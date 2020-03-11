@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<!-- 프로세스모니터링   -->
+	<bean id="processMntrng" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="egovProcessMonScheduling" />
+		<property name="targetMethod" value="monitorProcess" />
+		<property name="concurrent" value="false" />
+	</bean>
+
+	<!-- 프로세스모니터링  트리거-->
+	<bean id="processMntrngTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="processMntrng" />
+		<property name="startDelay" value="60000" />
+		<property name="repeatInterval" value="600000" />
+	</bean>
+	
+	<!-- <bean id="mntrngScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="processMntrngTrigger" />
+			</list>
+		</property>
+	</bean> -->
+
+</beans>

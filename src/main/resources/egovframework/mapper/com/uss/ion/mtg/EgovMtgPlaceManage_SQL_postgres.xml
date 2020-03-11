@@ -1,0 +1,361 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- 
+	수정일                 수정자                          수정내용
+  =========     =======    =================================================
+  2011.8.12   	안민정     	 	테이블 표준화에 따른 수정사항 반영
+  2018.08.20  최두영           비품관리 CRUD 삭제
+
+							QUANTITY			->	QY
+							MTG_PLACE_ID		->	MTGRUM_ID
+							MTG_PLACE_NM		->	MTGRUM_NM
+							FXTRS_CD			->	FXTRS_CODE							
+							RESVE_MAN_ID		->	RSVCTM_ID
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="mtgPlaceManageDAO">
+
+   <resultMap id="mtgPlaceManage" type="egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO">
+       <result property="mtgPlaceId" column="MTGRUM_ID"/>            
+       <result property="mtgPlaceNm" column="MTGRUM_NM"/>         
+       <result property="opnBeginTm" column="OPN_BEGIN_TM"/>         
+       <result property="opnEndTm" column="OPN_END_TM"/>           
+       <result property="aceptncPosblNmpr" column="ACEPTNC_POSBL_NMPR"/>   
+       <result property="lcSe" column="LC_SE"/>                
+       <result property="lcDetail" column="LC_DETAIL"/>            
+       <result property="frstRegisterId" column="FRST_REGISTER_ID"/>     
+       <result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>  
+       <result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>       
+       <result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>    
+   </resultMap>
+
+   <resultMap id="mtgPlaceResve" type="egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO">
+       <result property="resveId" column="RESVE_ID"/>  
+       <result property="mtgPlaceId" column="MTGRUM_ID"/>  
+       <result property="mtgSj" column="MTG_SJ"/>  
+       <result property="resveManId" column="RSVCTM_ID"/>  
+       <result property="resveBeginTm" column="RESVE_BEGIN_TM"/>  
+       <result property="resveEndTm" column="RESVE_END_TM"/>  
+       <result property="frstRegisterId" column="FRST_REGISTER_ID"/>  
+       <result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>  
+       <result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>  
+       <result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/> 
+   </resultMap>
+   
+<!-- 회의실관리 -->
+    <select id="selectMtgPlaceManageList" parameterType="egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO" resultType="egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO">
+        
+			   SELECT ROW_NUMBER() OVER () AS rowCount ,
+                      MTGRUM_ID        AS mtgPlaceId       ,
+                      MTGRUM_NM        AS mtgPlaceNm       ,
+                      OPN_BEGIN_TM        AS opnBeginTm       ,
+                      OPN_END_TM          AS opnEndTm         ,
+                      ACEPTNC_POSBL_NMPR  AS aceptncPosblNmpr ,
+                      LC_SE               AS lcSe             ,
+                      LC_DETAIL           AS lcDetail         ,
+   				      FRST_REGISTER_ID    AS frstRegisterId,
+   				      FRST_REGIST_PNTTM AS     FRST_REGISTER_PNTTM,
+   				      LAST_UPDUSR_ID      AS lastUpdusrId  ,
+   				      LAST_UPDT_PNTTM   AS lastUpdusrPnttm ,
+				     (select code_nm from COMTCCMMNDETAILCODE
+				      where code_id ='COM070'
+				      and   code    = A.LC_SE) as mtgPlaceTemp3
+			   FROM   COMTNMTGPLACEMANAGE A 
+			   WHERE  1=1          
+			   <if test="searchKeyword != null and searchKeyword != ''">AND
+			     MTGRUM_NM like  CONCAT('%', #{searchKeyword}, '%')   
+               </if>
+               
+			   ORDER BY FRST_REGIST_PNTTM DESC
+			   LIMIT #{recordCountPerPage} OFFSET #{firstIndex}   
+
+    </select>
+
+    <select id="selectMtgPlaceManageListTotCnt" parameterType="egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO" resultType="int">
+        
+            SELECT COUNT(*) totcnt
+            FROM COMTNMTGPLACEMANAGE
+            WHERE 1=1    
+			   <if test="searchKeyword != null and searchKeyword != ''">AND
+			     MTGRUM_NM like  CONCAT('%', #{searchKeyword}, '%')   
+               </if>
+    </select>
+    
+    <select id="selectMtgPlaceManage" parameterType="egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO" resultType="egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO">
+        
+				SELECT MTGRUM_ID        AS mtgPlaceId       ,
+				       MTGRUM_NM        AS mtgPlaceNm       ,
+				       OPN_BEGIN_TM        AS opnBeginTm       ,
+				       OPN_END_TM          AS opnEndTm         ,
+				       ACEPTNC_POSBL_NMPR  AS aceptncPosblNmpr ,
+				       LC_SE               AS lcSe             ,
+				       LC_DETAIL           AS lcDetail         ,
+				       ATCH_FILE_ID        AS atchFileId       ,
+				       FRST_REGISTER_ID    AS frstRegisterId   ,
+				       FRST_REGIST_PNTTM AS     FRST_REGISTER_PNTTM,
+				       LAST_UPDUSR_ID      AS lastUpdusrId     ,
+				       LAST_UPDT_PNTTM   AS lastUpdusrPnttm  ,
+				       (select code_nm from COMTCCMMNDETAILCODE
+				        where  code_id ='COM070'
+				        and    code    = LC_SE) as mtgPlaceTemp3
+				FROM   COMTNMTGPLACEMANAGE
+				WHERE MTGRUM_ID  = #{mtgPlaceId}
+        
+    </select>
+
+    <insert id="insertMtgPlaceManage" parameterType="egovframework.com.uss.ion.mtg.service.MtgPlaceManage">
+        
+
+            INSERT INTO COMTNMTGPLACEMANAGE
+                   (MTGRUM_ID        ,
+                    MTGRUM_NM        ,
+                    OPN_BEGIN_TM        ,   
+                    OPN_END_TM          ,
+                    ACEPTNC_POSBL_NMPR  ,     
+                    LC_SE               ,
+                    LC_DETAIL           ,
+                    ATCH_FILE_ID		,
+                    FRST_REGISTER_ID    ,
+                    FRST_REGIST_PNTTM) 
+            VALUES (#{mtgPlaceId},        
+                    #{mtgPlaceNm},        
+                    #{opnBeginTm},       
+                    #{opnEndTm},          
+                    #{aceptncPosblNmpr},  
+                    #{lcSe},             
+                    #{lcDetail},
+                    #{atchFileId},          
+                    #{frstRegisterId},   
+                    NOW() ) 
+        
+    </insert>     
+
+    <update id="updtMtgPlaceManage" parameterType="egovframework.com.uss.ion.mtg.service.MtgPlaceManage">
+        
+
+            UPDATE  COMTNMTGPLACEMANAGE
+               SET  MTGRUM_NM        = #{mtgPlaceNm}      ,           
+                    OPN_BEGIN_TM        = #{opnBeginTm}      ,        
+                    OPN_END_TM          = #{opnEndTm}        ,          
+                    ACEPTNC_POSBL_NMPR  = #{aceptncPosblNmpr},   
+                    LC_SE               = #{lcSe}            ,              
+                    LC_DETAIL           = #{lcDetail}        ,
+                    ATCH_FILE_ID        = #{atchFileId}      ,          
+					LAST_UPDUSR_ID      = #{lastUpdusrId}    ,
+                    LAST_UPDT_PNTTM   = NOW()    
+				 WHERE  MTGRUM_ID  = #{mtgPlaceId}   
+        
+    </update>    
+    
+    <delete id="deleteMtgPlaceManage" parameterType="egovframework.com.uss.ion.mtg.service.MtgPlaceManage">
+        
+
+            DELETE FROM COMTNMTGPLACEMANAGE
+				 WHERE  MTGRUM_ID  = #{mtgPlaceId}   
+
+        
+    </delete>  
+    
+<!-- 회의실예약 -->
+
+    <select id="selectMtgPlaceIDList" parameterType="egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO" resultType="egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO">
+        
+			   SELECT MTGRUM_ID        AS mtgPlaceId       ,
+                      MTGRUM_NM        AS mtgPlaceNm       
+			   FROM   COMTNMTGPLACEMANAGE 
+			   WHERE   1=1
+         
+    </select>
+
+
+    <select id="selectMtgPlaceResveManageList" parameterType="egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO" resultType="egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO">
+			 SELECT  mtg.MTGRUM_NM as mtgPlaceNm, mtg.MTGRUM_ID as mtgPlaceId, 
+			        COALESCE((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."0800" ),'0') as resveTemp0800,
+			        COALESCE((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."0830" ),'0') as resveTemp0830,
+			        COALESCE((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."0900" ),'0') as resveTemp0900,
+			        COALESCE((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."0930" ),'0') as resveTemp0930,
+			        COALESCE((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."1000" ),'0') as resveTemp1000,
+			        COALESCE((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."1030" ),'0') as resveTemp1030,
+			        COALESCE((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."1100" ),'0') as resveTemp1100,
+			        COALESCE((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."1130" ),'0') as resveTemp1130,
+			        COALESCE((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."1200" ),'0') as resveTemp1200,
+			        COALESCE((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."1230" ),'0') as resveTemp1230,
+			        COALESCE((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."1300" ),'0') as resveTemp1300,
+			        COALESCE((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."1330" ),'0') as resveTemp1330,
+			        COALESCE((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."1400" ),'0') as resveTemp1400,
+			        COALESCE((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."1430" ),'0') as resveTemp1430,
+			        COALESCE((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."1500" ),'0') as resveTemp1500,
+			        COALESCE((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."1530" ),'0') as resveTemp1530,
+			        COALESCE((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."1600" ),'0') as resveTemp1600,
+			        COALESCE((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."1630" ),'0') as resveTemp1630,
+			        COALESCE((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."1700" ),'0') as resveTemp1700,
+			        COALESCE((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."1730" ),'0') as resveTemp1730,
+			        COALESCE((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."1800" ),'0') as resveTemp1800,
+			        COALESCE((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."1830" ),'0') as resveTemp1830,
+			        COALESCE((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."1900" ),'0') as resveTemp1900,
+			        COALESCE((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."1930" ),'0') as resveTemp1930,
+			        COALESCE((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."2000" ),'0') as resveTemp2000,
+			        COALESCE((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."2030" ),'0') as resveTemp2030,
+			        COALESCE((SELECT CONCAT(RESVE_ID,MTG_SJ) FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."2100" ),'0') as resveTemp2100
+			from    COMTNMTGPLACEMANAGE mtg 
+				    left join (	select   COALESCE(MTGRUM_ID,'') AS MTGRUM_ID, 
+                   	MAX(case 800  between RESVE_BEGIN_TM::numeric and (RESVE_END_TM::numeric-1)   when  true then RESVE_ID else '' end) AS "0800",
+                   	MAX(case 830  between RESVE_BEGIN_TM::numeric and (RESVE_END_TM::numeric-1)   when  true then RESVE_ID else '' end) AS "0830",
+                   	MAX(case 900  between RESVE_BEGIN_TM::numeric and (RESVE_END_TM::numeric-1)   when  true then RESVE_ID else '' end) AS "0900",
+                   	MAX(case 930  between RESVE_BEGIN_TM::numeric and (RESVE_END_TM::numeric-1)   when  true then RESVE_ID else '' end) AS "0930",
+                   	MAX(case 1000 between RESVE_BEGIN_TM::numeric and (RESVE_END_TM::numeric-1)   when  true then RESVE_ID else '' end) AS "1000",
+                   	MAX(case 1030 between RESVE_BEGIN_TM::numeric and (RESVE_END_TM::numeric-1)   when  true then RESVE_ID else '' end) AS "1030",
+                   	MAX(case 1100 between RESVE_BEGIN_TM::numeric and (RESVE_END_TM::numeric-1)   when  true then RESVE_ID else '' end) AS "1100",
+                   	MAX(case 1130 between RESVE_BEGIN_TM::numeric and (RESVE_END_TM::numeric-1)   when  true then RESVE_ID else '' end) AS "1130",
+                   	MAX(case 1200 between RESVE_BEGIN_TM::numeric and (RESVE_END_TM::numeric-1)   when  true then RESVE_ID else '' end) AS "1200",
+                   	MAX(case 1230 between RESVE_BEGIN_TM::numeric and (RESVE_END_TM::numeric-1)   when  true then RESVE_ID else '' end) AS "1230",
+                   	MAX(case 1300 between RESVE_BEGIN_TM::numeric and (RESVE_END_TM::numeric-1)   when  true then RESVE_ID else '' end) AS "1300",
+                   	MAX(case 1330 between RESVE_BEGIN_TM::numeric and (RESVE_END_TM::numeric-1)   when  true then RESVE_ID else '' end) AS "1330",
+                   	MAX(case 1400 between RESVE_BEGIN_TM::numeric and (RESVE_END_TM::numeric-1)   when  true then RESVE_ID else '' end) AS "1400",
+                   	MAX(case 1430 between RESVE_BEGIN_TM::numeric and (RESVE_END_TM::numeric-1)   when  true then RESVE_ID else '' end) AS "1430",
+                   	MAX(case 1500 between RESVE_BEGIN_TM::numeric and (RESVE_END_TM::numeric-1)   when  true then RESVE_ID else '' end) AS "1500",
+                   	MAX(case 1530 between RESVE_BEGIN_TM::numeric and (RESVE_END_TM::numeric-1)   when  true then RESVE_ID else '' end) AS "1530",
+                   	MAX(case 1600 between RESVE_BEGIN_TM::numeric and (RESVE_END_TM::numeric-1)   when  true then RESVE_ID else '' end) AS "1600",
+                   	MAX(case 1630 between RESVE_BEGIN_TM::numeric and (RESVE_END_TM::numeric-1)   when  true then RESVE_ID else '' end) AS "1630",
+                   	MAX(case 1700 between RESVE_BEGIN_TM::numeric and (RESVE_END_TM::numeric-1)   when  true then RESVE_ID else '' end) AS "1700",
+                   	MAX(case 1730 between RESVE_BEGIN_TM::numeric and (RESVE_END_TM::numeric-1)   when  true then RESVE_ID else '' end) AS "1730",
+                   	MAX(case 1800 between RESVE_BEGIN_TM::numeric and (RESVE_END_TM::numeric-1)   when  true then RESVE_ID else '' end) AS "1800",
+                   	MAX(case 1830 between RESVE_BEGIN_TM::numeric and (RESVE_END_TM::numeric-1)   when  true then RESVE_ID else '' end) AS "1830",
+                   	MAX(case 1900 between RESVE_BEGIN_TM::numeric and (RESVE_END_TM::numeric-1)   when  true then RESVE_ID else '' end) AS "1900",
+                   	MAX(case 1930 between RESVE_BEGIN_TM::numeric and (RESVE_END_TM::numeric-1)   when  true then RESVE_ID else '' end) AS "1930",
+                   	MAX(case 2000 between RESVE_BEGIN_TM::numeric and (RESVE_END_TM::numeric-1)   when  true then RESVE_ID else '' end) AS "2000",
+                   	MAX(case 2030 between RESVE_BEGIN_TM::numeric and (RESVE_END_TM::numeric-1)   when  true then RESVE_ID else '' end) AS "2030",
+                   	MAX(case 2100 between RESVE_BEGIN_TM::numeric and (RESVE_END_TM::numeric-1)   when  true then RESVE_ID else '' end) AS "2100"
+						              FROM   COMTNMTGPLACERESVE
+			                      WHERE   RESVE_DE = #{resveDe} 
+			                      AND     MTGRUM_ID = #{mtgPlaceId} GROUP BY MTGRUM_ID) res 
+			        on res.MTGRUM_ID = mtg.MTGRUM_ID
+			  WHERE mtg.MTGRUM_ID = #{mtgPlaceId}
+         
+    </select>
+
+
+    <select id="selectMtgPlaceResve" parameterType="egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO" resultType="egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO">
+        
+	         select  mtg.MTGRUM_ID   AS mtgPlaceId,
+         	         mtg.MTGRUM_NM   AS mtgPlaceNm,
+         	         mtg.OPN_BEGIN_TM   AS opnBeginTm,
+         	         mtg.OPN_END_TM     AS opnEndTm  ,  
+	                 mtg.LC_SE          AS lcSe      ,      
+	                 mtg.LC_DETAIL      AS lcDetail  ,  
+	                 mtg.ATCH_FILE_ID   AS atchFileId,
+	                (select code_nm from COMTCCMMNDETAILCODE
+	                 where code_id ='COM070'
+	                 and   code    = mtg.LC_SE) AS mtgPlaceTemp3,
+	                 COALESCE(res.RESVE_ID,'')       AS resveId     ,
+	                 COALESCE(res.MTG_SJ  ,'')       AS mtgSj       ,
+	                 COALESCE(res.RESVE_DE,'')       AS resveDe     ,
+	                 COALESCE(res.RESVE_BEGIN_TM,'') AS resveBeginTm,
+	                 COALESCE(res.RESVE_END_TM,'')   AS resveEndTm  ,
+	                 COALESCE(res.ATNDNC_NMPR,0) AS atndncNmpr  ,
+	                 COALESCE(res.MTG_CN   ,'')      AS mtgCn             
+	         from    COMTNMTGPLACEMANAGE mtg 
+	                 left join COMTNMTGPLACERESVE res on res.MTGRUM_ID = mtg.MTGRUM_ID
+	                 AND  res.RESVE_ID = #{resveId}
+	         where   mtg.MTGRUM_ID = #{mtgPlaceId}
+        
+    </select>
+
+    <select id="selectMtgPlaceResveDetail" parameterType="egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO" resultType="egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO">
+        
+            SELECT  mtg.MTGRUM_ID   AS mtgPlaceId  ,
+                    mtg.MTGRUM_NM   AS mtgPlaceNm  ,
+                    mtg.OPN_BEGIN_TM   AS opnBeginTm  ,
+                    mtg.OPN_END_TM     AS opnEndTm    ,
+                    mtg.LC_SE          AS lcSe        ,
+                    mtg.LC_DETAIL      AS lcDetail    ,
+                    mtg.ATCH_FILE_ID   AS atchFileId  ,
+                   (select code_nm from COMTCCMMNDETAILCODE where code_id ='COM070' and code = mtg.LC_SE) AS mtgPlaceTemp3,
+                    res.RESVE_ID       AS resveId     ,
+                    res.MTG_SJ         AS mtgSj       ,
+                    res.RESVE_DE       AS resveDe     ,
+                    res.RESVE_BEGIN_TM AS resveBeginTm,
+                    res.RESVE_END_TM   AS resveEndTm  ,
+                    res.ATNDNC_NMPR    AS atndncNmpr  ,
+                    res.MTG_CN         AS mtgCn       ,
+                   (select info.ORGNZT_NM from COMTNORGNZTINFO info where  info.ORGNZT_ID = mst.ORGNZT_ID ) AS mtgPlaceTemp5,
+                    res.RSVCTM_ID   AS resveManId  ,
+                    mst.USER_NM        AS mtgPlaceTemp4
+            FROM    COMTNMTGPLACEMANAGE mtg, COMTNMTGPLACERESVE res, COMVNUSERMASTER mst
+            WHERE   1=1
+            AND     res.MTGRUM_ID = mtg.MTGRUM_ID
+            AND     res.RSVCTM_ID =  mst.ESNTL_ID
+            AND     res.RESVE_ID     =  #{resveId}
+            AND     mtg.MTGRUM_ID =  #{mtgPlaceId}
+        
+    </select>
+
+    <insert id="insertMtgPlaceResve" parameterType="egovframework.com.uss.ion.mtg.service.MtgPlaceResve">
+        
+            INSERT INTO COMTNMTGPLACERESVE
+                   ( RESVE_ID             ,
+                     MTGRUM_ID         ,
+                     MTG_SJ               ,
+                     RSVCTM_ID         ,
+                     RESVE_DE             ,
+                     RESVE_BEGIN_TM       ,
+                     RESVE_END_TM         ,
+                     ATNDNC_NMPR          ,
+                     MTG_CN               ,
+                     FRST_REGISTER_ID     ,
+                     FRST_REGIST_PNTTM  ) 
+            VALUES ( #{resveId}            ,
+                     #{mtgPlaceId}         ,
+                     #{mtgSj}              ,
+                     #{resveManId}         ,
+                     #{resveDe}            ,
+                     #{resveBeginTm}       ,
+                     #{resveEndTm}         ,
+                     #{atndncNmpr}         ,
+                     #{mtgCn}              ,
+                     #{frstRegisterId}     ,   
+                     NOW() ) 
+        
+    </insert>     
+
+    <update id="updtMtgPlaceResve" parameterType="egovframework.com.uss.ion.mtg.service.MtgPlaceResve">
+        
+
+            UPDATE  COMTNMTGPLACERESVE
+               SET  MTG_SJ            =#{mtgSj}        ,
+                    RSVCTM_ID      =#{resveManId}   ,
+                    RESVE_DE          =#{resveDe}      ,
+                    RESVE_BEGIN_TM    =#{resveBeginTm} ,
+                    RESVE_END_TM      =#{resveEndTm}   ,
+                    ATNDNC_NMPR       =#{atndncNmpr}   ,
+                    MTG_CN            =#{mtgCn}        , 
+                    LAST_UPDUSR_ID    =#{lastUpdusrId} ,
+                    LAST_UPDT_PNTTM = NOW()    
+			 WHERE  MTGRUM_ID  = #{mtgPlaceId}   
+			 AND    RESVE_ID      = #{resveId}
+
+        
+    </update>    
+    
+    <delete id="deleteMtgPlaceResve" parameterType="egovframework.com.uss.ion.mtg.service.MtgPlaceResve">
+        
+
+            DELETE FROM COMTNMTGPLACERESVE
+			WHERE  MTGRUM_ID  = #{mtgPlaceId}   
+			AND    RESVE_ID      = #{resveId}
+
+        
+    </delete>  
+
+    <select id="mtgPlaceResveDplactCeck" parameterType="egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO" resultType="int">
+        
+			SELECT count(resve_id) from COMTNMTGPLACERESVE
+			WHERE  RESVE_DE      = #{resveDe} 
+			AND    MTGRUM_ID  = #{mtgPlaceId} 
+			AND    (resve_begin_tm::NUMERIC BETWEEN cast(#{resveBeginTm} as NUMERIC)+1 and cast(#{resveEndTm} as NUMERIC)-1
+			       or RESVE_END_TM::NUMERIC BETWEEN cast(#{resveBeginTm} as NUMERIC)+1 and cast(#{resveEndTm} as NUMERIC)-1 )
+        
+		 <if test="resveId != null and resveId != ''"><![CDATA[AND
+		  RESVE_ID <> #{resveId}    ]]>
+		 </if>	       
+    </select>
+</mapper>

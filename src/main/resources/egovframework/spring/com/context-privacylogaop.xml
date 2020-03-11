@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
+	<!--  Privacy Log Aspect -->
+	<bean id="privacyLog" class="egovframework.com.sym.log.plg.service.EgovPrivacyLogAspect">
+		<property name="maxListCount" value="1" />
+		<property name="target">
+			<map>
+                <entry key="mberNm" value="회원명"/>
+                <entry key="moblphonNo" value="휴대폰번호"/>
+                <entry key="emailAdres" value="이메일"/>
+                <entry key="email" value="이메일"/>
+                <entry key="orgnztNm" value="조직명"/>
+			</map>
+		</property>
+	</bean>
+
+	<aop:config>
+		<aop:aspect id="privacyLogAspect" ref="privacyLog">
+			<!--  service Method -->
+			<aop:after-returning returning="returnVal" 
+					pointcut="execution(public * egovframework.com..impl.*Impl.*(..)) 
+				 &amp;&amp; ! execution(public * egovframework.com.cmm.service.impl.EgovUserDetailsSessionServiceImpl.*(..)) 
+				 &amp;&amp; ! execution(public * egovframework.com.sec.ram.service.impl.EgovUserDetailsSecurityServiceImpl.*(..)) 
+				 &amp;&amp; ! execution(public * egovframework.com.sym.log.plg.service.impl.EgovPrivacyLogServiceImpl.*(..))
+				 &amp;&amp; ! execution(public * egovframework.com.sym.log.wlg.service.impl.EgovWebLogServiceImpl.*(..))
+				 &amp;&amp; ! execution(public * egovframework.com.sym.log.lgm.service.impl.EgovSysLogServiceImpl.*(..))"
+				 method="insertLog" />
+			</aop:aspect>
+			<!--  warning : 자체 서비스(EgovPrivacyLogServiceImpl) 및 내부 호출 서비스, 로그 처리 부분  제외 필요 -->
+	</aop:config>
+
+</beans>

@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BBSSatisfactionDAO">
+	
+	<resultMap id="satisfactionList" type="egovframework.com.cop.bbs.service.SatisfactionVO">
+		<result property="stsfdgNo" column="STSFDG_NO"/>
+		<result property="nttId" column="NTT_ID"/>
+		<result property="bbsId" column="BBS_ID"/>
+		<result property="wrterId" column="WRTER_ID"/>
+		<result property="wrterNm" column="WRTER_NM"/>
+		<result property="stsfdgPassword" column="PASSWORD"/>
+		<result property="stsfdgCn" column="STSFDG_CN"/>
+		<result property="stsfdg" column="STSFDG"/>
+		<result property="useAt" column="USE_AT"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterNm" column="FRST_REGISTER_NM"/>
+	</resultMap>
+	
+	<resultMap id="satisfactionDetail" type="egovframework.com.cop.bbs.service.Satisfaction">
+		<result property="stsfdgNo" column="STSFDG_NO"/>
+		<result property="nttId" column="NTT_ID"/>
+		<result property="bbsId" column="BBS_ID"/>
+		<result property="wrterId" column="WRTER_ID"/>
+		<result property="wrterNm" column="WRTER_NM"/>
+		<result property="stsfdgPassword" column="PASSWORD"/>
+		<result property="stsfdgCn" column="STSFDG_CN"/>
+		<result property="stsfdg" column="STSFDG"/>
+		<result property="useAt" column="USE_AT"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterNm" column="FRST_REGISTER_NM"/>
+	</resultMap>
+
+	<select id="selectSatisfactionList" parameterType="egovframework.com.cop.bbs.service.SatisfactionVO" resultMap="satisfactionList">
+		
+			SELECT
+				a.STSFDG_NO, a.NTT_ID, a.BBS_ID, 
+				a.WRTER_ID, a.WRTER_NM, a.PASSWORD, a.STSFDG_CN, a.STSFDG, a.USE_AT,
+				TO_CHAR(a.FRST_REGIST_PNTTM, 'YYYY-mm-dd HH24:MI:SS') 
+				as FRST_REGIST_PNTTM,
+				b.USER_NM as FRST_REGISTER_NM
+			FROM
+				COMTNSTSFDG a
+			LEFT OUTER JOIN COMVNUSERMASTER b
+				ON a.FRST_REGISTER_ID = b.ESNTL_ID
+			WHERE
+				a.BBS_ID = #{bbsId} AND a.NTT_ID = #{nttId}
+			AND
+				a.USE_AT = 'Y'
+			ORDER BY a.FRST_REGIST_PNTTM ASC
+			LIMIT #{subRecordCountPerPage} OFFSET #{subFirstIndex}
+						
+	</select>	
+	
+	<select id="selectSatisfactionListCnt" parameterType="egovframework.com.cop.bbs.service.SatisfactionVO" resultType="java.lang.Integer">
+		
+			SELECT
+				COUNT(STSFDG_NO)
+			FROM
+				COMTNSTSFDG 
+			WHERE
+				BBS_ID = #{bbsId} AND NTT_ID = #{nttId}
+			AND
+				USE_AT = 'Y'
+					
+	</select>
+	
+	<insert id="insertSatisfaction" parameterType="egovframework.com.cop.bbs.service.Satisfaction">
+		
+		
+			INSERT INTO COMTNSTSFDG
+			(STSFDG_NO, NTT_ID, BBS_ID, WRTER_ID, WRTER_NM, PASSWORD, 
+			 STSFDG_CN, STSFDG, USE_AT, 
+			 FRST_REGISTER_ID, FRST_REGIST_PNTTM
+			 )
+			VALUES
+			( CAST(#{stsfdgNo} AS NUMERIC), #{nttId}, #{bbsId}, #{wrterId}, #{wrterNm}, #{stsfdgPassword}, 
+			  #{stsfdgCn}, #{stsfdg}, 'Y',
+			  #{frstRegisterId}, NOW()
+			 )
+		
+	</insert>
+	
+	<update id="deleteSatisfaction" parameterType="egovframework.com.cop.bbs.service.SatisfactionVO">
+		
+			UPDATE COMTNSTSFDG
+			SET USE_AT = 'N'
+			WHERE STSFDG_NO = CAST(#{stsfdgNo} AS NUMERIC)
+					
+	</update>
+	
+	<select id="selectSatisfaction" parameterType="egovframework.com.cop.bbs.service.SatisfactionVO" resultMap="satisfactionDetail">
+		
+			SELECT
+				a.STSFDG_NO, a.NTT_ID, a.BBS_ID, 
+				a.WRTER_ID, a.WRTER_NM, a.PASSWORD, a.STSFDG_CN, a.STSFDG, a.USE_AT,
+				TO_CHAR(a.FRST_REGIST_PNTTM, 'YYYY-mm-dd HH24:MI:SS') 
+				as FRST_REGIST_PNTTM,
+				b.USER_NM as FRST_REGISTER_NM
+			FROM
+				COMTNSTSFDG a
+			LEFT OUTER JOIN COMVNUSERMASTER b
+				ON a.FRST_REGISTER_ID = b.ESNTL_ID
+			WHERE
+				a.STSFDG_NO = CAST(#{stsfdgNo} AS NUMERIC)
+
+						
+	</select> 
+
+ 	 <update id="updateSatisfaction" parameterType="egovframework.com.cop.bbs.service.Satisfaction">
+ 		
+			UPDATE COMTNSTSFDG SET 
+				WRTER_NM = #{wrterNm},
+				PASSWORD = #{stsfdgPassword},
+				STSFDG_CN = #{stsfdgCn},
+				STSFDG = #{stsfdg},
+				LAST_UPDUSR_ID = #{lastUpdusrId},
+				LAST_UPDT_PNTTM = NOW()
+			WHERE STSFDG_NO = CAST(#{stsfdgNo} AS NUMERIC)
+ 		
+ 	</update>
+ 	
+ 	<select id="getSatisfactionPassword" parameterType="egovframework.com.cop.bbs.service.Satisfaction" resultType="java.lang.String">
+		
+			SELECT
+				PASSWORD
+			FROM
+				COMTNSTSFDG	
+			WHERE STSFDG_NO = #{stsfdgNo} 		
+		
+	</select>
+	
+	<select id="getSummary" parameterType="egovframework.com.cop.bbs.service.SatisfactionVO" resultType="java.lang.Float">
+		
+			SELECT
+				COALESCE(AVG(STSFDG), 0)
+			FROM
+				COMTNSTSFDG 
+			WHERE
+				BBS_ID = #{bbsId} AND NTT_ID = #{nttId}
+			AND
+				USE_AT = 'Y'
+					
+	</select>
+</mapper>

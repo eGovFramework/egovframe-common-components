@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SmsDAO">
+
+	<resultMap id="smsList" type="egovframework.com.cop.sms.service.SmsVO">
+		<result property="smsId" column="SMS_ID"/>
+		<result property="trnsmitTelno" column="TRNSMIS_TELNO"/>
+		<result property="recptnCnt" column="RECPTN_CNT"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+	</resultMap>
+
+	<resultMap id="smsDetail" type="egovframework.com.cop.sms.service.SmsVO">
+		<result property="smsId" column="SMS_ID"/>
+		<result property="trnsmitTelno" column="TRNSMIS_TELNO"/>
+		<result property="trnsmitCn" column="TRNSMIS_CN"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="frstRegisterNm" column="FRST_REGISTER_NM"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+	</resultMap>
+	
+	<resultMap id="smsRecptnList" type="egovframework.com.cop.sms.service.SmsRecptn">
+		<result property="smsId" column="SMS_ID"/>
+		<result property="recptnTelno" column="RECPTN_TELNO"/>
+		<result property="resultCode" column="RESULT_CODE"/>
+		<result property="resultMssage" column="RESULT_MSSAGE"/>
+	</resultMap>
+
+	<select id="selectSmsInfs" parameterType="egovframework.com.cop.sms.service.SmsVO" resultMap="smsList">
+		
+		SELECT * FROM ( SELECT rownum rn, TB.* FROM (
+			SELECT 
+				a.SMS_ID, a.TRNSMIS_TELNO, a.TRNSMIS_CN,
+				(SELECT COUNT(*) FROM COMTNSMSRECPTN s WHERE s.SMS_ID = a.SMS_ID) as RECPTN_CNT,
+				TO_CHAR(a.FRST_REGIST_PNTTM, 'YYYY-MM-DD HH24:MI:SS') as FRST_REGIST_PNTTM
+			FROM
+				COMTNSMS a
+			WHERE 1=1	
+		
+			<if test="searchCnd == 0">AND
+				a.SMS_ID in (SELECT SMS_ID FROM COMTNSMSRECPTN WHERE RECPTN_TELNO LIKE '%' || #{searchWrd} || '%')
+			</if>
+			<if test="searchCnd == 1">AND
+					a.TRNSMIS_CN LIKE '%' || #{searchWrd} || '%' 		
+			</if>	
+					
+			ORDER BY a.FRST_REGIST_PNTTM DESC 
+			) TB ) WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+						
+	</select>	
+	
+	<select id="selectSmsInfsCnt" parameterType="egovframework.com.cop.sms.service.SmsVO" resultType="java.lang.Integer">
+		
+			SELECT 
+				COUNT(a.SMS_ID) as cnt
+			FROM
+				COMTNSMS a
+			WHERE 1=1 
+		
+			<if test="searchCnd == 0">AND
+				
+				
+				a.SMS_ID in (SELECT SMS_ID FROM COMTNSMSRECPTN WHERE RECPTN_TELNO LIKE '%' || #{searchWrd} || '%')
+		 		
+		 		
+			</if>
+			<if test="searchCnd == 1">AND
+					a.TRNSMIS_CN LIKE '%' || #{searchWrd} || '%' 		
+			</if>		
+	</select>
+	
+	<insert id="insertSmsInf" parameterType="egovframework.com.cop.sms.service.Sms">
+		
+			INSERT INTO COMTNSMS
+			(SMS_ID, TRNSMIS_TELNO, TRNSMIS_CN,
+			 FRST_REGISTER_ID, FRST_REGIST_PNTTM )
+			VALUES
+			( #{smsId}, #{trnsmitTelno}, #{trnsmitCn},
+			  #{frstRegisterId}, SYSDATE
+			 )			
+		
+	</insert>
+	
+	<insert id="insertSmsRecptnInf" parameterType="egovframework.com.cop.sms.service.SmsRecptn">
+		
+			INSERT INTO COMTNSMSRECPTN
+			(SMS_ID, RECPTN_TELNO,
+			 RESULT_CODE, RESULT_MSSAGE )
+			VALUES
+			( #{smsId}, #{recptnTelno}, #{resultCode}, #{resultMssage} )		
+		
+	</insert>
+	
+	<select id="selectSmsInf" parameterType="egovframework.com.cop.sms.service.SmsVO" resultMap="smsDetail">
+		
+			SELECT 
+				a.SMS_ID, a.TRNSMIS_TELNO, a.TRNSMIS_CN,
+				a.FRST_REGISTER_ID, b.USER_NM as FRST_REGISTER_NM,
+				TO_CHAR(a.FRST_REGIST_PNTTM, 'YYYY-MM-DD HH24:MI:SS') as FRST_REGIST_PNTTM
+			FROM
+				COMTNSMS a				
+			LEFT OUTER JOIN COMVNUSERMASTER b
+				ON a.FRST_REGISTER_ID = b.ESNTL_ID		
+			WHERE a.SMS_ID = #{smsId}
+						
+	</select>
+	
+	<select id="selectSmsRecptnInfs" parameterType="egovframework.com.cop.sms.service.SmsRecptn" resultMap="smsRecptnList">
+		
+			SELECT 
+				a.SMS_ID, a.RECPTN_TELNO, a.RESULT_CODE, a.RESULT_MSSAGE
+			FROM
+				COMTNSMSRECPTN a
+			WHERE a.SMS_ID = #{smsId}
+						
+	</select> 
+	
+		<insert id="updateSmsRecptnInf" parameterType="egovframework.com.cop.sms.service.SmsRecptn">
+		
+			UPDATE COMTNSMSRECPTN SET
+				RESULT_CODE = #{resultCode},
+				RESULT_MSSAGE = #{resultMssage}
+			WHERE 
+				SMS_ID = #{smsId} AND
+				RECPTN_TELNO = #{recptnTelno}
+		
+	</insert>
+
+</mapper>

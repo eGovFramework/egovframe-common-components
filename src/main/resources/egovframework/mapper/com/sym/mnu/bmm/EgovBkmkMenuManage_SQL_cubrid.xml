@@ -1,0 +1,178 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BkmkMenuManageDAO">
+    
+    <resultMap id="BkmkInfs" type="egovframework.com.sym.mnu.bmm.service.BkmkMenuManageVO">
+		<result property="menuId" column="MENU_ID"/>
+		<result property="userId" column="EMPLYR_ID"/>
+		<result property="menuNm" column="MENU_NM"/>
+		<result property="progrmStrePath" column="PROGRM_STRE_PATH"/>	
+	</resultMap>
+	
+	<resultMap id="MenuInfs" type="egovframework.com.sym.mnu.bmm.service.BkmkMenuManageVO">
+		<result property="menuId" column="MENU_NO"/>
+		<result property="menuNm" column="MENU_NM"/>
+		<result property="menuDc" column="MENU_DC"/>
+	</resultMap>
+	
+	<resultMap id="menuManage" type="egovframework.com.sym.mnu.mpm.service.MenuManageVO">
+		<result property="menuNo" column="MENU_NO"/>
+		<result property="menuOrdr" column="MENU_ORDR"/>
+		<result property="menuNm" column="MENU_NM"/>
+		<result property="upperMenuId" column="UPPER_MENU_NO"/>
+		<result property="menuDc" column="MENU_DC"/>
+		<result property="relateImagePath" column="RELATE_IMAGE_PATH"/>
+		<result property="relateImageNm" column="RELATE_IMAGE_NM"/>
+		<result property="progrmFileNm" column="PROGRM_FILE_NM"/>
+	</resultMap>
+	
+	<select id="selectBkmkPreview" parameterType="egovframework.com.sym.mnu.bmm.service.BkmkMenuManageVO" resultMap="menuManage">
+		 
+			SELECT 
+			 	 MENU_NO, MENU_ORDR, MENU_NM, UPPER_MENU_NO,MENU_DC, RELATE_IMAGE_PATH, RELATE_IMAGE_NM, 
+			 	 PROGRM_FILE_NM
+			 FROM 
+			 	COMTNMENUINFO  , (SELECT  MENU_ID 
+                                                  FROM COMTNBKMKMENUMANAGERESULT  WHERE EMPLYR_ID = #{userId} )b
+			 WHERE
+			 	MENU_NO = b.MENU_ID
+		 
+	</select>
+	
+	<select id="selectBkmkMenuManage" parameterType="egovframework.com.sym.mnu.bmm.service.BkmkMenuManageVO" resultType="egovframework.com.sym.mnu.bmm.service.BkmkMenuManageVO">
+		 
+			 SELECT 
+			 	MENU_ID , EMPLYR_ID, MENU_NM, PROGRM_STRE_PATH 
+			 FROM 
+			 	COMTNBKMKMENUMANAGERESULT
+			 WHERE
+			 	MENU_ID = #{menuId} AND EMPLYR_ID = #{userId}
+		 
+	</select>		
+
+	<insert id="insertBkmkMenuManage" parameterType="egovframework.com.sym.mnu.bmm.service.BkmkMenuManage">
+		
+			INSERT INTO COMTNBKMKMENUMANAGERESULT
+			( MENU_ID , EMPLYR_ID, MENU_NM, PROGRM_STRE_PATH
+			)
+			VALUES
+			( #{menuId}, #{userId}, #{menuNm}, #{progrmStrePath}
+			)		
+		
+	</insert>
+	
+	<delete id="deleteBkmkMenuManage" parameterType="egovframework.com.sym.mnu.bmm.service.BkmkMenuManage">
+		
+			DELETE FROM COMTNBKMKMENUMANAGERESULT 
+			WHERE 
+				MENU_ID = #{menuId} AND EMPLYR_ID = #{userId}			
+		
+	</delete>
+	
+	<select id="selectBkmkMenuManageList" parameterType="egovframework.com.sym.mnu.bmm.service.BkmkMenuManageVO" resultMap="BkmkInfs">
+		 
+            SELECT  *
+              FROM  (
+            SELECT ROWNUM RNUM, ALL_LIST.*
+              FROM  (
+        
+       
+			SELECT 
+			 	MENU_ID , EMPLYR_ID, MENU_NM, PROGRM_STRE_PATH 
+			 FROM 
+			 	COMTNBKMKMENUMANAGERESULT
+			 WHERE
+			 	EMPLYR_ID = #{userId}				 						
+			
+		
+			<if test="searchCnd == 0">AND
+					MENU_NM LIKE '%'|| #{searchWrd}||'%' 		
+			</if>
+			
+			<![CDATA[
+			ORDER BY MENU_NM 
+						
+        
+                    ) ALL_LIST
+                    ) Z
+             WHERE  RNUM  > #{firstIndex}
+               AND  RNUM <= #{firstIndex} + #{recordCountPerPage}
+        	]]>
+	</select>	
+
+	<select id="selectBkmkMenuManageListCnt" parameterType="egovframework.com.sym.mnu.bmm.service.BkmkMenuManageVO" resultType="java.lang.Integer">
+		 
+			select count(MENU_ID) 
+			from   COMTNBKMKMENUMANAGERESULT
+			WHERE
+			 	EMPLYR_ID = #{userId}					
+				
+			<if test="searchCnd == 0">AND
+					MENU_NM LIKE '%'|| #{searchWrd}||'%' 		
+			</if>
+		
+	</select>
+	
+	<select id="selectBkmkMenuList" parameterType="egovframework.com.sym.mnu.bmm.service.BkmkMenuManageVO" resultMap="MenuInfs">
+		 
+             SELECT  *
+              FROM  (
+            SELECT ROWNUM RNUM, ALL_LIST.*
+              FROM  (
+        
+      
+			SELECT 
+			 	d.MENU_NO, d.MENU_NM, d.MENU_DC
+			FROM 
+				COMTNMENUINFO d, (SELECT a.MENU_NO  FROM COMTNMENUCREATDTLS a, COMTNEMPLYRSCRTYESTBS b , COMVNUSERMASTER c 
+								WHERE a.AUTHOR_CODE = b.AUTHOR_CODE AND b.SCRTY_DTRMN_TRGET_ID = c.ESNTL_ID AND c.USER_ID =  #{userId})temp
+			 WHERE
+ 				d.PROGRM_FILE_NM != 'dir' 
+				AND d.MENU_NO = temp.MENU_NO
+				AND d.menu_no not in (SELECT MENU_ID FROM COMTNBKMKMENUMANAGERESULT WHERE EMPLYR_ID =  #{userId})	
+				
+			<if test="searchCnd == 0">AND
+					d.MENU_NM LIKE '%'|| #{searchWrd}||'%' 		
+			</if>
+			
+			<![CDATA[
+			ORDER BY MENU_NM 
+								
+        
+               ) ALL_LIST
+               ) Z
+             WHERE  RNUM  > #{firstIndex}
+               AND  RNUM <= #{firstIndex} + #{recordCountPerPage}
+        	]]>
+	</select>	
+
+	<select id="selectBkmkMenuListCnt" parameterType="egovframework.com.sym.mnu.bmm.service.BkmkMenuManageVO" resultType="java.lang.Integer">
+		 
+			select count(d.MENU_NM) 
+			 FROM 
+			 	COMTNMENUINFO d, (SELECT a.MENU_NO  FROM COMTNMENUCREATDTLS a, COMTNEMPLYRSCRTYESTBS b , COMVNUSERMASTER c 
+						WHERE a.AUTHOR_CODE = b.AUTHOR_CODE AND b.SCRTY_DTRMN_TRGET_ID = c.ESNTL_ID AND c.USER_ID = #{userId})temp
+			 WHERE
+			 	d.PROGRM_FILE_NM != 'dir' 
+				AND d.MENU_NO = temp.MENU_NO
+				AND d.menu_no not in (SELECT MENU_ID FROM COMTNBKMKMENUMANAGERESULT WHERE EMPLYR_ID = #{userId})						
+				
+			<if test="searchCnd == 0">AND
+					d.MENU_NM LIKE '%'|| #{searchWrd}||'%' 		
+			</if>
+		
+	</select>
+	
+	<select id="selectUrl" parameterType="egovframework.com.sym.mnu.bmm.service.BkmkMenuManage" resultType="java.lang.String">
+		 
+			SELECT a.URL
+			FROM   COMTNPROGRMLIST a, (SELECT  MENU_NO , PROGRM_FILE_NM 
+                                                  FROM COMTNMENUINFO  WHERE MENU_NO = #{menuId} )b
+			WHERE
+			 	   a.PROGRM_FILE_NM = b.PROGRM_FILE_NM			
+				
+			
+		
+	</select>
+</mapper>

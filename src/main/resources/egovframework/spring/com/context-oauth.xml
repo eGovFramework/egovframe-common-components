@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+        
+	<!-- GOOGLE OAuth Configuration -->
+	<bean id="googleAuthVO" class="egovframework.com.ext.oauth.service.OAuthVO">
+		<constructor-arg value="google" /><!-- Service Name -->
+		<constructor-arg value="1044767185911-oev6uo5pkro2n5u3se4lragkb9o8ipg7.apps.googleusercontent.com" /><!-- googleClientID -->
+		<constructor-arg value="5qAMYyDD9CkN3f38w0a8zomn" /><!-- googleClientSecret -->
+		<constructor-arg value="http://localhost:8500/auth/google/callback" /><!-- googleRedirectUrl -->
+	</bean>
+	
+	<!-- NAVER OAuth Configuration -->
+	<bean id="naverAuthVO" class="egovframework.com.ext.oauth.service.OAuthVO">
+		<constructor-arg value="naver" /><!-- Service Name -->
+		<constructor-arg value="2NUTY4QHkWzCuEA3dNJo" /><!-- naverClientID -->
+		<constructor-arg value="I4UqcbjJbW" /><!-- naverClientSecret -->
+		<constructor-arg value="http://127.0.0.1:8500/auth/naver/callback" /><!-- naverRedirectUrl -->
+	</bean>
+	
+	<!-- KAKAO OAuth Configuration -->
+	<bean id="kakaoAuthVO" class="egovframework.com.ext.oauth.service.OAuthVO">
+		<constructor-arg value="kakao" /><!-- Service Name -->
+		<constructor-arg value="8fc0e5fc8b29f5224f7ee2101c6e3547" /><!-- kakaoClientID -->
+		<constructor-arg value="AGxiWEwu2ytIifA1AY2PoqVSrdnRZiao" /><!-- kakaoClientSecret -->
+		<constructor-arg value="http://localhost:8500/auth/kakao/callback" /><!-- kakaoRedirectUrl -->
+	</bean>
+    
+</beans>

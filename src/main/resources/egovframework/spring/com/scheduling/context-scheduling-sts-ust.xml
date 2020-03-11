@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<!-- 사용자 통계 집계 작업 정의 -->
+	<bean id="userStats" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="egovUserStatsScheduling" />
+		<property name="targetMethod" value="summaryUserStats" />
+		<property name="concurrent" value="false" />
+	</bean>
+	
+	<!-- 사용자 통계 트리거 정의-->
+	<bean id="userStatsTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="userStats" />
+		<!-- 시작하고 2분후에 실행한다. (milisecond) -->
+		<property name="startDelay" value="120000" />
+		<!-- 매 12시간마다 실행한다. 43200000(milisecond) -->
+		<property name="repeatInterval" value="43200000" />
+	</bean>
+
+	<!-- 사용자 통계 스케줄러 정의, 스케줄러 적용 -->
+	<bean id="userStatsSummaryScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="userStatsTrigger" />
+			</list>
+		</property>
+	</bean>
+
+</beans>

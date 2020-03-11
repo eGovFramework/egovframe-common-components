@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed May 11 15:49:52 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SndngMailDtlsDAO">
+	
+	<!-- 발송메일 내역 조회를 위한 resultMap -->
+	<resultMap id="sndngMail" type="egovframework.com.cop.ems.service.SndngMailVO">
+		<result property="mssageId" column="mssageId"/>
+		<result property="sndngResultCode" column="sndngResultCode"/>
+		<result property="dsptchPerson" column="sndr"/>
+		<result property="recptnPerson" column="rcver"/>
+		<result property="sj" column="sj"/>		
+		<result property="sndngDe" column="sndngDe"/>
+		<result property="atchFileId" column="atchFileId"/>		
+	</resultMap>	
+	
+	<!-- 발송메일 내역조회 -->
+	<select id="selectSndngMailList_D" resultMap="sndngMail">
+		
+		SELECT dtls.mssageId
+		     , dtls.sndngResultCode
+		     , dtls.sndr				
+		     , dtls.rcver				
+		     , dtls.sj
+		     , dtls.sndngDe
+		     , dtls.atchFileId
+		  FROM (
+				SELECT mssage_id AS mssageId
+				     , (SELECT code_nm 
+				          FROM COMTCCMMNDETAILCODE 
+				         WHERE use_at = 'Y' 
+				           AND code_id = 'COM024'
+				           AND code = sndng_result_code) AS sndngResultCode
+				     , sndr AS sndr
+				     , rcver AS rcver
+				     , sj AS sj
+				     , dsptch_dt AS sndngDe
+				     , atch_file_id AS atchFileId
+				  FROM COMTHEMAILDSPTCHMANAGE
+				 WHERE 1=1
+				
+				<if test="searchCondition == 1">AND
+					sj LIKE '%' || #{searchKeyword} || '%'
+				</if>
+				<if test="searchCondition == 2">AND
+					email_cn LIKE '%' || #{searchKeyword} || '%'
+				</if>
+				<if test="searchCondition == 3">AND
+					sndr LIKE '%' || #{searchKeyword} || '%'
+				</if>
+		<![CDATA[
+				 ORDER BY mssage_id DESC
+		  ) dtls	
+		 WHERE 1 = 1	 
+		   AND rownum > #{firstIndex}
+		   AND rownum <= #{firstIndex} + #{recordCountPerPage}
+		   ]]>
+		   
+	</select>
+
+	<!-- 발송메일 내역 총건수 조회 -->
+	<select id="selectSndngMailListTotCnt_S" parameterType="comDefaultVO" resultType="int">
+		
+		SELECT COUNT(*) AS totcnt
+		  FROM COMTHEMAILDSPTCHMANAGE
+		 WHERE 1=1
+		
+		<if test="searchCondition == 1">AND
+			sj LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 2">AND
+			email_cn LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 3">AND
+			sndr LIKE '%' || #{searchKeyword} || '%'
+		</if>
+	</select>
+</mapper>

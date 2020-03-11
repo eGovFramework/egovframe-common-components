@@ -1,0 +1,428 @@
+﻿<?xml version="1.0" encoding="UTF-8"?><!--
+	수정일		수정자					수정내용
+  =========     =======    =================================================
+  2011.8.24   	이기하     	 	테이블 표준화에 따른 수정사항 반영
+  							QUSTNR_TMPLAT_ID 를			 	QESTNR_TMPLAT_ID 로 변경
+							FRST_REGIST_PNTTM 를			FRST_REGISTER_PNTTM 로 변경
+							QUSTNR_QESITM_ID 를				QESTNR_QESITM_ID 로 변경
+							QUSTNR_SJ 를					QESTNR_SJ 로 변경
+							QUSTNR_RSPNS_RESULT_ID 를		QESTNR_QESRSPNS_ID 로 변경
+  2011.09.19       서준식 		QustnrRespondInfo.selectQustnrRespondInfoManage 등록일자 Character 타입으로 변경							
+  2011.10.05    서준식               보안 취약점 점검사항 반영 $->#변경
+  2017.07.18         김예영			표준프레임워크 v3.7 개선 (주석제거, CDATA 추가)  	
+--><!--Converted at: Wed May 11 15:51:41 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="QustnrRespondInfo">
+
+	<!-- 설문등록:: 설문템플릿조회 -->
+	<select id="selectQustnrTmplatManages" parameterType="java.util.Map" resultType="egovMap">
+		<![CDATA[
+		SELECT
+			QUSTNR_TMPLAT_ID AS QESTNR_TMPLAT_ID,
+			QUSTNR_TMPLAT_TY AS QESTNR_TMPLAT_TY,
+			FRST_REGIST_PNTTM AS FRST_REGISTER_PNTTM,
+			FRST_REGISTER_ID,
+			LAST_UPDT_PNTTM,
+			LAST_UPDUSR_ID,
+			QUSTNR_TMPLAT_DC AS QESTNR_TMPLAT_CN,
+			QUSTNR_TMPLAT_PATH_NM AS QESTNR_TMPLAT_COURS
+		FROM COMTNQUSTNRTMPLAT
+		WHERE 1=1
+		AND QUSTNR_TMPLAT_ID = #{qestnrTmplatId}
+		]]>
+	</select>
+
+	<!-- 설문템플릿 화이트리스트 조회 -->
+	<select id="selectQustnrTmplatWhiteList" resultType="egovMap">
+		<![CDATA[
+		SELECT
+			QUSTNR_TMPLAT_PATH_NM AS QESTNR_TMPLAT_COURS
+		FROM COMTNQUSTNRTMPLAT
+		]]>
+	</select>
+
+	<!-- 설문조사(통계/객관식):: 설문지 전체 통계 -->
+	<select id="selectQustnrRespondInfoManageStatistics1" parameterType="java.util.Map" resultType="egovMap">
+		<![CDATA[
+		SELECT
+			A.QUSTNR_TMPLAT_ID AS QESTNR_TMPLAT_ID,
+			A.QESTNR_ID,
+			A.QUSTNR_QESITM_ID AS QESTNR_QESITM_ID,
+			A.QUSTNR_IEM_ID,
+			(
+				SELECT IEM_CN FROM COMTNQUSTNRIEM
+				WHERE 1=1
+				AND QUSTNR_IEM_ID = A.QUSTNR_IEM_ID
+			) IEM_CN,
+			COUNT(A.QUSTNR_IEM_ID) QUSTNR_IEM_ID_CNT,
+			ROUND((100/ (SELECT COUNT(*) CNT FROM COMTNQUSTNRRSPNSRESULT WHERE QUSTNR_QESITM_ID = A.QUSTNR_QESITM_ID) ) * COUNT(A.QUSTNR_IEM_ID)) QUSTNR_PERCENT
+		FROM COMTNQUSTNRRSPNSRESULT A
+		WHERE 1=1
+		AND A.QESTNR_ID = #{qestnrId}
+		AND A.QUSTNR_TMPLAT_ID = #{qestnrTmplatId}
+		AND (A.QUSTNR_IEM_ID IS NOT NULL AND A.QUSTNR_IEM_ID != '')
+		GROUP BY A.QUSTNR_TMPLAT_ID,A.QESTNR_ID, A.QUSTNR_QESITM_ID, A.QUSTNR_IEM_ID
+		]]>
+	</select>
+	<!-- 설문조사(통계/주관식):: 설문지 전체 통계 -->
+	<select id="selectQustnrRespondInfoManageStatistics2" parameterType="java.util.Map" resultType="egovMap">
+		<![CDATA[
+		SELECT
+			A.QUSTNR_TMPLAT_ID AS QESTNR_TMPLAT_ID,
+			A.QESTNR_ID,
+			A.QUSTNR_QESITM_ID AS QESTNR_QESITM_ID,
+			A.QUSTNR_IEM_ID,
+			A.ETC_ANSWER_CN,
+			A.RESPOND_ANSWER_CN,
+			A.RESPOND_NM
+		FROM COMTNQUSTNRRSPNSRESULT A
+		WHERE 1=1
+		AND A.QESTNR_ID = #{qestnrId}
+		AND A.QUSTNR_TMPLAT_ID = #{qestnrTmplatId}
+		AND (A.QUSTNR_IEM_ID IS NULL OR A.QUSTNR_IEM_ID = '')
+		]]>
+	</select>
+
+	<!-- 설문조사(설문등록):: 설문등록 /사용자 정보-->
+	<select id="selectQustnrRespondInfoManageEmplyrinfo" parameterType="java.util.Map" resultType="egovMap">
+		<![CDATA[
+		SELECT
+			EMPLYR_ID,
+			USER_NM,
+			PASSWORD,
+			EMPL_NO,
+			IHIDNUM,
+			SEXDSTN_CODE,
+			BRTHDY,
+			FXNUM,
+			HOUSE_ADRES,
+			PASSWORD_HINT,
+			PASSWORD_CNSR,
+			HOUSE_END_TELNO,
+			AREA_NO,
+			DETAIL_ADRES,
+			ZIP,
+			OFFM_TELNO,
+			MBTLNUM,
+			EMAIL_ADRES,
+			OFCPS_NM,
+			HOUSE_MIDDLE_TELNO,
+			GROUP_ID,
+			ORGNZT_ID,
+			PSTINST_CODE,
+			EMPLYR_STTUS_CODE,
+			SBSCRB_DE,
+			ESNTL_ID
+		FROM COMTNEMPLYRINFO
+		WHERE 1=1
+		AND ESNTL_ID = #{uniqId}
+		]]>
+	</select>
+	<!-- 설문조사(설문등록):: 설문등록 /설문지정보-->
+	<select id="selectQustnrRespondInfoManageComtnqestnrinfo" parameterType="java.util.Map" resultType="egovMap">
+		<![CDATA[
+		SELECT
+			A.QESTNR_ID,
+			A.QUSTNR_SJ AS QESTNR_SJ,
+			A.QUSTNR_PURPS AS QESTNR_PURPS,
+			A.QUSTNR_WRITNG_GUIDANCE_CN AS QESTNR_WRITNG_GUIDANCE_CN,
+			DATE_FORMAT(A.QUSTNR_BGNDE, '%Y-%m-%d') AS QESTNR_BEGIN_DE,
+			DATE_FORMAT(A.QUSTNR_ENDDE, '%Y-%m-%d') AS QESTNR_END_DE,
+			A.FRST_REGIST_PNTTM,
+			A.FRST_REGISTER_ID,
+			A.LAST_UPDT_PNTTM,
+			A.LAST_UPDUSR_ID,
+			A.QUSTNR_TRGET AS QESTNR_TRGET,
+			A.QUSTNR_TMPLAT_ID AS QESTNR_TMPLAT_ID
+		FROM COMTNQESTNRINFO A
+		WHERE 1=1
+		AND A.QESTNR_ID = #{qestnrId}
+		AND A.QUSTNR_TMPLAT_ID = #{qestnrTmplatId}
+		]]>
+	</select>
+	<!-- 설문조사(설문등록):: 설문등록 /설문문 항정보-->
+	<select id="selectQustnrRespondInfoManageComtnqustnrqesitm" parameterType="java.util.Map" resultType="egovMap">
+		<![CDATA[
+		SELECT
+			A.QUSTNR_QESITM_ID AS QESTNR_QESITM_ID,
+			A.QESTNR_ID,
+			A.FRST_REGIST_PNTTM AS FRST_REGISTER_PNTTM,
+			A.FRST_REGISTER_ID,
+			A.LAST_UPDT_PNTTM,
+			A.LAST_UPDUSR_ID,
+			A.QESTN_SN,
+			A.QESTN_TY_CODE,
+			A.QESTN_CN,
+			A.MXMM_CHOISE_CO,
+			A.QUSTNR_TMPLAT_ID AS QESTNR_TMPLAT_ID
+		FROM COMTNQUSTNRQESITM A
+		WHERE 1=1
+		AND A.QESTNR_ID = #{qestnrId}
+		AND A.QUSTNR_TMPLAT_ID = #{qestnrTmplatId}
+		]]>
+	</select>
+	<!-- 설문조사(설문등록):: 설문등록 /설문 항목정보 -->
+	<select id="selectQustnrRespondInfoManageComtnqustnriem" parameterType="java.util.Map" resultType="egovMap">
+		<![CDATA[
+		SELECT
+			A.QUSTNR_QESITM_ID AS QESTNR_QESITM_ID,
+			A.QESTNR_ID,
+			A.IEM_SN,
+			A.FRST_REGIST_PNTTM AS FRST_REGISTER_PNTTM,
+			A.FRST_REGISTER_ID,
+			A.LAST_UPDT_PNTTM,
+			A.LAST_UPDUSR_ID,
+			A.QUSTNR_IEM_ID,
+			A.IEM_CN,
+			A.ETC_ANSWER_AT,
+			A.QUSTNR_TMPLAT_ID AS QESTNR_TMPLAT_ID
+		FROM COMTNQUSTNRIEM A
+		WHERE 1=1
+		AND A.QESTNR_ID = #{qestnrId}
+		AND A.QUSTNR_TMPLAT_ID = #{qestnrTmplatId}
+		]]>
+	</select>
+		
+	<!-- 설문조사(설문등록)::목록조회_게시물정보 -->
+	<select id="selectQustnrRespondInfoManage" parameterType="comDefaultVO" resultType="egovMap">
+	 	<![CDATA[
+		SELECT
+			A.QESTNR_ID,
+			A.QUSTNR_SJ AS QESTNR_SJ,
+			A.QUSTNR_PURPS AS QESTNR_PURPS,
+			A.QUSTNR_WRITNG_GUIDANCE_CN AS QESTNR_WRITNG_GUIDANCE_CN,
+			DATE_FORMAT(A.QUSTNR_BGNDE, '%Y-%m-%d') AS QESTNR_BEGIN_DE,
+			DATE_FORMAT(A.QUSTNR_ENDDE, '%Y-%m-%d') AS QESTNR_END_DE,
+			A.QUSTNR_TRGET AS QESTNR_TRGET,
+			A.QUSTNR_TMPLAT_ID AS QESTNR_TMPLAT_ID,
+			DATE_FORMAT(A.FRST_REGIST_PNTTM, '%Y-%m-%d') AS FRST_REGISTER_PNTTM,
+			A.FRST_REGISTER_ID,
+			B.USER_NM FRST_REGISTER_NM, 
+			A.LAST_UPDT_PNTTM,
+			A.LAST_UPDUSR_ID
+		FROM COMTNQESTNRINFO A
+		JOIN  COMTNEMPLYRINFO B  ON B.ESNTL_ID = A.FRST_REGISTER_ID
+		WHERE 1=1
+	 	]]>
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 	
+	 		<if test="searchCondition == 'QUSTNR_SJ'">
+ 				AND QUSTNR_SJ LIKE CONCAT ('%', #{searchKeyword},'%')
+ 			</if>
+ 			<if test="searchCondition == 'FRST_REGISTER_ID'">
+ 				AND B.USER_NM  LIKE CONCAT ('%', #{searchKeyword},'%')
+ 			</if>
+	 	
+	 </if>
+	 	<![CDATA[
+		ORDER BY A.FRST_REGIST_PNTTM DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+		]]>
+	</select>
+
+	<!-- 설문조사(설문등록)::목록조회_게시물 총갯수  -->
+	<select id="selectQustnrRespondInfoManageCnt" parameterType="comDefaultVO" resultType="int">
+		<![CDATA[
+		SELECT
+		COUNT(*) AS totcnt
+		FROM COMTNQESTNRINFO A
+		JOIN  COMTNEMPLYRINFO B  ON B.ESNTL_ID = A.FRST_REGISTER_ID
+		WHERE 1=1
+		]]>
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 	
+	 		<if test="searchCondition == 'QUSTNR_SJ'">
+ 				AND QUSTNR_SJ LIKE CONCAT ('%', #{searchKeyword},'%')
+ 			</if>
+ 			<if test="searchCondition == 'FRST_REGISTER_ID'">
+ 				AND B.USER_NM  LIKE CONCAT ('%', #{searchKeyword},'%')
+ 			</if>
+	 	
+	 </if>
+	</select>
+
+	<!-- 응답자결과(설문조사)::설문템플릿정보 -->
+	<select id="selectQustnrTmplatManage" parameterType="egovframework.com.uss.olp.qri.service.QustnrRespondInfoVO" resultType="egovMap">
+		<![CDATA[
+		SELECT
+		QUSTNR_TMPLAT_ID AS QESTNR_TMPLAT_ID,
+		QUSTNR_TMPLAT_TY AS QESTNR_TMPLAT_TY
+		FROM COMTNQUSTNRRSPNSRESULT
+		]]>
+	</select>
+
+	<!-- 응답자결과(설문조사)::삭제  -->
+	<delete id="deleteQustnrRespondInfo">
+			<![CDATA[
+			DELETE FROM COMTNQUSTNRRSPNSRESULT
+			WHERE 1=1
+			AND QUSTNR_RSPNS_RESULT_ID = #{qestnrQesrspnsId}
+			]]>
+	</delete>
+
+	<!-- 응답자결과(설문조사)::수정  -->
+	<update id="updateQustnrRespondInfo">
+		<![CDATA[
+		UPDATE COMTNQUSTNRRSPNSRESULT
+		SET
+			QUSTNR_IEM_ID=#{qustnrIemId},
+			RESPOND_ANSWER_CN=#{respondAnswerCn},
+			RESPOND_NM=#{respondNm},
+			ETC_ANSWER_CN=#{etcAnswerCn},
+			LAST_UPDT_PNTTM = sysdate(),
+			LAST_UPDUSR_ID = #{lastUpdusrId}
+		WHERE 1=1
+			AND QUSTNR_RSPNS_RESULT_ID = #{qestnrQesrspnsId}
+			]]>
+	</update>
+
+	<!-- 응답자결과(설문조사)::상세보기 -->
+	<select id="selectQustnrRespondInfoDetail" parameterType="egovframework.com.uss.olp.qri.service.QustnrRespondInfoVO" resultType="egovMap">
+		<![CDATA[
+		SELECT
+			QUSTNR_RSPNS_RESULT_ID AS QESTNR_QESRSPNS_ID,
+			( SELECT QUSTNR_SJ FROM COMTNQESTNRINFO
+			  WHERE 1=1
+			  AND QESTNR_ID = A.QESTNR_ID )    QESTNR_SJ,
+			( SELECT QESTN_TY_CODE FROM COMTNQUSTNRQESITM
+			  WHERE 1=1
+			  AND QUSTNR_QESITM_ID = A.QUSTNR_QESITM_ID	) QESTN_TY_CODE,
+			( SELECT QESTN_CN FROM COMTNQUSTNRQESITM
+			  WHERE 1=1
+			  AND QUSTNR_QESITM_ID = A.QUSTNR_QESITM_ID	) QESTN_CN,
+			( SELECT IEM_CN FROM COMTNQUSTNRIEM
+			  WHERE 1=1
+			  AND QUSTNR_IEM_ID = A.QUSTNR_IEM_ID ) IEM_CN,
+			A.QUSTNR_IEM_ID,
+			A.QUSTNR_QESITM_ID AS QESTNR_QESITM_ID,
+			A.QESTNR_ID,
+			A.RESPOND_ANSWER_CN,
+			A.RESPOND_NM,
+			A.ETC_ANSWER_CN,
+			A.QUSTNR_TMPLAT_ID AS QESTNR_TMPLAT_ID,
+			A.FRST_REGIST_PNTTM AS FRST_REGISTER_PNTTM,
+			A.FRST_REGISTER_ID,
+			A.LAST_UPDT_PNTTM,
+			A.LAST_UPDUSR_ID
+		FROM COMTNQUSTNRRSPNSRESULT A
+		WHERE 1=1
+			AND A.QUSTNR_RSPNS_RESULT_ID = #{qestnrQesrspnsId}
+		]]>
+	</select>
+
+	<!-- 응답자결과(설문조사)::목록조회_게시물정보 -->
+	<select id="selectQustnrRespondInfo" parameterType="comDefaultVO" resultType="egovMap">
+	 	<![CDATA[
+		SELECT
+			QUSTNR_RSPNS_RESULT_ID AS QESTNR_QESRSPNS_ID,
+			(
+			SELECT QESTN_TY_CODE FROM COMTNQUSTNRQESITM
+			WHERE 1=1
+			AND QUSTNR_QESITM_ID = A.QUSTNR_QESITM_ID
+			) QESTN_TY_CODE,
+			(
+			SELECT QESTN_CN FROM COMTNQUSTNRQESITM
+			WHERE 1=1
+			AND QUSTNR_QESITM_ID = A.QUSTNR_QESITM_ID
+			) QESTN_CN,
+			(
+			SELECT IEM_CN FROM COMTNQUSTNRIEM
+			WHERE 1=1
+			AND QUSTNR_IEM_ID = A.QUSTNR_IEM_ID
+			) IEM_CN,
+			A.QUSTNR_IEM_ID,
+			A.QUSTNR_QESITM_ID,
+			A.QESTNR_ID,
+			A.RESPOND_ANSWER_CN,
+			A.RESPOND_NM,
+			A.ETC_ANSWER_CN,
+			A.QUSTNR_TMPLAT_ID AS QESTNR_TMPLAT_ID,
+			A.FRST_REGIST_PNTTM AS FRST_REGISTER_PNTTM,
+			A.FRST_REGISTER_ID,
+			(SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = A.FRST_REGISTER_ID) FRST_REGISTER_NM,
+			A.LAST_UPDT_PNTTM,
+			A.LAST_UPDUSR_ID
+		FROM COMTNQUSTNRRSPNSRESULT A
+		WHERE 1=1
+	 	]]>
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 	
+	 		<if test="searchCondition == 'ETC_ANSWER_CN'">
+ 				AND ETC_ANSWER_CN  LIKE CONCAT ('%', #{searchKeyword},'%')
+ 			</if>
+ 			<if test="searchCondition == 'RESPOND_ANSWER_CN'">
+ 				AND RESPOND_ANSWER_CN  LIKE CONCAT ('%', #{searchKeyword},'%')
+ 			</if>
+ 			<if test="searchCondition == 'RESPOND_NM'">
+ 				AND RESPOND_NM  LIKE CONCAT ('%', #{searchKeyword},'%')
+ 			</if>
+	 	
+	 </if>
+	 	<![CDATA[
+		ORDER BY A.FRST_REGIST_PNTTM DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+		]]>
+	</select>
+
+	<!-- 응답자결과(설문조사)::목록조회_게시물 총갯수  -->
+	<select id="selectQustnrRespondInfoCnt" parameterType="comDefaultVO" resultType="int">
+		<![CDATA[
+		SELECT
+		COUNT(*) AS totcnt
+		FROM COMTNQUSTNRRSPNSRESULT
+		WHERE 1=1
+		]]>
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 	
+	 		
+	 		<if test="searchCondition == 'ETC_ANSWER_CN'">
+ 				AND ETC_ANSWER_CN  LIKE CONCAT ('%', #{searchKeyword},'%')
+ 			</if>
+ 			<if test="searchCondition == 'RESPOND_ANSWER_CN'">
+ 				AND RESPOND_ANSWER_CN  LIKE CONCAT ('%', #{searchKeyword},'%')
+ 			</if>
+ 			<if test="searchCondition == 'RESPOND_NM'">
+ 				AND RESPOND_NM  LIKE CONCAT ('%', #{searchKeyword},'%')
+ 			</if>
+	 	
+	 </if>
+	</select>
+
+	<!-- 응답자결과(설문조사)::입력  -->
+	<insert id="insertQustnrRespondInfo">
+	 
+		<![CDATA[
+		INSERT INTO COMTNQUSTNRRSPNSRESULT (
+			QUSTNR_RSPNS_RESULT_ID,
+			QUSTNR_QESITM_ID,
+			QESTNR_ID,
+			QUSTNR_TMPLAT_ID,
+			QUSTNR_IEM_ID,
+			RESPOND_ANSWER_CN,
+			RESPOND_NM,
+			ETC_ANSWER_CN,
+			FRST_REGIST_PNTTM,
+			FRST_REGISTER_ID,
+			LAST_UPDT_PNTTM,
+			LAST_UPDUSR_ID
+		)VALUES(
+			#{qestnrQesrspnsId},
+			#{qestnrQesitmId},
+			#{qestnrId},
+			#{qestnrTmplatId},
+			#{qustnrIemId},
+			#{respondAnswerCn},
+			#{respondNm},
+			#{etcAnswerCn},
+			sysdate(),
+			#{frstRegisterId},
+			sysdate(),
+			#{lastUpdusrId}
+		)
+		]]>
+	 
+	</insert>
+
+
+</mapper>

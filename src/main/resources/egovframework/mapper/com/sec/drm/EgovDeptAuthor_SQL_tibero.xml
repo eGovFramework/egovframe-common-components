@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="deptAuthorDAO">
+
+    <resultMap id="deptAuthor" type="egovframework.com.sec.drm.service.DeptAuthorVO">
+        <result property="deptCode" column="DEPT_CODE"/>
+        <result property="deptNm" column="DEPT_NM"/>
+        <result property="userId" column="USER_ID"/>
+        <result property="userNm" column="USER_NM"/>
+        <result property="authorCode" column="AUTHOR_CODE"/>
+        <result property="uniqId" column="ESNTL_ID"/>
+        <result property="regYn" column="REG_YN"/>
+    </resultMap>
+
+    <resultMap id="dept" type="egovframework.com.sec.drm.service.DeptAuthorVO">
+        <result property="deptCode" column="DEPT_CODE"/>
+        <result property="deptNm" column="DEPT_NM"/>
+    </resultMap>
+
+    <select id="selectDeptAuthorList" parameterType="egovframework.com.sec.drm.service.DeptAuthorVO" resultMap="deptAuthor">
+    <![CDATA[
+            SELECT  * 
+              FROM  (
+            SELECT ROWNUM RNUM, ALL_LIST.* 
+              FROM  (
+
+            SELECT A.DEPT_CODE, 
+                   A.DEPT_NM, 
+                   A.USER_ID,
+                   A.USER_NM,
+                   B.AUTHOR_CODE, 
+                   A.ESNTL_ID,
+                   (CASE WHEN B.SCRTY_DTRMN_TRGET_ID IS NULL THEN 'N'
+                         ELSE 'Y' 
+                     END) AS REG_YN
+              FROM (SELECT A.ORGNZT_ID DEPT_CODE, 
+                           A.ORGNZT_NM DEPT_NM,
+                           B.EMPLYR_ID USER_ID,
+                           B.USER_NM USER_NM,
+                           B.ESNTL_ID
+                      FROM COMTNORGNZTINFO A,
+                           COMTNEMPLYRINFO B
+                     WHERE A.ORGNZT_ID = B.ORGNZT_ID
+                       AND A.ORGNZT_ID = #{deptCode}) A LEFT OUTER JOIN COMTNEMPLYRSCRTYESTBS B
+                ON A.ESNTL_ID = B.SCRTY_DTRMN_TRGET_ID 
+             WHERE 1 = 1       
+
+                    ) ALL_LIST
+                    )
+
+             WHERE  RNUM  > #{firstIndex}
+               AND  RNUM <= #{firstIndex} + #{recordCountPerPage}
+    ]]>                
+    </select>
+
+    <insert id="insertDeptAuthor" parameterType="egovframework.com.sec.drm.service.DeptAuthor">
+        
+            INSERT INTO COMTNEMPLYRSCRTYESTBS 
+                  ( SCRTY_DTRMN_TRGET_ID                  
+                  , AUTHOR_CODE)
+           VALUES ( #{uniqId}                  
+                  , #{authorCode})
+        
+    </insert>
+
+    <update id="updateDeptAuthor" parameterType="egovframework.com.sec.drm.service.DeptAuthor">
+        
+            UPDATE COMTNEMPLYRSCRTYESTBS 
+               SET AUTHOR_CODE=#{authorCode}
+             WHERE SCRTY_DTRMN_TRGET_ID=#{uniqId}
+        
+    </update>
+
+    <delete id="deleteDeptAuthor">
+        
+            DELETE FROM COMTNEMPLYRSCRTYESTBS 
+             WHERE SCRTY_DTRMN_TRGET_ID=#{uniqId}
+        
+    </delete>
+
+    <select id="selectDeptAuthorListTotCnt" parameterType="egovframework.com.sec.drm.service.DeptAuthorVO" resultType="int">
+            SELECT COUNT(*) AS totcnt
+              FROM (SELECT A.ORGNZT_ID DEPT_CODE, 
+                           A.ORGNZT_NM DEPT_NM,
+                           B.EMPLYR_ID USER_ID,
+                           B.USER_NM USER_NM,
+                           B.ESNTL_ID
+                      FROM COMTNORGNZTINFO A,
+                           COMTNEMPLYRINFO B
+                     WHERE A.ORGNZT_ID = B.ORGNZT_ID
+                       AND A.ORGNZT_ID = #{deptCode}) A LEFT OUTER JOIN COMTNEMPLYRSCRTYESTBS B
+                ON A.ESNTL_ID = B.SCRTY_DTRMN_TRGET_ID 
+    </select>
+
+    <select id="selectDeptList" parameterType="egovframework.com.sec.drm.service.DeptAuthorVO" resultMap="dept">
+       
+            SELECT  * 
+              FROM  (
+            SELECT ROWNUM RNUM, ALL_LIST.* 
+              FROM  (
+
+            SELECT ORGNZT_ID AS DEPT_CODE,
+                   ORGNZT_NM AS DEPT_NM
+              FROM COMTNORGNZTINFO             
+             WHERE 1 = 1 
+                
+            <if test="searchCondition == 1">AND
+                ORGNZT_NM LIKE '%'||#{searchKeyword}||'%'
+            </if>        
+        <![CDATA[
+                    ) ALL_LIST
+                    )
+             WHERE  RNUM  > #{firstIndex}
+               AND  RNUM <= #{firstIndex} + #{recordCountPerPage}
+              ]]>      
+                  
+    </select>
+
+    <select id="selectDeptListTotCnt" parameterType="egovframework.com.sec.drm.service.DeptAuthorVO" resultType="int">
+            SELECT COUNT(*) AS totcnt
+              FROM COMTNORGNZTINFO             
+             WHERE 1 = 1 
+            <if test="searchCondition == 1">AND
+                ORGNZT_NM LIKE '%'||#{searchKeyword}||'%'
+            </if>                
+    </select>
+
+</mapper>

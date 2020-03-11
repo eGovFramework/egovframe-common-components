@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed May 11 15:51:27 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="indvdlYrycDAO">
+
+    <select id="selectIndvdlYrycManageList" parameterType="egovframework.com.uss.ion.yrc.service.IndvdlYrycManage" resultType="egovframework.com.uss.ion.yrc.service.IndvdlYrycManage">
+        
+			SELECT   OCCRRNC_YEAR    AS occrrncYear,
+			         USER_ID         AS mberId,
+			         YRYC_OCCRRNC_CO AS occrncYrycCo,
+			         USE_YRYC_CO     AS useYrycCo,
+			         REMNDR_YRYC_CO  AS remndrYrycCo,
+                     (SELECT MBER_NM FROM COMTNGNRLMBER A WHERE A.ESNTL_ID = USER_ID) AS mberNm
+			FROM     COMTNINDVDLYRYCMANAGE
+			WHERE    USER_ID = #{mberId}
+        
+    </select>
+    
+    <select id="selectIndvdlYrycManageListTotCnt" parameterType="egovframework.com.uss.ion.yrc.service.IndvdlYrycManage" resultType="int">
+        
+            SELECT  COUNT(*) totcnt
+            FROM    COMTNINDVDLYRYCMANAGE
+            WHERE   USER_ID = #{mberId}
+        
+    </select>
+
+    <insert id="insertIndvdlYrycManage" parameterType="egovframework.com.uss.ion.yrc.service.IndvdlYrycManage">
+        
+            INSERT INTO COMTNINDVDLYRYCMANAGE
+              ( OCCRRNC_YEAR,
+                USER_ID,
+                YRYC_OCCRRNC_CO,
+                USE_YRYC_CO,
+                REMNDR_YRYC_CO,
+                FRST_REGISTER_ID,
+                FRST_REGIST_PNTTM)
+            VALUES(#{occrrncYear},
+                  #{mberId},
+                  #{occrncYrycCo},
+                  #{useYrycCo},
+                  #{remndrYrycCo},
+                  #{mberId},
+                  NOW() )
+        
+    </insert>
+      
+    <update id="updateIndvdlYrycManage" parameterType="egovframework.com.uss.ion.yrc.service.IndvdlYrycManage">
+        
+            UPDATE COMTNINDVDLYRYCMANAGE
+               SET  OCCRRNC_YEAR    = #{occrrncYear},
+                    YRYC_OCCRRNC_CO = #{occrncYrycCo},
+                    USE_YRYC_CO     = #{useYrycCo},
+                    REMNDR_YRYC_CO  = #{remndrYrycCo},
+					LAST_UPDUSR_ID  = #{mberId},
+                    LAST_UPDT_PNTTM = NOW()
+			WHERE   USER_ID         = #{mberId}
+        
+    </update>
+    
+        <delete id="deleteIndvdlYrycManage" parameterType="egovframework.com.uss.ion.yrc.service.IndvdlYrycManage">
+        
+             DELETE FROM COMTNINDVDLYRYCMANAGE
+             WHERE USER_ID         = #{mberId}
+             AND   OCCRRNC_YEAR    = #{occrrncYear} 
+        
+    </delete> 
+
+</mapper>

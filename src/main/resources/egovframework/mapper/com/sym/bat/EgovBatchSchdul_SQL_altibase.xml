@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BatchSchdulDao">
+    <resultMap id="batchSchdulResult" type="egovframework.com.sym.bat.service.BatchSchdul">
+        <result property="batchSchdulId" column="BATCH_SCHDUL_ID"/>
+        <result property="batchOpertId" column="BATCH_OPERT_ID"/>
+        <result property="batchOpertNm" column="BATCH_OPERT_NM"/>
+        <result property="batchProgrm" column="BATCH_PROGRM"/>
+        <result property="paramtr" column="PARAMTR"/>
+        <result property="executCycle" column="EXECUT_CYCLE"/>
+        <result property="executCycleNm" column="EXECUT_CYCLE_NM"/>
+        <result property="executSchdulDe" column="EXECUT_SCHDUL_DE"/>
+        <result property="executSchdulHour" column="EXECUT_SCHDUL_HOUR"/>
+        <result property="executSchdulMnt" column="EXECUT_SCHDUL_MNT"/>
+        <result property="executSchdulSecnd" column="EXECUT_SCHDUL_SECND"/>
+        <result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+        <result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+        <result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+        <result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+    </resultMap>
+    <resultMap id="batchSchdulDfkResult" type="egovframework.com.sym.bat.service.BatchSchdulDfk">
+        <result property="batchSchdulId" column="BATCH_SCHDUL_ID"/>
+        <result property="executSchdulDfkSe" column="EXECUT_SCHDUL_DFK_SE"/>
+        <result property="executSchdulDfkSeNm" column="EXECUT_SCHDUL_DFK_SE_NM"/>
+    </resultMap>
+
+
+    <select id="selectBatchSchdulList" parameterType="egovframework.com.sym.bat.service.BatchSchdul" resultMap="batchSchdulResult">
+         
+        SELECT * FROM ( SELECT rownum rn, TB.* FROM (
+            SELECT  A.BATCH_SCHDUL_ID, A.BATCH_OPERT_ID, A.EXECUT_CYCLE, C.CODE_NM EXECUT_CYCLE_NM,
+               A.EXECUT_SCHDUL_DE, A.EXECUT_SCHDUL_HOUR, A.EXECUT_SCHDUL_MNT, A.EXECUT_SCHDUL_SECND,
+               B.BATCH_OPERT_NM, B.BATCH_PROGRM, B.PARAMTR,
+               TO_CHAR(A.LAST_UPDT_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS LAST_UPDT_PNTTM, A.LAST_UPDUSR_ID,
+               A.FRST_REGISTER_ID, TO_CHAR(A.FRST_REGIST_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS FRST_REGIST_PNTTM
+            FROM COMTNBATCHSCHDUL A, COMTNBATCHOPERT B, COMTCCMMNDETAILCODE C
+            WHERE A.BATCH_OPERT_ID = B.BATCH_OPERT_ID
+              AND A.EXECUT_CYCLE = C.CODE
+              AND C.CODE_ID = 'COM047'
+        
+            <if test="searchCondition == 0">AND
+                   B.BATCH_OPERT_NM LIKE '%' || #{searchKeyword} || '%'        
+            </if>
+            <if test="searchCondition == 1">AND
+                   B.BATCH_PROGRM LIKE '%' || #{searchKeyword} || '%'        
+            </if>
+        
+            ORDER BY A.BATCH_SCHDUL_ID ASC
+            ) TB ) WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+                     
+    </select>
+
+    <select id="selectBatchSchdulListCnt" parameterType="egovframework.com.sym.bat.service.BatchSchdul" resultType="java.lang.Integer">
+        
+            SELECT COUNT(*) totcnt
+            FROM COMTNBATCHSCHDUL A, COMTNBATCHOPERT B, COMTCCMMNDETAILCODE C
+            WHERE A.BATCH_OPERT_ID = B.BATCH_OPERT_ID
+              AND A.EXECUT_CYCLE = C.CODE
+              AND C.CODE_ID = 'COM047'
+        
+            <if test="searchCondition == 0">AND
+                   B.BATCH_OPERT_NM LIKE '%' || #{searchKeyword} || '%'        
+            </if>
+            <if test="searchCondition == 1">AND
+                   B.BATCH_PROGRM LIKE '%' || #{searchKeyword} || '%'        
+            </if>
+    </select>
+
+    
+    <select id="selectBatchSchdul" parameterType="egovframework.com.sym.bat.service.BatchSchdul" resultMap="batchSchdulResult">
+        
+            SELECT  A.BATCH_SCHDUL_ID, A.BATCH_OPERT_ID, A.EXECUT_CYCLE, C.CODE_NM EXECUT_CYCLE_NM,
+               A.EXECUT_SCHDUL_DE, A.EXECUT_SCHDUL_HOUR, A.EXECUT_SCHDUL_MNT, A.EXECUT_SCHDUL_SECND,
+               B.BATCH_OPERT_NM, B.BATCH_PROGRM, B.PARAMTR,
+               TO_CHAR(A.LAST_UPDT_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS LAST_UPDT_PNTTM, A.LAST_UPDUSR_ID,
+               A.FRST_REGISTER_ID, TO_CHAR(A.FRST_REGIST_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS FRST_REGIST_PNTTM
+            FROM COMTNBATCHSCHDUL A, COMTNBATCHOPERT B, COMTCCMMNDETAILCODE C
+            WHERE A.BATCH_OPERT_ID = B.BATCH_OPERT_ID
+              AND A.EXECUT_CYCLE = C.CODE
+              AND C.CODE_ID = 'COM047'
+              AND A.BATCH_SCHDUL_ID = #{batchSchdulId}
+        
+    </select>
+
+    <insert id="insertBatchSchdul" parameterType="egovframework.com.sym.bat.service.BatchSchdul">
+        
+            INSERT INTO COMTNBATCHSCHDUL (
+                BATCH_SCHDUL_ID, BATCH_OPERT_ID, EXECUT_CYCLE,
+                EXECUT_SCHDUL_DE, EXECUT_SCHDUL_HOUR, EXECUT_SCHDUL_MNT, EXECUT_SCHDUL_SECND,
+                LAST_UPDUSR_ID, LAST_UPDT_PNTTM,FRST_REGISTER_ID, FRST_REGIST_PNTTM
+                ) 
+            VALUES (
+                    #{batchSchdulId},  
+                    #{batchOpertId},  
+                    #{executCycle},
+                    #{executSchdulDe},
+                    #{executSchdulHour},
+                    #{executSchdulMnt},
+                    #{executSchdulSecnd},
+                    #{lastUpdusrId},
+                    SYSDATE,
+                    #{frstRegisterId},
+                    SYSDATE
+                 ) 
+        
+    </insert>
+
+     <update id="updateBatchSchdul" parameterType="egovframework.com.sym.bat.service.BatchSchdul">
+        
+            UPDATE COMTNBATCHSCHDUL SET 
+                BATCH_OPERT_ID = #{batchOpertId},
+                EXECUT_CYCLE = #{executCycle},
+                EXECUT_SCHDUL_DE = #{executSchdulDe},
+                EXECUT_SCHDUL_HOUR = #{executSchdulHour},
+                EXECUT_SCHDUL_MNT = #{executSchdulMnt},
+                EXECUT_SCHDUL_SECND = #{executSchdulSecnd},
+                LAST_UPDUSR_ID = #{lastUpdusrId},
+                LAST_UPDT_PNTTM = SYSDATE
+            WHERE BATCH_SCHDUL_ID = #{batchSchdulId} 
+        
+    </update>
+    
+
+    <delete id="deleteBatchSchdul" parameterType="egovframework.com.sym.bat.service.BatchSchdul">
+        
+            DELETE FROM COMTNBATCHSCHDUL
+            WHERE  BATCH_SCHDUL_ID = #{batchSchdulId} 
+        
+    </delete>
+    
+    <select id="selectBatchSchdulDfkList" parameterType="String" resultMap="batchSchdulDfkResult">
+        
+            SELECT  A.BATCH_SCHDUL_ID, A.EXECUT_SCHDUL_DFK_SE, B.CODE_NM EXECUT_SCHDUL_DFK_SE_NM
+            FROM COMTNBATCHSCHDULDFK A, COMTCCMMNDETAILCODE B
+            WHERE A.BATCH_SCHDUL_ID = #{batchSchdulId}
+              AND A.EXECUT_SCHDUL_DFK_SE = B.CODE
+              AND B.CODE_ID = 'COM074'
+        
+    </select>
+
+    <insert id="insertBatchSchdulDfk" parameterType="egovframework.com.sym.bat.service.BatchSchdulDfk">
+        
+            INSERT INTO COMTNBATCHSCHDULDFK (
+                BATCH_SCHDUL_ID, EXECUT_SCHDUL_DFK_SE
+                ) 
+            VALUES (
+                    #{batchSchdulId},  
+                    #{executSchdulDfkSe}
+                 ) 
+        
+    </insert>
+
+    <delete id="deleteBatchSchdulDfk" parameterType="String">
+        
+            DELETE FROM COMTNBATCHSCHDULDFK
+            WHERE  BATCH_SCHDUL_ID = #{batchSchdulId} 
+        
+    </delete>
+    
+</mapper>

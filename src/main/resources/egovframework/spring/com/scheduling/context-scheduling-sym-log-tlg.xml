@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<!-- 송수신 로그 요약  -->
+	<bean id="trsmrcvLogging" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="egovTrsmrcvLogScheduling" />
+		<property name="targetMethod" value="trsmrcvLogSummary" />
+		<property name="concurrent" value="false" />
+	</bean>
+
+	<!-- 송수신 로그 요약  트리거-->
+	<bean id="trsmrcvLogTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="trsmrcvLogging" />
+		<property name="startDelay" value="60000" />
+		<property name="repeatInterval" value="3600000" />
+	</bean>
+
+	<!-- 송수신 로그 스케줄러 -->
+	<bean id="trsmrcvScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="trsmrcvLogTrigger" />
+			</list>
+		</property>
+	</bean>
+
+</beans>

@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed May 11 15:51:07 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="InfrmlSanctnDAO">
+
+	<resultMap id="sanctnerList" type="egovframework.com.uss.ion.ism.service.SanctnerVO">
+		<result property="orgnztNm" column="ORGNZT_NM"/>
+		<result property="uniqId" column="ESNTL_ID"/>
+		<result property="emplyrNm" column="USER_NM"/>
+		<result property="emplNo" column="EMPL_NO"/>
+		<result property="ofcpsNm" column="OFCPS_NM"/>
+	</resultMap>
+	
+	<resultMap id="InfrmlSanctnDetail" type="egovframework.com.uss.ion.ism.service.InfrmlSanctn">
+		<result property="infrmlSanctnId" column="INFRML_SANCTN_ID"/>
+		<result property="jobSeCode" column="JOB_SE_CODE"/>
+		<result property="jobSeNm" column="JOB_SE_NM"/>
+		<result property="applcntId" column="APPLCNT_ID"/>
+		<result property="applcntNm" column="APPLCNT_NM"/>
+		<result property="reqstDe" column="REQST_DE"/>	
+		<result property="sanctnerId" column="SANCTNER_ID"/>
+		<result property="sanctnerNm" column="SANCTNER_NM"/>
+		<result property="sanctnerOrgnztNm" column="SANCTNER_ORGNZT_NM"/>
+		<result property="confmAt" column="CONFM_AT"/>
+		<result property="sanctnDt" column="SANCTN_DT"/>
+		<result property="returnResn" column="RETURN_RESN"/>	
+	</resultMap>
+
+	<select id="selectSanctnerList" parameterType="egovframework.com.uss.ion.ism.service.SanctnerVO" resultMap="sanctnerList">
+		
+			SELECT
+				b.ORGNZT_NM, a.ESNTL_ID, a.USER_NM, 
+				a.EMPL_NO, a.OFCPS_NM
+			FROM
+				COMTNEMPLYRINFO a
+			LEFT OUTER JOIN COMTNORGNZTINFO b
+				ON a.ORGNZT_ID = b.ORGNZT_ID
+			WHERE 1=1
+		
+			<if test="searchCnd == 0">AND
+					binary(IFNULL(b.ORGNZT_NM, ' ')) LIKE CONCAT('%', #{searchWrd}, '%')		
+			</if>
+			<if test="searchCnd == 1">AND
+					binary(IFNULL(a.USER_NM, ' ')) LIKE CONCAT('%', #{searchWrd}, '%')		
+			</if>
+		
+			ORDER BY b.ORGNZT_NM, a.USER_NM ASC
+			LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+						
+	</select>	
+	
+	<select id="selectSanctnerListCnt" parameterType="egovframework.com.uss.ion.ism.service.SanctnerVO" resultType="java.lang.Integer">
+		
+			SELECT
+				COUNT(EMPLYR_ID) as cnt
+			FROM
+				COMTNEMPLYRINFO a
+			LEFT OUTER JOIN COMTNORGNZTINFO b
+				ON a.ORGNZT_ID = b.ORGNZT_ID
+			WHERE 1=1
+		
+			<if test="searchCnd == 0">AND
+					 binary(IFNULL(b.ORGNZT_NM, ' ')) LIKE CONCAT('%', #{searchWrd}, '%') 		
+			</if>
+			<if test="searchCnd == 1">AND
+					binary(IFNULL(a.USER_NM, ' ')) LIKE CONCAT('%', #{searchWrd}, '%') 		
+			</if>		
+	</select>
+	
+	<!-- 약식결재::상세보기 -->
+	<select id="selectInfrmlSanctn" parameterType="egovframework.com.uss.ion.ism.service.InfrmlSanctn" resultMap="InfrmlSanctnDetail">
+		SELECT 
+			A.INFRML_SANCTN_ID,
+			A.JOB_SE_CODE,
+			B.CODE_NM JOB_SE_NM,
+			A.APPLCNT_ID,
+			C.USER_NM APPLCNT_NM,
+			A.REQST_DE,
+			A.SANCTNER_ID,
+			D.USER_NM SANCTNER_NM,
+			E.ORGNZT_NM SANCTNER_ORGNZT_NM,
+			A.CONFM_AT,
+			A.SANCTN_DT,
+			A.RETURN_RESN
+		FROM COMTNINFRMLSANCTN A
+		LEFT OUTER JOIN COMTCCMMNDETAILCODE B
+			ON B.CODE_ID = 'COM075' 
+			AND A.JOB_SE_CODE = B.CODE
+		LEFT OUTER JOIN COMTNEMPLYRINFO C
+			ON A.APPLCNT_ID = C.ESNTL_ID
+		LEFT OUTER JOIN COMTNEMPLYRINFO D
+			ON A.SANCTNER_ID = D.ESNTL_ID
+		LEFT OUTER JOIN COMTNORGNZTINFO E
+			ON D.ORGNZT_ID = E.ORGNZT_ID
+		WHERE A.INFRML_SANCTN_ID = #{infrmlSanctnId}
+	</select>
+	
+	<insert id="insertInfrmlSanctn" parameterType="egovframework.com.uss.ion.ism.service.InfrmlSanctn">
+		
+			INSERT INTO COMTNINFRMLSANCTN
+			(INFRML_SANCTN_ID, JOB_SE_CODE, APPLCNT_ID, REQST_DE, SANCTNER_ID, 
+			CONFM_AT, FRST_REGIST_PNTTM, FRST_REGISTER_ID, LAST_UPDT_PNTTM, LAST_UPDUSR_ID
+			 )
+			VALUES
+			( #{infrmlSanctnId}, #{jobSeCode}, #{applcntId}, #{reqstDe}, #{sanctnerId}, 
+			  #{confmAt}, sysdate(), #{frstRegisterId}, sysdate(), #{lastUpdusrId} 
+			 )
+		
+	</insert>
+	
+	<update id="updateInfrmlSanctn" parameterType="egovframework.com.uss.ion.ism.service.InfrmlSanctn">
+		
+			UPDATE COMTNINFRMLSANCTN
+				SET SANCTNER_ID = #{sanctnerId},
+					LAST_UPDT_PNTTM = sysdate(),
+					LAST_UPDUSR_ID = #{lastUpdusrId}
+			WHERE INFRML_SANCTN_ID = #{infrmlSanctnId}
+					
+	</update>
+	
+	<update id="updateInfrmlSanctnConfm" parameterType="egovframework.com.uss.ion.ism.service.InfrmlSanctn">
+		
+			UPDATE COMTNINFRMLSANCTN
+				SET CONFM_AT = #{confmAt}, 
+					SANCTN_DT = sysdate(), 
+					RETURN_RESN = #{returnResn},
+					LAST_UPDT_PNTTM = sysdate(),
+					LAST_UPDUSR_ID = #{lastUpdusrId}
+			WHERE INFRML_SANCTN_ID = #{infrmlSanctnId}
+					
+	</update>
+	
+	<delete id="deleteInfrmlSanctn" parameterType="egovframework.com.uss.ion.ism.service.InfrmlSanctn">
+		
+			DELETE FROM COMTNINFRMLSANCTN
+			WHERE INFRML_SANCTN_ID = #{infrmlSanctnId}
+					
+	</delete>
+	
+</mapper>

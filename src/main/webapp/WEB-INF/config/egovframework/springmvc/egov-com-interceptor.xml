@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+	<!-- 세션(Session) 방식 인증시에만 AuthenticInterceptor 동작  -->
+    <beans profile="session">  
+	    <mvc:interceptors>
+	        <!-- IP 정보 기록 인터셉터를 등록한다. -->
+	        <bean class="egovframework.com.cmm.interceptor.IpObtainInterceptor" />       
+	    </mvc:interceptors> 
+	</beans>
+	
+	<!-- 세션(Session) 방식 인증시에만 AuthenticInterceptor 동작  -->
+	<!-- 동작모드(프로파일명) : dummy, session, security ex)<beans profile="session"/> -->
+    <beans profile="dummy">
+	    <mvc:interceptors>
+	        <!--
+	        	* 로그인 체크가 필요한 URL과 로그인 여부를 체크해줄 인터셉터 등록에 대한 간단한 기능 예시이다.
+	        	* 실무에 사용시 시큐리티 간소화 서비스 또는 세션모드 접근제어를 사용한다.
+	        -->
+	        <mvc:interceptor>
+	            <mvc:mapping path="/**/*.do" />
+	            <mvc:exclude-mapping path="/uat/uia/**" />
+	            <mvc:exclude-mapping path="/index.do" />
+	            <mvc:exclude-mapping path="/cmm/fms/getImage.do" /> <!-- 로그인화면이미지 -->
+	            <mvc:exclude-mapping path="/uss/ion/bnr/getBannerImage.do" /> <!-- 포털예제배너 -->
+	            <mvc:exclude-mapping path="/EgovLeft.do" />
+	            <mvc:exclude-mapping path="/EgovContent.do" />
+	            <mvc:exclude-mapping path="/EgovTop.do" />
+	            <mvc:exclude-mapping path="/EgovBottom.do" />
+	            <mvc:exclude-mapping path="/EgovModal.do" />
+	            <bean class="egovframework.com.cmm.interceptor.AuthenticInterceptor">
+		           	<!-- 관리자 권한 Ant style Pattern List -->				
+					<property name="adminAuthPatternList">
+						<list>
+							<!-- 보안 > 권한관리 -->
+							<value>/sec/ram/*.do</value>
+						</list>
+					</property>
+	            </bean>
+	        </mvc:interceptor>
+	    </mvc:interceptors> 
+	</beans>
+</beans>

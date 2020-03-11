@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+
+<form-validation>
+
+    <formset>
+		<form name="onlineManualVO">
+		
+		    <field property="onlineMnlNm" depends="required, maxlength">
+        		<arg0 key="comUssOlhOmm.onlineManualVO.onlineMnlNm" resource="true"/>
+        		<arg1 key="255" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>255</var-value>
+				</var>
+			</field>
+			
+        	<field property="onlineMnlSeCode" depends="required">
+        		<arg0 key="comUssOlhOmm.onlineManualVO.onlineMnlSeCode" resource="true"/>
+			</field>
+			
+        	<field property="onlineMnlDf" depends="required">
+        		<arg0 key="comUssOlhOmm.onlineManualVO.onlineMnlDf" resource="true"/>
+			</field>
+			
+        	<field property="onlineMnlDc" depends="required">
+        		<arg0 key="comUssOlhOmm.onlineManualVO.onlineMnlDc" resource="true"/>
+			</field>
+			
+											
+		</form>
+    </formset>
+
+</form-validation>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="KnoAppraisalDAO">
+
+	<select id="selectKnoAppraisalList" parameterType="egovframework.com.dam.app.service.KnoAppraisalVO" resultType="egovMap">
+		
+			SELECT	A.KNWLDG_ID			knoId     		
+				 ,  A.KNWLDG_NM			knoNm
+				 ,  B.KNWLDG_TY_NM		knoTypeNm	 
+			     ,  D.USER_NM			userNm
+				 ,  A.KNWLDG_EVL		knoAps
+			     ,  DATE_FORMAT(A.EVL_DE,'%Y-%m-%d') appYmd
+			     ,	A.FRST_REGISTER_ID	frstRegisterId
+			     ,	A.FRST_REGIST_PNTTM     FRST_REGISTER_PNTTM
+			     ,  A.LAST_UPDUSR_ID	lastUpdusrId
+			     ,	A.LAST_UPDT_PNTTM	lastUpdusrPnttm
+			FROM  COMTNDAMKNOIFM A, COMTNDAMMAPKNO B, COMTNDAMMAPTEAM C, COMVNUSERMASTER D, COMTNDAMPRO E
+			WHERE C.ORGNZT_ID = B.ORGNZT_ID
+			AND   A.KNWLDG_TY_CODE = B.KNWLDG_TY_CODE
+			AND   A.KNWLDG_TY_CODE = E.KNWLDG_TY_CODE
+			AND   E.EXPERT_ID = D.ESNTL_ID			
+			AND   A.OTHBC_AT = 'Y'
+			AND   E.EXPERT_ID = #{emplyrId}
+			AND   IFNULL(A.KNWLDG_EVL, '') NOT IN ('3')
+		
+			
+			<if test='searchCondition == "1"'>AND
+				binary(A.KNWLDG_NM) LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+			<if test='searchCondition == "2"'>AND
+				binary(D.USER_NM) LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+			 LIMIT  #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+
+	<select id="selectKnoAppraisalTotCnt" parameterType="egovframework.com.dam.app.service.KnoAppraisalVO" resultType="int">
+		
+			SELECT COUNT(*) totcnt 
+			FROM  COMTNDAMKNOIFM A, COMTNDAMMAPKNO B, COMTNDAMMAPTEAM C, COMVNUSERMASTER D, COMTNDAMPRO E
+			WHERE C.ORGNZT_ID = B.ORGNZT_ID
+			AND   A.KNWLDG_TY_CODE = B.KNWLDG_TY_CODE
+			AND   A.KNWLDG_TY_CODE = E.KNWLDG_TY_CODE
+			AND   E.EXPERT_ID = D.ESNTL_ID			
+			AND   A.OTHBC_AT = 'Y'
+			AND   E.EXPERT_ID = #{emplyrId}
+			AND   IFNULL(A.KNWLDG_EVL, '') NOT IN ('3')
+					
+			<if test='searchCondition == "1"'>AND
+				binary(A.KNWLDG_NM) LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+			<if test='searchCondition == "2"'>AND
+				binary(D.USER_NM) LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+	</select>
+
+	<select id="selectKnoAppraisal" parameterType="egovframework.com.dam.app.service.KnoAppraisal" resultType="egovframework.com.dam.app.service.KnoAppraisal">
+		
+			SELECT  C.ORGNZT_NM							orgnztNm
+			     ,  C.ORGNZT_ID							orgnztId
+			     ,  B.KNWLDG_TY_NM						knoTypeNm			     			
+			     ,  B.KNWLDG_TY_CODE					knoTypeCd
+				 ,  A.KNWLDG_ID							knoId			     
+				 ,  A.KNWLDG_NM							knoNm			     
+			     ,  A.KNWLDG_CN							knoCn
+                 ,  A.OTHBC_AT							othbcAt              
+                 ,  A.ATCH_FILE_ID						atchFileId
+                 ,  DATE_FORMAT(A.EVL_DE,'%Y-%m-%d')	appYmd
+			     ,  A.KNWLDG_EVL						knoAps
+			     ,	A.FRST_REGISTER_ID					frstRegisterId
+			     ,	A.FRST_REGIST_PNTTM				     FRST_REGISTER_PNTTM
+			     ,  A.LAST_UPDUSR_ID					lastUpdusrId
+			     ,	A.LAST_UPDT_PNTTM					lastUpdusrPnttm			     
+			FROM  COMTNDAMKNOIFM A, COMTNDAMMAPKNO B, COMTNDAMMAPTEAM C
+			WHERE C.ORGNZT_ID = B.ORGNZT_ID
+			AND   A.KNWLDG_TY_CODE = B.KNWLDG_TY_CODE
+			AND   A.OTHBC_AT = 'Y'					
+            AND   A.KNWLDG_ID = #{knoId}
+		
+	</select>
+
+	<update id="updateKnoAppraisal">
+		
+            UPDATE  COMTNDAMKNOIFM 
+               SET  EVL_DE			  = #{appYmd}
+		         ,  KNWLDG_EVL        = #{knoAps}            
+                 ,  EXPERT_ID    	  = #{speId}               
+                 ,  LAST_UPDT_PNTTM = sysdate()
+             WHERE  OTHBC_AT 		  = 'Y'	
+             AND    KNWLDG_ID         = #{knoId} 
+		
+	</update>
+
+</mapper>

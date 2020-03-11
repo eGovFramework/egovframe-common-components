@@ -1,0 +1,315 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ProcessMonDAO">
+	
+	<resultMap id="ProcessMonList" type="egovframework.com.utl.sys.prm.service.ProcessMonVO">
+		<result property="processId" column="PROCS_ID"/>
+		<result property="processNm" column="PROCS_NM"/>
+		<result property="procsSttus" column="PROCS_STTUS"/>
+		<result property="creatDt" column="CREAT_DT"/>
+		<result property="mngrNm" column="MNGR_NM"/>
+		<result property="mngrEmailAddr" column="MNGR_EMAIL_ADRES"/>
+	</resultMap>
+	
+	<resultMap id="ProcessMonDetail" type="egovframework.com.utl.sys.prm.service.ProcessMonVO">
+		<result property="processId" column="PROCS_ID"/>
+		<result property="processNm" column="PROCS_NM"/>
+		<result property="procsSttus" column="PROCS_STTUS"/>
+		<result property="creatDt" column="CREAT_DT"/>
+		<result property="mngrNm" column="MNGR_NM"/>
+		<result property="mngrEmailAddr" column="MNGR_EMAIL_ADRES"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>		
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>			
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>			
+	</resultMap>
+	
+	<resultMap id="ProcessMonLogList" type="egovframework.com.utl.sys.prm.service.ProcessMonLogVO">
+		<result property="logId" column="LOG_ID"/>	
+		<result property="processId" column="PROCS_ID"/>
+		<result property="processNm" column="PROCS_NM"/>
+		<result property="procsSttus" column="PROCS_STTUS"/>
+		<result property="creatDt" column="CREAT_DT"/>
+		<result property="logInfo" column="LOG_INFO"/>		
+		<result property="mngrNm" column="MNGR_NM"/>
+		<result property="mngrEmailAddr" column="MNGR_EMAIL_ADRES"/>
+	</resultMap>
+	
+	<resultMap id="ProcessMonLogDetail" type="egovframework.com.utl.sys.prm.service.ProcessMonLogVO">
+		<result property="logId" column="LOG_ID"/>	
+		<result property="processId" column="PROCS_ID"/>
+		<result property="processNm" column="PROCS_NM"/>
+		<result property="procsSttus" column="PROCS_STTUS"/>
+		<result property="creatDt" column="CREAT_DT"/>
+		<result property="logInfo" column="LOG_INFO"/>			
+		<result property="mngrNm" column="MNGR_NM"/>
+		<result property="mngrEmailAddr" column="MNGR_EMAIL_ADRES"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>		
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>			
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>			
+	</resultMap>			
+	
+	<select id="selectProcessMonList" parameterType="egovframework.com.utl.sys.prm.service.ProcessMonVO" resultMap="ProcessMonList">
+		
+	SELECT *
+	FROM (
+	SELECT T0.*, ROWNUM RNUM
+		FROM (
+	
+					
+			SELECT  A.PROCS_ID
+				 ,  A.PROCS_NM
+				 ,  B.CODE_NM PROCS_STTUS
+				 ,  TO_CHAR(A.CREAT_DT,'YYYY-MM-DD HH24:MI:SS') CREAT_DT				 
+			     ,  A.MNGR_NM
+			     ,  A.MNGR_EMAIL_ADRES		     
+			FROM COMTNPROCESSMON A
+			LEFT OUTER JOIN COMTCCMMNDETAILCODE B
+				 ON B.CODE_ID = 'COM072' 
+				 AND A.PROCS_STTUS = B.CODE
+			WHERE 1 = 1
+		
+			<if test="searchCondition == 1">AND
+				A.PROCS_NM LIKE '%'||#{searchKeyword}||'%'
+			</if>
+			<if test="searchCondition == 2">AND
+				B.CODE_NM = #{searchKeyword}
+			</if>
+		
+			ORDER BY A.FRST_REGIST_PNTTM DESC
+			
+	
+		
+		) T0
+	) Z
+	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+		
+	</select>
+	
+	<select id="selectProcessMonTotCnt" parameterType="egovframework.com.utl.sys.prm.service.ProcessMonVO" resultType="java.lang.Integer">
+		
+			SELECT COUNT(A.PROCS_ID) as totcnt 
+			FROM   COMTNPROCESSMON A
+			LEFT   OUTER JOIN COMTCCMMNDETAILCODE B
+				   ON B.CODE_ID = 'COM072' 
+			AND    A.PROCS_STTUS = B.CODE			  
+			WHERE  1 = 1
+		
+			<if test="searchCondition == 1">AND
+				A.PROCS_NM LIKE '%'||#{searchKeyword}||'%'
+			</if>
+			<if test="searchCondition == 2">AND
+				B.CODE_NM = #{searchKeyword}
+			</if>
+	</select>
+	
+	<select id="selectProcessMon" parameterType="egovframework.com.utl.sys.prm.service.ProcessMonVO" resultMap="ProcessMonDetail">
+		
+            SELECT  A.PROCS_ID
+            	 ,  A.PROCS_NM
+			     ,  B.CODE_NM PROCS_STTUS
+            	 ,  TO_CHAR(A.CREAT_DT,'YYYY-MM-DD HH24:MI:SS') CREAT_DT
+			     ,  A.MNGR_NM
+                 ,  A.MNGR_EMAIL_ADRES	     
+            	 ,  A.FRST_REGISTER_ID
+			     ,  A.FRST_REGIST_PNTTM
+            	 ,  A.LAST_UPDUSR_ID
+			     ,  A.LAST_UPDT_PNTTM						     			     			     
+            FROM  COMTNPROCESSMON A
+			LEFT  OUTER JOIN COMTCCMMNDETAILCODE B
+				  ON B.CODE_ID = 'COM072' 
+			AND   A.PROCS_STTUS = B.CODE            
+            WHERE A.PROCS_NM = #{processNm}
+		
+	</select>
+	
+	<update id="updateProcessMon" parameterType="egovframework.com.utl.sys.prm.service.ProcessMon">
+		
+            UPDATE  COMTNPROCESSMON 
+               SET  PROCS_NM		  = #{processNm}
+               	 ,  MNGR_NM        	  = #{mngrNm}
+                 ,  MNGR_EMAIL_ADRES   = #{mngrEmailAddr}
+                 ,  LAST_UPDT_PNTTM = SYSDATETIME
+                 ,  LAST_UPDUSR_ID    = #{lastUpdusrId}
+             WHERE  PROCS_ID        = #{processId} 
+		
+	</update>
+	
+	<delete id="deleteProcessMon" parameterType="egovframework.com.utl.sys.prm.service.ProcessMon">
+		
+            DELETE  FROM COMTNPROCESSMON 
+            WHERE   PROCS_NM = #{processNm}  
+		
+	</delete>
+	
+	<insert id="insertProcessMon">
+		
+		    INSERT 
+		      INTO  COMTNPROCESSMON
+		         (  PROCS_ID
+		         ,  PROCS_NM
+		         ,  PROCS_STTUS
+		         ,  CREAT_DT
+		         ,  MNGR_NM
+		         ,  MNGR_EMAIL_ADRES
+			     ,	FRST_REGISTER_ID
+			     ,	FRST_REGIST_PNTTM
+		         ,  LAST_UPDUSR_ID			     	         
+		         ,  LAST_UPDT_PNTTM
+		         ) 
+		    VALUES  
+		         (  #{processId}
+		         ,  #{processNm}
+		         ,  #{procsSttus}
+		         ,  TO_DATE(#{creatDt}, 'yyyymmddhh24miss')
+		         ,  #{mngrNm}
+		         ,  #{mngrEmailAddr}
+		         ,  #{frstRegisterId}
+		         ,  SYSDATETIME	         		         
+		         ,  #{lastUpdusrId}
+		         ,  SYSDATETIME
+		         ) 
+		
+	</insert>
+	
+	<update id="updateProcessMonSttus" parameterType="egovframework.com.utl.sys.prm.service.ProcessMon">
+		
+            UPDATE  COMTNPROCESSMON 
+               SET  PROCS_STTUS       = #{procsSttus}
+                 ,  CREAT_DT          = TO_DATE(#{creatDt}, 'yyyymmddhh24miss')
+                 ,  LAST_UPDT_PNTTM = SYSDATETIME
+                 ,  LAST_UPDUSR_ID    = #{lastUpdusrId}
+             WHERE  PROCS_NM        = #{processNm} 
+		
+	</update>					
+	
+	<select id="selectProcessMonLogList" parameterType="egovframework.com.utl.sys.prm.service.ProcessMonLogVO" resultMap="ProcessMonLogList">
+		
+	SELECT *
+	FROM (
+	SELECT T0.*, ROWNUM RNUM
+		FROM (
+		
+		
+			SELECT  A.LOG_ID
+				 ,  A.PROCS_ID
+				 ,  A.PROCS_NM
+				 ,  C.CODE_NM PROCS_STTUS			 				 
+				 ,  TO_CHAR(A.CREAT_DT,'YYYY-MM-DD HH24:MI:SS') CREAT_DT
+				 ,  A.LOG_INFO				 
+			     ,  A.MNGR_NM
+			     ,  A.MNGR_EMAIL_ADRES		     
+			FROM COMTNPROCESSMONLOGINFO A
+			LEFT OUTER JOIN COMTNPROCESSMON B
+				 ON A.PROCS_ID = B.PROCS_ID
+			LEFT OUTER JOIN COMTCCMMNDETAILCODE C
+				 ON C.CODE_ID = 'COM072' 
+				 AND A.PROCS_STTUS = C.CODE			
+			WHERE 1 = 1
+		
+			<if test="searchBgnDt != null and searchBgnDt != ''">
+			 	<if test="searchEndDt != null and searchEndDt != ''">AND
+			 		TO_CHAR(A.CREAT_DT,'YYYY-MM-DD HH24MISS') BETWEEN #{searchBgnDt} AND #{searchEndDt}		
+			 	</if>
+			</if>		
+			<if test="searchCondition == 1">AND
+				A.PROCS_NM LIKE '%'||#{searchKeyword}||'%'
+			</if>
+			<if test="searchCondition == 2">AND
+				C.CODE_NM = #{searchKeyword}
+			</if>
+		
+			ORDER BY A.CREAT_DT DESC
+			
+	 
+		
+		) T0
+	) Z
+	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	
+	</select>	
+	
+	<select id="selectProcessMonLogTotCnt" parameterType="egovframework.com.utl.sys.prm.service.ProcessMonLogVO" resultType="int">
+		
+			SELECT COUNT(A.PROCS_ID) as totcnt 
+			FROM   COMTNPROCESSMONLOGINFO A
+			LEFT   OUTER JOIN COMTNPROCESSMON B
+				   ON A.PROCS_ID = B.PROCS_ID
+			LEFT   OUTER JOIN COMTCCMMNDETAILCODE C
+				   ON C.CODE_ID  = 'COM072' 
+			AND    A.PROCS_STTUS = C.CODE			  
+			WHERE  1 = 1
+		
+			<if test="searchBgnDt != null and searchBgnDt != ''">
+			 	<if test="searchEndDt != null and searchEndDt != ''">AND
+			 		TO_CHAR(A.CREAT_DT,'YYYY-MM-DD HH24MISS') BETWEEN #{searchBgnDt} AND #{searchEndDt}			
+			 	</if>
+			</if>		
+			<if test="searchCondition == 1">AND
+				A.PROCS_NM LIKE '%'||#{searchKeyword}||'%'
+			</if>
+			<if test="searchCondition == 2">AND
+				C.CODE_NM = #{searchKeyword}
+			</if>
+	</select>	
+	
+	<select id="selectProcessMonLog" parameterType="egovframework.com.utl.sys.prm.service.ProcessMonLogVO" resultMap="ProcessMonLogDetail">
+		
+            SELECT  A.LOG_ID 				
+				 ,  A.PROCS_ID 			
+            	 ,  A.PROCS_NM			
+			     ,  B.CODE_NM PROCS_STTUS
+            	 ,  TO_CHAR(A.CREAT_DT,'YYYY-MM-DD HH24:MI:SS') CREAT_DT				
+				 ,  A.LOG_INFO	                        	 
+			     ,  A.MNGR_NM  				
+                 ,  A.MNGR_EMAIL_ADRES 					     
+            	 ,  A.FRST_REGISTER_ID	  	
+			     ,  A.FRST_REGIST_PNTTM
+            	 ,  A.LAST_UPDUSR_ID
+			     ,  A.LAST_UPDT_PNTTM                                  
+            FROM COMTNPROCESSMONLOGINFO A
+			LEFT  OUTER JOIN COMTCCMMNDETAILCODE B
+				  ON B.CODE_ID  = 'COM072' 
+			AND   A.PROCS_STTUS = B.CODE            
+            WHERE A.PROCS_NM  = #{processNm}
+			AND   A.LOG_ID      = #{logId}            
+		
+	</select>
+	
+	<insert id="insertProcessMonLog" parameterType="egovframework.com.utl.sys.prm.service.ProcessMonLog">
+		
+		    INSERT 
+		      INTO  COMTNPROCESSMONLOGINFO
+		         (  LOG_ID
+		         ,  PROCS_ID
+		         ,  PROCS_NM
+		         ,  PROCS_STTUS
+		         ,  CREAT_DT
+		         ,  LOG_INFO
+		         ,  MNGR_NM
+		         ,  MNGR_EMAIL_ADRES
+			     ,	FRST_REGISTER_ID
+			     ,	FRST_REGIST_PNTTM
+		         ,  LAST_UPDUSR_ID			     	         
+		         ,  LAST_UPDT_PNTTM
+		         ) 
+		    VALUES  
+		         (  #{logId}
+		         ,  #{processId}
+		         ,  #{processNm}
+		         ,  #{procsSttus}
+		         ,  TO_DATE(#{creatDt}, 'yyyymmddhh24miss')
+		         ,  #{logInfo}
+		         ,  #{mngrNm}
+		         ,  #{mngrEmailAddr}
+		         ,  #{frstRegisterId}
+		         ,  SYSDATETIME         		         
+		         ,  #{lastUpdusrId}
+		         ,  SYSDATETIME
+		         ) 
+		
+	</insert>	
+
+</mapper>

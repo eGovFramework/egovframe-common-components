@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+
+<form-validation>
+
+    <formset>
+
+        <form name="zip">
+			<field property="zip" depends="required, maxlength, integer">
+        		<arg0 key="우편번호" resource="true"/>
+        		<arg1 key="6" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>6</var-value>
+				</var>
+			</field> 
+			<field property="ctprvnNm" depends="required, maxlength">
+        		<arg0 key="시도명" resource="true"/>
+        		<arg1 key="20" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>20</var-value>
+				</var>
+			</field> 
+			<field property="signguNm" depends="required, maxlength">
+        		<arg0 key="시군구명" resource="true"/>
+        		<arg1 key="20" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>20</var-value>
+				</var>
+			</field> 
+			<field property="emdNm" depends="required, maxlength">
+        		<arg0 key="읍면동명" resource="true"/>
+        		<arg1 key="30" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>30</var-value>
+				</var>
+			</field> 
+			<field property="liBuldNm" depends="maxlength">
+        		<arg0 key="리건물명" resource="true"/>
+        		<arg1 key="60" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>60</var-value>
+				</var>
+			</field> 
+			<field property="lnbrDongHo" depends="maxlength">
+        		<arg0 key="번지동호" resource="true"/>
+        		<arg1 key="20" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>20</var-value>
+				</var>
+			</field>
+			
+			<field property="rdmnCode" depends="required, maxlength, integer">
+        		<arg0 key="도로명코드" resource="true"/>
+        		<arg1 key="12" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>12</var-value>
+				</var>
+			</field> 
+			<field property="rdmn" depends="required, maxlength">
+        		<arg0 key="도로명" resource="true"/>
+        		<arg1 key="60" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>60</var-value>
+				</var>
+			</field> 
+			<field property="bdnbrMnnm" depends="maxlength">
+        		<arg0 key="건물번호본번" resource="true"/>
+        		<arg1 key="5" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>5</var-value>
+				</var>
+			</field> 
+			<field property="bdnbrSlno" depends="maxlength">
+        		<arg0 key="건물번호부번" resource="true"/>
+        		<arg1 key="5" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>5</var-value>
+				</var>
+			</field> 
+			<field property="buldNm" depends="maxlength">
+        		<arg0 key="건물명" resource="true"/>
+        		<arg1 key="60" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>60</var-value>
+				</var>
+			</field> 
+			<field property="detailBuldNm" depends="maxlength">
+        		<arg0 key="상세건물명" resource="true"/>
+        		<arg1 key="60" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>60</var-value>
+				</var>
+			</field> 
+			
+			 
+		</form>
+		
+
+    </formset>
+
+</form-validation>

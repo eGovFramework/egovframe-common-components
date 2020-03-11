@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+<form-validation>
+    <formset>
+        <form name="progrmManageVO"> 
+			<field property="progrmFileNm" depends="required, maxlength">
+        		<arg0 key="프로그램파일명" resource="true"/>
+        		<arg1 key="50" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>50</var-value>
+				</var>
+			</field> 
+            <field property="progrmStrePath" depends="required, maxlength">
+        		<arg0 key="프로그램저장경로" resource="true"/>
+        		<arg1 key="100" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>100</var-value>
+				</var>
+			</field> 
+            <field property="progrmKoreanNm" depends="required, maxlength">
+        		<arg0 key="프로그램한글명" resource="true"/>
+        		<arg1 key="50" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>50</var-value>
+				</var>
+			</field> 
+            <field property="URL" depends="required, maxlength">
+        		<arg0 key="URL" resource="true"/>
+        		<arg1 key="100" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>100</var-value>
+				</var>
+			</field>
+			<field property="progrmDc" depends="maxlength">
+        		<arg0 key="프로그램설명" resource="true"/>
+        		<arg1 key="100" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>100</var-value>
+				</var>
+			</field> 
+		</form>
+    </formset>
+</form-validation>

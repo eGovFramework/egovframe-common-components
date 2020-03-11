@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	수정일          수정자                          수정내용
+  ===========      ========    =================================================
+  2011.10.06		이기하     	 	보안 취약점 점검사항 반영 $->#변경
+--><!--Converted at: Wed May 11 15:50:39 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ZipManageDAO">
+
+	<select id="selectZipList" parameterType="egovframework.com.sym.ccm.zip.service.ZipVO" resultType="egovMap">
+		
+			SELECT  ZIP
+			     ,  SN
+			     ,  CTPRVN_NM
+			     ,  SIGNGU_NM
+			     ,  EMD_NM
+			     ,  LI_BULD_NM
+			     ,  LNBR_DONG_HO
+			  FROM  COMTCZIP
+			 WHERE	1 = 1
+		
+			<if test="searchCondition == 1">AND
+				ZIP LIKE CONCAT ('%', #{searchKeyword},'%')
+			</if>
+			<if test="searchCondition == 2">AND
+				CTPRVN_NM LIKE CONCAT ('%', #{searchKeyword},'%')
+			</if>
+			<if test="searchCondition == 3">AND
+				SIGNGU_NM LIKE CONCAT ('%', #{searchKeyword},'%')
+			</if>
+			<if test="searchCondition == 4">AND
+				EMD_NM LIKE CONCAT ('%', #{searchKeyword},'%')
+			</if>
+			<if test="searchCondition == 5">AND
+				LI_BULD_NM LIKE CONCAT ('%', #{searchKeyword},'%')
+			</if>
+			ORDER BY SN DESC
+			 LIMIT  #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+
+	<select id="selectZipListTotCnt" parameterType="egovframework.com.sym.ccm.zip.service.ZipVO" resultType="int">
+		
+			SELECT  COUNT(*) totcnt
+			  FROM  COMTCZIP
+			 WHERE	1 = 1
+		
+			<if test="searchCondition == 1">AND
+				ZIP LIKE CONCAT ('%', #{searchKeyword},'%')
+			</if>
+			<if test="searchCondition == 2">AND
+				CTPRVN_NM LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+			<if test="searchCondition == 3">AND
+				SIGNGU_NM LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+			<if test="searchCondition == 4">AND
+				EMD_NM LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+			<if test="searchCondition == 5">AND
+				LI_BULD_NM LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+	</select>
+
+	<select id="selectZipDetail" parameterType="egovframework.com.sym.ccm.zip.service.Zip" resultType="egovframework.com.sym.ccm.zip.service.Zip">
+		
+			SELECT  ZIP           zip
+			     ,  SN            sn
+			     ,  CTPRVN_NM     ctprvnNm
+			     ,  SIGNGU_NM     signguNm
+			     ,  EMD_NM        emdNm
+			     ,  LI_BULD_NM    liBuldNm
+			     ,  LNBR_DONG_HO  lnbrDongHo
+			  FROM  COMTCZIP
+             WHERE  ZIP = #{zip}
+               AND  SN  = #{sn}
+		
+	</select>
+
+	<insert id="insertZip">
+		<selectKey keyProperty="sn" resultType="int" order="BEFORE">
+		SELECT CASE WHEN MAX(SN)+1 IS NULL THEN 1
+		       ELSE MAX(SN)+1 END AS sn 
+			  FROM  COMTCZIP
+	    </selectKey>
+
+		
+			INSERT
+			  INTO  COMTCZIP
+			     (  ZIP
+			     ,  SN
+			     ,  CTPRVN_NM
+			     ,  SIGNGU_NM
+			     ,  EMD_NM
+			     ,  LI_BULD_NM
+			     ,  LNBR_DONG_HO
+			     ,  FRST_REGIST_PNTTM
+			     ,  FRST_REGISTER_ID
+			     ,  LAST_UPDT_PNTTM
+			     ,  LAST_UPDUSR_ID
+			     )
+			VALUES
+			     (  #{zip}
+			     ,  #{sn}
+			     ,  #{ctprvnNm}
+			     ,  #{signguNm}
+			     ,  #{emdNm}
+			     ,  #{liBuldNm}
+			     ,  #{lnbrDongHo}
+			     ,  NOW()
+			     ,  #{frstRegisterId}
+			     ,  NOW()
+			     ,  #{frstRegisterId}
+			     )
+		
+	</insert>
+
+	<insert id="insertExcelZip">
+		
+			INSERT
+			  INTO  COMTCZIP
+			     (  ZIP
+			     ,  SN
+			     ,  CTPRVN_NM
+			     ,  SIGNGU_NM
+			     ,  EMD_NM
+			     ,  LI_BULD_NM
+			     ,  LNBR_DONG_HO
+			     ,  FRST_REGIST_PNTTM
+			     ,  FRST_REGISTER_ID
+			     ,  LAST_UPDT_PNTTM
+			     ,  LAST_UPDUSR_ID
+			     )
+			VALUES
+			     (  #{zip}
+			     ,  #{sn}
+			     ,  #{ctprvnNm}
+			     ,  #{signguNm}
+			     ,  #{emdNm}
+			     ,  #{liBuldNm}
+			     ,  #{lnbrDongHo}
+			     ,  NOW()
+			     ,  #{frstRegisterId}
+			     ,  NOW()
+			     ,  #{frstRegisterId}
+			     )
+		
+	</insert>
+
+	<update id="updateZip">
+		
+            UPDATE  COMTCZIP
+               SET  CTPRVN_NM         = #{ctprvnNm}
+                 ,  SIGNGU_NM         = #{signguNm}
+                 ,  EMD_NM            = #{emdNm}
+                 ,  LI_BULD_NM        = #{liBuldNm}
+                 ,  LNBR_DONG_HO      = #{lnbrDongHo}
+                 ,  LAST_UPDT_PNTTM = NOW()
+                 ,  LAST_UPDUSR_ID    = #{lastUpdusrId}
+             WHERE  ZIP               = #{zip}
+               AND  SN                = #{sn}
+		
+	</update>
+
+	<delete id="deleteZip">
+		
+            DELETE
+              FROM  COMTCZIP
+             WHERE  ZIP = #{zip}
+		
+	</delete>
+
+	<delete id="deleteAllZip">
+		
+            DELETE
+              FROM  COMTCZIP
+		
+	</delete>
+
+</mapper>

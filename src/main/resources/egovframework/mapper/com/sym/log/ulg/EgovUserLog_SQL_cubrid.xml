@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- 
+	수정일                 수정자                          수정내용
+  =========     =======    =================================================
+  2011.10.17   	서준식     	 	OCCRRNC_DE 컬럼과 날짜 비교문에 RTRIM 함수 적용
+  2017.09.19		이정은			날짜로 검색 시 '-'를 공백으로 변환
+
+--><!--Converted at: Wed May 11 15:50:44 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserLog">
+
+	<!-- 사용자로그 맵 -->
+	<resultMap id="UserLogVO" type="egovframework.com.sym.log.ulg.service.UserLog">
+		<result property="occrrncDe" column="OCCRRNC_DE"/>
+		<result property="rqesterId" column="RQESTER_ID"/>
+		<result property="rqsterNm" column="RQESTER_NM"/>
+		<result property="srvcNm" column="SVC_NM"/>
+		<result property="methodNm" column="METHOD_NM"/>
+		<result property="creatCo" column="CREAT_CO"/>
+		<result property="updtCo" column="UPDT_CO"/>
+		<result property="rdCnt" column="RDCNT"/>
+		<result property="deleteCo" column="DELETE_CO"/>
+		<result property="outptCo" column="OUTPT_CO"/>
+		<result property="errorCo" column="ERROR_CO"/>
+	</resultMap>
+
+	<!-- 사용자 로그 등록 -->
+	<insert id="logInsertUserLog">
+		
+		<![CDATA[
+			INSERT INTO COMTNUSERLOG
+			SELECT TO_CHAR(b.OCCRRNC_DE,'YYYYMMDD')
+				 , b.RQESTER_ID
+			     , b.SVC_NM
+			     , b.METHOD_NM
+			     , SUM(CASE WHEN b.PROCESS_SE_CODE = 'C' THEN 1 ELSE 0 END) AS CREAT_CO
+			     , SUM(CASE WHEN b.PROCESS_SE_CODE = 'U' THEN 1 ELSE 0 END) AS UPDT_CO
+			     , SUM(CASE WHEN b.PROCESS_SE_CODE = 'R' THEN 1 ELSE 0 END) AS RDCNT
+			     , SUM(CASE WHEN b.PROCESS_SE_CODE = 'D' THEN 1 ELSE 0 END) AS DELETE_CO
+			     , 0 AS OUTPT_CO
+			     , 0 AS ERROR_CO
+			  FROM COMTNSYSLOG b
+			 WHERE NOT EXISTS (SELECT c.OCCRRNC_DE
+			                     FROM COMTNUSERLOG c
+			                    WHERE c.OCCRRNC_DE = TO_CHAR((SYSDATE - 1), 'YYYYMMDD')
+			                  )
+			   AND TO_CHAR(b.OCCRRNC_DE,'YYYYMMDD') = TO_CHAR((SYSDATE - 1), 'YYYYMMDD')
+			   AND b.RQESTER_ID IS NOT NULL
+			 GROUP BY TO_CHAR(b.OCCRRNC_DE,'YYYYMMDD')
+				    , b.RQESTER_ID
+				    , b.SVC_NM
+				    , b.METHOD_NM
+				    ]]>
+
+		
+	</insert>
+
+
+	<!-- 사용자 로그 상세 조회 -->
+	<select id="selectUserLog" parameterType="egovframework.com.sym.log.ulg.service.UserLog" resultMap="UserLogVO">
+		
+		<![CDATA[
+			SELECT
+				  a.OCCRRNC_DE
+				, a.RQESTER_ID
+				, b.USER_NM AS RQESTER_NM
+				, a.SVC_NM
+				, a.METHOD_NM
+				, a.CREAT_CO
+				, a.UPDT_CO
+				, a.RDCNT
+				, a.DELETE_CO
+				, a.OUTPT_CO
+				, a.ERROR_CO
+			FROM
+				COMTNUSERLOG a
+			LEFT OUTER JOIN COMVNUSERMASTER b
+				ON a.RQESTER_ID = b.ESNTL_ID
+			WHERE
+				a.OCCRRNC_DE = #{occrrncDe}
+			AND	a.RQESTER_ID = #{rqesterId}
+			AND	a.SVC_NM = #{srvcNm}
+			AND	a.METHOD_NM = #{methodNm}
+			]]>
+			
+	</select>
+
+	<!-- 사용자 로그 목록 조회 -->
+	<select id="selectUserLogInf" parameterType="egovframework.com.sym.log.ulg.service.UserLog" resultMap="UserLogVO">
+		
+		<![CDATA[
+		SELECT * FROM ( SELECT rownum rn, TB.* FROM (
+			SELECT
+				  a.OCCRRNC_DE
+				, a.RQESTER_ID
+				, b.USER_NM AS RQESTER_NM
+				, a.SVC_NM
+				, a.METHOD_NM
+				, a.CREAT_CO
+				, a.UPDT_CO
+				, a.RDCNT
+				, a.DELETE_CO
+				, a.OUTPT_CO
+				, a.ERROR_CO
+			FROM
+				COMTNUSERLOG a
+			LEFT OUTER JOIN COMVNUSERMASTER b
+				ON a.RQESTER_ID = b.ESNTL_ID
+			WHERE
+				1 = 1
+				]]>
+			
+			<if test="searchWrd != null and searchWrd != ''">	<![CDATA[	AND
+					b.USER_NM LIKE '%' || #{searchWrd} || '%' 	]]>
+			</if>
+			<if test="searchBgnDe != null and searchBgnDe != ''">	<![CDATA[	AND
+					a.OCCRRNC_DE BETWEEN REPLACE(#{searchBgnDe},'-','') AND REPLACE(#{searchEndDe},'-','') 	]]>
+			</if>
+		
+		<![CDATA[
+			ORDER BY a.OCCRRNC_DE DESC
+			) TB ) Z WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+			]]>
+		
+	</select>
+
+	<!-- 사용자 로그 총건수 -->
+	<select id="selectUserLogInfCnt" parameterType="egovframework.com.sym.log.ulg.service.UserLog" resultType="int">
+		
+		<![CDATA[
+			SELECT COUNT(a.OCCRRNC_DE) as cnt
+			FROM
+				COMTNUSERLOG a
+			LEFT OUTER JOIN COMVNUSERMASTER b
+				ON a.RQESTER_ID = b.ESNTL_ID
+			WHERE
+				1 = 1
+			]]>
+			
+			<if test="searchWrd != null and searchWrd != ''">	<![CDATA[	AND
+				 	b.USER_NM LIKE '%' || #{searchWrd} || '%' 	]]> 
+			</if>
+			<if test="searchBgnDe != null and searchBgnDe != ''">	<![CDATA[	AND
+				 	a.OCCRRNC_DE BETWEEN REPLACE(#{searchBgnDe},'-','') AND REPLACE(#{searchEndDe},'-','')  	]]>
+			</if>
+	</select>
+
+</mapper>

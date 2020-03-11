@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CpyrhtPrtcPolicyDAO">
+
+	<resultMap id="CpyrhtPrtcPolicy" type="egovframework.com.uss.sam.cpy.service.CpyrhtPrtcPolicyVO">
+		<result property="cpyrhtId" column="CPYRHT_ID"/>
+		<result property="cpyrhtPrtcPolicyCn" column="CPYRHT_PRTC_POLICY_CN"/>		
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>				
+	</resultMap>
+	
+	<select id="selectCpyrhtPrtcPolicyDetail" resultMap="CpyrhtPrtcPolicy">
+				
+			SELECT 	CPYRHT_ID, CPYRHT_PRTC_POLICY_CN,   
+					TO_CHAR(FRST_REGIST_PNTTM,'YYYY-mm-dd') FRST_REGIST_PNTTM   , FRST_REGISTER_ID, 
+					TO_CHAR(LAST_UPDT_PNTTM,'YYYY-mm-dd')   LAST_UPDT_PNTTM	  , LAST_UPDUSR_ID			 			  			 			  
+			FROM	COMTNCPYRHTINFO		
+			WHERE	CPYRHT_ID=#{cpyrhtId}					
+		
+	</select>
+	
+	<select id="selectCpyrhtPrtcPolicyList" parameterType="egovframework.com.uss.sam.cpy.service.CpyrhtPrtcPolicyDefaultVO" resultType="egovMap">
+		
+			SELECT 	CPYRHT_ID, CPYRHT_PRTC_POLICY_CN,  
+					FRST_REGIST_PNTTM	  , FRST_REGISTER_ID, 
+					LAST_UPDT_PNTTM	  , LAST_UPDUSR_ID			 
+			FROM	COMTNCPYRHTINFO                               			
+			WHERE	1=1   			
+							
+			<if test="searchCondition == 'cpyrhtPrtcPolicyCn'">AND
+				CPYRHT_PRTC_POLICY_CN LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+			ORDER BY CPYRHT_ID DESC			
+			LIMIT  #{recordCountPerPage} OFFSET #{firstIndex}	
+	</select>
+	
+	<select id="selectCpyrhtPrtcPolicyListTotCnt" parameterType="egovframework.com.uss.sam.cpy.service.CpyrhtPrtcPolicyDefaultVO" resultType="int">
+		
+			SELECT 	COUNT(*) totcnt
+			FROM 	COMTNCPYRHTINFO
+			WHERE 	1=1
+					
+			<if test="searchCondition == 'cpyrhtPrtcPolicyCn'">AND
+				CPYRHT_PRTC_POLICY_CN LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+	</select>
+	
+	<insert id="insertCpyrhtPrtcPolicyCn">	
+			
+			INSERT INTO COMTNCPYRHTINFO
+				   (CPYRHT_ID
+				  , CPYRHT_PRTC_POLICY_CN				   
+				  , FRST_REGIST_PNTTM 
+				  , FRST_REGISTER_ID 
+				  , LAST_UPDT_PNTTM 
+				  , LAST_UPDUSR_ID) 
+			VALUES ( #{cpyrhtId}
+				  , #{cpyrhtPrtcPolicyCn}			
+				  , NOW()
+				  , #{frstRegisterId}
+				  , NOW()
+				  , #{lastUpdusrId} )
+		
+	</insert>
+	
+	<update id="updateCpyrhtPrtcPolicyCn">
+		
+			UPDATE	COMTNCPYRHTINFO	SET 
+				   	CPYRHT_PRTC_POLICY_CN=#{cpyrhtPrtcPolicyCn}
+				  , LAST_UPDT_PNTTM=NOW()
+				  , LAST_UPDUSR_ID=#{lastUpdusrId}
+ 			WHERE  CPYRHT_ID=#{cpyrhtId}
+		
+	</update>
+	
+	<delete id="deleteCpyrhtPrtcPolicyCn">
+		
+			DELETE FROM COMTNCPYRHTINFO 
+ 			WHERE  CPYRHT_ID=#{cpyrhtId}
+		
+	</delete>
+	
+</mapper>

@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="KnoPersonalDAO">
+	
+	<resultMap id="KnoPersonalList" type="egovframework.com.dam.per.service.KnoPersonalVO">
+		<result property="orgnztNm" column="ORGNZT_NM"/>	
+		<result property="knoTypeNm" column="KNWLDG_TY_NM"/>
+		<result property="knoId" column="KNWLDG_ID"/>
+		<result property="knoNm" column="KNWLDG_NM"/>
+		<result property="userNm" column="USER_NM"/>
+		<result property="colYmd" column="COLCT_DE"/>
+		<result property="othbcAt" column="OTHBC_AT"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+	</resultMap>
+	
+	<resultMap id="KnoPersonal" type="egovframework.com.dam.per.service.KnoPersonal">
+		<result property="orgnztNm" column="ORGNZT_NM"/>	
+		<result property="orgnztId" column="ORGNZT_ID"/>
+		<result property="knoTypeNm" column="KNWLDG_TY_NM"/>
+		<result property="knoTypeCd" column="KNWLDG_TY_CODE"/>
+		<result property="knoId" column="KNWLDG_ID"/>
+		<result property="knoNm" column="KNWLDG_NM"/>
+		<result property="knoCn" column="KNWLDG_CN"/>
+		<result property="colYmd" column="COLCT_DE"/>
+		<result property="othbcAt" column="OTHBC_AT"/>
+		<result property="atchFileId" column="ATCH_FILE_ID"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+	</resultMap>
+
+	<select id="selectKnoPersonalList" parameterType="egovframework.com.dam.per.service.KnoPersonalVO" resultMap="KnoPersonalList">
+		
+	SELECT *
+	FROM (
+	SELECT T0.*, ROWNUM RNUM
+		FROM (
+	
+		
+			SELECT C.ORGNZT_NM
+			     ,  B.KNWLDG_TY_NM
+				 ,  A.KNWLDG_ID			     		
+				 ,  A.KNWLDG_NM
+				 ,  D.USER_NM          
+                 ,  A.COLCT_DE
+                 ,  A.OTHBC_AT
+			     ,	A.FRST_REGISTER_ID
+			     ,	A.FRST_REGIST_PNTTM
+			     ,  A.LAST_UPDUSR_ID
+			     ,	A.LAST_UPDT_PNTTM
+			FROM  COMTNDAMKNOIFM A, COMTNDAMMAPKNO B, COMTNDAMMAPTEAM C, COMVNUSERMASTER D
+			WHERE C.ORGNZT_ID = B.ORGNZT_ID
+			AND   A.KNWLDG_TY_CODE = B.KNWLDG_TY_CODE
+			AND   A.FRST_REGISTER_ID = D.ESNTL_ID	
+			AND   A.FRST_REGISTER_ID = #{frstRegisterId} 				
+		
+			<if test='searchCondition == "1"'>AND
+				B.KNWLDG_TY_NM LIKE '%'||#{searchKeyword}||'%'
+			</if>
+			<if test='searchCondition == "2"'>AND
+				A.KNWLDG_NM LIKE '%'||#{searchKeyword}||'%'
+			</if>
+		
+		) T0
+	) 
+	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	
+	</select>
+
+	<select id="selectKnoPersonalTotCnt" parameterType="egovframework.com.dam.per.service.KnoPersonalVO" resultType="java.lang.Integer">
+		
+			SELECT  COUNT(*) as totcnt 
+			FROM  COMTNDAMKNOIFM A, COMTNDAMMAPKNO B, COMTNDAMMAPTEAM C, COMVNUSERMASTER D
+			WHERE C.ORGNZT_ID = B.ORGNZT_ID
+			AND   A.KNWLDG_TY_CODE = B.KNWLDG_TY_CODE
+			AND   A.FRST_REGISTER_ID = D.ESNTL_ID	
+			AND   A.FRST_REGISTER_ID = #{frstRegisterId} 
+		
+			<if test='searchCondition == "1"'>AND
+				B.KNWLDG_TY_NM LIKE '%'||#{searchKeyword}||'%'
+			</if>
+			<if test='searchCondition == "2"'>AND
+				A.KNWLDG_NM LIKE '%'||#{searchKeyword}||'%'
+			</if>
+	</select>
+
+	<select id="selectKnoPersonal" parameterType="egovframework.com.dam.per.service.KnoPersonal" resultMap="KnoPersonal">
+		
+			SELECT  C.ORGNZT_NM
+			     ,  C.ORGNZT_ID
+			     ,  B.KNWLDG_TY_NM			     			
+			     ,  B.KNWLDG_TY_CODE
+				 ,  A.KNWLDG_ID			     
+				 ,  A.KNWLDG_NM			     
+			     ,  A.KNWLDG_CN          
+                 ,  A.COLCT_DE
+                 ,  A.OTHBC_AT
+                 ,  A.ATCH_FILE_ID
+			     ,	A.FRST_REGISTER_ID
+			     ,	A.FRST_REGIST_PNTTM
+			     ,  A.LAST_UPDUSR_ID
+			     ,	A.LAST_UPDT_PNTTM			     
+			FROM  COMTNDAMKNOIFM A, COMTNDAMMAPKNO B, COMTNDAMMAPTEAM C
+			WHERE C.ORGNZT_ID = B.ORGNZT_ID
+			AND   A.KNWLDG_TY_CODE = B.KNWLDG_TY_CODE			
+            AND   A.KNWLDG_ID = #{knoId}
+		
+	</select>
+
+	<insert id="insertKnoPersonal">
+		
+		    INSERT 
+		      INTO  COMTNDAMKNOIFM
+		         (  KNWLDG_ID
+		         ,  KNWLDG_NM
+		         ,	ORGNZT_ID
+		         ,  KNWLDG_TY_CODE
+		         ,  KNWLDG_CN
+		         ,  COLCT_DE
+		         ,  OTHBC_AT
+		         ,  ATCH_FILE_ID
+			     ,	FRST_REGISTER_ID
+			     ,	FRST_REGIST_PNTTM
+		         ,  LAST_UPDUSR_ID			     	         
+		         ,  LAST_UPDT_PNTTM
+		         ) 
+		    VALUES  
+		         (  #{knoId}
+		         ,  #{knoNm}
+		         ,  #{orgnztId}		         		         
+		         ,  #{knoTypeCd}
+		         ,  #{knoCn}
+		         ,  #{colYmd}
+		         ,  #{othbcAt}
+		         ,  #{atchFileId}		         		         
+		         ,  #{frstRegisterId}
+		         ,  sysdate	         		 
+		         ,  #{lastUpdusrId}
+		         ,  sysdate
+		         ) 
+		
+	</insert>
+
+	<update id="updateKnoPersonal">
+		
+            UPDATE  COMTNDAMKNOIFM 
+               SET  ORGNZT_ID         = #{orgnztId}      
+                 ,  KNWLDG_TY_CODE		  = #{knoTypeCd}
+                 ,  KNWLDG_NM        	  = #{knoNm}
+                 ,  KNWLDG_CN			  = #{knoCn}
+		         ,  COLCT_DE			  = REPLACE(#{colYmd},'-','')
+		         ,  OTHBC_AT          = #{othbcAt}               
+                 ,  ATCH_FILE_ID      = #{atchFileId}               
+                 ,  LAST_UPDUSR_ID    = #{lastUpdusrId}               
+                 ,  LAST_UPDT_PNTTM = sysdate
+             WHERE  KNWLDG_ID       	  = #{knoId} 
+		
+	</update>
+
+	<delete id="deleteKnoPersonal">
+		
+            DELETE  FROM COMTNDAMKNOIFM 
+            WHERE   KNWLDG_ID = #{knoId}
+		
+	</delete>
+
+
+</mapper>

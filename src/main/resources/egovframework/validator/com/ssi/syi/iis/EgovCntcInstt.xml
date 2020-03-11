@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+
+<form-validation>
+
+    <formset>
+
+        <form name="cntcInstt">
+			<field property="insttNm" depends="required, maxlength">
+        		<arg0 key="comSsiSyiIis.cntcInstt.cntcInstt.validate.insttNm"/>
+        		<arg1 key="60" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>60</var-value>
+				</var>
+			</field> 
+		</form>
+        <form name="cntcSystem">
+			<field property="insttId" depends="required, maxlength">
+        		<arg0 key="comSsiSyiIis.cntcInstt.cntcSystem.validate.insttId"/>
+        		<arg1 key="20" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>20</var-value>
+				</var>
+			</field> 
+			<field property="sysNm" depends="required, maxlength">
+        		<arg0 key="comSsiSyiIis.cntcInstt.cntcSystem.validate.sysNm"/>
+        		<arg1 key="60" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>60</var-value>
+				</var>
+			</field> 
+		</form>
+        <form name="cntcService">
+			<field property="insttId" depends="required, maxlength">
+        		<arg0 key="comSsiSyiIis.cntcInstt.cntcService.validate.insttId"/>
+        		<arg1 key="20" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>20</var-value>
+				</var>
+			</field> 
+			<field property="sysId" depends="required, maxlength">
+        		<arg0 key="comSsiSyiIis.cntcInstt.cntcService.validate.sysId"/>
+        		<arg1 key="20" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>20</var-value>
+				</var>
+			</field> 
+			<field property="svcNm" depends="required, maxlength">
+        		<arg0 key="comSsiSyiIis.cntcInstt.cntcService.validate.svcNm"/>
+        		<arg1 key="60" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>60</var-value>
+				</var>
+			</field> 
+		</form>
+		
+
+    </formset>
+
+</form-validation>

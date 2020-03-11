@@ -1,0 +1,74 @@
+<html>
+	<body>
+	<form name='form1' id='form1'>
+	<input type='hidden' name='dn' id='dn'>			
+	<table border='1px' style='border:1px solid #E7E7E7'>
+		<tr id='line1'>
+			<td style='background-color: #F6F6F6'>
+				ID
+			</td>
+			<td>
+				<input type='text' name='cn' id='cn' style='border:1px solid #ffffff' readonly>
+			</td>
+			<td style='background-color: #F6F6F6'>
+				이름
+			</td>
+			<td>
+				<input type='text' name='displayName' id='displayName' style='border:1px solid #ffffff'>	
+			</td>
+		</tr>
+		<tr id='line2'>
+			<td>
+				소속부서
+			</td>
+			<td style='background-color: #F6F6F6'>
+				<input type='text' name='ou' id='ou' style='border:1px solid #ffffff'>
+			</td>
+			<td>
+				부서코드
+			</td>
+			<td style='background-color: #F6F6F6'>
+				<input type='text' name='ouCode' id='ouCode' style='border:1px solid #ffffff'>
+			</td>
+		</tr>
+		<tr id='line3'>
+			<td style='background-color: #F6F6F6'>
+				소속기관
+			</td>
+			<td>
+				<input type='text' name='companyName' id='companyName' style='border:1px solid #ffffff'>
+			</td>
+			<td style='background-color: #F6F6F6'>
+				기관코드 
+			</td>
+			<td>
+				<input type='text' name='topouCode' id='topouCode' style='border:1px solid #ffffff'>
+			</td>
+		</tr>
+		<tr id='line4'>
+			<td>
+				사용자전체이름
+			</td>
+			<td colspan='3'  style='background-color: #F6F6F6'>
+				<input type='text' name='userFullName' width='100%' id='userFullName' style='border:1px solid #ffffff;width:100%'>
+			</td>
+		</tr>		
+		<tr>		
+			<td style='background-color: #F6F6F6'>
+				조직전체이름			
+			</td>
+			<td colspan='3'>
+				<input type='text' name='ucOrgFullName' width='100%' id='ucOrgFullName' style='border:1px solid #ffffff;width:100%'>
+			</td>
+		</tr>
+	</table>
+	</form>
+	<table style='width:100%'>
+		<tr>
+			<td style='text-align:left;vertical-align:middle' >
+				<button onClick='modifyOrgManage("user");'>저장</button> 
+			</td>
+		</tr>
+	</table>
+	</body>
+</html>

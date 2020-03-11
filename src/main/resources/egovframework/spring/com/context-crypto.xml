@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:egov-crypto="http://www.egovframe.go.kr/schema/egov-crypto"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://www.egovframe.go.kr/schema/egov-crypto http://www.egovframe.go.kr/schema/egov-crypto/egov-crypto-3.8.xsd">
+ 
+ 	
+	<!-- 
+	initial : globals.properties 연계 Url, UserName, Password 값 로드 여부(설정값 : true, false)
+	crypto : 계정 암호화 여부(설정값 : true, false)
+	algorithm : 계정 암호화 알고리즘
+	algorithmKey : 계정 암호화키 키
+	cryptoBlockSize : 계정 암호화키 블록사이즈
+	cryptoPropertyLocation : 설정파일 암복호화 경로 (선택) 기본값은 'classpath:/egovframework/egovProps/globals.properties'
+	-->
+    <egov-crypto:config id="egovCryptoConfig" 
+    	initial="true"
+    	crypto="true"
+    	algorithm="SHA-256"
+    	algorithmKey="egovframe"
+    	algorithmKeyHash="gdyYs/IZqY86VcWhT8emCYfqY1ahw2vtLG+/FzNqtrQ="
+		cryptoBlockSize="1024"
+		cryptoPropertyLocation="classpath:/egovframework/egovProps/globals.properties"
+	/>
+ 
+</beans>

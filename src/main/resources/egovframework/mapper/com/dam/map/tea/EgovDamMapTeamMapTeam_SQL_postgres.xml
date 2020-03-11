@@ -1,0 +1,92 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MapTeamDAO">
+
+	<select id="selectMapTeamList" parameterType="egovframework.com.dam.map.tea.service.MapTeamVO" resultType="egovMap">
+		
+			SELECT  TRIM(ORGNZT_ID)						"orgnztId"
+			     ,  ORGNZT_NM						"orgnztNm"
+                 ,  CL_DE							"clYmd"
+			     ,  KNWLDG_URL						"knoUrl"
+			  FROM  COMTNDAMMAPTEAM
+			 WHERE  1 = 1
+		
+			<if test='searchCondition == "1"'>AND
+				ORGNZT_NM LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+			<if test='searchCondition == "2"'>AND
+				ORGNZT_ID LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+			 LIMIT  #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+
+	<select id="selectMapTeamTotCnt" parameterType="egovframework.com.dam.map.tea.service.MapTeamVO" resultType="int">
+		
+			SELECT  COUNT(*) totcnt 
+			  FROM  COMTNDAMMAPTEAM
+			 WHERE  1 = 1
+		
+			<if test='searchCondition == "1"'>AND
+				ORGNZT_NM LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+			<if test='searchCondition == "2"'>AND
+				ORGNZT_ID LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+	</select>
+
+	<select id="selectMapTeamDetail" parameterType="egovframework.com.dam.map.tea.service.MapTeam" resultType="egovframework.com.dam.map.tea.service.MapTeam">
+		
+            SELECT  ORGNZT_ID 						orgnztId
+			     ,  ORGNZT_NM  						orgnztNm
+                 ,  TO_CHAR(TO_DATE(CL_DE,'YYYYmmdd'),'YYYYmmdd')	clYmd
+                 ,  KNWLDG_URL         				knoUrl
+              FROM  COMTNDAMMAPTEAM
+             WHERE  ORGNZT_ID = #{orgnztId}
+		
+	</select>
+
+	<insert id="insertMapTeam">
+		
+		    INSERT 
+		      INTO  COMTNDAMMAPTEAM
+		         (  ORGNZT_ID
+		         ,  ORGNZT_NM
+		         ,  CL_DE
+		         ,  KNWLDG_URL
+		         ,  LAST_UPDT_PNTTM
+		         ,  LAST_UPDUSR_ID
+		         ) 
+		    VALUES  
+		         (  #{orgnztId}
+		         ,  #{orgnztNm}
+		         ,  #{clYmd}
+		         ,  #{knoUrl}
+		         ,  NOW()
+		         ,  #{frstRegisterId}
+		         ) 
+		
+	</insert>
+
+	<update id="updateMapTeam">
+		
+            UPDATE  COMTNDAMMAPTEAM 
+               SET  ORGNZT_ID         = #{orgnztId}
+                 ,  ORGNZT_NM         = #{orgnztNm}
+                 ,  CL_DE  		  = #{clYmd}
+                 ,  KNWLDG_URL           = #{knoUrl}
+                 ,  LAST_UPDT_PNTTM = NOW()
+                 ,  LAST_UPDUSR_ID    = #{lastUpdusrId}
+             WHERE  ORGNZT_ID         = #{orgnztId} 
+		
+	</update>
+
+	<delete id="deleteMapTeam">
+		
+            DELETE  FROM COMTNDAMMAPTEAM 
+            WHERE   ORGNZT_ID = #{orgnztId}
+		
+	</delete>
+
+
+</mapper>

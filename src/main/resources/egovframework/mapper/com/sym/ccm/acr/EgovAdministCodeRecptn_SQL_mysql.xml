@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AdministCodeRecptnDAO">
+
+    <select id="selectAdministCodeRecptnList" parameterType="egovframework.com.sym.ccm.acr.service.AdministCodeRecptnVO" resultType="egovMap">
+        
+            SELECT  ADMINIST_ZONE_SE
+                 ,  ADMINIST_ZONE_CODE
+                 ,  OCCRRNC_DE
+                 ,  OPERT_SN
+                 ,  CHANGE_SE_CODE
+                 ,  PROCESS_SE
+                 ,  ADMINIST_ZONE_NM
+                 ,  LOWEST_ADMINIST_ZONE_NM
+                 ,  CTPRVN_CODE
+                 ,  SIGNGU_CODE
+                 ,  EMD_CODE
+                 ,  LI_CODE
+                 ,  CREAT_DE
+                 ,  ABL_DE
+                 ,  ABL_ENNC
+              FROM  COMTCADMINISTCODERECPTNLOG
+             WHERE  1 = 1
+        
+        <if test="searchCondition == 1">AND
+        
+                    ADMINIST_ZONE_NM     LIKE CONCAT ('%', #{searchKeyword},'%')
+        
+        </if>
+        <if test="searchCondition == 'CodeList'">AND
+        
+                    ADMINIST_ZONE_SE     = #{administZoneSe}
+        
+        </if>
+        <if test="searchCondition == 'CodeList'">AND
+        
+                    ADMINIST_ZONE_CODE     = #{administZoneCode}
+        
+        </if>
+            LIMIT  #{recordCountPerPage} OFFSET #{firstIndex}
+    </select>
+
+    <select id="selectAdministCodeRecptnListTotCnt" parameterType="egovframework.com.sym.ccm.acr.service.AdministCodeRecptnVO" resultType="int">
+        
+            SELECT  COUNT(*) totcnt
+              FROM  COMTCADMINISTCODERECPTNLOG
+             WHERE  1 = 1
+        
+        <if test="searchCondition == 1">AND
+        
+                    ADMINIST_ZONE_NM     LIKE CONCAT ('%', #{searchKeyword},'%')
+        
+        </if>
+        <if test="searchCondition == 'CodeList'">AND
+        
+                    ADMINIST_ZONE_SE     = #{administZoneSe}
+        
+        </if>
+        <if test="searchCondition == 'CodeList'">AND
+        
+                    ADMINIST_ZONE_CODE     = #{administZoneCode}
+        
+        </if>
+    </select>
+
+    <select id="selectAdministCodeDetail" parameterType="egovframework.com.sym.ccm.acr.service.AdministCodeRecptn" resultType="egovframework.com.sym.ccm.acr.service.AdministCodeRecptn">
+        
+            SELECT  ADMINIST_ZONE_SE            administZoneSe
+                 ,  ADMINIST_ZONE_CODE          administZoneCode
+                 ,  ADMINIST_ZONE_NM            administZoneNm
+                 ,  UPPER_ADMINIST_ZONE_CODE    upperAdministZoneCode
+                 ,  CREAT_DE                    creatDe
+                 ,  ABL_DE                      ablDe
+                 ,  USE_AT                      useAt
+              FROM  COMTCADMINISTCODE
+             WHERE  ADMINIST_ZONE_SE   = #{administZoneSe}
+               AND  ADMINIST_ZONE_CODE = #{administZoneCode}
+        
+    </select>
+
+    <insert id="insertAdministCodeRecptn">
+        
+            INSERT
+              INTO  COMTCADMINISTCODERECPTNLOG
+                 (  OCCRRNC_DE
+                 ,  ADMINIST_ZONE_SE
+                 ,  ADMINIST_ZONE_CODE
+                 ,  OPERT_SN
+                 ,  CHANGE_SE_CODE
+                 ,  PROCESS_SE
+                 ,  ADMINIST_ZONE_NM
+                 ,  LOWEST_ADMINIST_ZONE_NM
+                 ,  CTPRVN_CODE
+                 ,  SIGNGU_CODE
+                 ,  EMD_CODE
+                 ,  LI_CODE
+                 ,  CREAT_DE
+                 ,  ABL_DE
+                 ,  ABL_ENNC
+                 ,  FRST_REGISTER_ID
+                 ,  FRST_REGIST_PNTTM
+                 ,  LAST_UPDUSR_ID
+                 ,  LAST_UPDT_PNTTM
+                 )
+            VALUES
+                 (  #{occrrDe}
+                 ,  #{administZoneSe}
+                 ,  #{administZoneCode}
+                 ,  #{opertSn}
+                 ,  #{changeSeCode}
+                 ,  #{processSe}
+                 ,  #{administZoneNm}
+                 ,  #{lowestAdministZoneNm}
+                 ,  #{ctprvnCode}
+                 ,  #{signguCode}
+                 ,  #{emdCode}
+                 ,  #{liCode}
+                 ,  #{creatDe}
+                 ,  #{ablDe}
+                 ,  #{ablEnnc}
+                 ,  #{frstRegisterId}
+                 ,  sysdate()
+                 ,  #{frstRegisterId}
+                 ,  sysdate()
+                 )
+        
+    </insert>
+
+    <update id="updateAdministCodeRecptn">
+        
+            UPDATE  COMTCADMINISTCODERECPTNLOG
+               SET  PROCESS_SE         = #{processSe}
+                 ,  LAST_UPDUSR_ID     = #{lastUpdusrId}
+                 ,  LAST_UPDT_PNTTM  = sysdate()
+             WHERE  OCCRRNC_DE           = #{occrrDe}
+               AND  ADMINIST_ZONE_SE   = #{administZoneSe}
+               AND  ADMINIST_ZONE_CODE = #{administZoneCode}
+               AND  OPERT_SN           = #{opertSn}
+        
+    </update>
+
+    <insert id="insertAdministCode">
+            INSERT
+              INTO  COMTCADMINISTCODE
+                 (  ADMINIST_ZONE_SE
+                 ,  ADMINIST_ZONE_CODE
+                 ,  ADMINIST_ZONE_NM
+                 ,  UPPER_ADMINIST_ZONE_CODE
+                 ,  CREAT_DE
+                 ,  ABL_DE
+                 ,  USE_AT
+                 ,  FRST_REGISTER_ID
+                 ,  FRST_REGIST_PNTTM
+                 ,  LAST_UPDUSR_ID
+                 ,  LAST_UPDT_PNTTM
+                 )
+            VALUES
+                 (  #{administZoneSe}
+                 ,  #{administZoneCode}
+                 ,  #{administZoneNm}
+                 ,  #{upperAdministZoneCode}
+                 ,  #{creatDe}
+                 ,  #{ablDe}
+                 ,  #{useAt}
+                 ,  #{frstRegisterId}
+                 ,  sysdate()
+                 ,  #{frstRegisterId}
+                 ,  sysdate()
+                 )
+    </insert>
+
+    <update id="updateAdministCode">
+            UPDATE  COMTCADMINISTCODE
+               SET  ADMINIST_ZONE_SE            = #{AdministZoneSe}
+                 ,  ADMINIST_ZONE_CODE          = #{AdministZoneCode}
+                 ,  ADMINIST_ZONE_NM            = #{AdministZoneNm}
+                 ,  UPPER_ADMINIST_ZONE_CODE    = #{UpperAdministZoneCode}
+                 ,  CREAT_DE                    = #{CreatDe}
+                 ,  ABL_DE                      = #{AblDe}
+                 ,  USE_AT                      = #{useAt}
+                 ,  LAST_UPDUSR_ID              = #{lastUpdusrId}
+                 ,  LAST_UPDT_PNTTM           = sysdate()
+             WHERE  ADMINIST_ZONE_SE            = #{AdministZoneSe}
+               AND  ADMINIST_ZONE_CODE          = #{AdministZoneCode}
+    </update>
+
+    <update id="deleteAdministCode">
+        
+            UPDATE  COMTCADMINISTCODE
+               SET  ABL_ENNC                    = '1'
+                 ,  ABL_DE                      = #{ablDe}
+                 ,  LAST_UPDUSR_ID              = #{lastUpdusrId}
+                 ,  LAST_UPDT_PNTTM           = sysdate()
+             WHERE  ADMINIST_ZONE_SE            = #{AdministZoneSe}
+               AND  ADMINIST_ZONE_CODE          = #{AdministZoneCode}
+        
+    </update>
+
+</mapper>

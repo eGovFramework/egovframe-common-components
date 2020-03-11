@@ -1,0 +1,333 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="serverDAO">
+
+    <resultMap id="serverEqpmn" type="egovframework.com.sym.sym.srv.service.ServerEqpmnVO">
+        <result property="serverEqpmnId" column="SERVER_EQPMN_ID"/>
+        <result property="serverEqpmnNm" column="SERVER_EQPMN_NM"/>
+        <result property="serverEqpmnIp" column="SERVER_EQPMN_IP"/>
+        <result property="serverEqpmnMngrNm" column="SERVER_EQPMN_MNGR"/>
+        <result property="mngrEmailAddr" column="MNGR_EMAIL_ADRES"/>
+        <result property="opersysmInfo" column="OPERSYSM_INFO"/>
+        <result property="cpuInfo" column="CPU_INFO"/>
+        <result property="moryInfo" column="MORY_INFO"/>
+        <result property="hdDisk" column="HDDISK"/>
+        <result property="etcInfo" column="ETC_INFO"/>
+        <result property="regstYmd" column="RGSDE"/>
+        <result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+        <result property="frstRegisterId" column="FRST_REGISTER_ID"/>        
+        <result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+        <result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+    </resultMap>
+
+    <resultMap id="server" type="egovframework.com.sym.sym.srv.service.ServerVO">
+        <result property="serverId" column="SERVER_ID"/>
+        <result property="serverNm" column="SERVER_NM"/>
+        <result property="serverKnd" column="SERVER_KND"/>
+        <result property="serverKndNm" column="SERVER_KND_NM"/>
+        <result property="regstYmd" column="RGSDE"/>
+        <result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+        <result property="frstRegisterId" column="FRST_REGISTER_ID"/>           
+        <result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+        <result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+    </resultMap>
+
+    <resultMap id="serverEqpmnRelate" type="egovframework.com.sym.sym.srv.service.ServerEqpmnRelateVO">
+        <result property="serverEqpmnId" column="SERVER_EQPMN_ID"/>
+        <result property="serverEqpmnNm" column="SERVER_EQPMN_NM"/>
+        <result property="serverEqpmnIp" column="SERVER_EQPMN_IP"/>
+        <result property="serverEqpmnMngrNm" column="SERVER_EQPMN_MNGR"/>
+        <result property="regYn" column="REG_YN"/>
+    </resultMap>
+    
+    <select id="selectServerEqpmnList" parameterType="egovframework.com.sym.sym.srv.service.ServerEqpmnVO" resultMap="serverEqpmn">
+             SELECT SERVER_EQPMN_ID,
+                    SERVER_EQPMN_NM,
+                    SERVER_EQPMN_IP,
+                    SERVER_EQPMN_MNGR,
+                    MNGR_EMAIL_ADRES,
+                    OPERSYSM_INFO,
+                    CPU_INFO,
+                    MORY_INFO,
+                    HDDISK,
+                    ETC_INFO,                    
+                    TO_CHAR(RGSDE,'YYYYmmdd') AS RGSDE,
+                    TO_CHAR(FRST_REGIST_PNTTM, 'YYYY-mm-dd HH24:MI:SS') AS FRST_REGIST_PNTTM,
+                    FRST_REGISTER_ID,
+                    TO_CHAR(LAST_UPDT_PNTTM, 'YYYY-mm-dd HH24:MI:SS') AS LAST_UPDT_PNTTM,
+                    LAST_UPDUSR_ID
+               FROM COMTNSERVEREQPMNINFO
+              WHERE 1 = 1
+            <if test="strServerEqpmnNm != null">AND
+                    SERVER_EQPMN_NM LIKE CONCAT('%' , #{strServerEqpmnNm}, '%')
+            </if>            
+              ORDER BY SERVER_EQPMN_ID
+              LIMIT #{recordCountPerPage} OFFSET #{firstIndex}           
+    </select>
+
+    <select id="selectServerEqpmnListTotCnt" parameterType="egovframework.com.sym.sym.srv.service.ServerEqpmnVO" resultType="int">
+
+             SELECT COUNT(*) totcnt
+               FROM COMTNSERVEREQPMNINFO
+              WHERE 1 = 1
+            <if test="strServerEqpmnNm != null">AND
+                    SERVER_EQPMN_NM LIKE CONCAT('%' , #{strServerEqpmnNm}, '%')
+            </if>
+    </select>
+    
+    <select id="selectServerEqpmn" resultMap="serverEqpmn">
+        
+             SELECT SERVER_EQPMN_ID,
+                    SERVER_EQPMN_NM,
+                    SERVER_EQPMN_IP,
+                    SERVER_EQPMN_MNGR,
+                    MNGR_EMAIL_ADRES,
+                    OPERSYSM_INFO,
+                    CPU_INFO,
+                    MORY_INFO,
+                    HDDISK,
+                    ETC_INFO,                    
+                    TO_CHAR(RGSDE,'YYYYmmdd') AS RGSDE,
+                    TO_CHAR(FRST_REGIST_PNTTM, 'YYYY-mm-dd HH24:MI:SS') AS FRST_REGIST_PNTTM,
+                    FRST_REGISTER_ID,
+                    TO_CHAR(LAST_UPDT_PNTTM, 'YYYY-mm-dd HH24:MI:SS') AS LAST_UPDT_PNTTM,
+                    LAST_UPDUSR_ID
+               FROM COMTNSERVEREQPMNINFO
+             WHERE 1 = 1
+               AND SERVER_EQPMN_ID = #{serverEqpmnId}
+        
+    </select>
+
+    <insert id="insertServerEqpmn" parameterType="egovframework.com.sym.sym.srv.service.ServerEqpmn">
+        
+             INSERT INTO COMTNSERVEREQPMNINFO
+                    (SERVER_EQPMN_ID,
+                     SERVER_EQPMN_NM,
+                     SERVER_EQPMN_IP,
+                     SERVER_EQPMN_MNGR,
+                     MNGR_EMAIL_ADRES,
+                     OPERSYSM_INFO,
+                     CPU_INFO,
+                     MORY_INFO,
+                     HDDISK,
+                     ETC_INFO,
+                     RGSDE,
+                     FRST_REGIST_PNTTM,
+                     FRST_REGISTER_ID,
+                     LAST_UPDT_PNTTM,
+                     LAST_UPDUSR_ID)
+             VALUES (#{serverEqpmnId},
+                     #{serverEqpmnNm},
+                     #{serverEqpmnIp},
+                     #{serverEqpmnMngrNm},
+                     #{mngrEmailAddr},
+                     #{opersysmInfo},
+                     #{cpuInfo},
+                     #{moryInfo},
+                     #{hdDisk},
+                     #{etcInfo},                     
+                     TO_DATE(#{regstYmd}, 'YYYYmmdd'),
+                     NOW(),
+                     #{frstRegisterId},
+                     NOW(),
+                     #{lastUpdusrId})
+        
+    </insert>     
+
+    <update id="updateServerEqpmn" parameterType="egovframework.com.sym.sym.srv.service.ServerEqpmn">
+            UPDATE COMTNSERVEREQPMNINFO
+               SET SERVER_EQPMN_NM = #{serverEqpmnNm},
+                   SERVER_EQPMN_IP = #{serverEqpmnIp},
+                   SERVER_EQPMN_MNGR = #{serverEqpmnMngrNm},
+                   MNGR_EMAIL_ADRES = #{mngrEmailAddr},
+                   OPERSYSM_INFO = #{opersysmInfo},
+                   CPU_INFO = #{cpuInfo},
+                   MORY_INFO = #{moryInfo},
+                   HDDISK = #{hdDisk},
+                   ETC_INFO = #{etcInfo},
+                   RGSDE = TO_DATE(#{regstYmd}, 'YYYYmmdd'),
+                   LAST_UPDT_PNTTM = NOW(),
+                   LAST_UPDUSR_ID = #{lastUpdusrId}   
+             WHERE SERVER_EQPMN_ID = #{serverEqpmnId}
+    </update>    
+    
+    <delete id="deleteServerEqpmn" parameterType="egovframework.com.sym.sym.srv.service.ServerEqpmn">
+        
+            DELETE FROM COMTNSERVEREQPMNINFO
+             WHERE SERVER_EQPMN_ID = #{serverEqpmnId}
+        
+    </delete>
+    
+    <select id="selectServerList" parameterType="egovframework.com.sym.sym.srv.service.ServerVO" resultMap="server">
+             SELECT SERVER_ID,
+                    SERVER_NM,
+                    SERVER_KND,
+                   (SELECT CD.CODE_NM 
+                      FROM COMTCCMMNDETAILCODE CD
+                     WHERE CD.CODE_ID = 'COM064' 
+                       AND CD.USE_AT  = 'Y'
+                       AND SERVER_KND = CD.CODE) AS SERVER_KND_NM,
+                    TO_CHAR(RGSDE,'YYYYmmdd') AS RGSDE,
+                    TO_CHAR(FRST_REGIST_PNTTM, 'YYYY-mm-dd HH24:MI:SS') AS FRST_REGIST_PNTTM,
+                    FRST_REGISTER_ID,
+                    TO_CHAR(LAST_UPDT_PNTTM, 'YYYY-mm-dd HH24:MI:SS') AS LAST_UPDT_PNTTM,
+                    LAST_UPDUSR_ID
+               FROM COMTNSERVERINFO
+              WHERE 1 = 1
+            <if test="strServerNm != null">AND
+                    SERVER_NM LIKE CONCAT('%' , #{strServerNm}, '%')
+            </if>            
+              ORDER BY SERVER_ID
+              LIMIT #{recordCountPerPage} OFFSET #{firstIndex}           
+    </select>
+
+    <select id="selectServerListTotCnt" parameterType="egovframework.com.sym.sym.srv.service.ServerVO" resultType="int">
+
+             SELECT COUNT(*) totcnt
+               FROM COMTNSERVERINFO
+              WHERE 1 = 1
+            <if test="strServerNm != null">AND
+                    SERVER_NM LIKE CONCAT('%' , #{strServerNm}, '%')
+            </if>  
+    </select>
+    
+    <select id="selectServer" resultMap="server">
+        
+             SELECT SERVER_ID,
+                    SERVER_NM,
+                    SERVER_KND,
+                   (SELECT CD.CODE_NM 
+                      FROM COMTCCMMNDETAILCODE CD
+                     WHERE CD.CODE_ID = 'COM064' 
+                       AND CD.USE_AT  = 'Y'
+                       AND SERVER_KND = CD.CODE) AS SERVER_KND_NM,                    
+                    TO_CHAR(RGSDE,'YYYYmmdd') AS RGSDE,
+                    TO_CHAR(FRST_REGIST_PNTTM, 'YYYY-mm-dd HH24:MI:SS') AS FRST_REGIST_PNTTM,
+                    FRST_REGISTER_ID,
+                    TO_CHAR(LAST_UPDT_PNTTM, 'YYYY-mm-dd HH24:MI:SS') AS LAST_UPDT_PNTTM,
+                    LAST_UPDUSR_ID
+               FROM COMTNSERVERINFO
+             WHERE 1 = 1
+               AND SERVER_ID = #{serverId}
+        
+    </select>
+
+    <insert id="insertServer" parameterType="egovframework.com.sym.sym.srv.service.Server">
+        
+             INSERT INTO COMTNSERVERINFO
+                    (SERVER_ID,
+                     SERVER_NM,
+                     SERVER_KND,
+                     RGSDE,
+                     FRST_REGIST_PNTTM,
+                     FRST_REGISTER_ID,
+                     LAST_UPDT_PNTTM,
+                     LAST_UPDUSR_ID)
+             VALUES (#{serverId},
+                     #{serverNm},
+                     #{serverKnd},
+                     TO_DATE(#{regstYmd}, 'YYYYmmdd'),
+                     NOW(),
+                     #{frstRegisterId},                     
+                     NOW(),
+                     #{lastUpdusrId})
+        
+    </insert>     
+
+    <update id="updateServer" parameterType="egovframework.com.sym.sym.srv.service.Server">
+            UPDATE COMTNSERVERINFO
+               SET SERVER_NM = #{serverNm},
+                   SERVER_KND = #{serverKnd},
+                   RGSDE = TO_DATE(#{regstYmd}, 'YYYYmmdd'),
+                   LAST_UPDT_PNTTM = NOW(),
+                   LAST_UPDUSR_ID = #{lastUpdusrId}   
+             WHERE SERVER_ID = #{serverId}
+    </update>    
+    
+    <delete id="deleteServer" parameterType="egovframework.com.sym.sym.srv.service.Server">
+        
+            DELETE FROM COMTNSERVERINFO
+             WHERE SERVER_ID = #{serverId}
+        
+    </delete>   
+
+    <select id="selectServerEqpmnRelateDetail" resultMap="serverEqpmn">
+        
+             SELECT A.SERVER_EQPMN_ID   AS SERVER_EQPMN_ID,
+                    A.SERVER_EQPMN_NM   AS SERVER_EQPMN_NM,
+                    A.SERVER_EQPMN_IP   AS SERVER_EQPMN_IP,
+                    A.SERVER_EQPMN_MNGR AS SERVER_EQPMN_MNGR,
+                    A.MNGR_EMAIL_ADRES   AS MNGR_EMAIL_ADRES,
+                    A.OPERSYSM_INFO     AS OPERSYSM_INFO,
+                    A.CPU_INFO          AS CPU_INFO,
+                    A.MORY_INFO         AS MORY_INFO,
+                    A.HDDISK            AS HDDISK,
+                    A.ETC_INFO          AS ETC_INFO,
+                    TO_CHAR(RGSDE,'YYYYmmdd') AS RGSDE,
+                    TO_CHAR(A.FRST_REGIST_PNTTM, 'YYYY-mm-dd HH24:MI:SS') AS FRST_REGIST_PNTTM,
+                    A.FRST_REGISTER_ID,
+                    TO_CHAR(A.LAST_UPDT_PNTTM, 'YYYY-mm-dd HH24:MI:SS') AS LAST_UPDT_PNTTM,
+                    A.LAST_UPDUSR_ID
+               FROM COMTNSERVEREQPMNINFO A,
+                    COMTNSERVEREQPMNRELATE B
+              WHERE A.SERVER_EQPMN_ID = B.SERVER_EQPMN_ID     
+                AND B.SERVER_ID = #{serverId}
+        
+    </select>
+
+    <select id="selectServerEqpmnRelateDetailTotCnt" parameterType="egovframework.com.sym.sym.srv.service.ServerVO" resultType="int">
+        
+             SELECT COUNT(*) totcnt
+               FROM COMTNSERVEREQPMNINFO A,
+                    COMTNSERVEREQPMNRELATE B
+              WHERE A.SERVER_EQPMN_ID = B.SERVER_EQPMN_ID     
+                AND B.SERVER_ID = #{serverId}
+        
+    </select> 
+
+    <select id="selectServerEqpmnRelateList" parameterType="egovframework.com.sym.sym.srv.service.ServerEqpmnRelateVO" resultMap="serverEqpmnRelate">
+             SELECT A.SERVER_EQPMN_ID   AS SERVER_EQPMN_ID,
+                    A.SERVER_EQPMN_NM   AS SERVER_EQPMN_NM,
+                    A.SERVER_EQPMN_IP   AS SERVER_EQPMN_IP,
+                    A.SERVER_EQPMN_MNGR AS SERVER_EQPMN_MNGR,
+                    CASE 
+                      WHEN B.SERVER_EQPMN_ID IS NOT NULL THEN 'Y'
+                      ELSE 'N' 
+                    END AS REG_YN
+               FROM COMTNSERVEREQPMNINFO A
+                    LEFT OUTER JOIN (SELECT SERVER_EQPMN_ID, SERVER_ID FROM COMTNSERVEREQPMNRELATE WHERE SERVER_ID = #{serverId}) B
+                 ON A.SERVER_EQPMN_ID = B.SERVER_EQPMN_ID
+              LIMIT #{recordCountPerPage} OFFSET #{firstIndex}           
+    </select>
+
+    <select id="selectServerEqpmnRelateListTotCnt" parameterType="egovframework.com.sym.sym.srv.service.ServerEqpmnRelateVO" resultType="int">
+             SELECT COUNT(*) totcnt
+               FROM COMTNSERVEREQPMNINFO A
+                    LEFT OUTER JOIN (SELECT SERVER_EQPMN_ID, SERVER_ID FROM COMTNSERVEREQPMNRELATE WHERE SERVER_ID = #{serverId}) B
+                 ON A.SERVER_EQPMN_ID = B.SERVER_EQPMN_ID 
+    </select>
+    
+    <insert id="insertServerEqpmnRelate" parameterType="egovframework.com.sym.sym.srv.service.ServerEqpmnRelate">
+        
+             INSERT INTO COMTNSERVEREQPMNRELATE
+                    (SERVER_ID,
+                     SERVER_EQPMN_ID,
+                     LAST_UPDT_PNTTM,
+                     LAST_UPDUSR_ID)
+             VALUES (#{serverId},
+                     #{serverEqpmnId},
+                     NOW(),
+                     #{lastUpdusrId})
+        
+    </insert>     
+
+    <delete id="deleteServerEqpmnRelate" parameterType="egovframework.com.sym.sym.srv.service.ServerEqpmnRelate">
+        
+            DELETE FROM COMTNSERVEREQPMNRELATE
+             WHERE SERVER_ID = #{serverId}
+               AND SERVER_EQPMN_ID = #{serverEqpmnId}
+        
+    </delete>     
+
+</mapper>

@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed May 11 15:50:59 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="loginPolicyDAO">
+    
+    <resultMap id="loginPolicy" type="egovframework.com.uat.uap.service.LoginPolicyVO">
+        <result property="emplyrId" column="USER_ID"/>
+        <result property="emplyrNm" column="USER_NM"/>
+        <result property="emplyrSe" column="USER_SE"/>
+        <result property="ipInfo" column="IP_INFO"/>
+        <result property="dplctPermAt" column="DPLCT_PERM_AT"/>
+        <result property="lmttAt" column="LMTT_AT"/>
+        <result property="userId" column="LAST_UPDUSR_ID"/>
+        <result property="regDate" column="LAST_UPDT_PNTTM"/>
+        <result property="regYn" column="REG_YN"/>
+    </resultMap>
+
+    <select id="loginPolicyDAO.selectLoginPolicyList" parameterType="egovframework.com.uat.uap.service.LoginPolicyVO" resultMap="loginPolicy">
+            
+            SELECT  * 
+              FROM  (
+            SELECT ROWNUM RNUM, ALL_LIST.* 
+              FROM  (
+            SELECT A.USER_ID,
+                   A.USER_NM,
+                   A.USER_SE,
+                   B.IP_INFO,
+                   B.DPLCT_PERM_AT,
+                   B.LMTT_AT,
+                   B.LAST_UPDUSR_ID,
+                   B.LAST_UPDT_PNTTM,
+                   DECODE(B.EMPLYR_ID, NULL, 'N', 'Y') AS REG_YN
+              FROM COMVNUSERMASTER A LEFT OUTER JOIN COMTNLOGINPOLICY B
+                ON A.USER_ID = B.EMPLYR_ID   
+             WHERE 1 = 1
+                       
+            <if test="searchKeyword != null and searchKeyword != ''">
+                <if test="searchCondition == 1">AND
+                       A.USER_NM LIKE '%'||#{searchKeyword}||'%'
+                </if>
+            </if>
+            <![CDATA[
+                    ) ALL_LIST
+                    )
+             WHERE  RNUM  > #{firstIndex}
+               AND  RNUM <= #{firstIndex} + #{recordCountPerPage}
+          	]]>
+    </select>
+
+    <select id="loginPolicyDAO.selectLoginPolicyListTotCnt" parameterType="egovframework.com.uat.uap.service.LoginPolicyVO" resultType="int">
+            SELECT COUNT(*) AS totcnt                  
+              FROM COMVNUSERMASTER A LEFT OUTER JOIN COMTNLOGINPOLICY B
+                ON A.USER_ID = B.EMPLYR_ID   
+             WHERE 1 = 1
+            <if test="searchKeyword != null and searchKeyword != ''">
+                <if test="searchCondition == 1">AND
+                       A.USER_NM LIKE '%'||#{searchKeyword}||'%'
+                </if>
+            </if>
+    </select>
+    
+    <select id="loginPolicyDAO.selectLoginPolicy" resultMap="loginPolicy">
+            SELECT A.USER_ID,
+                   A.USER_NM,
+                   A.USER_SE,
+                   B.IP_INFO,
+                   B.DPLCT_PERM_AT,
+                   NVL(B.LMTT_AT,'N') AS LMTT_AT,
+                   B.LAST_UPDUSR_ID,
+                   B.LAST_UPDT_PNTTM,
+                   DECODE(B.EMPLYR_ID, NULL, 'N', 'Y') AS REG_YN
+              FROM COMVNUSERMASTER A LEFT OUTER JOIN COMTNLOGINPOLICY B
+                ON A.USER_ID = B.EMPLYR_ID   
+             WHERE 1 = 1
+               AND A.USER_ID = #{emplyrId}
+    </select>
+    
+    <insert id="loginPolicyDAO.insertLoginPolicy" parameterType="egovframework.com.uat.uap.service.LoginPolicy">
+        
+            INSERT INTO COMTNLOGINPOLICY 
+                   (EMPLYR_ID
+                   ,IP_INFO
+                   ,DPLCT_PERM_AT
+                   ,LMTT_AT
+                   ,FRST_REGISTER_ID
+                   ,FRST_REGIST_PNTTM
+                   ,LAST_UPDUSR_ID
+                   ,LAST_UPDT_PNTTM)
+            VALUES (#{emplyrId}
+                   ,#{ipInfo}
+                   ,#{dplctPermAt}
+                   ,#{lmttAt}
+                   ,#{userId}
+                   ,SYSDATE
+                   ,#{userId}
+                   ,SYSDATE)
+        
+    </insert>
+
+    <update id="loginPolicyDAO.updateLoginPolicy" parameterType="egovframework.com.uat.uap.service.LoginPolicy">
+        
+            UPDATE COMTNLOGINPOLICY 
+               SET IP_INFO = #{ipInfo}
+                  ,DPLCT_PERM_AT = #{dplctPermAt}
+                  ,LMTT_AT = #{lmttAt}
+                  ,LAST_UPDUSR_ID = #{userId}
+                  ,LAST_UPDT_PNTTM = SYSDATE
+             WHERE EMPLYR_ID = #{emplyrId}
+        
+    </update>
+
+    <delete id="loginPolicyDAO.deleteLoginPolicy">
+        
+            DELETE FROM COMTNLOGINPOLICY 
+             WHERE EMPLYR_ID = #{emplyrId}
+        
+    </delete>
+
+</mapper>

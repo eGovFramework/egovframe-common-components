@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed May 11 15:49:40 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AdressBookDAO">
+	
+	<resultMap id="ManInfs" type="egovframework.com.cop.adb.service.AddressBookUserVO">
+		<result property="emplyrId" column="EMPLYR_ID"/>
+		<result property="nm" column="USER_NM"/>
+		<result property="emailAdres" column="EMAIL_ADRES"/>
+		<result property="homeTelno" column="HOUSE_TELNO"/>		
+		<result property="moblphonNo" column="MBTLNUM"/>
+		<result property="offmTelno" column="OFFM_TELNO"/>
+		<result property="fxnum" column="FXNUM"/>
+	</resultMap>
+	
+	<resultMap id="CardInfs" type="egovframework.com.cop.adb.service.AddressBookUserVO">
+		<result property="ncrdId" column="NCRD_ID"/>
+		<result property="nm" column="NM"/>			
+		<result property="emailAdres" column="EMAIL_ADRES"/>
+		<result property="homeTelno" column="TELNO"/>	
+		<result property="moblphonNo" column="MBTLNUM"/>
+	</resultMap>
+
+	<resultMap id="AdressBookList" type="egovframework.com.cop.adb.service.AddressBookVO">
+		<result property="adbkId" column="ADBK_ID"/>
+		<result property="adbkNm" column="ADBK_NM"/>
+		<result property="othbcScope" column="OTHBC_SCOPE"/>
+		<result property="useAt" column="USE_AT"/>
+		<result property="wrterId" column="WRTER_ID"/>	
+		<result property="trgetOrgnztId" column="TRGET_ORGNZT_ID"/>		
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>	
+	</resultMap>
+		
+	<resultMap id="AdressBookInf" type="egovframework.com.cop.adb.service.AddressBookVO">
+		<result property="adbkId" column="ADBK_ID"/>
+		<result property="adbkNm" column="ADBK_NM"/>
+		<result property="othbcScope" column="OTHBC_SCOPE"/>
+		<result property="useAt" column="USE_AT"/>
+		<result property="wrterId" column="WRTER_ID"/>	
+	</resultMap>
+	
+	<resultMap id="User" type="egovframework.com.cop.adb.service.AddressBookUser">
+		<result property="emplyrId" column="EMPLYR_ID"/>
+		<result property="nm" column="USER_NM"/>
+		<result property="emailAdres" column="EMAIL_ADRES"/>
+		<result property="homeTelno" column="HOUSE_TELNO"/>		
+		<result property="moblphonNo" column="MBTLNUM"/>
+		<result property="offmTelno" column="OFFM_TELNO"/>
+		<result property="fxnum" column="FXNUM"/>
+	</resultMap>
+	
+	<resultMap id="Card" type="egovframework.com.cop.adb.service.AddressBookUser">		
+		<result property="ncrdId" column="NCRD_ID"/>
+		<result property="nm" column="NM"/>
+		<result property="emailAdres" column="EMAIL_ADRES"/>	
+		<result property="homeTelno" column="TELNO"/>	
+		<result property="moblphonNo" column="MBTLNUM"/>
+	</resultMap>
+	
+	<insert id="insertAdressBook" parameterType="egovframework.com.cop.adb.service.AddressBookVO">
+		
+			INSERT INTO COMTNADBKMANAGE
+			(ADBK_ID, ADBK_NM, OTHBC_SCOPE, USE_AT, WRTER_ID, TRGET_ORGNZT_ID, FRST_REGIST_PNTTM,
+			 LAST_UPDT_PNTTM, FRST_REGISTER_ID, LAST_UPDUSR_ID 
+			)
+			VALUES
+			( #{adbkId}, #{adbkNm}, #{othbcScope}, #{useAt}, #{wrterId},
+			  #{trgetOrgnztId}, SYSDATE, SYSDATE, #{frstRegisterId}, #{lastUpdusrId}
+			)		
+		
+	</insert>
+	
+	<insert id="insertAdressBookUser" parameterType="egovframework.com.cop.adb.service.AddressBookUser">
+		
+			INSERT INTO COMTNADBK 
+			(ADBK_CONSTNT_ID, ADBK_ID, EMPLYR_ID, NCRD_ID,  NM ,EMAIL_ADRES,
+			 HOUSE_TELNO, MBTLNUM, OFFM_TELNO, FXNUM
+			)
+			VALUES
+			( #{adbkUserId}, #{adbkId}, #{emplyrId}, #{ncrdId}, #{nm}, #{emailAdres},
+			  #{homeTelno},#{moblphonNo},#{offmTelno},#{fxnum}
+			)		
+		
+	</insert>
+	
+	<delete id="deleteAdressBookUser" parameterType="egovframework.com.cop.adb.service.AddressBookUser">
+		
+			DELETE from COMTNADBK 
+			where (EMPLYR_ID = #{emplyrId}  AND ADBK_ID = #{adbkId} )
+			      OR (NCRD_ID = #{ncrdId} AND ADBK_ID = #{adbkId} )
+				  
+		
+	</delete>	
+	
+	<select id="selectAdressBookList" parameterType="egovframework.com.cop.adb.service.AddressBookVO" resultMap="AdressBookList">
+	<![CDATA[
+            SELECT  *
+              FROM  (
+            SELECT ROWNUM RNUM, ALL_LIST.*
+              FROM  (
+        
+        /* 구현 Sql */
+       
+			SELECT 
+				ADBK_ID, ADBK_NM, OTHBC_SCOPE, USE_AT, WRTER_ID, TRGET_ORGNZT_ID,
+				FRST_REGIST_PNTTM
+			FROM
+				COMTNADBKMANAGE		
+			WHERE USE_AT = 'Y'		
+				AND( OTHBC_SCOPE = '회사	'
+					OR WRTER_ID = #{wrterId}
+						OR (OTHBC_SCOPE = '부서'
+							AND TRGET_ORGNZT_ID = #{trgetOrgnztId})	)		
+	]]>
+				
+			<if test="searchCnd == 0">AND
+					ADBK_NM LIKE '%' || #{searchWrd} || '%'  	
+									
+			</if>
+			<if test="searchCnd == 1">AND
+					OTHBC_SCOPE LIKE '%' || #{searchWrd} || '%'  		
+			</if>	
+			<if test="searchCnd == 2">AND
+					WRTER_ID LIKE '%' || #{searchWrd} || '%' 		
+			</if>
+	<![CDATA[			
+			ORDER BY ADBK_NM 
+						
+        /* 구현 Sql */
+        
+                    ) ALL_LIST
+                    )
+             WHERE  RNUM  > #{firstIndex}
+               AND  RNUM <= #{firstIndex} + #{recordCountPerPage}
+    ]]> 			
+	</select>	
+
+	<update id="updateAdressBook" parameterType="egovframework.com.cop.adb.service.AddressBookVO">
+		
+			UPDATE COMTNADBKMANAGE SET
+			 ADBK_NM = #{adbkNm}, OTHBC_SCOPE = #{othbcScope}, USE_AT = #{useAt}, 
+			 LAST_UPDT_PNTTM = SYSDATE,  LAST_UPDUSR_ID = #{lastUpdusrId}
+			WHERE 
+				ADBK_ID = #{adbkId}			
+		
+	</update>
+
+	<select id="selectAdressBookListCnt" parameterType="egovframework.com.cop.adb.service.AddressBookVO" resultType="java.lang.Integer">
+		
+			SELECT COUNT(ADBK_ID)
+			FROM
+				COMTNADBKMANAGE		
+			WHERE USE_AT = 'Y'
+				AND (OTHBC_SCOPE = '회사'	
+					OR WRTER_ID = #{wrterId}
+						OR (OTHBC_SCOPE = '부서'
+							AND TRGET_ORGNZT_ID = #{trgetOrgnztId})	)
+				
+				
+			
+			<if test="searchCnd == 0">AND
+					ADBK_NM LIKE '%' || #{searchWrd} || '%' 		
+			</if>
+			<if test="searchCnd == 1">AND
+					OTHBC_SCOPE LIKE '%' || #{searchWrd} || '%' 		
+			</if>	
+			<if test="searchCnd == 2">AND
+					WRTER_ID LIKE '%' || #{searchWrd} || '%'  		
+			</if>		
+						
+	</select>	
+	
+	<select id="selectManList" parameterType="egovframework.com.cop.adb.service.AddressBookUserVO" resultMap="ManInfs">
+ 	<![CDATA[
+            SELECT  *
+              FROM  (
+            SELECT ROWNUM RNUM, ALL_LIST.*
+              FROM  (
+        
+        /* 구현 Sql */
+       
+			SELECT 
+				EMPLYR_ID, USER_NM, EMAIL_ADRES, 
+				(AREA_NO || '-' || HOUSE_MIDDLE_TELNO || '-' || HOUSE_END_TELNO)HOUSE_TELNO, 
+				MBTLNUM, OFFM_TELNO, FXNUM
+			FROM 
+				COMTNEMPLYRINFO
+			WHERE 
+				USER_NM LIKE '%' || #{searchWrd} || '%' 
+			UNION
+			SELECT 
+				ENTRPRS_MBER_ID AS EMPLYR_ID,
+				CMPNY_NM AS USER_NM, 
+				APPLCNT_EMAIL_ADRES AS EMAIL_ADRES,
+				'' AS HOUSE_TELNO, '' AS MBTLNUM,
+				(AREA_NO ||'-' || ENTRPRS_MIDDLE_TELNO || '-' || ENTRPRS_END_TELNO)OFFM_TELNO,
+				FXNUM
+			FROM 
+				COMTNENTRPRSMBER
+			WHERE	
+				ENTRPRS_MBER_ID LIKE '%' || #{searchWrd} || '%'
+			UNION	
+			SELECT 
+				MBER_ID AS EMPLYR_ID, 
+				MBER_NM AS USER_NM,
+				MBER_EMAIL_ADRES AS EMAIL_ADRES,
+				(AREA_NO || '-' || MIDDLE_TELNO || '-' || END_TELNO)HOUSE_TELNO, 
+				MBTLNUM, 
+				'' AS OFFM_TELNO,  
+				MBER_FXNUM AS FXNUM 
+			FROM 
+				COMTNGNRLMBER			
+			WHERE	 
+				 MBER_ID LIKE '%' || #{searchWrd} || '%'
+ 		
+			
+					
+			ORDER BY USER_NM 
+	
+								
+        /* 구현 Sql */
+        
+                    ) ALL_LIST
+                    )
+             WHERE  RNUM  > #{firstIndex}
+               AND  RNUM <= #{firstIndex} + #{recordCountPerPage}
+    ]]>    
+ 	</select>
+ 	
+ 	<select id="selectCardList" parameterType="egovframework.com.cop.adb.service.AddressBookUserVO" resultMap="CardInfs">
+ 	<![CDATA[
+            SELECT  *
+              FROM  (
+            SELECT ROWNUM RNUM, ALL_LIST.*
+              FROM  (
+        
+        /* 구현 Sql */
+     
+			SELECT 
+				NCRD_ID, NM,  EMAIL_ADRES, TELNO, MBTLNUM
+			FROM 
+				COMTNNCRD
+			WHERE 1=1 
+				AND NM LIKE '%' || #{searchWrd} || '%'
+ 		
+			
+					
+			ORDER BY NM 
+
+									
+        /* 구현 Sql */
+        
+                    ) ALL_LIST
+                    )
+             WHERE  RNUM  > #{firstIndex}
+               AND  RNUM <= #{firstIndex} + #{recordCountPerPage}
+    ]]>	
+ 	</select>
+ 	
+ 	<select id="selectUserList" parameterType="egovframework.com.cop.adb.service.AddressBookVO" resultType="egovframework.com.cop.adb.service.AddressBookUser">
+ 		
+        /* 구현 Sql */
+      
+		SELECT 
+				ADBK_CONSTNT_ID As adbkUserId,          
+     			ADBK_ID As adbkId,      
+   				NVL(EMPLYR_ID,'') As emplyrId,    
+   				NVL(NCRD_ID,'') As ncrdId,  
+   				NM As nm,   
+  				EMAIL_ADRES As emailAdres,
+  				HOUSE_TELNO As homeTelno,
+  				MBTLNUM As moblphonNo,
+  				OFFM_TELNO As offmTelno,
+  				FXNUM As fxnum
+			FROM 
+				COMTNADBK
+			WHERE	ADBK_ID = #{adbkId}					
+ 							
+        /* 구현 Sql */
+        	
+ 	
+ 					
+ 	</select>
+ 	
+	<select id="selectManListCnt" parameterType="egovframework.com.cop.adb.service.AddressBookUserVO" resultType="java.lang.Integer">
+		
+			SELECT (
+				SELECT 	COUNT(USER_NM)
+				FROM COMTNEMPLYRINFO
+				WHERE USER_NM LIKE '%' || #{searchWrd} || '%' ) 
+			    + (
+				SELECT 	COUNT(CMPNY_NM)
+				FROM COMTNENTRPRSMBER 
+				WHERE CMPNY_NM LIKE '%' || #{searchWrd} || '%' )
+				+ (
+				SELECT 	COUNT(MBER_NM)
+				FROM COMTNGNRLMBER
+				WHERE MBER_NM LIKE '%' || #{searchWrd} || '%' )
+			FROM DUAL
+		
+				
+	</select>	
+	
+	<select id="selectCardListCnt" parameterType="egovframework.com.cop.adb.service.AddressBookUserVO" resultType="java.lang.Integer">
+		
+			SELECT 
+				COUNT(NM)
+			FROM 
+				COMTNNCRD
+			WHERE 1=1 
+				AND NM LIKE '%' || #{searchWrd} || '%' 
+		
+				
+	</select>
+
+	<select id="selectAdressBook" parameterType="egovframework.com.cop.adb.service.AddressBookVO" resultMap="AdressBookInf">
+		
+			SELECT 
+				ADBK_ID, ADBK_NM, OTHBC_SCOPE, USE_AT, WRTER_ID        
+			FROM
+				COMTNADBKMANAGE
+			WHERE
+				ADBK_ID = #{adbkId}
+		
+	</select>	
+	
+		<select id="selectUserCnt" parameterType="egovframework.com.cop.adb.service.AddressBookUserVO" resultType="java.lang.Integer">
+		
+			SELECT 
+				COUNT(ADBK_NM)
+			FROM 
+				COMTNADBK
+			WHERE  EMPLYR_ID = #{emplyrId}
+				AND NCRD_ID = #{ncrdId}
+				AND ADBK_ID = #{adbkId}
+		
+				
+	</select>
+	
+	<select id="selectManUser" parameterType="java.lang.String" resultMap="User">
+		
+			SELECT 
+				EMPLYR_ID, USER_NM, EMAIL_ADRES, 
+				(AREA_NO || '-' || HOUSE_MIDDLE_TELNO || '-' || HOUSE_END_TELNO)HOUSE_TELNO, 
+				MBTLNUM, OFFM_TELNO, FXNUM
+			FROM 
+				COMTNEMPLYRINFO
+			WHERE 
+				USER_NM = #{id} 
+			UNION
+			SELECT 
+				ENTRPRS_MBER_ID AS EMPLYR_ID,
+				CMPNY_NM AS USER_NM, 
+				APPLCNT_EMAIL_ADRES AS EMAIL_ADRES,
+				'' AS HOUSE_TELNO, '' AS MBTLNUM,
+				(AREA_NO || '-' || ENTRPRS_MIDDLE_TELNO || '-' || ENTRPRS_END_TELNO)OFFM_TELNO,
+				FXNUM
+			FROM 
+				COMTNENTRPRSMBER
+			WHERE	
+				CMPNY_NM = #{id}
+			UNION	
+			SELECT 
+				MBER_ID AS EMPLYR_ID, 
+				MBER_NM AS USER_NM,
+				MBER_EMAIL_ADRES AS EMAIL_ADRES,
+				(AREA_NO || '-' || MIDDLE_TELNO || '-' ||END_TELNO)HOUSE_TELNO, 
+				MBTLNUM, 
+				'' AS OFFM_TELNO,  
+				MBER_FXNUM AS FXNUM 
+			FROM 
+				COMTNGNRLMBER			
+			WHERE	 
+				 MBER_NM = #{id}
+		
+	</select>	
+	
+	<select id="selectCardUser" parameterType="java.lang.String" resultMap="Card">
+		
+			SELECT 
+				NCRD_ID, NM, EMAIL_ADRES, TELNO, MBTLNUM        
+			FROM
+				COMTNNCRD
+			WHERE
+				NCRD_ID = #{id}
+		
+	</select>	
+
+</mapper>

@@ -1,0 +1,254 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed May 11 15:51:20 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="RssTagManage">
+
+	<!-- ::ResultMap 선언 -->
+	<resultMap id="RssManageVO" type="egovframework.com.uss.ion.rss.service.RssManage">
+		<result property="rssId" column="RSS_ID"/>
+		<result property="trgetSvcNm" column="TRGET_SVC_NM"/>
+		<result property="trgetSvcTable" column="TRGET_SVC_TABLE"/>
+		<result property="trgetSvcListCo" column="TRGET_SVC_LIST_CO"/>
+		<result property="hderTitle" column="HDER_TITLE"/>
+		<result property="hderLink" column="HDER_LINK"/>
+		<result property="hderDescription" column="HDER_DC"/>
+		<result property="hderTag" column="HDER_TAG"/>
+		<result property="hderEtc" column="HDER_ETC"/>
+		<result property="bdtTitle" column="BDT_TITLE"/>
+		<result property="bdtLink" column="BDT_LINK"/>
+		<result property="bdtDescription" column="BDT_DC"/>
+		<result property="bdtTag" column="BDT_TAG"/>
+		<result property="bdtEtc" column="BDT_ETC_TAG"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/> 			
+	</resultMap>
+
+	<!-- RSS관리::목록조회 게시물정보 -->
+	<select id="selectRssTagManage" parameterType="comDefaultVO" resultType="egovMap">
+		
+	SELECT *
+	FROM (
+	SELECT T0.*, ROWNUM RNUM
+		FROM (
+	
+	 
+		SELECT 
+		A.RSS_ID,
+		A.TRGET_SVC_NM,
+		A.TRGET_SVC_TABLE,
+		A.HDER_TITLE,
+		A.HDER_LINK,
+		A.HDER_DC HDER_DESCRIPTION,
+		A.HDER_TAG,
+		A.HDER_ETC,
+		A.BDT_TITLE,
+		A.BDT_LINK,
+		A.BDT_DC BDT_DESCRIPTION,
+		A.BDT_TAG,
+		A.BDT_ETC_TAG BDT_ETC,
+		A.FRST_REGISTER_ID,
+		TO_CHAR(A.FRST_REGIST_PNTTM,'YYYY-MM-DD') FRST_REGISTER_PNTTM,
+		(SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = A.FRST_REGISTER_ID) FRST_REGISTER_NM 
+		FROM COMTNRSS A
+		WHERE 1=1
+	 
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 	
+		<if test="searchCondition == 'A.TRGET_SVC_NM'">
+		AND A.TRGET_SVC_NM LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 'A.TRGET_SVC_TABLE'">
+		AND A.TRGET_SVC_TABLE LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 'A.HDER_TITLE'">
+		AND A.HDER_TITLE LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 'A.HDER_LINK'">
+		AND A.HDER_LINK LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 'A.HDER_DC'">
+		AND A.HDER_DC LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 'A.HDER_TAG'">
+		AND A.HDER_TAG LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 'A.HDER_ETC'">
+		AND A.HDER_ETC LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 'A.BDT_LINK'">
+		AND A.BDT_LINK LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 'A.BDT_DC'">
+		AND A.BDT_DC LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 'A.BDT_TAG'">
+		AND A.BDT_TAG LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 'A.BDT_ETC_TAG'">
+		AND A.BDT_ETC_TAG LIKE '%' || #{searchKeyword} || '%'
+		</if>
+	 	
+	 </if>
+	 
+		ORDER BY A.FRST_REGIST_PNTTM DESC
+	
+		
+		) T0
+	) Z
+	WHERE ROWNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	
+	</select>
+	<!-- RSS관리::목록조회_게시물 총갯수  -->
+	<select id="selectRssTagManageCnt" parameterType="comDefaultVO" resultType="int">
+		SELECT 
+		COUNT(*) totcnt
+		FROM COMTNRSS A
+		WHERE 1=1
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 	
+		<if test="searchCondition == 'A.TRGET_SVC_NM'">
+		AND A.TRGET_SVC_NM LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 'A.TRGET_SVC_TABLE'">
+		AND A.TRGET_SVC_TABLE LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 'A.HDER_TITLE'">
+		AND A.HDER_TITLE LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 'A.HDER_LINK'">
+		AND A.HDER_LINK LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 'A.HDER_DC'">
+		AND A.HDER_DC LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 'A.HDER_TAG'">
+		AND A.HDER_TAG LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 'A.HDER_ETC'">
+		AND A.HDER_ETC LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 'A.BDT_LINK'">
+		AND A.BDT_LINK LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 'A.BDT_DC'">
+		AND A.BDT_DC LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 'A.BDT_TAG'">
+		AND A.BDT_TAG LIKE '%' || #{searchKeyword} || '%'
+		</if>
+		<if test="searchCondition == 'A.BDT_ETC_TAG'">
+		AND A.BDT_ETC_TAG LIKE '%' || #{searchKeyword} || '%'
+		</if>
+	 	
+	 </if>
+	</select>
+	
+    <!-- RSS관리::삭제  -->
+	<delete id="deleteRssTagManage">
+		
+			DELETE FROM COMTNRSS 
+			WHERE RSS_ID=#{rssId} 
+		
+	</delete>
+
+	<!-- RSS관리::수정  -->
+	<update id="updateRssTagManage">
+ 
+UPDATE COMTNRSS 
+SET
+	TRGET_SVC_NM = #{trgetSvcNm},
+	TRGET_SVC_TABLE = #{trgetSvcTable},
+	TRGET_SVC_LIST_CO = #{trgetSvcListCo},
+	HDER_TITLE = #{hderTitle},
+	HDER_LINK = #{hderLink},
+	HDER_DC = #{hderDescription},
+	HDER_TAG = #{hderTag},
+	HDER_ETC = #{hderEtc},
+	BDT_TITLE = #{bdtTitle},
+	BDT_LINK = #{bdtLink},
+	BDT_DC = #{bdtDescription},
+	BDT_TAG = #{bdtTag},
+	BDT_ETC_TAG = #{bdtEtc},
+	LAST_UPDT_PNTTM = SYSDATETIME,
+	LAST_UPDUSR_ID = #{lastUpdusrId}
+WHERE RSS_ID=#{rssId} 
+ 
+	</update>
+	
+	<!-- RSS관리::상세보기 -->
+	<select id="selectRssTagManageDetail" resultMap="RssManageVO">
+	SELECT 
+		A.RSS_ID,
+		A.TRGET_SVC_NM,
+		A.TRGET_SVC_TABLE,
+		A.TRGET_SVC_LIST_CO,
+		A.HDER_TITLE,
+		A.HDER_LINK,
+		A.HDER_DC,
+		A.HDER_TAG,
+		A.HDER_ETC,
+		A.BDT_TITLE,	
+		A.BDT_LINK,
+		A.BDT_DC,
+		A.BDT_TAG,
+		A.BDT_ETC_TAG,
+		A.FRST_REGIST_PNTTM,
+		A.FRST_REGISTER_ID,
+		A.LAST_UPDT_PNTTM,
+		A.LAST_UPDUSR_ID  
+		FROM COMTNRSS A
+		WHERE 1=1
+		AND A.RSS_ID=#{rssId} 
+	</select>
+
+	<!-- RSS관리::입력  -->
+	<insert id="insertRssTagManage">	     
+	 
+	
+	INSERT INTO COMTNRSS ( 
+		RSS_ID,
+		TRGET_SVC_NM,
+		TRGET_SVC_TABLE,
+		TRGET_SVC_LIST_CO,
+		HDER_TITLE,
+		HDER_LINK,
+		HDER_DC,
+		HDER_TAG,
+		HDER_ETC,
+		BDT_TITLE,
+		BDT_LINK,
+		BDT_DC,
+		BDT_TAG,
+		BDT_ETC_TAG,
+		FRST_REGIST_PNTTM,
+		FRST_REGISTER_ID,
+		LAST_UPDT_PNTTM,
+		LAST_UPDUSR_ID
+	)VALUES( 
+		#{rssId},
+		#{trgetSvcNm},
+		#{trgetSvcTable},
+		#{trgetSvcListCo},
+		#{hderTitle},
+		#{hderLink},
+		#{hderDescription},
+		#{hderTag},
+		#{hderEtc},
+		#{bdtTitle},
+		#{bdtLink},
+		#{bdtDescription},
+		#{bdtTag},
+		#{bdtEtc},
+		SYSDATETIME,
+		#{frstRegisterId},
+		SYSDATETIME,
+		#{lastUpdusrId} 
+	)
+	 
+	</insert>
+	
+
+
+</mapper>

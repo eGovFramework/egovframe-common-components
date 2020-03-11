@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+    <!-- 배치관리 스케줄러 -->
+    <bean id="batchScheduler" class="egovframework.com.sym.bat.service.BatchScheduler" init-method="init" destroy-method="destroy">
+        <property name="egovBatchSchdulService" ref="egovBatchSchdulService"/>
+        <property name="idgenService" ref="egovBatchResultIdGnrService"/>
+    </bean>
+
+</beans>

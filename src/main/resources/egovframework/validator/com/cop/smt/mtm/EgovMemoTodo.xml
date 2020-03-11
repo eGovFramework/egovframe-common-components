@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+
+<form-validation>
+
+    <formset>
+		<form name="memoTodoVO">
+			<field property="todoNm" depends="required, maxlength">
+        		<arg0 key="comCopSmtMtm.memoToDo.validate.todoNm" resource="true"/>
+        		<arg1 key="255" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>255</var-value>
+				</var>
+			</field>
+			
+			<field property="todoDe" depends="required">
+        		<arg0 key="comCopSmtMtm.memoToDo.validate.todoDe" resource="true"/>
+			</field>
+			
+			<field property="todoBeginHour" depends="required">
+        		<arg0 key="comCopSmtMtm.memoToDo.validate.todoBeginHour" resource="true"/>
+			</field>
+			<field property="todoBeginMin" depends="required">
+        		<arg0 key="comCopSmtMtm.memoToDo.validate.todoBeginMin" resource="true"/>
+			</field>
+			
+			<field property="todoEndHour" depends="required">
+        		<arg0 key="comCopSmtMtm.memoToDo.validate.todoEndHour" resource="true"/>
+			</field>
+			<field property="todoEndMin" depends="required">
+        		<arg0 key="comCopSmtMtm.memoToDo.validate.todoEndMin" resource="true"/>
+			</field>
+			
+			<field property="wrterNm" depends="required">
+        		<arg0 key="comCopSmtMtm.memoToDo.validate.wrterNm" resource="true"/>
+			</field>
+		
+			<field property="todoCn" depends="required, maxlength">
+        		<arg0 key="comCopSmtMtm.memoToDo.validate.todoCn" resource="true"/>
+        		<arg1 key="2500" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>2500</var-value>
+				</var>
+			</field>
+		</form>
+    </formset>
+
+</form-validation>

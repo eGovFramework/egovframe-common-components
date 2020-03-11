@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	수정일          수정자                          수정내용
+  ===========      ========    =================================================
+  2011.11.21		이기하     	 	최초 생성
+--><!--Converted at: Wed May 11 15:50:38 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="RdnmadZipDAO">
+
+	<select id="selectZipList" parameterType="egovframework.com.sym.ccm.zip.service.ZipVO" resultType="egovMap">
+		
+			SELECT  RDMN_CODE
+				 ,  SN
+			     ,  CTPRVN_NM
+			     ,  SIGNGU_NM
+			     ,  RDMN
+			     ,  BDNBR_MNNM
+			     ,  BDNBR_SLNO
+			     ,  BULD_NM
+			     ,  DETAIL_BULD_NM
+			     ,  ZIP
+			  FROM  COMTRDNMADRZIP
+			 WHERE	1 = 1
+		
+			<if test="searchCondition2 == 1">AND
+				ZIP LIKE CONCAT ('%', #{searchKeyword},'%')
+			</if>
+			<if test="searchCondition2 == 2">AND
+				CTPRVN_NM LIKE CONCAT ('%', #{searchKeyword},'%')
+			</if>
+			<if test="searchCondition2 == 3">AND
+				SIGNGU_NM LIKE CONCAT ('%', #{searchKeyword},'%')
+			</if>
+			<if test="searchCondition2 == 4">AND
+				RDMN LIKE CONCAT ('%', #{searchKeyword},'%')
+			</if>
+			<if test="searchCondition2 == 5">AND
+				BULD_NM LIKE CONCAT ('%', #{searchKeyword},'%')
+			</if>
+			<if test="searchCondition2 == 6">AND
+				DETAIL_BULD_NM LIKE CONCAT ('%', #{searchKeyword},'%')
+			</if>
+			ORDER BY SN DESC
+			LIMIT  #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+
+	<select id="selectZipListTotCnt" parameterType="egovframework.com.sym.ccm.zip.service.ZipVO" resultType="int">
+		
+			SELECT  COUNT(*) totcnt
+			  FROM  COMTRDNMADRZIP
+			 WHERE	1 = 1
+		
+			<if test="searchCondition2 == 1">AND
+				ZIP LIKE CONCAT ('%', #{searchKeyword},'%')
+			</if>
+			<if test="searchCondition2 == 2">AND
+				CTPRVN_NM LIKE CONCAT ('%', #{searchKeyword},'%')
+			</if>
+			<if test="searchCondition2 == 3">AND
+				SIGNGU_NM LIKE CONCAT ('%', #{searchKeyword},'%')
+			</if>
+			<if test="searchCondition2 == 4">AND
+				RDMN LIKE CONCAT ('%', #{searchKeyword},'%')
+			</if>
+			<if test="searchCondition2 == 5">AND
+				BULD_NM LIKE CONCAT ('%', #{searchKeyword},'%')
+			</if>
+			<if test="searchCondition2 == 6">AND
+				DETAIL_BULD_NM LIKE CONCAT ('%', #{searchKeyword},'%')
+			</if>
+	</select>
+
+	<select id="selectZipDetail" parameterType="egovframework.com.sym.ccm.zip.service.Zip" resultType="egovframework.com.sym.ccm.zip.service.Zip">
+		
+			SELECT  RDMN_CODE		rdmnCode
+			     ,  SN              sn
+			     ,  CTPRVN_NM		ctprvnNm
+			     ,  SIGNGU_NM		signguNm
+			     ,  RDMN			rdmn
+			     ,  BDNBR_MNNM		bdnbrMnnm
+			     ,  BDNBR_SLNO		bdnbrSlno
+			     ,  BULD_NM			buldNm
+			     ,  DETAIL_BULD_NM	detailBuldNm
+			     ,  ZIP				zip
+			  FROM  COMTRDNMADRZIP
+			 WHERE	RDMN_CODE = #{rdmnCode}
+               AND  SN  = #{sn}
+		
+	</select>
+
+	<insert id="insertZip">
+		<selectKey keyProperty="sn" resultType="int" order="BEFORE">
+			SELECT CASE WHEN MAX(SN)+1 IS NULL THEN 1
+			       ELSE MAX(SN)+1 END AS sn 
+			FROM  COMTRDNMADRZIP
+	    </selectKey>
+		
+			INSERT
+			  INTO  COMTRDNMADRZIP
+			     (  RDMN_CODE
+			     ,  SN
+			     ,  CTPRVN_NM
+			     ,  SIGNGU_NM
+			     ,  RDMN
+			     ,  BDNBR_MNNM
+			     ,  BDNBR_SLNO
+			     ,  BULD_NM
+			     ,  DETAIL_BULD_NM
+			     ,  ZIP
+			     ,  FRST_REGIST_PNTTM
+			     ,  FRST_REGISTER_ID
+			     ,  LAST_UPDT_PNTTM
+			     ,  LAST_UPDUSR_ID
+			     )
+			VALUES
+			     (  #{rdmnCode}
+			     ,  #{sn}
+			     ,  #{ctprvnNm}
+			     ,  #{signguNm}
+			     ,  #{rdmn}
+			     ,  #{bdnbrMnnm}
+			     ,  #{bdnbrSlno}
+			     ,  #{buldNm}
+			     ,  #{detailBuldNm}
+			     ,  #{zip}
+			     ,  SYSDATE()
+			     ,  #{frstRegisterId}
+			     ,  SYSDATE()
+			     ,  #{frstRegisterId}
+			     )
+		
+	</insert>
+
+	<insert id="insertExcelZip">
+		
+			INSERT
+			  INTO  COMTRDNMADRZIP
+			     (  RDMN_CODE
+			     ,  SN
+			     ,  CTPRVN_NM
+			     ,  SIGNGU_NM
+			     ,  RDMN
+			     ,  BDNBR_MNNM
+			     ,  BDNBR_SLNO
+			     ,  BULD_NM
+			     ,  DETAIL_BULD_NM
+			     ,  ZIP
+			     ,  FRST_REGIST_PNTTM
+			     ,  FRST_REGISTER_ID
+			     ,  LAST_UPDT_PNTTM
+			     ,  LAST_UPDUSR_ID
+			     )
+			VALUES
+			     (  #{rdmnCode}
+			     ,  #{sn}
+			     ,  #{ctprvnNm}
+			     ,  #{signguNm}
+			     ,  #{rdmn}
+			     ,  #{bdnbrMnnm}
+			     ,  #{bdnbrSlno}
+			     ,  #{buldNm}
+			     ,  #{detailBuldNm}
+			     ,  #{zip}
+			     ,  SYSDATE()
+			     ,  #{frstRegisterId}
+			     ,  SYSDATE()
+			     ,  #{frstRegisterId}
+			     )
+		
+	</insert>
+
+	<update id="updateZip">
+		
+            UPDATE  COMTRDNMADRZIP
+               SET  CTPRVN_NM       = #{ctprvnNm}
+                 ,  SIGNGU_NM       = #{signguNm}
+                 ,  RDMN          	= #{rdmn}
+                 ,  BDNBR_MNNM      = #{bdnbrMnnm}
+                 ,  BDNBR_SLNO      = #{bdnbrSlno}
+                 ,  BULD_NM      	= #{buldNm}
+                 ,  DETAIL_BULD_NM	= #{detailBuldNm}
+                 ,  ZIP      		= #{zip}
+                 ,  LAST_UPDT_PNTTM = sysdate()
+                 ,  LAST_UPDUSR_ID  = #{lastUpdusrId}
+             WHERE  RDMN_CODE       = #{rdmnCode}
+               AND  SN              = #{sn}
+		
+	</update>
+
+	<delete id="deleteZip">
+		
+            DELETE
+              FROM  COMTRDNMADRZIP
+             WHERE  RDMN_CODE = #{rdmnCode}
+               AND  SN = #{sn}
+		
+	</delete>
+
+	<delete id="deleteAllZip">
+		
+            DELETE
+              FROM  COMTRDNMADRZIP
+		
+	</delete>
+
+</mapper>

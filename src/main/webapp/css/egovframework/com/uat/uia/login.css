@@ -1,0 +1,36 @@
+@charset "utf-8";
+
+/* Base Style *****************************/
+* { margin: 0; padding: 0; border: 0; }
+/* body { overflow-y: auto; } */
+
+/* login Layout *********************************/
+.login_form { width:500px; margin: 90px auto 0; margin-left: 31%; border: 0px solid #d2d2d2;  }
+.login_form h1 { width: 174px; height: 25px; background: url('../../images/egovframework/com/cmm/main/top_logo.png') no-repeat; margin-left: 47px; text-indent: -10000em; }
+
+.idpw_form { position: absolute; top: 90px; left: 14%; }
+.id_search { float: left; width: 281px; padding-right: 65px;  }
+.pw_search { float: left; padding-left: 65px; border-left: 1px solid #e2e1e2; }
+.id_search h2, 
+.pw_search h2 { text-align: center; font-size: 19px; color: #222; }
+
+	.login_type { width: 100%; margin-top: 25px; }
+	.login_type ul { font-size:0; }
+	.login_type ul li { display: inline-block; width:33.33%; text-align: center;}
+	.login_type ul li:last-child { width:33.34%; }
+	.login_type ul a { display: block; height: 33px; line-height: 33px; font-size: 12px; font-weight: bold; padding: 0 33px; background: #f4f4f4; border: 1px solid #e6e6e6; }
+	.login_type ul a:hover { background-color: #e6e6e6; }
+	.login_type ul a.on { background: #0c4ca4; color: #fff; border: 1px solid #0c4ca4; }
+	
+	.login_input { margin-top: 10px; }
+	.login_input ul li { margin-bottom: 10px; }
+	.login_input ul li label { display: none; }
+	.login_input ul li input[type="password"],
+	.login_input ul li input[type="text"] {box-sizing:border-box; width:100%; height: 39px; border: 1px solid #dfdfdf; background: #f9f9f9; font-size: 14px; padding-left: 10px; }
+	.login_input ul li select { width: 281px; height: 39px; border: 1px solid #dfdfdf; font-size: 13px; padding-left: 6px; }
+	.login_input ul li.chk { font-size: 13px; }
+	.login_input ul li input[type="checkbox"] { margin-right: 5px; vertical-align: -3px; }
+	.login_input ul li input.btn_login {box-sizing:border-box; width:100%; height: 45px; margin-top: 6px; border: none; background: #0c4ca4; color: #fff; font-size: 18px; font-weight: bold; cursor: pointer; }
+	.login_input ul.btn_idpw { margin-top: 5px; }
+	.login_input ul.btn_idpw li { float: left; padding-right: 9px; border-right: 1px solid #d6d6d6; margin-right: 9px; }
+	.login_input ul.btn_idpw li:last-child { padding-right:0; border-right:0; }

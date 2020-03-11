@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+
+<form-validation>
+    <formset>
+        <form name="bndtCeckManage">
+            <field property="bndtCeckSe" depends="required, maxlength">
+                <arg0 key="comUssIonBnt.bndtCeckManage.validate.bndtCeckSe" resource="true"/>     <!-- 당직체크구분 -->
+                <arg1 key="10" resource="true"/>
+                <var>
+                <var-name>maxlength</var-name>
+                <var-value>10</var-value>
+                </var>                       
+            </field>
+            <field property="bndtCeckCd" depends="required, maxlength">
+                <arg0 key="comUssIonBnt.bndtCeckManage.validate.bndtCeckCd" resource="true"/><!-- 당직체크코드 -->
+                <arg1 key="10" resource="true"/>
+                <var>
+                <var-name>maxlength</var-name>
+                <var-value>10</var-value>
+                </var> 
+            </field>
+            <field property="bndtCeckCdNm" depends="required, maxlength">
+                <arg0 key="comUssIonBnt.bndtCeckManage.validate.bndtCeckCdNm" resource="true"/><!-- 당직체크코드명 -->
+                <arg1 key="100" resource="true"/>
+                <var>
+                <var-name>maxlength</var-name>
+                <var-value>100</var-value>
+                </var> 
+            </field>
+            <field property="useAt" depends="required">
+                <arg0 key="comUssIonBnt.bndtCeckManage.validate.useAt" resource="true"/><!-- 사용여부 -->               
+            </field>        
+        </form>
+    </formset>
+
+</form-validation>

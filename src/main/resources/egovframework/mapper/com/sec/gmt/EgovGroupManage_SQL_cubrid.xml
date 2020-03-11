@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="groupManageDAO">
+
+    <resultMap id="group" type="egovframework.com.sec.gmt.service.GroupManageVO">
+        <result property="groupId" column="GROUP_ID"/>
+        <result property="groupNm" column="GROUP_NM"/>
+        <result property="groupDc" column="GROUP_DC"/>
+        <result property="groupCreatDe" column="GROUP_CREAT_DE"/>
+    </resultMap>
+
+    <select id="selectGroup" parameterType="egovframework.com.sec.gmt.service.GroupManageVO" resultMap="group">
+        
+            SELECT GROUP_ID, GROUP_NM, GROUP_DC, GROUP_CREAT_DE
+              FROM COMTNAUTHORGROUPINFO 
+             WHERE GROUP_ID=#{groupId}
+        
+    </select>
+
+    <select id="selectGroupList" parameterType="egovframework.com.sec.gmt.service.GroupManageVO" resultMap="group">
+                    
+            SELECT  * 
+              FROM  (
+            SELECT ROWNUM RNUM, ALL_LIST.* 
+              FROM  (
+
+            SELECT GROUP_ID, GROUP_NM, GROUP_DC, GROUP_CREAT_DE
+              FROM COMTNAUTHORGROUPINFO
+             WHERE 1=1
+                        
+            <if test="searchCondition == 1">AND
+                GROUP_NM LIKE '%'||#{searchKeyword}||'%'
+            </if>
+                    
+            ORDER BY GROUP_CREAT_DE DESC
+                    ) ALL_LIST
+                    ) Z
+                    <![CDATA[
+             WHERE  RNUM  > #{firstIndex}
+               AND  RNUM <= #{firstIndex} + #{recordCountPerPage}
+                          ]]>
+    </select>
+
+    <insert id="insertGroup">
+        
+            INSERT INTO COMTNAUTHORGROUPINFO 
+                  ( GROUP_ID
+                  , GROUP_NM
+                  , GROUP_DC
+                  , GROUP_CREAT_DE )
+           VALUES ( #{groupId}
+                  , #{groupNm}
+                  , #{groupDc}
+                  , SYSDATETIME)
+        
+    </insert>
+    
+    <update id="updateGroup" parameterType="egovframework.com.sec.gmt.service.GroupManage">
+        
+            UPDATE COMTNAUTHORGROUPINFO 
+               SET GROUP_NM=#{groupNm}
+                 , GROUP_DC=#{groupDc}
+             WHERE GROUP_ID=#{groupId}
+        
+    </update>
+    
+    <delete id="deleteGroup">
+        
+            DELETE FROM COMTNAUTHORGROUPINFO 
+             WHERE GROUP_ID=#{groupId}
+        
+    </delete>
+    
+    <select id="selectGroupListTotCnt" parameterType="egovframework.com.sec.gmt.service.GroupManageVO" resultType="int">
+
+            SELECT COUNT(*) totcnt
+            FROM COMTNAUTHORGROUPINFO
+            WHERE 1=1
+            <if test="searchCondition == 1">AND
+                GROUP_NM LIKE '%'||#{searchKeyword}||'%'
+            </if>
+    </select>
+
+</mapper>

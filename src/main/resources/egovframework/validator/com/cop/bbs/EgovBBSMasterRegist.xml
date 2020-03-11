@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+
+<form-validation>
+
+    <formset>
+		<form name="boardMasterVO">
+			<field property="bbsNm" depends="required, maxlength">
+        		<arg0 key="comCopBbs.boardMasterVO.regist.bbsNm" />
+        		<arg1 key="120" resource="true"/>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>120</var-value>
+				</var>
+			</field>
+			
+			<field property="bbsIntrcn" depends="required, maxlength">
+        		<arg0 key="comCopBbs.boardMasterVO.regist.bbsIntrcn" />
+        		<arg1 key="2000" resource="true"/>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>2000</var-value>
+				</var>
+			</field> 
+			<field property="bbsTyCode" depends="required">
+        		<arg0 key="comCopBbs.boardMasterVO.regist.bbsTyCode" />
+			</field>			
+			<field property="replyPosblAt" depends="required">
+        		<arg0 key="comCopBbs.boardMasterVO.regist.replyPosblAt" />
+			</field>	
+			<field property="fileAtchPosblAt" depends="required">
+        		<arg0 key="comCopBbs.boardMasterVO.regist.fileAtchPosblAt" />
+			</field>
+			<field property="useAt" depends="required">
+        		<arg0 key="comCopBbs.boardMasterVO.regist.useAt" />
+			</field>		
+		</form>
+    </formset>
+
+</form-validation>

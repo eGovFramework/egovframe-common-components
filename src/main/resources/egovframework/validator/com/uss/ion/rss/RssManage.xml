@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+
+<form-validation>
+
+    <formset>
+		<form name="rssManage">
+			<field property="trgetSvcNm" depends="required, maxlength">
+        		<arg0 key="대상서비스명" resource="true"/>
+        		<arg1 key="255" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>255</var-value>
+				</var>
+			</field>
+
+			<field property="trgetSvcTable" depends="required, maxlength, english">
+        		<arg0 key="대상서비스TABLE" resource="true"/>
+        		<arg1 key="255" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>255</var-value>
+				</var>
+			</field>
+			<field property="trgetSvcListCo" depends="required, maxlength, integer">
+        		<arg0 key="대상서비스목록갯수" resource="true"/>
+        		<arg1 key="5" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>5</var-value>
+				</var>
+			</field>
+			<field property="hderTitle" depends="required, maxlength">
+        		<arg0 key="헤더TITLE" resource="true"/>
+        		<arg1 key="255" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>255</var-value>
+				</var>
+			</field>
+			<field property="hderLink" depends="required, maxlength">
+        		<arg0 key="헤더LINK" resource="true"/>
+        		<arg1 key="255" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>255</var-value>
+				</var>
+			</field>
+			<field property="hderDescription" depends="required, maxlength">
+        		<arg0 key="헤더DSCRIPTION" resource="true"/>
+        		<arg1 key="4000" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>4000</var-value>
+				</var>
+			</field>
+			<field property="hderTag" depends="maxlength">
+        		<arg0 key="헤더TAG" resource="true"/>
+        		<arg1 key="255" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>255</var-value>
+				</var>
+			</field>
+			<field property="hderEtc" depends="maxlength">
+        		<arg0 key="헤더ETC" resource="true"/>
+        		<arg1 key="255" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>255</var-value>
+				</var>
+			</field>
+			
+			<field property="bdtTitle" depends="required, maxlength">
+        		<arg0 key="본문TITLE" resource="true"/>
+        		<arg1 key="255" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>255</var-value>
+				</var>
+			</field>
+			<field property="bdtLink" depends="required, maxlength">
+        		<arg0 key="본문LINK" resource="true"/>
+        		<arg1 key="255" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>255</var-value>
+				</var>
+			</field>
+			<field property="bdtDescription" depends="required, maxlength">
+        		<arg0 key="본문DESCRIPTION" resource="true"/>
+        		<arg1 key="4000" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>4000</var-value>
+				</var>
+			</field>			
+			<field property="bdtTag" depends="maxlength">
+        		<arg0 key="본문TAG" resource="true"/>
+        		<arg1 key="255" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>255</var-value>
+				</var>
+			</field>
+			<field property="bdtEtc" depends="maxlength">
+        		<arg0 key="본문ETC" resource="true"/>
+        		<arg1 key="255" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>255</var-value>
+				</var>
+			</field>
+		</form>
+    </formset>
+
+</form-validation>

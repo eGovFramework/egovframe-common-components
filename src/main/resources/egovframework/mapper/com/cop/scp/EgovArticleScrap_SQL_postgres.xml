@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ArticleScrap">
+	
+	<resultMap id="scrapList" type="egovframework.com.cop.scp.service.ScrapVO">
+		<result property="scrapId" column="SCRAP_ID"/>
+		<result property="nttId" column="NTT_ID"/>
+		<result property="bbsId" column="BBS_ID"/>
+		<result property="scrapNm" column="SCRAP_NM"/>
+		<result property="useAt" column="USE_AT"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterNm" column="FRST_REGISTER_NM"/>
+	</resultMap>
+	
+	<resultMap id="scrapDetail" type="egovframework.com.cop.scp.service.ScrapVO">
+		<result property="scrapId" column="SCRAP_ID"/>
+		<result property="nttId" column="NTT_ID"/>
+		<result property="bbsId" column="BBS_ID"/>
+		<result property="scrapNm" column="SCRAP_Nm"/>
+		<result property="useAt" column="USE_AT"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterNm" column="FRST_REGISTER_NM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+	</resultMap>
+
+	<select id="selectArticleScrapList" parameterType="egovframework.com.cop.scp.service.ScrapVO" resultMap="scrapList">
+		
+			SELECT
+				a.SCRAP_ID, a.NTT_ID, a.BBS_ID, 
+				a.SCRAP_NM, a.USE_AT,
+				TO_CHAR(a.FRST_REGIST_PNTTM, 'YYYYmmdd')
+				as FRST_REGIST_PNTTM,
+				b.USER_NM as FRST_REGISTER_NM
+			FROM
+				COMTNSCRAP a
+			LEFT OUTER JOIN COMVNUSERMASTER b
+				ON a.FRST_REGISTER_ID = b.ESNTL_ID
+			WHERE
+				a.USE_AT = 'Y'
+			AND 
+				a.FRST_REGISTER_ID = #{uniqId}
+		
+			<if test="searchCnd == 0">AND
+					a.SCRAP_NM LIKE CONCAT ('%', #{searchWrd},'%') 		
+			</if>
+		
+			ORDER BY a.FRST_REGIST_PNTTM ASC
+			LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+						
+	</select>	
+	
+	<select id="selectArticleScrapListCnt" parameterType="egovframework.com.cop.scp.service.ScrapVO" resultType="java.lang.Integer">
+		
+			SELECT
+				COUNT(SCRAP_ID)
+			FROM
+				COMTNSCRAP 
+			WHERE
+				USE_AT = 'Y'
+			AND 
+				FRST_REGISTER_ID = #{uniqId}
+		
+			<if test="searchCnd == 0">AND
+					SCRAP_NM LIKE CONCAT ('%', #{searchWrd},'%') 	
+			</if>		
+	</select>
+	
+	<insert id="insertArticleScrap" parameterType="egovframework.com.cop.scp.service.ScrapVO">
+		
+			INSERT INTO COMTNSCRAP
+			(SCRAP_ID, NTT_ID, BBS_ID, SCRAP_NM, USE_AT, 
+			 FRST_REGISTER_ID, FRST_REGIST_PNTTM
+			 )
+			VALUES
+			( #{scrapId}, #{nttId}, #{bbsId}, #{scrapNm}, 'Y',
+			  #{frstRegisterId}, NOW()
+			 )
+		
+	</insert>
+	
+	<update id="deleteArticleScrap" parameterType="egovframework.com.cop.scp.service.ScrapVO">
+		
+			UPDATE COMTNSCRAP
+			SET USE_AT = 'N'
+			WHERE SCRAP_ID = #{scrapId}
+					
+	</update>
+	
+	<select id="selectArticleScrapDetail" parameterType="egovframework.com.cop.scp.service.ScrapVO" resultMap="scrapDetail">
+		
+			SELECT
+				a.SCRAP_ID, a.NTT_ID, a.BBS_ID, 
+				a.SCRAP_NM, a.USE_AT,
+				TO_CHAR(a.FRST_REGIST_PNTTM, 'YYYYmmdd')
+				as FRST_REGIST_PNTTM,
+				b.USER_NM as FRST_REGISTER_NM,
+				a.FRST_REGISTER_ID
+			FROM
+				COMTNSCRAP a
+			LEFT OUTER JOIN COMVNUSERMASTER b
+				ON a.FRST_REGISTER_ID = b.ESNTL_ID
+			WHERE
+				a.SCRAP_ID = #{scrapId}
+						
+	</select> 
+
+ 	 <update id="updateArticleScrap" parameterType="egovframework.com.cop.scp.service.ScrapVO">
+ 		
+			UPDATE COMTNSCRAP SET 
+				SCRAP_NM = #{scrapNm},
+				LAST_UPDUSR_ID = #{lastUpdusrId},
+				LAST_UPDT_PNTTM = NOW()
+			WHERE SCRAP_ID = #{scrapId} 
+ 		
+ 	</update>
+</mapper>

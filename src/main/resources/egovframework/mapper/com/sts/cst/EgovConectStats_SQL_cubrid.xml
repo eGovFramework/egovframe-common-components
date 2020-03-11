@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed May 11 15:50:23 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ConectStatsDAO">
+
+	<!-- 접속통계 조회 -->
+	<select id="selectConectStats" parameterType="egovframework.com.sts.com.StatsVO" resultType="egovframework.com.sts.com.StatsVO">
+		<!-- 서비스별 통계 -->
+		<if test='statsKind == "SERVICE"'>
+			SELECT METHOD_NM AS conectMethod
+			     , NVL(SUM(CREAT_CO),0) AS creatCo
+			     , NVL(SUM(UPDT_CO),0) AS updtCo
+			     , NVL(SUM(RDCNT),0) AS inqireCo
+			     , NVL(SUM(DELETE_CO),0) AS deleteCo
+			     , NVL(SUM(OUTPT_CO),0) AS outptCo
+			     , NVL(SUM(ERROR_CO),0) AS errorCo
+			     <!-- 기간검색(년) -->
+				 <if test='pdKind == "Y"'>
+			     , SUBSTR(OCCRRNC_DE, 1, 4) AS statsDate
+			     </if>
+			     <!-- 기간검색(월) -->
+			     <if test='pdKind == "M"'>			     
+			     , SUBSTR(OCCRRNC_DE, 1, 4) || '-' || SUBSTR(OCCRRNC_DE, 5, 2) AS statsDate
+			     </if>
+			     <!-- 기간검색(일) -->
+			     <if test='pdKind == "D"'>
+			     , SUBSTR(OCCRRNC_DE, 1, 4) || '-' || SUBSTR(OCCRRNC_DE, 5, 2) || '-' || SUBSTR(OCCRRNC_DE, 7, 2) AS statsDate
+			     </if>
+			     , 0 AS statsCo
+			  FROM COMTSSYSLOGSUMMARY
+		 	 WHERE OCCRRNC_DE BETWEEN #{fromDate} AND #{toDate}
+		 	 <if test='detailStatsKind != null and detailStatsKind != ""'>
+		 	   AND SVC_NM LIKE '%' || #{detailStatsKind} || '%'
+		 	 </if>
+		 	 <if test='pdKind == "Y"'>
+			 GROUP BY METHOD_NM, SUBSTR(OCCRRNC_DE, 1, 4)
+			 ORDER BY SUBSTR(OCCRRNC_DE, 1, 4)
+			 </if>
+			 <if test='pdKind == "M"'>
+			 GROUP BY METHOD_NM, SUBSTR(OCCRRNC_DE, 1, 4) || '-' || SUBSTR(OCCRRNC_DE, 5, 2)
+			 ORDER BY SUBSTR(OCCRRNC_DE, 1, 4) || '-' || SUBSTR(OCCRRNC_DE, 5, 2)
+			 </if>
+			 <if test='pdKind == "D"'>
+			 GROUP BY METHOD_NM, SUBSTR(OCCRRNC_DE, 1, 4) || '-' || SUBSTR(OCCRRNC_DE, 5, 2) || '-' || SUBSTR(OCCRRNC_DE, 7, 2)
+			 ORDER BY SUBSTR(OCCRRNC_DE, 1, 4) || '-' || SUBSTR(OCCRRNC_DE, 5, 2) || '-' || SUBSTR(OCCRRNC_DE, 7, 2)
+			 </if>
+		</if>
+
+		<!-- 개인별 통계 -->
+		<if test='statsKind == "PRSONAL"'>
+			SELECT COUNT(CONECT_ID) AS statsCo
+			     <!-- 기간검색(년) -->
+				 <if test='pdKind == "Y"'>
+			     , SUBSTR(TO_CHAR(CREAT_DT, 'YYYYMMDD'), 1, 4) AS statsDate
+			     </if>
+			     <!-- 기간검색(월) -->
+			     <if test='pdKind == "M"'>
+			     , SUBSTR(TO_CHAR(CREAT_DT, 'YYYYMMDD'), 1, 4) || '-' || SUBSTR(TO_CHAR(CREAT_DT, 'YYYYMMDD'), 5, 2) AS statsDate
+			     </if>
+			     <!-- 기간검색(일) -->
+			     <if test='pdKind == "D"'>
+			     , SUBSTR(TO_CHAR(CREAT_DT, 'YYYYMMDD'), 1, 4) || '-' || SUBSTR(TO_CHAR(CREAT_DT, 'YYYYMMDD'), 5, 2) || '-' || SUBSTR(TO_CHAR(CREAT_DT, 'YYYYMMDD'), 7, 2) AS statsDate
+			     </if>
+			     , '' AS conectMethod
+			     , 0 AS creatCo
+			     , 0 AS updtCo
+			     , 0 AS inqireCo
+			     , 0 AS deleteCo
+			     , 0 AS outptCo
+			     , 0 AS errorCo
+			  FROM COMTNLOGINLOG
+		 	 WHERE CONECT_ID = #{detailStatsKind}
+			   <!-- 시작일자~종료일자 기간제한 -->
+			   AND TO_CHAR(CREAT_DT, 'YYYYMMDD') BETWEEN #{fromDate} AND #{toDate}
+			 <if test='pdKind == "Y"'>
+			 GROUP BY SUBSTR(TO_CHAR(CREAT_DT, 'YYYYMMDD'), 1, 4)
+			 ORDER BY SUBSTR(TO_CHAR(CREAT_DT, 'YYYYMMDD'), 1, 4)
+			 </if>
+			 <if test='pdKind == "M"'>
+			 GROUP BY SUBSTR(TO_CHAR(CREAT_DT, 'YYYYMMDD'), 1, 4) || '-' || SUBSTR(TO_CHAR(CREAT_DT, 'YYYYMMDD'), 5, 2)
+			 ORDER BY SUBSTR(TO_CHAR(CREAT_DT, 'YYYYMMDD'), 1, 4) || '-' || SUBSTR(TO_CHAR(CREAT_DT, 'YYYYMMDD'), 5, 2)
+			 </if>
+			 <if test='pdKind == "D"'>
+			 GROUP BY SUBSTR(TO_CHAR(CREAT_DT, 'YYYYMMDD'), 1, 4) || '-' || SUBSTR(TO_CHAR(CREAT_DT, 'YYYYMMDD'), 5, 2) || '-' || SUBSTR(TO_CHAR(CREAT_DT, 'YYYYMMDD'), 7, 2)
+			 ORDER BY SUBSTR(TO_CHAR(CREAT_DT, 'YYYYMMDD'), 1, 4) || '-' || SUBSTR(TO_CHAR(CREAT_DT, 'YYYYMMDD'), 5, 2) || '-' || SUBSTR(TO_CHAR(CREAT_DT, 'YYYYMMDD'), 7, 2)
+			 </if>
+		</if>
+	</select>
+
+</mapper>

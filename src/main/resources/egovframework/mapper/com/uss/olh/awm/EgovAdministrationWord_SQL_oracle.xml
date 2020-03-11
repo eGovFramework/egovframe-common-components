@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	수정일		수정자					수정내용
+  =========     =======    =================================================
+  2011.9.5   	이기하     	 	테이블 표준화에 따른 수정사항 반영
+							ADMINIST_WORD_ABRV_NM 를		ADMINIST_WORD_ABRV 로 변경
+							WORD_SE 를						WORD_DOMN 로 변경
+							FRST_REGIST_PNTTM 를			FRST_REGISTER_PNTTM 로 변경
+  2011.09.15      서준식                selectAdministrationWord문의 영문 검색 SQL 변경						
+  2011.10.05    서준식               보안 취약점 점검사항 반영 $->#변경	
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AdministrationWord">
+
+	<!-- 행정전문용어사전::ResultMap 선언 -->
+	<resultMap id="AdministrationWordVO" type="egovframework.com.uss.olh.awm.service.AdministrationWordVO">
+		<result property="administWordId" column="ADMINIST_WORD_ID"/>
+		<result property="administWordNm" column="ADMINIST_WORD_NM"/>
+		<result property="administWordEngNm" column="ADMINIST_WORD_ENG_NM"/>
+		<result property="administWordAbrv" column="ADMINIST_WORD_ABRV_NM"/>
+		<result property="themaRelm" column="THEMA_RELM"/>
+		<result property="wordDomn" column="WORD_SE"/>
+		<result property="wordDomnNm" column="WORD_SE_NM"/>
+		<result property="stdWord" column="RELATE_STD_WORD"/>
+		<result property="administWordDf" column="ADMINIST_WORD_DFN"/>
+		<result property="administWordDc" column="ADMINIST_WORD_DC"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+	</resultMap>
+
+	<!-- 행정전문용어사전::목록조회 게시물정보 -->
+	<select id="selectAdministrationWordList" resultMap="AdministrationWordVO">
+	
+	SELECT *
+	FROM (
+	SELECT T0.*, ROWNUM RNUM
+		FROM (
+	
+	 
+		SELECT
+			A.ADMINIST_WORD_ID,
+			A.ADMINIST_WORD_NM,
+			A.ADMINIST_WORD_ENG_NM,
+			A.ADMINIST_WORD_ABRV_NM						ADMINIST_WORD_ABRV,
+			A.THEMA_RELM,
+			A.WORD_SE	,
+			C.CODE_NM AS WORD_SE_NM,
+			A.RELATE_STD_WORD,
+			A.ADMINIST_WORD_DFN,
+			A.ADMINIST_WORD_DC,
+			A.FRST_REGISTER_ID,
+			TO_CHAR(A.FRST_REGIST_PNTTM,'YYYY-MM-DD') 								  FRST_REGISTER_PNTTM,
+			(SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = A.FRST_REGISTER_ID) FRST_REGISTER_NM
+		FROM COMTNADMINISTRATIONWORD A
+		LEFT OUTER JOIN 
+				(SELECT CODE_ID, CODE, CODE_NM FROM 
+					COMTCCMMNDETAILCODE WHERE CODE_ID = 'COM102' AND USE_AT='Y') c
+				ON a.WORD_SE = c.CODE
+		WHERE 1=1
+	 
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 	
+
+	 		<if test="searchCondition == 0">
+	 			AND ADMINIST_WORD_NM LIKE '%' || #{searchKeyword} || '%'
+	 		</if>
+	 		<if test="searchCondition == 1">
+	 			AND ADMINIST_WORD_ENG_NM LIKE '%' || #{searchKeyword} || '%'
+	 		</if>
+	 		<if test="searchCondition == 2">
+	 			AND ADMINIST_WORD_ABRV_NM LIKE '%' || #{searchKeyword} || '%'
+	 		</if>
+	 		<if test="searchCondition == 3">
+	 			AND ADMINIST_WORD_DFN LIKE '%' || #{searchKeyword} || '%'
+	 		</if>
+	 		<if test="searchCondition == 4">
+	 			AND ADMINIST_WORD_DC LIKE '%' || #{searchKeyword} || '%'
+	 		</if>
+	 		
+	 	
+	 </if>
+
+	 <if test="choseongA != null and choseongA != ''">
+	 	
+		
+
+		<if test="cmd == 'H'">
+	 	  <![CDATA[ AND A.ADMINIST_WORD_NM >= #{choseongA} AND A.ADMINIST_WORD_NM < #{choseongB} ]]>
+	 	</if>
+		<if test="cmd == 'E'">
+	 	  <![CDATA[ AND SUBSTR(A.ADMINIST_WORD_NM, 0, 1) >= #{choseongA} AND SUBSTR(A.ADMINIST_WORD_NM, 0, 1) <= #{choseongB} ]]> 
+	 	</if>
+
+	 	 
+	 	
+	 </if>
+
+	 
+		ORDER BY A.FRST_REGIST_PNTTM DESC
+	
+	
+		) T0
+	)
+	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	
+	</select>
+	<!-- 행정전문용어사전::목록조회_게시물 총갯수  -->
+	<select id="selectAdministrationWordListCnt" resultType="int">
+		SELECT
+		COUNT(*) totcnt
+		FROM COMTNADMINISTRATIONWORD
+		WHERE 1=1
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 	
+	 		<if test="searchCondition == 0">
+	 			AND ADMINIST_WORD_NM LIKE '%' || #{searchKeyword} || '%'
+	 		</if>
+	 		<if test="searchCondition == 1">
+	 			AND ADMINIST_WORD_ENG_NM LIKE '%' || #{searchKeyword} || '%'
+	 		</if>
+	 		<if test="searchCondition == 2">
+	 			AND ADMINIST_WORD_ABRV_NM LIKE '%' || #{searchKeyword} || '%'
+	 		</if>
+	 		<if test="searchCondition == 3">
+	 			AND ADMINIST_WORD_DFN LIKE '%' || #{searchKeyword} || '%'
+	 		</if>
+	 		<if test="searchCondition == 4">
+	 			AND ADMINIST_WORD_DC LIKE '%' || #{searchKeyword} || '%'
+	 		</if>
+	 		
+	 	
+	 </if>
+	 <if test="choseongA != null and choseongA != ''">
+	 	
+		
+
+		<if test="cmd == 'H'">
+	 	  <![CDATA[ AND (ADMINIST_WORD_NM >= #{choseongA} AND ADMINIST_WORD_NM < #{choseongB}) ]]>
+	 	</if>
+		<if test="cmd == 'E'">
+	 	  <![CDATA[ AND (ADMINIST_WORD_NM >= #{choseongA} AND ADMINIST_WORD_NM <= #{choseongB}) ]]>
+	 	</if>
+
+	 	 
+	 	
+	 </if>
+	</select>
+
+    <!-- 행정전문용어사전::삭제  -->
+	<delete id="deleteAdministrationWord">
+		
+			DELETE FROM COMTNADMINISTRATIONWORD
+			WHERE ADMINIST_WORD_ID=#{administWordId}
+		
+	</delete>
+
+	<!-- 행정전문용어사전::수정  -->
+	<update id="updateAdministrationWord">
+	 
+		UPDATE COMTNADMINISTRATIONWORD
+		SET
+			ADMINIST_WORD_NM=#{administWordNm},
+			ADMINIST_WORD_ENG_NM=#{administWordEngNm},
+			ADMINIST_WORD_ABRV_NM=#{administWordAbrv},
+			THEMA_RELM=#{themaRelm},
+			WORD_SE=#{wordDomn},
+			RELATE_STD_WORD=#{stdWord},
+			ADMINIST_WORD_DFN=#{administWordDf},
+			ADMINIST_WORD_DC=#{administWordDc},
+			LAST_UPDT_PNTTM = sysdate,
+			LAST_UPDUSR_ID = #{lastUpdusrId}
+		WHERE ADMINIST_WORD_ID=#{administWordId}
+
+	 
+	</update>
+
+	<!-- 행정전문용어사전::상세보기 -->
+	<select id="selectAdministrationWordDetail" resultMap="AdministrationWordVO">
+		SELECT
+			A.ADMINIST_WORD_ID,
+			A.ADMINIST_WORD_NM,
+			A.ADMINIST_WORD_ENG_NM,
+			A.ADMINIST_WORD_ABRV_NM,
+			A.THEMA_RELM,
+			A.WORD_SE,
+			C.CODE_NM AS WORD_SE_NM,
+			A.RELATE_STD_WORD,
+			A.ADMINIST_WORD_DFN,
+			A.ADMINIST_WORD_DC,
+			A.FRST_REGIST_PNTTM,
+			A.FRST_REGISTER_ID,
+			A.LAST_UPDT_PNTTM,
+			A.LAST_UPDUSR_ID
+		FROM COMTNADMINISTRATIONWORD A
+		LEFT OUTER JOIN 
+				(SELECT CODE_ID, CODE, CODE_NM FROM 
+					COMTCCMMNDETAILCODE WHERE CODE_ID = 'COM102' AND USE_AT='Y') c
+				ON a.WORD_SE = c.CODE
+		WHERE 1=1
+		AND A.ADMINIST_WORD_ID=#{administWordId}
+	</select>
+
+	<!-- 행정전문용어사전::입력  -->
+	<insert id="insertAdministrationWord">
+	 
+		INSERT INTO COMTNADMINISTRATIONWORD (
+			ADMINIST_WORD_ID,
+			ADMINIST_WORD_NM,
+			ADMINIST_WORD_ENG_NM,
+			ADMINIST_WORD_ABRV_NM,
+			THEMA_RELM,
+			WORD_SE,
+			RELATE_STD_WORD,
+			ADMINIST_WORD_DFN,
+			ADMINIST_WORD_DC,
+			FRST_REGIST_PNTTM,
+			FRST_REGISTER_ID,
+			LAST_UPDT_PNTTM,
+			LAST_UPDUSR_ID
+		)VALUES(
+			#{administWordId},
+			#{administWordNm},
+			#{administWordEngNm},
+			#{administWordAbrv},
+			#{themaRelm},
+			#{wordDomn},
+			#{stdWord},
+			#{administWordDf},
+			#{administWordDc},
+			sysdate,
+			#{frstRegisterId},
+			sysdate,
+			#{lastUpdusrId}
+		)
+	 
+	</insert>
+
+</mapper>

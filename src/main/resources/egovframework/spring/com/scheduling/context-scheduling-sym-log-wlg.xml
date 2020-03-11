@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<!-- 웹 로그 요약  -->
+	<bean id="webLogging" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="egovWebLogScheduling" />
+		<property name="targetMethod" value="webLogSummary" />
+		<property name="concurrent" value="false" />
+	</bean>
+
+	<!-- 웹 로그 요약  트리거-->
+	<bean id="webLogTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="webLogging" />
+		<property name="startDelay" value="60000" />
+		<property name="repeatInterval" value="3600000" />
+	</bean>
+	
+	<!-- 웹 로그 요약 스케줄러 -->
+	<bean id="webLogScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="webLogTrigger" />				
+			</list>
+		</property>
+	</bean>
+</beans>

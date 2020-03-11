@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+
+<form-validation>
+
+    <formset>
+        <form name="cmmnClCodeVO">
+			<field property="clCode" depends="required, maxlength">
+        		<arg0 key="comSymCcmCcc.cmmnClCodeVO.clCode" resource="true"/><!-- 분류코드 -->
+        		<arg1 key="3" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>3</var-value>
+				</var>
+			</field> 
+			<field property="clCodeNm" depends="required, maxlength">
+        		<arg0 key="comSymCcmCcc.cmmnClCodeVO.clCodeNm" resource="true"/><!-- 분류코드명 -->
+        		<arg1 key="60" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>60</var-value>
+				</var>
+			</field> 
+			<field property="clCodeDc" depends="required, maxlength">
+        		<arg0 key="comSymCcmCcc.cmmnClCodeVO.clCodeDc" resource="true"/><!-- 분류코드설명 -->
+        		<arg1 key="200" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>200</var-value>
+				</var>
+			</field> 
+			<field property="useAt" depends="required">
+        		<arg0 key="comSymCcmCcc.cmmnClCodeVO.useAt" resource="true"/><!-- 사용여부 -->
+			</field> 
+		</form>
+		
+
+    </formset>
+
+</form-validation>

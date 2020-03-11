@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MemoTodoDAO">
+	
+	<resultMap id="MemoTodoList" type="egovframework.com.cop.smt.mtm.service.MemoTodoVO">
+		<result property="todoId" column="TODO_ID"/>
+		<result property="todoNm" column="TODO_SJ"/>
+		<result property="todoBeginTime" column="TODO_BEGIN_TIME"/>
+		<result property="todoEndTime" column="TODO_END_TIME"/>
+		<result property="wrterNm" column="WRTER_NM"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+	</resultMap>
+	
+	<resultMap id="MemoTodoDetail" type="egovframework.com.cop.smt.mtm.service.MemoTodoVO">
+		<result property="todoId" column="TODO_ID"/>
+		<result property="todoNm" column="TODO_SJ"/>
+		<result property="todoBeginTime" column="TODO_BEGIN_TIME"/>
+		<result property="todoEndTime" column="TODO_END_TIME"/>
+		<result property="wrterId" column="WRTER_ID"/>
+		<result property="wrterNm" column="WRTER_NM"/>
+		<result property="todoCn" column="TODO_CN"/>
+
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>				
+	</resultMap> 
+	
+	<!-- 메모할일::목록조회 -->
+	<select id="selectMemoTodoList" parameterType="egovframework.com.cop.smt.mtm.service.MemoTodoVO" resultMap="MemoTodoList">
+		
+	SELECT *
+	FROM (
+	SELECT T0.*, ROWNUM RNUM
+		FROM (
+	
+	
+	 
+		SELECT 
+			A.TODO_ID,
+			A.TODO_SJ,
+			A.TODO_BEGIN_TIME,
+			A.TODO_END_TIME,
+			NVL(B.USER_NM, C.MBER_NM) WRTER_NM,
+			TO_DATE(A.FRST_REGIST_PNTTM) FRST_REGIST_PNTTM
+		FROM COMTNMEMOTODO A
+		LEFT OUTER JOIN COMTNEMPLYRINFO B
+			ON A.WRTER_ID = B.ESNTL_ID
+		LEFT OUTER JOIN COMTNGNRLMBER C
+			ON A.WRTER_ID = C.ESNTL_ID
+		WHERE A.WRTER_ID = #{searchId}
+	 
+	
+	 <if test="searchDe != null and searchDe != ''">
+		 <if test="searchDe == 1">AND
+			 	A.FRST_REGIST_PNTTM BETWEEN #{searchBgnDe} AND #{searchEndDe}		
+		 </if>
+		 <if test="searchDe == 0">AND
+			 	(SUBSTR(A.TODO_BEGIN_TIME, 1, 10) BETWEEN #{searchBgnDe} AND #{searchEndDe}		
+			 			OR	SUBSTR(A.TODO_END_TIME, 1, 10) BETWEEN #{searchBgnDe} AND #{searchEndDe}	)
+			 
+		 </if>
+	 </if>
+	
+	 <if test="searchCnd != null and searchCnd != ''">
+		 <if test="searchCnd == 0">AND
+			 	A.TODO_SJ LIKE '%'||#{searchWrd}||'%' 		
+		 </if>
+		 <if test="searchCnd == 1">AND
+			 	A.TODO_CN LIKE '%'||#{searchWrd}||'%' 		
+		 </if>
+	 </if>
+	 
+		ORDER BY A.TODO_BEGIN_TIME DESC
+	 	
+	
+		
+		) T0
+	) 
+	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+		
+	</select>
+	
+	<!-- 메모할일::목록조회 Count -->
+	<select id="selectMemoTodoListCnt" parameterType="egovframework.com.cop.smt.mtm.service.MemoTodoVO" resultType="java.lang.Integer">
+	 
+		SELECT 
+			COUNT(A.TODO_ID) as cnt
+		FROM COMTNMEMOTODO A
+		WHERE A.WRTER_ID = #{searchId}
+	 
+	 
+	 <if test="searchDe != null and searchDe != ''">
+		 <if test="searchDe == 1">AND
+			 	A.FRST_REGIST_PNTTM BETWEEN #{searchBgnDe} AND #{searchEndDe}		
+		 </if>
+		 <if test="searchDe == 0">AND
+			 	(SUBSTR(A.TODO_BEGIN_TIME, 1, 10) BETWEEN #{searchBgnDe} AND #{searchEndDe}		
+			 			OR	SUBSTR(A.TODO_END_TIME, 1, 10) BETWEEN #{searchBgnDe} AND #{searchEndDe}	)
+			 
+		 </if>
+	 </if>
+	
+	 <if test="searchCnd != null and searchCnd != ''">
+		 <if test="searchCnd == 0">AND
+			 	A.TODO_SJ LIKE '%'||#{searchWrd}||'%' 		
+		 </if>
+		 <if test="searchCnd == 1">AND
+			 	A.TODO_CN LIKE '%'||#{searchWrd}||'%' 		
+		 </if>
+	 </if>
+
+	</select>
+	
+	<!-- 메모할일::상세보기 -->
+	<select id="selectMemoTodo" parameterType="egovframework.com.cop.smt.mtm.service.MemoTodoVO" resultMap="MemoTodoDetail">
+		SELECT 
+			A.TODO_ID,
+			A.TODO_SJ,
+			A.TODO_BEGIN_TIME,
+			A.TODO_END_TIME,
+			A.WRTER_ID,
+			NVL(B.USER_NM, C.MBER_NM) WRTER_NM,
+			A.TODO_CN,
+			A.FRST_REGIST_PNTTM,
+			A.FRST_REGISTER_ID,
+			A.LAST_UPDT_PNTTM,
+			A.LAST_UPDUSR_ID 
+		FROM COMTNMEMOTODO A
+		LEFT OUTER JOIN COMTNEMPLYRINFO B
+			ON A.WRTER_ID = B.ESNTL_ID
+		LEFT OUTER JOIN COMTNGNRLMBER C
+			ON A.WRTER_ID = C.ESNTL_ID
+		WHERE A.TODO_ID = #{todoId}
+	</select>
+	
+	<!-- 메모할일::수정  -->
+	<update id="updateMemoTodo" parameterType="egovframework.com.cop.smt.mtm.service.MemoTodo"> 
+		UPDATE COMTNMEMOTODO 
+		SET  
+			TODO_SJ=#{todoNm},
+			TODO_BEGIN_TIME=#{todoBeginTime},
+			TODO_END_TIME=#{todoEndTime},
+			TODO_CN=#{todoCn},
+			LAST_UPDT_PNTTM = sysdate,
+			LAST_UPDUSR_ID = #{lastUpdusrId}
+		WHERE TODO_ID = #{todoId}
+	</update>
+	
+	<!-- 메모할일::삭제  -->
+	<delete id="deleteMemoTodo" parameterType="egovframework.com.cop.smt.mtm.service.MemoTodo"> 
+		
+			DELETE FROM COMTNMEMOTODO 
+			WHERE TODO_ID = #{todoId}
+		
+	</delete>
+	
+	<!-- 메모할일::입력  -->
+	<insert id="insertMemoTodo" parameterType="egovframework.com.cop.smt.mtm.service.MemoTodo">
+	 
+	 
+		INSERT INTO COMTNMEMOTODO ( 
+			TODO_ID,
+			TODO_SJ,
+			TODO_BEGIN_TIME,
+			TODO_END_TIME,
+			WRTER_ID,
+			TODO_CN,
+			FRST_REGIST_PNTTM,
+			FRST_REGISTER_ID,
+			LAST_UPDT_PNTTM,
+			LAST_UPDUSR_ID
+		)VALUES( 
+			#{todoId},
+			#{todoNm},
+			#{todoBeginTime},
+			#{todoEndTime},
+			#{wrterId},
+			#{todoCn},  
+			sysdate,
+			#{frstRegisterId},
+			sysdate,
+			#{lastUpdusrId} 
+		)
+
+	 
+	</insert>
+	
+	
+	<!-- 메모할일::오늘의 할일 목록조회 -->
+	<select id="selectMemoTodoListToday" parameterType="egovframework.com.cop.smt.mtm.service.MemoTodoVO" resultMap="MemoTodoList">
+	 
+		SELECT 
+			A.TODO_ID,
+			A.TODO_SJ,
+			A.TODO_BEGIN_TIME,
+			A.TODO_END_TIME,
+			NVL(B.USER_NM, C.MBER_NM) WRTER_NM,
+			TO_DATE(A.FRST_REGIST_PNTTM) FRST_REGIST_PNTTM
+		FROM COMTNMEMOTODO A
+		LEFT OUTER JOIN COMTNEMPLYRINFO B
+			ON A.WRTER_ID = B.ESNTL_ID
+		LEFT OUTER JOIN COMTNGNRLMBER C
+			ON A.WRTER_ID = C.ESNTL_ID
+		WHERE A.WRTER_ID = #{searchId}
+	 
+	
+	 	
+	 	AND (A.TODO_BEGIN_TIME BETWEEN #{searchBgnDe} AND #{searchEndDe}		
+	 	OR	A.TODO_END_TIME BETWEEN #{searchBgnDe} AND #{searchEndDe}	)
+		ORDER BY A.FRST_REGIST_PNTTM DESC
+	 	
+
+	</select>
+</mapper>

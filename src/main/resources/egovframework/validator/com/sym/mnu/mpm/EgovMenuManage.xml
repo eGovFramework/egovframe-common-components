@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+
+<form-validation>
+    <formset>
+        <form name="menuManageVO">
+			<field property="menuNo" depends="required, integer">
+        		<arg0 key="comSymMnuMpm.menuManage.validate.menuNo"/>
+			</field> 
+			<field property="menuOrdr" depends="required, integer">
+        		<arg0 key="comSymMnuMpm.menuManage.validate.menuOrdr"/>
+			</field>
+            <field property="menuNm" depends="required, maxlength">
+        		<arg0 key="comSymMnuMpm.menuManage.validate.menuNm"/>
+        		<arg1 key="50" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>50</var-value>
+				</var>
+			</field> 
+			<field property="upperMenuId" depends="required, integer">
+        		<arg0 key="comSymMnuMpm.menuManage.validate.upperMenuId"/>
+			</field>
+			<field property="progrmFileNm" depends="required, maxlength">
+        		<arg0 key="comSymMnuMpm.menuManage.validate.progrmFileNm"/>
+        		<arg1 key="50" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>50</var-value>
+				</var>
+			</field> 
+			<field property="menuDc" depends="maxlength">
+        		<arg0 key="comSymMnuMpm.menuManage.validate.menuDc"/>
+        		<arg1 key="100" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>100</var-value>
+				</var>
+			</field> 
+			<field property="relateImagePath" depends="maxlength">
+        		<arg0 key="comSymMnuMpm.menuManage.validate.relateImagePath"/>
+        		<arg1 key="100" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>100</var-value>
+				</var>
+			</field> 
+			<field property="relateImageNm" depends="maxlength">
+        		<arg0 key="comSymMnuMpm.menuManage.validate.relateImageNm"/>
+        		<arg1 key="50" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>50</var-value>
+				</var>
+			</field> 
+		</form>
+    </formset>
+</form-validation>

@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<!-- SMS 전송 결과 수신 처리 -->
+	<bean id="smsInfoReceiver" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="EgovSmsInfoReceiver" />
+		<property name="targetMethod" value="execute" />
+		<property name="concurrent" value="false" />
+	</bean>
+		
+	<bean id="smsInfoReceiverTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="smsInfoReceiver" />
+		<!-- 시작하고 1분후에 실행한다. (milisecond) -->
+		<property name="startDelay" value="60000" />
+		<!-- 매 60초마다 실행한다. (milisecond) 데몬 형식으로 계속 기동 중 -->
+		<property name="repeatInterval" value="60000" />
+	</bean>
+	
+	<!-- 배포용인 경우 제외 SMS 서비스 제외 -->
+	<!--
+	<bean id="smsInfoReceiverScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="smsInfoReceiverTrigger" />
+			</list>
+		</property>
+	</bean>
+	-->
+
+</beans>

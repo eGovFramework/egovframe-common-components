@@ -1,0 +1,120 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MapMaterialDAO">
+
+	<select id="selectMapMaterialList" parameterType="egovframework.com.dam.map.mat.service.MapMaterialVO" resultType="egovMap">
+		
+			SELECT  B.ORGNZT_NM						orgnztNm
+				 ,	A.KNWLDG_TY_CODE				knoTypeCd
+			     ,  A.EXPERT_ID						speId
+			     ,  A.KNWLDG_TY_NM					knoTypeNm     
+                 ,  DATE_FORMAT(A.CL_DE,'%Y-%m-%d') clYmd
+			     ,  A.KNWLDG_URL					knoUrl
+			     ,	A.FRST_REGISTER_ID				frstRegisterId
+			     ,	A.FRST_REGIST_PNTTM			     FRST_REGISTER_PNTTM
+			     ,  A.LAST_UPDUSR_ID				lastUpdusrId
+			     ,	A.LAST_UPDT_PNTTM				lastUpdusrPnttm
+			FROM COMTNDAMMAPKNO A, COMTNDAMMAPTEAM B
+			WHERE A.ORGNZT_ID = B.ORGNZT_ID
+		
+			<if test='searchCondition == "1"'>AND
+				binary(B.ORGNZT_NM) LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+			<if test='searchCondition == "2"'>AND
+				binary(A.KNWLDG_TY_NM) LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>			
+			 LIMIT  #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+
+	<select id="selectMapMaterialTotCnt" parameterType="egovframework.com.dam.map.mat.service.MapMaterialVO" resultType="int">
+		
+			SELECT  COUNT(*) totcnt 
+			FROM COMTNDAMMAPKNO A, COMTNDAMMAPTEAM B
+			WHERE A.ORGNZT_ID = B.ORGNZT_ID
+		
+			<if test='searchCondition == "1"'>AND
+				binary(B.ORGNZT_NM) LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+			<if test='searchCondition == "2"'>AND
+				binary(A.KNWLDG_TY_NM) LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+	</select>
+
+	<select id="selectMapMaterial" parameterType="egovframework.com.dam.map.mat.service.MapMaterial" resultType="egovframework.com.dam.map.mat.service.MapMaterial">
+		
+            SELECT  A.KNWLDG_TY_CODE 					knoTypeCd
+				 ,	A.ORGNZT_ID							orgnztId
+				 ,  B.ORGNZT_NM							orgnztNm
+			     ,  A.EXPERT_ID							speId
+			     ,  A.KNWLDG_TY_NM						knoTypeNm
+                 ,  DATE_FORMAT(A.CL_DE,'%Y-%m-%d') 	clYmd
+                 ,  A.KNWLDG_URL         				knoUrl
+			     ,	A.FRST_REGISTER_ID					frstRegisterId
+			     ,	A.FRST_REGIST_PNTTM				     FRST_REGISTER_PNTTM
+			     ,  A.LAST_UPDUSR_ID					lastUpdusrId
+			     ,	A.LAST_UPDT_PNTTM             	 	lastUpdusrPnttm
+			FROM COMTNDAMMAPKNO A, COMTNDAMMAPTEAM B
+			WHERE A.ORGNZT_ID = B.ORGNZT_ID
+            AND   A.KNWLDG_TY_CODE = #{knoTypeCd}
+		
+	</select>
+
+	<insert id="insertMapMaterial">
+		
+		    INSERT 
+		      INTO  COMTNDAMMAPKNO
+		         (  KNWLDG_TY_CODE
+		         ,  ORGNZT_ID
+		         ,	EXPERT_ID
+		         ,	KNWLDG_TY_NM
+		         ,  CL_DE
+		         ,  KNWLDG_URL
+			     ,	FRST_REGISTER_ID
+			     ,	FRST_REGIST_PNTTM
+		         ,  LAST_UPDUSR_ID			     	         
+		         ,  LAST_UPDT_PNTTM
+		         ) 
+		    VALUES  
+		         (  #{knoTypeCd}
+		         ,  #{orgnztId}
+		         ,  #{speId}
+		         ,  #{knoTypeNm}		         		         
+		         ,  #{clYmd}
+		         ,  #{knoUrl}
+		         ,  #{frstRegisterId}
+		         ,  sysdate()		         		         
+		         ,  #{lastUpdusrId}
+		         ,  sysdate()
+		         ) 
+		
+	</insert>
+
+	<update id="updateMapMaterial">
+		
+            UPDATE  COMTNDAMMAPKNO 
+               SET  ORGNZT_ID         = #{orgnztId}
+                 ,  EXPERT_ID        	  = #{speId}
+                 ,  KNWLDG_TY_NM		  = #{knoTypeNm}
+                 ,  CL_DE  		  = #{clYmd}
+                 ,  KNWLDG_URL           = #{knoUrl}               
+                 ,  LAST_UPDUSR_ID    = #{lastUpdusrId}                 
+                 ,  LAST_UPDT_PNTTM = sysdate()
+             WHERE  KNWLDG_TY_CODE       = #{knoTypeCd} 
+		
+	</update>
+
+	<delete id="deleteMapMaterial">
+		
+            DELETE  FROM COMTNDAMMAPKNO 
+            WHERE   KNWLDG_TY_CODE = #{knoTypeCd}
+		
+	</delete>
+
+	<select id="selectKnoTypeCdCheck" parameterType="String" resultType="int">
+		SELECT COUNT(*)
+		  FROM COMTNDAMMAPKNO
+		 WHERE KNWLDG_TY_CODE = #{knoTypeCd}
+	</select>
+
+</mapper>

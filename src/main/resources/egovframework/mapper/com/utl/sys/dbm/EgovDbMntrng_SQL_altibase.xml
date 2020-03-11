@@ -1,0 +1,264 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DbMntrngDao">
+
+    <resultMap id="dbMntrngResult" type="egovframework.com.utl.sys.dbm.service.DbMntrng">
+        <result property="dataSourcNm" column="DATA_SOURC_NM"/>
+        <result property="serverNm" column="SERVER_NM"/>
+        <result property="dbmsKind" column="DBMS_KND"/>
+        <result property="ceckSql" column="CECK_SQL"/>
+        <result property="mngrNm" column="MNGR_NM"/>
+        <result property="mngrEmailAddr" column="MNGR_EMAIL_ADRES"/>
+        <result property="mntrngSttus" column="MNTRNG_STTUS"/>
+        <result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+        <result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+        <result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+        <result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+        <result property="creatDt" column="CREAT_DT"/>
+        <result property="mntrngSttusNm" column="MNTRNG_STTUS_NM"/>
+        <result property="dbmsKindNm" column="DBMS_KIND_NM"/>
+    </resultMap>
+
+    <resultMap id="dbMntrngLogResult" type="egovframework.com.utl.sys.dbm.service.DbMntrngLog">
+        <result property="logId" column="LOG_ID"/>
+        <result property="dataSourcNm" column="DATA_SOURC_NM"/>
+        <result property="serverNm" column="SERVER_NM"/>
+        <result property="dbmsKind" column="DBMS_KND"/>
+        <result property="ceckSql" column="CECK_SQL"/>
+        <result property="mngrNm" column="MNGR_NM"/>
+        <result property="mngrEmailAddr" column="MNGR_EMAIL_ADRES"/>
+        <result property="mntrngSttus" column="MNTRNG_STTUS"/>
+        <result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+        <result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+        <result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+        <result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+        <result property="creatDt" column="CREAT_DT"/>
+        <result property="logInfo" column="LOG_INFO"/>
+        <result property="mntrngSttusNm" column="MNTRNG_STTUS_NM"/>
+        <result property="dbmsKindNm" column="DBMS_KIND_NM"/>
+    </resultMap>
+
+    <select id="selectDbMntrngList" parameterType="egovframework.com.utl.sys.dbm.service.DbMntrng" resultMap="dbMntrngResult">
+         
+        SELECT * FROM ( SELECT rownum rn, TB.* FROM (
+            SELECT A.DATA_SOURC_NM, A.SERVER_NM, A.DBMS_KND, A.CECK_SQL, 
+                   A.MNGR_NM, A.MNGR_EMAIL_ADRES, A.MNTRNG_STTUS, 
+                   TO_CHAR(A.LAST_UPDT_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS LAST_UPDT_PNTTM, A.LAST_UPDUSR_ID,
+                   A.FRST_REGISTER_ID, TO_CHAR(A.FRST_REGIST_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS FRST_REGIST_PNTTM,
+                   TO_CHAR(A.CREAT_DT, 'YYYY-MM-DD HH24:MI:SS') AS CREAT_DT,
+                   B.CODE_NM DBMS_KIND_NM, C.CODE_NM MNTRNG_STTUS_NM
+            FROM COMTNDBMNTRNG A, COMTCCMMNDETAILCODE B, COMTCCMMNDETAILCODE C
+            WHERE A.DBMS_KND = B.CODE
+              AND A.MNTRNG_STTUS = C.CODE
+              AND B.CODE_ID = 'COM048'
+              AND C.CODE_ID = 'COM046'
+        
+            <if test="searchCondition == 0">AND
+                   A.DATA_SOURC_NM LIKE '%' || #{searchKeyword} || '%'      
+            </if>
+            <if test="searchCondition == 1">AND
+                   A.SERVER_NM LIKE '%' || #{searchKeyword} || '%'      
+            </if>
+            <if test="searchCondition == 2">AND
+                   A.MNGR_NM LIKE '%' || #{searchKeyword} || '%'        
+            </if>
+            <if test="searchCondition == 3">AND
+					C.CODE_NM LIKE #{searchKeyword} || '%' 		
+			</if>
+        
+            ORDER BY A.DATA_SOURC_NM ASC
+            ) TB ) WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+                     
+    </select>
+
+    <select id="selectDbMntrngListCnt" parameterType="egovframework.com.utl.sys.dbm.service.DbMntrng" resultType="java.lang.Integer">
+        
+            SELECT COUNT(*) totcnt
+            FROM COMTNDBMNTRNG A, COMTCCMMNDETAILCODE B, COMTCCMMNDETAILCODE C
+            WHERE A.DBMS_KND = B.CODE
+              AND A.MNTRNG_STTUS = C.CODE
+              AND B.CODE_ID = 'COM048'
+              AND C.CODE_ID = 'COM046'
+        
+            <if test="searchCondition == 0">AND
+                   A.DATA_SOURC_NM LIKE '%' || #{searchKeyword} || '%'      
+            </if>
+            <if test="searchCondition == 1">AND
+                   A.SERVER_NM LIKE '%' || #{searchKeyword} || '%'      
+            </if>
+            <if test="searchCondition == 2">AND
+                   A.MNGR_NM LIKE '%' || #{searchKeyword} || '%'        
+            </if>
+    </select>
+    
+    <select id="selectDbMntrng" parameterType="egovframework.com.utl.sys.dbm.service.DbMntrng" resultMap="dbMntrngResult">
+        
+            SELECT A.DATA_SOURC_NM, A.SERVER_NM, A.DBMS_KND, A.CECK_SQL, 
+                   A.MNGR_NM, A.MNGR_EMAIL_ADRES, A.MNTRNG_STTUS, 
+                   TO_CHAR(A.LAST_UPDT_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS LAST_UPDT_PNTTM, A.LAST_UPDUSR_ID,
+                   A.FRST_REGISTER_ID, TO_CHAR(A.FRST_REGIST_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS FRST_REGIST_PNTTM,
+                   TO_CHAR(A.CREAT_DT, 'YYYY-MM-DD HH24:MI:SS') AS CREAT_DT,
+                   B.CODE_NM DBMS_KIND_NM, C.CODE_NM MNTRNG_STTUS_NM
+            FROM COMTNDBMNTRNG A, COMTCCMMNDETAILCODE B, COMTCCMMNDETAILCODE C
+            WHERE A.DBMS_KND = B.CODE
+              AND A.MNTRNG_STTUS = C.CODE
+              AND B.CODE_ID = 'COM048'
+              AND C.CODE_ID = 'COM046'
+              AND A.DATA_SOURC_NM = #{dataSourcNm}
+        
+    </select>
+
+    <insert id="insertDbMntrng" parameterType="egovframework.com.utl.sys.dbm.service.DbMntrng">
+        
+            INSERT INTO COMTNDBMNTRNG (
+                DATA_SOURC_NM,SERVER_NM,DBMS_KND,CECK_SQL,MNGR_NM,MNGR_EMAIL_ADRES,
+                MNTRNG_STTUS,LAST_UPDT_PNTTM,LAST_UPDUSR_ID, CREAT_DT, FRST_REGISTER_ID, FRST_REGIST_PNTTM
+                ) 
+            VALUES (
+                    #{dataSourcNm},  
+                    #{serverNm},
+                    #{dbmsKind},
+                    #{ceckSql},
+                    #{mngrNm},
+                    #{mngrEmailAddr},
+                    #{mntrngSttus},
+                    SYSDATE,
+                    #{lastUpdusrId},
+                    SYSDATE,
+                    #{frstRegisterId},
+                    SYSDATE
+                 ) 
+        
+    </insert>
+
+     <update id="updateDbMntrng" parameterType="egovframework.com.utl.sys.dbm.service.DbMntrng">
+        
+            UPDATE COMTNDBMNTRNG SET 
+                SERVER_NM = #{serverNm},
+                DBMS_KND = #{dbmsKind},
+                CECK_SQL = #{ceckSql},
+                MNGR_NM = #{mngrNm},
+                MNGR_EMAIL_ADRES = #{mngrEmailAddr},
+                MNTRNG_STTUS = #{mntrngSttus},
+                LAST_UPDUSR_ID = #{lastUpdusrId},
+                LAST_UPDT_PNTTM = SYSDATE,
+                CREAT_DT = SYSDATE
+            WHERE DATA_SOURC_NM = #{dataSourcNm} 
+        
+    </update>
+    
+    <delete id="deleteDbMntrng" parameterType="egovframework.com.utl.sys.dbm.service.DbMntrng">
+        
+            DELETE  
+            FROM COMTNDBMNTRNG 
+             WHERE  DATA_SOURC_NM = #{dataSourcNm} 
+        
+    </delete>
+
+    <insert id="insertDbMntrngLog" parameterType="egovframework.com.utl.sys.dbm.service.DbMntrngLog">
+        
+            INSERT INTO COMTHDBMNTRNGLOGINFO (
+                LOG_ID, DATA_SOURC_NM,SERVER_NM,DBMS_KND,CECK_SQL,MNGR_NM,MNGR_EMAIL_ADRES,
+                MNTRNG_STTUS,LAST_UPDT_PNTTM,LAST_UPDUSR_ID, CREAT_DT, FRST_REGISTER_ID, FRST_REGIST_PNTTM, LOG_INFO
+                ) 
+            VALUES (
+                    #{logId},
+                    #{dataSourcNm},  
+                    #{serverNm},
+                    #{dbmsKind},
+                    #{ceckSql},
+                    #{mngrNm},
+                    #{mngrEmailAddr},
+                    #{mntrngSttus},
+                    SYSDATE,
+                    #{lastUpdusrId},
+                    SYSDATE,
+                    #{frstRegisterId},
+                    SYSDATE,
+                    #{logInfo}
+                 ) 
+        
+    </insert>
+
+    <select id="selectDbMntrngLogList" parameterType="egovframework.com.utl.sys.dbm.service.DbMntrngLog" resultMap="dbMntrngLogResult">
+         
+        SELECT * FROM ( SELECT rownum rn, TB.* FROM (
+            SELECT A.LOG_ID, A.DATA_SOURC_NM, A.SERVER_NM, A.DBMS_KND, A.CECK_SQL, 
+                   A.MNGR_NM, A.MNGR_EMAIL_ADRES, A.MNTRNG_STTUS, 
+                   TO_CHAR(A.LAST_UPDT_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS LAST_UPDT_PNTTM, A.LAST_UPDUSR_ID,
+                   A.FRST_REGISTER_ID, TO_CHAR(A.FRST_REGIST_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS FRST_REGIST_PNTTM,
+                   TO_CHAR(A.CREAT_DT, 'YYYY-MM-DD HH24:MI:SS') AS CREAT_DT, A.LOG_INFO,
+                   B.CODE_NM DBMS_KIND_NM, C.CODE_NM MNTRNG_STTUS_NM
+            FROM COMTHDBMNTRNGLOGINFO A, COMTCCMMNDETAILCODE B, COMTCCMMNDETAILCODE C
+            WHERE A.DBMS_KND = B.CODE
+              AND A.MNTRNG_STTUS = C.CODE
+              AND B.CODE_ID = 'COM048'
+              AND C.CODE_ID = 'COM046'
+        
+            <if test="searchKeywordFrom != null and searchKeywordFrom != ''">AND
+                   TO_CHAR(A.CREAT_DT, 'YYYYMMDD') >= #{searchKeywordFrom}
+            </if>
+            <if test="searchKeywordTo != null and searchKeywordTo != ''">AND
+                   TO_CHAR(A.CREAT_DT, 'YYYYMMDD') &lt;= #{searchKeywordTo}
+            </if>
+            <if test="searchCondition == 0">AND
+                   A.DATA_SOURC_NM LIKE '%' || #{searchKeyword} || '%'      
+            </if>
+            <if test="searchCondition == 1">AND
+                   A.SERVER_NM LIKE '%' || #{searchKeyword} || '%'      
+            </if>
+            <if test="searchCondition == 2">AND
+                   A.MNGR_NM LIKE '%' || #{searchKeyword} || '%'        
+            </if>
+        
+            ORDER BY A.LOG_ID DESC
+            ) TB ) WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+                     
+    </select>
+
+    <select id="selectDbMntrngLogListCnt" parameterType="egovframework.com.utl.sys.dbm.service.DbMntrngLog" resultType="java.lang.Integer">
+        
+            SELECT COUNT(*) totcnt
+            FROM COMTHDBMNTRNGLOGINFO A, COMTCCMMNDETAILCODE B, COMTCCMMNDETAILCODE C
+            WHERE A.DBMS_KND = B.CODE
+              AND A.MNTRNG_STTUS = C.CODE
+              AND B.CODE_ID = 'COM048'
+              AND C.CODE_ID = 'COM046'
+        
+            <if test="searchKeywordFrom != null and searchKeywordFrom != ''">AND
+                       TO_CHAR(A.CREAT_DT, 'YYYYMMDD') >= #{searchKeywordFrom}      
+                
+            </if>
+            <if test="searchKeywordTo != null and searchKeywordTo != ''">AND
+                       TO_CHAR(A.CREAT_DT, 'YYYYMMDD') &lt;= #{searchKeywordTo}
+                
+            </if>
+            <if test="searchCondition == 0">AND
+                   A.DATA_SOURC_NM LIKE '%' || #{searchKeyword} || '%'      
+            </if>
+            <if test="searchCondition == 1">AND
+                   A.SERVER_NM LIKE '%' || #{searchKeyword} || '%'      
+            </if>
+            <if test="searchCondition == 2">AND
+                   A.MNGR_NM LIKE '%' || #{searchKeyword} || '%'        
+            </if>
+    </select>
+
+    <select id="selectDbMntrngLog" parameterType="egovframework.com.utl.sys.dbm.service.DbMntrngLog" resultMap="dbMntrngLogResult">
+        
+            SELECT A.LOG_ID, A.DATA_SOURC_NM, A.SERVER_NM, A.DBMS_KND, A.CECK_SQL, 
+                   A.MNGR_NM, A.MNGR_EMAIL_ADRES, A.MNTRNG_STTUS, 
+                   TO_CHAR(A.LAST_UPDT_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS LAST_UPDT_PNTTM, A.LAST_UPDUSR_ID,
+                   A.FRST_REGISTER_ID, TO_CHAR(A.FRST_REGIST_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS FRST_REGIST_PNTTM,
+                   TO_CHAR(A.CREAT_DT, 'YYYY-MM-DD HH24:MI:SS') AS CREAT_DT, A.LOG_INFO,
+                   B.CODE_NM DBMS_KIND_NM, C.CODE_NM MNTRNG_STTUS_NM
+            FROM COMTHDBMNTRNGLOGINFO A, COMTCCMMNDETAILCODE B, COMTCCMMNDETAILCODE C
+            WHERE A.DBMS_KND = B.CODE
+              AND A.MNTRNG_STTUS = C.CODE
+              AND B.CODE_ID = 'COM048'
+              AND C.CODE_ID = 'COM046'
+              AND A.LOG_ID = #{logId}
+        
+    </select>
+</mapper>

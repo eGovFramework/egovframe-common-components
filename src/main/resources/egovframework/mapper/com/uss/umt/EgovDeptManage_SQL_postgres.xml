@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="deptManageDAO">
+
+    <resultMap id="deptManageVO" type="egovframework.com.uss.umt.service.DeptManageVO">
+        <result property="orgnztId" column="ORGNZT_ID"/>
+        <result property="orgnztNm" column="ORGNZT_NM"/>
+        <result property="orgnztDc" column="ORGNZT_DC"/>
+    </resultMap>
+
+    <select id="selectDeptManageList" resultMap="deptManageVO">
+            SELECT ORGNZT_ID,
+                   ORGNZT_NM,
+                   ORGNZT_DC
+              FROM COMTNORGNZTINFO
+             WHERE 1=1
+            <if test="searchCondition == 1">AND
+                ORGNZT_NM LIKE CONCAT('%' , #{searchKeyword}, '%')
+            </if>
+            <![CDATA[
+            ORDER BY ORGNZT_ID DESC
+            LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+            ]]>  
+    </select>
+
+    <select id="selectDeptManageListTotCnt" resultType="int">
+
+            SELECT COUNT(*) totcnt
+            FROM COMTNORGNZTINFO
+            WHERE 1=1
+            <if test="searchCondition == 1">AND
+                ORGNZT_NM LIKE CONCAT('%' , #{searchKeyword}, '%')
+            </if>
+    </select>
+    
+    <select id="selectDeptManage" resultMap="deptManageVO">
+        
+            SELECT ORGNZT_ID,
+                   ORGNZT_NM,
+                   ORGNZT_DC
+              FROM COMTNORGNZTINFO
+             WHERE ORGNZT_ID = #{orgnztId}    
+        
+    </select>
+
+    <insert id="insertDeptManage">
+        
+            INSERT INTO COMTNORGNZTINFO
+                   (ORGNZT_ID,
+                    ORGNZT_NM,
+                    ORGNZT_DC)
+            VALUES (#{orgnztId},
+                    #{orgnztNm}, 
+                    #{orgnztDc})   
+        
+    </insert>     
+
+    <update id="updateDeptManage">
+            UPDATE COMTNORGNZTINFO
+               SET ORGNZT_NM = #{orgnztNm},
+                   ORGNZT_DC = #{orgnztDc}  
+             WHERE ORGNZT_ID = #{orgnztId}    
+    </update>    
+    
+    <delete id="deleteDeptManage">
+        
+            DELETE FROM COMTNORGNZTINFO
+             WHERE ORGNZT_ID = #{orgnztId}    
+        
+    </delete>  
+
+</mapper>

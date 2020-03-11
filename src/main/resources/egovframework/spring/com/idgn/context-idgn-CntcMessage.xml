@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+    <!-- 연계메시지 -->
+    <bean name="egovCntcMessageIdGnrService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrServiceImpl" destroy-method="destroy">
+        <property name="dataSource" ref="egov.dataSource" />
+        <property name="strategy"   ref="egovCntcMessageIdMsgtrategy" />
+        <property name="blockSize"  value="10"/>
+        <property name="table"      value="COMTECOPSEQ"/>
+        <property name="tableName"  value="CNTC_MESSAGE_ID"/>
+    </bean>
+    <bean name="egovCntcMessageIdMsgtrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+        <property name="prefix"   value="MSG" />
+        <property name="cipers"   value="17" />
+        <property name="fillChar" value="0" />
+    </bean>
+    
+    <!-- 연계메시지항목 -->
+    <bean name="egovCntcMessageItemIdGnrService" class="egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrServiceImpl" destroy-method="destroy">
+        <property name="dataSource" ref="egov.dataSource" />
+        <property name="strategy"   ref="egovCntcMessageItemIdMsgtrategy" />
+        <property name="blockSize"  value="10"/>
+        <property name="table"      value="COMTECOPSEQ"/>
+        <property name="tableName"  value="ITEM_ID"/>
+    </bean>
+    <bean name="egovCntcMessageItemIdMsgtrategy" class="egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">
+        <property name="prefix"   value="ITM" />
+        <property name="cipers"   value="17" />
+        <property name="fillChar" value="0" />
+    </bean>
+    
+
+</beans>

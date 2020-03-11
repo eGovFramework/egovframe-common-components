@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="RequestOffer">
+
+	<!-- ::ResultMap 선언 -->
+	<resultMap id="RequestOfferVOs" type="egovframework.com.dam.spe.req.service.RequestOfferVO">
+		<result property="knoId" column="KNWLDG_ID"/>
+		<result property="orgnztId" column="ORGNZT_ID"/>
+		<result property="speId" column="EXPERT_ID"/>
+		<result property="knoTypeCd" column="KNWLDG_TY_CODE"/>
+		<result property="emplyrId" column="EMPLYR_ID"/>
+		<result property="knoNm" column="KNWLDG_NM"/>
+		<result property="knoCn" column="KNWLDG_CN"/>
+		<result property="atchFileId" column="ATCH_FILE_ID"/>
+		<result property="ansParents" column="PARNTS_KNWLDG_ID"/>
+		<result property="ansDepth" column="ANSWER_DP"/>
+		<result property="ansSeq" column="ANSWER_ORDR"/>
+		<result property="ansNumber" column="ANSWER_GROUP_NO"/>
+
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+	</resultMap>
+
+	<!-- 지식정보제공/지식정보요청::목록조회_게시물 총갯수  -->
+	<select id="selectRequestOfferSpeCnt" parameterType="java.util.Map" resultType="int">
+		SELECT COUNT(EXPERT_ID) CNT FROM COMTNDAMPRO WHERE EXPERT_ID = #{speId}
+	</select>
+
+	<!-- 지식정보제공/지식정보요청::목록조회 게시물정보 -->
+	<select id="selectRequestOffer" resultType="egovMap">
+	 
+		SELECT
+		A.KNWLDG_ID									KNO_ID,
+		A.ORGNZT_ID									ORGNZT_ID,
+		(SELECT ORGNZT_NM FROM COMTNDAMMAPTEAM WHERE ORGNZT_ID=A.ORGNZT_ID) 		ORGNZT_NM,
+        (SELECT KNWLDG_TY_NM FROM COMTNDAMMAPKNO WHERE KNWLDG_TY_CODE=A.KNWLDG_TY_CODE) KNO_TYPE_NM,
+		A.EXPERT_ID 								SPE_UNIQ,
+		(SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = A.EXPERT_ID) 			SPE_NM,
+		(SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = A.EXPERT_ID)			SPE_ID,
+		A.KNWLDG_TY_CODE							KNO_TYPE_CD,
+		A.EMPLYR_ID 								EMPLYR_UNIQ,
+		(SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = A.EMPLYR_ID)			USER_NM,
+		(SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = A.EMPLYR_ID) 			EMPLYR_ID,
+		A.KNWLDG_NM									KNO_NM,
+		A.KNWLDG_CN									KNO_CN,
+		A.ATCH_FILE_ID								ATCH_FILE_ID,
+		A.PARNTS_KNWLDG_ID							ANS_PARENTS,
+		A.ANSWER_DP									ANS_DEPTH,
+		A.ANSWER_ORDR								ANS_SEQ,
+		A.ANSWER_GROUP_NO							ANS_NUMBER,
+		A.FRST_REGISTER_ID							FRST_REGISTER_ID,
+		DATE_FORMAT(A.FRST_REGIST_PNTTM,'%Y-%m-%d') FRST_REGIST_PNTTM,
+		(SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = A.FRST_REGISTER_ID) 	FRST_REGISTER_NM
+		FROM COMTNDAMCALRES A
+		WHERE 1=1
+	 
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 	
+			<if test="searchCondition == 'A.KNWLDG_NM'">
+				AND A.KNWLDG_NM LIKE CONCAT ('%', #{searchKeyword},'%')
+			</if>
+			<if test="searchCondition == 'A.KNWLDG_CN'">
+				AND A.KNWLDG_CN LIKE CONCAT ('%', #{searchKeyword},'%')
+			</if>
+	 	
+	 </if>
+	 
+		ORDER BY A.ANSWER_GROUP_NO DESC, A.ANSWER_ORDR ASC, A.ANSWER_DP ASC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	
+	</select>
+	<!-- 지식정보제공/지식정보요청::목록조회_게시물 총갯수  -->
+	<select id="selectRequestOfferCnt" resultType="int">
+		SELECT
+		COUNT(*) totcnt
+		FROM COMTNDAMCALRES A
+		WHERE 1=1
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 	
+			<if test="searchCondition == 'A.KNWLDG_NM'">
+				AND A.KNWLDG_NM LIKE CONCAT ('%', #{searchKeyword},'%')
+			</if>
+			<if test="searchCondition == 'A.KNWLDG_CN'">
+				AND A.KNWLDG_CN LIKE CONCAT ('%', #{searchKeyword},'%')
+			</if>
+	 	
+	 </if>
+	</select>
+
+    <!-- 지식정보제공/지식정보요청::삭제  -->
+	<delete id="deleteRequestOffer">
+		
+			DELETE FROM COMTNDAMCALRES
+			WHERE KNWLDG_ID=#{knoId}
+		
+	</delete>
+	<!-- 지식정보제공/지식정보요청::하위 답변 수  -->
+	<select id="selectRequestOfferDelCnt" resultType="int">
+	SELECT COUNT(KNWLDG_ID) CNT
+	FROM COMTNDAMCALRES
+	WHERE 1=1
+	AND PARNTS_KNWLDG_ID = #{ansParents}
+	</select>
+
+	<!-- 지식정보제공/지식정보요청::수정  -->
+	<update id="updateRequestOffer">
+	 
+		UPDATE COMTNDAMCALRES
+		SET
+			ORGNZT_ID=#{orgnztId},
+			EXPERT_ID=#{speId},
+			KNWLDG_TY_CODE=#{knoTypeCd},
+			EMPLYR_ID=#{emplyrId},
+			KNWLDG_NM=#{knoNm},
+			KNWLDG_CN=#{knoCn},
+			ATCH_FILE_ID=#{atchFileId},
+			PARNTS_KNWLDG_ID=#{ansParents},
+			ANSWER_DP=#{ansDepth},
+			ANSWER_ORDR=#{ansSeq},
+			ANSWER_GROUP_NO=#{ansNumber},
+			LAST_UPDT_PNTTM = sysdate(),
+			LAST_UPDUSR_ID = #{lastUpdusrId}
+		WHERE KNWLDG_ID=#{knoId}
+	 
+	</update>
+
+	<!-- 지식정보제공/지식정보요청::상세보기 -->
+	<select id="selectRequestOfferDetail" resultMap="RequestOfferVOs">
+	SELECT
+		A.KNWLDG_ID,
+		A.ORGNZT_ID,
+		A.EXPERT_ID,
+		A.KNWLDG_TY_CODE,
+		A.EMPLYR_ID,
+		A.KNWLDG_NM,
+		A.KNWLDG_CN,
+		A.ATCH_FILE_ID,
+		A.PARNTS_KNWLDG_ID,
+		A.ANSWER_DP,
+		A.ANSWER_ORDR,
+		A.ANSWER_GROUP_NO,
+		A.FRST_REGIST_PNTTM,
+		A.FRST_REGISTER_ID,
+		A.LAST_UPDT_PNTTM,
+		A.LAST_UPDUSR_ID
+		FROM COMTNDAMCALRES A
+		WHERE 1=1
+		AND A.KNWLDG_ID=#{knoId}
+	</select>
+
+	<!-- #{knoId} 지식정보제공/지식정보요청::입력  -->
+	<insert id="insertRequestOfferSave">
+	<selectKey keyProperty="ansNumber" resultType="int" order="BEFORE">
+	 SELECT IFNULL(MAX(ANSWER_GROUP_NO)+1, 1) FROM COMTNDAMCALRES
+	</selectKey>
+	INSERT INTO COMTNDAMCALRES (
+		KNWLDG_ID,
+		ORGNZT_ID,
+		EXPERT_ID,
+		KNWLDG_TY_CODE,
+		EMPLYR_ID,
+		KNWLDG_NM,
+		KNWLDG_CN,
+		ATCH_FILE_ID,
+		PARNTS_KNWLDG_ID,
+		ANSWER_DP,
+		ANSWER_ORDR,
+		ANSWER_GROUP_NO,
+		FRST_REGIST_PNTTM,
+		FRST_REGISTER_ID,
+		LAST_UPDT_PNTTM,
+		LAST_UPDUSR_ID
+	)VALUES(
+		#{knoId},
+		#{orgnztId},
+		#{speId},
+		#{knoTypeCd},
+		#{emplyrId},
+		#{knoNm},
+		#{knoCn},
+		#{atchFileId},
+		'',
+		0,
+		0,
+		#{ansNumber},
+		sysdate(),
+		#{frstRegisterId},
+		sysdate(),
+		#{lastUpdusrId}
+	)
+
+	</insert>
+
+	<!-- 지식정보제공/지식정보요청::하위레벨 정보 조회  -->
+	<select id="selectRequestOfferReplyaAnsParents" resultType="egovMap">
+	SELECT
+		KNWLDG_ID			knoId,
+		PARNTS_KNWLDG_ID	ansParents,
+		ANSWER_ORDR 		ansSeq
+	FROM COMTNDAMCALRES
+	WHERE 1=1
+	AND ANSWER_GROUP_NO = #{ansNumber}
+	AND PARNTS_KNWLDG_ID = #{ansParents}
+	ORDER BY ANSWER_ORDR DESC
+	LIMIT 1
+	</select>
+
+	<!-- 지식정보제공/지식정보요청::레벨 탐색  -->
+	<select id="selectRequestOfferReplyaAnsParentsSearch" resultType="egovMap">
+	SELECT
+		KNWLDG_ID			knoId,
+		PARNTS_KNWLDG_ID	ansParents,
+		ANSWER_ORDR 		ansSeq
+	FROM COMTNDAMCALRES
+	WHERE 1=1
+	AND PARNTS_KNWLDG_ID=#{ansParents}
+	ORDER BY ANSWER_ORDR DESC
+	LIMIT 1
+	</select>
+	<!-- 지식정보제공/지식정보요청::Seq 검색  -->
+	<select id="selectRequestOfferReplySeq" resultType="int">
+	SELECT IFNULL((MAX(ANSWER_ORDR)+1), 1) SEQ
+	FROM COMTNDAMCALRES
+	WHERE 1=1
+	AND ANSWER_GROUP_NO = #{ansNumber}
+	AND PARNTS_KNWLDG_ID = #{ansParents}
+	</select>
+	<!-- 지식정보제공/지식정보요청::답변등록  -->
+	<insert id="insertRequestOfferReply">
+	INSERT INTO COMTNDAMCALRES (
+		KNWLDG_ID,
+		ORGNZT_ID,
+		EXPERT_ID,
+		KNWLDG_TY_CODE,
+		EMPLYR_ID,
+		KNWLDG_NM,
+		KNWLDG_CN,
+		ATCH_FILE_ID,
+		PARNTS_KNWLDG_ID,
+		ANSWER_DP,
+		ANSWER_ORDR,
+		ANSWER_GROUP_NO,
+		FRST_REGIST_PNTTM,
+		FRST_REGISTER_ID,
+		LAST_UPDT_PNTTM,
+		LAST_UPDUSR_ID
+	)VALUES(
+		#{knoId},
+		#{orgnztId},
+		#{speId},
+		#{knoTypeCd},
+		#{emplyrId},
+		#{knoNm},
+		#{knoCn},
+		#{atchFileId},
+		#{ansParents},
+		#{ansDepth},
+		#{ansSeq},
+		#{ansNumber},
+		sysdate(),
+		#{frstRegisterId},
+		sysdate(),
+		#{lastUpdusrId}
+	)
+	</insert>
+	<!-- 지식정보제공/지식정보요청::답변SEQ 업데이트  -->
+	<update id="updateRequestOfferReply">
+	UPDATE COMTNDAMCALRES
+	SET
+		ANSWER_ORDR=ANSWER_ORDR+1
+		WHERE 1=1
+		AND ANSWER_GROUP_NO = #{ansNumber}
+		AND ANSWER_ORDR >= #{ansSeq}
+	</update>
+
+</mapper>

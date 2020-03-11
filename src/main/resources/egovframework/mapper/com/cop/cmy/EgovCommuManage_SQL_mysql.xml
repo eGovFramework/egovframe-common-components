@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- 
+	수정일                 수정자                          수정내용
+  =========     =======    =================================================
+  2011.9.7   	정진오     	 	deleteCommunityUserInf과 deleteAllCommunityUserInf의 update 문에
+  							MNGR_AT = 'N' 추가(커뮤니티 탈퇴 시 운영자 인 경우 강제로 비운영자로 변경 필요) 
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CommuManage">
+
+	<resultMap id="CommuUserList" type="egovframework.com.cop.cmy.service.CommunityUser">
+		<result property="cmmntyId" column="CMMNTY_ID"/>
+		<result property="emplyrId" column="EMPLYR_ID"/>
+		<result property="emplyrNm" column="EMPLYR_NM"/>
+		<result property="mngrAt" column="MNGR_AT"/>
+		<result property="sbscrbDe" column="SBSCRB_DE"/>
+		<result property="secsnDe" column="SECSN_DE"/>
+		<result property="userId" column="USER_ID"/>
+		<result property="mberSttus" column="MBER_STTUS"/>
+		<result property="mberSttusNm" column="MBER_STTUS_NM"/>
+		<result property="userEmail" column="USER_EMAIL"/>
+		<result property="useAt" column="USE_AT"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+	</resultMap>
+
+	<resultMap id="CmmntyUserInf" type="egovframework.com.cop.cmy.service.CommunityUser">
+	    <result property="mngrAt" column="MNGR_AT" />
+		<result property="useAt" column="USE_AT" />				
+	</resultMap>
+	
+	<resultMap id="CmmntyManagerInf" type="egovframework.com.cop.cmy.service.CommunityUser">
+	    <result property="emplyrId" column="EMPLYR_ID" />
+		<result property="emplyrNm" column="USER_NM" />				
+	</resultMap>
+
+	<select id="selectSingleCommuUserDetail" parameterType="egovframework.com.cop.cmy.service.CommunityUserVO"  resultMap="CmmntyUserInf" >
+		<![CDATA[			
+			SELECT MNGR_AT, USE_AT FROM
+			COMTNCMMNTYUSER
+			WHERE EMPLYR_ID = #{emplyrId} 
+				AND CMMNTY_ID =  #{cmmntyId}
+		]]>
+	</select>
+
+	<select id="selectCommuManagerList" parameterType="egovframework.com.cop.cmy.service.CommunityVO" resultMap="CmmntyManagerInf">
+					
+			SELECT a.EMPLYR_ID, b.USER_NM as USER_NM 
+			FROM COMTNCMMNTYUSER a
+			LEFT OUTER JOIN COMVNUSERMASTER b
+			ON a.EMPLYR_ID = b.ESNTL_ID
+			WHERE a.CMMNTY_ID =  #{cmmntyId}
+				AND a.USE_AT = 'Y' AND a.MNGR_AT = 'Y'
+			ORDER BY a.FRST_REGIST_PNTTM ASC
+		
+	</select>	
+	
+	<select id="checkExistUser" parameterType="egovframework.com.cop.cmy.service.CommunityUserVO" resultType="java.lang.Integer">
+		
+			SELECT COUNT(CMMNTY_ID)
+				FROM
+			COMTNCMMNTYUSER
+				WHERE EMPLYR_ID = #{emplyrId} 
+					AND CMMNTY_ID = #{cmmntyId}
+		
+	</select>
+	
+	<insert id="insertCommuUserRqst" parameterType="egovframework.com.cop.cmy.service.CommunityUserVO">
+	
+		INSERT INTO COMTNCMMNTYUSER
+							(CMMNTY_ID, EMPLYR_ID, MNGR_AT, SBSCRB_DE,
+							 MBER_STTUS, USE_AT, FRST_REGIST_PNTTM, FRST_REGISTER_ID)
+				VALUES (#{cmmntyId}, #{emplyrId}, #{mngrAt}, SYSDATE(),
+								#{mberSttus}, #{useAt}, SYSDATE(), #{frstRegisterId})
+	
+	</insert>
+	
+	<select id="selectCommuUserList" parameterType="egovframework.com.cop.cmy.service.CommunityUserVO" resultMap="CommuUserList">
+ 		
+			SELECT a.CMMNTY_ID
+					  , a.EMPLYR_ID
+					  , b.USER_NM AS EMPLYR_NM
+					  , b.USER_ID
+					  , b.USER_EMAIL
+					  , a.MNGR_AT
+					  , a.SBSCRB_DE
+					  , a.SECSN_DE
+					  , a.MBER_STTUS
+					  , c.CODE_NM AS MBER_STTUS_NM
+					  , a.USE_AT
+					  , a.FRST_REGIST_PNTTM
+					  , a.FRST_REGISTER_ID
+			FROM 
+				COMTNCMMNTYUSER a
+			LEFT OUTER JOIN COMVNUSERMASTER b
+				ON a.EMPLYR_ID = b.ESNTL_ID
+			LEFT OUTER JOIN
+				(SELECT CODE_ID, CODE, CODE_NM FROM 
+					COMTCCMMNDETAILCODE WHERE CODE_ID = 'COM013' AND USE_AT='Y') c
+				ON a.MBER_STTUS = c.CODE
+			WHERE 1=1 
+ 				AND a.CMMNTY_ID = #{cmmntyId}
+			<if test="searchCnd == 0">AND
+					b.USER_NM LIKE CONCAT ('%', #{searchWrd},'%') 		
+			</if>
+					
+			ORDER BY b.USER_NM 
+			LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+							
+ 	</select>
+ 	
+ 	<select id="selectCommuUserListCnt" parameterType="egovframework.com.cop.cmy.service.CommunityUserVO" resultType="java.lang.Integer">
+		
+			SELECT 
+				COUNT(a.EMPLYR_ID)
+			FROM 
+				COMTNCMMNTYUSER a
+			LEFT OUTER JOIN COMVNUSERMASTER b
+				ON a.EMPLYR_ID = b.ESNTL_ID	
+			WHERE 1=1 
+				AND a.CMMNTY_ID = #{cmmntyId}
+			<if test="searchCnd == 0">AND
+					b.USER_NM LIKE CONCAT ('%', #{searchWrd},'%') 		
+			</if>		
+	</select>	
+	
+	<update id="insertCommuUser" parameterType="egovframework.com.cop.cmy.service.CommunityUserVO">
+			
+			UPDATE COMTNCMMNTYUSER
+				SET MBER_STTUS = 'P'
+					, LAST_UPDT_PNTTM = SYSDATE()
+					, LAST_UPDUSR_ID = #{lastUpdusrId}
+			WHERE CMMNTY_ID = #{cmmntyId}
+				AND EMPLYR_ID = #{emplyrId}
+				
+	
+	</update>
+	
+	<delete id="deleteCommuUser" parameterType="egovframework.com.cop.cmy.service.CommunityUserVO">
+	
+		DELETE FROM COMTNCMMNTYUSER
+			WHERE CMMNTY_ID = #{cmmntyId}
+				AND EMPLYR_ID = #{emplyrId}
+		
+	</delete>
+	
+	<update id="insertCommuUserAdmin" parameterType="egovframework.com.cop.cmy.service.CommunityUserVO">
+			
+			UPDATE COMTNCMMNTYUSER
+				SET MNGR_AT = 'Y'
+					, LAST_UPDT_PNTTM = SYSDATE()
+					, LAST_UPDUSR_ID = #{lastUpdusrId}
+			WHERE CMMNTY_ID = #{cmmntyId}
+				AND EMPLYR_ID = #{emplyrId}
+				
+	
+	</update>
+	
+	<update id="deleteCommuUserAdmin" parameterType="egovframework.com.cop.cmy.service.CommunityUserVO">
+			
+			UPDATE COMTNCMMNTYUSER
+				SET MNGR_AT = 'N'
+					, LAST_UPDT_PNTTM = SYSDATE()
+					, LAST_UPDUSR_ID = #{lastUpdusrId}
+			WHERE CMMNTY_ID = #{cmmntyId}
+				AND EMPLYR_ID = #{emplyrId}
+				
+	
+	</update>
+	
+</mapper>

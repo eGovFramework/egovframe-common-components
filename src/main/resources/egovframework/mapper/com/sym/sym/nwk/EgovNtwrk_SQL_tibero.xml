@@ -1,0 +1,158 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ntwrkDAO">
+
+    <resultMap id="ntwrk" type="egovframework.com.sym.sym.nwk.service.NtwrkVO">
+        <result property="ntwrkId" column="NTWRK_ID"/>
+        <result property="ntwrkIp" column="NTWRK_IP"/>
+        <result property="gtwy" column="GTWY"/>
+        <result property="subnet" column="SUBNET"/>
+        <result property="domnServer" column="DOMN_NM_SERVER"/>
+        <result property="manageIem" column="MANAGE_IEM"/>
+        <result property="userNm" column="USER_NM"/>
+        <result property="useAt" column="USE_AT"/>
+        <result property="regstYmd" column="RGSDE"/>
+        <result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+        <result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+        <result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+        <result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+    </resultMap>
+
+    <select id="selectNtwrkList" parameterType="egovframework.com.sym.sym.nwk.service.NtwrkVO" resultMap="ntwrk">
+            
+            SELECT  * 
+              FROM  (
+            SELECT ROWNUM RNUM, ALL_LIST.* 
+              FROM  (   
+                       
+             SELECT NTWRK_ID,
+                    NTWRK_IP,
+                    GTWY,
+                    SUBNET,
+                    DOMN_NM_SERVER,
+                    (SELECT CD.CODE_NM
+                       FROM COMTCCMMNDETAILCODE CD
+                      WHERE CD.CODE_ID = 'COM067'
+                        AND CD.USE_AT = 'Y'
+                        AND MANAGE_IEM = CD.CODE) AS MANAGE_IEM,
+                    USER_NM,
+                    USE_AT,
+                    TO_CHAR(RGSDE, 'yyyy-mm-dd') AS RGSDE,
+                    TO_CHAR(FRST_REGIST_PNTTM, 'yyyy-mm-dd HH24:mi:ss') AS FRST_REGIST_PNTTM,
+                    FRST_REGISTER_ID,
+                    TO_CHAR(LAST_UPDT_PNTTM, 'yyyy-mm-dd HH24:mi:ss') AS LAST_UPDT_PNTTM,
+                    LAST_UPDUSR_ID
+               FROM COMTNNTWRKINFO
+              WHERE 1 = 1
+            <if test="strManageIem !='00'">AND
+                    MANAGE_IEM = #{strManageIem}
+            </if>             
+            
+            <if test="strUserNm != null">AND
+                    USER_NM LIKE '%'||#{strUserNm}||'%'
+            </if>            
+            <![CDATA[ 
+            ORDER BY NTWRK_ID
+
+                    ) ALL_LIST
+                    )
+             WHERE  RNUM  > #{firstIndex}
+               AND  RNUM <= #{firstIndex} + #{recordCountPerPage}
+            ]]>
+    </select>
+
+    <select id="selectNtwrkListTotCnt" parameterType="egovframework.com.sym.sym.nwk.service.NtwrkVO" resultType="int">
+
+             SELECT COUNT(*) totcnt
+               FROM COMTNNTWRKINFO
+              WHERE 1 = 1
+            <if test="strManageIem !='00'">AND
+                    MANAGE_IEM = #{strManageIem}
+            </if>
+            
+            <if test="strUserNm != null">AND
+                    USER_NM LIKE '%'||#{strUserNm}||'%'
+            </if>            
+    </select>
+    
+    <select id="selectNtwrk" resultMap="ntwrk">
+        
+             SELECT NTWRK_ID,
+                    NTWRK_IP,
+                    GTWY,
+                    SUBNET,
+                    DOMN_NM_SERVER,
+                    (SELECT CD.CODE_NM
+                       FROM COMTCCMMNDETAILCODE CD
+                      WHERE CD.CODE_ID = 'COM067'
+                        AND CD.USE_AT = 'Y'
+                        AND MANAGE_IEM = CD.CODE) AS MANAGE_IEM,
+                    USER_NM,
+                    USE_AT,
+                    TO_CHAR(RGSDE, 'yyyy-mm-dd') AS RGSDE,
+                    TO_CHAR(FRST_REGIST_PNTTM, 'yyyy-mm-dd HH24:mi:ss') AS FRST_REGIST_PNTTM,
+                    FRST_REGISTER_ID,
+                    TO_CHAR(LAST_UPDT_PNTTM, 'yyyy-mm-dd HH24:mi:ss') AS LAST_UPDT_PNTTM,
+                    LAST_UPDUSR_ID
+               FROM COMTNNTWRKINFO
+              WHERE 1 = 1
+               AND NTWRK_ID = #{ntwrkId}    
+        
+    </select>
+
+    <insert id="insertNtwrk" parameterType="egovframework.com.sym.sym.nwk.service.Ntwrk">
+        
+             INSERT INTO COMTNNTWRKINFO
+                    (NTWRK_ID,
+                     NTWRK_IP,
+                     GTWY,
+                     SUBNET,
+                     DOMN_NM_SERVER,
+                     MANAGE_IEM,
+                     USER_NM,
+                     USE_AT,
+                     RGSDE,
+                     FRST_REGIST_PNTTM,
+                     FRST_REGISTER_ID,                    
+                     LAST_UPDT_PNTTM,
+                     LAST_UPDUSR_ID)
+             VALUES (#{ntwrkId},
+                     #{ntwrkIp},
+                     #{gtwy},
+                     #{subnet},
+                     #{domnServer},
+                     #{manageIem},
+                     #{userNm},
+                     #{useAt},
+                     #{regstYmd},
+                     SYSDATE,
+                     #{frstRegisterId},
+                     SYSDATE,
+                     #{lastUpdusrId})
+        
+    </insert>     
+
+    <update id="updateNtwrk" parameterType="egovframework.com.sym.sym.nwk.service.Ntwrk">
+            UPDATE COMTNNTWRKINFO
+               SET NTWRK_IP = #{ntwrkIp},
+                   GTWY = #{gtwy},
+                   SUBNET = #{subnet},
+                   DOMN_NM_SERVER = #{domnServer},
+                   MANAGE_IEM = #{manageIem},
+                   USER_NM = #{userNm},
+                   USE_AT = #{useAt},
+                   RGSDE = #{regstYmd},
+                   LAST_UPDT_PNTTM = SYSDATE,
+                   LAST_UPDUSR_ID = #{lastUpdusrId}   
+             WHERE NTWRK_ID = #{ntwrkId}
+    </update>    
+    
+    <delete id="deleteNtwrk" parameterType="egovframework.com.sym.sym.nwk.service.Ntwrk">
+        
+            DELETE FROM COMTNNTWRKINFO
+             WHERE NTWRK_ID = #{ntwrkId}
+        
+    </delete>  
+
+</mapper>

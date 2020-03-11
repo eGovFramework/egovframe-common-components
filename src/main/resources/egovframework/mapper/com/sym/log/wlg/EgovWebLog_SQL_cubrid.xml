@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- 
+	수정일                 수정자                          수정내용
+  =========     =======    =================================================
+  2011.10.17   	서준식     	 	OCCRRNC_DE 컬럼과 날짜 비교문에 RTRIM 함수 적용
+  2017.09.19		이정은			날짜로 검색 시 시분초 추가, 로그삭제기한 210일 -> 6개월로 변경
+
+--><!--Converted at: Wed May 11 15:50:45 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="WebLog">
+
+	<!-- 웹로그 맵 -->
+	<resultMap id="WebLogVO" type="egovframework.com.sym.log.wlg.service.WebLog">
+		<result property="requstId" column="REQUST_ID"/>
+		<result property="occrrncDe" column="OCCRRNC_DE"/>
+		<result property="url" column="URL"/>
+		<result property="rqesterIp" column="RQESTER_IP"/>
+		<result property="rqesterId" column="RQESTER_ID"/>
+		<result property="rqsterNm" column="RQESTER_NM"/>
+	</resultMap>
+
+	<!-- 웹 로그 등록 -->
+	<insert id="logInsertWebLog" parameterType="egovframework.com.sym.log.wlg.service.WebLog">
+		
+		<![CDATA[
+			INSERT INTO COMTNWEBLOG
+				( REQUST_ID
+				  , URL
+				  , RQESTER_ID
+				  , RQESTER_IP
+				  , OCCRRNC_DE )
+			VALUES ( #{requstId}
+				  , #{url}
+				  , #{rqesterId}
+				  , #{rqesterIp}
+				  , SYSDATETIME)
+				  ]]>
+		
+	</insert>
+
+	<!-- 웹 로그 상세 조회 -->
+	<select id="selectWebLog" parameterType="egovframework.com.sym.log.wlg.service.WebLog" resultMap="WebLogVO">
+		
+		<![CDATA[
+			SELECT
+				  a.REQUST_ID
+				, a.OCCRRNC_DE
+				, a.URL
+				, a.RQESTER_IP
+				, a.RQESTER_ID
+				, b.USER_NM AS RQESTER_NM
+			FROM
+				COMTNWEBLOG a
+			LEFT OUTER JOIN COMVNUSERMASTER b
+				ON a.RQESTER_ID = b.ESNTL_ID
+			WHERE
+				a.REQUST_ID = #{requstId}
+				]]>
+			
+	</select>
+
+	<!-- 웹 로그 목록 조회 -->
+	<select id="selectWebLogInf" parameterType="egovframework.com.sym.log.wlg.service.WebLog" resultMap="WebLogVO">
+		
+		<![CDATA[
+		SELECT * FROM ( SELECT rownum rn, TB.* FROM (
+			SELECT
+				  a.REQUST_ID
+				, a.OCCRRNC_DE
+				, a.URL
+				, a.RQESTER_IP
+				, a.RQESTER_ID
+				, b.USER_NM AS RQESTER_NM
+			FROM
+				COMTNWEBLOG a
+			LEFT OUTER JOIN COMVNUSERMASTER b
+				ON a.RQESTER_ID = b.ESNTL_ID
+			WHERE
+				1 = 1
+				]]>
+			
+			<if test="searchWrd != null and searchWrd != ''">	<![CDATA[	AND
+					a.URL LIKE '%' || #{searchWrd} || '%' 	]]>
+			</if>
+			<if test="searchBgnDe != null and searchBgnDe != ''">	<![CDATA[	AND
+					a.OCCRRNC_DE BETWEEN TO_DATETIME(#{searchBgnDe} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS') 
+														AND TO_DATETIME(#{searchEndDe} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS') 	]]>
+			</if>
+		
+		<![CDATA[
+			ORDER BY a.OCCRRNC_DE DESC
+			) TB ) Z WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+			]]>
+		
+	</select>
+
+	<!-- 웹 로그 총건수 -->
+	<select id="selectWebLogInfCnt" parameterType="egovframework.com.sym.log.wlg.service.WebLog" resultType="int">
+		
+		<![CDATA[
+			SELECT COUNT(a.REQUST_ID) as cnt
+			FROM
+				COMTNWEBLOG a
+			LEFT OUTER JOIN COMVNUSERMASTER b
+				ON a.RQESTER_ID = b.ESNTL_ID
+			WHERE
+				1 = 1
+				]]>
+			
+			<if test="searchWrd != null and searchWrd != ''">	<![CDATA[	AND
+				 	a.URL LIKE '%' || #{searchWrd} || '%'  	]]>
+			</if>
+			<if test="searchBgnDe != null and searchBgnDe != ''">	<![CDATA[	AND
+				 	a.OCCRRNC_DE BETWEEN TO_DATETIME(#{searchBgnDe} || ' 00:00:00', 'YYYY-MM-DD HH24:MI:SS') 
+														AND TO_DATETIME(#{searchEndDe} || ' 23:59:59', 'YYYY-MM-DD HH24:MI:SS')   	]]>
+			</if>
+	</select>
+
+	<!-- 웹 로그 전날 로그 요약 등록 -->
+	<insert id="logInsertWebLogSummary">
+		
+		<![CDATA[
+			INSERT INTO COMTSWEBLOGSUMMARY
+			SELECT TO_CHAR(b.OCCRRNC_DE,'YYYYMMDD')
+			     , b.URL
+			     , COUNT(b.OCCRRNC_DE) AS RDCNT
+			  FROM COMTNWEBLOG b
+			 WHERE NOT EXISTS (SELECT c.OCCRRNC_DE
+			                     FROM COMTSWEBLOGSUMMARY c
+			                    WHERE c.OCCRRNC_DE = TO_CHAR((SYSDATE - 1), 'YYYYMMDD')
+			                  )
+			   AND TO_CHAR(b.OCCRRNC_DE,'YYYYMMDD') = TO_CHAR((SYSDATE - 1), 'YYYYMMDD')
+			 GROUP BY TO_CHAR(b.OCCRRNC_DE,'YYYYMMDD')
+				    , b.URL
+				    ]]>
+
+		
+	</insert>
+
+	<!-- 웹 로그 6개월전 로그 삭제 -->
+	<delete id="logDeleteWebLogSummary">
+		
+		<![CDATA[
+			DELETE FROM COMTNWEBLOG
+			 WHERE TO_CHAR(OCCRRNC_DE, 'YYYY-MM-DD') < TO_CHAR(ADD_MONTHS(SYSDATE, -6), 'YYYY-MM-DD')
+			 ]]>
+
+		
+	</delete>
+
+</mapper>

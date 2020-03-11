@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="KnoManagementDAO">
+
+	<select id="selectKnoManagementList" parameterType="egovframework.com.dam.mgm.service.KnoManagementVO" resultType="egovMap">
+		
+	SELECT *
+	FROM (
+	SELECT T0.*, ROWNUM RNUM
+		FROM (
+	
+		
+			SELECT	A.KNWLDG_ID				knoId		     		
+				 ,  A.KNWLDG_NM				knoNm
+				 ,  C.ORGNZT_NM				orgnztNm
+				 ,  B.KNWLDG_TY_NM			knoTypeNm			 
+			     ,  D.USER_NM				userNm
+			     ,  A.EVL_DE				appYmd
+			     ,	A.FRST_REGISTER_ID		frstRegisterId
+			     ,	A.FRST_REGIST_PNTTM		frstRegistPnttm
+			     ,  A.LAST_UPDUSR_ID		lastUpdusrId
+			     ,	A.LAST_UPDT_PNTTM		lastUpdtPnttm
+			FROM  COMTNDAMKNOIFM A, COMTNDAMMAPKNO B, COMTNDAMMAPTEAM C, COMVNUSERMASTER D
+			WHERE C.ORGNZT_ID = B.ORGNZT_ID
+			AND   A.KNWLDG_TY_CODE = B.KNWLDG_TY_CODE
+			AND   A.FRST_REGISTER_ID = D.ESNTL_ID
+			AND   A.OTHBC_AT = 'Y'
+			AND   A.KNWLDG_EVL = '1'
+		
+			<if test='searchCondition == "1"'>AND
+				A.KNWLDG_NM  LIKE '%'||#{searchKeyword}||'%'
+			</if>
+			<if test='searchCondition == "2"'>AND
+				D.USER_NM LIKE '%'||#{searchKeyword}||'%'
+			</if>
+		
+		) T0
+	) 
+	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	
+	</select>
+
+	<select id="selectKnoManagementTotCnt" parameterType="egovframework.com.dam.mgm.service.KnoManagementVO" resultType="int">
+		
+			SELECT  COUNT(*) as totcnt 
+			FROM  COMTNDAMKNOIFM A, COMTNDAMMAPKNO B, COMTNDAMMAPTEAM C, COMVNUSERMASTER D
+			WHERE C.ORGNZT_ID = B.ORGNZT_ID
+			AND   A.KNWLDG_TY_CODE = B.KNWLDG_TY_CODE
+			AND   A.FRST_REGISTER_ID = D.ESNTL_ID
+			AND   A.OTHBC_AT = 'Y'
+			AND   A.KNWLDG_EVL = '1'
+		
+			<if test='searchCondition == "1"'>AND
+				A.KNWLDG_NM  LIKE '%'||#{searchKeyword}||'%'
+			</if>
+			<if test='searchCondition == "2"'>AND
+				D.USER_NM LIKE '%'||#{searchKeyword}||'%'
+			</if>
+	</select>
+
+	<select id="selectKnoManagement" parameterType="egovframework.com.dam.mgm.service.KnoManagement" resultType="egovframework.com.dam.mgm.service.KnoManagement">
+		
+			SELECT  C.ORGNZT_NM										orgnztNm
+			     ,  C.ORGNZT_ID										orgnztId
+			     ,  B.KNWLDG_TY_NM									knoTypeNm			     			
+			     ,  B.KNWLDG_TY_CODE									knoTypeCd
+				 ,  A.KNWLDG_ID										knoId			     
+				 ,  A.KNWLDG_NM										knoNm			     
+			     ,  A.KNWLDG_CN										knoCn
+			     ,  E.USER_NM    									userNm
+                 ,  A.OTHBC_AT										othbcAt              
+                 ,  A.ATCH_FILE_ID									atchFileId
+                 ,  A.EVL_DE										appYmd
+                 ,	(select a.user_nm from COMVNUSERMASTER a, COMTNDAMKNOIFM b where  a.ESNTL_ID = b.EXPERT_ID and b.KNWLDG_ID = #{knoId}) speNm
+				 ,  A.DSUSE_DE										junkYmd
+			     ,  A.KNWLDG_EVL										knoAps
+				 ,  D.AUTHOR_CODE         							authorCode
+			     ,	A.FRST_REGISTER_ID								frstRegisterId
+			     ,	A.FRST_REGIST_PNTTM						     FRST_REGISTER_PNTTM
+			     ,  A.LAST_UPDUSR_ID								lastUpdusrId
+			     ,	A.LAST_UPDT_PNTTM								lastUpdusrPnttm			     
+			FROM  COMTNDAMKNOIFM A, COMTNDAMMAPKNO B, COMTNDAMMAPTEAM C, COMTNEMPLYRSCRTYESTBS D, COMVNUSERMASTER E
+			WHERE A.ORGNZT_ID = B.ORGNZT_ID
+			AND   B.ORGNZT_ID = C.ORGNZT_ID
+			AND   A.KNWLDG_TY_CODE = B.KNWLDG_TY_CODE
+			AND   A.FRST_REGISTER_ID = E.ESNTL_ID
+			AND   A.OTHBC_AT = 'Y'				
+     		AND   A.KNWLDG_ID = #{knoId}		
+			AND   D.SCRTY_DTRMN_TRGET_ID = #{emplyrId}
+		
+	</select>
+
+	<update id="updateKnoManagement">
+		
+            UPDATE  COMTNDAMKNOIFM 
+               SET  DSUSE_DE          = #{junkYmd}
+                 ,  KNWLDG_EVL           = #{knoAps}            
+                 ,  LAST_UPDUSR_ID    = #{lastUpdusrId}               
+                 ,  LAST_UPDT_PNTTM = sysdate
+             WHERE  OTHBC_AT 		  = 'Y'	
+             AND    KNWLDG_ID       	  = #{knoId} 
+		
+	</update>
+
+</mapper>

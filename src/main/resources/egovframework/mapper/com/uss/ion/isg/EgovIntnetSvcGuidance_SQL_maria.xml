@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed May 11 15:51:06 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="intnetSvcGuidanceDAO">
+
+    <resultMap id="intnetSvcGuidance" type="egovframework.com.uss.ion.isg.service.IntnetSvcGuidanceVO">
+        <result property="intnetSvcId" column="INTNET_SVC_ID"/>
+        <result property="intnetSvcNm" column="INTNET_SVC_NM"/>
+        <result property="intnetSvcDc" column="INTNET_SVC_DC"/>
+        <result property="reflctAt" column="REFLCT_AT"/>
+        <result property="userId" column="LAST_UPDUSR_ID"/>
+        <result property="regDate" column="LAST_UPDT_PNTTM"/>
+    </resultMap>
+
+    <select id="selectIntnetSvcGuidanceList" parameterType="egovframework.com.uss.ion.isg.service.IntnetSvcGuidanceVO" resultMap="intnetSvcGuidance">
+            SELECT INTNET_SVC_ID,
+                   INTNET_SVC_NM,
+                   INTNET_SVC_DC,
+                   REFLCT_AT,
+                   LAST_UPDUSR_ID,
+                   LAST_UPDT_PNTTM
+              FROM COMTNINTNETSVC   
+             WHERE 1=1
+            <if test="searchCondition == 1">AND
+                INTNET_SVC_NM LIKE CONCAT('%' , #{searchKeyword}, '%')
+            </if>
+            ORDER BY LAST_UPDT_PNTTM DESC
+            LIMIT #{recordCountPerPage} OFFSET #{firstIndex}  
+    </select>
+
+    <select id="selectIntnetSvcGuidanceListTotCnt" parameterType="egovframework.com.uss.ion.isg.service.IntnetSvcGuidanceVO" resultType="int">
+
+            SELECT COUNT(*) totcnt
+            FROM COMTNINTNETSVC
+            WHERE 1=1
+            <if test="searchCondition == 1">AND
+                INTNET_SVC_NM LIKE CONCAT('%' , #{searchKeyword}, '%')
+            </if>
+    </select>
+
+    <select id="selectIntnetSvcGuidance" resultMap="intnetSvcGuidance">
+        
+            SELECT INTNET_SVC_ID,
+                   INTNET_SVC_NM,
+                   INTNET_SVC_DC,
+                   REFLCT_AT,
+                   LAST_UPDUSR_ID,
+                   LAST_UPDT_PNTTM 
+              FROM COMTNINTNETSVC 
+             WHERE INTNET_SVC_ID = #{intnetSvcId}
+        
+    </select>
+    
+    <insert id="insertIntnetSvcGuidance" parameterType="egovframework.com.uss.ion.isg.service.IntnetSvcGuidance">
+            INSERT INTO COMTNINTNETSVC  
+                       (INTNET_SVC_ID,
+                        INTNET_SVC_NM,
+                        INTNET_SVC_DC,
+                        REFLCT_AT,
+                        FRST_REGISTER_ID,
+                        FRST_REGIST_PNTTM,
+                        LAST_UPDUSR_ID,
+                        LAST_UPDT_PNTTM)
+                VALUES (#{intnetSvcId},
+                        #{intnetSvcNm},
+                        #{intnetSvcDc},
+                        #{reflctAt},
+                        #{userId},
+                        now(),
+                        #{userId},
+                        now())
+    </insert>    
+    
+    <update id="updateIntnetSvcGuidance" parameterType="egovframework.com.uss.ion.isg.service.IntnetSvcGuidance">
+            UPDATE COMTNINTNETSVC
+               SET INTNET_SVC_NM = #{intnetSvcNm},
+                   INTNET_SVC_DC = #{intnetSvcDc},
+                   REFLCT_AT = #{reflctAt},
+                   LAST_UPDUSR_ID = #{userId},
+                   LAST_UPDT_PNTTM = now()
+             WHERE INTNET_SVC_ID = #{intnetSvcId}    
+    </update>   
+    
+    <delete id="deleteIntnetSvcGuidance" parameterType="egovframework.com.uss.ion.isg.service.IntnetSvcGuidance">
+        
+            DELETE FROM COMTNINTNETSVC 
+             WHERE INTNET_SVC_ID = #{intnetSvcId}    
+        
+    </delete>  
+
+    <select id="selectIntnetSvcGuidanceResult" parameterType="egovframework.com.uss.ion.isg.service.IntnetSvcGuidanceVO" resultMap="intnetSvcGuidance">
+            SELECT INTNET_SVC_ID,
+                   INTNET_SVC_NM,
+                   INTNET_SVC_DC,
+                   REFLCT_AT,
+                   LAST_UPDUSR_ID,
+                   LAST_UPDT_PNTTM
+              FROM COMTNINTNETSVC
+             WHERE REFLCT_AT = 'Y'
+    </select>
+
+</mapper>

@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed May 11 15:49:42 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CommuBBSMaster">
+
+	<resultMap id="boardMasterList" type="egovframework.com.cop.bbs.service.BoardMasterVO">
+		<result property="bbsId" column="BBS_ID"/>
+		<result property="bbsTyCode" column="BBS_TY_CODE"/>
+		<result property="bbsTyCodeNm" column="BBS_TY_CODE_NM"/>
+		<result property="bbsNm" column="BBS_NM"/>
+		<result property="tmplatId" column="TMPLAT_ID"/>
+		<result property="useAt" column="USE_AT"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+	</resultMap>
+
+	<select id="selectCommuBBSMasterListMain" parameterType="egovframework.com.cop.bbs.service.BoardMasterVO" resultMap="boardMasterList">
+		
+			SELECT 
+				a.BBS_ID, a.BBS_TY_CODE, 
+				a.BBS_NM
+			FROM
+				COMTNBBSMASTER a
+			WHERE 1=1	
+				AND a.CMMNTY_ID = #{cmmntyId}
+				AND a.USE_AT = 'Y'
+						
+	</select>	
+	
+</mapper>

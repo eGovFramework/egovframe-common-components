@@ -1,0 +1,164 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- 
+	수정일                 수정자                          수정내용
+  =========     =======    =================================================						
+  2011.10.05    서준식               보안 취약점 점검사항 반영 $->#변경
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="DiaryManage">
+
+	<resultMap id="DiaryManage" type="egovframework.com.cop.smt.dsm.service.DiaryManageVO">
+		<result property="diaryId" column="DIARY_ID"/>
+		<result property="schdulId" column="SCHDUL_ID"/>
+		<result property="schdulCn" column="SCHDUL_CN"/>
+		<result property="diaryProcsPte" column="DIARY_PROGRSRT"/>
+		<result property="diaryNm" column="DIARY_NM"/>
+		<result property="drctMatter" column="DRCT_MATTER"/>
+		<result property="partclrMatter" column="PARTCLR_MATTER"/>
+		<result property="atchFileId" column="ATCH_FILE_ID"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>	
+	</resultMap>
+	<!-- 일지정보::삭제  -->
+	<delete id="deleteDiaryManage">
+		
+			DELETE FROM COMTNDIARYINFO 
+			WHERE 1=1 
+			AND DIARY_ID = #{diaryId}
+		
+	</delete>
+
+	<!-- 일지정보::수정  -->
+	<update id="updateDiaryManage">
+		UPDATE COMTNDIARYINFO 
+		SET  
+			DIARY_PROGRSRT=#{diaryProcsPte},
+			DIARY_NM=#{diaryNm},
+			DRCT_MATTER=#{drctMatter},
+			PARTCLR_MATTER=#{partclrMatter},
+			ATCH_FILE_ID=#{atchFileId},
+			LAST_UPDT_PNTTM = sysdate(),
+			LAST_UPDUSR_ID = #{lastUpdusrId}
+		WHERE 1=1 
+			AND DIARY_ID = #{diaryId} 
+	</update>
+	
+	<!-- 일지정보::상세보기 -->
+	<select id="selectDiaryManageDetail" resultMap="DiaryManage">
+		SELECT 
+		A.DIARY_ID,
+		A.SCHDUL_ID,
+		(SELECT SCHDUL_NM FROM COMTNSCHDULINFO WHERE SCHDUL_ID = A.SCHDUL_ID) SCHDUL_CN,
+		A.DIARY_PROGRSRT,
+		A.DIARY_NM,
+		A.DRCT_MATTER,
+		A.PARTCLR_MATTER,
+		A.ATCH_FILE_ID,
+		A.FRST_REGIST_PNTTM,
+		A.FRST_REGISTER_ID,
+		A.LAST_UPDT_PNTTM,
+		A.LAST_UPDUSR_ID
+		FROM COMTNDIARYINFO A 
+		WHERE 1=1
+			AND A.DIARY_ID = #{diaryId}  
+
+	</select>
+	
+	<!-- 일지정보::목록조회_게시물정보 -->
+	<select id="selectDiaryManage" parameterType="comDefaultVO" resultType="egovMap">
+	 
+		SELECT 
+			A.DIARY_ID,
+			A.SCHDUL_ID,
+			(SELECT SCHDUL_CN FROM COMTNSCHDULINFO WHERE SCHDUL_ID = A.SCHDUL_ID) SCHDUL_CN,
+			A.DIARY_PROGRSRT DIARY_PROCS_PTE,
+			A.DIARY_NM,
+			A.DRCT_MATTER,
+			A.PARTCLR_MATTER,
+			A.ATCH_FILE_ID,
+			A.FRST_REGIST_PNTTM FRST_REGISTER_PNTTM,
+			A.FRST_REGISTER_ID,
+			(SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = A.FRST_REGISTER_ID) FRST_REGISTER_NM,
+			A.LAST_UPDT_PNTTM,
+			A.LAST_UPDUSR_ID
+		FROM COMTNDIARYINFO A 
+		WHERE 1=1
+	 
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 	 		<if test="searchCondition == 'SCHDUL_ID'">
+	 				AND A.SCHDUL_ID = #{searchKeyword}
+	 			</if>
+	 			<if test="searchCondition == 'DIARY_NM'">
+	 				AND DIARY_NM LIKE CONCAT ('%', #{searchKeyword},'%')
+	 			</if>
+	 			<if test="searchCondition == 'DRCT_MATTER'">
+	 				AND DRCT_MATTER LIKE  CONCAT ('%', #{searchKeyword},'%')
+	 			</if>
+	 			<if test="searchCondition == 'PARTCLR_MATTER'">
+	 				AND PARTCLR_MATTER LIKE  CONCAT ('%', #{searchKeyword},'%')
+	 			</if>
+	 </if>
+	 
+		ORDER BY A.FRST_REGIST_PNTTM DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	
+	</select>
+	
+	<!-- 일지정보::목록조회_게시물 총갯수  -->
+	<select id="selectDiaryManageCnt" parameterType="comDefaultVO" resultType="int">
+		SELECT 
+		COUNT(*) totcnt
+		FROM COMTNDIARYINFO 
+		WHERE 1=1
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 			<if test="searchCondition == 'SCHDUL_ID'">
+	 				AND SCHDUL_ID = #{searchKeyword}
+	 			</if>
+	 			<if test="searchCondition == 'DIARY_NM'">
+	 				AND DIARY_NM LIKE CONCAT ('%', #{searchKeyword},'%')
+	 			</if>
+	 			<if test="searchCondition == 'DRCT_MATTER'">
+	 				AND DRCT_MATTER LIKE  CONCAT ('%', #{searchKeyword},'%')
+	 			</if>
+	 			<if test="searchCondition == 'PARTCLR_MATTER'">
+	 				AND PARTCLR_MATTER LIKE  CONCAT ('%', #{searchKeyword},'%')
+	 			</if>
+	 </if>
+	</select>
+	
+	<!-- 일지정보::입력  -->
+	<insert id="insertDiaryManage">
+	 
+		INSERT INTO COMTNDIARYINFO ( 
+		DIARY_ID,
+		SCHDUL_ID,
+		DIARY_PROGRSRT,
+		DIARY_NM,
+		DRCT_MATTER,
+		PARTCLR_MATTER,
+		ATCH_FILE_ID,
+		FRST_REGIST_PNTTM,
+		FRST_REGISTER_ID,
+		LAST_UPDT_PNTTM,
+		LAST_UPDUSR_ID
+		)VALUES( 
+		#{diaryId},
+		#{schdulId},
+		#{diaryProcsPte},
+		#{diaryNm},
+		#{drctMatter},
+		#{partclrMatter},
+		#{atchFileId},
+		sysdate(),
+		#{frstRegisterId},
+		sysdate(),
+		#{lastUpdusrId}
+		)
+
+	 
+	</insert>
+
+
+</mapper>

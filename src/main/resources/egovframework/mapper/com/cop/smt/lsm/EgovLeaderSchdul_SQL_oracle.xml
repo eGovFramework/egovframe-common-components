@@ -1,0 +1,424 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="LeaderSchdulDAO">
+	
+	<resultMap id="emplyrList" type="egovframework.com.cop.smt.lsm.service.EmplyrVO">
+		<result property="orgnztNm" column="ORGNZT_NM"/>
+		<result property="uniqId" column="ESNTL_ID"/>
+		<result property="emplyrNm" column="USER_NM"/>
+		<result property="emplNo" column="EMPL_NO"/>
+		<result property="ofcpsNm" column="OFCPS_NM"/>
+	</resultMap>
+	
+	<resultMap id="LeaderSchdulList" type="egovframework.com.cop.smt.lsm.service.LeaderSchdulVO">
+		<result property="schdulId" column="SCHDUL_ID"/>
+		<result property="schdulSe" column="SCHDUL_SE"/>
+		<result property="schdulNm" column="SCHDUL_NM"/>
+		<result property="schdulDe" column="SCHDUL_DE"/>
+		<result property="schdulBgnDe" column="SCHDUL_BGNDE"/>
+		<result property="schdulEndDe" column="SCHDUL_ENDDE"/>
+		<result property="leaderName" column="LEADER_NAME"/>
+		<result property="reptitSeCode" column="REPTIT_SE_CODE"/>		
+	</resultMap>
+	
+	<resultMap id="LeaderSchdulDetail" type="egovframework.com.cop.smt.lsm.service.LeaderSchdulVO">
+		<result property="schdulId" column="SCHDUL_ID"/>
+		<result property="schdulDe" column="SCHDUL_DE"/>
+		<result property="schdulSe" column="SCHDUL_SE"/>
+		<result property="schdulNm" column="SCHDUL_NM"/>
+		<result property="schdulCn" column="SCHDUL_CN"/>
+		<result property="schdulPlace" column="SCHDUL_PLACE"/>		
+		<result property="leaderId" column="LEADER_ID"/>
+		<result property="leaderName" column="LEADER_NAME"/>		
+		<result property="reptitSeCode" column="REPTIT_SE_CODE"/>		
+		<result property="schdulBgnDe" column="SCHDUL_BGNDE"/>
+		<result property="schdulEndDe" column="SCHDUL_ENDDE"/>		
+		<result property="schdulChargerId" column="SCHDUL_CHARGER_ID"/>
+		<result property="schdulChargerName" column="SCHDUL_CHARGER_NAME"/>		    
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/> 			
+	</resultMap>
+	
+	<resultMap id="LeaderSttusList" type="egovframework.com.cop.smt.lsm.service.LeaderSttusVO">
+		<result property="leaderId" column="LEADER_ID"/>
+		<result property="leaderNm" column="LEADER_NM"/>
+		<result property="orgnztNm" column="ORGNZT_NM"/>
+		<result property="leaderSttusNm" column="LEADER_STTUS_NM"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>	
+	</resultMap>
+	
+	<resultMap id="LeaderSttusDetail" type="egovframework.com.cop.smt.lsm.service.LeaderSttusVO">
+		<result property="leaderId" column="LEADER_ID"/>
+		<result property="leaderNm" column="LEADER_NM"/>
+		<result property="orgnztNm" column="ORGNZT_NM"/>
+		<result property="leaderSttus" column="LEADER_STTUS"/>
+		<result property="leaderSttusNm" column="LEADER_STTUS_NM"/>
+	</resultMap>
+	
+	<select id="selectEmplyrList" parameterType="egovframework.com.cop.smt.lsm.service.EmplyrVO" resultMap="emplyrList">
+		
+	SELECT *
+	FROM (
+	SELECT T0.*, ROWNUM RNUM
+		FROM (
+	
+	
+		
+			SELECT
+				b.ORGNZT_NM, a.ESNTL_ID, a.USER_NM, 
+				a.EMPL_NO, a.OFCPS_NM
+			FROM
+				COMTNEMPLYRINFO a
+			LEFT OUTER JOIN COMTNORGNZTINFO b
+				ON a.ORGNZT_ID = b.ORGNZT_ID
+			WHERE 1=1
+		
+			<if test="searchCnd == 0">AND
+					NVL(b.ORGNZT_NM, ' ') LIKE '%'||#{searchWrd}||'%' 		
+			</if>
+			<if test="searchCnd == 1">AND
+					NVL(a.USER_NM, ' ') LIKE '%'||#{searchWrd}||'%' 		
+			</if>
+		
+			ORDER BY b.ORGNZT_NM, a.USER_NM ASC
+				
+	
+		
+		) T0
+	) 
+	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	
+	</select>		
+	
+	<select id="selectEmplyrListCnt" parameterType="egovframework.com.cop.smt.lsm.service.EmplyrVO" resultType="java.lang.Integer">
+		
+			SELECT
+				COUNT(EMPLYR_ID) as cnt
+			FROM
+				COMTNEMPLYRINFO a
+			LEFT OUTER JOIN COMTNORGNZTINFO b
+				ON a.ORGNZT_ID = b.ORGNZT_ID
+			WHERE 1=1
+		
+			<if test="searchCnd == 0">AND
+					NVL(b.ORGNZT_NM, ' ') LIKE '%'||#{searchWrd}||'%' 		
+			</if>
+			<if test="searchCnd == 1">AND
+					NVL(a.USER_NM, ' ') LIKE '%'||#{searchWrd}||'%' 		
+			</if>		
+	</select>
+	
+	
+	<!-- 간부일정관리::목록조회 -->
+	<select id="selectLeaderSchdulList" parameterType="egovframework.com.cop.smt.lsm.service.LeaderSchdulVO" resultMap="LeaderSchdulList">
+	 
+		SELECT 
+			A.SCHDUL_ID,
+			A.SCHDUL_SE,
+			A.SCHDUL_NM,
+			B.SCHDUL_DE,
+			A.SCHDUL_BGNDE,
+			A.SCHDUL_ENDDE,
+			C.USER_NM LEADER_NAME,
+			A.REPTIT_SE_CODE 
+		FROM COMTNLEADERSCHDUL A
+		LEFT OUTER JOIN COMTNLEADERSCHDULDE B
+			ON A.SCHDUL_ID = B.SCHDUL_ID
+		LEFT OUTER JOIN COMTNEMPLYRINFO C
+			ON A.LEADER_ID = C.ESNTL_ID
+		WHERE 1=1 
+	 
+	 
+	 <if test="searchMode != null and searchMode != ''">
+	 <if test="searchMode == 'MONTH'">
+	 
+		 <if test="searchMonth != null and searchMonth != ''">
+		 	
+		 	 AND (#{searchMonth} = SUBSTR(B.SCHDUL_DE, 1, 6) ) 
+		 	
+		 </if>
+	 
+	 </if>
+	 <if test="searchMode == 'WEEK'">
+	  <![CDATA[
+		 AND (B.SCHDUL_DE >= #{searchBgnDe} AND B.SCHDUL_DE <= #{searchEndDe})
+	]]>
+	 </if>
+	 <if test="searchMode == 'DAILY'">
+	 
+	 	 AND (#{searchDay} = B.SCHDUL_DE)
+	   
+	 </if>
+	 </if>
+
+	 <if test="searchCondition != null and searchCondition != ''">
+	 	
+	 		AND SCHDUL_SE LIKE '%'||#{searchKeyword}||'%'
+	 	
+	 	
+	 		AND C.USER_NM LIKE '%'||#{searchKeywordEx}||'%'
+	 	
+	 </if>
+	 
+		ORDER BY SCHDUL_BGNDE
+
+	</select>
+	
+	<!-- 간부일정관리::상세보기 -->
+	<select id="selectLeaderSchdul" parameterType="egovframework.com.cop.smt.lsm.service.LeaderSchdulVO" resultMap="LeaderSchdulDetail">
+		SELECT 
+			A.SCHDUL_ID,
+			D.SCHDUL_DE,
+			A.SCHDUL_SE,
+			A.SCHDUL_NM,
+			A.SCHDUL_CN,
+			A.SCHDUL_PLACE,
+			A.LEADER_ID,
+			B.USER_NM LEADER_NAME,
+			A.REPTIT_SE_CODE,
+			A.SCHDUL_BGNDE,
+			A.SCHDUL_ENDDE,
+			A.SCHDUL_CHARGER_ID,
+			C.USER_NM SCHDUL_CHARGER_NAME,	
+			A.FRST_REGIST_PNTTM,
+			A.FRST_REGISTER_ID,
+			A.LAST_UPDT_PNTTM,
+			A.LAST_UPDUSR_ID 
+		FROM COMTNLEADERSCHDUL A
+		LEFT OUTER JOIN COMTNEMPLYRINFO B
+			ON A.LEADER_ID = B.ESNTL_ID
+		LEFT OUTER JOIN COMTNEMPLYRINFO C
+			ON A.SCHDUL_CHARGER_ID = C.ESNTL_ID
+		LEFT OUTER JOIN COMTNLEADERSCHDULDE D
+			ON A.SCHDUL_ID = D.SCHDUL_ID
+		WHERE A.SCHDUL_ID = #{schdulId}
+			AND D.SCHDUL_DE = #{schdulDe}
+	</select>
+	
+	<!-- 간부일정정보::수정  -->
+	<update id="updateLeaderSchdul" parameterType="egovframework.com.cop.smt.lsm.service.LeaderSchdul"> 
+		UPDATE COMTNLEADERSCHDUL 
+		SET  
+			SCHDUL_SE=#{schdulSe},
+			SCHDUL_NM=#{schdulNm},
+			SCHDUL_CN=#{schdulCn},
+			SCHDUL_PLACE=#{schdulPlace},
+			LEADER_ID=#{leaderId},
+			REPTIT_SE_CODE=#{reptitSeCode},
+			SCHDUL_BGNDE=#{schdulBgnDe},
+			SCHDUL_ENDDE=#{schdulEndDe},
+			SCHDUL_CHARGER_ID=#{schdulChargerId},
+			LAST_UPDT_PNTTM = sysdate,
+			LAST_UPDUSR_ID = #{lastUpdusrId}
+		WHERE SCHDUL_ID = #{schdulId}
+	</update>
+	
+	<!-- 간부일정관리::삭제  -->
+	<delete id="deleteLeaderSchdul" parameterType="egovframework.com.cop.smt.lsm.service.LeaderSchdul"> 
+		
+			DELETE FROM COMTNLEADERSCHDUL 
+			WHERE SCHDUL_ID = #{schdulId}
+		
+	</delete>
+	
+	<!-- 간부일정관리일자::삭제  -->
+	<delete id="deleteLeaderSchdulDe" parameterType="egovframework.com.cop.smt.lsm.service.LeaderSchdul"> 
+		
+			DELETE FROM COMTNLEADERSCHDULDE 
+			WHERE SCHDUL_ID = #{schdulId}
+		
+	</delete>
+	
+	<!-- 간부일정관리::입력  -->
+	<insert id="insertLeaderSchdul" parameterType="egovframework.com.cop.smt.lsm.service.LeaderSchdul">
+	 
+	 
+		INSERT INTO COMTNLEADERSCHDUL ( 
+			SCHDUL_ID,
+			SCHDUL_SE,
+			SCHDUL_NM,
+			SCHDUL_CN,
+			SCHDUL_PLACE,
+			LEADER_ID,
+			REPTIT_SE_CODE,
+			SCHDUL_BGNDE,
+			SCHDUL_ENDDE,
+			SCHDUL_CHARGER_ID,
+			FRST_REGIST_PNTTM,
+			FRST_REGISTER_ID,
+			LAST_UPDT_PNTTM,
+			LAST_UPDUSR_ID
+		)VALUES( 
+			#{schdulId},
+			#{schdulSe},
+			#{schdulNm},
+			#{schdulCn},
+			#{schdulPlace},
+			#{leaderId},
+			#{reptitSeCode},  
+			#{schdulBgnDe},
+			#{schdulEndDe},
+			#{schdulChargerId},
+			sysdate,
+			#{frstRegisterId},
+			sysdate,
+			#{lastUpdusrId} 
+		)
+
+	 
+	</insert>
+	
+	<!-- 간부일정일자::입력  -->
+	<insert id="insertLeaderSchdulDe" parameterType="egovframework.com.cop.smt.lsm.service.LeaderSchdul">
+	 
+		INSERT INTO COMTNLEADERSCHDULDE ( 
+			SCHDUL_ID,
+			SCHDUL_DE
+		)VALUES( 
+			#{schdulId},
+			#{schdulDe}
+		)
+
+	 
+	</insert>
+	
+	<!-- 간부상태::목록조회 -->
+	<select id="selectLeaderSttusList" parameterType="egovframework.com.cop.smt.lsm.service.LeaderSttusVO" resultMap="LeaderSttusList">
+		
+	SELECT *
+	FROM (
+	SELECT T0.*, ROWNUM RNUM
+		FROM (
+	
+	
+	 
+		SELECT 
+			A.LEADER_ID,
+			B.USER_NM LEADER_NM,
+			D.ORGNZT_NM,
+			E.CODE_NM LEADER_STTUS_NM,
+			C.USER_NM LAST_UPDUSR_NM,
+			A.LAST_UPDT_PNTTM
+		FROM COMTNLEADERSTTUS A
+		LEFT OUTER JOIN COMTNEMPLYRINFO B
+			ON A.LEADER_ID = B.ESNTL_ID 
+		LEFT OUTER JOIN COMTNEMPLYRINFO C
+			ON A.LAST_UPDUSR_ID = C.ESNTL_ID 
+		LEFT OUTER JOIN COMTNORGNZTINFO D
+				ON B.ORGNZT_ID = D.ORGNZT_ID
+		LEFT OUTER JOIN COMTCCMMNDETAILCODE E
+			ON E.CODE_ID = 'COM061' 
+			AND A.LEADER_STTUS = E.CODE
+		WHERE 1=1
+	 
+	 
+	 <if test="searchCnd == 1">AND
+		 	B.USER_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchCnd == 2">AND
+		 	D.CODE_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 
+		ORDER BY B.USER_NM ASC
+	 	
+	
+		
+		) T0
+	) 
+	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+		
+	</select>
+	
+	<!-- 간부상태::목록조회 Count-->
+	<select id="selectLeaderSttusListCnt" parameterType="egovframework.com.cop.smt.lsm.service.LeaderSttusVO" resultType="java.lang.Integer">
+		
+			SELECT
+				COUNT(A.LEADER_ID) as cnt
+			FROM
+				COMTNLEADERSTTUS A
+			LEFT OUTER JOIN COMTNEMPLYRINFO B
+				ON A.LEADER_ID = B.ESNTL_ID 
+			LEFT OUTER JOIN COMTCCMMNDETAILCODE D
+				ON D.CODE_ID = 'COM061' 
+				AND A.LEADER_STTUS = D.CODE
+			WHERE 1=1
+		
+		<if test="searchCnd == 1">AND
+		 	B.USER_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchCnd == 2">AND
+		 	D.CODE_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	</select>
+	
+	<!-- 간부상태::상세보기 -->
+	<select id="selectLeaderSttus" parameterType="egovframework.com.cop.smt.lsm.service.LeaderSttusVO" resultMap="LeaderSttusDetail">
+		SELECT 
+			A.LEADER_ID,
+			B.USER_NM LEADER_NM,
+			C.ORGNZT_NM,
+			A.LEADER_STTUS,
+			D.CODE_NM LEADER_STTUS_NM
+		FROM COMTNLEADERSTTUS A
+		LEFT OUTER JOIN COMTNEMPLYRINFO B
+			ON A.LEADER_ID = B.ESNTL_ID 
+		LEFT OUTER JOIN COMTNORGNZTINFO C
+				ON B.ORGNZT_ID = C.ORGNZT_ID
+		LEFT OUTER JOIN COMTCCMMNDETAILCODE D
+			ON D.CODE_ID = 'COM061' 
+			AND A.LEADER_STTUS = D.CODE
+		WHERE A.LEADER_ID = #{leaderId}
+	</select>
+	
+	<!-- 간부상태::입력  -->
+	<insert id="insertLeaderSttus" parameterType="egovframework.com.cop.smt.lsm.service.LeaderSttus">
+	 
+	 
+		INSERT INTO COMTNLEADERSTTUS ( 
+			LEADER_ID,
+			LEADER_STTUS,
+			FRST_REGIST_PNTTM,
+			FRST_REGISTER_ID,
+			LAST_UPDT_PNTTM,
+			LAST_UPDUSR_ID
+		)VALUES( 
+			#{leaderId},
+			#{leaderSttus},  
+			sysdate,
+			#{frstRegisterId},
+			sysdate,
+			#{lastUpdusrId} 
+		)
+
+	 
+	</insert>
+	
+	<!-- 간부상태::중복 CHECK Count -->
+	<select id="selectLeaderSttusCheck" parameterType="egovframework.com.cop.smt.lsm.service.LeaderSttus" resultType="java.lang.Integer">
+	 	SELECT 
+			COUNT(LEADER_ID) as cnt
+		FROM COMTNLEADERSTTUS 
+		WHERE LEADER_ID = #{leaderId}
+	</select>
+	
+	<!-- 간부상태::수정  -->
+	<update id="updateLeaderSttus" parameterType="egovframework.com.cop.smt.lsm.service.LeaderSttus"> 
+		UPDATE COMTNLEADERSTTUS 
+		SET  
+			LEADER_STTUS=#{leaderSttus},
+			LAST_UPDT_PNTTM = sysdate,
+			LAST_UPDUSR_ID = #{lastUpdusrId}
+		WHERE LEADER_ID = #{leaderId}
+	</update>
+	
+	<!-- 간부상태::삭제  -->
+	<delete id="deleteLeaderSttus" parameterType="egovframework.com.cop.smt.lsm.service.LeaderSttus"> 
+		
+			DELETE FROM COMTNLEADERSTTUS 
+			WHERE LEADER_ID = #{leaderId}
+		
+	</delete>
+</mapper>

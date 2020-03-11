@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="synchrnServerDAO">
+
+    <resultMap id="synchrnServer" type="egovframework.com.utl.sys.ssy.service.SynchrnServerVO">
+        <result property="serverId" column="SERVER_ID"/>
+        <result property="serverNm" column="SERVER_NM"/>
+        <result property="serverIp" column="SERVER_IP"/>
+        <result property="serverPort" column="SERVER_PORT"/>
+        <result property="ftpId" column="FTP_ID"/>
+        <result property="ftpPassword" column="FTP_PASSWORD"/>
+        <result property="synchrnLc" column="SYNCHRN_LC"/>
+        <result property="reflctAt" column="REFLCT_AT"/>        
+        <result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+        <result property="frstRegisterId" column="FRST_REGISTER_ID"/>        
+        <result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+        <result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+    </resultMap>
+
+    <select id="selectSynchrnServerList" parameterType="egovframework.com.utl.sys.ssy.service.SynchrnServerVO" resultMap="synchrnServer">
+            
+            SELECT  * 
+              FROM  (
+            SELECT ROWNUM RNUM, ALL_LIST.* 
+              FROM  (               
+             SELECT SERVER_ID,
+                    SERVER_NM,
+                    SERVER_IP,
+                    SERVER_PORT,
+                    FTP_ID,
+                    FTP_PASSWORD,
+                    SYNCHRN_LC,
+                    REFLCT_AT,
+                    FRST_REGIST_PNTTM,
+                    FRST_REGISTER_ID,
+                    LAST_UPDT_PNTTM,
+                    LAST_UPDUSR_ID
+               FROM COMTNSYNCHRNSERVERINFO
+              WHERE 1 = 1
+                        
+            <if test="strSynchrnServerNm != null">AND
+                    SERVER_NM LIKE '%'||#{strSynchrnServerNm}||'%'
+            </if>           
+            <![CDATA[            
+              ORDER BY SERVER_ID DESC
+                    ) ALL_LIST
+                    ) Z
+             WHERE  RNUM  > #{firstIndex}
+               AND  RNUM <= #{firstIndex} + #{recordCountPerPage}
+            ]]>       
+    </select>
+
+    <select id="selectSynchrnServerListTotCnt" parameterType="egovframework.com.utl.sys.ssy.service.SynchrnServerVO" resultType="int">
+
+             SELECT COUNT(*) totcnt
+               FROM COMTNSYNCHRNSERVERINFO
+              WHERE 1 = 1
+            <if test="strSynchrnServerNm != null">AND
+                    SERVER_NM LIKE '%'||#{strSynchrnServerNm}||'%'
+            </if>
+    </select>
+
+    <select id="selectSynchrnServer" resultMap="synchrnServer">
+        
+             SELECT SERVER_ID,
+                    SERVER_NM,
+                    SERVER_IP,
+                    SERVER_PORT,
+                    FTP_ID,
+                    FTP_PASSWORD,
+                    SYNCHRN_LC,
+                    REFLCT_AT,
+                    FRST_REGIST_PNTTM,
+                    FRST_REGISTER_ID,
+                    LAST_UPDT_PNTTM,
+                    LAST_UPDUSR_ID
+               FROM COMTNSYNCHRNSERVERINFO
+             WHERE 1 = 1
+               AND SERVER_ID = #{serverId}    
+        
+    </select>
+
+    <insert id="insertSynchrnServer" parameterType="egovframework.com.utl.sys.ssy.service.SynchrnServer">
+        
+             INSERT INTO COMTNSYNCHRNSERVERINFO
+                    (SERVER_ID,
+                     SERVER_NM,
+                     SERVER_IP,
+                     SERVER_PORT,
+                     FTP_ID,
+                     FTP_PASSWORD,
+                     SYNCHRN_LC,
+                     REFLCT_AT,
+                     FRST_REGIST_PNTTM,
+                     FRST_REGISTER_ID,
+                     LAST_UPDT_PNTTM,
+                     LAST_UPDUSR_ID)
+             VALUES (#{serverId},
+                     #{serverNm},
+                     #{serverIp},
+                     #{serverPort},
+                     #{ftpId},
+                     #{ftpPassword},
+                     #{synchrnLc},
+                     #{reflctAt},
+                     SYSDATETIME,
+                     #{frstRegisterId},
+                     SYSDATETIME,
+                     #{lastUpdusrId})
+        
+    </insert>
+
+    <update id="updateSynchrnServer" parameterType="egovframework.com.utl.sys.ssy.service.SynchrnServer">
+            UPDATE COMTNSYNCHRNSERVERINFO
+               SET SERVER_NM = #{serverNm},
+                   SERVER_IP = #{serverIp},
+                   SERVER_PORT = #{serverPort},
+                   FTP_ID = #{ftpId},
+                   FTP_PASSWORD = #{ftpPassword},
+                   SYNCHRN_LC = #{synchrnLc},
+                   LAST_UPDT_PNTTM = SYSDATETIME,
+                   LAST_UPDUSR_ID = #{lastUpdusrId}
+             WHERE SERVER_ID = #{serverId}
+    </update>    
+
+    <delete id="deleteSynchrnServer" parameterType="egovframework.com.utl.sys.ssy.service.SynchrnServer">
+        
+            DELETE FROM COMTNSYNCHRNSERVERINFO
+             WHERE SERVER_ID = #{serverId}
+        
+    </delete>  
+
+    <update id="processSynchrn" parameterType="egovframework.com.utl.sys.ssy.service.SynchrnServer">
+            UPDATE COMTNSYNCHRNSERVERINFO
+               SET REFLCT_AT = #{reflctAt}
+             WHERE SERVER_ID = #{serverId}
+    </update>
+
+    <select id="processSynchrnServerList" parameterType="egovframework.com.utl.sys.ssy.service.SynchrnServerVO" resultMap="synchrnServer">
+             SELECT SERVER_ID,
+                    SERVER_NM,
+                    SERVER_IP,
+                    SERVER_PORT,
+                    FTP_ID,
+                    FTP_PASSWORD,
+                    SYNCHRN_LC,
+                    REFLCT_AT,
+                    FRST_REGIST_PNTTM,
+                    FRST_REGISTER_ID,
+                    LAST_UPDT_PNTTM,
+                    LAST_UPDUSR_ID
+               FROM COMTNSYNCHRNSERVERINFO
+              WHERE 1 = 1
+              <if test="strReflctAt != null">AND
+                AND REFLCT_AT = #{reflctAt}
+              </if>
+    </select>    
+</mapper>

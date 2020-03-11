@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- 
+	수정일                 수정자                          수정내용
+  =========     =======    =================================================
+  2011.9.7   	정진오     	 	deleteCommunityUserInf과 deleteAllCommunityUserInf의 update 문에
+  							MNGR_AT = 'N' 추가(커뮤니티 탈퇴 시 운영자 인 경우 강제로 비운영자로 변경 필요)
+  2018.10.18    이정은              메인페이지 - 생성된 커뮤니티 목록 추가
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CommuMaster">
+
+	<resultMap id="CmmntyList" type="egovframework.com.cop.cmy.service.CommunityVO">
+		<result property="cmmntyId" column="CMMNTY_ID"/>
+		<result property="cmmntyNm" column="CMMNTY_NM"/>
+		<result property="registSeCode" column="REGIST_SE_CODE"/>
+		<result property="registSeCodeNm" column="REGIST_SE_CODE_NM"/>
+		<result property="useAt" column="USE_AT"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="frstRegisterNm" column="FRST_REGISTER_NM"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+	</resultMap>
+
+	<resultMap id="CmmntyDetail" type="egovframework.com.cop.cmy.service.CommunityVO">
+		<result property="cmmntyId" column="CMMNTY_ID"/>
+		<result property="cmmntyNm" column="CMMNTY_NM"/>
+		<result property="cmmntyIntrcn" column="CMMNTY_INTRCN"/>
+		<result property="useAt" column="USE_AT"/>		
+		<result property="tmplatId" column="TMPLAT_ID"/>
+		<result property="tmplatNm" column="TMPLAT_NM"/>		
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="frstRegisterNm" column="FRST_REGISTER_NM"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+	</resultMap>
+	
+	<resultMap id="CommuMasterListPortlet" type="egovframework.com.cop.cmy.service.CommunityVO">
+		<result property="cmmntyId" column="CMMNTY_ID"/>
+		<result property="cmmntyNm" column="CMMNTY_NM"/>
+		<result property="cmmntyIntrcn" column="CMMNTY_INTRCN"/>
+		<result property="tmplatId" column="TMPLAT_ID"/>
+	</resultMap>			
+
+	<insert id="insertCommuMaster" parameterType="egovframework.com.cop.cmy.service.CommunityVO">
+		
+			INSERT INTO COMTNCMMNTY
+			(CMMNTY_ID, CMMNTY_NM, CMMNTY_INTRCN, REGIST_SE_CODE, 
+			 TMPLAT_ID, USE_AT, FRST_REGISTER_ID, FRST_REGIST_PNTTM)
+			VALUES
+			(#{cmmntyId}, #{cmmntyNm}, #{cmmntyIntrcn}, #{registSeCode}, 
+			 #{tmplatId}, #{useAt}, #{frstRegisterId}, SYSDATE)
+		
+	</insert>
+
+	<select id="selectCommuMasterList" parameterType="egovframework.com.cop.cmy.service.CommunityVO" resultMap="CmmntyList">
+		
+		SELECT * FROM ( SELECT rownum rn, TB.* FROM (
+			SELECT 
+				a.CMMNTY_ID, a.CMMNTY_NM, a.USE_AT, a.REGIST_SE_CODE, 
+				c.CODE_NM as REGIST_SE_CODE_NM, 
+				a.FRST_REGIST_PNTTM, a.FRST_REGISTER_ID, 
+				b.USER_NM as FRST_REGISTER_NM
+			FROM
+				COMTNCMMNTY a
+			LEFT OUTER JOIN COMVNUSERMASTER b
+			ON a.FRST_REGISTER_ID = b.ESNTL_ID
+			LEFT OUTER JOIN COMTCCMMNDETAILCODE c
+			ON a.REGIST_SE_CODE = c.CODE
+			WHERE c.CODE_ID = 'COM001'
+		
+			<if test="searchCnd == 0">AND
+					a.CMMNTY_NM LIKE '%' || #{searchWrd} || '%' 		
+			</if>
+					
+			ORDER BY a.FRST_REGIST_PNTTM DESC 
+			) TB ) WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+						
+	</select>	
+	
+	<select id="selectCommuMasterListCnt" parameterType="egovframework.com.cop.cmy.service.CommunityVO" resultType="java.lang.Integer">
+		
+			SELECT 
+				COUNT(a.CMMNTY_ID)
+			FROM
+				COMTNCMMNTY a
+			LEFT OUTER JOIN COMVNUSERMASTER b
+			ON a.FRST_REGISTER_ID = b.ESNTL_ID
+			LEFT OUTER JOIN COMTCCMMNDETAILCODE c
+			ON a.REGIST_SE_CODE = c.CODE
+			WHERE c.CODE_ID = 'COM001'
+		
+			<if test="searchCnd == 0">AND
+					a.CMMNTY_NM LIKE '%' || #{searchWrd} || '%' 		
+			</if>
+	</select>	
+
+	<select id="selectCommuMasterDetail" parameterType="egovframework.com.cop.cmy.service.CommunityVO" resultMap="CmmntyDetail">
+		
+			SELECT 
+				a.CMMNTY_ID, a.CMMNTY_NM, a.CMMNTY_INTRCN, a.USE_AT, 
+				c.TMPLAT_ID, c.TMPLAT_NM,
+				a.FRST_REGIST_PNTTM, a.FRST_REGISTER_ID, 
+				b.USER_NM as FRST_REGISTER_NM, a.FRST_REGIST_PNTTM
+			FROM
+				COMTNCMMNTY a
+			LEFT OUTER JOIN COMVNUSERMASTER b
+			ON a.FRST_REGISTER_ID = b.ESNTL_ID
+			LEFT OUTER JOIN COMTNTMPLATINFO c
+			ON a.TMPLAT_ID = c.TMPLAT_ID
+			WHERE 
+				a.CMMNTY_ID = #{cmmntyId}	
+			
+	</select>
+	
+	<update id="updateCommuMaster" parameterType="egovframework.com.cop.cmy.service.CommunityVO">
+		
+			UPDATE COMTNCMMNTY
+			SET
+				CMMNTY_NM = #{cmmntyNm},
+				CMMNTY_INTRCN = #{cmmntyIntrcn}, 
+				TMPLAT_ID = #{tmplatId},
+				LAST_UPDUSR_ID = #{lastUpdusrId},
+				LAST_UPDT_PNTTM = SYSDATE,
+				USE_AT = #{useAt}
+			WHERE
+				CMMNTY_ID = #{cmmntyId}
+		
+	</update>
+	
+	<update id="deleteCommuMaster" parameterType="egovframework.com.cop.cmy.service.CommunityVO">
+		
+			UPDATE COMTNCMMNTY
+			SET
+				USE_AT = 'N',
+				LAST_UPDUSR_ID = #{lastUpdusrId},
+				LAST_UPDT_PNTTM = SYSDATE
+			WHERE
+				CMMNTY_ID = #{cmmntyId}
+		
+	</update>
+	
+	<select id="selectCommuMasterListPortlet" parameterType="egovframework.com.cop.cmy.service.CommunityVO" resultMap="CommuMasterListPortlet">
+		
+			SELECT 
+				CMMNTY_ID, CMMNTY_NM, CMMNTY_INTRCN, TMPLAT_ID, FRST_REGIST_PNTTM
+			FROM
+				COMTNCMMNTY
+			WHERE USE_AT = 'Y'
+			ORDER BY FRST_REGIST_PNTTM DESC
+		
+		</select>	
+		
+</mapper>

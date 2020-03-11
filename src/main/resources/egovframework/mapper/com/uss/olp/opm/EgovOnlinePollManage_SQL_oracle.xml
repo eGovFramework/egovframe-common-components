@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	수정일		수정자					수정내용
+  =========     =======    =================================================
+  2011.10.05        서준식               보안 취약점 점검사항 반영 $->#변경	
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="OnlinePollManage">
+
+	<!-- 온라인POLL관리::ResultMap 선언 -->
+	<resultMap id="OnlinePollManageVO" type="egovframework.com.uss.olp.opm.service.OnlinePollManage">
+		<result property="pollId" column="POLL_ID"/>
+		<result property="pollNm" column="POLL_NM"/>
+		<result property="pollBeginDe" column="POLL_BGNDE"/>
+		<result property="pollEndDe" column="POLL_ENDDE"/>
+		<result property="pollKindCode" column="POLL_KND"/>
+		<result property="pollDsuseYn" column="POLL_DSUSE_ENNC"/>
+		<result property="pollAutoDsuseYn" column="POLL_ATMC_DSUSE_ENNC"/>		
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/> 			
+	</resultMap>
+	
+	<!-- 온라인POLL관리::목록조회 게시물정보 -->
+	<select id="selectOnlinePollManage" parameterType="comDefaultVO" resultType="egovMap">
+		
+	SELECT *
+	FROM (
+	SELECT T0.*, ROWNUM RNUM
+		FROM (
+	
+	 
+		SELECT
+		A.POLL_ID,
+		A.POLL_NM, 
+		A.POLL_BGNDE																POLL_BEGIN_DE,
+		A.POLL_ENDDE																POLL_END_DE,
+		A.POLL_KND																	POLL_KIND_CODE,
+		A.POLL_DSUSE_ENNC,
+		A.POLL_ATMC_DSUSE_ENNC,
+		A.FRST_REGISTER_ID,
+		TO_CHAR(A.FRST_REGIST_PNTTM,'YYYY-MM-DD') 									FRST_REGISTER_PNTTM,
+		(SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = A.FRST_REGISTER_ID) 	FRST_REGISTER_NM 
+		FROM COMTNONLINEPOLLMANAGE A
+		WHERE 1=1
+	 
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 	
+	 		
+	 		
+				<if test="searchCondition == 'POLL_NM'">
+	 				AND POLL_NM LIKE '%' || #{searchKeyword} || '%'
+	 			</if>
+	 			
+	 		
+	 	
+	 </if>
+	 <![CDATA[
+		ORDER BY A.FRST_REGIST_PNTTM DESC
+	
+		
+		) T0
+	) 
+	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	]]>	
+	</select>
+	<!-- 온라인POLL관리::목록조회_게시물 총갯수  -->
+	<select id="selectOnlinePollManageCnt" parameterType="comDefaultVO" resultType="int">
+		SELECT 
+		COUNT(*) totcnt
+		FROM COMTNONLINEPOLLMANAGE
+		WHERE 1=1
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 	
+	 		
+	 			<if test="searchCondition == 'POLL_NM'">
+	 				AND POLL_NM LIKE '%' || #{searchKeyword} || '%'
+	 			</if>
+	 		
+	 	
+	 </if>
+	</select>
+	
+    <!-- 온라인POLL관리::삭제  -->
+	<delete id="deleteOnlinePollManage">
+		
+			DELETE FROM COMTNONLINEPOLLMANAGE 
+			WHERE POLL_ID=#{pollId}
+		
+	</delete>
+	
+	<!-- 온라인POLL관리::수정  -->
+	<update id="updateOnlinePollManage">
+ 
+	UPDATE COMTNONLINEPOLLMANAGE 
+	SET 
+		POLL_NM=#{pollNm},
+		POLL_BGNDE=#{pollBeginDe},
+		POLL_ENDDE=#{pollEndDe},
+		POLL_KND=#{pollKindCode},
+		POLL_DSUSE_ENNC=#{pollDsuseYn},
+		POLL_ATMC_DSUSE_ENNC=#{pollAutoDsuseYn},
+		LAST_UPDT_PNTTM = sysdate,
+		LAST_UPDUSR_ID = #{lastUpdusrId}
+	WHERE POLL_ID=#{pollId} 
+
+ 
+	</update>
+	
+	<!-- 온라인POLL관리::상세보기 -->
+	<select id="selectOnlinePollManageDetail" resultMap="OnlinePollManageVO">
+	SELECT 
+		A.POLL_ID,
+		A.POLL_NM,
+		A.POLL_BGNDE,
+		A.POLL_ENDDE,
+		A.POLL_KND,
+		A.POLL_DSUSE_ENNC,
+		A.POLL_ATMC_DSUSE_ENNC,
+		A.FRST_REGISTER_ID,
+		A.FRST_REGIST_PNTTM,
+		A.FRST_REGISTER_ID,
+		A.LAST_UPDT_PNTTM,
+		A.LAST_UPDUSR_ID  
+		FROM COMTNONLINEPOLLMANAGE A
+		WHERE 1=1
+		AND A.POLL_ID=#{pollId} 
+	</select>
+
+	<!-- 온라인POLL관리::입력  -->
+	<insert id="insertOnlinePollManage">	     
+	 
+	
+	INSERT INTO COMTNONLINEPOLLMANAGE ( 
+	POLL_ID,
+	POLL_NM,
+	POLL_BGNDE,
+	POLL_ENDDE,
+	POLL_KND,
+	POLL_DSUSE_ENNC,
+	POLL_ATMC_DSUSE_ENNC,
+	FRST_REGIST_PNTTM,
+	FRST_REGISTER_ID,
+	LAST_UPDT_PNTTM,
+	LAST_UPDUSR_ID
+	)VALUES( 
+	#{pollId},
+	#{pollNm},
+	#{pollBeginDe},
+	#{pollEndDe},
+	#{pollKindCode},
+	#{pollDsuseYn},
+	#{pollAutoDsuseYn},
+	sysdate,
+	#{frstRegisterId},
+	sysdate,
+	#{lastUpdusrId} 
+	)
+	 
+	</insert>
+	
+	<!-- 온라인POLL항목::목록조회 게시물정보 -->
+	<select id="selectOnlinePollItem" resultType="egovMap">
+	 
+		SELECT 
+		POLL_ID,
+		POLL_IEM_ID,
+		POLL_IEM_NM,
+		FRST_REGISTER_ID,
+		FRST_REGIST_PNTTM,
+		LAST_UPDUSR_ID,
+		LAST_UPDT_PNTTM
+		FROM COMTNONLINEPOLLIEM
+		WHERE 1=1
+		AND POLL_ID = #{pollId} 
+		ORDER BY POLL_IEM_NM DESC
+	 
+	</select>
+	<!-- 온라인POLL항목::등록  --> 
+	<insert id="insertOnlinePollItem">	     
+	
+	INSERT INTO COMTNONLINEPOLLIEM ( 
+	POLL_ID,
+	POLL_IEM_ID,
+	POLL_IEM_NM,
+	FRST_REGISTER_ID,
+	FRST_REGIST_PNTTM,
+	LAST_UPDUSR_ID,
+	LAST_UPDT_PNTTM
+	)VALUES( 
+	#{pollId},
+	#{pollIemId},
+	#{pollIemNm},
+	#{frstRegisterId},
+	sysdate,
+	#{lastUpdusrId},
+	sysdate
+	)
+	
+	</insert>
+	<!-- 온라인POLL항목::수정  -->
+	<update id="updateOnlinePollIteme">
+	
+	UPDATE COMTNONLINEPOLLIEM 
+	SET 
+		POLL_IEM_NM = #{pollIemNm}  
+	WHERE POLL_IEM_ID=#{pollIemId} 
+	
+	</update>
+	<!-- 온라인POLL결과::온라인POLL ID별  삭제  -->
+	<delete id="deleteOnlinePollResultAll">
+		
+			DELETE FROM COMTNONLINEPOLLRESULT 
+			WHERE POLL_ID=#{pollId}
+		
+	</delete>
+    <!-- 온라인POLL항목::온라인POLL ID별  삭제  -->
+	<delete id="deleteOnlinePollItemAll">
+		
+			DELETE FROM COMTNONLINEPOLLIEM 
+			WHERE POLL_ID=#{pollId}
+		
+	</delete>
+	
+	<!-- 온라인POLL결과::온라인POLL IEM ID별  삭제  -->
+	<delete id="deleteOnlinePollResultIemid">
+		
+			DELETE FROM COMTNONLINEPOLLRESULT 
+			WHERE POLL_ID=#{pollId} AND POLL_IEM_ID=#{pollIemId}
+		
+	</delete>
+    <!-- 온라인POLL항목::삭제  -->
+	<delete id="deleteOnlinePollItem">
+		
+			DELETE FROM COMTNONLINEPOLLIEM 
+			WHERE POLL_IEM_ID=#{pollIemId}
+		
+	</delete>
+</mapper>

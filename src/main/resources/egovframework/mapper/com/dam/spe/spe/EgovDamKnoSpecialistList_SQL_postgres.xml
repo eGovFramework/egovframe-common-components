@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="KnoSpecialistDAO">
+
+	<select id="selectKnoSpecialistList" parameterType="egovframework.com.dam.spe.spe.service.KnoSpecialistVO" resultType="egovMap">
+		
+			SELECT C.ORGNZT_NM				"orgnztNm"
+			     ,  B.KNWLDG_TY_CODE		"knoTypeCd"		
+			     ,  B.KNWLDG_TY_NM			"knoTypeNm"
+				 ,  D.USER_NM				"userNm"
+				 ,  A.EXPERT_GRAD			"appTypeCd"
+                 ,  TO_CHAR(TO_DATE(A.EXPERT_CONFM_DE, 'YYYYmmdd'),'YYYY-mm-dd')	"speConfmDe"
+                 ,  A.EXPERT_ID				"speId"
+			     ,	A.FRST_REGISTER_ID		"frstRegisterId"
+			     ,	A.FRST_REGIST_PNTTM	    FRST_REGISTER_PNTTM
+			     ,  A.LAST_UPDUSR_ID		"lastUpdusrId"
+			     ,	A.LAST_UPDT_PNTTM		"lastUpdusrPnttm"
+			FROM  COMTNDAMPRO A, COMTNDAMMAPKNO B, COMTNDAMMAPTEAM C, COMVNUSERMASTER D
+			WHERE C.ORGNZT_ID = B.ORGNZT_ID
+			AND   A.KNWLDG_TY_CODE = B.KNWLDG_TY_CODE
+			AND   A.EXPERT_ID = D.ESNTL_ID			
+		
+			<if test='searchCondition == "1"'>AND
+				D.USER_NM LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+			<if test='searchCondition == "2"'>AND
+				B.KNWLDG_TY_NM LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+			 LIMIT  #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+
+	<select id="selectKnoSpecialistTotCnt" parameterType="egovframework.com.dam.spe.spe.service.KnoSpecialistVO" resultType="int">
+		
+			SELECT  COUNT(*) totcnt 
+			FROM  COMTNDAMPRO A, COMTNDAMMAPKNO B, COMTNDAMMAPTEAM C, COMVNUSERMASTER D
+			WHERE C.ORGNZT_ID = B.ORGNZT_ID
+			AND   A.KNWLDG_TY_CODE = B.KNWLDG_TY_CODE
+			AND   A.EXPERT_ID = D.ESNTL_ID
+		
+			<if test='searchCondition == "1"'>AND
+				D.USER_NM LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+			<if test='searchCondition == "2"'>AND
+				B.KNWLDG_TY_NM LIKE CONCAT('%', #{searchKeyword}, '%')
+			</if>
+	</select>
+
+	<select id="selectKnoSpecialist" parameterType="egovframework.com.dam.spe.spe.service.KnoSpecialist" resultType="egovframework.com.dam.spe.spe.service.KnoSpecialist">
+		
+			SELECT  C.ORGNZT_NM							   	orgnztNm
+			     ,  C.ORGNZT_ID							   	orgnztId
+                 ,  A.EXPERT_ID                             speId			     
+			     ,  D.USER_NM    						   	userNm
+			     ,  B.KNWLDG_TY_NM						   	knoTypeNm			     			
+			     ,  B.KNWLDG_TY_CODE						knoTypeCd
+			     ,  A.EXPERT_GRAD		            	   	appTypeCd
+			     ,  A.EXPERT_DC						   		speExpCn
+                 ,  TO_CHAR(TO_DATE(A.EXPERT_CONFM_DE, 'YYYYmmdd'),'YYYY-mm-dd')	"speConfmDe"
+			     ,	A.FRST_REGISTER_ID					   	frstRegisterId
+			     ,	A.FRST_REGIST_PNTTM				  	        FRST_REGISTER_PNTTM
+			     ,  A.LAST_UPDUSR_ID					   	lastUpdusrId
+			     ,	A.LAST_UPDT_PNTTM					   	lastUpdusrPnttm			     
+			FROM  COMTNDAMPRO A, COMTNDAMMAPKNO B, COMTNDAMMAPTEAM C, COMVNUSERMASTER D
+			WHERE C.ORGNZT_ID = B.ORGNZT_ID
+			AND   A.KNWLDG_TY_CODE = B.KNWLDG_TY_CODE
+			AND   A.EXPERT_ID = D.ESNTL_ID				
+            AND   A.EXPERT_ID = #{speId}
+            AND   A.KNWLDG_TY_CODE = #{knoTypeCd}
+            AND   A.EXPERT_GRAD = #{appTypeCd}          
+		
+	</select>
+
+	<insert id="insertKnoSpecialist"> 
+		
+		    INSERT 
+		      INTO  COMTNDAMPRO
+		         (  EXPERT_ID
+		         ,  KNWLDG_TY_CODE
+		         ,  EXPERT_GRAD
+		         ,  EXPERT_DC
+		         ,  EXPERT_CONFM_DE
+			     ,	FRST_REGISTER_ID
+			     ,	FRST_REGIST_PNTTM
+		         ,  LAST_UPDUSR_ID			     	         
+		         ,  LAST_UPDT_PNTTM
+		         ) 
+		    VALUES  
+		         (  #{speId}         		         
+		         ,  #{knoTypeCd}
+		         ,  #{appTypeCd}
+		         ,  #{speExpCn}
+		         ,  #{speConfmDe}        		         
+		         ,  #{frstRegisterId}
+		         ,  NOW()		         		         
+		         ,  #{lastUpdusrId}
+		         ,  NOW()
+		         ) 
+		
+	</insert>
+
+	<update id="updateKnoSpecialist">
+		
+            UPDATE  COMTNDAMPRO 
+               SET  EXPERT_GRAD       = #{appTypeNm}
+                 ,  EXPERT_DC	      = #{speExpCn} 
+                 ,  EXPERT_CONFM_DE = #{speConfmDe}                            
+                 ,  LAST_UPDUSR_ID    = #{lastUpdusrId}               
+                 ,  LAST_UPDT_PNTTM = NOW()
+            WHERE  EXPERT_ID       	  = #{speId}
+            AND    KNWLDG_TY_CODE 	  = #{knoTypeCd}
+            AND    EXPERT_GRAD		  = #{appTypeCd}
+		
+	</update>
+
+	<delete id="deleteKnoSpecialist">
+		
+            DELETE  FROM COMTNDAMPRO 
+            WHERE   EXPERT_ID 		= #{speId}
+            AND     KNWLDG_TY_CODE 	= #{knoTypeCd}
+            AND     EXPERT_GRAD 	= #{appTypeCd}                                  
+		
+	</delete>
+
+
+</mapper>

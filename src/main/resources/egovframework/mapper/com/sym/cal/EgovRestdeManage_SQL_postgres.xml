@@ -1,0 +1,316 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="RestdeManageDAO">
+
+	<select id="selectNormalRestdePopup" parameterType="egovframework.com.sym.cal.service.Restde" resultType="egovMap">
+		
+            SELECT  #{year}               "YEAR"
+                 ,  #{month}              "MONTH"
+                 ,  CASE ((DUMMY.ROWNUM + 1 - #{startWeekMonth})>0 AND (DUMMY.ROWNUM + 1 - #{startWeekMonth}) &lt;= #{lastDayMonth})
+                    WHEN true THEN CAST((DUMMY.ROWNUM + 1 - #{startWeekMonth}) AS VARCHAR)
+                    ELSE ''
+                    END                  "DAY"
+                 ,  DUMMY.ROWNUM         CELL_NUM
+                 ,  DUMMY.WEEKS + 1      WEEKS
+                 ,  DUMMY.WEEK           WEEK
+                 ,  (
+                    SELECT  CASE (COUNT(*)) WHEN 0 THEN CASE DUMMY.WEEK WHEN 1 THEN 'Y' WHEN 7 THEN 'Y' ELSE 'N' END ELSE 'Y' END
+                      FROM  COMTNRESTDE
+                     WHERE  RESTDE = CONCAT(#{year}
+                                              ,LPAD(#{month},2,'0')
+                                              ,LPAD(CASE((DUMMY.ROWNUM + 1 - #{startWeekMonth})>0 AND (DUMMY.ROWNUM + 1 - #{startWeekMonth}) &lt;= #{lastDayMonth})
+                                                    WHEN true THEN CAST((DUMMY.ROWNUM + 1 - #{startWeekMonth}) AS VARCHAR)
+                                                    ELSE ''
+                                                    END,2,'0'
+                                               )
+                                        )
+                       AND  RESTDE_SE_CODE IN ('01','02')
+                    ) REST_AT
+              FROM  (
+                    SELECT  (W.W*7) + D.D ROWNUM
+                         ,  W.W WEEKS
+                         ,  D.D WEEK
+                      FROM  (
+                            SELECT 0 W
+                            UNION ALL
+                            SELECT 1
+                            UNION ALL
+                            SELECT 2
+                            UNION ALL
+                            SELECT 3
+                            UNION ALL
+                            SELECT 4
+                            UNION ALL
+                            SELECT 5
+                            ) W,
+                            (
+                            SELECT 1 D
+                            UNION ALL
+                            SELECT 2
+                            UNION ALL
+                            SELECT 3
+                            UNION ALL
+                            SELECT 4
+                            UNION ALL
+                            SELECT 5
+                            UNION ALL
+                            SELECT 6
+                            UNION ALL
+                            SELECT 7
+                            ) D
+                    ORDER BY (W.W*7) + D.D
+            ) DUMMY
+		
+	</select>
+
+	<select id="selectAdministRestdePopup" parameterType="egovframework.com.sym.cal.service.Restde" resultType="egovMap">
+		
+            SELECT  #{year}               "YEAR"
+                 ,  #{month}               "MONTH"
+                 ,  CASE ((DUMMY.ROWNUM + 1 - #{startWeekMonth})>0 AND (DUMMY.ROWNUM + 1 - #{startWeekMonth}) &lt;= #{lastDayMonth})
+                    WHEN true THEN CAST((DUMMY.ROWNUM + 1 - #{startWeekMonth}) AS VARCHAR)
+                    ELSE ''
+                    END                  "DAY"
+                 ,  DUMMY.ROWNUM         CELL_NUM
+                 ,  DUMMY.WEEKS + 1      WEEKS
+                 ,  DUMMY.WEEK           WEEK
+                 ,  (
+                    SELECT  CASE (COUNT(*)) WHEN 0 THEN CASE DUMMY.WEEK WHEN 1 THEN 'Y' WHEN 7 THEN 'Y' ELSE 'N' END ELSE 'Y' END
+                      FROM  COMTNRESTDE
+                     WHERE  RESTDE = CONCAT(#{year}
+                                              ,LPAD(#{month},2,'0')
+                                              ,LPAD(CASE((DUMMY.ROWNUM + 1 - #{startWeekMonth})>0 AND (DUMMY.ROWNUM + 1 - #{startWeekMonth}) &lt;= #{lastDayMonth})
+                                                    WHEN true THEN CAST((DUMMY.ROWNUM + 1 - #{startWeekMonth}) AS VARCHAR)
+                                                    ELSE ''
+                                                    END,2,'0'
+                                               )
+                                        )
+                       AND  RESTDE_SE_CODE IN ('02','03')
+                    ) REST_AT
+              FROM  (
+                    SELECT  (W.W*7) + D.D ROWNUM
+                         ,  W.W WEEKS
+                         ,  D.D WEEK
+                      FROM  (
+                            SELECT 0 W
+                            UNION ALL
+                            SELECT 1
+                            UNION ALL
+                            SELECT 2
+                            UNION ALL
+                            SELECT 3
+                            UNION ALL
+                            SELECT 4
+                            UNION ALL
+                            SELECT 5
+                            ) W,
+                            (
+                            SELECT 1 D
+                            UNION ALL
+                            SELECT 2
+                            UNION ALL
+                            SELECT 3
+                            UNION ALL
+                            SELECT 4
+                            UNION ALL
+                            SELECT 5
+                            UNION ALL
+                            SELECT 6
+                            UNION ALL
+                            SELECT 7
+                            ) D
+                    ORDER BY (W.W*7) + D.D
+            ) DUMMY
+		
+	</select>
+
+	<select id="selectNormalDayCal" parameterType="egovframework.com.sym.cal.service.Restde" resultType="egovMap">
+		
+			SELECT  #{year}               "YEAR"
+			     ,  #{month}              "MONTH"
+				 ,  #{day}                "DAY"
+				 ,  #{week}               WEEK
+				 ,  #{weeks}              WEEKS
+				 ,  #{maxWeeks}           MAX_WEEKS
+				 ,  #{lastDayMonth}       LAST_DAY_MONTH
+			     ,  (	SELECT  CASE (COUNT(*)) WHEN 0 THEN CASE #{week} WHEN 1 THEN 'Y' WHEN 7 THEN 'Y' ELSE 'N' END ELSE 'Y' END
+			              FROM  COMTNRESTDE
+			             WHERE  RESTDE = CONCAT(#{year},LPAD(#{month},2,'0'),LPAD(#{day},2,'0'))
+			               AND  RESTDE_SE_CODE IN ('01','02')
+			        ) REST_AT
+		
+	</select>
+
+	<select id="selectNormalDayRestde" parameterType="egovframework.com.sym.cal.service.Restde" resultType="egovMap">
+		
+            SELECT  #{year}     "YEAR"
+                 ,  #{month}    "MONTH"
+                 ,  #{day}      "DAY"
+                 ,  RESTDE
+                 ,  RESTDE_NM
+              FROM  COMTNRESTDE
+             WHERE  RESTDE         = CONCAT(#{year},LPAD(#{month},2,'0'),LPAD(#{day},2,'0'))
+               AND  RESTDE_SE_CODE   IN ('01','02')
+		
+	</select>
+
+	<select id="selectNormalMonthRestde" parameterType="egovframework.com.sym.cal.service.Restde" resultType="egovMap">
+		
+            SELECT  #{year}                "YEAR"
+                 ,  #{month}               "MONTH"
+                 ,  CAST(CAST( SUBSTR(RESTDE,7,2) AS DECIMAL(2)) AS CHAR) "DAY"
+                 ,  RESTDE
+                 ,  RESTDE_NM
+              FROM  COMTNRESTDE
+             WHERE  RESTDE      LIKE CONCAT(#{year},LPAD(#{month},2,'0'),'%')
+               AND  RESTDE_SE_CODE   IN ('01','02')
+		
+	</select>
+
+	<select id="selectAdministDayCal" parameterType="egovframework.com.sym.cal.service.Restde" resultType="egovMap">
+		
+			SELECT  #{year}               "YEAR"
+			     ,  #{month}              "MONTH"
+				 ,  #{day}                "DAY"
+				 ,  #{week}               WEEK
+				 ,  #{weeks}              WEEKS
+				 ,  #{maxWeeks}           MAX_WEEKS
+				 ,  #{lastDayMonth}       LAST_DAY_MONTH
+			     ,  (	SELECT  CASE (COUNT(*)) WHEN 0 THEN CASE #{week} WHEN 1 THEN 'Y' WHEN 7 THEN 'Y' ELSE 'N' END ELSE 'Y' END
+			              FROM  COMTNRESTDE
+			             WHERE  RESTDE = CONCAT(#{year},LPAD(#{month},2,'0'),LPAD(#{day},2,'0'))
+			               AND  RESTDE_SE_CODE IN ('02','03')
+			        ) REST_AT
+		
+	</select>
+
+	<select id="selectAdministDayRestde" parameterType="egovframework.com.sym.cal.service.Restde" resultType="egovMap">
+		
+            SELECT  #{year}     "YEAR"
+                 ,  #{month}    "MONTH"
+                 ,  #{day}      "DAY"
+                 ,  RESTDE
+                 ,  RESTDE_NM
+              FROM  COMTNRESTDE
+             WHERE  RESTDE         = CONCAT(#{year},LPAD(#{month},2,'0'),LPAD(#{day},2,'0'))
+               AND  RESTDE_SE_CODE   IN ('02','03')
+		
+	</select>
+
+	<select id="selectAdministMonthRestde" parameterType="egovframework.com.sym.cal.service.Restde" resultType="egovMap">
+		
+            SELECT  #{year}                "YEAR"
+                 ,  #{month}               "MONTH"
+                 ,  CAST(CAST( SUBSTR(RESTDE,7,2) AS DECIMAL(2)) AS CHAR) "DAY"
+                 ,  RESTDE
+                 ,  RESTDE_NM
+              FROM  COMTNRESTDE
+             WHERE  RESTDE      LIKE CONCAT(#{year},LPAD(#{month},2,'0'),'%')
+               AND  RESTDE_SE_CODE   IN ('02','03')
+		
+	</select>
+
+	<select id="selectRestdeList" parameterType="egovframework.com.sym.cal.service.RestdeVO" resultType="egovMap">
+		
+			SELECT  A.RESTDE_NO
+			     ,  A.RESTDE RESTDE_DE
+				 ,  A.RESTDE_NM
+				 ,  A.RESTDE_DC
+				 ,  B.CODE_NM        RESTDE_SE
+				 ,  A.RESTDE_SE_CODE
+			  FROM  COMTNRESTDE         A
+			     ,  COMTCCMMNDETAILCODE B
+			 WHERE  B.CODE_ID        = 'COM017'
+			   AND  A.RESTDE_SE_CODE = B.CODE
+		
+			<if test="searchCondition == 1">AND
+				A.RESTDE = #{searchKeyword}
+			</if>
+			<if test="searchCondition == 2">AND
+				A.RESTDE_NM LIKE CONCAT ('%', #{searchKeyword},'%')
+			</if>
+			 LIMIT  #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+
+	<select id="selectRestdeListTotCnt" parameterType="egovframework.com.sym.cal.service.RestdeVO" resultType="int">
+		
+			SELECT  COUNT(*) totcnt
+			  FROM  COMTNRESTDE         A
+			     ,  COMTCCMMNDETAILCODE B
+			 WHERE  B.CODE_ID        = 'COM017'
+			   AND  A.RESTDE_SE_CODE = B.CODE
+		
+			<if test="searchCondition == 1">AND
+				RESTDE = #{searchKeyword}
+			</if>
+			<if test="searchCondition == 2">AND
+				RESTDE_NM LIKE CONCAT ('%', #{searchKeyword},'%')
+			</if>
+	</select>
+
+	<insert id="insertRestde">
+		
+			INSERT
+			  INTO  COMTNRESTDE
+			     (  RESTDE_NO
+				 ,  RESTDE
+				 ,  RESTDE_NM
+				 ,  RESTDE_DC
+				 ,  RESTDE_SE_CODE
+			     ,  FRST_REGIST_PNTTM
+			     ,  FRST_REGISTER_ID
+			     ,  LAST_UPDT_PNTTM
+			     ,  LAST_UPDUSR_ID
+			     )
+			VALUES
+			     (  #{restdeNo}
+				 ,  #{restdeDe}
+				 ,  #{restdeNm}
+				 ,  #{restdeDc}
+				 ,  #{restdeSeCode}
+			     ,  NOW()
+			     ,  #{frstRegisterId}
+			     ,  NOW()
+			     ,  #{frstRegisterId}
+			     )
+		
+	</insert>
+
+	<select id="selectRestdeDetail" parameterType="egovframework.com.sym.cal.service.Restde" resultType="egovframework.com.sym.cal.service.Restde">
+		
+			SELECT  A.RESTDE_NO      restdeNo
+			     ,  A.RESTDE      restdeDe
+				 ,  A.RESTDE_NM      restdeNm
+				 ,  A.RESTDE_DC      restdeDc
+				 ,  B.CODE_NM        restdeSe
+				 ,  A.RESTDE_SE_CODE restdeSeCode
+			  FROM  COMTNRESTDE         A
+			     ,  COMTCCMMNDETAILCODE B
+			 WHERE  B.CODE_ID        = 'COM017'
+			   AND  A.RESTDE_SE_CODE = B.CODE
+               AND  A.RESTDE_NO      = #{restdeNo}
+		
+	</select>
+
+	<update id="updateRestde">
+		
+            UPDATE  COMTNRESTDE
+               SET  RESTDE_NM         = #{restdeNm}
+				 ,  RESTDE_DC         = #{restdeDc}
+				 ,  RESTDE_SE_CODE    = #{restdeSeCode}
+                 ,  LAST_UPDT_PNTTM = NOW()
+                 ,  LAST_UPDUSR_ID    = #{lastUpdusrId}
+             WHERE  RESTDE_NO         = #{restdeNo}
+		
+	</update>
+
+	<delete id="deleteRestde">
+		
+            DELETE
+              FROM  COMTNRESTDE
+             WHERE  RESTDE_NO = #{restdeNo}
+		
+	</delete>
+
+</mapper>

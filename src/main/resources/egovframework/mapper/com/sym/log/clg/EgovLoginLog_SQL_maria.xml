@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed May 11 15:50:41 KST 2016
+	수정일                 수정자                          수정내용
+  =========     =======    =================================================
+ 2017.11.07		이정은			날짜로 검색 시 시분초 추가
+  -->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="LoginLog">
+
+	<!-- 로그인로그 맵 -->
+	<resultMap id="LoginLogVO" type="egovframework.com.sym.log.clg.service.LoginLog">
+		<result property="logId" column="LOG_ID"/>
+		<result property="creatDt" column="CREAT_DT"/>
+		<result property="loginMthd" column="CONECT_MTHD"/>
+		<result property="loginIp" column="CONECT_IP"/>
+		<result property="loginId" column="CONECT_ID"/>
+		<result property="loginNm" column="LOGIN_NM"/>
+	</resultMap>
+
+	<!-- 로그인 로그 등록 -->
+	<insert id="logInsertLoginLog" parameterType="egovframework.com.sym.log.clg.service.LoginLog">
+		<![CDATA[
+			INSERT INTO COMTNLOGINLOG 
+				( LOG_ID
+				  , CONECT_MTHD
+				  , CONECT_ID
+				  , CONECT_IP
+				  , ERROR_OCCRRNC_AT
+				  , ERROR_CODE
+				  , CREAT_DT )
+			VALUES ( #{logId}
+				  , #{loginMthd}
+				  , #{loginId}
+				  , #{loginIp}
+				  , #{errOccrrAt}
+				  , #{errorCode}
+				  , sysdate())
+		]]>
+		
+	</insert>
+
+	<!-- 로그인 로그 상세  조회 -->
+	<select id="selectLoginLog" parameterType="egovframework.com.sym.log.clg.service.LoginLog" resultMap="LoginLogVO">
+			
+			<![CDATA[
+			SELECT 
+				  a.LOG_ID
+				, a.CREAT_DT
+				, a.CONECT_MTHD
+				, a.CONECT_IP
+				, a.CONECT_ID
+				, b.USER_NM AS LOGIN_NM
+			FROM
+				COMTNLOGINLOG a
+			LEFT OUTER JOIN COMVNUSERMASTER b
+				ON a.CONECT_ID = b.ESNTL_ID
+			WHERE 
+				a.LOG_ID = #{logId}
+			]]>
+			
+	</select>
+
+	<!-- 로그인 로그 목록  조회 -->
+	<select id="selectLoginLogInf" parameterType="egovframework.com.sym.log.clg.service.LoginLog" resultMap="LoginLogVO">
+			
+			<![CDATA[
+			SELECT 
+				  a.LOG_ID
+				, a.CREAT_DT
+				, a.CONECT_MTHD
+				, a.CONECT_IP
+				, a.CONECT_ID
+				, b.USER_NM AS LOGIN_NM
+			FROM
+				COMTNLOGINLOG a
+			LEFT OUTER JOIN COMVNUSERMASTER b
+				ON a.CONECT_ID = b.ESNTL_ID
+			WHERE 
+				1 = 1
+			]]>
+			
+		<if test="searchWrd != null and searchWrd != ''">	<![CDATA[ AND
+					a.CONECT_MTHD LIKE CONCAT ('%', #{searchWrd},'%') ]]>
+		</if>
+		<if test="searchBgnDe != null and searchBgnDe != ''">	<![CDATA[	AND
+					a.CREAT_DT BETWEEN STR_TO_DATE(CONCAT(#{searchBgnDe},' 00:00:00'), '%Y-%m-%d %H:%i:%s') 
+														AND STR_TO_DATE(CONCAT(#{searchEndDe},' 23:59:59'), '%Y-%m-%d %H:%i:%s') ]]>
+		</if>		
+			<![CDATA[	 ORDER BY a.CREAT_DT DESC ]]>
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+
+	<!-- 로그인 로그 총건수 -->
+	<select id="selectLoginLogInfCnt" parameterType="egovframework.com.sym.log.clg.service.LoginLog" resultType="java.lang.Integer">
+		 
+		 <![CDATA[
+			SELECT COUNT(a.LOG_ID) as cnt
+			FROM
+				COMTNLOGINLOG a
+			LEFT OUTER JOIN COMVNUSERMASTER b
+				ON a.CONECT_ID = b.ESNTL_ID
+			WHERE 
+				1 = 1
+		]]>
+		
+		<if test="searchWrd != null and searchWrd != ''">	<![CDATA[	AND
+					a.CONECT_MTHD LIKE CONCAT ('%', #{searchWrd},'%') ]]>
+		</if>
+		<if test="searchBgnDe != null and searchBgnDe != ''">	<![CDATA[	AND
+					a.CREAT_DT BETWEEN STR_TO_DATE(CONCAT(#{searchBgnDe},' 00:00:00'), '%Y-%m-%d %H:%i:%s') 
+														AND STR_TO_DATE(CONCAT(#{searchEndDe},' 23:59:59'), '%Y-%m-%d %H:%i:%s') ]]>
+		</if>
+	</select>
+
+</mapper>

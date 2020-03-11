@@ -1,0 +1,335 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="WikMnthngReprtDAO">
+	
+	<resultMap id="wikMnthngReportrList" type="egovframework.com.cop.smt.wmr.service.ReportrVO">
+		<result property="orgnztNm" column="ORGNZT_NM"/>
+		<result property="uniqId" column="ESNTL_ID"/>
+		<result property="emplyrNm" column="USER_NM"/>
+		<result property="emplNo" column="EMPL_NO"/>
+		<result property="ofcpsNm" column="OFCPS_NM"/>
+	</resultMap>
+	
+	<resultMap id="WikMnthngReprtList" type="egovframework.com.cop.smt.wmr.service.WikMnthngReprtVO">
+		<result property="reprtId" column="REPRT_ID"/>
+		<result property="reprtSe" column="REPRT_SE"/>
+		<result property="reprtSj" column="REPRT_SJ"/>
+		<result property="reprtDe" column="REPORT_DE"/>
+		<result property="wrterNm" column="WRTER_NM"/>
+		<result property="reprtBgnDe" column="REPORT_BGNDE"/>
+		<result property="reprtEndDe" column="REPORT_ENDDE"/>
+		<result property="confmDt" column="CONFM_DT"/>		
+	</resultMap>
+	
+	<resultMap id="WikMnthngReprtDetail" type="egovframework.com.cop.smt.wmr.service.WikMnthngReprtVO">
+		<result property="reprtId" column="REPRT_ID"/>
+		<result property="reprtSe" column="REPRT_SE"/>
+		<result property="reprtSj" column="REPRT_SJ"/>
+		<result property="reprtDe" column="REPORT_DE"/>
+		<result property="wrterId" column="WRTER_ID"/>
+		<result property="wrterNm" column="WRTER_NM"/>
+		<result property="wrterClsfNm" column="WRTER_CLSF_NM"/>
+		<result property="reportrId" column="REPORTR_ID"/>
+		<result property="reportrNm" column="REPORTR_NM"/>
+		<result property="reportrClsfNm" column="REPORTR_CLSF_NM"/>
+		
+		<result property="reprtBgnDe" column="REPORT_BGNDE"/>
+		<result property="reprtEndDe" column="REPORT_ENDDE"/>
+	
+		<result property="reprtThswikCn" column="THSWIK_REPORT_CN"/>
+		<result property="reprtLesseeCn" column="NEXTWIK_REPORT_CN"/>
+		
+		<result property="partclrMatter" column="PARTCLR_MATTER"/>
+		<result property="atchFileId" column="ATCH_FILE_ID"/>
+		<result property="confmDt" column="CONFM_DT"/>
+		    
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>				
+	</resultMap>
+	
+	<select id="selectReportrList" parameterType="egovframework.com.cop.smt.wmr.service.WikMnthngReprtVO" resultMap="wikMnthngReportrList">
+		
+	SELECT *
+	FROM (
+	SELECT T0.*, ROWNUM RNUM
+		FROM (
+	
+	
+		
+			SELECT
+				b.ORGNZT_NM, a.ESNTL_ID, a.USER_NM, 
+				a.EMPL_NO, a.OFCPS_NM
+			FROM
+				COMTNEMPLYRINFO a
+			LEFT OUTER JOIN COMTNORGNZTINFO b
+				ON a.ORGNZT_ID = b.ORGNZT_ID
+			WHERE 1=1
+		
+			<if test="searchCnd == 0">AND
+					NVL(b.ORGNZT_NM, ' ') LIKE '%'||#{searchWrd}||'%' 		
+			</if>
+			<if test="searchCnd == 1">AND
+					NVL(a.USER_NM, ' ') LIKE '%'||#{searchWrd}||'%' 		
+			</if>
+		
+			ORDER BY b.ORGNZT_NM, a.USER_NM ASC
+						
+	
+		
+		) T0
+	) 
+	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+		
+	</select>	
+	
+	<select id="selectReportrListCnt" parameterType="egovframework.com.cop.smt.wmr.service.WikMnthngReprtVO" resultType="java.lang.Integer">
+		
+			SELECT
+				COUNT(EMPLYR_ID) as cnt
+			FROM
+				COMTNEMPLYRINFO a
+			LEFT OUTER JOIN COMTNORGNZTINFO b
+				ON a.ORGNZT_ID = b.ORGNZT_ID
+			WHERE 1=1
+		
+			<if test="searchCnd == 0">AND
+					NVL(b.ORGNZT_NM, ' ') LIKE '%'||#{searchWrd}||'%' 		
+			</if>
+			<if test="searchCnd == 1">AND
+					NVL(a.USER_NM, ' ') LIKE '%'||#{searchWrd}||'%' 		
+			</if>		
+	</select>
+	
+	<!-- 사용자::조회 -->
+	<select id="selectWrterClsfNm" parameterType="java.lang.String" resultType="java.lang.String">
+	 
+		SELECT 
+			OFCPS_NM 
+		FROM COMTNEMPLYRINFO
+		WHERE ESNTL_ID = #{wrterId}
+	 
+	</select>
+	
+	<!-- 주간/월간보고::목록조회 -->
+	<select id="selectWikMnthngReprtList" parameterType="egovframework.com.cop.smt.wmr.service.WikMnthngReprtVO" resultMap="WikMnthngReprtList">
+		
+	SELECT *
+	FROM (
+	SELECT T0.*, ROWNUM RNUM
+		FROM (
+	
+	
+	 
+		SELECT 
+			A.REPRT_ID,
+			C.CODE_NM REPRT_SE,
+			A.REPRT_SJ,
+			A.REPORT_DE,
+			B.USER_NM WRTER_NM,
+			A.REPORT_BGNDE,
+			A.REPORT_ENDDE,
+			(CASE WHEN NVL(A.CONFM_DT, ' ') = ' ' THEN '미승인' ELSE '승인' END) CONFM_DT
+		FROM COMTNWIKMNTHNGREPRT A
+		LEFT OUTER JOIN COMTNEMPLYRINFO B
+			ON A.WRTER_ID = B.ESNTL_ID
+		LEFT OUTER JOIN COMTCCMMNDETAILCODE C
+			ON C.CODE_ID = 'COM060' 
+			AND A.REPRT_SE = C.CODE
+		WHERE (A.WRTER_ID = #{searchId} OR A.REPORTR_ID = #{searchId})
+	 
+	 
+	 <if test="searchDe == 0">AND
+		 	A.REPORT_DE BETWEEN #{searchBgnDe} AND #{searchEndDe}		
+	 </if>
+	 <if test="searchDe == 1">AND
+		 	(A.REPORT_BGNDE BETWEEN #{searchBgnDe} AND #{searchEndDe}		
+		 			OR	A.REPORT_ENDDE BETWEEN #{searchBgnDe} AND #{searchEndDe}	)
+		 
+	 </if>
+	 <if test="searchCnd == 0">AND
+		 	A.REPRT_SJ LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchCnd == 1">AND
+		 	B.USER_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchSttus == 0">AND
+		 	NVL(A.CONFM_DT, ' ') = ' ' 		
+	 </if>
+	 <if test="searchSttus == 1">AND
+		 	NVL(A.CONFM_DT, ' ') != ' ' 		
+	 </if>
+	 <if test="searchSe == 1">AND
+		 	A.REPRT_SE = '1' 		
+	 </if>
+	 <if test="searchSe == 2">AND
+		 	A.REPRT_SE = '2' 		
+	 </if>
+	 
+		ORDER BY A.FRST_REGIST_PNTTM DESC
+	 	
+	
+		
+		) T0
+	) 
+	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+		
+	</select>
+	
+	<!-- 주간/월간보고::목록조회 Count -->
+	<select id="selectWikMnthngReprtListCnt" parameterType="egovframework.com.cop.smt.wmr.service.WikMnthngReprtVO" resultType="java.lang.Integer">
+	 
+		SELECT 
+			COUNT(A.REPRT_ID) as cnt
+		FROM COMTNWIKMNTHNGREPRT A
+		LEFT OUTER JOIN COMTNEMPLYRINFO B
+			ON A.WRTER_ID = B.ESNTL_ID
+		WHERE (A.WRTER_ID = #{searchId} OR A.REPORTR_ID = #{searchId})
+	 
+	 
+	 <if test="searchDe == 0">AND
+		 	A.REPORT_DE BETWEEN #{searchBgnDe} AND #{searchEndDe}		
+	 </if>
+	 <if test="searchDe == 1">AND
+		 	(A.REPORT_BGNDE BETWEEN #{searchBgnDe} AND #{searchEndDe}		
+		 			OR	A.REPORT_ENDDE BETWEEN #{searchBgnDe} AND #{searchEndDe}	)
+		 
+	 </if>
+	 <if test="searchCnd == 0">AND
+		 	A.REPRT_SJ LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchCnd == 1">AND
+		 	B.USER_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchSttus == 0">AND
+		 	NVL(A.CONFM_DT, ' ') = ' '  		
+	 </if>
+	 <if test="searchSttus == 1">AND
+		 	NVL(A.CONFM_DT, ' ') != ' '  		
+	 </if>
+	 <if test="searchSe == 1">AND
+		 	A.REPRT_SE = '1' 		
+	 </if>
+	 <if test="searchSe == 2">AND
+		 	A.REPRT_SE = '2' 		
+	 </if>
+
+	</select>
+	
+	<!-- 주간/월간보고::상세보기 -->
+	<select id="selectWikMnthngReprt" parameterType="egovframework.com.cop.smt.wmr.service.WikMnthngReprtVO" resultMap="WikMnthngReprtDetail">
+		SELECT 
+			A.REPRT_ID,
+			A.REPRT_SE,
+			A.REPRT_SJ,
+			A.REPORT_DE,
+			A.WRTER_ID,
+			B.USER_NM WRTER_NM,
+			B.OFCPS_NM WRTER_CLSF_NM,
+			A.REPORTR_ID,
+			C.USER_NM REPORTR_NM,
+			C.OFCPS_NM REPORTR_CLSF_NM,		
+			A.REPORT_BGNDE,
+			A.REPORT_ENDDE,
+			A.THSWIK_REPORT_CN,
+			A.NEXTWIK_REPORT_CN,
+			A.PARTCLR_MATTER,
+			A.ATCH_FILE_ID,
+			A.CONFM_DT,
+			A.FRST_REGIST_PNTTM,
+			A.FRST_REGISTER_ID,
+			A.LAST_UPDT_PNTTM,
+			A.LAST_UPDUSR_ID 
+		FROM COMTNWIKMNTHNGREPRT A
+		LEFT OUTER JOIN COMTNEMPLYRINFO B
+			ON A.WRTER_ID = B.ESNTL_ID
+		LEFT OUTER JOIN COMTNEMPLYRINFO C
+			ON A.REPORTR_ID = C.ESNTL_ID
+		WHERE A.REPRT_ID = #{reprtId}
+	</select>
+	
+	<!-- 주간/월간보고::수정  -->
+	<update id="updateWikMnthngReprt" parameterType="egovframework.com.cop.smt.wmr.service.WikMnthngReprt"> 
+		UPDATE COMTNWIKMNTHNGREPRT 
+		SET  
+			REPRT_SE=#{reprtSe},
+			REPRT_SJ=#{reprtSj},
+			REPORT_DE=#{reprtDe},
+			WRTER_ID=#{wrterId},
+			REPORTR_ID=#{reportrId},
+			REPORT_BGNDE=#{reprtBgnDe},
+			REPORT_ENDDE=#{reprtEndDe},
+			THSWIK_REPORT_CN=#{reprtThswikCn},
+			NEXTWIK_REPORT_CN=#{reprtLesseeCn},
+			PARTCLR_MATTER=#{partclrMatter},
+			ATCH_FILE_ID=#{atchFileId},
+			LAST_UPDT_PNTTM = sysdate,
+			LAST_UPDUSR_ID = #{lastUpdusrId}
+		WHERE REPRT_ID = #{reprtId}
+	</update>
+	
+	<!-- 주간/월간보고::승인  -->
+	<update id="confirmWikMnthngReprt" parameterType="egovframework.com.cop.smt.wmr.service.WikMnthngReprt"> 
+		UPDATE COMTNWIKMNTHNGREPRT 
+		SET  
+			CONFM_DT=#{confmDt}
+		WHERE REPRT_ID = #{reprtId}
+	</update>
+	
+	<!-- 주간/월간보고::삭제  -->
+	<delete id="deleteWikMnthngReprt" parameterType="egovframework.com.cop.smt.wmr.service.WikMnthngReprt"> 
+		
+			DELETE FROM COMTNWIKMNTHNGREPRT 
+			WHERE REPRT_ID = #{reprtId}
+		
+	</delete>
+	
+	<!-- 주간/월간보고::입력  -->
+	<insert id="insertWikMnthngReprt" parameterType="egovframework.com.cop.smt.wmr.service.WikMnthngReprt">
+	 
+	 
+		INSERT INTO COMTNWIKMNTHNGREPRT ( 
+			REPRT_ID,
+			REPRT_SE,
+			REPRT_SJ,
+			REPORT_DE,
+			WRTER_ID,
+			REPORTR_ID,
+			REPORT_BGNDE,
+			REPORT_ENDDE,
+			THSWIK_REPORT_CN,
+			NEXTWIK_REPORT_CN,
+			PARTCLR_MATTER,
+			ATCH_FILE_ID,
+			CONFM_DT,
+			FRST_REGIST_PNTTM,
+			FRST_REGISTER_ID,
+			LAST_UPDT_PNTTM,
+			LAST_UPDUSR_ID
+		)VALUES( 
+			#{reprtId},
+			#{reprtSe},
+			#{reprtSj},
+			#{reprtDe},
+			#{wrterId},
+			#{reportrId},
+			#{reprtBgnDe},
+			#{reprtEndDe},
+			#{reprtThswikCn},
+			#{reprtLesseeCn},
+			#{partclrMatter},
+			#{atchFileId},
+			'',
+			sysdate,
+			#{frstRegisterId},
+			sysdate,
+			#{lastUpdusrId} 
+		)
+
+	 
+	</insert>
+	
+
+</mapper>

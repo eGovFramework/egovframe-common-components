@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+						http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd">
+
+	<!--  System Log Aspect -->
+	<bean id="syslog" class="egovframework.com.sym.log.lgm.service.EgovSysLogAspect" />
+
+	<aop:config>
+		<aop:aspect id="sysLogAspect" ref="syslog">
+			<!--  insert로 시작되는 service Method -->
+			<aop:around pointcut="execution(public * egovframework.com..impl.*Impl.insert*(..))" method="logInsert" />
+			<!--  update로 시작되는 service Method -->
+			<aop:around pointcut="execution(public * egovframework.com..impl.*Impl.update*(..))" method="logUpdate" />
+			<!--  delete로 시작되는 service Method -->
+			<aop:around pointcut="execution(public * egovframework.com..impl.*Impl.delete*(..))" method="logDelete" />
+			<!--  select로 시작되는 service Method -->
+			<aop:around pointcut="execution(public * egovframework.com..impl.*Impl.select*(..))" method="logSelect" />
+		</aop:aspect>
+	</aop:config>
+
+</beans>

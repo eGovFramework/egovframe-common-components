@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+
+<form-validation>
+
+    <formset>
+		<form name="cnsltManageVO">
+
+			<field property="wrterNm" depends="required,maxlength">
+        		<arg0 key="comUssOlpCns.regist.wrterNm" resource="true"/>
+        		<arg1 key="20" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>20</var-value>
+				</var>
+			</field>
+
+			<field property="writngPassword" depends="required, maxlength">
+        		<arg0 key="comUssOlpCns.regist.writngPassword" resource="true"/>
+        		<arg1 key="20" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>20</var-value>
+				</var>
+			</field> 
+
+			<field property="areaNo" depends="required, maxlength, integer">
+        		<arg0 key="comUssOlpCns.regist.telNo1" resource="true"/>
+        		<arg1 key="4" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>4</var-value>
+				</var>
+			</field>
+			
+			<field property="middleTelno" depends="required, maxlength, integer">
+        		<arg0 key="comUssOlpCns.regist.telNo2" resource="true"/>
+        		<arg1 key="4" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>4</var-value>
+				</var>
+			</field>			
+
+			<field property="endTelno" depends="required, maxlength, integer">
+        		<arg0 key="comUssOlpCns.regist.telNo3" resource="true"/>
+        		<arg1 key="4" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>4</var-value>
+				</var>
+			</field>
+			
+			<field property="firstMoblphonNo" depends="maxlength, integer">
+        		<arg0 key="comUssOlpCns.regist.mobileNo1" resource="true"/>
+        		<arg1 key="4" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>4</var-value>
+				</var>
+			</field>
+			
+			<field property="middleMbtlnum" depends="maxlength, integer">
+        		<arg0 key="comUssOlpCns.regist.mobileNo2" resource="true"/>
+        		<arg1 key="4" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>4</var-value>
+				</var>
+			</field>			
+
+			<field property="endMbtlnum" depends="maxlength, integer">
+        		<arg0 key="comUssOlpCns.regist.mobileNo3" resource="true"/>
+        		<arg1 key="4" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>4</var-value>
+				</var>
+			</field>			
+			
+			<field property="emailAdres" depends="email,maxlength">
+                <arg0 key="comUssOlpCns.regist.email" resource="true"/>
+                <arg1 key="50" resource="true"/>
+                <var>
+	                <var-name>maxlength</var-name>
+	                <var-value>50</var-value>
+                </var>
+            </field>	
+
+			<field property="cnsltSj" depends="required, maxlength">
+        		<arg0 key="comUssOlpCns.regist.cnsltSj" resource="true"/>
+        		<arg1 key="250" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>250</var-value>
+				</var>
+			</field>
+			
+			<field property="cnsltCn" depends="required, maxlength">
+        		<arg0 key="comUssOlpCns.regist.cnsltCn" resource="true"/>
+        		<arg1 key="2500" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>2500</var-value>
+				</var>
+			</field> 
+
+			<field property="managtCn" depends="required, maxlength">
+        		<arg0 key="comUssOlpCns.regist.managtCn" resource="true"/>
+        		<arg1 key="2500" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>2500</var-value>
+				</var>
+			</field> 
+											
+		</form>
+    </formset>
+
+</form-validation>

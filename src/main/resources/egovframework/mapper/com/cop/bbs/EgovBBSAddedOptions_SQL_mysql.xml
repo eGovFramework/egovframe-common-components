@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed May 11 15:49:41 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BBSAddedOptions">
+
+	<resultMap id="boardMasterDetail" type="egovframework.com.cop.bbs.service.BoardMasterVO">
+		<result property="bbsId" column="BBS_ID"/>
+		<result property="commentAt" column="ANSWER_AT"/>
+		<result property="stsfdgAt" column="STSFDG_AT"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="frstRegisterNm" column="FRST_REGISTER_NM"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+	</resultMap>
+
+	<insert id="insertAddedOptionsInf" parameterType="egovframework.com.cop.bbs.service.BoardMaster">
+		
+			INSERT INTO COMTNBBSMASTEROPTN
+			(BBS_ID, ANSWER_AT, STSFDG_AT,  
+			 FRST_REGISTER_ID, FRST_REGIST_PNTTM )
+			VALUES
+			( #{bbsId}, 
+		
+		<if test="option == ''">
+			 'N', 'N', 
+		</if>
+		<if test="option == 'comment'">
+			 'Y', 'N', 
+		</if>
+		<if test="option == 'stsfdg'">
+			 'N', 'Y', 
+		</if>
+		
+			  #{frstRegisterId}, SYSDATE()  
+			 )			
+		
+	</insert>
+
+	<select id="selectAddedOptionsInf" parameterType="egovframework.com.cop.bbs.service.BoardMaster" resultMap="boardMasterDetail">
+		
+			SELECT 
+				a.BBS_ID, a.ANSWER_AT, a.STSFDG_AT,
+				a.FRST_REGISTER_ID, b.USER_NM as FRST_REGISTER_NM,
+				DATE_FORMAT(a.FRST_REGIST_PNTTM, '%Y-%m-%d') as FRST_REGIST_PNTTM
+			FROM
+				COMTNBBSMASTEROPTN a				
+			LEFT OUTER JOIN COMVNUSERMASTER b
+				ON a.FRST_REGISTER_ID = b.ESNTL_ID		
+			WHERE a.BBS_ID = #{bbsId}
+						
+	</select> 
+	
+ 	<update id="updateAddedOptionsInf" parameterType="egovframework.com.cop.bbs.service.BoardMaster">
+ 		
+			UPDATE COMTNBBSMASTEROPTN SET 
+		
+		<if test="option == ''">
+			 ANSWER_AT = 'N', STSFDG_AT = 'N', 
+		</if>
+		<if test="option == 'comment'">
+			 ANSWER_AT = 'Y', STSFDG_AT = 'N', 
+		</if>
+		<if test="option == 'stsfdg'">
+			 ANSWER_AT = 'N', STSFDG_AT = 'Y', 
+		</if>
+		
+				LAST_UPDUSR_ID = #{lastUpdusrId},
+				LAST_UPDT_PNTTM = SYSDATE()
+			WHERE BBS_ID = #{bbsId}
+ 		
+ 	</update>
+</mapper>

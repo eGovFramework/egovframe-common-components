@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- 
+	수정일                 수정자                          수정내용
+  =========     =======    =================================================
+  2011.9.2   	정진오     	 	FRST_REGIST_PNTTM컬럼에 FRST_REGISTER_PNTTM Alias 추가
+  							SCHDUL_KND_CODE컬럼에 SCHDUL_KIND_CODE Alias 추가
+  							(egovMap을 사용하는 조회 쿼리의경우)
+  2011.09.19       서준식 		AllSchdulManage.selectIndvdlSchdulManage 등록일자 Character 타입으로 변경	
+  2011.10.05    서준식               보안 취약점 점검사항 반영 $->#변경						
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="AllSchdulManage">
+
+	<!-- 전제일정::목록조회_게시물정보 -->
+	<select id="selectIndvdlSchdulManage" parameterType="comDefaultVO" resultType="egovMap">
+	
+		
+	SELECT *
+	FROM (
+	SELECT T0.*, ROWNUM RNUM
+		FROM (
+	
+	
+	 
+		SELECT 
+			A.SCHDUL_ID,
+			A.SCHDUL_SE,
+			A.SCHDUL_DEPT_ID,
+			A.SCHDUL_KND_CODE SCHDUL_KIND_CODE,
+			A.SCHDUL_BGNDE,
+			A.SCHDUL_ENDDE,
+			A.SCHDUL_NM,
+			A.SCHDUL_CN,
+			A.SCHDUL_PLACE,
+			A.SCHDUL_IPCR_CODE,
+			A.SCHDUL_CHARGER_ID,		
+			A.ATCH_FILE_ID,
+			TO_CHAR(A.FRST_REGIST_PNTTM ,'YYYY-MM-DD') FRST_REGISTER_PNTTM,
+			(SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = A.FRST_REGISTER_ID) FRST_REGISTER_NM,
+			A.FRST_REGISTER_ID,
+			A.LAST_UPDT_PNTTM,
+			A.LAST_UPDUSR_ID,
+			A.REPTIT_SE_CODE 
+		FROM COMTNSCHDULINFO A
+		WHERE 1=1
+	 
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 	
+	 		<if test='searchCondition == "SCHDUL_NM"'>
+ 				AND SCHDUL_NM LIKE '%' || #{searchKeyword} || '%'
+ 			</if>
+ 			<if test='searchCondition == "SCHDUL_CN"'>
+ 				AND SCHDUL_CN LIKE '%' || #{searchKeyword} || '%'
+ 			</if>
+	 	
+	 </if>
+	 
+		ORDER BY A.FRST_REGIST_PNTTM DESC
+	
+	
+		
+		) T0
+	) 
+	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+		
+	
+
+	</select>
+	
+	<!-- 전제일정::목록조회_게시물 총갯수  -->
+	<select id="selectIndvdlSchdulManageCnt" parameterType="comDefaultVO" resultType="int">
+		SELECT 
+		COUNT(*) totcnt
+		FROM COMTNSCHDULINFO
+		WHERE 1=1
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 	
+	 		<if test='searchCondition == "SCHDUL_NM"'>
+ 				AND SCHDUL_NM LIKE '%' || #{searchKeyword} || '%'
+ 			</if>
+ 			<if test='searchCondition == "SCHDUL_CN"'>
+ 				AND SCHDUL_CN LIKE '%' || #{searchKeyword} || '%'
+ 			</if>
+	 	
+	 </if>
+	</select>
+
+
+
+</mapper>

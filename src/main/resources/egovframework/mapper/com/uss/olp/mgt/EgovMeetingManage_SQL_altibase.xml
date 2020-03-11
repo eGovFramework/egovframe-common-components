@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- 
+	수정일                 수정자                          수정내용
+  =========     =======    =================================================
+  2011.10.06	정진오 		보안 취약점 점검사항 반영 $->#변경
+--><!--Converted at: Wed May 11 15:51:34 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MeetingManage">
+
+	<resultMap id="MeetingManageListMap" type="java.util.HashMap">
+		<result property="mtgId" column="MTG_ID"/>
+		<result property="mtgNm" column="MTG_NM" javaType="java.lang.String"/>
+		<result property="mtgMtrCn" column="MTG_MTR_CN" javaType="java.lang.String"/>
+		<result property="mtgSn" column="MTG_SN"/>
+		<result property="mtgCo" column="MTG_CO"/>
+		<result property="mtgDe" column="MTG_DE"/>
+		<result property="mtgPlace" column="MTG_PLACE"/>
+		<result property="mtgBeginTime" column="MTG_BEGIN_TM"/>
+		<result property="mtgEndTime" column="MTG_END_TM"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterNm" column="FRST_REGISTER_NM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+	</resultMap>
+	<resultMap id="meetingManageMap" type="java.util.HashMap">
+		<result property="mtgId" column="MTG_ID"/>
+		<result property="mtgNm" column="MTG_NM"/>
+		<result property="mtgMtrCn" column="MTG_MTR_CN"/>
+		<result property="mtgSn" column="MTG_SN"/>
+		<result property="mtgCo" column="MTG_CO"/>
+		<result property="mtgDe" column="MTG_DE"/>
+		<result property="mtgPlace" column="MTG_PLACE"/>
+		<result property="mtgBeginTime" column="MTG_BEGIN_TM"/>
+		<result property="mtgEndTime" column="MTG_END_TM"/>
+		<result property="clsdrMtgAt" column="CLSDR_MTG_AT"/>
+		<result property="readngBeginDe" column="READNG_BGNDE"/>
+		<result property="readngAt" column="READNG_AT"/>
+		<result property="mtgResultCn" column="MTG_RESULT_CN"/>
+		<result property="mtgResultEnnc" column="MTG_RESULT_ENNC"/>
+		<result property="etcMatter" column="ETC_MATTER"/>
+		<result property="mngtDeptId" column="MNGT_DEPT_ID"/>
+		<result property="mngtDeptNm" column="MNGT_DEPT_NM"/>
+		<result property="mnaerId" column="MNAER_ID"/>
+		<result property="mnaerIds" column="MNAER_IDS"/>
+		<result property="mnaerNm" column="MNAER_NM"/>
+		<result property="mnaerDeptId" column="MNAER_DEPT_ID"/>
+		<result property="mnaerDeptNm" column="MNAER_DEPT_NM"/>
+		<result property="mtnAt" column="MTG_AT"/>
+		<result property="nonatdrnCo" column="NONATDRN_CO"/>
+		<result property="atdrnCo" column="ATDRN_CO"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+	</resultMap>
+	<!-- 회의관리::부서검색  -->
+	<select id="EgovMeetingManageLisAuthorGroupPopup" parameterType="comDefaultVO" resultType="egovMap">
+	 
+		SELECT
+		ORGNZT_ID,
+		ORGNZT_NM,
+		ORGNZT_DC
+		FROM COMTNORGNZTINFO
+		WHERE 1=1
+	 
+	<if test="searchKeyword != null and searchKeyword != ''">
+		
+			<if test="searchCondition == 'ORGNZT_NM'">
+	 			AND ORGNZT_NM LIKE '%' || #{searchKeyword} || '%'
+	 		</if>
+	 		<if test="searchCondition == 'ORGNZT_DC'">
+	 			AND ORGNZT_DC LIKE '%' || #{searchKeyword} || '%'
+	 		</if>
+	 	
+	 </if>
+	</select>
+      <!-- 회의관리::아이디 검색  -->
+	<select id="EgovMeetingManageLisEmpLyrPopup" parameterType="comDefaultVO" resultType="egovMap">
+	 
+	 SELECT * FROM
+	(
+	SELECT
+	ROWNUM RNUM,
+	EMPLYR_ID,
+	USER_NM,
+	ESNTL_ID,
+	SEXDSTN_CODE,
+	BRTHDY,
+	HOUSE_ADRES,
+	DETAIL_ADRES,
+	EMAIL_ADRES,
+	OFFM_TELNO
+	FROM COMTNEMPLYRINFO
+	WHERE 1=1
+	 
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 	
+	 		<if test="searchCondition == 'USER_NM'">
+	 			AND USER_NM LIKE '%' || #{searchKeyword} || '%'
+	 		</if>
+	 		<if test="searchCondition == 'EMPLYR_ID'">
+	 			AND EMPLYR_ID LIKE '%' || #{searchKeyword} || '%'
+	 		</if>
+	 		<if test="searchCondition == 'OFFM_TELNO'">
+	 			AND OFFM_TELNO LIKE '%' || #{searchKeyword} || '%'
+	 		</if>
+	 	
+	 </if>
+	 )
+	 <if test="searchKeyword == null or searchKeyword == ''">
+	 <![CDATA[
+	 WHERE RNUM <= 100
+	 ]]>
+	 </if>
+
+
+	</select>
+
+     <!-- 회의관리::삭제  -->
+	<delete id="deleteMeetingManage">
+		
+			DELETE FROM COMTNMTGINFO
+			WHERE MTG_ID=#{mtgId}
+		
+	</delete>
+
+	<!-- 회의관리::수정  -->
+	<update id="updateMeetingManage">
+ 
+		UPDATE COMTNMTGINFO
+		SET MTG_NM=#{mtgNm},
+			MTG_MTR_CN=#{mtgMtrCn},
+			MTG_SN=#{mtgSn},
+			MTG_CO=#{mtgCo},
+			MTG_DE=REPLACE(#{mtgDe},'-',''),
+			MTG_PLACE=#{mtgPlace},
+			MTG_BEGIN_TM=#{mtgBeginTime},
+			MTG_END_TM=#{mtgEndTime},
+			CLSDR_MTG_AT=#{clsdrMtgAt},
+			READNG_BGNDE=REPLACE(#{readngBeginDe},'-',''),
+			READNG_AT=#{readngAt},
+			MTG_RESULT_CN=#{mtgResultCn},
+			MTG_RESULT_ENNC=#{mtgResultEnnc},
+			ETC_MATTER=#{etcMatter},
+			MNGT_DEPT_ID=#{mngtDeptId},
+			MNAER_ID=#{mnaerId},
+			MNAER_DEPT_ID=#{mnaerDeptId},
+			MTG_AT=#{mtnAt},
+			NONATDRN_CO=#{nonatdrnCo},
+			ATDRN_CO=#{atdrnCo}
+		WHERE MTG_ID=#{mtgId}
+ 
+	</update>
+	<!-- 회의관리::상세보기 -->
+	<select id="selectMeetingManageDetail" parameterType="egovframework.com.uss.olp.mgt.service.MeetingManageVO" resultType="egovMap" resultMap="meetingManageMap">
+		SELECT
+			A.MTG_ID,
+			A.MTG_NM,
+			A.MTG_MTR_CN,
+			A.MTG_SN,
+			A.MTG_CO,
+			TO_CHAR(TO_DATE(A.MTG_DE, 'YYYYMMDD'),'YYYY-MM-DD') MTG_DE,
+			A.MTG_PLACE,
+			A.MTG_BEGIN_TM,
+			A.MTG_END_TM,
+			A.CLSDR_MTG_AT,
+			TO_CHAR(TO_DATE(A.READNG_BGNDE, 'YYYYMMDD'),'YYYY-MM-DD') READNG_BGNDE,
+			A.READNG_AT,
+			A.MTG_RESULT_CN,
+			A.MTG_RESULT_ENNC,
+			A.ETC_MATTER,
+			A.MNGT_DEPT_ID,
+			(SELECT ORGNZT_NM FROM COMTNORGNZTINFO WHERE ORGNZT_ID = A.MNGT_DEPT_ID) MNGT_DEPT_NM,
+			A.MNAER_ID,
+			(SELECT EMPLYR_ID FROM COMTNEMPLYRINFO WHERE ESNTL_ID = A.MNAER_ID) MNAER_IDS,
+			(SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = A.MNAER_ID) MNAER_NM,
+			A.MNAER_DEPT_ID,
+			(SELECT ORGNZT_NM FROM COMTNORGNZTINFO WHERE ORGNZT_ID = A.MNAER_DEPT_ID) MNAER_DEPT_NM,
+			A.MTG_AT,
+			A.NONATDRN_CO,
+			A.ATDRN_CO,
+			A.FRST_REGIST_PNTTM,
+			A.FRST_REGISTER_ID
+		FROM COMTNMTGINFO A
+		WHERE 1=1
+		AND A.MTG_ID = #{mtgId}
+	</select>
+	<!-- 회의관리::목록조회_게시물정보 -->
+	<select id="selectMeetingManage" parameterType="comDefaultVO" resultType="egovMap" resultMap="MeetingManageListMap">
+	
+	SELECT *
+	FROM (
+	SELECT T0.*, ROWNUM RNUM
+		FROM (
+	
+	 
+		SELECT
+			A.MTG_ID,
+			A.MTG_NM,
+			A.MTG_MTR_CN,
+			A.MTG_SN,
+			A.MTG_CO,
+			TO_CHAR(TO_DATE(A.MTG_DE, 'YYYYMMDD'),'YYYY-MM-DD') MTG_DE,
+			A.MTG_PLACE,
+			A.MTG_BEGIN_TM,
+			A.MTG_END_TM,
+			A.FRST_REGIST_PNTTM,
+			(SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = A.FRST_REGISTER_ID) FRST_REGISTER_NM,
+			A.FRST_REGISTER_ID
+		FROM COMTNMTGINFO A
+		WHERE 1=1
+	 
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 	
+	 		<if test="searchCondition == 'MTG_NM'">
+	 			AND MTG_NM LIKE '%' || #{searchKeyword} || '%'
+	 		</if>
+	 		<if test="searchCondition == 'MTG_MTR_CN'">
+	 			AND MTG_MTR_CN LIKE '%' || #{searchKeyword} || '%'
+	 		</if>
+	 	
+	 </if>
+	 
+		ORDER BY A.FRST_REGIST_PNTTM DESC
+	
+	
+		) T0
+	)
+	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	
+	</select>
+	<!-- 회의관리::목록조회_게시물 총갯수  -->
+	<select id="selectMeetingManageCnt" parameterType="comDefaultVO" resultType="int">
+		SELECT
+		COUNT(*) totcnt
+		FROM COMTNMTGINFO
+		WHERE 1=1
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 	
+	 		<if test="searchCondition == 'MTG_NM'">
+	 			AND MTG_NM LIKE '%' || #{searchKeyword} || '%'
+	 		</if>
+	 		<if test="searchCondition == 'MTG_MTR_CN'">
+	 			AND MTG_MTR_CN LIKE '%' || #{searchKeyword} || '%'
+	 		</if>
+	 	
+	 </if>
+	</select>
+	<!-- 회의관리::입력  -->
+	<insert id="insertMeetingManage">
+	 
+
+	INSERT INTO COMTNMTGINFO (
+		MTG_ID,
+		MTG_NM,
+		MTG_MTR_CN,
+		MTG_SN,
+		MTG_CO,
+		MTG_DE,
+		MTG_PLACE,
+		MTG_BEGIN_TM,
+		MTG_END_TM,
+		CLSDR_MTG_AT,
+		READNG_BGNDE,
+		READNG_AT,
+		MTG_RESULT_CN,
+		MTG_RESULT_ENNC,
+		ETC_MATTER,
+		MNGT_DEPT_ID,
+		MNAER_ID,
+		MNAER_DEPT_ID,
+		MTG_AT,
+		NONATDRN_CO,
+		ATDRN_CO,
+		FRST_REGIST_PNTTM,
+		FRST_REGISTER_ID,
+		LAST_UPDT_PNTTM,
+		LAST_UPDUSR_ID
+	)VALUES(
+		#{mtgId},
+		#{mtgNm},
+		#{mtgMtrCn},
+		#{mtgSn},
+		#{mtgCo},
+		REPLACE(#{mtgDe},'-',''),
+		#{mtgPlace},
+		#{mtgBeginTime},
+		#{mtgEndTime},
+		#{clsdrMtgAt},
+		REPLACE(#{readngBeginDe},'-',''),
+		#{readngAt},
+		#{mtgResultCn},
+		#{mtgResultEnnc},
+		#{etcMatter},
+		#{mngtDeptId},
+		#{mnaerId},
+		#{mnaerDeptId},
+		#{mtnAt},
+		#{nonatdrnCo},
+		#{atdrnCo},
+		sysdate,
+		#{frstRegisterId},
+		sysdate,
+		#{lastUpdusrId}
+		)
+	 
+	</insert>
+
+
+</mapper>

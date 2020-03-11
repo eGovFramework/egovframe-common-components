@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+
+<form-validation>
+
+    <formset>
+        <form name="server">
+            <field property="serverNm" depends="required, maxlength">
+                <arg0 key="comSymSymSrv.server.validate.serverNm"/>     
+                <arg1 key="30" resource="true"/>
+                <var>
+                <var-name>maxlength</var-name>
+                <var-value>30</var-value>
+                </var>                       
+            </field>
+            <field property="regstYmd" depends="required">
+                <arg0 key="comSymSymSrv.server.validate.regstYmd"/>
+            </field>             
+        </form>
+    </formset>
+
+</form-validation>

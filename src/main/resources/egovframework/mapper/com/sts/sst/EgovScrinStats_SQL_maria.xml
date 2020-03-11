@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ScrinStatsDAO">
+	
+	<!-- 화면통계 조회 -->
+	<select id="selectScrinStats" parameterType="egovframework.com.sts.com.StatsVO" resultType="egovframework.com.sts.com.StatsVO">
+		SELECT IFNULL(SUM(a.RDCNT),0) AS statsCo
+			 <!-- 기간검색(년) -->
+			 <if test='pdKind == "Y"'>
+		     , SUBSTR(a.OCCRRNC_DE, 1, 4) AS statsDate
+		     </if>
+		     <!-- 기간검색(월) -->
+		     <if test='pdKind == "M"'>
+		     , CONCAT(CONCAT(SUBSTR(a.OCCRRNC_DE, 1, 4), '-'), SUBSTR(a.OCCRRNC_DE, 5, 2)) AS statsDate
+		     </if>
+		     <!-- 기간검색(일) -->
+		     <if test='pdKind == "D"'>
+		     , CONCAT(CONCAT(CONCAT(CONCAT(SUBSTR(a.OCCRRNC_DE, 1, 4), '-'), SUBSTR(a.OCCRRNC_DE, 5, 2)), '-'), SUBSTR(a.OCCRRNC_DE, 7, 2)) AS statsDate
+		     </if>
+		  FROM COMTSWEBLOGSUMMARY a,
+		       (SELECT PROGRM_STRE_PATH AS URL
+			  	  FROM COMTNPROGRMLIST 
+			 	 WHERE PROGRM_FILE_NM = #{detailStatsKind}) b
+		 WHERE 1 = 1
+		   <!-- 시작일자~종료일자 기간제한 -->
+		   AND a.OCCRRNC_DE BETWEEN #{fromDate} AND #{toDate} 
+		   AND a.URL LIKE CONCAT(b.URL,'%')
+		 GROUP BY statsDate
+		 ORDER BY statsDate   
+	</select>
+	
+</mapper>

@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="proxySvcDAO">
+
+    <resultMap id="proxySvc" type="egovframework.com.utl.sys.pxy.service.ProxySvcVO">
+        <result property="proxyId" column="PROXY_ID"/>
+        <result property="proxyNm" column="PROXY_NM"/>
+        <result property="proxyIp" column="PROXY_IP"/>
+        <result property="proxyPort" column="PROXY_PORT"/>
+        <result property="trgetSvcNm" column="TRGET_SVC_NM"/>
+        <result property="svcDc" column="SVC_DC"/>
+        <result property="svcIp" column="SVC_IP"/>
+        <result property="svcPort" column="SVC_PORT"/>
+        <result property="svcSttus" column="SVC_STTUS"/>
+        <result property="svcSttusNm" column="SVC_STTUS_NM"/>
+        <result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+        <result property="frstRegisterId" column="FRST_REGISTER_ID"/>        
+        <result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+        <result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+    </resultMap>
+
+    <resultMap id="proxyLog" type="egovframework.com.utl.sys.pxy.service.ProxyLogVO">
+        <result property="proxyId" column="PROXY_ID"/>
+        <result property="logId" column="LOG_ID"/>
+        <result property="proxyNm" column="PROXY_NM"/>
+        <result property="clntIp" column="CLNT_IP"/>
+        <result property="clntPort" column="CLNT_PORT"/>
+        <result property="conectTime" column="CONECT_TIME"/>
+        <result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+        <result property="frstRegisterId" column="FRST_REGISTER_ID"/>        
+        <result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+        <result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+    </resultMap>
+
+    <select id="selectProxySvcList" parameterType="egovframework.com.utl.sys.pxy.service.ProxySvcVO" resultMap="proxySvc">
+             SELECT A.PROXY_ID,
+                    A.PROXY_NM,
+                    A.PROXY_IP,
+                    A.PROXY_PORT,
+                    A.TRGET_SVC_NM,
+                    A.SVC_DC,
+                    A.SVC_IP,
+                    A.SVC_PORT,
+                    A.SVC_STTUS,
+                    (SELECT CODE_NM 
+                       FROM COMTCCMMNDETAILCODE 
+                      WHERE CODE_ID = 'COM072' 
+                        AND CODE = A.SVC_STTUS) AS SVC_STTUS_NM,
+                    DATE_FORMAT(A.FRST_REGIST_PNTTM, '%Y-%m-%d %T') AS FRST_REGIST_PNTTM,
+                    A.FRST_REGISTER_ID,
+                    DATE_FORMAT(A.LAST_UPDT_PNTTM, '%Y-%m-%d %T') AS LAST_UPDT_PNTTM,
+                    A.LAST_UPDUSR_ID
+               FROM COMTNPROXYINFO A 
+              WHERE 1 = 1
+            <if test="strProxyNm != null">AND
+                    A.PROXY_NM LIKE CONCAT('%' , #{strProxyNm}, '%')
+            </if>            
+              ORDER BY A.PROXY_ID DESC
+              LIMIT #{recordCountPerPage} OFFSET #{firstIndex}           
+    </select>
+
+    <select id="selectProxySvcListTotCnt" parameterType="egovframework.com.utl.sys.pxy.service.ProxySvcVO" resultType="int">
+
+             SELECT COUNT(*) totcnt
+               FROM COMTNPROXYINFO
+              WHERE 1 = 1
+            <if test="strProxyNm != null">AND
+                    PROXY_NM LIKE CONCAT('%' , #{strProxyNm}, '%')
+            </if>       
+    </select>
+
+    <select id="selectProxySvc" resultMap="proxySvc">
+        
+             SELECT A.PROXY_ID,
+                    A.PROXY_NM,
+                    A.PROXY_IP,
+                    A.PROXY_PORT,
+                    A.TRGET_SVC_NM,
+                    A.SVC_DC,
+                    A.SVC_IP,
+                    A.SVC_PORT,
+                    A.SVC_STTUS,
+                    (SELECT CODE_NM 
+                       FROM COMTCCMMNDETAILCODE 
+                      WHERE CODE_ID = 'COM072' 
+                        AND CODE = A.SVC_STTUS) AS SVC_STTUS_NM,
+                    DATE_FORMAT(A.FRST_REGIST_PNTTM, '%Y-%m-%d %T') AS FRST_REGIST_PNTTM,
+                    A.FRST_REGISTER_ID,                        
+                    DATE_FORMAT(A.LAST_UPDT_PNTTM, '%Y-%m-%d %T') AS LAST_UPDT_PNTTM,
+                    A.LAST_UPDUSR_ID
+               FROM COMTNPROXYINFO A             
+              WHERE 1 = 1
+                AND A.PROXY_ID = #{proxyId}    
+        
+    </select>
+
+    <insert id="insertProxySvc" parameterType="egovframework.com.utl.sys.pxy.service.ProxySvc">
+        
+             INSERT INTO COMTNPROXYINFO
+                    (PROXY_ID,
+                     PROXY_NM,
+                     PROXY_IP,
+                     PROXY_PORT,
+                     TRGET_SVC_NM,
+                     SVC_DC,
+                     SVC_IP,
+                     SVC_PORT,
+                     SVC_STTUS,
+                     FRST_REGIST_PNTTM,
+                     FRST_REGISTER_ID,
+                     LAST_UPDT_PNTTM,
+                     LAST_UPDUSR_ID)
+             VALUES (#{proxyId},
+                     #{proxyNm},
+                     #{proxyIp},
+                     #{proxyPort},
+                     #{trgetSvcNm},
+                     #{svcDc},
+                     #{svcIp},
+                     #{svcPort},
+                     #{svcSttus},
+                     now(),
+                     #{frstRegisterId},
+                     now(),
+                     #{lastUpdusrId})
+        
+    </insert>
+
+    <update id="updateProxySvc" parameterType="egovframework.com.utl.sys.pxy.service.ProxySvc">
+            UPDATE COMTNPROXYINFO
+               SET PROXY_NM = #{proxyNm},
+                   PROXY_IP = #{proxyIp},
+                   PROXY_PORT = #{proxyPort},
+                   TRGET_SVC_NM = #{trgetSvcNm},
+                   SVC_DC = #{svcDc},
+                   SVC_IP = #{svcIp},
+                   SVC_PORT = #{svcPort},
+                   SVC_STTUS = #{svcSttus},
+                   LAST_UPDT_PNTTM = now(),
+                   LAST_UPDUSR_ID = #{lastUpdusrId}
+             WHERE PROXY_ID = #{proxyId}
+    </update>    
+    
+    <delete id="deleteProxySvc" parameterType="egovframework.com.utl.sys.pxy.service.ProxySvc">
+        
+            DELETE FROM COMTNPROXYINFO
+             WHERE PROXY_ID = #{proxyId}
+        
+    </delete>
+
+    <select id="selectProxyLogList" parameterType="egovframework.com.utl.sys.pxy.service.ProxyLogVO" resultMap="proxyLog">
+             SELECT A.PROXY_ID,
+                    A.LOG_ID,
+                    B.PROXY_NM,
+                    A.CLNT_PORT,
+                    A.CLNT_IP,
+                    DATE_FORMAT(A.CONECT_TIME, '%Y-%m-%d %T') AS CONECT_TIME,
+                    DATE_FORMAT(A.FRST_REGIST_PNTTM, '%Y-%m-%d %T') AS FRST_REGIST_PNTTM,
+                    A.FRST_REGISTER_ID,
+                    DATE_FORMAT(A.LAST_UPDT_PNTTM, '%Y-%m-%d %T') AS LAST_UPDT_PNTTM,
+                    A.LAST_UPDUSR_ID 
+               FROM COMTNPROXYLOGINFO A,
+                    COMTNPROXYINFO B
+              WHERE A.PROXY_ID = B.PROXY_ID       
+            <if test="strStartDate != null">
+                <if test="strEndDate != null">AND
+                    DATE_FORMAT(A.CONECT_TIME, '%Y%m%d') BETWEEN #{strStartDate} AND #{strEndDate}
+                </if>            
+            </if>            
+              ORDER BY A.LAST_UPDT_PNTTM DESC
+              LIMIT #{recordCountPerPage} OFFSET #{firstIndex}           
+    </select>
+    
+    <select id="selectProxyLogListTotCnt" parameterType="egovframework.com.utl.sys.pxy.service.ProxyLogVO" resultType="int">
+             SELECT COUNT(*) totcnt
+               FROM COMTNPROXYLOGINFO A,
+                    COMTNPROXYINFO B
+              WHERE A.PROXY_ID = B.PROXY_ID       
+            <if test="strStartDate != null">
+                <if test="strEndDate != null">AND
+                    DATE_FORMAT(A.CONECT_TIME, '%Y%m%d') BETWEEN #{strStartDate} AND #{strEndDate}
+                </if>            
+            </if>            
+    </select>    
+    
+    <insert id="insertProxyLog" parameterType="egovframework.com.utl.sys.pxy.service.ProxyLog">
+        
+             INSERT INTO COMTNPROXYLOGINFO
+                    (PROXY_ID,
+                     LOG_ID,
+                     CLNT_IP,
+                     CLNT_PORT,
+                     CONECT_TIME,
+                     FRST_REGIST_PNTTM,
+                     FRST_REGISTER_ID,                        
+                     LAST_UPDT_PNTTM,
+                     LAST_UPDUSR_ID)
+             VALUES (#{proxyId},
+                     #{logId},
+                     #{clntIp},
+                     #{clntPort},
+                     now(),
+                     now(),
+                     #{frstRegisterId},
+                     now(),
+                     #{lastUpdusrId})
+        
+    </insert>    
+</mapper>

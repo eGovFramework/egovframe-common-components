@@ -1,0 +1,371 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="NtwrkSvcMntrngDAO">
+	
+	<resultMap id="NtwrkSvcMntrngList" type="egovframework.com.utl.sys.nsm.service.NtwrkSvcMntrngVO">
+		<result property="sysIp" column="SYS_IP"/>
+		<result property="sysPort" column="SYS_PORT"/>
+		<result property="sysNm" column="SYS_NM"/>
+		<result property="mntrngSttus" column="MNTRNG_STTUS"/>
+		<result property="mngrNm" column="MNGR_NM"/>
+		<result property="mngrEmailAddr" column="MNGR_EMAIL_ADRES"/>
+	</resultMap>
+	
+	<resultMap id="NtwrkSvcMntrngDetail" type="egovframework.com.utl.sys.nsm.service.NtwrkSvcMntrngVO">
+		<result property="sysIp" column="SYS_IP"/>
+		<result property="sysPort" column="SYS_PORT"/>
+		<result property="sysNm" column="SYS_NM"/>
+		<result property="mngrNm" column="MNGR_NM"/>
+		<result property="mngrEmailAddr" column="MNGR_EMAIL_ADRES"/>
+		<result property="mntrngSttus" column="MNTRNG_STTUS"/>
+		<result property="creatDt" column="CREAT_DT"/>
+		
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>				
+	</resultMap> 
+	
+	<resultMap id="NtwrkSvcMntrngLogList" type="egovframework.com.utl.sys.nsm.service.NtwrkSvcMntrngLogVO">
+		<result property="sysIp" column="SYS_IP"/>
+		<result property="sysPort" column="SYS_PORT"/>
+		<result property="logId" column="LOG_ID"/>
+		<result property="sysNm" column="SYS_NM"/>
+		<result property="mntrngSttus" column="MNTRNG_STTUS"/>
+		<result property="creatDt" column="CREAT_DT"/>
+	</resultMap>
+	
+	<resultMap id="NtwrkSvcMntrngLogDetail" type="egovframework.com.utl.sys.nsm.service.NtwrkSvcMntrngLogVO">
+		<result property="sysIp" column="SYS_IP"/>
+		<result property="sysPort" column="SYS_PORT"/>
+		<result property="logId" column="LOG_ID"/>
+		<result property="sysNm" column="SYS_NM"/>
+		<result property="mntrngSttus" column="MNTRNG_STTUS"/>
+		<result property="logInfo" column="LOG_INFO"/>
+		<result property="creatDt" column="CREAT_DT"/>
+		
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>				
+	</resultMap> 
+	
+	<!-- 네트워크서비스모니터링관리::목록조회 -->
+	<select id="selectNtwrkSvcMntrngList" parameterType="egovframework.com.utl.sys.nsm.service.NtwrkSvcMntrngVO" resultMap="NtwrkSvcMntrngList">
+		
+	SELECT *
+	FROM (
+	SELECT T0.*, ROWNUM RNUM
+		FROM (
+	
+	
+	 
+		SELECT 
+			A.SYS_IP,
+			A.SYS_PORT,
+			A.SYS_NM,
+			B.CODE_NM MNTRNG_STTUS,
+			A.MNGR_NM,
+			A.MNGR_EMAIL_ADRES
+		FROM COMTNNTWRKSVCMNTRNG A
+		LEFT OUTER JOIN COMTCCMMNDETAILCODE B
+			ON B.CODE_ID = 'COM046' 
+			AND A.MNTRNG_STTUS = B.CODE
+		WHERE 1 = 1
+	 
+	
+	 <if test="searchCnd == 0">AND
+		 	A.SYS_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchCnd == 1">AND
+		 	A.SYS_IP LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchCnd == 2">AND
+		 	A.MNGR_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchCnd == 3">AND
+		 	B.CODE_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 
+		ORDER BY A.FRST_REGIST_PNTTM DESC
+	 	
+	
+		
+		) T0
+	) Z
+	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+		
+	</select>
+	
+	<!-- 네트워크서비스모니터링관리::목록조회 Count -->
+	<select id="selectNtwrkSvcMntrngListCnt" parameterType="egovframework.com.utl.sys.nsm.service.NtwrkSvcMntrngVO" resultType="java.lang.Integer">
+	 
+		SELECT 
+			COUNT(A.SYS_IP) as cnt
+		FROM COMTNNTWRKSVCMNTRNG A
+		LEFT OUTER JOIN COMTCCMMNDETAILCODE B
+			ON B.CODE_ID = 'COM046' 
+			AND A.MNTRNG_STTUS = B.CODE
+		WHERE 1 = 1
+	 
+	 
+	 <if test="searchCnd == 0">AND
+		 	A.SYS_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchCnd == 1">AND
+		 	A.SYS_IP LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchCnd == 2">AND
+		 	A.MNGR_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchCnd == 3">AND
+		 	B.CODE_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+
+	</select>
+	
+	<!-- 네트워크서비스모니터링관리::상세보기 -->
+	<select id="selectNtwrkSvcMntrng" parameterType="egovframework.com.utl.sys.nsm.service.NtwrkSvcMntrngVO" resultMap="NtwrkSvcMntrngDetail">
+		SELECT 
+			A.SYS_IP,
+			A.SYS_PORT,
+			A.SYS_NM,
+			A.MNGR_NM,
+			A.MNGR_EMAIL_ADRES,
+			B.CODE_NM MNTRNG_STTUS,
+			A.CREAT_DT,
+			A.FRST_REGIST_PNTTM,
+			A.FRST_REGISTER_ID,
+			A.LAST_UPDT_PNTTM,
+			A.LAST_UPDUSR_ID 
+		FROM COMTNNTWRKSVCMNTRNG A
+		LEFT OUTER JOIN COMTCCMMNDETAILCODE B
+			ON B.CODE_ID = 'COM046' 
+			AND A.MNTRNG_STTUS = B.CODE
+		WHERE A.SYS_IP = #{sysIp}
+			AND A.SYS_PORT = #{sysPort}
+	</select>
+	
+	<!-- 네트워크서비스모니터링관리::수정  -->
+	<update id="updateNtwrkSvcMntrng" parameterType="egovframework.com.utl.sys.nsm.service.NtwrkSvcMntrng"> 
+		UPDATE COMTNNTWRKSVCMNTRNG 
+		SET  
+			SYS_IP=#{sysIp},
+			SYS_PORT=#{sysPort},
+			SYS_NM=#{sysNm},
+			MNGR_NM=#{mngrNm},
+			MNGR_EMAIL_ADRES=#{mngrEmailAddr},
+			LAST_UPDT_PNTTM = SYSDATETIME,
+			LAST_UPDUSR_ID = #{lastUpdusrId}
+		WHERE SYS_IP = #{oldSysIp}
+			AND SYS_PORT = #{oldSysPort}
+	</update>
+	
+	<!-- 네트워크서비스모니터링관리::삭제  -->
+	<delete id="deleteNtwrkSvcMntrng" parameterType="egovframework.com.utl.sys.nsm.service.NtwrkSvcMntrng"> 
+		
+			DELETE FROM COMTNNTWRKSVCMNTRNG 
+			WHERE SYS_IP = #{sysIp}
+			AND SYS_PORT = #{sysPort}
+		
+	</delete>
+	
+	<!-- 네트워크서비스모니터링관리::입력  -->
+	<insert id="insertNtwrkSvcMntrng" parameterType="egovframework.com.utl.sys.nsm.service.NtwrkSvcMntrng">
+	 
+	 
+		INSERT INTO COMTNNTWRKSVCMNTRNG ( 
+			SYS_IP,
+			SYS_PORT,
+			SYS_NM,
+			MNGR_NM,
+			MNGR_EMAIL_ADRES,
+			FRST_REGIST_PNTTM,
+			FRST_REGISTER_ID,
+			LAST_UPDT_PNTTM,
+			LAST_UPDUSR_ID
+		)VALUES( 
+			#{sysIp},
+			#{sysPort},
+			#{sysNm},
+			#{mngrNm},  
+			#{mngrEmailAddr},  
+			SYSDATETIME,
+			#{frstRegisterId},
+			SYSDATETIME,
+			#{lastUpdusrId} 
+		)
+
+	 
+	</insert>
+	
+	<!-- 네트워크서비스모니터링관리::중복 CHECK Count -->
+	<select id="selectNtwrkSvcMntrngCheck" parameterType="egovframework.com.utl.sys.nsm.service.NtwrkSvcMntrngVO" resultType="java.lang.Integer">
+	 	SELECT 
+			COUNT(SYS_IP) as cnt
+		FROM COMTNNTWRKSVCMNTRNG 
+		WHERE SYS_IP = #{sysIp}
+			AND SYS_PORT = #{sysPort}
+	</select>
+	
+	<!-- 네트워크서비스모니터링관리::모니터링결과수정  -->
+	<update id="updateNtwrkSvcMntrngSttus" parameterType="egovframework.com.utl.sys.nsm.service.NtwrkSvcMntrng"> 
+		UPDATE COMTNNTWRKSVCMNTRNG 
+		SET  
+			MNTRNG_STTUS=#{mntrngSttus},
+			CREAT_DT=TO_DATE(#{creatDt}, 'yyyymmddhh24miss'),
+			LAST_UPDT_PNTTM = SYSDATETIME,
+			LAST_UPDUSR_ID = #{lastUpdusrId}
+		WHERE SYS_IP = #{sysIp}
+			AND SYS_PORT = #{sysPort}
+	</update>
+	
+	<!-- 네트워크서비스모니터링결과::목록조회 -->
+	<select id="selectNtwrkSvcMntrngLogList" parameterType="egovframework.com.utl.sys.nsm.service.NtwrkSvcMntrngLogVO" resultMap="NtwrkSvcMntrngLogList">
+		
+	SELECT *
+	FROM (
+	SELECT T0.*, ROWNUM RNUM
+		FROM (
+	
+	
+	 
+		SELECT 
+			A.SYS_IP,
+			A.SYS_PORT,
+			A.LOG_ID,
+			A.SYS_NM,
+			C.CODE_NM MNTRNG_STTUS,
+			A.CREAT_DT
+		FROM COMTNNTWRKSVCMNTRNGLOGINFO A
+		LEFT OUTER JOIN COMTNNTWRKSVCMNTRNG B
+			ON A.SYS_IP = B.SYS_IP
+			AND A.SYS_PORT = B.SYS_PORT
+		LEFT OUTER JOIN COMTCCMMNDETAILCODE C
+			ON C.CODE_ID = 'COM046' 
+			AND A.MNTRNG_STTUS = C.CODE
+		WHERE 1 = 1
+	 
+	
+	<if test="searchBgnDt != null and searchBgnDt != ''">
+	 	<if test="searchEndDt != null and searchEndDt != ''">AND
+	 	    to_char(A.CREAT_DT, 'yyyy-MM-dd hh24:mi') BETWEEN #{searchBgnDt} AND #{searchEndDt}	
+	 	</if>
+	 </if>
+	 
+	  <if test="searchCnd == 0">AND
+		 	A.SYS_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchCnd == 1">AND
+		 	A.SYS_IP LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchCnd == 2">AND
+		 	B.MNGR_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchCnd == 3">AND
+		 	C.CODE_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 
+		ORDER BY A.CREAT_DT DESC
+	 	
+	
+		
+		) T0
+	) Z
+	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+		
+	</select>
+	
+	<!-- 네트워크서비스모니터링결과::목록조회 Count -->
+	<select id="selectNtwrkSvcMntrngLogListCnt" parameterType="egovframework.com.utl.sys.nsm.service.NtwrkSvcMntrngLogVO" resultType="java.lang.Integer">
+	 
+		SELECT 
+			COUNT(A.SYS_IP) as cnt
+		FROM COMTNNTWRKSVCMNTRNGLOGINFO A
+		LEFT OUTER JOIN COMTNNTWRKSVCMNTRNG B
+			ON A.SYS_IP = B.SYS_IP
+			AND A.SYS_PORT = B.SYS_PORT
+		LEFT OUTER JOIN COMTCCMMNDETAILCODE C
+			ON C.CODE_ID = 'COM046' 
+			AND A.MNTRNG_STTUS = C.CODE
+		WHERE 1 = 1
+	 
+	 
+	 <if test="searchBgnDt != null and searchBgnDt != ''">
+	 	<if test="searchEndDt != null and searchEndDt != ''">AND
+	 		to_char(A.CREAT_DT, 'yyyy-MM-dd hh24:mi') BETWEEN #{searchBgnDt} AND #{searchEndDt}	
+	 	</if>
+	 </if>
+	 
+	  <if test="searchCnd == 0">AND
+		 	A.SYS_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchCnd == 1">AND
+		 	A.SYS_IP LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchCnd == 2">AND
+		 	B.MNGR_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchCnd == 3">AND
+		 	C.CODE_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+
+	</select>
+	
+	<!-- 네트워크서비스모니터링결과::상세보기 -->
+	<select id="selectNtwrkSvcMntrngLog" parameterType="egovframework.com.utl.sys.nsm.service.NtwrkSvcMntrngLogVO" resultMap="NtwrkSvcMntrngLogDetail">
+		SELECT 
+			A.SYS_IP,
+			A.SYS_PORT,
+			A.LOG_ID,
+			A.SYS_NM,
+			B.CODE_NM MNTRNG_STTUS,
+			A.LOG_INFO,
+			A.CREAT_DT,
+			A.FRST_REGIST_PNTTM,
+			A.FRST_REGISTER_ID,
+			A.LAST_UPDT_PNTTM,
+			A.LAST_UPDUSR_ID 
+		FROM COMTNNTWRKSVCMNTRNGLOGINFO A
+		LEFT OUTER JOIN COMTCCMMNDETAILCODE B
+			ON B.CODE_ID = 'COM046' 
+			AND A.MNTRNG_STTUS = B.CODE
+		WHERE A.SYS_IP = #{sysIp}
+			AND A.SYS_PORT = #{sysPort}
+			AND A.LOG_ID = #{logId}
+	</select>
+	
+	<!-- 네트워크서비스모니터링결과::입력  -->
+	<insert id="insertNtwrkSvcMntrngLog" parameterType="egovframework.com.utl.sys.nsm.service.NtwrkSvcMntrngLog">
+	 
+	 
+		INSERT INTO COMTNNTWRKSVCMNTRNGLOGINFO ( 
+			SYS_IP,
+			SYS_PORT,
+			LOG_ID,
+			SYS_NM,
+			MNTRNG_STTUS,
+			LOG_INFO,
+			CREAT_DT,
+			FRST_REGIST_PNTTM,
+			FRST_REGISTER_ID,
+			LAST_UPDT_PNTTM,
+			LAST_UPDUSR_ID
+		)VALUES( 
+			#{sysIp},
+			#{sysPort},
+			#{logId},
+			#{sysNm},
+			#{mntrngSttus},  
+			#{logInfo},  
+			TO_DATE(#{creatDt}, 'yyyymmddhh24miss'),  
+			SYSDATETIME,
+			#{frstRegisterId},
+			SYSDATETIME,
+			#{lastUpdusrId} 
+		)
+
+	 
+	</insert>
+</mapper>

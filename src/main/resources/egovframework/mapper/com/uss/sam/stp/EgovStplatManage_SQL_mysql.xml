@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	수정일		수정자					수정내용
+  =========     =======    =================================================					 		
+  2011.09.19       서준식 		selectStplatList 등록일자 Character 타입으로 변경
+  2016.06.13       장동한         표준프레임워크 v3.6 리뉴얼
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="StplatManage">
+
+	<resultMap id="StplatManage" type="egovframework.com.uss.sam.stp.service.StplatManageVO">
+		<result property="useStplatId" column="USE_STPLAT_ID"/>
+		<result property="useStplatNm" column="USE_STPLAT_NM"/>		
+		<result property="useStplatCn" column="USE_STPLAT_CN"/>
+		<result property="infoProvdAgreCn" column="INFO_PROVD_AGRE_CN"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="frstRegisterNm" column="FRST_REGISTER_NM"/>		
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>				
+	</resultMap>
+	
+	<select id="selectStplatDetail" resultMap="StplatManage">
+			SELECT 	a.USE_STPLAT_ID, a.USE_STPLAT_NM, a.USE_STPLAT_CN,  a.INFO_PROVD_AGRE_CN,  
+					DATE_FORMAT(a.FRST_REGIST_PNTTM,'%Y-%m-%d') FRST_REGIST_PNTTM   , a.FRST_REGISTER_ID, 
+					DATE_FORMAT(a.LAST_UPDT_PNTTM,'%Y-%m-%d')   LAST_UPDT_PNTTM	  , a.LAST_UPDUSR_ID
+					, (SELECT USER_NM FROM COMVNUSERMASTER WHERE ESNTL_ID = a.FRST_REGISTER_ID) AS FRST_REGISTER_NM		 			  			 			  
+			FROM	COMTNSTPLATINFO a	
+			WHERE	a.USE_STPLAT_ID=#{useStplatId}					
+		
+	</select>
+	
+	<select id="selectStplatList" parameterType="egovframework.com.uss.sam.stp.service.StplatManageDefaultVO" resultType="egovMap">
+		
+			SELECT 	USE_STPLAT_ID, USE_STPLAT_NM, USE_STPLAT_CN,  INFO_PROVD_AGRE_CN,  
+					DATE_FORMAT(FRST_REGIST_PNTTM,'%Y-%m-%d') FRST_REGIST_PNTTM	  , FRST_REGISTER_ID, 
+					DATE_FORMAT(LAST_UPDT_PNTTM,'%Y-%m-%d') LAST_UPDT_PNTTM	  , LAST_UPDUSR_ID			 
+			FROM	COMTNSTPLATINFO                               			
+			WHERE	1=1   						
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isNotEmpty(searchCondition)">		
+				<if test="searchCondition == 'useStplatNm'">AND
+					USE_STPLAT_NM LIKE CONCAT('%', #{searchKeyword}, '%')
+				</if>
+				<if test="searchCondition == 'useStplatCn'">AND
+					USE_STPLAT_CN LIKE CONCAT('%', #{searchKeyword}, '%')
+				</if>
+			</if>		
+			ORDER BY USE_STPLAT_NM DESC			
+			LIMIT  #{recordCountPerPage} OFFSET #{firstIndex}	
+	</select>
+	
+	<select id="selectStplatListTotCnt" parameterType="egovframework.com.uss.sam.stp.service.StplatManageDefaultVO" resultType="int">
+		
+			SELECT 	COUNT(*) totcnt
+			FROM 	COMTNSTPLATINFO
+			WHERE 	1=1
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isNotEmpty(searchCondition)">	
+				<if test="searchCondition == 'useStplatNm'">AND
+					USE_STPLAT_NM LIKE CONCAT('%', #{searchKeyword}, '%')
+				</if>
+				<if test="searchCondition == 'useStplatCn'">AND
+					USE_STPLAT_CN  LIKE CONCAT('%', #{searchKeyword}, '%')
+				</if>
+			</if>
+	</select>
+	
+	<insert id="insertStplatCn">	
+			
+			INSERT INTO COMTNSTPLATINFO
+				   (USE_STPLAT_ID
+				  , USE_STPLAT_NM				   
+				  , USE_STPLAT_CN
+				  , INFO_PROVD_AGRE_CN
+				  , FRST_REGIST_PNTTM 
+				  , FRST_REGISTER_ID 
+				  , LAST_UPDT_PNTTM 
+				  , LAST_UPDUSR_ID) 
+			VALUES ( #{useStplatId}
+				  , #{useStplatNm}			
+				  , #{useStplatCn}
+				  , #{infoProvdAgreCn}
+				  , sysdate()
+				  , #{frstRegisterId}
+				  , sysdate()
+				  , #{lastUpdusrId} )
+		
+	</insert>
+	
+	<update id="updateStplatCn">
+		
+			UPDATE	COMTNSTPLATINFO	SET 
+				   	USE_STPLAT_NM=#{useStplatNm}
+				  ,	USE_STPLAT_CN=#{useStplatCn}				  
+				  ,	INFO_PROVD_AGRE_CN=#{infoProvdAgreCn}
+				  , LAST_UPDT_PNTTM=sysdate()
+				  , LAST_UPDUSR_ID=#{lastUpdusrId}
+ 			WHERE  USE_STPLAT_ID=#{useStplatId}
+		
+	</update>
+	
+	<delete id="deleteStplatCn">
+		
+			DELETE FROM COMTNSTPLATINFO 
+			WHERE  USE_STPLAT_ID=#{useStplatId}
+		
+	</delete>
+	
+</mapper>

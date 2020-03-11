@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="menuManageDAO">
+
+	<select id="selectMenuManageList_D" parameterType="comDefaultVO" resultType="egovMap">
+		
+		       SELECT * FROM ( SELECT rownum rn, TB.* FROM (
+					SELECT 
+						  MENU_NO           AS "menuNo"
+						, MENU_ORDR         AS "menuOrdr"
+						, MENU_NM           AS "menuNm"
+						, UPPER_MENU_NO     AS "upperMenuId"
+						, MENU_DC           AS "menuDc"
+						, RELATE_IMAGE_PATH AS "relateImagePath"
+						, RELATE_IMAGE_NM   AS "relateImageNm"
+						, PROGRM_FILE_NM    AS "progrmFileNm"
+					FROM COMTNMENUINFO 
+					WHERE MENU_NM like '%'|| #{searchKeyword}||'%'
+		       ) TB )  WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+		 
+	</select> 
+
+	<!-- 총건수 조회 -->
+	<select id="selectMenuManageListTotCnt_S" parameterType="comDefaultVO" resultType="int">
+		
+		SELECT COUNT(MENU_NO) AS "totcnt"
+		  FROM COMTNMENUINFO
+		 WHERE MENU_NM like '%'||#{searchKeyword}||'%'
+		
+	</select>
+
+
+	<select id="selectMenuManage_D" parameterType="comDefaultVO" resultType="egovframework.com.sym.mnu.mpm.service.MenuManageVO">
+		
+			SELECT 
+				  MENU_NO           AS "menuNo"
+				, MENU_ORDR         AS "menuOrdr"
+				, MENU_NM           AS "menuNm"
+				, UPPER_MENU_NO     AS "upperMenuId"
+				, MENU_DC           AS "menuDc"
+				, RELATE_IMAGE_PATH AS "relateImagePath"
+				, RELATE_IMAGE_NM   AS "relateImageNm"
+				, PROGRM_FILE_NM    AS "progrmFileNm"
+			FROM COMTNMENUINFO
+			WHERE MENU_NO = #{searchKeyword}
+		
+	</select>
+	
+	<insert id="insertMenuManage_S">
+		
+			INSERT INTO COMTNMENUINFO 
+				( MENU_NO
+            , MENU_ORDR
+            , MENU_NM
+            , UPPER_MENU_NO
+            , MENU_DC
+            , RELATE_IMAGE_PATH
+            , RELATE_IMAGE_NM
+            , PROGRM_FILE_NM )
+			VALUES (   #{menuNo}
+                  , #{menuOrdr}
+                  , #{menuNm}  
+                  , #{upperMenuId}
+                  , #{menuDc}
+                  , #{relateImagePath}
+                  , #{relateImageNm}
+                  , #{progrmFileNm} )
+		
+	</insert>
+
+	<update id="updateMenuManage_S">
+		
+			UPDATE COMTNMENUINFO 
+			SET  MENU_ORDR         = #{menuOrdr}       
+            , MENU_NM           = #{menuNm}         
+            , UPPER_MENU_NO     = #{upperMenuId}    
+            , MENU_DC           = #{menuDc}         
+            , RELATE_IMAGE_PATH = #{relateImagePath}
+            , RELATE_IMAGE_NM   = #{relateImageNm}  
+            , PROGRM_FILE_NM    = #{progrmFileNm}   
+			WHERE MENU_NO=#{menuNo}
+		
+	</update>
+
+	<delete id="deleteMenuManage_S">
+		                          
+			DELETE FROM COMTNMENUINFO              
+			WHERE MENU_NO=#{menuNo}                 
+		                                
+	</delete> 
+	
+	<!-- 메뉴번호 존재여부 조회 -->
+	<select id="selectMenuNoByPk" parameterType="egovframework.com.sym.mnu.mpm.service.MenuManageVO" resultType="int">
+		
+		SELECT COUNT(MENU_NO) AS "totcnt"
+		  FROM COMTNMENUINFO
+		 WHERE MENU_NO = #{menuNo}
+		
+	</select>
+	
+	<!-- 상위 메뉴번호 존재여부 조회 -->
+	<select id="selectUpperMenuNoByPk" parameterType="egovframework.com.sym.mnu.mpm.service.MenuManageVO" resultType="int">
+		
+		SELECT COUNT(MENU_NO) AS totcnt
+		  FROM COMTNMENUINFO
+		 WHERE UPPER_MENU_NO = #{menuNo}
+		
+	</select>
+	
+	<select id="selectMenuListT_D" parameterType="comDefaultVO" resultType="egovMap">
+		 
+            SELECT
+			      MENU_NO           AS "menuNo"
+				, MENU_ORDR         AS "menuOrdr"
+				, MENU_NM           AS "menuNm"
+				, UPPER_MENU_NO     AS "upperMenuId"
+				, MENU_DC           AS "menuDc"
+				, RELATE_IMAGE_PATH AS "relateImagePath"
+				, RELATE_IMAGE_NM   AS "relateImageNm"
+				, PROGRM_FILE_NM    AS "progrmFileNm"
+			FROM COMTNMENUINFO 
+			WHERE Menu_NO > 0 
+			ORDER BY MENU_ORDR
+		 
+	</select>
+
+	<delete id="deleteAllMenuList">
+		                          
+			DELETE FROM COMTNMENUINFO              
+		                                
+	</delete> 
+
+	<!-- 메뉴정보 총건수 조회 -->
+	<select id="selectMenuListTotCnt" parameterType="egovframework.com.sym.mnu.mpm.service.MenuManageVO" resultType="int">
+		
+		SELECT COUNT(MENU_NO) AS totcnt
+		  FROM COMTNMENUINFO
+		
+	</select>
+
+</mapper>

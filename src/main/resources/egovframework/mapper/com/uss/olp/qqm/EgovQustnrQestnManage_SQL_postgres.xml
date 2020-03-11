@@ -1,0 +1,211 @@
+﻿<?xml version="1.0" encoding="UTF-8"?><!--
+	수정일		수정자					수정내용
+  =========     =======    =================================================
+  2011.8.24   	이기하     	 	테이블 표준화에 따른 수정사항 반영
+  							QUSTNR_TMPLAT_ID 를			 	QESTNR_TMPLAT_ID 로 변경
+							FRST_REGIST_PNTTM 를			FRST_REGISTER_PNTTM 로 변경
+							QUSTNR_QESITM_ID 를				QESTNR_QESITM_ID 로 변경
+							QUSTNR_SJ 를					QESTNR_SJ 로 변경
+							QUSTNR_TRGET 를					QESTNR_TRGET 로 변경
+  2011.10.05	정진오		보안 취약점 점검사항에 따른 수정사항 반영
+  							${searchKeyword}를	 #{searchKeyword} 로 변경
+  							${searchCondition}는 <isEqual property="searchCondition" compareValue="선택조건명">으로 수정
+  2017.07.17         김예영			표준프레임워크 v3.7 개선 (주석제거, CDATA 추가)  							
+--><!--Converted at: Wed May 11 15:51:40 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="QustnrQestnManage">
+
+	<!-- 설문문항:: 객관식 통계  -->
+	<select id="selectQustnrManageStatistics" parameterType="java.util.Map" resultType="egovMap">
+		<![CDATA[
+		SELECT
+			( SELECT IEM_CN FROM COMTNQUSTNRIEM
+			  WHERE 1=1
+			  AND QUSTNR_IEM_ID = A.QUSTNR_IEM_ID ) IEM_CN,
+			COUNT(A.QUSTNR_IEM_ID) QUSTNR_IEM_ID_CNT,
+			ROUND((100/(SELECT COUNT(*) CNT
+						FROM COMTNQUSTNRRSPNSRESULT
+						WHERE QUSTNR_QESITM_ID = #{qestnrQesitmId})) * COUNT(A.QUSTNR_IEM_ID)) QUSTNR_PERCENT
+		FROM COMTNQUSTNRRSPNSRESULT A
+		WHERE 1=1
+		AND A.QUSTNR_QESITM_ID = #{qestnrQesitmId}
+		GROUP BY A.QUSTNR_IEM_ID
+		]]>
+	</select>
+	<!-- 설문문항:: 응답자답변내용 결과/기타답변내용 결과 통계  -->
+	<select id="selectQustnrManageStatistics2" parameterType="java.util.Map" resultType="egovMap">
+		<![CDATA[
+		SELECT
+			RESPOND_ANSWER_CN,
+			ETC_ANSWER_CN
+		FROM COMTNQUSTNRRSPNSRESULT A
+		WHERE 1=1
+		AND A.QUSTNR_QESITM_ID = #{qestnrQesitmId}
+		]]>
+	</select>
+
+	<!-- 설문문항:: 설문지 제목 검색  -->
+	<select id="selectQustnrManageQESTNR_SJ" parameterType="java.util.Map" resultType="egovMap">
+		<![CDATA[
+		SELECT QUSTNR_SJ
+		FROM COMTNQESTNRINFO
+		WHERE QESTNR_ID = #{qestnrId}
+		]]>
+	</select>
+
+	<!-- 설문조사(설문결과) 삭제 -->
+	<delete id="deleteQustnrRespondInfo">
+		<![CDATA[
+		DELETE FROM COMTNQUSTNRRSPNSRESULT
+		WHERE QUSTNR_QESITM_ID = #{qestnrQesitmId}
+		]]>
+	</delete>
+	<!-- 설문항목 삭제 -->
+	<delete id="deleteQustnrItemManage">
+		<![CDATA[
+		DELETE FROM COMTNQUSTNRIEM
+		WHERE QUSTNR_QESITM_ID = #{qestnrQesitmId}
+		]]>
+	</delete>
+
+	<!-- 설문문항::삭제  -->
+	<delete id="deleteQustnrQestnManage">
+			<![CDATA[
+			DELETE FROM COMTNQUSTNRQESITM
+			WHERE QUSTNR_QESITM_ID = #{qestnrQesitmId}
+			]]>
+	</delete>
+
+	<!-- 설문문항::수정  -->
+	<update id="updateQustnrQestnManage">
+		<![CDATA[
+		UPDATE COMTNQUSTNRQESITM
+		SET
+			QESTN_SN=#{qestnSn}::NUMERIC,
+			QESTN_TY_CODE=#{qestnTyCode},
+			QESTN_CN=#{qestnCn},
+			MXMM_CHOISE_CO=#{mxmmChoiseCo}::NUMERIC,
+			LAST_UPDT_PNTTM = NOW(),
+			LAST_UPDUSR_ID = #{lastUpdusrId}
+		WHERE QUSTNR_QESITM_ID = #{qestnrQesitmId}
+		]]>
+	</update>
+
+	<!-- 설문문항::상세보기 -->
+	<select id="selectQustnrQestnManageDetail" parameterType="egovframework.com.uss.olp.qqm.service.QustnrQestnManageVO" resultType="egovMap">
+		<![CDATA[
+		SELECT
+			A.QUSTNR_QESITM_ID AS QESTNR_QESITM_ID,
+			A.QESTNR_ID,
+			(SELECT QUSTNR_SJ FROM COMTNQESTNRINFO WHERE QESTNR_ID=A.QESTNR_ID) QESTNR_SJ,
+			A.QESTN_SN,
+			A.QESTN_TY_CODE,
+			A.QESTN_CN,
+			A.MXMM_CHOISE_CO,
+			A.QUSTNR_TMPLAT_ID AS QESTNR_TMPLAT_ID,
+			TO_CHAR(A.FRST_REGIST_PNTTM,'YYYY-mm-dd HH24:MI:SS') FRST_REGISTER_PNTTM,
+			A.FRST_REGISTER_ID,
+			TO_CHAR(A.LAST_UPDT_PNTTM,'YYYY-mm-dd HH24:MI:SS') LAST_UPDT_PNTTM,
+			A.LAST_UPDUSR_ID
+		FROM COMTNQUSTNRQESITM A
+		WHERE 1=1
+		AND QUSTNR_QESITM_ID = #{qestnrQesitmId}
+		]]>
+	</select>
+
+	<!-- 설문문항::목록조회_게시물정보 -->
+	<select id="selectQustnrQestnManage" parameterType="comDefaultVO" resultType="egovMap">
+	 	<![CDATA[
+		SELECT
+			A.QUSTNR_QESITM_ID AS QESTNR_QESITM_ID,
+			A.QESTNR_ID,
+			(SELECT QUSTNR_SJ FROM COMTNQESTNRINFO WHERE QESTNR_ID=A.QESTNR_ID) QESTNR_SJ,
+			A.QESTN_SN,
+			A.QESTN_TY_CODE,
+			A.QESTN_CN,
+			A.MXMM_CHOISE_CO,
+			A.QUSTNR_TMPLAT_ID AS QESTNR_TMPLAT_ID,
+			TO_CHAR(A.FRST_REGIST_PNTTM,'YYYYmmdd') FRST_REGISTER_PNTTM,
+			A.FRST_REGISTER_ID,
+			(SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = A.FRST_REGISTER_ID) FRST_REGISTER_NM,
+			TO_CHAR(A.LAST_UPDT_PNTTM,'YYYYmmdd') LAST_UPDT_PNTTM,
+			A.LAST_UPDUSR_ID
+		FROM COMTNQUSTNRQESITM A
+		WHERE 1=1
+	 	]]>
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 	
+	 		
+	 			<if test="searchCondition == 'QESTN_CN'">
+	 				AND QESTN_CN LIKE CONCAT('%',#{searchKeyword},'%')
+	 			</if>
+	 			<if test="searchCondition == 'MXMM_CHOISE_CO'">
+	 				AND MXMM_CHOISE_CO LIKE CONCAT('%',#{searchKeyword},'%')
+	 			</if>
+	 		
+	 	
+	 </if>
+	 	<![CDATA[
+		ORDER BY A.FRST_REGIST_PNTTM DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+		]]>
+	</select>
+
+	<!-- 설문문항::목록조회_게시물 총갯수  -->
+	<select id="selectQustnrQestnManageCnt" parameterType="comDefaultVO" resultType="int">
+		<![CDATA[
+		SELECT
+		COUNT(*) totcnt
+		FROM COMTNQUSTNRQESITM
+		WHERE 1=1
+		]]>
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 	
+	 		
+	 			<if test="searchCondition == 'QESTN_CN'">
+	 				AND QESTN_CN LIKE CONCAT('%',#{searchKeyword},'%')
+	 			</if>
+	 			<if test="searchCondition == 'MXMM_CHOISE_CO'">
+	 				AND MXMM_CHOISE_CO LIKE CONCAT('%',#{searchKeyword},'%')
+	 			</if>
+	 		
+	 	
+	 </if>
+	</select>
+
+	<!-- 설문문항::입력  -->
+	<insert id="insertQustnrQestnManage">
+	 
+		<![CDATA[
+		INSERT INTO COMTNQUSTNRQESITM (
+			QUSTNR_QESITM_ID,
+			QESTNR_ID,
+			QESTN_SN,
+			QESTN_TY_CODE,
+			QESTN_CN,
+			MXMM_CHOISE_CO,
+			QUSTNR_TMPLAT_ID,
+			FRST_REGIST_PNTTM,
+			FRST_REGISTER_ID,
+			LAST_UPDT_PNTTM,
+			LAST_UPDUSR_ID
+		)VALUES(
+			#{qestnrQesitmId},
+			#{qestnrId},
+			#{qestnSn}::NUMERIC,
+			#{qestnTyCode},
+			#{qestnCn},
+			#{mxmmChoiseCo}::NUMERIC,
+			#{qestnrTmplatId},
+			NOW(),
+			#{frstRegisterId},
+			NOW(),
+			#{lastUpdusrId}
+		)
+		]]>
+	 
+	</insert>
+
+
+</mapper>

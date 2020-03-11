@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+
+<form-validation>
+
+    <formset>
+
+        <form name="systemCntc">
+			<field property="cntcNm" depends="required, maxlength">
+        		<arg0 key="comSsiSyiSim.systemCntc.validate.cntcNm"/><!-- 연계명 -->
+        		<arg1 key="60" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>60</var-value>
+				</var>
+			</field> 
+			<field property="cntcType" depends="required, maxlength">
+        		<arg0 key="comSsiSyiSim.systemCntc.validate.cntcType"/><!-- 연계유형 -->
+        		<arg1 key="60" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>60</var-value>
+				</var>
+			</field> 
+			<field property="provdInsttId" depends="required">
+        		<arg0 key="comSsiSyiSim.systemCntc.validate.provdInsttId"/><!-- 제공기관 -->
+			</field> 
+			<field property="provdSysId" depends="required">
+        		<arg0 key="comSsiSyiSim.systemCntc.validate.provdSysId"/><!-- 제공시스템 -->
+			</field> 
+			<field property="provdSvcId" depends="required">
+        		<arg0 key="comSsiSyiSim.systemCntc.validate.provdSvcId"/><!-- 제공서비스 -->
+			</field> 
+			<field property="requstInsttId" depends="required">
+        		<arg0 key="comSsiSyiSim.systemCntc.validate.requstInsttId"/><!-- 요청기관 -->
+			</field> 
+			<field property="requstSysId" depends="required">
+        		<arg0 key="comSsiSyiSim.systemCntc.validate.requstSysId"/><!-- 요청시스템 -->
+			</field> 
+			<field property="validBeginDe" depends="required, date">
+        		<arg0 key="comSsiSyiSim.systemCntc.validate.validBeginDe"/><!-- 유효시작일자 -->
+				<var>
+				<var-name>datePatternStrict</var-name>
+				<var-value>yyyyMMdd</var-value> 
+				</var>
+			</field> 
+			<field property="useAt" depends="required">
+        		<arg0 key="comSsiSyiSim.systemCntc.validate.useAt"/><!-- 사용여부 -->
+			</field> 
+		</form>
+    </formset>
+
+</form-validation>

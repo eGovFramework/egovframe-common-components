@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BatchOpertDao">
+    <resultMap id="batchOpertResult" type="egovframework.com.sym.bat.service.BatchOpert">
+        <result property="batchOpertId" column="BATCH_OPERT_ID"/>
+        <result property="batchOpertNm" column="BATCH_OPERT_NM"/>
+        <result property="batchProgrm" column="BATCH_PROGRM"/>
+        <result property="paramtr" column="PARAMTR"/>
+        <result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+        <result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+        <result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+        <result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+    </resultMap>
+
+    <select id="selectBatchOpertList" parameterType="egovframework.com.sym.bat.service.BatchOpert" resultMap="batchOpertResult">
+         
+            SELECT A.BATCH_OPERT_ID, A.BATCH_OPERT_NM, A.BATCH_PROGRM, A.PARAMTR, 
+               DATE_FORMAT(A.LAST_UPDT_PNTTM, '%Y-%m-%d %H:%i:%S') AS LAST_UPDT_PNTTM, A.LAST_UPDUSR_ID,
+               A.FRST_REGISTER_ID, DATE_FORMAT(A.FRST_REGIST_PNTTM, '%Y-%m-%d %H:%i:%S') AS FRST_REGIST_PNTTM
+            FROM COMTNBATCHOPERT A
+            WHERE USE_AT = 'Y'
+        
+            <if test="searchCondition == 0">AND
+                   A.BATCH_OPERT_NM LIKE CONCAT ('%', #{searchKeyword},'%')        
+            </if>
+            <if test="searchCondition == 1">AND
+                   A.BATCH_PROGRM LIKE CONCAT ('%', #{searchKeyword},'%')        
+            </if>
+        
+            ORDER BY A.BATCH_OPERT_ID ASC
+            LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+                     
+    </select>
+
+    <select id="selectBatchOpertListCnt" parameterType="egovframework.com.sym.bat.service.BatchOpert" resultType="java.lang.Integer">
+        
+            SELECT COUNT(*) totcnt
+            FROM COMTNBATCHOPERT A
+            WHERE USE_AT = 'Y'
+        
+            <if test="searchCondition == 0">AND
+                   A.BATCH_OPERT_NM LIKE CONCAT ('%', #{searchKeyword},'%')        
+            </if>
+            <if test="searchCondition == 1">AND
+                   A.BATCH_PROGRM LIKE CONCAT ('%', #{searchKeyword},'%')        
+            </if>
+    </select>
+    
+    <select id="selectBatchOpert" parameterType="egovframework.com.sym.bat.service.BatchOpert" resultMap="batchOpertResult">
+        
+            SELECT A.BATCH_OPERT_ID, A.BATCH_OPERT_NM, A.BATCH_PROGRM, A.PARAMTR, 
+               DATE_FORMAT(A.LAST_UPDT_PNTTM, '%Y-%m-%d %H:%i:%S') AS LAST_UPDT_PNTTM, A.LAST_UPDUSR_ID,
+               A.FRST_REGISTER_ID, DATE_FORMAT(A.FRST_REGIST_PNTTM, '%Y-%m-%d %H:%i:%S') AS FRST_REGIST_PNTTM
+            FROM COMTNBATCHOPERT A
+            WHERE A.BATCH_OPERT_ID = #{batchOpertId}
+        
+    </select>
+
+    <insert id="insertBatchOpert" parameterType="egovframework.com.sym.bat.service.BatchOpert">
+        
+            INSERT INTO COMTNBATCHOPERT (
+                BATCH_OPERT_ID, BATCH_OPERT_NM, BATCH_PROGRM, PARAMTR, USE_AT,
+                LAST_UPDUSR_ID, LAST_UPDT_PNTTM,FRST_REGISTER_ID, FRST_REGIST_PNTTM
+                ) 
+            VALUES (
+                    #{batchOpertId},  
+                    #{batchOpertNm},
+                    #{batchProgrm},
+                    #{paramtr},
+                    'Y',
+                    #{lastUpdusrId},
+                    SYSDATE(),
+                    #{frstRegisterId},
+                    SYSDATE()
+                 ) 
+        
+    </insert>
+
+     <update id="updateBatchOpert" parameterType="egovframework.com.sym.bat.service.BatchOpert">
+        
+            UPDATE COMTNBATCHOPERT SET 
+                BATCH_OPERT_NM = #{batchOpertNm},
+                BATCH_PROGRM = #{batchProgrm},
+                PARAMTR = #{paramtr},
+                LAST_UPDUSR_ID = #{lastUpdusrId},
+                LAST_UPDT_PNTTM = SYSDATE()
+            WHERE BATCH_OPERT_ID = #{batchOpertId} 
+        
+    </update>
+    
+    <delete id="deleteBatchOpert" parameterType="egovframework.com.sym.bat.service.BatchOpert">
+        
+            UPDATE COMTNBATCHOPERT SET
+                USE_AT = 'N'
+            WHERE  BATCH_OPERT_ID = #{batchOpertId} 
+        
+    </delete>
+
+</mapper>

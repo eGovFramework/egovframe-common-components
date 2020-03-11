@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:mvc="http://www.springframework.org/schema/mvc"
+    xmlns:p="http://www.springframework.org/schema/p"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+        http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-4.0.xsd">
+
+	<context:component-scan base-package="egovframework">
+		<context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Service"/>
+		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
+	</context:component-scan>
+	
+	<!-- For Pagination Tag -->
+	<bean id="imageRenderer" class="egovframework.com.cmm.ImagePaginationRenderer"/>
+
+	<bean id="paginationManager" class="egovframework.rte.ptl.mvc.tags.ui.pagination.DefaultPaginationManager">
+		<property name="rendererType">
+			<map>
+				<entry key="image" value-ref="imageRenderer"/>
+			</map>
+		</property>
+	</bean>
+
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
+        <property name="webBindingInitializer">
+            <bean class="egovframework.com.cmm.web.EgovBindingInitializer"/>
+        </property>
+    </bean>
+    
+    <!-- setting Locale Locale Interceptor 설정하기  -->
+    <bean id="localeChangeInterceptor" class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"
+        p:paramName="lang" />
+
+    <bean id="localeResolver" class="org.springframework.web.servlet.i18n.SessionLocaleResolver" />
+    
+	<bean id="egovWebLogInterceptor" class="egovframework.com.sym.log.wlg.web.EgovWebLogInterceptor" />
+
+    <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping">
+        <property name="interceptors">
+            <list>
+                <ref bean="localeChangeInterceptor"/>
+                <ref bean="egovWebLogInterceptor"/>
+            </list>
+        </property>
+    </bean>
+    
+    <!-- IP 정보 기록 및 로그인 체크가 필요한 URL과 로그인 여부를 체크해줄 인터셉터를 등록한다. -->
+    <!-- 분리 -->
+    
+	<bean class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver">
+		<property name="defaultErrorView" value="egovframework/com/cmm/error/egovError"/>
+		<property name="exceptionMappings">
+			<props>
+				<prop key="org.springframework.dao.DataAccessException">egovframework/com/cmm/error/dataAccessFailure</prop>
+				<prop key="org.springframework.transaction.TransactionException">egovframework/com/cmm/error/dataAccessFailure</prop>
+				<prop key="egovframework.rte.fdl.cmmn.exception.EgovBizException">egovframework/com/cmm/error/egovBizException</prop>
+				<prop key="org.springframework.web.HttpSessionRequiredException">egovframework/com/uat/uia/EgovLoginUsr</prop>
+				<prop key="egovframework.com.cmm.exception.EgovXssException">egovframework/com/cmm/error/EgovXssException</prop>
+			</props>
+		</property>
+	</bean>
+
+	<!-- for JFile -->
+	<bean class="org.springframework.web.servlet.view.BeanNameViewResolver" p:order="0"/>
+
+	<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver" p:order="1"
+		  p:viewClass="org.springframework.web.servlet.view.JstlView"
+		  p:prefix="/WEB-INF/jsp/" p:suffix=".jsp"/>
+		  
+	<bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
+		<property name="contentType" value="text/html;charset=UTF-8"/>
+	</bean>
+	
+	<!-- Facebook 설정 -->
+	<mvc:default-servlet-handler />
+	<bean class="org.springframework.social.connect.web.ProviderSignInController">
+		<constructor-arg ref="connectionFactoryLocator" />
+		<constructor-arg ref="usersConnectionRepository" />
+		<constructor-arg>
+			<bean class="egovframework.com.uss.ion.fbk.web.FacebookSimpleSignInAdapter"/>
+		</constructor-arg>
+		<property name="signInUrl" value="/uss/ion/fbk/facebookSignin.do"/>
+		<property name="postSignInUrl" value="/uss/ion/fbk/facebook.do"/>
+	</bean>
+	<mvc:interceptors>
+		<mvc:interceptor>
+			<mvc:mapping path="/uss/ion/fbk/**" />
+			<bean class="egovframework.com.uss.ion.fbk.web.FacebookUserInterceptor" >
+				<constructor-arg ref="usersConnectionRepository"/>
+			</bean>
+		</mvc:interceptor>
+	</mvc:interceptors>
+	<mvc:view-controller path="/uss/ion/fbk/facebook.do" view-name="egovframework/com/uss/ion/fbk/EgovFacebookHome" />
+	<mvc:view-controller path="/uss/ion/fbk/facebookSignin.do" view-name="egovframework/com/uss/ion/fbk/EgovFacebookSignin" />
+	<mvc:view-controller path="/uss/ion/fbk/facebookSignout.do" view-name="egovframework/com/uss/ion/fbk/EgovFacebookHome" />
+
+</beans>

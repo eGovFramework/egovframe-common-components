@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+
+<form-validation>
+
+    <formset>
+		<form name="leaderSchdulVO">
+			<field property="schdulSe" depends="required">
+        		<arg0 key="comCopSmtLsm.leaderSchdul.validate.schdulSe" resource="true"/>
+			</field>
+			
+			<field property="schdulNm" depends="required, maxlength">
+        		<arg0 key="comCopSmtLsm.leaderSchdul.validate.schdulNm" resource="true"/>
+        		<arg1 key="255" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>255</var-value>
+				</var>
+			</field>
+			
+			<field property="schdulCn" depends="required, maxlength">
+        		<arg0 key="comCopSmtLsm.leaderSchdul.validate.schdulCn" resource="true"/>
+        		<arg1 key="2500" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>2500</var-value>
+				</var>
+			</field> 
+
+			<field property="schdulBgndeYYYMMDD" depends="required">
+        		<arg0 key="comCopSmtLsm.leaderSchdul.validate.schdulBgndeYYYMMDD" resource="true"/>
+			</field>
+			
+			<field property="schdulEnddeYYYMMDD" depends="required">
+        		<arg0 key="comCopSmtLsm.leaderSchdul.validate.schdulEnddeYYYMMDD" resource="true"/>
+			</field>
+			
+			<field property="schdulBgndeHH" depends="required">
+        		<arg0 key="comCopSmtLsm.leaderSchdul.validate.schdulBgndeHH" resource="true"/>
+			</field>
+			<field property="schdulBgndeMM" depends="required">
+        		<arg0 key="comCopSmtLsm.leaderSchdul.validate.schdulBgndeMM" resource="true"/>
+			</field>
+			
+			<field property="schdulEnddeHH" depends="required">
+        		<arg0 key="comCopSmtLsm.leaderSchdul.validate.schdulEnddeHH" resource="true"/>
+			</field>
+			<field property="schdulEnddeMM" depends="required">
+        		<arg0 key="comCopSmtLsm.leaderSchdul.validate.schdulEnddeMM" resource="true"/>
+			</field>
+			
+			<field property="leaderName" depends="required">
+        		<arg0 key="comCopSmtLsm.leaderSchdul.validate.leaderName" resource="true"/>
+			</field>
+			
+			<field property="schdulChargerName" depends="required">
+        		<arg0 key="comCopSmtLsm.leaderSchdul.validate.schdulChargerName" resource="true"/>
+			</field>
+			
+		</form>
+    </formset>
+
+</form-validation>

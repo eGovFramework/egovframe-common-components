@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	수정일		수정자					수정내용
+  =========     =======    =================================================
+  2011.9.7   	이기하     	 	테이블 표준화에 따른 수정사항 반영
+					 		selectWordDicaryList_D에 FRST_REGIST_PNTTM -> FRST_REGISTER_PNTTM 로 변경
+					 		selectWordDicaryDetail_S 에 FRST_REGISTER_PNTTM -> FRST_REGIST_PNTTM 로 변경
+					 		selectWordDicaryDetail_S 에 LAST_UPDUSR_PNTTM -> LAST_UPDT_PNTTM 로 변경
+					 		selectWordDicaryListTotCnt_S에 and A.FRST_REGISTER_ID = B.ESNTL_ID 추가
+					 		
+  2011.09.19       서준식 		selectWordDicaryList_D 등록일자 Character 타입으로 변경					 		
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="WordDicary">
+
+	<resultMap id="WordDicary" type="egovframework.com.uss.olh.wor.service.WordDicaryVO">
+		<result property="wordId" column="WORD_ID"/>
+		<result property="wordNm" column="WORD_NM"/>
+		<result property="engNm" column="ENG_NM"/>
+		<result property="wordDc" column="WORD_DC"/>
+		<result property="synonm" column="SYNONM"/>
+		<result property="emplyrNm" column="USER_NM"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+	</resultMap>
+
+	<!-- 용어사전::상세조회  -->
+	<select id="selectWordDicaryDetail" resultMap="WordDicary">
+		
+			SELECT
+					WORD_ID,
+					WORD_NM,
+					ENG_NM,
+					WORD_DC,
+					SYNONM,
+					B.USER_NM,
+					DATE_FORMAT(FRST_REGIST_PNTTM,'%Y-%m-%d') FRST_REGIST_PNTTM,
+					FRST_REGISTER_ID,
+					DATE_FORMAT(LAST_UPDT_PNTTM,'%Y-%m-%d')   LAST_UPDT_PNTTM,
+					LAST_UPDUSR_ID
+			FROM 	COMTNWORDDICARYINFO A, COMTNEMPLYRINFO B
+			WHERE	A.WORD_ID=#{wordId}	and A.FRST_REGISTER_ID = B.ESNTL_ID
+		
+	</select>
+
+	<!-- 용어사전::목록조회  -->
+	<select id="selectWordDicaryList" parameterType="egovframework.com.uss.olh.wor.service.WordDicaryVO" resultMap="WordDicary">
+		
+			SELECT
+				WORD_ID,
+				WORD_NM,
+				ENG_NM,
+				WORD_DC,
+				SYNONM,
+				B.USER_NM				EMPLYR_NM,
+				DATE_FORMAT(FRST_REGIST_PNTTM,'%Y-%m-%d')		FRST_REGISTER_PNTTM,
+				FRST_REGISTER_ID,
+				DATE_FORMAT(LAST_UPDT_PNTTM,'%Y-%m-%d')			LAST_UPDUSR_PNTTM,
+				LAST_UPDUSR_ID
+			FROM 	COMTNWORDDICARYINFO A, COMTNEMPLYRINFO B
+			WHERE	1=1 and A.FRST_REGISTER_ID = B.ESNTL_ID
+		
+			<if test="searchCnd == 0">AND
+				WORD_NM LIKE CONCAT('%', #{searchWrd}, '%')
+			</if>
+			<if test="searchCnd == 1">AND
+				ENG_NM  LIKE CONCAT('%', #{searchWrd}, '%')
+			</if>
+			ORDER BY WORD_ID DESC
+			LIMIT  #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+
+
+
+	<select id="selectWordDicaryListCnt" parameterType="egovframework.com.uss.olh.wor.service.WordDicaryVO" resultType="int">
+		
+			SELECT	COUNT(*) totcnt
+			FROM 	COMTNWORDDICARYINFO A, COMTNEMPLYRINFO B
+			WHERE	1=1 and A.FRST_REGISTER_ID = B.ESNTL_ID
+		
+			<if test="searchCnd == 0">AND
+				WORD_NM LIKE CONCAT('%', #{searchWrd}, '%')
+			</if>
+			<if test="searchCnd == 1">AND
+				ENG_NM  LIKE CONCAT('%', #{searchWrd}, '%')
+			</if>
+	</select>
+
+	<insert id="insertWordDicary">
+		
+			INSERT INTO COMTNWORDDICARYINFO
+				( WORD_ID
+				  , WORD_NM
+				  , ENG_NM
+				  , WORD_DC
+				  , SYNONM
+				  , FRST_REGIST_PNTTM
+				  , FRST_REGISTER_ID )
+			VALUES ( #{wordId}
+				  , #{wordNm}
+				  , #{engNm}
+				  , #{wordDc}
+				  , #{synonm}
+				  , sysdate()
+				  , #{frstRegisterId} )
+		
+	</insert>
+
+	<update id="updateWordDicary">
+		
+			UPDATE COMTNWORDDICARYINFO	SET
+				   WORD_NM=#{wordNm}
+				 , ENG_NM=#{engNm}
+				 , WORD_DC=#{wordDc}
+				 , SYNONM=#{synonm}
+				 , LAST_UPDT_PNTTM=sysdate()
+				 , LAST_UPDUSR_ID=#{lastUpdusrId}
+			WHERE  WORD_ID=#{wordId}
+		
+	</update>
+
+	<delete id="deleteWordDicary">
+		
+			DELETE FROM COMTNWORDDICARYINFO
+			WHERE  WORD_ID=#{wordId}
+		
+	</delete>
+
+
+</mapper>

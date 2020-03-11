@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="troblReqstDAO">
+
+    <resultMap id="troblReqst" type="egovframework.com.sym.tbm.tbr.service.TroblReqstVO">
+        <result property="troblId" column="TROBL_ID"/>
+        <result property="troblNm" column="TROBL_NM"/>
+        <result property="troblKnd" column="TROBL_KND"/>
+        <result property="troblKndNm" column="TROBL_KND_NM"/>
+        <result property="troblDc" column="TROBL_DC"/>
+        <result property="troblOccrrncTime" column="TROBL_OCCRRNC_TIME"/>
+        <result property="troblRqesterNm" column="TROBL_RQESTER_NM"/>
+        <result property="troblRequstTime" column="TROBL_REQUST_TIME"/>
+        <result property="troblProcessResult" column="TROBL_PROCESS_RESULT"/>
+        <result property="troblOpetrNm" column="TROBL_OPETR_NM"/>
+        <result property="troblProcessTime" column="TROBL_PROCESS_TIME"/>
+        <result property="processSttus" column="PROCESS_STTUS"/>
+        <result property="processSttusNm" column="PROCESS_STTUS_NM"/>
+        <result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+        <result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+        <result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+        <result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+    </resultMap>
+
+    <select id="selectTroblReqstList" parameterType="egovframework.com.sym.tbm.tbr.service.TroblReqstVO" resultMap="troblReqst">
+            
+            SELECT  * 
+              FROM  (
+            SELECT ROWNUM RNUM, ALL_LIST.* 
+              FROM  (           
+             SELECT TROBL_ID,
+                    TROBL_NM,
+                    TROBL_KND,
+                    (SELECT CODE_NM 
+                       FROM COMTCCMMNDETAILCODE
+                      WHERE CODE_ID = 'COM065'
+                        AND USE_AT  = 'Y'
+                        AND CODE = TROBL_KND) AS TROBL_KND_NM,
+                    TROBL_DC,
+                    TO_CHAR(TO_DATE(TROBL_OCCRRNC_TIME, 'YYYYMMDDHH24MISS'), 'yyyy-mm-dd HH24:mi:ss') AS TROBL_OCCRRNC_TIME,
+                    TROBL_RQESTER_NM,
+                    TO_CHAR(TO_DATE(TROBL_REQUST_TIME, 'YYYYMMDDHH24MISS'), 'yyyy-mm-dd HH24:mi:ss') AS TROBL_REQUST_TIME,
+                    TROBL_PROCESS_RESULT,
+                    TROBL_OPETR_NM,
+                    TO_CHAR(TO_DATE(TROBL_PROCESS_TIME, 'YYYYMMDDHH24MISS'), 'yyyy-mm-dd HH24:mi:ss') AS TROBL_PROCESS_TIME,
+                    PROCESS_STTUS,
+                    (SELECT CODE_NM 
+                       FROM COMTCCMMNDETAILCODE
+                      WHERE CODE_ID = 'COM068'
+                        AND USE_AT  = 'Y'
+                        AND CODE = PROCESS_STTUS) AS PROCESS_STTUS_NM,                       
+                    TO_CHAR(FRST_REGIST_PNTTM, 'yyyy-mm-dd HH24:mi:ss') AS FRST_REGIST_PNTTM,
+                    FRST_REGISTER_ID,
+                    TO_CHAR(LAST_UPDT_PNTTM, 'yyyy-mm-dd HH24:mi:ss') AS LAST_UPDT_PNTTM,
+                    LAST_UPDUSR_ID
+               FROM COMTNTROBLINFO
+              WHERE 1 = 1
+                        
+            <if test="strTroblNm != null">AND
+                    TROBL_NM LIKE '%'||#{strTroblNm}||'%'
+            </if>
+            <if test="strTroblKnd != null">AND
+                    TROBL_KND = #{strTroblKnd}
+            </if>
+            <if test="strProcessSttus != '00'">AND
+                    PROCESS_STTUS = #{strProcessSttus}
+            </if>          
+               <![CDATA[          
+              ORDER BY TROBL_ID
+                    ) ALL_LIST
+                    ) Z
+             WHERE  RNUM  > #{firstIndex}
+               AND  RNUM <= #{firstIndex} + #{recordCountPerPage}
+               ]]>
+    </select>
+
+    <select id="selectTroblReqstListTotCnt" parameterType="egovframework.com.sym.tbm.tbr.service.TroblReqstVO" resultType="int">
+             SELECT COUNT(*) totcnt
+               FROM COMTNTROBLINFO
+              WHERE 1 = 1
+            <if test="strTroblNm != null">AND
+                    TROBL_NM LIKE '%'||#{strTroblNm}||'%'
+            </if>
+            <if test="strTroblKnd != '00'">AND
+                    TROBL_KND = #{strTroblKnd}
+            </if>
+            <if test="strProcessSttus != '00'">AND
+                    PROCESS_STTUS = #{strProcessSttus}
+            </if>
+    </select>
+    
+    <select id="selectTroblReqst" resultMap="troblReqst">
+        
+             SELECT TROBL_ID,
+                    TROBL_NM,
+                    TROBL_KND,
+                    (SELECT CODE_NM 
+                       FROM COMTCCMMNDETAILCODE
+                      WHERE CODE_ID = 'COM065'
+                        AND USE_AT  = 'Y'
+                        AND CODE = TROBL_KND) AS TROBL_KND_NM,
+                    TROBL_DC,
+                    TO_CHAR(TO_DATE(TROBL_OCCRRNC_TIME, 'YYYYMMDDHH24MISS'), 'yyyy-mm-dd HH24:mi:ss') AS TROBL_OCCRRNC_TIME,
+                    TROBL_RQESTER_NM,
+                    TO_CHAR(TO_DATE(TROBL_REQUST_TIME, 'YYYYMMDDHH24MISS'), 'yyyy-mm-dd HH24:mi:ss') AS TROBL_REQUST_TIME,
+                    TROBL_PROCESS_RESULT,
+                    TROBL_OPETR_NM,
+                    TO_CHAR(TO_DATE(TROBL_PROCESS_TIME, 'YYYYMMDDHH24MISS'), 'yyyy-mm-dd HH24:mi:ss') AS TROBL_PROCESS_TIME,
+                    PROCESS_STTUS,
+                    (SELECT CODE_NM 
+                       FROM COMTCCMMNDETAILCODE
+                      WHERE CODE_ID = 'COM068'
+                        AND USE_AT  = 'Y'
+                        AND CODE = PROCESS_STTUS) AS PROCESS_STTUS_NM,                       
+                    TO_CHAR(FRST_REGIST_PNTTM, 'yyyy-mm-dd HH24:mi:ss') AS FRST_REGIST_PNTTM,
+                    FRST_REGISTER_ID,
+                    TO_CHAR(LAST_UPDT_PNTTM, 'yyyy-mm-dd HH24:mi:ss') AS LAST_UPDT_PNTTM,
+                    LAST_UPDUSR_ID
+               FROM COMTNTROBLINFO
+              WHERE 1 = 1
+               AND TROBL_ID = #{troblId}
+        
+    </select>
+
+    <insert id="insertTroblReqst" parameterType="egovframework.com.sym.tbm.tbr.service.TroblReqst">
+        
+             INSERT INTO COMTNTROBLINFO
+                    (TROBL_ID,
+                     TROBL_NM,
+                     TROBL_KND,
+                     TROBL_DC,
+                     TROBL_OCCRRNC_TIME,
+                     TROBL_RQESTER_NM,
+                     PROCESS_STTUS,
+                     FRST_REGIST_PNTTM,
+                     FRST_REGISTER_ID,
+                     LAST_UPDT_PNTTM,
+                     LAST_UPDUSR_ID)
+             VALUES (#{troblId},
+                     #{troblNm},
+                     #{troblKnd},
+                     #{troblDc},
+                     #{troblOccrrncTime},
+                     #{troblRqesterNm},
+                     #{processSttus},
+                     SYSDATETIME,
+                     #{frstRegisterId},
+                     SYSDATETIME,
+                     #{lastUpdusrId})
+        
+    </insert>
+
+    <update id="updateTroblReqst" parameterType="egovframework.com.sym.tbm.tbr.service.TroblReqst">
+             UPDATE COMTNTROBLINFO
+                SET TROBL_NM = #{troblNm},
+                    TROBL_KND = #{troblKnd},
+                    TROBL_DC = #{troblDc},
+                    TROBL_OCCRRNC_TIME = #{troblOccrrncTime},
+                    TROBL_RQESTER_NM = #{troblRqesterNm},
+                    PROCESS_STTUS = #{processSttus},
+                    LAST_UPDT_PNTTM = SYSDATETIME,
+                    LAST_UPDUSR_ID = #{lastUpdusrId}
+              WHERE TROBL_ID = #{troblId}
+    </update>
+
+    <delete id="deleteTroblReqst" parameterType="egovframework.com.sym.tbm.tbr.service.TroblReqst">
+        
+            DELETE FROM COMTNTROBLINFO
+             WHERE TROBL_ID = #{troblId}
+        
+    </delete>
+
+    <delete id="requstTroblReqst" parameterType="egovframework.com.sym.tbm.tbr.service.TroblReqst">
+             UPDATE COMTNTROBLINFO
+                SET PROCESS_STTUS = #{processSttus},
+                <if test='processSttus == "R"'>
+                    TROBL_REQUST_TIME = TO_CHAR(SYSDATETIME,'YYYYMMDDHH24MISS'),
+                </if>
+                <if test='processSttus == "A"'>
+                    TROBL_REQUST_TIME = null,
+                </if>                
+                    LAST_UPDT_PNTTM = SYSDATETIME,
+                    LAST_UPDUSR_ID = #{lastUpdusrId}
+              WHERE TROBL_ID = #{troblId}
+    </delete>
+
+</mapper>

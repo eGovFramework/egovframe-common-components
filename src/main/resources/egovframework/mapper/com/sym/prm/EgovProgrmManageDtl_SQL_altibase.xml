@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="progrmManageDAO">
+
+    <!-- 프로그램 변경요청  --> 
+	<resultMap id="progrmManageDtl" type="egovframework.com.sym.prm.service.ProgrmManageDtlVO">
+	  <result property="progrmFileNm" column="PROGRM_FILE_NM"/>
+      <result property="rqesterNo" column="REQUST_NO"/>
+      <result property="rqesterPersonId" column="RQESTER_ID"/>
+      <result property="changerqesterCn" column="CHANGE_REQUST_CN"/>
+      <result property="rqesterProcessCn" column="REQUST_PROCESS_CN"/>
+      <result property="opetrId" column="OPETR_ID"/>
+      <result property="processSttus" column="PROCESS_STTUS_CODE"/>
+      <result property="processDe" column="PROCESS_DE"/>
+      <result property="rqesterDe" column="RQESTDE"/>
+      <result property="rqesterSj" column="REQUST_SJ"/>
+	</resultMap>
+	
+    <!-- 프로그램 변경요청 TMP --> 
+	<resultMap id="progrmManageDtl_Temp" type="egovframework.com.sym.prm.service.ProgrmManageDtlVO">
+      <result property="rqesterNo" column="REQUST_NO"/>
+	</resultMap>
+
+	<select id="selectProgrmChangeRequstList_D" parameterType="comDefaultVO" resultMap="progrmManageDtl">
+		
+           SELECT 
+				  PROGRM_FILE_NM                    AS "PROGRM_FILE_NM" 
+				, REQUST_NO                        AS "REQUST_NO" 
+				, RQESTER_ID                        AS "RQESTER_ID" 
+				, CHANGE_REQUST_CN                  AS "CHANGE_REQUST_CN" 
+				, REQUST_PROCESS_CN                AS "REQUST_PROCESS_CN"
+				, OPETR_ID                          AS "OPETR_ID" 
+				, trim(PROCESS_STTUS_CODE)          AS "PROCESS_STTUS_CODE"
+				, PROCESS_DE AS "PROCESS_DE"   
+				, RQESTDE AS "RQESTDE" 
+				, REQUST_SJ                        AS "REQUST_SJ"
+           FROM ( 
+               SELECT rownum rn
+					, TB.PROGRM_FILE_NM    
+					, TB.REQUST_NO        
+					, TB.RQESTER_ID        
+					, TB.CHANGE_REQUST_CN  
+					, TB.REQUST_PROCESS_CN
+					, TB.OPETR_ID          
+					, TB.PROCESS_STTUS_CODE
+					, TB.PROCESS_DE        
+					, TB.RQESTDE        
+					, TB.REQUST_SJ        
+               FROM (
+                     SELECT
+                            PROGRM_FILE_NM    
+                          , REQUST_NO        
+                          , RQESTER_ID        
+                          , CHANGE_REQUST_CN  
+                          , REQUST_PROCESS_CN
+                          , OPETR_ID          
+                          , PROCESS_STTUS_CODE
+                          , PROCESS_DE        
+                          , RQESTDE        
+                          , REQUST_SJ        
+					   FROM COMTHPROGRMCHANGEDTLS
+				WHERE PROGRM_FILE_NM like '%'|| #{searchKeyword}||'%'
+	       ) TB )  WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+		 
+	</select>
+
+	<!-- 총건수 조회 -->
+	<select id="selectProgrmChangeRequstListTotCnt_S" parameterType="comDefaultVO" resultType="int">
+		
+		SELECT COUNT(*) AS "totcnt"
+		  FROM COMTHPROGRMCHANGEDTLS
+		WHERE PROGRM_FILE_NM like '%'|| #{searchKeyword}||'%'
+		
+	</select>
+
+	<select id="selectProgrmChangeRequstNo_D" parameterType="egovframework.com.sym.prm.service.ProgrmManageDtlVO" resultType="egovframework.com.sym.prm.service.ProgrmManageDtlVO">
+		
+			select nvl(max(REQUST_NO),0)+1 AS "rqesterNo"
+			from COMTHPROGRMCHANGEDTLS
+		 
+	</select>
+
+	<select id="selectProgrmChangeRequst_D" parameterType="egovframework.com.sym.prm.service.ProgrmManageDtlVO" resultMap="progrmManageDtl">
+		
+			SELECT
+				  PROGRM_FILE_NM AS "PROGRM_FILE_NM" 
+				, REQUST_NO AS "REQUST_NO" 
+				, RQESTER_ID AS "RQESTER_ID" 
+				, CHANGE_REQUST_CN AS "CHANGE_REQUST_CN" 
+				, REQUST_PROCESS_CN AS "REQUST_PROCESS_CN"
+				, OPETR_ID AS "OPETR_ID" 
+				, trim(PROCESS_STTUS_CODE) AS "PROCESS_STTUS_CODE" 
+				, PROCESS_DE AS "PROCESS_DE" 
+				, RQESTDE AS "RQESTDE" 
+				, REQUST_SJ AS "REQUST_SJ"
+			FROM COMTHPROGRMCHANGEDTLS
+			WHERE PROGRM_FILE_NM=#{progrmFileNm}
+			AND   REQUST_NO    =#{rqesterNo}
+		
+	</select> 
+
+	<insert id="insertProgrmChangeRequst_S" parameterType="egovframework.com.sym.prm.service.ProgrmManageDtlVO">
+		
+			INSERT INTO COMTHPROGRMCHANGEDTLS
+				(  PROGRM_FILE_NM
+              , REQUST_NO
+              , RQESTER_ID
+              , CHANGE_REQUST_CN
+              , RQESTDE
+              , REQUST_SJ 
+              ,PROCESS_STTUS_CODE)
+			VALUES (  #{progrmFileNm}
+                 , #{rqesterNo}
+                 , #{rqesterPersonId}
+                 , #{changerqesterCn}
+                 , #{rqesterDe}
+                 , #{rqesterSj} 
+                 , 'A')
+		
+	</insert>
+
+	<update id="updateProgrmChangeRequst_S" parameterType="egovframework.com.sym.prm.service.ProgrmManageDtlVO">
+		
+			UPDATE COMTHPROGRMCHANGEDTLS
+			SET    RQESTER_ID         = #{rqesterPersonId} 
+			     , CHANGE_REQUST_CN   = #{changerqesterCn}
+			     , REQUST_PROCESS_CN = #{rqesterProcessCn}
+                 , RQESTDE         = #{rqesterDe}       
+                 , REQUST_SJ         = #{rqesterSj} 
+			WHERE PROGRM_FILE_NM=#{progrmFileNm}
+			AND   REQUST_NO    =#{rqesterNo}
+		
+	</update>
+
+	<delete id="deleteProgrmChangeRequst_S">
+		
+			DELETE FROM COMTHPROGRMCHANGEDTLS
+			WHERE PROGRM_FILE_NM=#{progrmFileNm}
+			AND   REQUST_NO    =#{rqesterNo}
+		
+	</delete>  
+
+	<update id="updateProgrmChangeRequstProcess_S" parameterType="egovframework.com.sym.prm.service.ProgrmManageDtlVO">
+		
+			UPDATE COMTHPROGRMCHANGEDTLS
+			SET    CHANGE_REQUST_CN   = #{changerqesterCn}  
+			     , REQUST_PROCESS_CN = #{rqesterProcessCn} 
+                 , OPETR_ID           = #{opetrId}         
+                 , PROCESS_STTUS_CODE = #{processSttus}    
+                 , PROCESS_DE         = #{processDe}       
+			WHERE  PROGRM_FILE_NM=#{progrmFileNm}
+			AND    REQUST_NO    =#{rqesterNo}  
+		
+	</update>
+
+	<select id="selectChangeRequstProcessList_D" parameterType="comDefaultVO" resultMap="progrmManageDtl">
+		
+           SELECT 
+				  PROGRM_FILE_NM                    AS "PROGRM_FILE_NM" 
+				, REQUST_NO                        AS "REQUST_NO" 
+				, RQESTER_ID                        AS "RQESTER_ID" 
+				, CHANGE_REQUST_CN                  AS "CHANGE_REQUST_CN" 
+				, REQUST_PROCESS_CN                AS "REQUST_PROCESS_CN"
+				, OPETR_ID                          AS "OPETR_ID" 
+				, trim(PROCESS_STTUS_CODE)          AS "PROCESS_STTUS_CODE"
+				, PROCESS_DE AS "PROCESS_DE"   
+				, RQESTDE AS "RQESTDE" 
+				, REQUST_SJ                        AS "REQUST_SJ"
+           FROM ( 
+               SELECT rownum rn
+					, TB.PROGRM_FILE_NM    
+					, TB.REQUST_NO        
+					, TB.RQESTER_ID        
+					, TB.CHANGE_REQUST_CN  
+					, TB.REQUST_PROCESS_CN
+					, TB.OPETR_ID          
+					, TB.PROCESS_STTUS_CODE
+					, TB.PROCESS_DE        
+					, TB.RQESTDE        
+					, TB.REQUST_SJ        
+               FROM (
+                     SELECT
+                            PROGRM_FILE_NM    
+                          , REQUST_NO        
+                          , RQESTER_ID        
+                          , CHANGE_REQUST_CN  
+                          , REQUST_PROCESS_CN
+                          , OPETR_ID          
+                          , PROCESS_STTUS_CODE
+                          , PROCESS_DE        
+                          , RQESTDE        
+                          , REQUST_SJ        
+					   FROM COMTHPROGRMCHANGEDTLS
+				WHERE 1=1
+		 
+        <if test="searchCondition == 1">AND
+            PROCESS_STTUS_CODE like #{searchKeyword}  
+        </if>        
+        <if test="searchCondition == 2">AND
+            PROCESS_STTUS_CODE = #{searchKeyword}   
+        </if>
+        <if test="searchCondition == 3">AND
+          RQESTDE between #{searchKeywordFrom} and #{searchKeywordTo} 
+        </if>
+        <if test="searchCondition == 4">AND
+           RQESTER_ID like  '%'||#{searchKeyword}||'%'   
+        </if>
+           ORDER BY REQUST_NO ASC
+             ) TB )  WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+        
+	</select>
+
+	<!-- 총건수 조회   binary(PROCESS_DE) >= #{searchKeywordFrom}  and  binary(PROCESS_DE) =<  #{searchKeywordTo}  -->
+	<select id="selectChangeRequstProcessListTotCnt_S" parameterType="comDefaultVO" resultType="int">
+		
+		SELECT COUNT(REQUST_NO) AS "totcnt"
+		  FROM COMTHPROGRMCHANGEDTLS
+			WHERE 1=1
+		 
+        <if test="searchCondition == 1">AND
+            PROCESS_STTUS_CODE like #{searchKeyword}  
+        </if>        
+        <if test="searchCondition == 2">AND
+            PROCESS_STTUS_CODE = #{searchKeyword}   
+        </if>
+        <if test="searchCondition == 3">AND
+          RQESTDE between #{searchKeywordFrom} and #{searchKeywordTo} 
+        </if>
+        <if test="searchCondition == 4">AND
+           RQESTER_ID like  '%'||#{searchKeyword}||'%'   
+        </if>
+	</select>
+
+	<delete id="deleteAllProgrmDtls">
+		                          
+			DELETE FROM COMTHPROGRMCHANGEDTLS              
+		                                
+	</delete> 
+
+	<select id="selectRqesterEmail" parameterType="egovframework.com.sym.prm.service.ProgrmManageDtlVO" resultType="egovframework.com.sym.prm.service.ProgrmManageDtlVO">
+		
+			select user_email AS tmpEmail from COMVNUSERMASTER
+			where ESNTL_ID = #{rqesterPersonId}
+		 
+	</select>
+
+</mapper>

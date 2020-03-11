@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- 
+	수정일                 수정자                          수정내용
+  =========     =======    =================================================
+  2011.8.12   	안민정     	 	테이블 표준화에 따른 수정사항 반영
+							USID를					USER_ID 로 변경
+  2011.09.25	서준식              CONSUMER_KEY를 			CNSMR_KEY 로 변경
+  							CONSUMER_SECRET를  		CNSMR_SECRET 로 변경								
+--><!--Converted at: Wed May 11 15:51:22 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Twitter">
+
+	<!-- 트위터::개정설정 검색 -->
+	<select id="selectTwitterAccount" resultType="java.util.HashMap">
+	SELECT 
+		USER_ID USID,
+		CNSMR_KEY,
+		CNSMR_SECRET,
+		FRST_REGISTER_ID,
+		FRST_REGIST_PNTTM,
+		LAST_UPDUSR_ID,
+		LAST_UPDT_PNTTM
+	FROM COMTNTWITTER
+	WHERE 1=1
+	AND USER_ID = #{usid}
+	</select>
+	
+	<!-- 트위터::개정설정 체크 -->
+	<select id="selectTwitterAccountCheck" resultType="int">
+	SELECT COUNT(USER_ID) CNT
+	FROM COMTNTWITTER
+	WHERE 1=1
+	AND USER_ID = #{usid}
+	</select>
+	
+	<!-- 트위터::개정설정 Insert -->
+	<insert id="insertTwitterAccount">
+	INSERT INTO COMTNTWITTER
+	(
+	USER_ID,
+	CNSMR_KEY,
+	CNSMR_SECRET,
+	FRST_REGISTER_ID,
+	FRST_REGIST_PNTTM,
+	LAST_UPDUSR_ID,
+	LAST_UPDT_PNTTM
+	)VALUES(
+	#{usid},
+	#{consumerKey},
+	#{consumerSecret},
+	#{frstRegisterId},
+	sysdate,
+	#{lastUpdusrId},
+	sysdate
+	)
+	</insert>
+	
+	<!-- 트위터::개정설정 업데이트 -->
+	<update id="updateTwitterAccount">
+	UPDATE COMTNTWITTER 
+	SET
+		CNSMR_KEY=#{consumerKey},
+		CNSMR_SECRET=#{consumerSecret},	
+		LAST_UPDT_PNTTM=sysdate,
+		LAST_UPDUSR_ID=#{lastUpdusrId}
+	WHERE 1=1
+		AND USER_ID=#{usid}
+	</update>
+	
+	<!-- 트위터::계정설정 삭제 -->
+	<delete id="deleteTwitterAccount">
+		
+			DELETE FROM COMTNTWITTER 
+			WHERE 1=1 
+			AND USER_ID=#{usid}
+		
+	</delete>
+</mapper>

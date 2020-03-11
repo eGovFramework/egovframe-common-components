@@ -1,0 +1,76 @@
+@CHARSET "UTF-8";
+/*
+  Css Name : com.css
+  Description : 공통 CSS
+  Modification Information
+
+      수정일        수정자          수정내용
+     ----------    --------    ---------------------------
+     2016.06.09     장동한          최초 생성
+
+    author   : 공통컴포넌트 개발팀 장동한
+    since    : 2016.06.09
+*/
+
+td {font-family: "돋움"; font-size: 9pt; color:#595959; font-weight:normal;}
+th {font-family: "돋움"; font-size: 9pt; color:#000000; font-weight:normal;}
+
+h1 {font-size:12px;}
+caption {visibility:hidden; font-size:0; height:0; margin:0; padding:0; line-height:0;}
+
+img { border : 0; }
+table { margin : 0; padding : 0; }
+
+/* Black 텍스트 Hyperlink Style */
+A:link { font-size:9pt; font-family:돋움;color:#000000; text-decoration:none; }
+A:visited { font-size:9pt; font-family:돋움;color:#000000; text-decoration:none; }
+A:active { font-size:9pt; font-family:돋움;color:red; text-decoration:none; }
+A:hover { font-size:9pt; font-family:돋움;color:red;text-decoration:none;}
+
+
+/* Gray 텍스트 Hyperlink Style */
+A.gr:link { font-size:9pt; font-family:돋움;color:#58595B; text-decoration:none; }
+A.gr:visited { font-size:9pt; font-family:돋움;color:#58595B; text-decoration:none; }
+A.gr:active { font-size:9pt; font-family:돋움;color:red; text-decoration:none; }
+A.gr:hover { font-size:9pt; font-family:돋움;color:red ;text-decoration:none;}
+
+
+/* Black 텍스트 Hyperlink Style_언더라인 */
+A.underline:link { font-size:9pt; font-family:돋움;color:#000000; text-decoration:underline; }
+A.underline:visited { font-size:9pt; font-family:돋움;color:#000000; text-decoration:underline; }
+A.underline:active { font-size:9pt; font-family:돋움;color:red; text-decoration:underline; }
+A.underline:hover { font-size:9pt; font-family:돋움;color:red;text-decoration:underline;}
+
+/* 링크 점선 제거 */
+a {selector-dummy: expression(this.hideFocus=true);}
+
+/* 스크롤 & margin */
+body {
+    scrollbar-face-color: #F6F6F6;
+    scrollbar-highlight-color: #bbbbbb;
+    scrollbar-3dlight-color: #FFFFFF;
+    scrollbar-shadow-color: #bbbbbb;
+    scrollbar-darkshadow-color: #FFFFFF;
+    scrollbar-track-color: #FFFFFF;
+    scrollbar-arrow-color: #bbbbbb;
+    margin-left:"23px"; margin-right:"0px"; margin-top:"17px"; margin-bottom:"0px";
+    font-family:'돋움', '굴림', 'Arial', 'AppleGothic', 'sans-serif'; 
+	font-size: 12px;
+}
+
+/*  흰색배경 inputbox  */
+ textarea, input, select {
+    padding-left:2px color:#555555; border:1px solid #9BBED2;
+    font-family: "돋움"; font-size: 9pt; color:#595959;
+ }
+
+/*------------------------------- textarea ------------------------------------------------*/
+
+textarea { color : #000000; border-color : #9cbed3; border-style : solid; }
+
+ /*  콤보박스에 테두리선 빼기  */
+input.cb {background-color:transparent;border:0x;}
+
+ select   { color:#000000; padding-left:2; border-color:#9CBED3; border-style:solid; }
+ select1  { color:#000000; padding-left:2; border-color:#9CBED3; border-style:solid; }
+.select12 { color:#000000; padding-left:2; border-color:#9CBED3; border-style:solid; }

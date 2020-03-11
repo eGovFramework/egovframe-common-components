@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BackupResultDao">
+    
+    <resultMap id="backupResultResult" type="egovframework.com.sym.sym.bak.service.BackupResult">
+        <result property="backupResultId" column="BACKUP_RESULT_ID"/>
+        <result property="backupOpertId" column="BACKUP_OPERT_ID"/>
+        <result property="backupOpertNm" column="BACKUP_OPERT_NM"/>
+        <result property="backupFile" column="BACKUP_FILE"/>
+        <result property="backupOrginlDrctry" column="BACKUP_ORGINL_DRCTRY"/>
+        <result property="backupStreDrctry" column="BACKUP_STRE_DRCTRY"/>
+        <result property="sttus" column="STTUS"/>
+        <result property="sttusNm" column="STTUS_NM"/>
+        <result property="errorInfo" column="ERROR_INFO"/>
+        <result property="executBeginTime" column="EXECUT_BEGIN_TM"/>
+        <result property="executEndTime" column="EXECUT_END_TM"/>
+        <result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+        <result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+        <result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+        <result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+    </resultMap>
+
+    <select id="selectBackupResultList" parameterType="egovframework.com.sym.sym.bak.service.BackupResult" resultMap="backupResultResult">
+         
+        SELECT * FROM ( SELECT rownum rn, TB.* FROM (
+            SELECT A.BACKUP_RESULT_ID, A.BACKUP_OPERT_ID, B.BACKUP_OPERT_NM, A.BACKUP_FILE, B.BACKUP_ORGINL_DRCTRY, B.BACKUP_STRE_DRCTRY, 
+               A.STTUS, C.CODE_NM STTUS_NM, A.ERROR_INFO, A.EXECUT_BEGIN_TM, A.EXECUT_END_TM, 
+               TO_CHAR(A.LAST_UPDT_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS LAST_UPDT_PNTTM, A.LAST_UPDUSR_ID,
+               A.FRST_REGISTER_ID, TO_CHAR(A.FRST_REGIST_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS FRST_REGIST_PNTTM
+            FROM COMTNBACKUPRESULT A, COMTNBACKUPOPERT B, COMTCCMMNDETAILCODE C
+            WHERE A.BACKUP_OPERT_ID = B.BACKUP_OPERT_ID
+              AND A.STTUS = C.CODE
+              AND C.CODE_ID = 'COM076'
+        
+            <if test="sttus != null and sttus != '00'">        
+              
+                   AND A.STTUS = #{sttus}        
+              
+            </if>         
+            <if test="searchKeywordFrom != null and searchKeywordFrom != ''"> <![CDATA[ AND
+                       SUBSTR(A.EXECUT_BEGIN_TM,1, 8) >= #{searchKeywordFrom}    ]]>
+                
+            </if>
+            <if test="searchKeywordTo != null and searchKeywordTo != ''"> <![CDATA[ AND
+                       SUBSTR(A.EXECUT_BEGIN_TM,1, 8) <= #{searchKeywordTo} ]]>
+                
+            </if>
+            <if test="searchCondition == 0">AND
+                   B.BACKUP_OPERT_NM LIKE '%'|| #{searchKeyword} ||'%'        
+            </if>
+            <if test="searchCondition == 1">AND
+                   A.BACKUP_OPERT_ID LIKE '%'|| #{searchKeyword} ||'%'        
+            </if>
+        
+            ORDER BY A.BACKUP_RESULT_ID DESC
+            ) TB ) WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+                     
+    </select>
+
+    <select id="selectBackupResultListCnt" parameterType="egovframework.com.sym.sym.bak.service.BackupResult" resultType="java.lang.Integer">
+        
+            SELECT COUNT(*) totcnt
+            FROM COMTNBACKUPRESULT A, COMTNBACKUPOPERT B, COMTCCMMNDETAILCODE C
+            WHERE A.BACKUP_OPERT_ID = B.BACKUP_OPERT_ID
+              AND A.STTUS = C.CODE
+              AND C.CODE_ID = 'COM076'
+        
+            <if test="sttus != null and sttus != '00'">        
+              
+                   AND A.STTUS = #{sttus}        
+              
+            </if>         
+            <if test="searchKeywordFrom != null and searchKeywordFrom != ''"> <![CDATA[ AND
+                       SUBSTR(A.EXECUT_BEGIN_TM,1, 8) >= #{searchKeywordFrom}      ]]>
+                
+            </if>
+            <if test="searchKeywordTo != null and searchKeywordTo != ''"> <![CDATA[ AND
+                       SUBSTR(A.EXECUT_BEGIN_TM,1, 8) <= #{searchKeywordTo} ]]>
+                
+            </if>
+            <if test="searchCondition == 0">AND
+                   B.BACKUP_OPERT_NM LIKE  '%'|| #{searchKeyword} ||'%'        
+            </if>
+            <if test="searchCondition == 1">AND
+                   A.BACKUP_OPERT_ID LIKE  '%'|| #{searchKeyword} ||'%'        
+            </if>
+    </select>
+    
+    <select id="selectBackupResult" parameterType="egovframework.com.sym.sym.bak.service.BackupResult" resultMap="backupResultResult">
+        
+            SELECT A.BACKUP_RESULT_ID, A.BACKUP_OPERT_ID, B.BACKUP_OPERT_NM, A.BACKUP_FILE, B.BACKUP_ORGINL_DRCTRY, B.BACKUP_STRE_DRCTRY, 
+               A.STTUS, C.CODE_NM STTUS_NM, A.ERROR_INFO, A.EXECUT_BEGIN_TM, A.EXECUT_END_TM, 
+               TO_CHAR(A.LAST_UPDT_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS LAST_UPDT_PNTTM, A.LAST_UPDUSR_ID,
+               A.FRST_REGISTER_ID, TO_CHAR(A.FRST_REGIST_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS FRST_REGIST_PNTTM
+            FROM COMTNBACKUPRESULT A, COMTNBACKUPOPERT B, COMTCCMMNDETAILCODE C
+            WHERE A.BACKUP_OPERT_ID = B.BACKUP_OPERT_ID
+              AND A.STTUS = C.CODE
+              AND C.CODE_ID = 'COM076'
+              AND A.BACKUP_RESULT_ID = #{backupResultId}
+        
+    </select>
+
+    <insert id="insertBackupResult" parameterType="egovframework.com.sym.sym.bak.service.BackupResult">
+        
+            INSERT INTO COMTNBACKUPRESULT (
+                BACKUP_RESULT_ID, BACKUP_OPERT_ID, BACKUP_FILE, STTUS, ERROR_INFO, EXECUT_BEGIN_TM, EXECUT_END_TM,
+                LAST_UPDUSR_ID, LAST_UPDT_PNTTM,FRST_REGISTER_ID, FRST_REGIST_PNTTM
+                ) 
+            VALUES (
+                    #{backupResultId},  
+                    #{backupOpertId},  
+                    #{backupFile},
+                    #{sttus},
+                    #{errorInfo},
+                    #{executBeginTime},
+                    #{executEndTime},
+                    #{lastUpdusrId},
+                    SYSDATE,
+                    #{frstRegisterId},
+                    SYSDATE
+                 ) 
+        
+    </insert>
+
+     <update id="updateBackupResult" parameterType="egovframework.com.sym.sym.bak.service.BackupResult">
+        
+            UPDATE COMTNBACKUPRESULT SET 
+                BACKUP_FILE = #{backupFile},
+                ERROR_INFO = #{errorInfo},
+                STTUS = #{sttus},
+                EXECUT_END_TM = #{executEndTime},
+                LAST_UPDUSR_ID = #{lastUpdusrId},
+                LAST_UPDT_PNTTM = SYSDATE
+            WHERE BACKUP_RESULT_ID = #{backupResultId} 
+        
+    </update>
+
+    <delete id="deleteBackupResult" parameterType="egovframework.com.sym.sym.bak.service.BackupResult">
+        
+            DELETE 
+            FROM COMTNBACKUPRESULT 
+            WHERE  BACKUP_RESULT_ID = #{backupResultId} 
+        
+    </delete>
+
+</mapper>

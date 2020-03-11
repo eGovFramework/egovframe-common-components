@@ -1,0 +1,171 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- 
+	수정일                 수정자                          수정내용
+  =========     =======    =================================================
+  2011.9.08   	서준식     	 	게시물 목록 조회시 등록자가 COMTNEMPLYRINFO 테이블과 Join 되어 업무 사용자만 표시되는 문제
+  							가 발생하여  COMVNUSERMASTER 뷰와 Join 변경으로 해결
+  2011.10.05    서준식               보안 취약점 점검사항 반영 $->#변경	
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="OnlineManual">
+
+	<!-- 온라인메뉴얼::ResultMap 선언 -->
+	<resultMap id="OnlineManualVO" type="egovframework.com.uss.olh.omm.service.OnlineManualVO">
+		<result property="onlineMnlId" column="ONLINE_MNL_ID"/>
+		<result property="onlineMnlNm" column="ONLINE_MNL_Nm"/>
+		<result property="onlineMnlSeCode" column="ONLINE_MNL_SE_CODE"/>
+		<result property="onlineMnlSeCodeNm" column="ONLINE_MNL_SE_CODE_NM"/>
+		<result property="onlineMnlDf" column="ONLINE_MNL_DFN"/>
+		<result property="onlineMnlDc" column="ONLINE_MNL_DC"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+	</resultMap>
+
+	<!-- 온라인메뉴얼::목록조회 게시물정보 -->
+	<select id="selectOnlineManualList" parameterType="egovframework.com.uss.olh.omm.service.OnlineManualVO" resultMap="OnlineManualVO">
+	
+	SELECT *
+	FROM (
+	SELECT T0.*, ROWNUM RNUM
+		FROM (
+	
+	 
+		SELECT
+		A.ONLINE_MNL_ID,
+		A.ONLINE_MNL_NM,
+		A.ONLINE_MNL_SE_CODE,
+		C.CODE_NM AS ONLINE_MNL_SE_CODE_NM,
+		A.ONLINE_MNL_DFN,
+		A.ONLINE_MNL_DC,
+		A.FRST_REGISTER_ID,
+		TO_CHAR(A.FRST_REGIST_PNTTM,'YYYY-MM-DD') FRST_REGISTER_PNTTM,
+		(SELECT USER_NM FROM COMVNUSERMASTER WHERE ESNTL_ID = A.FRST_REGISTER_ID) FRST_REGISTER_NM
+		FROM COMTNONLINEMANUAL A
+		LEFT OUTER JOIN 
+				(SELECT CODE_ID, CODE, CODE_NM FROM 
+					COMTCCMMNDETAILCODE WHERE CODE_ID = 'COM041' AND USE_AT='Y') c
+				ON a.ONLINE_MNL_SE_CODE = c.CODE
+		WHERE 1=1
+	 
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 	
+
+			<if test="searchCondition == 0">
+ 				AND ONLINE_MNL_NM LIKE '%' || #{searchKeyword} || '%'
+ 			</if>
+ 			<if test="searchCondition == 1">
+ 				AND ONLINE_MNL_DFN LIKE '%' || #{searchKeyword} || '%'
+ 			</if>
+ 			<if test="searchCondition == 2">
+ 				AND ONLINE_MNL_DC LIKE '%' || #{searchKeyword} || '%'
+ 			</if>
+
+	 	
+	 </if>
+	 
+		ORDER BY A.FRST_REGIST_PNTTM DESC
+	
+	
+		) T0
+	) Z
+	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	
+	</select>
+	<!-- 온라인메뉴얼::목록조회_게시물 총갯수  -->
+	<select id="selectOnlineManualListCnt" parameterType="egovframework.com.uss.olh.omm.service.OnlineManualVO" resultType="int">
+		SELECT
+		COUNT(*) totcnt
+		FROM COMTNONLINEMANUAL
+		WHERE 1=1
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 	
+	 		<if test="searchCondition == 0">
+ 				AND ONLINE_MNL_NM LIKE '%' || #{searchKeyword} || '%'
+ 			</if>
+ 			<if test="searchCondition == 1">
+ 				AND ONLINE_MNL_DFN LIKE '%' || #{searchKeyword} || '%'
+ 			</if>
+ 			<if test="searchCondition == 2">
+ 				AND ONLINE_MNL_DC LIKE '%' || #{searchKeyword} || '%'
+ 			</if>
+	 	
+	 </if>
+	</select>
+
+    <!-- 온라인메뉴얼::삭제  -->
+	<delete id="deleteOnlineManual">
+		
+			DELETE FROM COMTNONLINEMANUAL
+			WHERE ONLINE_MNL_ID=#{onlineMnlId}
+		
+	</delete>
+
+	<!-- 온라인메뉴얼::수정  -->
+	<update id="updateOnlineManual">
+ 
+	UPDATE COMTNONLINEMANUAL
+	SET
+		ONLINE_MNL_NM = #{onlineMnlNm},
+		ONLINE_MNL_SE_CODE = #{onlineMnlSeCode},
+		ONLINE_MNL_DFN = #{onlineMnlDf},
+		ONLINE_MNL_DC = #{onlineMnlDc},
+		LAST_UPDT_PNTTM = SYSDATETIME,
+		LAST_UPDUSR_ID = #{lastUpdusrId}
+	WHERE ONLINE_MNL_ID=#{onlineMnlId}
+
+ 
+	</update>
+
+	<!-- 온라인메뉴얼::상세보기 -->
+	<select id="selectOnlineManualDetail" resultMap="OnlineManualVO">
+		SELECT
+			A.ONLINE_MNL_ID,
+			A.ONLINE_MNL_NM,
+			A.ONLINE_MNL_SE_CODE,
+			C.CODE_NM AS ONLINE_MNL_SE_CODE_NM,
+			A.ONLINE_MNL_DFN,
+			A.ONLINE_MNL_DC,
+			A.FRST_REGIST_PNTTM,
+			A.FRST_REGISTER_ID,
+			A.LAST_UPDT_PNTTM,
+			A.LAST_UPDUSR_ID
+		FROM COMTNONLINEMANUAL A
+		LEFT OUTER JOIN 
+				(SELECT CODE_ID, CODE, CODE_NM FROM 
+					COMTCCMMNDETAILCODE WHERE CODE_ID = 'COM041' AND USE_AT='Y') c
+				ON a.ONLINE_MNL_SE_CODE = c.CODE
+		WHERE 1=1
+		AND A.ONLINE_MNL_ID=#{onlineMnlId}
+	</select>
+
+	<!-- 온라인메뉴얼::입력  -->
+	<insert id="insertOnlineManual">
+	 
+
+	INSERT INTO COMTNONLINEMANUAL (
+		ONLINE_MNL_ID,
+		ONLINE_MNL_NM,
+		ONLINE_MNL_SE_CODE,
+		ONLINE_MNL_DFN,
+		ONLINE_MNL_DC,
+		FRST_REGIST_PNTTM,
+		FRST_REGISTER_ID,
+		LAST_UPDT_PNTTM,
+		LAST_UPDUSR_ID
+	)VALUES(
+		#{onlineMnlId},
+		#{onlineMnlNm},
+		#{onlineMnlSeCode},
+		#{onlineMnlDf},
+		#{onlineMnlDc},
+		SYSDATETIME,
+		#{frstRegisterId},
+		SYSDATETIME,
+		#{lastUpdusrId}
+	)
+	 
+	</insert>
+
+</mapper>

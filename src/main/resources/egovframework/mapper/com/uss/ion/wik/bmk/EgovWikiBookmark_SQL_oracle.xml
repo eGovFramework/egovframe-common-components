@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- 
+	수정일                 수정자                          수정내용
+  =========     =======    =================================================
+  2011.8.12   	안민정     	 	테이블 표준화에 따른 수정사항 반영
+							USID를					USER_ID 로 변경
+							LAST_UPDUSR_PNTTM를		LAST_UPDT_PNTTM로 변경
+							FRST_REGISTER_PNTTM를 	FRST_REGIST_PNTTM로 변경
+  2011.10.06	정진오 		보안 취약점 점검사항 반영 $->#변경
+--><!--Converted at: Wed May 11 15:51:26 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="WikiBookmark">
+
+	<!-- 위키북마크::목록조회 게시물정보 -->
+	<select id="selectWikiBookmarkList" parameterType="comDefaultVO" resultType="egovMap">
+		
+	SELECT *
+	FROM (
+	SELECT T0.*, ROWNUM RNUM
+		FROM (
+	
+	 
+		SELECT 
+		A.WIKI_BKMK_ID,
+		A.USER_ID USID,
+		(SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = A.USER_ID) USNM,
+		A.WIKI_BKMK_NM,
+		A.FRST_REGISTER_ID,
+		TO_CHAR(A.FRST_REGIST_PNTTM,'YYYY-MM-DD') FRST_REGIST_PNTTM,
+		(SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = A.FRST_REGISTER_ID) FRST_REGISTER_NM 
+		FROM COMTNWIKIBKMK A
+		WHERE 1=1
+		AND A.FRST_REGISTER_ID=#{frstRegisterId}
+	 
+	 <if test="searchCondition == 'A.USER_ID'">
+	 	
+	 		
+	 AND A.FRST_REGISTER_ID = (SELECT ESNTL_ID FROM COMTNEMPLYRINFO WHERE EMPLYR_ID LIKE '%' || #{searchKeyword} || '%')
+	 		
+	 	
+	 </if>
+	 
+	 <if test="searchCondition == 'A.WIKI_BKMK_NM'">
+	 	
+	 		
+	 			AND A.WIKI_BKMK_NM LIKE '%' || #{searchKeyword} || '%'
+	 		
+	 	
+	 </if>
+	 
+	 
+		ORDER BY A.FRST_REGIST_PNTTM DESC
+	
+		
+		) T0
+	) 
+	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+		
+	</select>
+	
+	<!-- 위키북마크::목록조회_게시물 총갯수  -->
+	<select id="selectWikiBookmarkListCnt" parameterType="comDefaultVO" resultType="int">
+		SELECT 
+		COUNT(*) totcnt
+		FROM COMTNWIKIBKMK A
+		WHERE 1=1
+		AND A.FRST_REGISTER_ID=#{frstRegisterId}
+	 <if test="searchCondition == 'A.WIKI_BKMK_NM'">
+	 	
+	 		
+	 			AND A.WIKI_BKMK_NM LIKE '%' || #{searchKeyword} || '%'
+	 		
+	 	
+	 </if>
+	</select>
+	
+	<!-- 위키북마크::북마크 중복 체크  -->
+	<select id="selectWikiBookmarkDuplicationCnt" resultType="int">
+		SELECT 
+		COUNT(*) CTN
+		FROM COMTNWIKIBKMK A
+		WHERE 1=1
+		AND A.USER_ID=(SELECT ESNTL_ID FROM COMTNEMPLYRINFO WHERE EMPLYR_ID = #{usid})
+		AND A.WIKI_BKMK_NM=#{wikiBkmkNm}
+	
+	</select>
+	
+    <!-- 위키북마크::삭제  -->
+	<delete id="deleteWikiBookmark">
+		
+			DELETE FROM COMTNWIKIBKMK 
+			WHERE WIKI_BKMK_ID=#{wikiBkmkId} 
+		
+	</delete>
+
+	<!-- 위키북마크::입력  -->
+	<insert id="insertWikiBookmark">	     
+	 
+	INSERT INTO COMTNWIKIBKMK ( 
+		WIKI_BKMK_ID,
+		USER_ID,
+		WIKI_BKMK_NM,
+		FRST_REGIST_PNTTM,
+		FRST_REGISTER_ID,
+		LAST_UPDT_PNTTM,
+		LAST_UPDUSR_ID
+	)VALUES( 
+		#{wikiBkmkId},
+		#{usid},
+		#{wikiBkmkNm},
+		sysdate,
+		#{frstRegisterId},
+		sysdate,
+		#{lastUpdusrId} 
+	)
+	 
+	</insert>
+	<!-- 위키북마크::아이디조회  -->
+	<select id="selectWikiBookmarkEmpUniqId" resultType="String">
+		SELECT ESNTL_ID FROM COMTNEMPLYRINFO WHERE EMPLYR_ID = #{usid}
+	</select>
+
+
+</mapper>

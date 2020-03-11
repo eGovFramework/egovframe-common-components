@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="menuManageDAO">
+	
+	<select id="selectMenuCreatSiteMapList_D" parameterType="egovframework.com.sym.mnu.mcm.service.MenuSiteMapVO" resultType="egovMap">
+		
+			SELECT
+			       B.MENU_NO AS "menuNo"
+				 , B.MENU_ORDR AS "menuOrdr"
+				 , B.MENU_NM AS "menuNm"
+				 , B.UPPER_MENU_NO AS "upperMenuId"
+				 , (SELECT C.URL FROM COMTNPROGRMLIST C WHERE B.PROGRM_FILE_NM = C.PROGRM_FILE_NM) AS "chkURL"	
+			FROM   COMTNMENUCREATDTLS A, COMTNMENUINFO B
+			WHERE  A.MENU_NO  = B.MENU_NO 
+			AND    A.AUTHOR_CODE = #{authorCode}
+			ORDER BY B.MENU_ORDR
+		 
+	</select> 
+
+    <select id="selectSiteMapByUser" parameterType="egovframework.com.sym.mnu.mcm.service.MenuSiteMapVO" resultType="egovMap">
+        
+            SELECT
+                  A.MENU_NO AS "menuNo"
+                , A.MENU_ORDR AS "menuOrdr"
+                , A.MENU_NM AS "menuNm"
+                , A.UPPER_MENU_NO AS "upperMenuId"
+                , (SELECT Z.URL FROM COMTNPROGRMLIST Z WHERE A.PROGRM_FILE_NM = Z.PROGRM_FILE_NM) AS "chkURL" 
+            FROM COMTNMENUINFO A, COMTNMENUCREATDTLS B, COMTNEMPLYRSCRTYESTBS C, COMVNUSERMASTER D
+            WHERE A.MENU_NO > 0
+              AND A.MENU_NO             = B.MENU_NO 
+              AND B.AUTHOR_CODE         = C.AUTHOR_CODE
+              AND C.SCRTY_DTRMN_TRGET_ID = D.ESNTL_ID
+              AND D.USER_ID             = #{creatPersonId}
+            ORDER BY A.MENU_ORDR
+         
+    </select> 
+
+	<select id="selectMenuCreatSiteMapURL_D" parameterType="egovframework.com.sym.mnu.mcm.service.MenuSiteMapVO" resultType="egovMap">
+		
+			SELECT 
+					B.PROGRM_FILE_NM   AS "progrmFileNm",
+					B.PROGRM_STRE_PATH AS "progrmStrePath",
+					B.PROGRM_KOREAN_NM  AS "progrmKoreanNm",
+					B.URL              AS URL
+			FROM    COMTNMENUINFO A, COMTNPROGRMLIST B
+			WHERE   A.PROGRM_FILE_NM = B.PROGRM_FILE_NM
+			AND     A.MENU_NO = #{menuNo}
+		 
+	</select> 
+
+	<insert id="insertSiteMap_S">
+		
+			INSERT INTO COMTNSITEMAP ( MAPNG_CREAT_ID, CREATR_ID, MAPNG_FILE_NM, MAPNG_FILE_PATH )
+			VALUES (  #{mapCreatId}, #{creatPersonId}, #{bndeFileNm}, #{bndeFilePath})
+		
+	</insert>
+	
+	<select id="selectSiteMapCnt_S" parameterType="egovframework.com.sym.mnu.mcm.service.MenuSiteMapVO" resultType="int">
+		
+			SELECT COUNT(MAPNG_CREAT_ID) AS totcnt
+			  FROM COMTNSITEMAP
+			 WHERE MAPNG_CREAT_ID like CONCAT(#{mapCreatId}, '%')
+		
+	</select>
+
+</mapper>

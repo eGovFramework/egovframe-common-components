@@ -1,0 +1,413 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="FileSysMntrngDAO">
+	
+	<resultMap id="FileSysMntrngList" type="egovframework.com.utl.sys.fsm.service.FileSysMntrngVO">
+		<result property="fileSysId" column="FILE_SYS_ID"/>
+		<result property="fileSysNm" column="FILE_SYS_NM"/>
+		<result property="fileSysManageNm" column="FILE_SYS_MANAGE_NM"/>
+		<result property="fileSysMg" column="FILE_SYS_SIZE"/>
+		<result property="fileSysThrhld" column="FILE_SYS_THRHLD"/>
+		<result property="fileSysThrhldRt" column="FILE_SYS_THRHLD_RT"/>
+		<result property="fileSysUsgQty" column="FILE_SYS_USGQTY"/>
+		<result property="fileSysUsgRt" column="FILE_SYS_USG_RT"/>
+		<result property="mntrngSttus" column="MNTRNG_STTUS"/>
+		<result property="mngrNm" column="MNGR_NM"/>
+		<result property="mngrEmailAddr" column="MNGR_EMAIL_ADRES"/>
+	</resultMap>
+	
+	<resultMap id="FileSysMntrngDetail" type="egovframework.com.utl.sys.fsm.service.FileSysMntrngVO">
+		<result property="fileSysId" column="FILE_SYS_ID"/>
+		<result property="fileSysNm" column="FILE_SYS_NM"/>
+		<result property="fileSysManageNm" column="FILE_SYS_MANAGE_NM"/>
+		<result property="fileSysMg" column="FILE_SYS_SIZE"/>
+		<result property="fileSysThrhld" column="FILE_SYS_THRHLD"/>
+		<result property="fileSysThrhldRt" column="FILE_SYS_THRHLD_RT"/>
+		<result property="fileSysUsgQty" column="FILE_SYS_USGQTY"/>
+		<result property="fileSysUsgRt" column="FILE_SYS_USG_RT"/>
+		<result property="mngrNm" column="MNGR_NM"/>
+		<result property="mngrEmailAddr" column="MNGR_EMAIL_ADRES"/>
+		<result property="mntrngSttus" column="MNTRNG_STTUS"/>
+		<result property="creatDt" column="CREAT_DT"/>
+		
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>				
+	</resultMap> 
+	
+	<resultMap id="FileSysMntrngLogList" type="egovframework.com.utl.sys.fsm.service.FileSysMntrngLogVO">
+		<result property="fileSysId" column="FILE_SYS_ID"/>
+		<result property="logId" column="LOG_ID"/>
+		<result property="fileSysNm" column="FILE_SYS_NM"/>
+		<result property="fileSysManageNm" column="FILE_SYS_MANAGE_NM"/>
+		<result property="fileSysMg" column="FILE_SYS_SIZE"/>
+		<result property="fileSysThrhld" column="FILE_SYS_THRHLD"/>
+		<result property="fileSysThrhldRt" column="FILE_SYS_THRHLD_RT"/>
+		<result property="fileSysUsgQty" column="FILE_SYS_USGQTY"/>
+		<result property="fileSysUsgRt" column="FILE_SYS_USG_RT"/>
+		<result property="mntrngSttus" column="MNTRNG_STTUS"/>
+		<result property="creatDt" column="CREAT_DT"/>
+	</resultMap>
+	
+	<resultMap id="FileSysMntrngLogDetail" type="egovframework.com.utl.sys.fsm.service.FileSysMntrngLogVO">
+		<result property="fileSysId" column="FILE_SYS_ID"/>
+		<result property="logId" column="LOG_ID"/>
+		<result property="fileSysNm" column="FILE_SYS_NM"/>
+		<result property="fileSysManageNm" column="FILE_SYS_MANAGE_NM"/>
+		<result property="fileSysMg" column="FILE_SYS_SIZE"/>
+		<result property="fileSysThrhld" column="FILE_SYS_THRHLD"/>
+		<result property="fileSysThrhldRt" column="FILE_SYS_THRHLD_RT"/>
+		<result property="fileSysUsgQty" column="FILE_SYS_USGQTY"/>
+		<result property="fileSysUsgRt" column="FILE_SYS_USG_RT"/>
+		<result property="mntrngSttus" column="MNTRNG_STTUS"/>
+		<result property="logInfo" column="LOG_INFO"/>
+		<result property="creatDt" column="CREAT_DT"/>
+		
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>				
+	</resultMap> 
+	
+	<!-- 파일시스템모니터링관리::목록조회 -->
+	<select id="selectFileSysMntrngList" parameterType="egovframework.com.utl.sys.fsm.service.FileSysMntrngVO" resultMap="FileSysMntrngList">
+		
+	SELECT *
+	FROM (
+	SELECT T0.*, ROWNUM RNUM
+		FROM (
+	
+	
+	 
+		SELECT 
+			A.FILE_SYS_ID,
+			A.FILE_SYS_NM,
+			A.FILE_SYS_MANAGE_NM,
+			A.FILE_SYS_SIZE,
+			A.FILE_SYS_THRHLD,
+			ROUND((A.FILE_SYS_THRHLD / A.FILE_SYS_SIZE) * 100)	FILE_SYS_THRHLD_RT,
+			A.FILE_SYS_USGQTY,
+			ROUND((A.FILE_SYS_USGQTY / A.FILE_SYS_SIZE) * 1000) / 10	FILE_SYS_USG_RT,
+			B.CODE_NM MNTRNG_STTUS,
+			A.MNGR_NM,
+			A.MNGR_EMAIL_ADRES
+		FROM COMTNFILESYSMNTRNG A
+		LEFT OUTER JOIN COMTCCMMNDETAILCODE B
+			ON B.CODE_ID = 'COM046' 
+			AND A.MNTRNG_STTUS = B.CODE
+		WHERE 1 = 1
+	 
+	
+	 <if test="searchCnd == 0">AND
+		 	A.FILE_SYS_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchCnd == 1">AND
+		 	A.FILE_SYS_MANAGE_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchCnd == 2">AND
+		 	A.MNGR_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchCnd == 3">AND
+		 	B.CODE_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 
+		ORDER BY A.FRST_REGIST_PNTTM DESC
+	 	
+	
+		
+		) T0
+	) 
+	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+		
+
+	</select>
+	
+	<!-- 파일시스템모니터링관리::목록조회 Count -->
+	<select id="selectFileSysMntrngListCnt" parameterType="egovframework.com.utl.sys.fsm.service.FileSysMntrngVO" resultType="java.lang.Integer">
+	 
+		SELECT 
+			COUNT(A.FILE_SYS_ID) as cnt
+		FROM COMTNFILESYSMNTRNG A
+		LEFT OUTER JOIN COMTCCMMNDETAILCODE B
+			ON B.CODE_ID = 'COM046' 
+			AND A.MNTRNG_STTUS = B.CODE
+		WHERE 1 = 1
+	 
+	 
+	 <if test="searchCnd == 0">AND
+		 	A.FILE_SYS_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchCnd == 1">AND
+		 	A.FILE_SYS_MANAGE_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchCnd == 2">AND
+		 	A.MNGR_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchCnd == 3">AND
+		 	B.CODE_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+
+	</select>
+	
+	<!-- 파일시스템모니터링관리::상세보기 -->
+	<select id="selectFileSysMntrng" parameterType="egovframework.com.utl.sys.fsm.service.FileSysMntrngVO" resultMap="FileSysMntrngDetail">
+		SELECT 
+			A.FILE_SYS_ID,
+			A.FILE_SYS_NM,
+			A.FILE_SYS_MANAGE_NM,
+			A.FILE_SYS_SIZE,
+			A.FILE_SYS_THRHLD,
+			ROUND((A.FILE_SYS_THRHLD / A.FILE_SYS_SIZE) * 100) FILE_SYS_THRHLD_RT,
+			A.FILE_SYS_USGQTY,
+			ROUND((A.FILE_SYS_USGQTY / A.FILE_SYS_SIZE) * 1000) / 10 FILE_SYS_USG_RT,
+			A.MNGR_NM,
+			A.MNGR_EMAIL_ADRES,
+			B.CODE_NM MNTRNG_STTUS,
+			A.CREAT_DT,
+			A.FRST_REGIST_PNTTM,
+			A.FRST_REGISTER_ID,
+			A.LAST_UPDT_PNTTM,
+			A.LAST_UPDUSR_ID 
+		FROM COMTNFILESYSMNTRNG A
+		LEFT OUTER JOIN COMTCCMMNDETAILCODE B
+			ON B.CODE_ID = 'COM046' 
+			AND A.MNTRNG_STTUS = B.CODE
+		WHERE A.FILE_SYS_ID = #{fileSysId}
+	</select>
+	
+	<!-- 파일시스템모니터링관리::수정  -->
+	<update id="updateFileSysMntrng" parameterType="egovframework.com.utl.sys.fsm.service.FileSysMntrng"> 
+		UPDATE COMTNFILESYSMNTRNG 
+		SET  
+			FILE_SYS_NM=#{fileSysNm},
+			FILE_SYS_MANAGE_NM=#{fileSysManageNm},
+			FILE_SYS_SIZE=#{fileSysMg},
+			FILE_SYS_THRHLD=#{fileSysThrhld},
+			FILE_SYS_USGQTY=#{fileSysUsgQty},
+			MNGR_NM=#{mngrNm},
+			MNGR_EMAIL_ADRES=#{mngrEmailAddr},
+			LAST_UPDT_PNTTM = sysdate,
+			LAST_UPDUSR_ID = #{lastUpdusrId}
+		WHERE FILE_SYS_ID = #{fileSysId}
+	</update>
+	
+	<!-- 파일시스템모니터링관리::삭제  -->
+	<delete id="deleteFileSysMntrng" parameterType="egovframework.com.utl.sys.fsm.service.FileSysMntrng"> 
+		
+			DELETE FROM COMTNFILESYSMNTRNG 
+			WHERE FILE_SYS_ID = #{fileSysId}
+		
+	</delete>
+	
+	<!-- 파일시스템모니터링관리::입력  -->
+	<insert id="insertFileSysMntrng" parameterType="egovframework.com.utl.sys.fsm.service.FileSysMntrng">
+	 
+	 
+		INSERT INTO COMTNFILESYSMNTRNG ( 
+			FILE_SYS_ID,
+			FILE_SYS_NM,
+			FILE_SYS_MANAGE_NM,
+			FILE_SYS_SIZE,
+			FILE_SYS_THRHLD,
+			FILE_SYS_USGQTY,
+			MNGR_NM,
+			MNGR_EMAIL_ADRES,
+			FRST_REGIST_PNTTM,
+			FRST_REGISTER_ID,
+			LAST_UPDT_PNTTM,
+			LAST_UPDUSR_ID
+		)VALUES( 
+			#{fileSysId},
+			#{fileSysNm},
+			#{fileSysManageNm},
+			#{fileSysMg},
+			#{fileSysThrhld},
+			#{fileSysUsgQty},  
+			#{mngrNm},  
+			#{mngrEmailAddr},  
+			sysdate,
+			#{frstRegisterId},
+			sysdate,
+			#{lastUpdusrId} 
+		)
+
+	 
+	</insert>
+	
+	<!-- 파일시스템모니터링관리::모니터링결과수정  -->
+	<update id="updateFileSysMntrngSttus" parameterType="egovframework.com.utl.sys.fsm.service.FileSysMntrng"> 
+		UPDATE COMTNFILESYSMNTRNG 
+		SET  
+			FILE_SYS_SIZE=#{fileSysMg},
+			FILE_SYS_USGQTY=#{fileSysUsgQty},
+			MNTRNG_STTUS=#{mntrngSttus},
+			CREAT_DT = TO_DATE(#{creatDt}, 'yyyymmddhh24miss'),
+			LAST_UPDT_PNTTM = sysdate,
+			LAST_UPDUSR_ID = #{lastUpdusrId}
+		WHERE FILE_SYS_ID = #{fileSysId}
+	</update>
+	
+	<!-- 파일시스템모니터링결과::목록조회 -->
+	<select id="selectFileSysMntrngLogList" parameterType="egovframework.com.utl.sys.fsm.service.FileSysMntrngLogVO" resultMap="FileSysMntrngLogList">
+		
+	SELECT *
+	FROM (
+	SELECT T0.*, ROWNUM RNUM
+		FROM (
+	
+	
+	 
+		SELECT 
+			A.FILE_SYS_ID,
+			A.LOG_ID,
+			A.FILE_SYS_NM,
+			A.FILE_SYS_MANAGE_NM,
+			A.FILE_SYS_SIZE,
+			A.FILE_SYS_THRHLD,
+			ROUND((A.FILE_SYS_THRHLD / A.FILE_SYS_SIZE) * 100)	FILE_SYS_THRHLD_RT,
+			A.FILE_SYS_USGQTY,
+			ROUND((A.FILE_SYS_USGQTY / A.FILE_SYS_SIZE) * 1000) / 10	FILE_SYS_USG_RT,
+			C.CODE_NM MNTRNG_STTUS,
+			A.CREAT_DT
+		FROM COMTNFILESYSMNTRNGLOGINFO A
+		LEFT OUTER JOIN COMTNFILESYSMNTRNG B
+			ON A.FILE_SYS_ID = B.FILE_SYS_ID
+		LEFT OUTER JOIN COMTCCMMNDETAILCODE C
+			ON C.CODE_ID = 'COM046' 
+			AND A.MNTRNG_STTUS = C.CODE
+		WHERE 1 = 1
+	 
+	
+	<if test="searchBgnDt != null and searchBgnDt != ''">
+	 	<if test="searchEndDt != null and searchEndDt != ''">AND
+	 		to_char(A.CREAT_DT, 'yyyy-MM-dd hh24:mi') BETWEEN #{searchBgnDt} AND #{searchEndDt}
+  	    </if>
+	 </if>
+	 
+	 <if test="searchCnd == 0">AND
+		 	A.FILE_SYS_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchCnd == 1">AND
+		 	A.FILE_SYS_MANAGE_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchCnd == 2">AND
+		 	B.MNGR_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchCnd == 3">AND
+		 	C.CODE_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 
+		ORDER BY A.CREAT_DT DESC
+	 	
+	 
+		
+		) T0
+	) 
+	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+		
+
+	</select>
+	
+	<!-- 파일시스템모니터링결과::목록조회 Count -->
+	<select id="selectFileSysMntrngLogListCnt" parameterType="egovframework.com.utl.sys.fsm.service.FileSysMntrngLogVO" resultType="java.lang.Integer">
+	 
+		SELECT 
+			COUNT(A.FILE_SYS_ID) as cnt
+		FROM COMTNFILESYSMNTRNGLOGINFO A
+		LEFT OUTER JOIN COMTNFILESYSMNTRNG B
+			ON A.FILE_SYS_ID = B.FILE_SYS_ID
+		LEFT OUTER JOIN COMTCCMMNDETAILCODE C
+			ON C.CODE_ID = 'COM046' 
+			AND A.MNTRNG_STTUS = C.CODE
+		WHERE 1 = 1
+	 
+	 
+	 <if test="searchBgnDt != null and searchBgnDt != ''">
+	 	<if test="searchEndDt != null and searchEndDt != ''">AND
+	 		to_char(A.CREAT_DT, 'yyyy-MM-dd hh24:mi') BETWEEN #{searchBgnDt} AND #{searchEndDt}
+	 	</if>
+	 </if>
+	 
+	 <if test="searchCnd == 0">AND
+		 	A.FILE_SYS_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchCnd == 1">AND
+		 	A.FILE_SYS_MANAGE_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchCnd == 2">AND
+		 	B.MNGR_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+	 <if test="searchCnd == 3">AND
+		 	C.CODE_NM LIKE '%'||#{searchWrd}||'%' 		
+	 </if>
+
+	</select>
+	
+	<!-- 파일시스템모니터링결과::상세보기 -->
+	<select id="selectFileSysMntrngLog" parameterType="egovframework.com.utl.sys.fsm.service.FileSysMntrngLogVO" resultMap="FileSysMntrngLogDetail">
+		SELECT 
+			A.FILE_SYS_ID,
+			A.LOG_ID,
+			A.FILE_SYS_NM,
+			A.FILE_SYS_MANAGE_NM,
+			A.FILE_SYS_SIZE,
+			A.FILE_SYS_THRHLD,
+			ROUND((A.FILE_SYS_THRHLD / A.FILE_SYS_SIZE) * 100) FILE_SYS_THRHLD_RT,
+			A.FILE_SYS_USGQTY,
+			ROUND((A.FILE_SYS_USGQTY / A.FILE_SYS_SIZE) * 1000) / 10 FILE_SYS_USG_RT,
+			B.CODE_NM MNTRNG_STTUS,
+			A.LOG_INFO,
+			A.CREAT_DT,
+			A.FRST_REGIST_PNTTM,
+			A.FRST_REGISTER_ID,
+			A.LAST_UPDT_PNTTM,
+			A.LAST_UPDUSR_ID 
+		FROM COMTNFILESYSMNTRNGLOGINFO A
+		LEFT OUTER JOIN COMTCCMMNDETAILCODE B
+			ON B.CODE_ID = 'COM046' 
+			AND A.MNTRNG_STTUS = B.CODE
+		WHERE A.FILE_SYS_ID = #{fileSysId}
+			AND A.LOG_ID = #{logId}
+	</select>
+	
+	<!-- 파일시스템모니터링결과::입력  -->
+	<insert id="insertFileSysMntrngLog" parameterType="egovframework.com.utl.sys.fsm.service.FileSysMntrngLog">
+	 
+	 
+		INSERT INTO COMTNFILESYSMNTRNGLOGINFO ( 
+			FILE_SYS_ID,
+			LOG_ID,
+			FILE_SYS_NM,
+			FILE_SYS_MANAGE_NM,
+			FILE_SYS_SIZE,
+			FILE_SYS_THRHLD,
+			FILE_SYS_USGQTY,
+			MNTRNG_STTUS,
+			LOG_INFO,
+			CREAT_DT,
+			FRST_REGIST_PNTTM,
+			FRST_REGISTER_ID,
+			LAST_UPDT_PNTTM,
+			LAST_UPDUSR_ID
+		)VALUES( 
+			#{fileSysId},
+			#{logId},
+			#{fileSysNm},
+			#{fileSysManageNm},
+			#{fileSysMg},
+			#{fileSysThrhld},
+			#{fileSysUsgQty},  
+			#{mntrngSttus},  
+			#{logInfo},  
+			TO_DATE(#{creatDt}, 'yyyymmddhh24miss'),  
+			sysdate,
+			#{frstRegisterId},
+			sysdate,
+			#{lastUpdusrId} 
+		)
+
+	 
+	</insert>
+</mapper>

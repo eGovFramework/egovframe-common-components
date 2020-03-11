@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="OnlinePollResult">
+	
+	<!-- 온라인POLL관리::목록조회 게시물정보 -->
+	<select id="selectOnlinePollManageList" resultType="egovMap">
+	 
+		SELECT
+		A.POLL_ID,
+		A.POLL_NM, 
+		A.POLL_BGNDE,
+		A.POLL_ENDDE,
+		A.POLL_KND,
+		A.POLL_DSUSE_ENNC,
+		A.POLL_ATMC_DSUSE_ENNC,
+		A.FRST_REGISTER_ID,
+		TO_CHAR(A.FRST_REGIST_PNTTM,'YYYY-MM-DD') 									FRST_REGISTER_PNTTM,
+		(SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = A.FRST_REGISTER_ID) 	FRST_REGISTER_NM 
+		FROM COMTNONLINEPOLLMANAGE A
+		WHERE 1=1
+		AND POLL_ID = #{pollId} 
+	 
+	 
+		ORDER BY A.FRST_REGIST_PNTTM DESC
+	
+	</select>
+
+	<!-- 온라인POLL결과::목록조회 게시물정보 -->
+	<select id="selectOnlinePollResult" resultType="egovMap">
+	 
+		SELECT 
+		A.POLL_ID,
+		A.POLL_IEM_ID,
+		(SELECT POLL_IEM_NM FROM COMTNONLINEPOLLIEM WHERE POLL_ID=A.POLL_ID AND POLL_IEM_ID=A.POLL_IEM_ID) POLL_IEM_NM,
+		A.POLL_RESULT_ID,
+		A.FRST_REGISTER_ID,
+		(SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = A.FRST_REGISTER_ID) FRST_REGISTER_NM,
+		A.FRST_REGIST_PNTTM	FRST_REGISTER_PNTTM,
+		A.LAST_UPDUSR_ID,
+		A.LAST_UPDT_PNTTM
+		FROM COMTNONLINEPOLLRESULT A
+		WHERE 1=1
+		AND A.POLL_ID = #{pollId} 
+		ORDER BY POLL_IEM_NM
+
+
+	 
+	</select>
+	
+    <!-- 온라인POLL결과::삭제  -->
+	<delete id="deleteOnlinePollResult">
+		
+			DELETE FROM COMTNONLINEPOLLRESULT 
+			WHERE POLL_RESULT_ID=#{pollResultId}
+		
+	</delete>
+
+
+</mapper>

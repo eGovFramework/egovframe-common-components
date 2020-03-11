@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="RecomendSite">
+
+	<resultMap id="RecomendSiteManage" type="egovframework.com.uss.ion.rec.service.RecomendSiteVO">
+		<result property="recomendSiteId" column="RECOMEND_SITE_ID"/>
+		<result property="recomendSiteUrl" column="RECOMEND_SITE_URL"/>
+		<result property="recomendSiteNm" column="RECOMEND_SITE_NM"/>
+		<result property="recomendSiteDc" column="RECOMEND_SITE_DC"/>
+		<result property="recomendResnCn" column="RECOMEND_RESN_CN"/>
+		<result property="recomendConfmAt" column="RECOMEND_CONFM_AT"/>
+		<result property="confmDe" column="CONFM_DE"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+	</resultMap>
+
+	<select id="selectRecomendSiteDetail" resultMap="RecomendSiteManage">
+		SELECT RECOMEND_SITE_ID,
+			RECOMEND_SITE_URL,
+			RECOMEND_SITE_NM,
+			RECOMEND_SITE_DC,
+			RECOMEND_RESN_CN,
+			RECOMEND_CONFM_AT,
+			CONFM_DE,
+			TO_CHAR(FRST_REGIST_PNTTM, 'YYYY-MM-DD') FRST_REGIST_PNTTM ,
+			FRST_REGISTER_ID,
+			TO_CHAR(LAST_UPDT_PNTTM, 'YYYY-MM-DD') LAST_UPDT_PNTTM ,
+			LAST_UPDUSR_ID
+		FROM COMTNRECOMENDSITEINFO
+		WHERE 1=1
+		AND RECOMEND_SITE_ID = #{recomendSiteId}
+	</select>
+
+	<select id="selectRecomendSiteList" parameterType="egovframework.com.uss.ion.rec.service.RecomendSiteVO" resultMap="RecomendSiteManage">
+		
+			SELECT  RECOMEND_SITE_ID, RECOMEND_SITE_URL, RECOMEND_SITE_NM, RECOMEND_SITE_DC,
+			 		RECOMEND_RESN_CN, RECOMEND_CONFM_AT, CONFM_DE,
+					FRST_REGIST_PNTTM	  , FRST_REGISTER_ID,
+					TO_CHAR(LAST_UPDT_PNTTM, 'YYYY-MM-DD') LAST_UPDT_PNTTM	  , LAST_UPDUSR_ID
+			FROM
+				   (
+				   SELECT  ROWNUM RNUM,RECOMEND.*
+				   FROM
+				   	   	  (
+				   		   SELECT  RECOMEND_SITE_ID, RECOMEND_SITE_URL, RECOMEND_SITE_NM, RECOMEND_SITE_DC,
+			 			   		   RECOMEND_RESN_CN, RECOMEND_CONFM_AT, CONFM_DE,
+								   FRST_REGIST_PNTTM	  , FRST_REGISTER_ID,
+								   LAST_UPDT_PNTTM	  , LAST_UPDUSR_ID
+						   FROM	   COMTNRECOMENDSITEINFO
+						   WHERE   1=1
+		
+			<if test="searchCondition == 0">AND
+				RECOMEND_SITE_NM   LIKE '%' || #{searchKeyword} || '%'
+			</if>
+			<if test="searchCondition == 1">AND
+				RECOMEND_SITE_URL  LIKE '%' || #{searchKeyword} || '%'
+			</if>
+			<![CDATA[
+		
+						   ORDER BY RECOMEND_SITE_NM DESC
+						  ) RECOMEND
+				   )
+			WHERE ROWNUM <= #{recordCountPerPage} and RNUM > #{firstIndex}
+			]]>
+	</select>
+
+	<select id="selectRecomendSiteListCnt" parameterType="egovframework.com.uss.ion.rec.service.RecomendSiteVO" resultType="int">
+		
+			SELECT 	COUNT(*) totcnt
+			FROM 	COMTNRECOMENDSITEINFO
+			WHERE 	1=1
+		
+			<if test="searchCondition == 0">AND
+				RECOMEND_SITE_NM   LIKE '%' || #{searchKeyword} || '%'
+			</if>
+			<if test="searchCondition == 1">AND
+				RECOMEND_SITE_URL  LIKE '%' || #{searchKeyword} || '%'
+			</if>
+	</select>
+
+	<insert id="insertRecomendSite">
+		
+			INSERT INTO COMTNRECOMENDSITEINFO
+				   (RECOMEND_SITE_ID
+				  ,	RECOMEND_SITE_URL
+				  ,	RECOMEND_SITE_NM
+				  ,	RECOMEND_SITE_DC
+			  	  ,	RECOMEND_RESN_CN
+				  ,	RECOMEND_CONFM_AT
+				  ,	CONFM_DE
+				  , FRST_REGIST_PNTTM
+				  , FRST_REGISTER_ID
+				  , LAST_UPDT_PNTTM
+				  , LAST_UPDUSR_ID)
+			VALUES ( #{recomendSiteId}
+				  , #{recomendSiteUrl}
+				  , #{recomendSiteNm}
+				  , #{recomendSiteDc}
+				  , #{recomendResnCn}
+				  , #{recomendConfmAt}
+				  , #{confmDe}
+				  , sysdate
+				  , #{frstRegisterId}
+				  , sysdate
+				  , #{lastUpdusrId} )
+		
+	</insert>
+
+	<update id="updateRecomendSite">
+		
+			UPDATE	COMTNRECOMENDSITEINFO	SET
+				    RECOMEND_SITE_ID=#{recomendSiteId}
+				  ,	RECOMEND_SITE_URL=#{recomendSiteUrl}
+				  ,	RECOMEND_SITE_NM=#{recomendSiteNm}
+				  ,	RECOMEND_SITE_DC=#{recomendSiteDc}
+			  	  ,	RECOMEND_RESN_CN=#{recomendResnCn}
+				  ,	RECOMEND_CONFM_AT=#{recomendConfmAt}
+				  ,	CONFM_DE=#{confmDe}
+				  , LAST_UPDT_PNTTM=sysdate
+				  , LAST_UPDUSR_ID=#{lastUpdusrId}
+ 			WHERE  RECOMEND_SITE_ID=#{recomendSiteId}
+		
+	</update>
+
+	<delete id="deleteRecomendSite">
+		
+			DELETE FROM COMTNRECOMENDSITEINFO
+			WHERE  RECOMEND_SITE_ID=#{recomendSiteId}
+		
+	</delete>
+
+</mapper>

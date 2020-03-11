@@ -1,0 +1,28 @@
+/*
+  Css Name : com.css
+  Description : 공통 CSS
+  Modification Information
+
+      수정일        수정자         수정내용
+     ----------    --------    ---------------------------
+     2017.069.15     장동한        최초 생성
+     2018
+
+    author   : 공통컴포넌트 개발팀 서민영
+    since    : 2016.06.08
+*/
+@charset "utf-8";
+
+h1 {font-size:12px;}
+caption {visibility:hidden; font-size:0; height:0; margin:0; padding:0; line-height:0;}
+body{ 
+	margin-top:0px; 
+	margin-left:10px;
+	margin-right:10px;
+	padding-top:0px;
+	padding-left:0px;
+	margin-bottom: 0;
+	font-family:'돋움', '굴림', 'Arial', 'AppleGothic', 'sans-serif'; 
+	font-size: 12px;
+}
+.popup h1 {margin-bottom:7px; padding:0 0 1px 25px; background:url(../../../images/egovframework/com/cmm/icon/tit_icon.png) no-repeat left 0px; }

@@ -1,0 +1,266 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- 
+	수정일                 수정자                          수정내용
+  =========     =======    =================================================
+  2011.8.12   	안민정     	 	테이블 표준화에 따른 수정사항 반영
+							OCCRNC_YRYC_CO	->	YRYC_OCCRRNC_CO
+							USID			->	USER_ID
+--><!--Converted at: Wed May 11 15:51:25 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="vcatnManageDAO">
+
+    <select id="selectVcatnManageList" parameterType="egovframework.com.uss.ion.vct.service.VcatnManageVO" resultType="egovframework.com.uss.ion.vct.service.VcatnManageVO">
+        
+			   SELECT    @RNUM:=@RNUM+1      AS rowCount ,
+	                     APPLCNT_ID          AS applcntId        ,
+	                     VCATN_SE            AS vcatnSe          ,
+	                     REQST_DE            AS reqstDe          ,
+	                     VCATN_RESN          AS vcatnResn        ,
+	                     SANCTNER_ID         AS sanctnerId       ,
+						(select mst.USER_NM from COMVNUSERMASTER mst where  mst.ESNTL_ID = SANCTNER_ID)  AS sanctnerNm,
+	                     CONFM_AT            AS confmAt          ,
+	                     SANCTN_DT           AS sanctnDt         ,
+	                     RETURN_RESN         AS returnResn       ,
+	                     BGNDE               AS bgnde            ,
+	                     ENDDE               AS endde            ,
+	                     NOON_SE             AS noonSe           ,
+				        (select code_nm from COMTCCMMNDETAILCODE where code_id ='COM056' and code = A.VCATN_SE) AS vcatnSeNm
+			   FROM     (select @RNUM:=0) R,  COMTNVCATNMANAGE A  
+			   WHERE     1=1   
+			   AND       BGNDE like CONCAT('%', #{searchKeyword}, '%')
+			   AND       APPLCNT_ID = #{applcntId}
+			   ORDER BY FRST_REGIST_PNTTM DESC
+			   LIMIT #{recordCountPerPage} OFFSET #{firstIndex} 
+        
+    </select> 
+
+    <select id="selectVcatnManageListTotCnt" parameterType="egovframework.com.uss.ion.vct.service.VcatnManageVO" resultType="int">
+        
+            SELECT  COUNT(*) totcnt
+            FROM    COMTNVCATNMANAGE
+            WHERE   1=1
+		    AND     BGNDE like CONCAT('%', #{searchKeyword}, '%')
+		    AND     APPLCNT_ID = #{applcntId}
+        
+    </select>
+
+    <select id="selectVcatnManage" resultType="egovframework.com.uss.ion.vct.service.VcatnManageVO">
+        
+			SELECT APPLCNT_ID          AS applcntId        ,
+                   VCATN_SE            AS vcatnSe          ,
+                   BGNDE               AS bgnde            ,
+                   ENDDE               AS endde            ,
+                   REQST_DE            AS reqstDe          ,
+                   OCCRRNC_YEAR        AS occrrncYear      ,
+                   VCATN_RESN          AS vcatnResn		   ,
+                   SANCTNER_ID         AS sanctnerId       ,
+                   CONFM_AT            AS confmAt          ,
+                   SANCTN_DT           AS sanctnDt         ,
+                   RETURN_RESN         AS returnResn       ,
+			       INFRML_SANCTN_ID    AS infrmlSanctnId   ,
+			       mst.user_nm         AS applcntNm        ,
+			       org.orgnzt_nm       AS orgnztNm         ,
+			       NOON_SE             AS noonSe           ,
+			      (select code_nm from COMTCCMMNDETAILCODE where code_id ='COM056' and code = vct.VCATN_SE) as vcatnSeNm,
+			      (select mst_a.USER_NM from COMVNUSERMASTER mst_a where  mst_a.ESNTL_ID = vct.SANCTNER_ID)  AS sanctnerNm,
+                  (select info.ORGNZT_NM from COMVNUSERMASTER mst_b, COMTNORGNZTINFO info 
+                   where info.ORGNZT_ID = mst_b.ORGNZT_ID and mst_b.esntl_id= vct.SANCTNER_ID) AS sanctnerOrgnztNm
+			FROM   COMTNVCATNMANAGE vct, COMVNUSERMASTER mst,
+				   COMTNORGNZTINFO org 
+			WHERE  vct.APPLCNT_ID = mst.esntl_id
+			AND    mst.orgnzt_id  = org.orgnzt_id
+		    AND    APPLCNT_ID     = #{applcntId}
+			AND    VCATN_SE       = #{vcatnSe}
+			AND    BGNDE		  = #{bgnde}
+			AND    ENDDE		  = #{endde}
+        
+    </select>
+
+    <insert id="insertVcatnManage" parameterType="egovframework.com.uss.ion.vct.service.VcatnManage">
+        
+
+            INSERT INTO COMTNVCATNMANAGE
+                   (APPLCNT_ID         ,
+                    VCATN_SE           ,
+                    BGNDE              ,
+                    ENDDE              ,
+                    VCATN_RESN         ,
+                    REQST_DE           ,
+                    OCCRRNC_YEAR       ,
+                    NOON_SE            ,
+                    SANCTNER_ID        ,
+                    CONFM_AT           , 
+                    INFRML_SANCTN_ID   ,    
+                    FRST_REGISTER_ID   ,
+                    FRST_REGIST_PNTTM) 
+            VALUES (#{applcntId},   
+                    #{vcatnSe},     
+                    #{bgnde},     
+                    #{endde}, 
+                    #{vcatnResn},
+                    #{reqstDe},
+                    #{occrrncYear},
+                    #{noonSe},     
+                    #{sanctnerId},  
+                    #{confmAt}, 
+                    #{infrmlSanctnId},    
+                    #{frstRegisterId},   
+                    now())
+
+        
+    </insert>     
+
+    <update id="updateVcatnManage" parameterType="egovframework.com.uss.ion.vct.service.VcatnManage">
+        
+
+            UPDATE  COMTNVCATNMANAGE
+               SET  VCATN_RESN         = #{vcatnResn},   
+					LAST_UPDUSR_ID     = #{lastUpdusrId},
+                    LAST_UPDT_PNTTM  = now()    
+             WHERE  APPLCNT_ID         = #{applcntId}
+			 AND    VCATN_SE           = #{vcatnSe}
+			 AND    BGNDE			   = #{bgnde}
+			 AND    ENDDE			   = #{endde}
+
+        
+    </update>    
+    
+    <delete id="deleteVcatnManage" parameterType="egovframework.com.uss.ion.vct.service.VcatnManage">
+        
+
+             DELETE FROM COMTNVCATNMANAGE
+             WHERE  APPLCNT_ID     = #{applcntId}
+			 AND    VCATN_SE       = #{vcatnSe}
+			 AND    BGNDE		  = #{bgnde}
+			 AND    ENDDE		  = #{endde}
+
+        
+    </delete>  
+    
+<!-- 휴가일자 중복여부 체크 -->
+    <select id="selectVcatnManageDplctAt" parameterType="egovframework.com.uss.ion.vct.service.VcatnManageVO" resultType="int">
+        
+            SELECT  COUNT(*) totcnt
+              FROM  COMTNVCATNMANAGE
+             WHERE  CONFM_AT !='R'
+               AND  APPLCNT_ID = #{applcntId}
+               AND  TO_DAYS(#{searchKeyword}) BETWEEN TO_DAYS(BGNDE)  and TO_DAYS(ENDDE)
+        
+    </select>
+
+
+<!-- 휴가 승인관련  -->
+    <select id="selectVcatnManageConfmList" parameterType="egovframework.com.uss.ion.vct.service.VcatnManageVO" resultType="egovframework.com.uss.ion.vct.service.VcatnManageVO">
+        
+			 SELECT  @RNUM:=@RNUM+1 as rowCount ,
+                     A.APPLCNT_ID          AS applcntId        ,
+                     mst.USER_NM           AS applcntNm        ,
+			        (select info.ORGNZT_NM from COMTNORGNZTINFO info where  info.ORGNZT_ID = mst.ORGNZT_ID ) AS orgnztNm,
+                     A.VCATN_SE            AS vcatnSe          ,
+			        (select code_nm from COMTCCMMNDETAILCODE where code_id ='COM056' and code = A.VCATN_SE) as vcatnSeNm,
+                     A.REQST_DE            AS reqstDe          ,
+                     A.SANCTNER_ID         AS sanctnerId       ,
+                     A.CONFM_AT            AS confmAt          ,
+                     A.SANCTN_DT           AS sanctnDt         ,
+                     A.RETURN_RESN         AS returnResn       ,
+                     A.BGNDE               AS bgnde            ,
+                     A.ENDDE               AS endde            ,
+                     A.OCCRRNC_YEAR        AS occrrncYear      ,
+                     A.VCATN_RESN          AS vcatnResn		   ,
+			         A.INFRML_SANCTN_ID    AS infrmlSanctnId   ,
+			         A.NOON_SE             AS noonSe           
+		    FROM    (select @RNUM:=0) R,  COMTNVCATNMANAGE A, COMVNUSERMASTER mst
+			WHERE    1=1 
+			  AND    mst.ESNTL_ID   = A.APPLCNT_ID 
+			  AND    A.SANCTNER_ID = #{sanctnerId}
+        
+			 <if test="searchNm != null and searchNm != ''">AND
+					 mst.USER_NM  like  CONCAT('%', #{searchNm}, '%')
+			 </if>
+			 <if test="searchConfmAt != null and searchConfmAt != ''">AND
+					 A.CONFM_AT = #{searchConfmAt}
+			 </if>
+			 <if test="searchMonth != null and searchMonth != ''">AND
+					 #{searchKeyword} BETWEEN CAST(DATE_FORMAT(A.BGNDE,'%Y%m') AS CHAR(6)) AND CAST(DATE_FORMAT(A.ENDDE ,'%Y%m' ) AS CHAR(6) )
+			 </if>
+			 <if test="searchMonth == null or searchMonth == ''">
+			    <if test="searchYear != null and searchYear != ''">AND
+			         A.BGNDE like CONCAT('%', #{searchKeyword}, '%')
+			    </if>
+			 </if>
+        
+			   ORDER BY A.FRST_REGIST_PNTTM DESC
+			   LIMIT #{recordCountPerPage} OFFSET #{firstIndex} 
+       
+    </select> 
+
+    <select id="selectVcatnManageConfmListTotCnt" parameterType="egovframework.com.uss.ion.vct.service.VcatnManageVO" resultType="int">
+        
+               SELECT  COUNT(*) totcnt
+			   FROM    COMTNVCATNMANAGE A, COMVNUSERMASTER mst
+			   WHERE   1=1 
+			   AND     mst.ESNTL_ID   = A.APPLCNT_ID 
+			   AND    A.SANCTNER_ID  = #{sanctnerId}
+        
+			 <if test="searchNm != null and searchNm != ''">AND
+					 mst.USER_NM  like  CONCAT('%', #{searchNm}, '%')
+			 </if>
+			 <if test="searchConfmAt != null and searchConfmAt != ''">AND
+					 A.CONFM_AT = #{searchConfmAt}
+			 </if>
+			 <if test="searchMonth != null and searchMonth != ''">AND
+					 #{searchKeyword} BETWEEN CAST(DATE_FORMAT(A.BGNDE,'%Y%m') AS CHAR(6)) AND CAST(DATE_FORMAT(A.ENDDE ,'%Y%m' ) AS CHAR(6) )
+			 </if>
+			 <if test="searchMonth == null or searchMonth == ''">
+			    <if test="searchYear != null and searchYear != ''">AND
+			         A.BGNDE like CONCAT('%', #{searchKeyword}, '%')
+			    </if>
+			 </if>
+    </select>
+
+    <update id="updateVcatnManageConfm" parameterType="egovframework.com.uss.ion.vct.service.VcatnManage">
+        
+            UPDATE COMTNVCATNMANAGE
+               SET  CONFM_AT           = #{confmAt},   
+                    SANCTN_DT          = #{sanctnDt},  
+                    RETURN_RESN        = #{returnResn},  
+					LAST_UPDUSR_ID     = #{lastUpdusrId},
+                    LAST_UPDT_PNTTM  = now()    
+             WHERE  APPLCNT_ID         = #{applcntId}
+			 AND    VCATN_SE           = #{vcatnSe}
+			 AND    BGNDE			   = #{bgnde}
+			 AND    ENDDE			   = #{endde}
+        
+    </update>  
+
+ 
+
+<!-- 휴가 연차테이블 관련  -->
+
+    <select id="selectIndvdlYrycManage" parameterType="egovframework.com.uss.ion.vct.service.VcatnManageVO" resultType="egovframework.com.uss.ion.vct.service.VcatnManageVO">
+        
+			SELECT   OCCRRNC_YEAR    AS occrrncYear ,
+			         USER_ID            AS usid        ,
+			         YRYC_OCCRRNC_CO  AS occrncYrycCo,
+			         USE_YRYC_CO     AS useYrycCo   ,
+			         REMNDR_YRYC_CO  AS remndrYrycCo
+			FROM     COMTNINDVDLYRYCMANAGE
+			WHERE    OCCRRNC_YEAR = #{occrrncYear}
+			AND      USER_ID         = #{usid}
+        
+    </select>
+
+
+    <update id="updateIndvdlYrycManage" parameterType="egovframework.com.uss.ion.vct.service.IndvdlYrycManage">
+        
+            UPDATE COMTNINDVDLYRYCMANAGE
+               SET  USE_YRYC_CO        = #{useYrycCo},  
+                    REMNDR_YRYC_CO     = #{remndrYrycCo},  
+					LAST_UPDUSR_ID     = #{lastUpdusrId},
+                    LAST_UPDT_PNTTM  = now()    
+			WHERE   OCCRRNC_YEAR = #{occrrncYear}
+			AND     USER_ID         = #{usid}
+        
+    </update>  
+
+</mapper>

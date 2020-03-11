@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+
+<form-validation>
+
+    <formset>
+		<form name="satisfaction">
+			<field property="wrterNm" depends="required, maxlength">
+        		<arg0 key="cop.satisfaction.wrterNm" />
+        		<arg1 key="20" resource="true"/>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>20</var-value>
+				</var>
+			</field>			
+			<field property="stsfdgCn" depends="maxlength">
+        		<arg0 key="cop.satisfaction.stsfdgCn" />
+        		<arg1 key="200" resource="true"/>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>200</var-value>
+				</var>
+			</field>
+			<field property="stsfdg" depends="required">
+        		<arg0 key="cop.satisfaction.stsfdg" />
+			</field>
+			<field property="stsfdgPassword" depends="required">
+        		<arg0 key="cop.satisfaction.stsfdgPassword" />
+			</field>
+		</form>
+    </formset>
+</form-validation>

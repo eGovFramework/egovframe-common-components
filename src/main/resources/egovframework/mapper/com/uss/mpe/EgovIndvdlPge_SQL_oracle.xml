@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="IndvdlPge">
+
+    <resultMap id="indvdlPgeMap" type="egovframework.com.uss.mpe.service.IndvdlPgeVO">
+        <result property="cntntsId" column="CNTNTS_ID"/>
+        <result property="cntntsNm" column="CNTNTS_NM"/>
+        <result property="cntcUrl" column="CNTC_URL"/>
+        <result property="cntntsUseAt" column="CNTNTS_USE_AT"/>
+        <result property="cntntsLinkUrl" column="CNTNTS_LINK_URL"/>
+        <result property="cntntsDc" column="CNTNTS_DC"/>
+    </resultMap>
+
+	<!-- 마이페이지 콘텐츠 목록 -->
+    <select id="selectIndvdlPgeList" parameterType="egovframework.com.uss.mpe.service.IndvdlPgeVO" resultMap="indvdlPgeMap">
+<![CDATA[	
+            SELECT CNTNTS_ID, CNTNTS_NM, CNTC_URL, CNTNTS_USE_AT, CNTNTS_LINK_URL, CNTNTS_DC 
+            FROM COMTNINDVDLPGECNTNTS
+            WHERE 1=1 AND ROWNUM  > #{firstIndex} AND  ROWNUM <= #{firstIndex} + #{recordCountPerPage} 
+]]>
+            <if test="searchCondition == 0">AND
+                CNTNTS_NM LIKE '%'||#{searchKeyword}||'%' 
+            </if>
+            ORDER BY CNTNTS_ID DESC
+    </select>
+
+    <select id="selectIndvdlPgeListCnt" parameterType="egovframework.com.uss.mpe.service.IndvdlPgeVO" resultType="int">
+        
+            SELECT COUNT(*) totcnt 
+            FROM COMTNINDVDLPGECNTNTS 
+            WHERE 1=1
+        
+            <if test="searchCondition == 0">AND
+                CNTNTS_NM LIKE '%'||#{searchKeyword}||'%'
+            </if> 
+    </select>
+
+	<!-- 마이페이지 콘텐츠 상세보기 -->
+	<select id="selectIndvdlPgeDetail" parameterType="egovframework.com.uss.mpe.service.IndvdlPgeVO" resultMap="indvdlPgeMap">
+        
+            SELECT CNTNTS_ID, CNTNTS_NM, CNTC_URL, CNTNTS_USE_AT, CNTNTS_LINK_URL, CNTNTS_DC 
+            FROM COMTNINDVDLPGECNTNTS
+            WHERE 1 = 1 AND CNTNTS_ID=#{cntntsId}
+        
+    </select>
+
+	<!-- 마이페이지 콘텐츠 등록 -->
+    <insert id="insertIndvdlPge">
+        
+            INSERT INTO COMTNINDVDLPGECNTNTS 
+                (
+                	CNTNTS_ID, CNTNTS_NM, CNTC_URL, CNTNTS_USE_AT, CNTNTS_LINK_URL, CNTNTS_DC
+                )
+            VALUES 
+            	(
+            		#{cntntsId},#{cntntsNm},#{cntcUrl},#{cntntsUseAt},#{cntntsLinkUrl},#{cntntsDc}
+            	)
+        
+    </insert>
+    
+    <!-- 마이페이지 콘텐츠 수정 -->
+	<update id="updateIndvdlPge" parameterType="egovframework.com.uss.mpe.service.IndvdlPgeVO">
+        
+            UPDATE COMTNINDVDLPGECNTNTS
+            SET
+	            
+	            CNTNTS_NM = #{cntntsNm}, 
+	            CNTC_URL = #{cntcUrl}, 
+	            CNTNTS_USE_AT = #{cntntsUseAt}, 
+	            CNTNTS_LINK_URL = #{cntntsLinkUrl}, 
+	            CNTNTS_DC = #{cntntsDc}
+	             
+            WHERE CNTNTS_ID=#{cntntsId}
+        
+    </update>
+    
+    
+</mapper>

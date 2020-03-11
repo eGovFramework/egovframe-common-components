@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:facebook="http://www.springframework.org/schema/social/facebook"
+    xmlns:twitter="http://www.springframework.org/schema/social/twitter"
+    xmlns:social="http://www.springframework.org/schema/social"
+    xmlns:c="http://www.springframework.org/schema/c"
+    xmlns:jdbc="http://www.springframework.org/schema/jdbc"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/social/facebook http://www.springframework.org/schema/social/spring-social-facebook-1.1.xsd
+        http://www.springframework.org/schema/social/twitter http://www.springframework.org/schema/social/spring-social-twitter-1.1.xsd
+        http://www.springframework.org/schema/social http://www.springframework.org/schema/social/spring-social-1.1.xsd
+        http://www.springframework.org/schema/jdbc http://www.springframework.org/schema/jdbc/spring-jdbc-4.0.xsd">
+        
+    <!-- facebook 연동 설정 -->
+    <bean id="connectionFactory" class="org.springframework.social.facebook.connect.FacebookConnectionFactory">
+		<constructor-arg value="${facebook.appId}" />
+		<constructor-arg value="${facebook.appSecret}" />
+	</bean>
+
+    <bean id="textEncryptor" class="org.springframework.security.crypto.encrypt.Encryptors" factory-method="noOpText" />
+
+    <jdbc:embedded-database id="social.dataSource" type="H2">
+        <jdbc:script location="classpath:/social.sql" />
+    </jdbc:embedded-database>
+
+</beans>

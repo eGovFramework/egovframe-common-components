@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+
+<form-validation>
+    <formset>
+		<form name="nameCard">
+			<field property="ncrdNm" depends="required, maxlength">
+        		<arg0 key="cop.ncrdNm" />
+        		<arg1 key="50" resource="true"/>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>50</var-value>
+				</var>
+			</field>
+
+			<field property="cmpnyNm" depends="maxlength">
+        		<arg0 key="cop.cmpnyNm" />
+        		<arg1 key="60" resource="true"/>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>60</var-value>
+				</var>
+			</field>
+			
+			<field property="clsfNm" depends="maxlength">
+        		<arg0 key="cop.clsfNm" />
+        		<arg1 key="60" resource="true"/>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>60</var-value>
+				</var>
+			</field>
+						
+			<field property="deptNm" depends="maxlength">
+        		<arg0 key="cop.deptNm" />
+        		<arg1 key="60" resource="true"/>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>60</var-value>
+				</var>
+			</field>	
+			
+			<field property="ofcpsNm" depends="maxlength">
+        		<arg0 key="cop.ofcpsNm" />
+        		<arg1 key="60" resource="true"/>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>60</var-value>
+				</var>
+			</field>
+						
+			<field property="areaNo" depends="maxlength, integer">
+        		<arg0 key="comCopNcm.ncrdRegist.validate.areaNo" resource="true"/>
+        		<arg1 key="4" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>4</var-value>
+				</var>
+			</field>
+			
+			<field property="middleTelNo" depends="maxlength, integer">
+        		<arg0 key="comCopNcm.ncrdRegist.validate.middleTelNo" resource="true"/>
+        		<arg1 key="4" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>4</var-value>
+				</var>
+			</field>			
+
+			<field property="endTelNo" depends="maxlength, integer">
+        		<arg0 key="comCopNcm.ncrdRegist.validate.endTelNo" resource="true"/>
+        		<arg1 key="4" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>4</var-value>
+				</var>
+			</field>
+			
+			<field property="middleMbtlNum" depends="maxlength, integer">
+        		<arg0 key="comCopNcm.ncrdRegist.validate.middleMbtlNum" resource="true"/>
+        		<arg1 key="4" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>4</var-value>
+				</var>
+			</field>			
+
+			<field property="endMbtlNum" depends="maxlength, integer">
+        		<arg0 key="comCopNcm.ncrdRegist.validate.endMbtlNum" resource="true"/>
+        		<arg1 key="4" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>4</var-value>
+				</var>
+			</field>
+						
+			<field property="emailAdres" depends="required,email,maxlength">
+        		<arg0 key="cop.emailAdres" />
+        		<arg1 key="50" resource="true"/>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>50</var-value>
+				</var>
+			</field>		
+			
+			<field property="othbcAt" depends="required">
+        		<arg0 key="cop.publicAt" />        		
+			</field>
+			
+			<field property="adres" depends="maxlength">
+        		<arg0 key="cop.adres" />
+        		<arg1 key="2500" resource="true"/>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>100</var-value>
+				</var>
+			</field>				
+			
+			<field property="detailAdres" depends="maxlength">
+        		<arg0 key="comCopNcm.ncrdRegist.validate.detailAdres" />
+        		<arg1 key="2500" resource="true"/>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>100</var-value>
+				</var>
+			</field>
+			
+			<field property="remark" depends="maxlength">
+        		<arg0 key="cop.remark" />
+        		<arg1 key="2500" resource="true"/>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>2500</var-value>
+				</var>
+			</field>
+				
+		</form>
+    </formset>
+
+</form-validation>

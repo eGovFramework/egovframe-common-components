@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CntcInsttDAO">
+
+    <select id="selectCntcInsttList" parameterType="egovframework.com.ssi.syi.iis.service.CntcInsttVO" resultType="egovMap">
+        
+            SELECT  *
+              FROM  (
+            SELECT ROWNUM RNUM, ALL_LIST.*
+              FROM  (
+        
+        /* 구현 Sql */
+        
+            SELECT  INSTT_ID
+                 ,  INSTT_NM
+              FROM  COMTNCNTCINSTT
+             WHERE  USE_AT = 'Y'
+        
+        <if test='searchCondition == "1"'>AND
+            INSTT_NM LIKE '%' || #{searchKeyword} || '%'
+        </if>        
+        <if test='searchCondition == "CodeList"'>AND
+            1 = 1
+        </if>
+        /* 구현 Sql */
+        <![CDATA[
+                    ) ALL_LIST
+                    ) Z
+             WHERE  RNUM  > #{firstIndex}
+               AND  RNUM <= #{firstIndex} + #{recordCountPerPage}
+        ]]>
+    </select>
+
+    <select id="selectCntcInsttListTotCnt" parameterType="egovframework.com.ssi.syi.iis.service.CntcInsttVO" resultType="int">
+        
+            SELECT  COUNT(*) totcnt
+              FROM  COMTNCNTCINSTT
+             WHERE  USE_AT = 'Y'
+        
+        <if test='searchCondition == "1"'>AND
+            INSTT_NM LIKE '%' || #{searchKeyword} || '%'
+        </if>        
+        <if test='searchCondition == "CodeList"'>AND
+            1 = 1
+        </if>
+    </select>
+
+    <select id="selectCntcSystemList" parameterType="egovframework.com.ssi.syi.iis.service.CntcSystemVO" resultType="egovMap">
+        
+            SELECT  *
+              FROM  (
+            SELECT ROWNUM RNUM, ALL_LIST.*
+              FROM  (
+        
+        /* 구현 Sql */
+        
+            SELECT  INSTT_ID
+                 ,  SYS_ID
+                 ,  SYS_NM
+                 ,  SYS_IP
+              FROM  COMTNCNTCSYSTEM
+             WHERE  USE_AT = 'Y'
+        
+        <if test='searchCondition == "1"'>AND
+            INSTT_ID = #{searchKeyword}
+        </if>        
+        <if test='searchCondition == "CodeList"'>AND
+            INSTT_ID = #{insttId}
+        </if>
+        /* 구현 Sql */
+        <![CDATA[
+                    ) ALL_LIST
+                    ) Z
+             WHERE  RNUM  > #{firstIndex}
+               AND  RNUM <= #{firstIndex} + #{recordCountPerPage}
+        ]]>
+    </select>
+
+    <select id="selectCntcSystemListTotCnt" parameterType="egovframework.com.ssi.syi.iis.service.CntcSystemVO" resultType="int">
+        
+            SELECT  COUNT(*) totcnt
+              FROM  COMTNCNTCSYSTEM
+             WHERE  USE_AT = 'Y'
+        
+        <if test='searchCondition == "1"'>AND
+            INSTT_ID = #{searchKeyword}
+        </if>        
+        <if test='searchCondition == "CodeList"'>AND
+            INSTT_ID = #{insttId}
+        </if>
+    </select>
+
+    <select id="selectCntcServiceList" parameterType="egovframework.com.ssi.syi.iis.service.CntcServiceVO" resultType="egovMap">
+        
+            SELECT  *
+              FROM  (
+            SELECT ROWNUM RNUM, ALL_LIST.*
+              FROM  (
+        
+        /* 구현 Sql */
+        
+            SELECT  INSTT_ID
+                 ,  SYS_ID
+                 ,  SVC_ID
+                 ,  SVC_NM
+                 ,  REQUST_MSSAGE_ID	REQUEST_MESSAGE_ID
+                 ,  RSPNS_MSSAGE_ID		RSPNS_MESSAGE_ID
+              FROM  COMTNCNTCSERVICE
+             WHERE  USE_AT = 'Y'
+        
+        <if test='searchCondition == "1"'>AND
+            SVC_ID = #{searchKeyword}
+        </if>        
+        <if test='searchCondition == "CodeList"'>AND
+            INSTT_ID = #{insttId}
+        </if>
+        <if test='searchCondition == "CodeList"'>AND
+            SYS_ID = #{sysId}
+        </if>
+        <if test='searchCondition == "CodeList_InsttId"'>AND
+            INSTT_ID = #{insttId}
+        </if>
+        /* 구현 Sql */
+        <![CDATA[
+                    ) ALL_LIST
+                    ) Z
+             WHERE  RNUM  > #{firstIndex}
+               AND  RNUM <= #{firstIndex} + #{recordCountPerPage}
+        ]]>
+    </select>
+
+    <select id="selectCntcServiceListTotCnt" parameterType="egovframework.com.ssi.syi.iis.service.CntcServiceVO" resultType="int">
+        
+            SELECT  COUNT(*) totcnt
+              FROM  COMTNCNTCSYSTEM
+             WHERE  USE_AT = 'Y'
+        
+        <if test='searchCondition == "1"'>AND
+            SYS_NM LIKE '%' || #{searchKeyword} || '%'
+        </if>        
+        <if test='searchCondition == "CodeList"'>AND
+            INSTT_ID = #{insttId}
+        </if>
+    </select>
+
+    <select id="selectCntcInsttDetail" parameterType="egovframework.com.ssi.syi.iis.service.CntcInstt" resultType="egovframework.com.ssi.syi.iis.service.CntcInstt">
+        
+            SELECT  INSTT_ID        insttId
+                 ,  INSTT_NM        insttNm
+              FROM  COMTNCNTCINSTT
+             WHERE  INSTT_ID = #{insttId}
+               AND  USE_AT = 'Y'
+        
+    </select>
+
+    <select id="selectCntcSystemDetail" parameterType="egovframework.com.ssi.syi.iis.service.CntcSystem" resultType="egovframework.com.ssi.syi.iis.service.CntcSystem">
+        
+            SELECT  INSTT_ID	insttId
+                 ,  SYS_ID	sysId
+                 ,  SYS_NM	sysNm
+                 ,  SYS_IP	sysIp
+              FROM  COMTNCNTCSYSTEM
+             WHERE  INSTT_ID = #{insttId}
+               AND  SYS_ID   = #{sysId}
+               AND  USE_AT = 'Y'
+        
+    </select>
+
+    <select id="selectCntcServiceDetail" parameterType="egovframework.com.ssi.syi.iis.service.CntcService" resultType="egovframework.com.ssi.syi.iis.service.CntcService">
+        
+            SELECT  INSTT_ID	insttId
+                 ,  SYS_ID	sysId
+                 ,  SVC_ID	svcId
+                 ,  SVC_NM	svcNm
+                 ,  REQUST_MSSAGE_ID 	requestMessageId
+                 ,  RSPNS_MSSAGE_ID   	rspnsMessageId
+              FROM  COMTNCNTCSERVICE
+             WHERE  INSTT_ID = #{insttId}
+               AND  SYS_ID   = #{sysId}
+               AND  SVC_ID   = #{svcId}
+               AND  USE_AT = 'Y'
+        
+    </select>
+
+    <insert id="insertCntcInstt">
+        
+            INSERT
+              INTO  COMTNCNTCINSTT
+                 (  INSTT_ID
+                 ,  INSTT_NM
+                 ,  USE_AT
+                 ,  FRST_REGISTER_ID
+                 ,  FRST_REGIST_PNTTM
+                 ,  LAST_UPDUSR_ID
+                 ,  LAST_UPDT_PNTTM
+                 )
+            VALUES
+                 (  #{insttId}
+                 ,  #{insttNm}
+                 ,  'Y'
+                 ,  #{frstRegisterId}
+                 ,  SYSDATETIME
+                 ,  #{frstRegisterId}
+                 ,  SYSDATETIME
+                 )
+        
+    </insert>
+
+    <insert id="insertCntcSystem">
+        
+            INSERT
+              INTO  COMTNCNTCSYSTEM
+                 (  INSTT_ID
+                 ,  SYS_ID
+                 ,  SYS_NM
+                 ,  SYS_IP
+                 ,  USE_AT
+                 ,  FRST_REGISTER_ID
+                 ,  FRST_REGIST_PNTTM
+                 ,  LAST_UPDUSR_ID
+                 ,  LAST_UPDT_PNTTM
+                 )
+            VALUES
+                 (  #{insttId}
+                 ,  #{sysId}
+                 ,  #{sysNm}
+                 ,  #{sysIp}
+                 ,  'Y'
+                 ,  #{frstRegisterId}
+                 ,  SYSDATETIME
+                 ,  #{frstRegisterId}
+                 ,  SYSDATETIME
+                 )
+        
+    </insert>
+
+    <insert id="insertCntcService">
+        
+            INSERT
+              INTO  COMTNCNTCSERVICE
+                 (  INSTT_ID
+                 ,  SYS_ID
+                 ,  SVC_ID
+                 ,  SVC_NM
+                 ,  REQUST_MSSAGE_ID
+                 ,  RSPNS_MSSAGE_ID
+                 ,  USE_AT
+                 ,  FRST_REGISTER_ID
+                 ,  FRST_REGIST_PNTTM
+                 ,  LAST_UPDUSR_ID
+                 ,  LAST_UPDT_PNTTM
+                 )
+            VALUES
+                 (  #{insttId}
+                 ,  #{sysId}
+                 ,  #{svcId}
+                 ,  #{svcNm}
+                 ,  #{requestMessageId}
+                 ,  #{rspnsMessageId}
+                 ,  'Y'
+                 ,  #{frstRegisterId}
+                 ,  SYSDATETIME
+                 ,  #{frstRegisterId}
+                 ,  SYSDATETIME
+                 )
+        
+    </insert>
+
+    <update id="updateCntcInstt">
+        
+            UPDATE  COMTNCNTCINSTT
+               SET  INSTT_NM           = #{insttNm}
+                 ,  LAST_UPDUSR_ID     = #{lastUpdusrId}
+                 ,  LAST_UPDT_PNTTM  = SYSDATETIME
+             WHERE  INSTT_ID           = #{insttId}
+        
+    </update>
+
+    <update id="updateCntcSystem">
+        
+            UPDATE  COMTNCNTCSYSTEM
+               SET  SYS_NM             = #{sysNm}
+                 ,  SYS_IP             = #{sysIp}
+                 ,  LAST_UPDUSR_ID     = #{lastUpdusrId}
+                 ,  LAST_UPDT_PNTTM  = SYSDATETIME
+             WHERE  INSTT_ID           = #{insttId}
+               AND  SYS_ID             = #{sysId}
+        
+    </update>
+
+    <update id="updateCntcService">
+        
+            UPDATE  COMTNCNTCSERVICE
+               SET  SVC_NM             = #{svcNm}
+                 ,  REQUST_MSSAGE_ID = #{requestMessageId}
+                 ,  RSPNS_MSSAGE_ID   = #{rspnsMessageId}
+                 ,  LAST_UPDUSR_ID     = #{lastUpdusrId}
+                 ,  LAST_UPDT_PNTTM  = SYSDATETIME
+             WHERE  INSTT_ID           = #{insttId}
+               AND  SYS_ID             = #{sysId}
+               AND  SVC_ID             = #{svcId}
+        
+    </update>
+
+    <delete id="deleteCntcInstt">
+        
+            UPDATE  COMTNCNTCINSTT
+               SET  USE_AT             = 'N'
+                 ,  LAST_UPDUSR_ID     = #{lastUpdusrId}
+                 ,  LAST_UPDT_PNTTM  = SYSDATETIME
+             WHERE  INSTT_ID           = #{insttId}
+        
+    </delete>
+
+    <delete id="deleteCntcSystem">
+        
+            UPDATE  COMTNCNTCSYSTEM
+               SET  USE_AT             = 'N'
+                 ,  LAST_UPDUSR_ID     = #{lastUpdusrId}
+                 ,  LAST_UPDT_PNTTM  = SYSDATETIME
+             WHERE  INSTT_ID           = #{insttId}
+               AND  SYS_ID             = #{sysId}
+        
+    </delete>
+
+    <delete id="deleteCntcService">
+        
+            UPDATE  COMTNCNTCSERVICE
+               SET  USE_AT             = 'N'
+                 ,  LAST_UPDUSR_ID     = #{lastUpdusrId}
+                 ,  LAST_UPDT_PNTTM  = SYSDATETIME
+             WHERE  INSTT_ID           = #{insttId}
+               AND  SYS_ID             = #{sysId}
+               AND  SVC_ID             = #{svcId}
+        
+    </delete>
+
+</mapper>

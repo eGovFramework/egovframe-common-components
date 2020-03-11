@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+
+<form-validation>
+
+    <formset>    
+        <form name="indvdlPgeVO">
+            <field property="cntntsNm" depends="required, maxlength">
+                <arg0 key="comUssMpe.indvdlPgeVO.cntntsNm" resource="true"/>
+                <arg1 key="100" resource="true"/>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>100</var-value>
+				</var>
+            </field>
+            <field property="cntcUrl" depends="required, maxlength">
+                <arg0 key="comUssMpe.indvdlPgeVO.cntcUrl" resource="true"/>
+                <arg1 key="255" resource="true"/>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>255</var-value>
+				</var>
+            </field>
+            <field property="cntntsLinkUrl" depends="required, maxlength">
+                <arg0 key="comUssMpe.indvdlPgeVO.cntntsLinkUrl" resource="true"/>
+                <arg1 key="1000" resource="true"/>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>1000</var-value>
+				</var>
+            </field>
+            <field property="cntntsUseAt" depends="required">
+                <arg0 key="comUssMpe.indvdlPgeVO.cntntsUseAt" resource="true"/>
+            </field>
+            <field property="cntntsDc" depends="required, maxlength">
+                <arg0 key="comUssMpe.indvdlPgeVO.cntntsDc" resource="true"/>
+                <arg1 key="250" resource="true"/>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>250</var-value>
+				</var>
+            </field>
+        </form>
+    </formset>
+
+</form-validation>

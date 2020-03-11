@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:ldap="http://www.springframework.org/schema/ldap"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/ldap http://www.springframework.org/schema/ldap/spring-ldap-2.0.xsd">
+
+    <ldap:context-source url="${ldap.url}" base="${ldap.rootDn}" username="${ldap.username}" password="${ldap.password}" />
+
+	<ldap:ldap-template id="ldapTemplate" />
+
+	<bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView" >
+        <property name="extractValueFromSingleKeyModel" value="true"/>
+	</bean>
+</beans>

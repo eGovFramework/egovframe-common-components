@@ -1,0 +1,231 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- 
+	수정일                    수정자                          수정내용
+  =========     =======    =================================================
+  2011.8.10   	정진오     	 	테이블 표준화에 따른 수정사항 반영
+  							ANN_ID 를 			ANNVRSRY_ID 로 변경
+							USID 를 				USER_ID 로 변경
+							ANNVRSRY_DE 를 		ANNVRSRY 로 변경
+							ANNVRSRY_SETUP 를	ANNVRSRY_NTCN_SETUP 로 변경
+							ANNVRSRY_BGNDE 를	ANNVRSRY_NTCN_BGNDE 로 변경
+							REPTIT_SE 를			REPTIT_AT 로 변경	
+							selectAnnvrsryManage SQL의 USER_ID 를 ans.USER_ID로 변경
+ --><!--Converted at: Wed May 11 15:51:02 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="annvrsryManageDAO">
+
+    <resultMap id="annvrsryManage" type="egovframework.com.uss.ion.ans.service.AnnvrsryManageVO">
+        <result property="usid" column="USER_ID"/>
+        <result property="annvrsrySe" column="ANNVRSRY_SE"/>
+        <result property="annvrsryNm" column="ANNVRSRY_NM"/>
+        <result property="annvrsryDe" column="ANNVRSRY"/>
+        <result property="cldrSe" column="CLDR_SE"/>
+        <result property="annvrsrySetup" column="ANNVRSRY_NTCN_SETUP"/>
+        <result property="annvrsryBeginDe" column="ANNVRSRY_NTCN_BGNDE"/>
+        <result property="memo" column="MEMO"/>
+        <result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+        <result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+        <result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+        <result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+    </resultMap>
+
+    <select id="selectAnnvrsryManageList" parameterType="egovframework.com.uss.ion.ans.service.AnnvrsryManageVO" resultType="egovframework.com.uss.ion.ans.service.AnnvrsryManageVO">
+        <![CDATA[
+            SELECT  * 
+              FROM  (
+	            SELECT ROWNUM rowCount, ALL_LIST.* 
+	              FROM  (
+			            SELECT  ANNVRSRY_ID               as annId             ,
+			                    USER_ID                 as usid              ,
+			                    ANNVRSRY_SE          as annvrsrySe        ,
+			                    ANNVRSRY_NM          as annvrsryNm        ,
+			                    ANNVRSRY          as annvrsryDe        ,
+			                    CLDR_SE              as cldrSe            ,
+			                    ANNVRSRY_NTCN_SETUP       as annvrsrySetup     ,
+			                    ANNVRSRY_NTCN_BGNDE    as annvrsryBeginDe   ,
+			                    MEMO                 as memo              ,
+			                    REPTIT_AT            as reptitSe          ,
+			                    FRST_REGISTER_ID     as frstRegisterId    ,
+			                    FRST_REGIST_PNTTM  as     FRST_REGISTER_PNTTM ,
+			                    LAST_UPDUSR_ID       as lastUpdusrId      ,
+			                    LAST_UPDT_PNTTM    as lastUpdusrPnttm 
+			            FROM      COMTNANNVRSRYMANAGE A 
+			            WHERE   1=1
+			            AND     REPTIT_AT IS NULL
+			            AND    ANNVRSRY like  '%'||#{searchKeyword}||'%'
+		                AND     USER_ID = #{usid}
+				        union all
+			            SELECT  ANNVRSRY_ID               as annId             ,
+			                    USER_ID                 as usid              ,
+			                    ANNVRSRY_SE          as annvrsrySe        ,
+			                    ANNVRSRY_NM          as annvrsryNm        ,
+			                    ANNVRSRY          as annvrsryDe        ,
+			                    CLDR_SE              as cldrSe            ,
+			                    ANNVRSRY_NTCN_SETUP       as annvrsrySetup     ,
+			                    ANNVRSRY_NTCN_BGNDE    as annvrsryBeginDe   ,
+			                    MEMO                 as memo              ,
+			                    REPTIT_AT            as reptitSe          ,
+			                    FRST_REGISTER_ID     as frstRegisterId    ,
+			                    FRST_REGIST_PNTTM  as     FRST_REGISTER_PNTTM ,
+			                    LAST_UPDUSR_ID       as lastUpdusrId      ,
+			                    LAST_UPDT_PNTTM    as lastUpdusrPnttm 
+			            FROM    COMTNANNVRSRYMANAGE A 
+			            WHERE   1=1
+			            AND     REPTIT_AT = '1'
+		                AND     USER_ID = #{usid}
+	                    ) ALL_LIST
+	                    ORDER BY ALL_LIST.annvrsryDe DESC
+                    )
+             WHERE  rowCount  > #{firstIndex}
+               AND  rowCount <= #{firstIndex} + #{recordCountPerPage}
+        ]]>
+    </select>
+    <select id="selectAnnvrsryManageListTotCnt" parameterType="egovframework.com.uss.ion.ans.service.AnnvrsryManageVO" resultType="int">
+            SELECT COUNT(*) totcnt
+            FROM   (SELECT *
+		            FROM   COMTNANNVRSRYMANAGE
+		            WHERE  1=1
+					AND    ANNVRSRY like  '%'||#{searchKeyword}||'%'
+					AND    USER_ID = #{usid}
+			        union all
+		            SELECT  *
+		            FROM    COMTNANNVRSRYMANAGE
+		            WHERE   1=1
+		            AND     REPTIT_AT = '1'
+		            AND     USER_ID = #{usid}) a
+    </select>
+
+    <select id="selectAnnvrsryManage" parameterType="egovframework.com.uss.ion.ans.service.AnnvrsryManageVO" resultType="egovframework.com.uss.ion.ans.service.AnnvrsryManageVO">
+        
+				SELECT ANNVRSRY_ID as annId           ,
+				       ans.USER_ID as usid              ,
+				       ANNVRSRY_SE as annvrsrySe ,
+				       ANNVRSRY_NM as annvrsryNm ,
+				       ANNVRSRY as annvrsryDe ,
+				       CLDR_SE  as cldrSe         ,
+				       ANNVRSRY_NTCN_SETUP as annvrsrySetup   ,
+				       ANNVRSRY_NTCN_BGNDE as annvrsryBeginDe,
+				       MEMO   as  memo          ,
+				       REPTIT_AT            as reptitSe          ,
+				       FRST_REGISTER_ID  as frstRegisterId,
+				       FRST_REGIST_PNTTM  as     FRST_REGISTER_PNTTM,
+				       LAST_UPDUSR_ID  as lastUpdusrId  ,
+				       LAST_UPDT_PNTTM  as lastUpdusrPnttm,
+				       mst.user_nm AS annvrsryTemp1,
+				      (select info.ORGNZT_NM from COMTNORGNZTINFO info where  info.ORGNZT_ID = mst.ORGNZT_ID )  AS annvrsryTemp2,
+				      (select code_nm from COMTCCMMNDETAILCODE where code_id ='COM069'
+				       and   code    = ans.ANNVRSRY_SE) as annvrsryTemp3
+				FROM   COMTNANNVRSRYMANAGE ans, COMVNUSERMASTER mst
+				WHERE  ans.USER_ID = mst.esntl_id
+				  AND  ans.ANNVRSRY_ID   = #{annId}
+        
+    </select>
+
+    <insert id="insertAnnvrsryManage" parameterType="egovframework.com.uss.ion.ans.service.AnnvrsryManage">
+        
+            INSERT INTO COMTNANNVRSRYMANAGE
+                   (ANNVRSRY_ID             ,
+                    USER_ID               ,
+                    ANNVRSRY_SE        ,
+                    ANNVRSRY_NM        ,   
+                    ANNVRSRY        ,
+                    CLDR_SE            ,     
+                    ANNVRSRY_NTCN_SETUP     ,
+                    ANNVRSRY_NTCN_BGNDE  ,
+                    MEMO               ,
+                    REPTIT_AT          ,   
+                    FRST_REGISTER_ID   ,
+                    FRST_REGIST_PNTTM) 
+            VALUES (#{annId},
+                    #{usid} ,            
+                    #{annvrsrySe},       
+                    #{annvrsryNm},       
+                    #{annvrsryDe},       
+                    #{cldrSe},           
+                    #{annvrsrySetup},    
+                    #{annvrsryBeginDe},  
+                    #{memo},      
+                    #{reptitSe},       
+                    #{frstRegisterId},   
+                    sysdate ) 
+        
+    </insert>     
+
+    <update id="updateAnnvrsryManage" parameterType="egovframework.com.uss.ion.ans.service.AnnvrsryManage">
+        
+            UPDATE COMTNANNVRSRYMANAGE
+               SET  ANNVRSRY_SE        = #{annvrsrySe}      ,
+               		ANNVRSRY_NM    = #{annvrsryNm}    , 
+                    ANNVRSRY        = #{annvrsryDe}      ,
+			        CLDR_SE            = #{cldrSe}          ,   
+                    ANNVRSRY_NTCN_SETUP     = #{annvrsrySetup}   ,
+                    ANNVRSRY_NTCN_BGNDE  = #{annvrsryBeginDe} ,
+                    MEMO               = #{memo}            ,
+					REPTIT_AT          = #{reptitSe}        ,  
+					LAST_UPDUSR_ID     = #{lastUpdusrId}    ,
+                    LAST_UPDT_PNTTM  = sysdate    
+             WHERE  ANNVRSRY_ID         = #{annId}
+        
+    </update>    
+    
+    <delete id="deleteAnnvrsryManage" parameterType="egovframework.com.uss.ion.ans.service.AnnvrsryManage">
+        
+            DELETE FROM COMTNANNVRSRYMANAGE
+             WHERE ANNVRSRY_ID         = #{annId}  
+        
+    </delete>  
+ 
+     <select id="selectAnnvrsryManageDplctAt" parameterType="egovframework.com.uss.ion.ans.service.AnnvrsryManage" resultType="int">
+
+            SELECT COUNT(*) totcnt
+              FROM COMTNANNVRSRYMANAGE
+             WHERE  USER_ID         = #{usid}
+			   AND  ANNVRSRY_SE  = #{annvrsrySe}
+			   AND  ANNVRSRY  = #{annvrsryDe}
+			   AND  ANNVRSRY_NM  = #{annvrsryNm}
+			   AND  CLDR_SE       = #{cldrSe} 
+    </select>
+ 
+            
+    <!--select id="selectAnnvrsryManageResult" resultMap="bannerImage">
+        <![CDATA[
+            SELECT BANNER_IMAGE_FILE,
+                   LINK_URL
+              FROM COMTNBANNER
+             WHERE REFLCT_AT = 'Y'  
+             ORDER BY SORT_ORDR 
+        ]]>
+    </select-->
+
+    <select id="selectAnnvrsryGdcc" parameterType="egovframework.com.uss.ion.ans.service.AnnvrsryManageVO" resultType="egovframework.com.uss.ion.ans.service.AnnvrsryManageVO">
+        
+				SELECT   ANNVRSRY_ID as annId           ,
+				         USER_ID as usid              ,
+				         ANNVRSRY_SE as annvrsrySe ,
+				         ANNVRSRY_NM as annvrsryNm ,
+				         ANNVRSRY as annvrsryDe ,
+				         ANNVRSRY_NTCN_BGNDE as annvrsryBeginDe,
+				         CLDR_SE           as cldrSe ,
+                         REPTIT_AT         as reptitSe       
+				FROM     COMTNANNVRSRYMANAGE ans
+				where    USER_ID = #{usid}
+        
+    </select>
+
+<!-- 엑셀일괄 등록 처리  -->
+    <select id="selectAnnvrsryManageBnde" resultType="egovframework.com.uss.ion.ans.service.AnnvrsryManageVO">
+        <![CDATA[
+				select * from(
+					select A.ESNTL_ID as usid ,
+					       A.USER_NM as annvrsryTemp1 ,
+					      (select info.ORGNZT_NM from COMTNORGNZTINFO info where  info.ORGNZT_ID = A.ORGNZT_ID )  AS annvrsryTemp2,
+					      (select code_nm from COMTCCMMNDETAILCODE where code_id ='COM069' and code = #{annvrsrySe}) as annvrsryTemp3
+					from COMVNUSERMASTER A
+					WHERE  USER_ID   = #{usid}
+					AND    USER_NM   = #{annvrsryTemp1}
+				)
+				where rownum < 2
+        ]]>
+    </select>
+
+</mapper>

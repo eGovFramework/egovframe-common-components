@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+	
+	<!-- 사용자 로그 생성  -->
+	<bean id="userLogging" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="egovUserLogScheduling" />
+		<property name="targetMethod" value="userLogInsert" />
+		<property name="concurrent" value="false" />
+	</bean>
+
+	<!-- 사용자 로그 생성  트리거-->
+	<bean id="userLogTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="userLogging" />
+		<!-- 시작하고 1분후에 실행한다. (milisecond) -->
+		<property name="startDelay" value="60000" />
+		<!-- 매 1시간마다 실행한다. (milisecond) -->
+		<property name="repeatInterval" value="3600000" />
+	</bean>
+
+	
+	<!-- 사용자 로그 생성 스케줄러 -->
+	<bean id="userLogScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="userLogTrigger" />				
+			</list>
+		</property>
+	</bean>
+
+</beans>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<!-- 네트워크서비스모니터링   -->
+	<bean id="ntwrkSvcMntrng" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="egovNtwrkSvcMntrngScheduling" />
+		<property name="targetMethod" value="monitorNtwrkSvc" />
+		<property name="concurrent" value="false" />
+	</bean>
+
+	<!-- 네트워크서비스모니터링  트리거-->
+	<bean id="ntwrkSvcMntrngTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="ntwrkSvcMntrng" />
+		<property name="startDelay" value="60000" />
+		<property name="repeatInterval" value="600000" />
+	</bean>
+	
+	<!-- 모니터링 스케줄러 -->
+	<bean id="mntrngScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+                <ref bean="ntwrkSvcMntrngTrigger" />
+			</list>
+		</property>
+	</bean>
+
+</beans>

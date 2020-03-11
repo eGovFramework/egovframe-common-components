@@ -1,0 +1,307 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- 
+	수정일                 수정자                          수정내용
+  =========     =======    =================================================
+  2011.9.5   	정진오     	 	selectQnaList와 selectQnaAnswerList에 Alias 추가
+  							FRST_REGIST_PNTTM ->  	FRST_REGISTER_PNTTM
+							LAST_UPDT_PNTTM -> 		LAST_UPDUSR_PNTTM 
+							RDCNT ->				INQIRE_CO 							
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="QnaManage">
+
+	<resultMap id="QnaManage" type="egovframework.com.uss.olh.qna.service.QnaVO">
+		<result property="qaId" column="QA_ID"/>
+		<result property="qestnSj" column="QESTN_SJ"/>
+		<result property="qestnCn" column="QESTN_CN"/>
+		<result property="writngPassword" column="WRITNG_PASSWORD"/>
+		<result property="areaNo" column="AREA_NO"/>
+		<result property="middleTelno" column="MIDDLE_TELNO"/>
+		<result property="endTelno" column="END_TELNO"/>
+		<result property="emailAdres" column="EMAIL_ADRES"/>
+		<result property="emailAnswerAt" column="EMAIL_ANSWER_AT"/>
+		<result property="wrterNm" column="WRTER_NM"/>
+		<result property="writngDe" column="WRITNG_DE"/>
+		<result property="inqireCo" column="RDCNT"/>
+		<result property="qnaProcessSttusCode" column="QNA_PROCESS_STTUS_CODE"/>
+		<result property="qnaProcessSttusCodeNm" column="QNA_PROCESS_STTUS_CODE_NM"/>
+		<result property="answerCn" column="ANSWER_CN"/>
+		<result property="answerDe" column="ANSWER_DE"/>
+
+		<result property="emplyrNm" column="USER_NM"/>
+		<result property="offmTelno" column="OFFM_TELNO"/>
+		<result property="aemailAdres" column="AEMAIL_ADRES"/>
+		<result property="orgnztNm" column="ORGNZT_NM"/>
+
+
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+	</resultMap>
+
+	<select id="selectQnaDetail" resultMap="QnaManage">
+		
+			SELECT 	C.QA_ID, C.QESTN_SJ, C.QESTN_CN, C.WRITNG_PASSWORD, C.AREA_NO, C.MIDDLE_TELNO, C.END_TELNO,
+					C.EMAIL_ADRES, C.EMAIL_ANSWER_AT, C.WRTER_NM, C.WRITNG_DE, C.ANSWER_CN, C.ANSWER_DE, C.RDCNT,
+					C.QNA_PROCESS_STTUS_CODE, D.CODE_NM QNA_PROCESS_STTUS_CODE_NM,
+					A.USER_NM, A.OFFM_TELNO, A.EMAIL_ADRES AEMAIL_ADRES, B.ORGNZT_NM ,
+					TO_CHAR(C.FRST_REGIST_PNTTM,'YYYY-MM-DD') FRST_REGIST_PNTTM   , C.FRST_REGISTER_ID,
+					TO_CHAR(C.LAST_UPDT_PNTTM,'YYYY-MM-DD')   LAST_UPDT_PNTTM	  , C.LAST_UPDUSR_ID
+			FROM 	COMTNQAINFO C
+			LEFT 	OUTER JOIN COMTCCMMNDETAILCODE D ON		D.CODE_ID ='COM028' 		AND C.QNA_PROCESS_STTUS_CODE = D.CODE
+			LEFT 	OUTER JOIN COMTNEMPLYRINFO A     ON		A.ESNTL_ID= C.LAST_UPDUSR_ID
+			LEFT 	OUTER JOIN COMTNORGNZTINFO B     ON		A.ORGNZT_ID = B.ORGNZT_ID
+			WHERE	QA_ID=#{qaId}
+		
+	</select>
+
+	<select id="selectQnaList" parameterType="egovframework.com.uss.olh.qna.service.QnaVO" resultMap="QnaManage">
+		
+			SELECT QA_ID,
+				   QESTN_SJ,
+				   QESTN_CN,
+				   WRITNG_PASSWORD,
+				   AREA_NO,
+				   MIDDLE_TELNO,
+				   END_TELNO,
+				   EMAIL_ADRES,
+				   EMAIL_ANSWER_AT,
+				   WRTER_NM,
+				   WRITNG_DE,
+				   ANSWER_CN,
+				   ANSWER_DE,
+				   RDCNT						INQIRE_CO,
+				   QNA_PROCESS_STTUS_CODE,
+				   QNA_PROCESS_STTUS_CODE_NM,
+				   FRST_REGIST_PNTTM 			FRST_REGISTER_PNTTM,
+				   FRST_REGISTER_ID,
+				   LAST_UPDT_PNTTM				LAST_UPDUSR_PNTTM,
+				   LAST_UPDUSR_ID
+			FROM
+				   (
+				   SELECT  ROWNUM RNUM,QNA.*
+				   FROM
+				   	   	  (
+				   		   SELECT 	QA_ID, QESTN_SJ, QESTN_CN, WRITNG_PASSWORD, AREA_NO, MIDDLE_TELNO, END_TELNO,
+						   			EMAIL_ADRES, EMAIL_ANSWER_AT, WRTER_NM, WRITNG_DE, ANSWER_CN, ANSWER_DE, RDCNT,
+									QNA_PROCESS_STTUS_CODE, B.CODE_NM QNA_PROCESS_STTUS_CODE_NM,
+									A.FRST_REGIST_PNTTM , A.FRST_REGISTER_ID,
+									A.LAST_UPDT_PNTTM   , A.LAST_UPDUSR_ID
+						   FROM 	COMTNQAINFO A
+						   LEFT OUTER JOIN COMTCCMMNDETAILCODE B
+						   ON		B.CODE_ID ='COM028' AND A.QNA_PROCESS_STTUS_CODE = B.CODE
+						   WHERE	1=1
+		
+			<if test="searchCnd == 0">AND
+				WRTER_NM LIKE '%' || #{searchWrd} || '%'
+			</if>
+			<if test="searchCnd == 1">AND
+				QESTN_SJ LIKE '%' || #{searchWrd} || '%'
+			</if>
+		<![CDATA[
+							ORDER BY QA_ID DESC
+						  ) QNA
+				   )
+			WHERE ROWNUM <= #{recordCountPerPage} and RNUM > #{firstIndex}
+		]]>
+		
+	</select>
+
+	<select id="selectQnaListCnt" parameterType="egovframework.com.uss.olh.qna.service.QnaVO" resultType="int">
+		
+			SELECT 	COUNT(*) totcnt
+			FROM 	COMTNQAINFO
+			WHERE 	1=1
+		
+			<if test="searchCnd == 0">AND
+				WRTER_NM LIKE '%' || #{searchWrd} || '%'
+			</if>
+			<if test="searchCnd == 1">AND
+				QESTN_SJ LIKE '%' || #{searchWrd} || '%'
+			</if>
+	</select>
+
+	<insert id="insertQna">
+		
+			INSERT INTO COMTNQAINFO
+				   (QA_ID
+				  , QESTN_SJ
+				  , QESTN_CN
+				  , WRITNG_PASSWORD
+				  , AREA_NO
+				  , MIDDLE_TELNO
+				  , END_TELNO
+				  ,	EMAIL_ADRES
+				  , EMAIL_ANSWER_AT
+				  , WRTER_NM
+				  , WRITNG_DE
+				  , RDCNT
+				  , QNA_PROCESS_STTUS_CODE
+				  , FRST_REGIST_PNTTM
+				  , FRST_REGISTER_ID )
+			VALUES ( #{qaId}
+				  , #{qestnSj}
+				  , #{qestnCn}
+				  , #{writngPassword}
+				  , #{areaNo}
+				  , #{middleTelno}
+				  , #{endTelno}
+				  , #{emailAdres}
+				  , #{emailAnswerAt}
+				  , #{wrterNm}
+				  , TO_CHAR(sysdate,'YYYYMMDD')
+				  , 0
+				  , 1
+				  , sysdate
+				  , #{frstRegisterId})
+		
+	</insert>
+
+	<update id="updateQnaInqireCo">
+		
+			UPDATE	COMTNQAINFO	SET
+				    RDCNT= RDCNT + 1
+ 			WHERE  QA_ID=#{qaId}
+		
+	</update>
+
+	<select id="selectQnaPasswordConfirmCnt" resultType="int">
+		
+			SELECT 	COUNT(*) totcnt
+			FROM 	COMTNQAINFO
+			WHERE	QA_ID=#{qaId}
+			AND		WRITNG_PASSWORD=#{writngPassword}
+		
+	</select>
+
+	<update id="updateQna">
+		
+			UPDATE	COMTNQAINFO	SET
+				  	QESTN_SJ=#{qestnSj}
+				  , QESTN_CN=#{qestnCn}
+				  , WRITNG_PASSWORD=#{writngPassword}
+				  , AREA_NO=#{areaNo}
+				  , MIDDLE_TELNO=#{middleTelno}
+				  , END_TELNO=#{endTelno}
+				  ,	EMAIL_ADRES=#{emailAdres}
+				  , EMAIL_ANSWER_AT=NVL(#{emailAnswerAt},'N')
+				  , WRTER_NM=#{wrterNm}
+				  , WRITNG_DE=TO_CHAR(sysdate,'YYYYMMDD')
+				  , FRST_REGIST_PNTTM=sysdate
+				  , FRST_REGISTER_ID=#{frstRegisterId}
+			WHERE  QA_ID=#{qaId}
+		
+	</update>
+
+	<delete id="deleteQna">
+		
+			DELETE FROM COMTNQAINFO
+			WHERE  QA_ID=#{qaId}
+		
+	</delete>
+
+	<select id="selectQnaAnswerDetail" resultMap="QnaManage">
+		
+			SELECT 	C.QA_ID, C.QESTN_SJ, C.QESTN_CN, C.WRITNG_PASSWORD, C.AREA_NO, C.MIDDLE_TELNO, C.END_TELNO,
+					C.EMAIL_ADRES, C.EMAIL_ANSWER_AT, C.WRTER_NM, C.WRITNG_DE, C.ANSWER_CN, C.ANSWER_DE, C.RDCNT,
+					C.QNA_PROCESS_STTUS_CODE, D.CODE_NM QNA_PROCESS_STTUS_CODE_NM,
+					A.USER_NM, A.OFFM_TELNO, A.EMAIL_ADRES AEMAIL_ADRES, B.ORGNZT_NM ,
+					TO_CHAR(C.FRST_REGIST_PNTTM,'YYYY-MM-DD') FRST_REGIST_PNTTM   , C.FRST_REGISTER_ID,
+					TO_CHAR(C.LAST_UPDT_PNTTM,'YYYY-MM-DD')   LAST_UPDT_PNTTM	    , C.LAST_UPDUSR_ID
+			FROM 	COMTNQAINFO C
+			LEFT 	OUTER JOIN COMTCCMMNDETAILCODE D ON		D.CODE_ID ='COM028' 		AND C.QNA_PROCESS_STTUS_CODE = D.CODE
+			LEFT 	OUTER JOIN COMTNEMPLYRINFO A     ON		A.ESNTL_ID= C.LAST_UPDUSR_ID
+			LEFT 	OUTER JOIN COMTNORGNZTINFO B     ON		A.ORGNZT_ID = B.ORGNZT_ID
+			WHERE	QA_ID=#{qaId}
+		
+	</select>
+
+	<select id="selectQnaAnswerList" parameterType="egovframework.com.uss.olh.qna.service.QnaVO" resultMap="QnaManage">
+		
+			SELECT QA_ID,
+				   QESTN_SJ,
+				   QESTN_CN,
+				   WRITNG_PASSWORD,
+				   AREA_NO,
+				   MIDDLE_TELNO,
+				   END_TELNO,
+				   EMAIL_ADRES,
+				   EMAIL_ANSWER_AT,
+				   WRTER_NM,
+				   WRITNG_DE,
+				   ANSWER_CN,
+				   ANSWER_DE,
+				   RDCNT 						INQIRE_CO,
+				   QNA_PROCESS_STTUS_CODE,
+				   QNA_PROCESS_STTUS_CODE_NM,
+				   FRST_REGIST_PNTTM 			FRST_REGISTER_PNTTM,
+				   FRST_REGISTER_ID,
+				   LAST_UPDT_PNTTM  			LAST_UPDUSR_PNTTM,
+				   LAST_UPDUSR_ID
+			FROM
+				   (
+				   SELECT  ROWNUM RNUM,QNA.*
+				   FROM
+				   	   	  (
+				   		   SELECT 	QA_ID, QESTN_SJ, QESTN_CN, WRITNG_PASSWORD, AREA_NO, MIDDLE_TELNO, END_TELNO,
+						   			EMAIL_ADRES, EMAIL_ANSWER_AT, WRTER_NM, WRITNG_DE, ANSWER_CN, ANSWER_DE, RDCNT,
+									QNA_PROCESS_STTUS_CODE, B.CODE_NM QNA_PROCESS_STTUS_CODE_NM,
+									A.FRST_REGIST_PNTTM , A.FRST_REGISTER_ID,
+									A.LAST_UPDT_PNTTM   , A.LAST_UPDUSR_ID
+						   FROM 	COMTNQAINFO A
+						   LEFT OUTER JOIN COMTCCMMNDETAILCODE B
+						   ON		B.CODE_ID ='COM028' AND A.QNA_PROCESS_STTUS_CODE = B.CODE
+						   WHERE	1=1
+		
+			<if test="searchCnd == 0">AND
+				WRTER_NM LIKE '%' || #{searchWrd} || '%'
+			</if>
+			<if test="searchCnd == 1">AND
+				CODE_NM LIKE '%' || #{searchWrd} || '%'
+			</if>
+			<![CDATA[
+		
+							ORDER BY QESTN_SJ DESC
+						  ) QNA
+				   )
+			WHERE ROWNUM <= #{recordCountPerPage} and RNUM > #{firstIndex}
+			]]>
+		
+	</select>
+
+	<select id="selectQnaAnswerListCnt" parameterType="egovframework.com.uss.olh.qna.service.QnaVO" resultType="int">
+		
+			SELECT 	COUNT(*) totcnt
+			FROM 	COMTNQAINFO
+			WHERE 	1=1
+		
+			<if test="searchCnd == 0">AND
+				WRTER_NM LIKE '%' || #{searchWrd} || '%'
+			</if>
+			<if test="searchCnd == 1">AND
+				QNA_PROCESS_STTUS_CODE_NM LIKE '%' || #{searchWrd} || '%'
+			</if>
+	</select>
+
+	<update id="updateQnaAnswer">
+		
+			UPDATE	COMTNQAINFO	SET
+				  	QNA_PROCESS_STTUS_CODE=#{qnaProcessSttusCode}
+				  , ANSWER_CN=#{answerCn}
+				  , ANSWER_DE=TO_CHAR(sysdate,'YYYYMMDD')
+				  , LAST_UPDT_PNTTM=sysdate
+				  , LAST_UPDUSR_ID=#{lastUpdusrId}
+			WHERE  QA_ID=#{qaId}
+		
+	</update>
+
+	<delete id="deleteQnaAnswer">
+		
+			DELETE FROM COMTNQAINFO
+			WHERE  QA_ID=#{qaId}
+		
+	</delete>
+
+
+</mapper>

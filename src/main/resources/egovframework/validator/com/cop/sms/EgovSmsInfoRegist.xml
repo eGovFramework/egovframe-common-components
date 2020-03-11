@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+
+<form-validation>
+
+    <formset>
+		<form name="sms">
+			<field property="trnsmitTelno" depends="required">
+        		<arg0 key="cop.sms.trnsmitTelno" />
+			</field>			
+			<field property="trnsmitCn" depends="required, maxlength">
+        		<arg0 key="cop.sms.trnsmitCn" />
+        		<arg1 key="80" resource="true"/>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>80</var-value>
+				</var>
+			</field>
+			<field property="recptnTelno" depends="required">
+        		<arg0 key="cop.sms.recptnTelno" />
+			</field>
+		</form>
+    </formset>
+</form-validation>

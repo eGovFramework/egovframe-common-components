@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed May 11 15:51:01 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="cmtManageDAO">
+    
+    <insert id="insertWrkStartCmtInfo_S">
+        
+            INSERT INTO COMTNCOMMUTE 
+                (   WRKTM_ID            ,
+                    EMPLYR_ID           ,
+                    ORGNZT_ID            ,
+                    WRKT_DT             ,
+                    WRK_START_TIME      ,
+                    WRK_END_TIME        ,
+                    WRK_HOURS           ,
+                    OVTMWRK_HOURS       ,
+                    WRK_START_STATUS    ,
+                    WRK_END_STATUS      ,
+                    RM                  )
+            VALUES (
+                    #{wrktmId}          ,
+                    #{emplyrId}         ,
+                    #{orgnztId}          ,
+                    #{wrktDt}           ,
+                    #{wrkStartTime}    ,
+                    #{wrkEndTime}      ,                   
+                    #{wrkHours}         ,
+                    #{ovtmwrkHours}     ,
+                    #{wrkStartStatus}  ,
+                    #{wrkEndStatus}    ,
+                    #{rm}             )
+        
+    </insert>
+    
+    <update id="insertWrkEndCmtInfo_S" parameterType="egovframework.com.uss.cmt.service.CmtManageVO">
+        
+            UPDATE COMTNCOMMUTE 
+              SET   WRK_END_TIME      = #{wrkEndTime}, 
+                    WRK_HOURS         = #{wrkHours},    
+                    OVTMWRK_HOURS     = #{ovtmwrkHours}, 
+                    WRK_START_STATUS  = #{wrkStartStatus},  
+                    WRK_END_STATUS    = #{wrkEndStatus} 
+             WHERE 
+                    WRKTM_ID  =  #{wrktmId}     
+        
+    </update>
+    
+   <select id="selectWrktmId_S" resultType="String">
+        
+            SELECT
+                    WRKTM_ID   
+            FROM    COMTNCOMMUTE
+            WHERE   EMPLYR_ID = #{emplyrId} and WRKT_DT=#{wrktDt}
+        
+    </select>
+    
+    <select id="selectWrkStartInfo_S" resultType="egovframework.com.uss.cmt.service.CmtManageVO">
+        
+            SELECT
+                    WRKTM_ID        wrktmId,  
+                    WRK_START_TIME  wrkStartTime  
+            FROM    COMTNCOMMUTE
+            WHERE   EMPLYR_ID = #{emplyrId} and WRKT_DT=#{wrktDt}
+        
+    </select>
+    
+    <select id="selectCmtList_S" resultType="egovframework.com.uss.cmt.service.CmtManageVO">
+       
+            SELECT  
+                    WRKTM_ID           wrktmId ,
+                    EMPLYR_ID          emplyrId ,
+                    ORGNZT_ID          orgnztId  ,
+                    WRKT_DT            wrktDt ,
+                    WRK_START_TIME     wrkStartTime ,
+                    WRK_END_TIME       wrkEndTime ,
+                    WRK_HOURS          wrkHours ,
+                    OVTMWRK_HOURS      ovtmwrkHours ,
+                    WRK_START_STATUS   wrkStartStatus ,
+                    WRK_END_STATUS     wrkEndStatus 
+            FROM    COMTNCOMMUTE
+        
+    </select>
+    
+</mapper>

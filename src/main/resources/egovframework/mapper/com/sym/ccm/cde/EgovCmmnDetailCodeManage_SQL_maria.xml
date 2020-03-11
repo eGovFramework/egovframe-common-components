@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	수정일          수정자                          수정내용
+  ===========      ========    =================================================
+  2011.10.06		이기하     	 	보안 취약점 점검사항 반영 $->#변경
+--><!--Converted at: Wed May 11 15:50:37 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CmmnDetailCodeManage">
+
+	<select id="selectCmmnDetailCodeList" parameterType="egovframework.com.sym.ccm.cde.service.CmmnDetailCodeVO"  resultType="egovframework.com.sym.ccm.cde.service.CmmnDetailCodeVO">
+		
+		<![CDATA[
+			SELECT  A.CODE_ID
+			     ,  A.CODE
+			     ,  A.CODE_NM
+			     ,  A.USE_AT
+			  FROM  COMTCCMMNDETAILCODE A
+			     ,  COMTCCMMNCODE       B
+			 WHERE 	B.USE_AT  = 'Y'
+			   AND  A.CODE_ID = B.CODE_ID
+		]]>	   
+		
+			<if test="searchCondition == 1">	<![CDATA[	AND
+				A.CODE_ID LIKE CONCAT ('%', #{searchKeyword},'%')	]]>
+			</if>
+			<if test="searchCondition == 2">	<![CDATA[	AND
+				A.CODE    LIKE CONCAT ('%', #{searchKeyword},'%')	]]>
+			</if>
+			<if test="searchCondition == 3">	<![CDATA[	AND
+				A.CODE_NM LIKE CONCAT ('%', #{searchKeyword},'%')	]]>
+			</if>
+			 LIMIT  #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+
+	<select id="selectCmmnDetailCodeListTotCnt" parameterType="egovframework.com.sym.ccm.cde.service.CmmnDetailCodeVO" resultType="int">
+		
+		<![CDATA[
+			SELECT  COUNT(*) totcnt
+			  FROM  COMTCCMMNDETAILCODE A
+			     ,  COMTCCMMNCODE       B
+			 WHERE 	B.USE_AT  = 'Y'
+			   AND  A.CODE_ID = B.CODE_ID
+		]]>	   
+		
+			<if test="searchCondition == 1">	<![CDATA[	AND
+				A.CODE_ID LIKE CONCAT ('%', #{searchKeyword},'%')	]]>
+			</if>
+			<if test="searchCondition == 2">	<![CDATA[	AND
+				A.CODE    LIKE CONCAT ('%', #{searchKeyword},'%')	]]>
+			</if>
+			<if test="searchCondition == 3">	<![CDATA[	AND
+				A.CODE_NM LIKE CONCAT ('%', #{searchKeyword},'%')	]]>
+			</if>
+			
+	</select>
+
+	<select id="selectCmmnDetailCodeDetail" parameterType="egovframework.com.sym.ccm.cde.service.CmmnDetailCodeVO" resultType="egovframework.com.sym.ccm.cde.service.CmmnDetailCodeVO">
+		
+		<![CDATA[
+            SELECT  A.CODE_ID    codeId
+                 ,  B.CODE_ID_NM codeIdNm
+                 ,  A.CODE       code
+                 ,  A.CODE_NM    codeNm
+                 ,  A.CODE_DC    codeDc
+                 ,  A.USE_AT     useAt
+              FROM  COMTCCMMNDETAILCODE A
+                 ,  COMTCCMMNCODE       B
+             WHERE  B.USE_AT  = 'Y'
+               AND  A.CODE_ID = B.CODE_ID
+			   AND  A.CODE_ID = #{codeId}
+			   AND  A.CODE    = #{code}
+		]]>	   
+		
+	</select>
+
+	<insert id="insertCmmnDetailCode">
+		
+		<![CDATA[
+		    INSERT
+		      INTO  COMTCCMMNDETAILCODE
+		         (  CODE_ID
+		         ,  CODE
+		         ,  CODE_NM
+		         ,  CODE_DC
+		         ,  USE_AT
+		         ,  FRST_REGIST_PNTTM
+		         ,  FRST_REGISTER_ID
+		         ,  LAST_UPDT_PNTTM
+		         ,  LAST_UPDUSR_ID
+		         )
+		    VALUES
+		         (  #{codeId}
+		         ,  #{code}
+		         ,  #{codeNm}
+		         ,  #{codeDc}
+		         ,  #{useAt}
+		         ,  sysdate()
+		         ,  #{frstRegisterId}
+		         ,  sysdate()
+		         ,  #{frstRegisterId}
+		         )
+		   ]]>      
+		
+	</insert>
+
+	<update id="updateCmmnDetailCode">
+		
+		<![CDATA[
+            UPDATE  COMTCCMMNDETAILCODE
+               SET  CODE_NM           = #{codeNm}
+                 ,  CODE_DC           = #{codeDc}
+                 ,  USE_AT            = #{useAt}
+                 ,  LAST_UPDT_PNTTM = sysdate()
+                 ,  LAST_UPDUSR_ID    = #{lastUpdusrId}
+             WHERE  CODE_ID   = #{codeId}
+               AND  CODE      = #{code}
+         ]]>      
+		
+	</update>
+
+	<delete id="deleteCmmnDetailCode">
+		
+		<![CDATA[
+            UPDATE  COMTCCMMNDETAILCODE
+               SET  USE_AT    = 'N'
+             WHERE  CODE_ID   = #{codeId}
+               AND  CODE      = #{code}
+         ]]>      
+		
+	</delete>
+
+</mapper>

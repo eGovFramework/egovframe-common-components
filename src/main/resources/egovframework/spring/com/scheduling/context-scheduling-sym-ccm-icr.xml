@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<!-- 기관코드 수신 작업 정의  -->
+	<bean id="insttCodeReceiver" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="InsttCodeRecptnService" />
+		<property name="targetMethod" value="insertInsttCodeRecptn" />
+		<property name="concurrent" value="false" />
+	</bean>
+		
+	<!-- 기관코드 수신 트리거  -->	
+	<bean id="insttCodeReceiverTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="insttCodeReceiver" />
+		<property name="startDelay" value="60000" />
+		<property name="repeatInterval" value="60000" />
+	</bean>
+		
+	<!-- 기관코드 수신 스케줄  -->	
+	<!--
+	<bean id="insttCodeReceiverScheduler"
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="insttCodeReceiverTrigger" />
+			</list>
+		</property>
+	</bean>
+	-->
+</beans>

@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="KnoAppraisalDAO">
+
+	<select id="selectKnoAppraisalList" parameterType="egovframework.com.dam.app.service.KnoAppraisalVO" resultType="egovMap">
+		
+	SELECT *
+	FROM (
+	SELECT T0.*, ROWNUM RNUM
+		FROM (
+	
+		
+			SELECT	A.KNWLDG_ID			knoId     		
+				 ,  A.KNWLDG_NM			knoNm
+				 ,  B.KNWLDG_TY_NM		knoTypeNm	 
+			     ,  D.USER_NM			userNm
+				 ,  A.KNWLDG_EVL		knoAps
+			     ,  A.EVL_DE APP_YMD
+			     ,	A.FRST_REGISTER_ID	frstRegisterId
+			     ,	A.FRST_REGIST_PNTTM     FRST_REGISTER_PNTTM
+			     ,  A.LAST_UPDUSR_ID	lastUpdusrId
+			     ,	A.LAST_UPDT_PNTTM	lastUpdusrPnttm
+			FROM  COMTNDAMKNOIFM A, COMTNDAMMAPKNO B, COMTNDAMMAPTEAM C, COMVNUSERMASTER D, COMTNDAMPRO E
+			WHERE C.ORGNZT_ID = B.ORGNZT_ID
+			AND   A.KNWLDG_TY_CODE = B.KNWLDG_TY_CODE
+			AND   A.KNWLDG_TY_CODE = E.KNWLDG_TY_CODE
+			AND   E.EXPERT_ID = D.ESNTL_ID			
+			AND   A.OTHBC_AT = 'Y'
+			AND   E.EXPERT_ID = #{emplyrId}
+			AND   NVL(A.KNWLDG_EVL,0) NOT IN ('3')
+		
+			<if test='searchCondition == "1"'>AND
+				A.KNWLDG_NM  LIKE '%'||#{searchKeyword}||'%'
+			</if>
+			<if test='searchCondition == "2"'>AND			
+				D.USER_NM LIKE '%'||#{searchKeyword}||'%'
+			</if>
+		
+		) T0
+	) 
+	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	
+	</select>
+
+	<select id="selectKnoAppraisalTotCnt" parameterType="egovframework.com.dam.app.service.KnoAppraisalVO" resultType="int">
+		
+			SELECT COUNT(*) as totcnt 
+			FROM  COMTNDAMKNOIFM A, COMTNDAMMAPKNO B, COMTNDAMMAPTEAM C, COMVNUSERMASTER D, COMTNDAMPRO E
+			WHERE C.ORGNZT_ID = B.ORGNZT_ID
+			AND   A.KNWLDG_TY_CODE = B.KNWLDG_TY_CODE
+			AND   A.KNWLDG_TY_CODE = E.KNWLDG_TY_CODE
+			AND   E.EXPERT_ID = D.ESNTL_ID			
+			AND   A.OTHBC_AT = 'Y'
+			AND   E.EXPERT_ID = #{emplyrId}
+			AND   NVL(A.KNWLDG_EVL,0) NOT IN ('3')
+					
+			<if test='searchCondition == "1"'>AND
+				A.KNWLDG_NM  LIKE '%'||#{searchKeyword}||'%'
+			</if>
+			<if test='searchCondition == "2"'>AND
+				D.USER_NM LIKE '%'||#{searchKeyword}||'%'
+			</if>
+	</select>
+
+	<select id="selectKnoAppraisal" parameterType="egovframework.com.dam.app.service.KnoAppraisal" resultType="egovframework.com.dam.app.service.KnoAppraisal">
+		
+			SELECT  C.ORGNZT_NM							orgnztNm
+			     ,  C.ORGNZT_ID							orgnztId
+			     ,  B.KNWLDG_TY_NM						knoTypeNm			     			
+			     ,  B.KNWLDG_TY_CODE					knoTypeCd
+				 ,  A.KNWLDG_ID							knoId			     
+				 ,  A.KNWLDG_NM							knoNm			     
+			     ,  A.KNWLDG_CN							knoCn
+                 ,  A.OTHBC_AT							othbcAt              
+                 ,  A.ATCH_FILE_ID						atchFileId
+                 ,  A.EVL_DE							appYmd
+			     ,  A.KNWLDG_EVL						knoAps
+			     ,	A.FRST_REGISTER_ID					frstRegisterId
+			     ,	A.FRST_REGIST_PNTTM				     FRST_REGISTER_PNTTM
+			     ,  A.LAST_UPDUSR_ID					lastUpdusrId
+			     ,	A.LAST_UPDT_PNTTM					lastUpdusrPnttm			     
+			FROM  COMTNDAMKNOIFM A, COMTNDAMMAPKNO B, COMTNDAMMAPTEAM C
+			WHERE C.ORGNZT_ID = B.ORGNZT_ID
+			AND   A.KNWLDG_TY_CODE = B.KNWLDG_TY_CODE
+			AND   A.OTHBC_AT = 'Y'					
+            AND   A.KNWLDG_ID = #{knoId}
+		
+	</select>
+
+	<update id="updateKnoAppraisal">
+		
+            UPDATE  COMTNDAMKNOIFM 
+               SET  EVL_DE			  = #{appYmd}
+		         ,  KNWLDG_EVL        = #{knoAps}            
+                 ,  EXPERT_ID    	  = #{speId}                
+                 ,  LAST_UPDT_PNTTM = sysdate
+             WHERE  OTHBC_AT 		  = 'Y'	
+             AND    KNWLDG_ID         = #{knoId} 
+		
+	</update>
+
+</mapper>

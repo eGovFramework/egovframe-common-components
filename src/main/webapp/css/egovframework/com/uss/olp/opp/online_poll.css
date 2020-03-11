@@ -1,0 +1,19 @@
+@charset "utf-8";
+
+/* OnlinePoll Layout *********************************/
+.poll { position: relative; width: 730px; }
+.poll h1 { float: left; color: #333; font-size: 16px; font-weight: 600; margin: 18px 0 10px; }
+dl.poll_chart { padding: 30px; }
+dl.poll_chart dt { color: #444; margin-bottom: 7px; }
+dl.poll_chart dd { display: inline-block; margin-bottom: 13px; }
+dl.poll_chart dd:last-child { margin-bottom: 0; }
+dl.poll_chart ul li { position: relative; float: left; display: inline; }
+dl.poll_chart ul li:first-child { margin-right: 25px; } 
+dl.poll_chart ul li span.g_bar { display: inline-block; width: 580px; height: 8px; background: #e5e5e5; /* background: url('../images/poll_bar_gray.gif') repeat-x; */ }
+
+dl.poll_chart ul li span.g_bar2 { display: inline-block; width: 500px; height: 8px; background: #e5e5e5; text-align: left; /* background: url('../images/poll_bar_gray.gif') repeat-x; */ }
+dl.poll_chart ul li span.g_org { position: absolute; display: inline-block; height: 8px; background: #e2623d; /* background: url('../images/poll_bar_org.gif') repeat-x; */ }
+
+ul.poll_partcptn { display: inline-block; padding: 30px; }
+ul.poll_partcptn li { float: left; margin-right: 12px; }
+ul.poll_partcptn li input[type="radio"] { margin-right: 4px; }

@@ -1,0 +1,331 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="dtaUseStatsDAO">
+
+    <resultMap id="dtaUseStatsList" type="egovframework.com.sts.dst.service.DtaUseStatsVO">
+        <result property="bbsId" column="BBS_ID"/>
+        <result property="bbsNm" column="BBS_NM"/>
+        <result property="nttId" column="NTT_ID"/>
+        <result property="nttSj" column="NTT_SJ"/>
+        <result property="atchFileId" column="ATCH_FILE_ID"/>
+        <result property="fileSn" column="FILE_SN"/>
+        <result property="fileNm" column="ORIGNL_FILE_NM"/>
+        <result property="downCnt" column="COUNT"/>
+    </resultMap>
+
+    <resultMap id="dtaUseStats" type="egovframework.com.sts.dst.service.DtaUseStatsVO">
+        <result property="dtaUseStatsId" column="DTA_USE_STATS_ID"/>
+        <result property="bbsId" column="BBS_ID"/>
+        <result property="bbsNm" column="BBS_NM"/>
+        <result property="nttId" column="NTT_ID"/>
+        <result property="nttSj" column="NTT_SJ"/>
+        <result property="atchFileId" column="ATCH_FILE_ID"/>
+        <result property="fileSn" column="FILE_SN"/>
+        <result property="fileNm" column="ORIGNL_FILE_NM"/>
+        <result property="userId" column="FRST_REGISTER_ID"/>
+        <result property="userNm" column="USER_NM"/>
+        <result property="regdate" column="FRST_REGIST_PNTTM"/>
+    </resultMap>
+
+    <resultMap id="insertDtaUseStatsList" type="egovframework.com.sts.dst.service.DtaUseStatsVO">
+        <result property="bbsId" column="BBS_ID"/>
+        <result property="nttId" column="NTT_ID"/>
+        <result property="atchFileId" column="ATCH_FILE_ID"/>
+        <result property="fileSn" column="FILE_SN"/>
+    </resultMap>
+
+    <resultMap id="dtaUseStatsBarList" type="egovframework.com.sts.dst.service.DtaUseStatsVO">
+        <result property="grpRegDate" column="REG_DATE"/>
+        <result property="grpCnt" column="CNT"/>
+    </resultMap>
+
+    <select id="selectDtaUseStatsList" parameterType="egovframework.com.sts.dst.service.DtaUseStatsVO" resultMap="dtaUseStatsList">
+        
+            SELECT  *
+              FROM  (
+            SELECT ROWNUM RNUM, ALL_LIST.*
+              FROM  (
+            SELECT A.BBS_ID,
+                   B.BBS_NM,
+                   A.NTT_ID,
+                   C.NTT_SJ,
+                   A.ATCH_FILE_ID,
+                   A.FILE_SN,
+                   D.ORIGNL_FILE_NM,
+                   COUNT(*) AS COUNT
+              FROM COMTNDTAUSESTATS A,
+                   COMTNBBSMASTER B,
+                   COMTNBBS C,
+                   COMTNFILEDETAIL D
+             WHERE 1 = 1
+               AND A.BBS_ID       = B.BBS_ID
+               AND B.BBS_ID       = C.BBS_ID
+               AND A.NTT_ID       = C.NTT_ID
+               AND A.ATCH_FILE_ID = D.ATCH_FILE_ID
+               AND A.FILE_SN      = D.FILE_SN
+        
+            <if test="searchKeyword != null and searchKeyword != ''">
+                <if test="searchCondition == 1">AND
+                       B.BBS_NM LIKE '%'||#{searchKeyword}||'%'
+                </if>
+            </if>
+            
+            <if test="pmFromDate != null and pmFromDate != ''">                
+            	<if test="pmToDate != null and pmToDate != ''">AND   	
+                    TO_CHAR(A.FRST_REGIST_PNTTM,'YYYYMMDD') BETWEEN #{pmFromDate} AND #{pmToDate}
+                </if>                
+            </if>
+        
+        	<![CDATA[
+             GROUP BY A.BBS_ID,
+                      B.BBS_NM,
+                      A.NTT_ID,
+                      C.NTT_SJ,
+                      A.ATCH_FILE_ID,
+                      A.FILE_SN,
+                      D.ORIGNL_FILE_NM
+                    ) ALL_LIST
+                    )
+             WHERE  RNUM  > #{firstIndex}
+               AND  RNUM <= #{firstIndex} + #{recordCountPerPage}
+        ]]>
+    </select>
+
+    <select id="selectDtaUseStatsListTotCnt" parameterType="egovframework.com.sts.dst.service.DtaUseStatsVO" resultType="int">
+            SELECT COUNT(*) AS totcnt
+              FROM (SELECT A.BBS_ID,
+                           B.BBS_NM,
+                           A.NTT_ID,
+                           A.ATCH_FILE_ID,
+                           A.FILE_SN,
+                           D.ORIGNL_FILE_NM,
+                           COUNT(*) AS COUNT
+                      FROM COMTNDTAUSESTATS A,
+                           COMTNBBSMASTER B,
+                           COMTNBBS C,
+                           COMTNFILEDETAIL D
+                     WHERE 1 = 1
+                       AND A.BBS_ID       = B.BBS_ID
+                       AND B.BBS_ID       = C.BBS_ID
+                       AND A.NTT_ID       = C.NTT_ID
+                       AND A.ATCH_FILE_ID = D.ATCH_FILE_ID
+                       AND A.FILE_SN      = D.FILE_SN
+                    <if test="searchKeyword != null and searchKeyword != ''">
+                        <if test="searchCondition == 1">AND
+                            B.BBS_NM LIKE '%'||#{searchKeyword}||'%'
+                        </if>
+                    </if>
+                    
+                      <if test="pmFromDate != null and pmFromDate != ''">                
+            	<if test="pmToDate != null and pmToDate != ''">AND            	
+                    TO_CHAR(A.FRST_REGIST_PNTTM,'YYYYMMDD') BETWEEN #{pmFromDate} AND #{pmToDate}
+                </if>                
+            </if>
+                     GROUP BY A.BBS_ID,
+                              B.BBS_NM,
+                              A.NTT_ID,
+                              A.ATCH_FILE_ID,
+                              A.FILE_SN,
+                              D.ORIGNL_FILE_NM) A
+    </select>
+
+    <select id="selectDtaUseStatsListBarTotCnt" parameterType="egovframework.com.sts.dst.service.DtaUseStatsVO" resultType="int">
+            SELECT COUNT(*) AS totcnt
+              FROM COMTNDTAUSESTATS A,
+                   COMTNBBSMASTER B,
+                   COMTNBBS C,
+                   COMTNFILEDETAIL D
+             WHERE 1 = 1
+               AND A.BBS_ID       = B.BBS_ID
+               AND B.BBS_ID       = C.BBS_ID
+               AND A.NTT_ID       = C.NTT_ID
+               AND A.ATCH_FILE_ID = D.ATCH_FILE_ID
+               AND A.FILE_SN      = D.FILE_SN
+            <if test="searchKeyword != null and searchKeyword != ''">
+                <if test="searchCondition == 1">AND
+                    B.BBS_NM LIKE '%'||#{searchKeyword}||'%'
+                </if>
+            </if>
+            
+                <if test="pmFromDate != null and pmFromDate != ''">                
+            	<if test="pmToDate != null and pmToDate != ''">AND            	
+                    TO_CHAR(A.FRST_REGIST_PNTTM,'YYYYMMDD') BETWEEN #{pmFromDate} AND #{pmToDate}
+                </if>                
+            </if>
+            
+    </select>
+
+    <select id="selectDtaUseStats" parameterType="egovframework.com.sts.dst.service.DtaUseStatsVO" resultMap="dtaUseStats">
+            SELECT A.DTA_USE_STATS_ID,
+                   A.BBS_ID,
+                   B.BBS_NM,
+                   A.NTT_ID,
+                   C.NTT_SJ,
+                   A.ATCH_FILE_ID,
+                   A.FILE_SN,
+                   D.ORIGNL_FILE_NM,
+                   A.FRST_REGISTER_ID,
+                   E.USER_NM,
+                   A.FRST_REGIST_PNTTM
+              FROM COMTNDTAUSESTATS A,
+                   COMTNBBSMASTER B,
+                   COMTNBBS C,
+                   COMTNFILEDETAIL D,
+                   COMVNUSERMASTER E
+             WHERE 1 = 1
+               AND A.BBS_ID           = B.BBS_ID
+               AND A.BBS_ID           = C.BBS_ID
+               AND A.NTT_ID           = C.NTT_ID
+               AND A.ATCH_FILE_ID     = D.ATCH_FILE_ID
+               AND A.FILE_SN          = D.FILE_SN
+               AND A.FRST_REGISTER_ID = E.USER_ID
+               AND A.BBS_ID           = #{bbsId}
+               AND A.NTT_ID           = #{nttId}
+               AND A.ATCH_FILE_ID     = #{atchFileId}
+               AND A.FILE_SN          = #{fileSn}
+            
+                <if test="pmFromDate != null and pmFromDate != ''">                
+            	<if test="pmToDate != null and pmToDate != ''">AND            	
+                    TO_CHAR(A.FRST_REGIST_PNTTM,'YYYYMMDD') BETWEEN #{pmFromDate} AND #{pmToDate}
+                </if>                
+            </if>
+            
+             ORDER BY A.DTA_USE_STATS_ID DESC
+    </select>
+
+    <select id="selectDtaUseStatsTotCnt" parameterType="egovframework.com.sts.dst.service.DtaUseStatsVO" resultType="int">
+            SELECT COUNT(*) AS totcnt
+              FROM COMTNDTAUSESTATS A,
+                   COMTNBBSMASTER B,
+                   COMTNBBS C,
+                   COMTNFILEDETAIL D,
+                   COMVNUSERMASTER E
+             WHERE 1 = 1
+               AND A.BBS_ID           = B.BBS_ID
+               AND A.BBS_ID           = C.BBS_ID
+               AND A.NTT_ID           = C.NTT_ID
+               AND A.ATCH_FILE_ID     = D.ATCH_FILE_ID
+               AND A.FILE_SN          = D.FILE_SN
+               AND A.FRST_REGISTER_ID = E.USER_ID
+               AND A.BBS_ID           = #{bbsId}
+               AND A.NTT_ID           = #{nttId}
+               AND A.ATCH_FILE_ID     = #{atchFileId}
+               AND A.FILE_SN          = #{fileSn}
+            
+                <if test="pmFromDate != null and pmFromDate != ''">                
+            	<if test="pmToDate != null and pmToDate != ''">AND            	
+                    TO_CHAR(A.FRST_REGIST_PNTTM,'YYYYMMDD') BETWEEN #{pmFromDate} AND #{pmToDate}
+                </if>                
+            </if>
+            
+             ORDER BY A.DTA_USE_STATS_ID DESC
+    </select>
+
+    <select id="selectInsertDtaUseStats" parameterType="egovframework.com.sts.dst.service.DtaUseStats" resultMap="insertDtaUseStatsList">
+        
+            SELECT C.BBS_ID,
+                   C.NTT_ID,
+                   A.ATCH_FILE_ID,
+                   A.FILE_SN
+              FROM COMTNFILEDETAIL A,
+                   COMTNFILE B,
+                   COMTNBBS C
+             WHERE A.ATCH_FILE_ID = B.ATCH_FILE_ID
+               AND A.ATCH_FILE_ID = C.ATCH_FILE_ID
+               AND A.ATCH_FILE_ID = #{atchFileId}
+               AND A.FILE_SN      = #{fileSn}
+        
+    </select>
+
+    <insert id="insertDtaUseStats" parameterType="egovframework.com.sts.dst.service.DtaUseStats">
+        
+            INSERT INTO COMTNDTAUSESTATS
+                      ( DTA_USE_STATS_ID,
+                        BBS_ID,
+                        NTT_ID,
+                        ATCH_FILE_ID,
+                        FILE_SN,
+                        FRST_REGISTER_ID,
+                        FRST_REGIST_PNTTM,
+                        LAST_UPDUSR_ID,
+                        LAST_UPDT_PNTTM )
+                VALUES (#{dtaUseStatsId},
+                        #{bbsId},
+                        #{nttId},
+                        #{atchFileId},
+                        #{fileSn},
+                        #{userId},
+                        SYSDATE,
+                        #{userId},
+                        SYSDATE )
+        
+    </insert>
+
+    <select id="selectDtaUseStatsBarList" parameterType="egovframework.com.sts.dst.service.DtaUseStatsVO" resultMap="dtaUseStatsBarList">
+        
+            SELECT
+        
+        	<if test="pmDateTy != null and pmDateTy != ''">
+	        	<if test="pmDateTy == '%Y'">
+	                TO_CHAR(A.FRST_REGIST_PNTTM, 'YYYY') AS REG_DATE,
+	            </if>
+	            <if test="pmDateTy == '%Y-%m'">
+	                TO_CHAR(A.FRST_REGIST_PNTTM, 'YYYYMM') AS REG_DATE,
+	            </if>
+	            <if test="pmDateTy == '%Y-%m-%d'">
+	                TO_CHAR(A.FRST_REGIST_PNTTM, 'YYYYMMDD') AS REG_DATE,
+	            </if>
+        	</if>
+        	<if test="pmDateTy == null or pmDateTy == ''">
+        		TO_CHAR(A.FRST_REGIST_PNTTM, 'YYYY') AS REG_DATE,
+        	</if>
+            
+        
+                   COUNT(*) AS CNT
+              FROM COMTNDTAUSESTATS A,
+                   COMTNBBSMASTER B,
+                   COMTNBBS C,
+                   COMTNFILEDETAIL D
+             WHERE 1 = 1
+               AND A.BBS_ID       = B.BBS_ID
+               AND B.BBS_ID       = C.BBS_ID
+               AND A.NTT_ID       = C.NTT_ID
+               AND A.ATCH_FILE_ID = D.ATCH_FILE_ID
+               AND A.FILE_SN      = D.FILE_SN
+        
+            <if test="searchKeyword != null and searchKeyword != ''">
+                <if test="searchCondition == 1">AND
+                    B.BBS_NM LIKE '%'||#{searchKeyword}||'%'
+                </if>
+            </if>
+            
+                <if test="pmFromDate != null and pmFromDate != ''">                
+            	<if test="pmToDate != null and pmToDate != ''">AND            	
+                    TO_CHAR(A.FRST_REGIST_PNTTM,'YYYYMMDD') BETWEEN #{pmFromDate} AND #{pmToDate}
+                </if>                
+            </if>
+            
+            
+            <if test="pmDateTy != null and pmDateTy != ''">
+	        	<if test="pmDateTy == '%Y'">
+	                GROUP BY TO_CHAR(A.FRST_REGIST_PNTTM, 'YYYY')
+	            </if>
+	            <if test="pmDateTy == '%Y-%m'">
+	                GROUP BY TO_CHAR(A.FRST_REGIST_PNTTM, 'YYYYMM')
+	            </if>
+	            <if test="pmDateTy == '%Y-%m-%d'">
+	                GROUP BY TO_CHAR(A.FRST_REGIST_PNTTM, 'YYYYMMDD')
+	            </if>
+        	</if>
+        	<if test="pmDateTy == null or pmDateTy == ''">
+        		 GROUP BY TO_CHAR(A.FRST_REGIST_PNTTM, 'YYYY')
+        	</if>
+            
+            
+        
+             ORDER BY REG_DATE DESC
+        
+    </select>
+
+</mapper>

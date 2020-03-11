@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+
+<form-validation>
+
+    <formset>
+
+        <form name="qustnrManageVO"> 
+			<field property="qestnrSj" depends="required, maxlength">
+        		<arg0 key="comUssOlpQmc.regist.qestnrSj" resource="true"/><!-- 설문제목 -->
+        		<arg1 key="100" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>250</var-value>
+				</var>
+			</field>
+        	<field property="qestnrPurps" depends="required, maxlength">
+        		<arg0 key="comUssOlpQmc.regist.qestnrPurps" resource="true"/><!-- 설문목적 -->
+        		<arg1 key="1000" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>1000</var-value>
+				</var>
+			</field>
+        	<field property="qestnrWritngGuidanceCn" depends="required, maxlength">
+        		<arg0 key="comUssOlpQmc.regist.qestnrWritngGuidanceCn" resource="true"/><!-- 설문작성안내 내용 -->
+        		<arg1 key="2000" resource="true"/>
+				<var>
+				<var-name>maxlength</var-name>
+				<var-value>2000</var-value>
+				</var>
+			</field>
+			
+        	<field property="qestnrTrget" depends="required,">
+        		<arg0 key="comUssOlpQmc.regist.qestnrTrget" resource="true"/><!-- 설문대상 -->
+			</field>
+			
+        	<field property="qestnrBeginDe" depends="required, date">
+        		<arg0 key="comUssOlpQmc.regist.qestnrDeStartDay" resource="true"/><!-- 설문기간  시작일 -->
+				<var>
+				<var-name>datePatternStrict</var-name>
+				<var-value>yyyy-MM-dd</var-value> 
+				</var>
+			</field>
+        	<field property="qestnrEndDe" depends="required, date">
+        		<arg0 key="comUssOlpQmc.regist.qestnrDeEndDay" resource="true"/><!-- 설문기간  종료일 -->
+				<var>
+				<var-name>datePatternStrict</var-name>
+				<var-value>yyyy-MM-dd</var-value>
+				</var>
+			</field>
+		</form>
+		
+    </formset>
+
+</form-validation>

@@ -1,0 +1,528 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed May 11 15:51:06 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="eventManageDAO">
+
+    <resultMap id="eventAtdrn" type="egovframework.com.uss.ion.evt.service.EventAtdrnVO">
+        <result property="applcntId" column="APPLCNT_ID"/>  
+        <result property="eventId" column="EVENT_ID"/>  
+        <result property="reqstDe" column="REQST_DE"/>  
+        <result property="sanctnerId" column="SANCTNER_ID"/>  
+        <result property="confmAt" column="CONFM_AT"/>  
+        <result property="sanctnDt" column="SANCTN_DT"/>  
+        <result property="returnResn" column="RETURN_RESN"/>  
+        <result property="frstRegisterId" column="FRST_REGISTER_ID"/>  
+        <result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>  
+        <result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+        <result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/> 
+    </resultMap>
+
+    <resultMap id="eventManage" type="egovframework.com.uss.ion.evt.service.EventManageVO">
+		  <result property="eventId" column="EVENT_ID"/> 
+		  <result property="eventSe" column="EVENT_SE"/> 
+		  <result property="eventNm" column="EVENT_NM"/> 
+		  <result property="eventPurps" column="EVENT_PURPS"/> 
+		  <result property="eventBeginDe" column="EVENT_BGNDE"/> 
+		  <result property="eventEndDe" column="EVENT_ENDDE"/> 
+		  <result property="eventAuspcInsttNm" column="EVENT_AUSPC_INSTT_NM"/> 
+		  <result property="eventMngtInsttNm" column="EVENT_MNGT_INSTT_NM"/> 
+		  <result property="eventPlace" column="EVENT_PLACE"/> 
+		  <result property="eventCn" column="EVENT_CN"/>
+		  <result property="ctOccrrncAt" column="CT_OCCRRNC_AT"/>
+		  <result property="partcptCt" column="PARTCPT_CT"/> 
+		  <result property="psncpa" column="PSNCPA"/>  
+		  <result property="refrnUrl" column="REFRN_URL"/> 
+		  <result property="rceptBeginDe" column="RCEPT_BGNDE"/> 
+		  <result property="rceptEndDe" column="RCEPT_ENDDE"/> 
+		  <result property="frstRegisterId" column="FRST_REGISTER_ID"/> 
+		  <result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/> 
+		  <result property="lastUpdusrId" column="LAST_UPDUSR_ID"/> 
+		  <result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/> 
+    </resultMap>
+
+
+    <select id="selectEventManageList" parameterType="egovframework.com.uss.ion.evt.service.EventManageVO" resultType="egovframework.com.uss.ion.evt.service.EventManageVO">
+        
+
+			   SELECT    ROW_NUMBER() OVER () as rowCount ,
+	                     EVENT_ID             AS eventId          ,
+	                     EVENT_SE             AS eventSe          ,
+	                     EVENT_NM             AS eventNm          ,
+	                     EVENT_PURPS          AS eventPurps       ,
+	                     EVENT_BGNDE       AS eventBeginDe     ,
+	                     EVENT_ENDDE         AS eventEndDe       ,
+	                     EVENT_AUSPC_INSTT_NM AS eventAuspcInsttNm,
+	                     EVENT_MNGT_INSTT_NM  AS eventMngtInsttNm ,
+	                     EVENT_PLACE          AS eventPlace       ,
+	                     EVENT_CN             AS eventCn          ,
+	                     CT_OCCRRNC_AT        AS ctOccrrncAt      ,
+	                     PARTCPT_CT           AS partcptCt        ,
+	                     PSNCPA               AS psncpa           ,
+	                     REFRN_URL            AS refrnUrl         ,
+	                     RCEPT_BGNDE       AS rceptBeginDe     ,
+	                     RCEPT_ENDDE         AS rceptEndDe       ,
+	                     DATE_PART('day', TO_TIMESTAMP(EVENT_ENDDE,'YYYYmmdd')-TO_TIMESTAMP(EVENT_BGNDE,'YYYYmmdd'))+1 as eventTemp1 ,
+                        (select count(atdrn.APPLCNT_ID) from COMTNEVENTATDRN atdrn
+				         where  atdrn.EVENT_ID = A.EVENT_ID) as eventTemp2,
+                        (select code_nm from COMTCCMMNDETAILCODE
+				         where  code_id ='COM053'
+				         and    code    = A.EVENT_SE) as eventTemp3
+			   FROM    COMTNEVENTMANAGE A 
+			   WHERE    1=1
+         
+         <if test="searchSe != null and searchSe != ''">AND
+		      EVENT_SE like  CONCAT('%', #{searchSe}, '%')   
+         </if>
+		 <if test="searchMonth != null and searchMonth != ''">AND
+		      #{searchKeyword} BETWEEN TO_CHAR(TO_DATE(EVENT_BGNDE,'YYYYmmdd'), 'YYYYmm') AND TO_CHAR(TO_DATE(EVENT_ENDDE ,'YYYYmmdd'), 'YYYYmm')    
+		 </if>
+	     <if test="searchMonth == null or searchMonth == ''">
+		   <if test="searchYear != null and searchYear != ''">AND
+		      A.EVENT_BGNDE like CONCAT('%', #{searchKeyword}, '%')   
+		   </if>
+		</if> 
+         <if test="searchNm != null and searchNm != ''">AND
+		      EVENT_NM like  CONCAT('%', #{searchNm}, '%')   
+        </if>
+		    ORDER BY FRST_REGIST_PNTTM DESC
+			   LIMIT #{recordCountPerPage} OFFSET #{firstIndex} 
+           
+    </select>
+
+    <select id="selectEventManageListTotCnt" parameterType="egovframework.com.uss.ion.evt.service.EventManageVO" resultType="int">
+        
+            SELECT COUNT(*) totcnt
+            FROM COMTNEVENTMANAGE
+            WHERE 1=1
+         
+         <if test="searchSe != null and searchSe != ''">AND
+		      EVENT_SE like  CONCAT('%', #{searchSe}, '%')   
+         </if>
+		 <if test="searchMonth != null and searchMonth != ''">AND
+		      #{searchKeyword} BETWEEN TO_CHAR(TO_DATE(EVENT_BGNDE,'YYYYmmdd'), 'YYYYmm') AND TO_CHAR(TO_DATE(EVENT_ENDDE ,'YYYYmmdd'), 'YYYYmm')
+		 </if>
+	     <if test="searchMonth == null or searchMonth == ''">
+		   <if test="searchYear != null and searchYear != ''">AND
+		      EVENT_BGNDE like CONCAT('%', #{searchKeyword}, '%')   
+		   </if>
+		</if>
+         <if test="searchNm != null and searchNm != ''">AND
+		      EVENT_NM like  CONCAT('%', #{searchNm}, '%')   
+        </if>
+    </select>
+    
+    <select id="selectEventManage" resultType="egovframework.com.uss.ion.evt.service.EventManageVO">
+        
+	            SELECT  mge.EVENT_ID             AS eventId          ,
+	                    mge.EVENT_SE             AS eventSe          ,
+	                    mge.EVENT_NM             AS eventNm          ,
+	                    mge.EVENT_PURPS          AS eventPurps       ,
+	                    mge.EVENT_BGNDE       AS eventBeginDe     ,
+	                    mge.EVENT_ENDDE         AS eventEndDe       ,
+	                    mge.EVENT_AUSPC_INSTT_NM AS eventAuspcInsttNm,
+	                    mge.EVENT_MNGT_INSTT_NM  AS eventMngtInsttNm ,
+	                    mge.EVENT_PLACE          AS eventPlace       ,
+	                    mge.EVENT_CN             AS eventCn          ,
+	                    mge.CT_OCCRRNC_AT        AS ctOccrrncAt      ,
+	                    mge.PARTCPT_CT           AS partcptCt        ,
+	                    mge.PSNCPA               AS psncpa           ,
+	                    mge.REFRN_URL            AS refrnUrl         ,
+	                    mge.RCEPT_BGNDE       AS rceptBeginDe     ,
+	                    mge.RCEPT_ENDDE         AS rceptEndDe       ,
+	                    DATE_PART('day', TO_TIMESTAMP(mge.EVENT_ENDDE,'YYYYmmdd')-TO_TIMESTAMP(mge.EVENT_BGNDE,'YYYYmmdd'))+1 as eventTemp1 ,
+	                   (select count(*) from COMTNEVENTATDRN  where  EVENT_ID = mge.EVENT_ID) as eventAtdrnCount,
+	                    DATE_PART('day', TO_TIMESTAMP(mge.RCEPT_BGNDE,'YYYYmmdd')-NOW()) AS eventDayCount,
+	                   (select code_nm from COMTCCMMNDETAILCODE  where  code_id ='COM053' and code = mge.EVENT_SE) as eventTemp3
+	            FROM    COMTNEVENTMANAGE mge
+			    WHERE   EVENT_ID         = #{eventId}
+        
+    </select>
+
+    <insert id="insertEventManage" parameterType="egovframework.com.uss.ion.evt.service.EventManage">
+        
+
+            INSERT INTO COMTNEVENTMANAGE
+                   (EVENT_ID            ,
+                    EVENT_SE            ,
+                    EVENT_NM            ,   
+                    EVENT_PURPS         ,
+                    EVENT_BGNDE      ,     
+                    EVENT_ENDDE        ,
+                    EVENT_AUSPC_INSTT_NM,
+                    EVENT_MNGT_INSTT_NM ,   
+                    EVENT_PLACE         ,
+                    EVENT_CN            ,
+                    CT_OCCRRNC_AT       ,
+                    PARTCPT_CT          ,
+                    PSNCPA              ,
+                    REFRN_URL           ,
+                    RCEPT_BGNDE      ,
+                    RCEPT_ENDDE        ,
+                    FRST_REGISTER_ID    ,
+                    FRST_REGIST_PNTTM ) 
+            VALUES (#{eventId}           , 
+                    #{eventSe}           ,
+                    #{eventNm}           ,
+                    #{eventPurps}        ,
+                    #{eventBeginDe}      ,
+                    #{eventEndDe}        ,
+                    #{eventAuspcInsttNm} ,
+                    #{eventMngtInsttNm}  ,
+                    #{eventPlace}        ,
+                    #{eventCn}           ,
+                    #{ctOccrrncAt}       ,
+                    #{partcptCt}         ,
+                    #{psncpa}            ,
+                    #{refrnUrl}          ,
+                    #{rceptBeginDe}      ,
+                    #{rceptEndDe}        ,
+                    #{frstRegisterId}    ,   
+                    NOW() ) 
+
+        
+    </insert>     
+
+    <update id="updateEventManage" parameterType="egovframework.com.uss.ion.evt.service.EventManage">
+        
+
+            UPDATE COMTNEVENTMANAGE
+               SET EVENT_PURPS          = #{eventPurps}       ,   
+                   EVENT_BGNDE       = #{eventBeginDe}     ,
+                   EVENT_ENDDE         = #{eventEndDe}       ,
+                   EVENT_AUSPC_INSTT_NM = #{eventAuspcInsttNm},   
+				   EVENT_MNGT_INSTT_NM  = #{eventMngtInsttNm} ,
+                   EVENT_PLACE          = #{eventPlace}       ,
+                   EVENT_CN             = #{eventCn}          ,
+                   CT_OCCRRNC_AT        = #{ctOccrrncAt}      ,
+                   PARTCPT_CT           = #{partcptCt}        ,
+                   PSNCPA               = #{psncpa}           ,
+                   REFRN_URL            = #{refrnUrl}         ,
+                   RCEPT_BGNDE       = #{rceptBeginDe}     ,
+                   RCEPT_ENDDE         = #{rceptEndDe}       ,
+                   LAST_UPDUSR_ID       = #{lastUpdusrId}     ,
+                   LAST_UPDT_PNTTM    = NOW()  
+			  WHERE   EVENT_ID         = #{eventId}
+			    AND   EVENT_SE         = #{eventSe}
+        
+    </update>    
+    
+    <delete id="deleteEventManage" parameterType="egovframework.com.uss.ion.evt.service.EventManage">
+        
+            DELETE FROM COMTNEVENTMANAGE
+				 WHERE EVENT_ID         = #{eventId}
+        
+    </delete>  
+
+
+<!-- 행사접수 관리 -->
+
+    <select id="selectEventAtdrnList" parameterType="egovframework.com.uss.ion.evt.service.EventManageVO" resultType="egovframework.com.uss.ion.evt.service.EventManageVO">
+        
+				SELECT   ROW_NUMBER() OVER ()     as rowCount ,
+				         mge.EVENT_ID             AS eventId          ,
+				         mge.EVENT_SE             AS eventSe          ,
+				         mge.EVENT_NM             AS eventNm          ,
+				         mge.EVENT_PURPS          AS eventPurps       ,
+				         mge.EVENT_BGNDE       AS eventBeginDe     ,
+				         mge.EVENT_ENDDE         AS eventEndDe       ,
+				         mge.EVENT_AUSPC_INSTT_NM AS eventAuspcInsttNm,
+				         mge.EVENT_MNGT_INSTT_NM  AS eventMngtInsttNm ,
+				         mge.EVENT_PLACE          AS eventPlace       ,
+				         mge.EVENT_CN             AS eventCn          ,
+				         mge.CT_OCCRRNC_AT        AS ctOccrrncAt      ,
+				         mge.PARTCPT_CT           AS partcptCt        ,
+				         mge.PSNCPA               AS psncpa           ,
+				         mge.REFRN_URL            AS refrnUrl         ,
+				         mge.RCEPT_BGNDE       AS rceptBeginDe     ,
+				         mge.RCEPT_ENDDE         AS rceptEndDe       ,
+	                     DATE_PART('day', TO_TIMESTAMP(mge.EVENT_ENDDE,'YYYYmmdd')-TO_TIMESTAMP(mge.EVENT_BGNDE,'YYYYmmdd'))+1 as eventTemp1 ,
+                        (select count(APPLCNT_ID) from COMTNEVENTATDRN 
+				         where  EVENT_ID = mge.EVENT_ID) as eventTemp2,
+                        (select code_nm from COMTCCMMNDETAILCODE
+				         where  code_id ='COM053'
+				         and    code    = mge.EVENT_SE) as eventTemp3,
+				         atdrn.APPLCNT_ID         AS applcntId        ,
+				         atdrn.CONFM_AT           AS confmAt
+				  FROM   COMTNEVENTMANAGE mge
+				         left join COMTNEVENTATDRN atdrn
+				         ON   atdrn.EVENT_ID = mge.EVENT_ID
+				         and  atdrn.APPLCNT_ID = #{applcntId}
+				 WHERE    1=1
+				 AND     (CAST(TO_CHAR(NOW(),'YYYYmmdd') AS CHAR(8))  BETWEEN RCEPT_BGNDE  AND RCEPT_ENDDE 
+			              or atdrn.confm_At is not null)
+       
+         <if test="searchSe != null and searchSe != ''">AND
+		      mge.EVENT_SE like  CONCAT('%', #{searchSe}, '%')   
+         </if>
+		 <if test="searchMonth != null and searchMonth != ''">AND
+		      #{searchKeyword} BETWEEN TO_CHAR(TO_DATE(mge.EVENT_BGNDE,'YYYYmmdd'), 'YYYYmm') AND TO_CHAR(TO_DATE(mge.EVENT_ENDDE ,'YYYYmmdd'), 'YYYYmm')
+		 </if>
+	     <if test="searchMonth == null or searchMonth == ''">
+		   <if test="searchYear != null and searchYear != ''">AND
+		      mge.EVENT_BGNDE like CONCAT('%', #{searchKeyword}, '%')   
+		   </if>
+		</if> 
+         <if test="searchNm != null and searchNm != ''">AND
+		      mge.EVENT_NM like  CONCAT('%', #{searchNm}, '%')   
+        </if>
+         <if test="searchConfmAt != null and searchConfmAt != ''">AND
+			<if test='searchConfmAt == "NON"'>
+				 atdrn.CONFM_AT is null 
+			</if>
+			<if test='searchConfmAt == "A"'>
+				 atdrn.CONFM_AT = #{searchConfmAt}
+			</if>
+			<if test='searchConfmAt == "C"'>
+				 atdrn.CONFM_AT = #{searchConfmAt} 
+			</if>
+			<if test='searchConfmAt == "R"'>
+				 atdrn.CONFM_AT = #{searchConfmAt} 
+			</if>
+        </if>
+        <![CDATA[
+			   ORDER BY mge.EVENT_ID DESC
+			   LIMIT #{recordCountPerPage} OFFSET #{firstIndex} 
+        ]]>
+    </select>
+
+    <select id="selectEventAtdrnListTotCnt" parameterType="egovframework.com.uss.ion.evt.service.EventManageVO" resultType="int">
+        
+				 SELECT  COUNT(*) totcnt
+				  FROM   COMTNEVENTMANAGE mge
+				         left join COMTNEVENTATDRN atdrn
+				         ON   atdrn.EVENT_ID = mge.EVENT_ID
+				         and  atdrn.APPLCNT_ID = #{searchKeyword}
+				 WHERE    1=1
+			     AND     (CAST(TO_CHAR(NOW(),'YYYYmmdd') AS CHAR(8))  BETWEEN RCEPT_BGNDE  AND RCEPT_ENDDE 
+			              or atdrn.confm_At is not null)
+        	 
+         <if test="searchSe != null and searchSe != ''">AND
+		      mge.EVENT_SE like  CONCAT('%', #{searchSe}, '%')   
+         </if>
+		 <if test="searchMonth != null and searchMonth != ''">AND
+		      #{searchKeyword} BETWEEN TO_CHAR(TO_DATE(mge.EVENT_BGNDE,'YYYYmmdd'), 'YYYYmm') AND TO_CHAR(TO_DATE(mge.EVENT_ENDDE ,'YYYYmmdd'), 'YYYYmm')
+		 </if>
+	     <if test="searchMonth == null or searchMonth == ''">
+		   <if test="searchYear != null and searchYear != ''">AND
+		      mge.EVENT_BGNDE like CONCAT('%', #{searchKeyword}, '%')   
+		   </if>
+		</if> 
+         <if test="searchNm != null and searchNm != ''">AND
+		      mge.EVENT_NM like  CONCAT('%', #{searchNm}, '%')   
+        </if>
+         <if test="searchConfmAt != null and searchConfmAt != ''">AND
+			<if test='searchConfmAt == "NON"'>
+				 atdrn.CONFM_AT is null 
+			</if>
+			<if test='searchConfmAt == "A"'>
+				 atdrn.CONFM_AT = #{searchConfmAt} 
+			</if>
+			<if test='searchConfmAt == "C"'>
+				 atdrn.CONFM_AT = #{searchConfmAt} 
+			</if>
+			<if test='searchConfmAt == "R"'>
+				 atdrn.CONFM_AT = #{searchConfmAt} 
+			</if>
+        </if>
+    </select>
+
+
+    <select id="selectEventRceptConfmList" parameterType="egovframework.com.uss.ion.evt.service.EventManageVO" resultType="egovframework.com.uss.ion.evt.service.EventManageVO">
+        
+
+				SELECT   mge.EVENT_ID             AS eventId          ,
+				         mge.EVENT_SE             AS eventSe          ,
+				         mge.EVENT_NM             AS eventNm          ,
+				         mge.EVENT_PURPS          AS eventPurps       ,
+				         mge.EVENT_BGNDE       AS eventBeginDe     ,
+				         mge.EVENT_ENDDE         AS eventEndDe       ,
+				         mge.EVENT_AUSPC_INSTT_NM AS eventAuspcInsttNm,
+				         mge.EVENT_MNGT_INSTT_NM  AS eventMngtInsttNm ,
+				         mge.EVENT_PLACE          AS eventPlace       ,
+				         mge.EVENT_CN             AS eventCn          ,
+				         mge.CT_OCCRRNC_AT        AS ctOccrrncAt      ,
+				         mge.PARTCPT_CT           AS partcptCt        ,
+				         mge.PSNCPA               AS psncpa           ,
+				         mge.REFRN_URL            AS refrnUrl         ,
+				         mge.RCEPT_BGNDE       AS rceptBeginDe     ,
+				         mge.RCEPT_ENDDE         AS rceptEndDe       ,
+	                     atdrn.INFRML_SANCTN_ID   AS infrmlSanctnId   ,
+	                     atdrn.REQST_DE           AS reqstDe          ,
+	                     DATE_PART('day', TO_TIMESTAMP(mge.EVENT_ENDDE,'YYYYmmdd')-TO_TIMESTAMP(mge.EVENT_BGNDE,'YYYYmmdd'))+1                       AS eventTemp1,
+                        (select count(APPLCNT_ID) from COMTNEVENTATDRN where  EVENT_ID = mge.EVENT_ID) AS eventTemp2,
+                        (select code_nm from COMTCCMMNDETAILCODE  WHERE  code_id ='COM053' AND code= mge.EVENT_SE) AS eventSeNm,
+				         atdrn.APPLCNT_ID         AS applcntId        ,
+				         atdrn.CONFM_AT           AS confmAt          ,
+				         atdrn.SANCTNER_ID        AS sanctnerId       ,
+				        (select USER_NM from COMVNUSERMASTER WHERE  ESNTL_ID = atdrn.SANCTNER_ID)  AS sanctnerNm,
+					    (select USER_NM from COMVNUSERMASTER WHERE  ESNTL_ID = atdrn.APPLCNT_ID)   AS applcntNm,
+				         CAST( TO_CHAR(atdrn.SANCTN_DT  ,'YYYYmmdd' ) AS CHAR(10) )           AS sanctnDt              
+				  FROM   COMTNEVENTMANAGE mge, COMTNEVENTATDRN atdrn
+				 WHERE   atdrn.EVENT_ID    = mge.EVENT_ID
+				   AND   atdrn.SANCTNER_ID = #{sanctnerId}
+         
+         <if test="searchSe != null and searchSe != ''">AND
+		      mge.EVENT_SE like  CONCAT('%', #{searchSe}, '%')   
+         </if>
+		 <if test="searchMonth != null and searchMonth != ''">AND
+		      #{searchKeyword} BETWEEN TO_CHAR(TO_DATE(mge.EVENT_BGNDE,'YYYYmmdd'), 'YYYYmm') AND TO_CHAR(TO_DATE(mge.EVENT_ENDDE ,'YYYYmmdd'), 'YYYYmm')
+		 </if>
+	     <if test="searchMonth == null or searchMonth == ''">
+		   <if test="searchYear != null and searchYear != ''">AND
+		      mge.EVENT_BGNDE like CONCAT('%', #{searchKeyword}, '%')   
+		   </if>
+		</if>
+         <if test="searchNm != null and searchNm != ''">AND
+		      mge.EVENT_NM like  CONCAT('%', #{searchNm}, '%')   
+        </if>
+		     ORDER BY mge.EVENT_ID DESC
+			          LIMIT #{recordCountPerPage} OFFSET #{firstIndex}  
+    </select>
+
+    <select id="selectEventRceptConfmListTotCnt" parameterType="egovframework.com.uss.ion.evt.service.EventManageVO" resultType="int">
+        
+				 SELECT  COUNT(*) totcnt
+				  FROM   COMTNEVENTMANAGE mge, COMTNEVENTATDRN atdrn
+				 WHERE   atdrn.EVENT_ID    = mge.EVENT_ID
+				   AND   atdrn.SANCTNER_ID = #{sanctnerId}
+         
+         <if test="searchSe != null and searchSe != ''">AND
+		      mge.EVENT_SE like  CONCAT('%', #{searchSe}, '%')   
+         </if>
+		 <if test="searchMonth != null and searchMonth != ''">AND
+		      #{searchKeyword} BETWEEN TO_CHAR(TO_DATE(mge.EVENT_BGNDE,'YYYYmmdd'), 'YYYYmm') AND TO_CHAR(TO_DATE(mge.EVENT_ENDDE ,'YYYYmmdd'), 'YYYYmm')
+		 </if>
+	     <if test="searchMonth == null or searchMonth == ''">
+		   <if test="searchYear != null and searchYear != ''">AND
+		      mge.EVENT_BGNDE like CONCAT('%', #{searchKeyword}, '%')   
+		   </if>
+		</if>
+         <if test="searchNm != null and searchNm != ''">AND
+		      mge.EVENT_NM like  CONCAT('%', #{searchNm}, '%')   
+        </if>
+    </select>
+
+    <select id="selectEventNmList" parameterType="egovframework.com.uss.ion.evt.service.EventManageVO" resultType="egovframework.com.uss.ion.evt.service.EventManageVO">
+        
+				SELECT   mge.EVENT_ID             AS eventId ,
+				         mge.EVENT_NM             AS eventNm          
+				  FROM   COMTNEVENTMANAGE mge
+				 WHERE   EVENT_SE  like  CONCAT('%', #{eventSe}, '%')
+                   AND   #{reqstDe}                   
+		                 BETWEEN CAST( TO_CHAR(EVENT_BGNDE,'%Y%m' ) AS CHAR(6) ) 
+		                 AND     CAST( TO_CHAR(EVENT_ENDDE  ,'%Y%m' ) AS CHAR(6) )
+			     ORDER BY mge.EVENT_ID DESC
+        
+    </select>
+
+    <select id="selectEventAtdrn" resultType="egovframework.com.uss.ion.evt.service.EventManageVO">
+        
+
+				SELECT   mge.EVENT_ID             AS eventId          ,
+	                     mge.EVENT_SE             AS eventSe          ,
+	                     mge.EVENT_NM             AS eventNm          ,
+	                     mge.EVENT_PURPS          AS eventPurps       ,
+	                     mge.EVENT_BGNDE       AS eventBeginDe     ,
+	                     mge.EVENT_ENDDE         AS eventEndDe       ,
+	                     mge.EVENT_AUSPC_INSTT_NM AS eventAuspcInsttNm,
+	                     mge.EVENT_MNGT_INSTT_NM  AS eventMngtInsttNm ,
+	                     mge.EVENT_PLACE          AS eventPlace       ,
+	                     mge.EVENT_CN             AS eventCn          ,
+	                     mge.CT_OCCRRNC_AT        AS ctOccrrncAt      ,
+	                     mge.PARTCPT_CT           AS partcptCt        ,
+	                     mge.PSNCPA               AS psncpa           ,
+	                     mge.REFRN_URL            AS refrnUrl         ,
+	                     mge.RCEPT_BGNDE       AS rceptBeginDe     ,
+	                     mge.RCEPT_ENDDE         AS rceptEndDe       ,
+	                     atdrn.INFRML_SANCTN_ID   AS infrmlSanctnId   ,
+	                     atdrn.REQST_DE           AS reqstDe          ,
+	                     DATE_PART('day', TO_TIMESTAMP(mge.EVENT_ENDDE,'YYYYmmdd')-TO_TIMESTAMP(mge.EVENT_BGNDE,'YYYYmmdd'))+1 as eventTemp1 ,
+	                    (select count(APPLCNT_ID) from COMTNEVENTATDRN
+					     where  EVENT_ID = mge.EVENT_ID) as eventTemp2,
+                        (select code_nm from COMTCCMMNDETAILCODE
+				         where  code_id ='COM053'
+				         and    code    = mge.EVENT_SE) as eventTemp3,
+				         atdrn.APPLCNT_ID         AS applcntId        ,
+				         atdrn.SANCTNER_ID        AS sanctnerId       ,
+						(select USER_NM from COMVNUSERMASTER where  ESNTL_ID = atdrn.APPLCNT_ID)  AS eventTemp6,
+				        (select info.ORGNZT_NM from COMVNUSERMASTER mast, COMTNORGNZTINFO info 
+				         where  mast.ESNTL_ID   = atdrn.APPLCNT_ID
+				         AND    mast.ORGNZT_ID = info.ORGNZT_ID)  AS eventTemp7,
+						(select USER_NM from COMVNUSERMASTER where  ESNTL_ID = atdrn.SANCTNER_ID) AS sanctnerNm,
+				         atdrn.CONFM_AT           AS confmAt         ,
+				         atdrn.RETURN_RESN        AS returnResn      
+				  FROM   COMTNEVENTMANAGE mge,  COMTNEVENTATDRN atdrn
+				 WHERE   mge.EVENT_ID    = atdrn.EVENT_ID
+			       AND   atdrn.EVENT_ID        = #{eventId}
+			       AND   atdrn.APPLCNT_ID      = #{applcntId}
+        
+    </select>
+
+    <insert id="insertEventAtdrn" parameterType="egovframework.com.uss.ion.evt.service.EventAtdrn">
+        
+            INSERT INTO COMTNEVENTATDRN
+                   ( APPLCNT_ID          ,
+                     EVENT_ID            ,
+                     REQST_DE            ,
+                     SANCTNER_ID         ,
+                     CONFM_AT            ,
+                     INFRML_SANCTN_ID    ,
+                     FRST_REGISTER_ID    ,
+                     FRST_REGIST_PNTTM ) 
+            VALUES ( #{applcntId}         , 
+                     #{eventId}           ,
+                     #{reqstDe}           ,
+                     #{sanctnerId}        ,
+                     #{confmAt}           ,
+                     #{infrmlSanctnId}    ,
+                     #{frstRegisterId}    ,   
+                     NOW() ) 
+        
+	</insert>     
+
+    <update id="updtEventAtdrn" parameterType="egovframework.com.uss.ion.evt.service.EventAtdrn">
+        
+            UPDATE COMTNEVENTATDRN
+               SET CONFM_AT          = #{confmAt}    ,
+                   SANCTN_DT         = #{sanctnDt}::timestamp   ,
+                   RETURN_RESN       = #{returnResn} ,
+                   LAST_UPDUSR_ID    = #{lastUpdusrId},
+                   LAST_UPDT_PNTTM = NOW()   
+			  WHERE   APPLCNT_ID     = #{applcntId}
+			  AND     EVENT_ID       = #{eventId}
+        
+    </update>    
+    
+    <delete id="deleteEventAtdrn" parameterType="egovframework.com.uss.ion.evt.service.EventAtdrn">
+        
+            DELETE FROM COMTNEVENTATDRN
+			WHERE  APPLCNT_ID     = #{applcntId}
+			AND    EVENT_ID       = #{eventId}
+        
+    </delete> 
+
+    <select id="selectEventReqstAtdrnList" parameterType="egovframework.com.uss.ion.evt.service.EventManageVO" resultType="egovframework.com.uss.ion.evt.service.EventManageVO">
+        
+			select ROW_NUMBER() OVER () as rowCount ,
+			       mas.user_nm    as eventTemp1,  
+			      (select orgnzt_nm  from COMTNORGNZTINFO where orgnzt_ID = mas.orgnzt_ID) AS eventTemp2,
+			       mas.user_email as eventTemp3, 
+			       atd.confm_at   as eventTemp4
+			from  COMTNEVENTATDRN atd, COMVNUSERMASTER mas
+			where  atd.applcnt_ID = ESNTL_ID
+			and    atd.EVENT_ID = #{eventId}
+			ORDER BY atd.EVENT_ID DESC
+			LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+		
+    </select>
+
+    <select id="selectEventReqstAtdrnListTotCnt" parameterType="egovframework.com.uss.ion.evt.service.EventManageVO" resultType="int">
+        
+			SELECT  COUNT(*) totcnt
+			from   COMTNEVENTATDRN atd, COMVNUSERMASTER mas
+			where  atd.applcnt_ID = mas.ESNTL_ID
+			and    atd.EVENT_ID = #{eventId} 
+	    
+    </select>
+    
+</mapper>

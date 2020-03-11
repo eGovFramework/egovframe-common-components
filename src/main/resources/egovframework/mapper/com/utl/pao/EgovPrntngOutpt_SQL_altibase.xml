@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PrntngOutptDA">
+
+	<resultMap id="PrntngOutptResult" type="egovframework.com.utl.pao.service.PrntngOutptVO">
+		<result property="imgInfo" column="IMAGE_INFO"/>
+		<result property="imgType" column="IMAGE_TY"/>
+	</resultMap>
+
+	<select id="selectErncsl" parameterType="egovframework.com.utl.pao.service.PrntngOutptVO" resultMap="PrntngOutptResult">
+		 
+			SELECT  IMAGE_INFO
+			     ,  IMAGE_TY
+			  FROM  IMGTEMP
+			 WHERE 	ORGNZT_CODE  = #{orgCode}
+			   AND  ERNCSL_SE = #{erncslSe}
+		
+	</select>
+
+</mapper>

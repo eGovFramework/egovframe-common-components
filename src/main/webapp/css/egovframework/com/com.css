@@ -1,0 +1,527 @@
+/*
+  Css Name :com.css
+  Description :공통 CSS
+  Modification Information
+
+      수정일                 수정자          수정내용
+   ----------    --------  ---------------------------
+   2016.06.08    서민영          최초 생성
+   2018.06.01    유현우          공통컴포넌트 3.8 개선
+
+    author   :공통컴포넌트 개발팀 서민영
+    since    :2016.06.08
+*/
+@charset "utf-8";
+
+/* Base Style *****************************/
+* { margin:0; padding:0; border:0; }
+/* body { overflow-y:auto; } */
+body{ 
+	/*margin-top:20px;*/ 
+	margin-left:10px;
+	padding-top:0px;
+	padding-left:0px;
+	margin-bottom:0;
+	font-family:'돋움', '굴림', 'Arial', 'AppleGothic', 'sans-serif'; 
+	font-size:12px;
+}
+
+div,table,em,h1,h2,h3,h4,h5,h6,form,fieldset,p,th,td,input,textarea,select,button { 
+	font-family:'돋움', '굴림', 'Arial', 'AppleGothic', 'sans-serif'; font-size:12px; color:#666; }
+
+fieldset, img { border:0; }
+textarea { width:100%; resize:none; }
+img, label { vertical-align:middle; }
+ul, ol { list-style :none; } 
+caption span, .hide, legend { position:absolute; left:-1000%; top:0; }
+table { border-collapse:collapse; border-spacing:0; width:100%; }
+a { color:#666; text-decoration:none; }
+a:hover { color:#000; text-decoration:none; }
+a, button, input[type="button"] { cursor:pointer; }
+textarea,
+input[type="file"],
+input[type="password"],
+input[type="text"] {border:1px solid #d2d2d2; color:#727272; } 
+textarea[readonly="readonly"],
+button[readonly="readonly"],
+select[readonly="readonly"],
+input[readonly="readonly"],
+textarea[disabled="disabled"],
+button[disabled="disabled"],
+select[disabled="disabled"],
+input[disabled="disabled"] { color:#999; background:#f7f7f7; }
+input[type="password"],
+input[type="file"],
+input[type="text"] { /*height:15px; vertical-align:middle; */ }
+input[type="file"] { width:100%; }
+input[type="radio"] { vertical-align:text-bottom; }
+
+.vam { vertical-align:middle !important; }
+.ml10 { margin-left:10px !important; }
+.mr10 { margin-right:10px !important; }
+.mb10 { margin-bottom:10px !important; }
+.mb20 { margin-bottom:20px !important; }
+.mt20 { margin-top:20px !important; }
+
+
+/* box Style *****************************/
+.boxType1 { position:relative; border:4px solid #ececec; background:#f7f7f7; }
+.boxType1 .box { background:#fff; margin:4px; }
+.boxType1 .box .error { padding:25px 0 25px 190px; min-height:50px; background:url('../images/bul_i.jpg') 30px 50% no-repeat; }
+.boxType1 .box .error p.title { color:#DB6415; font-size:16px; line-height:21px; font-weight:bold; margin-bottom:10px; }
+.boxType1 .box .error p.cont { line-height:18px; }
+
+.boxType2 { position:relative; border:4px solid #f1f1f1; background:#f7f7f7; }
+
+
+/* button Style *****************************/
+.btn_style1 { display:inline-block; padding:6px 12px; border-radius:1px; }
+.btn_style1 a { color:#fff; font-size:13px; font-weight:bold; }
+.btn_style1 a:hover { opacity:0.6; }
+.btn_style2 { display:inline-block; padding:4px 10px; border:1px solid #d2d2d2; color:#333; font-size:11px; background:#f4f4f4; border-radius:1px; }
+.btn_style3 { display:inline-block; padding:5px 8px; background:#3d70b6; border-radius:1px; color:#fff; font-size:11px;}
+.btn_style3c { padding:5px 8px; background:#3d70b6; border-radius:1px; color:#fff; font-size:11px; cursor:pointer;}
+.btn_style4 { padding:5px 11px; }
+
+.btn_right { float:right; }
+.blue { background:#3d70b6; }
+.gray { background:#9e9e9e; }
+
+
+/* input Style *****************************/
+.input2 { height:21px !important; padding-left:5px; margin-right:3px; }
+
+
+
+/* select Style *****************************/
+.select2 { padding:2px 3px 3px 4px; border:1px solid #d2d2d2; }
+
+
+/* textarea Style *****************************/
+.textarea2 { padding:4px 0 0 6px; }
+.textarea3 { padding:4px 0 0 6px; background:#f7f7f7; }
+
+/* file Style *****************************/
+.file_add { margin-top:6px; width:100%; border:0px solid #666;}
+.file_add a { display:inline-block; width:13px; height:18px; background:url('../../../images/egovframework/com/cmm/btn/btn_del.png') 1px 2px no-repeat; text-indent:-10000em; }
+.file_input_textbox { 	float:left; color:#666; border:1px solid #cfcfcf !important; padding-left:5px; margin-right:4px; }
+.file_input_div { position:relative; width:66px; height:23px; overflow:hidden; }
+.file_input_button { position:absolute; width:66px; height:23px; background:#3d70b6; border-radius:1px; font-size:11px; color:#fff; border:none;  }
+.file_input_hidden { position:absolute; font-size:45px; right:0; top:0; opacity:0; cursor:pointer; 
+	filter:alpha(opacity=0);	
+	-ms-filter:"alpha(opacity=0)";
+	-khtml-opacity:0;
+	-moz-opacity:0;
+}
+
+.cursor {cursor:pointer;}
+/*.error  {color :#ff0000;} */
+
+/* Popup Layout *********************************/
+.popup { position:relative; }
+.popup h1 { float:left; color:#333; font-size:16px; font-weight:600; margin:18px 0 10px; }
+.pop_search_box { float:right; display:inline; margin:15px 6px 0 0; }
+.pop_search_box ul li { float:left; margin-left:5px; }
+.pop_search_box select { padding:2px 3px 3px 4px; border:1px solid #d2d2d2; }
+.pop_search_box input.s_input { width:140px; padding-left:5px; margin-right:3px; }
+.pop_search_box input.s_btn { height:24px; padding:0 10px; margin:0 0 0 0;border:none; color:#fff; background:#3d70b6; border-radius:2px; cursor:pointer; }
+.pop_search_box input.s_btn:hover { opacity:0.6; }
+
+.pop_board_list { width:100%; border-top:2px solid #0c4ca4; }
+.pop_board_list caption { display:none; }
+.pop_board_list thead th,
+.pop_board_list tbody th { color:#222 ; font-weight:bold; background:#f4f4f4; padding:12px 0; border-bottom:1px solid #e6e6e6; }
+.pop_board_list tbody th { text-align:left; padding-left:14px; }
+.pop_board_list tbody th.vtop { vertical-align:top; }
+.pop_board_list tbody th .ic_chk { background:url('../images/tbl_check.png') left 3px no-repeat; padding-left:14px; }
+.pop_board_list tbody th span.pilsu { color:#d0270b; font-weight:500; margin-left:3px; }
+.pop_board_list tbody td { text-align:center; padding:11px 5px; border-bottom:1px solid #e6e6e6; }
+.pop_board_list tbody td.left { text-align:left; padding-left:8px; }
+.pop_board_list tbody td.cnt { text-align:left; padding:12px 10px 20px; line-height:160%; }
+.pop_board_list tbody td.nopd { text-align:left; padding:0; border-left:1px solid #fff; }
+.pop_board_list tbody td input.bbs_Nm { width:99%; }
+.pop_board_list tbody td input.tmp { width:160px; }
+.pop_board_list tbody td textarea { width:99%; height:100px; }
+.pop_board_list tbody td textarea.txt { width:97%; height:300px; margin:6px 8px; }
+.pop_board_list tbody td textarea.re_txt { float:left; width:80%; }
+.pop_board_list tbody td a.re_btn { float:right; padding:43px 31px; margin:1px 2px 0 0; font-size:12px; font-weight:600; }
+.pop_board_list tbody td select { padding:2px 0 3px 2px; border:1px solid #dedede; }
+.pop_board_list tbody td img { margin-left:7px; }
+
+.popwTable { width:100%; border-top:2px solid #0c4ca4; }
+.popwTable caption { display:none; }
+.popwTable thead th,
+.popwTable tbody th { color:#222 ; font-size:13px; font-weight:400; background:#f4f4f4; padding:12px 0; border-bottom:1px solid #d9d9d9; }
+.popwTable tbody tr.odd {  }
+.popwTable tbody.ov tr:hover { background:#f9f9f9; }
+.popwTable tbody th { text-align:left; padding-left:14px; }
+.popwTable tbody th.vtop { vertical-align:top; }
+.popwTable tbody th span.pilsu { color:#d0270b; font-weight:500; margin-left:3px; }
+.popwTable tbody td { text-align:center; padding:11px 5px; border-bottom:1px solid #d9d9d9; }
+.popwTable tbody td.left { text-align:left; padding:6px 8px; }
+.popwTable tbody td.left div .error  {color :#ff0000;}
+.popwTable tbody td.cnt { text-align:left; padding:12px 10px 20px; line-height:160%; }
+.popwTable tbody td.nopd { text-align:left;}
+.popwTable tbody td.nopd div .error  {color :#ff0000; margin:0px 0px 0px 10px;}
+.popwTable tbody td.bold { text-align:left; font-size:14px; font-weight :bold;}
+.popwTable tbody td a:hover { text-decoration:underline; }
+.popwTable tbody td input { width:99%; }
+.popwTable tbody td input.tmp { width:160px; }
+.popwTable tbody td textarea { width:99%; height:50px; }
+.popwTable tbody td textarea.txt { width:96%; height:50px; margin:8px; padding:5px; }
+.popwTable tbody td textarea.re_txt { float:left; width:80%; }
+.popwTable tbody td a.re_btn { float:right; padding:43px 30px; margin:1px 0 0 0; font-size:12px; font-weight:600; }
+.popwTable tbody td a.re_btn:hover { text-decoration:none; }
+.popwTable tbody td select { padding:2px 0 3px 2px; border:1px solid #dedede; }
+.popwTable tbody td img { margin-left:7px; }
+
+.board {position:relative; width:730px; padding-top:20px; }
+.board h1, 
+.board h2 {/*float:left;*/ color:#333; font-size:16px; font-weight:600; }
+.board h1 {margin-bottom:7px; padding:0 0 1px 25px; background:url(../../../images/egovframework/com/cmm/icon/tit_icon.png) no-repeat left 0px; }
+.board h2 { margin:15px 0 10px 0; }
+.board h3 { color:#333;  font-size:14px; font-weight:600; margin:50px 0 10px 0; }
+.board h3 b { color:#2277d7; }
+.search_box {/* float:right;*/ position:relative; margin-bottom:7px; padding:13px 10px; border:1px solid #b1bbcb; border-top:3px solid #8191ac; background:#eef3fb; }
+.search_box ul {font-size:0; text-align:right; }
+.search_box ul li {/* float:left;*/display:inline-block; margin-left:5px; font-size:11px; vertical-align:top; }
+.search_box ul li img { margin-left:7px; }
+.search_box ul li > div {color:#194e73; font-weight:bold; vertical-align:top; }
+.search_box ul li > label {display:inline-block; height:24px; color:#194e73; font-size:12px; font-weight:bold; line-height:24px; }
+.search_box ul li > input[type=text] {height:22px; } 
+.search_box select {height:24px; /*padding:3px 3px 3px 4px;*/ border:1px solid #dedede; }
+.search_box input.s_input {width:140px; height:22px; margin-right:3px; padding-left:5px; }
+.search_box input.s_input2 {width:140px; height:22px; margin-right:3px; padding-left:5px; }
+.search_box input.s_btn { height:24px; padding:0 8px; border:none; color:#fff; background:#4688d2; border-radius:2px; cursor:pointer; }
+.search_box input.s_btn:hover { background:#7dabdf; }
+
+.search_box span.s_btn { display:inline-block; vertical-align:top; height:13px; font-size:12px; padding:6px 12px 5px 12px; background:#4688d2; border-radius:2px; cursor:pointer; }
+.search_box span.s_btn:hover { background:#7dabdf;}
+.search_box span.s_btn a { color:#fff;  }
+
+.search_box span.btn_b { display:inline-block; vertical-align:top; height:13px; font-size:12px; padding:3px 0 8px 0; background:#4688d2; border-radius:2px; cursor:pointer; }
+.search_box span.btn_b:hover { background:#7dabdf;}
+.search_box span.btn_b a { vertical-align:text-top; color:#fff; display:block; line-height:19px; padding:0 8px;}
+
+.search_box .con {display:inline-block; width:40%; margin-bottom:2px; }
+.search_box .con.full {display:inline-block; width:80%; margin-bottom:2px; }
+.search_box .con label {display:inline-block; width:70px; height:24px; color:#194e73; font-size:12px; font-weight:bold; line-height:24px; }
+.search_box .con input[type=text] {height:22px; }
+.search_box .bt_a {position:absolute; right:10px; top:13px; }	
+
+.noScriptTitle {
+font-size :17px;
+color :blue;
+text-align :center;
+font-family:'돋움', '굴림', 'Arial', 'AppleGothic', 'sans-serif'; 
+font-weight :bold;
+padding-bottom :12px;
+}
+
+/* table style */
+.board_list {width:100%; table-layout:fixed; border-top:2px solid #4688d2; }
+.board_list caption { display:none; }
+.board_list thead th,
+.board_list tbody th { color:#222 ; font-size:13px; font-weight:400; background:#f4f4f4; padding:12px 0; border-bottom:1px solid #d9d9d9; }
+.board_list tbody tr.odd {  }
+.board_list tbody.ov tr:hover { background:#f9f9f9; }
+.board_list tbody th { text-align:left; padding-left:14px; }
+.board_list tbody th.vtop { vertical-align:top; }
+.board_list tbody th span.pilsu { color:#d0270b; font-weight:500; margin-left:3px; }
+.board_list tbody td { text-align:center; padding:11px 5px; border-bottom:1px solid #d9d9d9; 
+							word-break:break-all; white-space:-moz-pre-wrap; overflow:hidden; text-overflow:ellipsis;}
+.board_list tbody td.left { text-align:left; padding:6px 8px; }
+.board_list tbody td.leftElli { text-align:left; padding:6px 8px; 
+overflow:hidden;
+text-overflow:ellipsis;
+-o-text-overflow:ellipsis;
+white-space:nowrap;
+width:100%;
+}
+.board_list tbody td.cnt { text-align:left; padding:12px 10px 20px; line-height:160%; }
+.board_list tbody td.nopd { text-align:left;}
+.board_list tbody td.bold { text-align:left; font-size:14px; font-weight :bold;}
+.board_list tbody td.bold input { text-align:left; font-size:14px; font-weight :bold;}
+.board_list tbody td a:hover { text-decoration:underline; }
+.board_list tbody td input.bbs_Nm { width:99%; }
+.board_list tbody td input.link {color:#666; }
+.board_list tbody td input.tmp { width:160px; }
+.board_list tbody td textarea { width:99%; height:50px; }
+.board_list tbody td textarea.txt { width:96%; height:300px; margin:8px; padding:5px; }
+.board_list tbody td textarea.re_txt { width:470px; float:left; margin-right:8px; height:96px;  }
+.board_list tbody td a.re_btn { float:right; padding:43px 30px; margin:1px 0 0 0; font-size:12px; font-weight:600; }
+.board_list tbody td a.re_btn:hover { text-decoration:none; }
+.board_list tbody td select { padding:2px 0 3px 2px; border:1px solid #dedede; }
+.board_list tbody td img { margin-left:7px; }
+
+.top_line { border-top:1px solid #d9d9d9; }
+.board_th_link { 
+	font-weight:600;
+}
+
+
+/* table style */
+.wTableFrm {position:relative; width:730px; padding-top:20px; }
+.wTableFrm h1, .wTableFrm h2 {/* float:left;*/ color:#333; font-size:16px; font-weight:600; }
+.wTableFrm h1 { margin-top:15px; }
+.wTableFrm h2 {margin-bottom:10px; padding-left:25px; background:url(../../../images/egovframework/com/cmm/icon/tit_icon.png) no-repeat left top; }
+.wTableFrm h3 { color:#333;  font-size:14px; font-weight:600; margin:50px 0 10px 0; }
+.wTableFrm h3 b { color:#2277d7; }
+
+.wTable { width:100%; border-top:2px solid #4688d2; }
+.wTable caption { display:none; }
+.wTable > thead > tr > th,
+.wTable > thead > tr > th { color:#222 ; font-size:13px; font-weight:400; background:#f4f4f4; padding:12px 0; border-bottom:1px solid #d9d9d9; }
+.wTable > tbody tr.odd {  }
+.wTable > tbody.ov tr:hover { background:#f9f9f9; }
+.wTable > thead > tr > th { text-align:left; padding-left:14px; }
+.wTable > thead > tr > th.vtop { vertical-align:top; }
+.wTable > thead > tr > th span.pilsu { color:#d0270b; font-weight:500; margin-left:3px; }
+.wTable > tbody > tr > th { padding-left:14px; border-bottom:1px solid #d9d9d9; text-align:left; background:#f4f4f4; }
+.wTable > tbody > tr > th.vtop { vertical-align:top; }
+.wTable > tbody > tr > th span.pilsu { color:#d0270b; font-weight:500; margin-left:3px; }
+.wTable > tbody > tr > td { text-align:center; padding:11px 5px; border-bottom:1px solid #d9d9d9; }
+.wTable > tbody > tr > td.left { text-align:left; padding:6px 8px; }
+.wTable > tbody > tr > td.left div .error  {color :#ff0000;}
+.wTable > tbody > tr > td.cnt { text-align:left; padding:12px 10px 20px; line-height:160%; }
+.wTable > tbody > tr > td.nopd { text-align:left;}
+.wTable > tbody > tr > td.nopd div .error  {color :#ff0000; margin:0px 0px 0px 10px;}
+.wTable > tbody > tr > td.bold { text-align:left; font-size:14px; font-weight :bold;}
+.wTable > tbody > tr > td a:hover { text-decoration:underline; }
+.wTable > tbody > tr > td input[type=text] {width:99%; height:22px; }
+.wTable > tbody > tr > td input.tmp { width:160px; }
+.wTable > tbody > tr > td textarea { width:99%; height:50px; }
+.wTable > tbody > tr > td textarea.txt { width:96%; height:50px; margin:8px; padding:5px; }
+.wTable > tbody > tr > td textarea.re_txt { float:left; width:80%; }
+.wTable > tbody > tr > td a.re_btn { float:right; padding:43px 30px; margin:1px 0 0 0; font-size:12px; font-weight:600; }
+.wTable > tbody > tr > td a.re_btn:hover { text-decoration:none; }
+.wTable > tbody > tr > td select {height:24px; border:1px solid #dedede; }
+.wTable > tbody > tr > td img {/* margin-left:7px;*/ }
+.wTable input[readonly="readonly"] {height:22px; border:1px solid #d2d2d2; }
+.wTable > tbody > tr > td input[type=checkbox] {vertical-align:-3px; }
+
+
+/* toolbar */
+.toolbar { height:52px; background-color:#e5e5e5; padding-bottom:4px; border-bottom:1px solid #dedede; }
+	.group { float:left; padding:4px 0 0 8px; }
+	.group ul { float:left; padding:0; margin:0 3px 0 0; }
+	.group ul li { float:left; margin-right:3px; }
+	.group ul.format li { margin:2px 0 0 0; }
+	.group ul.sep { border-left:1px solid #ccc; padding:0 3px; border-right:1px solid #ccc; }
+
+	.group input[type="button"] { width:22px; height:20px; line-height:20px; text-indent:-10000em; border:none; cursor:pointer; }
+	.group input[type="button"]:hover, .group input.on { background-color:#fff; border:1px solid #dedede; }
+	.ed_bold { background:url('../../../images/egovframework/com/cmm/toolbar/ed_format_bold.gif') left top no-repeat; }
+	.ed_italic { background:url('../../../images/egovframework/com/cmm/toolbar/ed_format_italic.gif') 2px top no-repeat; }
+	.ed_underline { background:url('../../../images/egovframework/com/cmm/toolbar/ed_format_underline.gif') 1px top no-repeat; }
+	.ed_strike { background:url('../../../images/egovframework/com/cmm/toolbar/ed_format_strike.gif') 1px top no-repeat; }
+	.ed_sub { background:url('../../../images/egovframework/com/cmm/toolbar/ed_format_sub.gif') 1px 1px no-repeat; }
+	.ed_sup { background:url('../../../images/egovframework/com/cmm/toolbar/ed_format_sup.gif') 1px 1px no-repeat; }
+	.ed_copy { background:url('../../../images/egovframework/com/cmm/toolbar/ed_copy.gif') left top no-repeat; }
+	.ed_cut { background:url('../../../images/egovframework/com/cmm/toolbar/ed_cut.gif') 1px top no-repeat; }
+	.ed_paste { background:url('../../../images/egovframework/com/cmm/toolbar/ed_paste.gif') 1px top no-repeat; }
+	.ed_undo { background:url('../../../images/egovframework/com/cmm/toolbar/ed_undo.gif') 1px top no-repeat; }
+	.ed_redo { background:url('../../../images/egovframework/com/cmm/toolbar/ed_redo.gif') 1px 1px no-repeat; }
+	.ed_rmformat { background:url('../../../images/egovframework/com/cmm/toolbar/ed_rmformat.gif') 1px top no-repeat; }
+	.ed_killword { background:url('../../../images/egovframework/com/cmm/toolbar/ed_killword.gif') 1px top no-repeat; }
+	.ed_al_left { background:url('../../../images/egovframework/com/cmm/toolbar/ed_align_left.gif') 1px top no-repeat; }
+	.ed_al_center { background:url('../../../images/egovframework/com/cmm/toolbar/ed_align_center.gif') 1px top no-repeat; }
+	.ed_al_right { background:url('../../../images/egovframework/com/cmm/toolbar/ed_align_right.gif') 1px top no-repeat; }
+	.ed_al_justify { background:url('../../../images/egovframework/com/cmm/toolbar/ed_align_justify.gif') 1px top no-repeat; }
+	.ed_right { background:url('../../../images/egovframework/com/cmm/toolbar/ed_left_to_right.gif') 1px top no-repeat; }
+	.ed_left { background:url('../../../images/egovframework/com/cmm/toolbar/ed_right_to_left.gif') 1px top no-repeat; }
+	.ed_num { background:url('../../../images/egovframework/com/cmm/toolbar/ed_list_num.gif') 1px top no-repeat; }
+	.ed_bullet { background:url('../../../images/egovframework/com/cmm/toolbar/ed_list_bullet.gif') 1px top no-repeat; }
+	.ed_indent_less { background:url('../../../images/egovframework/com/cmm/toolbar/ed_indent_less.gif') 1px top no-repeat; }
+	.ed_indent_more { background:url('../../../images/egovframework/com/cmm/toolbar/ed_indent_more.gif') 1px top no-repeat; }
+	.ed_fg { background:url('../../../images/egovframework/com/cmm/toolbar/ed_color_fg.gif') 1px top no-repeat; }
+	.ed_bg { background:url('../../../images/egovframework/com/cmm/toolbar/ed_color_bg.gif') 1px top no-repeat; }
+	.ed_hr { background:url('../../../images/egovframework/com/cmm/toolbar/ed_hr.gif') 1px top no-repeat; }
+	.ed_link { background:url('../../../images/egovframework/com/cmm/toolbar/ed_link.gif') 1px top no-repeat; }
+	.ed_image { background:url('../../../images/egovframework/com/cmm/toolbar/ed_image.gif') 1px top no-repeat; }
+	.ed_table { background:url('../../../images/egovframework/com/cmm/toolbar/insert_table.gif') 1px top no-repeat; }
+	.ed_html { background:url('../../../images/egovframework/com/cmm/toolbar/ed_html.gif') 1px top no-repeat; }
+	.ed_fullscreen { background:url('../../../images/egovframework/com/cmm/toolbar/fullscreen_maximize.gif') 1px top no-repeat; }
+	.ed_help { background:url('../../../images/egovframework/com/cmm/toolbar/ed_help.gif') 1px top no-repeat; }
+	.ed_about { background:url('../../../images/egovframework/com/cmm/toolbar/ed_about.gif') 1px top no-repeat; }
+.toolbar select { font-size:11px; }
+
+.reply { width:730px;  clear:both; border-top:2px solid #4688d2; position:relative; }
+.reply ul { width:730px;  margin:0; padding:0; }
+.reply ul li { width:690px;  border-bottom:1px solid #d9d9d9; padding:20px 20px 14px; overflow:hidden;}
+.reply .top { height:17px; padding-bottom:12px; }
+.reply .top strong { color:#333; font-weight:600; }
+.reply .top span.bar { color:#d3d3d3; font-size:10px; padding:0 9px; }
+.reply .top span.date { color:#999; }
+.reply .txt { line-height:19px; }
+.reply .bottom { float:right; margin:10px 0 6px; }
+
+/* pagination */
+.pagination {text-align:center; margin-top:15px; }
+.pagination ul { display:inline-block; }
+.pagination ul li {display:inline-block; margin:0 2px;  }
+.pagination ul li a { display:block; color:#999; width:26px; height:26px; line-height:26px; border:1px solid #e0e0e0; }
+.pagination ul li.first a { background:url('../../../images/egovframework/com/cmm/paging/pagination_first.gif') 8px 9px no-repeat; text-indent:-10000em; }
+.pagination ul li.prev a { background:url('../../../images/egovframework/com/cmm/paging/pagination_prev.gif') 11px 9px no-repeat; text-indent:-10000em; }
+.pagination ul li.next a { background:url('../../../images/egovframework/com/cmm/paging/pagination_next.gif') 12px 9px no-repeat; text-indent:-10000em; }
+.pagination ul li.last a { background:url('../../../images/egovframework/com/cmm/paging/pagination_last.gif') 10px 9px no-repeat; text-indent:-10000em; }
+.pagination ul li.first a:hover { background:url('../../../images/egovframework/com/cmm/paging/pagination_first_on.gif') no-repeat; }
+.pagination ul li.prev a:hover { background:url('../../../images/egovframework/com/cmm/paging/pagination_prev_on.gif') no-repeat; }
+.pagination ul li.next a:hover { background:url('../../../images/egovframework/com/cmm/paging/pagination_next_on.gif/') no-repeat; }
+.pagination ul li.current a,
+.pagination ul li a:hover { border:none; color:#fff; font-size:15px; font-weight:600; width:28px; height:28px; line-height:28px; background:#4688d2; }
+
+/* pagination by reply */
+.paging { float:left; display:inline; width:730px; font-size:1em; text-align:center; margin:15px 0 20px; position:relative;  }
+.paging ul { display:inline-block; margin:0; padding:0; }
+.paging ul li { float:left; margin:0 3px; }
+.paging ul li a { display:block; width:15px; color:#888; text-decoration:none; }
+.paging ul li.first a { background:url('../../../images/egovframework/com/cmm/paging/pagination_first.gif') center 5px no-repeat; text-indent:-10000em; }
+.paging ul li.prev a { background:url('../../../images/egovframework/com/cmm/paging/pagination_prev.gif') center 5px no-repeat; text-indent:-10000em; }
+.paging ul li.next a { background:url('../../../images/egovframework/com/cmm/paging/pagination_next.gif') center 5px no-repeat; text-indent:-10000em; }
+.paging ul li.last a { background:url('../../../images/egovframework/com/cmm/paging/pagination_last.gif') center 5px no-repeat; text-indent:-10000em; }
+.paging strong { display:block; padding:0 5px; color:#2277d7; }
+
+/* button submit */
+.btn_submit { padding:4px 11px 5px; background:#4688d2; font-weight:600; color:#fff; border-radius:1px; margin-left:4px; cursor:pointer; border:none;}
+.btn_submit:hover { background:#7dabdf; }
+
+/* button style */
+button { padding:5px 12px 7px 12px; background:#4688d2; font-weight:600; color:#fff; border-radius:1px; margin-left:4px; cursor:pointer; }
+button:hover { background:#7dabdf; }
+
+.btn_s2 { margin:0; padding:0px 12px 2px 12px; line-height:19px; word-spacing:-2px; border-radius:1px; font-weight:normal; background:#4688d2; color:#fff; font-size:11px; cursor:pointer; text-align:right;}
+.btn_s2:hover { background:#7dabdf; }
+
+.btn_s { padding:3px 10px 6px 11px; background-color:#4688d2; color:#fff; font-size:11px; border-radius:1px; margin-top:4px;}
+.btn_s:hover { color:#c7dbf1; }
+
+span.btn_s {display:inline-block !important; width:43px !important; height:21px !important; margin-top:0 !important; padding:0 !important; border-radius:1px !important; background:#4688d2 !important; vertical-align:top !important; cursor:pointer; }
+span.btn_s:hover { background:#7dabdf;}
+span.btn_s a {display:block !important; height:21px !important; color:#fff !important; text-align:center !important; line-height:21px !important; vertical-align:top !important; }
+
+span.btn_s2 {display:inline-block !important; height:21px !important; margin-top:0 !important; padding:0 10px !important; border-radius:1px !important; background:#4688d2 !important; vertical-align:top !important; cursor:pointer; }
+span.btn_s2:hover { background:#7dabdf;}
+span.btn_s2 a {display:block !important; height:21px !important; color:#fff !important; line-height:21px !important; vertical-align:top !important; }
+
+/* 2018.01.25 EgovQustnrItemManageListPopup.jsp 관련 추가 */
+span.btn_r { vertical-align:middle; padding:5px 1px 5px 1px; height:13px; margin:0px 0px 1px 0px; display:inline-block; background:#3d70b6; border-radius:0px; cursor:pointer; }
+span.btn_r:hover { background:#7dabdf;}
+span.btn_r a { vertical-align:text-top; color:#fff; display:block; line-height:16px; padding:0px 10px 0px 10px;}
+
+.btn { float:right; margin-top:18px; margin-bottom:15px; font-size:11px; }
+.btn input.s_submit {height:21px; padding:0 10px; border:0 !important; color:#fff; font-family:'돋움', '굴림', 'Arial', 'AppleGothic', 'sans-serif'; font-size:11px; font-weight:200; background:#4688d2; vertical-align:top; cursor:pointer; }
+.btn input.s_submit:hover { background:#7dabdf; }
+
+.blog_title { border-bottom:1px solid #e3e3e3; padding-bottom:10px; }
+.blog_title h5 { float:left; font-size:14px; }
+.blog_title span { border-left:1px solid #dcdada; margin-left:12px; padding-left:12px; vertical-align:middle; }
+.blog_title span a { color:#666; }
+.blog_title p { float:right; font-size:11px; color:#999; }
+
+.link, .link a, .link button, .link input {
+overflow:hidden;
+text-overflow:ellipsis;
+-o-text-overflow:ellipsis;
+white-space:nowrap;
+width:100%;
+text-align :left;
+font-size:12px;
+border-style :none;
+background-color :transparent;
+cursor :pointer;
+}
+.link.ac input {text-align:center; }
+
+
+.egov_file_box label {
+  display:inline-block;
+  padding:.45em .75em;
+  color:#fff;
+  font-size:11px;
+  line-height:normal;
+  vertical-align:middle;
+  background-color:#4688d2;
+  cursor:pointer;
+  border:1px solid #ebebeb;
+  border-bottom-color:#e2e2e2;
+  border-radius:.15em;
+}
+
+.egov_file_box input[type="file"] {  /* 파일 필드 숨기기 */
+  position:absolute;
+  width:1px;
+  height:1px;
+  padding:0;
+  margin:-1px;
+  overflow:hidden;
+  clip:rect(0,0,0,0);
+  border:0;
+}
+
+/* 2018 add */
+.blind {position:absolute; left:-9999px; top:-9999px; font-size:0; }
+.vat {vertical-align:top !important; }
+.mr-8 {margin-right:-8px !important; }
+.mb0 {margin-bottom:0px !important; }
+.mb5 {margin-bottom:8px !important; }
+.mb8 {margin-bottom:8px !important; }
+.pt5 {padding-top:5px !important; }
+.btn01 {display:inline-block; padding:5px !important; vertical-align:top !important; cursor:pointer; }
+.btn02 {display:inline-block; height:20px; padding:0 8px; color:#363636; line-height:20px; background:#ddd; }
+
+.calendar {table-layout:fixed; }
+.calendar .day > td {height:70px; padding:10px; border-right:1px solid #fff; border-bottom:1px solid #fff; background:#e5e5e5; vertical-align:top; }
+.calendar .day > td a {display:inline-block; margin-bottom:5px; color:#393939; font-size:10px; font-weight:bold; }
+.calendar .cap > td {height:25px; color:#fff; font-size:12px; font-weight:bold; text-align:center; background:#959fae; vertical-align:middle; }
+.calendar .cap > td.sat {background:#4989ce; }
+.calendar .cap > td.sun {background:#ee615f; }
+
+.cmt01 {font-size:12px; }
+
+.search_box2 {padding:15px 14px; border:1px solid #b1bbcb; border-top:3px solid #8191ac; background:#eef3fb; }
+.search_box2 label {display:inline-block; height:24px; color:#194e73; font-size:12px; font-weight:bold; line-height:24px; vertical-align:top; }
+.search_box2 input[type=text] {height:22px; vertical-align:top; }
+.search_box2 select {height:24px; border:1px solid #dedede; vertical-align:top; }
+.search_box2 > span.t1 {display:inline-block; height:24px; color:#194e73; font-size:16px; font-weight:bold; line-height:24px; vertical-align:top; }
+.search_box2 .btns {height:24px; padding:0 10px; border:none; color:#fff; background:#4688d2; border-radius:2px; cursor:pointer; vertical-align:top; }
+.search_box2 .btns:hover {background:#7dabdf; }
+.search_box2 .btns2 {display:inline-block; height:24px; padding:0 7px; border-radius:2px; color:#fff; font-size:12px; line-height:24px; background:#666; vertical-align:top; }
+
+.tit01 {padding-left:25px; color:#333; font-size:16px; font-weight:bold; background:url(../../../images/egovframework/com/cmm/icon/tit_icon.png) no-repeat; }
+.tit02 {padding-left:17px !important; color:#393939 !important; font-size:12px !important; font-weight:bold !important; background:url(../../../images/egovframework/com/cmm/icon/icon_tit2.png) no-repeat !important; }
+
+.tab01 {height:38px; border:1px solid #b1bbcb; border-radius:3px; background:url(../../../images/egovframework/com/cmm/bg_tab01.gif) repeat-x; }
+.tab01 ul:after {content:""; display:block; height:0; clear:both; visibility:hidden; }
+.tab01 ul li {float:left; padding:0 20px; background:url(../../../images/egovframework/com/cmm/bg_bar01.gif) no-repeat right bottom; }
+.tab01 ul li:last-child {background:none; }
+.tab01 ul li a {display:block; position:relative; top:-1px; height:14px; padding-top:14px; color:#393939; font-weight:bold; }
+.tab01 ul li a.on {background:url(../../../images/egovframework/com/cmm/bg_tab01_on.gif) no-repeat center top; }
+
+/* 리스트 테이블 */
+.table-line{table-layout:fixed; border-collapse:collapse; width:100%; }
+.table-line th{border-top:2px solid #d9d9d9; border-right:1px solid #a3a3a3; border-bottom:1px solid #a3a3a3; background:#e4eaf8; height:20px; padding:0; }
+.table-line td{padding:0; border-right:#d9d9d9 1px solid; border-bottom:#d9d9d9 1px solid; background:#f7f7f7; }
+.table-line td:first-child {border-left:1px solid #d9d9d9; }
+.table-line td.al {text-align:center; }
+
+.txta01 {border:1px solid #d2d2d2; }
+
+.e001 td {height:40px; }
+.e002 td {padding:2px 0; }
+
+.btn_01 {display:inline-block !important; height:24px !important; padding:0 11px !important; border-radius:2px !important; color:#fff !important; font-size:12px !important; line-height:24px !important; background:#4688d2 !important; vertical-align:top !important; }
+.btn_01:hover {background:#7dabdf !important;}
+.btn_02 {display:inline-block !important; height:18px !important; padding:0 10px !important; border:1px solid #9c9c9c; border-radius:2px !important; color:#000 !important; font-size:11px !important; line-height:18px !important; background:url(../../../images/egovframework/com/cmm/btn/bg_btn_02.jpg) repeat-x !important; vertical-align:top !important; }
+
+.schedule thead td {height:25px; color:#fff; text-align:center; background:#959fae; }
+.schedule thead td.sat {background:#4989ce; }
+.schedule thead td.sun {background:#ee615f; }
+.schedule > tbody > tr > td {border-right:1px solid #fff; border-bottom:1px solid #fff; background:#EFEFEF; }
+.schedule .btn_02 {vertical-align:1px !important; }
+
+.twit_list li {margin-bottom:10px; }
+.twit_list li a:hover {text-decoration:underline; }
+.twit_list li img {display:block; margin-top:10px; }
+
+

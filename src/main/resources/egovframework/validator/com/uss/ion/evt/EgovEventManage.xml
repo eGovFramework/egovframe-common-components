@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+
+<form-validation>
+
+    <formset>
+        <form name="eventManage">
+            <field property="eventSe" depends="required">
+                <arg0 key="comUssIonEvt.eventManage.validate.eventSe" resource="true"/><!-- 행사구분 -->
+            </field>
+            <field property="eventNm" depends="required, maxlength">
+                <arg0 key="comUssIonEvt.eventManage.validate.eventNm" resource="true"/><!-- 행사명 -->
+                <arg1 key="60" resource="true"/>
+                <var>
+                <var-name>maxlength</var-name>
+                <var-value>60</var-value>
+                </var>                       
+            </field>
+            <field property="eventPurps" depends="required, maxlength">
+                <arg0 key="comUssIonEvt.eventManage.validate.eventPurps" resource="true"/><!-- 행사목적 -->
+                <arg1 key="200" resource="true"/>
+                <var>
+                <var-name>maxlength</var-name>
+                <var-value>200</var-value>
+                </var>
+            </field>
+            <field property="eventBeginDe" depends="required">
+                <arg0 key="comUssIonEvt.eventManage.validate.eventBeginDe" resource="true"/><!-- 행사시작일자 -->
+            </field>
+            <field property="eventEndDe" depends="required">
+                <arg0 key="comUssIonEvt.eventManage.validate.eventEndDe" resource="true"/><!-- 행사종료일자  -->
+            </field>
+            <field property="eventAuspcInsttNm" depends="required, maxlength">
+                <arg0 key="comUssIonEvt.eventManage.validate.eventAuspcInsttNm" resource="true"/><!-- 행사주최기관명 -->
+                <arg1 key="60" resource="true"/>
+                <var>
+                <var-name>maxlength</var-name>
+                <var-value>60</var-value>
+                </var>
+            </field>
+            <field property="eventMngtInsttNm" depends="required, maxlength">
+                <arg0 key="comUssIonEvt.eventManage.validate.eventMngtInsttNm" resource="true"/><!-- 행사주관기관명 -->
+                <arg1 key="60" resource="true"/>
+                <var>
+                <var-name>maxlength</var-name>
+                <var-value>60</var-value>
+                </var>
+            </field>
+            <field property="eventPlace" depends="required, maxlength">
+                <arg0 key="comUssIonEvt.eventManage.validate.eventPlace" resource="true"/><!-- 행사장소 -->
+                <arg1 key="200" resource="true"/>
+                <var>
+                <var-name>maxlength</var-name>
+                <var-value>30</var-value>
+                </var>
+            </field>
+            <field property="eventCn" depends="required, maxlength">
+                <arg0 key="comUssIonEvt.eventManage.validate.eventCn" resource="true"/><!-- 행사내용 -->
+                <arg1 key="1000" resource="true"/>
+                <var>
+                <var-name>maxlength</var-name>
+                <var-value>1000</var-value>
+                </var>
+            </field>
+            <field property="ctOccrrncAt" depends="required">
+                <arg0 key="comUssIonEvt.eventManage.validate.ctOccrrncAt" resource="true"/><!-- 비용발생여부 -->
+            </field>
+            <field property="partcptCt" depends="required">
+                <arg0 key="comUssIonEvt.eventManage.validate.partcptCt" resource="true"/><!-- 참가비용 -->
+            </field>
+            <field property="psncpa" depends="required">
+                <arg0 key="comUssIonEvt.eventManage.validate.psncpa" resource="true"/><!-- 정원 -->
+            </field>
+            <field property="rceptBeginDe" depends="required">
+                <arg0 key="comUssIonEvt.eventManage.validate.rceptBeginDe" resource="true"/><!-- 접수시작일자 -->
+            </field>
+            <field property="rceptEndDe" depends="required">
+                <arg0 key="comUssIonEvt.eventManage.validate.rceptEndDe" resource="true"/><!-- 접수종료일자 -->
+            </field>
+
+        </form>
+    </formset>
+
+</form-validation>

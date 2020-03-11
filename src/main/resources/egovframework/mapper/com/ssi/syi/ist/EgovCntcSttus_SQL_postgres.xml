@@ -1,0 +1,180 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CntcSttusDAO">
+
+	<select id="selectCntcSttusList" parameterType="egovframework.com.ssi.syi.ist.service.CntcSttusVO" resultType="egovMap">
+		
+			SELECT  A.CNTC_ID           "cntcId"
+			     ,  A.CNTC_NM           "cntcNm"
+			     ,  A.CNTC_TY         	"cntcType"
+			     ,  B.CNT_ALL           "cntAll"
+			     ,  B.CNT_SUCCESS       "cntSuccess"
+			     ,  B.CNT_FAIL          "cntFail"
+			     ,  A.PROVD_INSTT_ID    "provdInsttId"
+			     ,  A.PROVD_SYS_ID      "provdSysId"
+			     ,  A.PROVD_SVC_ID      "provdSvcId"
+			     ,  A.REQUST_INSTT_ID   "requstInsttId"
+			     ,  A.REQUST_SYS_ID     "requstSysId"
+			     ,  C1.INSTT_NM         "provdInsttNm"
+			     ,  D1.SYS_NM           "provdSysNm"
+			     ,  E.SVC_NM            "provdSvcNm"
+			     ,  C2.INSTT_NM         "requstInsttNm"
+			     ,  D2.SYS_NM           "requstSysNm"
+			  FROM  COMTNSYSTEMCNTC A
+			     ,  (  SELECT  CNTC_ID CNTC_ID
+			                ,  SUM( CASE TRSMRCV_SE_CODE
+			                            WHEN 'S01' THEN 1
+			                            WHEN 'S04' THEN 1
+			                            ELSE 0
+			                        END
+			                   ) CNT_ALL
+			                ,  SUM( CASE TRSMRCV_SE_CODE
+			                            WHEN 'S02' THEN 1
+			                            WHEN 'S05' THEN 1
+			                            ELSE 0
+			                        END
+			                   ) CNT_SUCCESS
+			                ,  SUM( CASE TRSMRCV_SE_CODE
+			                            WHEN 'S03' THEN 1
+			                            WHEN 'S06' THEN 1
+			                            ELSE 0
+			                        END
+			                   ) CNT_FAIL
+			             FROM  COMTNTRSMRCVLOG
+			           GROUP BY CNTC_ID
+			        ) B
+			     ,  COMTNCNTCINSTT   C1
+			     ,  COMTNCNTCINSTT   C2
+			     ,  COMTNCNTCSYSTEM  D1
+			     ,  COMTNCNTCSYSTEM  D2
+			     ,  COMTNCNTCSERVICE E
+			 WHERE  A.CNTC_ID         = B.CNTC_ID
+			   AND  A.PROVD_INSTT_ID  = C1.INSTT_ID
+			   AND  A.PROVD_INSTT_ID  = D1.INSTT_ID
+			   AND  A.PROVD_SYS_ID    = D1.SYS_ID
+			   AND  A.PROVD_INSTT_ID  = E.INSTT_ID
+			   AND  A.PROVD_SYS_ID    = E.SYS_ID
+			   AND  A.PROVD_SVC_ID    = E.SVC_ID
+			   AND  A.REQUST_INSTT_ID = C2.INSTT_ID
+			   AND  A.REQUST_INSTT_ID = D2.INSTT_ID
+			   AND  A.REQUST_SYS_ID   = D2.SYS_ID
+		
+		<if test="searchCondition == 1">AND
+			
+			        A.CNTC_NM LIKE CONCAT ('%', #{searchKeyword},'%')
+			
+		</if>
+		 	LIMIT  #{recordCountPerPage} OFFSET #{firstIndex}
+	</select>
+
+	<select id="selectCntcSttusListTotCnt" parameterType="egovframework.com.ssi.syi.ist.service.CntcSttusVO" resultType="int">
+		
+			SELECT  COUNT(*) totcnt
+			  FROM  COMTNSYSTEMCNTC A
+			     ,  (  SELECT  CNTC_ID CNTC_ID
+			                ,  SUM( CASE TRSMRCV_SE_CODE
+			                            WHEN 'S01' THEN 1
+			                            WHEN 'S04' THEN 1
+			                            ELSE 0
+			                        END
+			                   ) CNT_ALL
+			                ,  SUM( CASE TRSMRCV_SE_CODE
+			                            WHEN 'S02' THEN 1
+			                            WHEN 'S05' THEN 1
+			                            ELSE 0
+			                        END
+			                   ) CNT_SUCCESS
+			                ,  SUM( CASE TRSMRCV_SE_CODE
+			                            WHEN 'S03' THEN 1
+			                            WHEN 'S06' THEN 1
+			                            ELSE 0
+			                        END
+			                   ) CNT_FAIL
+			             FROM  COMTNTRSMRCVLOG
+			           GROUP BY CNTC_ID
+			        ) B
+			     ,  COMTNCNTCINSTT   C1
+			     ,  COMTNCNTCINSTT   C2
+			     ,  COMTNCNTCSYSTEM  D1
+			     ,  COMTNCNTCSYSTEM  D2
+			     ,  COMTNCNTCSERVICE E
+			 WHERE  A.CNTC_ID         = B.CNTC_ID
+			   AND  A.PROVD_INSTT_ID  = C1.INSTT_ID
+			   AND  A.PROVD_INSTT_ID  = D1.INSTT_ID
+			   AND  A.PROVD_SYS_ID    = D1.SYS_ID
+			   AND  A.PROVD_INSTT_ID  = E.INSTT_ID
+			   AND  A.PROVD_SYS_ID    = E.SYS_ID
+			   AND  A.PROVD_SVC_ID    = E.SVC_ID
+			   AND  A.REQUST_INSTT_ID = C2.INSTT_ID
+			   AND  A.REQUST_INSTT_ID = D2.INSTT_ID
+			   AND  A.REQUST_SYS_ID   = D2.SYS_ID
+		
+		<if test="searchCondition == 1">AND
+			
+			        A.CNTC_NM LIKE CONCAT ('%', #{searchKeyword},'%')
+			
+		</if>
+	</select>
+
+	<select id="selectCntcSttusDetail" parameterType="egovframework.com.ssi.syi.ist.service.CntcSttus" resultType="egovframework.com.ssi.syi.ist.service.CntcSttus">
+		
+			SELECT  A.CNTC_ID           cntcId
+			     ,  A.CNTC_NM           cntcNm
+			     ,  A.CNTC_TY         	cntcType
+			     ,  B.CNT_ALL           cntAll
+			     ,  B.CNT_SUCCESS       cntSuccess
+			     ,  B.CNT_FAIL          cntFail
+			     ,  A.PROVD_INSTT_ID    provdInsttId
+			     ,  A.PROVD_SYS_ID      provdSysId
+			     ,  A.PROVD_SVC_ID      provdSvcId
+			     ,  A.REQUST_INSTT_ID   requstInsttId
+			     ,  A.REQUST_SYS_ID     requstSysId
+			     ,  C1.INSTT_NM         provdInsttNm
+			     ,  D1.SYS_NM           provdSysNm
+			     ,  E.SVC_NM           provdSvcNm
+			     ,  C2.INSTT_NM         requstInsttNm
+			     ,  D2.SYS_NM           requstSysNm
+			  FROM  COMTNSYSTEMCNTC A
+			     ,  (  SELECT  CNTC_ID CNTC_ID
+			                ,  SUM( CASE TRSMRCV_SE_CODE
+			                            WHEN 'S01' THEN 1
+			                            WHEN 'S04' THEN 1
+			                            ELSE 0
+			                        END
+			                   ) CNT_ALL
+			                ,  SUM( CASE TRSMRCV_SE_CODE
+			                            WHEN 'S02' THEN 1
+			                            WHEN 'S05' THEN 1
+			                            ELSE 0
+			                        END
+			                   ) CNT_SUCCESS
+			                ,  SUM( CASE TRSMRCV_SE_CODE
+			                            WHEN 'S03' THEN 1
+			                            WHEN 'S06' THEN 1
+			                            ELSE 0
+			                        END
+			                   ) CNT_FAIL
+			             FROM  COMTNTRSMRCVLOG
+			           GROUP BY CNTC_ID
+			        ) B
+			     ,  COMTNCNTCINSTT   C1
+			     ,  COMTNCNTCINSTT   C2
+			     ,  COMTNCNTCSYSTEM  D1
+			     ,  COMTNCNTCSYSTEM  D2
+			     ,  COMTNCNTCSERVICE E
+			 WHERE  A.CNTC_ID         = B.CNTC_ID
+			   AND  A.PROVD_INSTT_ID  = C1.INSTT_ID
+			   AND  A.PROVD_INSTT_ID  = D1.INSTT_ID
+			   AND  A.PROVD_SYS_ID    = D1.SYS_ID
+			   AND  A.PROVD_INSTT_ID  = E.INSTT_ID
+			   AND  A.PROVD_SYS_ID    = E.SYS_ID
+			   AND  A.PROVD_SVC_ID    = E.SVC_ID
+			   AND  A.REQUST_INSTT_ID = C2.INSTT_ID
+			   AND  A.REQUST_INSTT_ID = D2.INSTT_ID
+			   AND  A.REQUST_SYS_ID   = D2.SYS_ID
+			   AND  A.CNTC_ID         = #{cntcId}
+  		
+	</select>
+
+</mapper>

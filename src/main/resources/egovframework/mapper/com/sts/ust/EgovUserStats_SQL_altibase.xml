@@ -1,0 +1,330 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="UserStatsDAO">
+	
+	<!-- 사용자통계 조회 -->
+	<select id="selectUserStats" parameterType="egovframework.com.sts.com.StatsVO" resultType="egovframework.com.sts.com.StatsVO">
+		SELECT SUM(USER_CO) AS statsCo
+		     <!-- 기간검색(일) -->
+		     <if test='pdKind == "D"'>
+		     , SUBSTR(OCCRRNC_DE, 1, 4) || '-' || SUBSTR(OCCRRNC_DE, 5, 2) || '-' || SUBSTR(OCCRRNC_DE, 7, 2) AS statsDate
+		     </if>
+		  FROM COMTSUSERSUMMARY
+	 	 WHERE 1 = 1
+		   <!-- 시작일자~종료일자 기간제한 -->
+		   AND OCCRRNC_DE BETWEEN #{fromDate} AND #{toDate}
+		   AND STATS_SE = #{statsKind}
+		   <if test='detailStatsKind != null and detailStatsKind != ""'>
+		   AND DETAIL_STATS_SE = #{detailStatsKind}
+		   </if>
+		 GROUP BY SUBSTR(OCCRRNC_DE, 1, 4) || '-' || SUBSTR(OCCRRNC_DE, 5, 2) || '-' || SUBSTR(OCCRRNC_DE, 7, 2)
+		 ORDER BY SUBSTR(OCCRRNC_DE, 1, 4) || '-' || SUBSTR(OCCRRNC_DE, 5, 2) || '-' || SUBSTR(OCCRRNC_DE, 7, 2)
+	</select>
+	
+	<!-- 사용자 통계 집계 -->
+	<insert id="summaryUserStats">
+		
+		
+			INSERT INTO COMTSUSERSUMMARY 	
+					
+			SELECT TO_CHAR(SYSDATE - 1, 'YYYYMMDD') AS OCCRRNC_DE
+			     , 'COM012' AS STATS_SE
+			     , 'USR01' 	AS DETAIL_STATS_SE
+			     , COUNT(a.MBER_ID) AS USER_CO
+			  FROM COMTNGNRLMBER a
+			 WHERE NOT EXISTS (SELECT b.OCCRRNC_DE 
+			                     FROM COMTSUSERSUMMARY b
+			                    WHERE b.OCCRRNC_DE = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+                      			  AND b.STATS_SE = 'COM012'
+		      					  AND b.DETAIL_STATS_SE = 'USR01'
+			                  )
+			 GROUP BY TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+			
+			UNION
+			
+			SELECT TO_CHAR(SYSDATE - 1, 'YYYYMMDD') AS OCCRRNC_DE
+			     , 'COM012' AS STATS_SE
+			     , 'USR02' 	AS DETAIL_STATS_SE
+			     , COUNT(a.ENTRPRS_MBER_ID) AS USER_CO
+			  FROM COMTNENTRPRSMBER a
+			 WHERE NOT EXISTS (SELECT b.OCCRRNC_DE 
+			                     FROM COMTSUSERSUMMARY b
+			                    WHERE b.OCCRRNC_DE = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+                      			  AND b.STATS_SE = 'COM012'
+		      					  AND b.DETAIL_STATS_SE = 'USR02'
+			                  )
+			 GROUP BY TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+				    
+			UNION
+			
+			SELECT TO_CHAR(SYSDATE - 1, 'YYYYMMDD') AS OCCRRNC_DE
+			     , 'COM012' AS STATS_SE
+			     , 'USR03' 	AS DETAIL_STATS_SE
+			     , COUNT(a.EMPLYR_ID) AS USER_CO
+			  FROM COMTNEMPLYRINFO a
+			 WHERE NOT EXISTS (SELECT b.OCCRRNC_DE 
+			                     FROM COMTSUSERSUMMARY b
+			                    WHERE b.OCCRRNC_DE = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+                      			  AND b.STATS_SE = 'COM012'
+		      					  AND b.DETAIL_STATS_SE = 'USR03'
+			                  )
+			 GROUP BY TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+			
+			UNION
+			
+			SELECT c.OCCRRNC_DE
+			     , c.STATS_SE
+			     , c.DETAIL_STATS_SE
+			     , SUM(c.USER_CO) AS USER_CO
+			  FROM (
+					SELECT TO_CHAR(SYSDATE - 1, 'YYYYMMDD') AS OCCRRNC_DE
+					     , 'COM013' AS STATS_SE
+					     , 'A' 	AS DETAIL_STATS_SE
+					     , COUNT(a.MBER_ID) AS USER_CO
+					  FROM COMTNGNRLMBER a
+					 WHERE NOT EXISTS (SELECT b.OCCRRNC_DE 
+					                     FROM COMTSUSERSUMMARY b
+					                    WHERE b.OCCRRNC_DE = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+		                      			  AND b.STATS_SE = 'COM013'
+				      					  AND b.DETAIL_STATS_SE = 'A'
+					                  )
+					   AND MBER_STTUS = 'A'                  
+					 GROUP BY TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+					
+					UNION
+					
+					SELECT TO_CHAR(SYSDATE - 1, 'YYYYMMDD') AS OCCRRNC_DE
+					     , 'COM013' AS STATS_SE
+					     , 'A' 	AS DETAIL_STATS_SE
+					     , COUNT(a.ENTRPRS_MBER_ID) AS USER_CO
+					  FROM COMTNENTRPRSMBER a
+					 WHERE NOT EXISTS (SELECT b.OCCRRNC_DE 
+					                     FROM COMTSUSERSUMMARY b
+					                    WHERE b.OCCRRNC_DE = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+		                      			  AND b.STATS_SE = 'COM013'
+				      					  AND b.DETAIL_STATS_SE = 'A'
+					                  )
+					   AND ENTRPRS_MBER_STTUS = 'A'               
+					 GROUP BY TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+					
+					UNION
+						    
+					SELECT TO_CHAR(SYSDATE - 1, 'YYYYMMDD') AS OCCRRNC_DE
+					     , 'COM013' AS STATS_SE
+					     , 'A' 	AS DETAIL_STATS_SE
+					     , COUNT(a.EMPLYR_ID) AS USER_CO
+					  FROM COMTNEMPLYRINFO a
+					 WHERE NOT EXISTS (SELECT b.OCCRRNC_DE 
+					                     FROM COMTSUSERSUMMARY b
+					                    WHERE b.OCCRRNC_DE = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+		                      			  AND b.STATS_SE = 'COM013'
+				      					  AND b.DETAIL_STATS_SE = 'A'
+					                  )
+					   AND EMPLYR_STTUS_CODE = 'A'               
+					 GROUP BY TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+
+					) c
+			GROUP BY c.OCCRRNC_DE
+			       , c.STATS_SE
+			       , c.DETAIL_STATS_SE	
+			
+			UNION
+			
+			SELECT c.OCCRRNC_DE
+			     , c.STATS_SE
+			     , c.DETAIL_STATS_SE
+			     , SUM(c.USER_CO) AS USER_CO
+			  FROM (
+					SELECT TO_CHAR(SYSDATE - 1, 'YYYYMMDD') AS OCCRRNC_DE
+					     , 'COM013' AS STATS_SE
+					     , 'D' 	AS DETAIL_STATS_SE
+					     , COUNT(a.MBER_ID) AS USER_CO
+					  FROM COMTNGNRLMBER a
+					 WHERE NOT EXISTS (SELECT b.OCCRRNC_DE 
+					                     FROM COMTSUSERSUMMARY b
+					                    WHERE b.OCCRRNC_DE = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+		                      			  AND b.STATS_SE = 'COM013'
+				      					  AND b.DETAIL_STATS_SE = 'D'
+					                  )
+					   AND MBER_STTUS = 'D'                  
+					 GROUP BY TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+					
+					UNION
+					
+					SELECT TO_CHAR(SYSDATE - 1, 'YYYYMMDD') AS OCCRRNC_DE
+					     , 'COM013' AS STATS_SE
+					     , 'D' 	AS DETAIL_STATS_SE
+					     , COUNT(a.ENTRPRS_MBER_ID) AS USER_CO
+					  FROM COMTNENTRPRSMBER a
+					 WHERE NOT EXISTS (SELECT b.OCCRRNC_DE 
+					                     FROM COMTSUSERSUMMARY b
+					                    WHERE b.OCCRRNC_DE = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+		                      			  AND b.STATS_SE = 'COM013'
+				      					  AND b.DETAIL_STATS_SE = 'D'
+					                  )
+					   AND ENTRPRS_MBER_STTUS = 'D'               
+					 GROUP BY TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+					
+					UNION
+						    
+					SELECT TO_CHAR(SYSDATE - 1, 'YYYYMMDD') AS OCCRRNC_DE
+					     , 'COM013' AS STATS_SE
+					     , 'D' 	AS DETAIL_STATS_SE
+					     , COUNT(a.EMPLYR_ID) AS USER_CO
+					  FROM COMTNEMPLYRINFO a
+					 WHERE NOT EXISTS (SELECT b.OCCRRNC_DE 
+					                     FROM COMTSUSERSUMMARY b
+					                    WHERE b.OCCRRNC_DE = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+		                      			  AND b.STATS_SE = 'COM013'
+				      					  AND b.DETAIL_STATS_SE = 'D'
+					                  )
+					   AND EMPLYR_STTUS_CODE = 'D'               
+					 GROUP BY TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+
+					) c
+			GROUP BY c.OCCRRNC_DE
+			       , c.STATS_SE
+			       , c.DETAIL_STATS_SE       	    	    
+			
+			UNION
+			
+			SELECT c.OCCRRNC_DE
+			     , c.STATS_SE
+			     , c.DETAIL_STATS_SE
+			     , SUM(c.USER_CO) AS USER_CO
+			  FROM (
+					SELECT TO_CHAR(SYSDATE - 1, 'YYYYMMDD') AS OCCRRNC_DE
+					     , 'COM013' AS STATS_SE
+					     , 'P' 	AS DETAIL_STATS_SE
+					     , COUNT(a.MBER_ID) AS USER_CO
+					  FROM COMTNGNRLMBER a
+					 WHERE NOT EXISTS (SELECT b.OCCRRNC_DE 
+					                     FROM COMTSUSERSUMMARY b
+					                    WHERE b.OCCRRNC_DE = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+		                      			  AND b.STATS_SE = 'COM013'
+				      					  AND b.DETAIL_STATS_SE = 'P'
+					                  )
+					   AND MBER_STTUS = 'P'                  
+					 GROUP BY TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+
+					UNION
+					
+					SELECT TO_CHAR(SYSDATE - 1, 'YYYYMMDD') AS OCCRRNC_DE
+					     , 'COM013' AS STATS_SE
+					     , 'P' 	AS DETAIL_STATS_SE
+					     , COUNT(a.ENTRPRS_MBER_ID) AS USER_CO
+					  FROM COMTNENTRPRSMBER a
+					 WHERE NOT EXISTS (SELECT b.OCCRRNC_DE 
+					                     FROM COMTSUSERSUMMARY b
+					                    WHERE b.OCCRRNC_DE = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+		                      			  AND b.STATS_SE = 'COM013'
+				      					  AND b.DETAIL_STATS_SE = 'P'
+					                  )
+					   AND ENTRPRS_MBER_STTUS = 'P'               
+					 GROUP BY TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+					
+					UNION
+						    
+					SELECT TO_CHAR(SYSDATE - 1, 'YYYYMMDD') AS OCCRRNC_DE
+					     , 'COM013' AS STATS_SE
+					     , 'P' 	AS DETAIL_STATS_SE
+					     , COUNT(a.EMPLYR_ID) AS USER_CO
+					  FROM COMTNEMPLYRINFO a
+					 WHERE NOT EXISTS (SELECT b.OCCRRNC_DE 
+					                     FROM COMTSUSERSUMMARY b
+					                    WHERE b.OCCRRNC_DE = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+		                      			  AND b.STATS_SE = 'COM013'
+				      					  AND b.DETAIL_STATS_SE = 'P'
+					                  )
+					   AND EMPLYR_STTUS_CODE = 'P'               
+					 GROUP BY TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+					) c
+			GROUP BY c.OCCRRNC_DE
+			       , c.STATS_SE
+			       , c.DETAIL_STATS_SE	 
+			       
+			UNION
+			
+			SELECT c.OCCRRNC_DE
+			     , c.STATS_SE
+			     , c.DETAIL_STATS_SE
+			     , SUM(c.USER_CO) AS USER_CO
+			  FROM (
+					SELECT TO_CHAR(SYSDATE - 1, 'YYYYMMDD') AS OCCRRNC_DE
+					     , 'COM014' AS STATS_SE
+					     , 'F' 	AS DETAIL_STATS_SE
+					     , COUNT(a.MBER_ID) AS USER_CO
+					  FROM COMTNGNRLMBER a
+					 WHERE NOT EXISTS (SELECT b.OCCRRNC_DE 
+					                     FROM COMTSUSERSUMMARY b
+					                    WHERE b.OCCRRNC_DE = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+		                      			  AND b.STATS_SE = 'COM014'
+				      					  AND b.DETAIL_STATS_SE = 'F'
+					                  )
+					   AND SEXDSTN_CODE = 'F'                  
+					 GROUP BY TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+					
+					UNION
+						    
+					SELECT TO_CHAR(SYSDATE - 1, 'YYYYMMDD') AS OCCRRNC_DE
+					     , 'COM014' AS STATS_SE
+					     , 'F' 	AS DETAIL_STATS_SE
+					     , COUNT(a.EMPLYR_ID) AS USER_CO
+					  FROM COMTNEMPLYRINFO a
+					 WHERE NOT EXISTS (SELECT b.OCCRRNC_DE 
+					                     FROM COMTSUSERSUMMARY b
+					                    WHERE b.OCCRRNC_DE = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+		                      			  AND b.STATS_SE = 'COM014'
+				      					  AND b.DETAIL_STATS_SE = 'F'
+					                  )
+					   AND SEXDSTN_CODE = 'F'               
+					 GROUP BY TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+					) c
+			GROUP BY c.OCCRRNC_DE
+			       , c.STATS_SE
+			       , c.DETAIL_STATS_SE
+			       
+			UNION
+			
+			SELECT c.OCCRRNC_DE
+			     , c.STATS_SE
+			     , c.DETAIL_STATS_SE
+			     , SUM(c.USER_CO) AS USER_CO
+			  FROM (
+					SELECT TO_CHAR(SYSDATE - 1, 'YYYYMMDD') AS OCCRRNC_DE
+					     , 'COM014' AS STATS_SE
+					     , 'M' 	AS DETAIL_STATS_SE
+					     , COUNT(a.MBER_ID) AS USER_CO
+					  FROM COMTNGNRLMBER a
+					 WHERE NOT EXISTS (SELECT b.OCCRRNC_DE 
+					                     FROM COMTSUSERSUMMARY b
+					                    WHERE b.OCCRRNC_DE = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+		                      			  AND b.STATS_SE = 'COM014'
+				      					  AND b.DETAIL_STATS_SE = 'M'
+					                  )
+					   AND SEXDSTN_CODE = 'M'                  
+					 GROUP BY TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+					
+					UNION
+						    
+					SELECT TO_CHAR(SYSDATE - 1, 'YYYYMMDD') AS OCCRRNC_DE
+					     , 'COM014' AS STATS_SE
+					     , 'M' 	AS DETAIL_STATS_SE
+					     , COUNT(a.EMPLYR_ID) AS USER_CO
+					  FROM COMTNEMPLYRINFO a
+					 WHERE NOT EXISTS (SELECT b.OCCRRNC_DE 
+					                     FROM COMTSUSERSUMMARY b
+					                    WHERE b.OCCRRNC_DE = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+		                      			  AND b.STATS_SE = 'COM014'
+				      					  AND b.DETAIL_STATS_SE = 'M'
+					                  )
+					   AND SEXDSTN_CODE = 'M'               
+					 GROUP BY TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+					) c
+			GROUP BY c.OCCRRNC_DE
+			       , c.STATS_SE
+			       , c.DETAIL_STATS_SE                     
+		
+	</insert>
+</mapper>

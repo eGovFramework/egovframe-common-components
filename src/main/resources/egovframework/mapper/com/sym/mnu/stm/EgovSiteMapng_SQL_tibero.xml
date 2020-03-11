@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="siteMapngDAO">
+
+	<select id="selectSiteMapngByMapCreatID" parameterType="comDefaultVO" resultType="String">
+		
+			SELECT trim(MAPNG_CREAT_ID) AS "mapCreatId"
+			FROM   COMTNMENUCREATDTLS
+			WHERE  AUTHOR_CODE =
+				  (SELECT AUTHOR_CODE 
+				   FROM   COMTNEMPLYRSCRTYESTBS
+				   WHERE  SCRTY_DTRMN_TRGET_ID = #{searchKeyword} )
+			group by MAPNG_CREAT_ID
+		 
+	</select> 
+
+	<select id="selectSiteMapng_D" parameterType="comDefaultVO" resultType="egovframework.com.sym.mnu.stm.service.SiteMapngVO">
+		
+			SELECT CONCAT(MAPNG_FILE_PATH, MAPNG_FILE_NM) AS "bndeFileNm"
+			FROM   COMTNSITEMAP
+			WHERE  trim(MAPNG_CREAT_ID) = #{searchKeyword}
+		 
+	</select> 
+</mapper>

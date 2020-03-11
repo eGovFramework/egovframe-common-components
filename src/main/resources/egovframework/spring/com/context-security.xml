@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:egov-security="http://www.egovframe.go.kr/schema/egov-security"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+        http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd
+		http://www.egovframe.go.kr/schema/egov-security http://www.egovframe.go.kr/schema/egov-security/egov-security-3.7.xsd">
+
+<!--
+수정일      			수정자				수정내용
+=========	======= 		=================================================
+2011.09.07		서준식				일반, 업무사용자의 경우 조직아이디가 없어 로그인이 안되던 문제 수정(SQL 수정)
+2011.09.25		서준식				usersByUsernameQuery 쿼리의 조직 아이디 비교 부분  오류 수정 > alias 추가
+2014.06.13		Vincent Han		표준프레임워크 3.0 적용 (간소화 설정 사용)
+2017.07.10      장동한            실행행환경 v3.7 적용[보안기능 추가(sniff, xFrameOptions, xssProtection csrf)]
+2018.10.26      신용호            실행행환경 v3.8 적용
+-->
+
+	<security:http pattern="/css/**" security="none"/>
+	<security:http pattern="/html/**" security="none"/>
+    <security:http pattern="/images/**" security="none"/>
+ 	<security:http pattern="/js/**" security="none"/>
+ 	<security:http pattern="/resource/**" security="none"/>
+ 	<security:http pattern="\A/WEB-INF/jsp/.*\Z" request-matcher="regex" security="none"/>
+
+    <egov-security:config id="securityConfig"
+		loginUrl="/uat/uia/egovLoginUsr.do"
+		logoutSuccessUrl="/EgovContent.do"
+		loginFailureUrl="/uat/uia/egovLoginUsr.do?login_error=1"
+		accessDeniedUrl="/sec/ram/accessDenied.do"
+
+		dataSource="egov.dataSource"
+		jdbcUsersByUsernameQuery="SELECT USER_ID, ESNTL_ID AS PASSWORD, 1 ENABLED, USER_NM, USER_ZIP,
+                                                              USER_ADRES, USER_EMAIL, USER_SE, ORGNZT_ID, ESNTL_ID,
+                                                              (select a.ORGNZT_NM from COMTNORGNZTINFO a where a.ORGNZT_ID = m.ORGNZT_ID) ORGNZT_NM
+                                                       FROM COMVNUSERMASTER m WHERE CONCAT(USER_SE, USER_ID) = ?"
+		jdbcAuthoritiesByUsernameQuery="SELECT A.SCRTY_DTRMN_TRGET_ID USER_ID, A.AUTHOR_CODE AUTHORITY
+                                                             FROM COMTNEMPLYRSCRTYESTBS A, COMVNUSERMASTER B
+                                                             WHERE A.SCRTY_DTRMN_TRGET_ID = B.ESNTL_ID AND B.USER_ID = ?"
+		jdbcMapClass="egovframework.com.sec.security.common.EgovSessionMapping"
+
+		requestMatcherType="regex"
+		hash="plaintext"
+		hashBase64="false"
+
+		concurrentMaxSessons="1"
+		concurrentExpiredUrl="/EgovContent.do"
+
+		defaultTargetUrl="/EgovContent.do"
+		
+		sniff="true"
+		xframeOptions="SAMEORIGIN" 
+		xssProtection="true" 
+		csrf="false"
+	/>
+
+	<egov-security:secured-object-config id="securedObjectConfig"
+		sqlHierarchicalRoles="
+			SELECT a.CHLDRN_ROLE as child, a.PARNTS_ROLE parent
+			FROM COMTNROLES_HIERARCHY a LEFT JOIN COMTNROLES_HIERARCHY b on (a.CHLDRN_ROLE = b.PARNTS_ROLE)"
+		sqlRolesAndUrl="
+			SELECT a.ROLE_PTTRN url, b.AUTHOR_CODE authority
+			FROM COMTNROLEINFO a, COMTNAUTHORROLERELATE b
+			WHERE a.ROLE_CODE = b.ROLE_CODE
+				AND a.ROLE_TY = 'url'  ORDER BY a.ROLE_SORT"
+		sqlRolesAndMethod="
+			SELECT a.ROLE_PTTRN as 	&quot;method&quot;, b.AUTHOR_CODE authority
+			FROM COMTNROLEINFO a, COMTNAUTHORROLERELATE b
+			WHERE a.ROLE_CODE = b.ROLE_CODE
+			AND a.ROLE_TY = 'method'  ORDER BY a.ROLE_SORT"
+		sqlRolesAndPointcut="
+			SELECT a.ROLE_PTTRN pointcut, b.AUTHOR_CODE authority
+			FROM COMTNROLEINFO a, COMTNAUTHORROLERELATE b
+			WHERE a.ROLE_CODE = b.ROLE_CODE
+			AND a.ROLE_TY = 'pointcut'  ORDER BY a.ROLE_SORT"
+		sqlRegexMatchedRequestMapping="
+			SELECT a.ROLE_PTTRN uri, b.AUTHOR_CODE authority
+			FROM COMTNROLEINFO a, COMTNAUTHORROLERELATE b
+			WHERE a.ROLE_CODE = b.ROLE_CODE
+			AND a.ROLE_TY = 'regex'  
+			ORDER BY a.ROLE_SORT"
+	/>
+
+	<egov-security:initializer id="initializer" supportMethod="true" supportPointcut="false" />
+
+    <!-- URL에 세미콜론(semicolon)허용 여부(기본값/false) -->
+	<!-- 
+	<bean id="egovStrictHttpFirewall" class="org.springframework.security.web.firewall.StrictHttpFirewall">
+		<property name="allowSemicolon" value="true"/>
+	</bean>
+	<security:http-firewall ref="egovStrictHttpFirewall"/>
+	-->
+
+</beans>

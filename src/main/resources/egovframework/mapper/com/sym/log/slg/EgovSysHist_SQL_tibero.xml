@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SysHistoryDAO">
+
+	<resultMap id="historyVO" type="egovframework.com.sym.log.slg.service.SysHistoryVO">
+		<result property="histId" column="HIST_ID"/>
+		<result property="sysNm" column="SYS_NM"/>
+		<result property="histSeCode" column="HIST_SE_CODE"/>
+		<result property="histSeCodeNm" column="HIST_SE_CODE_NM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="frstRegisterNm" column="FRST_REGISTER_NM"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="atchFileId" column="ATCH_FILE_ID"/>
+	</resultMap>
+
+	<resultMap id="history" type="egovframework.com.sym.log.slg.service.SysHistory">
+		<result property="histId" column="HIST_ID"/>
+		<result property="sysNm" column="SYS_NM"/>
+		<result property="histSeCode" column="HIST_SE_CODE"/>
+		<result property="histCn" column="HIST_CN"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="atchFileId" column="ATCH_FILE_ID"/>
+	</resultMap>
+
+	<resultMap id="historyDetail" type="egovframework.com.sym.log.slg.service.SysHistoryVO">
+		<result property="histId" column="HIST_ID"/>
+		<result property="sysNm" column="SYS_NM"/>
+		<result property="histSeCode" column="HIST_SE_CODE"/>
+		<result property="histSeCodeNm" column="HIST_SE_CODE_NM"/>
+		<result property="histCn" column="HIST_CN"/>
+		<result property="frstRegisterNm" column="FRST_REGISTER_NM"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="atchFileId" column="ATCH_FILE_ID"/>
+	</resultMap>
+
+	<insert id="insertSysHistory" parameterType="egovframework.com.sym.log.slg.service.SysHistory">
+		
+			INSERT INTO COMTHSYSHIST
+				( SYS_NM
+				  , HIST_SE_CODE
+				  , HIST_CN
+				  , HIST_ID
+				  , FRST_REGISTER_ID
+				  , ATCH_FILE_ID
+				  , FRST_REGIST_PNTTM )
+			VALUES ( #{sysNm}
+				  , #{histSeCode}
+				  , #{histCn}
+				  , #{histId}
+				  , #{frstRegisterId}
+				  , #{atchFileId}
+				  , sysdate)
+		
+	</insert>
+
+	<update id="updateSysHistory" parameterType="egovframework.com.sym.log.slg.service.SysHistory">
+		
+			UPDATE COMTHSYSHIST
+			   SET SYS_NM = #{sysNm}
+				 , HIST_SE_CODE = #{histSeCode}
+				 , HIST_CN = #{histCn}
+				 , ATCH_FILE_ID = #{atchFileId}
+			 WHERE HIST_ID = #{histId}
+		
+	</update>
+
+	<delete id="deleteSysHistory" parameterType="egovframework.com.sym.log.slg.service.SysHistory">
+		
+			DELETE FROM COMTHSYSHIST
+			 WHERE HIST_ID = #{histId}
+		
+	</delete>
+
+	<select id="selectSysHistory" parameterType="egovframework.com.sym.log.slg.service.SysHistoryVO" resultMap="historyDetail">
+		
+			SELECT a.HIST_ID
+			     , a.SYS_NM
+			     , c.CODE as HIST_SE_CODE
+			     , c.CODE_NM as HIST_SE_CODE_NM
+			     , a.HIST_CN
+			     , b.USER_NM as FRST_REGISTER_NM
+			     , a.FRST_REGIST_PNTTM
+			     , a.ATCH_FILE_ID
+			  FROM COMTHSYSHIST a
+			     , COMVNUSERMASTER b
+			     , COMTCCMMNDETAILCODE c
+			 WHERE a.FRST_REGISTER_ID = b.ESNTL_ID
+			   AND a.HIST_SE_CODE = c.CODE
+			   AND c.CODE_ID = 'COM002'
+			   AND HIST_ID = #{histId}
+		
+	</select>
+
+
+	<select id="selectSysHistoryList" parameterType="egovframework.com.sym.log.slg.service.SysHistoryVO" resultMap="historyVO">
+		
+		SELECT * FROM ( SELECT rownum rn, TB.* FROM (
+			SELECT a.HIST_ID
+			     , a.SYS_NM
+			     , c.CODE as HIST_SE_CODE
+			     , c.CODE_NM as HIST_SE_CODE_NM
+			     , b.USER_NM as FRST_REGISTER_NM
+			     , a.FRST_REGISTER_ID
+			     , a.FRST_REGIST_PNTTM
+			     , a.ATCH_FILE_ID
+			  FROM COMTHSYSHIST a
+			     , COMVNUSERMASTER b
+			     , COMTCCMMNDETAILCODE c
+			 WHERE a.FRST_REGISTER_ID = b.ESNTL_ID
+			   AND a.HIST_SE_CODE = c.CODE
+			   AND c.CODE_ID = 'COM002'
+		
+			<if test="searchCnd == 0">AND
+					a.SYS_NM LIKE '%' || #{searchWrd} || '%' 		
+			</if>
+			<if test="searchCnd == 1">AND
+					c.CODE_NM LIKE '%' || #{searchWrd} || '%' 		
+			</if>
+		
+			ORDER BY a.FRST_REGIST_PNTTM DESC
+			) TB ) WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+		
+
+	</select>
+
+	<select id="selectSysHistoryListCnt" parameterType="egovframework.com.sym.log.slg.service.SysHistoryVO" resultType="java.lang.Integer">
+		
+			SELECT COUNT(a.HIST_ID) as cnt
+			  FROM COMTHSYSHIST a
+			     , COMVNUSERMASTER b
+			     , COMTCCMMNDETAILCODE c
+			 WHERE a.FRST_REGISTER_ID = b.ESNTL_ID
+			   AND a.HIST_SE_CODE = c.CODE
+			   AND c.CODE_ID = 'COM002'
+		
+			<if test="searchCnd == 0">AND
+				 a.SYS_NM LIKE '%' || #{searchWrd} || '%'		
+			</if>
+			<if test="searchCnd == 1">AND
+				 c.CODE_NM LIKE '%' || #{searchWrd} || '%'		
+			</if>
+	</select>
+
+</mapper>

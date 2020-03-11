@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	수정일		수정자					수정내용
+  =========     =======    =================================================
+  2011.10.05	정진오		보안 취약점 점검사항에 따른 수정사항 반영
+  							${searchKeyword}를	 #{searchKeyword} 로 변경
+  							${searchCondition}는 <isEqual property="searchCondition" compareValue="선택조건명">으로 수정
+  2011.10.05	정진오		온라인 POLL 중복 투표 체크 SQL 추가
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="OnlinePollPartcptn">
+
+	<!-- 온라인POLL참여::ResultMap 선언 -->
+	<resultMap id="OnlinePollManageVO" type="egovframework.com.uss.olp.opm.service.OnlinePollManage">
+		<result property="pollId" column="POLL_ID"/>
+		<result property="pollNm" column="POLL_NM"/>
+		<result property="pollBeginDe" column="POLL_BGNDE"/>
+		<result property="pollEndDe" column="POLL_ENDDE"/>
+		<result property="pollKindCode" column="POLL_KND"/>
+		<result property="pollDsuseYn" column="POLL_DSUSE_ENNC"/>
+		<result property="pollAutoDsuseYn" column="POLL_ATMC_DSUSE_ENNC"/>		
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/> 			
+	</resultMap>
+	
+	<!-- 온라인POLL참여::목록조회 게시물정보 -->
+	<select id="selectOnlinePollManageList" parameterType="comDefaultVO" resultType="egovMap">
+	<![CDATA[
+	SELECT *
+	FROM (
+	SELECT T0.*, ROWNUM RNUM
+		FROM (
+	
+	 
+		SELECT
+		A.POLL_ID,
+		A.POLL_NM, 
+		A.POLL_BGNDE				POLL_BEGIN_DE,
+		A.POLL_ENDDE				POLL_END_DE,
+		A.POLL_KND					POLL_KIND_CODE,
+		A.POLL_DSUSE_ENNC,
+		A.POLL_ATMC_DSUSE_ENNC,
+		A.FRST_REGISTER_ID,
+		TO_CHAR(A.FRST_REGIST_PNTTM,'YYYY-MM-DD') FRST_REGISTER_PNTTM,
+		(SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = A.FRST_REGISTER_ID) 	FRST_REGISTER_NM 
+		FROM COMTNONLINEPOLLMANAGE A
+		WHERE 1=1
+		AND A.POLL_ID IN (SELECT DISTINCT(POLL_ID) POLL_ID FROM COMTNONLINEPOLLIEM)
+	 ]]>
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 	
+	 		
+	 			<if test="searchCondition == 'POLL_NM'">
+	 				AND POLL_NM LIKE CONCAT('%', #{searchKeyword}, '%')
+	 			</if>
+	 		
+	 	
+	 </if>
+	 <![CDATA[
+		ORDER BY A.FRST_REGIST_PNTTM DESC
+	
+		
+		) T0
+	) 
+	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	]]>
+	</select>
+	<!-- 온라인POLL참여::목록조회_게시물 총갯수  -->
+	<select id="selectOnlinePollManageListCnt" parameterType="comDefaultVO" resultType="int">
+		SELECT 
+		COUNT(*) totcnt
+		FROM COMTNONLINEPOLLMANAGE
+		WHERE 1=1
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 	
+	 		
+	 			<if test="searchCondition == 'POLL_NM'">
+	 				AND POLL_NM LIKE CONCAT('%', #{searchKeyword}, '%')
+	 			</if>
+	 		
+	 	
+	 </if>
+	</select>
+	
+	
+	<!-- 온라인POLL참여::상세보기 -->
+	<select id="selectOnlinePollManageDetail" resultType="egovMap">
+	SELECT 
+		A.POLL_ID,
+		A.POLL_NM,
+		A.POLL_BGNDE				POLL_BEGIN_DE,
+		A.POLL_ENDDE				POLL_END_DE,
+		A.POLL_KND					POLL_KIND_CODE,
+		A.POLL_DSUSE_ENNC,
+		A.POLL_ATMC_DSUSE_ENNC,
+		A.FRST_REGISTER_ID,
+		A.FRST_REGIST_PNTTM			FRST_REGISTER_PNTTM,
+		A.FRST_REGISTER_ID,
+		A.LAST_UPDT_PNTTM,
+		A.LAST_UPDUSR_ID  
+		FROM COMTNONLINEPOLLMANAGE A
+		WHERE 1=1
+		AND A.POLL_ID=#{pollId} 
+	</select>
+
+	
+	<!-- 온라인POLL항목::목록조회 게시물정보 -->
+	<select id="selectOnlinePollItem" resultType="egovMap">
+	 
+		SELECT 
+		POLL_ID,
+		POLL_IEM_ID,
+		POLL_IEM_NM,
+		FRST_REGISTER_ID,
+		FRST_REGIST_PNTTM,
+		LAST_UPDUSR_ID,
+		LAST_UPDT_PNTTM
+		FROM COMTNONLINEPOLLIEM
+		WHERE 1=1
+		AND POLL_ID = #{pollId} 
+		ORDER BY POLL_IEM_NM DESC
+	 
+	</select>
+
+	<!-- 온라인POLL참여::온라인POLL결과 입력 -->
+	<insert id="insertOnlinePollResult">	     
+	 
+
+	INSERT INTO COMTNONLINEPOLLRESULT ( 
+	POLL_ID,
+	POLL_IEM_ID,
+	POLL_RESULT_ID,
+	FRST_REGIST_PNTTM,
+	FRST_REGISTER_ID,
+	LAST_UPDT_PNTTM,
+	LAST_UPDUSR_ID
+	)VALUES( 
+	#{pollId},
+	#{pollIemId},
+	#{pollResultId},
+	sysdate,
+	#{frstRegisterId},
+	sysdate,
+	#{lastUpdusrId} 
+	)
+	 
+	</insert>
+	
+	<!-- 온라인POLL참여::온라인POLL참여 횟수 조회(참여 여부 판단을 위해서) -->
+	<select id="selectOnlinePollResult" resultType="int">
+	 
+	 SELECT COUNT(*)
+	 FROM COMTNONLINEPOLLRESULT
+	 WHERE POLL_ID = #{pollId}
+	 AND FRST_REGISTER_ID = #{frstRegisterId}
+	 
+	 
+	</select>
+
+	<!-- 온라인POLL참여::온라인POLL통계를 조회한다.  -->
+	<select id="selectOnlinePollPartcptnStatistics" resultType="egovMap">
+	 <![CDATA[
+	SELECT 
+	A.POLL_IEM_ID,
+	COUNT(A.POLL_IEM_ID) POLL_IEM_ID_CNT,
+	ROUND((100/ (SELECT COUNT(*) CNT FROM COMTNONLINEPOLLRESULT WHERE POLL_ID = A.POLL_ID) ) * COUNT(A.POLL_IEM_ID)) POLL_IEM_PERCENT
+	FROM COMTNONLINEPOLLRESULT A
+	WHERE 1=1
+	AND A.POLL_ID = #{pollId} 
+	GROUP BY A.POLL_ID, A.POLL_IEM_ID
+	]]>
+	</select>
+</mapper>

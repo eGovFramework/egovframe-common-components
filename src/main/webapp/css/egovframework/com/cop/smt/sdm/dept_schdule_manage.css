@@ -1,0 +1,94 @@
+@charset "utf-8";
+
+/*캘린더*/
+.calendar { position: relative; width: 730px; }
+.calendar h2 { color: #333; font-size: 16px; margin: 15px 0 10px; padding-left:25px; background:url(../../../../../../images/egovframework/com/cmm/icon/tit_icon.png) no-repeat left top; }
+	 .sort_area { position: relative; height: 40px; border: 0px solid #dedede; margin:0 0 10px 0;}
+		.select_group { position: absolute; top: 5px; left: 0; }
+		.select_group select { height: 27px; border: 1px solid #dedede; padding: 3px 4px; }
+		/*.date_view { position:  relative; top: 9px; margin: 0 0 0 -85px; border: 1px solid #dedede;} */
+		.date_view { position: absolute; top: 9px; left: 37%; margin: 0 0 0 -85px; }
+		.date_view ul { display: inline-block; }
+		.date_view ul li { float: left; }
+		.date_view ul li.date { color: #000; font-size: 18px; font-weight: bold; margin-right: 5px;  margin-left: 5px;}
+		.date_view ul li a { display: block; height: 19px; line-height: 19px; background-color: #fff; border: 1px solid #e6e6e6; }
+		.date_view ul li a:hover { background-color: #e6e6e6; }
+		.date_view ul li a.today { padding: 0 7px; color: #000; font-size: 11px; margin-right: 5px; }
+		.date_view ul li a.prev { width: 18px; background: url('../../../../../../images/egovframework/com/cop/smt/sdm/btn_prev.png') 5px no-repeat; text-indent: -10000em; margin-right: 0px; }
+		.date_view ul li a.next { width: 18px; background: url('../../../../../../images/egovframework/com/cop/smt/sdm/btn_next.png') 6px 5px no-repeat; text-indent: -10000em; }
+		/*
+		.view_type { position: absolute; top: 5px; right: 0; }
+		.view_type ul { display: inline-block; }
+		.view_type ul li { float: left; margin-left: -1px; }
+		.view_type ul li a { display: block; height: 25px; line-height: 25px; color: #000; font-weight: bold; padding: 0 10px; background-color: #f4f4f4; border: 1px solid #e6e6e6; }
+		.view_type ul li a:hover { background-color: #e6e6e6; }
+		.view_type ul li a.on { background-color: #0c4ca4; color: #fff; border: 1px solid #0c4ca4; }
+		*/
+
+.sort_area_top { position: relative; height: 45px; text-align:center; border: 0px solid #dedede; }
+		.view_type_top { position: absolute; top: 5px; left: 28%; text-align:center; border: 0px solid #dedede; }
+		.view_type_top ul { display: inline-block; }
+		.view_type_top ul li { float: left; margin-left: -1px; }
+		.view_type_top ul li a { display:block; text-align:center; width:100px; height:28px; line-height: 28px; color: #000; font-weight: bold; padding: 0 10px; background-color: #f4f4f4; border: 1px solid #e6e6e6; }
+		.view_type_top ul li a:hover { background-color: #e6e6e6; }
+		.view_type_top ul li a.on { background-color: #0c4ca4; color: #fff; border: 1px solid #0c4ca4; }
+		
+		
+	.month { width: 100%; table-layout: fixed; border-top: 2px solid #0c4ca4; }
+	.month caption { display: none; }
+	.month thead th { text-align: left; color: #333; padding: 11px 0 12px 8px; background-color: #f4f4f4; }
+	.month tbody td { padding: 2px 6px 2px 4px; border-left: 1px solid #e6e6e6; overflow: hidden; text-overflow: clip; white-space: nowrap; }
+	.month tbody tr { height: 19px; border-bottom: 1px solid #fff; }
+	.month tbody tr.num td { color: #000; padding: 6px 7px; }
+	.month tbody tr.num td.opa { opacity: 0.4 }
+	.month thead th:nth-child(1),
+	.month tbody td:nth-child(1),
+	.month tbody td.holiday { color: #d90101 !important; }
+	.month tbody td:nth-child(1) { border-left: 0; }
+	.month tbody tr.line td { border-bottom: 1px solid #e6e6e6; }
+	.month tbody tr.last td { border-bottom: 0; }
+	.month tbody td.period { color: #fff; padding: 2px 6px 2px 4px; }
+	.month tbody td.purple_bg { background-color: #8394cf; }
+	.month tbody td.purple_txt { color: #5f74bb; }
+	.month tbody td.sky_bg { background-color: #69c2d2; }
+	.month tbody td.sky_txt { color: #2f95af; }
+	.month tbody td.pink_bg { background-color: #f1718c; }
+	.month tbody td.pink_txt { color: #ea4367; }
+	.month tbody td.org_bg { background-color: #f58555; }
+	.month tbody td.org_txt { color: #f3672a; }
+	.month tbody td.green_bg { background-color: #93cc4b; }                                 
+	.month tbody td.green_txt { color: #71a82b; }
+	.month tbody span.arrow { float: right; width: 4px; height: 5px; margin-top: 4px; background: url('../../../../../../images/egovframework/com/cop/smt/sdm/bullet_arrow.png') no-repeat; text-indent: -10000em; }s
+
+	.week_calendar { position: relative; }
+		.title { position: relative; top: 0; width: 100%; border-top: 2px solid #0c4ca4; margin-bottom: 11px; }
+		.title caption { display: none; }
+		.title thead th { height: 50px; text-align: center; color: #333; font-weight: normal; padding-left: 8px; background-color: #f4f4f4; }
+		.title tbody tr { border-bottom: 1px solid #fff; }
+		.title tbody td { vertical-align:middle;padding: 0px 0px 0px 2px; border-left: 1px solid #e6e6e6; text-align: center; font-size: 12px; }
+		/* 
+		.title thead th:nth-child(2),
+		.title tbody td.holiday { color: #d90101 !important; }
+		*/
+		.title tbody tr.line td { border-bottom: 1px solid #e6e6e6; }
+		/*
+		.title tbody td:nth-child(1) { vertical-align: top; text-align: right; color: #333; padding-right: 7px; border-left: 0; }
+		.title tbody td:nth-child(1),
+		*/
+		.title tbody td:nth-child(1) { border-left: 0;}
+		.title tbody td:nth-child(2) { line-height: 180%;}
+
+		.week_area { position: absolute; top: 89px; right: 0; left: 0; overflow: hidden; overflow-y: auto; }
+			.week_schedule { width: 100%; table-layout: fixed; border-top: 1px solid #e6e6e6; }
+			.week_schedule caption { display: none; }
+			.week_schedule tbody td { border-left: 1px solid #e6e6e6; color: #fff; font-size: 11px; }
+			.week_schedule tbody td:nth-child(1) { border-left: 0; }
+			.week_schedule tbody tr.grid td { padding-right: 0; }
+				.grid_time_wrap { position: relative; margin: 0; }
+				.grid_time_wrap .grid_time { position: absolute; width: 100%; }
+				.grid_time_wrap .hour_cell { height: 40px; border-bottom: 1px solid #e6e6e6; }
+				.grid_time_wrap .half { height: 20px; margin: -1px 0 19px; border-top: 1px solid #e6e6e6; font-size: 1px; }
+
+				.time_area { position: relative; width: 70px; }
+				.time_area ul { display: inline-block; width: 100%; }
+				.time_area ul li { display: block; text-align: right; white-space: nowrap; padding: 0 7px 26px 0; color: #333; }

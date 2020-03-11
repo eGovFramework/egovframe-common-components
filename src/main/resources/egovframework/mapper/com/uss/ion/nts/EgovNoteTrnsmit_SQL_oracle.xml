@@ -1,0 +1,282 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- 
+	수정일                 수정자                          수정내용
+  =========     =======    =================================================
+  2011.8.12   	안민정     	 	테이블 표준화에 따른 수정사항 반영
+							DELETE_YN	->	DELETE_AT
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="NoteTrnsmit">
+
+	<!-- ::ResultMap 선언 -->
+	<resultMap id="NoteTrnsmitVO" type="egovframework.com.uss.ion.nts.service.NoteTrnsmit">
+		<result property="noteId" column="NOTE_ID"/>
+		<result property="noteTrnsmitId" column="NOTE_TRNSMIT_ID"/>
+		<result property="trnsmiterId" column="TRNSMITER_ID"/>
+		<result property="noteSj" column="NOTE_SJ"/>
+		<result property="noteCn" column="NOTE_CN"/>
+		<result property="atchFileId" column="ATCH_FILE_ID"/>			
+	</resultMap>
+	
+	<!-- 보낸편지함관리::수신자목록 -->
+	
+	<!-- 보낸편지함관리::상세 게시물정보 -->
+	<select id="selectNoteTrnsmitDetail" resultType="egovMap">
+	<![CDATA[
+	SELECT 
+		NOTE.NOTE_ID,
+		NOTE_TNS.NOTE_TRNSMIT_ID,
+		NOTE_TNS.TRNSMITER_ID,
+		NOTE.NOTE_SJ,
+		NOTE.NOTE_CN,
+		NOTE.ATCH_FILE_ID,
+		TO_CHAR(NOTE_TNS.FRST_REGIST_PNTTM,'YYYY-MM-DD hh24:mi:ss') FRST_REGISTER_PNTTM,
+		(SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = NOTE_TNS.FRST_REGISTER_ID) FRST_REGISTER_NM,
+        (
+        SELECT          
+       (SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = A.RCVER_ID)
+        FROM COMTNNOTERECPTN A
+        WHERE 1=1
+        AND A.NOTE_ID=NOTE_TNS.NOTE_ID
+        AND A.NOTE_TRNSMIT_ID=NOTE_TNS.NOTE_TRNSMIT_ID         
+        AND ROWNUM <= 1
+        ) RCVER_NM,
+        (
+        SELECT          
+        COUNT(A.NOTE_ID)
+        FROM COMTNNOTERECPTN A
+        WHERE 1=1
+        AND A.NOTE_ID=NOTE_TNS.NOTE_ID
+        AND A.NOTE_TRNSMIT_ID=NOTE_TNS.NOTE_TRNSMIT_ID        
+        ) RCVER_TOTAL,
+        (
+        SELECT          
+        COUNT(A.NOTE_ID)
+        FROM COMTNNOTERECPTN A
+        WHERE 1=1
+        AND A.NOTE_ID=NOTE_TNS.NOTE_ID
+        AND A.NOTE_TRNSMIT_ID=NOTE_TNS.NOTE_TRNSMIT_ID 
+        AND A.OPEN_YN = 'Y'       
+        ) OPEN_Y,
+        (
+        SELECT          
+        COUNT(A.NOTE_ID)
+        FROM COMTNNOTERECPTN A
+        WHERE 1=1
+        AND A.NOTE_ID=NOTE_TNS.NOTE_ID
+        AND A.NOTE_TRNSMIT_ID=NOTE_TNS.NOTE_TRNSMIT_ID 
+        AND A.OPEN_YN = 'N'       
+        ) OPEN_N
+        
+	FROM 
+		COMTNNOTE NOTE, 
+		COMTNNOTETRNSMIT NOTE_TNS 
+	WHERE 1=1
+	AND NOTE.NOTE_ID = NOTE_TNS.NOTE_ID 
+	AND NOTE_TNS.NOTE_ID=#{noteId}
+	AND NOTE_TNS.NOTE_TRNSMIT_ID=#{noteTrnsmitId} 
+	]]>
+	</select>
+	
+	<!-- 보낸편지함관리::목록조회 게시물정보 -->
+	<select id="selectNoteTrnsmit" parameterType="comDefaultVO" resultType="egovMap">
+	<![CDATA[	
+	SELECT *
+	FROM (
+	SELECT T0.*, ROWNUM RNUM
+		FROM (
+	
+	 
+	SELECT 
+		NOTE.NOTE_ID,
+		NOTE_TNS.NOTE_TRNSMIT_ID,
+		NOTE_TNS.TRNSMITER_ID,
+		NOTE.NOTE_SJ,
+		NOTE.NOTE_CN,
+		NOTE.ATCH_FILE_ID,
+		TO_CHAR(NOTE_TNS.FRST_REGIST_PNTTM,'YYYY-MM-DD hh24:mi:ss') FRST_REGISTER_PNTTM,
+        (
+        SELECT          
+       (SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = A.RCVER_ID)
+        FROM COMTNNOTERECPTN A
+        WHERE 1=1
+        AND A.NOTE_ID=NOTE_TNS.NOTE_ID
+        AND A.NOTE_TRNSMIT_ID=NOTE_TNS.NOTE_TRNSMIT_ID         
+        AND ROWNUM <= 1
+        ) RCVER_NM,        
+        (
+        SELECT          
+        COUNT(A.NOTE_ID)
+        FROM COMTNNOTERECPTN A
+        WHERE 1=1
+        AND A.NOTE_ID=NOTE_TNS.NOTE_ID
+        AND A.NOTE_TRNSMIT_ID=NOTE_TNS.NOTE_TRNSMIT_ID        
+        )-1 RCVER_CNT,
+        (
+        SELECT          
+        COUNT(A.NOTE_ID)
+        FROM COMTNNOTERECPTN A
+        WHERE 1=1
+        AND A.NOTE_ID=NOTE_TNS.NOTE_ID
+        AND A.NOTE_TRNSMIT_ID=NOTE_TNS.NOTE_TRNSMIT_ID 
+        AND A.OPEN_YN = 'Y'       
+        ) OPEN_Y,
+        (
+        SELECT          
+        COUNT(A.NOTE_ID)
+        FROM COMTNNOTERECPTN A
+        WHERE 1=1
+        AND A.NOTE_ID=NOTE_TNS.NOTE_ID
+        AND A.NOTE_TRNSMIT_ID=NOTE_TNS.NOTE_TRNSMIT_ID 
+        AND A.OPEN_YN = 'N'       
+        ) OPEN_N
+	FROM 
+		COMTNNOTE NOTE, 
+		COMTNNOTETRNSMIT NOTE_TNS 
+	WHERE 1=1
+	AND NOTE.NOTE_ID = NOTE_TNS.NOTE_ID 
+	AND NOTE_TNS.DELETE_AT = 'N' 
+	AND NOTE_TNS.TRNSMITER_ID=#{trnsmiterId}
+	]]>
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 	
+	 		<if test="searchCondition == 'NOTE.NOTE_SJ'">
+	 		AND NOTE.NOTE_SJ LIKE '%' || #{searchKeyword} || '%'
+	 		</if>
+	 		<if test="searchCondition == 'NOTE.NOTE_CN'">
+	 		AND NOTE.NOTE_CN LIKE '%' || #{searchKeyword} || '%'
+	 		</if>
+	 	
+	 </if>
+	 <if test="searchFromDate != null and searchFromDate != ''">
+	 <if test="searchToDate != null and searchToDate != ''">
+	 <![CDATA[
+	  AND TO_CHAR(NOTE_TNS.FRST_REGIST_PNTTM,'YYYY-MM-DD') >= #{searchFromDate} AND TO_CHAR(NOTE_TNS.FRST_REGIST_PNTTM,'YYYY-MM-DD') <= #{searchToDate}
+	  ]]>  
+	 </if>
+	 </if>	 
+	 
+		ORDER BY NOTE.FRST_REGIST_PNTTM DESC
+	
+		
+		) T0
+	) 
+	WHERE ROWNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+		
+	</select>
+	<!-- 보낸편지함관리::목록조회_게시물 총갯수  -->
+	<select id="selectNoteTrnsmitCnt" parameterType="comDefaultVO" resultType="int">
+	SELECT 
+		COUNT(*) totcnt
+	FROM 
+		COMTNNOTE NOTE, 
+		COMTNNOTETRNSMIT NOTE_TNS 
+	WHERE 1=1
+	AND NOTE.NOTE_ID = NOTE_TNS.NOTE_ID 
+	AND NOTE_TNS.DELETE_AT = 'N' 
+	AND NOTE_TNS.TRNSMITER_ID=#{trnsmiterId}
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 	
+	 		<if test="searchCondition == 'NOTE.NOTE_SJ'">
+	 		AND NOTE.NOTE_SJ LIKE '%' || #{searchKeyword} || '%'
+	 		</if>
+	 		<if test="searchCondition == 'NOTE.NOTE_CN'">
+	 		AND NOTE.NOTE_CN LIKE '%' || #{searchKeyword} || '%'
+	 		</if>
+	 	
+	 </if>
+	 <if test="searchFromDate != null and searchFromDate != ''">
+	 <if test="searchToDate != null and searchToDate != ''">
+	 <![CDATA[
+	  AND TO_CHAR(NOTE_TNS.FRST_REGIST_PNTTM,'YYYY-MM-DD') >= #{searchFromDate} AND TO_CHAR(NOTE_TNS.FRST_REGIST_PNTTM,'YYYY-MM-DD') <= #{searchToDate}
+	  ]]>  
+	 </if>
+	 </if>
+	</select>
+	
+    <!-- 보낸편지함관리::받은편지함 삭제  -->
+	<delete id="deleteNoteTrnsmit">
+		
+			UPDATE COMTNNOTETRNSMIT SET DELETE_AT='Y',
+			LAST_UPDT_PNTTM=sysdate,
+			LAST_UPDUSR_ID=#{lastUpdusrId}
+			WHERE 1=1 
+			AND NOTE_ID=#{noteId}
+			AND NOTE_TRNSMIT_ID=#{noteTrnsmitId}
+		
+	</delete>
+	
+    <!-- 보낸편지함관리::보낸편지함 삭제  -->
+	<delete id="deleteNoteRecptn">
+		
+			DELETE FROM COMTNNOTERECPTN 
+			WHERE 1=1 
+			AND NOTE_ID=#{noteId}
+			AND NOTE_TRNSMIT_ID=#{noteTrnsmitId} 
+			AND NOTE_RECPTN_ID=#{noteRecptnId} 
+		
+	</delete>
+	
+	<!-- 보낸편지함관리::쪽지정보/보낸쪽지 삭제  -->
+	<delete id="deleteNoteManage">
+		
+		DELETE FROM COMTNNOTE WHERE NOTE_ID=#{noteId}
+		
+	</delete>
+	
+	<!-- 보낸편지함관리::받은편지함 갯수  -->
+	<select id="selectTrnsmitRelationCnt" resultType="int">
+	
+	SELECT 
+	COUNT(NOTE_ID) CNT
+	FROM COMTNNOTERECPTN
+	WHERE 1=1 
+	AND NOTE_ID=#{noteId}
+	AND NOTE_TRNSMIT_ID=#{noteTrnsmitId}
+	
+	</select>
+	
+	<!-- 보낸편지함관리::쪽지정보/보낸쪽지 삭제  -->
+	<delete id="deleteNoteTrnsmitRelation">
+		
+			DELETE FROM COMTNNOTETRNSMIT
+			WHERE 1=1 
+			AND NOTE_ID=#{noteId}
+			AND NOTE_TRNSMIT_ID=#{noteTrnsmitId}
+			
+		
+	</delete>
+	
+	<!-- 보낸편지함관리::수신자목록조회 -->
+	<select id="selectNoteTrnsmitCnfirm" resultType="egovMap">
+	 
+	SELECT 
+	NOTE.NOTE_ID,
+	NOTE_RNS.NOTE_TRNSMIT_ID,
+	NOTE_RNS.NOTE_RECPTN_ID,
+	NOTE_TNS.TRNSMITER_ID,
+    (SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = NOTE_TNS.TRNSMITER_ID) TRNSMITER_NM,
+    (SELECT EMPLYR_ID FROM COMTNEMPLYRINFO WHERE ESNTL_ID = NOTE_TNS.TRNSMITER_ID) TRNSMITER_IDS,      
+    TO_CHAR(NOTE_TNS.FRST_REGIST_PNTTM,'YYYY-MM-DD hh24:mi:ss') TRNSMITER_PNTTM,
+	NOTE.NOTE_SJ,
+	NOTE.NOTE_CN,
+	NOTE_RNS.RCVER_ID,
+	(SELECT EMPLYR_ID FROM COMTNEMPLYRINFO WHERE ESNTL_ID = NOTE_RNS.RCVER_ID) RCVER_IDS,
+	(SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = NOTE_RNS.RCVER_ID) RCVER_NM,
+	TO_CHAR(NOTE_RNS.LAST_UPDT_PNTTM,'YYYY-MM-DD hh24:mi:ss') RCVER_PNTTM, 
+	NOTE_RNS.OPEN_YN,
+	NOTE_RNS.RECPTN_SE
+	FROM 
+	     COMTNNOTE NOTE
+	     LEFT OUTER JOIN COMTNNOTETRNSMIT NOTE_TNS ON (
+         	NOTE.NOTE_ID=NOTE_TNS.NOTE_ID         
+	     )     
+	     LEFT OUTER JOIN COMTNNOTERECPTN NOTE_RNS ON (
+	          NOTE_TNS.NOTE_ID=NOTE_RNS.NOTE_ID  
+	          AND NOTE_TNS.NOTE_TRNSMIT_ID=NOTE_RNS.NOTE_TRNSMIT_ID
+	     )     
+	WHERE 1=1 
+		AND NOTE.NOTE_ID=#{noteId}
+	
+	</select>
+</mapper>

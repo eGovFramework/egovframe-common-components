@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="MapTeamDAO">
+	
+	<resultMap id="MapTeamList" type="egovframework.com.dam.map.tea.service.MapTeamVO">
+		<result property="orgnztId" column="ORGNZT_ID"/>	
+		<result property="orgnztNm" column="ORGNZT_NM"/>
+		<result property="clYmd" column="CL_DE"/>
+		<result property="knoUrl" column="KNWLDG_URL"/>
+	</resultMap>
+	
+	<resultMap id="MapTeamDetail" type="egovframework.com.dam.map.tea.service.MapTeam">
+		<result property="orgnztId" column="ORGNZT_ID"/>	
+		<result property="orgnztNm" column="ORGNZT_NM"/>
+		<result property="clYmd" column="CL_DE"/>
+		<result property="knoUrl" column="KNWLDG_URL"/>
+	</resultMap>
+
+	<select id="selectMapTeamList" parameterType="egovframework.com.dam.map.tea.service.MapTeamVO" resultMap="MapTeamList">
+		
+	SELECT *
+	FROM (
+	SELECT T0.*, ROWNUM RNUM
+		FROM (
+	
+		
+			SELECT  ORGNZT_ID
+			     ,  ORGNZT_NM
+                 ,  CL_DE
+			     ,  KNWLDG_URL
+			  FROM  COMTNDAMMAPTEAM
+			 WHERE  1 = 1
+		
+			<if test='searchCondition == "1"'>AND
+				ORGNZT_NM LIKE '%'||#{searchKeyword}||'%'
+			</if>
+			<if test='searchCondition == "2"'>AND
+				ORGNZT_ID LIKE '%'||#{searchKeyword}||'%'
+			</if>
+		
+		) T0
+	) 
+	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	
+	</select>
+
+	<select id="selectMapTeamTotCnt" parameterType="egovframework.com.dam.map.tea.service.MapTeamVO" resultType="java.lang.Integer">
+		
+			SELECT  COUNT(*) as totcnt 
+			  FROM  COMTNDAMMAPTEAM
+			 WHERE  1 = 1
+		
+			<if test='searchCondition == "1"'>AND
+				ORGNZT_NM LIKE '%'||#{searchKeyword}||'%'
+			</if>
+			<if test='searchCondition == "2"'>AND
+				ORGNZT_ID LIKE '%'||#{searchKeyword}||'%'
+			</if>
+	</select>
+
+	<select id="selectMapTeamDetail" parameterType="egovframework.com.dam.map.tea.service.MapTeam" resultMap="MapTeamDetail">
+		
+            SELECT  ORGNZT_ID
+			     ,  ORGNZT_NM
+                 ,  CL_DE
+                 ,  KNWLDG_URL
+              FROM  COMTNDAMMAPTEAM
+             WHERE  ORGNZT_ID = #{orgnztId}
+		
+	</select>
+
+	<insert id="insertMapTeam">
+		
+		    INSERT 
+		      INTO  COMTNDAMMAPTEAM
+		         (  ORGNZT_ID
+		         ,  ORGNZT_NM
+		         ,  CL_DE
+		         ,  KNWLDG_URL
+		         ,  LAST_UPDT_PNTTM
+		         ,  LAST_UPDUSR_ID
+		         ) 
+		    VALUES  
+		         (  #{orgnztId}
+		         ,  #{orgnztNm}
+		         ,  #{clYmd}
+		         ,  #{knoUrl}
+		         ,  sysdate
+		         ,  #{frstRegisterId}
+		         ) 
+		
+	</insert>
+
+	<update id="updateMapTeam">
+		
+            UPDATE  COMTNDAMMAPTEAM 
+               SET  ORGNZT_ID         = #{orgnztId}
+                 ,  ORGNZT_NM         = #{orgnztNm}
+                 ,  CL_DE  		  = #{clYmd}
+                 ,  KNWLDG_URL           = #{knoUrl}
+                 ,  LAST_UPDT_PNTTM = sysdate
+                 ,  LAST_UPDUSR_ID    = #{lastUpdusrId}
+             WHERE  ORGNZT_ID         = #{orgnztId} 
+		
+	</update>
+
+	<delete id="deleteMapTeam">
+		
+            DELETE  FROM COMTNDAMMAPTEAM 
+            WHERE   ORGNZT_ID = #{orgnztId}
+		
+	</delete>
+
+
+</mapper>

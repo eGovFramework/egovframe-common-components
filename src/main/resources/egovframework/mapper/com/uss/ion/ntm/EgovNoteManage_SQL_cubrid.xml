@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!-- 
+	수정일                 수정자                          수정내용
+  =========     =======    =================================================
+  2011.8.12   	안민정     	 	테이블 표준화에 따른 수정사항 반영
+							DELETE_YN	->	DELETE_AT
+-->
+<mapper namespace="NoteManage">
+	
+	<!-- 쪽지관리::쪽지관리 조회(답변처리시) -->
+	<select id="selectNoteManage" resultType="egovMap">
+	 <![CDATA[
+	 SELECT
+		A.NOTE_ID,
+		(SELECT TRNSMITER_ID FROM COMTNNOTETRNSMIT WHERE NOTE_ID = A.NOTE_ID AND ROWNUM <= 1) TRNSMITER_ORG_ID,
+		(SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = (SELECT TRNSMITER_ID FROM COMTNNOTETRNSMIT WHERE NOTE_ID = A.NOTE_ID AND ROWNUM <= 1)) TRNSMITER_NM,
+        (SELECT EMPLYR_ID FROM COMTNEMPLYRINFO WHERE ESNTL_ID = (SELECT TRNSMITER_ID FROM COMTNNOTETRNSMIT WHERE NOTE_ID = A.NOTE_ID AND ROWNUM <= 1)) TRNSMITER_ID,
+        TO_CHAR((SELECT FRST_REGIST_PNTTM FROM COMTNNOTETRNSMIT WHERE NOTE_ID = A.NOTE_ID AND ROWNUM <= 1),'YYYY-MM-DD hh24:mi:ss') TRNSMITER_PNTTM,
+		A.NOTE_SJ,
+		A.NOTE_CN,
+		A.ATCH_FILE_ID,
+		A.FRST_REGISTER_ID,
+		A.FRST_REGIST_PNTTM FRST_REGISTER_PNTTM,
+		A.LAST_UPDUSR_ID,
+		A.LAST_UPDT_PNTTM
+	 FROM COMTNNOTE A
+	 WHERE 1=1 
+	 AND A.NOTE_ID=#{noteId} 
+	]]>
+	</select>
+	
+	<!-- 쪽지관리::쪽지관리  등록  -->
+	<insert id="NoteManage.insertNoteManage">	     
+	 <![CDATA[ 
+		INSERT INTO COMTNNOTE ( 
+			NOTE_ID,
+			NOTE_SJ,
+			NOTE_CN,
+			ATCH_FILE_ID,
+			FRST_REGISTER_ID,
+			FRST_REGIST_PNTTM,
+			LAST_UPDUSR_ID,
+			LAST_UPDT_PNTTM
+		)VALUES(
+			#{noteId},
+			#{noteSj},
+			#{noteCn},
+			#{atchFileId},
+			#{frstRegisterId},
+			sysdatetime,
+			#{frstRegisterId},
+			sysdatetime
+		)
+	 ]]>
+	</insert>
+
+	<!-- 쪽지관리::보낸쪽지  등록  -->
+	<insert id="NoteManage.insertNoteTrnsmit">	     
+	 <![CDATA[
+		INSERT INTO COMTNNOTETRNSMIT ( 
+			NOTE_ID,
+			NOTE_TRNSMIT_ID,
+			TRNSMITER_ID,
+			DELETE_AT,
+			FRST_REGISTER_ID,
+			FRST_REGIST_PNTTM,
+			LAST_UPDUSR_ID,
+			LAST_UPDT_PNTTM
+		)VALUES(
+			#{noteId},
+			#{noteTrnsmitId},
+			#{trnsmiterId},
+			'N',
+			#{frstRegisterId},
+			sysdatetime,
+			#{frstRegisterId},
+			sysdatetime
+		)
+	]]>
+	</insert>
+	<!-- 쪽지관리::받은쪽지  등록  -->
+	<insert id="NoteManage.insertNoteRecptn">	     
+	<![CDATA[
+	INSERT INTO COMTNNOTERECPTN(
+		NOTE_ID,
+		NOTE_TRNSMIT_ID,
+		NOTE_RECPTN_ID,
+		RCVER_ID,
+		OPEN_YN,
+		RECPTN_SE,
+		FRST_REGISTER_ID,
+		FRST_REGIST_PNTTM,
+		LAST_UPDUSR_ID,
+		LAST_UPDT_PNTTM
+	)VALUES(
+		#{noteId},
+		#{noteTrnsmitId},
+		#{noteRecptnId},
+		#{rcverId},
+		#{openYn},
+		#{recptnSe},
+		#{frstRegisterId},
+		sysdatetime,
+		#{frstRegisterId},
+		sysdatetime
+	)
+	]]>
+	</insert>
+	
+	<!-- 쪽지관리::아이디 검색  -->
+	<select id="EovNoteEmpListPopup" parameterType="comDefaultVO" resultType="egovMap">
+	<![CDATA[	
+	SELECT *
+	FROM (
+	SELECT T0.*, ROWNUM RNUM
+		FROM (
+	]]>
+	<![CDATA[
+	SELECT 
+		EMPLYR_ID,
+		USER_NM EMPLYR_NM, 
+		ESNTL_ID UNIQ_ID,
+		SEXDSTN_CODE,
+		BRTHDY,
+		HOUSE_ADRES HOME_ADRES,
+		DETAIL_ADRES,
+		EMAIL_ADRES,
+		OFFM_TELNO 
+	FROM COMTNEMPLYRINFO 
+	WHERE 1=1 
+	 ]]>
+			<if test="searchCondition == 0">
+			AND USER_NM LIKE '%' || #{searchKeyword} || '%'
+			</if>
+			<if test="searchCondition == 1">
+			AND EMPLYR_ID LIKE '%' || #{searchKeyword} || '%'
+			</if>
+			<if test="searchCondition == 2">
+			AND OFFM_TELNO LIKE '%' || #{searchKeyword} || '%'
+			</if>
+	 <![CDATA[
+		ORDER BY USER_NM DESC
+	]]>
+	<![CDATA[	
+		) T0
+	) 
+	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	]]>	
+	</select>
+
+	<select id="EovNoteEmpListPopupCnt" parameterType="comDefaultVO" resultType="int">
+	<![CDATA[
+	SELECT 
+		COUNT(*) totcnt
+	FROM 
+	     COMTNEMPLYRINFO
+	WHERE 1=1 
+	]]>
+			<if test="searchCondition == 0">
+			AND USER_NM LIKE '%' || #{searchKeyword} || '%'
+			</if>
+			<if test="searchCondition == 1">
+			AND EMPLYR_ID LIKE '%' || #{searchKeyword} || '%'
+			</if>
+			<if test="searchCondition == 2">
+			AND OFFM_TELNO LIKE '%' || #{searchKeyword} || '%'
+			</if>
+	</select>
+</mapper>

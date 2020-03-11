@@ -1,0 +1,210 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TrsmrcvLogDAO">
+
+	<!-- 송수신로그 맵 -->
+	<resultMap id="TrsmrcvLogVO" type="egovframework.com.sym.log.tlg.service.TrsmrcvLog">
+		<result property="requstId" column="REQUST_ID"/>
+		<result property="occrrncDe" column="OCCRRNC_DE"/>
+		<result property="trsmrcvSeCode" column="TRSMRCV_SE_CODE"/>
+		<result property="trsmrcvSeCodeNm" column="TRSMRCV_SE_CODE_NM"/>
+		<result property="cntcId" column="CNTC_ID"/>
+		<result property="provdInsttId" column="PROVD_INSTT_ID"/>
+		<result property="provdSysId" column="PROVD_SYS_ID"/>
+		<result property="provdSvcId" column="PROVD_SVC_ID"/>
+		<result property="requstInsttId" column="REQUST_INSTT_ID"/>
+		<result property="requstSysId" column="REQUST_SYS_ID"/>
+		<result property="requstTrnsmitTm" column="REQUST_TRNSMIT_TM"/>
+		<result property="requstRecptnTm" column="REQUST_RECPTN_TM"/>
+		<result property="rspnsTrnsmitTm" column="RSPNS_TRNSMIT_TM"/>
+		<result property="rspnsRecptnTm" column="RSPNS_RECPTN_TM"/>
+		<result property="resultCode" column="RESULT_CODE"/>
+		<result property="resultMessage" column="RESULT_MSSAGE"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="rqesterId" column="RQESTER_ID"/>
+		<result property="rqsterNm" column="RQESTER_NM"/>
+	</resultMap>
+
+	<!-- 송수신 로그 등록 -->
+	<insert id="logInsertTrsmrcvLog" parameterType="egovframework.com.sym.log.tlg.service.TrsmrcvLog">
+		
+			INSERT INTO COMTNTRSMRCVLOG
+				( REQUST_ID
+				  , TRSMRCV_SE_CODE
+				  , CNTC_ID
+				  , PROVD_INSTT_ID
+				  , PROVD_SYS_ID
+				  , PROVD_SVC_ID
+				  , REQUST_INSTT_ID
+				  , REQUST_SYS_ID
+				  , REQUST_TRNSMIT_TM
+				  , REQUST_RECPTN_TM
+				  , RSPNS_TRNSMIT_TM
+				  , RSPNS_RECPTN_TM
+				  , RESULT_CODE
+				  , RESULT_MSSAGE
+				  , RQESTER_ID
+				  , FRST_REGIST_PNTTM
+				  , OCCRRNC_DE )
+			VALUES ( #{requstId}
+				  , #{trsmrcvSeCode}
+				  , #{cntcId}
+				  , #{provdInsttId}
+				  , #{provdSysId}
+				  , #{provdSvcId}
+				  , #{requstInsttId}
+				  , #{requstSysId}
+				  , #{requstTrnsmitTm}
+				  , #{requstRecptnTm}
+				  , #{rspnsTrnsmitTm}
+				  , #{rspnsRecptnTm}
+				  , #{resultCode}
+				  , #{resultMessage}
+				  , #{rqesterId}
+				  , SYSDATETIME
+				  , TO_CHAR(sysdate, 'YYYYMMDD'))
+		
+	</insert>
+
+	<!-- 송수신 로그 상세 조회 -->
+	<select id="selectTrsmrcvLog" parameterType="egovframework.com.sym.log.tlg.service.TrsmrcvLog" resultMap="TrsmrcvLogVO">
+		
+			SELECT
+				  a.REQUST_ID
+				, a.OCCRRNC_DE
+				, a.TRSMRCV_SE_CODE
+				, c.CODE_NM AS TRSMRCV_SE_CODE_NM
+				, a.CNTC_ID
+				, a.PROVD_INSTT_ID
+				, a.PROVD_SYS_ID
+				, a.PROVD_SVC_ID
+				, a.REQUST_INSTT_ID
+				, a.REQUST_SYS_ID
+				, a.REQUST_TRNSMIT_TM
+				, a.REQUST_RECPTN_TM
+				, a.RSPNS_TRNSMIT_TM
+				, a.RSPNS_RECPTN_TM
+				, a.RESULT_CODE
+				, a.RESULT_MSSAGE
+				, a.FRST_REGIST_PNTTM
+				, a.RQESTER_ID
+				, b.USER_NM AS RQESTER_NM
+			FROM
+				COMTNTRSMRCVLOG a
+			LEFT OUTER JOIN COMVNUSERMASTER b
+				ON a.RQESTER_ID = b.ESNTL_ID
+			LEFT OUTER JOIN COMTCCMMNDETAILCODE c
+				ON a.TRSMRCV_SE_CODE = c.CODE
+			WHERE
+				c.CODE_ID = 'COM008'
+			AND a.REQUST_ID = #{requstId}
+			
+	</select>
+
+	<!-- 송수신 로그 목록 조회 -->
+	<select id="selectTrsmrcvLogInf" parameterType="egovframework.com.sym.log.tlg.service.TrsmrcvLog" resultMap="TrsmrcvLogVO">
+		
+		SELECT * FROM ( SELECT rownum rn, TB.* FROM (
+			SELECT
+				  a.REQUST_ID
+				, a.OCCRRNC_DE
+				, a.TRSMRCV_SE_CODE
+				, c.CODE_NM AS TRSMRCV_SE_CODE_NM
+				, a.CNTC_ID
+				, a.PROVD_INSTT_ID
+				, a.PROVD_SYS_ID
+				, a.PROVD_SVC_ID
+				, a.REQUST_INSTT_ID
+				, a.REQUST_SYS_ID
+				, a.REQUST_TRNSMIT_TM
+				, a.REQUST_RECPTN_TM
+				, a.RSPNS_TRNSMIT_TM
+				, a.RSPNS_RECPTN_TM
+				, a.RESULT_CODE
+				, a.RESULT_MSSAGE
+				, a.FRST_REGIST_PNTTM
+				, a.RQESTER_ID
+				, b.USER_NM AS RQESTER_NM
+			FROM
+				COMTNTRSMRCVLOG a
+			LEFT OUTER JOIN COMVNUSERMASTER b
+				ON a.RQESTER_ID = b.ESNTL_ID
+			LEFT OUTER JOIN COMTCCMMNDETAILCODE c
+				ON a.TRSMRCV_SE_CODE = c.CODE
+			WHERE
+				c.CODE_ID = 'COM008'
+			
+			<if test="searchWrd != null and searchWrd != ''">AND
+					c.CODE_NM LIKE '%' || #{searchWrd} || '%' 
+			</if>
+			<if test="searchBgnDe != null and searchBgnDe != ''">AND
+					a.OCCRRNC_DE BETWEEN REPLACE(#{searchBgnDe},'-','') AND REPLACE(#{searchEndDe},'-','')
+			</if>
+		
+			ORDER BY a.OCCRRNC_DE DESC
+			) TB ) Z WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+		
+	</select>
+
+	<!-- 송수신 로그 총건수 -->
+	<select id="selectTrsmrcvLogInfCnt" parameterType="egovframework.com.sym.log.tlg.service.TrsmrcvLog" resultType="java.lang.Integer">
+		
+			SELECT COUNT(a.REQUST_ID) as cnt
+			FROM
+				COMTNTRSMRCVLOG a
+			LEFT OUTER JOIN COMVNUSERMASTER b
+				ON a.RQESTER_ID = b.ESNTL_ID
+			LEFT OUTER JOIN COMTCCMMNDETAILCODE c
+				ON a.TRSMRCV_SE_CODE = c.CODE
+			WHERE
+				c.CODE_ID = 'COM008'
+			
+			<if test="searchWrd != null and searchWrd != ''">AND
+				 	c.CODE_NM LIKE '%' || #{searchWrd} || '%'  
+			</if>
+			<if test="searchBgnDe != null and searchBgnDe != ''">AND
+				 	a.OCCRRNC_DE BETWEEN REPLACE(#{searchBgnDe},'-','') AND REPLACE(#{searchEndDe},'-','')
+			</if>
+	</select>
+
+	<!-- 송수신 로그 전날 로그 요약 등록 -->
+	<insert id="logInsertTrsmrcvLogSummary">
+		
+			INSERT INTO COMTSTRSMRCVLOGSUMMARY
+			SELECT b.OCCRRNC_DE
+ 				 , b.TRSMRCV_SE_CODE
+				 , b.PROVD_INSTT_ID
+				 , b.PROVD_SYS_ID
+				 , b.PROVD_SVC_ID
+				 , b.REQUST_INSTT_ID
+				 , b.REQUST_SYS_ID
+			     , COUNT(b.OCCRRNC_DE) AS RDCNT
+			     , 0 AS ERROR_CO
+			  FROM COMTNTRSMRCVLOG b
+			 WHERE NOT EXISTS (SELECT c.OCCRRNC_DE
+			                     FROM COMTSTRSMRCVLOGSUMMARY c
+			                    WHERE RTRIM(c.OCCRRNC_DE) = TO_CHAR((SYSDATE - 1), 'YYYYMMDD')
+			                  )
+			   AND RTRIM(b.OCCRRNC_DE) = TO_CHAR((SYSDATE - 1), 'YYYYMMDD')
+			 GROUP BY b.OCCRRNC_DE
+ 				    , b.TRSMRCV_SE_CODE
+				    , b.PROVD_INSTT_ID
+				    , b.PROVD_SYS_ID
+				    , b.PROVD_SVC_ID
+				    , b.REQUST_INSTT_ID
+				    , b.REQUST_SYS_ID
+
+		
+	</insert>
+
+	<!-- 송수신 로그 6개월전 로그 삭제 -->
+	<delete id="logDeleteTrsmrcvLogSummary">
+		<![CDATA[
+			DELETE FROM COMTNTRSMRCVLOG
+			 WHERE RTRIM(OCCRRNC_DE) < TO_CHAR((SYSDATE - 210), 'YYYYMMDD')
+
+		]]>
+	</delete>
+
+</mapper>

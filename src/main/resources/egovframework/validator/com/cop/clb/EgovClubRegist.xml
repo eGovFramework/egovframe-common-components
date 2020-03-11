@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+
+<form-validation>
+    <formset>
+		<form name="club">
+			<field property="cmmntyId" depends="required">
+        		<arg0 key="cop.cmmntyNm" />
+			</field>			
+			<field property="clbNm" depends="required, maxlength">
+        		<arg0 key="cop.clbNm" />
+        		<arg1 key="120" resource="true"/>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>120</var-value>
+				</var>
+			</field>		
+			<field property="clbIntrcn" depends="required, maxlength">
+        		<arg0 key="cop.clbIntrcn" />
+        		<arg1 key="1200" resource="true"/>
+				<var>
+					<var-name>maxlength</var-name>
+					<var-value>1200</var-value>
+				</var>
+			</field>			
+			<field property="tmplatId" depends="required">
+        		<arg0 key="cop.tmplatId" />
+			</field>				
+			<field property="emplyrId" depends="required">
+        		<arg0 key="cop.clbOprtr" />
+			</field> 
+		</form>
+		
+    </formset>
+
+</form-validation>

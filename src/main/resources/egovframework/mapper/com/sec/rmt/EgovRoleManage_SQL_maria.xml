@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="roleManageDAO">
+
+    <resultMap id="role" type="egovframework.com.sec.rmt.service.RoleManageVO">
+        <result property="roleCode" column="ROLE_CODE"/>
+        <result property="roleNm" column="ROLE_NM"/>
+        <result property="rolePtn" column="ROLE_PTTRN"/>
+        <result property="roleDc" column="ROLE_DC"/>
+        <result property="roleTyp" column="ROLE_TY"/>
+        <result property="roleSort" column="ROLE_SORT"/>
+        <result property="roleCreatDe" column="ROLE_CREAT_DE"/>
+    </resultMap>
+
+
+    <select id="selectRole" resultMap="role">
+        
+            SELECT ROLE_CODE, 
+                   ROLE_NM, 
+                   ROLE_PTTRN, 
+                   ROLE_DC, 
+                   ROLE_TY, 
+                   ROLE_SORT, 
+                   ROLE_CREAT_DE
+              FROM COMTNROLEINFO
+             WHERE ROLE_CODE = #{roleCode}		         
+        
+    </select>
+
+    <select id="selectRoleList" parameterType="egovframework.com.sec.rmt.service.RoleManageVO" resultMap="role">
+            SELECT ROLE_CODE, 
+                   ROLE_NM, 
+                   ROLE_PTTRN, 
+                   ROLE_DC, 
+                   (SELECT CODE_NM 
+                      FROM COMTCCMMNDETAILCODE 
+                     WHERE CODE_ID = 'COM029' 
+                       AND CODE = ROLE_TY) AS ROLE_TY, 
+                   ROLE_SORT, 
+                   ROLE_CREAT_DE
+              FROM COMTNROLEINFO
+             WHERE 1=1
+            <if test="searchCondition == 1">AND
+                ROLE_NM LIKE CONCAT('%' , #{searchKeyword}, '%')
+            </if>
+            ORDER BY ROLE_CREAT_DE DESC
+            LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+    </select>
+
+	<insert id="insertRole" parameterType="egovframework.com.sec.rmt.service.RoleManage">
+		
+			INSERT INTO COMTNROLEINFO 
+				  ( ROLE_CODE
+				  , ROLE_NM
+                  , ROLE_PTTRN
+                  , ROLE_DC
+                  , ROLE_TY
+				  , ROLE_SORT
+				  , ROLE_CREAT_DE )
+		   VALUES ( #{roleCode}
+			      , #{roleNm}
+				  , #{rolePtn}
+                  , #{roleDc}
+                  , #{roleTyp}
+                  , #{roleSort}
+				  , now())
+		
+	</insert>
+
+	<update id="updateRole" parameterType="egovframework.com.sec.rmt.service.RoleManage">
+		
+			UPDATE COMTNROLEINFO 
+			   SET ROLE_NM=#{roleNm}
+                 , ROLE_PTTRN=#{rolePtn}
+                 , ROLE_DC=#{roleDc}
+                 , ROLE_TY=#{roleTyp}
+                 , ROLE_SORT=#{roleSort}
+				 , ROLE_CREAT_DE=now()
+		  	 WHERE ROLE_CODE=#{roleCode}
+		
+	</update>
+
+	<delete id="deleteRole">
+		
+			DELETE FROM COMTNROLEINFO 
+			 WHERE ROLE_CODE=#{roleCode}
+		
+	</delete>
+
+	<select id="selectAuthorListTotCnt" parameterType="egovframework.com.sec.rmt.service.RoleManageVO" resultType="int">
+
+			SELECT COUNT(*) totcnt
+			FROM COMTNROLEINFO
+			WHERE 1=1
+			<if test="searchCondition == 1">AND
+				ROLE_NM LIKE CONCAT('%' , #{searchKeyword}, '%')
+			</if>
+	</select>
+
+    <select id="selectRoleAllList" parameterType="egovframework.com.sec.rmt.service.RoleManageVO" resultMap="role">
+            SELECT ROLE_CODE, ROLE_NM, ROLE_PTTRN, ROLE_DC, ROLE_TY, ROLE_SORT, ROLE_CREAT_DE
+              FROM COMTNROLEINFO
+    </select>
+
+</mapper>

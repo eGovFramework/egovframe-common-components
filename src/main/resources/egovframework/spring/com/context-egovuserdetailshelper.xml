@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" 
+		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+		xmlns:p="http://www.springframework.org/schema/p"
+		xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+<!--
+	수정일          수성자                          수정내용
+   ===========     ========      =================================================
+   2011.10.11		이기하			context-common.xml 파일에서 별도분리
+   2016.06.21		장동한 			spring profile 방식으로 변경 / 세션(Session), 시큐리티(Security) 인증
+   2017.09.04		장동한 			spring profile 이용한 더미(Dummy), 세션(Session), 시큐리티(Security)
+
+ ************************************************************************************************
+	1.Spring Profile을 이용한 더미(Dummy) 사용자 인증
+
+	2.Spring Profile을 이용한 세션(Session) 사용자 인증
+
+	3.Spring Profile을 이용한 시큐리티(Security) 사용자 인증
+ ************************************************************************************************
+-->
+
+<!-- 1.더미(Dummy) 인증  -->
+<beans profile="dummy"> 
+	<bean id="egovUserDetailsHelper" class="egovframework.com.cmm.util.EgovUserDetailsHelper" 
+			p:egovUserDetailsService="#{new egovframework.com.cmm.service.impl.EgoDummyUserDetailsServiceImpl()}"/>
+</beans>
+
+<!-- 2.세션(Session) 인증  -->
+<beans profile="session">  
+	<bean id="egovUserDetailsHelper" class="egovframework.com.cmm.util.EgovUserDetailsHelper" 
+			p:egovUserDetailsService="#{new egovframework.com.cmm.service.impl.EgovUserDetailsSessionServiceImpl()}"/>
+</beans>
+
+<!-- 3.시큐리티(Security) 인증  -->
+<beans profile="security">  
+	<bean id="egovUserDetailsHelper" class="egovframework.com.cmm.util.EgovUserDetailsHelper">
+        <property name="egovUserDetailsService" ref="egovUserDetailsSecurityService" />
+    </bean>
+    <!-- 스프링 시큐리티를 이용한 인증을 사용할 빈 -->
+    <bean id="egovUserDetailsSecurityService" class="egovframework.com.sec.ram.service.impl.EgovUserDetailsSecurityServiceImpl"/>
+</beans>
+
+</beans>

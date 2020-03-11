@@ -1,0 +1,381 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	수정일                 수정자                          수정내용
+  =========     =======    =================================================
+  2011.8.24   	이기하     	 	테이블 표준화에 따른 수정사항 반영
+  							resultMap 사용
+  							BRTHDY 를			 		BRTH 로 변경
+  							FRST_REGIST_PNTTM 를	 	FRST_REGISTER_PNTTM 로 변경
+ 2011.10.06		이기하     	보안 취약점 점검사항 반영 $->#변경
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="EventCmpgn">
+
+	<resultMap id="EventCmpgnListMap" type="egovframework.com.uss.ion.ecc.service.EventCmpgnVO">
+		<result property="eventId" column="EVENT_ID"/>
+		<result property="eventSvcBeginDe" column="EVENT_SVC_BGNDE"/>
+		<result property="svcUseNmprCo" column="SVC_USE_NMPR_CO"/>
+		<result property="chargerNm" column="CHARGER_NM"/>
+		<result property="eventCn" column="EVENT_CN"/>
+		<result property="frstRegisterNm" column="FRST_REGISTER_NM"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+		<result property="eventSvcEndDe" column="EVENT_SVC_ENDDE"/>
+		<result property="eventTyCode" column="EVENT_TY_CODE"/>
+		<result property="eventTyCodeNm" column="EVENT_TY_CODE_NM"/>
+		<result property="prparetgCn" column="PRPARETG_CN"/>
+	</resultMap>
+
+	<resultMap id="EventCmpgnDetailMap" type="egovframework.com.uss.ion.ecc.service.EventCmpgnVO">
+		<result property="eventId" column="EVENT_ID"/>
+		<result property="eventSvcBeginDe" column="EVENT_SVC_BGNDE"/>
+		<result property="svcUseNmprCo" column="SVC_USE_NMPR_CO"/>
+		<result property="chargerNm" column="CHARGER_NM"/>
+		<result property="eventCn" column="EVENT_CN"/>
+		<result property="eventConfmAt" column="EVENT_CONFM_AT"/>
+		<result property="eventConfmDe" column="EVENT_CONFM_DE"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+		<result property="eventSvcEndDe" column="EVENT_SVC_ENDDE"/>
+		<result property="eventTyCode" column="EVENT_TY_CODE"/>
+		<result property="eventTyCodeNm" column="EVENT_TY_CODE_NM"/>
+		<result property="prparetgCn" column="PRPARETG_CN"/>
+	</resultMap>
+
+	<resultMap id="EventTnextrlHrMap" type="egovframework.com.uss.ion.ecc.service.TnextrlHrVO">
+		<result property="eventId" column="EVENT_ID"/>
+		<result property="eventCn" column="EVENT_CN"/>
+		<result property="extrlHrId" column="EXTRL_HR_ID"/>
+		<result property="extrlHrNm" column="EXTRL_HR_NM"/>
+		<result property="sexdstnCode" column="SEXDSTN_CODE"/>
+		<result property="sexdstnCodeNm" column="SEXDSTN_CODE_NM"/>
+		<result property="occpTyCode" column="OCCP_TY_CODE"/>
+		<result property="occpTyCodeNm" column="OCCP_TY_CODE_NM"/>
+		<result property="psitnInsttNm" column="PSITN_INSTT_NM"/>
+		<result property="brth" column="BRTHDY"/>
+		<result property="areaNo" column="AREA_NO"/>
+		<result property="middleTelno" column="MIDDEL_TELNO"/>
+		<result property="endTelno" column="END_TELNO"/>
+		<result property="emailAdres" column="EMAIL_ADRES"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+	</resultMap>
+
+	<delete id="deleteEventCmpgnTnextrlHr">
+		
+			DELETE FROM COMTNEXTRLHRINFO
+			WHERE EVENT_ID = #{eventId}
+		
+	</delete>
+
+	<delete id="deleteEventCmpgn">
+		
+			DELETE FROM COMTNEVENTINFO
+			WHERE EVENT_ID = #{eventId}
+		
+	</delete>
+
+	<update id="updateEventCmpgn">
+		UPDATE COMTNEVENTINFO
+		SET
+			EVENT_SVC_BGNDE=REPLACE(#{eventSvcBeginDe},'-',''),
+			SVC_USE_NMPR_CO=#{svcUseNmprCo},
+			CHARGER_NM=#{chargerNm},
+			EVENT_CN=#{eventCn},
+			LAST_UPDT_PNTTM=sysdate(),
+			LAST_UPDUSR_ID=#{lastUpdusrId},
+			EVENT_SVC_ENDDE=REPLACE(#{eventSvcEndDe},'-',''),
+			EVENT_TY_CODE=#{eventTyCode},
+			EVENT_CONFM_AT=#{eventConfmAt},
+			EVENT_CONFM_DE=REPLACE(#{eventConfmDe},'-',''),
+			PRPARETG_CN=#{prparetgCn}
+		WHERE EVENT_ID = #{eventId}
+	</update>
+
+	<select id="selectEventCmpgnDetail" parameterType="egovframework.com.uss.ion.ecc.service.EventCmpgnVO" resultMap="EventCmpgnDetailMap">
+		SELECT
+			EVENT_ID,
+			DATE_FORMAT(EVENT_SVC_BGNDE,'%Y-%m-%d') EVENT_SVC_BGNDE,
+			SVC_USE_NMPR_CO,
+			CHARGER_NM,
+			EVENT_CN,
+			EVENT_CONFM_AT,
+			DATE_FORMAT(EVENT_CONFM_DE,'%Y-%m-%d') EVENT_CONFM_DE,
+			FRST_REGIST_PNTTM,
+			FRST_REGISTER_ID,
+			LAST_UPDT_PNTTM,
+			LAST_UPDUSR_ID,
+			DATE_FORMAT(EVENT_SVC_ENDDE,'%Y-%m-%d') EVENT_SVC_ENDDE,
+			EVENT_TY_CODE,
+			B.CODE_NM AS EVENT_TY_CODE_NM,
+			PRPARETG_CN
+		FROM COMTNEVENTINFO A
+		LEFT OUTER JOIN 
+				(SELECT CODE_ID, CODE, CODE_NM FROM 
+					COMTCCMMNDETAILCODE WHERE CODE_ID = 'COM035' AND USE_AT='Y') b
+				ON a.EVENT_TY_CODE = b.CODE
+		WHERE 1=1
+		AND EVENT_ID = #{eventId}
+	</select>
+
+	<select id="selectEventCmpgnList" parameterType="egovframework.com.uss.ion.ecc.service.EventCmpgnVO" resultMap="EventCmpgnListMap">
+	 
+		SELECT
+			A.EVENT_ID,
+			DATE_FORMAT(A.EVENT_SVC_BGNDE,'%Y-%m-%d') EVENT_SVC_BGNDE,
+			A.SVC_USE_NMPR_CO,
+			A.CHARGER_NM,
+			A.EVENT_CN,
+			DATE_FORMAT(A.FRST_REGIST_PNTTM,'%Y-%m-%d') FRST_REGIST_PNTTM,
+			A.FRST_REGISTER_ID,
+			(SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = A.FRST_REGISTER_ID) FRST_REGISTER_NM,
+			A.LAST_UPDT_PNTTM,
+			A.LAST_UPDUSR_ID,
+			DATE_FORMAT(A.EVENT_SVC_ENDDE,'%Y-%m-%d') EVENT_SVC_ENDDE,
+			A.EVENT_TY_CODE,
+			B.CODE_NM AS EVENT_TY_CODE_NM,
+			A.PRPARETG_CN
+		FROM COMTNEVENTINFO A
+		LEFT OUTER JOIN 
+				(SELECT CODE_ID, CODE, CODE_NM FROM 
+					COMTCCMMNDETAILCODE WHERE CODE_ID = 'COM035' AND USE_AT='Y') b
+				ON a.EVENT_TY_CODE = b.CODE
+		WHERE 1=1
+	 
+		<if test="searchCondition == 0">
+			AND EVENT_CN LIKE CONCAT ('%', #{searchKeyword},'%')
+		</if>
+	 	
+	 	<if test="searchCondition == 1">
+	 		AND  FRST_REGISTER_ID IN (SELECT ESNTL_ID FROM COMTNEMPLYRINFO WHERE USER_NM LIKE CONCAT ('%', #{searchKeyword},'%') )
+	 	</if>
+	 	
+
+	 
+		ORDER BY A.FRST_REGIST_PNTTM DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	
+	</select>
+
+	<select id="selectEventCmpgnListCnt" parameterType="egovframework.com.uss.ion.ecc.service.EventCmpgnVO" resultType="int">
+		SELECT
+		COUNT(*) totcnt
+		FROM COMTNEVENTINFO
+		WHERE 1=1
+	 	
+		<if test="searchCondition == 0">
+			AND EVENT_CN LIKE CONCAT ('%', #{searchKeyword},'%')
+		</if>
+	 	
+	 	<if test="searchCondition == 1">
+	 		AND  FRST_REGISTER_ID IN (SELECT ESNTL_ID FROM COMTNEMPLYRINFO WHERE USER_NM LIKE CONCAT ('%', #{searchKeyword},'%') )
+	 	</if>
+	 	
+
+	</select>
+
+	<insert id="insertEventCmpgn">
+	 
+
+	INSERT INTO COMTNEVENTINFO (
+		EVENT_ID,
+		EVENT_SVC_BGNDE,
+		SVC_USE_NMPR_CO,
+		CHARGER_NM,
+		EVENT_CN,
+		EVENT_SVC_ENDDE,
+		EVENT_TY_CODE,
+		PRPARETG_CN,
+		EVENT_CONFM_AT,
+		EVENT_CONFM_DE,
+		FRST_REGIST_PNTTM,
+		FRST_REGISTER_ID,
+		LAST_UPDT_PNTTM,
+		LAST_UPDUSR_ID
+	)VALUES(
+		#{eventId},
+		REPLACE(#{eventSvcBeginDe},'-',''),
+		#{svcUseNmprCo},
+		#{chargerNm},
+		#{eventCn},
+		REPLACE(#{eventSvcEndDe},'-',''),
+		#{eventTyCode},
+		#{prparetgCn},
+		#{eventConfmAt},
+		REPLACE(#{eventConfmDe},'-',''),
+		sysdate(),
+		#{frstRegisterId},
+		sysdate(),
+		#{lastUpdusrId}
+	)
+
+	 
+	</insert>
+
+	<delete id="deleteTnextrlHr">
+		
+			DELETE FROM COMTNEXTRLHRINFO
+			WHERE EXTRL_HR_ID = #{extrlHrId}
+		
+	</delete>
+
+	<update id="updateTnextrlHr">
+		UPDATE COMTNEXTRLHRINFO
+		SET
+			SEXDSTN_CODE=#{sexdstnCode},
+			EXTRL_HR_NM=#{extrlHrNm},
+			AREA_NO=#{areaNo},
+			MIDDLE_TELNO=#{middleTelno},
+			END_TELNO=#{endTelno},
+			EMAIL_ADRES=#{emailAdres},
+			OCCP_TY_CODE=#{occpTyCode},
+			BRTHDY=#{brth},
+			PSITN_INSTT_NM=#{psitnInsttNm},
+			LAST_UPDT_PNTTM = sysdate(),
+			LAST_UPDUSR_ID = #{lastUpdusrId}
+		WHERE EXTRL_HR_ID = #{extrlHrId}
+	</update>
+
+	<select id="selectTnextrlHrDetail" parameterType="egovframework.com.uss.ion.ecc.service.TnextrlHrVO" resultMap="EventTnextrlHrMap">
+		SELECT
+			A.EXTRL_HR_ID,
+			A.EVENT_ID,
+			(SELECT EVENT_CN FROM COMTNEVENTINFO WHERE EVENT_ID=A.EVENT_ID ) EVENT_CN,
+			A.SEXDSTN_CODE,
+			b.CODE_NM AS SEXDSTN_CODE_NM,
+			A.EXTRL_HR_NM,
+			A.AREA_NO,
+			A.MIDDLE_TELNO,
+			A.END_TELNO,
+			A.EMAIL_ADRES,
+			A.FRST_REGIST_PNTTM,
+			A.FRST_REGISTER_ID,
+			A.LAST_UPDT_PNTTM,
+			A.LAST_UPDUSR_ID,
+			A.OCCP_TY_CODE,
+			c.CODE_NM AS OCCP_TY_CODE_NM,
+			A.BRTHDY	,
+			A.PSITN_INSTT_NM
+		FROM COMTNEXTRLHRINFO A
+		LEFT OUTER JOIN 
+				(SELECT CODE_ID, CODE, CODE_NM FROM 
+					COMTCCMMNDETAILCODE WHERE CODE_ID = 'COM014' AND USE_AT='Y') b
+				ON a.SEXDSTN_CODE = b.CODE
+		LEFT OUTER JOIN 
+				(SELECT CODE_ID, CODE, CODE_NM FROM 
+					COMTCCMMNDETAILCODE WHERE CODE_ID = 'COM034' AND USE_AT='Y') c
+				ON a.OCCP_TY_CODE = c.CODE
+		WHERE 1=1
+		AND A.EXTRL_HR_ID = #{extrlHrId}
+	</select>
+
+	<select id="selectTnextrlHrList" parameterType="egovframework.com.uss.ion.ecc.service.TnextrlHrVO" resultMap="EventTnextrlHrMap">
+	 
+		SELECT
+			A.SEXDSTN_CODE,
+			B.CODE_NM AS SEXDSTN_CODE_NM,
+			A.EXTRL_HR_NM,
+			A.EMAIL_ADRES,
+			A.OCCP_TY_CODE,
+			C.CODE_NM AS OCCP_TY_CODE_NM,
+			A.PSITN_INSTT_NM,
+			A.EXTRL_HR_ID,
+			A.EVENT_ID,
+			A.BRTHDY,
+			A.AREA_NO,
+			A.MIDDLE_TELNO,
+			A.END_TELNO,
+			DATE_FORMAT(A.FRST_REGIST_PNTTM,'%Y-%m-%d') AS FRST_REGIST_PNTTM,
+			A.FRST_REGISTER_ID,
+			(SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = A.FRST_REGISTER_ID) FRST_REGISTER_NM,
+			A.LAST_UPDT_PNTTM,
+			A.LAST_UPDUSR_ID
+		FROM COMTNEXTRLHRINFO A
+		LEFT OUTER JOIN 
+				(SELECT CODE_ID, CODE, CODE_NM FROM 
+					COMTCCMMNDETAILCODE WHERE CODE_ID = 'COM014' AND USE_AT='Y') b
+				ON a.SEXDSTN_CODE = b.CODE
+		LEFT OUTER JOIN 
+				(SELECT CODE_ID, CODE, CODE_NM FROM 
+					COMTCCMMNDETAILCODE WHERE CODE_ID = 'COM034' AND USE_AT='Y') c
+				ON a.OCCP_TY_CODE = c.CODE
+		WHERE 1=1
+	 	
+			 <if test="eventId != null and eventId != ''">
+			 		AND A.EVENT_ID = #{eventId}
+			 </if>
+	 		<if test="searchCondition == 0">
+ 				AND EXTRL_HR_NM LIKE CONCAT ('%', #{searchKeyword},'%')
+	 		</if>
+	 		<if test="searchCondition == 1">
+ 				AND PSITN_INSTT_NM LIKE CONCAT ('%', #{searchKeyword},'%')
+	 		</if>
+	 	
+	 
+		ORDER BY A.FRST_REGIST_PNTTM DESC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+	
+	</select>
+
+	<select id="selectTnextrlHrListCnt" parameterType="egovframework.com.uss.ion.ecc.service.TnextrlHrVO" resultType="int">
+		SELECT
+		COUNT(*) totcnt
+		FROM COMTNEXTRLHRINFO
+		WHERE 1=1
+	 		<if test="eventId != null and eventId != ''">
+			 		AND EVENT_ID = #{eventId}
+			 </if>
+	 		<if test="searchCondition == 0">
+ 				AND EXTRL_HR_NM LIKE CONCAT ('%', #{searchKeyword},'%')
+	 		</if>
+	 		<if test="searchCondition == 1">
+ 				AND PSITN_INSTT_NM LIKE CONCAT ('%', #{searchKeyword},'%')
+	 		</if>
+	 	
+	</select>
+
+	<insert id="insertTnextrlHr">
+	 
+		INSERT INTO COMTNEXTRLHRINFO (
+			EVENT_ID,
+			EXTRL_HR_ID,
+			SEXDSTN_CODE,
+			EXTRL_HR_NM,
+			AREA_NO,
+			MIDDLE_TELNO,
+			END_TELNO,
+			EMAIL_ADRES,
+			OCCP_TY_CODE,
+			BRTHDY,
+			PSITN_INSTT_NM,
+			FRST_REGIST_PNTTM,
+			FRST_REGISTER_ID,
+			LAST_UPDT_PNTTM,
+			LAST_UPDUSR_ID
+		)VALUES(
+			#{eventId},
+			#{extrlHrId},
+			#{sexdstnCode},
+			#{extrlHrNm},
+			#{areaNo},
+			#{middleTelno},
+			#{endTelno},
+			#{emailAdres},
+			#{occpTyCode},
+			#{brth},
+			#{psitnInsttNm},
+			sysdate(),
+			#{frstRegisterId},
+			sysdate(),
+			#{lastUpdusrId}
+		)
+	 
+	</insert>
+
+</mapper>

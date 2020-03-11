@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="TrsmrcvMntrngDao">
+
+	<resultMap id="trsmrcvMntrngResult" type="egovframework.com.utl.sys.trm.service.TrsmrcvMntrng">
+		<result property="cntcId" column="CNTC_ID"/>
+		<result property="testClassNm" column="TEST_CLASS_NM"/>
+		<result property="mngrNm" column="MNGR_NM"/>
+		<result property="mngrEmailAddr" column="MNGR_EMAIL_ADRES"/>
+		<result property="mntrngSttus" column="MNTRNG_STTUS"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+        <result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+        <result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+        <result property="creatDt" column="CREAT_DT"/>
+		<result property="mntrngSttusNm" column="MNTRNG_STTUS_NM"/>
+		<result property="cntcNm" column="CNTC_NM"/>
+        <result property="provdInsttNm" column="PROVD_INSTT_NM"/>
+        <result property="provdSysNm" column="PROVD_SYS_NM"/>
+        <result property="provdSvcNm" column="PROVD_SVC_NM"/>
+        <result property="requstInsttNm" column="REQUST_INSTT_NM"/>
+        <result property="requstSysNm" column="REQUST_SYS_NM"/>
+	</resultMap>
+
+    <resultMap id="CntcResult" type="egovframework.com.utl.sys.trm.service.CntcVO">
+        <result property="cntcId" column="CNTC_ID"/>
+        <result property="cntcNm" column="CNTC_NM"/>
+        <result property="provdInsttNm" column="PROVD_INSTT_NM"/>
+        <result property="provdSysNm" column="PROVD_SYS_NM"/>
+        <result property="provdSvcNm" column="PROVD_SVC_NM"/>
+        <result property="requstInsttNm" column="REQUST_INSTT_NM"/>
+        <result property="requstSysNm" column="REQUST_SYS_NM"/>
+    </resultMap>
+
+ 
+    <resultMap id="trsmrcvMntrngLogResult" type="egovframework.com.utl.sys.trm.service.TrsmrcvMntrngLog">
+        <result property="logId" column="LOG_ID"/>
+        <result property="cntcId" column="CNTC_ID"/>
+        <result property="testClassNm" column="TEST_CLASS_NM"/>
+        <result property="mngrNm" column="MNGR_NM"/>
+        <result property="mngrEmailAddr" column="MNGR_EMAIL_ADRES"/>
+        <result property="mntrngSttus" column="MNTRNG_STTUS"/>
+        <result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+        <result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+        <result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+        <result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+        <result property="creatDt" column="CREAT_DT"/>
+        <result property="logInfo" column="LOG_INFO"/>
+        <result property="mntrngSttusNm" column="MNTRNG_STTUS_NM"/>
+        <result property="cntcNm" column="CNTC_NM"/>
+        <result property="provdInsttNm" column="PROVD_INSTT_NM"/>
+        <result property="provdSysNm" column="PROVD_SYS_NM"/>
+        <result property="provdSvcNm" column="PROVD_SVC_NM"/>
+        <result property="requstInsttNm" column="REQUST_INSTT_NM"/>
+        <result property="requstSysNm" column="REQUST_SYS_NM"/>
+    </resultMap>
+
+
+	<select id="selectTrsmrcvMntrngList" parameterType="egovframework.com.utl.sys.trm.service.TrsmrcvMntrng" resultMap="trsmrcvMntrngResult">
+		 
+		SELECT * FROM ( SELECT rownum rn, TB.* FROM (
+			SELECT A.CNTC_ID, A.TEST_CLASS_NM, 
+               A.MNGR_NM, A.MNGR_EMAIL_ADRES, A.MNTRNG_STTUS, 
+               TO_CHAR(A.LAST_UPDT_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS LAST_UPDT_PNTTM, A.LAST_UPDUSR_ID,
+               A.FRST_REGISTER_ID, TO_CHAR(A.FRST_REGIST_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS FRST_REGIST_PNTTM,
+               TO_CHAR(A.CREAT_DT, 'YYYY-MM-DD HH24:MI:SS') AS CREAT_DT,
+               B.CODE_NM MNTRNG_STTUS_NM, C.CNTC_NM,
+               D.INSTT_NM PROVD_INSTT_NM, E.SYS_NM PROVD_SYS_NM, F.SVC_NM PROVD_SVC_NM, 
+               G.INSTT_NM REQUST_INSTT_NM, H.SYS_NM REQUST_SYS_NM
+            FROM COMTNTRSMRCVMNTRNG A, COMTCCMMNDETAILCODE B, COMTNSYSTEMCNTC C,
+                 COMTNCNTCINSTT D, COMTNCNTCSYSTEM E, COMTNCNTCSERVICE F, 
+                 COMTNCNTCINSTT G, COMTNCNTCSYSTEM H
+            WHERE B.CODE_ID = 'COM046'
+              AND A.MNTRNG_STTUS = B.CODE
+              AND A.CNTC_ID = C.CNTC_ID
+              AND D.INSTT_ID = C.PROVD_INSTT_ID
+              AND E.INSTT_ID = C.PROVD_INSTT_ID
+              AND E.SYS_ID = C.PROVD_SYS_ID
+              AND F.INSTT_ID = C.PROVD_INSTT_ID
+              AND F.SYS_ID = C.PROVD_SYS_ID
+              AND F.SVC_ID = C.PROVD_SVC_ID
+              AND G.INSTT_ID = C.REQUST_INSTT_ID
+              AND H.INSTT_ID = C.REQUST_INSTT_ID
+              AND H.SYS_ID = C.REQUST_SYS_ID
+			  AND A.CNTC_ID = C.CNTC_ID
+		
+			<if test="searchCondition == 0">AND
+					C.CNTC_NM LIKE '%' || #{searchKeyword} || '%' 		
+			</if>
+            <if test="searchCondition == 1">AND
+                   A.CNTC_ID LIKE '%' || #{searchKeyword} || '%'        
+            </if>
+			<if test="searchCondition == 2">AND
+					A.MNGR_NM LIKE '%' || #{searchKeyword} || '%' 		
+			</if>
+			<if test="searchCondition == 3">AND
+					B.CODE_NM LIKE '%' || #{searchKeyword} || '%' 		
+			</if>
+		
+            ORDER BY A.CNTC_ID ASC
+			) TB ) Z WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+						
+	</select>
+
+	<select id="selectTrsmrcvMntrngListCnt" parameterType="egovframework.com.utl.sys.trm.service.TrsmrcvMntrng" resultType="java.lang.Integer">
+		
+			SELECT COUNT(*) totcnt
+            FROM COMTNTRSMRCVMNTRNG A, COMTCCMMNDETAILCODE B, COMTNSYSTEMCNTC C,
+                 COMTNCNTCINSTT D, COMTNCNTCSYSTEM E, COMTNCNTCSERVICE F, 
+                 COMTNCNTCINSTT G, COMTNCNTCSYSTEM H
+            WHERE B.CODE_ID = 'COM046'
+              AND A.MNTRNG_STTUS = B.CODE
+              AND A.CNTC_ID = C.CNTC_ID
+              AND D.INSTT_ID = C.PROVD_INSTT_ID
+              AND E.INSTT_ID = C.PROVD_INSTT_ID
+              AND E.SYS_ID = C.PROVD_SYS_ID
+              AND F.INSTT_ID = C.PROVD_INSTT_ID
+              AND F.SYS_ID = C.PROVD_SYS_ID
+              AND F.SVC_ID = C.PROVD_SVC_ID
+              AND G.INSTT_ID = C.REQUST_INSTT_ID
+              AND H.INSTT_ID = C.REQUST_INSTT_ID
+              AND H.SYS_ID = C.REQUST_SYS_ID
+              AND A.CNTC_ID = C.CNTC_ID
+        
+            <if test="searchCondition == 0">AND
+                   C.CNTC_NM LIKE '%' || #{searchKeyword} || '%'        
+            </if>
+            <if test="searchCondition == 1">AND
+                   A.CNTC_ID LIKE '%' || #{searchKeyword} || '%'        
+            </if>
+            <if test="searchCondition == 2">AND
+                   A.MNGR_NM LIKE '%' || #{searchKeyword} || '%'        
+            </if>
+	</select>
+	
+	<select id="selectTrsmrcvMntrng" parameterType="egovframework.com.utl.sys.trm.service.TrsmrcvMntrng" resultMap="trsmrcvMntrngResult">
+		
+			SELECT A.CNTC_ID, A.TEST_CLASS_NM, 
+			   A.MNGR_NM, A.MNGR_EMAIL_ADRES, A.MNTRNG_STTUS, 
+               TO_CHAR(A.LAST_UPDT_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS LAST_UPDT_PNTTM, A.LAST_UPDUSR_ID,
+               A.FRST_REGISTER_ID, TO_CHAR(A.FRST_REGIST_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS FRST_REGIST_PNTTM,
+               TO_CHAR(A.CREAT_DT, 'YYYY-MM-DD HH24:MI:SS') AS CREAT_DT,
+			   B.CODE_NM MNTRNG_STTUS_NM, C.CNTC_NM,
+			   D.INSTT_NM PROVD_INSTT_NM, E.SYS_NM PROVD_SYS_NM, F.SVC_NM PROVD_SVC_NM, 
+			   G.INSTT_NM REQUST_INSTT_NM, H.SYS_NM REQUST_SYS_NM
+			FROM COMTNTRSMRCVMNTRNG A, COMTCCMMNDETAILCODE B, COMTNSYSTEMCNTC C,
+			     COMTNCNTCINSTT D, COMTNCNTCSYSTEM E, COMTNCNTCSERVICE F, 
+			     COMTNCNTCINSTT G, COMTNCNTCSYSTEM H
+			WHERE B.CODE_ID = 'COM046'
+			  AND A.MNTRNG_STTUS = B.CODE
+			  AND A.CNTC_ID = C.CNTC_ID
+		 	  AND D.INSTT_ID = C.PROVD_INSTT_ID
+			  AND E.INSTT_ID = C.PROVD_INSTT_ID
+			  AND E.SYS_ID = C.PROVD_SYS_ID
+			  AND F.INSTT_ID = C.PROVD_INSTT_ID
+			  AND F.SYS_ID = C.PROVD_SYS_ID
+			  AND F.SVC_ID = C.PROVD_SVC_ID
+			  AND G.INSTT_ID = C.REQUST_INSTT_ID
+			  AND H.INSTT_ID = C.REQUST_INSTT_ID
+			  AND H.SYS_ID = C.REQUST_SYS_ID
+              AND A.CNTC_ID = #{cntcId}
+		
+	</select>
+
+	<insert id="insertTrsmrcvMntrng" parameterType="egovframework.com.utl.sys.trm.service.TrsmrcvMntrng">
+		
+			INSERT INTO COMTNTRSMRCVMNTRNG (
+				CNTC_ID,TEST_CLASS_NM,MNGR_NM,MNGR_EMAIL_ADRES,
+				MNTRNG_STTUS,LAST_UPDT_PNTTM,LAST_UPDUSR_ID, CREAT_DT, FRST_REGISTER_ID, FRST_REGIST_PNTTM
+				) 
+			VALUES (
+		    		#{cntcId},  
+		    		#{testClassNm},
+		            #{mngrNm},
+		            #{mngrEmailAddr},
+		            #{mntrngSttus},
+		            SYSDATETIME,
+		            #{lastUpdusrId},
+                    SYSDATETIME,
+                    #{frstRegisterId},
+                    SYSDATETIME
+		         ) 
+		
+	</insert>
+
+ 	 <update id="updateTrsmrcvMntrng" parameterType="egovframework.com.utl.sys.trm.service.TrsmrcvMntrng">
+ 		
+			UPDATE COMTNTRSMRCVMNTRNG SET 
+				TEST_CLASS_NM = #{testClassNm},
+				MNGR_NM = #{mngrNm},
+				MNGR_EMAIL_ADRES = #{mngrEmailAddr},
+				MNTRNG_STTUS = #{mntrngSttus},
+				LAST_UPDUSR_ID = #{lastUpdusrId},
+				LAST_UPDT_PNTTM = SYSDATETIME,
+                CREAT_DT = SYSDATETIME
+			WHERE CNTC_ID = #{cntcId} 
+ 		
+ 	</update>
+ 	
+	<delete id="deleteTrsmrcvMntrng" parameterType="egovframework.com.utl.sys.trm.service.TrsmrcvMntrng">
+		
+            DELETE  
+            FROM COMTNTRSMRCVMNTRNG 
+             WHERE  CNTC_ID = #{cntcId}
+		
+	</delete>
+
+    <select id="selectCntcList" parameterType="egovframework.com.utl.sys.trm.service.CntcVO" resultMap="CntcResult">
+        
+        SELECT * FROM ( SELECT rownum rn, TB.* FROM (
+            SELECT  A.CNTC_ID           
+                 ,  A.CNTC_NM           
+                 ,  A.CNTC_TY         
+                 ,  A.PROVD_INSTT_ID    
+                 ,  A.PROVD_SYS_ID      
+                 ,  A.PROVD_SVC_ID      
+                 ,  A.REQUST_INSTT_ID   
+                 ,  A.REQUST_SYS_ID     
+                 ,  C1.INSTT_NM         PROVD_INSTT_NM 
+                 ,  D1.SYS_NM           PROVD_SYS_NM   
+                 ,  E.SVC_NM            PROVD_SVC_NM   
+                 ,  C2.INSTT_NM         REQUST_INSTT_NM
+                 ,  D2.SYS_NM           REQUST_SYS_NM
+              FROM  COMTNSYSTEMCNTC A
+                 ,  COMTNCNTCINSTT   C1
+                 ,  COMTNCNTCINSTT   C2
+                 ,  COMTNCNTCSYSTEM  D1
+                 ,  COMTNCNTCSYSTEM  D2
+                 ,  COMTNCNTCSERVICE E
+             WHERE  A.PROVD_INSTT_ID  = C1.INSTT_ID
+               AND  A.PROVD_INSTT_ID  = D1.INSTT_ID
+               AND  A.PROVD_SYS_ID    = D1.SYS_ID
+               AND  A.PROVD_INSTT_ID  = E.INSTT_ID
+               AND  A.PROVD_SYS_ID    = E.SYS_ID
+               AND  A.PROVD_SVC_ID    = E.SVC_ID
+               AND  A.REQUST_INSTT_ID = C2.INSTT_ID
+               AND  A.REQUST_INSTT_ID = D2.INSTT_ID
+               AND  A.REQUST_SYS_ID   = D2.SYS_ID
+
+        
+        <if test="searchCondition == 0">AND
+            
+                    A.CNTC_NM LIKE '%' || #{searchKeyword} || '%'
+            
+        </if>
+            ORDER BY A.CNTC_ID ASC
+            ) TB ) Z WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+    </select>
+
+    <select id="selectCntcListCnt" parameterType="egovframework.com.utl.sys.trm.service.CntcVO" resultType="java.lang.Integer">
+        
+            SELECT COUNT(*) totcnt
+              FROM  COMTNSYSTEMCNTC A
+                 ,  COMTNCNTCINSTT   C1
+                 ,  COMTNCNTCINSTT   C2
+                 ,  COMTNCNTCSYSTEM  D1
+                 ,  COMTNCNTCSYSTEM  D2
+                 ,  COMTNCNTCSERVICE E
+             WHERE  A.PROVD_INSTT_ID  = C1.INSTT_ID
+               AND  A.PROVD_INSTT_ID  = D1.INSTT_ID
+               AND  A.PROVD_SYS_ID    = D1.SYS_ID
+               AND  A.PROVD_INSTT_ID  = E.INSTT_ID
+               AND  A.PROVD_SYS_ID    = E.SYS_ID
+               AND  A.PROVD_SVC_ID    = E.SVC_ID
+               AND  A.REQUST_INSTT_ID = C2.INSTT_ID
+               AND  A.REQUST_INSTT_ID = D2.INSTT_ID
+               AND  A.REQUST_SYS_ID   = D2.SYS_ID
+
+        
+        <if test="searchCondition == 0">AND
+            
+                    A.CNTC_NM LIKE '%' || #{searchKeyword} || '%'
+            
+        </if>
+    </select>
+
+    <insert id="insertTrsmrcvMntrngLog" parameterType="egovframework.com.utl.sys.trm.service.TrsmrcvMntrngLog">
+        
+            INSERT INTO COMTHTRSMRCVMNTRNGLOGINFO (
+                LOG_ID, CNTC_ID,TEST_CLASS_NM,MNGR_NM,MNGR_EMAIL_ADRES,
+                MNTRNG_STTUS,LAST_UPDT_PNTTM,LAST_UPDUSR_ID, CREAT_DT, FRST_REGISTER_ID, FRST_REGIST_PNTTM, LOG_INFO
+                ) 
+            VALUES (
+                    #{logId},
+                    #{cntcId},  
+                    #{testClassNm},
+                    #{mngrNm},
+                    #{mngrEmailAddr},
+                    #{mntrngSttus},
+                    SYSDATETIME,
+                    #{lastUpdusrId},
+                    SYSDATETIME,
+                    #{frstRegisterId},
+                    SYSDATETIME,
+                    #{logInfo}
+                 ) 
+        
+    </insert>
+
+    <select id="selectTrsmrcvMntrngLogList" parameterType="egovframework.com.utl.sys.trm.service.TrsmrcvMntrngLog" resultMap="trsmrcvMntrngLogResult">
+         
+        SELECT * FROM ( SELECT rownum rn, TB.* FROM (
+            SELECT A.LOG_ID, A.CNTC_ID, A.TEST_CLASS_NM,  
+                   A.MNGR_NM, A.MNGR_EMAIL_ADRES, A.MNTRNG_STTUS, 
+	               TO_CHAR(A.LAST_UPDT_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS LAST_UPDT_PNTTM, A.LAST_UPDUSR_ID,
+	               A.FRST_REGISTER_ID, TO_CHAR(A.FRST_REGIST_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS FRST_REGIST_PNTTM,
+	               TO_CHAR(A.CREAT_DT, 'YYYY-MM-DD HH24:MI:SS') AS CREAT_DT,  A.LOG_INFO,
+                   B.CODE_NM MNTRNG_STTUS_NM, C.CNTC_NM,
+                   D.INSTT_NM PROVD_INSTT_NM, E.SYS_NM PROVD_SYS_NM, F.SVC_NM PROVD_SVC_NM, 
+                   G.INSTT_NM REQUST_INSTT_NM, H.SYS_NM REQUST_SYS_NM
+            FROM COMTHTRSMRCVMNTRNGLOGINFO A, COMTCCMMNDETAILCODE B, COMTNSYSTEMCNTC C,
+                 COMTNCNTCINSTT D, COMTNCNTCSYSTEM E, COMTNCNTCSERVICE F, 
+                 COMTNCNTCINSTT G, COMTNCNTCSYSTEM H
+            WHERE B.CODE_ID = 'COM046'
+              AND A.MNTRNG_STTUS = B.CODE
+              AND A.CNTC_ID = C.CNTC_ID
+              AND D.INSTT_ID = C.PROVD_INSTT_ID
+              AND E.INSTT_ID = C.PROVD_INSTT_ID
+              AND E.SYS_ID = C.PROVD_SYS_ID
+              AND F.INSTT_ID = C.PROVD_INSTT_ID
+              AND F.SYS_ID = C.PROVD_SYS_ID
+              AND F.SVC_ID = C.PROVD_SVC_ID
+              AND G.INSTT_ID = C.REQUST_INSTT_ID
+              AND H.INSTT_ID = C.REQUST_INSTT_ID
+              AND H.SYS_ID = C.REQUST_SYS_ID
+        
+            <if test="searchKeywordFrom != null and searchKeywordFrom != ''">AND
+                       TO_CHAR(A.CREAT_DT, 'YYYYMMDD') >= #{searchKeywordFrom}      
+                
+            </if>
+            <if test="searchKeywordTo != null and searchKeywordTo != ''">AND
+                       TO_CHAR(A.CREAT_DT, 'YYYYMMDD') &lt;= #{searchKeywordTo}
+                
+            </if>
+            <if test="searchCondition == 0">AND
+                   C.CNTC_NM LIKE  '%' || #{searchKeyword} || '%'        
+            </if>
+            <if test="searchCondition == 1">AND
+                   A.CNTC_ID LIKE '%' || #{searchKeyword} || '%'        
+            </if>
+            <if test="searchCondition == 2">AND
+                   A.MNGR_NM LIKE '%' || #{searchKeyword} || '%'        
+            </if>
+        
+            ORDER BY A.LOG_ID DESC
+            ) TB ) Z WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+                     
+    </select>
+
+    <select id="selectTrsmrcvMntrngLogListCnt" parameterType="egovframework.com.utl.sys.trm.service.TrsmrcvMntrngLog" resultType="java.lang.Integer">
+        
+            SELECT COUNT(*) totcnt
+            FROM COMTHTRSMRCVMNTRNGLOGINFO A, COMTCCMMNDETAILCODE B, COMTNSYSTEMCNTC C,
+                 COMTNCNTCINSTT D, COMTNCNTCSYSTEM E, COMTNCNTCSERVICE F, 
+                 COMTNCNTCINSTT G, COMTNCNTCSYSTEM H
+            WHERE B.CODE_ID = 'COM046'
+              AND A.MNTRNG_STTUS = B.CODE
+              AND A.CNTC_ID = C.CNTC_ID
+              AND D.INSTT_ID = C.PROVD_INSTT_ID
+              AND E.INSTT_ID = C.PROVD_INSTT_ID
+              AND E.SYS_ID = C.PROVD_SYS_ID
+              AND F.INSTT_ID = C.PROVD_INSTT_ID
+              AND F.SYS_ID = C.PROVD_SYS_ID
+              AND F.SVC_ID = C.PROVD_SVC_ID
+              AND G.INSTT_ID = C.REQUST_INSTT_ID
+              AND H.INSTT_ID = C.REQUST_INSTT_ID
+              AND H.SYS_ID = C.REQUST_SYS_ID
+        
+            <if test="searchKeywordFrom != null and searchKeywordFrom != ''">AND
+                       TO_CHAR(A.CREAT_DT, 'YYYYMMDD') >= #{searchKeywordFrom}      
+                
+            </if>
+            <if test="searchKeywordTo != null and searchKeywordTo != ''">AND
+                       TO_CHAR(A.CREAT_DT, 'YYYYMMDD') &lt;= #{searchKeywordTo}
+                
+            </if>
+            <if test="searchCondition == 0">AND
+                   C.CNTC_NM LIKE  '%' || #{searchKeyword} || '%'        
+            </if>
+            <if test="searchCondition == 1">AND
+                   A.CNTC_ID LIKE '%' || #{searchKeyword} || '%'        
+            </if>
+            <if test="searchCondition == 2">AND
+                   A.MNGR_NM LIKE '%' || #{searchKeyword} || '%'        
+            </if>
+    </select>
+
+    <select id="selectTrsmrcvMntrngLog" parameterType="egovframework.com.utl.sys.trm.service.TrsmrcvMntrngLog" resultMap="trsmrcvMntrngLogResult">
+        
+            SELECT A.LOG_ID, A.CNTC_ID, A.TEST_CLASS_NM,  
+                   A.MNGR_NM, A.MNGR_EMAIL_ADRES, A.MNTRNG_STTUS, 
+                   TO_CHAR(A.LAST_UPDT_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS LAST_UPDT_PNTTM, A.LAST_UPDUSR_ID,
+                   A.FRST_REGISTER_ID, TO_CHAR(A.FRST_REGIST_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS FRST_REGIST_PNTTM,
+                   TO_CHAR(A.CREAT_DT, 'YYYY-MM-DD HH24:MI:SS') AS CREAT_DT,  A.LOG_INFO,
+                   B.CODE_NM MNTRNG_STTUS_NM, C.CNTC_NM,
+                   D.INSTT_NM PROVD_INSTT_NM, E.SYS_NM PROVD_SYS_NM, F.SVC_NM PROVD_SVC_NM, 
+                   G.INSTT_NM REQUST_INSTT_NM, H.SYS_NM REQUST_SYS_NM
+            FROM COMTHTRSMRCVMNTRNGLOGINFO A, COMTCCMMNDETAILCODE B, COMTNSYSTEMCNTC C,
+                 COMTNCNTCINSTT D, COMTNCNTCSYSTEM E, COMTNCNTCSERVICE F, 
+                 COMTNCNTCINSTT G, COMTNCNTCSYSTEM H
+            WHERE B.CODE_ID = 'COM046'
+              AND A.MNTRNG_STTUS = B.CODE
+              AND A.CNTC_ID = C.CNTC_ID
+              AND D.INSTT_ID = C.PROVD_INSTT_ID
+              AND E.INSTT_ID = C.PROVD_INSTT_ID
+              AND E.SYS_ID = C.PROVD_SYS_ID
+              AND F.INSTT_ID = C.PROVD_INSTT_ID
+              AND F.SYS_ID = C.PROVD_SYS_ID
+              AND F.SVC_ID = C.PROVD_SVC_ID
+              AND G.INSTT_ID = C.REQUST_INSTT_ID
+              AND H.INSTT_ID = C.REQUST_INSTT_ID
+              AND H.SYS_ID = C.REQUST_SYS_ID
+              AND A.LOG_ID = #{logId}
+        
+    </select>
+
+
+</mapper>

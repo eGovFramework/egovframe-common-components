@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- WHERE	A.LAST_UPDUSR_ID = B.ESNTL_ID 삭제  --><!--
+	수정일		수정자					수정내용
+  =========     =======    =================================================
+  2011.9.7   	이기하     	 	테이블 표준화에 따른 수정사항 반영
+					 		selectWordDicaryListTotCnt_S에 and A.FRST_REGISTER_ID = B.ESNTL_ID 추가
+					 		
+  2011.09.19       서준식 		selectWordDicaryList_D 등록일자 Character 타입으로 변경
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="WordDicary">
+
+	<resultMap id="WordDicary" type="egovframework.com.uss.olh.wor.service.WordDicaryVO">
+		<result property="wordId" column="WORD_ID"/>
+		<result property="wordNm" column="WORD_NM"/>
+		<result property="engNm" column="ENG_NM"/>
+		<result property="wordDc" column="WORD_DC"/>
+		<result property="synonm" column="SYNONM"/>
+		<result property="emplyrNm" column="USER_NM"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+	</resultMap>
+<!-- WHERE	A.LAST_UPDUSR_ID = B.ESNTL_ID 삭제  -->
+	<!-- 용어사전::상세조회  -->
+	<select id="selectWordDicaryDetail" resultMap="WordDicary">
+		
+			SELECT
+					WORD_ID,
+					WORD_NM,
+					ENG_NM,
+					WORD_DC,
+					SYNONM,
+					B.USER_NM,
+					TO_CHAR(FRST_REGIST_PNTTM,'YYYY-MM-DD') FRST_REGIST_PNTTM,
+					FRST_REGISTER_ID,
+					TO_CHAR(LAST_UPDT_PNTTM,'YYYY-MM-DD')   LAST_UPDT_PNTTM,
+					LAST_UPDUSR_ID
+			FROM 	COMTNWORDDICARYINFO A, COMTNEMPLYRINFO B
+			WHERE 	A.WORD_ID=#{wordId}	and A.FRST_REGISTER_ID = B.ESNTL_ID
+		
+	</select>
+<!-- WHERE	A.LAST_UPDUSR_ID = B.ESNTL_ID 삭제  -->
+	<!-- 용어사전::목록조회  -->
+	<select id="selectWordDicaryList" parameterType="egovframework.com.uss.olh.wor.service.WordDicaryVO" resultMap="WordDicary">
+		
+			SELECT	WORD_ID,
+					WORD_NM,
+					ENG_NM,
+					WORD_DC,
+					SYNONM,
+					USER_NM				EMPLYR_NM,
+					TO_CHAR(FRST_REGIST_PNTTM,'YYYY-MM-DD')	FRST_REGISTER_PNTTM,
+					FRST_REGISTER_ID,
+					TO_CHAR(LAST_UPDT_PNTTM,'YYYY-MM-DD')		LAST_UPDUSR_PNTTM,
+					LAST_UPDUSR_ID
+			FROM
+				   (
+				   SELECT  ROWNUM RNUM,WORD.*
+				   FROM
+				   	   	  (
+				   		   SELECT
+						   		  	WORD_ID, WORD_NM, ENG_NM, WORD_DC, SYNONM, B.USER_NM,
+								    FRST_REGIST_PNTTM     , FRST_REGISTER_ID,
+								    LAST_UPDT_PNTTM		, LAST_UPDUSR_ID
+						   FROM 	COMTNWORDDICARYINFO A, COMTNEMPLYRINFO B
+						   WHERE 	1=1	 and A.FRST_REGISTER_ID = B.ESNTL_ID
+		
+			<if test="searchCnd == 0">AND
+				WORD_NM LIKE '%' || #{searchWrd} || '%'
+			</if>
+			<if test="searchCnd == 1">AND
+				ENG_NM  LIKE '%' || #{searchWrd} || '%'
+			</if>
+			<![CDATA[
+							ORDER BY WORD_ID DESC
+						  ) WORD
+				   )
+			WHERE ROWNUM <=  #{recordCountPerPage} and RNUM > #{firstIndex}
+			]]>
+	</select>
+<!-- WHERE	A.LAST_UPDUSR_ID = B.ESNTL_ID 삭제  -->
+	<select id="selectWordDicaryListCnt" parameterType="egovframework.com.uss.olh.wor.service.WordDicaryVO" resultType="int">
+		
+			SELECT	COUNT(*) totcnt
+			FROM 	COMTNWORDDICARYINFO A, COMTNEMPLYRINFO B
+			WHERE   1=1	and A.FRST_REGISTER_ID = B.ESNTL_ID
+		
+			<if test="searchCnd == 0">AND
+				WORD_NM LIKE '%' || #{searchWrd} || '%'
+			</if>
+			<if test="searchCnd == 1">AND
+				ENG_NM  LIKE '%' || #{searchWrd} || '%'
+			</if>
+	</select>
+
+	<insert id="insertWordDicary">
+		
+			INSERT INTO COMTNWORDDICARYINFO
+				( WORD_ID
+				  , WORD_NM
+				  , ENG_NM
+				  , WORD_DC
+				  , SYNONM
+				  , FRST_REGIST_PNTTM
+				  , FRST_REGISTER_ID)
+			VALUES ( #{wordId}
+				  , #{wordNm}
+				  , #{engNm}
+				  , #{wordDc}
+				  , #{synonm}
+				  , sysdate
+				  , #{frstRegisterId})
+		
+	</insert>
+
+	<update id="updateWordDicary">
+		
+			UPDATE COMTNWORDDICARYINFO	SET
+				   WORD_NM=#{wordNm}
+				 , ENG_NM=#{engNm}
+				 , WORD_DC=#{wordDc}
+				 , SYNONM=#{synonm}
+				 , LAST_UPDT_PNTTM=sysdate
+				 , LAST_UPDUSR_ID=#{lastUpdusrId}
+			WHERE  WORD_ID=#{wordId}
+		
+	</update>
+
+	<delete id="deleteWordDicary">
+		
+			DELETE FROM COMTNWORDDICARYINFO
+			WHERE  WORD_ID=#{wordId}
+		
+	</delete>
+
+
+</mapper>

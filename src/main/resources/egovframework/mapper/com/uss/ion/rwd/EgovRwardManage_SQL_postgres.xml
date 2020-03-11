@@ -1,0 +1,295 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- 
+	수정일                    수정자                          수정내용
+  =========     =======    =================================================
+  2011.8.10   	정진오     	 	테이블 표준화에 따른 수정사항 반영
+							RWARD_MAN_ID를 RWARDWNR_ID로 변경함
+							RWARD_CD를 RWARD_CODE로 변경함
+ --><!--Converted at: Wed May 11 15:51:21 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="rwardManageDAO">
+
+    <resultMap id="rwardManage" type="egovframework.com.uss.ion.rwd.service.RwardManageVO">
+        <result property="rwardManId" column="RWARDWNR_ID"/> 
+        <result property="rwardCd" column="RWARD_CODE"/> 
+        <result property="rwardDe" column="RWARD_DE"/> 
+        <result property="rwardNm" column="RWARD_NM"/> 
+        <result property="pblenCn" column="PBLEN_CN"/> 
+        <result property="sanctnerId" column="SANCTNER_ID"/> 
+        <result property="confmAt" column="CONFM_AT"/> 
+        <result property="sanctnDt" column="SANCTN_DT"/> 
+        <result property="returnResn" column="RETURN_RESN"/> 
+        <result property="atchFileId" column="ATCH_FILE_ID"/> 
+        <result property="infrmlSanctnId" column="INFRML_SANCTN_ID"/> 
+        <result property="frstRegisterId" column="FRST_REGISTER_ID"/> 
+        <result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+        <result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+        <result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+    </resultMap>
+         
+    <select id="selectRwardManageList" parameterType="egovframework.com.uss.ion.rwd.service.RwardManageVO" resultType="egovframework.com.uss.ion.rwd.service.RwardManageVO">
+        
+         SELECT   ROW_NUMBER() OVER ()  AS rowCount         ,
+                  A.RWARD_ID            AS rwardId          ,
+                  A.RWARDWNR_ID         AS rwardManId       ,
+                  A.RWARD_CODE            AS rwardCd          ,
+                  A.RWARD_DE            AS rwardDe          ,
+                  A.RWARD_NM            AS rwardNm          ,
+                  A.PBLEN_CN            AS pblenCn          ,
+                  A.SANCTNER_ID         AS sanctnerId       ,
+                  A.CONFM_AT            AS confmAt          ,
+                  A.SANCTN_DT           AS sanctnDt         , 
+                  A.RETURN_RESN         AS returnResn       ,
+                  A.ATCH_FILE_ID        AS atchFileId       , 
+                  A.INFRML_SANCTN_ID    AS infrmlSanctnId   ,
+                  C.USER_NM             AS rwardManNm       ,
+                 (select mst.USER_NM from COMVNUSERMASTER mst where  mst.ESNTL_ID = SANCTNER_ID)          AS sanctnerNm  ,
+                 (select code_nm from COMTCCMMNDETAILCODE where code_id ='COM055' and code = A.RWARD_CODE) AS rwardCdNm   ,
+                 (select info.ORGNZT_NM from COMTNORGNZTINFO info where  info.ORGNZT_ID = C.ORGNZT_ID )  AS orgnztNm
+         FROM    COMTNRWARDMANAGE A, COMVNUSERMASTER C
+         WHERE    1=1 
+         AND      A.RWARDWNR_ID = C.ESNTL_ID  
+               <if test="searchKeyword != null and searchKeyword != ''">AND
+          A.RWARD_CODE = #{searchKeyword} 
+               </if>
+               <if test="searchFromDate != null and searchFromDate != ''">AND
+          A.RWARD_DE BETWEEN TO_CHAR(TO_DATE(#{searchFromDate},'YYYYmmdd' ),'YYYYmmdd') AND TO_CHAR(TO_DATE(#{searchToDate},'YYYYmmdd' ),'YYYYmmdd')  
+              </if>
+               <if test="searchNm != null and searchNm != ''">AND
+          C.USER_NM like CONCAT('%', #{searchNm}, '%') 
+               </if>
+         
+         ORDER BY FRST_REGIST_PNTTM DESC
+         LIMIT #{recordCountPerPage} OFFSET #{firstIndex} 
+         
+    </select> 
+
+    <select id="selectRwardManageListTotCnt" parameterType="egovframework.com.uss.ion.rwd.service.RwardManageVO" resultType="int">
+         
+            SELECT  COUNT(*) totcnt
+            FROM    COMTNRWARDMANAGE A, COMVNUSERMASTER C
+            WHERE    1=1 
+            AND      A.RWARDWNR_ID = C.ESNTL_ID  
+               <if test="searchKeyword != null and searchKeyword != ''">AND
+          A.RWARD_CODE = #{searchKeyword} 
+               </if>
+               <if test="searchFromDate != null and searchFromDate != ''">AND
+          A.RWARD_DE BETWEEN TO_CHAR(TO_DATE(#{searchFromDate},'YYYYmmdd' ),'YYYYmmdd') AND TO_CHAR(TO_DATE(#{searchToDate},'YYYYmmdd' ),'YYYYmmdd') 
+               </if>
+               <if test="searchNm != null and searchNm != ''">AND
+          C.USER_NM like CONCAT('%', #{searchNm}, '%') 
+               </if>
+    </select>
+
+    <select id="selectRwardManage" resultType="egovframework.com.uss.ion.rwd.service.RwardManageVO">
+
+        
+         SELECT   rwd.RWARD_ID            AS rwardId          ,
+                  rwd.RWARDWNR_ID         AS rwardManId       ,
+                  rwd.RWARD_CODE            AS rwardCd          ,
+                  rwd.RWARD_DE            AS rwardDe          ,
+                  rwd.RWARD_NM            AS rwardNm          ,
+                  rwd.PBLEN_CN            AS pblenCn          ,
+                  rwd.SANCTNER_ID         AS sanctnerId       ,
+                  rwd.CONFM_AT            AS confmAt          ,
+                  rwd.SANCTN_DT           AS sanctnDt         , 
+                  rwd.RETURN_RESN         AS returnResn       ,
+                  rwd.ATCH_FILE_ID        AS atchFileId       , 
+                  rwd.INFRML_SANCTN_ID    AS infrmlSanctnId   ,
+                  mst.USER_NM             AS rwardManNm       ,
+                 (select info.ORGNZT_NM from COMTNORGNZTINFO info where  info.ORGNZT_ID = mst.ORGNZT_ID )   AS orgnztNm    ,
+                 (select mst1.USER_NM from COMVNUSERMASTER mst1 where  mst1.ESNTL_ID = SANCTNER_ID)          AS sanctnerNm  ,
+                 (select code_nm from COMTCCMMNDETAILCODE where code_id ='COM055' and code = rwd.RWARD_CODE)  AS rwardCdNm   ,
+                 (select info.ORGNZT_NM from COMVNUSERMASTER mst_b, COMTNORGNZTINFO info 
+                  where info.ORGNZT_ID = mst_b.ORGNZT_ID and mst_b.esntl_id= rwd.SANCTNER_ID)  AS sanctnerOrgnztNm
+         FROM     COMTNRWARDMANAGE rwd, COMVNUSERMASTER mst 
+         WHERE    rwd.RWARDWNR_ID = mst.ESNTL_ID  
+	     AND      rwd.RWARD_ID     = #{rwardId}
+
+        
+    </select>
+
+    <insert id="insertRwardManage" parameterType="egovframework.com.uss.ion.rwd.service.RwardManage">
+        
+            INSERT INTO COMTNRWARDMANAGE
+                   ( RWARD_ID         ,  
+                     RWARDWNR_ID      ,  
+                     RWARD_CODE         ,  
+                     RWARD_DE         , 
+                     RWARD_NM         , 
+                     PBLEN_CN         ,  
+                     SANCTNER_ID      ,  
+                     CONFM_AT         ,  
+                     SANCTN_DT        ,  
+                     ATCH_FILE_ID     , 
+                     INFRML_SANCTN_ID , 
+                     FRST_REGISTER_ID ,  
+                     FRST_REGIST_PNTTM) 
+            VALUES (#{rwardId},        
+                    #{rwardManId},        
+                    #{rwardCd},          
+                    #{rwardDe},           
+                    #{rwardNm},           
+                    #{pblenCn},           
+                    #{sanctnerId},        
+                    #{confmAt},           
+                    #{sanctnDt}::timestamp,
+                    #{atchFileId},
+                    #{infrmlSanctnId},        
+                    #{frstRegisterId},    
+                    NOW())
+        
+    </insert>     
+
+    <update id="updtRwardManage" parameterType="egovframework.com.uss.ion.rwd.service.RwardManage">
+        
+
+          UPDATE COMTNRWARDMANAGE
+          SET    RWARD_CODE            = #{rwardCd},
+          		 RWARD_DE		     = #{rwardDe},
+                 RWARD_NM            = #{rwardNm},   
+				 PBLEN_CN            = #{pblenCn},   
+				 ATCH_FILE_ID        = #{atchFileId},   
+				 LAST_UPDUSR_ID      = #{lastUpdusrId},
+                 LAST_UPDT_PNTTM   = NOW()    
+          WHERE  RWARD_ID            = #{rwardId}
+        
+    </update>    
+    
+    <delete id="deleteRwardManage" parameterType="egovframework.com.uss.ion.rwd.service.RwardManage">
+        
+          DELETE FROM COMTNRWARDMANAGE
+          WHERE  RWARD_ID            = #{rwardId}
+        
+    </delete>  
+<!-- 포상 승인관련  -->
+    <select id="selectRwardManageConfmList" parameterType="egovframework.com.uss.ion.rwd.service.RwardManageVO" resultType="egovframework.com.uss.ion.rwd.service.RwardManageVO">
+        
+         SELECT   ROW_NUMBER() OVER ()  AS rowCount         ,
+                  A.RWARD_ID            AS rwardId          ,
+                  A.RWARDWNR_ID         AS rwardManId       ,
+                  A.RWARD_CODE            AS rwardCd          ,
+                  A.RWARD_DE            AS rwardDe          ,
+                  A.RWARD_NM            AS rwardNm          ,
+                  A.PBLEN_CN            AS pblenCn          ,
+                  A.SANCTNER_ID         AS sanctnerId       ,
+                  A.CONFM_AT            AS confmAt          ,
+                  A.SANCTN_DT           AS sanctnDt         , 
+                  A.RETURN_RESN         AS returnResn       ,
+                  A.ATCH_FILE_ID        AS atchFileId       , 
+                  A.INFRML_SANCTN_ID    AS infrmlSanctnId   ,
+                  C.USER_NM             AS rwardManNm       ,
+                 (select mst.USER_NM from COMVNUSERMASTER mst where  mst.ESNTL_ID = SANCTNER_ID)          AS sanctnerNm  ,
+                 (select code_nm from COMTCCMMNDETAILCODE where code_id ='COM055' and code = A.RWARD_CODE) AS rwardCdNm   ,
+                 (select info.ORGNZT_NM from COMTNORGNZTINFO info where  info.ORGNZT_ID = C.ORGNZT_ID )  AS orgnztNm
+         FROM    COMTNRWARDMANAGE A, COMVNUSERMASTER C
+         WHERE    1=1 
+         AND      A.SANCTNER_ID = #{sanctnerId}
+         AND      A.RWARDWNR_ID = C.ESNTL_ID  
+               <if test="searchKeyword != null and searchKeyword != ''">AND
+          A.RWARD_CODE = #{searchKeyword} 
+               </if>
+               <if test="searchFromDate != null and searchFromDate != ''">AND
+          A.RWARD_DE BETWEEN TO_CHAR(TO_DATE(#{searchFromDate},'YYYYmmdd' ), 'YYYYmmdd') AND TO_CHAR(TO_DATE(#{searchToDate},'YYYYmmdd' ), 'YYYYmmdd') 
+               </if>
+               <if test="searchNm != null and searchNm != ''">AND
+          C.USER_NM like CONCAT('%', #{searchNm}, '%') 
+               </if>
+               <if test="searchConfmAt != null and searchConfmAt != ''">AND
+         A.CONFM_AT like CONCAT('%', #{searchConfmAt}, '%') 
+               </if> 
+         
+         ORDER BY FRST_REGIST_PNTTM DESC
+         LIMIT #{recordCountPerPage} OFFSET #{firstIndex} 
+         
+    </select> 
+
+    <select id="selectRwardManageConfmListTotCnt" parameterType="egovframework.com.uss.ion.rwd.service.RwardManageVO" resultType="int">
+         
+            SELECT  COUNT(*) totcnt
+            FROM    COMTNRWARDMANAGE A, COMVNUSERMASTER C
+            WHERE   1=1 
+            AND     A.SANCTNER_ID = #{sanctnerId}
+            AND     A.RWARDWNR_ID = C.ESNTL_ID  
+                  <if test="rwardCd != null and rwardCd != ''">AND
+          A.RWARD_CODE = #{rwardCd} 
+                  </if>
+                  <if test="rwardDe != null and rwardDe != ''">AND
+          CAST( TO_CHAR(TO_DATE(#{rwardDe},'YYYYmmdd' ),'YYYY-mm-dd') AS CHAR(8) ) BETWEEN A.RWARD_DE AND A.RWARD_DE 
+                  </if>
+                  <if test="searchKeyword != null and searchKeyword != ''">AND
+          RWARD_DE like CONCAT('%', #{searchKeyword}, '%') 
+                  </if>
+               <if test="searchConfmAt != null and searchConfmAt != ''">AND
+         A.CONFM_AT like CONCAT('%', #{searchConfmAt}, '%') 
+               </if> 
+    </select>
+
+
+
+
+
+    <update id="updtRwardManageConfm" parameterType="egovframework.com.uss.ion.rwd.service.RwardManage">
+        
+         UPDATE COMTNRWARDMANAGE
+            SET  CONFM_AT              = #{confmAt},   
+                 SANCTN_DT               = #{sanctnDt}::timestamp,  
+                 RETURN_RESN            = #{returnResn},  
+				 LAST_UPDUSR_ID       = #{lastUpdusrId},
+                 LAST_UPDT_PNTTM    = NOW()    
+          WHERE  RWARD_ID            = #{rwardId}
+        
+    </update> 
+
+<!-- 포상 승인관련  
+    <select id="selectRwardManageConfmList" parameterClass="RwardManageVO" resultClass="RwardManageVO">
+        <![CDATA[
+			 SELECT  ROW_NUMBER() OVER ()  as rowCount ,
+                     A.APPLCNT_ID          AS applcntId        ,
+                     mst.USER_NM           AS applcntNm        ,
+			        (select info.ORGNZT_NM from COMTNORGNZTINFO info where  info.ORGNZT_ID = mst.ORGNZT_ID ) AS orgnztNm,
+                     A.VCATN_SE            AS vcatnSe          ,
+			        (select code_nm from COMTCCMMNDETAILCODE where code_id ='COM056' and code = A.VCATN_SE) as vcatnSeNm,
+                     A.REQST_DE            AS reqstDe          ,
+                     A.SANCTNER_ID         AS sanctnerId       ,
+                     A.CONFM_AT            AS confmAt          ,
+                     A.SANCTN_DT           AS sanctnDt         ,
+                     A.RETURN_RESN         AS returnResn       ,
+                     A.BGNDE               AS bgnde            ,
+                     A.ENDDE               AS endde            ,
+                     A.OCCRRNC_YEAR        AS occrrncYear      ,
+                     A.VCATN_RESN          AS vcatnResn		   ,
+			         A.INFRML_SANCTN_ID    AS infrmlSanctnId   
+		    FROM    COMTNVCATNMANAGE A, COMVNUSERMASTER mst
+			WHERE    1=1 
+			  AND    mst.ESNTL_ID   = A.APPLCNT_ID 
+			  AND    A.SANCTNER_ID = #{sanctnerId}
+			  AND    mst.USER_NM  like  CONCAT('%', #{searchNm}, '%')
+        ]]>
+			 <isNotEmpty prepend="AND" property="searchConfmAt">
+					 A.CONFM_AT = #{searchConfmAt}
+			 </isNotEmpty>
+			 <isNotEmpty prepend="AND" property="searchKeyword">
+					 #{searchKeyword} BETWEEN CAST(TO_CHAR(A.BGNDE,'%Y%m') AS CHAR(6)) AND CAST(TO_CHAR(A.ENDDE ,'%Y%m' ) AS CHAR(6) )
+			 </isNotEmpty>
+        <![CDATA[
+			   ORDER BY A.FRST_REGIST_PNTTM DESC
+			   LIMIT #{recordCountPerPage} OFFSET #{firstIndex} 
+       ]]>
+    </select> 
+
+    <select id="selectRwardManageConfmListTotCnt" parameterClass="RwardManageVO" resultClass="int">
+        <![CDATA[
+               SELECT  COUNT(*) totcnt
+			   FROM    COMTNVCATNMANAGE A, COMVNUSERMASTER mst
+			   WHERE   1=1 
+			   AND     mst.ESNTL_ID   = A.APPLCNT_ID 
+			   AND     mst.USER_NM  like  CONCAT('%', #{searchKeyword}, '%')
+			   AND     CAST( TO_CHAR(#{searchKeyword},'YYYYmm' ) AS CHAR(7) )                   
+				        BETWEEN CAST( TO_CHAR(A.BGNDE,'YYYYmm'   ) AS CHAR(7) )
+				        AND     CAST( TO_CHAR(A.ENDDE  ,'YYYYmm' ) AS CHAR(7) )
+        ]]>
+    </select>
+-->
+
+</mapper>

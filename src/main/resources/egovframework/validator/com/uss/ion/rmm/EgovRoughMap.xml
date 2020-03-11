@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE form-validation PUBLIC 
+    "-//Apache Software Foundation//DTD Commons Validator Rules Configuration 1.1//EN" 
+    "http://jakarta.apache.org/commons/dtds/validator_1_1.dtd">
+
+<form-validation>
+
+    <formset>
+		<form name="roughMapVO">
+
+			<field property="roughMapSj" depends="required">
+        		<arg0 key="comUssIonRmm.roughMapList.roughMapSj" resource="true"/>
+			</field> 
+
+			<field property="roughMapAddress" depends="required">
+        		<arg0 key="comUssIonRmm.roughMapList.roughMapAddress" resource="true"/>
+			</field>
+
+			<field property="infoWindow" depends="required">
+        		<arg0 key="comUssIonRmm.roughMapInfoRegist.express" resource="true"/>
+			</field>
+		</form>
+    </formset>
+
+</form-validation>

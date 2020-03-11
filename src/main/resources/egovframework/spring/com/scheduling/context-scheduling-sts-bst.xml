@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<!-- 게시판 통계 작업 정의 -->
+	<bean id="bbsStats" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="egovBbsStatsScheduling" />
+		<property name="targetMethod" value="summaryBbsStats" />
+		<property name="concurrent" value="false" />
+	</bean>
+
+	<!-- 게시판 통계 트리거 정의 -->
+	<bean id="bbsStatsTrigger" class="org.springframework.scheduling.quartz.SimpleTriggerFactoryBean">
+		<property name="jobDetail" ref="bbsStats" />
+		<!-- 시작하고 2분후에 실행한다. (milisecond) -->
+		<property name="startDelay" value="120000" />
+		<!-- 매 24시간마다 실행한다. (milisecond) -->
+		<property name="repeatInterval" value="86400000" />
+	</bean>
+
+	<!-- 게시판 통계 스케줄러 정의, 스케줄러 적용시 아래 주석 제거 필요 -->
+	<bean id="bbsStatsSummaryScheduler" class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="bbsStatsTrigger" />
+			</list>
+		</property>
+	</bean>
+	
+</beans>

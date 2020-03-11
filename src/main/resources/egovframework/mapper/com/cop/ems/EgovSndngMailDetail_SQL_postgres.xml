@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed May 11 15:49:52 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sndngMailDetailDAO">
+
+	<!-- 발송메일을 위한 resultMap -->
+	<resultMap id="sndngMail" type="egovframework.com.cop.ems.service.SndngMailVO">
+		<result property="mssageId" column="mssageId"/>
+		<result property="dsptchPerson" column="sndr"/>
+		<result property="recptnPerson" column="rcver"/>
+		<result property="sj" column="sj"/>
+		<result property="sndngResultCode" column="sndngResultCode"/>
+		<result property="emailCn" column="email_cn"/>
+		<result property="atchFileId" column="atchFileId"/>		
+	</resultMap>
+	
+	<!-- 발송메일 상세 조회 -->
+	<select id="selectSndngMail" resultMap="sndngMail">
+		
+		SELECT mssage_id AS mssageId
+		     , sndr AS sndr
+		     , rcver AS rcver
+		     , sj AS sj
+		     , (SELECT code_nm 
+		          FROM COMTCCMMNDETAILCODE 
+		         WHERE use_at = 'Y' 
+		           AND code_id = 'COM024'
+		           AND code = sndng_result_code) AS sndngResultCode
+		     , email_cn AS email_cn
+		     , atch_file_id AS atchFileId
+		  FROM COMTHEMAILDSPTCHMANAGE
+		 WHERE mssage_id = #{mssageId}
+		
+	</select>
+
+	<!-- 첨부파일 목록 조회 -->
+	<select id="selectAtchmnFileList" parameterType="egovframework.com.cop.ems.service.SndngMailVO" resultType="egovMap">
+		
+		SELECT mssage_id AS "mssageId"
+		     , atchmn_no AS "atchmnNo"
+		     , email_atchmn_file_nm AS "atchmnFileNm"
+		     , email_atchmn_file_path AS "atchmnFilePath"
+		     , atchmn_file_size AS "atchmnFileSize"
+		  FROM COMTNEMAILATCHMNINFO
+		 WHERE mssage_id = #{mssageId}
+		
+	</select>
+	
+	<!--  발송메일 삭제 -->
+	<delete id="deleteSndngMail" parameterType="egovframework.com.cop.ems.service.SndngMailVO">
+		
+		DELETE FROM COMTHEMAILDSPTCHMANAGE
+		WHERE mssage_id = #{mssageId}
+		
+	</delete>
+	
+	<!--  첨부파일 목록 삭제 -->
+	<delete id="deleteAtchmnFileList" parameterType="egovframework.com.cop.ems.service.SndngMailVO">
+		
+		DELETE FROM COMTNEMAILATCHMNINFO
+		WHERE mssage_id = #{mssageId}
+		
+	</delete>
+	
+</mapper>

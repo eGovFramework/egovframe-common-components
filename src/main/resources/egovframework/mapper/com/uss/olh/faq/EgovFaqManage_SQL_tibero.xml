@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- 
+	수정일                 수정자                          수정내용
+  =========     =======    =================================================
+  2011.9.5   	정진오     	 	selectFaqList에 Alias 추가
+  							FRST_REGIST_PNTTM ->  	FRST_REGISTER_PNTTM
+							LAST_UPDT_PNTTM -> 		LAST_UPDUSR_PNTTM 
+							RDCNT ->				INQIRE_CO 
+  2011.09.26        서준식		selectFaqList 문의 FRST_REGIST_PNTTM, LAST_UPDT_PNTTM 컬럼에  TO_CHAR 함수 적용															
+-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="FaqManage">
+
+	<resultMap id="FaqManage" type="egovframework.com.uss.olh.faq.service.FaqVO">
+		<result property="faqId" column="FAQ_ID"/>
+		<result property="qestnSj" column="QESTN_SJ"/>
+		<result property="qestnCn" column="QESTN_CN"/>
+		<result property="answerCn" column="ANSWER_CN"/>
+		<result property="inqireCo" column="RDCNT"/>
+		<result property="atchFileId" column="ATCH_FILE_ID"/>		
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>				
+	</resultMap>
+	
+	<select id="selectFaqDetail" resultMap="FaqManage">
+				
+			SELECT 	FAQ_ID,
+					QESTN_SJ,
+					QESTN_CN,
+					ANSWER_CN,
+					RDCNT,
+					ATCH_FILE_ID,
+					TO_CHAR(FRST_REGIST_PNTTM,'YYYY-MM-DD') FRST_REGIST_PNTTM,
+					FRST_REGISTER_ID, 
+					TO_CHAR(LAST_UPDT_PNTTM,'YYYY-MM-DD') LAST_UPDT_PNTTM,
+					LAST_UPDUSR_ID			 			  			 			  
+			FROM	COMTNFAQINFO				
+			WHERE	FAQ_ID=#{faqId}					
+		
+	</select>
+	
+	<select id="selectFaqList" parameterType="egovframework.com.uss.olh.faq.service.FaqVO" resultMap="FaqManage">
+		
+			SELECT FAQ_ID,
+				   QESTN_SJ,
+				   QESTN_CN,
+				   ANSWER_CN,
+				   RDCNT				INQIRE_CO,
+				   ATCH_FILE_ID,  
+				   TO_CHAR(FRST_REGIST_PNTTM,'YYYY-MM-DD')	FRST_REGISTER_PNTTM,
+				   FRST_REGISTER_ID, 
+				   TO_CHAR(LAST_UPDT_PNTTM,'YYYY-MM-DD')		LAST_UPDUSR_PNTTM,
+				   LAST_UPDUSR_ID		
+			FROM
+				   (
+				   SELECT  ROWNUM RNUM,FAQ.*
+				   FROM
+				   	   	  (
+						  SELECT  FAQ_ID, QESTN_SJ, QESTN_CN, ANSWER_CN, RDCNT, ATCH_FILE_ID,  
+						  		  FRST_REGIST_PNTTM	  , FRST_REGISTER_ID, 
+								  LAST_UPDT_PNTTM	  , LAST_UPDUSR_ID			 
+						   FROM	  COMTNFAQINFO
+						   WHERE   1=1   			
+							
+			<if test="searchCnd == 0">AND
+				QESTN_SJ LIKE '%' || #{searchWrd} || '%'
+			</if>
+			<![CDATA[	
+						  ORDER BY FAQ_ID DESC								   
+						  ) FAQ
+				   ) 
+			WHERE ROWNUM <= #{recordCountPerPage} and RNUM > #{firstIndex}		
+			]]>				
+					
+	</select>
+	
+	<select id="selectFaqListCnt" parameterType="egovframework.com.uss.olh.faq.service.FaqVO" resultType="int">
+		
+			SELECT 	COUNT(*) totcnt
+			FROM 	COMTNFAQINFO
+			WHERE 	1=1
+					
+			<if test="searchCnd == 0">AND
+				QESTN_SJ LIKE '%' || #{searchWrd} || '%'
+			</if>
+	</select>
+	
+	<insert id="insertFaq">	
+			
+			INSERT INTO COMTNFAQINFO
+				   (FAQ_ID
+				  , QESTN_SJ
+				  , QESTN_CN
+				  , ANSWER_CN
+				  , RDCNT
+				  , ATCH_FILE_ID
+				  , FRST_REGIST_PNTTM 
+				  , FRST_REGISTER_ID 
+				  , LAST_UPDT_PNTTM 
+				  , LAST_UPDUSR_ID) 
+			VALUES ( #{faqId}
+				  , #{qestnSj}
+				  , #{qestnCn}
+				  , #{answerCn}
+				  , 0
+				  , #{atchFileId}
+				  , sysdate
+				  , #{frstRegisterId}
+				  , sysdate
+				  , #{lastUpdusrId} )
+		
+	</insert>
+	
+	<update id="updateFaqInqireCo">
+				
+			UPDATE	COMTNFAQINFO	SET
+				    RDCNT= RDCNT + 1				  			
+ 			WHERE  FAQ_ID=#{faqId}
+		
+	</update>
+
+	<update id="updateFaq">
+		
+			UPDATE	COMTNFAQINFO	SET
+					FAQ_ID=#{faqId} 
+				  , QESTN_SJ=#{qestnSj}
+				  , QESTN_CN=#{qestnCn}
+				  , ANSWER_CN=#{answerCn}
+				  , ATCH_FILE_ID=#{atchFileId}				  			
+				  , LAST_UPDT_PNTTM=sysdate
+				  , LAST_UPDUSR_ID=#{lastUpdusrId}
+ 			WHERE  FAQ_ID=#{faqId}
+		
+	</update>
+	
+	<delete id="deleteFaq">
+		
+			DELETE FROM COMTNFAQINFO 
+			WHERE  FAQ_ID=#{faqId}
+		
+	</delete>
+	
+</mapper>

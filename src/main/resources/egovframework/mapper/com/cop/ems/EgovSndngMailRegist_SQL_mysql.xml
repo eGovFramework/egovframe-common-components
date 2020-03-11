@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed May 11 15:49:53 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="sndngMailRegistDAO">
+
+	<resultMap id="atchmnFileVO" type="egovframework.com.cop.ems.service.AtchmnFileVO">
+		<result property="atchFileId" column="atchFileId"/>
+		<result property="fileSn" column="fileSn"/>
+		<result property="fileStreCours" column="fileStreCours"/>
+		<result property="streFileNm" column="streFileNm"/>
+		<result property="orignlFileNm" column="orignlFileNm"/>
+		<result property="fileExtsn" column="fileExtsn"/>
+		<result property="fileMg" column="fileMg"/>	
+	</resultMap>
+	
+	<!-- 발송메일 등록 -->
+	<insert id="insertSndngMail" parameterType="egovframework.com.cop.ems.service.SndngMailVO">
+		
+		INSERT INTO COMTHEMAILDSPTCHMANAGE 
+		(	
+			MSSAGE_ID, 
+			SNDR, 
+			RCVER, 
+			SJ, 
+			SNDNG_RESULT_CODE, 
+			EMAIL_CN,
+			DSPTCH_DT,
+			ATCH_FILE_ID
+		)
+		VALUES
+		(	
+			#{mssageId},
+			#{dsptchPerson}, 
+			#{recptnPerson},
+			#{sj}, 
+			#{sndngResultCode}, 
+			#{emailCn},
+			sysdate(),
+			#{atchFileId}
+		)
+		
+	</insert>
+	
+	<!-- 첨부파일 목록 조회 -->
+	<select id="selectAtchmnFileList" parameterType="egovframework.com.cop.ems.service.SndngMailVO" resultMap="atchmnFileVO">
+		
+		SELECT atch_file_id AS atchFileId
+		     , file_sn AS fileSn
+		     , file_stre_cours AS fileStreCours
+		     , stre_file_nm AS streFileNm
+		     , orignl_file_nm AS orignlFileNm
+		     , file_extsn AS fileExtsn
+		     , file_size AS fileMg
+		  FROM COMTNFILEDETAIL
+		 WHERE atch_file_id = #{atchFileId}
+		
+	</select>
+	
+	<!-- 발송메일 결과 수정 -->
+	<update id="updateSndngMail" parameterType="egovframework.com.cop.ems.service.SndngMailVO">
+		
+		UPDATE COMTHEMAILDSPTCHMANAGE 
+		   SET SNDNG_RESULT_CODE = #{sndngResultCode}
+		 WHERE MSSAGE_ID = #{mssageId}
+		
+	</update>
+	
+</mapper>
