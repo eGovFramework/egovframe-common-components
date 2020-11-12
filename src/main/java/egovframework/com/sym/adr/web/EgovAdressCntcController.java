@@ -5,8 +5,6 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
 
-import egovframework.com.cmm.annotation.IncludedInfo;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -14,13 +12,18 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import egovframework.com.cmm.EgovWebUtil;
+import egovframework.com.cmm.annotation.IncludedInfo;
+
 /**
  * 도로명 주소 연계를 위한 Controller
  *
- *    수정일         수정자         수정내용
- *    -------        -------     -------------------
- *    2014.10.21	표준프레임워크		최초생성
- *    2015.04.01	전여철				Test용 Open API confmKey encode추가
+ *  수정일                수정자             수정내용
+ *  ----------   ---------   -------------------
+ *  2014.10.21   표준프레임워크    최초생성
+ *  2015.04.01   전여철              Test용 Open API confmKey encode추가
+ *  2020.10.29   신용호              KISA 보안약점 조치 (경로 조작 및 자원 삽입, 크로스사이트 스크립트)
+ *  
  * @author 표준프레임워크
  * @since 2014.10.21
  * @version 3.5
@@ -45,7 +48,7 @@ public class EgovAdressCntcController {
 		String confmKey = req.getParameter("confmKey");
 		String keyword = req.getParameter("keyword");
 		String apiUrl = "http://www.juso.go.kr/addrlink/addrLinkApi.do?currentPage="+currentPage+"&countPerPage="+countPerPage+"&keyword="+URLEncoder.encode(keyword,"UTF-8")+"&confmKey="+confmKey;
-		URL url = new URL(apiUrl);
+		URL url = new URL(EgovWebUtil.filePathBlackList(apiUrl));
     	BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(),"UTF-8"));
     	StringBuffer sb = new StringBuffer();
     	String tempStr = null;
@@ -57,7 +60,7 @@ public class EgovAdressCntcController {
     	br.close();
     	response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/xml");
-		response.getWriter().write(sb.toString());
+		response.getWriter().write(EgovWebUtil.clearXSSMinimum(sb.toString()));
     }
     
     /**
@@ -75,7 +78,7 @@ public class EgovAdressCntcController {
 		String confmKey = req.getParameter("confmKey");
 		String keyword = req.getParameter("keyword");
 		String apiUrl = "http://www.juso.go.kr/addrlink/addrLinkApiTest.do?currentPage="+currentPage+"&countPerPage="+countPerPage+"&keyword="+URLEncoder.encode(keyword,"UTF-8")+"&confmKey="+URLEncoder.encode(confmKey,"UTF-8");
-		URL url = new URL(apiUrl);
+		URL url = new URL(EgovWebUtil.filePathBlackList(apiUrl));
     	BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(),"UTF-8"));
     	StringBuffer sb = new StringBuffer();
     	String tempStr = null;
@@ -87,7 +90,7 @@ public class EgovAdressCntcController {
     	br.close();
     	response.setCharacterEncoding("UTF-8");
 		response.setContentType("text/xml");
-		response.getWriter().write(sb.toString());
+		response.getWriter().write(EgovWebUtil.clearXSSMinimum(sb.toString()));
     }
     
     /**

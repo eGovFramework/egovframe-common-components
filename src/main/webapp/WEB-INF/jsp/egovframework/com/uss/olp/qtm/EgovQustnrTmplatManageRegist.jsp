@@ -3,11 +3,12 @@
   Description : 설문템플릿 등록 페이지
   Modification Information
 
-      수정일         수정자                   수정내용
-    -------    --------    ---------------------------
-     2008.03.09    장동한          최초 생성
-     2017.06.26    김예영          표준프레임워크 v3.7 개선
-
+       수정일                 수정자            수정내용
+    ----------    --------   ---------------------------
+    2008.03.09    장동한            최초 생성
+    2017.06.26    김예영            표준프레임워크 v3.7 개선
+    2020.10.30    신용호            파일업로드 예외처리 수정
+    
     author   : 공통서비스 개발팀 장동한
     since    : 2009.03.09
 
@@ -37,17 +38,14 @@
  * 초기화
  ******************************************************** */
 function fn_egov_init_QustnrTmplatManage(){
+
 	//------------------------------------------
 	//------------------------- 첨부파일 등록 Start
 	//-------------------------------------------
-	
-	//var maxFileNum = document.getElementById('posblAtchFileNumber').value;
-	//if(maxFileNum==null || maxFileNum==""){ maxFileNum = 3;}
-	//var multi_selector = new MultiSelector( document.getElementById( 'egovComFileList' ), maxFileNum, 'qestnrTmplatImage_label' );
-	//multi_selector.addElement( document.getElementById( 'qestnrTmplatImage' ) );
-	
+	var maxFileNum = 1;
+	var multi_selector = new MultiSelector( document.getElementById( 'qestnrTmplatImage' ), maxFileNum);
+	multi_selector.addElement( document.getElementById( 'qestnrTmplatImage' ) );
 	//------------------------- 첨부파일 등록 End
-	
 	
 	// 첫 입력란에 포커스..
 	qustnrTmplatManageVO.qestnrTmplatTy.focus();
@@ -62,6 +60,12 @@ function fn_egov_list_QustnrTmplatManage(){
  * 저장처리화면
  ******************************************************** */
 function fn_egov_save_QustnrTmplatManage(form){
+	
+	var resultExtension = EgovMultiFilesChecker.checkExtensions("qestnrTmplatImage", "<c:out value='${fileUploadExtensions}'/>"); // 결과가 false인경우 허용되지 않음
+	if (!resultExtension) return true;
+	var resultSize = EgovMultiFilesChecker.checkFileSize("qestnrTmplatImage", 65535); // 파일당 1M까지 허용 (1K=1024), 결과가 false인경우 허용되지 않음
+	if (!resultSize) return true;
+	
 	if(confirm("<spring:message code='common.save.msg'/>")){
 		if(!validateQustnrTmplatManageVO(form)){
 			return;
@@ -90,7 +94,7 @@ function fnImgChange(obj){
 		var pathname = obj.value;
 		var ext = pathname.split('.').pop().toLowerCase();
 		
-		if( ".gif.jpg.bmp.jpeg.png".indexOf(ext) != -1 ){
+		if( "<c:out value='${fileUploadExtensions}'/>.".indexOf(ext+".") != -1 ){
 		
 			document.getElementById("DIV_IMG_VIEW").style.display = "";
 			
@@ -127,7 +131,6 @@ function fnImgChange(obj){
 
 	}
 	
-
 }
 
 </script>

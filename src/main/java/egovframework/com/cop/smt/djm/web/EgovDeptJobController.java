@@ -56,6 +56,7 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *  2010.06.28   장철호            최초 생성
  *  2011.08.26   정진오            IncludedInfo annotation 추가
  *  2019.12.09   신용호            KISA 보안약점 조치 (위험한 형식 파일 업로드)
+ *  2020.10.27   신용호            파일 업로드 수정 (multiRequest.getFiles), 널(null) 값 체크
  *
  * </pre>
  *
@@ -232,7 +233,11 @@ public class EgovDeptJobController {
 
 		model.addAttribute("resultList", map.get("resultList"));
 		model.addAttribute("resultCnt", map.get("resultCnt"));
-		model.addAttribute("resultNum", list.size());
+		// KISA 보안약점 조치 - 널(null) 값 체크
+		if ( list == null )
+			model.addAttribute("resultNum", 0);
+		else
+			model.addAttribute("resultNum", list.size());
 		model.addAttribute("paginationInfo", paginationInfo);
 
 		return sLocationUrl;
@@ -615,8 +620,8 @@ public class EgovDeptJobController {
 			****************************************************************** */
     		String _atchFileId = deptJobVO.getAtchFileId();
 
-
-    		final Map<String, MultipartFile> files = multiRequest.getFileMap();
+    		//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+    		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
     		if(!files.isEmpty()){
     			String atchFileAt = commandMap.get("atchFileAt") == null ? "" : (String)commandMap.get("atchFileAt");
@@ -682,11 +687,12 @@ public class EgovDeptJobController {
 		List<FileVO> _result = null;
 		String _atchFileId = "";
 
-		final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
 		if(!files.isEmpty()){
-		 _result = fileUtil.parseFileInf(files, "DSCH_", 0, "", "");
-		 _atchFileId = fileMngService.insertFileInfs(_result);  //파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
+			_result = fileUtil.parseFileInf(files, "DSCH_", 0, "", "");
+			_atchFileId = fileMngService.insertFileInfs(_result);  //파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
 		}
 
     	// 리턴받은 첨부파일ID를 셋팅한다..

@@ -4,10 +4,11 @@
   * @Description : EgovArticleReply 화면
   * @Modification Information
   * @
-  * @  수정일             수정자                   수정내용
-  * @ -------    --------    ---------------------------
-  * @ 2009.02.01   박정규              최초 생성
-  *   2016.06.13   김연호              표준프레임워크 v3.6 개선
+  * @ 수정일               수정자            수정내용
+  * @ ----------   --------   ---------------------------
+  *   2009.02.01   박정규            최초 생성
+  *   2016.06.13   김연호            표준프레임워크 v3.6 개선
+  *   2020.10.27   신용호            파일 업로드 수정
   *
   *  @author 공통서비스팀 
   *  @since 2009.02.01
@@ -78,19 +79,6 @@ $(function() {
  ******************************************************** */
 function fn_egov_init(){
 	
-	<c:if test="${boardMasterVO.fileAtchPosblAt == 'Y'}">
-	//------------------------------------------
-	//------------------------- 첨부파일 등록 Start
-	//-------------------------------------------
-	var maxFileNum = document.getElementById("articleVO").atchPosblFileNumber.value;
-	if(maxFileNum==null || maxFileNum==""){
-		maxFileNum = 3;
-	}
-	var multi_selector = new MultiSelector( document.getElementById( 'egovComFileList' ), maxFileNum, 'file_label' );
-	multi_selector.addElement( document.getElementById( 'egovfile_1' ) );
-	//------------------------- 첨부파일 등록 End
-	</c:if>
-
 	// 첫 입력란에 포커스
 	document.getElementById("articleVO").nttSj.focus();
 
@@ -234,23 +222,15 @@ function fn_egov_reply_article(form){
 		
 		<c:if test="${boardMasterVO.fileAtchPosblAt == 'Y'}">
 		<!-- 첨부파일  -->
-		<c:set var="title"><spring:message code="comCopBbs.articleVO.regist.atchFile"/></c:set>
+		<c:set var="title"><spring:message code="comCopBbs.articleVO.regist.atchFile"/></c:set><!-- 첨부파일 -->
 		<tr>
 			<th><label for="file_1">${title}</label> </th>
 			<td class="nopd" colspan="3">
-			<!-- attached file Start -->
-			<div>
-				<div class="egov_file_box">
-				<label for="egovfile_1" id="file_label"><spring:message code="title.attachedFileSelect" /></label> 
-				<input type="file" name="file_1" id="egovfile_1" multiple> 
-				</div>
-				<div id="egovComFileList"></div>
-			</div>
-			<!-- attached file End -->
+				<input name="file_1" id="egovComFileUploader" type="file" title="<spring:message code="comCopBbs.articleVO.regist.atchFile"/>" multiple/><!-- 첨부파일 -->
+			    <div id="egovComFileList"></div>
 			</td>
 		</tr>
-		</c:if>
-		
+	  	</c:if>
 		
 	</tbody>
 	</table>
@@ -267,7 +247,7 @@ function fn_egov_reply_article(form){
 <input type="hidden" name="bbsTyCode" value="<c:out value='${boardMasterVO.bbsTyCode}'/>" />
 <input type="hidden" name="replyPosblAt" value="<c:out value='${boardMasterVO.replyPosblAt}'/>" />
 <input type="hidden" name="fileAtchPosblAt" value="<c:out value='${boardMasterVO.fileAtchPosblAt}'/>" />
-<input type="hidden" name="atchPosblFileNumber" value="<c:out value='${boardMasterVO.atchPosblFileNumber}'/>" />
+<input type="hidden" id="atchPosblFileNumber" name="atchPosblFileNumber" value="<c:out value='${boardMasterVO.atchPosblFileNumber}'/>" />
 <input type="hidden" name="atchPosblFileSize" value="<c:out value='${boardMasterVO.atchPosblFileSize}'/>" />
 <input type="hidden" name="tmplatId" value="<c:out value='${boardMasterVO.tmplatId}'/>" />
 
@@ -279,6 +259,17 @@ function fn_egov_reply_article(form){
 <input name="bbsId" type="hidden" value="${boardMasterVO.bbsId}">
 <input name="cmd" type="hidden" value="<c:out value='save'/>">
 </form:form>
+
+<!-- 첨부파일 업로드 가능화일 설정 Start..-->  
+<script type="text/javascript">
+var maxFileNum = document.getElementById('atchPosblFileNumber').value;
+if(maxFileNum==null || maxFileNum==""){
+	maxFileNum = 3;
+}
+var multi_selector = new MultiSelector( document.getElementById( 'egovComFileList' ), maxFileNum );
+multi_selector.addElement( document.getElementById( 'egovComFileUploader' ) );
+</script> 
+<!-- 첨부파일 업로드 가능화일 설정 End.-->
 
 </body>
 </html>

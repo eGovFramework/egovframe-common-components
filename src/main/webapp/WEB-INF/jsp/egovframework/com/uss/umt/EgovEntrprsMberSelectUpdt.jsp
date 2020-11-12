@@ -75,7 +75,7 @@ function fnUpdate(form){
 <body>
 <!-- content start -->
 <form:form commandName="entrprsManageVO" action="${pageContext.request.contextPath}/uss/umt/EgovEntrprsMberSelectUpdt.do" name="entrprsManageVO" method="post" onSubmit="fnUpdate(document.forms[0]); return false;"> 
-<div class="wTableFrm">
+<!-- <div class="wTableFrm"> -->
 
 	<!-- 상세정보 사용자 삭제시 prameter 전달용 input -->
 	<input name="checkedIdForDel" type="hidden" />

@@ -104,7 +104,14 @@ function fnUpdate(form){
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-			    <input name="newPassword" id="newPassword" type="password" size="20" value=""  maxlength="100" >
+				<div>
+				    <input name="newPassword" id="newPassword" type="password" size="20" value=""  maxlength="100" >
+				</div>
+				<div>
+					<div><spring:message code="info.password.rule.password1" /></div> 
+					<div><spring:message code="info.password.rule.pwdcheckcomb3" /></div> 
+					<div><spring:message code="info.password.rule.pwdcheckseries" /></div> 
+				</div>
 			</td>
 		</tr>
 		<!-- 비밀번호확인 -->

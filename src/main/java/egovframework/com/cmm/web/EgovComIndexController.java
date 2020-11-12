@@ -25,6 +25,7 @@ package egovframework.com.cmm.web;
  *  2011.09.16   서준식            컨텐츠 페이지 생성
  *  2011.09.26     이기하		header, footer 페이지 생성
  *  2019.12.04   신용호            KISA 보안코드 점검 : Map<Integer, IncludedCompInfoVO> map를 지역변수로 수정
+ *  2020.08.28   정진호            표준프레임워크 v3.10 개선
  * </pre>
  */
 
@@ -161,5 +162,10 @@ public class EgovComIndexController implements ApplicationContextAware, Initiali
 		LOGGER.debug("EgovComIndexController index is called ");
 
 		return "egovframework/com/cmm/EgovUnitLeft";
+	}
+
+	@RequestMapping("/egovCSRFAccessDenied.do")
+	public String egovCSRFAccessDenied() {
+		return "egovframework/com/cmm/error/csrfAccessDenied";
 	}
 }

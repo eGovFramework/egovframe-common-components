@@ -47,6 +47,7 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *  2009.04.10   장동한            최초 생성
  *  2011.08.26   정진오            IncludedInfo annotation 추가
  *  2019.12.09   신용호            KISA 보안약점 조치 (위험한 형식 파일 업로드)
+ *  2020.10.28   신용호            파일 업로드 수정 (multiRequest.getFiles)
  *
  * </pre>
  */
@@ -267,7 +268,8 @@ public class EgovDiaryManageController {
     		String _atchFileId = diaryManageVO.getAtchFileId();
 
 
-    		final Map<String, MultipartFile> files = multiRequest.getFileMap();
+    		//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+    		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
     		if(!files.isEmpty()){
     			String atchFileAt = commandMap.get("atchFileAt") == null ? "" : (String)commandMap.get("atchFileAt");
@@ -394,11 +396,12 @@ public class EgovDiaryManageController {
     		List<FileVO> _result = null;
     		String _atchFileId = "";
 
-    		final Map<String, MultipartFile> files = multiRequest.getFileMap();
+    		//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+    		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
     		if(!files.isEmpty()){
-    		 _result = fileUtil.parseFileInf(files, "DIARY_", 0, "", "");
-    		 _atchFileId = fileMngService.insertFileInfs(_result);  //파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
+    			_result = fileUtil.parseFileInf(files, "DIARY_", 0, "", "");
+    			_atchFileId = fileMngService.insertFileInfs(_result);  //파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
     		}
 
         	// 리턴받은 첨부파일ID를 셋팅한다..

@@ -21,6 +21,7 @@ import egovframework.com.sym.mnu.mpm.service.MenuManageVO;
 import egovframework.com.sym.prm.service.ProgrmManageVO;
 import egovframework.com.sym.prm.service.impl.ProgrmManageDAO;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import egovframework.rte.fdl.cmmn.exception.BaseException;
 import egovframework.rte.fdl.excel.EgovExcelService;
 
 /**
@@ -383,7 +384,10 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 			} else {
 				return requestValue = "93"; // 엑셀 시트갯수 오류
 			}
-
+		} catch (BaseException e) {
+			LOGGER.error("["+ e.getClass() +"] : ", e.getMessage());
+			requestValue = "99";
+			
 		} catch (Exception e) {
 			//2017.02.13 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
 			LOGGER.error("["+ e.getClass() +"] : ", e.getMessage());

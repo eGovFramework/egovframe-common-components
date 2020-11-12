@@ -1,4 +1,8 @@
-<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?><!-- 
+    수정일                 수정자           수정내용
+  =========     =======    =================================================
+  2020.07.14    신용호           게시판마스터 페이징처리 오류수정 (180. 게시판관리)
+-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="BBSMaster">
@@ -109,10 +113,7 @@
 			LEFT OUTER JOIN
 				(SELECT ESNTL_ID, USER_ID, USER_NM FROM COMVNUSERMASTER) d
 				ON a.FRST_REGISTER_ID = d.ESNTL_ID
-			WHERE 1=1	
-			<if test='cmmntyId == null or cmmntyId == ""'>
-				AND a.CMMNTY_ID IS NULL
-			</if>
+			WHERE 1=1
 			<if test='cmmntyId != null and cmmntyId != ""'>
 				AND a.CMMNTY_ID = #{cmmntyId}
 			</if>
@@ -138,10 +139,7 @@
 				(SELECT CODE_ID, CODE, CODE_NM FROM 
 					COMTCCMMNDETAILCODE WHERE CODE_ID = 'COM101' AND USE_AT='Y') b
 				ON a.BBS_TY_CODE = b.CODE
-			WHERE 1=1 
-			<if test='cmmntyId == null or cmmntyId == ""'>AND
-					a.CMMNTY_ID IS NULL
-			</if>
+			WHERE 1=1
 			<if test='cmmntyId != null and cmmntyId != ""'>AND 
 					a.CMMNTY_ID = #{cmmntyId}
 			</if>

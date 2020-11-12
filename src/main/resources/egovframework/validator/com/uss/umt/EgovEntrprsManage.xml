@@ -26,7 +26,7 @@
                 </var>
             </field>
             
-            <field property="entrprsMberPassword" depends="required, password1, password2, password3, password4">
+            <field property="entrprsMberPassword" depends="required, password1, pwdCheckSeries, pwdCheckRepeat, pwdCheckComb3">
                 <arg0 key="비밀번호" resource="true"/>
             </field>
             

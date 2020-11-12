@@ -1,7 +1,6 @@
 package egovframework.com.uss.olh.faq.web;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -22,6 +21,7 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
+import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olh.faq.service.EgovFaqService;
@@ -41,11 +41,12 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 * <pre>
 * << 개정이력(Modification Information) >>
 *
-*   수정일      수정자           수정내용
-*  -------    --------    ---------------------------
-*   2009.04.01  박정규          최초 생성
-*   2011.8.26	정진오			IncludedInfo annotation 추가
-*   2016.08.03	김연호			표준프레임워크 3.6 개선
+*  수정일                수정자           수정내용
+*  ----------   --------   ---------------------------
+*  2009.04.01   박정규            최초 생성
+*  2011.08.26   정진오            IncludedInfo annotation 추가
+*  2016.08.03   김연호            표준프레임워크 3.6 개선
+*  2020.10.27   신용호            파일 업로드 수정 (multiRequest.getFiles)
 *
 * </pre>
 */
@@ -139,6 +140,13 @@ public class EgovFaqController {
 	public String insertFaqView(@ModelAttribute("searchVO") FaqVO searchVO, Model model) throws Exception {
 
 		model.addAttribute("faqVO", new FaqVO());
+		
+    	// 파일업로드 제한
+    	String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
+    	String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
+
+        model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
+        model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
 
 		return "egovframework/com/uss/olh/faq/EgovFaqRegist";
 
@@ -167,7 +175,8 @@ public class EgovFaqController {
 		List<FileVO> _result = null;
 		String _atchFileId = "";
 
-		final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
 		if (!files.isEmpty()) {
 			_result = fileUtil.parseFileInf(files, "FAQ_", 0, "", "");
@@ -209,6 +218,13 @@ public class EgovFaqController {
 		// 변수명은 CoC 에 따라 JSTL사용을 위해
 		model.addAttribute("faqVO", egovFaqService.selectFaqDetail(faqVO));
 
+    	// 파일업로드 제한
+    	String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
+    	String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
+
+        model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
+        model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
+		
 		return "egovframework/com/uss/olh/faq/EgovFaqUpdt";
 	}
 
@@ -234,12 +250,14 @@ public class EgovFaqController {
 			return "egovframework/com/uss/olh/wor/EgovFaqUpdt";
 		}
 
+		
 		// 첨부파일 관련 ID 생성 start....
 		String atchFileId = faqVO.getAtchFileId();
 
-		final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 	    if (!files.isEmpty()) {
-			if ("".equals(atchFileId)) {
+			if (atchFileId == null || "".equals(atchFileId)) {
 			    List<FileVO> result = fileUtil.parseFileInf(files, "FAQ_", 0, atchFileId, "");
 			    atchFileId = fileMngService.insertFileInfs(result);
 			    faqVO.setAtchFileId(atchFileId);

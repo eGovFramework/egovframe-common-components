@@ -1,24 +1,11 @@
 package egovframework.com.uss.ion.ans.web;
 
+import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import egovframework.com.cmm.ComDefaultCodeVO;
-import egovframework.com.cmm.EgovMessageSource;
-import egovframework.com.cmm.LoginVO;
-import egovframework.com.cmm.annotation.IncludedInfo;
-import egovframework.com.cmm.service.EgovCmmUseService;
-import egovframework.com.cmm.util.EgovUserDetailsHelper;
-import egovframework.com.uss.ion.ans.service.AnnvrsryManage;
-import egovframework.com.uss.ion.ans.service.AnnvrsryManageVO;
-import egovframework.com.uss.ion.ans.service.EgovAnnvrsryManageService;
-import egovframework.com.utl.fcc.service.EgovDateUtil;
-import egovframework.com.utl.fcc.service.EgovStringUtil;
-
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -35,6 +22,19 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
+import egovframework.com.cmm.ComDefaultCodeVO;
+import egovframework.com.cmm.EgovMessageSource;
+import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.uss.ion.ans.service.AnnvrsryManage;
+import egovframework.com.uss.ion.ans.service.AnnvrsryManageVO;
+import egovframework.com.uss.ion.ans.service.EgovAnnvrsryManageService;
+import egovframework.com.utl.fcc.service.EgovDateUtil;
+import egovframework.com.utl.fcc.service.EgovStringUtil;
+import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+
 /**
  * 개요
  * - 기념일관리에 대한 controller 클래스를 정의한다.
@@ -48,10 +48,11 @@ import org.springmodules.validation.commons.DefaultBeanValidator;
  * <pre>
  * << 개정이력(Modification Information) >>
  *
- *   수정일      수정자          수정내용
- *  -------    --------    ---------------------------
- *  2009.6.25	이용          최초 생성
- *  2011.8.26	정진오			IncludedInfo annotation 추가
+ *  수정일               수정자            수정내용
+ *  ----------   --------   ---------------------------
+ *  2009.06.25   이용               최초 생성
+ *  2011.08.26   정진오            IncludedInfo annotation 추가
+ *  2020.11.02   신용호            KISA 보안약점 조치 - 자원해제
  *
  *  </pre>
  */
@@ -471,7 +472,10 @@ public class EgovAnnvrsryManageController {
 				Entry<String, MultipartFile> entry = itr.next();
 				file = entry.getValue();
 				if (!"".equals(file.getOriginalFilename())) {
-						model.addAttribute("annvrsryManageList", egovAnnvrsryManageService.selectAnnvrsryManageBnde(file.getInputStream()));
+					// KISA 보안약점 조치 - 자원해제
+					InputStream is = file.getInputStream();
+					model.addAttribute("annvrsryManageList", egovAnnvrsryManageService.selectAnnvrsryManageBnde(is));
+					is.close();
 				}else{
 					resultMsg = egovMessageSource.getMessage("fail.common.msg");
 				}

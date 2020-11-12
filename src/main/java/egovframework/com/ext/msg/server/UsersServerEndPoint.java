@@ -44,9 +44,10 @@ import java.util.Random;
 * @Description : 현재 가능한 대화사용자 리스트를 처리하는 WebSocket 서버클래스
 * @Modification Information
 *
-*    수정일       수정자         수정내용
-*    -------        -------     -------------------
-*    2014. 11. 27.    이영지
+*    수정일               수정자                수정내용
+*    ----------   ---------    ---------------------------------
+*    2014.11.27   이영지                
+*    2020.11.02   신용호               KISA 보안약점 조치 (Random Seed값 추가)
 *
 */
 @ServerEndpoint(value = "/usersServerEndpoint"/* ,configurator=ServerAppConfig.class*/)
@@ -205,8 +206,10 @@ public class UsersServerEndPoint {
 	 */
 	private String genRandom() {
 		String chatroomId = "";
+		Random rnd = new Random();
 		for (int i = 0; i < 8; i++) {
-			chatroomId += (char) ((new Random().nextDouble() * 26) + 97);//KISA 보안약점 조치 (2018-10-29, 윤창원)
+			rnd.setSeed(System.currentTimeMillis());
+			chatroomId += (char) ((rnd.nextDouble() * 26) + 97);//KISA 보안약점 조치 (2018-10-29, 윤창원)
 		}
 		return chatroomId;
 	}

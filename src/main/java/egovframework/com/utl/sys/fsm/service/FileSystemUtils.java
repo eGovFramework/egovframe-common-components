@@ -181,7 +181,7 @@ public class FileSystemUtils {
 	 * @throws IllegalStateException if an error occurred in initialisation
 	 * @throws IOException if an error occurs when finding the free space
 	 */
-	long freeSpaceOS(String path, int os, boolean kb) throws IOException {
+	private long freeSpaceOS(String path, int os, boolean kb) throws IOException {
 		if (path == null) {
 			throw new IllegalArgumentException("Path must not be empty");
 		}
@@ -207,7 +207,7 @@ public class FileSystemUtils {
 	 * @return the amount of free drive space on the drive
 	 * @throws IOException if an error occurs
 	 */
-	long freeSpaceWindows(String path) throws IOException {
+	private long freeSpaceWindows(String path) throws IOException {
 		path = FilenameUtils.normalize(path);
 		if (path.length() > 2 && path.charAt(1) == ':') {
 			path = path.substring(0, 2); // seems to make it work
@@ -241,7 +241,7 @@ public class FileSystemUtils {
 	 * @return the number of bytes
 	 * @throws IOException if an error occurs
 	 */
-	long parseDir(String line, String path) throws IOException {
+	private long parseDir(String line, String path) throws IOException {
 		// read from the end of the line to find the last numeric
 		// character on the line, then continue until we find the first
 		// non-numeric character, and everything between that and the last
@@ -295,7 +295,7 @@ public class FileSystemUtils {
 	 * @return the amount of free drive space on the volume
 	 * @throws IOException if an error occurs
 	 */
-	long freeSpaceUnix(String path, boolean kb, boolean posix) throws IOException {
+	private long freeSpaceUnix(String path, boolean kb, boolean posix) throws IOException {
 		if (path.length() == 0) {
 			throw new IllegalArgumentException("Path must not be empty");
 		}
@@ -357,7 +357,7 @@ public class FileSystemUtils {
 	 * @return the number of bytes
 	 * @throws IOException if an error occurs
 	 */
-	long parseBytes(String freeSpace, String path) throws IOException {
+	private long parseBytes(String freeSpace, String path) throws IOException {
 		try {
 			long bytes = Long.parseLong(freeSpace);
 			if (bytes < 0) {
@@ -379,7 +379,7 @@ public class FileSystemUtils {
 	 * @return the parsed data
 	 * @throws IOException if an error occurs
 	 */
-	List<String> performCommand(String[] cmdAttribs, int max) throws IOException {
+	private List<String> performCommand(String[] cmdAttribs, int max) throws IOException {
 		// this method does what it can to avoid the 'Too many open files' error
 		// based on trial and error and these links:
 		// http://bugs.sun.com/bugdatabase/view_bug.do?bug_id=4784692
@@ -439,7 +439,7 @@ public class FileSystemUtils {
 	 * @return the process
 	 * @throws IOException if an error occurs
 	 */
-	Process openProcess(String[] cmdAttribs) throws IOException {
+	private Process openProcess(String[] cmdAttribs) throws IOException {
 		return Runtime.getRuntime().exec(cmdAttribs);
 	}
 

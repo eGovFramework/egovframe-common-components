@@ -51,10 +51,11 @@ import org.springframework.stereotype.Repository;
 * <pre>
 * << 개정이력(Modification Information) >>
 *
-*   수정일      수정자           수정내용
-*  -------    --------    ---------------------------
-*   2014.10.12  전우성          최초 생성
-*   2017-02-13  이정은          시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+*  수정일               수정자            수정내용
+*  ----------   --------   ---------------------------
+*  2014.10.12   전우성            최초 생성
+*  2017-02-13   이정은            시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+*  2020.08.28   정진호            표준프레임워크 v3.10 개선
 *
 * </pre>
 */
@@ -108,14 +109,14 @@ public class DeptManageLdapDAO extends OrgManageLdapDAO {
 		final ContainerCriteria criteria = query().where("objectclass").is("ucorg2");
 
 		@SuppressWarnings("unchecked")
-		Map<String, Object> introspected = new BeanMap(vo);
+		Map<Object, Object> introspected = new BeanMap(vo);
 
-		for (String key : introspected.keySet()) {
+		for (Object key : introspected.keySet()) {
 			if (key.equals("dn") || key.equals("class") || introspected.get(key) == null
 					|| introspected.get(key).equals(""))
 				continue;
 
-			ContainerCriteria c = query().where(key).is(String.valueOf(introspected.get(key)));
+			ContainerCriteria c = query().where((String) key).is(String.valueOf(introspected.get(key)));
 			criteria.and(c);
 		}
 

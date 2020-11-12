@@ -38,11 +38,13 @@ import org.springframework.web.multipart.MultipartFile;
  * @Description : 메시지 처리 관련 유틸리티
  * @Modification Information
  *
- *     수정일         수정자                   수정내용
- *     -------          --------        ---------------------------
- *   2009.02.13       이삼섭                  최초 생성
- *   2011.08.09       서준식                  utl.fcc패키지와 Dependency제거를 위해 getTimeStamp()메서드 추가
- *   2017.03.03 	     조성원 	            시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+ *   수정일               수정자            수정내용
+ *   ----------   --------   ---------------------------
+ *   2009.02.13   이삼섭            최초 생성
+ *   2011.08.09   서준식            utl.fcc패키지와 Dependency제거를 위해 getTimeStamp()메서드 추가
+ *   2017.03.03   조성원            시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+ *   2020.10.26   신용호            parseFileInf(List<MultipartFile> files ...) 추가
+ *   
  * @author 공통 서비스 개발팀 이삼섭
  * @since 2009. 02. 13
  * @version 1.0
@@ -144,6 +146,87 @@ public class EgovFileMngUtil {
 		return result;
 	}
 
+	/**
+	 * 첨부파일에 대한 목록 정보를 취득한다.
+	 *
+	 * @param files
+	 * @return
+	 * @throws Exception
+	 */
+	public List<FileVO> parseFileInf(List<MultipartFile> files, String KeyStr, int fileKeyParam, String atchFileId, String storePath) throws Exception {
+		int fileKey = fileKeyParam;
+
+		String storePathString = "";
+		String atchFileIdString = "";
+
+		if ("".equals(storePath) || storePath == null) {
+			storePathString = EgovProperties.getProperty("Globals.fileStorePath");
+		} else {
+			storePathString = EgovProperties.getProperty(storePath);
+		}
+
+		if ("".equals(atchFileId) || atchFileId == null) {
+			atchFileIdString = idgenService.getNextStringId();
+		} else {
+			atchFileIdString = atchFileId;
+		}
+
+		File saveFolder = new File(EgovWebUtil.filePathBlackList(storePathString));
+
+		if (!saveFolder.exists() || saveFolder.isFile()) {
+			//2017.03.03 	조성원 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+			if (saveFolder.mkdirs()){
+				LOGGER.debug("[file.mkdirs] saveFolder : Creation Success ");
+			}else{
+				LOGGER.error("[file.mkdirs] saveFolder : Creation Fail ");
+			}
+		}
+
+		String filePath = "";
+		List<FileVO> result = new ArrayList<FileVO>();
+		FileVO fvo;
+
+		for (MultipartFile file : files ) {
+			
+			String orginFileName = file.getOriginalFilename();
+
+			//--------------------------------------
+			// 원 파일명이 없는 경우 처리
+			// (첨부가 되지 않은 input file type)
+			//--------------------------------------
+			if ("".equals(orginFileName)) {
+				continue;
+			}
+			////------------------------------------
+
+			int index = orginFileName.lastIndexOf(".");
+			//String fileName = orginFileName.substring(0, index);
+			String fileExt = orginFileName.substring(index + 1);
+			String newName = KeyStr + getTimeStamp() + fileKey;
+			long size = file.getSize();
+
+			if (!"".equals(orginFileName)) {
+				filePath = storePathString + File.separator + newName;
+				file.transferTo(new File(EgovWebUtil.filePathBlackList(filePath)));
+			}
+			
+			fvo = new FileVO();
+			fvo.setFileExtsn(fileExt);
+			fvo.setFileStreCours(storePathString);
+			fvo.setFileMg(Long.toString(size));
+			fvo.setOrignlFileNm(orginFileName);
+			fvo.setStreFileNm(newName);
+			fvo.setAtchFileId(atchFileIdString);
+			fvo.setFileSn(String.valueOf(fileKey));
+
+			result.add(fvo);
+
+			fileKey++;
+		}
+
+		return result;
+	}
+	
 	/**
 	 * 첨부파일을 서버에 저장한다.
 	 *

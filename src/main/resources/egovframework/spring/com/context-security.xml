@@ -4,16 +4,18 @@
 	xmlns:security="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-4.2.xsd
-		http://www.egovframe.go.kr/schema/egov-security http://www.egovframe.go.kr/schema/egov-security/egov-security-3.7.xsd">
+		http://www.egovframe.go.kr/schema/egov-security http://www.egovframe.go.kr/schema/egov-security/egov-security-3.10.xsd">
 
 <!--
-수정일      			수정자				수정내용
-=========	======= 		=================================================
-2011.09.07		서준식				일반, 업무사용자의 경우 조직아이디가 없어 로그인이 안되던 문제 수정(SQL 수정)
-2011.09.25		서준식				usersByUsernameQuery 쿼리의 조직 아이디 비교 부분  오류 수정 > alias 추가
-2014.06.13		Vincent Han		표준프레임워크 3.0 적용 (간소화 설정 사용)
-2017.07.10      장동한            실행행환경 v3.7 적용[보안기능 추가(sniff, xFrameOptions, xssProtection csrf)]
-2018.10.26      신용호            실행행환경 v3.8 적용
+수정일               수정자			수정내용
+==========   ============	=================================================
+2011.09.07   서준식                   일반, 업무사용자의 경우 조직아이디가 없어 로그인이 안되던 문제 수정(SQL 수정)
+2011.09.25   서준식                   usersByUsernameQuery 쿼리의 조직 아이디 비교 부분  오류 수정 > alias 추가
+2014.06.13   Vincent Han    표준프레임워크 3.0 적용 (간소화 설정 사용)
+2017.07.10   장동한                   실행행환경 v3.7 적용[보안기능 추가(sniff, xFrameOptions, xssProtection csrf)]
+2018.10.26   신용호                   실행행환경 v3.8 적용
+2020.08.28   정진호                   표준프레임워크 v3.10 개선
+
 -->
 
 	<security:http pattern="/css/**" security="none"/>
@@ -45,13 +47,17 @@
 
 		concurrentMaxSessons="1"
 		concurrentExpiredUrl="/EgovContent.do"
+		errorIfMaximumExceeded="false"
 
 		defaultTargetUrl="/EgovContent.do"
-		
+		alwaysUseDefaultTargetUrl="true"
+
 		sniff="true"
 		xframeOptions="SAMEORIGIN" 
 		xssProtection="true" 
+		cacheControl="false"
 		csrf="false"
+		csrfAccessDeniedUrl="/egovCSRFAccessDenied.do"
 	/>
 
 	<egov-security:secured-object-config id="securedObjectConfig"

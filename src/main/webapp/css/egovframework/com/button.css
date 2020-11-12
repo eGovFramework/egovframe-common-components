@@ -85,3 +85,15 @@ visibility: hidden;
 	background:#4688d2 !important;
 	cursor : pointer !important;
 }
+
+.btn_03 {
+	display:inline-block !important;
+	height:30px !important;
+	padding:0 15px !important;
+	border:none !important;
+	color:#fff !important;
+	font-size:12px !important;
+	line-height:19px !important;
+	background:#4688d2 !important;
+	cursor : pointer !important;
+}

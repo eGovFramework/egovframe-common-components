@@ -100,8 +100,8 @@ public class EgovLoginPolicyFilter implements Filter {
 
 			} else {
 				String message = URLEncoder.encode(egovMessageSource.getMessage("fail.common.login.ip"),"UTF-8");
-				((HttpServletRequest) request).setAttribute("message", message);
-				((HttpServletResponse) response).sendRedirect(httpRequest.getContextPath() + "/uat/uia/egovLoginUsr.do?message="+message);
+				((HttpServletRequest) request).setAttribute("loginMessage", message);
+				((HttpServletResponse) response).sendRedirect(httpRequest.getContextPath() + "/uat/uia/egovLoginUsr.do?loginMessage="+message);
 			}
 
 		} catch (IOException e) {//KISA 보안약점 조치 (2018-10-29, 윤창원)

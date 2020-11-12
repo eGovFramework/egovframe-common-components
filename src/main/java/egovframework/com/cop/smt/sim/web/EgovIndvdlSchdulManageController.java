@@ -46,12 +46,13 @@ import egovframework.rte.fdl.property.EgovPropertyService;
  * <pre>
  * << 개정이력(Modification Information) >>
  *
- *   수정일      수정자         수정내용
- *  -------    --------    ---------------------------
- *   2009.04.10  장동한			최초 생성
- *   2011.09.02	 정진오			10월 주차 테이블에 날짜가 이상하게 나와서 수정함
- *   2011.09.16  이기하			일지관리가 존재할 때 버튼이 나타나도록 수정
- *   2016.08.12  장동한			일정관리 등록 로직 수정
+ *  수정일                수정자           수정내용
+ *  ----------   --------   ---------------------------
+ *  2009.04.10   장동한            최초 생성
+ *  2011.09.02   정진오            10월 주차 테이블에 날짜가 이상하게 나와서 수정함
+ *  2011.09.16   이기하            일지관리가 존재할 때 버튼이 나타나도록 수정
+ *  2016.08.12   장동한            일정관리 등록 로직 수정
+ *  2020.10.27   신용호            파일 업로드 수정 (multiRequest.getFiles)
  *
  * </pre>
  */
@@ -620,7 +621,8 @@ public class EgovIndvdlSchdulManageController {
     		String _atchFileId = indvdlSchdulManageVO.getAtchFileId();
 
 
-    		final Map<String, MultipartFile> files = multiRequest.getFileMap();
+    		//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+    		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
     		if(!files.isEmpty()){
     			String atchFileAt = commandMap.get("atchFileAt") == null ? "" : (String)commandMap.get("atchFileAt");
@@ -755,11 +757,12 @@ public class EgovIndvdlSchdulManageController {
     		List<FileVO> _result = null;
     		String _atchFileId = "";
 
-    		final Map<String, MultipartFile> files = multiRequest.getFileMap();
+    		//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+    		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
     		if(!files.isEmpty()){
-    		 _result = fileUtil.parseFileInf(files, "DSCH_", 0, "", "");
-    		 _atchFileId = fileMngService.insertFileInfs(_result);  //파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
+    			_result = fileUtil.parseFileInf(files, "DSCH_", 0, "", "");
+    			_atchFileId = fileMngService.insertFileInfs(_result);  //파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
     		}
 
         	// 리턴받은 첨부파일ID를 셋팅한다..

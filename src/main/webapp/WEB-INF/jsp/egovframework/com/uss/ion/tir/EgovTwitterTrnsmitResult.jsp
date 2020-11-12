@@ -3,10 +3,11 @@
   Description : 트위터 송신(등록) 페이지
   Modification Information
  
-      수정일         수정자                   수정내용
-    -------    --------    ---------------------------
-     2010.07.13    장동한          최초 생성
-     2018.10.29    이정은          공통컴포넌트 3.8 개선
+       수정일               수정자              수정내용
+    ----------   --------    ---------------------------
+    2010.07.13   장동한              최초 생성
+    2018.10.29   이정은              공통컴포넌트 3.8 개선
+    2020.10.29   신용호              KISA 보안약점 조치 (크로스사이트 스크립트)
  
     author   : 공통서비스 개발팀 장동한
     since    : 2010.07.13
@@ -15,6 +16,7 @@
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ page import="twitter4j.Status"%>
 <%@ page import="twitter4j.User"%>
+<%@page import="egovframework.com.cmm.EgovWebUtil"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
@@ -56,31 +58,31 @@ User user = (User)status.getUser();
 		<tr>
 			<th><spring:message code="ussIonTir.twitterTrnsmitResult.id"/></th><!-- 등록ID -->
 			<td class="left">
-			    <%=status.getId() %>
+			    <%=EgovWebUtil.clearXSSMinimum(""+user.getId()) %>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussIonTir.twitterTrnsmitResult.screenName"/></th><!-- 계정ID -->
 			<td class="left">
-			    <%=user.getScreenName() %>
+			    <%=EgovWebUtil.clearXSSMinimum(user.getScreenName()) %>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussIonTir.twitterTrnsmitResult.name"/></th><!-- 별명 -->
 			<td class="left">
-			    <%=user.getName() %>
+			    <%=EgovWebUtil.clearXSSMinimum(user.getName()) %>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussIonTir.twitterTrnsmitResult.url"/></th><!-- URL -->
 			<td class="left">
-			    <%=user.getURL() %>
+			    <%=EgovWebUtil.clearXSSMinimum(user.getURL()) %>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussIonTir.twitterTrnsmitResult.text"/></th><!-- 트위터 내용 -->
 			<td class="left">
-			    <%=status.getText() %>
+			    <%=EgovWebUtil.clearXSSMinimum(status.getText()) %>
 			</td>
 		</tr>
 		<tr>
@@ -101,19 +103,19 @@ User user = (User)status.getUser();
 		<tr>
 			<th><spring:message code="ussIonTir.twitterTrnsmitResult.isFavorited"/></th><!-- favorite -->
 			<td class="left">
-			    <%=status.isFavorited() %>
+			    <%=EgovWebUtil.clearXSSMinimum(""+status.isFavorited()) %>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussIonTir.twitterTrnsmitResult.isRetweet"/></th>
 			<td class="left">
-			    <%=status.isRetweet() %>
+			    <%=EgovWebUtil.clearXSSMinimum(""+status.isRetweet()) %>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussIonTir.twitterTrnsmitResult.isTruncated"/></th>
 			<td class="left">
-			    <%=status.isTruncated() %>
+			    <%=EgovWebUtil.clearXSSMinimum(""+status.isTruncated()) %>
 			</td>
 		</tr>
 	</table>

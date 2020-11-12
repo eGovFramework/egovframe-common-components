@@ -43,10 +43,11 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  * <pre>
  * << 개정이력(Modification Information) >>
  *   
- *   수정일      수정자           수정내용
- *  -------    --------    ---------------------------
- *   2010.6.28	장철호          최초 생성
- *   2011.8.26	정진오			IncludedInfo annotation 추가
+ *   수정일             수정자            수정내용
+ *  ----------   --------   ---------------------------
+ *  2010.06.28   장철호            최초 생성
+ *  2011.08.26   정진오            IncludedInfo annotation 추가
+ *  2020.11.02   신용호            KISA 보안약점 조치 - 널(null) 값 체크
  *
  * </pre>
  */
@@ -672,9 +673,12 @@ public class EgovLeaderSchdulController {
 		
 		boolean po = false;
 		List<String> authenticated = EgovUserDetailsHelper.getAuthorities();
-		for(int i=0; i< authenticated.size(); i++){
-			if("ROLE_LEADERSCHDUL".equals(String.valueOf(authenticated.get(i)).trim())){
-				po = true;
+		// KISA 보안약점 조치 - 널(null) 값 체크
+		if ( authenticated != null ) {
+			for(int i=0; i< authenticated.size(); i++){
+				if("ROLE_LEADERSCHDUL".equals(String.valueOf(authenticated.get(i)).trim())){
+					po = true;
+				}
 			}
 		}
 		

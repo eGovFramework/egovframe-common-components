@@ -4,10 +4,11 @@
   * @Description : 일정관리 수정 페이지
   * @Modification Information
   * @
-  * @  수정일             수정자                   수정내용
-  * @ -------    --------    ---------------------------
-  * @ 2008.03.09   장동한              최초 생성
-  *   2016.08.12   장동한              표준프레임워크 v3.6 개선
+  * @ 수정일                수정자           수정내용
+  * @ ----------   --------   ---------------------------
+  *   2008.03.09   장동한            최초 생성
+  *   2016.08.12   장동한            표준프레임워크 v3.6 개선
+  *   2020.10.28   신용호            파일 업로드 수정
   *
   *  @author 공통서비스팀 
   *  @since 2009.02.01
@@ -84,7 +85,7 @@ function fn_egov_init_IndvdlSchdulManage(){
 	var maxFileNum = document.getElementById('posblAtchFileNumber').value;
 	if(maxFileNum==null || maxFileNum==""){ maxFileNum = 3;}
 	var multi_selector = new MultiSelector( document.getElementById( 'egovComFileList' ), maxFileNum, 'file_label');
-	multi_selector.addElement( document.getElementById( 'egovfile_1' ) );
+	multi_selector.addElement( document.getElementById( 'egovComFileUploader' ) );
 	//------------------------- 첨부파일 수정 End
 }
 /* ******************************************************* 
@@ -321,11 +322,8 @@ String.prototype.replaceAll = function(src, repl){
 		    <div id="file_upload_posbl"  style="display:none;" >
 			<!-- attached file Start -->
 			<div>
-				<div class="egov_file_box">
-				<label for="egovfile_1" id="file_label"><spring:message code="title.attachedFileSelect" /></label> 
-				<input type="file" multiple name="file_1" id="egovfile_1"> 
-				</div>
-				<div id="egovComFileList"></div>
+				<input name="file_1" id="egovComFileUploader" type="file" title="<spring:message code="title.attachedFileSelect"/>" multiple/><!-- 첨부파일명 입력 -->
+			    <div id="egovComFileList"></div>
 			</div>
 			<!-- attached file End -->
 			</div>
@@ -337,7 +335,6 @@ String.prototype.replaceAll = function(src, repl){
 	   	        </table>
 			</div>
 		
-	  
 			</td>
 		</tr>
 	</tbody>

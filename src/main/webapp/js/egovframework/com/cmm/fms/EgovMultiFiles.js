@@ -7,6 +7,7 @@
  * ----------   ---------   ----------------------------
  * 2019.10.15   취두영        다중 파일 업로드 개선 (HTML5)
  * 2019.12.06   신용호        EgovMultiFilesChecker 추가하여 확장자 체크 및 용량 체크 하기
+ * 2020.08.07   신용호        수정시 첨부파일 갯수 없는경우 예외수정, 확장자 체크 로직 보완
  *
  */
 function MultiSelector(list_target, max, file_label) {
@@ -56,10 +57,11 @@ function MultiSelector(list_target, max, file_label) {
 					return;
 				}
 
+				// 수정모드 체크
 				if (document.getElementById("egov_file_view_table") != null) {
 					var sum = files_length
 							+ document.getElementById("egov_file_view_table")
-									.getElementsByTagName("tr").length;
+									.getElementsByTagName("img").length;
 
 					if (_base.max < sum) {
 						element.value = "";
@@ -137,7 +139,7 @@ var EgovMultiFilesChecker = {
 	    	console.log(this.getFileExtension(__fileObj.name));
 
 	    	var __fileExt = this.getFileExtension(__fileObj.name);
-	    	if ( __fileExt == "" || allowTypes.indexOf(__fileExt) < 0 ) {
+	    	if ( __fileExt == "" || (allowTypes+".").indexOf(__fileExt+".") < 0 ) {
 	    		alert("허용되지 않는 확장자 입니다.["+__fileExt+"]");
 	    		return false;
 	    	}
@@ -151,7 +153,7 @@ var EgovMultiFilesChecker = {
 	    console.log(this.getFileExtension(__filelPath));
 
 	    var __fileExt = this.getFileExtension(__filelPath);
-    	if ( __fileExt == "" || allowTypes.indexOf(__fileExt) < 0 ) {
+    	if ( __fileExt == "" || (allowTypes+".").indexOf(__fileExt+".") < 0 ) {
     		alert("2.허용되지 않는 확장자 입니다.["+__fileExt+"]");
     		return false;
     	}

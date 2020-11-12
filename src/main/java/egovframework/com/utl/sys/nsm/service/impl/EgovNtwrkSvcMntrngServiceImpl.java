@@ -26,6 +26,17 @@ import org.springframework.stereotype.Service;
  * @author 장철호
  * @version 1.0
  * @created 28-6-2010 오전 11:33:43
+ * 
+ * <pre>
+ * << 개정이력(Modification Information) >>
+ *
+ *   수정일            수정자           수정내용
+ *  ----------  --------   ---------------------------
+ *  2010.06.28  장철호           최초 생성
+ *  2020.06.25	신용호	    스케줄러 실행시 오류 수정
+ *  </pre>
+
+ * 
  */
 @Service("EgovNtwrkSvcMntrngService")
 public class EgovNtwrkSvcMntrngServiceImpl extends EgovAbstractServiceImpl implements EgovNtwrkSvcMntrngService {
@@ -164,6 +175,7 @@ public class EgovNtwrkSvcMntrngServiceImpl extends EgovAbstractServiceImpl imple
 	 * @param ntwrkSvcMntrngLog - 네트워크서비스 모니터링로그 model
 	 */
 	public void insertNtwrkSvcMntrngLog(NtwrkSvcMntrngLog ntwrkSvcMntrngLog) throws Exception{
+		ntwrkSvcMntrngLog.setLastUpdusrId("Logger");
 		ntwrkSvcMntrngDAO.insertNtwrkSvcMntrngLog(ntwrkSvcMntrngLog);
 	}
 }

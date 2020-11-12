@@ -39,6 +39,15 @@ import org.springframework.stereotype.Service;
  * @author lee.m.j
  * @version 1.0
  * @created 06-9-2010 오전 11:23:59
+ * 
+ * <pre>
+ * << 개정이력(Modification Information) >>
+ *
+ *  수정일      	         수정자              수정내용
+ *  ----------   ---------   ---------------------------
+ *  2020.11.02   신용호              불필요한 멤버변수 지역변수로 변경
+ *
+ * </pre>
  */
 
 @Service("egovServerResrceMntrngScheduling")
@@ -59,16 +68,8 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 	@Resource(name = "mntrngMailSender")
 	private MailSender mntrngMailSender;
 
-	Process process;
-	JMXServiceURL address = null;
-	JMXConnector connector = null;
-	MBeanServerConnection mbs = null;
-	ObjectName name = null;
-	MBeanInfo mBeanInfo = null;
-	MBeanAttributeInfo[] attrInfos = null;
-	ServerResrceMntrng serverResrceMntrng = null;
-	ServerResrceMntrngVO serverResrceMntrngVO = null;
-
+	private ServerResrceMntrngVO serverResrceMntrngVO = null;
+	
 	/**
 	 * 서버자원 모니터링를 수행한다.
 	 * @param
@@ -77,6 +78,14 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 
 	public void init(ServerResrceMntrngVO serverResrceMntrngVO) throws Exception {
 
+		JMXServiceURL address = null;
+		JMXConnector connector = null;
+		MBeanServerConnection mbs = null;
+		ObjectName name = null;
+		MBeanInfo mBeanInfo = null;
+		MBeanAttributeInfo[] attrInfos = null;
+		ServerResrceMntrng serverResrceMntrng = null;
+		
 		String serverId = serverResrceMntrngVO.getServerId();
 		String serverEqpmnId = serverResrceMntrngVO.getServerEqpmnId();
 		String serverNm = serverResrceMntrngVO.getServerNm();

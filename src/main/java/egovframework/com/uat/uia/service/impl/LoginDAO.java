@@ -17,11 +17,12 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
  * <pre>
  * << 개정이력(Modification Information) >>
  *
- *   수정일      수정자          수정내용
- *  -------    --------    ---------------------------
- *  2009.03.06  박지욱          최초 생성
- *  2011.08.26  서준식          EsntlId를 이용한 로그인 추가
- *  2017.07.21  장동한 			로그인인증제한 작업
+ *  수정일               수정자            수정내용
+ *  ----------   --------   ---------------------------
+ *  2009.03.06   박지욱            최초 생성
+ *  2011.08.26   서준식            EsntlId를 이용한 로그인 추가
+ *  2017.07.21   장동한            로그인인증제한 작업
+ *  2020.07.08   신용호            비밀번호를 수정한후 경과한 날짜 조회
  *  </pre>
  */
 @Repository("loginDAO")
@@ -104,11 +105,21 @@ public class LoginDAO extends EgovComAbstractDAO {
     /**
 	 * 로그인인증제한 내역을 업데이트 한다.
 	 * @param vo LoginVO
-	 * @return LoginVO
+	 * @return vod
 	 * @exception Exception
 	 */
     public void updateLoginIncorrect(Map<?,?> map) throws Exception {
     	update("LoginUsr.updateLoginIncorrect"+map.get("USER_SE"), map);
     }
-
+    
+    /**
+	 * 비밀번호를 수정한후 경과한 날짜를 조회한다.
+	 * @param vo LoginVO
+	 * @return LoginVO
+	 * @exception Exception
+	 */
+    public int selectPassedDayChangePWD(LoginVO vo) throws Exception {
+    	return selectOne("LoginUsr.selectPassedDayChangePWD", vo);
+    }
+    
 }

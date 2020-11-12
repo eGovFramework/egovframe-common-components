@@ -310,7 +310,11 @@ public class EgovSmsBasicReceiver implements SMEListener {
 			// 결과 수신을 위해서 리포트 세션을 접속한다.
 			// 프로그램 시작시 최초 한번만 해준다.
 			receiver.open();
-
+			
+			long startTimestamp = System.currentTimeMillis();
+			long nowTimestamp = 0;
+			long limitTimeInterval = (60)*60*1000; //60분간으로 제한
+			
 			// 데몬이 종료안되도록 10초씩 쉬면서 루프를 돌렸습니다.
 			// 실제 사용 목적에 맞게끔 고쳐주시면 됩니다.
 			while (true) {
@@ -324,6 +328,8 @@ public class EgovSmsBasicReceiver implements SMEListener {
 				}
 
 				Thread.sleep(10000);
+				nowTimestamp = System.currentTimeMillis();
+				if ( (nowTimestamp - startTimestamp) > limitTimeInterval) break;
 			}
 
 		} catch (SMEException ex) {

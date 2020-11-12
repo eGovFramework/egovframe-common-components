@@ -30,16 +30,16 @@
 	    dataSource="egov.dataSource"
 	    loginUrl="/uat/uia/egovLoginUsr.do"
 	    accessDeniedUrl="/uat/uia/egovLoginUsr.do?auth_error=1"
-	    sqlAuthorityUser="select concat(b.user_se, b.user_id) userid, a.author_code authority
-			from comtnemplyrscrtyestbs a, comvnusermaster b
-			where a.scrty_dtrmn_trget_id = b.esntl_id"
-	    sqlRoleAndUrl="select a.role_pttrn url, b.author_code authority
-			from comtnroleinfo a, comtnauthorrolerelate b
-			where a.role_code = b.role_code
-			and a.role_ty = 'url'
-			order by a.role_sort"
+	    sqlAuthorityUser="SELECT CONCAT(B.USER_SE, B.USER_ID) USERID, A.AUTHOR_CODE AUTHORITY
+			FROM COMTNEMPLYRSCRTYESTBS A, COMVNUSERMASTER B
+			WHERE A.SCRTY_DTRMN_TRGET_ID = B.ESNTL_ID"
+	    sqlRoleAndUrl="SELECT A.ROLE_PTTRN URL, B.AUTHOR_CODE AUTHORITY
+			FROM COMTNROLEINFO A, COMTNAUTHORROLERELATE B
+			WHERE A.ROLE_CODE = B.ROLE_CODE
+			AND A.ROLE_TY = 'URL'
+			ORDER BY A.ROLE_SORT"
 	    requestMatcherType="regex"
-		excludeList="/uat/uia/**, /index.do, /EgovLeft.do, /EgovContent.do, /EgovTop.do, /EgovBottom.do"
+		excludeList="/uat/uia/**, /index.do, /EgovLeft.do, /EgovContent.do, /EgovTop.do, /EgovBottom.do, /validator.do"
 	/>
 	<!--
 		* 예외 목록 URL

@@ -74,7 +74,7 @@ function fn_egov_save(){
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2><spring:message code="comSymBat.batchOpertUpdt.pageTop.title"/></h2><!-- 배치작업 수정 -->
-
+	<span>※ "배치프로그램은 globals.properties > SHELL.(UNIX/WINDOWS).batchShellFiles에 미리 등록하여야 실행이 가능하다.(WhiteList)</span>
 	<!-- 등록폼 -->
 	<table class="wTable">
 		<colgroup>

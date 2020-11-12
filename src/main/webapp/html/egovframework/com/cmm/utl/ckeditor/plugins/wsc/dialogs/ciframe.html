@@ -35,7 +35,9 @@ function sendData2Master()
 			window.clearInterval( interval ) ;
 		}
 	}
-	catch (e) {}
+	catch (e) {
+		console.log(e) ; 
+	}
 }
 
 function OnMessage (event) {

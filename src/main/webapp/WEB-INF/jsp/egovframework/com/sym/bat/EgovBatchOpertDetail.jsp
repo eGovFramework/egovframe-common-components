@@ -65,6 +65,7 @@ function fn_egov_update_view(){
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2><spring:message code="comSymBat.BatchOpertDetail.pageTop.title"/></h2><!-- 배치작업 상세조회 -->
+	<span>※ "배치프로그램은 globals.properties > SHELL.(UNIX/WINDOWS).batchShellFiles에 미리 등록하여야 실행이 가능하다.(WhiteList)</span>
 
 	<form name="batchOpertForm"  id="batchOpertForm" action="<c:url value='/sym/bat/getBatchOpert.do'/>" method="post">
     <input name="batchOpertId" type="hidden" value="<c:out value='${resultInfo.batchOpertId}'/>"/>

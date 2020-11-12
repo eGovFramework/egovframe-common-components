@@ -11,6 +11,16 @@ import java.util.List;
  * @author 이문준
  * @version 1.0
  * @created 28-6-2010 오전 10:44:55
+ * 
+ * <pre>
+ * << 개정이력(Modification Information) >>
+ *
+ *  수정일               수정자            수정내용
+ *  ----------   --------   ---------------------------
+ *  2020-08-28   신용호            보안약점 조치 (Private 배열에 Public 데이터 할당[CWE-496])
+ *
+ * </pre>
+ * 
  */
 public class ServerEqpmnVO extends ServerEqpmn {
 
@@ -50,7 +60,7 @@ public class ServerEqpmnVO extends ServerEqpmn {
 	 * @param delYn the delYn to set
 	 */
 	public void setDelYn(String[] delYn) {
-		this.delYn = delYn;
+		this.delYn = delYn.clone();
 	}
 	/**
 	 * @return the strServerEqpmnNm

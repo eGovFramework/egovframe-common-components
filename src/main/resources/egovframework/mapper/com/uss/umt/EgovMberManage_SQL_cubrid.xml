@@ -84,7 +84,8 @@ SELECT * FROM ( SELECT rownum rn, TB.* FROM (
                     MBER_FXNUM       ,
                     MBER_EMAIL_ADRES ,
                     MIDDLE_TELNO     ,
-                    SBSCRB_DE        )
+                    SBSCRB_DE        ,
+                    CHG_PWD_LAST_PNTTM		)
               VALUES(
                     #{uniqId},
                     #{mberId},
@@ -105,7 +106,8 @@ SELECT * FROM ( SELECT rownum rn, TB.* FROM (
                     #{mberFxnum},
                     #{mberEmailAdres},
                     #{middleTelno},
-                    SYSDATETIME  )              
+                    SYSDATETIME,
+                    SYSDATETIME  )
         
     </insert>
     
@@ -186,6 +188,7 @@ SELECT * FROM ( SELECT rownum rn, TB.* FROM (
             UPDATE COMTNGNRLMBER 
             SET 
                    PASSWORD   =  #{password}
+                 , CHG_PWD_LAST_PNTTM = SYSDATETIME
             WHERE  ESNTL_ID  = #{uniqId}
         
     </update>

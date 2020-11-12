@@ -100,7 +100,8 @@ FROM(
                     MBER_FXNUM       ,
                     MBER_EMAIL_ADRES ,
                     MIDDLE_TELNO     ,
-                    SBSCRB_DE        )
+                    SBSCRB_DE        ,
+                    CHG_PWD_LAST_PNTTM		)
               VALUES(
                     #{uniqId},
                     #{mberId},
@@ -121,7 +122,8 @@ FROM(
                     #{mberFxnum},
                     #{mberEmailAdres},
                     #{middleTelno},
-                    sysdate()  )              
+                    sysdate(),
+                    sysdate()  )
         
     </insert>
     
@@ -202,6 +204,7 @@ FROM(
             UPDATE COMTNGNRLMBER 
             SET 
                    PASSWORD   =  #{password}
+                 , CHG_PWD_LAST_PNTTM = sysdate()
             WHERE  ESNTL_ID  = #{uniqId}
         
     </update>

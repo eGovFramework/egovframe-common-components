@@ -13,6 +13,7 @@
   * @  수정일      수정자            수정내용
   * @ -------        --------    ---------------------------
   * @ 2009.04.06   이삼섭          최초 생성
+  * @ 2020.07.07   윤주호          43L <c:out> 중복 따옴표 문제 수정
   *
   *  @author 공통서비스 개발팀 이삼섭
   *  @since 2009.04.06
@@ -39,6 +40,6 @@
 <title>선택 목록</title>
 </head>
 <body>
-	<iframe id="popupFrame" src="<c:url value='<c:out value="${requestUrl}"/>' />" width="${width}" height="${height}" align="middle" frameborder="0" title="선택목록팝업창호출"></iframe>
+	<iframe id="popupFrame" src="<c:url value='${fn:escapeXml(requestUrl)}' />" width="${width}" height="${height}" align="middle" frameborder="0" title="선택목록팝업창호출"></iframe>
 </body>
 </html>

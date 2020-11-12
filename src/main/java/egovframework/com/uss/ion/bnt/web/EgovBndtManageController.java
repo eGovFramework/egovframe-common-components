@@ -1,9 +1,25 @@
 package egovframework.com.uss.ion.bnt.web;
 
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
+
+import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.support.SessionStatus;
+import org.springframework.web.multipart.MultipartFile;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -22,21 +38,6 @@ import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovFileUploadUtil;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.support.SessionStatus;
-import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springmodules.validation.commons.DefaultBeanValidator;
-
 /**
  * 개요
  * - 당직관리에 대한 controller 클래스를 정의한다.
@@ -50,11 +51,12 @@ import org.springmodules.validation.commons.DefaultBeanValidator;
  *  * <pre>
  * << 개정이력(Modification Information) >>
  *
- *   수정일      	수정자          	수정내용
+ *  수정일              수정자             수정내용
  *  ----------  --------    ---------------------------
- *  2009.6.25	이용          	최초 생성
- *  2011.8.26	정진오		IncludedInfo annotation 추가
- *  2018.8.29	신용호		xlsx 업로드 할수 있도록 수정
+ *  2009.06.25   이용              최초 생성
+ *  2011.08.26   정진오            IncludedInfo annotation 추가
+ *  2018.08.29   신용호            xlsx 업로드 할수 있도록 수정
+ *  2020.11.02   신용호            KISA 보안약점 조치 - 자원해제
  *
  *  </pre>
  */
@@ -608,9 +610,13 @@ public class EgovBndtManageController {
 				if (!"".equals(file.getOriginalFilename())) {
 						String ext = EgovFileUploadUtil.getFileExtension(file.getOriginalFilename());
 						if ( "xlsx".equals(ext) ) {
-							model.addAttribute("bndtManageList", egovBndtManageService.selectBndtManageBndeX(file.getInputStream()));
+							InputStream is = file.getInputStream();
+							model.addAttribute("bndtManageList", egovBndtManageService.selectBndtManageBndeX(is));
+							is.close();
 						} else if ( "xls".equals(ext) ) {
-							model.addAttribute("bndtManageList", egovBndtManageService.selectBndtManageBnde(file.getInputStream()));
+							InputStream is = file.getInputStream();
+							model.addAttribute("bndtManageList", egovBndtManageService.selectBndtManageBnde(is));
+							is.close();
 						} else {
 							throw new RuntimeException(egovMessageSource.getMessage("errors.file.extension"));
 						}

@@ -1092,6 +1092,7 @@
       	주민등록번호 validation.
       	Commons Validator가 제공하는 validator가 아니라 추가된 validator이므로
       	실행을 위해서는 반드시  egovframework.rte.ptl.mvcXXXXX.jar가 필요하다.
+      	2020-10-16 신용호 - 주민번호 남녀구분 관련 수정
       -->
       <validator name="ihidnum"
             classname="egovframework.rte.ptl.mvc.validation.RteFieldChecks"
@@ -1137,12 +1138,25 @@
              */
             function checkIhIdNum(ihidnum){
 
-            	fmt = /^\d{6}[1234]\d{6}$/;
+            	fmt = /^\d{13}$/;
             	if(!fmt.test(ihidnum)){
             		return false;
             	}
 
-            	birthYear = (ihidnum.charAt(7) <= "2") ? "19" : "20";
+            	switch(ihidnum.charAt(6)*1) {
+					case 9,0:
+						birthYear = "18";
+						break;
+					case 1,2,5,6: // 외국인 5,6
+						birthYear = "19";
+						break;
+					case 3,4,7,8: // 외국인 7,8
+						birthYear = "20";
+						break;
+					default:
+						birthYear = "19";
+				}
+            	
 				birthYear += ihidnum.substr(0, 2);
 				birthMonth = ihidnum.substr(2, 2) - 1;
 				birthDate = ihidnum.substr(4, 2);

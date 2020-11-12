@@ -39,14 +39,15 @@ import egovframework.rte.psl.dataaccess.util.EgovMap;
  * <pre>
  * 개정이력(Modification Information)
  *
- *     수정일                 수정자        	  수정내용
- *  -----------    --------   ---------------------------
- *  2011.08.29    	 서준식      최초생성
- *  2011.12.12      유지보수      사용자 로그인 정보 간섭 가능성 문제(멤버 변수 EgovUserDetails userDetails를 로컬변수로 변경)
- *  2014.03.07      유지보수      로그인된 상태에서 다시 로그인 시 미처리 되는 문제 수정 (로그인 처리 URL 파라미터화)
- *  2017.03.03 		조성원 	    시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
- *  2017.07.10      장동한       실행환경 v3.7(Spring Security 4.0.3 적용)
- *  2017.07.21 		 장동한 		로그인인증제한 작업
+ *  수정일               수정자        	 수정내용
+ *  ----------   --------   ---------------------------
+ *  2011.08.29   서준식            최초생성
+ *  2011.12.12   유지보수         사용자 로그인 정보 간섭 가능성 문제(멤버 변수 EgovUserDetails userDetails를 로컬변수로 변경)
+ *  2014.03.07   유지보수         로그인된 상태에서 다시 로그인 시 미처리 되는 문제 수정 (로그인 처리 URL 파라미터화)
+ *  2017.03.03 	  조성원 	       시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+ *  2017.07.10   장동한            실행환경 v3.7(Spring Security 4.0.3 적용)
+ *  2017.07.21 	  장동한 		로그인인증제한 작업
+ *  2020.06.25 	  신용호 		로그인 메시지 처리 수정
  *
  *  </pre>
  */
@@ -135,11 +136,20 @@ public class EgovSpringSecurityLoginFilter implements Filter {
 				if (requestURL.contains(loginProcessURL)) {
 
 					String password = httpRequest.getParameter("password");
+					String id = httpRequest.getParameter("id");
 					
 					// 보안점검 후속 조치(Password 검증)
-					if (password == null || password.equals("") || password.length() < 8 || password.length() > 20) {
-						httpRequest.setAttribute("message", egovMessageSource.getMessage("fail.common.login.password",request.getLocale()));
+					if ((id == null || "".equals(id)) && (password == null || "".equals(password))) {
 						RequestDispatcher dispatcher = httpRequest.getRequestDispatcher(loginURL);
+						httpRequest.setAttribute("loginMessage", "");
+						dispatcher.forward(httpRequest, httpResponse);
+						//chain.doFilter(request, response);
+						return;
+					}
+					else if (password == null || password.equals("") || password.length() < 8 || password.length() > 20) {
+						httpRequest.setAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login.password",request.getLocale()));
+						RequestDispatcher dispatcher = httpRequest.getRequestDispatcher(loginURL);
+						
 						dispatcher.forward(httpRequest, httpResponse);
 						//chain.doFilter(request, response);
 						return;
@@ -162,15 +172,15 @@ public class EgovSpringSecurityLoginFilter implements Filter {
 				                String sLoginIncorrectCode = loginService.processLoginIncorrect(loginVO, mapLockUserInfo);
 				                if(!sLoginIncorrectCode.equals("E")){
 				                    if(sLoginIncorrectCode.equals("L")){
-				                        request.setAttribute("message", egovMessageSource.getMessageArgs("fail.common.loginIncorrect", new Object[] {egovLoginConfig.getLockCount(),request.getLocale()}));
+				                        request.setAttribute("loginMessage", egovMessageSource.getMessageArgs("fail.common.loginIncorrect", new Object[] {egovLoginConfig.getLockCount(),request.getLocale()}));
 				                    }else if(sLoginIncorrectCode.equals("C")){
-				                        request.setAttribute("message", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
+				                        request.setAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
 				                    }
 				                    httpRequest.getRequestDispatcher(loginURL).forward(request, response);
 				                    return;
 				                }
 				            }else{
-				                request.setAttribute("message", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
+				                request.setAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
 				                httpRequest.getRequestDispatcher(loginURL).forward(request, response);
 				                return;
 				            }
@@ -178,7 +188,7 @@ public class EgovSpringSecurityLoginFilter implements Filter {
 				            LOGGER.error("[IllegalArgumentException] : "+ e.getMessage());
 				        } catch(Exception ex) {
 							LOGGER.error("Login Exception : {}", ex.getCause(), ex);
-							httpRequest.setAttribute("message", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
+							httpRequest.setAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
 							RequestDispatcher dispatcher = httpRequest.getRequestDispatcher(loginURL);
 							dispatcher.forward(httpRequest, httpResponse);
 				        }
@@ -222,7 +232,7 @@ public class EgovSpringSecurityLoginFilter implements Filter {
 
 						} else {
 							//사용자 정보가 없는 경우 로그인 화면으로 redirect 시킴
-							httpRequest.setAttribute("message", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
+							httpRequest.setAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
 							RequestDispatcher dispatcher = httpRequest.getRequestDispatcher(loginURL);
 							dispatcher.forward(httpRequest, httpResponse);
 							
@@ -236,7 +246,7 @@ public class EgovSpringSecurityLoginFilter implements Filter {
 					} catch (Exception ex) {
 						//DB인증 예외가 발생할 경우 로그인 화면으로 redirect 시킴
 						LOGGER.error("Login Exception : {}", ex.getCause(), ex);
-						httpRequest.setAttribute("message", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
+						httpRequest.setAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
 						RequestDispatcher dispatcher = httpRequest.getRequestDispatcher(loginURL);
 						dispatcher.forward(httpRequest, httpResponse);
 						//chain.doFilter(request, response);

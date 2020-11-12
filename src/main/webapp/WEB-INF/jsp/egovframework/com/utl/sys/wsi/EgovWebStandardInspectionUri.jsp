@@ -3,9 +3,10 @@
   Description : 웹표준검사
   Modification Information
 
-      수정일         수정자                   수정내용
-    -------    --------    ---------------------------
-     2010.10.05    박종선          최초 생성
+      수정일              수정자              수정내용
+   ----------   --------    ---------------------------
+   2010.10.05   박종선              최초 생성
+   2020.10.29   신용호              KISA 보안약점 조치 (경로 조작 및 자원 삽입)
 
     author   : 박종선
     since    : 2010.10.05
@@ -33,7 +34,7 @@ int nLine = 0;
 String[] arrMatcherFind;
 
 try {
-
+	sUri = EgovWebUtil.filePathBlackList(sUri);
 	URL urlCheck = new URL(sUri);
 	urlCheck.openStream();
 

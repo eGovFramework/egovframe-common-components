@@ -63,7 +63,6 @@ function fn_egov_save(){
 
 <%-- noscript 테그 --%>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
-
 <form:form commandName="batchOpert"  action="<c:url value='/sym/bat/addBatchOpert.do'/>" method="post">
 
 <!-- 검색조건 유지 -->
@@ -74,7 +73,7 @@ function fn_egov_save(){
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2><spring:message code="comSymBat.batchOpertRegist.pageTop.title"/></h2><!-- 배치작업 등록 -->
-
+	<span>※ "배치프로그램은 globals.properties > SHELL.(UNIX/WINDOWS).batchShellFiles에 미리 등록하여야 실행이 가능하다.(WhiteList)</span>
 	<!-- 등록폼 -->
 	<table class="wTable">
 		<colgroup>

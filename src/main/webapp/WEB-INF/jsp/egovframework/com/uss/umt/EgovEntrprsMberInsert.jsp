@@ -8,6 +8,7 @@
   * @ -------    --------    ---------------------------
   * @ 2009.03.02    조재영          최초 생성
   * @ 2016.06.13    장동한          표준프레임워크 v3.6 개선
+  * @ 2020.07.20    윤주호          표준프레임워크 v3.10 개선
   *
   *  @author 공통서비스 개발팀 조재영
   *  @since 2009.03.12
@@ -165,7 +166,7 @@ function fnListPage(){
 function fnInsert(form){
 	if(confirm("<spring:message code="common.regist.msg" />")){	
 		if(validateEntrprsManageVO(form)){
-			if(form.password.value != form.password2.value){
+			if(form.entrprsMberPassword.value != form.entrprsMberPassword2.value){
 	            alert("<spring:message code="fail.user.passwordUpdate2" />");
 	            return false;
 	        }
@@ -182,7 +183,7 @@ function fnInsert(form){
 <body onload="fn_egov_init()">
 
 <!-- content start -->
- <form:form commandName="entrprsManageVO" action="${pageContext.request.contextPath}/uss/umt/EgovEntrprsMberInsert.do" name="entrprsManageVO" method="post" onSubmit="fnInsert(document.forms[0]); return false;"> 
+<form:form commandName="entrprsManageVO" action="${pageContext.request.contextPath}/uss/umt/EgovEntrprsMberInsert.do" name="entrprsManageVO" method="post" onSubmit="fnInsert(document.forms[0]); return false;"> 
 
 <!-- 상세정보 사용자 삭제시 prameter 전달용 input -->
 <input name="checkedIdForDel" type="hidden" />
@@ -232,8 +233,15 @@ function fnInsert(form){
 		<tr>
 			<th><label for="entrprsMberPassword">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
-				<form:password path="entrprsMberPassword" title="${title} ${inputTxt}" size="50" maxlength="20" />
-				<div><form:errors path="entrprsMberPassword" cssClass="error" /></div> 
+				<div>
+					<form:password path="entrprsMberPassword" title="${title} ${inputTxt}" size="50" maxlength="20" />
+					<div><form:errors path="entrprsMberPassword" cssClass="error" /></div> 
+				</div>
+				<div>
+					<div><spring:message code="info.password.rule.password1" /></div> 
+					<div><spring:message code="info.password.rule.pwdcheckcomb3" /></div> 
+					<div><spring:message code="info.password.rule.pwdcheckseries" /></div> 
+				</div>
 			</td>
 		</tr>
 		<!-- 비밀번호확인 -->
@@ -344,7 +352,7 @@ function fnInsert(form){
 		<tr>
 			<th><label for="zip">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
-                    <input name="zip" id="zip" title="${title} ${inputTxt}" type="text" size="20" value="" maxlength="8" style="width:60px;" />
+                    <form:input path="zip" title="${title} ${inputTxt}" type="text" size="20" value="" maxlength="8" style="width:60px;" />
                     <!-- form:hidden path="zip" id="zip" --> 
                     <!-- <button class="btn_s2" onClick="fn_egov_ZipSearch(document.mberManageVO, document.mberManageVO.zip, document.mberManageVO.zip_view, document.mberManageVO.adres);return false;" title="<spring:message code="button.delete" /> <spring:message code="input.button" />">우번번호검색</button>  -->
                     <div><form:errors path="zip" cssClass="error" /></div>

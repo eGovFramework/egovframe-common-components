@@ -49,10 +49,11 @@ import egovframework.rte.fdl.excel.EgovExcelService;
  *  * <pre>
  * << 개정이력(Modification Information) >>
  *
- *   수정일      	수정자          	수정내용
- *  ----------  --------    ---------------------------
- *  2010.6.15	표준프레임워크   	최초 생성
- *  2018.8.29	신용호		xlsx 처리 할수 있도록 selectBndtManageBndeX추가
+ *  수정일                수정자               수정내용
+ *  ----------   ----------   ---------------------------
+ *  2010.06.15   표준프레임워크     최초 생성
+ *  2018.08.29   신용호               xlsx 처리 할수 있도록 selectBndtManageBndeX추가
+ *  2020.11.02   신용호               KISA 보안약점 조치 - 널(null) 값 체크
  *
  *  </pre>
  */
@@ -486,9 +487,9 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 	}
 
 	/**
-	 * 해당일자와 현재일자의 일수 계산
+	 * 해당일자와 현재일자의 일수 계산 (요일을 구함)
 	 * @param annvrsryManageVO
-	 * @return long
+	 * @return long (1~7로 요일을 리턴)
 	 */
 	@SuppressWarnings("static-access")
 	private int getDateWeekInt(String sDate) throws Exception{
@@ -497,6 +498,8 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
     	String sDayOfWeek     = null;
     	int    iWeek           = 0;
     	sDayOfWeek = EgovStringUtil.removeMinusChar(sDate);
+    	// KISA 보안약점 조치 - 널(null) 값 체크
+    	if ( sDayOfWeek == null ) return 0;
    		target_day.set(Integer.parseInt(sDayOfWeek.substring(0,4)),Integer.parseInt(sDayOfWeek.substring(4,6))-1,Integer.parseInt(sDayOfWeek.substring(6,8)));
 		iWeek = target_day.get(target_day.DAY_OF_WEEK);
 		

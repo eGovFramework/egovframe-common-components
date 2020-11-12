@@ -54,15 +54,17 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  * <pre>
  * << 개정이력(Modification Information) >>
  *   
- *   수정일              수정자          수정내용
- *  ----------   -------   ---------------------------
- *  2009.03.19   이삼섭          최초 생성
- *  2009.06.29   한성곤          2단계 기능 추가 (댓글관리, 만족도조사)
- *  2011.07.01   안민정          댓글, 스크랩, 만족도 조사 기능의 종속성 제거
- *  2011.08.26   정진오          IncludedInfo annotation 추가
- *  2011.09.07   서준식          유효 게시판 게시일 지나도 게시물이 조회되던 오류 수정
- *  2016.06.13   김연호          표준프레임워크 3.6 개선
- *  2019.05.17   신용호          KISA 취약점 조치 및 보완
+ *  수정일               수정자            수정내용
+ *  ----------   -------    ---------------------------
+ *  2009.03.19   이삼섭            최초 생성
+ *  2009.06.29   한성곤            2단계 기능 추가 (댓글관리, 만족도조사)
+ *  2011.07.01   안민정            댓글, 스크랩, 만족도 조사 기능의 종속성 제거
+ *  2011.08.26   정진오            IncludedInfo annotation 추가
+ *  2011.09.07   서준식            유효 게시판 게시일 지나도 게시물이 조회되던 오류 수정
+ *  2016.06.13   김연호            표준프레임워크 3.6 개선
+ *  2019.05.17   신용호            KISA 취약점 조치 및 보완
+ *  2020.10.27   신용호            파일 업로드 수정 (multiRequest.getFiles)
+ *  
  * </pre>
  */
 
@@ -363,10 +365,11 @@ public class EgovArticleController {
 		    List<FileVO> result = null;
 		    String atchFileId = "";
 		    
-		    final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		    //final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		    final List<MultipartFile> files = multiRequest.getFiles("file_1");
 		    if (!files.isEmpty()) {
-			result = fileUtil.parseFileInf(files, "BBS_", 0, "", "");
-			atchFileId = fileMngService.insertFileInfs(result);
+		    	result = fileUtil.parseFileInf(files, "BBS_", 0, "", "");
+		    	atchFileId = fileMngService.insertFileInfs(result);
 		    }
 		    board.setAtchFileId(atchFileId);
 		    board.setFrstRegisterId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
@@ -489,12 +492,13 @@ public class EgovArticleController {
 		}
 	
 		if (isAuthenticated) {
-		    final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		    //final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		    final List<MultipartFile> files = multiRequest.getFiles("file_1");
 		    String atchFileId = "";
 	
 		    if (!files.isEmpty()) {
-			List<FileVO> result = fileUtil.parseFileInf(files, "BBS_", 0, "", "");
-			atchFileId = fileMngService.insertFileInfs(result);
+				List<FileVO> result = fileUtil.parseFileInf(files, "BBS_", 0, "", "");
+				atchFileId = fileMngService.insertFileInfs(result);
 		    }
 	
 		    board.setAtchFileId(atchFileId);
@@ -505,7 +509,7 @@ public class EgovArticleController {
 		    board.setSortOrdr(boardVO.getSortOrdr());
 		    board.setReplyLc(Integer.toString(Integer.parseInt(boardVO.getReplyLc()) + 1));
 		    
-		  //익명등록 처리 
+		    //익명등록 처리 
 		    if(board.getAnonymousAt() != null && board.getAnonymousAt().equals("Y")){
 		    	board.setNtcrId("anonymous"); //게시물 통계 집계를 위해 등록자 ID 저장
 		    	board.setNtcrNm("익명"); //게시물 통계 집계를 위해 등록자 Name 저장
@@ -638,9 +642,11 @@ public class EgovArticleController {
 		}
 		
 		if (isAuthenticated) {
-		    final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		    
+			//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+			final List<MultipartFile> files = multiRequest.getFiles("file_1");
 		    if (!files.isEmpty()) {
-				if ("".equals(atchFileId)) {
+				if (atchFileId == null || "".equals(atchFileId)) {
 				    List<FileVO> result = fileUtil.parseFileInf(files, "BBS_", 0, atchFileId, "");
 				    atchFileId = fileMngService.insertFileInfs(result);
 				    board.setAtchFileId(atchFileId);

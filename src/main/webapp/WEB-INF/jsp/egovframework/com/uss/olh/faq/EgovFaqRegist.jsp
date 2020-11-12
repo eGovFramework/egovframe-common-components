@@ -4,10 +4,11 @@
   * @Description : EgovFaqRegist 화면
   * @Modification Information
   * @
-  * @  수정일             수정자                   수정내용
-  * @ -------    --------    ---------------------------
-  * @ 2009.02.01   박정규              최초 생성
-  *   2016.06.13   김연호              표준프레임워크 v3.6 개선
+  * @ 수정일               수정자                수정내용
+  * @ ----------   ---------    ---------------------------
+  * @ 2009.02.01   박정규                최초 생성
+  * @ 2016.06.13   김연호                표준프레임워크 v3.6 개선
+  * @ 2020.10.30   신용호                파일 확장자 및 사이즈 체크 누락 수정
   *
   *  @author 공통서비스팀 
   *  @since 2009.02.01
@@ -55,6 +56,11 @@ function fn_egov_init(){
  * 저장처리화면
  ******************************************************** */
 function fn_egov_regist_faq(form){
+	
+	var resultExtension = EgovMultiFilesChecker.checkExtensions("egovComFileUploader", "<c:out value='${fileUploadExtensions}'/>"); // 결과가 false인경우 허용되지 않음
+	if (!resultExtension) return true;
+	var resultSize = EgovMultiFilesChecker.checkFileSize("egovComFileUploader", <c:out value='${fileUploadMaxSize}'/>); // 파일당 1M까지 허용 (1K=1024), 결과가 false인경우 허용되지 않음
+	if (!resultSize) return true;
 	
 	//input item Client-Side validate
 	if (!validateFaqVO(form)) {	

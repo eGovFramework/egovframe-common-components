@@ -24,6 +24,7 @@ import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olp.qtm.service.EgovQustnrTmplatManageService;
 import egovframework.com.uss.olp.qtm.service.QustnrTmplatManageVO;
@@ -40,10 +41,11 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  * <pre>
  * << 개정이력(Modification Information) >>
  *
- *   수정일      수정자           수정내용
- *  -------    --------    ---------------------------
- *   2009.03.20  장동한          최초 생성
- *   2011.8.26	정진오			IncludedInfo annotation 추가
+ *  수정일                수정자            수정내용
+ *  ----------   --------   ---------------------------
+ *  2009.03.20   장동한            최초 생성
+ *  2011.08.26   정진오            IncludedInfo annotation 추가
+ *  2020.10.30   신용호            파일업로드 제한을위한 파라미터 전달
  *
  * </pre>
  */
@@ -243,6 +245,12 @@ public class EgovQustnrTmplatManageController {
         List<?> sampleList = egovQustnrTmplatManageService.selectQustnrTmplatManageDetail(qustnrTmplatManageVO);
         model.addAttribute("resultList", sampleList);
 
+    	// 파일업로드 제한
+    	String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
+    	String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
+
+        model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
+        model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
 
 		return sLocationUrl;
 	}
@@ -283,6 +291,13 @@ public class EgovQustnrTmplatManageController {
 		if (bindingResult.hasErrors()){
 	        List<?> sampleList = egovQustnrTmplatManageService.selectQustnrTmplatManageDetail(qustnrTmplatManageVO);
 	        model.addAttribute("resultList", sampleList);
+	        
+	    	// 파일업로드 제한
+	    	String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
+	    	String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
+
+	        model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
+	        model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
 			return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageModify";
 		}
 
@@ -346,6 +361,13 @@ public class EgovQustnrTmplatManageController {
 		//아이디 설정
 		qustnrTmplatManageVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 		qustnrTmplatManageVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+		
+    	// 파일업로드 제한
+    	String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions.Images");
+    	String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
+
+        model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
+        model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
 
 		return sLocationUrl;
 	}

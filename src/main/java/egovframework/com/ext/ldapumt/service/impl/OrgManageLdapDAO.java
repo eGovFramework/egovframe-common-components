@@ -46,9 +46,10 @@ import org.springframework.ldap.core.LdapTemplate;
 * <pre>
 * << 개정이력(Modification Information) >>
 *
-*   수정일      수정자           수정내용
-*  -------    --------    ---------------------------
-*   2014.10.12  전우성          최초 생성
+*  수정일               수정자            수정내용
+*  ----------   --------   ---------------------------
+*  2014.10.12   전우성            최초 생성
+*  2020.08.28   정진호            표준프레임워크 v3.10 개선
 *
 * </pre>
 */
@@ -121,14 +122,14 @@ public class OrgManageLdapDAO extends EgovComAbstractDAO {
 	 */
 	private void introspect(LdapObject vo, Executable e) {
 		@SuppressWarnings("unchecked")
-		Map<String, Object> introspected = new BeanMap(vo);
+		Map<Object, Object> introspected = new BeanMap(vo);
 
-		for (String key : introspected.keySet()) {
+		for (Object key : introspected.keySet()) {
 			if (key.equals("dn") || key.equals("class") || introspected.get(key) == null
 					|| introspected.get(key).equals(""))
 				continue;
 
-			e.execute(key, introspected.get(key));
+			e.execute((String) key, introspected.get(key));
 		}
 
 	}

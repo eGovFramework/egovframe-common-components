@@ -2,12 +2,12 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>egovframework</groupId>
-    <artifactId>common</artifactId>
-    <packaging>war</packaging>
-    <version>3.9.0</version>
-    <name>common component</name>
-    <url>http://maven.apache.org</url>
+	<groupId>egovframework</groupId>
+	<artifactId>common</artifactId>
+	<packaging>war</packaging>
+	<version>3.10.0</version>
+	<name>common component</name>
+	<url>http://www.egovframe.go.kr</url>
 
     <licenses>
         <license>
@@ -16,8 +16,8 @@
         </license>
     </licenses>
     <properties>
-        <spring.maven.artifact.version>4.3.22.RELEASE</spring.maven.artifact.version>
-        <egovframework.rte.version>3.9.0</egovframework.rte.version>
+        <spring.maven.artifact.version>4.3.25.RELEASE</spring.maven.artifact.version>
+        <egovframework.rte.version>3.10.0</egovframework.rte.version>
     </properties>
 
     <repositories>
@@ -148,11 +148,11 @@
             </exclusions>
         </dependency>
 
-        <dependency>
-            <groupId>commons-dbcp</groupId>
-            <artifactId>commons-dbcp</artifactId>
-            <version>1.4</version>
-        </dependency>
+		<dependency>
+		    <groupId>org.apache.commons</groupId>
+		    <artifactId>commons-dbcp2</artifactId>
+		    <version>2.4.0</version>
+		</dependency>
 
         <dependency>
             <groupId>javax.servlet</groupId>
@@ -183,23 +183,24 @@
         <dependency>
             <groupId>org.jasypt</groupId>
             <artifactId>jasypt</artifactId>
-            <version>1.9.2</version>
+            <version>1.9.3</version>
         </dependency>
 
         <dependency>
             <groupId>cglib</groupId>
             <artifactId>cglib</artifactId>
-            <version>3.1</version>
+            <version>3.3.0</version>
         </dependency>
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
-            <version>1.8.1</version>
+            <!-- <version>1.8.1</version> -->
+            <version>1.19</version>
         </dependency>
         <dependency>
             <groupId>xerces</groupId>
             <artifactId>xercesImpl</artifactId>
-            <version>2.11.0</version>
+            <version>2.12.0</version>
         </dependency>
 
         <!-- cache -->
@@ -225,7 +226,7 @@
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz</artifactId>
-            <version>2.1.7</version>
+            <version>2.3.2</version>
             <exclusions>
                 <exclusion>
                     <artifactId>slf4j-api</artifactId>
@@ -236,17 +237,17 @@
         <dependency>
             <groupId>org.quartz-scheduler</groupId>
             <artifactId>quartz-jobs</artifactId>
-            <version>2.2.1</version>
+            <version>2.3.2</version>
         </dependency>
         <!-- Scheduling end-->
 
         <!-- 공통컴포넌트 시작 -->
 
-        <!-- 게시판 생성시 사용 TokenStream -->
+        <!-- Validation 에서 사용 antlr.TokenStream -->
         <dependency>
             <groupId>org.antlr</groupId>
-            <artifactId>antlr</artifactId>
-            <version>3.5</version>
+	        <artifactId>antlr</artifactId>
+	        <version>3.5</version>
         </dependency>
 
         <!-- 우편번호를 위한 라이브러리 -->
@@ -286,7 +287,7 @@
         <dependency>
             <groupId>javax.servlet.jsp</groupId>
             <artifactId>javax.servlet.jsp-api</artifactId>
-            <version>2.3.1</version>
+            <version>2.3.3</version>
             <scope>provided</scope>
         </dependency>
 
@@ -511,7 +512,7 @@
         <dependency>
             <groupId>altibase</groupId>
             <artifactId>altibase-jdbc-driver</artifactId>
-            <version>5.1.3.18</version>
+            <version>7.1.0</version>
             <scope>system</scope>
             <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/Altibase.jar</systemPath>
         </dependency>
@@ -521,7 +522,7 @@
         <dependency>
             <groupId>com.tmax.tibero</groupId>
             <artifactId>tibero-jdbc</artifactId>
-            <version>3.0</version>
+            <version>5.0</version>
             <scope>system</scope>
             <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/tibero5-jdbc.jar</systemPath>
         </dependency>
@@ -531,9 +532,9 @@
         <dependency>
             <groupId>cubrid</groupId>
             <artifactId>cubrid-jdbc</artifactId>
-            <version>8.4</version>
+            <version>10.2</version>
             <scope>system</scope>
-            <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/cubrid_jdbc.jar</systemPath>
+            <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/JDBC-10.2-latest-cubrid.jar</systemPath>
         </dependency>
  		-->
         <!--  M-Gov (SMS Service API) -->
@@ -586,15 +587,15 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
+                        <source>1.7</source>
+                        <target>1.7</target>
                         <encoding>UTF-8</encoding>
                     </configuration>
                 </plugin>
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>hibernate3-maven-plugin</artifactId>
-                    <version>2.1</version>
+                    <version>3.0</version>
                     <configuration>
                         <components>
                             <component>
@@ -605,9 +606,9 @@
                     </configuration>
                     <dependencies>
                         <dependency>
-                            <groupId>hsqldb</groupId>
+                            <groupId>org.hsqldb</groupId>
                             <artifactId>hsqldb</artifactId>
-                            <version>2.3.2</version>
+                            <version>2.5.0</version>
                         </dependency>
                     </dependencies>
                 </plugin>
@@ -621,7 +622,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-pmd-plugin</artifactId>
-                    <version>3.1</version>
+                    <version>3.12.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -667,7 +668,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>2.9.1</version>
+                <version>3.1.1</version>
             </plugin>
         </plugins>
     </build>
@@ -676,7 +677,7 @@
         <plugins>
             <plugin>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>2.7</version>
+                <version>3.0.0</version>
                 <reportSets>
                     <reportSet>
                         <id>sunlink</id>

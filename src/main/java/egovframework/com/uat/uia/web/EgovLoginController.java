@@ -13,6 +13,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovComponentChecker;
@@ -21,6 +23,7 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.config.EgovLoginConfig;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.service.Globals;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uat.uia.service.EgovLoginService;
@@ -44,17 +47,19 @@ import com.gpki.servlet.GPKIHttpServletResponse;
  * <pre>
  * << 개정이력(Modification Information) >>
  *
- *   수정일            수정자          수정내용
- *  ----------  --------  ---------------------------
- *  2009.03.06  박지욱          최초 생성
- *  2011.8.26	정진오          IncludedInfo annotation 추가
- *  2011.09.07  서준식          스프링 시큐리티 로그인 및 SSO 인증 로직을 필터로 분리
- *  2011.09.25  서준식          사용자 관리 컴포넌트 미포함에 대한 점검 로직 추가
- *  2011.09.27  서준식          인증서 로그인시 스프링 시큐리티 사용에 대한 체크 로직 추가
- *  2011.10.27  서준식          아이디 찾기 기능에서 사용자 리름 공백 제거 기능 추가
- *  2017.07.21  장동한          로그인인증제한 작업
- *  2018.10.26  신용호          로그인 화면에 message 파라미터 전달 수정
- *  2019.10.01	EFW Center	  로그인 인증세션 추가
+ *  수정일               수정자            수정내용
+ *  ----------   --------   ---------------------------
+ *  2009.03.06   박지욱           최초 생성
+ *  2011.08.26   정진오           IncludedInfo annotation 추가
+ *  2011.09.07   서준식           스프링 시큐리티 로그인 및 SSO 인증 로직을 필터로 분리
+ *  2011.09.25   서준식           사용자 관리 컴포넌트 미포함에 대한 점검 로직 추가
+ *  2011.09.27   서준식           인증서 로그인시 스프링 시큐리티 사용에 대한 체크 로직 추가
+ *  2011.10.27   서준식           아이디 찾기 기능에서 사용자 리름 공백 제거 기능 추가
+ *  2017.07.21   장동한           로그인인증제한 작업
+ *  2018.10.26   신용호           로그인 화면에 message 파라미터 전달 수정
+ *  2019.10.01   정진호           로그인 인증세션 추가
+ *  2020.06.25   신용호           로그인 메시지 처리 수정
+ *  
  *  </pre>
  */
 @Controller
@@ -113,8 +118,8 @@ public class EgovLoginController {
 		    return "egovframework/com/cmm/egovError";
 		}
 		*/
-		String message = (String)request.getParameter("message");
-		if (message!=null) model.addAttribute("message", message);
+		String message = (String)request.getParameter("loginMessage");
+		if (message!=null) model.addAttribute("loginMessage", message);
 		
 		return "egovframework/com/uat/uia/EgovLoginUsr";
 	}
@@ -137,14 +142,14 @@ public class EgovLoginController {
 				String sLoginIncorrectCode = loginService.processLoginIncorrect(loginVO, mapLockUserInfo);
 				if(!sLoginIncorrectCode.equals("E")){
 					if(sLoginIncorrectCode.equals("L")){
-						model.addAttribute("message", egovMessageSource.getMessageArgs("fail.common.loginIncorrect", new Object[] {egovLoginConfig.getLockCount(),request.getLocale()}));
+						model.addAttribute("loginMessage", egovMessageSource.getMessageArgs("fail.common.loginIncorrect", new Object[] {egovLoginConfig.getLockCount(),request.getLocale()}));
 					}else if(sLoginIncorrectCode.equals("C")){
-						model.addAttribute("message", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
+						model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
 					}
 					return "egovframework/com/uat/uia/EgovLoginUsr";
 				}
 		    }else{
-		    	model.addAttribute("message", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
+		    	model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
 		    	return "egovframework/com/uat/uia/EgovLoginUsr";
 		    }
 		}
@@ -163,7 +168,7 @@ public class EgovLoginController {
 			return "redirect:/uat/uia/actionMain.do";
 
 		} else {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
+			model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
 			return "egovframework/com/uat/uia/EgovLoginUsr";
 		}
 	}
@@ -259,7 +264,7 @@ public class EgovLoginController {
 		// 1. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login"));
 			return "egovframework/com/uat/uia/EgovLoginUsr";
 		}
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -542,4 +547,63 @@ public class EgovLoginController {
 		*/
 		return "egovframework/com/uat/uia/EgovGpkiRegist";
 	}
+	
+	/**
+	 * 세션타임아웃 시간을 연장한다.
+	 * Cookie에 egovLatestServerTime, egovExpireSessionTime 기록하도록 한다.
+	 * @return result - String
+	 * @exception Exception
+	 */
+	@RequestMapping(value="/uat/uia/refreshSessionTimeout.do")
+	public ModelAndView refreshSessionTimeout(@RequestParam Map<String, Object> commandMap) throws Exception {
+		ModelAndView modelAndView = new ModelAndView();
+		modelAndView.setViewName("jsonView");
+
+		modelAndView.addObject("result", "ok");
+
+		return modelAndView;
+	}
+	
+	/**
+	 * 세션타임아웃 시간을 연장한다.
+	 * Cookie에 egovLatestServerTime, egovExpireSessionTime 기록하도록 한다.
+	 * @return result - String
+	 * @exception Exception
+	 */
+	@RequestMapping(value="/uat/uia/noticeExpirePwd.do")
+	public String noticeExpirePwd(@RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
+		
+		// 설정된 비밀번호 유효기간을 가져온다. ex) 180이면 비밀번호 변경후 만료일이 앞으로 180일 
+		String propertyExpirePwdDay = EgovProperties.getProperty("Globals.ExpirePwdDay");
+		int expirePwdDay = 0 ;
+		try {
+			expirePwdDay =  Integer.parseInt(propertyExpirePwdDay);
+		} catch (NumberFormatException e) {
+			LOGGER.debug("convert expirePwdDay Err : "+e.getMessage());
+		} catch (Exception e) {
+			LOGGER.debug("convert expirePwdDay Err : "+e.getMessage());
+		}
+		
+		model.addAttribute("expirePwdDay", expirePwdDay);
+
+		// 비밀번호 설정일로부터 몇일이 지났는지 확인한다. ex) 3이면 비빌번호 설정후 3일 경과
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		model.addAttribute("loginVO", loginVO);
+		int passedDayChangePWD = 0;
+		if ( loginVO != null ) {
+			System.out.println("===>>> loginVO.getId() = "+loginVO.getId());
+			System.out.println("===>>> loginVO.getUniqId() = "+loginVO.getUniqId());
+			System.out.println("===>>> loginVO.getUserSe() = "+loginVO.getUserSe());
+			// 비밀번호 변경후 경과한 일수
+			passedDayChangePWD = loginService.selectPassedDayChangePWD(loginVO);
+			System.out.println("===>>> passedDayChangePWD = "+passedDayChangePWD);
+			model.addAttribute("passedDay", passedDayChangePWD);
+		}
+		
+		// 만료일자로부터 경과한 일수 => ex)1이면 만료일에서 1일 경과
+		model.addAttribute("elapsedTimeExpiration", passedDayChangePWD - expirePwdDay);
+		
+		return "egovframework/com/uat/uia/EgovExpirePwd";
+	}
+
 }

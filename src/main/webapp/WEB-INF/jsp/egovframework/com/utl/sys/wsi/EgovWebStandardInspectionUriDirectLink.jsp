@@ -3,10 +3,11 @@
   Description : 웹표준검사
   Modification Information
 
-       수정일                 수정자              수정내용
-    ----------    --------    ---------------------------
-    2010.10.05    박종선              최초 생성
-    2019.11.29    신용호              KISA 보안약점 조치 (부적절한 자원 해제, 경로조작및 자원 삽입)
+      수정일               수정자              수정내용
+   ----------   ---------   ---------------------------
+   2010.10.05   박종선              최초 생성
+   2019.11.29   신용호              KISA 보안약점 조치 (부적절한 자원 해제, 경로조작및 자원 삽입)
+   2020.10.29   신용호              KISA 보안약점 조치 (크로스사이트 스크립트)
     
     author   : 박종선
     since    : 2010.10.05
@@ -217,6 +218,7 @@
 
 		sUri = EgovWebUtil.removeCRLF(sUri);
 		sUri = EgovWebUtil.filePathBlackList(sUri);
+		sUri = EgovWebUtil.clearXSSMinimum(sUri);
 	
 		//URL 체크
 		URL urlCheck = new URL(sUri);

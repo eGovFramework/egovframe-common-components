@@ -6,11 +6,13 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import org.apache.commons.dbcp.BasicDataSource;
-import org.apache.commons.dbcp.DataSourceConnectionFactory;
-import org.apache.commons.dbcp.PoolableConnectionFactory;
-import org.apache.commons.dbcp.PoolingDriver;
-import org.apache.commons.pool.impl.GenericObjectPool;
+import org.apache.commons.dbcp2.BasicDataSource;
+import org.apache.commons.dbcp2.DataSourceConnectionFactory;
+import org.apache.commons.dbcp2.PoolableConnection;
+import org.apache.commons.dbcp2.PoolableConnectionFactory;
+import org.apache.commons.dbcp2.PoolingDriver;
+import org.apache.commons.pool2.impl.GenericObjectPool;
+import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -30,10 +32,11 @@ import egovframework.com.cmm.service.Globals;
  * <pre>
  * << 개정이력(Modification Information) >>
  *
- *   수정일      수정자           수정내용
- *  -------    --------    ---------------------------
- *   2009.11.24  한성곤          최초 생성
- *   2017-02-13  이정은          시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+ *  수정일                수정자           수정내용
+ *  ----------   --------   ---------------------------
+ *  2009.11.24   한성곤            최초 생성
+ *  2017-02-13   이정은            시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+ *  2020-07-01   신용호            DBCP2 관련 변경사항 적용
  *
  * </pre>
  */
@@ -52,11 +55,16 @@ public class SmsBasicDBUtil {
 	/** JDBC 접속 패스워드 */
 	private static final String JDBC_PASSWORD = EgovProperties.getProperty(Globals.SMSDB_CONF_PATH, "JDBC_PASSWORD");
 	/** 한번에 pool에서 갖다 쓸 수 있는 최대 커넥션 개수 */
-	private static final int MAX_ACTIVE = 20;
-	/** 사용되지 않고 pool에 저정될 수 있는 최대 커넥션 개수 */
-	private static final int MAX_IDLE = 5;
+	private static final int MAX_TOTAL = 20;
+	/** 반납직후 pool에 저정될 수 있는 최대 유휴커넥션 개수 */
+	private static final int MAX_IDLE = 10;
+	/** 사용되지 않고 pool에 유지할 최소한의 커넥션 개수 */
+	private static final int MIN_IDLE = 5;
+	// 최대 커넥션이 20이고 maxIdle이 10인경우
+	// DB요청이 유휴상태가 되면 20개까지 생성된 커넥션풀은 10개까지 유휴커넥션으로 줄어들수 있다. (10~20개까지 커넥션풀의 갯수가 생성및 반납을 반복한다.)
+	// 이후 최소 IDLE까지 줄어들수 있다.
 	/** 커넥션 timeout */
-	private static final int MAX_WAIT = 20000;
+	private static final int MAX_WAIT_MILLIS = 20000;
 	/** auto commit 여부 */
 	private static final boolean DEFAULT_AUTOCOMMIT = true;
 	/** read only 여부 */
@@ -73,27 +81,34 @@ public class SmsBasicDBUtil {
 	 * @throws Exception
 	 */
 	protected static void createPools(String alias, BasicDataSource bds) {
-		GenericObjectPool pool;
-
-		pool = new GenericObjectPool(null);
-
-		pool.setMaxActive(bds.getMaxActive());
-		pool.setMaxIdle(bds.getMaxIdle());
-		pool.setMaxWait(bds.getMaxWait());
-
+		
 		DataSourceConnectionFactory factory = new DataSourceConnectionFactory(bds);
-		PoolableConnectionFactory poolable;
+		PoolableConnectionFactory poolableConnectionFactory;
 
-		poolable = new PoolableConnectionFactory(factory, pool, null, null, bds.getDefaultReadOnly(), bds.getDefaultAutoCommit());
+		poolableConnectionFactory = new PoolableConnectionFactory(factory, null);
 
-		LOGGER.info("Pool : {}", poolable.getClass().getName());
+		//커넥션이 유효한지 확인
+		poolableConnectionFactory.setValidationQuery(" SELECT 1 FROM DUAL ");
+		//커넥션 풀의 설정 정보를 생성
+		GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
+		//유효 커넥션 검사 주기
+		poolConfig.setTimeBetweenEvictionRunsMillis(1000L * 60L * 1L);
+		//풀에 있는 커넥션이 유효한지 검사 유무 설정
+		poolConfig.setTestWhileIdle(true);
+		//기본값  : false /true 일 경우 validationQuery 를 매번 수행한다.
+		poolConfig.setTestOnBorrow(false);
+		//커넥션 최소갯수 설정
+		poolConfig.setMinIdle(bds.getMinIdle());
+		//반납직후 커넥션 최소갯수 설정
+		poolConfig.setMaxIdle(bds.getMaxIdle());
+		//커넥션 최대 갯수 설정
+		poolConfig.setMaxTotal(bds.getMaxTotal());
+		GenericObjectPool<PoolableConnection> connectionPool = new GenericObjectPool<PoolableConnection>(poolableConnectionFactory,poolConfig);
+		//PoolableConnectionFactory 커넥션 풀 연결
+		poolableConnectionFactory.setPool(connectionPool);
+		
+		LOGGER.info("Pool : {}", poolableConnectionFactory.getClass().getName());
 
-		PoolingDriver poolingdriver = new PoolingDriver();
-		poolingdriver.registerPool(alias, pool);
-
-		//Class.forName("org.apache.commons.dbcp.PoolingDriver");
-		//PoolingDriver driver = (PoolingDriver) DriverManager.getDriver("jdbc:apache:commons:dbcp:");
-		//driver.registerPool(alias, pool);
 	}
 
 	protected static synchronized void loadDriver() {
@@ -103,9 +118,10 @@ public class SmsBasicDBUtil {
 		bds.setUrl(JDBC_URL);
 		bds.setUsername(JDBC_USER);
 		bds.setPassword(JDBC_PASSWORD);
-		bds.setMaxActive(MAX_ACTIVE);
+		bds.setMaxTotal(MAX_TOTAL);
 		bds.setMaxIdle(MAX_IDLE);
-		bds.setMaxWait(MAX_WAIT);
+		bds.setMinIdle(MIN_IDLE);
+		bds.setMaxWaitMillis(MAX_WAIT_MILLIS);
 		bds.setDefaultAutoCommit(DEFAULT_AUTOCOMMIT);
 		bds.setDefaultReadOnly(DEFAULT_READONLY);
 

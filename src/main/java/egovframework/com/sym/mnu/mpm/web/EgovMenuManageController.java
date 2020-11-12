@@ -1,20 +1,10 @@
 package egovframework.com.sym.mnu.mpm.web;
 
+import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import egovframework.com.cmm.ComDefaultVO;
-import egovframework.com.cmm.EgovMessageSource;
-import egovframework.com.cmm.annotation.IncludedInfo;
-import egovframework.com.cmm.util.EgovUserDetailsHelper;
-import egovframework.com.sym.mnu.mpm.service.EgovMenuManageService;
-import egovframework.com.sym.mnu.mpm.service.MenuManageVO;
-import egovframework.com.sym.prm.service.EgovProgrmManageService;
-
-import egovframework.rte.fdl.property.EgovPropertyService;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
@@ -32,6 +22,16 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
+import egovframework.com.cmm.ComDefaultVO;
+import egovframework.com.cmm.EgovMessageSource;
+import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.sym.mnu.mpm.service.EgovMenuManageService;
+import egovframework.com.sym.mnu.mpm.service.MenuManageVO;
+import egovframework.com.sym.prm.service.EgovProgrmManageService;
+import egovframework.rte.fdl.property.EgovPropertyService;
+import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+
 /**
  * 메뉴목록 관리및 메뉴생성, 사이트맵 생성을 처리하는 비즈니스 구현 클래스
  * @author 개발환경 개발팀 이용
@@ -42,14 +42,15 @@ import org.springmodules.validation.commons.DefaultBeanValidator;
  * <pre>
  * << 개정이력(Modification Information) >>
  *
- *   수정일      수정자           수정내용
- *  -------    --------    ---------------------------
- *   2009.03.20  이  용          최초 생성
- *	 2011.07.01	 서준식	   	메뉴정보 삭제시 참조되고 있는 하위 메뉴가 있는지 체크하는 로직 추가
- *	 2011.07.27	 서준식	   	deleteMenuManageList() 메서드에서 메뉴 멀티 삭제 버그 수정
- *	 2011.08.26	 정진오		IncludedInfo annotation 추가
- *	 2011.10.07	 이기하		보안취약점 수정(파일 업로드시 엑셀파일만 가능하도록 추가)
- *  2015.05.28	조정국		메뉴리스트관리 선택시 "정상적으로 조회되었습니다"라는 alert창이 제일 먼저 뜨는것 수정 : 출력메시지 주석처리
+ *  수정일               수정자           수정내용
+ *  ----------   --------   ---------------------------
+ *  2009.03.20   이  용            최초 생성
+ *  2011.07.01   서준식            메뉴정보 삭제시 참조되고 있는 하위 메뉴가 있는지 체크하는 로직 추가
+ *  2011.07.27   서준식            deleteMenuManageList() 메서드에서 메뉴 멀티 삭제 버그 수정
+ *  2011.08.26   정진오            IncludedInfo annotation 추가
+ *  2011.10.07   이기하            보안취약점 수정(파일 업로드시 엑셀파일만 가능하도록 추가)
+ *  2015.05.28   조정국            메뉴리스트관리 선택시 "정상적으로 조회되었습니다"라는 alert창이 제일 먼저 뜨는것 수정 : 출력메시지 주석처리
+ *  2020.11.02   신용호            KISA 보안약점 조치 - 자원해제
  * </pre>
  */
 
@@ -580,8 +581,11 @@ public class EgovMenuManageController {
 							|| file.getOriginalFilename().endsWith(".XLSX")) {
 
 						if(menuManageService.menuBndeAllDelete()){
-							sMessage = menuManageService.menuBndeRegist(menuManageVO, file.getInputStream());
+							// KISA 보안약점 조치 - 자원해제
+							InputStream is = file.getInputStream();
+							sMessage = menuManageService.menuBndeRegist(menuManageVO, is);
 				    	    resultMsg = sMessage;
+				    	    is.close();
 						}else{
 							resultMsg = egovMessageSource.getMessage("fail.common.msg");
 							menuManageVO.setTmpCmd("EgovMenuBndeRegist Error!!");
@@ -598,6 +602,7 @@ public class EgovMenuManageController {
 				}else{
 					resultMsg = egovMessageSource.getMessage("fail.common.msg");
 				}
+				file = null;
 			}
 			sLocationUrl = "egovframework/com/sym/mnu/mpm/EgovMenuBndeRegist";
 	    	model.addAttribute("resultMsg", resultMsg);

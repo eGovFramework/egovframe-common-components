@@ -39,12 +39,13 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.04.10  조재영          최초 생성
- *   2011.08.26	 정진오			IncludedInfo annotation 추가
- *   2014.12.08	 이기하			암호화방식 변경(EgovFileScrty.encryptPassword)
- *   2015.06.16	 조정국			수정시 유효성체크 후 에러발생 시 목록으로 이동하여 에러메시지 표시
- *   2015.06.19	 조정국			미인증 사용자에 대한 보안처리 기준 수정 (!isAuthenticated)
+ *   2009.04.10 조재영				최초 생성
+ *   2011.08.26	정진오			IncludedInfo annotation 추가
+ *   2014.12.08	이기하			암호화방식 변경(EgovFileScrty.encryptPassword)
+ *   2015.06.16	조정국			수정시 유효성체크 후 에러발생 시 목록으로 이동하여 에러메시지 표시
+ *   2015.06.19	조정국			미인증 사용자에 대한 보안처리 기준 수정 (!isAuthenticated)
  *   2017.07.21  장동한 			로그인인증제한 작업
+ *   2020.07.18  윤주호 			암호 설정 규칙 강화 및 버그 수정
  * </pre>
  */
 
@@ -67,6 +68,49 @@ public class EgovEntrprsManageController {
 	@Autowired
 	private DefaultBeanValidator beanValidator;
 
+	/** 비밀번호 힌트 조회 목록*/
+	@ModelAttribute("passwordHint_result")
+	private List<?> getPasswordHintResult(ComDefaultCodeVO vo) throws Exception{
+		vo.setCodeId("COM022");
+		return cmmUseService.selectCmmCodeDetail(vo);
+	}
+	
+	/** 성별 조회 목록 */
+	@ModelAttribute("sexdstnCode_result")
+	private List<?> getSexdstnCode_result(ComDefaultCodeVO vo) throws Exception{
+		vo.setCodeId("COM014");
+		return cmmUseService.selectCmmCodeDetail(vo);
+	}
+	
+	/** 사용자 상태 조회 목록 */
+	@ModelAttribute("entrprsMberSttus_result")
+	private List<?> getEntrprsMberSttus_result(ComDefaultCodeVO vo) throws Exception{
+		vo.setCodeId("COM013");
+		return cmmUseService.selectCmmCodeDetail(vo);
+	}
+	
+	/** 그룹 정보 조회 목록 */
+	@ModelAttribute("groupId_result")
+	private List<?> getGroupId_result(ComDefaultCodeVO vo) throws Exception{
+		vo.setTableNm("COMTNORGNZTINFO");
+		return cmmUseService.selectGroupIdDetail(vo);
+	}
+	
+	/** 기업 구분 조회 목록 */
+	@ModelAttribute("entrprsSeCode_result")
+	private List<?> getEntrprsSeCode_result(ComDefaultCodeVO vo) throws Exception{
+		vo.setCodeId("COM026");
+		return cmmUseService.selectCmmCodeDetail(vo);
+	}
+	
+	/** 업종 구분 조회 목록 */
+	@ModelAttribute("indutyCode_result")
+	private List<?> getIndutyCode_result(ComDefaultCodeVO vo) throws Exception{
+		vo.setCodeId("COM027");
+		return cmmUseService.selectCmmCodeDetail(vo);
+	}
+	
+	
 	/**
 	 * 기업회원 등록화면으로 이동한다.
 	 * @param userSearchVO 검색조건정보
@@ -88,30 +132,30 @@ public class EgovEntrprsManageController {
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 
 		//패스워드힌트목록을 코드정보로부터 조회
-		vo.setCodeId("COM022");
-		List<?> passwordHint_result = cmmUseService.selectCmmCodeDetail(vo);
+//		vo.setCodeId("COM022");
+//		List<?> passwordHint_result = cmmUseService.selectCmmCodeDetail(vo);
 		//성별구분코드를 코드정보로부터 조회
-		vo.setCodeId("COM014");
-		List<?> sexdstnCode_result = cmmUseService.selectCmmCodeDetail(vo);
+//		vo.setCodeId("COM014");
+//		List<?> sexdstnCode_result = cmmUseService.selectCmmCodeDetail(vo);
 		//사용자상태코드를 코드정보로부터 조회
-		vo.setCodeId("COM013");
-		List<?> entrprsMberSttus_result = cmmUseService.selectCmmCodeDetail(vo);
+//		vo.setCodeId("COM013");
+//		List<?> entrprsMberSttus_result = cmmUseService.selectCmmCodeDetail(vo);
 		//그룹정보를 조회 - GROUP_ID정보
-		vo.setTableNm("COMTNORGNZTINFO");
-		List<?> groupId_result = cmmUseService.selectGroupIdDetail(vo);
+//		vo.setTableNm("COMTNORGNZTINFO");
+//		List<?> groupId_result = cmmUseService.selectGroupIdDetail(vo);
 		//기업구분코드를 코드정보로부터 조회 - COM026
-		vo.setCodeId("COM026");
-		List<?> entrprsSeCode_result = cmmUseService.selectCmmCodeDetail(vo);
+//		vo.setCodeId("COM026");
+//		List<?> entrprsSeCode_result = cmmUseService.selectCmmCodeDetail(vo);
 		//업종코드를 코드정보로부터 조회 - COM027
-		vo.setCodeId("COM027");
-		List<?> indutyCode_result = cmmUseService.selectCmmCodeDetail(vo);
+//		vo.setCodeId("COM027");
+//		List<?> indutyCode_result = cmmUseService.selectCmmCodeDetail(vo);
 
-		model.addAttribute("passwordHint_result", passwordHint_result); //패스워트힌트목록
-		model.addAttribute("sexdstnCode_result", sexdstnCode_result); //성별구분코드목록
-		model.addAttribute("entrprsMberSttus_result", entrprsMberSttus_result);//사용자상태코드목록
-		model.addAttribute("groupId_result", groupId_result); //그룹정보 목록
-		model.addAttribute("entrprsSeCode_result", entrprsSeCode_result); //기업구분코드 목록
-		model.addAttribute("indutyCode_result", indutyCode_result); //업종코드목록
+//		model.addAttribute("passwordHint_result", passwordHint_result); //패스워트힌트목록
+//		model.addAttribute("sexdstnCode_result", sexdstnCode_result); //성별구분코드목록
+//		model.addAttribute("entrprsMberSttus_result", entrprsMberSttus_result);//사용자상태코드목록
+//		model.addAttribute("groupId_result", groupId_result); //그룹정보 목록
+//		model.addAttribute("entrprsSeCode_result", entrprsSeCode_result); //기업구분코드 목록
+//		model.addAttribute("indutyCode_result", indutyCode_result); //업종코드목록
 
 		return "egovframework/com/uss/umt/EgovEntrprsMberInsert";
 	}
@@ -172,30 +216,30 @@ public class EgovEntrprsManageController {
 
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		//패스워드힌트목록을 코드정보로부터 조회
-		vo.setCodeId("COM022");
-		List<?> passwordHint_result = cmmUseService.selectCmmCodeDetail(vo);
-		//성별구분코드를 코드정보로부터 조회
-		vo.setCodeId("COM014");
-		List<?> sexdstnCode_result = cmmUseService.selectCmmCodeDetail(vo);
-		//사용자상태코드를 코드정보로부터 조회
-		vo.setCodeId("COM013");
-		List<?> entrprsMberSttus_result = cmmUseService.selectCmmCodeDetail(vo);
-		//그룹정보를 조회 - GROUP_ID정보
-		vo.setTableNm("COMTNORGNZTINFO");
-		List<?> groupId_result = cmmUseService.selectGroupIdDetail(vo);
-		//기업구분코드를 코드정보로부터 조회 - COM026
-		vo.setCodeId("COM026");
-		List<?> entrprsSeCode_result = cmmUseService.selectCmmCodeDetail(vo);
-		//업종코드를 코드정보로부터 조회 - COM027
-		vo.setCodeId("COM027");
-		List<?> indutyCode_result = cmmUseService.selectCmmCodeDetail(vo);
+//		vo.setCodeId("COM022");
+//		List<?> passwordHint_result = cmmUseService.selectCmmCodeDetail(vo);
+//		//성별구분코드를 코드정보로부터 조회
+//		vo.setCodeId("COM014");
+//		List<?> sexdstnCode_result = cmmUseService.selectCmmCodeDetail(vo);
+//		//사용자상태코드를 코드정보로부터 조회
+//		vo.setCodeId("COM013");
+//		List<?> entrprsMberSttus_result = cmmUseService.selectCmmCodeDetail(vo);
+//		//그룹정보를 조회 - GROUP_ID정보
+//		vo.setTableNm("COMTNORGNZTINFO");
+//		List<?> groupId_result = cmmUseService.selectGroupIdDetail(vo);
+//		//기업구분코드를 코드정보로부터 조회 - COM026
+//		vo.setCodeId("COM026");
+//		List<?> entrprsSeCode_result = cmmUseService.selectCmmCodeDetail(vo);
+//		//업종코드를 코드정보로부터 조회 - COM027
+//		vo.setCodeId("COM027");
+//		List<?> indutyCode_result = cmmUseService.selectCmmCodeDetail(vo);
 
-		model.addAttribute("passwordHint_result", passwordHint_result); //패스워트힌트목록
-		model.addAttribute("sexdstnCode_result", sexdstnCode_result); //성별구분코드목록
-		model.addAttribute("entrprsMberSttus_result", entrprsMberSttus_result);//사용자상태코드목록
-		model.addAttribute("groupId_result", groupId_result); //그룹정보 목록
-		model.addAttribute("entrprsSeCode_result", entrprsSeCode_result); //기업구분코드 목록
-		model.addAttribute("indutyCode_result", indutyCode_result); //업종코드목록
+//		model.addAttribute("passwordHint_result", passwordHint_result); //패스워트힌트목록
+//		model.addAttribute("sexdstnCode_result", sexdstnCode_result); //성별구분코드목록
+//		model.addAttribute("entrprsMberSttus_result", entrprsMberSttus_result);//사용자상태코드목록
+//		model.addAttribute("groupId_result", groupId_result); //그룹정보 목록
+//		model.addAttribute("entrprsSeCode_result", entrprsSeCode_result); //기업구분코드 목록
+//		model.addAttribute("indutyCode_result", indutyCode_result); //업종코드목록
 
 		return "egovframework/com/uss/umt/EgovEntrprsMberSelectUpdt";
 	}
@@ -316,10 +360,10 @@ public class EgovEntrprsManageController {
 		model.addAttribute("paginationInfo", paginationInfo);
 
 		//사용자상태코드를 코드정보로부터 조회
-		ComDefaultCodeVO vo = new ComDefaultCodeVO();
-		vo.setCodeId("COM013");
-		List<?> entrprsMberSttus_result = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("entrprsMberSttus_result", entrprsMberSttus_result);//기업회원상태코드목록
+//		ComDefaultCodeVO vo = new ComDefaultCodeVO();
+//		vo.setCodeId("COM013");
+//		List<?> entrprsMberSttus_result = cmmUseService.selectCmmCodeDetail(vo);
+//		model.addAttribute("entrprsMberSttus_result", entrprsMberSttus_result);//기업회원상태코드목록
 
 		return "egovframework/com/uss/umt/EgovEntrprsMberManage";
 	}
@@ -339,23 +383,23 @@ public class EgovEntrprsManageController {
 
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 
-		//패스워드힌트목록을 코드정보로부터 조회
-		vo.setCodeId("COM022");
-		List<?> passwordHint_result = cmmUseService.selectCmmCodeDetail(vo);
-		//성별구분코드를 코드정보로부터 조회
-		vo.setCodeId("COM014");
-		List<?> sexdstnCode_result = cmmUseService.selectCmmCodeDetail(vo);
-		//기업구분코드를 코드정보로부터 조회 - COM026
-		vo.setCodeId("COM026");
-		List<?> entrprsSeCode_result = cmmUseService.selectCmmCodeDetail(vo);
-		//업종코드를 코드정보로부터 조회 - COM027
-		vo.setCodeId("COM027");
-		List<?> indutyCode_result = cmmUseService.selectCmmCodeDetail(vo);
+//		//패스워드힌트목록을 코드정보로부터 조회
+//		vo.setCodeId("COM022");
+//		List<?> passwordHint_result = cmmUseService.selectCmmCodeDetail(vo);
+//		//성별구분코드를 코드정보로부터 조회
+//		vo.setCodeId("COM014");
+//		List<?> sexdstnCode_result = cmmUseService.selectCmmCodeDetail(vo);
+//		//기업구분코드를 코드정보로부터 조회 - COM026
+//		vo.setCodeId("COM026");
+//		List<?> entrprsSeCode_result = cmmUseService.selectCmmCodeDetail(vo);
+//		//업종코드를 코드정보로부터 조회 - COM027
+//		vo.setCodeId("COM027");
+//		List<?> indutyCode_result = cmmUseService.selectCmmCodeDetail(vo);
 
-		model.addAttribute("passwordHint_result", passwordHint_result); //패스워트힌트목록
-		model.addAttribute("sexdstnCode_result", sexdstnCode_result); //성별구분코드목록
-		model.addAttribute("entrprsSeCode_result", entrprsSeCode_result); //기업구분코드 목록
-		model.addAttribute("indutyCode_result", indutyCode_result); //업종코드목록
+//		model.addAttribute("passwordHint_result", passwordHint_result); //패스워트힌트목록
+//		model.addAttribute("sexdstnCode_result", sexdstnCode_result); //성별구분코드목록
+//		model.addAttribute("entrprsSeCode_result", entrprsSeCode_result); //기업구분코드 목록
+//		model.addAttribute("indutyCode_result", indutyCode_result); //업종코드목록
 		if (!"".equals(commandMap.get("realname"))) {
 			model.addAttribute("applcntNm", commandMap.get("realname")); //실명인증된 이름 - 주민번호인증
 			model.addAttribute("applcntIhidnum", commandMap.get("ihidnum")); //실명인증된 주민등록번호 - 주민번호 인증

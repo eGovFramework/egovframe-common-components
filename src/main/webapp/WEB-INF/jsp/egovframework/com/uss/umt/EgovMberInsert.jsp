@@ -141,7 +141,7 @@ function fnIdCheck1(){
     varParam.checkId = document.mberManageVO.mberId.value;
     var openParam = "dialogWidth:303px;dialogHeight:250px;scroll:no;status:no;center:yes;resizable:yes;";
         
-    alert(1);
+//    alert(1);
     return false;
     retVal = window.showModalDialog(url, varParam, openParam);
     if(retVal) {
@@ -222,8 +222,15 @@ function fnInsert(form){
 		<tr>
 			<th><label for="password">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
-				<form:password path="password" title="${title} ${inputTxt}" size="50" maxlength="20" />
-				<div><form:errors path="password" cssClass="error" /></div> 
+				<div>
+					<form:password path="password" title="${title} ${inputTxt}" size="50" maxlength="20" />
+					<div><form:errors path="password" cssClass="error" /></div> 
+				</div>
+				<div>
+					<div><spring:message code="info.password.rule.password1" /></div> 
+					<div><spring:message code="info.password.rule.pwdcheckcomb3" /></div> 
+					<div><spring:message code="info.password.rule.pwdcheckseries" /></div> 
+				</div>
 			</td>
 		</tr>
 		<!-- 비밀번호확인 -->
@@ -311,7 +318,7 @@ function fnInsert(form){
 		<tr>
 			<th><label for="zip">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
-                    <input name="zip" id="zip" title="${title} ${inputTxt}" type="text" size="20" value="" maxlength="6" style="width:60px;" />
+                    <form:input path="zip" title="${title} ${inputTxt}" type="text" size="20" value="" maxlength="6" style="width:60px;" />
                     <!-- form:hidden path="zip" id="zip" --> 
                     <!-- <button class="btn_s2" onClick="fn_egov_ZipSearch(document.mberManageVO, document.mberManageVO.zip, document.mberManageVO.zip_view, document.mberManageVO.adres);return false;" title="<spring:message code="button.delete" /> <spring:message code="input.button" />">우번번호검색</button>  -->
                     <div><form:errors path="zip" cssClass="error" /></div>

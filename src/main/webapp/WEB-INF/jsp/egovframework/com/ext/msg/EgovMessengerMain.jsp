@@ -119,9 +119,10 @@
 	function random(roomId) {
 		<%
 			String rUid = "";
-		
+			Random rnd = new Random();
 			for(int i=0; i<8; i++) {
-				rUid += (char)((new Random().nextDouble()*26)+97);//KISA 보안약점 조치 (2018-10-29, 윤창원)
+				rnd.setSeed(System.currentTimeMillis());
+				rUid += (char)((rnd.nextDouble()*26)+97);//KISA 보안약점 조치 (2018-10-29, 윤창원)
 			}
 		%>
 		return roomId+"."+"<%=rUid%>";

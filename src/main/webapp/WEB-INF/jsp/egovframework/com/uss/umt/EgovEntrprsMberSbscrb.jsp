@@ -165,7 +165,7 @@ function fnListPage(){
 function fnInsert(form){
 	if(confirm("<spring:message code="common.regist.msg" />")){	
 		if(validateEntrprsManageVO(form)){
-			if(form.password.value != form.password2.value){
+			if(form.entrprsMberPassword.value != form.entrprsMberPassword2.value){
 	            alert("<spring:message code="fail.user.passwordUpdate2" />");
 	            return false;
 	        }
@@ -224,8 +224,15 @@ function fnInsert(form){
 		<tr>
 			<th><label for="entrprsMberPassword">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
-				<form:password path="entrprsMberPassword" title="${title} ${inputTxt}" size="50" maxlength="20" />
-				<div><form:errors path="entrprsMberPassword" cssClass="error" /></div> 
+				<div>
+					<form:password path="entrprsMberPassword" title="${title} ${inputTxt}" size="50" maxlength="20" />
+					<div><form:errors path="entrprsMberPassword" cssClass="error" /></div> 
+				</div>
+				<div>
+					<div><spring:message code="info.password.rule.password1" /></div> 
+					<div><spring:message code="info.password.rule.pwdcheckcomb3" /></div> 
+					<div><spring:message code="info.password.rule.pwdcheckseries" /></div> 
+				</div>
 			</td>
 		</tr>
 		<!-- 비밀번호확인 -->
@@ -336,7 +343,7 @@ function fnInsert(form){
 		<tr>
 			<th><label for="zip">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
-                    <input name="zip" id="zip" title="${title} ${inputTxt}" type="text" size="20" value="" maxlength="8" style="width:60px;" />
+                    <form:input path="zip" title="${title} ${inputTxt}" type="text" size="20" value="" maxlength="8" style="width:60px;" />
                     <!-- form:hidden path="zip" id="zip" --> 
                     <!-- <button class="btn_s2" onClick="fn_egov_ZipSearch(document.mberManageVO, document.mberManageVO.zip, document.mberManageVO.zip_view, document.mberManageVO.adres);return false;" title="<spring:message code="button.delete" /> <spring:message code="input.button" />">우번번호검색</button>  -->
                     <div><form:errors path="zip" cssClass="error" /></div>

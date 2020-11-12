@@ -222,8 +222,15 @@ function fnInsert(form){
 		<tr>
 			<th><label for="password">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
-				<form:password path="password" title="${title} ${inputTxt}" size="50" maxlength="20" />
-				<div><form:errors path="password" cssClass="error" /></div> 
+				<div>
+					<form:password path="password" title="${title} ${inputTxt}" size="50" maxlength="20" />
+					<div><form:errors path="password" cssClass="error" /></div> 
+				</div>
+				<div>
+					<div><spring:message code="info.password.rule.password1" /></div> 
+					<div><spring:message code="info.password.rule.pwdcheckcomb3" /></div> 
+					<div><spring:message code="info.password.rule.pwdcheckseries" /></div> 
+				</div>
 			</td>
 		</tr>
 		<!-- 비밀번호확인 -->

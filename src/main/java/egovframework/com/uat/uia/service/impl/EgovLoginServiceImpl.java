@@ -28,12 +28,13 @@ import egovframework.rte.psl.dataaccess.util.EgovMap;
  * <pre>
  * << 개정이력(Modification Information) >>
  *
- *   수정일      수정자          수정내용
- *  -------    --------    ---------------------------
- *  2009.03.06  박지욱          최초 생성
- *  2011.08.26  서준식          EsntlId를 이용한 로그인 추가
- *  2014.12.08	이기하			암호화방식 변경(EgovFileScrty.encryptPassword)
- *  2017.07.21  장동한 			로그인인증제한 작업
+ *  수정일               수정자            수정내용
+ *  ----------   --------   ---------------------------
+ *  2009.03.06   박지욱            최초 생성
+ *  2011.08.26   서준식            EsntlId를 이용한 로그인 추가
+ *  2014.12.08   이기하            암호화방식 변경(EgovFileScrty.encryptPassword)
+ *  2017.07.21   장동한            로그인인증제한 작업
+ *  2020.07.08   신용호            비밀번호를 수정한후 경과한 날짜 조회
  *  </pre>
  */
 @Service("loginService")
@@ -196,7 +197,7 @@ public class EgovLoginServiceImpl extends EgovAbstractServiceImpl implements Ego
     /**
 	 * 로그인인증제한을 조회한다.
 	 * @param vo LoginVO
-	 * @return boolean
+	 * @return Map
 	 * @exception Exception
 	 */
     public Map<?,?> selectLoginIncorrect(LoginVO vo) throws Exception{
@@ -206,7 +207,8 @@ public class EgovLoginServiceImpl extends EgovAbstractServiceImpl implements Ego
     /**
 	 * 로그인인증제한을 처리한다.
 	 * @param vo LoginVO
-	 * @return boolean
+	 * @param vo mapLockUserInfo
+	 * @return String
 	 * @exception Exception
 	 */
     public String processLoginIncorrect(LoginVO vo, Map<?,?> mapLockUserInfo) throws Exception{    	
@@ -241,4 +243,14 @@ public class EgovLoginServiceImpl extends EgovAbstractServiceImpl implements Ego
     	}
     	return sRtnCode;
     }
+
+    /**
+	 * 비밀번호를 수정한후 경과한 날짜를 조회한다.
+	 * @param vo LoginVO
+	 * @return int
+	 * @exception Exception
+	 */
+	public int selectPassedDayChangePWD(LoginVO vo) throws Exception {
+		return loginDAO.selectPassedDayChangePWD(vo);
+	}
 }

@@ -13,14 +13,17 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.util.AntPathMatcher;
 
+import egovframework.com.cmm.EgovWebUtil;
+
 /**
  * @Class Name : UrlRewriteFilter.java
  * @Description : UrlRewriteFilter Class
  * @Modification Information
  * @
- * @  수정일      수정자              수정내용
- * @ ---------   ---------   -------------------------------
- * @ 2014.09.30           최초생성
+ * @ 수정일               수정자              수정내용
+ * @ ----------   ---------   -------------------------------
+ * @ 2014.09.30               최초생성
+ * @ 2020.11.02   신용호              KISA 보안약점 조치 (CRLF 제거 조치)
  *
  * @author 전자정부 표준프레임워크 유지보수
  * @since 2014. 09.30
@@ -77,7 +80,7 @@ public class EgovUrlRewriteFilter implements Filter {
 					 String httpsPath = "https" + "://" + getDomain + ":" + httpsPort + uri;
 					 String site = new String(httpsPath);
 					 res.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
-					 res.setHeader("Location", site);
+					 res.setHeader("Location", EgovWebUtil.removeCRLF(site));
 
 				 }
 
@@ -89,7 +92,7 @@ public class EgovUrlRewriteFilter implements Filter {
 
 				String site = new String(httpPath);
 				res.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
-				res.setHeader("Location", site);
+				res.setHeader("Location", EgovWebUtil.removeCRLF(site));
 
 			}
 		}

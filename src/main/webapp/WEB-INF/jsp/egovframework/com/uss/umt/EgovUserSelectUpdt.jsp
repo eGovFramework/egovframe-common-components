@@ -112,7 +112,7 @@ function fn_egov_dn_info_setting(dn) {
 	<!-- 사용자유형정보 : password 수정화면으로 이동시 타겟 유형정보 확인용, 만약검색조건으로 유형이 포함될경우 혼란을 피하기위해 userTy명칭을 쓰지 않음-->
 	<input type="hidden" name="userTyForPassword" value="<c:out value='${userManageVO.userTy}'/>" />
 	<!-- for validation -->
-	<input type="hidden" name="password" id="password" value="Test#$123)"/>
+	<input type="hidden" name="password" id="password" value="Test#$123"/>
 	<input type="hidden" name="selectedId" id="selectedId" value=""/>  
 	
 	<!-- 타이틀 -->

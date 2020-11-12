@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?><!-- 
-	수정일                 수정자                          수정내용
+   수정일                 수정자            수정내용
   =========     =======    =================================================
-  2011.8.26   	서준식     	 	SSO 로그인을 위한 쿼리 추가
-  2011.09.27    서준식              컬럼 변경 SUB_DN 을  CRTFC_DN_VALUE 로 변경
-  2011.09.28    서준식              컬럼 변경 entrprsmber_id 을  ENTRPRS_MBER_ID 로 변경
+  2011.08.26   	서준식     	   SSO 로그인을 위한 쿼리 추가
+  2011.09.27    서준식            컬럼 변경 SUB_DN 을  CRTFC_DN_VALUE 로 변경
+  2011.09.28    서준식            컬럼 변경 entrprsmber_id 을  ENTRPRS_MBER_ID 로 변경
+  2020.07.06    서준식            비밀번호 만료여부 조회
 -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
@@ -255,6 +256,7 @@
 
 			UPDATE COMTNGNRLMBER
 			   SET password = #{password}
+			     , CHG_PWD_LAST_PNTTM = sysdate()
 			 WHERE mber_id = #{id}
 			
 		</if>
@@ -263,6 +265,7 @@
 
 			UPDATE COMTNENTRPRSMBER
 			   SET entrprs_mber_password = #{password}
+			     , CHG_PWD_LAST_PNTTM = sysdate()
 			 WHERE ENTRPRS_MBER_ID = #{id}
 			
 		</if>
@@ -271,6 +274,7 @@
 
 			UPDATE COMTNEMPLYRINFO
 			   SET password = #{password}
+			     , CHG_PWD_LAST_PNTTM = sysdate()
 			 WHERE emplyr_id = #{id}
 			
 		</if>
@@ -417,5 +421,33 @@
 			]]>
 		</if>
 	</update>
+	
+	<!-- 비밀번호 만료 기간 체크 -->
+	<select id="selectPassedDayChangePWD" resultType="int">
+		<!-- 일반회원 -->
+		<if test="userSe != null and userSe == 'GNR'">
+			
+			SELECT IFNULL(TIMESTAMPDIFF(day,CHG_PWD_LAST_PNTTM,sysdate()),0)
+			  FROM COMTNGNRLMBER
+			 WHERE mber_id = #{id}
+			
+		</if>
+		<!-- 기업회원 -->
+		<if test="userSe != null and userSe == 'ENT'">
+			
+			SELECT IFNULL(TIMESTAMPDIFF(day,CHG_PWD_LAST_PNTTM,sysdate()),0)
+			  FROM COMTNENTRPRSMBER
+			 WHERE ENTRPRS_MBER_ID = #{id}
+			
+		</if>
+		<!-- 업무사용자 -->
+		<if test="userSe != null and userSe == 'USR'">
+			
+			SELECT IFNULL(TIMESTAMPDIFF(day,CHG_PWD_LAST_PNTTM,sysdate()),0)
+			  FROM COMTNEMPLYRINFO
+			 WHERE emplyr_id = #{id}
+			
+		</if>
+	</select>
 	
 </mapper>

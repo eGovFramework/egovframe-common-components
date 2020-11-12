@@ -16,6 +16,7 @@ import org.springframework.web.multipart.support.MultipartFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 
 import egovframework.com.cmm.filter.HTMLTagFilter;
+import egovframework.com.cmm.filter.SessionTimeoutCookieFilter;
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.sec.security.filter.EgovSpringSecurityLoginFilter;
 import egovframework.com.sec.security.filter.EgovSpringSecurityLogoutFilter;
@@ -136,7 +137,7 @@ public class EgovWebApplicationInitializer implements WebApplicationInitializer 
 		//-------------------------------------------------------------
 		FilterRegistration.Dynamic regCkFilter = servletContext.addFilter("CKFilter", new CkFilter());
 		regCkFilter.setInitParameter("properties", "egovframework/egovProps/ck.properties");
-		regCkFilter.addMappingForUrlPatterns(null, false, "/ckupload");
+		regCkFilter.addMappingForUrlPatterns(null, false, "/ckUploadImage");
 		
 		//-------------------------------------------------------------
 		// HiddenHttpMethodFilter 설정 (Facebook OAuth 사용시 설정)
@@ -160,6 +161,14 @@ public class EgovWebApplicationInitializer implements WebApplicationInitializer 
 	    // (<c:out />의 경우 뷰단에서 데이터 출력시 XSS 방지 처리가 됨)
 		FilterRegistration.Dynamic htmlTagFilter = servletContext.addFilter("htmlTagFilter", new HTMLTagFilter());
 		htmlTagFilter.addMappingForUrlPatterns(null, false, "*.do");
+
+		//-------------------------------------------------------------
+	    // SessionTimeoutCookieFilter는 쿠키에 타임아웃 시간을 기록한다.
+		//-------------------------------------------------------------
+	    // latestServerTime - 서버 최근 시간
+	    // expireSessionTime - 세션이 만료되는 시간
+		FilterRegistration.Dynamic sessionTimeoutFilter = servletContext.addFilter("sessionTimeoutFilter", new SessionTimeoutCookieFilter());
+		sessionTimeoutFilter.addMappingForUrlPatterns(null, false, "*.do");
 		
 		//-------------------------------------------------------------
 		// Spring RequestContextListener 설정

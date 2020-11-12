@@ -43,6 +43,7 @@ import egovframework.rte.fdl.cryptography.EgovPasswordEncoder;
  *   2017.12.12   장동한          출력 모듈 경로 변경 취약점 조치
  *   2018.03.07   신용호          URLEncode 처리
  *   2018.08.17   신용호          URL 암호화 보안 추가 조치
+ *   2020.08.05   신용호          imageUploadCk Parameter 수정
  *   
  * </pre>
  */
@@ -55,7 +56,7 @@ public class EgovWebEditorImageController {
     /** 첨부파일 위치 지정  => globals.properties */
     private final String uploadDir = EgovProperties.getProperty("Globals.fileStorePath");
     /** 허용할 확장자를 .확장자 형태로 연달아 기술한다. ex) .gif.jpg.jpeg.png => globals.properties */
-    private final String extWhiteList = EgovProperties.getProperty("Globals.fileDownload.Extensions");    
+    private final String extWhiteList = EgovProperties.getProperty("Globals.fileDownload.Extensions");
 
     /** 첨부 최대 파일 크기 지정 */
     private final long maxFileSize = 1024 * 1024 * 100;   //업로드 최대 사이즈 설정 (100M)
@@ -78,9 +79,9 @@ public class EgovWebEditorImageController {
      * @throws Exception
      */
     @RequestMapping(value="/utl/wed/insertImage.do", method=RequestMethod.GET)
-    public String goInsertImage() throws Exception {
+    public String goInsertImage(Model model) throws Exception {
 
-	return "egovframework/com/utl/wed/EgovInsertImage";
+    	return "egovframework/com/utl/wed/EgovInsertImage";
     }
 
     
@@ -108,11 +109,11 @@ public class EgovWebEditorImageController {
      * @throws Exception
      */
     @RequestMapping(value="/utl/wed/insertImageCk.do", method=RequestMethod.POST)
-    public String imageUploadCk(@RequestParam(value="CKEditorFuncNum", required=false) String ckEditorFuncNum, HttpServletRequest request, HttpServletResponse response, Model model) throws Exception {
+    public String imageUploadCk(@RequestParam(value="CKEditorFuncNum", required=false) String ckEditorFuncNum, MultipartHttpServletRequest mRequest, HttpServletResponse response, Model model) throws Exception {
 		// Spring multipartResolver 미사용 시 (commons-fileupload 활용)
 		//List<EgovFormBasedFileVo> list = EgovFormBasedFileUtil.uploadFiles(request, uploadDir, maxFileSize);
     	model.addAttribute("ckEditorFuncNum", ckEditorFuncNum);
-    	uploadImageFiles(request, model);
+    	uploadImageFiles(mRequest, model);
 		return "egovframework/com/utl/wed/EgovUploadImageComplete";
     }
 
@@ -121,14 +122,14 @@ public class EgovWebEditorImageController {
 	 * @param model
 	 * @throws Exception
 	 */
-	private void uploadImageFiles(HttpServletRequest request, Model model) throws Exception {
+	private void uploadImageFiles(MultipartHttpServletRequest mRequest, Model model) throws Exception {
 
 		try {
-			List<EgovFormBasedFileVo> list = EgovFileUploadUtil.uploadFilesExt(request, uploadDir, maxFileSize, extWhiteList);
+			List<EgovFormBasedFileVo> list = EgovFileUploadUtil.uploadFilesExt(mRequest, uploadDir, maxFileSize, extWhiteList);
 			if (list.size() > 0) {
 				EgovFormBasedFileVo vo = list.get(0);	// 첫번째 이미지
 
-			    String url = request.getContextPath()
+			    String url = mRequest.getContextPath()
 						    + "/utl/web/imageSrc.do?"
 						    + "path=" + this.encrypt(vo.getServerSubPath())
 						    + "&physical=" + this.encrypt(vo.getPhysicalName())

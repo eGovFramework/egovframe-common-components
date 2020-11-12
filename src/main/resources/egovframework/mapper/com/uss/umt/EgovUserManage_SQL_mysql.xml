@@ -100,7 +100,8 @@ FROM(
                     PSTINST_CODE          ,
                     EMPLYR_STTUS_CODE   ,
                     SBSCRB_DE           ,
-                    CRTFC_DN_VALUE              )
+                    CRTFC_DN_VALUE      ,
+                    CHG_PWD_LAST_PNTTM        )
             VALUES (
                     #{uniqId}            ,
                     #{emplyrId}          ,
@@ -127,8 +128,9 @@ FROM(
                     #{orgnztId}          ,
                     #{insttCode}         ,
                     #{emplyrSttusCode}   ,
-                    sysdate()           ,
-                    #{subDn}             )
+                    sysdate()            ,
+                    #{subDn}             ,
+                    sysdate()            )
         
     </insert>
     
@@ -281,6 +283,7 @@ FROM(
             UPDATE COMTNEMPLYRINFO 
             SET 
                    PASSWORD   =  #{password}
+                 , CHG_PWD_LAST_PNTTM = sysdate()
             WHERE  ESNTL_ID  = #{uniqId}
         
     </update>

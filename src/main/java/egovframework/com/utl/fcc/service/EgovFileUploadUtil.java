@@ -23,6 +23,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
  *   2009.08.26     한성곤               최초 생성
  *   2018.08.17     신용호               uploadFilesExt(확장자 기록) 추가
  *   2019.12.06     신용호               checkFileExtension(), checkFileMaxSize() 추가
+ *   2020.08.05     신용호               uploadFilesExt Parameter 수정
  *
  * @author 공통컴포넌트 개발팀 한성곤
  * @since 2009.08.26
@@ -93,10 +94,9 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static List<EgovFormBasedFileVo> uploadFilesExt(HttpServletRequest request, String where, long maxFileSize, String extensionWhiteList) throws Exception {
+	public static List<EgovFormBasedFileVo> uploadFilesExt(MultipartHttpServletRequest mptRequest, String where, long maxFileSize, String extensionWhiteList) throws Exception {
 		List<EgovFormBasedFileVo> list = new ArrayList<EgovFormBasedFileVo>();
 
-		MultipartHttpServletRequest mptRequest = (MultipartHttpServletRequest) request;
 		Iterator<?> fileIter = mptRequest.getFileNames();
 
 		while (fileIter.hasNext()) {
@@ -153,6 +153,7 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 	 */
 	public static String getFileExtension(String fileNamePath) {
 		
+		if (fileNamePath == null) return "";
 		String ext = fileNamePath.substring(fileNamePath.lastIndexOf(".") + 1,fileNamePath.length());
 		
 		return (ext == null) ? "" : ext;
