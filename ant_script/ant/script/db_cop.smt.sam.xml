@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="cop.smt.sam">
+<echo> cop.smt.sam update...</echo>
+<target name="build">
+	<!-- cop/smt/sam 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/cop/smt/sam/**/*.java"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/cop/smt/sam/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/cop/smt/sam/**/*.xml"/>
+
+			<!-- message -->
+			<include name="/db_cop/smt/sam/**/*.propertie"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/cop/smt/sam/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/cop/smt/sam/**/*.*"/>
+
+			<!-- DB 생성 스크립트 -->
+			<include name="src/script/**/cop.smt.sam*.sql"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/cop/smt/sam/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

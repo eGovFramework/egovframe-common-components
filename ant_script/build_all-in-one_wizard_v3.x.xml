@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+   각 배포 패키지 작성하는 Ant script
+   author  : 공통컴포넌트 경량화팀 이기하
+   since   : 2011.06.30
+   version : 1.0
+
+   개정이력(Modification Information)
+
+    수정일      수정자          수정내용
+    ===================================================
+    2011.06.30  이기하          최초생성
+    2011.07.27  이기하          배포파일 통합 및 수정
+    2011.08.21  이기하         전체 배포 패키지 작성
+    2011.08.23  이기하         배포파일구성안 반영(config.xml -> cmm.xml로 통합)
+    2011.09.26  이기하         배포파일명 수정(패키지명 -> 배포명)
+    2014.12.10  이기하         신규 컴포넌트 추가
+    2016.11.22  장동한         공통컴포넌트 V3.6 반영
+    2017.11.10  양희훈         공통컴포넌트 V3.7 반영
+    2018.11.15  신용호         공통컴포넌트 V3.8 반영
+    2019.12.11  신용호         공통컴포넌트 V3.9 반영
+    2020.09.08  신용호         공통컴포넌트 V3.10 반영
+ -->
+
+<project basedir=".." default="build" name="01.홈페이지배포_공통">
+
+    <!-- 버전관리 -->
+    <property name="ver"            value="3.10.0" />
+
+    <!-- 경로관리 -->
+    <property name="path.java"          value="src/main/java/egovframework/com" />
+    <property name="path.sqlmap.config" value="src/main/resources/egovframework/mapper/config" />
+    <property name="path.sqlmap"        value="src/main/resources/egovframework/mapper/com" />
+    <property name="path.validator"     value="src/main/resources/egovframework/validator/com" />
+    <property name="path.jsp"           value="src/main/webapp/WEB-INF/jsp/egovframework/com" />
+    <property name="path.web"           value="src/main/webapp/*/egovframework/com" />
+
+    <!-- 파일명 -->
+    <property name="zipfilename"        value="egovframework.com.${pkgname}.zip" />
+
+    <!-- 기본 target -->
+    <target name="00.init" description="디렉토리 생성" >
+        <mkdir dir="ant_script/package_all-in-one_wizard" />
+    </target>
+
+    <target name="01.clean" description="디렉토리 내용삭제" >
+        <delete>
+            <fileset dir="ant_script/package_all-in-one_wizard" />
+        </delete>
+    </target>
+
+    <target name="build" depends="00.init, 01.clean" description="모든 배포패키지(파일명) 생성" >
+    	<antcall target="init"></antcall>
+        <antcall target="all-in-one"><param name="where" value="ant_script/package_all-in-one_wizard/egovframework-all-in-oneAllNew_wizard.zip"/></antcall>
+    	<antcall target="restore"></antcall>
+    </target>
+    
+    <target name="all-in-one" description="all-in-one" >
+       
+        <!-- cmm 파일관리  -->
+        <zip destfile="${where}" update="true">
+            <fileset dir=".">
+                
+                <!-- pom.xml -->
+                <include name="pom.xml"/>
+
+                <!-- java -->
+                <include name="${path.java}/**/*.java"/>
+
+                <!-- sql map config -->
+                <include name="${path.sqlmap.config}/**/*.xml"/>
+
+                <!-- sql map -->
+                <include name="${path.sqlmap}/**/*.xml"/>
+
+                <!-- jsp -->
+                <include name="${path.jsp}/**/*.jsp"/>
+
+                <!-- CSS/HTML/IMAGES/JS -->
+                <include name="${path.web}/**/*.*"/>
+
+                <!-- messages -->
+                <include name="src/main/resources/egovframework/message/**/*.properties"/>
+
+                <!-- validator 처리 -->
+                <include name="src/main/resources/egovframework/validator/*.xml"/>
+                <include name="src/main/resources/egovframework/validator/**/*.*"/>
+
+                <!-- log4j 처리 -->
+                <include name="src/main/resources/log4j2.xml"/>
+            	
+                <!-- context-*.xml -->
+                <include name="src/main/resources/egovframework/spring/com/**/*.xml"/>
+                
+                <!-- properties -->
+                <include name="src/main/resources/egovframework/egovProps/**/*.*"/>
+                
+                <!-- IMAGES -->
+                <include name="src/main/webapp/images/egovframework/com/*.*"/>
+
+                <!-- webapp -->
+                <include name="src/main/webapp/WEB-INF/**/*.*"/>
+                <include name="src/main/webapp/*.jsp"/>
+                <include name="src/main/webapp/resource/**/*.*"/>
+            	
+                <!-- license -->
+                <include name="src/main/webapp/META-INF/*"/>
+                	
+            	<!-- exclude order web.xml -->
+            	<exclude name="src/main/webapp/WEB-INF/web_*.xml"/>
+            	<exclude name="src/main/webapp/WEB-INF/lib/Altibase.jar"/><!-- V3.8 추가 -->
+            	<exclude name="src/main/webapp/WEB-INF/lib/cubrid_jdbc.jar"/><!-- V3.8 추가 -->
+            	<exclude name="src/main/webapp/WEB-INF/lib/ojdbc6-11.2.0.3.jar"/><!-- V3.8 추가 -->
+            	<exclude name="src/main/webapp/WEB-INF/lib/tibero5-jdbc.jar"/><!-- V3.8 추가 -->
+            	
+                <!-- DB 생성 스크립트 -->
+                <include name="script/**/com_DDL_*.sql"/>
+                <include name="script/**/com_DML_*.sql"/>
+            	<include name="script/comment/**/egov_*.sql"/><!-- V3.8 코멘트 추가 -->
+            	<include name="src/main/resources/social.sql"/><!-- V3.8 추가 -->
+				
+            </fileset>
+        </zip>
+    </target>
+	
+	<!-- init -->
+	<!-- 세션일때 -->
+	<!-- <target name="init" description="destroy config" > -->
+		<!-- 복사 : globals.properties -->
+	<!--
+		<copy file="build_config/component/weblog/egov-com-servlet.xml" tofile="src/main/webapp/WEB-INF/config/egovframework/springmvc/egov-com-servlet.xml" overwrite="true"/>
+		<copy file="build_config/auth/servlet_session/globals.properties" tofile="src/main/resources/egovframework/egovProps/globals.properties" overwrite="true"/>
+		<copy file="build_config/auth/servlet_session/context-datasource.xml" tofile="src/main/resources/egovframework/spring/com/context-datasource.xml" overwrite="true"/>
+		<copy file="build_config/auth/servlet_session/log4j2.xml" tofile="src/main/resources/log4j2.xml" overwrite="true"/>
+		<copy file="build_config/auth/servlet_session/pom.xml" tofile="pom.xml" overwrite="true"/>
+	</target>
+	-->
+	
+	<!-- 시큐리티일때 -->
+	<target name="init" description="init config" >
+		<!-- 복사 : globals.properties -->
+		<copy file="build_config/component/allinone/egov-com-servlet.xml" tofile="src/main/webapp/WEB-INF/config/egovframework/springmvc/egov-com-servlet.xml" overwrite="true"/><!-- V3.8 경로수정 -->
+		<copy file="build_config/auth/servlet_security/globals.properties" tofile="src/main/resources/egovframework/egovProps/globals.properties" overwrite="true"/>
+		<copy file="build_config/auth/servlet_security/context-datasource.xml" tofile="src/main/resources/egovframework/spring/com/context-datasource.xml" overwrite="true"/>
+		<copy file="build_config/auth/servlet_security/log4j2.xml" tofile="src/main/resources/log4j2.xml" overwrite="true"/>
+		<copy file="build_config/component/allinone/pom_wizard.xml" tofile="pom.xml" overwrite="true"/><!-- V3.8 경로수정 -->
+	</target>
+	
+	<!-- restore -->
+	<target name="restore" description="restore config" >
+		<!-- 복구 : egov-com-servlet.xml -->
+		<copy file="build_config/auth/local/egov-com-servlet.xml" tofile="src/main/webapp/WEB-INF/config/egovframework/springmvc/egov-com-servlet.xml" overwrite="true"/>
+		<!-- 복구 : globals.properties -->
+		<copy file="build_config/auth/local/globals.properties" tofile="src/main/resources/egovframework/egovProps/globals.properties" overwrite="true"/>
+		<!-- 복구 : context-datasource.xml -->
+		<copy file="build_config/auth/local/context-datasource.xml" tofile="src/main/resources/egovframework/spring/com/context-datasource.xml" overwrite="true"/>
+		<!-- 복구 : log4j2.xml -->
+		<copy file="build_config/auth/local/log4j2.xml" tofile="src/main/resources/log4j2.xml" overwrite="true"/>
+		<!-- 복구 : pom.xml -->
+		<copy file="build_config/auth/local/pom.xml" tofile="pom.xml" overwrite="true"/>
+	</target>
+</project>

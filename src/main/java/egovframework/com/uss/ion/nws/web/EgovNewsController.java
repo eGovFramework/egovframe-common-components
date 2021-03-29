@@ -144,7 +144,8 @@ public class EgovNewsController {
 		List<FileVO> _result = null;
 		String _atchFileId = "";
 
-		final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
 		if(!files.isEmpty()){
 		 _result = fileUtil.parseFileInf(files, "NEWS_", 0, "", "");
@@ -224,7 +225,9 @@ public class EgovNewsController {
     	// 첨부파일 관련 ID 생성 start....
 		String _atchFileId = newsVO.getAtchFileId();
 
-		final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		final List<MultipartFile> files = multiRequest.getFiles("file_1");
+		
 		if(!files.isEmpty()){
 			if("".equals(_atchFileId)){
 				List<FileVO> _result = fileUtil.parseFileInf(files, "NEWS_", 0, _atchFileId, "");

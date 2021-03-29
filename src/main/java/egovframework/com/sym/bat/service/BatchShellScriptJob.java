@@ -79,23 +79,24 @@ public class BatchShellScriptJob implements Job {
 		}
 		LOGGER.debug("SHELL.UNIX/WINDOWS.batchShellFiles properties = "+propertyValue);
 
-		List<String> cmdShell = Arrays.asList(propertyValue.split(","));
-		LOGGER.debug("SHELL.UNIX/WINDOWS.batchShellFiles size() = "+cmdShell.size());
-		
-		for(String item : cmdShell) {
-			boolean whiteListStatus = batchProgrm.contains(item);
-			LOGGER.debug("SHELL.UNIX/WINDOWS.batchShellFiles WhiteList item = "+item+", status = "+whiteListStatus);
-			if ( whiteListStatus == true ) whiteListOK = whiteListStatus;
-		}
-		LOGGER.debug("SHELL.UNIX/WINDOWS.batchShellFiles WhiteList Status = "+whiteListOK);
-		
 		if ( whiteListOK == false ) {
 			LOGGER.debug("SHELL.UNIX/WINDOWS.batchShellFiles WhiteList Blocked!");
 			throw new SecurityException("SHELL.UNIX/WINDOWS.batchShellFiles WhiteList Blocked!");
 		} else {
+			
+			List<String> cmdShell = Arrays.asList(propertyValue.split(","));
+			LOGGER.debug("SHELL.UNIX/WINDOWS.batchShellFiles size() = "+cmdShell.size());
+			
+			for(String item : cmdShell) {
+				boolean whiteListStatus = batchProgrm.contains(item);
+				LOGGER.debug("SHELL.UNIX/WINDOWS.batchShellFiles WhiteList item = "+item+", status = "+whiteListStatus);
+				if ( whiteListStatus == true ) whiteListOK = whiteListStatus;
+			}
+			LOGGER.debug("SHELL.UNIX/WINDOWS.batchShellFiles WhiteList Status = "+whiteListOK);
+			
 			try {
 				Process p = null;
-				String cmdStr = batchProgrm + " " + paramtr;
+				String cmdStr = batchProgrm; // + " " + paramtr; // KISA 코드 검증 조치에 따라 파라미터 사용불가 조치 (2020-12-07)
 				p = Runtime.getRuntime().exec(cmdStr);
 				p.waitFor();
 				result = p.exitValue();

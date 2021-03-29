@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="sym.sym.srv">
+<echo> sym.sym.srv update...</echo>
+<target name="build">
+	<!-- sym.sym.srv 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/sym/sym/srv/**/*.java"/>
+			
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-Server.xml"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/sym/sym/srv/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/sym/sym/srv/**/*.xml"/>
+
+			<!-- message -->
+			<include name="/db_sym/sym/srv/**/*.propertie"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/sym/sym/srv/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/sym/sym/srv/**/*.*"/>
+
+			<!-- DB 생성 스크립트 -->
+			<include name="src/script/**/sym.sym.srv*.sql"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/sym/sym/srv/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

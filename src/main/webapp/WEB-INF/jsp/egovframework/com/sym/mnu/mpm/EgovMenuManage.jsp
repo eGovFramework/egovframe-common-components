@@ -85,14 +85,17 @@ function fDeleteMenuList() {
             }
         }
     }
+
     if(checkedCount ==0){
 		alert("선택된 메뉴가 없습니다.");
 		return false;
     }
-	
-    document.menuManageForm.checkedMenuNoForDel.value=checkMenuNos;
-    document.menuManageForm.action = "<c:url value='/sym/mnu/mpm/EgovMenuManageListDelete.do'/>";
-    document.menuManageForm.submit();
+
+    if(confirm("<spring:message code="common.delete.msg" />")){	//삭제하시겠습니까?
+	    document.menuManageForm.checkedMenuNoForDel.value=checkMenuNos;
+	    document.menuManageForm.action = "<c:url value='/sym/mnu/mpm/EgovMenuManageListDelete.do'/>";
+	    document.menuManageForm.submit();
+    }
 }
 
 /* ********************************************************
@@ -158,13 +161,13 @@ function fMenuManageSelect(){
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
+<form name="menuManageForm" action ="<c:url value='/sym/mnu/mpm/EgovMenuManageSelect.do'/>" method="post">
+<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
+<input name="checkedMenuNoForDel" type="hidden" />
+<input name="req_menuNo" type="hidden"  />
+
 <div class="board">
 	<h1><spring:message code="comSymMnuMpm.menuManage.pageTop.title"/></h1><!-- 메뉴관리리스트 -->
-
-	<form name="menuManageForm" action ="<c:url value='/sym/mnu/mpm/EgovMenuManageSelect.do'/>" method="post">
-	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-	<input name="checkedMenuNoForDel" type="hidden" />
-	<input name="req_menuNo" type="hidden"  />
 
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
@@ -179,8 +182,6 @@ function fMenuManageSelect(){
 			</li>
 		</ul>
 	</div>
-	
-	</form>
 
 	<table class="board_list">
 		<caption></caption>
@@ -228,7 +229,7 @@ function fMenuManageSelect(){
 		</ul>
 	</div>
 </div>
-
+</form>
 </body>
 </html>
 

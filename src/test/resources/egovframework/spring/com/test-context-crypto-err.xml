@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+    xmlns:p="http://www.springframework.org/schema/p"  
+    xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd"> 
+     
+	<bean id="egovPasswordEncoder" class="egovframework.rte.fdl.cryptography.EgovPasswordEncoder">
+		<property name="algorithm" value="SHA-256" />
+		<property name="hashedPassword" value="gdyYs/IZqY86VcWhT8emCYfqY1ahw2vtLG+/FzNqtrQ=" />
+	</bean>
+	
+	<bean id="egovARIACryptoService" class="egovframework.rte.fdl.cryptography.impl.EgovARIACryptoServiceImpl">
+		<property name="passwordEncoder" ref="egovPasswordEncoder" />
+		<property name="blockSize" value="1024" />
+	</bean>
+
+</beans> 

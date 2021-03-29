@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="uss.olh.omm">
+<echo> uss.olh.omm update...</echo>
+<target name="build">
+	<!-- cmm 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/uss/olh/omm/**/*.java"/>
+			
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-OnlineMenual.xml"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/uss/olh/omm/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/uss/olh/omm/**/*.xml"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/uss/olh/omm/**/*.jsp"/>
+			<include name="${path.jsp}/uss/olh/omn/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/uss/olh/omm/**/*.*"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/uss/olh/omm/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

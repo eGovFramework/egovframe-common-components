@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="uss.olh.wor">
+<echo> uss.olh.wor update...</echo>
+<target name="build">
+	<!-- cmm 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/uss/olh/wor/**/*.java"/>
+			
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-WordDicary.xml"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/uss/olh/wor/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/uss/olh/wor/**/*.xml"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/uss/olh/wor/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/uss/olh/wor/**/*.*"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/uss/olh/wor/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

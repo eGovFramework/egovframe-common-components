@@ -1,5 +1,6 @@
 package egovframework.com.sym.mnu.mpm.web;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.util.WebUtils;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultVO;
@@ -51,6 +53,7 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *  2011.10.07   이기하            보안취약점 수정(파일 업로드시 엑셀파일만 가능하도록 추가)
  *  2015.05.28   조정국            메뉴리스트관리 선택시 "정상적으로 조회되었습니다"라는 alert창이 제일 먼저 뜨는것 수정 : 출력메시지 주석처리
  *  2020.11.02   신용호            KISA 보안약점 조치 - 자원해제
+ *  2021.02.16   신용호            WebUtils.getNativeRequest(request,MultipartHttpServletRequest.class);
  * </pre>
  */
 
@@ -566,7 +569,8 @@ public class EgovMenuManageController {
     	}
         String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
         if(sCmd.equals("bndeInsert")){
-	    	final MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+	    	//final MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+	    	final MultipartHttpServletRequest multiRequest = WebUtils.getNativeRequest(request,MultipartHttpServletRequest.class);
 			final Map<String, MultipartFile> files = multiRequest.getFileMap();
 			Iterator<Entry<String, MultipartFile>> itr = files.entrySet().iterator();
 			MultipartFile file;
@@ -582,10 +586,17 @@ public class EgovMenuManageController {
 
 						if(menuManageService.menuBndeAllDelete()){
 							// KISA 보안약점 조치 - 자원해제
-							InputStream is = file.getInputStream();
-							sMessage = menuManageService.menuBndeRegist(menuManageVO, is);
+							InputStream is = null;
+							try {
+								is = file.getInputStream();
+								sMessage = menuManageService.menuBndeRegist(menuManageVO, is);
+							} catch (IOException e) {
+								throw new IOException(e);
+							} finally {
+								is.close();
+							}
 				    	    resultMsg = sMessage;
-				    	    is.close();
+				    	    
 						}else{
 							resultMsg = egovMessageSource.getMessage("fail.common.msg");
 							menuManageVO.setTmpCmd("EgovMenuBndeRegist Error!!");

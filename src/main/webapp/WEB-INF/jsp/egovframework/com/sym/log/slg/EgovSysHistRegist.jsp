@@ -101,7 +101,7 @@
 		<tr>
 			<th><spring:message code="comSymLogSlg.sysHistRegist.atchFile"/></th><!-- 첨부파일 -->
 			<td class="left">
-				<input name="file_0" id="egovComFileUploader" type="file" multiple title="<spring:message code="comSymLogSlg.sysHistRegist.atchFile"/>"/><!-- 첨부파일 선택 -->
+				<input name="file_1" id="egovComFileUploader" type="file" multiple title="<spring:message code="comSymLogSlg.sysHistRegist.atchFile"/>"/><!-- 첨부파일 선택 -->
 				<div id="egovComFileList"></div>
 			</td>
 		</tr>

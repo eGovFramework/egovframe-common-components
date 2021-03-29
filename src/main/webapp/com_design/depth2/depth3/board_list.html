@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title> 게시판 목록</title>
+
+<link rel="stylesheet" type="text/css" href="../../../css/egovframework/com/com.css" />
+
+</head>
+
+<body>
+
+<div class="board">
+	<h1>게시판 목록</h1>
+	<div class="search_box">
+		<ul>
+			<li>
+				<select>
+					<option>제목</option>
+					<option>내용</option>
+					<option>작성자</option>
+				</select>
+			</li>
+			<li>
+				<input type="text" class="s_input" title="검색어 입력" />
+				<input type="button" class="s_btn" value="조회" />
+			</li>
+		</ul>
+	</div>
+
+	<table class="board_list">
+		<caption>게시판 목록</caption>
+		<colgroup>
+			<col style="width: 9%;"><col style="width: ;"><col style="width: 11%;"><col style="width: 13%;"><col style="width: 10%;">
+		</colgroup>
+		<thead>
+			<tr>
+				<th>번호</th>
+				<th>제목</th>
+				<th>작성자</th>
+				<th>작성일</th>
+				<th>조회수</th>
+			</tr>
+		</thead>
+		<tbody class="ov">
+			<tr>
+				<td>5</td>
+				<td class="left"><a href="">게시판 테스트 5 게시판 테스트 6 게시판 테스트 7게시판...</a></td>
+				<td>홍길동</td>
+				<td>2016-05-09</td>
+				<td>22</td>
+			</tr>
+			<tr>
+				<td>4</td>
+				<td class="left"><a href="">게시판 테스트 목록입니다.</a></td>
+				<td>홍길동</td>
+				<td>2016-05-09</td>
+				<td>14</td>
+			</tr>
+			<tr>
+				<td>3</td>
+				<td class="left"><a href="">testtesttesttesttesttesttesttesttesttest</a></td>
+				<td>홍길동</td>
+				<td>2016-05-09</td>
+				<td>2</td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td class="left"><a href="">게시판 테스트 2222</a></td>
+				<td>홍길동</td>
+				<td>2016-05-09</td>
+				<td>5</td>
+			</tr>
+			<tr>
+				<td>1</td>
+				<td class="left"><a href="">게시판 목록1</a></td>
+				<td>홍길동</td>
+				<td>2016-05-09</td>
+				<td>10</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<div class="pagination">
+		<ul>
+			<li class="first"><a href="">첫 페이지</a></li>
+			<li class="prev"><a href="">이전 페이지</a></li>
+			<li class="current"><a href="">1</a></li>
+			<li><a href="">2</a></li>
+			<li><a href="">3</a></li>
+			<li><a href="">4</a></li>
+			<li><a href="">5</a></li>
+			<li><a href="">6</a></li>
+			<li><a href="">7</a></li>
+			<li><a href="">8</a></li>
+			<li><a href="">9</a></li>
+			<li><a href="">10</a></li>
+			<li class="next"><a href="">다음 페이지</a></li>
+			<li class="last"><a href="">끝 페이지</a></li>
+		</ul>
+	</div>
+	<button class="btn">등 록</button>
+</div>
+</body>
+</html>

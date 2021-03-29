@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="sym.ccm.ccc">
+<echo> sym.ccm.ccc update...</echo>
+<target name="build">
+	<!-- sym.ccm.ccc 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/sym/ccm/ccc/**/*.java"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/sym/ccm/ccc/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/sym/ccm/ccc/**/*.xml"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/sym/ccm/ccc/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/sym/ccm/ccc/**/*.*"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/sym/ccm/ccc/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

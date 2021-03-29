@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title> 게시판 수정 </title>
+
+<link rel="stylesheet" type="text/css" href="../../../css/egovframework/com/com.css" />
+
+</head>
+
+<body>
+
+<div class="board">
+	<h2>게시판 수정</h2>
+
+	<table class="board_list">
+		<caption>게시판 수정</caption>
+		<colgroup>
+			<col style="width: 16%;"><col style="width: ;">
+		</colgroup>
+		<tbody>
+			<tr>
+				<th>제목 <span class="pilsu">*</span></th>
+				<td class="left"><input type="text" class="bbs_Nm" value="올해도 적용점검 기술지원을 하시는지요?" /></td>
+			</tr>
+			<tr>
+				<th>내용 <span class="pilsu">*</span></th>
+				<td class="nopd">
+					<div class="toolbar">
+						<div class="group">
+							<ul>
+								<li>
+									<select>
+										<option>굴림</option>
+										<option>돋움</option>
+										<option>바탕</option>
+										<option>궁서</option>
+										<option>- font -</option>
+										<option>Arial</option>
+										<option>Courier New</option>
+										<option>Georgia</option>
+										<option>Tahoma</option>
+										<option>Times New Roman</option>
+										<option>Verdana</option>
+										<option>impact</option>
+										<option>WingDings</option>
+									</select>
+								</li>
+								<li>
+									<select>
+										<option>- size -</option>
+										<option>1 (8pt)</option>
+										<option>2 (10pt)</option>
+										<option>3 (12pt)</option>
+										<option>4 (14pt)</option>
+										<option>5 (18pt)</option>
+										<option>6 (24pt)</option>
+										<option>7 (36pt)</option>
+									</select>
+								</li>
+								<li>
+									<select>
+										<option>- format -</option>
+										<option>Heading 1</option>
+										<option>Heading 2</option>
+										<option>Heading 3</option>
+										<option>Heading 4</option>
+										<option>Heading 5</option>
+										<option>Heading 6</option>
+										<option>Normal</option>
+										<option>Address</option>
+										<option>Formatted</option>
+									</select>
+								</li>
+							</ul>
+							<ul class="format">
+								<li><input type="button" class="ed_bold" value="굵게" /></li>
+								<li><input type="button" class="ed_italic" value="기울임꼴" /></li>
+								<li><input type="button" class="ed_underline" value="밑줄" /></li>
+								<li><input type="button" class="ed_strike" value="취소선" /></li>
+							</ul>
+							<ul class="format sep">
+								<li><input type="button" class="ed_sub" value="아래로 기입" /></li>
+								<li><input type="button" class="ed_sup" value="위로 기입" /></li>
+							</ul>
+							<ul class="format">
+								<li><input type="button" class="ed_copy" value="복사" /></li>
+								<li><input type="button" class="ed_cut" value="잘라내기" /></li>
+								<li><input type="button" class="ed_paste" value="붙여넣기" /></li>
+								<li><input type="button" class="ed_undo" value="뒤로 되돌리기" /></li>
+								<li><input type="button" class="ed_redo" value="앞으로 되돌리기" /></li>
+								<li><input type="button" class="ed_rmformat" value="모든 서식 지우기" /></li>
+								<li><input type="button" class="ed_killword" value="오피스 태그 지우기" /></li>
+							</ul>
+						</div>
+						<div class="group">
+							<ul class="format">
+								<li><input type="button" class="ed_al_left on" value="텍스트 왼쪽 맞춤" /></li>
+								<li><input type="button" class="ed_al_center" value="텍스트 가운데 맞춤" /></li>
+								<li><input type="button" class="ed_al_right" value="텍스트 오른쪽 맞춤" /></li>
+								<li><input type="button" class="ed_al_justify" value="텍스트 양쪽 맞춤" /></li>
+							</ul>
+							<ul class="format sep">
+								<li><input type="button" class="ed_right" value="오른쪽으로 이동" /></li>
+								<li><input type="button" class="ed_left" value="왼쪽으로 이동" /></li>
+							</ul>
+							<ul class="format">
+								<li><input type="button" class="ed_num" value="번호 매기기" /></li>
+								<li><input type="button" class="ed_bullet" value="글머리 기호" /></li>
+								<li><input type="button" class="ed_indent_less" value="내어쓰기" /></li>
+								<li><input type="button" class="ed_indent_more" value="들여쓰기" /></li>
+							</ul>
+							<ul class="format sep">
+								<li><input type="button" class="ed_fg" value="글꼴 색" /></li>
+								<li><input type="button" class="ed_bg" value="면 색" /></li>
+							</ul>
+							<ul class="format">
+								<li><input type="button" class="ed_hr" value="선" /></li>
+								<li><input type="button" class="ed_link" value="웹링크" /></li>
+								<li><input type="button" class="ed_image" value="그림 삽입" /></li>
+								<li><input type="button" class="ed_table" value="표 삽입" /></li>
+								<li><input type="button" class="ed_html" value="HTML 태그" /></li>
+							</ul>
+							<ul class="format sep">
+								<li><input type="button" class="ed_fullscreen" value="편집창 크게 보기" /></li>
+							</ul>
+							<ul class="format">
+								<li><input type="button" class="ed_help" value="참고문서" /></li>
+								<li><input type="button" class="ed_about" value="정보" /></li>
+							</ul>
+						</div>
+					</div>
+					<textarea class="txt" title="게시판소개입력" >
+행정기관 프로젝트 수행 PM입니다.
+올해도 행정기관 전자정부 표준프레임워크 적용점검 기술지원을 진행하는지 알고 싶습니다.
+					</textarea>
+				</td>
+			</tr>
+			<tr>
+				<th>파일첨부</th>
+				<td class="left">
+					<input type="text" id="fileName" class="file_input_textbox" />
+					<div class="file_input_div">
+						<input type="button" class="file_input_button" value="파일선택" />
+						<input type="file" class="file_input_hidden" onchange="javascript: document.getElementById('fileName').value = this.value" />
+					</div>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+	<div class="btn">
+		<button>수 정</button><button>취 소</button><button>목 록</button>
+	</div>
+</div>
+
+</body>
+</html>

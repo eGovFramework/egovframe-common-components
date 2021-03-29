@@ -6,10 +6,11 @@
   * @
   * @  수정일         수정자                   수정내용
   * @ -------    --------    ---------------------------
-  * @ 2009.03.02    조재영          최초 생성
+  * @ 2009.03.02    조재영        최초 생성
   * @ 2015.06.16	조정국		  password 중복필드 정리
-  * @ 2016.07.26    장동한          표준프레임워크 v3.6 개선
-  * @ 2017.07.21  장동한 			로그인인증제한 작업
+  * @ 2016.07.26    장동한        표준프레임워크 v3.6 개선
+  * @ 2017.07.21    장동한 		  로그인인증제한 작업
+  * @ 2021.03.02    EGSFWC        삭제버튼의 파라미터 수정
   *
   *  @author 공통서비스 개발팀 조재영
   *  @since 2009.03.02
@@ -112,7 +113,7 @@ function fn_egov_dn_info_setting(dn) {
 	<!-- 사용자유형정보 : password 수정화면으로 이동시 타겟 유형정보 확인용, 만약검색조건으로 유형이 포함될경우 혼란을 피하기위해 userTy명칭을 쓰지 않음-->
 	<input type="hidden" name="userTyForPassword" value="<c:out value='${userManageVO.userTy}'/>" />
 	<!-- for validation -->
-	<input type="hidden" name="password" id="password" value="Test#$123"/>
+	<input type="hidden" name="password" id="password" value="ex~Test#$12"/>
 	<input type="hidden" name="selectedId" id="selectedId" value=""/>  
 	
 	<!-- 타이틀 -->
@@ -362,7 +363,7 @@ function fn_egov_dn_info_setting(dn) {
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input type="submit" class="s_submit" value="<spring:message code="button.save" />" title="<spring:message code="button.save" /> <spring:message code="input.button" />" />
-		<button class="btn_s2" onClick="fnDeleteUser('<c:out value='${mberManageVO.userTy}'/>:<c:out value='${mberManageVO.uniqId}'/>'); return false;" title="<spring:message code="button.delete" /> <spring:message code="input.button" />"><spring:message code="button.delete" /></button>
+		<button class="btn_s2" onClick="fnDeleteUser('<c:out value='${userManageVO.userTy}'/>:<c:out value='${userManageVO.uniqId}'/>'); return false;" title="<spring:message code="button.delete" /> <spring:message code="input.button" />"><spring:message code="button.delete" /></button>
 		<span class="btn_s"><a href="<c:url value='/uss/umt/EgovUserManage.do' />"  title="<spring:message code="button.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
 		<button class="btn_s2" onClick="fnPasswordMove(); return false;" title="<spring:message code="comUssUmt.userManageModifyBtn.passwordChange" /> <spring:message code="input.button" />"><spring:message code="comUssUmt.userManageModifyBtn.passwordChange" /></button>
 		<button class="btn_s2" onClick="fnLockIncorrect(); return false;" title="<spring:message code="comUssUmt.common.lockAtBtn" /> <spring:message code="input.button" />"><spring:message code="comUssUmt.common.lockAtBtn" /></button>

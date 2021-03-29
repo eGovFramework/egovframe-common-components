@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="uss.sam.cpy">
+<echo> uss.sam.cpy update...</echo>
+<target name="build">
+	<!-- cmm 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/uss/sam/cpy/**/*.java"/>
+			
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-CpyrhtPrtcPolicy.xml"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/uss/sam/cpy/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/uss/sam/cpy/**/*.xml"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/uss/sam/cpy/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/uss/sam/cpy/**/*.*"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/uss/sam/cpy/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

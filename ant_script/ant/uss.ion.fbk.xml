@@ -1,0 +1,31 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="uss.ion.fbk">
+<echo> sym.log.lgm update...</echo>
+<target name="build">
+	<!-- uss.ion.fbk 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/uss/ion/fbk/**/*.java"/>
+			
+			<!-- resource -->
+			<include name="src/main/resources/social.sql"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/uss/ion/fbk/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/uss/ion/fbk/**/*.*"/>
+
+			<!-- context -->
+		    <include name="src/main/resources/egovframework/spring/com/context-social.xml"/>
+		    <include name="src/main/webapp/WEB-INF/config/egovframework/springmvc/egov-com-social.xml"/>
+
+		
+			<!-- message2 -->
+			<include name="${path.message}/uss/ion/fbk/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

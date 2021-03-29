@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="ssi.syi.ims">
+<echo> ssi.syi.ims update...</echo>
+<target name="build">
+	<!-- ssi/syi/ims 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/ssi/syi/ims/**/*.java"/>
+			
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-CntcMessage.xml"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/ssi/syi/ims/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/ssi/syi/ims/**/*.xml"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/ssi/syi/ims/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/ssi/syi/ims/**/*.*"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/ssi/syi/ims/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

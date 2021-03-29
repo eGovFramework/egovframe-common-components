@@ -364,7 +364,8 @@ public class EgovRequestOfferController {
             	// 첨부파일 관련 ID 생성 start....
         		String _atchFileId = RequestOfferVO.getAtchFileId();
 
-        		final Map<String, MultipartFile> files = multiRequest.getFileMap();
+        		//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+        		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
         		if(!files.isEmpty()){
         			String atchFileAt = commandMap.get("atchFileAt") == null ? "" : (String)commandMap.get("atchFileAt");
@@ -505,7 +506,8 @@ public class EgovRequestOfferController {
             	// 첨부파일 관련 첨부파일ID 생성
         		String _atchFileId = "";
 
-        		final Map<String, MultipartFile> files = multiRequest.getFileMap();
+        		//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+        		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
         		if(!files.isEmpty()){
     				List<FileVO> _result = fileUtil.parseFileInf(files, "DSCH_", 0, "", "");
@@ -514,8 +516,6 @@ public class EgovRequestOfferController {
                 	// 리턴받은 첨부파일ID를 셋팅한다..
             		requestOfferVO.setAtchFileId(_atchFileId);
         		}
-
-
 
                 //아이디 설정
                 requestOfferVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));

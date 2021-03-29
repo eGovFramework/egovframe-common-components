@@ -37,16 +37,6 @@ public class SndngMailDetailDAO extends EgovComAbstractDAO {
 	}
 
 	/**
-	 * 발송메일에 첨부된 파일목록을 조회한다.
-	 * @param vo SndngMailVO
-	 * @return List
-	 * @exception
-	 */
-	public List<?> selectAtchmnFileList(SndngMailVO vo) {
-		return list("sndngMailDetailDAO.selectAtchmnFileList", vo);
-	}
-
-	/**
 	 * 발송메일을 삭제한다.
 	 * @param vo SndngMailVO
 	 * @exception
@@ -55,12 +45,4 @@ public class SndngMailDetailDAO extends EgovComAbstractDAO {
 		delete("sndngMailDetailDAO.deleteSndngMail", vo);
 	}
 
-	/**
-	 * 첨부파일 목록을 삭제한다.
-	 * @param vo SndngMailVO
-	 * @exception
-	 */
-	public void deleteAtchmnFileList(SndngMailVO vo) throws Exception {
-		delete("sndngMailDetailDAO.deleteAtchmnFileList", vo);
-	}
 }

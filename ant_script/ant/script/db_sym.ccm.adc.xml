@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="sym.ccm.adc">
+<echo> sym.ccm.adc update...</echo>
+<target name="build">
+	<!-- sym.ccm.adc 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/sym/ccm/adc/**/*.java"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/sym/ccm/adc/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/sym/ccm/adc/**/*.xml"/>
+
+			<!-- message -->
+			<include name="/db_sym/ccm/adc/**/*.propertie"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/sym/ccm/adc/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/sym/ccm/adc/**/*.*"/>
+
+			<!-- DB 생성 스크립트 -->
+			<include name="src/script/**/sym.ccm.adc*.sql"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/sym/ccm/adc/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

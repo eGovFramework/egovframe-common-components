@@ -206,7 +206,9 @@ public class EgovFileMntrg extends Thread {
 				isSame = false; // 초기화
 				isNew = true; // 초기화
 			}
-
+		} catch (NullPointerException e) {
+			EgovBasicLogger.debug("NullPointerException", e);
+			
 		} catch (RuntimeException e) {
 			//interrupted = true; // there is no point in continuing
 

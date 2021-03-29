@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="sym.adr">
+<echo> uss.ion.rmm update...</echo>
+<target name="build">
+	<!-- sym.adr 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/sym/adr/**/*.java"/>
+			
+			<!-- jsp -->
+			<include name="${path.jsp}/sym/adr/**/*.jsp"/>
+			
+		
+			<!-- message2 -->
+			<include name="${path.message}/sym/adr/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

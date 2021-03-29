@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="utl.sys.rsc">
+<echo> utl.sys.rsc update...</echo>
+<target name="build">
+	<!-- cmm 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/utl/sys/rsc/**/*.java"/>
+
+			<!-- EgovUserDeatils.java 추가 -->
+			<include name="${path.java}/sec/security/userdetails/EgovUserDetails.java"/>
+
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/utl/sys/rsc/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/utl/sys/rsc/**/*.xml"/>
+
+			<!-- message -->
+			<include name="/db_utl/sys/rsc/**/*.propertie"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/utl/sys/rsc/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/utl/sys/rsc/**/*.*"/>
+
+			<!-- DB 생성 스크립트 -->
+			<include name="src/script/**/utl.sys.rsc*.sql"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/utl/sys/rsc/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

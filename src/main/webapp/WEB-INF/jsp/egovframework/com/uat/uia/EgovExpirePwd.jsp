@@ -121,6 +121,7 @@ function fn_egov_change_pwd() {
 	
 	<form id="pwdManage" name="pwdManage" method="post" target="_parent">
 		<input type="hidden" id="loginId" name="loginId" readonly="readonly"  value="${loginVO.id}"/>
+		<input type="hidden" id="uniqId" name="uniqId" readonly="readonly"  value="${loginVO.uniqId}"/>
 		<input type="hidden" id="userSe" name="userSe" readonly="readonly"  value="${loginVO.userSe}"/>
 		<br><br><br>
 		<!-- 일반회원 --><input type="hidden" id="mberId" name="mberId" readonly="readonly"  value=""/><!-- USER -->

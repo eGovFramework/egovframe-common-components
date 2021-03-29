@@ -6,17 +6,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import egovframework.com.cmm.LoginVO;
-import egovframework.com.cmm.annotation.IncludedInfo;
-import egovframework.com.cmm.util.EgovResourceCloseHelper;
-import egovframework.com.sym.ccm.zip.service.EgovCcmRdnmadZipManageService;
-import egovframework.com.sym.ccm.zip.service.EgovCcmZipManageService;
-import egovframework.com.sym.ccm.zip.service.Zip;
-import egovframework.com.sym.ccm.zip.service.ZipVO;
-
-import egovframework.rte.fdl.property.EgovPropertyService;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
@@ -33,7 +22,18 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
+import org.springframework.web.util.WebUtils;
 import org.springmodules.validation.commons.DefaultBeanValidator;
+
+import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovResourceCloseHelper;
+import egovframework.com.sym.ccm.zip.service.EgovCcmRdnmadZipManageService;
+import egovframework.com.sym.ccm.zip.service.EgovCcmZipManageService;
+import egovframework.com.sym.ccm.zip.service.Zip;
+import egovframework.com.sym.ccm.zip.service.ZipVO;
+import egovframework.rte.fdl.property.EgovPropertyService;
+import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
  *
@@ -46,12 +46,13 @@ import org.springmodules.validation.commons.DefaultBeanValidator;
  * <pre>
  * << 개정이력(Modification Information) >>
  *
- *   수정일      수정자           수정내용
- *  -------    --------    ---------------------------
- *   2009.04.01  이중호          최초 생성
- *   2011.08.26	 정진오		IncludedInfo annotation 추가
- *	 2011.10.07	 이기하		보안취약점 수정(파일 업로드시 엑셀파일만 가능하도록 추가)
- *	 2011.11.21	 이기하		도로명주소 추가(rdnmadZip)
+ *  수정일               수정자            수정내용
+ *  ----------   --------   ---------------------------
+ *  2009.04.01   이중호            최초 생성
+ *  2011.08.26   정진오            IncludedInfo annotation 추가
+ *  2011.10.07   이기하            보안취약점 수정(파일 업로드시 엑셀파일만 가능하도록 추가)
+ *  2011.11.21   이기하            도로명주소 추가(rdnmadZip)
+ *  2021.02.16   신용호            WebUtils.getNativeRequest(request,MultipartHttpServletRequest.class);
  *
  * </pre>
  */
@@ -215,7 +216,8 @@ public class EgovCcmZipManageController {
 			return "egovframework/com/sym/ccm/zip/EgovCcmExcelZipRegist";
 		}
 
-		final MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+		//final MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+		MultipartHttpServletRequest multiRequest = WebUtils.getNativeRequest(request,MultipartHttpServletRequest.class);
 		final Map<String, MultipartFile> files = multiRequest.getFileMap();
 		InputStream fis = null;
 

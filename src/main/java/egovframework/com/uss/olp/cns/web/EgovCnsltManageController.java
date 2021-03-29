@@ -309,7 +309,8 @@ public class EgovCnsltManageController {
 		List<FileVO> _result = null;
 		String _atchFileId = "";
 
-		final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
 		if(!files.isEmpty()){
 		 _result = fileUtil.parseFileInf(files, "CNSLT_", 0, "", "");
@@ -468,7 +469,8 @@ public class EgovCnsltManageController {
     	// 첨부파일 관련 ID 생성 start....
 		String _atchFileId = cnsltManageVO.getAtchFileId();
 
-		final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
 		if(!files.isEmpty()){
 

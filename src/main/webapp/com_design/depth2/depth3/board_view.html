@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title> 게시판 상세보기 </title>
+
+<link rel="stylesheet" type="text/css" href="../../../css/egovframework/com/com.css" />
+
+</head>
+
+<body>
+
+<div class="board">
+	<h2>게시판 상세보기</h2>
+
+	<table class="board_list">
+		<caption>게시판 상세보기</caption>
+		<colgroup>
+			<col style="width: 16%;">
+			<col style="width: 19%;">
+			<col style="width: 16%;">
+			<col style="width: 18%;">
+			<col style="width: 16%;">
+			<col style="width: 15%;">
+		</colgroup>
+		<tbody>
+			<tr>
+				<th>제목</th>
+				<td colspan="5" class="left">게시판 글 제목</td>
+			</tr>
+			<tr>
+				<th>작성자</th>
+				<td class="left">홍길동</td>
+				<th>작성시간</th>
+				<td class="left">2016-06-01</td>
+				<th>조회수</th>
+				<td class="left">17</td>
+			</tr>
+			<tr>
+				<th class="vtop">글내용</th>
+				<td colspan="5" class="cnt">
+					해마다 늘어나던 국민연금 가입자가 내년부터 감소세로 돌아설 것이라는 전망이 나왔다.<BR><BR>
+					저출산의 영향으로 생산 가능 활동인구가 줄어든데 따른 것으로 분석된다.<BR><BR>
+					2일 국민연금연구원의 '국민연금 중기재정전망(2016~2020)' 연구보고서를 보면, 경제활동참가율과 국민연금가입률 증가 등으로 지속해서 늘던 전체 가입자는 내년 감소할 것으로 전망됐다.
+				</td>
+			</tr>
+		</tbody>
+	</table>
+	<div class="btn">
+		<button>수 정</button>
+		<button>삭 제</button>
+		<button>답글작성</button>
+		<button>목 록</button>
+		<button>스크랩</button>
+	</div>
+
+	<h3>전체 댓글 <B>2</B></h3>
+	<div class="reply">
+		<ul>
+			<li>
+				<div class="top">
+					<strong>홍길동</strong>
+					<span class="bar">|</span>
+					<span class="date">2016-06-01 10:37:43</span>
+				</div>
+				<p class="txt">
+					사고는 다리 아래 공사현장에서 용단 작업 중 가스가 폭발해 난 것으로 추정된다.<BR>
+					경찰과 소방당국에 따르면 이날 오전 7시 27분께 남양주시 진접선 금곡리 일대 진접선 복선전철 제4공구 건설공사 현장에서 붕괴사고가
+					났다는 119 신고가 접수됐다.<BR>
+					이 사고로 작업 중이던 김모씨 등 근로자 4명이 숨졌다. <BR>
+				</p>
+				<div class="bottom">
+					<a href="#" class="btn_s">수 정</a>
+					<a href="#" class="btn_s">삭 제</a>
+				</div>
+			</li>
+			<li>
+				<div class="top">
+					<strong>홍길동</strong>
+					<span class="bar">|</span>
+					<span class="date">2016-06-01 10:37:43</span>
+				</div>
+				<p class="txt">
+					안녕하세요. 정부프레임워크 쓰면서 잘 안되는 부분이 있어서 문의합니다. 공통컴포넌트 설치를 하였고 local에서 실행되는것을 확인하였습니다.<BR>
+				</p>
+				<div class="bottom">
+					<a href="#" class="btn_s">수 정</a>
+					<a href="#" class="btn_s">삭 제</a>
+				</div>
+			</li>
+		</ul>
+	</div>
+
+	<div class="paging">
+		<ul>
+			<li class="first"><a href="">첫페이지</a></li>
+			<li class="prev"><a href="">이전</a></li>
+			<li><strong>1</strong></li>
+			<li><a href="">2</a></li>
+			<li><a href="">3</a></li>
+			<li><a href="">4</a></li>
+			<li><a href="">5</a></li>
+			<li><a href="">6</a></li>
+			<li class="next"><a href="">다음</a></li>
+			<li class="last"><a href="">끝페이지</a></li>
+		</ul>
+	</div>
+	<table class="board_list top_line">
+		<caption>댓글 쓰기</caption>
+		<colgroup>
+			<col style="width: 16%;"><col style="width: ;">
+		</colgroup>
+		<tbody>
+			<tr>
+				<th>작성자 <span class="pilsu">*</span></th>
+				<td class="left"><input type="text" class="bbs_Nm" /></td>
+			</tr>
+			<tr>
+				<th class="vtop">내용 <span class="pilsu">*</span></th>
+				<td class="left">
+					<textarea class="re_txt" title="댓글입력"></textarea>
+					<span><a href="#" class="btn_s re_btn">댓글등록</a></span>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+
+</body>
+</html>

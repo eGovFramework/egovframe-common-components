@@ -186,7 +186,7 @@
 			<th><spring:message code="comUssIonMtg.mtgPlaceRegist.imageUpload" /></th><!-- 이미지 파일첨부 -->
 			<td class="left" colspan="3">
 				<c:set var="attachments"><spring:message code="comUssIonMtg.mtgPlaceRegist.attachments" /></c:set>
-			    <input name="txtComFileUploader" id="egovComFileUploader" type="file" multiple  title="${attachments}"/><!-- 첨부파일 -->
+			    <input name="file_1" id="egovComFileUploader" type="file" multiple  title="${attachments}"/><!-- 첨부파일 -->
 			    <div id="egovComFileList"></div>
 			</td>
 		</tr>

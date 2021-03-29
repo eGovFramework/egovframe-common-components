@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="cop.tpl">
+<echo> cop.tpl update...</echo>
+<target name="build">
+	<!-- cop/tpl (템플릿 관리) 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/cop/tpl/**/*.java"/>
+			
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-Tmplat.xml"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/cop/tpl/**/*.xml"/>
+
+			<!-- validator -->
+
+			<!-- message -->
+			<include name="/db_cop/tpl/**/*.propertie"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/cop/tpl/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/cop/tpl/**/*.*"/>
+
+			<!-- DB 생성 스크립트 -->
+			<include name="src/script/**/cop.tpl*.sql"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/cop/tpl/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

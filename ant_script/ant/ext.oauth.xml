@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="ext.oauth">
+<echo> ext.oauth update...</echo>
+<target name="build">
+    <copy todir="src/main/webapp/WEB-INF/jsp/egovframework/com/uat/uia/" overwrite="true">
+        <fileset dir="build_config/component/oauth/"/>
+        <globmapper from="EgovLoginUsrOauth.jsp" to="EgovLoginUsr.jsp"/>
+    </copy><!-- V3.8추가 -->
+	
+	<!-- ext/oauth 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/ext/oauth/**/*.java"/>
+			
+            <!-- resource -->
+            <include name="src/main/resources/social.sql"/>
+			
+            <!-- CSS/HTML/IMAGES/JS -->
+            <include name="${path.web}/ext/oauth/**/*.*"/>
+
+			<!-- context -->
+            <include name="src/main/resources/egovframework/spring/com/context-social.xml"/>
+			<include name="src/main/resources/egovframework/spring/com/context-oauth.xml"/><!-- V3.8추가 -->
+            <include name="src/main/webapp/WEB-INF/config/egovframework/springmvc/egov-com-social.xml"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/uat/uia/EgovLoginUsr.jsp"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/ext/oauth/**/*.properties"/>
+		</fileset>
+	</zip>
+	
+    <copy todir="src/main/webapp/WEB-INF/jsp/egovframework/com/uat/uia/" overwrite="true">
+        <fileset dir="build_config/auth/local/"/>
+        <globmapper from="EgovLoginUsr.jsp" to="EgovLoginUsr.jsp"/>
+    </copy><!-- V3.8추가 -->
+</target>
+</project>

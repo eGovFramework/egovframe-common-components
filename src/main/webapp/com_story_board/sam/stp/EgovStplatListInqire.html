@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title> 게시판 목록</title>
+
+<link rel="stylesheet" type="text/css" href="../../../css/egovframework/com/com.css" />
+
+</head>
+
+<body>
+
+<!-- 자바스크립트 경고 태그  -->
+<noscript class="noScriptTitle">자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>
+
+<div class="board">
+	<h1>약관관리 목록</h1>
+	<div class="search_box" title="이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. ">
+		<ul>
+			<li>
+				<select title="조회조건 선택">
+					<option>약관명</option>
+					<option>약관내용</option>
+					<option>작성자</option>
+				</select>
+			</li>
+			<li>
+				<input type="text" class="s_input" title="검색어 입력" />
+				<input type="button" class="s_btn" value="조회" title="조회 버튼" />
+			</li>
+		</ul>
+	</div>
+
+	<table class="board_list" summary="이 표는 약관내용 대상 정보를 제공하며, 이용약관명, 이용약관내용, 등록일자 내용 정보로 구성되어 있습니다.">
+		<caption>약관관리 조회</caption>
+		<colgroup>
+			<col style="width: 9%;">
+			<col style="width: 20%;">
+			<col style="width: ;">
+			<col style="width: 11%;">
+			<col style="width: 13%;">
+		</colgroup>
+		<thead>
+		<tr>
+			<th>번호</th>
+			<th>약관명</th>
+			<th><font class="board_th_link">약관내용</font></th>
+			<th>작성일</th>
+			<th>작성자</th>
+		</tr>
+		</thead>
+		<tbody class="ov">
+		<tr>
+			<td>1</td>
+			<td>인터넷이용약관</td>
+			<td class="left"><a href="">개인정보의 수집 및 이용목적-개인회원</a></td>
+			<td>홍길동</td>
+			<td>2016-05-09</td>
+		</tr>
+		<tr>
+			<td>2</td>
+			<td>인터넷이용약관</td>
+			<td class="left"><a href="">개인정보의 수집 및 이용목적-기업회원</a></td>
+			<td>홍길동</td>
+			<td>2016-05-09</td>
+		</tr>
+		<tr>
+			<td>3</td>
+			<td>인터넷이용약관</td>
+			<td class="left"><a href="">개인정보의 수집 및 이용목적-개인회원</a></td>
+			<td>홍길동</td>
+			<td>2016-05-09</td>
+		</tr>
+		<tr>
+			<td>4</td>
+			<td>인터넷이용약관</td>
+			<td class="left"><a href="">개인정보의 수집 및 이용목적-개인회원</a></td>
+			<td>홍길동</td>
+			<td>2016-05-09</td>
+		</tr>
+		<tr>
+			<td>5</td>
+			<td>인터넷이용약관</td>
+			<td class="left"><a href="">개인정보의 수집 및 이용목적-개인회원</a></td>
+			<td>홍길동</td>
+			<td>2016-05-09</td>
+		</tr>
+		</tbody>
+	</table>
+
+	<div class="pagination">
+		<ul>
+			<li class="first"><a href="">첫 페이지</a></li>
+			<li class="prev"><a href="">이전 페이지</a></li>
+			<li class="current"><a href="">1</a></li>
+			<li><a href="">2</a></li>
+			<li><a href="">3</a></li>
+			<li><a href="">4</a></li>
+			<li><a href="">5</a></li>
+			<li><a href="">6</a></li>
+			<li><a href="">7</a></li>
+			<li><a href="">8</a></li>
+			<li><a href="">9</a></li>
+			<li><a href="">10</a></li>
+			<li class="next"><a href="">다음 페이지</a></li>
+			<li class="last"><a href="">끝 페이지</a></li>
+		</ul>
+	</div>
+	
+	<!-- 
+	
+	
+	<div class="pagination">
+		<ul>
+		<li class="current">1</li>
+		<li><a href="?pageIndex=2" onclick="fn_egov_select_linkPage(2);return false; ">2</a></li>
+
+		</ul>
+	</div>
+	
+	 -->
+	<button title="등록 버튼" class="btn">등 록</button>
+</div>
+</body>
+</html>

@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="ssi.syi.ist">
+<echo> ssi.syi.ist update...</echo>
+<target name="build">
+	<!-- ssi/syi/ist 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/ssi/syi/ist/**/*.java"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/ssi/syi/ist/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/ssi/syi/ist/**/*.xml"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/ssi/syi/ist/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/ssi/syi/ist/**/*.*"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/ssi/syi/ist/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

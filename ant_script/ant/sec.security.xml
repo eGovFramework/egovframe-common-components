@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="sec.security">
+<echo> sec.security update...</echo>
+<target name="build">
+	<!-- sec/ram 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/sec/security/**/*.java"/>
+
+			<!-- security 설정-->
+			<include name="src/main/resources/egovframework/spring/com/context-security.xml"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/sec/security/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

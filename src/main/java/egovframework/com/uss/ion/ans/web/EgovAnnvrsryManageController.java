@@ -1,5 +1,6 @@
 package egovframework.com.uss.ion.ans.web;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Calendar;
 import java.util.Iterator;
@@ -473,9 +474,15 @@ public class EgovAnnvrsryManageController {
 				file = entry.getValue();
 				if (!"".equals(file.getOriginalFilename())) {
 					// KISA 보안약점 조치 - 자원해제
-					InputStream is = file.getInputStream();
-					model.addAttribute("annvrsryManageList", egovAnnvrsryManageService.selectAnnvrsryManageBnde(is));
-					is.close();
+					InputStream is = null;
+					try {
+						is = file.getInputStream();
+						model.addAttribute("annvrsryManageList", egovAnnvrsryManageService.selectAnnvrsryManageBnde(is));
+					} catch (IOException e) {
+						throw new IOException(e);
+					} finally {
+						is.close();
+					}
 				}else{
 					resultMsg = egovMessageSource.getMessage("fail.common.msg");
 				}

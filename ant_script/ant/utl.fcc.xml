@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="utl.fcc">
+<echo> utl.fcc update...</echo>
+<target name="build">
+	<!-- utl.fcc 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/utl/fcc/**/*.java"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/utl/fcc/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/utl/fcc/**/*.xml"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/cmm//utl/fcc/**/*.*"/>
+			<include name="src/main/webapp/html/egovframework/com/cmm/utl/printstatus/*.*"/>
+			
+			<!-- TEST용이므로 제외함 -->
+			<exclude name="${path.java}/utl/fcc/web/*.java"/>
+			<exclude name="${path.jsp}/utl/fcc/**/*.jsp"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/utl/fcc/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="sts.com">
+<echo> sts.com update...</echo>
+<target name="build">
+	<!-- sts 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/sts/com/**/*.java"/>
+
+			<!-- DB 생성 스크립트 -->
+			<include name="src/script/**/sts.com*.sql"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/sts/com/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

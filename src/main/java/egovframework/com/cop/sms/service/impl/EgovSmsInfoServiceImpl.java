@@ -55,7 +55,7 @@ public class EgovSmsInfoServiceImpl extends EgovAbstractServiceImpl implements E
 	//--------------------------------
 	// 속성 정보 얻기
 	//--------------------------------
-	smeConfigPath = EgovProperties.getPathProperty("Globals.SMEConfigPath");
+    	this.smeConfigPath = EgovProperties.getPathProperty("Globals.SMEConfigPath");
     }
 
     private String getPhoneNumber(String number) {

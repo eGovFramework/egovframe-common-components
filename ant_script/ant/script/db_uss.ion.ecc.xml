@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="uss.ion.ecc">
+<echo> uss.ion.ecc update...</echo>
+<target name="build">
+	<!-- uss.ion.ecc 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/uss/ion/ecc/**/*.java"/>
+			
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-EventInfo.xml"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/uss/ion/ecc/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/uss/ion/ecc/**/*.xml"/>
+
+			<!-- message -->
+			<include name="/db_uss/ion/ecc/**/*.propertie"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/uss/ion/ecc/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/uss/ion/ecc/**/*.*"/>
+
+			<!-- DB 생성 스크립트 -->
+			<include name="src/script/**/uss.ion.ecc*.sql"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/uss/ion/ecc/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

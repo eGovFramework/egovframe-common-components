@@ -59,6 +59,7 @@ import com.gpki.servlet.GPKIHttpServletResponse;
  *  2018.10.26   신용호           로그인 화면에 message 파라미터 전달 수정
  *  2019.10.01   정진호           로그인 인증세션 추가
  *  2020.06.25   신용호           로그인 메시지 처리 수정
+ *  2021.01.15   신용호           로그아웃시 권한 초기화 추가 : session 모드 actionLogout()
  *  
  *  </pre>
  */
@@ -328,6 +329,9 @@ public class EgovLoginController {
 		return "redirect:/j_spring_security_logout";*/
 
 		request.getSession().setAttribute("loginVO", null);
+		// 세션모드인경우 Authority 초기화
+		// List<String> authList = (List<String>)EgovUserDetailsHelper.getAuthorities();
+		request.getSession().setAttribute("accessUser", null);
 
 		//return "redirect:/egovDevIndex.jsp";
 		return "redirect:/EgovContent.do";
@@ -565,7 +569,7 @@ public class EgovLoginController {
 	}
 	
 	/**
-	 * 세션타임아웃 시간을 연장한다.
+	 * 비밀번호 유효기간 팝업을 출력한다.
 	 * Cookie에 egovLatestServerTime, egovExpireSessionTime 기록하도록 한다.
 	 * @return result - String
 	 * @exception Exception
@@ -591,12 +595,12 @@ public class EgovLoginController {
 		model.addAttribute("loginVO", loginVO);
 		int passedDayChangePWD = 0;
 		if ( loginVO != null ) {
-			System.out.println("===>>> loginVO.getId() = "+loginVO.getId());
-			System.out.println("===>>> loginVO.getUniqId() = "+loginVO.getUniqId());
-			System.out.println("===>>> loginVO.getUserSe() = "+loginVO.getUserSe());
+			LOGGER.debug("===>>> loginVO.getId() = "+loginVO.getId());
+			LOGGER.debug("===>>> loginVO.getUniqId() = "+loginVO.getUniqId());
+			LOGGER.debug("===>>> loginVO.getUserSe() = "+loginVO.getUserSe());
 			// 비밀번호 변경후 경과한 일수
 			passedDayChangePWD = loginService.selectPassedDayChangePWD(loginVO);
-			System.out.println("===>>> passedDayChangePWD = "+passedDayChangePWD);
+			LOGGER.debug("===>>> passedDayChangePWD = "+passedDayChangePWD);
 			model.addAttribute("passedDay", passedDayChangePWD);
 		}
 		

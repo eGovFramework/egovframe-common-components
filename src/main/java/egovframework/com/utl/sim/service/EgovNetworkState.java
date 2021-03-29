@@ -31,6 +31,21 @@ import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.service.Globals;
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
 
+/**
+ * EgovNetworkState 클래스를 정의한다.
+ *
+ * @author 김진만
+ * @see
+ * <pre>
+ * == 개정이력(Modification Information) ==
+ *
+ *  수정일                수정자           수정내용
+ *  ----------   --------   ---------------------------
+ *  2020.12.07   신용호            KISA 보안약점 조치
+ *  
+ * </pre>
+ */
+
 public class EgovNetworkState {
 	public static String addrIP = "";
 	static final char FILE_SEPARATOR = File.separatorChar;
@@ -55,6 +70,10 @@ public class EgovNetworkState {
 		String mac = null;
 		try {
 			if ("WINDOWS".equals(Globals.OS_TYPE)) {
+				// 2020-12-07 KISA 보안코드 검증 조치
+				if (!EgovWebUtil.isIPAddress(localIP))
+					throw new SecurityException("IP Address is Not Valid~~~!");
+				
 				Process p = null;
 				Runtime rt = Runtime.getRuntime();
 				String[] execStr = { "nbtstat", "-A", localIP };

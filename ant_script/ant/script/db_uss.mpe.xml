@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="uss.mpe">
+<echo> uss.mpe update...</echo>
+<target name="build">
+	<!-- cmm 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/uss/mpe/**/*.java"/>
+			
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-IndvdlPge.xml"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/uss/mpe/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/uss/mpe/**/*.xml"/>
+
+			<!-- message -->
+			<include name="/db_uss/mpe/**/*.propertie"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/uss/mpe/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/uss/mpe/**/*.*"/>
+
+			<!-- DB 생성 스크립트 -->
+			<include name="src/script/**/uss.mpe*.sql"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/uss/mpe/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

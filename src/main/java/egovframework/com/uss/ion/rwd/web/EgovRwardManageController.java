@@ -218,7 +218,9 @@ public class EgovRwardManageController {
 			List<FileVO> _result = null;
 			String _atchFileId = "";
 
-			final Map<String, MultipartFile> files = multiRequest.getFileMap();
+			//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+			final List<MultipartFile> files = multiRequest.getFiles("file_1");
+			
 			if(!files.isEmpty()){
 			 _result = fileUtil.parseFileInf(files, "RWD_", 0, "", "");
 			 _atchFileId = fileMngService.insertFileInfs(_result);  //파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
@@ -260,7 +262,8 @@ public class EgovRwardManageController {
 	    	// 첨부파일 관련 ID 생성 start....
 			String _atchFileId = rwardManage.getAtchFileId();
 
-			final Map<String, MultipartFile> files = multiRequest.getFileMap();
+			//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+			final List<MultipartFile> files = multiRequest.getFiles("file_1");
 			//System.out.println("updtRwardManage 1");
 			if(!files.isEmpty()){
 				//System.out.println("updtRwardManage 2");

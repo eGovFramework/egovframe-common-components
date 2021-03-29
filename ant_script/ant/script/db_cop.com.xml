@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="cop.com">
+<echo> cop.com update...</echo>
+<target name="build">
+	<!-- cop/com 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/cop/com/**/*.java"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/cop/com/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/cop/com/**/*.xml"/>
+
+			<!-- message -->
+			<include name="/db_cop/com/**/*.propertie"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/cop/com/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/cop/com/**/*.*"/>
+
+			<!-- DB 생성 스크립트 -->
+			<include name="src/script/**/cop.com*.sql"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/cop/com/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

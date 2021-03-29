@@ -28,7 +28,7 @@ form {padding: 0px 0px;}
 #new_wrap {width:981px; min-height:500px;}
 #gnb {width:980px; height:65px;}
 #gnb #top_logo {width:236px; height:65px; float:left;}
-#gnb #use_descri { height:22px; float:right; margin:22px 0 0 0; font-size:12px; color:#4f4f4f; font-weight:bold; letter-spacing:-1px; background:url(../../../images/egovframework/com/yellow_bull.gif) no-repeat; padding:4px 0 0 22px; }
+#gnb #use_descri { height:22px; float:right; margin:22px 0 0 0; font-size:12px; color:#4f4f4f; font-weight:bold; letter-spacing:-1px; padding:4px 0 0 22px; }
 #gnb #use_descri li {display:inline;}
 #gnb #use_descri li img { margin:-3px 0 0px 5px;}
 /* 상단 ▲*/
@@ -48,7 +48,7 @@ form {padding: 0px 0px;}
 #new_container #contents {width:760px;float:left; padding:28px 0 0 0;}
 /* 좌측메뉴 ▲*/
 /* 하단 ▼*/
-#new_footer { background:url(../../../images/egovframework/com/bottom_bg.gif) repeat-x; width:941px; height:60px; clear:both; padding:12px 0 0 40px}
+#new_footer { width:941px; height:60px; clear:both; padding:12px 0 0 40px}
 #new_footer li.gap {padding:0 0 0 50px;}
 #new_footer li { display:inline; }
 /* 하단 ▲*/

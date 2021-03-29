@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="ssi.syi.iis">
+<echo> ssi.syi.iis update...</echo>
+<target name="build">
+	<!-- ssi/syi/iis 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/ssi/syi/iis/**/*.java"/>
+			
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-CntcInstt.xml"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/ssi/syi/iis/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/ssi/syi/iis/**/*.xml"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/ssi/syi/iis/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/ssi/syi/iis/**/*.*"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/ssi/syi/iis/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

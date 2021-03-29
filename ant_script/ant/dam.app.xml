@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="dam.app">
+<echo> dam.app update...</echo>
+<target name="build">
+	<!-- dam/app 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/dam/app/**/*.java"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/dam/app/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/dam/app/**/*.xml"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/dam/app/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/dam/app/**/*.*"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/dam/app/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

@@ -85,9 +85,16 @@ function fDeleteProgrmManageList() {
         }
     }
 
-    document.progrmManageForm.checkedProgrmFileNmForDel.value=checkProgrmFileNms;
-    document.progrmManageForm.action = "<c:url value='/sym/prm/EgovProgrmManageListDelete.do'/>";
-    document.progrmManageForm.submit();
+    if(checkedCount ==0){
+		alert("선택된 메뉴가 없습니다.");
+		return false;
+    }
+
+    if(confirm("<spring:message code="common.delete.msg" />")){	//삭제하시겠습니까?
+	    document.progrmManageForm.checkedProgrmFileNmForDel.value=checkProgrmFileNms;
+    	document.progrmManageForm.action = "<c:url value='/sym/prm/EgovProgrmManageListDelete.do'/>";
+    	document.progrmManageForm.submit();
+    }
 }
 
 /* ********************************************************

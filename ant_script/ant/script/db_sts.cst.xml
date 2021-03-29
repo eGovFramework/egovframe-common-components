@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="sts.cst">
+<echo> sts.cst update...</echo>
+<target name="build">
+	<!-- sts 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/sts/cst/**/*.java"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/sts/cst/**/*.xml"/>
+
+			<!-- message -->
+			<include name="/db_sts/cst/**/*.propertie"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/sts/cst/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/sts/cst/**/*.*"/>
+
+			<!-- context-com-*.xml scheduler 등록-->
+			<include name="src/main/resources/egovframework/spring/com/scheduling/context-scheduling-sym-log-lgm.xml"/><!-- V3.8 추가 -->
+			
+			<!-- DB 생성 스크립트 -->
+			<include name="src/script/**/sts.cst*.sql"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/sts/cst/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

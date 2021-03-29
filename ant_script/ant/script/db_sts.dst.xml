@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="sts.dst">
+<echo> sts.dst update...</echo>
+<target name="build">
+	<!-- sts 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/sts/dst/**/*.java"/>
+			
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-DtaUseStats.xml"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/sts/dst/**/*.xml"/>
+
+			<!-- message -->
+			<include name="/db_sts/dst/**/*.propertie"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/sts/dst/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/sts/dst/**/*.*"/>
+
+			<!-- Aspect -->
+			<include name="src/main/webapp/WEB-INF/config/egovframework/springmvc/egov-com-stsaop.xml"/>
+
+			<!-- DB 생성 스크립트 -->
+			<include name="src/script/**/sts.dst*.sql"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/sts/dst/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

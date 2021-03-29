@@ -1,0 +1,35 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="sym.log.ulg">
+<echo> sym.log.ulg update...</echo>
+<target name="build">
+	<!-- sym.log 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/sym/log/ulg/**/*.java"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/sym/log/ulg/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/sym/log/ulg/**/*.xml"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/sym/log/ulg/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/sym/log/ulg/**/*.*"/>
+
+			<!-- context-com-*.xml scheduler 등록-->
+			<include name="src/main/resources/egovframework/spring/com/scheduling/context-scheduling-sym-log-ulg.xml"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/sym/log/ulg/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

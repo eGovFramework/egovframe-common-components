@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="cop.smt.wmr">
+<echo> cop.smt.wmr update...</echo>
+<target name="build">
+	<!-- cop/smt/wmr 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/cop/smt/wmr/**/*.java"/>
+			
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-WikMnthngReprt.xml"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/cop/smt/wmr/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/cop/smt/wmr/**/*.xml"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/cop/smt/wmr/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/cop/smt/wmr/**/*.*"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/cop/smt/wmr/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

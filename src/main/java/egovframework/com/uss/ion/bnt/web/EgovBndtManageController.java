@@ -1,5 +1,6 @@
 package egovframework.com.uss.ion.bnt.web;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Iterator;
 import java.util.List;
@@ -610,13 +611,25 @@ public class EgovBndtManageController {
 				if (!"".equals(file.getOriginalFilename())) {
 						String ext = EgovFileUploadUtil.getFileExtension(file.getOriginalFilename());
 						if ( "xlsx".equals(ext) ) {
-							InputStream is = file.getInputStream();
-							model.addAttribute("bndtManageList", egovBndtManageService.selectBndtManageBndeX(is));
-							is.close();
+							InputStream is = null;
+							try {
+								is = file.getInputStream();
+								model.addAttribute("bndtManageList", egovBndtManageService.selectBndtManageBndeX(is));
+							} catch (IOException e) {
+								throw new IOException(e);
+							} finally {
+								is.close();
+							}
 						} else if ( "xls".equals(ext) ) {
-							InputStream is = file.getInputStream();
-							model.addAttribute("bndtManageList", egovBndtManageService.selectBndtManageBnde(is));
-							is.close();
+							InputStream is = null;
+							try {
+								is = file.getInputStream();
+								model.addAttribute("bndtManageList", egovBndtManageService.selectBndtManageBnde(is));
+							} catch (IOException e) {
+								throw new IOException(e);
+							} finally {
+								is.close();
+							}
 						} else {
 							throw new RuntimeException(egovMessageSource.getMessage("errors.file.extension"));
 						}

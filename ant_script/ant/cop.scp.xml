@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="cop.scp">
+<echo> cop.scp update...</echo>
+<target name="build">
+	<!-- cop/scp (스크랩 포함) 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/cop/scp/**/*.java"/>
+			
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-Scrap.xml"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/cop/scp/**/*.xml"/>
+
+			<!-- validator -->
+
+			<!-- jsp -->
+			<include name="${path.jsp}/cop/scp/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/cop/scp/**/*.*"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/cop/scp/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

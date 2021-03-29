@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="uss.sam.stp">
+<echo> uss.sam.stp update...</echo>
+<target name="build">
+	<!-- cmm 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/uss/sam/stp/**/*.java"/>
+			
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-StplatManage.xml"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/uss/sam/stp/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/uss/sam/stp/**/*.xml"/>
+
+			<!-- message -->
+			<include name="/db_uss/sam/stp/**/*.propertie"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/uss/sam/stp/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/uss/sam/stp/**/*.*"/>
+
+			<!-- DB 생성 스크립트 -->
+			<include name="src/script/**/uss.sam.stp*.sql"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/uss/sam/stp/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

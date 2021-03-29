@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="uat.uap">
+<echo> uat.uap update...</echo>
+<target name="build">
+	<!-- web.xml -->
+	<copy todir="src/main/webapp/WEB-INF/" overwrite="true">
+		<fileset dir="src/main/webapp/WEB-INF/"/>
+		<globmapper from="web_uat.uap.xml" to="web.xml"/>
+	</copy>
+
+	<!-- context-common.xml -->
+	<!--<copy todir="src/main/resources/egovframework/spring/com/" overwrite="true">
+		<fileset dir="src/context-common/"/>
+		<globmapper from="context-common_test.xml" to="context-egovuserdetailshelper.xml"/>
+	</copy>-->
+
+	<!-- pom.xml -->
+	<!--
+	<copy todir="." overwrite="true">
+		<fileset dir="."/>
+		<globmapper from="pom_com4.xml" to="pom.xml"/>
+	</copy>
+	-->
+
+	<!-- uat.uap 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/uat/uap/**/*.java"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*uat-uap.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/uat/uap/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/uat/uap/**/*.xml"/>
+
+			<!-- message -->
+			<include name="/db_uat/uap/**/*.propertie"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/uat/uap/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/uat/uap/**/*.*"/>
+
+			<!-- DB 생성 스크립트 -->
+			<include name="src/script/**/uat.uap*.sql"/>
+
+			<!-- web.xml -->
+			<include name="src/main/webapp/WEB-INF/web.xml" />
+
+			<!-- context-*.xml -->
+			<include name="src/main/resources/egovframework/spring/com/context-egovuserdetailshelper.xml"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/uat/uap/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

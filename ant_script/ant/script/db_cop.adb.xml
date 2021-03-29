@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="cop.adb">
+<echo> cop.adb update...</echo>
+<target name="build">
+	<!-- cop/adb 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/cop/adb/**/*.java"/>
+
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-Adbk.xml"/>
+			
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/cop/adb/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/cop/adb/**/*.xml"/>
+			
+			<!-- message -->
+			<include name="/db_cop/adb/**/*.propertie"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/cop/adb/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/cop/adb/**/*.*"/>
+
+			<!-- DB 생성 스크립트 -->
+			<include name="src/script/**/cop.adb*.sql"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/cop/adb/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

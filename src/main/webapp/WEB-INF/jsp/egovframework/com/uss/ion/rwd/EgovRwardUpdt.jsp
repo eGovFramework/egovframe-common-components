@@ -161,7 +161,7 @@ function fncUpdtRwardManage() {
 		<!-- 첨부파일 테이블 레이아웃 설정 Start..-->
 		<c:if test="${rwardManageVO.atchFileId ne null && rwardManageVO.atchFileId ne ''}">
 		<tr>
-			<th><spring:message code="comUssIonRwd.rwardUpdt.atchFileIdList"/> <span class="pilsu">*</span></th><!-- 첨부파일목록 -->
+			<th><spring:message code="comUssIonRwd.rwardUpdt.atchFileIdList"/></th><!-- 첨부파일목록 -->
 			<td class="left" colspan="3">
 			    <!-- c:import charEncoding="utf-8" url="/cmm/fms/selectFileInfs.do" -->
 				<c:import url="/cmm/fms/selectFileInfsForUpdate.do" charEncoding="utf-8">
@@ -170,10 +170,17 @@ function fncUpdtRwardManage() {
 				&nbsp
 			</td>
 		</tr>
+		<tr>
+			<th><spring:message code="comUssIonRwd.common.atchFileId"/></th><!-- 첨부파일 -->
+			<td class="left">
+				    <input name="file_1" id="egovComFileUploader" type="file" multiple title="<spring:message code="comUssIonRwd.common.atchFileId"/>"/><!-- 첨부파일명 입력 -->
+			    	<div id="egovComFileList"></div>
+			</td>
+		</tr>
 		</c:if>
 		<!-- 첨부파일 테이블 레이아웃 End.-->
 	</table>
-	
+
 	<h3 class="tit02" style="margin:0 0 5px 0"><spring:message code="comUssIonRwd.common.infrmlSanctnRegist"/></h3><!-- 결재권자 -->
 	
 	<!-- 결재권자 정보 Include -->

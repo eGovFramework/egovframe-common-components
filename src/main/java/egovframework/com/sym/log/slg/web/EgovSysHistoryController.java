@@ -103,7 +103,8 @@ public class EgovSysHistoryController {
 			LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 			List<FileVO> _result = null;
 			String _atchFileId = "";
-			final Map<String, MultipartFile> files = multiRequest.getFileMap();
+			//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+			final List<MultipartFile> files = multiRequest.getFiles("file_1");
 			if(!files.isEmpty()){
 				 _result = fileUtil.parseFileInf(files, "SHF_", 0, "", "");
 				 _atchFileId = fileMngService.insertFileInfs(_result);
@@ -167,7 +168,8 @@ public class EgovSysHistoryController {
 
 		if(isAuthenticated){
 			String _atchFileId = history.getAtchFileId();
-			final Map<String, MultipartFile> files = multiRequest.getFileMap();
+			//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+			final List<MultipartFile> files = multiRequest.getFiles("file_1");
 			if(!files.isEmpty()){
 				if("".equals(_atchFileId)){
 					List<FileVO> _result = fileUtil.parseFileInf(files, "SHF_", 0, _atchFileId, "");

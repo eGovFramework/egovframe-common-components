@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="UTF-8"?><!--
+	수정일          수정자                          수정내용
+  ===========      ========    =================================================
+  2011.10.06		이기하     	 	보안 취약점 점검사항 반영 $->#변경
+--><!--Converted at: Wed May 11 15:51:16 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="PopupManage">
+
+	<!-- ::ResultMap 선언 -->
+	<resultMap id="PopupManageVOs" type="egovframework.com.uss.ion.pwm.service.PopupManageVO">
+		<result property="popupId" column="POPUP_ID"/>
+		<result property="popupTitleNm" column="POPUP_SJ_NM"/>
+		<result property="fileUrl" column="FILE_URL"/>
+		<result property="popupHlc" column="POPUP_VRTICL_LC"/>
+		<result property="popupWlc" column="POPUP_WIDTH_LC"/>
+		<result property="popupHSize" column="POPUP_VRTICL_SIZE"/>
+		<result property="popupWSize" column="POPUP_WIDTH_SIZE"/>
+		<result property="ntceBgnde" column="NTCE_BGNDE"/>
+		<result property="ntceEndde" column="NTCE_ENDDE"/>
+		<result property="stopVewAt" column="STOPVEW_SETUP_AT"/>
+		<result property="ntceAt" column="NTCE_AT"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+	</resultMap>
+
+	<!-- 팝업창관리:: 메인 게시물정보 -->
+	<select id="selectPopupManageMain" resultType="egovMap">
+	 <![CDATA[
+		SELECT
+			A.POPUP_ID,
+			A.POPUP_SJ_NM		    POPUP_TITLE_NM,
+			A.FILE_URL,
+			A.POPUP_VRTICL_LC,
+			A.POPUP_WIDTH_LC,
+			A.POPUP_VRTICL_SIZE,
+			A.POPUP_WIDTH_SIZE,
+			A.NTCE_BGNDE,
+			A.NTCE_ENDDE,
+			A.STOPVEW_SETUP_AT,
+			A.NTCE_AT,
+			TO_CHAR(A.FRST_REGIST_PNTTM,'YYYY-MM-DD') FRST_REGIST_PNTTM,
+			(SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = A.FRST_REGISTER_ID) FRST_REGISTER_NM
+		FROM COMTNPOPUPMANAGE A
+		WHERE 1=1
+		AND A.NTCE_AT = 'Y'
+		AND TO_CHAR(SYSDATE,'YYYYMMDDHH24MI') >= NTCE_BGNDE
+		AND TO_CHAR(SYSDATE,'YYYYMMDDHH24MI') <=  NTCE_ENDDE
+	 ]]>
+	</select>
+
+	<!-- 팝업창관리: 화이트 리스트 정보 -->
+	<select id="selectPopupWhiteList" resultType="egovMap">
+	
+		SELECT
+			FILE_URL
+		FROM COMTNPOPUPMANAGE
+	
+	</select>
+
+	<!-- 팝업창관리::목록조회 게시물정보 -->
+	<select id="selectPopupManage" resultType="egovMap">
+	
+	SELECT *
+	FROM (
+	SELECT T0.*, ROWNUM RNUM
+		FROM (
+	
+	 
+		SELECT
+			A.POPUP_ID,
+			A.POPUP_SJ_NM		    POPUP_TITLE_NM,
+			A.FILE_URL,
+			A.POPUP_VRTICL_LC,
+			A.POPUP_WIDTH_LC,
+			A.POPUP_VRTICL_SIZE,
+			A.POPUP_WIDTH_SIZE,
+			A.NTCE_BGNDE,
+			A.NTCE_ENDDE,
+			A.STOPVEW_SETUP_AT,
+			A.NTCE_AT,
+			TO_CHAR(A.FRST_REGIST_PNTTM,'YYYY-MM-DD') FRST_REGIST_PNTTM,
+			(SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = A.FRST_REGISTER_ID) FRST_REGISTER_NM
+		FROM COMTNPOPUPMANAGE A
+		WHERE 1=1
+	 
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 	
+			<if test="searchCondition == 'POPUP_SJ_NM'">
+				AND POPUP_SJ_NM LIKE '%' || #{searchKeyword} || '%'
+			</if>
+			<if test="searchCondition == 'FILE_URL'">
+				AND FILE_URL LIKE '%' || #{searchKeyword} || '%'
+			</if>
+	 	
+	 </if>
+	 
+		ORDER BY A.FRST_REGIST_PNTTM DESC
+	
+	
+		) T0
+	)
+	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+	
+	</select>
+	<!-- 팝업창관리::목록조회_게시물 총갯수  -->
+	<select id="selectPopupManageCnt" resultType="int">
+		SELECT
+		COUNT(*) totcnt
+		FROM COMTNPOPUPMANAGE
+		WHERE 1=1
+	 <if test="searchKeyword != null and searchKeyword != ''">
+	 	
+			<if test="searchCondition == 'POPUP_SJ_NM'">
+				AND POPUP_SJ_NM LIKE '%' || #{searchKeyword} || '%'
+			</if>
+			<if test="searchCondition == 'FILE_URL'">
+				AND FILE_URL LIKE '%' || #{searchKeyword} || '%'
+			</if>
+	 	
+	 </if>
+	</select>
+
+    <!-- 팝업창관리::삭제  -->
+	<delete id="deletePopupManage">
+		
+			DELETE FROM COMTNPOPUPMANAGE
+			WHERE POPUP_ID=#{popupId}
+		
+	</delete>
+
+	<!-- 팝업창관리::수정  -->
+	<update id="updatePopupManage">
+	 
+		UPDATE COMTNPOPUPMANAGE
+		SET
+			POPUP_SJ_NM=#{popupTitleNm},
+			FILE_URL=#{fileUrl},
+			POPUP_VRTICL_LC=#{popupHlc},
+			POPUP_WIDTH_LC=#{popupWlc},
+			POPUP_VRTICL_SIZE=#{popupHSize},
+			POPUP_WIDTH_SIZE=#{popupWSize},
+			NTCE_BGNDE=#{ntceBgnde},
+			NTCE_ENDDE=#{ntceEndde},
+			STOPVEW_SETUP_AT=#{stopVewAt},
+			NTCE_AT=#{ntceAt},
+			LAST_UPDT_PNTTM=sysdate,
+			LAST_UPDUSR_ID=#{lastUpdusrId}
+		WHERE POPUP_ID=#{popupId}
+	 
+	</update>
+
+	<!-- 팝업창관리::상세보기 -->
+	<select id="selectPopupManageDetail" resultMap="PopupManageVOs">
+		SELECT
+			A.POPUP_ID,
+			A.POPUP_SJ_NM,
+			A.FILE_URL,
+			A.POPUP_VRTICL_LC,
+			A.POPUP_WIDTH_LC,
+			A.POPUP_VRTICL_SIZE,
+			A.POPUP_WIDTH_SIZE,
+			A.NTCE_BGNDE,
+			A.NTCE_ENDDE,
+			A.STOPVEW_SETUP_AT,
+			A.NTCE_AT,
+			A.FRST_REGIST_PNTTM,
+			A.FRST_REGISTER_ID,
+			A.LAST_UPDT_PNTTM,
+			A.LAST_UPDUSR_ID
+		FROM COMTNPOPUPMANAGE A
+		WHERE 1=1
+		AND A.POPUP_ID=#{popupId}
+	</select>
+
+	<!-- 팝업창관리::입력  -->
+	<insert id="insertPopupManage">
+	 
+
+		INSERT INTO COMTNPOPUPMANAGE (
+			POPUP_ID,
+			POPUP_SJ_NM,
+			FILE_URL,
+			POPUP_VRTICL_LC,
+			POPUP_WIDTH_LC,
+			POPUP_VRTICL_SIZE,
+			POPUP_WIDTH_SIZE,
+			NTCE_BGNDE,
+			NTCE_ENDDE,
+			STOPVEW_SETUP_AT,
+			NTCE_AT,
+			FRST_REGIST_PNTTM,
+			FRST_REGISTER_ID,
+			LAST_UPDT_PNTTM,
+			LAST_UPDUSR_ID
+		)VALUES(
+			#{popupId},
+			#{popupTitleNm},
+			#{fileUrl},
+			#{popupHlc},
+			#{popupWlc},
+			#{popupHSize},
+			#{popupWSize},
+			#{ntceBgnde},
+			#{ntceEndde},
+			#{stopVewAt},
+			#{ntceAt},
+			sysdate,
+			#{frstRegisterId},
+			sysdate,
+			#{lastUpdusrId}
+		)
+	 
+	</insert>
+
+
+
+</mapper>

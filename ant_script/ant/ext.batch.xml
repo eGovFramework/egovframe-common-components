@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="ext.batch">
+<echo> ext.batch update...</echo>
+<target name="build">
+	<!-- ext/batch 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/ext/easybatch/item/*.java"/>
+			
+		
+			<!-- message2 -->
+			<include name="${path.message}/ext/batch/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

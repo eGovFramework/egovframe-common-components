@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="utl.sys.dbm">
+<echo> utl.sys.dbm update...</echo>
+<target name="build">
+	<!-- cmm 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/utl/sys/dbm/**/*.java"/>
+			
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-DbMntrngLog.xml"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/utl/sys/dbm/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/utl/sys/dbm/**/*.xml"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/utl/sys/dbm/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/utl/sys/dbm/**/*.*"/>
+
+			<!-- context-Mail -->
+			<include name="src/main/resources/egovframework/spring/com/context-mail.xml"/>
+
+			<!-- Scheduler -->
+			<include name="src/main/resources/egovframework/spring/com/scheduling/context-scheduling-utl-sys-dbm.xml"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/utl/sys/dbm/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

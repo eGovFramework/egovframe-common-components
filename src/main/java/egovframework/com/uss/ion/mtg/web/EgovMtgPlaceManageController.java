@@ -194,7 +194,8 @@ public class EgovMtgPlaceManageController {
 			List<FileVO> _result = null;
 			String _atchFileId = "";
 
-			final Map<String, MultipartFile> files = multiRequest.getFileMap();
+			//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+			final List<MultipartFile> files = multiRequest.getFiles("file_1");
 			if(!files.isEmpty()){
 			 _result = fileUtil.parseFileInf(files, "MTG_", 0, "", "");
 			 _atchFileId = fileMngService.insertFileInfs(_result);  //파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
@@ -237,7 +238,8 @@ public class EgovMtgPlaceManageController {
 	    	// 첨부파일 관련 ID 생성 start....
 			String _atchFileId = mtgPlaceManage.getAtchFileId();
 
-			final Map<String, MultipartFile> files = multiRequest.getFileMap();
+			//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+			final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
 			if(!files.isEmpty()){
 

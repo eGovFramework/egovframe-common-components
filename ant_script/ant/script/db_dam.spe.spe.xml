@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="dam.spe.spe">
+<echo> dam.spe.spe update...</echo>
+<target name="build">
+	<!-- dam/spe/spe 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/dam/spe/spe/**/*.java"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/dam/spe/spe/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/dam/spe/spe/**/*.xml"/>
+
+			<!-- message -->
+			<include name="/db_dam/spe/spe/**/*.propertie"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/dam/spe/spe/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/dam/spe/spe/**/*.*"/>
+
+			<!-- DB 생성 스크립트 -->
+			<include name="src/script/**/dam.spe.spe*.sql"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/dam/spe/spe/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

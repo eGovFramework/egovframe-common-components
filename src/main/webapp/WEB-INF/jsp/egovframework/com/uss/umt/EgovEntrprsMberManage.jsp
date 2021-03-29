@@ -30,7 +30,8 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <script type="text/javaScript" language="javascript" defer="defer">
-function fnCheckAll() {
+<!--
+function fncCheckAll() {
     var checkField = document.listForm.checkField;
     if(document.listForm.checkAll.checked) {
         if(checkField) {
@@ -74,7 +75,6 @@ function fnDeleteUser() {
         }
     }
     if(checkedIds.length > 0) {
-    	//alert(checkedIds);
         if(confirm("<spring:message code="common.delete.msg" />")){
         	document.listForm.checkedIdForDel.value=checkedIds;
             document.listForm.action = "<c:url value='/uss/umt/EgovEntrprsMberDelete.do'/>";
@@ -110,10 +110,10 @@ function fnSearch(){
     document.listForm.submit();
 }
 <c:if test="${!empty resultMsg}">alert("<spring:message code="${resultMsg}" />");</c:if>
+-->
 </script>
 </head>
 <body>
-
 
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
@@ -190,7 +190,7 @@ function fnSearch(){
 	<tr>
 	    <td><c:out value="${status.count}"/></td>
 	    <td>
-	        <input name="checkField" title="checkField <c:out value="${status.count}"/>" type="checkbox"/>
+	        <input type="checkbox" name="checkField" class="check2" title="선택"/>
 	        <input name="checkId" type="hidden" value="<c:out value='${result.userTy}'/>:<c:out value='${result.uniqId}'/>"/>
 	    </td>
 	    <td><a href="<c:url value='/uss/umt/EgovEntrprsMberSelectUpdtView.do'/>?selectedId=<c:out value="${result.uniqId}"/>"  onclick="javascript:fnSelectUser('<c:out value="${result.userTy}"/>:<c:out value="${result.uniqId}"/>'); return false;"><c:out value="${result.userId}"/></a></td>

@@ -11,9 +11,10 @@
  *   <pre>
  * == 개정이력(Modification Information) ==
  * 
- *   수정일       수정자           수정내용
- *  -------     --------    ---------------------------
- *  2009.8.3    이문준     최초 생성
+ *  수정일               수정자            수정내용
+ *  ----------   --------   ---------------------------
+ *  2009.08.03   이문준            최초 생성
+ *  2021.02.18   신용호            selectLoginPolicyResult() 삭제
  * </pre>
  */
 
@@ -93,8 +94,9 @@ public class EgovLoginPolicyServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @param loginPolicyVO - 로그인정책 VO
 	 * @return LoginPolicyVO - 로그인정책 VO
 	 */
-	public LoginPolicyVO selectLoginPolicyResult(LoginPolicyVO loginPolicyVO) throws Exception {
-		return loginPolicyDAO.selectLoginPolicyResult(loginPolicyVO);
-	}
-
+	/*
+	 * public LoginPolicyVO selectLoginPolicyResult(LoginPolicyVO loginPolicyVO)
+	 * throws Exception { return
+	 * loginPolicyDAO.selectLoginPolicyResult(loginPolicyVO); }
+	 */
 }

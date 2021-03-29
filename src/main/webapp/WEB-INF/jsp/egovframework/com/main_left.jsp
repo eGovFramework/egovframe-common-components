@@ -8,9 +8,10 @@
   * @Description :  좌측메뉴화면
   * @Modification Information
   * @
-  * @  수정일         수정자                   수정내용
-  * @ -------    --------    ---------------------------
-  * @ 2009.03.10    이용          최초 생성
+  * @ 수정일                수정자           수정내용
+  * @ ----------   --------   ---------------------------
+  * @ 2009.03.10   이용              최초 생성
+  * @ 2021.03.03   신용호            URL 표기 버그 수정
   *
   *  @author 공통서비스 개발팀 이용
   *  @since 2009.03.10
@@ -27,7 +28,6 @@
 <html lang="ko">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<link rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/mpm.css' />" type="text/css" />
 <title>메뉴정보등록</title>
 <script type="text/javascript">
 var imgpath = "<c:url value='/images/egovframework/com/cmm/utl/'/>";
@@ -40,15 +40,15 @@ var path = "http://" + "${pageContext.request.serverName}" + ":" + "${pageContex
 <form name="menuListForm" action ="<c:url value='/sym/mnu/mpm/EgovMenuListSelect.do' />" method="post">
 <DIV id="main" style="display:">
 
-<table width="181" cellpadding="8" class="table-search" border="1">
+<table width="250" cellpadding="8" class="table-search" border="0">
   <tr>
-    <td width="181" class="title_left" >
+    <td width="250" class="title_left" >
         <div style="width:0px; height:0px;">
 		<c:forEach var="result" items="${list_menulist}" varStatus="status" >
-		<input type="hidden" name="tmp_menuNm" value="${result.menuNo}|${result.upperMenuId}|${result.menuNm}|${result.relateImagePath}|${result.relateImageNm}|${pageContext.request.contextPath}/${result.chkURL}|"/>
+		<input type="hidden" name="tmp_menuNm" value="${result.menuNo}|${result.upperMenuId}|${result.menuNm}|${result.relateImagePath}|${result.relateImageNm}|${pageContext.request.contextPath}${result.chkURL}|"/>
 		</c:forEach>
 		</div>
-		<div class="tree" style="overflow: auto; position: absolute; z-index: 5; padding: 0pt 0pt 0pt 49px; width: 214px; height: 512px;">
+		<div class="tree" style="overflow: auto; position: relative; z-index: 5; padding: 0pt 0pt 0pt 0px; width: 300px;">
 		<script language="javascript">
 			var Tree = new Array;
 			for (var j = 0; j < document.menuListForm.tmp_menuNm.length; j++) {

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="sec.ram.security.userdetails.jdbc">
+<echo> sec.ram.security.userdetails.jdbc update...</echo>
+<target name="build">
+	<!-- sec/ram/security/userdetails/jdbc 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/sec/gmt/**/*.java"/>
+			
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-Group.xml"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/sec/gmt/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/sec/ram/**/*.xml"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/sec/gmt/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/sec/gmt/**/*.*"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/sec/gmt/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="uss.olp.opr">
+<echo> uss.olp.opr update...</echo>
+<target name="build">
+	<!-- cmm 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/uss/olp/opr/**/*.java"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/uss/olp/opr/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/uss/olp/opr/**/*.xml"/>
+
+			<!-- message -->
+			<include name="/db_uss/olp/opr/**/*.propertie"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/uss/olp/opr/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/uss/olp/opr/**/*.*"/>
+
+			<!-- DB 생성 스크립트 -->
+			<include name="src/script/**/uss.olp.opr*.sql"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/uss/olp/opr/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

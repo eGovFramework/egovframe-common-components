@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="sym.log.clg">
+<echo> sym.log.clg update...</echo>
+<target name="build">
+	<!-- sym.log 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/sym/log/clg/**/*.java"/>
+			
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-LoginLog.xml"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/sym/log/clg/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/sym/log/clg/**/*.xml"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/sym/log/clg/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/sym/log/clg/**/*.*"/>
+
+			<!-- Aspect -->
+		    <include name="src/main/webapp/WEB-INF/config/egovframework/springmvc/egov-com-loginaop.xml"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/sym/log/clg/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

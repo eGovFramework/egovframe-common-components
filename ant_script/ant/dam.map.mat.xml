@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="dam.map.mat">
+<echo> dam.map.mat update...</echo>
+<target name="build">
+	<!-- dam/map/mat 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/dam/map/mat/**/*.java"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/dam/map/mat/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/dam/map/mat/**/*.xml"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/dam/map/mat/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/dam/map/mat/**/*.*"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/dam/map/mat/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

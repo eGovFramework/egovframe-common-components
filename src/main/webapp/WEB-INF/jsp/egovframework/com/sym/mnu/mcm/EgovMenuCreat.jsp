@@ -15,6 +15,7 @@
   * @ 2009.03.10   이용               최초 생성
   *   2018.09.10   신용호            표준프레임워크 v3.8 개선
   *   2019.12.11   신용호            KISA 보안약점 조치 (크로스사이트 스크립트)
+  *   2021.02.26   신용호            메뉴 목록 없는 경우 예외처리
   *
   *  @author 공통서비스 개발팀 이용
   *  @since 2009.03.10
@@ -125,6 +126,7 @@ function fMenuCreatSiteMap() {
 		
 	<div class="tree">
 		<script language="javascript" type="text/javaScript">
+
 		    var chk_Object = true;
 		    var chk_browse = "";
 			if (eval(document.menuCreatManageForm.authorCode)=="[object]") chk_browse = "IE";
@@ -145,13 +147,18 @@ function fMenuCreatSiteMap() {
 				   chk_Object = false;
 			}
 			if( chk_Object ){
-				for (var j = 0; j < document.menuCreatManageForm.tmp_menuNmVal.length; j++) {
-					Tree[j] = document.menuCreatManageForm.tmp_menuNmVal[j].value;
-			    }
-			    createTree(Tree);
+				if ( document.menuCreatManageForm.tmp_menuNmVal == undefined ) {
+					alert("<spring:message code="comSymMnuMpm.MenuCreat.validate.menuNmVal.none2" />");
+					
+				} else {
+					for (var j = 0; j < document.menuCreatManageForm.tmp_menuNmVal.length; j++) {
+						Tree[j] = document.menuCreatManageForm.tmp_menuNmVal[j].value;
+				    }
+				    createTree(Tree);
+				}
             }else{
                 alert("<spring:message code="comSymMnuMpm.MenuCreat.validate.menuNmVal.none2" />"); //메뉴가 존재하지 않습니다. 메뉴 등록 후 사용하세요.
-                window.close();
+                //window.close();
             }
 		</script>
 	</div>

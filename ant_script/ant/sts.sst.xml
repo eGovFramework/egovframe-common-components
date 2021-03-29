@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="sts.sst">
+<echo> sts.sst update...</echo>
+<target name="build">
+	<!-- sts 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/sts/sst/**/*.java"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/sts/sst/**/*.xml"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/sts/sst/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/sts/sst/**/*.*"/>
+
+			<!-- context-*.xml / excel import를 위해 사용 -->
+			<include name="src/main/resources/egovframework/spring/com/context-excel.xml"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/sts/sst/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

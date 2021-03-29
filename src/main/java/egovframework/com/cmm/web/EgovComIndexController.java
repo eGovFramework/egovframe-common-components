@@ -25,6 +25,7 @@ package egovframework.com.cmm.web;
  *  2011.09.16   서준식            컨텐츠 페이지 생성
  *  2011.09.26     이기하		header, footer 페이지 생성
  *  2019.12.04   신용호            KISA 보안코드 점검 : Map<Integer, IncludedCompInfoVO> map를 지역변수로 수정
+ *  2020.07.08   신용호           비밀번호를 수정한후 경과한 날짜 조회
  *  2020.08.28   정진호            표준프레임워크 v3.10 개선
  * </pre>
  */
@@ -33,10 +34,7 @@ import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.TreeMap;
 
-import egovframework.com.cmm.IncludedCompInfoVO;
-import egovframework.com.cmm.LoginVO;
-import egovframework.com.cmm.annotation.IncludedInfo;
-import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +45,13 @@ import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import egovframework.com.cmm.IncludedCompInfoVO;
+import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.EgovProperties;
+import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.uat.uia.service.EgovLoginService;
 
 @Controller
 public class EgovComIndexController implements ApplicationContextAware, InitializingBean {
@@ -63,6 +68,10 @@ public class EgovComIndexController implements ApplicationContextAware, Initiali
 		LOGGER.info("EgovComIndexController setApplicationContext method has called!");
 	}
 
+	/** EgovLoginService */
+	@Resource(name = "loginService")
+	private EgovLoginService loginService;
+	
 	@RequestMapping("/index.do")
 	public String index(ModelMap model) {
 		return "egovframework/com/cmm/EgovUnitMain";
@@ -79,11 +88,36 @@ public class EgovComIndexController implements ApplicationContextAware, Initiali
 	}
 
 	@RequestMapping("/EgovContent.do")
-	public String setContent(ModelMap model) {
+	public String setContent(ModelMap model) throws Exception {
 
+		// 설정된 비밀번호 유효기간을 가져온다. ex) 180이면 비밀번호 변경후 만료일이 앞으로 180일 
+		String propertyExpirePwdDay = EgovProperties.getProperty("Globals.ExpirePwdDay");
+		int expirePwdDay = 0 ;
+		try {
+			expirePwdDay =  Integer.parseInt(propertyExpirePwdDay);
+		} catch (Exception e) {
+			LOGGER.debug("convert expirePwdDay Err : "+e.getMessage());
+		}
+		
+		model.addAttribute("expirePwdDay", expirePwdDay);
+
+		// 비밀번호 설정일로부터 몇일이 지났는지 확인한다. ex) 3이면 비빌번호 설정후 3일 경과
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		model.addAttribute("loginVO", loginVO);
-
+		int passedDayChangePWD = 0;
+		if ( loginVO != null ) {
+			LOGGER.debug("===>>> loginVO.getId() = "+loginVO.getId());
+			LOGGER.debug("===>>> loginVO.getUniqId() = "+loginVO.getUniqId());
+			LOGGER.debug("===>>> loginVO.getUserSe() = "+loginVO.getUserSe());
+			// 비밀번호 변경후 경과한 일수
+			passedDayChangePWD = loginService.selectPassedDayChangePWD(loginVO);
+			LOGGER.debug("===>>> passedDayChangePWD = "+passedDayChangePWD);
+			model.addAttribute("passedDay", passedDayChangePWD);
+		}
+		
+		// 만료일자로부터 경과한 일수 => ex)1이면 만료일에서 1일 경과
+		model.addAttribute("elapsedTimeExpiration", passedDayChangePWD - expirePwdDay);
+		
 		return "egovframework/com/cmm/EgovUnitContent";
 	}
 
@@ -164,6 +198,9 @@ public class EgovComIndexController implements ApplicationContextAware, Initiali
 		return "egovframework/com/cmm/EgovUnitLeft";
 	}
 
+	// context-security.xml 설정
+	// csrf="true"인 경우 csrf Token이 없는경우 이동하는 페이지
+	// csrfAccessDeniedUrl="/egovCSRFAccessDenied.do"
 	@RequestMapping("/egovCSRFAccessDenied.do")
 	public String egovCSRFAccessDenied() {
 		return "egovframework/com/cmm/error/csrfAccessDenied";

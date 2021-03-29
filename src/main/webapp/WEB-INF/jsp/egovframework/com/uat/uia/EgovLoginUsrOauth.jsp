@@ -236,13 +236,13 @@ function fnShowLogin(stat) {
 				<c:set var="title"><spring:message code="comUatUia.loginForm.id"/></c:set>
 				<li>
 					<label for="id">${title}</label>
-					<input type="text" name="id" id="id" maxlength="10" title="${title} ${inputTxt}" placeholder="${title} ${inputTxt}">
+					<input type="text" name="id" id="id" maxlength="20" title="${title} ${inputTxt}" placeholder="${title} ${inputTxt}">
 				</li>
 				<!-- 비밀번호 -->
 				<c:set var="title"><spring:message code="comUatUia.loginForm.pw"/></c:set>
 				<li>
 					<label for="password">${title}</label>
-					<input type="password" name="password" id="password" maxlength="12" title="${title} ${inputTxt}" placeholder="${title} ${inputTxt}">
+					<input type="password" name="password" id="password" maxlength="20" title="${title} ${inputTxt}" placeholder="${title} ${inputTxt}">
 				</li>
 				<!-- 아이디 저장 -->
 				<c:set var="title"><spring:message code="comUatUia.loginForm.idSave"/></c:set>

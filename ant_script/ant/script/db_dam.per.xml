@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="dam.per">
+<echo> dam.per update...</echo>
+<target name="build">
+	<!-- dam/per 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/dam/per/**/*.java"/>
+			
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-DamManage.xml"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/dam/per/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/dam/per/**/*.xml"/>
+
+			<!-- message -->
+			<include name="/db_dam/per/**/*.propertie"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/dam/per/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/dam/per/**/*.*"/>
+
+			<!-- DB 생성 스크립트 -->
+			<include name="src/script/**/dam.per*.sql"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/dam/per/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

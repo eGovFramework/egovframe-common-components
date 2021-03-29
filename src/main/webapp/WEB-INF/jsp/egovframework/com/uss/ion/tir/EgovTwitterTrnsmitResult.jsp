@@ -88,7 +88,7 @@ User user = (User)status.getUser();
 		<tr>
 			<th><spring:message code="ussIonTir.twitterTrnsmitResult.profileImage"/></th><!-- Profile Image -->
 			<td class="left">
-			    <img src="<%=user.getProfileImageURL() %>" title="profileImageUrl" alt="profileImageUrl">
+			    <img src="<%=EgovWebUtil.clearXSSMinimum(user.getProfileImageURL()) %>" title="profileImageUrl" alt="profileImageUrl">
 			</td>
 		</tr>
 		<%

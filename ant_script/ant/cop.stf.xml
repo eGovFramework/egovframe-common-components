@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="cop.stf">
+<echo> cop.stf update...</echo>
+<target name="build">
+	<!-- cop/stf (만족도조사 포함) 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/cop/stf/**/*.java"/>
+			
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-StsfdgNo.xml"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/cop/stf/**/*.xml"/>
+
+			<!-- validator -->
+
+			<!-- jsp -->
+			<include name="${path.jsp}/cop/stf/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/cop/stf/**/*.*"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/cop/stf/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

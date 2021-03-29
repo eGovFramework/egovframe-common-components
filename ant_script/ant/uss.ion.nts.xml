@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="uss.ion.nts">
+<echo> uss.ion.nts update...</echo>
+<target name="build">
+	<!-- uss.ion.nts 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/uss/ion/nts/**/*.java"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/uss/ion/nts/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/uss/ion/nts/**/*.xml"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/uss/ion/nts/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/uss/ion/nts/**/*.*"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/uss/ion/nts/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

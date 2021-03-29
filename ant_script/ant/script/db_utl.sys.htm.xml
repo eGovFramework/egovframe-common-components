@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="utl.sys.htm">
+<echo> utl.sys.htm update...</echo>
+<target name="build">
+	<!-- cmm 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/utl/sys/htm/**/*.java"/>
+			
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-HttpManage.xml"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/utl/sys/htm/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/utl/sys/htm/**/*.xml"/>
+
+			<!-- message -->
+			<include name="/db_utl/sys/htm/**/*.propertie"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/utl/sys/htm/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/utl/sys/htm/**/*.*"/>
+
+			<!-- context-Mail -->
+			<include name="src/main/resources/egovframework/spring/com/context-mail.xml"/>
+
+			<!-- Scheduler -->
+			<include name="src/main/resources/egovframework/spring/com/scheduling/context-scheduling-utl-sys-htm.xml"/>
+
+			<!-- DB 생성 스크립트 -->
+			<include name="src/script/**/utl.sys.htm*.sql"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/utl/sys/htm/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

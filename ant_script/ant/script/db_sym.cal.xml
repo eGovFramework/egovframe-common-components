@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="sym.cal">
+<echo> sym.cal update...</echo>
+<target name="build">
+	<!-- sym.cal 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/sym/cal/**/*.java"/>
+			
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-RestDe.xml"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/sym/cal/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/sym/cal/**/*.xml"/>
+
+			<!-- message -->
+			<include name="/db_sym/cal/**/*.propertie"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/sym/cal/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/sym/cal/**/*.*"/>
+
+			<!-- DB 생성 스크립트 -->
+			<include name="src/script/**/sym.cal*.sql"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/sym/cal/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

@@ -90,7 +90,7 @@
 		if(retVal != null){
 
 			var tmp = retVal.split(",");
-			debugger;
+			
 			document.rwardManage.rwardManId.value = tmp[0];
 			document.rwardManage.rwardManNm.value =  tmp[2];
 			document.rwardManage.rwardManOrgnztNm.value = tmp[3]
@@ -189,7 +189,7 @@
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="comUssIonRwd.common.atchFileId"/> <span class="pilsu">*</span></th><!-- 첨부파일 -->
+			<th><spring:message code="comUssIonRwd.common.atchFileId"/></th><!-- 첨부파일 -->
 			<td class="left" colspan="3">
 			    <input name="file_1" id="egovComFileUploader" type="file" multiple title="<spring:message code="comUssIonRwd.common.atchFileId"/>"/><!-- 첨부파일 -->
 			    <div id="egovComFileList"></div>

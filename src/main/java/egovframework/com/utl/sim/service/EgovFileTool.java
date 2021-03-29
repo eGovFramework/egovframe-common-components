@@ -44,6 +44,21 @@ import egovframework.com.cmm.service.Globals;
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 
+/**
+ * EgovFileTool 클래스를 정의한다.
+ *
+ * @author 김진만
+ * @see
+ * <pre>
+ * == 개정이력(Modification Information) ==
+ *
+ *  수정일                수정자           수정내용
+ *  ----------   --------   ---------------------------
+ *  2020.12.07   신용호            KISA 보안약점 조치
+ *  
+ * </pre>
+ */
+
 public class EgovFileTool {
 
 	// 파일사이즈 1K
@@ -2109,15 +2124,18 @@ public class EgovFileTool {
 
 		String access = "";
 		String src = file.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR);
+		// 2020-12-07 KISA 보안코드 검증 조치
+		src = EgovWebUtil.filePathBlackList(src);
+		
 		BufferedReader b_err = null;
 		BufferedReader b_out = null;
 		try {
-			File srcFile = new File(EgovWebUtil.filePathBlackList(src));
+			File srcFile = new File(src);
 			if (srcFile.exists()) {
 
 				// 접근권한 조회
-				String parentPath = EgovWebUtil.filePathBlackList(srcFile.getParent());
-				String fname = EgovWebUtil.filePathBlackList(srcFile.getName());
+				String parentPath = srcFile.getParent();
+				String fname = srcFile.getName();
 
 				Process p = null;
 				if (Globals.OS_TYPE.equals("UNIX")) {

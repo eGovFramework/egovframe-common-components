@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="sym.log.tlg">
+<echo> sym.log.tlg update...</echo>
+<target name="build">
+	<!-- sym.log 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/sym/log/tlg/**/*.java"/>
+			
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-TrsmrcvLog.xml"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/sym/log/tlg/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/sym/log/tlg/**/*.xml"/>
+
+			<!-- message -->
+			<include name="/db_sym/log/tlg/**/*.propertie"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/sym/log/tlg/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/sym/log/tlg/**/*.*"/>
+
+			<!-- context-com-*.xml scheduler 등록-->
+			<include name="src/main/resources/egovframework/spring/com/scheduling/context-scheduling-sym-log-tlg.xml"/>
+
+			<!-- DB 생성 스크립트 -->
+			<include name="src/script/**/sym.log.tlg*.sql"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/sym/log/tlg/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

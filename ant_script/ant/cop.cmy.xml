@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="cop.cmy">
+<echo> cop.cmy update...</echo>
+<target name="build">
+	<!-- cop/cmy 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/cop/cmy/**/*.java"/>
+			
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-AnswerNo.xml"/>
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-Cmmnty.xml"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/cop/cmy/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/cop/cmy/**/*.xml"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/cop/cmy/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/cop/cmy/**/*.*"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/cop/cmy/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

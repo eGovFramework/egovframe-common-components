@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="uss.umt">
+<echo> uss.umt update...</echo>
+<target name="build">
+	<!-- cmm 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/uss/umt/**/*.java"/>
+			
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-UsrCnfrm.xml"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/uss/umt/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/uss/umt/**/*.xml"/>
+
+			<!-- message -->
+			<include name="/db_uss/umt/**/*.propertie"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/uss/umt/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/uss/umt/**/*.*"/>
+
+			<!-- DB 생성 스크립트 -->
+			<include name="src/script/**/uss.umt*.sql"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/uss/umt/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

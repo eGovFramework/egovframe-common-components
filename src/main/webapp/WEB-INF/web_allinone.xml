@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app id="WebApp_ID" version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
+			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
+			xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+<!--
+    수정일          수성자                          수정내용
+   ==========      ========      =================================================
+   2011.9.19        이기하         filter 정리
+   2013.5.31        이기하         미사용 filter 정리(.mdo, .action)
+   2016.6.34        장동한         WebApplicationInitializer 방식으로 변경
+-->
+    
+    <welcome-file-list>
+        <welcome-file>index.jsp</welcome-file>
+        <welcome-file>egovDevIndex.jsp</welcome-file>
+    </welcome-file-list>
+
+    <login-config>
+        <auth-method>BASIC</auth-method>
+    </login-config>
+
+    <session-config>
+        <session-timeout>600</session-timeout>
+    </session-config>
+
+    <error-page>
+      <error-code>404</error-code>
+      <location>/code404.jsp</location>
+    </error-page>
+    
+    <error-page>
+      <error-code>500</error-code>
+      <location>/code500.jsp</location>
+    </error-page>
+
+</web-app>

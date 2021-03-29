@@ -1,0 +1,38 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="sym.ccm.icr">
+<echo> sym.ccm.icr update...</echo>
+<target name="build">
+	<!-- sym.ccm.icr 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/sym/ccm/icr/**/*.java"/>
+			
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-InsttCodeRecptn.xml"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/sym/ccm/icr/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/sym/ccm/icr/**/*.xml"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/sym/ccm/icr/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/sym/ccm/icr/**/*.*"/>
+
+			<!-- context-com-*.xml scheduler 등록-->
+			<include name="src/main/resources/egovframework/spring/com/scheduling/context-scheduling-sym-ccm-icr.xml"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/sym/ccm/icr/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

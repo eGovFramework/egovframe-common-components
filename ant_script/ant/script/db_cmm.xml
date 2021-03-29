@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="cmm">
+<echo> cmm/config update...</echo>
+<target name="build">
+	<!-- web.xml -->
+	<copy todir="src/main/webapp/WEB-INF/" overwrite="true">
+		<fileset dir="src/main/webapp/WEB-INF/"/>
+		<globmapper from="web_default.xml" to="web.xml"/>
+	</copy>
+
+	<!-- context-common.xml -->
+	<!--<copy todir="src/main/resources/egovframework/spring/com/" overwrite="true">
+		<fileset dir="src/context-common/"/>
+		<globmapper from="context-common_test.xml" to="context-egovuserdetailshelper.xml"/>
+	</copy>-->
+
+	<!-- pom.xml -->
+	<copy todir="." overwrite="true">
+		<fileset dir="."/>
+		<globmapper from="pom_default.xml" to="pom.xml"/>
+	</copy>
+	<!-- context-datasource.xml -->
+	<copy todir="src/main/resources/egovframework/spring/com" overwrite="true">
+		<fileset dir="build_config/auth/servlet_session"/>
+		<globmapper from="context-datasource.xml" to="context-datasource.xml"/>
+	</copy>
+	<!-- globals.properties -->
+	<!--<copy todir="src/main/resources/egovframework/egovProps" overwrite="true">
+		<fileset dir="build_config/auth/servlet_dummy"/>
+		<globmapper from="globals.properties" to="globals.properties"/>
+	</copy>-->
+	
+	<!-- cmm 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+
+			<!-- java -->
+			<include name="${path.java}/cmm/**/*.java"/>
+			<include name="${path.java}/sec/ram/**/*.java" /><!-- V3.8 추가 -->
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/cmm/**/*.xml"/>
+			<include name="${path.sqlmap}/sec/ram/**/*.xml"/><!-- V3.8 추가 -->
+
+			<!-- jsp -->
+			<include name="${path.jsp}/cmm/**/*.jsp"/>
+			<exclude name="${path.jsp}/cmm/utl/EgovStrCnvrIndex.jsp"/>
+			<exclude name="${path.jsp}/cmm/utl/EgovStrCnvrMenu.jsp"/>
+			<exclude name="${path.jsp}/cmm/utl/testlist.jsp"/>
+			<include name="${path.jsp}/sec/ram/**/*.jsp"/><!-- V3.8 추가 -->
+			<include name="src/main/webapp/WEB-INF/jsp/index.jsp"/><!-- V3.8 추가 -->
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/cmm/**/*.*"/>
+	        <include name="${path.web}/*.css"/>
+
+			<!-- IMAGES -->
+			<include name="src/main/webapp/images/egovframework/com/*.gif"/>
+			<include name="src/main/webapp/images/egovframework/com/*.jpg"/>
+
+			<!-- exclude 처리 -->
+			<exclude name="src/main/webapp/html/**/*.*"/>
+			<exclude name="src/main/webapp/WEB-INF/jsp/egovframework/com/cmm/utl/**/*.*"/>
+
+			<!-- properties -->
+			<include name="src/main/resources/egovframework/egovProps/**/*.*"/>
+			<exclude name="src/main/resources/egovframework/egovProps/**/jenkins/*.*"/>
+
+			<!-- jstl -->
+			<include name="src\main\webapp\WEB-INF\tlds\egovc.tld"/>
+
+			<!-- 라이브러리 -->
+			<include name="src/main/webapp/WEB-INF/lib/*.jar"/>
+
+			<!-- DB 생성 스크립트 -->
+			<include name="src/script/**/cmm*.sql"/>
+
+			<!-- ********************************** config **********************************  -->
+
+			<!-- context-*.xml -->
+			<include name="src/main/resources/egovframework/spring/com/context-aspect.xml"/>
+			<include name="src/main/resources/egovframework/spring/com/context-common.xml"/>
+			<include name="src/main/resources/egovframework/spring/com/context-datasource.xml"/>
+			<include name="src/main/resources/egovframework/spring/com/context-egovuserdetailshelper.xml"/>
+			<include name="src/main/resources/egovframework/spring/com/context-properties.xml"/>
+			<include name="src/main/resources/egovframework/spring/com/context-sqlMap.xml"/>
+			<include name="src/main/resources/egovframework/spring/com/context-transaction.xml"/>
+			<include name="src/main/resources/egovframework/spring/com/context-validator.xml"/>
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-File.xml"/>
+			<include name="src/main/resources/egovframework/spring/com/context-mapper.xml"/><!-- V3.8 추가 -->
+			<include name="src/main/resources/egovframework/spring/com/context-config.xml"/><!-- V3.8 추가 -->
+			<include name="src/main/resources/egovframework/spring/com/context-crypto.xml"/><!-- V3.8 추가 -->
+			<include name="src/main/resources/egovframework/spring/com/context-whitelist.xml"/><!-- V3.8 패치 -->
+
+			<!-- servlet -->
+			<include name="src/main/webapp/WEB-INF/config/egovframework/springmvc/egov-com-servlet.xml"/>
+
+			<!-- pom.xml -->
+			<include name="pom.xml"/>
+
+			<!-- web.xml -->
+			<include name="src/main/webapp/WEB-INF/web.xml" />
+
+			<!-- messages -->
+			<include name="src/main/resources/egovframework/message/**/*.properties"/>
+
+			<!-- validator 처리 -->
+			<include name="src/main/resources/egovframework/validator/validator-rules.xml"/>
+			<include name="src/main/resources/egovframework/validator/com-rules.xml"/>
+			<!-- validator -->
+			<include name="${path.validator}/sec/ram/**/*.xml"/><!-- V3.8 추가 -->
+
+			<!-- log4j 처리 -->
+			<include name="src/main/resources/log4j2.xml"/>
+
+			<!-- etc -->
+			<include name="src/main/webapp/egovDevIndex.jsp"/>
+			<include name="src/main/webapp/index.jsp"/>
+			<include name="src/main/webapp/code404.jsp"/>
+			<include name="src/main/webapp/code500.jsp"/>
+
+			<!-- exclude 처리 -->
+			<exclude name="src/main/webapp/META-INF/**/*.*"/>
+			<exclude name="src/main/webapp/offlineInfo_ows.manifest"/>
+			<exclude name="src/main/webapp/offlineInfo_sync.manifest"/>
+			<exclude name="src/main/webapp/mindex.jsp"/>
+			<exclude name="src/main/webapp/test_code.jsp"/>
+			<exclude name="src/main/webapp/html/egovframework/com/cmm/utl/htmlarea/**/*.*"/>
+		</fileset>
+	</zip>
+</target>
+</project>

@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="cop.smt.mtm">
+<echo> cop.smt.mtm update...</echo>
+<target name="build">
+	<!-- cop/smt/mtm 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/cop/smt/mtm/**/*.java"/>
+			
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-MemoTodo.xml"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/cop/smt/mtm/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/cop/smt/mtm/**/*.xml"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/cop/smt/mtm/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/cop/smt/mtm/**/*.*"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/cop/smt/mtm/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

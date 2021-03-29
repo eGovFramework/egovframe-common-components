@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="cop.ems">
+<echo> ems update...</echo>
+<target name="build">
+	<!-- cop/ems 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/cop/ems/**/*.java"/>
+			
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-MailMsg.xml"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/cop/ems/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/cop/ems/**/*.xml"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/cop/ems/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/cop/ems/**/*.*"/>
+
+			<!-- context-*.xml -->
+			<include name="src/main/resources/egovframework/spring/com/context-mail.xml"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/cop/sym/ems/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

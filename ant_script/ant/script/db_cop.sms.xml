@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="cop.sms">
+<echo> cop.sms update...</echo>
+<target name="build">
+	
+    <!-- pom.xml -->
+     <copy todir="." overwrite="true">
+         <fileset dir="."/>
+         <globmapper from="pom_sms.xml" to="pom.xml"/>
+     </copy>
+	
+	<!-- cop/sms 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/cop/sms/**/*.java"/>
+			
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-Sms.xml"/>
+		    
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/cop/sms/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/cop/sms/**/*.xml"/>
+
+			<!-- message -->
+			<include name="/db_cop/sms/**/*.propertie"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/cop/sms/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/cop/sms/**/*.*"/>
+
+			<!-- context-com-*.xml scheduler 등록-->
+			<include name="src/main/resources/egovframework/spring/com/scheduling/context-scheduling-cop-sms.xml"/>
+
+			<!-- DB 생성 스크립트 -->
+			<include name="src/script/**/cop.sms*.sql"/>
+			
+			<!-- pom.xml -->
+			<include name="pom.xml"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/cop/sms/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

@@ -1,0 +1,32 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="sym.log.plg">
+<echo> sym.log.clg update...</echo>
+<target name="build">
+	<!-- sym.log.plg 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/sym/log/plg/**/*.java"/>
+			
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/sym/log/plg/**/*.xml"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/sym/log/plg/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/sym/log/plg/**/*.*"/>
+
+			<!-- Aspect -->
+			<include name="src/main/resources/egovframework/spring/com/context-privacylogaop.xml" />
+		
+			<!-- message2 -->
+			<include name="${path.message}/sym/log/plg/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

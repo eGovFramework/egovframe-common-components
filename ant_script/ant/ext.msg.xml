@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="ext.msg">
+<echo> ext.msg update...</echo>
+<target name="build">
+	<!-- ext/msg 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/ext/msg/**/*.java"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/ext/msg/**/*.jsp"/>
+
+	        <!-- CSS/HTML/IMAGES/JS -->
+            <include name="${path.web}/ext/msg/**/*.*"/>
+
+		
+			<!-- message2 -->
+			<include name="${path.message}/ext/msg/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

@@ -25,12 +25,6 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Iterator;
 
-import egovframework.com.cmm.EgovWebUtil;
-import egovframework.com.cmm.service.EgovProperties;
-import egovframework.com.cmm.util.EgovBasicLogger;
-import egovframework.com.cmm.util.EgovResourceCloseHelper;
-import egovframework.com.utl.fcc.service.EgovStringUtil;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -38,10 +32,17 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.util.WebUtils;
 
 import com.artofsolving.jodconverter.DocumentConverter;
 import com.artofsolving.jodconverter.openoffice.connection.SocketOpenOfficeConnection;
 import com.artofsolving.jodconverter.openoffice.converter.OpenOfficeDocumentConverter;
+
+import egovframework.com.cmm.EgovWebUtil;
+import egovframework.com.cmm.service.EgovProperties;
+import egovframework.com.cmm.util.EgovBasicLogger;
+import egovframework.com.cmm.util.EgovResourceCloseHelper;
+import egovframework.com.utl.fcc.service.EgovStringUtil;
 
 public class EgovPdfCnvr {
 	public static String addrIP = "";
@@ -67,7 +68,8 @@ public class EgovPdfCnvr {
 		boolean status = false;
 
 		try {
-			MultipartHttpServletRequest mptRequest = (MultipartHttpServletRequest) request;
+			//MultipartHttpServletRequest mptRequest = (MultipartHttpServletRequest) request;
+			MultipartHttpServletRequest mptRequest = WebUtils.getNativeRequest(request,MultipartHttpServletRequest.class);
 			Iterator<String> file_iter = mptRequest.getFileNames();
 
 			while (file_iter.hasNext()) {

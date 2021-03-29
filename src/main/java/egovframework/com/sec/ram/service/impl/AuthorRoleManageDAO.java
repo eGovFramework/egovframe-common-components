@@ -18,25 +18,16 @@ import org.springframework.stereotype.Repository;
  * <pre>
  * << 개정이력(Modification Information) >>
  *   
- *   수정일      수정자           수정내용
- *  -------    --------    ---------------------------
- *   2009.03.11  이문준          최초 생성
+ *  수정일               수정자               수정내용
+ *  ----------   ---------   ---------------------------
+ *  2009.03.11   이문준              최초 생성
+ *  2021.02-09   신용호              updateAuthorRole 삭제
  *
  * </pre>
  */
 
 @Repository("authorRoleManageDAO")
 public class AuthorRoleManageDAO extends EgovComAbstractDAO {
-
-	/**
-	 * 권한 롤 관계정보를 조회
-	 * @param authorRoleManageVO AuthorRoleManageVO
-	 * @return AuthorRoleManageVO
-	 * @exception Exception
-	 */
-	public AuthorRoleManageVO selectAuthorRole(AuthorRoleManageVO authorRoleManageVO) throws Exception {
-		return (AuthorRoleManageVO) selectOne("authorRoleManageDAO.selectAuthorRole", authorRoleManageVO);
-	}
 
 	/**
 	 * 권한 롤 관계정보 목록 조회
@@ -56,15 +47,6 @@ public class AuthorRoleManageDAO extends EgovComAbstractDAO {
 	 */
 	public void insertAuthorRole(AuthorRoleManage authorRoleManage) throws Exception {
 		insert("authorRoleManageDAO.insertAuthorRole", authorRoleManage);
-	}
-
-	/**
-	 * 수정된 권한 롤 관계정보를 데이터베이스에 반영
-	 * @param authorRoleManage AuthorRoleManage
-	 * @exception Exception
-	 */
-	public void updateAuthorRole(AuthorRoleManage authorRoleManage) throws Exception {
-		update("authorRoleManageDAO.updateAuthorRole", authorRoleManage);
 	}
 
 	/**

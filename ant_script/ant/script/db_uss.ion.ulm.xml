@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="uss.ion.ulm">
+<echo> uss.ion.ulm update...</echo>
+<target name="build">
+	<!-- cmm 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/uss/ion/ulm/**/*.java"/>
+			
+			<!-- IdGnrService -->
+			<include name="src/main/resources/egovframework/spring/com/idgn/context-idgn-UnityLink.xml"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/uss/ion/ulm/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/uss/ion/ulm/**/*.xml"/>
+
+			<!-- message -->
+			<include name="/db_uss/ion/ulm/**/*.propertie"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/uss/ion/ulm/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/uss/ion/ulm/**/*.*"/>
+
+			<!-- 통합링크 샘플 페이지 -->
+			<include name="src/main/webapp/WEB-INF/jsp/egovframework/com/uss/ion/uln/UnityLinkSample.jsp"/>
+
+			<!-- DB 생성 스크립트 -->
+			<include name="src/script/**/uss.ion.ulm*.sql"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/uss/ion/ulm/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

@@ -82,7 +82,7 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 		this.receiver.setListener(this);
 		this.connReceiver.start();
 
-		isConnected = true;
+		this.isConnected = true;
 	}
 
 	/**
@@ -113,9 +113,9 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 
 	public void readPropertyFile() {
 
-		connString = SMEConfig.getSmsUrl();
-		smsId = SMEConfig.getSmsId();
-		smsPwd = SMEConfig.getSmsPwd();
+		this.connString = SMEConfig.getSmsUrl();
+		this.smsId = SMEConfig.getSmsId();
+		this.smsPwd = SMEConfig.getSmsPwd();
 
 		String tmp = null;
 
@@ -281,7 +281,7 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 			} else {
 				//System.out.println("SMEReceiver Disconnected!!"); // 주석처리
 				LOGGER.debug("SMEReceiver Disconnected!!");
-				isConnected = false;
+				this.isConnected = false;
 			}
 		}
 	}
@@ -353,7 +353,7 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 	 * 관련 설정은 context-schedule.xml 참조
 	 */
 	public void execute() {
-		smeConfigPath = EgovProperties.getPathProperty("Globals.SMEConfigPath");
+		this.smeConfigPath = EgovProperties.getPathProperty("Globals.SMEConfigPath");
 
 		LOGGER.debug("EgovSmsInfoReceiver executed...");
 

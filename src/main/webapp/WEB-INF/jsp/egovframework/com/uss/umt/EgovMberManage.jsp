@@ -30,7 +30,8 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <script type="text/javaScript" language="javascript" defer="defer">
-function fnCheckAll() {
+<!--
+function fncCheckAll() {
     var checkField = document.listForm.checkField;
     if(document.listForm.checkAll.checked) {
         if(checkField) {
@@ -74,7 +75,6 @@ function fnDeleteUser() {
         }
     }
     if(checkedIds.length > 0) {
-    	//alert(checkedIds);
         if(confirm("<spring:message code="common.delete.msg" />")){
         	document.listForm.checkedIdForDel.value=checkedIds;
             document.listForm.action = "<c:url value='/uss/umt/EgovMberDelete.do'/>";
@@ -109,6 +109,7 @@ function fnSearch(){
     document.listForm.submit();
 }
 <c:if test="${!empty resultMsg}">alert("<spring:message code="${resultMsg}" />");</c:if>
+-->
 </script>
 </head>
 <body>

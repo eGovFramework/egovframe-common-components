@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:util="http://www.springframework.org/schema/util"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+               http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
+               http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util-2.5.xsd">
+
+	<!-- /EgovPageLink.do 화이트 리스트 처리 (대상목록) -->
+	<util:list id="egovPageLinkWhitelist" value-type="java.lang.String">
+		<value>/egovframework/com/sym/mnu/stm/EgovSiteMap</value>
+		<value>/cmm/sym/mpm/EgovSiteMap</value>
+		<value>/egovframework/com/main_bottom</value>
+		
+		<!-- <value>/egovframework/com/sec/rnc/EgovCallGpin</value>
+		<value>cmm/sec/rnc/EgovCallGpin</value>
+		<value>utl/sys/wsi/EgovWebStandardInspectionUriDirect</value>
+		<value>utl/sys/wsi/EgovWebStandardInspectionUri</value>
+		<value>utl/sys/wsi/EgovWebStandardInspectionUriDirectLink</value> -->
+	</util:list>
+
+	<!-- 820. RSS태그관리 -->
+	<util:list id="egovRSSWhitelist" value-type="java.lang.String">
+		<value>comthtrsmrcvmntrngloginfo</value>
+		<value>comtczip</value>
+	</util:list>
+	
+	<!-- 실명인증 nextUrl -->
+	<util:list id="egovNextUrlWhitelist" value-type="java.lang.String">
+		<value>/uss/umt/EgovMberSbscrbView.do</value>
+		<value>/uss/umt/EgovEntrprsMberSbscrbView.do</value>
+		<value>/uss/olh/qna/QnaCnRegistView.do</value>
+	</util:list>
+	
+</beans>

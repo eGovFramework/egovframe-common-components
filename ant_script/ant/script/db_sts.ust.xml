@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="sts.ust">
+<echo> sts.ust update...</echo>
+<target name="build">
+	<!-- sts 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/sts/ust/**/*.java"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/sts/ust/**/*.xml"/>
+
+			<!-- message -->
+			<include name="/db_sts/ust/**/*.propertie"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/sts/ust/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/sts/ust/**/*.*"/>
+
+			<!-- context-com-*.xml 스케줄러 등록-->
+			<include name="src/main/resources/egovframework/spring/com/scheduling/context-scheduling-sts-ust.xml"/>
+
+			<!-- DB 생성 스크립트 -->
+			<include name="src/script/**/sts.ust*.sql"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/sts/ust/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

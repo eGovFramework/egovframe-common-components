@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="ext.jfile">
+<echo> ext.jfile update...</echo>
+<target name="build">
+	<!-- cop/adb 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/ext/jfile/**/*.java"/>
+
+			<!-- context -->
+			<include name="src/main/resources/egovframework/spring/com/context-jfile.xml"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/ext/jfile/**/*.xml"/>
+
+			<!-- resource -->
+			<include name="src/main/resources/egovframework/jfile/**/*.*"/>
+			<include name="src/main/webapp/resource/jfile/**/*.*"/>
+
+			<!-- message -->
+			<include name="/db_ext/jfile/**/*.propertie"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/ext/jfile/**/*.jsp"/>
+
+			<!-- tld -->
+			<include name="src\main\webapp\WEB-INF\META-INF\jfile-jsp.tld"/>
+
+			<!-- DB 생성 스크립트 -->
+			<include name="src/script/**/ext.jfile_create_*.sql"/>
+
+		
+			<!-- message2 -->
+			<include name="${path.message}/ext/jfile/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

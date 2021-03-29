@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="sts.cst">
+<echo> sts.cst update...</echo>
+<target name="build">
+	<!-- sts 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/sts/cst/**/*.java"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/sts/cst/**/*.xml"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/sts/cst/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/sts/cst/**/*.*"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/sts/cst/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

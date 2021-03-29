@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="utl.sim">
+<echo> utl.sim update...</echo>
+<target name="build">
+	<!-- cmm 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/utl/sim/**/*.java"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/utl/sim/**/*.xml"/>
+
+			<!-- JSP -->
+			<include name="${path.jsp}/*.jsp"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/utl/sim/**/*.xml"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/utl/sim/**/*.*"/>
+			
+			<!-- DB 생성 스크립트 -->
+			<include name="src/script/**/utl.sim*.sql"/>
+			
+			<!-- TEST용이므로 제외함 -->
+			<exclude name="${path.jsp}/utl/sim/**/*.jsp"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/utl/sim/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>

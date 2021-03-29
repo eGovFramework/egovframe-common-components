@@ -307,7 +307,8 @@ public class EgovWikMnthngReprtController {
     		String _atchFileId = wikMnthngReprtVO.getAtchFileId();
 
 
-    		final Map<String, MultipartFile> files = multiRequest.getFileMap();
+    		//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+    		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
     		if(!files.isEmpty()){
     			String atchFileAt = commandMap.get("atchFileAt") == null ? "" : (String)commandMap.get("atchFileAt");
@@ -372,7 +373,8 @@ public class EgovWikMnthngReprtController {
 		List<FileVO> _result = null;
 		String _atchFileId = "";
 
-		final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
 		if(!files.isEmpty()){
 		 _result = fileUtil.parseFileInf(files, "DSCH_", 0, "", "");

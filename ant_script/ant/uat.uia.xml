@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<project basedir=".." default="build" name="uat.uia">
+<echo> uat.uia update...</echo>
+<target name="build">
+	<!-- cmm 파일관리  -->
+	<zip destfile="${where}" update="true">
+		<fileset dir=".">
+			<!-- java -->
+			<include name="${path.java}/uat/uia/**/*.java"/>
+			<include name="${path.java}/uat/sso/**/*.java"/>
+
+			<!-- sql map config -->
+			<include name="${path.sqlmap.config}/**/*.xml"/>
+
+			<!-- sql map -->
+			<include name="${path.sqlmap}/uat/uia/**/*.xml"/>
+
+			<!-- validator -->
+			<include name="${path.validator}/uat/uia/**/*.xml"/>
+
+			<!-- jsp -->
+			<include name="${path.jsp}/uat/uia/**/*.jsp"/>
+
+			<!-- CSS/HTML/IMAGES/JS -->
+			<include name="${path.web}/uat/uia/**/*.*"/>
+			
+			<!-- GPKISecureWeb 모듈 -->
+			<include name="/src/main/webapp/resource/gpkisecureweb/**/*.*"/>
+		
+			<!-- message2 -->
+			<include name="${path.message}/uat/uia/**/*.properties"/>
+		</fileset>
+	</zip>
+</target>
+</project>
