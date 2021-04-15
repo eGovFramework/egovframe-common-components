@@ -508,37 +508,37 @@
 		
         <!-- 3rd party 라이브러리로 별도의 설치 필요 -->
         <!-- oracle 11g driver -->
-        <dependency>
+        <!-- <dependency>
             <groupId>ojdbc</groupId>
             <artifactId>ojdbc</artifactId>
             <version>6-11</version>
             <scope>system</scope>
             <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/ojdbc6-11.2.0.3.jar</systemPath>
-        </dependency>
+        </dependency> -->
         <!-- altibase driver -->
-        <dependency>
+        <!-- <dependency>
             <groupId>altibase</groupId>
             <artifactId>altibase-jdbc-driver</artifactId>
             <version>7.1.0</version>
             <scope>system</scope>
             <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/Altibase.jar</systemPath>
-        </dependency>
+        </dependency> -->
         <!-- tibero driver -->
-        <dependency>
+        <!-- <dependency>
             <groupId>com.tmax.tibero</groupId>
             <artifactId>tibero-jdbc</artifactId>
             <version>5.0</version>
             <scope>system</scope>
             <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/tibero5-jdbc.jar</systemPath>
-        </dependency>
+        </dependency> -->
         <!-- cubrid driver -->
-        <dependency>
+        <!-- <dependency>
             <groupId>cubrid</groupId>
             <artifactId>cubrid-jdbc</artifactId>
             <version>10.2</version>
             <scope>system</scope>
             <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/JDBC-10.2-latest-cubrid.jar</systemPath>
-        </dependency>
+        </dependency> -->
 
         <!--  M-Gov (SMS Service API) -->        
          <dependency>
@@ -594,6 +594,22 @@
 			<scope>test</scope>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/junit/junit -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.13.2</version>
+			<scope>test</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.20</version>
+			<scope>provided</scope>
+		</dependency>
+
     </dependencies>
     <build>
         <defaultGoal>install</defaultGoal>
@@ -617,8 +633,8 @@
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
                     <configuration>
-                        <source>1.7</source>
-                        <target>1.7</target>
+                        <source>1.8</source>
+                        <target>1.8</target>
                         <encoding>UTF-8</encoding>
                     </configuration>
                 </plugin>
@@ -700,6 +716,16 @@
                 <artifactId>maven-javadoc-plugin</artifactId>
                 <version>3.1.1</version>
             </plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>3.3.1</version>
+				<configuration>
+					<attachClasses>true</attachClasses>
+				</configuration>
+			</plugin>
+
         </plugins>
     </build>
     <reporting>
