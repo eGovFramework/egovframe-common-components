@@ -9,14 +9,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.service.CmmnDetailCode;
+import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.test.DAOTest;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class CmmUseDAOTest_selectCmmCodeDetail extends DAOTest {
+public class EgovCmmUseServiceImplTest_selectCmmCodeDetail extends DAOTest {
 
 	@Autowired
-	CmmUseDAO cmmUseDAO;
+	EgovCmmUseService egovCmmUseService;
 
 	@Test
 	public void test() throws Exception {
@@ -27,7 +28,7 @@ public class CmmUseDAOTest_selectCmmCodeDetail extends DAOTest {
 		vo.setCodeId("COM001");
 
 		// when
-		List<CmmnDetailCode> results = cmmUseDAO.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> results = egovCmmUseService.selectCmmCodeDetail(vo);
 
 		// then
 		assertEquals(results.get(0).getCodeId(), vo.getCodeId());
