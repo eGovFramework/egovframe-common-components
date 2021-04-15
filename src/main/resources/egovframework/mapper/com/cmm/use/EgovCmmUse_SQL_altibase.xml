@@ -40,7 +40,7 @@
 		</if>
             
          <if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(haveDetailCondition,'Y')">
-            AND ORGNZT_ID  LIKE #{detailConditionValue}
+            AND ORGNZT_ID  LIKE #{detailCondition}
         </if>
     </select>
     
@@ -60,7 +60,7 @@
 		</if>
            
            <if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(haveDetailCondition,'Y')">
-           AND GROUP_ID  LIKE  #{detailConditionValue}
+           AND GROUP_ID  LIKE  #{detailCondition}
            </if>
     </select>
     
