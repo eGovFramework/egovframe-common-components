@@ -22,7 +22,7 @@ import org.springframework.stereotype.Repository;
  * @see
  *
  */
-@Repository("cmmUseDAO")
+@Repository
 public class CmmUseDAO extends EgovComAbstractDAO {
 
     /**
@@ -32,9 +32,8 @@ public class CmmUseDAO extends EgovComAbstractDAO {
      * @return
      * @throws Exception
      */
-    @SuppressWarnings("unchecked")
     public List<CmmnDetailCode> selectCmmCodeDetail(ComDefaultCodeVO vo) throws Exception {
-	return (List<CmmnDetailCode>) list("CmmUseDAO.selectCmmCodeDetail", vo);
+	return selectList("CmmUseDAO.selectCmmCodeDetail", vo);
     }
 
     /**
@@ -44,9 +43,8 @@ public class CmmUseDAO extends EgovComAbstractDAO {
      * @return
      * @throws Exception
      */
-    @SuppressWarnings("unchecked")
     public List<CmmnDetailCode> selectOgrnztIdDetail(ComDefaultCodeVO vo) throws Exception {
-	return (List<CmmnDetailCode>) list("CmmUseDAO.selectOgrnztIdDetail", vo);
+	return selectList("CmmUseDAO.selectOgrnztIdDetail", vo);
     }
 
     /**
@@ -55,8 +53,7 @@ public class CmmUseDAO extends EgovComAbstractDAO {
      * @return
      * @throws Exception
      */
-    @SuppressWarnings("unchecked")
     public List<CmmnDetailCode> selectGroupIdDetail(ComDefaultCodeVO vo) throws Exception {
-	return (List<CmmnDetailCode>) list("CmmUseDAO.selectGroupIdDetail", vo);
+	return selectList("CmmUseDAO.selectGroupIdDetail", vo);
     }
 }
