@@ -11,5 +11,5 @@ import org.springframework.transaction.annotation.Transactional;
 		"classpath*:egovframework/spring/com/idgn/context-*.xml" })
 @ActiveProfiles({ "mysql", "dummy" })
 @Transactional
-public class DAOTest {
+public class EgovTest {
 }

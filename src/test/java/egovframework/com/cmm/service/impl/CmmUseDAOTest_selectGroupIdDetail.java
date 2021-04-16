@@ -9,11 +9,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.service.CmmnDetailCode;
-import egovframework.com.test.DAOTest;
+import egovframework.com.test.EgovTest;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class CmmUseDAOTest_selectGroupIdDetail extends DAOTest {
+public class CmmUseDAOTest_selectGroupIdDetail extends EgovTest {
 
 	@Autowired
 	CmmUseDAO cmmUseDAO;
