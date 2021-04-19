@@ -2,6 +2,8 @@ package egovframework.com.cmm.service;
 
 import java.io.Serializable;
 
+import lombok.ToString;
+
 /**
  * 공통상세코드 모델 클래스
  * @author 공통서비스 개발팀 이중호
@@ -19,6 +21,7 @@ import java.io.Serializable;
  *
  * </pre>
  */
+@ToString
 public class CmmnDetailCode implements Serializable {
 
 	private static final long serialVersionUID = 1L;
