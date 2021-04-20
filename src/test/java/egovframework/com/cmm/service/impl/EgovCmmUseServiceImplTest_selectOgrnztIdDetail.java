@@ -2,9 +2,7 @@ package egovframework.com.cmm.service.impl;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -27,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { EgovCmmUseServiceImplTest_selectCmmCodeDetails.class })
+@ContextConfiguration(classes = { EgovCmmUseServiceImplTest_selectOgrnztIdDetail.class })
 @ActiveProfiles({ "mysql", "dummy" })
 
 @Configuration
@@ -35,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
 @ComponentScan(useDefaultFilters = false, basePackages = { "egovframework.com.cmm.service.impl" }, includeFilters = {
 		@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { EgovCmmUseServiceImpl.class, CmmUseDAO.class }) })
 
-public class EgovCmmUseServiceImplTest_selectCmmCodeDetails {
+public class EgovCmmUseServiceImplTest_selectOgrnztIdDetail {
 
 	@Autowired
 	ApplicationContext context;
@@ -57,37 +55,25 @@ public class EgovCmmUseServiceImplTest_selectCmmCodeDetails {
 		log.debug("test");
 
 		// given
-		List<ComDefaultCodeVO> voList = new ArrayList<>();
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
-		vo.setCodeId("COM001");
-		voList.add(vo);
-
-		vo = new ComDefaultCodeVO();
-		vo.setCodeId("COM002");
-		voList.add(vo);
+		vo.setTableNm("COMTNORGNZTINFO");
+		vo.setHaveDetailCondition("Y");
+		vo.setDetailCondition("ORGNZT_0000000000000");
 
 		// when
-		Map<String, List<CmmnDetailCode>> result = service.selectCmmCodeDetails(voList);
+		List<CmmnDetailCode> results = service.selectOgrnztIdDetail(vo);
 
 		// then
-		assertEquals(result.get(voList.get(0).getCodeId()).get(0).getCodeId(), voList.get(0).getCodeId());
+		assertEquals(results.get(0).getCodeId(), vo.getTableNm());
 
-		log.debug("result={}", result);
+		log.debug("results={}", results);
 
-		result.get(voList.get(0).getCodeId()).forEach(action -> {
-			log.debug("action={}", action);
-			log.debug("getCodeId={}", action.getCodeId());
-			log.debug("getCode={}", action.getCode());
-			log.debug("getCodeNm={}", action.getCodeNm());
-			log.debug("getCodeDc={}", action.getCodeDc());
-		});
-
-		result.get(voList.get(2).getCodeId()).forEach(action -> {
-			log.debug("action={}", action);
-			log.debug("getCodeId={}", action.getCodeId());
-			log.debug("getCode={}", action.getCode());
-			log.debug("getCodeNm={}", action.getCodeNm());
-			log.debug("getCodeDc={}", action.getCodeDc());
+		results.forEach(result -> {
+			log.debug("result={}", result);
+			log.debug("getCodeId={}", result.getCodeId());
+			log.debug("getCode={}", result.getCode());
+			log.debug("getCodeNm={}", result.getCodeNm());
+			log.debug("getCodeDc={}", result.getCodeDc());
 		});
 	}
 
