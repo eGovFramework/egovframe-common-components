@@ -11,6 +11,8 @@
 		resource="classpath*:/egovframework/spring/com/context-datasource.xml" />
 	<import
 		resource="classpath*:/egovframework/spring/com/context-mapper.xml" />
+	<import
+		resource="classpath*:/egovframework/spring/com/context-transaction.xml" />
 
 	<import
 		resource="classpath*:/egovframework/spring/com/test-context-common.xml" />
