@@ -29,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { EgovFileMngServiceImpl_insertFileInfs.class })
+@ContextConfiguration(classes = { EgovFileMngServiceImplTest_insertFileInfs.class })
 @ActiveProfiles({ "mysql", "dummy" })
 @Transactional
 
@@ -39,7 +39,7 @@ import lombok.extern.slf4j.Slf4j;
 @ComponentScan(useDefaultFilters = false, basePackages = { "egovframework.com.cmm.service.impl" }, includeFilters = {
 		@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { EgovFileMngService.class, FileManageDAO.class }) })
 
-public class EgovFileMngServiceImpl_insertFileInfs {
+public class EgovFileMngServiceImplTest_insertFileInfs {
 
 	@Autowired
 	private ApplicationContext context;
