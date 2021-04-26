@@ -22,7 +22,7 @@ import org.springframework.stereotype.Repository;
  * @see
  *
  */
-@Repository("FileManageDAO")
+@Repository
 public class FileManageDAO extends EgovComAbstractDAO {
 
 	/**

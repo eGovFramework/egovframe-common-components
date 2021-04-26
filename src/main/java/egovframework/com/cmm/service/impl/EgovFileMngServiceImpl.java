@@ -9,8 +9,6 @@ import egovframework.com.cmm.service.FileVO;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
 
 /**
@@ -28,11 +26,14 @@ import org.springframework.stereotype.Service;
  * @see
  *
  */
-@Service("EgovFileMngService")
+@Service
 public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements EgovFileMngService {
 
-	@Resource(name = "FileManageDAO")
-	private FileManageDAO fileMngDAO;
+	private final FileManageDAO fileMngDAO;
+
+	public EgovFileMngServiceImpl(FileManageDAO fileMngDAO) {
+		this.fileMngDAO = fileMngDAO;
+	}
 
 	/**
 	 * 여러 개의 파일을 삭제한다.
