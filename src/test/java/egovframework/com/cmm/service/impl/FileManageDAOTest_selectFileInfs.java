@@ -2,6 +2,8 @@ package egovframework.com.cmm.service.impl;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.List;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -26,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { FileManageDAOTest_deleteFileInf.class })
+@ContextConfiguration(classes = { FileManageDAOTest_selectFileInfs.class })
 @ActiveProfiles({ "mysql", "dummy" })
 @Transactional
 
@@ -44,7 +46,7 @@ import lombok.extern.slf4j.Slf4j;
 @ComponentScan(useDefaultFilters = false, basePackages = { "egovframework.com.cmm.service.impl" }, includeFilters = {
 		@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { FileManageDAO.class }) })
 
-public class FileManageDAOTest_deleteFileInf {
+public class FileManageDAOTest_selectFileInfs {
 
 	private static final StopWatch STOP_WATCH = new StopWatch();
 
@@ -94,24 +96,27 @@ public class FileManageDAOTest_deleteFileInf {
 		log.debug("test");
 
 		// given
-		FileVO fvo = new FileVO();
-		fvo.setAtchFileId("FILE_000000000000001");
-//		fvo.setAtchFileId("FILE_000000000000031");
-		fvo.setFileSn("1");
+		FileVO vo = new FileVO();
+		vo.setAtchFileId("FILE_000000000000001");
+//		vo.setAtchFileId("FILE_000000000000031");
 
 		// when
-		boolean result = false;
-		try {
-			dao.deleteFileInf(fvo);
-			result = true;
-		} catch (Exception e) {
-			log.error(e.getMessage());
-		}
+		List<FileVO> results = dao.selectFileInfs(vo);
+		int size = results.size();
 
 		// then
-		assertEquals(result, true);
+		if (size > 0) {
+			assertEquals(results.get(0).getAtchFileId(), vo.getAtchFileId());
+		}
 
-		log.debug("result={}", result);
+		log.debug("results={}", results);
+		log.debug("size={}", size);
+
+		results.forEach(result -> {
+			log.debug("result={}", result);
+			log.debug("getAtchFileId={}", result.getAtchFileId());
+			log.debug("getFileCn={}", result.getFileCn());
+		});
 	}
 
 }
