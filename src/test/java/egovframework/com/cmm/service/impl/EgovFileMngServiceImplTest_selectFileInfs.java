@@ -8,16 +8,17 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
+import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.test.EgovTestV1;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-@ContextConfiguration(classes = { FileManageDAOConfigurationTest.class })
-public class FileManageDAOTest_selectFileInfs extends EgovTestV1 {
+@ContextConfiguration(classes = { EgovFileMngServiceImplConfigurationTest.class })
+public class EgovFileMngServiceImplTest_selectFileInfs extends EgovTestV1 {
 
 	@Autowired
-	private FileManageDAO fileManageDAO;
+	private EgovFileMngService egovFileMngService;
 
 	@Test
 	public void test() throws Exception {
@@ -29,7 +30,7 @@ public class FileManageDAOTest_selectFileInfs extends EgovTestV1 {
 //		vo.setAtchFileId("FILE_000000000000031");
 
 		// when
-		List<FileVO> results = fileManageDAO.selectFileInfs(vo);
+		List<FileVO> results = egovFileMngService.selectFileInfs(vo);
 		int size = results.size();
 
 		// then

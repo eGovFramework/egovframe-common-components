@@ -7,6 +7,7 @@ import org.junit.BeforeClass;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StopWatch;
@@ -15,6 +16,15 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)
+
+//@ActiveProfiles({ "altibase", "dummy" })
+//@ActiveProfiles({ "cubrid", "dummy" })
+//@ActiveProfiles({ "maria", "dummy" })
+@ActiveProfiles({ "mysql", "dummy" })
+//@ActiveProfiles({ "oracle", "dummy" })
+//@ActiveProfiles({ "postgres", "dummy" })
+//@ActiveProfiles({ "tibero", "dummy" })
+
 @Transactional
 public class EgovTestV1 {
 
