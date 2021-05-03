@@ -116,11 +116,11 @@
 			AND 
 				a.USE_AT = 'Y'
  		
-			<if test="searchCnd == 'streFileNm'">AND
-					b.STRE_FILE_NM LIKE CONCAT ('%', #{searchWrd},'%') 		
+			<if test="searchCondition == 'streFileNm'">AND
+					b.STRE_FILE_NM LIKE CONCAT ('%', #{searchKeyword},'%') 		
 			</if>
-			<if test="searchCnd == 'orignlFileNm'">AND
-					b.ORIGNL_FILE_NM LIKE CONCAT ('%', #{searchWrd},'%') 		
+			<if test="searchCondition == 'orignlFileNm'">AND
+					b.ORIGNL_FILE_NM LIKE CONCAT ('%', #{searchKeyword},'%') 		
 			</if>	
 					
 			ORDER BY a.ATCH_FILE_ID, b.FILE_SN	
@@ -139,11 +139,11 @@
 			AND 
 				a.USE_AT = 'Y'				
  		
-			<if test="searchCnd == 'streFileNm'">AND
-					b.STRE_FILE_NM LIKE CONCAT ('%', #{searchWrd},'%') 		
+			<if test="searchCondition == 'streFileNm'">AND
+					b.STRE_FILE_NM LIKE CONCAT ('%', #{searchKeyword},'%') 		
 			</if>
-			<if test="searchCnd == 'orignlFileNm'">AND
-					b.ORIGNL_FILE_NM LIKE CONCAT ('%', #{searchWrd},'%') 		
+			<if test="searchCondition == 'orignlFileNm'">AND
+					b.ORIGNL_FILE_NM LIKE CONCAT ('%', #{searchKeyword},'%') 		
 			</if>	 		
  	</select>
  	
