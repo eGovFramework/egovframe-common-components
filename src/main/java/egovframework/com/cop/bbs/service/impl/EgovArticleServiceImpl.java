@@ -21,7 +21,7 @@ import egovframework.rte.fdl.property.EgovPropertyService;
 @Service("EgovArticleService")
 public class EgovArticleServiceImpl extends EgovAbstractServiceImpl implements EgovArticleService {
 
-	@Resource(name = "EgovArticleDAO")
+    @Resource(name = "EgovArticleDAO")
     private EgovArticleDAO egovArticleDao;
 
     @Resource(name = "EgovFileMngService")
