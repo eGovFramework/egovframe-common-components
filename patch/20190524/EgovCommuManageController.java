@@ -57,33 +57,33 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 @Controller
 public class EgovCommuManageController {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovCommuManageController.class);
-	
-	@Resource(name = "EgovCommuManageService")
-    private EgovCommuManageService egovCommuManageService;
-	
-	@Resource(name = "EgovCommuBBSMasterService")
-	private EgovCommuBBSMasterService egovCommuBBSMasterService;
-	
-	@Resource(name = "EgovCommuMasterService")
-	private EgovCommuMasterService egovCommuMasterService;
-	
-	@Resource(name = "EgovArticleService")
-	private EgovArticleService egovArticleService;
+     private static final Logger LOGGER = LoggerFactory.getLogger(EgovCommuManageController.class);
 
-	@Resource(name = "EgovTemplateManageService")
-	private EgovTemplateManageService egovTemplateManageService;
-	
-    @Resource(name = "propertiesService")
-    protected EgovPropertyService propertyService;
+     @Resource(name = "EgovCommuManageService")
+     private EgovCommuManageService egovCommuManageService;
 
-    @Autowired
-    private DefaultBeanValidator beanValidator;
-	
-    /** EgovMessageSource */
-	@Resource(name = "egovMessageSource")
-	EgovMessageSource egovMessageSource;
-    
+     @Resource(name = "EgovCommuBBSMasterService")
+     private EgovCommuBBSMasterService egovCommuBBSMasterService;
+
+     @Resource(name = "EgovCommuMasterService")
+     private EgovCommuMasterService egovCommuMasterService;
+
+     @Resource(name = "EgovArticleService")
+     private EgovArticleService egovArticleService;
+
+     @Resource(name = "EgovTemplateManageService")
+     private EgovTemplateManageService egovTemplateManageService;
+
+     @Resource(name = "propertiesService")
+     protected EgovPropertyService propertyService;
+
+     @Autowired
+     private DefaultBeanValidator beanValidator;
+
+     /** EgovMessageSource */
+     @Resource(name = "egovMessageSource")
+     EgovMessageSource egovMessageSource;
+
 	/**
      * 커뮤니티 메인페이지를 조회한다.
      * 
