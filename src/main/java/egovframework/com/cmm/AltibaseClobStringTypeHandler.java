@@ -93,8 +93,7 @@ public class AltibaseClobStringTypeHandler extends AbstractLobTypeHandler {
 				read_data.append(buf, 0, read_length);
 			}
 	    } catch (IOException ie) {
-	    	SQLException sqle = new SQLException(ie.getMessage());
-	    	throw sqle;
+			throw new SQLException(ie.getMessage());
     	// 2011.10.10 보안점검 후속조치
 	    } finally {
 		    if (rd != null) {
