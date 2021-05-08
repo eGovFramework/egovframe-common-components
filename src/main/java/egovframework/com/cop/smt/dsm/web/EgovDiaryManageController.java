@@ -240,11 +240,7 @@ public class EgovDiaryManageController {
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
 		// 파일업로드 제한
-    	String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
-    	String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
-
-        model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
-        model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
+    	restrictRequest(model);
 		
 		String sLocationUrl = "egovframework/com/cop/smt/dsm/EgovDiaryManageModify";
 
@@ -326,16 +322,12 @@ public class EgovDiaryManageController {
         	return "egovframework/com/uat/uia/EgovLoginUsr";
     	}
 
-		//로그인 객체 선언
+		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
-		// 파일업로드 제한
-    	String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
-    	String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
+		// 파일 업로드 제한
+		restrictRequest(model);
 
-        model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
-        model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
-		
 		String sLocationUrl = "egovframework/com/cop/smt/dsm/EgovDiaryManageRegist";
 
 		return sLocationUrl;
@@ -373,11 +365,7 @@ public class EgovDiaryManageController {
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
 		// 파일업로드 제한
-    	String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
-    	String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
-
-        model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
-        model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
+    	restrictRequest(model);
 		
 		String sLocationUrl = "egovframework/com/cop/smt/dsm/EgovDiaryManageRegist";
 
@@ -418,6 +406,13 @@ public class EgovDiaryManageController {
 		return sLocationUrl;
 	}
 
+	// 파일 업로드 제한
+	private void restrictRequest(ModelMap model) {
+		// 파일업로드 제한
+		String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
+		String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
+
+		model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
+		model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
+	}
 }
-
-

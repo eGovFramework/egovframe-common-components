@@ -38,7 +38,7 @@ public class EgovKnoAppraisalServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @param KnoAppraisalVO
 	 */
 	@Override
-	public List<?> selectKnoAppraisalList(KnoAppraisalVO  searchVO) throws Exception {
+	public List<?> selectKnoAppraisalList(KnoAppraisalVO searchVO) throws Exception {
 		return KnoAppraisalDAO.selectKnoAppraisalList(searchVO);
 	}
 

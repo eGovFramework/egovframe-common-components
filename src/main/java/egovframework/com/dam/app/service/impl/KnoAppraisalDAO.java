@@ -31,7 +31,7 @@ public class KnoAppraisalDAO extends EgovComAbstractDAO {
 	 * @param KnoAppraisalVO
 	 */
 	public List<?> selectKnoAppraisalList(KnoAppraisalVO searchVO) throws Exception {
-		return  selectList("KnoAppraisalDAO.selectKnoAppraisalList", searchVO);
+		return selectList("KnoAppraisalDAO.selectKnoAppraisalList", searchVO);
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class KnoAppraisalDAO extends EgovComAbstractDAO {
 	 * @param KnoAppraisalVO
 	 */
 	public int selectKnoAppraisalTotCnt(KnoAppraisalVO searchVO) throws Exception {
-		return  (Integer)selectOne("KnoAppraisalDAO.selectKnoAppraisalTotCnt", searchVO);
+		return selectOne("KnoAppraisalDAO.selectKnoAppraisalTotCnt", searchVO);
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class KnoAppraisalDAO extends EgovComAbstractDAO {
 	 * @param KnoAppraisalVO
 	 */
 	public KnoAppraisal selectKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception {
-		return (KnoAppraisal)selectOne("KnoAppraisalDAO.selectKnoAppraisal", knoAppraisal);
+		return selectOne("KnoAppraisalDAO.selectKnoAppraisal", knoAppraisal);
 	}
 
 	/**

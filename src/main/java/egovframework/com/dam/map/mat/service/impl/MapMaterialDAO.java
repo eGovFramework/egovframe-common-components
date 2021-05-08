@@ -31,7 +31,7 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 * @param MapMaterialVO
 	 */
 	public List<?> selectMapMaterialList(MapMaterialVO searchVO) throws Exception {
-		return  selectList("MapMaterialDAO.selectMapMaterialList", searchVO);
+		return selectList("MapMaterialDAO.selectMapMaterialList", searchVO);
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 * @param MapMaterialVO
 	 */
 	public int selectMapMaterialTotCnt(MapMaterialVO searchVO) throws Exception {
-		return  (Integer)selectOne("MapMaterialDAO.selectMapMaterialTotCnt", searchVO);
+		return selectOne("MapMaterialDAO.selectMapMaterialTotCnt", searchVO);
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 * @param MapMaterialVO
 	 */
 	public MapMaterial selectMapMaterial(MapMaterial mapMaterial) throws Exception {
-		return (MapMaterial)selectOne("MapMaterialDAO.selectMapMaterial", mapMaterial);
+		return selectOne("MapMaterialDAO.selectMapMaterial", mapMaterial);
 	}
 
 	/**
@@ -93,6 +93,6 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 * @throws Exception
 	 */
 	public int knoTypeCdCheck(String knoTypeCd) throws Exception {
-		return (Integer)selectOne("MapMaterialDAO.selectKnoTypeCdCheck", knoTypeCd);
+		return selectOne("MapMaterialDAO.selectKnoTypeCdCheck", knoTypeCd);
 	}
 }

@@ -41,7 +41,7 @@ public class MapTeamDAO extends EgovComAbstractDAO{
 	 * @param MapTeamVO
 	 */
 	public int selectMapTeamTotCnt(MapTeamVO searchVO) throws Exception {
-		return (Integer)selectOne("MapTeamDAO.selectMapTeamTotCnt", searchVO);
+		return selectOne("MapTeamDAO.selectMapTeamTotCnt", searchVO);
 	}
 
 	/**
@@ -52,7 +52,7 @@ public class MapTeamDAO extends EgovComAbstractDAO{
 	 * @param MapTeamVO
 	 */
 	public MapTeam selectMapTeamDetail(MapTeam mapTeam) throws Exception {
-		return (MapTeam)selectOne("MapTeamDAO.selectMapTeamDetail", mapTeam);
+		return selectOne("MapTeamDAO.selectMapTeamDetail", mapTeam);
 	}
 
 	/**

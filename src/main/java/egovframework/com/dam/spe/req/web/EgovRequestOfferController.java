@@ -129,21 +129,21 @@ public class EgovRequestOfferController {
         List<?> reusltList = egovRequestOfferVOService.selectRequestOfferList(searchVO);
         model.addAttribute("resultList", reusltList);
 
-        model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword"));
-        model.addAttribute("searchCondition", commandMap.get("searchCondition") == null ? "" : (String) commandMap.get("searchCondition"));
+        model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : commandMap.get("searchKeyword"));
+        model.addAttribute("searchCondition", commandMap.get("searchCondition") == null ? "" : commandMap.get("searchCondition"));
 
         int totCnt = egovRequestOfferVOService.selectRequestOfferListCnt(searchVO);
         paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);
 
         //(지식전문가/지식사용자) 검사 및 설정
-        HashMap<String, String> hmParam = new HashMap<String, String>();
+        HashMap<String, String> hmParam = new HashMap<>();
         hmParam.put("speId", loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 
         //지식전문가 일때
         if(egovRequestOfferVOService.selectRequestOfferSpeCheck(hmParam)){
         	model.addAttribute("IS_SPE", "Y");
-        }else{
+        } else{
         	model.addAttribute("IS_SPE", "N");
         	model.addAttribute("USER_UNIQ_ID", loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
         }
@@ -183,7 +183,7 @@ public class EgovRequestOfferController {
 
         if (sCmd.equals("del")) {
 
-			HashMap<String, String> hmParam = new HashMap<String, String>();
+			HashMap<String, String> hmParam = new HashMap<>();
 			hmParam.put("ansParents", requestOfferVO.getKnoId());
 
         	//하위답변 검색 건수를 체크
@@ -227,7 +227,7 @@ public class EgovRequestOfferController {
             model.addAttribute("mapMaterialList", MapMaterialList);
 
             //(지식전문가/지식사용자) 검사 및 설정
-            HashMap<String, String> hmParam = new HashMap<String, String>();
+            HashMap<String, String> hmParam = new HashMap<>();
             hmParam.put("speId", loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 
 
