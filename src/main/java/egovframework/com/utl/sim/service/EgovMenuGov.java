@@ -42,10 +42,10 @@ public class EgovMenuGov {
 	 */
 	public static Vector<List<String>> parsFileByMenuChar(String parFile, String parChar, int parField) throws Exception {
 		Vector<List<String>> list = null;
-		String FileName = null;
+		String fileName = null;
 		
-		FileName = parFile.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR);
-		File file = new File(FileName);
+		fileName = parFile.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR);
+		File file = new File(fileName);
 
 		// 파일이며, 존재하면 파싱 시작
 		if (file.exists() && file.isFile()) {
@@ -72,10 +72,10 @@ public class EgovMenuGov {
 
 	public static boolean setDataByDATFile(String parFile, String[] menuIDArray, String[] menuNameArray, String[] menuLevelArray, String[] menuURLArray) throws Exception {
 		boolean success = false;
-		String FileName = null;
+		String fileName = null;
 
-		FileName = parFile.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR);
-		File file = new File(FileName);
+		fileName = parFile.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR);
+		File file = new File(fileName);
 		BufferedWriter out = new BufferedWriter(new FileWriter(file));
 		try {
 
