@@ -112,11 +112,9 @@ public class EgovComCrossSiteHndlr extends BodyTagSupport {
 				//System.out.println("EgovComCrossSiteFilter def> ="+def);
 
 				// if we do have 'default', print it
-				if (def != null) {
-					// good 'default'
-					out(pageContext, escapeXml, def);
+				// good 'default'
+				out(pageContext, escapeXml, def);
 				//System.out.println("EgovComCrossSiteFilter> ="+def);
-				}
 				return SKIP_BODY;
 			}
 		} catch (IOException ex) {
@@ -261,7 +259,6 @@ public class EgovComCrossSiteHndlr extends BodyTagSupport {
 				if(c == cDiffChar[k]){
 					sRtn = sRtn + m_sArrDiffChar[k];
 					booleanDiff = true;
-					continue;
 				}
 			}
 
@@ -327,7 +324,6 @@ public class EgovComCrossSiteHndlr extends BodyTagSupport {
 				if(c == cDiffChar[k]){
 					sRtn = sRtn + m_sArrDiffChar[k];
 					booleanDiff = true;
-					continue;
 				}
 			}
 
