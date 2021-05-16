@@ -77,6 +77,32 @@ function fn_egov_regist_bbs(form){
 		}
 	} 
 }
+
+// 게시판 유형 방명록 선택시 아래 4개의 선택내용 비활성화 및 기본값으로 변경
+// 답장가능여부: 아니오
+// 파읿첨부기능여부: 아니오
+// 첨부가능파일숫자: 없음
+// 추가 선택사항: 미선택
+function fn_egov_regist_bbsTyCode_validation(){
+    var validateForm = document.getElementById("boardMasterVO");
+    if(validateForm.bbsTyCode.value == 'BBST03') {
+        validateForm.replyPosblAt.value = 'N';
+        validateForm.fileAtchPosblAt.value = 'N';
+        validateForm.atchPosblFileNumber.value = '0';
+        validateForm.option.value = '';
+        validateForm.replyPosblAt.disabled = true;
+        validateForm.fileAtchPosblAt.disabled = true;
+        validateForm.atchPosblFileNumber.disabled = true;
+        validateForm.option.disabled = true;
+    } else {
+        validateForm.replyPosblAt.disabled = false;
+        validateForm.fileAtchPosblAt.disabled = false;
+        validateForm.atchPosblFileNumber.disabled = false;
+        validateForm.option.disabled = false;
+    }
+
+}
+
 </script>
 
 </head>
@@ -85,7 +111,7 @@ function fn_egov_regist_bbs(form){
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form commandName="boardMasterVO" action="${pageContext.request.contextPath}/cop/bbs/insertBBSMaster.do" method="post" onSubmit="fn_egov_regist_bbs(document.forms[0]); return false;"> 
+<form:form commandName="boardMasterVO" action="${pageContext.request.contextPath}/cop/bbs/insertBBSMaster.do" method="post" onSubmit="fn_egov_regist_bbs(document.forms[0]); return false;">
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.create" /></h2><!-- 게시판 마스터 등록 -->
@@ -105,7 +131,7 @@ function fn_egov_regist_bbs(form){
 			<th><label for="bbsNm">${title} <span class="pilsu">*</span></label></th>
 			<td class="left">
 			    <form:input path="bbsNm" title="${title} ${inputTxt}" size="70" maxlength="70" />
-   				<div><form:errors path="bbsNm" cssClass="error" /></div>     
+   				<div><form:errors path="bbsNm" cssClass="error" /></div>
 			</td>
 		</tr>
 		<!-- 게시판 소개내용 -->
@@ -113,17 +139,17 @@ function fn_egov_regist_bbs(form){
 		<tr>
 			<th><label for="bbsIntrcn">${title } <span class="pilsu">*</span></label></th>
 			<td class="nopd">
-				<form:textarea path="bbsIntrcn" title="${title} ${inputTxt}" cols="300" rows="20" />   
-				<div><form:errors path="bbsIntrcn" cssClass="error" /></div>  
+				<form:textarea path="bbsIntrcn" title="${title} ${inputTxt}" cols="300" rows="20" />
+				<div><form:errors path="bbsIntrcn" cssClass="error" /></div>
 			</td>
 		</tr>
-		
+
 		<!-- 게시판 유형 -->
 		<c:set var="title"><spring:message code="comCopBbs.boardMasterVO.regist.bbsTyCode"/> </c:set>
 		<tr>
 			<th><label for="bbsTyCode">${title} <span class="pilsu">*</span></label></th>
 			<td class="left">
-				<form:select path="bbsTyCode" title="${title} ${inputTxt}" cssClass="txt">
+				<form:select onchange="fn_egov_regist_bbsTyCode_validation()" path="bbsTyCode" title="${title} ${inputTxt}" cssClass="txt">
 					<form:option value="" label="--선택하세요--" />
 					<form:options items="${bbsTyCode}" itemValue="code" itemLabel="codeNm" />
 				</form:select>
