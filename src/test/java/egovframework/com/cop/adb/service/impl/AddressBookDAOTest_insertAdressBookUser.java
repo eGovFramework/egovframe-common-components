@@ -2,30 +2,27 @@ package egovframework.com.cop.adb.service.impl;
 
 import static org.junit.Assert.assertEquals;
 
-import java.util.Date;
-
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 
-import egovframework.com.cop.adb.service.AddressBook;
+import egovframework.com.cop.adb.service.AddressBookUser;
 import egovframework.com.test.EgovTestV1;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
-import egovframework.rte.fdl.string.EgovDateUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { AddressBookConfigurationTest.class })
-public class AddressBookDAOTest_insertAdressBook extends EgovTestV1 {
+public class AddressBookDAOTest_insertAdressBookUser extends EgovTestV1 {
 
 	@Autowired
 	private AddressBookDAO addressBookDAO;
 
 	@Autowired
-	@Qualifier("egovAdbkIdGnrService")
-	private EgovIdGnrService egovAdbkIdGnrService;
+	@Qualifier("egovAdbkUserIdGnrService")
+	private EgovIdGnrService egovAdbkUserIdGnrService;
 
 	@Test
 	@Rollback(true)
@@ -33,19 +30,13 @@ public class AddressBookDAOTest_insertAdressBook extends EgovTestV1 {
 		log.debug("test");
 
 		// given
-		AddressBook addressBook = new AddressBook();
-		log.debug("getAdbkId={}", addressBook.getAdbkId());
-		addressBook.setAdbkId(egovAdbkIdGnrService.getNextStringId());
-		log.debug("getAdbkId={}", addressBook.getAdbkId());
-
-		String today = " " + EgovDateUtil.toString(new Date(), null, null);
-
-		addressBook.setAdbkNm("test 주소록명" + today);
+		AddressBookUser addressBookUser = new AddressBookUser();
+		addressBookUser.setAdbkUserId(egovAdbkUserIdGnrService.getNextStringId());
 
 		// when
 		boolean result = false;
 		try {
-			addressBookDAO.insertAdressBook(addressBook);
+			addressBookDAO.insertAdressBookUser(addressBookUser);
 			result = true;
 		} catch (Exception e) {
 			log.error(e.getMessage());
