@@ -6,14 +6,13 @@ import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.cop.bbs.service.Board;
-import egovframework.com.cop.bbs.service.BoardMasterVO;
 import egovframework.com.cop.bbs.service.BoardVO;
 
 @Repository("EgovArticleDAO")
 public class EgovArticleDAO extends EgovComAbstractDAO {
 
 	public List<?> selectArticleList(BoardVO boardVO) {
-		return list("BBSArticle.selectArticleList", boardVO);
+		return selectList("BBSArticle.selectArticleList", boardVO);
 	}
 
 	public int selectArticleListCnt(BoardVO boardVO) {
@@ -50,11 +49,11 @@ public class EgovArticleDAO extends EgovComAbstractDAO {
 	}
 
 	public List<BoardVO> selectNoticeArticleList(BoardVO boardVO) {
-		return (List<BoardVO>) list("BBSArticle.selectNoticeArticleList", boardVO);
+		return selectList("BBSArticle.selectNoticeArticleList", boardVO);
 	}
 	
 	public List<?> selectGuestArticleList(BoardVO vo) {
-		return list("BBSArticle.selectGuestArticleList", vo);
+		return selectList("BBSArticle.selectGuestArticleList", vo);
 	}
 
 	public int selectGuestArticleListCnt(BoardVO vo) {
@@ -69,11 +68,11 @@ public class EgovArticleDAO extends EgovComAbstractDAO {
 	}
 	
 	public List<BoardVO> selectBlogNmList(BoardVO boardVO) {
-		return (List<BoardVO>) list("BBSArticle.selectBlogNmList", boardVO);
+		return selectList("BBSArticle.selectBlogNmList", boardVO);
 	}
 	
 	public List<?> selectBlogListManager(BoardVO vo) {
-		return list("BBSArticle.selectBlogListManager", vo);
+		return selectList("BBSArticle.selectBlogListManager", vo);
 	}
 	
 	public int selectBlogListManagerCnt(BoardVO vo) {
@@ -81,7 +80,7 @@ public class EgovArticleDAO extends EgovComAbstractDAO {
 	}
 	
 	public List<BoardVO> selectArticleDetailDefault(BoardVO boardVO) {
-		return (List<BoardVO>) list("BBSArticle.selectArticleDetailDefault", boardVO);
+		return selectList("BBSArticle.selectArticleDetailDefault", boardVO);
 	}
 	
 	public int selectArticleDetailDefaultCnt(BoardVO boardVO) {
@@ -89,7 +88,7 @@ public class EgovArticleDAO extends EgovComAbstractDAO {
 	}
 	
 	public List<BoardVO> selectArticleDetailCn(BoardVO boardVO) {
-		return (List<BoardVO>) list("BBSArticle.selectArticleDetailCn", boardVO);
+		return selectList("BBSArticle.selectArticleDetailCn", boardVO);
 	}
 	
 	public int selectLoginUser(BoardVO boardVO) {
