@@ -23,9 +23,10 @@ import org.springframework.context.annotation.ImportResource;
 
 })
 
-@ComponentScan(useDefaultFilters = false, basePackages = {
+@ComponentScan(useDefaultFilters = false, basePackages = { "egovframework.com.cop.bbs.service.impl",
 		"egovframework.com.cop.bbs.service.impl" }, includeFilters = {
-				@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { EgovArticleDAO.class }) })
+				@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { EgovArticleDAO.class,
+						EgovBBSMasterDAO.class }) })
 
 public class EgovArticleDAOTest_Configuration {
 
