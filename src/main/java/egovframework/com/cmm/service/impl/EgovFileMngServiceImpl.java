@@ -8,6 +8,7 @@ import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.FileVO;
 
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import lombok.RequiredArgsConstructor;
 
 import org.springframework.stereotype.Service;
 
@@ -26,14 +27,11 @@ import org.springframework.stereotype.Service;
  * @see
  *
  */
-@Service
+@Service("EgovFileMngService")
+@RequiredArgsConstructor
 public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements EgovFileMngService {
 
 	private final FileManageDAO fileMngDAO;
-
-	public EgovFileMngServiceImpl(FileManageDAO fileMngDAO) {
-		this.fileMngDAO = fileMngDAO;
-	}
 
 	/**
 	 * 여러 개의 파일을 삭제한다.
