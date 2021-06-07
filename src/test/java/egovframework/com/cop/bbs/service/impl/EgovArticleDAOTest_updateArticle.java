@@ -11,6 +11,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cop.bbs.service.Board;
 import egovframework.com.cop.bbs.service.BoardMaster;
+import egovframework.com.cop.bbs.service.BoardVO;
 import egovframework.com.test.EgovTestV1;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import egovframework.rte.fdl.string.EgovDateUtil;
@@ -18,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovArticleDAOTest_Configuration.class })
-public class EgovArticleDAO_insertArticle extends EgovTestV1 {
+public class EgovArticleDAOTest_updateArticle extends EgovTestV1 {
 
 	@Autowired
 	private EgovBBSMasterDAO egovBBSMasterDAO;
@@ -40,28 +41,42 @@ public class EgovArticleDAO_insertArticle extends EgovTestV1 {
 		log.debug("test");
 
 		// given
+
+		// insertBBSMasterInf
 		BoardMaster boardMaster = new BoardMaster();
 		boardMaster.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
 
-		Board board = new Board();
+		egovBBSMasterDAO.insertBBSMasterInf(boardMaster);
 
-		board.setNttId(egovNttIdGnrService.getNextIntegerId());
-		board.setBbsId(boardMaster.getBbsId());
+		// insertArticle
+		Board boardInsertArticle = new Board();
+
+		boardInsertArticle.setNttId(egovNttIdGnrService.getNextIntegerId());
+		boardInsertArticle.setBbsId(boardMaster.getBbsId());
 
 		String today = " " + EgovDateUtil.toString(new Date(), null, null);
-		board.setNttSj("test 게시물제목" + today);
-		board.setNttCn("test 게시물내용" + today);
+		boardInsertArticle.setNttSj("test 게시물제목" + today);
+		boardInsertArticle.setNttCn("test 게시물내용" + today);
 
-		board.setParnts("0");
-		board.setReplyLc("0");
-		board.setReplyAt("N");
+		boardInsertArticle.setParnts("0");
+		boardInsertArticle.setReplyLc("0");
+		boardInsertArticle.setReplyAt("N");
+
+		egovArticleDAO.insertArticle(boardInsertArticle);
+
+		// selectArticleDetail
+		BoardVO boardVO = new BoardVO();
+		boardVO.setNttId(boardInsertArticle.getNttId());
+		boardVO.setBbsId(boardInsertArticle.getBbsId());
+
+		BoardVO selectArticleDetail = egovArticleDAO.selectArticleDetail(boardVO);
+		selectArticleDetail.setNttSj(selectArticleDetail.getNttSj() + " 수정");
 
 		// when
-		egovBBSMasterDAO.insertBBSMasterInf(boardMaster);
 
 		boolean result = false;
 		try {
-			egovArticleDAO.insertArticle(board);
+			egovArticleDAO.updateArticle(selectArticleDetail);
 			result = true;
 		} catch (Exception e) {
 			log.error(e.getMessage());
