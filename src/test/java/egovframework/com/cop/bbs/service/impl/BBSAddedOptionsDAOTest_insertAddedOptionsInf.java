@@ -1,4 +1,4 @@
-package egovframework.comegovframework.com.cop.bbs.service.impl;
+package egovframework.com.cop.bbs.service.impl;
 
 import static org.junit.Assert.assertEquals;
 
@@ -9,7 +9,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cop.bbs.service.BoardMaster;
-import egovframework.com.cop.bbs.service.impl.BBSAddedOptionsDAO;
 import egovframework.com.test.EgovTestV1;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import lombok.extern.slf4j.Slf4j;
