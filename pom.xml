@@ -610,6 +610,13 @@
 			<scope>provided</scope>
 		</dependency>
 
+		<!-- https://mvnrepository.com/artifact/com.github.javaparser/javaparser-core -->
+		<dependency>
+		    <groupId>com.github.javaparser</groupId>
+		    <artifactId>javaparser-core</artifactId>
+		    <version>3.22.1</version>
+		</dependency>
+
     </dependencies>
     <build>
         <defaultGoal>install</defaultGoal>
