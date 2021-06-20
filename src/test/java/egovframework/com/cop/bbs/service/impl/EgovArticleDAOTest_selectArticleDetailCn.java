@@ -17,7 +17,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovArticleDAOTest_Configuration.class })
-public class EgovArticleDAOTest_selectArticleDetailDefault extends EgovTestV1 {
+public class EgovArticleDAOTest_selectArticleDetailCn extends EgovTestV1 {
 
 	@Resource(name = "egovBBSMstrIdGnrService")
 	private EgovIdGnrService egovBBSMstrIdGnrService;
@@ -39,19 +39,14 @@ public class EgovArticleDAOTest_selectArticleDetailDefault extends EgovTestV1 {
 		// given
 		BoardVO boardVO = new BoardVO();
 		boardVO.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
-
-		boardVO.setSearchCnd("5");
-		boardVO.setSearchCnd("10");
-		boardVO.setSearchCnd("15");
-		boardVO.setSearchCnd("20");
-		boardVO.setSearchCnd("30");
+		boardVO.setNttId(egovNttIdGnrService.getNextLongId());
 
 		// when
-		List<BoardVO> articleDetailDefault = egovArticleDAO.selectArticleDetailDefault(boardVO);
-		log.debug("articleDetailDefault={}", articleDetailDefault);
+		List<BoardVO> articleDetailCn = egovArticleDAO.selectArticleDetailCn(boardVO);
+		log.debug("articleDetailCn={}", articleDetailCn);
 
 		// then
-		assertEquals(articleDetailDefault.size(), 0);
+		assertEquals(articleDetailCn.size(), 0);
 	}
 
 }

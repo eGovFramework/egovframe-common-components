@@ -20,7 +20,7 @@ public class EgovArticleDAOTest_selectArticleDetailDefaultCnt extends EgovTestV1
 	@Resource(name = "egovBBSMstrIdGnrService")
 	private EgovIdGnrService egovBBSMstrIdGnrService;
 
-	@Resource(name = "egovBBSMstrIdGnrService")
+	@Resource(name = "egovNttIdGnrService")
 	private EgovIdGnrService egovNttIdGnrService;
 
 	@Resource(name = "egovBlogIdGnrService")
@@ -39,11 +39,11 @@ public class EgovArticleDAOTest_selectArticleDetailDefaultCnt extends EgovTestV1
 		boardVO.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
 
 		// when
-		int rticleDetailDefaultCnt = egovArticleDAO.selectArticleDetailDefaultCnt(boardVO);
-		log.debug("rticleDetailDefaultCnt={}", rticleDetailDefaultCnt);
+		int articleDetailDefaultCnt = egovArticleDAO.selectArticleDetailDefaultCnt(boardVO);
+		log.debug("articleDetailDefaultCnt={}", articleDetailDefaultCnt);
 
 		// then
-		assertEquals(rticleDetailDefaultCnt, 0);
+		assertEquals(articleDetailDefaultCnt, 0);
 	}
 
 }
