@@ -26,8 +26,8 @@ import org.springframework.context.annotation.ImportResource;
 
 @ComponentScan(useDefaultFilters = false, basePackages = {
 		"egovframework.com.cop.bbs.service.impl", }, includeFilters = {
-				@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { EgovArticleDAO.class,
-						EgovBBSMasterDAO.class }) })
+				@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { EgovArticleDAO.class, EgovBBSMasterDAO.class,
+						EgovArticleDAOTest_AaaTestData.class }) })
 
 public class EgovArticleDAOTest_Configuration {
 

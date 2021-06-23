@@ -36,6 +36,9 @@ public class EgovArticleDAOTest_selectLoginUser extends EgovTestV1 {
 	@Autowired
 	private EgovBBSMasterDAO egovBBSMasterDAO;
 
+	@Autowired
+	private EgovArticleDAOTest_AaaTestData egovArticleDAOTest_AaaTestData;
+
 	@Test
 //	@Commit
 	public void test() throws Exception {
@@ -44,7 +47,8 @@ public class EgovArticleDAOTest_selectLoginUser extends EgovTestV1 {
 		// given
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-		Blog blog = insertBlogMaster(loginVO);
+//		Blog blog = insertBlogMaster(loginVO);
+		Blog blog = egovArticleDAOTest_AaaTestData.insertBlogMaster(loginVO);
 
 		BoardVO boardVO = new BoardVO();
 		boardVO.setFrstRegisterId(blog.getFrstRegisterId());
@@ -58,7 +62,7 @@ public class EgovArticleDAOTest_selectLoginUser extends EgovTestV1 {
 		assertEquals(loginUser, 1);
 	}
 
-	private Blog insertBlogMaster(LoginVO loginVO) throws FdlException {
+	Blog insertBlogMaster(LoginVO loginVO) throws FdlException {
 		Blog blog = new Blog();
 		blog.setBlogId(egovBlogIdGnrService.getNextStringId());
 //		blog.setBbsId(""); // 게시판 ID
