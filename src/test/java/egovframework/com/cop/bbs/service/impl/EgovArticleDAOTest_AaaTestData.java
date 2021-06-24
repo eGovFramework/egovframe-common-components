@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cop.bbs.service.Blog;
+import egovframework.com.cop.bbs.service.Board;
+import egovframework.com.cop.bbs.service.BoardMaster;
 import egovframework.rte.fdl.cmmn.exception.FdlException;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import egovframework.rte.fdl.string.EgovDateUtil;
@@ -52,6 +54,40 @@ public class EgovArticleDAOTest_AaaTestData {
 		egovBBSMasterDAO.insertBlogMaster(blog);
 
 		return blog;
+	}
+
+	public Board insertArticle() throws FdlException {
+		BoardMaster boardMaster = insertBBSMasterInf();
+		Board board = insertArticle(boardMaster);
+		return board;
+	}
+
+	private BoardMaster insertBBSMasterInf() throws FdlException {
+		BoardMaster boardMaster = new BoardMaster();
+		boardMaster.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
+
+		egovBBSMasterDAO.insertBBSMasterInf(boardMaster);
+
+		return boardMaster;
+	}
+
+	private Board insertArticle(BoardMaster boardMaster) throws FdlException {
+		Board board = new Board();
+
+		board.setNttId(egovNttIdGnrService.getNextIntegerId());
+		board.setBbsId(boardMaster.getBbsId());
+
+		String today = " " + EgovDateUtil.toString(new Date(), null, null);
+		board.setNttSj("test 게시물제목" + today);
+		board.setNttCn("test 게시물내용" + today);
+
+		board.setParnts("0");
+		board.setReplyLc("0");
+		board.setReplyAt("N");
+
+		egovArticleDAO.insertArticle(board);
+
+		return board;
 	}
 
 }
