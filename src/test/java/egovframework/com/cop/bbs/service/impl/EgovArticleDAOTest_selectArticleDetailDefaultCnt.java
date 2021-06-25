@@ -28,6 +28,9 @@ public class EgovArticleDAOTest_selectArticleDetailDefaultCnt extends EgovTestV1
 
 	@Autowired
 	private EgovArticleDAO egovArticleDAO;
+	
+	@Autowired
+	private EgovArticleDAOTest_AaaTestData egovArticleDAOTest_AaaTestData;
 
 	@Test
 //	@Commit
@@ -35,15 +38,14 @@ public class EgovArticleDAOTest_selectArticleDetailDefaultCnt extends EgovTestV1
 		log.debug("test");
 
 		// given
-		BoardVO boardVO = new BoardVO();
-		boardVO.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
+		BoardVO boardVO = egovArticleDAOTest_AaaTestData.selectArticleDetailDefaultCnt();
 
 		// when
 		int articleDetailDefaultCnt = egovArticleDAO.selectArticleDetailDefaultCnt(boardVO);
 		log.debug("articleDetailDefaultCnt={}", articleDetailDefaultCnt);
 
 		// then
-		assertEquals(articleDetailDefaultCnt, 0);
+		assertEquals(articleDetailDefaultCnt, 1);
 	}
 
 }

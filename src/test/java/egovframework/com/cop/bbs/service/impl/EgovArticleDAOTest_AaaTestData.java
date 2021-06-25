@@ -7,9 +7,11 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.bbs.service.Blog;
 import egovframework.com.cop.bbs.service.Board;
 import egovframework.com.cop.bbs.service.BoardMaster;
+import egovframework.com.cop.bbs.service.BoardVO;
 import egovframework.rte.fdl.cmmn.exception.FdlException;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import egovframework.rte.fdl.string.EgovDateUtil;
@@ -85,9 +87,22 @@ public class EgovArticleDAOTest_AaaTestData {
 		board.setReplyLc("0");
 		board.setReplyAt("N");
 
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		board.setFrstRegisterId(loginVO.getUniqId());
+
 		egovArticleDAO.insertArticle(board);
 
 		return board;
+	}
+
+	public BoardVO selectArticleDetailDefaultCnt() throws FdlException {
+		BoardVO boardVO = new BoardVO();
+
+		Board board = insertArticle();
+
+		boardVO.setBbsId(board.getBbsId());
+
+		return boardVO;
 	}
 
 }
