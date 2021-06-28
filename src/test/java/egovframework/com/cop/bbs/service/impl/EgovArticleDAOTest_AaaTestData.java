@@ -105,4 +105,26 @@ public class EgovArticleDAOTest_AaaTestData {
 		return boardVO;
 	}
 
+	public BoardVO selectBlogListManagerCnt() throws FdlException {
+		BoardVO boardVO = new BoardVO();
+
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+		Blog blog = insertBlogMaster(loginVO);
+
+		BoardMaster boardMaster = new BoardMaster();
+		boardMaster.setBbsId(blog.getBbsId());
+		boardMaster.setBlogId(blog.getBlogId());
+		String today = " " + EgovDateUtil.toString(new Date(), null, null);
+		boardMaster.setBbsNm("test 게시판명" + today);
+		boardMaster.setBbsIntrcn("test 게시판소개" + today);
+		egovBBSMasterDAO.insertBBSMasterInf(boardMaster);
+
+		boardVO.setBlogId(blog.getBlogId());
+		boardVO.setBbsNm(boardMaster.getBbsNm());
+		boardVO.setSearchWrd(boardMaster.getBbsIntrcn());
+
+		return boardVO;
+	}
+
 }
