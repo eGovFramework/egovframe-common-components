@@ -123,6 +123,7 @@ public class EgovArticleDAOTest_AaaTestData {
 		boardVO.setBlogId(blog.getBlogId());
 		boardVO.setBbsNm(boardMaster.getBbsNm());
 		boardVO.setSearchWrd(boardMaster.getBbsIntrcn());
+		boardVO.setBbsId(blog.getBbsId());
 
 		return boardVO;
 	}

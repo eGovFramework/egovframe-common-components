@@ -6,12 +6,10 @@ import java.util.List;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cop.bbs.service.BoardVO;
 import egovframework.com.test.EgovTestV1;
-import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -19,11 +17,10 @@ import lombok.extern.slf4j.Slf4j;
 public class EgovArticleDAOTest_selectBlogNmList extends EgovTestV1 {
 
 	@Autowired
-	@Qualifier("egovBlogIdGnrService")
-	private EgovIdGnrService egovBlogIdGnrService;
+	private EgovArticleDAO egovArticleDAO;
 
 	@Autowired
-	private EgovArticleDAO egovArticleDAO;
+	private EgovArticleDAOTest_AaaTestData egovArticleDAOTest_AaaTestData;
 
 	@Test
 //	@Commit
@@ -31,15 +28,24 @@ public class EgovArticleDAOTest_selectBlogNmList extends EgovTestV1 {
 		log.debug("test");
 
 		// given
-		BoardVO boardVO = new BoardVO();
-		boardVO.setBlogId(egovBlogIdGnrService.getNextStringId());
+		BoardVO boardVO = egovArticleDAOTest_AaaTestData.selectBlogListManagerCnt();
 
 		// when
 		List<BoardVO> blogNmList = egovArticleDAO.selectBlogNmList(boardVO);
 		log.debug("blogNmList={}", blogNmList);
 
+		for (BoardVO blogNm : blogNmList) {
+			log.debug("getBbsId={}", blogNm.getBbsId());
+			log.debug("getBbsNm={}", blogNm.getBbsNm());
+		}
+
 		// then
-		assertEquals(blogNmList.size(), 0);
+		assertEquals(blogNmList.size(), 1);
+
+		for (BoardVO blogNm : blogNmList) {
+			assertEquals(blogNm.getBbsId(), boardVO.getBbsId());
+			assertEquals(blogNm.getBbsNm(), boardVO.getBbsNm());
+		}
 	}
 
 }
