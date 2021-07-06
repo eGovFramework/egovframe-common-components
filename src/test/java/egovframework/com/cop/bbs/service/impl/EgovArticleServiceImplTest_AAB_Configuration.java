@@ -31,7 +31,7 @@ import egovframework.com.cmm.service.impl.FileManageDAO;
 @ComponentScan(useDefaultFilters = false, basePackages = { "egovframework.com.cop.bbs.service.impl",
 		"egovframework.com.cmm.service.impl" }, includeFilters = {
 				@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { EgovArticleDAO.class, EgovBBSMasterDAO.class,
-						EgovArticleDAOTest_AaaTestData.class, EgovArticleServiceImpl.class,
+						EgovArticleServiceImplTest_AAC_TestData.class, EgovArticleServiceImpl.class,
 						EgovFileMngServiceImpl.class, FileManageDAO.class }) })
 
 public class EgovArticleServiceImplTest_AAB_Configuration {
