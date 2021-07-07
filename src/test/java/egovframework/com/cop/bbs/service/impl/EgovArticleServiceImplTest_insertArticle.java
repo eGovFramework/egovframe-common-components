@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cop.bbs.service.Board;
-import egovframework.com.cop.bbs.service.BoardMaster;
 import egovframework.com.cop.bbs.service.EgovArticleService;
 import egovframework.com.test.EgovTestV1;
 import egovframework.rte.fdl.cmmn.exception.FdlException;
@@ -28,10 +27,7 @@ public class EgovArticleServiceImplTest_insertArticle extends EgovTestV1 {
 		log.debug("test");
 
 		// given
-		BoardMaster boardMaster = egovArticleServiceImplTest_AAC_TestData.insertBBSMasterInf();
-
-		Board board = new Board();
-		board.setBbsId(boardMaster.getBbsId());
+		Board board = egovArticleServiceImplTest_AAC_TestData.insertArticle();
 
 		boolean result = true;
 

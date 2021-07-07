@@ -15,7 +15,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class EgovArticleServiceImplTest_AAA_javaParser {
+public class EgovArticleServiceImplTest_AAA_JavaParser {
 
 	@Test
 	public void test() {
