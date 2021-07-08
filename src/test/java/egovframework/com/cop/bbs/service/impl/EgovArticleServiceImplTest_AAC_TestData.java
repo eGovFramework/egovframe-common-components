@@ -12,17 +12,22 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.bbs.service.Board;
 import egovframework.com.cop.bbs.service.BoardMaster;
+import egovframework.com.cop.bbs.service.BoardVO;
+import egovframework.com.cop.bbs.service.EgovArticleService;
 import egovframework.rte.fdl.cmmn.exception.FdlException;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import egovframework.rte.fdl.string.EgovDateUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class EgovArticleServiceImplTest_AAC_TestData {
 
 	private final EgovBBSMasterDAO egovBBSMasterDAO;
 //	private final EgovArticleDAO egovArticleDAO;
+	private final EgovArticleService egovArticleService;
 
 	@Resource(name = "egovBBSMstrIdGnrService")
 	private EgovIdGnrService egovBBSMstrIdGnrService;
@@ -79,6 +84,22 @@ public class EgovArticleServiceImplTest_AAC_TestData {
 //		board.setBlogId(null); // 블로그 ID
 
 		return board;
+	}
+
+	public BoardVO selectArticleList() {
+		Board board = insertArticle();
+
+		BoardVO boardVO = new BoardVO();
+		boardVO.setBbsId(board.getBbsId());
+		boardVO.setNttSj(board.getNttSj());
+
+		try {
+			egovArticleService.insertArticle(board);
+		} catch (FdlException e) {
+			log.error(e.getMessage());
+		}
+
+		return boardVO;
 	}
 
 }
