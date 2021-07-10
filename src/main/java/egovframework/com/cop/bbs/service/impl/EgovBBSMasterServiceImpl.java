@@ -1,23 +1,17 @@
 package egovframework.com.cop.bbs.service.impl;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-
-import egovframework.com.cop.bbs.service.BoardMaster;
-import egovframework.com.cop.bbs.service.BoardMasterVO;
-import egovframework.com.cop.bbs.service.EgovBBSMasterService;
 import egovframework.com.cmm.EgovComponentChecker;
-import egovframework.com.cop.bbs.service.Blog;
-import egovframework.com.cop.bbs.service.BlogUser;
-import egovframework.com.cop.bbs.service.BlogVO;
+import egovframework.com.cop.bbs.service.*;
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import egovframework.rte.fdl.cmmn.exception.FdlException;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
+import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 @Service("EgovBBSMasterService")
 public class EgovBBSMasterServiceImpl extends EgovAbstractServiceImpl implements EgovBBSMasterService {
@@ -114,7 +108,7 @@ public class EgovBBSMasterServiceImpl extends EgovAbstractServiceImpl implements
 	public void insertBBSMasterInf(BoardMaster boardMaster) throws Exception {
 		
 		//게시판 ID 채번
-		String bbsId = idgenService.getNextStringId();
+		String bbsId = idgenService.getNextStringId() + RandomStringUtils.randomAlphabetic(10);
 		boardMaster.setBbsId(bbsId);
 		
 		egovBBSMasterDao.insertBBSMasterInf(boardMaster);

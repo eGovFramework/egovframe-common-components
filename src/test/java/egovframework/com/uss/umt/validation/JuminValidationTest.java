@@ -51,7 +51,7 @@ public class JuminValidationTest {
 		// 1900년대 태어난 외국인 여자 - 6
 		// 2000년대 태어난 외국인 남자 - 7
 		// 2000년대 태어난 외국인 여자 - 8
-		String[] notOk = { "7612049110419" }; //남녀구분(외국인포함) 오류 1~6
+		String[] notOk = { "7613041110410" }; //남녀구분(외국인포함) 오류 1~6
 		
 		for (int i = 0; i < notOk.length; i++) {
 			assertFalse(RteGenericValidator.isValidIdIhNum(notOk[i]));
@@ -109,7 +109,7 @@ public class JuminValidationTest {
 		String[] notOk = { "8802301210414" };//윤년 2월 30일 (오류)
 		
 		for (int i = 0; i < notOk.length; i++) {
-			assertTrue(RteGenericValidator.isValidIdIhNum(notOk[i]));
+			assertFalse(RteGenericValidator.isValidIdIhNum(notOk[i]));
 		}
 		
 	}
@@ -131,7 +131,7 @@ public class JuminValidationTest {
 		String[] notOk = { "8803321210417" };// 3월 32일 (오류)
 		
 		for (int i = 0; i < notOk.length; i++) {
-			assertTrue(RteGenericValidator.isValidIdIhNum(notOk[i]));
+			assertFalse(RteGenericValidator.isValidIdIhNum(notOk[i]));
 		}
 		
 	}

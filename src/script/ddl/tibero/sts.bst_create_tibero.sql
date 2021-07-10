@@ -413,7 +413,7 @@ CONSTRAINT  COMTNRESTDE_PK PRIMARY KEY (RESTDE_NO)
 /* 게시판마스터 */
 CREATE TABLE COMTNBBSMASTER
 (
-	BBS_ID                CHAR(20)  NOT NULL ,
+	BBS_ID                CHAR(30)  NOT NULL ,
 	BBS_NM                VARCHAR2(255)  NOT NULL ,
 	BBS_INTRCN            VARCHAR2(2400)  NULL ,
 	BBS_TY_CODE           CHAR(6)  NOT NULL ,
@@ -440,7 +440,7 @@ CONSTRAINT  COMTNBBSMASTER_PK PRIMARY KEY (BBS_ID)
 CREATE TABLE COMTNBBS
 (
 	NTT_ID                NUMBER(20)  NOT NULL ,
-	BBS_ID                CHAR(20)  NOT NULL ,
+	BBS_ID                CHAR(30)  NOT NULL ,
 	NTT_NO                NUMBER(20)  NULL ,
 	NTT_SJ                VARCHAR2(2000)  NULL ,
 	NTT_CN                CLOB  NULL ,

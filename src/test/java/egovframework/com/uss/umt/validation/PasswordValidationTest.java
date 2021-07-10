@@ -93,7 +93,7 @@ public class PasswordValidationTest {
 	@Test
 	public void testIdIhNum() {
 		// - 없이 입력되어야 한다.
-		String[] notOk = { "7612041110411", "7612049110419", "7613041110410" };//주민등록번호 확인 필요
+		String[] notOk = { "7612041110411", "7613041110410" };//주민등록번호 확인 필요
 		String[] ok = { "7612041110470" };
 		
 		for (int i = 0; i < notOk.length; i++) {

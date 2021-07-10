@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xmlns:egov-access="http://www.egovframe.go.kr/schema/egov-access"
+       xmlns:egov-access="http://maven.egovframe.go.kr/schema/egov-access"
        xsi:schemaLocation="
 			http://www.springframework.org/schema/beans
 			http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-			http://www.egovframe.go.kr/schema/egov-access
-			http://www.egovframe.go.kr/schema/egov-access/egov-access-3.9.xsd">
+			http://maven.egovframe.go.kr/schema/egov-access
+			http://maven.egovframe.go.kr/schema/egov-access/egov-access-3.10.0.xsd">
 
     <egov-access:config id="egovAccessConfig"
 		globalAuthen="session"
