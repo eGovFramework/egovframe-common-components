@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:egov-crypto="http://www.egovframe.go.kr/schema/egov-crypto"
-	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-		http://www.egovframe.go.kr/schema/egov-crypto http://www.egovframe.go.kr/schema/egov-crypto/egov-crypto-3.8.xsd
+	   xmlns:egov-crypto="http://maven.egovframe.go.kr/schema/egov-crypto"
+	   xmlns:context="http://www.springframework.org/schema/context"
+	   xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://maven.egovframe.go.kr/schema/egov-crypto http://maven.egovframe.go.kr/schema/egov-crypto/egov-crypto.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
-    
-	<!-- 
+
+<!--
 	initial : globals.properties 연계 Url, UserName, Password 값 로드 여부(설정값 : true, false)
 	crypto : 계정 암호화 여부(설정값 : true, false)
 	algorithm : 계정 암호화 알고리즘
