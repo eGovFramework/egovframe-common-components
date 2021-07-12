@@ -10,6 +10,7 @@ import org.apache.ibatis.plugin.Intercepts;
 import org.apache.ibatis.plugin.Invocation;
 import org.apache.ibatis.plugin.Signature;
 
+import egovframework.rte.psl.dataaccess.util.CamelUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Intercepts(value = {
@@ -34,13 +35,27 @@ public class EgovMyBatisPlugin implements Interceptor {
 		ResultSet rs = stmt.getResultSet();
 		ResultSetMetaData rsmd = rs.getMetaData();
 		int columnCount = rsmd.getColumnCount() + 1;
+		StringBuffer sb = new StringBuffer("\n");
 		for (int column = 1; column < columnCount; column++) {
 			String columnLabel = rsmd.getColumnLabel(column);
 //			String columnName = rsmd.getColumnName(column);
 
+			columnLabel = CamelUtil.convert2CamelCase(columnLabel);
+			String columnLabelUpper = columnLabel.toUpperCase().substring(0, 1)
+					+ columnLabel.substring(1, columnLabel.length());
+
 			log.debug("columnLabel={}", columnLabel);
 //			log.debug("columnName={}", columnName);
+
+			sb.append("log.debug(\"");
+			sb.append(columnLabel);
+			sb.append("={}\", ");
+			sb.append("boardVO.get");
+			sb.append(columnLabelUpper);
+			sb.append("());\n");
 		}
+
+		log.debug("sb={}", sb);
 
 		Object returnObject = invocation.proceed();
 

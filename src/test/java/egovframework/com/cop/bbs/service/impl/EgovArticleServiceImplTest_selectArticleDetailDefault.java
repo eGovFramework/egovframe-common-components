@@ -34,6 +34,29 @@ public class EgovArticleServiceImplTest_selectArticleDetailDefault extends EgovT
 
 		log.debug("getBbsId={}", boardVO.getBbsId());
 
+		log.debug("nttId={}", boardVO.getNttId());
+		log.debug("nttSj={}", boardVO.getNttSj());
+		log.debug("nttCn={}", boardVO.getNttCn());
+		log.debug("frstRegisterId={}", boardVO.getFrstRegisterId());
+		log.debug("frstRegisterNm={}", boardVO.getFrstRegisterNm());
+//		log.debug("frstRegistPnttm={}", boardVO.getFrstRegistPnttm());
+//		log.debug("rdcnt={}", boardVO.getRdcnt());
+//		log.debug("parntscttNo={}", boardVO.getParntscttNo());
+//		log.debug("answerAt={}", boardVO.getAnswerAt());
+//		log.debug("answerLc={}", boardVO.getAnswerLc());
+		log.debug("useAt={}", boardVO.getUseAt());
+		log.debug("atchFileId={}", boardVO.getAtchFileId());
+		log.debug("bbsId={}", boardVO.getBbsId());
+		log.debug("ntceBgnde={}", boardVO.getNtceBgnde());
+		log.debug("ntceEndde={}", boardVO.getNtceEndde());
+		log.debug("sjBoldAt={}", boardVO.getSjBoldAt());
+		log.debug("noticeAt={}", boardVO.getNoticeAt());
+		log.debug("secretAt={}", boardVO.getSecretAt());
+		log.debug("commentCo={}", boardVO.getCommentCo());
+		log.debug("ntcrId={}", boardVO.getNtcrId());
+		log.debug("blogId={}", boardVO.getBlogId());
+		log.debug("replyPosblAt={}", boardVO.getReplyPosblAt());
+
 		// when
 		List<BoardVO> results = egovArticleService.selectArticleDetailDefault(boardVO);
 
