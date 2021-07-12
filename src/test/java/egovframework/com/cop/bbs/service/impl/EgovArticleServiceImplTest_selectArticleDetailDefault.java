@@ -2,6 +2,8 @@ package egovframework.com.cop.bbs.service.impl;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.List;
+
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -14,7 +16,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovArticleServiceImplTest_AAB_Configuration.class })
-public class EgovArticleServiceImplTest_selectArticleCnOne extends EgovTestV1 {
+public class EgovArticleServiceImplTest_selectArticleDetailDefault extends EgovTestV1 {
 
 	@Autowired
 	private EgovArticleServiceImplTest_AAC_TestData egovArticleServiceImplTest_AAC_TestData;
@@ -28,14 +30,15 @@ public class EgovArticleServiceImplTest_selectArticleCnOne extends EgovTestV1 {
 
 		// given
 		BoardVO boardVO = egovArticleServiceImplTest_AAC_TestData.selectArticleList();
+		boardVO.setSearchCnd("5");
 
-		log.debug("getNttCn={}", boardVO.getNttCn());
+		log.debug("getBbsId={}", boardVO.getBbsId());
 
 		// when
-		BoardVO result = egovArticleService.selectArticleCnOne(boardVO);
+		List<BoardVO> results = egovArticleService.selectArticleDetailDefault(boardVO);
 
 		// then
-		assertEquals(boardVO.getNttCn(), result.getNttCn());
+		assertEquals(boardVO.getBbsId(), results.get(0).getBbsId());
 	}
 
 }
