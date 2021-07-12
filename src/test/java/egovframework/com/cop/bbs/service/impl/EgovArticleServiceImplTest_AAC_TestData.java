@@ -96,6 +96,8 @@ public class EgovArticleServiceImplTest_AAC_TestData {
 		boardVO.setLastUpdusrId(board.getFrstRegisterId());
 		board.setUseAt(board.getUseAt());
 
+		boardVO.setNttCn(board.getNttCn());
+		
 		try {
 			egovArticleService.insertArticle(board);
 		} catch (FdlException e) {
