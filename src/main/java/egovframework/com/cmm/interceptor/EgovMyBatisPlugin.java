@@ -30,6 +30,13 @@ public class EgovMyBatisPlugin implements Interceptor {
 		log.debug("getMethod={}", invocation.getMethod());
 		log.debug("getArgs={}", invocation.getArgs());
 
+//		DefaultResultSetHandler target = (DefaultResultSetHandler) invocation.getTarget();
+//		log.debug("getSql={}", target.getBoundSql().getSql());
+//		log.debug("getParameterMappings={}", target.getBoundSql().getParameterMappings());
+//		log.debug("getParameterObject={}", target.getBoundSql().getParameterObject());
+
+		log.debug("getName={}", invocation.getMethod().getName());
+
 		Object[] args = invocation.getArgs();
 		Statement stmt = (Statement) args[0];
 		ResultSet rs = stmt.getResultSet();
