@@ -35,6 +35,18 @@ public class EgovArticleServiceImplTest_updateArticle extends EgovTestV1 {
 
 		boardVO.setNttSj("test 게시물제목" + today); // 게시물제목
 
+//		boardVO.setNttSj("");
+//		boardVO.setNttCn("");
+//		boardVO.setNtceBgnde("");
+//		boardVO.setNtceEndde("");
+//		boardVO.setLastUpdusrId("");
+//		boardVO.setAtchFileId("");
+//		boardVO.setSjBoldAt("");
+//		boardVO.setNoticeAt("");
+//		boardVO.setSecretAt("");
+//		boardVO.setBbsId("");
+//		boardVO.setNttId(0l);
+
 		// when
 		boolean result = true;
 		try {
