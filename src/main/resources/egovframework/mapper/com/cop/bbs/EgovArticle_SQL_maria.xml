@@ -343,7 +343,7 @@
  		
  	</update>
 
- 	<update id="deleteArticle" parameterType="egovframework.com.cop.bbs.service.BoardVO">
+ 	<update id="deleteArticle" parameterType="egovframework.com.cop.bbs.service.Board">
  		
 			UPDATE COMTNBBS SET 
 				NTT_SJ = #{nttSj},
