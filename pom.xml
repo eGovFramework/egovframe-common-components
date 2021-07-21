@@ -22,6 +22,17 @@
 
     <repositories>
         <repository>
+            <id>3rd</id>
+            <url>http://www.datanucleus.org/downloads/maven2/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>true</enabled>
+            </snapshots>
+        </repository>
+
+        <repository>
             <id>mvn2s</id>
             <url>https://repo1.maven.org/maven2/</url>
             <releases>
@@ -505,16 +516,15 @@
 		     <artifactId>postgresql</artifactId>
 		     <version>9.4.1208</version>
 		</dependency>
+
+        <dependency>
+            <groupId>oracle</groupId>
+            <artifactId>ojdbc6</artifactId>
+            <version>11.2.0.3</version>
+        </dependency>
 		
         <!-- 3rd party 라이브러리로 별도의 설치 필요 -->
         <!-- oracle 11g driver -->
-        <dependency>
-            <groupId>ojdbc</groupId>
-            <artifactId>ojdbc</artifactId>
-            <version>6-11</version>
-            <scope>system</scope>
-            <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/ojdbc6-11.2.0.3.jar</systemPath>
-        </dependency>
         <!-- altibase driver -->
         <dependency>
             <groupId>altibase</groupId>
@@ -593,7 +603,12 @@
 			<version>1.2</version>
 			<scope>test</scope>
 		</dependency>
-
+        <dependency>
+            <groupId>junit</groupId>
+            <artifactId>junit</artifactId>
+            <version>4.12</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
     <build>
         <defaultGoal>install</defaultGoal>
