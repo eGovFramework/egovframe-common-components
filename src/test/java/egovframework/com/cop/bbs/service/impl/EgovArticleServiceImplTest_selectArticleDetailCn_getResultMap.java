@@ -21,7 +21,9 @@ public class EgovArticleServiceImplTest_selectArticleDetailCn_getResultMap {
 				configuration.getSqlFragments());
 		builder.parse();
 
-		ResultMap resultMap = configuration.getResultMap("detailCn");
+//		String id = "detailCn";
+		String id = "boardMasterList";
+		ResultMap resultMap = configuration.getResultMap(id);
 
 		System.out.println("\n-------------------+✨ mappedColumns ✨+--------------------");
 		System.out.println(resultMap.getMappedColumns());
