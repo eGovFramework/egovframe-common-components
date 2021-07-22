@@ -12,6 +12,7 @@ import org.springframework.test.context.ContextConfiguration;
 import egovframework.com.cop.bbs.service.BoardVO;
 import egovframework.com.cop.bbs.service.EgovArticleService;
 import egovframework.com.test.EgovTestV1;
+import egovframework.rte.fdl.cmmn.exception.FdlException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -19,7 +20,7 @@ import lombok.extern.slf4j.Slf4j;
 public class EgovArticleServiceImplTest_selectBlogNmList extends EgovTestV1 {
 
 	@Autowired
-	private EgovArticleServiceImplTest_AAC_TestData egovArticleServiceImplTest_AAC_TestData;
+	private EgovArticleDAOTest_AaaTestData egovArticleDAOTest_AaaTestData;
 
 	@Autowired
 	private EgovArticleService egovArticleService;
@@ -30,15 +31,19 @@ public class EgovArticleServiceImplTest_selectBlogNmList extends EgovTestV1 {
 		log.debug("test");
 
 		// given
-		BoardVO boardVO = egovArticleServiceImplTest_AAC_TestData.selectArticleList();
-		// TODO insertBBSMasterInf, insertBlogMaster
+		BoardVO boardVO = null;
+		try {
+			boardVO = egovArticleDAOTest_AaaTestData.selectBlogListManagerCnt();
+		} catch (FdlException e) {
+			log.error(e.getMessage());
+		}
 
 		// when
 		List<BoardVO> blogNmList = egovArticleService.selectBlogNmList(boardVO);
 
 		blogNmList.forEach(blogNm -> {
 			log.debug("bbsId={}", blogNm.getBbsId());
-			log.debug("blogId", blogNm.getBlogId());
+			log.debug("blogId={}", blogNm.getBlogId());
 			log.debug("bbsNm={}", blogNm.getBbsNm());
 		});
 
