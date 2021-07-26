@@ -342,6 +342,19 @@ function fnInsert(form){
                     <div><form:errors path="detailAdres" cssClass="error" /></div>
 			</td>
 		</tr>
+		
+		<!-- captcha -->
+		<c:set var="title"><spring:message code="comUssUmt.userManageRegist.captcha"/></c:set>
+		<tr>
+			<th><label for="captcha">${title}</label> <span class="pilsu">*</span></th>
+			<td class="left">
+				<img src="${pageContext.request.contextPath}/captcha/image.do?" id="captcha-image" alt="captcha">
+				<form:input path="captcha" id="captcha" title="${title} ${inputTxt}" maxlength="10" style="width:60px" />
+				<a href="#" onclick="$('#captcha-image').attr('src', $('#captcha-image').attr('src') + Date.now())">새로운 문자</a>
+			    <div><form:errors path="captcha" cssClass="error" /></div>
+			</td>
+		</tr>
+
 		<input type="hidden" name="mberSttus" value="DEFAULT" />
 	</tbody>
 	</table>

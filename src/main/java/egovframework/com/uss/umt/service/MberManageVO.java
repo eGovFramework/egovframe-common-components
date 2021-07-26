@@ -108,11 +108,16 @@ public class MberManageVO extends UserDefaultVO{
 	 * 이메일주소
 	 */
 	private String mberEmailAdres;
-	
+
+	/**
+	 * Captcha
+	 */
+	private String captcha;
+
 	private String lockAt;
 	public String getLockAt() {return lockAt;}
 	public void setLockAt(String lockAt) {this.lockAt = lockAt;}
-	
+
 	/**
 	 * oldPassword attribute 값을  리턴한다.
 	 * @return String
@@ -420,6 +425,21 @@ public class MberManageVO extends UserDefaultVO{
 	 */
 	public void setMberEmailAdres(String mberEmailAdres) {
 		this.mberEmailAdres = mberEmailAdres;
+	}
+
+	/**
+	 * captcha attribute 값을  리턴한다.
+	 * @return String
+	 */
+	public String getCaptcha() {
+		return captcha;
+	}
+	/**
+	 * captcha attribute 값을 설정한다.
+	 * @param captcha String
+	 */
+	public void setCaptcha(String captcha) {
+		this.captcha = captcha;
 	}
 
 }

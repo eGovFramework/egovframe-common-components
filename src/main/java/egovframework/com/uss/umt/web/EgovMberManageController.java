@@ -27,6 +27,8 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovFileScrty;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import egovframework.com.sec.captcha.service.EgovCaptchaService;
+
 
 /**
  * 일반회원관련 요청을  비지니스 클래스로 전달하고 처리된결과를  해당   웹 화면으로 전달하는  Controller를 정의한다
@@ -69,6 +71,11 @@ public class EgovMberManageController {
 	@Autowired
 	private DefaultBeanValidator beanValidator;
 
+  /**
+   * CaptchaService
+   */
+  @Autowired
+  private EgovCaptchaService captchaService;
 	/**
 	 * 일반회원목록을 조회한다. (pageing)
 	 * @param userSearchVO 검색조건정보
@@ -401,6 +408,8 @@ public class EgovMberManageController {
 	 */
 	@RequestMapping("/uss/umt/EgovMberSbscrb.do")
 	public String sbscrbMber(@ModelAttribute("mberManageVO") MberManageVO mberManageVO) throws Exception {
+    // Captcha 입력 값 확인
+    captchaService.matches(mberManageVO.getCaptcha());
 
 		//가입상태 초기화
 		mberManageVO.setMberSttus("A");
