@@ -82,4 +82,12 @@
     <alias name="local.MultiCommonsMultipartResolver" alias="multipartResolver" />
     <!-- <alias name="spring.RegularCommonsMultipartResolver" alias="multipartResolver" /> -->
 
+
+		<!-- Captcha -->
+		<bean id="captchaService" class="egovframework.com.sec.captcha.service.impl.EgovSessionBasedCaptchaService">
+			<property name="width" value="120" />
+			<property name="height" value="40" />
+			<property name="difficulty" value="20" />
+		</bean>
+
 </beans>
