@@ -33,6 +33,16 @@
         </repository>
         <repository>
 			<id>egovframe</id>
+			<url>http://maven.egovframe.go.kr/maven/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+        <repository>
+			<id>egovframe_old1</id>
 			<url>http://maven.egovframe.kr:8080/maven/</url>
 			<releases>
 				<enabled>true</enabled>
@@ -42,7 +52,7 @@
 			</snapshots>
 		</repository>
         <repository>
-            <id>egovframe2</id>
+            <id>egovframe_old2</id>
             <url>http://www.egovframe.go.kr/maven/</url>
             <releases>
                 <enabled>true</enabled>
@@ -52,7 +62,7 @@
             </snapshots>
         </repository>
     </repositories>
-
+    
     <dependencies>
         <!-- 실행환경 라이브러리 -->
         <!--
@@ -165,7 +175,7 @@
             <artifactId>standard</artifactId>
             <version>1.1.2</version>
         </dependency>
-		<!--
+		<!-- 
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>servlet-api</artifactId>
@@ -362,7 +372,7 @@
             <artifactId>batik-ext</artifactId>
             <version>1.7</version>
         </dependency>
-
+        
         <!-- facebook 연동시 추가 -->
         <dependency>
 		    <groupId>org.springframework.social</groupId>
@@ -379,7 +389,7 @@
             	</exclusion>
             </exclusions>
 		</dependency>
-
+        
         <!-- oauth2 login -->
 	    <dependency>
               <groupId>com.github.scribejava</groupId>
@@ -392,7 +402,7 @@
               <artifactId>scribejava-core</artifactId>
               <version>5.6.0</version>
         </dependency>
-
+        
         <dependency>
             <groupId>org.apache.httpcomponents</groupId>
             <artifactId>httpclient</artifactId>
@@ -409,7 +419,7 @@
             <artifactId>h2</artifactId>
             <version>1.4.180</version>
         </dependency>
-
+        
         <!-- WebSocket Messenger -->
         <dependency>
             <groupId>javax.websocket</groupId>
@@ -422,10 +432,10 @@
             <artifactId>javax.json</artifactId>
             <version>1.0.4</version>
         </dependency>
-
+        
         <!-- ajax json -->
         <!-- social에서 참조 하고 있어 임시 주석 처리 -->
-        <!--
+        <!-- 
 		<dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
@@ -440,14 +450,14 @@
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
             <version>2.5.1</version>
-        </dependency>
+        </dependency>               
         -->
-
+        
         <!-- LDAP조직도관리 관련 라이브러리  -->
         <dependency>
             <groupId>org.springframework.ldap</groupId>
             <artifactId>spring-ldap-core</artifactId>
-            <version>2.3.2.RELEASE</version>
+            <version>2.0.2.RELEASE</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework</groupId>
@@ -471,7 +481,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>
+        <dependency>  
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
             <version>1.9.13</version>
@@ -482,23 +492,22 @@
             <artifactId>mysql-connector-java</artifactId>
             <version>5.1.31</version>
         </dependency>
-
+        
 		<dependency>
 		    <groupId>org.mariadb.jdbc</groupId>
 		    <artifactId>mariadb-java-client</artifactId>
 		    <version>2.2.5</version>
 		</dependency>
-
-
+		
+		
 		<dependency>
 		     <groupId>org.postgresql</groupId>
 		     <artifactId>postgresql</artifactId>
 		     <version>9.4.1208</version>
 		</dependency>
-
+		
         <!-- 3rd party 라이브러리로 별도의 설치 필요 -->
         <!-- oracle 11g driver -->
-        <!--
         <dependency>
             <groupId>ojdbc</groupId>
             <artifactId>ojdbc</artifactId>
@@ -506,9 +515,7 @@
             <scope>system</scope>
             <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/ojdbc6-11.2.0.3.jar</systemPath>
         </dependency>
-        -->
         <!-- altibase driver -->
-        <!--
         <dependency>
             <groupId>altibase</groupId>
             <artifactId>altibase-jdbc-driver</artifactId>
@@ -516,9 +523,7 @@
             <scope>system</scope>
             <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/Altibase.jar</systemPath>
         </dependency>
-		-->
         <!-- tibero driver -->
-        <!--
         <dependency>
             <groupId>com.tmax.tibero</groupId>
             <artifactId>tibero-jdbc</artifactId>
@@ -526,9 +531,7 @@
             <scope>system</scope>
             <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/tibero5-jdbc.jar</systemPath>
         </dependency>
- 		-->
         <!-- cubrid driver -->
-        <!--
         <dependency>
             <groupId>cubrid</groupId>
             <artifactId>cubrid-jdbc</artifactId>
@@ -536,23 +539,24 @@
             <scope>system</scope>
             <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/JDBC-10.2-latest-cubrid.jar</systemPath>
         </dependency>
- 		-->
-        <!--  M-Gov (SMS Service API) -->
-        <dependency>
+
+        <!--  M-Gov (SMS Service API) -->        
+         <dependency>
             <groupId>kr.go.mgov</groupId>
             <artifactId>smeapi</artifactId>
             <version>2.7</version>
             <scope>system</scope>
             <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/smeapi_2_7.jar</systemPath>
         </dependency>
-        <!-- GPKI인증서 로그인처리 라이브러리 -->
-        <dependency>
+    	   
+        <!-- GPKI인증서 로그인처리 라이브러리 -->         
+         <dependency>
             <groupId>kr.go.gpki</groupId>
             <artifactId>gpkisecureweb</artifactId>
             <version>1.0.4.9</version>
             <scope>system</scope>
             <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/gpkisecureweb-1.0.4.9.jar</systemPath>
-        </dependency>
+        </dependency>        
         <dependency>
             <groupId>kr.go.gpki</groupId>
             <artifactId>libgpkiapi_jni</artifactId>
@@ -563,6 +567,32 @@
         <!-- 3rd party 라이브러리로 별도의 설치 필요 끝 -->
 
         <!-- 공통컴포넌트 끝 -->
+
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-test</artifactId>
+			<version>${spring.maven.artifact.version}</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.inject</groupId>
+			<artifactId>javax.inject</artifactId>
+			<version>1</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>3.1.0</version>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+			<groupId>javax.annotation</groupId>
+			<artifactId>javax.annotation-api</artifactId>
+			<version>1.2</version>
+			<scope>test</scope>
+		</dependency>
 
     </dependencies>
     <build>
@@ -644,7 +674,7 @@
                     </includes>
                 </configuration>
             </plugin>
-            <!-- docker server 배포
+            <!-- docker server 배포 
             <plugin>
                 <groupId>org.apache.tomcat.maven</groupId>
                 <artifactId>tomcat7-maven-plugin</artifactId>
