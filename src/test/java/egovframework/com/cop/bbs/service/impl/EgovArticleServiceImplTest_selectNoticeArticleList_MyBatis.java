@@ -32,9 +32,11 @@ public class EgovArticleServiceImplTest_selectNoticeArticleList_MyBatis {
 
 			builder.parse();
 
-			ResultMap resultMap = configuration.getResultMap("boardList");
+//			ResultMap resultMap = configuration.getResultMap("boardList");
+			ResultMap resultMap = configuration.getResultMap("boardBlogManager");
 
 			StringBuffer sb = new StringBuffer("\n");
+			StringBuffer sb2 = new StringBuffer("\n");
 			resultMap.getResultMappings().forEach(rm -> {
 				String property = rm.getProperty();
 				String propertyUpper = property.toUpperCase().substring(0, 1)
@@ -46,9 +48,16 @@ public class EgovArticleServiceImplTest_selectNoticeArticleList_MyBatis {
 				sb.append("boardVO.get");
 				sb.append(propertyUpper);
 				sb.append("());\n");
+
+				sb2.append("assertEquals(resultList.get(0).get");
+				sb2.append(propertyUpper);
+				sb2.append("(), boardVO.get");
+				sb2.append(propertyUpper);
+				sb2.append("());\n");
 			});
 
 			System.out.println(sb);
+			System.out.println(sb2);
 		} catch (IOException e) {
 			log.error(e.getMessage());
 			EgovResourceCloseHelper.close(inputStream);

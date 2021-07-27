@@ -118,12 +118,18 @@ public class EgovArticleDAOTest_AaaTestData {
 		String today = " " + EgovDateUtil.toString(new Date(), null, null);
 		boardMaster.setBbsNm("test 게시판명" + today);
 		boardMaster.setBbsIntrcn("test 게시판소개" + today);
+		boardMaster.setUseAt("Y");
+		boardMaster.setFrstRegisterId(loginVO.getUniqId());
 		egovBBSMasterDAO.insertBBSMasterInf(boardMaster);
 
 		boardVO.setBlogId(blog.getBlogId());
 		boardVO.setBbsNm(boardMaster.getBbsNm());
 		boardVO.setSearchWrd(boardMaster.getBbsIntrcn());
 		boardVO.setBbsId(blog.getBbsId());
+		boardVO.setUseAt(boardMaster.getUseAt());
+//		boardVO.setFrstRegisterNm(loginVO.getName());
+		boardVO.setFrstRegisterNm("테스트1");
+		boardVO.setFrstRegisterPnttm(today.substring(1, 11));
 
 		return boardVO;
 	}
