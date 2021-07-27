@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cop.bbs.service.BoardVO;
@@ -27,7 +26,6 @@ public class EgovArticleServiceImplTest_selectGuestArticleList extends EgovTestV
 
 	@SuppressWarnings({ "unchecked" })
 	@Test
-	@Commit
 	public void test() {
 		log.debug("test");
 
