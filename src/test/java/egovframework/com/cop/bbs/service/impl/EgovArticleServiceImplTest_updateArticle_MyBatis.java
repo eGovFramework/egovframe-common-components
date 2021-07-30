@@ -76,7 +76,8 @@ public class EgovArticleServiceImplTest_updateArticle_MyBatis {
 		InputStream inputStream = null;
 		try {
 			Configuration configuration = new Configuration();
-			String resource = "egovframework/mapper/com/cop/bbs/EgovArticle_SQL_mysql.xml";
+//			String resource = "egovframework/mapper/com/cop/bbs/EgovArticle_SQL_mysql.xml";
+			String resource = "egovframework/mapper/com/cop/bbs/EgovBBSMaster_SQL_mysql.xml";
 			inputStream = Resources.getResourceAsStream(resource);
 
 			XMLMapperBuilder builder = new XMLMapperBuilder(inputStream, configuration, resource,
@@ -114,6 +115,8 @@ public class EgovArticleServiceImplTest_updateArticle_MyBatis {
 						sb.append("(\"\");");
 					} else if ("long".equals(javaTypeName)) {
 						sb.append("(0l);");
+					} else if ("int".equals(javaTypeName)) {
+						sb.append("(0);");
 					} else {
 						sb.append(javaTypeName);
 					}

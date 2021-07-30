@@ -36,6 +36,19 @@ public class EgovBBSMasterDAOTest_insertBBSMasterInf extends EgovTestV1 {
 			log.error(e.getMessage());
 		}
 
+		boardMaster.setBbsTyCode("BBST01"); // COM101 BBST01 통합게시판
+		boardMaster.setBbsNm("");
+		boardMaster.setBbsIntrcn("");
+		boardMaster.setReplyPosblAt("");
+		boardMaster.setFileAtchPosblAt("");
+		boardMaster.setAtchPosblFileNumber(0);
+		boardMaster.setTmplatId("");
+		boardMaster.setUseAt("");
+		boardMaster.setCmmntyId("");
+		boardMaster.setFrstRegisterId("");
+		boardMaster.setBlogId("");
+		boardMaster.setBlogAt("");
+
 		// when
 		boolean result = false;
 		try {
