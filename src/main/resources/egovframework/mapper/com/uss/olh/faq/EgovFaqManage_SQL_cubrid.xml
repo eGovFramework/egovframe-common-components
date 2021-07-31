@@ -16,9 +16,9 @@
 		<result property="qestnSj" column="QESTN_SJ"/>
 		<result property="qestnCn" column="QESTN_CN"/>
 		<result property="answerCn" column="ANSWER_CN"/>
-		<result property="rdcnt" column="RDCNT"/>
+		<result property="inqireCo" column="RDCNT"/>
 		<result property="atchFileId" column="ATCH_FILE_ID"/>		
-		<result property="frstRegistPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
 		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
 		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
 		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>				
