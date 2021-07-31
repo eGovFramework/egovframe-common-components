@@ -12,7 +12,7 @@
 		<result property="hpcmId" column="HPCM_ID"/>
 		<result property="hpcmSeCode" column="HPCM_SE_CODE"/>
 		<result property="hpcmSeCodeNm" column="HPCM_SE_CODE_NM"/>
-		<result property="hpcmDf" column="HPCM_DF"/>
+		<result property="hpcmDfn" column="HPCM_DF"/>
 		<result property="hpcmDc" column="HPCM_DC"/>
 		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
 		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
@@ -34,7 +34,7 @@
 
 	<select id="selectHpcmList" parameterType="egovframework.com.uss.olh.hpc.service.HpcmVO" resultMap="HpcmManage">
 		
-			SELECT HPCM_ID, HPCM_SE_CODE, HPCM_SE_CODE_NM, HPCM_DFN HPCM_DF, HPCM_DC,
+			SELECT HPCM_ID, HPCM_SE_CODE, HPCM_SE_CODE_NM, HPCM_DFN, HPCM_DC,
 				   TO_CHAR(FRST_REGIST_PNTTM,'YYYY-MM-DD') FRST_REGIST_PNTTM ,  FRST_REGISTER_ID,
 				   TO_CHAR(LAST_UPDT_PNTTM,'YYYY-MM-DD')  LAST_UPDUSR_PNTTM ,  LAST_UPDUSR_ID
 			FROM
