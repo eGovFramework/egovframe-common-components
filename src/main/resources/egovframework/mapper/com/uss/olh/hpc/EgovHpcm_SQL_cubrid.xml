@@ -12,7 +12,7 @@
 		<result property="hpcmId" column="HPCM_ID"/>
 		<result property="hpcmSeCode" column="HPCM_SE_CODE"/>
 		<result property="hpcmSeCodeNm" column="HPCM_SE_CODE_NM"/>
-		<result property="hpcmDfn" column="HPCM_DF"/>
+		<result property="hpcmDf" column="HPCM_DFN"/>
 		<result property="hpcmDc" column="HPCM_DC"/>
 		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
 		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
