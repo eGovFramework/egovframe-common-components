@@ -88,6 +88,34 @@ function chk_all(val) {
 <!-- bottom -->
 <c:import url="./main_bottom.jsp" />
 </div><!-- contents -->
+<script>
+function fn_egov_popupOpen_PopupManage(popupId,fileUrl,width,height,top,left,stopVewAt){
 
+	var url = "<c:url value='/uss/ion/pwm/openPopupManage.do' />?";
+	url = url + "fileUrl=" + fileUrl;
+	url = url + "&stopVewAt=" + stopVewAt;
+	url = url + "&popupId=" + popupId;
+	var name = popupId;
+	var openWindows = window.open(url,name,"width="+width+",height="+height+",top="+top+",left="+left+",toolbar=no,status=no,location=no,scrollbars=yes,menubar=no,resizable=yes");
+
+	if (window.focus) {openWindows.focus()}
+}
+
+$(document).ready(function() {
+	$.ajax({
+		type:"POST",
+	    url: "<c:url value='/uss/ion/pwm/listMainPopup.do' />",
+		dataType:'json',
+		timeout:(1000*30),
+		success: function(returnData, status){
+	        for(var i = 0 ; i < returnData.resultList.length ; i++) {
+            	fn_egov_popupOpen_PopupManage(returnData.resultList[i].popupId, returnData.resultList[i].fileUrl, returnData.resultList[i].popupWidthSize, returnData.resultList[i].popupVrticlSize, returnData.resultList[i].popupWidthLc, returnData.resultList[i].popupVrticlLc, returnData.resultList[i].stopvewSetupAt);
+            }
+		} ,
+		error: function(err) {
+		}
+	})
+});
+</script>
 </body>
 </html>
