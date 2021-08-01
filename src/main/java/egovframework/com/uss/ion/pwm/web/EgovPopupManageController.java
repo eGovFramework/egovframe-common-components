@@ -19,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
@@ -324,19 +325,16 @@ public class EgovPopupManageController {
 	}
 
 	/**
-	 * 팝업창관리 메인 테스트 목록을 조회한다.
-	 * @param popupManageVO
-	 * @param model
-	 * @return "egovframework/com/uss/ion/pwm/listMainPopup"
-	 * @throws Exception
+	 * 팝업창리스트를 가져온다.
 	 */
 	@RequestMapping(value = "/uss/ion/pwm/listMainPopup.do")
-	public String egovPopupManageMainList(PopupManageVO popupManageVO, ModelMap model) throws Exception {
+	public ModelAndView egovPopupManageMainList(PopupManageVO popupManageVO, ModelMap model) throws Exception {
 
-		List<?> reusltList = egovPopupManageService.selectPopupMainList(popupManageVO);
-		model.addAttribute("resultList", reusltList);
+		List<?> resultList = egovPopupManageService.selectPopupMainList(popupManageVO);
 
-		return "egovframework/com/uss/ion/pwm/EgovPopupMainList";
+		ModelAndView mav = new ModelAndView("jsonView");
+    	mav.addObject("resultList", resultList);
+    	return mav;
 	}
 
 	/**
