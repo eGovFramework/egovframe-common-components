@@ -5,18 +5,17 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
-import egovframework.com.cop.bbs.service.BoardMaster;
-import egovframework.com.cop.bbs.service.BoardMasterVO;
-import egovframework.com.cop.cmy.service.CommunityVO;
-import egovframework.com.cop.bbs.service.BlogVO;
 import egovframework.com.cop.bbs.service.Blog;
 import egovframework.com.cop.bbs.service.BlogUser;
+import egovframework.com.cop.bbs.service.BlogVO;
+import egovframework.com.cop.bbs.service.BoardMaster;
+import egovframework.com.cop.bbs.service.BoardMasterVO;
 
 @Repository("EgovBBSMasterDAO")
 public class EgovBBSMasterDAO extends EgovComAbstractDAO {
 
-	public List<?> selectBBSMasterInfs(BoardMasterVO boardMasterVO) {
-		return list("BBSMaster.selectBBSMasterList", boardMasterVO);
+	public List<BoardMasterVO> selectBBSMasterInfs(BoardMasterVO boardMasterVO) {
+		return selectList("BBSMaster.selectBBSMasterList", boardMasterVO);
 	}
 
 	public int selectBBSMasterInfsCnt(BoardMasterVO boardMasterVO) {

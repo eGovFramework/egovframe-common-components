@@ -86,7 +86,7 @@ public class EgovBBSMasterServiceImpl extends EgovAbstractServiceImpl implements
 
 	@Override
 	public Map<String, Object> selectBBSMasterInfs(BoardMasterVO boardMasterVO) {
-		List<?> result = egovBBSMasterDao.selectBBSMasterInfs(boardMasterVO);
+		List<BoardMasterVO> result = egovBBSMasterDao.selectBBSMasterInfs(boardMasterVO);
 		int cnt = egovBBSMasterDao.selectBBSMasterInfsCnt(boardMasterVO);
 		
 		Map<String, Object> map = new HashMap<String, Object>();

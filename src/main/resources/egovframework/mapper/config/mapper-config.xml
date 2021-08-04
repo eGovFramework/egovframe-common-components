@@ -18,8 +18,8 @@
 		<typeAlias alias="comDefaultVO"		type="egovframework.com.cmm.ComDefaultVO" />
 	</typeAliases>
 
-	<plugins>
+	<!-- <plugins>
 		<plugin interceptor="egovframework.com.cmm.interceptor.EgovMyBatisPlugin"></plugin>
-	</plugins>
+	</plugins> -->
 
 </configuration>

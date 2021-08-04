@@ -22,7 +22,8 @@ public class EgovArticleServiceImplTest_AAA_JavaParser {
 		try {
 
 //			String first = "C:\\EGOVFRAME-3.10.0\\git\\egovframe-common-components\\src\\main\\java\\egovframework\\com\\cop\\bbs\\service\\impl\\EgovArticleServiceImpl.java";
-			String first = "src/main/java/egovframework/com/cop/bbs/service/impl/EgovBBSMasterDAO.java";
+//			String first = "src/main/java/egovframework/com/cop/bbs/service/impl/EgovBBSMasterDAO.java";
+			String first = "src/main/java/egovframework/com/cop/bbs/service/impl/EgovBBSMasterServiceImpl.java";
 
 			CompilationUnit cu = StaticJavaParser.parse(Paths.get(first));
 
