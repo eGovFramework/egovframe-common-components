@@ -35,7 +35,8 @@ public class MyBatisTest_getResultMappings {
 
 //			ResultMap resultMap = configuration.getResultMap("boardList");
 //			ResultMap resultMap = configuration.getResultMap("boardBlogManager");
-			ResultMap resultMap = configuration.getResultMap("boardMasterList");
+//			ResultMap resultMap = configuration.getResultMap("boardMasterList");
+			ResultMap resultMap = configuration.getResultMap("boardMasterDetail");
 
 			StringBuffer sb = new StringBuffer("\n");
 			StringBuffer sb2 = new StringBuffer("\n");

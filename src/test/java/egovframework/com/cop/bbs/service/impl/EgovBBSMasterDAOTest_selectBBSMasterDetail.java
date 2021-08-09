@@ -45,12 +45,29 @@ public class EgovBBSMasterDAOTest_selectBBSMasterDetail extends EgovTestV1 {
 
 		// when
 		BoardMasterVO bbsMasterDetail = egovBBSMasterDAO.selectBBSMasterDetail(boardMasterVO);
-
-		log.debug("bbsMasterDetail={}", bbsMasterDetail);
-		log.debug("getBbsId={}", bbsMasterDetail.getBbsId());
+		debug(bbsMasterDetail);
 
 		// then
 		assertEquals(bbsMasterDetail.getBbsId(), boardMasterVO.getBbsId());
+
+		assertEquals(bbsMasterDetail.getBbsId(), boardMasterVO.getBbsId());
+		assertEquals(bbsMasterDetail.getBbsTyCode(), boardMasterVO.getBbsTyCode());
+//		assertEquals(bbsMasterDetail.getBbsNm(), boardMasterVO.getBbsNm());
+//		assertEquals(bbsMasterDetail.getBbsIntrcn(), boardMasterVO.getBbsIntrcn());
+//		assertEquals(bbsMasterDetail.getReplyPosblAt(), boardMasterVO.getReplyPosblAt());
+//		assertEquals(bbsMasterDetail.getFileAtchPosblAt(), boardMasterVO.getFileAtchPosblAt());
+//		assertEquals(bbsMasterDetail.getAtchPosblFileNumber(), boardMasterVO.getAtchPosblFileNumber());
+//		assertEquals(bbsMasterDetail.getAtchPosblFileSize(), boardMasterVO.getAtchPosblFileSize());
+//		assertEquals(bbsMasterDetail.getTmplatId(), boardMasterVO.getTmplatId());
+//		assertEquals(bbsMasterDetail.getFrstRegisterId(), boardMasterVO.getFrstRegisterId());
+//		assertEquals(bbsMasterDetail.getFrstRegisterNm(), boardMasterVO.getFrstRegisterNm());
+//		assertEquals(bbsMasterDetail.getFrstRegisterPnttm(), boardMasterVO.getFrstRegisterPnttm());
+//		assertEquals(bbsMasterDetail.getBbsTyCodeNm(), boardMasterVO.getBbsTyCodeNm());
+//		assertEquals(bbsMasterDetail.getTmplatNm(), boardMasterVO.getTmplatNm());
+//		assertEquals(bbsMasterDetail.getAuthFlag(), boardMasterVO.getAuthFlag());
+//		assertEquals(bbsMasterDetail.getTmplatCours(), boardMasterVO.getTmplatCours());
+//		assertEquals(bbsMasterDetail.getCmmntyId(), boardMasterVO.getCmmntyId());
+//		assertEquals(bbsMasterDetail.getBlogId(), boardMasterVO.getBlogId());
 	}
 
 	public BoardMasterVO testData() {
@@ -86,8 +103,36 @@ public class EgovBBSMasterDAOTest_selectBBSMasterDetail extends EgovTestV1 {
 
 		BoardMasterVO boardMasterVO = new BoardMasterVO();
 		boardMasterVO.setBbsId(boardMaster.getBbsId());
+		boardMasterVO.setUniqId(loginVO.getUniqId());
+
+		boardMasterVO.setBbsTyCode(boardMaster.getBbsTyCode());
 
 		return boardMasterVO;
+	}
+
+	void debug(BoardMasterVO bbsMasterDetail) {
+		log.debug("bbsMasterDetail={}", bbsMasterDetail);
+		log.debug("getBbsId={}", bbsMasterDetail.getBbsId());
+		log.debug("getAuthFlag={}", bbsMasterDetail.getAuthFlag());
+
+		log.debug("bbsId={}", bbsMasterDetail.getBbsId());
+		log.debug("bbsTyCode={}", bbsMasterDetail.getBbsTyCode());
+		log.debug("bbsNm={}", bbsMasterDetail.getBbsNm());
+		log.debug("bbsIntrcn={}", bbsMasterDetail.getBbsIntrcn());
+		log.debug("replyPosblAt={}", bbsMasterDetail.getReplyPosblAt());
+		log.debug("fileAtchPosblAt={}", bbsMasterDetail.getFileAtchPosblAt());
+		log.debug("atchPosblFileNumber={}", bbsMasterDetail.getAtchPosblFileNumber());
+		log.debug("atchPosblFileSize={}", bbsMasterDetail.getAtchPosblFileSize());
+		log.debug("tmplatId={}", bbsMasterDetail.getTmplatId());
+		log.debug("frstRegisterId={}", bbsMasterDetail.getFrstRegisterId());
+		log.debug("frstRegisterNm={}", bbsMasterDetail.getFrstRegisterNm());
+		log.debug("frstRegisterPnttm={}", bbsMasterDetail.getFrstRegisterPnttm());
+		log.debug("bbsTyCodeNm={}", bbsMasterDetail.getBbsTyCodeNm());
+		log.debug("tmplatNm={}", bbsMasterDetail.getTmplatNm());
+		log.debug("authFlag={}", bbsMasterDetail.getAuthFlag());
+		log.debug("tmplatCours={}", bbsMasterDetail.getTmplatCours());
+		log.debug("cmmntyId={}", bbsMasterDetail.getCmmntyId());
+		log.debug("blogId={}", bbsMasterDetail.getBlogId());
 	}
 
 }
