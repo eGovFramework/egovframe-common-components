@@ -52,22 +52,22 @@ public class EgovBBSMasterDAOTest_selectBBSMasterDetail extends EgovTestV1 {
 
 		assertEquals(bbsMasterDetail.getBbsId(), boardMasterVO.getBbsId());
 		assertEquals(bbsMasterDetail.getBbsTyCode(), boardMasterVO.getBbsTyCode());
-//		assertEquals(bbsMasterDetail.getBbsNm(), boardMasterVO.getBbsNm());
-//		assertEquals(bbsMasterDetail.getBbsIntrcn(), boardMasterVO.getBbsIntrcn());
-//		assertEquals(bbsMasterDetail.getReplyPosblAt(), boardMasterVO.getReplyPosblAt());
-//		assertEquals(bbsMasterDetail.getFileAtchPosblAt(), boardMasterVO.getFileAtchPosblAt());
-//		assertEquals(bbsMasterDetail.getAtchPosblFileNumber(), boardMasterVO.getAtchPosblFileNumber());
-//		assertEquals(bbsMasterDetail.getAtchPosblFileSize(), boardMasterVO.getAtchPosblFileSize());
-//		assertEquals(bbsMasterDetail.getTmplatId(), boardMasterVO.getTmplatId());
-//		assertEquals(bbsMasterDetail.getFrstRegisterId(), boardMasterVO.getFrstRegisterId());
+		assertEquals(bbsMasterDetail.getBbsNm(), boardMasterVO.getBbsNm());
+		assertEquals(bbsMasterDetail.getBbsIntrcn(), boardMasterVO.getBbsIntrcn());
+		assertEquals(bbsMasterDetail.getReplyPosblAt(), boardMasterVO.getReplyPosblAt());
+		assertEquals(bbsMasterDetail.getFileAtchPosblAt(), boardMasterVO.getFileAtchPosblAt());
+		assertEquals(bbsMasterDetail.getAtchPosblFileNumber(), boardMasterVO.getAtchPosblFileNumber());
+		assertEquals(bbsMasterDetail.getAtchPosblFileSize(), boardMasterVO.getAtchPosblFileSize());
+		assertEquals(bbsMasterDetail.getTmplatId(), boardMasterVO.getTmplatId());
+		assertEquals(bbsMasterDetail.getFrstRegisterId(), boardMasterVO.getFrstRegisterId());
 //		assertEquals(bbsMasterDetail.getFrstRegisterNm(), boardMasterVO.getFrstRegisterNm());
 //		assertEquals(bbsMasterDetail.getFrstRegisterPnttm(), boardMasterVO.getFrstRegisterPnttm());
 //		assertEquals(bbsMasterDetail.getBbsTyCodeNm(), boardMasterVO.getBbsTyCodeNm());
-//		assertEquals(bbsMasterDetail.getTmplatNm(), boardMasterVO.getTmplatNm());
-//		assertEquals(bbsMasterDetail.getAuthFlag(), boardMasterVO.getAuthFlag());
-//		assertEquals(bbsMasterDetail.getTmplatCours(), boardMasterVO.getTmplatCours());
-//		assertEquals(bbsMasterDetail.getCmmntyId(), boardMasterVO.getCmmntyId());
-//		assertEquals(bbsMasterDetail.getBlogId(), boardMasterVO.getBlogId());
+		assertEquals(bbsMasterDetail.getTmplatNm(), boardMasterVO.getTmplatNm());
+		assertEquals(bbsMasterDetail.getAuthFlag(), boardMasterVO.getAuthFlag());
+		assertEquals(bbsMasterDetail.getTmplatCours(), boardMasterVO.getTmplatCours());
+		assertEquals(bbsMasterDetail.getCmmntyId(), boardMasterVO.getCmmntyId());
+		assertEquals(bbsMasterDetail.getBlogId(), boardMasterVO.getBlogId());
 	}
 
 	public BoardMasterVO testData() {
@@ -106,6 +106,16 @@ public class EgovBBSMasterDAOTest_selectBBSMasterDetail extends EgovTestV1 {
 		boardMasterVO.setUniqId(loginVO.getUniqId());
 
 		boardMasterVO.setBbsTyCode(boardMaster.getBbsTyCode());
+		boardMasterVO.setBbsNm(boardMaster.getBbsNm());
+		boardMasterVO.setBbsIntrcn(boardMaster.getBbsIntrcn());
+		boardMasterVO.setReplyPosblAt(boardMaster.getReplyPosblAt());
+		boardMasterVO.setFileAtchPosblAt(boardMaster.getFileAtchPosblAt());
+		boardMasterVO.setAtchPosblFileNumber(boardMaster.getAtchPosblFileNumber());
+		boardMasterVO.setAtchPosblFileSize(boardMaster.getAtchPosblFileSize());
+		boardMasterVO.setTmplatId(boardMaster.getTmplatId());
+		boardMasterVO.setFrstRegisterId(boardMaster.getFrstRegisterId());
+		boardMasterVO.setCmmntyId(boardMaster.getCmmntyId());
+		boardMasterVO.setBlogId(boardMaster.getBlogId());
 
 		return boardMasterVO;
 	}
