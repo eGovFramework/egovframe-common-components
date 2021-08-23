@@ -13,6 +13,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.cop.bbs.service.Blog;
 import egovframework.com.cop.bbs.service.BlogVO;
 import egovframework.com.cop.bbs.service.BoardMaster;
 import egovframework.com.cop.bbs.service.BoardMasterVO;
@@ -50,18 +51,45 @@ public class EgovBBSMasterDAOTest_selectBlogMasterInfs extends EgovTestV1 {
 		List<BlogVO> blogMasterInfs = (List<BlogVO>) egovBBSMasterDAO.selectBlogMasterInfs(boardMasterVO);
 
 		// then
-		assertEquals(blogMasterInfs.get(0).getBlogId(), boardMasterVO.getBlogId());
+//		assertEquals(blogMasterInfs.get(0).getBlogId(), boardMasterVO.getBlogId());
+		assertEquals(blogMasterInfs.get(0).getBbsId(), boardMasterVO.getBbsId());
+//		assertEquals(blogMasterInfs.get(0).getBlogNm(), boardMasterVO.getBlogNm());
+//		assertEquals(blogMasterInfs.get(0).getRegistSeCode(), boardMasterVO.getRegistSeCode());
+//		assertEquals(blogMasterInfs.get(0).getRegistSeCodeNm(), boardMasterVO.getRegistSeCodeNm());
+//		assertEquals(blogMasterInfs.get(0).getUseAt(), boardMasterVO.getUseAt());
+//		assertEquals(blogMasterInfs.get(0).getFrstRegisterId(), boardMasterVO.getFrstRegisterId());
+//		assertEquals(blogMasterInfs.get(0).getFrstRegisterNm(), boardMasterVO.getFrstRegisterNm());
+//		assertEquals(blogMasterInfs.get(0).getFrstRegisterPnttm(), boardMasterVO.getFrstRegisterPnttm());
+
 	}
 
 	public BoardMasterVO testData() {
+		String today = " " + EgovDateUtil.toString(new Date(), null, null);
+
+		// insertBlogMaster
+		Blog blog = new Blog();
+		try {
+			blog.setBlogId(egovBlogIdGnrService.getNextStringId());
+		} catch (FdlException e) {
+			log.error(e.getMessage());
+		}
+		blog.setBlogNm("test 블로그 명" + today);
+//		blog.setBlogIntrcn("");
+		blog.setRegistSeCode("REGC02"); // 커뮤니티 등록
+//		blog.setTmplatId("");
+//		blog.setUseAt("");
+//		blog.setFrstRegisterId("");
+//		blog.setBbsId("");
+//		blog.setBlogAt("");
+		egovBBSMasterDAO.insertBlogMaster(blog);
+
+		// insertBBSMasterInf
 		BoardMaster boardMaster = new BoardMaster();
 		try {
 			boardMaster.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
 		} catch (FdlException e) {
 			log.error(e.getMessage());
 		}
-
-		String today = " " + EgovDateUtil.toString(new Date(), null, null);
 
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
@@ -75,18 +103,24 @@ public class EgovBBSMasterDAOTest_selectBlogMasterInfs extends EgovTestV1 {
 		boardMaster.setUseAt("Y"); // 사용여부
 		boardMaster.setCmmntyId(""); // 커뮤니티ID
 		boardMaster.setFrstRegisterId(loginVO.getUniqId()); // 최초등록자ID
-		try {
-			boardMaster.setBlogId(egovBlogIdGnrService.getNextStringId());
-		} catch (FdlException e) {
-			log.error(e.getMessage());
-		} // 블로그 ID
+		boardMaster.setBlogId(blog.getBlogId()); // 블로그 ID
 		boardMaster.setBlogAt("Y"); // 블로그 여부
 
 		egovBBSMasterDAO.insertBBSMasterInf(boardMaster);
 
 		BoardMasterVO boardMasterVO = new BoardMasterVO();
-		boardMasterVO.setBlogId(boardMaster.getBlogId());
+		boardMasterVO.setRecordCountPerPage(10);
 		boardMasterVO.setFirstIndex(0);
+
+		boardMasterVO.setBlogId(boardMaster.getBlogId());
+		boardMasterVO.setBbsId(boardMaster.getBbsId());
+		boardMasterVO.setSearchWrd(blog.getBlogNm());
+//		log.debug("registSeCode={}", boardVO.getRegistSeCode());
+//		log.debug("registSeCodeNm={}", boardVO.getRegistSeCodeNm());
+//		log.debug("useAt={}", boardVO.getUseAt());
+//		log.debug("frstRegisterId={}", boardVO.getFrstRegisterId());
+//		log.debug("frstRegisterNm={}", boardVO.getFrstRegisterNm());
+//		log.debug("frstRegisterPnttm={}", boardVO.getFrstRegisterPnttm());
 
 		return boardMasterVO;
 	}
