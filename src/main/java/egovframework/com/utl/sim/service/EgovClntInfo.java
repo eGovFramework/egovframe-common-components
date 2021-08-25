@@ -30,10 +30,36 @@ public class EgovClntInfo {
 	 * @exception Exception
 	*/
 	public static String getClntIP(HttpServletRequest request) throws Exception {
+		 String ip = null;
+		 HttpServletRequest req = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+		 ip = request.getHeader("X-Forwarded-For");
+  		 if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+		     ip = req.getHeader("Proxy-Client-IP"); 
+		 } 
+		 if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+		     ip = req.getHeader("WL-Proxy-Client-IP"); 
+		 } 
+		 if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+		     ip = req.getHeader("HTTP_CLIENT_IP"); 
+		 } 
+		 if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+		     ip = req.getHeader("HTTP_X_FORWARDED_FOR"); 
+		 }
+		 if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+		     ip = req.getHeader("X-Real-IP"); 
+		 }
+		 if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+		     ip = req.getHeader("X-RealIP"); 
+		 }
+		 if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+		     ip = req.getHeader("REMOTE_ADDR");
+		 }
+		 if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) { 
+		     ip = req.getRemoteAddr(); 
+		 }
 		
 		// IP주소
-		String ipAddr = request.getRemoteAddr();
-		return ipAddr;
+		return ip;
 	}
 	
 	/**
