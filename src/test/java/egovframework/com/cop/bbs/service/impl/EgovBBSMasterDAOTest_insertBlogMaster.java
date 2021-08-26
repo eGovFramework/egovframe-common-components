@@ -2,6 +2,8 @@ package egovframework.com.cop.bbs.service.impl;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.Date;
+
 import javax.annotation.Resource;
 
 import org.junit.Test;
@@ -11,15 +13,15 @@ import org.springframework.test.context.ContextConfiguration;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.bbs.service.Blog;
-import egovframework.com.cop.bbs.service.BlogUser;
 import egovframework.com.test.EgovTestV1;
 import egovframework.rte.fdl.cmmn.exception.FdlException;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
+import egovframework.rte.fdl.string.EgovDateUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovBBSMasterDAOTest_AAA_Configuration.class })
-public class EgovBBSMasterDAOTest_insertBoardBlogUserRqst extends EgovTestV1 {
+public class EgovBBSMasterDAOTest_insertBlogMaster extends EgovTestV1 {
 
 	@Autowired
 	private EgovBBSMasterDAO egovBBSMasterDAO;
@@ -39,12 +41,12 @@ public class EgovBBSMasterDAOTest_insertBoardBlogUserRqst extends EgovTestV1 {
 		log.debug("test");
 
 		// given
-		BlogUser blogUser = testData();
+		Blog blog = testData();
 
 		// when
 		boolean result = false;
 		try {
-			egovBBSMasterDAO.insertBoardBlogUserRqst(blogUser);
+			egovBBSMasterDAO.insertBlogMaster(blog);
 			result = true;
 		} catch (Exception e) {
 			log.error(e.getMessage());
@@ -54,8 +56,9 @@ public class EgovBBSMasterDAOTest_insertBoardBlogUserRqst extends EgovTestV1 {
 		assertEquals(result, true);
 	}
 
-	public BlogUser testData() {
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+	public Blog testData() {
+		String today = " " + EgovDateUtil.toString(new Date(), null, null);
+		LoginVO authenticatedUser = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		Blog blog = new Blog();
 		try {
@@ -64,21 +67,16 @@ public class EgovBBSMasterDAOTest_insertBoardBlogUserRqst extends EgovTestV1 {
 			log.error(e.getMessage());
 		}
 
-		egovBBSMasterDAO.insertBlogMaster(blog);
+		blog.setBlogNm("test 블로그 명" + today);
+		blog.setBlogIntrcn("test 블로그 명" + today);
+		blog.setRegistSeCode("REGC02"); // 커뮤니티 등록
+//		blog.setTmplatId("");
+		blog.setUseAt("Y");
+		blog.setFrstRegisterId(authenticatedUser.getUniqId());
+//		blog.setBbsId("");
+		blog.setBlogAt("Y");
 
-		BlogUser blogUser = new BlogUser();
-		blogUser.setBlogId(blog.getBlogId());
-		blogUser.setEmplyrId(loginVO.getUniqId());
-		blogUser.setMngrAt("Y");
-
-//		blogUser.setMberSttus("A"); // 회원 가입 신청 상태
-//		blogUser.setMberSttus("D"); // 회원 가입 삭제 상태
-		blogUser.setMberSttus("P"); // 회원 가입 승인 상태
-
-		blogUser.setUseAt("Y");
-		blogUser.setFrstRegisterId(loginVO.getUniqId());
-
-		return blogUser;
+		return blog;
 	}
 
 }
