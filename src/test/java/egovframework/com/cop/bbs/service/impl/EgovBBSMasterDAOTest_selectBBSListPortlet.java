@@ -49,7 +49,7 @@ public class EgovBBSMasterDAOTest_selectBBSListPortlet extends EgovTestV1 {
 
 		// then
 		assertEquals(bbsListPortlet.get(0).getBbsId(), boardMasterVO.getBbsId());
-		assertEquals(bbsListPortlet.get(0).getBbsTyCodeNm(), boardMasterVO.getBbsTyCodeNm());
+		assertEquals(bbsListPortlet.get(0).getBbsTyCode(), boardMasterVO.getBbsTyCode());
 		assertEquals(bbsListPortlet.get(0).getBbsNm(), boardMasterVO.getBbsNm());
 
 		debug(bbsListPortlet);
@@ -89,7 +89,7 @@ public class EgovBBSMasterDAOTest_selectBBSListPortlet extends EgovTestV1 {
 		egovBBSMasterDAO.insertBBSMasterInf(boardMaster);
 
 		boardMasterVO.setBbsId(boardMaster.getBbsId());
-		boardMasterVO.setBbsTyCodeNm(boardMaster.getBbsTyCode());
+		boardMasterVO.setBbsTyCode(boardMaster.getBbsTyCode());
 		boardMasterVO.setBbsNm(boardMaster.getBbsNm());
 
 		return boardMasterVO;
@@ -98,7 +98,7 @@ public class EgovBBSMasterDAOTest_selectBBSListPortlet extends EgovTestV1 {
 	void debug(List<BoardMasterVO> bbsListPortlet) {
 		bbsListPortlet.forEach(bbsPortlet -> {
 			log.debug("bbsId={}", bbsPortlet.getBbsId());
-			log.debug("bbsTyCodeNm={}", bbsPortlet.getBbsTyCodeNm());
+			log.debug("bbsTyCode={}", bbsPortlet.getBbsTyCode());
 			log.debug("bbsNm={}", bbsPortlet.getBbsNm());
 		});
 	}

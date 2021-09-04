@@ -39,7 +39,6 @@ public class EgovBBSMasterDAOTest_selectBlogMasterInfs extends EgovTestV1 {
 	@Resource(name = "egovBlogIdGnrService")
 	private EgovIdGnrService egovBlogIdGnrService;
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void test() {
 		log.debug("test");
@@ -48,7 +47,7 @@ public class EgovBBSMasterDAOTest_selectBlogMasterInfs extends EgovTestV1 {
 		BoardMasterVO boardMasterVO = testData();
 
 		// when
-		List<BlogVO> blogMasterInfs = (List<BlogVO>) egovBBSMasterDAO.selectBlogMasterInfs(boardMasterVO);
+		List<BlogVO> blogMasterInfs = egovBBSMasterDAO.selectBlogMasterInfs(boardMasterVO);
 
 		// then
 		assertEquals(blogMasterInfs.get(0).getBlogId(), boardMasterVO.getBlogId());

@@ -99,7 +99,7 @@ public class EgovBBSMasterServiceImpl extends EgovAbstractServiceImpl implements
 	
 	@Override
 	public Map<String, Object> selectBlogMasterInfs(BoardMasterVO boardMasterVO) {
-		List<?> result = egovBBSMasterDao.selectBlogMasterInfs(boardMasterVO);
+		List<BlogVO> result = egovBBSMasterDao.selectBlogMasterInfs(boardMasterVO);
 		int cnt = egovBBSMasterDao.selectBlogMasterInfsCnt(boardMasterVO);
 		
 		Map<String, Object> map = new HashMap<String, Object>();

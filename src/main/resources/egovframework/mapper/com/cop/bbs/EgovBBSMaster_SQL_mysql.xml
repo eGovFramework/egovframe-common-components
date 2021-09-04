@@ -76,7 +76,7 @@
 		
 	<resultMap id="BBSListPortlet" type="egovframework.com.cop.bbs.service.BoardMasterVO">
 		<result property="bbsId" column="BBS_ID"/>
-		<result property="bbsTyCodeNm" column="BBS_TY_CODE"/>
+		<result property="bbsTyCode" column="BBS_TY_CODE"/>
 		<result property="bbsNm" column="BBS_NM"/>
 	</resultMap>	
 
@@ -292,7 +292,7 @@
 	
 	</insert>
 	
-	<insert id="insertBlogMaster" parameterType="egovframework.com.cop.bbs.service.BlogVO">
+	<insert id="insertBlogMaster" parameterType="egovframework.com.cop.bbs.service.Blog">
 		
 			INSERT INTO COMTNBLOG
 			(BLOG_ID, BLOG_NM, BLOG_INTRCN, REGIST_SE_CODE, 
