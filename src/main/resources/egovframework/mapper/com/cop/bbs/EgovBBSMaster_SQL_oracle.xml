@@ -269,13 +269,14 @@
 	</select>
 	
 	<select id="checkExistUser2" parameterType="egovframework.com.cop.bbs.service.BlogVO" resultMap="selectBlogUser">
-		
+
 			SELECT 
 				FRST_REGISTER_ID
 			FROM
 				COMTNBLOG
-			WHERE FRST_REGISTER_ID = #{frstRegisterId} 
-		
+			WHERE FRST_REGISTER_ID = #{frstRegisterId}
+			AND ROWNUM = 1
+
 	</select>
 	
 	<insert id="insertBoardBlogUserRqst" parameterType="egovframework.com.cop.bbs.service.BlogUser">
