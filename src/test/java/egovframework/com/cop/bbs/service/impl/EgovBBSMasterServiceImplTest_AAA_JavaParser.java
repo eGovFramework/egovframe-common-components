@@ -34,7 +34,7 @@ public class EgovBBSMasterServiceImplTest_AAA_JavaParser {
 //					log.debug("getNameAsString={}", method.getNameAsString());
 
 					sb.append(primaryTypeName);
-					sb.append("_");
+					sb.append("Test_");
 					sb.append(method.getNameAsString());
 					sb.append("\n");
 				});
