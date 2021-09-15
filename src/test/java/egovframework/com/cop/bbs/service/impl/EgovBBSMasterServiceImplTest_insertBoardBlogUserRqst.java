@@ -37,6 +37,9 @@ public class EgovBBSMasterServiceImplTest_insertBoardBlogUserRqst extends EgovTe
 	@Resource(name = "egovBlogIdGnrService")
 	private EgovIdGnrService egovBlogIdGnrService;
 
+	@Resource(name = "egovTmplatIdGnrService")
+	private EgovIdGnrService egovTmplatIdGnrService;
+
 	@Autowired
 	private EgovBBSMasterDAO egovBBSMasterDAO;
 
@@ -75,7 +78,11 @@ public class EgovBBSMasterServiceImplTest_insertBoardBlogUserRqst extends EgovTe
 		blog.setBlogNm("test 블로그 명" + today);
 		blog.setBlogIntrcn("test 블로그 소개" + today);
 //		blog.setRegistSeCode("");
-//		blog.setTmplatId("");
+		try {
+			blog.setTmplatId(egovTmplatIdGnrService.getNextStringId());
+		} catch (FdlException e) {
+			log.error(e.getMessage());
+		}
 		blog.setUseAt("Y");
 		blog.setFrstRegisterId(authenticatedUser.getUniqId());
 		try {

@@ -20,6 +20,7 @@ import org.springframework.context.annotation.ImportResource;
 		"classpath*:egovframework/spring/com/context-transaction.xml",
 
 		"classpath*:egovframework/spring/com/idgn/context-idgn-bbs.xml",
+		"classpath*:egovframework/spring/com/idgn/context-idgn-Tmplat.xml",
 
 		"classpath*:egovframework/spring/com/test-context-common.xml",
 
