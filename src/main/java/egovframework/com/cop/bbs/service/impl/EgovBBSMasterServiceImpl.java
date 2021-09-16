@@ -36,8 +36,8 @@ public class EgovBBSMasterServiceImpl extends EgovAbstractServiceImpl implements
     ////-------------------------------
     
 	@Override
+	@Deprecated
 	public Map<String, Object> selectNotUsedBdMstrList(BoardMasterVO boardMasterVO) {
-		// TODO Auto-generated method stub
 		return null;
 	}
 
