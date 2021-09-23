@@ -11,9 +11,12 @@ import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.cop.bbs.service.BoardMaster;
 import egovframework.com.cop.bbs.service.BoardMasterVO;
 import egovframework.com.cop.bbs.service.EgovBBSMasterService;
 import egovframework.com.test.EgovTestV1;
+import egovframework.rte.fdl.cmmn.exception.FdlException;
+import egovframework.rte.fdl.idgnr.EgovIdGnrService;
 import egovframework.rte.fdl.string.EgovDateUtil;
 import lombok.extern.slf4j.Slf4j;
 
@@ -24,18 +27,22 @@ public class EgovBBSMasterServiceImplTest_selectBBSMasterInf extends EgovTestV1 
 	@Resource(name = "EgovBBSMasterService")
 	private EgovBBSMasterService egovBBSMasterService;
 
-//	@Resource(name = "egovBBSMstrIdGnrService")
-//	private EgovIdGnrService egovBBSMstrIdGnrService;
+	@Resource(name = "egovBBSMstrIdGnrService")
+	private EgovIdGnrService egovBBSMstrIdGnrService;
 
 //	@Resource(name = "egovNttIdGnrService")
 //	private EgovIdGnrService egovNttIdGnrService;
 
-//	@Resource(name = "egovBlogIdGnrService")
-//	private EgovIdGnrService egovBlogIdGnrService;
+	@Resource(name = "egovBlogIdGnrService")
+	private EgovIdGnrService egovBlogIdGnrService;
+
+	@Resource(name = "EgovBBSMasterDAO")
+	private EgovBBSMasterDAO egovBBSMasterDAO;
 
 	// given
 	String today;
 	LoginVO authenticatedUser;
+	BoardMaster boardMaster;
 
 	BoardMasterVO boardMasterVO;
 
@@ -45,18 +52,49 @@ public class EgovBBSMasterServiceImplTest_selectBBSMasterInf extends EgovTestV1 
 	@Test
 	public void test() {
 		log.debug("test");
+		testData();
 		given();
 		when();
 		then();
 	}
 
-	void given() {
+	void testData() {
+		log.debug("testData");
+
 		today = " " + EgovDateUtil.toString(new Date(), null, null);
 		authenticatedUser = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
+		boardMaster = new BoardMaster();
+		try {
+			boardMaster.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
+		} catch (FdlException e) {
+			log.error(e.getMessage());
+		}
+
+		boardMaster.setBbsTyCode("BBST01"); // COM101 BBST01 통합게시판
+		boardMaster.setBbsNm("test 게시판명" + today); // 게시판명
+		boardMaster.setBbsIntrcn("test 게시판소개" + today); // 게시판소개
+		boardMaster.setReplyPosblAt("Y"); // 답장가능여부
+		boardMaster.setFileAtchPosblAt("Y"); // 파일첨부가능여부
+		boardMaster.setAtchPosblFileNumber(3); // 첨부가능파일숫자
+		boardMaster.setTmplatId(""); // 템플릿ID
+		boardMaster.setUseAt("Y"); // 사용여부
+		boardMaster.setCmmntyId(""); // 커뮤니티ID
+		boardMaster.setFrstRegisterId(authenticatedUser.getUniqId()); // 최초등록자ID
+		try {
+			boardMaster.setBlogId(egovBlogIdGnrService.getNextStringId());
+		} catch (FdlException e) {
+			log.error(e.getMessage());
+		} // 블로그 ID
+		boardMaster.setBlogAt("Y"); // 블로그 여부
+
+		egovBBSMasterDAO.insertBBSMasterInf(boardMaster);
+	}
+
+	void given() {
 		boardMasterVO = new BoardMasterVO();
-		boardMasterVO.setBbsId("");
-		boardMasterVO.setUniqId("");
+		boardMasterVO.setBbsId(boardMaster.getBbsId());
+//		boardMasterVO.setUniqId("");
 	}
 
 	void when() {
@@ -69,45 +107,49 @@ public class EgovBBSMasterServiceImplTest_selectBBSMasterInf extends EgovTestV1 
 
 	void then() {
 		log.debug("bbsMasterInf={}", bbsMasterInf);
-		log.debug("bbsId={}", bbsMasterInf.getBbsId());
-		log.debug("bbsTyCode={}", bbsMasterInf.getBbsTyCode());
-		log.debug("bbsNm={}", bbsMasterInf.getBbsNm());
-		log.debug("bbsIntrcn={}", bbsMasterInf.getBbsIntrcn());
-		log.debug("replyPosblAt={}", bbsMasterInf.getReplyPosblAt());
-		log.debug("fileAtchPosblAt={}", bbsMasterInf.getFileAtchPosblAt());
-		log.debug("atchPosblFileNumber={}", bbsMasterInf.getAtchPosblFileNumber());
-		log.debug("atchPosblFileSize={}", bbsMasterInf.getAtchPosblFileSize());
-		log.debug("tmplatId={}", bbsMasterInf.getTmplatId());
-		log.debug("frstRegisterId={}", bbsMasterInf.getFrstRegisterId());
-		log.debug("frstRegisterNm={}", bbsMasterInf.getFrstRegisterNm());
-		log.debug("frstRegisterPnttm={}", bbsMasterInf.getFrstRegisterPnttm());
-		log.debug("bbsTyCodeNm={}", bbsMasterInf.getBbsTyCodeNm());
-		log.debug("tmplatNm={}", bbsMasterInf.getTmplatNm());
-		log.debug("authFlag={}", bbsMasterInf.getAuthFlag());
-		log.debug("tmplatCours={}", bbsMasterInf.getTmplatCours());
-		log.debug("cmmntyId={}", bbsMasterInf.getCmmntyId());
-		log.debug("blogId={}", bbsMasterInf.getBlogId());
+		if (bbsMasterInf != null) {
+			log.debug("bbsId={}", bbsMasterInf.getBbsId());
+			log.debug("bbsTyCode={}", bbsMasterInf.getBbsTyCode());
+			log.debug("bbsNm={}", bbsMasterInf.getBbsNm());
+			log.debug("bbsIntrcn={}", bbsMasterInf.getBbsIntrcn());
+			log.debug("replyPosblAt={}", bbsMasterInf.getReplyPosblAt());
+			log.debug("fileAtchPosblAt={}", bbsMasterInf.getFileAtchPosblAt());
+			log.debug("atchPosblFileNumber={}", bbsMasterInf.getAtchPosblFileNumber());
+			log.debug("atchPosblFileSize={}", bbsMasterInf.getAtchPosblFileSize());
+			log.debug("tmplatId={}", bbsMasterInf.getTmplatId());
+			log.debug("frstRegisterId={}", bbsMasterInf.getFrstRegisterId());
+			log.debug("frstRegisterNm={}", bbsMasterInf.getFrstRegisterNm());
+			log.debug("frstRegisterPnttm={}", bbsMasterInf.getFrstRegisterPnttm());
+			log.debug("bbsTyCodeNm={}", bbsMasterInf.getBbsTyCodeNm());
+			log.debug("tmplatNm={}", bbsMasterInf.getTmplatNm());
+			log.debug("authFlag={}", bbsMasterInf.getAuthFlag());
+			log.debug("tmplatCours={}", bbsMasterInf.getTmplatCours());
+			log.debug("cmmntyId={}", bbsMasterInf.getCmmntyId());
+			log.debug("blogId={}", bbsMasterInf.getBlogId());
+		}
 
 		assertEquals(bbsMasterInf, null);
 
-		assertEquals(bbsMasterInf.getBbsId(), boardMasterVO.getBbsId());
-		assertEquals(bbsMasterInf.getBbsTyCode(), boardMasterVO.getBbsTyCode());
-		assertEquals(bbsMasterInf.getBbsNm(), boardMasterVO.getBbsNm());
-		assertEquals(bbsMasterInf.getBbsIntrcn(), boardMasterVO.getBbsIntrcn());
-		assertEquals(bbsMasterInf.getReplyPosblAt(), boardMasterVO.getReplyPosblAt());
-		assertEquals(bbsMasterInf.getFileAtchPosblAt(), boardMasterVO.getFileAtchPosblAt());
-		assertEquals(bbsMasterInf.getAtchPosblFileNumber(), boardMasterVO.getAtchPosblFileNumber());
-		assertEquals(bbsMasterInf.getAtchPosblFileSize(), boardMasterVO.getAtchPosblFileSize());
-		assertEquals(bbsMasterInf.getTmplatId(), boardMasterVO.getTmplatId());
-		assertEquals(bbsMasterInf.getFrstRegisterId(), boardMasterVO.getFrstRegisterId());
-		assertEquals(bbsMasterInf.getFrstRegisterNm(), boardMasterVO.getFrstRegisterNm());
-		assertEquals(bbsMasterInf.getFrstRegisterPnttm(), boardMasterVO.getFrstRegisterPnttm());
-		assertEquals(bbsMasterInf.getBbsTyCodeNm(), boardMasterVO.getBbsTyCodeNm());
-		assertEquals(bbsMasterInf.getTmplatNm(), boardMasterVO.getTmplatNm());
-		assertEquals(bbsMasterInf.getAuthFlag(), boardMasterVO.getAuthFlag());
-		assertEquals(bbsMasterInf.getTmplatCours(), boardMasterVO.getTmplatCours());
-		assertEquals(bbsMasterInf.getCmmntyId(), boardMasterVO.getCmmntyId());
-		assertEquals(bbsMasterInf.getBlogId(), boardMasterVO.getBlogId());
+		if (bbsMasterInf != null) {
+			assertEquals(bbsMasterInf.getBbsId(), boardMasterVO.getBbsId());
+			assertEquals(bbsMasterInf.getBbsTyCode(), boardMasterVO.getBbsTyCode());
+			assertEquals(bbsMasterInf.getBbsNm(), boardMasterVO.getBbsNm());
+			assertEquals(bbsMasterInf.getBbsIntrcn(), boardMasterVO.getBbsIntrcn());
+			assertEquals(bbsMasterInf.getReplyPosblAt(), boardMasterVO.getReplyPosblAt());
+			assertEquals(bbsMasterInf.getFileAtchPosblAt(), boardMasterVO.getFileAtchPosblAt());
+			assertEquals(bbsMasterInf.getAtchPosblFileNumber(), boardMasterVO.getAtchPosblFileNumber());
+			assertEquals(bbsMasterInf.getAtchPosblFileSize(), boardMasterVO.getAtchPosblFileSize());
+			assertEquals(bbsMasterInf.getTmplatId(), boardMasterVO.getTmplatId());
+			assertEquals(bbsMasterInf.getFrstRegisterId(), boardMasterVO.getFrstRegisterId());
+			assertEquals(bbsMasterInf.getFrstRegisterNm(), boardMasterVO.getFrstRegisterNm());
+			assertEquals(bbsMasterInf.getFrstRegisterPnttm(), boardMasterVO.getFrstRegisterPnttm());
+			assertEquals(bbsMasterInf.getBbsTyCodeNm(), boardMasterVO.getBbsTyCodeNm());
+			assertEquals(bbsMasterInf.getTmplatNm(), boardMasterVO.getTmplatNm());
+			assertEquals(bbsMasterInf.getAuthFlag(), boardMasterVO.getAuthFlag());
+			assertEquals(bbsMasterInf.getTmplatCours(), boardMasterVO.getTmplatCours());
+			assertEquals(bbsMasterInf.getCmmntyId(), boardMasterVO.getCmmntyId());
+			assertEquals(bbsMasterInf.getBlogId(), boardMasterVO.getBlogId());
+		}
 	}
 
 }
