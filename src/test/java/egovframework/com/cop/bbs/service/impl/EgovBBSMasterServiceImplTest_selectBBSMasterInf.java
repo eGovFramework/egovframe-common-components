@@ -8,6 +8,8 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 import org.springframework.test.context.ContextConfiguration;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
@@ -50,6 +52,7 @@ public class EgovBBSMasterServiceImplTest_selectBBSMasterInf extends EgovTestV1 
 	BoardMasterVO bbsMasterInf;
 
 	@Test
+	@Transactional(propagation = Propagation.NEVER)
 	public void test() {
 		log.debug("test");
 		testData();
