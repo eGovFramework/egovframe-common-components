@@ -8,10 +8,7 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
 
-import egovframework.com.cmm.EgovComponentChecker;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.bbs.service.BoardMaster;
@@ -53,14 +50,14 @@ public class EgovBBSMasterServiceImplTest_selectBBSMasterInf extends EgovTestV1 
 	BoardMasterVO bbsMasterInf;
 
 	@Test
-	@Transactional(propagation = Propagation.NEVER)
+//	@Transactional(propagation = Propagation.NEVER)
 	public void test() {
 		log.debug("test");
 
-		boolean hasComponent = EgovComponentChecker.hasComponent("EgovBBSCommentService");
-		log.debug("EgovBBSCommentService hasComponent={}", hasComponent);
-		hasComponent = EgovComponentChecker.hasComponent("EgovBBSSatisfactionService");
-		log.debug("EgovBBSSatisfactionService hasComponent={}", hasComponent);
+//		boolean hasComponent = EgovComponentChecker.hasComponent("EgovBBSCommentService");
+//		log.debug("EgovBBSCommentService hasComponent={}", hasComponent);
+//		hasComponent = EgovComponentChecker.hasComponent("EgovBBSSatisfactionService");
+//		log.debug("EgovBBSSatisfactionService hasComponent={}", hasComponent);
 
 		testData();
 		given();
