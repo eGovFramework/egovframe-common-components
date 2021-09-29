@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.ImportResource;
 
+import egovframework.com.cmm.EgovComponentChecker;
+
 @Configuration
 
 @ImportResource({
@@ -26,10 +28,10 @@ import org.springframework.context.annotation.ImportResource;
 
 })
 
-@ComponentScan(useDefaultFilters = false, basePackages = {
-		"egovframework.com.cop.bbs.service.impl" }, includeFilters = {
+@ComponentScan(useDefaultFilters = false, basePackages = { "egovframework.com.cop.bbs.service.impl",
+		"egovframework.com.cmm" }, includeFilters = {
 				@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { EgovBBSMasterDAO.class,
-						EgovBBSMasterServiceImpl.class, BBSAddedOptionsDAO.class }) })
+						EgovBBSMasterServiceImpl.class, BBSAddedOptionsDAO.class, EgovComponentChecker.class }) })
 
 public class EgovBBSMasterServiceImplTestConfiguration {
 

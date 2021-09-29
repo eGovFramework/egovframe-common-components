@@ -9,6 +9,7 @@ import javax.annotation.Resource;
 import org.junit.Test;
 import org.springframework.test.context.ContextConfiguration;
 
+import egovframework.com.cmm.EgovComponentChecker;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.bbs.service.BoardMaster;
@@ -54,10 +55,18 @@ public class EgovBBSMasterServiceImplTest_selectBBSMasterInf extends EgovTestV1 
 	public void test() {
 		log.debug("test");
 
-//		boolean hasComponent = EgovComponentChecker.hasComponent("EgovBBSCommentService");
-//		log.debug("EgovBBSCommentService hasComponent={}", hasComponent);
-//		hasComponent = EgovComponentChecker.hasComponent("EgovBBSSatisfactionService");
-//		log.debug("EgovBBSSatisfactionService hasComponent={}", hasComponent);
+		boolean hasComponent = EgovComponentChecker.hasComponent("EgovBBSCommentService");
+		log.debug("EgovBBSCommentService hasComponent={}", hasComponent);
+		hasComponent = EgovComponentChecker.hasComponent("EgovBBSSatisfactionService");
+		log.debug("EgovBBSSatisfactionService hasComponent={}", hasComponent);
+
+		hasComponent = EgovComponentChecker.hasComponent("EgovBBSMasterService");
+		log.debug("EgovBBSMasterService hasComponent={}", hasComponent);
+
+		hasComponent = EgovComponentChecker.hasComponent("egovUtil");
+		log.debug("egovUtil hasComponent={}", hasComponent);
+		hasComponent = EgovComponentChecker.hasComponent("EgovComponentChecker");
+		log.debug("EgovComponentChecker hasComponent={}", hasComponent);
 
 		testData();
 		given();
