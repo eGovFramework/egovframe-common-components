@@ -36,8 +36,8 @@ public class EgovBBSMasterServiceImplTest_selectBBSMasterInfs extends EgovTestV1
 	@Resource(name = "egovBBSMstrIdGnrService")
 	private EgovIdGnrService egovBBSMstrIdGnrService;
 
-	@Resource(name = "egovNttIdGnrService")
-	private EgovIdGnrService egovNttIdGnrService;
+//	@Resource(name = "egovNttIdGnrService")
+//	private EgovIdGnrService egovNttIdGnrService;
 
 	@Resource(name = "egovBlogIdGnrService")
 	private EgovIdGnrService egovBlogIdGnrService;
