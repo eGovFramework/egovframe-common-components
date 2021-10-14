@@ -23,7 +23,8 @@ public class MyBatisTest_getResultMappings {
 
 		try {
 //			String resource = "egovframework/mapper/com/cop/bbs/EgovArticle_SQL_mysql.xml";
-			String resource = "egovframework/mapper/com/cop/bbs/EgovBBSMaster_SQL_mysql.xml";
+//			String resource = "egovframework/mapper/com/cop/bbs/EgovBBSMaster_SQL_mysql.xml";
+			String resource = "egovframework/mapper/com/cop/cmt/EgovArticleComment_SQL_mysql.xml";
 			inputStream = Resources.getResourceAsStream(resource);
 
 			Configuration configuration = new Configuration();
@@ -41,7 +42,9 @@ public class MyBatisTest_getResultMappings {
 //			ResultMap resultMap = configuration.getResultMap("BBSListPortlet");
 //			ResultMap resultMap = configuration.getResultMap("selectBlogDetail");
 //			ResultMap resultMap = configuration.getResultMap("BlogListPortlet");
-			ResultMap resultMap = configuration.getResultMap("selectBlogUser");
+//			ResultMap resultMap = configuration.getResultMap("selectBlogUser");
+
+			ResultMap resultMap = configuration.getResultMap("commentList");
 
 			StringBuffer sb = new StringBuffer("\n");
 			StringBuffer sb2 = new StringBuffer("\n");

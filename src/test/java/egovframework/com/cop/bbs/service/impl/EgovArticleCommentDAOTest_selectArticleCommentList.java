@@ -3,6 +3,7 @@ package egovframework.com.cop.bbs.service.impl;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -14,6 +15,7 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.bbs.service.Board;
 import egovframework.com.cop.bbs.service.BoardMaster;
 import egovframework.com.cop.cmt.service.Comment;
+import egovframework.com.cop.cmt.service.CommentVO;
 import egovframework.com.cop.cmt.service.impl.EgovArticleCommentDAO;
 import egovframework.com.test.EgovTestV1;
 import egovframework.rte.fdl.cmmn.exception.FdlException;
@@ -23,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovArticleCommentDAOTest_Configuration.class })
-public class EgovArticleCommentDAOTest_insertArticleComment extends EgovTestV1 {
+public class EgovArticleCommentDAOTest_selectArticleCommentList extends EgovTestV1 {
 
 	@Resource(name = "egovBBSMstrIdGnrService")
 	private EgovIdGnrService egovBBSMstrIdGnrService;
@@ -57,16 +59,20 @@ public class EgovArticleCommentDAOTest_insertArticleComment extends EgovTestV1 {
 	// given
 	Comment comment;
 
+	CommentVO commentVO;
+
 	// when
-	boolean result = false;
+//	List<?> articleCommentList;
+	List<CommentVO> articleCommentList;
 
 	@Test
 //	@Commit
 	public void test() {
 		log.debug("test");
 		testData();
-		testData2();
-		testData3();
+		testData2_insertBBSMasterInf();
+		testData3_insertArticle();
+		testData4_insertArticleComment();
 		given();
 		when();
 		then();
@@ -77,7 +83,7 @@ public class EgovArticleCommentDAOTest_insertArticleComment extends EgovTestV1 {
 		authenticatedUser = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 	}
 
-	void testData2() {
+	void testData2_insertBBSMasterInf() {
 		boardMaster = new BoardMaster();
 		try {
 			boardMaster.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
@@ -88,7 +94,7 @@ public class EgovArticleCommentDAOTest_insertArticleComment extends EgovTestV1 {
 		egovBBSMasterDAO.insertBBSMasterInf(boardMaster);
 	}
 
-	void testData3() {
+	void testData3_insertArticle() {
 		board = new Board();
 		try {
 			board.setNttId(egovNttIdGnrService.getNextLongId());
@@ -100,7 +106,7 @@ public class EgovArticleCommentDAOTest_insertArticleComment extends EgovTestV1 {
 		egovArticleDAO.insertArticle(board);
 	}
 
-	void given() {
+	void testData4_insertArticleComment() {
 		comment = new Comment();
 		try {
 			comment.setCommentNo(egovAnswerNoGnrService.getNextLongId() + "");
@@ -116,21 +122,46 @@ public class EgovArticleCommentDAOTest_insertArticleComment extends EgovTestV1 {
 		comment.setCommentPassword("test 비밀번호" + today); // 비밀번호
 		comment.setCommentCn("test 댓글" + today); // 댓글
 		comment.setFrstRegisterId(authenticatedUser.getUniqId()); // 최초등록자ID
+
+		egovArticleCommentDAO.insertArticleComment(comment);
 	}
 
+	void given() {
+		commentVO = new CommentVO();
+		commentVO.setBbsId(boardMaster.getBbsId());
+		commentVO.setNttId(board.getNttId());
+		commentVO.setSubRecordCountPerPage(10);
+		commentVO.setSubFirstIndex(0);
+	}
+
+	@SuppressWarnings("unchecked")
 	void when() {
-		try {
-			egovArticleCommentDAO.insertArticleComment(comment);
-			result = true;
-		} catch (Exception e) {
-			log.error(e.getMessage());
-		}
+//		articleCommentList = egovArticleCommentDAO.selectArticleCommentList(commentVO);
+		articleCommentList = (List<CommentVO>) egovArticleCommentDAO.selectArticleCommentList(commentVO);
 	}
 
 	void then() {
-		log.debug("result={}", result);
+		log.debug("commentNo={}", comment.getCommentNo());
+		log.debug("nttId={}", commentVO.getNttId());
+		log.debug("bbsId={}", commentVO.getBbsId());
+		log.debug("wrterId={}", comment.getWrterId());
+		log.debug("wrterNm={}", comment.getWrterNm());
+		log.debug("commentPassword={}", comment.getCommentPassword());
+		log.debug("commentCn={}", comment.getCommentCn());
+		log.debug("useAt={}", comment.getUseAt());
+		log.debug("frstRegisterPnttm={}", comment.getFrstRegisterPnttm());
+		log.debug("frstRegisterNm={}", comment.getFrstRegisterNm());
 
-		assertEquals(result, true);
+		assertEquals(articleCommentList.get(0).getCommentNo(), comment.getCommentNo());
+		assertEquals(articleCommentList.get(0).getNttId(), commentVO.getNttId());
+		assertEquals(articleCommentList.get(0).getBbsId(), commentVO.getBbsId());
+		assertEquals(articleCommentList.get(0).getWrterId(), comment.getWrterId());
+		assertEquals(articleCommentList.get(0).getWrterNm(), comment.getWrterNm());
+		assertEquals(articleCommentList.get(0).getCommentPassword(), comment.getCommentPassword());
+		assertEquals(articleCommentList.get(0).getCommentCn(), comment.getCommentCn());
+//		assertEquals(articleCommentList.get(0).getUseAt(), comment.getUseAt());
+//		assertEquals(articleCommentList.get(0).getFrstRegisterPnttm(), comment.getFrstRegisterPnttm());
+//		assertEquals(articleCommentList.get(0).getFrstRegisterNm(), comment.getFrstRegisterNm());
 	}
 
 }
