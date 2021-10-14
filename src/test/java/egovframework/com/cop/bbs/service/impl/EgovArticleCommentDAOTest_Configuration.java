@@ -28,9 +28,10 @@ import egovframework.com.cop.cmt.service.impl.EgovArticleCommentDAO;
 
 })
 
-@ComponentScan(useDefaultFilters = false, basePackages = {
-		"egovframework.com.cop.cmt.service.impl" }, includeFilters = {
-				@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { EgovArticleCommentDAO.class }) })
+@ComponentScan(useDefaultFilters = false, basePackages = { "egovframework.com.cop.cmt.service.impl",
+		"egovframework.com.cop.bbs.service.impl" }, includeFilters = {
+				@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { EgovArticleCommentDAO.class,
+						EgovBBSMasterDAO.class, EgovArticleDAO.class }) })
 
 public class EgovArticleCommentDAOTest_Configuration {
 

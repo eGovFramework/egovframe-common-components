@@ -7,10 +7,13 @@ import java.util.Date;
 import javax.annotation.Resource;
 
 import org.junit.Test;
+import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.cop.bbs.service.Board;
+import egovframework.com.cop.bbs.service.BoardMaster;
 import egovframework.com.cop.cmt.service.Comment;
 import egovframework.com.cop.cmt.service.impl.EgovArticleCommentDAO;
 import egovframework.com.test.EgovTestV1;
@@ -36,11 +39,21 @@ public class EgovArticleCommentDAOTest_insertArticleComment extends EgovTestV1 {
 	private EgovIdGnrService egovAnswerNoGnrService;
 
 	@Resource
+	private EgovBBSMasterDAO egovBBSMasterDAO;
+
+	@Resource
 	private EgovArticleCommentDAO egovArticleCommentDAO;
+
+	@Resource
+	private EgovArticleDAO egovArticleDAO;
 
 	// testData
 	String today;
 	LoginVO authenticatedUser;
+
+	BoardMaster boardMaster;
+
+	Board board;
 
 	// given
 	Comment comment;
@@ -49,9 +62,12 @@ public class EgovArticleCommentDAOTest_insertArticleComment extends EgovTestV1 {
 	boolean result = false;
 
 	@Test
+	@Commit
 	public void test() {
 		log.debug("test");
 		testData();
+		testData2();
+		testData3();
 		given();
 		when();
 		then();
@@ -62,15 +78,43 @@ public class EgovArticleCommentDAOTest_insertArticleComment extends EgovTestV1 {
 		authenticatedUser = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 	}
 
-	void given() {
-		comment = new Comment();
+	void testData2() {
+		boardMaster = new BoardMaster();
 		try {
-			comment.setNttId(egovNttIdGnrService.getNextLongId());
-			comment.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
-			comment.setCommentNo(egovAnswerNoGnrService.getNextStringId());
+			boardMaster.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
 		} catch (FdlException e) {
 			log.error(e.getMessage());
 		}
+		egovBBSMasterDAO.insertBBSMasterInf(boardMaster);
+	}
+
+	void testData3() {
+		board = new Board();
+		board.setBbsId(boardMaster.getBbsId());
+		try {
+			board.setNttId(egovNttIdGnrService.getNextLongId());
+		} catch (FdlException e) {
+			log.error(e.getMessage());
+		}
+		egovArticleDAO.insertArticle(board);
+	}
+
+	void given() {
+		comment = new Comment();
+		try {
+			comment.setCommentNo(egovAnswerNoGnrService.getNextLongId() + "");
+		} catch (FdlException e) {
+			log.error(e.getMessage());
+		}
+
+//		comment.setCommentNo("");
+		comment.setNttId(board.getNttId());
+		comment.setBbsId(boardMaster.getBbsId());
+		comment.setWrterId(authenticatedUser.getUniqId()); // 작성자ID
+		comment.setWrterNm(authenticatedUser.getName()); // 작성자명
+		comment.setCommentPassword("test 비밀번호" + today); // 비밀번호
+		comment.setCommentCn("test 댓글" + today); // 댓글
+		comment.setFrstRegisterId(authenticatedUser.getUniqId()); // 최초등록자ID
 	}
 
 	void when() {
