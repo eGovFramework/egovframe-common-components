@@ -134,10 +134,9 @@ public class EgovArticleCommentDAOTest_selectArticleCommentList extends EgovTest
 		commentVO.setSubFirstIndex(0);
 	}
 
-	@SuppressWarnings("unchecked")
 	void when() {
-//		articleCommentList = egovArticleCommentDAO.selectArticleCommentList(commentVO);
-		articleCommentList = (List<CommentVO>) egovArticleCommentDAO.selectArticleCommentList(commentVO);
+		articleCommentList = egovArticleCommentDAO.selectArticleCommentList(commentVO);
+//		articleCommentList = (List<CommentVO>) egovArticleCommentDAO.selectArticleCommentList(commentVO);
 	}
 
 	void then() {

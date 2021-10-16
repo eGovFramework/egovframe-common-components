@@ -56,7 +56,8 @@ public class EgovArticleCommentServiceImpl extends EgovAbstractServiceImpl imple
 	
 	@Override
 	public Map<String, Object> selectArticleCommentList(CommentVO commentVO) {
-		List<?> result = egovArticleCommentDao.selectArticleCommentList(commentVO);
+//		List<?> result = egovArticleCommentDao.selectArticleCommentList(commentVO);
+		List<CommentVO> result = egovArticleCommentDao.selectArticleCommentList(commentVO);
 		int cnt = egovArticleCommentDao.selectArticleCommentListCnt(commentVO);
 		
 		Map<String, Object> map = new HashMap<String, Object>();

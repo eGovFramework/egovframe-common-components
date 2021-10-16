@@ -11,8 +11,11 @@ import egovframework.com.cop.cmt.service.CommentVO;
 @Repository("EgovArticleCommentDAO")
 public class EgovArticleCommentDAO extends EgovComAbstractDAO{
 
-	public List<?> selectArticleCommentList(CommentVO commentVO) {
-		return list("ArticleComment.selectArticleCommentList", commentVO);
+//	public List<?> selectArticleCommentList(CommentVO commentVO) {
+//		return list("ArticleComment.selectArticleCommentList", commentVO);
+//	}
+	public List<CommentVO> selectArticleCommentList(CommentVO commentVO) {
+		return selectList("ArticleComment.selectArticleCommentList", commentVO);
 	}
 
 	public int selectArticleCommentListCnt(CommentVO commentVO) {
