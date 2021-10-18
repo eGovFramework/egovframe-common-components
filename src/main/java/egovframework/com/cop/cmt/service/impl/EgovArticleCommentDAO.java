@@ -31,7 +31,8 @@ public class EgovArticleCommentDAO extends EgovComAbstractDAO{
 	}
 
 	public CommentVO selectArticleCommentDetail(CommentVO commentVO) {
-		return (CommentVO) selectOne("ArticleComment.selectArticleCommentDetail", commentVO);
+//		return (CommentVO) selectOne("ArticleComment.selectArticleCommentDetail", commentVO);
+		return selectOne("ArticleComment.selectArticleCommentDetail", commentVO);
 	}
 
 	public void updateArticleComment(Comment comment) {
