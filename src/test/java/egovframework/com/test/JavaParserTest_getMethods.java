@@ -12,7 +12,7 @@ import org.junit.Test;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 
-import egovframework.com.cop.cmt.service.impl.EgovArticleCommentDAO;
+import egovframework.com.cop.cmt.service.impl.EgovArticleCommentServiceImpl;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -21,7 +21,8 @@ public class JavaParserTest_getMethods {
 	@Test
 	public void test() {
 		try {
-			String first = getFirst(EgovArticleCommentDAO.class);
+//			String first = getFirst(EgovArticleCommentDAO.class);
+			String first = getFirst(EgovArticleCommentServiceImpl.class);
 
 			CompilationUnit cu = StaticJavaParser.parse(Paths.get(first));
 
