@@ -1,8 +1,13 @@
 package egovframework.com.test;
 
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.SystemUtils;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.Configuration;
@@ -70,10 +75,22 @@ public class MyBatisTest_getParameterMappings {
 			});
 
 			System.out.println(sb);
+
+			writeStringToFile(resource, sb);
 		} catch (IOException e) {
 			log.error(e.getMessage());
 		} finally {
 			EgovResourceCloseHelper.close(inputStream);
+		}
+	}
+
+	private void writeStringToFile(String resource, StringBuffer sb) {
+		String name = FilenameUtils.getName(resource);
+		try {
+			FileUtils.writeStringToFile(new File(SystemUtils.USER_HOME + "/Desktop/god.codegen/" + name + ".txt"),
+					sb.toString(), StandardCharsets.UTF_8);
+		} catch (IOException e) {
+			log.error(e.getMessage());
 		}
 	}
 
