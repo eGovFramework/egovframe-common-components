@@ -85,7 +85,7 @@ public class MyBatisTest_getParameterMappings {
 	}
 
 	private void writeStringToFile(String resource, StringBuffer sb) {
-		String name = FilenameUtils.getName(resource);
+		String name = FilenameUtils.getName(resource) + "-getParameterMappings";
 		try {
 			FileUtils.writeStringToFile(new File(SystemUtils.USER_HOME + "/Desktop/god.codegen/" + name + ".txt"),
 					sb.toString(), StandardCharsets.UTF_8);
