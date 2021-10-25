@@ -27,6 +27,7 @@ import lombok.extern.slf4j.Slf4j;
 @ContextConfiguration(classes = { EgovArticleCommentServiceImplTest_Configuration.class })
 public class EgovArticleCommentServiceImplTest_insertArticleComment extends EgovTestV1 {
 
+	// context-idgn-bbs.xml
 	@Resource(name = "egovBBSMstrIdGnrService")
 	private EgovIdGnrService egovBBSMstrIdGnrService;
 
@@ -36,13 +37,14 @@ public class EgovArticleCommentServiceImplTest_insertArticleComment extends Egov
 //	@Resource(name = "egovBlogIdGnrService")
 //	private EgovIdGnrService egovBlogIdGnrService;
 
-	@Resource(name = "egovAnswerNoGnrService")
-	private EgovIdGnrService egovAnswerNoGnrService;
+	// context-idgn-AnswerNo.xml
+//	@Resource(name = "egovAnswerNoGnrService")
+//	private EgovIdGnrService egovAnswerNoGnrService;
 
-	@Resource
+	@Resource(name = "EgovBBSMasterDAO")
 	private EgovBBSMasterDAO egovBBSMasterDAO;
 
-	@Resource
+	@Resource(name = "EgovArticleDAO")
 	private EgovArticleDAO egovArticleDAO;
 
 	@Resource(name = "EgovArticleCommentService")
@@ -67,8 +69,8 @@ public class EgovArticleCommentServiceImplTest_insertArticleComment extends Egov
 	public void test() {
 		log.debug("test");
 		testData();
-		testData2();
-		testData3();
+		testData2_insertBBSMasterInf();
+		testData3_insertArticle();
 		given();
 		when();
 		then();
@@ -79,7 +81,7 @@ public class EgovArticleCommentServiceImplTest_insertArticleComment extends Egov
 		authenticatedUser = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 	}
 
-	void testData2() {
+	void testData2_insertBBSMasterInf() {
 		boardMaster = new BoardMaster();
 		try {
 			boardMaster.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
@@ -90,7 +92,7 @@ public class EgovArticleCommentServiceImplTest_insertArticleComment extends Egov
 		egovBBSMasterDAO.insertBBSMasterInf(boardMaster);
 	}
 
-	void testData3() {
+	void testData3_insertArticle() {
 		board = new Board();
 		try {
 			board.setNttId(egovNttIdGnrService.getNextLongId());
