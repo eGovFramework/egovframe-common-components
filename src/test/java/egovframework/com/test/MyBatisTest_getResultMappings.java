@@ -39,48 +39,59 @@ public class MyBatisTest_getResultMappings {
 
 			builder.parse();
 
-//			ResultMap resultMap = configuration.getResultMap("boardList");
-//			ResultMap resultMap = configuration.getResultMap("boardBlogManager");
-//			ResultMap resultMap = configuration.getResultMap("boardMasterList");
-//			ResultMap resultMap = configuration.getResultMap("boardMasterDetail");
-//			ResultMap resultMap = configuration.getResultMap("BlogList");
-//			ResultMap resultMap = configuration.getResultMap("BBSListPortlet");
-//			ResultMap resultMap = configuration.getResultMap("selectBlogDetail");
-//			ResultMap resultMap = configuration.getResultMap("BlogListPortlet");
-//			ResultMap resultMap = configuration.getResultMap("selectBlogUser");
-
-//			ResultMap resultMap = configuration.getResultMap("commentList");
-			ResultMap resultMap = configuration.getResultMap("commentDetail");
-
 			StringBuffer sb = new StringBuffer("\n");
 			StringBuffer sb2 = new StringBuffer("\n");
-			resultMap.getResultMappings().forEach(rm -> {
-				String property = rm.getProperty();
-				String propertyUpper = property.toUpperCase().substring(0, 1)
-						+ property.substring(1, property.length());
+			StringBuffer sb3 = new StringBuffer("\n");
 
-				sb.append("log.debug(\"");
-				sb.append(property);
-				sb.append("={}\", ");
-				sb.append("boardVO.get");
-				sb.append(propertyUpper);
-				sb.append("());\n");
-
-				sb2.append("assertEquals(resultList.get(0).get");
-				sb2.append(propertyUpper);
-				sb2.append("(), boardVO.get");
-				sb2.append(propertyUpper);
-				sb2.append("());\n");
+			configuration.getResultMapNames().forEach(id -> {
+				sb.setLength(0);
+				sb2.setLength(0);
+				getResultMappings(configuration, sb, sb2, sb3, id);
 			});
 
 			System.out.println(sb);
 			System.out.println(sb2);
+			System.out.println(sb3);
 
-			writeStringToFile(resource, sb.append(sb2));
+			writeStringToFile(resource, sb3);
 		} catch (IOException e) {
 			log.error(e.getMessage());
 			EgovResourceCloseHelper.close(inputStream);
 		}
+	}
+
+	private void getResultMappings(Configuration configuration, StringBuffer sb, StringBuffer sb2, StringBuffer sb3,
+			String id) {
+		ResultMap resultMap = configuration.getResultMap(id);
+
+		sb3.append(id);
+		sb3.append("\n\n");
+
+		resultMap.getResultMappings().forEach(rm -> {
+			String property = rm.getProperty();
+			String propertyUpper = property.toUpperCase().substring(0, 1) + property.substring(1, property.length());
+
+			sb.append("log.debug(\"");
+			sb.append(property);
+			sb.append("={}\", ");
+			sb.append("boardVO.get");
+			sb.append(propertyUpper);
+			sb.append("());\n");
+
+			sb2.append("assertEquals(resultList.get(0).get");
+			sb2.append(propertyUpper);
+			sb2.append("(), boardVO.get");
+			sb2.append(propertyUpper);
+			sb2.append("());\n");
+		});
+
+		sb3.append(sb);
+		sb3.append("\n");
+		sb3.append(sb2);
+
+		sb3.append("\n");
+		sb3.append("---");
+		sb3.append("\n\n");
 	}
 
 	private void writeStringToFile(String resource, StringBuffer sb) {
