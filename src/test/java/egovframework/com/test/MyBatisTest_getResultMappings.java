@@ -14,6 +14,7 @@ import org.apache.ibatis.mapping.ResultMap;
 import org.apache.ibatis.session.Configuration;
 import org.junit.Test;
 
+import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import lombok.extern.slf4j.Slf4j;
 
@@ -29,10 +30,13 @@ public class MyBatisTest_getResultMappings {
 		try {
 //			String resource = "egovframework/mapper/com/cop/bbs/EgovArticle_SQL_mysql.xml";
 //			String resource = "egovframework/mapper/com/cop/bbs/EgovBBSMaster_SQL_mysql.xml";
-			String resource = "egovframework/mapper/com/cop/cmt/EgovArticleComment_SQL_mysql.xml";
+//			String resource = "egovframework/mapper/com/cop/cmt/EgovArticleComment_SQL_mysql.xml";
+			String resource = "egovframework/mapper/com/cmm/fms/EgovFile_SQL_mysql.xml";
 			inputStream = Resources.getResourceAsStream(resource);
 
 			Configuration configuration = new Configuration();
+
+			configuration.getTypeAliasRegistry().registerAlias("FileVO", FileVO.class);
 
 			XMLMapperBuilder builder = new XMLMapperBuilder(inputStream, configuration, resource,
 					configuration.getSqlFragments());
