@@ -1,4 +1,4 @@
-package egovframework.com.cop.bbs.service.impl;
+package egovframework.com.cop.cmt.service.impl;
 
 import static org.junit.Assert.assertEquals;
 
@@ -13,6 +13,8 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.bbs.service.Board;
 import egovframework.com.cop.bbs.service.BoardMaster;
+import egovframework.com.cop.bbs.service.impl.EgovArticleDAO;
+import egovframework.com.cop.bbs.service.impl.EgovBBSMasterDAO;
 import egovframework.com.cop.cmt.service.Comment;
 import egovframework.com.cop.cmt.service.CommentVO;
 import egovframework.com.cop.cmt.service.impl.EgovArticleCommentDAO;
@@ -24,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovArticleCommentDAOTest_Configuration.class })
-public class EgovArticleCommentDAOTest_selectArticleCommentDetail extends EgovTestV1 {
+public class EgovArticleCommentDAOTest_deleteArticleComment extends EgovTestV1 {
 
 	@Resource(name = "egovBBSMstrIdGnrService")
 	private EgovIdGnrService egovBBSMstrIdGnrService;
@@ -49,19 +51,18 @@ public class EgovArticleCommentDAOTest_selectArticleCommentDetail extends EgovTe
 
 	// testData
 	String today;
+	String today2;
 	LoginVO authenticatedUser;
 
 	BoardMaster boardMaster;
-
 	Board board;
-
-	// given
 	Comment comment;
 
+	// given
 	CommentVO commentVO;
 
 	// when
-	CommentVO articleCommentDetail;
+	boolean result = false;
 
 	@Test
 //	@Commit
@@ -130,34 +131,18 @@ public class EgovArticleCommentDAOTest_selectArticleCommentDetail extends EgovTe
 	}
 
 	void when() {
-		articleCommentDetail = egovArticleCommentDAO.selectArticleCommentDetail(commentVO);
+		try {
+			egovArticleCommentDAO.deleteArticleComment(commentVO);
+			result = true;
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
 	}
 
 	void then() {
-		log.debug("articleCommentDetail={}", articleCommentDetail);
+		log.debug("result={}", result);
 
-		log.debug("commentNo={}, {}", articleCommentDetail.getCommentNo(), commentVO.getCommentNo());
-		log.debug("nttId={}, {}", articleCommentDetail.getNttId(), comment.getNttId());
-		log.debug("bbsId={}, {}", articleCommentDetail.getBbsId(), comment.getBbsId());
-		log.debug("wrterId={}, {}", articleCommentDetail.getWrterId(), comment.getWrterId());
-		log.debug("wrterNm={}, {}", articleCommentDetail.getWrterNm(), comment.getWrterNm());
-		log.debug("commentPassword={}, {}", articleCommentDetail.getCommentPassword(), comment.getCommentPassword());
-		log.debug("commentCn={}, {}", articleCommentDetail.getCommentCn(), comment.getCommentCn());
-		log.debug("useAt={}, {}", articleCommentDetail.getUseAt(), comment.getUseAt());
-		log.debug("frstRegisterPnttm={}, {}", articleCommentDetail.getFrstRegisterPnttm(),
-				comment.getFrstRegisterPnttm());
-		log.debug("frstRegisterNm={}, {}", articleCommentDetail.getFrstRegisterNm(), comment.getFrstRegisterNm());
-
-		assertEquals(articleCommentDetail.getCommentNo(), commentVO.getCommentNo());
-		assertEquals(articleCommentDetail.getNttId(), comment.getNttId());
-		assertEquals(articleCommentDetail.getBbsId(), comment.getBbsId());
-		assertEquals(articleCommentDetail.getWrterId(), comment.getWrterId());
-		assertEquals(articleCommentDetail.getWrterNm(), comment.getWrterNm());
-		assertEquals(articleCommentDetail.getCommentPassword(), comment.getCommentPassword());
-		assertEquals(articleCommentDetail.getCommentCn(), comment.getCommentCn());
-//		assertEquals(articleCommentDetail.getUseAt(), comment.getUseAt());
-//		assertEquals(articleCommentDetail.getFrstRegisterPnttm(), comment.getFrstRegisterPnttm());
-//		assertEquals(articleCommentDetail.getFrstRegisterNm(), comment.getFrstRegisterNm());
+		assertEquals(result, true);
 	}
 
 }

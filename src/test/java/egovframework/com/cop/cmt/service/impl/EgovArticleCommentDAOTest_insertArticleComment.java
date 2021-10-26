@@ -1,4 +1,4 @@
-package egovframework.com.cop.bbs.service.impl;
+package egovframework.com.cop.cmt.service.impl;
 
 import static org.junit.Assert.assertEquals;
 
@@ -13,6 +13,8 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.bbs.service.Board;
 import egovframework.com.cop.bbs.service.BoardMaster;
+import egovframework.com.cop.bbs.service.impl.EgovArticleDAO;
+import egovframework.com.cop.bbs.service.impl.EgovBBSMasterDAO;
 import egovframework.com.cop.cmt.service.Comment;
 import egovframework.com.cop.cmt.service.impl.EgovArticleCommentDAO;
 import egovframework.com.test.EgovTestV1;

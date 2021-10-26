@@ -1,4 +1,4 @@
-package egovframework.com.cop.bbs.service.impl;
+package egovframework.com.cop.cmt.service.impl;
 
 import static org.junit.Assert.assertEquals;
 
@@ -13,8 +13,9 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.bbs.service.Board;
 import egovframework.com.cop.bbs.service.BoardMaster;
+import egovframework.com.cop.bbs.service.impl.EgovArticleDAO;
+import egovframework.com.cop.bbs.service.impl.EgovBBSMasterDAO;
 import egovframework.com.cop.cmt.service.Comment;
-import egovframework.com.cop.cmt.service.CommentVO;
 import egovframework.com.cop.cmt.service.impl.EgovArticleCommentDAO;
 import egovframework.com.test.EgovTestV1;
 import egovframework.rte.fdl.cmmn.exception.FdlException;
@@ -24,7 +25,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovArticleCommentDAOTest_Configuration.class })
-public class EgovArticleCommentDAOTest_selectArticleCommentListCnt extends EgovTestV1 {
+public class EgovArticleCommentDAOTest_updateArticleComment extends EgovTestV1 {
 
 	@Resource(name = "egovBBSMstrIdGnrService")
 	private EgovIdGnrService egovBBSMstrIdGnrService;
@@ -49,6 +50,7 @@ public class EgovArticleCommentDAOTest_selectArticleCommentListCnt extends EgovT
 
 	// testData
 	String today;
+	String today2;
 	LoginVO authenticatedUser;
 
 	BoardMaster boardMaster;
@@ -58,10 +60,8 @@ public class EgovArticleCommentDAOTest_selectArticleCommentListCnt extends EgovT
 	// given
 	Comment comment;
 
-	CommentVO commentVO;
-
 	// when
-	int articleCommentListCnt;
+	boolean result = false;
 
 	@Test
 //	@Commit
@@ -125,19 +125,31 @@ public class EgovArticleCommentDAOTest_selectArticleCommentListCnt extends EgovT
 	}
 
 	void given() {
-		commentVO = new CommentVO();
-		commentVO.setBbsId(boardMaster.getBbsId());
-		commentVO.setNttId(board.getNttId());
+		try {
+			Thread.sleep(1000);
+		} catch (InterruptedException e) {
+			log.error(e.getMessage());
+		}
+
+		today2 = " " + EgovDateUtil.toString(new Date(), null, null);
+		comment.setCommentCn("test 댓글" + today2);
+		comment.setLastUpdusrId(authenticatedUser.getUniqId());
+//		comment.setCommentNo("");
 	}
 
 	void when() {
-		articleCommentListCnt = egovArticleCommentDAO.selectArticleCommentListCnt(commentVO);
+		try {
+			egovArticleCommentDAO.updateArticleComment(comment);
+			result = true;
+		} catch (Exception e) {
+			log.error(e.getMessage());
+		}
 	}
 
 	void then() {
-		log.debug("articleCommentListCnt={}", articleCommentListCnt);
+		log.debug("result={}", result);
 
-		assertEquals(articleCommentListCnt, 1);
+		assertEquals(result, true);
 	}
 
 }

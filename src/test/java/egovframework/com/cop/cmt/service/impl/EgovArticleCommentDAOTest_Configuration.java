@@ -1,4 +1,4 @@
-package egovframework.com.cop.bbs.service.impl;
+package egovframework.com.cop.cmt.service.impl;
 
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.ImportResource;
 
+import egovframework.com.cop.bbs.service.impl.EgovArticleDAO;
+import egovframework.com.cop.bbs.service.impl.EgovBBSMasterDAO;
 import egovframework.com.cop.cmt.service.impl.EgovArticleCommentDAO;
 
 @Configuration
