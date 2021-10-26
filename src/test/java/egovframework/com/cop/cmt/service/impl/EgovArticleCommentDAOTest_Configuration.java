@@ -8,7 +8,6 @@ import org.springframework.context.annotation.ImportResource;
 
 import egovframework.com.cop.bbs.service.impl.EgovArticleDAO;
 import egovframework.com.cop.bbs.service.impl.EgovBBSMasterDAO;
-import egovframework.com.cop.cmt.service.impl.EgovArticleCommentDAO;
 
 @Configuration
 
