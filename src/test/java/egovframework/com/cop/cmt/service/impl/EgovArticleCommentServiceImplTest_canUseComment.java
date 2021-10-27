@@ -134,7 +134,7 @@ public class EgovArticleCommentServiceImplTest_canUseComment extends EgovTestV1 
 		boardMaster.setOption("comment");
 		String insertAddedOptionsInf = null;
 		try {
-			bbsAddedOptionsDAO.insertAddedOptionsInf(boardMaster);
+			insertAddedOptionsInf = bbsAddedOptionsDAO.insertAddedOptionsInf(boardMaster);
 		} catch (Exception e) {
 			log.error("Exception");
 		}

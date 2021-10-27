@@ -7,7 +7,8 @@ import org.junit.runners.Suite.SuiteClasses;
 @RunWith(Suite.class)
 @SuiteClasses({ EgovArticleCommentServiceImplTest_insertArticleComment.class,
 		EgovArticleCommentServiceImplTest_selectArticleCommentDetail.class,
-		EgovArticleCommentServiceImplTest_selectArticleCommentList.class })
+		EgovArticleCommentServiceImplTest_selectArticleCommentList.class,
+		EgovArticleCommentServiceImplTest_canUseComment.class })
 public class EgovArticleCommentServiceImplTest_AllTests {
 
 }
