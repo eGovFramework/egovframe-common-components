@@ -16,6 +16,7 @@ import egovframework.com.cop.bbs.service.BoardMaster;
 import egovframework.com.cop.bbs.service.impl.EgovArticleDAO;
 import egovframework.com.cop.bbs.service.impl.EgovBBSMasterDAO;
 import egovframework.com.cop.cmt.service.Comment;
+import egovframework.com.cop.cmt.service.CommentVO;
 import egovframework.com.cop.cmt.service.EgovArticleCommentService;
 import egovframework.com.test.EgovTestV1;
 import egovframework.rte.fdl.cmmn.exception.FdlException;
@@ -25,7 +26,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovArticleCommentServiceImplTest_Configuration.class })
-public class EgovArticleCommentServiceImplTest_updateArticleComment extends EgovTestV1 {
+public class EgovArticleCommentServiceImplTest_deleteArticleComment extends EgovTestV1 {
 
 	// context-idgn-bbs.xml
 	@Resource(name = "egovBBSMstrIdGnrService")
@@ -62,8 +63,10 @@ public class EgovArticleCommentServiceImplTest_updateArticleComment extends Egov
 
 	Board board;
 
-	// given
 	Comment comment;
+
+	// given
+	CommentVO commentVO;
 
 	// when
 	boolean result = false;
@@ -140,21 +143,13 @@ public class EgovArticleCommentServiceImplTest_updateArticleComment extends Egov
 //	}
 
 	void given() {
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			log.error("InterruptedException");
-		}
-		today2 = " " + EgovDateUtil.toString(new Date(), null, null);
-
-		comment.setCommentCn("test 댓글 수정" + today2); // 댓글
-		comment.setLastUpdusrId(authenticatedUser.getUniqId());
-//		comment.setCommentNo("");
+		commentVO = new CommentVO();
+		commentVO.setCommentNo(comment.getCommentNo());
 	}
 
 	void when() {
 		try {
-			egovArticleCommentService.updateArticleComment(comment);
+			egovArticleCommentService.deleteArticleComment(commentVO);
 			result = true;
 		} catch (Exception e) {
 			log.error("Exception");

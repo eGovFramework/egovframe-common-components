@@ -9,7 +9,8 @@ import org.junit.runners.Suite.SuiteClasses;
 		EgovArticleCommentServiceImplTest_selectArticleCommentDetail.class,
 		EgovArticleCommentServiceImplTest_selectArticleCommentList.class,
 		EgovArticleCommentServiceImplTest_canUseComment.class,
-		EgovArticleCommentServiceImplTest_updateArticleComment.class })
+		EgovArticleCommentServiceImplTest_updateArticleComment.class,
+		EgovArticleCommentServiceImplTest_deleteArticleComment.class })
 public class EgovArticleCommentServiceImplTest_AllTests {
 
 }
