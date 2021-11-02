@@ -16,8 +16,11 @@
 	<select id="selectCommuBBSMasterListMain" parameterType="egovframework.com.cop.bbs.service.BoardMasterVO" resultMap="boardMasterList">
 		
 			SELECT 
-				a.BBS_ID, a.BBS_TY_CODE, 
-				a.BBS_NM
+				a.BBS_ID, a.BBS_TY_CODE, (SELECT CODE_NM FROM COMTCCMMNDETAILCODE WHERE CODE_ID = 'COM101' AND CODE = a.BBS_TY_CODE) AS BBS_TY_CODE_NM,
+				a.BBS_NM,
+				a.TMPLAT_ID,
+				a.USE_AT,
+				TO_CHAR(a.FRST_REGIST_PNTTM, 'YYYY-MM-DD HH24:MI:SS') AS FRST_REGIST_PNTTM
 			FROM
 				COMTNBBSMASTER a
 			WHERE 1=1	

@@ -83,6 +83,8 @@ public class EgovCommuBBSMasterDAOTest_selectCommuBBSMasterListMain extends Egov
 	void given() {
 		boardMasterVO = new BoardMasterVO();
 		boardMasterVO.setCmmntyId(boardMaster.getCmmntyId());
+
+//		boardMasterVO.setBbsTyCodeNm("통합게시판");
 	}
 
 	void when() {
@@ -92,18 +94,18 @@ public class EgovCommuBBSMasterDAOTest_selectCommuBBSMasterListMain extends Egov
 	void then() {
 		log.debug("bbsId={}, {}", boardMaster.getBbsId(), commuBBSMasterListMain.get(0).getBbsId());
 		log.debug("bbsTyCode={}, {}", boardMaster.getBbsTyCode(), commuBBSMasterListMain.get(0).getBbsTyCode());
-//		log.debug("bbsTyCodeNm={}", boardVO.getBbsTyCodeNm());
+		log.debug("bbsTyCodeNm={}, {}", boardMasterVO.getBbsTyCodeNm(), commuBBSMasterListMain.get(0).getBbsTyCodeNm());
 		log.debug("bbsNm={}, {}", boardMaster.getBbsNm(), commuBBSMasterListMain.get(0).getBbsNm());
-//		log.debug("tmplatId={}", boardVO.getTmplatId());
+		log.debug("tmplatId={}", commuBBSMasterListMain.get(0).getTmplatId());
 		log.debug("useAt={}, {}", boardMaster.getUseAt(), commuBBSMasterListMain.get(0).getUseAt());
-//		log.debug("frstRegisterPnttm={}", boardVO.getFrstRegisterPnttm());
+		log.debug("frstRegisterPnttm={}", commuBBSMasterListMain.get(0).getFrstRegisterPnttm());
 //
 		assertEquals(boardMaster.getBbsId(), commuBBSMasterListMain.get(0).getBbsId());
 		assertEquals(boardMaster.getBbsTyCode(), commuBBSMasterListMain.get(0).getBbsTyCode());
-//		assertEquals(commuBBSMasterListMain.get(0).getBbsTyCodeNm(), boardVO.getBbsTyCodeNm());
+//		assertEquals(boardMasterVO.getBbsTyCodeNm(), commuBBSMasterListMain.get(0).getBbsTyCodeNm());
 		assertEquals(boardMaster.getBbsNm(), commuBBSMasterListMain.get(0).getBbsNm());
 //		assertEquals(boardMasterVO.getTmplatId(), commuBBSMasterListMain.get(0).getTmplatId());
-//		assertEquals(boardMaster.getUseAt(), commuBBSMasterListMain.get(0).getUseAt());
+		assertEquals(boardMaster.getUseAt(), commuBBSMasterListMain.get(0).getUseAt());
 //		assertEquals(commuBBSMasterListMain.get(0).getFrstRegisterPnttm(), boardVO.getFrstRegisterPnttm());
 	}
 
