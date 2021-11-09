@@ -102,7 +102,8 @@
 				ON a.MBER_STTUS = c.CODE
 			WHERE 1=1 
  				AND a.CMMNTY_ID = #{cmmntyId}
-			<if test="searchCnd == 0">AND
+			<!-- <if test="searchCnd == 0">AND -->
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCnd, '0')">AND
 					b.USER_NM LIKE CONCAT ('%', #{searchWrd},'%') 		
 			</if>
 					

@@ -28,8 +28,15 @@ public class EgovCommuManageDAO extends EgovComAbstractDAO{
 		insert("CommuManage.insertCommuUserRqst", cmmntyUser);
 	}
 
-	public List<?> selectCommuUserList(CommunityUserVO cmmntyUserVO) {
-		return list("CommuManage.selectCommuUserList", cmmntyUserVO);
+	/**
+	 * 커뮤니티 사용자 조회(멀티건)
+	 * 
+	 * @param cmmntyUserVO
+	 * @return commuUsers
+	 */
+//	public List<?> selectCommuUserList(CommunityUserVO cmmntyUserVO) {
+	public List<CommunityUser> selectCommuUserList(CommunityUserVO cmmntyUserVO) {
+		return selectList("CommuManage.selectCommuUserList", cmmntyUserVO);
 	}
 
 	public int selectCommuUserListCnt(CommunityUserVO cmmntyUserVO) {
