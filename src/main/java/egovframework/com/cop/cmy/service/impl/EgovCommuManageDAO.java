@@ -20,8 +20,14 @@ public class EgovCommuManageDAO extends EgovComAbstractDAO{
 		return selectList("CommuManage.selectCommuManagerList", cmmntyVO);
 	}
 
+	/**
+	 * 기존 사용자 조건확인
+	 * 
+	 * @param cmmntyUser
+	 * @return
+	 */
 	public int checkExistUser(CommunityUser cmmntyUser) {
-		return (Integer)selectOne("CommuManage.checkExistUser", cmmntyUser);
+		return (Integer) selectOne("CommuManage.checkExistUser", cmmntyUser);
 	}
 
 	public void insertCommuUserRqst(CommunityUser cmmntyUser) {
@@ -39,8 +45,14 @@ public class EgovCommuManageDAO extends EgovComAbstractDAO{
 		return selectList("CommuManage.selectCommuUserList", cmmntyUserVO);
 	}
 
+	/**
+	 * 커뮤니티 사용자 조회(멀티건) 카운트
+	 * 
+	 * @param cmmntyUserVO
+	 * @return
+	 */
 	public int selectCommuUserListCnt(CommunityUserVO cmmntyUserVO) {
-		return (Integer)selectOne("CommuManage.selectCommuUserListCnt", cmmntyUserVO);
+		return (Integer) selectOne("CommuManage.selectCommuUserListCnt", cmmntyUserVO);
 	}
 
 	public void insertCommuUser(CommunityUserVO cmmntyUserVO) {
