@@ -59,6 +59,11 @@ public class EgovCommuManageDAO extends EgovComAbstractDAO{
 		update("CommuManage.insertCommuUser", cmmntyUserVO);
 	}
 
+	/**
+	 * 커뮤니티 사용자 삭제
+	 * 
+	 * @param cmmntyUserVO
+	 */
 	public void deleteCommuUser(CommunityUserVO cmmntyUserVO) {
 		delete("CommuManage.deleteCommuUser", cmmntyUserVO);
 	}

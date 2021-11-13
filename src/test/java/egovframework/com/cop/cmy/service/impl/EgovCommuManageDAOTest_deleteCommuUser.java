@@ -13,6 +13,7 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.cmy.service.Community;
 import egovframework.com.cop.cmy.service.CommunityUser;
+import egovframework.com.cop.cmy.service.CommunityUserVO;
 import egovframework.com.test.EgovTestV1;
 import egovframework.rte.fdl.cmmn.exception.FdlException;
 import egovframework.rte.fdl.idgnr.EgovIdGnrService;
@@ -21,7 +22,7 @@ import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @ContextConfiguration(classes = { EgovCommuManageDAOTest_Configuration.class })
-public class EgovCommuManageDAOTest_checkExistUser extends EgovTestV1 {
+public class EgovCommuManageDAOTest_deleteCommuUser extends EgovTestV1 {
 
 	@Resource(name = "egovCmmntyIdGnrService")
 	private EgovIdGnrService egovCmmntyIdGnrService;
@@ -38,11 +39,13 @@ public class EgovCommuManageDAOTest_checkExistUser extends EgovTestV1 {
 
 	Community community;
 
-	// given
 	CommunityUser cmmntyUser;
 
+	// given
+	CommunityUserVO cmmntyUserVO;
+
 	// when
-	int checkExistUser;
+	boolean result;
 
 	@Test
 	public void test() {
@@ -89,18 +92,24 @@ public class EgovCommuManageDAOTest_checkExistUser extends EgovTestV1 {
 	}
 
 	void given() {
-//		cmmntyUser.setEmplyrId(authenticatedUser.getUniqId());
-//		cmmntyUser.setCmmntyId(community.getCmmntyId());
+		cmmntyUserVO = new CommunityUserVO();
+		cmmntyUserVO.setCmmntyId(community.getCmmntyId());
+		cmmntyUserVO.setEmplyrId(authenticatedUser.getUniqId());
 	}
 
 	void when() {
-		checkExistUser = egovCommuManageDAO.checkExistUser(cmmntyUser);
+		try {
+			egovCommuManageDAO.deleteCommuUser(cmmntyUserVO);
+			result = true;
+		} catch (Exception e) {
+			log.error("Exception");
+		}
 	}
 
 	void then() {
-		log.debug("checkExistUser={}", checkExistUser);
+		log.debug("result={}", result);
 
-		assertEquals(1, checkExistUser);
+		assertEquals(true, result);
 	}
 
 }
