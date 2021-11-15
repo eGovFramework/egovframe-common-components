@@ -13,7 +13,7 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 
-import egovframework.com.cop.cmy.service.impl.EgovCommuBBSMasterServiceImpl;
+import egovframework.com.cop.cmy.service.impl.EgovCommuMasterDAO;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -27,7 +27,8 @@ public class JavaParserTest_getMethods {
 //			String first = getFirst(EgovArticleCommentServiceImpl.class);
 //			String first = getFirst(EgovCommuBBSMasterDAO.class);
 //			String first = getFirst(EgovCommuManageDAO.class);
-			String first = getFirst(EgovCommuBBSMasterServiceImpl.class);
+//			String first = getFirst(EgovCommuBBSMasterServiceImpl.class);
+			String first = getFirst(EgovCommuMasterDAO.class);
 
 			CompilationUnit cu = StaticJavaParser.parse(Paths.get(first));
 
@@ -73,11 +74,12 @@ public class JavaParserTest_getMethods {
 
 			log.debug("methodName={}", methodName);
 
+			sb.append("||");
 			sb.append(primaryTypeName);
 			sb.append("Test_");
 			sb.append(methodName);
+			sb.append("|");
 			sb.append("\n");
-
 		});
 	}
 

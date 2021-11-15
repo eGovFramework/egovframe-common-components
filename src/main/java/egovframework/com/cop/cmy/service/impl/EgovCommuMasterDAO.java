@@ -20,9 +20,13 @@ public class EgovCommuMasterDAO extends EgovComAbstractDAO{
 		return (Integer)selectOne("CommuMaster.selectCommuMasterListCnt", cmmntyVO);
 	}
 
+	/**
+	 * 커뮤니티 마스터 등록
+	 * 
+	 * @param community
+	 */
 	public void insertCommuMaster(Community community) {
 		insert("CommuMaster.insertCommuMaster", community);
-		
 	}
 
 	public CommunityVO selectCommuMasterDetail(CommunityVO cmmntyVO) {
