@@ -20,7 +20,7 @@ public class EgovCommuMasterDAO extends EgovComAbstractDAO{
 	 * 커뮤니티 마스터 조회(멀티건) 카운트
 	 * 
 	 * @param cmmntyVO
-	 * @return
+	 * @return commuMasterListCnt
 	 */
 	public int selectCommuMasterListCnt(CommunityVO cmmntyVO) {
 		return (Integer) selectOne("CommuMaster.selectCommuMasterListCnt", cmmntyVO);
