@@ -35,6 +35,12 @@ public class EgovCommuMasterDAO extends EgovComAbstractDAO{
 		insert("CommuMaster.insertCommuMaster", community);
 	}
 
+	/**
+	 * 커뮤니티 마스터 상세 조회(단건)
+	 * 
+	 * @param cmmntyVO
+	 * @return commuMasterDetail
+	 */
 	public CommunityVO selectCommuMasterDetail(CommunityVO cmmntyVO) {
 		return (CommunityVO) selectOne("CommuMaster.selectCommuMasterDetail", cmmntyVO);
 	}

@@ -79,18 +79,22 @@ public class MyBatisTest_getResultMappings {
 			String property = rm.getProperty();
 			String propertyUpper = property.toUpperCase().substring(0, 1) + property.substring(1, property.length());
 
+			String expected = "results.get(0).get" + propertyUpper + "()";
+			String actual = "vo.get" + propertyUpper + "()";
+
 			sb.append("log.debug(\"");
 			sb.append(property);
-			sb.append("={}\", ");
-			sb.append("boardVO.get");
-			sb.append(propertyUpper);
-			sb.append("());\n");
+			sb.append("={}, {}\", ");
+			sb.append(expected);
+			sb.append(", ");
+			sb.append(actual);
+			sb.append(");\n");
 
-			sb2.append("assertEquals(resultList.get(0).get");
-			sb2.append(propertyUpper);
-			sb2.append("(), boardVO.get");
-			sb2.append(propertyUpper);
-			sb2.append("());\n");
+			sb2.append("assertEquals(");
+			sb2.append(expected);
+			sb2.append(", ");
+			sb2.append(actual);
+			sb2.append(");\n");
 		});
 
 		sb3.append(sb);
