@@ -54,15 +54,14 @@ public class EgovCommuMasterDAO extends EgovComAbstractDAO{
 	}
 	
     /**
-     * 포트릿을 위한 커뮤니티 정보 목록 정보를 조회한다.
+     * 포틀릿을 위한 커뮤니티 정보 목록 정보를 조회한다.
      *
      * @param cmmntyVO
-     * @return
+     * @return commuMasterListPortlet
      * @throws Exception
      */
-	@SuppressWarnings("unchecked")
     public List<CommunityVO> selectCommuMasterListPortlet(CommunityVO cmmntyVO) throws Exception {
-		return (List<CommunityVO>) list("CommuMaster.selectCommuMasterListPortlet", cmmntyVO);
+		return selectList("CommuMaster.selectCommuMasterListPortlet", cmmntyVO);
     }
 
 }
