@@ -45,6 +45,11 @@ public class EgovCommuMasterDAO extends EgovComAbstractDAO{
 		return (CommunityVO) selectOne("CommuMaster.selectCommuMasterDetail", cmmntyVO);
 	}
 
+	/**
+	 * 커뮤니티 마스터 수정
+	 * 
+	 * @param community
+	 */
 	public void updateCommuMaster(Community community) {
 		update("CommuMaster.updateCommuMaster", community);
 	}
