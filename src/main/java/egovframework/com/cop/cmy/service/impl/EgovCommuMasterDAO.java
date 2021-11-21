@@ -54,6 +54,11 @@ public class EgovCommuMasterDAO extends EgovComAbstractDAO{
 		update("CommuMaster.updateCommuMaster", community);
 	}
 
+	/**
+	 * 커뮤니티 마스터 삭제
+	 * 
+	 * @param community
+	 */
 	public void deleteCommuMaster(Community community) {
 		update("CommuMaster.deleteCommuMaster", community);
 	}
