@@ -36,7 +36,7 @@
 				COMVNUSERMASTER
 			WHERE 1=1 
  		
-			<if test="searchCnd == 0">AND
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCnd, '0')">AND
 					USER_NM LIKE CONCAT ('%', #{searchWrd},'%') 		
 			</if>
 					
@@ -53,7 +53,7 @@
 				COMVNUSERMASTER
 			WHERE 1=1 
 		
-			<if test="searchCnd == 0">AND
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCnd, '0')">AND
 					USER_NM LIKE CONCAT ('%', #{searchWrd},'%') 		
 			</if>		
 	</select>	
@@ -70,7 +70,7 @@
 			AND
 				b.CMMNTY_ID = #{trgetId}
  		
-			<if test="searchCnd == 0">AND
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCnd, '0')">AND
 					a.USER_NM LIKE CONCAT ('%', #{searchWrd},'%') 		
 			</if>
 					
@@ -90,7 +90,7 @@
 			AND
 				b.CMMNTY_ID = #{trgetId}
 		
-			<if test="searchCnd == 0">AND
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCnd, '0')">AND
 					a.USER_NM LIKE CONCAT ('%', #{searchWrd},'%') 		
 			</if>		
 	</select>
@@ -110,7 +110,7 @@
 			AND
 				b.CMMNTY_ID = #{trgetId}				
  		
-			<if test="searchCnd == 0">AND
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCnd, '0')">AND
 					a.USER_NM LIKE CONCAT ('%', #{searchWrd},'%') 		
 			</if>
 					
@@ -132,7 +132,7 @@
 			AND
 				b.CMMNTY_ID = #{trgetId}				
 		
-			<if test="searchCnd == 0">AND
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCnd, '0')">AND
 					a.USER_NM LIKE CONCAT ('%', #{searchWrd},'%') 		
 			</if>		
 	</select>
@@ -150,7 +150,7 @@
 			AND
 				b.CLB_ID = #{trgetId}				
  		
-			<if test="searchCnd == 0">AND
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCnd, '0')">AND
 					a.USER_NM LIKE CONCAT ('%', #{searchWrd},'%') 		
 			</if>
 					
@@ -170,7 +170,7 @@
 			AND
 				b.CLB_ID = #{trgetId}						
 		
-			<if test="searchCnd == 0">AND
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCnd, '0')">AND
 					a.USER_NM LIKE CONCAT ('%', #{searchWrd},'%') 		
 			</if>		
 	</select>
@@ -189,7 +189,7 @@
 			AND
 				b.CLB_ID = #{trgetId}						
  		
-			<if test="searchCnd == 0">AND
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCnd, '0')">AND
 					a.USER_NM LIKE CONCAT ('%', #{searchWrd},'%') 		
 			</if>
 					
@@ -211,7 +211,7 @@
 			AND
 				b.CLB_ID = #{trgetId}						
 		
-			<if test="searchCnd == 0">AND
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCnd, '0')">AND
 					a.USER_NM LIKE CONCAT ('%', #{searchWrd},'%') 		
 			</if>		
 	</select>

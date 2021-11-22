@@ -66,7 +66,7 @@
 			ON a.REGIST_SE_CODE = c.CODE
 			WHERE c.CODE_ID = 'COM001'
 		
-			<if test="searchCnd == 0">AND
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCnd, '0')">AND
 					a.CMMNTY_NM LIKE CONCAT ('%', #{searchWrd},'%') 		
 			</if>
 					
