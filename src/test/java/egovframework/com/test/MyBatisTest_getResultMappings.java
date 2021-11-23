@@ -14,8 +14,11 @@ import org.apache.ibatis.mapping.ResultMap;
 import org.apache.ibatis.session.Configuration;
 import org.junit.Test;
 
+import egovframework.com.cmm.ComDefaultCodeVO;
+import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
+import egovframework.rte.psl.dataaccess.util.EgovMap;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -36,12 +39,16 @@ public class MyBatisTest_getResultMappings {
 //			String resource = "egovframework/mapper/com/cop/cmy/EgovCommuBBSMaster_SQL_mysql.xml";
 //			String resource = "egovframework/mapper/com/cop/cmy/EgovCommuManage_SQL_mysql.xml";
 //			String resource = "egovframework/mapper/com/cop/cmy/EgovCommuMaster_SQL_mysql.xml";
-			String resource = "egovframework/mapper/com/cop/com/EgovUserInf_SQL_mysql.xml";
+//			String resource = "egovframework/mapper/com/cop/com/EgovUserInf_SQL_mysql.xml";
+			String resource = "egovframework/mapper/com/uss/umt/EgovMberManage_SQL_mysql.xml";
 			inputStream = Resources.getResourceAsStream(resource);
 
 			Configuration configuration = new Configuration();
 
+			configuration.getTypeAliasRegistry().registerAlias("egovMap", EgovMap.class);
 			configuration.getTypeAliasRegistry().registerAlias("FileVO", FileVO.class);
+			configuration.getTypeAliasRegistry().registerAlias("ComDefaultCodeVO", ComDefaultCodeVO.class);
+			configuration.getTypeAliasRegistry().registerAlias("comDefaultVO", ComDefaultVO.class);
 
 			XMLMapperBuilder builder = new XMLMapperBuilder(inputStream, configuration, resource,
 					configuration.getSqlFragments());

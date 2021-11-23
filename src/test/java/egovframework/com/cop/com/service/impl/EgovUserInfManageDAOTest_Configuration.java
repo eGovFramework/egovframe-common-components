@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.ImportResource;
 
+import egovframework.com.uss.umt.service.impl.MberManageDAO;
+
 @Configuration
 
 @ImportResource({
@@ -25,9 +27,10 @@ import org.springframework.context.annotation.ImportResource;
 
 })
 
-@ComponentScan(useDefaultFilters = false, basePackages = {
-		"egovframework.com.cop.com.service.impl" }, includeFilters = {
-				@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { EgovUserInfManageDAO.class }) })
+@ComponentScan(useDefaultFilters = false, basePackages = { "egovframework.com.cop.com.service.impl",
+		"egovframework.com.uss.umt.service.impl" }, includeFilters = {
+				@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { EgovUserInfManageDAO.class,
+						MberManageDAO.class }) })
 
 public class EgovUserInfManageDAOTest_Configuration {
 

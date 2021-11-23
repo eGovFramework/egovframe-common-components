@@ -77,7 +77,7 @@ FROM(
             </if>
     </select>
     
-    <insert id="insertMber_S">
+    <insert id="insertMber_S" parameterType="egovframework.com.uss.umt.service.MberManageVO">
         
             INSERT INTO COMTNGNRLMBER 
                 (   
