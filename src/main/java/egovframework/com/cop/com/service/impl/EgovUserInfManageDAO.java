@@ -45,7 +45,7 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
 	 * @throws Exception
 	 */
 	public int selectUserListCnt(UserInfVO userVO) throws Exception {
-		return (Integer) selectOne("EgovUserInfManageDAO.selectUserListCnt", userVO);
+		return selectOne("EgovUserInfManageDAO.selectUserListCnt", userVO);
 	}
 
 	/**
