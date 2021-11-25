@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.ImportResource;
 
+import egovframework.com.cop.cmy.service.impl.EgovCommuManageDAO;
+import egovframework.com.cop.cmy.service.impl.EgovCommuMasterDAO;
 import egovframework.com.uss.umt.service.impl.MberManageDAO;
 
 @Configuration
@@ -23,14 +25,14 @@ import egovframework.com.uss.umt.service.impl.MberManageDAO;
 
 		"classpath*:egovframework/spring/com/test-context-common.xml",
 
-//		"classpath*:egovframework/spring/com/idgn/context-idgn-Cmmnty.xml",
+		"classpath*:egovframework/spring/com/idgn/context-idgn-Cmmnty.xml",
 
 })
 
 @ComponentScan(useDefaultFilters = false, basePackages = { "egovframework.com.cop.com.service.impl",
-		"egovframework.com.uss.umt.service.impl" }, includeFilters = {
-				@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { EgovUserInfManageDAO.class,
-						MberManageDAO.class }) })
+		"egovframework.com.uss.umt.service.impl", "egovframework.com.cop.cmy.service.impl" }, includeFilters = {
+				@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { EgovUserInfManageDAO.class, MberManageDAO.class,
+						EgovCommuManageDAO.class, EgovCommuMasterDAO.class }) })
 
 public class EgovUserInfManageDAOTest_Configuration {
 

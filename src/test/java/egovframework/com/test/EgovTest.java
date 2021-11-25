@@ -1,5 +1,6 @@
 package egovframework.com.test;
 
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -11,5 +12,6 @@ import org.springframework.transaction.annotation.Transactional;
 		"classpath*:egovframework/spring/com/idgn/context-*.xml" })
 @ActiveProfiles({ "mysql", "dummy" })
 @Transactional
+@Ignore
 public class EgovTest {
 }

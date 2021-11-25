@@ -52,7 +52,7 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
 	 * 커뮤니티 사용자 목록을 조회한다.
 	 *
 	 * @param userVO
-	 * @return
+	 * @return cmmntyUsers
 	 * @throws Exception
 	 */
 	public List<UserInfVO> selectCmmntyUserList(UserInfVO userVO) throws Exception {
