@@ -30,7 +30,7 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
 	 * 사용자 정보에 대한 목록을 조회한다.
 	 *
 	 * @param userVO
-	 * @return
+	 * @return users
 	 * @throws Exception
 	 */
 	public List<UserInfVO> selectUserList(UserInfVO userVO) throws Exception {
@@ -41,7 +41,7 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
 	 * 사용자 정보에 대한 목록 전체 건수를 조회한다.
 	 *
 	 * @param userVO
-	 * @return
+	 * @return usersCnt
 	 * @throws Exception
 	 */
 	public int selectUserListCnt(UserInfVO userVO) throws Exception {
@@ -63,7 +63,7 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
 	 * 커뮤니티 사용자 목록에 대한 전체 건수를 조회한다.
 	 *
 	 * @param userVO
-	 * @return
+	 * @return cmmntyUsersCnt
 	 * @throws Exception
 	 */
 	public int selectCmmntyUserListCnt(UserInfVO userVO) throws Exception {
@@ -74,7 +74,7 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
 	 * 커뮤니티 관리자 목록을 조회한다.
 	 *
 	 * @param userVO
-	 * @return
+	 * @return cmmntyMngrs
 	 * @throws Exception
 	 */
 	public List<UserInfVO> selectCmmntyMngrList(UserInfVO userVO) throws Exception {
@@ -85,11 +85,11 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
 	 * 커뮤니티 관리자 목록에 대한 전체 건수를 조회한다.
 	 *
 	 * @param userVO
-	 * @return
+	 * @return cmmntyMngrsCnt
 	 * @throws Exception
 	 */
 	public int selectCmmntyMngrListCnt(UserInfVO userVO) throws Exception {
-		return (Integer) selectOne("EgovUserInfManageDAO.selectCmmntyMngrListCnt", userVO);
+		return selectOne("EgovUserInfManageDAO.selectCmmntyMngrListCnt", userVO);
 	}
 
 	/**
