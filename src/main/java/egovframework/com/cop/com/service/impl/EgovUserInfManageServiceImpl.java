@@ -41,6 +41,7 @@ public class EgovUserInfManageServiceImpl extends EgovAbstractServiceImpl implem
 	 * @see egovframework.com.cop.com.service.EgovUserInfManageService#selectClubOprtrList(egovframework.com.cop.com.service.UserInfVO)
 	 */
 	@Override
+	@Deprecated
 	public Map<String, Object> selectClubOprtrList(UserInfVO userVO) throws Exception {
 		List<UserInfVO> result = userInfDAO.selectClubOprtrList(userVO);
 		int cnt = userInfDAO.selectClubOprtrListCnt(userVO);
@@ -59,6 +60,7 @@ public class EgovUserInfManageServiceImpl extends EgovAbstractServiceImpl implem
 	 * @see egovframework.com.cop.com.service.EgovUserInfManageService#selectClubUserList(egovframework.com.cop.com.service.UserInfVO)
 	 */
 	@Override
+	@Deprecated
 	public Map<String, Object> selectClubUserList(UserInfVO userVO) throws Exception {
 		List<UserInfVO> result = userInfDAO.selectClubUserList(userVO);
 		int cnt = userInfDAO.selectClubUserListCnt(userVO);
@@ -77,6 +79,7 @@ public class EgovUserInfManageServiceImpl extends EgovAbstractServiceImpl implem
 	 * @see egovframework.com.cop.com.service.EgovUserInfManageService#selectCmmntyMngrList(egovframework.com.cop.com.service.UserInfVO)
 	 */
 	@Override
+	@Deprecated
 	public Map<String, Object> selectCmmntyMngrList(UserInfVO userVO) throws Exception {
 		List<UserInfVO> result = userInfDAO.selectCmmntyMngrList(userVO);
 		int cnt = userInfDAO.selectCmmntyMngrListCnt(userVO);
@@ -95,6 +98,7 @@ public class EgovUserInfManageServiceImpl extends EgovAbstractServiceImpl implem
 	 * @see egovframework.com.cop.com.service.EgovUserInfManageService#selectCmmntyUserList(egovframework.com.cop.com.service.UserInfVO)
 	 */
 	@Override
+	@Deprecated
 	public Map<String, Object> selectCmmntyUserList(UserInfVO userVO) throws Exception {
 		List<UserInfVO> result = userInfDAO.selectCmmntyUserList(userVO);
 		int cnt = userInfDAO.selectCmmntyUserListCnt(userVO);
@@ -131,6 +135,7 @@ public class EgovUserInfManageServiceImpl extends EgovAbstractServiceImpl implem
 	 * @see egovframework.com.cop.com.service.EgovUserInfManageService#selectAllClubUser(egovframework.com.cop.com.service.UserInfVO)
 	 */
 	@Override
+	@Deprecated
 	public List<UserInfVO> selectAllClubUser(UserInfVO userVO) throws Exception {
 		return userInfDAO.selectAllClubUser(userVO);
 	}
@@ -141,6 +146,7 @@ public class EgovUserInfManageServiceImpl extends EgovAbstractServiceImpl implem
 	 * @see egovframework.com.cop.com.service.EgovUserInfManageService#selectAllCmmntyUser(egovframework.com.cop.com.service.UserInfVO)
 	 */
 	@Override
+	@Deprecated
 	public List<UserInfVO> selectAllCmmntyUser(UserInfVO userVO) throws Exception {
 		return userInfDAO.selectAllCmmntyUser(userVO);
 	}

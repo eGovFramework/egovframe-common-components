@@ -26,6 +26,7 @@ import egovframework.com.uss.umt.service.impl.MberManageDAO;
 		"classpath*:egovframework/spring/com/test-context-common.xml",
 
 		"classpath*:egovframework/spring/com/idgn/context-idgn-Cmmnty.xml",
+//		"classpath*:egovframework/spring/com/idgn/context-idgn-Clb.xml",
 
 })
 

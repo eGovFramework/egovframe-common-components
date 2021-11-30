@@ -64,6 +64,7 @@ public interface EgovUserInfManageService {
 	 * @return
 	 * @throws Exception
 	 */
+	@Deprecated
 	public Map<String, Object> selectClubOprtrList(UserInfVO userVO) throws Exception;
 
 	/**
@@ -73,6 +74,7 @@ public interface EgovUserInfManageService {
 	 * @return
 	 * @throws Exception
 	 */
+	@Deprecated
 	public List<UserInfVO> selectAllClubUser(UserInfVO userVO) throws Exception;
 
 	/**
@@ -82,5 +84,6 @@ public interface EgovUserInfManageService {
 	 * @return
 	 * @throws Exception
 	 */
+	@Deprecated
 	public List<UserInfVO> selectAllCmmntyUser(UserInfVO userVO) throws Exception;
 }
