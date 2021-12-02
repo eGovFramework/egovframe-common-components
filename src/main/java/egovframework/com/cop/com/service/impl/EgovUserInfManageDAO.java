@@ -112,12 +112,12 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
 	 * 동호회 사용자 목록에 대한 전체 건수를 조회한다.
 	 *
 	 * @param userVO
-	 * @return
+	 * @return clubUsersCnt
 	 * @throws Exception
 	 */
 	@Deprecated
 	public int selectClubUserListCnt(UserInfVO userVO) throws Exception {
-		return (Integer) selectOne("EgovUserInfManageDAO.selectClubUserListCnt", userVO);
+		return selectOne("EgovUserInfManageDAO.selectClubUserListCnt", userVO);
 	}
 
 	/**
