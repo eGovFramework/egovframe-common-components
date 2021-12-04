@@ -124,7 +124,7 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
 	 * 동호회 운영자 목록을 조회한다.
 	 *
 	 * @param userVO
-	 * @return
+	 * @return clubOprtrs
 	 * @throws Exception
 	 */
 	@Deprecated
