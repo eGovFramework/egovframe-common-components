@@ -148,7 +148,7 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
 	 * 동호회에 대한 모든 사용자 목록을 조회한다.
 	 *
 	 * @param userVO
-	 * @return
+	 * @return List<UserInfVO> allClubUsers = egovUserInfManageDAO.selectAllClubUser(userVO);
 	 * @throws Exception
 	 */
 	@Deprecated
