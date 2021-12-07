@@ -160,7 +160,7 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
 	 * 커뮤니티에 대한 모든 사용자 목록을 조회한다.
 	 *
 	 * @param userVO
-	 * @return
+	 * @return List&lt;UserInfVO&gt; allCmmntyUsers = egovUserInfManageDAO.selectAllCmmntyUser(userVO);
 	 * @throws Exception
 	 */
 	@Deprecated
