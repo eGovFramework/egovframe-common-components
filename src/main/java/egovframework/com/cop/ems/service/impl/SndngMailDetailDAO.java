@@ -1,11 +1,9 @@
 package egovframework.com.cop.ems.service.impl;
 
-import java.util.List;
+import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.cop.ems.service.SndngMailVO;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 발송메일을 상세 조회하는 DAO 클래스
@@ -33,7 +31,7 @@ public class SndngMailDetailDAO extends EgovComAbstractDAO {
 	 * @exception Exception
 	 */
 	public SndngMailVO selectSndngMail(SndngMailVO vo) throws Exception {
-		return (SndngMailVO) selectOne("sndngMailDetailDAO.selectSndngMail", vo);
+		return selectOne("sndngMailDetailDAO.selectSndngMail", vo);
 	}
 
 	/**
