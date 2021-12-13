@@ -39,13 +39,13 @@
 				  FROM COMTHEMAILDSPTCHMANAGE
 				 WHERE 1=1
 				
-				<if test="searchCondition == 1">AND
+				<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCondition, '1')">AND
 					sj LIKE '%' || #{searchKeyword} || '%'
 				</if>
-				<if test="searchCondition == 2">AND
+				<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCondition, '2')">AND
 					email_cn LIKE '%' || #{searchKeyword} || '%'
 				</if>
-				<if test="searchCondition == 3">AND
+				<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCondition, '3')">AND
 					sndr LIKE '%' || #{searchKeyword} || '%'
 				</if>
 		<![CDATA[
@@ -65,13 +65,13 @@
 		  FROM COMTHEMAILDSPTCHMANAGE
 		 WHERE 1=1
 		
-		<if test="searchCondition == 1">AND
+		<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCondition, '1')">AND
 			sj LIKE '%' || #{searchKeyword} || '%'
 		</if>
-		<if test="searchCondition == 2">AND
+		<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCondition, '2')">AND
 			email_cn LIKE '%' || #{searchKeyword} || '%'
 		</if>
-		<if test="searchCondition == 3">AND
+		<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCondition, '3')">AND
 			sndr LIKE '%' || #{searchKeyword} || '%'
 		</if>
 	</select>

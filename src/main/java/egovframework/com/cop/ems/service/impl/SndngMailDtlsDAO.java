@@ -2,10 +2,11 @@ package egovframework.com.cop.ems.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
-
-import org.springframework.stereotype.Repository;
+import egovframework.com.cop.ems.service.SndngMailVO;
 
 /**
  * 발송메일 내역을 조회하는 DAO 클래스
@@ -29,11 +30,11 @@ public class SndngMailDtlsDAO extends EgovComAbstractDAO {
 	/**
 	 * 발송메일 목록을 조회한다.
 	 * @param vo ComDefaultVO
-	 * @return List
+	 * @return List&lt;SndngMailVO&gt; sndngMails = sndngMailDtlsDAO.selectSndngMailList(vo);
 	 * @exception Exception
 	 */
-	public List<?> selectSndngMailList(ComDefaultVO vo) throws Exception {
-		return list("SndngMailDtlsDAO.selectSndngMailList_D", vo);
+	public List<SndngMailVO> selectSndngMailList(ComDefaultVO vo) throws Exception {
+		return selectList("SndngMailDtlsDAO.selectSndngMailList_D", vo);
 	}
 
 	/**

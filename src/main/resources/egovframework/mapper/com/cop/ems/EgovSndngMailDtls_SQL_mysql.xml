@@ -39,13 +39,13 @@
 				  FROM COMTHEMAILDSPTCHMANAGE
 				 WHERE 1=1
 				
-				<if test="searchCondition == 1">AND
+				<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCondition, '1')">AND
 					sj LIKE CONCAT('%', #{searchKeyword}, '%')
 				</if>
-				<if test="searchCondition == 2">AND
+				<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCondition, '2')">AND
 					email_cn LIKE CONCAT('%', #{searchKeyword}, '%')
 				</if>
-				<if test="searchCondition == 3">AND
+				<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCondition, '3')">AND
 					sndr LIKE CONCAT('%', #{searchKeyword}, '%')
 				</if>
 				 ORDER BY mssage_id DESC
@@ -61,13 +61,13 @@
 		  FROM COMTHEMAILDSPTCHMANAGE
 		 WHERE 1=1
 		
-		<if test="searchCondition == 1">AND
+		<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCondition, '1')">AND
 			sj LIKE CONCAT('%', #{searchKeyword}, '%')
 		</if>
-		<if test="searchCondition == 2">AND
+		<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCondition, '2')">AND
 			email_cn LIKE CONCAT('%', #{searchKeyword}, '%')
 		</if>
-		<if test="searchCondition == 3">AND
+		<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCondition, '3')">AND
 			sndr LIKE CONCAT('%', #{searchKeyword}, '%')
 		</if>
 	</select>
