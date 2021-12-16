@@ -2,10 +2,11 @@ package egovframework.com.cop.ems.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
-import egovframework.com.cop.ems.service.SndngMailVO;
-
 import org.springframework.stereotype.Repository;
+
+import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cop.ems.service.AtchmnFileVO;
+import egovframework.com.cop.ems.service.SndngMailVO;
 
 /**
  * 발송메일을 등록하는 DAO 클래스
@@ -45,7 +46,7 @@ public class SndngMailRegistDAO extends EgovComAbstractDAO {
 	 * @return List
 	 * @exception Exception
 	 */
-	public List<?> selectAtchmnFileList(SndngMailVO vo) throws Exception {
+	public List<AtchmnFileVO> selectAtchmnFileList(SndngMailVO vo) throws Exception {
 		return selectList("sndngMailRegistDAO.selectAtchmnFileList", vo);
 	}
 

@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.ImportResource;
 
+import egovframework.com.cmm.service.impl.FileManageDAO;
+
 @Configuration
 
 @ImportResource({
@@ -22,12 +24,14 @@ import org.springframework.context.annotation.ImportResource;
 		"classpath*:egovframework/spring/com/test-context-common.xml",
 
 		"classpath*:egovframework/spring/com/idgn/context-idgn-MailMsg.xml",
+		"classpath*:egovframework/spring/com/idgn/context-idgn-File.xml",
 
 })
 
-@ComponentScan(useDefaultFilters = false, basePackages = {
-		"egovframework.com.cop.ems.service.impl" }, includeFilters = {
-				@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { SndngMailRegistDAO.class }) })
+@ComponentScan(useDefaultFilters = false, basePackages = { "egovframework.com.cop.ems.service.impl",
+		"egovframework.com.cmm.service.impl" }, includeFilters = {
+				@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { SndngMailRegistDAO.class,
+						FileManageDAO.class }) })
 
 public class SndngMailRegistDAOTest_Configuration {
 
