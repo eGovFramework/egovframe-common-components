@@ -163,4 +163,9 @@ public class ComDefaultVO implements Serializable {
 	public void setSearchKeywordTo(String searchKeywordTo) {
 		this.searchKeywordTo = searchKeywordTo;
 	}
+
+//	public enum At {
+//		Y, N;
+//	}
+
 }
