@@ -35,9 +35,7 @@ public class SndngMailRegistDAO extends EgovComAbstractDAO {
 	 */
 	public SndngMailVO insertSndngMail(SndngMailVO vo) throws Exception {
 		insert("sndngMailRegistDAO.insertSndngMail", vo);
-		SndngMailVO result = new SndngMailVO() ;
-		result.setMssageId(vo.getMssageId());
-		return result;
+		return vo;
 	}
 
 	/**
@@ -58,6 +56,6 @@ public class SndngMailRegistDAO extends EgovComAbstractDAO {
 	 */
 	public SndngMailVO updateSndngMail(SndngMailVO vo) throws Exception {
 		update("sndngMailRegistDAO.updateSndngMail", vo);
-		return new SndngMailVO();
+		return vo;
 	}
 }
