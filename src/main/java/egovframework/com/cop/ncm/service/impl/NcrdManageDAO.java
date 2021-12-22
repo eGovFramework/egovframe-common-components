@@ -85,18 +85,18 @@ public class NcrdManageDAO extends EgovComAbstractDAO {
      * @throws Exception
      */
     public List<NameCardVO> selectNcrdItemList(NameCardVO ncrdVO) throws Exception {
-	return selectList("NcrdManageDAO.selectNcrdItemList", ncrdVO);
-
+        return selectList("NcrdManageDAO.selectNcrdItemList", ncrdVO);
     }
 
     /**
+     * 명함 정보에 대한 목록 전체 건수를 조회한다.
      * 
      * @param nameCard
      * @return
      * @throws Exception
      */
     public int selectNcrdItemListCnt(NameCardVO ncrdVO) throws Exception {
-	return (Integer)selectOne("NcrdManageDAO.selectNcrdItemListCnt", ncrdVO);
+        return selectOne("NcrdManageDAO.selectNcrdItemListCnt", ncrdVO);
     }
 
     /**

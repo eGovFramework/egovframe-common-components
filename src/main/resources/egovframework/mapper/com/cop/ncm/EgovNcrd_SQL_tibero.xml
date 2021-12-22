@@ -107,13 +107,13 @@
 			WHERE OTHBC_AT = 'Y'
 				
 			
-			<if test="searchCnd == 0">AND
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCnd, '0')">AND
 					NM LIKE '%' || #{searchWrd} || '%' 		
 			</if>
-			<if test="searchCnd == 1">AND
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCnd, '1')">AND
 					CMPNY_NM LIKE '%' || #{searchWrd} || '%' 		
 			</if>	
-			<if test="searchCnd == 2">AND
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCnd, '2')">AND
 					DEPT_NM LIKE '%' || #{searchWrd} || '%' 		
 			</if>				
 					
@@ -127,18 +127,15 @@
 			SELECT COUNT(NCRD_ID)
 			FROM
 				COMTNNCRD
-			WHERE OTHBC_AT = 'Y'		
-				AND NCRD_ID NOT IN 
-					( SELECT DISTINCT NCRD_ID FROM COMTNNCRDUSER 
-						WHERE EMPLYR_ID = #{emplyrId} ) 			
-			
-			<if test="searchCnd == 0">AND
+			WHERE OTHBC_AT = 'Y'
+
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCnd, '0')">AND
 					NM LIKE '%' || #{searchWrd} || '%' 		
 			</if>
-			<if test="searchCnd == 1">AND
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCnd, '1')">AND
 					CMPNY_NM LIKE '%' || #{searchWrd} || '%' 		
 			</if>	
-			<if test="searchCnd == 2">AND
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCnd, '2')">AND
 					DEPT_NM LIKE '%' || #{searchWrd} || '%' 		
 			</if>				
 	</select>	
@@ -155,13 +152,13 @@
 			WHERE 
 				FRST_REGISTER_ID = #{frstRegisterId}			
 			
-			<if test="searchCnd == 0">AND
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCnd, '0')">AND
 					NM LIKE '%' || #{searchWrd} || '%' 		
 			</if>
-			<if test="searchCnd == 1">AND
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCnd, '1')">AND
 					CMPNY_NM LIKE '%' || #{searchWrd} || '%' 		
 			</if>	
-			<if test="searchCnd == 2">AND
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCnd, '2')">AND
 					DEPT_NM LIKE '%' || #{searchWrd} || '%' 		
 			</if>				
 					
@@ -178,13 +175,13 @@
 			WHERE 
 				FRST_REGISTER_ID = #{frstRegisterId}			
 			
-			<if test="searchCnd == 0">AND
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCnd, '0')">AND
 					NM LIKE '%' || #{searchWrd} || '%' 		
 			</if>
-			<if test="searchCnd == 1">AND
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCnd, '1')">AND
 					CMPNY_NM LIKE '%' || #{searchWrd} || '%' 		
 			</if>	
-			<if test="searchCnd == 2">AND
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCnd, '2')">AND
 					DEPT_NM LIKE '%' || #{searchWrd} || '%' 		
 			</if>				
 	</select>
@@ -238,13 +235,13 @@
 			AND
 				a.EMPLYR_ID = #{emplyrId}
 		
-			<if test="searchCnd == 0">AND
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCnd, '0')">AND
 					NM LIKE '%' || #{searchWrd} || '%' 		
 			</if>
-			<if test="searchCnd == 1">AND
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCnd, '1')">AND
 					CMPNY_NM LIKE '%' || #{searchWrd} || '%' 		
 			</if>	
-			<if test="searchCnd == 2">AND
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCnd, '2')">AND
 					DEPT_NM LIKE '%' || #{searchWrd} || '%' 		
 			</if>	
 					
