@@ -141,7 +141,6 @@ public class NcrdManageDAOTest_selectNcrdUseInfsCnt extends EgovTestV1 {
 		log.debug("ncrdUseInfsCnt={}, {}", ncrdUseInfsCnt, 1);
 
 		assertEquals(ncrdUseInfsCnt, 1);
-
 	}
 
 }
