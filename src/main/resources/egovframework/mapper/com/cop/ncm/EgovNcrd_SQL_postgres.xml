@@ -142,7 +142,7 @@
 	<select id="selectMyNcrdItemList" parameterType="egovframework.com.cop.ncm.service.NameCardVO" resultMap="ncrdList">
 		
 			SELECT 
-				NCRD_ID, NM, NCRD_TRGTER_ID, OTHBC_AT, EXTRL_USER_AT, OTHBC_AT
+				NCRD_ID, NM, NCRD_TRGTER_ID, OTHBC_AT, EXTRL_USER_AT, OTHBC_AT,
 				CMPNY_NM, DEPT_NM, IDNTFC_NO, MIDDLE_MBTLNUM, END_MBTLNUM, 
 				TO_CHAR(FRST_REGIST_PNTTM, 'YYYY-mm-dd') as FRST_REGIST_PNTTM, FRST_REGISTER_ID
 			FROM
