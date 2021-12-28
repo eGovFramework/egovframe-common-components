@@ -160,6 +160,6 @@ public class NcrdManageDAO extends EgovComAbstractDAO {
      * @throws Exception
      */
     public int selectMyNcrdItemListCnt(NameCardVO ncrdVO) throws Exception {
-	return (Integer)selectOne("NcrdManageDAO.selectMyNcrdItemListCnt", ncrdVO);
+        return selectOne("NcrdManageDAO.selectMyNcrdItemListCnt", ncrdVO);
     }
 }
