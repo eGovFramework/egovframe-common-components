@@ -128,7 +128,7 @@ public class NcrdManageDAO extends EgovComAbstractDAO {
      * @throws Exception
      */
     public void updateNcrdItem(NameCard nameCard) throws Exception {
-	update("NcrdManageDAO.updateNcrdItem", nameCard);
+        update("NcrdManageDAO.updateNcrdItem", nameCard);
     }
 
     /**

@@ -198,6 +198,7 @@
 				NCRD_ID = #{ncrdId}
 		
 	</select>	
+
 	<update id="updateNcrdItem" parameterType="egovframework.com.cop.ncm.service.NameCard">
 		
 			UPDATE COMTNNCRD SET
