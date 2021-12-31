@@ -151,8 +151,9 @@ public class EgovNcrdManageServiceImpl extends EgovAbstractServiceImpl implement
      * 
      * @see egovframework.com.cop.ncm.num.service.EgovNcrdManageService#updateNcrdUseInf(egovframework.com.cop.ncm.num.service.NameCardUser)
      */
+    @Deprecated
     public void updateNcrdUseInf(NameCardUser ncrdUser) throws Exception {
-	ncrdMngDAO.updateNcrdUseInf(ncrdUser);
+        ncrdMngDAO.updateNcrdUseInf(ncrdUser);
     }
 
     /**

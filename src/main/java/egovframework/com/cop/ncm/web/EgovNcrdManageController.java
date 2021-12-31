@@ -355,6 +355,7 @@ public class EgovNcrdManageController {
      * @throws Exception
      */
     @RequestMapping("/cop/ncm/updateNcrdUseInf.do")
+    @Deprecated
     public String updateNcrdUseInf(@ModelAttribute("ncrdUser") NameCardUser ncrdUser, @ModelAttribute("ncrdVO") NameCardVO ncrdVO,
 	    SessionStatus status, ModelMap model) throws Exception {
 

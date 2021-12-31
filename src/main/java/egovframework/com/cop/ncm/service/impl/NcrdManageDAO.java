@@ -137,8 +137,9 @@ public class NcrdManageDAO extends EgovComAbstractDAO {
      * @param ncrdUser
      * @throws Exception
      */
+    @Deprecated
     public void updateNcrdUseInf(NameCardUser ncrdUser) throws Exception {
-	update("NcrdManageDAO.updateNcrdUseInf", ncrdUser);
+        update("NcrdManageDAO.updateNcrdUseInf", ncrdUser);
     }
 
     /**
