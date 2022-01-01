@@ -31,13 +31,13 @@ public class NcrdManageDAO extends EgovComAbstractDAO {
     //Logger log = Logger.getLogger(this.getClass());
 
     /**
-     * 명함 정보를 삭제한다.
+     * 명함사용자 정보를 삭제한다.
      * 
-     * @param nameCard
+     * @param nameCardVO
      * @throws Exception
      */
     public void deleteNcrdItemUser(NameCardVO nameCardVO) throws Exception {
-    update("NcrdManageDAO.deleteNcrdItemUser", nameCardVO);
+        delete("NcrdManageDAO.deleteNcrdItemUser", nameCardVO);
     }
 	
     public void deleteNcrdItem(NameCardVO nameCardVO) throws Exception {
