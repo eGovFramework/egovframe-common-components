@@ -41,7 +41,7 @@ public class NcrdManageDAO extends EgovComAbstractDAO {
     }
 	
     public void deleteNcrdItem(NameCardVO nameCardVO) throws Exception {
-	update("NcrdManageDAO.deleteNcrdItem", nameCardVO);
+    	delete("NcrdManageDAO.deleteNcrdItem", nameCardVO);
     }
     
 
