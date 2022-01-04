@@ -41,7 +41,8 @@ public class MyBatisTest_getParameterMappings {
 //			String resource = "egovframework/mapper/com/cop/ems/EgovSndngMailDetail_SQL_mysql.xml";
 //			String resource = "egovframework/mapper/com/cop/ems/EgovSndngMailRegist_SQL_mysql.xml";
 //			String resource = "egovframework/mapper/com/cop/ems/EgovSndngMailDtls_SQL_mysql.xml";
-			String resource = "egovframework/mapper/com/cop/ncm/EgovNcrd_SQL_mysql.xml";
+//			String resource = "egovframework/mapper/com/cop/ncm/EgovNcrd_SQL_mysql.xml";
+			String resource = "egovframework/mapper/com/cop/scp/EgovArticleScrap_SQL_mysql.xml";
 			inputStream = Resources.getResourceAsStream(resource);
 			Configuration configuration = new Configuration();
 

@@ -13,7 +13,7 @@ import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 
-import egovframework.com.cop.ncm.service.impl.NcrdManageDAO;
+import egovframework.com.cop.scp.service.impl.EgovArticleScrapDAO;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -33,7 +33,8 @@ public class JavaParserTest_getMethods {
 //			String first = getFirst(SndngMailDetailDAO.class);
 //			String first = getFirst(SndngMailDtlsDAO.class);
 //			String first = getFirst(SndngMailRegistDAO.class);
-			String first = getFirst(NcrdManageDAO.class);
+//			String first = getFirst(NcrdManageDAO.class);
+			String first = getFirst(EgovArticleScrapDAO.class);
 
 			CompilationUnit cu = StaticJavaParser.parse(Paths.get(first));
 
