@@ -17,7 +17,7 @@ public class EgovArticleScrapDAO extends EgovComAbstractDAO{
 	}
 
 	public int selectArticleScrapListCnt(ScrapVO scrapVO) {
-		return (Integer)selectOne("ArticleScrap.selectArticleScrapListCnt", scrapVO);
+		return selectOne("ArticleScrap.selectArticleScrapListCnt", scrapVO);
 	}
 
 	public void insertArticleScrap(Scrap scrap) {
