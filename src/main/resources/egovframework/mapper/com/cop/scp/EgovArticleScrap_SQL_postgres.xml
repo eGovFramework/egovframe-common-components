@@ -41,7 +41,7 @@
 			AND 
 				a.FRST_REGISTER_ID = #{uniqId}
 		
-			<if test="searchCnd == 0">AND
+			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCnd, '0')">AND
 					a.SCRAP_NM LIKE CONCAT ('%', #{searchWrd},'%') 		
 			</if>
 		
