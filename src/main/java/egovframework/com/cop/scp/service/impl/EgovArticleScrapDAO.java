@@ -24,7 +24,7 @@ public class EgovArticleScrapDAO extends EgovComAbstractDAO{
 	}
 
 	public ScrapVO selectArticleScrapDetail(ScrapVO scrapVO) {
-		return (ScrapVO) selectOne("ArticleScrap.selectArticleScrapDetail", scrapVO);
+		return selectOne("ArticleScrap.selectArticleScrapDetail", scrapVO);
 	}
 
 	public void deleteArticleScrap(ScrapVO scrapVO) {
