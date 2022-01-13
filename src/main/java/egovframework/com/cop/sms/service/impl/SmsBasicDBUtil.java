@@ -109,6 +109,15 @@ public class SmsBasicDBUtil {
 		
 		LOGGER.info("Pool : {}", poolableConnectionFactory.getClass().getName());
 
+		try {
+			Class.forName("org.apache.commons.dbcp2.PoolingDriver");
+			PoolingDriver driver = (PoolingDriver) DriverManager.getDriver("jdbc:apache:commons:dbcp:" + alias);
+			driver.registerPool(alias, connectionPool);
+		} catch (ClassNotFoundException e) {
+			LOGGER.error("createPools ClassNotFoundException Exception");
+		} catch (SQLException e) {
+			LOGGER.error("createPools SQLException Exception");
+		}
 	}
 
 	protected static synchronized void loadDriver() {
