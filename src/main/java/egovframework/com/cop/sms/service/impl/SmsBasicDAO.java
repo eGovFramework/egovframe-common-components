@@ -57,7 +57,7 @@ public class SmsBasicDAO {
 					buffer.append("  AND a.SMS_ID in (SELECT SMS_ID FROM COMTNSMSRECPTN WHERE RECPTN_TELNO LIKE CONCAT ('%', ?,'%'))\n");
 				}
 			} else if ("1".equals(vo.getSearchCnd())) {
-				buffer.append("  AND a.TRNSMIS_CN LIKE CONCAT ('%', #searchWrd#,'%')\n");
+				buffer.append("  AND a.TRNSMIS_CN LIKE CONCAT ('%', ?,'%')\n");
 			}
 
 			buffer.append("ORDER BY a.FRST_REGIST_PNTTM DESC\n");

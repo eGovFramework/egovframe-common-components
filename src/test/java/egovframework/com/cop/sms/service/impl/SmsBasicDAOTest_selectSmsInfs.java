@@ -3,17 +3,19 @@ package egovframework.com.cop.sms.service.impl;
 import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
+import java.util.List;
 
 import org.junit.Test;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cop.sms.service.Sms;
 import egovframework.com.cop.sms.service.SmsRecptn;
+import egovframework.com.cop.sms.service.SmsVO;
 import egovframework.rte.fdl.string.EgovDateUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
-public class SmsBasicDAOTest_insertSmsRecptnInf {
+public class SmsBasicDAOTest_selectSmsInfs {
 
 	private SmsBasicDAO smsDao = new SmsBasicDAO();
 
@@ -24,16 +26,19 @@ public class SmsBasicDAOTest_insertSmsRecptnInf {
 	Sms sms;
 	String smsId;
 
-	// given
 	SmsRecptn smsRecptn;
 
+	// given
+	SmsVO vo;
+
 	// when
-	boolean result = false;
+	List<SmsVO> smsInfs;
 
 	@Test
 	public void test() {
 		testData();
 		testData_insertSmsInf();
+		testData_insertSmsRecptnInf();
 		given();
 		when();
 		then();
@@ -59,29 +64,51 @@ public class SmsBasicDAOTest_insertSmsRecptnInf {
 		}
 	}
 
-	void given() {
+	void testData_insertSmsRecptnInf() {
 		smsRecptn = new SmsRecptn();
 		smsRecptn.setSmsId(smsId);
 		smsRecptn.setRecptnTelno("010-0000-0001".replaceAll("-", ""));
 		smsRecptn.setResultCode("3000");
 		smsRecptn.setResultMssage("착발신 번호 포맷 오류 또는 부재");
-	}
 
-	void when() {
 		try {
 			smsDao.insertSmsRecptnInf(smsRecptn);
-			result = true;
 		} catch (Exception e) {
 //			e.printStackTrace();
 			log.error("insertSmsRecptnInf Exception");
 		}
 	}
 
-	void then() {
-		log.debug("smsId={}", smsId);
-		log.debug("result={}", result, true);
+	void given() {
+		vo = new SmsVO();
 
-		assertEquals(result, true);
+//		vo.setSearchCnd("0");
+//		vo.setSearchWrd(smsRecptn.getRecptnTelno());
+
+		vo.setSearchCnd("1");
+		vo.setSearchWrd(sms.getTrnsmitCn());
+
+		vo.setRecordCountPerPage(10);
+		vo.setFirstIndex(0);
+	}
+
+	void when() {
+		try {
+			smsInfs = smsDao.selectSmsInfs(vo);
+		} catch (Exception e) {
+			e.printStackTrace();
+			log.error("selectSmsInfs Exception");
+		}
+	}
+
+	void then() {
+		log.debug("getSmsId={}, {}", smsInfs.get(0).getSmsId(), smsId);
+		log.debug("getTrnsmitCn={}, {}", smsInfs.get(0).getTrnsmitTelno(), sms.getTrnsmitTelno());
+		log.debug("getTrnsmitCn={}, {}", smsInfs.get(0).getTrnsmitCn(), sms.getTrnsmitCn());
+
+		assertEquals(smsInfs.get(0).getSmsId(), smsId);
+		assertEquals(smsInfs.get(0).getTrnsmitTelno(), sms.getTrnsmitTelno());
+		assertEquals(smsInfs.get(0).getTrnsmitCn(), sms.getTrnsmitCn());
 	}
 
 }
