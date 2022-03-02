@@ -25,7 +25,7 @@ import egovframework.com.sts.dst.service.DtaUseStatsVO;
 import egovframework.com.sts.dst.service.EgovDtaUseStatsService;
 import egovframework.com.utl.fcc.service.EgovDateUtil;
 
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 import javax.annotation.Resource;
 

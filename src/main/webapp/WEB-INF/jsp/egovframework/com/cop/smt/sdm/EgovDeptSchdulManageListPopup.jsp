@@ -142,7 +142,7 @@ function fn_egov_open_Popup(cnt, schdulId){
 	<tbody class="ov">
 	<c:if test="${fn:length(resultList) == 0}">
 	<tr>
-		<td colspan="6"><spring:message code="common.nodata.msg" /></td>
+		<td colspan="4"><spring:message code="common.nodata.msg" /></td>
 	</tr>
 	</c:if>
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">

@@ -28,8 +28,8 @@ import egovframework.com.uss.olh.qna.service.EgovQnaService;
 import egovframework.com.uss.olh.qna.service.QnaDefaultVO;
 import egovframework.com.uss.olh.qna.service.QnaVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import egovframework.rte.fdl.property.EgovPropertyService;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 /**
 *
 * Q&A를 처리하는 Controller 클래스

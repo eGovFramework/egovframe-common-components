@@ -8,7 +8,7 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.mnu.stm.service.EgovSiteMapngService;
 import egovframework.com.sym.mnu.stm.service.SiteMapngVO;
 
-import egovframework.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.fdl.property.EgovPropertyService;
 
 import javax.annotation.Resource;
 

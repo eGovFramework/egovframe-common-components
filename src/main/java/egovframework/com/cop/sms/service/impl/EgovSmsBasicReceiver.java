@@ -2,12 +2,10 @@ package egovframework.com.cop.sms.service.impl;
 
 import java.io.IOException;
 
-import egovframework.com.cmm.util.EgovBasicLogger;
-import egovframework.com.cop.sms.service.SmsRecptn;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import egovframework.com.cop.sms.service.SmsRecptn;
 import x3.client.smeapi.SMEConnection;
 import x3.client.smeapi.SMEConnectionFactory;
 import x3.client.smeapi.SMEException;
@@ -86,22 +84,25 @@ public class EgovSmsBasicReceiver implements SMEListener {
 	 */
 	public void close() {
 		try {
-			if (receiver != null)
+			if (receiver != null) {
 				receiver.close();
+			}
 		} catch (SMEException ignore) {
 			LOGGER.debug(ignore.getMessage());
 		}
 
 		try {
-			if (sessReceiver != null)
+			if (sessReceiver != null) {
 				sessReceiver.close();
+			}
 		} catch (SMEException ignore) {
 			LOGGER.debug(ignore.getMessage());
 		}
 
 		try {
-			if (connReceiver != null)
+			if (connReceiver != null) {
 				connReceiver.close();
+			}
 		} catch (SMEException ignore) {
 			LOGGER.error("Exception: {}", ignore.getClass().getName());
 			LOGGER.error("Exception  Message: {}", ignore.getMessage());
@@ -138,10 +139,11 @@ public class EgovSmsBasicReceiver implements SMEListener {
 	/**
 	 * 결과에 대한 수신 처리를 한다.
 	 */
+	@Override
 	public void onMessage(SMEReport msg) {
 		if (msg instanceof SMEReport) {
 			if (msg.isConnected()) {
-				SMEReport rpt = (SMEReport) msg;
+				SMEReport rpt = msg;
 				String msgId = rpt.getMessageId();
 				int nRes = rpt.getResult(); 						// 결과코드
 				String doneTime = rpt.getDeliverTime();	// 이동통신사 결과처리시간-단말기에 전달된 시간(이동통신사 생성)
@@ -286,58 +288,59 @@ public class EgovSmsBasicReceiver implements SMEListener {
 	 *
 	 * @param args
 	 */
-	public static void mainExample(String[] args) {
-		if (args.length < 1) {
-			LOGGER.error("SMEConfig.conf file full path needed.");
-			LOGGER.error("ex) java [JVM Options] [className] /home/egovframe/conf/SMEConfig.conf");
-			System.exit(-1);
-		}
-
-		EgovSmsBasicReceiver receiver = new EgovSmsBasicReceiver();
-
-		try {
-			try {
-				SMEConfig.configSet(args[0]);
-				receiver.readPropertyFile();
-				
-			} catch (Exception ex) {
-//				LOGGER.error("DEBUG: {}", ex.getMessage());
-				//2017.03.07 	조성원 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-				LOGGER.error("["+ ex.getClass() +"] : Connection Close ", ex.getMessage());
-				return;
+	// 2022.01. Exit methods should not be called 처리 - 예제이므로 주석 처리
+	/*	public static void mainExample(String[] args) {
+			if (args.length < 1) {
+				LOGGER.error("SMEConfig.conf file full path needed.");
+				LOGGER.error("ex) java [JVM Options] [className] /home/egovframe/conf/SMEConfig.conf");
+				System.exit(-1);
 			}
 
-			// 결과 수신을 위해서 리포트 세션을 접속한다.
-			// 프로그램 시작시 최초 한번만 해준다.
-			receiver.open();
-			
-			long startTimestamp = System.currentTimeMillis();
-			long nowTimestamp = 0;
-			long limitTimeInterval = (60)*60*1000; //60분간으로 제한
-			
-			// 데몬이 종료안되도록 10초씩 쉬면서 루프를 돌렸습니다.
-			// 실제 사용 목적에 맞게끔 고쳐주시면 됩니다.
-			while (true) {
-				// 연결을 유지해야하는데 서버측에서 세션을 끊어버리거나
-				// 네트워크 간섭 또는 장애 상황으로 연결이 끊겼을 경우 재접속할 수 있도록 처리
-				//if (receiver.isConnected == false) {
-				if (!receiver.isConnected) { // recommended by PMD
-					receiver.close();
-					Thread.sleep(10000);
-					receiver.open();
+			EgovSmsBasicReceiver receiver = new EgovSmsBasicReceiver();
+
+			try {
+				try {
+					SMEConfig.configSet(args[0]);
+					receiver.readPropertyFile();
+
+				} catch (Exception ex) {
+	//				LOGGER.error("DEBUG: {}", ex.getMessage());
+					//2017.03.07 	조성원 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+					LOGGER.error("["+ ex.getClass() +"] : Connection Close ", ex.getMessage());
+					return;
 				}
 
-				Thread.sleep(10000);
-				nowTimestamp = System.currentTimeMillis();
-				if ( (nowTimestamp - startTimestamp) > limitTimeInterval) break;
-			}
+				// 결과 수신을 위해서 리포트 세션을 접속한다.
+				// 프로그램 시작시 최초 한번만 해준다.
+				receiver.open();
 
-		} catch (SMEException ex) {
-			LOGGER.error("DEBUG: {}", ex.getMessage());
-		} catch (InterruptedException ie) {
-			EgovBasicLogger.ignore("InterruptedException", ie);
-		} finally {
-			receiver.close();
-		}
-	}
+				long startTimestamp = System.currentTimeMillis();
+				long nowTimestamp = 0;
+				long limitTimeInterval = (60)*60*1000; //60분간으로 제한
+
+				// 데몬이 종료안되도록 10초씩 쉬면서 루프를 돌렸습니다.
+				// 실제 사용 목적에 맞게끔 고쳐주시면 됩니다.
+				while (true) {
+					// 연결을 유지해야하는데 서버측에서 세션을 끊어버리거나
+					// 네트워크 간섭 또는 장애 상황으로 연결이 끊겼을 경우 재접속할 수 있도록 처리
+					//if (receiver.isConnected == false) {
+					if (!receiver.isConnected) { // recommended by PMD
+						receiver.close();
+						Thread.sleep(10000);
+						receiver.open();
+					}
+
+					Thread.sleep(10000);
+					nowTimestamp = System.currentTimeMillis();
+					if ( (nowTimestamp - startTimestamp) > limitTimeInterval) break;
+				}
+
+			} catch (SMEException ex) {
+				LOGGER.error("DEBUG: {}", ex.getMessage());
+			} catch (InterruptedException ie) {
+				EgovBasicLogger.ignore("InterruptedException", ie);
+			} finally {
+				receiver.close();
+			}
+		}*/
 }

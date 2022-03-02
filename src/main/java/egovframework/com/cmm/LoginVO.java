@@ -9,7 +9,8 @@ import java.io.Serializable;
  * @
  * @  수정일         수정자                   수정내용
  * @ -------    --------    ---------------------------
- * @ 2009.03.03    박지욱          최초 생성
+ * @ 2009.03.03		박지욱		최초 생성
+ * @ 2021.05.30		정진오		디지털원패스 사용자키/세션값 추가
  *
  *  @author 공통서비스 개발팀 박지욱
  *  @since 2009.03.03
@@ -52,6 +53,11 @@ public class LoginVO implements Serializable{
 	private String ip;
 	/** GPKI인증 DN */
 	private String dn;
+	/** 디지털원패스 사용자키 */
+	private String onepassUserkey;
+	/** 디지털원패스 사용자세션값 */
+	private String onepassIntfToken;
+
 	/**
 	 * id attribute 를 리턴한다.
 	 * @return String
@@ -247,4 +253,33 @@ public class LoginVO implements Serializable{
 		this.orgnztNm = orgnztNm;
 	}
 	
+	/**
+	 * 디지털원패스 사용자키를 리턴한다.
+	 * @return onepassUserkey
+	 */
+	public String getOnepassUserkey() {
+		return onepassUserkey;
+	}
+	/**
+	 * 디지털원패스 사용자키를 설정한다.
+	 * @param onepassUserkey
+	 */
+	public void setOnepassUserkey(String onepassUserkey) {
+		this.onepassUserkey = onepassUserkey;
+	}
+	/**
+	 * 디지털원패스 사용자세션값을 리턴한다.
+	 * @return
+	 */
+	public String getOnepassIntfToken() {
+		return onepassIntfToken;
+	}
+	/**
+	 * 디지털원패스 사용자세션값을 설정한다.
+	 * @param onepassIntfToken
+	 */
+	public void setOnepassIntfToken(String onepassIntfToken) {
+		this.onepassIntfToken = onepassIntfToken;
+	}
+
 }

@@ -4,8 +4,8 @@ import java.util.List;
 
 import egovframework.com.cmm.service.EgovUserDetailsService;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import egovframework.rte.fdl.security.userdetails.util.EgovUserDetailsHelper;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.security.userdetails.util.EgovUserDetailsHelper;
 
 /**
  *권한관리 인증에 대한 ServiceImpl 클래스를 정의한다.

@@ -66,7 +66,7 @@ function fncProxySvcDelete(proxyId) {
 	<!-- 타이틀 -->
 	<h2><spring:message code="comUtlSysPxy.proxySvcDetail.title" /></h2><!-- 프록시설정 상세조회 -->
 	
-	<form:form commandName="proxySvc" method="post" action="${pageContext.request.contextPath}/utl/sys/pxy/removeProxySvc.do">
+	<form:form modelAttribute="proxySvc" method="post" action="${pageContext.request.contextPath}/utl/sys/pxy/removeProxySvc.do">
 	
 	<!-- 등록폼 -->
 	<table class="wTable">

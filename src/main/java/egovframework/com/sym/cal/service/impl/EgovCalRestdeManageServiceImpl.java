@@ -6,7 +6,7 @@ import egovframework.com.sym.cal.service.EgovCalRestdeManageService;
 import egovframework.com.sym.cal.service.Restde;
 import egovframework.com.sym.cal.service.RestdeVO;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 import javax.annotation.Resource;
 

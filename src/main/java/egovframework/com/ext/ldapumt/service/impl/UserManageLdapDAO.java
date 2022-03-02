@@ -13,14 +13,12 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * @author 전우성(슈퍼개발자K3)
  */
 package egovframework.com.ext.ldapumt.service.impl;
 
 import java.util.List;
-
-import egovframework.com.ext.ldapumt.service.UserVO;
 
 import javax.naming.directory.BasicAttribute;
 import javax.naming.directory.SearchControls;
@@ -28,9 +26,12 @@ import javax.naming.directory.SearchControls;
 import org.springframework.ldap.NameNotFoundException;
 import org.springframework.stereotype.Repository;
 
+import egovframework.com.cmm.EgovWebUtil;
+import egovframework.com.ext.ldapumt.service.UserVO;
+
 /**
 *
-* 사용자 관련 기능을 제공하는 DAO객체 
+* 사용자 관련 기능을 제공하는 DAO객체
 * @author 전우성
 * @since 2014.10.12
 * @version 1.0
@@ -49,7 +50,7 @@ import org.springframework.stereotype.Repository;
 public class UserManageLdapDAO extends OrgManageLdapDAO {
 
 	/**
-	 * 
+	 *
 	 * @param dn
 	 * @return
 	 */
@@ -58,7 +59,8 @@ public class UserManageLdapDAO extends OrgManageLdapDAO {
 		String filter = "objectclass=user";
 
 		try {
-			ucorgList = ldapTemplate.search(dn, filter, SearchControls.ONELEVEL_SCOPE, new ObjectMapper<UserVO>(
+			ucorgList = ldapTemplate.search(EgovWebUtil.removeLDAPInjectionRisk(dn), filter,
+				SearchControls.ONELEVEL_SCOPE, new ObjectMapper<UserVO>(
 					UserVO.class));
 		} catch (NameNotFoundException e) {
 			logger.error("[NameNotFoundException] : search fail");//KISA 보안약점 조치 (2018-10-29, 윤창원)
@@ -96,7 +98,7 @@ public class UserManageLdapDAO extends OrgManageLdapDAO {
 	 * @return
 	 */
 	public UserVO selectUserManageByDn(String dn) {
-		return (UserVO) selectOrgManageByDn(dn, UserVO.class);
+		return (UserVO)selectOrgManageByDn(dn, UserVO.class);
 	}
 
 	/**

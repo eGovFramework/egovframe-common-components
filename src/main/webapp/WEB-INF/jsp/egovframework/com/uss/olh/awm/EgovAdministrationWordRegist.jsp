@@ -64,7 +64,7 @@ function fn_egov_regist_administrationword(form){
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form commandName="administrationWordVO" action="${pageContext.request.contextPath}/uss/olh/awm/insertAdministrationWord.do" method="post" onSubmit="fn_egov_regist_administrationword(document.forms[0]); return false;"> 
+<form:form modelAttribute="administrationWordVO" action="${pageContext.request.contextPath}/uss/olh/awm/insertAdministrationWord.do" method="post" onSubmit="fn_egov_regist_administrationword(document.forms[0]); return false;"> 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.create" /></h2>

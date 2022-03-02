@@ -141,7 +141,7 @@ function fnImgChange(obj){
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 <div class="wTableFrm">
-<form:form commandName="qustnrTmplatManageVO" action="${pageContext.request.contextPath}/uss/olp/qtm/EgovQustnrTmplatManageRegistActor.do" method="post" enctype="multipart/form-data" onSubmit="fn_egov_save_QustnrTmplatManage(document.forms[0]); return false;">
+<form:form modelAttribute="qustnrTmplatManageVO" action="${pageContext.request.contextPath}/uss/olp/qtm/EgovQustnrTmplatManageRegistActor.do" method="post" enctype="multipart/form-data" onSubmit="fn_egov_save_QustnrTmplatManage(document.forms[0]); return false;">
 
 <!-- 첨부파일 개수 설정을 위한 Hidden 설정 -->
 <!-- <input type="hidden" name="posblAtchFileNumber" id="posblAtchFileNumber" value="1" /> -->

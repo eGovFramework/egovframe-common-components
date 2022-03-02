@@ -27,8 +27,8 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olh.faq.service.EgovFaqService;
 import egovframework.com.uss.olh.faq.service.FaqVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import egovframework.rte.fdl.property.EgovPropertyService;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
 *
@@ -47,6 +47,7 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 *  2011.08.26   정진오            IncludedInfo annotation 추가
 *  2016.08.03   김연호            표준프레임워크 3.6 개선
 *  2020.10.27   신용호            파일 업로드 수정 (multiRequest.getFiles)
+*  2021.07.29   정진호            경로 오류 수정
 *
 * </pre>
 */
@@ -168,7 +169,7 @@ public class EgovFaqController {
 		beanValidator.validate(faqVO, bindingResult);
 
 		if (bindingResult.hasErrors()) {
-			return "egovframework/com/uss/olh/wor/EgovFaqRegist";
+			return "egovframework/com/uss/olh/faq/EgovFaqRegist";
 		}
 
 		// 첨부파일 관련 첨부파일ID 생성
@@ -247,7 +248,7 @@ public class EgovFaqController {
 		// Validation
 		beanValidator.validate(faqVO, bindingResult);
 		if (bindingResult.hasErrors()) {
-			return "egovframework/com/uss/olh/wor/EgovFaqUpdt";
+			return "egovframework/com/uss/olh/faq/EgovFaqUpdt";
 		}
 
 		

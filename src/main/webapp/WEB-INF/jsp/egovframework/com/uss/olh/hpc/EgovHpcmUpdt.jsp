@@ -66,7 +66,7 @@ function fn_egov_inqire_list() {
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
 <!-- 상단타이틀 -->
-<form:form commandName="hpcmVO" action="${pageContext.request.contextPath}/uss/olh/hpc/updateHpcm.do" method="post" onSubmit="fn_egov_updt_hpcm(document.forms[0]); return false;">  
+<form:form modelAttribute="hpcmVO" action="${pageContext.request.contextPath}/uss/olh/hpc/updateHpcm.do" method="post" onSubmit="fn_egov_updt_hpcm(document.forms[0]); return false;">  
 <div class="wTableFrm">
 	<h2>${pageTitle} <spring:message code="title.update" /></h2>
 

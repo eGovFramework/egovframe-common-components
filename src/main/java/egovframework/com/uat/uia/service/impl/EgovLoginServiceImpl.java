@@ -15,8 +15,8 @@ import egovframework.com.uat.uia.service.EgovLoginService;
 import egovframework.com.utl.fcc.service.EgovNumberUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovFileScrty;
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import egovframework.rte.psl.dataaccess.util.EgovMap;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 /**
  * 일반 로그인, 인증서 로그인을 처리하는 비즈니스 구현 클래스
@@ -35,6 +35,7 @@ import egovframework.rte.psl.dataaccess.util.EgovMap;
  *  2014.12.08   이기하            암호화방식 변경(EgovFileScrty.encryptPassword)
  *  2017.07.21   장동한            로그인인증제한 작업
  *  2020.07.08   신용호            비밀번호를 수정한후 경과한 날짜 조회
+ *  2021.05.30   정진오            디지털원패스 인증 회원 조회
  *  </pre>
  */
 @Service("loginService")
@@ -253,4 +254,17 @@ public class EgovLoginServiceImpl extends EgovAbstractServiceImpl implements Ego
 	public int selectPassedDayChangePWD(LoginVO vo) throws Exception {
 		return loginDAO.selectPassedDayChangePWD(vo);
 	}
+
+    /**
+	 * 디지털원패스 인증 회원 조회한다.
+	 * @param id
+	 * @return LoginVO
+	 * @exception Exception
+	 */
+    @Override
+	public LoginVO onepassLogin(String id) throws Exception {
+    	LoginVO loginVO = loginDAO.onepassLogin(id);
+    	return loginVO;
+    }
+
 }

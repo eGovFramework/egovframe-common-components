@@ -178,7 +178,7 @@ function fn_egov_SelectBoxValue(sbName)
 <!-- 자바스크립트 경고 태그  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 <!-- 상단타이틀 -->
-<form:form commandName="meetingManageVO"  action="" method="post">
+<form:form modelAttribute="meetingManageVO"  action="" method="post">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->

@@ -16,8 +16,8 @@ import egovframework.com.utl.sys.pxy.service.ProxyLogVO;
 import egovframework.com.utl.sys.pxy.service.ProxySvc;
 import egovframework.com.utl.sys.pxy.service.ProxySvcVO;
 
-import egovframework.rte.fdl.idgnr.EgovIdGnrService;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 import javax.annotation.Resource;
 

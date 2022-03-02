@@ -6,7 +6,7 @@ import java.util.Map;
 import egovframework.com.cop.bbs.service.BlogUser;
 import egovframework.com.cop.bbs.service.BlogVO;
 import egovframework.com.cop.bbs.service.Blog;
-import egovframework.rte.fdl.cmmn.exception.FdlException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 
 public interface EgovBBSMasterService {
 

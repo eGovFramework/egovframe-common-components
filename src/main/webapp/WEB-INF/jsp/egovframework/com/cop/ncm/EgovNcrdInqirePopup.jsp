@@ -40,7 +40,7 @@ function fn_egov_delete_ncrdInf(){
 </script>
 </head>
 <body>
-<form:form commandName="nameCard" name="nameCard" method="post" >
+<form:form modelAttribute="nameCard" name="nameCard" method="post" >
 
 <div class="board">
 	<!-- 타이틀 -->

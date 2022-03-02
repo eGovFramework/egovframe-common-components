@@ -22,7 +22,7 @@ import egovframework.com.cmm.service.FileVO;
 import egovframework.com.uss.ion.msi.service.EgovMainImageService;
 import egovframework.com.uss.ion.msi.service.MainImage;
 import egovframework.com.uss.ion.msi.service.MainImageVO;
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 import javax.annotation.Resource;
 

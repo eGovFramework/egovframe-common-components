@@ -14,8 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
-import egovframework.rte.fdl.cryptography.EgovEnvCryptoService;
-import egovframework.rte.fdl.cryptography.EgovPasswordEncoder;
+import org.egovframe.rte.fdl.cryptography.EgovEnvCryptoService;
+import org.egovframe.rte.fdl.cryptography.EgovPasswordEncoder;
 
 /**
  * 암호화/복호화 관한 controller 클래스를 정의한다.

@@ -4,7 +4,7 @@
 <%@ page import="java.util.HashMap"%>
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="java.util.Calendar"%>
-<%@ page import="egovframework.rte.psl.dataaccess.util.EgovMap"%>
+<%@ page import="org.egovframe.rte.psl.dataaccess.util.EgovMap"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>

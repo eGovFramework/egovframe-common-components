@@ -1,10 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?><!-- 
    수정일                 수정자            수정내용
   =========     =======    =================================================
-  2011.08.26   	서준식     	   SSO 로그인을 위한 쿼리 추가
+  2011.08.26   	서준식            SSO 로그인을 위한 쿼리 추가
   2011.09.27    서준식            컬럼 변경 SUB_DN 을  CRTFC_DN_VALUE 로 변경
   2011.09.28    서준식            컬럼 변경 entrprsmber_id 을  ENTRPRS_MBER_ID 로 변경
   2020.07.06    신용호            비밀번호 만료여부 조회
+  2021.05.30    정진오            디지털원패스 로그인을 위한 쿼리 추가
 -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
@@ -434,5 +435,44 @@
 			
 		</if>
 	</select>
-	
+
+	<!-- 2021.05.30, 정진오, 디지털원패스 로그인을 위한 쿼리 추가 -->
+	<select id="onepassLogin" resultMap="login">
+		SELECT mber_id AS id
+		     , mber_nm AS name
+		     , password AS password
+		     , ihidNum AS ihidNum
+		     , mber_email_adres AS email
+		     , 'GNR' AS userSe
+		     , '-' AS orgnztId
+		     , esntl_id AS uniqId
+		  FROM COMTNGNRLMBER
+		 WHERE mber_id = #{id}
+		   AND mber_sttus = 'P'
+		UNION ALL
+		SELECT ENTRPRS_MBER_ID AS id
+		     , cmpny_nm AS name
+		     , entrprs_mber_password AS password
+		     , bizrno AS ihidNum
+		     , applcnt_email_adres AS email
+		     , 'ENT' AS userSe
+		     , '-' AS orgnztId
+		     , esntl_id AS uniqId
+		  FROM COMTNENTRPRSMBER
+		 WHERE ENTRPRS_MBER_ID = #{id}
+		   AND entrprs_mber_sttus = 'P'
+		UNION ALL
+		SELECT emplyr_id AS id
+		     , user_nm AS name
+		     , password AS password
+		     , ihidnum AS ihidNum
+		     , email_adres AS email
+		     , 'USR' AS userSe
+		     , orgnzt_id AS orgnztId
+		     , esntl_id AS uniqId
+		  FROM COMTNEMPLYRINFO
+		 WHERE emplyr_id = #{id}
+		   AND emplyr_sttus_code = 'P'
+	</select>
+
 </mapper>

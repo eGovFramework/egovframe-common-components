@@ -28,8 +28,8 @@ import egovframework.com.sym.sym.srv.service.ServerEqpmnRelateVO;
 import egovframework.com.sym.sym.srv.service.ServerEqpmnVO;
 import egovframework.com.sym.sym.srv.service.ServerVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import egovframework.rte.fdl.idgnr.EgovIdGnrService;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
  * 개요

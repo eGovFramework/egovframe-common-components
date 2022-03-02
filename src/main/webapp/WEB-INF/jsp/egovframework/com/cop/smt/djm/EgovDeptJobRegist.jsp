@@ -110,7 +110,7 @@
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form commandName="deptJobVO" name="deptJobVO" method="post" action="${pageContext.request.contextPath}/cop/smt/djm/insertDeptJob.do' />" enctype="multipart/form-data">
+<form:form modelAttribute="deptJobVO" name="deptJobVO" method="post" action="${pageContext.request.contextPath}/cop/smt/djm/insertDeptJob.do' />" enctype="multipart/form-data">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->

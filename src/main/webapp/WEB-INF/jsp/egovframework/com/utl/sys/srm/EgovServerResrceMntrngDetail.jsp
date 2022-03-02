@@ -51,7 +51,7 @@ function fncSelectServerResrceMntrngList() {
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.detail" /></h2>
 	
-	<form:form commandName="serverResrceMntrng" method="post" action="${pageContext.request.contextPath}/utl/sys/srm/selectServerResrceMntrngList.do">
+	<form:form modelAttribute="serverResrceMntrng" method="post" action="${pageContext.request.contextPath}/utl/sys/srm/selectServerResrceMntrngList.do">
 	<!-- 등록폼 -->
 	<table class="wTable" summary="<spring:message code="common.summary.inqire" arguments="${pageTitle}" />">
 		<colgroup>

@@ -4,7 +4,7 @@ import java.util.List;
 import egovframework.com.sym.sym.bak.service.BackupResult;
 import egovframework.com.sym.sym.bak.service.EgovBackupResultService;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 import javax.annotation.Resource;
 

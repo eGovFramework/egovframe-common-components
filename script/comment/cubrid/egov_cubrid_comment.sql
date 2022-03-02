@@ -1,4 +1,4 @@
-﻿
+
 -- Cubrid Manager에서 DBA 권한에서 실행해야 함.
 
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtcadministcode','*','행정코드',SYS_TIMESTAMP,'DBA');

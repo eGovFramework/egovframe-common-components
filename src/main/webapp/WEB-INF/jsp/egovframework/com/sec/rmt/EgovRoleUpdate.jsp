@@ -67,7 +67,7 @@ function fncRoleDelete() {
 
 <body>
 
-<form:form commandName="roleManage" method="post" action="${pageContext.request.contextPath}/sec/rmt/EgovRoleUpdate.do" onSubmit="fncRoleUpdate(document.forms[0]); return false;"> 
+<form:form modelAttribute="roleManage" method="post" action="${pageContext.request.contextPath}/sec/rmt/EgovRoleUpdate.do" onSubmit="fncRoleUpdate(document.forms[0]); return false;"> 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.update" /></h2><!-- 롤관리 수정 -->

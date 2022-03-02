@@ -62,7 +62,7 @@ function fncNtwrkDelete(ntwrkId) {
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
-<form:form commandName="ntwrk" method="post" action="${pageContext.request.contextPath}/sym/sym/nwk/updtViewNtwrk.do">
+<form:form modelAttribute="ntwrk" method="post" action="${pageContext.request.contextPath}/sym/sym/nwk/updtViewNtwrk.do">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->

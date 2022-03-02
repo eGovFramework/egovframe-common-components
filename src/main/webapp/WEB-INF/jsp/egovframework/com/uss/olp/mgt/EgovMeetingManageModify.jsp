@@ -176,7 +176,7 @@ function fn_egov_SelectBoxValue(sbName)
 </head>
 <body onLoad="fn_egov_init_MeetingManage(); fn_egov_init_date();">
 
-<form:form commandName="meetingManageVO"  action="" method="post">
+<form:form modelAttribute="meetingManageVO"  action="" method="post">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->

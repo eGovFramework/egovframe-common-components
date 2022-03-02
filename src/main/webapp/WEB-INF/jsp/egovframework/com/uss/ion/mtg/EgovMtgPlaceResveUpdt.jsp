@@ -124,7 +124,7 @@
 
 <noscript class="noScriptTitle">자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>
 
-<form:form commandName="mtgPlaceResve" name="mtgPlaceResve" method="post" >
+<form:form modelAttribute="mtgPlaceResve" name="mtgPlaceResve" method="post" >
 <input type="hidden" name="cmd" value="updt" >
 <input type="hidden" name="mtgPlaceId" value ="<c:out value='${mtgPlaceManageVO.mtgPlaceId}'/>">
 <input type="hidden" name="resveId"    value ="<c:out value='${mtgPlaceManageVO.resveId   }'/>"/>

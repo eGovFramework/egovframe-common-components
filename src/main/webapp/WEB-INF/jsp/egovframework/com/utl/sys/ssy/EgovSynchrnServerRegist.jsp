@@ -108,7 +108,7 @@ function ipValidate(ipValue) {
 
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
-<form:form commandName="synchrnServer" method="post" action="${pageContext.request.contextPath}/utl/sys/ssy/addSynchrnServer.do">
+<form:form modelAttribute="synchrnServer" method="post" action="${pageContext.request.contextPath}/utl/sys/ssy/addSynchrnServer.do">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->

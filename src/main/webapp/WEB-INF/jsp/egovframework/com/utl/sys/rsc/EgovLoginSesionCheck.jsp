@@ -71,7 +71,7 @@ function fncgetLoginSessionView(url) {
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
 <div class="wTableFrm">
-<form:form commandName="loginSessionCheck" method="post" action="${pageContext.request.contextPath}/utl/sys/rsc/setLoginSession.do">
+<form:form modelAttribute="loginSessionCheck" method="post" action="${pageContext.request.contextPath}/utl/sys/rsc/setLoginSession.do">
 	<!-- 타이틀 -->
 	<h2><spring:message code="utlSysRsc.loginSessionCheck.loginSessionCheck"/></h2><!-- 로그인 세션정보 체크 -->
 

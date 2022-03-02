@@ -145,7 +145,7 @@ function fn_egov_select_guestList(pageNo) {
 </form>
 
 <!-- 방명록 입력폼 -->
-<form:form commandName="articleVO" action="${pageContext.request.contextPath}/cop/bbs/insertGuestArticle.do" method="post" onSubmit="fn_egov_insert_guest(document.forms[1]); return false; " style="float:left; clear:both;">
+<form:form modelAttribute="articleVO" action="${pageContext.request.contextPath}/cop/bbs/insertGuestArticle.do" method="post" onSubmit="fn_egov_insert_guest(document.forms[1]); return false; " style="float:left; clear:both;">
 	<div class="wTableFrm" >
 	<table class="board_list top_line">
 		<caption>${pageTitle } <spring:message code="title.create" /></caption>

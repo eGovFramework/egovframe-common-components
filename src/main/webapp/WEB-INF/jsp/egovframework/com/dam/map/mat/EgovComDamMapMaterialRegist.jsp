@@ -139,7 +139,7 @@
 
 	<body onLoad="fn_egov_initl_MapMaterial();">
 	
-	<form:form commandName="mapMaterial" name="mapMaterial" method="post">
+	<form:form modelAttribute="mapMaterial" name="mapMaterial" method="post">
 	
 		<div class="wTableFrm">
 			<!-- 타이틀 -->

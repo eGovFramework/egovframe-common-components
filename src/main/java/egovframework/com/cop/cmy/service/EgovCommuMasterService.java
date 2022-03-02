@@ -3,7 +3,7 @@ package egovframework.com.cop.cmy.service;
 import java.util.List;
 import java.util.Map;
 
-import egovframework.rte.fdl.cmmn.exception.FdlException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 
 public interface EgovCommuMasterService {
 

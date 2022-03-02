@@ -10,7 +10,7 @@ import egovframework.com.sym.sym.srv.service.ServerEqpmnVO;
 import egovframework.com.sym.sym.srv.service.ServerVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 import javax.annotation.Resource;
 

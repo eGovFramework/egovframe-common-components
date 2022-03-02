@@ -64,7 +64,7 @@ function fn_egov_regist_site(form){
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form commandName="siteVO" action="${pageContext.request.contextPath}/uss/ion/sit/insertSite.do" method="post" onSubmit="fn_egov_regist_site(document.forms[0]); return false;"> 
+<form:form modelAttribute="siteVO" action="${pageContext.request.contextPath}/uss/ion/sit/insertSite.do" method="post" onSubmit="fn_egov_regist_site(document.forms[0]); return false;"> 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.create" /></h2>

@@ -134,7 +134,7 @@ function fn_egov_QustnrItemManageListPopup_QustnrItemManage(){
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form commandName="qustnrRespondInfoVO" action="${pageContext.request.contextPath}/uss/olp/qri/EgovQustnrRespondInfoRegist.do" method="post" enctype="multipart/form-data" onSubmit="fn_egov_save_QustnrRespondInfo(document.forms[0]); return false;">
+<form:form modelAttribute="qustnrRespondInfoVO" action="${pageContext.request.contextPath}/uss/olp/qri/EgovQustnrRespondInfoRegist.do" method="post" enctype="multipart/form-data" onSubmit="fn_egov_save_QustnrRespondInfo(document.forms[0]); return false;">
  
 <div class="wTableFrm">
 	<!-- 타이틀 -->

@@ -27,7 +27,7 @@ import egovframework.com.ext.ldapumt.service.LdapTreeObject;
 import egovframework.com.ext.ldapumt.service.UcorgVO;
 import egovframework.com.ext.ldapumt.service.UserVO;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 import javax.annotation.Resource;
 

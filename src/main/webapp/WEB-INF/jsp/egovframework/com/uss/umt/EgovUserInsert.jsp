@@ -206,7 +206,7 @@ if (typeof(opener.fn_egov_dn_info_setting) == 'undefined') {
 </style>
 </head>
 <body onload="fn_egov_init()">
-<form:form commandName="userManageVO" action="${pageContext.request.contextPath}/uss/umt/EgovUserInsert.do" name="userManageVO" method="post" onSubmit="fnInsert(document.forms[0]); return false;"> 
+<form:form modelAttribute="userManageVO" action="${pageContext.request.contextPath}/uss/umt/EgovUserInsert.do" name="userManageVO" method="post" onSubmit="fnInsert(document.forms[0]); return false;"> 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.create" /></h2>

@@ -7,8 +7,8 @@ import egovframework.com.cop.smt.mtm.service.EgovMemoTodoService;
 import egovframework.com.cop.smt.mtm.service.MemoTodo;
 import egovframework.com.cop.smt.mtm.service.MemoTodoVO;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import egovframework.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 
 import javax.annotation.Resource;
 

@@ -146,7 +146,7 @@
 	<!-- 타이틀 -->
 	<h2 class=""><spring:message code="comUssIonVct.vcatnConfm.title"/></h2><!-- 휴가승인 -->
 	
-	<form:form commandName="vcatnManage" name="vcatnManage" method="post" action="<c:url value='/uss/ion/vct/EgovVcatnConfm.do'/>">
+	<form:form modelAttribute="vcatnManage" name="vcatnManage" method="post" action="<c:url value='/uss/ion/vct/EgovVcatnConfm.do'/>">
 	<div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="<spring:message code="comUssIonVct.vcatnConfm.submit"/>" title="<spring:message code="comUssIonVct.vcatnConfm.submit"/>"></div><!-- 전송 -->
 	<form:hidden  path="applcntId"/>
 	<form:hidden  path="vcatnSe"/>

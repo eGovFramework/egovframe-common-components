@@ -9,8 +9,8 @@ import egovframework.com.utl.sys.nsm.service.NtwrkSvcMntrngLog;
 import egovframework.com.utl.sys.nsm.service.NtwrkSvcMntrngLogVO;
 import egovframework.com.utl.sys.nsm.service.NtwrkSvcMntrngVO;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import egovframework.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 
 import javax.annotation.Resource;
 

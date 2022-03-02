@@ -102,7 +102,7 @@ function fn_egov_QustnrItemManageListPopup_QustnrItemManage(){
 
 <div class="wTableFrm">
 <!-- 상단타이틀 -->
-<form:form commandName="qustnrRespondInfoVO" name="qustnrRespondInfoVO" action="${pageContext.request.contextPath}/uss/olp/qri/EgovQustnrRespondInfoModify.do" method="post" enctype="multipart/form-data" onSubmit="fn_egov_save_QustnrRespondInfo(document.forms[0]); return false;">
+<form:form modelAttribute="qustnrRespondInfoVO" name="qustnrRespondInfoVO" action="${pageContext.request.contextPath}/uss/olp/qri/EgovQustnrRespondInfoModify.do" method="post" enctype="multipart/form-data" onSubmit="fn_egov_save_QustnrRespondInfo(document.forms[0]); return false;">
  
 <!-- 타이틀 -->
 <h2>${pageTitle} <spring:message code="title.update" /></h2>

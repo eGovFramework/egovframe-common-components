@@ -1,7 +1,15 @@
 package egovframework.com.uss.cmt.web;
 
 import java.util.List;
-import java.util.Map;
+
+import javax.annotation.Resource;
+
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -12,20 +20,8 @@ import egovframework.com.uss.cmt.service.CmtManageVO;
 import egovframework.com.uss.cmt.service.EgovCmtManageService;
 import egovframework.com.utl.fcc.service.EgovDateUtil;
 
-import egovframework.rte.fdl.idgnr.EgovIdGnrService;
-import egovframework.rte.fdl.property.EgovPropertyService;
-
-import javax.annotation.Resource;
-
-import org.apache.poi.util.SystemOutLogger;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.ui.ModelMap;
-import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springmodules.validation.commons.DefaultBeanValidator;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.fdl.property.EgovPropertyService;
 
 /**
  * 업무사용자관련 요청을  비지니스 클래스로 전달하고 처리된결과를  해당
@@ -58,13 +54,13 @@ public class EgovCmtManageController {
 	protected EgovPropertyService propertiesService;
 
 	/** DefaultBeanValidator beanValidator */
-	@Autowired
-	private DefaultBeanValidator beanValidator;
+//	@Autowired
+//	private DefaultBeanValidator beanValidator;
 
 	/** egovCmtManageIdGnrService */
 	@Resource(name = "egovCmtManageIdGnrService")
 	private EgovIdGnrService idgenService;
-	
+
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
@@ -78,23 +74,25 @@ public class EgovCmtManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/cmt/EgovCmtWrkStartInsert.do")
-	public String insertWrkStartCmtInfo(@ModelAttribute("cmtManageVO") CmtManageVO cmtManageVO, BindingResult bindingResult, Model model) throws Exception {
+	public String insertWrkStartCmtInfo(@ModelAttribute("cmtManageVO") CmtManageVO cmtManageVO,
+		BindingResult bindingResult, Model model) throws Exception {
 
-		//KISA 보안약점 조치 (2018-10-29, 윤창원)
-		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		// login data
-		if (((user == null || user.getUniqId() == null) ? "" : user.getUniqId()) != null)
+		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+
+		if (user != null && user.getUniqId() != null) {
 			cmtManageVO.setEmplyrId(user.getUniqId());
-		if (((user == null || user.getOrgnztId() == null) ? "" : user.getOrgnztId()) != null)
+		}
+		if (user != null && user.getOrgnztId() != null) {
 			cmtManageVO.setOrgnztId(user.getOrgnztId());
+		}
 		cmtManageVO.setWrktDt(EgovDateUtil.getToday());
 
 		//출근 중복 확인
 		String wrktmId = cmtManageService.selectWrktmId(cmtManageVO);
-		if(wrktmId != null){
+		if (wrktmId != null) {
 			model.addAttribute("message", egovMessageSource.getMessage("ussCmt.cmtManageList.validate.wrkStartAlert")); //이미 출근 상태입니다.
 			return "forward:/uss/cmt/EgovCmtManageList.do";
-		}else{
+		} else {
 			cmtManageService.insertWrkStartCmtInfo(cmtManageVO);
 		}
 		return "forward:/uss/cmt/EgovCmtManageList.do";
@@ -109,26 +107,29 @@ public class EgovCmtManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/cmt/EgovCmtWrkEndInsert.do")
-	public String insertWrkEndCmtInfo(@ModelAttribute("cmtManageVO") CmtManageVO cmtManageVO, BindingResult bindingResult, Model model) throws Exception {
-		//사용자정보
-		//KISA 보안약점 조치 (2018-10-29, 윤창원)
-		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (((user == null || user.getUniqId() == null) ? "" : user.getUniqId()) != null)
-			cmtManageVO.setEmplyrId(user.getUniqId());
-		if (((user == null || user.getOrgnztId() == null) ? "" : user.getOrgnztId()) != null)
-			cmtManageVO.setOrgnztId(user.getOrgnztId());
+	public String insertWrkEndCmtInfo(@ModelAttribute("cmtManageVO") CmtManageVO cmtManageVO,
+		BindingResult bindingResult, Model model) throws Exception {
 
+		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+
+		if (user != null && user.getUniqId() != null) {
+			cmtManageVO.setEmplyrId(user.getUniqId());
+		}
+		if (user != null && user.getOrgnztId() != null) {
+			cmtManageVO.setOrgnztId(user.getOrgnztId());
+		}
 		cmtManageVO.setWrktDt(EgovDateUtil.getToday());
 
 		// 출근여부 체크
 		String wrktmId = cmtManageService.selectWrktmId(cmtManageVO);
-		if(wrktmId != null){
+		if (wrktmId != null) {
 			cmtManageService.insertWrkEndCmtInfo(cmtManageVO);
 			return "forward:/uss/cmt/EgovCmtManageList.do";
 		}
-		model.addAttribute("message", egovMessageSource.getMessage("ussCmt.cmtManageList.validate.wrkStartBeforeEndAlert"));// 먼저 출근등록을 해주세요.
+		model.addAttribute("message",
+			egovMessageSource.getMessage("ussCmt.cmtManageList.validate.wrkStartBeforeEndAlert"));// 먼저 출근등록을 해주세요.
 		return "forward:/uss/cmt/EgovCmtManageList.do";
-		
+
 	}
 
 	/**
@@ -140,7 +141,8 @@ public class EgovCmtManageController {
 	 */
 	@IncludedInfo(name = "출퇴근관리", order = 950, gid = 50)
 	@RequestMapping(value = "/uss/cmt/EgovCmtManageList.do")
-	public String selectUserCmtList(@ModelAttribute("cmtSearchVO") CmtDefaultVO cmtSearchVO, ModelMap model) throws Exception {
+	public String selectUserCmtList(@ModelAttribute("cmtSearchVO") CmtDefaultVO cmtSearchVO, ModelMap model)
+		throws Exception {
 
 		List<?> cmtManageList = cmtManageService.selectCmtInfoList(cmtSearchVO);
 		model.addAttribute("resultList", cmtManageList);

@@ -164,8 +164,8 @@
 				  , EMAIL_ANSWER_AT=ifnull(#{emailAnswerAt},'N')
 				  , WRTER_NM=#{wrterNm}
 				  , WRITNG_DE=DATE_FORMAT(sysdate(),'%Y%m%d')
-				  , FRST_REGIST_PNTTM=sysdate()
-				  , FRST_REGISTER_ID=#{frstRegisterId}
+				  , LAST_UPDT_PNTTM=sysdate()
+				  , LAST_UPDUSR_ID=#{lastUpdusrId}
 			WHERE  QA_ID=#{qaId}
 		
 	</update>

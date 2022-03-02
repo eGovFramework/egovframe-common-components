@@ -21,7 +21,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.uss.ion.bnt.service.BndtCeckManage;
@@ -33,8 +32,8 @@ import egovframework.com.uss.ion.bnt.service.BndtManageVO;
 import egovframework.com.uss.ion.bnt.service.EgovBndtManageService;
 import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import egovframework.rte.fdl.excel.EgovExcelService;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.excel.EgovExcelService;
 
 /**
  * 개요
@@ -62,13 +61,10 @@ import egovframework.rte.fdl.excel.EgovExcelService;
 @Service("egovBndtManageService")
 public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implements EgovBndtManageService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovProperties.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(EgovBndtManageServiceImpl.class);
 	
 	@Resource(name = "excelZipService")
     private EgovExcelService excelZipService;
-
-	@Resource(name = "multipartResolver")
-	CommonsMultipartResolver mailmultipartResolver;
 
 	@Resource(name="bndtManageDAO")
     private BndtManageDAO bndtManageDAO;

@@ -86,7 +86,7 @@ function selectList(){
   <tr>
     <td width="700">
 <!-- ********** 여기서 부터 본문 내용 *************** -->
-<form:form commandName="progrmManageVO" method="post" >
+<form:form modelAttribute="progrmManageVO" method="post" >
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->

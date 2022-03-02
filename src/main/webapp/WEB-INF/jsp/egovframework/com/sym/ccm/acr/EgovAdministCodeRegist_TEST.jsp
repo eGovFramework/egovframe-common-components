@@ -59,7 +59,7 @@ function fn_egov_regist_AdministCode(form){
 <body>
 <DIV id="content" style="width:712px">
 <!-- 상단타이틀 -->
-<form:form commandName="AdministCode" name="AdministCode" method="post">
+<form:form modelAttribute="AdministCode" name="AdministCode" method="post">
 <input name="cmd" type="hidden" value="<c:out value='Regist'/>"/>
 <input name="insttId" type="hidden" value="<c:out value='AUTO'/>"/>
 

@@ -60,18 +60,20 @@ public class EgovComIndexController implements ApplicationContextAware, Initiali
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovComIndexController.class);
 
+	@Override
 	public void afterPropertiesSet() throws Exception {}
 
+	@Override
 	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
 		this.applicationContext = applicationContext;
-		
+
 		LOGGER.info("EgovComIndexController setApplicationContext method has called!");
 	}
 
 	/** EgovLoginService */
 	@Resource(name = "loginService")
 	private EgovLoginService loginService;
-	
+
 	@RequestMapping("/index.do")
 	public String index(ModelMap model) {
 		return "egovframework/com/cmm/EgovUnitMain";
@@ -90,15 +92,17 @@ public class EgovComIndexController implements ApplicationContextAware, Initiali
 	@RequestMapping("/EgovContent.do")
 	public String setContent(ModelMap model) throws Exception {
 
-		// 설정된 비밀번호 유효기간을 가져온다. ex) 180이면 비밀번호 변경후 만료일이 앞으로 180일 
+		// 설정된 비밀번호 유효기간을 가져온다. ex) 180이면 비밀번호 변경후 만료일이 앞으로 180일
 		String propertyExpirePwdDay = EgovProperties.getProperty("Globals.ExpirePwdDay");
 		int expirePwdDay = 0 ;
 		try {
 			expirePwdDay =  Integer.parseInt(propertyExpirePwdDay);
+		} catch (NumberFormatException Nfe) {
+			LOGGER.debug("convert expirePwdDay Err : "+Nfe.getMessage());
 		} catch (Exception e) {
 			LOGGER.debug("convert expirePwdDay Err : "+e.getMessage());
 		}
-		
+
 		model.addAttribute("expirePwdDay", expirePwdDay);
 
 		// 비밀번호 설정일로부터 몇일이 지났는지 확인한다. ex) 3이면 비빌번호 설정후 3일 경과
@@ -114,10 +118,10 @@ public class EgovComIndexController implements ApplicationContextAware, Initiali
 			LOGGER.debug("===>>> passedDayChangePWD = "+passedDayChangePWD);
 			model.addAttribute("passedDay", passedDayChangePWD);
 		}
-		
+
 		// 만료일자로부터 경과한 일수 => ex)1이면 만료일에서 1일 경과
 		model.addAttribute("elapsedTimeExpiration", passedDayChangePWD - expirePwdDay);
-		
+
 		return "egovframework/com/cmm/EgovUnitContent";
 	}
 
@@ -192,7 +196,7 @@ public class EgovComIndexController implements ApplicationContextAware, Initiali
 		}
 
 		model.addAttribute("resultList", map.values());
-		
+
 		LOGGER.debug("EgovComIndexController index is called ");
 
 		return "egovframework/com/cmm/EgovUnitLeft";

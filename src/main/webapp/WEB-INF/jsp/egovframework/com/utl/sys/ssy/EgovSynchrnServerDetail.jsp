@@ -146,7 +146,7 @@ function fncDownSynchrnServerFile(fileNm) {
 </div>
 
 <div class="board">
-<form:form commandName="fileList" method="post" action="${pageContext.request.contextPath}/utl/sys/ssy/removeSynchrnServerFile.do">
+<form:form modelAttribute="fileList" method="post" action="${pageContext.request.contextPath}/utl/sys/ssy/removeSynchrnServerFile.do">
 	<h1><spring:message code="comUtlSysSsy.synchrn.title" />  <spring:message code="title.list" /></h1><!-- 동기화 파일 목록 -->
 
 	<table class="board_list">

@@ -268,7 +268,7 @@ String.prototype.replaceAll = function(src, repl){
 <body onLoad="fn_egov_init_LeaderSchdul(); initCalendar();">
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 <div id="content" style="width:712px">
-<form:form commandName="leaderSchdulVO" action="${pageContext.request.contextPath}/cop/smt/lsm/mng/insertLeaderSchdul.do" name="leaderSchdulVO" method="post">
+<form:form modelAttribute="leaderSchdulVO" action="${pageContext.request.contextPath}/cop/smt/lsm/mng/insertLeaderSchdul.do" name="leaderSchdulVO" method="post">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->

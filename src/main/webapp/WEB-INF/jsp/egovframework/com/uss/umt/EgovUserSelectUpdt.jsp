@@ -99,7 +99,7 @@ function fn_egov_dn_info_setting(dn) {
 </head>
 <body>
 <!-- content start -->
-<form:form commandName="userManageVO" action="${pageContext.request.contextPath}/uss/umt/EgovUserSelectUpdt.do" name="userManageVO" method="post" onSubmit="fnUpdate(document.forms[0]); return false;"> 
+<form:form modelAttribute="userManageVO" action="${pageContext.request.contextPath}/uss/umt/EgovUserSelectUpdt.do" name="userManageVO" method="post" onSubmit="fnUpdate(document.forms[0]); return false;"> 
 <div class="wTableFrm">
 	<!-- 상세정보 사용자 삭제시 prameter 전달용 input -->
 	<input name="checkedIdForDel" type="hidden" />

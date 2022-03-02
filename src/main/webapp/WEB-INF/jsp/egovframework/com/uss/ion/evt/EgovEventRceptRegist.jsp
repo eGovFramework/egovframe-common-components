@@ -67,7 +67,7 @@ function fncInsertEventRceptManage() {
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
-<form:form commandName="eventAtdrn" name="eventAtdrn" method="post">
+<form:form modelAttribute="eventAtdrn" name="eventAtdrn" method="post">
 <form:hidden  path="applcntId" id="applcntId"/>
 <form:errors  path="applcntId"/>
 <form:hidden  path="eventId" id="eventId"/>

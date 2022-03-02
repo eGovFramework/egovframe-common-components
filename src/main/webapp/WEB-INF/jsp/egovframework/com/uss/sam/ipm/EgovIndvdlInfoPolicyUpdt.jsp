@@ -65,7 +65,7 @@ function fn_egov_save_IndvdlInfoPolicy(){
 </head>
 <body onLoad="fn_egov_init_IndvdlInfoPolicy();">
 
-<form:form commandName="indvdlInfoPolicy" name="indvdlInfoPolicy" action="${pageContext.request.contextPath}/uss/sam/ipm/updtIndvdlInfoPolicy.do" method="post" enctype="multipart/form-data">
+<form:form modelAttribute="indvdlInfoPolicy" name="indvdlInfoPolicy" action="${pageContext.request.contextPath}/uss/sam/ipm/updtIndvdlInfoPolicy.do" method="post" enctype="multipart/form-data">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->

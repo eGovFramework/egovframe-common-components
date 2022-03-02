@@ -65,7 +65,7 @@
 			</ul>
 		</div>
 		
-	<form:form commandName="articleCommentVO" action="${pageContext.request.contextPath}/cop/cmt/insertArticleComment.do" method="post" onSubmit="fn_egov_insert_commentList(); return false;" style="float:left; clear:both;">
+	<form:form modelAttribute="articleCommentVO" action="${pageContext.request.contextPath}/cop/cmt/insertArticleComment.do" method="post" onSubmit="fn_egov_insert_commentList(); return false;" style="float:left; clear:both;">
 	<div class="wTableFrm" >
 	<table class="board_list top_line">
 		<caption>${replyTitle } <spring:message code="title.create" /></caption>

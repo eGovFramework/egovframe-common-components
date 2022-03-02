@@ -184,7 +184,7 @@
 </head>
 <body onLoad="fn_egov_init_roughmapregist();">
 
-<form:form commandName="roughMap" name="roughMap" method="post">
+<form:form modelAttribute="roughMap" name="roughMap" method="post">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->

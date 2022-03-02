@@ -22,14 +22,14 @@
  */
 package egovframework.com.uss.ion.fbk.web;
 
-import egovframework.com.uss.ion.fbk.service.FacebookSecurityContext;
-import egovframework.com.uss.ion.fbk.service.FacebookUser;
-
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.web.SignInAdapter;
 import org.springframework.web.context.request.NativeWebRequest;
+
+import egovframework.com.uss.ion.fbk.service.FacebookSecurityContext;
+import egovframework.com.uss.ion.fbk.service.FacebookUser;
 
 /**
  * facebook 연동 로그인 클래스
@@ -54,7 +54,9 @@ public final class FacebookSimpleSignInAdapter implements SignInAdapter {
 	@Override
 	public String signIn(String userId, Connection<?> connection, NativeWebRequest request) {
 		FacebookSecurityContext.setCurrentUser(new FacebookUser(userId));
-		userCookieGenerator.addCookie(userId, request.getNativeResponse(HttpServletResponse.class));
+		if (userCookieGenerator != null) {
+			userCookieGenerator.addCookie(userId, request.getNativeResponse(HttpServletResponse.class));
+		}
 		return null;
 	}
 

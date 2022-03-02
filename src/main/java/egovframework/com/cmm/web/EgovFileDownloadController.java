@@ -6,7 +6,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -20,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovBrowserUtil;
+import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.util.EgovBasicLogger;
@@ -79,11 +79,12 @@ public class EgovFileDownloadController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/cmm/fms/FileDown.do")
-	public void cvplFileDownload(@RequestParam Map<String, Object> commandMap, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public void cvplFileDownload(@RequestParam Map<String, Object> commandMap, HttpServletRequest request,
+		HttpServletResponse response) throws Exception {
 
-		String atchFileId = (String) commandMap.get("atchFileId");
-		String fileSn = (String) commandMap.get("fileSn");
-		
+		String atchFileId = (String)commandMap.get("atchFileId");
+		String fileSn = (String)commandMap.get("fileSn");
+
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (isAuthenticated) {
@@ -98,14 +99,14 @@ public class EgovFileDownloadController {
 
 			if (fSize > 0) {
 				String mimetype = "application/x-msdownload";
-				
+
 				String userAgent = request.getHeader("User-Agent");
-				HashMap<String,String> result = EgovBrowserUtil.getBrowser(userAgent);
-				if ( !EgovBrowserUtil.MSIE.equals(result.get(EgovBrowserUtil.TYPEKEY)) ) {
+				HashMap<String, String> result = EgovBrowserUtil.getBrowser(userAgent);
+				if (!EgovBrowserUtil.MSIE.equals(result.get(EgovBrowserUtil.TYPEKEY))) {
 					mimetype = "application/x-stuff";
 				}
 
-				String contentDisposition = EgovBrowserUtil.getDisposition(fvo.getOrignlFileNm(),userAgent,"UTF-8");
+				String contentDisposition = EgovBrowserUtil.getDisposition(fvo.getOrignlFileNm(), userAgent, "UTF-8");
 				//response.setBufferSize(fSize);	// OutOfMemeory 발생
 				response.setContentType(mimetype);
 				//response.setHeader("Content-Disposition", "attachment; filename=\"" + contentDisposition + "\"");
@@ -139,13 +140,13 @@ public class EgovFileDownloadController {
 				response.setContentType("application/x-msdownload");
 
 				PrintWriter printwriter = response.getWriter();
-				
+
 				printwriter.println("<html>");
-				printwriter.println("<br><br><br><h2>Could not get file name:<br>" + fvo.getOrignlFileNm() + "</h2>");
+				printwriter.println("<br><br><br><h2>Could not get file name:<br>"+ EgovWebUtil.clearXSSMaximum(fvo.getOrignlFileNm()) + "</h2>");//2022.01 Potential XSS in Servlet
 				printwriter.println("<br><br><br><center><h3><a href='javascript: history.go(-1)'>Back</a></h3></center>");
 				printwriter.println("<br><br><br>&copy; webAccess");
 				printwriter.println("</html>");
-				
+
 				printwriter.flush();
 				printwriter.close();
 			}

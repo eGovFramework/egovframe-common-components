@@ -59,7 +59,7 @@ function fn_egov_regist_Restde(form){
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form commandName="restde" name="restde" method="post">
+<form:form modelAttribute="restde" name="restde" method="post">
 <input name="cmd" type="hidden" value="Modify">
 <form:hidden path="restdeNo"/>
 <form:hidden path="restdeDe"/>

@@ -4,7 +4,7 @@ import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.sym.mnu.stm.service.EgovSiteMapngService;
 import egovframework.com.sym.mnu.stm.service.SiteMapngVO;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 import javax.annotation.Resource;
 

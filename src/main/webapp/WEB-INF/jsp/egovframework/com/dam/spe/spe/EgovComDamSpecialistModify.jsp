@@ -123,7 +123,7 @@
 
 	<body onLoad="fn_egov_initl_KnoSpecialist();">
 	
-	<form:form commandName="knoSpecialist" name="knoSpecialist" method="post">
+	<form:form modelAttribute="knoSpecialist" name="knoSpecialist" method="post">
 			<form:hidden path="orgnztId"/>
 			<form:hidden path="knoTypeCd"/>
 			<form:hidden path="speId"/>

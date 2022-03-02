@@ -1091,11 +1091,11 @@
       <!--
       	주민등록번호 validation.
       	Commons Validator가 제공하는 validator가 아니라 추가된 validator이므로
-      	실행을 위해서는 반드시  egovframework.rte.ptl.mvcXXXXX.jar가 필요하다.
+      	실행을 위해서는 반드시  org.egovframe.rte.ptl.mvcXXXXX.jar가 필요하다.
       	2020-10-16 신용호 - 주민번호 남녀구분 관련 수정
       -->
       <validator name="ihidnum"
-            classname="egovframework.rte.ptl.mvc.validation.RteFieldChecks"
+            classname="org.egovframe.rte.ptl.mvc.validation.RteFieldChecks"
                method="validateIhIdNum"
          methodParams="java.lang.Object,
                        org.apache.commons.validator.ValidatorAction,
@@ -1184,7 +1184,7 @@
            </javascript>
       </validator>
 	  <validator name="korean"
-            classname="egovframework.rte.ptl.mvc.validation.RteFieldChecks"
+            classname="org.egovframe.rte.ptl.mvc.validation.RteFieldChecks"
                method="validateKorean"
          methodParams="java.lang.Object,
                        org.apache.commons.validator.ValidatorAction,

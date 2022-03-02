@@ -4,12 +4,13 @@
   * @Description : 사용자상세조회, 수정 JSP
   * @Modification Information
   * @
-  * @  수정일         수정자                   수정내용
+  * @  수정일     수정자          수정내용
   * @ -------    --------    ---------------------------
-  * @ 2009.03.02    조재영         최초 생성
-  * @ 2015.06.16	조정국		 password 중복필드 정리
-  * @ 2016.06.13    장동한         표준프레임워크 v3.6 개선
-  * @ 2017.07.21    장동한    	로그인인증제한 작업
+  * @ 2009.03.02  조재영          최초 생성
+  * @ 2015.06.16  조정국          password 중복필드 정리
+  * @ 2016.06.13  장동한          표준프레임워크 v3.6 개선
+  * @ 2017.07.21  장동한          로그인인증제한 작업
+  * @ 2021.05.30  정진오          디지털원패스 연동해지
   *
   *  @author 공통서비스 개발팀 조재영
   *  @since 2009.03.12
@@ -70,11 +71,22 @@ function fnUpdate(form){
 	    }
 	}
 }
+
+// 2021.05.30, 정진오, 디지털원패스 연동해지
+function onepassCancel() {
+	if (confirm("디지털원패스 연동해지를 진행하시겠습니까?")) { 
+		document.onepassForm.action = "<c:url value='/uat/uia/onepass/onepassCancel.do'/>";
+		document.onepassForm.submit();
+		return true;
+	} else {
+		return false;
+	}
+}
 </script>
 </head>
 <body>
 <!-- content start -->
-<form:form commandName="entrprsManageVO" action="${pageContext.request.contextPath}/uss/umt/EgovEntrprsMberSelectUpdt.do" name="entrprsManageVO" method="post" onSubmit="fnUpdate(document.forms[0]); return false;"> 
+<form:form modelAttribute="entrprsManageVO" action="${pageContext.request.contextPath}/uss/umt/EgovEntrprsMberSelectUpdt.do" name="entrprsManageVO" method="post" onSubmit="fnUpdate(document.forms[0]); return false;"> 
 <!-- <div class="wTableFrm"> -->
 
 	<!-- 상세정보 사용자 삭제시 prameter 전달용 input -->
@@ -113,9 +125,20 @@ function fnUpdate(form){
 		<tr>
 			<th>${title} <span class="pilsu">*</span></th>
 			<td class="left">
-				<form:input path="entrprsmberId" id="entrprsmberId" title="${title} ${inputTxt}" size="20" readonly="true" maxlength="20" />
-				<div><form:errors path="entrprsmberId" cssClass="error" /></div>
-				<form:hidden path="uniqId" />
+				<!-- 2021.05.30, 정진오, 디지털원패스 연동해지 -->
+				<c:choose>
+					<c:when test="${not empty onepassUserkey && not empty onepassIntfToken}">
+						<form:input path="entrprsmberId" id="entrprsmberId" title="${title} ${inputTxt}" size="20" readonly="true" maxlength="20" style="width:70%"/>
+						<form:errors path="entrprsmberId" cssClass="error" />
+						<form:hidden path="uniqId" />
+						<a class="btn02" href="#" onclick="onepassCancel();return false;">디지털원패스 연동해지</a>
+					</c:when>
+					<c:otherwise>
+						<form:input path="entrprsmberId" id="entrprsmberId" title="${title} ${inputTxt}" size="20" readonly="true" maxlength="20" />
+						<form:errors path="entrprsmberId" cssClass="error" />
+						<form:hidden path="uniqId" />
+					</c:otherwise>
+				</c:choose>
 			</td>
 		</tr>
 		<!-- 회사명 -->
@@ -319,11 +342,15 @@ function fnUpdate(form){
 		<button class="btn_s2" onClick="document.entrprsManageVO.reset(); return false;" title="<spring:message code="button.reset" /> <spring:message code="input.button" />"><spring:message code="button.reset" /></button>
 	</div><div style="clear:both;"></div>
 
-
-
-
 </div>
 </form:form>
 <!-- content end -->
+
+<!-- 2021.05.30, 정진오, 디지털원패스 연동해지 -->
+<form id="onepassForm" name="onepassForm" method="post">
+<input type="hidden" name="userKey" id="userKey" value="<c:out value='${onepassUserkey}'/>"/>
+<input type="hidden" name="intfToken" id="intfToken" value="<c:out value='${onepassIntfToken}'/>"/>
+</form>
+
 </body>
 </html>

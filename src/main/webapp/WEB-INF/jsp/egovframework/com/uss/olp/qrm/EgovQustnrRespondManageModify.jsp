@@ -117,7 +117,7 @@ return  FValue;
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 <div class="wTableFrm">
 <!-- 상단타이틀 -->
-<form:form commandName="qustnrRespondManageVO" name="qustnrRespondManageVO" action="${pageContext.request.contextPath}/uss/olp/qrm/EgovQustnrRespondManageModify.do" method="post" enctype="multipart/form-data" onSubmit="fn_egov_save_QustnrItemManage(document.forms[0]); return false;">
+<form:form modelAttribute="qustnrRespondManageVO" name="qustnrRespondManageVO" action="${pageContext.request.contextPath}/uss/olp/qrm/EgovQustnrRespondManageModify.do" method="post" enctype="multipart/form-data" onSubmit="fn_egov_save_QustnrItemManage(document.forms[0]); return false;">
  
 <!-- 타이틀 -->
 <h2>${pageTitle} <spring:message code="title.update" /></h2>

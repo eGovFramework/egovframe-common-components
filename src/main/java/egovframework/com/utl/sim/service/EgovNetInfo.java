@@ -38,7 +38,8 @@ public class EgovNetInfo {
 	 */
 	public static String getHostName() throws Exception {
 		// 실행할 명령을 프로퍼티 파일에서 확인한다.
-		String command = EgovProperties.getPathProperty(Globals.SHELL_FILE_PATH, "SHELL." + Globals.OS_TYPE + ".getHostName");
+		String command = EgovProperties.getPathProperty(Globals.SHELL_FILE_PATH,
+			"SHELL." + Globals.OS_TYPE + ".getHostName");
 
 		// 출력할 결과 (파싱대상)
 		String hostStr = "";
@@ -53,8 +54,6 @@ public class EgovNetInfo {
 			//프로세스 에러시 종료
 			if (p.exitValue() != 0) {
 				b_err = new BufferedReader(new InputStreamReader(p.getErrorStream()));
-				while (b_err.ready()) {
-				}
 			}
 			//프로세스 실행 성공시 결과 확인
 			else {
@@ -64,7 +63,7 @@ public class EgovNetInfo {
 					//도스명령어 실행시 결과는 3번째 라인부터 출력됨..
 					tmp = b_out.readLine();
 					//2017.03.03 	조성원 	시큐어코딩(ES)-Null Pointer 역참조[CWE-476]
-					if(tmp != null){
+					if (tmp != null) {
 						if (tmp.length() <= MAX_STR_LEN) {
 							if (i > 1) {
 								hostStr += tmp + "\n";

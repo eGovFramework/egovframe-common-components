@@ -2,16 +2,16 @@ package egovframework.com.utl.sys.dbm.service;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
-
-import egovframework.com.cmm.util.EgovResourceCloseHelper;
 
 import javax.sql.DataSource;
 
-import java.sql.ResultSet;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
+
+import egovframework.com.cmm.util.EgovResourceCloseHelper;
 
 /**
  * @Class Name : EgovDbMntrngChecker.java
@@ -67,11 +67,12 @@ public class DbMntrngChecker {
 			LOGGER.error("DB서비스모니터링 에러", e);
 			return new DbMntrngResult(false, e);
 		} finally {
-			
-			EgovResourceCloseHelper.closeDBObjects(stmt, conn);
-			if( rs != null ) try {rs.close();}catch(Exception e){ LOGGER.error("rs.close Exception", e); }
-			if( stmt != null ) try {stmt.close();}catch(Exception e){ LOGGER.error("stmt.close Exception", e); }
-			if( conn != null ) try {conn.close();}catch(Exception e){ LOGGER.error("conn.close Exception", e); }
+
+			EgovResourceCloseHelper.closeDBObjects(rs, stmt, conn);
+			//2022.01 "Exception" should not be caught when not required by called methods 조치
+//			if( rs != null ) try {rs.close();}catch(Exception e){ LOGGER.error("rs.close Exception", e); }
+//			if( stmt != null ) try {stmt.close();}catch(Exception e){ LOGGER.error("stmt.close Exception", e); }
+//			if( conn != null ) try {conn.close();}catch(Exception e){ LOGGER.error("conn.close Exception", e); }
 		}
 
 	}

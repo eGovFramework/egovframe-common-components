@@ -19,10 +19,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import egovframework.com.cmm.EgovWebUtil;
-import egovframework.com.cmm.util.EgovResourceCloseHelper;
-import egovframework.rte.fdl.idgnr.EgovIdGnrService;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -32,6 +28,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
+
+import egovframework.com.cmm.EgovWebUtil;
+import egovframework.com.cmm.util.EgovResourceCloseHelper;
+
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 
 /**
  * @Class Name  : EgovFileMngUtil.java
@@ -44,7 +45,7 @@ import org.springframework.web.multipart.MultipartFile;
  *   2011.08.09   서준식            utl.fcc패키지와 Dependency제거를 위해 getTimeStamp()메서드 추가
  *   2017.03.03   조성원            시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
  *   2020.10.26   신용호            parseFileInf(List<MultipartFile> files ...) 추가
- *   
+ *
  * @author 공통 서비스 개발팀 이삼섭
  * @since 2009. 02. 13
  * @version 1.0
@@ -55,7 +56,7 @@ import org.springframework.web.multipart.MultipartFile;
 public class EgovFileMngUtil {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovFileMngUtil.class);
-	
+
 	public static final int BUFF_SIZE = 2048;
 
 	@Resource(name = "egovFileIdGnrService")
@@ -128,7 +129,7 @@ public class EgovFileMngUtil {
 				filePath = storePathString + File.separator + newName;
 				file.transferTo(new File(EgovWebUtil.filePathBlackList(filePath)));
 			}
-			
+
 			fvo = new FileVO();
 			fvo.setFileExtsn(fileExt);
 			fvo.setFileStreCours(storePathString);
@@ -187,7 +188,7 @@ public class EgovFileMngUtil {
 		FileVO fvo;
 
 		for (MultipartFile file : files ) {
-			
+
 			String orginFileName = file.getOriginalFilename();
 
 			//--------------------------------------
@@ -209,7 +210,7 @@ public class EgovFileMngUtil {
 				filePath = storePathString + File.separator + newName;
 				file.transferTo(new File(EgovWebUtil.filePathBlackList(filePath)));
 			}
-			
+
 			fvo = new FileVO();
 			fvo.setFileExtsn(fileExt);
 			fvo.setFileStreCours(storePathString);
@@ -226,7 +227,7 @@ public class EgovFileMngUtil {
 
 		return result;
 	}
-	
+
 	/**
 	 * 첨부파일을 서버에 저장한다.
 	 *
@@ -380,7 +381,7 @@ public class EgovFileMngUtil {
 					LOGGER.error("[file.mkdirs] saveFolder : Creation Fail ");
 				}
 			}
-				
+
 			bos = new FileOutputStream(EgovWebUtil.filePathBlackList(stordFilePath + File.separator + newName));
 
 			int bytesRead = 0;
@@ -407,7 +408,7 @@ public class EgovFileMngUtil {
 		String orgFileName = orignFileNm;
 
 		File file = new File(downFileName);
-		
+
 		if (!file.exists()) {
 			throw new FileNotFoundException(downFileName);
 		}

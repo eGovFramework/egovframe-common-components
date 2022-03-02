@@ -94,7 +94,7 @@ function fn_egov_regist_hr(form){
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form commandName="tnextrlHrVO" action="${pageContext.request.contextPath}/uss/ion/ecc/insertTnextrlHr.do" method="post" onSubmit="fn_egov_regist_hr(document.forms[0]); return false;"> 
+<form:form modelAttribute="tnextrlHrVO" action="${pageContext.request.contextPath}/uss/ion/ecc/insertTnextrlHr.do" method="post" onSubmit="fn_egov_regist_hr(document.forms[0]); return false;"> 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.create" /></h2>

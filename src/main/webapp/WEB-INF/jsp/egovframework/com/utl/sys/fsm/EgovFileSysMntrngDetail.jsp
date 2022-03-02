@@ -65,7 +65,7 @@
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form commandName="fileSysMntrngVO" name="fileSysMntrngVO" method="post" action="${pageContext.request.contextPath}/utl/sys/fsm/modifyFileSysMntrng.do">
+<form:form modelAttribute="fileSysMntrngVO" name="fileSysMntrngVO" method="post" action="${pageContext.request.contextPath}/utl/sys/fsm/modifyFileSysMntrng.do">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->

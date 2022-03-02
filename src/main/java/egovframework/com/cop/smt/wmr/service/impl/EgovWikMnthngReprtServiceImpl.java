@@ -8,8 +8,8 @@ import egovframework.com.cop.smt.wmr.service.ReportrVO;
 import egovframework.com.cop.smt.wmr.service.WikMnthngReprt;
 import egovframework.com.cop.smt.wmr.service.WikMnthngReprtVO;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import egovframework.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 
 import javax.annotation.Resource;
 

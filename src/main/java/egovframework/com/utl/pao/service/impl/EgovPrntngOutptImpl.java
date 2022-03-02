@@ -3,7 +3,7 @@ package egovframework.com.utl.pao.service.impl;
 import egovframework.com.utl.pao.service.EgovPrntngOutpt;
 import egovframework.com.utl.pao.service.PrntngOutptVO;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 import javax.annotation.Resource;
 

@@ -8,7 +8,7 @@
 <%@ page import="org.springframework.security.core.userdetails.UserDetails" %>
 <%@ page import="org.springframework.security.core.userdetails.UserDetailsService" %>
 
-<%@ page import="egovframework.rte.fdl.string.EgovStringUtil" %>
+<%@ page import="org.egovframe.rte.fdl.string.EgovStringUtil" %>
 <%@ page import="java.lang.String" %>
 <%
     boolean authenticateFail = false;

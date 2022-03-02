@@ -94,7 +94,7 @@
 
 	<body onLoad="fn_egov_initl_MapTeam();">
 	
-	<form:form commandName="mapTeam" name="mapTeam" method="post">
+	<form:form modelAttribute="mapTeam" name="mapTeam" method="post">
 	
 	<div class="wTableFrm">
 	<!-- 타이틀 -->

@@ -6,8 +6,8 @@ import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.uss.olp.qim.service.EgovQustnrItemManageService;
 import egovframework.com.uss.olp.qim.service.QustnrItemManageVO;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import egovframework.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 
 import javax.annotation.Resource;
 

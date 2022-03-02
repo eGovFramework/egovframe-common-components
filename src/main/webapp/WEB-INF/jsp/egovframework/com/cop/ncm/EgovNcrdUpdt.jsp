@@ -75,7 +75,7 @@
 </head>
 <body>
 
-<form:form commandName="nameCard" name="nameCard" method="post" >
+<form:form modelAttribute="nameCard" name="nameCard" method="post" >
 <div style="visibility:hidden;display:none;">
 	<input name="iptSubmit" type="submit" value="전송" title="전송">
 </div>

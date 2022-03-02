@@ -87,7 +87,7 @@ function fn_egov_inqire_cpyrhtprtcpolicylist() {
 </head>
 <body onLoad="fn_egov_initl_cpyrhtprtcpolicycn();">
 
-<form:form commandName="cpyrhtPrtcPolicyVO" action="${pageContext.request.contextPath}/uss/sam/cpy/CpyrhtPrtcPolicyCnUpdt.do" method="post">
+<form:form modelAttribute="cpyrhtPrtcPolicyVO" action="${pageContext.request.contextPath}/uss/sam/cpy/CpyrhtPrtcPolicyCnUpdt.do" method="post">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->

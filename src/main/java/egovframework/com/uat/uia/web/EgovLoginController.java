@@ -29,7 +29,7 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uat.uia.service.EgovLoginService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovClntInfo;
-import egovframework.rte.psl.dataaccess.util.EgovMap;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 /*
 import com.gpki.gpkiapi.cert.X509Certificate;
@@ -57,9 +57,10 @@ import com.gpki.servlet.GPKIHttpServletResponse;
  *  2011.10.27   서준식           아이디 찾기 기능에서 사용자 리름 공백 제거 기능 추가
  *  2017.07.21   장동한           로그인인증제한 작업
  *  2018.10.26   신용호           로그인 화면에 message 파라미터 전달 수정
- *  2019.10.01   정진호           로그인 인증세션 추가
+ *  2019.10.01   정진오           로그인 인증세션 추가
  *  2020.06.25   신용호           로그인 메시지 처리 수정
  *  2021.01.15   신용호           로그아웃시 권한 초기화 추가 : session 모드 actionLogout()
+ *  2021.05.30   정진오           디지털원패스 처리하기 위해 로그인 화면에 인증방식 전달
  *  
  *  </pre>
  */
@@ -119,6 +120,11 @@ public class EgovLoginController {
 		    return "egovframework/com/cmm/egovError";
 		}
 		*/
+
+		// 2021.05.30, 정진오, 디지털원패스 처리하기 위해 로그인 화면에 인증방식 전달
+		String authType = EgovProperties.getProperty("Globals.Auth").trim();
+		model.addAttribute("authType", authType);
+
 		String message = (String)request.getParameter("loginMessage");
 		if (message!=null) model.addAttribute("loginMessage", message);
 		

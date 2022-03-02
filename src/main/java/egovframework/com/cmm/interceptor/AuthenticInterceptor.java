@@ -31,6 +31,7 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
  *  2011.07.01  서준식          최초 생성
  *  2011.09.07  서준식          인증이 필요없는 URL을 패스하는 로직 추가
  *  2017.08.31  장동한          인증된 사용자 체크로직 변경 및 관리자 권한 체크 로직 추가 
+ *  2021.08.27  신용호          dummy모드 사용시 "60. 권한관리" 접근오류 수정
  *  </pre>
  */
 
@@ -81,7 +82,7 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter {
 			}
 		}
 		//관리자 권한 체크
-		if(adminAuthUrlPatternMatcher && !authList.contains("ADMIN")){
+		if(adminAuthUrlPatternMatcher && !authList.contains("ROLE_ADMIN")){
 			ModelAndView modelAndView = new ModelAndView("redirect:/uat/uia/egovLoginUsr.do?auth_error=1");
 			throw new ModelAndViewDefiningException(modelAndView);
 		}

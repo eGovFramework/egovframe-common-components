@@ -20,15 +20,16 @@ package egovframework.com.ext.msg.server.model.decoder;
 
 import java.io.StringReader;
 
-import egovframework.com.ext.msg.server.model.ChatMessage;
-import egovframework.com.ext.msg.server.model.Message;
-
 import javax.json.Json;
 import javax.json.JsonException;
 import javax.json.JsonObject;
+import javax.json.JsonReader;
 import javax.websocket.DecodeException;
 import javax.websocket.Decoder;
 import javax.websocket.EndpointConfig;
+
+import egovframework.com.ext.msg.server.model.ChatMessage;
+import egovframework.com.ext.msg.server.model.Message;
 
 
 /**
@@ -67,8 +68,8 @@ public class MessageDecoder implements Decoder.Text<Message> {
 	public boolean willDecode(String message) {
 		boolean flag = true;
 
-		try {
-			Json.createReader(new StringReader(message)).readObject();
+		try (JsonReader jsonReader = Json.createReader(new StringReader(message));){
+			jsonReader.readObject();
 		} catch (JsonException ex) {//KISA 보안약점 조치 (2018-10-29, 윤창원)
 			flag = false;
 		} catch (Exception ex) {

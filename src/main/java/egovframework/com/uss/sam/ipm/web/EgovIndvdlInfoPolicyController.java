@@ -22,8 +22,8 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.sam.ipm.service.EgovIndvdlInfoPolicyService;
 import egovframework.com.uss.sam.ipm.service.IndvdlInfoPolicy;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import egovframework.rte.fdl.property.EgovPropertyService;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
  * 개인정보보호정책를 처리하는 Controller Class 구현

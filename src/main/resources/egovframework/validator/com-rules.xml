@@ -56,7 +56,7 @@
 		6. pwdCheckRepeat 	: [반복] 반복된 3개 이상의 문자나 숫자 사용 금지
 		-->
 		<validator name="password1"
-			classname="egovframework.rte.ptl.mvc.validation.RteFieldChecks"
+			classname="org.egovframe.rte.ptl.mvc.validation.RteFieldChecks"
 			method="validatePassword1"
 			methodParams="java.lang.Object,
                        org.apache.commons.validator.ValidatorAction,
@@ -108,7 +108,7 @@
 		</validator>
 
 		<validator name="password2"
-			classname="egovframework.rte.ptl.mvc.validation.RteFieldChecks"
+			classname="org.egovframe.rte.ptl.mvc.validation.RteFieldChecks"
 			method="validatePassword2"
 			methodParams="java.lang.Object,
                        org.apache.commons.validator.ValidatorAction,
@@ -158,7 +158,7 @@
 		</validator>
 
 		<validator name="password3"
-			classname="egovframework.rte.ptl.mvc.validation.RteFieldChecks"
+			classname="org.egovframe.rte.ptl.mvc.validation.RteFieldChecks"
 			method="validatePassword3"
 			methodParams="java.lang.Object,
                        org.apache.commons.validator.ValidatorAction,
@@ -225,7 +225,7 @@
 		</validator>
 
 		<validator name="password4"
-			classname="egovframework.rte.ptl.mvc.validation.RteFieldChecks"
+			classname="org.egovframe.rte.ptl.mvc.validation.RteFieldChecks"
 			method="validatePassword4"
 			methodParams="java.lang.Object,
                        org.apache.commons.validator.ValidatorAction,
@@ -292,7 +292,7 @@
 		</validator>
 		
 		<validator name="pwdCheckComb3"
-			classname="egovframework.rte.ptl.mvc.validation.RteFieldChecks"
+			classname="org.egovframe.rte.ptl.mvc.validation.RteFieldChecks"
 			method="validatePwdCheckComb3"
 			methodParams="java.lang.Object,
                        org.apache.commons.validator.ValidatorAction,
@@ -340,7 +340,7 @@
 		</validator>
 		
 		<validator name="pwdCheckComb4"
-			classname="egovframework.rte.ptl.mvc.validation.RteFieldChecks"
+			classname="org.egovframe.rte.ptl.mvc.validation.RteFieldChecks"
 			method="validatePwdCheckComb4"
 			methodParams="java.lang.Object,
                        org.apache.commons.validator.ValidatorAction,
@@ -388,7 +388,7 @@
 		</validator>
 		
 		<validator name="pwdCheckSeries"
-			classname="egovframework.rte.ptl.mvc.validation.RteFieldChecks"
+			classname="org.egovframe.rte.ptl.mvc.validation.RteFieldChecks"
 			method="validatePwdCheckSeries"
 			methodParams="java.lang.Object,
                        org.apache.commons.validator.ValidatorAction,
@@ -469,7 +469,7 @@
 		</validator>
 		
 		<validator name="pwdCheckRepeat"
-			classname="egovframework.rte.ptl.mvc.validation.RteFieldChecks"
+			classname="org.egovframe.rte.ptl.mvc.validation.RteFieldChecks"
 			method="validatePwdCheckRepeat"
 			methodParams="java.lang.Object,
                        org.apache.commons.validator.ValidatorAction,
@@ -542,7 +542,7 @@
 		</validator>
 		
 		<validator name="minInteger"
-			classname="egovframework.rte.ptl.mvc.validation.RteFieldChecks"
+			classname="org.egovframe.rte.ptl.mvc.validation.RteFieldChecks"
 			method="validateMinInteger"
 			methodParams="java.lang.Object,
                        org.apache.commons.validator.ValidatorAction,
@@ -612,7 +612,7 @@
 			</javascript>
 		</validator>
 		<validator name="english"
-			classname="egovframework.rte.ptl.mvc.validation.RteFieldChecks"
+			classname="org.egovframe.rte.ptl.mvc.validation.RteFieldChecks"
 			method="validateEnglish"
 			methodParams="java.lang.Object,
                        org.apache.commons.validator.ValidatorAction,

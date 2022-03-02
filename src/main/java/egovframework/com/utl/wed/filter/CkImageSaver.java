@@ -40,7 +40,7 @@ import org.springframework.web.context.support.WebApplicationContextUtils;
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import egovframework.rte.fdl.cryptography.EgovEnvCryptoService;
+import org.egovframe.rte.fdl.cryptography.EgovEnvCryptoService;
 
 /**
  * Created by guava on 1/20/14.

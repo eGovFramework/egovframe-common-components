@@ -9,24 +9,28 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.sql.SQLException;
 
+import javax.net.ssl.SSLServerSocketFactory;
+import javax.net.ssl.SSLSocketFactory;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import egovframework.com.utl.sys.pxy.service.impl.ProxySvcDAO;
-import egovframework.rte.fdl.idgnr.EgovIdGnrService;
+
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 
 /**
  * 프록시서비스 처리 클래스
- * 
+ *
  * @author 김진만
  * @since 2010.07.15
  * @version 1.0
  * @see
  * <pre>
  * == 개정이력(Modification Information) ==
- * 
+ *
  *  수정일                수정자             수정내용
  *  ----------   --------    ---------------------------
  *  2019.12.05   신용호              KISA 보안약점 조치 (경로조작및 자원 삽입, 부적절한 예외처리)
@@ -57,7 +61,8 @@ public class ProxyServer extends Thread {
 
 	ProxyLog proxyLog = null;
 
-	public ProxyServer(String svcHost, String localIp, int localPort, int remotePort, String threadName, ProxySvcDAO proxySvcDAO, EgovIdGnrService egovProxyLogIdGnrService) {
+	public ProxyServer(String svcHost, String localIp, int localPort, int remotePort, String threadName,
+		ProxySvcDAO proxySvcDAO, EgovIdGnrService egovProxyLogIdGnrService) {
 
 		try {
 			setSvcIp(svcHost);
@@ -69,15 +74,16 @@ public class ProxyServer extends Thread {
 			this.proxySvcDAO = proxySvcDAO;
 			this.egovProxyLogIdGnrService = egovProxyLogIdGnrService;
 
-			serverSocket = new ServerSocket(localPort);
+			serverSocket = SSLServerSocketFactory.getDefault().createServerSocket(localPort);//2022.01. Unencrypted Socket
 
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
 	}
 
+	@Override
 	public void run() {
-		
+
 		runServer();
 	}
 
@@ -108,12 +114,13 @@ public class ProxyServer extends Thread {
 					OutputStream streamToClient = client.getOutputStream();
 
 					String svcIp = EgovWebUtil.filePathBlackList(getSvcIp());
-					server = new Socket(svcIp, remotePort);
+					server = SSLSocketFactory.getDefault().createSocket(svcIp, remotePort);//2022.01. Unencrypted Socket 처리
 
 					InputStream streamFromServer = server.getInputStream();
 					OutputStream streamToServer = server.getOutputStream();
 
-					ProxyThread proxyThread = new ProxyThread(client, streamFromClient, streamToClient, streamFromServer, streamToServer);
+					ProxyThread proxyThread = new ProxyThread(client, streamFromClient, streamToClient,
+						streamFromServer, streamToServer);
 					Thread thread = new Thread(proxyThread, getThreadName() + "-" + server.getLocalPort());
 					thread.start();
 
@@ -134,7 +141,7 @@ public class ProxyServer extends Thread {
 					}
 				}
 			}
-			
+
 		} catch (IOException e) {
 			LOGGER.debug("Server IO exception", e);
 		} finally {

@@ -22,11 +22,13 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Set;
 
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.json.JsonObject;
+import javax.json.JsonReader;
 import javax.websocket.EncodeException;
 import javax.websocket.OnClose;
 import javax.websocket.OnMessage;
@@ -37,8 +39,6 @@ import javax.websocket.server.ServerEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.Random;
-
 /**
 * @Class Name : UsersServerEndPoint.java
 * @Description : 현재 가능한 대화사용자 리스트를 처리하는 WebSocket 서버클래스
@@ -46,7 +46,7 @@ import java.util.Random;
 *
 *    수정일               수정자                수정내용
 *    ----------   ---------    ---------------------------------
-*    2014.11.27   이영지                
+*    2014.11.27   이영지
 *    2020.11.02   신용호               KISA 보안약점 조치 (Random Seed값 추가)
 *
 */
@@ -77,60 +77,71 @@ public class UsersServerEndPoint {
 	 * @throws EncodeException
 	 */
 	@OnMessage
-	public void handleMessage(String message, Session userSession) throws IOException, EncodeException {
-		String username = (String) userSession.getUserProperties().get("username");
+	public void handleMessage(String message, Session userSession) throws EncodeException {
+		String username = (String)userSession.getUserProperties().get("username");
 
-		JsonObject jsonObject = Json.createReader(new StringReader(message)).readObject();
+		try (JsonReader jsonReader = Json.createReader(new StringReader(message));) {//2022.01 Resources should be closed
 
-		String connectionType = jsonObject.getString("connectionType");
+			JsonObject jsonObject = jsonReader.readObject();
 
-		if ("firstConnection".equals(connectionType) && username == null) {
-			// 맨 처음 접속 시,
-			// 사용자의 이름을 가져옴
-			username = jsonObject.getString("username");
+			String connectionType = jsonObject.getString("connectionType");
 
-			LOGGER.info(username + " is entered.");
+			if ("firstConnection".equals(connectionType) && username == null) {
+				// 맨 처음 접속 시,
+				// 사용자의 이름을 가져옴
+				username = jsonObject.getString("username");
 
-			if (username != null && !isExisted(username)) {
-				userSession.getUserProperties().put("username", username);
+				LOGGER.info(username + " is entered.");
 
-				for (Session session : connectedAllUsers) {
-					session.getBasicRemote().sendText(buildJsonUserData(getUsers()));
+				if (username != null && !isExisted(username)) {
+					userSession.getUserProperties().put("username", username);
+
+					for (Session session : connectedAllUsers) {
+						session.getBasicRemote().sendText(buildJsonUserData(getUsers()));
+					}
+				} else {
+					// username을 다시 입력하게하는 로직 넣기.
 				}
-			} else {
-				// username을 다시 입력하게하는 로직 넣기.
-			}
 
-		} else if ("chatConnection".equals(connectionType)) {
-			// chatroomId로 또다른 webSocket url에 접근한다.
-			// id generation으로 대체가능.
-			String chatroomId = genRandom();
+			} else if ("chatConnection".equals(connectionType)) {
+				// chatroomId로 또다른 webSocket url에 접근한다.
+				// id generation으로 대체가능.
+				String chatroomId = genRandom();
 
-			// 다른 사용자와 대화하고자 시도할 때
-			// 채팅룸 사용자 저장
-			Set<Session> chatroomMembers = new HashSet<Session>();
-			chatroomMembers.add(userSession);
+				// 다른 사용자와 대화하고자 시도할 때
+				// 채팅룸 사용자 저장
+				Set<Session> chatroomMembers = new HashSet<Session>();
+				chatroomMembers.add(userSession);
 
-			// 선택한 사용자를 사용자들 안에서 찾기.
-			String connectingUser = jsonObject.getString("connectingUser");
+				// 선택한 사용자를 사용자들 안에서 찾기.
+				String connectingUser = jsonObject.getString("connectingUser");
 
-			if (connectingUser != null && !username.equals(connectingUser)) {
-				// 사용자들 중 선택한 유저와 연결
-				for (Session session : connectedAllUsers) {
-					if (connectingUser.equals(session.getUserProperties().get("username"))) {
-						// 선택한 사용자면 chatroomMember로 추가.
-						chatroomMembers.add(session);
+				if (connectingUser != null && !username.equals(connectingUser)) {
+					// 사용자들 중 선택한 유저와 연결
+					for (Session session : connectedAllUsers) {
+						if (connectingUser.equals(session.getUserProperties().get("username"))) {
+							// 선택한 사용자면 chatroomMember로 추가.
+							chatroomMembers.add(session);
+						}
+					}
+
+					// chatroomMembers에게 room입장하라는 신호 보내기
+					for (Session session : chatroomMembers) {
+
+						session.getBasicRemote().sendText(
+							Json.createObjectBuilder().add("enterChatId", chatroomId)
+								.add("username", (String)session.getUserProperties().get("username")).build()
+								.toString());
 					}
 				}
-
-				// chatroomMembers에게 room입장하라는 신호 보내기
-				for (Session session : chatroomMembers) {
-
-					session.getBasicRemote().sendText(
-							Json.createObjectBuilder().add("enterChatId", chatroomId).add("username", (String) session.getUserProperties().get("username")).build().toString());
-				}
 			}
+
+		} catch (IOException ioe) {
+			LOGGER.error("UsersServerEndPoint IOException", ioe);
+		} catch (Exception e) {
+			LOGGER.error("UsersServerEndPoint Exception", e);
 		}
+
 	}
 
 	/**
@@ -143,14 +154,15 @@ public class UsersServerEndPoint {
 	@OnClose
 	public void handleClose(Session userSession) throws IOException, EncodeException {
 
-		String disconnectedUser = (String) userSession.getUserProperties().get("username");
+		String disconnectedUser = (String)userSession.getUserProperties().get("username");
 		connectedAllUsers.remove(userSession);
 
 		if (disconnectedUser != null) {
 			Json.createObjectBuilder().add("disconnectedUser", disconnectedUser).build().toString();
 
 			for (Session session : connectedAllUsers) {
-				session.getBasicRemote().sendText(Json.createObjectBuilder().add("disconnectedUser", disconnectedUser).build().toString());
+				session.getBasicRemote()
+					.sendText(Json.createObjectBuilder().add("disconnectedUser", disconnectedUser).build().toString());
 			}
 		}
 	}
@@ -165,7 +177,8 @@ public class UsersServerEndPoint {
 		for (Session session : connectedAllUsers) {
 			if (session.getUserProperties().get("username") != null) {
 				returnSet.add(session.getUserProperties().get("username").toString());
-			};
+			}
+			;
 		}
 		return returnSet;
 	}
@@ -209,7 +222,7 @@ public class UsersServerEndPoint {
 		Random rnd = new Random();
 		for (int i = 0; i < 8; i++) {
 			rnd.setSeed(System.currentTimeMillis());
-			chatroomId += (char) ((rnd.nextDouble() * 26) + 97);//KISA 보안약점 조치 (2018-10-29, 윤창원)
+			chatroomId += (char)((rnd.nextDouble() * 26) + 97);//KISA 보안약점 조치 (2018-10-29, 윤창원)
 		}
 		return chatroomId;
 	}

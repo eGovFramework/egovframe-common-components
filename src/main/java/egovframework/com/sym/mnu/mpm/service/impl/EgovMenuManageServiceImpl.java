@@ -13,16 +13,15 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.sym.mnu.mpm.service.EgovMenuManageService;
 import egovframework.com.sym.mnu.mpm.service.MenuManageVO;
 import egovframework.com.sym.prm.service.ProgrmManageVO;
 import egovframework.com.sym.prm.service.impl.ProgrmManageDAO;
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import egovframework.rte.fdl.cmmn.exception.BaseException;
-import egovframework.rte.fdl.excel.EgovExcelService;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.BaseException;
+import org.egovframe.rte.fdl.excel.EgovExcelService;
 
 /**
  * 메뉴목록관리, 생성, 사이트맵을 처리하는 비즈니스 구현 클래스를 정의한다.
@@ -56,9 +55,6 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 	private ProgrmManageDAO progrmManageDAO;
 	@Resource(name = "excelZipService")
 	private EgovExcelService excelZipService;
-
-	@Resource(name = "multipartResolver")
-	CommonsMultipartResolver mailmultipartResolver;
 
 	/**
 	 * 메뉴 상세정보를 조회

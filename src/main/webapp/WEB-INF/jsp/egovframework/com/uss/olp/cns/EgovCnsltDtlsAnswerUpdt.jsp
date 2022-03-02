@@ -101,7 +101,7 @@ function fn_egov_pop_mailform() {
 <body onLoad="fn_egov_initl_cnsltdtlsanswer();">
 <div class="wTableFrm">
 <!-- 상단타이틀 -->
-<form:form commandName="cnsltManageVO" action="${pageContext.request.contextPath}/uss/olp/cnm/CnsltDtlsAnswerUpdt.do" method="post">
+<form:form modelAttribute="cnsltManageVO" action="${pageContext.request.contextPath}/uss/olp/cnm/CnsltDtlsAnswerUpdt.do" method="post">
 
 <!-- hidden 화일정의 -->
 <input name="cnsltId" type="hidden" value="<c:out value='${result.cnsltId}'/>">

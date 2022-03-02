@@ -56,7 +56,7 @@ function fn_egov_modify_Zip(form){
 </script>
 </head>
 <body>
-<form:form commandName="zip" name="zip" method="post">
+<form:form modelAttribute="zip" name="zip" method="post">
 <input name="cmd" type="hidden" value="Modify">
 	<form:hidden path="zip"/>
 	<form:hidden path="sn"/>

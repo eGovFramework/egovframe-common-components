@@ -125,7 +125,7 @@
 <body onLoad="javascript:fnShowMessg();">
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form commandName="administCode" name="administCode" method="post">
+<form:form modelAttribute="administCode" name="administCode" method="post">
 <input name="cmd" type="hidden" value="<c:out value='Regist'/>"/>
 
 <div class="wTableFrm">

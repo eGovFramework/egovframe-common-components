@@ -11,9 +11,9 @@ import org.springframework.stereotype.Service;
 import egovframework.com.cop.scp.service.EgovArticleScrapService;
 import egovframework.com.cop.scp.service.Scrap;
 import egovframework.com.cop.scp.service.ScrapVO;
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import egovframework.rte.fdl.cmmn.exception.FdlException;
-import egovframework.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 
 @Service("EgovArticleScrapService")
 public class EgovArticleScrapServiceImpl extends EgovAbstractServiceImpl implements EgovArticleScrapService{

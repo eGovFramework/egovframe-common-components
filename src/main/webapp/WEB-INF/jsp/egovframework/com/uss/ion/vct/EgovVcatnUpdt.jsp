@@ -167,7 +167,7 @@ function fncHTMLTagFilter(vValue) {
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 <div class="wTableFrm">
 
-<form:form commandName="vcatnManage" name="vcatnManage" method="post" action="${pageContext.request.contextPath}/uss/ion/vct/updtVcatnManage.do">
+<form:form modelAttribute="vcatnManage" name="vcatnManage" method="post" action="${pageContext.request.contextPath}/uss/ion/vct/updtVcatnManage.do">
 <input type="hidden" name="applcntIdKey" value="<c:out value='${vcatnManageVO.applcntId}'/>" />
 <input type="hidden" name="vcatnSeKey"   value="<c:out value='${vcatnManageVO.vcatnSe}'/>" />
 <input type="hidden" name="bgndeKey"     value="<c:out value='${vcatnManageVO.bgnde}'/>" />

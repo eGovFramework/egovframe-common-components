@@ -6,7 +6,7 @@ import egovframework.com.sym.bat.service.BatchResult;
 import egovframework.com.sym.bat.service.BatchSchdul;
 import egovframework.com.sym.bat.service.EgovBatchSchdulService;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 import javax.annotation.Resource;
 

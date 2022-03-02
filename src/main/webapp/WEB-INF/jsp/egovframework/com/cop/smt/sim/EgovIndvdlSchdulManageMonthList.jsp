@@ -22,7 +22,7 @@
 <%@ page import="java.util.HashMap"%>
 <%@ page import="java.util.ArrayList"%>
 <%@ page import="java.util.Random"%>
-<%@ page import="egovframework.rte.psl.dataaccess.util.EgovMap"%>
+<%@ page import="org.egovframe.rte.psl.dataaccess.util.EgovMap"%>
 <%@ page import='egovframework.com.utl.fcc.service.EgovNumberUtil' %>
 <%@ page import='egovframework.com.utl.fcc.service.EgovStringUtil' %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>

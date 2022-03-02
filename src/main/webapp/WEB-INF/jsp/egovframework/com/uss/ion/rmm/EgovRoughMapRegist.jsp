@@ -170,7 +170,7 @@
 </head>
 <body onLoad="fn_egov_init_roughmapregist();">
 
-<form:form commandName="roughMap" name="roughMap" method="post">
+<form:form modelAttribute="roughMap" name="roughMap" method="post">
 
 <div class="board">
 	<!-- 타이틀 -->

@@ -56,7 +56,7 @@
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.detail" /></h2>
 	
-	<form:form commandName="fileSysMntrngLogVO" name="fileSysMntrngLogVO" method="post" action="${pageContext.request.contextPath}/utl/sys/fsm/selectFileSysMntrngLogList.do">
+	<form:form modelAttribute="fileSysMntrngLogVO" name="fileSysMntrngLogVO" method="post" action="${pageContext.request.contextPath}/utl/sys/fsm/selectFileSysMntrngLogList.do">
 
 	<!-- 등록폼 -->
 	<table class="wTable">

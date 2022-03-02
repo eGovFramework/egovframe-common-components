@@ -79,7 +79,7 @@ function fn_egov_regist_faq(form){
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form commandName="faqVO" action="${pageContext.request.contextPath}/uss/olh/faq/insertFaq.do" method="post" onSubmit="fn_egov_regist_faq(document.forms[0]); return false;" enctype="multipart/form-data"> 
+<form:form modelAttribute="faqVO" action="${pageContext.request.contextPath}/uss/olh/faq/insertFaq.do" method="post" onSubmit="fn_egov_regist_faq(document.forms[0]); return false;" enctype="multipart/form-data"> 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.create" /></h2>

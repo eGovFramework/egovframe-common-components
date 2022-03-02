@@ -100,7 +100,7 @@ function fn_egov_save_QustnrQestnManage(form){
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form commandName="qustnrQestnManageVO" id="qustnrQestnManageVO" action="<c:url value='/uss/olp/qqm/EgovQustnrQestnManageRegist.do' />" method="post" enctype="multipart/form-data" onSubmit="fn_egov_save_QustnrQestnManage(document.forms[0]); return false;">
+<form modelAttribute="qustnrQestnManageVO" id="qustnrQestnManageVO" action="<c:url value='/uss/olp/qqm/EgovQustnrQestnManageRegist.do' />" method="post" enctype="multipart/form-data" onSubmit="fn_egov_save_QustnrQestnManage(document.forms[0]); return false;">
  
 <div class="wTableFrm">
 	<!-- 타이틀 -->

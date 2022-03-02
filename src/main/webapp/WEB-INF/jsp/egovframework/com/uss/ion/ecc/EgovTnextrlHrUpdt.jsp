@@ -89,7 +89,7 @@ function fn_egov_inqire_eventlist() {
 <noscript class="noScriptTitle">	<spring:message code="common.noScriptTitle.msg" />	</noscript>
 
 <!-- 상단타이틀 -->
-<form:form commandName="tnextrlHrVO" action="${pageContext.request.contextPath}/uss/ion/ecc/updateTnextrlHr.do" method="post" onSubmit="fn_egov_updt_hr(document.forms[0]); return false;" >
+<form:form modelAttribute="tnextrlHrVO" action="${pageContext.request.contextPath}/uss/ion/ecc/updateTnextrlHr.do" method="post" onSubmit="fn_egov_updt_hr(document.forms[0]); return false;" >
 	<div class="wTableFrm">
 	<h2>${pageTitle} <spring:message code="title.update" /></h2>
 

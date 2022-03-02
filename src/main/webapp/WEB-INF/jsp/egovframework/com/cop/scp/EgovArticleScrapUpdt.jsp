@@ -70,7 +70,7 @@
 	</noscript>
 
 	<!-- 상단타이틀 -->
-	<form:form commandName="articleScrapVO" action="${pageContext.request.contextPath}/cop/scp/updateArticleScrap.do" method="post"	onSubmit="fn_egov_updt_articleScrap(document.forms[0]); return false;">
+	<form:form modelAttribute="articleScrapVO" action="${pageContext.request.contextPath}/cop/scp/updateArticleScrap.do" method="post"	onSubmit="fn_egov_updt_articleScrap(document.forms[0]); return false;">
 		<div class="wTableFrm">
 			<h2>${pageTitle}
 				<spring:message code="title.update" />

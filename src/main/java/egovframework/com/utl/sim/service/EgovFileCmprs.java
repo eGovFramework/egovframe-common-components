@@ -25,8 +25,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.List;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -39,12 +37,12 @@ import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
 
 public class EgovFileCmprs {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovFileCmprs.class);
 
-	final static  int COMPRESSION_LEVEL = 8;
-	final static  int BUFFER_SIZE = 64 * 1024;
-	final static  char FILE_SEPARATOR = File.separatorChar;
+	final static int COMPRESSION_LEVEL = 8;
+	final static int BUFFER_SIZE = 64 * 1024;
+	final static char FILE_SEPARATOR = File.separatorChar;
 
 	/**
 	 * 파일(디렉토리)을 압축하는 기능
@@ -83,7 +81,7 @@ public class EgovFileCmprs {
 
 				try {
 					foutput = new FileOutputStream(tarFile);
-					zoutput = new ZipOutputStream((OutputStream) foutput);
+					zoutput = new ZipOutputStream(foutput);
 					finput = new FileInputStream(srcFile);
 					zentry = new ZipEntry(srcFile.getName());
 					zoutput.putNextEntry(zentry);
@@ -94,12 +92,12 @@ public class EgovFileCmprs {
 					}
 					zoutput.closeEntry();
 					result = true;
-					
+
 				} catch (IOException e) {
 					//2017.03.03 	조성원 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-					if(tarFile.delete()){
+					if (tarFile.delete()) {
 						LOGGER.debug("[file.delete] tarFile : File Deletion Success");
-					}else{						
+					} else {
 						LOGGER.error("[file.delete] tarFile : File Deletion Fail");
 					}
 					throw e;
@@ -117,20 +115,21 @@ public class EgovFileCmprs {
 
 				try {
 					foutput = new FileOutputStream(tarFile);
-					zoutput = new ZipOutputStream((OutputStream) foutput);
+					zoutput = new ZipOutputStream(foutput);
 					File[] fileArr = srcFile.listFiles();
-					
+
 					//2017.03.03 	조성원 	시큐어코딩(ES)-Null Pointer 역참조[CWE-476]
-					if(fileArr == null){
+					if (fileArr == null) {
 						fileArr = new File[0];
 					}
 
 					List<String> list = EgovFileTool.getSubFilesByAll(fileArr);
 
 					for (int i = 0; i < list.size(); i++) {
-						File sfile = new File((String) list.get(i));
+						File sfile = new File(list.get(i));
 						finput = new FileInputStream(sfile);
-						zentry = new ZipEntry(sfile.getAbsolutePath().replace('\\', '/').replaceAll(srcFile.getAbsolutePath().replace('\\', '/'), ""));
+						zentry = new ZipEntry(sfile.getAbsolutePath().replace('\\', '/')
+							.replaceAll(srcFile.getAbsolutePath().replace('\\', '/'), ""));
 						zoutput.putNextEntry(zentry);
 						zoutput.setLevel(COMPRESSION_LEVEL);
 						cnt = 0;
@@ -142,11 +141,11 @@ public class EgovFileCmprs {
 					}
 					zoutput.closeEntry();
 				} catch (IOException e) {
-					
+
 					//2020.08.28 	신용호 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-					if(tarFile.delete()){
+					if (tarFile.delete()) {
 						LOGGER.debug("[file.delete] tarFile : File Deletion Success");
-					}else{						
+					} else {
 						LOGGER.error("[file.delete] tarFile : File Deletion Fail");
 					}
 					throw e;
@@ -186,7 +185,7 @@ public class EgovFileCmprs {
 			String target2 = EgovFileTool.createNewDirectory(target1);
 			File tarFile = new File(target2);
 			finput = new FileInputStream(srcFile);
-			zinput = new ZipInputStream((InputStream) finput);
+			zinput = new ZipInputStream(finput);
 
 			ZipEntry entry;
 
@@ -204,8 +203,9 @@ public class EgovFileCmprs {
 					} else {
 						foutput = new FileOutputStream(efile);
 						while ((cnt = zinput.read(buffer)) != -1) {
-							if (foutput != null)
+							if (foutput != null) {
 								foutput.write(buffer, 0, cnt);
+							}
 						}
 					}
 

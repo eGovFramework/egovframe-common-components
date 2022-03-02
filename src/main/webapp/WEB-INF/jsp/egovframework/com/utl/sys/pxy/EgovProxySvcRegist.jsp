@@ -113,7 +113,7 @@ function ipValidate(ipValue) {
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.create" /></h2>
-	<form:form commandName="proxySvc" method="post" action="${pageContext.request.contextPath}/utl/sys/pxy/addProxySvc.do">
+	<form:form modelAttribute="proxySvc" method="post" action="${pageContext.request.contextPath}/utl/sys/pxy/addProxySvc.do">
 	<!-- 등록폼 -->
 	<table class="wTable">
 		<colgroup>

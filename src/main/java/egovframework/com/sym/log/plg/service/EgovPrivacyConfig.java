@@ -1,8 +1,8 @@
 package egovframework.com.sym.log.plg.service;
 
-import egovframework.rte.fdl.idgnr.EgovIdGnrService;
-import egovframework.rte.fdl.idgnr.impl.EgovTableIdGnrServiceImpl;
-import egovframework.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.fdl.idgnr.impl.EgovTableIdGnrServiceImpl;
+import org.egovframe.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl;
 
 import javax.annotation.Resource;
 import javax.sql.DataSource;

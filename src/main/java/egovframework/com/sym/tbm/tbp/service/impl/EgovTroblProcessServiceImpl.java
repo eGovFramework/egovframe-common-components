@@ -6,7 +6,7 @@ import egovframework.com.sym.tbm.tbp.service.EgovTroblProcessService;
 import egovframework.com.sym.tbm.tbp.service.TroblProcess;
 import egovframework.com.sym.tbm.tbp.service.TroblProcessVO;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 import javax.annotation.Resource;
 

@@ -83,7 +83,7 @@ function fncOnChangeImage() {
 	<h2><spring:message code="ussIonBnr.bannerUpdt.bannerUpdt"/></h2>
 
 	<!-- 등록폼 -->
-<form:form commandName="banner" method="post" action="${pageContext.request.contextPath}/uss/ion/bnr/updtBanner.do' />" enctype="multipart/form-data"> 
+<form:form modelAttribute="banner" method="post" action="${pageContext.request.contextPath}/uss/ion/bnr/updtBanner.do' />" enctype="multipart/form-data"> 
 <input type="hidden" name="posblAtchFileNumber" value="1"  >
 	<table class="wTable">
 		<colgroup>

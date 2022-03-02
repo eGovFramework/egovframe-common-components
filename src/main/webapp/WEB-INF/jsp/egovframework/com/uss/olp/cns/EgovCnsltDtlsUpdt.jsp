@@ -84,7 +84,7 @@ function fn_egov_inqire_qnalist() {
 <body onLoad="fn_egov_initl_cnsltdtls();">
 <div class="wTableFrm">
 <!-- 상단타이틀 -->
-<form:form commandName="cnsltManageVO" action="${pageContext.request.contextPath}/uss/olp/cns/CnsltDtlsUpdt.do" method="post" enctype="multipart/form-data" onSubmit="fn_egov_updt_cnsltdtls(document.forms[0],'${result.cnsltId}'); return false;">
+<form:form modelAttribute="cnsltManageVO" action="${pageContext.request.contextPath}/uss/olp/cns/CnsltDtlsUpdt.do" method="post" enctype="multipart/form-data" onSubmit="fn_egov_updt_cnsltdtls(document.forms[0],'${result.cnsltId}'); return false;">
 
 <!-- CnsltDtlsUpdtView.do Call을 위한 처리  -->
 <input name="cnsltId" type="hidden" value="<c:out value='${result.cnsltId}'/>">

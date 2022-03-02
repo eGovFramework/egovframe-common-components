@@ -109,7 +109,7 @@ function fncTroblReqstRequstCancl(troblId) {
 	<!-- 타이틀 -->
 	<h2><spring:message code="comSymTbmTbr.troblReqstDetail.pageTop.title"/></h2><!-- 장애신청 상세조회 -->
 
-	<form:form commandName="troblReqst" method="post" action="${pageContext.request.contextPath}/sym/tbm/tbr/updtViewTroblReqst.do">
+	<form:form modelAttribute="troblReqst" method="post" action="${pageContext.request.contextPath}/sym/tbm/tbr/updtViewTroblReqst.do">
 	<!-- 등록폼 -->
 	<table class="wTable">
 		<colgroup>

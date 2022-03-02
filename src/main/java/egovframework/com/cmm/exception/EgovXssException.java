@@ -1,6 +1,6 @@
 package egovframework.com.cmm.exception;
 
-import egovframework.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 
 /**
  * EgovXssException 클래스

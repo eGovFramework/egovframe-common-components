@@ -5,8 +5,8 @@ import java.sql.SQLException;
 
 import egovframework.com.cmm.LoginVO;
 
-import egovframework.rte.fdl.security.userdetails.EgovUserDetails;
-import egovframework.rte.fdl.security.userdetails.jdbc.EgovUsersByUsernameMapping;
+import org.egovframe.rte.fdl.security.userdetails.EgovUserDetails;
+import org.egovframe.rte.fdl.security.userdetails.jdbc.EgovUsersByUsernameMapping;
 
 import javax.sql.DataSource;
 

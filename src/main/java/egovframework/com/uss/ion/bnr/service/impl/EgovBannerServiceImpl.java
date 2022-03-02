@@ -19,7 +19,7 @@ import egovframework.com.cmm.service.FileVO;
 import egovframework.com.uss.ion.bnr.service.Banner;
 import egovframework.com.uss.ion.bnr.service.BannerVO;
 import egovframework.com.uss.ion.bnr.service.EgovBannerService;
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 import javax.annotation.Resource;
 

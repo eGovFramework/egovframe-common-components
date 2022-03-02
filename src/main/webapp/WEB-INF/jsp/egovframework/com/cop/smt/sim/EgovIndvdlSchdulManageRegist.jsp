@@ -204,7 +204,7 @@ String.prototype.replaceAll = function(src, repl){
 <body onLoad="fn_egov_init_IndvdlSchdulManage()">
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
-<form:form commandName="indvdlSchdulManageVO" action="${pageContext.request.contextPath}/cop/smt/sim/EgovIndvdlSchdulManageRegistActor.do" name="indvdlSchdulManageVO" method="post" enctype="multipart/form-data" onSubmit="fn_egov_save_IndvdlSchdulManage(document.forms[0]); return false;"> 
+<form:form modelAttribute="indvdlSchdulManageVO" action="${pageContext.request.contextPath}/cop/smt/sim/EgovIndvdlSchdulManageRegistActor.do" name="indvdlSchdulManageVO" method="post" enctype="multipart/form-data" onSubmit="fn_egov_save_IndvdlSchdulManage(document.forms[0]); return false;"> 
  
 <div class="wTableFrm">
 	<!-- 타이틀 -->

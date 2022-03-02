@@ -104,7 +104,7 @@
 
 	<body onLoad="fn_egov_initl_MapTeam();">
 	
-	<form:form commandName="mapTeam" name="mapTeam" method="post">
+	<form:form modelAttribute="mapTeam" name="mapTeam" method="post">
 		<form:hidden path="orgnztId"/>
 		<input name="cmd" type="hidden" value="Modify">
 		

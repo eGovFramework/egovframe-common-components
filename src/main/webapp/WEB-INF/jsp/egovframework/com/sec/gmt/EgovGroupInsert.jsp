@@ -58,7 +58,7 @@ function fncGroupInsert(form) {
 
 <body>
 
-<form:form commandName="groupManage" method="post" action="${pageContext.request.contextPath}/sec/gmt/EgovGroupInsert.do" onSubmit="fncGroupInsert(document.forms[0]); return false;"> 
+<form:form modelAttribute="groupManage" method="post" action="${pageContext.request.contextPath}/sec/gmt/EgovGroupInsert.do" onSubmit="fncGroupInsert(document.forms[0]); return false;"> 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.create" /></h2><!-- 그룹관리 등록 -->

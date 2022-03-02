@@ -95,7 +95,7 @@ function fn_egov_inqire_qnalist() {
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form commandName="cnsltManageVO" action="${pageContext.request.contextPath}/uss/olp/cns/CnsltDtlsRegist.do" method="post" enctype="multipart/form-data" onSubmit="fn_egov_regist_cnsltdtls(document.forms[0]); return false;">
+<form:form modelAttribute="cnsltManageVO" action="${pageContext.request.contextPath}/uss/olp/cns/CnsltDtlsRegist.do" method="post" enctype="multipart/form-data" onSubmit="fn_egov_regist_cnsltdtls(document.forms[0]); return false;">
 <!-- 첨부파일 개수 설정을 위한 Hidden 설정 -->
 <input type="hidden" name="posblAtchFileNumber" id="posblAtchFileNumber" value="3" />
 <input name="managtCn" type="hidden" value="Testing...">

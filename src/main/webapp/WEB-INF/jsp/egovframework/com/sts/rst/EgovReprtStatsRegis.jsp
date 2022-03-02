@@ -87,7 +87,7 @@ function fncReprtStatsDelete() {
 <body>
 <noscript class="noScriptTitle">자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>
 
-<form:form commandName="reprtStats" method="post" action="${pageContext.request.contextPath}/sts/rst/addReprtStats.do' />">
+<form:form modelAttribute="reprtStats" method="post" action="${pageContext.request.contextPath}/sts/rst/addReprtStats.do' />">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
