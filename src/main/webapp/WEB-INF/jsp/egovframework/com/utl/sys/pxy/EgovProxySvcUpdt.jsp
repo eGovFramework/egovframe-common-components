@@ -123,7 +123,7 @@ function ipValidate(ipValue) {
 	<!-- 타이틀 -->
 	<h2><spring:message code="comUtlSysPxy.proxySvcUpdtl.title" /></h2><!-- 프록시설정 수정 -->
 
-    <form:form commandName="proxySvc" method="post" action="${pageContext.request.contextPath}/utl/sys/pxy/updtProxySvc.do">
+    <form:form modelAttribute="proxySvc" method="post" action="${pageContext.request.contextPath}/utl/sys/pxy/updtProxySvc.do">
 
 	<!-- 등록폼 -->
 	<table class="wTable">

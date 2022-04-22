@@ -81,7 +81,7 @@ function fncUpdtMtgPlace() {
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form commandName="mtgPlaceManage" name="mtgPlaceManage" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/updtMtgPlace.do"  enctype="multipart/form-data"> 
+<form:form modelAttribute="mtgPlaceManage" name="mtgPlaceManage" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/updtMtgPlace.do"  enctype="multipart/form-data"> 
 <input type="hidden" name="returnUrl"           value="/uss/ion/mtg/selectMtgPlaceManage.do" />
 <input type="hidden" name="posblAtchFileNumber" id="posblAtchFileNumber" value="3" />  
 <input type="hidden" name="cmd" value="update">

@@ -114,7 +114,7 @@ function ipValidate() {
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2><spring:message code="comUatUap.loginPolicyRegist.pageTop.title"/></h2><!-- 로그인정책 등록 -->
-	<form:form commandName="loginPolicy" method="post" action="${pageContext.request.contextPath}/uat/uap/addLoginPolicy.do' />">
+	<form:form modelAttribute="loginPolicy" method="post" action="${pageContext.request.contextPath}/uat/uap/addLoginPolicy.do' />">
 
 	<!-- 등록폼 -->
 	<table class="wTable">

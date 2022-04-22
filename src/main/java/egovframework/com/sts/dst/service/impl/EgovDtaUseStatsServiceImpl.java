@@ -39,8 +39,8 @@ import egovframework.com.sts.dst.service.DtaUseStats;
 import egovframework.com.sts.dst.service.DtaUseStatsVO;
 import egovframework.com.sts.dst.service.EgovDtaUseStatsService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import egovframework.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 
 @Service("egovDtaUseStatsService")
 public class EgovDtaUseStatsServiceImpl extends EgovAbstractServiceImpl implements EgovDtaUseStatsService {

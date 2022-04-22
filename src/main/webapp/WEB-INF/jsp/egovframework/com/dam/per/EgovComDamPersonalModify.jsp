@@ -113,7 +113,7 @@ function fn_egov_modify_KnoPersonal(){
 
 
 <!-- 파일첨부를 위한 폼명 및 Enctype 설정 -->
-<form:form commandName="knoPersonal" name="knoPersonal" action="<c:url value='/dam/per/EgovComDamPersonalModifyView.do'/>" method="post" enctype="multipart/form-data">
+<form:form modelAttribute="knoPersonal" name="knoPersonal" action="<c:url value='/dam/per/EgovComDamPersonalModifyView.do'/>" method="post" enctype="multipart/form-data">
 
 <input name="cmd" type="hidden" value="Modify">
 <input name="knoId" type="hidden" value="<c:out value='${knoPersonal.knoId}'/>">

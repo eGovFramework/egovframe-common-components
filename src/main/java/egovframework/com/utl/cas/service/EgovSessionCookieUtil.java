@@ -21,12 +21,12 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Enumeration;
 
-import egovframework.com.cmm.EgovWebUtil;
-
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import egovframework.com.cmm.EgovWebUtil;
 
 public class EgovSessionCookieUtil {
 
@@ -85,7 +85,7 @@ public class EgovSessionCookieUtil {
 
 		Enumeration<?> e = session.getAttributeNames();
 		while (e.hasMoreElements()) {
-			String sessionKey = (String) e.nextElement();
+			String sessionKey = (String)e.nextElement();
 			returnVal = returnVal + "[" + sessionKey + " : " + session.getAttribute(sessionKey) + "]";
 		}
 
@@ -118,7 +118,8 @@ public class EgovSessionCookieUtil {
 	 * @exception
 	 * @see
 	 */
-	public static void setCookie(HttpServletResponse response, String cookieNm, String cookieVal, int minute) throws UnsupportedEncodingException {
+	public static void setCookie(HttpServletResponse response, String cookieNm, String cookieVal, int minute)
+		throws UnsupportedEncodingException {
 
 		// 특정의 encode 방식을 사용해 캐릭터 라인을 application/x-www-form-urlencoded 형식으로 변환
 		// 일반 문자열을 웹에서 통용되는 'x-www-form-urlencoded' 형식으로 변환하는 역할
@@ -129,10 +130,12 @@ public class EgovSessionCookieUtil {
 
 		cookie.setSecure(true);
 
+		cookie.setHttpOnly(true);//2022.01. Cookie without the HttpOnly flag 처리
+
 		// 쿠키의 유효시간 설정
 		int maxAge = 60 * minute;
 		// KISA 보안약점 조치 (2018-10-29, 윤창원)
-		if(maxAge > 60 * 60 * 24) {
+		if (maxAge > 60 * 60 * 24) {
 			maxAge = 60 * 60 * 24;
 		}
 		cookie.setMaxAge(maxAge);
@@ -152,7 +155,8 @@ public class EgovSessionCookieUtil {
 	 * @see
 	 */
 
-	public static void setCookie(HttpServletResponse response, String cookieNm, String cookieVal) throws UnsupportedEncodingException {
+	public static void setCookie(HttpServletResponse response, String cookieNm, String cookieVal)
+		throws UnsupportedEncodingException {
 
 		// 특정의 encode 방식을 사용해 캐릭터 라인을 application/x-www-form-urlencoded 형식으로 변환
 		// 일반 문자열을 웹에서 통용되는 'x-www-form-urlencoded' 형식으로 변환하는 역할
@@ -163,6 +167,8 @@ public class EgovSessionCookieUtil {
 
 		// 2011.10.10 보안점검 후속조치
 		cookie.setSecure(true);
+
+		cookie.setHttpOnly(true);//2022.01. Cookie without the HttpOnly flag 처리
 
 		// response 내장 객체를 이용해 쿠키를 전송
 		response.addCookie(cookie);
@@ -183,8 +189,9 @@ public class EgovSessionCookieUtil {
 		// Cookie를 읽어서 Cookie 배열로 반환
 		Cookie[] cookies = request.getCookies();
 
-		if (cookies == null)
+		if (cookies == null) {
 			return "";
+		}
 
 		String cookieValue = null;
 
@@ -219,6 +226,8 @@ public class EgovSessionCookieUtil {
 		Cookie cookie = new Cookie(EgovWebUtil.removeCRLF(cookieNm), null);
 
 		cookie.setSecure(true);
+
+		cookie.setHttpOnly(true);//2022.01. Cookie without the HttpOnly flag 처리
 
 		// 쿠키를 삭제하는 메소드가 따로 존재하지 않음
 		// 쿠키의 유효시간을 0으로 설정해 줌으로써 쿠키를 삭제하는 것과 동일한 효과

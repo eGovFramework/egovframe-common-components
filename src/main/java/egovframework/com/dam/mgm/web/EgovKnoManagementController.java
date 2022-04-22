@@ -22,8 +22,8 @@ import egovframework.com.dam.mgm.service.EgovKnoManagementService;
 import egovframework.com.dam.mgm.service.KnoManagement;
 import egovframework.com.dam.mgm.service.KnoManagementVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import egovframework.rte.fdl.property.EgovPropertyService;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
  * 개요

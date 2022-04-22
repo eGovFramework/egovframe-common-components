@@ -67,7 +67,7 @@ function fn_egov_save_db_mntrng(){
 
 <DIV class="wTableFrm">
 <!-- 상단타이틀 -->
-<form:form commandName="dbMntrng" id="dbMntrng" action="<c:url value='/utl/sys/dbm/updateDbMntrng.do'/>" method="post">
+<form:form modelAttribute="dbMntrng" id="dbMntrng" action="<c:url value='/utl/sys/dbm/updateDbMntrng.do'/>" method="post">
 
     <!-- 검색조건 유지 -->
     <input type="hidden" name="searchCondition" value="<c:out value='${searchVO.searchCondition}'/>"/>

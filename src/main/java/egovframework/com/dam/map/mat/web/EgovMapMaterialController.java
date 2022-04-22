@@ -11,8 +11,8 @@ import egovframework.com.dam.map.mat.service.MapMaterialVO;
 import egovframework.com.dam.map.tea.service.EgovMapTeamService;
 import egovframework.com.dam.map.tea.service.MapTeamVO;
 
-import egovframework.rte.fdl.property.EgovPropertyService;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 import javax.annotation.Resource;
 

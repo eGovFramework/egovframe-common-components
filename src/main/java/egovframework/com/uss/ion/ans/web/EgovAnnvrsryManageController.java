@@ -34,7 +34,8 @@ import egovframework.com.uss.ion.ans.service.AnnvrsryManageVO;
 import egovframework.com.uss.ion.ans.service.EgovAnnvrsryManageService;
 import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
  * 개요
@@ -61,52 +62,54 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 @Controller
 public class EgovAnnvrsryManageController {
 
-	@Resource(name="egovMessageSource")
-    EgovMessageSource egovMessageSource;
+	@Resource(name = "egovMessageSource")
+	EgovMessageSource egovMessageSource;
 
-    @Resource(name = "egovAnnvrsryManageService")
-    private EgovAnnvrsryManageService egovAnnvrsryManageService;
+	@Resource(name = "egovAnnvrsryManageService")
+	private EgovAnnvrsryManageService egovAnnvrsryManageService;
 
-    @Autowired
-	 private DefaultBeanValidator beanValidator;
+	@Autowired
+	private DefaultBeanValidator beanValidator;
 
-	@Resource(name="EgovCmmUseService")
+	@Resource(name = "EgovCmmUseService")
 	private EgovCmmUseService cmmUseService;
 
-    /**
+	/**
 	 * 기념일관리 목록화면 이동
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping("/uss/ion/ans/selectAnnvrsryManageListView.do")
-    public String selectAnnvrsryManageListView() throws Exception {
+	@RequestMapping("/uss/ion/ans/selectAnnvrsryManageListView.do")
+	public String selectAnnvrsryManageListView() throws Exception {
 
-        return "egovframework/com/uss/ion/ans/EgovAnnvrsryManageList";
-    }
+		return "egovframework/com/uss/ion/ans/EgovAnnvrsryManageList";
+	}
 
 	/**
 	 * 기념일관리정보를 관리하기 위해 등록된 기념일관리 목록을 조회한다.
 	 * @param annvrsryManageVO - 기념일관리 VO
 	 * @return String - 리턴 Url
 	 */
-    @IncludedInfo(name="기념일관리", order = 930 ,gid = 50)
-    @RequestMapping(value="/uss/ion/ans/selectAnnvrsryManageList.do")
-	 public String selectAnnvrsryManageList( @ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO,
-											 @ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryGdcc,
-								              ModelMap model) throws Exception {
+	@IncludedInfo(name = "기념일관리", order = 930, gid = 50)
+	@RequestMapping(value = "/uss/ion/ans/selectAnnvrsryManageList.do")
+	public String selectAnnvrsryManageList(@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO,
+		@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryGdcc,
+		ModelMap model) throws Exception {
 
 		java.util.Calendar cal = java.util.Calendar.getInstance();
-    	String [] yearList = new String[5];
-    	for(int x=0; x < 5 ; x++){
-    		yearList[x] = Integer.toString(cal.get(java.util.Calendar.YEAR)+2-x);
-    	}
-    	if(annvrsryManageVO.getSearchKeyword()== null||annvrsryManageVO.getSearchKeyword().equals(""))  annvrsryManageVO.setSearchKeyword(Integer.toString(cal.get(java.util.Calendar.YEAR)));
+		String[] yearList = new String[5];
+		for (int x = 0; x < 5; x++) {
+			yearList[x] = Integer.toString(cal.get(java.util.Calendar.YEAR) + 2 - x);
+		}
+		if (annvrsryManageVO.getSearchKeyword() == null || annvrsryManageVO.getSearchKeyword().equals("")) {
+			annvrsryManageVO.setSearchKeyword(Integer.toString(cal.get(java.util.Calendar.YEAR)));
+		}
 
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-    	if (loginVO == null) {
-    		return "egovframework/com/uat/uia/EgovLoginUsr";
-    	}
+		if (loginVO == null) {
+			return "egovframework/com/uat/uia/EgovLoginUsr";
+		}
 		annvrsryManageVO.setUsid(loginVO.getUniqId());
 
 		/** paging */
@@ -138,33 +141,39 @@ public class EgovAnnvrsryManageController {
 	 * @param annvrsryManageVO - 기념일관리 VO
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value="/uss/ion/ans/selectAnnvrsryManage.do")
-	 public String selectAnnvrsryManage(@ModelAttribute("annvrsryManage") AnnvrsryManage annvrsryManage,
-                                        @ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO,
-                                        @RequestParam Map<?, ?> commandMap,
-			                            ModelMap model) throws Exception {
+	@RequestMapping(value = "/uss/ion/ans/selectAnnvrsryManage.do")
+	public String selectAnnvrsryManage(@ModelAttribute("annvrsryManage") AnnvrsryManage annvrsryManage,
+		@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO,
+		@RequestParam Map<?, ?> commandMap,
+		ModelMap model) throws Exception {
 
-    	String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd"); // 상세정보 구분
-    	String sTempAnnvrsryDe = null;
-    	String sTempCldrSe     = null;
-    	String sTempAnnvrsrySetup  = null;
-    	AnnvrsryManageVO annvrsryManageVO_Temp = new AnnvrsryManageVO();
-    	annvrsryManageVO_Temp = egovAnnvrsryManageService.selectAnnvrsryManage(annvrsryManageVO);
+		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd"); // 상세정보 구분
+		String sTempAnnvrsryDe = null;
+		String sTempCldrSe = null;
+		String sTempAnnvrsrySetup = null;
+		AnnvrsryManageVO annvrsryManageVO_Temp = new AnnvrsryManageVO();
+		annvrsryManageVO_Temp = egovAnnvrsryManageService.selectAnnvrsryManage(annvrsryManageVO);
 
-    	if("1".equals(annvrsryManageVO_Temp.getCldrSe()))  sTempCldrSe= egovMessageSource.getMessage("comUssIonAns.annvrsryGdcc.cldrSe1");//양
-    	else sTempCldrSe= egovMessageSource.getMessage("comUssIonAns.annvrsryGdcc.cldrSe2");//음
-    	sTempAnnvrsryDe = annvrsryManageVO_Temp.getAnnvrsryDe()+"("+sTempCldrSe+")";
-    	annvrsryManageVO_Temp.setAnnvrsryTemp4(sTempAnnvrsryDe);
+		if ("1".equals(annvrsryManageVO_Temp.getCldrSe())) {
+			sTempCldrSe = egovMessageSource.getMessage("comUssIonAns.annvrsryGdcc.cldrSe1");//양
+		}
+		else {
+			sTempCldrSe = egovMessageSource.getMessage("comUssIonAns.annvrsryGdcc.cldrSe2");//음
+		}
+		sTempAnnvrsryDe = annvrsryManageVO_Temp.getAnnvrsryDe() + "(" + sTempCldrSe + ")";
+		annvrsryManageVO_Temp.setAnnvrsryTemp4(sTempAnnvrsryDe);
 
-    	if("Y".equals(annvrsryManageVO_Temp.getAnnvrsrySetup()))  sTempAnnvrsrySetup="ON";
-    	else sTempAnnvrsrySetup="OFF";
-    	annvrsryManageVO_Temp.setAnnvrsryTemp5(sTempAnnvrsrySetup);
+		if ("Y".equals(annvrsryManageVO_Temp.getAnnvrsrySetup())) {
+			sTempAnnvrsrySetup = "ON";
+		} else {
+			sTempAnnvrsrySetup = "OFF";
+		}
+		annvrsryManageVO_Temp.setAnnvrsryTemp5(sTempAnnvrsrySetup);
 
-    	model.addAttribute("annvrsryManageVO", annvrsryManageVO_Temp);
-    	model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
+		model.addAttribute("annvrsryManageVO", annvrsryManageVO_Temp);
+		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
-
-		if(sCmd.equals("update")){
+		if (sCmd.equals("update")) {
 
 			annvrsryManage.setAnnId(annvrsryManageVO_Temp.getAnnId());
 			annvrsryManage.setAnnvrsryNm(annvrsryManageVO_Temp.getAnnvrsryNm());
@@ -173,13 +182,13 @@ public class EgovAnnvrsryManageController {
 			annvrsryManage.setUsid(annvrsryManageVO_Temp.getUsid());
 			annvrsryManage.setAnnvrsrySe(annvrsryManageVO_Temp.getAnnvrsrySe());
 
-	    	ComDefaultCodeVO vo = new ComDefaultCodeVO();
+			ComDefaultCodeVO vo = new ComDefaultCodeVO();
 			vo.setCodeId("COM069");
-	        List<?> annvrsrySeCodeList = cmmUseService.selectCmmCodeDetail(vo);
-	        model.addAttribute("annvrsrySeCode", annvrsrySeCodeList);
+			List<?> annvrsrySeCodeList = cmmUseService.selectCmmCodeDetail(vo);
+			model.addAttribute("annvrsrySeCode", annvrsrySeCodeList);
 			model.addAttribute("annvrsryManage", annvrsryManage);
 			return "egovframework/com/uss/ion/ans/EgovAnnvrsryUpdt";
-		}else{
+		} else {
 			return "egovframework/com/uss/ion/ans/EgovAnnvrsryDetail";
 		}
 	}
@@ -188,27 +197,27 @@ public class EgovAnnvrsryManageController {
 	 * 기념일관리 등록 화면으로 이동한다.
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value="/uss/ion/ans/insertViewAnnvrsry.do")
-	 public String insertViewAnnvrsryManage(@ModelAttribute("annvrsryManage") AnnvrsryManage annvrsryManage,
-				                            @ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO,
-				                            ModelMap model ) throws Exception {
+	@RequestMapping(value = "/uss/ion/ans/insertViewAnnvrsry.do")
+	public String insertViewAnnvrsryManage(@ModelAttribute("annvrsryManage") AnnvrsryManage annvrsryManage,
+		@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO,
+		ModelMap model) throws Exception {
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
 		annvrsryManage.setUsid(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 		annvrsryManage.setAnnvrsrySetup("Y");
-		annvrsryManage.setCldrSe("1");  // 1:양력  2:음력
-		annvrsryManageVO.setUsid(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));		           // 사용자ID
-		annvrsryManageVO.setAnnvrsryTemp1(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getName()));          // 사용자명
-		annvrsryManageVO.setAnnvrsryTemp2(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getOrgnztNm()));      // 조직 ID
+		annvrsryManage.setCldrSe("1"); // 1:양력  2:음력
+		annvrsryManageVO.setUsid(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId())); // 사용자ID
+		annvrsryManageVO.setAnnvrsryTemp1(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getName())); // 사용자명
+		annvrsryManageVO.setAnnvrsryTemp2(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getOrgnztNm())); // 조직 ID
 
-    	ComDefaultCodeVO vo = new ComDefaultCodeVO();
+		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM069");
-        List<?> annvrsrySeCodeList = cmmUseService.selectCmmCodeDetail(vo);
-        model.addAttribute("annvrsrySeCode", annvrsrySeCodeList);
-        model.addAttribute("annvrsryManage", annvrsryManage);
-        model.addAttribute("annvrsryManageVO", annvrsryManageVO);
-     	return "egovframework/com/uss/ion/ans/EgovAnnvrsryRegist";
+		List<?> annvrsrySeCodeList = cmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("annvrsrySeCode", annvrsrySeCodeList);
+		model.addAttribute("annvrsryManage", annvrsryManage);
+		model.addAttribute("annvrsryManageVO", annvrsryManageVO);
+		return "egovframework/com/uss/ion/ans/EgovAnnvrsryRegist";
 	}
 
 	/**
@@ -216,46 +225,47 @@ public class EgovAnnvrsryManageController {
 	 * @param annvrsryManage - 기념일관리 model
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value="/uss/ion/ans/insertAnnvrsry.do")
-	 public String insertAnnvrsryManage(@ModelAttribute("annvrsryManage") AnnvrsryManage annvrsryManage,
-			                            @ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO,
-			                            BindingResult bindingResult,
-			                            SessionStatus status,
-						                ModelMap model) throws Exception {
+	@RequestMapping(value = "/uss/ion/ans/insertAnnvrsry.do")
+	public String insertAnnvrsryManage(@ModelAttribute("annvrsryManage") AnnvrsryManage annvrsryManage,
+		@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO,
+		BindingResult bindingResult,
+		SessionStatus status,
+		ModelMap model) throws Exception {
 
-    	beanValidator.validate(annvrsryManage, bindingResult); //validation 수행
+		beanValidator.validate(annvrsryManage, bindingResult); //validation 수행
 
-    	if (bindingResult.hasErrors()) {
-        	ComDefaultCodeVO vo = new ComDefaultCodeVO();
-    		vo.setCodeId("COM069");
-            List<?> annvrsrySeCodeList = cmmUseService.selectCmmCodeDetail(vo);
-            model.addAttribute("annvrsrySeCode", annvrsrySeCodeList);
+		if (bindingResult.hasErrors()) {
+			ComDefaultCodeVO vo = new ComDefaultCodeVO();
+			vo.setCodeId("COM069");
+			List<?> annvrsrySeCodeList = cmmUseService.selectCmmCodeDetail(vo);
+			model.addAttribute("annvrsrySeCode", annvrsrySeCodeList);
 
-    		model.addAttribute("annvrsryManageVO", annvrsryManageVO);
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.insert"));
-         	return "egovframework/com/uss/ion/ans/EgovAnnvrsryRegist";
+			model.addAttribute("annvrsryManageVO", annvrsryManageVO);
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.insert"));
+			return "egovframework/com/uss/ion/ans/EgovAnnvrsryRegist";
 		} else {
 
-	    	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-	    	status.setComplete();
-	    	model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
-	    	annvrsryManage.setFrstRegisterId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
+			LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+			status.setComplete();
+			model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
+			annvrsryManage.setFrstRegisterId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 
-	    	if(egovAnnvrsryManageService.selectAnnvrsryManageDplctAt(annvrsryManage)==0){
-	    		egovAnnvrsryManageService.insertAnnvrsryManage(annvrsryManage);
-		    	model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
-		    	return "forward:/uss/ion/ans/selectAnnvrsryManageList.do";
-	    	}else{
-	        	ComDefaultCodeVO vo = new ComDefaultCodeVO();
-	    		vo.setCodeId("COM069");
-	            List<?> annvrsrySeCodeList = cmmUseService.selectCmmCodeDetail(vo);
-	            annvrsryManageVO.setAnnvrsryTemp1(user == null ? "" : EgovStringUtil.isNullToString(user.getName()));
-	            annvrsryManageVO.setAnnvrsryTemp2(user == null ? "" : EgovStringUtil.isNullToString(user.getOrgnztNm()));
-	            model.addAttribute("annvrsrySeCode", annvrsrySeCodeList);
-	            model.addAttribute("annvrsryManageVO", annvrsryManageVO);
-		    	model.addAttribute("dplctMessage", egovMessageSource.getMessage("comUssIonAns.common.duplicate"));//이미 등록된 데이타입니다. 해당 데이타를 확인해 주세요"); 
-		     	return "egovframework/com/uss/ion/ans/EgovAnnvrsryRegist";
-	    	}
+			if (egovAnnvrsryManageService.selectAnnvrsryManageDplctAt(annvrsryManage) == 0) {
+				egovAnnvrsryManageService.insertAnnvrsryManage(annvrsryManage);
+				model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
+				return "forward:/uss/ion/ans/selectAnnvrsryManageList.do";
+			} else {
+				ComDefaultCodeVO vo = new ComDefaultCodeVO();
+				vo.setCodeId("COM069");
+				List<?> annvrsrySeCodeList = cmmUseService.selectCmmCodeDetail(vo);
+				annvrsryManageVO.setAnnvrsryTemp1(user == null ? "" : EgovStringUtil.isNullToString(user.getName()));
+				annvrsryManageVO
+					.setAnnvrsryTemp2(user == null ? "" : EgovStringUtil.isNullToString(user.getOrgnztNm()));
+				model.addAttribute("annvrsrySeCode", annvrsrySeCodeList);
+				model.addAttribute("annvrsryManageVO", annvrsryManageVO);
+				model.addAttribute("dplctMessage", egovMessageSource.getMessage("comUssIonAns.common.duplicate"));//이미 등록된 데이타입니다. 해당 데이타를 확인해 주세요");
+				return "egovframework/com/uss/ion/ans/EgovAnnvrsryRegist";
+			}
 		}
 	}
 
@@ -264,39 +274,40 @@ public class EgovAnnvrsryManageController {
 	 * @param annvrsryManage - 기념일관리 model
 	 * @return String - 리턴 Url
 	 */
-	 @RequestMapping(value="/uss/ion/ans/updateAnnvrsryManage.do")
-	 public String updateAnnvrsryManage(@ModelAttribute("annvrsryManage") AnnvrsryManage annvrsryManage,
-										@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO,
-							            BindingResult bindingResult,
-			                            SessionStatus status,
-		                                ModelMap model) throws Exception {
+	@RequestMapping(value = "/uss/ion/ans/updateAnnvrsryManage.do")
+	public String updateAnnvrsryManage(@ModelAttribute("annvrsryManage") AnnvrsryManage annvrsryManage,
+		@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO,
+		BindingResult bindingResult,
+		SessionStatus status,
+		ModelMap model) throws Exception {
 
 		beanValidator.validate(annvrsryManage, bindingResult); //validation 수행
 
-    	if (bindingResult.hasErrors()) {
-    		model.addAttribute("annvrsryManageVO", annvrsryManage);
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("annvrsryManageVO", annvrsryManage);
 			return "egovframework/com/uss/ion/ans/EgovAnnvrsryManageUpdt";
 		} else {
 
-	    	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-	    	status.setComplete();
-	    	annvrsryManage.setLastUpdusrId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
+			LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+			status.setComplete();
+			annvrsryManage.setLastUpdusrId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 
-	    	if(egovAnnvrsryManageService.selectAnnvrsryManageDplctAt(annvrsryManage)==0){
-	    		egovAnnvrsryManageService.updateAnnvrsryManage(annvrsryManage);
-		    	model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
-		    	return "forward:/uss/ion/ans/selectAnnvrsryManageList.do";
-	    	}else{
-	        	ComDefaultCodeVO vo = new ComDefaultCodeVO();
-	    		vo.setCodeId("COM069");
-	            List<?> annvrsrySeCodeList = cmmUseService.selectCmmCodeDetail(vo);
-	            annvrsryManageVO.setAnnvrsryTemp1(user == null ? "" : EgovStringUtil.isNullToString(user.getName()));
-	            annvrsryManageVO.setAnnvrsryTemp2(user == null ? "" : EgovStringUtil.isNullToString(user.getOrgnztNm()));
-	            model.addAttribute("annvrsrySeCode", annvrsrySeCodeList);
-	            model.addAttribute("annvrsryManageVO", annvrsryManageVO);
-		    	model.addAttribute("dplctMessage", egovMessageSource.getMessage("comUssIonAns.common.duplicate"));//이미 등록된 데이타입니다. 해당 데이타를 확인해 주세요"); 
-		     	return "egovframework/com/uss/ion/ans/EgovAnnvrsryUpdt";
-	    	}
+			if (egovAnnvrsryManageService.selectAnnvrsryManageDplctAt(annvrsryManage) == 0) {
+				egovAnnvrsryManageService.updateAnnvrsryManage(annvrsryManage);
+				model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
+				return "forward:/uss/ion/ans/selectAnnvrsryManageList.do";
+			} else {
+				ComDefaultCodeVO vo = new ComDefaultCodeVO();
+				vo.setCodeId("COM069");
+				List<?> annvrsrySeCodeList = cmmUseService.selectCmmCodeDetail(vo);
+				annvrsryManageVO.setAnnvrsryTemp1(user == null ? "" : EgovStringUtil.isNullToString(user.getName()));
+				annvrsryManageVO
+					.setAnnvrsryTemp2(user == null ? "" : EgovStringUtil.isNullToString(user.getOrgnztNm()));
+				model.addAttribute("annvrsrySeCode", annvrsrySeCodeList);
+				model.addAttribute("annvrsryManageVO", annvrsryManageVO);
+				model.addAttribute("dplctMessage", egovMessageSource.getMessage("comUssIonAns.common.duplicate"));//이미 등록된 데이타입니다. 해당 데이타를 확인해 주세요");
+				return "egovframework/com/uss/ion/ans/EgovAnnvrsryUpdt";
+			}
 		}
 	}
 
@@ -305,15 +316,15 @@ public class EgovAnnvrsryManageController {
 	 * @param annvrsryManage - 기념일관리 model
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value="/uss/ion/ans/deleteAnnvrsryManage.do")
-	 public String deleteAnnvrsryManage(@ModelAttribute("annvrsryManage") AnnvrsryManage annvrsryManage,
-			                             SessionStatus status,
-			                             ModelMap model) throws Exception {
+	@RequestMapping(value = "/uss/ion/ans/deleteAnnvrsryManage.do")
+	public String deleteAnnvrsryManage(@ModelAttribute("annvrsryManage") AnnvrsryManage annvrsryManage,
+		SessionStatus status,
+		ModelMap model) throws Exception {
 
-    	egovAnnvrsryManageService.deleteAnnvrsryManage(annvrsryManage);
-    	status.setComplete();
-    	model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
-    	return "forward:/uss/ion/ans/selectAnnvrsryManageList.do";
+		egovAnnvrsryManageService.deleteAnnvrsryManage(annvrsryManage);
+		status.setComplete();
+		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
+		return "forward:/uss/ion/ans/selectAnnvrsryManageList.do";
 	}
 
 	/**
@@ -321,17 +332,17 @@ public class EgovAnnvrsryManageController {
 	 * @param annvrsryManageVO - 기념일관리 VO
 	 * @return String - 리턴 Url
 	 */
-    @IncludedInfo(name="기념일목록(확인용)", order = 931 ,gid = 50)
-    @RequestMapping(value="/uss/ion/ans/selectAnnvrsryMainList.do")
-	 public String selectAnnvrsryMainList( @ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO,
-										   @ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryGdcc,
-								           ModelMap model) throws Exception {
+	@IncludedInfo(name = "기념일목록(확인용)", order = 931, gid = 50)
+	@RequestMapping(value = "/uss/ion/ans/selectAnnvrsryMainList.do")
+	public String selectAnnvrsryMainList(@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO,
+		@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryGdcc,
+		ModelMap model) throws Exception {
 
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-    	if (loginVO == null) {
-    		return "egovframework/com/uat/uia/EgovLoginUsr";
-    	}
+		if (loginVO == null) {
+			return "egovframework/com/uat/uia/EgovLoginUsr";
+		}
 		annvrsryManageVO.setUsid(loginVO.getUniqId());
 
 		/** paging */
@@ -355,117 +366,119 @@ public class EgovAnnvrsryManageController {
 		return "egovframework/com/uss/ion/ans/EgovAnnvrsryMainList";
 	}
 
-
 	/**
 	 * 등록된 기념일관리의 알림 화면을 조회한다.
 	 * @param annvrsryManageVO - 기념일관리 VO
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value="/uss/ion/ans/selectAnnvrsryGdcc.do")
-	 public String selectAnnvrsryGdcc(@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO,
-			                            ModelMap model) throws Exception {
-    	String sTempAnnvrsryDe      = null;
-    	String sTempCldrSe          = null;
-    	String sTempAnnvrsrySetup   = null;
-    	String sAnnvrsryDe          = null;
-    	AnnvrsryManageVO annvrsryManageVO_Temp = new AnnvrsryManageVO();
-/*
-    	String sAnnvrsryDe_Temp     = null;
+	@RequestMapping(value = "/uss/ion/ans/selectAnnvrsryGdcc.do")
+	public String selectAnnvrsryGdcc(@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO,
+		ModelMap model) throws Exception {
+		String sTempAnnvrsryDe = null;
+		String sTempCldrSe = null;
+		String sTempAnnvrsrySetup = null;
+		String sAnnvrsryDe = null;
+		AnnvrsryManageVO annvrsryManageVO_Temp = new AnnvrsryManageVO();
+		/*
+		    	String sAnnvrsryDe_Temp     = null;
 
-    	sAnnvrsryDe_Temp = EgovStringUtil.removeMinusChar(annvrsryManageVO.getAnnvrsryDe());
-    	if("0".equals(annvrsryManageVO.getCldrSe())){  // 음력인 경우 양력으로 환산
-    		sAnnvrsryDe_Temp = EgovDateUtil.toSolar(sAnnvrsryDe_Temp, 0);
-    		annvrsryManageVO.setAnnvrsryDe(sAnnvrsryDe_Temp);
-    	}
-*/
-    	annvrsryManageVO_Temp = egovAnnvrsryManageService.selectAnnvrsryManage(annvrsryManageVO);
-    	sAnnvrsryDe = EgovStringUtil.removeMinusChar(annvrsryManageVO_Temp.getAnnvrsryDe());
-    	if("1".equals(annvrsryManageVO_Temp.getCldrSe())){  sTempCldrSe= egovMessageSource.getMessage("comUssIonAns.annvrsryGdcc.cldrSe1");//양
-    	}else{
-    		sTempCldrSe= egovMessageSource.getMessage("comUssIonAns.annvrsryGdcc.cldrSe2");//음
-    		sAnnvrsryDe = EgovDateUtil.toSolar(sAnnvrsryDe, 0);
-    	}
+		    	sAnnvrsryDe_Temp = EgovStringUtil.removeMinusChar(annvrsryManageVO.getAnnvrsryDe());
+		    	if("0".equals(annvrsryManageVO.getCldrSe())){  // 음력인 경우 양력으로 환산
+		    		sAnnvrsryDe_Temp = EgovDateUtil.toSolar(sAnnvrsryDe_Temp, 0);
+		    		annvrsryManageVO.setAnnvrsryDe(sAnnvrsryDe_Temp);
+		    	}
+		*/
+		annvrsryManageVO_Temp = egovAnnvrsryManageService.selectAnnvrsryManage(annvrsryManageVO);
+		sAnnvrsryDe = EgovStringUtil.removeMinusChar(annvrsryManageVO_Temp.getAnnvrsryDe());
+		if ("1".equals(annvrsryManageVO_Temp.getCldrSe())) {
+			sTempCldrSe = egovMessageSource.getMessage("comUssIonAns.annvrsryGdcc.cldrSe1");//양
+		} else {
+			sTempCldrSe = egovMessageSource.getMessage("comUssIonAns.annvrsryGdcc.cldrSe2");//음
+			sAnnvrsryDe = EgovDateUtil.toSolar(sAnnvrsryDe, 0);
+		}
 
-    	sTempAnnvrsryDe = annvrsryManageVO_Temp.getAnnvrsryDe()+"("+sTempCldrSe+")";
-    	annvrsryManageVO_Temp.setAnnvrsryTemp4(sTempAnnvrsryDe);
+		sTempAnnvrsryDe = annvrsryManageVO_Temp.getAnnvrsryDe() + "(" + sTempCldrSe + ")";
+		annvrsryManageVO_Temp.setAnnvrsryTemp4(sTempAnnvrsryDe);
 
-    	if("Y".equals(annvrsryManageVO_Temp.getAnnvrsrySetup()))  sTempAnnvrsrySetup="ON";
-    	else sTempAnnvrsrySetup="OFF";
-    	annvrsryManageVO_Temp.setAnnvrsryTemp5(sTempAnnvrsrySetup);
+		if ("Y".equals(annvrsryManageVO_Temp.getAnnvrsrySetup())) {
+			sTempAnnvrsrySetup = "ON";
+		} else {
+			sTempAnnvrsrySetup = "OFF";
+		}
+		annvrsryManageVO_Temp.setAnnvrsryTemp5(sTempAnnvrsrySetup);
 
-        /* 날짜 사이의 기간 산출 */
-    	long resultDay = 0;
-    	Calendar to_day = Calendar.getInstance(); //Calendar객체를 생성합니다.
-    	Calendar target_day = Calendar.getInstance();
+		/* 날짜 사이의 기간 산출 */
+		long resultDay = 0;
+		Calendar to_day = Calendar.getInstance(); //Calendar객체를 생성합니다.
+		Calendar target_day = Calendar.getInstance();
 
-    	if(sAnnvrsryDe!=null && !sAnnvrsryDe.equals("")){
-    		target_day.set(Integer.parseInt(sAnnvrsryDe.substring(0,4)),Integer.parseInt(sAnnvrsryDe.substring(4,6))-1,Integer.parseInt(sAnnvrsryDe.substring(6,8)));
-    	}else{
-    		target_day.set(to_day.get(Calendar.YEAR),to_day.get(Calendar.MONTH)+1,to_day.get(Calendar.DATE));
-    	}
+		if (sAnnvrsryDe != null && !sAnnvrsryDe.equals("")) {
+			target_day.set(Integer.parseInt(sAnnvrsryDe.substring(0, 4)),
+				Integer.parseInt(sAnnvrsryDe.substring(4, 6)) - 1, Integer.parseInt(sAnnvrsryDe.substring(6, 8)));
+		} else {
+			target_day.set(to_day.get(Calendar.YEAR), to_day.get(Calendar.MONTH) + 1, to_day.get(Calendar.DATE));
+		}
 
-    	long resultTime = target_day.getTime().getTime() - to_day.getTime().getTime(); // 차이 구하기
-    	if(resultTime>0){
-    		resultDay = resultTime /(1000*60*60*24);// 일로 바꾸기
-    	}
-    	else resultDay = 0;
+		long resultTime = target_day.getTime().getTime() - to_day.getTime().getTime(); // 차이 구하기
+		if (resultTime > 0) {
+			resultDay = resultTime / (1000 * 60 * 60 * 24);// 일로 바꾸기
+		} else {
+			resultDay = 0;
+		}
 
-    	annvrsryManageVO_Temp.setAnnvrsryBeginDe(Long.toString(resultDay));
+		annvrsryManageVO_Temp.setAnnvrsryBeginDe(Long.toString(resultDay));
 
-    	model.addAttribute("annvrsryManageVO", annvrsryManageVO_Temp);
-    	model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
+		model.addAttribute("annvrsryManageVO", annvrsryManageVO_Temp);
+		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
-    	return "egovframework/com/uss/ion/ans/EgovAnnvrsryGdcc";
+		return "egovframework/com/uss/ion/ans/EgovAnnvrsryGdcc";
 	}
 
+	/**
+	 * 기념일일괄등록화면 호출 및  기념일일괄등록처리 프로세스
+	 * @param annvrsryManageVO  AnnvrsryManageVO
+	 * @param request       HttpServletRequest
+	 * @return 출력페이지정보 "ion/bnt/EgovBndtManageListPop"
+	 * @exception Exception
+	 */
+	@RequestMapping(value = "/uss/ion/ans/EgovAnnvrsryManageListPop.do")
+	public String selectAnnvrsryManageBnde(final HttpServletRequest request,
+		@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO,
+		@RequestParam Map<?, ?> commandMap,
+		BindingResult bindingResult,
+		ModelMap model) throws Exception {
+		String resultMsg = "";
+		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd"); // 상세정보 구분
 
+		// 0. Spring Security 사용자권한 처리
 
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "egovframework/com/uat/uia/EgovLoginUsr";
+		}
 
-    /**
-     * 기념일일괄등록화면 호출 및  기념일일괄등록처리 프로세스
-     * @param annvrsryManageVO  AnnvrsryManageVO
-     * @param request       HttpServletRequest
-     * @return 출력페이지정보 "ion/bnt/EgovBndtManageListPop"
-     * @exception Exception
-     */
-    @RequestMapping(value="/uss/ion/ans/EgovAnnvrsryManageListPop.do")
-    public String selectAnnvrsryManageBnde( final HttpServletRequest request,
-							    		@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO,
-							    		@RequestParam Map<?, ?> commandMap,
-							    		BindingResult bindingResult,
-							    		ModelMap model) throws Exception {
-        String resultMsg = "";
-    	String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd"); // 상세정보 구분
+		return "egovframework/com/uss/ion/ans/EgovAnnvrsryManageBndeListPop";
+	}
 
-        // 0. Spring Security 사용자권한 처리
+	@RequestMapping(value = "/uss/ion/ans/EgovAnnvrsryManageListPopAction.do")
+	public String selectAnnvrsryManageBndeAction(final MultipartHttpServletRequest multiRequest,
+		@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO,
+		@RequestParam Map<?, ?> commandMap,
+		ModelMap model) throws Exception {
+		String resultMsg = "";
+		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd"); // 상세정보 구분
 
-    	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-    	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "egovframework/com/uat/uia/EgovLoginUsr";
-    	}
+		// 0. Spring Security 사용자권한 처리
 
-    	return "egovframework/com/uss/ion/ans/EgovAnnvrsryManageBndeListPop";
-    }
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "egovframework/com/uat/uia/EgovLoginUsr";
+		}
 
-    @RequestMapping(value="/uss/ion/ans/EgovAnnvrsryManageListPopAction.do")
-    public String selectAnnvrsryManageBndeAction( final MultipartHttpServletRequest multiRequest,
-							    		@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO,
-							    		@RequestParam Map<?, ?> commandMap,
-							    		ModelMap model) throws Exception {
-        String resultMsg = "";
-    	String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd"); // 상세정보 구분
-
-        // 0. Spring Security 사용자권한 처리
-
-    	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-    	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "egovframework/com/uat/uia/EgovLoginUsr";
-    	}
-
-		if(sCmd.equals("bnde")){
-	    	//final MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+		if (sCmd.equals("bnde")) {
+			//final MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
 			final Map<String, MultipartFile> files = multiRequest.getFileMap();
 			Iterator<Entry<String, MultipartFile>> itr = files.entrySet().iterator();
 			MultipartFile file;
@@ -477,46 +490,50 @@ public class EgovAnnvrsryManageController {
 					InputStream is = null;
 					try {
 						is = file.getInputStream();
-						model.addAttribute("annvrsryManageList", egovAnnvrsryManageService.selectAnnvrsryManageBnde(is));
+						model.addAttribute("annvrsryManageList",
+							egovAnnvrsryManageService.selectAnnvrsryManageBnde(is));
 					} catch (IOException e) {
 						throw new IOException(e);
 					} finally {
-						is.close();
+						if (is != null) {//2022.01.Possible null pointer dereference in method on exception path 처리
+							is.close();
+						}
 					}
-				}else{
+				} else {
 					resultMsg = egovMessageSource.getMessage("fail.common.msg");
 				}
 			}
-	    	model.addAttribute("resultMsg", resultMsg);
+			model.addAttribute("resultMsg", resultMsg);
 		}
-    	return "egovframework/com/uss/ion/ans/EgovAnnvrsryManageBndeListPop";
-    }
-    
+		return "egovframework/com/uss/ion/ans/EgovAnnvrsryManageBndeListPop";
+	}
+
 	/**
 	 * 기념일정보를 일괄등록처리한다.
 	 * @param annvrsryManageVO     - 기념일관리 VO
 	 * @param String               - 기념일정보
 	 * @return String              - 리턴 Url
 	 */
-    @RequestMapping(value="/uss/ion/ans/insertAnnvrsryManageBnde.do")
-	 public String insertAnnvrsryManageBnde(@RequestParam("checkedAnnvrsryManageForInsert") String checkedAnnvrsryManageForInsert ,
-			                            @ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO,
-			                            SessionStatus status,
-						                ModelMap model) throws Exception {
-    	    //int iTemp = egovAnnvrsryManageService.selectAnnvrsryManageMonthCnt(annvrsryManageVO);
-    	   // if(iTemp == 0 ){
+	@RequestMapping(value = "/uss/ion/ans/insertAnnvrsryManageBnde.do")
+	public String insertAnnvrsryManageBnde(
+		@RequestParam("checkedAnnvrsryManageForInsert") String checkedAnnvrsryManageForInsert,
+		@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO,
+		SessionStatus status,
+		ModelMap model) throws Exception {
+		//int iTemp = egovAnnvrsryManageService.selectAnnvrsryManageMonthCnt(annvrsryManageVO);
+		// if(iTemp == 0 ){
 
-	    	    LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
-	    	    annvrsryManageVO.setFrstRegisterId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
-	    	    egovAnnvrsryManageService.insertAnnvrsryManageBnde(annvrsryManageVO, checkedAnnvrsryManageForInsert);
-		    	status.setComplete();
-		    	model.addAttribute("message", "true");
-		    	return "egovframework/com/uss/ion/ans/EgovAnnvrsryManageBndeListPop";
-    	  //  }else{
-    	    	//String sTempMessage = annvrsryManageVO.getBndtDe().substring(0,4)+"년"+bndtManageVO.getBndtDe().substring(4,6)+"월 데이타가 존재합니다.";
-    	    	//model.addAttribute("message", sTempMessage);
-		   // 	return "egovframework/com/uss/ion/bnt/EgovBndtManageBndeListPop";
-    	   // }
+		annvrsryManageVO.setFrstRegisterId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
+		egovAnnvrsryManageService.insertAnnvrsryManageBnde(annvrsryManageVO, checkedAnnvrsryManageForInsert);
+		status.setComplete();
+		model.addAttribute("message", "true");
+		return "egovframework/com/uss/ion/ans/EgovAnnvrsryManageBndeListPop";
+		//  }else{
+		//String sTempMessage = annvrsryManageVO.getBndtDe().substring(0,4)+"년"+bndtManageVO.getBndtDe().substring(4,6)+"월 데이타가 존재합니다.";
+		//model.addAttribute("message", sTempMessage);
+		// 	return "egovframework/com/uss/ion/bnt/EgovBndtManageBndeListPop";
+		// }
 	}
 }

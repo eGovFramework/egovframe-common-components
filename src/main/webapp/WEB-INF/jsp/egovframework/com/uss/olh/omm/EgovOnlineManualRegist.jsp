@@ -68,7 +68,7 @@ function fn_egov_regist_onlinemanual(form){
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form commandName="onlineManualVO" action="${pageContext.request.contextPath}/uss/olh/omm/insertOnlineManual.do" method="post" onSubmit="fn_egov_regist_onlinemanual(document.forms[0]); return false;"> 
+<form:form modelAttribute="onlineManualVO" action="${pageContext.request.contextPath}/uss/olh/omm/insertOnlineManual.do" method="post" onSubmit="fn_egov_regist_onlinemanual(document.forms[0]); return false;"> 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.create" /></h2>

@@ -18,7 +18,7 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.mnu.mpm.service.EgovMenuManageService;
 import egovframework.com.sym.mnu.mpm.service.MenuManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import egovframework.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.fdl.property.EgovPropertyService;
 
 /**
  * 메인메뉴 해당링크 처리를 하는 비즈니스 구현 클래스

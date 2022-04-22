@@ -80,7 +80,7 @@
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form commandName="mtgPlaceResve" name="mtgPlaceResve" method="post" >
+<form:form modelAttribute="mtgPlaceResve" name="mtgPlaceResve" method="post" >
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->

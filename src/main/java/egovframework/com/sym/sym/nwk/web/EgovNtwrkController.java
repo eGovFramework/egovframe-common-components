@@ -24,8 +24,8 @@ import egovframework.com.sym.sym.nwk.service.EgovNtwrkService;
 import egovframework.com.sym.sym.nwk.service.Ntwrk;
 import egovframework.com.sym.sym.nwk.service.NtwrkVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import egovframework.rte.fdl.idgnr.EgovIdGnrService;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
  * 개요

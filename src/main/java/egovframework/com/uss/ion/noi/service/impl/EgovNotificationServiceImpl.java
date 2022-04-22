@@ -12,7 +12,7 @@ import egovframework.com.uss.ion.noi.service.EgovNotificationService;
 import egovframework.com.uss.ion.noi.service.Notification;
 import egovframework.com.uss.ion.noi.service.NotificationVO;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 import javax.annotation.Resource;
 

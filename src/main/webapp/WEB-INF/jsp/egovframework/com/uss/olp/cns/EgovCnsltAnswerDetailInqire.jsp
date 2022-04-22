@@ -224,8 +224,8 @@ function fn_egov_updt_cnsltdtlsanswer(cnsltId){
 	</table>
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<input type="submit" class="s_submit" value="<spring:message code="button.update" />" title="<spring:message code="title.update" /> <spring:message code="input.button" />" />
-		<span class="btn_s"><a href="<c:url value='/uss/olp/cnm/CnsltAnswerListInqire.do' />"  title="<spring:message code="title.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
+		<input type="submit" class="s_submit" value="<spring:message code="button.answer" />" title="<spring:message code="button.answer" /> <spring:message code="input.button" />" /><!-- 답변 -->
+		<span class="btn_s"><a href="<c:url value='/uss/olp/cnm/CnsltAnswerListInqire.do' />"  title="<spring:message code="title.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span><!-- 목록 -->
 	</div><div style="clear:both;"></div>
 	
 </div>

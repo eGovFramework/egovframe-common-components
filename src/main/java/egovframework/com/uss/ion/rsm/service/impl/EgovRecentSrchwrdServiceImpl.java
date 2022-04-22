@@ -5,8 +5,8 @@ import java.util.List;
 import egovframework.com.uss.ion.rsm.service.EgovRecentSrchwrdService;
 import egovframework.com.uss.ion.rsm.service.RecentSrchwrd;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import egovframework.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 
 import javax.annotation.Resource;
 

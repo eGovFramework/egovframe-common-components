@@ -21,9 +21,6 @@ package egovframework.com.ext.ldapumt.service.impl;
 import java.util.ArrayList;
 import java.util.Map;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
-import egovframework.com.ext.ldapumt.service.LdapObject;
-
 import javax.annotation.Resource;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
@@ -34,6 +31,10 @@ import javax.naming.directory.ModificationItem;
 
 import org.apache.commons.beanutils.BeanMap;
 import org.springframework.ldap.core.LdapTemplate;
+
+import egovframework.com.cmm.EgovWebUtil;
+import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.ext.ldapumt.service.LdapObject;
 
 /**
 *
@@ -91,7 +92,7 @@ public class OrgManageLdapDAO extends EgovComAbstractDAO {
 	protected LdapObject selectOrgManageByDn(String dn, @SuppressWarnings("rawtypes") Class lookupClass) {
 		LdapObject vo = null;
 
-		vo = (LdapObject) ldapTemplate.lookup(dn, new ObjectMapper<Object>(lookupClass));
+		vo = (LdapObject) ldapTemplate.lookup(EgovWebUtil.removeLDAPInjectionRisk(dn), new ObjectMapper<Object>(lookupClass));//2022.01 Potential LDAP Injection
 
 		return vo;
 	}
@@ -126,8 +127,9 @@ public class OrgManageLdapDAO extends EgovComAbstractDAO {
 
 		for (Object key : introspected.keySet()) {
 			if (key.equals("dn") || key.equals("class") || introspected.get(key) == null
-					|| introspected.get(key).equals(""))
+					|| introspected.get(key).equals("")) {
 				continue;
+			}
 
 			e.execute((String) key, introspected.get(key));
 		}

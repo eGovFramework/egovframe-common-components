@@ -102,7 +102,7 @@
 		<!-- 타이틀 -->
 		<h2><spring:message code="comDamApp.comDamAppraisalModify.pageTop.title"/></h2><!-- 지식평가 수정 -->
 	
-		<form:form commandName="knoAppraisal" name="knoAppraisal" method="post">
+		<form:form modelAttribute="knoAppraisal" name="knoAppraisal" method="post">
 
 		<input name="cmd" type="hidden" value="Modify">
 		<input name="knoId" type="hidden" value="<c:out value='${knoAppraisal.knoId}'/>">

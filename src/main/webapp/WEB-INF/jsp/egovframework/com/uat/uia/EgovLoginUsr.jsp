@@ -17,6 +17,7 @@
   *  2017.07.21   장동한            로그인인증제한 작업
   *  2019.12.11   신용호            KISA 보안약점 조치 (크로스사이트 스크립트)
   *  2020.06.23   신용호            세션만료시간 보여주기
+  *  2021.05.30   정진오            디지털원패스 로그인 추가
   *
   *  @author 공통서비스 개발팀 박지욱
   *  @since 2009.03.03
@@ -213,6 +214,17 @@ function fnShowLogin(stat) {
 	}
 }
 
+// 2021.05.30, 정진오, 디지털원패스 로그인 추가
+function fnOnepassLogin() {
+	if ('${authType}' == 'session') {
+		document.onepassForm.serviceType.value = 'LOGIN';
+		document.onepassForm.target = '_top';
+		document.onepassForm.action = '<c:url value="/uat/uia/onepass/onepassLogin.do"/>';
+		document.onepassForm.submit();
+	} else {
+		alert('디지털원패스는 Session 권한인증일때만 사용하실 수 있습니다.');
+	}
+}
 </script>
 </head>
 <body onLoad="fnInit();">
@@ -220,13 +232,13 @@ function fnShowLogin(stat) {
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-
 <!-- 일반로그인 -->
 <div class="login_form">
 	<form name="loginForm" id="loginForm" action="<c:url value='/uat/uia/actionLogin.do'/>" method="post">
 	<input type="hidden" id="message" name="message" value="<c:out value='${message}'/>">
 	
 	<fieldset>
+
 		<img src="<c:url value='/images/egovframework/com/uat/uia/login_tit.png'/>" style="margin:30px 0 0px 60px" alt="login title image"  title="login title image">
 		<div class="login_type">
 			<ul id="ulLoginType">
@@ -291,13 +303,27 @@ function fnShowLogin(stat) {
 					</ul>
 				</li>
 			</ul>
-			
 		</div>
+
 	</fieldset>
-	
+
 	<input name="userSe" type="hidden" value="GNR"/>
 	<input name="j_username" type="hidden"/>
 	</form>
+
+	<!-- 2021.05.30, 정진오, 디지털원패스 로그인 추가 -->
+	<div style="border:2px solid #e6e6e6; margin-top:20px;">
+		<form id="onepassForm" name="onepassForm" method="post">
+		<input type="hidden" id="serviceType" name="serviceType"/>
+		</form>
+		<ul style="margin:10px 0px 10px;">
+			<li style="text-align:center;">
+				하나의 아이디로 간편하게
+				<a href="#" onclick="javascript:fnOnepassLogin();"><img src="<c:url value='/images/egovframework/com/uat/uia/onepass.png'/>" alt="디지털원패스 로그인" title="디지털원패스 로그인"></a>
+			</li>
+		</ul>
+	</div>
+
 </div>
 
 <!-- 팝업 폼 -->
@@ -308,9 +334,5 @@ function fnShowLogin(stat) {
 </form>
 <!-- login영역 //-->
 
-
-
 </body>
 </html>
-
-

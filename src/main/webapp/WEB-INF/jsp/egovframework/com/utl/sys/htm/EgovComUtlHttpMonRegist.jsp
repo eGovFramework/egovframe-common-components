@@ -68,7 +68,7 @@
 
 	<body onLoad="fn_egov_initl_HttpMon();">
 	
-	<form:form commandName="httpMon" name="httpMon" method="post">
+	<form:form modelAttribute="httpMon" name="httpMon" method="post">
 	
 		<div class="wTableFrm">
 			<!-- 타이틀 -->

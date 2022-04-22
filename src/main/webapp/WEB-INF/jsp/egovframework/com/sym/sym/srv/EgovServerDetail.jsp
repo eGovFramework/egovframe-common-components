@@ -68,7 +68,7 @@ function fncServerDelete(serverId) {
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
-<form:form commandName="server" method="post" action="${pageContext.request.contextPath}/sym/sym/srv/updtViewServer.do">
+<form:form modelAttribute="server" method="post" action="${pageContext.request.contextPath}/sym/sym/srv/updtViewServer.do">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->

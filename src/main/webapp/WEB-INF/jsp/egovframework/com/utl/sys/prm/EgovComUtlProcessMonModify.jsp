@@ -79,7 +79,7 @@
 
 	<body>
 		<div class="wTableFrm">					
-			<form:form commandName="processMonVO" name="processMonVO" method="post">
+			<form:form modelAttribute="processMonVO" name="processMonVO" method="post">
 			<input name="cmd" type="hidden" value="Modify">
 			<form:hidden path="processId"/>	
 				<!-- 상단 타이틀  영역 -->

@@ -3,7 +3,7 @@
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.HashMap"%>
 <%@ page import="java.util.ArrayList"%>
-<%@ page import="egovframework.rte.psl.dataaccess.util.EgovMap"%>
+<%@ page import="org.egovframe.rte.psl.dataaccess.util.EgovMap"%>
 <%@ page import="egovframework.com.uss.ion.bnt.service.BndtManageVO"%>
 <%@ page import='egovframework.com.utl.fcc.service.EgovNumberUtil' %>
 <%@ page import='egovframework.com.utl.fcc.service.EgovStringUtil' %>

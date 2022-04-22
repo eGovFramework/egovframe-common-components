@@ -7,8 +7,8 @@ import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cop.smt.sim.service.EgovIndvdlSchdulManageService;
 import egovframework.com.cop.smt.sim.service.IndvdlSchdulManageVO;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import egovframework.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 
 import javax.annotation.Resource;
 

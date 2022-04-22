@@ -61,7 +61,7 @@
 
 	<body>
 		<DIV class="wTableFrm">
-			<form:form commandName="httpMon" name="httpMon" method="post">
+			<form:form modelAttribute="httpMon" name="httpMon" method="post">
 			<input name="cmd" type="hidden" value="Modify">
 			<form:hidden path="sysId"/>	
 

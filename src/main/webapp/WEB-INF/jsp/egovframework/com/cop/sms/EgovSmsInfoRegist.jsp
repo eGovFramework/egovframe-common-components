@@ -91,7 +91,7 @@ function loading() {
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
-<form:form commandName="sms" name="sms" method="post" action="${pageContext.request.contextPath}/cop/sms/insertSms.do' />">
+<form:form modelAttribute="sms" name="sms" method="post" action="${pageContext.request.contextPath}/cop/sms/insertSms.do' />">
 
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 

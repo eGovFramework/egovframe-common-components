@@ -52,7 +52,7 @@
 <body onLoad="fn_egov_init_NtwrkSvcMntrngLog()">
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
-<form:form commandName="ntwrkSvcMntrngLogVO" name="ntwrkSvcMntrngLogVO" method="post" action="${pageContext.request.contextPath}/utl/sys/nsm/selectNtwrkSvcMntrngLogList.do">
+<form:form modelAttribute="ntwrkSvcMntrngLogVO" name="ntwrkSvcMntrngLogVO" method="post" action="${pageContext.request.contextPath}/utl/sys/nsm/selectNtwrkSvcMntrngLogList.do">
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.detail" /></h2><!-- 네트워크서비스모니터링로그 상세조회 -->

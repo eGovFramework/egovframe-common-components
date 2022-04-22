@@ -7,8 +7,8 @@ import java.util.Map;
 import egovframework.com.sym.log.tlg.service.EgovTrsmrcvLogService;
 import egovframework.com.sym.log.tlg.service.TrsmrcvLog;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import egovframework.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 
 import javax.annotation.Resource;
 

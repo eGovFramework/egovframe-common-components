@@ -5,7 +5,7 @@ import java.util.List;
 import egovframework.com.uss.olp.opr.service.EgovOnlinePollResultService;
 import egovframework.com.uss.olp.opr.service.OnlinePollResult;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 import javax.annotation.Resource;
 

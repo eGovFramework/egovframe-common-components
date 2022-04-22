@@ -33,8 +33,8 @@ import egovframework.com.dam.map.tea.service.MapTeamVO;
 import egovframework.com.dam.spe.req.service.EgovRequestOfferService;
 import egovframework.com.dam.spe.req.service.RequestOfferVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import egovframework.rte.fdl.property.EgovPropertyService;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
  * 지식정보제공/지식정보요청를 처리하는 Controller Class 구현

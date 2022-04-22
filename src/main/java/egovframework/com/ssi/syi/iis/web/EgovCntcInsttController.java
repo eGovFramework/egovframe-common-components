@@ -27,10 +27,10 @@ import egovframework.com.ssi.syi.iis.service.EgovCntcInsttService;
 import egovframework.com.ssi.syi.ims.service.CntcMessageVO;
 import egovframework.com.ssi.syi.ims.service.EgovCntcMessageService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import egovframework.rte.fdl.idgnr.EgovIdGnrService;
-import egovframework.rte.fdl.property.EgovPropertyService;
-import egovframework.rte.psl.dataaccess.util.EgovMap;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
  *

@@ -164,8 +164,8 @@
 				  , EMAIL_ANSWER_AT=COALESCE(#{emailAnswerAt},'N')
 				  , WRTER_NM=#{wrterNm}
 				  , WRITNG_DE=TO_CHAR(NOW(),'YYYYmmdd')
-				  , FRST_REGIST_PNTTM=NOW()
-				  , FRST_REGISTER_ID=#{frstRegisterId}
+				  , LAST_UPDT_PNTTM=NOW()
+				  , LAST_UPDUSR_ID=#{lastUpdusrId}
 			WHERE  QA_ID=#{qaId}
 		
 	</update>

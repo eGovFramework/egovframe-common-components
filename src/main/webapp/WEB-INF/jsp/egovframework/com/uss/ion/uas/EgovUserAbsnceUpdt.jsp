@@ -75,7 +75,7 @@ function fncUserAbsnceDelete() {
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg"/></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
 <div class="wTableFrm">
-<form:form commandName="userAbsnce" action="${pageContext.request.contextPath}/uss/ion/uas/updtUserAbsnce.do' />" method="post">
+<form:form modelAttribute="userAbsnce" action="${pageContext.request.contextPath}/uss/ion/uas/updtUserAbsnce.do' />" method="post">
 	<!-- 타이틀 -->
 	<h2><spring:message code="ussIonUas.userAbsnceUpdt.userAbsnceUpdt"/></h2><!-- 사용자부재 수정 -->
 

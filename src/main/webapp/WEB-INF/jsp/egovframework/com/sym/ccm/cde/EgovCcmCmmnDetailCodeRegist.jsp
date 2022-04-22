@@ -85,7 +85,7 @@ function fncShowMessg(){
 </head>
 <body onLoad="fn_egov_init(); fncShowMessg();">
 
-<form:form commandName="cmmnDetailCodeVO" method="post" onSubmit="fn_egov_regist_code(document.forms[0]); return false;"> 
+<form:form modelAttribute="cmmnDetailCodeVO" method="post" onSubmit="fn_egov_regist_code(document.forms[0]); return false;"> 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.create" /></h2>

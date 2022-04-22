@@ -27,8 +27,8 @@ import egovframework.com.cmm.util.EgovXssChecker;
 import egovframework.com.uss.olh.omm.service.EgovOnlineManualService;
 import egovframework.com.uss.olh.omm.service.OnlineManualVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import egovframework.rte.fdl.property.EgovPropertyService;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 /**
  * 온라인메뉴얼를 처리하는 Controller Class 구현
  * @author 공통서비스 장동한

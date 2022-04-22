@@ -61,7 +61,7 @@
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form commandName="memoTodoVO" name="memoTodoVO" method="post" action="${pageContext.request.contextPath}/cop/smt/mtm/modifyMemoTodo.do' />">
+<form:form modelAttribute="memoTodoVO" name="memoTodoVO" method="post" action="${pageContext.request.contextPath}/cop/smt/mtm/modifyMemoTodo.do' />">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->

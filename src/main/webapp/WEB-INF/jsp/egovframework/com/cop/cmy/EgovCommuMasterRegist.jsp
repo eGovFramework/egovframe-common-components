@@ -64,7 +64,7 @@ function fn_egov_regist_commu(form){
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form commandName="commuMasterVO" action="${pageContext.request.contextPath}/cop/cmy/insertCommuMaster.do" method="post" onSubmit="fn_egov_regist_commu(document.forms[0]); return false;"> 
+<form:form modelAttribute="commuMasterVO" action="${pageContext.request.contextPath}/cop/cmy/insertCommuMaster.do" method="post" onSubmit="fn_egov_regist_commu(document.forms[0]); return false;"> 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.create" /></h2><!-- 커뮤니티 마스터 등록 -->

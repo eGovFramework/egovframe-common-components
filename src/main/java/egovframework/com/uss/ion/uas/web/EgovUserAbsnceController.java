@@ -40,7 +40,7 @@ import egovframework.com.uss.ion.uas.service.EgovUserAbsnceService;
 import egovframework.com.uss.ion.uas.service.UserAbsnce;
 import egovframework.com.uss.ion.uas.service.UserAbsnceVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 
 @Controller

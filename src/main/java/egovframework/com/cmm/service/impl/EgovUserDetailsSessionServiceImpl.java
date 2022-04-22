@@ -5,8 +5,8 @@ import java.util.List;
 
 import egovframework.com.cmm.service.EgovUserDetailsService;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import egovframework.rte.fdl.access.service.EgovUserDetailsHelper;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.access.service.EgovUserDetailsHelper;
 
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;

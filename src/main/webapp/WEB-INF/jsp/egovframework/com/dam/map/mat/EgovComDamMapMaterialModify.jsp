@@ -102,7 +102,7 @@
 
 	<body onLoad="fn_egov_initl_MapMaterial();">
 	
-	<form:form commandName="mapMaterial" name="mapMaterial" method="post">
+	<form:form modelAttribute="mapMaterial" name="mapMaterial" method="post">
 			<input name="cmd" type="hidden" value="Modify">
 			<form:hidden path="orgnztId"/>
 			<form:hidden path="knoTypeCd"/>

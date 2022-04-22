@@ -21,7 +21,7 @@ package egovframework.com.uss.ion.fbk.service.impl;
 
 import java.util.concurrent.atomic.AtomicLong;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.ConnectionSignUp;

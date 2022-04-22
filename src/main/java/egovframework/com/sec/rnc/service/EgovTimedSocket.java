@@ -5,10 +5,12 @@ import java.io.InterruptedIOException;
 import java.net.InetAddress;
 import java.net.Socket;
 
-import egovframework.com.cmm.EgovWebUtil;
+import javax.net.ssl.SSLSocketFactory;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import egovframework.com.cmm.EgovWebUtil;
 
 /**
  * G4C 연계용    배포파일- TimedSocket.java
@@ -30,7 +32,7 @@ import org.slf4j.LoggerFactory;
 public class EgovTimedSocket
 {
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovTimedSocket.class);
-	 
+
 	/**
 	  * 특정주소로 연결시도한다.(InetAdress로 연결)
 	  *
@@ -90,7 +92,7 @@ public class EgovTimedSocket
 		if (!EgovWebUtil.isIPAddress(ihost)) {	// 2011.10.25 보안점검 후속조치
 		    throw new RuntimeException("IP is needed. (" + ihost + ")");
 		}
-		
+
 		InetAddress inetAddr = InetAddress.getByName (ihost);
 		return getSocketClient ( inetAddr, connectPort, delayTime );
 	}
@@ -148,6 +150,7 @@ public class EgovTimedSocket
 			}
 		}
 
+		@Override
 		public void run()
 		{
 			Socket sock = null;
@@ -155,10 +158,11 @@ public class EgovTimedSocket
 			try
 			{
 				if (threadHost != null)	{
-					sock = new Socket (threadHost, threadPort);
+					sock = SSLSocketFactory.getDefault().createSocket(threadHost, threadPort);//2022.01. Unencrypted Socket 처리
+
 				}
 				else{
-					sock = new Socket (threadInetAddr, threadPort);
+					sock = SSLSocketFactory.getDefault().createSocket(threadInetAddr, threadPort); //2022.01. Unencrypted Socket 처리
 				}
 			}
 			catch (IOException ioe)
@@ -176,33 +180,36 @@ public class EgovTimedSocket
 
 		public boolean isFail()
 		{
-			if (threadException == null)
+			if (threadException == null) {
 				return false;
-			else
+			} else {
 				return true;
+			}
 		}
 
 		public boolean isConnected()
 		{
-			if (threadSocket == null)
+			if (threadSocket == null) {
 				return false;
-			else
+			} else {
 				return true;
+			}
 		}
 
 		public String getThreadSocket()
 		{
-			if (threadSocket == null)
+			if (threadSocket == null) {
 				return "";
-			else
+			} else {
 				return threadHost;
+			}
 		}
 
 		public String getThreadInetAddr()
 		{
-			if (threadInetAddr == null)
+			if (threadInetAddr == null) {
 				return "";
-			else
+			} else
 				if (!EgovWebUtil.isIPAddress(threadInetAddr.getHostAddress())) {	// 2011.10.25 보안점검 후속조치
 				    throw new RuntimeException("IP is needed. (" + threadInetAddr.getHostAddress() + ")");
 				}

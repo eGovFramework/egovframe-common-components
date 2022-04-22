@@ -178,7 +178,7 @@ String.prototype.replaceAll = function(src, repl){
 <body onLoad="fn_egov_init_DeptSchdulManage();">
 
 <!--  상단타이틀 -->
-<form:form commandName="deptSchdulManageVO" name="deptSchdulManageVO" action="${pageContext.request.contextPath}/cop/smt/sdm/EgovDeptSchdulManageModifyActor.do" method="post" enctype="multipart/form-data" onSubmit="fn_egov_save_DeptSchdulManage(document.forms[0]); return false;"> 
+<form:form modelAttribute="deptSchdulManageVO" name="deptSchdulManageVO" action="${pageContext.request.contextPath}/cop/smt/sdm/EgovDeptSchdulManageModifyActor.do" method="post" enctype="multipart/form-data" onSubmit="fn_egov_save_DeptSchdulManage(document.forms[0]); return false;"> 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.update" /></h2>

@@ -5,7 +5,7 @@ import java.util.List;
 import egovframework.com.uss.ion.yrc.service.EgovIndvdlYrycManageService;
 import egovframework.com.uss.ion.yrc.service.IndvdlYrycManage;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 import javax.annotation.Resource;
 

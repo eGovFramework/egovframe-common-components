@@ -182,7 +182,7 @@ function fnInsert(form){
 <body onload="fn_egov_init()">
 
 <!-- content start -->
- <form:form commandName="entrprsManageVO" action="${pageContext.request.contextPath}/uss/umt/EgovEntrprsMberSbscrb.do" name="entrprsManageVO" method="post" onSubmit="fnInsert(document.forms[0]); return false;"> 
+ <form:form modelAttribute="entrprsManageVO" action="${pageContext.request.contextPath}/uss/umt/EgovEntrprsMberSbscrb.do" name="entrprsManageVO" method="post" onSubmit="fnInsert(document.forms[0]); return false;"> 
 
 <!-- 우편번호검색 -->
 <input type="hidden" name="zip_url" value="<c:url value='/sym/ccm/zip/EgovCcmZipSearchPopup.do'/>" />

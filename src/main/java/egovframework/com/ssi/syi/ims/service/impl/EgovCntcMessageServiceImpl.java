@@ -8,7 +8,7 @@ import egovframework.com.ssi.syi.ims.service.CntcMessageItemVO;
 import egovframework.com.ssi.syi.ims.service.CntcMessageVO;
 import egovframework.com.ssi.syi.ims.service.EgovCntcMessageService;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 import javax.annotation.Resource;
 

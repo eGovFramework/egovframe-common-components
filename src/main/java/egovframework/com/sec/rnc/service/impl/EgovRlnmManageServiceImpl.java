@@ -3,7 +3,7 @@ package egovframework.com.sec.rnc.service.impl;
 import egovframework.com.sec.rnc.service.EgovRlnmManageService;
 import egovframework.com.sec.rnc.service.EgovSocketClient;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 import org.springframework.stereotype.Service;
 

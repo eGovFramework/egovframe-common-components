@@ -80,7 +80,7 @@ function jusoCallBack(zipNo,rnMgtSn,siNm,sggNm,roadFullAddr,buldMnnm,buldSlno,bd
 </head>
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg"/></noscript>
-<form:form commandName="zip" name="zip" method="post">
+<form:form modelAttribute="zip" name="zip" method="post">
 <div class="note">
 
 <!-- 상단 타이틀  영역 -->

@@ -35,7 +35,7 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.smt.sim.service.EgovIndvdlSchdulManageService;
 import egovframework.com.cop.smt.sim.service.IndvdlSchdulManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import egovframework.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.fdl.property.EgovPropertyService;
 /**
  * 일정관리를 처리하는 Controller Class 구현
  * @author 공통서비스 장동한

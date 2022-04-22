@@ -183,7 +183,7 @@ function fnInsert(form){
 <body onload="fn_egov_init()">
 
 <!-- content start -->
-<form:form commandName="entrprsManageVO" action="${pageContext.request.contextPath}/uss/umt/EgovEntrprsMberInsert.do" name="entrprsManageVO" method="post" onSubmit="fnInsert(document.forms[0]); return false;"> 
+<form:form modelAttribute="entrprsManageVO" action="${pageContext.request.contextPath}/uss/umt/EgovEntrprsMberInsert.do" name="entrprsManageVO" method="post" onSubmit="fnInsert(document.forms[0]); return false;"> 
 
 <!-- 상세정보 사용자 삭제시 prameter 전달용 input -->
 <input name="checkedIdForDel" type="hidden" />

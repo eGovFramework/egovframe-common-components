@@ -111,7 +111,7 @@ function fncUpdtBndtDiary() {
 <div class="board">
 	<h1><spring:message code="comUssIonBnt.bndtDiaryUpdt.title"/></h1><!-- 제목아이콘이미지/당직일지  수정 -->
 
-	<form:form commandName="bndtDiary" name="bndtDiary" method="post" action="${pageContext.request.contextPath}/uss/ion/bnt/updtBndtDiary.do">
+	<form:form modelAttribute="bndtDiary" name="bndtDiary" method="post" action="${pageContext.request.contextPath}/uss/ion/bnt/updtBndtDiary.do">
 	<div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="<spring:message code="comUssIonBnt.common.submit"/>" title="<spring:message code="comUssIonBnt.common.submit"/>"></div><!-- 전송 -->
 	<input name="cmd" type="hidden" value="<c:out value='updt'/>"/>
 	<input name="diaryForUpdt" type="hidden" />

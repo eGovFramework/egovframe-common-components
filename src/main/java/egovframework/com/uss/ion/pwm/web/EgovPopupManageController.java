@@ -30,9 +30,10 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.pwm.service.EgovPopupManageService;
 import egovframework.com.uss.ion.pwm.service.PopupManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import egovframework.rte.fdl.property.EgovPropertyService;
-import egovframework.rte.psl.dataaccess.util.EgovMap;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
  * 개요
@@ -85,7 +86,8 @@ public class EgovPopupManageController {
 	 */
 	@IncludedInfo(name = "팝업창관리", order = 720, gid = 50)
 	@RequestMapping(value = "/uss/ion/pwm/listPopup.do")
-	public String egovPopupManageList(@RequestParam Map<?, ?> commandMap, PopupManageVO popupManageVO, ModelMap model) throws Exception {
+	public String egovPopupManageList(@RequestParam Map<?, ?> commandMap, PopupManageVO popupManageVO, ModelMap model)
+		throws Exception {
 
 		/** EgovPropertyService.sample */
 		popupManageVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -104,8 +106,10 @@ public class EgovPopupManageController {
 		List<?> reusltList = egovPopupManageService.selectPopupList(popupManageVO);
 		model.addAttribute("resultList", reusltList);
 
-		model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword"));
-		model.addAttribute("searchCondition", commandMap.get("searchCondition") == null ? "" : (String) commandMap.get("searchCondition"));
+		model.addAttribute("searchKeyword",
+			commandMap.get("searchKeyword") == null ? "" : (String)commandMap.get("searchKeyword"));
+		model.addAttribute("searchCondition",
+			commandMap.get("searchCondition") == null ? "" : (String)commandMap.get("searchCondition"));
 
 		int totCnt = egovPopupManageService.selectPopupListCount(popupManageVO);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -124,11 +128,12 @@ public class EgovPopupManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/ion/pwm/detailPopup.do")
-	public String egovPopupManageDetail(PopupManageVO popupManageVO, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+	public String egovPopupManageDetail(PopupManageVO popupManageVO, @RequestParam Map<?, ?> commandMap, ModelMap model)
+		throws Exception {
 
 		String sLocationUrl = "egovframework/com/uss/ion/pwm/EgovPopupDetail";
 
-		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
+		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
 
 		if (sCmd.equals("del")) {
 			egovPopupManageService.deletePopup(popupManageVO);
@@ -153,7 +158,8 @@ public class EgovPopupManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/ion/pwm/updtPopup.do")
-	public String egovPopupManageUpdt(@RequestParam Map<?, ?> commandMap, PopupManageVO popupManageVO, BindingResult bindingResult, ModelMap model) throws Exception {
+	public String egovPopupManageUpdt(@RequestParam Map<?, ?> commandMap, PopupManageVO popupManageVO,
+		BindingResult bindingResult, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
@@ -162,11 +168,11 @@ public class EgovPopupManageController {
 		}
 
 		// 로그인 객체 선언
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
 		String sLocationUrl = "egovframework/com/uss/ion/pwm/EgovPopupUpdt";
 
-		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
+		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
 
 		//팝업창시작일자(시)
 		model.addAttribute("ntceBgndeHH", getTimeHH());
@@ -219,8 +225,9 @@ public class EgovPopupManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/ion/pwm/registPopup.do")
-	public String egovPopupManageRegist(@RequestParam Map<?, ?> commandMap, @ModelAttribute("popupManageVO") PopupManageVO popupManageVO, BindingResult bindingResult,
-			ModelMap model) throws Exception {
+	public String egovPopupManageRegist(@RequestParam Map<?, ?> commandMap,
+		@ModelAttribute("popupManageVO") PopupManageVO popupManageVO, BindingResult bindingResult,
+		ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
@@ -229,11 +236,11 @@ public class EgovPopupManageController {
 		}
 
 		// 로그인 객체 선언
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
 		String sLocationUrl = "egovframework/com/uss/ion/pwm/EgovPopupRegist";
 
-		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
+		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
 		LOGGER.info("cmd => {}", sCmd);
 
 		if (sCmd.equals("save")) {
@@ -271,7 +278,8 @@ public class EgovPopupManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/ion/pwm/ajaxPopupManageInfo.do")
-	public void egovPopupManageInfoAjax(@RequestParam Map<?, ?> commandMap, HttpServletResponse response, PopupManageVO popupManageVO) throws Exception {
+	public void egovPopupManageInfoAjax(@RequestParam Map<?, ?> commandMap, HttpServletResponse response,
+		PopupManageVO popupManageVO) throws Exception {
 
 		response.setHeader("Content-Type", "text/html;charset=utf-8");
 		PrintWriter out = new PrintWriter(new OutputStreamWriter(response.getOutputStream(), "UTF-8"));
@@ -288,7 +296,7 @@ public class EgovPopupManageController {
 		sPrint = sPrint + "||" + popupManageVOs.getPopupHlc();
 		sPrint = sPrint + "||" + popupManageVOs.getPopupWlc();
 		sPrint = sPrint + "||" + popupManageVOs.getStopVewAt();
-		out.print(sPrint);
+		out.print(EgovWebUtil.clearXSSMinimum(sPrint));//2022.01 Potential XSS in Servlet
 		out.flush();
 	}
 
@@ -300,24 +308,27 @@ public class EgovPopupManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/ion/pwm/openPopupManage.do")
-	public String egovPopupManagePopupOpen(@RequestParam("fileUrl") String fileUrl, @RequestParam("stopVewAt") String stopVewAt, @RequestParam("popupId") String popupId,
-			ModelMap model) throws Exception {
+	public String egovPopupManagePopupOpen(@RequestParam("fileUrl") String fileUrl,
+		@RequestParam("stopVewAt") String stopVewAt, @RequestParam("popupId") String popupId,
+		ModelMap model) throws Exception {
 
 		model.addAttribute("stopVewAt", stopVewAt);
 		model.addAttribute("popupId", popupId);
-		
+
 		fileUrl = EgovWebUtil.filePathBlackList(fileUrl);
-		
+
 		List<?> popupWhiteList = egovPopupManageService.selectPopupWhiteList();
-		LOGGER.debug("Open Popup > WhiteList Count = {}",popupWhiteList.size());
-		if ( fileUrl == null ) fileUrl = "";
-		for(Object obj : popupWhiteList){
-            EgovMap map = (EgovMap)obj;
-			LOGGER.debug("Open Popup > whiteList fileUrl = "+map.get("fileUrl"));
-            if ( fileUrl.equals(map.get("fileUrl")) ) {
-            	return fileUrl;
-            }
-        }
+		LOGGER.debug("Open Popup > WhiteList Count = {}", popupWhiteList.size());
+		if (fileUrl == null) {
+			fileUrl = "";
+		}
+		for (Object obj : popupWhiteList) {
+			EgovMap map = (EgovMap)obj;
+			LOGGER.debug("Open Popup > whiteList fileUrl = " + map.get("fileUrl"));
+			if (fileUrl.equals(map.get("fileUrl"))) {
+				return fileUrl;
+			}
+		}
 		//System.out.println("===>>> "+popupWhiteList.size());
 		LOGGER.debug("Open Popup > WhiteList mismatch! Please check Admin page!");
 		return "egovframework/com/cmm/egovError";

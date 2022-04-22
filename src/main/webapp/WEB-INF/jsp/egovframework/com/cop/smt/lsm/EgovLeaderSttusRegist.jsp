@@ -88,7 +88,7 @@
 
 <div id="border" style="width:730px">
 
-<form:form commandName="leaderSttusVO" name="leaderSttusVO" method="post" action="${pageContext.request.contextPath}/cop/smt/lsm/mng/insertLeaderSttus.do' />">
+<form:form modelAttribute="leaderSttusVO" name="leaderSttusVO" method="post" action="${pageContext.request.contextPath}/cop/smt/lsm/mng/insertLeaderSttus.do' />">
 
 	<table width="100%" cellpadding="8" class="table-search" border="0">
 	 <tr>

@@ -69,7 +69,7 @@ function fn_egov_save_QustnrItemManage(){
 
 <div class="wTableFrm">
 <!-- 상단타이틀 -->
-<form:form commandName="qustnrItemManageVO" name="qustnrItemManageVO" action="${pageContext.request.contextPath}/uss/olp/qim/EgovQustnrItemManageModify.do" method="post" enctype="multipart/form-data" onSubmit="fn_egov_save_QustnrItemManage(document.forms[0]); return false;">
+<form:form modelAttribute="qustnrItemManageVO" name="qustnrItemManageVO" action="${pageContext.request.contextPath}/uss/olp/qim/EgovQustnrItemManageModify.do" method="post" enctype="multipart/form-data" onSubmit="fn_egov_save_QustnrItemManage(document.forms[0]); return false;">
  
 <!-- 타이틀 -->
 <h2>${pageTitle} <spring:message code="title.update" /></h2>

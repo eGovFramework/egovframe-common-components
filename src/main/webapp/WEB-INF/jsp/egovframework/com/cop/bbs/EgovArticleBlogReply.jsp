@@ -145,7 +145,7 @@ function fn_egov_reply_article(form){
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form commandName="articleVO" action="${pageContext.request.contextPath}/cop/bbs/replyArticle.do" method="post" onSubmit="fn_egov_reply_article(document.forms[0]); return false;" enctype="multipart/form-data"> 
+<form:form modelAttribute="articleVO" action="${pageContext.request.contextPath}/cop/bbs/replyArticle.do" method="post" onSubmit="fn_egov_reply_article(document.forms[0]); return false;" enctype="multipart/form-data"> 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.create" /></h2>

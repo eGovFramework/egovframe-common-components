@@ -62,7 +62,7 @@ function fn_egov_inqire_code() {
 <body onLoad="fn_egov_init();">
 
 <!-- 상단타이틀 -->
-<form:form commandName="cmmnClCodeVO" action="${pageContext.request.contextPath}/sym/ccm/ccc/UpdateCcmCmmnClCode.do" method="post" onSubmit="fn_egov_updt_code(document.forms[0]); return false;">  
+<form:form modelAttribute="cmmnClCodeVO" action="${pageContext.request.contextPath}/sym/ccm/ccc/UpdateCcmCmmnClCode.do" method="post" onSubmit="fn_egov_updt_code(document.forms[0]); return false;">  
 <div class="wTableFrm">
 	<h2>${pageTitle} <spring:message code="title.update" /></h2>
 

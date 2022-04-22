@@ -71,7 +71,7 @@
     <td width="700">
 
 <!-- ********** 여기서 부터 본문 내용 *************** -->
-<form:form commandName="mtgPlaceManage" name="mtgPlaceManage" method="post" >
+<form:form modelAttribute="mtgPlaceManage" name="mtgPlaceManage" method="post" >
 <div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="전송" title="전송"></div>
 <input type="hidden" name="cmd" >
 <!-- 검색조건 유지 -->

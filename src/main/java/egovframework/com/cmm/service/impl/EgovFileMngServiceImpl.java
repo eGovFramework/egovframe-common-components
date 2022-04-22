@@ -7,8 +7,14 @@ import java.util.Map;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.FileVO;
 
+<<<<<<< HEAD
 import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import lombok.RequiredArgsConstructor;
+=======
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+
+import javax.annotation.Resource;
+>>>>>>> upstream/master
 
 import org.springframework.stereotype.Service;
 

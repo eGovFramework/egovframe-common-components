@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="egovOnepassDAO">
+
+    <select id="onePassCheckIdDplct" resultType="int">
+		SELECT COUNT(1) "usedCnt"
+		FROM (
+			SELECT EMPLYR_ID "userId" FROM COMTNEMPLYRINFO
+			UNION ALL
+			SELECT ENTRPRS_MBER_ID "userId" FROM COMTNENTRPRSMBER
+			UNION ALL
+			SELECT MBER_ID "userId" FROM COMTNGNRLMBER
+		) A
+		WHERE "userId" = #{checkId}
+    </select>
+
+</mapper>

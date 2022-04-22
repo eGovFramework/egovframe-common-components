@@ -73,7 +73,7 @@ function fncShowMessg(){
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form commandName="blogMasterVO" action="${pageContext.request.contextPath}/cop/bbs/insertBlogMaster.do" method="post" onSubmit="fn_egov_regist_blog(document.forms[0]); return false;"> 
+<form:form modelAttribute="blogMasterVO" action="${pageContext.request.contextPath}/cop/bbs/insertBlogMaster.do" method="post" onSubmit="fn_egov_regist_blog(document.forms[0]); return false;"> 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.create" /></h2>

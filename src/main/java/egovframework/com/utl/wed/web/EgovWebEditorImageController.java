@@ -23,8 +23,8 @@ import egovframework.com.utl.fcc.service.EgovFileUploadUtil;
 import egovframework.com.utl.fcc.service.EgovFormBasedFileUtil;
 import egovframework.com.utl.fcc.service.EgovFormBasedFileVo;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import egovframework.rte.fdl.cryptography.EgovEnvCryptoService;
-import egovframework.rte.fdl.cryptography.EgovPasswordEncoder;
+import org.egovframe.rte.fdl.cryptography.EgovEnvCryptoService;
+import org.egovframe.rte.fdl.cryptography.EgovPasswordEncoder;
 
 /**
  * 웹에디터 이미지 upload 처리 Controller

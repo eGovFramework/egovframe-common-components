@@ -86,7 +86,7 @@ function selectList(){
 <c:set var="vurl"><spring:message code="comSymPrm.programListDetailSelectUpdt.url"/></c:set>
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
-<form:form commandName="progrmManageVO" method="post">
+<form:form modelAttribute="progrmManageVO" method="post">
     <!-- 검색조건 유지 -->
     <input type="hidden" name="searchCondition" value="<c:out value='${searchVO.searchCondition}'/>"/>
     <input type="hidden" name="searchKeyword" value="<c:out value='${searchVO.searchKeyword}'/>"/>

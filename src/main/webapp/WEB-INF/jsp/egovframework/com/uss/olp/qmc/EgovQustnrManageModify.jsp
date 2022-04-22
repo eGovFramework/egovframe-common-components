@@ -126,7 +126,7 @@ String.prototype.replaceAll = function(src, repl){
 
 <div class="wTableFrm">
 <!-- 상단타이틀 -->
-<form:form commandName="qustnrManageVO" name="qustnrManageVO" action="${pageContext.request.contextPath}/uss/olp/qmc/EgovQustnrManageModify.do" method="post" enctype="multipart/form-data" onSubmit="fn_egov_save_QustnrTmplatManage(document.forms[0]); return false;">
+<form:form modelAttribute="qustnrManageVO" name="qustnrManageVO" action="${pageContext.request.contextPath}/uss/olp/qmc/EgovQustnrManageModify.do" method="post" enctype="multipart/form-data" onSubmit="fn_egov_save_QustnrTmplatManage(document.forms[0]); return false;">
  
 <!-- 타이틀 -->
 <h2>${pageTitle} <spring:message code="title.update" /></h2>

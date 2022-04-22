@@ -2,7 +2,7 @@ package egovframework.com.cop.scp.service;
 
 import java.util.Map;
 
-import egovframework.rte.fdl.cmmn.exception.FdlException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 
 public interface EgovArticleScrapService {
 

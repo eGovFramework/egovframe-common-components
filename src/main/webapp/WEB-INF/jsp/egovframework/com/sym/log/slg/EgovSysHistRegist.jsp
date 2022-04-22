@@ -58,7 +58,7 @@
 </head>
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
-<form:form commandName="history" name="history" method="post" enctype="multipart/form-data" >
+<form:form modelAttribute="history" name="history" method="post" enctype="multipart/form-data" >
 <input name="pageIndex" type="hidden" value="1" />
 <input type="hidden" name="posblAtchFileNumber" value="3" />
 

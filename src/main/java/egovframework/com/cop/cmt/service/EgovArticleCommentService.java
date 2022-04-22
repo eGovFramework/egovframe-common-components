@@ -2,7 +2,7 @@ package egovframework.com.cop.cmt.service;
 
 import java.util.Map;
 
-import egovframework.rte.fdl.cmmn.exception.FdlException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 
 public interface EgovArticleCommentService {
 

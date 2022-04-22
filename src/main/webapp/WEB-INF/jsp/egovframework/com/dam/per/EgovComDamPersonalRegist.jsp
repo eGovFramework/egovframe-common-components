@@ -122,7 +122,7 @@ function fn_egov_get_CodeId(form){
 
 <body onLoad="fn_egov_initl_knoPersonal();">
 
-<form:form commandName="knoPersonal" name="knoPersonal" method="post" enctype="multipart/form-data">
+<form:form modelAttribute="knoPersonal" name="knoPersonal" method="post" enctype="multipart/form-data">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->

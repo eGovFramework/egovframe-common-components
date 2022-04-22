@@ -82,7 +82,7 @@
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.update" /></h2>
 	
-	<form:form commandName="fileSysMntrngVO" name="fileSysMntrngVO" method="post" action="${pageContext.request.contextPath}/utl/sys/fsm/updateFileSysMntrng.do">
+	<form:form modelAttribute="fileSysMntrngVO" name="fileSysMntrngVO" method="post" action="${pageContext.request.contextPath}/utl/sys/fsm/updateFileSysMntrng.do">
 
 	<!-- 등록폼 -->
 	<table class="wTable">

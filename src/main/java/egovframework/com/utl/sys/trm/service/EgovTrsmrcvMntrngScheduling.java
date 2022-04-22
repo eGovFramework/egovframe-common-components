@@ -3,11 +3,6 @@ package egovframework.com.utl.sys.trm.service;
 import java.util.Iterator;
 import java.util.List;
 
-import egovframework.com.utl.fcc.service.EgovStringUtil;
-
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import egovframework.rte.fdl.idgnr.EgovIdGnrService;
-
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
@@ -15,6 +10,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
+
+import egovframework.com.utl.fcc.service.EgovStringUtil;
+
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 
 /**
  * @Class Name : EgovTrsmrcvMntrngScheduling.java
@@ -78,13 +78,13 @@ public class EgovTrsmrcvMntrngScheduling extends EgovAbstractServiceImpl {
 		Class<?> klass = null;
 		TrsmrcvMntrngChecker checker = null;
 		while (iter.hasNext()) {
-			target = (TrsmrcvMntrng) iter.next();
+			target = iter.next();
 			LOGGER.debug("Data : {}", target);
 
 			try {
 				// Checker 클래스 생성.
 				klass = Class.forName(target.getTestClassNm());
-				checker = (TrsmrcvMntrngChecker) klass.newInstance();
+				checker = (TrsmrcvMntrngChecker)klass.newInstance();
 				LOGGER.debug("Just made: {}", checker);
 				// 서비스 체크 수행.
 				result = checker.check(target.getCntcId());
@@ -120,12 +120,13 @@ public class EgovTrsmrcvMntrngScheduling extends EgovAbstractServiceImpl {
 			trsmrcvMntrngLog.setMntrngSttus(target.getMntrngSttus());
 			trsmrcvMntrngLog.setFrstRegisterId("SYSTEM");
 			trsmrcvMntrngLog.setLastUpdusrId("SYSTEM");
-			
+
 			if (result != null && result.getCause() != null) {
 				LOGGER.debug("에러메시지: {}", result.getCause().getMessage());
 
 				if (result.getCause().getMessage() != null) {
-					trsmrcvMntrngLog.setLogInfo(result.getCause().getClass().getName() + " - " + result.getCause().getMessage());
+					trsmrcvMntrngLog
+						.setLogInfo(result.getCause().getClass().getName() + " - " + result.getCause().getMessage());
 				} else {
 					trsmrcvMntrngLog.setLogInfo("");
 				}
@@ -141,7 +142,7 @@ public class EgovTrsmrcvMntrngScheduling extends EgovAbstractServiceImpl {
 			LOGGER.debug(" email전송할 송수신모니터링로그 Data : {}", trsmrcvMntrngLog);
 
 			// email 전송.
-			if (!result.isNrmltAt()) {
+			if (result != null && !result.isNrmltAt()) { //2022.01. Possible null pointer dereference
 				sendEmail(trsmrcvMntrngLog);
 			}
 
@@ -178,7 +179,7 @@ public class EgovTrsmrcvMntrngScheduling extends EgovAbstractServiceImpl {
 		errorContents = errorContents + "모니터링시각 : " + mntrngLog.getCreatDt() + "\n";
 		errorContents = errorContents + "에러메시지 : " + mntrngLog.getLogInfo() + "\n";
 		text = EgovStringUtil.replace(text, "{에러내용}", errorContents);
-		
+
 		msg.setText(text);
 
 		this.mntrngMailSender.send(msg);

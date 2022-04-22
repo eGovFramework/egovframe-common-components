@@ -9,7 +9,7 @@
  *   2017.03.03       조성원 	         시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
  *   2017.03.03    조성원          시큐어코딩(ES)-Null Pointer 역참조[CWE-476]
  *   2018.03.19    신용호          createDirectories() 추가 : 여러 레벨의 디렉토리를 한번에 생성
- *   
+ *
  *
  *  @author 공통 서비스 개발팀 조재영,박지욱
  *  @since 2009. 01. 13
@@ -55,7 +55,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *  수정일                수정자           수정내용
  *  ----------   --------   ---------------------------
  *  2020.12.07   신용호            KISA 보안약점 조치
- *  
+ *
  * </pre>
  */
 
@@ -112,7 +112,8 @@ public class EgovFileTool {
 	public static List<String> getExistDirectory(String baseDirPath, String targetDirPath, int cnt) throws Exception {
 
 		// 인자값 유효하지 않은 경우 빈 ArrayList 리턴
-		if (baseDirPath == null || baseDirPath.equals("") || targetDirPath == null || targetDirPath.equals("") || cnt == 0) {
+		if (baseDirPath == null || baseDirPath.equals("") || targetDirPath == null || targetDirPath.equals("")
+			|| cnt == 0) {
 			return new ArrayList<String>();
 		}
 		int dirCnt = 0;
@@ -121,7 +122,7 @@ public class EgovFileTool {
 		} else {
 			dirCnt = cnt;
 		}
-		
+
 		// 찾은 결과를 전달할 ArrayList
 		List<String> result = new ArrayList<String>();
 		// 하위의 결과를 임시 보관할 ArrayList
@@ -139,7 +140,7 @@ public class EgovFileTool {
 		if (isExist) {
 			dirList = f.list();
 		}
-		
+
 		for (int i = 0; dirList != null && i < dirList.length; i++) {
 			//log.debug("dirList["+i+"]:"+dirList[i] +"--->"+baseDirPath+"/"+dirList[i]);
 			subDirPath = baseDirPath + "/" + dirList[i];
@@ -170,13 +171,13 @@ public class EgovFileTool {
 				// 하위에서 모두 발견된 경우 반복 체크는 종료한다.
 				if (dirCnt <= dirFindCnt) {
 					for (int j = 0; j < subResult.size(); j++) {
-						result.add((String) subResult.get(j));
+						result.add(subResult.get(j));
 					}
 
 					break;
 				} else {
 					for (int j = 0; j < subResult.size(); j++) {
-						result.add((String) subResult.get(j));
+						result.add(subResult.get(j));
 					}
 				}
 			}
@@ -198,7 +199,8 @@ public class EgovFileTool {
 	public static boolean getExistDirectory(String targetDirPath, String fromDate, String toDate) throws Exception {
 
 		// 인자값 유효하지 않은 경우 공백 리턴
-		if (targetDirPath == null || targetDirPath.equals("") || fromDate == null || fromDate.equals("") || toDate == null || toDate.equals("")) {
+		if (targetDirPath == null || targetDirPath.equals("") || fromDate == null || fromDate.equals("")
+			|| toDate == null || toDate.equals("")) {
 			return false;
 		}
 
@@ -209,7 +211,8 @@ public class EgovFileTool {
 		f = new File(EgovWebUtil.filePathBlackList(targetDirPath));
 		lastModifyedDate = getLastModifiedDateFromFile(f);
 		//log.debug("getLastModifiedDateFromFile(f):"+lastModifyedDate);
-		if (Integer.parseInt(lastModifyedDate) >= Integer.parseInt(fromDate) && Integer.parseInt(lastModifyedDate) <= Integer.parseInt(toDate)) {
+		if (Integer.parseInt(lastModifyedDate) >= Integer.parseInt(fromDate)
+			&& Integer.parseInt(lastModifyedDate) <= Integer.parseInt(toDate)) {
 			result = true;
 		}
 
@@ -302,7 +305,8 @@ public class EgovFileTool {
 	public static List<String> getLastDirectoryForModifiedDate(String baseDirPath, String fromDate, String toDate) {
 
 		// 인자값 유효하지 않은 경우 빈 ArrayList 리턴
-		if (baseDirPath == null || baseDirPath.equals("") || fromDate == null || fromDate.equals("") || toDate == null || toDate.equals("")) {
+		if (baseDirPath == null || baseDirPath.equals("") || fromDate == null || fromDate.equals("") || toDate == null
+			|| toDate.equals("")) {
 			return new ArrayList<String>();
 		}
 
@@ -318,19 +322,20 @@ public class EgovFileTool {
 		//KISA 보안약점 조치 (2018-10-29, 윤창원)
 		if (subDirList != null) {
 			for (int i = 0; i < subDirList.length; i++) {
-	
+
 				subDirPath = baseDirPath + "/" + subDirList[i];
 				childFile = new File(EgovWebUtil.filePathBlackList(subDirPath));
 				if (childFile.isDirectory()) {
 					//childResult = getLastDirectoryForModifiedDate(subDirPath , fromDate, toDate);
 					String lastModifyedDate = getLastModifiedDateFromFile(childFile);
-					if (Integer.parseInt(lastModifyedDate) >= Integer.parseInt(fromDate) && Integer.parseInt(lastModifyedDate) <= Integer.parseInt(toDate)) {
+					if (Integer.parseInt(lastModifyedDate) >= Integer.parseInt(fromDate)
+						&& Integer.parseInt(lastModifyedDate) <= Integer.parseInt(toDate)) {
 						result.add(baseDirPath + "/" + subDirList[i]);
 					}
 					childResult = getLastDirectoryForModifiedDate(baseDirPath + "/" + subDirList[i], fromDate, toDate);
 					// 하위디렉토리의 결과를 추가한다.
 					for (int j = 0; j < childResult.size(); j++) {
-						result.add((String) childResult.get(j));
+						result.add(childResult.get(j));
 					}
 				}
 			}
@@ -453,9 +458,9 @@ public class EgovFileTool {
 		try {
 			if (!file.exists()) {
 				//2017.02.08 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-				if(file.createNewFile()){
+				if (file.createNewFile()) {
 					LOGGER.debug("[file.createNewFile] file : Path Creation Success");
-				}else{
+				} else {
 					LOGGER.error("[file.createNewFile] file : Path Creation Fail");
 				}
 				file.getAbsolutePath();
@@ -464,7 +469,7 @@ public class EgovFileTool {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		}
-		
+
 		return result;
 	}
 
@@ -481,17 +486,17 @@ public class EgovFileTool {
 		String result = "";
 
 		if (!file.exists()) {
-			if(file.mkdirs()) {
+			if (file.mkdirs()) {
 				LOGGER.debug("[file.mkdirs] file : Path Creation Success");
-			}else{
+			} else {
 				LOGGER.error("[file.mkdirs] file : Path Creation Fail");
 			}
 			file.getAbsolutePath();
 		}
-		
+
 		return result;
 	}
-	
+
 	/**
 	 * 디렉토리에 파일이 존재하는지 체크하는 기능
 	 *
@@ -767,10 +772,12 @@ public class EgovFileTool {
 			} else {
 				// 파일의 최종수정일자 조회
 				long date = fileArray[i].lastModified();
-				java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyyMMdd", java.util.Locale.KOREA);
+				java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyyMMdd",
+					java.util.Locale.KOREA);
 				String lastUpdtDate = dateFormat.format(new java.util.Date(date));
 				// 수정기간 내에 존재하는지 확인
-				if (Integer.parseInt(lastUpdtDate) >= Integer.parseInt(updtFrom) && Integer.parseInt(lastUpdtDate) <= Integer.parseInt(updtTo)) {
+				if (Integer.parseInt(lastUpdtDate) >= Integer.parseInt(updtFrom)
+					&& Integer.parseInt(lastUpdtDate) <= Integer.parseInt(updtTo)) {
 					list.add(fileArray[i].getAbsolutePath());
 				}
 			}
@@ -828,8 +835,9 @@ public class EgovFileTool {
 			if (fileArray[i].isDirectory()) {
 				File[] tmpArray = fileArray[i].listFiles();
 				List<String> list1 = getSubFilesByOwner(tmpArray, owner);
-				if (list1 != null)
+				if (list1 != null) {
 					list.addAll(list1);
+				}
 
 				// 파일이면, 생성자가 같은지 비교한다.
 			} else {
@@ -837,12 +845,16 @@ public class EgovFileTool {
 				String fullpath = EgovWebUtil.filePathBlackList(fileArray[i].getAbsolutePath());
 				Process p = null;
 				if (Globals.OS_TYPE.equals("UNIX")) {
-					String[] command = { EgovProperties.getProperty(Globals.SHELL_FILE_PATH, "SHELL." + Globals.OS_TYPE + ".getDrctryByOwner"),
-							fullpath.substring(0, fullpath.lastIndexOf("/")), fullpath.substring(fullpath.lastIndexOf("/"), fullpath.length()), owner };
+					String[] command = {
+						EgovProperties.getProperty(Globals.SHELL_FILE_PATH,
+							"SHELL." + Globals.OS_TYPE + ".getDrctryByOwner"),
+						fullpath.substring(0, fullpath.lastIndexOf("/")),
+						fullpath.substring(fullpath.lastIndexOf("/"), fullpath.length()), owner};
 					p = Runtime.getRuntime().exec(command);
 					p.waitFor();
 				} else if (Globals.OS_TYPE.equals("WINDOWS")) {
-					String command = EgovProperties.getProperty(Globals.SHELL_FILE_PATH, "SHELL." + Globals.OS_TYPE + ".getDrctryByOwner");
+					String command = EgovProperties.getProperty(Globals.SHELL_FILE_PATH,
+						"SHELL." + Globals.OS_TYPE + ".getDrctryByOwner");
 					p = Runtime.getRuntime().exec(command);
 					p.waitFor();
 				}
@@ -863,7 +875,7 @@ public class EgovFileTool {
 					BufferedReader b_out = null;
 					try {
 						//2017.03.03 조성원 시큐어코딩(ES)-Null Pointer 역참조[CWE-476]
-						if(p != null){
+						if (p != null) {
 							b_out = new BufferedReader(new InputStreamReader(p.getInputStream()));
 							while (b_out.ready()) {
 								// 결과문자가 있으면 생성자가 일치하는 파일이 존재한다는 의미
@@ -946,12 +958,12 @@ public class EgovFileTool {
 			} else {
 				// 존재하지 않으면 생성함
 				//2017.02.08 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-				if(new File(file.getParent()).mkdirs()){
+				if (new File(file.getParent()).mkdirs()) {
 					LOGGER.debug("[file.mkdirs] file : File Creation Success");
-				}else{
+				} else {
 					LOGGER.error("[file.mkdirs] file : File Creation Fail");
 				}
-								
+
 				if (file.createNewFile()) {
 					result = file.getAbsolutePath();
 				}
@@ -992,9 +1004,9 @@ public class EgovFileTool {
 					if (f.isFile()) {
 						//디렉토리에 속한 파일들을 모두 삭제한다.
 						//2017.02.08 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-						if(f.delete()){
+						if (f.delete()) {
 							LOGGER.debug("[file.delete] f : File Deletion Success");
-						}else{
+						} else {
 							LOGGER.error("[file.delete] f : File Deletion Fail");
 						}
 					} else {
@@ -1168,7 +1180,8 @@ public class EgovFileTool {
 			} else {
 				// 파일의 최종수정일자 조회
 				long date = fileArray[i].lastModified();
-				java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyyMMdd", java.util.Locale.KOREA);
+				java.text.SimpleDateFormat dateFormat = new java.text.SimpleDateFormat("yyyyMMdd",
+					java.util.Locale.KOREA);
 				String lastUpdtDate = dateFormat.format(new java.util.Date(date));
 				if (Integer.parseInt(lastUpdtDate) == Integer.parseInt(updtDate)) {
 					list.add(fileArray[i].getAbsolutePath());
@@ -1206,8 +1219,9 @@ public class EgovFileTool {
 				StringBuffer strBuff = new StringBuffer();
 				String line = "";
 				while ((line = br.readLine()) != null) {
-					if (line.length() < MAX_STR_LEN)
+					if (line.length() < MAX_STR_LEN) {
 						strBuff.append(line);
+					}
 				}
 
 				// 2. 쌓은 내용을 특정 구분자로 파싱하여 String 배열로 얻는다.
@@ -1288,8 +1302,9 @@ public class EgovFileTool {
 				String line = "";
 				int readCnt = 0;
 				while ((line = br.readLine()) != null && readCnt < parLine) {
-					if (line.length() <= MAX_STR_LEN)
+					if (line.length() <= MAX_STR_LEN) {
 						strArr[readCnt++] = line;
+					}
 				}
 
 				// 2. Vector<ArrayList> 형태로 만든다.
@@ -1421,7 +1436,7 @@ public class EgovFileTool {
 
 		BufferedReader br1 = null;
 		BufferedReader br2 = null;
-		
+
 		try {
 			// 파일이며, 존재하면 파일 내용 비교
 			if (file1.exists() && file2.exists() && file1.isFile() && file2.isFile()) {
@@ -1433,16 +1448,18 @@ public class EgovFileTool {
 				br1 = new BufferedReader(new InputStreamReader(new FileInputStream(file1)));
 				String line1 = "";
 				while ((line1 = br1.readLine()) != null) {
-					if (line1.length() < MAX_STR_LEN)
+					if (line1.length() < MAX_STR_LEN) {
 						cmprText1.add(line1);
+					}
 				}
 
 				// 파일2 텍스트 내용
 				br2 = new BufferedReader(new InputStreamReader(new FileInputStream(file2)));
 				String line2 = "";
 				while ((line2 = br2.readLine()) != null) {
-					if (line2.length() <= MAX_STR_LEN)
+					if (line2.length() <= MAX_STR_LEN) {
 						cmprText2.add(line2);
+					}
 				}
 
 				// 내용 비교
@@ -1609,7 +1626,7 @@ public class EgovFileTool {
 				for (int i = 0; i < list.size(); i++) {
 					if (result) { //f(result != false){
 						// 원본파일 절대경로
-						String abspath = (String) list.get(i);
+						String abspath = list.get(i);
 
 						// 타겟파일이름 명명
 						File chkFile = new File(EgovWebUtil.filePathBlackList(abspath));
@@ -1623,11 +1640,10 @@ public class EgovFileTool {
 						result = execCopyFile(chkFile, tarFile);
 					}
 				} // end for
-			}
-			else {
+			} else {
 				result = false;
 			}
-				
+
 		}
 
 		return result;
@@ -1643,7 +1659,8 @@ public class EgovFileTool {
 	 * @return boolean result 복사여부 True / False
 	 * @exception Exception
 	 */
-	public static boolean copyFilesByUpdtPd(String source, String updtFrom, String updtTo, String target) throws Exception {
+	public static boolean copyFilesByUpdtPd(String source, String updtFrom, String updtTo, String target)
+		throws Exception {
 
 		// 복사여부
 		boolean result = true;
@@ -1669,7 +1686,7 @@ public class EgovFileTool {
 					if (result) { //f(result != false){
 
 						// 원본파일 절대경로
-						String abspath = (String) list.get(i);
+						String abspath = list.get(i);
 
 						// 타겟파일이름 명명
 						File chkFile = new File(EgovWebUtil.filePathBlackList(abspath));
@@ -1724,7 +1741,7 @@ public class EgovFileTool {
 
 					if (result) { //result != false
 						// 원본파일 절대경로
-						String abspath = (String) list.get(i);
+						String abspath = list.get(i);
 
 						// 타겟파일이름 명명
 						File chkFile = new File(EgovWebUtil.filePathBlackList(abspath));
@@ -1783,7 +1800,7 @@ public class EgovFileTool {
 					if (result) { //result != false
 
 						// 원본파일 절대경로
-						String abspath = (String) list.get(i);
+						String abspath = list.get(i);
 
 						// 타겟파일이름 명명
 						File chkFile = new File(EgovWebUtil.filePathBlackList(abspath));
@@ -1829,10 +1846,11 @@ public class EgovFileTool {
 			//예외상황에 따른 처리 추가함. -> 만약 tarFile 이 디렉토리명인 경우 디렉토리 밑으로 새로 파일을 생성해서 복사한다.. like DOS
 			File tarFile1 = tarFile;
 			if (tarFile1.isDirectory()) {
-				tarFile1 = new File(EgovWebUtil.filePathBlackList(tarFile1.getAbsolutePath()) + "/" + srcFile.getName());
+				tarFile1 = new File(
+					EgovWebUtil.filePathBlackList(tarFile1.getAbsolutePath()) + "/" + srcFile.getName());
 			}
 			fos = new FileOutputStream(tarFile1);
-			byte[] buffer = new byte[(int) BUFFER_SIZE];
+			byte[] buffer = new byte[(int)BUFFER_SIZE];
 			int i = 0;
 			if (fis != null && fos != null) {
 				while ((i = fis.read(buffer)) != -1) {
@@ -1906,7 +1924,8 @@ public class EgovFileTool {
 	public static String deleteDirectory(String dirDeletePath, String fromDate, String toDate) {
 
 		// 인자값 유효하지 않은 경우 블랭크 리턴
-		if (dirDeletePath == null || dirDeletePath.equals("") || fromDate == null || fromDate.equals("") || toDate == null || toDate.equals("")) {
+		if (dirDeletePath == null || dirDeletePath.equals("") || fromDate == null || fromDate.equals("")
+			|| toDate == null || toDate.equals("")) {
 			return "";
 		}
 
@@ -1918,8 +1937,9 @@ public class EgovFileTool {
 		boolean isInCondition = false;
 		String lastModifyedDate = getLastModifiedDateFromFile(file);
 		//log.debug("lastModifyedDate:"+lastModifyedDate);
-		
-		if (Integer.parseInt(lastModifyedDate) >= Integer.parseInt(fromDate) && Integer.parseInt(lastModifyedDate) <= Integer.parseInt(toDate)) {
+
+		if (Integer.parseInt(lastModifyedDate) >= Integer.parseInt(fromDate)
+			&& Integer.parseInt(lastModifyedDate) <= Integer.parseInt(toDate)) {
 			isInCondition = true;
 		}
 
@@ -1952,7 +1972,9 @@ public class EgovFileTool {
 			// 유닉스 파일시스템명 조회 (df -k $1 | grep $2 | awk -F" " '{print $7}')
 			if (Globals.OS_TYPE.equals("UNIX")) {
 				Process p = null;
-				String[] command = { EgovProperties.getProperty(Globals.SHELL_FILE_PATH, "SHELL." + Globals.OS_TYPE + ".getMountLc"), src, "/" };
+				String[] command = {
+					EgovProperties.getProperty(Globals.SHELL_FILE_PATH, "SHELL." + Globals.OS_TYPE + ".getMountLc"),
+					src, "/"};
 				p = Runtime.getRuntime().exec(command);
 				//p.waitFor();
 
@@ -2073,9 +2095,11 @@ public class EgovFileTool {
 				String fname = EgovStringUtil.isNullToString(srcFile.getName());
 
 				Process p = null;
-				String cmdStr = EgovStringUtil.isNullToString(EgovProperties.getProperty(Globals.SHELL_FILE_PATH, "SHELL." + Globals.OS_TYPE + ".getDrctryOwner"));
-				String[] command = { cmdStr.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR), parentPath.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR),
-						fname };
+				String cmdStr = EgovStringUtil.isNullToString(EgovProperties.getProperty(Globals.SHELL_FILE_PATH,
+					"SHELL." + Globals.OS_TYPE + ".getDrctryOwner"));
+				String[] command = {cmdStr.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR),
+					parentPath.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR),
+					fname};
 				p = Runtime.getRuntime().exec(command);
 				p.waitFor();
 				//프로세스 에러시 종료
@@ -2085,7 +2109,7 @@ public class EgovFileTool {
 						//String line = b_err.readLine();
 						//if (line.length() <= MAX_STR_LEN) log.debug("ERR\n" + line);
 					}
-				} else if (p != null) {	//프로세스 실행 성공시 결과 확인
+				} else if (p != null) { //프로세스 실행 성공시 결과 확인
 					boolean result = false;
 					b_out = new BufferedReader(new InputStreamReader(p.getInputStream()));
 					while (b_out.ready()) {
@@ -2126,7 +2150,7 @@ public class EgovFileTool {
 		String src = file.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR);
 		// 2020-12-07 KISA 보안코드 검증 조치
 		src = EgovWebUtil.filePathBlackList(src);
-		
+
 		BufferedReader b_err = null;
 		BufferedReader b_out = null;
 		try {
@@ -2139,7 +2163,8 @@ public class EgovFileTool {
 
 				Process p = null;
 				if (Globals.OS_TYPE.equals("UNIX")) {
-					String[] command = { EgovProperties.getProperty(Globals.SHELL_FILE_PATH, "SHELL." + Globals.OS_TYPE + ".getDrctryAccess"), parentPath, fname };
+					String[] command = {EgovProperties.getProperty(Globals.SHELL_FILE_PATH,
+						"SHELL." + Globals.OS_TYPE + ".getDrctryAccess"), parentPath, fname};
 					p = Runtime.getRuntime().exec(command);
 					p.waitFor();
 					//프로세스 에러시 종료
@@ -2167,7 +2192,7 @@ public class EgovFileTool {
 						b_out.close();
 					}
 				} else if (Globals.OS_TYPE.equals("WINDOWS")) {
-					String[] command = { "cmd", "/c", "attrib", src };
+					String[] command = {"cmd", "/c", "attrib", src};
 					p = Runtime.getRuntime().exec(command);
 					p.waitFor();
 					//프로세스 에러시 종료
@@ -2177,7 +2202,7 @@ public class EgovFileTool {
 							//String line = b_err.readLine();
 							//if (line.length() <= MAX_STR_LEN) log.debug("ERR\n" + line);
 						}
-					} else {	//프로세스 실행 성공시 결과 확인
+					} else { //프로세스 실행 성공시 결과 확인
 						boolean result = false;
 						b_out = new BufferedReader(new InputStreamReader(p.getInputStream()));
 						while (b_out.ready()) {
@@ -2306,7 +2331,8 @@ public class EgovFileTool {
 	public static boolean copyDirectory(String originalDirPath, String targetDirPath) throws Exception {
 
 		// 인자값 유효하지 않은 경우 공백 리턴
-		if (originalDirPath == null || originalDirPath.equals("") || targetDirPath == null || targetDirPath.equals("")) {
+		if (originalDirPath == null || originalDirPath.equals("") || targetDirPath == null
+			|| targetDirPath.equals("")) {
 			return false;
 		}
 		boolean result = false;
@@ -2323,25 +2349,28 @@ public class EgovFileTool {
 			} else {
 				File targetDir = new File(EgovWebUtil.filePathBlackList(targetDirPath1));
 				//2017.02.08 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-				if(targetDir.mkdirs()){
+				if (targetDir.mkdirs()) {
 					LOGGER.debug("[file.mkdirs] targetDir : Directory Creation Success");
-				}else{					
+				} else {
 					LOGGER.error("[file.mkdirs] targetDir : Directory Creation Fail");
 				}
-				
+
 				// 디렉토리에 속한 파일들을 복사한다.
 				String[] originalFileList = f.list();
 				//KISA 보안약점 조치 (2018-10-29, 윤창원)
 				if (originalFileList != null) {
 					if (originalFileList.length > 0) {
 						for (int i = 0; i < originalFileList.length; i++) {
-							File subF = new File(EgovWebUtil.filePathBlackList(originalDirPath) + FILE_SEPARATOR + originalFileList[i]);
+							File subF = new File(
+								EgovWebUtil.filePathBlackList(originalDirPath) + FILE_SEPARATOR + originalFileList[i]);
 							if (subF.isFile()) {
 								//하위목록이 파일이면 파일복사실행 -> 실패 발생하는 경우 복사를 중단한다.
-								result = copyFile(originalDirPath + FILE_SEPARATOR + originalFileList[i], targetDir.getAbsolutePath() + FILE_SEPARATOR + originalFileList[i]);
+								result = copyFile(originalDirPath + FILE_SEPARATOR + originalFileList[i],
+									targetDir.getAbsolutePath() + FILE_SEPARATOR + originalFileList[i]);
 							} else {
 								//하위목록이 디렉토리이면 복사를 재귀적으로 호출한다.
-								result = copyDirectory(originalDirPath + "/" + originalFileList[i], targetDirPath1 + "/" + originalFileList[i]);
+								result = copyDirectory(originalDirPath + "/" + originalFileList[i],
+									targetDirPath1 + "/" + originalFileList[i]);
 							}
 						}
 					} else {
@@ -2368,11 +2397,13 @@ public class EgovFileTool {
 	 * @param toDate 디렉토리의 복사조건 종료일자
 	 * @return boolean result 복사가 성공함변 true, 실패하면 false를 리턴한다.
 	 */
-	public static boolean copyDirectory(String originalDirPath, String targetDirPath, String fromDate, String toDate) throws Exception {
+	public static boolean copyDirectory(String originalDirPath, String targetDirPath, String fromDate, String toDate)
+		throws Exception {
 
 		// 인자값 유효하지 않은 경우 공백 리턴
-		if (originalDirPath == null || originalDirPath.equals("") || targetDirPath == null || targetDirPath.equals("") || fromDate == null || fromDate.equals("") || toDate == null
-				|| toDate.equals("")) {
+		if (originalDirPath == null || originalDirPath.equals("") || targetDirPath == null || targetDirPath.equals("")
+			|| fromDate == null || fromDate.equals("") || toDate == null
+			|| toDate.equals("")) {
 			return false;
 		}
 		boolean result = false;
@@ -2381,7 +2412,8 @@ public class EgovFileTool {
 		f = new File(EgovWebUtil.filePathBlackList(originalDirPath));
 		boolean isInCondition = false;
 		String lastModifyedDate = getLastModifiedDateFromFile(f);
-		if (Integer.parseInt(lastModifyedDate) >= Integer.parseInt(fromDate) && Integer.parseInt(lastModifyedDate) <= Integer.parseInt(toDate)) {
+		if (Integer.parseInt(lastModifyedDate) >= Integer.parseInt(fromDate)
+			&& Integer.parseInt(lastModifyedDate) <= Integer.parseInt(toDate)) {
 			isInCondition = true;
 		}
 
@@ -2395,26 +2427,29 @@ public class EgovFileTool {
 			} else {
 				File targetDir = new File(EgovWebUtil.filePathBlackList(targetDirPath1));
 				//2017.02.08 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-				if(targetDir.mkdirs()){
+				if (targetDir.mkdirs()) {
 					LOGGER.debug("[file.mkdirs] targetDir : Directory Creation Success");
-				}else{					
+				} else {
 					LOGGER.error("[file.mkdirs] targetDir : Directory Creation Fail");
 				}
-				
+
 				// 디렉토리에 속한 파일들을 복사한다.
 				String[] originalFileList = f.list();
 				//KISA 보안약점 조치 (2018-10-29, 윤창원)
 				if (originalFileList != null) {
 					if (originalFileList.length > 0) {
 						for (int i = 0; i < originalFileList.length; i++) {
-							File subF = new File(EgovWebUtil.filePathBlackList(originalDirPath) + FILE_SEPARATOR + originalFileList[i]);
+							File subF = new File(
+								EgovWebUtil.filePathBlackList(originalDirPath) + FILE_SEPARATOR + originalFileList[i]);
 							if (subF.isFile()) {
 								//하위목록이 파일이면 파일복사실행 -> 실패 발생하는 경우 복사를 중단한다.
-								result = copyFile(originalDirPath + FILE_SEPARATOR + originalFileList[i], targetDir.getAbsolutePath() + FILE_SEPARATOR + originalFileList[i]);
+								result = copyFile(originalDirPath + FILE_SEPARATOR + originalFileList[i],
+									targetDir.getAbsolutePath() + FILE_SEPARATOR + originalFileList[i]);
 							} else {
 								//하위목록이 디렉토리이면 복사를 재귀적으로 호출한다.
 								//하위목록에 해당하는 폴더에 대해서는 생성일자 검사를 하지 않는다.(현재 폴더가 복사대상이면 현재폴더의 하위는 제외없이 복사함)
-								result = copyDirectory(originalDirPath + "/" + originalFileList[i], targetDirPath1 + "/" + originalFileList[i]);
+								result = copyDirectory(originalDirPath + "/" + originalFileList[i],
+									targetDirPath1 + "/" + originalFileList[i]);
 							}
 						}
 					} else {
@@ -2444,7 +2479,8 @@ public class EgovFileTool {
 	public static boolean copyDirectory(String originalDirPath, String targetDirPath, String owner) throws Exception {
 
 		// 인자값 유효하지 않은 경우 공백 리턴
-		if (originalDirPath == null || originalDirPath.equals("") || targetDirPath == null || targetDirPath.equals("") || owner == null || owner.equals("")) {
+		if (originalDirPath == null || originalDirPath.equals("") || targetDirPath == null || targetDirPath.equals("")
+			|| owner == null || owner.equals("")) {
 			return false;
 		}
 		boolean result = false;
@@ -2453,7 +2489,7 @@ public class EgovFileTool {
 		f = new File(EgovWebUtil.filePathBlackList(originalDirPath));
 		boolean isInCondition = false;
 		String realOwner = getOwner(originalDirPath);
-		if (realOwner.equals(owner)) {
+		if (realOwner != null && realOwner.equals(owner)) {//2022.01 Null pointers should not be dereferenced
 			isInCondition = true;
 		}
 
@@ -2466,28 +2502,31 @@ public class EgovFileTool {
 				result = false;
 			} else {
 				File targetDir = new File(EgovWebUtil.filePathBlackList(targetDirPath1));
-				
+
 				//2017.02.08 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-				if(targetDir.mkdirs()){
+				if (targetDir.mkdirs()) {
 					LOGGER.debug("[file.mkdirs] targetDir : Directory Creation Success");
-				}else{					
+				} else {
 					LOGGER.error("[file.mkdirs] targetDir : Directory Creation Fail");
 				}
-				
+
 				// 디렉토리에 속한 파일들을 복사한다.
 				String[] originalFileList = f.list();
 				//KISA 보안약점 조치 (2018-10-29, 윤창원)
 				if (originalFileList != null) {
 					if (originalFileList.length > 0) {
 						for (int i = 0; i < originalFileList.length; i++) {
-							File subF = new File(EgovWebUtil.filePathBlackList(originalDirPath) + FILE_SEPARATOR + originalFileList[i]);
+							File subF = new File(
+								EgovWebUtil.filePathBlackList(originalDirPath) + FILE_SEPARATOR + originalFileList[i]);
 							if (subF.isFile()) {
 								//하위목록이 파일이면 파일복사실행 -> 실패 발생하는 경우 복사를 중단한다.
-								result = copyFile(originalDirPath + FILE_SEPARATOR + originalFileList[i], targetDir.getAbsolutePath() + FILE_SEPARATOR + originalFileList[i]);
+								result = copyFile(originalDirPath + FILE_SEPARATOR + originalFileList[i],
+									targetDir.getAbsolutePath() + FILE_SEPARATOR + originalFileList[i]);
 							} else {
 								//하위목록이 디렉토리이면 복사를 재귀적으로 호출한다.
 								//하위목록에 해당하는 폴더에 대해서는 생성일자 검사를 하지 않는다.(현재 폴더가 복사대상이면 현재폴더의 하위는 제외없이 복사함)
-								result = copyDirectory(originalDirPath + "/" + originalFileList[i], targetDirPath1 + "/" + originalFileList[i]);
+								result = copyDirectory(originalDirPath + "/" + originalFileList[i],
+									targetDirPath1 + "/" + originalFileList[i]);
 							}
 						}
 					} else {
@@ -2554,7 +2593,8 @@ public class EgovFileTool {
 	public static boolean moveFile(String originalDirPath, String targetDirPath) throws Exception {
 
 		// 인자값 유효하지 않은 경우 공백 리턴
-		if (originalDirPath == null || originalDirPath.equals("") || targetDirPath == null || targetDirPath.equals("")) {
+		if (originalDirPath == null || originalDirPath.equals("") || targetDirPath == null
+			|| targetDirPath.equals("")) {
 			return false;
 		}
 		boolean result = false;
@@ -2574,10 +2614,13 @@ public class EgovFileTool {
 				} else {
 					// 새로 생성되는 경우만 진행한다. (이동쉘을 실행시킨다.)
 					//KISA 보안약점 조치 (2018-10-29, 윤창원)
-					String cmdStr = EgovStringUtil.isNullToString(EgovProperties.getProperty(Globals.SHELL_FILE_PATH, "SHELL." + Globals.OS_TYPE + ".moveDrctry"));
-					String[] command = { cmdStr.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR),
-							EgovWebUtil.filePathBlackList(originalDirPath.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR)),
-							EgovWebUtil.filePathBlackList(targetDirPath.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR)) };
+					String cmdStr = EgovStringUtil.isNullToString(EgovProperties.getProperty(Globals.SHELL_FILE_PATH,
+						"SHELL." + Globals.OS_TYPE + ".moveDrctry"));
+					String[] command = {cmdStr.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR),
+						EgovWebUtil.filePathBlackList(
+							originalDirPath.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR)),
+						EgovWebUtil.filePathBlackList(
+							targetDirPath.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR))};
 					Process p = Runtime.getRuntime().exec(command);
 					//String access = "";
 					p.waitFor();
@@ -2618,11 +2661,13 @@ public class EgovFileTool {
 	 * @param toDate 디렉토리의 이동조건 종료일자
 	 * @return boolean result 이동이 성공하면 true, 실패하면 false를 리턴한다.
 	 */
-	public static boolean moveFile(String originalDirPath, String targetDirPath, String fromDate, String toDate) throws Exception {
+	public static boolean moveFile(String originalDirPath, String targetDirPath, String fromDate, String toDate)
+		throws Exception {
 
 		// 인자값 유효하지 않은 경우 공백 리턴
-		if (originalDirPath == null || originalDirPath.equals("") || targetDirPath == null || targetDirPath.equals("") || fromDate == null || fromDate.equals("") || toDate == null
-				|| toDate.equals("")) {
+		if (originalDirPath == null || originalDirPath.equals("") || targetDirPath == null || targetDirPath.equals("")
+			|| fromDate == null || fromDate.equals("") || toDate == null
+			|| toDate.equals("")) {
 			return false;
 		}
 		boolean result = false;
@@ -2643,16 +2688,20 @@ public class EgovFileTool {
 					// 새로 생성되는 경우만 진행한다. (이동쉘을 실행시킨다.)
 					boolean isInCondition = false;
 					String lastModifyedDate = getLastModifiedDateFromFile(f);
-					if (Integer.parseInt(lastModifyedDate) >= Integer.parseInt(fromDate) && Integer.parseInt(lastModifyedDate) <= Integer.parseInt(toDate)) {
+					if (Integer.parseInt(lastModifyedDate) >= Integer.parseInt(fromDate)
+						&& Integer.parseInt(lastModifyedDate) <= Integer.parseInt(toDate)) {
 						isInCondition = true;
 					}
 
 					if (isInCondition) {
 						//KISA 보안약점 조치 (2018-10-29, 윤창원)
-						String cmdStr = EgovStringUtil.isNullToString(EgovProperties.getProperty(Globals.SHELL_FILE_PATH, "SHELL." + Globals.OS_TYPE + ".moveDrctry"));
-						String[] command = { cmdStr.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR),
-								EgovWebUtil.filePathBlackList(originalDirPath.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR)),
-								EgovWebUtil.filePathBlackList(targetDirPath.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR)) };
+						String cmdStr = EgovStringUtil.isNullToString(EgovProperties
+							.getProperty(Globals.SHELL_FILE_PATH, "SHELL." + Globals.OS_TYPE + ".moveDrctry"));
+						String[] command = {cmdStr.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR),
+							EgovWebUtil.filePathBlackList(
+								originalDirPath.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR)),
+							EgovWebUtil.filePathBlackList(
+								targetDirPath.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR))};
 						Process p = Runtime.getRuntime().exec(command);
 						String access = "";
 						p.waitFor();
@@ -2686,7 +2735,8 @@ public class EgovFileTool {
 				result = false;
 			}
 		} finally {
-			EgovResourceCloseHelper.close(b_err, b_out);;
+			EgovResourceCloseHelper.close(b_err, b_out);
+			;
 		}
 
 		return result;
@@ -2705,7 +2755,8 @@ public class EgovFileTool {
 	public static boolean moveFile(String originalDirPath, String targetDirPath, String owner) throws Exception {
 
 		// 인자값 유효하지 않은 경우 공백 리턴
-		if (originalDirPath == null || originalDirPath.equals("") || targetDirPath == null || targetDirPath.equals("") || owner == null || owner.equals("")) {
+		if (originalDirPath == null || originalDirPath.equals("") || targetDirPath == null || targetDirPath.equals("")
+			|| owner == null || owner.equals("")) {
 			return false;
 		}
 		//log.debug("originalDirPath:"+originalDirPath);
@@ -2728,16 +2779,19 @@ public class EgovFileTool {
 					// 새로 생성되는 경우만 진행한다. (이동쉘을 실행시킨다.)
 					boolean isInCondition = false;
 					String realOwner = getOwner(originalDirPath);
-					if (realOwner.equals(owner)) {
+					if (realOwner != null && realOwner.equals(owner)) {//2022.01 Null pointers should not be dereferenced
 						isInCondition = true;
 					}
 
 					if (isInCondition) {
 						//KISA 보안약점 조치 (2018-10-29, 윤창원)
-						String cmdStr = EgovStringUtil.isNullToString(EgovProperties.getProperty(Globals.SHELL_FILE_PATH, "SHELL." + Globals.OS_TYPE + ".moveDrctry"));
-						String[] command = { cmdStr.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR),
-								EgovWebUtil.filePathBlackList(originalDirPath.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR)),
-								EgovWebUtil.filePathBlackList(targetDirPath.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR)) };
+						String cmdStr = EgovStringUtil.isNullToString(EgovProperties
+							.getProperty(Globals.SHELL_FILE_PATH, "SHELL." + Globals.OS_TYPE + ".moveDrctry"));
+						String[] command = {cmdStr.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR),
+							EgovWebUtil.filePathBlackList(
+								originalDirPath.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR)),
+							EgovWebUtil.filePathBlackList(
+								targetDirPath.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR))};
 						Process p = Runtime.getRuntime().exec(command);
 						String access = "";
 						p.waitFor();
@@ -2750,7 +2804,7 @@ public class EgovFileTool {
 							}
 						}
 						//프로세스 실행 성공시 결과 확인
-						else if (p != null){
+						else if (p != null) {
 							result = false;
 							b_out = new BufferedReader(new InputStreamReader(p.getInputStream()));
 							while (b_out.ready()) {
@@ -2818,8 +2872,9 @@ public class EgovFileTool {
 					//int ch = 0;
 					String line = "";
 					while ((line = br.readLine()) != null) {
-						if (line.length() < MAX_STR_LEN)
+						if (line.length() < MAX_STR_LEN) {
 							lastStr = line;
+						}
 					}
 					//log.debug("lastStr:"+lastStr);
 					if (lastStr.equals("END")) {
@@ -2873,8 +2928,9 @@ public class EgovFileTool {
 				//int ch = 0;
 				String line = "";
 				while ((line = br.readLine()) != null) {
-					if (line.length() < MAX_STR_LEN)
+					if (line.length() < MAX_STR_LEN) {
 						lastStr = line;
+					}
 				}
 				br.close();
 
@@ -2931,7 +2987,7 @@ public class EgovFileTool {
 			fr = new FileReader(logF);
 			int ch = 0;
 			while ((ch = fr.read()) != -1) {
-				result.append((char) ch);
+				result.append((char)ch);
 			}
 		} finally {
 			EgovResourceCloseHelper.close(fr);

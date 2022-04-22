@@ -8,8 +8,8 @@ import org.springframework.stereotype.Service;
 
 import egovframework.com.cop.bbs.service.BoardMasterVO;
 import egovframework.com.cop.cmy.service.EgovCommuBBSMasterService;
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import egovframework.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 
 @Service("EgovCommuBBSMasterService")
 public class EgovCommuBBSMasterServiceImpl extends EgovAbstractServiceImpl implements EgovCommuBBSMasterService {

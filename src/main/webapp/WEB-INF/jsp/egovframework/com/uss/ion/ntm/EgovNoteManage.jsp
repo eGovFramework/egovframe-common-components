@@ -180,7 +180,7 @@ function  fn_egov_recptnEmpSearchPupup(){
 <!-- noscript 태그  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form commandName="noteManage"  name="noteManage"  action="/uss/ion/ntm/registEgovNoteManage.do" method="post" enctype="multipart/form-data" >
+<form:form modelAttribute="noteManage"  name="noteManage"  action="/uss/ion/ntm/registEgovNoteManage.do" method="post" enctype="multipart/form-data" >
 
 <div class="wTableFrm">
 	<h2>${pageTitle}</h2>

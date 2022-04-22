@@ -86,7 +86,7 @@
 
 	<body onLoad="fn_egov_initl_ProcessMon();">
 	
-	<form:form commandName="processMonVO" name="processMonVO" method="post">
+	<form:form modelAttribute="processMonVO" name="processMonVO" method="post">
 	
 	<div class="wTableFrm">
 		<!-- 타이틀 -->

@@ -16,7 +16,6 @@ package egovframework.com.cmm.web;
  * limitations under the License.
  */
 import java.io.UnsupportedEncodingException;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.List;
@@ -30,7 +29,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.util.StringUtils;
-import org.springframework.web.multipart.MultipartException;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
@@ -40,7 +38,7 @@ import egovframework.com.utl.fcc.service.EgovFileUploadUtil;
 
 /**
  * 실행환경의 파일업로드 처리를 위한 기능 클래스
- * 
+ *
  * @author 공통서비스개발팀 이삼섭
  * @since 2009.06.01
  * @version 1.0
@@ -84,6 +82,7 @@ public class EgovMultipartResolver extends CommonsMultipartResolver {
 		MultiValueMap<String, MultipartFile> multipartFiles = new LinkedMultiValueMap<String, MultipartFile>();
 		Map<String, String[]> multipartParameters = new HashMap<String, String[]>();
 		String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
+		Map<String, String> mpParamContentTypes = new HashMap<String, String>();
 
 		// Extract multipart files and multipart parameters.
 		for (Iterator<FileItem> it = fileItems.iterator(); it.hasNext();) {
@@ -103,7 +102,7 @@ public class EgovMultipartResolver extends CommonsMultipartResolver {
 				} else {
 					value = fileItem.getString();
 				}
-				String[] curParam = (String[]) multipartParameters.get(fileItem.getFieldName());
+				String[] curParam = multipartParameters.get(fileItem.getFieldName());
 				if (curParam == null) {
 					// simple form field
 					multipartParameters.put(fileItem.getFieldName(), new String[] { value });
@@ -112,6 +111,9 @@ public class EgovMultipartResolver extends CommonsMultipartResolver {
 					String[] newParam = StringUtils.addStringToArray(curParam, value);
 					multipartParameters.put(fileItem.getFieldName(), newParam);
 				}
+
+				//contentType 입력
+				mpParamContentTypes.put(fileItem.getFieldName(), fileItem.getContentType());
 			} else {
 
 				CommonsMultipartFile file = createMultipartFile(fileItem);
@@ -144,6 +146,6 @@ public class EgovMultipartResolver extends CommonsMultipartResolver {
 			}
 		}
 
-		return new MultipartParsingResult(multipartFiles, multipartParameters, null);
+		return new MultipartParsingResult(multipartFiles, multipartParameters, mpParamContentTypes);//2022.01. Method call passes null for non-null parameter 처리
 	}
 }

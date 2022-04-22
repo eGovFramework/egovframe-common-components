@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -25,8 +27,8 @@ import egovframework.com.uss.umt.service.MberManageVO;
 import egovframework.com.uss.umt.service.UserDefaultVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovFileScrty;
-import egovframework.rte.fdl.property.EgovPropertyService;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
  * 일반회원관련 요청을  비지니스 클래스로 전달하고 처리된결과를  해당   웹 화면으로 전달하는  Controller를 정의한다
@@ -40,12 +42,13 @@ import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.04.10  조재영          최초 생성
- *   2011.08.26	 정진오			IncludedInfo annotation 추가
- *   2014.12.08	 이기하			암호화방식 변경(EgovFileScrty.encryptPassword)
- *   2015.06.16	 조정국			수정시 유효성체크 후 에러발생 시 목록으로 이동하여 에러메시지 표시
- *   2015.06.19	 조정국			미인증 사용자에 대한 보안처리 기준 수정 (!isAuthenticated)
- *   2017.07.21  장동한 			로그인인증제한 작업
+ *   2009.04.10  조재영         최초 생성
+ *   2011.08.26  정진오         IncludedInfo annotation 추가
+ *   2014.12.08  이기하         암호화방식 변경(EgovFileScrty.encryptPassword)
+ *   2015.06.16  조정국         수정시 유효성체크 후 에러발생 시 목록으로 이동하여 에러메시지 표시
+ *   2015.06.19  조정국         미인증 사용자에 대한 보안처리 기준 수정 (!isAuthenticated)
+ *   2017.07.21  장동한         로그인인증제한 작업
+ *   2021.05.30  정진오         디지털원패스 정보 조회
  *
  * </pre>
  */
@@ -83,8 +86,6 @@ public class EgovMberManageController {
 		// 미인증 사용자에 대한 보안처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-//			return "redirect:/egovDevIndex.jsp";
-//			return "/EgovContent.do";
 			return "index";
 		}
 
@@ -220,7 +221,7 @@ public class EgovMberManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/uss/umt/EgovMberSelectUpdtView.do")
-	public String updateMberView(@RequestParam("selectedId") String mberId, @ModelAttribute("searchVO") UserDefaultVO userSearchVO, Model model) throws Exception {
+	public String updateMberView(@RequestParam("selectedId") String mberId, @ModelAttribute("searchVO") UserDefaultVO userSearchVO, HttpServletRequest request, Model model) throws Exception {
 
 		// 미인증 사용자에 대한 보안처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -254,6 +255,19 @@ public class EgovMberManageController {
 		MberManageVO mberManageVO = mberManageService.selectMber(mberId);
 		model.addAttribute("mberManageVO", mberManageVO);
 		model.addAttribute("userSearchVO", userSearchVO);
+
+		// 2021.05.30, 정진오, 디지털원패스 정보 조회
+		LoginVO loginVO = (LoginVO)request.getSession().getAttribute("loginVO");
+		String onepassUserId = loginVO.getUniqId();
+		String onepassUserkey = loginVO.getOnepassUserkey();
+		String onepassIntfToken = loginVO.getOnepassIntfToken();
+		if (mberId.equals(onepassUserId)) {
+			model.addAttribute("onepassUserkey", onepassUserkey); //디지털원패스 사용자키
+			model.addAttribute("onepassIntfToken", onepassIntfToken); //디지털원패스 사용자세션값
+		} else {
+			model.addAttribute("onepassUserkey", "");
+			model.addAttribute("onepassIntfToken", "");
+		}
 
 		return "egovframework/com/uss/umt/EgovMberSelectUpdt";
 	}
@@ -321,7 +335,7 @@ public class EgovMberManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/uss/umt/EgovMberDelete.do")
-	public String deleteMber(@RequestParam("checkedIdForDel") String checkedIdForDel, @ModelAttribute("searchVO") UserDefaultVO userSearchVO, Model model) throws Exception {
+	public String deleteMber(@RequestParam("checkedIdForDel") String checkedIdForDel, @ModelAttribute("searchVO") UserDefaultVO userSearchVO, HttpServletRequest request, Model model) throws Exception {
 
 		// 미인증 사용자에 대한 보안처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -329,9 +343,17 @@ public class EgovMberManageController {
 			return "index";
 		}
 
-		mberManageService.deleteMber(checkedIdForDel);
-		//Exception 없이 진행시 삭제성공메시지
-		model.addAttribute("resultMsg", "success.common.delete");
+		// 2021.05.30, 정진오, 디지털원패스 정보 조회
+		LoginVO loginVO = (LoginVO)request.getSession().getAttribute("loginVO");
+		String onepassUserkey = loginVO.getOnepassUserkey();
+		String onepassIntfToken = loginVO.getOnepassIntfToken();
+		if (onepassUserkey.isEmpty() && onepassIntfToken.isEmpty()) {
+			mberManageService.deleteMber(checkedIdForDel);
+			model.addAttribute("resultMsg", "success.common.delete");
+		} else {
+			model.addAttribute("resultMsg", "digital.onepass.delete.alert");
+		}
+
 		return "forward:/uss/umt/EgovMberManage.do";
 	}
 

@@ -64,7 +64,7 @@
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form commandName="ntwrkSvcMntrngVO" name="ntwrkSvcMntrngVO" method="post" action="${pageContext.request.contextPath}/utl/sys/nsm/modifyNtwrkSvcMntrng.do">
+<form:form modelAttribute="ntwrkSvcMntrngVO" name="ntwrkSvcMntrngVO" method="post" action="${pageContext.request.contextPath}/utl/sys/nsm/modifyNtwrkSvcMntrng.do">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->

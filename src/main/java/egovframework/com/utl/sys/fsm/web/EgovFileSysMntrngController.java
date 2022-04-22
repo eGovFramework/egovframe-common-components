@@ -26,8 +26,8 @@ import egovframework.com.utl.sys.fsm.service.FileSysMntrng;
 import egovframework.com.utl.sys.fsm.service.FileSysMntrngLogVO;
 import egovframework.com.utl.sys.fsm.service.FileSysMntrngVO;
 import egovframework.com.utl.sys.fsm.service.FileSystemChecker;
-import egovframework.rte.fdl.property.EgovPropertyService;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
  * 개요

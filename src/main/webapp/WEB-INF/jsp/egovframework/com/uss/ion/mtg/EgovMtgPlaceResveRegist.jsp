@@ -117,7 +117,7 @@
 <body onLoad="initCalendar();">
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form commandName="mtgPlaceResve" name="mtgPlaceResve" method="post" >
+<form:form modelAttribute="mtgPlaceResve" name="mtgPlaceResve" method="post" >
 <input type="hidden" name="cmd" value="insert" >
 <input type="hidden" name="dplactCeck" id="dplactCeck">
 <input type="hidden" name="mtgPlaceId" value ="<c:out value='${mtgPlaceManageVO.mtgPlaceId}'/>">

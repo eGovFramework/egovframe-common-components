@@ -182,7 +182,7 @@ function fnInsert(form){
 </style>
 </head>
 <body onload="fn_egov_init()">
-<form:form commandName="mberManageVO" action="${pageContext.request.contextPath}/uss/umt/EgovMberInsert.do" name="mberManageVO"  method="post" onSubmit="fnInsert(document.forms[0]); return false;"> 
+<form:form modelAttribute="mberManageVO" action="${pageContext.request.contextPath}/uss/umt/EgovMberInsert.do" name="mberManageVO"  method="post" onSubmit="fnInsert(document.forms[0]); return false;"> 
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->

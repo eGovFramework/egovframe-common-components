@@ -16,8 +16,8 @@ import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.sec.ram.service.AuthorRoleManage;
 import egovframework.com.sec.ram.service.AuthorRoleManageVO;
 import egovframework.com.sec.ram.service.EgovAuthorRoleManageService;
-import egovframework.rte.fdl.property.EgovPropertyService;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
  * 권한별 롤관리에 관한 controller 클래스를 정의한다.

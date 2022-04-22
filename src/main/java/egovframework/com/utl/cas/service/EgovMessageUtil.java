@@ -124,8 +124,10 @@ public class EgovMessageUtil {
 
 			strMsg = EgovProperties.getProperty(EgovProperties.RELATIVE_PATH_PREFIX + "egovProps" + PATH_SEP + "conf" + PATH_SEP + wrkCode + "message.properties", strCode);
 
-			for (int i = (arrParam != null && arrParam.length > 0 ? arrParam.length - 1 : -1); i >= 0; i--) {
-				strMsg = EgovStringUtil.replace(EgovStringUtil.isNullToString(strMsg), "{" + i + "}", arrParam[i]);//KISA 보안약점 조치 (2018-10-29, 윤창원)
+			if(arrParam != null) {
+				for (int i = (arrParam.length > 0 ? arrParam.length - 1 : -1); i >= 0; i--) {
+					strMsg = EgovStringUtil.replace(EgovStringUtil.isNullToString(strMsg), "{" + i + "}", arrParam[i]);//KISA 보안약점 조치 (2018-10-29, 윤창원)
+				}
 			}
 			message = strMsg;
 		} else {

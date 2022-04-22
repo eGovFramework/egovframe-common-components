@@ -86,7 +86,7 @@ function fn_egov_inqire_bbslist() {
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
 <!-- 상단타이틀 -->
-<form:form commandName="boardMasterVO" action="${pageContext.request.contextPath}/cop/bbs/updateBBSMaster.do" method="post" onSubmit="fn_egov_updt_bbs(document.forms[0]); return false;">  
+<form:form modelAttribute="boardMasterVO" action="${pageContext.request.contextPath}/cop/bbs/updateBBSMaster.do" method="post" onSubmit="fn_egov_updt_bbs(document.forms[0]); return false;">  
 <div class="wTableFrm">
 	<h2>${pageTitle} <spring:message code="title.update" /></h2><!-- 게시판 마스터 수정 -->
 

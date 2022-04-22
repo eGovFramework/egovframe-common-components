@@ -133,7 +133,7 @@ function fnImgChange(obj){
 
 <div class="wTableFrm">
 <!-- 상단타이틀 -->
-<form:form commandName="qustnrTmplatManageVO" name="qustnrTmplatManageVO" action="${pageContext.request.contextPath}/uss/olp/qtm/EgovQustnrTmplatManageModifyActor.do" method="post" enctype="multipart/form-data" >
+<form:form modelAttribute="qustnrTmplatManageVO" name="qustnrTmplatManageVO" action="${pageContext.request.contextPath}/uss/olp/qtm/EgovQustnrTmplatManageModifyActor.do" method="post" enctype="multipart/form-data" >
 
 <!-- 첨부파일 개수 설정을 위한 Hidden 설정 -->
 <input type="hidden" name="posblAtchFileNumber" id="posblAtchFileNumber" value="3" />

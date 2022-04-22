@@ -12,7 +12,7 @@ import org.springframework.web.context.request.WebRequest;
 public class EgovBindingInitializer implements WebBindingInitializer {
 
 
-	public void initBinder(WebDataBinder binder, WebRequest request) {
+	public void initBinder(WebDataBinder binder) {
 		SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
 		dateFormat.setLenient(false);
 		binder.registerCustomEditor(Date.class, new CustomDateEditor(dateFormat, false));

@@ -1,17 +1,17 @@
 package egovframework.com.cmm.context;
 
-import egovframework.com.cmm.service.EgovProperties;
-
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import egovframework.com.cmm.service.EgovProperties;
+
 /**
  * EgovWebServletContextListener 클래스
  * <Notice>
- * 	    데이터베이스 설정을 spring.profiles.active 방식으로 처리 
+ * 	    데이터베이스 설정을 spring.profiles.active 방식으로 처리
  * 		(공통컴포넌트 특성상 데이터베이스별 분리/개발,검증,운영서버로 분리 가능)
  * <Disclaimer>
  *		N/A
@@ -33,23 +33,25 @@ import org.slf4j.LoggerFactory;
 
 public class EgovWebServletContextListener implements ServletContextListener {
     private static final Logger LOGGER = LoggerFactory.getLogger(EgovWebServletContextListener.class);
-    
+
     public EgovWebServletContextListener(){
     	setEgovProfileSetting();
     }
 
-    public void contextInitialized(ServletContextEvent event){
+    @Override
+	public void contextInitialized(ServletContextEvent event){
     	if(System.getProperty("spring.profiles.active") == null){
     		setEgovProfileSetting();
     	}
     }
 
-    public void contextDestroyed(ServletContextEvent event) {
+    @Override
+	public void contextDestroyed(ServletContextEvent event) {
     	if(System.getProperty("spring.profiles.active") != null){
-    		System.setProperty("spring.profiles.active", null);
+    		System.clearProperty("spring.profiles.active");
     	}
-    } 
-    
+    }
+
     public void setEgovProfileSetting(){
         try {
             LOGGER.debug("===========================Start EgovServletContextLoad START ===========");

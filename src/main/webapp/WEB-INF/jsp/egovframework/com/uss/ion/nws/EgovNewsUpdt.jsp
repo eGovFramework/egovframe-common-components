@@ -99,7 +99,7 @@ function fn_egov_inqire_newslist() {
 <noscript class="noScriptTitle">	<spring:message code="common.noScriptTitle.msg" />	</noscript>
 
 <!-- 상단타이틀 -->
-<form:form commandName="newsVO" action="${pageContext.request.contextPath}/uss/ion/nws/updateNews.do" method="post" onSubmit="fn_egov_updt_news(document.forms[0]); return false;" enctype="multipart/form-data">
+<form:form modelAttribute="newsVO" action="${pageContext.request.contextPath}/uss/ion/nws/updateNews.do" method="post" onSubmit="fn_egov_updt_news(document.forms[0]); return false;" enctype="multipart/form-data">
 <input type="hidden" name="posblAtchFileNumber" id="posblAtchFileNumber" value="3" />  
 <!--  첨부파일 테이블 레이아웃 -->
 	<c:if test="${newsVO.atchFileId eq null || newsVO.atchFileId eq ''}">

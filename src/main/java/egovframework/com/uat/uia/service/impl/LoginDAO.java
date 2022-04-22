@@ -23,6 +23,7 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
  *  2011.08.26   서준식            EsntlId를 이용한 로그인 추가
  *  2017.07.21   장동한            로그인인증제한 작업
  *  2020.07.08   신용호            비밀번호를 수정한후 경과한 날짜 조회
+ *  2021.05.30   정진오            디지털원패스 인증 회원 조회
  *  </pre>
  */
 @Repository("loginDAO")
@@ -121,5 +122,15 @@ public class LoginDAO extends EgovComAbstractDAO {
     public int selectPassedDayChangePWD(LoginVO vo) throws Exception {
     	return selectOne("LoginUsr.selectPassedDayChangePWD", vo);
     }
-    
+
+	/**
+	 * 디지털원패스 인증 회원 조회한다.
+	 * @param id
+	 * @return LoginVO
+	 * @exception Exception
+	 */
+    public LoginVO onepassLogin(String id) throws Exception {
+    	return (LoginVO)selectOne("LoginUsr.onepassLogin", id);
+    }
+
 }

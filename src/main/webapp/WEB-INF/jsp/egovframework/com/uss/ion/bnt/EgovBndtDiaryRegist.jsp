@@ -110,7 +110,7 @@ function fncInsertBndtDiary() {
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
-<form:form commandName="bndtDiary" name="bndtDiary" method="post" >
+<form:form modelAttribute="bndtDiary" name="bndtDiary" method="post" >
 <div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="<spring:message code="comUssIonBnt.common.submit"/>" title="<spring:message code="comUssIonBnt.common.submit"/>"></div><!-- 전송 -->
 <input name="cmd" type="hidden" value="<c:out value='insert'/>"/>
 <input name="diaryForInsert" type="hidden" />

@@ -65,7 +65,7 @@ function fn_egov_save(){
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 <div class="wTableFrm">					
 <!-- 상단타이틀 -->
-<form:form commandName="trsmrcvMntrng" id="trsmrcvMntrng" action="<c:url value='/utl/sys/trm/updateTrsmrcvMntrng.do'/>" method="post">
+<form:form modelAttribute="trsmrcvMntrng" id="trsmrcvMntrng" action="<c:url value='/utl/sys/trm/updateTrsmrcvMntrng.do'/>" method="post">
 
     <!-- 검색조건 유지 -->
     <input type="hidden" name="searchCondition" value="<c:out value='${searchVO.searchCondition}'/>"/>

@@ -8,6 +8,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.web.servlet.view.AbstractView;
 
+import egovframework.com.cmm.EgovWebUtil;
+
 /**
 *
 * <pre>
@@ -21,10 +23,10 @@ import org.springframework.web.servlet.view.AbstractView;
 
 public class AjaxXmlView extends AbstractView {
 
-    @SuppressWarnings("rawtypes")
+	@SuppressWarnings("rawtypes")
 	@Override
 	protected void renderMergedOutputModel(Map model, HttpServletRequest request, HttpServletResponse response)
-	        throws Exception {
+		throws Exception {
 		PrintWriter writer = null;
 		try {
 			response.setContentType("text/xml");
@@ -32,7 +34,8 @@ public class AjaxXmlView extends AbstractView {
 			response.setCharacterEncoding("UTF-8");
 
 			writer = response.getWriter();
-			writer.write((String) model.get("ajaxXml"));
+			//			writer.write((String) model.get("ajaxXml"));
+			writer.write(EgovWebUtil.clearXSSMaximum((String)model.get("ajaxXml")));//Request로 들어오는 Parameter만 XSS 처리 필요
 
 		} finally {
 			// 2011.10.10 보안점검 조치(널포인트 역참조 방지)

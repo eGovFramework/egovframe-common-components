@@ -177,7 +177,7 @@ function fn_egov_init_WikMnthngReprt(){
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
-<form:form commandName="wikMnthngReprtVO" name="wikMnthngReprtVO" method="post" action="${pageContext.request.contextPath}/cop/smt/wmr/insertWikMnthngReprt.do' />" enctype="multipart/form-data">
+<form:form modelAttribute="wikMnthngReprtVO" name="wikMnthngReprtVO" method="post" action="${pageContext.request.contextPath}/cop/smt/wmr/insertWikMnthngReprt.do' />" enctype="multipart/form-data">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->

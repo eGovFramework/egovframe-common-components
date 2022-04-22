@@ -27,7 +27,7 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.config.EgovLoginConfig;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uat.uia.service.EgovLoginService;
-import egovframework.rte.psl.dataaccess.util.EgovMap;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 /**
  *

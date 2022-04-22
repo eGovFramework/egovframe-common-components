@@ -275,7 +275,7 @@ function fn_egov_clearExecutSchdulValue(bYyyyMMdd, bMonth, bDay, bDfk, bHHmmss) 
 <c:set var="vexecutSchdulMnt"><spring:message code="comSymSymBak.backupOpertRegist.executSchdulMnt"/></c:set>
 <c:set var="vexecutSchdulSecnd"><spring:message code="comSymSymBak.backupOpertRegist.executSchdulSecnd"/></c:set>
 
-<form:form commandName="backupOpert"  action="<c:url value='/sym/sym/bak/addBackupOpert.do' />" method="post">
+<form:form modelAttribute="backupOpert"  action="<c:url value='/sym/sym/bak/addBackupOpert.do' />" method="post">
 
 <!-- 검색조건 유지 -->
 <input type="hidden" name="searchCondition" value="<c:out value='${searchVO.searchCondition}'/>"/>

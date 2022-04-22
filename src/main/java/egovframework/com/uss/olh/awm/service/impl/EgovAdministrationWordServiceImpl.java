@@ -8,9 +8,9 @@ import org.springframework.stereotype.Service;
 
 import egovframework.com.uss.olh.awm.service.AdministrationWordVO;
 import egovframework.com.uss.olh.awm.service.EgovAdministrationWordService;
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import egovframework.rte.fdl.cmmn.exception.FdlException;
-import egovframework.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 
 @Service("EgovAdministrationWordService")
 public class EgovAdministrationWordServiceImpl extends EgovAbstractServiceImpl implements EgovAdministrationWordService {

@@ -1,16 +1,14 @@
 package egovframework.com.cop.sms.service.impl;
 
-import egovframework.com.cmm.service.EgovProperties;
-import egovframework.com.cmm.util.EgovBasicLogger;
-import egovframework.com.cop.sms.service.SmsRecptn;
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-
 import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import egovframework.com.cmm.service.EgovProperties;
+import egovframework.com.cmm.util.EgovBasicLogger;
+import egovframework.com.cop.sms.service.SmsRecptn;
 import x3.client.smeapi.SMEConnection;
 import x3.client.smeapi.SMEConnectionFactory;
 import x3.client.smeapi.SMEException;
@@ -22,6 +20,8 @@ import x3.client.smeapi.SMESession;
 import x3.client.smeapi.impl.SMEConfig;
 import x3.client.smeapi.impl.SMEConnectionFactoryImpl;
 import x3.client.smeapi.impl.SMELogger;
+
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 /**
  * 문자메시지 연동 결과 수신 처리를 위한 클래스
@@ -90,22 +90,25 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 	 */
 	public void close() {
 		try {
-			if (receiver != null)
+			if (receiver != null) {
 				receiver.close();
+			}
 		} catch (SMEException ignore) {
 			EgovBasicLogger.ignore("Receiver close error");
 		}
 
 		try {
-			if (sessReceiver != null)
+			if (sessReceiver != null) {
 				sessReceiver.close();
+			}
 		} catch (SMEException ignore) {
 			EgovBasicLogger.ignore("Session Receiver close error");
 		}
 
 		try {
-			if (connReceiver != null)
+			if (connReceiver != null) {
 				connReceiver.close();
+			}
 		} catch (SMEException ignore) {
 			EgovBasicLogger.ignore("Connection Receiver close error");
 		}
@@ -144,10 +147,11 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 	/**
 	 * 결과에 대한 수신 처리를 한다.
 	 */
+	@Override
 	public void onMessage(SMEReport msg) {
 		if (msg instanceof SMEReport) {
 			if (msg.isConnected()) {
-				SMEReport rpt = (SMEReport) msg;
+				SMEReport rpt = msg;
 				String msgId = rpt.getMessageId();
 				int nRes = rpt.getResult(); 						// 결과코드
 				String doneTime = rpt.getDeliverTime(); 	// 이동통신사 결과처리시간-단말기에 전달된 시간(이동통신사 생성)
@@ -291,7 +295,8 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 	 *
 	 * @param args
 	 */
-	public static void mainExample(String[] args) {
+	//2022.01. Exit methods should not be called 처리 - 예제이므로 주석 처리
+	/*public static void mainExample(String[] args) {
 
 		if (args.length < 1) {
 			LOGGER.error("SMEConfig.conf file full path needed.");
@@ -325,10 +330,10 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 				if (!receiver.isConnected) { // recommended by PMD
 					receiver.close();
 					Thread.sleep(10000);
-					
+
 					try{
 						receiver.open();
-						
+
 					} catch (SMEException ex) {
 						LOGGER.error("DEBUG: {}", ex.getMessage());
 						break;
@@ -345,7 +350,7 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 		} finally {
 			receiver.close();
 		}
-	}
+	}*/
 
 	/**
 	 * Scheduler 등을 통해 호출되는 처리를 담당한다.
@@ -386,7 +391,7 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 				if (!isConnected) {
 					close();
 					Thread.sleep(10000);
-					
+
 					try	{
 						open();
 					} catch (SMEException ex) {

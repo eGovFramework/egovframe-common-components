@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 
 import egovframework.com.sym.log.ulg.service.EgovUserLogService;
 import egovframework.com.sym.log.ulg.service.UserLog;
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 /**
  * @Class Name : EgovUserLogServiceImpl.java

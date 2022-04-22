@@ -64,7 +64,7 @@ function fn_egov_regist_pge(form){
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form commandName="indvdlPgeVO" action="${pageContext.request.contextPath}/uss/mpe/insertIndvdlPge.do" method="post" onSubmit="fn_egov_regist_pge(document.forms[0]); return false;"> 
+<form:form modelAttribute="indvdlPgeVO" action="${pageContext.request.contextPath}/uss/mpe/insertIndvdlPge.do" method="post" onSubmit="fn_egov_regist_pge(document.forms[0]); return false;"> 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.create" /></h2>

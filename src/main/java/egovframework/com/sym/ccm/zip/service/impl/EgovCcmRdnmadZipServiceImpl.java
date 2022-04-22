@@ -7,8 +7,8 @@ import egovframework.com.sym.ccm.zip.service.EgovCcmRdnmadZipManageService;
 import egovframework.com.sym.ccm.zip.service.Zip;
 import egovframework.com.sym.ccm.zip.service.ZipVO;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import egovframework.rte.fdl.excel.EgovExcelService;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.excel.EgovExcelService;
 
 import javax.annotation.Resource;
 

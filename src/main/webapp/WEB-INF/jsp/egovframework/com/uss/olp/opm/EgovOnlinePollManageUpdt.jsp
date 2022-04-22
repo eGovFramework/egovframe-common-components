@@ -124,7 +124,7 @@ String.prototype.replaceAll = function(src, repl){
 
 <div class="wTableFrm">
 <!-- 상단타이틀 -->
-<form:form commandName="onlinePollManage" name="onlinePollManage" action="" method="post" onsubmit="fn_egov_save_OnlinePollManage(); return false;">
+<form:form modelAttribute="onlinePollManage" name="onlinePollManage" action="" method="post" onsubmit="fn_egov_save_OnlinePollManage(); return false;">
 	<h2>${pageTitle} <spring:message code="title.update" /></h2>
 	
 	<!-- 수정폼 -->

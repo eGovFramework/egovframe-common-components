@@ -66,7 +66,7 @@ function fn_egov_inqire_list() {
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
 <!-- 상단타이틀 -->
-<form:form commandName="administrationWordVO" action="${pageContext.request.contextPath}/uss/olh/awm/updateAdministrationWord.do" method="post" onSubmit="fn_egov_updt_administrationword(document.forms[0]); return false;">  
+<form:form modelAttribute="administrationWordVO" action="${pageContext.request.contextPath}/uss/olh/awm/updateAdministrationWord.do" method="post" onSubmit="fn_egov_updt_administrationword(document.forms[0]); return false;">  
 <div class="wTableFrm">
 	<h2>${pageTitle} <spring:message code="title.update" /></h2>
 

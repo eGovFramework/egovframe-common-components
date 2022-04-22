@@ -20,7 +20,7 @@ package egovframework.com.ext.oauth.service.impl;
 
 import egovframework.com.cmm.LoginVO;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.UserProfile;

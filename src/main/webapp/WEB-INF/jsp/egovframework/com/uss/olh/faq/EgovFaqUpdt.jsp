@@ -85,7 +85,7 @@ function fn_egov_inqire_faqlist() {
 <noscript class="noScriptTitle">	<spring:message code="common.noScriptTitle.msg" />	</noscript>
 
 <!-- 상단타이틀 -->
-<form:form commandName="faqVO" action="${pageContext.request.contextPath}/uss/olh/faq/updateFaq.do" method="post" onSubmit="fn_egov_updt_faq(document.forms[0]); return false;" enctype="multipart/form-data">
+<form:form modelAttribute="faqVO" action="${pageContext.request.contextPath}/uss/olh/faq/updateFaq.do" method="post" onSubmit="fn_egov_updt_faq(document.forms[0]); return false;" enctype="multipart/form-data">
 	<div class="wTableFrm">
 	<h2>${pageTitle} <spring:message code="title.update" /></h2>
 

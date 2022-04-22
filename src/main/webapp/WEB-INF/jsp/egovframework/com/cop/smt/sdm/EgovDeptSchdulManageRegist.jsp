@@ -209,7 +209,7 @@ String.prototype.replaceAll = function(src, repl){
 <body onLoad="fn_egov_init_DeptSchdulManage()">
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
-<form:form commandName="deptSchdulManageVO" action="${pageContext.request.contextPath}/cop/smt/sdm/EgovDeptSchdulManageRegistActor.do" name="deptSchdulManageVO" method="post" enctype="multipart/form-data" onSubmit="fn_egov_save_DeptSchdulManage(document.forms[0]); return false;"> 
+<form:form modelAttribute="deptSchdulManageVO" action="${pageContext.request.contextPath}/cop/smt/sdm/EgovDeptSchdulManageRegistActor.do" name="deptSchdulManageVO" method="post" enctype="multipart/form-data" onSubmit="fn_egov_save_DeptSchdulManage(document.forms[0]); return false;"> 
  
 <div class="wTableFrm">
 	<!-- 타이틀 -->

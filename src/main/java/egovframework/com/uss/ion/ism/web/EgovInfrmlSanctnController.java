@@ -7,8 +7,8 @@ import egovframework.com.uss.ion.ism.service.EgovInfrmlSanctnService;
 import egovframework.com.uss.ion.ism.service.InfrmlSanctn;
 import egovframework.com.uss.ion.ism.service.SanctnerVO;
 
-import egovframework.rte.fdl.property.EgovPropertyService;
-import egovframework.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 import javax.annotation.Resource;
 

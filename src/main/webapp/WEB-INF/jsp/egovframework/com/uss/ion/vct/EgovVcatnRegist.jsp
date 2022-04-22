@@ -128,7 +128,7 @@ function fncNoonSeSpan(vValue){
     if(vValue == "02"){
     	vTemp += "  <input name='noonSe' type='radio' value='1' checked><spring:message code="comUssIonVct.common.noonSe1"/>";/* 오전 */
     	vTemp += "  <input name='noonSe' type='radio' value='2'><spring:message code="comUssIonVct.common.noonSe2"/>";/* 오후 */
-    	vTemp += '   <form:form commandName="vcatnManage" name="vcatnManage" method="post" ><form:hidden path="endde"/></form:form>';
+    	vTemp += '   <form:form modelAttribute="vcatnManage" name="vcatnManage" method="post" ><form:hidden path="endde"/></form:form>';
         nameSpan.innerHTML = "<label for='noonSe'><spring:message code="comUssIonVct.common.noonSe"/></label>";/* 정오구분 */
         noonSeSpan.innerHTML = vTemp;
     }    
@@ -144,7 +144,7 @@ function fncNoonSeSpan(vValue){
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 <div class="wTableFrm">
 
-	<form:form commandName="vcatnManage" name="vcatnManage" method="post" >
+	<form:form modelAttribute="vcatnManage" name="vcatnManage" method="post" >
 	<form:hidden  path="applcntId" id="applcntId"/>
 	<form:errors  path="applcntId"/>
 

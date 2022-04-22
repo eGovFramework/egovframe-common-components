@@ -126,7 +126,7 @@ String.prototype.replaceAll = function(src, repl){
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form commandName="qustnrManageVO" action="${pageContext.request.contextPath}/uss/olp/qmc/EgovQustnrManageRegist.do" method="post" enctype="multipart/form-data" onSubmit="fn_egov_save_QustnrManage(document.forms[0]); return false;">
+<form:form modelAttribute="qustnrManageVO" action="${pageContext.request.contextPath}/uss/olp/qmc/EgovQustnrManageRegist.do" method="post" enctype="multipart/form-data" onSubmit="fn_egov_save_QustnrManage(document.forms[0]); return false;">
 <!-- 첨부파일 개수 설정을 위한 Hidden 설정 -->
  
 <div class="wTableFrm">

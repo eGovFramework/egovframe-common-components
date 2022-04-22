@@ -6,8 +6,8 @@ import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cop.smt.dsm.service.DiaryManageVO;
 import egovframework.com.cop.smt.dsm.service.EgovDiaryManageService;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import egovframework.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 
 import javax.annotation.Resource;
 

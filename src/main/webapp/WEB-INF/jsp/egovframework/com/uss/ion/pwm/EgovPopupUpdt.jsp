@@ -160,7 +160,7 @@ function fn_egov_init_date(){
 </head>
 <body onLoad="fn_egov_init_PopupManage(); fn_egov_init_date();">
 
-<form:form commandName="popupManageVO" name="popupManageVO" action="${pageContext.request.contextPath}/uss/ion/pwm/updtPopup.do" method="post" >
+<form:form modelAttribute="popupManageVO" name="popupManageVO" action="${pageContext.request.contextPath}/uss/ion/pwm/updtPopup.do" method="post" >
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->

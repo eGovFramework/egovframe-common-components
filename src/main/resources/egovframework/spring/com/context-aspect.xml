@@ -12,7 +12,7 @@
 		</aop:aspect>
 	</aop:config>
 	
-	<bean id="egov.exceptionTransfer" class="egovframework.rte.fdl.cmmn.aspect.ExceptionTransfer">
+	<bean id="egov.exceptionTransfer" class="org.egovframe.rte.fdl.cmmn.aspect.ExceptionTransfer">
 		<property name="exceptionHandlerService">
 			<list>
 				<ref bean="defaultExceptionHandleManager" />
@@ -21,7 +21,7 @@
 		</property>
 	</bean>
 
-	<bean id="defaultExceptionHandleManager" class="egovframework.rte.fdl.cmmn.exception.manager.DefaultExceptionHandleManager">
+	<bean id="defaultExceptionHandleManager" class="org.egovframe.rte.fdl.cmmn.exception.manager.DefaultExceptionHandleManager">
 		<property name="reqExpMatcher">
 			<ref bean="egov.antPathMater"/>
 		</property>
@@ -37,7 +37,7 @@
 		</property>
 	</bean>
 
-	<bean id="otherExceptionHandleManager" class="egovframework.rte.fdl.cmmn.exception.manager.DefaultExceptionHandleManager">
+	<bean id="otherExceptionHandleManager" class="org.egovframe.rte.fdl.cmmn.exception.manager.DefaultExceptionHandleManager">
 		<property name="reqExpMatcher">
 			<ref bean="egov.antPathMater"/>
 		</property>

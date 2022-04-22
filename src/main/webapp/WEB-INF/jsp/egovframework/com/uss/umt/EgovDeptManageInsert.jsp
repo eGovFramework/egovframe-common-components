@@ -62,7 +62,7 @@ function fncDeptManageInsert() {
 <body>
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
-<form:form commandName="deptManage" method="post" action="${pageContext.request.contextPath}/uss/umt/dpt/addDeptManage.do' />" onSubmit="fncDeptManageInsert(); return false;" enctype="multipart/form-data">
+<form:form modelAttribute="deptManage" method="post" action="${pageContext.request.contextPath}/uss/umt/dpt/addDeptManage.do' />" onSubmit="fncDeptManageInsert(); return false;" enctype="multipart/form-data">
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.create" /></h2>

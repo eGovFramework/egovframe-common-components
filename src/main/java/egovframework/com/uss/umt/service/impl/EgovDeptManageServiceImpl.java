@@ -5,7 +5,7 @@ import java.util.List;
 import egovframework.com.uss.umt.service.DeptManageVO;
 import egovframework.com.uss.umt.service.EgovDeptManageService;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 import javax.annotation.Resource;
 

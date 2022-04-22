@@ -19,7 +19,7 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.yrc.service.EgovIndvdlYrycManageService;
 import egovframework.com.uss.ion.yrc.service.IndvdlYrycManage;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import egovframework.rte.fdl.string.EgovDateUtil;
+import org.egovframe.rte.fdl.string.EgovDateUtil;
 
 /**
  * 개요

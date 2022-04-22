@@ -84,14 +84,13 @@ public class EgovWebUtil {
 
 		return returnValue;
 	}
-	
+
 	public static String fileInjectPathReplaceAll(String value) {
 		String returnValue = value;
 		if (returnValue == null || returnValue.trim().equals("")) {
 			return "";
 		}
 
-		
 		returnValue = returnValue.replaceAll("/", "");
 		returnValue = returnValue.replaceAll("\\..", ""); // ..
 		returnValue = returnValue.replaceAll("\\\\", "");// \
@@ -108,18 +107,49 @@ public class EgovWebUtil {
 		Pattern ipPattern = Pattern.compile("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}");
 
 		return ipPattern.matcher(str).matches();
-    }
+	}
 
 	public static String removeCRLF(String parameter) {
 		return parameter.replaceAll("\r", "").replaceAll("\n", "");
 	}
 
 	public static String removeSQLInjectionRisk(String parameter) {
-		return parameter.replaceAll("\\p{Space}", "").replaceAll("\\*", "").replaceAll("%", "").replaceAll(";", "").replaceAll("-", "").replaceAll("\\+", "").replaceAll(",", "");
+		return parameter.replaceAll("\\p{Space}", "").replaceAll("\\*", "").replaceAll("%", "").replaceAll(";", "")
+			.replaceAll("-", "").replaceAll("\\+", "").replaceAll(",", "");
 	}
 
 	public static String removeOSCmdRisk(String parameter) {
 		return parameter.replaceAll("\\p{Space}", "").replaceAll("\\*", "").replaceAll("|", "").replaceAll(";", "");
+	}
+
+	/**
+	 * LDAP 파라미터에서 특수문자 제거.
+	 * 파라미터 별로 제거를 해야 함.
+	 * 일괄 연결된 파라미터들은 따로 처리해야 함.
+	 * TODO : LDAP Injection Prevent 로직 추가 필요
+	 * @param value
+	 * @return
+	 */
+	public static String removeLDAPInjectionRisk(String value) {
+
+		String returnValue = value;
+		if (returnValue == null || returnValue.trim().equals("")) {
+			return "";
+		}
+
+		/*모든 특수문자 제거*/
+//		String match = "[^\uAC00-\uD7A30-9a-zA-Z]";//특수문자 = 한글,숫자,영문 제외
+//		returnValue = returnValue.replaceAll(match, "");
+
+		/*특수문자 선택적 제거*/
+		returnValue = returnValue.replaceAll("*", "");
+		returnValue = returnValue.replaceAll("&", "");
+		returnValue = returnValue.replaceAll("|", "");
+		returnValue = returnValue.replaceAll("//", "");
+		//...
+		//개별로 필요한 항목들 추가 필요
+
+		return returnValue;
 	}
 
 }

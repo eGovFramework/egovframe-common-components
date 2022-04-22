@@ -177,7 +177,7 @@ function fn_egov_inquire_userLog(occrrncDe, rqesterId, srvcNm, methodNm) {
 	<tbody class="ov">
 	<c:if test="${fn:length(resultList) == 0}">
 	<tr>
-		<td colspan="8"><spring:message code="common.nodata.msg" /></td>
+		<td colspan="9"><spring:message code="common.nodata.msg" /></td>
 	</tr>
 	</c:if>
 	<c:forEach items="${resultList}" var="result" varStatus="status">

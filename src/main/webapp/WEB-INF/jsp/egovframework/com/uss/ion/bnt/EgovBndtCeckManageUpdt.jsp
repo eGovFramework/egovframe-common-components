@@ -66,7 +66,7 @@
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
-<form:form commandName="bndtCeckManage" name="bndtCeckManage" method="post" > 
+<form:form modelAttribute="bndtCeckManage" name="bndtCeckManage" method="post" > 
 <input type="hidden" name="cmd" value="updt" >
 <input type="hidden" name="bndtCeckSe" value ="<c:out value='${bndtCeckManageVO.bndtCeckSe}'/>">
 <input type="hidden" name="bndtCeckCd" value ="<c:out value='${bndtCeckManageVO.bndtCeckCd  }'/>"/>

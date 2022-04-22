@@ -115,7 +115,7 @@
 	<!-- 타이틀 -->
 	<h2><spring:message code="comUssIonCtn.ctsnnConfm.title"/></h2><!-- 경조사 승인 -->
 
-	<form:form commandName="ctsnnManage" name="ctsnnManage" method="post" action="#LINK">
+	<form:form modelAttribute="ctsnnManage" name="ctsnnManage" method="post" action="#LINK">
 	<div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="<spring:message code="comUssIonCtn.ctsnnConfm.submit"/>" title="<spring:message code="comUssIonCtn.ctsnnConfm.submit"/>"></div><!-- 전송 -->
 	<form:hidden  path="ctsnnId"/>
 	<form:hidden  path="usid"/>

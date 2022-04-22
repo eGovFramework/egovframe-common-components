@@ -13,17 +13,15 @@
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
  * See the License for the specific language governing permissions and
  * limitations under the License.
- * 
+ *
  * @author 전우성(슈퍼개발자K3)
  */
 package egovframework.com.ext.ldapumt.service.impl;
 
-import static org.springframework.ldap.query.LdapQueryBuilder.query;
+import static org.springframework.ldap.query.LdapQueryBuilder.*;
 
 import java.util.List;
 import java.util.Map;
-
-import egovframework.com.ext.ldapumt.service.UcorgVO;
 
 import javax.annotation.Resource;
 import javax.naming.NamingEnumeration;
@@ -40,9 +38,12 @@ import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.query.ContainerCriteria;
 import org.springframework.stereotype.Repository;
 
+import egovframework.com.cmm.EgovWebUtil;
+import egovframework.com.ext.ldapumt.service.UcorgVO;
+
 /**
 *
-* 부서 관련 기능을 제공하는 DAO객체 
+* 부서 관련 기능을 제공하는 DAO객체
 * @author 전우성
 * @since 2014.10.12
 * @version 1.0
@@ -76,7 +77,8 @@ public class DeptManageLdapDAO extends OrgManageLdapDAO {
 		String filter = "objectclass=ucorg2";
 
 		try {
-			ucorgList = ldapTemplate.search(dn, filter, SearchControls.ONELEVEL_SCOPE, new ObjectMapper<UcorgVO>(
+			ucorgList = ldapTemplate.search(EgovWebUtil.removeLDAPInjectionRisk(dn), filter,
+				SearchControls.ONELEVEL_SCOPE, new ObjectMapper<UcorgVO>(
 					UcorgVO.class));
 		} catch (NameNotFoundException e) {
 			logger.error("[NameNotFoundException] : search fail");//KISA 보안약점 조치 (2018-10-29, 윤창원)
@@ -108,38 +110,38 @@ public class DeptManageLdapDAO extends OrgManageLdapDAO {
 	public UcorgVO selectDeptManage(UcorgVO vo) throws Exception {
 		final ContainerCriteria criteria = query().where("objectclass").is("ucorg2");
 
-		@SuppressWarnings("unchecked")
-		Map<Object, Object> introspected = new BeanMap(vo);
+		@SuppressWarnings("unchecked") Map<Object, Object> introspected = new BeanMap(vo);
 
 		for (Object key : introspected.keySet()) {
 			if (key.equals("dn") || key.equals("class") || introspected.get(key) == null
-					|| introspected.get(key).equals(""))
+				|| introspected.get(key).equals("")) {
 				continue;
+			}
 
-			ContainerCriteria c = query().where((String) key).is(String.valueOf(introspected.get(key)));
+			ContainerCriteria c = query().where((String)key).is(String.valueOf(introspected.get(key)));
 			criteria.and(c);
 		}
 
 		List<Object> list = null;
 		try {
 			list = ldapTemplate.search(criteria, new ObjectMapper<UcorgVO>(UcorgVO.class));
-		//2017.02.07 	이정은 	시큐어코딩(ES)-오류 메시지를 통한 정보노출[CWE-209]
+			//2017.02.07 	이정은 	시큐어코딩(ES)-오류 메시지를 통한 정보노출[CWE-209]
 		} catch (NullPointerException e) {
 			logger.error("[NullPointerException] : search fail");
 		} catch (Exception e) {
-			logger.error("[" + e.getClass() +"] search fail : " + e.getMessage());
+			logger.error("[" + e.getClass() + "] search fail : " + e.getMessage());
 		}
 
-		return list == null ? null : (UcorgVO) list.get(0);
+		return list == null ? null : (UcorgVO)list.get(0);
 	}
 
 	/**
-	 * 등록된 부서의 상세정보를 조회한다. 
+	 * 등록된 부서의 상세정보를 조회한다.
 	 * @param dn
 	 * @return
 	 */
 	public UcorgVO selectDeptManageByDn(String dn) {
-		return (UcorgVO) selectOrgManageByDn(dn, UcorgVO.class);
+		return (UcorgVO)selectOrgManageByDn(dn, UcorgVO.class);
 	}
 
 	/**
@@ -191,12 +193,12 @@ public class DeptManageLdapDAO extends OrgManageLdapDAO {
 		SearchControls control = new SearchControls();
 		control.setSearchScope(SearchControls.ONELEVEL_SCOPE);
 
-		NamingEnumeration<SearchResult> n = ctx.search(dn, filter, control);
+		NamingEnumeration<SearchResult> n = ctx.search(EgovWebUtil.removeLDAPInjectionRisk(dn), filter, control);//2022.01 Potential LDAP Injection
 
-		if(n !=null && n.hasMore()){
+		if (n != null && n.hasMore()) {
 			return true;
 		}
-			
+
 		return false;
 	}
 }

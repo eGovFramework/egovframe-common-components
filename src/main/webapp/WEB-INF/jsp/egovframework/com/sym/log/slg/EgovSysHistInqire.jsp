@@ -78,7 +78,7 @@ function fn_egov_select_sysHist(){
 		<tr>
 			<th><spring:message code="comSymLogSlg.sysHistInqire.histCn"/></th><!-- 이력내용 -->
 			<td class="left">
-			    <textarea name="histCn" class="textarea"  cols="40" rows="8"  style="height:100px;" id="histCn"><c:out value="${result.histCn}"/></textarea>
+			    <textarea name="histCn" class="textarea"  cols="40" rows="8"  style="height:100px;" id="histCn" readonly><c:out value="${result.histCn}"/></textarea>
 			</td>
 		</tr>
 		<tr>

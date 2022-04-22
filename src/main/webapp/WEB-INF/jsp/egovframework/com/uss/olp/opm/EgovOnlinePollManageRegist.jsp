@@ -133,7 +133,7 @@ function fn_egov_save_OnlinePollManage(){
 <body onLoad="fn_egov_init_OnlinePollManage()">
 <div class="wTableFrm">
 
-<form:form commandName="onlinePollManage" name="onlinePollManage" id="onlinePollManage" action="" method="post" onsubmit="fn_egov_save_OnlinePollManage(); return false;">
+<form:form modelAttribute="onlinePollManage" name="onlinePollManage" id="onlinePollManage" action="" method="post" onsubmit="fn_egov_save_OnlinePollManage(); return false;">
 <!-- 타이틀 -->
 <h2>${pageTitle} <spring:message code="title.create" /></h2>
 

@@ -75,8 +75,8 @@
 <div class="board">
 	<h1><spring:message code="comUssIonYrc.indvdlYrycRegist.title" /></h1><!-- 개인연차 등록 -->
 
-	<form:form commandName="indvdlYrycManage" action="">
-    <form:hidden path="occrrncYear" value="<c:out value='${indvdlYrycManage.occrrncYear}'/>"/>
+	<form:form modelAttribute="indvdlYrycManage" action="">
+    <form:hidden path="occrrncYear" value="${indvdlYrycManage.occrrncYear}"/>
 
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
 		<ul>

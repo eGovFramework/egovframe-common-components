@@ -99,7 +99,7 @@
 
 	<body onLoad="fn_egov_initl_KnoManagement();">
 	
-	<form:form commandName="knoManagement" name="knoManagement" action="${pageContext.request.contextPath}/dam/mgm/EgovComDamManagementModify.do" method="post">	
+	<form:form modelAttribute="knoManagement" name="knoManagement" action="${pageContext.request.contextPath}/dam/mgm/EgovComDamManagementModify.do" method="post">	
 						
 	<input name="cmd" type="hidden" value="Modify">
 	<input name="knoId" type="hidden" value="<c:out value='${knoManagement.knoId}'/>">

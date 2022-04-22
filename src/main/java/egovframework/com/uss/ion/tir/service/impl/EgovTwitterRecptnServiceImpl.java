@@ -7,7 +7,7 @@ import java.util.Map;
 import egovframework.com.uss.ion.tir.service.EgovTwitterRecptnService;
 import egovframework.com.uss.ion.tir.service.TwitterInfo;
 
-import egovframework.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 import org.springframework.stereotype.Service;
 

@@ -2,7 +2,7 @@ package egovframework.com.uss.olh.awm.service;
 
 import java.util.List;
 
-import egovframework.rte.fdl.cmmn.exception.FdlException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 
 public interface EgovAdministrationWordService {
 

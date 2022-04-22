@@ -114,7 +114,7 @@ return  FValue;
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form commandName="qustnrRespondManageVO" id="qustnrRespondManageVO" action="" method="post" enctype="multipart/form-data" onSubmit="fn_egov_save_QustnrRespondManage(); return false;">
+<form:form modelAttribute="qustnrRespondManageVO" id="qustnrRespondManageVO" action="" method="post" enctype="multipart/form-data" onSubmit="fn_egov_save_QustnrRespondManage(); return false;">
  
 <div class="wTableFrm">
 	

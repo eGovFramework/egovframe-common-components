@@ -54,7 +54,7 @@ function fncSelectDtaUseStatsList() {
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form commandName="dtaUseStats" method="post" action="${pageContext.request.contextPath}/sts/dst/selectDtaUseStatsList.do">
+<form:form modelAttribute="dtaUseStats" method="post" action="${pageContext.request.contextPath}/sts/dst/selectDtaUseStatsList.do">
 <div class="board">
 	<h1>${pageTitle}</h1>
 

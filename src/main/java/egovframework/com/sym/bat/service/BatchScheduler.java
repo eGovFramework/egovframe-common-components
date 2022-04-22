@@ -6,7 +6,7 @@ import static org.quartz.TriggerBuilder.newTrigger;
 
 import java.util.List;
 
-import egovframework.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 
 import org.quartz.CronTrigger;
 import org.quartz.JobDetail;

@@ -64,7 +64,7 @@ function fn_egov_regist_stplatcn(form){
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form commandName="stplatManageVO" action="${pageContext.request.contextPath}/uss/sam/stp/StplatCnRegist.do" method="post" onSubmit="fn_egov_regist_stplatcn(document.forms[0]); return false;"> 
+<form:form modelAttribute="stplatManageVO" action="${pageContext.request.contextPath}/uss/sam/stp/StplatCnRegist.do" method="post" onSubmit="fn_egov_regist_stplatcn(document.forms[0]); return false;"> 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.create" /></h2>

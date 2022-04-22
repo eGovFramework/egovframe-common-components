@@ -34,7 +34,7 @@
 
 	<select id="selectHpcmList" parameterType="egovframework.com.uss.olh.hpc.service.HpcmVO" resultMap="HpcmManage">
 		
-			SELECT HPCM_ID, HPCM_SE_CODE, HPCM_SE_CODE_NM, HPCM_DFN HPCM_DF, HPCM_DC,
+			SELECT HPCM_ID, HPCM_SE_CODE, HPCM_SE_CODE_NM, HPCM_DFN, HPCM_DC,
 				   TO_CHAR(FRST_REGIST_PNTTM,'YYYY-MM-DD') FRST_REGIST_PNTTM ,  FRST_REGISTER_ID,
 				   TO_CHAR(LAST_UPDT_PNTTM,'YYYY-MM-DD')  LAST_UPDUSR_PNTTM ,  LAST_UPDUSR_ID
 			FROM

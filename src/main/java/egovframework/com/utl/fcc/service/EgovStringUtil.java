@@ -75,8 +75,9 @@ public class EgovStringUtil {
 		if (source != null) {
 			if (source.length() > slength) {
 				returnVal = source.substring(0, slength) + output;
-			} else
+			} else {
 				returnVal = source;
+			}
 		}
 		return returnVal;
 	}
@@ -92,8 +93,9 @@ public class EgovStringUtil {
 		if (source != null) {
 			if (source.length() > slength) {
 				result = source.substring(0, slength);
-			} else
+			} else {
 				result = source;
+			}
 		}
 		return result;
 	}
@@ -200,7 +202,7 @@ public class EgovStringUtil {
 			rtnStr.append(preStr).append(object);
 		}
 		rtnStr.append(nextStr);
-		
+
 		return rtnStr.toString();
 	}
 
@@ -219,7 +221,7 @@ public class EgovStringUtil {
 			preStr = source.substring(0, source.indexOf(subject));
 			nextStr = source.substring(source.indexOf(subject) + subject.length(), source.length());
 			rtnStr.append(preStr).append(object).append(nextStr);
-			
+
 			return rtnStr.toString();
 		} else {
 			return source;
@@ -278,7 +280,7 @@ public class EgovStringUtil {
 		if (str == null || searchStr == null) {
 			return -1;
 		}
-		
+
 		return str.indexOf(searchStr);
 	}
 
@@ -306,16 +308,28 @@ public class EgovStringUtil {
 	 *         <br/>다르면 defaultStr을 반환한다.
 	 */
 	public static String decode(String sourceStr, String compareStr, String returnStr, String defaultStr) {
-		if (sourceStr == null && compareStr == null) {
-			return returnStr;
-		}
+		//		if (sourceStr == null && compareStr == null) {
+		//			return returnStr;
+		//		}
+		//
+		//		if (sourceStr == null && compareStr != null) {
+		//			return defaultStr;
+		//		}
+		//
+		//		if (sourceStr.trim().equals(compareStr)) {
+		//			return returnStr;
+		//		}
 
-		if (sourceStr == null && compareStr != null) {
-			return defaultStr;
-		}
-
-		if (sourceStr.trim().equals(compareStr)) {
-			return returnStr;
+		if (sourceStr == null) { //2022.01. Possible null pointer dereference
+			if (compareStr == null) {
+				return returnStr;
+			} else {
+				return defaultStr;
+			}
+		} else {
+			if (sourceStr.trim().equals(compareStr)) {
+				return returnStr;
+			}
 		}
 
 		return defaultStr;
@@ -371,16 +385,16 @@ public class EgovStringUtil {
 	public static String nullConvert(Object src) {
 		//if (src != null && src.getClass().getName().equals("java.math.BigDecimal")) {
 		if (src != null && src instanceof java.math.BigDecimal) {
-			return ((BigDecimal) src).toString();
+			return ((BigDecimal)src).toString();
 		}
 
 		if (src == null || src.equals("null")) {
 			return "";
 		} else {
-			return ((String) src).trim();
+			return ((String)src).trim();
 		}
 	}
-	
+
 	/**
 	 *<pre>
 	 * 인자로 받은 String이 null일 경우 &quot;&quot;로 리턴한다.
@@ -391,13 +405,13 @@ public class EgovStringUtil {
 	public static String nullConvertInt(Object src) {
 		//if (src != null && src.getClass().getName().equals("java.math.BigDecimal")) {
 		if (src != null && src instanceof java.math.BigDecimal) {
-			return ((BigDecimal) src).toString();
+			return ((BigDecimal)src).toString();
 		}
 
 		if (src == null || src.equals("null")) {
 			return "0";
 		} else {
-			return ((String) src).trim();
+			return ((String)src).trim();
 		}
 	}
 
@@ -429,7 +443,7 @@ public class EgovStringUtil {
 		if (src == null || src.equals("null")) {
 			return 0;
 		} else {
-			return Integer.parseInt(((String) src).trim());
+			return Integer.parseInt(((String)src).trim());
 		}
 	}
 
@@ -497,7 +511,7 @@ public class EgovStringUtil {
 		int len = strString.length();
 
 		for (int i = 0; i < len; i++) {
-			chrBuff = (char) strString.charAt(i);
+			chrBuff = strString.charAt(i);
 
 			switch (chrBuff) {
 				case '<':
@@ -764,7 +778,7 @@ public class EgovStringUtil {
 		} while (randomInt < startInt); // 입력받은 문자 'A'(65)보다 작으면 다시 랜덤 숫자 발생.
 
 		// 랜덤 숫자를 문자로 변환 후 스트링으로 다시 변환
-		randomStr = (char) randomInt + "";
+		randomStr = (char)randomInt + "";
 
 		// 랜덤문자열를 리턴
 		return randomStr;
@@ -787,8 +801,9 @@ public class EgovStringUtil {
 
 		String rtnStr = null;
 
-		if (srcString == null)
+		if (srcString == null) {
 			return null;
+		}
 
 		try {
 			rtnStr = new String(srcString.getBytes(srcCharsetNm), cnvrCharsetNm);
@@ -816,7 +831,7 @@ public class EgovStringUtil {
 		int len = srcString.length();
 
 		for (int i = 0; i < len; i++) {
-			chrBuff = (char) srcString.charAt(i);
+			chrBuff = srcString.charAt(i);
 
 			switch (chrBuff) {
 				case '<':
@@ -896,7 +911,8 @@ public class EgovStringUtil {
 	 */
 	public static String addMinusChar(String date) {
 		if (date.length() == 8) {
-			return date.substring(0, 4).concat("-").concat(date.substring(4, 6)).concat("-").concat(date.substring(6, 8));
+			return date.substring(0, 4).concat("-").concat(date.substring(4, 6)).concat("-")
+				.concat(date.substring(6, 8));
 		} else {
 			return "";
 		}

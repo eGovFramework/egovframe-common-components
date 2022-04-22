@@ -5,19 +5,21 @@ import java.io.DataOutputStream;
 import java.io.IOException;
 import java.net.Socket;
 
+import javax.net.ssl.SSLSocketFactory;
+
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
 
 /**
  * 프록시서비스 처리 클래스
- * 
+ *
  * @author 김진만
  * @since 2010.07.15
  * @version 1.0
  * @see
  * <pre>
  * == 개정이력(Modification Information) ==
- * 
+ *
  *  수정일                수정자             수정내용
  *  ----------   --------    ---------------------------
  *  2019.12.05   신용호              KISA 보안약점 조치 (경로조작및 자원 삽입)
@@ -44,7 +46,7 @@ public class ProxyCommand {
 	public void runCommand(String msg) {
 		try {
 			proxyIp = EgovWebUtil.filePathBlackList(proxyIp);
-			clientSocket = new Socket(proxyIp, proxyPort);
+			clientSocket = SSLSocketFactory.getDefault().createSocket(proxyIp, proxyPort); //2022.01. Unencrypted Socket 처리
 
 			disReader = new DataInputStream(clientSocket.getInputStream());
 			dosWriter = new DataOutputStream(clientSocket.getOutputStream());

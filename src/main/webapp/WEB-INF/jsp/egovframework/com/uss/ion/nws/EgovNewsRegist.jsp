@@ -97,7 +97,7 @@ function fn_egov_regist_news(form){
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form commandName="newsVO" action="${pageContext.request.contextPath}/uss/ion/nws/insertNews.do" method="post" onSubmit="fn_egov_regist_news(document.forms[0]); return false;" enctype="multipart/form-data"> 
+<form:form modelAttribute="newsVO" action="${pageContext.request.contextPath}/uss/ion/nws/insertNews.do" method="post" onSubmit="fn_egov_regist_news(document.forms[0]); return false;" enctype="multipart/form-data"> 
 <input type="hidden" name="posblAtchFileNumber" id="posblAtchFileNumber" value="3" />
 
 <div class="wTableFrm">
