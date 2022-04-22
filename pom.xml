@@ -5,7 +5,7 @@
 	<groupId>egovframework</groupId>
 	<artifactId>common</artifactId>
 	<packaging>war</packaging>
-	<version>4.0.0</version>
+	<version>3.10.0</version>
 	<name>common component</name>
 	<url>http://www.egovframe.go.kr</url>
 
@@ -16,8 +16,8 @@
         </license>
     </licenses>
     <properties>
-        <spring.maven.artifact.version>5.3.6</spring.maven.artifact.version>
-        <org.egovframe.rte.version>4.0.0</org.egovframe.rte.version>
+        <spring.maven.artifact.version>4.3.25.RELEASE</spring.maven.artifact.version>
+        <egovframework.rte.version>3.10.0</egovframework.rte.version>
     </properties>
 
     <repositories>
@@ -33,7 +33,7 @@
         </repository>
         <repository>
 			<id>egovframe</id>
-			<url>https://maven.egovframe.go.kr/maven/</url>
+			<url>http://maven.egovframe.go.kr/maven/</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
@@ -41,6 +41,26 @@
 				<enabled>false</enabled>
 			</snapshots>
 		</repository>
+        <repository>
+			<id>egovframe_old1</id>
+			<url>http://maven.egovframe.kr:8080/maven/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+        <repository>
+            <id>egovframe_old2</id>
+            <url>http://www.egovframe.go.kr/maven/</url>
+            <releases>
+                <enabled>true</enabled>
+            </releases>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
     </repositories>
     
     <dependencies>
@@ -49,9 +69,9 @@
         mybatis를 사용하는 데 jdk1.5로 컴파일 할 경우 아래와 같이 변경해 주시기 바랍니다.
         (3.2.X 버전에서 부터 jdk1.6으로 컴파일 되어 발생하는 현상)
           <dependency>
-           <groupId>org.egovframe.rte</groupId>
-           <artifactId>org.egovframe.rte.psl.dataaccess</artifactId>
-           <version>${org.egovframe.rte.version}</version>
+           <groupId>egovframework.rte</groupId>
+           <artifactId>egovframework.rte.psl.dataaccess</artifactId>
+           <version>${egovframework.rte.version}</version>
            <exclusions>
             <exclusion>
              <artifactId>mybatis</artifactId>
@@ -66,22 +86,22 @@
           </dependency>
         -->
         <dependency>
-            <groupId>org.egovframe.rte</groupId>
-            <artifactId>org.egovframe.rte.fdl.idgnr</artifactId>
-            <version>${org.egovframe.rte.version}</version>
+            <groupId>egovframework.rte</groupId>
+            <artifactId>egovframework.rte.fdl.idgnr</artifactId>
+            <version>${egovframework.rte.version}</version>
         </dependency>
 
         <!--
         JBoss의 경우는 <body-context>부분을 empty로 수정하여 적용하시면 되며,
         pom.xml을 아래와 같이 적용하시면 수정된 jar를 참조하실 수 있습니다.
-        (기존 org.egovframe.rte.ptl.mvc dependency에 내부적으로 참조되고 있어,
+        (기존 egovframework.rte.ptl.mvc dependency에 내부적으로 참조되고 있어,
         해당 부분을 exclude 처리해야 함)
         아래 주석을 해제하시면 됩니다.
         -->
         <dependency>
-            <groupId>org.egovframe.rte</groupId>
-            <artifactId>org.egovframe.rte.ptl.mvc</artifactId>
-            <version>${org.egovframe.rte.version}</version>
+            <groupId>egovframework.rte</groupId>
+            <artifactId>egovframework.rte.ptl.mvc</artifactId>
+            <version>${egovframework.rte.version}</version>
             <!-- <exclusions>
                 <exclusion>
                     <groupId>org.springmodules</groupId>
@@ -90,39 +110,39 @@
             <exclusions> -->
         </dependency>
         <!-- <dependency>
-          <groupId>org.egovframe.rte</groupId>
+          <groupId>egovframework.rte</groupId>
           <artifactId>spring-modules-validation</artifactId>
           <version>0.9</version>
         </dependency> -->
         <dependency>
-            <groupId>org.egovframe.rte</groupId>
-            <artifactId>org.egovframe.rte.fdl.property</artifactId>
-            <version>${org.egovframe.rte.version}</version>
+            <groupId>egovframework.rte</groupId>
+            <artifactId>egovframework.rte.fdl.property</artifactId>
+            <version>${egovframework.rte.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.egovframe.rte</groupId>
-            <artifactId>org.egovframe.rte.fdl.security</artifactId>
-            <version>${org.egovframe.rte.version}</version>
+            <groupId>egovframework.rte</groupId>
+            <artifactId>egovframework.rte.fdl.security</artifactId>
+            <version>${egovframework.rte.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.egovframe.rte</groupId>
-            <artifactId>org.egovframe.rte.fdl.excel</artifactId>
-            <version>${org.egovframe.rte.version}</version>
+            <groupId>egovframework.rte</groupId>
+            <artifactId>egovframework.rte.fdl.excel</artifactId>
+            <version>${egovframework.rte.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.egovframe.rte</groupId>
-            <artifactId>org.egovframe.rte.bat.core</artifactId>
-            <version>${org.egovframe.rte.version}</version>
+            <groupId>egovframework.rte</groupId>
+            <artifactId>egovframework.rte.bat.core</artifactId>
+            <version>${egovframework.rte.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.egovframe.rte</groupId>
-            <artifactId>org.egovframe.rte.fdl.crypto</artifactId>
-            <version>${org.egovframe.rte.version}</version>
+            <groupId>egovframework.rte</groupId>
+            <artifactId>egovframework.rte.fdl.crypto</artifactId>
+            <version>${egovframework.rte.version}</version>
         </dependency>
         <dependency>
-			<groupId>org.egovframe.rte</groupId>
-			<artifactId>org.egovframe.rte.fdl.access</artifactId>
-			<version>${org.egovframe.rte.version}</version>
+			<groupId>egovframework.rte</groupId>
+			<artifactId>egovframework.rte.fdl.access</artifactId>
+			<version>${egovframework.rte.version}</version>
 		</dependency>
         <!-- 실행환경 라이브러리 끝 -->
 
@@ -415,27 +435,29 @@
         
         <!-- ajax json -->
         <!-- social에서 참조 하고 있어 임시 주석 처리 -->
+        <!-- 
 		<dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.11.4</version>
+            <version>2.5.1</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.11.4</version>
+            <version>2.5.1</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.11.4</version>
+            <version>2.5.1</version>
         </dependency>               
+        -->
         
         <!-- LDAP조직도관리 관련 라이브러리  -->
         <dependency>
             <groupId>org.springframework.ldap</groupId>
             <artifactId>spring-ldap-core</artifactId>
-            <version>2.3.3.RELEASE</version>
+            <version>2.0.2.RELEASE</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework</groupId>
@@ -486,74 +508,39 @@
 		
         <!-- 3rd party 라이브러리로 별도의 설치 필요 -->
         <!-- oracle 11g driver -->
-<<<<<<< HEAD
         <!-- <dependency>
-=======
-        <!-- 
-        <dependency>
->>>>>>> upstream/master
             <groupId>ojdbc</groupId>
             <artifactId>ojdbc</artifactId>
             <version>6-11</version>
             <scope>system</scope>
             <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/ojdbc6-11.2.0.3.jar</systemPath>
-<<<<<<< HEAD
         </dependency> -->
         <!-- altibase driver -->
         <!-- <dependency>
-=======
-        </dependency>
-        -->
-        <!-- altibase driver -->
-        <!--
-        <dependency>
->>>>>>> upstream/master
             <groupId>altibase</groupId>
             <artifactId>altibase-jdbc-driver</artifactId>
             <version>7.1.0</version>
             <scope>system</scope>
             <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/Altibase.jar</systemPath>
-<<<<<<< HEAD
         </dependency> -->
         <!-- tibero driver -->
         <!-- <dependency>
-=======
-        </dependency>
-		-->
-        <!-- tibero driver -->
-        <!--
-        <dependency>
->>>>>>> upstream/master
             <groupId>com.tmax.tibero</groupId>
             <artifactId>tibero-jdbc</artifactId>
             <version>5.0</version>
             <scope>system</scope>
             <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/tibero5-jdbc.jar</systemPath>
-<<<<<<< HEAD
         </dependency> -->
         <!-- cubrid driver -->
         <!-- <dependency>
-=======
-        </dependency>
- 		-->
-        <!-- cubrid driver -->
-        <!-- 
-        <dependency>
->>>>>>> upstream/master
             <groupId>cubrid</groupId>
             <artifactId>cubrid-jdbc</artifactId>
             <version>10.2</version>
             <scope>system</scope>
             <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/JDBC-10.2-latest-cubrid.jar</systemPath>
-<<<<<<< HEAD
         </dependency> -->
 
         <!--  M-Gov (SMS Service API) -->        
-=======
-        </dependency>
- 		-->
-        <!--  M-Gov (SMS Service API) -->
->>>>>>> upstream/master
          <dependency>
             <groupId>kr.go.mgov</groupId>
             <artifactId>smeapi</artifactId>
@@ -561,8 +548,9 @@
             <scope>system</scope>
             <systemPath>${basedir}/src/main/webapp/WEB-INF/lib/smeapi_2_7.jar</systemPath>
         </dependency>
+    	   
         <!-- GPKI인증서 로그인처리 라이브러리 -->         
-        <dependency>
+         <dependency>
             <groupId>kr.go.gpki</groupId>
             <artifactId>gpkisecureweb</artifactId>
             <version>1.0.4.9</version>
@@ -606,7 +594,6 @@
 			<scope>test</scope>
 		</dependency>
 
-<<<<<<< HEAD
 		<!-- https://mvnrepository.com/artifact/junit/junit -->
 		<dependency>
 			<groupId>junit</groupId>
@@ -629,27 +616,8 @@
 		    <artifactId>javaparser-core</artifactId>
 		    <version>3.22.1</version>
 		</dependency>
-=======
-        <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>4.12</version>
-            <scope>test</scope>
-        </dependency>
-
-		<!-- 디지털원패스 라이브러리 시작 -->
-		<dependency>
-			<groupId>onepass-client</groupId>
-			<artifactId>onepass-client</artifactId>
-			<version>2.0.0</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/src/main/webapp/WEB-INF/lib/onepass-client-2.0.0.jar</systemPath>
-		</dependency>
-		<!-- 디지털원패스 라이브러리 끝 -->
->>>>>>> upstream/master
 
     </dependencies>
-
     <build>
         <defaultGoal>install</defaultGoal>
         <directory>${basedir}/target</directory>
@@ -671,7 +639,6 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.8.1</version>
                     <configuration>
                         <source>1.8</source>
                         <target>1.8</target>
@@ -773,7 +740,7 @@
         <plugins>
             <plugin>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>3.1.2</version>
+                <version>3.0.0</version>
                 <reportSets>
                     <reportSet>
                         <id>sunlink</id>

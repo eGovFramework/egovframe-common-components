@@ -3,18 +3,13 @@ package egovframework.com.cop.bbs.service;
 import java.util.List;
 import java.util.Map;
 
-<<<<<<< HEAD
-import egovframework.rte.fdl.cmmn.exception.FdlException;
-=======
 import egovframework.com.cop.bbs.service.BlogUser;
 import egovframework.com.cop.bbs.service.BlogVO;
 import egovframework.com.cop.bbs.service.Blog;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
->>>>>>> upstream/master
 
 public interface EgovBBSMasterService {
 
-	@Deprecated
 	Map<String, Object> selectNotUsedBdMstrList(BoardMasterVO boardMasterVO);
 
 	void deleteBBSMasterInf(BoardMaster boardMaster);
