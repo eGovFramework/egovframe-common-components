@@ -20,9 +20,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import egovframework.rte.fdl.access.bean.AuthorityResourceMetadata;
-import egovframework.rte.fdl.access.interceptor.EgovAccessUtil;
-import egovframework.rte.fdl.access.service.EgovUserDetailsHelper;
+import org.egovframe.rte.fdl.access.bean.AuthorityResourceMetadata;
+import org.egovframe.rte.fdl.access.interceptor.EgovAccessUtil;
+import egovframework.com.cmm.util.EgovUserDetailsHelper;
 
 /**
  * EgovAccessConfigTest Test Class 구현 (실행환경 세션접근제어 테스트)

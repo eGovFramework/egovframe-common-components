@@ -3,9 +3,9 @@ package egovframework.com.uss.umt;
 import java.security.MessageDigest;
 
 import org.apache.commons.codec.binary.Hex;
-import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
+//import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.crypto.password.StandardPasswordEncoder;
+//import org.springframework.security.crypto.password.StandardPasswordEncoder;
 
 import egovframework.com.utl.sim.service.EgovFileScrty;
 
@@ -55,14 +55,14 @@ public class TestMakePwd {
 		    String result = new String(Hex.encodeHexString(digest));
 			System.out.println("==>> MessageDigest(Spring Security sha-256) > encryptPassword = "+result);
 			
-			ShaPasswordEncoder encoder = new ShaPasswordEncoder(); 
-			String shaEncryptPassword = encoder.encodePassword(memberPwd,memberId);
-			System.out.println("==>> ShaPasswordEncoder > encryptPassword = "+shaEncryptPassword);
+//			ShaPasswordEncoder encoder = new ShaPasswordEncoder(); 
+//			String shaEncryptPassword = encoder.encodePassword(memberPwd,memberId);
+//			System.out.println("==>> ShaPasswordEncoder > encryptPassword = "+shaEncryptPassword);
 
 		
-			StandardPasswordEncoder stdEncoder = new StandardPasswordEncoder();
-			String stdEncryptPassword = stdEncoder.encode(memberPwd);
-			System.out.println("==>> StandardPasswordEncoder > encryptPassword = "+stdEncryptPassword);
+//			StandardPasswordEncoder stdEncoder = new StandardPasswordEncoder();
+//			String stdEncryptPassword = stdEncoder.encode(memberPwd);
+//			System.out.println("==>> StandardPasswordEncoder > encryptPassword = "+stdEncryptPassword);
 
 			BCryptPasswordEncoder bcEncoder = new BCryptPasswordEncoder();
 			String bcEncryptPassword = bcEncoder.encode(memberPwd);

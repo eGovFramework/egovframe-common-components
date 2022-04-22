@@ -8,8 +8,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import egovframework.rte.fdl.cryptography.EgovARIACryptoService;
-import egovframework.rte.fdl.cryptography.EgovPasswordEncoder;
+import org.egovframe.rte.fdl.cryptography.EgovARIACryptoService;
+import org.egovframe.rte.fdl.cryptography.EgovPasswordEncoder;
 
 /**
  * egovframework.rte.fdl.crypto v3.7 이하의 오류 테스트
@@ -34,6 +34,7 @@ public class TestEncryptV37 {
 	private static EgovPasswordEncoder egovPasswordEncoder;
 	private static String pKey = "my-egovframe-crypto-key";
 	
+	@SuppressWarnings("resource")
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
     	//WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());

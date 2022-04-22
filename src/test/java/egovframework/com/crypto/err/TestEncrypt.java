@@ -7,9 +7,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import egovframework.com.utl.wed.web.EgovWebEditorImageController;
-import egovframework.rte.fdl.cryptography.EgovEnvCryptoService;
-import egovframework.rte.fdl.cryptography.impl.EgovEnvCryptoServiceImpl;
+import org.egovframe.rte.fdl.cryptography.EgovEnvCryptoService;
+import org.egovframe.rte.fdl.cryptography.impl.EgovEnvCryptoServiceImpl;
 
 /**
  * egovframework.rte.fdl.crypto v3.7 이하의 오류 테스트
@@ -32,6 +31,7 @@ public class TestEncrypt {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TestEncrypt.class);
 	private static EgovEnvCryptoService cryptoService;
 	
+	@SuppressWarnings("resource")
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
     	//WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
