@@ -3,7 +3,7 @@ package egovframework.com.uss.ion.ulm.service.impl;
 import java.util.List;
 
 import egovframework.com.cmm.ComDefaultVO;
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.ion.ulm.service.UnityLink;
 
 import org.springframework.stereotype.Repository;
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("onlineUnityLinkDao")
-public class UnityLinkDao extends EgovComAbstractDAO {
+public class UnityLinkDao extends EgovComAbstractMapper {
 
     /**
      * 통합링크관리 메인 셈플 목록을 조회한다.

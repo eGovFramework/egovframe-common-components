@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sym.log.lgm.service.SysLog;
 
 /**
@@ -24,7 +24,7 @@ import egovframework.com.sym.log.lgm.service.SysLog;
 *
 */
 @Repository("SysLogDAO")
-public class SysLogDAO extends EgovComAbstractDAO{
+public class SysLogDAO extends EgovComAbstractMapper{
 
 	/**
 	 * 시스템 로그정보를 생성한다.

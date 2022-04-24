@@ -2,7 +2,7 @@ package egovframework.com.sym.ccm.zip.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sym.ccm.zip.service.Zip;
 import egovframework.com.sym.ccm.zip.service.ZipVO;
 
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("RdnmadZipDAO")
-public class RdnmadZipDAO extends EgovComAbstractDAO {
+public class RdnmadZipDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 우편번호를 삭제한다.

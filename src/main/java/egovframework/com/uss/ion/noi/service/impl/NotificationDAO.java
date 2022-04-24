@@ -2,7 +2,7 @@ package egovframework.com.uss.ion.noi.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.ion.noi.service.Notification;
 import egovframework.com.uss.ion.noi.service.NotificationVO;
 
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("NotificationDAO")
-public class NotificationDAO extends EgovComAbstractDAO {
+public class NotificationDAO extends EgovComAbstractMapper {
     /**
      * 정보알림이 목록을 조회한다.
      * 

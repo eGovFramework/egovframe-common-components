@@ -1,6 +1,6 @@
 package egovframework.com.cop.bbs.service.impl;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.cop.bbs.service.BoardMaster;
 import egovframework.com.cop.bbs.service.BoardMasterVO;
 
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("BBSAddedOptionsDAO")
-public class BBSAddedOptionsDAO extends EgovComAbstractDAO {
+public class BBSAddedOptionsDAO extends EgovComAbstractMapper {
 
     /**
      * 신규 게시판 추가기능 정보를 등록한다.

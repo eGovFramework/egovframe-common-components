@@ -14,14 +14,14 @@ package egovframework.com.sym.sym.nwk.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sym.sym.nwk.service.Ntwrk;
 import egovframework.com.sym.sym.nwk.service.NtwrkVO;
 
 import org.springframework.stereotype.Repository;
 
 @Repository("ntwrkDAO")
-public class NtwrkDAO extends EgovComAbstractDAO {
+public class NtwrkDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 네트워크를 관리하기 위해 등록된 네트워크목록을 조회한다.

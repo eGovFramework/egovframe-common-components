@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.ion.rec.service.RecomendSiteVO;
 
 @Repository("EgovRecomendSiteDAO")
-public class EgovRecomendSiteDAO extends EgovComAbstractDAO{
+public class EgovRecomendSiteDAO extends EgovComAbstractMapper{
 
 	public List<?> selectRecomendSiteList(RecomendSiteVO searchVO) {
 		return list("RecomendSite.selectRecomendSiteList", searchVO);

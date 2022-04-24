@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.mpe.service.IndvdlPgeVO;
 
 @Repository("EgovIndvdlPgeDAO")
-public class EgovIndvdlPgeDAO extends EgovComAbstractDAO {
+public class EgovIndvdlPgeDAO extends EgovComAbstractMapper {
 
 	public List<?> selectIndvdlPgeList(IndvdlPgeVO searchVO) {
 		return selectList("IndvdlPge.selectIndvdlPgeList", searchVO);

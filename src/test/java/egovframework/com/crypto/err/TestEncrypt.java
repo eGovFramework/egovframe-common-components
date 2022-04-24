@@ -8,11 +8,11 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import egovframework.com.utl.wed.web.EgovWebEditorImageController;
-import egovframework.rte.fdl.cryptography.EgovEnvCryptoService;
-import egovframework.rte.fdl.cryptography.impl.EgovEnvCryptoServiceImpl;
+import org.egovframe.rte.fdl.cryptography.EgovEnvCryptoService;
+import org.egovframe.rte.fdl.cryptography.impl.EgovEnvCryptoServiceImpl;
 
 /**
- * egovframework.rte.fdl.crypto v3.7 이하의 오류 테스트
+ * org.egovframe.rte.fdl.crypto v3.7 이하의 오류 테스트
  * @author 표준프레임워크 신용호
  * @since 2019.01.03
  * @version 3.8

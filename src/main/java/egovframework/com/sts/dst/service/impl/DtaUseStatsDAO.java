@@ -14,14 +14,14 @@ package egovframework.com.sts.dst.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sts.dst.service.DtaUseStats;
 import egovframework.com.sts.dst.service.DtaUseStatsVO;
 
 import org.springframework.stereotype.Repository;
 
 @Repository("dtaUseStatsDAO")
-public class DtaUseStatsDAO extends EgovComAbstractDAO {
+public class DtaUseStatsDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 자료이용현황 통계정보의 대상목록을 조회한다.

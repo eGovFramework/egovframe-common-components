@@ -1,7 +1,7 @@
 package egovframework.com.sym.sym.bak.service.impl;
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sym.sym.bak.service.BackupOpert;
 import egovframework.com.sym.sym.bak.service.BackupSchdulDfk;
 
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("backupOpertDao")
-public class BackupOpertDao extends EgovComAbstractDAO {
+public class BackupOpertDao extends EgovComAbstractMapper {
 
 	/**
 	 * 백업작업을 삭제한다.

@@ -2,7 +2,7 @@ package egovframework.com.uss.ion.vct.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.ion.vct.service.IndvdlYrycManage;
 import egovframework.com.uss.ion.vct.service.VcatnManage;
 import egovframework.com.uss.ion.vct.service.VcatnManageVO;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository("vcatnManageDAO")
-public class VcatnManageDAO extends EgovComAbstractDAO {
+public class VcatnManageDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 휴가관리정보를 관리하기 위해 등록된 휴가관리 목록을 조회한다.

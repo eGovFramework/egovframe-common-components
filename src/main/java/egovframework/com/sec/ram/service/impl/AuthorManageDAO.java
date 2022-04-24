@@ -2,7 +2,7 @@ package egovframework.com.sec.ram.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sec.ram.service.AuthorManage;
 import egovframework.com.sec.ram.service.AuthorManageVO;
 
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository("authorManageDAO")
-public class AuthorManageDAO extends EgovComAbstractDAO {
+public class AuthorManageDAO extends EgovComAbstractMapper {
 
     /**
 	 * 권한목록을 조회한다.

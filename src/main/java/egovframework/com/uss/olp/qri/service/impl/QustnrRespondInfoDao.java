@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import egovframework.com.cmm.ComDefaultVO;
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.olp.qri.service.QustnrRespondInfoVO;
 
 import org.springframework.stereotype.Repository;
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("qustnrRespondInfoDao")
-public class QustnrRespondInfoDao extends EgovComAbstractDAO {
+public class QustnrRespondInfoDao extends EgovComAbstractMapper {
 
 
     /**

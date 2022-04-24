@@ -2,7 +2,7 @@ package egovframework.com.sym.log.wlg.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sym.log.wlg.service.WebLog;
 
 import org.springframework.stereotype.Repository;
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Repository;
  *
  */
 @Repository("webLogDAO")
-public class WebLogDAO extends EgovComAbstractDAO {
+public class WebLogDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 웹 로그를 기록한다.

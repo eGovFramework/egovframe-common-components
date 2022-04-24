@@ -2,7 +2,7 @@ package egovframework.com.utl.sys.srm.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.utl.sys.srm.service.ServerResrceMntrng;
 import egovframework.com.utl.sys.srm.service.ServerResrceMntrngVO;
 
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
  * @created 06-9-2010 오전 11:24:00
  */
 @Repository("serverResrceMntrngDAO")
-public class ServerResrceMntrngDAO extends EgovComAbstractDAO {
+public class ServerResrceMntrngDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 서버자원모니터링의 로그정보 목록을 조회한다.

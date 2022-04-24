@@ -2,7 +2,7 @@ package egovframework.com.ssi.syi.sim.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.ssi.syi.sim.service.SystemCntc;
 import egovframework.com.ssi.syi.sim.service.SystemCntcVO;
 
@@ -27,7 +27,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("SystemCntcDAO")
-public class SystemCntcDAO extends EgovComAbstractDAO {
+public class SystemCntcDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 시스템연계를 삭제한다.

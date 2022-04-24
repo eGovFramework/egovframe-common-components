@@ -2,7 +2,7 @@ package egovframework.com.cop.com.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.cop.com.service.UserInfVO;
 
 import org.springframework.stereotype.Repository;
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("EgovUserInfManageDAO")
-public class EgovUserInfManageDAO extends EgovComAbstractDAO {
+public class EgovUserInfManageDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 사용자 정보에 대한 목록을 조회한다.

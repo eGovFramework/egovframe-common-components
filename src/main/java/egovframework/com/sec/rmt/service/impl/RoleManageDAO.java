@@ -2,7 +2,7 @@ package egovframework.com.sec.rmt.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sec.rmt.service.RoleManage;
 import egovframework.com.sec.rmt.service.RoleManageVO;
 
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository("roleManageDAO")
-public class RoleManageDAO extends EgovComAbstractDAO {
+public class RoleManageDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 등록된 롤 정보 조회

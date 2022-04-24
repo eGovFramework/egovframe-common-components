@@ -1,7 +1,7 @@
 package egovframework.com.utl.sys.fsm.service.impl;
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.utl.sys.fsm.service.FileSysMntrng;
 import egovframework.com.utl.sys.fsm.service.FileSysMntrngLog;
 import egovframework.com.utl.sys.fsm.service.FileSysMntrngLogVO;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Repository;
  * @created 28-6-2010 오전 11:33:26
  */
 @Repository("FileSysMntrngDAO")
-public class FileSysMntrngDAO extends EgovComAbstractDAO {
+public class FileSysMntrngDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 주어진 조건에 맞는 파일시스템모니터링 대상 목록을 불러온다.

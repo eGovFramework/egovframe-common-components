@@ -2,7 +2,7 @@ package egovframework.com.sec.gmt.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sec.gmt.service.GroupManage;
 import egovframework.com.sec.gmt.service.GroupManageVO;
 
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository("groupManageDAO")
-public class GroupManageDAO extends EgovComAbstractDAO {
+public class GroupManageDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 검색조건에 따른 그룹정보를 조회

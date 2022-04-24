@@ -30,7 +30,7 @@
     </bean>
     
 	<!-- 실행환경에서 빈 이름 참조(AbstractServiceImpl) -->
-	<bean id="leaveaTrace" class="egovframework.rte.fdl.cmmn.trace.LeaveaTrace">
+	<bean id="leaveaTrace" class="org.egovframe.rte.fdl.cmmn.trace.LeaveaTrace">
 		<property name="traceHandlerServices">
 			<list>
 				<ref bean="egov.traceHandlerService" />
@@ -38,7 +38,7 @@
 		</property>
 	</bean>
 
-	<bean id="egov.traceHandlerService" class="egovframework.rte.fdl.cmmn.trace.manager.DefaultTraceHandleManager">
+	<bean id="egov.traceHandlerService" class="org.egovframe.rte.fdl.cmmn.trace.manager.DefaultTraceHandleManager">
 		<property name="reqExpMatcher">
 			<ref bean="egov.antPathMater" />
 		</property>
@@ -56,7 +56,7 @@
 
 	<bean id="egov.antPathMater" class="org.springframework.util.AntPathMatcher" />
 
-	<bean id="egov.defaultTraceHandler" class="egovframework.rte.fdl.cmmn.trace.handler.DefaultTraceHandler" />
+	<bean id="egov.defaultTraceHandler" class="org.egovframe.rte.fdl.cmmn.trace.handler.DefaultTraceHandler" />
 
 
     <!-- MULTIPART RESOLVERS -->

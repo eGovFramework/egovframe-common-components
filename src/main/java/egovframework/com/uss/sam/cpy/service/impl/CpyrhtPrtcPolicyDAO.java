@@ -2,7 +2,7 @@ package egovframework.com.uss.sam.cpy.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.sam.cpy.service.CpyrhtPrtcPolicyDefaultVO;
 import egovframework.com.uss.sam.cpy.service.CpyrhtPrtcPolicyVO;
 
@@ -27,7 +27,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("CpyrhtPrtcPolicyDAO")
-public class CpyrhtPrtcPolicyDAO extends EgovComAbstractDAO {
+public class CpyrhtPrtcPolicyDAO extends EgovComAbstractMapper {
 
 
     /**

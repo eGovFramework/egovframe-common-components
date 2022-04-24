@@ -3,7 +3,7 @@ package egovframework.com.sym.mnu.mpm.service.impl;
 import java.util.List;
 
 import egovframework.com.cmm.ComDefaultVO;
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sym.mnu.mpm.service.MenuManageVO;
 
 import org.springframework.stereotype.Repository;
@@ -27,7 +27,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository("menuManageDAO")
-public class MenuManageDAO extends EgovComAbstractDAO{
+public class MenuManageDAO extends EgovComAbstractMapper{
 
 	/**
 	 * 메뉴목록을 조회

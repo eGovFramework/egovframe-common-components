@@ -14,14 +14,14 @@ package egovframework.com.uss.ion.uas.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.ion.uas.service.UserAbsnce;
 import egovframework.com.uss.ion.uas.service.UserAbsnceVO;
 
 import org.springframework.stereotype.Repository;
 
 @Repository("userAbsnceDAO")
-public class UserAbsnceDAO extends EgovComAbstractDAO {
+public class UserAbsnceDAO extends EgovComAbstractMapper {
 	
 	/**
 	 * 사용자부재정보를 관리하기 위해 등록된 사용자부재 목록을 조회한다.

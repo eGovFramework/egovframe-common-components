@@ -2,7 +2,7 @@ package egovframework.com.dam.app.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.dam.app.service.KnoAppraisal;
 import egovframework.com.dam.app.service.KnoAppraisalVO;
 
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository("KnoAppraisalDAO")
-public class KnoAppraisalDAO extends EgovComAbstractDAO {
+public class KnoAppraisalDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 등록된 지식정보평가 정보를 조회 한다.

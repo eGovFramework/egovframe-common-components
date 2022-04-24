@@ -1,7 +1,7 @@
 package egovframework.com.cop.smt.mrm.service.impl;
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.cop.smt.mrm.service.MemoReprt;
 import egovframework.com.cop.smt.mrm.service.MemoReprtVO;
 import egovframework.com.cop.smt.mrm.service.ReportrVO;
@@ -30,7 +30,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("MemoReprtDAO")
-public class MemoReprtDAO extends EgovComAbstractDAO {
+public class MemoReprtDAO extends EgovComAbstractMapper {
 	
 	/**
 	 * 주어진 조건에 맞는 보고자를 불러온다.

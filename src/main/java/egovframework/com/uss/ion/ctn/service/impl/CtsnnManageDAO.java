@@ -2,7 +2,7 @@ package egovframework.com.uss.ion.ctn.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.ion.ctn.service.CtsnnManage;
 import egovframework.com.uss.ion.ctn.service.CtsnnManageVO;
 
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository("ctsnnManageDAO")
-public class CtsnnManageDAO extends EgovComAbstractDAO {
+public class CtsnnManageDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 경조관리정보를 관리하기 위해 등록된 경조관리 목록을 조회한다.

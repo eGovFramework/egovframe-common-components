@@ -2,7 +2,7 @@ package egovframework.com.utl.sys.prm.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.utl.sys.prm.service.ProcessMon;
 import egovframework.com.utl.sys.prm.service.ProcessMonLog;
 import egovframework.com.utl.sys.prm.service.ProcessMonLogVO;
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository("ProcessMonDAO")
-public class ProcessMonDAO extends EgovComAbstractDAO {
+public class ProcessMonDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 등록된 PROCESS모니터링 목록을 조회한다.

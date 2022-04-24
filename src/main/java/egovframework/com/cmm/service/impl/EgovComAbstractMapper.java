@@ -31,7 +31,7 @@ import org.egovframe.rte.psl.dataaccess.EgovAbstractMapper;
  *   2016. 5. 11.   장동한        myBatis 방식 적용
  * </pre>
  */
-public abstract class EgovComAbstractDAO extends EgovAbstractMapper{
+public abstract class EgovComAbstractMapper extends EgovAbstractMapper{
 
 	private final Logger LOGGER = LoggerFactory.getLogger(this.getClass());
 	

@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.olh.hpc.service.HpcmDefaultVO;
 import egovframework.com.uss.olh.hpc.service.HpcmVO;
 
 @Repository("EgovHpcmDAO")
-public class EgovHpcmDAO extends EgovComAbstractDAO {
+public class EgovHpcmDAO extends EgovComAbstractMapper {
 
 	public List<?> selectHpcmList(HpcmDefaultVO searchVO) {
 		return list("Hpcm.selectHpcmList", searchVO);

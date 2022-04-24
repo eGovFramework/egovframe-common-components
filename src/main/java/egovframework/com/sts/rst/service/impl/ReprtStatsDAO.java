@@ -23,14 +23,14 @@ package egovframework.com.sts.rst.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sts.rst.service.ReprtStats;
 import egovframework.com.sts.rst.service.ReprtStatsVO;
 
 import org.springframework.stereotype.Repository;
 
 @Repository("reprtStatsDAO")
-public class ReprtStatsDAO extends EgovComAbstractDAO {
+public class ReprtStatsDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 보고서 통계정보의 대상목록을 조회한다.

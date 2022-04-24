@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.ion.ecc.service.EventCmpgnVO;
 import egovframework.com.uss.ion.ecc.service.TnextrlHrVO;
 
 @Repository("EgovEventCmpgnDAO")
-public class EgovEventCmpgnDAO extends EgovComAbstractDAO {
+public class EgovEventCmpgnDAO extends EgovComAbstractMapper {
 
 	public List<?> selectEventCmpgnList(EventCmpgnVO searchVO) {
 		return list("EventCmpgn.selectEventCmpgnList", searchVO);

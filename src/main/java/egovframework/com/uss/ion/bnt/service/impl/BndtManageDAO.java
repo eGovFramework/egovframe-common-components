@@ -2,7 +2,7 @@ package egovframework.com.uss.ion.bnt.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.ion.bnt.service.BndtCeckManage;
 import egovframework.com.uss.ion.bnt.service.BndtCeckManageVO;
 import egovframework.com.uss.ion.bnt.service.BndtDiary;
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository("bndtManageDAO")
-public class BndtManageDAO extends EgovComAbstractDAO {
+public class BndtManageDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 당직관리정보를 관리하기 위해 등록된 당직관리 목록을 조회한다.

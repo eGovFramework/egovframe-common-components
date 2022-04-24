@@ -22,14 +22,14 @@ package egovframework.com.uat.uap.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uat.uap.service.LoginPolicy;
 import egovframework.com.uat.uap.service.LoginPolicyVO;
 
 import org.springframework.stereotype.Repository;
 
 @Repository("loginPolicyDAO")
-public class LoginPolicyDAO extends EgovComAbstractDAO {
+public class LoginPolicyDAO extends EgovComAbstractMapper {
 	
 	/**
 	 * 로그인정책 목록을 조회한다.

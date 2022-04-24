@@ -2,7 +2,7 @@ package egovframework.com.uss.ion.evt.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.ion.evt.service.EventAtdrn;
 import egovframework.com.uss.ion.evt.service.EventManage;
 import egovframework.com.uss.ion.evt.service.EventManageVO;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository("eventManageDAO")
-public class EventManageDAO extends EgovComAbstractDAO {
+public class EventManageDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 행사관리정보를 관리하기 위해 등록된 행사관리 목록을 조회한다.

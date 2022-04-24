@@ -33,7 +33,7 @@ import org.apache.commons.beanutils.BeanMap;
 import org.springframework.ldap.core.LdapTemplate;
 
 import egovframework.com.cmm.EgovWebUtil;
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.ext.ldapumt.service.LdapObject;
 
 /**
@@ -54,7 +54,7 @@ import egovframework.com.ext.ldapumt.service.LdapObject;
 *
 * </pre>
 */
-public class OrgManageLdapDAO extends EgovComAbstractDAO {
+public class OrgManageLdapDAO extends EgovComAbstractMapper {
 	@Resource(name = "ldapTemplate")
 	public LdapTemplate ldapTemplate;
 

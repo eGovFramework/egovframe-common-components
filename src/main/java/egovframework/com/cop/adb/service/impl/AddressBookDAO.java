@@ -2,7 +2,7 @@ package egovframework.com.cop.adb.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.cop.adb.service.AddressBook;
 import egovframework.com.cop.adb.service.AddressBookUser;
 import egovframework.com.cop.adb.service.AddressBookUserVO;
@@ -28,7 +28,7 @@ import org.springframework.stereotype.Repository;
  */
 @SuppressWarnings("unchecked")
 @Repository("AdressBookDAO")
-public class AddressBookDAO extends EgovComAbstractDAO{
+public class AddressBookDAO extends EgovComAbstractMapper{
     
     /**
      * 주어진 조건에 따른 주소록목록을 불러온다.

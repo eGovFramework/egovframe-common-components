@@ -2,7 +2,7 @@ package egovframework.com.sym.cal.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sym.cal.service.Restde;
 import egovframework.com.sym.cal.service.RestdeVO;
 
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("RestdeManageDAO")
-public class RestdeManageDAO extends EgovComAbstractDAO {
+public class RestdeManageDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 일반달력 팝업 정보를 조회한다.

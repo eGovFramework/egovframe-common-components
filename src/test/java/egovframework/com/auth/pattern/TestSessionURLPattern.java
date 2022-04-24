@@ -10,7 +10,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import egovframework.com.auth.session.EgovAccessConfigTest;
-import egovframework.rte.fdl.access.interceptor.EgovAccessUtil;
+import org.egovframe.rte.fdl.access.interceptor.EgovAccessUtil;
 
 /**
  * @TestSessionURLPattern Test Class 구현 (AntPattern 검증 및 RegexPattern URL 검증)

@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.olh.awm.service.AdministrationWordVO;
 
 @Repository("EgovAdministrationWordDAO")
-public class EgovAdministrationWordDAO extends EgovComAbstractDAO {
+public class EgovAdministrationWordDAO extends EgovComAbstractMapper {
 
 	public List<?> selectAdministrationWordList(AdministrationWordVO searchVO) {
 		return list("AdministrationWord.selectAdministrationWordList", searchVO);

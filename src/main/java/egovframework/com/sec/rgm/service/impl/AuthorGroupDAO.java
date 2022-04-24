@@ -2,7 +2,7 @@ package egovframework.com.sec.rgm.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sec.rgm.service.AuthorGroup;
 import egovframework.com.sec.rgm.service.AuthorGroupVO;
 
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository("authorGroupDAO")
-public class AuthorGroupDAO extends EgovComAbstractDAO {
+public class AuthorGroupDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 그룹별 할당된 권한 목록 조회

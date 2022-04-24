@@ -2,7 +2,7 @@ package egovframework.com.ssi.syi.ist.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.ssi.syi.ist.service.CntcSttus;
 import egovframework.com.ssi.syi.ist.service.CntcSttusVO;
 
@@ -27,7 +27,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("CntcSttusDAO")
-public class CntcSttusDAO extends EgovComAbstractDAO {
+public class CntcSttusDAO extends EgovComAbstractMapper {
 
 
 	/**

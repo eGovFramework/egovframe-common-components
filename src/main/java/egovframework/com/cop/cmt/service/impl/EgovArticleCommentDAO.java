@@ -4,12 +4,12 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.cop.cmt.service.Comment;
 import egovframework.com.cop.cmt.service.CommentVO;
 
 @Repository("EgovArticleCommentDAO")
-public class EgovArticleCommentDAO extends EgovComAbstractDAO{
+public class EgovArticleCommentDAO extends EgovComAbstractMapper{
 
 	public List<?> selectArticleCommentList(CommentVO commentVO) {
 		return list("ArticleComment.selectArticleCommentList", commentVO);

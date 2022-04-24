@@ -2,7 +2,7 @@ package egovframework.com.uss.cmt.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.cmt.service.CmtDefaultVO;
 import egovframework.com.uss.cmt.service.CmtManageVO;
 
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("cmtManageDAO")
-public class EgovCmtManageDAO extends EgovComAbstractDAO {
+public class EgovCmtManageDAO extends EgovComAbstractMapper {
 
 	public List<?> selectCmtInfoList(CmtDefaultVO cmtSearchVO) {
 		return selectList("cmtManageDAO.selectCmtList_S", cmtSearchVO);

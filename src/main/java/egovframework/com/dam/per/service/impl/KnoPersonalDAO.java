@@ -2,7 +2,7 @@ package egovframework.com.dam.per.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.dam.per.service.KnoPersonal;
 import egovframework.com.dam.per.service.KnoPersonalVO;
 
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository("KnoPersonalDAO")
-public class KnoPersonalDAO extends EgovComAbstractDAO {
+public class KnoPersonalDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 등록된 개인지식 정보를 조회 한다.

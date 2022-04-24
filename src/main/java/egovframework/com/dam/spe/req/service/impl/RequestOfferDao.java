@@ -4,7 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.dam.spe.req.service.RequestOfferVO;
 
 import org.springframework.stereotype.Repository;
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("RequestOfferDao")
-public class RequestOfferDao extends EgovComAbstractDAO {
+public class RequestOfferDao extends EgovComAbstractMapper {
 
     /**
      * 삭제시 하위 답변 건수를 조회한다.

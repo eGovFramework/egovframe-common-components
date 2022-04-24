@@ -15,14 +15,14 @@ package egovframework.com.uss.ion.lsi.service.impl;
 import java.util.List;
 
 import egovframework.com.cmm.service.FileVO;
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.ion.lsi.service.LoginScrinImage;
 import egovframework.com.uss.ion.lsi.service.LoginScrinImageVO;
 
 import org.springframework.stereotype.Repository;
 
 @Repository("loginScrinImageDAO")
-public class LoginScrinImageDAO extends EgovComAbstractDAO {
+public class LoginScrinImageDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 로그인화면이미지정보를 관리하기 위해 등록된 로그인화면이미지 목록을 조회한다.

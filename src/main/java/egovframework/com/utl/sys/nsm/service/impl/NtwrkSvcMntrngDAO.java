@@ -1,7 +1,7 @@
 package egovframework.com.utl.sys.nsm.service.impl;
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.utl.sys.nsm.service.NtwrkSvcMntrng;
 import egovframework.com.utl.sys.nsm.service.NtwrkSvcMntrngLog;
 import egovframework.com.utl.sys.nsm.service.NtwrkSvcMntrngLogVO;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Repository;
  * @created 28-6-2010 오전 11:33:43
  */
 @Repository("NtwrkSvcMntrngDAO")
-public class NtwrkSvcMntrngDAO extends EgovComAbstractDAO {
+public class NtwrkSvcMntrngDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 주어진 조건에 맞는 네트워크서비스 모니터링 대상 목록을 불러온다.

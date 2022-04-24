@@ -2,7 +2,7 @@ package egovframework.com.uss.olp.opr.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.olp.opr.service.OnlinePollResult;
 
 import org.springframework.stereotype.Repository;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("onlinePollResultDao")
-public class OnlinePollResultDao extends EgovComAbstractDAO {
+public class OnlinePollResultDao extends EgovComAbstractMapper {
 
     /**
      * 온라인POLL결과를(을) 목록을 한다.

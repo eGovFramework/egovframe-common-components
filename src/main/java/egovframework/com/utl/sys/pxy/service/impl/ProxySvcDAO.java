@@ -1,7 +1,7 @@
 package egovframework.com.utl.sys.pxy.service.impl;
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.utl.sys.pxy.service.ProxyLog;
 import egovframework.com.utl.sys.pxy.service.ProxyLogVO;
 import egovframework.com.utl.sys.pxy.service.ProxySvc;
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Repository;
  * @created 28-6-2010 오전 10:44:51
  */
 @Repository("proxySvcDAO")
-public class ProxySvcDAO extends EgovComAbstractDAO {
+public class ProxySvcDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 프록시서비스를 관리하기 위해 등록된 프록시정보 목록을 조회한다.

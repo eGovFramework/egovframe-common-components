@@ -2,7 +2,7 @@ package egovframework.com.dam.mgm.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.dam.mgm.service.KnoManagement;
 import egovframework.com.dam.mgm.service.KnoManagementVO;
 
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository("KnoManagementDAO")
-public class KnoManagementDAO extends EgovComAbstractDAO {
+public class KnoManagementDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 등록된 지식정보 정보를 조회 한다.

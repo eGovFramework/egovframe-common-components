@@ -2,7 +2,7 @@ package egovframework.com.cop.ncm.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.cop.ncm.service.NameCard;
 import egovframework.com.cop.ncm.service.NameCardUser;
 import egovframework.com.cop.ncm.service.NameCardVO;
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("NcrdManageDAO")
-public class NcrdManageDAO extends EgovComAbstractDAO {
+public class NcrdManageDAO extends EgovComAbstractMapper {
 
     //Logger log = Logger.getLogger(this.getClass());
 

@@ -3,7 +3,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sym.sym.srv.service.Server;
 import egovframework.com.sym.sym.srv.service.ServerEqpmn;
 import egovframework.com.sym.sym.srv.service.ServerEqpmnRelate;
@@ -23,7 +23,7 @@ import egovframework.com.sym.sym.srv.service.ServerVO;
  * @created 28-6-2010 오전 10:44:54
  */
 @Repository("serverDAO")
-public class ServerDAO extends EgovComAbstractDAO {
+public class ServerDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 서버장비를 관리하기 위해 등록된 서버장비목록을 조회한다.

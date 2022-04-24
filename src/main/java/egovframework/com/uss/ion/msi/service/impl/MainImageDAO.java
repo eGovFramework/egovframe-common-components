@@ -15,14 +15,14 @@ package egovframework.com.uss.ion.msi.service.impl;
 import java.util.List;
 
 import egovframework.com.cmm.service.FileVO;
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.ion.msi.service.MainImage;
 import egovframework.com.uss.ion.msi.service.MainImageVO;
 
 import org.springframework.stereotype.Repository;
 
 @Repository("mainImageDAO")
-public class MainImageDAO extends EgovComAbstractDAO {
+public class MainImageDAO extends EgovComAbstractMapper {
 	
 	/**
 	 * 메인화면이미지정보를 관리하기 위해 등록된 메인화면이미지 목록을 조회한다.

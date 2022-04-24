@@ -2,7 +2,7 @@ package egovframework.com.sym.log.clg.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sym.log.clg.service.LoginLog;
 
 import org.springframework.stereotype.Repository;
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Repository;
  *
  */
 @Repository("loginLogDAO")
-public class LoginLogDAO extends EgovComAbstractDAO {
+public class LoginLogDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 접속로그를 기록한다.

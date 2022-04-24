@@ -3,7 +3,7 @@ package egovframework.com.cop.ems.service.impl;
 import java.util.List;
 
 import egovframework.com.cmm.ComDefaultVO;
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 
 import org.springframework.stereotype.Repository;
 
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Repository;
  *  </pre>
  */
 @Repository("sndngMailDtlsDAO")
-public class SndngMailDtlsDAO extends EgovComAbstractDAO {
+public class SndngMailDtlsDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 발송메일 목록을 조회한다.

@@ -2,7 +2,7 @@ package egovframework.com.uss.umt.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.umt.service.EntrprsManageVO;
 import egovframework.com.uss.umt.service.UserDefaultVO;
 
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("entrprsManageDAO")
-public class EntrprsManageDAO extends EgovComAbstractDAO{
+public class EntrprsManageDAO extends EgovComAbstractMapper{
 
     /**
      * 화면에 조회된 기업회원의 정보를 데이터베이스에서 삭제

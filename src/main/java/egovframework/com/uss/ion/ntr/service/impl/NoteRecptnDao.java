@@ -3,7 +3,7 @@ package egovframework.com.uss.ion.ntr.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.ion.ntr.service.NoteRecptn;
 
 import org.springframework.stereotype.Repository;
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("noteRecptnDao")
-public class NoteRecptnDao extends EgovComAbstractDAO {
+public class NoteRecptnDao extends EgovComAbstractMapper {
 
     /**
      * 받은쪽지함관리를(을) 목록을 한다.

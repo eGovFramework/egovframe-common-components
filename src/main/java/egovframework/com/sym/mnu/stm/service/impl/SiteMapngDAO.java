@@ -1,7 +1,7 @@
 package egovframework.com.sym.mnu.stm.service.impl;
 
 import egovframework.com.cmm.ComDefaultVO;
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sym.mnu.stm.service.SiteMapngVO;
 
 import org.springframework.stereotype.Repository;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("siteMapngDAO")
-public class SiteMapngDAO extends EgovComAbstractDAO{
+public class SiteMapngDAO extends EgovComAbstractMapper{
 
 	/**
 	 * 사이트맵 조회

@@ -3,7 +3,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sym.tbm.tbp.service.TroblProcess;
 import egovframework.com.sym.tbm.tbp.service.TroblProcessVO;
 
@@ -19,7 +19,7 @@ import egovframework.com.sym.tbm.tbp.service.TroblProcessVO;
  * @created 28-6-2010 오전 10:44:58
  */
 @Repository("troblProcessDAO")
-public class TroblProcessDAO extends EgovComAbstractDAO {
+public class TroblProcessDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 장애처리정보를 관리하기 위해 대상 장애처리목록을 조회한다.

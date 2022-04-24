@@ -2,7 +2,7 @@ package egovframework.com.sym.mnu.bmm.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sym.mnu.bmm.service.BkmkMenuManage;
 import egovframework.com.sym.mnu.bmm.service.BkmkMenuManageVO;
 import egovframework.com.sym.mnu.mpm.service.MenuManageVO;
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Repository;
  *
  */
 @Repository("bkmkMenuManageDAO")
-public class BkmkMenuManageDAO extends EgovComAbstractDAO{
+public class BkmkMenuManageDAO extends EgovComAbstractMapper{
 
     /**
      * 바로가기메뉴관리 정보를 삭제한다.

@@ -3,7 +3,7 @@ package egovframework.com.crypto.xmlconfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import egovframework.rte.fdl.cryptography.EgovPasswordEncoder;
+import org.egovframe.rte.fdl.cryptography.EgovPasswordEncoder;
 
 public class EgovEnvCryptoAlgorithmCreateTest {
 

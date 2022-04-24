@@ -5,7 +5,7 @@ import java.util.Map;
 import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.LoginVO;
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 
 /**
  * 일반 로그인, 인증서 로그인을 처리하는 DAO 클래스
@@ -27,7 +27,7 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
  *  </pre>
  */
 @Repository("loginDAO")
-public class LoginDAO extends EgovComAbstractDAO {
+public class LoginDAO extends EgovComAbstractMapper {
 
     /**
      * 2011.08.26

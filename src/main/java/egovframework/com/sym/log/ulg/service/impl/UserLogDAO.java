@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sym.log.ulg.service.UserLog;
 
 /**
@@ -24,7 +24,7 @@ import egovframework.com.sym.log.ulg.service.UserLog;
  *
  */
 @Repository("userLogDAO")
-public class UserLogDAO extends EgovComAbstractDAO {
+public class UserLogDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 사용자 로그정보를 생성한다.

@@ -2,7 +2,7 @@ package egovframework.com.dam.spe.spe.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.dam.spe.spe.service.KnoSpecialist;
 import egovframework.com.dam.spe.spe.service.KnoSpecialistVO;
 
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository("KnoSpecialistDAO")
-public class KnoSpecialistDAO extends EgovComAbstractDAO {
+public class KnoSpecialistDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 등록된 지식전문가 정보를 조회 한다.

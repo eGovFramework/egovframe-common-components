@@ -2,7 +2,7 @@ package egovframework.com.sym.ccm.adc.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sym.ccm.adc.service.AdministCode;
 import egovframework.com.sym.ccm.adc.service.AdministCodeVO;
 
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("AdministCodeManageDAO")
-public class AdministCodeManageDAO extends EgovComAbstractDAO {
+public class AdministCodeManageDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 행정코드를 삭제한다.

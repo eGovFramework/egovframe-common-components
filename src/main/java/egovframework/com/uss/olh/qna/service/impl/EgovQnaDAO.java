@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.olh.qna.service.QnaVO;
 
 @Repository("EgovQnaDAO")
-public class EgovQnaDAO extends EgovComAbstractDAO {
+public class EgovQnaDAO extends EgovComAbstractMapper {
 
 	public List<?> selectQnaList(QnaVO searchVO) {
 		return list("QnaManage.selectQnaList", searchVO);

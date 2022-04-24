@@ -2,7 +2,7 @@ package egovframework.com.uss.ion.wik.bmk.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.ion.wik.bmk.service.WikiBookmark;
 
 import org.springframework.stereotype.Repository;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("wikiBookmarkDao")
-public class WikiBookmarkDao extends EgovComAbstractDAO {
+public class WikiBookmarkDao extends EgovComAbstractMapper {
     /**
 	 * 위키북마크 목록을 조회한다.
 	 * @param wikiBookmark -조회할 정보가 담긴 객체

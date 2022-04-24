@@ -2,7 +2,7 @@
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.cop.sms.service.Sms;
 import egovframework.com.cop.sms.service.SmsRecptn;
 import egovframework.com.cop.sms.service.SmsVO;
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("SmsDAO")
-public class SmsDAO extends EgovComAbstractDAO {
+public class SmsDAO extends EgovComAbstractMapper {
     /**
      * 문자메시지 목록을 조회한다.
      * 

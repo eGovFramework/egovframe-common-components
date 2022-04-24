@@ -23,7 +23,7 @@ import org.springframework.stereotype.Repository;
  *
  */
 @Repository("cmmUseDAO")
-public class CmmUseDAO extends EgovComAbstractDAO {
+public class CmmUseDAO extends EgovComAbstractMapper {
 
     /**
      * 주어진 조건에 따른 공통코드를 불러온다.

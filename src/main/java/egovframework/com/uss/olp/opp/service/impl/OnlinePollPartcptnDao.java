@@ -3,7 +3,7 @@ package egovframework.com.uss.olp.opp.service.impl;
 import java.util.List;
 
 import egovframework.com.cmm.ComDefaultVO;
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.olp.opp.service.OnlinePollPartcptn;
 
 import org.springframework.stereotype.Repository;
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("onlinePollPartcptnDao")
-public class OnlinePollPartcptnDao extends EgovComAbstractDAO {
+public class OnlinePollPartcptnDao extends EgovComAbstractMapper {
 
     /**
      * 온라인POLL관리를(을) 목록을 한다.

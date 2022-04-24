@@ -2,7 +2,7 @@ package egovframework.com.sts.bst.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sts.com.StatsVO;
 
 import org.springframework.stereotype.Repository;
@@ -28,7 +28,7 @@ import org.springframework.stereotype.Repository;
  *  </pre>
  */
 @Repository("bbsStatsDAO")
-public class BbsStatsDAO extends EgovComAbstractDAO {
+public class BbsStatsDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 게시물 생성글수 통계를 조회한다

@@ -2,7 +2,7 @@ package egovframework.com.sym.bat.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sym.bat.service.BatchOpert;
 
 import org.springframework.stereotype.Repository;
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("batchOpertDao")
-public class BatchOpertDao extends EgovComAbstractDAO {
+public class BatchOpertDao extends EgovComAbstractMapper {
 
 	/**
 	 * 배치작업을 삭제한다.

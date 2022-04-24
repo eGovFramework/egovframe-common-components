@@ -2,7 +2,7 @@ package egovframework.com.utl.sys.ssy.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.utl.sys.ssy.service.SynchrnServer;
 import egovframework.com.utl.sys.ssy.service.SynchrnServerVO;
 
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Repository;
  * @created 28-6-2010 오전 10:44:57
  */
 @Repository("synchrnServerDAO")
-public class SynchrnServerDAO extends EgovComAbstractDAO {
+public class SynchrnServerDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 동기화대상 서버를 관리하기 위해 등록된 동기화대상 서버목록을 조회한다.

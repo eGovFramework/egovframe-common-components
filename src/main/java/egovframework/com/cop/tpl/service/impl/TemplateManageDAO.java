@@ -2,7 +2,7 @@ package egovframework.com.cop.tpl.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.cop.tpl.service.TemplateInf;
 import egovframework.com.cop.tpl.service.TemplateInfVO;
 
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("TemplateManageDAO")
-public class TemplateManageDAO extends EgovComAbstractDAO {
+public class TemplateManageDAO extends EgovComAbstractMapper {
 
     /**
      * 템플릿 정보를 삭제한다.

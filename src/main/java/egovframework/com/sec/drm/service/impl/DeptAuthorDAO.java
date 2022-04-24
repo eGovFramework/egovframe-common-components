@@ -2,7 +2,7 @@ package egovframework.com.sec.drm.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sec.drm.service.DeptAuthor;
 import egovframework.com.sec.drm.service.DeptAuthorVO;
 
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository("deptAuthorDAO")
-public class DeptAuthorDAO extends EgovComAbstractDAO {
+public class DeptAuthorDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 부서별 할당된 권한목록 조회

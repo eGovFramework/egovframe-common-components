@@ -2,7 +2,7 @@ package egovframework.com.dam.map.tea.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.dam.map.tea.service.MapTeam;
 import egovframework.com.dam.map.tea.service.MapTeamVO;
 
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Repository;
  * @created 22-7-2010 오전 10:57:44
  */
 @Repository("MapTeamDAO")
-public class MapTeamDAO extends EgovComAbstractDAO{
+public class MapTeamDAO extends EgovComAbstractMapper{
 
 	/**
 	 * 등록된 지식맵(조직별) 목록을 조회 한다.

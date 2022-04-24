@@ -2,7 +2,7 @@ package egovframework.com.sym.log.tlg.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sym.log.tlg.service.TrsmrcvLog;
 
 import org.springframework.stereotype.Repository;
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Repository;
  *
  */
 @Repository("trsmrcvLogDAO")
-public class TrsmrcvLogDAO extends EgovComAbstractDAO {
+public class TrsmrcvLogDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 송수신로그를 기록한다.

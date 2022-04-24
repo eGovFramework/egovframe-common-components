@@ -3,7 +3,7 @@ package egovframework.com.uss.ion.rsn.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.ion.rsn.service.RssInfo;
 
 import org.springframework.stereotype.Repository;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("rssInfoDao")
-public class RssDao extends EgovComAbstractDAO {
+public class RssDao extends EgovComAbstractMapper {
 
     /**
      * RSS서비스 테이블을 조회 한다.

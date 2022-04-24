@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import egovframework.com.cmm.ComDefaultVO;
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.ion.ntm.service.NoteManageVO;
 
 import org.springframework.stereotype.Repository;
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("noteManageDao")
-public class NoteManageDao extends EgovComAbstractDAO {
+public class NoteManageDao extends EgovComAbstractMapper {
 
     /**
      * 쪽지관리 정보를 조회한다.

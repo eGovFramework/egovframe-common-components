@@ -2,7 +2,7 @@ package egovframework.com.dam.map.mat.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.dam.map.mat.service.MapMaterial;
 import egovframework.com.dam.map.mat.service.MapMaterialVO;
 
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository("MapMaterialDAO")
-public class MapMaterialDAO extends EgovComAbstractDAO {
+public class MapMaterialDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 등록된 지식맵(지식유형) 정보를 조회 한다.

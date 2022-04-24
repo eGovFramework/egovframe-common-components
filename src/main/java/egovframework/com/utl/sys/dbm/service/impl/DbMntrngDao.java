@@ -1,7 +1,7 @@
 package egovframework.com.utl.sys.dbm.service.impl;
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.utl.sys.dbm.service.DbMntrng;
 import egovframework.com.utl.sys.dbm.service.DbMntrngLog;
 
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("dbMntrngDao")
-public class DbMntrngDao extends EgovComAbstractDAO {
+public class DbMntrngDao extends EgovComAbstractMapper {
 
 	/**
 	 * DB서비스모니터링을 삭제한다.

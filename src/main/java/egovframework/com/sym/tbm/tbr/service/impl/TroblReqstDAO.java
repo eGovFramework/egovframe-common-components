@@ -1,7 +1,7 @@
 package egovframework.com.sym.tbm.tbr.service.impl;
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sym.tbm.tbr.service.TroblReqst;
 import egovframework.com.sym.tbm.tbr.service.TroblReqstVO;
 
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
  * @created 28-6-2010 오전 10:44:58
  */
 @Repository("troblReqstDAO")
-public class TroblReqstDAO extends EgovComAbstractDAO {
+public class TroblReqstDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 장애요청을 관리하기 위해 등록된 장애요청목록을 조회한다.

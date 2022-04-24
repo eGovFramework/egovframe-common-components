@@ -2,7 +2,7 @@ package egovframework.com.uat.uia.onepass.service.impl;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 
 /**
  * 디티털원패스 연동을 처리하는 비즈니스 DAO 클래스
@@ -21,7 +21,7 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
  *  </pre>
  */
 @Repository("egovOnepassDAO")
-public class EgovOnepassDAO extends EgovComAbstractDAO {
+public class EgovOnepassDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 입력한 사용자아이디의 중복여부를 체크하여 사용가능여부를 확인

@@ -3,7 +3,7 @@ package egovframework.com.cop.smt.dsm.service.impl;
 import java.util.List;
 
 import egovframework.com.cmm.ComDefaultVO;
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.cop.smt.dsm.service.DiaryManageVO;
 
 import org.springframework.stereotype.Repository;
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("diaryManageDao")
-public class DiaryManageDao extends EgovComAbstractDAO {
+public class DiaryManageDao extends EgovComAbstractMapper {
 	
     /**
 	 * 일지관리 목록을 조회한다. 

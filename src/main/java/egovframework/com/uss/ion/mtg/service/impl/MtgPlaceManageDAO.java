@@ -14,7 +14,7 @@ package egovframework.com.uss.ion.mtg.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.ion.mtg.service.MtgPlaceManage;
 import egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO;
 import egovframework.com.uss.ion.mtg.service.MtgPlaceResve;
@@ -22,7 +22,7 @@ import egovframework.com.uss.ion.mtg.service.MtgPlaceResve;
 import org.springframework.stereotype.Repository;
 
 @Repository("mtgPlaceManageDAO")
-public class MtgPlaceManageDAO extends EgovComAbstractDAO {
+public class MtgPlaceManageDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 회의실관리정보를 관리하기 위해 등록된 회의실관리 목록을 조회한다.

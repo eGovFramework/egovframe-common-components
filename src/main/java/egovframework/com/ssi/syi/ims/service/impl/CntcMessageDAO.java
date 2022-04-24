@@ -2,7 +2,7 @@ package egovframework.com.ssi.syi.ims.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.ssi.syi.ims.service.CntcMessage;
 import egovframework.com.ssi.syi.ims.service.CntcMessageItem;
 import egovframework.com.ssi.syi.ims.service.CntcMessageItemVO;
@@ -29,7 +29,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("CntcMessageDAO")
-public class CntcMessageDAO extends EgovComAbstractDAO {
+public class CntcMessageDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 연계메시지를 삭제한다.

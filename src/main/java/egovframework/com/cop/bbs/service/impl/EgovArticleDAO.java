@@ -4,13 +4,13 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.cop.bbs.service.Board;
 import egovframework.com.cop.bbs.service.BoardMasterVO;
 import egovframework.com.cop.bbs.service.BoardVO;
 
 @Repository("EgovArticleDAO")
-public class EgovArticleDAO extends EgovComAbstractDAO {
+public class EgovArticleDAO extends EgovComAbstractMapper {
 
 	public List<?> selectArticleList(BoardVO boardVO) {
 		return list("BBSArticle.selectArticleList", boardVO);

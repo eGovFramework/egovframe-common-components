@@ -3,7 +3,7 @@ package egovframework.com.cop.smt.sam.service.impl;
 import java.util.List;
 
 import egovframework.com.cmm.ComDefaultVO;
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 
 import org.springframework.stereotype.Repository;
 /**
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("allSchdulManageDao")
-public class AllSchdulManageDao extends EgovComAbstractDAO {
+public class AllSchdulManageDao extends EgovComAbstractMapper {
 	
     /**
 	 * 전체일정 목록을 조회한다. 

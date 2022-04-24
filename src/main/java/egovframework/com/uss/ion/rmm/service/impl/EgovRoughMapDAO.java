@@ -2,7 +2,7 @@ package egovframework.com.uss.ion.rmm.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.ion.rmm.service.RoughMapDefaultVO;
 import egovframework.com.uss.ion.rmm.service.RoughMapVO;
 
@@ -32,7 +32,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository("roughMapDAO")
-public class EgovRoughMapDAO extends EgovComAbstractDAO {
+public class EgovRoughMapDAO extends EgovComAbstractMapper {
 
     /**
      * 약도 목록을 조회한다.

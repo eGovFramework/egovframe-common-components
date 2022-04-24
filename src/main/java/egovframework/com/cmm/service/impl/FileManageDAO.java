@@ -23,7 +23,7 @@ import org.springframework.stereotype.Repository;
  *
  */
 @Repository("FileManageDAO")
-public class FileManageDAO extends EgovComAbstractDAO {
+public class FileManageDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 여러 개의 파일에 대한 정보(속성 및 상세)를 등록한다.

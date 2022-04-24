@@ -2,7 +2,7 @@ package egovframework.com.uss.ion.ans.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.ion.ans.service.AnnvrsryManage;
 import egovframework.com.uss.ion.ans.service.AnnvrsryManageVO;
 
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository("annvrsryManageDAO")
-public class AnnvrsryManageDAO extends EgovComAbstractDAO {
+public class AnnvrsryManageDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 기념일관리정보를 관리하기 위해 등록된 기념일관리 목록을 조회한다.

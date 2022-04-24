@@ -2,7 +2,7 @@ package egovframework.com.cop.stf.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.cop.bbs.service.Satisfaction;
 import egovframework.com.cop.bbs.service.SatisfactionVO;
 
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("BBSSatisfactionDAO")
-public class BBSSatisfactionDAO extends EgovComAbstractDAO {
+public class BBSSatisfactionDAO extends EgovComAbstractMapper {
 
     /**
      * 만족도조사에 대한 목록을 조회 한다.

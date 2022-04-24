@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.ion.sit.service.SiteVO;
 
 @Repository("EgovSiteDAO")
-public class EgovSiteDAO extends EgovComAbstractDAO {
+public class EgovSiteDAO extends EgovComAbstractMapper {
 
 	public List<?> selectSiteList(SiteVO searchVO) {
 		return list("SiteManage.selectSiteList", searchVO);

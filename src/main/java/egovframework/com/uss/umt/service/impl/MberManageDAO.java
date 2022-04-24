@@ -2,7 +2,7 @@ package egovframework.com.uss.umt.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.umt.service.MberManageVO;
 import egovframework.com.uss.umt.service.UserDefaultVO;
 
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("mberManageDAO")
-public class MberManageDAO extends EgovComAbstractDAO{
+public class MberManageDAO extends EgovComAbstractMapper{
 
     /**
      * 기 등록된 특정 일반회원의 정보를 데이터베이스에서 읽어와 화면에 출력

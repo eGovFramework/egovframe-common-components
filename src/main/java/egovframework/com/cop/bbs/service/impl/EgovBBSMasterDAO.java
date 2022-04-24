@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.cop.bbs.service.BoardMaster;
 import egovframework.com.cop.bbs.service.BoardMasterVO;
 import egovframework.com.cop.cmy.service.CommunityVO;
@@ -13,7 +13,7 @@ import egovframework.com.cop.bbs.service.Blog;
 import egovframework.com.cop.bbs.service.BlogUser;
 
 @Repository("EgovBBSMasterDAO")
-public class EgovBBSMasterDAO extends EgovComAbstractDAO {
+public class EgovBBSMasterDAO extends EgovComAbstractMapper {
 
 	public List<?> selectBBSMasterInfs(BoardMasterVO boardMasterVO) {
 		return list("BBSMaster.selectBBSMasterList", boardMasterVO);

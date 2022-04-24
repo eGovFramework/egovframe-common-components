@@ -3,7 +3,7 @@ package egovframework.com.uss.olp.mgt.service.impl;
 import java.util.List;
 
 import egovframework.com.cmm.ComDefaultVO;
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.olp.mgt.service.MeetingManageVO;
 
 import org.springframework.stereotype.Repository;
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("meetingManageDao")
-public class MeetingManageDao extends EgovComAbstractDAO {
+public class MeetingManageDao extends EgovComAbstractMapper {
 
     /**
 	 * 부서 목록을 조회한다.

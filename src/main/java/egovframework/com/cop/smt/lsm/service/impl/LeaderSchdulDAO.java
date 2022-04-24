@@ -1,7 +1,7 @@
 package egovframework.com.cop.smt.lsm.service.impl;
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.cop.smt.lsm.service.EmplyrVO;
 import egovframework.com.cop.smt.lsm.service.LeaderSchdul;
 import egovframework.com.cop.smt.lsm.service.LeaderSchdulVO;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Repository;
  * @created 28-6-2010 오전 10:59:06
  */
 @Repository("LeaderSchdulDAO")
-public class LeaderSchdulDAO extends EgovComAbstractDAO {
+public class LeaderSchdulDAO extends EgovComAbstractMapper {
 	
 	/**
 	 * 주어진 조건에 맞는 사용자를 불러온다.

@@ -3,7 +3,7 @@ package egovframework.com.uss.sam.ipm.service.impl;
 import java.util.List;
 
 import egovframework.com.cmm.ComDefaultVO;
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.sam.ipm.service.IndvdlInfoPolicy;
 
 import org.springframework.stereotype.Repository;
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("onlineIndvdlInfoPolicyDao")
-public class IndvdlInfoPolicyDao extends EgovComAbstractDAO {
+public class IndvdlInfoPolicyDao extends EgovComAbstractMapper {
 
     /**
      * 개인정보보호정책를(을) 목록을 한다.

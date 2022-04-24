@@ -1,7 +1,7 @@
 package egovframework.com.sym.sym.bak.service.impl;
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sym.sym.bak.service.BackupResult;
 
 import org.springframework.stereotype.Repository;
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("backupResultDao")
-public class BackupResultDao extends EgovComAbstractDAO {
+public class BackupResultDao extends EgovComAbstractMapper {
 
 	/**
 	 * 백업결과을 삭제한다.

@@ -2,7 +2,7 @@ package egovframework.com.sym.ccm.acr.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sym.ccm.acr.service.AdministCodeRecptn;
 import egovframework.com.sym.ccm.acr.service.AdministCodeRecptnVO;
 
@@ -27,7 +27,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("AdministCodeRecptnDAO")
-public class AdministCodeRecptnDAO extends EgovComAbstractDAO {
+public class AdministCodeRecptnDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 법정동코드수신을 처리한다.

@@ -2,7 +2,7 @@ package egovframework.com.uss.ion.tir.service.impl;
 
 import java.util.Map;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 
 import org.springframework.stereotype.Repository;
 /**
@@ -20,7 +20,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("twitterDao")
-public class EgovTwitterDao extends EgovComAbstractDAO {
+public class EgovTwitterDao extends EgovComAbstractMapper {
 
     /**
      * 트위터 계정을 조회 한다.

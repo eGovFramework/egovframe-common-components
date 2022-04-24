@@ -6,7 +6,7 @@ import static org.junit.Assert.assertTrue;
 
 import org.junit.Test;
 
-import egovframework.rte.ptl.mvc.validation.RteGenericValidator;
+import org.egovframe.rte.ptl.mvc.validation.RteGenericValidator;
 
 /**
  * 비밀번호 생성 Test Class 구현

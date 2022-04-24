@@ -4,7 +4,7 @@ package egovframework.com.uss.ion.rwd.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.ion.rwd.service.RwardManage;
 import egovframework.com.uss.ion.rwd.service.RwardManageVO;
 
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository("rwardManageDAO")
-public class RwardManageDAO extends EgovComAbstractDAO {
+public class RwardManageDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 포상관리정보를 관리하기 위해 등록된 포상관리 목록을 조회한다.

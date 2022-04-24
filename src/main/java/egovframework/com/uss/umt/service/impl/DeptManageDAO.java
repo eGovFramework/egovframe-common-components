@@ -2,13 +2,13 @@ package egovframework.com.uss.umt.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.umt.service.DeptManageVO;
 
 import org.springframework.stereotype.Repository;
 
 @Repository("deptManageDAO")
-public class DeptManageDAO extends EgovComAbstractDAO {
+public class DeptManageDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 부서를 관리하기 위해 등록된 부서목록을 조회한다.

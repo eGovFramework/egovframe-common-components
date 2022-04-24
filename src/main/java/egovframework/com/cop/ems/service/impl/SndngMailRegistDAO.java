@@ -2,7 +2,7 @@ package egovframework.com.cop.ems.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.cop.ems.service.SndngMailVO;
 
 import org.springframework.stereotype.Repository;
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Repository;
  *  </pre>
  */
 @Repository("sndngMailRegistDAO")
-public class SndngMailRegistDAO extends EgovComAbstractDAO {
+public class SndngMailRegistDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 발송할 메일을 등록한다

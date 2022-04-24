@@ -2,13 +2,13 @@ package egovframework.com.sym.log.plg.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sym.log.plg.service.PrivacyLog;
 
 import org.springframework.stereotype.Repository;
 
 @Repository("privacyLogDAO")
-public class PrivacyLogDAO extends EgovComAbstractDAO {
+public class PrivacyLogDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 개인정보조회 로그정보를 생성한다.

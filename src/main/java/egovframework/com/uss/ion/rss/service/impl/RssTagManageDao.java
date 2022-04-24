@@ -15,7 +15,7 @@ import javax.annotation.Resource;
 import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import egovframework.com.uss.ion.rss.service.RssManage;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
@@ -38,7 +38,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  * </pre>
  */
 @Repository("rssManageDao")
-public class RssTagManageDao extends EgovComAbstractDAO {
+public class RssTagManageDao extends EgovComAbstractMapper {
 
 	// RSS에 허용할 테이블 목록 - context-whitelist.xml에서 관리
 	@Resource(name = "egovRSSWhitelist")

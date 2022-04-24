@@ -2,7 +2,7 @@ package egovframework.com.sts.sst.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sts.com.StatsVO;
 
 import org.springframework.stereotype.Repository;
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Repository;
  *  </pre>
  */
 @Repository("scrinStatsDAO")
-public class ScrinStatsDAO extends EgovComAbstractDAO {
+public class ScrinStatsDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 화면 통계를 조회한다

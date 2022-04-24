@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import egovframework.com.cmm.ComDefaultVO;
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.cop.smt.sim.service.IndvdlSchdulManageVO;
 
 import org.springframework.stereotype.Repository;
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("indvdlSchdulManageDao")
-public class IndvdlSchdulManageDao extends EgovComAbstractDAO {
+public class IndvdlSchdulManageDao extends EgovComAbstractMapper {
 
 
     /**

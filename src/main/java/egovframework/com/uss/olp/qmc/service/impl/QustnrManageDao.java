@@ -3,7 +3,7 @@ package egovframework.com.uss.olp.qmc.service.impl;
 import java.util.List;
 
 import egovframework.com.cmm.ComDefaultVO;
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.olp.qmc.service.QustnrManageVO;
 
 import org.springframework.stereotype.Repository;
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("qustnrManageDao")
-public class QustnrManageDao extends EgovComAbstractDAO {
+public class QustnrManageDao extends EgovComAbstractMapper {
 
     /**
 	 * 설문템플릿 목록을 조회한다.

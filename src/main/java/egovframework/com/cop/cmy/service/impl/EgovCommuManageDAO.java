@@ -4,13 +4,13 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.cop.cmy.service.CommunityUser;
 import egovframework.com.cop.cmy.service.CommunityUserVO;
 import egovframework.com.cop.cmy.service.CommunityVO;
 
 @Repository("EgovCommuManageDAO")
-public class EgovCommuManageDAO extends EgovComAbstractDAO{
+public class EgovCommuManageDAO extends EgovComAbstractMapper{
 
 	public CommunityUser selectSingleCommuUserDetail(CommunityUser cmmntyUser) {
 		return (CommunityUser) selectOne("CommuManage.selectSingleCommuUserDetail", cmmntyUser);

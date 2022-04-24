@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.ion.nws.service.NewsVO;
 
 @Repository("EgovNewsDAO")
-public class EgovNewsDAO extends EgovComAbstractDAO {
+public class EgovNewsDAO extends EgovComAbstractMapper {
 
 	public List<?> selectNewsList(NewsVO searchVO) {
 		return list("NewsManage.selectNewsList", searchVO);

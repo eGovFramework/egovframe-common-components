@@ -1,7 +1,7 @@
 package egovframework.com.cop.smt.djm.service.impl;
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.cop.smt.djm.service.ChargerVO;
 import egovframework.com.cop.smt.djm.service.DeptJob;
 import egovframework.com.cop.smt.djm.service.DeptJobBx;
@@ -31,7 +31,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("DeptJobDAO")
-public class DeptJobDAO extends EgovComAbstractDAO{
+public class DeptJobDAO extends EgovComAbstractMapper{
 	
 	/**
 	 * 주어진 조건에 맞는 담당자를 불러온다.

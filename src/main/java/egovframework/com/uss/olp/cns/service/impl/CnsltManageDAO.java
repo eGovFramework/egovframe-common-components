@@ -2,7 +2,7 @@ package egovframework.com.uss.olp.cns.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.olp.cns.service.CnsltManageDefaultVO;
 import egovframework.com.uss.olp.cns.service.CnsltManageVO;
 
@@ -28,7 +28,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("CnsltManageDAO")
-public class CnsltManageDAO extends EgovComAbstractDAO {
+public class CnsltManageDAO extends EgovComAbstractMapper {
 
 
     /**

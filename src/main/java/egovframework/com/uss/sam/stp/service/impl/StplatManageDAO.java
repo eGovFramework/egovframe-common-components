@@ -2,7 +2,7 @@ package egovframework.com.uss.sam.stp.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.sam.stp.service.StplatManageDefaultVO;
 import egovframework.com.uss.sam.stp.service.StplatManageVO;
 
@@ -28,7 +28,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("StplatManageDAO")
-public class StplatManageDAO extends EgovComAbstractDAO {
+public class StplatManageDAO extends EgovComAbstractMapper {
 
 
     /**

@@ -1,7 +1,7 @@
 package egovframework.com.uss.ion.pwm.service.impl;
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.ion.pwm.service.PopupManageVO;
 
 import org.springframework.stereotype.Repository;
@@ -18,7 +18,7 @@ import org.springframework.stereotype.Repository;
  * @created 05-8-2009 오후 2:21:04
  */
 @Repository("popupManageDAO")
-public class PopupManageDAO extends EgovComAbstractDAO {
+public class PopupManageDAO extends EgovComAbstractMapper {
 
 	public PopupManageDAO(){}
 

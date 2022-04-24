@@ -3,7 +3,7 @@ package egovframework.com.sym.prm.service.impl;
 import java.util.List;
 
 import egovframework.com.cmm.ComDefaultVO;
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sym.prm.service.ProgrmManageDtlVO;
 import egovframework.com.sym.prm.service.ProgrmManageVO;
 
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository("progrmManageDAO")
-public class ProgrmManageDAO extends EgovComAbstractDAO {
+public class ProgrmManageDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 프로그램 목록을 조회

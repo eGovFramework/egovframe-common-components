@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.olh.faq.service.FaqVO;
 
 @Repository("EgovFaqDAO")
-public class EgovFaqDAO extends EgovComAbstractDAO {
+public class EgovFaqDAO extends EgovComAbstractMapper {
 
 	public List<?> selectFaqList(FaqVO searchVO) {
 		return list("FaqManage.selectFaqList", searchVO);

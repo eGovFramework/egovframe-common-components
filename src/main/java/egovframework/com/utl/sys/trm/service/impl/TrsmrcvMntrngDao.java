@@ -2,7 +2,7 @@ package egovframework.com.utl.sys.trm.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.utl.sys.trm.service.CntcVO;
 import egovframework.com.utl.sys.trm.service.TrsmrcvMntrng;
 import egovframework.com.utl.sys.trm.service.TrsmrcvMntrngLog;
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("trsmrcvMntrngDao")
-public class TrsmrcvMntrngDao extends EgovComAbstractDAO {
+public class TrsmrcvMntrngDao extends EgovComAbstractMapper {
 
 	/**
 	 * 송수신모니터링을 삭제한다.

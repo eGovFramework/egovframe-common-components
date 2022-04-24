@@ -2,7 +2,7 @@ package egovframework.com.uss.ion.yrc.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.ion.yrc.service.IndvdlYrycManage;
 
 import org.springframework.stereotype.Repository;
@@ -19,7 +19,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository("indvdlYrycDAO")
-public class IndvdlYrycDAO extends EgovComAbstractDAO {
+public class IndvdlYrycDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 연차를 조회처리한다.

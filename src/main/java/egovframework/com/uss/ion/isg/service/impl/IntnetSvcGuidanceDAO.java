@@ -14,14 +14,14 @@ package egovframework.com.uss.ion.isg.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.ion.isg.service.IntnetSvcGuidance;
 import egovframework.com.uss.ion.isg.service.IntnetSvcGuidanceVO;
 
 import org.springframework.stereotype.Repository;
 
 @Repository("intnetSvcGuidanceDAO")
-public class IntnetSvcGuidanceDAO extends EgovComAbstractDAO {
+public class IntnetSvcGuidanceDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 인터넷서비스안내정보를 관리하기 위해 등록된 인터넷서비스안내 목록을 조회한다.

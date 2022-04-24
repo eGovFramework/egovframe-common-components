@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import egovframework.com.cmm.ComDefaultVO;
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.olp.qqm.service.QustnrQestnManageVO;
 
 import org.springframework.stereotype.Repository;
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("qustnrQestnManageDao")
-public class QustnrQestnManageDao extends EgovComAbstractDAO {
+public class QustnrQestnManageDao extends EgovComAbstractMapper {
 
     /**
 	 * 설문조사 응답자답변내용결과/기타답변내용결과 통계를 조회한다.

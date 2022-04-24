@@ -4,11 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.olh.wor.service.WordDicaryVO;
 
 @Repository("EgovWordDicaryDAO")
-public class EgovWordDicaryDAO extends EgovComAbstractDAO {
+public class EgovWordDicaryDAO extends EgovComAbstractMapper {
 
 	public List<?> selectWordDicaryList(WordDicaryVO searchVO) {
 		return list("WordDicary.selectWordDicaryList", searchVO);

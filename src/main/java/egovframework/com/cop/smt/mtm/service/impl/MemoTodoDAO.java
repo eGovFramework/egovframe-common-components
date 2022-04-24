@@ -1,7 +1,7 @@
 package egovframework.com.cop.smt.mtm.service.impl;
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.cop.smt.mtm.service.MemoTodo;
 import egovframework.com.cop.smt.mtm.service.MemoTodoVO;
 
@@ -27,7 +27,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("MemoTodoDAO")
-public class MemoTodoDAO extends EgovComAbstractDAO {
+public class MemoTodoDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 주어진 조건에 맞는 메모할일 목록을 불러온다.

@@ -1,7 +1,7 @@
 package egovframework.com.sym.bat.service.impl;
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sym.bat.service.BatchSchdul;
 import egovframework.com.sym.bat.service.BatchSchdulDfk;
 
@@ -24,7 +24,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("batchSchdulDao")
-public class BatchSchdulDao extends EgovComAbstractDAO {
+public class BatchSchdulDao extends EgovComAbstractMapper {
 
 	/**
 	 * 배치스케줄을 삭제한다.

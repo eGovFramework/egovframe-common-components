@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sym.log.slg.service.SysHistory;
 import egovframework.com.sym.log.slg.service.SysHistoryVO;
 
@@ -24,7 +24,7 @@ import egovframework.com.sym.log.slg.service.SysHistoryVO;
  *
  */
 @Repository("sysHistoryDAO")
-public class SysHistoryDAO extends EgovComAbstractDAO {
+public class SysHistoryDAO extends EgovComAbstractMapper {
 
 
 	/**

@@ -2,7 +2,7 @@ package egovframework.com.uss.umt.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.umt.service.UserDefaultVO;
 import egovframework.com.uss.umt.service.UserManageVO;
 
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("userManageDAO")
-public class UserManageDAO extends EgovComAbstractDAO{
+public class UserManageDAO extends EgovComAbstractMapper{
 
     /**
      * 입력한 사용자아이디의 중복여부를 체크하여 사용가능여부를 확인

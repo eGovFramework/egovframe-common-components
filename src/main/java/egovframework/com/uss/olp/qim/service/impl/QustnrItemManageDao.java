@@ -3,7 +3,7 @@ package egovframework.com.uss.olp.qim.service.impl;
 import java.util.List;
 
 import egovframework.com.cmm.ComDefaultVO;
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.olp.qim.service.QustnrItemManageVO;
 
 import org.springframework.stereotype.Repository;
@@ -25,7 +25,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("qustnrItemManageDao")
-public class QustnrItemManageDao extends EgovComAbstractDAO {
+public class QustnrItemManageDao extends EgovComAbstractMapper {
 
 
     /**

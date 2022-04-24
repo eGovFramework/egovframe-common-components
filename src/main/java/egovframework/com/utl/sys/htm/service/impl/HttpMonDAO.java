@@ -2,7 +2,7 @@ package egovframework.com.utl.sys.htm.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.utl.sys.htm.service.HttpMon;
 import egovframework.com.utl.sys.htm.service.HttpMonLog;
 import egovframework.com.utl.sys.htm.service.HttpMonLogVO;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Repository;
  * @created 17-6-2010 오후 5:12:45
  */
 @Repository("HttpMonDAO")
-public class HttpMonDAO extends EgovComAbstractDAO {
+public class HttpMonDAO extends EgovComAbstractMapper {
 
 	/**
 	 * 등록된 HTTP서비스모니터링 목록을 조회한다.

@@ -2,7 +2,7 @@ package egovframework.com.uss.ion.rsm.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.ion.rsm.service.RecentSrchwrd;
 
 import org.springframework.stereotype.Repository;
@@ -22,7 +22,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("onlineRecentSrchwrdDao")
-public class RecentSrchwrdDao extends EgovComAbstractDAO {
+public class RecentSrchwrdDao extends EgovComAbstractMapper {
 
     /**
      * 최근검색어관리를(을) 목록을 한다.

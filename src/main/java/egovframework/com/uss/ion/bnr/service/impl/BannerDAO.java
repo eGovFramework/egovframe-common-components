@@ -15,14 +15,14 @@ package egovframework.com.uss.ion.bnr.service.impl;
 import java.util.List;
 
 import egovframework.com.cmm.service.FileVO;
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.uss.ion.bnr.service.Banner;
 import egovframework.com.uss.ion.bnr.service.BannerVO;
 
 import org.springframework.stereotype.Repository;
 
 @Repository("bannerDAO")
-public class BannerDAO extends EgovComAbstractDAO {
+public class BannerDAO extends EgovComAbstractMapper {
 	
 	/**
 	 * 배너를 관리하기 위해 등록된 배너목록을 조회한다.

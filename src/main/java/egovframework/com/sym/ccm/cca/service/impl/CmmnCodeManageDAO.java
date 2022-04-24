@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.sym.ccm.cca.service.CmmnCode;
 import egovframework.com.sym.ccm.cca.service.CmmnCodeVO;
 
@@ -27,7 +27,7 @@ import egovframework.com.sym.ccm.cca.service.CmmnCodeVO;
 */
 
 @Repository("CmmnCodeManageDAO")
-public class CmmnCodeManageDAO extends    EgovComAbstractDAO {
+public class CmmnCodeManageDAO extends    EgovComAbstractMapper {
 
    /**
 	 * 공통코드 총 갯수를 조회한다.

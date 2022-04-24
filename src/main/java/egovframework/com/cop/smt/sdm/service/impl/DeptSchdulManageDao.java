@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Map;
 
 import egovframework.com.cmm.ComDefaultVO;
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.cop.smt.sdm.service.DeptSchdulManageVO;
 
 import org.springframework.stereotype.Repository;
@@ -26,7 +26,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("deptSchdulManageDao")
-public class DeptSchdulManageDao extends EgovComAbstractDAO {
+public class DeptSchdulManageDao extends EgovComAbstractMapper {
 	
     /**
 	 * 부서 목록을 조회한다.

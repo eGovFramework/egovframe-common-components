@@ -1,6 +1,6 @@
 package egovframework.com.utl.pao.service.impl;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cmm.service.impl.EgovComAbstractMapper;
 import egovframework.com.utl.pao.service.PrntngOutptVO;
 
 import org.springframework.stereotype.Repository;
@@ -23,7 +23,7 @@ import org.springframework.stereotype.Repository;
  * </pre>
  */
 @Repository("PrntngOutptDAO")
-public class PrntngOutptDAO extends EgovComAbstractDAO {
+public class PrntngOutptDAO extends EgovComAbstractMapper {
 
     /**
 	 * 주어진 조건에 따른 공통코드를 불러온다.
