@@ -3,6 +3,7 @@ package egovframework.com.sec.drm.web;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.SessionVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.web.EgovComAbstractController;
 import egovframework.com.sec.drm.service.DeptAuthor;
 import egovframework.com.sec.drm.service.DeptAuthorVO;
 import egovframework.com.sec.drm.service.EgovDeptAuthorService;
@@ -42,7 +43,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 
 @Controller
 @SessionAttributes(types=SessionVO.class)
-public class EgovDeptAuthorController {
+public class EgovDeptAuthorController extends EgovComAbstractController {
 
     @Resource(name="egovMessageSource")
     EgovMessageSource egovMessageSource;
@@ -81,15 +82,16 @@ public class EgovDeptAuthorController {
 			                            @ModelAttribute("authorManageVO") AuthorManageVO authorManageVO,
 			                             ModelMap model) throws Exception {
 
-    	/** paging */
-    	PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(deptAuthorVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(deptAuthorVO.getPageUnit());
-		paginationInfo.setPageSize(deptAuthorVO.getPageSize());
-		
-		deptAuthorVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		deptAuthorVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		deptAuthorVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+//    	/** paging */
+//    	PaginationInfo paginationInfo = new PaginationInfo();
+//		paginationInfo.setCurrentPageNo(deptAuthorVO.getPageIndex());
+//		paginationInfo.setRecordCountPerPage(deptAuthorVO.getPageUnit());
+//		paginationInfo.setPageSize(deptAuthorVO.getPageSize());
+//		
+//		deptAuthorVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+//		deptAuthorVO.setLastIndex(paginationInfo.getLastRecordIndex());
+//		deptAuthorVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		PaginationInfo paginationInfo = builderPaginationInfo(deptAuthorVO);
 		
 		deptAuthorVO.setDeptAuthorList(egovDeptAuthorService.selectDeptAuthorList(deptAuthorVO));
         model.addAttribute("deptAuthorList", deptAuthorVO.getDeptAuthorList());
