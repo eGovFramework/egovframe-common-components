@@ -31,9 +31,28 @@ public class EgovClntInfo {
 	*/
 	public static String getClntIP(HttpServletRequest request) throws Exception {
 		
-		// IP주소
-		String ipAddr = request.getRemoteAddr();
-		return ipAddr;
+	    String ip = request.getHeader("X-Real-IP");
+
+	    if (ip == null) {
+	        ip = request.getHeader("X-Forwarded-For");
+	    }
+	    if (ip == null) {
+	    	ip = request.getHeader("Proxy-Client-IP");
+	    }
+	    if (ip == null) {
+	        ip = request.getHeader("WL-Proxy-Client-IP");
+	    }
+	    if (ip == null) {
+	        ip = request.getHeader("HTTP_CLIENT_IP");
+	    }
+	    if (ip == null) {
+	        ip = request.getHeader("HTTP_X_FORWARDED_FOR");
+	    }
+	    if (ip == null) {
+	        ip = request.getRemoteAddr();
+	    }
+
+	    return ip;
 	}
 	
 	/**

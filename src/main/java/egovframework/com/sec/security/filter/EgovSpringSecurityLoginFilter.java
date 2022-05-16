@@ -27,6 +27,8 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.config.EgovLoginConfig;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uat.uia.service.EgovLoginService;
+import egovframework.com.utl.sim.service.EgovClntInfo;
+
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 /**
@@ -97,6 +99,10 @@ public class EgovSpringSecurityLoginFilter implements Filter {
 					loginVO = loginService.actionLoginByEsntlId(loginVO);
 
 					if (loginVO != null && loginVO.getId() != null && !loginVO.getId().equals("")) {
+						
+                        String userIp = EgovClntInfo.getClntIP(httpRequest);
+                        loginVO.setIp(userIp);
+						
 						//세션 로그인
 						session.setAttribute("loginVO", loginVO);
 
@@ -201,7 +207,8 @@ public class EgovSpringSecurityLoginFilter implements Filter {
 						//사용자 입력 id, password로 DB 인증을 실행함
 						loginVO = loginService.actionLogin(loginVO);
 						//사용자 IP 기록
-						loginVO.setIp(request.getRemoteAddr());
+                        String userIp = EgovClntInfo.getClntIP(httpRequest);
+                        loginVO.setIp(userIp);
 						if (loginVO != null && loginVO.getId() != null && !loginVO.getId().equals("")) {
 							//세션 로그인
 							session.setAttribute("loginVO", loginVO);

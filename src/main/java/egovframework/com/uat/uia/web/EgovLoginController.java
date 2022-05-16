@@ -163,6 +163,8 @@ public class EgovLoginController {
 		
 		// 2. 로그인 처리
 		LoginVO resultVO = loginService.actionLogin(loginVO);
+		String userIp = EgovClntInfo.getClntIP(request);
+		resultVO.setIp(userIp);
 		
 		// 3. 일반 로그인 처리
 		if (resultVO != null && resultVO.getId() != null && !resultVO.getId().equals("")) {
@@ -191,6 +193,7 @@ public class EgovLoginController {
 
 		// 접속IP
 		String userIp = EgovClntInfo.getClntIP(request);
+		loginVO.setIp(userIp);
 		LOGGER.debug("User IP : {}", userIp);
 
 		/*
@@ -266,7 +269,7 @@ public class EgovLoginController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/uat/uia/actionMain.do")
-	public String actionMain(ModelMap model) throws Exception {
+	public String actionMain(HttpServletRequest request, ModelMap model) throws Exception {
 
 		// 1. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -275,6 +278,9 @@ public class EgovLoginController {
 			return "egovframework/com/uat/uia/EgovLoginUsr";
 		}
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		
+		if (user.getIp().equals(""))
+			user.setIp(EgovClntInfo.getClntIP(request));
 		
 		LOGGER.debug("User Id : {}", user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
 
