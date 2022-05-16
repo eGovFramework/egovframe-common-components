@@ -75,6 +75,16 @@ public class FileManageDAO extends EgovComAbstractDAO {
 	}
 
 	/**
+	 * 파일다운로드 횟수를 수정한다.
+	 *
+	 * @param fvo
+	 * @throws Exception
+	 */
+	public void updateFileDownloadCnt(FileVO fvo) throws Exception {
+		delete("FileManageDAO.updateFileDownloadCnt", fvo);
+	}
+
+	/**
 	 * 여러 개의 파일을 삭제한다.
 	 *
 	 * @param fileList

@@ -58,6 +58,10 @@ public class FileVO implements Serializable {
      * 저장파일명
      */
     public String streFileNm = "";
+    /**
+     * 다운로드 횟수
+     */
+    public String downloadCnt = "";
 
     /**
      * atchFileId attribute를 리턴한다.
@@ -228,6 +232,25 @@ public class FileVO implements Serializable {
      */
     public void setStreFileNm(String streFileNm) {
 	this.streFileNm = streFileNm;
+    }
+
+    /**
+     * downloadCnt attribute를 리턴한다.
+     * 
+     * @return the downloadCnt
+     */
+    public String getDownloadCnt() {
+	return downloadCnt;
+    }
+
+    /**
+     * downloadCnt attribute 값을 설정한다.
+     * 
+     * @param downloadCnt
+     *            the downloadCnt to set
+     */
+    public void setDownloadCnt(String downloadCnt) {
+	this.downloadCnt = downloadCnt;
     }
 
     /**

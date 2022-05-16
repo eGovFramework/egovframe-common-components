@@ -13,6 +13,7 @@
 		<result property="orignlFileNm" column="ORIGNL_FILE_NM"/>
 		<result property="streFileNm" column="STRE_FILE_NM"/>
 		<result property="creatDt" column="CREAT_DT"/>			
+        <result property="downloadCnt" column="DOWNLOAD_CNT"/>
 	</resultMap>
 
 	<resultMap id="fileDetail" type="egovframework.com.cmm.service.FileVO">
@@ -24,6 +25,7 @@
 		<result property="fileStreCours" column="FILE_STRE_COURS"/>
 		<result property="orignlFileNm" column="ORIGNL_FILE_NM"/>
 		<result property="streFileNm" column="STRE_FILE_NM"/>
+        <result property="downloadCnt" column="DOWNLOAD_CNT"/>
 	</resultMap>	
 
 
@@ -31,7 +33,7 @@
  		
 			SELECT 
 				a.ATCH_FILE_ID, b.FILE_CN, b.FILE_SN, b.FILE_STRE_COURS, b.STRE_FILE_NM,
-				b.FILE_EXTSN, b.ORIGNL_FILE_NM, b.FILE_SIZE, a.CREAT_DT
+				b.FILE_EXTSN, b.ORIGNL_FILE_NM, b.FILE_SIZE, a.CREAT_DT, b.DOWNLOAD_CNT
 			FROM
 				COMTNFILE a, COMTNFILEDETAIL b
 			WHERE
@@ -51,16 +53,27 @@
 			VALUES
 			( #{atchFileId}, SYSDATE, 'Y')			
 		
-	</insert>
+	</insert>   
+    
+    <update id="updateFileDownloadCnt" parameterType="FileVO">
+        
+            UPDATE COMTNFILEDETAIL
+            SET    DOWNLOAD_CNT = IFNULL(DOWNLOAD_CNT, 0) + 1
+            WHERE
+                ATCH_FILE_ID = #{atchFileId}
+            AND 
+                FILE_SN = #{fileSn}         
+            
+    </update>
 	
 	<insert id="insertFileDetail" parameterType="FileVO">
 		
 			INSERT INTO COMTNFILEDETAIL
 			( ATCH_FILE_ID, FILE_SN, FILE_STRE_COURS, STRE_FILE_NM, 
-			  ORIGNL_FILE_NM, FILE_EXTSN, FILE_SIZE, FILE_CN )
+			  ORIGNL_FILE_NM, FILE_EXTSN, FILE_SIZE, FILE_CN, DOWNLOAD_CNT )
 			VALUES
 			( #{atchFileId}, #{fileSn}, #{fileStreCours}, #{streFileNm}, 
-			  #{orignlFileNm}, #{fileExtsn}, #{fileMg}, #{fileCn} )			
+			  #{orignlFileNm}, #{fileExtsn}, #{fileMg}, #{fileCn}, 0 )			
 		
 	</insert>	
 	
@@ -86,7 +99,7 @@
  		
 			SELECT 
 				ATCH_FILE_ID, FILE_CN, FILE_SN, FILE_STRE_COURS, STRE_FILE_NM,
-				FILE_EXTSN, ORIGNL_FILE_NM, FILE_SIZE
+				FILE_EXTSN, ORIGNL_FILE_NM, FILE_SIZE, DOWNLOAD_CNT
 			FROM
 				COMTNFILEDETAIL
 			WHERE
@@ -109,7 +122,7 @@
  		SELECT * FROM ( SELECT rownum rn, TB.* FROM (
 			SELECT 
 				a.ATCH_FILE_ID, b.FILE_CN, b.FILE_SN, b.FILE_STRE_COURS, b.STRE_FILE_NM,
-				b.FILE_EXTSN, b.ORIGNL_FILE_NM, b.FILE_SIZE, a.CREAT_DT
+				b.FILE_EXTSN, b.ORIGNL_FILE_NM, b.FILE_SIZE, a.CREAT_DT, b.DOWNLOAD_CNT
 			FROM
 				COMTNFILE a, COMTNFILEDETAIL b
 			WHERE
@@ -152,7 +165,7 @@
  		
 			SELECT 
 				a.ATCH_FILE_ID, b.FILE_CN, b.FILE_SN, b.FILE_STRE_COURS, b.STRE_FILE_NM,
-				b.FILE_EXTSN, b.ORIGNL_FILE_NM, b.FILE_SIZE, a.CREAT_DT
+				b.FILE_EXTSN, b.ORIGNL_FILE_NM, b.FILE_SIZE, a.CREAT_DT, b.DOWNLOAD_CNT
 			FROM
 				COMTNFILE a, COMTNFILEDETAIL b
 			WHERE

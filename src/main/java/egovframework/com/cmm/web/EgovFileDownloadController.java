@@ -98,6 +98,7 @@ public class EgovFileDownloadController {
 			long fSize = uFile.length();
 
 			if (fSize > 0) {
+				fileService.updateFileDownloadCnt(fileVO); // 파일 다운로드 횟수 증가
 				String mimetype = "application/x-msdownload";
 
 				String userAgent = request.getHeader("User-Agent");

@@ -54,6 +54,14 @@ public interface EgovFileMngService {
     public void updateFileInfs(List<?> fvoList) throws Exception;
 
     /**
+     * 파일다운로드 횟수를 수정한다.
+     *
+     * @param fvo
+     * @throws Exception
+     */
+    public void updateFileDownloadCnt(FileVO fvo) throws Exception;
+
+    /**
      * 여러 개의 파일을 삭제한다.
      *
      * @param fvoList

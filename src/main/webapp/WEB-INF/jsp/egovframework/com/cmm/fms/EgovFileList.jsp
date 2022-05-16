@@ -115,7 +115,7 @@
 				</c:when>
 				<c:otherwise>
 					<a href="javascript:fn_egov_downFile('<c:out value="${fileVO.atchFileId}"/>','<c:out value="${fileVO.fileSn}"/>')">
-					<c:out value="${fileVO.orignlFileNm}"/>&nbsp;[<c:out value="${fileVO.fileMg}"/>&nbsp;byte]
+					<c:out value="${fileVO.orignlFileNm}"/>&nbsp;[<c:out value="${fileVO.fileMg}"/>&nbsp;byte]&nbsp;[Download:<c:out value="${fileVO.downloadCnt}"/>]
 					</a>
 				</c:otherwise>
 			

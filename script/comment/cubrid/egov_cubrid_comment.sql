@@ -1007,6 +1007,7 @@ Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATE
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnfiledetail','file_stre_cours','파일저장경로',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnfiledetail','orignl_file_nm','원파일명',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnfiledetail','stre_file_nm','저장파일명',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnfiledetail','download_cnt','다운로드횟수',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnfilesysmntrng','creat_dt','생성일시',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnfilesysmntrng','file_sys_id','파일시스템ID',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnfilesysmntrng','file_sys_manage_nm','파일시스템관리명',SYS_TIMESTAMP,'DBA');

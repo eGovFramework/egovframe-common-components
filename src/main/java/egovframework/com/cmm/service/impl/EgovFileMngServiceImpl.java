@@ -93,6 +93,15 @@ public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements E
 	}
 
 	/**
+	 * 파일다운로드 횟수를 수정한다.
+	 *
+	 * @see egovframework.com.cmm.service.EgovFileMngService#deleteFileInf(egovframework.com.cmm.service.FileVO)
+	 */
+	public void updateFileDownloadCnt(FileVO fvo) throws Exception {
+		fileMngDAO.updateFileDownloadCnt(fvo);
+	}
+
+	/**
 	 * 하나의 파일을 삭제한다.
 	 *
 	 * @see egovframework.com.cmm.service.EgovFileMngService#deleteFileInf(egovframework.com.cmm.service.FileVO)
