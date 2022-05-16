@@ -14,9 +14,8 @@
 		
 		<!-- <value>/egovframework/com/sec/rnc/EgovCallGpin</value>
 		<value>cmm/sec/rnc/EgovCallGpin</value>
-		<value>utl/sys/wsi/EgovWebStandardInspectionUriDirect</value>
-		<value>utl/sys/wsi/EgovWebStandardInspectionUri</value>
-		<value>utl/sys/wsi/EgovWebStandardInspectionUriDirectLink</value> -->
+		<value>utl/sys/wsi/EgovWebStandardInspectionUri.*</value> -->
+		
 	</util:list>
 
 	<!-- 820. RSS태그관리 -->
