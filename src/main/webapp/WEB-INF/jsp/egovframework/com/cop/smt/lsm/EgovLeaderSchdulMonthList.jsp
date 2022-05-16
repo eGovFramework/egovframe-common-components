@@ -150,7 +150,7 @@ int newLine = 0;
 </head>
 <body style="margin:0"> 
 <form name="leaderSchdulVO" id="leaderSchdulVO" action="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulMonthList.do' />?year=<%=year%>&month=<%=month%>&searchCondition=LEADER_ID" method="post" target="_self">
-	<div id="content" style="width:712px;">
+	<div id="content" style="width:100%;min-width:712px;">
 	
 		<!-- 검색영역 -->
 		<div class="search_box2 mb10">

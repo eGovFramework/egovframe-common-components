@@ -1,7 +1,7 @@
 @charset "utf-8";
 
 /*캘린더*/
-.calendar { position: relative; width: 730px; }
+.calendar { position: relative; width:100%; min-width: 730px; }
 .calendar h2 { color: #333; font-size: 16px; margin: 15px 0 10px; padding-left:25px; background:url(../../../../../../images/egovframework/com/cmm/icon/tit_icon.png) no-repeat left top; }
 	 .sort_area { position: relative; height: 40px; border: 0px solid #dedede; margin:0 0 10px 0;}
 		.select_group { position: absolute; top: 5px; left: 0; }

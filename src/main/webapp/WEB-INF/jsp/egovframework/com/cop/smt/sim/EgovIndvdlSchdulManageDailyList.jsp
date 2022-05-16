@@ -164,7 +164,7 @@ String sTodate = formatter.format(new java.util.Date());
 </HEAD>
 <BODY>
 <form name="deptSchdulManageVO" id="deptSchdulManageVO" action="" method="post">
-<DIV id="content" style="width:712px;">
+<DIV id="content" style="width:100%;min-width:712px;">
 
 
 <div class="sort_area">

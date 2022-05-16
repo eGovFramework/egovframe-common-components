@@ -145,7 +145,7 @@ A:hover { font-size:9pt; font-family:"돋움";color:red;text-decoration:none;}
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
-<div id="border" style="width:712px">
+<div id="border" style="width:100%;min-width:712px">
 
 	<h1 class="tit01 mt20 mb8"><spring:message code="comUssIonBnt.bndtManageList.title"/></h1><!-- 당직관리 목록 -->
 	
@@ -175,7 +175,7 @@ A:hover { font-size:9pt; font-family:"돋움";color:red;text-decoration:none;}
 <input type="hidden" name="bndtDe" value ="<c:out value='${bndtManageVO.bndtDe}'/>">
 <input type="hidden" name="bndtId" value ="<c:out value='${bndtManageVO.bndtId  }'/>"/>
 
-<DIV id="content" style="width:712px;">
+<DIV id="content" style="width:100%;min-width:712px">
 <br>
 <table class="schedule" border="0" cellspacing="1" cellpadding="1" summary="<spring:message code="comUssIonBnt.bndtManageList.bndtList"/>" ><!-- 당직목록 -->
 <colgroup>

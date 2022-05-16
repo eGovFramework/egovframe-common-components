@@ -143,7 +143,7 @@ int iEndDay = cal.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
 </head>
 <body> 
 <form name="leaderSchdulVO" id="leaderSchdulVO" action="<c:url value='/cop/smt/lsm/usr/EgovLeaderSchdulDailyList.do' />?year=<%=iNowYear%>&month=<%=iNowMonth%>&day=<%=iNowDay%>&searchCondition=SCHDUL_SE" method="post">
-<div id="content" style="width:712px;">
+<div id="content" style="width:100%;min-width:712px;">
 
 	<!-- 검색영역 -->
 	<div class="search_box2 mb10">
