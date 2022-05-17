@@ -81,7 +81,7 @@ public class EgovKnoAppraisalController {
 	    Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 	    if (!isAuthenticated) {
 	        model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-	        return "egovframework/com/uat/uia/EgovLoginUsr";
+	        return "redirect:/uat/uia/egovLoginUsr.do";
 	    }
 
         // 로그인 객체 선언

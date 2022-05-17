@@ -216,7 +216,7 @@ public class EgovBBSMasterController {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
     	
 		boardMasterVO.setPageUnit(propertyService.getInt("pageUnit"));
@@ -306,7 +306,7 @@ public class EgovBBSMasterController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		
         if(!isAuthenticated) { //KISA 보안약점 조치 (2018-12-10, 신용호)
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 		
 		blogVO.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));

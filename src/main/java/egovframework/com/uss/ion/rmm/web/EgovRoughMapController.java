@@ -75,7 +75,7 @@ public class EgovRoughMapController {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
         searchVO.setPageUnit(propertyService.getInt("pageUnit"));
@@ -115,7 +115,7 @@ public class EgovRoughMapController {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
         RoughMapVO roughMap = egovRoughMapService.selectRoughMapDetail(roughMapVO);
@@ -137,7 +137,7 @@ public class EgovRoughMapController {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
         return "egovframework/com/uss/ion/rmm/EgovRoughMapRegist";
@@ -156,7 +156,7 @@ public class EgovRoughMapController {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
     	beanValidator.validate(roughMap, bindingResult);
@@ -190,7 +190,7 @@ public class EgovRoughMapController {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
         roughMap = egovRoughMapService.selectRoughMapDetail(roughMap);
@@ -214,7 +214,7 @@ public class EgovRoughMapController {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
     	beanValidator.validate(roughMap, bindingResult);
@@ -246,7 +246,7 @@ public class EgovRoughMapController {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();

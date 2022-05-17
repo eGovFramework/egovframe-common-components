@@ -229,7 +229,7 @@ public class EgovSynchrnServerController {
 			Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated(); //KISA 보안취약점 조치 (2018-12-10, 이정은)
 
 			if (!isAuthenticated) {
-				return "egovframework/com/uat/uia/EgovLoginUsr";
+				return "redirect:/uat/uia/egovLoginUsr.do";
 			}
 			synchrnServer.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
 			//KISA 보안약점 조치 (2018-10-29, 윤창원)
@@ -282,7 +282,7 @@ public class EgovSynchrnServerController {
 			Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated(); //KISA 보안취약점 조치 (2018-12-10, 이정은)
 
 			if (!isAuthenticated) {
-				return "egovframework/com/uat/uia/EgovLoginUsr";
+				return "redirect:/uat/uia/egovLoginUsr.do";
 			}
 			synchrnServer.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
 			//KISA 보안약점 조치 (2018-10-29, 윤창원)

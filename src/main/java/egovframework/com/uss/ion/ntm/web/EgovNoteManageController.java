@@ -95,7 +95,7 @@ public class EgovNoteManageController {
 	    Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 	    if (!isAuthenticated) {
 	        model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-	        return "egovframework/com/uat/uia/EgovLoginUsr";
+	        return "redirect:/uat/uia/egovLoginUsr.do";
 	    }
 
      	//수신구분
@@ -169,7 +169,7 @@ public class EgovNoteManageController {
 	    Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 	    if (!isAuthenticated) {
 	        model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-	        return "egovframework/com/uat/uia/EgovLoginUsr";
+	        return "redirect:/uat/uia/egovLoginUsr.do";
 	    }
 
         //서버  validate 체크

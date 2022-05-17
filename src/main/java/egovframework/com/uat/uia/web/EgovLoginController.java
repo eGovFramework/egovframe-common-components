@@ -114,7 +114,7 @@ public class EgovLoginController {
 		    gpkirequest= new GPKIHttpServletRequest(request);
 		    gpkiresponse.setRequest(gpkirequest);
 		    model.addAttribute("challenge", gpkiresponse.getChallenge());
-		    return "egovframework/com/uat/uia/EgovLoginUsr";
+		    return "redirect:/uat/uia/egovLoginUsr.do";
 
 		}catch(Exception e){
 		    return "egovframework/com/cmm/egovError";
@@ -153,11 +153,11 @@ public class EgovLoginController {
 					}else if(sLoginIncorrectCode.equals("C")){
 						model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
 					}
-					return "egovframework/com/uat/uia/EgovLoginUsr";
+					return "redirect:/uat/uia/egovLoginUsr.do";
 				}
 		    }else{
 		    	model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
-		    	return "egovframework/com/uat/uia/EgovLoginUsr";
+		    	return "redirect:/uat/uia/egovLoginUsr.do";
 		    }
 		}
 		
@@ -178,7 +178,7 @@ public class EgovLoginController {
 
 		} else {
 			model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 	}
 
@@ -252,14 +252,14 @@ public class EgovLoginController {
 
 		    } else {
 		    	model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-		    	return "egovframework/com/uat/uia/EgovLoginUsr";
+		    	return "redirect:/uat/uia/egovLoginUsr.do";
 		    }
 		} else {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 		*/
-		return "egovframework/com/uat/uia/EgovLoginUsr";
+		return "redirect:/uat/uia/egovLoginUsr.do";
 	}
 
 	/**
@@ -275,7 +275,7 @@ public class EgovLoginController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		

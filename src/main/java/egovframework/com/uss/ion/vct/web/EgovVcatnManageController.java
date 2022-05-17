@@ -97,7 +97,7 @@ public class EgovVcatnManageController {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		if (user == null) {
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		vcatnManageVO = egovVcatnManageService.selectIndvdlYrycManage(user.getUniqId());
@@ -219,7 +219,7 @@ public class EgovVcatnManageController {
 
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		//승인권자 소속명, 성명   유지
@@ -316,7 +316,7 @@ public class EgovVcatnManageController {
 				return "egovframework/com/uss/ion/vct/EgovVcatnRegist";
 			}
 		} else {
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 	}
 
@@ -352,7 +352,7 @@ public class EgovVcatnManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (!isAuthenticated) {
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -417,7 +417,7 @@ public class EgovVcatnManageController {
 				return "egovframework/com/uss/ion/vct/EgovVcatnUpdt";
 			}
 		} else {
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 	}
 
@@ -467,7 +467,7 @@ public class EgovVcatnManageController {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		if (user == null) {
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		vcatnManageVO.setSanctnerId(user.getUniqId()); //사용자가 승인권자인지 조건값 setting
@@ -530,7 +530,7 @@ public class EgovVcatnManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (!isAuthenticated) {
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		if (bindingResult.hasErrors()) {
