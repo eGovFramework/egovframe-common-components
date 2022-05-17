@@ -54,7 +54,7 @@ function fn_egov_search_OnlineManual(){
 </head>
 <body>
 
-<DIV id="content" style="width:712px">
+<DIV id="content" style="width:100%;min-width:712px;">
 <!--  상단타이틀 -->
 <form name="listForm" action="<c:url value='/uss/olh/omn/listOnlineManual.do'/>" method="post">
 <%-- noscript 테그 --%>

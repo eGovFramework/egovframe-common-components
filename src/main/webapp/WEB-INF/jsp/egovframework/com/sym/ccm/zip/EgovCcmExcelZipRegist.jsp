@@ -66,7 +66,7 @@ function fn_egov_regist_ExcelZip(){
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg"/></noscript>
 <!-- 엑셀 등록 메시지  -->
 ${sResult}
-<DIV id="note" style="width:712px">
+<DIV id="note" style="width:100%;min-width:712px;">
 <!-- 상단타이틀 -->
 <form name="Form" id="Form" action="<c:url value='/sym/ccm/zip/EgovCcmZipRegist.do'/>" method="post" enctype="multipart/form-data" >
 <!-- 상단 타이틀  영역 -->

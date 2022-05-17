@@ -41,7 +41,7 @@ User user = (User)status.getUser();
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/button.css'/>">
 </head>
 <body>
-<DIV id="content" style="width:712px">
+<DIV id="content" style="width:100%;min-width:712px;">
 <!-- noscript 태그  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 

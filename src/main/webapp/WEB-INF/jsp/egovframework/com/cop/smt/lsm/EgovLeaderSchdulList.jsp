@@ -158,7 +158,7 @@ $(function() {
 </script>
 </head>
 <body>
-<div id="content" style="width:712px">
+<div id="content" style="width:100%;min-width:712px;">
 
 	<h1 class="tit01 mt20 mb8"><spring:message code="comCopSmtLsm.leaderSchdulList.title" /></h1><!-- 간부일정 목록 -->
 	

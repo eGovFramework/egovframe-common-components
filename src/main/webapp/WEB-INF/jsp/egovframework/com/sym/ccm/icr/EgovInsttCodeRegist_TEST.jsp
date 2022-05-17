@@ -57,7 +57,7 @@ function fn_egov_regist_InsttCode(form){
 </head>
 
 <body>
-<DIV id="content" style="width:712px">
+<DIV id="content" style="width:100%;min-width:712px;">
 <!-- 상단타이틀 -->
 <form:form modelAttribute="InsttCode" name="InsttCode" method="post">
 <input name="cmd" type="hidden" value="<c:out value='Regist'/>"/>

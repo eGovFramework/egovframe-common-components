@@ -59,7 +59,7 @@ function fn_egov_modify_CntcSystem(form){
 </head>
 
 <body>
-<DIV id="content" style="width:712px">
+<DIV id="content" style="width:100%;min-width:712px;">
 <%-- noscript 테그 --%>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
