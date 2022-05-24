@@ -86,13 +86,13 @@ function fn_egov_select_linkPage(pageNo){
 function fn_egov_search_privacyLog(){
 	var vFrom = document.PrivacyLogForm;
 
-	 if(vFrom.searchEndDe.value != ""){
-	     if(vFrom.searchBgnDe.value > vFrom.searchEndDe.value){
+	 if(vFrom.searchEndDate.value != ""){
+	     if(vFrom.searchBeginDate.value > vFrom.searchEndDate.value){
 	         alert("<spring:message code="comSymLogPlg.validate.dateCheck" />"); //검색조건의 시작일자가 종료일자보다  늦습니다. 검색조건 날짜를 확인하세요!
 	         return;
 		  }
 	 }else{
-		 vFrom.searchEndDe.value = "";
+		 vFrom.searchEndDate.value = "";
 	 }
 
 	vFrom.pageIndex.value = "1";
