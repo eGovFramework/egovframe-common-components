@@ -31,7 +31,6 @@
 <title>${pageTitle}</title>
 <link href="<c:url value='/css/egovframework/com/com.css' />" rel="stylesheet" type="text/css">
 <link href="<c:url value='/css/egovframework/com/button.css' />" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value='/js/egovframework/com/sym/cal/EgovCalPopup.js' />" ></script>
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
 <validator:javascript formName="restde" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javaScript" language="javascript">
@@ -47,6 +46,7 @@ function fn_egov_list_Restde(){
  ******************************************************** */
  function fn_egov_regist_Restde(form){
 	if(confirm("<spring:message code='common.save.msg' />")){
+        document.all.restdeDe.value = document.all.vrestdeDe.value.replaceAll('-', '');
 		if(!validateRestde(form)){
 			return;
 		}else{
@@ -75,10 +75,9 @@ function fn_egov_list_Restde(){
 		<tr>
 			<th><spring:message code="sym.cal.restDay" /> <span class="pilsu">*</span></th><!-- 휴일일자 -->
 			<td class="left">
-			    <input type="hidden" name="cal_url" value="<c:url value='/sym/cal/EgovNormalCalPopup.do'/>" />
-		    	<form:hidden path="restdeDe" />
-				<input name="vrestdeDe" type="text" value=""  maxlength="10" readonly="readonly" onclick="fn_egov_NormalCalendar(document.restde, document.restde.restdeDe, document.restde.vrestdeDe);" title="<spring:message code="sym.cal.restDay" />(새창)" style="width:70px"/>
-				<a href="#noscript" onclick="fn_egov_NormalCalendar(document.restde, document.restde.restdeDe, document.restde.vrestdeDe); return false;"><img src="<c:url value='/images/egovframework/com/cmm/icon/bu_icon_carlendar.gif' />" alt="달력창팝업버튼이미지"/></a>
+                <input type="date" name="vrestdeDe" id="vrestdeDe" />
+                <form:hidden path="restdeDe" />
+                <form:errors   path="restdeDe"/>
 			</td>
 		</tr>
 		<tr>

@@ -38,6 +38,7 @@ a:hover { color:#000; text-decoration:none; }
 a, button, input[type="button"] { cursor:pointer; }
 textarea,
 input[type="file"],
+input[type="date"],
 input[type="password"],
 input[type="text"] {border:1px solid #d2d2d2; color:#727272; } 
 textarea[readonly="readonly"],
@@ -50,6 +51,7 @@ select[disabled="disabled"],
 input[disabled="disabled"] { color:#999; background:#f7f7f7; }
 input[type="password"],
 input[type="file"],
+input[type="date"],
 input[type="text"] { /*height:15px; vertical-align:middle; */ }
 input[type="file"] { width:100%; }
 input[type="radio"] { vertical-align:text-bottom; }
@@ -73,7 +75,7 @@ img, input[type=checkbox]
 }
 
 /* INPUT, TEXTAREA, COMBOBOX 기본모양 설정 */
-input[type=text], input[type=password], textarea, select
+input[type=text], input[type=password], input[type=date], textarea, select
 {
 	border-radius:0.5em;
 	min-height:28px;
