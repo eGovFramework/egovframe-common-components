@@ -16,8 +16,6 @@
 package egovframework.com.cmm.filter;
 
 import java.io.IOException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -64,12 +62,12 @@ public class SessionTimeoutCookieFilter implements Filter{
         cookie = new Cookie("egovExpireSessionTime", "" + sessionExpireTime);
         cookie.setPath("/");
         
-        Date dateServer = new Date(serverTime);
-        Date dateExpiry = new Date(sessionExpireTime);
-        SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+//        Date dateServer = new java.util.Date(serverTime);
+//        Date dateExpiry = new java.util.Date(sessionExpireTime);
+//        SimpleDateFormat format = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-        String serverYMD = format.format(dateServer);
-        String expiryYMD = format.format(dateExpiry);
+//        String serverYMD = format.format(dateServer);
+//        String expiryYMD = format.format(dateExpiry);
         //System.out.println("=====>>> serverYMD = "+serverYMD);
         //System.out.println("=====>>> expiryYMD = "+expiryYMD);
         //System.out.println("=====>>> server TimeStamp = "+serverTime);

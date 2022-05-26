@@ -336,7 +336,7 @@ public class EgovMenuManageController {
 		@ModelAttribute("searchVO") ComDefaultVO searchVO,
 		ModelMap model)
 		throws Exception {
-		String resultMsg = "";
+//		String resultMsg = "";
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
@@ -344,7 +344,7 @@ public class EgovMenuManageController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 		List<?> list_menulist = menuManageService.selectMenuList();
-		resultMsg = egovMessageSource.getMessage("success.common.select");
+//		resultMsg = egovMessageSource.getMessage("success.common.select");
 		model.addAttribute("list_menulist", list_menulist);
 		//        model.addAttribute("resultMsg", resultMsg);
 		return "egovframework/com/sym/mnu/mpm/EgovMenuList";

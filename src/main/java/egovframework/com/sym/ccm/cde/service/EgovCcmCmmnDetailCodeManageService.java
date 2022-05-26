@@ -3,7 +3,6 @@ package egovframework.com.sym.ccm.cde.service;
 import java.util.List;
 
 import egovframework.com.cmm.service.CmmnDetailCode;
-import egovframework.com.sym.ccm.cde.service.CmmnDetailCodeVO;
 
 /**
 *

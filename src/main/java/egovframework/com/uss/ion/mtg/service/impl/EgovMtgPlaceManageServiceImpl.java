@@ -102,7 +102,7 @@ public class EgovMtgPlaceManageServiceImpl extends EgovAbstractServiceImpl imple
             					   MtgPlaceManageVO mtgPlaceManageVO) throws Exception {
 
 		mtgPlaceManageDAO.updtMtgPlaceManage(mtgPlaceManage);
-		String sMtgPlaceId = mtgPlaceManage.getMtgPlaceId();
+//		String sMtgPlaceId = mtgPlaceManage.getMtgPlaceId();
 
 		}
 
@@ -112,7 +112,7 @@ public class EgovMtgPlaceManageServiceImpl extends EgovAbstractServiceImpl imple
 	 */
 	@Override
 	public void deleteMtgPlaceManage(MtgPlaceManage mtgPlaceManage) throws Exception {
-		String sMtgPlaceId = mtgPlaceManage.getMtgPlaceId();
+//		String sMtgPlaceId = mtgPlaceManage.getMtgPlaceId();
 		mtgPlaceManageDAO.deleteMtgPlaceManage(mtgPlaceManage);
 	}
 

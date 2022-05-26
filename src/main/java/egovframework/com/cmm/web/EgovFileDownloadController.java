@@ -51,25 +51,6 @@ public class EgovFileDownloadController {
 	@Resource(name = "EgovFileMngService")
 	private EgovFileMngService fileService;
 
-	/**
-	 * 브라우저 구분 얻기.
-	 *
-	 * @param request
-	 * @return
-	 */
-	private String getBrowser(HttpServletRequest request) {
-		String header = request.getHeader("User-Agent");
-		if (header.indexOf("MSIE") > -1) {
-			return "MSIE";
-		} else if (header.indexOf("Trident") > -1) { // IE11 문자열 깨짐 방지
-			return "Trident";
-		} else if (header.indexOf("Chrome") > -1) {
-			return "Chrome";
-		} else if (header.indexOf("Opera") > -1) {
-			return "Opera";
-		}
-		return "Firefox";
-	}
 
 	/**
 	 * 첨부파일로 등록된 파일에 대하여 다운로드를 제공한다.

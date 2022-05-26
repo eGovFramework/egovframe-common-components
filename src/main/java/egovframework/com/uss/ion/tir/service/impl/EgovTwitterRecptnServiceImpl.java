@@ -16,8 +16,8 @@ import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
-import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationBuilder;
+//import twitter4j.conf.Configuration;
+//import twitter4j.conf.ConfigurationBuilder;
 /**
  * 트위터수신을 처리하는 ServiceImpl Class 구현
  * @author 공통서비스 장동한

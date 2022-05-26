@@ -292,7 +292,7 @@ public class EgovArticleController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 	
 		BoardMasterVO bdMstr = new BoardMasterVO();
-		BoardVO board = new BoardVO();
+		
 		if (isAuthenticated) {
 	
 		    BoardMasterVO vo = new BoardMasterVO();
@@ -1341,6 +1341,10 @@ public class EgovArticleController {
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();	//KISA 보안취약점 조치 (2018-12-10, 이정은)
 
+    	if(!isAuthenticated) {
+        	throw new IllegalAccessException("Login Required!");
+        }
+    	
     	String tmplatCours = boardVO.getSearchWrd();
     	
 		BlogVO master = new BlogVO();
@@ -1371,7 +1375,7 @@ public class EgovArticleController {
 		model.addAttribute("articleVO", boardVO);
 		model.addAttribute("boardMasterVO", master);
 		model.addAttribute("blogNameList", blogNameList);
-		model.addAttribute("loginUserCnt", 1);
+		model.addAttribute("loginUserCnt", loginUserCnt);
 		
 		model.addAttribute("preview", "true");
 		

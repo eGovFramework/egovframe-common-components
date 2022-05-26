@@ -87,8 +87,8 @@ public class CkImageSaver {
 		}
 
 		this.imageDomain = EgovWebUtil.filePathBlackList(imageDomain);
-		if ((EgovStringUtil.isNullToString(imageDomain)).endsWith("/")) {
-			StringUtils.removeEnd(imageDomain, "/");
+		if ((EgovStringUtil.isNullToString(this.imageDomain)).endsWith("/")) {
+			StringUtils.removeEnd(this.imageDomain, "/");
 		}
 
 		this.allowFileTypeArr = allowFileTypeArr.clone();

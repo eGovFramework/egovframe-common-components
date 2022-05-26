@@ -1,7 +1,5 @@
 package egovframework.com.cop.ems.service.impl;
 
-import java.util.List;
-
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.cop.ems.service.SndngMailVO;
 

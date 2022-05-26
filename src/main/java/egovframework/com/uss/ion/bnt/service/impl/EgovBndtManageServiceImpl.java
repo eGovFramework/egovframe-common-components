@@ -22,7 +22,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.uss.ion.bnt.service.BndtCeckManage;
 import egovframework.com.uss.ion.bnt.service.BndtCeckManageVO;
 import egovframework.com.uss.ion.bnt.service.BndtDiary;
