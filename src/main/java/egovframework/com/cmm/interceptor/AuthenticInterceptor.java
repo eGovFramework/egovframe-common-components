@@ -38,6 +38,7 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 
 public class AuthenticInterceptor extends HandlerInterceptorAdapter {
 
+	@SuppressWarnings("unused")
 	@Autowired
 	private Environment environment;
 	

@@ -515,7 +515,7 @@ public class EgovBndtManageController {
 		SessionStatus status,
 		@RequestParam Map<?, ?> commandMap,
 		ModelMap model) throws Exception {
-		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd"); // 상세정보 구분
+//		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd"); // 상세정보 구분
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		status.setComplete();
