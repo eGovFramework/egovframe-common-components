@@ -76,6 +76,14 @@ public class CkImageSaver {
     
 	private FileSaveManager fileSaveManager;
 
+
+	/**
+	 *
+	 * @param imageBaseDir
+	 * @param imageDomain
+	 * @param allowFileTypeArr
+	 * @param saveManagerClass	 *
+	 */
 	public CkImageSaver(String imageBaseDir, String imageDomain, String[] allowFileTypeArr, String saveManagerClass) {
 		this.imageBaseDir = EgovWebUtil.filePathBlackList(imageBaseDir);
 		
@@ -112,6 +120,12 @@ public class CkImageSaver {
 		}
 	}
 
+	/**
+	 *
+	 * @param request
+	 * @param response
+	 * @throws IOException
+	 */
 	public void saveAndReturnUrlToClient(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// Parse the request
 		try {
@@ -172,6 +186,11 @@ public class CkImageSaver {
 		}
 	}
 
+	/**
+	 *
+	 * @param fileName
+	 * @return
+	 */
 	protected boolean isAllowFileType(String fileName) {
 		boolean isAllow = false;
 		if (allowFileTypeArr != null && allowFileTypeArr.length > 0) {
@@ -192,6 +211,8 @@ public class CkImageSaver {
      * 암호화
      *
      * @param encrypt
+	 * @param request
+	 * @return
      */
     private String encrypt(String encrypt,HttpServletRequest request) {
     	
@@ -201,7 +222,7 @@ public class CkImageSaver {
     	try {
     		return cryptoService.encrypt(encrypt);
         } catch(IllegalArgumentException e) {
-        	log.error("[IllegalArgumentException] Try/Catch...usingParameters Runing : "+ e.getMessage());
+        	log.error("[IllegalArgumentException] Try/Catch...usingParameters Running : "+ e.getMessage());
         } catch (Exception e) {
         	log.error("[" + e.getClass() +"] :" + e.getMessage());
         }
