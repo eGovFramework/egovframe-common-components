@@ -1,0 +1,93 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+
+<body>  
+	
+	
+  
+	
+ 	<div id="chart2" style="background-color:#ffffff;"></div>  
+ 	
+ 	<script> 
+	var chart = bb.generate({
+		  size: {
+			    height: 500,
+			    width: 900
+			  },
+		data: {
+	    rows: [
+	    	[
+	        
+		      [ 
+		    	  "[ "+'${item1}'+" ]"
+			  ]
+		
+	    		
+	    	],
+	    	
+			 <c:forEach var = "resultInfo" items = "${userStats}" varStatus = "status">
+		    [
+			${resultInfo.statsCo}
+			]
+			 <c:if test="${!status.last}">,</c:if>
+			</c:forEach>	
+			
+	        ],
+
+
+	          
+	        type: "line", 	        
+	        
+
+	  },
+	  
+ 
+	  
+	  axis: {
+		    x: {
+		  
+		      type: "category",
+		          categories: [
+				        <c:forEach items="${userStats}" var="resultInfo" varStatus="status">
+			        	
+			         	'${resultInfo.statsDate}'
+			         
+				        <c:if test="${!status.last}">,</c:if> 
+				        </c:forEach>
+		          ] ,
+		      
+	       label: "[ "+'${timegb1}'+" ]" ,
+	       
+
+	
+		      
+		    },
+		    
+		    y: {
+		           label: {
+		              text: "[ "+'${unit1}'+" ]" 
+		            }
+		    },
+		    y2: {
+		        show: true,
+		        label: {
+		              text: "[ "+'${unit1}'+" ]" 
+		            }
+		      }
+		  },
+
+  grid: {
+	    y: {
+	      show: true
+	    }
+	  },	  
+  area: {
+	    linearGradient: true
+	  },	  
+	  bindto: "#chart2"
+	});
+		</script>  	
+ 	
+	
+	
+<html>

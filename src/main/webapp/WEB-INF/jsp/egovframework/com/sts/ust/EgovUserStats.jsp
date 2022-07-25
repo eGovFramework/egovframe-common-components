@@ -15,7 +15,8 @@
   * @ 2009.03.16   박지욱            최초 생성
   * @ 2011.07.17   이기하            패키지 분리(sts -> sts.ust)
   * @ 2019.12.11   신용호            KISA 보안약점 조치 (크로스사이트 스크립트)
-  *
+  * @ 2022.07.25   박승원            차트라이브러리 적용
+  
   *  @author 공통서비스 개발팀 박지욱
   *  @since 2009.03.16
   *  @version 1.0
@@ -30,10 +31,13 @@
 <title>${pageTitle}</title>
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
+<link href="<c:url value="/css/egovframework/com/billboard.css"/>" rel="stylesheet" type="text/css">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/sym/cal/EgovCalPopup.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
+<script src="<c:url value='/js/egovframework/com/billboard.pkgd.js' />"></script>
+
 <script type="text/javaScript" language="javascript">
 /* ********************************************************
  * 기간구분 변경
@@ -277,9 +281,30 @@ function getNextWeek(v,t){
 			</li>
 		</ul>
 	</div>
+
+
+
+
 	
 	<h2 class="tit02" style="margin:0 0 10px 0"><spring:message code="comStsUst.userStats.statResult" /></h2> <!-- 사용자 통계 검색 -->
 	<h3><spring:message code="comStsUst.userStats.subTitle1" /></h3> <!-- 그래프 (단위, 명) -->
+
+	<c:set var="item1" value= "사용자">   </c:set>	
+	<c:set var="timegb1" value= "일자">   </c:set>	
+	<c:set var="unit1" value= "명">   </c:set>
+
+<table  width="100%"  >
+<tr>
+<c:if test="${fn:length(userStats) > 0}">
+<td bgcolor="#ffffff">
+<%@ include file="billboard2.html" %>
+</td>
+</tr>
+</c:if>
+</table>
+
+
+	<!--
 	<table class="e001 mb10">
 		<colgroup>
 			<col style="width:14%" />
@@ -298,7 +323,7 @@ function getNextWeek(v,t){
 	    </c:if>
 	</table>
 
-	<h3><spring:message code="comStsUst.userStats.subTitle2" /></h3> <!-- 텍스트 (단위, 명) -->
+	<h3><spring:message code="comStsUst.userStats.subTitle2" /></h3>
 	<table class="e001">
 		<colgroup>
 			<col style="width:14%" />
@@ -313,6 +338,8 @@ function getNextWeek(v,t){
 			    <tr><td></td></tr>
 			    </c:if>
 	</table>
+	
+	-->
 
 	</form>
 </div>
