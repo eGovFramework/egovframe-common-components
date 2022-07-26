@@ -296,13 +296,14 @@ function getNextWeek(v,t){
 <table  width="100%"  >
 <tr>
 <c:if test="${fn:length(userStats) > 0}">
-<td bgcolor="#ffffff">
+<td>
 <%@ include file="billboard2.html" %>
 </td>
 </tr>
 </c:if>
 </table>
 
+	
 
 	<!--
 	<table class="e001 mb10">

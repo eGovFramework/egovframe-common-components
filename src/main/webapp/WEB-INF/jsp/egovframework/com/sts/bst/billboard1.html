@@ -25,7 +25,7 @@
 	    		
 	    	],
 	    	
-			 <c:forEach var = "resultInfo" items = "${userStats}" varStatus = "status">
+			 <c:forEach var = "resultInfo" items = "${bbsStatsList}" varStatus = "status">
 		    [
 			${resultInfo.statsCo}
 			]
@@ -48,7 +48,7 @@
 		  
 		      type: "category",
 		          categories: [
-				        <c:forEach items="${userStats}" var="resultInfo" varStatus="status">
+				        <c:forEach items="${bbsStatsList}" var="resultInfo" varStatus="status">
 			        	
 			         	'${resultInfo.statsDate}'
 			         

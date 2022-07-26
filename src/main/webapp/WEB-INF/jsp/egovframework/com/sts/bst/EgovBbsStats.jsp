@@ -16,6 +16,7 @@
   * @ 2011.07.17   이기하            패키지 분리(sts -> sts.bst)
   *   2011.09.15   서준식            평균/최고/최소 조회수, 최고게시자 오류 수정
   *   2019.12.11   신용호            KISA 보안약점 조치 (크로스사이트 스크립트)
+  *   2022.07.26   박승원            차트라이브러리 적용
   *
   *  @author 공통서비스 개발팀 박지욱
   *  @since 2009.03.19
@@ -31,10 +32,12 @@
 <title>${pageTitle}</title>
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
+<link href="<c:url value="/css/egovframework/com/billboard.css"/>" rel="stylesheet" type="text/css">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/sym/cal/EgovCalPopup.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
+<script src="<c:url value='/js/egovframework/com/billboard.pkgd.js' />"></script>
 <script type="text/javaScript" language="javascript">
 
 function fn_egov_init_date(){
@@ -313,7 +316,21 @@ function getNextWeek(v,t){
 		<h3 class="tit02" style="margin:0 0 10px 0"><spring:message code="comStsBst.bbsStats.tab1" /> <spring:message code="comStsBst.bbsStats.statResult" /></h3>  <!-- 생성글수 통계 결과 -->
 		<h4><spring:message code="comStsBst.bbsStats.tab1.subTitle1" /></h4> <!-- 그래프 (단위, 개) -->
 
-		<!-- 막대그래프 시작 -->
+		<c:set var="item1" value= "글수">   </c:set>	
+		<c:set var="timegb1" value= "일자">   </c:set>	
+		<c:set var="unit1" value= "개">   </c:set>
+
+		<table  width="100%"  >
+		<tr>
+		<c:if test="${fn:length(bbsStatsList) > 0}">
+		<td>
+		<%@ include file="billboard1.html" %>
+		</td>
+		</tr>
+		</c:if>
+		</table>
+
+		<!-- 막대그래프 시작 
 		<table class="e001 mb10">
 		<colgroup>
 			<col style="width:14%" />
@@ -331,10 +348,10 @@ function getNextWeek(v,t){
 			<tr><td></td></tr>
 			</c:if>
 		</table>
-		<!-- 막대그래프 끝 -->
 		
 		
-		<h4><spring:message code="comStsBst.bbsStats.tab1.subTitle2" /></h4> <!-- 텍스트 (단위, 개) -->
+		
+		<h4><spring:message code="comStsBst.bbsStats.tab1.subTitle2" /></h4> 
 
 		<table class="e001">
 			<colgroup>
@@ -350,7 +367,7 @@ function getNextWeek(v,t){
 		    <tr><td></td></tr>
 		    </c:if>
 		</table>
-
+		막대그래프 끝 -->
 	</div>
 		
 	<!-- 총조회수 탭 -->
@@ -359,7 +376,22 @@ function getNextWeek(v,t){
 		<h3 class="tit02" style="margin:0 0 10px 0"><spring:message code="comStsBst.bbsStats.tab2" /> <spring:message code="comStsBst.bbsStats.statResult" /></h3> <!-- 총조회수 통계 결과 -->
 		<h4><spring:message code="comStsBst.bbsStats.tab2.subTitle1" /></h4> <!-- 그래프 (단위, 회) -->
 
-		<!-- 막대그래프 시작 -->
+		<c:set var="item1" value= "조회수">   </c:set>	
+		<c:set var="timegb1" value= "일자">   </c:set>	
+		<c:set var="unit1" value= "회">   </c:set>
+
+		<table  width="100%"  >
+		<tr>
+		<c:if test="${fn:length(bbsStatsList) > 0}">
+		<td>
+		<%@ include file="billboard1.html" %>
+		</td>
+		</tr>
+		</c:if>
+		</table>
+
+
+		<!-- 막대그래프 시작
 		<table class="e001 mb10">
 		<colgroup>
 			<col style="width:14%" />
@@ -377,10 +409,10 @@ function getNextWeek(v,t){
 			<tr><td></td></tr>
 			</c:if>
 		</table>
-		<!-- 막대그래프 끝 -->
+		<!-- 막대그래프 끝 
 		
 		
-		<h4><spring:message code="comStsBst.bbsStats.tab2.subTitle2" /></h4> <!-- 텍스트 (단위, 회) -->
+		<h4><spring:message code="comStsBst.bbsStats.tab2.subTitle2" /></h4> 
 
 		<table class="e001">
 			<colgroup>
@@ -397,6 +429,7 @@ function getNextWeek(v,t){
 		    </c:if>
 		</table>
 
+ -->
 	</div>
 	
 	
@@ -406,7 +439,21 @@ function getNextWeek(v,t){
 		<h3 class="tit02" style="margin:0 0 10px 0"><spring:message code="comStsBst.bbsStats.tab3" /> <spring:message code="comStsBst.bbsStats.statResult" /></h3> <!-- 평균조회수 통계 결과 -->
 		<h4><spring:message code="comStsBst.bbsStats.tab3.subTitle1" /></h4> <!-- 그래프 (단위, 회) -->
 
-		<!-- 막대그래프 시작 -->
+		<c:set var="item1" value= "조회수">   </c:set>	
+		<c:set var="timegb1" value= "일자">   </c:set>	
+		<c:set var="unit1" value= "회">   </c:set>
+
+		<table  width="100%"  >
+		<tr>
+		<c:if test="${fn:length(bbsStatsList) > 0}">
+		<td>
+		<%@ include file="billboard1.html" %>
+		</td>
+		</tr>
+		</c:if>
+		</table>
+
+		<!-- 막대그래프 시작 
 		<table class="e001 mb10">
 		<colgroup>
 			<col style="width:14%" />
@@ -424,10 +471,10 @@ function getNextWeek(v,t){
 			<tr><td></td></tr>
 			</c:if>
 		</table>
-		<!-- 막대그래프 끝 -->
+		<!-- 막대그래프 끝 
 		
 		
-		<h4><spring:message code="comStsBst.bbsStats.tab3.subTitle2" /></h4> <!-- 텍스트 (단위, 회) -->
+		<h4><spring:message code="comStsBst.bbsStats.tab3.subTitle2" /></h4> 
 
 		<table class="e001">
 			<colgroup>
@@ -443,7 +490,7 @@ function getNextWeek(v,t){
 		    <tr><td></td></tr>
 		    </c:if>
 		</table>
-
+-->
 
 	</div>
 
