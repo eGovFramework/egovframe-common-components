@@ -29,10 +29,15 @@
 <title>${pageTitle}</title>
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
+<link href="<c:url value="/css/egovframework/com/tui-grid.css"/>" rel="stylesheet" type="text/css">
+<link href="<c:url value="/css/egovframework/com/billboard.css"/>" rel="stylesheet" type="text/css">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/sym/cal/EgovCalPopup.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
+<script src="<c:url value='/js/egovframework/com/tui-grid.js' />"></script>
+<script src="<c:url value='/js/egovframework/com/billboard.pkgd.js' />"></script>
+
 <script type="text/javaScript" language="javascript">
 function fn_egov_init_date(){
 	
@@ -163,6 +168,9 @@ function fnInitAll(){
 	}
 	
 	fn_egov_init_date();
+	
+	
+	
 }
 
 function getNextWeek(v,t){
@@ -177,7 +185,11 @@ function getNextWeek(v,t){
 	str[str.length]=e.getDate();
 	return str.join("");
 }
+
+
 </script>
+
+
 </head>
 <body onLoad="javascript:fnInitAll();">
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
@@ -223,8 +235,151 @@ function getNextWeek(v,t){
 	</div>
 
 	<h2 class="tit02" style="margin:0 0 10px 0"><spring:message code="comStsCst.conectStats.statResult"/></h2>
-
 	<!-- 서비스별 결과 -->
+	<c:if test='${statsInfo.statsKind == "SERVICE" }'>
+    <div  align="left" class="code-html contents">
+      <div id="grid"></div>
+    </div>
+    <script> 
+    
+    var gridData = [];
+    (function() {
+    	<c:forEach var = "resultInfo" items = "${conectStats}" varStatus = "status">	
+           gridData.push({
+      	  statsDate: '${resultInfo.statsDate}',
+      	  conectMethod: '${resultInfo.conectMethod}',
+      	  creatCo: '${resultInfo.creatCo}',
+      	  updtCo: '${resultInfo.updtCo}',
+      	  inqireCo: '${resultInfo.inqireCo}',
+      	  deleteCo: '${resultInfo.deleteCo}',
+      	  outptCo: '${resultInfo.outptCo}',
+          errorCo: '${resultInfo.errorCo}'
+        });
+        </c:forEach>
+    })();
+
+    tui.Grid.applyTheme('striped', {
+        cell: {
+            head: {
+                background: '#eef'
+            },
+            evenRow: {
+                background: '#fee'
+            }
+        }
+    });
+    
+    var grid = new tui.Grid({
+        el: document.getElementById('grid'),
+        data: gridData,
+        width: 800,
+        scrollX: false,
+        scrollY: false,
+        columns: [
+       	  {
+             header: '일자',
+             name: 'statsDate'
+          } ,	
+          {
+            header: '메소드명',
+            name: 'conectMethod',
+            width: 200
+          },
+          {
+            header: '생성',
+            name: 'creatCo'
+          },
+          {
+            header: '수정',
+            name: 'updtCo'
+          },
+          {
+            header: '조회',
+            name: 'inqireCo'
+          },
+          {
+            header: '삭제',
+            name: 'deleteCo'
+          },
+          {
+              header: '출력',
+              name: 'outptCo'
+            },
+            {
+              header: '에러',
+              name: 'errorCo'
+            }
+         ],
+
+      });
+  
+
+
+    </script> 
+	</c:if>
+
+	<!-- 개인별 결과 -->
+	<c:if test='${statsInfo.statsKind == "PRSONAL" }'>
+	<h3><spring:message code="comStsCst.conectStats.subTitle1" /></h3> <!-- 그래프 (단위, 횟수) -->
+	
+	<c:set var="item1" value= "접속수">   </c:set>	
+	<c:set var="timegb1" value= "일자">   </c:set>	
+	<c:set var="unit1" value= "회">   </c:set>
+
+	<table  width="100%"  >
+	<tr>
+	<c:if test="${fn:length(userStatsList) > 0}">
+	<td>
+	<%@ include file="billboard3.html" %>
+	</td>
+	</tr>
+	</c:if>
+	</table>
+		
+	</c:if>
+
+
+	<!-- 서비스별 결과 
+	
+,
+         summary: {
+             height: 40,
+             position: 'bottom', 
+             columnContent: {
+             creatCo: {
+                 template: function(valueMap) {
+                   return '${valueMap.sum}';
+                 }
+               },
+               updtCo: {
+                  template: function(valueMap) {
+                    return `${valueMap.sum}`;
+                  }
+                },
+                inqireCo: {
+                    template: function(valueMap) {
+                      return `${valueMap.sum}`;
+                    }
+                },
+                deleteCo: {
+                    template: function(valueMap) {
+                      return `${valueMap.sum}`;
+                    }
+                  },
+                  outptCo: {
+                      template: function(valueMap) {
+                        return `${valueMap.sum}`;
+                      }
+                    },   
+                 errorCo: {
+                 template: function(valueMap) {
+                   return `${valueMap.sum}`;
+                 }
+               }
+             }
+           }	
+
+	
 	<c:if test='${statsInfo.statsKind == "SERVICE" }'>
 	<table class="board_list">
 		<caption></caption>
@@ -240,14 +395,14 @@ function getNextWeek(v,t){
 		</colgroup>
 		<thead>
 			<tr>
-			   <th scope="col"><spring:message code="comStsCst.conectStats.results.col1"/></th> <!-- 일자     -->
-			   <th scope="col"><spring:message code="comStsCst.conectStats.results.col2"/></th> <!-- 메소드명 -->   
-			   <th scope="col"><spring:message code="comStsCst.conectStats.results.col3"/></th> <!-- 생성     -->
-			   <th scope="col"><spring:message code="comStsCst.conectStats.results.col4"/></th> <!-- 수정     -->
-			   <th scope="col"><spring:message code="comStsCst.conectStats.results.col5"/></th> <!-- 조회     -->
-			   <th scope="col"><spring:message code="comStsCst.conectStats.results.col6"/></th> <!-- 삭제     -->
-			   <th scope="col"><spring:message code="comStsCst.conectStats.results.col7"/></th> <!-- 출력     -->
-			   <th scope="col"><spring:message code="comStsCst.conectStats.results.col8"/></th> <!-- 에러     -->
+			   <th scope="col"><spring:message code="comStsCst.conectStats.results.col1"/></th> 
+			   <th scope="col"><spring:message code="comStsCst.conectStats.results.col2"/></th> 
+			   <th scope="col"><spring:message code="comStsCst.conectStats.results.col3"/></th> 
+			   <th scope="col"><spring:message code="comStsCst.conectStats.results.col4"/></th> 
+			   <th scope="col"><spring:message code="comStsCst.conectStats.results.col5"/></th> 
+			   <th scope="col"><spring:message code="comStsCst.conectStats.results.col6"/></th> 
+			   <th scope="col"><spring:message code="comStsCst.conectStats.results.col7"/></th> 
+			   <th scope="col"><spring:message code="comStsCst.conectStats.results.col8"/></th> 
 			</tr>
 		</thead>
 		<tbody>
@@ -274,10 +429,12 @@ function getNextWeek(v,t){
 		    </c:forEach>
 		</table>
 	</c:if>
+-->
 
-	<!-- 개인별 결과 -->
+
+	<!-- 개인별 결과 
 	<c:if test='${statsInfo.statsKind == "PRSONAL" }'>
-	<h3><spring:message code="comStsCst.conectStats.subTitle1" /></h3> <!-- 그래프 (단위, 횟수) -->
+	<h3><spring:message code="comStsCst.conectStats.subTitle1" /></h3> 
 	<table class="e001 mb10">
 		<colgroup>
 			<col style="width:14%" />
@@ -287,7 +444,7 @@ function getNextWeek(v,t){
 			      <tr>
 			        <td width="100" height="10" class="lt_text3" nowrap>${resultInfo.statsDate}</td>
 			        <td width="560" height="10">
-					  <img src="<c:url value='/images/egovframework/com/cmm/left_bg.gif' />" width="<c:out value='${resultInfo.statsCo * statsInfo.maxUnit}' />" height="10" align="left" alt="">&nbsp;&nbsp;${resultInfo.statsCo}&nbsp;<spring:message code="comStsCst.conectStats.results.unit"/> <!-- 회 -->
+					  <img src="<c:url value='/images/egovframework/com/cmm/left_bg.gif' />" width="<c:out value='${resultInfo.statsCo * statsInfo.maxUnit}' />" height="10" align="left" alt="">&nbsp;&nbsp;${resultInfo.statsCo}&nbsp;<spring:message code="comStsCst.conectStats.results.unit"/> 
 					</td>
 			      </tr>
 			    </c:forEach>
@@ -296,7 +453,7 @@ function getNextWeek(v,t){
 	    </c:if>
 	</table>
 
-	<h3><spring:message code="comStsCst.conectStats.subTitle2" /></h3> <!-- 텍스트 (단위, 횟수) -->
+	<h3><spring:message code="comStsCst.conectStats.subTitle2" /></h3> 
 	<table class="e001">
 		<colgroup>
 			<col style="width:14%" />
@@ -304,7 +461,7 @@ function getNextWeek(v,t){
 		</colgroup>
 		        <c:forEach items="${conectStats}" var="resultInfo" varStatus="status">
 		        <tr>
-		          <td>${resultInfo.statsDate} &nbsp;&nbsp;&nbsp;${resultInfo.statsCo}&nbsp;<spring:message code="comStsCst.conectStats.results.unit"/></td> <!-- 회 -->
+		          <td>${resultInfo.statsDate} &nbsp;&nbsp;&nbsp;${resultInfo.statsCo}&nbsp;<spring:message code="comStsCst.conectStats.results.unit"/></td> 
 		        </tr>
 		        </c:forEach>
 		        <c:if test="${fn:length(userStatsList) == 0}">
@@ -312,7 +469,7 @@ function getNextWeek(v,t){
 			    </c:if>
 	</table>
 	</c:if>
-
+-->
 	</form>
 	
 </div>
