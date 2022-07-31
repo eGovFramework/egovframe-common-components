@@ -1,5 +1,6 @@
 package egovframework.com.uss.olh.faq.web;
 
+import egovframework.com.cmm.service.Globals;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -54,7 +55,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 @Controller
 public class EgovFaqController {
-	
+
 	@Resource(name = "EgovFaqService")
 	private EgovFaqService egovFaqService;
 
@@ -76,7 +77,7 @@ public class EgovFaqController {
 	// Validation 관련
 	@Autowired
 	private DefaultBeanValidator beanValidator;
-	
+
 	/**
 	 * FAQ 목록을 조회한다.
 	 * @param searchVO
@@ -111,7 +112,7 @@ public class EgovFaqController {
 
 		return "egovframework/com/uss/olh/faq/EgovFaqList";
 	}
-	
+
 	/**
 	 * FAQ 목록에 대한 상세정보를 조회한다.
 	 * @param faqVO
@@ -129,7 +130,7 @@ public class EgovFaqController {
 
 		return "egovframework/com/uss/olh/faq/EgovFaqDetail";
 	}
-	
+
 	/**
 	 * FAQ를 등록하기 위한 전 처리
 	 * @param searchVO
@@ -141,10 +142,10 @@ public class EgovFaqController {
 	public String insertFaqView(@ModelAttribute("searchVO") FaqVO searchVO, Model model) throws Exception {
 
 		model.addAttribute("faqVO", new FaqVO());
-		
+
     	// 파일업로드 제한
-    	String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
-    	String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
+    	String whiteListFileUploadExtensions = Globals.FILE_UP_EXTS;
+    	String fileUploadMaxSize = Globals.FILE_UP_MAX_SIZE;
 
         model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
         model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
@@ -152,7 +153,7 @@ public class EgovFaqController {
 		return "egovframework/com/uss/olh/faq/EgovFaqRegist";
 
 	}
-	
+
 	/**
 	 * FAQ를 등록한다.
 	 * @param multiRequest
@@ -199,7 +200,7 @@ public class EgovFaqController {
 
 		return "forward:/uss/olh/faq/selectFaqList.do";
 	}
-	
+
 	/**
 	 * FAQ를 수정하기 위한 전 처리
 	 * @param faqId
@@ -220,12 +221,12 @@ public class EgovFaqController {
 		model.addAttribute("faqVO", egovFaqService.selectFaqDetail(faqVO));
 
     	// 파일업로드 제한
-    	String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
-    	String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
+    	String whiteListFileUploadExtensions = Globals.FILE_UP_EXTS;
+    	String fileUploadMaxSize = Globals.FILE_UP_MAX_SIZE;
 
         model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
         model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
-		
+
 		return "egovframework/com/uss/olh/faq/EgovFaqUpdt";
 	}
 
@@ -251,7 +252,7 @@ public class EgovFaqController {
 			return "egovframework/com/uss/olh/faq/EgovFaqUpdt";
 		}
 
-		
+
 		// 첨부파일 관련 ID 생성 start....
 		String atchFileId = faqVO.getAtchFileId();
 
@@ -307,5 +308,5 @@ public class EgovFaqController {
 
 		return "forward:/uss/olh/faq/selectFaqList.do";
 	}
-	
+
 }

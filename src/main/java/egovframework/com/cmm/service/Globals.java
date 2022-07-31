@@ -56,4 +56,9 @@ public class Globals {
 	//SMS 정보 프로퍼티 위치
 	public static final String SMSDB_CONF_PATH = EgovProperties.getPathProperty("Globals.SmsDbConfPath");
 
+	//파일 업로드 가능 확장자들
+	public static final String FILE_UP_EXTS = EgovProperties.getProperty("Globals.fileUpload.Extensions");
+	//파일 업로드 최대 용량
+	public static final String FILE_UP_MAX_SIZE = EgovProperties.getProperty("Globals.fileUpload.maxSize");
+
 }
