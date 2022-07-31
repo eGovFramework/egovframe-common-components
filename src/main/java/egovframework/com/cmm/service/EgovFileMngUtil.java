@@ -35,22 +35,18 @@ import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 
 /**
+ * @author 공통 서비스 개발팀 이삼섭
+ * @version 1.0
  * @Class Name  : EgovFileMngUtil.java
  * @Description : 메시지 처리 관련 유틸리티
  * @Modification Information
- *
- *   수정일               수정자            수정내용
- *   ----------   --------   ---------------------------
- *   2009.02.13   이삼섭            최초 생성
- *   2011.08.09   서준식            utl.fcc패키지와 Dependency제거를 위해 getTimeStamp()메서드 추가
- *   2017.03.03   조성원            시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
- *   2020.10.26   신용호            parseFileInf(List<MultipartFile> files ...) 추가
- *
- * @author 공통 서비스 개발팀 이삼섭
- * @since 2009. 02. 13
- * @version 1.0
+ * <p>
+ * 수정일               수정자            수정내용 ----------   --------   --------------------------- 2009.02.13   이삼섭
+ * 최초 생성 2011.08.09   서준식            utl.fcc패키지와 Dependency제거를 위해 getTimeStamp()메서드 추가 2017.03.03   조성원
+ * 시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754] 2020.10.26   신용호            parseFileInf(List<MultipartFile> files
+ * ...) 추가
  * @see
- *
+ * @since 2009. 02. 13
  */
 @Component("EgovFileMngUtil")
 public class EgovFileMngUtil {
@@ -69,19 +65,20 @@ public class EgovFileMngUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<FileVO> parseFileInf(Map<String, MultipartFile> files, String KeyStr, int fileKeyParam, String atchFileId, String storePath) throws Exception {
+	public List<FileVO> parseFileInf(Map<String, MultipartFile> files, String KeyStr, int fileKeyParam,
+									 String atchFileId, String storePath) throws Exception {
 		int fileKey = fileKeyParam;
 
 		String storePathString = "";
 		String atchFileIdString = "";
 
-		if ("".equals(storePath) || storePath == null) {
+		if (storePath == null || "".equals(storePath)) {
 			storePathString = EgovProperties.getProperty("Globals.fileStorePath");
 		} else {
 			storePathString = EgovProperties.getProperty(storePath);
 		}
 
-		if ("".equals(atchFileId) || atchFileId == null) {
+		if (atchFileId == null || "".equals(atchFileId)) {
 			atchFileIdString = idgenService.getNextStringId();
 		} else {
 			atchFileIdString = atchFileId;
@@ -91,9 +88,9 @@ public class EgovFileMngUtil {
 
 		if (!saveFolder.exists() || saveFolder.isFile()) {
 			//2017.03.03 	조성원 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-			if (saveFolder.mkdirs()){
+			if (saveFolder.mkdirs()) {
 				LOGGER.debug("[file.mkdirs] saveFolder : Creation Success ");
-			}else{
+			} else {
 				LOGGER.error("[file.mkdirs] saveFolder : Creation Fail ");
 			}
 		}
@@ -154,19 +151,20 @@ public class EgovFileMngUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<FileVO> parseFileInf(List<MultipartFile> files, String KeyStr, int fileKeyParam, String atchFileId, String storePath) throws Exception {
+	public List<FileVO> parseFileInf(List<MultipartFile> files, String KeyStr, int fileKeyParam, String atchFileId,
+									 String storePath) throws Exception {
 		int fileKey = fileKeyParam;
 
 		String storePathString = "";
 		String atchFileIdString = "";
 
-		if ("".equals(storePath) || storePath == null) {
+		if (storePath == null || "".equals(storePath)) {
 			storePathString = EgovProperties.getProperty("Globals.fileStorePath");
 		} else {
 			storePathString = EgovProperties.getProperty(storePath);
 		}
 
-		if ("".equals(atchFileId) || atchFileId == null) {
+		if (atchFileId == null || "".equals(atchFileId)) {
 			atchFileIdString = idgenService.getNextStringId();
 		} else {
 			atchFileIdString = atchFileId;
@@ -176,9 +174,9 @@ public class EgovFileMngUtil {
 
 		if (!saveFolder.exists() || saveFolder.isFile()) {
 			//2017.03.03 	조성원 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-			if (saveFolder.mkdirs()){
+			if (saveFolder.mkdirs()) {
 				LOGGER.debug("[file.mkdirs] saveFolder : Creation Success ");
-			}else{
+			} else {
 				LOGGER.error("[file.mkdirs] saveFolder : Creation Fail ");
 			}
 		}
@@ -187,7 +185,7 @@ public class EgovFileMngUtil {
 		List<FileVO> result = new ArrayList<FileVO>();
 		FileVO fvo;
 
-		for (MultipartFile file : files ) {
+		for (MultipartFile file : files) {
 
 			String orginFileName = file.getOriginalFilename();
 
@@ -303,7 +301,8 @@ public class EgovFileMngUtil {
 		byte[] buffer = new byte[BUFF_SIZE]; //buffer size 2K.
 
 		response.setContentType("application/x-msdownload");
-		response.setHeader("Content-Disposition:", "attachment; filename=" + new String(orgFileName.getBytes(), "UTF-8"));
+		response.setHeader("Content-Disposition:",
+			"attachment; filename=" + new String(orgFileName.getBytes(), "UTF-8"));
 		response.setHeader("Content-Transfer-Encoding", "binary");
 		response.setHeader("Pragma", "no-cache");
 		response.setHeader("Expires", "0");
@@ -373,11 +372,11 @@ public class EgovFileMngUtil {
 			stream = file.getInputStream();
 			File cFile = new File(EgovWebUtil.filePathBlackList(stordFilePath));
 
-			if (!cFile.isDirectory()){
+			if (!cFile.isDirectory()) {
 				//2017.03.03 	조성원 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-				if (cFile.mkdirs()){
+				if (cFile.mkdirs()) {
 					LOGGER.debug("[file.mkdirs] saveFolder : Creation Success ");
-				}else{
+				} else {
 					LOGGER.error("[file.mkdirs] saveFolder : Creation Fail ");
 				}
 			}
@@ -399,7 +398,7 @@ public class EgovFileMngUtil {
 	 * 서버 파일에 대하여 다운로드를 처리한다.
 	 *
 	 * @param response
-	 * @param streFileNm 파일저장 경로가 포함된 형태
+	 * @param streFileNm  파일저장 경로가 포함된 형태
 	 * @param orignFileNm
 	 * @throws Exception
 	 */
@@ -496,8 +495,7 @@ public class EgovFileMngUtil {
 	}
 
 	/**
-	 * 공통 컴포넌트 utl.fcc 패키지와 Dependency제거를 위해 내부 메서드로 추가 정의함
-	 * 응용어플리케이션에서 고유값을 사용하기 위해 시스템에서17자리의TIMESTAMP값을 구하는 기능
+	 * 공통 컴포넌트 utl.fcc 패키지와 Dependency제거를 위해 내부 메서드로 추가 정의함 응용어플리케이션에서 고유값을 사용하기 위해 시스템에서17자리의TIMESTAMP값을 구하는 기능
 	 *
 	 * @param
 	 * @return Timestamp 값
