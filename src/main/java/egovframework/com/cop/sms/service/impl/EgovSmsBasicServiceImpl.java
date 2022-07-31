@@ -76,14 +76,12 @@ public class EgovSmsBasicServiceImpl implements EgovSmsInfoService {
 		if (EgovProperties.class.getResource("") != null) {
 			String FILE_SEPARATOR = System.getProperty("file.separator");
 
-			String globalsPropertiesFile = EgovProperties.class.getResource("").getPath()
+			smeConfigPath = EgovProperties.class.getResource("").getPath()
 				+ FILE_SEPARATOR + ".." + FILE_SEPARATOR
 				+ ".." + FILE_SEPARATOR + ".." + FILE_SEPARATOR
 				+ FILE_SEPARATOR + "egovProps"
 				+ FILE_SEPARATOR + "conf"
 				+ FILE_SEPARATOR + "SMEConfig.properties";
-
-			smeConfigPath = globalsPropertiesFile;
 		}
 
 	}
