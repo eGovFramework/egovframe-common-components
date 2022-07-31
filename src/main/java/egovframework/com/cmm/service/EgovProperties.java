@@ -113,7 +113,7 @@ public class EgovProperties {
 		// key - value 형태로 된 배열 결과
 		ArrayList<Map<String, String>> keyList = new ArrayList<Map<String, String>>();
 
-		String src = property.replace('\\', File.separatorChar).replace('/', File.separatorChar);
+		String src = property.replace("\\", FILE_SEPARATOR).replace("/", FILE_SEPARATOR);
 
 		if (Files.exists(Paths.get(EgovWebUtil.filePathBlackList(src)))) { //2022.01 Potential Path Traversal
 			Properties props = loadPropertiesFromFile(src);
