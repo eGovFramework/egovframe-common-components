@@ -116,7 +116,7 @@
 			<form:input path="leaderNm" size="15" readonly="true" maxlength="10" title="간부명"/>
 			</td>
 			<td style="padding:0px 0px 0px 2px;margin:0px 0px 0px 0px;">
-			<a href="<c:url value='/cop/smt/lsm/selectEmplyrListPopup.do' />" target="_blank"  title="새 창으로 이동"  onClick="fn_egov_schdulCharger_LeaderSchdule('간부', 'leaderId', '', 'leaderNm', 'orgnztNm');return false;">
+			<a href="<c:url value='/cop/smt/lsm/selectEmplyrListPopup.do' />" target="_blank"  title="새 창으로 이동"  onclick="fn_egov_schdulCharger_LeaderSchdule('간부', 'leaderId', '', 'leaderNm', 'orgnztNm');return false;">
 			<img src="${ImgUrl}icon/search2.gif' />" style="border:0px" alt="간부선택 검색" title="간부선택 검색">
 			</a>
 			</td>

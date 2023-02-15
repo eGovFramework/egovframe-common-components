@@ -243,7 +243,7 @@ function fn_egov_checkAll_NoteEmp(){
  			</li> 		
   			<li>
    				<input class="s_input" name="searchKeyword" title="<spring:message code="title.search"/>" type="text" size="35"  onkeyup="if(window.event.keyCode==13){fn_egov_search_NoteEmp(); return false;}" value='<c:out value="${mberVO.searchKeyword}"/>' maxlength="255"><!-- 검색창 -->
-				<input type="button" class="s_btn" value="<spring:message code="title.inquire" />" onClick="fn_egov_search_NoteEmp(); return false; "/><!-- 조회 -->
+				<input type="button" class="s_btn" value="<spring:message code="title.inquire" />" onclick="fn_egov_search_NoteEmp(); return false; "/><!-- 조회 -->
   			</li>
 		</ul>
 				<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
@@ -269,7 +269,7 @@ function fn_egov_checkAll_NoteEmp(){
     			<th><spring:message code="comUssIonNtm.NoteEmpList.name" /></th><!-- 이름 -->
   				<th><spring:message code="comUssIonNtm.NoteEmpList.tel" /></th><!-- 전화번호 -->
     			<th><spring:message code="comUssIonNtm.NoteEmpList.address" /></th><!-- 주소 -->
-  				<th><input type="checkbox" name="checkAll" title="<spring:message code="comUssIonNtm.NoteEmpList.all" />" id="checkAll" value="1" onClick="fn_egov_checkAll_NoteEmp();"></th><!-- 전체선택 -->
+  				<th><input type="checkbox" name="checkAll" title="<spring:message code="comUssIonNtm.NoteEmpList.all" />" id="checkAll" value="1" onclick="fn_egov_checkAll_NoteEmp();"></th><!-- 전체선택 -->
 			</tr>
 		</thead>
 
@@ -284,10 +284,10 @@ function fn_egov_checkAll_NoteEmp(){
 		<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 			<tr>
 				<td class="center">${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}</td>
-				<td class="center"><a href="#LINK" onClick="fn_egov_close_NoteEmpOne(${status.count-1});">${resultInfo.emplyrId}</a></td>
-				<td class="center"><a href="#LINK" onClick="fn_egov_close_NoteEmpOne(${status.count-1});">${resultInfo.emplyrNm}</a></td>
-				<td class="center"><a href="#LINK" onClick="fn_egov_close_NoteEmpOne(${status.count-1});">${resultInfo.offmTelno}</a></td>
-				<td class="left"><a href="#LINK" onClick="fn_egov_close_NoteEmpOne(${status.count-1});">${resultInfo.homeAdres} ${resultInfo.detailAdres}</a></td>
+				<td class="center"><a href="#LINK" onclick="fn_egov_close_NoteEmpOne(${status.count-1});">${resultInfo.emplyrId}</a></td>
+				<td class="center"><a href="#LINK" onclick="fn_egov_close_NoteEmpOne(${status.count-1});">${resultInfo.emplyrNm}</a></td>
+				<td class="center"><a href="#LINK" onclick="fn_egov_close_NoteEmpOne(${status.count-1});">${resultInfo.offmTelno}</a></td>
+				<td class="left"><a href="#LINK" onclick="fn_egov_close_NoteEmpOne(${status.count-1});">${resultInfo.homeAdres} ${resultInfo.detailAdres}</a></td>
     			<td class="center"><input type="checkbox" name="checkList" title="<spring:message code="table.select" />" value="${resultInfo.uniqId}|${resultInfo.emplyrId}|${resultInfo.emplyrNm}"></td><!-- 선택 -->
 			</tr>
 		</c:forEach>

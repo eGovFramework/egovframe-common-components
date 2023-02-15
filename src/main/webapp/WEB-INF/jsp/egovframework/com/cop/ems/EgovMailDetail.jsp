@@ -130,7 +130,7 @@ function fnSelectXml(){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		
-		<span class="btn_s"><a href="<c:url value='/cop/ems/deleteSndngMail.do'/>" onClick="fnDelete(); return false;"  title="<spring:message code="button.delete" /> <spring:message code="input.button" />"><spring:message code="button.delete" /></a></span>
+		<span class="btn_s"><a href="<c:url value='/cop/ems/deleteSndngMail.do'/>" onclick="fnDelete(); return false;"  title="<spring:message code="button.delete" /> <spring:message code="input.button" />"><spring:message code="button.delete" /></a></span>
 		<span class="btn_s"><a href="<c:url value='/cop/ems/selectSndngMailList.do' />"  title="<spring:message code="title.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
 	</div><div style="clear:both;"></div>
 	  

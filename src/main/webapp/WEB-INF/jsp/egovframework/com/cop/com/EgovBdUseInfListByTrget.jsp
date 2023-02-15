@@ -138,7 +138,7 @@
 			    	<spring:message code="button.use" />
 			    </td>
 			    <td class="lt_text3" nowrap>
-			    	<input type="button" value="사용중지" onClick="javascript:fn_egov_delete_bbsUseInf('<c:out value="${result.bbsId}"/>','<c:out value="${result.trgetId}"/>');" />
+			    	<input type="button" value="사용중지" onclick="javascript:fn_egov_delete_bbsUseInf('<c:out value="${result.bbsId}"/>','<c:out value="${result.trgetId}"/>');" />
 			    </td>
     		</c:when>
     		<c:when test="${result.useAt=='N'}">
@@ -146,7 +146,7 @@
 			    	<spring:message code="button.notUsed" />
 			    </td>
 			    <td class="lt_text3" nowrap>
-			    	<input type="button" value="사용" onClick="javascript:fn_egov_update_bbsUseInf('<c:out value="${result.bbsId}"/>','<c:out value="${result.trgetId}"/>');" />
+			    	<input type="button" value="사용" onclick="javascript:fn_egov_update_bbsUseInf('<c:out value="${result.bbsId}"/>','<c:out value="${result.trgetId}"/>');" />
 			    </td>
     		</c:when>
     		<c:otherwise>
@@ -154,7 +154,7 @@
 			    	미사용
 			    </td>
 			    <td class="lt_text3" nowrap>
-			    	<input type="button" value="사용" onClick="javascript:fn_egov_insert_bbsUseInf('<c:out value="${result.bbsId}"/>','<c:out value="${result.trgetId}"/>');" />
+			    	<input type="button" value="사용" onclick="javascript:fn_egov_insert_bbsUseInf('<c:out value="${result.bbsId}"/>','<c:out value="${result.trgetId}"/>');" />
 			    </td>
     		</c:otherwise>
     	</c:choose>

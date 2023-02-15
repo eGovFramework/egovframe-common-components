@@ -117,7 +117,7 @@ function fn_egov_inquire_codedetail(clCode) {
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 		<td><c:out value='${resultInfo.clCode}'/></td>
-		<td><a href="<c:url value='/sym/ccm/ccc/SelectCcmCmmnClCodeDetail.do'/>?clCode=${resultInfo.clCode}" onClick="fn_egov_inquire_codedetail('<c:out value="${resultInfo.clCode}"/>');return false;"><c:out value='${fn:substring(resultInfo.clCodeNm, 0, 40)}'/></a></td>
+		<td><a href="<c:url value='/sym/ccm/ccc/SelectCcmCmmnClCodeDetail.do'/>?clCode=${resultInfo.clCode}" onclick="fn_egov_inquire_codedetail('<c:out value="${resultInfo.clCode}"/>');return false;"><c:out value='${fn:substring(resultInfo.clCodeNm, 0, 40)}'/></a></td>
 		<td><c:out value='${resultInfo.useAt}'/></td>
 	</tr>
 	</c:forEach>

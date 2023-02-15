@@ -210,7 +210,7 @@ if(listResult != null){
 %>
 		<tr>  
 		    <td>
-		       	<a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdul.do' />?schdulId=<%=(String)leaderSchdulVO.getSchdulId()%>&schdulDe=<%=sUseDate %>&searchMode=DAILY&year=<%=iNowYear %>&month=<%=iNowMonth %>&day=<%=iNowDay %>" target="parent" onClick="JavaScript:fn_egov_detail_LeaderSchdul('<%=leaderSchdulVO.getSchdulId() %>','<%=sUseDate %>')"/>
+		       	<a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdul.do' />?schdulId=<%=(String)leaderSchdulVO.getSchdulId()%>&schdulDe=<%=sUseDate %>&searchMode=DAILY&year=<%=iNowYear %>&month=<%=iNowMonth %>&day=<%=iNowDay %>" target="parent" onclick="JavaScript:fn_egov_detail_LeaderSchdul('<%=leaderSchdulVO.getSchdulId() %>','<%=sUseDate %>')"/>
 <%
     out.print( ((String)leaderSchdulVO.getSchdulBgnDe()).substring(8,10) +": ");
 	out.print( ((String)leaderSchdulVO.getSchdulBgnDe()).substring(10,12) +" ~ ");
@@ -225,13 +225,13 @@ if(listResult != null){
 	String sSchdulEndDate = (String)leaderSchdulVO.getSchdulEndDe().substring(0, 8);
 	
 	if(!sSchdulBgnDate.equals(sSchdulEndDate)){
-		//out.print("<table><tr><td nowrap><div class='divDotText' style='width:350px;border:solid 0px;'><a href=\"<c:url value='/cop/smt/lsm/usr/selectLeaderSchdul.do' />?schdulId=" + (String)leaderSchdulVO.getSchdulId() + "&amp;schdulDe=" + sUseDate + "&amp;searchMode=DAILY&amp;year=" + iNowYear + "&amp;month=" + iNowMonth + "&amp;day=" + iNowDay + "\" target=\"_parent\" onClick=\"JavaScript:fn_egov_detail_LeaderSchdul('" + leaderSchdulVO.getSchdulId() + "','" + sUseDate + "')\">");
+		//out.print("<table><tr><td nowrap><div class='divDotText' style='width:350px;border:solid 0px;'><a href=\"<c:url value='/cop/smt/lsm/usr/selectLeaderSchdul.do' />?schdulId=" + (String)leaderSchdulVO.getSchdulId() + "&amp;schdulDe=" + sUseDate + "&amp;searchMode=DAILY&amp;year=" + iNowYear + "&amp;month=" + iNowMonth + "&amp;day=" + iNowDay + "\" target=\"_parent\" onclick=\"JavaScript:fn_egov_detail_LeaderSchdul('" + leaderSchdulVO.getSchdulId() + "','" + sUseDate + "')\">");
 %>
 				<table>
 					<tr>
 						<td nowrap>
 							<div class='divDotText' style='width:350px; border:0;'>
-								<a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdul.do' />?schdulId=<%=(String)leaderSchdulVO.getSchdulId()%>&schdulDe=<%=sUseDate %>&searchMode=DAILY&year=<%=iNowYear %>&month=<%=iNowMonth %>&day=<%=iNowDay %>" target="parent" onClick="JavaScript:fn_egov_detail_LeaderSchdul('<%=leaderSchdulVO.getSchdulId() %>','<%=sUseDate %>')"/>
+								<a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdul.do' />?schdulId=<%=(String)leaderSchdulVO.getSchdulId()%>&schdulDe=<%=sUseDate %>&searchMode=DAILY&year=<%=iNowYear %>&month=<%=iNowMonth %>&day=<%=iNowDay %>" target="parent" onclick="JavaScript:fn_egov_detail_LeaderSchdul('<%=leaderSchdulVO.getSchdulId() %>','<%=sUseDate %>')"/>
 <%
 		out.print("[");
 		out.print(EgovDateUtil.formatDate(sSchdulBgnDate, "-"));
@@ -248,18 +248,18 @@ if(listResult != null){
 		//out.println("</a></div></td></tr></table>");		
 	}
 %>
-    			<a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdul.do' />?schdulId=<%=(String)leaderSchdulVO.getSchdulId()%>&schdulDe=<%=sUseDate %>&searchMode=DAILY&year=<%=iNowYear %>&month=<%=iNowMonth %>&day=<%=iNowDay %>" target="parent" onClick="JavaScript:fn_egov_detail_LeaderSchdul('<%=leaderSchdulVO.getSchdulId() %>','<%=sUseDate %>')"/>
+    			<a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdul.do' />?schdulId=<%=(String)leaderSchdulVO.getSchdulId()%>&schdulDe=<%=sUseDate %>&searchMode=DAILY&year=<%=iNowYear %>&month=<%=iNowMonth %>&day=<%=iNowDay %>" target="parent" onclick="JavaScript:fn_egov_detail_LeaderSchdul('<%=leaderSchdulVO.getSchdulId() %>','<%=sUseDate %>')"/>
 <%
-		//out.print("<a href=\"<c:url value='/cop/smt/lsm/usr/selectLeaderSchdul.do' />?schdulId=" + (String)leaderSchdulVO.getSchdulId() + "&amp;schdulDe=" + sUseDate + "&amp;searchMode=DAILY&amp;year=" + iNowYear + "&amp;month=" + iNowMonth + "&amp;day=" + iNowDay + "\" target=\"_parent\" onClick=\"JavaScript:fn_egov_detail_LeaderSchdul('" + leaderSchdulVO.getSchdulId() + "','" + sUseDate + "')\">");
+		//out.print("<a href=\"<c:url value='/cop/smt/lsm/usr/selectLeaderSchdul.do' />?schdulId=" + (String)leaderSchdulVO.getSchdulId() + "&amp;schdulDe=" + sUseDate + "&amp;searchMode=DAILY&amp;year=" + iNowYear + "&amp;month=" + iNowMonth + "&amp;day=" + iNowDay + "\" target=\"_parent\" onclick=\"JavaScript:fn_egov_detail_LeaderSchdul('" + leaderSchdulVO.getSchdulId() + "','" + sUseDate + "')\">");
 		out.print((String)leaderSchdulVO.getSchdulNm());
 		//out.println("</a>");
 %>
 				</a> 
 		    </td>
 		    <td>
-		    	<a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdul.do' />?schdulId=<%=(String)leaderSchdulVO.getSchdulId()%>&schdulDe=<%=sUseDate %>&searchMode=DAILY&year=<%=iNowYear %>&month=<%=iNowMonth %>&day=<%=iNowDay %>" target="parent" onClick="JavaScript:fn_egov_detail_LeaderSchdul('<%=leaderSchdulVO.getSchdulId() %>','<%=sUseDate %>')"/>
+		    	<a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdul.do' />?schdulId=<%=(String)leaderSchdulVO.getSchdulId()%>&schdulDe=<%=sUseDate %>&searchMode=DAILY&year=<%=iNowYear %>&month=<%=iNowMonth %>&day=<%=iNowDay %>" target="parent" onclick="JavaScript:fn_egov_detail_LeaderSchdul('<%=leaderSchdulVO.getSchdulId() %>','<%=sUseDate %>')"/>
 <%
-		//out.print("<a href=\"<c:url value='/cop/smt/lsm/usr/selectLeaderSchdul.do' />?schdulId=" + (String)leaderSchdulVO.getSchdulId() + "&amp;schdulDe=" + sUseDate + "&amp;searchMode=DAILY&amp;year=" + iNowYear + "&amp;month=" + iNowMonth + "&amp;day=" + iNowDay + "\" target=\"_parent\" onClick=\"JavaScript:fn_egov_detail_LeaderSchdul('" + leaderSchdulVO.getSchdulId() + "','" + sUseDate + "')\">");
+		//out.print("<a href=\"<c:url value='/cop/smt/lsm/usr/selectLeaderSchdul.do' />?schdulId=" + (String)leaderSchdulVO.getSchdulId() + "&amp;schdulDe=" + sUseDate + "&amp;searchMode=DAILY&amp;year=" + iNowYear + "&amp;month=" + iNowMonth + "&amp;day=" + iNowDay + "\" target=\"_parent\" onclick=\"JavaScript:fn_egov_detail_LeaderSchdul('" + leaderSchdulVO.getSchdulId() + "','" + sUseDate + "')\">");
 		out.print((String)leaderSchdulVO.getLeaderName());
 		//out.println("</a>");
 %>

@@ -115,7 +115,7 @@ function fn_egov_inquire_commudetail(cmmntyId) {
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-		<td class="left"><a href="<c:url value='/cop/cmy/selectCommuMasterDetail.do'/>?cmmntyId=${resultInfo.cmmntyId}" onClick="fn_egov_inquire_commudetail('<c:out value="${resultInfo.cmmntyId}"/>');return false;"><c:out value='${fn:substring(resultInfo.cmmntyNm, 0, 40)}'/></a></td>
+		<td class="left"><a href="<c:url value='/cop/cmy/selectCommuMasterDetail.do'/>?cmmntyId=${resultInfo.cmmntyId}" onclick="fn_egov_inquire_commudetail('<c:out value="${resultInfo.cmmntyId}"/>');return false;"><c:out value='${fn:substring(resultInfo.cmmntyNm, 0, 40)}'/></a></td>
 		<td><c:out value='${resultInfo.frstRegisterNm}'/></td>
 		<td><c:out value='${resultInfo.frstRegisterPnttm}'/></td>
 		<td><c:out value='${resultInfo.useAt}'/></td>		

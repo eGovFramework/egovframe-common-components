@@ -161,7 +161,7 @@ function fn_egov_search_QustnrTmplatManage(){
 		<!-- onLoad="if(this.width>65){this.width=65}" -->
 		<!-- 템플릿 설명 -->
 		<td class="lt_text3L">
-		<a href="<c:url value='/uss/olp/qtm/EgovQustnrTmplatManageDetail.do'/>?qestnrTmplatId=${resultInfo.qestnrTmplatId}" onClick="fn_egov_detail_QustnrTmplatManage('<c:out value="${resultInfo.qestnrTmplatId}"/>');return false;"><c:out value='${resultInfo.qestnrTmplatCn}'/></a>
+		<a href="<c:url value='/uss/olp/qtm/EgovQustnrTmplatManageDetail.do'/>?qestnrTmplatId=${resultInfo.qestnrTmplatId}" onclick="fn_egov_detail_QustnrTmplatManage('<c:out value="${resultInfo.qestnrTmplatId}"/>');return false;"><c:out value='${resultInfo.qestnrTmplatCn}'/></a>
 		</td>
 		<!-- 작성자명 -->
 		<td class="lt_text3">${resultInfo.frstRegisterNm}</td>

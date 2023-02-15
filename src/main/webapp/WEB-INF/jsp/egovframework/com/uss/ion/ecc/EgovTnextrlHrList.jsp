@@ -119,7 +119,7 @@ function fn_egov_inquire_hrdetail(extrlHrId) {
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 		<td><c:out value='${resultInfo.sexdstnCodeNm}'/></td>
-		<td><a href="<c:url value='/uss/ion/ecc/selectTnextrlHrDetail.do?extrlHrId=${resultInfo.extrlHrId}'/>" onClick="fn_egov_inquire_hrdetail('<c:out value="${resultInfo.extrlHrId}"/>');return false;"><c:out value='${fn:substring(resultInfo.extrlHrNm, 0, 40)}'/></a></td>
+		<td><a href="<c:url value='/uss/ion/ecc/selectTnextrlHrDetail.do?extrlHrId=${resultInfo.extrlHrId}'/>" onclick="fn_egov_inquire_hrdetail('<c:out value="${resultInfo.extrlHrId}"/>');return false;"><c:out value='${fn:substring(resultInfo.extrlHrNm, 0, 40)}'/></a></td>
 		<td><c:out value='${resultInfo.psitnInsttNm}'/></td>
 		<td><c:out value='${resultInfo.frstRegisterNm}'/></td>
 		<td><c:out value='${resultInfo.frstRegisterPnttm}'/></td>

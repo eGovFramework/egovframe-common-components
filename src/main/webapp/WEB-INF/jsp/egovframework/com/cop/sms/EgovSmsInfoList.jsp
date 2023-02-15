@@ -110,7 +110,7 @@
 			<tr>
 				<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 				<td>	
-				<a href="<c:url value='/cop/sms/selectSms.do'/>?smsId=${result.smsId}&pageIndex=${searchVO.pageIndex}" onClick="fn_egov_inqire_sms('<c:out value="${result.smsId}"/>');return false;"><c:out value='${result.frstRegisterPnttm}'/></a>	
+				<a href="<c:url value='/cop/sms/selectSms.do'/>?smsId=${result.smsId}&pageIndex=${searchVO.pageIndex}" onclick="fn_egov_inqire_sms('<c:out value="${result.smsId}"/>');return false;"><c:out value='${result.frstRegisterPnttm}'/></a>	
 				
 				</td>
 				<td><c:out value="${result.trnsmitTelno}"/></td>

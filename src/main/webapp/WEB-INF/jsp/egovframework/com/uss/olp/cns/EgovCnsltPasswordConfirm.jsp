@@ -116,8 +116,8 @@ function fn_egov_cancel_qnapassword() {
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<button class="btn_style3" onClick="fn_egov_confirm_qnapassword();return false;" title="<spring:message code="button.confirm" /> <spring:message code="input.button" />"><spring:message code="button.confirm" /></button>
-		<button class="btn_style3" onClick="fn_egov_cancel_qnapassword();return false;" title="<spring:message code="button.reset" /> <spring:message code="input.button" />"><spring:message code="button.reset" /></button>
+		<button class="btn_style3" onclick="fn_egov_confirm_qnapassword();return false;" title="<spring:message code="button.confirm" /> <spring:message code="input.button" />"><spring:message code="button.confirm" /></button>
+		<button class="btn_style3" onclick="fn_egov_cancel_qnapassword();return false;" title="<spring:message code="button.reset" /> <spring:message code="input.button" />"><spring:message code="button.reset" /></button>
 	</div><div style="clear:both;"></div>
 	
 

@@ -116,7 +116,7 @@ function fn_egov_inquire_sitedetail(recomendSiteId) {
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-		<td><a href="<c:url value='/uss/ion/rec/selectRecomendSiteDetail.do?recomendSiteId=${resultInfo.recomendSiteId}'/>" onClick="fn_egov_inquire_sitedetail('<c:out value="${resultInfo.recomendSiteId}"/>');return false;"><c:out value='${fn:substring(resultInfo.recomendSiteNm, 0, 40)}'/></a></td>
+		<td><a href="<c:url value='/uss/ion/rec/selectRecomendSiteDetail.do?recomendSiteId=${resultInfo.recomendSiteId}'/>" onclick="fn_egov_inquire_sitedetail('<c:out value="${resultInfo.recomendSiteId}"/>');return false;"><c:out value='${fn:substring(resultInfo.recomendSiteNm, 0, 40)}'/></a></td>
 		<td><c:out value='${fn:substring(resultInfo.recomendSiteUrl, 0, 40)}'/></td>
 		<td><c:out value='${resultInfo.recomendConfmAt}'/></td>
 		<td><c:out value='${resultInfo.frstRegisterPnttm}'/></td>

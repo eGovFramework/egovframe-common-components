@@ -128,7 +128,7 @@ function fn_egov_SelectBoxValue(sbName)
 			<th><label for="schdulCn">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
 			   <form:input path="schdulCn" size="40" cssClass="txaIpt" readonly="true" maxlength="255" style="width:94%;" />
-			   <a href="#" onClick="fn_egov_Schdule_DiaryManage()"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>" align="middle" style="border:0px" alt=<spring:message code="comCopSmtDsm.registBtn.schdulCn"/> title="<spring:message code="comCopSmtDsm.registBtn.schdulCn"/>"></a>
+			   <a href="#" onclick="fn_egov_Schdule_DiaryManage()"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>" align="middle" style="border:0px" alt=<spring:message code="comCopSmtDsm.registBtn.schdulCn"/> title="<spring:message code="comCopSmtDsm.registBtn.schdulCn"/>"></a>
 				<div style="display:none"><form:input path="schdulId" /></div>
 				<div><form:errors path="schdulId" cssClass="error"/></div>
 				<div><form:errors path="schdulCn" cssClass="error"/></div>

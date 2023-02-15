@@ -78,7 +78,7 @@
 		<table style='width:100%'>
 			<tr>
 				<td style='text-align:left;vertical-align:middle' >
-					<button onClick='modifyOrgManage("dept");'><spring:message code="button.save" /></button> <!-- 저장 --> 
+					<button onclick='modifyOrgManage("dept");'><spring:message code="button.save" /></button> <!-- 저장 --> 
 				</td>
 			</tr>
 		</table>

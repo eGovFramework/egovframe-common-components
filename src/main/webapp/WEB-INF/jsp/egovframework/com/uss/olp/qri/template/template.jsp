@@ -57,7 +57,7 @@
 		    		</c:if>
 
 		    		<c:if test="${QestmInfo.mxmmChoiseCo >  1}">
-		    		<input type="checkbox" name="${QestmItem.qestnrQesitmId}" value="${QestmItem.qustnrIemId}" id="${QestmItem.qestnrQesitmId}" onClick="fn_egov_checkbox_amout('${QestmItem.qestnrQesitmId}', ${QestmInfo.mxmmChoiseCo}, this)"  title="<spring:message code='comUssOlpQri.title.checkBox'/>"><c:out value="${fn:replace(QestmItem.iemCn , crlf , '<br/>')}" escapeXml="false"/><!-- title="체크박스" -->
+		    		<input type="checkbox" name="${QestmItem.qestnrQesitmId}" value="${QestmItem.qustnrIemId}" id="${QestmItem.qestnrQesitmId}" onclick="fn_egov_checkbox_amout('${QestmItem.qestnrQesitmId}', ${QestmInfo.mxmmChoiseCo}, this)"  title="<spring:message code='comUssOlpQri.title.checkBox'/>"><c:out value="${fn:replace(QestmItem.iemCn , crlf , '<br/>')}" escapeXml="false"/><!-- title="체크박스" -->
 		    		</c:if>
 		    		<%-- 기타답변여부 --%>
 		    		<c:if test="${QestmItem.etcAnswerAt eq  'Y'}">

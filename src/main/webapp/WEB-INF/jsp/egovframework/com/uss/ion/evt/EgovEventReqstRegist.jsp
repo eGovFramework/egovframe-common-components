@@ -321,7 +321,7 @@
 			<th><spring:message code="comUssIonEvt.common.ctOccrrncAt"/> <span class="pilsu">*</span></th><!-- 참가비용 -->
 			<td class="left">
 			    <input name="ctOccrrncAt" type="radio" value="1" onclick="fncOccrrncAt(this.value)" title="<spring:message code="comUssIonEvt.common.free"/>" checked="checked" /><spring:message code="comUssIonEvt.common.free"/><!-- 무료 -->
-				<input name="ctOccrrncAt" type="radio" value="2" onClick="fncOccrrncAt(this.value)" title="<spring:message code="comUssIonEvt.common.fee"/>" /><spring:message code="comUssIonEvt.common.fee"/><!-- 유료 -->
+				<input name="ctOccrrncAt" type="radio" value="2" onclick="fncOccrrncAt(this.value)" title="<spring:message code="comUssIonEvt.common.fee"/>" /><spring:message code="comUssIonEvt.common.fee"/><!-- 유료 -->
 				<c:set var="feePrice"><spring:message code="comUssIonEvt.common.feePrice"/></c:set>				
 				<form:input  path="partcptCt" maxlength="9" title="${feePrice}" cssStyle="width:68px"/><!-- 유료금액 -->
 				<form:errors path="partcptCt"/><spring:message code="comUssIonEvt.common.feeUnit"/><!-- 만원 -->

@@ -118,7 +118,7 @@ function fn_egov_inquire_worddicarydetail(wordId) {
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-		<td class="left"><a href="<c:url value='/uss/olh/wor/selectWordDicaryDetail.do?wordId=${resultInfo.wordId}'/>" onClick="fn_egov_inquire_worddicarydetail('<c:out value="${resultInfo.wordId}"/>');return false;"><c:out value='${fn:substring(resultInfo.wordNm, 0, 40)}'/></a></td>
+		<td class="left"><a href="<c:url value='/uss/olh/wor/selectWordDicaryDetail.do?wordId=${resultInfo.wordId}'/>" onclick="fn_egov_inquire_worddicarydetail('<c:out value="${resultInfo.wordId}"/>');return false;"><c:out value='${fn:substring(resultInfo.wordNm, 0, 40)}'/></a></td>
 		<td class="left"><c:out value='${resultInfo.engNm}'/></td>
 		<td class="left"><c:out value='${resultInfo.synonm}'/></td>
 		<td><c:out value='${resultInfo.emplyrNm}'/></td>

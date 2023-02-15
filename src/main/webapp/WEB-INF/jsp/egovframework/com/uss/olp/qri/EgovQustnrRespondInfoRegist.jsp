@@ -156,7 +156,7 @@ function fn_egov_QustnrItemManageListPopup_QustnrItemManage(){
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
   				<input name="qestnrCn" id="qestnrCn" type="text" title="<spring:message code='comUssOlpQri.regist.qestnrCn'/><spring:message code='input.input'/> " size="73" value="" maxlength="4000" style="width:300px;" disabled="disabled"><!-- title="설문관리정보 입력" -->
-			    <a href="#LINK" onClick="fn_egov_QustnrManageListPopup_QustnrItemManage()">
+			    <a href="#LINK" onclick="fn_egov_QustnrManageListPopup_QustnrItemManage()">
 				<img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>" align="middle" style="border:0px" alt="<spring:message code='comUssOlpQri.regist.qestnrCn'/>" title="<spring:message code='comUssOlpQri.regist.qestnrCn'/>"><!-- alt="설문관리정보" title="설문관리정보" -->
 				</a>
 				<input name="qestnrId" id="qestnrId" type="hidden" value="">
@@ -170,7 +170,7 @@ function fn_egov_QustnrItemManageListPopup_QustnrItemManage(){
 			<td class="left">
 			<div>
 				<input name="qestnrQesitmCn" id="qestnrQesitmCn" type="text" title="<spring:message code='comUssOlpQri.regist.qestnrQesitmCn'/><spring:message code='input.input'/>" size="73" value="" maxlength="4000" style="width:300px;" disabled="disabled"><!-- title="설문문항정보 입력" -->
-			    <a href="#LINK" onClick="fn_egov_QustnrQestnManageListPopup_QustnrItemManage()">
+			    <a href="#LINK" onclick="fn_egov_QustnrQestnManageListPopup_QustnrItemManage()">
 				<img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>" align="middle" style="border:0px" alt="<spring:message code='comUssOlpQri.regist.qestnrQesitmCn'/>" title="<spring:message code='comUssOlpQri.regist.qestnrQesitmCn'/>"><!-- alt="설문문항정보" title="설문문항정보" -->
 				</a>
 				<input name="qestnrQesitmId" id="qestnrQesitmId" type="hidden" value="">
@@ -195,7 +195,7 @@ function fn_egov_QustnrItemManageListPopup_QustnrItemManage(){
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
   				<input name="qustnrIemCn" id="qustnrIemCn" type="text" title="<spring:message code='comUssOlpQri.regist.qustnrIemCn'/><spring:message code='input.input'/>" size="73" value="" maxlength="4000" style="width:300px;" disabled="disabled"><!-- title="설문항목정보 입력" -->
-		        <a href="#LINK" onClick="fn_egov_QustnrItemManageListPopup_QustnrItemManage()">
+		        <a href="#LINK" onclick="fn_egov_QustnrItemManageListPopup_QustnrItemManage()">
 				<img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>" align="middle" style="border:0px" alt="<spring:message code='comUssOlpQri.regist.qustnrIemCn'/>" title="<spring:message code='comUssOlpQri.regist.newWindow'/>"><!-- alt="설문항목정보" title="새창" -->
 				</a>
 				<input name="qustnrIemId" id="qustnrIemId" type="hidden" value="">

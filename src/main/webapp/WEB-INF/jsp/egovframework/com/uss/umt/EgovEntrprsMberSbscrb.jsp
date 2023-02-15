@@ -206,7 +206,7 @@ function fnInsert(form){
 			<th><label for="entrprsmberId">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
 				<form:input path="entrprsmberId" id="entrprsmberId" title="${title} ${inputTxt}" size="20" readonly="true" maxlength="20" style="width:80%;" />
-				<button id="btnMbrId" class="btn_s2" onClick="return false;" title="<spring:message code="button.delete" /> <spring:message code="input.button" />"><spring:message code="comUssUmt.entrprsUserManageRegistBtn.idSearch" /></button>
+				<button id="btnMbrId" class="btn_s2" onclick="return false;" title="<spring:message code="button.delete" /> <spring:message code="input.button" />"><spring:message code="comUssUmt.entrprsUserManageRegistBtn.idSearch" /></button>
 				<div><form:errors path="entrprsmberId" cssClass="error" /></div>
 			</td>
 		</tr>
@@ -345,7 +345,7 @@ function fnInsert(form){
 			<td class="left">
                     <form:input path="zip" title="${title} ${inputTxt}" type="text" size="20" value="" maxlength="8" style="width:60px;" />
                     <!-- form:hidden path="zip" id="zip" --> 
-                    <!-- <button class="btn_s2" onClick="fn_egov_ZipSearch(document.mberManageVO, document.mberManageVO.zip, document.mberManageVO.zip_view, document.mberManageVO.adres);return false;" title="<spring:message code="button.delete" /> <spring:message code="input.button" />">우번번호검색</button>  -->
+                    <!-- <button class="btn_s2" onclick="fn_egov_ZipSearch(document.mberManageVO, document.mberManageVO.zip, document.mberManageVO.zip_view, document.mberManageVO.adres);return false;" title="<spring:message code="button.delete" /> <spring:message code="input.button" />">우번번호검색</button>  -->
                     <div><form:errors path="zip" cssClass="error" /></div>
 			</td>
 		</tr>

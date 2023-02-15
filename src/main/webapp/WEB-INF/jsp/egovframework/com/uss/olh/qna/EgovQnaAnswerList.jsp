@@ -117,7 +117,7 @@ function fn_egov_inquire_qnadetail(qaId) {
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-		<td class="left"><a href="<c:url value='/uss/olh/qna/selectQnaAnswerDetail.do?qaId=${resultInfo.qaId}'/>" onClick="fn_egov_inquire_qnadetail('<c:out value="${resultInfo.qaId}"/>');return false;"><c:out value='${fn:substring(resultInfo.qestnSj, 0, 40)}'/></a></td>
+		<td class="left"><a href="<c:url value='/uss/olh/qna/selectQnaAnswerDetail.do?qaId=${resultInfo.qaId}'/>" onclick="fn_egov_inquire_qnadetail('<c:out value="${resultInfo.qaId}"/>');return false;"><c:out value='${fn:substring(resultInfo.qestnSj, 0, 40)}'/></a></td>
 		<td><c:out value='${resultInfo.wrterNm}'/></td>
 		<td><c:out value='${resultInfo.qnaProcessSttusCodeNm}'/></td>
 		<td><c:out value='${resultInfo.inqireCo}'/></td>

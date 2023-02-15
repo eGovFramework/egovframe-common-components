@@ -256,7 +256,7 @@ String.prototype.replaceAll = function(src, repl){
 			<th><label for="infoProvdAgreCn">${title}</label> <span class="pilsu">*</span></th>
 			<td class="nopd">
 				<form:input path="schdulDeptName" size="73" cssClass="txaIpt" readonly="true" maxlength="1000" style="width:94%;"/>
-				<a href="#" onClick="fn_egov_schdulDept_DeptSchdulManage()"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>" align="middle" style="border:0px" alt="${title} <spring:message code="input.button"/>" title="${title} <spring:message code="input.button"/>"></a>
+				<a href="#" onclick="fn_egov_schdulDept_DeptSchdulManage()"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>" align="middle" style="border:0px" alt="${title} <spring:message code="input.button"/>" title="${title} <spring:message code="input.button"/>"></a>
 				<form:hidden path="schdulDeptId" />
 				<div><form:errors path="schdulDeptName" cssClass="error"/></div>
 			</td>
@@ -322,7 +322,7 @@ String.prototype.replaceAll = function(src, repl){
 			<th><label for="infoProvdAgreCn">${title}</label> <span class="pilsu">*</span></th>
 			<td class="nopd">
 				<form:input path="schdulChargerName" size="73" cssClass="txaIpt" readonly="true" maxlength="10" style="width:100px;"  />
-				<a href="#" onClick="fn_egov_schdulCharger_DeptSchdulManagee()"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>" align="middle" style="border:0px" alt="${title} <spring:message code="input.button"/>" title="${title} <spring:message code="input.button"/>"></a>
+				<a href="#" onclick="fn_egov_schdulCharger_DeptSchdulManagee()"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>" align="middle" style="border:0px" alt="${title} <spring:message code="input.button"/>" title="${title} <spring:message code="input.button"/>"></a>
 				<div><form:errors path="schdulChargerName" cssClass="error"/></div>
 		       <form:hidden path="schdulChargerId" />
 			</td>

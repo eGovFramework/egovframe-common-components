@@ -86,7 +86,7 @@ if( !rtoken.equals("") && !rtoken.equals("") &&
 	
 	<ol class="twit_list mt20">
 		<li>1) <a href="https://developer.twitter.com" target="_blank"  title="새 창으로 이동" >https://developer.twitter.com</a> <spring:message code="ussIonTir.twitterMain.app"/></li><!-- 트위터 사이트에 로그인한다. -->
-		<li>2) Create an app >> <spring:message code="ussIonTir.twitterMain.buttonClick"/><br><!-- 버튼을 클릭하고 등록 페이지에 아래와 같이 트위터 어플리케이션 서비스를 등록한다. -->
+		<li>2) Create an app >> <spring:message code="ussIonTir.twitterMain.buttonclick"/><br><!-- 버튼을 클릭하고 등록 페이지에 아래와 같이 트위터 어플리케이션 서비스를 등록한다. -->
 		<img src="<c:url value='/images/egovframework/com/uss/ion/tir/twitter_regist.jpg'/>" alt="트위터 어플 등록 이미지" title="트위터 어플 등록 이미지">
 		<br>※ Callback URL: http://common.egovframe.go.kr/uss/ion/tir/selectTwitterPopupProcess.do
 		<br><spring:message code="ussIonTir.twitterMain.returnUrl"/></li><!-- (키 발급 후 리턴되는 URL) -->

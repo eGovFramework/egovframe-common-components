@@ -294,7 +294,7 @@
 		</colgroup>
 		<thead>
 			<tr>
-			   <th scope="col"><input type="checkbox" name="checkAll" id="checkAll" class="check2" onClick="javascript:fn_egov_checkAll()" title="전체선택"></th>
+			   <th scope="col"><input type="checkbox" name="checkAll" id="checkAll" class="check2" onclick="javascript:fn_egov_checkAll()" title="전체선택"></th>
 			   <th scope="col"><spring:message code="comUssIonEvt.common.eventNm"/></th><!-- 행사명 -->
 			   <th scope="col"><spring:message code="comUssIonEvt.common.eventPlace"/></th><!-- 행사장소 -->
 			   <th scope="col"><spring:message code="comUssIonEvt.common.eventTemp3"/></th><!-- 행사구분 -->

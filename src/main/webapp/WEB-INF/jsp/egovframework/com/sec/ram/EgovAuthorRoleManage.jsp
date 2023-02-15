@@ -172,8 +172,8 @@ function press() {
 			<li>
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${searchVO.searchKeyword}"/>'  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
-				<input type="button" class="s_btn" value="<spring:message code="button.list" />" onClick="fncSelectAuthorList()" title="<spring:message code="button.list" /> <spring:message code="input.button" />" />
-				<input type="button" class="s_btn" value="<spring:message code="button.create" />" onClick="fncAddAuthorRoleInsert()" title="<spring:message code="button.create" /> <spring:message code="input.button" />" />
+				<input type="button" class="s_btn" value="<spring:message code="button.list" />" onclick="fncSelectAuthorList()" title="<spring:message code="button.list" /> <spring:message code="input.button" />" />
+				<input type="button" class="s_btn" value="<spring:message code="button.create" />" onclick="fncAddAuthorRoleInsert()" title="<spring:message code="button.create" /> <spring:message code="input.button" />" />
 			</li>
 		</ul>
 	</div>

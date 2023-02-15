@@ -171,7 +171,7 @@
 			<th><label for="schdulCn">${title}</label> </th>
 			<td class="left">
 			   <input name="adbkUser" id="adbkUser" size="40" readonly="true" maxlength="255" style="width:94%;" />
-			   <a href="#" onClick="fn_egov_inqire_user();return false;"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>" align="middle" style="border:0px" alt=<spring:message code="comCopAdb.regist.findAdbkUser"/> title="<spring:message code="comCopAdb.regist.findAdbkUser"/>"></a>
+			   <a href="#" onclick="fn_egov_inqire_user();return false;"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>" align="middle" style="border:0px" alt=<spring:message code="comCopAdb.regist.findAdbkUser"/> title="<spring:message code="comCopAdb.regist.findAdbkUser"/>"></a>
 			</td>
 		</tr>
 		<c:set var="title"><spring:message code="comCopSmtDsm.regist.drctMatter"/></c:set>
@@ -231,12 +231,12 @@
 			   	<!-- <input type="hidden" name="emplyrId" value="<c:out value="${result.emplyrId}"/>"/> -->
 			   	<!-- 
  				<span class="button">
- 					<input type="submit" value="삭제" onClick="javascript:fn_egov_deleteUser('<c:out value="${result.emplyrId}" />'); return false;">
+ 					<input type="submit" value="삭제" onclick="javascript:fn_egov_deleteUser('<c:out value="${result.emplyrId}" />'); return false;">
 				</span>
 				 -->
 				<!-- </form>  -->
 			     <!-- 2016.08.16 신 UI 적용 -->
- 				<button class="btn_s2" onClick="javascript:fn_egov_deleteUser'<c:out value="${result.emplyrId}" />'); return false;" title="<spring:message code="button.select" /> <spring:message code="input.button" />"><spring:message code="button.select" /></button>
+ 				<button class="btn_s2" onclick="javascript:fn_egov_deleteUser'<c:out value="${result.emplyrId}" />'); return false;" title="<spring:message code="button.select" /> <spring:message code="input.button" />"><spring:message code="button.select" /></button>
 				
 				</td>
 			</c:if>
@@ -247,12 +247,12 @@
 			    <!-- <input type="hidden" name="ncrdId" value="<c:out value="${result.ncrdId}"/>"/> -->
 			    <!--
 			    <span class="button">
- 					<input type="submit" value="삭제" onClick="javascript:fn_egov_deleteUser('<c:out value="${result.emplyrId}" />'); return false;">
+ 					<input type="submit" value="삭제" onclick="javascript:fn_egov_deleteUser('<c:out value="${result.emplyrId}" />'); return false;">
 				</span> 
 			     -->
 			     <!-- </form> -->
 			     <!-- 2016.08.16 신 UI 적용 -->
- 				<button class="btn_s2" onClick="javascript:fn_egov_deleteUser('<c:out value="${result.ncrdId}" />'); return false;" title="<spring:message code="button.select" /> <spring:message code="input.button" />"><spring:message code="button.select" /></button>
+ 				<button class="btn_s2" onclick="javascript:fn_egov_deleteUser('<c:out value="${result.ncrdId}" />'); return false;" title="<spring:message code="button.select" /> <spring:message code="input.button" />"><spring:message code="button.select" /></button>
 				
 				</td>
 			</c:if>

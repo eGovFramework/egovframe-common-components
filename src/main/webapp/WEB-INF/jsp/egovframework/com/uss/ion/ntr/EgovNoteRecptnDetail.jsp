@@ -147,7 +147,7 @@ function fn_egov_delete_NoteRecptn(){
 		</form>
 		
 		<form name="formDelete" action="<c:url value='/uss/ion/ntr/detailNoteRecptn.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
-			<input type="submit" class="s_submit" value="<spring:message code="button.delete" />" onClick="fn_egov_delete_NoteRecptn(); return false;">
+			<input type="submit" class="s_submit" value="<spring:message code="button.delete" />" onclick="fn_egov_delete_NoteRecptn(); return false;">
 			<input name="noteId" type="hidden" value="${noteRecptn.noteId}">
 			<input name="noteTrnsmitId" type="hidden" value="${noteRecptn.noteTrnsmitId}">
 			<input name="noteRecptnId" type="hidden" value="${noteRecptn.noteRecptnId}">

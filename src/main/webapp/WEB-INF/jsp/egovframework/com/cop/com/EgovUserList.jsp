@@ -185,11 +185,11 @@
 		    <td class="lt_text3" nowrap>
 		    	<c:choose>
 		    		<c:when test="${result.useAt == 'Y'}">
-		    			<input type="button" value="탈퇴"  onClick="javascript:fn_egov_deleteUser('<c:out value="${result.uniqId}"/>')" />
-		    			|<input type="button" value="운영진등록" onClick="javascript:fn_egov_registManager('<c:out value="${result.uniqId}"/>');" />
+		    			<input type="button" value="탈퇴"  onclick="javascript:fn_egov_deleteUser('<c:out value="${result.uniqId}"/>')" />
+		    			|<input type="button" value="운영진등록" onclick="javascript:fn_egov_registManager('<c:out value="${result.uniqId}"/>');" />
 		    		</c:when>
 		    		<c:otherwise>
-		    			|<input type="button" value="재가입" onClick="javascript:fn_egov_reRegistUser('<c:out value="${result.uniqId}"/>');" />
+		    			|<input type="button" value="재가입" onclick="javascript:fn_egov_reRegistUser('<c:out value="${result.uniqId}"/>');" />
 		    		</c:otherwise>
 		    	</c:choose>
 		    </td>

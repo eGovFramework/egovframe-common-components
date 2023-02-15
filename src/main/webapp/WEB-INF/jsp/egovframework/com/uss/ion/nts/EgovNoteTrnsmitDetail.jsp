@@ -135,7 +135,7 @@ function fn_egov_delete_NoteTrnsmit(){
 	<div class="btn">
 	
 		<form name="formDelete" action="<c:url value='/uss/ion/nts/detailNoteTrnsmit.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
-			<input type="submit" class="s_submit" value="<spring:message code="button.delete" />" onClick="fn_egov_delete_NoteTrnsmit(); return false;">
+			<input type="submit" class="s_submit" value="<spring:message code="button.delete" />" onclick="fn_egov_delete_NoteTrnsmit(); return false;">
 			<input name="noteId" type="hidden" value="${noteTrnsmit.noteId}">
 			<input name="noteTrnsmitId" type="hidden" value="${noteTrnsmit.noteTrnsmitId}">
 			<input name="popupId" type="hidden" value="${popupManageVO.popupId}">

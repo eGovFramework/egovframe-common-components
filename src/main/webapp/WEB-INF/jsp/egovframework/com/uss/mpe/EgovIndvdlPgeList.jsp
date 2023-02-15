@@ -113,7 +113,7 @@ function fn_egov_inquire_pgedetail(cntntsId) {
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-		<td class="left"><a href="<c:url value='/uss/mpe/selectIndvdlPgeDetail.do?cntntsId=${resultInfo.cntntsId}'/>" onClick="fn_egov_inquire_pgedetail('<c:out value="${resultInfo.cntntsId}"/>');return false;"><c:out value='${fn:substring(resultInfo.cntntsNm, 0, 40)}'/></a></td>
+		<td class="left"><a href="<c:url value='/uss/mpe/selectIndvdlPgeDetail.do?cntntsId=${resultInfo.cntntsId}'/>" onclick="fn_egov_inquire_pgedetail('<c:out value="${resultInfo.cntntsId}"/>');return false;"><c:out value='${fn:substring(resultInfo.cntntsNm, 0, 40)}'/></a></td>
 		<td class="left"><c:out value='${fn:substring(resultInfo.cntcUrl, 0, 40)}'/></td>
 		<td><c:out value='${resultInfo.cntntsUseAt}'/></td>
 	</tr>

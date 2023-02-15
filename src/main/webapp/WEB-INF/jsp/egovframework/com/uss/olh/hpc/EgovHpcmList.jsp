@@ -115,7 +115,7 @@ function fn_egov_inquire_hpcmdetail(hpcmId) {
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 		<td><c:out value='${resultInfo.hpcmSeCodeNm}'/></td>
-		<td class="left"><a href="<c:url value='/uss/olh/hpc/selectHpcmDetail.do?bbsId=${resultInfo.hpcmId}'/>" onClick="fn_egov_inquire_hpcmdetail('<c:out value="${resultInfo.hpcmId}"/>');return false;"><c:out value='${fn:substring(resultInfo.hpcmDf, 0, 40)}'/></a></td>
+		<td class="left"><a href="<c:url value='/uss/olh/hpc/selectHpcmDetail.do?bbsId=${resultInfo.hpcmId}'/>" onclick="fn_egov_inquire_hpcmdetail('<c:out value="${resultInfo.hpcmId}"/>');return false;"><c:out value='${fn:substring(resultInfo.hpcmDf, 0, 40)}'/></a></td>
 		<td><c:out value='${resultInfo.frstRegisterPnttm}'/></td>
 	</tr>
 	</c:forEach>

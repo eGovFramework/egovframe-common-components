@@ -153,7 +153,7 @@ function fn_egov_QustnrItemManageListPopup_QustnrItemManage(){
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
   				<input name="qustnrIemCn" id="qustnrIemCn" type="text" title="<spring:message code='comUssOlpQri.regist.qestnrQesitmCn'/>" size="73" value="${resultList[0].iemCn}" maxlength="4000" style="width:300px;" disabled="disabled"><!-- title="설문문항정보" -->
-		   		<a href="#LINK" onClick="fn_egov_QustnrItemManageListPopup_QustnrItemManage()">
+		   		<a href="#LINK" onclick="fn_egov_QustnrItemManageListPopup_QustnrItemManage()">
 				<img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>" align="middle" style="border:0px" alt="<spring:message code='comUssOlpQri.regist.qustnrIemCn'/>" title="<spring:message code='comUssOlpQri.regist.newWindow'/>"><!-- alt="설문항목정보" title="새창" -->
 				</a>
 				<input name="qustnrIemId" id="qustnrIemId" type="hidden" value="${resultList[0].qustnrIemId}">

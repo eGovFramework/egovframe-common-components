@@ -168,7 +168,7 @@ function fn_egov_pop_mailform() {
 				
 			  	<c:if test="${result.emailAnswerAt == 'Y'}">
   			    &nbsp;&nbsp;&nbsp;
-				<a href = "<c:url value='/images/egovframework/com/cmm/icon/search2.gif'/>" onClick="javascript:fn_egov_pop_mailform(); return false;" alt="발송메일 등록 팝업"></a>
+				<a href = "<c:url value='/images/egovframework/com/cmm/icon/search2.gif'/>" onclick="javascript:fn_egov_pop_mailform(); return false;" alt="발송메일 등록 팝업"></a>
  				</c:if>
 			</td>
 		</tr>

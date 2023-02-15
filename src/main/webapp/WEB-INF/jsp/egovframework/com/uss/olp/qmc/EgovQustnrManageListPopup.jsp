@@ -144,7 +144,7 @@ function fn_egov_open_QustnrManage(qestnrId, qestnrTmplatId, cnt){
 		<td class="lt_text3">${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}</td>
 		<!-- 설문제목  -->
 		<td class="lt_text3L">
-			<div class="divDotText" style="width:330px; border:solid 0px;"><a href="#LINK" onClick="fn_egov_open_QustnrManage('${resultInfo.qestnrId}', '${resultInfo.qestnrTmplatId}', '${status.count}')">${resultInfo.qestnrSj}</a></div>
+			<div class="divDotText" style="width:330px; border:solid 0px;"><a href="#LINK" onclick="fn_egov_open_QustnrManage('${resultInfo.qestnrId}', '${resultInfo.qestnrTmplatId}', '${status.count}')">${resultInfo.qestnrSj}</a></div>
 		</td>
 		<!-- 설문기간 -->
 		<td class="lt_text3">${resultInfo.qestnrBeginDe}~${resultInfo.qestnrEndDe}</td>
@@ -155,7 +155,7 @@ function fn_egov_open_QustnrManage(qestnrId, qestnrTmplatId, cnt){
 	  	<td class="lt_text3">${fn:substring(resultInfo.frstRegisterPnttm, 0, 10)}</td>
 	  	<!-- 선택 -->
 	  	<td class="lt_text3">
-		<a href="#LINK" onClick="fn_egov_open_QustnrManage('${resultInfo.qestnrId}', '${resultInfo.qestnrTmplatId}', '${status.count}')"><spring:message code='comUssOlpQmc.value.select'/></a><!-- 선택 -->
+		<a href="#LINK" onclick="fn_egov_open_QustnrManage('${resultInfo.qestnrId}', '${resultInfo.qestnrTmplatId}', '${status.count}')"><spring:message code='comUssOlpQmc.value.select'/></a><!-- 선택 -->
 		<input name="iptText_${status.count}" id="iptText_${status.count}" type="hidden" value="${resultInfo.qestnrSj}">
 		</td>
 	  </tr>	  

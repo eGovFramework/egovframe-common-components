@@ -123,7 +123,7 @@ function fn_egov_inquire_administrationworddetail(administWordId) {
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 		<td><c:out value='${resultInfo.wordDomnNm}'/></td>
 		<td><c:out value='${resultInfo.themaRelm}'/></td>
-		<td class="left"><a href="<c:url value='/uss/olh/awm/selectAdministrationWordManageDetail.do?administWordId=${resultInfo.administWordId}'/>" onClick="fn_egov_inquire_administrationworddetail('<c:out value="${resultInfo.administWordId}"/>');return false;"><c:out value='${fn:substring(resultInfo.administWordNm, 0, 40)}'/></a></td>
+		<td class="left"><a href="<c:url value='/uss/olh/awm/selectAdministrationWordManageDetail.do?administWordId=${resultInfo.administWordId}'/>" onclick="fn_egov_inquire_administrationworddetail('<c:out value="${resultInfo.administWordId}"/>');return false;"><c:out value='${fn:substring(resultInfo.administWordNm, 0, 40)}'/></a></td>
 		<td><c:out value='${resultInfo.administWordAbrv}'/></td>
 		<td><c:out value='${resultInfo.frstRegisterPnttm}'/></td>
 	</tr>

@@ -150,12 +150,12 @@
 	    
 		<c:if test="${searchVO.searchCnd == '0'}">
 		<td>
-				<button class="btn_style3" onClick="javascript:fn_egov_returnUserInfo('<c:out value="${result.emplyrId}" />'); return false;" title="<spring:message code="button.select" /> <spring:message code="input.button" />"><spring:message code="button.select" /></button>
+				<button class="btn_style3" onclick="javascript:fn_egov_returnUserInfo('<c:out value="${result.emplyrId}" />'); return false;" title="<spring:message code="button.select" /> <spring:message code="input.button" />"><spring:message code="button.select" /></button>
 		</td>
 		</c:if>
 		 <c:if test="${searchVO.searchCnd == '1'}">
 		<td>
-			<button class="btn_style3" onClick="javascript:fn_egov_returnUserInfo('<c:out value="${result.ncrdId}" />'); return false;" title="<spring:message code="button.select" /> <spring:message code="input.button" />"><spring:message code="button.select" /></button>
+			<button class="btn_style3" onclick="javascript:fn_egov_returnUserInfo('<c:out value="${result.ncrdId}" />'); return false;" title="<spring:message code="button.select" /> <spring:message code="input.button" />"><spring:message code="button.select" /></button>
 		</td>
 		</c:if>
 	  </tr>
@@ -172,7 +172,7 @@
 
 <!-- 하단 버튼 -->
 <div class="btn">
-	<button class="btn_style3" onClick="fn_egov_close();return false;" title="<spring:message code="button.close" /> <spring:message code="input.button" />"><spring:message code="button.close" /></button>
+	<button class="btn_style3" onclick="fn_egov_close();return false;" title="<spring:message code="button.close" /> <spring:message code="input.button" />"><spring:message code="button.close" /></button>
 	<div style="clear:both;"></div>
 </div>
 </form>

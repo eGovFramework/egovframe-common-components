@@ -185,7 +185,7 @@ function fn_egov_search_QustnrQestnManage(){
 		<td class="lt_text3">${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}</td>
 		<!-- 질문내용  -->
 		<td class="lt_text3L">
-			<a href="<c:url value='/uss/olp/qqm/EgovQustnrQestnManageDetail.do'/>?qestnrQesitmId=${resultInfo.qestnrQesitmId}" onClick="fn_egov_detail_QustnrQestnManage('<c:out value="${resultInfo.qestnrQesitmId}"/>');return false;"><c:out value='${resultInfo.qestnCn}'/></a>
+			<a href="<c:url value='/uss/olp/qqm/EgovQustnrQestnManageDetail.do'/>?qestnrQesitmId=${resultInfo.qestnrQesitmId}" onclick="fn_egov_detail_QustnrQestnManage('<c:out value="${resultInfo.qestnrQesitmId}"/>');return false;"><c:out value='${resultInfo.qestnCn}'/></a>
     	</td>
 		<!-- 질문유형 -->
 		<td class="lt_text3">

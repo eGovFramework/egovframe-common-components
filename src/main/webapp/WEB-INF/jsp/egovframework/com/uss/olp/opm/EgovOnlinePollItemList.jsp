@@ -209,8 +209,8 @@
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr>
   		<td class="left"><c:out value="${resultInfo.pollIemNm}"/></td>
-  		<td><button class="btn_s2" onClick="fn_egov_modify_display_OnlinePollItem('${resultInfo.pollIemNm}','${resultInfo.pollIemId}'); return false;" title="<spring:message code="button.update" /> <spring:message code="input.button" />"><spring:message code="button.update" /></button></td>
-  		<td><button class="btn_s2" onClick="fn_egov_del_OnlinePollItem('${resultInfo.pollIemId}'); return false;" title="<spring:message code="button.delete" /> <spring:message code="input.button" />"><spring:message code="button.delete" /></button></td>
+  		<td><button class="btn_s2" onclick="fn_egov_modify_display_OnlinePollItem('${resultInfo.pollIemNm}','${resultInfo.pollIemId}'); return false;" title="<spring:message code="button.update" /> <spring:message code="input.button" />"><spring:message code="button.update" /></button></td>
+  		<td><button class="btn_s2" onclick="fn_egov_del_OnlinePollItem('${resultInfo.pollIemId}'); return false;" title="<spring:message code="button.delete" /> <spring:message code="input.button" />"><spring:message code="button.delete" /></button></td>
 	</tr>
 	</c:forEach>
 	</tbody>
@@ -236,7 +236,7 @@
 			    <td width="2px" nowrap></td>
 			    <td nowrap><input name="pollIemNm" id="pollIemNm" type="text" size="100" value="" maxlength="255" style="width:100%;" title="POLL 세부항목 입력"></td>
 			    <td width="10px" nowrap></td>
-			    <td width="40px" align="center" nowrap style=" background: #4688d2; cursor:pointer;cursor:hand;" onClick="JavaScript:fn_egov_regist_OnlinePollItem();">
+			    <td width="40px" align="center" nowrap style=" background: #4688d2; cursor:pointer;cursor:hand;" onclick="JavaScript:fn_egov_regist_OnlinePollItem();">
 				<DIV id="divPollIem" style="font-size: 11px;color: #fff;"><spring:message code="button.create" /></DIV>
 				</td>
 			</tr>

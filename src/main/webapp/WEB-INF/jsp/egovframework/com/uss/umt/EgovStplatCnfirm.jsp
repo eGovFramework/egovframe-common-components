@@ -129,7 +129,7 @@ function fnDisAgree(){
         </c:forEach>
         
 	<div class="btn">
-		<button class="btn_s2" onClick="fnDisAgree(); return false;" title="<spring:message code="button.disagree" /> <spring:message code="input.button" />"><spring:message code="button.disagree" /></button>
+		<button class="btn_s2" onclick="fnDisAgree(); return false;" title="<spring:message code="button.disagree" /> <spring:message code="input.button" />"><spring:message code="button.disagree" /></button>
 		<input type="submit" class="s_submit" onclick="fnAgree(); return false;" value="<spring:message code="button.agree" />" title="<spring:message code="button.agree" /> <spring:message code="button.save" />" />
 	</div><div style="clear:both;"></div>
 	

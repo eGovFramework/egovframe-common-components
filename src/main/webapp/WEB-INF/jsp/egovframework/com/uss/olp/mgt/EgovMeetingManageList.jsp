@@ -148,11 +148,11 @@ function fn_egov_search_MeetingManage(){
 			<tr>
 				<td>${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}</td>
 				<td>
-					<a href="<c:url value='/uss/olp/mgt/EgovMeetingManageDetail.do'/>?mtgId=${resultInfo.mtgId}&pageIndex=${searchVO.pageIndex}" onClick="fn_egov_detail_MeetingManage('<c:out value="${resultInfo.mtgId}"/>');return false;"><c:out value="${resultInfo.mtgDe}"/></a>
+					<a href="<c:url value='/uss/olp/mgt/EgovMeetingManageDetail.do'/>?mtgId=${resultInfo.mtgId}&pageIndex=${searchVO.pageIndex}" onclick="fn_egov_detail_MeetingManage('<c:out value="${resultInfo.mtgId}"/>');return false;"><c:out value="${resultInfo.mtgDe}"/></a>
 					
 				</td>
 				<td>
-					<a href="<c:url value='/uss/olp/mgt/EgovMeetingManageDetail.do'/>?mtgId=${resultInfo.mtgId}&pageIndex=${searchVO.pageIndex}" onClick="fn_egov_detail_MeetingManage('<c:out value="${resultInfo.mtgId}"/>');return false;"><c:out value="${resultInfo.mtgNm}"/></a>
+					<a href="<c:url value='/uss/olp/mgt/EgovMeetingManageDetail.do'/>?mtgId=${resultInfo.mtgId}&pageIndex=${searchVO.pageIndex}" onclick="fn_egov_detail_MeetingManage('<c:out value="${resultInfo.mtgId}"/>');return false;"><c:out value="${resultInfo.mtgNm}"/></a>
 				</td>
 				<td>${resultInfo.mtgPlace}</td>
 				<td>

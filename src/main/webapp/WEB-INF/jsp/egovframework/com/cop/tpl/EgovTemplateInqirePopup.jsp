@@ -114,7 +114,7 @@
 			<td class="lt_text3" nowrap>
 		    	<c:if test="${result.useAt == 'Y'}">
 		    		<input type="button" name="selectTmplat" value="선택"
-		    			onClick="javascript:fn_egov_returnTmplatInfo('<c:out value="${result.tmplatId}"/>','<c:out value="${result.tmplatNm}"/>')" />
+		    			onclick="javascript:fn_egov_returnTmplatInfo('<c:out value="${result.tmplatId}"/>','<c:out value="${result.tmplatNm}"/>')" />
 		    	</c:if>
 			</td>
 		  </tr>

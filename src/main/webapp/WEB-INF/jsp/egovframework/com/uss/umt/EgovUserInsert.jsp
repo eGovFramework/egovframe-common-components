@@ -228,7 +228,7 @@ if (typeof(opener.fn_egov_dn_info_setting) == 'undefined') {
 			<th><label for="emplyrId">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
 				<form:input path="emplyrId" id="emplyrId" title="${title} ${inputTxt}" size="20" readonly="true" maxlength="20" style="width:80%;" />
-				<button id="btnEmplyrId" class="btn_s2" onClick="return false;" title="<spring:message code="button.delete" /> <spring:message code="input.button" />"><spring:message code="comUssUmt.deptUserManageRegistBtn.idSearch" /></button>
+				<button id="btnEmplyrId" class="btn_s2" onclick="return false;" title="<spring:message code="button.delete" /> <spring:message code="input.button" />"><spring:message code="comUssUmt.deptUserManageRegistBtn.idSearch" /></button>
 				<div><form:errors path="emplyrId" cssClass="error" /></div>
 			</td>
 		</tr>
@@ -405,7 +405,7 @@ if (typeof(opener.fn_egov_dn_info_setting) == 'undefined') {
 			<td class="left">
                     <input name="zip" id="zip" title="${title} ${inputTxt}" type="text" size="20" value="" maxlength="8" style="width:60px;" />
                     <!-- form:hidden path="zip" id="zip" --> 
-                    <!-- <button class="btn_s2" onClick="fn_egov_ZipSearch(document.mberManageVO, document.mberManageVO.zip, document.mberManageVO.zip_view, document.mberManageVO.adres);return false;" title="<spring:message code="button.delete" /> <spring:message code="input.button" />">우번번호검색</button>  -->
+                    <!-- <button class="btn_s2" onclick="fn_egov_ZipSearch(document.mberManageVO, document.mberManageVO.zip, document.mberManageVO.zip_view, document.mberManageVO.adres);return false;" title="<spring:message code="button.delete" /> <spring:message code="input.button" />">우번번호검색</button>  -->
                     <div><form:errors path="zip" cssClass="error" /></div>
 			</td>
 		</tr>
@@ -459,7 +459,7 @@ if (typeof(opener.fn_egov_dn_info_setting) == 'undefined') {
 			<th>${title} <span class="pilsu">*</span></th>
 			<td class="left">
                     <form:input path="subDn" id="subDn" title="${title} ${inputTxt}" size="40" maxlength="400" style="width:80%;" />
-                    <button id="btnSubdn" class="btn_s2" onClick="fn_egov_inqire_cert(); return false;" title="<spring:message code="button.delete" /> <spring:message code="input.button" />"><spring:message code="comUssUmt.deptUserManageRegistBtn.Search" /></button>
+                    <button id="btnSubdn" class="btn_s2" onclick="fn_egov_inqire_cert(); return false;" title="<spring:message code="button.delete" /> <spring:message code="input.button" />"><spring:message code="comUssUmt.deptUserManageRegistBtn.Search" /></button>
                     <div><form:errors path="subDn" cssClass="error" /></div>
 			</td>
 		</tr>

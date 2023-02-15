@@ -153,7 +153,7 @@ function fn_egov_open_Popup(cnt, schdulId){
 		 <c:if test="${resultInfo.schdulKindCode == '2'}"><spring:message code="comCopSmtSdm.popupList.diaryDept" /></c:if>    <!-- 부서일정 -->
 		</td>
 		<td>${resultInfo.schdulNm}</td>
-		<td><button class="btn_s2" onClick="fn_egov_open_Popup('${status.count}', '${resultInfo.schdulId}');return false;" title="<spring:message code="button.select" /> <spring:message code="input.button" />"><spring:message code="button.select" /></button></td>
+		<td><button class="btn_s2" onclick="fn_egov_open_Popup('${status.count}', '${resultInfo.schdulId}');return false;" title="<spring:message code="button.select" /> <spring:message code="input.button" />"><spring:message code="button.select" /></button></td>
 		<input name="iptText_${status.count}" id="iptText_${status.count}" type="hidden" value="${resultInfo.schdulNm}">
 	</tr>
 	</c:forEach>

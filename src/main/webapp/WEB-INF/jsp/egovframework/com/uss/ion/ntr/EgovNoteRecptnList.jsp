@@ -213,7 +213,7 @@ function fn_egov_delete_NoteRecptn(){
 	</colgroup>
 	<thead>
 	<tr>
-		<th><input type="checkbox" name="checkAll" id="checkAll" title="<spring:message code="input.selectAll.title" />" value="1" onClick="fn_egov_checkAll_NoteRecptn();"></th><!-- 전체선택 -->
+		<th><input type="checkbox" name="checkAll" id="checkAll" title="<spring:message code="input.selectAll.title" />" value="1" onclick="fn_egov_checkAll_NoteRecptn();"></th><!-- 전체선택 -->
 		<th><spring:message code="comUssIonNtr.list.seq" /></th><!-- 순번 -->
 		<th class="board_th_link"><spring:message code="comUssIonNtr.list.noteSj" /></th><!-- 제목 -->
 		<th><spring:message code="comUssIonNtr.list.rcverNm" /></th><!-- 보낸사람 -->

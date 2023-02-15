@@ -118,8 +118,8 @@ function fn_egov_inquire_codedetail(codeId) {
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 		<td><c:out value='${resultInfo.clCodeNm}'/></td>
-		<td><a href="<c:url value='/sym/ccm/cca/SelectCcmCmmnCodeDetail.do'/>?codeId=${resultInfo.codeId}" onClick="fn_egov_inquire_codedetail('<c:out value="${resultInfo.codeId}"/>');return false;"><c:out value='${fn:substring(resultInfo.codeId, 0, 40)}'/></a></td>
-		<td><a href="<c:url value='/sym/ccm/cca/SelectCcmCmmnCodeDetail.do'/>?codeId=${resultInfo.codeId}" onClick="fn_egov_inquire_codedetail('<c:out value="${resultInfo.codeId}"/>');return false;"><c:out value='${fn:substring(resultInfo.codeIdNm, 0, 40)}'/></a></td>
+		<td><a href="<c:url value='/sym/ccm/cca/SelectCcmCmmnCodeDetail.do'/>?codeId=${resultInfo.codeId}" onclick="fn_egov_inquire_codedetail('<c:out value="${resultInfo.codeId}"/>');return false;"><c:out value='${fn:substring(resultInfo.codeId, 0, 40)}'/></a></td>
+		<td><a href="<c:url value='/sym/ccm/cca/SelectCcmCmmnCodeDetail.do'/>?codeId=${resultInfo.codeId}" onclick="fn_egov_inquire_codedetail('<c:out value="${resultInfo.codeId}"/>');return false;"><c:out value='${fn:substring(resultInfo.codeIdNm, 0, 40)}'/></a></td>
 		<td><c:out value='${resultInfo.useAt}'/></td>
 	</tr>
 	</c:forEach>

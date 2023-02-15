@@ -28,7 +28,7 @@ function fn_egov_IndvdlSchdulManage(schdulId){
 <table border="0" bgcolor="FFFFFF" width="430" >
 <c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 <tr>
-	<td><a href="#" onClick="fn_egov_IndvdlSchdulManage('${resultInfo.schdulId}')">${resultInfo.toDay}  ${resultInfo.schdulNm}</a></td>
+	<td><a href="#" onclick="fn_egov_IndvdlSchdulManage('${resultInfo.schdulId}')">${resultInfo.toDay}  ${resultInfo.schdulNm}</a></td>
 </tr>
 </c:forEach>
 </table>

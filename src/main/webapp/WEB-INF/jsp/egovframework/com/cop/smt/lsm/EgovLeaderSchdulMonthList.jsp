@@ -257,7 +257,7 @@ for(int index = 1; index <= endDay; index++)
 					<tr>
 						<td>
 							<div class='divDotText'>
-								<a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdul.do' />?schdulId=<%=schdulId%>&amp;schdulDe=<%=iUseDate%>&amp;searchMode=MONTH&amp;year=<%=year%>&amp;month=<%=month%>" target="_parent" onClick="JavaScript:fn_egov_detail_LeaderSchdul('<%=schdulId %>', '<%=iUseDate%>')">
+								<a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdul.do' />?schdulId=<%=schdulId%>&amp;schdulDe=<%=iUseDate%>&amp;searchMode=MONTH&amp;year=<%=year%>&amp;month=<%=month%>" target="_parent" onclick="JavaScript:fn_egov_detail_LeaderSchdul('<%=schdulId %>', '<%=iUseDate%>')">
 									<font style="font-weight : solid"><%=(String)leaderSchdulVO.getSchdulNm()%></font>
 								</a>
 							</div>

@@ -229,11 +229,11 @@ function press() {
 			<li>
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${searchVO.searchKeyword}"/>'  maxlength="155" >
 
-				<input type="button" class="s_btn" onClick="fncSelectAuthorGroupPop()" value="<spring:message code="comCopSecRgm.btn.groupInquire" />" title="<spring:message code="comCopSecRgm.btn.groupInquire" /> <spring:message code="input.button" />" /><!-- 그룹조회팝업 -->
-				<input type="button" class="s_btn" onClick="fncSelectAuthorGroupList('1')" value="<spring:message code="button.inquire" />" title="<spring:message code="button.inquire" /> <spring:message code="input.button" />" /><!-- 조회 -->
+				<input type="button" class="s_btn" onclick="fncSelectAuthorGroupPop()" value="<spring:message code="comCopSecRgm.btn.groupInquire" />" title="<spring:message code="comCopSecRgm.btn.groupInquire" /> <spring:message code="input.button" />" /><!-- 그룹조회팝업 -->
+				<input type="button" class="s_btn" onclick="fncSelectAuthorGroupList('1')" value="<spring:message code="button.inquire" />" title="<spring:message code="button.inquire" /> <spring:message code="input.button" />" /><!-- 조회 -->
 				
-				<input type="button" class="s_btn" onClick="fncAuthorGroupDeleteList()" value="<spring:message code="title.delete" />" title="<spring:message code="title.delete" /> <spring:message code="input.button" />" /><!-- 삭제 -->
-				<input type="button" class="s_btn" onClick="fncAddAuthorGroupInsert()" value="<spring:message code="button.create" />" title="<spring:message code="button.create" /> <spring:message code="button.create" />" /><!-- 등록 -->
+				<input type="button" class="s_btn" onclick="fncAuthorGroupDeleteList()" value="<spring:message code="title.delete" />" title="<spring:message code="title.delete" /> <spring:message code="input.button" />" /><!-- 삭제 -->
+				<input type="button" class="s_btn" onclick="fncAddAuthorGroupInsert()" value="<spring:message code="button.create" />" title="<spring:message code="button.create" /> <spring:message code="button.create" />" /><!-- 등록 -->
 			</li>
 		</ul>
 	</div>

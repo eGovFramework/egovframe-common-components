@@ -94,8 +94,8 @@
 			<!-- 검색키워드 및 조회버튼 -->
 			<li>
 				<input class="s_input" name="searchWrd" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${searchVO.searchWrd}"/>'  maxlength="155" >
-				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" onClick="fn_egov_search_adbkInfs();return false;"/>
-				<span class="btn_b"><a href="<c:url value='/cop/adb/addAdbkInf.do'/>" onClick="javascript:fn_egov_addadbkInf();return false;"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
+				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" onclick="fn_egov_search_adbkInfs();return false;"/>
+				<span class="btn_b"><a href="<c:url value='/cop/adb/addAdbkInf.do'/>" onclick="javascript:fn_egov_addadbkInf();return false;"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>

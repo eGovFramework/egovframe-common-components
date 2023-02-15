@@ -141,12 +141,12 @@ function fnReturnConfirm(day, rest){
 				<c:otherwise>
 			 		<c:choose>
 			 		<c:when test='${result.restAt == "Y" }'>
-					    <td class="lt_text3" nowrap STYLE="color:red;cursor:pointer;cursor:hand" onClick="javascript:fnReturnConfirm(${result.day},'${result.restAt}');">
+					    <td class="lt_text3" nowrap STYLE="color:red;cursor:pointer;cursor:hand" onclick="javascript:fnReturnConfirm(${result.day},'${result.restAt}');">
 					    	${result.day}
 					    </td>
 					</c:when>
 					<c:otherwise>
-					    <td class="lt_text3" nowrap STYLE="color:black;cursor:pointer;cursor:hand" onClick="javascript:fnReturnConfirm(${result.day},'${result.restAt}');">
+					    <td class="lt_text3" nowrap STYLE="color:black;cursor:pointer;cursor:hand" onclick="javascript:fnReturnConfirm(${result.day},'${result.restAt}');">
 					    	${result.day}
 					    </td>
 					</c:otherwise>

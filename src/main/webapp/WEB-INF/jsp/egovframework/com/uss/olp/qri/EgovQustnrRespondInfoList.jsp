@@ -176,7 +176,7 @@ function fn_egov_list_QustnrQestnManag(qestnrId, qestnrTmplatId){
 		</td>
 		<!-- 설문문항 -->
 		<td class="lt_text3">
-			<a href="<c:url value='/uss/olp/qri/EgovQustnrRespondInfoDetail.do'/>?qestnrQesrspnsId=${resultInfo.qestnrQesrspnsId}" onClick="fn_egov_detail_QustnrRespondInfo('<c:out value="${resultInfo.qestnrQesrspnsId}"/>');return false;"><c:out value='${resultInfo.qestnCn}'/></a>
+			<a href="<c:url value='/uss/olp/qri/EgovQustnrRespondInfoDetail.do'/>?qestnrQesrspnsId=${resultInfo.qestnrQesrspnsId}" onclick="fn_egov_detail_QustnrRespondInfo('<c:out value="${resultInfo.qestnrQesrspnsId}"/>');return false;"><c:out value='${resultInfo.qestnCn}'/></a>
 		</td>
 		<!-- onLoad="if(this.width>65){this.width=65}" -->
 		<!-- 설문항목 -->

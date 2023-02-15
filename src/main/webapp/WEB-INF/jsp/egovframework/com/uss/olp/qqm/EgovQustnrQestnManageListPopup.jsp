@@ -192,7 +192,7 @@ function fn_egov_open_QustnrQestnManage(qestnrQesitmId,  cnt, qestnTyCode){
 		<!-- 질문내용  -->
 		<td class="lt_text3L">
 			<div class="divDotText" style="width:320px; border:solid 0px;">
-    			<a href="#LINK" onClick="fn_egov_open_QustnrQestnManage('${resultInfo.qestnrQesitmId}', '${status.count}', '${resultInfo.qestnTyCode}')">${resultInfo.qestnCn}</a>
+    			<a href="#LINK" onclick="fn_egov_open_QustnrQestnManage('${resultInfo.qestnrQesitmId}', '${status.count}', '${resultInfo.qestnTyCode}')">${resultInfo.qestnCn}</a>
     		</div>
 		</td>
 		<!-- 질문유형 -->
@@ -206,7 +206,7 @@ function fn_egov_open_QustnrQestnManage(qestnrQesitmId,  cnt, qestnTyCode){
 	  	<td class="lt_text3">${fn:substring(resultInfo.frstRegisterPnttm, 0, 10)}</td>
 	  	<!-- 선택 -->
 	  	<td class="lt_text3">
-			<a href="#LINK" onClick="fn_egov_open_QustnrQestnManage('${resultInfo.qestnrQesitmId}', '${status.count}', '${resultInfo.qestnTyCode}')"><spring:message code="input.cSelect" /></a><!-- 선택 -->
+			<a href="#LINK" onclick="fn_egov_open_QustnrQestnManage('${resultInfo.qestnrQesitmId}', '${status.count}', '${resultInfo.qestnTyCode}')"><spring:message code="input.cSelect" /></a><!-- 선택 -->
     		<input name="iptText_${status.count}" id="iptText_${status.count}" type="hidden" value="${resultInfo.qestnCn}">
 		</td>
 	  </tr>	  

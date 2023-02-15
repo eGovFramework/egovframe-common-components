@@ -270,10 +270,10 @@ function fn_egov_save_RssTagManage(){
 		<tr>
 			<th><spring:message code="ussIonRss.rssTagManageRegist.bdtTag"/></th><!-- 본문TAG -->
 			<td class="left">
-			    <a href="#LINK" onClick="fn_egov_ColumnSetting_RssTagManage('bdtTag')"><img src="<c:url value='/images/egovframework/com/cmm/icon/action_add.gif'/>"alt="컬럼명추가" title="컬럼명추가"></a>
+			    <a href="#LINK" onclick="fn_egov_ColumnSetting_RssTagManage('bdtTag')"><img src="<c:url value='/images/egovframework/com/cmm/icon/action_add.gif'/>"alt="컬럼명추가" title="컬럼명추가"></a>
 				<c:set var="bTag"><spring:message code="ussIonRss.rssTagManageRegist.bdtTag"/></c:set>
 				<form:input path="bdtTag" title="${bTag}" maxlength="255" cssStyle="width:80%"/>
-				<a href="#LINK" onClick="document.getElementById('bdtTag').value='';"><img src="<c:url value='/images/egovframework/com/cmm/icon/action_delete.gif'/>" width="13px" height="14px" style="vertical-align:middle; display:inline-block;margin:0px 2px 0px 0px; " alt="컬럼명삭제" title="컬럼명삭제"></a>
+				<a href="#LINK" onclick="document.getElementById('bdtTag').value='';"><img src="<c:url value='/images/egovframework/com/cmm/icon/action_delete.gif'/>" width="13px" height="14px" style="vertical-align:middle; display:inline-block;margin:0px 2px 0px 0px; " alt="컬럼명삭제" title="컬럼명삭제"></a>
 				<div><form:errors path="bdtTag" cssClass="error"/></div>
 			</td>
 		</tr>

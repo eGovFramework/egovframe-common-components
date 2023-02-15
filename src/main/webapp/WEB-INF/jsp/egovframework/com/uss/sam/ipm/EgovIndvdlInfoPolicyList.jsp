@@ -115,7 +115,7 @@ function fn_egov_search_IndvdlInfoPolicy(){
 						<c:if test="${resultInfo.indvdlInfoscrPolicyAgreAt == 'N'}"><spring:message code="input.no"/></c:if><!-- 아니오 -->
 					</td>
 					<td>			
-						<a href="<c:url value='/uss/sam/ipm/detailIndvdlInfoPolicy.do'/>?indvdlInfoId=${resultInfo.indvdlInfoPolicyId}&pageIndex=${searchVO.pageIndex}" onClick="fn_egov_detail_IndvdlInfoPolicy('<c:out value="${resultInfo.indvdlInfoPolicyId}"/>');return false;"><c:out value='${resultInfo.indvdlInfoPolicyNm}'/></a>	
+						<a href="<c:url value='/uss/sam/ipm/detailIndvdlInfoPolicy.do'/>?indvdlInfoId=${resultInfo.indvdlInfoPolicyId}&pageIndex=${searchVO.pageIndex}" onclick="fn_egov_detail_IndvdlInfoPolicy('<c:out value="${resultInfo.indvdlInfoPolicyId}"/>');return false;"><c:out value='${resultInfo.indvdlInfoPolicyNm}'/></a>	
 					</td>
 					<td><c:out value="${resultInfo.frstRegisterNm}"/></td>
 					<td><c:out value="${fn:substring(resultInfo.frstRegistPnttm, 0, 10)}"/></td>

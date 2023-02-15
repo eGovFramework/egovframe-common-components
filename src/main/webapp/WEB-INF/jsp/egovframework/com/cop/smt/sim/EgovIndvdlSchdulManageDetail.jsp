@@ -218,7 +218,7 @@ function fn_egov_delete_IndvdlSchdulManage(frm){
 		<!-- 2011.09.16 끝  -->
 		
 		<form name="formList" action="<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageList.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
-			<input type="submit" class="s_submit" value="<spring:message code="button.list" />" title="<spring:message code="button.list" /> <spring:message code="input.button" />" onClick="fn_egov_list_IndvdlSchdulManage(); return false;"><!-- 목록 -->
+			<input type="submit" class="s_submit" value="<spring:message code="button.list" />" title="<spring:message code="button.list" /> <spring:message code="input.button" />" onclick="fn_egov_list_IndvdlSchdulManage(); return false;"><!-- 목록 -->
 		</form>
 	
 	</div><div style="clear:both;"></div>

@@ -168,7 +168,7 @@ function jusoCallBack(zipNo,rnMgtSn,siNm,sggNm,roadFullAddr,buldMnnm,buldSlno,bd
 	    <th class="ic_none"><label for="zip">${title} <span class="pilsu">*</label></th>
 	    <td>
 	      <form:input  path="zip" size="5" maxlength="5" id="zip" name="zip"/>
-	      <form:errors path="zip"/> <input type="button" class="btn_s" onClick="goAddSearch();" value="${address }"/>
+	      <form:errors path="zip"/> <input type="button" class="btn_s" onclick="goAddSearch();" value="${address }"/>
 	    </td>
 	  </tr>
 	  <!-- 도로명코드  -->

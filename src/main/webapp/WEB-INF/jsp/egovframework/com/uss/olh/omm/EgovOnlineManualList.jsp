@@ -118,7 +118,7 @@ function fn_egov_inquire_onlinemanualdetail(onlineMnlId) {
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 		<td><c:out value='${resultInfo.onlineMnlSeCodeNm}'/></td>
-		<td class="left"><a href="<c:url value='/uss/olh/omm/selectOnlineManualDetail.do?onlineMnlId=${resultInfo.onlineMnlId}'/>" onClick="fn_egov_inquire_onlinemanualdetail('<c:out value="${resultInfo.onlineMnlId}"/>');return false;"><c:out value='${fn:substring(resultInfo.onlineMnlNm, 0, 40)}'/></a></td>
+		<td class="left"><a href="<c:url value='/uss/olh/omm/selectOnlineManualDetail.do?onlineMnlId=${resultInfo.onlineMnlId}'/>" onclick="fn_egov_inquire_onlinemanualdetail('<c:out value="${resultInfo.onlineMnlId}"/>');return false;"><c:out value='${fn:substring(resultInfo.onlineMnlNm, 0, 40)}'/></a></td>
 		<td><c:out value='${resultInfo.frstRegisterNm}'/></td>
 		<td><c:out value='${resultInfo.frstRegisterPnttm}'/></td>
 	</tr>

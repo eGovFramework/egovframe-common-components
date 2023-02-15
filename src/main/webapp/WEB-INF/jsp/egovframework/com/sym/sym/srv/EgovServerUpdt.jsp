@@ -129,7 +129,7 @@ function fncServerDelete() {
 			<td class="left">
 			    <label for="regstYmd">
 		            <input type="hidden" name="cal_url" id="cal_url" value="<c:url value='/sym/cal/EgovNormalCalPopup.do'/>" >
-		            <!-- <input type="text" name="regstYmd" id="regstYmd" value="<c:out value="${server.regstYmd}"/>" size="10" maxlength="10" title="등록일자" class="readOnlyClass" readonly onClick="javascript:fn_egov_NormalCalendar(document.server, document.server.registerDate, document.server.regstYmd);" onKeyDown="javascript:if (event.keyCode == 13) { fn_egov_NormalCalendar(document.server, document.server.registerDate, document.server.regstYmd); }" > -->
+		            <!-- <input type="text" name="regstYmd" id="regstYmd" value="<c:out value="${server.regstYmd}"/>" size="10" maxlength="10" title="등록일자" class="readOnlyClass" readonly onclick="javascript:fn_egov_NormalCalendar(document.server, document.server.registerDate, document.server.regstYmd);" onKeyDown="javascript:if (event.keyCode == 13) { fn_egov_NormalCalendar(document.server, document.server.registerDate, document.server.regstYmd); }" > -->
 		            <input type="text" name="regstYmd" id="regstYmd" value="<c:out value="${server.regstYmd}"/>" maxlength="10" title="<spring:message code="comSymSymSrv.serverUpdt.regstYmd"/>" style="width:70px" /><!-- 등록일자 -->
 		            <input type="hidden" name="registerDate" value=""/>
 		            &nbsp;<form:errors path="regstYmd" />

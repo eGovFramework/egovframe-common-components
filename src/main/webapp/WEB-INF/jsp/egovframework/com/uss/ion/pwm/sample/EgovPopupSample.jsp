@@ -56,7 +56,7 @@ function fnPopupCheck() {
 </div>
 <div id="bottom">
 <c:if test="${stopVewAt eq 'Y'}">
-<spring:message code="ussIonPwm.popupSample.checkBox"/><input type="checkbox" name="chkPopup" value="" onClick="fnPopupCheck()" title="다음부터창열지않기체크">
+<spring:message code="ussIonPwm.popupSample.checkBox"/><input type="checkbox" name="chkPopup" value="" onclick="fnPopupCheck()" title="다음부터창열지않기체크">
 </c:if>
 </div>
 

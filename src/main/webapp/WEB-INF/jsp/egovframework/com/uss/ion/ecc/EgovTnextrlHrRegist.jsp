@@ -115,7 +115,7 @@ function fn_egov_regist_hr(form){
 			<th><label for="eventCn">${title} <span class="pilsu">*</span></label></th>
 			<td class="left">
 			    <form:textarea path="eventCn" title="${title} ${inputTxt}" cols="300" rows="20" readonly="true" style="width:94%;"/>   
-			    <a href="#" onClick="fn_egov_popup_event()"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>" align="middle" style="border:0px" alt=<spring:message code="comUssIonEcc.eventCmpgnVO.findEv"/> title="<spring:message code="comUssIonEcc.eventCmpgnVO.findEv"/>"></a>
+			    <a href="#" onclick="fn_egov_popup_event()"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>" align="middle" style="border:0px" alt=<spring:message code="comUssIonEcc.eventCmpgnVO.findEv"/> title="<spring:message code="comUssIonEcc.eventCmpgnVO.findEv"/>"></a>
 			    <div style="display:none"><form:input path="eventId" /></div>
    				<div><form:errors path="eventCn" cssClass="error" /></div>     
 			</td>

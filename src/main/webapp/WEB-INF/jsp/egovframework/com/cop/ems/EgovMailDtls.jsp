@@ -171,7 +171,7 @@ function fnCheckAll(){
 		</colgroup>
 		<thead>
 		<tr>
-			<th><input type="checkbox" name="checkAll" class="check2" onClick="javascript:fnCheckAll();" title="전체선택" id="checkAll" /></th><!-- 전체선택 -->
+			<th><input type="checkbox" name="checkAll" class="check2" onclick="javascript:fnCheckAll();" title="전체선택" id="checkAll" /></th><!-- 전체선택 -->
 			<th><spring:message code="comCopSymEms.list.status" /></th><!-- 상태 -->
 			<th><spring:message code="comCopSymEms.list.sender" /></th><!-- 발신자 -->
 			<th><spring:message code="comCopSymEms.list.receiver" /></th><!-- 수신자 -->

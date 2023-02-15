@@ -170,7 +170,7 @@ function fn_egov_list_QustnrQestnManag(qestnrId, qestnrTmplatId){
 		<td class="lt_text3">${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}</td>
 		<!-- 항목내용  -->
 		<td class="lt_text3L">
-		<a href="<c:url value='/uss/olp/qim/EgovQustnrItemManageDetail.do'/>?qustnrIemId=${resultInfo.qustnrIemId}" onClick="fn_egov_detail_QustnrItemManage('<c:out value="${resultInfo.qustnrIemId}"/>');return false;"><c:out value='${resultInfo.iemCn}'/></a>
+		<a href="<c:url value='/uss/olp/qim/EgovQustnrItemManageDetail.do'/>?qustnrIemId=${resultInfo.qustnrIemId}" onclick="fn_egov_detail_QustnrItemManage('<c:out value="${resultInfo.qustnrIemId}"/>');return false;"><c:out value='${resultInfo.iemCn}'/></a>
 		</td>
 		<!-- 기타답변여부 -->
 		<td class="lt_text3">${resultInfo.etcAnswerAt}</td>

@@ -146,7 +146,7 @@ function fn_egov_open_Popup(cnt, groupId){
 		<td class="left">${resultInfo.orgnztNm}</td>
 		<td class="left">${resultInfo.orgnztDc}</td>
     	<td>
-	   		<button class="btn_style3" onClick="javascript:fn_egov_open_Popup('${status.count}', '${resultInfo.orgnztId}'); return false;" title="<spring:message code="button.select" /> <spring:message code="input.button" />"><spring:message code="button.select" /></button>
+	   		<button class="btn_style3" onclick="javascript:fn_egov_open_Popup('${status.count}', '${resultInfo.orgnztId}'); return false;" title="<spring:message code="button.select" /> <spring:message code="input.button" />"><spring:message code="button.select" /></button>
 	   		<input name="iptText_${status.count}" id="iptText_${status.count}" type="hidden" value="${resultInfo.orgnztNm}">    	
     	</td>
 	  </tr>   

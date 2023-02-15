@@ -119,7 +119,7 @@ function fn_egov_inquire_sitedetail(siteId) {
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 		<td><c:out value='${resultInfo.siteThemaClNm}'/></td>
-		<td><a href="<c:url value='/uss/ion/sit/selectSiteDetail.do?siteId=${resultInfo.siteId}'/>" onClick="fn_egov_inquire_sitedetail('<c:out value="${resultInfo.siteId}"/>');return false;"><c:out value='${fn:substring(resultInfo.siteNm, 0, 40)}'/></a></td>
+		<td><a href="<c:url value='/uss/ion/sit/selectSiteDetail.do?siteId=${resultInfo.siteId}'/>" onclick="fn_egov_inquire_sitedetail('<c:out value="${resultInfo.siteId}"/>');return false;"><c:out value='${fn:substring(resultInfo.siteNm, 0, 40)}'/></a></td>
 		<td><c:out value='${fn:substring(resultInfo.siteUrl, 0, 40)}'/></td>
 		<td><c:out value='${resultInfo.emplyrNm}'/></td>
 		<td><c:out value='${resultInfo.frstRegisterPnttm}'/></td>

@@ -154,7 +154,7 @@ function fn_egov_search_QustnrRespondManage(){
 		<td class="lt_text3">${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}</td>
 		<!-- 설문지정보(제목) -->
 		<td class="lt_text3L">
-			<a href="<c:url value='/uss/olp/qrm/EgovQustnrRespondManageDetail.do'/>?qestnrRespondId=${resultInfo.qestnrRespondId}" onClick="fn_egov_detail_QustnrRespondInfo('<c:out value="${resultInfo.qestnrRespondId}"/>');return false;"><c:out value='${resultInfo.qestnrSj}'/></a>
+			<a href="<c:url value='/uss/olp/qrm/EgovQustnrRespondManageDetail.do'/>?qestnrRespondId=${resultInfo.qestnrRespondId}" onclick="fn_egov_detail_QustnrRespondInfo('<c:out value="${resultInfo.qestnrRespondId}"/>');return false;"><c:out value='${resultInfo.qestnrSj}'/></a>
 		</td>
 		<!-- 응답자명 -->
 		<td class="lt_text3">${resultInfo.respondNm}</td>

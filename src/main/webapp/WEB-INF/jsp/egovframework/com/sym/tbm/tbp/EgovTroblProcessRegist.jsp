@@ -199,7 +199,7 @@ function fncSelectTroblProcessList() {
 			<th><spring:message code="comSymTbmTbp.troblProcessRegist.troblProcessD"/> <span class="pilsu">*</span></th><!-- 처리시간 -->
 			<td class="left">
 			    <input type="hidden" name="cal_url" id="cal_url" value="<c:url value='/sym/cal/EgovNormalCalPopup.do'/>" >
-	            <!-- <input type="text" name="troblProcessD" id="troblProcessD" value="<c:out value="${troblProcessDtmp}" />" size="10" maxlength="10" title="처리시간" class="readOnlyClass" readonly onClick="javascript:fn_egov_NormalCalendar(document.troblProcess, document.troblProcess.troblProcessDate, document.troblProcess.troblProcessD);" onKeyDown="javascript:if (event.keyCode == 13) { fn_egov_NormalCalendar(document.troblProcess, document.troblProcess.troblProcessDate, document.troblProcess.troblProcessD); }" > -->
+	            <!-- <input type="text" name="troblProcessD" id="troblProcessD" value="<c:out value="${troblProcessDtmp}" />" size="10" maxlength="10" title="처리시간" class="readOnlyClass" readonly onclick="javascript:fn_egov_NormalCalendar(document.troblProcess, document.troblProcess.troblProcessDate, document.troblProcess.troblProcessD);" onKeyDown="javascript:if (event.keyCode == 13) { fn_egov_NormalCalendar(document.troblProcess, document.troblProcess.troblProcessDate, document.troblProcess.troblProcessD); }" > -->
 	            <label for="troblProcessD"><input type="text" name="troblProcessD" id="troblProcessD" value="<c:out value="${troblProcessDtmp}" />" maxlength="10" title="처리시간" style="width:70px" /></label><!-- 처리시간 -->
 	            <input type="hidden" name="troblProcessDate" value=""/>
 	            <label for="troblProcessH"><select name="troblProcessH" id="troblProcessH" title="시"><!-- 분 -->

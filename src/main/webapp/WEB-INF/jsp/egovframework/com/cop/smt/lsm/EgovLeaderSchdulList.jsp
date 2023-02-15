@@ -175,11 +175,11 @@ $(function() {
 	<%-- 
 	<table border="0" cellspacing="0" cellpadding="0" summary="간부일정목록의 보기방식을 지정합니다.">
 	<tr> 
-	  <td height="20px" width="100px" bgcolor="#DDDDDD" style="cursor:hand;cursor:pointer;" align="center" id="tabMenu0" ><a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulMonthList.do' />" target="SchdulView" onClick="fnTabMenuSelect(0);"><b>월별일정보기</b></a></td>
+	  <td height="20px" width="100px" bgcolor="#DDDDDD" style="cursor:hand;cursor:pointer;" align="center" id="tabMenu0" ><a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulMonthList.do' />" target="SchdulView" onclick="fnTabMenuSelect(0);"><b>월별일정보기</b></a></td>
 	  <td height="20px" width="1x" bgcolor="#FFFFFF"></td>
-	  <td height="20px" width="100px"  bgcolor="#DDDDDD" style="cursor:hand;cursor:pointer;" align="center" id="tabMenu1"><a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulWeekList.do' />" target="SchdulView" onClick="fnTabMenuSelect(1);"><b>주간별일정보기</b></a></td>
+	  <td height="20px" width="100px"  bgcolor="#DDDDDD" style="cursor:hand;cursor:pointer;" align="center" id="tabMenu1"><a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulWeekList.do' />" target="SchdulView" onclick="fnTabMenuSelect(1);"><b>주간별일정보기</b></a></td>
 	  <td height="20px" width="1x" bgcolor="#FFFFFF" ></td>
-	  <td height="20px" width="100px" style="cursor:hand;cursor:pointer;" bgcolor="#DDDDDD" align="center" id="tabMenu2"><a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulDailyList.do' />" target="SchdulView" onClick="fnTabMenuSelect(2);"><b>일별일정보기</b></a></td>
+	  <td height="20px" width="100px" style="cursor:hand;cursor:pointer;" bgcolor="#DDDDDD" align="center" id="tabMenu2"><a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulDailyList.do' />" target="SchdulView" onclick="fnTabMenuSelect(2);"><b>일별일정보기</b></a></td>
 	  <td height="20px" width="1x" bgcolor="#FFFFFF"> </td>
 	</tr>
 	</table>

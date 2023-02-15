@@ -205,7 +205,7 @@ function fn_egov_open_QustnrItemManage(qestnrId, qestnrTmplatId, qustnrIemId, cn
 		<!-- 항목내용  -->
 		<td class="lt_text3L">
 			<div class="divDotText" style="width:320px; border:solid 0px;">
-    			<a href="#LINK" onClick="fn_egov_open_QustnrItemManage('${resultInfo.qestnrId}', '${resultInfo.qestnrTmplatId}', '${resultInfo.qustnrIemId}', '${status.count}')">${resultInfo.iemCn}</a>
+    			<a href="#LINK" onclick="fn_egov_open_QustnrItemManage('${resultInfo.qestnrId}', '${resultInfo.qestnrTmplatId}', '${resultInfo.qustnrIemId}', '${status.count}')">${resultInfo.iemCn}</a>
     		</div>
 		</td>
 		<!-- 기타답변여부 -->
@@ -218,7 +218,7 @@ function fn_egov_open_QustnrItemManage(qestnrId, qestnrTmplatId, qustnrIemId, cn
 	  	<td class="lt_text3">${fn:substring(resultInfo.frstRegisterPnttm, 0, 10)}</td>
 	  	<!-- 선택 -->
 	  	<td class="lt_text3">
-			<a href="#LINK" onClick="fn_egov_open_QustnrItemManage('${resultInfo.qestnrId}', '${resultInfo.qestnrTmplatId}', '${resultInfo.qustnrIemId}', '${status.count}')"><spring:message code="input.cSelect" /></a><!-- 선택 -->
+			<a href="#LINK" onclick="fn_egov_open_QustnrItemManage('${resultInfo.qestnrId}', '${resultInfo.qestnrTmplatId}', '${resultInfo.qustnrIemId}', '${status.count}')"><spring:message code="input.cSelect" /></a><!-- 선택 -->
 			<input name="iptText_${status.count}" id="iptText_${status.count}" type="hidden" value="${resultInfo.iemCn}">
 		</td>
 	  </tr>	  

@@ -146,7 +146,7 @@ function fn_egov_close(){
 		<td><%-- 미개봉만 삭제가능하게  --%>
 			<c:if test="${resultInfo.openYn eq 'N'}">
 			<form name="formUpdt" action="<c:url value='/uss/ion/nts/selectNoteTrnsmitCnfirm.do?noteId='/>${resultInfo.noteId}"  method="post">
-				<input type="submit" class="btn_style3c" value="<spring:message code="button.delete" />" onClick="fn_egov_delete_TrnsmitCnfirm(this.form);return false;">
+				<input type="submit" class="btn_style3c" value="<spring:message code="button.delete" />" onclick="fn_egov_delete_TrnsmitCnfirm(this.form);return false;">
 				<input type="hidden" name="cmd" value="del">
 				<input type="hidden" name="noteTrnsmitId" value="${resultInfo.noteTrnsmitId}">
 				<input type="hidden" name="noteRecptnId" value="${resultInfo.noteRecptnId}">
@@ -163,7 +163,7 @@ function fn_egov_close(){
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<button class="btn_style3" onClick="fn_egov_close();" title="<spring:message code="button.close" /> <spring:message code="input.button" />"><spring:message code="button.close" /></button>
+		<button class="btn_style3" onclick="fn_egov_close();" title="<spring:message code="button.close" /> <spring:message code="input.button" />"><spring:message code="button.close" /></button>
 		<div style="clear:both;"></div>
 	</div>
 </form>

@@ -158,7 +158,7 @@ summary="이 표는 웹표준검사 대상 정보를 제공하며, URL명, Publi
 	<tr>       
 	  <td>&nbsp;</td>
 	  <td><img src="/images/egovframework/com/cmm/uss/umt/btn/bu2_left.gif"  width="8" height="20"></td>
-	  <td class="btnBackground" nowrap><input type="submit" value="검색" name="btnSearch" onClick="if(fn_egov_submit_WebStandardInspection(this.form,'<%=i%>') == false){return false;};" class="btnNew" style="height:20px;width:26px;" > 
+	  <td class="btnBackground" nowrap><input type="submit" value="검색" name="btnSearch" onclick="if(fn_egov_submit_WebStandardInspection(this.form,'<%=i%>') == false){return false;};" class="btnNew" style="height:20px;width:26px;" > 
 	  </td>
 	  <td><img src="/images/egovframework/com/cmm/uss/umt/btn/bu2_right.gif"  width="8" height="20"></td>
 	</tr>
@@ -174,7 +174,7 @@ summary="이 표는 웹표준검사 대상 정보를 제공하며, URL명, Publi
 	<tr>       
 	  <td>&nbsp;</td>
 	  <td><img src="/images/egovframework/com/cmm/uss/umt/btn/bu2_left.gif"  width="8" height="20"></td>
-	  <td class="btnBackground" nowrap><input type="button" value="보기" name="btnSearch" onClick="fn_egov_submit_WebStandardInspectionLink(this.form);" class="btnNew" style="height:20px;width:26px;" ></td>
+	  <td class="btnBackground" nowrap><input type="button" value="보기" name="btnSearch" onclick="fn_egov_submit_WebStandardInspectionLink(this.form);" class="btnNew" style="height:20px;width:26px;" ></td>
 	  <td><img src="/images/egovframework/com/cmm/uss/umt/btn/bu2_right.gif"  width="8" height="20"></td>
 	</tr>
 	</table>

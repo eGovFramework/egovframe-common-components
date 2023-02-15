@@ -243,7 +243,7 @@ function fn_egov_search_NoteRecptn(){
 	</colgroup>
 	<thead>
 	<tr>
-		<th><input type="checkbox" name="checkAll" id="checkAll" title="<spring:message code="input.selectAll.title" />" value="1" onClick="fn_egov_checkAll_NoteTrnsmit();"></th><!-- 전체선택 -->
+		<th><input type="checkbox" name="checkAll" id="checkAll" title="<spring:message code="input.selectAll.title" />" value="1" onclick="fn_egov_checkAll_NoteTrnsmit();"></th><!-- 전체선택 -->
 		<th><spring:message code="comUssIonNts.list.seq" /></th><!-- 순번 -->
 		<th class="board_th_link"><spring:message code="comUssIonNts.list.noteSj" /></th><!-- 제목 -->
 		<th><spring:message code="comUssIonNts.list.rcverNm" /></th><!-- 받는사람 -->
@@ -266,7 +266,7 @@ function fn_egov_search_NoteRecptn(){
 		</td>
 		<td><c:out value="${resultInfo.rcverNm}"/><c:if test="${resultInfo.rcverCnt ne '0'}">&nbsp;외&nbsp; ${resultInfo.rcverCnt}명</c:if></td>
 		<td>
-			<span class="btn_s"><a href="<c:url value='/uss/ion/nts/selectNoteTrnsmitCnfirm.do'/>?noteId=${resultInfo.noteId}" onClick="fn_egov_cnfirm_NoteTrnsmit('${resultInfo.noteId}');return false;"  title="<spring:message code="comUssIonNts.list.openAt" /> <spring:message code="input.button" />">${resultInfo.openY}/${resultInfo.openN}</a></span>
+			<span class="btn_s"><a href="<c:url value='/uss/ion/nts/selectNoteTrnsmitCnfirm.do'/>?noteId=${resultInfo.noteId}" onclick="fn_egov_cnfirm_NoteTrnsmit('${resultInfo.noteId}');return false;"  title="<spring:message code="comUssIonNts.list.openAt" /> <spring:message code="input.button" />">${resultInfo.openY}/${resultInfo.openN}</a></span>
 		</td>
 		<td><c:out value="${resultInfo.frstRegisterPnttm}"/></td>
 	</tr>

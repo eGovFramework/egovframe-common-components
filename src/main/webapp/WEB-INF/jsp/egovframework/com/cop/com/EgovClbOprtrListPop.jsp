@@ -104,7 +104,7 @@
 			<td class="lt_text3" nowrap>
 			<c:if test="${result.useAt == 'Y'}">
 	    		<input type="button" name="selectUser" value="선택"
-		    			onClick="javascript:fn_egov_returnUserInfo('<c:out value="${result.uniqId}" />');"  />
+		    			onclick="javascript:fn_egov_returnUserInfo('<c:out value="${result.uniqId}" />');"  />
 			</c:if>
 			</td>
 		  </tr>

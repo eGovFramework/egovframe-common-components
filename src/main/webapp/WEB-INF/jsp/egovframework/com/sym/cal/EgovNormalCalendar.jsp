@@ -136,12 +136,12 @@ function fnReturnDay(day){
 				<c:otherwise>
 			 		<c:choose>
 			 		<c:when test='${result.restAt == "Y" }'>
-					    <td class="lt_text3" nowrap STYLE="color:red;cursor:pointer;cursor:hand" onClick="javascript:fnReturnDay(${result.day});">
+					    <td class="lt_text3" nowrap STYLE="color:red;cursor:pointer;cursor:hand" onclick="javascript:fnReturnDay(${result.day});">
 					    	${result.day}
 					    </td>
 					</c:when>
 					<c:otherwise>
-					    <td class="lt_text3" nowrap STYLE="color:black;cursor:pointer;cursor:hand" onClick="javascript:fnReturnDay(${result.day});">
+					    <td class="lt_text3" nowrap STYLE="color:black;cursor:pointer;cursor:hand" onclick="javascript:fnReturnDay(${result.day});">
 					    	${result.day}
 					    </td>
 					</c:otherwise>

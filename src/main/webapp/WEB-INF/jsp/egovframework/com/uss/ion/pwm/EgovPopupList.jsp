@@ -220,7 +220,7 @@ function fnGetCookie(name) {
 		<thead>
 			<tr>
 			   <th scope="col"><spring:message code="table.num"/></th><!-- 순번 -->
-			   <th scope="col"><input type="checkbox" name="checkAll" id="checkAll" class="check2" value="1" onClick="fn_egov_checkAll_PopupManage();"/></th>
+			   <th scope="col"><input type="checkbox" name="checkAll" id="checkAll" class="check2" value="1" onclick="fn_egov_checkAll_PopupManage();"/></th>
 			   <th scope="col"><spring:message code="ussIonPwm.popupList.popupTitleNm"/></th><!-- 제목 -->
 			   <th scope="col"><spring:message code="ussIonPwm.popupList.ntcePeriod"/></th><!-- 게시기간 -->
 			   <th scope="col"><spring:message code="ussIonPwm.popupList.fileUrl"/></th><!-- 파일 -->

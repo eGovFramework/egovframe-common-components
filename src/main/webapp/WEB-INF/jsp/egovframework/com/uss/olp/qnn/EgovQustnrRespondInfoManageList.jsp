@@ -100,7 +100,7 @@ function fn_egov_statistics_QustnrRespondInfoManage(qestnrId, qestnrTmplatId){
 			<li>
 				<!-- 조회버튼 -->
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code='title.search' /> <spring:message code='input.input' />" value="<c:out value='${searchVO.searchKeyword}'/>"  maxlength="155" >
-				<input type="submit" class="s_btn" value="<spring:message code='button.inquire' />" title="<spring:message code='title.inquire' /> <spring:message code='input.button' />" onClick="fn_egov_search_QustnrManage(); return false;" />
+				<input type="submit" class="s_btn" value="<spring:message code='button.inquire' />" title="<spring:message code='title.inquire' /> <spring:message code='input.button' />" onclick="fn_egov_search_QustnrManage(); return false;" />
 				<!-- 등록버튼 -->
 				<%-- <span class="btn_b"> <a href="<c:url value='/uss/olp/qim/EgovQustnrItemManageRegist.do'/>" title="<spring:message code='button.create' /> <spring:message code='input.button' />"><spring:message code="button.create" /></a></span> --%> 
 			</li>
@@ -150,7 +150,7 @@ function fn_egov_statistics_QustnrRespondInfoManage(qestnrId, qestnrTmplatId){
 		<td class="lt_text3">${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}</td>
 		<!-- 설문제목  -->
 		<td class="lt_text3L">
-			<a href="<c:url value='/uss/olp/qnn/EgovQustnrRespondInfoManageRegist.do'/>?qestnrId=${resultInfo.qestnrId}&qestnrTmplatId=${resultInfo.qestnrTmplatId}" onClick="fn_egov_regist_QustnrRespondInfoManage('<c:out value="${resultInfo.qestnrId}"/>','<c:out value="${resultInfo.qestnrTmplatId}"/>');return false;"><c:out value='${resultInfo.qestnrSj}'/></a> 
+			<a href="<c:url value='/uss/olp/qnn/EgovQustnrRespondInfoManageRegist.do'/>?qestnrId=${resultInfo.qestnrId}&qestnrTmplatId=${resultInfo.qestnrTmplatId}" onclick="fn_egov_regist_QustnrRespondInfoManage('<c:out value="${resultInfo.qestnrId}"/>','<c:out value="${resultInfo.qestnrTmplatId}"/>');return false;"><c:out value='${resultInfo.qestnrSj}'/></a> 
 		</td>
 		<!-- 설문기간 -->
 		<td class="lt_text3">${resultInfo.qestnrBeginDe} ~ ${resultInfo.qestnrEndDe}</td>

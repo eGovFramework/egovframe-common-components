@@ -110,8 +110,8 @@ ${sResult}
 </table>
 <!-- 목록/저장버튼  -->
 <div class="txt-cnt mt20">
-		<input type="submit" class="btnStyle02 bg_gray" value="<spring:message code="button.list" />" onClick="fn_egov_list_Zip(); return false;" /> <!-- 목록 -->
-		<input type="submit" class="btnStyle02" value="<spring:message code="button.save" />" onClick="fn_egov_regist_ExcelZip(); return false;" /> <!-- 저장 -->
+		<input type="submit" class="btnStyle02 bg_gray" value="<spring:message code="button.list" />" onclick="fn_egov_list_Zip(); return false;" /> <!-- 목록 -->
+		<input type="submit" class="btnStyle02" value="<spring:message code="button.save" />" onclick="fn_egov_regist_ExcelZip(); return false;" /> <!-- 저장 -->
 	</div>
 
 <input name="cmd" type="hidden" value="<c:out value='ExcelZipRegist'/>"/>

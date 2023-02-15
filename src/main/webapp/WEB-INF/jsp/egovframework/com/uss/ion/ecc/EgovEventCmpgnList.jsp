@@ -119,7 +119,7 @@ function fn_egov_inquire_eventdetail(eventId) {
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 		<td><c:out value='${resultInfo.eventTyCodeNm}'/></td>
-		<td class="left"><a href="<c:url value='/uss/ion/ecc/selectEventCmpgnDetail.do?eventId=${resultInfo.eventId}'/>" onClick="fn_egov_inquire_eventdetail('<c:out value="${resultInfo.eventId}"/>');return false;"><c:out value='${fn:substring(resultInfo.eventCn, 0, 40)}'/></a></td>
+		<td class="left"><a href="<c:url value='/uss/ion/ecc/selectEventCmpgnDetail.do?eventId=${resultInfo.eventId}'/>" onclick="fn_egov_inquire_eventdetail('<c:out value="${resultInfo.eventId}"/>');return false;"><c:out value='${fn:substring(resultInfo.eventCn, 0, 40)}'/></a></td>
 		<td><c:out value='${resultInfo.eventSvcBeginDe}'/></td>
 		<td><c:out value='${resultInfo.eventSvcEndDe}'/></td>
 		<td><c:out value='${resultInfo.frstRegisterPnttm}'/></td>

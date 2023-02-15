@@ -115,9 +115,9 @@ function fnSearchPassword() {
 		<h2><spring:message code="comUatUia.idPw.searchId" /></h2>
 		<div class="login_type">
 			<ul>
-				<li><a id="idGnr" onClick="fnCheckUsrId('GNR');" class="on"><spring:message code="comUatUia.idPw.gnr" /></a></li>
-				<li><a id="idEnt" onClick="fnCheckUsrId('ENT');"><spring:message code="comUatUia.idPw.ent" /></a></li>
-				<li><a id="idUsr" onClick="fnCheckUsrId('USR');"><spring:message code="comUatUia.idPw.usr" /></a></li>
+				<li><a id="idGnr" onclick="fnCheckUsrId('GNR');" class="on"><spring:message code="comUatUia.idPw.gnr" /></a></li>
+				<li><a id="idEnt" onclick="fnCheckUsrId('ENT');"><spring:message code="comUatUia.idPw.ent" /></a></li>
+				<li><a id="idUsr" onclick="fnCheckUsrId('USR');"><spring:message code="comUatUia.idPw.usr" /></a></li>
 			</ul>
 		</div>
 		<div class="login_input">
@@ -131,7 +131,7 @@ function fnSearchPassword() {
 					<input type="text" name="email" maxlength="30" title="<spring:message code="comUatUia.idPw.email" />" placeholder="<spring:message code="comUatUia.idPw.email" />" />
 				</li>
 				<li>
-					<input type="button" class="btn_login" onClick="fnSearchId();" value="<spring:message code="comUatUia.idPw.searchId" />" />
+					<input type="button" class="btn_login" onclick="fnSearchId();" value="<spring:message code="comUatUia.idPw.searchId" />" />
 				</li>
 			</ul>
 		</div>
@@ -147,9 +147,9 @@ function fnSearchPassword() {
 		<h2><spring:message code="comUatUia.idPw.searchPassword" /></h2>
 		<div class="login_type">
 			<ul>
-				<li><a id="pwGnr" onClick="fnCheckUsrPassword('GNR');" class="on"><spring:message code="comUatUia.idPw.gnr" /></a></li>
-				<li><a id="pwEnt" onClick="fnCheckUsrPassword('ENT');"><spring:message code="comUatUia.idPw.ent" /></a></li>
-				<li><a id="pwUsr" onClick="fnCheckUsrPassword('USR');"><spring:message code="comUatUia.idPw.usr" /></a></li>
+				<li><a id="pwGnr" onclick="fnCheckUsrPassword('GNR');" class="on"><spring:message code="comUatUia.idPw.gnr" /></a></li>
+				<li><a id="pwEnt" onclick="fnCheckUsrPassword('ENT');"><spring:message code="comUatUia.idPw.ent" /></a></li>
+				<li><a id="pwUsr" onclick="fnCheckUsrPassword('USR');"><spring:message code="comUatUia.idPw.usr" /></a></li>
 			</ul>
 		</div>
 		<div class="login_input">
@@ -179,7 +179,7 @@ function fnSearchPassword() {
 					<input type="text" name="passwordCnsr" maxlength="50" title="<spring:message code="comUatUia.idPw.passwordCnsr" />" placeholder="<spring:message code="comUatUia.idPw.passwordCnsr" />">
 				</li>
 				<li>
-					<input type="button" class="btn_login" onClick="fnSearchPassword();" value="<spring:message code="comUatUia.idPw.searchPassword" />">
+					<input type="button" class="btn_login" onclick="fnSearchPassword();" value="<spring:message code="comUatUia.idPw.searchPassword" />">
 				</li>
 			</ul>
 		</div>

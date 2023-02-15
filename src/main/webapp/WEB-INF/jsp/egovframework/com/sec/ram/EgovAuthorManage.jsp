@@ -170,8 +170,8 @@ function press() {
 			<li style="border: 0px solid #d2d2d2;">
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${authorManageVO.searchKeyword}"/>'  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
-				<input type="button" class="s_btn" onClick="fncAuthorDeleteList()" value="<spring:message code="title.delete" />" title="<spring:message code="title.delete" /> <spring:message code="input.button" />" />
-				<span class="btn_b"><a href="<c:url value='/sec/ram/EgovAuthorInsertView.do'/>" onClick="javascript:fncAddAuthorInsert();"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
+				<input type="button" class="s_btn" onclick="fncAuthorDeleteList()" value="<spring:message code="title.delete" />" title="<spring:message code="title.delete" /> <spring:message code="input.button" />" />
+				<span class="btn_b"><a href="<c:url value='/sec/ram/EgovAuthorInsertView.do'/>" onclick="javascript:fncAddAuthorInsert();"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>

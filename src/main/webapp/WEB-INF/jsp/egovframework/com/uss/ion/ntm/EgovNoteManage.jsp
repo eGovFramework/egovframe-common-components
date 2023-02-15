@@ -219,9 +219,9 @@ function  fn_egov_recptnEmpSearchPupup(){
 							<form:radiobutton path="recptnSe" value="2" style="width:18px;border: 1px solid #dedede;"/><spring:message code="comUssIonNtm.NoteMange.reference"/>
 							<form:errors path="recptnSe" cssClass="error"/>
 							<!-- 수신/참조자 선택 목록 팝업창 열기 -->
-							<a href="<c:url value='/uss/ion/ntm/listEgovNoteEmpListPopup.do'/>" onClick="fn_egov_recptnEmpSearchPupup();return false;"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>" align="middle" style="border:0px;margin-right:10px;" alt="${recptnEmnpList}" title="${recptnEmnpList}"></a>
+							<a href="<c:url value='/uss/ion/ntm/listEgovNoteEmpListPopup.do'/>" onclick="fn_egov_recptnEmpSearchPupup();return false;"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>" align="middle" style="border:0px;margin-right:10px;" alt="${recptnEmnpList}" title="${recptnEmnpList}"></a>
 							<!-- 수신자 목록 리스트 제외 -->
-							<span class="btn_s"><a href="#LINK" onClick="fn_egov_delete_NoteManage(1);"  title="<spring:message code="comUssIonNtm.NoteMange.delete" /> <spring:message code="input.button" />"><spring:message code="comUssIonNtm.NoteMange.delete" /> </a></span>    
+							<span class="btn_s"><a href="#LINK" onclick="fn_egov_delete_NoteManage(1);"  title="<spring:message code="comUssIonNtm.NoteMange.delete" /> <spring:message code="input.button" />"><spring:message code="comUssIonNtm.NoteMange.delete" /> </a></span>    
 						</div>
 						</div>
 					</td>
@@ -245,7 +245,7 @@ function  fn_egov_recptnEmpSearchPupup(){
 
 
 <div class="btnNote">
-	<input type="submit" class="s_submit" onClick="fn_egov_save_NoteManage(); return false;" value="<spring:message code="comUssIonNtm.NoteMange.send" />" title="<spring:message code="comUssIonNtm.NoteMange.send" /> <spring:message code="input.button" />" />
+	<input type="submit" class="s_submit" onclick="fn_egov_save_NoteManage(); return false;" value="<spring:message code="comUssIonNtm.NoteMange.send" />" title="<spring:message code="comUssIonNtm.NoteMange.send" /> <spring:message code="input.button" />" />
 </div><div style="clear:both;"></div>
 
 </div>

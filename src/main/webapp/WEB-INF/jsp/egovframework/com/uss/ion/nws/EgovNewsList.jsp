@@ -116,7 +116,7 @@ function fn_egov_inquire_newsdetail(newsId) {
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-		<td class="left"><a href="<c:url value='/uss/ion/nws/selectNewsDetail.do?newsId=${resultInfo.newsId}'/>" onClick="fn_egov_inquire_newsdetail('<c:out value="${resultInfo.newsId}"/>');return false;"><c:out value='${fn:substring(resultInfo.newsSj, 0, 40)}'/></a></td>
+		<td class="left"><a href="<c:url value='/uss/ion/nws/selectNewsDetail.do?newsId=${resultInfo.newsId}'/>" onclick="fn_egov_inquire_newsdetail('<c:out value="${resultInfo.newsId}"/>');return false;"><c:out value='${fn:substring(resultInfo.newsSj, 0, 40)}'/></a></td>
 		<td><c:out value='${resultInfo.newsOrigin}'/></td>
 		<td><c:out value='${resultInfo.ntceDe}'/></td>
 		<td><c:out value='${resultInfo.frstRegisterPnttm}'/></td>

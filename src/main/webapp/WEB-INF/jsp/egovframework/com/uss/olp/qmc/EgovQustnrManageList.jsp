@@ -204,7 +204,7 @@ function fn_egov_statistics_QustnrQestnManag(qestnrId, qestnrTmplatId){
 		<td class="lt_text3">${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}</td>
 		<!-- 설문제목  -->
 		<td class="lt_text3L">
-			<a href="<c:url value='/uss/olp/qmc/EgovQustnrManageDetail.do'/>?qestnrId=${resultInfo.qestnrId}" onClick="fn_egov_detail_QustnrManage('<c:out value="${resultInfo.qestnrId}"/>');return false;"><c:out value='${resultInfo.qestnrSj}'/></a>
+			<a href="<c:url value='/uss/olp/qmc/EgovQustnrManageDetail.do'/>?qestnrId=${resultInfo.qestnrId}" onclick="fn_egov_detail_QustnrManage('<c:out value="${resultInfo.qestnrId}"/>');return false;"><c:out value='${resultInfo.qestnrSj}'/></a>
     	</td>
 		<!-- 설문기간 -->
 		<td class="lt_text3">${resultInfo.qestnrBeginDe}~${resultInfo.qestnrEndDe}</td>

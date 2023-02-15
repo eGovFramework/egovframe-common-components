@@ -247,8 +247,8 @@ function press() {
 				<input name="deptNm" type="text" value="<c:out value='${deptAuthorVO.deptNm}'/>" size="15" title="<spring:message code="comCopSecDrm.list.deptNm" />" onkeypress="press();" readonly="readonly" /><!-- 부서명 -->
 				<input id="deptSelectPopup" type="button" class="s_btn" value="<spring:message code="comCopSecDrm.btn.deptSelectPopup" />" title="<spring:message code="comCopSecDrm.btn.deptSelectPopup" /> <spring:message code="input.button" />" /><!-- 부서조회팝업 -->
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="button.inquire" /> <spring:message code="input.button" />" /><!-- 조회 -->
-				<input type="button" class="s_btn" onClick="fncDeptAuthorDeleteList();return false;" value="<spring:message code="button.delete" />" title="<spring:message code="button.delete" /> <spring:message code="input.button" />" /><!-- 삭제 -->
-				<input type="button" class="s_btn" onClick="fncAddDeptAuthorInsert();return false;" value="<spring:message code="button.create" />" title="<spring:message code="button.create" /> <spring:message code="input.button" />" /><!-- 등록 -->
+				<input type="button" class="s_btn" onclick="fncDeptAuthorDeleteList();return false;" value="<spring:message code="button.delete" />" title="<spring:message code="button.delete" /> <spring:message code="input.button" />" /><!-- 삭제 -->
+				<input type="button" class="s_btn" onclick="fncAddDeptAuthorInsert();return false;" value="<spring:message code="button.create" />" title="<spring:message code="button.create" /> <spring:message code="input.button" />" /><!-- 등록 -->
 			</li>
 		</ul>
 	</div>

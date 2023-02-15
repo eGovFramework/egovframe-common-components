@@ -119,10 +119,10 @@ function fn_egov_select_popup(cnt, eventId){
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 		<td><c:out value='${resultInfo.eventTyCodeNm}'/></td>
-		<td><a href="<c:url value='/uss/ion/ecc/selectEventCmpgnDetail.do?eventId=${resultInfo.eventId}'/>" onClick="fn_egov_inquire_eventdetail('<c:out value="${resultInfo.eventId}"/>');return false;"><c:out value='${fn:substring(resultInfo.eventCn, 0, 40)}'/></a></td>
+		<td><a href="<c:url value='/uss/ion/ecc/selectEventCmpgnDetail.do?eventId=${resultInfo.eventId}'/>" onclick="fn_egov_inquire_eventdetail('<c:out value="${resultInfo.eventId}"/>');return false;"><c:out value='${fn:substring(resultInfo.eventCn, 0, 40)}'/></a></td>
 		<td><c:out value='${resultInfo.eventSvcBeginDe}'/></td>
 		<td><c:out value='${resultInfo.eventSvcEndDe}'/></td>
-		<td><button class="btn_s2" onClick="fn_egov_select_popup('${status.count}', '${resultInfo.eventId}');return false;" title="<spring:message code="button.select" /> <spring:message code="input.button" />"><spring:message code="button.select" /></button></td>
+		<td><button class="btn_s2" onclick="fn_egov_select_popup('${status.count}', '${resultInfo.eventId}');return false;" title="<spring:message code="button.select" /> <spring:message code="input.button" />"><spring:message code="button.select" /></button></td>
 		<input name="iptText_${status.count}" id="iptText_${status.count}" type="hidden" value="${resultInfo.eventCn}">
 	</tr>
 	</c:forEach>

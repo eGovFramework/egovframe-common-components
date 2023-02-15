@@ -122,7 +122,7 @@ function fn_egov_save_QustnrQestnManage(form){
 			<th><label for="qestnrCn">${title}<span class="pilsu">*</span></label></th>
 			<td class="left">
   				<input name="qestnrCn" id="qestnrCn" title="<spring:message code='comUssOlpQqm.regist.qestnrCn'/><spring:message code='input.input'/>" type="text" size="73" value="${qestnrInfo.qestnrSj}" maxlength="2000" style="width:300px;" disabled="disabled"><!-- title="설문지정보(제목) 입력" -->
-      			<a href="#LINK" onClick="fn_egov_QustnrManageListPopup_QustnrQestnManage()">
+      			<a href="#LINK" onclick="fn_egov_QustnrManageListPopup_QustnrQestnManage()">
       			<img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>" align="middle" style="border:0px" alt="<spring:message code='comUssOlpQqm.regist.qestnrCn'/>" title="<spring:message code='comUssOlpQqm.regist.qestnrCn'/>"><!-- alt="설문지정보(제목)" title="설문지정보(제목)" -->
       			</a>
      			<input name="qestnrTmplatId" id="qestnrTmplatId" type="hidden" value="${qustnrQestnManageVO.qestnrTmplatId}">
