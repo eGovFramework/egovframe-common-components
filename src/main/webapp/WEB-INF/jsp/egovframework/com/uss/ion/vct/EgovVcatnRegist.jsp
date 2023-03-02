@@ -70,7 +70,10 @@
 		         , changeMonth: true // 월선택 select box 표시 (기본은 false)
 		         , changeYear: true  // 년선택 selectbox 표시 (기본은 false)
 		         , showButtonPanel: true // 하단 today, done  버튼기능 추가 표시 (기본은 false)
-			});			
+			});
+		}
+		else {
+			fncNoonSeSpan("02");
 		}
 	}
 

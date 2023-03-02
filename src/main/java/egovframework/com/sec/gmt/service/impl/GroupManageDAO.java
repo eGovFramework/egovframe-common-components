@@ -77,7 +77,7 @@ public class GroupManageDAO extends EgovComAbstractDAO {
 	}
 
     /**
-	 * 롤목록 총 갯수를 조회한다.
+	 * 롤목록 총 개수를 조회한다.
 	 * @param groupManageVO GroupManageVO
 	 * @return int
 	 * @exception Exception

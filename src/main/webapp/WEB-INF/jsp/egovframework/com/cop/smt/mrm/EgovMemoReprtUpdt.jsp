@@ -23,6 +23,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -174,7 +175,7 @@
 			<th><spring:message code="comCopSmtMrm.memoReprtRegist.attachFile"/></th><!-- 첨부파일 목록 -->
 			<td class="left">
 			    <c:import charEncoding="utf-8" url="/cmm/fms/selectFileInfsForUpdate.do" >
-					<c:param name="param_atchFileId" value="${memoReprtVO.atchFileId}" />
+					<c:param name="param_atchFileId" value="${egovc:encrypt(memoReprtVO.atchFileId)}" />
 				</c:import>
 			</td>
 		</tr>
@@ -199,7 +200,7 @@
 	<input type="hidden" name="returnUrl" value="<c:url value='/cop/smt/mrm/modifyMemoReprt.do' />" />
 	<form:hidden path="reprtId" />
 	<input type="hidden" name="posblAtchFileNumber" id="posblAtchFileNumber" value="3" />
-	<!-- //첨부파일 갯수를 위한 hidden -->
+	<!-- //첨부파일 개수를 위한 hidden -->
 
 	<!-- 검색조건 유지 -->
     <input type="hidden" name="searchWrd" value="<c:out value='${memoReprtVO.searchWrd}'/>" />

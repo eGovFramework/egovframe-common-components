@@ -90,6 +90,10 @@
         	$dialog.dialog('open');
     	});
 	});
+	
+    function fncPageReload() {
+		location.reload();
+	}
 
 </script>
 
@@ -103,7 +107,7 @@
 
 	<h1><spring:message code="comUssIonAns.annvrsryManageList.annvrsryManageList"/></h1><!-- 기념일관리 목록 -->
 	
-	<span>※  <spring:message code="comUssIonAns.annvrsryMainList.option"/></span><!-- 매년반복 옵션을 사용할 경우  년도 조회 시 해당 년도가 아니어도 매년 적용되어 조회됨 -->
+	<span>※  <spring:message code="comUssIonAns.annvrsryMainList.option"/></span><!-- 매년반복 옵션을 사용할 경우  연도 조회 시 해당 연도가 아니어도 매년 적용되어 조회됨 -->
 
 	<input type="hidden" name="annId">
 	<input type="hidden" name="pageIndex" value="<c:if test="${empty annvrsryManageVO.pageIndex }">1</c:if><c:if test="${!empty annvrsryManageVO.pageIndex }"><c:out value='${annvrsryManageVO.pageIndex}'/></c:if>">
@@ -112,8 +116,8 @@
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
 			<li>
-				<label for=""><spring:message code="comUssIonAns.common.yearList"/> : </label><!-- 년도 -->
-				<select name="searchKeyword" title="<spring:message code="comUssIonAns.common.yearList"/>"><!-- 년도 -->
+				<label for=""><spring:message code="comUssIonAns.common.yearList"/> : </label><!-- 연도 -->
+				<select name="searchKeyword" title="<spring:message code="comUssIonAns.common.yearList"/>"><!-- 연도 -->
 				<c:forEach items="${yearList}" var="result" varStatus="status">
 				<option value="<c:out value="${result}"/>"  <c:if test="${annvrsryManageVO.searchKeyword eq result}">selected</c:if>><c:out value="${result}"/></option>
 				</c:forEach>

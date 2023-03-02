@@ -54,7 +54,7 @@ public class EgovMtgPlaceManageServiceImpl extends EgovAbstractServiceImpl imple
 	}
 
 	/**
-	 * 회의실관리목록 총 갯수를 조회한다.
+	 * 회의실관리목록 총 개수를 조회한다.
 	 * @param mtgPlaceManageVO - 회의실관리 VO
 	 * @return int - 회의실관리 카운트 수
 	 */
@@ -102,7 +102,7 @@ public class EgovMtgPlaceManageServiceImpl extends EgovAbstractServiceImpl imple
             					   MtgPlaceManageVO mtgPlaceManageVO) throws Exception {
 
 		mtgPlaceManageDAO.updtMtgPlaceManage(mtgPlaceManage);
-		String sMtgPlaceId = mtgPlaceManage.getMtgPlaceId();
+//		String sMtgPlaceId = mtgPlaceManage.getMtgPlaceId();
 
 		}
 
@@ -112,7 +112,7 @@ public class EgovMtgPlaceManageServiceImpl extends EgovAbstractServiceImpl imple
 	 */
 	@Override
 	public void deleteMtgPlaceManage(MtgPlaceManage mtgPlaceManage) throws Exception {
-		String sMtgPlaceId = mtgPlaceManage.getMtgPlaceId();
+//		String sMtgPlaceId = mtgPlaceManage.getMtgPlaceId();
 		mtgPlaceManageDAO.deleteMtgPlaceManage(mtgPlaceManage);
 	}
 

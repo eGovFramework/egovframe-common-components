@@ -122,7 +122,7 @@ function fn_egov_inquire_worddicarydetail(wordId) {
 		<td class="left"><c:out value='${resultInfo.engNm}'/></td>
 		<td class="left"><c:out value='${resultInfo.synonm}'/></td>
 		<td><c:out value='${resultInfo.emplyrNm}'/></td>
-		<td><c:out value='${resultInfo.frstRegisterPnttm}'/></td>
+		<td><c:out value='${resultInfo.frstRegisterPnttm}'/></td>		
 	</tr>
 	</c:forEach>
 	</tbody>

@@ -23,6 +23,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator"%>
 <%@ taglib prefix="ckeditor" uri="http://ckeditor.com" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <c:set var="pageTitle">
 	<spring:message code="comCopBbs.articleVO.title" />
 </c:set>
@@ -241,7 +242,7 @@ function fn_egov_inqire_articlelist() {
 							<th>${title}</th>
 							<td class="nopd" colspan="3">
 								<c:import url="/cmm/fms/selectFileInfsForUpdate.do" charEncoding="utf-8">
-									<c:param name="param_atchFileId" value="${articleVO.atchFileId}" />
+									<c:param name="param_atchFileId" value="${egovc:encrypt(articleVO.atchFileId)}" />
 								</c:import>
 							</td>
 						</tr>
@@ -291,6 +292,5 @@ var multi_selector = new MultiSelector( document.getElementById( 'egovComFileLis
 multi_selector.addElement( document.getElementById( 'egovComFileUploader' ) );
 </script> 
 <!-- 첨부파일 업로드 가능화일 설정 End.-->
-
 </body>
 </html>

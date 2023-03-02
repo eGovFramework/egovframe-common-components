@@ -110,9 +110,9 @@ public class AdministCodeRecptnDAO extends EgovComAbstractDAO {
     }
 
     /**
-	 * 법정동코드수신 총 갯수를 조회한다.
+	 * 법정동코드수신 총 개수를 조회한다.
      * @param searchVO
-     * @return int(법정동코드 총 갯수)
+     * @return int(법정동코드 총 개수)
      */
     public int selectAdministCodeRecptnListTotCnt(AdministCodeRecptnVO searchVO) throws Exception {
         return (Integer)selectOne("AdministCodeRecptnDAO.selectAdministCodeRecptnListTotCnt", searchVO);
@@ -129,9 +129,9 @@ public class AdministCodeRecptnDAO extends EgovComAbstractDAO {
     }
 
     /**
-	 * 법정동코드 총 갯수를 조회한다.
+	 * 법정동코드 총 개수를 조회한다.
      * @param searchVO
-     * @return int(법정동코드 총 갯수)
+     * @return int(법정동코드 총 개수)
      */
     public int selectAdministCodeListTotCnt(AdministCodeRecptnVO searchVO) throws Exception {
         return (Integer)selectOne("AdministCodeRecptnDAO.selectAdministCodeListTotCnt", searchVO);

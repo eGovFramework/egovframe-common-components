@@ -251,7 +251,7 @@ public class EgovFormBasedFileUtil {
 	 */
 	public static void viewFile(HttpServletResponse response, String where, String serverSubPath, String physicalName, String mimeTypeParam) throws Exception {
 		String mimeType = mimeTypeParam;
-		String downFileName = where + SEPERATOR + serverSubPath + SEPERATOR + physicalName;
+		String downFileName = where + SEPERATOR + serverSubPath + SEPERATOR + physicalName + "_upfile";
 
 		File file = new File(EgovWebUtil.filePathBlackList(downFileName));
 

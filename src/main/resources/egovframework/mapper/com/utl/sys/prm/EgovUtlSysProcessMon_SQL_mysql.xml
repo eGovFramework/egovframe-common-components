@@ -101,9 +101,9 @@
 			     ,  A.MNGR_NM
                  ,  A.MNGR_EMAIL_ADRES	     
             	 ,  A.FRST_REGISTER_ID
-			     ,  A.FRST_REGIST_PNTTM
+			     ,  DATE_FORMAT(A.FRST_REGIST_PNTTM,'%Y-%m-%d') AS FRST_REGIST_PNTTM
             	 ,  A.LAST_UPDUSR_ID
-			     ,  A.LAST_UPDT_PNTTM						     			     			     
+			     ,  DATE_FORMAT(A.LAST_UPDT_PNTTM,'%Y-%m-%d') AS LAST_UPDT_PNTTM					     			     			     
             FROM  COMTNPROCESSMON A
 			LEFT  OUTER JOIN COMTCCMMNDETAILCODE B
 				  ON B.CODE_ID = 'COM072' 
@@ -236,9 +236,9 @@
 			     ,  A.MNGR_NM  				
                  ,  A.MNGR_EMAIL_ADRES 					     
             	 ,  A.FRST_REGISTER_ID	  	
-			     ,  A.FRST_REGIST_PNTTM
+			     ,  DATE_FORMAT(A.FRST_REGIST_PNTTM,'%Y-%m-%d') AS FRST_REGIST_PNTTM
             	 ,  A.LAST_UPDUSR_ID  	
-			     ,  A.LAST_UPDT_PNTTM                                  
+			     ,  DATE_FORMAT(A.LAST_UPDT_PNTTM,'%Y-%m-%d') AS LAST_UPDT_PNTTM                            
             FROM COMTNPROCESSMONLOGINFO A
 			LEFT  OUTER JOIN COMTCCMMNDETAILCODE B
 				  ON B.CODE_ID  = 'COM072' 

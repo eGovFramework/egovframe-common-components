@@ -59,6 +59,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *  -----------    --------    ---------------------------
  *  2014.10.08		이기하          최초 생성
  *  2018.10.02		신용호          Facebook 관련 ProviderSignInUtils 초기화 수정
+ *  2022.11.11      김혜준          시큐어코딩 처리
  *  </pre>
  */
 
@@ -84,7 +85,6 @@ public class EgovSignupController {
 	
 	@Inject
 	public EgovSignupController(ConnectionFactoryLocator connectionFactoryLocator,UsersConnectionRepository connectionRepository) {
-		//this.providerSignInUtils = new ProviderSignInUtils();
 		this.providerSignInUtils = new ProviderSignInUtils(connectionFactoryLocator, connectionRepository);
 	}
 
@@ -149,15 +149,14 @@ public class EgovSignupController {
 		// 다음 부분은 업무의 목적에 맞게 커스텀 코드를 작성한다.
 		// 3. 해당 유저가 DB에 존재하는지 체크 (google, naver, kakao에서 전달받은 ID가 존재하는지 체크)
 		String resultDBInfo = ""; // DB 체크 결과
-		
-		if ( oauthUser == null || resultDBInfo == null) {
+
+		// 2022.11.11 시큐어코딩 처리
+		if ( oauthUser == null) {
 			// 미존재시 가입페이지로!!
 			model.addAttribute("message", "This user does not exist. Please sign up.");
-			
 		} else {
 			// 존재시 로그인 처리
 			model.addAttribute("message", "OAuth Sign-in succeeded.");
-			
 		}
 		
 		return "egovframework/com/uat/uia/EgovLoginUsrOauthResult";

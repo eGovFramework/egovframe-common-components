@@ -105,7 +105,7 @@ function fnReturnConfirm(day, rest){
 	 <thead>
 	  <tr>
 	    <th class="title" width="36" nowrap colspan=1>
-	    	<a href="javascript:fnChangeCalendar(${resultList[0].year-1},${resultList[0].month});"  style="selector-dummy:expression(this.hideFocus=false);cursor:pointer;cursor:hand;"><img src="<c:url value='/images/egovframework/com/sym/cal/icon_pre_year.gif' />" alt="이전년도"></a>
+	    	<a href="javascript:fnChangeCalendar(${resultList[0].year-1},${resultList[0].month});"  style="selector-dummy:expression(this.hideFocus=false);cursor:pointer;cursor:hand;"><img src="<c:url value='/images/egovframework/com/sym/cal/icon_pre_year.gif' />" alt="이전연도"></a>
 	    </th>
 	    <th class="title" width="36" nowrap colspan=1>
 	    	<a href="javascript:fnChangeCalendar(${resultList[0].year},${resultList[0].month-1});"  style="selector-dummy:expression(this.hideFocus=false);cursor:pointer;cursor:hand;"><img src="<c:url value='/images/egovframework/com/sym/cal/icon_pre_month.gif' />" alt="이전달"></a>
@@ -115,7 +115,7 @@ function fnReturnConfirm(day, rest){
 	    	<a href="javascript:fnChangeCalendar(${resultList[0].year},${resultList[0].month+1});"  style="selector-dummy:expression(this.hideFocus=false);cursor:pointer;cursor:hand;"><img src="<c:url value='/images/egovframework/com/sym/cal/icon_aft_month.gif' />" alt="다음달"></a>
 	    </th>
 	    <th class="title" width="36" nowrap colspan=1>
-	    	<a href="javascript:fnChangeCalendar(${resultList[0].year+1},${resultList[0].month});"  style="selector-dummy:expression(this.hideFocus=false);cursor:pointer;cursor:hand;"><img src="<c:url value='/images/egovframework/com/sym/cal/icon_aft_year.gif' />" alt="다음년도"></a>
+	    	<a href="javascript:fnChangeCalendar(${resultList[0].year+1},${resultList[0].month});"  style="selector-dummy:expression(this.hideFocus=false);cursor:pointer;cursor:hand;"><img src="<c:url value='/images/egovframework/com/sym/cal/icon_aft_year.gif' />" alt="다음연도"></a>
 	  </tr>
 	  <tr>
 	    <th class="title" width="36" nowrap>일</th>

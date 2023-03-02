@@ -23,7 +23,7 @@
                    B.DPLCT_PERM_AT,
                    B.LMTT_AT,
                    B.LAST_UPDUSR_ID,
-                   B.LAST_UPDT_PNTTM,
+                   DATE_FORMAT(B.LAST_UPDT_PNTTM,'%Y-%m-%d') AS LAST_UPDT_PNTTM,
                    IF(B.EMPLYR_ID IS NULL, 'N', 'Y') AS REG_YN 
               FROM COMVNUSERMASTER A LEFT OUTER JOIN COMTNLOGINPOLICY B
                 ON A.USER_ID = B.EMPLYR_ID   
@@ -56,7 +56,7 @@
                    B.DPLCT_PERM_AT,
                    IF(B.LMTT_AT IS NULL, 'N', B.LMTT_AT) AS LMTT_AT,
                    B.LAST_UPDUSR_ID,
-                   B.LAST_UPDT_PNTTM,
+                   DATE_FORMAT(B.LAST_UPDT_PNTTM,'%Y-%m-%d') AS LAST_UPDT_PNTTM,
                    IF(B.EMPLYR_ID IS NULL, 'N', 'Y') AS REG_YN                   
               FROM COMVNUSERMASTER A LEFT OUTER JOIN COMTNLOGINPOLICY B
                 ON A.USER_ID = B.EMPLYR_ID   

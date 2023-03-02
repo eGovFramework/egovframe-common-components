@@ -156,7 +156,7 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	/**
 	 * 메모보고 목록에 대한 전체 건수를 조회한다.
 	 * @param MemoReprtVO - 메모보고 VO
-	 * @return int - 메모보고 목록 갯수
+	 * @return int - 메모보고 목록 개수
 	 * 
 	 * @param memoReprtVO
 	 */

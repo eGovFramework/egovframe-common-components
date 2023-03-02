@@ -24,7 +24,7 @@ public interface EgovMtgPlaceManageService {
 	public List<MtgPlaceManageVO> selectMtgPlaceManageList(MtgPlaceManageVO mtgPlaceManageVO) throws Exception;
 
 	/**
-	 * 회의실관리 목록 총 갯수를 조회한다.
+	 * 회의실관리 목록 총 개수를 조회한다.
 	 * @param mtgPlaceManageVO - 회의실관리 VO
 	 * @return int - 회의실관리 카운트 수
 	 */

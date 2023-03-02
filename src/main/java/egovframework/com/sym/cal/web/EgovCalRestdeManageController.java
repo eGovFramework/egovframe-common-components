@@ -493,7 +493,7 @@ public class EgovCalRestdeManageController {
 		int iLastDate  = restde.getLastDayMonth();
 		int iDayWeek  = cal.get(Calendar.DAY_OF_WEEK);
 
-		int iMaxWeeks = (int)Math.floor(iLastDate/7);
+		int iMaxWeeks = iLastDate / 7;
 		iMaxWeeks = iMaxWeeks + (int)Math.ceil(((iLastDate - iMaxWeeks * 7) + iStartWeek - 1) / 7.0);
 		restde.setMaxWeeks(iMaxWeeks);
 
@@ -1002,7 +1002,7 @@ public class EgovCalRestdeManageController {
 		int iLastDate  = restde.getLastDayMonth();
 		int iDayWeek  = cal.get(Calendar.DAY_OF_WEEK);
 
-		int iMaxWeeks = (int)Math.floor(iLastDate/7);
+		int iMaxWeeks = iLastDate / 7;
 		iMaxWeeks = iMaxWeeks + (int)Math.ceil(((iLastDate - iMaxWeeks * 7) + iStartWeek - 1) / 7.0);
 		restde.setMaxWeeks(iMaxWeeks);
 

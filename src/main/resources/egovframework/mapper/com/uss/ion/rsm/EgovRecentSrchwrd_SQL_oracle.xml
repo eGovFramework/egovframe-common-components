@@ -135,7 +135,7 @@
 	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
 	
 	</select>
-	<!-- 최근검색어결과조회::목록조회_게시물 총갯수  -->
+	<!-- 최근검색어결과조회::목록조회_게시물 총개수  -->
 	<select id="selectRecentSrchwrdCntResult" resultType="int">
 		SELECT
 		COUNT(*) totcnt
@@ -192,7 +192,7 @@
 	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
 	
 	</select>
-	<!-- 최근검색어관리조회::목록조회_게시물 총갯수  -->
+	<!-- 최근검색어관리조회::목록조회_게시물 총개수  -->
 	<select id="selectRecentSrchwrdCnt" resultType="int">
 		SELECT
 		COUNT(*) totcnt

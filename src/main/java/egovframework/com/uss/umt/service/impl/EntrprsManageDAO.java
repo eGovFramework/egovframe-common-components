@@ -98,9 +98,9 @@ public class EntrprsManageDAO extends EgovComAbstractDAO{
         return (List<EntrprsManageVO>) list("entrprsManageDAO.selectEntrprsMberList", userSearchVO);
     }
     /**
-     * 기업회원 총 갯수를 조회한다.
+     * 기업회원 총 개수를 조회한다.
      * @param userSearchVO 검색조건
-     * @return int 기업회원총갯수
+     * @return int 기업회원총개수
      */
     public int selectEntrprsMberListTotCnt(UserDefaultVO userSearchVO) {
         return (Integer)selectOne("entrprsManageDAO.selectEntrprsMberListTotCnt", userSearchVO);

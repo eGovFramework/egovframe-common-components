@@ -39,15 +39,13 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *  -------    --------    ---------------------------
  *   2009.3.30  이삼섭          최초 생성
  *   2011.8.26	정진오			IncludedInfo annotation 추가
+ *   2022.11.11 김혜준          시큐어코딩 처리
  *
  * </pre>
  */
 
 @Controller
 public class EgovNcrdManageController {
-	
-	 
-	 
 
     @Resource(name = "EgovNcrdManageService")
     private EgovNcrdManageService ncrdService;
@@ -73,40 +71,39 @@ public class EgovNcrdManageController {
     @IncludedInfo(name="명함관리",order = 370 ,gid = 40)
     @RequestMapping("/cop/ncm/selectNcrdInfs.do")
     public String selectNcrdItems(@ModelAttribute("searchVO") NameCardVO ncrdVO, SessionStatus status, ModelMap model) throws Exception {
-
-	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-	 // KISA 보안취약점 조치 (2018-12-10, 신용호)
-    if(!isAuthenticated) {
-        return "egovframework/com/uat/uia/EgovLoginUsr";
-    }
-
-	ncrdVO.setPageUnit(propertyService.getInt("pageUnit"));
-	ncrdVO.setPageSize(propertyService.getInt("pageSize"));
-
-	PaginationInfo paginationInfo = new PaginationInfo();
+		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		 // KISA 보안취약점 조치 (2018-12-10, 신용호)
+	    if(!isAuthenticated) {
+	        return "redirect:/uat/uia/egovLoginUsr.do";
+	    }
 	
-	paginationInfo.setCurrentPageNo(ncrdVO.getPageIndex());
-	paginationInfo.setRecordCountPerPage(ncrdVO.getPageUnit());
-	paginationInfo.setPageSize(ncrdVO.getPageSize());
-
-	ncrdVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-	ncrdVO.setLastIndex(paginationInfo.getLastRecordIndex());
-	ncrdVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-
-	ncrdVO.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+		ncrdVO.setPageUnit(propertyService.getInt("pageUnit"));
+		ncrdVO.setPageSize(propertyService.getInt("pageSize"));
 	
-	Map<String, Object> map = ncrdService.selectNcrdItems(ncrdVO);
-	int totCnt = Integer.parseInt((String)map.get("resultCnt"));
+		PaginationInfo paginationInfo = new PaginationInfo();
+		
+		paginationInfo.setCurrentPageNo(ncrdVO.getPageIndex());
+		paginationInfo.setRecordCountPerPage(ncrdVO.getPageUnit());
+		paginationInfo.setPageSize(ncrdVO.getPageSize());
 	
-	paginationInfo.setTotalRecordCount(totCnt);
-
-	model.addAttribute("uniqId", user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-	model.addAttribute("resultList", map.get("resultList"));
-	model.addAttribute("resultCnt", map.get("resultCnt"));
-	model.addAttribute("paginationInfo", paginationInfo);
-
-	return "egovframework/com/cop/ncm/EgovNcrdList";
+		ncrdVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		ncrdVO.setLastIndex(paginationInfo.getLastRecordIndex());
+		ncrdVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+	
+		ncrdVO.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+		
+		Map<String, Object> map = ncrdService.selectNcrdItems(ncrdVO);
+		int totCnt = Integer.parseInt((String)map.get("resultCnt"));
+		
+		paginationInfo.setTotalRecordCount(totCnt);
+	
+		model.addAttribute("uniqId", user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+		model.addAttribute("resultList", map.get("resultList"));
+		model.addAttribute("resultCnt", map.get("resultCnt"));
+		model.addAttribute("paginationInfo", paginationInfo);
+	
+		return "egovframework/com/cop/ncm/EgovNcrdList";
     }
 
     /**
@@ -127,18 +124,16 @@ public class EgovNcrdManageController {
 	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 	 // KISA 보안취약점 조치 (2018-12-10, 신용호)
     if(!isAuthenticated) {
-        return "egovframework/com/uat/uia/EgovLoginUsr";
+        return "redirect:/uat/uia/egovLoginUsr.do";
     }
 
 	ncrdVO.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-	
-	if (isAuthenticated) {
-	    ncrdService.deleteNcrdItem(ncrdVO);
-	}
+
+	// 2022.11.11 시큐어코딩 처리
+	ncrdService.deleteNcrdItem(ncrdVO);
 
 	return "forward:/cop/ncm/selectNcrdInfs.do";
     }
-    
 
     /**
      * 명함 정보 등록을 위한 등록페이지로 이동한다.
@@ -152,7 +147,7 @@ public class EgovNcrdManageController {
      */
     @RequestMapping("/cop/ncm/addNcrdInf.do")
     public String addNcrdItem(@ModelAttribute("searchVO") NameCardVO ncrdVO, SessionStatus status, ModelMap model) throws Exception {
-	return "egovframework/com/cop/ncm/EgovNcrdRegist";
+    	return "egovframework/com/cop/ncm/EgovNcrdRegist";
     }
 
     /**
@@ -169,26 +164,25 @@ public class EgovNcrdManageController {
     public String insertNcrdItem(@ModelAttribute("searchVO") NameCardVO ncrdVO, @ModelAttribute("nameCard") NameCard nameCard,
 	    BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
 
-	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-	 // KISA 보안취약점 조치 (2018-12-10, 신용호)
-    if(!isAuthenticated) {
-        return "egovframework/com/uat/uia/EgovLoginUsr";
-    }
+		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		 // KISA 보안취약점 조치 (2018-12-10, 신용호)
+	    if(!isAuthenticated) {
+	        return "redirect:/uat/uia/egovLoginUsr.do";
+	    }
+		
+		beanValidator.validate(nameCard, bindingResult);
+		if (bindingResult.hasErrors()) {
+		    return "egovframework/com/cop/ncm/EgovNcrdRegist";
+		}
 	
-	beanValidator.validate(nameCard, bindingResult);
-	if (bindingResult.hasErrors()) {
-	    return "egovframework/com/cop/ncm/EgovNcrdRegist";
-	}
+		nameCard.setAdres(nameCard.getZipCode() + " " + nameCard.getAdres());
+		nameCard.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 
-	nameCard.setAdres(nameCard.getZipCode() + " " + nameCard.getAdres());
-	nameCard.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-	
-	if (isAuthenticated) {
-	    ncrdService.insertNcrdItem(nameCard);
-	}
+		// 2022.11.11 시큐어코딩 처리
+		ncrdService.insertNcrdItem(nameCard);
 
-	return "forward:/cop/ncm/selectMyNcrdUseInf.do";
+		return "forward:/cop/ncm/selectMyNcrdUseInf.do";
     }
 
     /**
@@ -204,20 +198,20 @@ public class EgovNcrdManageController {
     @RequestMapping("/cop/ncm/selectNcrdInf.do")
     public String selectNcrdItem(@ModelAttribute("searchVO") NameCardVO ncrdVO, SessionStatus status, ModelMap model) throws Exception {
 
-	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-	// KISA 보안취약점 조치 (2018-12-10, 신용호)
-    if(!isAuthenticated) {
-        return "egovframework/com/uat/uia/EgovLoginUsr";
-    }
-
-	ncrdVO.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		// KISA 보안취약점 조치 (2018-12-10, 신용호)
+	    if(!isAuthenticated) {
+	        return "redirect:/uat/uia/egovLoginUsr.do";
+	    }
 	
-	NameCardVO vo = ncrdService.selectNcrdItem(ncrdVO);
-
-	model.addAttribute("ncrdVO", vo);
+		ncrdVO.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+		
+		NameCardVO vo = ncrdService.selectNcrdItem(ncrdVO);
 	
-	return "egovframework/com/cop/ncm/EgovNcrdUpdt";
+		model.addAttribute("ncrdVO", vo);
+		
+		return "egovframework/com/cop/ncm/EgovNcrdUpdt";
     }
 
     /**
@@ -233,36 +227,34 @@ public class EgovNcrdManageController {
     @RequestMapping("/cop/ncm/updateNcrdInf.do")
     public String updateNcrdItem(@ModelAttribute("searchVO") NameCardVO ncrdVO, @RequestParam("ncrdNm") String ncrdNm,
 	    @ModelAttribute("nameCard") NameCard nameCard, BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
-
-	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-	// KISA 보안취약점 조치 (2018-12-10, 신용호)
-    if(!isAuthenticated) {
-        return "egovframework/com/uat/uia/EgovLoginUsr";
-    }
-
-	beanValidator.validate(nameCard, bindingResult);
-	if (bindingResult.hasErrors()) {
-	    ncrdVO.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-	    
-	    NameCardVO vo  = ncrdService.selectNcrdItem(ncrdVO);
-
-	    model.addAttribute("ncrdVO", vo);
-	    
-	    return "egovframework/com/cop/ncm/EgovNcrdUpdt";
-	}
-
-	if (!"".equals(nameCard.getZipCode())) {
-	    nameCard.setAdres(nameCard.getZipCode() + " " + nameCard.getAdres());
-	}
+		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		// KISA 보안취약점 조치 (2018-12-10, 신용호)
+	    if(!isAuthenticated) {
+	        return "redirect:/uat/uia/egovLoginUsr.do";
+	    }
 	
-	nameCard.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+		beanValidator.validate(nameCard, bindingResult);
+		if (bindingResult.hasErrors()) {
+		    ncrdVO.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+		    
+		    NameCardVO vo  = ncrdService.selectNcrdItem(ncrdVO);
 	
-	if (isAuthenticated) {
-	    ncrdService.updateNcrdItem(nameCard);
-	}
+		    model.addAttribute("ncrdVO", vo);
+		    
+		    return "egovframework/com/cop/ncm/EgovNcrdUpdt";
+		}
+	
+		if (!"".equals(nameCard.getZipCode())) {
+		    nameCard.setAdres(nameCard.getZipCode() + " " + nameCard.getAdres());
+		}
+		
+		nameCard.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 
-	return "forward:/cop/ncm/selectMyNcrdUseInf.do";
+		// 2022.11.11 시큐어코딩 처리
+		ncrdService.updateNcrdItem(nameCard);
+
+		return "forward:/cop/ncm/selectMyNcrdUseInf.do";
     }
 
     /**
@@ -278,21 +270,20 @@ public class EgovNcrdManageController {
     @RequestMapping("/cop/ncm/insertNcrdUseInf.do")
     public String insertNcrdUseInf(@ModelAttribute("ncrdUser") NameCardUser ncrdUser, @ModelAttribute("ncrdVO") NameCardVO ncrdVO,
 	    SessionStatus status, ModelMap model) throws Exception {
-
-	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-	 // KISA 보안취약점 조치 (2018-12-10, 신용호)
-    if(!isAuthenticated) {
-        return "egovframework/com/uat/uia/EgovLoginUsr";
-    }
-
-	ncrdUser.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-	ncrdUser.setUseAt("Y");
+		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		 // KISA 보안취약점 조치 (2018-12-10, 신용호)
+	    if(!isAuthenticated) {
+	        return "redirect:/uat/uia/egovLoginUsr.do";
+	    }
 	
-	if (isAuthenticated) {
-	    ncrdService.insertNcrdUseInf(ncrdUser);
-	}
-	return "forward:/cop/ncm/selectMyNcrdUseInf.do";
+		ncrdUser.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+		ncrdUser.setUseAt("Y");
+
+		// 2022.11.11 시큐어코딩 처리
+		ncrdService.insertNcrdUseInf(ncrdUser);
+
+		return "forward:/cop/ncm/selectMyNcrdUseInf.do";
     }
 
     /**
@@ -308,40 +299,39 @@ public class EgovNcrdManageController {
     @IncludedInfo(name="내명함목록",order = 371 ,gid = 40)
     @RequestMapping("/cop/ncm/selectMyNcrdUseInf.do")
     public String selectNcrdUseInf(@ModelAttribute("searchVO") NameCardUser ncrdUser, SessionStatus status, ModelMap model) throws Exception {
-
-	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-	 // KISA 보안취약점 조치 (2018-12-10, 신용호)
-    if(!isAuthenticated) {
-        return "egovframework/com/uat/uia/EgovLoginUsr";
-    }
-
-	ncrdUser.setPageUnit(propertyService.getInt("pageUnit"));
-	ncrdUser.setPageSize(propertyService.getInt("pageSize"));
-
-	PaginationInfo paginationInfo = new PaginationInfo();
+		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		 // KISA 보안취약점 조치 (2018-12-10, 신용호)
+	    if(!isAuthenticated) {
+	        return "redirect:/uat/uia/egovLoginUsr.do";
+	    }
 	
-	paginationInfo.setCurrentPageNo(ncrdUser.getPageIndex());
-	paginationInfo.setRecordCountPerPage(ncrdUser.getPageUnit());
-	paginationInfo.setPageSize(ncrdUser.getPageSize());
-
-	ncrdUser.setFirstIndex(paginationInfo.getFirstRecordIndex());
-	ncrdUser.setLastIndex(paginationInfo.getLastRecordIndex());
-	ncrdUser.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-
-	ncrdUser.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+		ncrdUser.setPageUnit(propertyService.getInt("pageUnit"));
+		ncrdUser.setPageSize(propertyService.getInt("pageSize"));
 	
-	Map<String, Object> map = ncrdService.selectNcrdUseInfs(ncrdUser);
-	int totCnt = Integer.parseInt((String)map.get("resultCnt"));
+		PaginationInfo paginationInfo = new PaginationInfo();
+		
+		paginationInfo.setCurrentPageNo(ncrdUser.getPageIndex());
+		paginationInfo.setRecordCountPerPage(ncrdUser.getPageUnit());
+		paginationInfo.setPageSize(ncrdUser.getPageSize());
 	
-	paginationInfo.setTotalRecordCount(totCnt);
+		ncrdUser.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		ncrdUser.setLastIndex(paginationInfo.getLastRecordIndex());
+		ncrdUser.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 	
-	model.addAttribute("resultList", map.get("resultList"));
-	model.addAttribute("resultCnt", map.get("resultCnt"));
-	model.addAttribute("uniqId", user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-	model.addAttribute("paginationInfo", paginationInfo);
-
-	return "egovframework/com/cop/ncm/EgovMyNcrdList";
+		ncrdUser.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+		
+		Map<String, Object> map = ncrdService.selectNcrdUseInfs(ncrdUser);
+		int totCnt = Integer.parseInt((String)map.get("resultCnt"));
+		
+		paginationInfo.setTotalRecordCount(totCnt);
+		
+		model.addAttribute("resultList", map.get("resultList"));
+		model.addAttribute("resultCnt", map.get("resultCnt"));
+		model.addAttribute("uniqId", user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+		model.addAttribute("paginationInfo", paginationInfo);
+	
+		return "egovframework/com/cop/ncm/EgovMyNcrdList";
     }
 
     /**
@@ -357,18 +347,17 @@ public class EgovNcrdManageController {
     @RequestMapping("/cop/ncm/updateNcrdUseInf.do")
     public String updateNcrdUseInf(@ModelAttribute("ncrdUser") NameCardUser ncrdUser, @ModelAttribute("ncrdVO") NameCardVO ncrdVO,
 	    SessionStatus status, ModelMap model) throws Exception {
-
-	@SuppressWarnings("unused")
-	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-
-	ncrdUser.setUseAt("N");
+		@SuppressWarnings("unused")
+		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 	
-	if (isAuthenticated) {
-	    ncrdService.updateNcrdUseInf(ncrdUser);
-	}
-
-	return "forward:/cop/ncm/selectMyNcrdUseInf.do";
+		ncrdUser.setUseAt("N");
+		
+		if (isAuthenticated) {
+		    ncrdService.updateNcrdUseInf(ncrdUser);
+		}
+	
+		return "forward:/cop/ncm/selectMyNcrdUseInf.do";
     }
 
     /**
@@ -382,20 +371,19 @@ public class EgovNcrdManageController {
      */
     @RequestMapping("/cop/ncm/selectNcrdInfPopup.do")
     public String selectNcrdItemforPop(@ModelAttribute("searchVO") NameCardVO ncrdVO, ModelMap model) throws Exception {
-
-	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-	// KISA 보안취약점 조치 (2018-12-10, 신용호)
-    if(!isAuthenticated) {
-        return "egovframework/com/uat/uia/EgovLoginUsr";
-    }
-
-	ncrdVO.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		// KISA 보안취약점 조치 (2018-12-10, 신용호)
+	    if(!isAuthenticated) {
+	        return "redirect:/uat/uia/egovLoginUsr.do";
+	    }
 	
-	NameCardVO vo = ncrdService.selectNcrdItem(ncrdVO);
-
-	model.addAttribute("ncrdVO", vo);
+		ncrdVO.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+		
+		NameCardVO vo = ncrdService.selectNcrdItem(ncrdVO);
 	
-	return "egovframework/com/cop/ncm/EgovNcrdInqirePopup";
+		model.addAttribute("ncrdVO", vo);
+		
+		return "egovframework/com/cop/ncm/EgovNcrdInqirePopup";
     }
 }

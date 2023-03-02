@@ -1,7 +1,5 @@
 package egovframework.com.cop.adb.web;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Map;
 
 import egovframework.com.cmm.LoginVO;
@@ -39,9 +37,10 @@ import org.springmodules.validation.commons.DefaultBeanValidator;
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.9.25  윤성록         최초 생성
- *   2011.8.26	정진오		  IncludedInfo annotation 추가
- *   2016.12.13 최두영         클래스명 변경
+ *   2009.9.25   윤성록      최초 생성
+ *   2011.8.26	 정진오		 IncludedInfo annotation 추가
+ *   2016.12.13  최두영      클래스명 변경
+ *   2022.11.11  김혜준      시큐어코딩 처리
  * </pre>
  */
 
@@ -75,7 +74,7 @@ public class EgovAddressBookController {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
         adbkVO.setPageUnit(propertyService.getInt("pageUnit"));
@@ -124,7 +123,7 @@ public class EgovAddressBookController {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
         adbkVO.setPageUnit(propertyService.getInt("pageUnit"));
@@ -253,7 +252,7 @@ public class EgovAddressBookController {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
         String[] tempId = EgovStringUtil.isNullToString(adbkUserVO.getUserId()).split(",");
@@ -378,7 +377,7 @@ public class EgovAddressBookController {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
         AddressBookVO tempAdbkVO = adbkService.selectAdressBook(adbkVO);
@@ -444,15 +443,16 @@ public class EgovAddressBookController {
         }
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
         adbkVO.setWrterId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
         adbkVO.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
         adbkVO.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
+        // 2022.11.11 시큐어코딩 처리
+        adbkVO.setTrgetOrgnztId(user == null ? "" : EgovStringUtil.isNullToString(user.getOrgnztId()));
 
         String[] tempId = EgovStringUtil.isNullToString(adbkUserVO.getUserId()).split(",");
-
 
         for(int i =0; i < tempId.length; i++){
             if(!tempId[i].equals("")){
@@ -461,10 +461,7 @@ public class EgovAddressBookController {
             }
         }
 
-        if (isAuthenticated) {
-            adbkVO.setTrgetOrgnztId(user == null ? "" : EgovStringUtil.isNullToString(user.getOrgnztId()));
-            adbkService.insertAdressBook(adbkVO);
-        }
+        adbkService.insertAdressBook(adbkVO);
 
         return "forward:/cop/adb/selectAdbkList.do";
     }
@@ -488,7 +485,7 @@ public class EgovAddressBookController {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
         beanValidator.validate(adbkVO, bindingResult);

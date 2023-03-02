@@ -1,6 +1,8 @@
 package egovframework.com.sym.ccm.zip.web;
 
+import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -32,6 +34,9 @@ import egovframework.com.sym.ccm.zip.service.EgovCcmZipManageService;
 import egovframework.com.sym.ccm.zip.service.Zip;
 import egovframework.com.sym.ccm.zip.service.ZipVO;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
@@ -53,6 +58,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *  2011.10.07   이기하            보안취약점 수정(파일 업로드시 엑셀파일만 가능하도록 추가)
  *  2011.11.21   이기하            도로명주소 추가(rdnmadZip)
  *  2021.02.16   신용호            WebUtils.getNativeRequest(request,MultipartHttpServletRequest.class);
+ *  2022.11.11   김혜준			   시큐어코딩 처리
  *
  * </pre>
  */
@@ -206,9 +212,14 @@ public class EgovCcmZipManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/ccm/zip/EgovCcmExcelZipRegist.do")
-	public String insertExcelZip(@ModelAttribute("loginVO") LoginVO loginVO, final HttpServletRequest request,
-		@RequestParam Map<String, Object> commandMap, ZipVO searchVO, Model model)
-		throws Exception {
+	public String insertExcelZip(
+			@ModelAttribute("loginVO") LoginVO loginVO,
+			final HttpServletRequest request,
+			@RequestParam Map<String, Object> commandMap,
+			ZipVO searchVO, Model model)
+	throws Exception {
+		String[] fileExtension = {"XLS", "XLSX"};
+		
 		model.addAttribute("searchList", searchVO.getSearchList());
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
@@ -216,47 +227,43 @@ public class EgovCcmZipManageController {
 			return "egovframework/com/sym/ccm/zip/EgovCcmExcelZipRegist";
 		}
 
-		//final MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
-		MultipartHttpServletRequest multiRequest = WebUtils.getNativeRequest(request,
-			MultipartHttpServletRequest.class);
-		if (multiRequest != null) { //2022.01 Possible null pointer dereference due to return value of called method 조치
+		MultipartHttpServletRequest multiRequest = WebUtils.getNativeRequest(request, MultipartHttpServletRequest.class);
+
+		//2022.01 Possible null pointer dereference due to return value of called method 조치
+		if (multiRequest != null) {
+
 			final Map<String, MultipartFile> files = multiRequest.getFileMap();
-			InputStream fis = null;
-
-			//String sResult = "";
-
 			Iterator<Entry<String, MultipartFile>> itr = files.entrySet().iterator();
-			MultipartFile file;
 
 			while (itr.hasNext()) {
 				Entry<String, MultipartFile> entry = itr.next();
+				MultipartFile file = entry.getValue();
+				String originalFilename = file.getOriginalFilename();
+				if (StringUtils.isEmpty(originalFilename)) {
+					continue;
+				}
+				String fileExtensionName = FilenameUtils.getExtension(originalFilename).toUpperCase();
+				boolean isExist = Arrays.stream(fileExtension).anyMatch(fileExtensionName::equals);
+				// 2022.11.11 시큐어코딩 처리
+				if (isExist) {
+					InputStream fis = null;
 
-				file = entry.getValue();
-				if (file.getOriginalFilename() != null && !"".equals(file.getOriginalFilename())) {
-					// 업로드 파일에 대한 확장자를 체크
-					if (file.getOriginalFilename().endsWith(".xls") || file.getOriginalFilename().endsWith(".xlsx")
-						|| file.getOriginalFilename().endsWith(".XLS")
-						|| file.getOriginalFilename().endsWith(".XLSX")) {
-
-						//zipManageService.deleteAllZip();
-						//excelZipService.uploadExcel("ZipManageDAO.insertExcelZip", file.getInputStream(), 2);
-						try {
-							fis = file.getInputStream();
-							if (searchVO.getSearchList().equals("1")) {
-								zipManageService.insertExcelZip(fis);
-							} else {
-								rdnmadZipService.insertExcelZip(fis);
-							}
-						} finally {
-							EgovResourceCloseHelper.close(fis);
+					try {
+						fis = file.getInputStream();
+						if (searchVO.getSearchList().equals("1")) {
+							zipManageService.insertExcelZip(fis);
+						} else {
+							rdnmadZipService.insertExcelZip(fis);
 						}
-
-					} else {
-						LOGGER.info("xls, xlsx 파일 타입만 등록이 가능합니다.");
-						return "egovframework/com/sym/ccm/zip/EgovCcmExcelZipRegist";
+					} catch (IOException e) {
+						throw new IOException(e);
+					} finally {
+						EgovResourceCloseHelper.close(fis);
 					}
-					// *********** 끝 ***********
 
+				} else {
+					LOGGER.info("xls, xlsx 파일 타입만 등록이 가능합니다.");
+					return "egovframework/com/sym/ccm/zip/EgovCcmExcelZipRegist";
 				}
 			}
 		}

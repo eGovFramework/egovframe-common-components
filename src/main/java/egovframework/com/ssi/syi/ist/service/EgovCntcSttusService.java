@@ -39,9 +39,9 @@ public interface EgovCntcSttusService {
 	List<?> selectCntcSttusList(CntcSttusVO searchVO) throws Exception;
 
     /**
-	 * 연계현황 총 갯수를 조회한다.
+	 * 연계현황 총 개수를 조회한다.
      * @param searchVO
-     * @return int(연계현황 총 갯수)
+     * @return int(연계현황 총 개수)
      */
     int selectCntcSttusListTotCnt(CntcSttusVO searchVO) throws Exception;
 

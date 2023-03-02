@@ -44,9 +44,9 @@
 				                    MEMO                 as memo              ,
 				                    REPTIT_AT            as reptitSe          ,
 				                    FRST_REGISTER_ID     as frstRegisterId    ,
-				                    FRST_REGIST_PNTTM  as     FRST_REGISTER_PNTTM ,
+				                    DATE_FORMAT(FRST_REGIST_PNTTM,'%Y-%m-%d')  as     FRST_REGISTER_PNTTM ,
 				                    LAST_UPDUSR_ID       as lastUpdusrId      ,
-				                    LAST_UPDT_PNTTM    as lastUpdusrPnttm 
+				                    DATE_FORMAT(LAST_UPDT_PNTTM,'%Y-%m-%d')    as lastUpdusrPnttm 
 				            FROM    COMTNANNVRSRYMANAGE A 
 				            WHERE   1=1
 				            AND     REPTIT_AT IS NULL
@@ -64,9 +64,9 @@
 				                    MEMO                 as memo              ,
 				                    REPTIT_AT            as reptitSe          ,
 				                    FRST_REGISTER_ID     as frstRegisterId    ,
-				                    FRST_REGIST_PNTTM  as     FRST_REGISTER_PNTTM ,
+				                    DATE_FORMAT(FRST_REGIST_PNTTM,'%Y-%m-%d')  as     FRST_REGISTER_PNTTM ,
 				                    LAST_UPDUSR_ID       as lastUpdusrId      ,
-				                    LAST_UPDT_PNTTM    as lastUpdusrPnttm 
+				                    DATE_FORMAT(LAST_UPDT_PNTTM,'%Y-%m-%d')    as lastUpdusrPnttm 
 				            FROM    COMTNANNVRSRYMANAGE A 
 				            WHERE   1=1
 				            AND     REPTIT_AT = '1'
@@ -105,9 +105,9 @@
 				       ANNVRSRY_NTCN_BGNDE as annvrsryBeginDe,
 				       MEMO   as  memo          ,
 				       FRST_REGISTER_ID  as frstRegisterId,
-				       FRST_REGIST_PNTTM  as     FRST_REGISTER_PNTTM,
+				       DATE_FORMAT(FRST_REGIST_PNTTM,'%Y-%m-%d')  as     FRST_REGISTER_PNTTM,
 				       LAST_UPDUSR_ID  as lastUpdusrId  ,
-				       LAST_UPDT_PNTTM  as lastUpdusrPnttm,
+				       DATE_FORMAT(LAST_UPDT_PNTTM,'%Y-%m-%d')  as lastUpdusrPnttm,
 				       REPTIT_AT         as reptitSe,
 				       mst.user_nm AS annvrsryTemp1,
 				      (select info.ORGNZT_NM from COMTNORGNZTINFO info where  info.ORGNZT_ID = mst.ORGNZT_ID )  AS annvrsryTemp2,

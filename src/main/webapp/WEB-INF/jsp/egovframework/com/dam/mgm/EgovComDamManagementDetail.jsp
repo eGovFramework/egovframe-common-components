@@ -23,6 +23,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <!DOCTYPE html>
 <html lang="ko">
 	<head>
@@ -155,10 +156,10 @@
 			</tr>
 			<c:if test="${result.atchFileId != ''}">
 			<tr>
-				<th><spring:message code="comDamMgm.comDamManagementDetail.atchFileList"/> <span class="pilsu">*</span></th><!-- 첨부파일 목록 -->
+				<th><spring:message code="comDamMgm.comDamManagementDetail.atchFileList"/></span></th><!-- 첨부파일 목록 -->
 				<td class="left">
 				    <c:import url="/cmm/fms/selectFileInfs.do" >
-						<c:param name="param_atchFileId" value="${result.atchFileId}" />
+						<c:param name="param_atchFileId" value="${egovc:encrypt(result.atchFileId)}" />
 					</c:import>
 				</td>
 			</tr>

@@ -132,7 +132,7 @@ function fn_egov_inquire_cpyrhtprtcpolicydetail(cpyrhtId) {
 				<td>
 					<a href="<c:url value='/uss/sam/cpy/CpyrhtPrtcPolicyDetailInqire.do'/>?cpyrhtId=${resultInfo.cpyrhtId}&pageIndex=${searchVO.pageIndex}" onClick="fn_egov_inquire_cpyrhtprtcpolicydetail('<c:out value="${resultInfo.cpyrhtId}"/>');return false;"><c:out value='${fn:substring(resultInfo.cpyrhtPrtcPolicyCn, 0, 40)}'/></a>
 				</td>		
-				<td><fmt:formatDate value="${resultInfo.lastUpdtPnttm}"  pattern="yyyy-MM-dd"/></td>			
+				<td><c:out value="${resultInfo.lastUpdtPnttm}" /></td>			
 			</tr>   
 			</c:forEach>
 			<c:if test="${fn:length(resultList) == 0}">

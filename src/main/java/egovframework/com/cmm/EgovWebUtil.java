@@ -11,9 +11,10 @@ import java.util.regex.Pattern;
  *   수정일              수정자           수정내용
  *  -----------  --------  ---------------------------
  *   2011.10.10  한성곤           최초 생성
- *	 2017-02-07   이정은           시큐어코딩(ES) - 시큐어코딩 경로 조작 및 자원 삽입[CWE-22, CWE-23, CWE-95, CWE-99]
+ *	 2017-02-07  이정은           시큐어코딩(ES) - 시큐어코딩 경로 조작 및 자원 삽입[CWE-22, CWE-23, CWE-95, CWE-99]
  *   2018.08.17  신용호           filePathBlackList 수정
  *   2018.10.10  신용호           . => \\.으로 수정
+ *   2022.05.10  정진오           clearXSS() 메소드 추가
  * </pre>
  */
 
@@ -54,6 +55,23 @@ public class EgovWebUtil {
 		return returnValue;
 	}
 
+	public static String clearXSS(String value) {
+		if (value == null || value.trim().equals("")) {
+			return "";
+		}
+
+		String returnValue = value;
+		returnValue = returnValue.replaceAll("&", "&amp;");
+		returnValue = returnValue.replaceAll("%2E", "&#46;");
+		returnValue = returnValue.replaceAll("%2F", "&#47;");
+		returnValue = returnValue.replaceAll("<", "&lt;");
+		returnValue = returnValue.replaceAll(">", "&gt;");
+		returnValue = returnValue.replaceAll("%3C", "&lt;");
+		returnValue = returnValue.replaceAll("%3E", "&gt;");
+
+		return returnValue;
+	}
+	
 	public static String filePathBlackList(String value) {
 		String returnValue = value;
 		if (returnValue == null || returnValue.trim().equals("")) {
@@ -78,7 +96,7 @@ public class EgovWebUtil {
 		}
 
 		returnValue = returnValue.replaceAll("/", "");
-		returnValue = returnValue.replaceAll("\\", "");
+		returnValue = returnValue.replaceAll("\\\\", "");
 		returnValue = returnValue.replaceAll("\\.\\.", ""); // ..
 		returnValue = returnValue.replaceAll("&", "");
 
@@ -119,7 +137,7 @@ public class EgovWebUtil {
 	}
 
 	public static String removeOSCmdRisk(String parameter) {
-		return parameter.replaceAll("\\p{Space}", "").replaceAll("\\*", "").replaceAll("|", "").replaceAll(";", "");
+		return parameter.replaceAll("\\p{Space}", "").replaceAll("\\*", "").replaceAll("\\|", "").replaceAll(";", "");
 	}
 
 	/**

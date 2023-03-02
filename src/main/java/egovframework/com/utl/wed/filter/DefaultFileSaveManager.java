@@ -29,6 +29,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.service.EgovProperties;
 
 /**
@@ -59,10 +60,9 @@ public class DefaultFileSaveManager implements FileSaveManager {
 		// filename
 		String subDir = File.separator + DirectoryPathManager.getDirectoryPathByDateType(DirectoryPathManager.DIR_DATE_TYPE.DATE_POLICY_YYYY_MM);
 		String fileName = RandomStringUtils.randomAlphanumeric(20) + "." + StringUtils.lowerCase(StringUtils.substringAfterLast(originalFileName, "."));
-
-		File newFile = new File(imageBaseDir + subDir + fileName);
-		File fileToSave = DirectoryPathManager.getUniqueFile(newFile.getAbsoluteFile());
-
+		
+		File fileToSave = DirectoryPathManager.getUniqueFile(imageBaseDir, subDir, fileName);
+		
 		try {
 			FileUtils.writeByteArrayToFile(fileToSave, fileItem.get());
 		} catch (IOException e) {

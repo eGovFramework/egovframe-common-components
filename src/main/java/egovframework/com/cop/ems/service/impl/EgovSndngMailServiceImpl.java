@@ -98,12 +98,6 @@ public class EgovSndngMailServiceImpl extends EgovAbstractServiceImpl implements
 			sndngMailRegistDAO.updateSndngMail(sndngMailVO); // 발송상태를 DB에 업데이트 한다.
 			LOGGER.error("Sending Mail Exception : {} [failure when sending the message]", ex.getCause());
 			return false;
-		} catch (Exception ex) {
-			sndngMailVO.setSndngResultCode("F"); // 발송결과 실패
-			sndngMailRegistDAO.updateSndngMail(sndngMailVO); // 발송상태를 DB에 업데이트 한다.
-			LOGGER.error("Sending Mail Exception : {} [unknown Exception]", ex.getCause());
-			LOGGER.debug(ex.getMessage());
-			return false;
 		}
 
 		return true;

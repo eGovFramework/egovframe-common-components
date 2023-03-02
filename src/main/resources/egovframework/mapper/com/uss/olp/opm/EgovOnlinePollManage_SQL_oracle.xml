@@ -65,7 +65,7 @@
 	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
 	]]>	
 	</select>
-	<!-- 온라인POLL관리::목록조회_게시물 총갯수  -->
+	<!-- 온라인POLL관리::목록조회_게시물 총개수  -->
 	<select id="selectOnlinePollManageCnt" parameterType="comDefaultVO" resultType="int">
 		SELECT 
 		COUNT(*) totcnt

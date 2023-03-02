@@ -61,9 +61,9 @@ public interface EgovSystemCntcService {
 	List<?> selectSystemCntcList(SystemCntcVO searchVO) throws Exception;
 
     /**
-	 * 시스템연계 총 갯수를 조회한다.
+	 * 시스템연계 총 개수를 조회한다.
      * @param searchVO
-     * @return int(시스템연계 총 갯수)
+     * @return int(시스템연계 총 개수)
      */
     int selectSystemCntcListTotCnt(SystemCntcVO searchVO) throws Exception;
 

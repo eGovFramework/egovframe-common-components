@@ -17,6 +17,7 @@ import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -39,7 +40,8 @@ import org.springframework.stereotype.Service;
  *   수정일      	수정자          	수정내용
  *  ----------  --------    ---------------------------
  *  2010.06.15	표준프레임워크   	최초 생성
- *  2018.11.30	최두영		selectAnnvrsryManageBnde에서 annvrsryManageVO의 null처리 추가
+ *  2018.11.30	최두영				selectAnnvrsryManageBnde에서 annvrsryManageVO의 null처리 추가
+ *  2022.11.11  김혜준			  	시큐어코딩 처리
  *
  *  </pre>
  */
@@ -76,7 +78,7 @@ public class EgovAnnvrsryManageServiceImpl extends EgovAbstractServiceImpl imple
 	}
 
 	/**
-	 * 기념일관리목록 총 갯수를 조회한다.
+	 * 기념일관리목록 총 개수를 조회한다.
 	 * @param annvrsryManageVO - 기념일관리 VO
 	 * @return int - 기념일관리 카운트 수
 	 */
@@ -152,7 +154,7 @@ public class EgovAnnvrsryManageServiceImpl extends EgovAbstractServiceImpl imple
 	}
 
 	/**
-	 * 기념일관리목록 총 갯수를 조회한다.
+	 * 기념일관리목록 총 개수를 조회한다.
 	 * @param annvrsryManageVO - 기념일관리 VO
 	 * @return int - 기념일관리 카운트 수
 	 */
@@ -227,12 +229,12 @@ public class EgovAnnvrsryManageServiceImpl extends EgovAbstractServiceImpl imple
 
 		//String sBndtDe = null;
 		HSSFWorkbook hssfWB = (HSSFWorkbook) excelZipService.loadWorkbook(inputStream);
-		// 엑셀 파일 시트 갯수 확인 sheet = 1
+		// 엑셀 파일 시트 개수 확인 sheet = 1
 		if (hssfWB.getNumberOfSheets() == 1) {
 			HSSFSheet annvrsrySheet = hssfWB.getSheetAt(0); //기념일관리 시트 가져오기
 			//HSSFRow annvrsryRow = annvrsrySheet.getRow(1); //기념일 row 가져오기
 			//annvrsrySheetRowCnt = annvrsryRow.getPhysicalNumberOfCells(); //기념일 cell Cnt
-			int rowsCnt = annvrsrySheet.getPhysicalNumberOfRows(); //행 갯수 가져오기
+			int rowsCnt = annvrsrySheet.getPhysicalNumberOfRows(); //행 개수 가져오기
 
 			//사용자ID	기념일자	양/음 구분	기념일구분	기념일명
 			for (int j = 1; j < rowsCnt; j++) { //row 루프
@@ -240,7 +242,7 @@ public class EgovAnnvrsryManageServiceImpl extends EgovAbstractServiceImpl imple
 				AnnvrsryManageVO annvrsryManageVOTemp = null;
 				HSSFRow row = annvrsrySheet.getRow(j); //row 가져오기
 				if (row != null) {
-					//int cells = row.getPhysicalNumberOfCells(); //cell 갯수 가져오기
+					//int cells = row.getPhysicalNumberOfCells(); //cell 개수 가져오기
 					HSSFCell cell = null;
 					cell = row.getCell(0); //사용자ID
 					if (cell != null) {
@@ -294,22 +296,19 @@ public class EgovAnnvrsryManageServiceImpl extends EgovAbstractServiceImpl imple
 
 	/**
 	 * 기념일정보를 일괄등록처리한다.
-	 * @param annvrsryManageVO     - 기념일관리 VO
-	 * @param String           - 기념일정보
+	 * @param annvrsryManageVO - 기념일관리 VO
+	 * @param String - 기념일정보
 	*/
 	public void insertAnnvrsryManageBnde(AnnvrsryManageVO annvrsryManageVO, String checkedAnnvrsryManageForInsert) throws Exception {
 		AnnvrsryManage annvrsryManage;
-		//int insertCnt = 0;
-		String[] annvrsryManageValues = checkedAnnvrsryManageForInsert.split("[$]");
-		String[] sTempAnnvrsryManage;
-		String sTemp = null;
-		String sAnnId = null;
 
-		if (checkedAnnvrsryManageForInsert != null && !checkedAnnvrsryManageForInsert.equals("")) {
+		// 2022.11.11 시큐어코딩 처리
+		if (StringUtils.isNotEmpty(checkedAnnvrsryManageForInsert)) {
+			String[] annvrsryManageValues = checkedAnnvrsryManageForInsert.split("[$]");
 			for (int i = 0; i < annvrsryManageValues.length; i++) {
 				annvrsryManage = new AnnvrsryManage();
-				sTemp = annvrsryManageValues[i];
-				sTempAnnvrsryManage = sTemp.split(",");
+				String sTemp = annvrsryManageValues[i];
+				String[] sTempAnnvrsryManage = sTemp.split(",");
 				annvrsryManage.setUsid(sTempAnnvrsryManage[0]);
 
 				annvrsryManage.setAnnvrsryDe(EgovStringUtil.removeMinusChar(sTempAnnvrsryManage[1]));
@@ -322,7 +321,7 @@ public class EgovAnnvrsryManageServiceImpl extends EgovAbstractServiceImpl imple
 				annvrsryManage.setAnnvrsryBeginDe("7");
 				annvrsryManage.setAnnvrsrySetup("Y");
 				annvrsryManage.setMemo("기념일 일괄등록");
-				sAnnId = idgenAnnvrsryManageService.getNextStringId();
+				String sAnnId = idgenAnnvrsryManageService.getNextStringId();
 				annvrsryManage.setAnnId(sAnnId);
 
 				annvrsryManage.setFrstRegisterId(annvrsryManageVO.getFrstRegisterId());

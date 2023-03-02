@@ -1,5 +1,6 @@
 package egovframework.com.sym.tbm.tbr.service;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -48,7 +49,7 @@ public class TroblReqstVO extends TroblReqst {
 	 * @param troblReqstList the troblReqstList to set
 	 */
 	public void setTroblReqstList(List<?> troblReqstList) {
-		this.troblReqstList = troblReqstList;
+		this.troblReqstList = Collections.unmodifiableList(troblReqstList);
 	}
 
 	/**

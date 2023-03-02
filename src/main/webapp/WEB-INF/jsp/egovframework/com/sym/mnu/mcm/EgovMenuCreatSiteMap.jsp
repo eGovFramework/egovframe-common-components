@@ -114,7 +114,7 @@ function fCallUrl(url) {
 	</div>
 	
 	<c:forEach var="result1" items="${list_menulist}" varStatus="status" >
-	<input type="hidden" name="tmp_menuNmVal" value="${result1.menuNo}|${result1.upperMenuId}|${result1.menuNm}|${result1.menuOrdr}|${result1.chkURL}|">
+	<input type="hidden" name="tmp_menuNmVal" value="${result1.menuNo}|${result1.upperMenuId}|${result1.menuNm}|${result1.menuOrdr}|${result1.chkUrl}|">
 	</c:forEach>
 	
 	<div class="tree" style="width:480px;" id="treeSiteMap">

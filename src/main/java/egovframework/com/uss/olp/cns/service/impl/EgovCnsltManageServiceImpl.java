@@ -79,9 +79,9 @@ public class EgovCnsltManageServiceImpl extends EgovAbstractServiceImpl implemen
     }
 
     /**
-	 * 상담내용 글 총 갯수를 조회한다.
+	 * 상담내용 글 총 개수를 조회한다.
 	 * @param searchVO
-	 * @return 글 총 갯수
+	 * @return 글 총 개수
 	 */
     @Override
 	public int selectCnsltListTotCnt(CnsltManageDefaultVO searchVO) {
@@ -105,7 +105,7 @@ public class EgovCnsltManageServiceImpl extends EgovAbstractServiceImpl implemen
     /**
 	 * 작성비밀번호를 확인한다.
 	 * @param vo
-	 * @return 글 총 갯수
+	 * @return 글 총 개수
 	 */
     @Override
 	public int selectCnsltPasswordConfirmCnt(CnsltManageVO vo) {
@@ -159,9 +159,9 @@ public class EgovCnsltManageServiceImpl extends EgovAbstractServiceImpl implemen
     }
 
     /**
-	 * 상담답변 글 총 갯수를 조회한다.
+	 * 상담답변 글 총 개수를 조회한다.
 	 * @param searchVO
-	 * @return 글 총 갯수
+	 * @return 글 총 개수
 	 */
     @Override
 	public int selectCnsltAnswerListTotCnt(CnsltManageDefaultVO searchVO) {

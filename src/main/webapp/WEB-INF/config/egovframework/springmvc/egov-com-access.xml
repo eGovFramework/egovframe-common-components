@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:egov-access="http://maven.egovframe.go.kr/schema/egov-access"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://maven.egovframe.go.kr/schema/egov-access http://maven.egovframe.go.kr/schema/egov-access/egov-access-4.0.0.xsd">
+		http://maven.egovframe.go.kr/schema/egov-access http://maven.egovframe.go.kr/schema/egov-access/egov-access-4.1.0.xsd">
 
     <!--
     	globalAuthen : globals.properties 설정(전자정부 프레임워크 기본 설정 중 dummy, security 사용 시 session 으로 재설정됨)
@@ -34,7 +34,7 @@
 	    sqlRoleAndUrl="SELECT A.ROLE_PTTRN URL, B.AUTHOR_CODE AUTHORITY
 			FROM COMTNROLEINFO A, COMTNAUTHORROLERELATE B
 			WHERE A.ROLE_CODE = B.ROLE_CODE
-			AND A.ROLE_TY = 'URL'
+			AND A.ROLE_TY = 'url'
 			ORDER BY A.ROLE_SORT"
 	    requestMatcherType="regex"
 		excludeList="/uat/uia/**, /index.do, /EgovLeft.do, /EgovContent.do, /EgovTop.do, /EgovBottom.do, /validator.do, /uss/umt/**, /sec/rnc/EgovRlnmCnfirm.do, /EgovModal.do"

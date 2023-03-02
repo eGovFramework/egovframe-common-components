@@ -8,13 +8,15 @@
   * @Class Name : EgovLoginUsr.jsp
   * @Description : Login 인증 화면
   * @Modification Information
-  * @
-  * @  수정일         수정자                   수정내용
-  * @ -------    --------    ---------------------------
-  * @ 2009.03.03    박지욱          최초 생성
-  * @ 2011.09.25    서준식          사용자 관리 패키지가 미포함 되었을때에 회원가입 오류 메시지 표시
-  * @ 2011.10.27    서준식          사용자 입력 탭 순서 변경
-  * @ 2017.07.21    장동한 	    	로그인인증제한 작업
+  * 
+  * @수정일               수정자            수정내용
+  *  ----------   --------   ---------------------------
+  *  2009.03.03   박지욱            최초 생성
+  *  2011.09.25   서준식            사용자 관리 패키지가 미포함 되었을때에 회원가입 오류 메시지 표시
+  *  2011.10.27   서준식            사용자 입력 탭 순서 변경
+  *  2017.07.21   장동한            로그인인증제한 작업
+  *  2019.12.11   신용호            KISA 보안약점 조치 (크로스사이트 스크립트)
+  *  2020.06.23   신용호            세션만료시간 보여주기
   *
   *  @author 공통서비스 개발팀 박지욱
   *  @since 2009.03.03
@@ -144,15 +146,15 @@ function saveid(form) {
 }
 
 function getid(form) {
-    form.checkId.checked = ((form.id.value = getCookie("saveid")) != "");
+	form.checkId.checked = ((form.id.value = getCookie("saveid")) != "");
 }
 
 function fnInit() {
 	/* if (document.getElementById('loginForm').message.value != null) {
 	    var message = document.getElementById('loginForm').message.value;
 	} */
-    /* if (${message} != "") {
-        alert(${message});
+    /* if ("<c:out value='${message}'/>" != "") {
+        alert("<c:out value='${message}'/>");
     } */
 
     /* *************************
@@ -171,11 +173,15 @@ function fnInit() {
     getid(document.loginForm);
     
     fnLoginTypeSelect("typeGnr");
-    
-    <c:if test="${not empty fn:trim(message) &&  message ne ''}">
-    alert("${message}");    
+
+    <c:if test="${not empty fn:trim(loginMessage) &&  loginMessage ne ''}">
+    alert("loginMessage:<c:out value='${loginMessage}'/>");
     </c:if>
     
+    // reload "_top" frame page
+    if (parent.frames["_top"] == undefined)
+    	console.log("'_top' frame is not exist!");
+    parent.frames["_top"].location.reload();
 }
 
 function fnLoginTypeSelect(objName){
@@ -255,7 +261,6 @@ function fnShowLogin(stat) {
 				<li>
 					<ul class="btn_idpw" >
 						<li><a href="#" onclick="goRegiUsr(); return false;"><spring:message code="comUatUia.loginForm.regist"/></a></li> <!-- 회원가입  -->
-						<li><a href="#" onclick="goFindId(); return false;"><spring:message code="comUatUia.loginForm.idPwSearch"/></a></li> <!-- 아이디/비밀번호 찾기 -->
 					</ul>
 				</li>
 				<li>

@@ -66,7 +66,7 @@ function MultiSelector( list_target, max , file_label ){
 			// What to do when a file is selected
 			element.onchange = function(){
 				
-				var sErrMsg = "첨부파일 갯수는 ["+_base.max+"]이상 첨부할 수 없습니다!";
+				var sErrMsg = "첨부파일 개수는 ["+_base.max+"]이상 첨부할 수 없습니다!";
 				if( _base.update_count > 0 ){
 					if( _base.count > (_base.max-_base.update_count) ){
 						element.value = "";

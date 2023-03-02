@@ -4,16 +4,15 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import egovframework.com.cmm.EgovWebUtil;
+import egovframework.com.cmm.annotation.IncludedInfo;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
-
-import egovframework.com.cmm.EgovWebUtil;
-import egovframework.com.cmm.annotation.IncludedInfo;
 
 /**
  * 도로명 주소 연계를 위한 Controller
@@ -21,8 +20,9 @@ import egovframework.com.cmm.annotation.IncludedInfo;
  *  수정일                수정자             수정내용
  *  ----------   ---------   -------------------
  *  2014.10.21   표준프레임워크    최초생성
- *  2015.04.01   전여철              Test용 Open API confmKey encode추가
- *  2020.10.29   신용호              KISA 보안약점 조치 (경로 조작 및 자원 삽입, 크로스사이트 스크립트)
+ *  2015.04.01   전여철            Test용 Open API confmKey encode추가
+ *  2020.10.29   신용호            KISA 보안약점 조치 (경로 조작 및 자원 삽입, 크로스사이트 스크립트)
+ *  2022.05.10   정진오            XSS공격방지 위한 메소드 변경
  *
  * @author 표준프레임워크
  * @since 2014.10.21
@@ -60,9 +60,10 @@ public class EgovAdressCntcController {
 				}
 				sb.append(tempStr);
 			}
+
 			response.setCharacterEncoding("UTF-8");
 			response.setContentType("text/xml");
-			response.getWriter().write(EgovWebUtil.clearXSSMinimum(sb.toString()));
+			response.getWriter().write(EgovWebUtil.clearXSSMaximum(sb.toString()));
 		}
 	}
 

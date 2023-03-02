@@ -102,7 +102,7 @@
 	]]>
 	</select>
 
-	<!-- 설문정보::목록조회_게시물 총갯수  -->
+	<!-- 설문정보::목록조회_게시물 총개수  -->
 	<select id="selectQustnrManageCnt" parameterType="comDefaultVO" resultType="int">
 		<![CDATA[
 		SELECT
@@ -191,7 +191,7 @@
 		SELECT
 			A.QESTNR_ID,
 			A.QUSTNR_SJ AS QESTNR_SJ,
-			A.QUSTNR_PURP AS QESTNR_PURPS,
+			A.QUSTNR_PURPS AS QESTNR_PURPS,
 			A.QUSTNR_WRITNG_GUIDANCE_CN AS QESTNR_WRITNG_GUIDANCE_CN,
 			TO_CHAR(TO_DATE(A.QUSTNR_BGNDE, 'YYYYMMDD'),'YYYY-MM-DD') QESTNR_BEGIN_DE,
 			TO_CHAR(TO_DATE(A.QUSTNR_ENDDE, 'YYYYMMDD'),'YYYY-MM-DD') QESTNR_END_DE,

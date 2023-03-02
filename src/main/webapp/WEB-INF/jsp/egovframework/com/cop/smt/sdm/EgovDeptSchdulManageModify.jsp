@@ -24,6 +24,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <c:set var="pageTitle"><spring:message code="comCopSmtSdm.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -304,7 +305,7 @@ String.prototype.replaceAll = function(src, repl){
 			 <!--첨부목록을 보여주기 위한 -->
 			<c:if test="${deptSchdulManageVO.atchFileId ne null && deptSchdulManageVO.atchFileId ne ''}">
 			<c:import charEncoding="utf-8" url="/cmm/fms/selectFileInfsForUpdate.do" >
-			<c:param name="param_atchFileId" value="${deptSchdulManageVO.atchFileId}" />
+			<c:param name="param_atchFileId" value="${egovc:encrypt(deptSchdulManageVO.atchFileId)}" />
 			</c:import>
 			</c:if>			
 			<input name="file_1" id="egovComFileUploader" type="file" title="${title}" multiple/><!-- 첨부파일명 입력 -->

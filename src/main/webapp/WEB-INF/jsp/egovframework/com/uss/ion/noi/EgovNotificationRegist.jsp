@@ -77,7 +77,7 @@
 			return;
 		}
 
-		if (confirm('<spring:message code="common.regist.msg" />')) {/* 등록하겠습니까? */
+		if (confirm('<spring:message code="common.regist.msg" />')) {/* 등록 하시겠습니까? */
 			form = document.notification;
 			form.action = "<c:url value='/uss/ion/noi/insertNotification.do'/>";
 

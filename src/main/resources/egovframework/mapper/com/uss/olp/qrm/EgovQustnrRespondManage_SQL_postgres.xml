@@ -114,7 +114,7 @@
 		]]>
 	</select>
 
-	<!-- 응답자결과(설문조사)::목록조회_게시물 총갯수  -->
+	<!-- 응답자결과(설문조사)::목록조회_게시물 총개수  -->
 	<select id="selectQustnrRespondManageCnt" parameterType="comDefaultVO" resultType="int">
 		<![CDATA[
 		SELECT

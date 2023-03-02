@@ -25,6 +25,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -121,7 +122,7 @@
 			<th height="23" class="required_text" scope="row"><spring:message code="comUssIonMtg.mtgPlaceDetail.imgFileList" /><img src="<c:url value='/images/egovframework/com/cmm/icon/no_required.gif'/>" width="15" height="15" alt=""></th><!-- 이미지 파일목록 -->
 			<td class="left" colspan="3">
 			     <c:import charEncoding="utf-8" url="/cmm/fms/selectFileInfs.do" >
-					<c:param name="param_atchFileId" value="${mtgPlaceManage.atchFileId}" />
+					<c:param name="param_atchFileId" value="${egovc:encrypt(mtgPlaceManage.atchFileId)}" />
 				</c:import>				
 			</td>
 		</tr>

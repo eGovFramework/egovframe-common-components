@@ -24,7 +24,7 @@ public interface EgovUserAbsnceService {
 	public List<UserAbsnceVO> selectUserAbsnceList(UserAbsnceVO userAbsnceVO) throws Exception;
 	
 	/**
-	 * 사용자부재목록 총 갯수를 조회한다.
+	 * 사용자부재목록 총 개수를 조회한다.
 	 * @param userAbsnceVO - 사용자부재 VO
 	 * @return int - 사용자부재 카운트 수
 	 */

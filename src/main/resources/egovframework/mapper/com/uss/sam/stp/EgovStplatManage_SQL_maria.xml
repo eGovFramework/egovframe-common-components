@@ -37,7 +37,7 @@
 					DATE_FORMAT(LAST_UPDT_PNTTM,'%Y-%m-%d') LAST_UPDT_PNTTM	  , LAST_UPDUSR_ID			 
 			FROM	COMTNSTPLATINFO                               			
 			WHERE	1=1   						
-			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isNotEmpty(searchCondition)">		
+			<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isNotEmpty(searchCondition)">		
 				<if test="searchCondition == 'useStplatNm'">AND
 					USE_STPLAT_NM LIKE CONCAT('%', #{searchKeyword}, '%')
 				</if>
@@ -54,7 +54,7 @@
 			SELECT 	COUNT(*) totcnt
 			FROM 	COMTNSTPLATINFO
 			WHERE 	1=1
-			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isNotEmpty(searchCondition)">	
+			<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isNotEmpty(searchCondition)">	
 				<if test="searchCondition == 'useStplatNm'">AND
 					USE_STPLAT_NM LIKE CONCAT('%', #{searchKeyword}, '%')
 				</if>

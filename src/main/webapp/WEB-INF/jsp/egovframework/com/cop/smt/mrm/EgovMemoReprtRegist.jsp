@@ -195,9 +195,9 @@
 	</div>
 	<div style="clear:both;"></div>
 
-	<!-- 첨부파일 갯수 -->
+	<!-- 첨부파일 개수 -->
 	<input type="hidden" name="posblAtchFileNumber" id="posblAtchFileNumber" value="3" />
-	<!-- //첨부파일 갯수 -->
+	<!-- //첨부파일 개수 -->
 	<!-- 검색조건 유지 -->
     <input type="hidden" name="searchWrd" value="<c:out value='${memoReprtVO.searchWrd}'/>" />
     <input type="hidden" name="searchCnd" value="<c:out value='${memoReprtVO.searchCnd}'/>" />

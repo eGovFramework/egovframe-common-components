@@ -24,7 +24,7 @@
 		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
 	</resultMap>
 
-	<!-- 지식정보제공/지식정보요청::목록조회_게시물 총갯수  -->
+	<!-- 지식정보제공/지식정보요청::목록조회_게시물 총개수  -->
 	<select id="selectRequestOfferSpeCnt" parameterType="java.util.Map" resultType="int">
 		SELECT COUNT(EXPERT_ID) CNT FROM COMTNDAMPRO WHERE EXPERT_ID = #{speId}
 	</select>
@@ -72,7 +72,7 @@
 		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
 	
 	</select>
-	<!-- 지식정보제공/지식정보요청::목록조회_게시물 총갯수  -->
+	<!-- 지식정보제공/지식정보요청::목록조회_게시물 총개수  -->
 	<select id="selectRequestOfferCnt" resultType="int">
 		SELECT
 		COUNT(*) totcnt
@@ -142,9 +142,9 @@
 		A.ANSWER_DP,
 		A.ANSWER_ORDR,
 		A.ANSWER_GROUP_NO,
-		A.FRST_REGIST_PNTTM,
+		DATE_FORMAT(A.FRST_REGIST_PNTTM,'%Y-%m-%d') AS FRST_REGIST_PNTTM,
 		A.FRST_REGISTER_ID,
-		A.LAST_UPDT_PNTTM,
+		DATE_FORMAT(A.LAST_UPDT_PNTTM,'%Y-%m-%d') AS LAST_UPDT_PNTTM,
 		A.LAST_UPDUSR_ID
 		FROM COMTNDAMCALRES A
 		WHERE 1=1

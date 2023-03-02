@@ -11,16 +11,16 @@
 		FROM (
 	
 		
-			SELECT	A.KNWLDG_ID			knoId     		
-				 ,  A.KNWLDG_NM			knoNm
-				 ,  B.KNWLDG_TY_NM		knoTypeNm	 
-			     ,  D.USER_NM			userNm
-				 ,  A.KNWLDG_EVL		knoAps
-			     ,  TO_CHAR(A.EVL_DE,'YYYY-MM-DD') appYmd
-			     ,	A.FRST_REGISTER_ID	frstRegisterId
+			SELECT	A.KNWLDG_ID			KNO_ID
+				 ,  A.KNWLDG_NM			KNO_NM
+				 ,  B.KNWLDG_TY_NM		KNO_TYPE_NM
+			     ,  D.USER_NM			USER_NM
+				 ,  A.KNWLDG_EVL		KNO_APS
+			     ,  TO_CHAR(TO_DATE(A.EVL_DE, 'YYYYMMDD'), 'YYYY-MM-DD')	 APP_YMD
+			     ,	A.FRST_REGISTER_ID	FRST_REGISTER_ID
 			     ,	A.FRST_REGIST_PNTTM     FRST_REGISTER_PNTTM
-			     ,  A.LAST_UPDUSR_ID	lastUpdusrId
-			     ,	A.LAST_UPDT_PNTTM	lastUpdusrPnttm
+			     ,  A.LAST_UPDUSR_ID	LAST_UPDUSR_ID
+			     ,	A.LAST_UPDT_PNTTM	LAST_UPDUSR_PNTTM
 			FROM  COMTNDAMKNOIFM A, COMTNDAMMAPKNO B, COMTNDAMMAPTEAM C, COMVNUSERMASTER D, COMTNDAMPRO E
 			WHERE C.ORGNZT_ID = B.ORGNZT_ID
 			AND   A.KNWLDG_TY_CODE = B.KNWLDG_TY_CODE
@@ -74,7 +74,7 @@
 			     ,  A.KNWLDG_CN							knoCn
                  ,  A.OTHBC_AT							othbcAt              
                  ,  A.ATCH_FILE_ID						atchFileId
-                 ,  A.EVL_DE							appYmd
+                 ,  TO_CHAR(TO_DATE(A.EVL_DE, 'YYYYmmdd'), 'YYYY-mm-dd') AS APP_YMD
 			     ,  A.KNWLDG_EVL						knoAps
 			     ,	A.FRST_REGISTER_ID					frstRegisterId
 			     ,	A.FRST_REGIST_PNTTM				     FRST_REGISTER_PNTTM

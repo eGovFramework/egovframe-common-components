@@ -116,9 +116,9 @@ public interface EgovCalRestdeManageService {
 	List<?> selectRestdeList(RestdeVO searchVO) throws Exception;
 
     /**
-     * 휴일 총 갯수를 조회한다.
+     * 휴일 총 개수를 조회한다.
      * @param searchVO
-     * @return int(휴일 총 갯수)
+     * @return int(휴일 총 개수)
      */
     int selectRestdeListTotCnt(RestdeVO searchVO) throws Exception;
 

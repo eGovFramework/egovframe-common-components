@@ -140,7 +140,7 @@ function fn_egov_save(){
              return ;
         }
 
-        // 2월 29일도 입력가능하도록 윤년인 해를 년도값으로 사용
+        // 2월 29일도 입력가능하도록 윤년인 해를 연도값으로 사용
         if (!checkDate('0400', varForm.executSchdulMonth.value, varForm.executSchdulDay.value, "<spring:message code="comSymBat.batchSchdulUpdt.validate.checkDate"/>")) { //실행스케줄월, 일이 유효하지 않습니다.
              return ;
         }

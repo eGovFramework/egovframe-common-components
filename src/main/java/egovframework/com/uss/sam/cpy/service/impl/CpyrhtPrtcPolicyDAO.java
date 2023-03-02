@@ -55,9 +55,9 @@ public class CpyrhtPrtcPolicyDAO extends EgovComAbstractDAO {
     }
 
     /**
-	 * 저작권보호정책 글 총 갯수를 조회한다.
+	 * 저작권보호정책 글 총 개수를 조회한다.
 	 * @param searchVO
-	 * @return 글 총 갯수
+	 * @return 글 총 개수
 	 */
     public int selectCpyrhtPrtcPolicyListTotCnt(CpyrhtPrtcPolicyDefaultVO searchVO) {
 

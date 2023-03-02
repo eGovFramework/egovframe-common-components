@@ -67,9 +67,9 @@ public interface EgovCcmZipManageService {
 	List<?> selectZipList(ZipVO searchVO) throws Exception;
 
     /**
-	 * 우편번호 총 갯수를 조회한다.
+	 * 우편번호 총 개수를 조회한다.
      * @param searchVO
-     * @return int(우편번호 총 갯수)
+     * @return int(우편번호 총 개수)
      */
     int selectZipListTotCnt(ZipVO searchVO) throws Exception;
 

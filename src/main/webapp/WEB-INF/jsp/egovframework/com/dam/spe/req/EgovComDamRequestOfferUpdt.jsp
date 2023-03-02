@@ -21,6 +21,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <c:set var="JsUrl" value="/js/egovframework/com/dam/spe/req/"/>
 <!DOCTYPE html>
 <html lang="ko">
@@ -125,7 +126,7 @@ function fn_egov_get_CodeId(form){
 			<td class="left">
 			    <!-- c:import charEncoding="utf-8" url="/cmm/fms/selectFileInfs.do" -->
 				<c:import url="/cmm/fms/selectFileInfsForUpdate.do" charEncoding="utf-8">
-					<c:param name="param_atchFileId" value="${requestOfferVO.atchFileId}" />
+					<c:param name="param_atchFileId" value="${egovc:encrypt(requestOfferVO.atchFileId)}" />
 				</c:import>
 			</td>
 		</tr>

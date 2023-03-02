@@ -1,6 +1,7 @@
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<%@ page isErrorPage="true" %>
 <!DOCTYPE html>
 <html>
 <head>
@@ -14,6 +15,11 @@ function fncGoAfterErrorPage(){
 }
 </script>
 </head>
+<%
+if ( "egovframework.com.cmm.exception.EgovFileExtensionException".equals(exception.getClass().getName()) ) {
+	pageContext.forward("/errorFileExtension.jsp");
+}
+%>
 <body>
 <div style="width: 1000px; margin: 50px auto 50px;">
 	<p style="font-size: 18px; color: #000; margin-bottom: 10px; "><img src="<c:url value='/images/egovframework/com/cmm/er_logo.jpg' />" width="379" height="57" /></p>

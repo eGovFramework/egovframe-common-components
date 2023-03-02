@@ -82,7 +82,9 @@
 		<jsp:forward page="/uat/uia/egovLoginUsr.do"/>
 	</c:if>
 	<p/><p/><p/>
-	<b><spring:message code="comCmm.unitContent.4"/><br /><br/><!-- 실행 시 오류 사항이 있으시면 표준프레임워크센터로 연락하시기 바랍니다. -->
+	<font color="red"><b><spring:message code="comCmm.unitContent.0"/></b></font><br />
+	<a href="https://www.egovframe.go.kr/wiki/doku.php?id=egovframework:rte4.0:fdl:crypto" target="_blank">실행환경 Crypto 설정간소화 관련 위키가이드 참조</a><br /><br /><br />
+	<b><spring:message code="comCmm.unitContent.4"/></b><br/><br/><!-- 실행 시 오류 사항이 있으시면 표준프레임워크센터로 연락하시기 바랍니다. -->
 	<b><img src="${pageContext.request.contextPath }/images/egovframework/com/cmm/icon/tit_icon.png"> <spring:message code="comCmm.unitContent.5"/></b><p/><!-- 화면 설명 -->
 	<spring:message code="comCmm.unitContent.6"/><p/><!-- 왼쪽 메뉴는 메뉴와 관련된 컴포넌트(메뉴관리, 사이트맵 등)들의 영향을 받지 않으며, -->
 	<spring:message code="comCmm.unitContent.7"/><p/><!-- 각 컴포넌트를 쉽게 찾아볼 수 있는 바로 가기 링크페이지입니다. -->

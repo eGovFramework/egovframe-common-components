@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="egovframework.com.sec.rnc.mip.mva.sp.comm.dao.TrxInfoDAO">
+
+	<select id="selectTrxInfo" resultType="egovframework.com.sec.rnc.mip.mva.sp.comm.vo.TrxInfoVO">
+		SELECT trxcode
+			 , svcCode
+			 , opMode
+			 , deviceId
+			 , branchName
+		     , nonce
+		     , zkpNonce
+			 , vpVerifyResult
+			 , trxStsCode
+			 , profileSendDt
+			 , imgSendDt
+			 , vpReceptDt
+			 , errorCn
+			 , regDt
+			 , udtDt
+			 , CONCAT(SUBSTRING(vpName, 1, 1), RPAD('*', CHAR_LENGTH(vpName)-1, '*'))	AS vpName
+		  FROM TB_TRX_INFO
+		 WHERE trxcode = #{trxcode}
+	</select>
+	
+	<insert id="insertTrxInfo">
+		INSERT
+		  INTO TB_TRX_INFO
+		(
+		       trxcode
+			 , svcCode
+			 , opMode
+			 , deviceId
+			 , branchName
+			 , trxStsCode
+			 , regDt
+		)
+		VALUES
+		(
+		       #{trxcode}
+			 , #{svcCode}
+			 , #{mode}
+			 , #{deviceId}
+			 , #{branchName}
+			 , IFNULL(#{trxStsCode}, '0001')
+			 , current_timestamp()
+		)
+	</insert>
+	
+	<update id="updateTrxInfo">
+		UPDATE TB_TRX_INFO
+		   SET trxStsCode = #{trxStsCode}
+			<if test="trxStsCode eq '0002'.toString()">
+		     , profileSendDt = current_timestamp()
+			</if>
+			<if test="trxStsCode eq '0003'.toString()">
+		     , vpReceptDt = current_timestamp()
+			</if>
+			<if test="trxStsCode eq '0004'.toString()">
+			 , imgSendDt = current_timestamp()
+			</if>
+			<if test="nonce != null and !nonce.equals('')">
+		     , nonce = #{nonce}
+			</if>
+			<if test="zkpNonce != null and !zkpNonce.equals('')">
+		     , zkpNonce = #{zkpNonce}
+			</if>
+			<if test="errorCn != null and !errorCn.equals('')">
+		     , errorCn = #{errorCn}
+			</if>
+		     , vpVerifyResult = IFNULL(#{vpVerifyResult}, 'N')
+		     , udtDt = current_timestamp()
+		     , vpName = #{vpName}
+		 WHERE trxcode = #{trxcode}
+	</update>
+	
+	<delete id="deleteTrxInfo">
+		DELETE
+		  FROM TB_TRX_INFO
+		 WHERE trxcode = #{trxcode}
+	</delete>
+	
+	<insert id="insertVp">
+		INSERT
+		  INTO TB_TRX_INFO
+		(
+		       trxcode
+			 , svcCode
+			 , opMode
+			 , deviceId
+			 , branchName
+			 , trxStsCode
+			 , regDt
+		)
+		VALUES
+		(
+		       #{trxcode}
+			 , #{svcCode}
+			 , #{mode}
+			 , #{deviceId}
+			 , #{branchName}
+			 , IFNULL(#{trxStsCode}, '0001')
+			 , current_timestamp()
+		)
+	</insert>
+	
+</mapper>

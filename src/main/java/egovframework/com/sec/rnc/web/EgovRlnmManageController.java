@@ -66,7 +66,6 @@ public class EgovRlnmManageController {
 		String nextUrl = (String) commandMap.get("nextUrl");
 		if ( nextUrl == null ) nextUrl = "";
 		model.addAttribute("nextUrl", nextUrl); 						//다음단계로 이동할 URL
-		String result = "";
 
 //		if ("".equals((String) commandMap.get("ihidnum"))) {
 //			result = "info.user.rlnmCnfirm";
@@ -91,9 +90,20 @@ public class EgovRlnmManageController {
 		
 		// 화이트 리스트 처리
 		// whitelist목록에 있는 경우 결과가 true, 결과가 false인경우 FAIL처리
-		if (nextUrlWhitelist.contains(nextUrl) == false) {
-			LOGGER.debug("nextUrl WhiteList Error! Please check whitelist!");
-			nextUrl="egovframework/com/cmm/egovError";
+		boolean isAuth = false;
+
+		for (String urlPattern : nextUrlWhitelist)
+		{
+			if (nextUrl.matches(urlPattern))
+			{
+				isAuth = true;
+				break;
+			}
+		}
+
+		if (!isAuth) {
+			LOGGER.error("nextUrl WhiteList Error! Please check whitelist! ... " + nextUrl);
+			nextUrl = "egovframework/com/cmm/egovError";
 		}
 		
 		// 안전한 경로 문자열로 조치
@@ -175,24 +185,37 @@ public class EgovRlnmManageController {
 	 */
 	@RequestMapping(value = "/sec/rnc/EgovPageLink.do")
 	public String moveToPage(@RequestParam("link") String linkPage) {
+
 		// service 사용하여 리턴할 결과값 처리하는 부분은 생략하고 단순 페이지 링크만 처리함
-		String link = linkPage;
-		link = link.replace(";", "");
-		link = link.replace(".", "");
+		String link = linkPage.replace(";", "").replace(".", "");
+
 		if (link == null || link.equals("")) {
 			link = "egovframework/com/cmm/egovError";
 		}
+		else
+		{
+			// 화이트 리스트 처리
+			// whitelist목록에 있는 경우 결과가 true, 결과가 false인경우 FAIL처리
+			boolean isAuth = false;
 
-		// 화이트 리스트 처리
-		// whitelist목록에 있는 경우 결과가 true, 결과가 false인경우 FAIL처리
-		if (egovWhitelist.contains(link) == false) {
-			LOGGER.debug("Page Link WhiteList Error! Please check whitelist!");
-			link="egovframework/com/cmm/egovError";
+			for (String urlPattern : egovWhitelist)
+			{
+				if (link.matches(urlPattern))
+				{
+					isAuth = true;
+					break;
+				}
+			}
+
+			if (!isAuth) {
+				LOGGER.error("Page Link WhiteList Error! Please check whitelist!" + link);
+				link = "egovframework/com/cmm/egovError";
+			}
+
 		}
-		
+
 		// 안전한 경로 문자열로 조치
-		link = EgovWebUtil.filePathBlackList(link);
-		
-		return link;
+		return EgovWebUtil.filePathBlackList(link);
+
 	}
 }

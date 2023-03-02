@@ -1,5 +1,6 @@
 package egovframework.com.utl.sys.srm.service;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -77,7 +78,7 @@ public class ServerResrceMntrngVO extends ServerResrceMntrng {
 	 * @param serverResrceMntrngList the serverResrceMntrngList to set
 	 */
 	public void setServerResrceMntrngList(List<ServerResrceMntrngVO> serverResrceMntrngList) {
-		this.serverResrceMntrngList = serverResrceMntrngList;
+		this.serverResrceMntrngList = Collections.unmodifiableList(serverResrceMntrngList);
 	}
 
 }

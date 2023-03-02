@@ -97,9 +97,9 @@ public interface EgovCntcInsttService {
 	List<?> selectCntcInsttList(CntcInsttVO searchVO) throws Exception;
 
     /**
-	 * 연계기관 총 갯수를 조회한다.
+	 * 연계기관 총 개수를 조회한다.
      * @param searchVO
-     * @return int(연계기관 총 갯수)
+     * @return int(연계기관 총 개수)
      */
     int selectCntcInsttListTotCnt(CntcInsttVO searchVO) throws Exception;
 
@@ -112,9 +112,9 @@ public interface EgovCntcInsttService {
 	List<?> selectCntcSystemList(CntcSystemVO searchVO) throws Exception;
 
     /**
-	 * 연계시스템 총 갯수를 조회한다.
+	 * 연계시스템 총 개수를 조회한다.
      * @param searchVO
-     * @return int(연계시스템 총 갯수)
+     * @return int(연계시스템 총 개수)
      */
     int selectCntcSystemListTotCnt(CntcSystemVO searchVO) throws Exception;
 
@@ -127,9 +127,9 @@ public interface EgovCntcInsttService {
 	List<?> selectCntcServiceList(CntcServiceVO searchVO) throws Exception;
 
     /**
-	 * 연계서비스 총 갯수를 조회한다.
+	 * 연계서비스 총 개수를 조회한다.
      * @param searchVO
-     * @return int(연계시스템 총 갯수)
+     * @return int(연계시스템 총 개수)
      */
     int selectCntcServiceListTotCnt(CntcServiceVO searchVO) throws Exception;
 

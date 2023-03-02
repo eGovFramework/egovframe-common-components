@@ -83,9 +83,9 @@ public interface EgovEntrprsManageService {
 	public List<EntrprsManageVO> selectEntrprsMberList(UserDefaultVO userSearchVO) throws Exception;
 
     /**
-     * 기업회원 총 갯수를 조회한다.
+     * 기업회원 총 개수를 조회한다.
      * @param userSearchVO 검색조건
-     * @return 사용자 총 갯수(int)
+     * @return 사용자 총 개수(int)
      * @throws Exception
      */
     public int selectEntrprsMberListTotCnt(UserDefaultVO userSearchVO) throws Exception;

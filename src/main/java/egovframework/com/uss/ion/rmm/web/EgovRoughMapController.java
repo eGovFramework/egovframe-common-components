@@ -41,6 +41,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *   수정일			수정자		수정내용
  *  -----------		------		---------
  *   2014.08.27		옥찬우		최초 생성
+ *   2022.11.11     김혜준		시큐어코딩 처리
  *
  * </pre>
  */
@@ -75,7 +76,7 @@ public class EgovRoughMapController {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
         searchVO.setPageUnit(propertyService.getInt("pageUnit"));
@@ -115,7 +116,7 @@ public class EgovRoughMapController {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
         RoughMapVO roughMap = egovRoughMapService.selectRoughMapDetail(roughMapVO);
@@ -137,7 +138,7 @@ public class EgovRoughMapController {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
         return "egovframework/com/uss/ion/rmm/EgovRoughMapRegist";
@@ -156,7 +157,7 @@ public class EgovRoughMapController {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
     	beanValidator.validate(roughMap, bindingResult);
@@ -167,11 +168,10 @@ public class EgovRoughMapController {
 
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
-        if (isAuthenticated) {
-            roughMap.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
-            roughMap.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));    	// 최종수정자ID
-            egovRoughMapService.insertRoughMap(roughMap);
-        }
+        // 2022.11.11 시큐어코딩 처리
+        roughMap.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
+        roughMap.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));    	// 최종수정자ID
+        egovRoughMapService.insertRoughMap(roughMap);
 
         return "forward:/com/uss/ion/rmm/selectRoughMapList.do";
     }
@@ -190,7 +190,7 @@ public class EgovRoughMapController {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
         roughMap = egovRoughMapService.selectRoughMapDetail(roughMap);
@@ -214,7 +214,7 @@ public class EgovRoughMapController {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
     	beanValidator.validate(roughMap, bindingResult);
@@ -225,10 +225,9 @@ public class EgovRoughMapController {
 
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
-        if (isAuthenticated) {
-            roughMap.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
-            egovRoughMapService.updateRoughMap(roughMap);
-        }
+        // 2022.11.11 시큐어코딩 처리
+        roughMap.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
+        egovRoughMapService.updateRoughMap(roughMap);
 
         return "forward:/com/uss/ion/rmm/selectRoughMapList.do";
     }
@@ -246,16 +245,15 @@ public class EgovRoughMapController {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
         // 사용자 인증여부 판단
-        if (isAuthenticated) {
-            roughMap.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
-            egovRoughMapService.deleteRoughMap(roughMap);
-        }
+        // 2022.11.11 시큐어코딩 처리
+        roughMap.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
+        egovRoughMapService.deleteRoughMap(roughMap);
 
         return "forward:/com/uss/ion/rmm/selectRoughMapList.do";
     }

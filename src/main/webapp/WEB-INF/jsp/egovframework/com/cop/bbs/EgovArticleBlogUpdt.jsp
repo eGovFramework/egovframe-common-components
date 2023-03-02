@@ -22,6 +22,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator"%>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <%@ taglib prefix="ckeditor" uri="http://ckeditor.com" %>
 <c:set var="pageTitle">
 	<spring:message code="comCopBbs.articleVO.title" />
@@ -268,7 +269,7 @@ function fn_egov_inqire_articlelist() {
 						<!-- 첨부목록을 보여주기 위한 -->
 						<c:if test="${not empty articleVO.atchFileId}">
 							<c:import charEncoding="utf-8" url="/cmm/fms/selectFileInfsForUpdate.do" >
-								<c:param name="param_atchFileId" value="${articleVO.atchFileId}" />
+								<c:param name="param_atchFileId" value="${egovc:encrypt(articleVO.atchFileId)}" />
 							</c:import>		
 						</c:if>
 						<c:if test="${articleVO.atchFileId == ''}">

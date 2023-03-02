@@ -25,7 +25,7 @@
 				</var>
 			</field>
 			<field property="trgetSvcListCo" depends="required, maxlength, integer">
-        		<arg0 key="대상서비스목록갯수" resource="true"/>
+        		<arg0 key="대상서비스목록개수" resource="true"/>
         		<arg1 key="5" resource="true"/>
 				<var>
 				<var-name>maxlength</var-name>

@@ -44,8 +44,7 @@ function fSiteMapng() {
  * Url Call 함수
  ******************************************************** */
 function fCallUrl(fURL){
-	var vPath = "<c:url value='/'/>" +fURL;
-	window.location = vPath.replace("//","/");
+	window.location = fURL.replace("//","/");
 }
 <c:if test="${!empty resultMsg}">alert("${resultMsg}");</c:if>
 -->

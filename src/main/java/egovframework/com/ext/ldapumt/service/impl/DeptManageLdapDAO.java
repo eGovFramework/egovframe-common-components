@@ -56,7 +56,7 @@ import egovframework.com.ext.ldapumt.service.UcorgVO;
 *  ----------   --------   ---------------------------
 *  2014.10.12   전우성            최초 생성
 *  2017-02-13   이정은            시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-*  2020.08.28   정진호            표준프레임워크 v3.10 개선
+*  2020.08.28   정진오            표준프레임워크 v3.10 개선
 *
 * </pre>
 */
@@ -123,14 +123,7 @@ public class DeptManageLdapDAO extends OrgManageLdapDAO {
 		}
 
 		List<Object> list = null;
-		try {
-			list = ldapTemplate.search(criteria, new ObjectMapper<UcorgVO>(UcorgVO.class));
-			//2017.02.07 	이정은 	시큐어코딩(ES)-오류 메시지를 통한 정보노출[CWE-209]
-		} catch (NullPointerException e) {
-			logger.error("[NullPointerException] : search fail");
-		} catch (Exception e) {
-			logger.error("[" + e.getClass() + "] search fail : " + e.getMessage());
-		}
+		list = ldapTemplate.search(criteria, new ObjectMapper<UcorgVO>(UcorgVO.class));
 
 		return list == null ? null : (UcorgVO)list.get(0);
 	}

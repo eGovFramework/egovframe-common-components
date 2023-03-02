@@ -23,7 +23,6 @@ import egovframework.com.sec.security.filter.EgovSpringSecurityLogoutFilter;
 import egovframework.com.uat.uap.filter.EgovLoginPolicyFilter;
 import egovframework.com.utl.wed.filter.CkFilter;
 
-
 /**
  * EgovWebApplicationInitializer 클래스
  * <Notice>
@@ -56,7 +55,7 @@ public class EgovWebApplicationInitializer implements WebApplicationInitializer 
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
 		LOGGER.debug("EgovWebApplicationInitializer START-============================================");
-			
+		
 		//-------------------------------------------------------------
 		// Egov Web ServletContextListener 설정
 		//-------------------------------------------------------------
@@ -89,7 +88,7 @@ public class EgovWebApplicationInitializer implements WebApplicationInitializer 
 		xmlWebApplicationContext.setConfigLocation("/WEB-INF/config/egovframework/springmvc/egov-com-*.xml");
 		ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", new DispatcherServlet(xmlWebApplicationContext));
 		//dispatcher.addMapping("*.do");
-		dispatcher.addMapping("/"); // Facebook OAuth 사용시 변경
+		dispatcher.addMapping("/"); // Facebook OAuth 혹은 모바일신분증 에서 사용
 		dispatcher.setLoadOnStartup(1);
 		
 		if("security".equals(EgovProperties.getProperty("Globals.Auth").trim())) {

@@ -96,9 +96,9 @@ public class CntcMessageDAO extends EgovComAbstractDAO {
 	}
 
 	/**
-	 * 연계메시지 총 갯수를 조회한다.
+	 * 연계메시지 총 개수를 조회한다.
 	 * @param searchVO
-	 * @return int(연계메시지 총 갯수)
+	 * @return int(연계메시지 총 개수)
 	 */
 	public int selectCntcMessageListTotCnt(CntcMessageVO searchVO) throws Exception {
 		return (Integer) selectOne("CntcMessageDAO.selectCntcMessageListTotCnt", searchVO);
@@ -115,9 +115,9 @@ public class CntcMessageDAO extends EgovComAbstractDAO {
 	}
 
 	/**
-	 * 연계메시지항목 총 갯수를 조회한다.
+	 * 연계메시지항목 총 개수를 조회한다.
 	 * @param searchVO
-	 * @return int(연계메시지 총 갯수)
+	 * @return int(연계메시지 총 개수)
 	 */
 	public int selectCntcMessageItemListTotCnt(CntcMessageItemVO searchVO) throws Exception {
 		return (Integer) selectOne("CntcMessageDAO.selectCntcMessageItemListTotCnt", searchVO);

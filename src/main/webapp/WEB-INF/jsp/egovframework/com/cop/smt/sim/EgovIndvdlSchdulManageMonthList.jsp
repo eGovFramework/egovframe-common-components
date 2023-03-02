@@ -49,7 +49,7 @@ if(strYear != null && EgovNumberUtil.getNumberValidCheck(strYear))
 }else{
 
 }
-//년도/월 셋팅
+//연도/월 셋팅
 cal.set(year, month, 1);
 
 int startDay = cal.getMinimum(java.util.Calendar.DATE);
@@ -366,7 +366,7 @@ for(int index = 1; index <= endDay; index++)
 						
 			long remainingDays = (long)Math.ceil((float) (cEndDate.getTimeInMillis() - cBeginDate.getTimeInMillis()) / (24 * 60 * 60 * 1000));
 			
-			//스캐줄연속갯수
+			//스캐줄연속개수
 			int iSchdulCurrent = 0;
 			int iSchdulCurrentTotal = 0;
 			if(egovMap.get("schdulCurrent") == null){				
@@ -375,7 +375,7 @@ for(int index = 1; index <= endDay; index++)
 			}else{
 				iSchdulCurrent = (Integer)egovMap.get("schdulCurrent");
 			}
-			//주의첫일정갯수
+			//주의첫일정개수
 			if(egovMap.get("schdulWeekFirest") == null){
 				iSchdulWeekFirest = 0;
 			}else{
@@ -391,11 +391,11 @@ for(int index = 1; index <= endDay; index++)
 				//out.println("</a></div></td></tr></table>");
 
 				//표준프레임워크 3.6 Display 방식
-				//스케줄연속갯수 감소
+				//스케줄연속개수 감소
 				iSchdulCurrent--;
 				egovMap.put("schdulCurrent", iSchdulCurrent);
 				
-				//주의첫일정갯수 증가
+				//주의첫일정개수 증가
 				if(newLine == 6){
 					iSchdulWeekFirest = 0;
 				}else if(newLine >= 0){ 	iSchdulWeekFirest++;}
@@ -420,7 +420,7 @@ for(int index = 1; index <= endDay; index++)
 					out.print((String)egovMap.get("schdulNm"));
 					out.println("</a></div>");
 				}				
-				//일별스케줄갯수
+				//일별스케줄개수
 				iDayCount++;				
 			}
 		}

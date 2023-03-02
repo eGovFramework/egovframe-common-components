@@ -76,7 +76,7 @@ public class EgovSynchrnServerController {
 	@Resource(name = "EgovFileMngUtil")
 	private EgovFileMngUtil fileUtil;
 
-	final static String uploadDir = EgovProperties.getProperty("Globals.SynchrnServerPath");
+	final static String SYNTH_SERVER_PATH = EgovProperties.getProperty("Globals.SynchrnServerPath");
 	// final static String uploadDir = "/product/jeus2/egovProps/tmp/upload/";
 	// final static String uploadDir = "D:/ftp/";
 
@@ -129,7 +129,7 @@ public class EgovSynchrnServerController {
 		int totCnt = egovSynchrnServerService.selectSynchrnServerListTotCnt(synchrnServerVO);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
-		model.addAttribute("fileList", egovSynchrnServerService.getFileName(uploadDir));
+		model.addAttribute("fileList", egovSynchrnServerService.getFileName(SYNTH_SERVER_PATH));
 
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
@@ -190,7 +190,7 @@ public class EgovSynchrnServerController {
 
 		synchrnServerVO.setServerId(serverId);
 		synchrnServerVO = egovSynchrnServerService.selectSynchrnServer(synchrnServerVO);
-		synchrnServerVO.setFilePath(uploadDir);
+		synchrnServerVO.setFilePath(SYNTH_SERVER_PATH);
 		egovSynchrnServerService.downloadFtpFile(synchrnServerVO, fileNm);
 		return "forward:/utl/sys/ssy/getSynchrnServer.do";
 	}
@@ -229,7 +229,7 @@ public class EgovSynchrnServerController {
 			Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated(); //KISA 보안취약점 조치 (2018-12-10, 이정은)
 
 			if (!isAuthenticated) {
-				return "egovframework/com/uat/uia/EgovLoginUsr";
+				return "redirect:/uat/uia/egovLoginUsr.do";
 			}
 			synchrnServer.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
 			//KISA 보안약점 조치 (2018-10-29, 윤창원)
@@ -282,7 +282,7 @@ public class EgovSynchrnServerController {
 			Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated(); //KISA 보안취약점 조치 (2018-12-10, 이정은)
 
 			if (!isAuthenticated) {
-				return "egovframework/com/uat/uia/EgovLoginUsr";
+				return "redirect:/uat/uia/egovLoginUsr.do";
 			}
 			synchrnServer.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
 			//KISA 보안약점 조치 (2018-10-29, 윤창원)
@@ -321,8 +321,8 @@ public class EgovSynchrnServerController {
 	public String processSynchrn(@ModelAttribute("synchrnServerVO") SynchrnServerVO synchrnServerVO,
 		Model model) throws Exception {
 
-		synchrnServerVO.setFilePath(uploadDir);
-		File uploadFile = new File(uploadDir);
+		synchrnServerVO.setFilePath(SYNTH_SERVER_PATH);
+		File uploadFile = new File(SYNTH_SERVER_PATH);
 		File[] fileList = uploadFile.listFiles();
 
 		synchrnServerVO.setReflctAt("N");
@@ -366,7 +366,7 @@ public class EgovSynchrnServerController {
 			boolean resultFileMaxSize = EgovFileUploadUtil.checkFileMaxSize(multipartFile, maxFileSize);
 
 			if (resultFileExtention && resultFileMaxSize) { // true = 허용
-				egovSynchrnServerService.writeFile(multipartFile, fileName, uploadDir, synchrnServerVO);
+				egovSynchrnServerService.writeFile(multipartFile, fileName, synchrnServerVO);
 			} else {
 				if (resultFileExtention == false) {
 					model.addAttribute("fileUploadResultMessage", "* 허용되지 않는 확장자 입니다.[" + extension + "]");
@@ -392,7 +392,7 @@ public class EgovSynchrnServerController {
 		@ModelAttribute("synchrnServerVO") SynchrnServerVO synchrnServerVO) throws Exception {
 
 		synchrnServerVO.setReflctAt("");
-		egovSynchrnServerService.deleteFile(deleteFiles, uploadDir, synchrnServerVO);
+		egovSynchrnServerService.deleteFile(deleteFiles, synchrnServerVO);
 
 		return "forward:/utl/sys/ssy/selectSynchrnServerList.do";
 	}

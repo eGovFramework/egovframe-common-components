@@ -60,7 +60,7 @@ public class EgovIndvdlYrycManageController {
 
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
     	if (user == null) {
-    		return "egovframework/com/uat/uia/EgovLoginUsr";
+    		return "redirect:/uat/uia/egovLoginUsr.do";
     	}
     	
     	indvdlYrycManage.setMberId(user.getUniqId());

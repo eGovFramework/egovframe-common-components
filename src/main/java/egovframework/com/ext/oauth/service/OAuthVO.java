@@ -3,6 +3,7 @@ package egovframework.com.ext.oauth.service;
 import org.apache.commons.lang3.StringUtils;
 
 import com.github.scribejava.apis.GoogleApi20;
+import com.github.scribejava.apis.KakaoApi;
 import com.github.scribejava.core.builder.api.DefaultApi20;
 
 public class OAuthVO implements OAuthConfig {
@@ -106,7 +107,7 @@ public class OAuthVO implements OAuthConfig {
 			this.api20Instance = NaverAPI20.instance();
 			this.profileUrl = NAVER_PROFILE_URL;
 		} else if (isKakao) {
-			this.api20Instance = KakaoAPI20.instance();
+			this.api20Instance = KakaoApi.instance();
 			this.profileUrl = KAKAO_PROFILE_URL;
 		}
 	}

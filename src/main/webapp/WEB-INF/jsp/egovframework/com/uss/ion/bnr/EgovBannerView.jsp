@@ -27,13 +27,13 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
-
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <!-- 세로배열 -->
 <c:if test="${resultType == 'vertical'}">
 <ul class="vertical">
     <c:forEach var="fileVO" items="${fileList}" varStatus="status">
 	<li>
-		<a href="<c:out value="${fileVO.linkUrl}"/>" target="_blank"  title="새 창으로 이동" ><img alt="배너 이미지" src='<c:url value='/cmm/fms/getImage.do'/>?atchFileId=<c:out value="${fileVO.bannerImageFile}"/>'></a>
+		<a href="<c:out value="${fileVO.linkUrl}"/>" target="_blank"  title="새 창으로 이동" ><img alt="배너 이미지" src='<c:url value='/cmm/fms/getImage.do'/>?atchFileId=<c:out value="${egovc:encryptSession(fileVO.bannerImageFile,pageContext.session.id)}"/>'></a>
     </li>
     </c:forEach>
 </ul>
@@ -44,7 +44,7 @@
 <ul class="horizon">
     <c:forEach var="fileVO" items="${fileList}" varStatus="status">
 	<li>
-		<a href="<c:out value="${fileVO.linkUrl}"/>" target="_blank"  title="새 창으로 이동" ><img alt="배너 이미지" src='<c:url value='/cmm/fms/getImage.do'/>?atchFileId=<c:out value="${fileVO.bannerImageFile}"/>'></a>
+		<a href="<c:out value="${fileVO.linkUrl}"/>" target="_blank"  title="새 창으로 이동" ><img alt="배너 이미지" src='<c:url value='/cmm/fms/getImage.do'/>?atchFileId=<c:out value="${egovc:encryptSession(fileVO.bannerImageFile,pageContext.session.id)}"/>'></a>
     </li>
     </c:forEach>
 </ul>

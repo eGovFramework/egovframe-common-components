@@ -142,7 +142,7 @@ public class EgovMemoReprtController {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 		
 		memoReprtVO.setPageUnit(propertyService.getInt("pageUnit"));
@@ -190,7 +190,7 @@ public class EgovMemoReprtController {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 		
 		model.addAttribute("uniqId", loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
@@ -221,7 +221,7 @@ public class EgovMemoReprtController {
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "egovframework/com/uat/uia/EgovLoginUsr";
+        	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
     	
     	// 1. 로그인 객체 선언
@@ -253,7 +253,7 @@ public class EgovMemoReprtController {
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "egovframework/com/uat/uia/EgovLoginUsr";
+        	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 		
     	MemoReprtVO resultVO = memoReprtService.selectMemoReprt(memoReprtVO);
@@ -359,7 +359,7 @@ public class EgovMemoReprtController {
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "egovframework/com/uat/uia/EgovLoginUsr";
+        	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
     	
 		//로그인 객체 선언
@@ -420,7 +420,7 @@ public class EgovMemoReprtController {
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "egovframework/com/uat/uia/EgovLoginUsr";
+        	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
     	
     	// 첨부파일 삭제를 위한 ID 생성 start....

@@ -31,6 +31,7 @@
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/utl/EgovCmmUtl.js' />"></script>
 <validator:javascript formName="backupOpert" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javaScript" language="javascript">
 
@@ -119,7 +120,7 @@ function fn_egov_save(){
             alert("<spring:message code="comSymSymBak.backupOpertRegist.validate.cycleYear.executSchdulDay"/>"); //실행주기가 매년일때 실행스케줄(일)은 필수 입력값입니다.
              return ;
         }
-         // 2월 29일도 입력가능하도록 윤년인 해를 년도값으로 사용
+         // 2월 29일도 입력가능하도록 윤년인 해를 연도값으로 사용
         if (!checkDate('0400', varForm.executSchdulMonth.value, varForm.executSchdulDay.value, "<spring:message code="comSymSymBak.backupOpertRegist.validate.checkDate"/>"))  { //실행스케줄 (월/일)이 유효하지 않습니다.
              return ;
         }
@@ -131,10 +132,10 @@ function fn_egov_save(){
              return ;
         }
         if (!isDate(varForm.executSchdulDeNm.value, "<spring:message code="comSymSymBak.backupOpertRegist.validate.executSchdulDeNm.isDate"/>"))   { //실행스케줄(일자)가 유효하지 않습니다.
-             return ;
+        	return ;
         }
     }
-
+    
     /* 폼전송 데이타 조립. */
     var executSchdulDe = "";
     if (varForm.executCycle.value == "03") {
@@ -145,7 +146,7 @@ function fn_egov_save(){
       executSchdulDe = varForm.executSchdulDeNm.value;
       executSchdulDe = executSchdulDe.replace(/-/gi,"");
     }
-
+	
     varForm.executSchdulDe.value = executSchdulDe;
 
     if(!validateBackupOpert(varForm)){

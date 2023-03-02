@@ -62,7 +62,7 @@
 		<if test="searchCondition == 'A.HDER_LINK'">
 		AND A.HDER_LINK LIKE CONCAT('%', #{searchKeyword}, '%')
 		</if>
-		<if test="searchCondition == 'A.HDER_DC'">
+		<if test="searchCondition == 'A.HDER_DESCRIPTION'">
 		AND A.HDER_DC LIKE CONCAT('%', #{searchKeyword}, '%')
 		</if>
 		<if test="searchCondition == 'A.HDER_TAG'">
@@ -74,13 +74,13 @@
 		<if test="searchCondition == 'A.BDT_LINK'">
 		AND A.BDT_LINK LIKE CONCAT('%', #{searchKeyword}, '%')
 		</if>
-		<if test="searchCondition == 'A.BDT_DC'">
+		<if test="searchCondition == 'A.BDT_DESCRIPTION'">
 		AND A.BDT_DC LIKE CONCAT('%', #{searchKeyword}, '%')
 		</if>
 		<if test="searchCondition == 'A.BDT_TAG'">
 		AND A.BDT_TAG LIKE CONCAT('%', #{searchKeyword}, '%')
 		</if>
-		<if test="searchCondition == 'A.BDT_ETC_TAG'">
+		<if test="searchCondition == 'A.BDT_ETC'">
 		AND A.BDT_ETC_TAG LIKE CONCAT('%', #{searchKeyword}, '%')
 		</if>
 	 	
@@ -90,7 +90,7 @@
 		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
 	
 	</select>
-	<!-- RSS관리::목록조회_게시물 총갯수  -->
+	<!-- RSS관리::목록조회_게시물 총개수  -->
 	<select id="selectRssTagManageCnt" parameterType="comDefaultVO" resultType="int">
 		SELECT 
 		COUNT(*) totcnt
@@ -184,9 +184,9 @@ WHERE RSS_ID=#{rssId}
 		A.BDT_DC,
 		A.BDT_TAG,
 		A.BDT_ETC_TAG,
-		A.FRST_REGIST_PNTTM,
+		DATE_FORMAT(A.FRST_REGIST_PNTTM,'%Y-%m-%d') AS FRST_REGIST_PNTTM,
 		A.FRST_REGISTER_ID,
-		A.LAST_UPDT_PNTTM,
+		DATE_FORMAT(A.LAST_UPDT_PNTTM,'%Y-%m-%d') AS LAST_UPDT_PNTTM,
 		A.LAST_UPDUSR_ID  
 		FROM COMTNRSS A
 		WHERE 1=1

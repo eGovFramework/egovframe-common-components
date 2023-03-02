@@ -58,6 +58,7 @@ public class EgovSmsBasicReceiver implements SMEListener {
 	private SMEReceiver receiver = null;
 
 	/** 연결 여부 */
+	@SuppressWarnings("unused")
 	private boolean isConnected = false;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovSmsBasicReceiver.class);

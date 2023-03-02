@@ -16,8 +16,8 @@ import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
-import twitter4j.conf.Configuration;
-import twitter4j.conf.ConfigurationBuilder;
+//import twitter4j.conf.Configuration;
+//import twitter4j.conf.ConfigurationBuilder;
 /**
  * 트위터수신을 처리하는 ServiceImpl Class 구현
  * @author 공통서비스 장동한
@@ -40,7 +40,7 @@ public class EgovTwitterRecptnServiceImpl extends EgovAbstractServiceImpl
 	 * 트위터 목록을 조회한다.
 	 * @param sTwitterId 	-트위터 아이디
 	 * @param sTwitterPw 	-트위터 비밀번호
-	 * @param nPageSize 	-페이징 갯수
+	 * @param nPageSize 	-페이징 개수
      * @return List 		-조회 결과
      * @throws Exception	-Exception Throws
 	 */
@@ -69,7 +69,7 @@ public class EgovTwitterRecptnServiceImpl extends EgovAbstractServiceImpl
     	List<TwitterInfo> listRtn = new ArrayList();
     	//트위터 페이징 객체
         Paging page = new Paging();
-        //페이지 갯수 설정
+        //페이지 개수 설정
         page.count(nPageSize);
         //인덱스 설정
         page.setPage(1);

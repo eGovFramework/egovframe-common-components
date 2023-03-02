@@ -52,7 +52,7 @@ public class EgovProxySvcServiceImpl extends EgovAbstractServiceImpl implements 
 	}
 
 	/**
-	 * 프록시서비스 목록 총 갯수를 조회한다.
+	 * 프록시서비스 목록 총 개수를 조회한다.
 	 * @param proxySvcVO - 프록시서비스 Vo
 	 * @return int - 프록시서비스 카운트 수
 	 */
@@ -114,7 +114,7 @@ public class EgovProxySvcServiceImpl extends EgovAbstractServiceImpl implements 
 	}
 
 	/**
-	 * 프록시로그 목록 총 갯수를 조회한다.
+	 * 프록시로그 목록 총 개수를 조회한다.
 	 * @param proxyLogVO - 프록시로그 Vo
 	 * @return int - 프록시로그 카운트 수
 	 */

@@ -26,7 +26,7 @@ public interface EgovKnoAppraisalService {
 	List<?> selectKnoAppraisalList(KnoAppraisalVO searchVO) throws Exception;
 
 	/**
-	 * 지식정보평가 목록 총 갯수를 조회한다.
+	 * 지식정보평가 목록 총 개수를 조회한다.
 	 * @param MapTeamVO - 지식정보평가 Vo
 	 * @return int - 지식정보평가 토탈 카운트 수
 	 *

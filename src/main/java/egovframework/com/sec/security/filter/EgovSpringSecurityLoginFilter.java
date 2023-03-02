@@ -27,6 +27,7 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.config.EgovLoginConfig;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uat.uia.service.EgovLoginService;
+import egovframework.com.utl.sim.service.EgovClntInfo;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 /**
@@ -42,12 +43,12 @@ import org.egovframe.rte.psl.dataaccess.util.EgovMap;
  *  수정일               수정자        	 수정내용
  *  ----------   --------   ---------------------------
  *  2011.08.29   서준식            최초생성
- *  2011.12.12   유지보수         사용자 로그인 정보 간섭 가능성 문제(멤버 변수 EgovUserDetails userDetails를 로컬변수로 변경)
- *  2014.03.07   유지보수         로그인된 상태에서 다시 로그인 시 미처리 되는 문제 수정 (로그인 처리 URL 파라미터화)
- *  2017.03.03 	  조성원 	       시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+ *  2011.12.12   유지보수          사용자 로그인 정보 간섭 가능성 문제(멤버 변수 EgovUserDetails userDetails를 로컬변수로 변경)
+ *  2014.03.07   유지보수          로그인된 상태에서 다시 로그인 시 미처리 되는 문제 수정 (로그인 처리 URL 파라미터화)
+ *  2017.03.03   조성원 	       시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
  *  2017.07.10   장동한            실행환경 v3.7(Spring Security 4.0.3 적용)
- *  2017.07.21 	  장동한 		로그인인증제한 작업
- *  2020.06.25 	  신용호 		로그인 메시지 처리 수정
+ *  2017.07.21   장동한 		   로그인인증제한 작업
+ *  2020.06.25   신용호 		   로그인 메시지 처리 수정
  *
  *  </pre>
  */
@@ -97,6 +98,10 @@ public class EgovSpringSecurityLoginFilter implements Filter {
 					loginVO = loginService.actionLoginByEsntlId(loginVO);
 
 					if (loginVO != null && loginVO.getId() != null && !loginVO.getId().equals("")) {
+						
+						String userIp = EgovClntInfo.getClntIP(httpRequest);
+                        loginVO.setIp(userIp);
+                        
 						//세션 로그인
 						session.setAttribute("loginVO", loginVO);
 
@@ -105,7 +110,7 @@ public class EgovSpringSecurityLoginFilter implements Filter {
 
 						//스프링 시큐리티 로그인
 						//httpResponse.sendRedirect(httpRequest.getContextPath() + "/j_spring_security_check?j_username=" + loginVO.getUserSe() + loginVO.getId() + "&j_password=" + loginVO.getUniqId());
-
+						
 						UsernamePasswordAuthenticationFilter springSecurity = null;
 
 						Map<String, UsernamePasswordAuthenticationFilter> beans = act.getBeansOfType(UsernamePasswordAuthenticationFilter.class);
@@ -201,7 +206,8 @@ public class EgovSpringSecurityLoginFilter implements Filter {
 						//사용자 입력 id, password로 DB 인증을 실행함
 						loginVO = loginService.actionLogin(loginVO);
 						//사용자 IP 기록
-						loginVO.setIp(request.getRemoteAddr());
+						String userIp = EgovClntInfo.getClntIP(httpRequest);
+                        loginVO.setIp(userIp);
 						if (loginVO != null && loginVO.getId() != null && !loginVO.getId().equals("")) {
 							//세션 로그인
 							session.setAttribute("loginVO", loginVO);

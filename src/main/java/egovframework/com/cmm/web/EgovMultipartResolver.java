@@ -33,6 +33,7 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartFile;
 import org.springframework.web.multipart.commons.CommonsMultipartResolver;
 
+import egovframework.com.cmm.exception.EgovFileExtensionException;
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.utl.fcc.service.EgovFileUploadUtil;
 
@@ -133,12 +134,13 @@ public class EgovMultipartResolver extends CommonsMultipartResolver {
 						LOGGER.debug("No file name.");
 					} else {
 						if ("".equals(fileExtension)) { // 확장자 없는 경우 처리 불가
-							throw new SecurityException("[No file extension] File extension not allowed.");
+							throw new EgovFileExtensionException("[No file extension] File extension not allowed.","errors.file.extension.none");
 						}
 						if ((whiteListFileUploadExtensions+".").contains("."+fileExtension.toLowerCase()+".")) {
 							LOGGER.debug("File extension allowed.");
 						} else {
-							throw new SecurityException("["+fileExtension+"] File extension not allowed.");
+							LOGGER.info("["+fileExtension+"] File extension not allowed.{} OK");
+							throw new EgovFileExtensionException("["+fileExtension+"] File extension not allowed.","errors.file.extension.deny");
 						}
 					}
 				}

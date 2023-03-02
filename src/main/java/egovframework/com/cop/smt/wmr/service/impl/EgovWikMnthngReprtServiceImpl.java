@@ -104,10 +104,10 @@ public class EgovWikMnthngReprtServiceImpl extends EgovAbstractServiceImpl imple
 		WikMnthngReprtVO resultVO = wikMnthngReprtDAO.selectWikMnthngReprt(wikMnthngReprtVO);
 		if(resultVO.getConfmDt() == null || resultVO.getConfmDt().equals("")){
 			String year = resultVO.getFrstRegisterPnttm().substring(0,4);
-			String month = resultVO.getFrstRegisterPnttm().substring(5,7);
-			String day = resultVO.getFrstRegisterPnttm().substring(8,10);
-			String hour = resultVO.getFrstRegisterPnttm().substring(11,13);
-			String min = resultVO.getFrstRegisterPnttm().substring(14,16);
+			String month = resultVO.getFrstRegisterPnttm().substring(4,6);
+			String day = resultVO.getFrstRegisterPnttm().substring(6,8);
+			String hour = resultVO.getFrstRegisterPnttm().substring(8,10);
+			String min = resultVO.getFrstRegisterPnttm().substring(10,12);
 			
 			String yymmddhhmm = year + "/" + month + "/" + day + "  " + hour + "시 " + min + "분";
 			resultVO.setReprtSttus("등록 (" + yymmddhhmm + ") ");

@@ -1,0 +1,1282 @@
+@charset "UTF-8";
+/* CSS Document */
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre,
+a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd,
+q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd,
+ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td,
+article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup,
+menu, nav, output, ruby, section, summary, time, mark, audio, video {
+  margin: 0;
+  padding: 0;
+  border: 0;
+  font-size: 100%;
+  font: inherit;
+  vertical-align: baseline;
+  text-decoration: none;
+  list-style: none;
+  font-style: normal;
+}
+
+/* HTML5 display-role reset for older browsers */
+html {
+  scroll-behavior: smooth;
+}
+
+html,
+body {
+  font-family: "Noto Sans KR", "맑은 고딕", "Malgun Gothic", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  color: #333;
+  height: 100%;
+  word-wrap: break-word;
+  word-break: keep-all;
+  letter-spacing: -0.5px;
+}
+
+article, aside, details, figcaption, figure, footer, header, hgroup, menu, nav, section, main {
+  display: block;
+}
+
+blockquote,
+q {
+  quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+  content: "";
+  content: none;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: #333;
+  text-decoration: none;
+  transition: all 0.3s;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+}
+
+select {
+  position: relative;
+  width: 100%;
+  min-width: 150px;
+  font-family: "Noto Sans KR", "맑은 고딕", "Malgun Gothic", sans-serif;
+  height: 34px;
+  line-height: 34px;
+  font-size: 14px;
+  color: #333;
+  border: 1px solid #dbdbe8;
+  appearance: none;
+  padding: 0 30px 0 10px;
+  vertical-align: middle;
+  border-radius: 3px;
+  background: #fff url(../../../../../../images/egovframework/com/sec/rnc/mip/bg/bg-select.svg) right 10px center/7px no-repeat;
+}
+
+select::-ms-expand {
+  display: none;
+}
+
+select[disabled] {
+  background: #eff1f5 url(../../../../../../images/egovframework/com/sec/rnc/mip/bg/bg-select.svg) right 10px center/7px no-repeat;
+}
+
+button {
+  font-family: "Noto Sans KR", "맑은 고딕", "Malgun Gothic", sans-serif;
+  font-size: 14px;
+  padding: 0;
+  margin: 0;
+  background: none;
+  border: none;
+  outline: none;
+  letter-spacing: 1px;
+  cursor: pointer;
+}
+
+input[type="checkbox"],
+input[type="radio"] {
+  display: none;
+}
+
+input[type="checkbox"] + label {
+  position: relative;
+  letter-spacing: -1px;
+  padding-left: 16px;
+}
+
+input[type="radio"] + label {
+  position: relative;
+  letter-spacing: -1px;
+  padding-left: 22px;
+}
+
+input[type="checkbox"].chk_text + label {
+  padding-left: 22px;
+}
+
+input[type="checkbox"] + label::before {
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  position: relative;
+  left: 0;
+  font-size: 16px;
+  transition: all 0.3s;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  border-radius: 50px;
+  overflow: hidden;
+}
+
+input[type="radio"] + label::before {
+  width: 16px;
+  height: 16px;
+  line-height: 16px;
+  position: relative;
+  left: 0;
+  font-size: 16px;
+  transition: all 0.3s;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  border-radius: 50px;
+  overflow: hidden;
+  margin-right: 16px;
+}
+
+input[type="checkbox"].chk_text + label::before {
+  margin-right: 16px;
+  margin-bottom: 2px;
+}
+
+input[type="checkbox"] + label::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  display: inline-block;
+  vertical-align: middle;
+  content: "";
+  position: absolute;
+  color: #dbdbe8;
+  font-weight: 700;
+}
+
+input.m-hidden[type="checkbox"] + label::before {
+  display: none;
+}
+
+input[type="radio"] + label::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  display: inline-block;
+  vertical-align: middle;
+  content: "";
+  position: absolute;
+  color: #dbdbe8;
+}
+
+input[type="checkbox"]:checked + label,
+input[type="radio"]:checked + label {
+  position: relative;
+}
+
+input[type="checkbox"]:checked + label::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  display: inline-block;
+  vertical-align: middle;
+  content: "";
+  position: absolute;
+  color: #3e50c5;
+  font-weight: 700;
+  background: #fff;
+}
+
+input.m-hidden[type="checkbox"]:checked + label::before {
+  display: none;
+}
+
+input[type="radio"]:checked + label::before {
+  font-family: "Font Awesome 5 Free";
+  font-weight: 900;
+  display: inline-block;
+  vertical-align: middle;
+  content: "";
+  position: absolute;
+  color: #2d2f94;
+  font-weight: 700;
+  background: #fff;
+}
+
+.btn-check > div,
+.btn-radio > div {
+  margin-right: 15px;
+  padding: 2px 0;
+}
+
+.btn-check.row,
+.btn-radio.row {
+  flex-wrap: wrap;
+}
+
+input[type="tel"],
+input[type="time"],
+input[type="text"],
+input[type="password"],
+input[type="search"],
+input[type="email"],
+input[type="file"],
+input[type="url"],
+input[type="number"] {
+  box-sizing: border-box;
+  width: 100%;
+  font-family: "Noto Sans KR", "맑은 고딕", "Malgun Gothic", sans-serif;
+  font-size: 14px;
+  border: 1px solid #dbdbe8;
+  background: #fff;
+  text-indent: 10px;
+  padding-right: 10px;
+  vertical-align: middle;
+  padding-bottom: 2px;
+}
+
+input::-webkit-input-placeholder {
+  color: #8b949e;
+  font-size: 14px;
+  line-height: 100%;
+  line-height: 1.5;
+}
+
+input.sch-lg::-webkit -input-placeholder {
+  font-size: 16px;
+}
+
+input.sch-lg {
+  width: 100%;
+  height: 100%;
+  padding-right: 50px;
+  background-color: transparent;
+  border: 2px solid transparent;
+}
+
+input.mini,
+select.mini {
+  width: 80px;
+}
+
+input.sm,
+select.sm {
+  width: 138px;
+}
+
+input.md,
+select.md {
+  width: 250px;
+}
+
+input.lg,
+select.lg {
+  width: 100%;
+  max-width: 400px;
+}
+
+input.pass {
+  border: 1px solid #37bc9b;
+  padding-right: 36px;
+  position: relative;
+  background: url(../../../../../../images/egovframework/com/sec/rnc/mip/icon/ic-pass.svg) right 10px center/16px no-repeat;
+}
+
+.input-group {
+  padding-bottom: 20px;
+  position: relative;
+}
+
+.input-group > span {
+  font-size: 12px;
+  position: absolute;
+  bottom: 0;
+  left: 0;
+}
+
+.input-group > span.pass {
+  color: #37bc9b;
+}
+
+.input-group > span.error {
+  color: #e40009;
+}
+
+input.error {
+  border: 1px solid #e40009;
+  padding-right: 36px;
+  position: relative;
+  background: url(../../../../../../images/egovframework/com/sec/rnc/mip/icon/ic-error.svg) right 10px center/16px no-repeat;
+}
+
+input[type="date"] {
+  width: 100%;
+  font-family: "Noto Sans KR", "맑은 고딕", "Malgun Gothic", sans-serif;
+  font-size: 14px;
+  height: 34px;
+  border: 1px solid #dbdbe8;
+  background: #fff;
+  text-indent: 4px;
+  padding-right: 5px;
+  vertical-align: middle;
+  border-radius: 3px;
+  color: #8b949e;
+}
+
+input[type="date"]::-webkit-clear-button,
+input[type="date"]::-webkit-inner-spin-button {
+  display: none;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator {
+  color: rgba(0, 0, 0, 0);
+  opacity: 1;
+  display: block;
+  position: relative;
+  right: 0px;
+  top: 0px;
+  background: url(../../../../../../images/egovframework/com/sec/rnc/mip/icon/ic-calendar.svg) center center/contain no-repeat;
+  width: 13px;
+  height: 13px;
+  transition: all 0.3s;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+}
+
+input[type="date"]::-webkit-calendar-picker-indicator:hover {
+  background: url(../../../../../../images/egovframework/com/sec/rnc/mip/icon/ic-calendar-hover.svg) center center/contain no-repeat;
+}
+
+.date-group {
+  position: relative;
+  width: 100%;
+}
+
+.date-group .btn-date {
+  width: 32px;
+  min-width: unset;
+  margin: 0;
+  height: 32px;
+  background: #f6f7fc url(../../../../../../images/egovframework/com/sec/rnc/mip/icon/ic-calendar.svg) center center/14px no-repeat;
+  position: absolute;
+  top: 1px;
+  right: 1px;
+  border-radius: 0 3px 3px 0;
+}
+
+.date-group .btn-date:hover {
+  background-color: #f0f2f6;
+}
+
+.txt-between {
+  display: inline-block;
+  padding: 0 6px;
+  line-height: 34px;
+}
+
+textarea {
+  padding: 10px;
+  width: 100%;
+  font-family: "Noto Sans KR", "맑은 고딕", "Malgun Gothic", sans-serif;
+  font-size: 14px;
+  border: 1px solid #dbdbe8;
+  background: #fff;
+  vertical-align: middle;
+  resize: none;
+  height: 150px;
+}
+
+button:focus,
+select:focus,
+textarea:focus,
+input:focus {
+  outline: none;
+  -webkit-appearance: none;
+}
+
+.sch-lg.input-focus:focus {
+  outline: none;
+  -webkit-appearance: none;
+  background-color: #fff;
+  border: 2px solid #3e50c5;
+  box-shadow: 0 0 10px rgba(0, 126, 229, 0.25);
+  transition: all 0.3s;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+}
+
+input[type="tel"][readonly],
+input[type="text"][readonly],
+input[type="password"][readonly],
+input[type="email"][readonly],
+input[type="search"][readonly],
+input[type="tel"][disabled],
+input[type="text"][disabled],
+input[type="password"][disabled],
+input[type="search"][disabled],
+input[type="email"][disabled] {
+  background: #eff1f5;
+  border-color: #dbdbe8;
+  color: #666;
+  -webkit-appearance: none;
+  font-size: 15px;
+  outline: none;
+}
+
+input[type="file"] {
+  display: none;
+}
+
+.btn-file {
+  min-width: 100px;
+  height: 34px;
+  display: inline-block;
+  font-family: "Noto Sans KR", "맑은 고딕", "Malgun Gothic", sans-serif;
+  font-size: 14px;
+  letter-spacing: -1px;
+  background: #3566d6;
+  color: #fff;
+  text-align: center;
+  padding: 7px 15px;
+  border-radius: 3px;
+  outline: none;
+  cursor: pointer;
+  position: relative;
+  transition: all 0.3s;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+}
+
+.btn-file::after {
+  content: '선택한 파일 없음';
+  display: inline-block;
+  position: absolute;
+  letter-spacing: 0px;
+  right: -105%;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #888;
+  font-size: 13px;
+  white-space: nowrap;
+}
+
+.btn-file:hover {
+  background: #346cf0;
+}
+
+textarea[readonly],
+textarea[disabled] {
+  padding: 5px;
+  font-size: 15px;
+  color: #eff1f5;
+  font-weight: normal;
+  line-height: 140%;
+  height: 78px;
+  background: #eaeaea;
+  border: 1px solid #eff1f5;
+}
+
+a {
+  cursor: pointer;
+}
+
+.row {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.row.right {
+  justify-content: flex-end;
+}
+
+.row.center {
+  justify-content: center;
+}
+
+.row.adjust {
+  justify-content: space-between;
+}
+
+.w-100 {
+  width: 100% !important;
+}
+
+.w-80 {
+  width: 80% !important;
+}
+
+.w-70 {
+  width: 70% !important;
+}
+
+.w-60 {
+  width: 60% !important;
+}
+
+.w-50 {
+  width: 50% !important;
+}
+
+.w-40 {
+  width: 40% !important;
+}
+
+.w-30 {
+  width: 30% !important;
+}
+
+.w-25 {
+  width: 25% !important;
+}
+
+.w-20 {
+  width: 20% !important;
+}
+
+.fw-100 {
+  flex-basis: 100% !important;
+}
+
+/* 텍스트 굵기, 색상 */
+.bold {
+  font-weight: 700;
+}
+
+.bold-m {
+  font-weight: 500;
+}
+
+.txt-underline {
+  text-decoration: underline;
+}
+
+.txt-red {
+  color: #e40009;
+}
+
+.txt-blue {
+  color: #3e50c5;
+}
+
+.txt-yellow {
+  color: #ffc533;
+}
+
+.txt-green {
+  color: #37bc9b;
+}
+
+.txt-gray {
+  color: #999999;
+}
+
+.txt-gray-dark {
+  color: #666666;
+}
+
+.txt-link {
+  color: #2d2f94;
+}
+
+/* 텍스트 정렬 */
+.txt-al {
+  text-align: left !important;
+}
+
+.txt-ac {
+  text-align: center !important;
+}
+
+.txt-ar {
+  text-align: right !important;
+}
+
+/* 패딩,마진 스타일 */
+.pd-0 {
+  padding: 0 !important;
+}
+
+.pl-0 {
+  padding-left: 0 !important;
+}
+
+.pr-0 {
+  padding-right: 0 !important;
+}
+
+.pt-0 {
+  padding-top: 0 !important;
+}
+
+.pb-0 {
+  padding-bottom: 0 !important;
+}
+
+.pd-5 {
+  padding: 5px !important;
+}
+
+.pl-5 {
+  padding-left: 5px !important;
+}
+
+.pr-5 {
+  padding-right: 5px !important;
+}
+
+.pt-5 {
+  padding-top: 5px !important;
+}
+
+.pb-5 {
+  padding-bottom: 5px !important;
+}
+
+.pd-10 {
+  padding: 10px !important;
+}
+
+.pl-10 {
+  padding-left: 10px !important;
+}
+
+.pr-10 {
+  padding-right: 10px !important;
+}
+
+.pt-10 {
+  padding-top: 10px !important;
+}
+
+.pb-10 {
+  padding-bottom: 10px !important;
+}
+
+.pd-15 {
+  padding: 15px !important;
+}
+
+.pl-15 {
+  padding-left: 15px !important;
+}
+
+.pr-15 {
+  padding-right: 15px !important;
+}
+
+.pt-15 {
+  padding-top: 15px !important;
+}
+
+.pb-15 {
+  padding-bottom: 15px !important;
+}
+
+.pd-20 {
+  padding: 20px !important;
+}
+
+.pl-20 {
+  padding-left: 20px !important;
+}
+
+.pr-20 {
+  padding-right: 20px !important;
+}
+
+.pt-20 {
+  padding-top: 20px !important;
+}
+
+.pb-20 {
+  padding-bottom: 20px !important;
+}
+
+.pd-25 {
+  padding: 25px !important;
+}
+
+.pl-25 {
+  padding-left: 25px !important;
+}
+
+.pr-25 {
+  padding-right: 25px !important;
+}
+
+.pt-25 {
+  padding-top: 25px !important;
+}
+
+.pb-25 {
+  padding-bottom: 25px !important;
+}
+
+.pd-30 {
+  padding: 30px !important;
+}
+
+.pl-30 {
+  padding-left: 30px !important;
+}
+
+.pr-30 {
+  padding-right: 30px !important;
+}
+
+.pt-30 {
+  padding-top: 30px !important;
+}
+
+.pb-30 {
+  padding-bottom: 30px !important;
+}
+
+.pd-35 {
+  padding: 35px !important;
+}
+
+.pl-35 {
+  padding-left: 35px !important;
+}
+
+.pr-35 {
+  padding-right: 35px !important;
+}
+
+.pt-35 {
+  padding-top: 35px !important;
+}
+
+.pb-35 {
+  padding-bottom: 35px !important;
+}
+
+.pd-40 {
+  padding: 40px !important;
+}
+
+.pl-40 {
+  padding-left: 40px !important;
+}
+
+.pr-40 {
+  padding-right: 40px !important;
+}
+
+.pt-40 {
+  padding-top: 40px !important;
+}
+
+.pb-40 {
+  padding-bottom: 40px !important;
+}
+
+.mg-0 {
+  margin: 0 !important;
+}
+
+.ml-0 {
+  margin-left: 0 !important;
+}
+
+.mr-0 {
+  margin-right: 0 !important;
+}
+
+.mt-0 {
+  margin-top: 0 !important;
+}
+
+.mb-0 {
+  margin-bottom: 0 !important;
+}
+
+.mg-5 {
+  margin: 5px !important;
+}
+
+.ml-5 {
+  margin-left: 5px !important;
+}
+
+.mr-5 {
+  margin-right: 5px !important;
+}
+
+.mt-5 {
+  margin-top: 5px !important;
+}
+
+.mb-5 {
+  margin-bottom: 5px !important;
+}
+
+.mg-10 {
+  margin: 10px !important;
+}
+
+.ml-10 {
+  margin-left: 10px !important;
+}
+
+.mr-10 {
+  margin-right: 10px !important;
+}
+
+.mt-10 {
+  margin-top: 10px !important;
+}
+
+.mb-10 {
+  margin-bottom: 10px !important;
+}
+
+.mg-15 {
+  margin: 15px !important;
+}
+
+.ml-15 {
+  margin-left: 15px !important;
+}
+
+.mr-15 {
+  margin-right: 15px !important;
+}
+
+.mt-15 {
+  margin-top: 15px !important;
+}
+
+.mb-15 {
+  margin-bottom: 15px !important;
+}
+
+.mg-20 {
+  margin: 20px !important;
+}
+
+.ml-20 {
+  margin-left: 20px !important;
+}
+
+.mr-20 {
+  margin-right: 20px !important;
+}
+
+.mt-20 {
+  margin-top: 20px !important;
+}
+
+.mb-20 {
+  margin-bottom: 20px !important;
+}
+
+.mg-25 {
+  margin: 25px !important;
+}
+
+.ml-25 {
+  margin-left: 25px !important;
+}
+
+.mr-25 {
+  margin-right: 25px !important;
+}
+
+.mt-25 {
+  margin-top: 25px !important;
+}
+
+.mb-25 {
+  margin-bottom: 25px !important;
+}
+
+.mg-30 {
+  margin: 30px !important;
+}
+
+.ml-30 {
+  margin-left: 30px !important;
+}
+
+.mr-30 {
+  margin-right: 30px !important;
+}
+
+.mt-30 {
+  margin-top: 30px !important;
+}
+
+.mb-30 {
+  margin-bottom: 30px !important;
+}
+
+.mg-35 {
+  margin: 35px !important;
+}
+
+.ml-35 {
+  margin-left: 35px !important;
+}
+
+.mr-35 {
+  margin-right: 35px !important;
+}
+
+.mt-35 {
+  margin-top: 35px !important;
+}
+
+.mb-35 {
+  margin-bottom: 35px !important;
+}
+
+.mg-40 {
+  margin: 40px !important;
+}
+
+.ml-40 {
+  margin-left: 40px !important;
+}
+
+.mr-40 {
+  margin-right: 40px !important;
+}
+
+.mt-40 {
+  margin-top: 40px !important;
+}
+
+.mb-40 {
+  margin-bottom: 40px !important;
+}
+
+.mg-45 {
+  margin: 45px !important;
+}
+
+.ml-45 {
+  margin-left: 45px !important;
+}
+
+.mr-45 {
+  margin-right: 45px !important;
+}
+
+.mt-45 {
+  margin-top: 45px !important;
+}
+
+.mb-45 {
+  margin-bottom: 45px !important;
+}
+
+.mg-50 {
+  margin: 50px !important;
+}
+
+.ml-50 {
+  margin-left: 50px !important;
+}
+
+.mr-50 {
+  margin-right: 50px !important;
+}
+
+.mt-50 {
+  margin-top: 50px !important;
+}
+
+.mb-50 {
+  margin-bottom: 50px !important;
+}
+
+/* 간격 스타일 */
+.space-5 {
+  height: 5px;
+}
+
+.space-10 {
+  height: 10px;
+}
+
+.space-15 {
+  height: 15px;
+}
+
+.space-20 {
+  height: 20px;
+}
+
+.space-25 {
+  height: 25px;
+}
+
+.space-30 {
+  height: 30px;
+}
+
+.space-35 {
+  height: 35px;
+}
+
+.space-40 {
+  height: 40px;
+}
+
+.space-45 {
+  height: 45px;
+}
+
+.space-50 {
+  height: 50px;
+}
+
+.btn-area {
+  display: flex;
+}
+
+.btn-area.right {
+  justify-content: flex-end;
+}
+
+.btn-area.center {
+  justify-content: center;
+}
+
+.btn-area.adjust {
+  justify-content: space-between;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+}
+
+button,
+.btn {
+  min-width: 100px;
+  position: relative;
+  font-family: "Noto Sans KR", "맑은 고딕", "Malgun Gothic", sans-serif;
+  font-size: 14px;
+  padding: 10px 15px;
+  margin-left: 5px;
+  outline: none;
+  border: none;
+  letter-spacing: -1px;
+  cursor: pointer;
+  background-color: #3566d6;
+  color: #fff;
+  border-radius: 3px;
+  transition: all 0.3s;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+}
+
+button:hover,
+.btn:hover {
+  background-color: #346cf0;
+}
+
+button.line,
+.btn.line {
+  color: #3566d6;
+  background-color: #fff;
+  padding: 9px 15px;
+  border: 1px solid #3566d6;
+}
+
+button.line:hover,
+.btn.line:hover {
+  color: #fff;
+  background-color: #346cf0;
+}
+
+button.pass,
+.btn.pass {
+  background-color: #37bc9b;
+}
+
+button.pass:hover,
+.btn.pass:hover {
+  background-color: #39c7a3;
+}
+
+button.danger,
+.btn.danger {
+  background-color: #e40009;
+}
+
+button.danger:hover,
+.btn.danger:hover {
+  background-color: #ca0d13;
+}
+
+button.gray,
+.btn.gray {
+  background-color: #67788d;
+}
+
+button.gray:hover,
+.btn.gray:hover {
+  background-color: #5e6f85;
+}
+
+button.disable,
+.btn.disable {
+  background-color: #eff1f5;
+  color: #888;
+  cursor: default;
+}
+
+button.disable:hover,
+.btn.disable:hover {
+  background-color: #eff1f5;
+}
+
+button > i,
+.btn > i {
+  margin-right: 5px;
+  margin-top: -3px;
+  vertical-align: middle;
+  font-size: 11px;
+}
+
+.wrap {
+  width: 100%;
+  padding: 40px;
+}
+
+.top-wrap {
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.top-wrap .select-box {
+  margin-top: 24px;
+}
+
+.bottom-wrap {
+  width: 100%;
+  height: 350px;
+  display: flex;
+}
+
+.bottom-wrap > div {
+  margin-right: 10px;
+}
+
+.bottom-wrap > div:first-of-type {
+  width: 40%;
+}
+
+.bottom-wrap > div:nth-of-type(2) {
+  width: 30%;
+}
+
+.bottom-wrap > div:last-of-type {
+  width: 30%;
+  margin-right: 0;
+}
+
+.box-group {
+  border: 1px solid #f0f2f6;
+}
+
+.box-th {
+	background: #f4f4f4;
+	padding: 5px;
+	border-top: 2px solid #4688d2;
+	border-bottom: 1px solid #d9d9d9;
+}
+
+.box-tit {
+  font-size: 20px;
+  font-weight: 700;
+  margin-bottom: 25px;
+  color: #3e50c5;
+  display: inline-block;
+  width: 300px !important;
+}
+
+label {
+  font-weight: 500;
+  display: block;
+  margin-bottom: 10px;
+  color: #666666;
+}
+
+.box-line {
+  width: 100%;
+}
+
+.tit-sm {
+  font-size: 16px;
+  font-weight: 700;
+  margin-bottom: 20px;
+  padding-left: 20px;
+  position: relative;
+}
+
+.tit-sm::before {
+  content: '';
+  display: block;
+  width: 16px;
+  height: 16px;
+  position: absolute;
+  left: 0;
+  top: 1px;
+  background: url(../../../../../../images/egovframework/com/sec/rnc/mip/icon/ic-sub-tit.svg) center center/contain no-repeat;
+}
+
+.code-area {
+  width: 100%;
+  padding: 15px;
+  max-height: 594px;
+  overflow-y: auto;
+  line-height: 1.8;
+  height: 240px;
+}
+
+.qr-wrap {
+  width: 250px;
+  height: 250px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.qr-wrap img {
+  display: block;
+  margin: auto;
+  width: 100%;
+}
+
+.float-r {
+	float: right;
+}
+
+.flex-box {
+	display: flex;
+	flex-direction: row;
+}
+
+.flex-box > div {
+	margin: 0 10px;
+}

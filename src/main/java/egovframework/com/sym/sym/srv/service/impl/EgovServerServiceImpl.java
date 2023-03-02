@@ -43,7 +43,7 @@ public class EgovServerServiceImpl extends EgovAbstractServiceImpl implements Eg
 	}
 
 	/**
-	 * 서버장비목록 총 갯수를 조회한다.
+	 * 서버장비목록 총 개수를 조회한다.
 	 * @param serverEqpmnVO - 서버장비 Vo
 	 * @return int - 서버장비 카운트 수
 	 */
@@ -98,7 +98,7 @@ public class EgovServerServiceImpl extends EgovAbstractServiceImpl implements Eg
 	}
 
 	/**
-	 * 서버목록 총 갯수를 조회한다.
+	 * 서버목록 총 개수를 조회한다.
 	 * @param serverVO - 서버 Vo
 	 * @return int - 서버 카운트 수
 	 */
@@ -171,7 +171,7 @@ public class EgovServerServiceImpl extends EgovAbstractServiceImpl implements Eg
 	}
 
 	/**
-	 * 서버장비관계 대상 목록 총 갯수를 조회한다.
+	 * 서버장비관계 대상 목록 총 개수를 조회한다.
 	 * @param serverEqpmnRelateVO - 서버장비관계 Vo
 	 * @return int - 서버장비관계 카운트 수
 	 */

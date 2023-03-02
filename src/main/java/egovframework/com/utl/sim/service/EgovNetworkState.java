@@ -28,6 +28,7 @@ import java.util.List;
 
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.service.EgovProperties;
+import egovframework.com.cmm.service.FileSystemUtils;
 import egovframework.com.cmm.service.Globals;
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
 
@@ -42,6 +43,7 @@ import egovframework.com.cmm.util.EgovResourceCloseHelper;
  *  수정일                수정자           수정내용
  *  ----------   --------   ---------------------------
  *  2020.12.07   신용호            KISA 보안약점 조치
+ *  2022.11.11   김혜준            시큐어코딩 처리
  *  
  * </pre>
  */
@@ -73,12 +75,11 @@ public class EgovNetworkState {
 				// 2020-12-07 KISA 보안코드 검증 조치
 				if (!EgovWebUtil.isIPAddress(localIP))
 					throw new SecurityException("IP Address is Not Valid~~~!");
-				
-				Process p = null;
-				Runtime rt = Runtime.getRuntime();
-				String[] execStr = { "nbtstat", "-A", localIP };
-				p = rt.exec(execStr); // 여기다 아이피 주소 넣주세여
 
+				String execStr = "nbtstat -A " + localIP;
+				// 2022.11.11 시큐어코딩 처리
+				FileSystemUtils util = new FileSystemUtils();
+				Process p = util.processOperate("EgovNetworkState", execStr);
 				InputStream in = p.getInputStream();
 				String out = null;
 				int c;
@@ -117,11 +118,11 @@ public class EgovNetworkState {
 		
 		try {
 
-			Process p = null;
-			Runtime rt = Runtime.getRuntime();
 			if ("WINDOWS".equals(Globals.OS_TYPE)) {
-				String[] execStr = { "netstat", "-an" };
-				p = rt.exec(execStr);
+				String execStr = "netstat -an";
+				// 2022.11.11 시큐어코딩 처리
+				FileSystemUtils util = new FileSystemUtils();
+				Process p = util.processOperate("EgovNetworkState", execStr);
 				input = new BufferedReader(new InputStreamReader(p.getInputStream()));
 
 				while (true) {
@@ -137,10 +138,10 @@ public class EgovNetworkState {
 				}
 			} else if ("UNIX".equals(Globals.OS_TYPE)) {
 				String cmdStr = EgovProperties.getPathProperty(Globals.SERVER_CONF_PATH, "SHELL." + Globals.OS_TYPE + ".getNetWorkInfo");
-				String[] command = { cmdStr.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR), "SCAN" };
-				p = Runtime.getRuntime().exec(command);
-				p = rt.exec(command);
-
+				String command = cmdStr.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR) + "SCAN";
+				// 2022.11.11 시큐어코딩 처리
+				FileSystemUtils util = new FileSystemUtils();
+				Process p = util.processOperate("EgovNetworkState", command);
 				input = new BufferedReader(new InputStreamReader(p.getInputStream()));
 				while (true) {
 					String str = input.readLine();
@@ -153,7 +154,6 @@ public class EgovNetworkState {
 						processes.add(str);
 					}
 				}
-				//log.debug("getMyPortScan 6");
 			}
 		} catch (IOException e) {
 			throw new RuntimeException("IO Exception", e);
@@ -230,8 +230,10 @@ public class EgovNetworkState {
 		String outValue = "";
 		try {
 			String cmdStr = EgovProperties.getPathProperty(Globals.SERVER_CONF_PATH, "SHELL." + Globals.OS_TYPE + ".getNetWorkInfo");
-			String[] command = { cmdStr.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR), stringOne };
-			p = Runtime.getRuntime().exec(command);
+			String command = cmdStr.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR) + stringOne;
+			// 2022.11.11 시큐어코딩 처리
+			FileSystemUtils util = new FileSystemUtils();
+			p = util.processOperate("EgovNetworkState", command);
 			b_out = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			while (true) {
 				tmp = b_out.readLine();

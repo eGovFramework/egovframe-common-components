@@ -344,7 +344,7 @@ public class EgovRwardManageController {
 
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
     	if (user == null) {
-    		return "egovframework/com/uat/uia/EgovLoginUsr";
+    		return "redirect:/uat/uia/egovLoginUsr.do";
     	}
     	
     	rwardManageVO.setSanctnerId(user.getUniqId()); //사용자가 승인권자인지 조건값 setting   selectRwardManageList
@@ -417,7 +417,7 @@ public class EgovRwardManageController {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
     	if (bindingResult.hasErrors()) {

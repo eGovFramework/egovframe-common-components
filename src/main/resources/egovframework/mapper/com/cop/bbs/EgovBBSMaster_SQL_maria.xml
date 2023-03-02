@@ -306,7 +306,7 @@
 	<select id="selectBlogListPortlet" parameterType="egovframework.com.cop.bbs.service.BlogVO" resultMap="BlogListPortlet">
 		
 			SELECT 
-				BLOG_ID, BBS_ID, BLOG_NM, FRST_REGIST_PNTTM
+				BLOG_ID, BBS_ID, BLOG_NM, DATE_FORMAT(FRST_REGIST_PNTTM,'%Y-%m-%d') AS FRST_REGIST_PNTTM
 			FROM
 				COMTNBLOG
 			WHERE USE_AT = 'Y'
@@ -317,7 +317,7 @@
 	<select id="selectBBSListPortlet" parameterType="egovframework.com.cop.bbs.service.BoardMasterVO" resultMap="BBSListPortlet">
 		
 			SELECT 
-				BBS_ID, BBS_TY_CODE, BBS_NM, FRST_REGIST_PNTTM
+				BBS_ID, BBS_TY_CODE, BBS_NM, DATE_FORMAT(FRST_REGIST_PNTTM,'%Y-%m-%d') AS FRST_REGIST_PNTTM
 			FROM
 				COMTNBBSMASTER
 			WHERE USE_AT = 'Y' 

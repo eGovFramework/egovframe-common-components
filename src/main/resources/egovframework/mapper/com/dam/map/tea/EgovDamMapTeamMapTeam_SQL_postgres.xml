@@ -5,10 +5,10 @@
 
 	<select id="selectMapTeamList" parameterType="egovframework.com.dam.map.tea.service.MapTeamVO" resultType="egovMap">
 		
-			SELECT  TRIM(ORGNZT_ID)						"orgnztId"
-			     ,  ORGNZT_NM						"orgnztNm"
-                 ,  CL_DE							"clYmd"
-			     ,  KNWLDG_URL						"knoUrl"
+			SELECT  TRIM(ORGNZT_ID)					ORGNZT_ID
+			     ,  ORGNZT_NM						ORGNZT_NM
+                 ,  TO_CHAR(TO_DATE(CL_DE, 'YYYYmmdd'), 'YYYY-mm-dd') AS CL_YMD
+			     ,  KNWLDG_URL						KNO_URL
 			  FROM  COMTNDAMMAPTEAM
 			 WHERE  1 = 1
 		
@@ -39,7 +39,7 @@
 		
             SELECT  ORGNZT_ID 						orgnztId
 			     ,  ORGNZT_NM  						orgnztNm
-                 ,  TO_CHAR(TO_DATE(CL_DE,'YYYYmmdd'),'YYYYmmdd')	clYmd
+                 ,  TO_CHAR(TO_DATE(CL_DE, 'YYYYmmdd'), 'YYYY-mm-dd') AS CL_YMD
                  ,  KNWLDG_URL         				knoUrl
               FROM  COMTNDAMMAPTEAM
              WHERE  ORGNZT_ID = #{orgnztId}

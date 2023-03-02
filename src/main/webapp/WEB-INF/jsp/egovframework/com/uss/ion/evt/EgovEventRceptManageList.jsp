@@ -42,7 +42,7 @@
 	var varForm				 = document.all["listForm"];
 	 if(varForm.searchMonth.value !=""){
 		 if(varForm.searchYear.value ==""){
-			 alert("<spring:message code="comUssIonEvt.common.validate.searchYearValue"/>");/* 전체년도에 월만 조회할 수 없습니다. 년도는 선택해주세요 */
+			 alert("<spring:message code="comUssIonEvt.common.validate.searchYearValue"/>");/* 전체연도에 월만 조회할 수 없습니다. 연도는 선택해주세요 */
 			 return;
 		 } 
 	 }
@@ -60,7 +60,7 @@
 	 var varForm				 = document.all["listForm"];
 	 if(varForm.searchMonth.value !=""){
 		 if(varForm.searchYear.value ==""){
-			 alert("<spring:message code="comUssIonEvt.common.validate.searchYearValue"/>");/* 전체년도에 월만 조회할 수 없습니다. 년도는 선택해주세요 */
+			 alert("<spring:message code="comUssIonEvt.common.validate.searchYearValue"/>");/* 전체연도에 월만 조회할 수 없습니다. 연도는 선택해주세요 */
 			 return;
 		 } 
 	 }

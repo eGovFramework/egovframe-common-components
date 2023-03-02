@@ -77,9 +77,9 @@ public class SystemCntcDAO extends EgovComAbstractDAO {
     }
 
     /**
-	 * 시스템연계 총 갯수를 조회한다.
+	 * 시스템연계 총 개수를 조회한다.
      * @param searchVO
-     * @return int(시스템연계 총 갯수)
+     * @return int(시스템연계 총 개수)
      */
     public int selectSystemCntcListTotCnt(SystemCntcVO searchVO) throws Exception {
         return (Integer)selectOne("SystemCntcDAO.selectSystemCntcListTotCnt", searchVO);

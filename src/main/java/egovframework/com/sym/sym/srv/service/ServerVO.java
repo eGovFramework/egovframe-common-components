@@ -1,5 +1,6 @@
 package egovframework.com.sym.sym.srv.service;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -50,7 +51,7 @@ public class ServerVO extends Server {
 	 * @param serverList the serverList to set
 	 */
 	public void setServerList(List<?> serverList) {
-		this.serverList = serverList;
+		this.serverList = Collections.unmodifiableList(serverList);
 	}
 	/**
 	 * @return the delYn

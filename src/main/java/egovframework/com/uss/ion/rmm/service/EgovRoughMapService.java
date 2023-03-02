@@ -36,9 +36,9 @@ public interface EgovRoughMapService {
     List<?> selectRoughMapList(RoughMapDefaultVO searchVO) throws Exception;
 
     /**
-     * 글 총 갯수를 조회한다
+     * 글 총 개수를 조회한다
      * @param searchVO
-     * @return 총 갯수
+     * @return 총 개수
      */
     int selectRoughMapListTotCnt(RoughMapDefaultVO searchVO);
 

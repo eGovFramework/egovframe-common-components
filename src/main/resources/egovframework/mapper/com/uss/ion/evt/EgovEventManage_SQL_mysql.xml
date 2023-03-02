@@ -266,16 +266,16 @@
 		      binary(mge.EVENT_NM) like  CONCAT('%', #{searchNm}, '%')   
         </if>
          <if test="searchConfmAt != null and searchConfmAt != ''">AND
-			<if test="searchConfmAt == 'NON'">
+			<if test='searchConfmAt == "NON"'>
 				 atdrn.CONFM_AT is null 
 			</if>
-			<if test="searchConfmAt == 'A'">
+			<if test='searchConfmAt == "A"'>
 				 atdrn.CONFM_AT = #{searchConfmAt} 
 			</if>
-			<if test="searchConfmAt == 'C'">
+			<if test='searchConfmAt == "C"'>
 				 atdrn.CONFM_AT = #{searchConfmAt} 
 			</if>
-			<if test="searchConfmAt == 'R'">
+			<if test='searchConfmAt == "R"'>
 				 atdrn.CONFM_AT = #{searchConfmAt} 
 			</if>
         </if>
@@ -311,16 +311,16 @@
 		      binary(mge.EVENT_NM) like  CONCAT('%', #{searchNm}, '%')   
         </if>
          <if test="searchConfmAt != null and searchConfmAt != ''">AND
-			<if test="searchConfmAt == 'NON'">
+			<if test='searchConfmAt == "NON"'>
 				 atdrn.CONFM_AT is null 
 			</if>
-			<if test="searchConfmAt == 'A'">
+			<if test='searchConfmAt == "A"'>
 				 atdrn.CONFM_AT = #{searchConfmAt} 
 			</if>
-			<if test="searchConfmAt == 'C'">
+			<if test='searchConfmAt == "C"'>
 				 atdrn.CONFM_AT = #{searchConfmAt} 
 			</if>
-			<if test="searchConfmAt == 'R'">
+			<if test='searchConfmAt == "R"'>
 				 atdrn.CONFM_AT = #{searchConfmAt} 
 			</if>
         </if>

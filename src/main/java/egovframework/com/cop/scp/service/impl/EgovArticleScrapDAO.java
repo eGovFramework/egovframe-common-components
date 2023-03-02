@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
-import egovframework.com.cop.bbs.service.BoardVO;
 import egovframework.com.cop.scp.service.Scrap;
 import egovframework.com.cop.scp.service.ScrapVO;
 

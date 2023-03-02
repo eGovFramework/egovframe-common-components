@@ -77,7 +77,7 @@ public class AuthorManageDAO extends EgovComAbstractDAO {
     }
 
     /**
-	 * 권한목록 총 갯수를 조회한다.
+	 * 권한목록 총 개수를 조회한다.
 	 * @param authorManageVO AuthorManageVO
 	 * @return int
 	 * @exception Exception

@@ -94,7 +94,7 @@ function fncTroblReqstRequstCancl(troblId) {
     
     varFrom.troblId.value = troblId;
     varFrom.action = "<c:url value='/sym/tbm/tbr/requstTroblReqstCancl.do'/>";
-    if(confirm("<spring:message code="comSymTbmTbr.troblReqstDetail.validate."/>")) { //요청취소를 하시겠습니까?
+    if(confirm("<spring:message code="comSymTbmTbr.troblReqstDetail.validate."/>")) { //요청을 취소하시겠습니까?
         varFrom.submit();
     }
 }

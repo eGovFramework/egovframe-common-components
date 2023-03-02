@@ -101,7 +101,7 @@ public class MemoTodoDAO extends EgovComAbstractDAO {
 	/**
 	 * 메모할일 목록에 대한 전체 건수를 조회한다.
 	 * @param MemoTodoVO - 메모할일 VO
-	 * @return int - 메모할일 목록 갯수
+	 * @return int - 메모할일 목록 개수
 	 * 
 	 * @param memoTodoVO
 	 */

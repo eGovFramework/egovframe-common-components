@@ -30,6 +30,7 @@ import egovframework.com.uss.olp.qtm.service.EgovQustnrTmplatManageService;
 import egovframework.com.uss.olp.qtm.service.QustnrTmplatManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
@@ -48,6 +49,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *  2009.03.20   장동한            최초 생성
  *  2011.08.26   정진오            IncludedInfo annotation 추가
  *  2020.10.30   신용호            파일업로드 제한을위한 파라미터 전달
+ *  2022.11.11   김혜준			   시큐어코딩 처리
  *
  * </pre>
  */
@@ -179,12 +181,7 @@ public class EgovQustnrTmplatManageController {
 		byte[] img = (byte[])mapResult.get("QUSTNR_TMPLAT_IMAGE_INFOPATHNM");
 
 		String imgtype = "jpeg";
-		String type = "";
-
-		if (imgtype != null && !"".equals(imgtype)) {
-			type = "image/" + imgtype;
-		}
-
+		// 2022.11.11 시큐어코딩 처리
 		response.setHeader("Content-Type", imgtype);
 		response.setHeader("Content-Length", "" + img.length);
 		response.getOutputStream().write(img);
@@ -283,7 +280,7 @@ public class EgovQustnrTmplatManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		//로그인 객체 선언
@@ -350,7 +347,7 @@ public class EgovQustnrTmplatManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		//로그인 객체 선언
@@ -396,35 +393,29 @@ public class EgovQustnrTmplatManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
 		//아이디 설정
-		qustnrTmplatManageVO
-			.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+		qustnrTmplatManageVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 		qustnrTmplatManageVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 
 		final Map<String, MultipartFile> files = multiRequest.getFileMap();
 
 		if (files != null && !files.isEmpty()) {
 			for (MultipartFile file : files.values()) {
-				LOGGER.info("getName => {}", file.getName());
-				LOGGER.info("getOriginalFilename => {}", file.getOriginalFilename());
-				/*if(file.getName().equals("qestnrTmplatImage")){
-				   qustnrTmplatManageVO.setQestnrTmplatImagepathnm( file.getBytes() );
-				}*/
+				LOGGER.info("getName => {}", file.getName()); // 파일의 파라미터 이름
+				LOGGER.info("getOriginalFilename => {}", file.getOriginalFilename()); // 파일의 실제 이름
 
-				if (file.getName() != null && !file.getName().equals("")
-					&& file.getOriginalFilename() != null && !file.getOriginalFilename().equals("")) {
+				// 2022.11.11 시큐어코딩 처리
+				if (ObjectUtils.isNotEmpty(file.getName()) && ObjectUtils.isNotEmpty(file.getOriginalFilename())) {
 					qustnrTmplatManageVO.setQestnrTmplatImagepathnm(file.getBytes());
 				}
 			}
 		}
-
-		//log.info("qestnrTmplatImagepathnm =>" + qustnrTmplatManageVO.getQestnrTmplatImagepathnm() );
 
 		egovQustnrTmplatManageService.insertQustnrTmplatManage(qustnrTmplatManageVO);
 

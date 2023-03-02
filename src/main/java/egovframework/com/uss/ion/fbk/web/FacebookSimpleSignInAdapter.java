@@ -24,6 +24,7 @@ package egovframework.com.uss.ion.fbk.web;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
 import org.springframework.social.connect.Connection;
 import org.springframework.social.connect.web.SignInAdapter;
 import org.springframework.web.context.request.NativeWebRequest;
@@ -44,20 +45,31 @@ import egovframework.com.uss.ion.fbk.service.FacebookUser;
  *   수정일     	수정자          		      수정내용
  *  -----------    --------------------    ---------------------------
  *  2014.11.10		표준프레임워크센터		      최초 생성
+ *  2022.11.11   	김혜준			  			  시큐어코딩 처리
+ *  
  *  </pre>
  */
 
 public final class FacebookSimpleSignInAdapter implements SignInAdapter {
 
-	private final FacebookUserCookieGenerator userCookieGenerator = new FacebookUserCookieGenerator();
-
 	@Override
 	public String signIn(String userId, Connection<?> connection, NativeWebRequest request) {
-		FacebookSecurityContext.setCurrentUser(new FacebookUser(userId));
-		if (userCookieGenerator != null) {
-			userCookieGenerator.addCookie(userId, request.getNativeResponse(HttpServletResponse.class));
+		String result = "";
+		// 2022.11.11 시큐어코딩 처리
+		if (StringUtils.isNotEmpty(userId))  {
+			FacebookUserCookieGenerator userCookieGenerator = new FacebookUserCookieGenerator();
+			FacebookSecurityContext.setCurrentUser(new FacebookUser(userId));
+			HttpServletResponse response = request.getNativeResponse(HttpServletResponse.class);
+			if (response != null) {
+				userCookieGenerator.addCookie(userId, response);
+				result = "success";
+			} else {
+				result = "failure";
+			}
+		} else {
+			result = "failure";
 		}
-		return null;
+		return result;
 	}
 
 }

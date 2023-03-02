@@ -22,7 +22,7 @@ public interface EgovServerResrceMntrngService {
 	public List<ServerResrceMntrngVO> selectServerResrceMntrngList(ServerResrceMntrngVO serverResrceMntrngVO) throws Exception;
 
 	/**
-	 * 서버자원모니터링의 로그정보 목록 총 갯수를 조회한다.
+	 * 서버자원모니터링의 로그정보 목록 총 개수를 조회한다.
 	 * @param serverResrceMntrngVO - 서버자원모니터링 Vo
 	 * @return int - 서버자원모니터링의 로그 카운트 수
 	 */
@@ -49,7 +49,7 @@ public interface EgovServerResrceMntrngService {
 	public List<ServerResrceMntrngVO> selectMntrngServerList(ServerResrceMntrngVO serverResrceMntrngVO) throws Exception;
 	
 	/**
-	 * 서버자원모티너링 대상서버 목록 총 갯수를 조회한다.
+	 * 서버자원모티너링 대상서버 목록 총 개수를 조회한다.
 	 * @param serverResrceMntrngVO - 서버자원모니터링 Vo
 	 * @return int - 서버자원모니터링 대상서버의 카운트 수
 	 */

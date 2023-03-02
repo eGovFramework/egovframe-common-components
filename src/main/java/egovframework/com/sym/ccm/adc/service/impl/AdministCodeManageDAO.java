@@ -68,9 +68,9 @@ public class AdministCodeManageDAO extends EgovComAbstractDAO {
     }
 
     /**
-	 * 행정코드 총 갯수를 조회한다.
+	 * 행정코드 총 개수를 조회한다.
      * @param searchVO
-     * @return int(행정코드 총 갯수)
+     * @return int(행정코드 총 개수)
      */
     public int selectAdministCodeListTotCnt(AdministCodeVO searchVO) throws Exception {
         return (Integer)selectOne("AdministCodeManageDAO.selectAdministCodeListTotCnt", searchVO);

@@ -2,7 +2,6 @@ package egovframework.com.cmm;
 
 import java.net.URLEncoder;
 import java.util.HashMap;
-import javax.servlet.http.HttpServletRequest;
 
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

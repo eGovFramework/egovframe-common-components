@@ -170,7 +170,7 @@ public class EgovDeptSchdulManageController {
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "egovframework/com/uat/uia/EgovLoginUsr";
+        	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
 		//로그인 객체 선언
@@ -354,7 +354,7 @@ public class EgovDeptSchdulManageController {
 		  iNowWeek = Integer.parseInt(strWeek);
 		}
 
-		//년도/월 셋팅
+		//연도/월 셋팅
 		calNow.set(iNowYear, iNowMonth, 1);
 		calBefore.set(iNowYear, iNowMonth, 1);
 		calNext.set(iNowYear, iNowMonth, 1);
@@ -672,7 +672,7 @@ public class EgovDeptSchdulManageController {
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "egovframework/com/uat/uia/EgovLoginUsr";
+        	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
 		//로그인 객체 선언
@@ -783,7 +783,7 @@ public class EgovDeptSchdulManageController {
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "egovframework/com/uat/uia/EgovLoginUsr";
+        	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
      	//공통코드  중요도 조회
@@ -840,7 +840,7 @@ public class EgovDeptSchdulManageController {
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "egovframework/com/uat/uia/EgovLoginUsr";
+        	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
 		//로그인 객체 선언

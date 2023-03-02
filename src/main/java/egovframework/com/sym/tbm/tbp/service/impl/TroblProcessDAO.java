@@ -31,7 +31,7 @@ public class TroblProcessDAO extends EgovComAbstractDAO {
 	}
 
 	/**
-	 * 장애처리목록 총 갯수를 조회한다.
+	 * 장애처리목록 총 개수를 조회한다.
 	 * @param troblProcessVO - 장애처리결과 Vo
 	 * @return int - 장애처리결과 카운트 수
 	 */

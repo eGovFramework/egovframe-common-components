@@ -97,7 +97,7 @@ public class EgovVcatnManageController {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		if (user == null) {
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		vcatnManageVO = egovVcatnManageService.selectIndvdlYrycManage(user.getUniqId());
@@ -219,7 +219,7 @@ public class EgovVcatnManageController {
 
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		//승인권자 소속명, 성명   유지
@@ -316,7 +316,7 @@ public class EgovVcatnManageController {
 				return "egovframework/com/uss/ion/vct/EgovVcatnRegist";
 			}
 		} else {
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 	}
 
@@ -333,7 +333,6 @@ public class EgovVcatnManageController {
 		ModelMap model) throws Exception {
 		String sTemp = null;
 		String sTempMessage = null;
-		int iTemp = 0;
 		/*
 				beanValidator.validate(vcatnManage, bindingResult); //validation 수행
 
@@ -352,63 +351,46 @@ public class EgovVcatnManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (!isAuthenticated) {
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
 		if (user != null) {
-			vcatnManage.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+			// 221116	김혜준	2022 시큐어코딩 조치
+			vcatnManage.setFrstRegisterId(EgovStringUtil.isNullToString(user.getUniqId()));
 			sTemp = egovVcatnManageService.updtVcatnManage(vcatnManage, vcatnManageVO);
-			if (iTemp != 10) {
-				status.setComplete();
-				//sTemp = egovVcatnManageService.insertVcatnManage(vcatnManage, vcatnManageVO);
+			// 221116	김혜준	2022 시큐어코딩 조치
+			status.setComplete();
+			//sTemp = egovVcatnManageService.insertVcatnManage(vcatnManage, vcatnManageVO);
 
-				if (sTemp.equals("01")) {
-					model.addAttribute("message", egovMessageSource.getMessage("comUssIonVct.common.inputSuccess"));
-					return "forward:/uss/ion/vct/EgovVcatnManageList.do";
-				} else {
-
-					if (sTemp.equals("99")) {
-						sTempMessage = egovMessageSource.getMessage("comUssIonVct.common.validate.vacationSelectError");
-					} else if (sTemp.equals("09")) {
-						sTempMessage = egovMessageSource.getMessage("comUssIonVct.common.validate.thatYearOnly");
-					} else if (sTemp.equals("02")) {
-						sTempMessage = egovMessageSource.getMessage("comUssIonVct.common.validate.vacationFail");
-					} else if (sTemp.equals("03")) {
-						sTempMessage = egovMessageSource.getMessage("comUssIonVct.common.validate.halfVacationFail");
-					} else {
-						sTempMessage = "undefined error";
-					}
-
-					model.addAttribute("errorMessage", sTempMessage);
-
-					VcatnManageVO vcatnManageVO1 = egovVcatnManageService.selectIndvdlYrycManage(user.getUniqId());
-					vcatnManageVO1.setApplcntId(user.getUniqId());
-					vcatnManageVO1.setApplcntNm(user.getName());
-					vcatnManageVO1.setOrgnztNm(user.getOrgnztNm());
-					vcatnManageVO1.setTempBgnde(EgovDateUtil.formatDate(vcatnManage.getBgnde(), "-"));
-					vcatnManageVO1.setTempEndde(EgovDateUtil.formatDate(vcatnManage.getEndde(), "-"));
-
-					model.addAttribute("vcatnManageVO", vcatnManageVO1);
-					ComDefaultCodeVO vo = new ComDefaultCodeVO();
-					vo.setCodeId("COM056");
-					List<?> vcatnSeCodeList = cmmUseService.selectCmmCodeDetail(vo);
-					model.addAttribute("vcatnSeCode", vcatnSeCodeList);
-
-					return "egovframework/com/uss/ion/vct/EgovVcatnUpdt";
-				}
+			if (sTemp.equals("01")) {
+				model.addAttribute("message", egovMessageSource.getMessage("comUssIonVct.common.inputSuccess"));
+				return "forward:/uss/ion/vct/EgovVcatnManageList.do";
 			} else {
 
-				model.addAttribute("errorMessage",
-					egovMessageSource.getMessage("comUssIonVct.common.validate.duplicate"));
+				if (sTemp.equals("99")) {
+					sTempMessage = egovMessageSource.getMessage("comUssIonVct.common.validate.vacationSelectError");
+				} else if (sTemp.equals("09")) {
+					sTempMessage = egovMessageSource.getMessage("comUssIonVct.common.validate.thatYearOnly");
+				} else if (sTemp.equals("02")) {
+					sTempMessage = egovMessageSource.getMessage("comUssIonVct.common.validate.vacationFail");
+				} else if (sTemp.equals("03")) {
+					sTempMessage = egovMessageSource.getMessage("comUssIonVct.common.validate.halfVacationFail");
+				} else {
+					sTempMessage = "undefined error";
+				}
+
+				model.addAttribute("errorMessage", sTempMessage);
 
 				VcatnManageVO vcatnManageVO1 = egovVcatnManageService.selectIndvdlYrycManage(user.getUniqId());
 				vcatnManageVO1.setApplcntId(user.getUniqId());
 				vcatnManageVO1.setApplcntNm(user.getName());
 				vcatnManageVO1.setOrgnztNm(user.getOrgnztNm());
-				model.addAttribute("vcatnManageVO", vcatnManageVO1);
+				vcatnManageVO1.setTempBgnde(EgovDateUtil.formatDate(vcatnManage.getBgnde(), "-"));
+				vcatnManageVO1.setTempEndde(EgovDateUtil.formatDate(vcatnManage.getEndde(), "-"));
 
+				model.addAttribute("vcatnManageVO", vcatnManageVO1);
 				ComDefaultCodeVO vo = new ComDefaultCodeVO();
 				vo.setCodeId("COM056");
 				List<?> vcatnSeCodeList = cmmUseService.selectCmmCodeDetail(vo);
@@ -417,7 +399,7 @@ public class EgovVcatnManageController {
 				return "egovframework/com/uss/ion/vct/EgovVcatnUpdt";
 			}
 		} else {
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 	}
 
@@ -467,7 +449,7 @@ public class EgovVcatnManageController {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		if (user == null) {
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		vcatnManageVO.setSanctnerId(user.getUniqId()); //사용자가 승인권자인지 조건값 setting
@@ -530,7 +512,7 @@ public class EgovVcatnManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (!isAuthenticated) {
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		if (bindingResult.hasErrors()) {

@@ -40,7 +40,7 @@ public class EgovIndvdlYrycManageServiceImpl extends EgovAbstractServiceImpl imp
 	}
 
 	/**
-	 * 개인별 연차 리스트 갯수를 조회 처리한다.
+	 * 개인별 연차 리스트 개수를 조회 처리한다.
 	 * @param indvdlYrycManage - 연차관리 model
 	 */
 	@Override

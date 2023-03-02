@@ -23,6 +23,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
@@ -32,9 +35,9 @@ import org.springframework.web.multipart.MultipartFile;
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
 
-import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-
 /**
+ * @author 공통 서비스 개발팀 이삼섭
+ * @version 1.0
  * @Class Name  : EgovFileMngUtil.java
  * @Description : 메시지 처리 관련 유틸리티
  * @Modification Information
@@ -45,17 +48,17 @@ import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
  *   2011.08.09   서준식            utl.fcc패키지와 Dependency제거를 위해 getTimeStamp()메서드 추가
  *   2017.03.03   조성원            시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
  *   2020.10.26   신용호            parseFileInf(List<MultipartFile> files ...) 추가
+ *   2022.11.11   김혜준            시큐어코딩 처리
  *
- * @author 공통 서비스 개발팀 이삼섭
- * @since 2009. 02. 13
- * @version 1.0
  * @see
+ * @since 2009. 02. 13
  *
  */
 @Component("EgovFileMngUtil")
 public class EgovFileMngUtil {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovFileMngUtil.class);
+	private static final String FILE_STORE_PATH = EgovProperties.getProperty("Globals.fileStorePath");
 
 	public static final int BUFF_SIZE = 2048;
 
@@ -75,13 +78,13 @@ public class EgovFileMngUtil {
 		String storePathString = "";
 		String atchFileIdString = "";
 
-		if ("".equals(storePath) || storePath == null) {
+		if (storePath == null || "".equals(storePath)) {
 			storePathString = EgovProperties.getProperty("Globals.fileStorePath");
 		} else {
 			storePathString = EgovProperties.getProperty(storePath);
 		}
 
-		if ("".equals(atchFileId) || atchFileId == null) {
+		if (atchFileId == null || "".equals(atchFileId)) {
 			atchFileIdString = idgenService.getNextStringId();
 		} else {
 			atchFileIdString = atchFileId;
@@ -91,44 +94,32 @@ public class EgovFileMngUtil {
 
 		if (!saveFolder.exists() || saveFolder.isFile()) {
 			//2017.03.03 	조성원 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-			if (saveFolder.mkdirs()){
+			if (saveFolder.mkdirs()) {
 				LOGGER.debug("[file.mkdirs] saveFolder : Creation Success ");
-			}else{
+			} else {
 				LOGGER.error("[file.mkdirs] saveFolder : Creation Fail ");
 			}
 		}
 
 		Iterator<Entry<String, MultipartFile>> itr = files.entrySet().iterator();
 		MultipartFile file;
-		String filePath = "";
 		List<FileVO> result = new ArrayList<FileVO>();
 		FileVO fvo;
 
 		while (itr.hasNext()) {
 			Entry<String, MultipartFile> entry = itr.next();
-
 			file = entry.getValue();
 			String orginFileName = file.getOriginalFilename();
-
-			//--------------------------------------
-			// 원 파일명이 없는 경우 처리
-			// (첨부가 되지 않은 input file type)
-			//--------------------------------------
-			if ("".equals(orginFileName)) {
+			if (StringUtils.isEmpty(orginFileName)) {
 				continue;
 			}
-			////------------------------------------
 
-			int index = orginFileName.lastIndexOf(".");
-			//String fileName = orginFileName.substring(0, index);
-			String fileExt = orginFileName.substring(index + 1);
+			// 2022.11.11 시큐어코딩 처리
+			String fileExt = FilenameUtils.getExtension(orginFileName).toUpperCase();
 			String newName = KeyStr + getTimeStamp() + fileKey;
 			long size = file.getSize();
-
-			if (!"".equals(orginFileName)) {
-				filePath = storePathString + File.separator + newName;
-				file.transferTo(new File(EgovWebUtil.filePathBlackList(filePath)));
-			}
+			String filePath = storePathString + File.separator + newName;
+			file.transferTo(new File(EgovWebUtil.filePathBlackList(filePath)));
 
 			fvo = new FileVO();
 			fvo.setFileExtsn(fileExt);
@@ -138,7 +129,6 @@ public class EgovFileMngUtil {
 			fvo.setStreFileNm(newName);
 			fvo.setAtchFileId(atchFileIdString);
 			fvo.setFileSn(String.valueOf(fileKey));
-
 			result.add(fvo);
 
 			fileKey++;
@@ -160,13 +150,13 @@ public class EgovFileMngUtil {
 		String storePathString = "";
 		String atchFileIdString = "";
 
-		if ("".equals(storePath) || storePath == null) {
+		if (storePath == null || "".equals(storePath)) {
 			storePathString = EgovProperties.getProperty("Globals.fileStorePath");
 		} else {
 			storePathString = EgovProperties.getProperty(storePath);
 		}
 
-		if ("".equals(atchFileId) || atchFileId == null) {
+		if (atchFileId == null || "".equals(atchFileId)) {
 			atchFileIdString = idgenService.getNextStringId();
 		} else {
 			atchFileIdString = atchFileId;
@@ -175,41 +165,30 @@ public class EgovFileMngUtil {
 		File saveFolder = new File(EgovWebUtil.filePathBlackList(storePathString));
 
 		if (!saveFolder.exists() || saveFolder.isFile()) {
-			//2017.03.03 	조성원 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-			if (saveFolder.mkdirs()){
+			// 2017.03.03 조성원 시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+			if (saveFolder.mkdirs()) {
 				LOGGER.debug("[file.mkdirs] saveFolder : Creation Success ");
-			}else{
+			} else {
 				LOGGER.error("[file.mkdirs] saveFolder : Creation Fail ");
 			}
 		}
 
-		String filePath = "";
 		List<FileVO> result = new ArrayList<FileVO>();
 		FileVO fvo;
 
-		for (MultipartFile file : files ) {
+		for (MultipartFile file : files) {
 
 			String orginFileName = file.getOriginalFilename();
-
-			//--------------------------------------
-			// 원 파일명이 없는 경우 처리
-			// (첨부가 되지 않은 input file type)
-			//--------------------------------------
-			if ("".equals(orginFileName)) {
+			if (StringUtils.isEmpty(orginFileName)) {
 				continue;
 			}
-			////------------------------------------
 
-			int index = orginFileName.lastIndexOf(".");
-			//String fileName = orginFileName.substring(0, index);
-			String fileExt = orginFileName.substring(index + 1);
+			// 2022.11.11 시큐어코딩 처리
+			String fileExt = FilenameUtils.getExtension(orginFileName).toUpperCase();
 			String newName = KeyStr + getTimeStamp() + fileKey;
 			long size = file.getSize();
-
-			if (!"".equals(orginFileName)) {
-				filePath = storePathString + File.separator + newName;
-				file.transferTo(new File(EgovWebUtil.filePathBlackList(filePath)));
-			}
+			String filePath = storePathString + File.separator + newName;
+			file.transferTo(new File(EgovWebUtil.filePathBlackList(filePath)));
 
 			fvo = new FileVO();
 			fvo.setFileExtsn(fileExt);
@@ -236,13 +215,13 @@ public class EgovFileMngUtil {
 	 * @param stordFilePath
 	 * @throws Exception
 	 */
-	protected void writeUploadedFile(MultipartFile file, String newName, String stordFilePath) throws Exception {
+	protected void writeUploadedFile(MultipartFile file, String newName) throws Exception {
 		InputStream stream = null;
 		OutputStream bos = null;
 
 		try {
 			stream = file.getInputStream();
-			File cFile = new File(stordFilePath);
+			File cFile = new File(FILE_STORE_PATH);
 
 			if (!cFile.isDirectory()) {
 				boolean _flag = cFile.mkdir();
@@ -251,7 +230,8 @@ public class EgovFileMngUtil {
 				}
 			}
 
-			bos = new FileOutputStream(stordFilePath + File.separator + newName);
+			String writeFilePath = EgovWebUtil.filePathBlackList(FILE_STORE_PATH + File.separator + FilenameUtils.getName(newName));
+			bos = new FileOutputStream(writeFilePath);
 
 			int bytesRead = 0;
 			byte[] buffer = new byte[BUFF_SIZE];
@@ -334,24 +314,22 @@ public class EgovFileMngUtil {
 	public static HashMap<String, String> uploadFile(MultipartFile file) throws Exception {
 
 		HashMap<String, String> map = new HashMap<String, String>();
-		//Write File 이후 Move File????
-		String newName = "";
-		String stordFilePath = EgovProperties.getProperty("Globals.fileStorePath");
-		String orginFileName = file.getOriginalFilename();
-
-		int index = orginFileName.lastIndexOf(".");
-		//String fileName = orginFileName.substring(0, _index);
-		String fileExt = orginFileName.substring(index + 1);
 		long size = file.getSize();
+		String orginFileName = file.getOriginalFilename();
+		String fileExt = "";
+		String newName = "";
+		// 2022.11.11 시큐어코딩 처리
+		if (StringUtils.isNotEmpty(orginFileName)) {
+			fileExt = FilenameUtils.getExtension(orginFileName);
+		}
 
-		//newName 은 Naming Convention에 의해서 생성
-		newName = getTimeStamp(); // 2012.11 KISA 보안조치
-		writeFile(file, newName, stordFilePath);
-		//storedFilePath는 지정
+		// 2012.11 KISA 보안조치
+		newName = getTimeStamp();
+		writeFile(file, newName);
 		map.put(Globals.ORIGIN_FILE_NM, orginFileName);
 		map.put(Globals.UPLOAD_FILE_NM, newName);
 		map.put(Globals.FILE_EXT, fileExt);
-		map.put(Globals.FILE_PATH, stordFilePath);
+		map.put(Globals.FILE_PATH, FILE_STORE_PATH );
 		map.put(Globals.FILE_SIZE, String.valueOf(size));
 
 		return map;
@@ -365,24 +343,24 @@ public class EgovFileMngUtil {
 	 * @param stordFilePath
 	 * @throws Exception
 	 */
-	protected static void writeFile(MultipartFile file, String newName, String stordFilePath) throws Exception {
+	protected static void writeFile(MultipartFile file, String newName) throws Exception {
 		InputStream stream = null;
 		OutputStream bos = null;
 
 		try {
 			stream = file.getInputStream();
-			File cFile = new File(EgovWebUtil.filePathBlackList(stordFilePath));
+			File cFile = new File(EgovWebUtil.filePathBlackList(FILE_STORE_PATH ));
 
-			if (!cFile.isDirectory()){
+			if (!cFile.isDirectory()) {
 				//2017.03.03 	조성원 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
 				if (cFile.mkdirs()){
 					LOGGER.debug("[file.mkdirs] saveFolder : Creation Success ");
-				}else{
+				} else {
 					LOGGER.error("[file.mkdirs] saveFolder : Creation Fail ");
 				}
 			}
 
-			bos = new FileOutputStream(EgovWebUtil.filePathBlackList(stordFilePath + File.separator + newName));
+			bos = new FileOutputStream(EgovWebUtil.filePathBlackList(FILE_STORE_PATH  + File.separator + FilenameUtils.getName(newName)));
 
 			int bytesRead = 0;
 			byte[] buffer = new byte[BUFF_SIZE];
@@ -404,7 +382,7 @@ public class EgovFileMngUtil {
 	 * @throws Exception
 	 */
 	public void downFile(HttpServletResponse response, String streFileNm, String orignFileNm) throws Exception {
-		String downFileName = streFileNm;
+		String downFileName = EgovWebUtil.filePathBlackList(streFileNm);
 		String orgFileName = orignFileNm;
 
 		File file = new File(downFileName);
@@ -496,8 +474,8 @@ public class EgovFileMngUtil {
 	}
 
 	/**
-	 * 공통 컴포넌트 utl.fcc 패키지와 Dependency제거를 위해 내부 메서드로 추가 정의함
-	 * 응용어플리케이션에서 고유값을 사용하기 위해 시스템에서17자리의TIMESTAMP값을 구하는 기능
+	 * 공통 컴포넌트 utl.fcc 패키지와 Dependency 제거를 위해 내부 메서드로 추가 정의함
+	 * 응용어플리케이션에서 고유값을 사용하기 위해 시스템에서 17자리의 TIMESTAMP값을 구하는 기능
 	 *
 	 * @param
 	 * @return Timestamp 값
@@ -507,7 +485,7 @@ public class EgovFileMngUtil {
 
 		String rtnStr = null;
 
-		// 문자열로 변환하기 위한 패턴 설정(년도-월-일 시:분:초:초(자정이후 초))
+		// 문자열로 변환하기 위한 패턴 설정(연도-월-일 시:분:초:초(자정이후 초))
 		String pattern = "yyyyMMddhhmmssSSS";
 
 		SimpleDateFormat sdfCurrent = new SimpleDateFormat(pattern, Locale.KOREA);

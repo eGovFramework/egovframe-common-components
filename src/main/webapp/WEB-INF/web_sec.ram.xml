@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app id="WebApp_ID" version="3.1" xmlns="http://xmlns.jcp.org/xml/ns/javaee" 
 			xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
-			xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
+			xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee; http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd">
 <!--
     수정일          수성자                          수정내용
    ==========      ========      =================================================
@@ -20,7 +20,8 @@
     </login-config>
 
     <session-config>
-        <session-timeout>600</session-timeout>
+        <session-timeout>60</session-timeout>
+    	<!-- <tracking-mode>COOKIE</tracking-mode> -->
     </session-config>
 
     <error-page>

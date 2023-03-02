@@ -5,16 +5,16 @@
 
 	<select id="selectMapMaterialList" parameterType="egovframework.com.dam.map.mat.service.MapMaterialVO" resultType="egovMap">
 		
-			SELECT  B.ORGNZT_NM						"orgnztNm"
-				 ,	A.KNWLDG_TY_CODE				"knoTypeCd"
-			     ,  A.EXPERT_ID						"speId"
-			     ,  A.KNWLDG_TY_NM					"knoTypeNm"     
-                 ,  A.CL_DE							"clYmd"
-			     ,  A.KNWLDG_URL					"knoUrl"
-			     ,	A.FRST_REGISTER_ID				"frstRegisterId"
-			     ,	A.FRST_REGIST_PNTTM			     FRST_REGISTER_PNTTM
-			     ,  A.LAST_UPDUSR_ID				"lastUpdusrId"
-			     ,	A.LAST_UPDT_PNTTM				"lastUpdusrPnttm"
+			SELECT  B.ORGNZT_NM						ORGNZT_NM
+				 ,	A.KNWLDG_TY_CODE				KNO_TYPE_CD
+			     ,  A.EXPERT_ID						SPE_ID
+			     ,  A.KNWLDG_TY_NM					KNO_TYPE_NM
+                 ,  TO_CHAR(TO_DATE(A.CL_DE, 'YYYYmmdd'), 'YYYY-mm-dd') AS CL_YMD
+			     ,  A.KNWLDG_URL					KNO_URL
+			     ,	A.FRST_REGISTER_ID				FRST_REGISTER_ID
+			     ,	A.FRST_REGIST_PNTTM				FRST_REGIST_PNTTM
+			     ,  A.LAST_UPDUSR_ID				LAST_UPDUSR_ID
+			     ,	A.LAST_UPDT_PNTTM				LAST_UPDUSR_PNTTM
 			FROM COMTNDAMMAPKNO A, COMTNDAMMAPTEAM B
 			WHERE A.ORGNZT_ID = B.ORGNZT_ID
 		
@@ -48,7 +48,7 @@
 				 ,  B.ORGNZT_NM							orgnztNm
 			     ,  A.EXPERT_ID							speId
 			     ,  A.KNWLDG_TY_NM						knoTypeNm
-                 ,  A.CL_DE								clYmd
+                 ,  TO_CHAR(TO_DATE(A.CL_DE, 'YYYYmmdd'), 'YYYY-mm-dd') AS CL_YMD
                  ,  A.KNWLDG_URL         				knoUrl
 			     ,	A.FRST_REGISTER_ID					frstRegisterId
 			     ,	A.FRST_REGIST_PNTTM				     FRST_REGISTER_PNTTM

@@ -27,6 +27,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <html lang="ko">
 <head>
 <title><spring:message code="comUssIonMtg.mtgPlaceResveRegist.image" /></title><!-- 회의실 이미지 -->
@@ -63,7 +64,7 @@
 			<!--  등록  폼 영역  -->
 			<div style="width:600px; height:290px; text-align:center">
 				<c:forEach var="fileVO" items="${fileList}" varStatus="status">
-			 		  <img style="max-width:100%" src='<c:url value='/cmm/fms/getImage.do'/>?atchFileId=<c:out value="${fileVO.atchFileId}"/>&fileSn=<c:out value="${fileVO.fileSn}"/>'  width="500" />
+			 		  <img style="max-width:100%" src='<c:url value='/cmm/fms/getImage.do'/>?atchFileId=<c:out value="${egovc:encryptSession(fileVO.atchFileId,pageContext.session.id)}"/>&fileSn=<c:out value="${fileVO.fileSn}"/>'  width="500" />
 				</c:forEach>
 			</div>
 			

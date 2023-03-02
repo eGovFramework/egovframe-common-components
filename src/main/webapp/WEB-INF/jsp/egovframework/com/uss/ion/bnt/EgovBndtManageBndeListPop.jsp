@@ -31,17 +31,18 @@
 <title><spring:message code="comUssIonBnt.bndtManageBndeListPop.title"/></title><!-- 당직일괄등록 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
+<script src="<c:url value='/js/egovframework/com/cmm/jquery-1.12.4.min.js' />"></script>
 <script type="text/javascript">
 
 	/* ********************************************************
 	 * 등록 처리 함수 
 	 ******************************************************** */
 	function fncBndtManageBndeRegist(){
-		var varFrom = document.getElementById("listForm");
-		//var checkField = varFrom.bndtCheck;
-		var bndtId = varFrom.bndtId;
-		var bndtDe = varFrom.bndtDe;
-		var searchKeyword  = varFrom.searchKeyword;
+		var varForm = document.getElementById("listForm");
+		//var checkField = varForm.bndtCheck;
+		var bndtId = varForm.bndtId;
+		var bndtDe = varForm.bndtDe;
+		var searchKeyword  = varForm.searchKeyword;
 		var checkBndtManage = "";
 		var checkedCount     = 0;
 		
@@ -56,11 +57,33 @@
 			checkBndtManage = bndtDe.value+","+bndtId.value;
 		}
 	
-		varFrom.checkedBndtManageForInsert.value=checkBndtManage;
-		varFrom.action = "<c:url value='/uss/ion/bnt/insertBndtManageBnde.do'/>";
+		varForm.checkedBndtManageForInsert.value=checkBndtManage;
+		varForm.action = "<c:url value='/uss/ion/bnt/insertBndtManageBnde.do'/>";
+		
+		var formData = new FormData();
+		formData.append("searchCondition", varForm.searchCondition.value);
+		formData.append("checkedBndtManageForInsert", varForm.checkedBndtManageForInsert.value);
+		formData.append("searchKeyword", varForm.searchKeyword.value);
+		formData.append("cmd", varForm.cmd.value);
+		formData.append("bndtDe", varForm.bndtDe.value);
+		formData.append("bndtId", varForm.bndtId.value);
 	
-		if(confirm("<spring:message code="common.save.msg" />")){/* 저장 하시겠습니까? */
-			varFrom.submit();
+		if(confirm("<spring:message code="common.save.msg" />")) {/* 저장 하시겠습니까? */
+			$.ajax({
+				type : "post",
+				enctype : "multipart/form-data",
+				url : varForm.action,
+				data : formData,
+				processData : false,
+				contentType : false,
+				success : function(data) {
+					opener.window.fncPageReload();
+					self.close();
+				},
+				error : function(request, status, error) {
+					alert("등록 실패");
+				}
+			});
 		}
 	}
 

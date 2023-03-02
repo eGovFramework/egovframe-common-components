@@ -56,9 +56,9 @@ public class StplatManageDAO extends EgovComAbstractDAO {
     }
 
     /**
-	 * 약관정보 글 총 갯수를 조회한다.
+	 * 약관정보 글 총 개수를 조회한다.
 	 * @param searchVO
-	 * @return 글 총 갯수
+	 * @return 글 총 개수
 	 */
     public int selectStplatListTotCnt(StplatManageDefaultVO searchVO) {
 

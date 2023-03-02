@@ -38,7 +38,7 @@ public class BndtManageDAO extends EgovComAbstractDAO {
 	}
 
     /**
-	 * 당직관리목록 총 갯수를 조회한다.
+	 * 당직관리목록 총 개수를 조회한다.
 	 * @param bndtManageVO - 당직관리 VO
 	 * @return int
 	 * @exception Exception
@@ -81,7 +81,7 @@ public class BndtManageDAO extends EgovComAbstractDAO {
 	}
 
     /**
-	 * 당직일지 갯수를 조회한다.
+	 * 당직일지 개수를 조회한다.
 	 * @param bndtManageVO - 당직관리 VO
 	 * @return int
 	 * @exception Exception
@@ -102,7 +102,7 @@ public class BndtManageDAO extends EgovComAbstractDAO {
 	}
 
     /**
-	 * 당직체크관리목록 총 갯수를 조회한다.
+	 * 당직체크관리목록 총 개수를 조회한다.
 	 * @param bndtCeckManageVO - 당직체크관리 VO
 	 * @return int
 	 * @exception Exception

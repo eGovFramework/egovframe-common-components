@@ -14,8 +14,8 @@
 <%
 
 /**
- * @Class Name : EgovMtgPlaceManageList.java
- * @Description : EgovMtgPlaceManageList jsp
+ * @Class Name : EgovBndtManageList.java
+ * @Description : EgovBndtManageList jsp
  * @Modification Information
  * @
  * @  수정일                    수정자                수정내용
@@ -49,7 +49,7 @@
 
  }
   
- //년도/월 셋팅
+ //연도/월 셋팅
  cal.set(year, month, 1);
 
  int startDay = cal.getMinimum(java.util.Calendar.DATE);
@@ -108,7 +108,10 @@
 		varForm.submit();
 
 		}
-
+	
+	function fncPageReload() {
+		location.reload();
+	}
 
 -->
 </script>

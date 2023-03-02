@@ -26,7 +26,7 @@ public class SatisfactionVO extends Satisfaction {
     /** 현재페이지 */
     private int subPageIndex = 1;
 
-    /** 페이지갯수 */
+    /** 페이지개수 */
     private int subPageUnit = 10;
 
     /** 페이지사이즈 */

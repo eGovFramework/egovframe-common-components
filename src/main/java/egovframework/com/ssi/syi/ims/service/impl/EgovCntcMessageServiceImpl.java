@@ -97,7 +97,7 @@ public class EgovCntcMessageServiceImpl extends EgovAbstractServiceImpl implemen
 	}
 
 	/**
-	 * 연계메시지 총 갯수를 조회한다.
+	 * 연계메시지 총 개수를 조회한다.
 	 */
 	@Override
 	public int selectCntcMessageListTotCnt(CntcMessageVO searchVO) throws Exception {
@@ -113,7 +113,7 @@ public class EgovCntcMessageServiceImpl extends EgovAbstractServiceImpl implemen
 	}
 
 	/**
-	 * 연계메시지항목 총 갯수를 조회한다.
+	 * 연계메시지항목 총 개수를 조회한다.
 	 */
 	@Override
 	public int selectCntcMessageItemListTotCnt(CntcMessageItemVO searchVO) throws Exception {

@@ -7,7 +7,7 @@ import egovframework.com.cmm.ComDefaultVO;
  * - 개인별 연차관리에 대한 model 클래스를 정의한다.
  *
  * 상세내용
- * - 연차관리의 발생연도,사용자ID,연차발생갯수,사용연차갯수,잔여연차갯수,최초등록자ID,최초등록시점,최종수정자ID,최종수정시점 항목을 관리한다.
+ * - 연차관리의 발생연도,사용자ID,연차발생개수,사용연차개수,잔여연차개수,최초등록자ID,최초등록시점,최종수정자ID,최종수정시점 항목을 관리한다.
  * @author 이기하
  * @version 1.0
  * @created 2014.11.14
@@ -33,17 +33,17 @@ public class IndvdlYrycManage extends ComDefaultVO {
 	private String mberNm;
 
 	/**
-	*  발생연차갯수
+	*  발생연차개수
 	*/
 	private double occrncYrycCo;
 
 	/**
-	*  사용연차갯수
+	*  사용연차개수
 	*/
 	private double useYrycCo;
 
 	/**
-	*  잔여연차갯수
+	*  잔여연차개수
 	*/
 	private double remndrYrycCo;
 

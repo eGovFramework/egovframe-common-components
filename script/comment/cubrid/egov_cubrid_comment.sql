@@ -187,6 +187,8 @@ Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATE
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnbndtdiary','*','당직관리',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnleaderschdulde','*','간부일정관리',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnmemoreprt','*','메모보고관리',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_SERVICE','*','SP 서비스',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_TRX_INFO','*','SP 거래정보',SYS_TIMESTAMP,'DBA');
 
 
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtcadministcode','abl_de','폐지일',SYS_TIMESTAMP,'DBA');
@@ -845,7 +847,7 @@ Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATE
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtndiaryinfo','atch_file_id','첨부파일ID',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtndiaryinfo','diary_id','일지ID',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtndiaryinfo','diary_nm','일지명',SYS_TIMESTAMP,'DBA');
-Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtndiaryinfo','diary_progrsrt','일지진척율',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtndiaryinfo','diary_progrsrt','일지진척률',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtndiaryinfo','drct_matter','지시사항',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtndiaryinfo','frst_regist_pnttm','최초등록시점',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtndiaryinfo','frst_register_id','최초등록자ID',SYS_TIMESTAMP,'DBA');
@@ -935,7 +937,7 @@ Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATE
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtneventatdrn','sanctn_dt','결재일시',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtneventatdrn','sanctner_id','결재자ID',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtneventinfo','bsns_code','사업코드',SYS_TIMESTAMP,'DBA');
-Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtneventinfo','bsns_year','사업년도',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtneventinfo','bsns_year','사업연도',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtneventinfo','charger_nm','담당자명',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtneventinfo','event_cn','행사내용',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtneventinfo','event_confm_at','행사승인여부',SYS_TIMESTAMP,'DBA');
@@ -1104,7 +1106,7 @@ Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATE
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnindvdlyrycmanage','frst_register_id','최초등록자ID',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnindvdlyrycmanage','last_updt_pnttm','최종수정시점',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnindvdlyrycmanage','last_updusr_id','최종수정자ID',SYS_TIMESTAMP,'DBA');
-Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnindvdlyrycmanage','occrrnc_year','발생년도',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnindvdlyrycmanage','occrrnc_year','발생연도',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnindvdlyrycmanage','remndr_yryc_co','잔여연차개수',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnindvdlyrycmanage','use_yryc_co','사용연차개수',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnindvdlyrycmanage','user_id','사용자ID',SYS_TIMESTAMP,'DBA');
@@ -1998,7 +2000,7 @@ Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATE
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnvcatnmanage','last_updt_pnttm','최종수정시점',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnvcatnmanage','last_updusr_id','최종수정자ID',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnvcatnmanage','noon_se','정오구분',SYS_TIMESTAMP,'DBA');
-Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnvcatnmanage','occrrnc_year','발생년도',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnvcatnmanage','occrrnc_year','발생연도',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnvcatnmanage','reqst_de','신청일',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnvcatnmanage','return_resn','반환사유',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnvcatnmanage','sanctn_dt','결재일시',SYS_TIMESTAMP,'DBA');
@@ -2140,3 +2142,31 @@ Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATE
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnbloguser','sbscrb_de','가입일자',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnbloguser','secsn_de','탈퇴일',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtnbloguser','use_at','사용여부',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_SERVICE','SVCCODE','서비스코드',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_SERVICE','PRESENTTYPE','현재타입',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_SERVICE','ENCRYPTTYPE','암호화타입',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_SERVICE','KEYTYPE','키타입',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_SERVICE','AUTHTYPE','인증타입',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_SERVICE','SPNAME','SP명',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_SERVICE','SERVICENAME','서비스명',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_SERVICE','ATTRLIST','고정속성목록',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_SERVICE','PREDLIST','비교속성목록',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_SERVICE','CALLBACKURL','콜백URL',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_SERVICE','REGDT','등록일',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_SERVICE','UDTDT','수정일',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_TRX_INFO','TRXCODE','거래코드',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_TRX_INFO','SVCCODE','서비스코드',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_TRX_INFO','OPMODE','모드',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_TRX_INFO','DEVICEID','키오스크 ID',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_TRX_INFO','BRANCHNAME','지점명',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_TRX_INFO','NONCE','DID해시',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_TRX_INFO','ZKPNONCE','영지식해시',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_TRX_INFO','VPVERIFYRESULT','VP검증결과',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_TRX_INFO','TRXSTSCODE','거래상태코드',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_TRX_INFO','PROFILESENDDT','프로파일전송일',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_TRX_INFO','IMGSENDDT','이미지전송일',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_TRX_INFO','VPRECEPTDT','VP수신일',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_TRX_INFO','ERRORCN','오류상세',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_TRX_INFO','REGDT','등록일',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_TRX_INFO','UDTDT','수정일',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('TB_TRX_INFO','VPNAME','검증자이름',SYS_TIMESTAMP,'DBA');

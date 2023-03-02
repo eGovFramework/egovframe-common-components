@@ -32,6 +32,7 @@ import javax.swing.text.html.parser.ParserDelegator;
 
 public class EgovEhgtCalcUtil {
 
+	static private final String EHGT_URL = "http://community.fxkeb.com";
 	// 환율....
 	static final char EGHT_USD = 'U'; 	// 미국
 	static final char EGHT_JPY = 'J'; 	// 일본
@@ -62,7 +63,7 @@ public class EgovEhgtCalcUtil {
 		InputStreamReader reader = null;
 		try {
 			//입력받은 URL에 연결하여 InputStream을 통해 읽은 후 파싱 한다.
-			URL url = new URL(str);
+			URL url = new URL(EHGT_URL + str);
 
 			con = (HttpURLConnection) url.openConnection();
 
@@ -120,7 +121,7 @@ public class EgovEhgtCalcUtil {
 
 		EgovEhgtCalcUtil parser = new EgovEhgtCalcUtil();
 
-		parser.readHtmlParsing("http://community.fxkeb.com/fxportal/jsp/RS/DEPLOY_EXRATE/4176_0.html");
+		parser.readHtmlParsing("/fxportal/jsp/RS/DEPLOY_EXRATE/4176_0.html");
 
 		if (sb == null) {
 			throw new RuntimeException("StringBuffer is null!!");

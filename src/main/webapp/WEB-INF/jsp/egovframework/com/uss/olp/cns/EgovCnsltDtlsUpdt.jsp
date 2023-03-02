@@ -24,6 +24,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <c:set var="pageTitle"><spring:message code="comUssOlpCns.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -194,7 +195,7 @@ function fn_egov_inqire_qnalist() {
 			<!-- 첨부목록을 보여주기 위한 -->
 			<c:if test="${result.atchFileId != ''}">
 				<c:import charEncoding="utf-8" url="/cmm/fms/selectFileInfsForUpdate.do" >
-					<c:param name="param_atchFileId" value="${result.atchFileId}" />
+					<c:param name="param_atchFileId" value="${egovc:encrypt(result.atchFileId)}" />
 				</c:import>		
 			</c:if>
 			

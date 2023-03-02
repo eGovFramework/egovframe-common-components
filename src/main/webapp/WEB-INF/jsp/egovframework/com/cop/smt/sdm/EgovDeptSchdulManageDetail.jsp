@@ -25,6 +25,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 <%
 String sLinkType = request.getParameter("linkType") == null ? "" : (String)request.getParameter("linkType");
@@ -195,7 +196,7 @@ function fn_egov_delete_DeptSchdulManage(frm){
 			<th><label for="infoProvdAgreCn">${title}</label> </th>
 			<td class="nopd">
 				<c:import charEncoding="utf-8" url="/cmm/fms/selectFileInfs.do" >
-				<c:param name="param_atchFileId" value="${resultList[0].atchFileId}" />
+				<c:param name="param_atchFileId" value="${egovc:encrypt(resultList[0].atchFileId)}" />
 				</c:import>&nbsp;
 			</td>
 		</tr>

@@ -5,9 +5,9 @@
 
 	<select id="selectNormalRestdePopup" parameterType="egovframework.com.sym.cal.service.Restde" resultType="egovMap">
 		
-            SELECT  '#{year}'               YEAR
-                 ,  '#{month}'              MONTH
-                 ,  DECODE(GREATEST(T_DUMMY.RNUM + 1 - #{startWeekMonth},0),0,'',DECODE(GREATEST(T_DUMMY.RNUM + 1 - #{startWeekMonth},#{lastDayMonth}),#{lastDayMonth},TO_CHAR(T_DUMMY.RNUM + 1 - #{startWeekMonth}),''))
+            SELECT  CAST(#{year} AS NUMERIC)               YEAR
+                 ,  CAST(#{month} AS NUMERIC)              MONTH
+                 ,  DECODE(GREATEST(T_DUMMY.RNUM + 1 - CAST(#{startWeekMonth} AS NUMERIC),0),0,'',DECODE(GREATEST(T_DUMMY.RNUM + 1 - CAST(#{startWeekMonth} AS NUMERIC),CAST(#{lastDayMonth} AS NUMERIC)),CAST(#{lastDayMonth} AS NUMERIC),TO_CHAR(T_DUMMY.RNUM + 1 - CAST(#{startWeekMonth} AS NUMERIC)),''))
                                          DAY 
                  ,  T_DUMMY.RNUM           CELL_NUM
                  ,  T_DUMMY.WEEKS + 1      WEEKS
@@ -15,9 +15,9 @@
                  ,  (
                     SELECT  CASE (COUNT(*)) WHEN 0 THEN CASE T_DUMMY.WEEK WHEN 1 THEN 'Y' WHEN 7 THEN 'Y' ELSE 'N' END ELSE 'Y' END
                       FROM  COMTNRESTDE 
-                     WHERE  RESTDE = LPAD('#{year}',4,'0')
-                                      ||LPAD('#{month}',2,'0')
-                                      ||LPAD(DECODE(GREATEST(T_DUMMY.RNUM + 1 - '#{startWeekMonth}',0),0,'',DECODE(GREATEST(T_DUMMY.RNUM + 1 - '#{startWeekMonth}','#{lastDayMonth}'),'#{lastDayMonth}',TO_CHAR(T_DUMMY.RNUM + 1 - '#{startWeekMonth}'),''))
+                     WHERE  RESTDE = LPAD(#{year},4,'0')
+                                      ||LPAD(#{month},2,'0')
+                                      ||LPAD(DECODE(GREATEST(T_DUMMY.RNUM + 1 - #{startWeekMonth},0),0,'',DECODE(GREATEST(T_DUMMY.RNUM + 1 - #{startWeekMonth},#{lastDayMonth}),#{lastDayMonth},TO_CHAR(T_DUMMY.RNUM + 1 - #{startWeekMonth}),''))
                     			             ,2,'0'
                     			            )
                        AND  RESTDE_SE_CODE IN ('01','02')                                   

@@ -62,11 +62,6 @@ public class EgovServerResrceMntrngClient {
     		throw new EgovBizException("[server resource monitoring] : create connection fail");
         
         //2017.02.07 	이정은 	시큐어코딩(ES)-오류 메시지를 통한 정보노출[CWE-211]
-    	} catch (Exception ex) {
-    		LOGGER.error("["+ex.getClass()+"] server connection : " + ex.getMessage());
-    		//throw new RuntimeException(ex);
-    		throw new EgovBizException("[server resource monitoring] : connection close fail");
-    		
     	} finally {
 
     		if (connector != null)

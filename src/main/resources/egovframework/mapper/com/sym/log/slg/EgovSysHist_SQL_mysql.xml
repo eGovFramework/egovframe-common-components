@@ -80,7 +80,7 @@
 			     , c.CODE_NM as HIST_SE_CODE_NM
 			     , a.HIST_CN
 			     , b.USER_NM as FRST_REGISTER_NM
-			     , a.FRST_REGIST_PNTTM
+			     , DATE_FORMAT(a.FRST_REGIST_PNTTM,'%Y-%m-%d') AS FRST_REGIST_PNTTM
 			     , a.ATCH_FILE_ID
 			  FROM COMTHSYSHIST a
 			     , COMVNUSERMASTER b
@@ -101,7 +101,7 @@
 			     , c.CODE_NM as HIST_SE_CODE_NM
 			     , b.USER_NM as FRST_REGISTER_NM
 			     , a.FRST_REGISTER_ID
-			     , a.FRST_REGIST_PNTTM
+			     , DATE_FORMAT(a.FRST_REGIST_PNTTM,'%Y-%m-%d') AS FRST_REGIST_PNTTM
 			     , a.ATCH_FILE_ID
 			  FROM COMTHSYSHIST a
 			     , COMVNUSERMASTER b

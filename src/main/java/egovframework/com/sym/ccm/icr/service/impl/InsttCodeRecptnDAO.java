@@ -108,9 +108,9 @@ public class InsttCodeRecptnDAO extends EgovComAbstractDAO {
     }
 
     /**
-	 * 기관코드수신 총 갯수를 조회한다.
+	 * 기관코드수신 총 개수를 조회한다.
      * @param searchVO
-     * @return int(기관코드 총 갯수)
+     * @return int(기관코드 총 개수)
      */
     public int selectInsttCodeRecptnListTotCnt(InsttCodeRecptnVO searchVO) throws Exception {
         return (Integer)selectOne("InsttCodeRecptnDAO.selectInsttCodeRecptnListTotCnt", searchVO);
@@ -127,9 +127,9 @@ public class InsttCodeRecptnDAO extends EgovComAbstractDAO {
     }
 
     /**
-	 * 기관코드 총 갯수를 조회한다.
+	 * 기관코드 총 개수를 조회한다.
      * @param searchVO
-     * @return int(기관코드 총 갯수)
+     * @return int(기관코드 총 개수)
      */
     public int selectInsttCodeListTotCnt(InsttCodeRecptnVO searchVO) throws Exception {
         return (Integer)selectOne("InsttCodeRecptnDAO.selectInsttCodeListTotCnt", searchVO);

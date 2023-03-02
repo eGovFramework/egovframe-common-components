@@ -59,8 +59,8 @@
                             UNION ALL
                             SELECT 7
                             ) D
-                    ORDER BY (W.W*7) + D.D
             ) DUMMY
+            ORDER BY ROWNUM
 		
 	</select>
 

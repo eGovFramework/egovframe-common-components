@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="progrmManageDAO">
+ 
+    <!-- 프로그램목록 관리 -->
+	<resultMap id="progrmManage" type="egovframework.com.sym.prm.service.ProgrmManageVO">
+		<result property="progrmFileNm" column="progrmFileNm"/>
+		<result property="progrmStrePath" column="progrmStrePath"/>
+		<result property="progrmKoreanNm" column="progrmKoreanNm"/>
+		<result property="progrmDc" column="progrmDc"/>
+		<result property="URL" column="URL"/>
+	</resultMap> 
+ 
+	<select id="selectProgrmList_D" parameterType="comDefaultVO" resultMap="progrmManage">
+		
+	       SELECT PROGRM_FILE_NM    AS "progrmFileNm"   
+	            , PROGRM_STRE_PATH  AS "progrmStrePath" 
+	            , PROGRM_KOREAN_NM   AS "progrmKoreanNm"
+	            , PROGRM_DC         AS "progrmDc"      
+	            , URL               AS "URL"         
+	       FROM  ( SELECT rownum rn, 
+	                      TB.PROGRM_FILE_NM    
+			            , TB.PROGRM_STRE_PATH 
+			            , TB.PROGRM_KOREAN_NM  
+			            , TB.PROGRM_DC        
+			            , TB.URL              
+	               FROM (
+							SELECT 
+								  PROGRM_FILE_NM   
+								, PROGRM_STRE_PATH 
+								, PROGRM_KOREAN_NM  
+								, PROGRM_DC        
+								, URL             
+							FROM COMTNPROGRMLIST
+				            WHERE PROGRM_KOREAN_NM like  '%'|| #{searchKeyword}||'%'
+	       ) TB )  WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
+		 
+	</select> 
+ 
+	<!-- 총건수 조회 -->
+	<select id="selectProgrmListTotCnt_S" parameterType="comDefaultVO" resultType="int">
+		
+		SELECT COUNT(*) AS "totcnt"
+		  FROM COMTNPROGRMLIST
+	    WHERE PROGRM_KOREAN_NM like  '%'|| #{searchKeyword}||'%'
+		
+	</select>
+
+	<!-- 파일명존재여부 조회 -->
+	<select id="selectProgrmNMTotCnt" parameterType="comDefaultVO" resultType="int">
+		
+		SELECT COUNT(*) AS "totcnt"
+		  FROM COMTNPROGRMLIST
+		 WHERE PROGRM_FILE_NM = #{searchKeyword}
+		
+	</select>
+
+	<select id="selectProgrm_D" resultMap="progrmManage">
+		
+			SELECT
+				  PROGRM_FILE_NM   AS "progrmFileNm" 
+				, PROGRM_STRE_PATH AS "progrmStrePath" 
+				, PROGRM_KOREAN_NM  AS "progrmKoreanNm" 
+				, PROGRM_DC        AS "progrmDc" 
+				, URL              AS "URL"
+			FROM COMTNPROGRMLIST
+			WHERE PROGRM_FILE_NM = #{progrmFileNm}
+		
+	</select>
+	
+	<insert id="insertProgrm_S" parameterType="egovframework.com.sym.prm.service.ProgrmManageVO">
+		
+			INSERT INTO COMTNPROGRMLIST 
+				( PROGRM_FILE_NM
+				  , PROGRM_STRE_PATH
+				  , PROGRM_KOREAN_NM
+				  , PROGRM_DC
+				  , URL )
+			VALUES ( #{progrmFileNm}
+				  , #{progrmStrePath}
+				  , #{progrmKoreanNm}
+				  , #{progrmDc}
+				  , #{URL} )
+		
+	</insert>
+
+	<update id="updateProgrm_S" parameterType="egovframework.com.sym.prm.service.ProgrmManageVO">
+		
+			UPDATE COMTNPROGRMLIST 
+			SET PROGRM_STRE_PATH =#{progrmStrePath}
+				, PROGRM_KOREAN_NM=#{progrmKoreanNm}
+				, PROGRM_DC      =#{progrmDc}
+				, URL            =#{URL}
+			WHERE PROGRM_FILE_NM=#{progrmFileNm}
+		
+	</update>
+
+	<delete id="deleteProgrm_S">
+		                          
+			DELETE FROM COMTNPROGRMLIST              
+			WHERE PROGRM_FILE_NM=#{progrmFileNm}                 
+		                                
+	</delete> 
+
+	<delete id="deleteAllProgrm">
+		                          
+			DELETE FROM COMTNPROGRMLIST              
+		                                
+	</delete> 
+
+	<!-- 메뉴정보 총건수 조회 -->
+	<select id="selectProgrmListTotCnt" parameterType="egovframework.com.sym.prm.service.ProgrmManageVO" resultType="int">
+		
+		SELECT COUNT(PROGRM_FILE_NM) AS "totcnt" FROM COMTNPROGRMLIST
+		
+	</select>
+</mapper>

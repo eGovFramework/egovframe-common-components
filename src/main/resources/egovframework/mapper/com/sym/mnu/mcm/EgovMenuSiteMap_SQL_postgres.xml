@@ -6,11 +6,11 @@
 	<select id="selectMenuCreatSiteMapList_D" parameterType="egovframework.com.sym.mnu.mcm.service.MenuSiteMapVO" resultType="egovMap">
 		
 			SELECT
-			       B.MENU_NO AS "menuNo"
-				 , B.MENU_ORDR AS "menuOrdr"
-				 , B.MENU_NM AS "menuNm"
-				 , B.UPPER_MENU_NO AS "upperMenuId"
-				 , (SELECT C.URL FROM COMTNPROGRMLIST C WHERE B.PROGRM_FILE_NM = C.PROGRM_FILE_NM) AS "chkURL"	
+			       B.MENU_NO       AS MENU_NO
+				 , B.MENU_ORDR     AS MENU_ORDR
+				 , B.MENU_NM       AS MENU_NM
+				 , B.UPPER_MENU_NO AS UPPER_MENU_ID
+				 , (SELECT C.URL FROM COMTNPROGRMLIST C WHERE B.PROGRM_FILE_NM = C.PROGRM_FILE_NM) AS CHK_URL
 			FROM   COMTNMENUCREATDTLS A, COMTNMENUINFO B
 			WHERE  A.MENU_NO  = B.MENU_NO 
 			AND    A.AUTHOR_CODE = #{authorCode}
@@ -21,11 +21,11 @@
     <select id="selectSiteMapByUser" parameterType="egovframework.com.sym.mnu.mcm.service.MenuSiteMapVO" resultType="egovMap">
         
             SELECT
-                  A.MENU_NO AS "menuNo"
-                , A.MENU_ORDR AS "menuOrdr"
-                , A.MENU_NM AS "menuNm"
-                , A.UPPER_MENU_NO AS "upperMenuId"
-                , (SELECT Z.URL FROM COMTNPROGRMLIST Z WHERE A.PROGRM_FILE_NM = Z.PROGRM_FILE_NM) AS "chkURL" 
+                  A.MENU_NO			AS MENU_NO
+                , A.MENU_ORDR		AS MENU_ORDR
+                , A.MENU_NM			AS MENU_NM
+                , A.UPPER_MENU_NO	AS UPPER_MENU_ID
+                , (SELECT Z.URL FROM COMTNPROGRMLIST Z WHERE A.PROGRM_FILE_NM = Z.PROGRM_FILE_NM) AS CHK_URL
             FROM COMTNMENUINFO A, COMTNMENUCREATDTLS B, COMTNEMPLYRSCRTYESTBS C, COMVNUSERMASTER D
             WHERE A.MENU_NO > 0
               AND A.MENU_NO             = B.MENU_NO 
@@ -39,10 +39,10 @@
 	<select id="selectMenuCreatSiteMapURL_D" parameterType="egovframework.com.sym.mnu.mcm.service.MenuSiteMapVO" resultType="egovMap">
 		
 			SELECT 
-					B.PROGRM_FILE_NM   AS "progrmFileNm",
-					B.PROGRM_STRE_PATH AS "progrmStrePath",
-					B.PROGRM_KOREAN_NM  AS "progrmKoreanNm",
-					B.URL              AS URL
+					B.PROGRM_FILE_NM		AS PROGRM_FILE_NM,
+					B.PROGRM_STRE_PATH		AS PROGRM_STRE_PATH,
+					B.PROGRM_KOREAN_NM		AS PROGRM_KOREAN_NM,
+					B.URL					AS URL
 			FROM    COMTNMENUINFO A, COMTNPROGRMLIST B
 			WHERE   A.PROGRM_FILE_NM = B.PROGRM_FILE_NM
 			AND     A.MENU_NO = #{menuNo}

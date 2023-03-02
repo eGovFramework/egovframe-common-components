@@ -23,10 +23,10 @@ import java.util.List;
 public interface EgovCcmCmmnCodeManageService {
 
 	/**
-	 * 공통분류코드 총 갯수를 조회한다.
+	 * 공통분류코드 총 개수를 조회한다.
 	 * 
 	 * @param searchVO
-	 * @return int(공통분류코드 총 갯수)
+	 * @return int(공통분류코드 총 개수)
 	 * @throws Exception 
 	 */
 	int selectCmmnCodeListTotCnt(CmmnCodeVO searchVO) throws Exception;

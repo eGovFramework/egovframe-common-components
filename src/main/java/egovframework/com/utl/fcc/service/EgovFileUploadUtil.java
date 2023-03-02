@@ -8,6 +8,8 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.util.WebUtils;
@@ -26,6 +28,7 @@ import egovframework.com.cmm.EgovWebUtil;
  *  2019.12.06   신용호            checkFileExtension(), checkFileMaxSize() 추가
  *  2020.08.05   신용호            uploadFilesExt Parameter 수정
  *  2021.02.16   신용호            WebUtils.getNativeRequest(request,MultipartHttpServletRequest.class);
+ *  2022.11.11   김혜준            시큐어코딩 처리
  *
  * @author 공통컴포넌트 개발팀 한성곤
  * @since 2009.08.26
@@ -42,11 +45,8 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static List<EgovFormBasedFileVo> uploadFiles(HttpServletRequest request, String where, long maxFileSize)
-		throws Exception {
+	public static List<EgovFormBasedFileVo> uploadFiles(HttpServletRequest request, String where, long maxFileSize) throws Exception {
 		List<EgovFormBasedFileVo> list = new ArrayList<EgovFormBasedFileVo>();
-
-		//MultipartHttpServletRequest mptRequest = (MultipartHttpServletRequest) request;
 		MultipartHttpServletRequest mptRequest = WebUtils.getNativeRequest(request, MultipartHttpServletRequest.class);
 
 		if (mptRequest != null) {//2022.01 Possible null pointer dereference due to return value of called method 조치
@@ -55,10 +55,18 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 			while (fileIter.hasNext()) {
 				MultipartFile mFile = mptRequest.getFile((String)fileIter.next());
 
+				// 2022.11.11 김혜준 시큐어코딩 처리
+				if (mFile == null) {
+					continue;
+				}
+
 				EgovFormBasedFileVo vo = new EgovFormBasedFileVo();
 
 				String tmp = mFile.getOriginalFilename();
-				if(tmp != null) {//2022.01 Possible null pointer dereference due to return value of called method
+
+				//2022.01 Possible null pointer dereference due to return value of called method
+				if (StringUtils.isNotEmpty(tmp)) {
+
 					if (tmp.lastIndexOf("\\") >= 0) {
 						tmp = tmp.substring(tmp.lastIndexOf("\\") + 1);
 					}
@@ -103,8 +111,7 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public static List<EgovFormBasedFileVo> uploadFilesExt(MultipartHttpServletRequest mptRequest, String where,
-		long maxFileSize, String extensionWhiteList) throws Exception {
+	public static List<EgovFormBasedFileVo> uploadFilesExt(MultipartHttpServletRequest mptRequest, String where, long maxFileSize, String extensionWhiteList) throws Exception {
 		List<EgovFormBasedFileVo> list = new ArrayList<EgovFormBasedFileVo>();
 
 		if (mptRequest != null) {
@@ -113,11 +120,18 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 			while (fileIter.hasNext()) {
 				MultipartFile mFile = mptRequest.getFile((String)fileIter.next());
 
+				// 2022.11.11 김혜준 시큐어코딩 처리
+				if (mFile == null) {
+					continue;
+				}
+
 				EgovFormBasedFileVo vo = new EgovFormBasedFileVo();
 
 				String tmp = mFile.getOriginalFilename();
 
-				if(tmp != null) {//2022.01 Possible null pointer dereference due to return value of called method
+				//2022.01 Possible null pointer dereference due to return value of called method
+				if (StringUtils.isNotEmpty(tmp)) {
+
 					if (tmp.lastIndexOf("\\") >= 0) {
 						tmp = tmp.substring(tmp.lastIndexOf("\\") + 1);
 					}
@@ -146,8 +160,8 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 
 						try {
 							is = mFile.getInputStream();
-							saveFile(is, new File(EgovWebUtil.filePathBlackList(
-								where + SEPERATOR + vo.getServerSubPath() + SEPERATOR + vo.getPhysicalName())));
+							String fullPath = where + SEPERATOR + vo.getServerSubPath() + SEPERATOR + vo.getPhysicalName() + "_upfile"; 
+							saveFile(is, new File(EgovWebUtil.filePathBlackList( fullPath )));
 						} finally {
 							if (is != null) {
 								is.close();

@@ -31,7 +31,7 @@ public class DiaryManageVO extends ComDefaultVO implements Serializable {
 	/** 일정ID */
 	private String schdulId;
 	
-	/** 진척율 */
+	/** 진척률 */
 	private String diaryProcsPte;
 	
 	/** 일정명 */

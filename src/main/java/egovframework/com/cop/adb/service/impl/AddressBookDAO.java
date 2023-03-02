@@ -26,7 +26,6 @@ import org.springframework.stereotype.Repository;
  * @see
  *
  */
-@SuppressWarnings("unchecked")
 @Repository("AdressBookDAO")
 public class AddressBookDAO extends EgovComAbstractDAO{
     
@@ -38,7 +37,7 @@ public class AddressBookDAO extends EgovComAbstractDAO{
      * @throws Exception
      */
 	public List<AddressBookVO> selectAdressBookList(AddressBookVO adbkVO) throws Exception {
-        return (List<AddressBookVO>) list("AdressBookDAO.selectAdressBookList", adbkVO);
+        return selectList("AdressBookDAO.selectAdressBookList", adbkVO);
     }
     
     /**
@@ -49,7 +48,7 @@ public class AddressBookDAO extends EgovComAbstractDAO{
      * @throws Exception
      */
     public List<AddressBookUserVO> selectManList(AddressBookUserVO adbkUserVO) throws Exception {
-        return (List<AddressBookUserVO>) list("AdressBookDAO.selectManList", adbkUserVO);
+        return selectList("AdressBookDAO.selectManList", adbkUserVO);
     }
     
     /**
@@ -60,7 +59,7 @@ public class AddressBookDAO extends EgovComAbstractDAO{
      * @throws Exception
      */
     public List<AddressBookUserVO> selectCardList(AddressBookUserVO adbkUserVO) throws Exception {
-        return (List<AddressBookUserVO>) list("AdressBookDAO.selectCardList", adbkUserVO);
+        return selectList("AdressBookDAO.selectCardList", adbkUserVO);
     }
     
     /**
@@ -71,7 +70,7 @@ public class AddressBookDAO extends EgovComAbstractDAO{
      * @throws Exception
      */
     public List<AddressBookUser> selectUserList(AddressBookVO adbkVO) throws Exception {
-        return (List<AddressBookUser>) list("AdressBookDAO.selectUserList", adbkVO);
+        return selectList("AdressBookDAO.selectUserList", adbkVO);
     }  
 
     /**

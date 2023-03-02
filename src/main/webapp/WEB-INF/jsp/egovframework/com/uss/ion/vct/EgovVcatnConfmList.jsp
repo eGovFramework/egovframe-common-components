@@ -59,7 +59,7 @@
 
 	 if(varForm.searchMonth.value !=""){
 		 if(varForm.searchYear.value ==""){
-			 alert("<spring:message code="comUssIonVct.vcatnConfmList.validate.searchYear"/>");/* 전체년도에 월만 조회할 수 없습니다. 년도는 선택해주세요 */
+			 alert("<spring:message code="comUssIonVct.vcatnConfmList.validate.searchYear"/>");/* 전체연도에 월만 조회할 수 없습니다. 연도는 선택해주세요 */
 			 return;
 		 } 
 	 }
@@ -114,7 +114,7 @@ function fncVcatnManageDetail(applcntId,vcatnSe,bgnde,endde,infrmlSanctnId){
 		      	</select>
 		      	
 		      	<label for="" style="margin-left:15px"><spring:message code="comUssIonVct.vcatnConfmList.searchConfmAt.vcatnDay"/> : </label><!-- 휴가일자 -->
-		      	<select name="searchYear" title="<spring:message code="comUssIonVct.vcatnConfmList.searchYear"/>"><!-- 년도 -->
+		      	<select name="searchYear" title="<spring:message code="comUssIonVct.vcatnConfmList.searchYear"/>"><!-- 연도 -->
 		    		<option value="" <c:if test="${vcatnManageVO.searchYear eq '' }">selected</c:if>><spring:message code="comUssIonVct.vcatnConfmList.selectedAll"/></option><!-- 전체 -->
 		            <c:forEach items="${yearList}" var="result" varStatus="status">
 			       	   <option value="<c:out value="${result }"/>"  <c:if test="${vcatnManageVO.searchYear eq result}">selected</c:if>><c:out value="${result }"/></option>

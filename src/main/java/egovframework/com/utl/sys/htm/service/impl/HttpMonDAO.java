@@ -36,7 +36,7 @@ public class HttpMonDAO extends EgovComAbstractDAO {
     }		
 	
 	/**
-	 * HTTP서비스모니터링 목록 총 갯수를 조회한다.
+	 * HTTP서비스모니터링 목록 총 개수를 조회한다.
 	 * @param HttpMonVO - HTTP서비스모니터링 Vo
 	 * @return int - HTTP서비스 토탈 카운트 수
 	 * 
@@ -99,7 +99,7 @@ public class HttpMonDAO extends EgovComAbstractDAO {
     }
 	
 	/**
-	 * HTTP서비스모니터링로그 목록 총 갯수를 조회한다.
+	 * HTTP서비스모니터링로그 목록 총 개수를 조회한다.
 	 * @param HttpMonVO - HTTP서비스모니터링 Vo
 	 * @return int - HTTP서비스 토탈 카운트 수
 	 * 

@@ -34,7 +34,7 @@
             WHERE 1=1
             
             <if test='haveDetailCondition == "Y"'>AND
-                ORGNZT_ID  LIKE  #{detailConditionValue}
+                ORGNZT_ID  LIKE  #{detailCondition}
             </if>
     </select>
     
@@ -50,7 +50,7 @@
             WHERE 1=1
             
             <if test='haveDetailCondition == "Y"'>AND
-                GROUP_ID  LIKE  #{detailConditionValue}
+                GROUP_ID  LIKE  #{detailCondition}
             </if>
     </select>
     

@@ -19,6 +19,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.ModelAndView;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
@@ -164,7 +165,7 @@ public class EgovPopupManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		// 로그인 객체 선언
@@ -232,7 +233,7 @@ public class EgovPopupManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		// 로그인 객체 선언
@@ -340,14 +341,15 @@ public class EgovPopupManageController {
 	 * @param model
 	 * @return "egovframework/com/uss/ion/pwm/listMainPopup"
 	 * @throws Exception
+	 * 팝업창리스트를 가져온다.
 	 */
 	@RequestMapping(value = "/uss/ion/pwm/listMainPopup.do")
-	public String egovPopupManageMainList(PopupManageVO popupManageVO, ModelMap model) throws Exception {
-
-		List<?> reusltList = egovPopupManageService.selectPopupMainList(popupManageVO);
-		model.addAttribute("resultList", reusltList);
-
-		return "egovframework/com/uss/ion/pwm/EgovPopupMainList";
+	
+	public ModelAndView egovPopupManageMainList(PopupManageVO popupManageVO, ModelMap model) throws Exception {
+		List<?> resultList = egovPopupManageService.selectPopupMainList(popupManageVO);
+		ModelAndView mav = new ModelAndView("jsonView");
+    	mav.addObject("resultList", resultList);
+    	return mav;
 	}
 
 	/**

@@ -61,7 +61,7 @@ public class EgovWebServletContextListener implements ServletContextListener {
         //2017.03.03 	조성원 	시큐어코딩(ES)-오류 메시지를 통한 정보노출[CWE-209]
         } catch(IllegalArgumentException e) {
     		LOGGER.error("[IllegalArgumentException] Try/Catch...usingParameters Runing : "+ e.getMessage());
-        } catch (Exception e) {
+        } catch (RuntimeException e) {
         	LOGGER.error("[" + e.getClass() +"] search fail : " + e.getMessage());
         }
     }

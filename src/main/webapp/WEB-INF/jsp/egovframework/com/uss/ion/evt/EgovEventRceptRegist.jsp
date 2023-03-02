@@ -50,7 +50,7 @@ function fncEventRceptManageList(){
 function fncInsertEventRceptManage() {
 	    var varFrom = document.getElementById("eventAtdrn");
 	    varFrom.action = "<c:url value='/uss/ion/evt/insertEventAtdrn.do'/>";
-	    if(confirm("<spring:message code="button.save" />")){/* 저장 하시겠습니까? */
+	    if(confirm("<spring:message code="common.save.msg" />")){/* 저장 하시겠습니까? */
 	        if(!validateEventAtdrn(varFrom)){           
 	            return;
 	        }else{

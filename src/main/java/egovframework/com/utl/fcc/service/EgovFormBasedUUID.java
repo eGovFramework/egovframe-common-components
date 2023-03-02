@@ -108,6 +108,15 @@ public class EgovFormBasedUUID implements Serializable {
      * UUIDs.
      */
     private static volatile SecureRandom numberGenerator = null;
+    
+    // 221116	김혜준	2022 시큐어코딩 조치
+    private static SecureRandom makeSecureRandom() {
+    	SecureRandom ng = numberGenerator;
+        if (ng == null) {
+            numberGenerator = ng = new SecureRandom();
+        }
+        return ng;
+    }
 
     // Constructors and Factories
 
@@ -148,10 +157,7 @@ public class EgovFormBasedUUID implements Serializable {
      * @return a randomly generated <tt>UUID</tt>.
      */
     public static EgovFormBasedUUID randomUUID() {
-        SecureRandom ng = numberGenerator;
-        if (ng == null) {
-            numberGenerator = ng = new SecureRandom();
-        }
+        SecureRandom ng = makeSecureRandom();
 
         byte[] randomBytes = new byte[16];
         ng.nextBytes(randomBytes);
@@ -187,7 +193,7 @@ public class EgovFormBasedUUID implements Serializable {
         }
         // 2014.09.20 보안점검 후속 조치
         // Random 방식의 salt 추가
-        SecureRandom ng = new SecureRandom();
+        SecureRandom ng = makeSecureRandom();
         byte[] randomBytes = new byte[16];
         ng.nextBytes(randomBytes);
 

@@ -1,7 +1,6 @@
 package egovframework.com.cmm.service;
 
 import java.io.BufferedInputStream;
-import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -64,9 +63,8 @@ public class EgovProperties {
 	 * @return String
 	 */
 	public static String getProperty(String keyName) {
-		LOGGER.debug("===>>> getProperty" + EgovProperties.class.getProtectionDomain().getCodeSource() == null ? ""
-			: EgovStringUtil
-				.isNullToString(EgovProperties.class.getProtectionDomain().getCodeSource().getLocation().getPath()));
+		// 221116	김혜준	2022 시큐어코딩 조치
+		LOGGER.debug("===>>> getProperty" + EgovStringUtil.isNullToString(EgovProperties.class.getProtectionDomain().getCodeSource().getLocation().getPath()));
 		LOGGER.debug("getProperty : {} = {}", GLOBALS_PROPERTIES_FILE, keyName);
 
 		return getPropertyValueByKey(keyName);
@@ -113,7 +111,7 @@ public class EgovProperties {
 		// key - value 형태로 된 배열 결과
 		ArrayList<Map<String, String>> keyList = new ArrayList<Map<String, String>>();
 
-		String src = property.replace('\\', File.separatorChar).replace('/', File.separatorChar);
+		String src = property.replace("\\", FILE_SEPARATOR).replace("/", FILE_SEPARATOR);
 
 		if (Files.exists(Paths.get(EgovWebUtil.filePathBlackList(src)))) { //2022.01 Potential Path Traversal
 			Properties props = loadPropertiesFromFile(src);

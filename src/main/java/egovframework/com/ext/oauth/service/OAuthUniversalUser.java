@@ -60,11 +60,11 @@ public class OAuthUniversalUser {
 	}
 
 	public Date getLastlogin() {
-		return lastLogin;
+		return (Date)lastLogin.clone();
 	}
 
 	public void setLastlogin(Date lastLogin) {
-		this.lastLogin = lastLogin;
+		this.lastLogin = (Date) lastLogin.clone();
 	}
 
 	private String uid;

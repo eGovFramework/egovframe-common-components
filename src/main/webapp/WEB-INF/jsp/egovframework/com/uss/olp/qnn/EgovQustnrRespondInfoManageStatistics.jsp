@@ -131,12 +131,12 @@ return  FValue;
 			<th> <span class="pilsu"> </span></th>
 			<td class="left">
   				<b><spring:message code="comUssOlpQnn.regist.qestnrTrget"/>  :</b>
-				<c:if test="${Comtnqestnrinfo[0].qestnrTrget ==  '1'}"><spring:message code="comUssOlpQnn.regist.student"/></c:if><!-- 학생 -->
-				<c:if test="${Comtnqestnrinfo[0].qestnrTrget ==  '2'}"><spring:message code="comUssOlpQnn.regist.univStudent"/></c:if><!-- 대학생 -->
-				<c:if test="${Comtnqestnrinfo[0].qestnrTrget ==  '3'}"><spring:message code="comUssOlpQnn.regist.salaryMan"/></c:if><!-- 직장인 -->
-				<c:if test="${Comtnqestnrinfo[0].qestnrTrget ==  '4'}"><spring:message code="comUssOlpQnn.regist.soldier"/></c:if><!-- 군인 -->
-				<c:if test="${Comtnqestnrinfo[0].qestnrTrget ==  '5'}"><spring:message code="comUssOlpQnn.regist.teacher"/></c:if><!-- 교사 -->
-				<c:if test="${Comtnqestnrinfo[0].qestnrTrget ==  '6'}"><spring:message code="comUssOlpQnn.regist.etc"/></c:if><!-- 기타 -->
+				<c:if test="${Comtnqestnrinfo[0].qestnrTrget ==  '0'}"><spring:message code="comUssOlpQnn.regist.student"/></c:if><!-- 학생 -->
+				<c:if test="${Comtnqestnrinfo[0].qestnrTrget ==  '1'}"><spring:message code="comUssOlpQnn.regist.univStudent"/></c:if><!-- 대학생 -->
+				<c:if test="${Comtnqestnrinfo[0].qestnrTrget ==  '2'}"><spring:message code="comUssOlpQnn.regist.salaryMan"/></c:if><!-- 직장인 -->
+				<c:if test="${Comtnqestnrinfo[0].qestnrTrget ==  '3'}"><spring:message code="comUssOlpQnn.regist.soldier"/></c:if><!-- 군인 -->
+				<c:if test="${Comtnqestnrinfo[0].qestnrTrget ==  '4'}"><spring:message code="comUssOlpQnn.regist.teacher"/></c:if><!-- 교사 -->
+				<c:if test="${Comtnqestnrinfo[0].qestnrTrget ==  '5'}"><spring:message code="comUssOlpQnn.regist.etc"/></c:if><!-- 기타 -->
 			
 			    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 				<b><spring:message code="comUssOlpQnn.regist.qestnrDate"/> :</b>

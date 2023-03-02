@@ -34,7 +34,7 @@ public class LoginScrinImageDAO extends EgovComAbstractDAO {
 	}
 
     /**
-	 * 로그인화면이미지목록 총 갯수를 조회한다.
+	 * 로그인화면이미지목록 총 개수를 조회한다.
 	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 * @return int
 	 * @exception Exception

@@ -164,7 +164,7 @@
 	WHERE ROWNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
 		
 	</select>
-	<!-- 보낸편지함관리::목록조회_게시물 총갯수  -->
+	<!-- 보낸편지함관리::목록조회_게시물 총개수  -->
 	<select id="selectNoteTrnsmitCnt" parameterType="comDefaultVO" resultType="int">
 	SELECT 
 		COUNT(*) totcnt
@@ -224,7 +224,7 @@
 		
 	</delete>
 	
-	<!-- 보낸편지함관리::받은편지함 갯수  -->
+	<!-- 보낸편지함관리::받은편지함 개수  -->
 	<select id="selectTrnsmitRelationCnt" resultType="int">
 	
 	SELECT 

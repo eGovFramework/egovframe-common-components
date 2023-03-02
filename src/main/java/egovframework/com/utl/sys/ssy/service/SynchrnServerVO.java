@@ -1,6 +1,7 @@
 package egovframework.com.utl.sys.ssy.service;
 
 import java.io.File;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -67,7 +68,7 @@ public class SynchrnServerVO extends SynchrnServer {
 	 * @param synchrnServerList the synchrnServerList to set
 	 */
 	public void setSynchrnServerList(List<?> synchrnServerList) {
-		this.synchrnServerList = synchrnServerList;
+		this.synchrnServerList = Collections.unmodifiableList(synchrnServerList);
 	}
 	/**
 	 * @return the synchrnFile
@@ -103,7 +104,7 @@ public class SynchrnServerVO extends SynchrnServer {
 	 * @param ftpFileList the ftpFileList to set
 	 */
 	public void setFtpFileList(List<?> ftpFileList) {
-		this.ftpFileList = ftpFileList;
+		this.ftpFileList = Collections.unmodifiableList(ftpFileList);
 	}
 	/**
 	 * @return the filePath

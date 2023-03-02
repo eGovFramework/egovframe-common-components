@@ -549,4 +549,24 @@ body content should be processed.
     </attribute>
   </tag>
 
+  <function>
+    <description>문자열 암호화 메서드</description>
+    <name>encrypt</name>
+    <function-class>egovframework.com.cmm.web.EgovFileMngController</function-class>
+    <function-signature>java.lang.String encrypt(java.lang.String)</function-signature>
+    <example>
+    ${egovc:encrypt(java.lang.String source)}
+    </example>
+  </function>
+
+  <function>
+    <description>문자열 및 세션 암호화 메서드</description>
+    <name>encryptSession</name>
+    <function-class>egovframework.com.cmm.web.EgovFileMngController</function-class>
+    <function-signature>java.lang.String encryptSession(java.lang.String, java.lang.String)</function-signature>
+    <example>
+    ${egovc:encryptSession(java.lang.String source, java.lang.String sessionId)}
+    </example>
+  </function>
+
 </taglib>

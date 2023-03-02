@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="InsttCodeRecptnDAO">
+
+    <select id="selectInsttCodeRecptnList" parameterType="egovframework.com.sym.ccm.icr.service.InsttCodeRecptnVO" resultType="egovMap">
+        
+            SELECT  *
+              FROM  (
+            SELECT ROWNUM RNUM, ALL_LIST.*
+              FROM  (
+        
+        /* 구현 Sql */
+        
+            SELECT  OCCRRNC_DE
+                 ,  INSTT_CODE
+                 ,  OPERT_SN
+                 ,  CHANGE_SE_CODE
+                 ,  PROCESS_SE
+                 ,  ETC_CODE
+                 ,  ALL_INSTT_NM
+                 ,  LOWEST_INSTT_NM
+                 ,  INSTT_ABRV_NM
+                 ,  ODR
+                 ,  ORD
+                 ,  INSTT_ODR
+                 ,  BEST_INSTT_CODE
+                 ,  UPPER_INSTT_CODE
+                 ,  REPRSNT_INSTT_CODE
+                 ,  INSTT_TY_LCLAS
+                 ,  INSTT_TY_MLSFC
+                 ,  INSTT_TY_SCLAS
+                 ,  TELNO
+                 ,  FXNUM
+                 ,  CREAT_DE
+                 ,  ABL_DE
+                 ,  ABL_ENNC
+                 ,  CHANGE_DE
+                 ,  CHANGE_TIME
+                 ,  BSIS_DE
+                 ,  SORT_ORDR
+              FROM  COMTNINSTTCODERECPTNLOG
+             WHERE  1 = 1
+        
+        <if test='searchCondition == "1"'>AND
+        
+                    ALL_INSTT_NM     LIKE '%' || #{searchKeyword} || '%'
+        
+        </if>
+        <if test='searchCondition == "CodeList"'>AND
+        
+                    INSTT_CODE     = #{insttCode}
+        
+        </if>
+        <![CDATA[
+        /* 구현 Sql */
+        
+                    ) ALL_LIST
+                    )
+             WHERE  RNUM  > #{firstIndex}
+               AND  RNUM <= #{firstIndex} + #{recordCountPerPage}
+        ]]>
+    </select>
+
+    <select id="selectInsttCodeRecptnListTotCnt" parameterType="egovframework.com.sym.ccm.icr.service.InsttCodeRecptnVO" resultType="int">
+        
+            SELECT  COUNT(*) totcnt
+              FROM  COMTNINSTTCODERECPTNLOG
+             WHERE  1 = 1
+        
+        <if test='searchCondition == "1"'>AND
+        
+                    ALL_INSTT_NM     LIKE '%' || #{searchKeyword} || '%'
+        
+        </if>
+        <if test='searchCondition == "CodeList"'>AND
+        
+                    INSTT_CODE     = #{insttCode}
+        
+        </if>
+    </select>
+
+    <select id="selectInsttCodeDetail" parameterType="egovframework.com.sym.ccm.icr.service.InsttCodeRecptn" resultType="egovframework.com.sym.ccm.icr.service.InsttCodeRecptn">
+        
+            SELECT  INSTT_CODE              insttCode
+                 ,  ALL_INSTT_NM            allInsttNm
+                 ,  LOWEST_INSTT_NM         lowestInsttNm
+                 ,  INSTT_ABRV_NM           insttAbrvNm
+                 ,  ODR                     odr
+                 ,  ORD                     ord
+                 ,  INSTT_ODR               insttOdr
+                 ,  BEST_INSTT_CODE         bestInsttCode
+                 ,  UPPER_INSTT_CODE        upperInsttCode
+                 ,  REPRSNT_INSTT_CODE      reprsntInsttCode
+                 ,  INSTT_TY_LCLAS          insttTyLclas
+                 ,  INSTT_TY_MLSFC          insttTyMclas
+                 ,  INSTT_TY_SCLAS          insttTySclas
+                 ,  TELNO                   telno
+                 ,  FXNUM                   fxnum
+                 ,  CREAT_DE                creatDe
+                 ,  ABL_DE                  ablDe
+                 ,  ABL_ENNC                ablEnnc
+                 ,  CHANGE_DE                changede
+                 ,  CHANGE_TIME             changeTime
+                 ,  BSIS_DE                 bsisDe
+                 ,  SORT_ORDR               sortOrdr
+              FROM  COMTNINSTTCODE
+             WHERE  INSTT_CODE     = #{insttCode}
+        
+    </select>
+
+    <insert id="insertInsttCodeRecptn">
+        
+            INSERT
+              INTO  COMTNINSTTCODERECPTNLOG
+                 (  OCCRRNC_DE
+                 ,  INSTT_CODE
+                 ,  OPERT_SN
+                 ,  CHANGE_SE_CODE
+                 ,  PROCESS_SE
+                 ,  ETC_CODE
+                 ,  ALL_INSTT_NM
+                 ,  LOWEST_INSTT_NM
+                 ,  INSTT_ABRV_NM
+                 ,  ODR
+                 ,  ORD
+                 ,  INSTT_ODR
+                 ,  BEST_INSTT_CODE
+                 ,  UPPER_INSTT_CODE
+                 ,  REPRSNT_INSTT_CODE
+                 ,  INSTT_TY_LCLAS
+                 ,  INSTT_TY_MLSFC
+                 ,  INSTT_TY_SCLAS
+                 ,  TELNO
+                 ,  FXNUM
+                 ,  CREAT_DE
+                 ,  ABL_DE
+                 ,  ABL_ENNC
+                 ,  CHANGE_DE
+                 ,  CHANGE_TIME
+                 ,  BSIS_DE
+                 ,  SORT_ORDR
+                 ,  FRST_REGISTER_ID
+                 ,  FRST_REGIST_PNTTM
+                 ,  LAST_UPDUSR_ID
+                 ,  LAST_UPDT_PNTTM
+                 )
+            VALUES
+                 (  #{occrrDe}
+                 ,  #{insttCode}
+                 ,  #{opertSn}
+                 ,  #{changeSeCode}
+                 ,  #{processSe}
+                 ,  #{etcCode}
+                 ,  #{allInsttNm}
+                 ,  #{lowestInsttNm}
+                 ,  #{insttAbrvNm}
+                 ,  #{odr}
+                 ,  #{ord}
+                 ,  #{insttOdr}
+                 ,  #{bestInsttCode}
+                 ,  #{upperInsttCode}
+                 ,  #{reprsntInsttCode}
+                 ,  #{insttTyLclas}
+                 ,  #{insttTyMclas}
+                 ,  #{insttTySclas}
+                 ,  #{telno}
+                 ,  #{fxnum}
+                 ,  #{creatDe}
+                 ,  #{ablDe}
+                 ,  #{ablEnnc}
+                 ,  #{changede}
+                 ,  #{changeTime}
+                 ,  #{bsisDe}
+                 ,  #{sortOrdr}
+                 ,  #{frstRegisterId}
+                 ,  sysdate
+                 ,  #{frstRegisterId}
+                 ,  sysdate
+                 )
+        
+    </insert>
+
+    <update id="updateInsttCodeRecptn">
+        
+            UPDATE  COMTNINSTTCODERECPTNLOG
+               SET  PROCESS_SE         = #{processSe}
+                 ,  LAST_UPDUSR_ID     = #{lastUpdusrId}
+                 ,  LAST_UPDT_PNTTM  = sysdate
+             WHERE  OCCRRNC_DE           = #{occrrDe}
+               AND  INSTT_CODE         = #{insttCode}
+               AND  OPERT_SN           = #{opertSn}
+        
+    </update>
+
+    <insert id="insertInsttCode">
+            INSERT
+              INTO  COMTNINSTTCODE
+                 (  INSTT_CODE
+                 ,  ALL_INSTT_NM
+                 ,  LOWEST_INSTT_NM
+                 ,  INSTT_ABRV_NM
+                 ,  ODR
+                 ,  ORD
+                 ,  INSTT_ODR
+                 ,  BEST_INSTT_CODE
+                 ,  UPPER_INSTT_CODE
+                 ,  REPRSNT_INSTT_CODE
+                 ,  INSTT_TY_LCLAS
+                 ,  INSTT_TY_MLSFC
+                 ,  INSTT_TY_SCLAS
+                 ,  TELNO
+                 ,  FXNUM
+                 ,  CREAT_DE
+                 ,  ABL_DE
+                 ,  ABL_ENNC
+                 ,  CHANGE_DE
+                 ,  CHANGE_TIME
+                 ,  BSIS_DE
+                 ,  SORT_ORDR
+                 ,  FRST_REGISTER_ID
+                 ,  FRST_REGIST_PNTTM
+                 ,  LAST_UPDUSR_ID
+                 ,  LAST_UPDT_PNTTM
+                 )
+            VALUES
+                 (  #{insttCode}
+                 ,  #{allInsttNm}
+                 ,  #{lowestInsttNm}
+                 ,  #{insttAbrvNm}
+                 ,  #{odr}
+                 ,  #{ord}
+                 ,  #{insttOdr}
+                 ,  #{bestInsttCode}
+                 ,  #{upperInsttCode}
+                 ,  #{reprsntInsttCode}
+                 ,  #{insttTyLclas}
+                 ,  #{insttTyMclas}
+                 ,  #{insttTySclas}
+                 ,  #{telno}
+                 ,  #{fxnum}
+                 ,  #{creatDe}
+                 ,  #{ablDe}
+                 ,  #{ablEnnc}
+                 ,  #{changede}
+                 ,  #{changeTime}
+                 ,  #{bsisDe}
+                 ,  #{sortOrdr}
+                 ,  #{frstRegisterId}
+                 ,  sysdate
+                 ,  #{frstRegisterId}
+                 ,  sysdate
+                 )
+    </insert>
+
+    <update id="updateInsttCode">
+            UPDATE  COMTNINSTTCODE
+               SET  ALL_INSTT_NM       = #{allInsttNm}
+                 ,  LOWEST_INSTT_NM    = #{lowestInsttNm}
+                 ,  INSTT_ABRV_NM      = #{insttAbrvNm}
+                 ,  ODR                = #{odr}
+                 ,  ORD                = #{ord}
+                 ,  INSTT_ODR          = #{insttOdr}
+                 ,  BEST_INSTT_CODE    = #{bestInsttCode}
+                 ,  UPPER_INSTT_CODE   = #{upperInsttCode}
+                 ,  REPRSNT_INSTT_CODE = #{reprsntInsttCode}
+                 ,  INSTT_TY_LCLAS     = #{insttTyLclas}
+                 ,  INSTT_TY_MLSFC     = #{insttTyMclas}
+                 ,  INSTT_TY_SCLAS     = #{insttTySclas}
+                 ,  TELNO              = #{telno}
+                 ,  FXNUM              = #{fxnum}
+                 ,  CREAT_DE           = #{creatDe}
+                 ,  ABL_DE             = #{ablDe}
+                 ,  ABL_ENNC           = #{ablEnnc}
+                 ,  CHANGE_DE           = #{changede}
+                 ,  CHANGE_TIME        = #{changeTime}
+                 ,  BSIS_DE            = #{bsisDe}
+                 ,  SORT_ORDR          = #{sortOrdr}
+                 ,  LAST_UPDUSR_ID     = #{lastUpdusrId}
+                 ,  LAST_UPDT_PNTTM  = sysdate
+             WHERE  INSTT_CODE         = #{insttCode}
+    </update>
+
+    <update id="deleteInsttCode">
+        
+            UPDATE  COMTNINSTTCODE
+               SET  ABL_ENNC           = '1'
+                 ,  ABL_DE             = #{ablDe}
+                 ,  CHANGE_DE           = #{changede}
+                 ,  CHANGE_TIME        = #{changeTime}
+                 ,  LAST_UPDUSR_ID     = #{lastUpdusrId}
+                 ,  LAST_UPDT_PNTTM  = sysdate
+             WHERE  INSTT_CODE         = #{insttCode}
+        
+    </update>
+
+</mapper>

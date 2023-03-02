@@ -24,7 +24,7 @@ public interface EgovTwitterRecptnService {
 	 * 트위터 목록을 조회한다.
 	 * @param sTwitterId 	-트위터 아이디
 	 * @param sTwitterPw 	-트위터 비밀번호
-	 * @param nPageSize 	-페이징 갯수
+	 * @param nPageSize 	-페이징 개수
      * @return List 		-조회 결과
      * @throws Exception	-Exception Throws
 	 */

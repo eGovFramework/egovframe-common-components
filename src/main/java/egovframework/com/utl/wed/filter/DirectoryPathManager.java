@@ -26,6 +26,9 @@ import org.apache.commons.lang3.StringUtils;
 
 import com.sun.star.auth.InvalidArgumentException;
 
+import egovframework.com.cmm.EgovWebUtil;
+import egovframework.com.cmm.service.EgovProperties;
+
 /**
  *  이미지 저장 처리 클래스
  * @author guavatak
@@ -40,9 +43,13 @@ import com.sun.star.auth.InvalidArgumentException;
  *  ----------  --------    ---------------------------
  *  2014.12.04  표준프레임워크   최초 적용 (패키지 변경 및 소스 정리)
  *  2018.12.28  신용호             getDirectoryPathByDateType() Month의 범위를 1~12가 되도록 수정
+ *  2022.11.16  신용호             보안코드 점검 및 수정
  * </pre>
  */
 public class DirectoryPathManager {
+	
+	private static String fileStorePath = EgovProperties.getProperty("Globals.fileStorePath");
+	
 	public enum DIR_DATE_TYPE {
 		DATE_POLICY_YYYY_MM_DD, DATE_POLICY_YYYY_MM, DATE_POLICY_YYYY
 	};
@@ -68,7 +75,10 @@ public class DirectoryPathManager {
 		return sb.toString();
 	}
 
-	public static File getUniqueFile(final File file) {
+	public static File getUniqueFile(String imageBaseDir, String subDir, String fileName) {
+		
+		File file = new File(fileStorePath + EgovWebUtil.filePathBlackList(imageBaseDir + subDir) + FilenameUtils.getName(fileName));
+		
 		if (!file.exists())
 			return file;
 

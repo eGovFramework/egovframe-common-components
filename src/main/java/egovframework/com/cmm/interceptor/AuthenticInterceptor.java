@@ -1,5 +1,7 @@
 package egovframework.com.cmm.interceptor;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -38,6 +40,7 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 
 public class AuthenticInterceptor extends HandlerInterceptorAdapter {
 
+	@SuppressWarnings("unused")
 	@Autowired
 	private Environment environment;
 	
@@ -52,7 +55,7 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter {
 	}
 
 	public void setAdminAuthPatternList(List<String> adminAuthPatternList) {
-		this.adminAuthPatternList = adminAuthPatternList;
+		this.adminAuthPatternList = Collections.unmodifiableList(adminAuthPatternList);
 	}
 
 	/**

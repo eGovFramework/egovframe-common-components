@@ -1,5 +1,6 @@
 package egovframework.com.utl.sys.pxy.service;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -50,7 +51,7 @@ public class ProxySvcVO extends ProxySvc {
 	 * @param proxySvcList the proxySvcList to set
 	 */
 	public void setProxySvcList(List<?> proxySvcList) {
-		this.proxySvcList = proxySvcList;
+		this.proxySvcList = Collections.unmodifiableList(proxySvcList);
 	}
 	/**
 	 * @return the strPreSvcSttus

@@ -3,6 +3,7 @@ package egovframework.com.sym.sym.bak.validation;
 import java.io.File;
 
 import egovframework.com.cmm.EgovWebUtil;
+import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.sym.sym.bak.service.BackupOpert;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 
@@ -23,11 +24,15 @@ import org.springframework.validation.Validator;
  *   수정일       수정자           수정내용
  *  -------     --------    ---------------------------
  *  2010.09.02   김진만     최초 생성
+ *  2022.11.16   신용호     시큐어코딩 조치
  * </pre>
  */
 @Component("backupOpertValidator")
 public class BackupOpertValidator implements Validator {
 
+	private static final String SOURCE_BASE_DIRECTORY = EgovProperties.getProperty("Globals.SynchrnServerPath");
+	private static final String TARGET_BASE_DIRECTORY = EgovProperties.getProperty("Globals.SynchrnServerPath");
+	
 	/*
 	 * (non-Javadoc)
 	 * @see org.springframework.validation.Validator#supports(java.lang.Class)
@@ -46,7 +51,7 @@ public class BackupOpertValidator implements Validator {
 		File dir = null;
 		String srcDir = backupOpert.getBackupOrginlDrctry();
 		//KISA 보안약점 조치 (2018-10-29, 윤창원)
-		dir = new File(EgovWebUtil.filePathBlackList(srcDir));
+		dir = new File(SOURCE_BASE_DIRECTORY + EgovWebUtil.filePathBlackList(srcDir));
 		try {
 			if (!dir.exists()) {
 				errors.rejectValue("backupOrginlDrctry", "errors.backupOrginlDrctry", new Object [] { srcDir },
@@ -67,7 +72,7 @@ public class BackupOpertValidator implements Validator {
 		//KISA 보안약점 조치 (2018-10-29, 윤창원)
 		String targetDir = EgovStringUtil.isNullToString(backupOpert.getBackupStreDrctry());
 		//KISA 보안약점 조치 (2018-10-29, 윤창원)
-		dir = new File(EgovWebUtil.filePathBlackList(EgovStringUtil.isNullToString(backupOpert.getBackupStreDrctry())));
+		dir = new File(TARGET_BASE_DIRECTORY + EgovWebUtil.filePathBlackList(EgovStringUtil.isNullToString(backupOpert.getBackupStreDrctry())));
 		try {
 			if (!dir.exists()) {
 				errors.rejectValue("backupStreDrctry", "errors.backupStreDrctry", new Object [] { targetDir },

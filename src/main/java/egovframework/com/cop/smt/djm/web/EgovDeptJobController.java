@@ -57,6 +57,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *  2011.08.26   정진오            IncludedInfo annotation 추가
  *  2019.12.09   신용호            KISA 보안약점 조치 (위험한 형식 파일 업로드)
  *  2020.10.27   신용호            파일 업로드 수정 (multiRequest.getFiles), 널(null) 값 체크
+ *  2022.11.11   김혜준            시큐어코딩 처리
  *
  * </pre>
  *
@@ -276,7 +277,7 @@ public class EgovDeptJobController {
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "egovframework/com/uat/uia/EgovLoginUsr";
+        	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
     	return sLocationUrl;
@@ -305,12 +306,8 @@ public class EgovDeptJobController {
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "egovframework/com/uat/uia/EgovLoginUsr";
+        	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
-
-
-    	//System.out.println(deptJobService.selectDeptJobBxOrdr(deptJobBxVO.getDeptId()));
-    	//deptJobBxVO.setIndictOrdr(deptJobService.selectDeptJobBxOrdr(deptJobBxVO.getDeptId()) + 1);
 
     	model.addAttribute("indictOrdrValue", deptJobService.selectDeptJobBxOrdr(deptJobBxVO.getDeptId()) + 1);
     	return sLocationUrl;
@@ -329,7 +326,7 @@ public class EgovDeptJobController {
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "egovframework/com/uat/uia/EgovLoginUsr";
+        	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
     	DeptJobBxVO resultVO = deptJobService.selectDeptJobBx(deptJobBxVO);
@@ -357,8 +354,6 @@ public class EgovDeptJobController {
 
 		beanValidator.validate(deptJobBxVO, bindingResult);
 		if (bindingResult.hasErrors()) {
-			//DeptJobBx result = deptJobService.selectDeptJobBx(deptJobBxVO);
-		    //model.addAttribute("deptJobBx", result);
 		    return "egovframework/com/cop/smt/djm/EgovDeptJobBxUpdt";
 		}
 
@@ -408,7 +403,7 @@ public class EgovDeptJobController {
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "egovframework/com/uat/uia/EgovLoginUsr";
+        	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
 		//로그인 객체 선언
@@ -450,7 +445,7 @@ public class EgovDeptJobController {
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "egovframework/com/uat/uia/EgovLoginUsr";
+        	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
     	deptJobService.deleteDeptJobBx(deptJobBx);
 		return "forward:/cop/smt/djm/selectDeptJobBxList.do";
@@ -466,15 +461,13 @@ public class EgovDeptJobController {
 	@IncludedInfo(name="부서업무정보", order = 401 ,gid = 40)
 	@RequestMapping("/cop/smt/djm/selectDeptJobList.do")
 	public String selectDeptJobList(@ModelAttribute("searchVO") DeptJobVO deptJobVO, ModelMap model) throws Exception{
-		//LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
    	 	// KISA 보안취약점 조치 (2018-12-10, 신용호)
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
 		deptJobVO.setPageUnit(propertyService.getInt("pageUnit"));
@@ -498,7 +491,6 @@ public class EgovDeptJobController {
 		paginationInfo.setTotalRecordCount(totCnt);
 
 		model.addAttribute("resultBxList", deptJobService.selectDeptJobBxListAll());
-		//model.addAttribute("deptId", loginVO.getOrgnztId());
 		model.addAttribute("resultList", map.get("resultList"));
 		model.addAttribute("resultCnt", map.get("resultCnt"));
 		model.addAttribute("paginationInfo", paginationInfo);
@@ -521,7 +513,7 @@ public class EgovDeptJobController {
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "egovframework/com/uat/uia/EgovLoginUsr";
+        	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
     	deptJobVO.setDeptId(deptJobVO.getSearchDeptId());
@@ -551,7 +543,7 @@ public class EgovDeptJobController {
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "egovframework/com/uat/uia/EgovLoginUsr";
+        	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
 		DeptJobVO resultVO = deptJobService.selectDeptJob(deptJobVO);
@@ -604,7 +596,7 @@ public class EgovDeptJobController {
    	 	// KISA 보안취약점 조치 (2018-12-10, 신용호)
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
 		beanValidator.validate(deptJobVO, bindingResult);
@@ -614,32 +606,30 @@ public class EgovDeptJobController {
 		    return "egovframework/com/cop/smt/djm/EgovDeptJobUpdt";
 		}
 
-		if (isAuthenticated) {
-			/* *****************************************************************
-        	// 첨부파일 관련 ID 생성 start....
-			****************************************************************** */
-    		String _atchFileId = deptJobVO.getAtchFileId();
+		/* *****************************************************************
+    	// 첨부파일 관련 ID 생성 start....
+		****************************************************************** */
+		// 2022.11.11 시큐어코딩 처리
+		String _atchFileId = deptJobVO.getAtchFileId();
 
-    		//final Map<String, MultipartFile> files = multiRequest.getFileMap();
-    		final List<MultipartFile> files = multiRequest.getFiles("file_1");
+		//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
-    		if(!files.isEmpty()){
-    			String atchFileAt = commandMap.get("atchFileAt") == null ? "" : (String)commandMap.get("atchFileAt");
-    			if("N".equals(atchFileAt)){
-    				List<FileVO> _result = fileUtil.parseFileInf(files, "DSCH_", 0, _atchFileId, "");
-    				_atchFileId = fileMngService.insertFileInfs(_result);
+		if(!files.isEmpty()){
+			String atchFileAt = commandMap.get("atchFileAt") == null ? "" : (String)commandMap.get("atchFileAt");
+			if("N".equals(atchFileAt)){
+				List<FileVO> _result = fileUtil.parseFileInf(files, "DSCH_", 0, _atchFileId, "");
+				_atchFileId = fileMngService.insertFileInfs(_result);
+				// 첨부파일 ID 셋팅
+				deptJobVO.setAtchFileId(_atchFileId);    	// 첨부파일 ID
 
-    				// 첨부파일 ID 셋팅
-    				deptJobVO.setAtchFileId(_atchFileId);    	// 첨부파일 ID
-
-    			}else{
-    				FileVO fvo = new FileVO();
-    				fvo.setAtchFileId(_atchFileId);
-    				int _cnt = fileMngService.getMaxFileSN(fvo);
-    				List<FileVO> _result = fileUtil.parseFileInf(files, "DSCH_", _cnt, _atchFileId, "");
-    				fileMngService.updateFileInfs(_result);
-    			}
-    		}
+			}else{
+				FileVO fvo = new FileVO();
+				fvo.setAtchFileId(_atchFileId);
+				int _cnt = fileMngService.getMaxFileSN(fvo);
+				List<FileVO> _result = fileUtil.parseFileInf(files, "DSCH_", _cnt, _atchFileId, "");
+				fileMngService.updateFileInfs(_result);
+			}
 
 			deptJobVO.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 			deptJobService.updateDeptJob(deptJobVO);
@@ -661,7 +651,7 @@ public class EgovDeptJobController {
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "egovframework/com/uat/uia/EgovLoginUsr";
+        	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
 		//로그인 객체 선언
@@ -721,7 +711,7 @@ public class EgovDeptJobController {
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "egovframework/com/uat/uia/EgovLoginUsr";
+        	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
     	// 첨부파일 삭제를 위한 ID 생성 start....

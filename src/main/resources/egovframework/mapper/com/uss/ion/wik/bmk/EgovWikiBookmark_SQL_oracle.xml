@@ -58,7 +58,7 @@
 		
 	</select>
 	
-	<!-- 위키북마크::목록조회_게시물 총갯수  -->
+	<!-- 위키북마크::목록조회_게시물 총개수  -->
 	<select id="selectWikiBookmarkListCnt" parameterType="comDefaultVO" resultType="int">
 		SELECT 
 		COUNT(*) totcnt

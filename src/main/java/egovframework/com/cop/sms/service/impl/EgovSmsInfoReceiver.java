@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.util.EgovBasicLogger;
 import egovframework.com.cop.sms.service.SmsRecptn;
+import lombok.Synchronized;
 import x3.client.smeapi.SMEConnection;
 import x3.client.smeapi.SMEConnectionFactory;
 import x3.client.smeapi.SMEException;
@@ -73,6 +74,7 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 	 *
 	 * @throws SMEException
 	 */
+	@Synchronized		// 221111	김혜준	2022 시큐어코딩 조치
 	public void open() throws SMEException {
 		this.factReceiver = new SMEConnectionFactoryImpl(connString);
 		this.connReceiver = factReceiver.createConnection(smsId, smsPwd); // 아이디와 패스워드입니다.
@@ -116,9 +118,11 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 
 	public void readPropertyFile() {
 
-		this.connString = SMEConfig.getSmsUrl();
-		this.smsId = SMEConfig.getSmsId();
-		this.smsPwd = SMEConfig.getSmsPwd();
+		synchronized (this) {				// 221111	김혜준	2022 시큐어코딩 조치
+			this.connString = SMEConfig.getSmsUrl();
+			this.smsId = SMEConfig.getSmsId();
+			this.smsPwd = SMEConfig.getSmsPwd();
+		}
 
 		String tmp = null;
 
@@ -285,7 +289,9 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 			} else {
 				//System.out.println("SMEReceiver Disconnected!!"); // 주석처리
 				LOGGER.debug("SMEReceiver Disconnected!!");
-				this.isConnected = false;
+				synchronized (this) {				// 221111	김혜준	2022 시큐어코딩 조치
+					this.isConnected = false;
+				}
 			}
 		}
 	}
@@ -358,7 +364,9 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 	 * 관련 설정은 context-schedule.xml 참조
 	 */
 	public void execute() {
-		this.smeConfigPath = EgovProperties.getPathProperty("Globals.SMEConfigPath");
+		synchronized (this) {				// 221111	김혜준	2022 시큐어코딩 조치
+			this.smeConfigPath = EgovProperties.getPathProperty("Globals.SMEConfigPath");
+		}
 
 		LOGGER.debug("EgovSmsInfoReceiver executed...");
 

@@ -11,24 +11,26 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.net.ftp.FTP;
+import org.apache.commons.net.ftp.FTPClient;
+import org.apache.commons.net.ftp.FTPFile;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
+
 import egovframework.com.cmm.EgovWebUtil;
+import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.util.EgovBasicLogger;
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sys.ssy.service.EgovSynchrnServerService;
 import egovframework.com.utl.sys.ssy.service.SynchrnServer;
 import egovframework.com.utl.sys.ssy.service.SynchrnServerVO;
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-
-import javax.annotation.Resource;
-
-import org.apache.commons.net.ftp.FTP;
-import org.apache.commons.net.ftp.FTPClient;
-import org.apache.commons.net.ftp.FTPFile;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Service;
-import org.springframework.web.multipart.MultipartFile;
 
 /**
  * 개요
@@ -53,6 +55,7 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 	
 	// LOGGER
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovSynchrnServerServiceImpl.class);
+	private static final String SYNCH_SERVER_PATH = EgovProperties.getProperty("Globals.SynchrnServerPath");
 
 	@Resource(name = "synchrnServerDAO")
 	private SynchrnServerDAO synchrnServerDAO;
@@ -67,7 +70,7 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 	}
 
 	/**
-	 * 동기화대상 서버목록 총 갯수를 조회한다.
+	 * 동기화대상 서버목록 총 개수를 조회한다.
 	 * @param synchrnServerVO - 동기화대상 서버 Vo
 	 * @return int - 동기화대상 서버 카운트 수
 	 */
@@ -448,7 +451,7 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 	 * @param newName - 업로드 대상 파일명
 	 * @param stordFilePath - 업로드 경로
 	 */
-	public void writeFile(MultipartFile multipartFile, String newName, String stordFilePath, SynchrnServerVO synchrnServerVO) throws Exception {
+	public void writeFile(MultipartFile multipartFile, String newName, SynchrnServerVO synchrnServerVO) throws Exception {
 
 		List<SynchrnServerVO> synchrnServerList = synchrnServerDAO.processSynchrnServerList(synchrnServerVO);
 		Iterator<SynchrnServerVO> iterator = synchrnServerList.iterator();
@@ -459,7 +462,7 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 
 		try {
 			stream = multipartFile.getInputStream();
-			File cFile = new File(EgovWebUtil.filePathBlackList(stordFilePath));
+			File cFile = new File(EgovWebUtil.filePathBlackList(SYNCH_SERVER_PATH));
 
 			if (!cFile.isDirectory())
 				//2017.02.08 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
@@ -469,7 +472,7 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 					LOGGER.error("[file.mkdirs] cFile : Directory Creation Fail");
 				}
 
-			bos = new FileOutputStream(EgovWebUtil.filePathBlackList(stordFilePath + File.separator + newName));
+			bos = new FileOutputStream(EgovWebUtil.filePathBlackList(SYNCH_SERVER_PATH + File.separator + FilenameUtils.getName(newName)));
 
 			int bytesRead = 0;
 			byte[] buffer = new byte[2048];
@@ -494,7 +497,7 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 	 * 업로드 파일을 삭제한다.
 	 * @param synchrnServerVO - 동기화대상 서버 Vo
 	 */
-	public void deleteFile(String deleteFiles, String stordFilePath, SynchrnServerVO synchrnServerVO) throws Exception {
+	public void deleteFile(String deleteFiles, SynchrnServerVO synchrnServerVO) throws Exception {
 
 		List<SynchrnServerVO> synchrnServerList = synchrnServerDAO.processSynchrnServerList(synchrnServerVO);
 		Iterator<SynchrnServerVO> iterator = synchrnServerList.iterator();
@@ -503,7 +506,7 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 		String[] strDeleteFiles = deleteFiles.split(";");
 
 		for (int i = 0; i < strDeleteFiles.length; i++) {
-			File uploadFile = new File(EgovWebUtil.filePathBlackList(stordFilePath + strDeleteFiles[i]));
+			File uploadFile = new File(EgovWebUtil.filePathBlackList(SYNCH_SERVER_PATH + FilenameUtils.getName(strDeleteFiles[i])));
 			//2017.02.08 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
 			if(uploadFile.delete()){
 				LOGGER.debug("[file.delete] uploadFile : File Deletion Success");

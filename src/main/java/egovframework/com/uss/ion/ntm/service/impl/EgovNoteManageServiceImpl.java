@@ -126,7 +126,7 @@ public class EgovNoteManageServiceImpl extends EgovAbstractServiceImpl
 	}
 
     /**
-	 *  수신자/참조자선택팝업 갯수를 조회한다.
+	 *  수신자/참조자선택팝업 개수를 조회한다.
 	 * @param searchVO -조회할 정보가 담긴 VO
 	 * @return int -조회된 데이터 건수
 	 * @throws Exception

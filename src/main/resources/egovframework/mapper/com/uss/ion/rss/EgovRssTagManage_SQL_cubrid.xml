@@ -68,7 +68,7 @@
 		<if test="searchCondition == 'A.HDER_LINK'">
 		AND A.HDER_LINK LIKE '%' || #{searchKeyword} || '%'
 		</if>
-		<if test="searchCondition == 'A.HDER_DC'">
+		<if test="searchCondition == 'A.HDER_DESCRIPTION'">
 		AND A.HDER_DC LIKE '%' || #{searchKeyword} || '%'
 		</if>
 		<if test="searchCondition == 'A.HDER_TAG'">
@@ -80,13 +80,13 @@
 		<if test="searchCondition == 'A.BDT_LINK'">
 		AND A.BDT_LINK LIKE '%' || #{searchKeyword} || '%'
 		</if>
-		<if test="searchCondition == 'A.BDT_DC'">
+		<if test="searchCondition == 'A.BDT_DESCRIPTION'">
 		AND A.BDT_DC LIKE '%' || #{searchKeyword} || '%'
 		</if>
 		<if test="searchCondition == 'A.BDT_TAG'">
 		AND A.BDT_TAG LIKE '%' || #{searchKeyword} || '%'
 		</if>
-		<if test="searchCondition == 'A.BDT_ETC_TAG'">
+		<if test="searchCondition == 'A.BDT_ETC'">
 		AND A.BDT_ETC_TAG LIKE '%' || #{searchKeyword} || '%'
 		</if>
 	 	
@@ -100,7 +100,7 @@
 	WHERE ROWNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
 	
 	</select>
-	<!-- RSS관리::목록조회_게시물 총갯수  -->
+	<!-- RSS관리::목록조회_게시물 총개수  -->
 	<select id="selectRssTagManageCnt" parameterType="comDefaultVO" resultType="int">
 		SELECT 
 		COUNT(*) totcnt

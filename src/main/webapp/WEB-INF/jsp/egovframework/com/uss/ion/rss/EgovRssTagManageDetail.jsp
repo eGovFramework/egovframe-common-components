@@ -86,7 +86,7 @@ function fn_egov_delete_RssTagManage(){
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="ussIonRss.rssTagManageDetail.trgetSvcListCo"/></th><!-- 대상서비스목록갯수 -->
+			<th><spring:message code="ussIonRss.rssTagManageDetail.trgetSvcListCo"/></th><!-- 대상서비스목록개수 -->
 			<td class="left">
 			    <c:out value="${rssManage.trgetSvcListCo}" />&nbsp;
 			</td>

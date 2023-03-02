@@ -24,7 +24,7 @@ public interface EgovCtsnnManageService {
 	public List<CtsnnManageVO> selectCtsnnManageList(CtsnnManageVO ctsnnManageVO) throws Exception;
 
 	/**
-	 * 경조관리 목록 총 갯수를 조회한다.
+	 * 경조관리 목록 총 개수를 조회한다.
 	 * @param ctsnnManageVO - 경조관리 VO
 	 * @return int - 경조관리 카운트 수
 	 */
@@ -64,7 +64,7 @@ public interface EgovCtsnnManageService {
 	public List<CtsnnManageVO> selectCtsnnManageConfmList(CtsnnManageVO ctsnnManageVO) throws Exception;
 
 	/**
-	 * 경조관리정보 승인 처리를 위해 신청된 경조관리 목록 총 갯수를 조회한다.
+	 * 경조관리정보 승인 처리를 위해 신청된 경조관리 목록 총 개수를 조회한다.
 	 * @param ctsnnManageVO - 경조관리 VO
 	 * @return int - 경조관리 카운트 수
 	 */

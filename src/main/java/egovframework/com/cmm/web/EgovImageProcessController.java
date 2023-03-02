@@ -4,6 +4,7 @@ import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.util.Base64;
 import java.util.Map;
 
 import egovframework.com.cmm.EgovWebUtil;
@@ -14,8 +15,11 @@ import egovframework.com.cmm.util.EgovResourceCloseHelper;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.lang.StringUtils;
+import org.egovframe.rte.fdl.cryptography.EgovEnvCryptoService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -46,6 +50,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 public class EgovImageProcessController extends HttpServlet {
 
+	/** 암호화서비스 */
+	@Resource(name = "egovEnvCryptoService")
+	EgovEnvCryptoService cryptoService;
+	
     @Resource(name = "EgovFileMngService")
     private EgovFileMngService fileService;
 
@@ -62,16 +70,29 @@ public class EgovImageProcessController extends HttpServlet {
      * @throws Exception
      */
     @RequestMapping("/cmm/fms/getImage.do")
-    public void getImageInf(SessionVO sessionVO, ModelMap model, @RequestParam Map<String, Object> commandMap, HttpServletResponse response) throws Exception {
+    public void getImageInf(SessionVO sessionVO, ModelMap model, @RequestParam Map<String, Object> commandMap, HttpServletRequest request, HttpServletResponse response) throws Exception {
 
-		//@RequestParam("atchFileId") String atchFileId,
-		//@RequestParam("fileSn") String fileSn,
-		String atchFileId = (String)commandMap.get("atchFileId");
+		// 암호화된 atchFileId 를 복호화하고 동일한 세션인 경우만 다운로드할 수 있다. (2022.12.06 추가) - 파일아이디가 유추 불가능하도록 조치
+    	String param_atchFileId = (String) commandMap.get("atchFileId");
+    	param_atchFileId = param_atchFileId.replaceAll(" ", "+");
+		byte[] decodedBytes = Base64.getDecoder().decode(param_atchFileId);
+		String decodedString = cryptoService.decrypt(new String(decodedBytes));
+		String decodedSessionId = StringUtils.substringBefore(decodedString, "|");
+		String decodedFileId = StringUtils.substringAfter(decodedString, "|");
+
 		String fileSn = (String)commandMap.get("fileSn");
 
+		String sessionId = request.getSession().getId();
+
+		boolean isSameSessionId = StringUtils.equals(decodedSessionId, sessionId);
+
+		if (!isSameSessionId) {
+			throw new Exception();
+		}
+		
 		FileVO vo = new FileVO();
 
-		vo.setAtchFileId(atchFileId);
+		vo.setAtchFileId(decodedFileId);
 		vo.setFileSn(fileSn);
 
 		//------------------------------------------------------------
@@ -92,9 +113,12 @@ public class EgovImageProcessController extends HttpServlet {
 
 		BufferedInputStream in = null;
 		ByteArrayOutputStream bStream = null;
+		
+		String fileStreCours = EgovWebUtil.filePathBlackList(fvo.getFileStreCours());
+		String streFileNm = EgovWebUtil.filePathBlackList(fvo.getStreFileNm());
 
 		try {
-		    file = new File(fvo.getFileStreCours(), fvo.getStreFileNm());
+		    file = new File(fileStreCours, streFileNm);
 		    fis = new FileInputStream(file);
 
 		    in = new BufferedInputStream(fis);

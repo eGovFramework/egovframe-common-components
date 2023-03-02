@@ -26,7 +26,7 @@ public interface EgovHttpMonService {
 	public List<HttpMon> selectHttpMonList(HttpMonVO searchVO) throws Exception;
 
 	/**
-	 * HTTP서비스모니터링 목록 총 갯수를 조회한다.
+	 * HTTP서비스모니터링 목록 총 개수를 조회한다.
 	 * @param HttpMonVO - HTTP서비스모니터링 Vo
 	 * @return int - HTTP서비스 토탈 카운트 수
 	 * 
@@ -77,7 +77,7 @@ public interface EgovHttpMonService {
 	public Map<String, Object> selectHttpMonLogList(HttpMonLogVO httpMonLogVO) throws Exception;
 	
 	/**
-	 * HTTP서비스모니터링로그 목록 총 갯수를 조회한다.
+	 * HTTP서비스모니터링로그 목록 총 개수를 조회한다.
 	 * @param HttpMonVO - HTTP서비스모니터링 Vo
 	 * @return int - HTTP서비스 토탈 카운트 수
 	 * 

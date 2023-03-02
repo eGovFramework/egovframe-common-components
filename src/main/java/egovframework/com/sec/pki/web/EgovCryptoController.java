@@ -63,7 +63,7 @@ public class EgovCryptoController {
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "egovframework/com/uat/uia/EgovLoginUsr";
+        	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
     	
     	String plainText = (String)commandMap.get("plainText");
@@ -97,8 +97,6 @@ public class EgovCryptoController {
 			return cryptoService.encryptNone(encrypt); // Does not handle URLEncoding.
         } catch(IllegalArgumentException e) {
     		LOGGER.error("[IllegalArgumentException] Try/Catch...usingParameters Runing : "+ e.getMessage());
-        } catch (Exception e) {
-        	LOGGER.error("[" + e.getClass() +"] :" + e.getMessage());
         }
 		return encrypt;
     }
@@ -115,8 +113,6 @@ public class EgovCryptoController {
 			return cryptoService.decryptNone(decrypt); // Does not handle URLDecoding.
         } catch(IllegalArgumentException e) {
     		LOGGER.error("[IllegalArgumentException] Try/Catch...usingParameters Runing : "+ e.getMessage());
-        } catch (Exception e) {
-        	LOGGER.error("[" + e.getClass() +"] :" + e.getMessage());
         }
 		return decrypt;
     }

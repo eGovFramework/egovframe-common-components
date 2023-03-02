@@ -110,7 +110,7 @@ function fn_egov_tableColumn_RssTagManageIFrame(){
  ******************************************************** */
 function fn_egov_init_RssTagManage(){
 	
-	//대상서비스목록갯수  초기화
+	//대상서비스목록개수  초기화
 	if( document.getElementById("trgetSvcListCo").value == "" || document.getElementById("trgetSvcListCo").value == "0"){
 		document.getElementById("trgetSvcListCo").value = "20";
 	}
@@ -174,7 +174,7 @@ function fn_egov_save_RssTagManage(){
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="ussIonRss.rssTagManageRegist.trgetSvcListCo"/> <span class="pilsu">*</span></th><!-- 대상서비스목록갯수 -->
+			<th><spring:message code="ussIonRss.rssTagManageRegist.trgetSvcListCo"/> <span class="pilsu">*</span></th><!-- 대상서비스목록개수 -->
 			<td class="left">
 				<c:set var="trgetSvcListCount"><spring:message code="ussIonRss.rssTagManageRegist.trgetSvcListCo"/></c:set>
 			    <form:input path="trgetSvcListCo" size="73" title="${trgetSvcListCount}" cssClass="txaIpt" maxlength="5"/>

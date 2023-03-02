@@ -43,7 +43,7 @@
 	}
 	
 	function fn_egov_delete_notification() {		
-		if (confirm('<spring:message code="common.delete.msg" />')) {/* 삭제하겠습니까? */
+		if (confirm('<spring:message code="common.delete.msg" />')) {/* 삭제 하시겠습니까? */
 			document.frm.action = "<c:url value='/uss/ion/noi/deleteNotification.do'/>";
 			document.frm.submit();
 		}	

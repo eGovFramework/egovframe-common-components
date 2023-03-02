@@ -64,7 +64,7 @@ public class EgovRwardManageServiceImpl extends EgovAbstractServiceImpl implemen
 	}
 
 	/**
-	 * 포상관리목록 총 갯수를 조회한다.
+	 * 포상관리목록 총 개수를 조회한다.
 	 * @param rwardManageVO - 포상관리 VO
 	 * @return int - 포상관리 카운트 수
 	 */
@@ -150,7 +150,7 @@ public class EgovRwardManageServiceImpl extends EgovAbstractServiceImpl implemen
 	}
 
 	/**
-	 * 포상승인목록 총 갯수를 조회한다.
+	 * 포상승인목록 총 개수를 조회한다.
 	 * @param rwardManageVO - 포상관리 VO
 	 * @return int - 포상관리 카운트 수
 	 */

@@ -1,5 +1,6 @@
 package egovframework.com.sym.sym.srv.service;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -48,7 +49,7 @@ public class ServerEqpmnVO extends ServerEqpmn {
 	 * @param serverEqpmnList the serverEqpmnList to set
 	 */
 	public void setServerEqpmnList(List<?> serverEqpmnList) {
-		this.serverEqpmnList = serverEqpmnList;
+		this.serverEqpmnList = Collections.unmodifiableList(serverEqpmnList);
 	}
 	/**
 	 * @return the delYn

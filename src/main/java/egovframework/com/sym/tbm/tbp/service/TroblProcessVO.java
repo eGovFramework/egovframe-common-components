@@ -1,5 +1,6 @@
 package egovframework.com.sym.tbm.tbp.service;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -45,7 +46,7 @@ public class TroblProcessVO extends TroblProcess {
 	 * @param troblProcessList the troblProcessList to set
 	 */
 	public void setTroblProcessList(List<?> troblProcessList) {
-		this.troblProcessList = troblProcessList;
+		this.troblProcessList = Collections.unmodifiableList(troblProcessList);
 	}
 	/**
 	 * @return the strTroblNm

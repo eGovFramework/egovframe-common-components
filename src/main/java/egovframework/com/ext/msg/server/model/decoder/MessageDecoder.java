@@ -28,6 +28,9 @@ import javax.websocket.DecodeException;
 import javax.websocket.Decoder;
 import javax.websocket.EndpointConfig;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import egovframework.com.ext.msg.server.model.ChatMessage;
 import egovframework.com.ext.msg.server.model.Message;
 
@@ -49,6 +52,8 @@ public class MessageDecoder implements Decoder.Text<Message> {
 
 	@Override
 	public void init(EndpointConfig arg0) {}
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(MessageDecoder.class);
 
 	/**
 	 * 화면에서 넘어오는 데이터를 decoding하는 함수
@@ -57,10 +62,31 @@ public class MessageDecoder implements Decoder.Text<Message> {
 	public Message decode(String message) throws DecodeException {
 		ChatMessage chatMessage = new ChatMessage();
 
-		JsonObject jsonObject = Json
-				.createReader(new StringReader(message)).readObject();
-		chatMessage.setMessage(jsonObject.getString("message"));
-		chatMessage.setRoom(jsonObject.getString("room"));
+		// 221111	김혜준	2022 시큐어코딩 조치
+		JsonObject jsonObject = null;
+		JsonReader jsonReader = null;
+		StringReader stringReader = null;
+		
+		try {
+			stringReader = new StringReader(message);
+			jsonReader = Json.createReader(stringReader);
+			jsonObject = jsonReader.readObject();
+			chatMessage.setMessage(jsonObject.getString("message"));
+			chatMessage.setRoom(jsonObject.getString("room"));
+		} catch (JsonException ex) {
+			LOGGER.debug(ex.getMessage());
+		} finally {
+			if (stringReader != null) {
+				stringReader.close();
+			}
+			if (jsonReader != null) {
+				jsonReader.close();
+			}
+			if (jsonObject != null) {
+				jsonObject.clear();
+			}
+		}
+
 		return chatMessage;
 	}
 

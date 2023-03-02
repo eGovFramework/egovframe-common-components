@@ -10,7 +10,6 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.dbcp2.DataSourceConnectionFactory;
 import org.apache.commons.dbcp2.PoolableConnection;
 import org.apache.commons.dbcp2.PoolableConnectionFactory;
-import org.apache.commons.dbcp2.PoolingDriver;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
 import org.slf4j.Logger;
@@ -61,7 +60,7 @@ public class SmsBasicDBUtil {
 	/** 사용되지 않고 pool에 유지할 최소한의 커넥션 개수 */
 	private static final int MIN_IDLE = 5;
 	// 최대 커넥션이 20이고 maxIdle이 10인경우
-	// DB요청이 유휴상태가 되면 20개까지 생성된 커넥션풀은 10개까지 유휴커넥션으로 줄어들수 있다. (10~20개까지 커넥션풀의 갯수가 생성및 반납을 반복한다.)
+	// DB요청이 유휴상태가 되면 20개까지 생성된 커넥션풀은 10개까지 유휴커넥션으로 줄어들수 있다. (10~20개까지 커넥션풀의 개수가 생성및 반납을 반복한다.)
 	// 이후 최소 IDLE까지 줄어들수 있다.
 	/** 커넥션 timeout */
 	private static final int MAX_WAIT_MILLIS = 20000;
@@ -97,11 +96,11 @@ public class SmsBasicDBUtil {
 		poolConfig.setTestWhileIdle(true);
 		//기본값  : false /true 일 경우 validationQuery 를 매번 수행한다.
 		poolConfig.setTestOnBorrow(false);
-		//커넥션 최소갯수 설정
+		//커넥션 최소개수 설정
 		poolConfig.setMinIdle(bds.getMinIdle());
-		//반납직후 커넥션 최소갯수 설정
+		//반납직후 커넥션 최소개수 설정
 		poolConfig.setMaxIdle(bds.getMaxIdle());
-		//커넥션 최대 갯수 설정
+		//커넥션 최대 개수 설정
 		poolConfig.setMaxTotal(bds.getMaxTotal());
 		GenericObjectPool<PoolableConnection> connectionPool = new GenericObjectPool<PoolableConnection>(poolableConnectionFactory,poolConfig);
 		//PoolableConnectionFactory 커넥션 풀 연결
@@ -146,8 +145,6 @@ public class SmsBasicDBUtil {
 			//2017.02.08 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
 			} catch (SQLException ignore) {
 				LOGGER.error("[SQLExceptionException] : database access error occurs");
-			} catch (Exception ignore) {
-				LOGGER.error("["+ ignore.getClass() +"] : ", ignore.getMessage());
 			}
 		if (stmt != null)
 			try {
@@ -155,8 +152,6 @@ public class SmsBasicDBUtil {
 			//2017.02.08 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
 			} catch (SQLException ignore) {
 				LOGGER.error("[SQLExceptionException] : database access error occurs");
-			} catch (Exception ignore) {
-				LOGGER.error("["+ ignore.getClass() +"] : ", ignore.getMessage());
 			}
 		if (conn != null)
 			try {
@@ -164,8 +159,6 @@ public class SmsBasicDBUtil {
 			//2017.02.08 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
 			} catch (SQLException ignore) {
 				LOGGER.error("[SQLExceptionException] : database access error occurs");
-			} catch (Exception ignore) {
-				LOGGER.error("["+ ignore.getClass() +"] : ", ignore.getMessage());
 			}
 	}
 }

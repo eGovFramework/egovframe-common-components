@@ -138,7 +138,7 @@ function fn_egov_get_CodeId(form){
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="comDamSpeReq.comDamRequestOfferRegist.atchFile"/> <span class="pilsu">*</span></th>
+			<th><spring:message code="comDamSpeReq.comDamRequestOfferRegist.atchFile"/></span></th>
 			<td class="left">
 			    <input name="file_1" id="egovComFileUploader" type="file" multiple title="<spring:message code="comDamSpeReq.comDamRequestOfferRegist.atchFile"/>">
 			    <div id="egovComFileList"></div>

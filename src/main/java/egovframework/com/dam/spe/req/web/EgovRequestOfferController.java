@@ -106,7 +106,7 @@ public class EgovRequestOfferController {
 	    Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 	    if (!isAuthenticated) {
 	        model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-	        return "egovframework/com/uat/uia/EgovLoginUsr";
+	        return "redirect:/uat/uia/egovLoginUsr.do";
 	    }
 
         // 로그인 객체 선언
@@ -126,8 +126,8 @@ public class EgovRequestOfferController {
         searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
         searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> reusltList = egovRequestOfferVOService.selectRequestOfferList(searchVO);
-        model.addAttribute("resultList", reusltList);
+        List<?> resultList = egovRequestOfferVOService.selectRequestOfferList(searchVO);
+        model.addAttribute("resultList", resultList);
 
         model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword"));
         model.addAttribute("searchCondition", commandMap.get("searchCondition") == null ? "" : (String) commandMap.get("searchCondition"));
@@ -147,7 +147,7 @@ public class EgovRequestOfferController {
         	model.addAttribute("IS_SPE", "N");
         	model.addAttribute("USER_UNIQ_ID", loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
         }
-
+        
     	return "egovframework/com/dam/spe/req/EgovComDamRequestOfferList";
 
     }
@@ -172,7 +172,7 @@ public class EgovRequestOfferController {
 	    Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 	    if (!isAuthenticated) {
 	        model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-	        return "egovframework/com/uat/uia/EgovLoginUsr";
+	        return "redirect:/uat/uia/egovLoginUsr.do";
 	    }
         // 로그인 객체 선언
         LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -268,7 +268,7 @@ public class EgovRequestOfferController {
             Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
             if (!isAuthenticated) {
                 model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-                return "egovframework/com/uat/uia/EgovLoginUsr";
+                return "redirect:/uat/uia/egovLoginUsr.do";
             }
             String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
@@ -334,7 +334,7 @@ public class EgovRequestOfferController {
             Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
             if (!isAuthenticated) {
                 model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-                return "egovframework/com/uat/uia/EgovLoginUsr";
+                return "redirect:/uat/uia/egovLoginUsr.do";
             }
 
             // 로그인 객체 선언
@@ -421,7 +421,7 @@ public class EgovRequestOfferController {
             Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
             if (!isAuthenticated) {
                 model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-                return "egovframework/com/uat/uia/EgovLoginUsr";
+                return "redirect:/uat/uia/egovLoginUsr.do";
             }
 
 			MapTeamVO mapTeamVO = new MapTeamVO();
@@ -479,7 +479,7 @@ public class EgovRequestOfferController {
             Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
             if (!isAuthenticated) {
                 model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-                return "egovframework/com/uat/uia/EgovLoginUsr";
+                return "redirect:/uat/uia/egovLoginUsr.do";
             }
 
             // 로그인 객체 선언

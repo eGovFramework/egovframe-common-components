@@ -56,7 +56,7 @@ public class EgovCntcSttusServiceImpl extends EgovAbstractServiceImpl implements
 	}
 
 	/**
-	 * 연계현황 총 갯수를 조회한다.
+	 * 연계현황 총 개수를 조회한다.
 	 */
 	@Override
 	public int selectCntcSttusListTotCnt(CntcSttusVO searchVO) throws Exception {

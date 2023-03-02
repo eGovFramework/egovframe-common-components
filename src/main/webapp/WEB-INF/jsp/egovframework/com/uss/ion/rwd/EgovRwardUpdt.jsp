@@ -25,6 +25,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -165,7 +166,7 @@ function fncUpdtRwardManage() {
 			<td class="left" colspan="3">
 			    <!-- c:import charEncoding="utf-8" url="/cmm/fms/selectFileInfs.do" -->
 				<c:import url="/cmm/fms/selectFileInfsForUpdate.do" charEncoding="utf-8">
-					<c:param name="param_atchFileId" value="${rwardManageVO.atchFileId}" />
+					<c:param name="param_atchFileId" value="${egovc:encrypt(rwardManageVO.atchFileId)}" />
 				</c:import>
 				&nbsp
 			</td>

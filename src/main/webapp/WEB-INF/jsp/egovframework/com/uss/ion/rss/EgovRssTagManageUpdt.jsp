@@ -159,7 +159,7 @@ function fn_egov_save_RssTagManage(){
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="ussIonRss.rssTagManageUpdt.trgetSvcListCo"/> <span class="pilsu">*</span></th><!-- 대상서비스목록갯수 -->
+			<th><spring:message code="ussIonRss.rssTagManageUpdt.trgetSvcListCo"/> <span class="pilsu">*</span></th><!-- 대상서비스목록개수 -->
 			<td class="left">
 			    <c:set var="trgetSvcListCount"><spring:message code="ussIonRss.rssTagManageRegist.trgetSvcListCo"/></c:set>
 			    <form:input path="trgetSvcListCo" size="73" title="${trgetSvcListCount}" cssClass="txaIpt" maxlength="5"/>

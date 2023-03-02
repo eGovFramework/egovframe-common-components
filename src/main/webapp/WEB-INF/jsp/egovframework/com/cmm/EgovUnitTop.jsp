@@ -29,6 +29,31 @@
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <title>eGovFrame 공통 컴포넌트</title>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/jquery.js'/>" ></script>
+<%
+
+	String egovLatestServerTime = "";
+	String egovExpireSessionTime = "";
+	// 쿠키값 가져오기
+	Cookie[] cookies = request.getCookies() ;
+	if(cookies != null){
+		for(int i=0; i < cookies.length; i++){
+			Cookie c = cookies[i] ;
+			// 저장된 쿠키 이름을 가져온다
+			String cName = c.getName();
+			// 쿠키값을 가져온다
+			String cValue = c.getValue() ;
+			if ("egovLatestServerTime".equals(cName)) {
+				System.out.println("===>>> egovLatestServerTime = "+cName+":"+cValue);
+				egovLatestServerTime = cValue;
+			}
+			if ("egovExpireSessionTime".equals(cName)) {
+				System.out.println("===>>> egovExpireSessionTime = "+cName+":"+cValue);
+				egovExpireSessionTime = cValue;
+			}
+		}
+	}
+
+%>
 <script type="text/javaScript" language="javascript" defer="defer">
 	function getCookie(cname) {
  	  var name = cname + "=";
@@ -61,7 +86,7 @@
 	var stateExpiredTime = false;
 	var logoutUrl = "<c:url value='/uat/uia/actionLogout.do'/>";
 	var timer;
-  
+  	
 	function init() {
 		objLeftTime = document.getElementById("leftTimeInfo");
 		
@@ -72,10 +97,10 @@
 		objClickInfo = document.getElementById("clickInfo");
 		//console.log(objLeftTime.textContent);
 
-		latestTime = getCookie("egovLatestServerTime");
-		expireTime = getCookie("egovExpireSessionTime");
-		//console.log("latestServerTime = "+latestTime);
-		//console.log("expireSessionTime = "+expireTime);
+		latestTime = <%=egovLatestServerTime%>; //getCookie("egovLatestServerTime")
+		expireTime = <%=egovExpireSessionTime%>; //getCookie("egovExpireSessionTime");
+		console.log("latestServerTime = "+latestTime);
+		console.log("expireSessionTime = "+expireTime);
 		
 		elapsedTime = 0;
 		firstLocalTime = (new Date()).getTime();

@@ -120,7 +120,7 @@ function fn_egov_delete_NoteManage(nChk){
 	var sbName = "recptnEmp";
 	var FValue = document.getElementById(sbName).length;
 	var DValue = 0;
-	//삭제시 삭제 갯수 체크
+	//삭제시 삭제 개수 체크
 	if(nChk){
 		if(FValue == 0 || document.getElementById(sbName).selectedIndex == -1){
 			alert("<spring:message code="comUssIonNtm.NoteMange.alert.noList"/>");

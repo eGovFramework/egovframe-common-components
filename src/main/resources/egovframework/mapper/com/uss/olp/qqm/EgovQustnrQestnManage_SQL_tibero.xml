@@ -158,7 +158,7 @@
 	]]>
 	</select>
 
-	<!-- 설문문항::목록조회_게시물 총갯수  -->
+	<!-- 설문문항::목록조회_게시물 총개수  -->
 	<select id="selectQustnrQestnManageCnt" parameterType="comDefaultVO" resultType="int">
 		<![CDATA[
 		SELECT

@@ -137,6 +137,11 @@ function fn_egov_reply_article(form){
 		}
 	} 
 }
+
+<c:if test="${!empty resultMsg}">
+alert("<spring:message code="${resultMsg}" />");
+location.href = "<c:url value='/cop/bbs/selectArticleList.do' />?bbsId=${boardMasterVO.bbsId}";
+</c:if>
 </script>
 
 </head>

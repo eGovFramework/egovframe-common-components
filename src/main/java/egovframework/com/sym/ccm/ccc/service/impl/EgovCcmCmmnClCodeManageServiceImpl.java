@@ -36,7 +36,7 @@ public class EgovCcmCmmnClCodeManageServiceImpl extends EgovAbstractServiceImpl 
 	private CmmnClCodeManageDAO cmmnClCodeManageDAO;
 	
 	/**
-	 * 공통분류코드 총 갯수를 조회한다.
+	 * 공통분류코드 총 개수를 조회한다.
 	 */
 	@Override
 	public int selectCmmnClCodeListTotCnt(CmmnClCodeVO searchVO) throws Exception {

@@ -357,7 +357,7 @@ String.prototype.replaceAll = function(src, repl){
 <input type="hidden" name="schdulBgnde" id="schdulBgnde" value="" />
 <input type="hidden" name="schdulEndde" id="schdulEndde" value="" />
 <input type="hidden" name="schdulKindCode" id="schdulKindCode" value="1" />
-<!--첨부파일 갯수를 위한 hidden -->
+<!--첨부파일 개수를 위한 hidden -->
 <input type="hidden" name="posblAtchFileNumber" id="posblAtchFileNumber" value="3" />
 </form:form>
 

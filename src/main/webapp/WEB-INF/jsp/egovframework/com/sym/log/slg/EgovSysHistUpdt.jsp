@@ -6,6 +6,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <%
  /**
   * @Class Name : EgovSysHistUpdt.jsp
@@ -101,7 +102,7 @@
 			<th><spring:message code="comSymLogSlg.sysHistUpdt.atchFileList"/></th><!-- 첨부파일목록 -->
 			<td class="left">
 			    <c:import url="/cmm/fms/selectFileInfsForUpdate.do" charEncoding="utf-8">
-					<c:param name="param_atchFileId" value="${history.atchFileId}" />
+					<c:param name="param_atchFileId" value="${egovc:encrypt(history.atchFileId)}" />
 				</c:import>
 			</td>
 		</tr>

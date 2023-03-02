@@ -8,6 +8,7 @@
  * @ ----------   --------    ---------------------------
  * @ 2010.07.01   lee.m.j     최초 생성
  *   2018.09.07   신용호             공통컴포넌트 3.8 개선
+ *   2022.06.10   김해준			ip validation segment 별 alert 반복 호출 개선
  *
  *  @author lee.m.j
  *  @since 2010.07.01
@@ -120,14 +121,16 @@ function ipValidate(ipValue, ipName) {
 
             thisSegment = ipArray[i];
 
-            if (thisSegment > 255) {
+            if (thisSegment > 255) {			// 22.06.10 segment 별 alert 반복 호출 수정
                 alert(IPName+" : <spring:message code="comSymSymNwk.ntwrkRegist.validate.ip.formatMismatch"/>"); //IP 형식이 일치 하지않습니다.
                 result = false;
+                break;
             }
 
             if ((i == 0) && (thisSegment > 255)) {
                 alert(IPName+" : <spring:message code="comSymSymNwk.ntwrkRegist.validate.ip.formatMismatch"/>"); //IP 형식이 일치 하지않습니다.
                 result = false;
+                break;
             }
         }
     }

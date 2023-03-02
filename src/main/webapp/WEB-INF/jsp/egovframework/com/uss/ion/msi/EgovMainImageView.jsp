@@ -27,6 +27,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 
 <!DOCTYPE html>
@@ -41,7 +42,7 @@
     <c:forEach var="fileVO" items="${fileList}" varStatus="status">
     <tr>
         <td>
-            <img alt="" src='<c:url value='/cmm/fms/getImage.do'/>?atchFileId=<c:out value="${fileVO.imageFile}"/>' />
+            <img alt="" src='<c:url value='/cmm/fms/getImage.do'/>?atchFileId=<c:out value="${egovc:encryptSession(fileVO.imageFile,pageContext.session.id)}"/>' />
         </td>
     </tr>
     </c:forEach>

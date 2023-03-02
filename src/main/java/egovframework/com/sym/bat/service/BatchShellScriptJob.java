@@ -6,6 +6,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang3.ObjectUtils;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
@@ -14,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import egovframework.com.cmm.service.EgovProperties;
+import egovframework.com.cmm.service.FileSystemUtils;
 import egovframework.com.cmm.service.Globals;
 
 /**
@@ -28,6 +30,7 @@ import egovframework.com.cmm.service.Globals;
  *  ----------   --------   ---------------------------
  *  2010.08.30   김진만            최초 생성
  *  2020.11.05   신용호            KISA 보안약점 조치 - WhiteList처리
+ *  2022.11.11   김혜준            시큐어코딩 처리
  *  
  * </pre>
  */
@@ -39,7 +42,7 @@ public class BatchShellScriptJob implements Job {
 
 	@Resource(name = "egovNextUrlWhitelist")
     protected List<String> nextUrlWhitelist;
-	
+
 	/**
 	 * (non-Javadoc)
 	 * @see org.quartz.Job#execute(org.quartz.JobExecutionContext)
@@ -70,44 +73,37 @@ public class BatchShellScriptJob implements Job {
 
 		int result = 0;
 
-		boolean whiteListOK = false;
 		String propertyValue = EgovProperties.getProperty("SHELL." + Globals.OS_TYPE + ".batchShellFiles");
-		if (propertyValue == null || propertyValue.length() == 0) {
-			System.out.println("SHELL.Globals.OSTYPE.batchShellFiles OK");
-			LOGGER.debug("SHELL.UNIX/WINDOWS.batchShellFiles properties not defined");
-			whiteListOK = false;
-		}
-		LOGGER.debug("SHELL.UNIX/WINDOWS.batchShellFiles properties = "+propertyValue);
 
-		if ( whiteListOK == false ) {
-			LOGGER.debug("SHELL.UNIX/WINDOWS.batchShellFiles WhiteList Blocked!");
+		if (ObjectUtils.isEmpty(propertyValue) || propertyValue.length() == 0) {
+
+			LOGGER.debug("SHELL.Globals.OSTYPE.batchShellFiles OK");
+			LOGGER.debug("SHELL.UNIX/WINDOWS.batchShellFiles properties not defined");
 			throw new SecurityException("SHELL.UNIX/WINDOWS.batchShellFiles WhiteList Blocked!");
+
 		} else {
-			
+
+			LOGGER.debug("SHELL.UNIX/WINDOWS.batchShellFiles properties = "+propertyValue);
 			List<String> cmdShell = Arrays.asList(propertyValue.split(","));
 			LOGGER.debug("SHELL.UNIX/WINDOWS.batchShellFiles size() = "+cmdShell.size());
 			
 			for(String item : cmdShell) {
 				boolean whiteListStatus = batchProgrm.contains(item);
 				LOGGER.debug("SHELL.UNIX/WINDOWS.batchShellFiles WhiteList item = "+item+", status = "+whiteListStatus);
-				if ( whiteListStatus == true ) whiteListOK = whiteListStatus;
-			}
-			LOGGER.debug("SHELL.UNIX/WINDOWS.batchShellFiles WhiteList Status = "+whiteListOK);
-			
-			try {
-				Process p = null;
-				String cmdStr = batchProgrm; // + " " + paramtr; // KISA 코드 검증 조치에 따라 파라미터 사용불가 조치 (2020-12-07)
-				p = Runtime.getRuntime().exec(cmdStr);
-				p.waitFor();
-				result = p.exitValue();
-				LOGGER.debug("배치실행화일 - {} 실행완료, 결과값: {}", cmdStr, result);
-	
-			} catch (IOException e) {
-				LOGGER.error("배치스크립트 실행 에러 : {}", e.getMessage());
-				LOGGER.debug(e.getMessage(), e);
-			} catch (InterruptedException e) {
-				LOGGER.error("배치스크립트 실행 에러 : {}", e.getMessage());
-				LOGGER.debug(e.getMessage(), e);
+				if (whiteListStatus) {
+					try {
+						// 2022.11.11 시큐어코딩 처리
+						FileSystemUtils util = new FileSystemUtils();
+						Process process = util.processOperate("BatchShellScriptJob", item);
+						process.waitFor();
+						result = process.exitValue();
+						LOGGER.debug("배치실행화일 - {} 실행완료, 결과값: {}", item, result);
+					} catch (IOException e) {
+						LOGGER.error("배치스크립트 실행 에러 : {}", e.getMessage());
+					} catch (InterruptedException e) {
+						LOGGER.error("배치스크립트 실행 에러 : {}", e.getMessage());
+					}
+				}
 			}
 		}
 

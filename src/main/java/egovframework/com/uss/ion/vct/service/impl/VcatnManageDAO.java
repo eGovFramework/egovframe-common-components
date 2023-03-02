@@ -34,7 +34,7 @@ public class VcatnManageDAO extends EgovComAbstractDAO {
 	}
 
     /**
-	 * 휴가관리목록 총 갯수를 조회한다.
+	 * 휴가관리목록 총 개수를 조회한다.
 	 * @param vcatnManageVO - 휴가관리 VO
 	 * @return int
 	 * @exception Exception
@@ -98,7 +98,7 @@ public class VcatnManageDAO extends EgovComAbstractDAO {
 	}
 
     /**
-	 * 휴가관리정보 승인 처리를 위해 신청된 휴가관리 목록 총 갯수를 조회한다.
+	 * 휴가관리정보 승인 처리를 위해 신청된 휴가관리 목록 총 개수를 조회한다.
 	 * @param vcatnManageVO - 휴가관리 VO
 	 * @return int
 	 * @exception Exception

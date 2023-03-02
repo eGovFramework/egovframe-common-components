@@ -23,6 +23,7 @@ import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.service.FileVO;
+import egovframework.com.cmm.service.Globals;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olh.faq.service.EgovFaqService;
 import egovframework.com.uss.olh.faq.service.FaqVO;
@@ -47,7 +48,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 *  2011.08.26   정진오            IncludedInfo annotation 추가
 *  2016.08.03   김연호            표준프레임워크 3.6 개선
 *  2020.10.27   신용호            파일 업로드 수정 (multiRequest.getFiles)
-*  2021.07.29   정진호            경로 오류 수정
+*  2021.07.29   정진오            경로 오류 수정
 *
 * </pre>
 */
@@ -143,8 +144,8 @@ public class EgovFaqController {
 		model.addAttribute("faqVO", new FaqVO());
 		
     	// 파일업로드 제한
-    	String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
-    	String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
+    	String whiteListFileUploadExtensions = Globals.FILE_UP_EXTS;
+    	String fileUploadMaxSize = Globals.FILE_UP_MAX_SIZE;
 
         model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
         model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
@@ -220,8 +221,8 @@ public class EgovFaqController {
 		model.addAttribute("faqVO", egovFaqService.selectFaqDetail(faqVO));
 
     	// 파일업로드 제한
-    	String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
-    	String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
+    	String whiteListFileUploadExtensions = Globals.FILE_UP_EXTS;
+    	String fileUploadMaxSize = Globals.FILE_UP_MAX_SIZE;
 
         model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
         model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);

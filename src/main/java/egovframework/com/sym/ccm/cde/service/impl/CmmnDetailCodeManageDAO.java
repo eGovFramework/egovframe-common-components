@@ -30,9 +30,9 @@ import egovframework.com.sym.ccm.cde.service.CmmnDetailCodeVO;
 public class CmmnDetailCodeManageDAO extends EgovComAbstractDAO {
 
     /**
-	 * 공통상세코드 총 갯수를 조회한다.
+	 * 공통상세코드 총 개수를 조회한다.
      * @param searchVO
-     * @return int(공통상세코드 총 갯수)
+     * @return int(공통상세코드 총 개수)
      */
     public int selectCmmnDetailCodeListTotCnt(CmmnDetailCodeVO searchVO) throws Exception {
         return (Integer)selectOne("CmmnDetailCodeManage.selectCmmnDetailCodeListTotCnt", searchVO);

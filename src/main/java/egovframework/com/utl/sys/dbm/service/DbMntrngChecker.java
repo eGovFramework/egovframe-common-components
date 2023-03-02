@@ -63,9 +63,6 @@ public class DbMntrngChecker {
 		} catch (SQLException e) {
 			LOGGER.error("DB서비스모니터링 에러", e);
 			return new DbMntrngResult(false, e);
-		} catch (Exception e) {
-			LOGGER.error("DB서비스모니터링 에러", e);
-			return new DbMntrngResult(false, e);
 		} finally {
 
 			EgovResourceCloseHelper.closeDBObjects(rs, stmt, conn);

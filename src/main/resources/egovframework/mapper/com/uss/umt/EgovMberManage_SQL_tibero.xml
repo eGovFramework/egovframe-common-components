@@ -12,26 +12,26 @@
  <select id="selectMberList" resultType="egovMap">
 SELECT * FROM ( SELECT rownum rn, TB.* FROM (
     SELECT 
-        ESNTL_ID               as "uniqId",
-        'USR01'               as "userTy",
-        MBER_ID               as "userId",
-        MBER_NM               as "userNm",
-        MBER_EMAIL_ADRES      as "emailAdres",
-        AREA_NO               as "areaNo",
-        MIDDLE_TELNO          as "middleTelno",
-        END_TELNO             as "endTelno",
-        MBTLNUM           as "moblphonNo",
-        GROUP_ID              as "groupId",
-        MBER_STTUS            as "sttus",
-        SBSCRB_DE             as "sbscrbDe"
+        ESNTL_ID              as UNIQ_ID,
+        'USR01'               as USER_TY,
+        MBER_ID               as USER_ID,
+        MBER_NM               as USER_NM,
+        MBER_EMAIL_ADRES      as EMAIL_ADRES,
+        AREA_NO               as AREA_NO,
+        MIDDLE_TELNO          as MIDDLE_TELNO,
+        END_TELNO             as END_TELNO,
+        MBTLNUM               as MOBLPHON_NO,
+        GROUP_ID              as GROUP_ID,
+        MBER_STTUS            as STTUS,
+        SBSCRB_DE             as SBSCRB_DE
     FROM    COMTNGNRLMBER
     WHERE 1=1
         <if test='sbscrbSttus != null and sbscrbSttus neq "0" and sbscrbSttus neq ""'>
             AND MBER_STTUS LIKE  #{sbscrbSttus}
         </if>
-        <if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isNotEmpty(searchKeyword)">
+        <if test="@egovframework.com.cmm.util.EgovMybatisUtil@isNotEmpty(searchKeyword)">
         <if test="searchCondition == 0">
-            AND MBER_ID LIKE #{searchKeyword}
+            AND MBER_ID LIKE '%' || #{searchKeyword} || '%'
         </if>
         <if test="searchCondition == 1">
             AND MBER_NM LIKE '%' ||#{searchKeyword}|| '%'
@@ -51,9 +51,9 @@ SELECT * FROM ( SELECT rownum rn, TB.* FROM (
             <if test='sbscrbSttus != null and sbscrbSttus neq "0" and sbscrbSttus neq ""'>
                 AND MBER_STTUS LIKE  #{sbscrbSttus}
             </if>
-            <if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isNotEmpty(searchKeyword)">
+            <if test="@egovframework.com.cmm.util.EgovMybatisUtil@isNotEmpty(searchKeyword)">
             <if test="searchCondition == 0">
-                AND MBER_ID LIKE #{searchKeyword}
+                AND MBER_ID LIKE '%' || #{searchKeyword} || '%'
             </if>
             <if test="searchCondition == 1">
                 AND MBER_NM LIKE '%' ||#{searchKeyword}|| '%'

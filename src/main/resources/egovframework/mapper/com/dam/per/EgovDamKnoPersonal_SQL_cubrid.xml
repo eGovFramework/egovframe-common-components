@@ -47,7 +47,7 @@
 				 ,  A.KNWLDG_ID			     		
 				 ,  A.KNWLDG_NM
 				 ,  D.USER_NM          
-                 ,  A.COLCT_DE
+                 ,  TO_CHAR(TO_DATE(A.COLCT_DE, 'YYYYmmdd'), 'YYYY-mm-dd') AS COLCT_DE
                  ,  A.OTHBC_AT
 			     ,	A.FRST_REGISTER_ID
 			     ,	A.FRST_REGIST_PNTTM
@@ -98,7 +98,7 @@
 				 ,  A.KNWLDG_ID			     
 				 ,  A.KNWLDG_NM			     
 			     ,  A.KNWLDG_CN          
-                 ,  A.COLCT_DE
+                 ,  TO_CHAR(TO_DATE(A.COLCT_DE, 'YYYYmmdd'), 'YYYY-mm-dd') AS COLCT_DE
                  ,  A.OTHBC_AT
                  ,  A.ATCH_FILE_ID
 			     ,	A.FRST_REGISTER_ID

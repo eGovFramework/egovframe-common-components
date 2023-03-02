@@ -117,7 +117,7 @@
 		<result property="nttCn" column="NTT_CN"/>
 	</resultMap>
 	
-	<resultMap id="boardMasterList" type="egovframework.com.cop.bbs.service.BoardMasterVO">
+	<resultMap id="boardMasterList" type="egovframework.com.cop.bbs.service.BoardVO">
 		<result property="bbsId" column="BBS_ID"/>
 		<result property="bbsNm" column="BBS_NM"/>
 	</resultMap>

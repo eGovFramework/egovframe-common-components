@@ -2,6 +2,7 @@ package egovframework.com.sym.mnu.mpm.web;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
@@ -27,11 +28,15 @@ import org.springmodules.validation.commons.DefaultBeanValidator;
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.mnu.mpm.service.EgovMenuManageService;
 import egovframework.com.sym.mnu.mpm.service.MenuManageVO;
 import egovframework.com.sym.prm.service.EgovProgrmManageService;
 
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
@@ -55,6 +60,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *  2015.05.28   조정국            메뉴리스트관리 선택시 "정상적으로 조회되었습니다"라는 alert창이 제일 먼저 뜨는것 수정 : 출력메시지 주석처리
  *  2020.11.02   신용호            KISA 보안약점 조치 - 자원해제
  *  2021.02.16   신용호            WebUtils.getNativeRequest(request,MultipartHttpServletRequest.class);
+ *  2022.11.11   김혜준			   시큐어코딩 처리
  * </pre>
  */
 
@@ -78,17 +84,6 @@ public class EgovMenuManageController {
 	@Resource(name = "progrmManageService")
 	private EgovProgrmManageService progrmManageService;
 
-	/** EgovFileMngService */
-	//	@Resource(name="EgovFileMngService")
-	//	private EgovFileMngService fileMngService;
-
-	/** EgovFileMngUtil */
-	//	@Resource(name="EgovFileMngUtil")
-	//	private EgovFileMngUtil fileUtil;
-
-	//	@Resource(name = "excelZipService")
-	//    private EgovExcelService excelZipService;
-
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
@@ -109,7 +104,7 @@ public class EgovMenuManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 		searchVO.setSearchKeyword(req_menuNo);
 
@@ -135,7 +130,7 @@ public class EgovMenuManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 		// 내역 조회
 		/** EgovPropertyService.sample */
@@ -178,18 +173,21 @@ public class EgovMenuManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 		String sLocationUrl = null;
 		String resultMsg = "";
 
 		String[] delMenuNo = checkedMenuNoForDel.split(",");
-		menuManageVO.setMenuNo(Integer.parseInt(delMenuNo[0]));
+		if (delMenuNo.length != 0) {
+			menuManageVO.setMenuNo(Integer.parseInt(delMenuNo[0]));
+		}
 
+		// 2022.11.11 시큐어코딩 처리
 		if (menuManageService.selectUpperMenuNoByPk(menuManageVO) != 0) {
 			resultMsg = egovMessageSource.getMessage("fail.common.delete.upperMenuExist");
 			sLocationUrl = "forward:/sym/mnu/mpm/EgovMenuManageSelect.do";
-		} else if (delMenuNo == null || (delMenuNo.length == 0)) {
+		} else if (delMenuNo.length == 0) {
 			resultMsg = egovMessageSource.getMessage("fail.common.delete");
 			sLocationUrl = "forward:/sym/mnu/mpm/EgovMenuManageSelect.do";
 		} else {
@@ -222,7 +220,7 @@ public class EgovMenuManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
 		if (sCmd.equals("insert")) {
@@ -271,7 +269,7 @@ public class EgovMenuManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 		beanValidator.validate(menuManageVO, bindingResult);
 		if (bindingResult.hasErrors()) {
@@ -308,7 +306,7 @@ public class EgovMenuManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 		if (menuManageService.selectUpperMenuNoByPk(menuManageVO) != 0) {
 			resultMsg = egovMessageSource.getMessage("fail.common.delete.upperMenuExist");
@@ -336,15 +334,15 @@ public class EgovMenuManageController {
 		@ModelAttribute("searchVO") ComDefaultVO searchVO,
 		ModelMap model)
 		throws Exception {
-		String resultMsg = "";
+//		String resultMsg = "";
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 		List<?> list_menulist = menuManageService.selectMenuList();
-		resultMsg = egovMessageSource.getMessage("success.common.select");
+//		resultMsg = egovMessageSource.getMessage("success.common.select");
 		model.addAttribute("list_menulist", list_menulist);
 		//        model.addAttribute("resultMsg", resultMsg);
 		return "egovframework/com/sym/mnu/mpm/EgovMenuList";
@@ -368,7 +366,7 @@ public class EgovMenuManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		beanValidator.validate(menuManageVO, bindingResult);
@@ -414,7 +412,7 @@ public class EgovMenuManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		beanValidator.validate(menuManageVO, bindingResult);
@@ -454,7 +452,7 @@ public class EgovMenuManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		beanValidator.validate(menuManageVO, bindingResult);
@@ -484,7 +482,7 @@ public class EgovMenuManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		List<?> list_menulist = menuManageService.selectMenuList();
@@ -507,7 +505,7 @@ public class EgovMenuManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		List<?> list_menulist = menuManageService.selectMenuList();
@@ -533,7 +531,7 @@ public class EgovMenuManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 		menuManageService.menuBndeAllDelete();
 		resultMsg = egovMessageSource.getMessage("success.common.delete");
@@ -542,7 +540,7 @@ public class EgovMenuManageController {
 	}
 
 	/**
-	 * 메뉴일괄등록화면 호출 및  메뉴일괄등록처리 프로세스
+	 * 메뉴일괄등록화면 호출 및 메뉴일괄등록처리 프로세스
 	 * @param commandMap    Map
 	 * @param menuManageVO  MenuManageVO
 	 * @param request       HttpServletRequest
@@ -551,79 +549,85 @@ public class EgovMenuManageController {
 	 */
 	@RequestMapping(value = "/sym/mnu/mpm/EgovMenuBndeRegist.do")
 	public String menuBndeRegist(
-		@RequestParam Map<?, ?> commandMap,
-		final HttpServletRequest request,
-		@ModelAttribute("menuManageVO") MenuManageVO menuManageVO,
-		ModelMap model)
-		throws Exception {
+			@RequestParam Map<?, ?> commandMap,
+			final HttpServletRequest request,
+			@ModelAttribute("menuManageVO") MenuManageVO menuManageVO,
+			ModelMap model)
+	throws Exception {
 		String sLocationUrl = null;
 		String resultMsg = "";
 		String sMessage = "";
+		String[] fileExtension = {"XLS", "XLSX"};
+
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
+
 		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
+
 		if (sCmd.equals("bndeInsert")) {
-			//final MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
-			final MultipartHttpServletRequest multiRequest = WebUtils.getNativeRequest(request,
-				MultipartHttpServletRequest.class);
-			if (multiRequest != null) {//2022.01 Possible null pointer dereference due to return value of called method
+
+			final MultipartHttpServletRequest multiRequest = WebUtils.getNativeRequest(request, MultipartHttpServletRequest.class);
+
+			//2022.01 Possible null pointer dereference due to return value of called method
+			if (multiRequest != null) {
+
 				final Map<String, MultipartFile> files = multiRequest.getFileMap();
 				Iterator<Entry<String, MultipartFile>> itr = files.entrySet().iterator();
-				MultipartFile file;
+
 				while (itr.hasNext()) {
 					Entry<String, MultipartFile> entry = itr.next();
-					file = entry.getValue();
-					if (file.getOriginalFilename() != null && !"".equals(file.getOriginalFilename())) {
-						// 2011.10.07 업로드 파일에 대한 확장자를 체크
-						if (file.getOriginalFilename().endsWith(".xls")
-							|| file.getOriginalFilename().endsWith(".xlsx")
-							|| file.getOriginalFilename().endsWith(".XLS")
-							|| file.getOriginalFilename().endsWith(".XLSX")) {
+					MultipartFile file = entry.getValue();
+					String originalFilename = file.getOriginalFilename();
+					if (StringUtils.isEmpty(originalFilename)) {
+						continue;
+					}
+					String fileExtensionName = FilenameUtils.getExtension(originalFilename).toUpperCase();
+					boolean isExist = Arrays.stream(fileExtension).anyMatch(fileExtensionName::equals);
+					// 2022.11.11 시큐어코딩 처리
+					if (isExist) {
 
-							if (menuManageService.menuBndeAllDelete()) {
-								// KISA 보안약점 조치 - 자원해제
-								InputStream is = null;
-								try {
-									is = file.getInputStream();
-									sMessage = menuManageService.menuBndeRegist(menuManageVO, is);
-								} catch (IOException e) {
-									throw new IOException(e);
-								} finally {
-									if (is != null) {//2022.01.Possible null pointer dereference in method on exception path 처리
-										is.close();
-									}
-								}
-								resultMsg = sMessage;
+						if (menuManageService.menuBndeAllDelete()) {
+							// KISA 보안약점 조치 - 자원해제
+							InputStream is = null;
 
-							} else {
-								resultMsg = egovMessageSource.getMessage("fail.common.msg");
-								menuManageVO.setTmpCmd("EgovMenuBndeRegist Error!!");
-								model.addAttribute("resultVO", menuManageVO);
+							try {
+								is = file.getInputStream();
+								sMessage = menuManageService.menuBndeRegist(menuManageVO, is);
+							} catch (IOException e) {
+								throw new IOException(e);
+							} finally {
+								EgovResourceCloseHelper.close(is);
 							}
+
+							resultMsg = sMessage;
+
 						} else {
-							LOGGER.info("xls, xlsx 파일 타입만 등록이 가능합니다.");
 							resultMsg = egovMessageSource.getMessage("fail.common.msg");
-							model.addAttribute("resultMsg", resultMsg);
-							return "egovframework/com/sym/mnu/mpm/EgovMenuBndeRegist";
+							menuManageVO.setTmpCmd("EgovMenuBndeRegist Error!!");
+							model.addAttribute("resultVO", menuManageVO);
 						}
-						// *********** 끝 ***********
 
 					} else {
+						LOGGER.info("xls, xlsx 파일 타입만 등록이 가능합니다.");
 						resultMsg = egovMessageSource.getMessage("fail.common.msg");
+						model.addAttribute("resultMsg", resultMsg);
+						return "egovframework/com/sym/mnu/mpm/EgovMenuBndeRegist";
 					}
-					file = null;
-				}
 
-			}
+				} // while end
+			} // if end(MultipartHttpServletRequest isNotEmpty)
+
 			sLocationUrl = "egovframework/com/sym/mnu/mpm/EgovMenuBndeRegist";
 			model.addAttribute("resultMsg", resultMsg);
+
 		} else {
 			sLocationUrl = "egovframework/com/sym/mnu/mpm/EgovMenuBndeRegist";
 		}
+
 		return sLocationUrl;
 	}
 }

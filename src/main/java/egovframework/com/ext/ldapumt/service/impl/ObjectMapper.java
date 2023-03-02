@@ -76,8 +76,6 @@ public class ObjectMapper<T> implements ContextMapper<Object> {
 			throw new RuntimeException(e2);
 		} catch (IllegalAccessException e2) {
 			throw new RuntimeException(e2);
-		} catch (Exception  e2) {
-			throw new RuntimeException(e2);
 		}
 
 		vo.setDn(adapter.getDn().toString());
@@ -111,8 +109,6 @@ public class ObjectMapper<T> implements ContextMapper<Object> {
 					} catch (InvocationTargetException e) {
 						throw new RuntimeException(e);
 					} catch (NoSuchMethodException e) {
-						throw new RuntimeException(e);
-					} catch (Exception e) {
 						throw new RuntimeException(e);
 					}
 				

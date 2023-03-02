@@ -9,6 +9,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -22,7 +24,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.uss.ion.bnt.service.BndtCeckManage;
 import egovframework.com.uss.ion.bnt.service.BndtCeckManageVO;
 import egovframework.com.uss.ion.bnt.service.BndtDiary;
@@ -51,12 +52,12 @@ import org.egovframe.rte.fdl.excel.EgovExcelService;
  *  수정일                수정자               수정내용
  *  ----------   ----------   ---------------------------
  *  2010.06.15   표준프레임워크     최초 생성
- *  2018.08.29   신용호               xlsx 처리 할수 있도록 selectBndtManageBndeX추가
- *  2020.11.02   신용호               KISA 보안약점 조치 - 널(null) 값 체크
+ *  2018.08.29   신용호             xlsx 처리 할수 있도록 selectBndtManageBndeX추가
+ *  2020.11.02   신용호             KISA 보안약점 조치 - 널(null) 값 체크
+ *  2022.11.11   김혜준			  	시큐어코딩 처리
  *
  *  </pre>
  */
-
 
 @Service("egovBndtManageService")
 public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implements EgovBndtManageService {
@@ -80,7 +81,7 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 	}
 
 	/**
-	 * 당직관리목록 총 갯수를 조회한다.
+	 * 당직관리목록 총 개수를 조회한다.
 	 * @param bndtManageVO - 당직관리 VO
 	 * @return int - 당직관리 카운트 수
 	 */
@@ -135,7 +136,7 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 	}
 
     /**
-	 * 당직일지 갯수를 조회한다.
+	 * 당직일지 개수를 조회한다.
 	 * @param bndtManage - 당직관리
 	 * @return int
 	 * @exception Exception
@@ -159,7 +160,7 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 	}
 
 	/**
-	 * 당직체크관리목록 총 갯수를 조회한다.
+	 * 당직체크관리목록 총 개수를 조회한다.
 	 * @param bndtCeckManageVO - 당직체크관리 VO
 	 * @return int - 당직체크관리 카운트 수
 	 */
@@ -314,19 +315,19 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 
     	String   sBndtDe = null;
     	HSSFWorkbook hssfWB = (HSSFWorkbook) excelZipService.loadWorkbook(inputStream);
-    	// 엑셀 파일 시트 갯수 확인 sheet = 1
+    	// 엑셀 파일 시트 개수 확인 sheet = 1
 		if (hssfWB.getNumberOfSheets() == 1) {
             HSSFSheet bndtSheet  = hssfWB.getSheetAt(0);  //당직자 시트 가져오기
             HSSFRow   bndtRow    = bndtSheet.getRow(1); //당직자 row 가져오기
             bndtSheetRowCnt      = bndtRow.getPhysicalNumberOfCells(); //당직자 cell Cnt
-            int rowsCnt=bndtSheet.getPhysicalNumberOfRows(); //행 갯수 가져오기
+            int rowsCnt=bndtSheet.getPhysicalNumberOfRows(); //행 개수 가져오기
 
             BndtManageVO checkBndtManageVO = new BndtManageVO();
             for(int j=1; j<rowsCnt; j++){ //row 루프
             	BndtManageVO bndtManageVO = new BndtManageVO();
                 HSSFRow row=bndtSheet.getRow(j); //row 가져오기
                 if(row!=null){
-                    int cells = row.getPhysicalNumberOfCells(); //cell 갯수 가져오기
+                    int cells = row.getPhysicalNumberOfCells(); //cell 개수 가져오기
                     HSSFCell cell = null;
                 	cell = row.getCell(0);  //당직일자
                 	if(cell!=null){
@@ -389,23 +390,21 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 
     	} catch (IOException e) {//KISA 보안약점 조치 (2018-10-29, 윤창원)
     		LOGGER.debug("=====>>>>> ERR : IOException "+e.getMessage());
-    	} catch (Exception e) {
-    		LOGGER.debug("=====>>>>> ERR : "+e.getMessage());
     	}
     	
-    	// 엑셀 파일 시트 갯수 확인 sheet = 1
+    	// 엑셀 파일 시트 개수 확인 sheet = 1
 		if (hssfWB != null && hssfWB.getNumberOfSheets() == 1) {
             XSSFSheet bndtSheet  = hssfWB.getSheetAt(0);  //당직자 시트 가져오기
             XSSFRow   bndtRow    = bndtSheet.getRow(1); //당직자 row 가져오기
             bndtSheetRowCnt      = bndtRow.getPhysicalNumberOfCells(); //당직자 cell Cnt
-            int rowsCnt=bndtSheet.getPhysicalNumberOfRows(); //행 갯수 가져오기
+            int rowsCnt=bndtSheet.getPhysicalNumberOfRows(); //행 개수 가져오기
 
             BndtManageVO checkBndtManageVO = new BndtManageVO();
             for(int j=1; j<rowsCnt; j++){ //row 루프
             	BndtManageVO bndtManageVO = new BndtManageVO();
                 XSSFRow row=bndtSheet.getRow(j); //row 가져오기
                 if(row!=null){
-                    int cells = row.getPhysicalNumberOfCells(); //cell 갯수 가져오기
+                    int cells = row.getPhysicalNumberOfCells(); //cell 개수 가져오기
                     XSSFCell cell = null;
                 	cell = row.getCell(0);  //당직일자
                 	if(cell!=null){
@@ -448,19 +447,16 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
     */
 	@Override
 	@SuppressWarnings("unused")
-	public void insertBndtManageBnde(BndtManageVO bndtManageVO,
-			                         String checkedBndtManageForInsert) throws Exception {
+	public void insertBndtManageBnde(BndtManageVO bndtManageVO, String checkedBndtManageForInsert) throws Exception {
 		BndtManage bndtManage;
-		int insertCnt    = 0;
-		String [] bndtManageValues = checkedBndtManageForInsert.split("[$]");
-		String [] sTempBndtManage;
-		String    sTemp=null;
 
-		if(checkedBndtManageForInsert != null && !checkedBndtManageForInsert.equals("")){
-			for (int i=0; i<bndtManageValues.length ; i++){
+		// 2022.11.11 시큐어코딩 처리
+		if (StringUtils.isNotEmpty(checkedBndtManageForInsert)) {
+			String[] bndtManageValues = checkedBndtManageForInsert.split("[$]");
+			for (int i = 0; i < bndtManageValues.length; i++) {
 				bndtManage = new BndtManage();
-				sTemp = bndtManageValues[i];
-				sTempBndtManage = sTemp.split(",");
+				String sTemp = bndtManageValues[i];
+				String[] sTempBndtManage = sTemp.split(",");
 				bndtManage.setBndtDe(sTempBndtManage[0]);
 				bndtManage.setBndtId(sTempBndtManage[1]);
 				bndtManage.setRemark("당직일괄등록");
@@ -489,16 +485,14 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 	 */
 	@SuppressWarnings("static-access")
 	private int getDateWeekInt(String sDate) throws Exception{
-
 		Calendar target_day = Calendar.getInstance();
-    	String sDayOfWeek     = null;
-    	int    iWeek           = 0;
+    	String sDayOfWeek = null;
+    	int iWeek = 0;
     	sDayOfWeek = EgovStringUtil.removeMinusChar(sDate);
     	// KISA 보안약점 조치 - 널(null) 값 체크
     	if ( sDayOfWeek == null ) return 0;
    		target_day.set(Integer.parseInt(sDayOfWeek.substring(0,4)),Integer.parseInt(sDayOfWeek.substring(4,6))-1,Integer.parseInt(sDayOfWeek.substring(6,8)));
 		iWeek = target_day.get(target_day.DAY_OF_WEEK);
-		
 		return iWeek;
 	}
 

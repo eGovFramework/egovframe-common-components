@@ -1,0 +1,152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="SystemCntcDAO">
+    
+    <select id="selectSystemCntcList" parameterType="egovframework.com.ssi.syi.sim.service.SystemCntcVO" resultType="egovMap">
+        
+            SELECT  *
+              FROM  (
+            SELECT ROWNUM RNUM, ALL_LIST.*
+              FROM  (
+        
+        /* 구현 Sql */
+        
+            SELECT  CNTC_ID
+                 ,  CNTC_NM
+                 ,  CNTC_TY
+                 ,  PROVD_INSTT_ID
+                 ,  PROVD_SYS_ID
+                 ,  PROVD_SVC_ID
+                 ,  REQUST_INSTT_ID
+                 ,  REQUST_SYS_ID
+                 ,  CONFM_AT
+                 ,  USE_AT
+                 ,  VALID_BGNDE
+                 ,  VALID_ENDDE
+              FROM  COMTNSYSTEMCNTC
+             WHERE  1 = 1
+        
+        <if test="searchCondition == 1">AND
+             CNTC_NM LIKE '%' || #{searchKeyword} || '%'        
+        </if>
+        /* 구현 Sql */
+        <![CDATA[       
+                    ) ALL_LIST
+                    )
+             WHERE  RNUM  > #{firstIndex}
+               AND  RNUM <= #{firstIndex} + #{recordCountPerPage}
+        ]]>
+    </select>
+
+    <select id="selectSystemCntcListTotCnt" parameterType="egovframework.com.ssi.syi.sim.service.SystemCntcVO" resultType="int">
+        
+            SELECT  COUNT(*) totcnt
+              FROM  COMTNSYSTEMCNTC
+             WHERE  1 = 1
+        
+        <if test="searchCondition == 1">AND
+           CNTC_NM LIKE '%' || #{searchKeyword} || '%'        
+        </if>
+    </select>
+
+    <select id="selectSystemCntcDetail" parameterType="egovframework.com.ssi.syi.sim.service.SystemCntc" resultType="egovframework.com.ssi.syi.sim.service.SystemCntc">
+        
+            SELECT  CNTC_ID          cntcId
+                 ,  CNTC_NM          cntcNm
+                 ,  CNTC_TY		     cntcType
+                 ,  PROVD_INSTT_ID   provdInsttId
+                 ,  PROVD_SYS_ID     provdSysId
+                 ,  PROVD_SVC_ID     provdSvcId
+                 ,  REQUST_INSTT_ID  requstInsttId
+                 ,  REQUST_SYS_ID    requstSysId
+                 ,  CONFM_AT         confmAt
+                 ,  USE_AT           useAt
+                 ,  VALID_BGNDE   validBeginDe
+                 ,  VALID_ENDDE     validEndDe
+              FROM  COMTNSYSTEMCNTC
+             WHERE  CNTC_ID = #{cntcId}
+        
+    </select>
+
+    <insert id="insertSystemCntc">
+        
+            INSERT
+              INTO  COMTNSYSTEMCNTC
+                 (  CNTC_ID
+                 ,  CNTC_NM
+                 ,  CNTC_TY
+                 ,  PROVD_INSTT_ID
+                 ,  PROVD_SYS_ID
+                 ,  PROVD_SVC_ID
+                 ,  REQUST_INSTT_ID
+                 ,  REQUST_SYS_ID
+                 ,  CONFM_AT
+                 ,  USE_AT
+                 ,  VALID_BGNDE
+                 ,  VALID_ENDDE
+                 ,  FRST_REGISTER_ID
+                 ,  FRST_REGIST_PNTTM
+                 ,  LAST_UPDUSR_ID
+                 ,  LAST_UPDT_PNTTM
+                 )
+            VALUES
+                 (  #{cntcId}
+                 ,  #{cntcNm}
+                 ,  #{cntcType}
+                 ,  #{provdInsttId}
+                 ,  #{provdSysId}
+                 ,  #{provdSvcId}
+                 ,  #{requstInsttId}
+                 ,  #{requstSysId}
+                 ,  #{confmAt}
+                 ,  #{useAt}
+                 ,  #{validBeginDe}
+                 ,  #{validEndDe}
+                 ,  #{frstRegisterId}
+                 ,  sysdate
+                 ,  #{frstRegisterId}
+                 ,  sysdate
+                 )
+        
+    </insert>
+
+    <update id="updateSystemCntc">
+        
+            UPDATE  COMTNSYSTEMCNTC
+               SET  CNTC_NM           = #{cntcNm}
+                 ,  CNTC_TY		      = #{cntcType}
+                 ,  PROVD_INSTT_ID    = #{provdInsttId}
+                 ,  PROVD_SYS_ID      = #{provdSysId}
+                 ,  PROVD_SVC_ID      = #{provdSvcId}
+                 ,  REQUST_INSTT_ID   = #{requstInsttId}
+                 ,  REQUST_SYS_ID     = #{requstSysId}
+                 ,  CONFM_AT          = #{confmAt}
+                 ,  USE_AT            = #{useAt}
+                 ,  VALID_BGNDE    = #{validBeginDe}
+                 ,  VALID_ENDDE      = #{validEndDe}
+                 ,  LAST_UPDUSR_ID    = #{lastUpdusrId}
+                 ,  LAST_UPDT_PNTTM = sysdate
+             WHERE  CNTC_ID = #{cntcId}
+        
+    </update>
+
+    <update id="confirmSystemCntc">
+        
+            UPDATE  COMTNSYSTEMCNTC
+               SET  CONFM_AT          = #{confmAt}
+                 ,  LAST_UPDUSR_ID    = #{lastUpdusrId}
+                 ,  LAST_UPDT_PNTTM = sysdate
+             WHERE  CNTC_ID = #{cntcId}
+        
+    </update>
+
+    <delete id="deleteSystemCntc">
+        
+            DELETE
+              FROM  COMTNSYSTEMCNTC
+             WHERE  CNTC_ID = #{cntcId}
+        
+    </delete>
+
+</mapper>

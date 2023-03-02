@@ -166,7 +166,7 @@ public class EgovProxySvcController {
 			Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();	//KISA 보안취약점 조치 (2018-12-10, 이정은)
 
 	        if(!isAuthenticated) {
-	            return "egovframework/com/uat/uia/EgovLoginUsr";
+	            return "redirect:/uat/uia/egovLoginUsr.do";
 	        }
 			proxySvc.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
 			proxySvc.setProxyId(egovProxySvcIdGnrService.getNextStringId());
@@ -220,7 +220,7 @@ public class EgovProxySvcController {
     		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();	//KISA 보안취약점 조치 (2018-12-10, 이정은)
 
             if(!isAuthenticated) {
-                return "egovframework/com/uat/uia/EgovLoginUsr";
+                return "redirect:/uat/uia/egovLoginUsr.do";
             }
     		proxySvc.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
     		

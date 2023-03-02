@@ -94,9 +94,9 @@ public class EgovMberManageServiceImpl extends EgovAbstractServiceImpl implement
 	}
 
     /**
-     * 일반회원 총 갯수를 조회한다.
+     * 일반회원 총 개수를 조회한다.
      * @param userSearchVO 검색조건
-     * @return 일반회원총갯수(int)
+     * @return 일반회원총개수(int)
      */
     @Override
 	public int selectMberListTotCnt(UserDefaultVO userSearchVO) {

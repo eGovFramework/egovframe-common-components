@@ -34,7 +34,7 @@ public class EventManageDAO extends EgovComAbstractDAO {
 	}
 
     /**
-	 * 행사관리목록 총 갯수를 조회한다.
+	 * 행사관리목록 총 개수를 조회한다.
 	 * @param eventManageVO - 행사관리 VO
 	 * @return int
 	 * @exception Exception
@@ -88,7 +88,7 @@ public class EventManageDAO extends EgovComAbstractDAO {
 	}
 
     /**
-	 * 행사접수관리목록 총 갯수를 조회한다.
+	 * 행사접수관리목록 총 개수를 조회한다.
 	 * @param eventManageVO - 행사관리 VO
 	 * @return int
 	 * @exception Exception
@@ -107,7 +107,7 @@ public class EventManageDAO extends EgovComAbstractDAO {
 	}
 
     /**
-	 * 행사접수승인/반려 처리를 위해 등록된 행사접수 목록 총 갯수를 조회한다.
+	 * 행사접수승인/반려 처리를 위해 등록된 행사접수 목록 총 개수를 조회한다.
 	 * @param eventManageVO - 행사관리 VO
 	 * @return int
 	 * @exception Exception
@@ -170,7 +170,7 @@ public class EventManageDAO extends EgovComAbstractDAO {
 	}
 
     /**
-	 * 행사접수자 목록 총 갯수를 조회한다.
+	 * 행사접수자 목록 총 개수를 조회한다.
 	 * @param eventManageVO - 행사관리 VO
 	 * @return int
 	 * @exception Exception

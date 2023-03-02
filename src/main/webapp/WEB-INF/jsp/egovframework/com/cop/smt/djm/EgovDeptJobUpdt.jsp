@@ -24,6 +24,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -155,7 +156,7 @@
 			<th><spring:message code="comCopSmtDjm.deptJobRegist.fileAttach"/> <span class="pilsu">*</span></th><!-- 파일첨부 -->
 			<td class="left">
 				<c:import charEncoding="utf-8" url="/cmm/fms/selectFileInfsForUpdate.do" >
-					<c:param name="param_atchFileId" value="${deptJobVO.atchFileId}" />
+					<c:param name="param_atchFileId" value="${egovc:encrypt(deptJobVO.atchFileId)}" />
 				</c:import>
 			</td>
 		</tr>
@@ -177,7 +178,7 @@
 	
 	<input type="hidden" name="returnUrl" value="<c:url value='/cop/smt/djm/modifyDeptJob.do' />" />
 	<form:hidden path="deptJobId" />
-	<!-- 첨부파일 갯수를 위한 hidden -->
+	<!-- 첨부파일 개수를 위한 hidden -->
 	<c:if test="${deptJobVO.atchFileId eq null || deptJobVO.atchFileId eq ''}">
 	 	<input type="hidden" name="fileListCnt" value="0" />
 	 	<input type="hidden" name="atchFileAt" value="N">
@@ -187,7 +188,7 @@
 	 	<input type="hidden" name="atchFileAt" value="Y"> 
 	</c:if>
 	<input type="hidden" name="posblAtchFileNumber" id="posblAtchFileNumber" value="3" />
-	<!-- //첨부파일 갯수를 위한 hidden -->
+	<!-- //첨부파일 개수를 위한 hidden -->
 	<!-- 검색조건 유지 -->
     <input type="hidden" name="searchWrd" value="<c:out value='${deptJobVO.searchWrd}'/>" />
     <input type="hidden" name="searchCnd" value="<c:out value='${deptJobVO.searchCnd}'/>" />

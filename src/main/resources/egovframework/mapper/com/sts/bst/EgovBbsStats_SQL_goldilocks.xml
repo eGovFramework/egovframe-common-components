@@ -1,0 +1,420 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="BbsStatsDAO">
+	
+	<!-- 게시물 생성글수 조회 -->
+	<select id="selectBbsCretCntStats" parameterType="egovframework.com.sts.com.StatsVO" resultType="egovframework.com.sts.com.StatsVO">
+		SELECT SUM(CREAT_CO) AS statsCo
+		     <!-- 기간검색(년) -->
+			 <if test='pdKind == "Y"'>
+		     , SUBSTR(OCCRRNC_DE, 1, 4) AS statsDate
+		     </if>
+		     <!-- 기간검색(월) -->
+		     <if test='pdKind == "M"'>
+		     , SUBSTR(OCCRRNC_DE, 1, 4) || '-' || SUBSTR(OCCRRNC_DE, 5, 2) AS statsDate
+		     </if>
+		     <!-- 기간검색(일) -->
+		     <if test='pdKind == "D"'>
+		     , SUBSTR(OCCRRNC_DE, 1, 4) || '-' || SUBSTR(OCCRRNC_DE, 5, 2) || '-' || SUBSTR(OCCRRNC_DE, 7, 2) AS statsDate
+		     </if>
+		  FROM COMTSBBSSUMMARY
+	 	 WHERE 1 = 1
+		   <!-- 시작일자~종료일자 기간제한 -->
+		   AND OCCRRNC_DE BETWEEN #{fromDate} AND #{toDate}
+		   AND STATS_SE = #{statsKind}
+		   <if test='detailStatsKind != null and detailStatsKind != ""'>
+		   AND DETAIL_STATS_SE = #{detailStatsKind}
+		   </if>
+		 <if test='pdKind == "Y"'>
+		 GROUP BY SUBSTR(OCCRRNC_DE, 1, 4)
+		 ORDER BY SUBSTR(OCCRRNC_DE, 1, 4)
+		 </if>
+		 <if test='pdKind == "M"'>
+		 GROUP BY SUBSTR(OCCRRNC_DE, 1, 4) || '-' || SUBSTR(OCCRRNC_DE, 5, 2)
+		 ORDER BY SUBSTR(OCCRRNC_DE, 1, 4) || '-' || SUBSTR(OCCRRNC_DE, 5, 2)
+		 </if>
+		 <if test='pdKind == "D"'>
+		 GROUP BY SUBSTR(OCCRRNC_DE, 1, 4) || '-' || SUBSTR(OCCRRNC_DE, 5, 2) || '-' || SUBSTR(OCCRRNC_DE, 7, 2)
+		 ORDER BY SUBSTR(OCCRRNC_DE, 1, 4) || '-' || SUBSTR(OCCRRNC_DE, 5, 2) || '-' || SUBSTR(OCCRRNC_DE, 7, 2)
+		 </if>
+	</select>
+	
+	<!-- 게시물 총조회수 조회 -->
+	<select id="selectBbsTotCntStats" parameterType="egovframework.com.sts.com.StatsVO" resultType="egovframework.com.sts.com.StatsVO">
+		SELECT SUM(TOT_RDCNT) AS statsCo
+		     <!-- 기간검색(년) -->
+			 <if test='pdKind == "Y"'>
+		     , SUBSTR(OCCRRNC_DE, 1, 4) AS statsDate
+		     </if>
+		     <!-- 기간검색(월) -->
+		     <if test='pdKind == "M"'>
+		     , SUBSTR(OCCRRNC_DE, 1, 4) || '-' || SUBSTR(OCCRRNC_DE, 5, 2) AS statsDate
+		     </if>
+		     <!-- 기간검색(일) -->
+		     <if test='pdKind == "D"'>
+		     , SUBSTR(OCCRRNC_DE, 1, 4) || '-' || SUBSTR(OCCRRNC_DE, 5, 2) || '-' || SUBSTR(OCCRRNC_DE, 7, 2) AS statsDate
+		     </if>
+		  FROM COMTSBBSSUMMARY
+	 	 WHERE 1 = 1
+		   <!-- 시작일자~종료일자 기간제한 -->
+		   AND OCCRRNC_DE BETWEEN #{fromDate} AND #{toDate}
+		   AND STATS_SE = #{statsKind}
+		   <if test='detailStatsKind != null and detailStatsKind != ""'>
+		   AND DETAIL_STATS_SE = #{detailStatsKind}
+		   </if>
+		 <if test='pdKind == "Y"'>
+		 GROUP BY SUBSTR(OCCRRNC_DE, 1, 4)
+		 ORDER BY SUBSTR(OCCRRNC_DE, 1, 4)
+		 </if>
+		 <if test='pdKind == "M"'>
+		 GROUP BY SUBSTR(OCCRRNC_DE, 1, 4) || '-' || SUBSTR(OCCRRNC_DE, 5, 2)
+		 ORDER BY SUBSTR(OCCRRNC_DE, 1, 4) || '-' || SUBSTR(OCCRRNC_DE, 5, 2)
+		 </if>
+		 <if test='pdKind == "D"'>
+		 GROUP BY SUBSTR(OCCRRNC_DE, 1, 4) || '-' || SUBSTR(OCCRRNC_DE, 5, 2) || '-' || SUBSTR(OCCRRNC_DE, 7, 2)
+		 ORDER BY SUBSTR(OCCRRNC_DE, 1, 4) || '-' || SUBSTR(OCCRRNC_DE, 5, 2) || '-' || SUBSTR(OCCRRNC_DE, 7, 2)
+		 </if>
+	</select>
+	
+	<!-- 게시물 평균조회수 조회 -->
+	<select id="selectBbsAvgCntStats" parameterType="egovframework.com.sts.com.StatsVO" resultType="egovframework.com.sts.com.StatsVO">
+		SELECT NVL(AVG(TOT_RDCNT), 0) AS avrgInqireCo
+		     <!-- 기간검색(년) -->
+			 <if test='pdKind == "Y"'>
+		     , SUBSTR(OCCRRNC_DE, 1, 4) AS statsDate
+		     </if>
+		     <!-- 기간검색(월) -->
+		     <if test='pdKind == "M"'>
+		     , SUBSTR(OCCRRNC_DE, 1, 4) || '-' || SUBSTR(OCCRRNC_DE, 5, 2) AS statsDate
+		     </if>
+		     <!-- 기간검색(일) -->
+		     <if test='pdKind == "D"'>
+		     , SUBSTR(OCCRRNC_DE, 1, 4) || '-' || SUBSTR(OCCRRNC_DE, 5, 2) || '-' || SUBSTR(OCCRRNC_DE, 7, 2) AS statsDate
+		     </if>
+		  FROM COMTSBBSSUMMARY
+	 	 WHERE 1 = 1
+		   <!-- 시작일자~종료일자 기간제한 -->
+		   AND OCCRRNC_DE BETWEEN #{fromDate} AND #{toDate}
+		   AND STATS_SE = #{statsKind}
+		   <if test='detailStatsKind != null and detailStatsKind != ""'>
+		   AND DETAIL_STATS_SE = #{detailStatsKind}
+		   </if>
+		 <if test='pdKind == "Y"'>
+		 GROUP BY SUBSTR(OCCRRNC_DE, 1, 4)
+		 ORDER BY SUBSTR(OCCRRNC_DE, 1, 4)
+		 </if>
+		 <if test='pdKind == "M"'>
+		 GROUP BY SUBSTR(OCCRRNC_DE, 1, 4) || '-' || SUBSTR(OCCRRNC_DE, 5, 2)
+		 ORDER BY SUBSTR(OCCRRNC_DE, 1, 4) || '-' || SUBSTR(OCCRRNC_DE, 5, 2)
+		 </if>
+		 <if test='pdKind == "D"'>
+		 GROUP BY SUBSTR(OCCRRNC_DE, 1, 4) || '-' || SUBSTR(OCCRRNC_DE, 5, 2) || '-' || SUBSTR(OCCRRNC_DE, 7, 2)
+		 ORDER BY SUBSTR(OCCRRNC_DE, 1, 4) || '-' || SUBSTR(OCCRRNC_DE, 5, 2) || '-' || SUBSTR(OCCRRNC_DE, 7, 2)
+		 </if>
+	</select>
+	
+	<!-- 최고조회수 게시물정보 조회 -->
+	<select id="selectBbsMaxCntStats" parameterType="egovframework.com.sts.com.StatsVO" resultType="egovframework.com.sts.com.StatsVO">
+		SELECT a.OCCRRNC_DE AS statsDate
+		     , a.TOP_INQIRE_BBSCTT_ID AS mxmmInqireBbsId
+		     , b.NTT_SJ AS mxmmInqireBbsNm
+		     , b.RDCNT AS maxStatsCo
+		  FROM (
+			SELECT OCCRRNC_DE
+		         , TOP_INQIRE_BBSCTT_ID
+			  FROM COMTSBBSSUMMARY
+			 WHERE 1 = 1
+			   AND OCCRRNC_DE BETWEEN #{fromDate} AND #{toDate}
+			   AND STATS_SE = #{statsKind}
+			   <if test='detailStatsKind != null and detailStatsKind != ""'>
+			   AND DETAIL_STATS_SE = #{detailStatsKind}
+			   </if>
+			) a, COMTNBBS b
+		 WHERE a.TOP_INQIRE_BBSCTT_ID = b.NTT_ID
+		 ORDER BY a.OCCRRNC_DE
+	</select>
+	
+	<!-- 최소조회수 게시물정보 조회 -->
+	<select id="selectBbsMinCntStats" parameterType="egovframework.com.sts.com.StatsVO" resultType="egovframework.com.sts.com.StatsVO">
+		SELECT a.OCCRRNC_DE AS statsDate
+		     , a.MUMM_INQIRE_BBSCTT_ID AS mummInqireBbsId
+		     , b.NTT_SJ AS mummInqireBbsNm
+		     , b.RDCNT AS minStatsCo
+		  FROM (
+			SELECT OCCRRNC_DE
+		         , MUMM_INQIRE_BBSCTT_ID
+			  FROM COMTSBBSSUMMARY
+			 WHERE 1 = 1
+			   AND OCCRRNC_DE BETWEEN #{fromDate} AND #{toDate}
+			   AND STATS_SE = #{statsKind}
+			   <if test='detailStatsKind != null and detailStatsKind != ""'>
+			   AND DETAIL_STATS_SE = #{detailStatsKind}
+			   </if>
+			) a, COMTNBBS b
+		 WHERE a.MUMM_INQIRE_BBSCTT_ID = b.NTT_ID
+		 ORDER BY a.OCCRRNC_DE
+	</select>
+	
+	<!-- 게시물 최고게시자 조회 -->
+	<select id="selectBbsMaxUserStats" parameterType="egovframework.com.sts.com.StatsVO" resultType="egovframework.com.sts.com.StatsVO">
+		SELECT a.OCCRRNC_DE AS statsDate
+		     , a.TOP_NTCR_ID AS topNtcepersonId
+		     , COUNT(b.NTT_ID) AS topNtcepersonCo
+		  FROM (
+			SELECT OCCRRNC_DE
+		         , TOP_NTCR_ID
+			  FROM COMTSBBSSUMMARY
+			 WHERE 1 = 1
+			   AND OCCRRNC_DE BETWEEN #{fromDate} AND #{toDate}
+			   AND STATS_SE = #{statsKind}
+			   <if test='detailStatsKind != null and detailStatsKind != ""'>
+			   AND DETAIL_STATS_SE = #{detailStatsKind}
+			   </if>
+			) a, COMTNBBS b
+		 WHERE 1=1
+		   
+		   AND a.TOP_NTCR_ID IS NOT NULL
+		   AND b.NTCR_ID = a.TOP_NTCR_ID
+		   
+		   AND b.NTCR_ID IS NOT NULL
+		 GROUP BY a.OCCRRNC_DE, a.TOP_NTCR_ID    
+		 ORDER BY a.OCCRRNC_DE
+	</select>
+	
+	<!-- 게시물 집계 여부 조회 -->
+	<select id="selectBbsSummary" parameterType="egovframework.com.sts.com.StatsVO" resultType="egovframework.com.sts.com.StatsVO">
+		
+			SELECT a.STATS_SE AS statsKind
+			  FROM COMTSBBSSUMMARY a
+			 WHERE a.OCCRRNC_DE = CAST(TO_CHAR(SYSDATE - 1, 'YYYYMMDD') AS CHAR(20))
+			   AND a.STATS_SE = #{statsKind}
+			   AND a.DETAIL_STATS_SE = #{detailStatsKind}
+		
+	</select>
+	
+	<!-- 게시물 생성글수 조회 -->
+	<select id="selectBbsCreatCo" parameterType="egovframework.com.sts.com.StatsVO" resultType="egovframework.com.sts.com.StatsVO">
+		<if test="statsKind == 'COM101'">
+		
+			SELECT COUNT(a.NTT_ID) AS creatCo
+			  FROM COMTNBBS a, COMTNBBSMASTER b
+			 WHERE a.BBS_ID = b.BBS_ID
+			   AND TO_CHAR(a.FRST_REGIST_PNTTM, 'YYYYMMDD') = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+			   AND b.BBS_TY_CODE = #{detailStatsKind}             
+					    
+		</if>
+		<if test="statsKind == 'COM005'">
+		
+			SELECT COUNT(a.NTT_ID) AS creatCo
+			  FROM COMTNBBS a, COMTNBBSMASTER b, COMTNTMPLATINFO c
+			 WHERE a.BBS_ID = b.BBS_ID
+			   AND TO_CHAR(a.FRST_REGIST_PNTTM, 'YYYYMMDD') = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+			   AND b.TMPLAT_ID = c.TMPLAT_ID
+			   AND c.TMPLAT_SE_CODE = #{detailStatsKind}             
+					    
+		</if>
+	</select>
+	
+	<!-- 게시물 총조회수 조회 -->
+	<select id="selectBbsTotInqireCo" parameterType="egovframework.com.sts.com.StatsVO" resultType="egovframework.com.sts.com.StatsVO">
+		<if test="statsKind == 'COM101'">
+		
+			SELECT NVL(SUM(a.RDCNT),0) AS totInqireCo
+			  FROM COMTNBBS a, COMTNBBSMASTER b
+			 WHERE a.BBS_ID = b.BBS_ID
+			   AND TO_CHAR(a.FRST_REGIST_PNTTM, 'YYYYMMDD') = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+			   AND b.BBS_TY_CODE = #{detailStatsKind}             
+		
+		</if>
+		<if test="statsKind == 'COM005'">
+		
+			SELECT NVL(SUM(a.RDCNT),0) AS totInqireCo
+			  FROM COMTNBBS a, COMTNBBSMASTER b, COMTNTMPLATINFO c
+			 WHERE a.BBS_ID = b.BBS_ID
+			   AND TO_CHAR(a.FRST_REGIST_PNTTM, 'YYYYMMDD') = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+			   AND b.TMPLAT_ID = c.TMPLAT_ID
+			   AND c.TMPLAT_SE_CODE = #{detailStatsKind}          
+		
+		</if>					    
+	</select>
+	
+	<!-- 게시물 평균조회수 조회 -->
+	<select id="selectBbsAvrgInqireCo" parameterType="egovframework.com.sts.com.StatsVO" resultType="egovframework.com.sts.com.StatsVO">
+		<if test="statsKind == 'COM101'">
+		
+			SELECT NVL(NVL(SUM(a.RDCNT),0) / (CASE COUNT(a.NTT_ID) WHEN 0 THEN 1 END), 0) AS avrgInqireCo
+			  FROM COMTNBBS a, COMTNBBSMASTER b
+			 WHERE a.BBS_ID = b.BBS_ID
+			   AND TO_CHAR(a.FRST_REGIST_PNTTM, 'YYYYMMDD') = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+			   AND b.BBS_TY_CODE = #{detailStatsKind}          
+		
+		</if>
+		<if test="statsKind == 'COM005'">
+		
+			SELECT NVL(NVL(SUM(a.RDCNT),0) / (CASE COUNT(a.NTT_ID) WHEN 0 THEN 1 END), 0) AS avrgInqireCo
+			  FROM COMTNBBS a, COMTNBBSMASTER b, COMTNTMPLATINFO c
+			 WHERE a.BBS_ID = b.BBS_ID
+			   AND TO_CHAR(a.FRST_REGIST_PNTTM, 'YYYYMMDD') = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+			   AND b.TMPLAT_ID = c.TMPLAT_ID
+			   AND c.TMPLAT_SE_CODE = #{detailStatsKind}     
+		
+		</if>		    
+	</select>
+	
+	<!-- 게시물 최고조회게시물ID 조회 -->
+	<select id="selectBbsMxmmInqireBbsId" parameterType="egovframework.com.sts.com.StatsVO" resultType="egovframework.com.sts.com.StatsVO">
+		<if test="statsKind == 'COM101'">
+		
+			SELECT a.NTT_ID AS mxmmInqireBbsId
+			  FROM COMTNBBS a, COMTNBBSMASTER b
+			 WHERE a.BBS_ID = b.BBS_ID
+			   AND a.RDCNT = (SELECT MAX(c.RDCNT)
+								    FROM COMTNBBS c, COMTNBBSMASTER d
+								   WHERE c.BBS_ID = d.BBS_ID
+								     AND c.RDCNT > 0
+								     AND TO_CHAR(c.FRST_REGIST_PNTTM, 'YYYYMMDD') = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+									 AND d.BBS_TY_CODE = #{detailStatsKind})
+			   AND TO_CHAR(a.FRST_REGIST_PNTTM, 'YYYYMMDD') = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+			   AND b.BBS_TY_CODE = #{detailStatsKind}
+			   AND rownum = 1       
+		
+		</if>
+		<if test="statsKind == 'COM005'">
+		
+			SELECT a.NTT_ID AS mxmmInqireBbsId
+			  FROM COMTNBBS a, COMTNBBSMASTER b, COMTNTMPLATINFO c
+			 WHERE a.BBS_ID = b.BBS_ID
+			   AND a.RDCNT = (SELECT MAX(d.RDCNT)
+								    FROM COMTNBBS d, COMTNBBSMASTER e, COMTNTMPLATINFO f
+								   WHERE d.BBS_ID = e.BBS_ID
+								     AND d.RDCNT > 0
+								     AND TO_CHAR(d.FRST_REGIST_PNTTM, 'YYYYMMDD') = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+									 AND e.TMPLAT_ID = f.TMPLAT_ID
+			   						 AND f.TMPLAT_SE_CODE = #{detailStatsKind})
+			   AND TO_CHAR(a.FRST_REGIST_PNTTM, 'YYYYMMDD') = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+			   AND b.TMPLAT_ID = c.TMPLAT_ID
+			   AND c.TMPLAT_SE_CODE = #{detailStatsKind}
+			   AND rownum = 1      
+		
+		</if>
+	</select>	
+	
+	<!-- 게시물 최소조회게시물ID 조회 -->
+	<select id="selectBbsMummInqireBbsId" parameterType="egovframework.com.sts.com.StatsVO" resultType="egovframework.com.sts.com.StatsVO">
+		<if test="statsKind == 'COM101'">
+		
+			SELECT a.NTT_ID AS mummInqireBbsId
+			  FROM COMTNBBS a, COMTNBBSMASTER b
+			 WHERE a.BBS_ID = b.BBS_ID
+			   AND a.RDCNT = (SELECT MIN(c.RDCNT)
+								    FROM COMTNBBS c, COMTNBBSMASTER d
+								   WHERE c.BBS_ID = d.BBS_ID
+								     AND c.RDCNT > 0
+								     AND TO_CHAR(c.FRST_REGIST_PNTTM, 'YYYYMMDD') = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+								     AND d.BBS_TY_CODE = #{detailStatsKind})
+			   AND TO_CHAR(a.FRST_REGIST_PNTTM, 'YYYYMMDD') = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+			   AND b.BBS_TY_CODE = #{detailStatsKind}
+			   AND rownum = 1
+		
+		</if>
+		<if test="statsKind == 'COM005'">
+		
+			SELECT a.NTT_ID AS mummInqireBbsId
+			  FROM COMTNBBS a, COMTNBBSMASTER b, COMTNTMPLATINFO c
+			 WHERE a.BBS_ID = b.BBS_ID
+			   AND a.RDCNT = (SELECT MIN(d.RDCNT)
+								    FROM COMTNBBS d, COMTNBBSMASTER e, COMTNTMPLATINFO f
+								   WHERE d.BBS_ID = e.BBS_ID
+								     AND d.RDCNT > 0
+								     AND TO_CHAR(d.FRST_REGIST_PNTTM, 'YYYYMMDD') = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+									 AND e.TMPLAT_ID = f.TMPLAT_ID
+			   						 AND f.TMPLAT_SE_CODE = #{detailStatsKind})
+			   AND TO_CHAR(a.FRST_REGIST_PNTTM, 'YYYYMMDD') = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+			   AND b.TMPLAT_ID = c.TMPLAT_ID
+			   AND c.TMPLAT_SE_CODE = #{detailStatsKind}
+			   AND rownum = 1      
+		
+		</if>
+	</select>	
+	
+	<!-- 게시물 최고게시자ID 조회 -->
+	<select id="selectBbsTopNtcepersonId" parameterType="egovframework.com.sts.com.StatsVO" resultType="egovframework.com.sts.com.StatsVO">
+		<if test="statsKind == 'COM101'">
+		
+			SELECT c.topNtcepersonId
+			  FROM (SELECT COUNT(a.NTT_ID) AS topNtcepersonCo
+					     , a.NTCR_ID AS topNtcepersonId
+					  FROM COMTNBBS a, COMTNBBSMASTER b
+					 WHERE a.BBS_ID = b.BBS_ID
+					   AND a.NTCR_ID IS NOT NULL
+					   AND TO_CHAR(a.FRST_REGIST_PNTTM, 'YYYYMMDD') = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+					   AND b.BBS_TY_CODE = #{detailStatsKind}
+					 GROUP BY a.NTCR_ID) c
+			  WHERE c.topNtcepersonCo = (SELECT MAX(f.topNtcepersonCo)
+									       FROM (SELECT COUNT(d.NTT_ID) AS topNtcepersonCo
+										          , d.NTCR_ID AS topNtcepersonId
+										       FROM COMTNBBS d, COMTNBBSMASTER e
+										      WHERE d.BBS_ID = e.BBS_ID
+										        AND d.NTCR_ID IS NOT NULL
+										        AND TO_CHAR(d.FRST_REGIST_PNTTM, 'YYYYMMDD') = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+										        AND e.BBS_TY_CODE = #{detailStatsKind}
+										      GROUP BY d.NTCR_ID) f)
+				AND rownum = 1						      
+		
+		</if>
+		<if test="statsKind == 'COM005'">
+		
+			SELECT c.topNtcepersonId
+			  FROM (SELECT COUNT(a.NTT_ID) AS topNtcepersonCo
+					     , a.NTCR_ID AS topNtcepersonId
+					  FROM COMTNBBS a, COMTNBBSMASTER b, COMTNTMPLATINFO t1
+					 WHERE a.BBS_ID = b.BBS_ID
+					   AND a.NTCR_ID IS NOT NULL
+					   AND TO_CHAR(a.FRST_REGIST_PNTTM, 'YYYYMMDD') = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+					   AND b.TMPLAT_ID = t1.TMPLAT_ID
+			           AND t1.TMPLAT_SE_CODE = #{detailStatsKind}
+					 GROUP BY a.NTCR_ID) c
+			  WHERE c.topNtcepersonCo = (SELECT MAX(f.topNtcepersonCo)
+									       FROM (SELECT COUNT(d.NTT_ID) AS topNtcepersonCo
+										          , d.NTCR_ID AS topNtcepersonId
+										       FROM COMTNBBS d, COMTNBBSMASTER e, COMTNTMPLATINFO t2
+										      WHERE d.BBS_ID = e.BBS_ID
+										        AND d.NTCR_ID IS NOT NULL
+										        AND TO_CHAR(d.FRST_REGIST_PNTTM, 'YYYYMMDD') = TO_CHAR(SYSDATE - 1, 'YYYYMMDD')
+										        AND e.TMPLAT_ID = t2.TMPLAT_ID
+			           							AND t2.TMPLAT_SE_CODE = #{detailStatsKind}
+										      GROUP BY d.NTCR_ID) f)
+				AND rownum = 1						      
+		
+		</if>
+	</select>
+	
+	<!-- 게시물 통계 집계 -->
+	<insert id="summaryBbsStats">
+		
+			INSERT INTO COMTSBBSSUMMARY (
+				OCCRRNC_DE,
+				STATS_SE,
+				DETAIL_STATS_SE,
+				CREAT_CO,
+				TOT_RDCNT,
+				AVRG_RDCNT,
+				TOP_INQIRE_BBSCTT_ID,
+				MUMM_INQIRE_BBSCTT_ID,
+				TOP_NTCR_ID
+			) VALUES (
+				TO_CHAR(SYSDATE - 1, 'YYYYMMDD'),
+				#{statsKind},
+				#{detailStatsKind},
+				#{creatCo},
+				#{totInqireCo},
+				#{avrgInqireCo},
+				#{mxmmInqireBbsId},
+				#{mummInqireBbsId},
+				#{topNtcepersonId}
+			)	
+		
+	</insert>	
+	
+</mapper>

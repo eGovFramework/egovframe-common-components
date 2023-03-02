@@ -94,7 +94,7 @@ function goRegiUsr() {
 	}
 
     var userSe = document.loginForm.userSe.value;
- 
+
     // 일반회원
     if (userSe == "GNR") {
         document.loginForm.action="<c:url value='/uss/umt/EgovStplatCnfirmMber.do'/>";
@@ -106,7 +106,7 @@ function goRegiUsr() {
     // 업무사용자
     } else if (userSe == "USR") {
     	<%-- 업무사용자는 별도의 회원가입이 필요하지 않습니다. --%>
-        alert("<spring:message code="comUatUia.validate.membershipCheck" />");
+        alert("<spring:message code='comUatUia.validate.membershipCheck' />");
     }
 }
 
@@ -273,6 +273,7 @@ function fnOnepassLogin() {
 				<li>
 					<ul class="btn_idpw" >
 						<li><a href="#" onclick="goRegiUsr(); return false;"><spring:message code="comUatUia.loginForm.regist"/></a></li> <!-- 회원가입  -->
+						<li><a href="#" onclick="goFindId(); return false;"><spring:message code="comUatUia.loginForm.idPwSearch"/></a></li> <!-- 아이디/비밀번호 찾기 -->
 					</ul>
 				</li>
 				<li>

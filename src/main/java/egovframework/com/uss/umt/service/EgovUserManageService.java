@@ -61,7 +61,7 @@ public interface EgovUserManageService  {
 	/**
 	 * 기 등록된 특정 사용자목록의 전체수를 확인
 	 * @param userSearchVO 검색조건
-	 * @return 총사용자갯수(int)
+	 * @return 총사용자개수(int)
 	 * @throws Exception
 	 */
 	public int selectUserListTotCnt(UserDefaultVO userSearchVO) throws Exception;

@@ -5,6 +5,7 @@ import java.util.List;
 
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 
+import org.apache.commons.lang.StringUtils;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 
@@ -12,9 +13,8 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
@@ -27,6 +27,7 @@ import org.springframework.stereotype.Service;
  *    수정일       수정자         수정내용
  *    -------        -------     -------------------
  *    2010.06.30     김진만   최초생성
+ *    2022.11.11   	 김혜준   시큐어코딩 처리
  *
  * @author  김진만
  * @since 2010.06.30
@@ -35,7 +36,7 @@ import org.springframework.stereotype.Service;
  *
  */
 @Service("egovDbMntrngScheduling")
-public class EgovDbMntrngScheduling extends EgovAbstractServiceImpl implements ApplicationContextAware {
+public class EgovDbMntrngScheduling extends EgovAbstractServiceImpl {
 
 	@Resource(name = "egovDbMntrngService")
 	private EgovDbMntrngService dbMntrngService;
@@ -55,13 +56,8 @@ public class EgovDbMntrngScheduling extends EgovAbstractServiceImpl implements A
 	// 모니터링 대상을 읽기위한 페이지 크기
 	private static final int RECORD_COUNT_PER_PAGE = 10000;
 
+	@Autowired
 	private ApplicationContext context;
-
-	@Override
-	public void setApplicationContext(ApplicationContext context) throws BeansException {
-		this.context = context;
-
-	}
 
 	/**
 	 * DB서비스 모니터링를 수행한다.
@@ -147,29 +143,35 @@ public class EgovDbMntrngScheduling extends EgovAbstractServiceImpl implements A
 	 *
 	 */
 	private void sendEmail(DbMntrngLog mntrngLog) {
-		String subject = null;
-		String text = null;
-		String errorContents = null;
+		String subject = "";
+		String text = "";
+		String errorContents = "";
 
 		SimpleMailMessage msg = new SimpleMailMessage(this.mntrngMessage);
 		// 수신자
 		msg.setTo(mntrngLog.getMngrEmailAddr());
 		// 메일제목
 		subject = msg.getSubject();
-		subject = EgovStringUtil.replace(subject, "{모니터링종류}", "DB서비스모니터링");
-		msg.setSubject(subject);
+		// 2022.11.11 시큐어코딩 처리
+		if (StringUtils.isNotEmpty(subject)) {
+			subject = EgovStringUtil.replace(subject, "{모니터링종류}", "DB서비스모니터링");
+			msg.setSubject(subject);
+		}
 		// 메일내용
 		text = msg.getText();
-		text = EgovStringUtil.replace(text, "{모니터링종류}", "DB서비스모니터링");
-		errorContents = "데이타소스명 : " + mntrngLog.getDataSourcNm() + "\n";
-		errorContents = errorContents + "서버명  : " + mntrngLog.getServerNm() + "\n";
-		errorContents = errorContents + "DBMS종류 : " + mntrngLog.getDbmsKindNm() + "\n";
-		errorContents = errorContents + "체크SQL : " + mntrngLog.getCeckSql() + "\n";
-		errorContents = errorContents + "상태 : " + mntrngLog.getMntrngSttusNm() + "\n";
-		errorContents = errorContents + "모니터링시각 : " + mntrngLog.getCreatDt() + "\n";
-		errorContents = errorContents + "에러메시지 : " + mntrngLog.getLogInfo() + "\n";
-		text = EgovStringUtil.replace(text, "{에러내용}", errorContents);
-		msg.setText(text);
+		// 2022.11.11 시큐어코딩 처리
+		if (StringUtils.isNotEmpty(text)) {
+			text = EgovStringUtil.replace(text, "{모니터링종류}", "DB서비스모니터링");
+			errorContents = "데이타소스명 : " + mntrngLog.getDataSourcNm() + "\n";
+			errorContents = errorContents + "서버명  : " + mntrngLog.getServerNm() + "\n";
+			errorContents = errorContents + "DBMS종류 : " + mntrngLog.getDbmsKindNm() + "\n";
+			errorContents = errorContents + "체크SQL : " + mntrngLog.getCeckSql() + "\n";
+			errorContents = errorContents + "상태 : " + mntrngLog.getMntrngSttusNm() + "\n";
+			errorContents = errorContents + "모니터링시각 : " + mntrngLog.getCreatDt() + "\n";
+			errorContents = errorContents + "에러메시지 : " + mntrngLog.getLogInfo() + "\n";
+			text = EgovStringUtil.replace(text, "{에러내용}", errorContents);
+			msg.setText(text);
+		}
 
 		this.mntrngMailSender.send(msg);
 	}

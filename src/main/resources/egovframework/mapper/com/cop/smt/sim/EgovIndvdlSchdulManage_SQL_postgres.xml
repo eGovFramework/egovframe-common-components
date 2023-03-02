@@ -200,7 +200,7 @@
 	
 	</select>
 
-	<!-- 개인일정정보::목록조회_게시물 총갯수  -->
+	<!-- 개인일정정보::목록조회_게시물 총개수  -->
 	<select id="selectIndvdlSchdulManageCnt" parameterType="comDefaultVO" resultType="int">
 		SELECT
 		COUNT(*) totcnt

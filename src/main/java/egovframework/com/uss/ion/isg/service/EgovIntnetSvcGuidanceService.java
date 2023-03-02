@@ -24,7 +24,7 @@ public interface EgovIntnetSvcGuidanceService {
 	public List<IntnetSvcGuidanceVO> selectIntnetSvcGuidanceList(IntnetSvcGuidanceVO intnetSvcGuidanceVO) throws Exception;
 
 	/**
-	 * 인터넷서비스안내목록 총 갯수를 조회한다.
+	 * 인터넷서비스안내목록 총 개수를 조회한다.
 	 * @param mainImageVO - 인터넷서비스안내 VO
 	 * @return int
 	 */

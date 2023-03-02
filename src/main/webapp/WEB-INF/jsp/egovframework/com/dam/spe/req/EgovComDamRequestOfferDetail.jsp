@@ -17,6 +17,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 <%--  자마스크립트 메세지 출력 --%>
 ${reusltScript}
@@ -108,7 +109,7 @@ function fn_egov_delete_RequestOffer(){
 			<th><spring:message code="comDamSpeReq.comDamRequestOfferDetail.atchFile"/></th><!-- 파일첨부 -->
 			<td class="left">&nbsp;
 			    <c:import charEncoding="utf-8" url="/cmm/fms/selectFileInfs.do" > 
-				<c:param name="param_atchFileId" value="${requestOfferVO.atchFileId}" /> 
+				<c:param name="param_atchFileId" value="${egovc:encrypt(requestOfferVO.atchFileId)}" /> 
 				</c:import>
 			</td>
 		</tr>

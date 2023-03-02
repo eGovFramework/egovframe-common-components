@@ -30,7 +30,7 @@ public class RssManage extends ComDefaultVO implements Serializable{
 	/** 대상테이블명 */
 	private String trgetSvcTable;
 	
-	/** 대상서비스목록갯수 */
+	/** 대상서비스목록개수 */
 	private int trgetSvcListCo;
 	
 	/** 헤더 TITLE */

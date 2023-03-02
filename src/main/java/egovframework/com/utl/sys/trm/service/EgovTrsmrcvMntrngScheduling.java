@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 
+import org.apache.commons.lang.StringUtils;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 
@@ -24,6 +25,7 @@ import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
  *    수정일       수정자         수정내용
  *    -------        -------     -------------------
  *    2010.08.16     김진만   최초생성
+ *    2022.11.11   	 김혜준   시큐어코딩 처리
  *
  * @author  김진만
  * @version
@@ -158,29 +160,34 @@ public class EgovTrsmrcvMntrngScheduling extends EgovAbstractServiceImpl {
 	 *
 	 */
 	private void sendEmail(TrsmrcvMntrngLog mntrngLog) {
-		String subject = null;
-		String text = null;
-		String errorContents = null;
+		String subject = "";
+		String text = "";
+		String errorContents = "";
 
 		SimpleMailMessage msg = new SimpleMailMessage(this.mntrngMessage);
 		// 수신자
 		msg.setTo(mntrngLog.getMngrEmailAddr());
 		// 메일제목
 		subject = msg.getSubject();
-		subject = EgovStringUtil.replace(subject, "{모니터링종류}", "송수신모니터링");
-		msg.setSubject(subject);
+		// 2022.11.11 시큐어코딩 처리
+		if (StringUtils.isNotEmpty(subject)) {
+			subject = EgovStringUtil.replace(subject, "{모니터링종류}", "송수신모니터링");
+			msg.setSubject(subject);
+		}
 		// 메일내용
 		text = msg.getText();
-		text = EgovStringUtil.replace(text, "{모니터링종류}", "송수신모니터링");
-		errorContents = "연계ID : " + mntrngLog.getCntcId() + "\n";
-		errorContents = errorContents + "연계명 : " + mntrngLog.getCntcNm() + "\n";
-		errorContents = errorContents + "테스트클래스명 : " + mntrngLog.getTestClassNm() + "\n";
-		errorContents = errorContents + "상태 : " + mntrngLog.getMntrngSttusNm() + "\n";
-		errorContents = errorContents + "모니터링시각 : " + mntrngLog.getCreatDt() + "\n";
-		errorContents = errorContents + "에러메시지 : " + mntrngLog.getLogInfo() + "\n";
-		text = EgovStringUtil.replace(text, "{에러내용}", errorContents);
-
-		msg.setText(text);
+		// 2022.11.11 시큐어코딩 처리
+		if (StringUtils.isNotEmpty(text)) {
+			text = EgovStringUtil.replace(text, "{모니터링종류}", "송수신모니터링");
+			errorContents = "연계ID : " + mntrngLog.getCntcId() + "\n";
+			errorContents = errorContents + "연계명 : " + mntrngLog.getCntcNm() + "\n";
+			errorContents = errorContents + "테스트클래스명 : " + mntrngLog.getTestClassNm() + "\n";
+			errorContents = errorContents + "상태 : " + mntrngLog.getMntrngSttusNm() + "\n";
+			errorContents = errorContents + "모니터링시각 : " + mntrngLog.getCreatDt() + "\n";
+			errorContents = errorContents + "에러메시지 : " + mntrngLog.getLogInfo() + "\n";
+			text = EgovStringUtil.replace(text, "{에러내용}", errorContents);
+			msg.setText(text);
+		}
 
 		this.mntrngMailSender.send(msg);
 	}

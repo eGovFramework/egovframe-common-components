@@ -228,7 +228,7 @@
 	]]>
 	</select>
 
-	<!-- 설문조사(설문등록)::목록조회_게시물 총갯수  -->
+	<!-- 설문조사(설문등록)::목록조회_게시물 총개수  -->
 	<select id="selectQustnrRespondInfoManageCnt" parameterType="comDefaultVO" resultType="int">
 		<![CDATA[
 		SELECT
@@ -385,7 +385,7 @@
 	]]>
 	</select>
 
-	<!-- 응답자결과(설문조사)::목록조회_게시물 총갯수  -->
+	<!-- 응답자결과(설문조사)::목록조회_게시물 총개수  -->
 	<select id="selectQustnrRespondInfoCnt" parameterType="comDefaultVO" resultType="int">
 		<![CDATA[
 		SELECT

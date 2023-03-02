@@ -115,7 +115,7 @@ function fn_egov_save(){
             alert("<spring:message code="comSymBat.batchSchdulRegist.validate.cycleYear.executSchdulDay"/>"); //실행주기가 매년일때 실행스케줄(일)은 필수 입력값입니다.
              return ;
         }
-         // 2월 29일도 입력가능하도록 윤년인 해를 년도값으로 사용
+         // 2월 29일도 입력가능하도록 윤년인 해를 연도값으로 사용
         if (!checkDate('0400', varForm.executSchdulMonth.value, varForm.executSchdulDay.value, "<spring:message code="comSymBat.batchSchdulRegist.validate.checkDate"/>"))   { //실행스케줄 (월/일)이 유효하지 않습니다.
              return ;
         }

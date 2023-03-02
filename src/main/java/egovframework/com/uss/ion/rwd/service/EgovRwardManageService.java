@@ -23,7 +23,7 @@ public interface EgovRwardManageService {
 	public List<RwardManageVO> selectRwardManageList(RwardManageVO rwardManageVO) throws Exception;
 
 	/**
-	 * 포상관리 목록 총 갯수를 조회한다.
+	 * 포상관리 목록 총 개수를 조회한다.
 	 * @param rwardManageVO - 포상관리 VO
 	 * @return int - 포상관리 카운트 수
 	 */
@@ -63,7 +63,7 @@ public interface EgovRwardManageService {
 	public List<RwardManageVO> selectRwardManageConfmList(RwardManageVO rwardManageVO) throws Exception;
 
 	/**
-	 * 포상관리정보 승인 처리를 위해 신청된 포상관리 목록 총 갯수를 조회한다.
+	 * 포상관리정보 승인 처리를 위해 신청된 포상관리 목록 총 개수를 조회한다.
 	 * @param rwardManageVO - 포상관리 VO
 	 * @return int - 포상관리 카운트 수
 	 */

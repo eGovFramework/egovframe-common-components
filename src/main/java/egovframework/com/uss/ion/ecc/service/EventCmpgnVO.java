@@ -29,7 +29,7 @@ public class EventCmpgnVO extends ComDefaultVO implements Serializable {
 	private String eventId = "";
 
 	/**
-	 * 사업년도
+	 * 사업연도
 	 */
 	private String bsnsYear = "";
 

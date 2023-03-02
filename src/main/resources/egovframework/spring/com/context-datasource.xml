@@ -10,7 +10,7 @@
         <property name="locations">
             <list>
                 <value>classpath:/egovframework/egovProps/globals.properties</value>
-                <!-- value>file:/product/jeus/egovProps/globals.properties</value-->
+                <!-- <value>file:/product/jeus/egovProps/globals.properties</value> -->
             </list>
         </property>
     </bean>
@@ -96,6 +96,16 @@
 		<property name="driverClassName" value="${Globals.postgres.DriverClassName}"/>
 		<property name="url" value="${Globals.postgres.Url}" />
 		<property name="username" value="${Globals.postgres.UserName}"/>
+		<property name="password" value="#{egovEnvCryptoService.getPassword()}"/>
+	</bean>
+	</beans>
+	
+	<!-- GOLDILOCKS -->
+	<beans profile="goldilocks">  
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
+		<property name="driverClassName" value="${Globals.goldilocks.DriverClassName}"/>
+		<property name="url" value="${Globals.goldilocks.Url}" />
+		<property name="username" value="${Globals.goldilocks.UserName}"/>
 		<property name="password" value="#{egovEnvCryptoService.getPassword()}"/>
 	</bean>
 	</beans>

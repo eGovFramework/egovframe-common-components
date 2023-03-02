@@ -7,7 +7,7 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.util.WebUtils;
-import org.springmodules.validation.commons.DefaultBeanValidator;
+//import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -51,8 +51,8 @@ import twitter4j.auth.AccessToken;
 @Controller
 public class EgovTwitterController {
 
-	@Autowired
-	private DefaultBeanValidator beanValidator;
+//	@Autowired
+//	private DefaultBeanValidator beanValidator;
 
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
@@ -95,7 +95,7 @@ public class EgovTwitterController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		// 로그인 객체 선언
@@ -132,7 +132,7 @@ public class EgovTwitterController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		// 로그인 객체 선언
@@ -193,7 +193,7 @@ public class EgovTwitterController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		// 로그인 객체 선언
@@ -237,7 +237,7 @@ public class EgovTwitterController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		// 로그인 객체 선언
@@ -349,7 +349,7 @@ public class EgovTwitterController {
 		//twitter.getFriendsTimeline().subList(0, 100);
 
 		model.addAttribute("resultList", egovTwitterRecptnService.twitterRecptnList(hmParam, nPageSize));
-		model.addAttribute("pageSize", nPageSize); //전체 페이지 갯수
+		model.addAttribute("pageSize", nPageSize); //전체 페이지 개수
 
 		return sLocationUrl;
 

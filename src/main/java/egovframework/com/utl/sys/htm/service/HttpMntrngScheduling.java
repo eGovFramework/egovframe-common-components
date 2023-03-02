@@ -14,6 +14,8 @@ import org.springframework.stereotype.Service;
 
 import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+
+import org.apache.commons.lang.StringUtils;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 /**
@@ -25,6 +27,7 @@ import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
  *    ----------   -------   -------------------
  *    2010.09.01   박종선          최초생성
  *    2019.12.06   신용호          KISA 보안약점 조치 (부적절한 예외처리)
+ *    2022.11.11   김혜준          시큐어코딩 처리
  *
  * @author  박종선
  * @since 2010.05.01
@@ -135,40 +138,43 @@ public class HttpMntrngScheduling extends EgovAbstractServiceImpl {
 	 * @param target
 	 */
 	private void sendEmail(HttpMon target) {
-
-		String subject = null;
-		String text = null;
-		String errorContents = null;
+		String subject = "";
+		String text = "";
+		String errorContents = "";
 
 		SimpleMailMessage msg = new SimpleMailMessage(this.mntrngMessage);
 		// 수신자
 		msg.setTo(target.getMngrEmailAddr());
 		// 메일제목
 		subject = msg.getSubject();
-		subject = EgovStringUtil.replace(subject, "{모니터링종류}", "HTTP서비스 모니터링");
-		msg.setSubject(subject);
+		// 2022.11.11 시큐어코딩 처리
+		if (StringUtils.isNotEmpty(subject)) {
+			subject = EgovStringUtil.replace(subject, "{모니터링종류}", "HTTP서비스 모니터링");
+			msg.setSubject(subject);
+		}
 		// 메일내용
 		text = msg.getText();
-		text = EgovStringUtil.replace(text, "{모니터링종류}", "HTTP서비스 모니터링");
-		errorContents = "웹서비스종류 : ";
-		errorContents += target.getWebKind();
-		errorContents += "\n";
-		errorContents += "시스템URL : ";
-		errorContents += target.getSiteUrl();
-		errorContents += "\n";
-		errorContents += "상태 : ";
-		errorContents += target.getHttpSttusCd();
-		errorContents += "\n";
-		errorContents += "모티터링 시각 : ";
-		errorContents += EgovDateUtil.convertDate(target.getCreatDt(), "", "", "");
-		errorContents += "\n";
-		
-		if (target.getLogInfo() != null && !target.getLogInfo().equals("")) {
-			errorContents += target.getWebKind() + " 의 프로세스 상태가 비정상입니다.  \n로그를 확인해주세요.";
+		// 2022.11.11 시큐어코딩 처리
+			if (StringUtils.isNotEmpty(text)) {
+			text = EgovStringUtil.replace(text, "{모니터링종류}", "HTTP서비스 모니터링");
+			errorContents = "웹서비스종류 : ";
+			errorContents += target.getWebKind();
+			errorContents += "\n";
+			errorContents += "시스템URL : ";
+			errorContents += target.getSiteUrl();
+			errorContents += "\n";
+			errorContents += "상태 : ";
+			errorContents += target.getHttpSttusCd();
+			errorContents += "\n";
+			errorContents += "모티터링 시각 : ";
+			errorContents += EgovDateUtil.convertDate(target.getCreatDt(), "", "", "");
+			errorContents += "\n";
+			if (target.getLogInfo() != null && !target.getLogInfo().equals("")) {
+				errorContents += target.getWebKind() + " 의 프로세스 상태가 비정상입니다.  \n로그를 확인해주세요.";
+			}
+			text = EgovStringUtil.replace(text, "{에러내용}", errorContents);
+			msg.setText(text);
 		}
-		
-		text = EgovStringUtil.replace(text, "{에러내용}", errorContents);
-		msg.setText(text);
 
 		this.mntrngMailSender.send(msg);
 	}

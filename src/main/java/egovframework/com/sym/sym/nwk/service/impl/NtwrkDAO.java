@@ -34,7 +34,7 @@ public class NtwrkDAO extends EgovComAbstractDAO {
     }
     
 	/**
-	 * 네트워크목록 총 갯수를 조회한다.
+	 * 네트워크목록 총 개수를 조회한다.
 	 * @param ntwrkVO - 네트워크 Vo
 	 * @return int - 네트워크 카운트 수
 	 */

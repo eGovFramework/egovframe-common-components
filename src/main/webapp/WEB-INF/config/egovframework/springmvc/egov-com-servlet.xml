@@ -28,6 +28,11 @@
         <property name="webBindingInitializer">
             <bean class="egovframework.com.cmm.web.EgovBindingInitializer"/>
         </property>
+        <property name="messageConverters">
+			<list>
+				<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
+			</list>
+		</property>
     </bean>
     
     <!-- setting Locale Locale Interceptor 설정하기  -->
@@ -58,7 +63,8 @@
 				<prop key="org.springframework.transaction.TransactionException">egovframework/com/cmm/error/dataAccessFailure</prop>
 				<prop key="org.egovframe.rte.fdl.cmmn.exception.EgovBizException">egovframework/com/cmm/error/egovBizException</prop>
 				<prop key="org.springframework.web.HttpSessionRequiredException">egovframework/com/uat/uia/EgovLoginUsr</prop>
-				<prop key="egovframework.com.cmm.exception.EgovXssException">egovframework/com/cmm/error/EgovXssException</prop>
+				<prop key="egovframework.com.cmm.exception.EgovXssException">egovframework/com/cmm/error/egovXssException</prop>
+				<prop key="egovframework.com.cmm.exception.EgovFileExtensionException">egovframework/com/cmm/error/egovFileExtensionException</prop>
 			</props>
 		</property>
 	</bean>

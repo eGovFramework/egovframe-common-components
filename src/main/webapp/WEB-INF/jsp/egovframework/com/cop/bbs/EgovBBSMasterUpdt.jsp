@@ -71,6 +71,37 @@ function fn_egov_updt_bbs(form, bbsId){
 		}					
 	}	
 }
+
+
+function fn_egov_regist_fileAtchPosblAt_validation(){
+	var validateForm = document.getElementById("boardMasterVO");	
+	if(validateForm.fileAtchPosblAt.value == 'N'){
+		validateForm.atchPosblFileNumber.disabled = true;	
+		validateForm.atchPosblFileNumber.value = '0';
+	}else{
+		validateForm.atchPosblFileNumber.disabled = false;
+	}
+}
+	
+//게시판 유형 방명록 선택시 아래 4개의 선택내용 비활성화 및 기본값으로 변경
+//답장가능여부: 아니오
+//파읿첨부기능여부: 아니오
+//첨부가능파일숫자: 없음
+//추가 선택사항: 미선택
+function fn_egov_regist_bbsTyCode_validation(){
+ var validateForm = document.getElementById("boardMasterVO");
+ if(validateForm.bbsTyCode.value == 'BBST03') {	 
+     validateForm.replyPosblAt.value = 'N';
+     validateForm.fileAtchPosblAt.value = 'N';
+     validateForm.atchPosblFileNumber.value = '0';
+     validateForm.fileAtchPosblAt.disabled = true;
+     validateForm.atchPosblFileNumber.disabled = true;     
+ } else {     
+     validateForm.fileAtchPosblAt.disabled = false;
+     validateForm.atchPosblFileNumber.disabled = false;     
+ }
+ 
+}
 /* ********************************************************
  * 목록 으로 가기
  ******************************************************** */
@@ -122,8 +153,8 @@ function fn_egov_inqire_bbslist() {
 		<c:set var="title"><spring:message code="comCopBbs.boardMasterVO.updt.bbsTyCode"/> </c:set>
 		<tr>
 			<th><label for="bbsTyCode">${title} <span class="pilsu">*</span></label></th>
-			<td class="left">
-				<form:select path="bbsTyCode" title="${title} ${inputTxt}" cssClass="txt">
+			<td class="left">				
+				<form:select onchange="fn_egov_regist_bbsTyCode_validation()" path="bbsTyCode" title="${title} ${inputTxt}" cssClass="txt">
 					<form:option value='' label="--선택하세요--" />
 				   <form:options items="${bbsTyCode}" itemValue="code" itemLabel="codeNm" />
 				</form:select>
@@ -136,8 +167,8 @@ function fn_egov_inqire_bbslist() {
 		<c:set var="title"><spring:message code="comCopBbs.boardMasterVO.updt.fileAtchPosblAt"/> </c:set>
 		<tr>
 			<th><label for="fileAtchPosblAt">${title}<span class="pilsu">*</span></label></th>
-			<td class="left">
-				<form:select path="fileAtchPosblAt" title="${title} ${inputTxt}" cssClass="txt">
+			<td class="left">				
+				<form:select onchange="fn_egov_regist_fileAtchPosblAt_validation()" path="fileAtchPosblAt" title="${title} ${inputTxt}" cssClass="txt">
 					<form:option value='' label="--선택하세요--" />
 					<form:option value="Y"  label="예" />
 	  		   		<form:option value='N'>아니오</form:option>

@@ -1,19 +1,20 @@
 package egovframework.com.sym.log.plg.service;
 
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import egovframework.com.cmm.LoginVO;
-import egovframework.com.cmm.util.EgovHttpRequestHelper;
-import egovframework.com.cmm.util.EgovUserDetailsHelper;
 
 import javax.annotation.Resource;
 
 import org.aspectj.lang.JoinPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.util.EgovHttpRequestHelper;
+import egovframework.com.cmm.util.EgovUserDetailsHelper;
 
 /**
  * @Class Name : EgovPrivacyLogAspect.java
@@ -122,9 +123,20 @@ public class EgovPrivacyLogAspect {
 				if (returned != null && ! returned.toString().trim().equals("")) {
 					list.add(target.get(key));
 				}
-			} catch (SecurityException ignore) {//KISA 보안약점 조치 (2018-10-29, 윤창원)
+			} catch (NoSuchMethodException ignore) {
+				LOGGER.error("["+ignore.getClass()+"] Try/Catch... : "+ ignore.getMessage());
 				continue;
-			} catch (Exception ignore) {
+			} catch (IllegalAccessException ignore) {
+				LOGGER.error("["+ignore.getClass()+"] Try/Catch... : "+ ignore.getMessage());
+				continue;
+			} catch (IllegalArgumentException ignore) {
+				LOGGER.error("["+ignore.getClass()+"] Try/Catch... : "+ ignore.getMessage());
+				continue;
+			} catch (InvocationTargetException ignore) {
+				LOGGER.error("["+ignore.getClass()+"] Try/Catch... : "+ ignore.getMessage());
+				continue;
+			} catch (NullPointerException ignore) {
+				LOGGER.error("["+ignore.getClass()+"] Try/Catch... : "+ ignore.getMessage());
 				continue;
 			}
 			

@@ -13,6 +13,7 @@ import egovframework.com.cop.sms.service.Sms;
 import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 
+import org.apache.commons.lang.StringUtils;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 import javax.annotation.Resource;
@@ -46,6 +47,7 @@ import org.springframework.stereotype.Service;
  *  수정일      	         수정자              수정내용
  *  ----------   ---------   ---------------------------
  *  2020.11.02   신용호              불필요한 멤버변수 지역변수로 변경
+ *  2022.11.11   김혜준              시큐어코딩 처리
  *
  * </pre>
  */
@@ -204,46 +206,49 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 	 * @param serverResrceMntrngVO
 	 */
 	public void sendEmail(ServerResrceMntrng serverResrceMntrng) {
-		String subject = null;
-		String text = null;
-		String errorContents = null;
+		String subject = "";
+		String text = "";
+		String errorContents = "";
 
 		SimpleMailMessage msg = new SimpleMailMessage(this.mntrngMessage);
 		// 수신자
 		msg.setTo(serverResrceMntrng.getMngrEamilAddr());
 		// 메일제목
 		subject = msg.getSubject();
-		subject = EgovStringUtil.replace(subject, "{모니터링종류}", "서버자원서비스모니터링");
-		msg.setSubject(subject);
+		// 2022.11.11 시큐어코딩 처리
+		if (StringUtils.isNotEmpty(subject)) {
+			subject = EgovStringUtil.replace(subject, "{모니터링종류}", "서버자원서비스모니터링");
+			msg.setSubject(subject);
+		}
 		// 메일내용
 		text = msg.getText();
-		text = EgovStringUtil.replace(text, "{모니터링종류}", "서버자원서비스모니터링");
-		errorContents = "서버명 : ";
-		errorContents += serverResrceMntrngVO.getServerNm();
-		errorContents += "\n";
-		errorContents += "서버IP : ";
-		errorContents += serverResrceMntrngVO.getServerEqpmnIp();
-		errorContents += "\n";
-		errorContents += "CPU사용률 : ";
-		errorContents += serverResrceMntrngVO.getCpuUseRt();
-		errorContents += "\n";
-		errorContents += "메모리사용률 : ";
-		errorContents += serverResrceMntrngVO.getMoryUseRt();
-		errorContents += "\n";
-		errorContents += "서비스상태 : 비정상";
-		// errorContents += serverResrceMntrngVO.getSvcSttusNm();
-		errorContents += "\n";
-		errorContents += "내용 : ";
-		errorContents += serverResrceMntrngVO.getLogInfo();
-		errorContents += "\n";
-		errorContents += "생성일시 : ";
-		errorContents += EgovDateUtil.convertDate(serverResrceMntrngVO.getCreatDt(), "", "", "");
-		errorContents += "\n";
-		errorContents += serverResrceMntrngVO.getServerNm() + " 의 서버자원 서비스 상태가 비정상입니다. \n로그를 확인해주세요.";
-		
-		text = EgovStringUtil.replace(text, "{에러내용}", errorContents);
-		
-		msg.setText(text);
+		// 2022.11.11 시큐어코딩 처리
+		if (StringUtils.isNotEmpty(text)) {
+			text = EgovStringUtil.replace(text, "{모니터링종류}", "서버자원서비스모니터링");
+			errorContents = "서버명 : ";
+			errorContents += serverResrceMntrngVO.getServerNm();
+			errorContents += "\n";
+			errorContents += "서버IP : ";
+			errorContents += serverResrceMntrngVO.getServerEqpmnIp();
+			errorContents += "\n";
+			errorContents += "CPU사용률 : ";
+			errorContents += serverResrceMntrngVO.getCpuUseRt();
+			errorContents += "\n";
+			errorContents += "메모리사용률 : ";
+			errorContents += serverResrceMntrngVO.getMoryUseRt();
+			errorContents += "\n";
+			errorContents += "서비스상태 : 비정상";
+			errorContents += "\n";
+			errorContents += "내용 : ";
+			errorContents += serverResrceMntrngVO.getLogInfo();
+			errorContents += "\n";
+			errorContents += "생성일시 : ";
+			errorContents += EgovDateUtil.convertDate(serverResrceMntrngVO.getCreatDt(), "", "", "");
+			errorContents += "\n";
+			errorContents += serverResrceMntrngVO.getServerNm() + " 의 서버자원 서비스 상태가 비정상입니다. \n로그를 확인해주세요.";
+			text = EgovStringUtil.replace(text, "{에러내용}", errorContents);
+			msg.setText(text);
+		}
 
 		this.mntrngMailSender.send(msg);
 	}

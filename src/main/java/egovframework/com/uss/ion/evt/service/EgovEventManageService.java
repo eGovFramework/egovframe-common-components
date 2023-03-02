@@ -24,7 +24,7 @@ public interface EgovEventManageService {
 	public List<EventManageVO> selectEventManageList(EventManageVO eventManageVO) throws Exception;
 
 	/**
-	 * 행사관리 목록 총 갯수를 조회한다.
+	 * 행사관리 목록 총 개수를 조회한다.
 	 * @param eventManageVO - 행사관리 VO
 	 * @return int - 행사관리 카운트 수
 	 */
@@ -67,7 +67,7 @@ public interface EgovEventManageService {
 	public List<EventManageVO> selectEventAtdrnList(EventManageVO eventManageVO) throws Exception;
 
 	/**
-	 * 행사관리 목록 총 갯수를 조회한다.
+	 * 행사관리 목록 총 개수를 조회한다.
 	 * @param eventManageVO - 행사관리 VO
 	 * @return int - 행사접수관리 카운트 수
 	 */
@@ -81,7 +81,7 @@ public interface EgovEventManageService {
 	public List<EventManageVO> selectEventRceptConfmList(EventManageVO eventManageVO) throws Exception;
 
 	/**
-	 * 행사접수승인/반려 처리를 위해 등록된 행사접수 목록 총 갯수를 조회한다.
+	 * 행사접수승인/반려 처리를 위해 등록된 행사접수 목록 총 개수를 조회한다.
 	 * @param eventManageVO - 행사관리 VO
 	 * @return int - 행사접수승인 카운트 수
 	 */
@@ -127,7 +127,7 @@ public interface EgovEventManageService {
 	public List<EventManageVO> selectEventReqstAtdrnList(EventManageVO eventManageVO) throws Exception;
 
 	/**
-	 * 행사접수자 목록 총 갯수를 조회한다.
+	 * 행사접수자 목록 총 개수를 조회한다.
 	 * @param eventManageVO - 행사관리 VO
 	 * @return int - 행사관리 카운트 수
 	 */

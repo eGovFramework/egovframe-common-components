@@ -37,7 +37,8 @@ import org.springframework.batch.item.file.transform.Range;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
-
+import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang3.ObjectUtils;
 import org.egovframe.rte.bat.core.item.file.mapping.EgovDefaultLineMapper;
 import org.egovframe.rte.bat.core.item.file.mapping.EgovObjectMapper;
 import org.egovframe.rte.bat.core.item.file.transform.EgovDelimitedLineTokenizer;
@@ -57,6 +58,7 @@ import org.egovframe.rte.bat.core.item.file.transform.EgovLineTokenizer;
  *  -------       --------          ---------------------------
  *   2014.11.05    서경석           최초 생성
  *   2014.11.28    표준프레임워크	공통컴포넌트 추가 적용 (패키지 변경)
+ *   2022.11.11    김혜준           시큐어코딩 처리
  *
  * </pre>
  */
@@ -202,7 +204,10 @@ public class DefaultItemReader<T> implements ItemStreamReader<T> {
 				}
 
 				this.resource = new FileSystemResource(resourceName);
-				this.fieldNames = names.split(",");
+				// 2022.11.11 시큐어코딩 처리
+				if (StringUtils.isNotEmpty(names)) {
+					this.fieldNames = names.split(",");
+				}
 
 				try {
 					this.voType = Class.forName(type);
@@ -254,13 +259,8 @@ public class DefaultItemReader<T> implements ItemStreamReader<T> {
 		EgovObjectMapper<T> objectMapper = new EgovObjectMapper<T>();
 		objectMapper.setNames(fieldNames);
 		objectMapper.setType(voType);
-		try {
-			objectMapper.afterPropertiesSet();
-		} catch (RuntimeException e) {//2022.01 "Exception" should not be caught when not required by called methods
-			throw new RuntimeException(e);
-		} catch (Exception e) {
-			throw new RuntimeException(e);
-		}
+		objectMapper.afterPropertiesSet();
+
 		return objectMapper;
 	}
 

@@ -51,7 +51,7 @@
 		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
 	
 	</select>
-	<!-- 개인정보보호정책확인::목록조회_게시물 총갯수  -->
+	<!-- 개인정보보호정책확인::목록조회_게시물 총개수  -->
 	<select id="selectIndvdlInfoPolicyCnt" parameterType="comDefaultVO" resultType="int">
 		SELECT 
 		COUNT(*) totcnt
@@ -98,9 +98,9 @@
 		A.INDVDL_INFO_POLICY_NM,
 		A.INDVDL_INFO_POLICY_CN,
 		A.INDVDL_INFO_POLICY_AGRE_AT,
-		A.FRST_REGIST_PNTTM,
+		DATE_FORMAT(A.FRST_REGIST_PNTTM,'%Y-%m-%d') AS FRST_REGIST_PNTTM,
 		A.FRST_REGISTER_ID,
-		A.LAST_UPDT_PNTTM,
+		DATE_FORMAT(A.LAST_UPDT_PNTTM,'%Y-%m-%d') AS LAST_UPDT_PNTTM,
 		A.LAST_UPDUSR_ID  
 		FROM COMTNINDVDLINFOPOLICY A
 		WHERE 1=1

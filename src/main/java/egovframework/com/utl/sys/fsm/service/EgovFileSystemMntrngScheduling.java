@@ -8,6 +8,8 @@ import java.util.Map;
 
 import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+
+import org.apache.commons.lang.StringUtils;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 import javax.annotation.Resource;
@@ -29,7 +31,14 @@ import org.springframework.stereotype.Service;
  * @version 1.0
  * @created 28-6-2010 오전 11:33:43
  * 
- * 2017.03.03 	조성원 	시큐어코딩(ES)-Null Pointer 역참조[CWE-476]
+ * <pre>
+ * << 개정이력(Modification Information) >>
+ *
+ *  수정일       수정자     수정내용
+ *  ----------   --------   ---------------------------
+ *  2017.03.03 	 조성원 	시큐어코딩(ES)-Null Pointer 역참조[CWE-476]
+ *  2022.11.11   김혜준     시큐어코딩 처리
+ * 
  */
 
 @Service("egovFileSysMntrngScheduling")
@@ -103,9 +112,6 @@ public class EgovFileSystemMntrngScheduling extends EgovAbstractServiceImpl {
 			}catch (IOException e1) {
 				target.setLogInfo(e1.getMessage());
 				nrmltAt = false;
-			}catch (Exception e2) {
-				target.setLogInfo(e2.getMessage());
-				nrmltAt = false;
 			}
 
 			if(fileSysUsgQty > fileSysThrhld){
@@ -137,56 +143,59 @@ public class EgovFileSystemMntrngScheduling extends EgovAbstractServiceImpl {
 	 * @return
 	 *
 	 */
-    private void sendEmail(FileSysMntrng target)
-    {
-    	String subject = null;
-    	String text = null;
-    	String errorContents = null;
+    private void sendEmail(FileSysMntrng target) {
+    	String subject = "";
+    	String text = "";
+    	String errorContents = "";
 
     	SimpleMailMessage msg = new SimpleMailMessage(this.mntrngMessage);
         // 수신자
         msg.setTo(target.getMngrEmailAddr());
         // 메일제목
         subject = msg.getSubject();
-        subject = EgovStringUtil.replace(subject, "{모니터링종류}", "파일시스템모니터링");
-        msg.setSubject(subject);
+		// 2022.11.11 시큐어코딩 처리
+		if (StringUtils.isNotEmpty(subject)) {
+			subject = EgovStringUtil.replace(subject, "{모니터링종류}", "파일시스템모니터링");
+	        msg.setSubject(subject);
+		}
         // 메일내용
         text = msg.getText();
-        text = EgovStringUtil.replace(text, "{모니터링종류}", "파일시스템모니터링");
-        errorContents = "파일시스템명 : ";
-        errorContents += target.getFileSysNm();
-        errorContents += "\n";
-        errorContents += "파일시스템관리명 : ";
-        errorContents += target.getFileSysManageNm();
-        errorContents += "\n";
-
-        if(target.getLogInfo() != null && !target.getLogInfo().equals("")){
-        	errorContents += "해당파일의 파일시스템 정보를 가져오는중 에러가 발생하였습니다.";
-        }else{
-	        errorContents += "크기 : ";
-	        errorContents += target.getFileSysMg();
-	        errorContents += "GB\n";
-	        errorContents += "임계치 : ";
-	        errorContents += target.getFileSysThrhld();
-	        errorContents += "GB\n";
-	        errorContents += "사용량 : ";
-	        errorContents += target.getFileSysUsgQty();
-	        errorContents += "GB\n";
-        }
-
-        errorContents += "상태 : ";
-        errorContents += target.getMntrngSttus();
-        errorContents += "\n";
-        errorContents += "모니터링 시각 : ";
-        errorContents += EgovDateUtil.convertDate(target.getCreatDt(), "", "", "");
-        errorContents += "\n";
-        if(target.getLogInfo() != null && !target.getLogInfo().equals("")){
-        	errorContents += target.getFileSysManageNm() + " 의 파일시스템 상태가 비정상입니다.  \n로그를 확인해주세요.";
-        }else{
-        	errorContents += target.getFileSysManageNm() + " 의 파일시스템이 임계치를 넘었습니다.";
-        }
-        text = EgovStringUtil.replace(text, "{에러내용}", errorContents);
-        msg.setText(text);
+        // 2022.11.11 시큐어코딩 처리
+     	if (StringUtils.isNotEmpty(subject)) {
+	        text = EgovStringUtil.replace(text, "{모니터링종류}", "파일시스템모니터링");
+	        errorContents = "파일시스템명 : ";
+	        errorContents += target.getFileSysNm();
+	        errorContents += "\n";
+	        errorContents += "파일시스템관리명 : ";
+	        errorContents += target.getFileSysManageNm();
+	        errorContents += "\n";
+	        if(target.getLogInfo() != null && !target.getLogInfo().equals("")){
+	        	errorContents += "해당파일의 파일시스템 정보를 가져오는중 에러가 발생하였습니다.";
+	        }else{
+		        errorContents += "크기 : ";
+		        errorContents += target.getFileSysMg();
+		        errorContents += "GB\n";
+		        errorContents += "임계치 : ";
+		        errorContents += target.getFileSysThrhld();
+		        errorContents += "GB\n";
+		        errorContents += "사용량 : ";
+		        errorContents += target.getFileSysUsgQty();
+		        errorContents += "GB\n";
+	        }
+	        errorContents += "상태 : ";
+	        errorContents += target.getMntrngSttus();
+	        errorContents += "\n";
+	        errorContents += "모니터링 시각 : ";
+	        errorContents += EgovDateUtil.convertDate(target.getCreatDt(), "", "", "");
+	        errorContents += "\n";
+	        if(target.getLogInfo() != null && !target.getLogInfo().equals("")){
+	        	errorContents += target.getFileSysManageNm() + " 의 파일시스템 상태가 비정상입니다.  \n로그를 확인해주세요.";
+	        }else{
+	        	errorContents += target.getFileSysManageNm() + " 의 파일시스템이 임계치를 넘었습니다.";
+	        }
+	        text = EgovStringUtil.replace(text, "{에러내용}", errorContents);
+	        msg.setText(text);
+     	}
 
         this.mntrngMailSender.send(msg);
     }

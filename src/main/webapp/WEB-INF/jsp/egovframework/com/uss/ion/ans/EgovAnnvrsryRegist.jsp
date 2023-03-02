@@ -60,12 +60,12 @@
  ******************************************************** */
 function fncAnnvrsryClear() {
 	var varFrom = document.getElementById("annvrsryManage");
-	varFrom.annvrsrySe.value         = "";
+	varFrom.annvrsrySe.value         = "01";
 	varFrom.annvrsryDe.value         = "";
 	varFrom.cldrSe[0].checked        = true;
 	varFrom.annvrsryNm.value         = "";
 	varFrom.memo.value               = "";
-	varFrom.annvrsryBeginDe.value    = "";
+	varFrom.annvrsryBeginDe.value    = "7";
 	varFrom.annvrsrySetup[0].checked = true;
 }
 

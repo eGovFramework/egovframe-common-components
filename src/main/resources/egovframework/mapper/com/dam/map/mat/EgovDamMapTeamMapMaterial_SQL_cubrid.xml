@@ -42,7 +42,7 @@
 				 ,	A.KNWLDG_TY_CODE
 			     ,  A.EXPERT_ID
 			     ,  A.KNWLDG_TY_NM			     
-                 ,  A.CL_DE
+                 ,  TO_CHAR(TO_DATE(A.CL_DE, 'YYYYmmdd'), 'YYYY-mm-dd') AS CL_DE
 			     ,  A.KNWLDG_URL
 			     ,	A.FRST_REGISTER_ID
 			     ,	A.FRST_REGIST_PNTTM
@@ -85,7 +85,7 @@
 				 ,  B.ORGNZT_NM
 			     ,  A.EXPERT_ID
 			     ,  A.KNWLDG_TY_NM
-                 ,  A.CL_DE
+                 ,  TO_CHAR(TO_DATE(A.CL_DE, 'YYYYmmdd'), 'YYYY-mm-dd') AS CL_DE
                  ,  A.KNWLDG_URL
 			     ,	A.FRST_REGISTER_ID
 			     ,	A.FRST_REGIST_PNTTM

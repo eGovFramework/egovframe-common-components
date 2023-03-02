@@ -5,7 +5,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,6 +26,8 @@ import egovframework.com.uss.umt.service.MberManageVO;
 import egovframework.com.uss.umt.service.UserDefaultVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovFileScrty;
+
+import org.apache.commons.lang3.StringUtils;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
@@ -49,7 +50,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *   2015.06.19  조정국         미인증 사용자에 대한 보안처리 기준 수정 (!isAuthenticated)
  *   2017.07.21  장동한         로그인인증제한 작업
  *   2021.05.30  정진오         디지털원패스 정보 조회
- *
+ *   2022.07.13  김해준         디지털원패스 정보 조회 null 판별 수정
  * </pre>
  */
 
@@ -344,38 +345,38 @@ public class EgovMberManageController {
 		}
 
 		// 2021.05.30, 정진오, 디지털원패스 정보 조회
+		// 2022.07.13, 김해준, null 판별 수정
 		LoginVO loginVO = (LoginVO)request.getSession().getAttribute("loginVO");
 		String onepassUserkey = loginVO.getOnepassUserkey();
 		String onepassIntfToken = loginVO.getOnepassIntfToken();
-		if (onepassUserkey.isEmpty() && onepassIntfToken.isEmpty()) {
+		if (StringUtils.isNotEmpty(onepassUserkey) || StringUtils.isNotEmpty(onepassIntfToken)) {
+			model.addAttribute("resultMsg", "digital.onepass.delete.alert");
+		} else {
 			mberManageService.deleteMber(checkedIdForDel);
 			model.addAttribute("resultMsg", "success.common.delete");
-		} else {
-			model.addAttribute("resultMsg", "digital.onepass.delete.alert");
 		}
 
 		return "forward:/uss/umt/EgovMberManage.do";
 	}
 
 	// 탈퇴 처리 기능에 대한 예시
+	// 221114	김혜준	2022 시큐어코딩 조치
 	@RequestMapping("/uss/umt/EgovMberWithdraw.do")
 	public String withdrawMber(Model model) throws Exception {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-		String returnPage = "/"; // 탈퇴 처리 후 화면 지정
-
 		if (!isAuthenticated) {
 			model.addAttribute("resultMsg", "fail.common.delete");
 
-			return "redirect:" + returnPage;
+			return "redirect:/";
 		}
 
 		mberManageService.deleteMber(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 		//Exception 없이 진행시 삭제성공메시지
 		model.addAttribute("resultMsg", "success.common.delete");
 
-		return "redirect:" + returnPage;
+		return "redirect:/";
 	}
 
 	/**

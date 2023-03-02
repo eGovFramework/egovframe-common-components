@@ -209,7 +209,7 @@ function fn_egov_inqire_eventlist() {
 		<!-- 승인여부 -->
 		<c:set var="title"><spring:message code="comUssIonEcc.eventCmpgnVO.eventConfmAt"/> </c:set>
 		<tr>
-			<th><label for="eventConfmAt">${title } </label></th>
+			<th><label for="eventConfmAt">${title } <span class="pilsu">*</span></label></th>
 			<td class="left">
 				<form:select path="eventConfmAt" title="${title} ${inputTxt }" cssClass="txt">
 					<form:option value="" label="--선택하세요--" />

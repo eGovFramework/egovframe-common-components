@@ -20,9 +20,9 @@ package egovframework.com.ext.msg.server;
 
 import java.io.IOException;
 import java.io.StringReader;
+import java.security.SecureRandom;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Random;
 import java.util.Set;
 
 import javax.json.Json;
@@ -219,9 +219,8 @@ public class UsersServerEndPoint {
 	 */
 	private String genRandom() {
 		String chatroomId = "";
-		Random rnd = new Random();
+		SecureRandom rnd = new SecureRandom();			// 221115	김혜준	2022 시큐어코딩 조치
 		for (int i = 0; i < 8; i++) {
-			rnd.setSeed(System.currentTimeMillis());
 			chatroomId += (char)((rnd.nextDouble() * 26) + 97);//KISA 보안약점 조치 (2018-10-29, 윤창원)
 		}
 		return chatroomId;

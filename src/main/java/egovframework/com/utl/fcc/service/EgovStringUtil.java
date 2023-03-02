@@ -44,6 +44,9 @@ public class EgovStringUtil {
 	 * 빈 문자열 <code>""</code>.
 	 */
 	public static final String EMPTY = "";
+	
+	// 221116	김혜준	2022 시큐어코딩 조치
+	private static SecureRandom rnd = new SecureRandom();
 
 	/**
 	 * <p>Padding을 할 수 있는 최대 수치</p>
@@ -769,9 +772,6 @@ public class EgovStringUtil {
 			throw new IllegalArgumentException("Start String: " + startChr + " End String: " + endChr);
 		}
 
-		// 랜덤 객체 생성
-		SecureRandom rnd = new SecureRandom();
-
 		do {
 			// 시작문자 및 종료문자 중에서 랜덤 숫자를 발생시킨다.
 			randomInt = rnd.nextInt(endInt + 1);
@@ -865,7 +865,7 @@ public class EgovStringUtil {
 
 		String rtnStr = null;
 
-		// 문자열로 변환하기 위한 패턴 설정(년도-월-일 시:분:초:초(자정이후 초))
+		// 문자열로 변환하기 위한 패턴 설정(연도-월-일 시:분:초:초(자정이후 초))
 		String pattern = "yyyyMMddhhmmssSSS";
 
 		SimpleDateFormat sdfCurrent = new SimpleDateFormat(pattern, Locale.KOREA);

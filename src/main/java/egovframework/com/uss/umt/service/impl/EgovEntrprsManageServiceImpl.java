@@ -167,9 +167,9 @@ public class EgovEntrprsManageServiceImpl extends EgovAbstractServiceImpl implem
 	}
 
     /**
-     * 기업회원 총 갯수를 조회한다.
+     * 기업회원 총 개수를 조회한다.
      * @param userSearchVO 검색조건
-     * @return 사용자 총 갯수(int)
+     * @return 사용자 총 개수(int)
      * @throws Exception
      */
     @Override

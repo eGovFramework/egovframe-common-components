@@ -14,27 +14,27 @@ SELECT
     uniqId, userTy, userId , userNm, emailAdres, areaNo, middleTelno, endTelno, moblphonNo, groupId, sttus, sbscrbDe
 FROM(
     SELECT 
-        ESNTL_ID               uniqId,
-        'USR01'               userTy,
-        MBER_ID               userId,
-        MBER_NM               userNm,
-        MBER_EMAIL_ADRES      emailAdres,
-        AREA_NO               areaNo,
-        MIDDLE_TELNO          middleTelno,
-        END_TELNO             endTelno,
-        MBTLNUM           moblphonNo,
-        GROUP_ID              groupId,
-        MBER_STTUS            sttus,
-        SBSCRB_DE             sbscrbDe
+        ESNTL_ID              as uniqId,
+        'USR01'               as userTy,
+        MBER_ID               as userId,
+        MBER_NM               as userNm,
+        MBER_EMAIL_ADRES      as emailAdres,
+        AREA_NO               as areaNo,
+        MIDDLE_TELNO          as middleTelno,
+        END_TELNO             as endTelno,
+        MBTLNUM               as moblphonNo,
+        GROUP_ID              as groupId,
+        MBER_STTUS            as sttus,
+        DATE_FORMAT(SBSCRB_DE,'%Y-%m-%d') as sbscrbDe
     FROM    COMTNGNRLMBER
     ) A
         WHERE 1=1
         <if test='sbscrbSttus != null and sbscrbSttus neq "0" and sbscrbSttus neq ""'>
             AND sttus LIKE  #{sbscrbSttus}
         </if>
-        <if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isNotEmpty(searchKeyword)">
+        <if test="@egovframework.com.cmm.util.EgovMybatisUtil@isNotEmpty(searchKeyword)">
         <if test="searchCondition == 0">AND
-             userId LIKE #{searchKeyword}
+             userId LIKE '%' #{searchKeyword} '%'
         </if>
         <if test="searchCondition == 1">AND
              userNm LIKE '%' #{searchKeyword} '%'
@@ -67,9 +67,9 @@ FROM(
             <if test='sbscrbSttus != null and sbscrbSttus neq "0" and sbscrbSttus neq ""'>
                 AND sttus LIKE  #{sbscrbSttus}
             </if>
-            <if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isNotEmpty(searchKeyword)">
+            <if test="@egovframework.com.cmm.util.EgovMybatisUtil@isNotEmpty(searchKeyword)">
             <if test="searchCondition == 0">AND
-                 userId LIKE #{searchKeyword}
+                 userId LIKE '%' #{searchKeyword} '%'
             </if>
             <if test="searchCondition == 1">AND
                  userNm LIKE '%' #{searchKeyword} '%'
@@ -157,7 +157,7 @@ FROM(
                 MBER_FXNUM       mberFxnum,
                 MBER_EMAIL_ADRES mberEmailAdres,
                 MIDDLE_TELNO     middleTelno,
-                SBSCRB_DE        sbscrbDe,
+                DATE_FORMAT(SBSCRB_DE,'%Y-%m-%d') AS sbscrbDe,
                 LOCK_AT          lockAt
             FROM COMTNGNRLMBER
             WHERE ESNTL_ID=#{uniqId}

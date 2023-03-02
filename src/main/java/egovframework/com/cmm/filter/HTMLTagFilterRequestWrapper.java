@@ -135,7 +135,16 @@ public class HTMLTagFilterRequestWrapper extends HttpServletRequestWrapper {
 				break;
 			case '\'':
 				strBuff.append("&apos;");
-				break;	
+				break;
+			case '(':
+				strBuff.append("&#40;");
+				break;
+			case ')':
+				strBuff.append("&#41;");
+				break;
+			//case '.':
+			//	strBuff.append("&#46;");
+			//	break;
 			default:
 				strBuff.append(c);
 				break;

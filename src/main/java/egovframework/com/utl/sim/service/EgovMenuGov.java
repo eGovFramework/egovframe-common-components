@@ -6,6 +6,7 @@
  *     수정일         수정자                   수정내용
  *   -------    --------    ---------------------------
  *   2009.02.02    이 용          최초 생성
+ *   2022.11.11    김혜준		  시큐어코딩 처리
  *
  *  @author 공통 서비스 개발팀 이 용
  *  @since 2009. 02. 02
@@ -21,7 +22,6 @@ import java.io.File;
 import java.io.FileWriter;
 import java.util.List;
 import java.util.Vector;
-
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
 
 public class EgovMenuGov {
@@ -33,9 +33,9 @@ public class EgovMenuGov {
 	 * <pre>
 	 * Comment : DAT 파일을 파싱하여 메뉴관리화면에 리턴.
 	 * </pre>
-	 * @param String parFile   DAT파일명
-	 * @param String parChar   구분자
-	 * @param Int    parField  필드수
+	 * @param parFile   DAT파일명
+	 * @param parChar   구분자
+	 * @param parField  필드수
 	 * @return Vector list
 	 * @version 1.0 (2009.02.04.)
 	 * @see
@@ -61,15 +61,14 @@ public class EgovMenuGov {
 	 * <pre>
 	 * Comment : 메뉴관리 화면의 데이타를 DAT 파일로 생성.
 	 * </pre>
-	 * @param String[] menuIDArray     ID Array
-	 * @param String[] menuNameArray   Name Array
-	 * @param String[] menuLevelArray  Lefel Array
-	 * @param String[] menuURLArray    URL Array
+	 * @param menuIDArray     ID Array
+	 * @param menuNameArray   Name Array
+	 * @param menuLevelArray  Lefel Array
+	 * @param menuURLArray    URL Array
 	 * @return boolean true/false
 	 * @version 1.0 (2009.02.04.)
 	 * @see
 	 */
-
 	public static boolean setDataByDATFile(String parFile, String[] menuIDArray, String[] menuNameArray, String[] menuLevelArray, String[] menuURLArray) throws Exception {
 		boolean success = false;
 		String FileName = null;
@@ -89,4 +88,5 @@ public class EgovMenuGov {
 		}
 		return success;
 	}
+
 }

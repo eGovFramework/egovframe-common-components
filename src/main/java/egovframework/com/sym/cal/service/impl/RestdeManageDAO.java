@@ -149,9 +149,9 @@ public class RestdeManageDAO extends EgovComAbstractDAO {
     }
 
     /**
-     * 글 총 갯수를 조회한다.
+     * 글 총 개수를 조회한다.
      * @param searchVO
-     * @return int(휴일 총 갯수)
+     * @return int(휴일 총 개수)
      * @throws Exception
      */
     public int selectRestdeListTotCnt(RestdeVO searchVO) throws Exception {

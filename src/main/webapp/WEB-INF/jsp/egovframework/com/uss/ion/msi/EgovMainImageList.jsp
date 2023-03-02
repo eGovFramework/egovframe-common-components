@@ -127,7 +127,7 @@ function fncAddMainImageInsert() {
 
 function fncLoginMainImageListDelete() {
 	if(fncManageChecked()) {
-        if(confirm("<spring:message code="uss.ion.msi.mainImageList.deleteImage" />")) {/* 삭제하겠습니까? */
+        if(confirm("<spring:message code="uss.ion.msi.mainImageList.deleteImage" />")) {/* 삭제 하시겠습니까? */
             document.listForm.action = "<c:url value='/uss/ion/msi/removeMainImageList.do'/>";
             document.listForm.submit();
         }

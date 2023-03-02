@@ -51,9 +51,9 @@ public class CntcSttusDAO extends EgovComAbstractDAO {
     }
 
     /**
-	 * 연계현황 총 갯수를 조회한다.
+	 * 연계현황 총 개수를 조회한다.
      * @param searchVO
-     * @return int(연계현황 총 갯수)
+     * @return int(연계현황 총 개수)
      */
     public int selectCntcSttusListTotCnt(CntcSttusVO searchVO) throws Exception {
         return (Integer)selectOne("CntcSttusDAO.selectCntcSttusListTotCnt", searchVO);

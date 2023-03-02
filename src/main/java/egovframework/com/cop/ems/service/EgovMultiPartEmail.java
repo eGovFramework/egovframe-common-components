@@ -21,6 +21,7 @@ import org.apache.commons.mail.MultiPartEmail;
  *  ----------     --------    ---------------------------
  *  2011.12.06		이기하          최초 생성
  *  2013.05.23		이기하          thread-safe 하게 변경
+ *  2022.11.11      김혜준          시큐어코딩 처리
  *
  *  </pre>
  */
@@ -91,6 +92,8 @@ public class EgovMultiPartEmail implements Serializable {
 		email.setHostName(this.host);
 		email.setSmtpPort(this.port);
 		email.setStartTLSEnabled(true);
+		// 2022.11.11 시큐어코딩 처리
+		email.setSSLCheckServerIdentity(true);
 		email.setAuthenticator(new DefaultAuthenticator(this.id, this.password));
 		email.setSocketConnectionTimeout(60000);
 		email.setSocketTimeout(60000);
@@ -110,6 +113,8 @@ public class EgovMultiPartEmail implements Serializable {
 		email.setHostName(this.host);
 		email.setSmtpPort(this.port);
 		email.setStartTLSEnabled(true);
+		// 2022.11.11 시큐어코딩 처리
+		email.setSSLCheckServerIdentity(true);
 		email.setAuthenticator(new DefaultAuthenticator(this.id, this.password));
 		email.setSocketConnectionTimeout(60000);
 		email.setSocketTimeout(60000);

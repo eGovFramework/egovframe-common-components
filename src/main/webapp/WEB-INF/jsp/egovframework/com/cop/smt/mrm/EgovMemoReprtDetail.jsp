@@ -23,6 +23,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -138,7 +139,7 @@
 			<th><spring:message code="comCopSmtMrm.memoReprtRegist.attachFile"/><span class="pilsu">*</span></th><!--  파일첨부-->
 			<td class="left">
 			    <c:import charEncoding="utf-8" url="/cmm/fms/selectFileInfs.do" >
-				<c:param name="param_atchFileId" value="${memoReprt.atchFileId}" />
+				<c:param name="param_atchFileId" value="${egovc:encrypt(memoReprt.atchFileId)}" />
 				</c:import>
 			</td>
 		</tr>

@@ -45,7 +45,7 @@ public class BoardVO extends Board implements Serializable {
     /** 현재페이지 */
     private int pageIndex = 1;
 
-    /** 페이지갯수 */
+    /** 페이지개수 */
     private int pageUnit = 10;
 
     /** 페이지사이즈 */
@@ -105,7 +105,7 @@ public class BoardVO extends Board implements Serializable {
     /** 하위 페이지 인덱스 (댓글 및 만족도 조사 여부 확인용) */
     private String subPageIndex = "";
 
-    /** 게시글 댓글갯수 */
+    /** 게시글 댓글개수 */
     private String commentCo = "";
     
     /** 볼드체 여부 */

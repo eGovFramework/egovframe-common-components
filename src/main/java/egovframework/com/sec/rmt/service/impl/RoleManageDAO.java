@@ -75,7 +75,7 @@ public class RoleManageDAO extends EgovComAbstractDAO {
 	}
 	
     /**
-	 * 롤목록 총 갯수를 조회한다.
+	 * 롤목록 총 개수를 조회한다.
 	 * @param roleManageVO RoleManageVO
 	 * @return int
 	 * @exception Exception

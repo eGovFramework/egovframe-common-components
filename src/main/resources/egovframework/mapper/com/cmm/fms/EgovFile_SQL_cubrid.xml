@@ -117,12 +117,12 @@
 			AND 
 				a.USE_AT = 'Y'
  		
-			<if test="searchCnd == 'streFileNm'">AND
-					b.STRE_FILE_NM LIKE '%' || #{searchWrd} || '%' 		
+			<if test="searchCondition == 'streFileNm'">AND
+					b.STRE_FILE_NM LIKE '%' || #{searchKeyword} || '%' 		
 			</if>
-			<if test="searchCnd == 'orignlFileNm'">AND
-					b.ORIGNL_FILE_NM LIKE '%' || #{searchWrd} || '%' 		
-			</if>	
+			<if test="searchCondition == 'orignlFileNm'">AND
+					b.ORIGNL_FILE_NM LIKE '%' || #{searchKeyword} || '%' 		
+			</if>		
 					
 			ORDER BY a.ATCH_FILE_ID, b.FILE_SN	
 			) TB ) Z WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
@@ -140,11 +140,11 @@
 			AND 
 				a.USE_AT = 'Y'				
  		
-			<if test="searchCnd == 'streFileNm'">AND
-					b.STRE_FILE_NM LIKE '%' || #{searchWrd} || '%' 		
+			<if test="searchCondition == 'streFileNm'">AND
+					b.STRE_FILE_NM LIKE '%' || #{searchKeyword} || '%' 		
 			</if>
-			<if test="searchCnd == 'orignlFileNm'">AND
-					b.ORIGNL_FILE_NM LIKE '%' || #{searchWrd} || '%' 		
+			<if test="searchCondition == 'orignlFileNm'">AND
+					b.ORIGNL_FILE_NM LIKE '%' || #{searchKeyword} || '%' 		
 			</if>	 		
  	</select>
  	

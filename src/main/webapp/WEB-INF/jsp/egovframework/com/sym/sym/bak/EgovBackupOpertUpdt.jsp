@@ -32,6 +32,7 @@
 <validator:javascript formName="backupOpert" staticJavascript="false" xhtml="true" cdata="false"/>
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/utl/EgovCmmUtl.js' />"></script>
 <script type="text/javaScript" language="javascript">
 
 /* ********************************************************
@@ -135,7 +136,7 @@ function fn_egov_save(){
              return ;
         }
 
-        // 2월 29일도 입력가능하도록 윤년인 해를 년도값으로 사용
+        // 2월 29일도 입력가능하도록 윤년인 해를 연도값으로 사용
         if (!checkDate('0400', varForm.executSchdulMonth.value, varForm.executSchdulDay.value, "<spring:message code="comSymSymBak.backupOpertUpdt.validate.checkDate"/>"))  { //실행스케줄 (월/일)이 유효하지 않습니다.
              return ;
         }

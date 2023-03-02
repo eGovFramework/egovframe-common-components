@@ -6,15 +6,15 @@
 	<select id="selectMainMenuHead" parameterType="egovframework.com.sym.mnu.mpm.service.MenuManageVO" resultType="egovMap">
 		 
             SELECT
-			      B.MENU_NO AS menuNo
-				, B.MENU_ORDR AS menuOrdr
-				, B.MENU_NM AS menuNm
-				, B.UPPER_MENU_NO AS upperMenuId
-				, B.MENU_DC AS menuDc
-				, B.RELATE_IMAGE_PATH AS relateImagePath
-				, B.RELATE_IMAGE_NM AS relateImageNm
-				, B.PROGRM_FILE_NM AS progrmFileNm
-				, (SELECT C.URL FROM COMTNPROGRMLIST C WHERE B.PROGRM_FILE_NM = C.PROGRM_FILE_NM) AS chkURL
+			      B.MENU_NO           AS MENU_NO
+				, B.MENU_ORDR         AS MENU_ORDR
+				, B.MENU_NM           AS MENU_NM
+				, B.UPPER_MENU_NO     AS UPPER_MENU_ID
+				, B.MENU_DC           AS MENU_DC
+				, B.RELATE_IMAGE_PATH AS RELATE_IMAGE_PATH
+				, B.RELATE_IMAGE_NM   AS RELATE_IMAGE_NM
+				, B.PROGRM_FILE_NM    AS PROGRM_FILE_NM
+				, (SELECT C.URL FROM COMTNPROGRMLIST C WHERE B.PROGRM_FILE_NM = C.PROGRM_FILE_NM) AS CHK_URL
 			FROM COMTNMENUCREATDTLS A, COMTNMENUINFO B 
 			WHERE  B.Menu_NO > 0 
 			AND    B.UPPER_MENU_NO = 0  
@@ -28,13 +28,13 @@
 	<select id="selectMainMenuLeft" parameterType="egovframework.com.sym.mnu.mpm.service.MenuManageVO" resultType="egovMap">
 		 
 			SELECT
-			       B.MENU_NO AS menuNo
-				 , B.MENU_ORDR AS menuOrdr
-				 , B.MENU_NM AS menuNm
-				 , B.UPPER_MENU_NO AS upperMenuId
-				 , B.RELATE_IMAGE_PATH AS relateImagePath
-				 , B.RELATE_IMAGE_NM AS relateImageNm
-				 , (SELECT C.URL FROM COMTNPROGRMLIST C WHERE B.PROGRM_FILE_NM = C.PROGRM_FILE_NM) AS chkURL	
+			       B.MENU_NO           AS MENU_NO
+				 , B.MENU_ORDR         AS MENU_ORDR
+				 , B.MENU_NM           AS MENU_NM
+				 , B.UPPER_MENU_NO     AS UPPER_MENU_ID
+				 , B.RELATE_IMAGE_PATH AS RELATE_IMAGE_PATH
+				 , B.RELATE_IMAGE_NM   AS RELATE_IMAGE_NM
+				 , (SELECT C.URL FROM COMTNPROGRMLIST C WHERE B.PROGRM_FILE_NM = C.PROGRM_FILE_NM) AS CHK_URL	
 			FROM   COMTNMENUCREATDTLS A, COMTNMENUINFO B
 			WHERE  A.MENU_NO  = B.MENU_NO 
 			AND    A.AUTHOR_CODE = (SELECT AUTHOR_CODE from COMTNEMPLYRSCRTYESTBS

@@ -46,9 +46,9 @@ public interface EgovAdministCodeRecptnService {
 	List<?> selectAdministCodeRecptnList(AdministCodeRecptnVO searchVO) throws Exception;
 
     /**
-	 * 법정동코드수신 총 갯수를 조회한다.
+	 * 법정동코드수신 총 개수를 조회한다.
      * @param searchVO
-     * @return int(법정동코드 총 갯수)
+     * @return int(법정동코드 총 개수)
      */
     int selectAdministCodeRecptnListTotCnt(AdministCodeRecptnVO searchVO) throws Exception;
 
@@ -61,9 +61,9 @@ public interface EgovAdministCodeRecptnService {
 	List<?> selectAdministCodeList(AdministCodeRecptnVO searchVO) throws Exception;
 
     /**
-	 * 법정동코드 총 갯수를 조회한다.
+	 * 법정동코드 총 개수를 조회한다.
      * @param searchVO
-     * @return int(법정동코드 총 갯수)
+     * @return int(법정동코드 총 개수)
      */
     int selectAdministCodeListTotCnt(AdministCodeRecptnVO searchVO) throws Exception;
 }

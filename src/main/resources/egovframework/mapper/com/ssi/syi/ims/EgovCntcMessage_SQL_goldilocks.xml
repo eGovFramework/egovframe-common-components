@@ -1,0 +1,235 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="CntcMessageDAO">
+
+    <select id="selectCntcMessageList" parameterType="egovframework.com.ssi.syi.ims.service.CntcMessageVO" resultType="egovMap">
+        
+            SELECT  *
+              FROM  (
+            SELECT ROWNUM RNUM, ALL_LIST.*
+              FROM  (
+        
+        /* 구현 Sql */
+        
+            SELECT  CNTC_MSSAGE_ID			CNTC_MESSAGE_ID
+                 ,  CNTC_MSSAGE_NM			CNTC_MESSAGE_NM
+                 ,  UPPER_CNTC_MSSAGE_ID	UPPER_CNTC_MESSAGE_ID
+              FROM  COMTNCNTCMESSAGE
+             WHERE  USE_AT = 'Y'
+        
+        <if test='searchCondition == "1"'>AND
+            
+            	CNTC_MSSAGE_NM LIKE '%' || #{searchKeyword} || '%'
+           	
+        </if>
+        <if test="searchCondition == 'CodeList'">AND
+            1 = 1
+        </if>
+        /* 구현 Sql */
+        <![CDATA[
+                    ) ALL_LIST
+                    )
+             WHERE  RNUM  > #{firstIndex}
+               AND  RNUM <= #{firstIndex} + #{recordCountPerPage}
+        ]]>
+    </select>
+
+    <select id="selectCntcMessageListTotCnt" parameterType="egovframework.com.ssi.syi.ims.service.CntcMessageVO" resultType="int">
+        
+            SELECT  COUNT(*) totcnt
+              FROM  COMTNCNTCMESSAGE
+             WHERE  USE_AT = 'Y'
+        
+        <if test='searchCondition == "1"'>AND
+            
+            	CNTC_MSSAGE_NM LIKE '%' || #{searchKeyword} || '%'
+           	
+        </if>
+        <if test="searchCondition == 'CodeList'">AND
+            1 = 1
+        </if>
+    </select>
+
+    <select id="selectCntcMessageItemList" parameterType="egovframework.com.ssi.syi.ims.service.CntcMessageItemVO" resultType="egovMap">
+        
+            SELECT  *
+              FROM  (
+            SELECT ROWNUM RNUM, ALL_LIST.*
+              FROM  (
+        
+        /* 구현 Sql */
+        
+            SELECT  CNTC_MSSAGE_ID			CNTC_MESSAGE_ID
+                 ,  IEM_ID					ITEM_ID
+                 ,  IEM_NM					ITEM_NM
+                 ,  IEM_TY					ITEM_TYPE
+                 ,  IEM_LT					ITEM_LT
+              FROM  COMTNCNTCMESSAGEITEM
+             WHERE  USE_AT = 'Y'
+        
+        <if test='searchCondition == "1"'>AND
+            
+            	IEM_NM LIKE '%' || #{searchKeyword} || '%'
+           	
+        </if>
+        <if test="searchCondition == 'CodeList'">AND
+            
+            	CNTC_MSSAGE_ID = #{cntcMessageId}
+           	
+        </if>
+        /* 구현 Sql */
+        <![CDATA[
+                    ) ALL_LIST
+                    )
+             WHERE  RNUM  > #{firstIndex}
+               AND  RNUM <= #{firstIndex} + #{recordCountPerPage}
+        ]]>
+    </select>
+
+    <select id="selectCntcMessageItemListTotCnt" parameterType="egovframework.com.ssi.syi.ims.service.CntcMessageItemVO" resultType="int">
+        
+            SELECT  COUNT(*) totcnt
+              FROM  COMTNCNTCMESSAGEITEM
+             WHERE  USE_AT = 'Y'
+
+        
+        <if test='searchCondition == "1"'>AND
+            
+            	IEM_NM LIKE '%' || #{searchKeyword} || '%'
+           	
+        </if>
+        <if test="searchCondition == 'CodeList'">AND
+            
+            	IEM_ID = #{itemId}
+           	
+        </if>
+    </select>
+
+    <select id="selectCntcMessageDetail" parameterType="egovframework.com.ssi.syi.ims.service.CntcMessage" resultType="egovframework.com.ssi.syi.ims.service.CntcMessage">
+        
+            SELECT  CNTC_MSSAGE_ID      	cntcMessageId
+                 ,  CNTC_MSSAGE_NM      	cntcMessageNm
+                 ,  UPPER_CNTC_MSSAGE_ID  	upperCntcMessageId
+              FROM  COMTNCNTCMESSAGE
+             WHERE  CNTC_MSSAGE_ID = #{cntcMessageId}
+               AND  USE_AT          = 'Y'
+        
+    </select>
+
+    <select id="selectCntcMessageItemDetail" parameterType="egovframework.com.ssi.syi.ims.service.CntcMessageItem" resultType="egovframework.com.ssi.syi.ims.service.CntcMessageItem">
+        
+            SELECT  CNTC_MSSAGE_ID  	cntcMessageId
+                 ,  IEM_ID          	itemId
+                 ,  IEM_NM          	itemNm
+                 ,  IEM_TY        		itemType
+                 ,  IEM_LT          	itemLt
+              FROM  COMTNCNTCMESSAGEITEM
+             WHERE  CNTC_MSSAGE_ID = #{cntcMessageId}
+               AND  IEM_ID         = #{itemId}
+               AND  USE_AT          = 'Y'
+        
+    </select>
+
+    <insert id="insertCntcMessage">
+        
+            INSERT
+              INTO  COMTNCNTCMESSAGE
+                 (  CNTC_MSSAGE_ID
+                 ,  CNTC_MSSAGE_NM
+                 ,  UPPER_CNTC_MSSAGE_ID
+                 ,  USE_AT
+                 ,  FRST_REGISTER_ID
+                 ,  FRST_REGIST_PNTTM
+                 ,  LAST_UPDUSR_ID
+                 ,  LAST_UPDT_PNTTM
+                 )
+            VALUES
+                 (  #{cntcMessageId}
+                 ,  #{cntcMessageNm}
+                 ,  #{upperCntcMessageId}
+                 ,  'Y'
+                 ,  #{frstRegisterId}
+                 ,  sysdate
+                 ,  #{frstRegisterId}
+                 ,  sysdate
+                 )
+        
+    </insert>
+
+    <insert id="insertCntcMessageItem">
+        
+            INSERT
+              INTO  COMTNCNTCMESSAGEITEM
+                 (  CNTC_MSSAGE_ID
+                 ,  IEM_ID
+                 ,  IEM_NM
+                 ,  IEM_TY
+                 ,  IEM_LT
+                 ,  USE_AT
+                 ,  FRST_REGISTER_ID
+                 ,  FRST_REGIST_PNTTM
+                 ,  LAST_UPDUSR_ID
+                 ,  LAST_UPDT_PNTTM
+                 )
+            VALUES
+                 (  #{cntcMessageId}
+                 ,  #{itemId}
+                 ,  #{itemNm}
+                 ,  #{itemType}
+                 ,  #{itemLt}
+                 ,  'Y'
+                 ,  #{frstRegisterId}
+                 ,  sysdate
+                 ,  #{frstRegisterId}
+                 ,  sysdate
+                 )
+        
+    </insert>
+
+    <update id="updateCntcMessage">
+        
+            UPDATE  COMTNCNTCMESSAGE
+               SET  CNTC_MSSAGE_NM       = #{cntcMessageNm}
+                 ,  UPPER_CNTC_MSSAGE_ID = #{upperCntcMessageId}
+                 ,  LAST_UPDUSR_ID        = #{lastUpdusrId}
+                 ,  LAST_UPDT_PNTTM     = sysdate
+             WHERE  CNTC_MSSAGE_ID       = #{cntcMessageId}
+        
+    </update>
+
+    <update id="updateCntcMessageItem">
+        
+            UPDATE  COMTNCNTCMESSAGEITEM
+               SET  IEM_NM           = #{itemNm}
+                 ,  IEM_TY         = #{itemType}
+                 ,  IEM_LT           = #{itemLt}
+                 ,  LAST_UPDUSR_ID    = #{lastUpdusrId}
+                 ,  LAST_UPDT_PNTTM = sysdate
+             WHERE  CNTC_MSSAGE_ID   = #{cntcMessageId}
+               AND  IEM_ID           = #{itemId}
+        
+    </update>
+
+    <delete id="deleteCntcMessage">
+        
+            UPDATE  COMTNCNTCMESSAGE
+               SET  USE_AT            = 'N'
+                 ,  LAST_UPDUSR_ID    = #{lastUpdusrId}
+                 ,  LAST_UPDT_PNTTM = sysdate
+             WHERE  CNTC_MSSAGE_ID   = #{cntcMessageId}
+        
+    </delete>
+
+    <delete id="deleteCntcMessageItem">
+        
+            UPDATE  COMTNCNTCMESSAGEITEM
+               SET  USE_AT            = 'N'
+                 ,  LAST_UPDUSR_ID    = #{lastUpdusrId}
+                 ,  LAST_UPDT_PNTTM = sysdate
+             WHERE  CNTC_MSSAGE_ID   = #{cntcMessageId}
+               AND  IEM_ID           = #{itemId}
+        
+    </delete>
+
+</mapper>

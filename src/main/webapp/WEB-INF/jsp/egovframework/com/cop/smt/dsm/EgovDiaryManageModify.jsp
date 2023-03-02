@@ -25,6 +25,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <c:set var="pageTitle"><spring:message code="comCopSmtDsm.title"/></c:set>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 
@@ -123,7 +124,7 @@ function fn_egov_save_DiaryManage(form){
 				<div><form:errors path="partclrMatter" cssClass="error"/></div>
 			</td>
 		</tr>
-		<!-- 진척율 -->
+		<!-- 진척률 -->
 		<c:set var="title"><spring:message code="comCopSmtDsm.regist.diaryProcsPte"/></c:set>
 		<tr>
 			<th><label for="diaryProcsPte">${title}</label> <span class="pilsu">*</span></th>
@@ -138,7 +139,7 @@ function fn_egov_save_DiaryManage(form){
 				<th><spring:message code="comCopSmtDsm.regist.atchFileList"/></th><!-- 첨부파일목록 -->
 				<td>
 					<c:import url="/cmm/fms/selectFileInfsForUpdate.do" charEncoding="utf-8">
-						<c:param name="param_atchFileId" value="${diaryManageVO.atchFileId}" />
+						<c:param name="param_atchFileId" value="${egovc:encrypt(diaryManageVO.atchFileId)}" />
 					</c:import>
 				</td>
 			</tr>

@@ -115,7 +115,7 @@
 		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
 	
 	</select>
-	<!-- 받은편지함관리::목록조회_게시물 총갯수  -->
+	<!-- 받은편지함관리::목록조회_게시물 총개수  -->
 	<select id="selectNoteRecptnCnt" parameterType="comDefaultVO" resultType="int">
 	
 	SELECT 
@@ -158,7 +158,7 @@
 	 </if>
 	</select>
 	
-	<!-- 받은편지함관리::보낸편지함 갯수 조회  -->
+	<!-- 받은편지함관리::보낸편지함 개수 조회  -->
 	<select id="selectNoteTrnsmitRelationCnt" resultType="int">
 	SELECT 
 	COUNT(NOTE_ID) CNT
@@ -169,7 +169,7 @@
 	AND NOTE_TRNSMIT_ID=#{noteTrnsmitId}
 	</select>
 	
-	<!-- 받은편지함관리::받은편지함 갯수 조회  -->
+	<!-- 받은편지함관리::받은편지함 개수 조회  -->
 	<select id="selectNoteRecptnRelationCnt" resultType="int">
 	SELECT 
 	COUNT(NOTE_ID) CNT

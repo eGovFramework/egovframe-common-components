@@ -5,17 +5,17 @@
 
 	<select id="selectKnoPersonalList" parameterType="egovframework.com.dam.per.service.KnoPersonalVO" resultType="egovMap">
 		
-			SELECT C.ORGNZT_NM					"orgnztNm"
-			     ,  B.KNWLDG_TY_NM				"knoTypeNm"
-				 ,  A.KNWLDG_ID					"knoId"  		
-				 ,  A.KNWLDG_NM					"knoNm"
-				 ,  D.USER_NM        			"userNm"  
-                 ,  A.COLCT_DE
-                 ,  A.OTHBC_AT					"othbcAt"
-			     ,	A.FRST_REGISTER_ID			"frstRegisterId"
-			     ,	A.FRST_REGIST_PNTTM		    FRST_REGISTER_PNTTM
-			     ,  A.LAST_UPDUSR_ID			"lastUpdusrId"
-			     ,	A.LAST_UPDT_PNTTM			"lastUpdusrPnttm"
+			SELECT C.ORGNZT_NM					ORGNZT_NM
+			     ,  B.KNWLDG_TY_NM				KNO_TYPE_NM
+				 ,  A.KNWLDG_ID					KNO_ID
+				 ,  A.KNWLDG_NM					KNO_NM
+				 ,  D.USER_NM        			USER_NM
+                 ,  TO_CHAR(TO_DATE(A.COLCT_DE,'YYYYmmdd'),'YYYY-mm-dd')	COL_YMD
+                 ,  A.OTHBC_AT					OTHBC_AT
+			     ,	A.FRST_REGISTER_ID			FRST_REGISTER_ID
+			     ,	A.FRST_REGIST_PNTTM		    FRST_REGIST_PNTTM
+			     ,  A.LAST_UPDUSR_ID			LAST_UPDUSR_ID
+			     ,	A.LAST_UPDT_PNTTM			LAST_UPDUSR_PNTTM
 			FROM  COMTNDAMKNOIFM A, COMTNDAMMAPKNO B, COMTNDAMMAPTEAM C, COMVNUSERMASTER D
 			WHERE C.ORGNZT_ID = B.ORGNZT_ID
 			AND   A.KNWLDG_TY_CODE = B.KNWLDG_TY_CODE
@@ -61,7 +61,7 @@
                  ,  A.OTHBC_AT							othbcAt
                  ,  TRIM(A.ATCH_FILE_ID)				atchFileId
 			     ,	A.FRST_REGISTER_ID					frstRegisterId
-			     ,	A.FRST_REGIST_PNTTM				     FRST_REGISTER_PNTTM
+			     ,	A.FRST_REGIST_PNTTM					FRST_REGIST_PNTTM
 			     ,  A.LAST_UPDUSR_ID					lastUpdusrId
 			     ,	A.LAST_UPDT_PNTTM					lastUpdusrPnttm			     
 			FROM  COMTNDAMKNOIFM A, COMTNDAMMAPKNO B, COMTNDAMMAPTEAM C

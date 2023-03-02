@@ -265,16 +265,7 @@ public class DefaultItemWriter<T> implements ItemStreamWriter<T> {
 			((EgovJdbcBatchItemWriter<T>)this.writer).setSql(this.sql);
 			((EgovJdbcBatchItemWriter<T>)this.writer).setItemPreparedStatementSetter(preparedStatementSetter);
 			((EgovJdbcBatchItemWriter<T>)this.writer).setAssertUpdates(true);
-
-			try {
-				((EgovJdbcBatchItemWriter<T>)this.writer).afterPropertiesSet();
-			} catch (RuntimeException e) {//2022.01 "Exception" should not be caught when not required by called methods
-				throw new RuntimeException(
-					this.writerResourceType + " 타입의 File을 write 하기 위한 FlatFileItemWriter 생성에 실패 하였습니다.");
-			} catch (Exception e) {
-				throw new RuntimeException(
-					this.writerResourceType + " 타입의 File을 write 하기 위한 FlatFileItemWriter 생성에 실패 하였습니다.");
-			}
+			((EgovJdbcBatchItemWriter<T>)this.writer).afterPropertiesSet();
 		}
 
 		printXmlConfig();

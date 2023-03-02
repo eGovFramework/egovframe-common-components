@@ -24,6 +24,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <c:set var="pageTitle"><spring:message code="comCopSmtDsm.title"/></c:set>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 
@@ -121,7 +122,7 @@ function fn_egov_delete_DiaryManage(frm){
 				<c:out value="${fn:replace(diaryManageVO.partclrMatter , crlf , '<br/>')}" escapeXml="false" />
 			</td>
 		</tr>
-		<!-- 진척율 -->
+		<!-- 진척률 -->
 		<c:set var="title"><spring:message code="comCopSmtSam.regist.diaryProcsPte"/></c:set>
 		<tr>
 			<th><label for="diaryProcsPte">${title}</label> <span class="pilsu">*</span></th>
@@ -135,7 +136,7 @@ function fn_egov_delete_DiaryManage(frm){
 			<th><label for="infoProvdAgreCn">${title}</label> </th>
 			<td class="nopd">
 				<c:import charEncoding="utf-8" url="/cmm/fms/selectFileInfs.do" >
-				<c:param name="param_atchFileId" value="${diaryManageVO.atchFileId}" />
+				<c:param name="param_atchFileId" value="${egovc:encrypt(diaryManageVO.atchFileId)}" />
 				</c:import>   	    			
    	    	</td>
 		</tr>

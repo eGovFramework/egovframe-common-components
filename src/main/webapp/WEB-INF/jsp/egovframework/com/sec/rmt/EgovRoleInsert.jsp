@@ -124,7 +124,7 @@ function fncRoleDelete() {
 		<!-- 롤 설명 -->
 		<c:set var="title"><spring:message code="comCopSecRam.regist.rollDc" /></c:set>
 		<tr>
-			<th>${title} <span class="pilsu">*</span></th>
+			<th>${title} </th>
 			<td class="left">
 			    <form:textarea path="roleDc" title="${title} ${inputTxt}" cols="300" rows="10" />   
 				<div><form:errors path="roleDc" cssClass="error" /></div> 
@@ -133,7 +133,7 @@ function fncRoleDelete() {
 		<!-- 롤 타입 -->
 		<c:set var="title"><spring:message code="comCopSecRam.regist.rollType" /></c:set>
 		<tr>
-			<th>${title} <span class="pilsu">*</span></th>
+			<th>${title} </th>
 			<td class="left">
 				<form:select path="roleTyp">
 					<form:options items="${cmmCodeDetailList}" itemValue="code" itemLabel="codeNm"/>

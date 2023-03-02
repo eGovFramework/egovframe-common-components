@@ -2,7 +2,6 @@ package egovframework.com.sym.log.slg.web;
 
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.LoginVO;

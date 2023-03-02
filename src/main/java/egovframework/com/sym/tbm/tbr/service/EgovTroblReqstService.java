@@ -23,7 +23,7 @@ public interface EgovTroblReqstService {
 	public List<TroblReqstVO> selectTroblReqstList(TroblReqstVO troblReqstVO) throws Exception;
 
 	/**
-	 * 장애요청목록 총 갯수를 조회한다.
+	 * 장애요청목록 총 개수를 조회한다.
 	 * @param troblReqstVO - 장애신청 Vo
 	 * @return int - 장애요청 카운트 수
 	 */

@@ -26,7 +26,7 @@ public interface EgovBannerService {
 	public List<BannerVO> selectBannerList(BannerVO bannerVO) throws Exception;
 
 	/**
-	 * 배너목록 총 갯수를 조회한다.
+	 * 배너목록 총 개수를 조회한다.
 	 * @param bannerVO - 배너 Vo
 	 * @return int - 배너 카운트 수
 	 * 

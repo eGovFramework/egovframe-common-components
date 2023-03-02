@@ -5,6 +5,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <%
  /**
   * @Class Name : EgovSysHistInqire.jsp
@@ -92,7 +93,7 @@ function fn_egov_select_sysHist(){
 			<th><spring:message code="comSymLogSlg.sysHistInqire.atchFileList"/></th><!-- 첨부파일목록 -->
 			<td class="left">
 			    <c:import url="/cmm/fms/selectFileInfs.do" charEncoding="utf-8">
-					<c:param name="param_atchFileId" value="${result.atchFileId}" />
+					<c:param name="param_atchFileId" value="${egovc:encrypt(result.atchFileId)}" />
 				</c:import>
 			</td>
 		</tr>

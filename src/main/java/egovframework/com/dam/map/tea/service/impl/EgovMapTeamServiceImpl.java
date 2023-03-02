@@ -42,7 +42,7 @@ public class EgovMapTeamServiceImpl extends EgovAbstractServiceImpl implements E
 	}
 
 	/**
-	 * 지식맵(조직별) 목록 총 갯수를 조회한다.
+	 * 지식맵(조직별) 목록 총 개수를 조회한다.
 	 * @param MapTeamVO - 지식맵(조직별) Vo
 	 * @return int - 지식맵(조직별) 토탈 카운트 수
 	 *

@@ -62,7 +62,7 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 	}
 
 	/**
-	 * 휴가관리목록 총 갯수를 조회한다.
+	 * 휴가관리목록 총 개수를 조회한다.
 	 * @param vcatnManageVO - 휴가관리 VO
 	 * @return int - 휴가관리 카운트 수
 	 */
@@ -130,12 +130,12 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 		//InfrmlSanctn infrmlSanctn = infrmlSanctnService.insertInfrmlSanctn("003", vcatnManage);
 		vcatnManage.setInfrmlSanctnId(infrmlSanctn.getInfrmlSanctnId());
 		VcatnManageVO vcatnManageVO1 = selectIndvdlYrycManage(uniqId);
-		double iUseYrycCo = vcatnManageVO1.getUseYrycCo(); //연차테이블의 사용 연차갯수
-		double iRemndrYrycCo = vcatnManageVO1.getRemndrYrycCo(); //연차테이블의 잔여 연차갯수
+		double iUseYrycCo = vcatnManageVO1.getUseYrycCo(); //연차테이블의 사용 연차개수
+		double iRemndrYrycCo = vcatnManageVO1.getRemndrYrycCo(); //연차테이블의 잔여 연차개수
 		double iCountYryc = 0.0;
 
 		/*
-		 * 시작일자 와 종료일자 사이의 일자 갯수 - 공휴일 or 주말 제외
+		 * 시작일자 와 종료일자 사이의 일자 개수 - 공휴일 or 주말 제외
 		 */
 		// 휴가구분이 연차인 경우
 		if ("01".equals(vcatnManage.getVcatnSe())) {
@@ -264,11 +264,11 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 
 		// 개인연차조회
 		VcatnManageVO vcatnManageVO1 = selectIndvdlYrycManage(vcatnManage.getApplcntId());
-		double iUseYrycCo = vcatnManageVO1.getUseYrycCo(); //연차테이블의 사용 연차갯수
-		double iRemndrYrycCo = vcatnManageVO1.getRemndrYrycCo(); //연차테이블의 잔여 연차갯수
+		double iUseYrycCo = vcatnManageVO1.getUseYrycCo(); //연차테이블의 사용 연차개수
+		double iRemndrYrycCo = vcatnManageVO1.getRemndrYrycCo(); //연차테이블의 잔여 연차개수
 		double iCountYryc = 0.0;
 		/*
-		 * 시작일자 와 종료일자 사이의 일자 갯수 - 공휴일 or 주말 제외
+		 * 시작일자 와 종료일자 사이의 일자 개수 - 공휴일 or 주말 제외
 		 */
 		// 휴가구분이 연차인 경우
 		if ("01".equals(vcatnManage.getVcatnSe())) {
@@ -335,7 +335,7 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 	}
 
 	/**
-	 * 휴가관리정보 승인 처리를 위해 신청된 휴가관리 목록 총 갯수를 조회한다.
+	 * 휴가관리정보 승인 처리를 위해 신청된 휴가관리 목록 총 개수를 조회한다.
 	 * @param vcatnManageVO - 휴가관리 VO
 	 * @return int - 휴가관리 카운트 수
 	 */
@@ -378,12 +378,12 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 			// 연차 반환처리
 			// 개인연차조회
 			VcatnManageVO vcatnManageVO1 = selectIndvdlYrycManage(vcatnManage.getApplcntId());
-			double iUseYrycCo = vcatnManageVO1.getUseYrycCo(); //연차테이블의 사용 연차갯수
-			double iRemndrYrycCo = vcatnManageVO1.getRemndrYrycCo(); //연차테이블의 잔여 연차갯수
+			double iUseYrycCo = vcatnManageVO1.getUseYrycCo(); //연차테이블의 사용 연차개수
+			double iRemndrYrycCo = vcatnManageVO1.getRemndrYrycCo(); //연차테이블의 잔여 연차개수
 			double iCountYryc = 0.0;
 
 			/*
-			 * 시작일자 와 종료일자 사이의 일자 갯수 - 공휴일 or 주말 제외
+			 * 시작일자 와 종료일자 사이의 일자 개수 - 공휴일 or 주말 제외
 			 */
 			// 휴가구분이 연차인 경우
 			if ("01".equals(vcatnManage.getVcatnSe())) {

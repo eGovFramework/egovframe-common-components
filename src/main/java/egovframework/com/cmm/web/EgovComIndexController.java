@@ -26,7 +26,7 @@ package egovframework.com.cmm.web;
  *  2011.09.26     이기하		header, footer 페이지 생성
  *  2019.12.04   신용호            KISA 보안코드 점검 : Map<Integer, IncludedCompInfoVO> map를 지역변수로 수정
  *  2020.07.08   신용호           비밀번호를 수정한후 경과한 날짜 조회
- *  2020.08.28   정진호            표준프레임워크 v3.10 개선
+ *  2020.08.28   정진오            표준프레임워크 v3.10 개선
  * </pre>
  */
 
@@ -38,10 +38,8 @@ import javax.annotation.Resource;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.BeansException;
-import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -54,21 +52,12 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uat.uia.service.EgovLoginService;
 
 @Controller
-public class EgovComIndexController implements ApplicationContextAware, InitializingBean {
+public class EgovComIndexController {
 
+	@Autowired
 	private ApplicationContext applicationContext;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovComIndexController.class);
-
-	@Override
-	public void afterPropertiesSet() throws Exception {}
-
-	@Override
-	public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
-		this.applicationContext = applicationContext;
-
-		LOGGER.info("EgovComIndexController setApplicationContext method has called!");
-	}
 
 	/** EgovLoginService */
 	@Resource(name = "loginService")
@@ -99,8 +88,6 @@ public class EgovComIndexController implements ApplicationContextAware, Initiali
 			expirePwdDay =  Integer.parseInt(propertyExpirePwdDay);
 		} catch (NumberFormatException Nfe) {
 			LOGGER.debug("convert expirePwdDay Err : "+Nfe.getMessage());
-		} catch (Exception e) {
-			LOGGER.debug("convert expirePwdDay Err : "+e.getMessage());
 		}
 
 		model.addAttribute("expirePwdDay", expirePwdDay);

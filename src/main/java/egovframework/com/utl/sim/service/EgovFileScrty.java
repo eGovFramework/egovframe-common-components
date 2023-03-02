@@ -25,9 +25,12 @@ import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.security.MessageDigest;
 
-import egovframework.com.cmm.util.EgovResourceCloseHelper;
-
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.FilenameUtils;
+
+import egovframework.com.cmm.EgovWebUtil;
+import egovframework.com.cmm.service.EgovProperties;
+import egovframework.com.cmm.util.EgovResourceCloseHelper;
 
 /**
  * @Class Name : EgovFileScrty.java
@@ -37,6 +40,7 @@ import org.apache.commons.codec.binary.Base64;
  *    수정일                 수정자              수정내용
  *    ----------    -------     -------------------
  *    2019.11.29	신용호		encryptPassword(String data) 삭제 : KISA 보안약점 조치 (비밀번호 해시함수 적용 시 솔트를 사용하여야 함)
+ *    2022.11.16	신용호        소스코드 보안 조치
  *    
  * @author 공통컴포넌트개발팀 한성곤
  * @since 2009.08.26
@@ -44,6 +48,7 @@ import org.apache.commons.codec.binary.Base64;
  */
 public class EgovFileScrty {
 
+	private static final String STORE_FILE_PATH = EgovProperties.getProperty("Globals.fileStorePath");
     // 파일구분자
     static final char FILE_SEPARATOR = File.separatorChar;
 
@@ -62,9 +67,7 @@ public class EgovFileScrty {
 		// 암호화 여부
 		boolean result = false;
 	
-		String sourceFile = source.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR);
-		String targetFile = target.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR);
-		File srcFile = new File(sourceFile);
+		File srcFile = new File(EgovWebUtil.filePathBlackList(STORE_FILE_PATH + FilenameUtils.getName(source)));
 	
 		BufferedInputStream input = null;
 		BufferedOutputStream output = null;
@@ -75,7 +78,7 @@ public class EgovFileScrty {
 		    if (srcFile.exists() && srcFile.isFile()) {
 	
 				input = new BufferedInputStream(new FileInputStream(srcFile));
-				output = new BufferedOutputStream(new FileOutputStream(targetFile));
+				output = new BufferedOutputStream(new FileOutputStream(EgovWebUtil.filePathBlackList(STORE_FILE_PATH + FilenameUtils.getName(target))));
 
 				int length = 0;
 				while ((length = input.read(buffer)) >= 0) {
@@ -106,9 +109,7 @@ public class EgovFileScrty {
 		// 복호화 여부
 		boolean result = false;
 	
-		String sourceFile = source.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR);
-		String targetFile = target.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR);
-		File srcFile = new File(sourceFile);
+		File srcFile = new File(EgovWebUtil.filePathBlackList(STORE_FILE_PATH + FilenameUtils.getName(source)));
 	
 		BufferedReader input = null;
 		BufferedOutputStream output = null;
@@ -120,7 +121,7 @@ public class EgovFileScrty {
 		    if (srcFile.exists() && srcFile.isFile()) {
 	
 			input = new BufferedReader(new InputStreamReader(new FileInputStream(srcFile)));
-			output = new BufferedOutputStream(new FileOutputStream(targetFile));
+			output = new BufferedOutputStream(new FileOutputStream(EgovWebUtil.filePathBlackList(STORE_FILE_PATH + FilenameUtils.getName(target))));
 	
 			while ((line = input.readLine()) != null) {
 			    byte[] data = line.getBytes();

@@ -226,7 +226,7 @@ WHERE MTG_ID=#{mtgId}
 	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
 	
 	</select>
-	<!-- 회의관리::목록조회_게시물 총갯수  -->
+	<!-- 회의관리::목록조회_게시물 총개수  -->
 	<select id="selectMeetingManageCnt" parameterType="comDefaultVO" resultType="int">
 		SELECT
 		COUNT(*) totcnt

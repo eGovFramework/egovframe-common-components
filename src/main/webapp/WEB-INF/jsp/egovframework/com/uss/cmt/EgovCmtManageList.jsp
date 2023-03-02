@@ -33,17 +33,6 @@
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <script type="text/javaScript" language="javascript">
-/* ********************************************************
- * 페이징 처리 함수
- ******************************************************** */
- /*설명 : 행사 목록 페이지 조회 */
- function linkPage(pageNo){
-	var varForm				 = document.all["listForm"];
-	varForm.searchCondition.value = "1";
-	varForm.pageIndex.value = pageNo;
-	varForm.action = "<c:url value='/uss/ion/vct/EgovVcatnManageList.do'/>";
-	varForm.submit();
- }
 
 /* ********************************************************
  * 조회 처리 
@@ -52,7 +41,7 @@
  function fncSelectCmtManageList(pageNo){
 	 var varForm				 = document.all["listForm"];
 	 //varForm.searchCondition.value = "1";
-	 varForm.pageIndex.value = pageNo;
+// 	 varForm.pageIndex.value = pageNo;
 	 varForm.action = "<c:url value='/uss/cmt/EgovCmtManageList.do'/>";
 	 varForm.submit();
  }
@@ -134,7 +123,7 @@ function fncShowMessg(){
 		</c:if>
 		<c:forEach var="cmtManage" items="${resultList}" varStatus="status">
 		<tr>
-			<td><c:out value="${cmtManage.wrktDt}"/></td>
+			<td><c:out value="${fn:substring(cmtManage.wrktDt, 0, 4)}"/>-<c:out value="${fn:substring(cmtManage.wrktDt, 4, 6)}"/>-<c:out value="${fn:substring(cmtManage.wrktDt, 6, 8)}"/></td>
 			<td><c:out value="${cmtManage.emplyrId}"/></td>
 			<td><c:out value="${cmtManage.wrkStartTime}"/></td>
 			<td><c:out value="${cmtManage.wrkEndTime}"/></td>  

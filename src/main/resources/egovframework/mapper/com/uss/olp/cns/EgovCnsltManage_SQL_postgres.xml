@@ -81,7 +81,7 @@
 			<if test="searchCondition == 'cnsltSj'">AND
 				CNSLT_SJ LIKE CONCAT('%', #{searchKeyword}, '%')
 			</if>
-			ORDER BY FRST_REGIST_PNTTM DESC
+			ORDER BY CNSLT_SJ DESC
 			LIMIT  #{recordCountPerPage} OFFSET #{firstIndex}
 	</select>
 

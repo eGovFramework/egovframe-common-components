@@ -25,10 +25,10 @@
 			A.SCHDUL_IPCR_CODE,
 			A.SCHDUL_CHARGER_ID,		
 			A.ATCH_FILE_ID,
-			DATE_FORMAT(A.FRST_REGIST_PNTTM, '%Y-%m-%d')	FRST_REGISTER_PNTTM,
+			DATE_FORMAT(A.FRST_REGIST_PNTTM, '%Y-%m-%d') AS FRST_REGISTER_PNTTM,
 			(SELECT USER_NM FROM COMTNEMPLYRINFO WHERE ESNTL_ID = A.FRST_REGISTER_ID) FRST_REGISTER_NM,
 			A.FRST_REGISTER_ID,
-			A.LAST_UPDT_PNTTM,
+			DATE_FORMAT(A.LAST_UPDT_PNTTM, '%Y-%m-%d') AS LAST_UPDT_PNTTM,
 			A.LAST_UPDUSR_ID,
 			A.REPTIT_SE_CODE 
 		FROM COMTNSCHDULINFO A
@@ -52,7 +52,7 @@
 	
 	</select>
 	
-	<!-- 전제일정::목록조회_게시물 총갯수  -->
+	<!-- 전제일정::목록조회_게시물 총개수  -->
 	<select id="selectIndvdlSchdulManageCnt" parameterType="comDefaultVO" resultType="int">
 		SELECT 
 		COUNT(*) totcnt

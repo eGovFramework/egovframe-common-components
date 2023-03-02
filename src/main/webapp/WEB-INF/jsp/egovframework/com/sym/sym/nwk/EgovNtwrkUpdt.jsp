@@ -128,11 +128,13 @@ function ipValidate(ipValue, ipName) {
             if (thisSegment > 255) {
                 alert(IPName+" : <spring:message code="comSymSymNwk.ntwrkUpdt.validate.ip.formatMismatch"/>"); //IP 형식이 일치 하지않습니다.
                 result = false;
+                break;
             }
 
             if ((i == 0) && (thisSegment > 255)) {
                 alert(IPName+" : <spring:message code="comSymSymNwk.ntwrkUpdt.validate.ip.formatMismatch"/>"); //IP 형식이 일치 하지않습니다.
                 result = false;
+                break;
             }
         }
     }

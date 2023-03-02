@@ -24,6 +24,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 <c:set var="pageTitle"><spring:message code="comCopSymEms.regist.title"/></c:set>
 <!DOCTYPE html>
@@ -120,7 +121,7 @@ function fnSelectXml(){
 		<th><spring:message code="comCopSymEms.inqire.atch" /></th>
 		<td class="left">
 		<c:import url="/cmm/fms/selectFileInfs.do" >
-			<c:param name="param_atchFileId" value="${resultInfo.atchFileId}" />
+			<c:param name="param_atchFileId" value="${egovc:encrypt(resultInfo.atchFileId)}" />
 		</c:import>&nbsp;
 		</td>
 	</tr>

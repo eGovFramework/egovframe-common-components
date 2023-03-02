@@ -48,7 +48,7 @@ int iNowDay = (Integer)request.getAttribute("day");
 
 
 java.util.Calendar cal = java.util.Calendar.getInstance();
-//년도/월 셋팅
+//연도/월 셋팅
 cal.set(iNowYear, iNowMonth, 1);
 
 int iEndDay = cal.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
@@ -160,9 +160,9 @@ int iEndDay = cal.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);
 		
 		<input class="btns" type="submit" value="<spring:message code="title.inquire" />" title="<spring:message code="title.inquire" />" onclick="fnEgovSchdulSelect(); return false;" style="margin-right:60px" />
 		
-		<a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulDailyList.do' />?year=<%=iNowYear-1%>&amp;month=<%=iNowMonth%>&amp;day=<%=iNowDay%>" style="vertical-align:3px"><img alt="이전년도" src="<c:url value='/images/egovframework/com/cmm/icon/icon_prev.png' />" /></a>
+		<a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulDailyList.do' />?year=<%=iNowYear-1%>&amp;month=<%=iNowMonth%>&amp;day=<%=iNowDay%>" style="vertical-align:3px"><img alt="이전연도" src="<c:url value='/images/egovframework/com/cmm/icon/icon_prev.png' />" /></a>
 		<span class="t1"><%=iNowYear%><spring:message code="comCopSmtLsm.leaderSchdulMonthList.year" /></span>
-		<a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulDailyList.do' />?year=<%=iNowYear+1%>&amp;month=<%=iNowMonth%>&amp;day=<%=iNowDay%>" style="margin-right:16px; vertical-align:3px"><img alt="다음년도" src="<c:url value='/images/egovframework/com/cmm/icon/icon_next.png' />" /></a>
+		<a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulDailyList.do' />?year=<%=iNowYear+1%>&amp;month=<%=iNowMonth%>&amp;day=<%=iNowDay%>" style="margin-right:16px; vertical-align:3px"><img alt="다음연도" src="<c:url value='/images/egovframework/com/cmm/icon/icon_next.png' />" /></a>
 		
 		<%if(iNowMonth > 0 ){ %>
 			<a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulDailyList.do' />?year=<%=iNowYear%>&amp;month=<%=iNowMonth-1%>&amp;day=<%=iNowDay%>" style="vertical-align:3px"><img alt="이전월" src="<c:url value='/images/egovframework/com/cmm/icon/icon_prev.png' />" /></a>

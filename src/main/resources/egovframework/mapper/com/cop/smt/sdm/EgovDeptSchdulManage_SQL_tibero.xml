@@ -272,7 +272,7 @@ order by A.SCHDUL_BGNDE , (1+(SUBSTR(A.SCHDUL_ENDDE,1, 8) - SUBSTR(A.SCHDUL_BGND
 		
 	</select>
 	
-	<!-- 부서일정정보::목록조회_게시물 총갯수  -->
+	<!-- 부서일정정보::목록조회_게시물 총개수  -->
 	<select id="selectDeptSchdulManageCnt" parameterType="comDefaultVO" resultType="int">
 		SELECT 
 		COUNT(*) totcnt

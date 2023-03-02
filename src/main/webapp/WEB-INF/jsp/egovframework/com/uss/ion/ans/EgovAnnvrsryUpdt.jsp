@@ -151,10 +151,10 @@ function fncUpdateAnnvrsry() {
 			<td class="left">
 				D-
 		        <select name="annvrsryBeginDe" title="<spring:message code="comUssIonAns.common.annvrsryBeginDe"/>"><!-- 알림시작일 -->
-			       	<option value="7" <c:if test='${annvrsryManageVO.annvrsryBeginDe == "7"}'>selected</c:if>><spring:message code="comUssIonAns.common.annvrsryBeginDe.7"/></option><!-- 일주일 -->
-			       	<option value="3" <c:if test='${annvrsryManageVO.annvrsryBeginDe == "3"}'>selected</c:if>><spring:message code="comUssIonAns.common.annvrsryBeginDe.3"/></option><!-- 3일 -->
-			       	<option value="2" <c:if test='${annvrsryManageVO.annvrsryBeginDe == "2"}'>selected</c:if>><spring:message code="comUssIonAns.common.annvrsryBeginDe.2"/></option><!-- 2일 -->
-			       	<option value="1" <c:if test='${annvrsryManageVO.annvrsryBeginDe == "1"}'>selected</c:if>><spring:message code="comUssIonAns.common.annvrsryBeginDe.1"/></option><!-- 1일 -->
+			       	<option value="7" <c:if test='${fn:substring(annvrsryManageVO.annvrsryBeginDe, 0, 1) eq "7"}'>selected</c:if>><spring:message code="comUssIonAns.common.annvrsryBeginDe.7"/></option><!-- 일주일 -->
+			       	<option value="3" <c:if test='${fn:substring(annvrsryManageVO.annvrsryBeginDe, 0, 1) eq "3"}'>selected</c:if>><spring:message code="comUssIonAns.common.annvrsryBeginDe.3"/></option><!-- 3일 -->
+			       	<option value="2" <c:if test='${fn:substring(annvrsryManageVO.annvrsryBeginDe, 0, 1) eq "2"}'>selected</c:if>><spring:message code="comUssIonAns.common.annvrsryBeginDe.2"/></option><!-- 2일 -->
+			       	<option value="1" <c:if test='${fn:substring(annvrsryManageVO.annvrsryBeginDe, 0, 1) eq "1"}'>selected</c:if>><spring:message code="comUssIonAns.common.annvrsryBeginDe.1"/></option><!-- 1일 -->
 		      	</select> <spring:message code="comUssIonAns.common.annvrsryBeginDe.alarm"/><!-- 전 부터 알림 -->
 			</td>
 			<th><spring:message code="comUssIonAns.common.annvrsryTemp5"/> <span class="pilsu">*</span></th><!-- 알림설정 -->

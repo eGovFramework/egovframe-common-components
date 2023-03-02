@@ -85,9 +85,9 @@ public class RdnmadZipDAO extends EgovComAbstractDAO {
     }
 
     /**
-	 * 우편번호 총 갯수를 조회한다.
+	 * 우편번호 총 개수를 조회한다.
      * @param searchVO
-     * @return int(우편번호 총 갯수)
+     * @return int(우편번호 총 개수)
      */
     public int selectZipListTotCnt(ZipVO searchVO) throws Exception {
         return (Integer)selectOne("RdnmadZipDAO.selectZipListTotCnt", searchVO);

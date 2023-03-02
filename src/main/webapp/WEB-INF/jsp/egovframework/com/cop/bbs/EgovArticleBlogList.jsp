@@ -254,7 +254,7 @@ $(document).ready(function() {
 			</table>
 			<form name="postCnt" method="post" onChange="$('#titleck').click();">
 				<div class="post_opt">
-					<label for="" class="blind"><spring:message code="comCopBlog.articleBlogList.setListNumbers" /></label><!-- 포스트 갯수 설정 -->
+					<label for="" class="blind"><spring:message code="comCopBlog.articleBlogList.setListNumbers" /></label><!-- 포스트 개수 설정 -->
 					<select name="searchCnd" id="searchCnd">
 						<option value="5"  <c:if test="${searchVO.searchCnd == '5'}">selected="selected"</c:if>><spring:message code="comCopBlog.articleBlogList.listNumber5" /></option><!-- 5줄 보기 -->
 						<option value="10" <c:if test="${searchVO.searchCnd == '10'}">selected="selected"</c:if>><spring:message code="comCopBlog.articleBlogList.listNumber10" /></option><!-- 10줄 보기 -->

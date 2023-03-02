@@ -3,7 +3,6 @@ package egovframework.com.sym.ccm.cde.service;
 import java.util.List;
 
 import egovframework.com.cmm.service.CmmnDetailCode;
-import egovframework.com.sym.ccm.cde.service.CmmnDetailCodeVO;
 
 /**
 *
@@ -25,9 +24,9 @@ import egovframework.com.sym.ccm.cde.service.CmmnDetailCodeVO;
 
 public interface EgovCcmCmmnDetailCodeManageService {
 	/**
-	 * 공통상세코드 총 갯수를 조회한다.
+	 * 공통상세코드 총 개수를 조회한다.
 	 * @param searchVO
-	 * @return int(공통상세코드 총 갯수)
+	 * @return int(공통상세코드 총 개수)
 	 */
 	int selectCmmnDetailCodeListTotCnt(CmmnDetailCodeVO searchVO) throws Exception;
 	

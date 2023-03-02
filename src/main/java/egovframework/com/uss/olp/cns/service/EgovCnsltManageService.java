@@ -46,9 +46,9 @@ public interface EgovCnsltManageService {
     List<?> selectCnsltList(CnsltManageDefaultVO searchVO) throws Exception;
 
     /**
-	 * 상담내용 글 총 갯수를 조회한다.
+	 * 상담내용 글 총 개수를 조회한다.
 	 * @param searchVO
-	 * @return 글 총 갯수
+	 * @return 글 총 개수
 	 */
     int selectCnsltListTotCnt(CnsltManageDefaultVO searchVO);
 
@@ -62,7 +62,7 @@ public interface EgovCnsltManageService {
     /**
 	 * 작성비밀번호를 확인한다.
 	 * @param searchVO
-	 * @return 글 총 갯수
+	 * @return 글 총 개수
 	 * @exception
 	 */
     int selectCnsltPasswordConfirmCnt(CnsltManageVO vo);
@@ -100,9 +100,9 @@ public interface EgovCnsltManageService {
     List<?> selectCnsltAnswerList(CnsltManageDefaultVO searchVO) throws Exception;
 
     /**
-	 * 상담답변 글 총 갯수를 조회한다.
+	 * 상담답변 글 총 개수를 조회한다.
 	 * @param searchVO
-	 * @return 글 총 갯수
+	 * @return 글 총 개수
 	 * @exception
 	 */
     int selectCnsltAnswerListTotCnt(CnsltManageDefaultVO searchVO);

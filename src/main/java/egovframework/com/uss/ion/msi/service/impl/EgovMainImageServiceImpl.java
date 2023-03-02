@@ -47,7 +47,7 @@ public class EgovMainImageServiceImpl extends EgovAbstractServiceImpl implements
 	}
 
 	/**
-	 * 메인화면이미지목록 총 갯수를 조회한다.
+	 * 메인화면이미지목록 총 개수를 조회한다.
 	 * @param mainImageVO - 메인이미지 VO
 	 * @return int - 메인이미지 카운트 수
 	 */

@@ -46,12 +46,13 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *   
  *   수정일      수정자           수정내용
  *  -------       --------    ---------------------------
- *   2009.3.12  이삼섭          최초 생성
- *   2009.06.26	한성곤		    2단계 기능 추가 (댓글관리, 만족도조사)
- *	 2011.07.21 안민정          커뮤니티 관련 메소드 분리 (->EgovBBSAttributeManageController)
- *	 2011.8.26	정진오			IncludedInfo annotation 추가
- *   2011.09.15 서준식           2단계 기능 추가 (댓글관리, 만족도조사) 적용방법 변경
- *   2016.06.13 김연호          표준프레임워크 v3.6 개선
+ *   2009.3.12   이삼섭      최초 생성
+ *   2009.06.26	 한성곤		 2단계 기능 추가 (댓글관리, 만족도조사)
+ *	 2011.07.21  안민정      커뮤니티 관련 메소드 분리 (->EgovBBSAttributeManageController)
+ *	 2011.8.26	 정진오		 IncludedInfo annotation 추가
+ *   2011.09.15  서준식      2단계 기능 추가 (댓글관리, 만족도조사) 적용방법 변경
+ *   2016.06.13  김연호      표준프레임워크 v3.6 개선
+ *   2022.11.11  김혜준      시큐어코딩 처리
  * </pre>
  */
 
@@ -216,7 +217,7 @@ public class EgovBBSMasterController {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
     	
 		boardMasterVO.setPageUnit(propertyService.getInt("pageUnit"));
@@ -306,7 +307,7 @@ public class EgovBBSMasterController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		
         if(!isAuthenticated) { //KISA 보안약점 조치 (2018-12-10, 신용호)
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 		
 		blogVO.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
@@ -334,18 +335,18 @@ public class EgovBBSMasterController {
 		blog.setBlogAt("Y");
 		egovBBSMasterService.insertBlogMaster(blog);
 		
-		if (isAuthenticated) {
-		    //블로그 개설자의 정보를 등록한다.
-		    BlogUserVO blogUserVO = new BlogUserVO();
-		    blogUserVO.setBlogId(blogId);
-		    blogUserVO.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-		    blogUserVO.setMngrAt("Y");
-		    blogUserVO.setMberSttus("P");
-		    blogUserVO.setUseAt("Y");
-		    blogUserVO.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-		    
-		    egovBBSMasterService.insertBoardBlogUserRqst(blogUserVO);
-		}
+	    // 블로그 개설자의 정보를 등록한다.
+		// 2022.11.11 시큐어코딩 처리
+		BlogUserVO blogUserVO = new BlogUserVO();
+	    blogUserVO.setBlogId(blogId);
+	    blogUserVO.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+	    blogUserVO.setMngrAt("Y");
+	    blogUserVO.setMberSttus("P");
+	    blogUserVO.setUseAt("Y");
+	    blogUserVO.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+	    
+	    egovBBSMasterService.insertBoardBlogUserRqst(blogUserVO);
+
 		return "forward:/cop/bbs/selectBlogList.do";
     }
 

@@ -30,20 +30,21 @@
 <title><spring:message code="comUssIonAns.annvrsryManageBndeListPop.title"/> </title><!-- 기념일일괄등록 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
+<script src="<c:url value='/js/egovframework/com/cmm/jquery-1.12.4.min.js' />"></script>
 <script type="text/javaScript" language="javascript">
 
 	/* ********************************************************
 	 * 등록 처리 함수 
 	 ******************************************************** */
 	function fncAnnvrsryManageBndeRegist(){
-		var varFrom = document.getElementById("listForm");
+		var varForm = document.getElementById("listForm");
 
-		var usid           = varFrom.usid;
-		var annvrsryDe     = varFrom.annvrsryDe;
-		var cldrSe         = varFrom.cldrSe;
-		var annvrsrySe     = varFrom.annvrsrySe;
-		var annvrsryNm     = varFrom.annvrsryNm;
-		var reptitSe       = varFrom.reptitSe;
+		var usid           = varForm.usid;
+		var annvrsryDe     = varForm.annvrsryDe;
+		var cldrSe         = varForm.cldrSe;
+		var annvrsrySe     = varForm.annvrsrySe;
+		var annvrsryNm     = varForm.annvrsryNm;
+		var reptitSe       = varForm.reptitSe;
    
 		var checkAnnvrsryManage = "";
 		var checkedCount     = 0;
@@ -57,11 +58,37 @@
 			checkAnnvrsryManage = usid.value+","+annvrsryDe.value+","+cldrSe.value+","+annvrsrySe.value+","+annvrsryNm.value+","+reptitSe.value;
 		}
 
-		varFrom.checkedAnnvrsryManageForInsert.value=checkAnnvrsryManage;
-		varFrom.action = "<c:url value='/uss/ion/ans/insertAnnvrsryManageBnde.do'/>";
+		varForm.checkedAnnvrsryManageForInsert.value=checkAnnvrsryManage;
+		varForm.action = "<c:url value='/uss/ion/ans/insertAnnvrsryManageBnde.do'/>";
+		
+		var formData = new FormData();
+		formData.append("searchCondition", varForm.searchCondition.value);
+		formData.append("checkedAnnvrsryManageForInsert", varForm.checkedAnnvrsryManageForInsert.value);
+		formData.append("searchKeyword", varForm.searchKeyword.value);
+		formData.append("cmd", varForm.cmd.value);
+		formData.append("usid", varForm.usid.value);
+		formData.append("annvrsryDe", varForm.annvrsryDe.value);
+		formData.append("cldrSe", varForm.cldrSe.value);
+		formData.append("annvrsrySe", varForm.annvrsrySe.value);
+		formData.append("annvrsryNm", varForm.annvrsryNm.value);
+		formData.append("reptitSe", varForm.reptitSe.value);
 
 		if(confirm("<spring:message code="common.save.msg" />")){/* 저장 하시겠습니까? */			
-			varFrom.submit();
+			$.ajax({
+				type : "post",
+				enctype : "multipart/form-data",
+				url : varForm.action,
+				data : formData,
+				processData : false,
+				contentType : false,
+				success : function(data) {
+					parent.window.fncPageReload();
+					self.close();
+				},
+				error : function(request, status, error) {
+					alert("등록 실패");
+				}
+			});
 		}
 	}
 
@@ -69,11 +96,11 @@
 	 * 엑셀체크 처리 함수 
 	 ******************************************************** */
 	function fncAnnvrsryManageBndeCheck(){
-	   var varFrom = document.getElementById("listForm");
+	   var varForm = document.getElementById("listForm");
 	   if(checkFile()){
-		   varFrom.action ="<c:url value='/uss/ion/ans/EgovAnnvrsryManageListPopAction.do'/>";
-		   varFrom.cmd.value = "bnde";
-		   varFrom.submit();
+		   varForm.action ="<c:url value='/uss/ion/ans/EgovAnnvrsryManageListPopAction.do'/>";
+		   varForm.cmd.value = "bnde";
+		   varForm.submit();
 	   }
 	}
 	

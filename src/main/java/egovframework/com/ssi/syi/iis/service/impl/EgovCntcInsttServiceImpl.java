@@ -127,7 +127,7 @@ public class EgovCntcInsttServiceImpl extends EgovAbstractServiceImpl implements
 	}
 
 	/**
-	 * 연계기관 총 갯수를 조회한다.
+	 * 연계기관 총 개수를 조회한다.
 	 */
 	@Override
 	public int selectCntcInsttListTotCnt(CntcInsttVO searchVO) throws Exception {
@@ -143,7 +143,7 @@ public class EgovCntcInsttServiceImpl extends EgovAbstractServiceImpl implements
 	}
 
 	/**
-	 * 연계시스템 총 갯수를 조회한다.
+	 * 연계시스템 총 개수를 조회한다.
 	 */
 	@Override
 	public int selectCntcSystemListTotCnt(CntcSystemVO searchVO) throws Exception {
@@ -159,7 +159,7 @@ public class EgovCntcInsttServiceImpl extends EgovAbstractServiceImpl implements
 	}
 
 	/**
-	 * 연계서비스 총 갯수를 조회한다.
+	 * 연계서비스 총 개수를 조회한다.
 	 */
 	@Override
 	public int selectCntcServiceListTotCnt(CntcServiceVO searchVO) throws Exception {

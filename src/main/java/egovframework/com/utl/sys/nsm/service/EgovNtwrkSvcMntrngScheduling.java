@@ -7,6 +7,7 @@ import java.util.Map;
 import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 
+import org.apache.commons.lang.StringUtils;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 import javax.annotation.Resource;
@@ -27,6 +28,14 @@ import org.springframework.stereotype.Service;
  * @author 장철호
  * @version 1.0
  * @created 28-6-2010 오전 11:33:43
+ * 
+ * <pre>
+ * << 개정이력(Modification Information) >>
+ *
+ *  수정일       수정자     수정내용
+ *  ----------   --------   ---------------------------
+ *  2022.11.11   김혜준     시큐어코딩 처리
+ * 
  */
 
 @Service("egovNtwrkSvcMntrngScheduling")
@@ -45,8 +54,6 @@ public class EgovNtwrkSvcMntrngScheduling extends EgovAbstractServiceImpl {
 
 	// 모니터링 대상을 읽기위한 페이지 크기
 	private static final int RECORD_COUNT_PER_PAGE = 10000;
-
-
 
 	/**
 	 * 네트워크 서비스 모니터링를 수행한다.
@@ -115,40 +122,45 @@ public class EgovNtwrkSvcMntrngScheduling extends EgovAbstractServiceImpl {
 	 * @return
 	 *
 	 */
-    private void sendEmail(NtwrkSvcMntrng target)
-    {
-    	String subject = null;
-    	String text = null;
-    	String errorContents = null;
+    private void sendEmail(NtwrkSvcMntrng target) {
+    	String subject = "";
+    	String text = "";
+    	String errorContents = "";
 
     	SimpleMailMessage msg = new SimpleMailMessage(this.mntrngMessage);
         // 수신자
         msg.setTo(target.getMngrEmailAddr());
         // 메일제목
         subject = msg.getSubject();
-        subject = EgovStringUtil.replace(subject, "{모니터링종류}", "네트워크서비스모니터링");
-        msg.setSubject(subject);
+		// 2022.11.11 시큐어코딩 처리
+		if (StringUtils.isNotEmpty(subject)) {
+			subject = EgovStringUtil.replace(subject, "{모니터링종류}", "네트워크서비스모니터링");
+	        msg.setSubject(subject);
+		}
         // 메일내용
         text = msg.getText();
-        text = EgovStringUtil.replace(text, "{모니터링종류}", "네트워크서비스모니터링");
-        errorContents = "서버명 : ";
-        errorContents += target.getSysNm();
-        errorContents += "\n";
-        errorContents += "서버IP : ";
-        errorContents += target.getSysIp();
-        errorContents += "\n";
-        errorContents += "서버포트 : ";
-        errorContents += target.getSysPort();
-        errorContents += "\n";
-        errorContents += "상태 : ";
-        errorContents += target.getMntrngSttus();
-        errorContents += "\n";
-        errorContents += "모니터링 시각 : ";
-        errorContents += EgovDateUtil.convertDate(target.getCreatDt(), "", "", "");
-        errorContents += "\n";
-        errorContents += target.getSysNm() + " 의 네트워크 서비스 상태가 비정상입니다. \n로그를 확인해주세요.";
-        text = EgovStringUtil.replace(text, "{에러내용}", errorContents);
-        msg.setText(text);
+        // 2022.11.11 시큐어코딩 처리
+     	if (StringUtils.isNotEmpty(text)) {
+	        text = EgovStringUtil.replace(text, "{모니터링종류}", "네트워크서비스모니터링");
+	        errorContents = "서버명 : ";
+	        errorContents += target.getSysNm();
+	        errorContents += "\n";
+	        errorContents += "서버IP : ";
+	        errorContents += target.getSysIp();
+	        errorContents += "\n";
+	        errorContents += "서버포트 : ";
+	        errorContents += target.getSysPort();
+	        errorContents += "\n";
+	        errorContents += "상태 : ";
+	        errorContents += target.getMntrngSttus();
+	        errorContents += "\n";
+	        errorContents += "모니터링 시각 : ";
+	        errorContents += EgovDateUtil.convertDate(target.getCreatDt(), "", "", "");
+	        errorContents += "\n";
+	        errorContents += target.getSysNm() + " 의 네트워크 서비스 상태가 비정상입니다. \n로그를 확인해주세요.";
+	        text = EgovStringUtil.replace(text, "{에러내용}", errorContents);
+	        msg.setText(text);
+     	}
 
         this.mntrngMailSender.send(msg);
     }

@@ -25,7 +25,7 @@ public interface EgovLoginScrinImageService {
 	public List<LoginScrinImageVO> selectLoginScrinImageList(LoginScrinImageVO loginScrinImageVO) throws Exception;
 
 	/**
-	 * 로그인화면이미지목록 총 갯수를 조회한다.
+	 * 로그인화면이미지목록 총 개수를 조회한다.
 	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 * @return int - 로그인화면이미지 카운트 수
 	 */

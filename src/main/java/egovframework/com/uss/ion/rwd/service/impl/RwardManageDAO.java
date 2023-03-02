@@ -35,7 +35,7 @@ public class RwardManageDAO extends EgovComAbstractDAO {
 	}
 
     /**
-	 * 포상관리목록 총 갯수를 조회한다.
+	 * 포상관리목록 총 개수를 조회한다.
 	 * @param rwardManageVO - 포상관리 VO
 	 * @return int
 	 * @exception Exception
@@ -88,7 +88,7 @@ public class RwardManageDAO extends EgovComAbstractDAO {
 	}
 
     /**
-	 * 포상관리정보 승인 처리를 위해 신청된 포상관리 목록 총 갯수를 조회한다.
+	 * 포상관리정보 승인 처리를 위해 신청된 포상관리 목록 총 개수를 조회한다.
 	 * @param rwardManageVO - 포상관리 VO
 	 * @return int
 	 * @exception Exception

@@ -23,6 +23,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 
 <c:set var="ImgUrl" value="/images/egovframework/com/cmm/"/>
 
@@ -101,7 +102,7 @@
 				<th><spring:message code="comDamApp.comDamAppraisalDetail.atchFileList"/></th><!-- 첨부파일 목록 -->
 				<td class="left">
 				    <c:import url="/cmm/fms/selectFileInfs.do" >
-						<c:param name="param_atchFileId" value="${result.atchFileId}" />
+						<c:param name="param_atchFileId" value="${egovc:encrypt(result.atchFileId)}" />
 					</c:import>
 				</td>
 			</tr>

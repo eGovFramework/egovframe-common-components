@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.NoSuchBeanDefinitionException;
 import org.springframework.context.ApplicationContext;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import egovframework.com.cmm.LoginVO;
@@ -56,7 +57,8 @@ public class EgovSSOLoginFilter implements Filter {
 		EgovSSOService egovSSOService = null;
 		try {
 			egovSSOService = (EgovSSOService)act.getBean("egovSSOService");
-			if (egovSSOService == null) {
+			// 221116	김혜준	2022 시큐어코딩 조치
+			if (ObjectUtils.isEmpty(egovSSOService)) {
 				LOGGER.error("Fail to create 'EgovSSOService' object");
 				chain.doFilter(request, response);
 				return;

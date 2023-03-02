@@ -2,6 +2,7 @@ package egovframework.com.cop.adb.service;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -45,7 +46,7 @@ public class AddressBookVO extends AddressBook implements Serializable  {
     /** 현재페이지 */
     private int pageIndex = 1;
 
-    /** 페이지갯수 */
+    /** 페이지개수 */
     private int pageUnit = 10;
 
     /** 페이지사이즈 */
@@ -375,7 +376,7 @@ public class AddressBookVO extends AddressBook implements Serializable  {
      *            the adbkMan to set
      */
     public void setAdbkMan(List<AddressBookUser> adbkMan) {
-        this.adbkMan = adbkMan;
+        this.adbkMan = Collections.unmodifiableList(adbkMan);
     }
     
 

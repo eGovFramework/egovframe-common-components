@@ -26,7 +26,7 @@ public interface EgovKnoPersonalService {
 	List<?> selectKnoPersonalList(KnoPersonalVO searchVO) throws Exception;
 
 	/**
-	 * 개인지식 목록 총 갯수를 조회한다.
+	 * 개인지식 목록 총 개수를 조회한다.
 	 * @param KnoPersonalVO - 개인지식 Vo
 	 * @return int - 개인지식 토탈 카운트 수
 	 *

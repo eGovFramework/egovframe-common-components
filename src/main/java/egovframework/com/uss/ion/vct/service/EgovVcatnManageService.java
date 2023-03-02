@@ -24,7 +24,7 @@ public interface EgovVcatnManageService {
 	public List<VcatnManageVO> selectVcatnManageList(VcatnManageVO vcatnManageVO) throws Exception;
 
 	/**
-	 * 휴가관리 목록 총 갯수를 조회한다.
+	 * 휴가관리 목록 총 개수를 조회한다.
 	 * @param vcatnManageVO - 휴가관리 VO
 	 * @return int - 휴가관리 카운트 수
 	 */
@@ -73,7 +73,7 @@ public interface EgovVcatnManageService {
 	public List<VcatnManageVO> selectVcatnManageConfmList(VcatnManageVO vcatnManageVO) throws Exception;
 
 	/**
-	 * 휴가관리정보 승인 처리를 위해 신청된 휴가관리 목록 총 갯수를 조회한다.
+	 * 휴가관리정보 승인 처리를 위해 신청된 휴가관리 목록 총 개수를 조회한다.
 	 * @param vcatnManageVO - 휴가관리 VO
 	 * @return int - 휴가관리 카운트 수
 	 */

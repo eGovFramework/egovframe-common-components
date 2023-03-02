@@ -141,10 +141,8 @@ public class EgovSndngMailDetailController {
 						in.close();
 					 //2017.03.03 	조성원 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
 			         }catch (IOException ignore){
-			        	 LOGGER.error("[IOException] : Connection Close");
-			         } catch (Exception ignore) {
-						LOGGER.error("["+ ignore.getClass() +"] : Connection Close ", ignore.getMessage());
-					 }
+			        	 LOGGER.error("["+ ignore.getClass() +"] : Connection Close");
+			         }
 				}
 			}
 			response.getOutputStream().flush();

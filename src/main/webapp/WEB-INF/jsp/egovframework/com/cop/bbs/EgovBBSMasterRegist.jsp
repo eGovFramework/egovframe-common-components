@@ -9,6 +9,7 @@
   * @ 2009.02.01   박정규              최초 생성
   * @ 2016.06.13   김연호              표준프레임워크 v3.6 개선
   * @ 2018.10.15   최두영             표준프레임워크 V3.8 개선
+  * @ 2022.07.05   이기호             2021github 반영
   *
   *  @author 공통서비스팀 
   *  @since 2009.02.01
@@ -77,6 +78,42 @@ function fn_egov_regist_bbs(form){
 		}
 	} 
 }
+
+function fn_egov_regist_fileAtchPosblAt_validation(){
+	var validateForm = document.getElementById("boardMasterVO");	
+	if(validateForm.fileAtchPosblAt.value == 'N'){
+		validateForm.atchPosblFileNumber.disabled = true;	
+		validateForm.atchPosblFileNumber.value = '0';
+	}else{
+		validateForm.atchPosblFileNumber.disabled = false;
+	}
+}
+	
+//게시판 유형 방명록 선택시 아래 4개의 선택내용 비활성화 및 기본값으로 변경
+//답장가능여부: 아니오
+//파읿첨부기능여부: 아니오
+//첨부가능파일숫자: 없음
+//추가 선택사항: 미선택
+function fn_egov_regist_bbsTyCode_validation(){
+ var validateForm = document.getElementById("boardMasterVO");
+ if(validateForm.bbsTyCode.value == 'BBST03') {	 
+     validateForm.replyPosblAt.value = 'N';
+     validateForm.fileAtchPosblAt.value = 'N';
+     validateForm.atchPosblFileNumber.value = '0';
+     validateForm.option.value = '';
+     validateForm.replyPosblAt.disabled = true;
+     validateForm.fileAtchPosblAt.disabled = true;
+     validateForm.atchPosblFileNumber.disabled = true;
+     validateForm.option.disabled = true;
+ } else {
+     validateForm.replyPosblAt.disabled = false;
+     validateForm.fileAtchPosblAt.disabled = false;
+     validateForm.atchPosblFileNumber.disabled = false;
+     validateForm.option.disabled = false;
+ }
+ 
+}
+
 </script>
 
 </head>
@@ -122,8 +159,8 @@ function fn_egov_regist_bbs(form){
 		<c:set var="title"><spring:message code="comCopBbs.boardMasterVO.regist.bbsTyCode"/> </c:set>
 		<tr>
 			<th><label for="bbsTyCode">${title} <span class="pilsu">*</span></label></th>
-			<td class="left">
-				<form:select path="bbsTyCode" title="${title} ${inputTxt}" cssClass="txt">
+			<td class="left">				
+				<form:select onchange="fn_egov_regist_bbsTyCode_validation()" path="bbsTyCode" title="${title} ${inputTxt}" cssClass="txt">
 					<form:option value="" label="--선택하세요--" />
 					<form:options items="${bbsTyCode}" itemValue="code" itemLabel="codeNm" />
 				</form:select>
@@ -149,8 +186,8 @@ function fn_egov_regist_bbs(form){
 		<c:set var="title"><spring:message code="comCopBbs.boardMasterVO.regist.fileAtchPosblAt"/> </c:set>
 		<tr>
 			<th><label for="fileAtchPosblAt">${title} <span class="pilsu">*</span></label></th>
-			<td class="left">
-				<form:select path="fileAtchPosblAt" title="${title} ${inputTxt}" cssClass="txt">
+			<td class="left">				
+				<form:select onchange="fn_egov_regist_fileAtchPosblAt_validation()" path="fileAtchPosblAt" title="${title} ${inputTxt}" cssClass="txt">
 					<form:option value="" label="--선택하세요--" />
 					<form:option value="Y"  label="예" />
 	  		   		<form:option value='N'>아니오</form:option>

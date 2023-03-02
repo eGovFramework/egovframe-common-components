@@ -45,9 +45,10 @@ import org.egovframe.rte.psl.orm.ibatis.support.AbstractLobTypeHandler;
  * @see org.springframework.orm.ibatis.SqlMapClientFactoryBean#setLobHandler
  * 
  * 
- *     수정일         수정자                   수정내용
+ *    수정일     수정자      수정내용
  *   -------    --------    ---------------------------
- *   2017.03.03          조성원 	    시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+ *   2017.03.03  조성원      시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+ *   2022.11.11  김혜준      시큐어코딩 처리
  * 
  * 
  */
@@ -78,23 +79,22 @@ public class AltibaseClobStringTypeHandler extends AbstractLobTypeHandler {
 		lobCreator.setClobAsString(ps, index, (String) value);
 	}
 
-
 	protected Object getResultInternal(ResultSet rs, int index, LobHandler lobHandler)
 			throws SQLException {
 
+		Reader rd = null;
 		StringBuffer read_data = new StringBuffer("");
 	    int read_length;
-
 		char [] buf = new char[1024];
 
-		Reader rd =  lobHandler.getClobAsCharacterStream(rs, index);
 	    try {
-			while( (read_length=rd.read(buf))  != -1) {
+	    	// 2022.11.11 시큐어코딩 처리
+	    	rd =  lobHandler.getClobAsCharacterStream(rs, index);
+	    	while( (read_length=rd.read(buf))  != -1) {
 				read_data.append(buf, 0, read_length);
 			}
 	    } catch (IOException ie) {
-	    	SQLException sqle = new SQLException(ie.getMessage());
-	    	throw sqle;
+	    	throw new SQLException(ie.getMessage());
     	// 2011.10.10 보안점검 후속조치
 	    } finally {
 		    if (rd != null) {
@@ -102,16 +102,12 @@ public class AltibaseClobStringTypeHandler extends AbstractLobTypeHandler {
 				    rd.close();
 				//2017.03.03 	조성원 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
 				} catch (IOException ignore) {
-					LOGGER.error("[IOException] : Connection Close");
-				} catch (Exception ignore) {
 					LOGGER.error("["+ ignore.getClass() +"] Connection Close : " + ignore.getMessage());
 				}
 		    }
 		}
 
 	    return read_data.toString();
-
-		//return lobHandler.getClobAsString(rs, index);
 	}
 
 	public Object valueOf(String s) {

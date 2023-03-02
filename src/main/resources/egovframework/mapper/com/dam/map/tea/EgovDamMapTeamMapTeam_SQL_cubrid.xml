@@ -27,7 +27,7 @@
 		
 			SELECT  ORGNZT_ID
 			     ,  ORGNZT_NM
-                 ,  CL_DE
+                 ,  TO_CHAR(TO_DATE(CL_DE, 'YYYYmmdd'), 'YYYY-mm-dd') AS CL_DE
 			     ,  KNWLDG_URL
 			  FROM  COMTNDAMMAPTEAM
 			 WHERE  1 = 1
@@ -63,7 +63,7 @@
 		
             SELECT  ORGNZT_ID
 			     ,  ORGNZT_NM
-                 ,  CL_DE
+                 ,  TO_CHAR(TO_DATE(CL_DE, 'YYYYmmdd'), 'YYYY-mm-dd') AS CL_DE
                  ,  KNWLDG_URL
               FROM  COMTNDAMMAPTEAM
              WHERE  ORGNZT_ID = #{orgnztId}

@@ -22,7 +22,7 @@ public interface EgovIndvdlYrycManageService {
 	public List<IndvdlYrycManage> selectIndvdlYrycManageList(IndvdlYrycManage indvdlYrycManage) throws Exception;
 
 	/**
-	 * 연차목록 총 갯수를 조회한다.
+	 * 연차목록 총 개수를 조회한다.
 	 * @param indvdlYrycManage - 개인연차관리 model
 	 */
 	public int selectIndvdlYrycManageListTotCnt(IndvdlYrycManage indvdlYrycManage) throws Exception;

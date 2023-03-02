@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="UTF-8"?><!-- 
+	수정일                 수정자                          수정내용
+  =========     =======    =================================================
+  2011.8.12   	안민정     	 	테이블 표준화에 따른 수정사항 반영
+							CTSNN_CD	->	CTSNN_CODE
+							USID		->	USER_ID
+--><!--Converted at: Wed May 11 15:51:03 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="ctsnnManageDAO">
+
+   <select id="selectCtsnnManageList" parameterType="egovframework.com.uss.ion.ctn.service.CtsnnManageVO" resultType="egovframework.com.uss.ion.ctn.service.CtsnnManageVO">
+        
+            SELECT  * 
+              FROM  (
+            SELECT ROWNUM AS RNUM, ALL_LIST.* 
+              FROM  (
+         SELECT   A.CTSNN_ID             AS ctsnnId          ,
+                  A.USER_ID                 AS  usid           ,
+                  A.CTSNN_CODE             AS  ctsnnCd        ,
+                  A.REQST_DE             AS  reqstDe        ,
+                  A.CTSNN_NM             AS  ctsnnNm        ,
+                  A.TRGTER_NM            AS  trgterNm       ,
+                  A.BRTHDY                 AS  brth           ,
+                  A.OCCRRNC_DE             AS  occrrDe        ,
+                  A.RELATE               AS  relate         ,
+                  A.RM               AS  remark         ,
+                  A.SANCTNER_ID          AS  sanctnerId     ,
+                  A.CONFM_AT             AS  confmAt        ,
+                  A.SANCTN_DT            AS  sanctnDt       ,
+                  A.RETURN_RESN          AS  returnResn     ,
+                  A.INFRML_SANCTN_ID     AS  infrmlSanctnId ,
+                  C.USER_NM              AS usNm            ,
+                 (select mst.USER_NM from COMVNUSERMASTER mst where  mst.ESNTL_ID = SANCTNER_ID)          AS sanctnerNm  ,
+                 (select code_nm from COMTCCMMNDETAILCODE where code_id ='COM054' and code = A.CTSNN_CODE) AS ctsnnCdNm   ,
+                 (select info.ORGNZT_NM from COMTNORGNZTINFO info where  info.ORGNZT_ID = C.ORGNZT_ID )  AS orgnztNm
+         FROM    COMTNCTSNNMANAGE A, COMVNUSERMASTER C
+         WHERE    1=1 
+         AND      A.USER_ID = C.ESNTL_ID  
+               <if test="searchKeyword != null and searchKeyword != ''">AND
+          A.CTSNN_CODE = #{searchKeyword} 
+               </if>
+               <if test="searchFromDate != null and searchFromDate != ''">AND
+				TO_DATE(A.OCCRRNC_DE, 'YYYYmmdd') BETWEEN TO_DATE(#{searchFromDate},'YYYYmmdd') AND TO_DATE(#{searchToDate},'YYYYmmdd')
+               </if>
+               <if test="searchNm != null and searchNm != ''">AND
+          C.USER_NM like '%'||#{searchNm}||'%' 
+               </if>
+               <if test="searchConfmAt != null and searchConfmAt != ''">AND
+         A.CONFM_AT like '%'||#{searchConfmAt}||'%'  
+               </if> 
+               <![CDATA[
+         ORDER BY FRST_REGIST_PNTTM DESC
+                       ) ALL_LIST
+                    )
+          WHERE  RNUM  > #{firstIndex}
+            AND  RNUM <= #{firstIndex} + #{recordCountPerPage}
+            ]]>  
+    </select>
+
+    <select id="selectCtsnnManageListTotCnt" parameterType="egovframework.com.uss.ion.ctn.service.CtsnnManageVO" resultType="int">
+        
+            SELECT  COUNT(*) totcnt
+            FROM    COMTNCTSNNMANAGE A, COMVNUSERMASTER C
+            WHERE    1=1 
+            AND      A.USER_ID = C.ESNTL_ID  
+               <if test="searchKeyword != null and searchKeyword != ''">AND
+          A.CTSNN_CODE = #{searchKeyword} 
+               </if>
+               <if test="searchFromDate != null and searchFromDate != ''">AND
+               TO_DATE(A.OCCRRNC_DE, 'YYYYmmdd') BETWEEN TO_DATE(#{searchFromDate},'YYYYmmdd') AND TO_DATE(#{searchToDate},'YYYYmmdd')
+               </if>
+               <if test="searchNm != null and searchNm != ''">AND
+          C.USER_NM like '%'||#{searchNm}||'%' 
+               </if>
+               <if test="searchConfmAt != null and searchConfmAt != ''">AND
+         A.CONFM_AT like '%'||#{searchConfmAt}||'%'  
+               </if> 
+    </select>
+    
+    <select id="selectCtsnnManage" resultType="egovframework.com.uss.ion.ctn.service.CtsnnManageVO">
+        
+
+         SELECT   ctn.CTSNN_ID            AS ctsnnId          ,
+                  ctn.USER_ID                AS usid            ,  
+                  ctn.CTSNN_CODE            AS ctsnnCd         ,  
+                  ctn.REQST_DE            AS reqstDe         ,  
+                  ctn.CTSNN_NM            AS ctsnnNm         ,  
+                  ctn.TRGTER_NM           AS trgterNm        ,  
+                  ctn.BRTHDY                AS brth            ,  
+                  ctn.OCCRRNC_DE            AS occrrDe         ,  
+                  ctn.RELATE              AS relate          ,  
+                  ctn.RM              AS remark          ,  
+                  ctn.SANCTNER_ID         AS sanctnerId      ,  
+                  ctn.CONFM_AT            AS confmAt         ,  
+                  ctn.SANCTN_DT           AS sanctnDt        ,  
+                  ctn.RETURN_RESN         AS returnResn      ,  
+                  ctn.INFRML_SANCTN_ID    AS infrmlSanctnId  ,
+                  mst.USER_NM             AS usNm            ,
+                 (select org.ORGNZT_NM from COMTNORGNZTINFO org where  org.ORGNZT_ID = mst.ORGNZT_ID)       AS orgnztNm    ,
+                 (select mst1.USER_NM from COMVNUSERMASTER mst1 where  mst1.ESNTL_ID = SANCTNER_ID)          AS sanctnerNm  ,
+                 (select code_nm from COMTCCMMNDETAILCODE where code_id ='COM054' and code = ctn.CTSNN_CODE)  AS ctsnnCdNm   ,
+                 (select code_nm from COMTCCMMNDETAILCODE where code_id ='COM073' and code = ctn.RELATE  )  AS relateNm    ,
+                 (select info.ORGNZT_NM from COMVNUSERMASTER mst_b, COMTNORGNZTINFO info 
+                  where  info.ORGNZT_ID = mst_b.ORGNZT_ID and mst_b.esntl_id= ctn.SANCTNER_ID)               AS sanctnerOrgnztNm
+         FROM     COMTNCTSNNMANAGE ctn, COMVNUSERMASTER mst
+         WHERE    ctn.USER_ID         = mst.ESNTL_ID
+	       AND    ctn.CTSNN_ID     = #{ctsnnId} 
+
+        
+    </select>
+
+    <insert id="insertCtsnnManage" parameterType="egovframework.com.uss.ion.ctn.service.CtsnnManage">
+        
+
+            INSERT INTO COMTNCTSNNMANAGE
+                   (CTSNN_ID           ,
+                    USER_ID               ,
+                    CTSNN_CODE           ,
+                    REQST_DE           ,   
+                    CTSNN_NM           ,
+                    TRGTER_NM          ,     
+                    BRTHDY               ,
+                    OCCRRNC_DE           ,
+                    RELATE             ,   
+                    RM             ,
+                    SANCTNER_ID        ,
+                    CONFM_AT           ,
+                    INFRML_SANCTN_ID   ,    
+                    FRST_REGISTER_ID   ,
+                    FRST_REGIST_PNTTM)
+            VALUES (#{ctsnnId}        ,
+                    #{usid}           ,
+                    #{ctsnnCd}        ,
+                    #{reqstDe}        ,
+                    #{ctsnnNm}        ,
+                    #{trgterNm}       ,
+                    #{brth}           ,
+                    #{occrrDe}        ,
+                    #{relate}         ,
+                    #{remark}         ,
+                    #{sanctnerId}     ,
+                    #{confmAt}        ,
+                    #{infrmlSanctnId} ,
+                    #{frstRegisterId} ,  
+                    sysdate ) 
+        
+    </insert>     
+
+    <update id="updateCtsnnManage" parameterType="egovframework.com.uss.ion.ctn.service.CtsnnManage">
+        
+
+            UPDATE  COMTNCTSNNMANAGE
+               SET  CTSNN_CODE          = #{ctsnnCd}     ,
+                    CTSNN_NM			= #{ctsnnNm}	,
+                    REQST_DE          = #{reqstDe}     ,
+                    TRGTER_NM         = #{trgterNm}    ,  
+                    BRTHDY              = #{brth}        ,           
+                    OCCRRNC_DE          = #{occrrDe}     ,   
+                    RELATE            = #{relate}      ,    
+                    RM            = #{remark}      ,       
+				    LAST_UPDUSR_ID    = #{lastUpdusrId},
+                    LAST_UPDT_PNTTM = sysdate    
+             WHERE  CTSNN_ID          = #{ctsnnId}
+
+        
+    </update>    
+    
+    <delete id="deleteCtsnnManage" parameterType="egovframework.com.uss.ion.ctn.service.CtsnnManage">
+        
+            DELETE  FROM COMTNCTSNNMANAGE
+             WHERE  CTSNN_ID          = #{ctsnnId} 
+        
+    </delete>  
+
+
+<!--  경조 승인관련  -->
+    <select id="selectCtsnnManageConfmList" parameterType="egovframework.com.uss.ion.ctn.service.CtsnnManageVO" resultType="egovframework.com.uss.ion.ctn.service.CtsnnManageVO">
+        
+            SELECT  * 
+              FROM  (
+            SELECT ROWNUM AS RNUM, ALL_LIST.* 
+              FROM  (
+         SELECT   A.CTSNN_ID             AS  ctsnnId          ,
+                  A.USER_ID              AS  usid           ,
+                  A.CTSNN_CODE             AS  ctsnnCd        ,
+                  A.REQST_DE             AS  reqstDe        ,
+                  A.CTSNN_NM             AS  ctsnnNm        ,
+                  A.TRGTER_NM            AS  trgterNm       ,
+                  A.BRTHDY                 AS  brth           ,
+                  A.OCCRRNC_DE             AS  occrrDe        ,
+                  A.RELATE               AS  relate         ,
+                  A.RM               AS  remark         ,
+                  A.SANCTNER_ID          AS  sanctnerId     ,
+                  A.CONFM_AT             AS  confmAt        ,
+                  A.SANCTN_DT            AS  sanctnDt       ,
+                  A.RETURN_RESN          AS  returnResn     ,
+                  A.INFRML_SANCTN_ID     AS  infrmlSanctnId ,
+                  C.USER_NM              AS usNm            ,
+                 (select mst.USER_NM from COMVNUSERMASTER mst where  mst.ESNTL_ID = SANCTNER_ID)          AS sanctnerNm  ,
+                 (select code_nm from COMTCCMMNDETAILCODE where code_id ='COM054' and code = A.CTSNN_CODE) AS ctsnnCdNm   ,
+                 (select info.ORGNZT_NM from COMTNORGNZTINFO info where  info.ORGNZT_ID = C.ORGNZT_ID )  AS orgnztNm
+         FROM     COMTNCTSNNMANAGE A, COMVNUSERMASTER C
+         WHERE    1=1 
+         AND      A.SANCTNER_ID = #{sanctnerId}
+         AND      A.USER_ID = C.ESNTL_ID  
+               <if test="searchKeyword != null and searchKeyword != ''">AND
+          A.CTSNN_CODE = #{searchKeyword} 
+               </if>
+               <if test="searchFromDate != null and searchFromDate != ''">AND
+				TO_DATE(A.OCCRRNC_DE, 'YYYYmmdd') BETWEEN TO_DATE(#{searchFromDate},'YYYYmmdd') AND TO_DATE(#{searchToDate},'YYYYmmdd')
+               </if>
+               <if test="searchNm != null and searchNm != ''">AND
+          C.USER_NM like '%'||#{searchNm}||'%' 
+               </if>
+               <if test="searchConfmAt != null and searchConfmAt != ''">AND
+         A.CONFM_AT like '%'||#{searchConfmAt}||'%'  
+               </if>  
+               <![CDATA[
+         ORDER BY FRST_REGIST_PNTTM DESC
+                       ) ALL_LIST
+                    )
+          WHERE  RNUM  > #{firstIndex}
+            AND  RNUM <= #{firstIndex} + #{recordCountPerPage}  
+]]>
+    </select> 
+
+    <select id="selectCtsnnManageConfmListTotCnt" parameterType="egovframework.com.uss.ion.ctn.service.CtsnnManageVO" resultType="int">
+         
+            SELECT  COUNT(*) totcnt
+            FROM    COMTNCTSNNMANAGE A, COMVNUSERMASTER C
+            WHERE   1=1
+            AND     A.SANCTNER_ID = #{sanctnerId} 
+            AND     A.USER_ID = C.ESNTL_ID  
+               <if test="searchKeyword != null and searchKeyword != ''">AND
+          A.CTSNN_CODE = #{searchKeyword} 
+               </if>
+               <if test="searchFromDate != null and searchFromDate != ''">AND
+				TO_DATE(A.OCCRRNC_DE, 'YYYYmmdd') BETWEEN TO_DATE(#{searchFromDate},'YYYYmmdd') AND TO_DATE(#{searchToDate},'YYYYmmdd')
+               </if>
+               <if test="searchNm != null and searchNm != ''">AND
+          C.USER_NM like '%'||#{searchNm}||'%' 
+               </if>
+               <if test="searchConfmAt != null and searchConfmAt != ''">AND
+         A.CONFM_AT like '%'||#{searchConfmAt}||'%'  
+               </if> 
+    </select>
+
+    <update id="updtCtsnnManageConfm" parameterType="egovframework.com.uss.ion.ctn.service.CtsnnManage">
+        
+            UPDATE COMTNCTSNNMANAGE
+               SET CONFM_AT           = #{confmAt}     ,   
+                   SANCTN_DT          = TO_DATE(#{sanctnDt}, 'yyyy-mm-dd hh24:mi:ss'),
+                   RETURN_RESN        = #{returnResn}  ,  
+				   LAST_UPDUSR_ID     = #{lastUpdusrId},
+                   LAST_UPDT_PNTTM  = sysdate    
+             WHERE CTSNN_ID           = #{ctsnnId}
+        
+    </update>
+
+</mapper>

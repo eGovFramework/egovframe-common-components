@@ -1,8 +1,7 @@
 package egovframework.com.utl.sys.trm.service.impl;
 
 
-import java.util.Date;
-import java.util.Random;
+import java.security.SecureRandom;
 
 import egovframework.com.utl.sys.trm.service.TrsmrcvMntrngChecker;
 import egovframework.com.utl.sys.trm.service.TrsmrcvMntrngResult;
@@ -28,6 +27,7 @@ import org.slf4j.LoggerFactory;
 public class TrsmrcvMntrngCheckerTestImpl implements TrsmrcvMntrngChecker {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TrsmrcvMntrngCheckerTestImpl.class);
+	private static SecureRandom oRandom = new SecureRandom();		// 221115	김혜준	2022 시큐어코딩 조치
 
 	/**
 	 * 송수신모니터링을 수행한다.
@@ -45,8 +45,6 @@ public class TrsmrcvMntrngCheckerTestImpl implements TrsmrcvMntrngChecker {
 	 *
 	 */
 	public TrsmrcvMntrngResult check(String cntcId) {
-		Random oRandom = new Random();
-		oRandom.setSeed(new Date().getTime());	// 2011.10.10 보안점검 후속조치
 		Boolean b = oRandom.nextBoolean();
 		TrsmrcvMntrngResult result = null;
 

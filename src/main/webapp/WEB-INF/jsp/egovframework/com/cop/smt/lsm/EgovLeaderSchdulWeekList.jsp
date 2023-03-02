@@ -177,9 +177,9 @@ arrDateTitle[6] = "Sat";/* 토요일 */
 		
 		<input class="btns" type="submit" value="<spring:message code="title.inquire" />" title="<spring:message code="title.inquire" />" onclick="fnEgovSchdulSelect(); return false;" style="margin-right:60px" /><!-- 조회 -->
 		
-		<a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulWeekList.do' />?year=<%=iNowYear-1%>&amp;month=<%=iNowMonth%>&amp;week=<%=iNowWeek%>" style="vertical-align:3px"><img alt="이전년도" src="<c:url value='/images/egovframework/com/cmm/icon/icon_prev.png' />" /></a>
+		<a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulWeekList.do' />?year=<%=iNowYear-1%>&amp;month=<%=iNowMonth%>&amp;week=<%=iNowWeek%>" style="vertical-align:3px"><img alt="이전연도" src="<c:url value='/images/egovframework/com/cmm/icon/icon_prev.png' />" /></a>
 		<span class="t1"><%=iNowYear%><spring:message code="comCopSmtLsm.leaderSchdulMonthList.year" /></span><!-- 년 -->
-		<a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulWeekList.do' />?year=<%=iNowYear+1%>&amp;month=<%=iNowMonth%>&amp;week=<%=iNowWeek%>" style="margin-right:16px; vertical-align:3px"><img alt="다음년도" src="<c:url value='/images/egovframework/com/cmm/icon/icon_next.png' />" /></a>
+		<a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulWeekList.do' />?year=<%=iNowYear+1%>&amp;month=<%=iNowMonth%>&amp;week=<%=iNowWeek%>" style="margin-right:16px; vertical-align:3px"><img alt="다음연도" src="<c:url value='/images/egovframework/com/cmm/icon/icon_next.png' />" /></a>
 		
 		<%if(iNowMonth > 0 ){ %>
 			<a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulWeekList.do' />?year=<%=iNowYear%>&amp;month=<%=iNowMonth-1%>&amp;week=<%=iNowWeek%>" style="vertical-align:3px"><img alt="이전월" src="<c:url value='/images/egovframework/com/cmm/icon/icon_prev.png' />" /></a>

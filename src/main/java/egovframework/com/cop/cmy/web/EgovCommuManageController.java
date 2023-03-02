@@ -9,12 +9,12 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springmodules.validation.commons.DefaultBeanValidator;
+//import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.EgovWebUtil;
@@ -49,6 +49,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *   ----------   --------   ---------------------------
  *   2016.06.13   김연호            최초 생성 - 표준프레임워크 v3.6 개선
  *   2019.05.17   신용호            KISA 취약점 조치 및 보완
+ *   2022.11.11   김혜준            시큐어코딩 처리
  *   
  * </pre>
  */
@@ -76,9 +77,6 @@ public class EgovCommuManageController {
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertyService;
 
-    @Autowired
-    private DefaultBeanValidator beanValidator;
-	
     /** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
@@ -101,19 +99,13 @@ public class EgovCommuManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
    	 	// KISA 보안취약점 조치 (2018-12-10, 신용호)
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
         cmmntyVO.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 	
-//		String tmplatCours = cmmntyService.selectCmmntyTemplat(cmmntyVO);
-		String tmplatCours = "";
-		if ("".equals(tmplatCours) || tmplatCours == null) {
-		    tmplatCours = "egovframework/com/cop/tpl/EgovCmmntyBaseTmpl";
-		}
+        // 2022.11.11 시큐어코딩 처리
 		Map<String, Object> map = egovCommuManageService.selectCommuInf(cmmntyVO);
-	
-		//model.addAttribute("cmmntyVO", cmmntyVO);
 		model.addAttribute("cmmntyVO", (CommunityVO)map.get("cmmntyVO"));
 		model.addAttribute("cmmntyUser", (CommunityUser)map.get("cmmntyUser"));
 			
@@ -128,12 +120,8 @@ public class EgovCommuManageController {
 	
 		model.addAttribute("bbsList", bbsResult);
 		////------------------------------
-		
-		if (isAuthenticated) {
-		    model.addAttribute("isAuthenticated", "Y");
-		} else {
-		    model.addAttribute("isAuthenticated", "N");
-		}
+		//		221116	김혜준	2022 시큐어코딩 조치
+		model.addAttribute("isAuthenticated", "Y");
 		model.addAttribute("returnMsg", request.getParameter("returnMsg"));
 		
 		return "egovframework/com/cop/cmy/EgovCommuMain";
@@ -155,7 +143,7 @@ public class EgovCommuManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		// KISA 보안취약점 조치 (2018-12-10, 신용호)
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 	
 		cmmntyVO.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
@@ -224,7 +212,7 @@ public class EgovCommuManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		//KISA 보안취약점 조치 (2018-12-10, 신용호)
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 	
 		String retVal = "";
@@ -236,25 +224,18 @@ public class EgovCommuManageController {
 		cmmntyUser.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 		cmmntyUser.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 		cmmntyUser.setMberSttus("A");
-		
-		if (isAuthenticated) {
-	
-		    //---------------------------------------------
-		    // 승인요청 처리
-		    //---------------------------------------------
-		    retVal = egovCommuManageService.checkCommuUserDetail(cmmntyUser);
-	
-		    //요청건이 없을 경우 
-		    if (!retVal.equals("EXIST")) {
-				
-				egovCommuManageService.insertCommuUserRqst(cmmntyUser);
-				retVal = egovMessageSource.getMessage("comCopCmy.commuMain.joinMember.info.success"); //가입신청이 정상처리되었습니다.
-		    } else {
-		    	
-		    	retVal = egovMessageSource.getMessage("comCopCmy.commuMain.joinMember.info.fail"); //이미 가입처리가 되어 있습니다.
-		    }
-		    ////-------------------------------------------
-		}
+
+	    // 승인요청 처리
+	    retVal = egovCommuManageService.checkCommuUserDetail(cmmntyUser);
+
+	    //요청건이 없을 경우 
+	    if (!retVal.equals("EXIST")) {
+			egovCommuManageService.insertCommuUserRqst(cmmntyUser);
+			retVal = egovMessageSource.getMessage("comCopCmy.commuMain.joinMember.info.success"); //가입신청이 정상처리되었습니다.
+	    } else {
+	    	retVal = egovMessageSource.getMessage("comCopCmy.commuMain.joinMember.info.fail"); //이미 가입처리가 되어 있습니다.
+	    }
+
 		model.addAttribute("returnMsg", retVal);
 		model.addAttribute("cmmntyId", cmmntyUser.getCmmntyId());
 		
@@ -277,7 +258,7 @@ public class EgovCommuManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		//KISA 보안취약점 조치 (2018-12-10, 신용호)
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 		
 		//로그인한 사용자가 관리자인지 확인한다.
@@ -288,7 +269,8 @@ public class EgovCommuManageController {
 	
 		//관리자는 탈퇴할 수 없음.
 		String resultMsg = "";
-		if(isAuthenticated && !isCommuAdmin) {
+		// 2022.11.11 시큐어코딩 처리
+		if(!isCommuAdmin) {
 			cmmntyUserVO.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 			egovCommuManageService.deleteCommuUser(cmmntyUserVO);
 			resultMsg = egovMessageSource.getMessage("comCopCmy.commuMain.deleteMember.info.success"); //탈퇴신청이 정상처리되었습니다.
@@ -352,7 +334,7 @@ public class EgovCommuManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
    	 	// KISA 보안취약점 조치 (2018-12-10, 신용호)
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
     	
 		//로그인한 사용자가 관리자인지 확인한다.
@@ -361,14 +343,12 @@ public class EgovCommuManageController {
 		userVO.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 		Boolean isCommuAdmin = egovCommuManageService.selectIsCommuAdmin(userVO);
 		
-		
-		if(isAuthenticated && isCommuAdmin) {
+		// 2022.11.11 시큐어코딩 처리
+		if(isCommuAdmin) {
 			cmmntyUserVO.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 			egovCommuManageService.insertCommuUser(cmmntyUserVO);
 		}
-		
-		
-		
+
 		return "forward:/cop/cmy/selectCommuUserList.do";
     }
     
@@ -387,7 +367,7 @@ public class EgovCommuManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
    	 	// KISA 보안취약점 조치 (2018-12-10, 신용호)
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
     	
 		//로그인한 사용자가 관리자인지 확인한다.
@@ -396,13 +376,11 @@ public class EgovCommuManageController {
 		userVO.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 		Boolean isCommuAdmin = egovCommuManageService.selectIsCommuAdmin(userVO);
 		
-		
-		if(isAuthenticated && isCommuAdmin) {
+		// 2022.11.11 시큐어코딩 처리
+		if(isCommuAdmin) {
 			egovCommuManageService.deleteCommuUser(cmmntyUserVO);
 		}
-		
-		
-		
+
 		return "forward:/cop/cmy/selectCommuUserList.do";
     }
     
@@ -421,7 +399,7 @@ public class EgovCommuManageController {
    	 	// KISA 보안취약점 조치 (2018-12-10, 신용호)
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
     	
 		//로그인한 사용자가 관리자인지 확인한다.
@@ -430,14 +408,12 @@ public class EgovCommuManageController {
 		userVO.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 		Boolean isCommuAdmin = egovCommuManageService.selectIsCommuAdmin(userVO);
 		
-		
-		if(isAuthenticated && isCommuAdmin) {
+		// 2022.11.11 시큐어코딩 처리
+		if(isCommuAdmin) {
 			cmmntyUserVO.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 			egovCommuManageService.insertCommuUserAdmin(cmmntyUserVO);
 		}
-		
-		
-		
+
 		return "forward:/cop/cmy/selectCommuUserList.do";
     }
     
@@ -456,7 +432,7 @@ public class EgovCommuManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
    	 	// KISA 보안취약점 조치 (2018-12-10, 신용호)
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
     	
 		//로그인한 사용자가 관리자인지 확인한다.
@@ -464,8 +440,7 @@ public class EgovCommuManageController {
 		userVO.setCmmntyId(cmmntyUserVO.getCmmntyId());
 		userVO.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 		Boolean isCommuAdmin = egovCommuManageService.selectIsCommuAdmin(userVO);
-		
-		
+
 		//커뮤니티 개설자는 관리자해제를 할 수 없음.
 		CommunityVO cmmntyVO = new CommunityVO();
 		cmmntyVO.setCmmntyId(cmmntyUserVO.getCmmntyId());
@@ -474,16 +449,13 @@ public class EgovCommuManageController {
 		if(cmmntyVO.getFrstRegisterId().equals(cmmntyUserVO.getEmplyrId())) {
 			return "forward:/cop/cmy/selectCommuUserList.do";
 		}
-		
-		
-		
-		if(isAuthenticated && isCommuAdmin) {
+
+		// 2022.11.11 시큐어코딩 처리
+		if(isCommuAdmin) {
 			cmmntyUserVO.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 			egovCommuManageService.deleteCommuUserAdmin(cmmntyUserVO);
 		}
-		
-		
-		
+
 		return "forward:/cop/cmy/selectCommuUserList.do";
     }
 
@@ -634,6 +606,5 @@ public class EgovCommuManageController {
 	
 		return "egovframework/com/cop/tpl/EgovCmmntyBaseTmplContents";
     }
-
     
 }

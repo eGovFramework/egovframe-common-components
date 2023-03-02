@@ -18,6 +18,7 @@ import egovframework.com.cop.bbs.service.BlogVO;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.apache.commons.lang3.RandomStringUtils;
 
 @Service("EgovBBSMasterService")
 public class EgovBBSMasterServiceImpl extends EgovAbstractServiceImpl implements EgovBBSMasterService {
@@ -113,8 +114,10 @@ public class EgovBBSMasterServiceImpl extends EgovAbstractServiceImpl implements
 	@Override
 	public void insertBBSMasterInf(BoardMaster boardMaster) throws Exception {
 		
+		//2021 github 반영
+		//String bbsId = idgenService.getNextStringId();
 		//게시판 ID 채번
-		String bbsId = idgenService.getNextStringId();
+		String bbsId = idgenService.getNextStringId() + RandomStringUtils.randomAlphabetic(10);
 		boardMaster.setBbsId(bbsId);
 		
 		egovBBSMasterDao.insertBBSMasterInf(boardMaster);

@@ -64,7 +64,7 @@ public class SysHistoryDAO extends EgovComAbstractDAO {
 	}
 
 	/**
-	 * 시스템 이력정보 목록의 글 갯수를 조회한다.
+	 * 시스템 이력정보 목록의 글 개수를 조회한다.
 	 * @param history
 	 * @return
 	 * @throws Exception

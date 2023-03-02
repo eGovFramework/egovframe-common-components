@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xmlns:egov-security="http://maven.egovframe.go.kr/schema/egov-security"
 	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:egov-security="http://maven.egovframe.go.kr/schema/egov-security"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
-		http://maven.egovframe.go.kr/schema/egov-security http://maven.egovframe.go.kr/schema/egov-security/egov-security-4.0.0.xsd">
+		http://maven.egovframe.go.kr/schema/egov-security http://maven.egovframe.go.kr/schema/egov-security/egov-security-4.1.0.xsd">
 
 <!--
 수정일               수정자			수정내용
@@ -14,7 +14,7 @@
 2014.06.13   Vincent Han    표준프레임워크 3.0 적용 (간소화 설정 사용)
 2017.07.10   장동한                   실행행환경 v3.7 적용[보안기능 추가(sniff, xFrameOptions, xssProtection csrf)]
 2018.10.26   신용호                   실행행환경 v3.8 적용
-2020.08.28   정진호                   표준프레임워크 v3.10 개선
+2020.08.28   정진오                   표준프레임워크 v3.10 개선
 
 -->
 

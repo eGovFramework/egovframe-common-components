@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed May 11 15:51:17 KST 2016-->
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="RoughMapDAO">
+
+	<resultMap id="RoughMap" type="egovframework.com.uss.ion.rmm.service.RoughMapVO">
+		<result property="roughMapId" column="ROUGHMAP_ID"/>
+		<result property="roughMapSj" column="ROUGHMAPSJ"/>
+		<result property="roughMapAddress" column="ROUGHMAPADDRESS"/>
+		<result property="la" column="LA"/>
+		<result property="lo" column="LO"/>
+		<result property="markerLa" column="MARKERLA"/>
+		<result property="markerLo" column="MARKERLO"/>
+		<result property="infoWindow" column="INFOWINDOW"/>
+		<result property="zoomLevel" column="ZOOMLEVEL"/>
+		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
+		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
+	</resultMap>
+		
+	<select id="selectRoughMapList" parameterType="egovframework.com.uss.ion.rmm.service.RoughMapDefaultVO" resultType="egovMap">
+		
+			SELECT
+				ROUGHMAP_ID,
+				ROUGHMAPSJ,
+				ROUGHMAPADDRESS,
+				TO_CHAR(LAST_UPDT_PNTTM,'YYYY-mm-dd') LAST_UPDT_PNTTM
+			FROM
+				COMTNROUGHMAP
+			WHERE
+				1 = 1
+		
+			<if test="searchCondition == 'roughMapSj'">AND
+				ROUGHMAPSJ LIKE CONCAT ('%', #{searchKeyword},'%')
+			</if>
+			<if test="searchCondition == 'roughMapAddress'">AND
+				ROUGHMAPADDRESS LIKE CONCAT ('%', #{searchKeyword},'%')
+			</if>
+		
+			ORDER BY ROUGHMAP_ID DESC
+		
+			<if test="searchUseYn == ''">
+				LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+			</if>
+	</select>	
+	
+	<select id="selectRoughMapListTotCnt" parameterType="egovframework.com.uss.ion.rmm.service.RoughMapDefaultVO" resultType="int">
+		
+			SELECT
+				COUNT(ROUGHMAP_ID)
+			FROM
+				COMTNROUGHMAP
+			WHERE
+				1 = 1
+		
+			<if test="searchCondition == 'roughMapSj'">AND
+				ROUGHMAPSJ LIKE CONCAT ('%', #{searchKeyword},'%')
+			</if>
+			<if test="searchCondition == 'roughMapAddress'">AND
+				ROUGHMAPADDRESS LIKE CONCAT ('%', #{searchKeyword},'%')
+			</if>
+	</select>	
+ 
+ 	<select id="selectRoughMapDetail" resultMap="RoughMap">
+		
+			SELECT
+				ROUGHMAP_ID,
+				ROUGHMAPSJ,
+				ROUGHMAPADDRESS,
+				LA,
+				LO,
+				MARKERLA,
+				MARKERLO,
+				INFOWINDOW,
+				ZOOMLEVEL,
+				FRST_REGIST_PNTTM,
+				FRST_REGISTER_ID,
+				LAST_UPDT_PNTTM,
+				LAST_UPDUSR_ID 
+			FROM
+				COMTNROUGHMAP
+			WHERE
+				ROUGHMAP_ID = #{roughMapId}
+			
+	</select>
+ 
+ 	<insert id="insertRoughMap">
+		
+			INSERT INTO COMTNROUGHMAP (
+				ROUGHMAP_ID,
+				ROUGHMAPSJ,
+				ROUGHMAPADDRESS,
+				LA,
+				LO,
+				MARKERLA,
+				MARKERLO,
+				INFOWINDOW,
+				ZOOMLEVEL,
+				FRST_REGIST_PNTTM,
+				FRST_REGISTER_ID,
+				LAST_UPDT_PNTTM,
+				LAST_UPDUSR_ID)
+			VALUES (
+				#{roughMapId},
+				#{roughMapSj},
+				#{roughMapAddress},
+				#{la},
+				#{lo},
+				#{markerLa},
+				#{markerLo},
+				#{infoWindow},
+				#{zoomLevel},
+				sysdate,
+				#{frstRegisterId},
+				sysdate,
+				#{lastUpdusrId}
+			)			
+		
+	</insert>
+	
+	<update id="updateRoughMap">
+		
+			UPDATE
+				COMTNROUGHMAP
+			SET
+				ROUGHMAPSJ = #{roughMapSj},
+				ROUGHMAPADDRESS = #{roughMapAddress},
+				LA = #{la},	
+				LO = #{lo},
+				MARKERLA = #{markerLa},	
+				MARKERLO = #{markerLo},
+				INFOWINDOW = #{infoWindow},
+				ZOOMLEVEL = #{zoomLevel},
+				LAST_UPDT_PNTTM = sysdate,
+				LAST_UPDUSR_ID = #{lastUpdusrId}
+ 			WHERE
+ 				ROUGHMAP_ID = #{roughMapId}
+		
+	</update>
+	
+	<delete id="deleteRoughMap">
+		
+			DELETE FROM
+				COMTNROUGHMAP 
+			WHERE
+				ROUGHMAP_ID = #{roughMapId}
+		
+	</delete>
+</mapper>

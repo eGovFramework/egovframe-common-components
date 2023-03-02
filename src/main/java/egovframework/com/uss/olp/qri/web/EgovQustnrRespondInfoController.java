@@ -90,7 +90,7 @@ public class EgovQustnrRespondInfoController {
 	 * @return "egovframework/com/uss/olp/template/template"
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/uss/olp/qri/template/template")
+	@RequestMapping(value="/uss/olp/qri/template/template.do")
 	public String egovQustnrRespondInfoManageTemplate(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			HttpServletRequest request,
@@ -259,7 +259,7 @@ public class EgovQustnrRespondInfoController {
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "egovframework/com/uat/uia/EgovLoginUsr";
+        	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
 		//로그인 객체 선언
@@ -394,7 +394,7 @@ public class EgovQustnrRespondInfoController {
            	ResultScript += "</script>";
 
            	model.addAttribute("resultScript", ResultScript);
-        	sLocationUrl = "forward:/uss/olp/qnn/EgovQustnrRespondInfoManageList.do";
+        	sLocationUrl = "redirect:/uss/olp/qnn/EgovQustnrRespondInfoManageList.do";
         }else{
 
         	 if(loginVO.getUniqId() != null){
@@ -445,7 +445,7 @@ public class EgovQustnrRespondInfoController {
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "egovframework/com/uat/uia/EgovLoginUsr";
+        	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
 		//로그인 객체 선언
@@ -544,7 +544,7 @@ public class EgovQustnrRespondInfoController {
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "egovframework/com/uat/uia/EgovLoginUsr";
+        	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
 		//로그인 객체 선언
@@ -600,7 +600,7 @@ public class EgovQustnrRespondInfoController {
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "egovframework/com/uat/uia/EgovLoginUsr";
+        	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
 		//로그인 객체 선언

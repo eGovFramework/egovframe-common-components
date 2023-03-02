@@ -65,7 +65,7 @@
 		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
 	
 	</select>
-	<!-- RSS서비스::목록조회_게시물 총갯수  -->
+	<!-- RSS서비스::목록조회_게시물 총개수  -->
 	<select id="selectRssTagServiceCnt" parameterType="comDefaultVO" resultType="int">
 		SELECT 
 		COUNT(*) totcnt
@@ -102,7 +102,7 @@
 			BDT_TAG,
 			BDT_ETC_TAG BDT_ETC,
 			FRST_REGISTER_ID,
-			FRST_REGIST_PNTTM FRST_REGISTER_PNTTM,
+			DATE_FORMAT(FRST_REGISTER_PNTTM,'%Y-%m-%d') AS FRST_REGISTER_PNTTM,
 			LAST_UPDUSR_ID
 		FROM COMTNRSS
 		WHERE 1=1

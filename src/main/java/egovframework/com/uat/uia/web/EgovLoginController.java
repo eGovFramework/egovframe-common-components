@@ -61,6 +61,7 @@ import com.gpki.servlet.GPKIHttpServletResponse;
  *  2020.06.25   신용호           로그인 메시지 처리 수정
  *  2021.01.15   신용호           로그아웃시 권한 초기화 추가 : session 모드 actionLogout()
  *  2021.05.30   정진오           디지털원패스 처리하기 위해 로그인 화면에 인증방식 전달
+ *  2022.11.11   김혜준			  시큐어코딩 처리
  *  
  *  </pre>
  */
@@ -153,19 +154,22 @@ public class EgovLoginController {
 					}else if(sLoginIncorrectCode.equals("C")){
 						model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
 					}
-					return "egovframework/com/uat/uia/EgovLoginUsr";
+					return "redirect:/uat/uia/egovLoginUsr.do";
 				}
 		    }else{
 		    	model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
-		    	return "egovframework/com/uat/uia/EgovLoginUsr";
+		    	return "redirect:/uat/uia/egovLoginUsr.do";
 		    }
 		}
 		
 		// 2. 로그인 처리
 		LoginVO resultVO = loginService.actionLogin(loginVO);
+		String userIp = EgovClntInfo.getClntIP(request);
+		resultVO.setIp(userIp);
 		
 		// 3. 일반 로그인 처리
-		if (resultVO != null && resultVO.getId() != null && !resultVO.getId().equals("")) {
+		// 2022.11.11 시큐어코딩 처리
+		if (resultVO.getId() != null && !resultVO.getId().equals("")) {
 
 			// 3-1. 로그인 정보를 세션에 저장
 			request.getSession().setAttribute("loginVO", resultVO);
@@ -176,7 +180,7 @@ public class EgovLoginController {
 
 		} else {
 			model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 	}
 
@@ -191,6 +195,7 @@ public class EgovLoginController {
 
 		// 접속IP
 		String userIp = EgovClntInfo.getClntIP(request);
+		loginVO.setIp(userIp);
 		LOGGER.debug("User IP : {}", userIp);
 
 		/*
@@ -249,14 +254,14 @@ public class EgovLoginController {
 
 		    } else {
 		    	model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-		    	return "egovframework/com/uat/uia/EgovLoginUsr";
+		    	return "redirect:/uat/uia/egovLoginUsr.do";
 		    }
 		} else {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 		*/
-		return "egovframework/com/uat/uia/EgovLoginUsr";
+		return "redirect:/uat/uia/egovLoginUsr.do";
 	}
 
 	/**
@@ -266,17 +271,21 @@ public class EgovLoginController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/uat/uia/actionMain.do")
-	public String actionMain(ModelMap model) throws Exception {
+	public String actionMain(HttpServletRequest request,ModelMap model) throws Exception {
 
 		// 1. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		
-		LOGGER.debug("User Id : {}", user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
+		if (user.getIp().equals(""))
+			user.setIp(EgovClntInfo.getClntIP(request));
+		
+		// 221116	김혜준	2022 시큐어코딩 조치
+		LOGGER.debug("User Id : {}", EgovStringUtil.isNullToString(user.getId()));
 
 		/*
 		// 2. 메뉴조회
@@ -589,8 +598,6 @@ public class EgovLoginController {
 		try {
 			expirePwdDay =  Integer.parseInt(propertyExpirePwdDay);
 		} catch (NumberFormatException e) {
-			LOGGER.debug("convert expirePwdDay Err : "+e.getMessage());
-		} catch (Exception e) {
 			LOGGER.debug("convert expirePwdDay Err : "+e.getMessage());
 		}
 		

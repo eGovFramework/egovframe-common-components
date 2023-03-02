@@ -83,7 +83,7 @@ public class EgovCmtManageServiceImpl extends EgovAbstractServiceImpl implements
 	/**
 	 * 퇴근 정보 입력을 위한 wrktm id 확인
 	 * @param cmtManageVO 검색조건
-	 * @return 총사용자갯수(int)
+	 * @return 총사용자개수(int)
 	 * @throws Exception
 	 */
 	@Override

@@ -25,7 +25,7 @@ public interface EgovBndtManageService {
 	public List<BndtManageVO> selectBndtManageList(BndtManageVO bndtManageVO) throws Exception;
 
 	/**
-	 * 당직관리 목록 총 갯수를 조회한다.
+	 * 당직관리 목록 총 개수를 조회한다.
 	 * @param bndtManageVO - 당직관리 VO
 	 * @return int - 당직관리 카운트 수
 	 */
@@ -57,7 +57,7 @@ public interface EgovBndtManageService {
 	public void deleteBndtManage(BndtManage bndtManage) throws Exception;
 
     /**
-	 * 당직일지 갯수를 조회한다.
+	 * 당직일지 개수를 조회한다.
 	 * @param bndtManageVO - 당직관리 VO
 	 * @return int
 	 * @exception Exception
@@ -73,7 +73,7 @@ public interface EgovBndtManageService {
 	public List<BndtCeckManageVO> selectBndtCeckManageList(BndtCeckManageVO bndtCeckManageVO) throws Exception;
 
 	/**
-	 * 당직체크관리 목록 총 갯수를 조회한다.
+	 * 당직체크관리 목록 총 개수를 조회한다.
 	 * @param bndtCeckManageVO - 당직체크관리 VO
 	 * @return int - 당직체크관리 카운트 수
 	 */

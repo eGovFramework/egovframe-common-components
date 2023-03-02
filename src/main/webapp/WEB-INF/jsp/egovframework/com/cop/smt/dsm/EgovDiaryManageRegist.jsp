@@ -161,7 +161,7 @@ function fn_egov_SelectBoxValue(sbName)
 				<div><form:errors path="partclrMatter" cssClass="error"/></div>
 			</td>
 		</tr>
-		<!-- 진척율 -->
+		<!-- 진척률 -->
 		<c:set var="title"><spring:message code="comCopSmtDsm.regist.diaryProcsPte"/></c:set>
 		<tr>
 			<th><label for="diaryProcsPte">${title}</label> <span class="pilsu">*</span></th>
@@ -176,7 +176,7 @@ function fn_egov_SelectBoxValue(sbName)
 			<th><label for="infoProvdAgreCn">${title}</label></th>
 			<td class="nopd">
 
-		<!-- 첨부파일 갯수를 위한 hidden -->
+		<!-- 첨부파일 개수를 위한 hidden -->
 		<input type="hidden" name="posblAtchFileNumber" id="posblAtchFileNumber" value="3" />
 		
 			<!-- 방법1) 기존의 소스 -->

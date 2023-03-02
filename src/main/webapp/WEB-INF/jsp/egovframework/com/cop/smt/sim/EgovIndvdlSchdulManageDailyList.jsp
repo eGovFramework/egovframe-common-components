@@ -50,7 +50,7 @@ int iNowDay = (Integer)request.getAttribute("day");
 
 
 java.util.Calendar cal = java.util.Calendar.getInstance();
-//년도/월 셋팅
+//연도/월 셋팅
 cal.set(iNowYear, iNowMonth, 1);
 
 int iEndDay = cal.getActualMaximum(java.util.Calendar.DAY_OF_MONTH);

@@ -18,6 +18,7 @@
  */
 package egovframework.com.ext.msg.server.model;
 
+import java.util.Collections;
 import java.util.Set;
 
 /**
@@ -37,7 +38,7 @@ public class UsersMessage implements Message{
 	private Set<String> users = null;
 
 	public UsersMessage(Set<String> users) {
-		this.users = users;
+		this.users = Collections.unmodifiableSet(users);
 	}
 
 	public Set<String> getUsers() {
@@ -45,7 +46,7 @@ public class UsersMessage implements Message{
 	}
 
 	public void setUsers(Set<String> users) {
-		this.users = users;
+		this.users = Collections.unmodifiableSet(users);
 	}
 
 }

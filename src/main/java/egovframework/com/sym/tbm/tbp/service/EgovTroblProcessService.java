@@ -23,7 +23,7 @@ public interface EgovTroblProcessService {
 	public List<TroblProcessVO> selectTroblProcessList(TroblProcessVO troblProcessVO) throws Exception;
 
 	/**
-	 * 장애처리정보목록 총 갯수를 조회한다.
+	 * 장애처리정보목록 총 개수를 조회한다.
 	 * @param troblManageVO - 장애관리 Vo
 	 * @return List - 장애처리 목록
 	 */

@@ -53,6 +53,9 @@
 				<var-value>1000</var-value>
 				</var>
 			</field> 
+			<field property="eventConfmAt" depends="required">
+        		<arg0 key="comUssIonEcc.eventCmpgnVO.eventConfmAt" resource="true"/>
+			</field>
 			<field property="eventConfmDe" depends="required, date">
         		<arg0 key="comUssIonEcc.eventCmpgnVO.eventConfmDe" resource="true"/>
 				<var>

@@ -60,7 +60,7 @@
             <if test="strTroblNm != null">AND
                     TROBL_NM LIKE '%'||#{strTroblNm}||'%'
             </if>
-            <if test="strTroblKnd != null">AND
+            <if test="strTroblKnd != '00'">AND
                     TROBL_KND = #{strTroblKnd}
             </if>
             <if test="strProcessSttus != '00'">AND

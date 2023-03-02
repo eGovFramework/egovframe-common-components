@@ -46,7 +46,7 @@ public class EgovBannerServiceImpl extends EgovAbstractServiceImpl implements Eg
 	}
 
 	/**
-	 * 배너목록 총 갯수를 조회한다.
+	 * 배너목록 총 개수를 조회한다.
 	 * @param bannerVO - 배너 VO
 	 * @return int - 배너 카운트 수
 	 */

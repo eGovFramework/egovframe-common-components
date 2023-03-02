@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="egovframework.com.sec.rnc.mip.mva.sp.comm.dao.SvcDAO">
+
+	<resultMap id="trxInfoSvc" type="egovframework.com.sec.rnc.mip.mva.sp.comm.vo.TrxInfoSvcVO">
+        <result property="trxcode" column="trxcode"/>
+        <result property="svcCode" column="svcCode"/>
+        <result property="mode" column="opMode"/>
+        <result property="deviceId" column="deviceId"/>
+        <result property="branchName" column="branchName"/>
+        <result property="nonce" column="nonce"/>
+        <result property="zkpNonce" column="zkpNonce"/>
+        <result property="vpVerifyResult" column="vpVerifyResult"/>
+        <result property="profileSendDt" column="profileSendDt"/>
+        <result property="imgSendDt" column="imgSendDt"/>
+        <result property="vpReceptDt" column="vpReceptDt"/>
+        <result property="errorCn" column="errorCn"/>
+        <result property="regDt" column="regDt"/>
+        <result property="udtDt" column="udtDt"/>
+        <result property="presentType" column="presentType"/>
+        <result property="encryptType" column="encryptType"/>
+        <result property="keyType" column="keyType"/>
+        <result property="authType" column="authType"/>
+        <result property="spName" column="spName"/>
+        <result property="serviceName" column="serviceName"/>
+        <result property="attrList" column="attrList"/>
+        <result property="predList" column="predList"/>
+        <result property="callBackUrl" column="callBackUrl"/>
+    </resultMap>
+	
+	<select id="selectSvc" resultType="egovframework.com.sec.rnc.mip.mva.sp.comm.vo.SvcVO">
+		SELECT svcCode
+			 , presentType
+			 , encryptType
+			 , keyType
+			 , authType
+			 , spName
+			 , serviceName
+		     , attrList
+		     , predList
+			 , callBackUrl
+		  FROM TB_SERVICE
+		 WHERE svcCode = #{svcCode}
+	</select>
+	
+	<insert id="insertSvc">
+		INSERT
+		  INTO TB_SERVICE
+		(
+		       svcCode
+		     , presentType
+		     , encryptType
+		     , keyType
+		     , authType
+		     , spName
+		     , serviceName
+		     , attrList
+		     , predList
+		     , callBackUrl
+		     , regDt
+		     , udtDt
+		)
+		VALUES
+		(
+		       #{svcCode}
+		     , #{presentType}
+		     , #{encryptType}
+		     , #{keyType}
+		     , #{authType}
+		     , #{spName}
+		     , #{serviceName}
+		     , #{attrList}
+		     , #{predList}
+		     , #{callBackUrl}
+		     , current_timestamp()
+		     , current_timestamp()
+		)
+	</insert>
+
+	<select id="selectTrxInfoSvc" resultMap="trxInfoSvc">
+		SELECT a.trxcode        AS trxcode
+		     , a.svcCode        AS svcCode
+		     , a.opMode         AS opMode
+		     , a.deviceId       AS deviceId
+		     , a.branchName     AS branchName
+		     , a.nonce          AS nonce
+		     , a.zkpNonce       AS zkpNonce
+		     , a.vpVerifyResult AS vpVerifyResult
+		     , a.trxStsCode     AS trxStsCode
+		     , a.profileSendDt  AS profileSendDt
+		     , a.imgSendDt      AS imgSendDt
+		     , a.vpReceptDt     AS vpReceptDt
+		     , a.errorCn        AS errorCn
+		     , a.regDt          AS regDt
+		     , a.udtDt          AS udtDt
+		     , b.presentType    AS presentType
+		     , b.encryptType    AS encryptType
+		     , b.keyType        AS keyType
+		     , b.authType       AS authType
+		     , b.spName         AS spName
+		     , b.serviceName    AS serviceName
+		     , b.attrList       AS attrList
+		     , b.predList       AS predList
+		     , b.callBackUrl    AS callBackUrl
+		  FROM TB_TRX_INFO a
+		  JOIN TB_SERVICE b
+		    ON a.svcCode = b.svcCode
+		 WHERE trxcode = #{trxcode}
+	</select>
+	
+</mapper>

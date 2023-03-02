@@ -454,7 +454,7 @@ public class BackupOpert extends ComDefaultVO implements Serializable {
 
 		// 년변환
 		if (this.executCycle.equals("05")) {
-			// 한번만인경우 년도 출력
+			// 한번만인경우 연도 출력
 			cronExpression = cronExpression + " " + this.executSchdulDe.substring(0,4);
 		}
 

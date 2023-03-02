@@ -205,7 +205,7 @@ public class EgovSystemCntcController {
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "egovframework/com/uat/uia/EgovLoginUsr";
+        	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
     	String selfUri = "/ssi/syi/sim/getSystemCntcDetail.do";
@@ -269,7 +269,7 @@ public class EgovSystemCntcController {
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "egovframework/com/uat/uia/EgovLoginUsr";
+        	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
     	String selfUri = "/ssi/syi/sim/getSystemCntcList.do";
@@ -438,7 +438,7 @@ public class EgovSystemCntcController {
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "egovframework/com/uat/uia/EgovLoginUsr";
+        	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
     	String selfUri = "/ssi/syi/scm/getConfirmSystemCntcList.do";
@@ -487,7 +487,7 @@ public class EgovSystemCntcController {
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "egovframework/com/uat/uia/EgovLoginUsr";
+        	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");

@@ -63,10 +63,10 @@ public class EgovUnitCalcUtil {
 
 		//넓이
 		g_hmAr.put("ar0", (double)0);
-		g_hmAr.put("ar1", (double)(1089/100));
-		g_hmAr.put("ar2", (double)(1089/3600));
-		g_hmAr.put("ar3", (double)(1089/1080000));
-		g_hmAr.put("ar4", (double)(1089/10800000));
+		g_hmAr.put("ar1", (double)(1089d/100d));
+		g_hmAr.put("ar2", (double)(1089d/3600d));
+		g_hmAr.put("ar3", (double)(1089d/1080000d));
+		g_hmAr.put("ar4", (double)(1089d/10800000d));
 		g_hmAr.put("ar5", (double)1);
 		g_hmAr.put("ar6", 0.01);
 		g_hmAr.put("ar7", (1/Math.pow(2.54*12/100,2)));
@@ -85,8 +85,8 @@ public class EgovUnitCalcUtil {
 		g_hmWt.put("wt7", (1/453.59237));
 		g_hmWt.put("wt8", (1/3.75));
 		g_hmWt.put("wt9", (1/37.5));
-		g_hmWt.put("wt10", (double)(1/600));
-		g_hmWt.put("wt11", (double)(1/3750));
+		g_hmWt.put("wt10", (double)(1/600d));
+		g_hmWt.put("wt11", (double)(1/3750d));
 	}
 
 	/**

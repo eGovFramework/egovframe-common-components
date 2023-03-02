@@ -38,7 +38,7 @@ public class LeaderSchdulDAO extends EgovComAbstractDAO {
 	/**
 	 * 사용자 목록에 대한 전체 건수를 조회한다.
 	 * @param EmplyrVO - 사용자 VO
-	 * @return int - 사용자 목록 갯수
+	 * @return int - 사용자 목록 개수
 	 * 
 	 * @param emplyrVO
 	 */

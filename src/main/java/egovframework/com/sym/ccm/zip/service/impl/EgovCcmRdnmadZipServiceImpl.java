@@ -94,7 +94,7 @@ public class EgovCcmRdnmadZipServiceImpl extends EgovAbstractServiceImpl impleme
 	}
 
 	/**
-	 * 우편번호 총 갯수를 조회한다.
+	 * 우편번호 총 개수를 조회한다.
 	 */
 	@Override
 	public int selectZipListTotCnt(ZipVO searchVO) throws Exception {

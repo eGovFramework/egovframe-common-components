@@ -327,7 +327,7 @@
 	<!-- 로그인인증제한 변경 > 일반회원 -->
 	<update id="updateLoginIncorrectGNR">
 		<!-- LOCK 해제 -->
-		<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(updateAt,'E')">
+		<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(updateAt,'E')">
 			<![CDATA[
 			UPDATE  COMTNGNRLMBER
 			   SET  LOCK_AT = NULL
@@ -337,7 +337,7 @@
 			]]>
 		</if>
 		<!-- LOCK 설정 -->
-		<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(updateAt,'L')">
+		<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(updateAt,'L')">
 			<![CDATA[
 			UPDATE  COMTNGNRLMBER
 			   SET  LOCK_AT = 'Y'
@@ -347,7 +347,7 @@
 			]]>
 		</if>
 		<!-- LOCK 카운트 설정 -->
-		<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(updateAt,'C')">
+		<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(updateAt,'C')">
 			<![CDATA[
 			UPDATE  COMTNGNRLMBER
 			   SET  LOCK_CNT  = IFNULL(LOCK_CNT,0)+1
@@ -360,7 +360,7 @@
 	<!-- 로그인인증제한 변경 > 기업사용자 -->
 	<update id="updateLoginIncorrectENT">
 		<!-- LOCK 해제 -->
-		<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(updateAt,'E')">
+		<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(updateAt,'E')">
 			<![CDATA[
 			UPDATE  COMTNENTRPRSMBER
 			   SET  LOCK_AT = NULL
@@ -370,7 +370,7 @@
 			]]>
 		</if>
 		<!-- LOCK 설정 -->
-		<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(updateAt,'L')">
+		<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(updateAt,'L')">
 			<![CDATA[
 			UPDATE  COMTNENTRPRSMBER
 			   SET  LOCK_AT = 'Y'
@@ -380,7 +380,7 @@
 			]]>
 		</if>
 		<!-- LOCK 카운트 설정 -->
-		<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(updateAt,'C')">
+		<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(updateAt,'C')">
 			<![CDATA[
 			UPDATE  COMTNENTRPRSMBER
 			   SET  LOCK_CNT  = IFNULL(LOCK_CNT,0)+1
@@ -393,7 +393,7 @@
 	<!-- 로그인인증제한 변경 > 업무사용자 -->
 	<update id="updateLoginIncorrectUSR">
 		<!-- LOCK 해제 -->
-		<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(updateAt,'E')">
+		<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(updateAt,'E')">
 			<![CDATA[
 			UPDATE  COMTNEMPLYRINFO
 			   SET  LOCK_AT = NULL
@@ -403,7 +403,7 @@
 			]]>
 		</if>
 		<!-- LOCK 설정 -->
-		<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(updateAt,'L')">
+		<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(updateAt,'L')">
 			<![CDATA[
 			UPDATE  COMTNEMPLYRINFO
 			   SET  LOCK_AT = 'Y'
@@ -413,7 +413,7 @@
 			]]>
 		</if>
 		<!-- LOCK 카운트 설정 -->
-		<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(updateAt,'C')">
+		<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(updateAt,'C')">
 			<![CDATA[
 			UPDATE  COMTNEMPLYRINFO
 			   SET  LOCK_CNT  = IFNULL(LOCK_CNT,0)+1

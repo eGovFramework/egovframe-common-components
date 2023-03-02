@@ -7,7 +7,6 @@ import org.springframework.stereotype.Repository;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.cop.bbs.service.BoardMaster;
 import egovframework.com.cop.bbs.service.BoardMasterVO;
-import egovframework.com.cop.cmy.service.CommunityVO;
 import egovframework.com.cop.bbs.service.BlogVO;
 import egovframework.com.cop.bbs.service.Blog;
 import egovframework.com.cop.bbs.service.BlogUser;

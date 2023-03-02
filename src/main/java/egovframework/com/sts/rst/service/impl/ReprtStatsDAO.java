@@ -43,7 +43,7 @@ public class ReprtStatsDAO extends EgovComAbstractDAO {
 	}
 
     /**
-	 * 보고서통계목록 페이징 총 갯수를 조회한다.
+	 * 보고서통계목록 페이징 총 개수를 조회한다.
 	 * @param reprtStatsVO - 보고서통계 VO
 	 * @return int
 	 */
@@ -52,7 +52,7 @@ public class ReprtStatsDAO extends EgovComAbstractDAO {
     }
     
     /**
-	 * 보고서통계목록 총 갯수를 조회한다.
+	 * 보고서통계목록 총 개수를 조회한다.
 	 * @param reprtStatsVO - 보고서통계 VO
 	 * @return int
 	 */

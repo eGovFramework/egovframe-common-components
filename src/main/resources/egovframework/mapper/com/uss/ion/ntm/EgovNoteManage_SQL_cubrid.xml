@@ -130,13 +130,13 @@
 	FROM COMTNEMPLYRINFO 
 	WHERE 1=1 
 	 ]]>
-			<if test="searchCondition == 0">
+			<if test="searchCondition == 'USER_NM'">
 			AND USER_NM LIKE '%' || #{searchKeyword} || '%'
 			</if>
-			<if test="searchCondition == 1">
+			<if test="searchCondition == 'EMPLYR_ID'">
 			AND EMPLYR_ID LIKE '%' || #{searchKeyword} || '%'
 			</if>
-			<if test="searchCondition == 2">
+			<if test="searchCondition == 'OFFM_TELNO'">
 			AND OFFM_TELNO LIKE '%' || #{searchKeyword} || '%'
 			</if>
 	 <![CDATA[
@@ -157,13 +157,13 @@
 	     COMTNEMPLYRINFO
 	WHERE 1=1 
 	]]>
-			<if test="searchCondition == 0">
+			<if test="searchCondition == 'USER_NM'">
 			AND USER_NM LIKE '%' || #{searchKeyword} || '%'
 			</if>
-			<if test="searchCondition == 1">
+			<if test="searchCondition == 'EMPLYR_ID'">
 			AND EMPLYR_ID LIKE '%' || #{searchKeyword} || '%'
 			</if>
-			<if test="searchCondition == 2">
+			<if test="searchCondition == 'OFFM_TELNO'">
 			AND OFFM_TELNO LIKE '%' || #{searchKeyword} || '%'
 			</if>
 	</select>

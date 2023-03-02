@@ -75,10 +75,12 @@ public class EgovAddressBookServiceImpl extends EgovAbstractServiceImpl implemen
      */
     public AddressBookVO selectAdressBook(AddressBookVO addressBookVO)throws Exception {
 
-       
         AddressBookVO adbkVO = adbkDAO.selectAdressBook(addressBookVO); 
         
-        adbkVO.setAdbkMan(adbkDAO.selectUserList(adbkVO));
+        if(adbkVO != null) {
+        	adbkVO.setAdbkMan(adbkDAO.selectUserList(adbkVO));
+        }
+        
         return  adbkVO;        
     }    
     

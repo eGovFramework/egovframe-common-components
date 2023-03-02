@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="reprtStatsDAO">
+
+    <resultMap id="reprtStatsList" type="egovframework.com.sts.rst.service.ReprtStatsVO">
+        <result property="reprtTy" column="REPRT_TY"/>
+        <result property="reprtTyNm" column="REPRT_TY_NM"/>
+        <result property="reprtSttus" column="REPRT_STTUS"/>
+        <result property="reprtSttusNm" column="REPRT_STTUS_NM"/>
+        <result property="cnt" column="CNT"/>
+    </resultMap>
+
+    <resultMap id="reprtStats" type="egovframework.com.sts.rst.service.ReprtStatsVO">
+        <result property="reprtId" column="REPRT_ID"/>
+        <result property="reprtNm" column="REPRT_NM"/>
+        <result property="reprtTy" column="REPRT_TY"/>
+        <result property="reprtTyNm" column="REPRT_TY_NM"/>
+        <result property="reprtSttus" column="REPRT_STTUS"/>
+        <result property="reprtSttusNm" column="REPRT_STTUS_NM"/>
+        <result property="userId" column="FRST_REGISTER_ID"/>
+        <result property="regDate" column="FRST_REGIST_PNTTM"/>
+    </resultMap>
+
+    <resultMap id="reprtStatsBarList" type="egovframework.com.sts.rst.service.ReprtStatsVO">
+        <result property="grpRegDate" column="REG_DATE"/>
+        <result property="grpCnt" column="CNT"/>
+    </resultMap>
+
+    <resultMap id="reprtStatsByReprtTyList" type="egovframework.com.sts.rst.service.ReprtStatsVO">
+        <result property="grpReprtTy" column="REPRT_TY"/>
+        <result property="grpReprtTyNm" column="REPRT_TY_NM"/>
+        <result property="grpReprtTyCnt" column="CNT"/>
+    </resultMap>
+
+    <resultMap id="reprtStatsByReprtSttusList" type="egovframework.com.sts.rst.service.ReprtStatsVO">
+        <result property="grpReprtSttus" column="REPRT_STTUS"/>
+        <result property="grpReprtSttusNm" column="REPRT_STTUS_NM"/>
+        <result property="grpReprtSttusCnt" column="CNT"/>
+    </resultMap>
+
+    <select id="selectReprtStatsList" parameterType="egovframework.com.sts.rst.service.ReprtStatsVO" resultMap="reprtStatsList">
+        
+            SELECT  *
+              FROM  (
+            SELECT ROWNUM RNUM, ALL_LIST.*
+              FROM  (
+            SELECT REPRT_TY,
+                   (SELECT CODE_NM FROM COMTCCMMNDETAILCODE
+                     WHERE CODE_ID = 'COM040'
+                       AND CODE = REPRT_TY) AS REPRT_TY_NM,
+                   REPRT_STTUS,
+                   (SELECT CODE_NM FROM COMTCCMMNDETAILCODE
+                     WHERE CODE_ID = 'COM036'
+                       AND CODE = REPRT_STTUS) AS REPRT_STTUS_NM,
+                   COUNT(*) AS CNT
+              FROM COMTNREPRTSTATS
+             WHERE 1 = 1
+        
+            
+            <if test='pmReprtTy != "00"'>AND
+               REPRT_TY = #{pmReprtTy}
+            </if>
+            <if test="pmFromDate != null and pmFromDate != ''">                
+            	<if test="pmToDate != null and pmToDate != ''">AND            	
+                    TO_CHAR(FRST_REGIST_PNTTM,'YYYYMMDD') BETWEEN #{pmFromDate} AND #{pmToDate}
+                </if>                
+            </if>
+                
+            <![CDATA[
+        
+             GROUP BY REPRT_TY,
+                      REPRT_STTUS
+             ORDER BY REPRT_TY,
+                      REPRT_STTUS
+                    ) ALL_LIST
+                    )
+             WHERE  RNUM  > #{firstIndex}
+               AND  RNUM <= #{firstIndex} + #{recordCountPerPage}
+        ]]>
+    </select>
+
+    <select id="selectReprtStatsListTotCnt" parameterType="egovframework.com.sts.rst.service.ReprtStatsVO" resultType="int">
+            SELECT COUNT(*) totcnt
+              FROM (SELECT REPRT_TY,
+                           REPRT_STTUS
+                      FROM COMTNREPRTSTATS
+                     WHERE 1 = 1
+                    <if test='pmReprtTy != "00"'>AND
+               REPRT_TY = #{pmReprtTy}
+            </if>
+                    
+                        <if test="pmFromDate != null and pmFromDate != ''">                
+            	<if test="pmToDate != null and pmToDate != ''">AND            	
+                    TO_CHAR(FRST_REGIST_PNTTM,'YYYYMMDD') BETWEEN #{pmFromDate} AND #{pmToDate}
+                </if>                
+            </if>
+                       
+                        
+                    
+                     GROUP BY REPRT_TY,
+                              REPRT_STTUS) A
+    </select>
+
+    <select id="selectReprtStatsListBarTotCnt" parameterType="egovframework.com.sts.rst.service.ReprtStatsVO" resultType="int">
+                    SELECT COUNT(*) totcnt
+                      FROM COMTNREPRTSTATS
+                     WHERE 1 = 1
+                    
+                   <if test='pmReprtTy != "00"'>AND
+               REPRT_TY = #{pmReprtTy}
+            </if> 
+                    
+                        <if test="pmFromDate != null and pmFromDate != ''">                
+            	<if test="pmToDate != null and pmToDate != ''">AND            	
+                    TO_CHAR(FRST_REGIST_PNTTM,'YYYYMMDD') BETWEEN #{pmFromDate} AND #{pmToDate}
+                </if>                
+            </if>
+                        
+    </select>
+
+    <select id="selectReprtStatsBarList" parameterType="egovframework.com.sts.rst.service.ReprtStatsVO" resultMap="reprtStatsBarList">
+        
+            SELECT
+        
+            <if test="pmDateTy == '%Y'">
+                TO_CHAR(FRST_REGIST_PNTTM, 'YYYY') AS REG_DATE,
+            </if>
+            <if test="pmDateTy == '%Y-%m'">
+                TO_CHAR(FRST_REGIST_PNTTM, 'YYYYMM') AS REG_DATE,
+            </if>
+            <if test="pmDateTy == '%Y-%m-%d'">
+                TO_CHAR(FRST_REGIST_PNTTM, 'YYYYMMDD') AS REG_DATE,
+            </if>
+        
+                   COUNT(*) AS CNT
+              FROM COMTNREPRTSTATS
+             WHERE 1 = 1
+        
+            <if test='pmReprtTy != "00"'>AND
+               REPRT_TY = #{pmReprtTy}
+            </if>
+            
+                <if test="pmFromDate != null and pmFromDate != ''">                
+            	<if test="pmToDate != null and pmToDate != ''">AND            	
+                    TO_CHAR(FRST_REGIST_PNTTM,'YYYYMMDD') BETWEEN #{pmFromDate} AND #{pmToDate}
+                </if>                
+            </if>
+            
+
+            <if test="pmDateTy == '%Y'">
+                GROUP BY TO_CHAR(FRST_REGIST_PNTTM, 'YYYY')
+            </if>
+            <if test="pmDateTy == '%Y-%m'">
+                GROUP BY TO_CHAR(FRST_REGIST_PNTTM, 'YYYYMM')
+            </if>
+            <if test="pmDateTy == '%Y-%m-%d'">
+                GROUP BY TO_CHAR(FRST_REGIST_PNTTM, 'YYYYMMDD')
+            </if>
+        
+             ORDER BY REG_DATE DESC
+        
+    </select>
+
+    <select id="selectReprtStatsByReprtTyList" parameterType="egovframework.com.sts.rst.service.ReprtStatsVO" resultMap="reprtStatsByReprtTyList">
+            SELECT REPRT_TY,
+                   (SELECT CODE_NM FROM COMTCCMMNDETAILCODE
+                     WHERE CODE_ID = 'COM040'
+                       AND CODE = REPRT_TY) AS REPRT_TY_NM,
+                   COUNT(*) AS CNT
+              FROM COMTNREPRTSTATS
+             WHERE 1 = 1
+            
+            <if test='pmReprtTy != "00"'>AND
+               REPRT_TY = #{pmReprtTy}
+            </if>
+            <if test="pmFromDate != null and pmFromDate != ''">                
+            	<if test="pmToDate != null and pmToDate != ''">AND            	
+                    TO_CHAR(FRST_REGIST_PNTTM,'YYYYMMDD') BETWEEN #{pmFromDate} AND #{pmToDate}
+                </if>                
+            </if>
+            
+             GROUP BY REPRT_TY
+             ORDER BY REPRT_TY
+    </select>
+
+    <select id="selectReprtStatsByReprtSttusList" parameterType="egovframework.com.sts.rst.service.ReprtStatsVO" resultMap="reprtStatsByReprtSttusList">
+            SELECT REPRT_STTUS,
+                   (SELECT CODE_NM FROM COMTCCMMNDETAILCODE
+                     WHERE CODE_ID = 'COM036'
+                       AND CODE = REPRT_STTUS) AS REPRT_STTUS_NM,
+                   COUNT(*) AS CNT
+              FROM COMTNREPRTSTATS
+             WHERE 1 = 1
+            
+             <if test='pmReprtTy != "00"'>AND
+               REPRT_TY = #{pmReprtTy}
+            </if>
+            
+                
+                 <if test="pmFromDate != null and pmFromDate != ''">                
+            	<if test="pmToDate != null and pmToDate != ''">AND            	
+                    TO_CHAR(FRST_REGIST_PNTTM,'YYYYMMDD') BETWEEN #{pmFromDate} AND #{pmToDate}
+                </if>                
+            </if>
+            
+             GROUP BY REPRT_STTUS
+             ORDER BY REPRT_STTUS
+    </select>
+
+
+    <select id="selectReprtStats" parameterType="egovframework.com.sts.rst.service.ReprtStatsVO" resultMap="reprtStats">
+            SELECT REPRT_ID,
+                   REPRT_NM,
+                   REPRT_TY,
+                  (SELECT CODE_NM FROM COMTCCMMNDETAILCODE
+                    WHERE CODE_ID = 'COM040'
+                      AND CODE = REPRT_TY) AS REPRT_TY_NM,
+                   REPRT_STTUS,
+                  (SELECT CODE_NM FROM COMTCCMMNDETAILCODE
+                    WHERE CODE_ID = 'COM036'
+                      AND CODE = REPRT_STTUS) AS REPRT_STTUS_NM,
+                   FRST_REGISTER_ID,
+                   FRST_REGIST_PNTTM
+              FROM COMTNREPRTSTATS
+             WHERE 1 = 1
+               AND REPRT_TY = #{reprtTy}
+               AND REPRT_STTUS = #{reprtSttus}
+            
+                
+                  <if test="pmFromDate != null and pmFromDate != ''">                
+            	<if test="pmToDate != null and pmToDate != ''">AND            	
+                    TO_CHAR(FRST_REGIST_PNTTM,'YYYYMMDD') BETWEEN #{pmFromDate} AND #{pmToDate}
+                </if>                
+            </if>
+            
+    </select>
+
+    <insert id="insertReprtStats" parameterType="egovframework.com.sts.rst.service.ReprtStats">
+            INSERT INTO COMTNREPRTSTATS
+                       (REPRT_ID,
+                        REPRT_NM,
+                        REPRT_TY,
+                        REPRT_STTUS,
+                        FRST_REGISTER_ID,
+                        FRST_REGIST_PNTTM,
+                        LAST_UPDUSR_ID,
+                        LAST_UPDT_PNTTM)
+                VALUES (#{reprtId},
+                        #{reprtNm},
+                        #{reprtTy},
+                        #{reprtSttus},
+                        #{userId},
+                        SYSDATE,
+                        #{userId},
+                        SYSDATE)
+    </insert>
+
+    <update id="updateReprtStats" parameterType="egovframework.com.sts.rst.service.ReprtStats">
+            UPDATE COMTNREPRTSTATS
+               SET REPRT_NM = #{reprtNm},
+                   REPRT_TY = #{reprtTy},
+                   REPRT_STTUS = #{reprtSttus},
+                   LAST_UPDUSR_ID = #{userId},
+                   LAST_UPDT_PNTTM = SYSDATE
+             WHERE REPRT_ID = #{reprtId}
+    </update>
+
+    <delete id="deleteReprtStats" parameterType="egovframework.com.sts.rst.service.ReprtStats">
+        
+            DELETE FROM COMTNREPRTSTATS
+             WHERE REPRT_ID = #{reprtId}
+        
+    </delete>
+
+</mapper>

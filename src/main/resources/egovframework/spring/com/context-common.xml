@@ -73,6 +73,7 @@
     </bean>
 
     <!-- custom multi file resolver -->
+    <!-- 확장자 제한 : globals.properties > Globals.fileUpload.Extensions로 설정 -->
     <bean id="local.MultiCommonsMultipartResolver" class="egovframework.com.cmm.web.EgovMultipartResolver">
         <property name="maxUploadSize" value="50000000" />
         <property name="maxInMemorySize" value="100000000" />

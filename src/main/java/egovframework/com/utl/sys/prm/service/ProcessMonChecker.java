@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 
 import egovframework.com.cmm.EgovWebUtil;
+import egovframework.com.cmm.service.FileSystemUtils;
 import egovframework.com.cmm.service.Globals;
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
 
@@ -24,6 +25,7 @@ import egovframework.com.cmm.util.EgovResourceCloseHelper;
  *  수정일               수정자            수정내용
  *  ----------   --------   ---------------------------
  *  2019.12.06   신용호             KISA 보안약점 조치 (부적절한 예외처리)
+ *  2022.11.11   김혜준             시큐어코딩 처리
  *
  * </pre>
  * 
@@ -48,10 +50,7 @@ public class ProcessMonChecker {
 		Process p = null;
 		String procsSttus = null;
 		BufferedReader buf = null;
-		//String result = null;
-		String execStr = "tasklist /fo table /nh /fi \"imagename eq " + processNm + "\"";
 		int cnt = 0;
-		//String str = null;
 
 		try {
 			if (Globals.OS_TYPE == null) {
@@ -61,11 +60,16 @@ public class ProcessMonChecker {
 
 			if ("WINDOWS".equals(Globals.OS_TYPE)) {
 				cnt = -1; //윈도우의 경우 정상 프로세스 일때 두번째 줄에 결과를 리턴한다.
-				p = Runtime.getRuntime().exec(execStr);
+				String execStr = "tasklist /fo table /nh /fi \"imagename eq " + processNm + "\"";
+				// 2022.11.11 시큐어코딩 처리
+				FileSystemUtils util = new FileSystemUtils();
+				p = util.processOperate("EgovNetworkState", execStr);
 
 			} else if ("UNIX".equals(Globals.OS_TYPE)) {
-				String[] cmd = { "/bin/csh", "-c", "ps -A | grep " + EgovWebUtil.removeOSCmdRisk(processNm) }; 
-				p = Runtime.getRuntime().exec(cmd);
+				String cmd = "/bin/csh" + "-c" + "ps -A | grep " + EgovWebUtil.removeOSCmdRisk(processNm); 
+				// 2022.11.11 시큐어코딩 처리
+				FileSystemUtils util = new FileSystemUtils();
+				p = util.processOperate("EgovNetworkState", cmd);
 			}
 
 			if (p == null) {

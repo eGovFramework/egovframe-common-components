@@ -52,9 +52,9 @@ public interface EgovCcmAdministCodeManageService {
 	List<?> selectAdministCodeList(AdministCodeVO searchVO) throws Exception;
 
     /**
-	 * 행정코드 총 갯수를 조회한다.
+	 * 행정코드 총 개수를 조회한다.
      * @param searchVO
-     * @return int(행정코드 총 갯수)
+     * @return int(행정코드 총 개수)
      */
     int selectAdministCodeListTotCnt(AdministCodeVO searchVO) throws Exception;
 

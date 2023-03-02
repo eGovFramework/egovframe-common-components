@@ -64,7 +64,7 @@
 		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
 	
 	</select>
-	<!-- 온라인메뉴얼::목록조회_게시물 총갯수  -->
+	<!-- 온라인메뉴얼::목록조회_게시물 총개수  -->
 	<select id="selectOnlineManualListCnt" parameterType="egovframework.com.uss.olh.omm.service.OnlineManualVO" resultType="int">
 		SELECT
 		COUNT(*) totcnt
@@ -120,9 +120,9 @@
 			C.CODE_NM AS ONLINE_MNL_SE_CODE_NM,
 			A.ONLINE_MNL_DFN,
 			A.ONLINE_MNL_DC,
-			A.FRST_REGIST_PNTTM,
+			DATE_FORMAT(A.FRST_REGIST_PNTTM,'%Y-%m-%d') AS FRST_REGIST_PNTTM,
 			A.FRST_REGISTER_ID,
-			A.LAST_UPDT_PNTTM,
+			DATE_FORMAT(A.LAST_UPDT_PNTTM,'%Y-%m-%d') AS LAST_UPDT_PNTTM,
 			A.LAST_UPDUSR_ID
 		FROM COMTNONLINEMANUAL A
 		LEFT OUTER JOIN 

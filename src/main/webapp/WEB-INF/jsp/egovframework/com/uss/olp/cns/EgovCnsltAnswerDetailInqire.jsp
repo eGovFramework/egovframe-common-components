@@ -21,6 +21,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 <c:set var="pageTitle"><spring:message code="comUssOlpCnm.title"/></c:set>
 <!DOCTYPE html>
@@ -161,7 +162,7 @@ function fn_egov_updt_cnsltdtlsanswer(cnsltId){
 			<th>${title} </th>
 			<td class="cnt">
 				<c:import charEncoding="utf-8" url="/cmm/fms/selectFileInfs.do" >
-					<c:param name="param_atchFileId" value="${result.atchFileId}" />
+					<c:param name="param_atchFileId" value="${egovc:encrypt(result.atchFileId)}" />
 				</c:import>
 			</td>
 		</tr>

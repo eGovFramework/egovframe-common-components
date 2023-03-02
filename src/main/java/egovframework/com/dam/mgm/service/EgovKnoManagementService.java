@@ -26,7 +26,7 @@ public interface EgovKnoManagementService {
 	List<?> selectKnoManagementList(KnoManagementVO searchVO) throws Exception;
 
 	/**
-	 * 지식정보 목록 총 갯수를 조회한다.
+	 * 지식정보 목록 총 개수를 조회한다.
 	 * @param KnoManagementVO - 지식정보 Vo
 	 * @return int - 지식정보 토탈 카운트 수
 	 *

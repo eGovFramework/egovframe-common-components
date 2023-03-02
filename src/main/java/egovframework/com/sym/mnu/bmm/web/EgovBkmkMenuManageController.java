@@ -34,10 +34,11 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  * <pre>
  * << 개정이력(Modification Information) >>
  *
- *   수정일      수정자           수정내용
+ *   수정일       수정자		수정내용
  *  -------    --------    ---------------------------
- *   2009.9.25  윤성록          최초 생성
- *   2011.8.26	정진오			IncludedInfo annotation 추가
+ *   2009.9.25    윤성록		최초 생성
+ *   2011.8.26	  정진오		IncludedInfo annotation 추가
+ *   2022.11.11   김혜준		시큐어코딩 처리
  *
  * </pre>
  */
@@ -72,7 +73,7 @@ public class EgovBkmkMenuManageController {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
         bkmkMenuManageVO.setPageUnit(propertyService.getInt("pageUnit"));
@@ -130,7 +131,7 @@ public class EgovBkmkMenuManageController {
 
         if(!isAuthenticated) {
             //    model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
         String [] temp = checkMenuIds.split(",");
@@ -248,7 +249,7 @@ public class EgovBkmkMenuManageController {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
         beanValidator.validate(bkmkMenuManage, bindingResult);
@@ -257,9 +258,9 @@ public class EgovBkmkMenuManageController {
         }
 
         bkmkMenuManage.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
-        if (isAuthenticated) {
-            bkmkMenuManageService.insertBkmkMenuManage(bkmkMenuManage);
-        }
+
+        // 2022.11.11 시큐어코딩 처리
+        bkmkMenuManageService.insertBkmkMenuManage(bkmkMenuManage);
 
         return "forward:/sym/mnu/bmm/selectBkmkMenuManageList.do";
     }
@@ -281,7 +282,7 @@ public class EgovBkmkMenuManageController {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
-               return "egovframework/com/uat/uia/EgovLoginUsr";
+               return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
         bkmkMenuManageVO.setFirstIndex(0);

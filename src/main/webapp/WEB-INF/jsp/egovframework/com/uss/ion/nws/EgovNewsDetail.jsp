@@ -21,6 +21,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 <c:set var="pageTitle"><spring:message code="comUssIonNws.newsVO.title"/></c:set>
 <!DOCTYPE html>
@@ -97,7 +98,7 @@
 			<th><spring:message code="comUssIonNws.newsVO.atchFile" /></th>
 			<td>
 				<c:import url="/cmm/fms/selectFileInfs.do" charEncoding="utf-8">
-				<c:param name="param_atchFileId" value="${result.atchFileId}" />
+				<c:param name="param_atchFileId" value="${egovc:encrypt(result.atchFileId)}" />
 			</c:import>
 			</td>
 		</tr>

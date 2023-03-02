@@ -33,7 +33,7 @@ public class AnnvrsryManageDAO extends EgovComAbstractDAO {
 	}
 
     /**
-	 * 기념일관리목록 총 갯수를 조회한다.
+	 * 기념일관리목록 총 개수를 조회한다.
 	 * @param annvrsryManageVO - 기념일관리 VO
 	 * @return int
 	 * @exception Exception

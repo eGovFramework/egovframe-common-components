@@ -11,6 +11,7 @@
 
 package egovframework.com.sym.sym.nwk.service;
 
+import java.util.Collections;
 import java.util.List;
 
 public class NtwrkVO extends Ntwrk {
@@ -68,7 +69,7 @@ public class NtwrkVO extends Ntwrk {
 	 * @param ntwrkList the ntwrkList to set
 	 */
 	public void setNtwrkList(List<?> ntwrkList) {
-		this.ntwrkList = ntwrkList;
+		this.ntwrkList = Collections.unmodifiableList(ntwrkList);
 	}
 	/**
 	 * @return the delYn

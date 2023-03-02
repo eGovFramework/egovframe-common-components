@@ -108,7 +108,7 @@ public class EgovAnnvrsryManageController {
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		if (loginVO == null) {
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 		annvrsryManageVO.setUsid(loginVO.getUniqId());
 
@@ -341,7 +341,7 @@ public class EgovAnnvrsryManageController {
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		if (loginVO == null) {
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 		annvrsryManageVO.setUsid(loginVO.getUniqId());
 
@@ -447,15 +447,15 @@ public class EgovAnnvrsryManageController {
 		@RequestParam Map<?, ?> commandMap,
 		BindingResult bindingResult,
 		ModelMap model) throws Exception {
-		String resultMsg = "";
-		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd"); // 상세정보 구분
+		
+//		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd"); // 상세정보 구분
 
 		// 0. Spring Security 사용자권한 처리
 
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		return "egovframework/com/uss/ion/ans/EgovAnnvrsryManageBndeListPop";
@@ -474,7 +474,7 @@ public class EgovAnnvrsryManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "egovframework/com/uat/uia/EgovLoginUsr";
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		if (sCmd.equals("bnde")) {

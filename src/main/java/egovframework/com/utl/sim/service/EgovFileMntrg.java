@@ -27,11 +27,16 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.io.FilenameUtils;
+
+import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.util.EgovBasicLogger;
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
 
 public class EgovFileMntrg extends Thread {
 
+	String storePathString = EgovProperties.getProperty("Globals.fileStorePath");
+	
 	/**
 	 * <p>
 	 * 해당 파일의 변경 유무를 체크하기 위한 Default 초의 stati final 변수, 기본 적용은 값은 60초
@@ -84,7 +89,7 @@ public class EgovFileMntrg extends Thread {
 		//log.debug("EgovFileMntrg start");
 		this.logFile = logFile;
 		this.filename = filename;
-		file = new File(filename);
+		file = new File(storePathString + FilenameUtils.getName(filename));
 		// 1. 최초생성시 현재 디렉토리의 하위정보를 ArrayList에 보관한다. 보관정보 ==>  절대경로 + "," + 최종수정일시 + "," + 사이즈
 		File[] fList = file.listFiles();
 		//2017.03.06 	조성원 	시큐어코딩(ES)-Null Pointer 역참조[CWE-476]
@@ -241,9 +246,9 @@ public class EgovFileMntrg extends Thread {
 			}
 			checkAndConfigure();
 		}
-		if (interrupted) {
-			this.interrupt();
-		}
+
+		// 2022.11.11 시큐어코딩 처리
+		this.interrupt();
 	}
 
 	/**

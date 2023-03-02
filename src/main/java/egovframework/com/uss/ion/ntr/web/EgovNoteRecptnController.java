@@ -9,13 +9,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
+//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
+//import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -49,8 +49,8 @@ public class EgovNoteRecptnController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovNoteRecptnController.class);
 
-    @Autowired
-    private DefaultBeanValidator beanValidator;
+//    @Autowired
+//    private DefaultBeanValidator beanValidator;
 
     /** EgovMessageSource */
     @Resource(name = "egovMessageSource")
@@ -95,7 +95,7 @@ public class EgovNoteRecptnController {
 	    Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 	    if (!isAuthenticated) {
 	        model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-	        return "egovframework/com/uat/uia/EgovLoginUsr";
+	        return "redirect:/uat/uia/egovLoginUsr.do";
 	    }
 
         //로그인 객체 선언

@@ -48,7 +48,7 @@ if(strYear != null && !strYear.equals("") && EgovNumberUtil.getNumberValidCheck(
 }else{
 	
 }
-//년도/월 셋팅
+//연도/월 셋팅
 cal.set(year, month, 1);
 
 int startDay = cal.getMinimum(java.util.Calendar.DATE);
@@ -167,9 +167,9 @@ int newLine = 0;
 			
 			<input class="btns" type="submit" value="<spring:message code="title.inquire" />" title="<spring:message code="title.inquire" />" onclick="fnEgovSchdulSelect(); return false;" style="margin-right:60px" /><!-- 조회 -->
 			
-			<a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulMonthList.do'/>?year=<%=year-1%>&amp;month=<%=month%>" style="vertical-align:-4px"><img alt="이전년도" src="<c:url value='/images/egovframework/com/cmm/icon/icon_prev.png'/>" /></a>
+			<a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulMonthList.do'/>?year=<%=year-1%>&amp;month=<%=month%>" style="vertical-align:-4px"><img alt="이전연도" src="<c:url value='/images/egovframework/com/cmm/icon/icon_prev.png'/>" /></a>
 			<span class="t1"><%=year%><spring:message code="comCopSmtLsm.leaderSchdulMonthList.year" /></span><!-- 년 -->
-			<a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulMonthList.do'/>?year=<%=year+1%>&amp;month=<%=month%>" style="margin-right:16px; vertical-align:-4px"><img alt="다음년도" src="<c:url value='/images/egovframework/com/cmm/icon/icon_next.png'/>" /></a>
+			<a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulMonthList.do'/>?year=<%=year+1%>&amp;month=<%=month%>" style="margin-right:16px; vertical-align:-4px"><img alt="다음연도" src="<c:url value='/images/egovframework/com/cmm/icon/icon_next.png'/>" /></a>
 			
 			
 			

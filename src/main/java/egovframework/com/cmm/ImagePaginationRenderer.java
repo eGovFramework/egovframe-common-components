@@ -24,6 +24,7 @@ import org.springframework.web.context.ServletContextAware;
  */
 public class ImagePaginationRenderer extends AbstractPaginationRenderer implements ServletContextAware{
 
+	@SuppressWarnings("unused")
 	private ServletContext servletContext;
 
 	public ImagePaginationRenderer() {

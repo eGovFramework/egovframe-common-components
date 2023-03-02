@@ -71,7 +71,7 @@
 	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
 	
 	</select>
-	<!-- 온라인메뉴얼::목록조회_게시물 총갯수  -->
+	<!-- 온라인메뉴얼::목록조회_게시물 총개수  -->
 	<select id="selectOnlineManualListCnt" parameterType="egovframework.com.uss.olh.omm.service.OnlineManualVO" resultType="int">
 		SELECT
 		COUNT(*) totcnt

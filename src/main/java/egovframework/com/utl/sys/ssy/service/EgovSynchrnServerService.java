@@ -26,7 +26,7 @@ public interface EgovSynchrnServerService {
 	public List<SynchrnServerVO> selectSynchrnServerList(SynchrnServerVO synchrnServerVO) throws Exception;
 
 	/**
-	 * 동기화대상 서버 목록 총 갯수를 조회한다.
+	 * 동기화대상 서버 목록 총 개수를 조회한다.
 	 * @param synchrnServerVO - 동기화대상 서버 Vo
 	 * @return int - 동기화대상 서버 카운트 수
 	 */
@@ -99,11 +99,11 @@ public interface EgovSynchrnServerService {
 	 * @param stordFilePath - 업로드 경로
 	 * @param synchrnServerVO - 동기화대상 서버 Vo
 	 */
-	public void writeFile(MultipartFile multipartFile, String newName, String stordFilePath, SynchrnServerVO synchrnServerVO) throws Exception;
+	public void writeFile(MultipartFile multipartFile, String newName, SynchrnServerVO synchrnServerVO) throws Exception;
 	
 	/**
 	 * 업로드 파일을 삭제한다.
 	 * @param synchrnServerVO - 동기화대상 서버 Vo
 	 */
-	public void deleteFile(String deleteFiles, String stordFilePath, SynchrnServerVO synchrnServerVO) throws Exception;
+	public void deleteFile(String deleteFiles, SynchrnServerVO synchrnServerVO) throws Exception;
 }

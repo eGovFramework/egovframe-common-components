@@ -33,6 +33,11 @@ public class HttpMntrngChecker {
 
 	// 최대 문자길이
 	static final int MAX_STR_LEN = 1024;
+	
+	// 화이트 리스트
+	static private String[] whiteListURL = { "wwww.egovwebserver.go.kr"
+												,"wwww.egovwasserver.go.kr"
+												,"192.168.100.133" };
 
 	/**
 	 * 시스템에 존재하는 서버의 실행상태 정보를 조회하는 기능
@@ -42,6 +47,18 @@ public class HttpMntrngChecker {
 	*/
 	public static String getPrductStatus(String siteUrl) throws IOException {
 
+		boolean isAuth = false;
+
+		for (String urlPattern : whiteListURL)
+		{
+			if (siteUrl.contains(urlPattern))
+			{
+				isAuth = true;
+				break;
+			}
+		}
+		if ( !isAuth ) throw new IOException("UnRegistered site URL : "+siteUrl);
+		
 		String httpSttusCd = null;
 
 		try {

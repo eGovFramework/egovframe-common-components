@@ -1,6 +1,7 @@
 package egovframework.com.cop.sms.service;
 
 import java.io.Serializable;
+import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -163,7 +164,7 @@ public class Sms implements Serializable {
      * @param recptn the recptn to set
      */
     public void setRecptn(List<SmsRecptn> recptn) {
-        this.recptn = recptn;
+        this.recptn = Collections.unmodifiableList(recptn);
     }
 
     /**

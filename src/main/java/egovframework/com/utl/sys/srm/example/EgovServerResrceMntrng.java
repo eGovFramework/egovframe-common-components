@@ -1,24 +1,25 @@
 package egovframework.com.utl.sys.srm.example;
 
-import java.io.IOException;
+//import java.io.IOException;
 import java.lang.management.ManagementFactory;
 import java.lang.management.OperatingSystemMXBean;
 import java.lang.management.RuntimeMXBean;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
-import java.net.MalformedURLException;
-import java.rmi.registry.LocateRegistry;
-import java.rmi.registry.Registry;
+//import java.net.MalformedURLException;
+//import java.rmi.registry.LocateRegistry;
+//import java.rmi.registry.Registry;
 
-import javax.management.InstanceAlreadyExistsException;
-import javax.management.MBeanRegistrationException;
-import javax.management.MBeanServer;
-import javax.management.MalformedObjectNameException;
-import javax.management.NotCompliantMBeanException;
-import javax.management.ObjectName;
-import javax.management.remote.JMXConnectorServer;
-import javax.management.remote.JMXConnectorServerFactory;
-import javax.management.remote.JMXServiceURL;
+//import javax.management.InstanceAlreadyExistsException;
+//import javax.management.MBeanRegistrationException;
+//import javax.management.MBeanServer;
+//import javax.management.MalformedObjectNameException;
+//import javax.management.NotCompliantMBeanException;
+//import javax.management.ObjectName;
+//import javax.management.remote.JMXConnectorServer;
+//import javax.management.remote.JMXConnectorServerFactory;
+//import javax.management.remote.JMXServiceURL;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,11 +44,14 @@ public class EgovServerResrceMntrng implements EgovServerResrceMntrngMBean {
 				Object value;
 				try {
 					value = method.invoke(operatingSystemMXBean);
+					
 				} catch (IllegalAccessException e) {//KISA 보안약점 조치 (2018-10-29, 윤창원)
 					value = e;
-				} catch (Exception e) {
+				} catch (IllegalArgumentException e) {
 					value = e;
-				} // try
+				} catch (InvocationTargetException e) {
+					value = e;
+				}
 				//System.out.println(method.getName() + " = " + value);
 				return value;
 			} // if

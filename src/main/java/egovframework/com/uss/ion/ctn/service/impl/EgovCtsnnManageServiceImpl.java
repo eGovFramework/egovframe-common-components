@@ -65,7 +65,7 @@ public class EgovCtsnnManageServiceImpl extends EgovAbstractServiceImpl implemen
 	}
 
 	/**
-	 * 경조관리목록 총 갯수를 조회한다.
+	 * 경조관리목록 총 개수를 조회한다.
 	 * @param ctsnnManageVO - 경조관리 VO
 	 * @return int - 경조관리 카운트 수
 	 */
@@ -169,7 +169,7 @@ public class EgovCtsnnManageServiceImpl extends EgovAbstractServiceImpl implemen
 	}
 
 	/**
-	 * 경조승인목록 총 갯수를 조회한다.
+	 * 경조승인목록 총 개수를 조회한다.
 	 * @param ctsnnManageVO - 경조관리 VO
 	 * @return int - 경조관리 카운트 수
 	 */

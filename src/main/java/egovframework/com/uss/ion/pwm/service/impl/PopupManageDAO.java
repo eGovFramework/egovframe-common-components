@@ -89,7 +89,7 @@ public class PopupManageDAO extends EgovComAbstractDAO {
 	}
 
         /**
-         * 팝업창를 관리하기 위해 등록된 팝업창목록 총갯수를 조회한다.
+         * 팝업창를 관리하기 위해 등록된 팝업창목록 총개수를 조회한다.
          * @param popupManageVO - 팝업창 Vo
          * @return List - 팝업창 목록
          *

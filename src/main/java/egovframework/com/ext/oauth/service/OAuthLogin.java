@@ -22,7 +22,7 @@ public class OAuthLogin {
 		this.oauthService = new ServiceBuilder(oauthVO.getClientId())
 				.apiSecret(oauthVO.getClientSecret())
 				.callback(oauthVO.getRedirectUrl())
-				.scope("profile")
+				.defaultScope("profile")
 				.build(oauthVO.getApi20Instance());
 		
 		this.oauthVO = oauthVO;
@@ -45,22 +45,22 @@ public class OAuthLogin {
 	}
 
 	private OAuthUniversalUser parseJson(String body) throws Exception {
-		//System.out.println("============================\n" + body + "\n==================");
+		System.out.println("============================\n" + body + "\n==================");
 		OAuthUniversalUser user = new OAuthUniversalUser();
 		
 		ObjectMapper mapper = new ObjectMapper();
 		JsonNode rootNode = mapper.readTree(body);
 		
 		if (this.oauthVO.isGoogle()) {
-			String id = rootNode.get("id").asText();
+			String id = rootNode.get("sub").asText();
 			user.setServiceName(OAuthConfig.GOOGLE_SERVICE_NAME);
 			if (oauthVO.isGoogle())
 				user.setUserId(id);
-			user.setNickName(rootNode.get("displayName").asText());
-			JsonNode nameNode = rootNode.path("name");
-			String uname = nameNode.get("familyName").asText() + nameNode.get("givenName").asText();
+			//JsonNode nameNode = rootNode.path("name");
+			String uname = rootNode.get("name").asText();
 			user.setUserName(uname);
 
+			/*
 			Iterator<JsonNode> iterEmails = rootNode.path("emails").elements();
 			while(iterEmails.hasNext()) {
 				JsonNode emailNode = iterEmails.next();
@@ -70,6 +70,7 @@ public class OAuthLogin {
 					break;
 				}
 			}
+			*/
 			
 		} else if (this.oauthVO.isNaver()) {
 			user.setServiceName(OAuthConfig.NAVER_SERVICE_NAME);

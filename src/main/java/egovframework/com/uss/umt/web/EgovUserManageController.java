@@ -44,7 +44,8 @@ import org.springmodules.validation.commons.DefaultBeanValidator;
  *   2014.12.08	 이기하			암호화방식 변경(EgovFileScrty.encryptPassword)
  *   2015.06.16	 조정국			수정시 유효성체크 후 에러발생 시 목록으로 이동하여 에러메시지 표시
  *   2015.06.19	 조정국			미인증 사용자에 대한 보안처리 기준 수정 (!isAuthenticated)
- *   2017.07.21  장동한 			로그인인증제한 작업
+ *   2017.07.21  장동한 		로그인인증제한 작업
+ *   2022.11.11  김혜준			시큐어코딩 처리
  *
  * </pre>
  */
@@ -369,11 +370,13 @@ public class EgovUserManageController {
 			return "index";
 		}
 
+		// 2022.11.11 시큐어코딩 처리
 		String checkId = (String) commandMap.get("checkId");
-		checkId = new String(checkId.getBytes("ISO-8859-1"), "UTF-8");
-
-		if (checkId == null || checkId.equals(""))
+		if (checkId == null || checkId.equals("")) {
 			return "forward:/uss/umt/EgovIdDplctCnfirmView.do";
+		} else {
+			checkId = new String(checkId.getBytes("ISO-8859-1"), "UTF-8");
+		}
 
 		int usedCnt = userManageService.checkIdDplct(checkId);
 		model.addAttribute("usedCnt", usedCnt);

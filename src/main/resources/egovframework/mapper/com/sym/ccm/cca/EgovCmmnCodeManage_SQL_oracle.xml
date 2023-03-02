@@ -24,10 +24,10 @@
 			 WHERE  A.CL_CODE = B.CL_CODE
 			 ]]>
 		
-			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCondition,'1')">	<![CDATA[	AND
+			<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(searchCondition,'1')">	<![CDATA[	AND
 				A.CODE_ID LIKE '%' || #{searchKeyword} || '%']]>
 			</if>
-			<if test="@egovframework.com.cmm.util.EgovMybaitsUtil@isEquals(searchCondition,'2')">	<![CDATA[	AND
+			<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(searchCondition,'2')">	<![CDATA[	AND
 				A.CODE_ID_NM LIKE '%' || #{searchKeyword} || '%']]>
 			</if>
 			<if test="searchCondition == 'clCode'">	<![CDATA[	AND

@@ -26,6 +26,7 @@ import egovframework.com.uss.umt.service.EntrprsManageVO;
 import egovframework.com.uss.umt.service.UserDefaultVO;
 import egovframework.com.utl.sim.service.EgovFileScrty;
 
+import org.apache.commons.lang3.StringUtils;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
@@ -49,6 +50,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *   2017.07.21  장동한         로그인인증제한 작업
  *   2020.07.18  윤주호         암호 설정 규칙 강화 및 버그 수정
  *   2021.05.30  정진오         디지털원패스 정보 조회
+ *   2022.07.13  김해준         디지털원패스 정보 조회 null 판별 수정
  * </pre>
  */
 
@@ -330,7 +332,7 @@ public class EgovEntrprsManageController {
 	public String deleteEntrprsMber(@RequestParam("checkedIdForDel") String checkedIdForDel,
 		@ModelAttribute("searchVO") UserDefaultVO userSearchVO, HttpServletRequest request, Model model)
 		throws Exception {
-
+		
 		// 미인증 사용자에 대한 보안처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
@@ -338,14 +340,15 @@ public class EgovEntrprsManageController {
 		}
 
 		// 2021.05.30, 정진오, 디지털원패스 정보 조회
+		// 2022.07.13, 김해준, null 판별 수정
 		LoginVO loginVO = (LoginVO)request.getSession().getAttribute("loginVO");
 		String onepassUserkey = loginVO.getOnepassUserkey();
 		String onepassIntfToken = loginVO.getOnepassIntfToken();
-		if (onepassUserkey.isEmpty() && onepassIntfToken.isEmpty()) {
+		if (StringUtils.isNotEmpty(onepassUserkey) || StringUtils.isNotEmpty(onepassIntfToken)) {
+			model.addAttribute("resultMsg", "digital.onepass.delete.alert");
+		} else {
 			entrprsManageService.deleteEntrprsmber(checkedIdForDel);
 			model.addAttribute("resultMsg", "success.common.delete");
-		} else {
-			model.addAttribute("resultMsg", "digital.onepass.delete.alert");
 		}
 
 		return "forward:/uss/umt/EgovEntrprsMberManage.do";
@@ -389,7 +392,7 @@ public class EgovEntrprsManageController {
 		int totCnt = entrprsManageService.selectEntrprsMberListTotCnt(userSearchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
-
+		
 		//사용자상태코드를 코드정보로부터 조회
 		//		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		//		vo.setCodeId("COM013");

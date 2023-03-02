@@ -71,7 +71,7 @@ public class EgovCcmAdministCodeManageServiceImpl extends EgovAbstractServiceImp
 	}
 
 	/**
-	 * 행정코드 총 갯수를 조회한다.
+	 * 행정코드 총 개수를 조회한다.
 	 */
 	@Override
 	public int selectAdministCodeListTotCnt(AdministCodeVO searchVO) throws Exception {

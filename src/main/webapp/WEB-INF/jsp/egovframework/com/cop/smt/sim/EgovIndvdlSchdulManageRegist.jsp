@@ -333,7 +333,7 @@ String.prototype.replaceAll = function(src, repl){
 <input type="hidden" name="cal_url" id="cal_url" value="<c:url value='/sym/cal/EgovNormalCalPopup.do'/>" />
 <input type="hidden" name="schdulBgnde" id="schdulBgnde" value="" />
 <input type="hidden" name="schdulEndde" id="schdulEndde" value="" />
-<!-- 첨부파일 갯수를 위한 hidden -->
+<!-- 첨부파일 개수를 위한 hidden -->
 <input type="hidden" name="posblAtchFileNumber" id="posblAtchFileNumber" value="3" />
 </form:form>
 

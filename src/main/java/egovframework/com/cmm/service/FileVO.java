@@ -1,8 +1,6 @@
 package egovframework.com.cmm.service;
 
-import java.io.Serializable;
-
-import org.apache.commons.lang3.builder.ToStringBuilder;
+import egovframework.com.cmm.ComDefaultVO;
 
 /**
  * @Class Name : FileVO.java
@@ -20,7 +18,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
  *
  */
 @SuppressWarnings("serial")
-public class FileVO implements Serializable {
+public class FileVO extends ComDefaultVO {
 
     /**
      * 첨부파일 아이디
@@ -228,13 +226,6 @@ public class FileVO implements Serializable {
      */
     public void setStreFileNm(String streFileNm) {
 	this.streFileNm = streFileNm;
-    }
-
-    /**
-     * toString 메소드를 대치한다.
-     */
-    public String toString() {
-	return ToStringBuilder.reflectionToString(this);
     }
 	
 }

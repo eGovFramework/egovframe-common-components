@@ -157,7 +157,7 @@
                    D.ORIGNL_FILE_NM,
                    A.FRST_REGISTER_ID,
                    E.USER_NM,
-                   A.FRST_REGIST_PNTTM
+                   DATE_FORMAT(A.FRST_REGIST_PNTTM,'%Y-%m-%d') AS FRST_REGIST_PNTTM
               FROM COMTNDTAUSESTATS A,
                    COMTNBBSMASTER B,
                    COMTNBBS C,

@@ -80,7 +80,7 @@ public class EgovSystemCntcServiceImpl extends EgovAbstractServiceImpl implement
 	}
 
 	/**
-	 * 시스템연계 총 갯수를 조회한다.
+	 * 시스템연계 총 개수를 조회한다.
 	 */
 	@Override
 	public int selectSystemCntcListTotCnt(SystemCntcVO searchVO) throws Exception {

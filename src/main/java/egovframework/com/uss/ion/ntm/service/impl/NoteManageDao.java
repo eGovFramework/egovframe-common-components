@@ -77,7 +77,7 @@ public class NoteManageDao extends EgovComAbstractDAO {
     /**
 	 * 수신자/참조자선택팝업 건수를 조회한다.
 	 * @param searchVO -조회할 정보가 담긴 VO
-	 * @return int -조회된 데이터 갯수
+	 * @return int -조회된 데이터 개수
 	 * @throws Exception
 	 */
 	public int selectNoteEmpListPopupCnt(ComDefaultVO searchVO) throws Exception{

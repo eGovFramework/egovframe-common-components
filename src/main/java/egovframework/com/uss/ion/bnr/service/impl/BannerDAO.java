@@ -35,7 +35,7 @@ public class BannerDAO extends EgovComAbstractDAO {
 	}
 
     /**
-	 * 배너목록 총 갯수를 조회한다.
+	 * 배너목록 총 개수를 조회한다.
 	 * @param bannerVO BannerVO
 	 * @return int
 	 * @exception Exception

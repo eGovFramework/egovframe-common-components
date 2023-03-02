@@ -19,7 +19,7 @@ function dirname(path) {
 function getActiveScript() {
 	var d = document.getElementsByTagName("script");
 	var path = dirname(d[d.length - 1].src);
-	delete d;
+	d = "";			// 221114	김혜준	2022 시큐어코딩 조치
 	
 	var offset=path.indexOf(location.host)+location.host.length;
 	return path.substring(offset);

@@ -46,7 +46,7 @@ public class EgovDoubleSubmitHelper {
 	
 	public static boolean checkAndSaveToken(String tokenKey) {
 		
-		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
+		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes()).getRequest();
 		HttpSession session = request.getSession();
 		
 		// check session...

@@ -55,7 +55,7 @@ public class EgovProcessMonServiceImpl extends EgovAbstractServiceImpl implement
 	}
 
 	/**
-	 * PROCESS모니터링 목록 총 갯수를 조회한다.
+	 * PROCESS모니터링 목록 총 개수를 조회한다.
 	 * @param processMonVO - PROCESS모니터링 Vo
 	 * @return int - PROCESS모니터링 토탈 카운트 수
 	 *

@@ -45,7 +45,7 @@
 			     ,  B.KNWLDG_TY_NM
 				 ,  D.USER_NM
 				 ,  A.EXPERT_GRAD
-                 ,  A.EXPERT_CONFM_DE
+                 ,  TO_CHAR(TO_DATE(A.EXPERT_CONFM_DE, 'YYYYmmdd'), 'YYYY-mm-dd') AS EXPERT_CONFM_DE
                  ,  A.EXPERT_ID
 			     ,	A.FRST_REGISTER_ID
 			     ,	A.FRST_REGIST_PNTTM
@@ -95,7 +95,7 @@
 			     ,  B.KNWLDG_TY_CODE
 			     ,  A.EXPERT_GRAD
 			     ,  A.EXPERT_DC
-                 ,  A.EXPERT_CONFM_DE
+                 ,  TO_CHAR(TO_DATE(A.EXPERT_CONFM_DE, 'YYYYmmdd'), 'YYYY-mm-dd') AS EXPERT_CONFM_DE
 			     ,	A.FRST_REGISTER_ID
 			     ,	A.FRST_REGIST_PNTTM
 			     ,  A.LAST_UPDUSR_ID

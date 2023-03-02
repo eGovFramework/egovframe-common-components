@@ -156,7 +156,7 @@ public class WikMnthngReprtDAO extends EgovComAbstractDAO {
 	/**
 	 * 주간월간보고 목록에 대한 전체 건수를 조회한다.
 	 * @param WikMnthngReprtVO - 주간월간보고 VO
-	 * @return int - 주간월간보고 목록 갯수
+	 * @return int - 주간월간보고 목록 개수
 	 * 
 	 * @param wikMnthngReprtVO
 	 */

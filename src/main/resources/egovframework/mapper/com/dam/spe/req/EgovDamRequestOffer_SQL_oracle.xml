@@ -24,7 +24,7 @@
 		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
 	</resultMap>
 
-	<!-- 지식정보제공/지식정보요청::목록조회_게시물 총갯수  -->
+	<!-- 지식정보제공/지식정보요청::목록조회_게시물 총개수  -->
 	<select id="selectRequestOfferSpeCnt" parameterType="java.util.Map" resultType="int">
 		SELECT COUNT(EXPERT_ID) CNT FROM COMTNDAMPRO WHERE EXPERT_ID = #{speId}
 	</select>
@@ -82,7 +82,7 @@
 	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
 	
 	</select>
-	<!-- 지식정보제공/지식정보요청::목록조회_게시물 총갯수  -->
+	<!-- 지식정보제공/지식정보요청::목록조회_게시물 총개수  -->
 	<select id="selectRequestOfferCnt" resultType="int">
 		SELECT
 		COUNT(*) totcnt

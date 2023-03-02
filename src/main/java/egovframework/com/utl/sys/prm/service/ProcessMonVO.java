@@ -20,7 +20,7 @@ public class ProcessMonVO extends ProcessMon {
     /** 검색Keyword */
     private String searchKeyword = "";
 
-    /** 페이지갯수 */
+    /** 페이지개수 */
     private int pageUnit = 10;
 
 	/** 페이지사이즈 */

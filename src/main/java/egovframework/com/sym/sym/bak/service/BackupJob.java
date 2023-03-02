@@ -10,9 +10,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import egovframework.com.cmm.util.EgovResourceCloseHelper;
-import egovframework.com.utl.sim.service.EgovFileTool;
-
 import org.apache.commons.compress.archivers.ArchiveEntry;
 import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
@@ -20,12 +17,18 @@ import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
 import org.apache.commons.compress.utils.IOUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import egovframework.com.cmm.EgovWebUtil;
+import egovframework.com.cmm.service.EgovProperties;
+import egovframework.com.cmm.util.EgovResourceCloseHelper;
+import egovframework.com.utl.sim.service.EgovFileTool;
 
 /**
  * 백업작업을 실행하는 Quartz Job 클래스를 정의한다.
@@ -39,6 +42,7 @@ import org.slf4j.LoggerFactory;
  *  -------     --------    ---------------------------
  *  2010.09.06   김진만     최초 생성
  *  2017-02-08	  이정은     시큐어코딩(ES) - 시큐어코딩  부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+ *  2022-11-16	  신용호     시큐어코딩 조치
  * </pre>
  */
 
@@ -46,6 +50,8 @@ public class BackupJob implements Job {
 
 	/** logger */
 	private static final Logger LOGGER = LoggerFactory.getLogger(BackupJob.class);
+	private static final String SOURCE_BASE_DIRECTORY = EgovProperties.getProperty("Globals.SynchrnServerPath");
+	private static final String TARGET_BASE_DIRECTORY = EgovProperties.getProperty("Globals.SynchrnServerPath");
 
 	/**
 	 * (non-Javadoc)
@@ -69,9 +75,9 @@ public class BackupJob implements Job {
 
 		String backupFileNm = null;
 		if ("01".equals(cmprsSe)) {
-			backupFileNm = backupStreDrctry + File.separator + generateBackupFileNm(backupOpertId) + "." + "tar";
+			backupFileNm = File.separator + generateBackupFileNm(backupOpertId) + "." + "tar";
 		} else if ("02".equals(cmprsSe)) {
-			backupFileNm = backupStreDrctry + File.separator + generateBackupFileNm(backupOpertId) + "." + "zip";
+			backupFileNm = File.separator + generateBackupFileNm(backupOpertId) + "." + "zip";
 		} else {
 			LOGGER.error("압축구분값[{}]이 잘못지정되었습니다.", cmprsSe);
 			throw new JobExecutionException("압축구분값[" + cmprsSe + "]이 잘못지정되었습니다.");
@@ -80,9 +86,9 @@ public class BackupJob implements Job {
 		dataMap.put("backupFile", backupFileNm);
 
 		if ("01".equals(cmprsSe)) {
-			result = excuteBackup(backupOrginlDrctry, backupFileNm, ArchiveStreamFactory.TAR);
+			result = excuteBackup(backupOrginlDrctry, backupStreDrctry, backupFileNm, ArchiveStreamFactory.TAR);
 		} else {
-			result = excuteBackup(backupOrginlDrctry, backupFileNm, ArchiveStreamFactory.ZIP);
+			result = excuteBackup(backupOrginlDrctry, backupStreDrctry, backupFileNm, ArchiveStreamFactory.ZIP);
 		}
 
 		// jobContext에 결과값을 저장한다.
@@ -111,11 +117,11 @@ public class BackupJob implements Job {
 	 * @param archiveFormat 저장포맷 (tar, zip)
 	 * @return  result 백업성공여부 True / False
 	*/
-	public boolean excuteBackup(String backupOrginlDrctry, String targetFileNm, String archiveFormat) throws JobExecutionException {
+	public boolean excuteBackup(String backupOrginlDrctry, String backupStreDrctry, String targetFileNm, String archiveFormat) throws JobExecutionException {
 
+		File srcFile = new File(SOURCE_BASE_DIRECTORY + EgovWebUtil.filePathBlackList(backupOrginlDrctry));
 		// 화일명 생성.
-		File targetFile = new File(targetFileNm);
-		File srcFile = new File(backupOrginlDrctry);
+		File targetFile = new File(TARGET_BASE_DIRECTORY + EgovWebUtil.filePathBlackList(backupStreDrctry) + FilenameUtils.getName(targetFileNm));
 
 		if (!srcFile.exists()) {
 			LOGGER.error("백업원본디렉토리[{}]가 존재하지 않습니다.", srcFile.getAbsolutePath());
@@ -191,19 +197,13 @@ public class BackupJob implements Job {
 		} finally {
 			EgovResourceCloseHelper.close(finput, aosOutput, fosOutput);
 
-			try {
-				if (result == false) {
-					//2017.02.08 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-					if(targetFile.delete()){
-						LOGGER.debug("[file.delete] targetFile : File Deletion Success");
-					}else{
-						LOGGER.error("[file.delete] targetFile : File Deletion Fail");
-					}
+			if (result == false) {
+				//2017.02.08 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+				if(targetFile.delete()){
+					LOGGER.debug("[file.delete] targetFile : File Deletion Success");
+				}else{
+					LOGGER.error("[file.delete] targetFile : File Deletion Fail");
 				}
-			} catch (SecurityException ignore) {//KISA 보안약점 조치 (2018-10-29, 윤창원)
-				LOGGER.warn("File delete error (SecurityException)", ignore);
-			} catch (Exception ignore) {
-				LOGGER.warn("File delete error", ignore);
 			}
 		}
 

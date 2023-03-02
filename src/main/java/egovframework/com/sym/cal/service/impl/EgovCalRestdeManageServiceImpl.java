@@ -135,7 +135,7 @@ public class EgovCalRestdeManageServiceImpl extends EgovAbstractServiceImpl impl
 	}
 
 	/**
-	 * 휴일 총 갯수를 조회한다.
+	 * 휴일 총 개수를 조회한다.
 	 */
 	@Override
 	public int selectRestdeListTotCnt(RestdeVO searchVO) throws Exception {

@@ -279,16 +279,16 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 				sMessage = "파일존재하지 않음.";
 				break;
 			case 91:
-				LOGGER.debug("프로그램시트의 cell 갯수 오류.");
-				sMessage = "프로그램시트의 cell 갯수 오류.";
+				LOGGER.debug("프로그램시트의 cell 개수 오류.");
+				sMessage = "프로그램시트의 cell 개수 오류.";
 				break;
 			case 92:
-				LOGGER.debug("메뉴정보시트의 cell 갯수 오류.");
-				sMessage = "메뉴정보시트의 cell 갯수 오류.";
+				LOGGER.debug("메뉴정보시트의 cell 개수 오류.");
+				sMessage = "메뉴정보시트의 cell 개수 오류.";
 				break;
 			case 93:
-				LOGGER.debug("엑셀 시트갯수 오류.");
-				sMessage = "엑셀 시트갯수 오류.";
+				LOGGER.debug("엑셀 시트개수 오류.");
+				sMessage = "엑셀 시트개수 오류.";
 				break;
 			case 95:
 				LOGGER.debug("메뉴정보 입력시 에러.");
@@ -325,9 +325,9 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 			message = "99";	//프로그램목록테이블 데이타 존재오류.
 			message = "99";	//메뉴정보테이블 데이타 존재오류.
 			message = "90";	//파일존재하지 않음.
-			message = "91";	//프로그램시트의 cell 갯수 오류
-			message = "92";	//메뉴정보시트의 cell 갯수 오류
-			message = "93";	//엑셀 시트갯수 오류
+			message = "91";	//프로그램시트의 cell 개수 오류
+			message = "92";	//메뉴정보시트의 cell 개수 오류
+			message = "93";	//엑셀 시트개수 오류
 			message = "95";	//메뉴정보 입력시 에러
 			message = "96";	//프로그램목록입력시 에러
 			message = "0";	//일괄배치처리 완료
@@ -341,7 +341,7 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 			} //메뉴정보테이블 데이타 존재오류.
 
 			HSSFWorkbook hssfWB = (HSSFWorkbook) excelZipService.loadWorkbook(inputStream);
-			// 엑셀 파일 시트 갯수 확인 sheet = 2  첫번째시트 = 프로그램목록  두번째시트 = 메뉴목록
+			// 엑셀 파일 시트 개수 확인 sheet = 2  첫번째시트 = 프로그램목록  두번째시트 = 메뉴목록
 			if (hssfWB.getNumberOfSheets() == 2) {
 				HSSFSheet progrmSheet = hssfWB.getSheetAt(0); //프로그램목록 시트 가져오기
 				HSSFSheet menuSheet = hssfWB.getSheetAt(1); //메뉴정보 시트 가져오기
@@ -352,12 +352,12 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 
 				// 프로그램 시트 파일 데이타 검증 cell = 5개
 				if (progrmSheetRowCnt != 5) {
-					return requestValue = "91"; //프로그램시트의 cell 갯수 오류
+					return requestValue = "91"; //프로그램시트의 cell 개수 오류
 				}
 
 				// 메뉴목록 시트 파일 데이타 검증  cell = 8개
 				if (menuSheetRowCnt != 8) {
-					return requestValue = "92"; //메뉴정보시트의 cell 갯수 오류
+					return requestValue = "92"; //메뉴정보시트의 cell 개수 오류
 				}
 
 				/* sheet1번 = 프로그램목록 ,  sheet2번 = 메뉴정보 */
@@ -378,7 +378,7 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 					return requestValue = "96"; // 프로그램목록입력시 에러
 				}
 			} else {
-				return requestValue = "93"; // 엑셀 시트갯수 오류
+				return requestValue = "93"; // 엑셀 시트개수 오류
 			}
 		} catch (BaseException e) {
 			LOGGER.error("["+ e.getClass() +"] : ", e.getMessage());
@@ -402,12 +402,12 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 		int count = 0;
 		boolean success = false;
 		try {
-			int rows = progrmSheet.getPhysicalNumberOfRows(); //행 갯수 가져오기
+			int rows = progrmSheet.getPhysicalNumberOfRows(); //행 개수 가져오기
 			for (int j = 1; j < rows; j++) { //row 루프
 				ProgrmManageVO vo = new ProgrmManageVO();
 				HSSFRow row = progrmSheet.getRow(j); //row 가져오기
 				if (row != null) {
-					//int cells = row.getPhysicalNumberOfCells(); //cell 갯수 가져오기
+					//int cells = row.getPhysicalNumberOfCells(); //cell 개수 가져오기
 
 					HSSFCell cell = null;
 					cell = row.getCell(0); //프로그램명
@@ -462,12 +462,12 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 		boolean success = false;
 		int count = 0;
 		try {
-			int rows = menuSheet.getPhysicalNumberOfRows(); //행 갯수 가져오기
+			int rows = menuSheet.getPhysicalNumberOfRows(); //행 개수 가져오기
 			for (int j = 1; j < rows; j++) { //row 루프
 				MenuManageVO vo = new MenuManageVO();
 				HSSFRow row = menuSheet.getRow(j); //row 가져오기
 				if (row != null) {
-					//int cells = row.getPhysicalNumberOfCells(); //cell 갯수 가져오기
+					//int cells = row.getPhysicalNumberOfCells(); //cell 개수 가져오기
 					HSSFCell cell = null;
 					cell = row.getCell(0); //메뉴번호
 					if (cell != null) {
@@ -564,8 +564,7 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 	 * @exception Exception
 	 */
 	private boolean deleteAllProgrm() throws Exception {
-		progrmManageDAO.deleteAllProgrm();
-		return true;
+		return progrmManageDAO.deleteAllProgrm();
 	}
 
 	/**
@@ -574,7 +573,6 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 	 * @exception Exception
 	 */
 	private boolean deleteAllProgrmDtls() throws Exception {
-		progrmManageDAO.deleteAllProgrmDtls();
-		return true;
+		return progrmManageDAO.deleteAllProgrmDtls();
 	}
 }

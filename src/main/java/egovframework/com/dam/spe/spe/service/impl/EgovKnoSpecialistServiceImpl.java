@@ -43,7 +43,7 @@ public class EgovKnoSpecialistServiceImpl extends EgovAbstractServiceImpl implem
 	}
 
 	/**
-	 * 지식전문가 목록 총 갯수를 조회한다.
+	 * 지식전문가 목록 총 개수를 조회한다.
 	 * @param KnoSpecialistVO - 지식전문가 Vo
 	 * @return int - 지식전문가 토탈 카운트 수
 	 *

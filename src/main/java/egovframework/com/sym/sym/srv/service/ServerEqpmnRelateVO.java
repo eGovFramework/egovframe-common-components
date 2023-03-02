@@ -1,5 +1,6 @@
 package egovframework.com.sym.sym.srv.service;
 
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -54,7 +55,7 @@ public class ServerEqpmnRelateVO extends ServerEqpmnRelate {
 	 * @param serverEqpmnRelateList the serverEqpmnRelateList to set
 	 */
 	public void setServerEqpmnRelateList(List<?> serverEqpmnRelateList) {
-		this.serverEqpmnRelateList = serverEqpmnRelateList;
+		this.serverEqpmnRelateList = Collections.unmodifiableList(serverEqpmnRelateList);
 	}
 
 	/**

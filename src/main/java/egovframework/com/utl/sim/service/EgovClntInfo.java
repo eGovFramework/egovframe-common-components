@@ -21,6 +21,9 @@ import egovframework.com.cmm.service.Globals;
 
 import javax.servlet.http.HttpServletRequest;
 
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
 public class EgovClntInfo {
 	
 	/**
@@ -31,8 +34,37 @@ public class EgovClntInfo {
 	*/
 	public static String getClntIP(HttpServletRequest request) throws Exception {
 		
-		// IP주소
-		String ipAddr = request.getRemoteAddr();
+		String ipAddr = null;
+		
+		HttpServletRequest req = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
+		 
+		 ipAddr = request.getHeader("X-Forwarded-For");
+ 		 if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) { 
+ 			ipAddr = req.getHeader("Proxy-Client-IP"); 
+		 } 
+		 if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) { 
+			 ipAddr = req.getHeader("WL-Proxy-Client-IP"); 
+		 } 
+		 if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) { 
+			 ipAddr = req.getHeader("HTTP_CLIENT_IP"); 
+		 } 
+		 if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) { 
+			 ipAddr = req.getHeader("HTTP_X_FORWARDED_FOR"); 
+		 }
+		 if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) { 
+			 ipAddr = req.getHeader("X-Real-IP"); 
+		 }
+		 if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) { 
+			 ipAddr = req.getHeader("X-RealIP"); 
+		 }
+		 if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) { 
+			 ipAddr = req.getHeader("REMOTE_ADDR");
+		 }
+		 if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) { 
+			 ipAddr = req.getRemoteAddr(); 
+		 }
+		 
+		// IP주소		
 		return ipAddr;
 	}
 	

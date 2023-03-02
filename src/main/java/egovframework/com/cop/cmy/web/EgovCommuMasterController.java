@@ -44,6 +44,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *   							커뮤니티 탈퇴 요청시 승인자를 선택하므로 탈퇴 승인자가 자신이 될 수 없음에도
  *   							세션에서 가져온 값(탈퇴신청자)을 탈퇴승인자로 설정하도록 되어 있었음
  *   2016.06.13 김연호          표준프레임워크 v3.6 개선
+ *   2022.11.11 김혜준          시큐어코딩 처리
  * </pre>
  */
 
@@ -133,7 +134,7 @@ public class EgovCommuMasterController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
    	 	// KISA 보안취약점 조치 (2018-12-10, 신용호)
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
         
 		beanValidator.validate(community, bindingResult);
@@ -144,25 +145,21 @@ public class EgovCommuMasterController {
 	
 		community.setRegistSeCode("REGC02");
 		community.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-	
-		String cmmntyId = "";
-		if (isAuthenticated) {
-		    cmmntyId = egovCommuMasterService.insertCommuMaster(community);
 
-		    //커뮤니티 개설자의 정보를 등록한다.
-		    CommunityUserVO cmmntyUserVO = new CommunityUserVO();
-		    cmmntyUserVO.setCmmntyId(cmmntyId);
-		    cmmntyUserVO.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-		    cmmntyUserVO.setMngrAt("Y");
-		    cmmntyUserVO.setMberSttus("P");
-		    cmmntyUserVO.setUseAt("Y");
-		    cmmntyUserVO.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-		    
-		    egovCommuManageService.insertCommuUserRqst(cmmntyUserVO);
-		}
-		
-		
-	
+		// 2022.11.11 시큐어코딩 처리
+		String cmmntyId = egovCommuMasterService.insertCommuMaster(community);
+
+	    //커뮤니티 개설자의 정보를 등록한다.
+	    CommunityUserVO cmmntyUserVO = new CommunityUserVO();
+	    cmmntyUserVO.setCmmntyId(cmmntyId);
+	    cmmntyUserVO.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+	    cmmntyUserVO.setMngrAt("Y");
+	    cmmntyUserVO.setMberSttus("P");
+	    cmmntyUserVO.setUseAt("Y");
+	    cmmntyUserVO.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+	    
+	    egovCommuManageService.insertCommuUserRqst(cmmntyUserVO);
+
 		return "forward:/cop/cmy/selectCommuMasterList.do";
     }
 
@@ -225,7 +222,7 @@ public class EgovCommuMasterController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		// KISA 보안취약점 조치 (2018-12-10, 신용호)
         if(!isAuthenticated) {
-            return "egovframework/com/uat/uia/EgovLoginUsr";
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 	
 		beanValidator.validate(community, bindingResult);

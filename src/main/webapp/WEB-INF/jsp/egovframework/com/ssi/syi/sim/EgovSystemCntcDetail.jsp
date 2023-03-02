@@ -9,6 +9,7 @@
   * @ -------    --------    ---------------------------
   * @ 2009.08.11   이중호              최초 생성
   *   2018.09.10   신용호              표준프레임워크 v3.8 개선
+  *   2022.06.13   김해준				승인여부 로직 수정
   *
   *  @author 공통컴포넌트팀
   *  @since 2009.08.11
@@ -48,10 +49,6 @@ function fn_egov_pageview(pageNo){
 /*
  * 관리자로 접근시 처리
  */
-<c:if test="${selfUri eq '/ssi/syi/scm/getConfirmSystemCntcDetail.do'}">
-	<c:set var="listUri" value="/ssi/syi/scm/getConfirmSystemCntcList.do" />
-	<c:set var="confirmTF" value="T"/>
-
 /* ********************************************************
  * 승인/승인취소 처리 함수
  ******************************************************** */
@@ -59,14 +56,12 @@ function fn_egov_confirm_SystemCntc(confmAt){
 	if (confirm((confmAt=='Y')?"<spring:message code="common.acknowledgement.msg"/>":"<spring:message code="common.acknowledgementcancel.msg"/>")) {
 		var varForm				    = document.all["Form"];
 		varForm.cmd.value			= "Confirm";
-		varForm.action              = "<c:url value='${selfUri}'/>";
+		varForm.action              = "<c:url value='/ssi/syi/scm/getConfirmSystemCntcDetail.do'/>";
 		varForm.cntcId.value		= "<c:out value='${result.cntcId}'/>";
 		varForm.confmAt.value		= confmAt;
 		varForm.submit();
 	}
 }
-</c:if>
-
 /*
  * 업무사용자로 접근시 처리
  */
@@ -225,45 +220,34 @@ function fn_egov_list_SystemCntc(){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		
-		<% /** * 업무사용자 처리 */ %>
-		<c:if test="${confirmTF eq 'F'}">
-
-			<% /** * 승인여부 처리 */ %>
-			<c:if test="${result.confmAt eq 'N'}">
-				<form name="formUpdt" action="<c:url value='/ssi/syi/sim/updateSystemCntc.do'/>" method="post" style="display:inline-block; vertical-align:top">
-				<input class="s_submit" type="submit" value="<spring:message code="button.update" />" title="<spring:message code="button.update" />" onclick="fn_egov_modify_SystemCntc(); return false;"><!-- 수정 -->
-				<input name="cntcId"        type="hidden" value="<c:out value='${result.cntcId}'/>">
-				</form>
-				
-				<form name="formDelete" action="<c:url value='/ssi/syi/sim/removeSystemCntc.do'/>" method="post" style="display:inline-block; vertical-align:top">
-				<input class="s_submit" type="submit" value="<spring:message code="button.delete" />" title="<spring:message code="button.delete" />" onclick="fn_egov_delete_SystemCntc(); return false;"><!-- 삭제 -->
-				<input name="cntcId"        type="hidden" value="<c:out value='${result.cntcId}'/>">
-				</form>
-			</c:if>
+		<% /** * 승인여부 처리 */ %>
+		<c:if test="${result.confmAt eq 'N'}">
+			<form name="formUpdt" action="<c:url value='/ssi/syi/sim/updateSystemCntc.do'/>" method="post" style="display:inline-block; vertical-align:top">
+			<input class="s_submit" type="submit" value="<spring:message code="button.update" />" title="<spring:message code="button.update" />" onclick="fn_egov_modify_SystemCntc(); return false;"><!-- 수정 -->
+			<input name="cntcId"        type="hidden" value="<c:out value='${result.cntcId}'/>">
+			</form>
+			
+			<form name="formDelete" action="<c:url value='/ssi/syi/sim/removeSystemCntc.do'/>" method="post" style="display:inline-block; vertical-align:top">
+			<input class="s_submit" type="submit" value="<spring:message code="button.delete" />" title="<spring:message code="button.delete" />" onclick="fn_egov_delete_SystemCntc(); return false;"><!-- 삭제 -->
+			<input name="cntcId"        type="hidden" value="<c:out value='${result.cntcId}'/>">
+			</form>
+			
+			<form name="formConfirm" action="<c:url value='${selfUri}'/>" method="post" style="display:inline-block; vertical-align:top">
+			<input class="s_submit" type="submit" value="<spring:message code="button.acknowledgment" />" title="<spring:message code="button.acknowledgment" />" onclick="fn_egov_confirm_SystemCntc('Y'); return false;"><!-- 승인 -->
+			<input name="cntcId"  type="hidden" value="<c:out value='${result.cntcId}'/>">
+			<input name="confmAt" type="hidden" value="Y">
+			<input name="cmd"     type="hidden" value="Confirm">
+			</form>
 		</c:if>
-		
-		
-		<% /** * 업무사용자 처리 */ %>
-		<c:if test="${confirmTF eq 'T'}">
-
-			<% /** * 승인여부 처리 */ %>
-			<c:if test="${result.confmAt eq 'N'}">
-				<form name="formConfirm" action="<c:url value='${selfUri}'/>" method="post" style="display:inline-block; vertical-align:top">
-				<input class="s_submit" type="submit" value="<spring:message code="button.acknowledgment" />" title="<spring:message code="button.acknowledgment" />" onclick="fn_egov_confirm_SystemCntc('Y'); return false;"><!-- 승인 -->
-				<input name="cntcId"  type="hidden" value="<c:out value='${result.cntcId}'/>">
-				<input name="confmAt" type="hidden" value="Y">
-				<input name="cmd"     type="hidden" value="Confirm">
-				</form>
-			</c:if>
-
-			<c:if test="${result.confmAt eq 'Y'}">
-				<form name="formConfirmCancel" action="<c:url value='${selfUri}'/>" method="post" style="display:inline-block; vertical-align:top">
-				<input class="s_submit" type="submit" value="<spring:message code="button.cancelAcknowledgment" />" title="<spring:message code="button.cancelAcknowledgment" />" onclick="fn_egov_confirm_SystemCntc('N'); return false;"><!-- 승인취소 -->
-				<input name="cntcId"  type="hidden" value="<c:out value='${result.cntcId}'/>">
-				<input name="confmAt" type="hidden" value="N">
-				<input name="cmd"     type="hidden" value="Confirm">
-				</form>
-			</c:if>
+	
+		<% /** * 승인여부 처리 */ %>
+		<c:if test="${result.confmAt eq 'Y'}">
+			<form name="formConfirmCancel" action="<c:url value='${selfUri}'/>" method="post" style="display:inline-block; vertical-align:top">
+			<input class="s_submit" type="submit" value="<spring:message code="button.cancelAcknowledgment" />" title="<spring:message code="button.cancelAcknowledgment" />" onclick="fn_egov_confirm_SystemCntc('N'); return false;"><!-- 승인취소 -->
+			<input name="cntcId"  type="hidden" value="<c:out value='${result.cntcId}'/>">
+			<input name="confmAt" type="hidden" value="N">
+			<input name="cmd"     type="hidden" value="Confirm">
+			</form>
 		</c:if>
 		
 		<form name="formList" action="<c:url value='${listUri}'/>" method="post" style="display:inline-block; vertical-align:top">

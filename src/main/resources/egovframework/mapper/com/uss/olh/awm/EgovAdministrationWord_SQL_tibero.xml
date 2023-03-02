@@ -17,14 +17,14 @@
 		<result property="administWordId" column="ADMINIST_WORD_ID"/>
 		<result property="administWordNm" column="ADMINIST_WORD_NM"/>
 		<result property="administWordEngNm" column="ADMINIST_WORD_ENG_NM"/>
-		<result property="administWordAbrv" column="ADMINIST_WORD_ABRV_NM"/>
+		<result property="administWordAbrv" column="ADMINIST_WORD_ABRV"/>
 		<result property="themaRelm" column="THEMA_RELM"/>
 		<result property="wordDomn" column="WORD_SE"/>
 		<result property="wordDomnNm" column="WORD_SE_NM"/>
 		<result property="stdWord" column="RELATE_STD_WORD"/>
 		<result property="administWordDf" column="ADMINIST_WORD_DFN"/>
 		<result property="administWordDc" column="ADMINIST_WORD_DC"/>
-		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
+		<result property="frstRegisterPnttm" column="FRST_REGISTER_PNTTM"/>
 		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
 		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
 		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
@@ -104,7 +104,7 @@
 	WHERE RNUM BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}
 	
 	</select>
-	<!-- 행정전문용어사전::목록조회_게시물 총갯수  -->
+	<!-- 행정전문용어사전::목록조회_게시물 총개수  -->
 	<select id="selectAdministrationWordListCnt" resultType="int">
 		SELECT
 		COUNT(*) totcnt
@@ -174,14 +174,14 @@
 			A.ADMINIST_WORD_ID,
 			A.ADMINIST_WORD_NM,
 			A.ADMINIST_WORD_ENG_NM,
-			A.ADMINIST_WORD_ABRV_NM,
+			A.ADMINIST_WORD_ABRV_NM	ADMINIST_WORD_ABRV,
 			A.THEMA_RELM,
 			A.WORD_SE,
 			C.CODE_NM AS WORD_SE_NM,
 			A.RELATE_STD_WORD,
 			A.ADMINIST_WORD_DFN,
 			A.ADMINIST_WORD_DC,
-			A.FRST_REGIST_PNTTM,
+			A.FRST_REGIST_PNTTM	FRST_REGISTER_PNTTM,
 			A.FRST_REGISTER_ID,
 			A.LAST_UPDT_PNTTM,
 			A.LAST_UPDUSR_ID

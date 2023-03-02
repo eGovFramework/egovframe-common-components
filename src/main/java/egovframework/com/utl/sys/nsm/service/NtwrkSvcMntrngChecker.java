@@ -48,10 +48,6 @@ public class NtwrkSvcMntrngChecker {
 			//log.error("네트워크서비스모니터링 에러 : " + e.getMessage());
 			//log.debug(e.getMessage(), e);
 			return new NtwrkSvcMntrngResult(false, e);
-		} catch (Exception e) {
-			//log.error("네트워크서비스모니터링 에러 : " + e.getMessage());
-			//log.debug(e.getMessage(), e);
-			return new NtwrkSvcMntrngResult(false, e);
 		} finally {
 			if (clientSocket != null) {
 				try {
@@ -61,11 +57,6 @@ public class NtwrkSvcMntrngChecker {
 					return new NtwrkSvcMntrngResult(false, e);
 
 					// 2017-03-03   조성원      시큐어코딩(ES) - 부적절한 예외 처리[CWE-253, CWE-440, CWE-756]
-				} catch (Exception e) {
-
-					LOGGER.error("[" + e.getClass() + "] : ", e.getMessage());
-					return new NtwrkSvcMntrngResult(false, e);
-
 				}
 			}
 		}

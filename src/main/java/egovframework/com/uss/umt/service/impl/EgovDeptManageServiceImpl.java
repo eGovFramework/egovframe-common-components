@@ -29,7 +29,7 @@ public class EgovDeptManageServiceImpl extends EgovAbstractServiceImpl implement
 	}
 
 	/**
-	 * 부서목록 총 갯수를 조회한다.
+	 * 부서목록 총 개수를 조회한다.
 	 * @param deptManageVO - 부서 Vo
 	 * @return int - 부서 카운트 수
 	 * 

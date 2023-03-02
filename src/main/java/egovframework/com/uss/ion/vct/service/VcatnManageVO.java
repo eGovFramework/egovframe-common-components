@@ -47,17 +47,17 @@ public class VcatnManageVO extends VcatnManage implements Serializable {
 	private String usid;
 
 	/**
-	*  발생연차갯수
+	*  발생연차개수
 	*/
 	private double occrncYrycCo = 0.0;
 
 	/**
-	*  사용연차갯수
+	*  사용연차개수
 	*/
 	private double useYrycCo = 0.0;
 
 	/**
-	*  잔여연차갯수
+	*  잔여연차개수
 	*/
 	private double remndrYrycCo = 0.0;
 

@@ -5,13 +5,13 @@
 	
 	<select id="selectMenuCreatManageList_D" parameterType="comDefaultVO" resultType="egovMap">
 		
-			SELECT  AUTHOR_CODE   AS authorCode,
-					AUTHOR_NM     AS authorNm,
-					AUTHOR_DC     AS authorDc,
-					AUTHOR_CREAT_DE AS authorCreatDe,
+			SELECT  AUTHOR_CODE   AS AUTHOR_CODE,
+					AUTHOR_NM     AS AUTHOR_NM,
+					AUTHOR_DC     AS AUTHOR_DC,
+					AUTHOR_CREAT_DE AS AUTHOR_CREAT_DE,
 				   (SELECT COUNT(B.AUTHOR_CODE)
 					FROM   COMTNMENUCREATDTLS B
-					WHERE  B.AUTHOR_CODE = A.AUTHOR_CODE ) AS chkYeoBu
+					WHERE  B.AUTHOR_CODE = A.AUTHOR_CODE ) AS CHK_YEO_BU
 			FROM    COMTNAUTHORINFO A
 			WHERE   A.AUTHOR_CODE like CONCAT('%', #{searchKeyword}, '%') 
 			LIMIT  #{recordCountPerPage} OFFSET #{firstIndex}
@@ -29,14 +29,14 @@
 	<select id="selectMenuCreatList_D" parameterType="egovframework.com.sym.mnu.mcm.service.MenuCreatVO" resultType="egovMap">
 		
 			SELECT
-				  A.MENU_NO AS menuNo
-				, A.MENU_ORDR AS menuOrdr
-				, A.MENU_NM AS menuNm
-				, A.UPPER_MENU_NO AS upperMenuId
+				  A.MENU_NO AS MENU_NO
+				, A.MENU_ORDR AS MENU_ORDR
+				, A.MENU_NM AS MENU_NM
+				, A.UPPER_MENU_NO AS UPPER_MENU_ID
 			    , (SELECT count(B.MENU_NO) 
 			         FROM COMTNMENUCREATDTLS B   
 			        WHERE B.MENU_NO  = A.MENU_NO 
-			          AND B.AUTHOR_CODE = #{authorCode}) AS chkYeoBu
+			          AND B.AUTHOR_CODE = #{authorCode}) AS CHK_YEO_BU
 			FROM COMTNMENUINFO A
 			WHERE A.MENU_NO > 0
 			ORDER BY A.MENU_ORDR

@@ -62,7 +62,7 @@ function fn_egov_change_Calendar(form){
 	    <td width="400" class="title_left"><img src="<c:url value='/images/egovframework/com/cmm/icon/tit_icon.gif' />" width="16" height="16" hspace="3" align="absmiddle" alt="제목아이콘이미지">&nbsp;행정달력 연간</td>
 	  	<td>
 	  		<div style={text-align:right;}>
-	  		<select name="year" onChange="javascript:fn_egov_change_Calendar(document.administYearCalendar);"  title="년도선택">
+	  		<select name="year" onChange="javascript:fn_egov_change_Calendar(document.administYearCalendar);"  title="연도선택">
 	  			<c:if test="${year_b3 > 0 && year_b3 < 10000}"><option value="${year_b3}"                    >${year_b3}</option></c:if>
 	  			<c:if test="${year_b2 > 0 && year_b2 < 10000}"><option value="${year_b2}"                    >${year_b2}</option></c:if>
 	  			<c:if test="${year_b1 > 0 && year_b1 < 10000}"><option value="${year_b1}"                    >${year_b1}</option></c:if>

@@ -119,8 +119,8 @@ function fncVcatnManageDetail(applcntId,vcatnSe,bgnde,endde){
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
 			<li>
-				<label for=""><spring:message code="comUssIonVct.vcatnManageList.vctYr"/> : </label><!-- 휴가년도 -->
-				<select name="searchKeyword" title="<spring:message code="comUssIonVct.vcatnManageList.vctYr"/>"><!-- 휴가년도 -->
+				<label for=""><spring:message code="comUssIonVct.vcatnManageList.vctYr"/> : </label><!-- 휴가연도 -->
+				<select name="searchKeyword" title="<spring:message code="comUssIonVct.vcatnManageList.vctYr"/>"><!-- 휴가연도 -->
 					<option value="" selected ><spring:message code="comUssIonVct.vcatnManageList.selectedAll"/></option><!-- 전체 -->
 					<c:forEach items="${yearList}" var="result" varStatus="status">
 					<option value="<c:out value="${result }"/>"  <c:if test="${vcatnManageVO.searchKeyword eq result}">selected</c:if>><c:out value="${result }"/></option>

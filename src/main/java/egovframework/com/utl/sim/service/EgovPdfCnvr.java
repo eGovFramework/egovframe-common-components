@@ -28,6 +28,7 @@ import java.util.Iterator;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.multipart.MultipartFile;
@@ -49,14 +50,13 @@ public class EgovPdfCnvr {
 	static final char FILE_SEPARATOR = File.separatorChar;
 	// 최대 문자길이
 	static final int MAX_STR_LEN = 1024;
-
 	public static final int BUFF_SIZE = 2048;
-
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovPdfCnvr.class);
+	private static final String STORE_FILE_PATH = EgovProperties.getProperty("Globals.fileStorePath");
 
 	/**
 	 * <pre>
-	 * Comment : doc, xls 파일등을 PDF변환 변환한다. .
+	 * Comment : doc, xls 파일등을 PDF변환 변환한다.
 	 * </pre>
 	 * @param String pdfFileSrc        doc, xls 파일 전체경로
 	 * @param String targetPdf         변환파일명(확장자 제외)
@@ -68,65 +68,64 @@ public class EgovPdfCnvr {
 		boolean status = false;
 
 		try {
-			//MultipartHttpServletRequest mptRequest = (MultipartHttpServletRequest) request;
 			MultipartHttpServletRequest mptRequest = WebUtils.getNativeRequest(request,MultipartHttpServletRequest.class);
-			if(mptRequest!= null) { //2022.01 Possible null pointer dereference due to return value of called method 조치
+
+			// 2022.01 Possible null pointer dereference due to return value of called method 조치
+			if(mptRequest!= null) {
 				Iterator<String> file_iter = mptRequest.getFileNames();
 
 				while (file_iter.hasNext()) {
+
 					MultipartFile mFile = mptRequest.getFile(file_iter.next());
 
-					if (mFile.getSize() > 0) {
-
-						//Write File 이후 Move File????
-						String newName = "";
-						String stordFilePath = EgovProperties.getProperty("Globals.fileStorePath");
-
-						//String orginFileName = mFile.getOriginalFilename();
-						//int index = orginFileName.lastIndexOf(".");
-						//String fileExt = orginFileName.substring(index + 1);
-
-						//newName 은 Naming Convention에 의해서 생성
-						newName = EgovStringUtil.getTimeStamp();
-						writeFile(mFile, newName, stordFilePath);
-
-						String pdfFileSrcValue = stordFilePath.replace('\\', FILE_SEPARATOR).replace('/',
-							FILE_SEPARATOR);
-						File inputFile = new File(EgovWebUtil.filePathBlackList(pdfFileSrcValue + newName));
-
-						if (inputFile.exists()) {
-							// connect to an OpenOffice.org instance running on port 8100
-							SocketOpenOfficeConnection connection = new SocketOpenOfficeConnection(8100);
-							connection.connect();
-							//원본 디렉토리에 targetPdf 명칭지정
-							String valueFile = null;
-							//KISA 보안약점 조치 (2018-10-29, 윤창원)
-							valueFile = EgovStringUtil.isNullToString(inputFile.getParent())
-								.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR);
-							File outputFile = new File(valueFile + "/" + targetPdf + ".pdf");
-							// convert
-							DocumentConverter converter = new OpenOfficeDocumentConverter(connection);
-							converter.convert(inputFile, outputFile);
-							// close the connection
-							connection.disconnect();
-
-							if (inputFile.exists()) {
-								//3. 삭제해줍니다.
-								status = inputFile.delete();
-							}
-							status = true;
-						} else {
-							status = false;
-						}
+					// 2022.11.11 김혜준 시큐어코딩 처리
+					if (mFile == null) {
+						continue;
 					}
+
+					String newName = "";
+	
+					//newName 은 Naming Convention에 의해서 생성
+					newName = EgovStringUtil.getTimeStamp();
+					writeFile(mFile, newName);
+	
+					File inputFile = new File(EgovWebUtil.filePathBlackList(STORE_FILE_PATH + FilenameUtils.getName(newName)));
+	
+					if (inputFile.exists()) {
+	
+						// connect to an OpenOffice.org instance running on port 8100
+						SocketOpenOfficeConnection connection = new SocketOpenOfficeConnection(8100);
+						connection.connect();
+						//원본 디렉토리에 targetPdf 명칭지정
+						String valueFile = null;
+						//KISA 보안약점 조치 (2018-10-29, 윤창원)
+						valueFile = EgovStringUtil.isNullToString(inputFile.getParent()).replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR);
+						File outputFile = new File(valueFile + "/" + targetPdf + ".pdf");
+						// convert
+						DocumentConverter converter = new OpenOfficeDocumentConverter(connection);
+						converter.convert(inputFile, outputFile);
+						// close the connection
+						connection.disconnect();
+	
+						if (inputFile.exists()) {
+							//3. 삭제해줍니다.
+							status = inputFile.delete();
+						}
+	
+						status = true;
+	
+					} else {
+						status = false;
+					}
+
 				}
 
 			}
 		} catch (IOException ex) {
 			EgovBasicLogger.debug("PDF converting error", ex);
-
 			status = false;
 		}
+
 		// 메소드 종료 Log
 		return status;
 	}
@@ -138,27 +137,28 @@ public class EgovPdfCnvr {
 	 * @param stordFilePath
 	 * @throws Exception
 	 */
-	protected static void writeFile(MultipartFile file, String newName, String stordFilePath) throws IOException {
+	protected static void writeFile(MultipartFile file, String newName) throws IOException {
 		InputStream stream = null;
 		OutputStream bos = null;
 
 		try {
+
 			stream = file.getInputStream();
-			File cFile = new File(EgovWebUtil.filePathBlackList(stordFilePath));
+			File cFile = new File(EgovWebUtil.filePathBlackList(STORE_FILE_PATH));
 
 			if (!cFile.isDirectory()) {
-				//2017.03.03 	조성원 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-				if(cFile.mkdirs()){
+				// 2017.03.03 조성원 시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+				if (cFile.mkdirs()) {
 					LOGGER.debug("[file.mkdirs] targetDir : Directory Creation Success");
-				}else{
+				} else {
 					LOGGER.error("[file.mkdirs] targetDir : Directory Creation Fail");
 				}
 			}
-			bos = new FileOutputStream(EgovWebUtil.filePathBlackList(stordFilePath + File.separator + newName));
+
+			bos = new FileOutputStream(EgovWebUtil.filePathBlackList(STORE_FILE_PATH + File.separator + FilenameUtils.getName(newName)));
 
 			int bytesRead = 0;
 			byte[] buffer = new byte[BUFF_SIZE];
-
 			while ((bytesRead = stream.read(buffer, 0, BUFF_SIZE)) != -1) {
 				bos.write(buffer, 0, bytesRead);
 			}

@@ -32,7 +32,7 @@ public class SynchrnServerDAO extends EgovComAbstractDAO {
 	}
 
 	/**
-	 * 동기화대상 서버목록 총 갯수를 조회한다.
+	 * 동기화대상 서버목록 총 개수를 조회한다.
 	 * @param synchrnServerVO - 동기화대상 서버 Vo
 	 * @return int - 동기화대상 서버 카운트 수
 	 */

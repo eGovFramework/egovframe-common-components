@@ -96,7 +96,7 @@
 	
 	</select>
 	
-	<!-- 팝업창관리::목록조회_게시물 총갯수  -->
+	<!-- 팝업창관리::목록조회_게시물 총개수  -->
 	<select id="selectPopupManageCnt" resultType="int">
 		SELECT
 		COUNT(*) totcnt
@@ -157,9 +157,9 @@
 		A.NTCE_ENDDE,
 		A.STOPVEW_SETUP_AT,
 		A.NTCE_AT,
-		A.FRST_REGIST_PNTTM,
+		DATE_FORMAT(A.FRST_REGIST_PNTTM,'%Y-%m-%d') AS FRST_REGIST_PNTTM,
 		A.FRST_REGISTER_ID,
-		A.LAST_UPDT_PNTTM,
+		DATE_FORMAT(A.LAST_UPDT_PNTTM,'%Y-%m-%d') AS LAST_UPDT_PNTTM,
 		A.LAST_UPDUSR_ID
 	FROM COMTNPOPUPMANAGE A
 		WHERE 1=1

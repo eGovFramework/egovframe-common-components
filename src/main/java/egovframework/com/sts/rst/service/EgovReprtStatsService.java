@@ -34,14 +34,14 @@ public interface EgovReprtStatsService {
 	public List<ReprtStatsVO> selectReprtStatsList(ReprtStatsVO reprtVO) throws Exception;
 
 	/**
-	 * 보고서통계목록 페이징 총 갯수를 조회한다.
+	 * 보고서통계목록 페이징 총 개수를 조회한다.
 	 * @param reprtStatsVO - 보고서통계 VO
 	 * @return int
 	 */
 	public int selectReprtStatsListTotCnt(ReprtStatsVO reprtVO) throws Exception;
 
     /**
-	 * 보고서통계목록 총 갯수를 조회한다.
+	 * 보고서통계목록 총 개수를 조회한다.
 	 * @param reprtStatsVO - 보고서통계 VO
 	 * @return int
 	 */
