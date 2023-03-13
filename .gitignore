@@ -30,6 +30,7 @@
 
 # Build #
 target/
+bin/
 
 # OS
 .DS_Store
