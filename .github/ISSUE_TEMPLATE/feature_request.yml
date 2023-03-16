@@ -39,5 +39,7 @@ body:
     attributes:
       label: 솔루션 상세
       description: 위 기능을 구현하는데 도움이 되는 기술내용이 있으면 적어 주세요.
+      placeholder: 솔루션 상세 내용
+      value: ""
     validations:
       required: false
