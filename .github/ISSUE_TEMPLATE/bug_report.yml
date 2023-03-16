@@ -1,4 +1,4 @@
-name: Bug Report
+name: 버그 리포트
 description: 오류 내용을 이슈로 등록하는 템플릿입니다.
 title: "[Bug]: "
 labels: ["bug", "triage"]
