@@ -33,7 +33,7 @@
         </repository>
         <repository>
 			<id>egovframe</id>
-			<url>http://maven.egovframe.go.kr/maven/</url>
+			<url>https://maven.egovframe.go.kr/maven/</url>
 			<releases>
 				<enabled>true</enabled>
 			</releases>
