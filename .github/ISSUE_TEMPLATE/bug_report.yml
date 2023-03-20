@@ -61,8 +61,11 @@ body:
       options:
         - Chrome
         - Firefox
-        - Safari
         - Microsoft Edge
+        - Opera
+        - Safari
+        - Internet Explorer
+        - 기타
   - type: textarea
     id: logs
     attributes:
