@@ -12,7 +12,7 @@ body:
   - type: input
     id: url
     attributes:
-      label: 개발가이드 URL
+      label: 개발가이드 URL Dev Guide URL
       description: 수정해야할 개발가이드 URL을 적어 주세요. Please write down the dev guide URL that needs to be modified.
       placeholder: Example) https://www.egovframe.go.kr/wiki/doku.php?id=egovframework:rte4.1:fdl:aop:aspectj
     validations:
@@ -20,7 +20,7 @@ body:
   - type: textarea
     id: where-to-amend
     attributes:
-      label: 수정 대상 내용
+      label: 수정 대상 내용 What to fix
       description: 수정해야할 대상 내용을 기입해 주세요. Fill in what you need to fix.
       placeholder: 수정해야할 대상은 다음과 같습니다. Here's what you'll need to modify
     validations:

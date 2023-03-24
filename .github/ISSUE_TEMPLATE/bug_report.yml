@@ -12,7 +12,7 @@ body:
   - type: input
     id: contact
     attributes:
-      label: 연락처
+      label: 연락처 Contact
       description: 추가 정보 필요 시, 연락할 수 있는 이메일을 적어 주세요. Please include an email where we can reach you if we need more information. (Optional)
       placeholder: 예) email@example.com
     validations:
@@ -20,7 +20,7 @@ body:
   - type: textarea
     id: what-happened
     attributes:
-      label: 오류 내용
+      label: 오류 내용 Error Description
       description: 오류 내용을 기입해 주세요. Please provide a description of the error.
       placeholder: Tell us what you see!
       value: "오류를 발견했어요. I found an error."
@@ -29,7 +29,7 @@ body:
   - type: textarea
     id: reproduce
     attributes:
-      label: 오류 재현 방법
+      label: 오류 재현 방법 How to reproduce the error
       description: 오류 발생을 재현하려면, 어떻게 해야하나요? How can we reproduce the error you reported?
       placeholder: 오류 재현 방법 How to reproduce the error
       value: "(다음은 예시이며, 내용을 덮어 써 주세요. The following is an example, please overwrite the content.)\n\n
@@ -42,7 +42,7 @@ body:
   - type: textarea
     id: environment
     attributes:
-      label: 환경정보
+      label: 환경정보 Environmental information
       description: 오류가 발생한 환경정보를 작성해 주세요. Please describe the environment in which the error occurred.
       placeholder: 오류 환경정보 Error Environment Information
       value: " - OS정보 Operating System: \n
