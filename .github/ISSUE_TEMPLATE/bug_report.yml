@@ -65,7 +65,7 @@ body:
         - Opera
         - Safari
         - Internet Explorer
-        - 기타
+        - Others
   - type: textarea
     id: logs
     attributes:
