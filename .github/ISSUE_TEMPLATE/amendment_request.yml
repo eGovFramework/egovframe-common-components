@@ -28,7 +28,7 @@ body:
   - type: textarea
     id: amendment
     attributes:
-      label: 수정 문구 Corrective wording
+      label: 수정 문구 Corrective Wording
       description: 어떻게 수정되어야 하는지 적어주세요. Please write down how it should be fixed.
       placeholder: 다음과 같이 수정되어야 합니다. It should be modified as follows
     validations:

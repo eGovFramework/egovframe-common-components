@@ -42,7 +42,7 @@ body:
   - type: textarea
     id: environment
     attributes:
-      label: 환경정보 Environmental information
+      label: 환경정보 Environmental Information
       description: 오류가 발생한 환경정보를 작성해 주세요. Please describe the environment in which the error occurred.
       placeholder: 오류 환경정보 Error Environment Information
       value: " - OS정보 Operating System: \n
@@ -69,6 +69,6 @@ body:
   - type: textarea
     id: logs
     attributes:
-      label: 에러 로그
+      label: 에러 로그 Error Logs
       description: 관련 에러 로그를 복사하여 붙여넣어 주세요. Please copy and paste the relevant error logs.
       render: shell

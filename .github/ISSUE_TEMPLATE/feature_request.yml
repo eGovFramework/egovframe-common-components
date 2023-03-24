@@ -36,7 +36,7 @@ body:
   - type: textarea
     id: solution
     attributes:
-      label: 솔루션 상세 Solution details
+      label: 솔루션 상세 Solution Details
       description: 위 기능을 구현하는데 도움이 되는 기술내용이 있으면 적어 주세요. If you have any technical details to help us implement the above features, please let us know.
       placeholder: 위 기능을 구현하는데 도움이 되는 기술내용은 다음과 같습니다. Here are some technical details to help you implement the above features.
     validations:
