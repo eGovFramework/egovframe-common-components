@@ -28,7 +28,7 @@
 - [ ] Safari
 - [ ] Opera
 - [ ] Internet Explorer
-- [ ] 기타
+- [ ] 기타 Others
 
 ## 테스트 스크린샷 또는 캡쳐 영상 Test screenshots or captured video
 
