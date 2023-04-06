@@ -59,26 +59,7 @@ egovframe-common-components
 1. 개발환경 Eclipse IDE 를 실행함
 2. Eclipse IDE 메뉴에서 File>Import… 를 클릭하여 프로젝트를 가져옴
 3. 프로젝트명을 마우스 우클릭하여 Maven > Update Project… > Force Update of Snapshots/Releases 체크 후 Update를 실행함
-4. 공통컴포넌트를 설치한 프로젝트 내에 위치한 `globals.properties`(src/main/resources/egovframework/egovProps/globals.properties) 파일의 데이터베이스 정보를 설정함```# DB서버 타입(mysql, oracle, altibase, tibero, cubrid, mariadb, postgres, goldilocks) - datasource 및 sqlMap 파일 지정에 사용됨
-Globals.DbType = mysql
- 
-#mysql
-Globals.mysql.DriverClassName=net.sf.log4jdbc.DriverSpy
-Globals.mysql.Url=jdbc:log4jdbc:mysql://127.0.0.1:3336/com
-Globals.mysql.UserName = com
-Globals.mysql.Password = 
- 
-                        .
-                        .
-                        .
-#oracle
-#altibase
-#tibero
-#cubrid
-#mariadb
-#postgres
-#goldilocks
-```
+4. 공통컴포넌트를 설치한 프로젝트 내에 위치한 `globals.properties`(src/main/resources/egovframework/egovProps/globals.properties) 파일의 데이터베이스 정보를 설정함<img width="912" alt="6" src="https://user-images.githubusercontent.com/51683963/230331068-72ac3ab3-df28-4ac2-a3b5-d1d2e58c6b6b.png">
 5. `globals.properties` 파일의 인증/권한방식 정보를 설정함<img width="600" alt="7" src="https://user-images.githubusercontent.com/51683963/230331630-dd9dc884-0b83-4019-bb81-b162b729d008.png">
 6. 프로젝트명을 마우스 우클릭하여 run as > run on server을 실행함
 7. 브라우저를 통해 공통컴포넌트 서비스를 확인함![8](https://user-images.githubusercontent.com/51683963/230332233-d753370b-e824-4e27-8509-a50b773b56e0.jpg)
