@@ -62,11 +62,10 @@ egovframe-common-components
 4. 공통컴포넌트를 설치한 프로젝트 내에 위치한 `globals.properties`(src/main/resources/egovframework/egovProps/globals.properties) 파일의 데이터베이스 정보를 설정함<img width="912" alt="6" src="https://user-images.githubusercontent.com/51683963/230331068-72ac3ab3-df28-4ac2-a3b5-d1d2e58c6b6b.png">
 5. `globals.properties` 파일의 인증/권한방식 정보를 설정함<img width="600" alt="7" src="https://user-images.githubusercontent.com/51683963/230331630-dd9dc884-0b83-4019-bb81-b162b729d008.png">
 6. 프로젝트명을 마우스 우클릭하여 run as > run on server을 실행함
-7. 브라우저를 통해 공통컴포넌트 서비스를 확인함![8](https://user-images.githubusercontent.com/51683963/230332233-d753370b-e824-4e27-8509-a50b773b56e0.jpg)
+7. 브라우저를 통해 공통컴포넌트 서비스를 확인함![8](https://user-images.githubusercontent.com/51683963/230332233-d753370b-e824-4e27-8509-a50b773b56e0.jpg)  
 
----
 
-### 참조
+## 참조
 
 1. [공통컴포넌트 위키가이드](https://www.egovframe.go.kr/wiki/doku.php?id=egovframework:com:v4.1:init)
 2. [개발환경 다운로드](https://www.egovframe.go.kr/home/sub.do?menuNo=94)
