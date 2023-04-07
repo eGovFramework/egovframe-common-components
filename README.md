@@ -69,6 +69,7 @@ egovframe-common-components
 ## 참조
 
 1. [공통컴포넌트 위키가이드](https://www.egovframe.go.kr/wiki/doku.php?id=egovframework:com:v4.1:init)
-2. [개발환경 다운로드](https://www.egovframe.go.kr/home/sub.do?menuNo=94)
-3. [공통컴포넌트 다운로드](https://www.egovframe.go.kr/home/sub.do?menuNo=49)
-4. [공통컴포넌트 로그인정보](https://www.egovframe.go.kr/wiki/doku.php?id=egovframework:com:v4.1:init_table)
+2. <a href="https://www.egovframe.go.kr/wiki/doku.php?id=egovframework:com:v4.1:init" target="_blank">공통컴포넌트 위키가이드</a>
+3. [개발환경 다운로드](https://www.egovframe.go.kr/home/sub.do?menuNo=94)
+4. [공통컴포넌트 다운로드](https://www.egovframe.go.kr/home/sub.do?menuNo=49)
+5. [공통컴포넌트 로그인정보](https://www.egovframe.go.kr/wiki/doku.php?id=egovframework:com:v4.1:init_table)
