@@ -66,12 +66,9 @@ egovframe-common-components
 
 ---
 
-### 참조
-
-보다 상세한 설명은 아래의 문서를 확인한다.
+## 참조
 
 1. [공통컴포넌트 위키가이드](https://www.egovframe.go.kr/wiki/doku.php?id=egovframework:com:v4.1:init)
 2. [공통컴포넌트 다운로드](https://www.egovframe.go.kr/home/sub.do?menuNo=49)
-3. <a href="https://www.egovframe.go.kr/wiki/doku.php?id=egovframework:com:v4.1:init_table" target="_blank"> 공통컴포넌트 로그인정보 </a>
-
+3. [공통컴포넌트 로그인정보](https://www.egovframe.go.kr/wiki/doku.php?id=egovframework:com:v4.1:init_table)
 
