@@ -6,6 +6,8 @@
 ![javascript](https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![jQuery](https://img.shields.io/badge/jquery-%230769AD.svg?style=for-the-badge&logo=jquery&logoColor=white)
 
+![workflow](https://github.com/eGovFramework/egovframe-common-components/actions/workflows/maven.yml/badge.svg)
+
 ## 공통컴포넌트 정의
 
 - 공통컴포넌트는 전자정부 사업에서 응용SW 개발 시 공통적으로 활용하기 위하여, 재사용이 가능하도록 개발한 어플리케이션의 집합임
