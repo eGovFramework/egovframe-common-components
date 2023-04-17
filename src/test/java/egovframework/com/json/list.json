@@ -1,0 +1,33 @@
+[
+	{
+		"title":"squat1",
+		"description":"this is squat1",
+		"trainClass":"squat1 class",
+		"dataSetFile":"/squat1.csv"
+	},
+	{
+		"title":"squat2",
+		"description":"this is squat2",
+		"trainClass":"squat2 class",
+		"dataSetFile":"/squat2.csv"
+	},
+	{
+		"title":"squat3",
+		"description":"this is squat3",
+		"trainClass":"squat3 class",
+		"dataSetFile":"/squat3.csv"
+	},
+	{
+		"title":"squat4",
+		"description":"this is squat34",
+		"trainClass":"squat4 class",
+		"dataSetFile":"/squat4.csv"
+	},
+	{
+		"title":"squat5",
+		"description":"this is squat5",
+		"trainClass":"squat5 class",
+		"dataSetFile":"/squat5.csv"
+	}
+]
+	
