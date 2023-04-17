@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- EgovEnvCryptoUserTest.java 설정 파일 -->
+<!-- context-crypto-test.xml -->
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:egov-crypto="http://maven.egovframe.go.kr/schema/egov-crypto"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+		http://maven.egovframe.go.kr/schema/egov-crypto http://maven.egovframe.go.kr/schema/egov-crypto/egov-crypto-4.0.0.xsd">
+ 
+	<bean name="messageSource" class="org.springframework.context.support.ResourceBundleMessageSource">
+		<property name="useCodeAsDefaultMessage">
+			<value>true</value>
+		</property>
+		<property name="basenames">
+			<list>
+				<value>classpath:/egovframework/egovProps/globals</value>
+			</list>
+		</property>
+	</bean>
+ 
+    <!-- <egov-crypto:config id="egovCryptoConfig" 
+    	initial="false"
+    	crypto="true"
+    	algorithm="SHA-256"
+    	algorithmKey="(사용자정의 값)"
+    	algorithmKeyHash="(생성값)"
+	cryptoBlockSize="1024"
+	/> -->
+	    <egov-crypto:config id="egovCryptoConfig" 
+    	initial="false"
+    	crypto="false"
+    	algorithm="SHA-256"
+    	algorithmKey="egovframe"
+    	algorithmKeyHash="gdyYs/IZqY86VcWhT8emCYfqY1ahw2vtLG+/FzNqtrQ="
+	cryptoBlockSize="1024"
+	/>
+ 
+</beans>

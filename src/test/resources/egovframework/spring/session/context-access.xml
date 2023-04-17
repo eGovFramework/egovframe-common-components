@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:egov-access="http://maven.egovframe.go.kr/schema/egov-access"
+       xsi:schemaLocation="
+			http://www.springframework.org/schema/beans
+			http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
+			http://maven.egovframe.go.kr/schema/egov-access
+			http://maven.egovframe.go.kr/schema/egov-access/egov-access-3.10.0.xsd">
+
+    <egov-access:config id="egovAccessConfig"
+		globalAuthen="session"
+		mappingPath="/**/*.do"
+		dataSource="dataSource"
+		loginUrl="/uat/uia/egovLoginUsr.do"
+		accessDeniedUrl="/uat/uia/egovLoginUsr.do?auth_error=1"
+		sqlAuthorityUser="select concat(b.user_se, b.user_id) userid, a.author_code authority
+			from comtnemplyrscrtyestbs a, comvnusermaster b
+			where a.scrty_dtrmn_trget_id = b.esntl_id"
+		sqlRoleAndUrl="select a.role_pttrn url, b.author_code authority
+			from comtnroleinfo a, comtnauthorrolerelate b
+			where a.role_code = b.role_code
+			and a.role_ty = 'url'
+			order by a.role_sort"
+		requestMatcherType="regex"
+		excludeList="/uat/uia/**, /index.do, /EgovLeft.do, /EgovContent.do, /EgovTop.do, /EgovBottom.do, /uat/uia/egovLoginUsr.do, /uat/uia/actionLogin.do"
+	/>
+
+</beans>
