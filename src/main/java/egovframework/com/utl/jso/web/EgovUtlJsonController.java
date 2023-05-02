@@ -103,14 +103,14 @@ public class EgovUtlJsonController {
     	modelAndView.addObject("fruits4", "lime");
     	modelAndView.addObject("fruits5", "mango");
     	
-    	HashMap<String,String> mp = new HashMap<String,String>();
+    	Map<String, String> mp = new HashMap<>();
     	mp.put("fruits1", "apple");
     	mp.put("fruits2", "orange");
     	mp.put("fruits3", "lemon");
     	mp.put("fruits4", "lime");
     	mp.put("fruits5", "mango");
     	
-    	List<HashMap> list = new ArrayList<HashMap>();
+    	List<Map<String, String>> list = new ArrayList<>();
     	list.add(mp);
     	list.add(mp);
     	list.add(mp);
