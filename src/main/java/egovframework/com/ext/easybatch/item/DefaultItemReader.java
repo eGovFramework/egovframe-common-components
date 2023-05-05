@@ -38,7 +38,6 @@ import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
 import org.springframework.jdbc.core.BeanPropertyRowMapper;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang3.ObjectUtils;
 import org.egovframe.rte.bat.core.item.file.mapping.EgovDefaultLineMapper;
 import org.egovframe.rte.bat.core.item.file.mapping.EgovObjectMapper;
 import org.egovframe.rte.bat.core.item.file.transform.EgovDelimitedLineTokenizer;
