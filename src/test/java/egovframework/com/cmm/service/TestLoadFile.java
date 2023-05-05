@@ -1,28 +1,31 @@
 package egovframework.com.cmm.service;
 
-import egovframework.com.cmm.service.EgovProperties;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class TestLoadFile {
 
+	protected static Logger egovLogger = LoggerFactory.getLogger(TestLoadFile.class);
+	
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		/*EgovWhiteList.check("");
 		List<String> result = EgovWhiteList.loadWhiteList("");
 		for (String whiteListData : result) {
-			System.out.println("===> whiteList Data = "+ whiteListData);
+			egovLogger.debug("===> whiteList Data = "+ whiteListData);
 		}*/
 		
 		// Run As > Java Application 실행시 경로가 Web Server 배포 경로와 다르므로 별도 지정 필요
-		//System.out.println(">>> ORG RELATIVE_PATH_PREFIX = "+EgovWhiteList.RELATIVE_PATH_PREFIX);
+		//egovLogger.debug(">>> ORG RELATIVE_PATH_PREFIX = "+EgovWhiteList.RELATIVE_PATH_PREFIX);
 		//EgovWhiteList.RELATIVE_PATH_PREFIX = "C:/eGovFrameDev-3.7.0-64bit_dev/workspace/egovframework-all-in-one-AllNew/target/classes/egovframework";
-		System.out.println(">>> "+EgovProperties.class.getResource(".").getPath());
-		System.out.println(">>> "+TestLoadFile.class.getResource(".").getPath());
-		System.out.println(">>> TEST RELATIVE_PATH_PREFIX = "+EgovWhiteList.RELATIVE_PATH_PREFIX);
+		egovLogger.debug(">>> "+EgovProperties.class.getResource(".").getPath());
+		egovLogger.debug(">>> "+TestLoadFile.class.getResource(".").getPath());
+		egovLogger.debug(">>> TEST RELATIVE_PATH_PREFIX = "+EgovWhiteList.RELATIVE_PATH_PREFIX);
 		
 		boolean result = EgovWhiteList.check("/egovframework/com/main_bottom");
-		System.out.println("===>>> result = "+result);
+		egovLogger.debug("===>>> result = "+result);
 		
-		System.out.println(">>> "+EgovProperties.class.getResource(".").getPath());
+		egovLogger.debug(">>> "+EgovProperties.class.getResource(".").getPath());
 		
 	}
 }
