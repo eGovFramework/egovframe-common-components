@@ -19,11 +19,11 @@
 package egovframework.com.filter;
 
 import static org.junit.Assert.assertEquals;
-import static org.hamcrest.CoreMatchers.is;
-
 import java.util.Map;
 
 import org.junit.Test;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.web.filter.CorsFilter;
 
@@ -36,6 +36,8 @@ import egovframework.com.cmm.filter.HTMLTagFilterRequestWrapper;
  */
 public class HTMLTagFilterTest {
 
+	protected Logger egovLogger = LoggerFactory.getLogger(HTMLTagFilterTest.class);
+
 	HTMLTagFilter filter = new HTMLTagFilter();
 	MockHttpServletRequest request;
 	HTMLTagFilterRequestWrapper wrapper;
@@ -47,8 +49,8 @@ public class HTMLTagFilterTest {
 		request.addParameter("globalParameter", "<b>Text</b>");
 		wrapper = new HTMLTagFilterRequestWrapper(request);
 
-		System.out.println("testGetMethodGetParameter===> wrapper.getParameter(title) = "+wrapper.getParameter("title"));
-		System.out.println("testGetMethodGetParameter===> wrapper.getParameter(globalParameter) = "+wrapper.getParameter("globalParameter"));
+		egovLogger.debug("testGetMethodGetParameter===> wrapper.getParameter(title) = "+wrapper.getParameter("title"));
+		egovLogger.debug("testGetMethodGetParameter===> wrapper.getParameter(globalParameter) = "+wrapper.getParameter("globalParameter"));
 		assertEquals(wrapper.getParameter("title"), "&lt;b&gt;Text&lt;/b&gt;");
 		//assertEquals(wrapper.getParameter("globalParameter"), is("<b>Text</b>"));
 		assertEquals(wrapper.getParameter("globalParameter"), "&lt;b&gt;Text&lt;/b&gt;");
@@ -59,9 +61,9 @@ public class HTMLTagFilterTest {
 		request.addParameter("globalParameter", "<script>Text</script>");
 		wrapper = new HTMLTagFilterRequestWrapper(request);
 
-		System.out.println("testGetMethodGetParameter===> wrapper.getParameter(title) = "+wrapper.getParameter("title"));
-		System.out.println("testGetMethodGetParameter===> wrapper.getParameter(mode) = "+wrapper.getParameter("mode"));
-		System.out.println("testGetMethodGetParameter===> wrapper.getParameter(globalParameter) = "+wrapper.getParameter("globalParameter"));
+		egovLogger.debug("testGetMethodGetParameter===> wrapper.getParameter(title) = "+wrapper.getParameter("title"));
+		egovLogger.debug("testGetMethodGetParameter===> wrapper.getParameter(mode) = "+wrapper.getParameter("mode"));
+		egovLogger.debug("testGetMethodGetParameter===> wrapper.getParameter(globalParameter) = "+wrapper.getParameter("globalParameter"));
 		assertEquals(wrapper.getParameter("title"), "&lt;b&gt;Text&lt;/b&gt;");
 		assertEquals(wrapper.getParameter("mode"), "&lt;script&gt;Text&lt;/script&gt;");
 		assertEquals(wrapper.getParameter("globalParameter"), "&lt;script&gt;Text&lt;/script&gt;");
@@ -74,8 +76,8 @@ public class HTMLTagFilterTest {
 		request.addParameter("globalParameter", "<b>Text</b>");
 		wrapper = new HTMLTagFilterRequestWrapper(request);
 
-		System.out.println("testPostMethodGetParameter===> wrapper.getParameter(title) = "+wrapper.getParameter("title"));
-		System.out.println("testPostMethodGetParameter===> wrapper.getParameter(globalParameter) = "+wrapper.getParameter("globalParameter"));
+		egovLogger.debug("testPostMethodGetParameter===> wrapper.getParameter(title) = "+wrapper.getParameter("title"));
+		egovLogger.debug("testPostMethodGetParameter===> wrapper.getParameter(globalParameter) = "+wrapper.getParameter("globalParameter"));
 		assertEquals(wrapper.getParameter("title"), "&lt;b&gt;Text&lt;/b&gt;");
 		assertEquals(wrapper.getParameter("globalParameter"), "&lt;b&gt;Text&lt;/b&gt;");
 		//assertEquals(wrapper.getParameter("globalParameter"), is("<b>Text</b>"));
@@ -86,9 +88,9 @@ public class HTMLTagFilterTest {
 		request.addParameter("globalParameter", "<script>Text</script>");
 		wrapper = new HTMLTagFilterRequestWrapper(request);
 
-		System.out.println("testPostMethodGetParameter===> wrapper.getParameter(title) = "+wrapper.getParameter("title"));
-		System.out.println("testPostMethodGetParameter===> wrapper.getParameter(mode) = "+wrapper.getParameter("mode"));
-		System.out.println("testPostMethodGetParameter===> wrapper.getParameter(globalParameter) = "+wrapper.getParameter("globalParameter"));
+		egovLogger.debug("testPostMethodGetParameter===> wrapper.getParameter(title) = "+wrapper.getParameter("title"));
+		egovLogger.debug("testPostMethodGetParameter===> wrapper.getParameter(mode) = "+wrapper.getParameter("mode"));
+		egovLogger.debug("testPostMethodGetParameter===> wrapper.getParameter(globalParameter) = "+wrapper.getParameter("globalParameter"));
 		assertEquals(wrapper.getParameter("title"), "&lt;b&gt;Text&lt;/b&gt;");
 		assertEquals(wrapper.getParameter("mode"), "&lt;script&gt;Text&lt;/script&gt;");
 		assertEquals(wrapper.getParameter("globalParameter"), "&lt;script&gt;Text&lt;/script&gt;");
@@ -170,7 +172,7 @@ public class HTMLTagFilterTest {
 		assertEquals(values[1], "&lt;script&gt;Text2&lt;/script&gt;");
 
 		values = (String[])map.get("globalParameter");
-		System.out.println("===>>>"+values[0]);
+		egovLogger.debug("===>>>"+values[0]);
 		assertEquals(values[0], "&lt;script&gt;Text1&lt;/script&gt;");
 	}
 
