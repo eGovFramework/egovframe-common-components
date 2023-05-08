@@ -96,7 +96,7 @@ public class EgovFileMngController {
 		model.addAttribute("fileList", result);
 		model.addAttribute("updateFlag", "N");
 		model.addAttribute("fileListCnt", result.size());
-		model.addAttribute("atchFileId", URLDecoder.decode(param_atchFileId));
+		model.addAttribute("atchFileId", param_atchFileId);
 
 		return "egovframework/com/cmm/fms/EgovFileList";
 	}
@@ -139,7 +139,7 @@ public class EgovFileMngController {
 		model.addAttribute("fileList", result);
 		model.addAttribute("updateFlag", "Y");
 		model.addAttribute("fileListCnt", result.size());
-		model.addAttribute("atchFileId", URLDecoder.decode(param_atchFileId));
+		model.addAttribute("atchFileId", param_atchFileId);
 
 		return "egovframework/com/cmm/fms/EgovFileList";
 	}
