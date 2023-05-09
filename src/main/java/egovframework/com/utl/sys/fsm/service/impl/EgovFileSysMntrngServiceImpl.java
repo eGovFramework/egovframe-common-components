@@ -19,7 +19,6 @@ import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 
 import javax.annotation.Resource;
 
-import org.apache.commons.io.FileSystemUtils;
 import org.springframework.stereotype.Service;
 
 /**
@@ -123,7 +122,7 @@ public class EgovFileSysMntrngServiceImpl extends EgovAbstractServiceImpl implem
 			egovLogger.error("IOException");
 		}
 		long usableSpaceKb = usableSpaceBytes / 1024;
-		return (int) usableSpaceKb;
+		return  Math.toIntExact(usableSpaceKb);
 	}
 	
 	/**
