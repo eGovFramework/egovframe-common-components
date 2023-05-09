@@ -1,4 +1,9 @@
 package egovframework.com.utl.sys.fsm.service.impl;
+import java.io.IOException;
+import java.nio.file.FileStore;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -108,8 +113,17 @@ public class EgovFileSysMntrngServiceImpl extends EgovAbstractServiceImpl implem
 	 * @param fileSysMntrng
 	 */
 	public int selectFileSysMg(FileSysMntrng fileSysMntrng) throws Exception{
-		FileSystemUtils.freeSpaceKb("");
-		return 0;
+		Path path = Paths.get("");
+		FileStore fs = null;
+		long usableSpaceBytes = 0;
+		try {
+			fs = Files.getFileStore(path);
+			usableSpaceBytes = fs.getUsableSpace();
+		} catch (IOException e) {
+			egovLogger.error("IOException");
+		}
+		long usableSpaceKb = usableSpaceBytes / 1024;
+		return (int) usableSpaceKb;
 	}
 	
 	/**
