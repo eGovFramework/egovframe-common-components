@@ -3,9 +3,10 @@ package egovframework.com.cmm.service;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.junit.Test;
-
-import egovframework.com.cmm.service.EgovWhiteList;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 화이트 리스트를 체크하는 Test Class 구현
@@ -31,19 +32,21 @@ import egovframework.com.cmm.service.EgovWhiteList;
 
 public class TestWhiteListLink {
 
+	protected Logger egovLogger = LoggerFactory.getLogger(TestWhiteListLink.class);
+	
 	@Test
 	public void testWhiteListTrue() {
 		//fail("Not yet implemented");
 
-		//System.out.println(">>> "+EgovProperties.class.getResource("").getPath());
+		//egovLogger.debug(">>> "+EgovProperties.class.getResource("").getPath());
 		//EgovWhiteList.RELATIVE_PATH_PREFIX = "C:/eGovFrameDev-3.7.0-64bit_dev/workspace/egovframework-all-in-one-AllNew/target/classes/egovframework";
-		System.out.println(">>> TEST RELATIVE_PATH_PREFIX = "+EgovWhiteList.RELATIVE_PATH_PREFIX);
+		egovLogger.debug(">>> TEST RELATIVE_PATH_PREFIX = "+EgovWhiteList.RELATIVE_PATH_PREFIX);
 		
 		String link = "/egovframework/com/main_bottom";
-		System.out.println("===>>> link = "+link);
+		egovLogger.debug("===>>> link = "+link);
 
 		boolean resultTrue = EgovWhiteList.check(link);
-		System.out.println("===>>> result = "+resultTrue);
+		egovLogger.debug("===>>> result = "+resultTrue);
 
 		assertTrue(resultTrue);
 		
@@ -53,10 +56,10 @@ public class TestWhiteListLink {
 	public void testWhiteListFalse() {
 
 		String link = "/egovframework/com/main_bottomXXXXX";
-		System.out.println("===>>> link = "+link);
+		egovLogger.debug("===>>> link = "+link);
 		
 		boolean resultFalse = EgovWhiteList.check(link);
-		System.out.println("===>>> result = "+resultFalse);
+		egovLogger.debug("===>>> result = "+resultFalse);
 		
 		assertFalse(resultFalse);
 	}
@@ -66,10 +69,10 @@ public class TestWhiteListLink {
 	public void testWhiteListRemarkFalse() {
 
 		String link = "#utl/sys/wsi/EgovWebStandardInspectionUriDirectLink";
-		System.out.println("===>>> link = "+link);
+		egovLogger.debug("===>>> link = "+link);
 
 		boolean resultFalse = EgovWhiteList.check(link);
-		System.out.println("===>>> result = "+resultFalse);
+		egovLogger.debug("===>>> result = "+resultFalse);
 		
 		assertFalse(resultFalse);
 	}
