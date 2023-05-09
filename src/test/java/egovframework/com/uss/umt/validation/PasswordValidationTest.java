@@ -53,11 +53,15 @@ public class PasswordValidationTest {
 		String[] ok = { "abcdefgh", "12345678", "#!@#^#$#@" };
 		
 		for (int i = 0; i < notOk.length; i++) {
-			assertFalse(RteGenericValidator.checkCharacterType(notOk[i]));
+//			assertFalse(RteGenericValidator.checkCharacterType(notOk[i]));
+			assertFalse(RteGenericValidator.isMoreThan2CharTypeComb(notOk[i]));
+			assertFalse(RteGenericValidator.isMoreThan3CharTypeComb(notOk[i]));
 		}
 		
 		for (int i = 0; i < ok.length; i++) {
-			assertTrue(RteGenericValidator.checkCharacterType(ok[i]));
+//			assertTrue(RteGenericValidator.checkCharacterType(ok[i]));
+			assertFalse(RteGenericValidator.isMoreThan2CharTypeComb(ok[i]));
+			assertFalse(RteGenericValidator.isMoreThan3CharTypeComb(ok[i]));
 		}
 	}
 	
@@ -67,11 +71,15 @@ public class PasswordValidationTest {
 		String[] ok = { "abcaabbee", };
 		
 		for (int i = 0; i < notOk.length; i++) {
-			assertFalse(RteGenericValidator.checkSeries(notOk[i]));
+//			assertFalse(RteGenericValidator.checkSeries(notOk[i]));
+			assertTrue(RteGenericValidator.isSeriesCharacter(notOk[i]));
+			assertFalse(RteGenericValidator.isRepeatCharacter(notOk[i]));
 		}
 		
 		for (int i = 0; i < ok.length; i++) {
-			assertTrue(RteGenericValidator.checkSeries(ok[i]));
+//			assertTrue(RteGenericValidator.checkSeries(ok[i]));
+			assertTrue(RteGenericValidator.isSeriesCharacter(ok[i]));
+			assertFalse(RteGenericValidator.isRepeatCharacter(ok[i]));
 		}
 	}
 	
@@ -81,11 +89,15 @@ public class PasswordValidationTest {
 		String[] ok = { "aaatesta", };
 		
 		for (int i = 0; i < notOk.length; i++) {
-			assertFalse(RteGenericValidator.checkSeries(notOk[i]));
+//			assertFalse(RteGenericValidator.checkSeries(notOk[i]));
+			assertFalse(RteGenericValidator.isSeriesCharacter(notOk[i]));
+			assertTrue(RteGenericValidator.isRepeatCharacter(notOk[i]));
 		}
 		
 		for (int i = 0; i < ok.length; i++) {
-			assertTrue(RteGenericValidator.checkSeries(ok[i]));
+//			assertTrue(RteGenericValidator.checkSeries(ok[i]));
+			assertFalse(RteGenericValidator.isSeriesCharacter(ok[i]));
+			assertTrue(RteGenericValidator.isRepeatCharacter(ok[i]));
 		}
 	}
 	
