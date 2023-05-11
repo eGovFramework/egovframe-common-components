@@ -47,7 +47,7 @@ public class EgovCcmCmmnCodeManageServiceImpl extends EgovAbstractServiceImpl im
 	 * 공통코드 목록을 조회한다.
 	 */
 	@Override
-	public List<?> selectCmmnCodeList(CmmnCodeVO searchVO) throws Exception {
+	public List<CmmnCodeVO> selectCmmnCodeList(CmmnCodeVO searchVO) throws Exception {
 		return cmmnCodeManageDAO.selectCmmnCodeList(searchVO);
 	}
 
