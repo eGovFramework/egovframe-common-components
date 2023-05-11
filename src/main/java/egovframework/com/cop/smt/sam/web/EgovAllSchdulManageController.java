@@ -9,6 +9,7 @@ import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cop.smt.sam.service.EgovAllSchdulManageService;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 import javax.annotation.Resource;
@@ -81,7 +82,7 @@ public class EgovAllSchdulManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> resultList = egovAllSchdulManageService.selectAllSchdulManageeList(searchVO);
+        List<EgovMap> resultList = egovAllSchdulManageService.selectAllSchdulManageeList(searchVO);
         model.addAttribute("resultList", resultList);
 
         model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String)commandMap.get("searchKeyword"));

@@ -2,6 +2,8 @@ package egovframework.com.cop.smt.sam.service;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 import egovframework.com.cmm.ComDefaultVO;
 /**
  * 전체일정을 처리하는 Service Class 구현
@@ -27,7 +29,7 @@ public interface EgovAllSchdulManageService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectAllSchdulManageeList(ComDefaultVO searchVO) throws Exception;
+	public List<EgovMap> selectAllSchdulManageeList(ComDefaultVO searchVO) throws Exception;
 	
     /**
 	 * 전체일정를(을) 목록 전체 건수를(을) 조회한다.
