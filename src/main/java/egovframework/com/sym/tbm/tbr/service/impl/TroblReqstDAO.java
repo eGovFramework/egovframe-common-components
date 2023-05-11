@@ -26,7 +26,6 @@ public class TroblReqstDAO extends EgovComAbstractDAO {
 	 * @param troblReqstVO - 장애신청 Vo
 	 * @return List - 장애요청 목록
 	 */
-	@SuppressWarnings("unchecked")
 	public List<TroblReqstVO> selectTroblReqstList(TroblReqstVO troblReqstVO) throws Exception {
 		return selectList("troblReqstDAO.selectTroblReqstList", troblReqstVO);
 	}

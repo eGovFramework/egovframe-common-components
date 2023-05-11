@@ -71,7 +71,6 @@ public class BkmkMenuManageDAO extends EgovComAbstractDAO{
      * @return
      * @throws Exception
      */
-    @SuppressWarnings("unchecked")
 	public List<BkmkMenuManageVO> selectBkmkMenuManageList(BkmkMenuManageVO bkmkMenuManageVO)
             throws Exception {
         return selectList("BkmkMenuManageDAO.selectBkmkMenuManageList", bkmkMenuManageVO);
@@ -95,7 +94,6 @@ public class BkmkMenuManageDAO extends EgovComAbstractDAO{
      * @return
      * @throws Exception
      */
-    @SuppressWarnings("unchecked")
 	public List<BkmkMenuManageVO> selectBkmkMenuList(BkmkMenuManageVO bkmkMenuManageVO)
             throws Exception {
         return selectList("BkmkMenuManageDAO.selectBkmkMenuList", bkmkMenuManageVO);
@@ -119,7 +117,6 @@ public class BkmkMenuManageDAO extends EgovComAbstractDAO{
      * @return
      * @throws Exception
      */
-    @SuppressWarnings("unchecked")
 	public List<MenuManageVO> selectBkmkPreview(BkmkMenuManageVO bkmkMenuManageVO)
             throws Exception {
         return selectList("BkmkMenuManageDAO.selectBkmkPreview", bkmkMenuManageVO);

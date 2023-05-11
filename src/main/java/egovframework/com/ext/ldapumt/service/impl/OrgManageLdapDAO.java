@@ -122,7 +122,6 @@ public class OrgManageLdapDAO extends EgovComAbstractDAO {
 	 * @param e
 	 */
 	private void introspect(LdapObject vo, Executable e) {
-		@SuppressWarnings("unchecked")
 		Map<Object, Object> introspected = new BeanMap(vo);
 
 		for (Object key : introspected.keySet()) {

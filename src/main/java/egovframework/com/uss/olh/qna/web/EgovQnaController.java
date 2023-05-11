@@ -126,7 +126,6 @@ public class EgovQnaController {
 	 * @return	"/uss/olh/qna/EgovQnaDetail"
 	 * @throws Exception
 	 */
-	@SuppressWarnings("deprecation")
 	@RequestMapping("/uss/olh/qna/selectQnaDetail.do")
 	public String selectQnaDetail(@RequestParam("qaId") String qaId, QnaVO qnaVO, @ModelAttribute("searchVO") QnaDefaultVO searchVO, ModelMap model) throws Exception {
 
@@ -190,7 +189,6 @@ public class EgovQnaController {
 	 * @return	"forward:/uss/olh/qna/selectQnaList.do"
 	 * @throws Exception
 	 */
-	@SuppressWarnings("deprecation")
 	@RequestMapping("/uss/olh/qna/insertQna.do")
 	public String insertQna(@ModelAttribute("searchVO") QnaVO searchVO, @ModelAttribute("qnaVO") QnaVO qnaVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
@@ -228,7 +226,6 @@ public class EgovQnaController {
 	 * @return	"/uss/olh/qna/EgovQnaUpdt
 	 * @throws Exception
 	 */
-	@SuppressWarnings("deprecation")
 	@RequestMapping("/uss/olh/qna/updateQnaView.do")
 	public String updateQnaView(QnaVO qnaVO, @ModelAttribute("searchVO") QnaVO searchVO, ModelMap model) throws Exception {
 
@@ -253,7 +250,6 @@ public class EgovQnaController {
 	 * @return	"forward:/uss/olh/qna/selectQnaList.do"
 	 * @throws Exception
 	 */
-	@SuppressWarnings("deprecation")
 	@RequestMapping("/uss/olh/qna/updateQna.do")
 	public String updateQna(
     		HttpServletRequest request,
