@@ -7,8 +7,6 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -43,10 +41,7 @@ public class AuthenticInterceptor extends HandlerInterceptorAdapter {
 	@SuppressWarnings("unused")
 	@Autowired
 	private Environment environment;
-	
-	/** log */
-	private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticInterceptor.class);
-	
+
 	/** 관리자 접근 권한 패턴 목록 */
 	private List<String> adminAuthPatternList;
 	

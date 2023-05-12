@@ -148,7 +148,7 @@ public class EgovSignupController {
 		// ========================================================================
 		// 다음 부분은 업무의 목적에 맞게 커스텀 코드를 작성한다.
 		// 3. 해당 유저가 DB에 존재하는지 체크 (google, naver, kakao에서 전달받은 ID가 존재하는지 체크)
-		String resultDBInfo = ""; // DB 체크 결과
+//		String resultDBInfo = ""; // DB 체크 결과
 
 		// 2022.11.11 시큐어코딩 처리
 		if ( oauthUser == null) {
