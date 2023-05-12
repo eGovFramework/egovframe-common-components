@@ -1,5 +1,6 @@
 package egovframework.code.security.copyobj;
 
+import java.util.Calendar;
 import java.util.Date;
 
 import org.slf4j.Logger;
@@ -13,8 +14,10 @@ public class TestCopyDate {
 		
 		Date d = new Date();
 		Date copyDate = (Date)d.clone();
-		d.setYear(2021-1900);
-		LOGGER.debug("Org Date.year = "+(d.getYear()+1900));
+		Calendar calendar = Calendar.getInstance();
+		calendar.set(Calendar.YEAR, 2021);
+		d = calendar.getTime();
+		LOGGER.debug("Org Date.year = "+(calendar.get(Calendar.YEAR)));
 		LOGGER.debug("Org Date = "+d);
 		LOGGER.debug("Org Date = "+d.hashCode());
 		LOGGER.debug("Destination Date = "+copyDate);
