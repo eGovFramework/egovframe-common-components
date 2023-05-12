@@ -18,6 +18,7 @@ import egovframework.com.uss.olp.cns.service.EgovCnsltManageService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovFileScrty;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 import javax.servlet.http.HttpServletRequest;
@@ -134,7 +135,7 @@ public class EgovCnsltManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> CnsltList = cnsltManageService.selectCnsltList(searchVO);
+        List<EgovMap> CnsltList = cnsltManageService.selectCnsltList(searchVO);
         model.addAttribute("resultList", CnsltList);
 
     	// 인증여부 체크
@@ -582,7 +583,7 @@ public class EgovCnsltManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> CnsltAnswerList = cnsltManageService.selectCnsltAnswerList(searchVO);
+        List<EgovMap> CnsltAnswerList = cnsltManageService.selectCnsltAnswerList(searchVO);
         model.addAttribute("resultList", CnsltAnswerList);
 
         int totCnt = cnsltManageService.selectCnsltAnswerListTotCnt(searchVO);

@@ -8,6 +8,7 @@ import egovframework.com.uss.olp.cns.service.EgovCnsltManageService;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 import javax.annotation.Resource;
 
@@ -74,7 +75,7 @@ public class EgovCnsltManageServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @exception Exception
 	 */
     @Override
-	public List<?> selectCnsltList(CnsltManageDefaultVO searchVO) throws Exception {
+	public List<EgovMap> selectCnsltList(CnsltManageDefaultVO searchVO) throws Exception {
         return cnsltManageDAO.selectCnsltList(searchVO);
     }
 
@@ -154,7 +155,7 @@ public class EgovCnsltManageServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @exception Exception
 	 */
     @Override
-	public List<?> selectCnsltAnswerList(CnsltManageDefaultVO searchVO) throws Exception {
+	public List<EgovMap> selectCnsltAnswerList(CnsltManageDefaultVO searchVO) throws Exception {
         return cnsltManageDAO.selectCnsltAnswerList(searchVO);
     }
 

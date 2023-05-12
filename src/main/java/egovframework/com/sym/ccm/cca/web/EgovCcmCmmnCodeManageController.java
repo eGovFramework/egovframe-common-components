@@ -92,7 +92,7 @@ public class EgovCcmCmmnCodeManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<?> CmmnCodeList = cmmnCodeManageService.selectCmmnCodeList(searchVO);
+		List<CmmnCodeVO> CmmnCodeList = cmmnCodeManageService.selectCmmnCodeList(searchVO);
 		model.addAttribute("resultList", CmmnCodeList);
 
 		int totCnt = cmmnCodeManageService.selectCmmnCodeListTotCnt(searchVO);
@@ -134,7 +134,7 @@ public class EgovCcmCmmnCodeManageController {
 		
 		CmmnClCodeVO searchVO = new CmmnClCodeVO();
 		searchVO.setFirstIndex(0);
-        List<?> CmmnCodeList = cmmnClCodeManageService.selectCmmnClCodeList(searchVO);
+        List<CmmnClCodeVO> CmmnCodeList = cmmnClCodeManageService.selectCmmnClCodeList(searchVO);
         
         model.addAttribute("clCodeList", CmmnCodeList);
 
@@ -163,7 +163,7 @@ public class EgovCcmCmmnCodeManageController {
 	
 		if (bindingResult.hasErrors()) {
 			
-	        List<?> CmmnCodeList = cmmnClCodeManageService.selectCmmnClCodeList(searchVO);
+	        List<CmmnClCodeVO> CmmnCodeList = cmmnClCodeManageService.selectCmmnClCodeList(searchVO);
 	        model.addAttribute("clCodeList", CmmnCodeList);
 	        
 		    return "egovframework/com/sym/ccm/cca/EgovCcmCmmnCodeRegist";

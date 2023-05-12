@@ -43,8 +43,8 @@ public class CmmnClCodeManageDAO extends EgovComAbstractDAO {
 	     * @return List(공통분류코드 목록)
 	     * @throws Exception
 	     */
-	    public List<?> selectCmmnClCodeList(CmmnClCodeVO searchVO) throws Exception {
-	        return list("CmmnClCodeManage.selectCmmnClCodeList", searchVO);
+	    public List<CmmnClCodeVO> selectCmmnClCodeList(CmmnClCodeVO searchVO) throws Exception {
+	        return selectList("CmmnClCodeManage.selectCmmnClCodeList", searchVO);
 	    }
 	    
 	    /**

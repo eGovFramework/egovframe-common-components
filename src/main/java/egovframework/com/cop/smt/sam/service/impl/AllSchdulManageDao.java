@@ -5,6 +5,7 @@ import java.util.List;
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 /**
  * 전체일정을 처리하는 Dao Class 구현
@@ -32,9 +33,8 @@ public class AllSchdulManageDao extends EgovComAbstractDAO {
 	 * @return List
 	 * @throws Exception
 	 */
-	@SuppressWarnings("rawtypes")
-	public List selectAllSchdulManageeList(ComDefaultVO searchVO) throws Exception{
-		return (List)list("AllSchdulManage.selectIndvdlSchdulManage", searchVO);
+	public List<EgovMap> selectAllSchdulManageeList(ComDefaultVO searchVO) throws Exception{
+		return selectList("AllSchdulManage.selectIndvdlSchdulManage", searchVO);
 	}
 	
 
