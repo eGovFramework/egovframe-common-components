@@ -7,7 +7,7 @@ import egovframework.com.utl.sim.service.EgovClntInfo;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.HandlerInterceptor;
  
 /**
  * 사용자IP 체크 인터셉터
@@ -25,7 +25,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  *  </pre>
  */
 
-public class IpObtainInterceptor extends HandlerInterceptorAdapter {
+public class IpObtainInterceptor implements HandlerInterceptor {
  
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {

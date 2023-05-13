@@ -28,7 +28,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.social.connect.UsersConnectionRepository;
 import org.springframework.social.facebook.api.Facebook;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.view.RedirectView;
 
 /**
@@ -47,7 +47,7 @@ import org.springframework.web.servlet.view.RedirectView;
  *  </pre>
  */
 
-public final class FacebookUserInterceptor extends HandlerInterceptorAdapter {
+public final class FacebookUserInterceptor implements HandlerInterceptor {
 
 	private final UsersConnectionRepository connectionRepository;
 

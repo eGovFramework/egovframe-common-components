@@ -9,8 +9,8 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 /**
  * @Class Name : EgovWebLogInterceptor.java
@@ -28,7 +28,7 @@ import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
  * @see
  *
  */
-public class EgovWebLogInterceptor extends HandlerInterceptorAdapter {
+public class EgovWebLogInterceptor implements HandlerInterceptor {
 
 	@Resource(name="EgovWebLogService")
 	private EgovWebLogService webLogService;
