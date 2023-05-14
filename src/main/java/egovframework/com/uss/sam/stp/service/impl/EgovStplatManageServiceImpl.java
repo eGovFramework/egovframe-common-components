@@ -64,7 +64,7 @@ public class EgovStplatManageServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @exception Exception
 	 */
     @Override
-	public List<?> selectStplatList(StplatManageDefaultVO searchVO) throws Exception {
+	public List<StplatManageVO> selectStplatList(StplatManageDefaultVO searchVO) throws Exception {
         return stplatManageDAO.selectStplatList(searchVO);
     }
 

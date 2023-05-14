@@ -2,6 +2,8 @@ package egovframework.com.uss.olp.qrm.service;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 import egovframework.com.cmm.ComDefaultVO;
 /**
  * 설문응답자관리 Service Class 구현
@@ -27,7 +29,7 @@ public interface EgovQustnrRespondManageService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectQustnrRespondManageList(ComDefaultVO searchVO) throws Exception;
+	public List<EgovMap> selectQustnrRespondManageList(ComDefaultVO searchVO) throws Exception;
 
     /**
 	 * 응답자정보를(을) 상세조회 한다.
@@ -35,7 +37,7 @@ public interface EgovQustnrRespondManageService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectQustnrRespondManageDetail(QustnrRespondManageVO qustnrRespondManageVO) throws Exception;
+	public List<EgovMap> selectQustnrRespondManageDetail(QustnrRespondManageVO qustnrRespondManageVO) throws Exception;
 
     /**
 	 * 응답자정보를(을) 목록 전체 건수를(을) 조회한다.

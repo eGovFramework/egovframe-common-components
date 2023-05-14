@@ -36,7 +36,7 @@ public interface EgovStplatManageService {
 	 * @return 글 목록
 	 * @exception Exception
 	 */
-    List<?> selectStplatList(StplatManageDefaultVO searchVO) throws Exception;
+    List<StplatManageVO> selectStplatList(StplatManageDefaultVO searchVO) throws Exception;
 
     /**
 	 * 약관정보 글 총 개수를 조회한다.

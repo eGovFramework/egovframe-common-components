@@ -49,9 +49,9 @@ public class StplatManageDAO extends EgovComAbstractDAO {
 	 * @return 글 목록
 	 * @exception Exception
 	 */
-    public List<?> selectStplatList(StplatManageDefaultVO searchVO) throws Exception {
+    public List<StplatManageVO> selectStplatList(StplatManageDefaultVO searchVO) throws Exception {
 
-        return list("StplatManage.selectStplatList", searchVO);
+        return selectList("StplatManage.selectStplatList", searchVO);
 
     }
 

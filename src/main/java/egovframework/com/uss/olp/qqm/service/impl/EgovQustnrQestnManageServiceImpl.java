@@ -9,6 +9,7 @@ import egovframework.com.uss.olp.qqm.service.QustnrQestnManageVO;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 import javax.annotation.Resource;
 
@@ -91,7 +92,7 @@ public class EgovQustnrQestnManageServiceImpl extends EgovAbstractServiceImpl im
 	 * @throws Exception
 	 */
 	@Override
-	public List<?> selectQustnrQestnManageDetail(QustnrQestnManageVO qustnrQestnManageVO) throws Exception{
+	public List<EgovMap> selectQustnrQestnManageDetail(QustnrQestnManageVO qustnrQestnManageVO) throws Exception{
 		return dao.selectQustnrQestnManageDetail(qustnrQestnManageVO);
 	}
 

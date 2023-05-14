@@ -28,6 +28,7 @@ import egovframework.com.uss.olp.qqm.service.EgovQustnrQestnManageService;
 import egovframework.com.uss.olp.qqm.service.QustnrQestnManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 /**
  * 설문문항을 처리하는 Controller Class 구현
@@ -89,7 +90,7 @@ public class EgovQustnrQestnManageController {
 
 		String sLocationUrl = "egovframework/com/uss/olp/qqm/EgovQustnrQestnManageStatistics";
 
-        List<?> sampleList = egovQustnrQestnManageService.selectQustnrQestnManageDetail(qustnrQestnManageVO);
+        List<EgovMap> sampleList = egovQustnrQestnManageService.selectQustnrQestnManageDetail(qustnrQestnManageVO);
         model.addAttribute("resultList", sampleList);
         
         HashMap<String, String> mapParam = new HashMap<String, String>();
@@ -267,7 +268,7 @@ public class EgovQustnrQestnManageController {
 	    	List<?> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
 	    	model.addAttribute("cmmCode018", listComCode);
 
-	        List<?> sampleList = egovQustnrQestnManageService.selectQustnrQestnManageDetail(qustnrQestnManageVO);
+	        List<EgovMap> sampleList = egovQustnrQestnManageService.selectQustnrQestnManageDetail(qustnrQestnManageVO);
 	        model.addAttribute("resultList", sampleList);
 		}
 
@@ -331,7 +332,7 @@ public class EgovQustnrQestnManageController {
             		model.addAttribute("qestnrInfo", egovQustnrQestnManageService.selectQustnrManageQestnrSj(mapQustnrManage));
             	}
 
-                List<?> resultList = egovQustnrQestnManageService.selectQustnrQestnManageDetail(qustnrQestnManageVO);
+                List<EgovMap> resultList = egovQustnrQestnManageService.selectQustnrQestnManageDetail(qustnrQestnManageVO);
                 model.addAttribute("resultList", resultList);
             	return "egovframework/com/uss/olp/qqm/EgovQustnrQestnManageModify";
     		}

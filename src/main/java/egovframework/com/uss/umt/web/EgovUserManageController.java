@@ -12,6 +12,7 @@ import egovframework.com.uss.umt.service.UserDefaultVO;
 import egovframework.com.uss.umt.service.UserManageVO;
 import egovframework.com.utl.sim.service.EgovFileScrty;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 import javax.annotation.Resource;
@@ -100,7 +101,7 @@ public class EgovUserManageController {
 		userSearchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		userSearchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<?> userList = userManageService.selectUserList(userSearchVO);
+		List<EgovMap> userList = userManageService.selectUserList(userSearchVO);
 		model.addAttribute("resultList", userList);
 
 		int totCnt = userManageService.selectUserListTotCnt(userSearchVO);

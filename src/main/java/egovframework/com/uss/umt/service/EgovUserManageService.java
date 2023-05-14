@@ -1,6 +1,8 @@
 package egovframework.com.uss.umt.service;
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 /**
  * 사용자관리에 관한 인터페이스클래스를 정의한다.
  * @author 공통서비스 개발팀 조재영
@@ -56,7 +58,7 @@ public interface EgovUserManageService  {
 	 * @return List<UserManageVO> 업무사용자 목록정보
 	 * @throws Exception
 	 */
-	public List<?> selectUserList(UserDefaultVO userSearchVO) throws Exception;
+	public List<EgovMap> selectUserList(UserDefaultVO userSearchVO) throws Exception;
 
 	/**
 	 * 기 등록된 특정 사용자목록의 전체수를 확인
