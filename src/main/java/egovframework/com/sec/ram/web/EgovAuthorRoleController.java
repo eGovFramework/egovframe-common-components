@@ -4,8 +4,6 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -38,8 +36,6 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 @Controller
 public class EgovAuthorRoleController {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovAuthorRoleController.class);
-	
     @Resource(name="egovMessageSource")
     EgovMessageSource egovMessageSource;
     
