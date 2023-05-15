@@ -21,9 +21,6 @@ import java.lang.reflect.Modifier;
 //import javax.management.remote.JMXConnectorServerFactory;
 //import javax.management.remote.JMXServiceURL;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /*
  *       수정일         수정자                   수정내용
  *   -------    --------    ---------------------------
@@ -31,9 +28,7 @@ import org.slf4j.LoggerFactory;
  */
 
 public class EgovServerResrceMntrng implements EgovServerResrceMntrngMBean {
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovServerResrceMntrng.class);
-	
+
 	private Object getOSInfo(String getMethod) {
 		
 		OperatingSystemMXBean operatingSystemMXBean = ManagementFactory.getOperatingSystemMXBean();
