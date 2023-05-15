@@ -9,9 +9,9 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.ModelAndViewDefiningException;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 
@@ -35,7 +35,7 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
  */
 
 
-public class AuthenticInterceptor extends HandlerInterceptorAdapter {
+public class AuthenticInterceptor implements HandlerInterceptor {
 
 	@SuppressWarnings("unused")
 	@Autowired
