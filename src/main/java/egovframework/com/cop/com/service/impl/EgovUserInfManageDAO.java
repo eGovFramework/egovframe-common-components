@@ -33,7 +33,6 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unchecked")
 	public List<UserInfVO> selectUserList(UserInfVO userVO) throws Exception {
 		return selectList("EgovUserInfManageDAO.selectUserList", userVO);
 	}
@@ -56,7 +55,6 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unchecked")
 	public List<UserInfVO> selectCmmntyUserList(UserInfVO userVO) throws Exception {
 		return selectList("EgovUserInfManageDAO.selectCmmntyUserList", userVO);
 	}
@@ -79,7 +77,6 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unchecked")
 	public List<UserInfVO> selectCmmntyMngrList(UserInfVO userVO) throws Exception {
 		return selectList("EgovUserInfManageDAO.selectCmmntyMngrList", userVO);
 	}
@@ -102,7 +99,6 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unchecked")
 	public List<UserInfVO> selectClubUserList(UserInfVO userVO) throws Exception {
 		return selectList("EgovUserInfManageDAO.selectClubUserList", userVO);
 	}
@@ -125,7 +121,6 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unchecked")
 	public List<UserInfVO> selectClubOprtrList(UserInfVO userVO) throws Exception {
 		return selectList("EgovUserInfManageDAO.selectClubOprtrList", userVO);
 	}
@@ -148,7 +143,6 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unchecked")
 	public List<UserInfVO> selectAllClubUser(UserInfVO userVO) throws Exception {
 		return selectList("EgovUserInfManageDAO.selectAllClubUser", userVO);
 	}
@@ -160,7 +154,6 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
 	 * @return
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unchecked")
 	public List<UserInfVO> selectAllCmmntyUser(UserInfVO userVO) throws Exception {
 		return selectList("EgovUserInfManageDAO.selectAllCmmntyUser", userVO);
 	}

@@ -66,7 +66,6 @@ public class EgovOrgManageLdapServiceImpl extends EgovAbstractServiceImpl implem
 	public Map<String, Object> selectDeptManage(String dn) {
 		UcorgVO vo = deptManageLdapDAO.selectDeptManageByDn(dn);
 
-		@SuppressWarnings("unchecked")
 		Map<Object, Object> mapObject = new org.apache.commons.beanutils.BeanMap(vo);
 		Map<String, Object> map = new HashMap<String, Object>();
 		for (Map.Entry<Object, Object> entry : mapObject.entrySet()) {
@@ -84,7 +83,6 @@ public class EgovOrgManageLdapServiceImpl extends EgovAbstractServiceImpl implem
 	public Map<String, Object> selectUserManage(String dn) {
 		UserVO vo = userManageLdapDAO.selectUserManageByDn(dn);
 		
-		@SuppressWarnings("unchecked")
 		Map<Object, Object> mapObject = new org.apache.commons.beanutils.BeanMap(vo);
 		Map<String, Object> map = new HashMap<String, Object>();
 		for (Map.Entry<Object, Object> entry : mapObject.entrySet()) {
@@ -99,7 +97,6 @@ public class EgovOrgManageLdapServiceImpl extends EgovAbstractServiceImpl implem
 	/**
 	 * 등록된 부서의 목록을 조회한다.
 	 */
-	@SuppressWarnings("unchecked")
 	public Map<String, Object> selectDeptManageSubList(String dn) throws Exception {
 		UcorgVO u = deptManageLdapDAO.selectDeptManageByDn(dn);
 
@@ -164,7 +161,6 @@ public class EgovOrgManageLdapServiceImpl extends EgovAbstractServiceImpl implem
 
 		deptManageLdapDAO.insertDeptManage(vo);
 		LdapTreeObject object = new LdapTreeObject(vo.getOu(), vo.getDn());
-		@SuppressWarnings("unchecked")
 		Map<Object, Object> mapObject = new org.apache.commons.beanutils.BeanMap(object);
 		Map<String, Object> map = new HashMap<String, Object>();
 		for (Map.Entry<Object, Object> entry : mapObject.entrySet()) {
@@ -187,7 +183,6 @@ public class EgovOrgManageLdapServiceImpl extends EgovAbstractServiceImpl implem
 		userManageLdapDAO.insertUserManage(vo);
 
 		LdapTreeObject object = new LdapTreeObject(vo.getOu(), vo.getDn());
-		@SuppressWarnings("unchecked")
 		Map<Object, Object> mapObject = new org.apache.commons.beanutils.BeanMap(object);
 		Map<String, Object> map = new HashMap<String, Object>();
 		for (Map.Entry<Object, Object> entry : mapObject.entrySet()) {

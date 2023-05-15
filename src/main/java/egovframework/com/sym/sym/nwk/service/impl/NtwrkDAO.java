@@ -28,7 +28,6 @@ public class NtwrkDAO extends EgovComAbstractDAO {
 	 * @param ntwrkVO - 네트워크 Vo
 	 * @return List - 네트워크 목록
 	 */
-    @SuppressWarnings("unchecked")
 	public List<NtwrkVO> selectNtwrkList(NtwrkVO ntwrkVO) throws Exception {
         return selectList("ntwrkDAO.selectNtwrkList", ntwrkVO);
     }

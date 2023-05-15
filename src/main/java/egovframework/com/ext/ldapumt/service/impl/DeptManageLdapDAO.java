@@ -110,7 +110,7 @@ public class DeptManageLdapDAO extends OrgManageLdapDAO {
 	public UcorgVO selectDeptManage(UcorgVO vo) throws Exception {
 		final ContainerCriteria criteria = query().where("objectclass").is("ucorg2");
 
-		@SuppressWarnings("unchecked") Map<Object, Object> introspected = new BeanMap(vo);
+		Map<Object, Object> introspected = new BeanMap(vo);
 
 		for (Object key : introspected.keySet()) {
 			if (key.equals("dn") || key.equals("class") || introspected.get(key) == null
