@@ -67,20 +67,9 @@ public class EgovComUtlController {
 
 		// 화이트 리스트 처리
 		// whitelist 목록에 있는 경우 결과가 true, 결과가 false인 경우 FAIL처리
-		boolean isAuth = false;
-
-		for (String urlPattern : egovWhitelist)
-		{
-			if (linkPage.matches(urlPattern))
-			{
-				isAuth = true;
-				break;
-			}
-		}
-
-		if (!isAuth) {
+		if (egovWhitelist.contains(linkPage) == false) {
 			LOGGER.debug("Page Link WhiteList Error! Please check whitelist!");
-			linkPage = "egovframework/com/cmm/egovError";
+			link="egovframework/com/cmm/egovError";
 		}
 		
 		// 안전한 경로 문자열로 조치
