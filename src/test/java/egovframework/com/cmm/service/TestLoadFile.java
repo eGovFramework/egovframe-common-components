@@ -24,6 +24,9 @@ public class TestLoadFile {
 		
 		boolean result = EgovWhiteList.check("/egovframework/com/main_bottom");
 		egovLogger.debug("===>>> result = "+result);
+
+		boolean resultNew = EgovWhiteList.checkNew("/egovframework/com/main_bottom");
+		egovLogger.debug("===>>> resultNew = "+resultNew);
 		
 		egovLogger.debug(">>> "+EgovProperties.class.getResource(".").getPath());
 		

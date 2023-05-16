@@ -3,7 +3,6 @@ package egovframework.com.cmm.service;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.junit.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -48,6 +47,9 @@ public class TestWhiteListLink {
 		boolean resultTrue = EgovWhiteList.check(link);
 		egovLogger.debug("===>>> result = "+resultTrue);
 
+		boolean resultTrueNew = EgovWhiteList.checkNew(link);
+		egovLogger.debug("===>>> resultNew = "+resultTrueNew);
+
 		assertTrue(resultTrue);
 		
 	}
@@ -60,6 +62,9 @@ public class TestWhiteListLink {
 		
 		boolean resultFalse = EgovWhiteList.check(link);
 		egovLogger.debug("===>>> result = "+resultFalse);
+
+		boolean resultFalseNew = EgovWhiteList.checkNew(link);
+		egovLogger.debug("===>>> resultNew = "+resultFalseNew);
 		
 		assertFalse(resultFalse);
 	}
@@ -73,6 +78,9 @@ public class TestWhiteListLink {
 
 		boolean resultFalse = EgovWhiteList.check(link);
 		egovLogger.debug("===>>> result = "+resultFalse);
+
+		boolean resultFalseNew = EgovWhiteList.checkNew(link);
+		egovLogger.debug("===>>> resultNew = "+resultFalseNew);
 		
 		assertFalse(resultFalse);
 	}
