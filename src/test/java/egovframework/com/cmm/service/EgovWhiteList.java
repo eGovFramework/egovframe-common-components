@@ -21,6 +21,38 @@ public class EgovWhiteList {
 	final static  String FILE_SEPARATOR = System.getProperty("file.separator");
 	public static final String RELATIVE_PATH_PREFIX = EgovProperties.RELATIVE_PATH_PREFIX;
 
+	public static boolean checkNew(String keyword) {
+		
+		String fName = EgovProperties.getProperty("Globals.linkWhitelistFile");
+		if ( fName == null || "".equals(fName) ) {
+			throw new RuntimeException("Globals.linkWhitelistFile is not defined!");
+		}
+		return checkNew(keyword, fName);
+	}
+	
+	public static boolean checkNew(String keyword, String whiteListFile) {
+		
+		String filePath = RELATIVE_PATH_PREFIX+"egovProps"+FILE_SEPARATOR+whiteListFile;
+
+		List<String> whiteList = loadWhiteListNew(EgovWebUtil.filePathBlackList(filePath));
+		if ( whiteList == null ) return false;
+		
+		for (String whiteListData : whiteList) {
+			
+			if ( whiteListData != null ) {
+				if ( !whiteListData.trim().equals("") ) {
+					if ("#".equals(whiteListData.substring(0,1))) {
+						// 주석으로 인식 - Pass
+					} else {
+						if (whiteListData.equals(keyword)) return true;
+					}
+				}
+			}
+		}
+		
+		return false;
+	}
+
 	public static boolean check(String keyword) {
 		
 		String fName = EgovProperties.getProperty("Globals.linkWhitelistFile");
@@ -33,7 +65,7 @@ public class EgovWhiteList {
 	public static boolean check(String keyword, String whiteListFile) {
 		
 		String filePath = RELATIVE_PATH_PREFIX+"egovProps"+FILE_SEPARATOR+whiteListFile;
-
+		
 		List<String> whiteList = loadWhiteList(EgovWebUtil.filePathBlackList(filePath));
 		if ( whiteList == null ) return false;
 		
