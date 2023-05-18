@@ -3,6 +3,9 @@ package egovframework.com.utl.sim;
 import java.io.IOException;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import egovframework.com.utl.sim.service.EgovNetworkState;
 
 /**
@@ -29,26 +32,23 @@ import egovframework.com.utl.sim.service.EgovNetworkState;
 
 public class TestPingNetwork {
 
-	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+	protected static Logger egovLogger = LoggerFactory.getLogger(TestPingNetwork.class);
 
-		EgovNetworkState networkState = new EgovNetworkState();
+	public static void main(String[] args) {
 
 		try {
-			String myIpaddress = networkState.getMyIPaddress();
-			System.out.println("1. My IP Address = "+myIpaddress);
-			System.out.println("2. Ping Test = "+networkState.getPingTest(myIpaddress));
-			//System.out.println("1. My MAC Address = "+networkState.getMyMACAddress(myIpaddress));//getNetWorkInfo.sh
-			List<String> myPortInfoList = networkState.getMyPortScan();
+			String myIpaddress = EgovNetworkState.getMyIPaddress();
+			egovLogger.debug("1. My IP Address = "+myIpaddress);
+			egovLogger.debug("2. Ping Test = "+EgovNetworkState.getPingTest(myIpaddress));
+			//egovLogger.debug("1. My MAC Address = "+networkState.getMyMACAddress(myIpaddress));//getNetWorkInfo.sh
+			List<String> myPortInfoList = EgovNetworkState.getMyPortScan();
 			for (String portInfo : myPortInfoList) {
-				System.out.println("3. My Port Info. = "+portInfo);
+				egovLogger.debug("3. My Port Info. = "+portInfo);
 			}
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			egovLogger.error("IOException");
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			egovLogger.error("Exception");
 		}
 
 	}
