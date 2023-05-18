@@ -74,7 +74,7 @@ public class EgovSndngMailDtlsController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<?> sndngMailList = sndngMailDtlsService.selectSndngMailList(searchVO);
+		List<SndngMailVO> sndngMailList = sndngMailDtlsService.selectSndngMailList(searchVO);
 		model.addAttribute("resultList", sndngMailList);
 
 		int totCnt = sndngMailDtlsService.selectSndngMailListTotCnt(searchVO);

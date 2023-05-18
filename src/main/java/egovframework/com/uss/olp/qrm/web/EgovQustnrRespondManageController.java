@@ -27,6 +27,7 @@ import egovframework.com.uss.olp.qrm.service.EgovQustnrRespondManageService;
 import egovframework.com.uss.olp.qrm.service.QustnrRespondManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 /**
  * 설문응답자관리 Controller Class 구현
@@ -109,7 +110,7 @@ public class EgovQustnrRespondManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> sampleList = egovQustnrRespondManageService.selectQustnrRespondManageList(searchVO);
+        List<EgovMap> sampleList = egovQustnrRespondManageService.selectQustnrRespondManageList(searchVO);
         model.addAttribute("resultList", sampleList);
 
         model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String)commandMap.get("searchKeyword"));
@@ -158,7 +159,7 @@ public class EgovQustnrRespondManageController {
 	    	listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
 	    	model.addAttribute("comCode034", listComCode);
 
-	        List<?> sampleList = egovQustnrRespondManageService.selectQustnrRespondManageDetail(qustnrRespondManageVO);
+	        List<EgovMap> sampleList = egovQustnrRespondManageService.selectQustnrRespondManageDetail(qustnrRespondManageVO);
 	        model.addAttribute("resultList", sampleList);
 		}
 

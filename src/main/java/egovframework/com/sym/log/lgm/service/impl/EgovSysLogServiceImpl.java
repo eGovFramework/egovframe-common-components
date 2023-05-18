@@ -70,7 +70,7 @@ public class EgovSysLogServiceImpl extends EgovAbstractServiceImpl implements Eg
 	@Override
 	public Map<?, ?> selectSysLogInf(SysLog sysLog) throws Exception {
 
-		List<?> _result = sysLogDAO.selectSysLogInf(sysLog);
+		List<SysLog> _result = sysLogDAO.selectSysLogInf(sysLog);
 		int _cnt = sysLogDAO.selectSysLogInfCnt(sysLog);
 
 		Map<String, Object> _map = new HashMap<String, Object>();

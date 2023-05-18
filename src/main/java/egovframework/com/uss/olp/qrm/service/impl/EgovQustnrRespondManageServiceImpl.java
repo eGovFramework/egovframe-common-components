@@ -8,6 +8,7 @@ import egovframework.com.uss.olp.qrm.service.QustnrRespondManageVO;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 import javax.annotation.Resource;
 
@@ -47,7 +48,7 @@ public class EgovQustnrRespondManageServiceImpl extends EgovAbstractServiceImpl 
 	 * @throws Exception
 	 */
 	@Override
-	public List<?> selectQustnrRespondManageList(ComDefaultVO searchVO) throws Exception{
+	public List<EgovMap> selectQustnrRespondManageList(ComDefaultVO searchVO) throws Exception{
 		return dao.selectQustnrRespondManageList(searchVO);
 	}
 
@@ -58,7 +59,7 @@ public class EgovQustnrRespondManageServiceImpl extends EgovAbstractServiceImpl 
 	 * @throws Exception
 	 */
 	@Override
-	public List<?> selectQustnrRespondManageDetail(QustnrRespondManageVO qustnrRespondManageVO) throws Exception{
+	public List<EgovMap> selectQustnrRespondManageDetail(QustnrRespondManageVO qustnrRespondManageVO) throws Exception{
 		return dao.selectQustnrRespondManageDetail(qustnrRespondManageVO);
 	}
 

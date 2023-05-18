@@ -4,6 +4,7 @@ import java.util.List;
 
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.cop.ems.service.SndngMailVO;
 
 import org.springframework.stereotype.Repository;
 
@@ -32,8 +33,8 @@ public class SndngMailDtlsDAO extends EgovComAbstractDAO {
 	 * @return List
 	 * @exception Exception
 	 */
-	public List<?> selectSndngMailList(ComDefaultVO vo) throws Exception {
-		return list("SndngMailDtlsDAO.selectSndngMailList_D", vo);
+	public List<SndngMailVO> selectSndngMailList(ComDefaultVO vo) throws Exception {
+		return selectList("SndngMailDtlsDAO.selectSndngMailList_D", vo);
 	}
 
 	/**

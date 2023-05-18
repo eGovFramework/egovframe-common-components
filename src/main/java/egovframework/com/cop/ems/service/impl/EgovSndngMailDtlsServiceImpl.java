@@ -46,7 +46,7 @@ public class EgovSndngMailDtlsServiceImpl extends EgovAbstractServiceImpl implem
 	 * @exception Exception
 	 */
 	@Override
-	public List<?> selectSndngMailList(ComDefaultVO vo) throws Exception {
+	public List<SndngMailVO> selectSndngMailList(ComDefaultVO vo) throws Exception {
 		return sndngMailDtlsDAO.selectSndngMailList(vo);
 	}
 
