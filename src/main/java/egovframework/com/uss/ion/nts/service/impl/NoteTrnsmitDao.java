@@ -6,6 +6,7 @@ import java.util.Map;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.nts.service.NoteTrnsmit;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 /**
  * 보낸쪽지함관리를 처리하는 Dao Class 구현
@@ -31,8 +32,8 @@ public class NoteTrnsmitDao extends EgovComAbstractDAO {
      * @return List -조회한목록이담긴List
      * @throws Exception
      */
-    public List<?> selectNoteTrnsmitList(NoteTrnsmit noteTrnsmit) throws Exception {
-    	return list("NoteTrnsmit.selectNoteTrnsmit", noteTrnsmit);
+    public List<EgovMap> selectNoteTrnsmitList(NoteTrnsmit noteTrnsmit) throws Exception {
+    	return selectList("NoteTrnsmit.selectNoteTrnsmit", noteTrnsmit);
     }
 
     /**
@@ -108,7 +109,7 @@ public class NoteTrnsmitDao extends EgovComAbstractDAO {
      * @return List -조회한목록이담긴List
      * @throws Exception
      */
-    public List<?> selectNoteTrnsmitCnfirm(NoteTrnsmit noteTrnsmit) throws Exception {
-    	return list("NoteTrnsmit.selectNoteTrnsmitCnfirm", noteTrnsmit);
+    public List<EgovMap> selectNoteTrnsmitCnfirm(NoteTrnsmit noteTrnsmit) throws Exception {
+    	return selectList("NoteTrnsmit.selectNoteTrnsmitCnfirm", noteTrnsmit);
     }
 }

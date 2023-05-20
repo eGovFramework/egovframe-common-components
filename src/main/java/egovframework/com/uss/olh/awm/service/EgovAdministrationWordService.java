@@ -6,7 +6,7 @@ import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 
 public interface EgovAdministrationWordService {
 
-	List<?> selectAdministrationWordList(AdministrationWordVO searchVO);
+	List<AdministrationWordVO> selectAdministrationWordList(AdministrationWordVO searchVO);
 
 	int selectAdministrationWordListCnt(AdministrationWordVO searchVO);
 

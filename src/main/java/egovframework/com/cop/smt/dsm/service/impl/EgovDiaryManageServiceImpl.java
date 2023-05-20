@@ -8,6 +8,7 @@ import egovframework.com.cop.smt.dsm.service.EgovDiaryManageService;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 import javax.annotation.Resource;
 
@@ -46,9 +47,8 @@ public class EgovDiaryManageServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @return List
 	 * @throws Exception
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public List selectDiaryManageList(ComDefaultVO searchVO) throws Exception{
-		return (List)dao.selectDiaryManageList(searchVO);
+	public List<EgovMap> selectDiaryManageList(ComDefaultVO searchVO) throws Exception{
+		return dao.selectDiaryManageList(searchVO);
 	}
 	
     /**

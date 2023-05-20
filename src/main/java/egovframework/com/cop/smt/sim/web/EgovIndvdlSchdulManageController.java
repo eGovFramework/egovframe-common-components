@@ -27,6 +27,7 @@ import egovframework.com.cmm.EgovComponentChecker;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
@@ -36,6 +37,7 @@ import egovframework.com.cop.smt.sim.service.EgovIndvdlSchdulManageService;
 import egovframework.com.cop.smt.sim.service.IndvdlSchdulManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 /**
  * 일정관리를 처리하는 Controller Class 구현
  * @author 공통서비스 장동한
@@ -113,7 +115,7 @@ public class EgovIndvdlSchdulManageController {
 
 		hmParam.put("uniqId", loginVO.getUniqId());
 
-		List<?> reusltList = egovIndvdlSchdulManageService.selectIndvdlSchdulManageMainList(hmParam);
+		List<EgovMap> reusltList = egovIndvdlSchdulManageService.selectIndvdlSchdulManageMainList(hmParam);
 
 		 model.addAttribute("resultList", reusltList);
 
@@ -180,7 +182,7 @@ public class EgovIndvdlSchdulManageController {
 		model.addAttribute("month", iNowMonth);
 		model.addAttribute("day", iNowDay);
 
-		List<?> resultList = egovIndvdlSchdulManageService.selectIndvdlSchdulManageRetrieve(commandMap);
+		List<EgovMap> resultList = egovIndvdlSchdulManageService.selectIndvdlSchdulManageRetrieve(commandMap);
         model.addAttribute("resultList", resultList);
 
 		return "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageDailyList";
@@ -335,7 +337,6 @@ public class EgovIndvdlSchdulManageController {
 	 * @return "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageMonthList"
 	 * @throws Exception
 	 */
-	@SuppressWarnings({ "rawtypes", "unused" })
 	@RequestMapping(value="/cop/smt/sim/EgovIndvdlSchdulManageMonthList.do")
 	public String egovIndvdlSchdulManageMonthList(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
@@ -355,7 +356,7 @@ public class EgovIndvdlSchdulManageController {
 
 		int iYear = cal.get(java.util.Calendar.YEAR);
 		int iMonth = cal.get(java.util.Calendar.MONTH);
-		int iDate = cal.get(java.util.Calendar.DATE);
+//		int iDate = cal.get(java.util.Calendar.DATE);
 
                 //검색 설정
                 String sSearchDate = "";
@@ -375,13 +376,13 @@ public class EgovIndvdlSchdulManageController {
 		ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
 	   	voComCode = new ComDefaultCodeVO();
     	voComCode.setCodeId("COM030");
-    	List listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+    	List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
     	model.addAttribute("schdulSe", listComCode);
 
     	commandMap.put("searchMonth", sSearchDate);
     	commandMap.put("searchMode", "MONTH");
 
-        List resultList = egovIndvdlSchdulManageService.selectIndvdlSchdulManageRetrieve(commandMap);
+        List<EgovMap> resultList = egovIndvdlSchdulManageService.selectIndvdlSchdulManageRetrieve(commandMap);
         model.addAttribute("resultList", resultList);
 
 		return "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageMonthList";
@@ -406,7 +407,7 @@ public class EgovIndvdlSchdulManageController {
     throws Exception {
 
 
-        List<?> resultList = egovIndvdlSchdulManageService.selectIndvdlSchdulManageList(searchVO);
+        List<IndvdlSchdulManageVO> resultList = egovIndvdlSchdulManageService.selectIndvdlSchdulManageList(searchVO);
         model.addAttribute("resultList", resultList);
 
 		return "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageList";
@@ -454,7 +455,7 @@ public class EgovIndvdlSchdulManageController {
 	    	listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
 	    	model.addAttribute("reptitSeCode", listComCode);
 
-	        List<?> sampleList = egovIndvdlSchdulManageService.selectIndvdlSchdulManageDetail(indvdlSchdulManageVO);
+	        List<IndvdlSchdulManageVO> sampleList = egovIndvdlSchdulManageService.selectIndvdlSchdulManageDetail(indvdlSchdulManageVO);
 	        model.addAttribute("resultList", sampleList);
 
 	        //-----------------------------------------------------------

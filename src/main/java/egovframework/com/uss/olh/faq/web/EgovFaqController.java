@@ -102,7 +102,7 @@ public class EgovFaqController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<?> FaqList = egovFaqService.selectFaqList(searchVO);
+		List<FaqVO> FaqList = egovFaqService.selectFaqList(searchVO);
 		model.addAttribute("resultList", FaqList);
 
 		int totCnt = egovFaqService.selectFaqListCnt(searchVO);

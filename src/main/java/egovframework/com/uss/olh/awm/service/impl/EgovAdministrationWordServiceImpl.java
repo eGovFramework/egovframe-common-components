@@ -22,7 +22,7 @@ public class EgovAdministrationWordServiceImpl extends EgovAbstractServiceImpl i
     private EgovIdGnrService idgenService;
 	
 	@Override
-	public List<?> selectAdministrationWordList(AdministrationWordVO searchVO) {
+	public List<AdministrationWordVO> selectAdministrationWordList(AdministrationWordVO searchVO) {
 		return egovAdministrationWordDao.selectAdministrationWordList(searchVO);
 	}
 

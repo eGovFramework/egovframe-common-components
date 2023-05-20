@@ -27,6 +27,7 @@ import egovframework.com.uss.olp.opp.service.EgovOnlinePollPartcptnService;
 import egovframework.com.uss.olp.opp.service.OnlinePollPartcptn;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
@@ -76,14 +77,13 @@ public class EgovOnlinePollPartcptnController {
      * @return "egovframework/com/uss/olp/opp/EgovOnlinePollList"
      * @throws Exception
      */
-    @SuppressWarnings("unused")
 	@RequestMapping(value = "/uss/olp/opp/listEgovOnlinePollPartcptnMain.do")
     public String egovOnlinePollPartcptnMainList(
             @ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap,
             OnlinePollPartcptn onlinePollPartcptn, ModelMap model)
             throws Exception {
 
-        String sSearchMode = commandMap.get("searchMode") == null ? "" : (String) commandMap.get("searchMode");
+//        String sSearchMode = commandMap.get("searchMode") == null ? "" : (String) commandMap.get("searchMode");
 
         /** EgovPropertyService.sample */
         searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -99,7 +99,7 @@ public class EgovOnlinePollPartcptnController {
         searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
         searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> reusltList = egovOnlinePollPartcptnService.selectOnlinePollManageList(searchVO);
+        List<EgovMap> reusltList = egovOnlinePollPartcptnService.selectOnlinePollManageList(searchVO);
         model.addAttribute("resultList", reusltList);
 
 
@@ -116,7 +116,6 @@ public class EgovOnlinePollPartcptnController {
      * @return "egovframework/com/uss/olp/opp/EgovOnlinePollList"
      * @throws Exception
      */
-    @SuppressWarnings("unused")
 	@IncludedInfo(name="온라인poll참여", order = 661 ,gid = 50)
     @RequestMapping(value = "/uss/olp/opp/listOnlinePollPartcptn.do")
     public String egovOnlinePollPartcptnList(
@@ -124,7 +123,7 @@ public class EgovOnlinePollPartcptnController {
             OnlinePollPartcptn onlinePollPartcptn, ModelMap model)
             throws Exception {
 
-        String sSearchMode = commandMap.get("searchMode") == null ? "" : (String) commandMap.get("searchMode");
+//        String sSearchMode = commandMap.get("searchMode") == null ? "" : (String) commandMap.get("searchMode");
 
         /** EgovPropertyService.sample */
         searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -140,7 +139,7 @@ public class EgovOnlinePollPartcptnController {
         searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
         searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> reusltList = egovOnlinePollPartcptnService.selectOnlinePollManageList(searchVO);
+        List<EgovMap> reusltList = egovOnlinePollPartcptnService.selectOnlinePollManageList(searchVO);
         model.addAttribute("resultList", reusltList);
 
         model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword"));
@@ -228,11 +227,11 @@ public class EgovOnlinePollPartcptnController {
             model.addAttribute("pollDeuseYnList", cmmUseService.selectCmmCodeDetail(voComCode));
 
             //온라인POLL관리 정보 설정
-            List<?> reusltDetail = egovOnlinePollPartcptnService.selectOnlinePollManageDetail(onlinePollPartcptn);
-            model.addAttribute("PollManage", reusltDetail);
+            List<EgovMap> reusltPollManage = egovOnlinePollPartcptnService.selectOnlinePollManageDetail(onlinePollPartcptn);
+            model.addAttribute("PollManage", reusltPollManage);
             //온라인POLL항목 정보 설정
-            reusltDetail = egovOnlinePollPartcptnService.selectOnlinePollItemDetail(onlinePollPartcptn);
-            model.addAttribute("PollItem", reusltDetail);
+            List<EgovMap> reusltPollItem = egovOnlinePollPartcptnService.selectOnlinePollItemDetail(onlinePollPartcptn);
+            model.addAttribute("PollItem", reusltPollItem);
         }
 
         return sLocationUrl;
@@ -246,7 +245,6 @@ public class EgovOnlinePollPartcptnController {
      *         "/uss/olp/opm/EgovOnlinePollManageStatistics"
      * @throws Exception
      */
-    @SuppressWarnings("unused")
 	@RequestMapping(value = "/uss/olp/opp/statisticsOnlinePollPartcptn.do")
     public String egovOnlinePollManageStatistics(
     		@RequestParam Map<?, ?> commandMap,
@@ -262,19 +260,19 @@ public class EgovOnlinePollPartcptnController {
         model.addAttribute("pollKindCodeList", listComCode );
 
         //POLL페기유무 설정 /POLL자동페기유무
-        List<?> listPollDeuseYn = new ArrayList<Object>();
+//        List<?> listPollDeuseYn = new ArrayList<Object>();
         voComCode  = new ComDefaultCodeVO();
         voComCode.setCodeId("COM038");
         model.addAttribute("pollDeuseYnList", cmmUseService.selectCmmCodeDetail(voComCode));
 
         //온라인POLL관리 정보 설정
-        List<?> reusltDetail = egovOnlinePollPartcptnService.selectOnlinePollManageDetail(onlinePollPartcptn);
-        model.addAttribute("PollManageList", reusltDetail);
+        List<EgovMap> reusltPollManageList = egovOnlinePollPartcptnService.selectOnlinePollManageDetail(onlinePollPartcptn);
+        model.addAttribute("PollManageList", reusltPollManageList);
         //온라인POLL항목 정보 설정
-        reusltDetail = egovOnlinePollPartcptnService.selectOnlinePollItemDetail(onlinePollPartcptn);
-        model.addAttribute("PollItemList", reusltDetail);
+        List<EgovMap> reusltPollItemList = egovOnlinePollPartcptnService.selectOnlinePollItemDetail(onlinePollPartcptn);
+        model.addAttribute("PollItemList", reusltPollItemList);
         //온라인POLL결과 정보 설정
-        List<?> reusltList = egovOnlinePollPartcptnService.selectOnlinePollManageStatistics(onlinePollPartcptn);
+        List<EgovMap> reusltList = egovOnlinePollPartcptnService.selectOnlinePollManageStatistics(onlinePollPartcptn);
         model.addAttribute("statisticsList", reusltList);
 
         //이전 주소

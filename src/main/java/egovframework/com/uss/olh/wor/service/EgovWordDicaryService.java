@@ -6,7 +6,7 @@ import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 
 public interface EgovWordDicaryService {
 
-	List<?> selectWordDicaryList(WordDicaryVO searchVO);
+	List<WordDicaryVO> selectWordDicaryList(WordDicaryVO searchVO);
 
 	int selectWordDicaryListCnt(WordDicaryVO searchVO);
 

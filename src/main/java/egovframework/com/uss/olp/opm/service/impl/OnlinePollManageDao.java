@@ -7,6 +7,7 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.olp.opm.service.OnlinePollItem;
 import egovframework.com.uss.olp.opm.service.OnlinePollManage;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -32,8 +33,8 @@ public class OnlinePollManageDao extends EgovComAbstractDAO {
      * @return List
      * @throws Exception
      */
-    public List<?> selectOnlinePollManageList(ComDefaultVO searchVO) throws Exception {
-        return list("OnlinePollManage.selectOnlinePollManage", searchVO);
+    public List<EgovMap> selectOnlinePollManageList(ComDefaultVO searchVO) throws Exception {
+        return selectList("OnlinePollManage.selectOnlinePollManage", searchVO);
     }
 
     /**
@@ -93,8 +94,8 @@ public class OnlinePollManageDao extends EgovComAbstractDAO {
      * @param onlinePollManage 온라인POLL관리 정보가 담김 VO
      * @throws Exception
      */
-    public List<?> selectOnlinePollManageStatistics(OnlinePollManage onlinePollManage) throws Exception {
-        return list("OnlinePollManage.selectOnlinePollManageDetail", onlinePollManage);
+    public List<OnlinePollManage> selectOnlinePollManageStatistics(OnlinePollManage onlinePollManage) throws Exception {
+        return selectList("OnlinePollManage.selectOnlinePollManageDetail", onlinePollManage);
     }
 
     /**
@@ -102,8 +103,8 @@ public class OnlinePollManageDao extends EgovComAbstractDAO {
      * @param onlinePollItem  온라인POLL항목 정보가 담김 VO
      * @throws Exception
      */
-    public List<?> selectOnlinePollItemList(OnlinePollItem onlinePollItem) throws Exception {
-        return list("OnlinePollManage.selectOnlinePollItem", onlinePollItem);
+    public List<EgovMap> selectOnlinePollItemList(OnlinePollItem onlinePollItem) throws Exception {
+        return selectList("OnlinePollManage.selectOnlinePollItem", onlinePollItem);
     }
 
     /**

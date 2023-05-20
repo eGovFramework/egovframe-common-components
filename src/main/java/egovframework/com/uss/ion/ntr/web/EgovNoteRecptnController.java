@@ -26,6 +26,7 @@ import egovframework.com.uss.ion.ntr.service.NoteRecptn;
 import egovframework.com.uss.ion.nts.service.EgovNoteTrnsmitService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
@@ -211,7 +212,7 @@ public class EgovNoteRecptnController {
         	egovframework.com.uss.ion.nts.service.NoteTrnsmit noteTrnsmit = new egovframework.com.uss.ion.nts.service.NoteTrnsmit();
         	noteTrnsmit.setNoteId((String)commandMap.get("noteId"));
 
-            List<?> resultRecptnEmp = egovNoteTrnsmitService.selectNoteTrnsmitCnfirm(noteTrnsmit);
+            List<EgovMap> resultRecptnEmp = egovNoteTrnsmitService.selectNoteTrnsmitCnfirm(noteTrnsmit);
         	model.addAttribute("resultRecptnEmp", resultRecptnEmp);
         }
 

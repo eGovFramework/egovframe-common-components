@@ -2,6 +2,8 @@ package egovframework.com.uss.olp.opm.service;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 import egovframework.com.cmm.ComDefaultVO;
 /**
  * 온라인POLL관리를 처리하는 Service Class 구현
@@ -28,7 +30,7 @@ public interface EgovOnlinePollManageService {
     * @return List
     * @throws Exception
     */
-    public List<?> selectOnlinePollManageList(ComDefaultVO searchVO) throws Exception;
+    public List<EgovMap> selectOnlinePollManageList(ComDefaultVO searchVO) throws Exception;
 
     /**
     * 온라인POLL관리를(을) 상세조회 한다.
@@ -79,7 +81,7 @@ public interface EgovOnlinePollManageService {
     * @param onlinePollItem 온라인POLL항목 정보가 담김 VO
     * @throws Exception
     */
-    public List<?> selectOnlinePollItemList(OnlinePollItem onlinePollItem) throws Exception;
+    public List<EgovMap> selectOnlinePollItemList(OnlinePollItem onlinePollItem) throws Exception;
 
     /**
     * 온라인POLL항목를(을) 등록한다.

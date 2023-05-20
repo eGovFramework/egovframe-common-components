@@ -2,6 +2,8 @@ package egovframework.com.uss.olp.opp.service;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 import egovframework.com.cmm.ComDefaultVO;
 
 /**
@@ -29,7 +31,7 @@ public interface EgovOnlinePollPartcptnService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectOnlinePollManageList(ComDefaultVO searchVO) throws Exception;
+	public List<EgovMap> selectOnlinePollManageList(ComDefaultVO searchVO) throws Exception;
 
 	/**
 	 * 온라인POLL관리를(을) 목록 전체 건수를(을) 조회한다.
@@ -45,7 +47,7 @@ public interface EgovOnlinePollPartcptnService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectOnlinePollManageDetail(OnlinePollPartcptn onlinePollPartcptn) throws Exception;
+	public List<EgovMap> selectOnlinePollManageDetail(OnlinePollPartcptn onlinePollPartcptn) throws Exception;
 
 	/**
 	 *  온라인POLL항목를(을) 상세조회 한다.
@@ -53,7 +55,7 @@ public interface EgovOnlinePollPartcptnService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectOnlinePollItemDetail(OnlinePollPartcptn onlinePollPartcptn) throws Exception;
+	public List<EgovMap> selectOnlinePollItemDetail(OnlinePollPartcptn onlinePollPartcptn) throws Exception;
 
 	/**
 	 * 온라인POLL참여를(을) 등록한다.
@@ -68,7 +70,7 @@ public interface EgovOnlinePollPartcptnService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectOnlinePollManageStatistics(OnlinePollPartcptn onlinePollPartcptn) throws Exception;
+	public List<EgovMap> selectOnlinePollManageStatistics(OnlinePollPartcptn onlinePollPartcptn) throws Exception;
 
 	/**
 	 * 온라인POLL참여 여부를 조회한다.

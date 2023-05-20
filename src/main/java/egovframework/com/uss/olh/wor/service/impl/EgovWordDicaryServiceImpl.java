@@ -23,7 +23,7 @@ public class EgovWordDicaryServiceImpl extends EgovAbstractServiceImpl implement
 	private EgovIdGnrService idgenService;
 	
 	@Override
-	public List<?> selectWordDicaryList(WordDicaryVO searchVO) {
+	public List<WordDicaryVO> selectWordDicaryList(WordDicaryVO searchVO) {
 		return egovWordDicaryDao.selectWordDicaryList(searchVO);
 	}
 

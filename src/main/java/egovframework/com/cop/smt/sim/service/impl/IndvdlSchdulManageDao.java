@@ -7,6 +7,7 @@ import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.cop.smt.sim.service.IndvdlSchdulManageVO;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 /**
  * 일정관리를 처리하는 Dao Class 구현
@@ -35,8 +36,8 @@ public class IndvdlSchdulManageDao extends EgovComAbstractDAO {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectIndvdlSchdulManageMainList(Map<?, ?> map) throws Exception{
-		 return  list("IndvdlSchdulManage.selectIndvdlSchdulManageMainList", map);
+	public List<EgovMap> selectIndvdlSchdulManageMainList(Map<?, ?> map) throws Exception{
+		 return  selectList("IndvdlSchdulManage.selectIndvdlSchdulManageMainList", map);
 	}
 
     /**
@@ -45,8 +46,8 @@ public class IndvdlSchdulManageDao extends EgovComAbstractDAO {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectIndvdlSchdulManageRetrieve(Map<?, ?> map) throws Exception{
-		 return  list("IndvdlSchdulManage.selectIndvdlSchdulManageRetrieve", map);
+	public List<EgovMap> selectIndvdlSchdulManageRetrieve(Map<?, ?> map) throws Exception{
+		 return  selectList("IndvdlSchdulManage.selectIndvdlSchdulManageRetrieve", map);
 	}
 
 
@@ -66,8 +67,8 @@ public class IndvdlSchdulManageDao extends EgovComAbstractDAO {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectIndvdlSchdulManageList(ComDefaultVO searchVO) throws Exception{
-		return list("IndvdlSchdulManage.selectIndvdlSchdulManage", searchVO);
+	public List<IndvdlSchdulManageVO> selectIndvdlSchdulManageList(ComDefaultVO searchVO) throws Exception{
+		return selectList("IndvdlSchdulManage.selectIndvdlSchdulManage", searchVO);
 	}
 
     /**
@@ -76,8 +77,8 @@ public class IndvdlSchdulManageDao extends EgovComAbstractDAO {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectIndvdlSchdulManageDetail(IndvdlSchdulManageVO indvdlSchdulManageVO) throws Exception{
-		return list("IndvdlSchdulManage.selectIndvdlSchdulManageDetail", indvdlSchdulManageVO);
+	public List<IndvdlSchdulManageVO> selectIndvdlSchdulManageDetail(IndvdlSchdulManageVO indvdlSchdulManageVO) throws Exception{
+		return selectList("IndvdlSchdulManage.selectIndvdlSchdulManageDetail", indvdlSchdulManageVO);
 	}
 
     /**

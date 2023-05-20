@@ -11,8 +11,8 @@ import egovframework.com.uss.ion.ecc.service.TnextrlHrVO;
 @Repository("EgovEventCmpgnDAO")
 public class EgovEventCmpgnDAO extends EgovComAbstractDAO {
 
-	public List<?> selectEventCmpgnList(EventCmpgnVO searchVO) {
-		return list("EventCmpgn.selectEventCmpgnList", searchVO);
+	public List<EventCmpgnVO> selectEventCmpgnList(EventCmpgnVO searchVO) {
+		return selectList("EventCmpgn.selectEventCmpgnList", searchVO);
 	}
 
 	public int selectEventCmpgnListCnt(EventCmpgnVO searchVO) {
@@ -35,8 +35,8 @@ public class EgovEventCmpgnDAO extends EgovComAbstractDAO {
 		delete("EventCmpgn.deleteEventCmpgn", eventCmpgnVO);
 	}
 
-	public List<?> selectTnextrlHrList(TnextrlHrVO searchVO) {
-		return list("EventCmpgn.selectTnextrlHrList", searchVO);
+	public List<TnextrlHrVO> selectTnextrlHrList(TnextrlHrVO searchVO) {
+		return selectList("EventCmpgn.selectTnextrlHrList", searchVO);
 	}
 
 	public int selectTnextrlHrListCnt(TnextrlHrVO searchVO) {

@@ -27,6 +27,7 @@ import egovframework.com.uss.olp.qmc.service.EgovQustnrManageService;
 import egovframework.com.uss.olp.qmc.service.QustnrManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 /**
  * 설문관리를 처리하는 Controller Class 구현
@@ -104,7 +105,7 @@ public class EgovQustnrManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> sampleList = egovQustnrManageService.selectQustnrManageList(searchVO);
+        List<EgovMap> sampleList = egovQustnrManageService.selectQustnrManageList(searchVO);
         model.addAttribute("resultList", sampleList);
 
         model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String)commandMap.get("searchKeyword"));
@@ -155,7 +156,7 @@ public class EgovQustnrManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> sampleList = egovQustnrManageService.selectQustnrManageList(searchVO);
+        List<EgovMap> sampleList = egovQustnrManageService.selectQustnrManageList(searchVO);
         model.addAttribute("resultList", sampleList);
 
         model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String)commandMap.get("searchKeyword"));
@@ -200,7 +201,7 @@ public class EgovQustnrManageController {
 	    	List<?> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
 	    	model.addAttribute("comCode034", listComCode);
 
-	        List<?> sampleList = egovQustnrManageService.selectQustnrManageDetail(qustnrManageVO);
+	        List<EgovMap> sampleList = egovQustnrManageService.selectQustnrManageDetail(qustnrManageVO);
 	        model.addAttribute("resultList", sampleList);
 		}
 
@@ -250,11 +251,11 @@ public class EgovQustnrManageController {
             beanValidator.validate(qustnrManageVO, bindingResult);
     		if (bindingResult.hasErrors()){
 
-                List<?> sampleList = egovQustnrManageService.selectQustnrManageDetail(qustnrManageVO);
+                List<EgovMap> sampleList = egovQustnrManageService.selectQustnrManageDetail(qustnrManageVO);
                 model.addAttribute("resultList", sampleList);
 
             	//설문템플릿 정보 불러오기
-                List<?> listQustnrTmplat = egovQustnrManageService.selectQustnrTmplatManageList(qustnrManageVO);
+                List<EgovMap> listQustnrTmplat = egovQustnrManageService.selectQustnrTmplatManageList(qustnrManageVO);
                 model.addAttribute("listQustnrTmplat", listQustnrTmplat);
 
     			return sLocationUrl;
@@ -325,7 +326,7 @@ public class EgovQustnrManageController {
             beanValidator.validate(qustnrManageVO, bindingResult);
     		if (bindingResult.hasErrors()){
             	//설문템플릿 정보 불러오기
-                List<?> listQustnrTmplat = egovQustnrManageService.selectQustnrTmplatManageList(qustnrManageVO);
+                List<EgovMap> listQustnrTmplat = egovQustnrManageService.selectQustnrTmplatManageList(qustnrManageVO);
                 model.addAttribute("listQustnrTmplat", listQustnrTmplat);
     			return sLocationUrl;
     		}

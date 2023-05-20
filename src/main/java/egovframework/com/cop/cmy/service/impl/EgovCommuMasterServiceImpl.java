@@ -27,7 +27,7 @@ public class EgovCommuMasterServiceImpl extends EgovAbstractServiceImpl implemen
 	@Override
 	public Map<String, Object> selectCommuMasterList(CommunityVO cmmntyVO) {
 		
-		List<?> result = egovCommuMasterDAO.selectCommuMasterList(cmmntyVO);
+		List<CommunityVO> result = egovCommuMasterDAO.selectCommuMasterList(cmmntyVO);
 		int cnt = egovCommuMasterDAO.selectCommuMasterListCnt(cmmntyVO);
 
 		Map<String, Object> map = new HashMap<String, Object>();

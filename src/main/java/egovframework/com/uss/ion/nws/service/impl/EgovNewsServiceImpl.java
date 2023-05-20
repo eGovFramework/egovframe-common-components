@@ -23,7 +23,7 @@ public class EgovNewsServiceImpl extends EgovAbstractServiceImpl implements Egov
 	private EgovIdGnrService idgenService;
 	
 	@Override
-	public List<?> selectNewsList(NewsVO searchVO) {
+	public List<NewsVO> selectNewsList(NewsVO searchVO) {
 		return egovNewsDao.selectNewsList(searchVO);
 	}
 

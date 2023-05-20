@@ -2,6 +2,8 @@ package egovframework.com.cop.smt.dsm.service;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 import egovframework.com.cmm.ComDefaultVO;
 /**
  * 일지관리를 처리하는 Service Class 구현
@@ -27,7 +29,7 @@ public interface EgovDiaryManageService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectDiaryManageList(ComDefaultVO searchVO) throws Exception;
+	public List<EgovMap> selectDiaryManageList(ComDefaultVO searchVO) throws Exception;
 	
     /**
 	 * 일지관리를(을) 상세조회 한다.

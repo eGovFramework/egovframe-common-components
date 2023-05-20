@@ -6,7 +6,7 @@ import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 
 public interface EgovQnaService {
 
-	List<?> selectQnaList(QnaVO searchVO);
+	List<QnaVO> selectQnaList(QnaVO searchVO);
 
 	int selectQnaListCnt(QnaVO searchVO);
 
@@ -20,7 +20,7 @@ public interface EgovQnaService {
 
 	void deleteQna(QnaVO qnaVO);
 
-	List<?> selectQnaAnswerList(QnaVO searchVO);
+	List<QnaVO> selectQnaAnswerList(QnaVO searchVO);
 
 	int selectQnaAnswerListCnt(QnaVO searchVO);
 

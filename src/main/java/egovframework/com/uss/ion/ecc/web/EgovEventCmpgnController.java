@@ -90,7 +90,7 @@ public class EgovEventCmpgnController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> sampleList = egovEventCmpgnService.selectEventCmpgnList(searchVO);
+        List<EventCmpgnVO> sampleList = egovEventCmpgnService.selectEventCmpgnList(searchVO);
         model.addAttribute("resultList", sampleList);
 
         int totCnt = egovEventCmpgnService.selectEventCmpgnListCnt(searchVO);
@@ -126,7 +126,7 @@ public class EgovEventCmpgnController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> sampleList = egovEventCmpgnService.selectEventCmpgnList(searchVO);
+        List<EventCmpgnVO> sampleList = egovEventCmpgnService.selectEventCmpgnList(searchVO);
         model.addAttribute("resultList", sampleList);
 
         int totCnt = egovEventCmpgnService.selectEventCmpgnListCnt(searchVO);
@@ -313,7 +313,7 @@ public class EgovEventCmpgnController {
  		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
  		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-         List<?> sampleList = egovEventCmpgnService.selectTnextrlHrList(searchVO);
+         List<TnextrlHrVO> sampleList = egovEventCmpgnService.selectTnextrlHrList(searchVO);
          model.addAttribute("resultList", sampleList);
 
          int totCnt = egovEventCmpgnService.selectTnextrlHrListCnt(searchVO);

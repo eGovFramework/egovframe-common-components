@@ -31,7 +31,7 @@ public class OnlinePollResultDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public List<?> selectOnlinePollResultList(OnlinePollResult onlinePollResult) throws Exception {
-        return list("OnlinePollResult.selectOnlinePollResult", onlinePollResult);
+        return selectList("OnlinePollResult.selectOnlinePollResult", onlinePollResult);
     }
 
     /**

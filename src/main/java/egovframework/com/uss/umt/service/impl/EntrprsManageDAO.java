@@ -4,6 +4,7 @@ import java.util.List;
 
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.umt.service.EntrprsManageVO;
+import egovframework.com.uss.umt.service.StplatVO;
 import egovframework.com.uss.umt.service.UserDefaultVO;
 
 import org.springframework.stereotype.Repository;
@@ -67,8 +68,8 @@ public class EntrprsManageDAO extends EgovComAbstractDAO{
      * @param stplatId 기업회원 약관아이디
      * @return List 기업회원약관정보
      */
-    public List<?> selectStplat(String stplatId) {
-    	return list("entrprsManageDAO.selectStplat_S", stplatId);
+    public List<StplatVO> selectStplat(String stplatId) {
+    	return selectList("entrprsManageDAO.selectStplat_S", stplatId);
     }
 
     /**
@@ -93,9 +94,8 @@ public class EntrprsManageDAO extends EgovComAbstractDAO{
      * @param userSearchVO 검색조건
      * @return List<EntrprsManageVO>
      */
-    @SuppressWarnings("unchecked")
 	public List<EntrprsManageVO> selectEntrprsMberList(UserDefaultVO userSearchVO){
-        return (List<EntrprsManageVO>) list("entrprsManageDAO.selectEntrprsMberList", userSearchVO);
+        return selectList("entrprsManageDAO.selectEntrprsMberList", userSearchVO);
     }
     /**
      * 기업회원 총 개수를 조회한다.

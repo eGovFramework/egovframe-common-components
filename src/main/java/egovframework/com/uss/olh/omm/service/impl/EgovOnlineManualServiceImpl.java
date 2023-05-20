@@ -22,7 +22,7 @@ public class EgovOnlineManualServiceImpl extends EgovAbstractServiceImpl impleme
     private EgovIdGnrService idgenService;
 	
 	@Override
-	public List<?> selectOnlineManualList(OnlineManualVO searchVO) {
+	public List<OnlineManualVO> selectOnlineManualList(OnlineManualVO searchVO) {
 		return egovOnlineManualDao.selectOnlineManualList(searchVO);
 	}
 
