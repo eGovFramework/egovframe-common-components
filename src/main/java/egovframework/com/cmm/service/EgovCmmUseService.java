@@ -42,7 +42,7 @@ public interface EgovCmmUseService {
      * @return Map(코드)
      * @throws Exception
      */
-    public Map<String, List<CmmnDetailCode>> selectCmmCodeDetails(List<?> voList) throws Exception;
+    public Map<String, List<CmmnDetailCode>> selectCmmCodeDetails(List<ComDefaultCodeVO> voList) throws Exception;
 
     /**
      * 조직정보를 코드형태로 리턴한다.
