@@ -39,7 +39,7 @@ public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements E
 	 *
 	 * @see egovframework.com.cmm.service.EgovFileMngService#deleteFileInfs(java.util.List)
 	 */
-	public void deleteFileInfs(List<?> fvoList) throws Exception {
+	public void deleteFileInfs(List<FileVO> fvoList) throws Exception {
 		fileMngDAO.deleteFileInfs(fvoList);
 	}
 
@@ -61,7 +61,7 @@ public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements E
 	 *
 	 * @see egovframework.com.cmm.service.EgovFileMngService#insertFileInfs(java.util.List)
 	 */
-	public String insertFileInfs(List<?> fvoList) throws Exception {
+	public String insertFileInfs(List<FileVO> fvoList) throws Exception {
 		String atchFileId = "";
 
 		if (fvoList.size() != 0) {
@@ -87,7 +87,7 @@ public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements E
 	 *
 	 * @see egovframework.com.cmm.service.EgovFileMngService#updateFileInfs(java.util.List)
 	 */
-	public void updateFileInfs(List<?> fvoList) throws Exception {
+	public void updateFileInfs(List<FileVO> fvoList) throws Exception {
 		//Delete & Insert
 		fileMngDAO.updateFileInfs(fvoList);
 	}

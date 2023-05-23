@@ -32,15 +32,15 @@ public class FileManageDAO extends EgovComAbstractDAO {
 	 * @return
 	 * @throws Exception
 	 */
-	public String insertFileInfs(List<?> fileList) throws Exception {
-		FileVO vo = (FileVO) fileList.get(0);
+	public String insertFileInfs(List<FileVO> fileList) throws Exception {
+		FileVO vo = fileList.get(0);
 		String atchFileId = vo.getAtchFileId();
 
 		insert("FileManageDAO.insertFileMaster", vo);
 
-		Iterator<?> iter = fileList.iterator();
+		Iterator<FileVO> iter = fileList.iterator();
 		while (iter.hasNext()) {
-			vo = (FileVO) iter.next();
+			vo = iter.next();
 
 			insert("FileManageDAO.insertFileDetail", vo);
 		}
@@ -65,11 +65,11 @@ public class FileManageDAO extends EgovComAbstractDAO {
 	 * @param fileList
 	 * @throws Exception
 	 */
-	public void updateFileInfs(List<?> fileList) throws Exception {
+	public void updateFileInfs(List<FileVO> fileList) throws Exception {
 		FileVO vo;
-		Iterator<?> iter = fileList.iterator();
+		Iterator<FileVO> iter = fileList.iterator();
 		while (iter.hasNext()) {
-			vo = (FileVO) iter.next();
+			vo = iter.next();
 			insert("FileManageDAO.insertFileDetail", vo);
 		}
 	}
@@ -80,11 +80,11 @@ public class FileManageDAO extends EgovComAbstractDAO {
 	 * @param fileList
 	 * @throws Exception
 	 */
-	public void deleteFileInfs(List<?> fileList) throws Exception {
-		Iterator<?> iter = fileList.iterator();
+	public void deleteFileInfs(List<FileVO> fileList) throws Exception {
+		Iterator<FileVO> iter = fileList.iterator();
 		FileVO vo;
 		while (iter.hasNext()) {
-			vo = (FileVO) iter.next();
+			vo = iter.next();
 
 			delete("FileManageDAO.deleteFileDetail", vo);
 		}
