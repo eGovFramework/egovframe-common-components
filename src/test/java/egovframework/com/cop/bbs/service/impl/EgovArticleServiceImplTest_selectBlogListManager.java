@@ -13,7 +13,6 @@ import egovframework.com.cop.bbs.service.BoardMasterVO;
 import egovframework.com.cop.bbs.service.BoardVO;
 import egovframework.com.cop.bbs.service.EgovArticleService;
 import egovframework.com.test.EgovTestV1;
-import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -33,11 +32,7 @@ public class EgovArticleServiceImplTest_selectBlogListManager extends EgovTestV1
 
 		// given
 		BoardVO boardVO = null;
-		try {
-			boardVO = egovArticleDAOTest_AaaTestData.selectBlogListManagerCnt();
-		} catch (FdlException e) {
-			log.error(e.getMessage());
-		}
+		boardVO = egovArticleDAOTest_AaaTestData.selectBlogListManagerCnt();
 
 		boardVO.setSearchCnd("0");
 		boardVO.setSearchWrd("test 게시판명");

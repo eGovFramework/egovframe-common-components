@@ -5,6 +5,9 @@ import static org.junit.Assert.assertEquals;
 import java.util.Date;
 import java.util.List;
 
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.fdl.string.EgovDateUtil;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -16,8 +19,6 @@ import egovframework.com.cop.bbs.service.Board;
 import egovframework.com.cop.bbs.service.BoardMaster;
 import egovframework.com.cop.bbs.service.BoardVO;
 import egovframework.com.test.EgovTestV1;
-import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-import org.egovframe.rte.fdl.string.EgovDateUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -38,18 +39,58 @@ public class EgovArticleDAOTest_selectGuestArticleList extends EgovTestV1 {
 	@Qualifier("egovBBSMstrIdGnrService")
 	private EgovIdGnrService egovBBSMstrIdGnrService;
 
-	@SuppressWarnings("unchecked")
 	@Test
 //	@Commit
-	public void test() throws Exception {
+	public void test() {
 		log.debug("test");
+
+		// given
+		Board board = testData();
+
+		BoardVO boardVO = new BoardVO();
+		boardVO.setBbsId(board.getBbsId());
+		boardVO.setRecordCountPerPage(10);
+		boardVO.setFirstIndex(0);
+
+		// when
+		List<BoardVO> results = egovArticleDAO.selectGuestArticleList(boardVO);
+
+		log.debug("results={}", results);
+		log.debug("size={}", results.size());
+		for (BoardVO result : results) {
+			log.debug("result={}", result);
+			log.debug("getBbsId={}", result.getBbsId());
+			log.debug("getNttId={}", result.getNttId());
+			log.debug("getNttSj={}", result.getNttSj());
+			log.debug("getFrstRegisterPnttm={}", result.getFrstRegisterPnttm());
+			log.debug("getNttCn={}", result.getNttCn());
+			log.debug("getUseAt={}", result.getUseAt());
+			log.debug("getFrstRegisterNm={}", result.getFrstRegisterNm());
+			log.debug("getFrstRegisterId={}", result.getFrstRegisterId());
+		}
+
+		log.debug("board={}", board);
+		log.debug("getBbsId={}", board.getBbsId());
+		log.debug("getNttId={}", board.getNttId());
+
+		// then
+		assertEquals(results.get(0).getNttId(), board.getNttId());
+		assertEquals(results.get(0).getBbsId(), board.getBbsId());
+	}
+
+	private Board testData() {
+		log.debug("testData");
 
 		// given
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		// insertBBSMasterInf
 		BoardMaster boardMaster = new BoardMaster();
-		boardMaster.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
+		try {
+			boardMaster.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
+		} catch (FdlException e) {
+			log.error("FdlException egovBBSMstrIdGnrService");
+		}
 		boardMaster.setFrstRegisterId(loginVO.getUniqId());
 
 		egovBBSMasterDAO.insertBBSMasterInf(boardMaster);
@@ -57,7 +98,11 @@ public class EgovArticleDAOTest_selectGuestArticleList extends EgovTestV1 {
 		// insertArticle
 		Board board = new Board();
 
-		board.setNttId(egovNttIdGnrService.getNextIntegerId());
+		try {
+			board.setNttId(egovNttIdGnrService.getNextIntegerId());
+		} catch (FdlException e) {
+			log.error("FdlException egovBBSMstrIdGnrService");
+		}
 		board.setBbsId(boardMaster.getBbsId());
 
 		String today = " " + EgovDateUtil.toString(new Date(), null, null);
@@ -75,32 +120,7 @@ public class EgovArticleDAOTest_selectGuestArticleList extends EgovTestV1 {
 
 		egovArticleDAO.insertArticle(board);
 
-		// selectNoticeArticleList
-		BoardVO boardVO = new BoardVO();
-		boardVO.setBbsId(boardMaster.getBbsId());
-		boardVO.setRecordCountPerPage(10);
-		boardVO.setFirstIndex(0);
-
-		// when
-		List<BoardVO> noticeArticleList = (List<BoardVO>) egovArticleDAO.selectGuestArticleList(boardVO);
-
-		log.debug("noticeArticleList={}", noticeArticleList);
-		log.debug("size={}", noticeArticleList.size());
-		for (BoardVO noticeArticle : noticeArticleList) {
-			log.debug("noticeArticle={}", noticeArticle);
-			log.debug("getBbsId={}", noticeArticle.getBbsId());
-			log.debug("getNttId={}", noticeArticle.getNttId());
-			log.debug("getNttSj={}", noticeArticle.getNttSj());
-			log.debug("getFrstRegisterPnttm={}", noticeArticle.getFrstRegisterPnttm());
-			log.debug("getNttCn={}", noticeArticle.getNttCn());
-			log.debug("getUseAt={}", noticeArticle.getUseAt());
-			log.debug("getFrstRegisterNm={}", noticeArticle.getFrstRegisterNm());
-			log.debug("getFrstRegisterId={}", noticeArticle.getFrstRegisterId());
-		}
-
-		// then
-		assertEquals(noticeArticleList.get(0).getNttId(), board.getNttId());
-		assertEquals(noticeArticleList.get(0).getBbsId(), boardVO.getBbsId());
+		return board;
 	}
 
 }

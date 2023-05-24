@@ -23,10 +23,9 @@ public class EgovArticleDAOTest_selectBlogListManager extends EgovTestV1 {
 	@Autowired
 	private EgovArticleDAOTest_AaaTestData egovArticleDAOTest_AaaTestData;
 
-	@SuppressWarnings("unchecked")
 	@Test
 //	@Commit
-	public void test() throws Exception {
+	public void test() {
 		log.debug("test");
 
 		// given
@@ -44,7 +43,6 @@ public class EgovArticleDAOTest_selectBlogListManager extends EgovTestV1 {
 		assertEquals(blogNmList.size(), 1);
 	}
 
-	@SuppressWarnings("unchecked")
 	@Test
 //	@Commit
 	public void test2() throws Exception {
@@ -58,7 +56,7 @@ public class EgovArticleDAOTest_selectBlogListManager extends EgovTestV1 {
 		vo.setSearchWrd(vo.getSearchWrd());
 
 		// when
-		List<BoardMasterVO> blogNmList = (List<BoardMasterVO>) egovArticleDAO.selectBlogListManager(vo);
+		List<BoardMasterVO> blogNmList = egovArticleDAO.selectBlogListManager(vo);
 		log.debug("blogNmList={}", blogNmList);
 
 		// then

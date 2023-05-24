@@ -4,7 +4,6 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.List;
 
-import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Commit;
@@ -32,11 +31,7 @@ public class EgovArticleServiceImplTest_selectBlogNmList extends EgovTestV1 {
 
 		// given
 		BoardVO boardVO = null;
-		try {
-			boardVO = egovArticleDAOTest_AaaTestData.selectBlogListManagerCnt();
-		} catch (FdlException e) {
-			log.error(e.getMessage());
-		}
+		boardVO = egovArticleDAOTest_AaaTestData.selectBlogListManagerCnt();
 
 		// when
 		List<BoardVO> blogNmList = egovArticleService.selectBlogNmList(boardVO);
