@@ -167,7 +167,6 @@ public class EgovQustnrTmplatManageController {
 	 * @return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageImg"
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unused")
 	@RequestMapping(value = "/uss/olp/qtm/EgovQustnrTmplatManageImg.do")
 	public void egovQustnrTmplatManageImg(
 		HttpServletRequest request,
