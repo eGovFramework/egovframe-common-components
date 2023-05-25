@@ -14,7 +14,7 @@ public class TodoTest {
 
 	@Test
 	public void test() {
-		String pathname = "C:\\EGOVFRAME-3.10.0\\git\\egovframe-common-components\\src\\main\\java\\egovframework\\com";
+		String pathname = "src/main/java/egovframework/com";
 
 		final File directory = new File(pathname);
 		final String[] extensions = { "java" };
