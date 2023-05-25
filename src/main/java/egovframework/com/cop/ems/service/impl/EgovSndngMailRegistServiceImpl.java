@@ -131,9 +131,9 @@ public class EgovSndngMailRegistServiceImpl extends EgovAbstractServiceImpl impl
 		// 1. 첨부파일 목록 (원파일명, 저장파일명)
 		String orignlFileList = "";
 		String streFileList = "";
-		List<?> atchmnFileList = sndngMailRegistDAO.selectAtchmnFileList(vo);
+		List<AtchmnFileVO> atchmnFileList = sndngMailRegistDAO.selectAtchmnFileList(vo);
 		for (int i = 0; i < atchmnFileList.size(); i++) {
-			AtchmnFileVO fileVO = (AtchmnFileVO) atchmnFileList.get(i);
+			AtchmnFileVO fileVO = atchmnFileList.get(i);
 			String orignlFile = fileVO.getOrignlFileNm();
 			String streFile = fileVO.getFileStreCours() + fileVO.getStreFileNm();
 			orignlFileList += orignlFile + ";";
