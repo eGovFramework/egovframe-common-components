@@ -12,7 +12,6 @@ import egovframework.com.cop.bbs.service.Blog;
 import egovframework.com.cop.bbs.service.BoardVO;
 import egovframework.com.cop.bbs.service.EgovArticleService;
 import egovframework.com.test.EgovTestV1;
-import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -32,11 +31,7 @@ public class EgovArticleServiceImplTest_selectLoginUser extends EgovTestV1 {
 		// given
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Blog blog = null;
-		try {
-			blog = egovArticleDAOTest_AaaTestData.insertBlogMaster(loginVO);
-		} catch (FdlException e) {
-			log.error(e.getMessage());
-		}
+		blog = egovArticleDAOTest_AaaTestData.insertBlogMaster(loginVO);
 
 		BoardVO boardVO = new BoardVO();
 		boardVO.setFrstRegisterId(blog.getFrstRegisterId());

@@ -24,7 +24,6 @@ public class EgovArticleServiceImplTest_selectGuestArticleList extends EgovTestV
 	@Autowired
 	private EgovArticleService egovArticleService;
 
-	@SuppressWarnings({ "unchecked" })
 	@Test
 	public void test() {
 		log.debug("test");
@@ -36,9 +35,10 @@ public class EgovArticleServiceImplTest_selectGuestArticleList extends EgovTestV
 		boardVO.setRecordCountPerPage(10);
 
 		// when
-		Map<String, Object> guestArticleList = egovArticleService.selectGuestArticleList(boardVO);
-		List<BoardVO> resultList = (List<BoardVO>) guestArticleList.get("resultList");
-		String resultCnt = (String) guestArticleList.get("resultCnt");
+		Map<String, Object> guestArticle = egovArticleService.selectGuestArticleList(boardVO);
+		@SuppressWarnings("unchecked")
+		List<BoardVO> resultList = (List<BoardVO>) guestArticle.get("resultList");
+		String resultCnt = (String) guestArticle.get("resultCnt");
 
 		resultList.forEach(result -> {
 			log.debug("result={}", result);
