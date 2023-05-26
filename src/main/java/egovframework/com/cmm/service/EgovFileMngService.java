@@ -43,7 +43,7 @@ public interface EgovFileMngService {
      * @param fvoList
      * @throws Exception
      */
-    public String insertFileInfs(List<?> fvoList) throws Exception;
+    public String insertFileInfs(List<FileVO> fvoList) throws Exception;
 
     /**
      * 여러 개의 파일에 대한 정보(속성 및 상세)를 수정한다.
@@ -51,7 +51,7 @@ public interface EgovFileMngService {
      * @param fvoList
      * @throws Exception
      */
-    public void updateFileInfs(List<?> fvoList) throws Exception;
+    public void updateFileInfs(List<FileVO> fvoList) throws Exception;
 
     /**
      * 여러 개의 파일을 삭제한다.
@@ -59,7 +59,7 @@ public interface EgovFileMngService {
      * @param fvoList
      * @throws Exception
      */
-    public void deleteFileInfs(List<?> fvoList) throws Exception;
+    public void deleteFileInfs(List<FileVO> fvoList) throws Exception;
 
     /**
      * 하나의 파일을 삭제한다.
