@@ -1,6 +1,6 @@
 package egovframework.com.utl.sim;
 
-import java.io.File;
+//import java.io.File;
 
 /*
 import org.jodconverter.JodConverter;
@@ -36,10 +36,9 @@ import org.jodconverter.office.OfficeUtils;
 public class TestPdfConverter2 {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 
-		File inputFile = new File("C:/egovframework/test1.xls");
-		File outputFile = new File("C:/egovframework/result1.pdf");
+//		File inputFile = new File("C:/egovframework/test1.xls");
+//		File outputFile = new File("C:/egovframework/result1.pdf");
 
 		// Create an office manager using the default configuration.
 		// The default port is 2002. Note that when an office manager
@@ -58,7 +57,6 @@ public class TestPdfConverter2 {
 		             .to(outputFile)
 		             .execute();
 		} catch (OfficeException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 		    // Stop the office process

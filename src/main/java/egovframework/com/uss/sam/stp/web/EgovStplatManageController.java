@@ -109,7 +109,7 @@ public class EgovStplatManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> StplatList = stplatManageService.selectStplatList(searchVO);
+        List<StplatManageVO> StplatList = stplatManageService.selectStplatList(searchVO);
         model.addAttribute("resultList", StplatList);
 
         int totCnt = stplatManageService.selectStplatListTotCnt(searchVO);

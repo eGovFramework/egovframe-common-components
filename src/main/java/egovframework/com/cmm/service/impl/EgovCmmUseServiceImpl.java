@@ -54,13 +54,13 @@ public class EgovCmmUseServiceImpl extends EgovAbstractServiceImpl implements Eg
      * @return
      * @throws Exception
      */
-    public Map<String, List<CmmnDetailCode>> selectCmmCodeDetails(List<?> voList) throws Exception {
+    public Map<String, List<CmmnDetailCode>> selectCmmCodeDetails(List<ComDefaultCodeVO> voList) throws Exception {
 		ComDefaultCodeVO vo;
 		Map<String, List<CmmnDetailCode>> map = new HashMap<String, List<CmmnDetailCode>>();
 
-		Iterator<?> iter = voList.iterator();
+		Iterator<ComDefaultCodeVO> iter = voList.iterator();
 		while (iter.hasNext()) {
-		    vo = (ComDefaultCodeVO)iter.next();
+		    vo = iter.next();
 		    map.put(vo.getCodeId(), cmmUseDAO.selectCmmCodeDetail(vo));
 		}
 

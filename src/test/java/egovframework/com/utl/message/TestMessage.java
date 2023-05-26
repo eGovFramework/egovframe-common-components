@@ -1,11 +1,7 @@
 package egovframework.com.utl.message;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-
 import org.junit.Test;
-import org.springframework.validation.BindException;
-
 import egovframework.com.utl.cas.service.EgovMessageUtil;
 
 /**

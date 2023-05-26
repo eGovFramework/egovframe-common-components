@@ -40,7 +40,6 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
 
-import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import noNamespace.SndngMailDocument;

@@ -5,6 +5,7 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Duration;
 
 import org.apache.commons.dbcp2.BasicDataSource;
 import org.apache.commons.dbcp2.DataSourceConnectionFactory;
@@ -89,9 +90,9 @@ public class SmsBasicDBUtil {
 		//커넥션이 유효한지 확인
 		poolableConnectionFactory.setValidationQuery(" SELECT 1 FROM DUAL ");
 		//커넥션 풀의 설정 정보를 생성
-		GenericObjectPoolConfig poolConfig = new GenericObjectPoolConfig();
+		GenericObjectPoolConfig<PoolableConnection> poolConfig = new GenericObjectPoolConfig<>();
 		//유효 커넥션 검사 주기
-		poolConfig.setTimeBetweenEvictionRunsMillis(1000L * 60L * 1L);
+		poolConfig.setTimeBetweenEvictionRuns(Duration.ofMillis(1000L * 60L * 1L));
 		//풀에 있는 커넥션이 유효한지 검사 유무 설정
 		poolConfig.setTestWhileIdle(true);
 		//기본값  : false /true 일 경우 validationQuery 를 매번 수행한다.

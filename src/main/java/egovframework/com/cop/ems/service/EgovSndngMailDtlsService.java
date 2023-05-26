@@ -28,7 +28,7 @@ public interface EgovSndngMailDtlsService {
 	 * @return List
 	 * @exception Exception
 	 */
-	List<?> selectSndngMailList(ComDefaultVO vo) throws Exception;
+	List<SndngMailVO> selectSndngMailList(ComDefaultVO vo) throws Exception;
 
 	/**
 	 * 발송메일 총건수를 조회한다.

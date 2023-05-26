@@ -2,6 +2,8 @@ package egovframework.com.uss.olp.cns.service;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 
 /**
  *
@@ -43,7 +45,7 @@ public interface EgovCnsltManageService {
 	 * @return 글 목록
 	 * @exception Exception
 	 */
-    List<?> selectCnsltList(CnsltManageDefaultVO searchVO) throws Exception;
+    List<EgovMap> selectCnsltList(CnsltManageDefaultVO searchVO) throws Exception;
 
     /**
 	 * 상담내용 글 총 개수를 조회한다.
@@ -97,7 +99,7 @@ public interface EgovCnsltManageService {
 	 * @return 글 목록
 	 * @exception Exception
 	 */
-    List<?> selectCnsltAnswerList(CnsltManageDefaultVO searchVO) throws Exception;
+    List<EgovMap> selectCnsltAnswerList(CnsltManageDefaultVO searchVO) throws Exception;
 
     /**
 	 * 상담답변 글 총 개수를 조회한다.

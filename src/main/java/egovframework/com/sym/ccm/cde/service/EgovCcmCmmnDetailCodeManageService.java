@@ -36,7 +36,7 @@ public interface EgovCcmCmmnDetailCodeManageService {
 	 * @return List(공통상세코드 목록)
 	 * @throws Exception
 	 */
-	List<?> selectCmmnDetailCodeList(CmmnDetailCodeVO searchVO) throws Exception;
+	List<CmmnDetailCodeVO> selectCmmnDetailCodeList(CmmnDetailCodeVO searchVO) throws Exception;
 
 	/**
 	 * 공통상세코드 상세항목을 조회한다.

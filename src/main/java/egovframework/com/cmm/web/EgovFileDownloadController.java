@@ -20,9 +20,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
 import egovframework.com.cmm.EgovBrowserUtil;
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.service.EgovFileMngService;

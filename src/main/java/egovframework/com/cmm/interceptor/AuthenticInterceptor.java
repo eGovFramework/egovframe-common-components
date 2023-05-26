@@ -1,20 +1,17 @@
 package egovframework.com.cmm.interceptor;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
+import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.ModelAndViewDefiningException;
-import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 
@@ -38,15 +35,12 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
  */
 
 
-public class AuthenticInterceptor extends HandlerInterceptorAdapter {
+public class AuthenticInterceptor implements HandlerInterceptor {
 
 	@SuppressWarnings("unused")
 	@Autowired
 	private Environment environment;
-	
-	/** log */
-	private static final Logger LOGGER = LoggerFactory.getLogger(AuthenticInterceptor.class);
-	
+
 	/** 관리자 접근 권한 패턴 목록 */
 	private List<String> adminAuthPatternList;
 	

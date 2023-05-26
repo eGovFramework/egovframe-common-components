@@ -86,7 +86,7 @@ public class EgovCcmCmmnClCodeManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<?> CmmnCodeList = cmmnClCodeManageService.selectCmmnClCodeList(searchVO);
+		List<CmmnClCodeVO> CmmnCodeList = cmmnClCodeManageService.selectCmmnClCodeList(searchVO);
 		model.addAttribute("resultList", CmmnCodeList);
 
 		int totCnt = cmmnClCodeManageService.selectCmmnClCodeListTotCnt(searchVO);

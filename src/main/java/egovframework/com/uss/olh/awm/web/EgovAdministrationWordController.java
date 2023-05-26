@@ -4,8 +4,6 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -48,8 +46,6 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 @Controller
 public class EgovAdministrationWordController {
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovAdministrationWordController.class);
 
     @Autowired
     private DefaultBeanValidator beanValidator;
@@ -78,7 +74,6 @@ public class EgovAdministrationWordController {
      * @return "egovframework/com/uss/olh/awm/EgovAdministrationWordList"
      * @throws Exception
      */
-    @SuppressWarnings("unused")
 	@IncludedInfo(name="행정전문용어사전", order = 560 ,gid = 50)
     @RequestMapping(value = "/uss/olh/awm/selectAdministrationWordList.do")
     public String egovAdministrationWordList(@ModelAttribute("searchVO") AdministrationWordVO searchVO, ModelMap model) throws Exception {
@@ -117,7 +112,6 @@ public class EgovAdministrationWordController {
      *         "/uss/olh/awm/EgovAdministrationWordDetail"
      * @throws Exception
      */
-    @SuppressWarnings("unused")
 	@RequestMapping(value = "/uss/olh/awm/selectAdministrationWordDetail.do")
     public String selectAdministrationWordDetail(@ModelAttribute("searchVO") AdministrationWordVO searchVO, AdministrationWordVO administrationWord, ModelMap model) throws Exception {
 
@@ -134,7 +128,6 @@ public class EgovAdministrationWordController {
      * @return "egovframework/com/uss/olh/awm/EgovAdministrationWordManageList"
      * @throws Exception
      */
-    @SuppressWarnings("unused")
 	@IncludedInfo(name="행정전문용어사전관리", order = 561 ,gid = 50)
     @RequestMapping(value = "/uss/olh/awm/selectAdministrationWordManageList.do")
     public String egovAdministrationWordManageList(@ModelAttribute("searchVO") AdministrationWordVO searchVO, ModelMap model) throws Exception {
@@ -172,7 +165,6 @@ public class EgovAdministrationWordController {
      *         "/uss/olh/awm/EgovAdministrationWordDetail"
      * @throws Exception
      */
-    @SuppressWarnings("unused")
 	@RequestMapping(value = "/uss/olh/awm/selectAdministrationWordManageDetail.do")
     public String selectAdministrationWordManageDetail(@ModelAttribute("searchVO") AdministrationWordVO searchVO, AdministrationWordVO administrationWord, ModelMap model) throws Exception {
 

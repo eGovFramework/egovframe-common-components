@@ -6,6 +6,7 @@ import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cop.smt.sam.service.EgovAllSchdulManageService;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 import javax.annotation.Resource;
 
@@ -39,8 +40,7 @@ public class EgovAllSchdulManageServiceImpl extends EgovAbstractServiceImpl impl
 	 * @throws Exception
 	 */
 	@Override
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public List selectAllSchdulManageeList(ComDefaultVO searchVO) throws Exception{
+	public List<EgovMap> selectAllSchdulManageeList(ComDefaultVO searchVO) throws Exception{
 
 		return dao.selectAllSchdulManageeList(searchVO);
 	}

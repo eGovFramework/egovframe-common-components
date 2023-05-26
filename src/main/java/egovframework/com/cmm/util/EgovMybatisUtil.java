@@ -39,7 +39,7 @@ public class EgovMybatisUtil {
 	 * @exception IllegalArgumentException
 	 */
 	public static boolean isEmpty(Object o) {
-
+		logger.debug("o={}", o);
 		if(o == null) return true;
 		
 		if(o instanceof String) {
@@ -47,7 +47,7 @@ public class EgovMybatisUtil {
 				return true;
 			}
 		} else if(o instanceof Collection) {
-			if(((Collection)o).isEmpty()){
+			if(((Collection<?>)o).isEmpty()){
 			return true;
 			}
 		} else if(o.getClass().isArray()) {
@@ -55,7 +55,7 @@ public class EgovMybatisUtil {
 			return true;
 			}
 		} else if(o instanceof Map) {
-			if(((Map)o).isEmpty()){
+			if(((Map<?, ?>)o).isEmpty()){
 			return true;
 			}
 		}else {

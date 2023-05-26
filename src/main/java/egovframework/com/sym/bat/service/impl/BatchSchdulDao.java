@@ -70,7 +70,6 @@ public class BatchSchdulDao extends EgovComAbstractDAO {
 	 * @param batchSchdul    조회할 KEY가 있는 배치스케줄 VO
 	 * @exception Exception Exception
 	 */
-	@SuppressWarnings("unchecked")
 	public BatchSchdul selectBatchSchdul(BatchSchdul batchSchdul)
 	  throws Exception{
 		BatchSchdul result = (BatchSchdul)selectOne("BatchSchdulDao.selectBatchSchdul", batchSchdul);
@@ -94,7 +93,6 @@ public class BatchSchdulDao extends EgovComAbstractDAO {
 	 * @param searchVO    조회조건이 저장된 VO
 	 * @exception Exception Exception
 	 */
-	@SuppressWarnings("unchecked")
 	public List<?> selectBatchSchdulList(BatchSchdul searchVO)
 	  throws Exception{
 		List<?> resultList = selectList("BatchSchdulDao.selectBatchSchdulList", searchVO);

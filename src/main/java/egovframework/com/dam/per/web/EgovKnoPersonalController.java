@@ -338,7 +338,6 @@ public class EgovKnoPersonalController {
 	 *
 	 * @param KnoNm
 	 */
-	@SuppressWarnings("unused")
 	@RequestMapping(value="/dam/per/EgovComDamPersonalModify.do")
 	public String updateKnoPersonal(
 			final MultipartHttpServletRequest multiRequest

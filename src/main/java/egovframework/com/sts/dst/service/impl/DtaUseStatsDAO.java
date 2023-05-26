@@ -28,7 +28,6 @@ public class DtaUseStatsDAO extends EgovComAbstractDAO {
 	 * @param dtaUseStatsVO - 자료이용현황 VO
 	 * @return List - 자료이용현황 목록
 	 */
-	@SuppressWarnings("unchecked")
 	public List<DtaUseStatsVO> selectDtaUseStatsList(DtaUseStatsVO dtaUseStatsVO) throws Exception {
 		return selectList("dtaUseStatsDAO.selectDtaUseStatsList", dtaUseStatsVO);
 	}
@@ -56,7 +55,6 @@ public class DtaUseStatsDAO extends EgovComAbstractDAO {
 	 * @param dtaUseStatsVO - 자료이용현황 VO
 	 * @return reprtStatsVO - 자료이용현황 VO
 	 */
-	@SuppressWarnings("unchecked")
 	public List<DtaUseStatsVO> selectDtaUseStats(DtaUseStatsVO dtaUseStatsVO) throws Exception {
 		return selectList("dtaUseStatsDAO.selectDtaUseStats", dtaUseStatsVO);
 	}
@@ -94,7 +92,6 @@ public class DtaUseStatsDAO extends EgovComAbstractDAO {
 	 * @param dtaUseStatsVO - 자료이용현황 VO
 	 * @return List - 등록일자별 자료이용현황 목록
 	 */
-	@SuppressWarnings("unchecked")
 	public List<DtaUseStatsVO> selectDtaUseStatsBarList(DtaUseStatsVO dtaUseStatsVO) throws Exception {
 		return selectList("dtaUseStatsDAO.selectDtaUseStatsBarList", dtaUseStatsVO);
 	}

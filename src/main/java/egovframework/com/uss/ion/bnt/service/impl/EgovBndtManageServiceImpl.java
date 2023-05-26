@@ -10,7 +10,6 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -302,11 +301,10 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 	 * @return  String
 	 * @exception Exception
 	 */
-	@SuppressWarnings("unused")
 	@Override
 	public List<BndtManageVO> selectBndtManageBnde(InputStream inputStream)throws Exception{
-	    int bndtSheetRowCnt = 0;
-	    String xlsFile = null;
+//	    int bndtSheetRowCnt = 0;
+//	    String xlsFile = null;
 	    String sTempNm = null;
 	    String sTempId = null;
 
@@ -318,8 +316,8 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
     	// 엑셀 파일 시트 개수 확인 sheet = 1
 		if (hssfWB.getNumberOfSheets() == 1) {
             HSSFSheet bndtSheet  = hssfWB.getSheetAt(0);  //당직자 시트 가져오기
-            HSSFRow   bndtRow    = bndtSheet.getRow(1); //당직자 row 가져오기
-            bndtSheetRowCnt      = bndtRow.getPhysicalNumberOfCells(); //당직자 cell Cnt
+//            HSSFRow   bndtRow    = bndtSheet.getRow(1); //당직자 row 가져오기
+//            bndtSheetRowCnt      = bndtRow.getPhysicalNumberOfCells(); //당직자 cell Cnt
             int rowsCnt=bndtSheet.getPhysicalNumberOfRows(); //행 개수 가져오기
 
             BndtManageVO checkBndtManageVO = new BndtManageVO();
@@ -327,7 +325,7 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
             	BndtManageVO bndtManageVO = new BndtManageVO();
                 HSSFRow row=bndtSheet.getRow(j); //row 가져오기
                 if(row!=null){
-                    int cells = row.getPhysicalNumberOfCells(); //cell 개수 가져오기
+//                    int cells = row.getPhysicalNumberOfCells(); //cell 개수 가져오기
                     HSSFCell cell = null;
                 	cell = row.getCell(0);  //당직일자
                 	if(cell!=null){
@@ -372,11 +370,10 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 	 * @return  String
 	 * @exception Exception
 	 */
-	@SuppressWarnings("unused")
 	@Override
 	public List<BndtManageVO> selectBndtManageBndeX(InputStream inputStream)throws Exception{
-	    int bndtSheetRowCnt = 0;
-	    String xlsFile = null;
+//	    int bndtSheetRowCnt = 0;
+//	    String xlsFile = null;
 	    String sTempNm = null;
 	    String sTempId = null;
 
@@ -395,8 +392,8 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
     	// 엑셀 파일 시트 개수 확인 sheet = 1
 		if (hssfWB != null && hssfWB.getNumberOfSheets() == 1) {
             XSSFSheet bndtSheet  = hssfWB.getSheetAt(0);  //당직자 시트 가져오기
-            XSSFRow   bndtRow    = bndtSheet.getRow(1); //당직자 row 가져오기
-            bndtSheetRowCnt      = bndtRow.getPhysicalNumberOfCells(); //당직자 cell Cnt
+//            XSSFRow   bndtRow    = bndtSheet.getRow(1); //당직자 row 가져오기
+//            bndtSheetRowCnt      = bndtRow.getPhysicalNumberOfCells(); //당직자 cell Cnt
             int rowsCnt=bndtSheet.getPhysicalNumberOfRows(); //행 개수 가져오기
 
             BndtManageVO checkBndtManageVO = new BndtManageVO();
@@ -404,7 +401,7 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
             	BndtManageVO bndtManageVO = new BndtManageVO();
                 XSSFRow row=bndtSheet.getRow(j); //row 가져오기
                 if(row!=null){
-                    int cells = row.getPhysicalNumberOfCells(); //cell 개수 가져오기
+//                    int cells = row.getPhysicalNumberOfCells(); //cell 개수 가져오기
                     XSSFCell cell = null;
                 	cell = row.getCell(0);  //당직일자
                 	if(cell!=null){
@@ -446,7 +443,6 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 	 * @param String           - 당직자정보
     */
 	@Override
-	@SuppressWarnings("unused")
 	public void insertBndtManageBnde(BndtManageVO bndtManageVO, String checkedBndtManageForInsert) throws Exception {
 		BndtManage bndtManage;
 

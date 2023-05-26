@@ -6,12 +6,13 @@ import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.cop.bbs.service.Board;
+import egovframework.com.cop.bbs.service.BoardMasterVO;
 import egovframework.com.cop.bbs.service.BoardVO;
 
 @Repository("EgovArticleDAO")
 public class EgovArticleDAO extends EgovComAbstractDAO {
 
-	public List<?> selectArticleList(BoardVO boardVO) {
+	public List<BoardVO> selectArticleList(BoardVO boardVO) {
 		return selectList("BBSArticle.selectArticleList", boardVO);
 	}
 
@@ -52,7 +53,7 @@ public class EgovArticleDAO extends EgovComAbstractDAO {
 		return selectList("BBSArticle.selectNoticeArticleList", boardVO);
 	}
 	
-	public List<?> selectGuestArticleList(BoardVO vo) {
+	public List<BoardVO> selectGuestArticleList(BoardVO vo) {
 		return selectList("BBSArticle.selectGuestArticleList", vo);
 	}
 
@@ -71,7 +72,7 @@ public class EgovArticleDAO extends EgovComAbstractDAO {
 		return selectList("BBSArticle.selectBlogNmList", boardVO);
 	}
 	
-	public List<?> selectBlogListManager(BoardVO vo) {
+	public List<BoardMasterVO> selectBlogListManager(BoardVO vo) {
 		return selectList("BBSArticle.selectBlogListManager", vo);
 	}
 	

@@ -1,9 +1,5 @@
 package egovframework.com.ext.oauth.service;
 
-import java.util.Iterator;
-
-import org.apache.commons.lang3.StringUtils;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.scribejava.core.builder.ServiceBuilder;
@@ -12,7 +8,6 @@ import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
-
 
 public class OAuthLogin {
 	private OAuth20Service oauthService;

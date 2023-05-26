@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cop.bbs.service.Board;
+import egovframework.com.cop.bbs.service.BoardMasterVO;
 import egovframework.com.cop.bbs.service.BoardVO;
 import egovframework.com.cop.bbs.service.EgovArticleService;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
@@ -35,7 +36,7 @@ public class EgovArticleServiceImpl extends EgovAbstractServiceImpl implements E
 	
 	@Override
 	public Map<String, Object> selectArticleList(BoardVO boardVO) {
-		List<?> list = egovArticleDao.selectArticleList(boardVO);
+		List<BoardVO> list = egovArticleDao.selectArticleList(boardVO);
 
 
 		int cnt = egovArticleDao.selectArticleListCnt(boardVO);
@@ -132,7 +133,7 @@ public class EgovArticleServiceImpl extends EgovAbstractServiceImpl implements E
 
 	@Override
 	public Map<String, Object> selectGuestArticleList(BoardVO vo) {
-		List<?> list = egovArticleDao.selectGuestArticleList(vo);
+		List<BoardVO> list = egovArticleDao.selectGuestArticleList(vo);
 
 
 		int cnt = egovArticleDao.selectGuestArticleListCnt(vo);
@@ -152,7 +153,7 @@ public class EgovArticleServiceImpl extends EgovAbstractServiceImpl implements E
 	
 	@Override
 	public Map<String, Object> selectBlogListManager(BoardVO vo) {
-		List<?> result = egovArticleDao.selectBlogListManager(vo);
+		List<BoardMasterVO> result = egovArticleDao.selectBlogListManager(vo);
 		int cnt = egovArticleDao.selectBlogListManagerCnt(vo);
 
 		Map<String, Object> map = new HashMap<String, Object>();

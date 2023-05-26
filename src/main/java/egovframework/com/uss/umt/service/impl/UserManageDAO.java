@@ -6,6 +6,7 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.umt.service.UserDefaultVO;
 import egovframework.com.uss.umt.service.UserManageVO;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -69,8 +70,8 @@ public class UserManageDAO extends EgovComAbstractDAO{
      * @param userSearchVO 검색조건
      * @return List 업무사용자 목록정보
      */
-    public List<?> selectUserList(UserDefaultVO userSearchVO){
-        return list("userManageDAO.selectUserList_S", userSearchVO);
+    public List<EgovMap> selectUserList(UserDefaultVO userSearchVO){
+        return selectList("userManageDAO.selectUserList_S", userSearchVO);
     }
 
     /**

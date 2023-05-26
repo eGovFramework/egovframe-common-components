@@ -4,6 +4,9 @@ import java.util.Date;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.fdl.string.EgovDateUtil;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.cmm.LoginVO;
@@ -12,14 +15,12 @@ import egovframework.com.cop.bbs.service.Blog;
 import egovframework.com.cop.bbs.service.Board;
 import egovframework.com.cop.bbs.service.BoardMaster;
 import egovframework.com.cop.bbs.service.BoardVO;
-
-import org.egovframe.rte.fdl.cmmn.exception.FdlException;
-import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-import org.egovframe.rte.fdl.string.EgovDateUtil;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
 public class EgovArticleDAOTest_AaaTestData {
 
 	private final EgovBBSMasterDAO egovBBSMasterDAO;
@@ -34,12 +35,20 @@ public class EgovArticleDAOTest_AaaTestData {
 	@Resource(name = "egovBlogIdGnrService")
 	private EgovIdGnrService egovBlogIdGnrService;
 
-	public Blog insertBlogMaster(LoginVO loginVO) throws FdlException {
+	public Blog insertBlogMaster(LoginVO loginVO) {
 		String today = " " + EgovDateUtil.toString(new Date(), null, null);
 
 		Blog blog = new Blog();
-		blog.setBlogId(egovBlogIdGnrService.getNextStringId());
-		blog.setBbsId(egovBBSMstrIdGnrService.getNextStringId()); // 게시판 ID
+		try {
+			blog.setBlogId(egovBlogIdGnrService.getNextStringId());
+		} catch (FdlException e) {
+			log.error("FdlException egovBlogIdGnrService");
+		}
+		try {
+			blog.setBbsId(egovBBSMstrIdGnrService.getNextStringId()); // 게시판 ID
+		} catch (FdlException e) {
+			log.error("FdlException egovBBSMstrIdGnrService");
+		}
 		blog.setBlogIntrcn("test 블로그 소개" + today);
 		blog.setBlogNm("test 블로그 명" + today);
 		blog.setFrstRegisterId(loginVO.getUniqId()); // 최초등록자ID
@@ -58,26 +67,34 @@ public class EgovArticleDAOTest_AaaTestData {
 
 		return blog;
 	}
-	
-	public Board insertArticle() throws FdlException {
+
+	public Board insertArticle() {
 		BoardMaster boardMaster = insertBBSMasterInf();
 		Board board = insertArticle(boardMaster);
 		return board;
 	}
 
-	private BoardMaster insertBBSMasterInf() throws FdlException {
+	private BoardMaster insertBBSMasterInf() {
 		BoardMaster boardMaster = new BoardMaster();
-		boardMaster.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
+		try {
+			boardMaster.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
+		} catch (FdlException e) {
+			log.error("FdlException egovBBSMstrIdGnrService");
+		}
 
 		egovBBSMasterDAO.insertBBSMasterInf(boardMaster);
 
 		return boardMaster;
 	}
 
-	private Board insertArticle(BoardMaster boardMaster) throws FdlException {
+	private Board insertArticle(BoardMaster boardMaster) {
 		Board board = new Board();
 
-		board.setNttId(egovNttIdGnrService.getNextIntegerId());
+		try {
+			board.setNttId(egovNttIdGnrService.getNextIntegerId());
+		} catch (FdlException e) {
+			log.error("FdlException egovNttIdGnrService");
+		}
 		board.setBbsId(boardMaster.getBbsId());
 
 		String today = " " + EgovDateUtil.toString(new Date(), null, null);
@@ -87,7 +104,7 @@ public class EgovArticleDAOTest_AaaTestData {
 		board.setParnts("0");
 		board.setReplyLc("0");
 		board.setReplyAt("N");
-		
+
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		board.setFrstRegisterId(loginVO.getUniqId());
 
@@ -95,8 +112,8 @@ public class EgovArticleDAOTest_AaaTestData {
 
 		return board;
 	}
-	
-	public BoardVO selectArticleDetailDefaultCnt() throws FdlException {
+
+	public BoardVO selectArticleDetailDefaultCnt() {
 		BoardVO boardVO = new BoardVO();
 
 		Board board = insertArticle();
@@ -105,8 +122,8 @@ public class EgovArticleDAOTest_AaaTestData {
 
 		return boardVO;
 	}
-	
-	public BoardVO selectBlogListManagerCnt() throws FdlException {
+
+	public BoardVO selectBlogListManagerCnt() {
 		BoardVO boardVO = new BoardVO();
 
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();

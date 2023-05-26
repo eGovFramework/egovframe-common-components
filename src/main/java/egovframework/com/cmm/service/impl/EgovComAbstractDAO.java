@@ -298,6 +298,7 @@ public abstract class EgovComAbstractDAO extends EgovAbstractMapper{
 	 *
 	 * @return 결과 List 객체 - SQL mapping 파일에서 지정한 resultType/resultMap 에 의한 결과 객체(보통 VO 또는 Map)의 List
 	 */
+	@SuppressWarnings("rawtypes")
 	@Override
 	public void listToOutUsingResultHandler(String queryId, ResultHandler handler) {
 		LOGGER.debug("queryId = "+queryId);

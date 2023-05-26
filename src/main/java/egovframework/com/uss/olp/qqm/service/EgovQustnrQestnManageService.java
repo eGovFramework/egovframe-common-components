@@ -3,6 +3,8 @@ package egovframework.com.uss.olp.qqm.service;
 import java.util.List;
 import java.util.Map;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 import egovframework.com.cmm.ComDefaultVO;
 /**
  * 설문문항을 처리하는 Service Class 구현
@@ -60,7 +62,7 @@ public interface EgovQustnrQestnManageService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectQustnrQestnManageDetail(QustnrQestnManageVO qustnrQestnManageVO) throws Exception;
+	public List<EgovMap> selectQustnrQestnManageDetail(QustnrQestnManageVO qustnrQestnManageVO) throws Exception;
 
     /**
 	 * 설문문항를(을) 목록 전체 건수를(을) 조회한다.

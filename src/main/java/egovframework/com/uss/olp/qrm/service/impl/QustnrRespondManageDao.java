@@ -6,6 +6,7 @@ import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.olp.qrm.service.QustnrRespondManageVO;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 /**
  * 설문응답자관리 Dao Class 구현
@@ -33,8 +34,8 @@ public class QustnrRespondManageDao extends EgovComAbstractDAO {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectQustnrRespondManageList(ComDefaultVO searchVO) throws Exception{
-		return list("QustnrRespondManage.selectQustnrRespondManage", searchVO);
+	public List<EgovMap> selectQustnrRespondManageList(ComDefaultVO searchVO) throws Exception{
+		return selectList("QustnrRespondManage.selectQustnrRespondManage", searchVO);
 	}
 
     /**
@@ -43,8 +44,8 @@ public class QustnrRespondManageDao extends EgovComAbstractDAO {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectQustnrRespondManageDetail(QustnrRespondManageVO qustnrRespondManageVO) throws Exception{
-		return list("QustnrRespondManage.selectQustnrRespondManageDetail", qustnrRespondManageVO);
+	public List<EgovMap> selectQustnrRespondManageDetail(QustnrRespondManageVO qustnrRespondManageVO) throws Exception{
+		return selectList("QustnrRespondManage.selectQustnrRespondManageDetail", qustnrRespondManageVO);
 	}
 
     /**

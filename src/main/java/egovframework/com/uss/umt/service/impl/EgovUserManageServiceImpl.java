@@ -9,6 +9,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovFileScrty;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 import javax.annotation.Resource;
 
@@ -122,8 +123,8 @@ public class EgovUserManageServiceImpl extends EgovAbstractServiceImpl implement
 	 * @throws Exception
 	 */
 	@Override
-	public List<?> selectUserList(UserDefaultVO userSearchVO) {
-		List<?> result = userManageDAO.selectUserList(userSearchVO);
+	public List<EgovMap> selectUserList(UserDefaultVO userSearchVO) {
+		List<EgovMap> result = userManageDAO.selectUserList(userSearchVO);
 		return result;
 	}
 

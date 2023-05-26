@@ -6,6 +6,7 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.olp.cns.service.CnsltManageDefaultVO;
 import egovframework.com.uss.olp.cns.service.CnsltManageVO;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
 
@@ -60,9 +61,9 @@ public class CnsltManageDAO extends EgovComAbstractDAO {
 	 * @return 글 목록
 	 * @exception Exception
 	 */
-    public List<?> selectCnsltList(CnsltManageDefaultVO searchVO) throws Exception {
+    public List<EgovMap> selectCnsltList(CnsltManageDefaultVO searchVO) throws Exception {
 
-        return list("CnsltManageDAO.selectCnsltList", searchVO);
+        return selectList("CnsltManageDAO.selectCnsltList", searchVO);
 
     }
 
@@ -141,9 +142,9 @@ public class CnsltManageDAO extends EgovComAbstractDAO {
 	 * @return 글 목록
 	 * @exception Exception
 	 */
-    public List<?> selectCnsltAnswerList(CnsltManageDefaultVO searchVO) throws Exception {
+    public List<EgovMap> selectCnsltAnswerList(CnsltManageDefaultVO searchVO) throws Exception {
 
-        return list("CnsltManageDAO.selectCnsltAnswerList", searchVO);
+        return selectList("CnsltManageDAO.selectCnsltAnswerList", searchVO);
 
     }
 

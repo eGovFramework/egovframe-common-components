@@ -66,7 +66,7 @@ public class EgovUserLogServiceImpl extends EgovAbstractServiceImpl implements
 	 */
 	@Override
 	public Map<?, ?> selectUserLogInf(UserLog userLog) throws Exception {
-		List<?> _result = userLogDAO.selectUserLogInf(userLog);
+		List<UserLog> _result = userLogDAO.selectUserLogInf(userLog);
 		int _cnt = userLogDAO.selectUserLogInfCnt(userLog);
 
 		Map<String, Object> _map = new HashMap<String, Object>();

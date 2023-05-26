@@ -35,7 +35,7 @@ public class DeptSchdulManageDao extends EgovComAbstractDAO {
 	 * @throws Exception
 	 */
 	public List<?> selectDeptSchdulManageAuthorGroupPopup(ComDefaultVO searchVO){
-		return  (List)list("DeptSchdulManage.selectDeptSchdulAuthorGroupPopup", searchVO);
+		return selectList("DeptSchdulManage.selectDeptSchdulAuthorGroupPopup", searchVO);
 	}
 
     /**
@@ -45,7 +45,7 @@ public class DeptSchdulManageDao extends EgovComAbstractDAO {
 	 * @throws Exception
 	 */
 	public List<?> selectDeptSchdulManageEmpLyrPopup(ComDefaultVO searchVO){
-		return  (List)list("DeptSchdulManage.selectDeptSchdulEmpLyrPopup", searchVO);
+		return selectList("DeptSchdulManage.selectDeptSchdulEmpLyrPopup", searchVO);
 	}
 	
     /**
@@ -56,7 +56,7 @@ public class DeptSchdulManageDao extends EgovComAbstractDAO {
 	 */
 	@SuppressWarnings("rawtypes")
 	public List selectDeptSchdulManageMainList(Map map) throws Exception{
-		 return  (List)list("DeptSchdulManage.selectDeptSchdulManageMainList", map);
+		return selectList("DeptSchdulManage.selectDeptSchdulManageMainList", map);
 	}
 	
     /**
@@ -67,7 +67,7 @@ public class DeptSchdulManageDao extends EgovComAbstractDAO {
 	 */
 	@SuppressWarnings("rawtypes")
 	public List selectDeptSchdulManageRetrieve(Map map) throws Exception{
-		 return  (List)list("DeptSchdulManage.selectDeptSchdulManageRetrieve", map);
+		return selectList("DeptSchdulManage.selectDeptSchdulManageRetrieve", map);
 	}
 	
 	
@@ -89,7 +89,7 @@ public class DeptSchdulManageDao extends EgovComAbstractDAO {
 	 */
 	@SuppressWarnings("rawtypes")
 	public List selectDeptSchdulManageList(ComDefaultVO searchVO) throws Exception{
-		return (List)list("DeptSchdulManage.selectDeptSchdulManage", searchVO);
+		return selectList("DeptSchdulManage.selectDeptSchdulManage", searchVO);
 	}
 	
     /**
@@ -100,7 +100,7 @@ public class DeptSchdulManageDao extends EgovComAbstractDAO {
 	 */
 	@SuppressWarnings("rawtypes")
 	public List selectDeptSchdulManageDetail(DeptSchdulManageVO deptSchdulManageVO) throws Exception{
-		return (List)list("DeptSchdulManage.selectDeptSchdulManageDetail", deptSchdulManageVO);
+		return selectList("DeptSchdulManage.selectDeptSchdulManageDetail", deptSchdulManageVO);
 	}
 
     /**

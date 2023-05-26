@@ -37,7 +37,6 @@ public class ReprtStatsDAO extends EgovComAbstractDAO {
 	 * @param reprtStatsVO - 보고서통계 VO
 	 * @return List - 보고서통계 목록
 	 */
-	@SuppressWarnings("unchecked")
 	public List<ReprtStatsVO> selectReprtStatsList(ReprtStatsVO reprtStatsVO) throws Exception {
 		return selectList("reprtStatsDAO.selectReprtStatsList", reprtStatsVO);
 	}
@@ -65,7 +64,6 @@ public class ReprtStatsDAO extends EgovComAbstractDAO {
 	 * @param reprtStatsVO - 보고서통계 VO
 	 * @return ReprtStatsVO - 보고서통계 VO
 	 */
-    @SuppressWarnings("unchecked")
 	public List<ReprtStatsVO> selectReprtStats(ReprtStatsVO reprtStatsVO) throws Exception {
 		return selectList("reprtStatsDAO.selectReprtStats", reprtStatsVO);
 	}
@@ -83,7 +81,6 @@ public class ReprtStatsDAO extends EgovComAbstractDAO {
 	 * @param reprtStatsVO - 보고서통계 VO
 	 * @return List - 보고서통계 목록
 	 */
-	@SuppressWarnings("unchecked")
 	public List<ReprtStatsVO> selectReprtStatsBarList(ReprtStatsVO reprtStatsVO) throws Exception {
 		return selectList("reprtStatsDAO.selectReprtStatsBarList", reprtStatsVO);
 	}	
@@ -93,7 +90,6 @@ public class ReprtStatsDAO extends EgovComAbstractDAO {
 	 * @param reprtStatsVO - 보고서통계 VO
 	 * @return List - 보고서통계 목록
 	 */
-	@SuppressWarnings("unchecked")
 	public List<ReprtStatsVO> selectReprtStatsByReprtTyList(ReprtStatsVO reprtStatsVO) throws Exception {
 		return selectList("reprtStatsDAO.selectReprtStatsByReprtTyList", reprtStatsVO);
 	}	
@@ -103,7 +99,6 @@ public class ReprtStatsDAO extends EgovComAbstractDAO {
 	 * @param reprtStatsVO - 보고서통계 VO
 	 * @return List - 보고서통계 목록
 	 */
-	@SuppressWarnings("unchecked")
 	public List<ReprtStatsVO> selectReprtStatsByReprtSttusList(ReprtStatsVO reprtStatsVO) throws Exception {
 		return selectList("reprtStatsDAO.selectReprtStatsByReprtSttusList", reprtStatsVO);
 	}		

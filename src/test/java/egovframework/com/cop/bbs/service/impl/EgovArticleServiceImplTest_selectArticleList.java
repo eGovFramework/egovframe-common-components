@@ -5,6 +5,7 @@ import static org.junit.Assert.assertEquals;
 import java.util.List;
 import java.util.Map;
 
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -12,7 +13,6 @@ import org.springframework.test.context.ContextConfiguration;
 import egovframework.com.cop.bbs.service.BoardVO;
 import egovframework.com.cop.bbs.service.EgovArticleService;
 import egovframework.com.test.EgovTestV1;
-import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -25,7 +25,6 @@ public class EgovArticleServiceImplTest_selectArticleList extends EgovTestV1 {
 	@Autowired
 	private EgovArticleService egovArticleService;
 
-	@SuppressWarnings("unchecked")
 	@Test
 	public void test() throws FdlException {
 		log.debug("test");
@@ -40,6 +39,7 @@ public class EgovArticleServiceImplTest_selectArticleList extends EgovTestV1 {
 
 		// when
 		Map<String, Object> result = egovArticleService.selectArticleList(boardVO);
+		@SuppressWarnings("unchecked")
 		List<BoardVO> resultList = (List<BoardVO>) result.get("resultList");
 		String resultCnt = (String) result.get("resultCnt");
 

@@ -37,7 +37,7 @@ public interface EgovCcmCmmnClCodeManageService {
 	 * @return List(공통분류코드 목록)
 	 * @throws Exception
 	 */
-	List<?> selectCmmnClCodeList(CmmnClCodeVO searchVO) throws Exception;
+	List<CmmnClCodeVO> selectCmmnClCodeList(CmmnClCodeVO searchVO) throws Exception;
 
 	 /**
 	  *  공통분류코드 상세항목을 조회한다.
