@@ -7,6 +7,7 @@ import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.cop.smt.sdm.service.DeptSchdulManageVO;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 /**
  * 부서일정관리를 처리하는 Dao Class 구현
@@ -44,7 +45,7 @@ public class DeptSchdulManageDao extends EgovComAbstractDAO {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectDeptSchdulManageEmpLyrPopup(ComDefaultVO searchVO){
+	public List<EgovMap> selectDeptSchdulManageEmpLyrPopup(ComDefaultVO searchVO){
 		return selectList("DeptSchdulManage.selectDeptSchdulEmpLyrPopup", searchVO);
 	}
 	

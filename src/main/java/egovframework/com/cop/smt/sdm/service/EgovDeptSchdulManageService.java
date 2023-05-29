@@ -3,6 +3,8 @@ package egovframework.com.cop.smt.sdm.service;
 import java.util.List;
 import java.util.Map;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 import egovframework.com.cmm.ComDefaultVO;
 /**
  * 부서일정관리를 처리하는 Service Class 구현
@@ -35,7 +37,7 @@ public interface EgovDeptSchdulManageService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectDeptSchdulManageEmpLyrPopup(ComDefaultVO searchVO) throws Exception;
+	public List<EgovMap> selectDeptSchdulManageEmpLyrPopup(ComDefaultVO searchVO) throws Exception;
 	
 	/**
 	 * 메인페이지/부서일정관리조회 

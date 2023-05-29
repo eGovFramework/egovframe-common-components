@@ -9,6 +9,7 @@ import egovframework.com.cop.smt.sdm.service.EgovDeptSchdulManageService;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 import javax.annotation.Resource;
 
@@ -59,7 +60,7 @@ public class EgovDeptSchdulManageServiceImpl extends EgovAbstractServiceImpl imp
 	 * @throws Exception
 	 */
 	@Override
-	public List<?> selectDeptSchdulManageEmpLyrPopup(ComDefaultVO searchVO){
+	public List<EgovMap> selectDeptSchdulManageEmpLyrPopup(ComDefaultVO searchVO){
 		return dao.selectDeptSchdulManageEmpLyrPopup(searchVO);
 	}
 	

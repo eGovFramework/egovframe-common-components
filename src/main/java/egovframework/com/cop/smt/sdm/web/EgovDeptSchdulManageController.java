@@ -35,6 +35,7 @@ import egovframework.com.cop.smt.sdm.service.DeptSchdulManageVO;
 import egovframework.com.cop.smt.sdm.service.EgovDeptSchdulManageService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 /**
  * 부서일정관리를 처리하는 Controller Class 구현
@@ -146,7 +147,7 @@ public class EgovDeptSchdulManageController {
     		ModelMap model)
     throws Exception {
 
-    	 List<?> resultList = egovDeptSchdulManageService.selectDeptSchdulManageEmpLyrPopup(searchVO);
+    	 List<EgovMap> resultList = egovDeptSchdulManageService.selectDeptSchdulManageEmpLyrPopup(searchVO);
          model.addAttribute("resultList", resultList);
 
     	return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageEmpLyrPopup";
