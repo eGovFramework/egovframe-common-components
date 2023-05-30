@@ -49,8 +49,8 @@ import org.springframework.web.context.WebApplicationContext;
 
 public abstract class EgovAbstractControllerV1Test {
 
-	protected static Logger EGOV_LOGGER = LoggerFactory.getLogger(EgovAbstractDAOV2Test.class);
-	protected Logger egovLogger = LoggerFactory.getLogger(EgovAbstractDAOV2Test.class);
+	protected static Logger EGOV_LOGGER = LoggerFactory.getLogger(EgovAbstractControllerV1Test.class);
+	protected Logger egovLogger = LoggerFactory.getLogger(EgovAbstractControllerV1Test.class);
 
 	protected static final StopWatch STOP_WATCH = new StopWatch();
 	protected final StopWatch stopWatch = new StopWatch();
