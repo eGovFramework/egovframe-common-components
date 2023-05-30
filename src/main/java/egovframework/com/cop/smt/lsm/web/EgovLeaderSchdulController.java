@@ -254,8 +254,8 @@ public class EgovLeaderSchdulController {
 		int startWeek = calNow.get(Calendar.DAY_OF_WEEK);
 
 
-		ArrayList<Object> listWeekGrop = new ArrayList<Object>();
-		ArrayList<String> listWeekDate = new ArrayList<String>();
+		List<List<String>> listWeekGrop = new ArrayList<>();
+		List<String> listWeekDate = new ArrayList<>();
 
 		String sUseDate = "";
 
@@ -284,7 +284,7 @@ public class EgovLeaderSchdulController {
 
 			if( iBetweenCount % 7 == 0){
 				listWeekGrop.add(listWeekDate);
-				listWeekDate = new ArrayList<String>();
+				listWeekDate = new ArrayList<>();
 				
 				if(strYear == null &&  i < iNowDate){
 					iNowWeek++;
@@ -315,11 +315,11 @@ public class EgovLeaderSchdulController {
 	
 		model.addAttribute("listWeekGrop", listWeekGrop);
 		
-		List<?> listWeek = (List<?>)listWeekGrop.get(iNowWeek);
+		List<String> listWeek = listWeekGrop.get(iNowWeek);
 		
 		leaderSchdulVO.setSearchMode("WEEK");
-		leaderSchdulVO.setSearchBgnDe((String)listWeek.get(0));
-		leaderSchdulVO.setSearchEndDe((String)listWeek.get(listWeek.size()-1));
+		leaderSchdulVO.setSearchBgnDe(listWeek.get(0));
+		leaderSchdulVO.setSearchEndDe(listWeek.get(listWeek.size()-1));
 		
 		List<LeaderSchdulVO> resultList = leaderSchdulService.selectLeaderSchdulList(leaderSchdulVO);
         model.addAttribute("resultList", resultList);
