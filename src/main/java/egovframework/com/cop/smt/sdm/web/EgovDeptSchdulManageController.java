@@ -178,11 +178,11 @@ public class EgovDeptSchdulManageController {
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		if(loginVO == null){ loginVO = new LoginVO();}
 
-		HashMap<String, String> hmParam = new HashMap<String, String>();
+		Map<String, String> hmParam = new HashMap<>();
 
 		hmParam.put("uniqId", (String)loginVO.getUniqId());
 
-		List<?> reusltList = egovDeptSchdulManageService.selectDeptSchdulManageMainList(hmParam);
+		List<EgovMap> reusltList = egovDeptSchdulManageService.selectDeptSchdulManageMainList(hmParam);
 
 		 model.addAttribute("resultList", reusltList);
 

@@ -45,7 +45,7 @@ public interface EgovDeptSchdulManageService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectDeptSchdulManageMainList(Map<?, ?> map) throws Exception;
+	public List<EgovMap> selectDeptSchdulManageMainList(Map<String, String> map) throws Exception;
 	
 	/**
 	 * 부서일정 목록을 조회한다.
