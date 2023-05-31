@@ -26,6 +26,7 @@ import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
@@ -262,7 +263,7 @@ public class EgovDeptSchdulManageController {
 		ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
 	   	voComCode = new ComDefaultCodeVO();
     	voComCode.setCodeId("COM030");
-    	List<?> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+    	List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
     	model.addAttribute("schdulSe", listComCode);
 
 		/* *****************************************************************
@@ -296,7 +297,7 @@ public class EgovDeptSchdulManageController {
 		model.addAttribute("month", iNowMonth);
 		model.addAttribute("day", iNowDay);
 
-		List<?> resultList = egovDeptSchdulManageService.selectDeptSchdulManageRetrieve(commandMap);
+		List<EgovMap> resultList = egovDeptSchdulManageService.selectDeptSchdulManageRetrieve(commandMap);
         model.addAttribute("resultList", resultList);
 
 		return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageDailyList";
@@ -311,7 +312,6 @@ public class EgovDeptSchdulManageController {
 	 * @return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageWeekList"
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unused")
 	@RequestMapping(value="/cop/smt/sdm/EgovDeptSchdulManageWeekList.do")
 	public String egovDeptSchdulManageWeekList(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
@@ -328,7 +328,7 @@ public class EgovDeptSchdulManageController {
 		ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
 	   	voComCode = new ComDefaultCodeVO();
     	voComCode.setCodeId("COM030");
-    	List<?> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+    	List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
     	model.addAttribute("schdulSe", listComCode);
 
 		/* *****************************************************************
@@ -363,13 +363,13 @@ public class EgovDeptSchdulManageController {
 		calBefore.add(Calendar.MONTH, -1);
 		calNext.add(Calendar.MONTH, +1);
 
-		int startDay = calNow.getMinimum(Calendar.DATE);
+//		int startDay = calNow.getMinimum(Calendar.DATE);
 		int endDay = calNow.getActualMaximum(Calendar.DAY_OF_MONTH);
 		int startWeek = calNow.get(Calendar.DAY_OF_WEEK);
 
 
-		ArrayList<ArrayList<String>> listWeekGrop = new ArrayList<ArrayList<String>>();
-		ArrayList<String> listWeekDate = new ArrayList<String>();
+		List<List<String>> listWeekGrop = new ArrayList<>();
+		List<String> listWeekDate = new ArrayList<>();
 
 		String sUseDate = "";
 
@@ -402,7 +402,7 @@ public class EgovDeptSchdulManageController {
 
 			if( iBetweenCount % 7 == 0){
 				listWeekGrop.add(listWeekDate);
-				listWeekDate = new ArrayList<String>();
+				listWeekDate = new ArrayList<>();
 
 				if(strYear == null &&  i < iNowDate){
 					iNowWeek++;
@@ -434,12 +434,12 @@ public class EgovDeptSchdulManageController {
 
 		model.addAttribute("listWeekGrop", listWeekGrop);
 
-		List<?> listWeek = (List<?>)listWeekGrop.get(iNowWeek);
+		List<String> listWeek = listWeekGrop.get(iNowWeek);
 		commandMap.put("searchMode", "WEEK");
 		commandMap.put("schdulBgnde", (String)listWeek.get(0));
 		commandMap.put("schdulEndde", (String)listWeek.get(listWeek.size()-1));
 
-		List<?> resultList = egovDeptSchdulManageService.selectDeptSchdulManageRetrieve(commandMap);
+		List<EgovMap> resultList = egovDeptSchdulManageService.selectDeptSchdulManageRetrieve(commandMap);
         model.addAttribute("resultList", resultList);
 
 		return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageWeekList";
@@ -454,7 +454,6 @@ public class EgovDeptSchdulManageController {
 	 * @return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageMonthList"
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unused")
 	@RequestMapping(value="/cop/smt/sdm/EgovDeptSchdulManageMonthList.do")
 	public String egovDeptSchdulManageMonthList(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
@@ -474,7 +473,7 @@ public class EgovDeptSchdulManageController {
 
 		int iYear = cal.get(java.util.Calendar.YEAR);
 		int iMonth = cal.get(java.util.Calendar.MONTH);
-		int iDate = cal.get(java.util.Calendar.DATE);
+//		int iDate = cal.get(java.util.Calendar.DATE);
 
 		//검색 설정
 		String sSearchDate = "";
@@ -496,11 +495,11 @@ public class EgovDeptSchdulManageController {
 		ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
 	   	voComCode = new ComDefaultCodeVO();
     	voComCode.setCodeId("COM030");
-    	List<?> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+    	List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
     	model.addAttribute("schdulSe", listComCode);
 
     	commandMap.put("searchMode", "MONTH");
-        List<?> resultList = egovDeptSchdulManageService.selectDeptSchdulManageRetrieve(commandMap);
+        List<EgovMap> resultList = egovDeptSchdulManageService.selectDeptSchdulManageRetrieve(commandMap);
         model.addAttribute("resultList", resultList);
 
 		return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageMonthList";
