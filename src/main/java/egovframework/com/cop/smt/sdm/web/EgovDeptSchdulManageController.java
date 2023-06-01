@@ -507,23 +507,11 @@ public class EgovDeptSchdulManageController {
 
 	/**
 	 * 부서일정 목록을 조회한다.
-	 * @param searchVO
-	 * @param commandMap
-	 * @param deptSchdulManageVO
-	 * @param model
 	 * @return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageList"
-	 * @throws Exception
 	 */
 	@IncludedInfo(name="부서일정관리", order = 320 ,gid = 40)
 	@RequestMapping(value="/cop/smt/sdm/EgovDeptSchdulManageList.do")
-	public String egovDeptSchdulManageList(
-			@ModelAttribute("searchVO") ComDefaultVO searchVO,
-    		ModelMap model)
-    throws Exception {
-
-        List<EgovMap> resultList = egovDeptSchdulManageService.selectDeptSchdulManageList(searchVO);
-        model.addAttribute("resultList", resultList);
-
+	public String egovDeptSchdulManageList() {
 		return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageList";
 	}
 
