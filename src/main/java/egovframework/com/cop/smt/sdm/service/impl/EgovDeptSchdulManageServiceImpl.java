@@ -101,10 +101,8 @@ public class EgovDeptSchdulManageServiceImpl extends EgovAbstractServiceImpl imp
 	 * @return List
 	 * @exception Exception
 	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	public List selectDeptSchdulManageList(ComDefaultVO searchVO) throws Exception{
-
-		return (List)dao.selectDeptSchdulManageList(searchVO);
+	public List<EgovMap> selectDeptSchdulManageList(ComDefaultVO searchVO) throws Exception{
+		return dao.selectDeptSchdulManageList(searchVO);
 	}
 	
     /**

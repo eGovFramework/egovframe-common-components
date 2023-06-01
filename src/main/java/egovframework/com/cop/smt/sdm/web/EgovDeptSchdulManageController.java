@@ -199,16 +199,15 @@ public class EgovDeptSchdulManageController {
 	 * @return "egovframework/com/cop/smt/dsm/EgovDiaryManageList"
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unused")
 	@RequestMapping(value="/cop/smt/sdm/EgovDeptSchdulManageListPopup.do")
 	public String egovDeptSchdulManageListPopup(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<?, ?> commandMap,
+			@RequestParam Map<String, String> commandMap,
 			DeptSchdulManageVO deptSchdulManageVO,
     		ModelMap model)
     throws Exception {
 
-		String sSearchMode = commandMap.get("searchMode") == null ? "" : (String)commandMap.get("searchMode");
+//		String sSearchMode = commandMap.get("searchMode") == null ? "" : commandMap.get("searchMode");
 
     	/** EgovPropertyService.sample */
     	searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -224,13 +223,13 @@ public class EgovDeptSchdulManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> sampleList = egovDeptSchdulManageService.selectDeptSchdulManageList(searchVO);
+        List<EgovMap> sampleList = egovDeptSchdulManageService.selectDeptSchdulManageList(searchVO);
         model.addAttribute("resultList", sampleList);
 
-        model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String)commandMap.get("searchKeyword"));
-        model.addAttribute("searchCondition", commandMap.get("searchCondition") == null ? "" : (String)commandMap.get("searchCondition"));
+        model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : commandMap.get("searchKeyword"));
+        model.addAttribute("searchCondition", commandMap.get("searchCondition") == null ? "" : commandMap.get("searchCondition"));
 
-        int totCnt = (Integer)egovDeptSchdulManageService.selectDeptSchdulManageListCnt(searchVO);
+        int totCnt = egovDeptSchdulManageService.selectDeptSchdulManageListCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);
 
@@ -519,13 +518,10 @@ public class EgovDeptSchdulManageController {
 	@RequestMapping(value="/cop/smt/sdm/EgovDeptSchdulManageList.do")
 	public String egovDeptSchdulManageList(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<?, ?> commandMap,
-			DeptSchdulManageVO deptSchdulManageVO,
     		ModelMap model)
     throws Exception {
 
-
-        List<?> resultList = egovDeptSchdulManageService.selectDeptSchdulManageList(searchVO);
+        List<EgovMap> resultList = egovDeptSchdulManageService.selectDeptSchdulManageList(searchVO);
         model.addAttribute("resultList", resultList);
 
 		return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageList";
