@@ -37,7 +37,7 @@ public interface EgovDeptSchdulManageService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectDeptSchdulManageEmpLyrPopup(ComDefaultVO searchVO) throws Exception;
+	public List<EgovMap> selectDeptSchdulManageEmpLyrPopup(ComDefaultVO searchVO) throws Exception;
 	
 	/**
 	 * 메인페이지/부서일정관리조회 

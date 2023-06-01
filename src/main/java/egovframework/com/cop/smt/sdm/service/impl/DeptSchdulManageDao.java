@@ -45,7 +45,7 @@ public class DeptSchdulManageDao extends EgovComAbstractDAO {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectDeptSchdulManageEmpLyrPopup(ComDefaultVO searchVO){
+	public List<EgovMap> selectDeptSchdulManageEmpLyrPopup(ComDefaultVO searchVO){
 		return selectList("DeptSchdulManage.selectDeptSchdulEmpLyrPopup", searchVO);
 	}
 	

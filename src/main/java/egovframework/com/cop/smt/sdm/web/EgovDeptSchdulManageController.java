@@ -147,7 +147,7 @@ public class EgovDeptSchdulManageController {
     		ModelMap model)
     throws Exception {
 
-    	 List<?> resultList = egovDeptSchdulManageService.selectDeptSchdulManageEmpLyrPopup(searchVO);
+    	 List<EgovMap> resultList = egovDeptSchdulManageService.selectDeptSchdulManageEmpLyrPopup(searchVO);
          model.addAttribute("resultList", resultList);
 
     	return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageEmpLyrPopup";
