@@ -193,8 +193,6 @@ public class EgovDeptSchdulManageController {
 	/**
 	 * 일지관리 목록을 조회한다.
 	 * @param searchVO
-	 * @param commandMap
-	 * @param deptSchdulManageVO
 	 * @param model
 	 * @return "egovframework/com/cop/smt/dsm/EgovDiaryManageList"
 	 * @throws Exception
@@ -202,12 +200,8 @@ public class EgovDeptSchdulManageController {
 	@RequestMapping(value="/cop/smt/sdm/EgovDeptSchdulManageListPopup.do")
 	public String egovDeptSchdulManageListPopup(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<String, String> commandMap,
-			DeptSchdulManageVO deptSchdulManageVO,
     		ModelMap model)
     throws Exception {
-
-//		String sSearchMode = commandMap.get("searchMode") == null ? "" : commandMap.get("searchMode");
 
     	/** EgovPropertyService.sample */
     	searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -223,14 +217,11 @@ public class EgovDeptSchdulManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<EgovMap> sampleList = egovDeptSchdulManageService.selectDeptSchdulManageList(searchVO);
-        model.addAttribute("resultList", sampleList);
+        List<EgovMap> resultList = egovDeptSchdulManageService.selectDeptSchdulManageList(searchVO);
+        model.addAttribute("resultList", resultList);
 
-        model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : commandMap.get("searchKeyword"));
-        model.addAttribute("searchCondition", commandMap.get("searchCondition") == null ? "" : commandMap.get("searchCondition"));
-
-        int totCnt = egovDeptSchdulManageService.selectDeptSchdulManageListCnt(searchVO);
-		paginationInfo.setTotalRecordCount(totCnt);
+        int totalRecordCount = egovDeptSchdulManageService.selectDeptSchdulManageListCnt(searchVO);
+		paginationInfo.setTotalRecordCount(totalRecordCount);
         model.addAttribute("paginationInfo", paginationInfo);
 
 		return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageListPopup";

@@ -110,7 +110,7 @@ function fn_egov_open_Popup(cnt, schdulId){
 			<li>
 				<select name="searchCondition" title="<spring:message code="title.searchCondition" /> <spring:message code="input.cSelect" />">
 					<option selected value=''>--<spring:message code="input.select" />--</option>
-					<option value='SCHDUL_NM' <c:if test="${searchCondition == 'SCHDUL_NM'}">selected</c:if>><spring:message code="comCopSmtSdm.popupSearchCondition.diaryNm" /></option><!-- 일지명 -->
+					<option value='SCHDUL_NM' <c:if test="${searchVO.searchCondition == 'SCHDUL_NM'}">selected</c:if>><spring:message code="comCopSmtSdm.popupSearchCondition.diaryNm" /></option><!-- 일지명 -->
 				</select>
 			</li>
 			<!-- 검색키워드 및 조회버튼 -->
