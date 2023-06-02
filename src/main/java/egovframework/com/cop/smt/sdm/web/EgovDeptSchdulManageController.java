@@ -543,15 +543,15 @@ public class EgovDeptSchdulManageController {
 	public String egovDeptSchdulManageDetail(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			DeptSchdulManageVO deptSchdulManageVO,
-			@RequestParam Map<?, ?> commandMap,
+			@RequestParam Map<String, String> commandMap,
     		ModelMap model)
     throws Exception {
 
 		String sLocationUrl = "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageDetail";
 
-		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
+		String sCmd = commandMap.get("cmd");
 
-		if(sCmd.equals("del")){
+		if("del".equals(sCmd)){
 			egovDeptSchdulManageService.deleteDeptSchdulManage(deptSchdulManageVO);
 			sLocationUrl = "redirect:/cop/smt/sdm/EgovDeptSchdulManageList.do";
 		}else{
@@ -559,7 +559,7 @@ public class EgovDeptSchdulManageController {
 	     	//공통코드  중요도 조회
 	    	ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
 	    	voComCode.setCodeId("COM019");
-	    	List<?> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+	    	List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
 	    	model.addAttribute("schdulIpcrCode", listComCode);
 	    	//공통코드  일정구분 조회
 	    	voComCode = new ComDefaultCodeVO();
@@ -572,8 +572,8 @@ public class EgovDeptSchdulManageController {
 	    	listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
 	    	model.addAttribute("reptitSeCode", listComCode);
 
-	        List<?> sampleList = egovDeptSchdulManageService.selectDeptSchdulManageDetail(deptSchdulManageVO);
-	        model.addAttribute("resultList", sampleList);
+	        List<EgovMap> resultList = egovDeptSchdulManageService.selectDeptSchdulManageDetail(deptSchdulManageVO);
+	        model.addAttribute("resultList", resultList);
 		}
 
 		return sLocationUrl;
