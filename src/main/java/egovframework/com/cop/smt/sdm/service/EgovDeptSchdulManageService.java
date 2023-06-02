@@ -53,7 +53,7 @@ public interface EgovDeptSchdulManageService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectDeptSchdulManageRetrieve(Map<?, ?> map) throws Exception;
+	public List<EgovMap> selectDeptSchdulManageRetrieve(Map<String, String> map) throws Exception;
 	
 	/**
 	 * 부서일정 목록을 VO(model)형식으로 조회한다. 
