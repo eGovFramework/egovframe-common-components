@@ -589,24 +589,19 @@ public class EgovDeptSchdulManageController {
 	 * @return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageModify"
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unused")
 	@RequestMapping(value="/cop/smt/sdm/EgovDeptSchdulManageModify.do")
 	public String deptSchdulManageModify(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<?, ?> commandMap,
 			DeptSchdulManageVO deptSchdulManageVO,
-			BindingResult bindingResult,
     		ModelMap model)
     throws Exception {
 
 		String sLocationUrl = "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageModify";
 
-		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
-
      	//공통코드  중요도 조회
     	ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
     	voComCode.setCodeId("COM019");
-    	List<?> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+    	List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
     	model.addAttribute("schdulIpcrCode", listComCode);
     	//공통코드  일정구분 조회
     	voComCode = new ComDefaultCodeVO();
@@ -620,15 +615,15 @@ public class EgovDeptSchdulManageController {
     	model.addAttribute("reptitSeCode", listComCode);
 
     	//일정시작일자(시)
-    	model.addAttribute("schdulBgndeHH", (List<?>)getTimeHH());
+    	model.addAttribute("schdulBgndeHH", getTimeHH());
     	//일정시작일자(분)
-    	model.addAttribute("schdulBgndeMM", (List<?>)getTimeMM());
+    	model.addAttribute("schdulBgndeMM", getTimeMM());
     	//일정종료일자(시)
-    	model.addAttribute("schdulEnddeHH", (List<?>)getTimeHH());
+    	model.addAttribute("schdulEnddeHH", getTimeHH());
     	//일정정료일자(분)
-    	model.addAttribute("schdulEnddeMM", (List<?>)getTimeMM());
+    	model.addAttribute("schdulEnddeMM", getTimeMM());
 
-    	DeptSchdulManageVO resultDeptSchdulManageVOReuslt = (DeptSchdulManageVO)egovDeptSchdulManageService.selectDeptSchdulManageDetailVO(deptSchdulManageVO);
+    	DeptSchdulManageVO resultDeptSchdulManageVOReuslt = egovDeptSchdulManageService.selectDeptSchdulManageDetailVO(deptSchdulManageVO);
 
     	String sSchdulBgnde = resultDeptSchdulManageVOReuslt.getSchdulBgnde();
     	String sSchdulEndde = resultDeptSchdulManageVOReuslt.getSchdulEndde();
