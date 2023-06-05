@@ -88,7 +88,7 @@ public class EgovWordDicaryController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<?> wordDicaryList = egovWordDicaryService.selectWordDicaryList(searchVO);
+		List<WordDicaryVO> wordDicaryList = egovWordDicaryService.selectWordDicaryList(searchVO);
 		model.addAttribute("resultList", wordDicaryList);
 
 		int totCnt = egovWordDicaryService.selectWordDicaryListCnt(searchVO);

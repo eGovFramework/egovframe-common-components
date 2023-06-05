@@ -6,7 +6,7 @@ import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 
 public interface EgovFaqService {
 
-	List<?> selectFaqList(FaqVO searchVO);
+	List<FaqVO> selectFaqList(FaqVO searchVO);
 
 	int selectFaqListCnt(FaqVO searchVO);
 

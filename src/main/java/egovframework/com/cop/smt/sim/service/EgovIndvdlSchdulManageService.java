@@ -3,6 +3,8 @@ package egovframework.com.cop.smt.sim.service;
 import java.util.List;
 import java.util.Map;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 import egovframework.com.cmm.ComDefaultVO;
 /**
  * 일정관리를 처리하는 Service Class 구현
@@ -29,7 +31,7 @@ public interface EgovIndvdlSchdulManageService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectIndvdlSchdulManageMainList(Map<?, ?> map) throws Exception;
+	public List<EgovMap> selectIndvdlSchdulManageMainList(Map<?, ?> map) throws Exception;
 
     /**
 	 * 일정 목록을 Map(map)형식으로 조회한다.
@@ -37,7 +39,7 @@ public interface EgovIndvdlSchdulManageService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectIndvdlSchdulManageRetrieve(Map<?, ?> map) throws Exception;
+	public List<EgovMap> selectIndvdlSchdulManageRetrieve(Map<?, ?> map) throws Exception;
 
 
     /**
@@ -54,7 +56,7 @@ public interface EgovIndvdlSchdulManageService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectIndvdlSchdulManageList(ComDefaultVO searchVO) throws Exception;
+	public List<IndvdlSchdulManageVO> selectIndvdlSchdulManageList(ComDefaultVO searchVO) throws Exception;
 
     /**
 	 * 일정를(을) 상세조회 한다.
@@ -62,7 +64,7 @@ public interface EgovIndvdlSchdulManageService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectIndvdlSchdulManageDetail(IndvdlSchdulManageVO indvdlSchdulManageVO) throws Exception;
+	public List<IndvdlSchdulManageVO> selectIndvdlSchdulManageDetail(IndvdlSchdulManageVO indvdlSchdulManageVO) throws Exception;
 
     /**
 	 * 일정를(을) 목록 전체 건수를(을) 조회한다.

@@ -28,8 +28,8 @@ public class EgovCommuManageDAO extends EgovComAbstractDAO{
 		insert("CommuManage.insertCommuUserRqst", cmmntyUser);
 	}
 
-	public List<?> selectCommuUserList(CommunityUserVO cmmntyUserVO) {
-		return list("CommuManage.selectCommuUserList", cmmntyUserVO);
+	public List<CommunityUser> selectCommuUserList(CommunityUserVO cmmntyUserVO) {
+		return selectList("CommuManage.selectCommuUserList", cmmntyUserVO);
 	}
 
 	public int selectCommuUserListCnt(CommunityUserVO cmmntyUserVO) {

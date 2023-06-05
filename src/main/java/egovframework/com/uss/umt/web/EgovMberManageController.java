@@ -23,6 +23,7 @@ import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.umt.service.EgovMberManageService;
 import egovframework.com.uss.umt.service.MberManageVO;
+import egovframework.com.uss.umt.service.StplatVO;
 import egovframework.com.uss.umt.service.UserDefaultVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovFileScrty;
@@ -454,7 +455,7 @@ public class EgovMberManageController {
 		//회원가입유형 설정-일반회원
 		String sbscrbTy = "USR01";
 		//약관정보 조회
-		List<?> stplatList = mberManageService.selectStplat(stplatId);
+		List<StplatVO> stplatList = mberManageService.selectStplat(stplatId);
 		model.addAttribute("stplatList", stplatList); //약관정보 포함
 		model.addAttribute("sbscrbTy", sbscrbTy); //회원가입유형 포함
 

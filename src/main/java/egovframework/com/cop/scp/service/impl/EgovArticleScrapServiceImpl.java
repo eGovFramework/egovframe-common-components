@@ -26,7 +26,7 @@ public class EgovArticleScrapServiceImpl extends EgovAbstractServiceImpl impleme
 	
 	@Override
 	public Map<String, Object> selectArticleScrapList(ScrapVO scrapVO) {
-		List<?> result = egovArticleScrapDao.selectArticleScrapList(scrapVO);
+		List<ScrapVO> result = egovArticleScrapDao.selectArticleScrapList(scrapVO);
 		int cnt = egovArticleScrapDao.selectArticleScrapListCnt(scrapVO);
 		
 		Map<String, Object> map = new HashMap<String, Object>();

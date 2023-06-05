@@ -2,6 +2,8 @@ package egovframework.com.uss.olp.qim.service;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 import egovframework.com.cmm.ComDefaultVO;
 /**
  * 설문항목관리를 처리하는 Service Class 구현
@@ -27,7 +29,7 @@ public interface EgovQustnrItemManageService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectQustnrTmplatManageList(QustnrItemManageVO qustnrItemManageVO) throws Exception;
+	public List<EgovMap> selectQustnrTmplatManageList(QustnrItemManageVO qustnrItemManageVO) throws Exception;
 
     /**
 	 * 설문항목 목록을 조회한다.
@@ -35,7 +37,7 @@ public interface EgovQustnrItemManageService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectQustnrItemManageList(ComDefaultVO searchVO) throws Exception;
+	public List<EgovMap> selectQustnrItemManageList(ComDefaultVO searchVO) throws Exception;
 
     /**
 	 * 설문항목를(을) 상세조회 한다.
@@ -43,7 +45,7 @@ public interface EgovQustnrItemManageService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectQustnrItemManageDetail(QustnrItemManageVO qustnrItemManageVO) throws Exception;
+	public List<EgovMap> selectQustnrItemManageDetail(QustnrItemManageVO qustnrItemManageVO) throws Exception;
 
     /**
 	 * 설문항목를(을) 목록 전체 건수를(을) 조회한다.

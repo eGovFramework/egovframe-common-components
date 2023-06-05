@@ -57,7 +57,7 @@ public interface EgovEntrprsManageService {
 	 * @return stplatList 기업회원약관정보
 	 * @throws Exception
 	 */
-	public List<?> selectStplat(String stplatId) throws Exception;
+	public List<StplatVO> selectStplat(String stplatId) throws Exception;
 
 	/**
 	 * 기업회원암호수정

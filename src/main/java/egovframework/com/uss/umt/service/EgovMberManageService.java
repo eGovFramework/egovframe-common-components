@@ -73,7 +73,7 @@ public interface EgovMberManageService {
 	 * @return 일반회원약관정보(List)
 	 * @throws Exception
 	 */
-	public List<?> selectStplat(String stplatId)  throws Exception;
+	public List<StplatVO> selectStplat(String stplatId)  throws Exception;
 
 	/**
 	 * 일반회원암호수정

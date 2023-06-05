@@ -9,6 +9,7 @@ import egovframework.com.cop.smt.sim.service.IndvdlSchdulManageVO;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 import javax.annotation.Resource;
 
@@ -49,7 +50,7 @@ public class EgovIndvdlSchdulManageServiceImpl extends EgovAbstractServiceImpl i
 	 * @throws Exception
 	 */
 	@Override
-	public List<?> selectIndvdlSchdulManageMainList(Map<?, ?> map) throws Exception{
+	public List<EgovMap> selectIndvdlSchdulManageMainList(Map<?, ?> map) throws Exception{
 		return dao.selectIndvdlSchdulManageMainList(map);
 	}
 
@@ -60,7 +61,7 @@ public class EgovIndvdlSchdulManageServiceImpl extends EgovAbstractServiceImpl i
 	 * @throws Exception
 	 */
 	@Override
-	public List<?> selectIndvdlSchdulManageRetrieve(Map<?, ?> map) throws Exception{
+	public List<EgovMap> selectIndvdlSchdulManageRetrieve(Map<?, ?> map) throws Exception{
 		return dao.selectIndvdlSchdulManageRetrieve(map);
 	}
 
@@ -82,7 +83,7 @@ public class EgovIndvdlSchdulManageServiceImpl extends EgovAbstractServiceImpl i
 	 * @throws Exception
 	 */
 	@Override
-	public List<?> selectIndvdlSchdulManageList(ComDefaultVO searchVO) throws Exception{
+	public List<IndvdlSchdulManageVO> selectIndvdlSchdulManageList(ComDefaultVO searchVO) throws Exception{
 		return dao.selectIndvdlSchdulManageList(searchVO);
 	}
 
@@ -93,7 +94,7 @@ public class EgovIndvdlSchdulManageServiceImpl extends EgovAbstractServiceImpl i
 	 * @throws Exception
 	 */
 	@Override
-	public List<?> selectIndvdlSchdulManageDetail(IndvdlSchdulManageVO indvdlSchdulManageVO) throws Exception{
+	public List<IndvdlSchdulManageVO> selectIndvdlSchdulManageDetail(IndvdlSchdulManageVO indvdlSchdulManageVO) throws Exception{
 		return dao.selectIndvdlSchdulManageDetail(indvdlSchdulManageVO);
 	}
 

@@ -79,7 +79,7 @@ public class EgovNewsController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> NewsList = egovNewsService.selectNewsList(searchVO);
+        List<NewsVO> NewsList = egovNewsService.selectNewsList(searchVO);
         model.addAttribute("resultList", NewsList);
 
         int totCnt = egovNewsService.selectNewsListCnt(searchVO);

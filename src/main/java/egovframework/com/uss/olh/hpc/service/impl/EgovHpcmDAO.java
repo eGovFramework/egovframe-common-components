@@ -11,8 +11,8 @@ import egovframework.com.uss.olh.hpc.service.HpcmVO;
 @Repository("EgovHpcmDAO")
 public class EgovHpcmDAO extends EgovComAbstractDAO {
 
-	public List<?> selectHpcmList(HpcmDefaultVO searchVO) {
-		return list("Hpcm.selectHpcmList", searchVO);
+	public List<HpcmVO> selectHpcmList(HpcmDefaultVO searchVO) {
+		return selectList("Hpcm.selectHpcmList", searchVO);
 	}
 
 	public int selectHpcmListCnt(HpcmDefaultVO searchVO) {

@@ -9,6 +9,7 @@ import egovframework.com.uss.olp.opm.service.OnlinePollManage;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 import javax.annotation.Resource;
 
@@ -49,7 +50,7 @@ public class EgovOnlinePollManageServiceImpl extends EgovAbstractServiceImpl
      * @throws Exception
      */
     @Override
-	public List<?> selectOnlinePollManageList(ComDefaultVO searchVO) throws Exception {
+	public List<EgovMap> selectOnlinePollManageList(ComDefaultVO searchVO) throws Exception {
         return dao.selectOnlinePollManageList(searchVO);
     }
 
@@ -113,7 +114,7 @@ public class EgovOnlinePollManageServiceImpl extends EgovAbstractServiceImpl
      * @throws Exception
      */
     @Override
-	public List<?> selectOnlinePollManageStatistics(OnlinePollManage onlinePollManage) throws Exception {
+	public List<OnlinePollManage> selectOnlinePollManageStatistics(OnlinePollManage onlinePollManage) throws Exception {
         return dao.selectOnlinePollManageStatistics(onlinePollManage);
     }
 
@@ -123,7 +124,7 @@ public class EgovOnlinePollManageServiceImpl extends EgovAbstractServiceImpl
      * @throws Exception
      */
     @Override
-	public List<?> selectOnlinePollItemList(OnlinePollItem onlinePollItem) throws Exception {
+	public List<EgovMap> selectOnlinePollItemList(OnlinePollItem onlinePollItem) throws Exception {
         return dao.selectOnlinePollItemList(onlinePollItem);
     }
 

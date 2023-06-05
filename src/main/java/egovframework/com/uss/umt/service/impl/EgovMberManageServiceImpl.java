@@ -4,6 +4,7 @@ import java.util.List;
 
 import egovframework.com.uss.umt.service.EgovMberManageService;
 import egovframework.com.uss.umt.service.MberManageVO;
+import egovframework.com.uss.umt.service.StplatVO;
 import egovframework.com.uss.umt.service.UserDefaultVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovFileScrty;
@@ -146,7 +147,7 @@ public class EgovMberManageServiceImpl extends EgovAbstractServiceImpl implement
 	 * @throws Exception
 	 */
 	@Override
-	public List<?> selectStplat(String stplatId)  {
+	public List<StplatVO> selectStplat(String stplatId)  {
         return mberManageDAO.selectStplat(stplatId);
 	}
 

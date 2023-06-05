@@ -6,6 +6,7 @@ import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.cop.smt.dsm.service.DiaryManageVO;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 /**
  * 일지관리를 처리하는 Dao Class 구현
@@ -32,9 +33,8 @@ public class DiaryManageDao extends EgovComAbstractDAO {
 	 * @return List
 	 * @throws Exception
 	 */
-	@SuppressWarnings("rawtypes")
-	public List selectDiaryManageList(ComDefaultVO searchVO) throws Exception{
-		return (List)list("DiaryManage.selectDiaryManage", searchVO);
+	public List<EgovMap> selectDiaryManageList(ComDefaultVO searchVO) throws Exception{
+		return selectList("DiaryManage.selectDiaryManage", searchVO);
 	}
 	
     /**

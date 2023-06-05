@@ -92,7 +92,7 @@ public class EgovAdministrationWordController {
         searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
         searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> resultList = egovAdministrationWordService.selectAdministrationWordList(searchVO);
+        List<AdministrationWordVO> resultList = egovAdministrationWordService.selectAdministrationWordList(searchVO);
         model.addAttribute("resultList", resultList);
 
         int totCnt = egovAdministrationWordService.selectAdministrationWordListCnt(searchVO);
@@ -145,7 +145,7 @@ public class EgovAdministrationWordController {
         searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
         searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> resultList = egovAdministrationWordService.selectAdministrationWordList(searchVO);
+        List<AdministrationWordVO> resultList = egovAdministrationWordService.selectAdministrationWordList(searchVO);
         model.addAttribute("resultList", resultList);
 
         int totCnt = egovAdministrationWordService.selectAdministrationWordListCnt(searchVO);

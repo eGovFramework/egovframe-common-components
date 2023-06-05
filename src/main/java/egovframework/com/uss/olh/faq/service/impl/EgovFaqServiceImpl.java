@@ -23,7 +23,7 @@ public class EgovFaqServiceImpl extends EgovAbstractServiceImpl implements EgovF
 	private EgovIdGnrService idgenService;
 	
 	@Override
-	public List<?> selectFaqList(FaqVO searchVO) {
+	public List<FaqVO> selectFaqList(FaqVO searchVO) {
 		return egovFaqDao.selectFaqList(searchVO);
 	}
 

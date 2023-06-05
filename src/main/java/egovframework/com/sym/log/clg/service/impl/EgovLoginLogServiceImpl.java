@@ -72,13 +72,12 @@ public class EgovLoginLogServiceImpl extends EgovAbstractServiceImpl implements
 	 *
 	 * @param LoginLog
 	 */
-	@SuppressWarnings({ "rawtypes", "unchecked" })
 	@Override
 	public Map<?, ?> selectLoginLogInf(LoginLog loinLog) throws Exception {
-		List<?> _result = loginLogDAO.selectLoginLogInf(loinLog);
+		List<LoginLog> _result = loginLogDAO.selectLoginLogInf(loinLog);
 		int _cnt = loginLogDAO.selectLoginLogInfCnt(loinLog);
 
-		Map<String, Object> _map = new HashMap();
+		Map<String, Object> _map = new HashMap<>();
 		_map.put("resultList", _result);
 		_map.put("resultCnt", Integer.toString(_cnt));
 

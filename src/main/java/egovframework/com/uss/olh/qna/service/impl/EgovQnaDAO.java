@@ -10,8 +10,8 @@ import egovframework.com.uss.olh.qna.service.QnaVO;
 @Repository("EgovQnaDAO")
 public class EgovQnaDAO extends EgovComAbstractDAO {
 
-	public List<?> selectQnaList(QnaVO searchVO) {
-		return list("QnaManage.selectQnaList", searchVO);
+	public List<QnaVO> selectQnaList(QnaVO searchVO) {
+		return selectList("QnaManage.selectQnaList", searchVO);
 	}
 
 	public int selectQnaListCnt(QnaVO searchVO) {
@@ -38,8 +38,8 @@ public class EgovQnaDAO extends EgovComAbstractDAO {
 		delete("QnaManage.deleteQna", qnaVO);
 	}
 
-	public List<?> selectQnaAnswerList(QnaVO searchVO) {
-		return list("QnaManage.selectQnaAnswerList", searchVO);
+	public List<QnaVO> selectQnaAnswerList(QnaVO searchVO) {
+		return selectList("QnaManage.selectQnaAnswerList", searchVO);
 	}
 
 	public int selectQnaAnswerListCnt(QnaVO searchVO) {

@@ -23,7 +23,7 @@ public class EgovQnaServiceImpl extends EgovAbstractServiceImpl implements EgovQ
 	private EgovIdGnrService idgenService;
 	
 	@Override
-	public List<?> selectQnaList(QnaVO searchVO) {
+	public List<QnaVO> selectQnaList(QnaVO searchVO) {
 		return egovQnaDao.selectQnaList(searchVO);
 	}
 
@@ -64,7 +64,7 @@ public class EgovQnaServiceImpl extends EgovAbstractServiceImpl implements EgovQ
 	}
 
 	@Override
-	public List<?> selectQnaAnswerList(QnaVO searchVO) {
+	public List<QnaVO> selectQnaAnswerList(QnaVO searchVO) {
 		return egovQnaDao.selectQnaAnswerList(searchVO);
 	}
 

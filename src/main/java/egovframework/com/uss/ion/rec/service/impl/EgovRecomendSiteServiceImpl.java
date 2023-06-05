@@ -23,7 +23,7 @@ public class EgovRecomendSiteServiceImpl extends EgovAbstractServiceImpl impleme
 	private EgovIdGnrService idgenService;
 	
 	@Override
-	public List<?> selectRecomendSiteList(RecomendSiteVO searchVO) {
+	public List<RecomendSiteVO> selectRecomendSiteList(RecomendSiteVO searchVO) {
 		return egovRecomendSiteDao.selectRecomendSiteList(searchVO);
 	}
 

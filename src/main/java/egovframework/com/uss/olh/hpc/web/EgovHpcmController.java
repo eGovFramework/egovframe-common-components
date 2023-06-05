@@ -92,7 +92,7 @@ public class EgovHpcmController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> HpcmList = egovHpcmService.selectHpcmList(searchVO);
+        List<HpcmVO> HpcmList = egovHpcmService.selectHpcmList(searchVO);
         model.addAttribute("resultList", HpcmList);
 
         int totCnt = egovHpcmService.selectHpcmListCnt(searchVO);

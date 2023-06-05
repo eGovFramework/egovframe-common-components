@@ -55,7 +55,7 @@ public class TestService {
 		System.out.println("start test~~~");
 		HpcmVO searchVO = new HpcmVO();
 		searchVO.setFirstIndex(0);
-		List<?> HpcmList = egovHpcmService.selectHpcmList(searchVO);
+		List<HpcmVO> HpcmList = egovHpcmService.selectHpcmList(searchVO);
 		System.out.println("====> count = "+HpcmList.size());
 	}
 

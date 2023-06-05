@@ -90,7 +90,7 @@ public class EgovSiteController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> SiteList = egovSiteService.selectSiteList(searchVO);
+        List<SiteVO> SiteList = egovSiteService.selectSiteList(searchVO);
         model.addAttribute("resultList", SiteList);
 
         int totCnt = egovSiteService.selectSiteListCnt(searchVO);

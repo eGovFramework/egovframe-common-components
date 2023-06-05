@@ -26,7 +26,7 @@ public class EgovEventCmpgnServiceImpl extends EgovAbstractServiceImpl implement
 	private EgovIdGnrService idgenService2;
 	
 	@Override
-	public List<?> selectEventCmpgnList(EventCmpgnVO searchVO) {
+	public List<EventCmpgnVO> selectEventCmpgnList(EventCmpgnVO searchVO) {
 		return egovEventCmpgnDao.selectEventCmpgnList(searchVO);
 	}
 
@@ -67,7 +67,7 @@ public class EgovEventCmpgnServiceImpl extends EgovAbstractServiceImpl implement
 	}
 
 	@Override
-	public List<?> selectTnextrlHrList(TnextrlHrVO searchVO) {
+	public List<TnextrlHrVO> selectTnextrlHrList(TnextrlHrVO searchVO) {
 		return egovEventCmpgnDao.selectTnextrlHrList(searchVO);
 	}
 

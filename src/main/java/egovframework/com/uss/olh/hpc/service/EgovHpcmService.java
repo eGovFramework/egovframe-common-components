@@ -6,7 +6,7 @@ import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 
 public interface EgovHpcmService {
 
-	List<?> selectHpcmList(HpcmDefaultVO searchVO);
+	List<HpcmVO> selectHpcmList(HpcmDefaultVO searchVO);
 
 	int selectHpcmListCnt(HpcmDefaultVO searchVO);
 

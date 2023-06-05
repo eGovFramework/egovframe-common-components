@@ -28,6 +28,7 @@ import egovframework.com.uss.olp.opm.service.OnlinePollItem;
 import egovframework.com.uss.olp.opm.service.OnlinePollManage;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
@@ -80,7 +81,6 @@ public class EgovOnlinePollManageController {
      * @return "egovframework/com/uss/olp/opm/EgovOnlinePollList"
      * @throws Exception
      */
-    @SuppressWarnings("unused")
 	@IncludedInfo(name="온라인poll관리", order = 660 ,gid = 50)
     @RequestMapping(value = "/uss/olp/opm/listOnlinePollManage.do")
     public String egovOnlinePollManageList(
@@ -89,7 +89,7 @@ public class EgovOnlinePollManageController {
             OnlinePollManage onlinePollManage, ModelMap model)
             throws Exception {
 
-        String sSearchMode = commandMap.get("searchMode") == null ? "" : (String) commandMap.get("searchMode");
+//        String sSearchMode = commandMap.get("searchMode") == null ? "" : (String) commandMap.get("searchMode");
 
         /** EgovPropertyService.sample */
         searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -105,7 +105,7 @@ public class EgovOnlinePollManageController {
         searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
         searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> reusltList = egovOnlinePollManageService.selectOnlinePollManageList(searchVO);
+        List<EgovMap> reusltList = egovOnlinePollManageService.selectOnlinePollManageList(searchVO);
         model.addAttribute("resultList", reusltList);
 
         model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword"));
@@ -298,7 +298,7 @@ public class EgovOnlinePollManageController {
             ModelMap model)
             throws Exception {
 
-        List<?> reusltList = egovOnlinePollManageService.selectOnlinePollItemList(onlinePollItem);
+        List<EgovMap> reusltList = egovOnlinePollManageService.selectOnlinePollItemList(onlinePollItem);
         model.addAttribute("resultList", reusltList);
 
         return "egovframework/com/uss/olp/opm/EgovOnlinePollItemList";

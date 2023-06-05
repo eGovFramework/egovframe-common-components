@@ -6,6 +6,7 @@ import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.olp.opp.service.OnlinePollPartcptn;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -32,8 +33,8 @@ public class OnlinePollPartcptnDao extends EgovComAbstractDAO {
      * @return List
      * @throws Exception
      */
-    public List<?> selectOnlinePollManageList(ComDefaultVO searchVO) throws Exception {
-        return list("OnlinePollPartcptn.selectOnlinePollManageList", searchVO);
+    public List<EgovMap> selectOnlinePollManageList(ComDefaultVO searchVO) throws Exception {
+        return selectList("OnlinePollPartcptn.selectOnlinePollManageList", searchVO);
     }
 
     /**
@@ -52,8 +53,8 @@ public class OnlinePollPartcptnDao extends EgovComAbstractDAO {
      * @return List
      * @throws Exception
      */
-    public List<?> selectOnlinePollManageDetail(OnlinePollPartcptn onlinePollPartcptn) throws Exception {
-        return list("OnlinePollPartcptn.selectOnlinePollManageDetail", onlinePollPartcptn);
+    public List<EgovMap> selectOnlinePollManageDetail(OnlinePollPartcptn onlinePollPartcptn) throws Exception {
+        return selectList("OnlinePollPartcptn.selectOnlinePollManageDetail", onlinePollPartcptn);
     }
 
     /**
@@ -62,8 +63,8 @@ public class OnlinePollPartcptnDao extends EgovComAbstractDAO {
      * @return List
      * @throws Exception
      */
-    public List<?> selectOnlinePollItemDetail(OnlinePollPartcptn onlinePollPartcptn) throws Exception {
-        return list("OnlinePollPartcptn.selectOnlinePollItem", onlinePollPartcptn);
+    public List<EgovMap> selectOnlinePollItemDetail(OnlinePollPartcptn onlinePollPartcptn) throws Exception {
+        return selectList("OnlinePollPartcptn.selectOnlinePollItem", onlinePollPartcptn);
     }
 
 
@@ -81,8 +82,8 @@ public class OnlinePollPartcptnDao extends EgovComAbstractDAO {
      * @param qonlinePollPartcptn  온라인POLL 정보가 담김 VO
      * @throws Exception
      */
-    public List<?> selectOnlinePollManageStatistics(OnlinePollPartcptn onlinePollPartcptn) throws Exception {
-        return list("OnlinePollPartcptn.selectOnlinePollPartcptnStatistics", onlinePollPartcptn);
+    public List<EgovMap> selectOnlinePollManageStatistics(OnlinePollPartcptn onlinePollPartcptn) throws Exception {
+        return selectList("OnlinePollPartcptn.selectOnlinePollPartcptnStatistics", onlinePollPartcptn);
     }
 
     /**

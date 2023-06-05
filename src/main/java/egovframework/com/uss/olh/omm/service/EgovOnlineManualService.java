@@ -6,7 +6,7 @@ import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 
 public interface EgovOnlineManualService {
 
-	List<?> selectOnlineManualList(OnlineManualVO searchVO);
+	List<OnlineManualVO> selectOnlineManualList(OnlineManualVO searchVO);
 
 	int selectOnlineManualListCnt(OnlineManualVO searchVO);
 

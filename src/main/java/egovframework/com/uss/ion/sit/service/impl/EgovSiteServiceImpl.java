@@ -23,7 +23,7 @@ public class EgovSiteServiceImpl extends EgovAbstractServiceImpl implements Egov
 	private EgovIdGnrService idgenService;
 	
 	@Override
-	public List<?> selectSiteList(SiteVO searchVO) {
+	public List<SiteVO> selectSiteList(SiteVO searchVO) {
 		return egovSiteDao.selectSiteList(searchVO);
 	}
 

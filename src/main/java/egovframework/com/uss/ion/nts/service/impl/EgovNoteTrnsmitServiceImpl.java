@@ -7,6 +7,7 @@ import egovframework.com.uss.ion.nts.service.EgovNoteTrnsmitService;
 import egovframework.com.uss.ion.nts.service.NoteTrnsmit;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 import javax.annotation.Resource;
 
@@ -40,7 +41,7 @@ public class EgovNoteTrnsmitServiceImpl extends EgovAbstractServiceImpl
      * @throws Exception
      */
     @Override
-	public List<?> selectNoteTrnsmitList(NoteTrnsmit noteTrnsmit) throws Exception {
+	public List<EgovMap> selectNoteTrnsmitList(NoteTrnsmit noteTrnsmit) throws Exception {
     	return dao.selectNoteTrnsmitList(noteTrnsmit);
     }
 
@@ -106,7 +107,7 @@ public class EgovNoteTrnsmitServiceImpl extends EgovAbstractServiceImpl
      * @throws Exception
      */
     @Override
-	public List<?> selectNoteTrnsmitCnfirm(NoteTrnsmit noteTrnsmit) throws Exception {
+	public List<EgovMap> selectNoteTrnsmitCnfirm(NoteTrnsmit noteTrnsmit) throws Exception {
         return dao.selectNoteTrnsmitCnfirm(noteTrnsmit);
     }
 }

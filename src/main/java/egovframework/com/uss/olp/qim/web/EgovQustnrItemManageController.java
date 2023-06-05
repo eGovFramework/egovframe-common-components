@@ -25,6 +25,7 @@ import egovframework.com.uss.olp.qim.service.EgovQustnrItemManageService;
 import egovframework.com.uss.olp.qim.service.QustnrItemManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 /**
  * 설문항목관리를 처리하는 Controller Class 구현
@@ -99,7 +100,7 @@ public class EgovQustnrItemManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> sampleList = egovQustnrItemManageService.selectQustnrItemManageList(searchVO);
+        List<EgovMap> sampleList = egovQustnrItemManageService.selectQustnrItemManageList(searchVO);
         model.addAttribute("resultList", sampleList);
 
         model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String)commandMap.get("searchKeyword"));
@@ -152,7 +153,7 @@ public class EgovQustnrItemManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> sampleList = egovQustnrItemManageService.selectQustnrItemManageList(searchVO);
+        List<EgovMap> sampleList = egovQustnrItemManageService.selectQustnrItemManageList(searchVO);
         model.addAttribute("resultList", sampleList);
 
         model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String)commandMap.get("searchKeyword"));
@@ -190,7 +191,7 @@ public class EgovQustnrItemManageController {
 			egovQustnrItemManageService.deleteQustnrItemManage(qustnrItemManageVO);
 			sLocationUrl = "redirect:/uss/olp/qim/EgovQustnrItemManageList.do";
 		}else{
-	        List<?> sampleList = egovQustnrItemManageService.selectQustnrItemManageDetail(qustnrItemManageVO);
+	        List<EgovMap> sampleList = egovQustnrItemManageService.selectQustnrItemManageDetail(qustnrItemManageVO);
 	        model.addAttribute("resultList", sampleList);
 		}
 
@@ -235,10 +236,10 @@ public class EgovQustnrItemManageController {
             beanValidator.validate(qustnrItemManageVO, bindingResult);
     		if(bindingResult.hasErrors()){
             	//설문항목(을)를  정보 불러오기
-                List<?> listQustnrTmplat = egovQustnrItemManageService.selectQustnrTmplatManageList(qustnrItemManageVO);
+                List<EgovMap> listQustnrTmplat = egovQustnrItemManageService.selectQustnrTmplatManageList(qustnrItemManageVO);
                 model.addAttribute("listQustnrTmplat", listQustnrTmplat);
             	//게시물 불러오기
-                List<?> sampleList = egovQustnrItemManageService.selectQustnrItemManageDetail(qustnrItemManageVO);
+                List<EgovMap> sampleList = egovQustnrItemManageService.selectQustnrItemManageDetail(qustnrItemManageVO);
                 model.addAttribute("resultList", sampleList);
 
                 return "egovframework/com/uss/olp/qim/EgovQustnrItemManageModify";
@@ -301,7 +302,7 @@ public class EgovQustnrItemManageController {
             beanValidator.validate(qustnrItemManageVO, bindingResult);
     		if(bindingResult.hasErrors()){
             	//설문항목(을)를  정보 불러오기
-                List<?> listQustnrTmplat = egovQustnrItemManageService.selectQustnrTmplatManageList(qustnrItemManageVO);
+                List<EgovMap> listQustnrTmplat = egovQustnrItemManageService.selectQustnrTmplatManageList(qustnrItemManageVO);
                 model.addAttribute("listQustnrTmplat", listQustnrTmplat);
                 return "egovframework/com/uss/olp/qim/EgovQustnrItemManageRegist";
     		}

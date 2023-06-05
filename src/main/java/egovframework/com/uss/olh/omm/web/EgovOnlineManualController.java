@@ -95,7 +95,7 @@ public class EgovOnlineManualController {
         searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
         searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> reusltList = egovOnlineManualService.selectOnlineManualList(searchVO);
+        List<OnlineManualVO> reusltList = egovOnlineManualService.selectOnlineManualList(searchVO);
         model.addAttribute("resultList", reusltList);
 
         int totCnt = egovOnlineManualService.selectOnlineManualListCnt(searchVO);
@@ -150,7 +150,7 @@ public class EgovOnlineManualController {
         searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
         searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> reusltList = egovOnlineManualService.selectOnlineManualList(searchVO);
+        List<OnlineManualVO> reusltList = egovOnlineManualService.selectOnlineManualList(searchVO);
         model.addAttribute("resultList", reusltList);
 
         int totCnt = egovOnlineManualService.selectOnlineManualListCnt(searchVO);

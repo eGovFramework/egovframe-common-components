@@ -24,7 +24,7 @@ public class EgovHpcmServiceImpl extends EgovAbstractServiceImpl implements Egov
 	private EgovIdGnrService idgenService;
 	
 	@Override
-	public List<?> selectHpcmList(HpcmDefaultVO searchVO) {
+	public List<HpcmVO> selectHpcmList(HpcmDefaultVO searchVO) {
 		return egovHpcmDao.selectHpcmList(searchVO);
 	}
 

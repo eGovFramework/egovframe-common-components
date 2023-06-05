@@ -23,6 +23,7 @@ import egovframework.com.uss.ion.nts.service.EgovNoteTrnsmitService;
 import egovframework.com.uss.ion.nts.service.NoteTrnsmit;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 /**
  * 보낸쪽지함관리를 처리하는 Controller Class 구현
@@ -153,7 +154,7 @@ public class EgovNoteTrnsmitController {
         //발시자설정
         searchVO.setTrnsmiterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 
-        List<?> reusltList = egovNoteTrnsmitService.selectNoteTrnsmitList(searchVO);
+        List<EgovMap> reusltList = egovNoteTrnsmitService.selectNoteTrnsmitList(searchVO);
         model.addAttribute("resultList", reusltList);
 
         model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword"));
@@ -207,7 +208,7 @@ public class EgovNoteTrnsmitController {
             	Map<?, ?> noteTrnsmitMap = egovNoteTrnsmitService.selectNoteTrnsmitDetail(searchVO);
             	model.addAttribute("noteTrnsmit", noteTrnsmitMap);
 
-                List<?> resultRecptnEmp = egovNoteTrnsmitService.selectNoteTrnsmitCnfirm(searchVO);
+                List<EgovMap> resultRecptnEmp = egovNoteTrnsmitService.selectNoteTrnsmitCnfirm(searchVO);
             	model.addAttribute("resultRecptnEmp", resultRecptnEmp);
             }
 
@@ -234,7 +235,7 @@ public class EgovNoteTrnsmitController {
     			egovNoteTrnsmitService.deleteNoteRecptn(noteTrnsmit);
     		}
 
-            List<?> resultList = egovNoteTrnsmitService.selectNoteTrnsmitCnfirm(noteTrnsmit);
+            List<EgovMap> resultList = egovNoteTrnsmitService.selectNoteTrnsmitCnfirm(noteTrnsmit);
         	model.addAttribute("resultList", resultList);
 
     		return "egovframework/com/uss/ion/nts/EgovNoteTrnsmitCnfirm";

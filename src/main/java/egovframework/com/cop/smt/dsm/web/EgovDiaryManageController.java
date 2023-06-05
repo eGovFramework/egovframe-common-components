@@ -31,6 +31,7 @@ import egovframework.com.cop.smt.dsm.service.DiaryManageVO;
 import egovframework.com.cop.smt.dsm.service.EgovDiaryManageService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 /**
  * 일지관리를 처리하는 Controller Class 구현
@@ -87,7 +88,6 @@ public class EgovDiaryManageController {
 	 * @return "egovframework/com/cop/smt/dsm/EgovDiaryManageList"
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unused")
 	@IncludedInfo(name="일지관리", order = 340 ,gid = 40)
 	@RequestMapping(value="/cop/smt/dsm/EgovDiaryManageList.do")
 	public String egovDiaryManageList(
@@ -97,7 +97,7 @@ public class EgovDiaryManageController {
     		ModelMap model)
     throws Exception {
 
-		String sSearchMode = commandMap.get("searchMode") == null ? "" : (String)commandMap.get("searchMode");
+//		String sSearchMode = commandMap.get("searchMode") == null ? "" : (String)commandMap.get("searchMode");
 
     	/** EgovPropertyService.sample */
     	searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -118,7 +118,7 @@ public class EgovDiaryManageController {
         	searchVO.setSearchKeyword((String)commandMap.get("schdulId"));
         }
 
-        List<?> resultList = egovDiaryManageService.selectDiaryManageList(searchVO);
+        List<EgovMap> resultList = egovDiaryManageService.selectDiaryManageList(searchVO);
         model.addAttribute("resultList", resultList);
 
         model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String)commandMap.get("searchKeyword"));

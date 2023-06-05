@@ -44,9 +44,8 @@ public class GroupManageDAO extends EgovComAbstractDAO {
 	 * @return GroupManageVO
 	 * @exception Exception
 	 */
-	@SuppressWarnings("unchecked")
 	public List<GroupManageVO> selectGroupList(GroupManageVO groupManageVO) throws Exception {
-		return (List<GroupManageVO>) list("groupManageDAO.selectGroupList", groupManageVO);
+		return selectList("groupManageDAO.selectGroupList", groupManageVO);
 	}
 
 	/**
