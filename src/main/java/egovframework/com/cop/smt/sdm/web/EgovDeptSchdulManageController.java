@@ -220,8 +220,8 @@ public class EgovDeptSchdulManageController {
         List<EgovMap> resultList = egovDeptSchdulManageService.selectDeptSchdulManageList(searchVO);
         model.addAttribute("resultList", resultList);
 
-        int totalRecordCount = egovDeptSchdulManageService.selectDeptSchdulManageListCnt(searchVO);
-		paginationInfo.setTotalRecordCount(totalRecordCount);
+        int totCnt = egovDeptSchdulManageService.selectDeptSchdulManageListCnt(searchVO);
+		paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);
 
 		return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageListPopup";
