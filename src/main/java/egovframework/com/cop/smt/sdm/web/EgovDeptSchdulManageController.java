@@ -761,9 +761,7 @@ public class EgovDeptSchdulManageController {
 	/**
 	 *  부서일정를 등록한다. / 등록 초기페이지
 	 * @param searchVO
-	 * @param commandMap
 	 * @param deptSchdulManageVO
-	 * @param bindingResult
 	 * @param model
 	 * @return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageRegist"
 	 * @throws Exception
@@ -771,9 +769,7 @@ public class EgovDeptSchdulManageController {
 	@RequestMapping(value="/cop/smt/sdm/EgovDeptSchdulManageRegist.do")
 	public String deptSchdulManageRegist(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<?, ?> commandMap,
 			@ModelAttribute("deptSchdulManageVO") DeptSchdulManageVO deptSchdulManageVO,
-			BindingResult bindingResult,
     		ModelMap model)
     throws Exception {
 
@@ -789,7 +785,7 @@ public class EgovDeptSchdulManageController {
      	//공통코드  중요도 조회
     	ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
     	voComCode.setCodeId("COM019");
-    	List<?> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+    	List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
     	model.addAttribute("schdulIpcrCode", listComCode);
     	//공통코드  일정구분 조회
     	voComCode = new ComDefaultCodeVO();
@@ -803,13 +799,13 @@ public class EgovDeptSchdulManageController {
     	model.addAttribute("reptitSeCode", listComCode);
 
     	//일정시작일자(시)
-    	model.addAttribute("schdulBgndeHH", (List<?>)getTimeHH());
+    	model.addAttribute("schdulBgndeHH", getTimeHH());
     	//일정시작일자(분)
-    	model.addAttribute("schdulBgndeMM", (List<?>)getTimeMM());
+    	model.addAttribute("schdulBgndeMM", getTimeMM());
     	//일정종료일자(시)
-    	model.addAttribute("schdulEnddeHH", (List<?>)getTimeHH());
+    	model.addAttribute("schdulEnddeHH", getTimeHH());
     	//일정정료일자(분)
-    	model.addAttribute("schdulEnddeMM", (List<?>)getTimeMM());
+    	model.addAttribute("schdulEnddeMM", getTimeMM());
 
 
     	return sLocationUrl;
