@@ -649,7 +649,6 @@ public class EgovDeptSchdulManageController {
 	/**
 	 * 부서일정를 수정 처리 한다.
 	 * @param multiRequest
-	 * @param searchVO
 	 * @param commandMap
 	 * @param deptSchdulManageVO
 	 * @param bindingResult
@@ -660,13 +659,11 @@ public class EgovDeptSchdulManageController {
 	@RequestMapping(value="/cop/smt/sdm/EgovDeptSchdulManageModifyActor.do")
 	public String deptSchdulManageModifyActor(
 			final MultipartHttpServletRequest multiRequest,
-			ComDefaultVO searchVO,
-			@RequestParam Map<?, ?> commandMap,
+			@RequestParam Map<String, String> commandMap,
 			@ModelAttribute("deptSchdulManageVO") DeptSchdulManageVO deptSchdulManageVO,
 			BindingResult bindingResult,
     		ModelMap model)
     throws Exception {
-
 
     	// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -680,11 +677,9 @@ public class EgovDeptSchdulManageController {
 
 		String sLocationUrl = "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageModify";
 
-		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
+		String sCmd = commandMap.get("cmd");
 
-
-
-        if(sCmd.equals("save")){
+        if("save".equals(sCmd)){
     		//서버  validate 체크
             beanValidator.validate(deptSchdulManageVO, bindingResult);
     		if(bindingResult.hasErrors()){
@@ -692,7 +687,7 @@ public class EgovDeptSchdulManageController {
     	     	//공통코드  중요도 조회
     	    	ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
     	    	voComCode.setCodeId("COM019");
-    	    	List<?> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+    	    	List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
     	    	model.addAttribute("schdulIpcrCode", listComCode);
     	    	//공통코드  일정구분 조회
     	    	voComCode = new ComDefaultCodeVO();
@@ -706,21 +701,21 @@ public class EgovDeptSchdulManageController {
     	    	model.addAttribute("reptitSeCode", listComCode);
 
     	    	//일정시작일자(시)
-    	    	model.addAttribute("schdulBgndeHH", (List<?>)getTimeHH());
+    	    	model.addAttribute("schdulBgndeHH", getTimeHH());
     	    	//일정시작일자(분)
-    	    	model.addAttribute("schdulBgndeMM", (List<?>)getTimeMM());
+    	    	model.addAttribute("schdulBgndeMM", getTimeMM());
     	    	//일정종료일자(시)
-    	    	model.addAttribute("schdulEnddeHH", (List<?>)getTimeHH());
+    	    	model.addAttribute("schdulEnddeHH", getTimeHH());
     	    	//일정정료일자(분)
-    	    	model.addAttribute("schdulEnddeMM", (List<?>)getTimeMM());
+    	    	model.addAttribute("schdulEnddeMM", getTimeMM());
 
     			return sLocationUrl;
     		}
     		/* *****************************************************************
         	// 아이디 설정
 			****************************************************************** */
-    		deptSchdulManageVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-    		deptSchdulManageVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+    		deptSchdulManageVO.setFrstRegisterId(loginVO.getUniqId());
+    		deptSchdulManageVO.setLastUpdusrId(loginVO.getUniqId());
     		/* *****************************************************************
         	// 첨부파일 관련 ID 생성 start....
 			****************************************************************** */
@@ -731,14 +726,13 @@ public class EgovDeptSchdulManageController {
     		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
     		if(!files.isEmpty()){
-    			String atchFileAt = commandMap.get("atchFileAt") == null ? "" : (String)commandMap.get("atchFileAt");
+    			String atchFileAt = commandMap.get("atchFileAt");
     			if("N".equals(atchFileAt)){
     				List<FileVO> _result = fileUtil.parseFileInf(files, "DSCH_", 0, _atchFileId, "");
     				_atchFileId = fileMngService.insertFileInfs(_result);
 
     				// 첨부파일 ID 셋팅
     				deptSchdulManageVO.setAtchFileId(_atchFileId);    	// 첨부파일 ID
-
     			}else{
     				FileVO fvo = new FileVO();
     				fvo.setAtchFileId(_atchFileId);
