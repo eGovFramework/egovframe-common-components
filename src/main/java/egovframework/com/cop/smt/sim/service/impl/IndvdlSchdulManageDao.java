@@ -36,7 +36,7 @@ public class IndvdlSchdulManageDao extends EgovComAbstractDAO {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<EgovMap> selectIndvdlSchdulManageMainList(Map<?, ?> map) throws Exception{
+	public List<EgovMap> selectIndvdlSchdulManageMainList(Map<String, String> map) throws Exception{
 		 return  selectList("IndvdlSchdulManage.selectIndvdlSchdulManageMainList", map);
 	}
 
