@@ -89,14 +89,12 @@ public class EgovIndvdlSchdulManageController {
 
 	/**
 	 * 메인페이지/일정관리조회
-	 * @param commandMap
 	 * @param model
 	 * @return "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageMainList"
 	 * @throws Exception
 	 */
 	@RequestMapping(value="/cop/smt/sim/EgovIndvdlSchdulManageMainList.do")
 	public String egovIndvdlSchdulManageMainList(
-			@RequestParam Map<?, ?> commandMap,
     		ModelMap model)
     throws Exception {
 
@@ -108,16 +106,15 @@ public class EgovIndvdlSchdulManageController {
     	}
 
 		//로그인 객체 선언
-		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-		if(loginVO == null){ loginVO = new LoginVO();}
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-		HashMap<String, String> hmParam = new HashMap<String, String>();
+		Map<String, String> hmParam = new HashMap<String, String>();
 
 		hmParam.put("uniqId", loginVO.getUniqId());
 
 		List<EgovMap> reusltList = egovIndvdlSchdulManageService.selectIndvdlSchdulManageMainList(hmParam);
 
-		 model.addAttribute("resultList", reusltList);
+		model.addAttribute("resultList", reusltList);
 
     	return "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageMainList";
 
