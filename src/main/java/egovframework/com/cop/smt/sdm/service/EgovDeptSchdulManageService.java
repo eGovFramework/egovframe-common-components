@@ -69,7 +69,7 @@ public interface EgovDeptSchdulManageService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectDeptSchdulManageList(ComDefaultVO searchVO) throws Exception;
+	public List<EgovMap> selectDeptSchdulManageList(ComDefaultVO searchVO) throws Exception;
 	
 	/**
 	 *  부서일정를(을) 상세조회 한다.

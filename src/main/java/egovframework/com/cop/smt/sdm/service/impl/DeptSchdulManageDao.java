@@ -86,8 +86,7 @@ public class DeptSchdulManageDao extends EgovComAbstractDAO {
 	 * @return List
 	 * @exception Exception
 	 */
-	@SuppressWarnings("rawtypes")
-	public List selectDeptSchdulManageList(ComDefaultVO searchVO) throws Exception{
+	public List<EgovMap> selectDeptSchdulManageList(ComDefaultVO searchVO) throws Exception{
 		return selectList("DeptSchdulManage.selectDeptSchdulManage", searchVO);
 	}
 	

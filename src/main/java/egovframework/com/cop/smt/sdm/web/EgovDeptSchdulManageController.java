@@ -194,22 +194,15 @@ public class EgovDeptSchdulManageController {
 	/**
 	 * 일지관리 목록을 조회한다.
 	 * @param searchVO
-	 * @param commandMap
-	 * @param deptSchdulManageVO
 	 * @param model
 	 * @return "egovframework/com/cop/smt/dsm/EgovDiaryManageList"
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unused")
 	@RequestMapping(value="/cop/smt/sdm/EgovDeptSchdulManageListPopup.do")
 	public String egovDeptSchdulManageListPopup(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<?, ?> commandMap,
-			DeptSchdulManageVO deptSchdulManageVO,
     		ModelMap model)
     throws Exception {
-
-		String sSearchMode = commandMap.get("searchMode") == null ? "" : (String)commandMap.get("searchMode");
 
     	/** EgovPropertyService.sample */
     	searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -225,13 +218,10 @@ public class EgovDeptSchdulManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> sampleList = egovDeptSchdulManageService.selectDeptSchdulManageList(searchVO);
-        model.addAttribute("resultList", sampleList);
+        List<EgovMap> resultList = egovDeptSchdulManageService.selectDeptSchdulManageList(searchVO);
+        model.addAttribute("resultList", resultList);
 
-        model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String)commandMap.get("searchKeyword"));
-        model.addAttribute("searchCondition", commandMap.get("searchCondition") == null ? "" : (String)commandMap.get("searchCondition"));
-
-        int totCnt = (Integer)egovDeptSchdulManageService.selectDeptSchdulManageListCnt(searchVO);
+        int totCnt = egovDeptSchdulManageService.selectDeptSchdulManageListCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);
 
@@ -507,26 +497,11 @@ public class EgovDeptSchdulManageController {
 
 	/**
 	 * 부서일정 목록을 조회한다.
-	 * @param searchVO
-	 * @param commandMap
-	 * @param deptSchdulManageVO
-	 * @param model
 	 * @return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageList"
-	 * @throws Exception
 	 */
 	@IncludedInfo(name="부서일정관리", order = 320 ,gid = 40)
 	@RequestMapping(value="/cop/smt/sdm/EgovDeptSchdulManageList.do")
-	public String egovDeptSchdulManageList(
-			@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<?, ?> commandMap,
-			DeptSchdulManageVO deptSchdulManageVO,
-    		ModelMap model)
-    throws Exception {
-
-
-        List<?> resultList = egovDeptSchdulManageService.selectDeptSchdulManageList(searchVO);
-        model.addAttribute("resultList", resultList);
-
+	public String egovDeptSchdulManageList() {
 		return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageList";
 	}
 
