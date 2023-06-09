@@ -39,7 +39,7 @@ public interface EgovIndvdlSchdulManageService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<EgovMap> selectIndvdlSchdulManageRetrieve(Map<?, ?> map) throws Exception;
+	public List<EgovMap> selectIndvdlSchdulManageRetrieve(Map<String, String> map) throws Exception;
 
 
     /**

@@ -141,14 +141,14 @@ public class EgovIndvdlSchdulManageController {
     throws Exception {
 
 		//일정구분 검색 유지
-        model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String)commandMap.get("searchKeyword"));
-        model.addAttribute("searchCondition", commandMap.get("searchCondition") == null ? "" : (String)commandMap.get("searchCondition"));
+        model.addAttribute("searchKeyword", commandMap.get("searchKeyword"));
+        model.addAttribute("searchCondition", commandMap.get("searchCondition"));
 
 		//공통코드 일정종류
 		ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
 	   	voComCode = new ComDefaultCodeVO();
     	voComCode.setCodeId("COM030");
-    	List<?> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+    	List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
     	model.addAttribute("schdulSe", listComCode);
 
 		/* *****************************************************************

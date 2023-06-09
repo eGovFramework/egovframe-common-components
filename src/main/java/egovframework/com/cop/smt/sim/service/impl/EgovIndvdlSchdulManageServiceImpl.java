@@ -61,7 +61,7 @@ public class EgovIndvdlSchdulManageServiceImpl extends EgovAbstractServiceImpl i
 	 * @throws Exception
 	 */
 	@Override
-	public List<EgovMap> selectIndvdlSchdulManageRetrieve(Map<?, ?> map) throws Exception{
+	public List<EgovMap> selectIndvdlSchdulManageRetrieve(Map<String, String> map) throws Exception{
 		return dao.selectIndvdlSchdulManageRetrieve(map);
 	}
 
