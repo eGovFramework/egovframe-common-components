@@ -1,7 +1,6 @@
 package egovframework.com.dam.app.web;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -9,9 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -129,16 +129,21 @@ public class EgovKnoAppraisalController {
 	}
 
 	/**
-	 * 지식정보평가 정보를 신규로 등록한다.
-	 * @param knoAps - 지식정보평가 model
+	 * 기 등록 된 지식정보평가 정보를 수정 한다.
+	 * @param AppraisalknoAps - 지식정보평가 model
 	 * @return String - 리턴 Url
 	 *
 	 * @param knoAps
 	 */
-	//@RequestMapping(value="/dam/app/EgovComDamAppraisalRegist.do")
-	//public String insertKnoAppraisal(knoAps knoAps){
-	//	return "egovframework/com/";
-	//}
+	@GetMapping(value="/dam/app/EgovComDamAppraisalModify.do")
+	public String updateKnoAppraisalView(@ModelAttribute("knoId") KnoAppraisal knoAppraisal
+			, ModelMap model
+			) throws Exception {
+
+		KnoAppraisal vo = knoAppraisalService.selectKnoAppraisal(knoAppraisal);
+		model.addAttribute("knoAppraisal", vo);
+		return "egovframework/com/dam/app/EgovComDamAppraisalModify";
+	}
 
 	/**
 	 * 기 등록 된 지식정보평가 정보를 수정 한다.
@@ -147,52 +152,30 @@ public class EgovKnoAppraisalController {
 	 *
 	 * @param knoAps
 	 */
-	@RequestMapping(value="/dam/app/EgovComDamAppraisalModify.do")
+	@PostMapping(value="/dam/app/EgovComDamAppraisalModify.do")
 	public String updateKnoAppraisal(@ModelAttribute("knoId") KnoAppraisal knoAppraisal
-			, BindingResult bindingResult
-			, @RequestParam Map<String, String> commandMap
-			, ModelMap model
-			) throws Exception {
+	        , BindingResult bindingResult
+	        , ModelMap model
+	        ) throws Exception {
 
-		//로그인 객체 선언
-		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+        beanValidator.validate(knoAppraisal, bindingResult);
+        if (bindingResult.hasErrors()){
+            KnoAppraisal vo = knoAppraisalService.selectKnoAppraisal(knoAppraisal);
+            model.addAttribute("knoAppraisal", vo);
+            return "egovframework/com/dam/app/EgovComDamAppraisalModify";
+        }
 
-		String sCmd = commandMap.get("cmd") == null ? "": commandMap.get("cmd");
-		if ("".equals(sCmd)) {
-			KnoAppraisal vo = knoAppraisalService.selectKnoAppraisal(knoAppraisal);
-			model.addAttribute("knoAppraisal", vo);
-			return "egovframework/com/dam/app/EgovComDamAppraisalModify";
-		} else if ("Modify".equals(sCmd)) {
-			beanValidator.validate(knoAppraisal, bindingResult);
-			if (bindingResult.hasErrors()){
-				KnoAppraisal vo = knoAppraisalService.selectKnoAppraisal(knoAppraisal);
-				model.addAttribute("knoAppraisal", vo);
-				return "egovframework/com/dam/app/EgovComDamAppraisalModify";
-			}
+        //로그인 객체 선언
+        LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-        	// 아이디 설정
-			if (loginVO != null) {
-    			//knoAppraisal.setFrstRegisterId((String)loginVO.getUniqId());
-    			knoAppraisal.setLastUpdusrId(loginVO.getUniqId());
-    			knoAppraisal.setSpeId(loginVO.getUniqId());
-			}
+        // 아이디 설정
+        if (loginVO != null) {
+            knoAppraisal.setLastUpdusrId(loginVO.getUniqId());
+            knoAppraisal.setSpeId(loginVO.getUniqId());
+        }
 
-			knoAppraisalService.updateKnoAppraisal(knoAppraisal);
-			return "forward:/dam/app/EgovComDamAppraisalList.do";
-		} else {
-			return "forward:/dam/app/EgovComDamAppraisalList.do";
-		}
+        knoAppraisalService.updateKnoAppraisal(knoAppraisal);
+        return "forward:/dam/app/EgovComDamAppraisalList.do";
 	}
-
-	/**
-	 * 기 등록된 지식정보평가 정보를 삭제한다.
-	 * @param AppraisalknoAps - 지식정보평가 model
-	 * @return String - 리턴 Url
-	 *
-	 * @param knoAps
-	 */
-	//public String deleteKnoAppraisal(knoAps knoAps){
-	//	return "egovframework/com/";
-	//}
 
 }
