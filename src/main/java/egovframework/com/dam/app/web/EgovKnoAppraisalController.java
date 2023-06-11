@@ -121,10 +121,8 @@ public class EgovKnoAppraisalController {
 	 * @param KnoAppraisalVO
 	 */
 	@RequestMapping(value="/dam/app/EgovComDamAppraisal.do")
-	public String selectKnoAppraisal(@ModelAttribute("loginVO") LoginVO loginVO
-			, KnoAppraisal knoAppraisal
+	public String selectKnoAppraisal(KnoAppraisal knoAppraisal
 			, ModelMap model
-			, @RequestParam Map<?, ?> commandMap
 			) throws Exception {
 		KnoAppraisal vo = knoAppraisalService.selectKnoAppraisal(knoAppraisal);
 		model.addAttribute("result", vo);
@@ -153,19 +151,19 @@ public class EgovKnoAppraisalController {
 	@RequestMapping(value="/dam/app/EgovComDamAppraisalModify.do")
 	public String updateKnoAppraisal(@ModelAttribute("knoId") KnoAppraisal knoAppraisal
 			, BindingResult bindingResult
-			, @RequestParam Map<?, ?> commandMap
+			, @RequestParam Map<String, String> commandMap
 			, ModelMap model
 			) throws Exception {
 
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
-		String sCmd = commandMap.get("cmd") == null ? "": (String)commandMap.get("cmd");
-		if (sCmd.equals("")) {
+		String sCmd = commandMap.get("cmd") == null ? "": commandMap.get("cmd");
+		if ("".equals(sCmd)) {
 			KnoAppraisal vo = knoAppraisalService.selectKnoAppraisal(knoAppraisal);
 			model.addAttribute("knoAppraisal", vo);
 			return "egovframework/com/dam/app/EgovComDamAppraisalModify";
-		} else if (sCmd.equals("Modify")) {
+		} else if ("Modify".equals(sCmd)) {
 			beanValidator.validate(knoAppraisal, bindingResult);
 			if (bindingResult.hasErrors()){
 				KnoAppraisal vo = knoAppraisalService.selectKnoAppraisal(knoAppraisal);
