@@ -23,6 +23,7 @@ import egovframework.com.dam.app.service.KnoAppraisal;
 import egovframework.com.dam.app.service.KnoAppraisalVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
@@ -102,7 +103,7 @@ public class EgovKnoAppraisalController {
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
 		searchVO.setEmplyrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-		List<?> KnoAppraisalList = knoAppraisalService.selectKnoAppraisalList(searchVO);
+		List<EgovMap> KnoAppraisalList = knoAppraisalService.selectKnoAppraisalList(searchVO);
 		model.addAttribute("resultList", KnoAppraisalList);
 
 		int totCnt = knoAppraisalService.selectKnoAppraisalTotCnt(searchVO);
