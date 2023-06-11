@@ -21,7 +21,6 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.dam.app.service.EgovKnoAppraisalService;
 import egovframework.com.dam.app.service.KnoAppraisal;
 import egovframework.com.dam.app.service.KnoAppraisalVO;
-import egovframework.com.utl.fcc.service.EgovStringUtil;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -172,9 +171,11 @@ public class EgovKnoAppraisalController {
 			}
 
         	// 아이디 설정
-			//knoAppraisal.setFrstRegisterId((String)loginVO.getUniqId());
-			//knoAppraisal.setLastUpdusrId((String)loginVO.getUniqId());
-			knoAppraisal.setSpeId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+			if (loginVO != null) {
+    			//knoAppraisal.setFrstRegisterId((String)loginVO.getUniqId());
+    			knoAppraisal.setLastUpdusrId(loginVO.getUniqId());
+    			knoAppraisal.setSpeId(loginVO.getUniqId());
+			}
 
 			knoAppraisalService.updateKnoAppraisal(knoAppraisal);
 			return "forward:/dam/app/EgovComDamAppraisalList.do";
