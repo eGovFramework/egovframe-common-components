@@ -200,7 +200,7 @@ public class EgovKnoPersonalController {
             //	mapMaterial.setOrgnztId(emp.get("orgnztId").toString());
             //}
 
-            List<?> MapMaterialList = mapMaterialService.selectMapMaterialList(searchMatVO);
+            List<MapMaterialVO> MapMaterialList = mapMaterialService.selectMapMaterialList(searchMatVO);
             model.addAttribute("mapMaterialList", MapMaterialList);
 
 			return "egovframework/com/dam/per/EgovComDamPersonalRegist";

@@ -30,7 +30,7 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 *
 	 * @param MapMaterialVO
 	 */
-	public List<?> selectMapMaterialList(MapMaterialVO searchVO) throws Exception {
+	public List<MapMaterialVO> selectMapMaterialList(MapMaterialVO searchVO) throws Exception {
 		return  selectList("MapMaterialDAO.selectMapMaterialList", searchVO);
 	}
 
