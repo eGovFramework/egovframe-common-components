@@ -18,12 +18,12 @@ import org.springmodules.validation.commons.DefaultBeanValidator;
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.tpl.service.EgovTemplateManageService;
 import egovframework.com.cop.tpl.service.TemplateInf;
 import egovframework.com.cop.tpl.service.TemplateInfVO;
-import egovframework.com.utl.fcc.service.EgovStringUtil;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
@@ -112,7 +112,7 @@ public class EgovTemplateManageController {
 		ComDefaultCodeVO codeVO = new ComDefaultCodeVO();
 
 		codeVO.setCodeId("COM005");
-		List<?> result = cmmUseService.selectCmmCodeDetail(codeVO);
+		List<CmmnDetailCode> result = cmmUseService.selectCmmCodeDetail(codeVO);
 
 		TemplateInfVO vo = tmplatService.selectTemplateInf(tmplatInfVO);
 
@@ -145,16 +145,15 @@ public class EgovTemplateManageController {
 
 			vo.setCodeId("COM005");
 
-			List<?> result = cmmUseService.selectCmmCodeDetail(vo);
+			List<CmmnDetailCode> result = cmmUseService.selectCmmCodeDetail(vo);
 
 			model.addAttribute("resultList", result);
 
 			return "egovframework/com/cop/tpl/EgovTemplateRegist";
 		}
 
-		templateInf.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-
 		if (isAuthenticated) {
+			templateInf.setFrstRegisterId(user.getUniqId());
 			tmplatService.insertTemplateInf(templateInf);
 		}
 
@@ -175,7 +174,7 @@ public class EgovTemplateManageController {
 
 		vo.setCodeId("COM005");
 
-		List<?> result = cmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> result = cmmUseService.selectCmmCodeDetail(vo);
 
 		model.addAttribute("resultList", result);
 
@@ -205,7 +204,7 @@ public class EgovTemplateManageController {
 
 			codeVO.setCodeId("COM005");
 
-			List<?> result = cmmUseService.selectCmmCodeDetail(codeVO);
+			List<CmmnDetailCode> result = cmmUseService.selectCmmCodeDetail(codeVO);
 
 			TemplateInfVO vo = tmplatService.selectTemplateInf(tmplatInfVO);
 
@@ -215,9 +214,8 @@ public class EgovTemplateManageController {
 			return "egovframework/com/cop/tpl/EgovTemplateUpdt";
 		}
 
-		templateInf.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-
 		if (isAuthenticated) {
+			templateInf.setLastUpdusrId(user.getUniqId());
 			tmplatService.updateTemplateInf(templateInf);
 		}
 
@@ -240,9 +238,8 @@ public class EgovTemplateManageController {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-		tmplatInf.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-
 		if (isAuthenticated) {
+			tmplatInf.setLastUpdusrId(user.getUniqId());
 			tmplatService.deleteTemplateInf(tmplatInf);
 		}
 
