@@ -64,7 +64,7 @@ String sTodate = formatter.format(new java.util.Date());
 <html>
 <head>
 <HEAD>
-	<TITLE><spring:message code="comCopSmtSdm.Gbn.Daily"/> <spring:message code="comCopSmtSdm.title"/></TITLE>
+	<TITLE><spring:message code="comCopSmtSim.Gbn.Daily"/> <spring:message code="comCopSmtSim.title"/></TITLE>
 	<meta http-equiv="content-type" content="text/html; charset=utf-8">
 	<link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css'/>">
 	<link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cop/smt/sdm/dept_schdule_manage.css'/>">
@@ -178,10 +178,10 @@ String sTodate = formatter.format(new java.util.Date());
 	</div>
 	<div class="date_view">
 		<ul>
-			<li><a href="javascript:fnEgovSchdulTodate();" class="today"><spring:message code="comCopSmtSdm.Navi.Today"/></a></li> <!-- 오늘 -->
+			<li><a href="javascript:fnEgovSchdulTodate();" class="today"><spring:message code="comCopSmtSim.Navi.Today"/></a></li> <!-- 오늘 -->
 			
 			<li><a class="prev" href="<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageDailyList.do' />?year=<%=iNowYear-1%>&amp;month=<%=iNowMonth%>&amp;day=<%=iNowDay%>">prev</a></li>
-			<li class="date"><%=iNowYear%> <spring:message code="comCopSmtSdm.Navi.Year"/> </li>  <!-- 년 -->
+			<li class="date"><%=iNowYear%> <spring:message code="comCopSmtSim.Navi.Year"/> </li>  <!-- 년 -->
 			<li><a class="next" href="<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageDailyList.do' />?year=<%=iNowYear+1%>&amp;month=<%=iNowMonth%>&amp;day=<%=iNowDay%>">next</a></li>
 			
 			<li class="date">&nbsp;</li>
@@ -189,7 +189,7 @@ String sTodate = formatter.format(new java.util.Date());
 			<%if(iNowMonth > 0 ){ %>
 			<li><a class="prev" href="<c:url value='/cop/smt/sdm/EgovDeptSchdulManageDailyList.do' />?year=<%=iNowYear%>&amp;month=<%=iNowMonth-1%>&amp;day=<%=iNowDay%>">prev</a></li>
 			<%}%>
-			<li class="date"><%=iNowMonth+1%> <spring:message code="comCopSmtSdm.Navi.Month"/> </li> <!-- 월 -->
+			<li class="date"><%=iNowMonth+1%> <spring:message code="comCopSmtSim.Navi.Month"/> </li> <!-- 월 -->
 			<%if(iNowMonth < 11 ){ %>
 			<li><a class="next" href="<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageDailyList.do' />?year=<%=iNowYear%>&amp;month=<%=iNowMonth+1%>&amp;day=<%=iNowDay%>">next</a></li>
 			<%}%>
@@ -197,7 +197,7 @@ String sTodate = formatter.format(new java.util.Date());
 			<%if(iNowDay > 1 ){ %>
 			<li><a class="prev" href="<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageDailyList.do' />?year=<%=iNowYear%>&amp;month=<%=iNowMonth%>&amp;day=<%=iNowDay-1%>">prev</a></li>
 			<%}%>
-			<li class="date"><%=iNowDay%> <spring:message code="comCopSmtSdm.Navi.Day"/> </li> <!-- 일 -->
+			<li class="date"><%=iNowDay%> <spring:message code="comCopSmtSim.Navi.Day"/> </li> <!-- 일 -->
 			<%if(iNowDay < iEndDay ){ %>
 			<li><a class="next" href="<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageDailyList.do' />?year=<%=iNowYear%>&amp;month=<%=iNowMonth%>&amp;day=<%=iNowDay+1%>">next</a></li>
 			<%}%>		
@@ -208,7 +208,7 @@ String sTodate = formatter.format(new java.util.Date());
 
 <div class="week_calendar">
 <table class="title">
-<caption><spring:message code="comCopSmtSdm.Gbn.Daily"/> <spring:message code="comCopSmtSdm.title"/></caption> <!-- 일간 부서일정관리 -->
+<caption><spring:message code="comCopSmtSim.Gbn.Daily"/> <spring:message code="comCopSmtSim.title"/></caption> <!-- 일간 부서일정관리 -->
 <colgroup>
 	<col style="width: 170px;">
 	<col style="width:;">
@@ -216,9 +216,9 @@ String sTodate = formatter.format(new java.util.Date());
 </colgroup>
 <thead>
 <tr>
-	<th><spring:message code="comCopSmtSdm.Weekly.time"/></th> <!-- 시간 -->
-	<th><spring:message code="comCopSmtSdm.Weekly.title"/></th> <!-- 제목 -->
-	<th><spring:message code="comCopSmtSdm.Weekly.chargeName"/></th> <!-- 담당자 -->
+	<th><spring:message code="comCopSmtSim.Weekly.time"/></th> <!-- 시간 -->
+	<th><spring:message code="comCopSmtSim.Weekly.title"/></th> <!-- 제목 -->
+	<th><spring:message code="comCopSmtSim.Weekly.chargeName"/></th> <!-- 담당자 -->
 </tr>
 <tbody>
 <%
