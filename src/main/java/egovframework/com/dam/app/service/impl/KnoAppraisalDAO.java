@@ -6,6 +6,7 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.dam.app.service.KnoAppraisal;
 import egovframework.com.dam.app.service.KnoAppraisalVO;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -30,7 +31,7 @@ public class KnoAppraisalDAO extends EgovComAbstractDAO {
 	 *
 	 * @param KnoAppraisalVO
 	 */
-	public List<?> selectKnoAppraisalList(KnoAppraisalVO searchVO) throws Exception {
+	public List<EgovMap> selectKnoAppraisalList(KnoAppraisalVO searchVO) throws Exception {
 		return  selectList("KnoAppraisalDAO.selectKnoAppraisalList", searchVO);
 	}
 

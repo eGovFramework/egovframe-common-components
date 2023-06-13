@@ -92,8 +92,9 @@
 		
             UPDATE  COMTNDAMKNOIFM 
                SET  EVL_DE			  = #{appYmd}
-		         ,  KNWLDG_EVL        = #{knoAps}            
-                 ,  EXPERT_ID    	  = #{speId}                
+		         ,  KNWLDG_EVL        = #{knoAps}
+                 ,  EXPERT_ID    	  = #{speId}
+                 ,  LAST_UPDUSR_ID = #{lastUpdusrId}
                  ,  LAST_UPDT_PNTTM = sysdate
              WHERE  OTHBC_AT 		  = 'Y'	
              AND    KNWLDG_ID         = #{knoId} 

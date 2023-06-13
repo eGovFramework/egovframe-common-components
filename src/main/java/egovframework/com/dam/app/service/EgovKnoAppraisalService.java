@@ -2,6 +2,8 @@ package egovframework.com.dam.app.service;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 /**
  * 개요
  * - 지식정보평가에 대한 Service Interface를 정의한다.
@@ -23,7 +25,7 @@ public interface EgovKnoAppraisalService {
 	 *
 	 * @param KnoAppraisalVO
 	 */
-	List<?> selectKnoAppraisalList(KnoAppraisalVO searchVO) throws Exception;
+	List<EgovMap> selectKnoAppraisalList(KnoAppraisalVO searchVO) throws Exception;
 
 	/**
 	 * 지식정보평가 목록 총 개수를 조회한다.

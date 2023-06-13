@@ -7,6 +7,7 @@ import egovframework.com.dam.app.service.KnoAppraisal;
 import egovframework.com.dam.app.service.KnoAppraisalVO;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 import javax.annotation.Resource;
 
@@ -38,7 +39,7 @@ public class EgovKnoAppraisalServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @param KnoAppraisalVO
 	 */
 	@Override
-	public List<?> selectKnoAppraisalList(KnoAppraisalVO  searchVO) throws Exception {
+	public List<EgovMap> selectKnoAppraisalList(KnoAppraisalVO  searchVO) throws Exception {
 		return KnoAppraisalDAO.selectKnoAppraisalList(searchVO);
 	}
 
