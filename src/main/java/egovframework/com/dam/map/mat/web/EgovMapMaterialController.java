@@ -139,7 +139,7 @@ public class EgovMapMaterialController {
     		searchVO.setRecordCountPerPage(999999);
     		searchVO.setFirstIndex(0);
     		searchVO.setSearchCondition("MapTeamList");
-            List<?> MapMaterialList = mapTeamService.selectMapTeamList(searchVO);
+            List<MapTeamVO> MapMaterialList = mapTeamService.selectMapTeamList(searchVO);
             model.addAttribute("mapTeam", MapMaterialList);
 
 			return "egovframework/com/dam/map/mat/EgovComDamMapMaterialRegist";
@@ -153,7 +153,7 @@ public class EgovMapMaterialController {
     		searchVO.setRecordCountPerPage(999999);
     		searchVO.setFirstIndex(0);
     		searchVO.setSearchCondition("MapTeamList");
-            List<?> MapMaterialList = mapTeamService.selectMapTeamList(searchVO);
+            List<MapTeamVO> MapMaterialList = mapTeamService.selectMapTeamList(searchVO);
             model.addAttribute("mapTeam", MapMaterialList);
 
 			return "egovframework/com/dam/map/mat/EgovComDamMapMaterialRegist";

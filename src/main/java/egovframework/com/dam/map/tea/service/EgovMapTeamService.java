@@ -22,7 +22,7 @@ public interface EgovMapTeamService {
 	 *
 	 * @param MapTeamVO
 	 */
-	List<?> selectMapTeamList(MapTeamVO searchVO) throws Exception;
+	List<MapTeamVO> selectMapTeamList(MapTeamVO searchVO) throws Exception;
 
 	/**
 	 * 지식맵(조직별) 목록 총 개수를 조회한다.

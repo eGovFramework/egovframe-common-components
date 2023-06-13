@@ -86,7 +86,7 @@ public class EgovMapTeamController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<?> MapTeamList = mapTeamService.selectMapTeamList(searchVO);
+		List<MapTeamVO> MapTeamList = mapTeamService.selectMapTeamList(searchVO);
 		model.addAttribute("resultList", MapTeamList);
 
 		int totCnt = mapTeamService.selectMapTeamTotCnt(searchVO);

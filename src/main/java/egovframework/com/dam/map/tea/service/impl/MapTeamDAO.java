@@ -29,7 +29,7 @@ public class MapTeamDAO extends EgovComAbstractDAO{
 	 *
 	 * @param MapTeamVO
 	 */
-	public List<?> selectMapTeamList(MapTeamVO searchVO) throws Exception {
+	public List<MapTeamVO> selectMapTeamList(MapTeamVO searchVO) throws Exception {
 		return selectList("MapTeamDAO.selectMapTeamList", searchVO);
 	}
 

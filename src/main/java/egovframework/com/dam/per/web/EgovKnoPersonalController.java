@@ -185,7 +185,7 @@ public class EgovKnoPersonalController {
 			searchVO.setRecordCountPerPage(999999);
 			searchVO.setFirstIndex(0);
 			searchVO.setSearchCondition("MaterialList");
-            List<?> MapTeamList = mapTeamService.selectMapTeamList(searchVO);
+            List<MapTeamVO> MapTeamList = mapTeamService.selectMapTeamList(searchVO);
             model.addAttribute("mapTeamList", MapTeamList);
 
             MapMaterialVO searchMatVO;
