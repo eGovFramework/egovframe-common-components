@@ -73,8 +73,7 @@ public class EgovKnoManagementController {
 	 */
     @IncludedInfo(name="지식정보관리", listUrl="/dam/mgm/EgovComDamManagementList.do", order = 1280 ,gid = 80)
 	@RequestMapping(value="/dam/mgm/EgovComDamManagementList.do")
-	public String selectKnoManagementList(@ModelAttribute("loginVO") LoginVO loginVO
-			, @ModelAttribute("searchVO") KnoManagementVO searchVO
+	public String selectKnoManagementList(@ModelAttribute("searchVO") KnoManagementVO searchVO
 			, ModelMap model
 			) throws Exception {
 
@@ -92,8 +91,8 @@ public class EgovKnoManagementController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<EgovMap> KnoManagementList = knoManagementService.selectKnoManagementList(searchVO);
-		model.addAttribute("resultList", KnoManagementList);
+		List<EgovMap> resultList = knoManagementService.selectKnoManagementList(searchVO);
+		model.addAttribute("resultList", resultList);
 
 		int totCnt = knoManagementService.selectKnoManagementTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -113,7 +112,6 @@ public class EgovKnoManagementController {
 	public String selectKnoManagement(
 			KnoManagement knoManagement
 			, ModelMap model
-			, @RequestParam Map<?, ?> commandMap
 			) throws Exception {
 
 		//Spring Security 사용자권한 처리
@@ -123,25 +121,14 @@ public class EgovKnoManagementController {
 	        return "redirect:/uat/uia/egovLoginUsr.do";
 	    }
         // 로그인 객체 선언
-        LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+        LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-        knoManagement.setEmplyrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+        knoManagement.setEmplyrId(loginVO.getUniqId());
 
-		KnoManagement vo = knoManagementService.selectKnoManagement(knoManagement);
-		model.addAttribute("result", vo);
+		KnoManagement result = knoManagementService.selectKnoManagement(knoManagement);
+		model.addAttribute("result", result);
 		return "egovframework/com/dam/mgm/EgovComDamManagementDetail";
 	}
-
-	/**
-	 * 지식정보 정보를 신규로 등록한다.
-	 * @param KnoNm - 지식정보 model
-	 * @return String - 리턴 Url
-	 *
-	 * @param knoNm
-	 */
-	//public String  insertKnoManagement(knoNm knoNm){
-	//	return null;
-	//}
 
 	/**
 	 * 기 등록 된 지식정보 정보를 수정 한다.
@@ -201,18 +188,5 @@ public class EgovKnoManagementController {
 			return "forward:/dam/mgm/EgovComDamManagementList.do";
 		}
 	}
-
-
-
-	/**
-	 * 기 등록된 지식정보 정보를 삭제한다.
-	 * @param ManagementKnoNm - 지식정보 model
-	 * @return String - 리턴 Url
-	 *
-	 * @param knoNm
-	 */
-	//public String  deleteKnoManagement(knoNm knoNm){
-	//	return null;
-	//}
 
 }
