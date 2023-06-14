@@ -23,6 +23,7 @@ import egovframework.com.dam.mgm.service.KnoManagement;
 import egovframework.com.dam.mgm.service.KnoManagementVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
@@ -91,7 +92,7 @@ public class EgovKnoManagementController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<?> KnoManagementList = knoManagementService.selectKnoManagementList(searchVO);
+		List<EgovMap> KnoManagementList = knoManagementService.selectKnoManagementList(searchVO);
 		model.addAttribute("resultList", KnoManagementList);
 
 		int totCnt = knoManagementService.selectKnoManagementTotCnt(searchVO);

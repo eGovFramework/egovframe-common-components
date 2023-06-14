@@ -6,6 +6,7 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.dam.mgm.service.KnoManagement;
 import egovframework.com.dam.mgm.service.KnoManagementVO;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -30,7 +31,7 @@ public class KnoManagementDAO extends EgovComAbstractDAO {
 	 *
 	 * @param KnoManagementVO
 	 */
-	public List<?> selectKnoManagementList(KnoManagementVO searchVO) throws Exception {
+	public List<EgovMap> selectKnoManagementList(KnoManagementVO searchVO) throws Exception {
 		return  selectList("KnoManagementDAO.selectKnoManagementList", searchVO);
 	}
 

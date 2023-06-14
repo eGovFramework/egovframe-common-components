@@ -2,6 +2,8 @@ package egovframework.com.dam.mgm.service;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 /**
  * 개요
  * - 지식정보에 대한 Service Interface를 정의한다.
@@ -23,7 +25,7 @@ public interface EgovKnoManagementService {
 	 *
 	 * @param KnoManagementVO
 	 */
-	List<?> selectKnoManagementList(KnoManagementVO searchVO) throws Exception;
+	List<EgovMap> selectKnoManagementList(KnoManagementVO searchVO) throws Exception;
 
 	/**
 	 * 지식정보 목록 총 개수를 조회한다.
