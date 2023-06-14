@@ -22,7 +22,7 @@ public interface EgovMapMaterialService {
 	 *
 	 * @param MapMaterialVO
 	 */
-	List<?> selectMapMaterialList(MapMaterialVO searchVO) throws Exception;
+	List<MapMaterialVO> selectMapMaterialList(MapMaterialVO searchVO) throws Exception;
 
 	/**
 	 * 지식맵(지식유형) 목록 총 개수를 조회한다.

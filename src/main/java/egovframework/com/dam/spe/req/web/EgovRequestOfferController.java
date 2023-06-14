@@ -223,7 +223,7 @@ public class EgovRequestOfferController {
             searchMatVO.setFirstIndex(0);
             searchMatVO.setSearchCondition("orgnztId");
             searchMatVO.setSearchKeyword(requestOfferVOs.getOrgnztId());
-            List<?> MapMaterialList = mapMaterialService.selectMapMaterialList(searchMatVO);
+            List<MapMaterialVO> MapMaterialList = mapMaterialService.selectMapMaterialList(searchMatVO);
             model.addAttribute("mapMaterialList", MapMaterialList);
 
             //(지식전문가/지식사용자) 검사 및 설정
@@ -299,7 +299,7 @@ public class EgovRequestOfferController {
             	 searchMatVO.setSearchKeyword(requestOfferVOs.getOrgnztId());
             }
 
-            List<?> MapMaterialList = mapMaterialService.selectMapMaterialList(searchMatVO);
+            List<MapMaterialVO> MapMaterialList = mapMaterialService.selectMapMaterialList(searchMatVO);
             model.addAttribute("mapMaterialList", MapMaterialList);
 
         	// 파일업로드 제한
@@ -442,7 +442,7 @@ public class EgovRequestOfferController {
             //	mapMaterial.setOrgnztId(emp.get("orgnztId").toString());
             //}
 
-            List<?> MapMaterialList = mapMaterialService.selectMapMaterialList(searchMatVO);
+            List<MapMaterialVO> MapMaterialList = mapMaterialService.selectMapMaterialList(searchMatVO);
             model.addAttribute("mapMaterialList", MapMaterialList);
 
             model.addAttribute("cmd", sCmd);

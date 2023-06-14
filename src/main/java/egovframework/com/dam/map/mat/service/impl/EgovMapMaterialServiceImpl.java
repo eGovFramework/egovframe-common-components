@@ -38,7 +38,7 @@ public class EgovMapMaterialServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @param MapMaterialVO
 	 */
 	@Override
-	public List<?> selectMapMaterialList(MapMaterialVO searchVO) throws Exception {
+	public List<MapMaterialVO> selectMapMaterialList(MapMaterialVO searchVO) throws Exception {
 		return MapMaterialDAO.selectMapMaterialList(searchVO);
 	}
 

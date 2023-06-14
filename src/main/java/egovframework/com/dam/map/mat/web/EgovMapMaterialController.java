@@ -91,7 +91,7 @@ public class EgovMapMaterialController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<?> MapMaterialList = mapMaterialService.selectMapMaterialList(searchVO);
+		List<MapMaterialVO> MapMaterialList = mapMaterialService.selectMapMaterialList(searchVO);
 		model.addAttribute("resultList", MapMaterialList);
 
 		int totCnt = mapMaterialService.selectMapMaterialTotCnt(searchVO);
