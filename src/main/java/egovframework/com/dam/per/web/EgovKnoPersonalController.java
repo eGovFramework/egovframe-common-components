@@ -113,7 +113,7 @@ public class EgovKnoPersonalController {
 	    }
 
         // 로그인 객체 선언
-        LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+        LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		/** EgovPropertyService.mapMaterial */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -129,9 +129,9 @@ public class EgovKnoPersonalController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		searchVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-		List<KnoPersonalVO> KnoPersonalList = knoPersonalService.selectKnoPersonalList(searchVO);
-		model.addAttribute("resultList", KnoPersonalList);
+		searchVO.setFrstRegisterId(loginVO.getUniqId());
+		List<KnoPersonalVO> resultList = knoPersonalService.selectKnoPersonalList(searchVO);
+		model.addAttribute("resultList", resultList);
 
 		int totCnt = knoPersonalService.selectKnoPersonalTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
