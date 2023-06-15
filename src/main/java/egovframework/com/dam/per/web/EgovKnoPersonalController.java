@@ -181,8 +181,8 @@ public class EgovKnoPersonalController {
         MapTeamVO mapTeamVO = new MapTeamVO();
         mapTeamVO.setRecordCountPerPage(Integer.MAX_VALUE);
         mapTeamVO.setFirstIndex(0);
-        List<MapTeamVO> MapTeamList = mapTeamService.selectMapTeamList(mapTeamVO);
-        model.addAttribute("mapTeamList", MapTeamList);
+        List<MapTeamVO> mapTeamList = mapTeamService.selectMapTeamList(mapTeamVO);
+        model.addAttribute("mapTeamList", mapTeamList);
 
         MapMaterialVO mapMaterialVO = new MapMaterialVO();
         mapMaterialVO.setRecordCountPerPage(Integer.MAX_VALUE);
