@@ -139,8 +139,8 @@ function fn_egov_get_CodeId(form){
 		<td class="left">
 		    <select name="orgnztId" class="select" >
 			<option value=""><spring:message code="input.cSelect"/></option><!-- 선택 -->
-			<c:forEach var="knoPersonal" items="${mapTeamList}" varStatus="status">
-			<option value='<c:out value="${knoPersonal.orgnztId}"/>' <c:if test="${knoPersonal.orgnztId == mapMaterial.orgnztId}">selected="selected"</c:if> ><c:out value="${knoPersonal.orgnztNm}"/></option>
+			<c:forEach var="item" items="${mapTeamList}" varStatus="status">
+			<option value="<c:out value="${item.orgnztId}"/>"<c:if test="${item.orgnztId == knoPersonal.orgnztId}"> selected="selected"</c:if>><c:out value="${item.orgnztNm}"/></option>
 			</c:forEach>
 			</select>
 		</td>
@@ -150,8 +150,8 @@ function fn_egov_get_CodeId(form){
 		<td class="left">
 		    <select name="knoTypeCd" class="select">
 			<option value=""><spring:message code="input.cSelect"/></option><!-- 선택 -->
-			<c:forEach var="knoPersonal" items="${mapMaterialList}" varStatus="status">
-			<option value='<c:out value="${knoPersonal.knoTypeCd}"/>'><c:out value="${knoPersonal.knoTypeNm}"/></option>
+			<c:forEach var="item" items="${mapMaterialList}" varStatus="status">
+			<option value="<c:out value="${item.knoTypeCd}"/>"<c:if test="${item.knoTypeCd == knoPersonal.knoTypeCd}"> selected="selected"</c:if>><c:out value="${item.knoTypeNm}"/></option>
 			</c:forEach>
 			</select>
 		</td>

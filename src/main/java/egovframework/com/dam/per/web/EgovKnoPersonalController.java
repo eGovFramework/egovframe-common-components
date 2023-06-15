@@ -13,6 +13,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -27,7 +28,6 @@ import egovframework.com.cmm.service.EgovFileMngUtil;
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.dam.map.mat.service.EgovMapMaterialService;
-import egovframework.com.dam.map.mat.service.MapMaterial;
 import egovframework.com.dam.map.mat.service.MapMaterialVO;
 import egovframework.com.dam.map.tea.service.EgovMapTeamService;
 import egovframework.com.dam.map.tea.service.MapTeamVO;
@@ -165,30 +165,34 @@ public class EgovKnoPersonalController {
 	 */
 	@GetMapping(value="/dam/per/EgovComDamPersonalRegistView.do")
 	public String insertKnoPersonalView(
-			@ModelAttribute("knoPersonal") KnoPersonal knoPersonal
-			, @ModelAttribute("mapMaterial") MapMaterial mapMaterial
+			KnoPersonal knoPersonal
 			, ModelMap model
 			) throws Exception {
+        insertKnoPersonalView(model);
+		return "egovframework/com/dam/per/EgovComDamPersonalRegist";
+	}
 
-		MapTeamVO mapTeamVO = new MapTeamVO();
-		mapTeamVO.setRecordCountPerPage(Integer.MAX_VALUE);
-		mapTeamVO.setFirstIndex(0);
-		mapTeamVO.setSearchCondition("MaterialList");
+    /**
+     * 개인지식 정보를 등록폼. 초기값
+     * 
+     * @param model
+     * @throws Exception
+     */
+    private void insertKnoPersonalView(ModelMap model) throws Exception {
+        MapTeamVO mapTeamVO = new MapTeamVO();
+        mapTeamVO.setRecordCountPerPage(Integer.MAX_VALUE);
+        mapTeamVO.setFirstIndex(0);
         List<MapTeamVO> MapTeamList = mapTeamService.selectMapTeamList(mapTeamVO);
         model.addAttribute("mapTeamList", MapTeamList);
 
         MapMaterialVO mapMaterialVO = new MapMaterialVO();
         mapMaterialVO.setRecordCountPerPage(Integer.MAX_VALUE);
         mapMaterialVO.setFirstIndex(0);
-        mapMaterialVO.setSearchCondition("orgnztId");
-        mapMaterialVO.setSearchKeyword(mapMaterial.getOrgnztId());
 
         List<MapMaterialVO> mapMaterialList = mapMaterialService.selectMapMaterialList(mapMaterialVO);
         model.addAttribute("mapMaterialList", mapMaterialList);
-
-		return "egovframework/com/dam/per/EgovComDamPersonalRegist";
-	}
-
+    }
+	
 	/**
 	 * 개인지식 정보를 신규로 등록한다.
 	 * @param KnoNm - 개인지식정보 model
@@ -196,12 +200,10 @@ public class EgovKnoPersonalController {
 	 *
 	 * @param KnoNm
 	 */
-	@RequestMapping(value="/dam/per/EgovComDamPersonalRegist.do")
+	@PostMapping(value="/dam/per/EgovComDamPersonalRegist.do")
 	public String insertKnoPersonal(
 			final MultipartHttpServletRequest multiRequest
-			, @ModelAttribute("knoPersonal") KnoPersonal knoPersonal
-			, @RequestParam Map<?, ?> commandMap
-			, KnoPersonal knoPersonal1
+			, KnoPersonal knoPersonal
 			, BindingResult bindingResult
 			, ModelMap model
 			) throws Exception {
@@ -213,21 +215,15 @@ public class EgovKnoPersonalController {
     	}
 
 		//로그인 객체 선언
-		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		String sLocationUrl = "egovframework/com/dam/per/EgovComDamPersonalRegist";
 
-		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
-		LOGGER.info("cmd => {}", sCmd);
-
-        if(sCmd.equals("Regist")){
-    		//서버  validate 체크
-
 		beanValidator.validate(knoPersonal, bindingResult);
 		if (bindingResult.hasErrors()){
+            insertKnoPersonalView(model);
 			return sLocationUrl;
 		}
-
 
     	// 첨부파일 관련 첨부파일ID 생성
 		List<FileVO> _result = null;
@@ -245,13 +241,11 @@ public class EgovKnoPersonalController {
 		knoPersonal.setAtchFileId(_atchFileId);					// 첨부파일 ID
 
 		//아이디 설정
-		knoPersonal.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-		knoPersonal.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+		knoPersonal.setFrstRegisterId(loginVO.getUniqId());
+		knoPersonal.setLastUpdusrId(loginVO.getUniqId());
 
 		knoPersonalService.insertKnoPersonal(knoPersonal);
 		return "forward:/dam/per/EgovComDamPersonalList.do";
-        }
-        return sLocationUrl;
 	}
 
 	/**
