@@ -23,7 +23,7 @@ public interface EgovKnoPersonalService {
 	 *
 	 * @param KnoPersonalVO
 	 */
-	List<?> selectKnoPersonalList(KnoPersonalVO searchVO) throws Exception;
+	List<KnoPersonalVO> selectKnoPersonalList(KnoPersonalVO searchVO) throws Exception;
 
 	/**
 	 * 개인지식 목록 총 개수를 조회한다.

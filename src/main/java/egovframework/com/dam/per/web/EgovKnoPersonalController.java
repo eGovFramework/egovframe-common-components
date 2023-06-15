@@ -130,7 +130,7 @@ public class EgovKnoPersonalController {
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
 		searchVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-		List<?> KnoPersonalList = knoPersonalService.selectKnoPersonalList(searchVO);
+		List<KnoPersonalVO> KnoPersonalList = knoPersonalService.selectKnoPersonalList(searchVO);
 		model.addAttribute("resultList", KnoPersonalList);
 
 		int totCnt = knoPersonalService.selectKnoPersonalTotCnt(searchVO);

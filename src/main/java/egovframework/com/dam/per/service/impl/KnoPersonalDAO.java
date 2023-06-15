@@ -30,7 +30,7 @@ public class KnoPersonalDAO extends EgovComAbstractDAO {
 	 *
 	 * @param KnoPersonalVO
 	 */
-	public List<?> selectKnoPersonalList(KnoPersonalVO searchVO) throws Exception {
+	public List<KnoPersonalVO> selectKnoPersonalList(KnoPersonalVO searchVO) throws Exception {
 		return  selectList("KnoPersonalDAO.selectKnoPersonalList", searchVO);
 	}
 

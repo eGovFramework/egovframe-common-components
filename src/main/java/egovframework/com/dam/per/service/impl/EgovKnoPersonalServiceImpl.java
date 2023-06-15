@@ -44,7 +44,7 @@ public class EgovKnoPersonalServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @param KnoPersonalVO
 	 */
 	@Override
-	public List<?> selectKnoPersonalList(KnoPersonalVO searchVO) throws Exception {
+	public List<KnoPersonalVO> selectKnoPersonalList(KnoPersonalVO searchVO) throws Exception {
 		return KnoPersonalDAO.selectKnoPersonalList(searchVO);
 	}
 
