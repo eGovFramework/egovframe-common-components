@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -35,7 +36,6 @@ import egovframework.com.dam.per.service.KnoPersonal;
 import egovframework.com.dam.per.service.KnoPersonalVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
-import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
@@ -163,82 +163,30 @@ public class EgovKnoPersonalController {
 	 *
 	 * @param KnoNm
 	 */
-	@RequestMapping(value="/dam/per/EgovComDamPersonalRegistView.do")
+	@GetMapping(value="/dam/per/EgovComDamPersonalRegistView.do")
 	public String insertKnoPersonalView(
 			@ModelAttribute("knoPersonal") KnoPersonal knoPersonal
 			, @ModelAttribute("mapMaterial") MapMaterial mapMaterial
-			, BindingResult bindingResult
-			, @RequestParam Map<?, ?> commandMap
 			, ModelMap model
 			) throws Exception {
 
-		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
+		MapTeamVO mapTeamVO = new MapTeamVO();
+		mapTeamVO.setRecordCountPerPage(Integer.MAX_VALUE);
+		mapTeamVO.setFirstIndex(0);
+		mapTeamVO.setSearchCondition("MaterialList");
+        List<MapTeamVO> MapTeamList = mapTeamService.selectMapTeamList(mapTeamVO);
+        model.addAttribute("mapTeamList", MapTeamList);
 
-		if (knoPersonal.getKnoId() == null
-			||knoPersonal.getKnoId().equals("")
-			||sCmd.equals("")) {
+        MapMaterialVO mapMaterialVO = new MapMaterialVO();
+        mapMaterialVO.setRecordCountPerPage(Integer.MAX_VALUE);
+        mapMaterialVO.setFirstIndex(0);
+        mapMaterialVO.setSearchCondition("orgnztId");
+        mapMaterialVO.setSearchKeyword(mapMaterial.getOrgnztId());
 
-			MapTeamVO searchVO;
-			searchVO = new MapTeamVO();
-			searchVO.setRecordCountPerPage(999999);
-			searchVO.setFirstIndex(0);
-			searchVO.setSearchCondition("MaterialList");
-            List<MapTeamVO> MapTeamList = mapTeamService.selectMapTeamList(searchVO);
-            model.addAttribute("mapTeamList", MapTeamList);
+        List<MapMaterialVO> mapMaterialList = mapMaterialService.selectMapMaterialList(mapMaterialVO);
+        model.addAttribute("mapMaterialList", mapMaterialList);
 
-            MapMaterialVO searchMatVO;
-            searchMatVO = new MapMaterialVO();
-            searchMatVO.setRecordCountPerPage(999999);
-            searchMatVO.setFirstIndex(0);
-            searchMatVO.setSearchCondition("orgnztId");
-            searchMatVO.setSearchKeyword(mapMaterial.getOrgnztId());
-
-            //if (mapMaterial.getOrgnztId().equals("")) {
-            //	EgovMap emp = (EgovMap)MapTeamList.get(0);
-            //	mapMaterial.setOrgnztId(emp.get("orgnztId").toString());
-            //}
-
-            List<MapMaterialVO> MapMaterialList = mapMaterialService.selectMapMaterialList(searchMatVO);
-            model.addAttribute("mapMaterialList", MapMaterialList);
-
-			return "egovframework/com/dam/per/EgovComDamPersonalRegist";
-
-		} else if (sCmd.equals("Regist")) {
-
-			beanValidator.validate(knoPersonal, bindingResult);
-			if (bindingResult.hasErrors()){
-
-				MapTeamVO searchVO;
-				searchVO = new MapTeamVO();
-				searchVO.setRecordCountPerPage(999999);
-				searchVO.setFirstIndex(0);
-	            List<?> MapTeamList = mapTeamService.selectMapTeamList(searchVO);
-	            model.addAttribute("mapTeamList", MapTeamList);
-
-	            MapMaterialVO searchMatVO;
-	            searchMatVO = new MapMaterialVO();
-	            searchMatVO.setRecordCountPerPage(999999);
-	            searchMatVO.setFirstIndex(0);
-	            searchMatVO.setSearchCondition("orgnztId");
-
-	            if (mapMaterial.getOrgnztId().equals("")) {
-	            	EgovMap emp = (EgovMap)MapTeamList.get(0);
-	            	mapMaterial.setOrgnztId(emp.get("orgnztId").toString());
-	            }
-	            searchMatVO.setSearchKeyword(mapMaterial.getOrgnztId());
-
-	            List<?> MapMaterialList = mapMaterialService.selectMapMaterialList(searchMatVO);
-	            model.addAttribute("mapMaterialList", MapMaterialList);
-
-				return "egovframework/com/dam/per/EgovComDamPersonalRegist";
-			}
-
-			knoPersonalService.insertKnoPersonal(knoPersonal);
-			return "forward:/dam/per/EgovComDamPersonalList.do";
-		} else {
-			return "forward:/dam/per/EgovComDamPersonalList.do";
-		}
-
+		return "egovframework/com/dam/per/EgovComDamPersonalRegist";
 	}
 
 	/**
