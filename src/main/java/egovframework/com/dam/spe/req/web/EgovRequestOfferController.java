@@ -214,7 +214,7 @@ public class EgovRequestOfferController {
 			mapTeamVO.setRecordCountPerPage(999999);
 			mapTeamVO.setFirstIndex(0);
 			mapTeamVO.setSearchCondition("MaterialList");
-            List<?> MapTeamList = mapTeamService.selectMapTeamList(mapTeamVO);
+            List<MapTeamVO> MapTeamList = mapTeamService.selectMapTeamList(mapTeamVO);
             model.addAttribute("mapTeamList", MapTeamList);
 
             //지식유형코드불러오기
@@ -285,7 +285,7 @@ public class EgovRequestOfferController {
 			mapTeamVO.setRecordCountPerPage(999999);
 			mapTeamVO.setFirstIndex(0);
 			mapTeamVO.setSearchCondition("MaterialList");
-            List<?> MapTeamList = mapTeamService.selectMapTeamList(mapTeamVO);
+            List<MapTeamVO> MapTeamList = mapTeamService.selectMapTeamList(mapTeamVO);
             model.addAttribute("mapTeamList", MapTeamList);
 
             //지식유형코드불러오기
@@ -428,7 +428,7 @@ public class EgovRequestOfferController {
 			mapTeamVO.setRecordCountPerPage(999999);
 			mapTeamVO.setFirstIndex(0);
 			mapTeamVO.setSearchCondition("MaterialList");
-            List<?> MapTeamList = mapTeamService.selectMapTeamList(mapTeamVO);
+            List<MapTeamVO> MapTeamList = mapTeamService.selectMapTeamList(mapTeamVO);
             model.addAttribute("mapTeamList", MapTeamList);
 
             MapMaterialVO searchMatVO = new MapMaterialVO();

@@ -37,7 +37,7 @@ public class EgovMapTeamServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @param MapTeamVO
 	 */
 	@Override
-	public List<?> selectMapTeamList(MapTeamVO searchVO) throws Exception {
+	public List<MapTeamVO> selectMapTeamList(MapTeamVO searchVO) throws Exception {
 		return MapTeamDAO.selectMapTeamList(searchVO);
 	}
 
