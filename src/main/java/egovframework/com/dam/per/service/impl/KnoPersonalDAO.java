@@ -31,7 +31,7 @@ public class KnoPersonalDAO extends EgovComAbstractDAO {
 	 * @param KnoPersonalVO
 	 */
 	public List<KnoPersonalVO> selectKnoPersonalList(KnoPersonalVO searchVO) throws Exception {
-		return  selectList("KnoPersonalDAO.selectKnoPersonalList", searchVO);
+		return selectList("KnoPersonalDAO.selectKnoPersonalList", searchVO);
 	}
 
 	/**
@@ -42,7 +42,7 @@ public class KnoPersonalDAO extends EgovComAbstractDAO {
 	 * @param KnoPersonalVO
 	 */
 	public int selectKnoPersonalTotCnt(KnoPersonalVO searchVO) throws Exception {
-		return  (Integer)selectOne("KnoPersonalDAO.selectKnoPersonalTotCnt", searchVO);
+		return selectOne("KnoPersonalDAO.selectKnoPersonalTotCnt", searchVO);
 	}
 
 	/**
@@ -53,7 +53,7 @@ public class KnoPersonalDAO extends EgovComAbstractDAO {
 	 * @param KnoPersonalVO
 	 */
 	public KnoPersonal selectKnoPersonal(KnoPersonal knoPersonal) throws Exception {
-		return (KnoPersonal)selectOne("KnoPersonalDAO.selectKnoPersonal", knoPersonal);
+		return selectOne("KnoPersonalDAO.selectKnoPersonal", knoPersonal);
 	}
 
 	/**
