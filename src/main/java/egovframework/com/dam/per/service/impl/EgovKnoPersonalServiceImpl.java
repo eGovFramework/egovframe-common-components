@@ -30,7 +30,7 @@ import org.springframework.stereotype.Service;
 public class EgovKnoPersonalServiceImpl extends EgovAbstractServiceImpl implements EgovKnoPersonalService {
 
 	@Resource(name="KnoPersonalDAO")
-	private KnoPersonalDAO KnoPersonalDAO;
+	private KnoPersonalDAO knoPersonalDAO;
 
     /** ID Generation */
 	@Resource(name="egovDamManageIdGnrService")
@@ -45,7 +45,7 @@ public class EgovKnoPersonalServiceImpl extends EgovAbstractServiceImpl implemen
 	 */
 	@Override
 	public List<KnoPersonalVO> selectKnoPersonalList(KnoPersonalVO searchVO) throws Exception {
-		return KnoPersonalDAO.selectKnoPersonalList(searchVO);
+		return knoPersonalDAO.selectKnoPersonalList(searchVO);
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class EgovKnoPersonalServiceImpl extends EgovAbstractServiceImpl implemen
 	 */
 	@Override
 	public int selectKnoPersonalTotCnt(KnoPersonalVO searchVO) throws Exception {
-		return KnoPersonalDAO.selectKnoPersonalTotCnt(searchVO);
+		return knoPersonalDAO.selectKnoPersonalTotCnt(searchVO);
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class EgovKnoPersonalServiceImpl extends EgovAbstractServiceImpl implemen
 	 */
 	@Override
 	public KnoPersonal selectKnoPersonal(KnoPersonal knoPersonal) throws Exception {
-		KnoPersonal kpm = KnoPersonalDAO.selectKnoPersonal(knoPersonal);
+		KnoPersonal kpm = knoPersonalDAO.selectKnoPersonal(knoPersonal);
 		return kpm;
 	}
 
@@ -86,7 +86,7 @@ public class EgovKnoPersonalServiceImpl extends EgovAbstractServiceImpl implemen
 		String knoId = idgenService.getNextStringId();
 		knoPersonal.setKnoId(knoId);
 
-		KnoPersonalDAO.insertKnoPersonal(knoPersonal);
+		knoPersonalDAO.insertKnoPersonal(knoPersonal);
 	}
 
 	/**
@@ -97,7 +97,7 @@ public class EgovKnoPersonalServiceImpl extends EgovAbstractServiceImpl implemen
 	 */
 	@Override
 	public void updateKnoPersonal(KnoPersonal knoPersonal) throws Exception {
-		KnoPersonalDAO.updateKnoPersonal(knoPersonal);
+		knoPersonalDAO.updateKnoPersonal(knoPersonal);
 	}
 
 	/**
@@ -108,7 +108,7 @@ public class EgovKnoPersonalServiceImpl extends EgovAbstractServiceImpl implemen
 	 */
 	@Override
 	public void deleteKnoPersonal(KnoPersonal knoPersonal) throws Exception {
-		KnoPersonalDAO.deleteKnoPersonal(knoPersonal);
+		knoPersonalDAO.deleteKnoPersonal(knoPersonal);
 	}
 
 }
