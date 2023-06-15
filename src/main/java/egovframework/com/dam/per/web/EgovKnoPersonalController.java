@@ -148,13 +148,11 @@ public class EgovKnoPersonalController {
 	 * @param KnoPersonalVO
 	 */
 	@RequestMapping(value="/dam/per/EgovComDamPersonal.do")
-	public String selectKnoPersonal(@ModelAttribute("loginVO") LoginVO loginVO
-			, KnoPersonal knoPersonal
+	public String selectKnoPersonal(KnoPersonal knoPersonal
 			, ModelMap model
-			, @RequestParam Map<?, ?> commandMap
 			) throws Exception {
-		KnoPersonal vo = knoPersonalService.selectKnoPersonal(knoPersonal);
-		model.addAttribute("result", vo);
+		KnoPersonal result = knoPersonalService.selectKnoPersonal(knoPersonal);
+		model.addAttribute("result", result);
 		return "egovframework/com/dam/per/EgovComDamPersonalDetail";
 	}
 
