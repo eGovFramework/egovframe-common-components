@@ -85,7 +85,7 @@
 				knoManagement.junkYmd.value = ls_junkYmd;
 			}
 			
-			if(confirm("<spring:message code="common.save.msg" />")){
+			if(confirm("<spring:message code="common.update.msg" />")){
 				if(!validateKnoManagement(form)){ 			
 					return;
 				}else{
@@ -217,7 +217,7 @@
 	
 		<!-- 하단 버튼 -->
 		<div class="btn">
-			<input class="s_submit" type="submit" value="<spring:message code="button.save" />" onclick="fn_egov_modify_KnoManagement(document.forms[0]); return false;" /><!-- 저장 -->
+			<input class="s_submit" type="submit" value="<spring:message code="button.update" />" onclick="fn_egov_modify_KnoManagement(document.forms[0]); return false;" /><!-- 저장 -->
 			<input class="s_submit" type="submit" value='<spring:message code="button.list" />' onclick="fn_egov_list_KnoManagement(); return false;" /><!-- 목록 -->
 		</div>
 		<div style="clear:both;"></div>
