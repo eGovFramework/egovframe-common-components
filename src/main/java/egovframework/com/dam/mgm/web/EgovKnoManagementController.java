@@ -142,7 +142,7 @@ public class EgovKnoManagementController {
 	 * @param knoNm
 	 */
 	@GetMapping(value="/dam/mgm/EgovComDamManagementModify.do")
-	public String  updateKnoManagementView(@ModelAttribute("knoManagement") KnoManagement knoManagement
+	public String updateKnoManagementView(KnoManagement knoManagement
 			, ModelMap model
 			) throws Exception {
 
@@ -157,8 +157,7 @@ public class EgovKnoManagementController {
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
         knoManagement.setEmplyrId(loginVO.getUniqId());
-		knoManagement = knoManagementService.selectKnoManagement(knoManagement);
-		model.addAttribute("knoManagement", knoManagement);
+		model.addAttribute("resultKnoManagement", knoManagementService.selectKnoManagement(knoManagement));
 
 		LOGGER.debug("knoManagement>{}", knoManagement);
 		LOGGER.debug("knoManagement>{}", model.get("knoManagement"));
@@ -174,7 +173,7 @@ public class EgovKnoManagementController {
 	 * @param knoNm
 	 */
 	@PostMapping(value="/dam/mgm/EgovComDamManagementModify.do")
-	public String  updateKnoManagement(@ModelAttribute("knoManagement") KnoManagement knoManagement
+	public String  updateKnoManagement(KnoManagement knoManagement
 	        , BindingResult bindingResult
 	        , ModelMap model
 	        ) throws Exception {
@@ -192,8 +191,7 @@ public class EgovKnoManagementController {
         beanValidator.validate(knoManagement, bindingResult);
         if (bindingResult.hasErrors()){
             knoManagement.setEmplyrId(loginVO.getUniqId());
-            knoManagement = knoManagementService.selectKnoManagement(knoManagement);
-            model.addAttribute("knoManagement", knoManagement);
+            model.addAttribute("resultKnoManagement", knoManagementService.selectKnoManagement(knoManagement));
             return "egovframework/com/dam/mgm/EgovComDamManagementModify";
         }
         
