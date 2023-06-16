@@ -1,7 +1,6 @@
 package egovframework.com.dam.mgm.web;
 
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -9,9 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -21,9 +21,12 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.dam.mgm.service.EgovKnoManagementService;
 import egovframework.com.dam.mgm.service.KnoManagement;
 import egovframework.com.dam.mgm.service.KnoManagementVO;
-import egovframework.com.utl.fcc.service.EgovStringUtil;
+
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 개요
@@ -49,6 +52,8 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 @Controller
 public class EgovKnoManagementController {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(EgovKnoManagementController.class);
+
 	@Resource(name = "KnoManagementService")
     private EgovKnoManagementService knoManagementService;
 
@@ -72,8 +77,7 @@ public class EgovKnoManagementController {
 	 */
     @IncludedInfo(name="지식정보관리", listUrl="/dam/mgm/EgovComDamManagementList.do", order = 1280 ,gid = 80)
 	@RequestMapping(value="/dam/mgm/EgovComDamManagementList.do")
-	public String selectKnoManagementList(@ModelAttribute("loginVO") LoginVO loginVO
-			, @ModelAttribute("searchVO") KnoManagementVO searchVO
+	public String selectKnoManagementList(@ModelAttribute("searchVO") KnoManagementVO searchVO
 			, ModelMap model
 			) throws Exception {
 
@@ -91,8 +95,8 @@ public class EgovKnoManagementController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<?> KnoManagementList = knoManagementService.selectKnoManagementList(searchVO);
-		model.addAttribute("resultList", KnoManagementList);
+		List<EgovMap> resultList = knoManagementService.selectKnoManagementList(searchVO);
+		model.addAttribute("resultList", resultList);
 
 		int totCnt = knoManagementService.selectKnoManagementTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -112,7 +116,6 @@ public class EgovKnoManagementController {
 	public String selectKnoManagement(
 			KnoManagement knoManagement
 			, ModelMap model
-			, @RequestParam Map<?, ?> commandMap
 			) throws Exception {
 
 		//Spring Security 사용자권한 처리
@@ -122,25 +125,14 @@ public class EgovKnoManagementController {
 	        return "redirect:/uat/uia/egovLoginUsr.do";
 	    }
         // 로그인 객체 선언
-        LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+        LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-        knoManagement.setEmplyrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+        knoManagement.setEmplyrId(loginVO.getUniqId());
 
-		KnoManagement vo = knoManagementService.selectKnoManagement(knoManagement);
-		model.addAttribute("result", vo);
+		KnoManagement result = knoManagementService.selectKnoManagement(knoManagement);
+		model.addAttribute("result", result);
 		return "egovframework/com/dam/mgm/EgovComDamManagementDetail";
 	}
-
-	/**
-	 * 지식정보 정보를 신규로 등록한다.
-	 * @param KnoNm - 지식정보 model
-	 * @return String - 리턴 Url
-	 *
-	 * @param knoNm
-	 */
-	//public String  insertKnoManagement(knoNm knoNm){
-	//	return null;
-	//}
 
 	/**
 	 * 기 등록 된 지식정보 정보를 수정 한다.
@@ -149,12 +141,8 @@ public class EgovKnoManagementController {
 	 *
 	 * @param knoNm
 	 */
-	@RequestMapping(value="/dam/mgm/EgovComDamManagementModify.do")
-	public String  updateKnoManagement(
-			KnoManagement knoManagementBlank
-			, @RequestParam Map<?, ?> commandMap
-			,@ModelAttribute("knoManagement") KnoManagement knoManagement
-			, BindingResult bindingResult
+	@GetMapping(value="/dam/mgm/EgovComDamManagementModify.do")
+	public String  updateKnoManagementView(@ModelAttribute("knoManagement") KnoManagement knoManagement
 			, ModelMap model
 			) throws Exception {
 
@@ -168,50 +156,51 @@ public class EgovKnoManagementController {
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
-		String sCmd = commandMap.get("cmd") == null ? "": (String)commandMap.get("cmd");
-		System.out.println("cmd>"+sCmd);
+        knoManagement.setEmplyrId(loginVO.getUniqId());
+		knoManagement = knoManagementService.selectKnoManagement(knoManagement);
+		model.addAttribute("knoManagement", knoManagement);
 
-		if (sCmd.equals("")) {
+		LOGGER.debug("knoManagement>{}", knoManagement);
+		LOGGER.debug("knoManagement>{}", model.get("knoManagement"));
 
-	        knoManagement.setEmplyrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-			knoManagement = knoManagementService.selectKnoManagement(knoManagement);
-			model.addAttribute("knoManagement", knoManagement);
-
-			System.out.println("knoManagement>"+knoManagement);
-			System.out.println("knoManagement>"+model.get("knoManagement"));
-
-			return "egovframework/com/dam/mgm/EgovComDamManagementModify";
-
-		} else if (sCmd.equals("Modify")) {
-
-			beanValidator.validate(knoManagement, bindingResult);
-			if (bindingResult.hasErrors()){
-
-		        knoManagement.setEmplyrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-				knoManagement = knoManagementService.selectKnoManagement(knoManagement);
-				model.addAttribute("knoManagement", knoManagement);
-				return "egovframework/com/dam/mgm/EgovComDamManagementModify";
-			}
-
-	        knoManagement.setEmplyrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-			knoManagementService.updateKnoManagement(knoManagement);
-			return "forward:/dam/mgm/EgovComDamManagementList.do";
-		} else {
-			return "forward:/dam/mgm/EgovComDamManagementList.do";
-		}
+		return "egovframework/com/dam/mgm/EgovComDamManagementModify";
 	}
 
-
-
 	/**
-	 * 기 등록된 지식정보 정보를 삭제한다.
+	 * 기 등록 된 지식정보 정보를 수정 한다.
 	 * @param ManagementKnoNm - 지식정보 model
 	 * @return String - 리턴 Url
 	 *
 	 * @param knoNm
 	 */
-	//public String  deleteKnoManagement(knoNm knoNm){
-	//	return null;
-	//}
+	@PostMapping(value="/dam/mgm/EgovComDamManagementModify.do")
+	public String  updateKnoManagement(@ModelAttribute("knoManagement") KnoManagement knoManagement
+	        , BindingResult bindingResult
+	        , ModelMap model
+	        ) throws Exception {
+	    
+	    //Spring Security 사용자권한 처리
+	    Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+	    if (!isAuthenticated) {
+	        model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+	        return "redirect:/uat/uia/egovLoginUsr.do";
+	    }
+	    
+	    //로그인 객체 선언
+	    LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+
+        beanValidator.validate(knoManagement, bindingResult);
+        if (bindingResult.hasErrors()){
+            knoManagement.setEmplyrId(loginVO.getUniqId());
+            knoManagement = knoManagementService.selectKnoManagement(knoManagement);
+            model.addAttribute("knoManagement", knoManagement);
+            return "egovframework/com/dam/mgm/EgovComDamManagementModify";
+        }
+        
+        knoManagement.setEmplyrId(loginVO.getUniqId());
+        knoManagement.setLastUpdusrId(loginVO.getUniqId());
+        knoManagementService.updateKnoManagement(knoManagement);
+        return "forward:/dam/mgm/EgovComDamManagementList.do";
+	}
 
 }

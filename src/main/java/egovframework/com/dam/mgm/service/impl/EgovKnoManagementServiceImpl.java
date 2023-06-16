@@ -7,6 +7,7 @@ import egovframework.com.dam.mgm.service.KnoManagement;
 import egovframework.com.dam.mgm.service.KnoManagementVO;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 import javax.annotation.Resource;
 
@@ -38,7 +39,7 @@ public class EgovKnoManagementServiceImpl extends EgovAbstractServiceImpl implem
 	 * @param KnoManagementVO
 	 */
 	@Override
-	public List<?> selectKnoManagementList(KnoManagementVO searchVO) throws Exception {
+	public List<EgovMap> selectKnoManagementList(KnoManagementVO searchVO) throws Exception {
 		return KnoManagementDAO.selectKnoManagementList(searchVO);
 	}
 
