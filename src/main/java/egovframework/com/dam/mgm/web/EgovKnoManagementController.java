@@ -1,5 +1,7 @@
 package egovframework.com.dam.mgm.web;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -22,6 +24,7 @@ import egovframework.com.dam.mgm.service.EgovKnoManagementService;
 import egovframework.com.dam.mgm.service.KnoManagement;
 import egovframework.com.dam.mgm.service.KnoManagementVO;
 
+import org.apache.commons.validator.GenericValidator;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -203,6 +206,9 @@ public class EgovKnoManagementController {
 
         beanValidator.validate(knoManagement, bindingResult);
         if (bindingResult.hasErrors()) {
+            if (GenericValidator.isDate(knoManagement.getJunkYmd(), "yyyyMMdd", true)) {
+                knoManagement.setJunkYmd(LocalDate.parse(knoManagement.getJunkYmd(), DateTimeFormatter.BASIC_ISO_DATE).format(DateTimeFormatter.ISO_LOCAL_DATE));
+            }
             updateKnoManagementViewInit(knoManagement, model);
             return "egovframework/com/dam/mgm/EgovComDamManagementModify";
         }
