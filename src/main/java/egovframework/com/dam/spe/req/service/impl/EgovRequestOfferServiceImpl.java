@@ -71,13 +71,13 @@ public class EgovRequestOfferServiceImpl extends EgovAbstractServiceImpl
 
     /**
      * 지식정보제공/지식정보요청를(을) 목록을 조회 한다.
-     * @param RequestOfferVO 조회할 정보가 담긴 객체
+     * @param requestOfferVO 조회할 정보가 담긴 객체
      * @return List
      * @throws Exception
      */
     @Override
-	public List<EgovMap> selectRequestOfferList(RequestOfferVO RequestOfferVO) throws Exception {
-    	return dao.selectRequestOfferList(RequestOfferVO);
+	public List<EgovMap> selectRequestOfferList(RequestOfferVO requestOfferVO) throws Exception {
+    	return dao.selectRequestOfferList(requestOfferVO);
     }
 
     /**
@@ -87,8 +87,8 @@ public class EgovRequestOfferServiceImpl extends EgovAbstractServiceImpl
      * @throws Exception
      */
     @Override
-	public int selectRequestOfferListCnt(RequestOfferVO RequestOfferVO) throws Exception {
-        return dao.selectRequestOfferListCnt(RequestOfferVO);
+	public int selectRequestOfferListCnt(RequestOfferVO requestOfferVO) throws Exception {
+        return dao.selectRequestOfferListCnt(requestOfferVO);
     }
 
     /**
@@ -98,41 +98,41 @@ public class EgovRequestOfferServiceImpl extends EgovAbstractServiceImpl
      * @throws Exception
      */
     @Override
-	public RequestOfferVO selectRequestOfferDetail(RequestOfferVO RequestOfferVO) throws Exception {
-        return dao.selectRequestOfferDetail(RequestOfferVO);
+	public RequestOfferVO selectRequestOfferDetail(RequestOfferVO requestOfferVO) throws Exception {
+        return dao.selectRequestOfferDetail(requestOfferVO);
     }
 
     /**
      * 지식정보제공/지식정보요청를(을) 등록한다.
-     * @param RequestOfferVO 지식정보제공/지식정보요청 정보가 담긴 객체
+     * @param requestOfferVO 지식정보제공/지식정보요청 정보가 담긴 객체
      * @throws Exception
      */
     @Override
-	public void insertRequestOffer(RequestOfferVO RequestOfferVO)throws Exception {
+	public void insertRequestOffer(RequestOfferVO requestOfferVO)throws Exception {
 
-    	RequestOfferVO.setKnoId(idgenService.getNextStringId());
+    	requestOfferVO.setKnoId(idgenService.getNextStringId());
 
-    	dao.insertRequestOffer(RequestOfferVO);
+    	dao.insertRequestOffer(requestOfferVO);
     }
 
     /**
      * 지식정보제공/지식정보요청를(을) 수정한다.
-     * @param RequestOfferVO 지식정보제공/지식정보요청 정보가 담긴 객체
+     * @param requestOfferVO 지식정보제공/지식정보요청 정보가 담긴 객체
      * @throws Exception
      */
     @Override
-	public void updateRequestOffer(RequestOfferVO RequestOfferVO) throws Exception {
-    	dao.updateRequestOffer(RequestOfferVO);
+	public void updateRequestOffer(RequestOfferVO requestOfferVO) throws Exception {
+    	dao.updateRequestOffer(requestOfferVO);
     }
 
     /**
      * 지식정보제공/지식정보요청를(을) 삭제한다.
-     * @param RequestOfferVO 지식정보제공/지식정보요청 정보가 담긴 객체
+     * @param requestOfferVO 지식정보제공/지식정보요청 정보가 담긴 객체
      * @throws Exception
      */
     @Override
-	public void deleteRequestOffer(RequestOfferVO RequestOfferVO) throws Exception {
-    	dao.deleteRequestOffer(RequestOfferVO);
+	public void deleteRequestOffer(RequestOfferVO requestOfferVO) throws Exception {
+    	dao.deleteRequestOffer(requestOfferVO);
     }
 
 }

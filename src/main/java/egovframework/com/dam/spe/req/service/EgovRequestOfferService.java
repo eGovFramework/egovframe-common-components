@@ -44,7 +44,7 @@ public interface EgovRequestOfferService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<EgovMap> selectRequestOfferList(RequestOfferVO RequestOfferVO) throws Exception;
+	public List<EgovMap> selectRequestOfferList(RequestOfferVO requestOfferVO) throws Exception;
 
     /**
      * 지식정보제공/지식정보요청를(을) 목록 전체 건수를(을) 조회한다.
@@ -52,35 +52,35 @@ public interface EgovRequestOfferService {
      * @return int
      * @throws Exception
      */
-    public int selectRequestOfferListCnt(RequestOfferVO RequestOfferVO) throws Exception;
+    public int selectRequestOfferListCnt(RequestOfferVO requestOfferVO) throws Exception;
 
      /**
 	 * 지식정보제공/지식정보요청를(을) 상세조회 한다.
-	 * @param RequestOfferVO  지식정보제공/지식정보요청 정보 담김 객체
+	 * @param requestOfferVO  지식정보제공/지식정보요청 정보 담김 객체
 	 * @return List
 	 * @throws Exception
 	 */
-	public RequestOfferVO selectRequestOfferDetail(RequestOfferVO RequestOfferVO) throws Exception;
+	public RequestOfferVO selectRequestOfferDetail(RequestOfferVO requestOfferVO) throws Exception;
 
      /**
 	 * 지식정보제공/지식정보요청를(을) 등록한다.
-	 * @param RequestOfferVO  지식정보제공/지식정보요청 정보 담김 객체
+	 * @param requestOfferVO  지식정보제공/지식정보요청 정보 담김 객체
 	 * @throws Exception
 	 */
-	void  insertRequestOffer(RequestOfferVO RequestOfferVO) throws Exception;
+	void  insertRequestOffer(RequestOfferVO requestOfferVO) throws Exception;
 
      /**
 	 * 지식정보제공/지식정보요청를(을) 수정한다.
-	 * @param RequestOfferVO  지식정보제공/지식정보요청 정보 담김 객체
+	 * @param requestOfferVO  지식정보제공/지식정보요청 정보 담김 객체
 	 * @throws Exception
 	 */
-	void  updateRequestOffer(RequestOfferVO RequestOfferVO) throws Exception;
+	void  updateRequestOffer(RequestOfferVO requestOfferVO) throws Exception;
 
 	/**
 	 * 지식정보제공/지식정보요청를(을) 삭제한다.
-	 * @param RequestOfferVO  지식정보제공/지식정보요청 정보 담김 VO
+	 * @param requestOfferVO  지식정보제공/지식정보요청 정보 담김 VO
 	 * @throws Exception
 	 */
-	void  deleteRequestOffer(RequestOfferVO RequestOfferVO) throws Exception;
+	void  deleteRequestOffer(RequestOfferVO requestOfferVO) throws Exception;
 
 }

@@ -49,33 +49,33 @@ public class RequestOfferDao extends EgovComAbstractDAO {
 
     /**
      * 지식정보제공/지식정보요청를(을) 목록을 한다.
-     * @param RequestOfferVO  조회할 정보가 담긴 객체
+     * @param requestOfferVO  조회할 정보가 담긴 객체
      * @return List
      * @throws Exception
      */
-    public List<EgovMap> selectRequestOfferList(RequestOfferVO RequestOfferVO) throws Exception {
-    	return selectList("RequestOffer.selectRequestOffer",RequestOfferVO);
+    public List<EgovMap> selectRequestOfferList(RequestOfferVO requestOfferVO) throws Exception {
+    	return selectList("RequestOffer.selectRequestOffer",requestOfferVO);
 
     }
 
     /**
      * 지식정보제공/지식정보요청를(을) 목록 전체 건수를(을) 조회한다.
-     * @param RequestOfferVO  조회할 정보가 담긴 객체
+     * @param requestOfferVO  조회할 정보가 담긴 객체
      * @return int
      * @throws Exception
      */
-    public int selectRequestOfferListCnt(RequestOfferVO RequestOfferVO) throws Exception {
-    	return (Integer)selectOne("RequestOffer.selectRequestOfferCnt", RequestOfferVO);
+    public int selectRequestOfferListCnt(RequestOfferVO requestOfferVO) throws Exception {
+    	return (Integer)selectOne("RequestOffer.selectRequestOfferCnt", requestOfferVO);
     }
 
     /**
      * 지식정보제공/지식정보요청를(을) 상세조회 한다.
-     * @param RequestOfferVO  지식정보제공/지식정보요청 정보가 담김 객체
+     * @param requestOfferVO  지식정보제공/지식정보요청 정보가 담김 객체
      * @return RequestOfferVO
      * @throws Exception
      */
-    public RequestOfferVO selectRequestOfferDetail(RequestOfferVO RequestOfferVO) throws Exception {
-    	return (RequestOfferVO)selectOne("RequestOffer.selectRequestOfferDetail", RequestOfferVO);
+    public RequestOfferVO selectRequestOfferDetail(RequestOfferVO requestOfferVO) throws Exception {
+    	return (RequestOfferVO)selectOne("RequestOffer.selectRequestOfferDetail", requestOfferVO);
     }
 
     /**
@@ -84,13 +84,13 @@ public class RequestOfferDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     @SuppressWarnings("unused")
-	public void insertRequestOffer(RequestOfferVO RequestOfferVO) throws Exception {
-    	if(RequestOfferVO.getCmd().equals("save")){
-    		insert("RequestOffer.insertRequestOfferSave", RequestOfferVO);
-    	}else if(RequestOfferVO.getCmd().equals("reply")){
-    		int nSeq = (Integer)selectOne("RequestOffer.selectRequestOfferReplySeq", RequestOfferVO);
+	public void insertRequestOffer(RequestOfferVO requestOfferVO) throws Exception {
+    	if(requestOfferVO.getCmd().equals("save")){
+    		insert("RequestOffer.insertRequestOfferSave", requestOfferVO);
+    	}else if(requestOfferVO.getCmd().equals("reply")){
+    		int nSeq = (Integer)selectOne("RequestOffer.selectRequestOfferReplySeq", requestOfferVO);
 
-    		Map<?, ?> mapAnsParents = (Map<?, ?>)selectOne("RequestOffer.selectRequestOfferReplyaAnsParents", RequestOfferVO);
+    		Map<?, ?> mapAnsParents = (Map<?, ?>)selectOne("RequestOffer.selectRequestOfferReplyaAnsParents", requestOfferVO);
 
     		//단말노드가 아닐때 탐색
     		if(mapAnsParents != null){
@@ -119,12 +119,12 @@ public class RequestOfferDao extends EgovComAbstractDAO {
 
     		//단말노드가 없으면
     		if( nSeq != 1){
-    			RequestOfferVO.setAnsSeq(nSeq);
+    			requestOfferVO.setAnsSeq(nSeq);
     		}
     		System.out.println("LastSeq>" + nSeq);
 
-    		update("RequestOffer.updateRequestOfferReply", RequestOfferVO);
-    		insert("RequestOffer.insertRequestOfferReply", RequestOfferVO);
+    		update("RequestOffer.updateRequestOfferReply", requestOfferVO);
+    		insert("RequestOffer.insertRequestOfferReply", requestOfferVO);
 
     	}
 
@@ -132,20 +132,20 @@ public class RequestOfferDao extends EgovComAbstractDAO {
 
     /**
      * 지식정보제공/지식정보요청를(을) 수정한다.
-     * @param RequestOfferVO  지식정보제공/지식정보요청 정보가 담김 객체
+     * @param requestOfferVO  지식정보제공/지식정보요청 정보가 담김 객체
      * @throws Exception
      */
-    public void updateRequestOffer(RequestOfferVO RequestOfferVO) throws Exception {
-    	 update("RequestOffer.updateRequestOffer", RequestOfferVO);
+    public void updateRequestOffer(RequestOfferVO requestOfferVO) throws Exception {
+    	 update("RequestOffer.updateRequestOffer", requestOfferVO);
     }
 
     /**
      * 지식정보제공/지식정보요청를(을) 삭제한다.
-     * @param RequestOfferVO  지식정보제공/지식정보요청 정보가 담김 객체
+     * @param requestOfferVO  지식정보제공/지식정보요청 정보가 담김 객체
      * @throws Exception
      */
-    public void deleteRequestOffer(RequestOfferVO RequestOfferVO) throws Exception {
-    	delete("RequestOffer.deleteRequestOffer", RequestOfferVO);
+    public void deleteRequestOffer(RequestOfferVO requestOfferVO) throws Exception {
+    	delete("RequestOffer.deleteRequestOffer", requestOfferVO);
     }
 
 }
