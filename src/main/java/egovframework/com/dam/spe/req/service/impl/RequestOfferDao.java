@@ -7,6 +7,7 @@ import java.util.Map;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.dam.spe.req.service.RequestOfferVO;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 /**
  * 지식정보제공/지식정보요청를 처리하는 Dao Class 구현
@@ -52,7 +53,7 @@ public class RequestOfferDao extends EgovComAbstractDAO {
      * @return List
      * @throws Exception
      */
-    public List<?> selectRequestOfferList(RequestOfferVO RequestOfferVO) throws Exception {
+    public List<EgovMap> selectRequestOfferList(RequestOfferVO RequestOfferVO) throws Exception {
     	return selectList("RequestOffer.selectRequestOffer",RequestOfferVO);
 
     }

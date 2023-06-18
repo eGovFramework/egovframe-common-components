@@ -2,6 +2,8 @@ package egovframework.com.dam.spe.req.service;
 
 import java.util.List;
 import java.util.Map;
+
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 /**
  * 지식정보제공/지식정보요청를 처리하는 Service Class 구현
  * @author 공통서비스 장동한
@@ -42,7 +44,7 @@ public interface EgovRequestOfferService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectRequestOfferList(RequestOfferVO RequestOfferVO) throws Exception;
+	public List<EgovMap> selectRequestOfferList(RequestOfferVO RequestOfferVO) throws Exception;
 
     /**
      * 지식정보제공/지식정보요청를(을) 목록 전체 건수를(을) 조회한다.

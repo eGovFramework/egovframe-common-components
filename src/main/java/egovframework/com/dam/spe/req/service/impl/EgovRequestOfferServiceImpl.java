@@ -8,6 +8,7 @@ import egovframework.com.dam.spe.req.service.RequestOfferVO;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 import javax.annotation.Resource;
 
@@ -75,7 +76,7 @@ public class EgovRequestOfferServiceImpl extends EgovAbstractServiceImpl
      * @throws Exception
      */
     @Override
-	public List<?> selectRequestOfferList(RequestOfferVO RequestOfferVO) throws Exception {
+	public List<EgovMap> selectRequestOfferList(RequestOfferVO RequestOfferVO) throws Exception {
     	return dao.selectRequestOfferList(RequestOfferVO);
     }
 
