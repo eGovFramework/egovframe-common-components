@@ -85,7 +85,7 @@
 				knoManagement.junkYmd.value = ls_junkYmd;
 			}
 			
-			if(confirm("<spring:message code="common.save.msg" />")){
+			if(confirm("<spring:message code="common.update.msg" />")){
 				if(!validateKnoManagement(form)){ 			
 					return;
 				}else{
@@ -118,44 +118,44 @@
 			<tr>
 				<th><spring:message code="comDamMgm.comDamManagementModify.orgnztNm"/> <span class="pilsu">*</span></th><!-- 조직명 -->
 				<td class="left">
-				    ${knoManagement.orgnztNm}
+				    ${resultKnoManagement.orgnztNm}
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comDamMgm.comDamManagementModify.knoTypeNm"/> <span class="pilsu">*</span></th><!-- 지식유형명 -->
 				<td class="left">
-				    ${knoManagement.knoTypeNm}
+				    ${resultKnoManagement.knoTypeNm}
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comDamMgm.comDamManagementModify.frstRegisterPnttm"/> <span class="pilsu">*</span></th><!-- 등록일자 -->
 				<td class="left">
-				    ${knoManagement.frstRegisterPnttm}
+				    ${resultKnoManagement.frstRegisterPnttm}
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comDamMgm.comDamManagementModify.userNm"/> <span class="pilsu">*</span></th><!-- 등록자명 -->
 				<td class="left">
-				    ${knoManagement.userNm}
+				    ${resultKnoManagement.userNm}
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comDamMgm.comDamManagementModify.knoNm"/> <span class="pilsu">*</span></th><!-- 지식명 -->
 				<td class="left">
-				    ${knoManagement.knoNm}
+				    ${resultKnoManagement.knoNm}
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comDamMgm.comDamManagementModify.knoCn"/> <span class="pilsu">*</span></th><!-- 지식내용 -->
 				<td class="left">
-				    <textarea name="knoCn" class="textarea" title="<spring:message code="comDamMgm.comDamManagementModify.knoCn"/>" cols="300" rows="5" style="width:450px;" readonly>${knoManagement.knoCn}</textarea><!-- 지식내용 -->
+				    <textarea name="knoCn" class="textarea" title="<spring:message code="comDamMgm.comDamManagementModify.knoCn"/>" cols="300" rows="5" style="width:450px;" readonly>${resultKnoManagement.knoCn}</textarea><!-- 지식내용 -->
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comDamMgm.comDamManagementModify.othbcAt"/> <span class="pilsu">*</span></th><!-- 공개여부 -->
 				<td class="left">
 				    <c:choose>
-					<c:when test="${knoManagement.othbcAt == 'Y'}">
+					<c:when test="${resultKnoManagement.othbcAt == 'Y'}">
 						<spring:message code="cop.public" />
 					</c:when>
 					<c:otherwise>
@@ -167,22 +167,22 @@
 			<tr>
 				<th><spring:message code="comDamMgm.comDamManagementModify.appYmd"/> <span class="pilsu">*</span></th><!-- 평가일자 -->
 				<td class="left">
-				    <c:if test="${knoManagement.appYmd == null}"><spring:message code="comDamMgm.comDamManagementModify.status.proceeding"/></c:if><!-- 진행중 -->
-		    		<c:if test="${knoManagement.appYmd != null}">${knoManagement.appYmd}</c:if>
+				    <c:if test="${resultKnoManagement.appYmd == null}"><spring:message code="comDamMgm.comDamManagementModify.status.proceeding"/></c:if><!-- 진행중 -->
+		    		<c:if test="${resultKnoManagement.appYmd != null}">${resultKnoManagement.appYmd}</c:if>
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comDamMgm.comDamManagementModify.speNm"/> <span class="pilsu">*</span></th><!-- 평가자명 -->
 				<td class="left">
-				    ${knoManagement.speNm}
+				    ${resultKnoManagement.speNm}
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comDamMgm.comDamManagementModify.knoAps"/> <span class="pilsu">*</span></th><!-- 평가결과 -->
 				<td class="left">
-				    <c:if test="${knoManagement.knoAps == null}"><spring:message code="comDamMgm.comDamManagementModify.status.evaluating"/></c:if><!-- 평가중 -->
-				    <c:if test="${knoManagement.knoAps == '1'}"><spring:message code="comDamMgm.comDamManagementModify.status.approved"/></c:if><!-- 승인 -->
-				    <c:if test="${knoManagement.knoAps == '2'}"><spring:message code="comDamMgm.comDamManagementModify.status.denied"/></c:if><!-- 반려 -->
+				    <c:if test="${resultKnoManagement.knoAps == null}"><spring:message code="comDamMgm.comDamManagementModify.status.evaluating"/></c:if><!-- 평가중 -->
+				    <c:if test="${resultKnoManagement.knoAps == '1'}"><spring:message code="comDamMgm.comDamManagementModify.status.approved"/></c:if><!-- 승인 -->
+				    <c:if test="${resultKnoManagement.knoAps == '2'}"><spring:message code="comDamMgm.comDamManagementModify.status.denied"/></c:if><!-- 반려 -->
 				</td>
 			</tr>
 			<tr>
@@ -191,6 +191,7 @@
 				    <select name="knoAps" title="<spring:message code="comDamMgm.comDamManagementModify.knoAps"/>"><!-- 지식정제 선택 -->
 					    <option value="3" <c:if test="${knoManagement.knoAps == '3'}">selected</c:if> ><spring:message code="comDamMgm.comDamManagementModify.status.disposal"/></option><!-- 폐기 -->
 					</select>
+                    <form:errors path="knoAps" />
 				</td>
 			</tr>
 			<tr>
@@ -202,12 +203,12 @@
 				</td>
 			</tr>
 			<!-- 첨부목록을 보여주기 위한 -->  
-			<c:if test="${knoManagement.atchFileId ne null && knoManagement.atchFileId ne ''}">
+			<c:if test="${resultKnoManagement.atchFileId ne null && resultKnoManagement.atchFileId ne ''}">
 			<tr>
 				<th><spring:message code="comDamMgm.comDamManagementModify.atchFileList"/></th><!-- 첨부파일 목록 -->
 				<td class="left">
 				    <c:import charEncoding="utf-8" url="/cmm/fms/selectFileInfs.do" >
-						<c:param name="param_atchFileId" value="${egovc:encrypt(knoManagement.atchFileId)}" />
+						<c:param name="param_atchFileId" value="${egovc:encrypt(resultKnoManagement.atchFileId)}" />
 					</c:import>
 				</td>
 			</tr>
@@ -216,7 +217,7 @@
 	
 		<!-- 하단 버튼 -->
 		<div class="btn">
-			<input class="s_submit" type="submit" value="<spring:message code="button.save" />" onclick="fn_egov_modify_KnoManagement(document.forms[0]); return false;" /><!-- 저장 -->
+			<input class="s_submit" type="submit" value="<spring:message code="button.update" />" onclick="fn_egov_modify_KnoManagement(document.forms[0]); return false;" /><!-- 저장 -->
 			<input class="s_submit" type="submit" value='<spring:message code="button.list" />' onclick="fn_egov_list_KnoManagement(); return false;" /><!-- 목록 -->
 		</div>
 		<div style="clear:both;"></div>

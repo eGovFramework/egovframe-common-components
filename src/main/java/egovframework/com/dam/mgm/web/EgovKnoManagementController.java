@@ -1,5 +1,7 @@
 package egovframework.com.dam.mgm.web;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -22,6 +24,7 @@ import egovframework.com.dam.mgm.service.EgovKnoManagementService;
 import egovframework.com.dam.mgm.service.KnoManagement;
 import egovframework.com.dam.mgm.service.KnoManagementVO;
 
+import org.apache.commons.validator.GenericValidator;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -142,7 +145,7 @@ public class EgovKnoManagementController {
 	 * @param knoNm
 	 */
 	@GetMapping(value="/dam/mgm/EgovComDamManagementModify.do")
-	public String  updateKnoManagementView(@ModelAttribute("knoManagement") KnoManagement knoManagement
+	public String updateKnoManagementView(KnoManagement knoManagement
 			, ModelMap model
 			) throws Exception {
 
@@ -154,53 +157,64 @@ public class EgovKnoManagementController {
 	    }
 
 		//로그인 객체 선언
-		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-
-        knoManagement.setEmplyrId(loginVO.getUniqId());
-		knoManagement = knoManagementService.selectKnoManagement(knoManagement);
-		model.addAttribute("knoManagement", knoManagement);
-
-		LOGGER.debug("knoManagement>{}", knoManagement);
-		LOGGER.debug("knoManagement>{}", model.get("knoManagement"));
-
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+        if (loginVO != null) {
+            knoManagement.setEmplyrId(loginVO.getUniqId());
+        }
+        updateKnoManagementViewInit(knoManagement, model);
 		return "egovframework/com/dam/mgm/EgovComDamManagementModify";
 	}
 
-	/**
-	 * 기 등록 된 지식정보 정보를 수정 한다.
-	 * @param ManagementKnoNm - 지식정보 model
-	 * @return String - 리턴 Url
-	 *
-	 * @param knoNm
-	 */
-	@PostMapping(value="/dam/mgm/EgovComDamManagementModify.do")
-	public String  updateKnoManagement(@ModelAttribute("knoManagement") KnoManagement knoManagement
-	        , BindingResult bindingResult
-	        , ModelMap model
-	        ) throws Exception {
-	    
-	    //Spring Security 사용자권한 처리
-	    Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-	    if (!isAuthenticated) {
-	        model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-	        return "redirect:/uat/uia/egovLoginUsr.do";
-	    }
-	    
-	    //로그인 객체 선언
-	    LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+    /**
+     * 기 등록 된 지식정보 정보를 수정 한다. 초기값
+     * 
+     * @param knoManagement
+     * @param model
+     * @throws Exception
+     */
+    private void updateKnoManagementViewInit(KnoManagement knoManagement, ModelMap model) throws Exception {
+        model.addAttribute("resultKnoManagement", knoManagementService.selectKnoManagement(knoManagement));
+
+        LOGGER.debug("knoManagement>{}", knoManagement);
+        LOGGER.debug("knoManagement>{}", model.get("knoManagement"));
+    }
+
+    /**
+     * 기 등록 된 지식정보 정보를 수정 한다.
+     * @param ManagementKnoNm - 지식정보 model
+     * @return String - 리턴 Url
+     *
+     * @param knoNm
+     */
+    @PostMapping(value = "/dam/mgm/EgovComDamManagementModify.do")
+    public String updateKnoManagement(KnoManagement knoManagement, BindingResult bindingResult, ModelMap model)
+            throws Exception {
+
+        // Spring Security 사용자권한 처리
+        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+        if (!isAuthenticated) {
+            model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+            return "redirect:/uat/uia/egovLoginUsr.do";
+        }
+
+        // 로그인 객체 선언
+        LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+        if (loginVO != null) {
+            knoManagement.setEmplyrId(loginVO.getUniqId());
+            knoManagement.setLastUpdusrId(loginVO.getUniqId());
+        }
 
         beanValidator.validate(knoManagement, bindingResult);
-        if (bindingResult.hasErrors()){
-            knoManagement.setEmplyrId(loginVO.getUniqId());
-            knoManagement = knoManagementService.selectKnoManagement(knoManagement);
-            model.addAttribute("knoManagement", knoManagement);
+        if (bindingResult.hasErrors()) {
+            if (GenericValidator.isDate(knoManagement.getJunkYmd(), "yyyyMMdd", true)) {
+                knoManagement.setJunkYmd(LocalDate.parse(knoManagement.getJunkYmd(), DateTimeFormatter.BASIC_ISO_DATE).format(DateTimeFormatter.ISO_LOCAL_DATE));
+            }
+            updateKnoManagementViewInit(knoManagement, model);
             return "egovframework/com/dam/mgm/EgovComDamManagementModify";
         }
-        
-        knoManagement.setEmplyrId(loginVO.getUniqId());
-        knoManagement.setLastUpdusrId(loginVO.getUniqId());
+
         knoManagementService.updateKnoManagement(knoManagement);
         return "forward:/dam/mgm/EgovComDamManagementList.do";
-	}
+    }
 
 }

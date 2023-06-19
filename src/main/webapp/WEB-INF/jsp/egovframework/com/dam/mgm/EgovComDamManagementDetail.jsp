@@ -47,6 +47,7 @@
 			varForm.action      = "<c:url value='/dam/mgm/EgovComDamManagementModify.do'/>";
 			varForm.knoId.value = "${result.knoId}";
 			//alert(varForm.knoId.value);	
+			varForm.method = 'get';
 			varForm.submit();
 		}
 		-->
