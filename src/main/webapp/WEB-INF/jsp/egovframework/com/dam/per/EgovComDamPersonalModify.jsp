@@ -95,7 +95,7 @@ function fn_egov_modify_KnoPersonal(){
 
 	var form = document.knoPersonal;
 
-	if(confirm("<spring:message code="common.save.msg" />")){
+	if(confirm("<spring:message code="common.update.msg" />")){
 
 		form.action = "<c:url value='/dam/per/EgovComDamPersonalModify.do'/>";
 
