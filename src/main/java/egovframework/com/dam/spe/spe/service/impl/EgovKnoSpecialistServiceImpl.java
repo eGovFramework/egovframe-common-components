@@ -38,7 +38,7 @@ public class EgovKnoSpecialistServiceImpl extends EgovAbstractServiceImpl implem
 	 * @param KnoSpecialistVO
 	 */
 	@Override
-	public List<?> selectKnoSpecialistList(KnoSpecialistVO searchVO) throws Exception {
+	public List<KnoSpecialistVO> selectKnoSpecialistList(KnoSpecialistVO searchVO) throws Exception {
 		return KnoSpecialistDAO.selectKnoSpecialistList(searchVO);
 	}
 
