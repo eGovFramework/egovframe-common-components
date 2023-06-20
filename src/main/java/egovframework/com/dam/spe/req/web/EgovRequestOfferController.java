@@ -34,6 +34,7 @@ import egovframework.com.dam.spe.req.service.EgovRequestOfferService;
 import egovframework.com.dam.spe.req.service.RequestOfferVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
@@ -89,7 +90,7 @@ public class EgovRequestOfferController {
      * 지식정보제공/지식정보요청 목록을 조회한다.
      * @param searchVO
      * @param commandMap
-     * @param RequestOfferVO
+     * @param requestOfferVO
      * @param model
      * @return "egovframework/com/dam/spe/req/EgovRequestOfferVOList"
      * @throws Exception
@@ -99,7 +100,7 @@ public class EgovRequestOfferController {
     public String EgovRequestOfferList(
             @ModelAttribute("searchVO") RequestOfferVO searchVO,
             @RequestParam Map<?, ?> commandMap,
-            RequestOfferVO RequestOfferVO, ModelMap model)
+            RequestOfferVO requestOfferVO, ModelMap model)
             throws Exception {
 
 		//Spring Security 사용자권한 처리
@@ -126,7 +127,7 @@ public class EgovRequestOfferController {
         searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
         searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> resultList = egovRequestOfferVOService.selectRequestOfferList(searchVO);
+        List<EgovMap> resultList = egovRequestOfferVOService.selectRequestOfferList(searchVO);
         model.addAttribute("resultList", resultList);
 
         model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword"));
@@ -316,7 +317,7 @@ public class EgovRequestOfferController {
      * 지식정보제공/지식정보요청를 수정한다.
      * @param searchVO
      * @param commandMap
-     * @param RequestOfferVO
+     * @param requestOfferVO
      * @param bindingResult
      * @param model
      * @return "egovframework/com/dam/spe/req/EgovRequestOfferVOUpdt"
@@ -327,7 +328,7 @@ public class EgovRequestOfferController {
     		final MultipartHttpServletRequest multiRequest,
             @ModelAttribute("searchVO") RequestOfferVO searchVO,
             @RequestParam Map<?, ?> commandMap,
-            @ModelAttribute("RequestOfferVO") RequestOfferVO RequestOfferVO,
+            @ModelAttribute("RequestOfferVO") RequestOfferVO requestOfferVO,
             BindingResult bindingResult, ModelMap model) throws Exception {
 
             // 0. Spring Security 사용자권한 처리
@@ -354,15 +355,15 @@ public class EgovRequestOfferController {
             if (sCmd.equals("save")) {
 
                 //서버  validate 체크
-                beanValidator.validate(RequestOfferVO, bindingResult);
+                beanValidator.validate(requestOfferVO, bindingResult);
                 if(bindingResult.hasErrors()){
                     return sLocationUrl;
                 }
                 //아이디 설정
-                RequestOfferVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-                RequestOfferVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+                requestOfferVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+                requestOfferVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
             	// 첨부파일 관련 ID 생성 start....
-        		String _atchFileId = RequestOfferVO.getAtchFileId();
+        		String _atchFileId = requestOfferVO.getAtchFileId();
 
         		//final Map<String, MultipartFile> files = multiRequest.getFileMap();
         		final List<MultipartFile> files = multiRequest.getFiles("file_1");
@@ -374,7 +375,7 @@ public class EgovRequestOfferController {
         				_atchFileId = fileMngService.insertFileInfs(_result);
 
         				// 첨부파일 ID 셋팅
-        				RequestOfferVO.setAtchFileId(_atchFileId);    	// 첨부파일 ID
+        				requestOfferVO.setAtchFileId(_atchFileId);    	// 첨부파일 ID
 
         			}else{
         				FileVO fvo = new FileVO();
@@ -385,13 +386,13 @@ public class EgovRequestOfferController {
         			}
         		}
                 //저장
-                egovRequestOfferVOService.updateRequestOffer(RequestOfferVO);
+                egovRequestOfferVOService.updateRequestOffer(requestOfferVO);
                 sLocationUrl = "forward:/dam/spe/req/listRequestOffer.do";
             } else {
 
                 //수정정보 불러오기
-                RequestOfferVO requestOfferVO = egovRequestOfferVOService.selectRequestOfferDetail(RequestOfferVO);
-                model.addAttribute("requestOfferVO", requestOfferVO);
+                RequestOfferVO resultRequestOfferVO = egovRequestOfferVOService.selectRequestOfferDetail(requestOfferVO);
+                model.addAttribute("requestOfferVO", resultRequestOfferVO);
             }
 
             return sLocationUrl;
