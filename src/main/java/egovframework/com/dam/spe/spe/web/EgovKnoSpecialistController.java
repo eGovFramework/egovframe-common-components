@@ -28,7 +28,6 @@ import egovframework.com.dam.spe.spe.service.KnoSpecialist;
 import egovframework.com.dam.spe.spe.service.KnoSpecialistVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
-import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
@@ -103,7 +102,7 @@ public class EgovKnoSpecialistController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<?> KnoSpecialistList = knoSpecialistService.selectKnoSpecialistList(searchVO);
+		List<KnoSpecialistVO> KnoSpecialistList = knoSpecialistService.selectKnoSpecialistList(searchVO);
 		model.addAttribute("resultList", KnoSpecialistList);
 
 		int totCnt = knoSpecialistService.selectKnoSpecialistTotCnt(searchVO);
@@ -192,7 +191,7 @@ public class EgovKnoSpecialistController {
 				searchVO = new MapTeamVO();
 				searchVO.setRecordCountPerPage(999999);
 				searchVO.setFirstIndex(0);
-	            List<?> MapTeamList = mapTeamService.selectMapTeamList(searchVO);
+	            List<MapTeamVO> MapTeamList = mapTeamService.selectMapTeamList(searchVO);
 	            model.addAttribute("mapTeamList", MapTeamList);
 
 	            MapMaterialVO searchMatVO;
@@ -202,12 +201,12 @@ public class EgovKnoSpecialistController {
 	            searchMatVO.setSearchCondition("orgnztId");
 
 	            if (mapMaterial.getOrgnztId().equals("")) {
-	            	EgovMap emp = (EgovMap)MapTeamList.get(0);
-	            	mapMaterial.setOrgnztId(emp.get("orgnztId").toString());
+	                MapTeamVO emp = MapTeamList.get(0);
+	            	mapMaterial.setOrgnztId(emp.getOrgnztId());
 	            }
 	            searchMatVO.setSearchKeyword(mapMaterial.getOrgnztId());
 
-	            List<?> MapMaterialList = mapMaterialService.selectMapMaterialList(searchMatVO);
+	            List<MapMaterialVO> MapMaterialList = mapMaterialService.selectMapMaterialList(searchMatVO);
 	            model.addAttribute("mapMaterialList", MapMaterialList);
 
 				return "egovframework/com/dam/spe/spe/EgovComDamSpecialistRegist";

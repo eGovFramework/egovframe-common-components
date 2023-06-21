@@ -22,7 +22,7 @@ public interface EgovKnoSpecialistService {
 	 *
 	 * @param KnoSpecialistVO
 	 */
-	List<?> selectKnoSpecialistList(KnoSpecialistVO searchVO) throws Exception;
+	List<KnoSpecialistVO> selectKnoSpecialistList(KnoSpecialistVO searchVO) throws Exception;
 
 	/**
 	 * 지식전문가 목록 총 개수를 조회한다.
