@@ -10,6 +10,7 @@ import egovframework.com.ssi.syi.iis.service.CntcServiceVO;
 import egovframework.com.ssi.syi.iis.service.CntcSystem;
 import egovframework.com.ssi.syi.iis.service.CntcSystemVO;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -121,7 +122,7 @@ public class CntcInsttDAO extends EgovComAbstractDAO {
      * @return List(연계기관 목록)
      * @throws Exception
      */
-    public List<?> selectCntcInsttList(CntcInsttVO searchVO) throws Exception {
+    public List<EgovMap> selectCntcInsttList(CntcInsttVO searchVO) throws Exception {
         return selectList("CntcInsttDAO.selectCntcInsttList", searchVO);
     }
 
@@ -140,7 +141,7 @@ public class CntcInsttDAO extends EgovComAbstractDAO {
      * @return List(연계시스템 목록)
      * @throws Exception
      */
-    public List<?> selectCntcSystemList(CntcSystemVO searchVO) throws Exception {
+    public List<EgovMap> selectCntcSystemList(CntcSystemVO searchVO) throws Exception {
         return selectList("CntcInsttDAO.selectCntcSystemList", searchVO);
     }
 
@@ -159,7 +160,7 @@ public class CntcInsttDAO extends EgovComAbstractDAO {
      * @return List(연계서비스 목록)
      * @throws Exception
      */
-    public List<?> selectCntcServiceList(CntcServiceVO searchVO) throws Exception {
+    public List<EgovMap> selectCntcServiceList(CntcServiceVO searchVO) throws Exception {
         return selectList("CntcInsttDAO.selectCntcServiceList", searchVO);
     }
 

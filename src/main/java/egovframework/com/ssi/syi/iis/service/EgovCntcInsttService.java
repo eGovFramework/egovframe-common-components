@@ -2,6 +2,8 @@ package egovframework.com.ssi.syi.iis.service;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 /**
  *
  * 연계기관에 관한 서비스 인터페이스 클래스를 정의한다
@@ -94,7 +96,7 @@ public interface EgovCntcInsttService {
 	 * @return List(연계기관 목록)
 	 * @throws Exception
 	 */
-	List<?> selectCntcInsttList(CntcInsttVO searchVO) throws Exception;
+	List<EgovMap> selectCntcInsttList(CntcInsttVO searchVO) throws Exception;
 
     /**
 	 * 연계기관 총 개수를 조회한다.
@@ -109,7 +111,7 @@ public interface EgovCntcInsttService {
 	 * @return List(연계시스템 목록)
 	 * @throws Exception
 	 */
-	List<?> selectCntcSystemList(CntcSystemVO searchVO) throws Exception;
+	List<EgovMap> selectCntcSystemList(CntcSystemVO searchVO) throws Exception;
 
     /**
 	 * 연계시스템 총 개수를 조회한다.
@@ -124,7 +126,7 @@ public interface EgovCntcInsttService {
 	 * @return List(연계시스템 목록)
 	 * @throws Exception
 	 */
-	List<?> selectCntcServiceList(CntcServiceVO searchVO) throws Exception;
+	List<EgovMap> selectCntcServiceList(CntcServiceVO searchVO) throws Exception;
 
     /**
 	 * 연계서비스 총 개수를 조회한다.

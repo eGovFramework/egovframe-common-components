@@ -183,7 +183,7 @@ public class EgovCntcInsttController {
 			searchCntcInsttVO.setRecordCountPerPage(999999);
 			searchCntcInsttVO.setFirstIndex(0);
 			searchCntcInsttVO.setSearchCondition("CodeList");
-			List<?> cntcInsttList = cntcInsttService.selectCntcInsttList(searchCntcInsttVO);
+			List<EgovMap> cntcInsttList = cntcInsttService.selectCntcInsttList(searchCntcInsttVO);
 			model.addAttribute("cntcInsttList", cntcInsttList);
 
 			return "egovframework/com/ssi/syi/iis/EgovCntcSystemRegist";
@@ -197,7 +197,7 @@ public class EgovCntcInsttController {
 				searchCntcInsttVO.setRecordCountPerPage(999999);
 				searchCntcInsttVO.setFirstIndex(0);
 				searchCntcInsttVO.setSearchCondition("CodeList");
-				List<?> cntcInsttList = cntcInsttService.selectCntcInsttList(searchCntcInsttVO);
+				List<EgovMap> cntcInsttList = cntcInsttService.selectCntcInsttList(searchCntcInsttVO);
 				model.addAttribute("cntcInsttList", cntcInsttList);
 
 				return "egovframework/com/ssi/syi/iis/EgovCntcSystemRegist";
@@ -239,7 +239,7 @@ public class EgovCntcInsttController {
 			searchCntcInsttVO.setRecordCountPerPage(999999);
 			searchCntcInsttVO.setFirstIndex(0);
 			searchCntcInsttVO.setSearchCondition("CodeList");
-			List<?> cntcInsttList = cntcInsttService.selectCntcInsttList(searchCntcInsttVO);
+			List<EgovMap> cntcInsttList = cntcInsttService.selectCntcInsttList(searchCntcInsttVO);
 			model.addAttribute("cntcInsttList", cntcInsttList);
 
 			// 연계시스템 리스트박스 데이터
@@ -255,7 +255,7 @@ public class EgovCntcInsttController {
 				}
 			}
 			searchCntcSystemVO.setInsttId(cntcService.getInsttId());
-			List<?> cntcSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
+			List<EgovMap> cntcSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
 			model.addAttribute("cntcSystemList", cntcSystemList);
 
 			// 연계메시지 리스트박스 데이터
@@ -278,7 +278,7 @@ public class EgovCntcInsttController {
 				searchCntcInsttVO.setRecordCountPerPage(999999);
 				searchCntcInsttVO.setFirstIndex(0);
 				searchCntcInsttVO.setSearchCondition("CodeList");
-				List<?> cntcInsttList = cntcInsttService.selectCntcInsttList(searchCntcInsttVO);
+				List<EgovMap> cntcInsttList = cntcInsttService.selectCntcInsttList(searchCntcInsttVO);
 				model.addAttribute("cntcInsttList", cntcInsttList);
 
 				// 연계시스템 리스트박스 데이터
@@ -294,7 +294,7 @@ public class EgovCntcInsttController {
 					}
 				}
 				searchCntcSystemVO.setInsttId(cntcService.getInsttId());
-				List<?> cntcSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
+				List<EgovMap> cntcSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
 				model.addAttribute("cntcSystemList", cntcSystemList);
 
 				// 연계메시지 리스트박스 데이터
@@ -353,14 +353,14 @@ public class EgovCntcInsttController {
 		cntcSystemVO.setRecordCountPerPage(999999);
 		cntcSystemVO.setFirstIndex(0);
 		cntcSystemVO.setSearchCondition("CodeList");
-		List<?> cntcSystemList = cntcInsttService.selectCntcSystemList(cntcSystemVO);
+		List<EgovMap> cntcSystemList = cntcInsttService.selectCntcSystemList(cntcSystemVO);
 		model.addAttribute("cntcSystemList", cntcSystemList);
 
 		/* 연계서비스 리스트 */
 		cntcServiceVO.setRecordCountPerPage(999999);
 		cntcServiceVO.setFirstIndex(0);
 		cntcServiceVO.setSearchCondition("CodeList_InsttId");
-		List<?> cntcServiceList = cntcInsttService.selectCntcServiceList(cntcServiceVO);
+		List<EgovMap> cntcServiceList = cntcInsttService.selectCntcServiceList(cntcServiceVO);
 		model.addAttribute("cntcServiceList", cntcServiceList);
 
 		return "egovframework/com/ssi/syi/iis/EgovCntcInsttDetail";
@@ -391,7 +391,7 @@ public class EgovCntcInsttController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<?> CmmnCodeList = cntcInsttService.selectCntcInsttList(searchVO);
+		List<EgovMap> CmmnCodeList = cntcInsttService.selectCntcInsttList(searchVO);
 		model.addAttribute("resultList", CmmnCodeList);
 
 		int totCnt = cntcInsttService.selectCntcInsttListTotCnt(searchVO);
@@ -462,7 +462,7 @@ public class EgovCntcInsttController {
 			searchCntcInsttVO.setRecordCountPerPage(999999);
 			searchCntcInsttVO.setFirstIndex(0);
 			searchCntcInsttVO.setSearchCondition("CodeList");
-			List<?> cntcInsttList = cntcInsttService.selectCntcInsttList(searchCntcInsttVO);
+			List<EgovMap> cntcInsttList = cntcInsttService.selectCntcInsttList(searchCntcInsttVO);
 			model.addAttribute("cntcInsttList", cntcInsttList);
 
 			// 연계시스템 리스트박스 데이터 2011.09.14
@@ -478,7 +478,7 @@ public class EgovCntcInsttController {
 				}
 			}
 			searchCntcSystemVO.setInsttId(cntcSystem.getInsttId());
-			List<?> cntcSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
+			List<EgovMap> cntcSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
 			model.addAttribute("cntcSystemList", cntcSystemList);
 
 			// 연계메시지 리스트박스 데이터 2011.09.14
@@ -503,7 +503,7 @@ public class EgovCntcInsttController {
 				searchCntcInsttVO.setRecordCountPerPage(999999);
 				searchCntcInsttVO.setFirstIndex(0);
 				searchCntcInsttVO.setSearchCondition("CodeList");
-				List<?> cntcInsttList = cntcInsttService.selectCntcInsttList(searchCntcInsttVO);
+				List<EgovMap> cntcInsttList = cntcInsttService.selectCntcInsttList(searchCntcInsttVO);
 				model.addAttribute("cntcInsttList", cntcInsttList);
 
 				// 연계시스템 리스트박스 데이터 2011.09.14
@@ -519,7 +519,7 @@ public class EgovCntcInsttController {
 					}
 				}
 				searchCntcSystemVO.setInsttId(cntcSystem.getInsttId());
-				List<?> cntcSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
+				List<EgovMap> cntcSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
 				model.addAttribute("cntcSystemList", cntcSystemList);
 
 				// 연계메시지 리스트박스 데이터 2011.09.14
@@ -570,7 +570,7 @@ public class EgovCntcInsttController {
 			searchCntcInsttVO.setRecordCountPerPage(999999);
 			searchCntcInsttVO.setFirstIndex(0);
 			searchCntcInsttVO.setSearchCondition("CodeList");
-			List<?> cntcInsttList = cntcInsttService.selectCntcInsttList(searchCntcInsttVO);
+			List<EgovMap> cntcInsttList = cntcInsttService.selectCntcInsttList(searchCntcInsttVO);
 			model.addAttribute("cntcInsttList", cntcInsttList);
 
 			// 연계시스템 리스트박스 데이터
@@ -586,7 +586,7 @@ public class EgovCntcInsttController {
 				}
 			}
 			searchCntcSystemVO.setInsttId(cntcService.getInsttId());
-			List<?> cntcSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
+			List<EgovMap> cntcSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
 			model.addAttribute("cntcSystemList", cntcSystemList);
 
 			// 연계메시지 리스트박스 데이터
@@ -611,7 +611,7 @@ public class EgovCntcInsttController {
 				searchCntcInsttVO.setRecordCountPerPage(999999);
 				searchCntcInsttVO.setFirstIndex(0);
 				searchCntcInsttVO.setSearchCondition("CodeList");
-				List<?> cntcInsttList = cntcInsttService.selectCntcInsttList(searchCntcInsttVO);
+				List<EgovMap> cntcInsttList = cntcInsttService.selectCntcInsttList(searchCntcInsttVO);
 				model.addAttribute("cntcInsttList", cntcInsttList);
 
 				// 연계시스템 리스트박스 데이터
@@ -627,7 +627,7 @@ public class EgovCntcInsttController {
 					}
 				}
 				searchCntcSystemVO.setInsttId(cntcService.getInsttId());
-				List<?> cntcSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
+				List<EgovMap> cntcSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
 				model.addAttribute("cntcSystemList", cntcSystemList);
 
 				// 연계메시지 리스트박스 데이터
