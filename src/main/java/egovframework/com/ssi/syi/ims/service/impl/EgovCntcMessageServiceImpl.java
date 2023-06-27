@@ -9,6 +9,7 @@ import egovframework.com.ssi.syi.ims.service.CntcMessageVO;
 import egovframework.com.ssi.syi.ims.service.EgovCntcMessageService;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 import javax.annotation.Resource;
 
@@ -92,7 +93,7 @@ public class EgovCntcMessageServiceImpl extends EgovAbstractServiceImpl implemen
 	 * 연계메시지 목록을 조회한다.
 	 */
 	@Override
-	public List<?> selectCntcMessageList(CntcMessageVO searchVO) throws Exception {
+	public List<EgovMap> selectCntcMessageList(CntcMessageVO searchVO) throws Exception {
 		return cntcMessageDAO.selectCntcMessageList(searchVO);
 	}
 
@@ -108,7 +109,7 @@ public class EgovCntcMessageServiceImpl extends EgovAbstractServiceImpl implemen
 	 * 연계메시지항목 목록을 조회한다.
 	 */
 	@Override
-	public List<?> selectCntcMessageItemList(CntcMessageItemVO searchVO) throws Exception {
+	public List<EgovMap> selectCntcMessageItemList(CntcMessageItemVO searchVO) throws Exception {
 		return cntcMessageDAO.selectCntcMessageItemList(searchVO);
 	}
 

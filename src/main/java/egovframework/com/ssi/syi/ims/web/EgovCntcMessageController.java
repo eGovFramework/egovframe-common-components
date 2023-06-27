@@ -25,6 +25,7 @@ import egovframework.com.ssi.syi.ims.service.EgovCntcMessageService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
@@ -123,7 +124,7 @@ public class EgovCntcMessageController {
     		searchCntcMessageVO.setRecordCountPerPage(999999);
     		searchCntcMessageVO.setFirstIndex(0);
     		searchCntcMessageVO.setSearchCondition("CodeList");
-            List<?> cntcMessageList = cntcMessageService.selectCntcMessageList(searchCntcMessageVO);
+            List<EgovMap> cntcMessageList = cntcMessageService.selectCntcMessageList(searchCntcMessageVO);
             model.addAttribute("cntcMessageList", cntcMessageList);
 
             return "egovframework/com/ssi/syi/ims/EgovCntcMessageRegist";
@@ -137,7 +138,7 @@ public class EgovCntcMessageController {
 	    		searchCntcMessageVO.setRecordCountPerPage(999999);
 	    		searchCntcMessageVO.setFirstIndex(0);
 	    		searchCntcMessageVO.setSearchCondition("CodeList");
-	            List<?> cntcMessageList = cntcMessageService.selectCntcMessageList(searchCntcMessageVO);
+	            List<EgovMap> cntcMessageList = cntcMessageService.selectCntcMessageList(searchCntcMessageVO);
 	            model.addAttribute("cntcMessageList", cntcMessageList);
 
 				return "egovframework/com/ssi/syi/ims/EgovCntcMessageRegist";
@@ -183,7 +184,7 @@ public class EgovCntcMessageController {
     		searchCntcMessageVO.setRecordCountPerPage(999999);
     		searchCntcMessageVO.setFirstIndex(0);
     		searchCntcMessageVO.setSearchCondition("CodeList");
-            List<?> cntcMessageList = cntcMessageService.selectCntcMessageList(searchCntcMessageVO);
+            List<EgovMap> cntcMessageList = cntcMessageService.selectCntcMessageList(searchCntcMessageVO);
             model.addAttribute("cntcMessageList", cntcMessageList);
 
             return "egovframework/com/ssi/syi/ims/EgovCntcMessageItemRegist";
@@ -197,7 +198,7 @@ public class EgovCntcMessageController {
 	    		searchCntcMessageVO.setRecordCountPerPage(999999);
 	    		searchCntcMessageVO.setFirstIndex(0);
 	    		searchCntcMessageVO.setSearchCondition("CodeList");
-	            List<?> cntcMessageList = cntcMessageService.selectCntcMessageList(searchCntcMessageVO);
+	            List<EgovMap> cntcMessageList = cntcMessageService.selectCntcMessageList(searchCntcMessageVO);
 	            model.addAttribute("cntcMessageList", cntcMessageList);
 
 				return "egovframework/com/ssi/syi/ims/EgovCntcMessageItemRegist";
@@ -241,7 +242,7 @@ public class EgovCntcMessageController {
 		cntcMessageItemVO.setFirstIndex(0);
 
     	cntcMessageItemVO.setSearchCondition("CodeList");
-        List<?> cntcMessageItemList = cntcMessageService.selectCntcMessageItemList(cntcMessageItemVO);
+        List<EgovMap> cntcMessageItemList = cntcMessageService.selectCntcMessageItemList(cntcMessageItemVO);
         model.addAttribute("cntcMessageItemList", cntcMessageItemList);
 
 		return "egovframework/com/ssi/syi/ims/EgovCntcMessageDetail";
@@ -274,7 +275,7 @@ public class EgovCntcMessageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> CmmnCodeList = cntcMessageService.selectCntcMessageList(searchVO);
+        List<EgovMap> CmmnCodeList = cntcMessageService.selectCntcMessageList(searchVO);
         model.addAttribute("resultList", CmmnCodeList);
 
         int totCnt = cntcMessageService.selectCntcMessageListTotCnt(searchVO);
@@ -308,7 +309,7 @@ public class EgovCntcMessageController {
     		searchCntcMessageVO.setRecordCountPerPage(999999);
     		searchCntcMessageVO.setFirstIndex(0);
     		searchCntcMessageVO.setSearchCondition("CodeList");
-            List<?> cntcMessageList = cntcMessageService.selectCntcMessageList(searchCntcMessageVO);
+            List<EgovMap> cntcMessageList = cntcMessageService.selectCntcMessageList(searchCntcMessageVO);
             model.addAttribute("cntcMessageList", cntcMessageList);
 
             CntcMessage vo = cntcMessageService.selectCntcMessageDetail(cntcMessage);
@@ -324,7 +325,7 @@ public class EgovCntcMessageController {
         		searchCntcMessageVO.setRecordCountPerPage(999999);
         		searchCntcMessageVO.setFirstIndex(0);
         		searchCntcMessageVO.setSearchCondition("CodeList");
-                List<?> cntcMessageList = cntcMessageService.selectCntcMessageList(searchCntcMessageVO);
+                List<EgovMap> cntcMessageList = cntcMessageService.selectCntcMessageList(searchCntcMessageVO);
                 model.addAttribute("cntcMessageList", cntcMessageList);
 
                 CntcMessage vo = cntcMessageService.selectCntcMessageDetail(cntcMessage);
@@ -369,7 +370,7 @@ public class EgovCntcMessageController {
     		searchCntcMessageVO.setRecordCountPerPage(999999);
     		searchCntcMessageVO.setFirstIndex(0);
     		searchCntcMessageVO.setSearchCondition("CodeList");
-            List<?> cntcMessageList = cntcMessageService.selectCntcMessageList(searchCntcMessageVO);
+            List<EgovMap> cntcMessageList = cntcMessageService.selectCntcMessageList(searchCntcMessageVO);
             model.addAttribute("cntcMessageList", cntcMessageList);
 
             CntcMessageItem vo = cntcMessageService.selectCntcMessageItemDetail(cntcMessageItem);
@@ -385,7 +386,7 @@ public class EgovCntcMessageController {
         		searchCntcMessageVO.setRecordCountPerPage(999999);
         		searchCntcMessageVO.setFirstIndex(0);
         		searchCntcMessageVO.setSearchCondition("CodeList");
-                List<?> cntcMessageList = cntcMessageService.selectCntcMessageList(searchCntcMessageVO);
+                List<EgovMap> cntcMessageList = cntcMessageService.selectCntcMessageList(searchCntcMessageVO);
                 model.addAttribute("cntcMessageList", cntcMessageList);
 
                 CntcMessageItem vo = cntcMessageService.selectCntcMessageItemDetail(cntcMessageItem);

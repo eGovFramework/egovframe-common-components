@@ -264,7 +264,7 @@ public class EgovCntcInsttController {
 			searchCntcMessageVO.setRecordCountPerPage(999999);
 			searchCntcMessageVO.setFirstIndex(0);
 			searchCntcMessageVO.setSearchCondition("CodeList");
-			List<?> cntcMessageList = cntcMessageService.selectCntcMessageList(searchCntcMessageVO);
+			List<EgovMap> cntcMessageList = cntcMessageService.selectCntcMessageList(searchCntcMessageVO);
 			model.addAttribute("cntcMessageList", cntcMessageList);
 
 			return "egovframework/com/ssi/syi/iis/EgovCntcServiceRegist";
@@ -342,7 +342,7 @@ public class EgovCntcInsttController {
 		searchCntcMessageVO.setRecordCountPerPage(999999);
 		searchCntcMessageVO.setFirstIndex(0);
 		searchCntcMessageVO.setSearchCondition("CodeList");
-		List<?> cntcMessageList = cntcMessageService.selectCntcMessageList(searchCntcMessageVO);
+		List<EgovMap> cntcMessageList = cntcMessageService.selectCntcMessageList(searchCntcMessageVO);
 		model.addAttribute("cntcMessageList", cntcMessageList);
 
 		/* 연계기관 상세 */
@@ -487,7 +487,7 @@ public class EgovCntcInsttController {
 			searchCntcMessageVO.setRecordCountPerPage(999999);
 			searchCntcMessageVO.setFirstIndex(0);
 			searchCntcMessageVO.setSearchCondition("CodeList");
-			List<?> cntcMessageList = cntcMessageService.selectCntcMessageList(searchCntcMessageVO);
+			List<EgovMap> cntcMessageList = cntcMessageService.selectCntcMessageList(searchCntcMessageVO);
 			model.addAttribute("cntcMessageList", cntcMessageList);
 
 			CntcSystem vo = cntcInsttService.selectCntcSystemDetail(cntcSystem);
@@ -595,7 +595,7 @@ public class EgovCntcInsttController {
 			searchCntcMessageVO.setRecordCountPerPage(999999);
 			searchCntcMessageVO.setFirstIndex(0);
 			searchCntcMessageVO.setSearchCondition("CodeList");
-			List<?> cntcMessageList = cntcMessageService.selectCntcMessageList(searchCntcMessageVO);
+			List<EgovMap> cntcMessageList = cntcMessageService.selectCntcMessageList(searchCntcMessageVO);
 			model.addAttribute("cntcMessageList", cntcMessageList);
 
 			CntcService vo = cntcInsttService.selectCntcServiceDetail(cntcService);
