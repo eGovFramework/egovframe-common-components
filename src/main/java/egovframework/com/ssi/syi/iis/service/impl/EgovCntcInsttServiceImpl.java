@@ -11,6 +11,7 @@ import egovframework.com.ssi.syi.iis.service.CntcSystemVO;
 import egovframework.com.ssi.syi.iis.service.EgovCntcInsttService;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 import javax.annotation.Resource;
 
@@ -122,7 +123,7 @@ public class EgovCntcInsttServiceImpl extends EgovAbstractServiceImpl implements
 	 * 연계기관 목록을 조회한다.
 	 */
 	@Override
-	public List<?> selectCntcInsttList(CntcInsttVO searchVO) throws Exception {
+	public List<EgovMap> selectCntcInsttList(CntcInsttVO searchVO) throws Exception {
         return cntcInsttDAO.selectCntcInsttList(searchVO);
 	}
 
@@ -138,7 +139,7 @@ public class EgovCntcInsttServiceImpl extends EgovAbstractServiceImpl implements
 	 * 연계시스템 목록을 조회한다.
 	 */
 	@Override
-	public List<?> selectCntcSystemList(CntcSystemVO searchVO) throws Exception {
+	public List<EgovMap> selectCntcSystemList(CntcSystemVO searchVO) throws Exception {
         return cntcInsttDAO.selectCntcSystemList(searchVO);
 	}
 
@@ -154,7 +155,7 @@ public class EgovCntcInsttServiceImpl extends EgovAbstractServiceImpl implements
 	 * 연계서비스 목록을 조회한다.
 	 */
 	@Override
-	public List<?> selectCntcServiceList(CntcServiceVO searchVO) throws Exception {
+	public List<EgovMap> selectCntcServiceList(CntcServiceVO searchVO) throws Exception {
         return cntcInsttDAO.selectCntcServiceList(searchVO);
 	}
 
