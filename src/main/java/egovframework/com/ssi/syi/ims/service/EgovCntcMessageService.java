@@ -2,6 +2,8 @@ package egovframework.com.ssi.syi.ims.service;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 /**
  *
  * 연계메시지에 관한 서비스 인터페이스 클래스를 정의한다
@@ -72,7 +74,7 @@ public interface EgovCntcMessageService {
 	 * @return List(연계메시지 목록)
 	 * @throws Exception
 	 */
-	List<?> selectCntcMessageList(CntcMessageVO searchVO) throws Exception;
+	List<EgovMap> selectCntcMessageList(CntcMessageVO searchVO) throws Exception;
 
     /**
 	 * 연계메시지 총 개수를 조회한다.
@@ -87,7 +89,7 @@ public interface EgovCntcMessageService {
 	 * @return List(연계메시지 목록)
 	 * @throws Exception
 	 */
-	List<?> selectCntcMessageItemList(CntcMessageItemVO searchVO) throws Exception;
+	List<EgovMap> selectCntcMessageItemList(CntcMessageItemVO searchVO) throws Exception;
 
     /**
 	 * 연계메시지항목 총 개수를 조회한다.

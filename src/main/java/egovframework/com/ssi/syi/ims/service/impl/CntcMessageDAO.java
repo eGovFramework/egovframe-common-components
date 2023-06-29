@@ -8,6 +8,7 @@ import egovframework.com.ssi.syi.ims.service.CntcMessageItem;
 import egovframework.com.ssi.syi.ims.service.CntcMessageItemVO;
 import egovframework.com.ssi.syi.ims.service.CntcMessageVO;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -91,7 +92,7 @@ public class CntcMessageDAO extends EgovComAbstractDAO {
 	 * @return List(연계메시지 목록)
 	 * @throws Exception
 	 */
-	public List<?> selectCntcMessageList(CntcMessageVO searchVO) throws Exception {
+	public List<EgovMap> selectCntcMessageList(CntcMessageVO searchVO) throws Exception {
 		return selectList("CntcMessageDAO.selectCntcMessageList", searchVO);
 	}
 
@@ -110,7 +111,7 @@ public class CntcMessageDAO extends EgovComAbstractDAO {
 	 * @return List(연계메시지 목록)
 	 * @throws Exception
 	 */
-	public List<?> selectCntcMessageItemList(CntcMessageItemVO searchVO) throws Exception {
+	public List<EgovMap> selectCntcMessageItemList(CntcMessageItemVO searchVO) throws Exception {
 		return selectList("CntcMessageDAO.selectCntcMessageItemList", searchVO);
 	}
 
