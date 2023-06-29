@@ -7,6 +7,7 @@ import egovframework.com.ssi.syi.sim.service.SystemCntc;
 import egovframework.com.ssi.syi.sim.service.SystemCntcVO;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 import javax.annotation.Resource;
 
@@ -75,7 +76,7 @@ public class EgovSystemCntcServiceImpl extends EgovAbstractServiceImpl implement
 	 * 시스템연계 목록을 조회한다.
 	 */
 	@Override
-	public List<?> selectSystemCntcList(SystemCntcVO searchVO) throws Exception {
+	public List<EgovMap> selectSystemCntcList(SystemCntcVO searchVO) throws Exception {
         return systemCntcDAO.selectSystemCntcList(searchVO);
 	}
 

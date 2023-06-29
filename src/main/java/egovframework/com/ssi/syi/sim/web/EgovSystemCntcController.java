@@ -117,7 +117,7 @@ public class EgovSystemCntcController {
     		searchCntcInsttVO.setRecordCountPerPage(999999);
     		searchCntcInsttVO.setFirstIndex(0);
     		searchCntcInsttVO.setSearchCondition("CodeList");
-            List<?> cntcInsttList = cntcInsttService.selectCntcInsttList(searchCntcInsttVO);
+            List<EgovMap> cntcInsttList = cntcInsttService.selectCntcInsttList(searchCntcInsttVO);
             model.addAttribute("cntcInsttList", cntcInsttList);
 
 			// 연계시스템 리스트박스 데이터
@@ -133,7 +133,7 @@ public class EgovSystemCntcController {
             	}
             }
             searchCntcSystemVO.setInsttId(systemCntc.getProvdInsttId());
-            List<?> cntcProvdSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
+            List<EgovMap> cntcProvdSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
             model.addAttribute("cntcProvdSystemList", cntcProvdSystemList);
 
             if (systemCntc.getRequstInsttId().equals("")) {
@@ -143,7 +143,7 @@ public class EgovSystemCntcController {
             	}
             }
             searchCntcSystemVO.setInsttId(systemCntc.getRequstInsttId());
-            List<?> cntcRequstSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
+            List<EgovMap> cntcRequstSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
             model.addAttribute("cntcRequstSystemList", cntcRequstSystemList);
 
 			// 연계서비스 리스트박스 데이터
@@ -160,7 +160,7 @@ public class EgovSystemCntcController {
             	}
             }
             searchCntcServiceVO.setSysId(systemCntc.getProvdSysId());
-            List<?> cntcProvdServiceList = cntcInsttService.selectCntcServiceList(searchCntcServiceVO);
+            List<EgovMap> cntcProvdServiceList = cntcInsttService.selectCntcServiceList(searchCntcServiceVO);
             model.addAttribute("cntcProvdServiceList", cntcProvdServiceList);
 
             return "egovframework/com/ssi/syi/sim/EgovSystemCntcRegist";
@@ -220,7 +220,7 @@ public class EgovSystemCntcController {
 		searchCntcInsttVO.setRecordCountPerPage(999999);
 		searchCntcInsttVO.setFirstIndex(0);
 		searchCntcInsttVO.setSearchCondition("CodeList");
-        List<?> cntcInsttList = cntcInsttService.selectCntcInsttList(searchCntcInsttVO);
+        List<EgovMap> cntcInsttList = cntcInsttService.selectCntcInsttList(searchCntcInsttVO);
         model.addAttribute("cntcInsttList", cntcInsttList);
 
 		// 연계시스템 리스트박스 데이터
@@ -230,11 +230,11 @@ public class EgovSystemCntcController {
         searchCntcSystemVO.setFirstIndex(0);
         searchCntcSystemVO.setSearchCondition("CodeList");
         searchCntcSystemVO.setInsttId(vo.getProvdInsttId());
-        List<?> cntcProvdSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
+        List<EgovMap> cntcProvdSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
         model.addAttribute("cntcProvdSystemList", cntcProvdSystemList);
 
         searchCntcSystemVO.setInsttId(vo.getRequstInsttId());
-        List<?> cntcRequstSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
+        List<EgovMap> cntcRequstSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
         model.addAttribute("cntcRequstSystemList", cntcRequstSystemList);
 
 		// 연계서비스 리스트박스 데이터
@@ -245,7 +245,7 @@ public class EgovSystemCntcController {
         searchCntcServiceVO.setSearchCondition("CodeList");
         searchCntcServiceVO.setInsttId(vo.getProvdInsttId());
         searchCntcServiceVO.setSysId(vo.getProvdSysId());
-        List<?> cntcProvdServiceList = cntcInsttService.selectCntcServiceList(searchCntcServiceVO);
+        List<EgovMap> cntcProvdServiceList = cntcInsttService.selectCntcServiceList(searchCntcServiceVO);
         model.addAttribute("cntcProvdServiceList", cntcProvdServiceList);
 
 		return "egovframework/com/ssi/syi/sim/EgovSystemCntcDetail";
@@ -289,7 +289,7 @@ public class EgovSystemCntcController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> CmmnCodeList = systemCntcService.selectSystemCntcList(searchVO);
+        List<EgovMap> CmmnCodeList = systemCntcService.selectSystemCntcList(searchVO);
         model.addAttribute("resultList", CmmnCodeList);
 
         int totCnt = systemCntcService.selectSystemCntcListTotCnt(searchVO);
@@ -330,7 +330,7 @@ public class EgovSystemCntcController {
     		searchCntcInsttVO.setRecordCountPerPage(999999);
     		searchCntcInsttVO.setFirstIndex(0);
     		searchCntcInsttVO.setSearchCondition("CodeList");
-            List<?> cntcInsttList = cntcInsttService.selectCntcInsttList(searchCntcInsttVO);
+            List<EgovMap> cntcInsttList = cntcInsttService.selectCntcInsttList(searchCntcInsttVO);
             model.addAttribute("cntcInsttList", cntcInsttList);
 
     		// 연계시스템 리스트박스 데이터
@@ -340,11 +340,11 @@ public class EgovSystemCntcController {
             searchCntcSystemVO.setFirstIndex(0);
             searchCntcSystemVO.setSearchCondition("CodeList");
             searchCntcSystemVO.setInsttId(systemCntc.getProvdInsttId());
-            List<?> cntcProvdSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
+            List<EgovMap> cntcProvdSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
             model.addAttribute("cntcProvdSystemList", cntcProvdSystemList);
 
             searchCntcSystemVO.setInsttId(systemCntc.getRequstInsttId());
-            List<?> cntcRequstSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
+            List<EgovMap> cntcRequstSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
             model.addAttribute("cntcRequstSystemList", cntcRequstSystemList);
 
     		// 연계서비스 리스트박스 데이터
@@ -355,7 +355,7 @@ public class EgovSystemCntcController {
             searchCntcServiceVO.setSearchCondition("CodeList");
             searchCntcServiceVO.setInsttId(systemCntc.getProvdInsttId());
             searchCntcServiceVO.setSysId(systemCntc.getProvdSysId());
-            List<?> cntcProvdServiceList = cntcInsttService.selectCntcServiceList(searchCntcServiceVO);
+            List<EgovMap> cntcProvdServiceList = cntcInsttService.selectCntcServiceList(searchCntcServiceVO);
             model.addAttribute("cntcProvdServiceList", cntcProvdServiceList);
 
     		return "egovframework/com/ssi/syi/sim/EgovSystemCntcUpdt";
@@ -375,7 +375,7 @@ public class EgovSystemCntcController {
 	    		searchCntcInsttVO.setRecordCountPerPage(999999);
 	    		searchCntcInsttVO.setFirstIndex(0);
 	    		searchCntcInsttVO.setSearchCondition("CodeList");
-	            List<?> cntcInsttList = cntcInsttService.selectCntcInsttList(searchCntcInsttVO);
+	            List<EgovMap> cntcInsttList = cntcInsttService.selectCntcInsttList(searchCntcInsttVO);
 	            model.addAttribute("cntcInsttList", cntcInsttList);
 
         		// 연계시스템 리스트박스 데이터
@@ -385,11 +385,11 @@ public class EgovSystemCntcController {
                 searchCntcSystemVO.setFirstIndex(0);
                 searchCntcSystemVO.setSearchCondition("CodeList");
                 searchCntcSystemVO.setInsttId(systemCntc.getProvdInsttId());
-                List<?> cntcProvdSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
+                List<EgovMap> cntcProvdSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
                 model.addAttribute("cntcProvdSystemList", cntcProvdSystemList);
 
                 searchCntcSystemVO.setInsttId(systemCntc.getRequstInsttId());
-                List<?> cntcRequstSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
+                List<EgovMap> cntcRequstSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
                 model.addAttribute("cntcRequstSystemList", cntcRequstSystemList);
 
         		// 연계서비스 리스트박스 데이터
@@ -400,7 +400,7 @@ public class EgovSystemCntcController {
                 searchCntcServiceVO.setSearchCondition("CodeList");
                 searchCntcServiceVO.setInsttId(systemCntc.getProvdInsttId());
                 searchCntcServiceVO.setSysId(systemCntc.getProvdSysId());
-                List<?> cntcProvdServiceList = cntcInsttService.selectCntcServiceList(searchCntcServiceVO);
+                List<EgovMap> cntcProvdServiceList = cntcInsttService.selectCntcServiceList(searchCntcServiceVO);
                 model.addAttribute("cntcProvdServiceList", cntcProvdServiceList);
 
         		return "egovframework/com/ssi/syi/sim/EgovSystemCntcUpdt";
@@ -458,7 +458,7 @@ public class EgovSystemCntcController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> CmmnCodeList = systemCntcService.selectSystemCntcList(searchVO);
+        List<EgovMap> CmmnCodeList = systemCntcService.selectSystemCntcList(searchVO);
         model.addAttribute("resultList", CmmnCodeList);
 
         int totCnt = systemCntcService.selectSystemCntcListTotCnt(searchVO);
@@ -513,7 +513,7 @@ public class EgovSystemCntcController {
 		searchCntcInsttVO.setRecordCountPerPage(999999);
 		searchCntcInsttVO.setFirstIndex(0);
 		searchCntcInsttVO.setSearchCondition("CodeList");
-        List<?> cntcInsttList = cntcInsttService.selectCntcInsttList(searchCntcInsttVO);
+        List<EgovMap> cntcInsttList = cntcInsttService.selectCntcInsttList(searchCntcInsttVO);
         model.addAttribute("cntcInsttList", cntcInsttList);
 
 		// 연계시스템 리스트박스 데이터
@@ -523,11 +523,11 @@ public class EgovSystemCntcController {
         searchCntcSystemVO.setFirstIndex(0);
         searchCntcSystemVO.setSearchCondition("CodeList");
         searchCntcSystemVO.setInsttId(vo.getProvdInsttId());
-        List<?> cntcProvdSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
+        List<EgovMap> cntcProvdSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
         model.addAttribute("cntcProvdSystemList", cntcProvdSystemList);
 
         searchCntcSystemVO.setInsttId(vo.getRequstInsttId());
-        List<?> cntcRequstSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
+        List<EgovMap> cntcRequstSystemList = cntcInsttService.selectCntcSystemList(searchCntcSystemVO);
         model.addAttribute("cntcRequstSystemList", cntcRequstSystemList);
 
 		// 연계서비스 리스트박스 데이터
@@ -538,7 +538,7 @@ public class EgovSystemCntcController {
         searchCntcServiceVO.setSearchCondition("CodeList");
         searchCntcServiceVO.setInsttId(vo.getProvdInsttId());
         searchCntcServiceVO.setSysId(vo.getProvdSysId());
-        List<?> cntcProvdServiceList = cntcInsttService.selectCntcServiceList(searchCntcServiceVO);
+        List<EgovMap> cntcProvdServiceList = cntcInsttService.selectCntcServiceList(searchCntcServiceVO);
         model.addAttribute("cntcProvdServiceList", cntcProvdServiceList);
 
 		return "egovframework/com/ssi/syi/sim/EgovSystemCntcDetail";
