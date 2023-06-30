@@ -6,6 +6,7 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.ssi.syi.ist.service.CntcSttus;
 import egovframework.com.ssi.syi.ist.service.CntcSttusVO;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -46,7 +47,7 @@ public class CntcSttusDAO extends EgovComAbstractDAO {
      * @return List(연계현황 목록)
      * @throws Exception
      */
-    public List<?> selectCntcSttusList(CntcSttusVO searchVO) throws Exception {
+    public List<EgovMap> selectCntcSttusList(CntcSttusVO searchVO) throws Exception {
         return selectList("CntcSttusDAO.selectCntcSttusList", searchVO);
     }
 

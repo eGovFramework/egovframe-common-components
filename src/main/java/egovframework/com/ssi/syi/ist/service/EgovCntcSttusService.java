@@ -2,6 +2,8 @@ package egovframework.com.ssi.syi.ist.service;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 /**
  *
  * 연계현황에 관한 서비스 인터페이스 클래스를 정의한다
@@ -36,7 +38,7 @@ public interface EgovCntcSttusService {
 	 * @return List(연계현황 목록)
 	 * @throws Exception
 	 */
-	List<?> selectCntcSttusList(CntcSttusVO searchVO) throws Exception;
+	List<EgovMap> selectCntcSttusList(CntcSttusVO searchVO) throws Exception;
 
     /**
 	 * 연계현황 총 개수를 조회한다.

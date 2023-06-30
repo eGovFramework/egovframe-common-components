@@ -9,6 +9,7 @@ import egovframework.com.ssi.syi.ist.service.CntcSttusVO;
 import egovframework.com.ssi.syi.ist.service.EgovCntcSttusService;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 import javax.annotation.Resource;
@@ -94,7 +95,7 @@ public class EgovCntcSttusController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> CmmnCodeList = cntcSttusService.selectCntcSttusList(searchVO);
+        List<EgovMap> CmmnCodeList = cntcSttusService.selectCntcSttusList(searchVO);
         model.addAttribute("resultList", CmmnCodeList);
 
         int totCnt = cntcSttusService.selectCntcSttusListTotCnt(searchVO);

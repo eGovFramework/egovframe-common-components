@@ -7,6 +7,7 @@ import egovframework.com.ssi.syi.ist.service.CntcSttusVO;
 import egovframework.com.ssi.syi.ist.service.EgovCntcSttusService;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 import javax.annotation.Resource;
 
@@ -51,7 +52,7 @@ public class EgovCntcSttusServiceImpl extends EgovAbstractServiceImpl implements
 	 * 연계현황 목록을 조회한다.
 	 */
 	@Override
-	public List<?> selectCntcSttusList(CntcSttusVO searchVO) throws Exception {
+	public List<EgovMap> selectCntcSttusList(CntcSttusVO searchVO) throws Exception {
         return cntcSttusDAO.selectCntcSttusList(searchVO);
 	}
 
