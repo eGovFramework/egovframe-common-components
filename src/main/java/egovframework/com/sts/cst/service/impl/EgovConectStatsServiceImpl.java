@@ -42,7 +42,7 @@ public class EgovConectStatsServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @exception Exception
 	 */
     @Override
-	public List<?> selectConectStats(StatsVO vo) throws Exception {
+	public List<StatsVO> selectConectStats(StatsVO vo) throws Exception {
         return conectStatsDAO.selectConectStats(vo);
 	}
 }

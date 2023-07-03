@@ -57,7 +57,7 @@ public class EgovConectStatsController {
 
 		if (statsVO.getFromDate() != null && !"".equals(statsVO.getFromDate())) {
 
-			List<?> conectStats = conectStatsService.selectConectStats(statsVO);
+			List<StatsVO> conectStats = conectStatsService.selectConectStats(statsVO);
 
 			// 1. 서비스별
 			if ("SERVICE".equals(statsVO.getStatsKind())) {

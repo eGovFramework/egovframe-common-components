@@ -29,5 +29,5 @@ public interface EgovConectStatsService {
 	 * @return List
 	 * @exception Exception
 	 */
-	List<?> selectConectStats(StatsVO vo) throws Exception;
+	List<StatsVO> selectConectStats(StatsVO vo) throws Exception;
 }
