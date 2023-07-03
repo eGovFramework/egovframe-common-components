@@ -61,7 +61,7 @@ public class EgovScrinStatsController {
 
 		if (statsVO.getFromDate() != null && !"".equals(statsVO.getFromDate())) {
 
-			List<?> scrinStats = scrinStatsService.selectScrinStats(statsVO);
+			List<StatsVO> scrinStats = scrinStatsService.selectScrinStats(statsVO);
 			// 그래프에 표시될 이미지 길이를 결정한다.
 			float iMaxUnit = 50.0f;
 			for (int i = 0; i < scrinStats.size(); i++) {

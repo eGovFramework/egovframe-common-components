@@ -42,7 +42,7 @@ public class EgovScrinStatsServiceImpl extends EgovAbstractServiceImpl implement
 	 * @exception Exception
 	 */
     @Override
-	public List<?> selectScrinStats(StatsVO vo) throws Exception {
+	public List<StatsVO> selectScrinStats(StatsVO vo) throws Exception {
         return scrinStatsDAO.selectScrinStats(vo);
 	}
 }
