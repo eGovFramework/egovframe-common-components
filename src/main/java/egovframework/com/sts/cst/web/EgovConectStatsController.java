@@ -1,5 +1,7 @@
 package egovframework.com.sts.cst.web;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import egovframework.com.cmm.annotation.IncludedInfo;
@@ -8,6 +10,7 @@ import egovframework.com.sts.cst.service.EgovConectStatsService;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.validator.GenericValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -88,6 +91,12 @@ public class EgovConectStatsController {
 				model.addAttribute("conectStats", conectStats);
 				model.addAttribute("statsInfo", statsVO);
 			}
+            if (GenericValidator.isDate(statsVO.getFromDate(), "yyyyMMdd", true)) {
+                model.addAttribute("fDate", (LocalDate.parse(statsVO.getFromDate(), DateTimeFormatter.BASIC_ISO_DATE).format(DateTimeFormatter.ISO_LOCAL_DATE)));
+            }
+            if (GenericValidator.isDate(statsVO.getToDate(), "yyyyMMdd", true)) {
+                model.addAttribute("tDate", (LocalDate.parse(statsVO.getToDate(), DateTimeFormatter.BASIC_ISO_DATE).format(DateTimeFormatter.ISO_LOCAL_DATE)));
+            }
 		}
         return "egovframework/com/sts/cst/EgovConectStats";
 	}
