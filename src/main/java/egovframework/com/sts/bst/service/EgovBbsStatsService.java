@@ -29,7 +29,7 @@ public interface EgovBbsStatsService {
 	 * @return List
 	 * @exception Exception
 	 */
-	List<?> selectBbsCretCntStats(StatsVO vo) throws Exception;
+	List<StatsVO> selectBbsCretCntStats(StatsVO vo) throws Exception;
 
 	/**
 	 * 게시물 총조회수 통계를 조회한다
@@ -37,7 +37,7 @@ public interface EgovBbsStatsService {
 	 * @return List
 	 * @exception Exception
 	 */
-	List<?> selectBbsTotCntStats(StatsVO vo) throws Exception;
+	List<StatsVO> selectBbsTotCntStats(StatsVO vo) throws Exception;
 
 	/**
 	 * 게시물 평균조회수 통계를 조회한다
@@ -45,7 +45,7 @@ public interface EgovBbsStatsService {
 	 * @return List
 	 * @exception Exception
 	 */
-	List<?> selectBbsAvgCntStats(StatsVO vo) throws Exception;
+	List<StatsVO> selectBbsAvgCntStats(StatsVO vo) throws Exception;
 
 	/**
 	 * 최고조회 게시물 통계정보를 조회한다
@@ -53,7 +53,7 @@ public interface EgovBbsStatsService {
 	 * @return List
 	 * @exception Exception
 	 */
-	List<?> selectBbsMaxCntStats(StatsVO vo) throws Exception;
+	List<StatsVO> selectBbsMaxCntStats(StatsVO vo) throws Exception;
 
 	/**
 	 * 최소조회 게시물 통계정보를 조회한다
@@ -61,7 +61,7 @@ public interface EgovBbsStatsService {
 	 * @return List
 	 * @exception Exception
 	 */
-	List<?> selectBbsMinCntStats(StatsVO vo) throws Exception;
+	List<StatsVO> selectBbsMinCntStats(StatsVO vo) throws Exception;
 
 	/**
 	 * 게시물 최고게시자 통계를 조회한다
@@ -69,7 +69,7 @@ public interface EgovBbsStatsService {
 	 * @return List
 	 * @exception Exception
 	 */
-	List<?> selectBbsMaxUserStats(StatsVO vo) throws Exception;
+	List<StatsVO> selectBbsMaxUserStats(StatsVO vo) throws Exception;
 
 	/**
 	 * 게시물 통계를 위한 집계를 하루단위로 작업하는 배치 프로그램

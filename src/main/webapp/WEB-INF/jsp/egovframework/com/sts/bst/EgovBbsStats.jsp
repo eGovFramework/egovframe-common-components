@@ -259,8 +259,8 @@ function getNextWeek(v,t){
 				<input type="hidden" name="cal_url" value="<c:url value='/sym/cal/EgovNormalCalPopup.do'/>" />
                   <input type="hidden" name="fromDate" value="<c:out value='${statsInfo.fromDate}'/>" />
                   <input type="hidden" name="toDate" value="<c:out value='${statsInfo.toDate}'/>" />
-                  <input type="text" name="fDate" size="10" title="<spring:message code="comStsBst.bbsStats.fromDate" />" id="fDate" value="<c:out value='${statsInfo.fromDate}'/>"/> <!-- 시작일자 -->
-                  <input type="text" name="tDate" size="10" tabindex="2" title="<spring:message code="comStsBst.bbsStats.toDate" />" id="tDate" value="<c:out value='${statsInfo.toDate}'/>"/> <!-- 종료일자 -->
+                  <input type="text" name="fDate" size="10" title="<spring:message code="comStsBst.bbsStats.fromDate" />" id="fDate" value="<c:out value='${fDate}'/>"/> <!-- 시작일자 -->
+                  <input type="text" name="tDate" size="10" tabindex="2" title="<spring:message code="comStsBst.bbsStats.toDate" />" id="tDate" value="<c:out value='${tDate}'/>"/> <!-- 종료일자 -->
 				
 				<label for="" style="margin-left:10px"><spring:message code="comStsBst.bbsStats.periodKind" /> : </label> <!-- 기간구분 -->
 				<select id="PD" name="PD" class="select" onchange="fnChangePdKind();" title="<spring:message code="comStsBst.bbsStats.periodKind" />" >

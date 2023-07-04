@@ -1,15 +1,19 @@
 package egovframework.com.sts.bst.web;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.sts.bst.service.EgovBbsStatsService;
 import egovframework.com.sts.com.StatsVO;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.validator.GenericValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -63,9 +67,9 @@ public class EgovBbsStatsController {
     	ComDefaultCodeVO vo = new ComDefaultCodeVO();
 
     	vo.setCodeId("COM101");
-		List<?> code004 = cmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> code004 = cmmUseService.selectCmmCodeDetail(vo);
 		vo.setCodeId("COM005");
-		List<?> code005 = cmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> code005 = cmmUseService.selectCmmCodeDetail(vo);
 
 		model.addAttribute("COM101", code004);
 		model.addAttribute("COM005", code005);
@@ -73,10 +77,10 @@ public class EgovBbsStatsController {
 		if (statsVO.getFromDate() != null && !"".equals(statsVO.getFromDate())) {
 
 			// 탭구분 : 생성글수(tab1), 총조회수(tab2), 평균조회수(tab3), 최고/최소조회수(tab4), 최고게시자(tab5)
-			List<?> bbsStatsList = null;
-			List<?> bbsMaxStatsList = null;
-			List<?> bbsMinStatsList = null;
-			List<?> bbsMaxNtcrList = null;
+			List<StatsVO> bbsStatsList = null;
+			List<StatsVO> bbsMaxStatsList = null;
+			List<StatsVO> bbsMinStatsList = null;
+			List<StatsVO> bbsMaxNtcrList = null;
 
 			// 1. 생성글수(tab1)
 			if ("tab1".equals(statsVO.getTabKind())) {
@@ -182,6 +186,12 @@ public class EgovBbsStatsController {
 				model.addAttribute("bbsMaxNtcrList", bbsMaxNtcrList);
 				model.addAttribute("statsInfo", statsVO);
 			}
+            if (GenericValidator.isDate(statsVO.getFromDate(), "yyyyMMdd", true)) {
+                model.addAttribute("fDate", (LocalDate.parse(statsVO.getFromDate(), DateTimeFormatter.BASIC_ISO_DATE).format(DateTimeFormatter.ISO_LOCAL_DATE)));
+            }
+            if (GenericValidator.isDate(statsVO.getToDate(), "yyyyMMdd", true)) {
+                model.addAttribute("tDate", (LocalDate.parse(statsVO.getToDate(), DateTimeFormatter.BASIC_ISO_DATE).format(DateTimeFormatter.ISO_LOCAL_DATE)));
+            }
 		} else {
 			statsVO.setTabKind("tab1");
 			model.addAttribute("statsInfo", statsVO);

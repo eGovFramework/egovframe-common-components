@@ -36,7 +36,7 @@ public class BbsStatsDAO extends EgovComAbstractDAO {
 	 * @return List
 	 * @exception Exception
 	 */
-    public List<?> selectBbsCretCntStats(StatsVO vo) throws Exception {
+    public List<StatsVO> selectBbsCretCntStats(StatsVO vo) throws Exception {
         return selectList("BbsStatsDAO.selectBbsCretCntStats", vo);
     }
 
@@ -46,7 +46,7 @@ public class BbsStatsDAO extends EgovComAbstractDAO {
 	 * @return List
 	 * @exception Exception
 	 */
-    public List<?> selectBbsTotCntStats(StatsVO vo) throws Exception {
+    public List<StatsVO> selectBbsTotCntStats(StatsVO vo) throws Exception {
         return selectList("BbsStatsDAO.selectBbsTotCntStats", vo);
     }
 
@@ -56,7 +56,7 @@ public class BbsStatsDAO extends EgovComAbstractDAO {
 	 * @return List
 	 * @exception Exception
 	 */
-    public List<?> selectBbsAvgCntStats(StatsVO vo) throws Exception {
+    public List<StatsVO> selectBbsAvgCntStats(StatsVO vo) throws Exception {
         return selectList("BbsStatsDAO.selectBbsAvgCntStats", vo);
     }
 
@@ -66,7 +66,7 @@ public class BbsStatsDAO extends EgovComAbstractDAO {
 	 * @return List
 	 * @exception Exception
 	 */
-    public List<?> selectBbsMaxCntStats(StatsVO vo) throws Exception {
+    public List<StatsVO> selectBbsMaxCntStats(StatsVO vo) throws Exception {
         return selectList("BbsStatsDAO.selectBbsMaxCntStats", vo);
     }
 
@@ -76,7 +76,7 @@ public class BbsStatsDAO extends EgovComAbstractDAO {
 	 * @return List
 	 * @exception Exception
 	 */
-    public List<?> selectBbsMinCntStats(StatsVO vo) throws Exception {
+    public List<StatsVO> selectBbsMinCntStats(StatsVO vo) throws Exception {
         return selectList("BbsStatsDAO.selectBbsMinCntStats", vo);
     }
 
@@ -86,7 +86,7 @@ public class BbsStatsDAO extends EgovComAbstractDAO {
 	 * @return List
 	 * @exception Exception
 	 */
-    public List<?> selectBbsMaxUserStats(StatsVO vo) throws Exception {
+    public List<StatsVO> selectBbsMaxUserStats(StatsVO vo) throws Exception {
         return selectList("BbsStatsDAO.selectBbsMaxUserStats", vo);
     }
 

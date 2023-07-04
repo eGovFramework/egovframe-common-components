@@ -42,7 +42,7 @@ public class EgovBbsStatsServiceImpl extends EgovAbstractServiceImpl implements
 	 * @exception Exception
 	 */
     @Override
-	public List<?> selectBbsCretCntStats(StatsVO vo) throws Exception {
+	public List<StatsVO> selectBbsCretCntStats(StatsVO vo) throws Exception {
         return bbsStatsDAO.selectBbsCretCntStats(vo);
 	}
 
@@ -53,7 +53,7 @@ public class EgovBbsStatsServiceImpl extends EgovAbstractServiceImpl implements
 	 * @exception Exception
 	 */
     @Override
-	public List<?> selectBbsTotCntStats(StatsVO vo) throws Exception {
+	public List<StatsVO> selectBbsTotCntStats(StatsVO vo) throws Exception {
         return bbsStatsDAO.selectBbsTotCntStats(vo);
 	}
 
@@ -64,7 +64,7 @@ public class EgovBbsStatsServiceImpl extends EgovAbstractServiceImpl implements
 	 * @exception Exception
 	 */
     @Override
-	public List<?> selectBbsAvgCntStats(StatsVO vo) throws Exception {
+	public List<StatsVO> selectBbsAvgCntStats(StatsVO vo) throws Exception {
         return bbsStatsDAO.selectBbsAvgCntStats(vo);
 	}
 
@@ -75,7 +75,7 @@ public class EgovBbsStatsServiceImpl extends EgovAbstractServiceImpl implements
 	 * @exception Exception
 	 */
     @Override
-	public List<?> selectBbsMaxCntStats(StatsVO vo) throws Exception {
+	public List<StatsVO> selectBbsMaxCntStats(StatsVO vo) throws Exception {
         return bbsStatsDAO.selectBbsMaxCntStats(vo);
 	}
 
@@ -86,7 +86,7 @@ public class EgovBbsStatsServiceImpl extends EgovAbstractServiceImpl implements
 	 * @exception Exception
 	 */
     @Override
-	public List<?> selectBbsMinCntStats(StatsVO vo) throws Exception {
+	public List<StatsVO> selectBbsMinCntStats(StatsVO vo) throws Exception {
         return bbsStatsDAO.selectBbsMinCntStats(vo);
 	}
 
@@ -97,7 +97,7 @@ public class EgovBbsStatsServiceImpl extends EgovAbstractServiceImpl implements
 	 * @exception Exception
 	 */
     @Override
-	public List<?> selectBbsMaxUserStats(StatsVO vo) throws Exception {
+	public List<StatsVO> selectBbsMaxUserStats(StatsVO vo) throws Exception {
         return bbsStatsDAO.selectBbsMaxUserStats(vo);
 	}
 
