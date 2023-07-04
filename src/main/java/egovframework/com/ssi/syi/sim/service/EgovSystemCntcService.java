@@ -2,6 +2,8 @@ package egovframework.com.ssi.syi.sim.service;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 /**
  *
  * 시스템연계에 관한 서비스 인터페이스 클래스를 정의한다
@@ -58,7 +60,7 @@ public interface EgovSystemCntcService {
 	 * @return List(시스템연계 목록)
 	 * @throws Exception
 	 */
-	List<?> selectSystemCntcList(SystemCntcVO searchVO) throws Exception;
+	List<EgovMap> selectSystemCntcList(SystemCntcVO searchVO) throws Exception;
 
     /**
 	 * 시스템연계 총 개수를 조회한다.

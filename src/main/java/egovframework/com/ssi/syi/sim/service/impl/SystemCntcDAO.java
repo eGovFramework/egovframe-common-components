@@ -6,6 +6,7 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.ssi.syi.sim.service.SystemCntc;
 import egovframework.com.ssi.syi.sim.service.SystemCntcVO;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -72,7 +73,7 @@ public class SystemCntcDAO extends EgovComAbstractDAO {
      * @return List(시스템연계 목록)
      * @throws Exception
      */
-    public List<?> selectSystemCntcList(SystemCntcVO searchVO) throws Exception {
+    public List<EgovMap> selectSystemCntcList(SystemCntcVO searchVO) throws Exception {
         return selectList("SystemCntcDAO.selectSystemCntcList", searchVO);
     }
 
