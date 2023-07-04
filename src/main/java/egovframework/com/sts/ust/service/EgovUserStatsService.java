@@ -29,7 +29,7 @@ public interface EgovUserStatsService {
 	 * @return List
 	 * @exception Exception
 	 */
-	List<?> selectUserStats(StatsVO vo) throws Exception;
+	List<StatsVO> selectUserStats(StatsVO vo) throws Exception;
 
 	/**
 	 * 사용자 통계를 위한 집계를 하루단위로 작업하는 배치 프로그램

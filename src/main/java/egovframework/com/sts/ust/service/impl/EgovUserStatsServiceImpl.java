@@ -42,7 +42,7 @@ public class EgovUserStatsServiceImpl extends EgovAbstractServiceImpl implements
 	 * @exception Exception
 	 */
     @Override
-	public List<?> selectUserStats(StatsVO vo) throws Exception {
+	public List<StatsVO> selectUserStats(StatsVO vo) throws Exception {
         return userStatsDAO.selectUserStats(vo);
 	}
 
