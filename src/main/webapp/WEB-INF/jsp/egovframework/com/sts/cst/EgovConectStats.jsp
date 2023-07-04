@@ -197,8 +197,8 @@ function getNextWeek(v,t){
 				<input type="hidden" name="cal_url" value="<c:url value='/sym/cal/EgovNormalCalPopup.do'/>" />
                   <input type="hidden" name="fromDate" value="${statsInfo.fromDate}" />
                   <input type="hidden" name="toDate" value="${statsInfo.toDate}" />
-                  <input type="text" name="fDate" size="10" title="<spring:message code="comStsCst.conectStats.fromDate" />" id="fDate" value="${statsInfo.fromDate}"/> <!-- 시작일자 -->
-                  <input type="text" name="tDate" size="10" tabindex="2" title="<spring:message code="comStsCst.conectStats.toDate" />" id="tDate" value="${statsInfo.toDate}"/> <!-- 종료일자 -->
+                  <input type="text" name="fDate" size="10" title="<spring:message code="comStsCst.conectStats.fromDate" />" id="fDate" value="${fDate}"/> <!-- 시작일자 -->
+                  <input type="text" name="tDate" size="10" tabindex="2" title="<spring:message code="comStsCst.conectStats.toDate" />" id="tDate" value="${tDate}"/> <!-- 종료일자 -->
 				
 				<label for="" style="margin-left:5px"><spring:message code="comStsCst.conectStats.periodKind"/> : </label> <!-- 기간구분 -->
 				<select id="PD" name="PD" class="select" onchange="fnChangePdKind();" title="<spring:message code="comStsCst.conectStats.periodKind"/>">
