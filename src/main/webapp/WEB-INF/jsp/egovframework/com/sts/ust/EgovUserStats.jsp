@@ -161,8 +161,8 @@ function fnInitAll(){
 	} else if (document.listForm.fDate.value != "" && document.listForm.tDate.value != "") {
 		var fromDate = document.listForm.fDate.value;
 		var toDate = document.listForm.tDate.value;
-		document.listForm.fDate.value = fromDate.substring(0, 4) + "-" + fromDate.substring(5, 7) + "-" + fromDate.substring(8, 10);
-		document.listForm.tDate.value = toDate.substring(0, 4) + "-" + toDate.substring(5, 7) + "-" + toDate.substring(8, 10);
+		document.listForm.fDate.value = fromDate.substring(0, 4) + "-" + fromDate.substring(4, 6) + "-" + fromDate.substring(6, 8);
+		document.listForm.tDate.value = toDate.substring(0, 4) + "-" + toDate.substring(4, 6) + "-" + toDate.substring(6, 8);
 	}
 
 	// 기간구분
