@@ -196,7 +196,6 @@ public class EgovBatchOpertController {
 	 * @param popupAt	팝업여부
 	 * @exception Exception Exception
 	 */
-	@SuppressWarnings("unchecked")
 	@IncludedInfo(name = "배치작업관리", listUrl = "/sym/bat/getBatchOpertList.do", order = 1120, gid = 60)
 	@RequestMapping("/sym/bat/getBatchOpertList.do")
 	public String selectBatchOpertList(@ModelAttribute("searchVO") BatchOpert searchVO, ModelMap model, @RequestParam(value = "popupAt", required = false) String popupAt)
@@ -213,7 +212,7 @@ public class EgovBatchOpertController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<BatchOpert> resultList = (List<BatchOpert>) egovBatchOpertService.selectBatchOpertList(searchVO);
+		List<BatchOpert> resultList = egovBatchOpertService.selectBatchOpertList(searchVO);
 		int totCnt = egovBatchOpertService.selectBatchOpertListCnt(searchVO);
 
 		paginationInfo.setTotalRecordCount(totCnt);
