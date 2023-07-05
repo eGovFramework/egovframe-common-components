@@ -54,7 +54,7 @@ public class BatchOpertDao extends EgovComAbstractDAO {
 	 * @exception Exception Exception
 	 */
 	public BatchOpert selectBatchOpert(BatchOpert batchOpert) throws Exception {
-		return (BatchOpert) selectOne("BatchOpertDao.selectBatchOpert", batchOpert);
+		return selectOne("BatchOpertDao.selectBatchOpert", batchOpert);
 	}
 
 	/**
