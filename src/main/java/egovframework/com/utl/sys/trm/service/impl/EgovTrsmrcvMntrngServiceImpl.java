@@ -169,10 +169,9 @@ public class EgovTrsmrcvMntrngServiceImpl extends EgovAbstractServiceImpl implem
 	 * @param searchVO    조회조건VO
 	 * @exception Exception Exception
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<CntcVO> selectCntcList(CntcVO searchVO) throws Exception {
-		List<CntcVO> result = (List<CntcVO>) dao.selectCntcList(searchVO);
+		List<CntcVO> result = dao.selectCntcList(searchVO);
 		return result;
 	}
 

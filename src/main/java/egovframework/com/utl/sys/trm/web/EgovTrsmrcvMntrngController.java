@@ -330,11 +330,9 @@ public class EgovTrsmrcvMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-	@SuppressWarnings("unused")
 	@RequestMapping("/utl/sys/trm/getCntcList.do")
 	public String selectCntcList(@ModelAttribute("searchVO") CntcVO searchVO, ModelMap model)
 	  throws Exception {
-		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
 		searchVO.setPageUnit(propertyService.getInt("pageUnit"));
 		searchVO.setPageSize(propertyService.getInt("pageSize"));
