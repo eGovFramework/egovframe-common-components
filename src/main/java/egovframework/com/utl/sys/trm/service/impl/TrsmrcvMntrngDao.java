@@ -109,7 +109,7 @@ public class TrsmrcvMntrngDao extends EgovComAbstractDAO {
 	 * @param searchVO    조회조건이 저장된 VO
 	 * @exception Exception Exception
 	 */
-	public List<?> selectTrsmrcvMntrngLogList(TrsmrcvMntrngLog searchVO) throws Exception {
+	public List<TrsmrcvMntrngLog> selectTrsmrcvMntrngLogList(TrsmrcvMntrngLog searchVO) throws Exception {
 		return selectList("TrsmrcvMntrngDao.selectTrsmrcvMntrngLogList", searchVO);
 	}
 

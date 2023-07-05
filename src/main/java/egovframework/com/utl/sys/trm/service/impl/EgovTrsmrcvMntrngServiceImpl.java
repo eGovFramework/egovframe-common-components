@@ -131,10 +131,9 @@ public class EgovTrsmrcvMntrngServiceImpl extends EgovAbstractServiceImpl implem
 	 * @param searchVO 	조회정보가 담긴 VO
 	 * @exception Exception Exception
 	 */
-	@SuppressWarnings("unchecked")
 	@Override
 	public List<TrsmrcvMntrngLog> selectTrsmrcvMntrngLogList(TrsmrcvMntrngLog searchVO) throws Exception {
-		List<TrsmrcvMntrngLog> result = (List<TrsmrcvMntrngLog>) dao.selectTrsmrcvMntrngLogList(searchVO);
+		List<TrsmrcvMntrngLog> result = dao.selectTrsmrcvMntrngLogList(searchVO);
 		return result;
 	}
 
