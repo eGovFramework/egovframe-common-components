@@ -64,7 +64,7 @@ public class BatchOpertDao extends EgovComAbstractDAO {
 	 * @param searchVO    조회조건이 저장된 VO
 	 * @exception Exception Exception
 	 */
-	public List<?> selectBatchOpertList(BatchOpert searchVO) throws Exception {
+	public List<BatchOpert> selectBatchOpertList(BatchOpert searchVO) throws Exception {
 		return selectList("BatchOpertDao.selectBatchOpertList", searchVO);
 	}
 

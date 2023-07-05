@@ -52,7 +52,7 @@ public interface EgovBatchOpertService {
 	 * @param searchVO    조회조건VO
 	 * @exception Exception Exception
 	 */
-	public List<?> selectBatchOpertList(BatchOpert searchVO) throws Exception;
+	public List<BatchOpert> selectBatchOpertList(BatchOpert searchVO) throws Exception;
 
 	/**
 	 * 배치작업 목록 전체 건수를(을) 조회한다.

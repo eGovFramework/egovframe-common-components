@@ -76,8 +76,8 @@ public class EgovBatchOpertServiceImpl extends EgovAbstractServiceImpl implement
 	 * @exception Exception Exception
 	 */
 	@Override
-	public List<?> selectBatchOpertList(BatchOpert searchVO) throws Exception {
-		List<?> result = dao.selectBatchOpertList(searchVO);
+	public List<BatchOpert> selectBatchOpertList(BatchOpert searchVO) throws Exception {
+		List<BatchOpert> result = dao.selectBatchOpertList(searchVO);
 		return result;
 	}
 
