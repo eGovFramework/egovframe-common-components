@@ -532,7 +532,7 @@ public class EgovIndvdlSchdulManageController {
     	resultIndvdlSchdulManageVOReuslt.setSchdulEnddeHH(sSchdulEndde.substring(8, 10));
     	resultIndvdlSchdulManageVOReuslt.setSchdulEnddeMM(sSchdulEndde.substring(10, 12));
 
-    	System.out.println("resultIndvdlSchdulManageVOReuslt>>>"+resultIndvdlSchdulManageVOReuslt.getAtchFileId());
+    	LOGGER.info("resultIndvdlSchdulManageVOReuslt>>>"+resultIndvdlSchdulManageVOReuslt.getAtchFileId());
     	model.addAttribute("indvdlSchdulManageVO", resultIndvdlSchdulManageVOReuslt);
 
 		return sLocationUrl;

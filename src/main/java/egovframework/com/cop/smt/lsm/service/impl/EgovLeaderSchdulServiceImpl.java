@@ -14,6 +14,8 @@ import egovframework.com.cop.smt.lsm.service.LeaderSttusVO;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Resource;
 
@@ -38,6 +40,8 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 	
 	@Resource(name="egovLeaderSchdulIdGnrService")
     private EgovIdGnrService idgenService;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(EgovLeaderSchdulServiceImpl.class);
 	
 	/**
 	 * 사용자 목록을 조회한다.
@@ -141,10 +145,10 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 			LeaderSchdul leaderSchdulDe = null;
 			if("2".equals(leaderSchdul.getReptitSeCode()) || "3".equals(leaderSchdul.getReptitSeCode()) || "4".equals(leaderSchdul.getReptitSeCode())){
 				while(true){
-					System.out.println("[jino]#######################");
-					System.out.println("[jino] [1-1] iNowDe ==> " + iNowDe);
-					System.out.println("[jino] [1-1] iBgnDe ==> " + iBgnDe);
-					System.out.println("[jino]#######################");
+					LOGGER.info("[jino]#######################");
+					LOGGER.info("[jino] [1-1] iNowDe ==> " + iNowDe);
+					LOGGER.info("[jino] [1-1] iBgnDe ==> " + iBgnDe);
+					LOGGER.info("[jino]#######################");
 					if(iNowDe != iBgnDe){
 						iNowYear = Integer.valueOf(String.valueOf(iNowDe).substring(0,4));
 						iNowMonth = Integer.valueOf(String.valueOf(iNowDe).substring(4,6));
