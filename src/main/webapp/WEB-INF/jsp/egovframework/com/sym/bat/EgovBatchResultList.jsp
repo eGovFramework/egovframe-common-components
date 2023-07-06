@@ -125,9 +125,6 @@ function press(event) {
 }
 
 function fn_egov_get_list(pageIndex) {
-	
-	debugger;
-
     if (document.frm.searchKeyword.value != "") {
         if (document.frm.searchCondition.value == "") {
             alert("<spring:message code="comSymBat.batchResultList.validate.searchCondition"/>"); //검색조건을 선택하세요.
