@@ -4,6 +4,7 @@ import java.util.List;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.sts.com.StatsVO;
 import egovframework.com.sts.ust.service.EgovUserStatsService;
@@ -66,11 +67,11 @@ public class EgovUserStatsController {
     	ComDefaultCodeVO vo = new ComDefaultCodeVO();
 
     	vo.setCodeId("COM012");
-		List<?> code012 = cmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> code012 = cmmUseService.selectCmmCodeDetail(vo);
 		vo.setCodeId("COM013");
-		List<?> code013 = cmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> code013 = cmmUseService.selectCmmCodeDetail(vo);
 		vo.setCodeId("COM014");
-		List<?> code014 = cmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> code014 = cmmUseService.selectCmmCodeDetail(vo);
 
 		model.addAttribute("COM012", code012);
 		model.addAttribute("COM013", code013);
@@ -78,7 +79,7 @@ public class EgovUserStatsController {
 
 		if (statsVO.getFromDate() != null && !"".equals(statsVO.getFromDate())) {
 
-			List<?> userStats = userStatsService.selectUserStats(statsVO);
+			List<StatsVO> userStats = userStatsService.selectUserStats(statsVO);
 			LOGGER.debug("++++++++++++++++++++++ userStats.size() : {}", userStats.size());
 			// 그래프에 표시될 이미지 길이를 결정한다.
 			float iMaxUnit = 50.0f;

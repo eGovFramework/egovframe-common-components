@@ -33,7 +33,7 @@ public class UserStatsDAO extends EgovComAbstractDAO {
 	 * @return List
 	 * @exception Exception
 	 */
-    public List<?> selectUserStats(StatsVO vo) throws Exception {
+    public List<StatsVO> selectUserStats(StatsVO vo) throws Exception {
         return selectList("UserStatsDAO.selectUserStats", vo);
     }
 
