@@ -117,7 +117,7 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 					serverResrceMntrng.setCpuUseRt(mbs.getAttribute(name, attrInfo.getName()).toString());
 				else if (attrInfo.getName().equals("MemoryUsage"))
 					serverResrceMntrng.setMoryUseRt(mbs.getAttribute(name, attrInfo.getName()).toString());
-				System.out.println(attrInfo.getName() + " = " + mbs.getAttribute(name, attrInfo.getName()));
+				LOGGER.info(attrInfo.getName() + " = " + mbs.getAttribute(name, attrInfo.getName()));
 			}
 			serverResrceMntrng.setSvcSttus("01");
 			serverResrceMntrng.setFrstRegisterId(InetAddress.getLocalHost().getHostAddress());

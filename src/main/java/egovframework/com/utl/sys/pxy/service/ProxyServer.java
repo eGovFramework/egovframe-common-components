@@ -96,7 +96,7 @@ public class ProxyServer extends Thread {
 
 				try {
 					serverSocket.setSoTimeout(2000);
-					System.out.println("client wait......");
+					LOGGER.info("client wait......");
 
 					client = serverSocket.accept();
 
@@ -109,7 +109,7 @@ public class ProxyServer extends Thread {
 
 					insertProxyLog();
 
-					System.out.println("client connect");
+					LOGGER.info("client connect");
 					InputStream streamFromClient = client.getInputStream();
 					OutputStream streamToClient = client.getOutputStream();
 
@@ -171,12 +171,12 @@ public class ProxyServer extends Thread {
 			proxyLog.setFrstRegisterId("SYSTEM");
 			proxyLog.setLastUpdusrId("SYSTEM");
 
-			System.out.println(proxyLog.getProxyId());
-			System.out.println(proxyLog.getLogId());
-			System.out.println(proxyLog.getClntIp());
-			System.out.println(proxyLog.getClntPort());
-			System.out.println(proxyLog.getFrstRegisterId());
-			System.out.println(proxyLog.getLastUpdusrId());
+			LOGGER.info(proxyLog.getProxyId());
+			LOGGER.info(proxyLog.getLogId());
+			LOGGER.info(proxyLog.getClntIp());
+			LOGGER.info(proxyLog.getClntPort());
+			LOGGER.info(proxyLog.getFrstRegisterId());
+			LOGGER.info(proxyLog.getLastUpdusrId());
 
 			proxySvcDAO.insertProxyLog(proxyLog);
 

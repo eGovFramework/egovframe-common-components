@@ -20,6 +20,7 @@ import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.sym.ccm.zip.web.EgovCcmZipManageController;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sys.htm.service.EgovHttpMonService;
 import egovframework.com.utl.sys.htm.service.HttpMntrngChecker;
@@ -29,6 +30,8 @@ import egovframework.com.utl.sys.htm.service.HttpMonLogVO;
 import egovframework.com.utl.sys.htm.service.HttpMonVO;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * 개요
@@ -52,6 +55,8 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 @Controller
 public class EgovHttpMonController {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(EgovHttpMonController.class);
 
 	@Resource(name = "EgovHttpMonService")
 	protected EgovHttpMonService egovHttpMonService;
@@ -231,7 +236,7 @@ public class EgovHttpMonController {
 			, ModelMap model
 			) throws Exception {
 
-		System.out.println("SiteUrl" + httpMonVO.getSiteUrl());
+    	LOGGER.info("SiteUrl" + httpMonVO.getSiteUrl());
     	model.addAttribute("httpSttusCd", HttpMntrngChecker.getPrductStatus(httpMonVO.getSiteUrl()));
     	model.addAttribute("httpMonVO", httpMonVO);
 
