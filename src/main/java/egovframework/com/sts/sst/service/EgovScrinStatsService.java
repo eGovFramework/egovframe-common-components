@@ -29,5 +29,5 @@ public interface EgovScrinStatsService {
 	 * @return List
 	 * @exception Exception
 	 */
-	List<?> selectScrinStats(StatsVO vo) throws Exception;
+	List<StatsVO> selectScrinStats(StatsVO vo) throws Exception;
 }

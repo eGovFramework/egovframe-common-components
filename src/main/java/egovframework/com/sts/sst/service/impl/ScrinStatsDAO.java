@@ -33,7 +33,7 @@ public class ScrinStatsDAO extends EgovComAbstractDAO {
 	 * @return List
 	 * @exception Exception
 	 */
-    public List<?> selectScrinStats(StatsVO vo) throws Exception {
+    public List<StatsVO> selectScrinStats(StatsVO vo) throws Exception {
         return selectList("ScrinStatsDAO.selectScrinStats", vo);
     }
 }
