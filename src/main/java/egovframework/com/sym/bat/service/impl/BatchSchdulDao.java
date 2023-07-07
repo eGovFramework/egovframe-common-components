@@ -93,12 +93,12 @@ public class BatchSchdulDao extends EgovComAbstractDAO {
 	 * @param searchVO    조회조건이 저장된 VO
 	 * @exception Exception Exception
 	 */
-	public List<?> selectBatchSchdulList(BatchSchdul searchVO)
+	public List<BatchSchdul> selectBatchSchdulList(BatchSchdul searchVO)
 	  throws Exception{
-		List<?> resultList = selectList("BatchSchdulDao.selectBatchSchdulList", searchVO);
+		List<BatchSchdul> resultList = selectList("BatchSchdulDao.selectBatchSchdulList", searchVO);
 
 		for (int i = 0; i < resultList.size(); i++) {
-			BatchSchdul result = (BatchSchdul) resultList.get(i);
+			BatchSchdul result = resultList.get(i);
 			// 스케줄요일정보를 가져온다.
 			List<BatchSchdulDfk> dfkSeList = selectList("BatchSchdulDao.selectBatchSchdulDfkList", result.getBatchSchdulId());
 			String [] dfkSes = new String [dfkSeList.size()];
