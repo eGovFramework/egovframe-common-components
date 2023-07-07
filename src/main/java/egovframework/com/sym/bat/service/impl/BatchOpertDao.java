@@ -54,7 +54,7 @@ public class BatchOpertDao extends EgovComAbstractDAO {
 	 * @exception Exception Exception
 	 */
 	public BatchOpert selectBatchOpert(BatchOpert batchOpert) throws Exception {
-		return (BatchOpert) selectOne("BatchOpertDao.selectBatchOpert", batchOpert);
+		return selectOne("BatchOpertDao.selectBatchOpert", batchOpert);
 	}
 
 	/**
@@ -64,7 +64,7 @@ public class BatchOpertDao extends EgovComAbstractDAO {
 	 * @param searchVO    조회조건이 저장된 VO
 	 * @exception Exception Exception
 	 */
-	public List<?> selectBatchOpertList(BatchOpert searchVO) throws Exception {
+	public List<BatchOpert> selectBatchOpertList(BatchOpert searchVO) throws Exception {
 		return selectList("BatchOpertDao.selectBatchOpertList", searchVO);
 	}
 
