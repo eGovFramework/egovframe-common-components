@@ -14,7 +14,7 @@
        color: Black;
 }
 </style>
-<link type="text/css" rel="stylesheet" href="/egovframework-all-in-one/css/egovframework/com/cmm/jqueryui.css">
+<link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
 <script type="text/javascript">
