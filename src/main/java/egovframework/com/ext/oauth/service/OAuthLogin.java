@@ -1,5 +1,8 @@
 package egovframework.com.ext.oauth.service;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.scribejava.core.builder.ServiceBuilder;
@@ -9,9 +12,13 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 
+import egovframework.com.sym.ccm.ccc.service.impl.CmmnClCodeManageDAO;
+
 public class OAuthLogin {
 	private OAuth20Service oauthService;
 	private OAuthVO oauthVO;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(OAuthLogin.class);
 	
 	public OAuthLogin(OAuthVO oauthVO) {
 		this.oauthService = new ServiceBuilder(oauthVO.getClientId())
@@ -40,7 +47,7 @@ public class OAuthLogin {
 	}
 
 	private OAuthUniversalUser parseJson(String body) throws Exception {
-		System.out.println("============================\n" + body + "\n==================");
+		LOGGER.info("============================\n" + body + "\n==================");
 		OAuthUniversalUser user = new OAuthUniversalUser();
 		
 		ObjectMapper mapper = new ObjectMapper();

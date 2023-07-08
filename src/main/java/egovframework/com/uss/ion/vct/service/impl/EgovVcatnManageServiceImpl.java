@@ -17,6 +17,8 @@ import egovframework.com.uss.ion.vct.service.VcatnManage;
 import egovframework.com.uss.ion.vct.service.VcatnManageVO;
 import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
@@ -40,6 +42,8 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 
 	@Resource(name = "EgovInfrmlSanctnService")
 	protected EgovInfrmlSanctnService infrmlSanctnService;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(EgovVcatnManageServiceImpl.class);
 
 	/**
 	 * 휴가관리정보를 관리하기 위해 등록된 휴가관리 목록을 조회한다.
@@ -228,11 +232,11 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 
 		if (iTemp == 0) {
 			sTempMessage = insertVcatnManage(vcatnManage, vcatnManageVO);
-			System.out.println("updtVcatnManage 4:" + sTempMessage);
+			LOGGER.info("updtVcatnManage 4:" + sTempMessage);
 			return sTempMessage;
 		} else {
 			sTempMessage = "10";
-			System.out.println("updtVcatnManage 5:" + sTempMessage);
+			LOGGER.info("updtVcatnManage 5:" + sTempMessage);
 			return sTempMessage;
 		}
 		/*

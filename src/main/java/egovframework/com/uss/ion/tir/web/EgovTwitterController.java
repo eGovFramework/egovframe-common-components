@@ -24,9 +24,13 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.tir.service.EgovTwitterRecptnService;
 import egovframework.com.uss.ion.tir.service.EgovTwitterTrnsmitService;
 import egovframework.com.uss.ion.tir.service.TwitterInfo;
+import egovframework.com.uss.ion.vct.service.impl.EgovVcatnManageServiceImpl;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.auth.AccessToken;
@@ -69,6 +73,8 @@ public class EgovTwitterController {
 	/** 트위터 송신(목록) 서비스 */
 	@Resource(name = "egovTwitterTrnsmitService")
 	private EgovTwitterTrnsmitService egovTwitterTrnsmitService;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(EgovTwitterController.class);
 
 	/**
 	 * 트위터를 메인 인증 페이지조회
@@ -250,8 +256,8 @@ public class EgovTwitterController {
 		hmPram.put("frstRegisterId", loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 		hmPram.put("lastUpdusrId", loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 
-		System.out.println("EgovTwitterPopupPost>");
-		System.out.println("selectTwitterAccountCheck>" + egovTwitterTrnsmitService.selectTwitterAccountCheck(hmPram));
+		LOGGER.info("EgovTwitterPopupPost>");
+		LOGGER.info("selectTwitterAccountCheck>" + egovTwitterTrnsmitService.selectTwitterAccountCheck(hmPram));
 
 		//Consumer key/Consumer secret 키 값 저장 체크시
 		if (sCheckKey.equals("1")) {
@@ -395,8 +401,8 @@ public class EgovTwitterController {
 		hmParam.put("sCONSUMER_SECRET", sCONSUMER_SECRET);
 		hmParam.put("atoken", atoken);
 		hmParam.put("astoken", astoken);
-		System.out.println("[Controller]===>>> atoken = "+atoken);
-		System.out.println("[Controller]===>>> astoken = "+astoken);
+		LOGGER.info("[Controller]===>>> atoken = "+atoken);
+		LOGGER.info("[Controller]===>>> astoken = "+astoken);
 		//트위터  글 게시
 		twitter4j.Status status = egovTwitterTrnsmitService.twitterTrnsmitRegist(hmParam, twitterInfo.getTwitterText());
 		model.addAttribute("status", status);

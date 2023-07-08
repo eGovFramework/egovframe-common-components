@@ -9,7 +9,11 @@ import org.springframework.stereotype.Service;
 import egovframework.com.sym.ccm.ccc.service.CmmnClCode;
 import egovframework.com.sym.ccm.ccc.service.CmmnClCodeVO;
 import egovframework.com.sym.ccm.ccc.service.EgovCcmCmmnClCodeManageService;
+import egovframework.com.uss.ion.ntr.service.impl.EgovNoteRecptnServiceImpl;
+
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
 *
@@ -34,6 +38,8 @@ public class EgovCcmCmmnClCodeManageServiceImpl extends EgovAbstractServiceImpl 
 	
 	@Resource(name = "CmmnClCodeManageDAO")
 	private CmmnClCodeManageDAO cmmnClCodeManageDAO;
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(EgovCcmCmmnClCodeManageServiceImpl.class);
 	
 	/**
 	 * 공통분류코드 총 개수를 조회한다.
@@ -65,7 +71,7 @@ public class EgovCcmCmmnClCodeManageServiceImpl extends EgovAbstractServiceImpl 
 	 */
 	@Override
 	public void insertCmmnClCode(CmmnClCodeVO cmmnClCodeVO) throws Exception {
-		System.out.println("TEST4 : 등록 Serviceimpl");
+		LOGGER.info("TEST4 : 등록 Serviceimpl");
     	cmmnClCodeManageDAO.insertCmmnClCode(cmmnClCodeVO);
 	}
 	

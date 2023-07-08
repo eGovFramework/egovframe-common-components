@@ -5,8 +5,11 @@ import java.util.Map;
 
 import egovframework.com.uss.ion.ntr.service.EgovNoteRecptnService;
 import egovframework.com.uss.ion.ntr.service.NoteRecptn;
+import egovframework.com.uss.ion.tir.web.EgovTwitterController;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javax.annotation.Resource;
 
@@ -31,6 +34,8 @@ public class EgovNoteRecptnServiceImpl extends EgovAbstractServiceImpl
 
     @Resource(name = "noteRecptnDao")
     private NoteRecptnDao dao;
+    
+	private static final Logger LOGGER = LoggerFactory.getLogger(EgovNoteRecptnServiceImpl.class);
 
     /**
      * 받은쪽지함관리를(을) 목록을 조회 한다.
@@ -82,8 +87,8 @@ public class EgovNoteRecptnServiceImpl extends EgovAbstractServiceImpl
         //받은쪽지함 건수를 조회함
         int nNoteRecptnCnt = dao.selectNoteRecptnRelationCnt(noteRecptn);
 
-        System.out.println("nNoteTrnsmitCnt>"+nNoteTrnsmitCnt);
-        System.out.println("nNoteRecptnCnt>"+nNoteRecptnCnt);
+        LOGGER.info("nNoteTrnsmitCnt>"+nNoteTrnsmitCnt);
+        LOGGER.info("nNoteRecptnCnt>"+nNoteRecptnCnt);
         if(nNoteTrnsmitCnt == 1 && nNoteRecptnCnt==1){
         	//받은쪽지/쪽지관리 삭제 처리
         	//dao.deleteNoteRecptnRelation(noteRecptn);
