@@ -5,7 +5,6 @@ import java.util.Map;
 
 import egovframework.com.uss.ion.ntr.service.EgovNoteRecptnService;
 import egovframework.com.uss.ion.ntr.service.NoteRecptn;
-import egovframework.com.uss.ion.tir.web.EgovTwitterController;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.slf4j.Logger;

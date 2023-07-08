@@ -12,8 +12,6 @@ import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
 
-import egovframework.com.sym.ccm.ccc.service.impl.CmmnClCodeManageDAO;
-
 public class OAuthLogin {
 	private OAuth20Service oauthService;
 	private OAuthVO oauthVO;

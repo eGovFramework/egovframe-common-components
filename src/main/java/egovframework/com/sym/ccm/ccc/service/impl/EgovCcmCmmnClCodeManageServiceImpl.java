@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 import egovframework.com.sym.ccm.ccc.service.CmmnClCode;
 import egovframework.com.sym.ccm.ccc.service.CmmnClCodeVO;
 import egovframework.com.sym.ccm.ccc.service.EgovCcmCmmnClCodeManageService;
-import egovframework.com.uss.ion.ntr.service.impl.EgovNoteRecptnServiceImpl;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.slf4j.Logger;
