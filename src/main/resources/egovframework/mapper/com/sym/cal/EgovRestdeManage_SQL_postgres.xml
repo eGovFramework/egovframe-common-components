@@ -61,7 +61,7 @@
                             ) D
                     ORDER BY (W.W*7) + D.D
             ) DUMMY
-		
+		ORDER BY DUMMY.ROWNUM
 	</select>
 
 	<select id="selectAdministRestdePopup" parameterType="egovframework.com.sym.cal.service.Restde" resultType="egovMap">

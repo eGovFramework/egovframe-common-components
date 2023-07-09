@@ -60,7 +60,7 @@
                             SELECT 7
                             ) D
             ) DUMMY
-            ORDER BY ROWNUM
+            ORDER BY DUMMY.ROWNUM
 		
 	</select>
 
