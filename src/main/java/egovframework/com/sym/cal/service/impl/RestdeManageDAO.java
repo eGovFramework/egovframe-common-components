@@ -6,6 +6,7 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sym.cal.service.Restde;
 import egovframework.com.sym.cal.service.RestdeVO;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -34,7 +35,7 @@ public class RestdeManageDAO extends EgovComAbstractDAO {
 	 * @return List(일반달력 팝업 날짜정보)
 	 * @throws Exception
 	 */
-    public List<?> selectNormalRestdePopup(Restde restde) throws Exception {
+    public List<EgovMap> selectNormalRestdePopup(Restde restde) throws Exception {
         return selectList("RestdeManageDAO.selectNormalRestdePopup", restde);
 	}
 
