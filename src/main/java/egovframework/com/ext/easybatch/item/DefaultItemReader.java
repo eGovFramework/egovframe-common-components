@@ -43,6 +43,8 @@ import org.egovframe.rte.bat.core.item.file.mapping.EgovObjectMapper;
 import org.egovframe.rte.bat.core.item.file.transform.EgovDelimitedLineTokenizer;
 import org.egovframe.rte.bat.core.item.file.transform.EgovFixedLengthTokenizer;
 import org.egovframe.rte.bat.core.item.file.transform.EgovLineTokenizer;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author 서경석
@@ -62,6 +64,8 @@ import org.egovframe.rte.bat.core.item.file.transform.EgovLineTokenizer;
  * </pre>
  */
 public class DefaultItemReader<T> implements ItemStreamReader<T> {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultItemReader.class);
 
 	// Input Resource Type - key
 	private static final String XML_CONF_FLAG_KEY = ".reader.xml.conf.flag";
@@ -324,7 +328,7 @@ public class DefaultItemReader<T> implements ItemStreamReader<T> {
 	private void printXmlConfig() {
 		if (printXmlConf) {
 			if (DELIMITED_FILE_TYPE.equalsIgnoreCase(this.readerResourceType)) {
-				System.out.println("======= " + stepName + " READER 설정(XML 버전) =========\n"
+				LOGGER.info("======= " + stepName + " READER 설정(XML 버전) =========\n"
 					+ "<bean id=\"" + stepName
 					+ ".reader\" class=\"org.springframework.batch.item.file.FlatFileItemReader\" scope=\"step\">\n"
 					+ "  <property name=\"resource\" value=\"" + this.resourceName + "\" />\n"
@@ -346,7 +350,7 @@ public class DefaultItemReader<T> implements ItemStreamReader<T> {
 					+ "</bean>\n"
 					+ "================================================");
 			} else if (FIXED_LENGTH_FILE_TYPE.equalsIgnoreCase(this.readerResourceType)) {
-				System.out.println("======= " + stepName + " READER 설정(XML 버전) =========\n"
+				LOGGER.info("======= " + stepName + " READER 설정(XML 버전) =========\n"
 					+ "<bean id=\"" + stepName
 					+ ".reader\" class=\"org.springframework.batch.item.file.FlatFileItemReader\" scope=\"step\">\n"
 					+ "  <property name=\"resource\" value=\"" + this.resourceName + "\" />\n"
@@ -368,7 +372,7 @@ public class DefaultItemReader<T> implements ItemStreamReader<T> {
 					+ "</bean>\n"
 					+ "================================================");
 			} else if (JDBC_DB_TYPE.equalsIgnoreCase(this.readerResourceType)) {
-				System.out.println("======= " + stepName + " READER 설정(XML 버전) =========\n"
+				LOGGER.info("======= " + stepName + " READER 설정(XML 버전) =========\n"
 					+ "<bean id=\"" + stepName
 					+ ".reader\" class=\"org.springframework.batch.item.database.JdbcCursorItemReader\" scope=\"step\">\n"
 					+ "  <property name=\"dataSource\" ref=\"dataSource\" />\n"
