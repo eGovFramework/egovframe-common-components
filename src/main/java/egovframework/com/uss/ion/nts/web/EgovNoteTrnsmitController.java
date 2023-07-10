@@ -82,7 +82,7 @@ public class EgovNoteTrnsmitController {
     	String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
     	
-    	System.out.println("userMap>"+commandMap);
+    	LOGGER.info("userMap>"+commandMap);
     	
 		//Spring Security 사용자권한 처리
 	    Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();

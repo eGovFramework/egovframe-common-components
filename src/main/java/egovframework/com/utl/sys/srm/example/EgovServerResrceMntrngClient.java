@@ -45,16 +45,16 @@ public class EgovServerResrceMntrngClient {
             mBeanInfo = mbs.getMBeanInfo(name);
             attrInfos = mBeanInfo.getAttributes();
             
-            System.out.println("MBean info : " + mBeanInfo.getClassName());
+            LOGGER.info("MBean info : " + mBeanInfo.getClassName());
 
             for (MBeanAttributeInfo attrInfo : attrInfos) {
             	if (attrInfo.getName().equals("CpuUsage")) {
-            		System.out.println("CPU : " + mbs.getAttribute(name, attrInfo.getName()).toString());
+            		LOGGER.info("CPU : " + mbs.getAttribute(name, attrInfo.getName()).toString());
             	} else if (attrInfo.getName().equals("MemoryUsage")){ 
-            		System.out.println("Memory : " + mbs.getAttribute(name, attrInfo.getName()).toString());
+            		LOGGER.info("Memory : " + mbs.getAttribute(name, attrInfo.getName()).toString());
             	
             	} else {
-            		System.out.println(attrInfo.getName() + " = " + mbs.getAttribute(name, attrInfo.getName()));
+            		LOGGER.info(attrInfo.getName() + " = " + mbs.getAttribute(name, attrInfo.getName()));
             	}
             }
     	} catch (IOException ex) {//KISA 보안약점 조치 (2018-10-29, 윤창원)
