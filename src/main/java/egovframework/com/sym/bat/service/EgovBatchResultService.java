@@ -44,7 +44,7 @@ public interface EgovBatchResultService {
 	 * @param searchVO    조회조건VO
 	 * @exception Exception Exception
 	 */
-	public List<?> selectBatchResultList(BatchResult searchVO) throws Exception;
+	public List<BatchResult> selectBatchResultList(BatchResult searchVO) throws Exception;
 
 	/**
 	 * 배치스케줄 목록 전체 건수를(을) 조회한다.

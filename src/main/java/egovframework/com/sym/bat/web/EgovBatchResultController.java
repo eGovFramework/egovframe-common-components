@@ -103,7 +103,6 @@ public class EgovBatchResultController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-	@SuppressWarnings("unchecked")
 	@IncludedInfo(name = "배치결과관리", listUrl = "/sym/bat/getBatchResultList.do", order = 1130, gid = 60)
 	@RequestMapping("/sym/bat/getBatchResultList.do")
 	public String selectBatchResultList(@ModelAttribute("searchVO") BatchResult searchVO, ModelMap model) throws Exception {
@@ -119,7 +118,7 @@ public class EgovBatchResultController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<BatchResult> resultList = (List<BatchResult>) egovBatchResultService.selectBatchResultList(searchVO);
+		List<BatchResult> resultList = egovBatchResultService.selectBatchResultList(searchVO);
 		int totCnt = egovBatchResultService.selectBatchResultListCnt(searchVO);
 
 		paginationInfo.setTotalRecordCount(totCnt);
