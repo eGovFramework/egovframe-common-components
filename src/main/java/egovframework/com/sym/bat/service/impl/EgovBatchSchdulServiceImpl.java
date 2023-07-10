@@ -83,8 +83,8 @@ public class EgovBatchSchdulServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @exception Exception Exception
 	 */
 	@Override
-	public List<?> selectBatchSchdulList(BatchSchdul searchVO) throws Exception {
-		List<?> result = batchSchdulDao.selectBatchSchdulList(searchVO);
+	public List<BatchSchdul> selectBatchSchdulList(BatchSchdul searchVO) throws Exception {
+		List<BatchSchdul> result = batchSchdulDao.selectBatchSchdulList(searchVO);
 		return result;
 	}
 

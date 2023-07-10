@@ -261,7 +261,6 @@ public class EgovBatchSchdulController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-	@SuppressWarnings("unchecked")
 	@IncludedInfo(name = "스케줄처리", listUrl = "/sym/bat/getBatchSchdulList.do", order = 1140, gid = 60)
 	@RequestMapping("/sym/bat/getBatchSchdulList.do")
 	public String selectBatchSchdulList(@ModelAttribute("searchVO") BatchSchdul searchVO, ModelMap model) throws Exception {
@@ -277,7 +276,7 @@ public class EgovBatchSchdulController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<BatchSchdul> resultList = (List<BatchSchdul>) egovBatchSchdulService.selectBatchSchdulList(searchVO);
+		List<BatchSchdul> resultList = egovBatchSchdulService.selectBatchSchdulList(searchVO);
 		int totCnt = egovBatchSchdulService.selectBatchSchdulListCnt(searchVO);
 
 		paginationInfo.setTotalRecordCount(totCnt);

@@ -52,7 +52,7 @@ public interface EgovBatchSchdulService {
 	 * @param searchVO    조회조건VO
 	 * @exception Exception Exception
 	 */
-	public List<?> selectBatchSchdulList(BatchSchdul searchVO) throws Exception;
+	public List<BatchSchdul> selectBatchSchdulList(BatchSchdul searchVO) throws Exception;
 
 	/**
 	 * 배치스케줄 목록 전체 건수를(을) 조회한다.
