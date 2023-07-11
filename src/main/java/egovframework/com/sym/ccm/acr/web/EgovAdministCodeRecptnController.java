@@ -5,12 +5,14 @@ import java.util.Map;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.sym.ccm.acr.service.AdministCodeRecptn;
 import egovframework.com.sym.ccm.acr.service.AdministCodeRecptnVO;
 import egovframework.com.sym.ccm.acr.service.EgovAdministCodeRecptnService;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 import javax.annotation.Resource;
@@ -110,16 +112,16 @@ public class EgovAdministCodeRecptnController {
 
     	/* 변경구분코드 */
     	comCodeVO.setCodeId("COM043");
-        List<?> changeSeCodeList = cmmUseService.selectCmmCodeDetail(comCodeVO);
+        List<CmmnDetailCode> changeSeCodeList = cmmUseService.selectCmmCodeDetail(comCodeVO);
         model.addAttribute("changeSeCodeList", changeSeCodeList);
 
     	/* 처리구분코드 */
         comCodeVO.setCodeId("COM044");
-        List<?> processSeList = cmmUseService.selectCmmCodeDetail(comCodeVO);
+        List<CmmnDetailCode> processSeList = cmmUseService.selectCmmCodeDetail(comCodeVO);
         model.addAttribute("processSeList", processSeList);
 
         administCodeRecptnVO.setSearchCondition("CodeList");
-        List<?> administCodeRecptnList = administCodeManageService.selectAdministCodeRecptnList(administCodeRecptnVO);
+        List<EgovMap> administCodeRecptnList = administCodeManageService.selectAdministCodeRecptnList(administCodeRecptnVO);
         model.addAttribute("administCodeRecptnList", administCodeRecptnList);
 
 		return "egovframework/com/sym/ccm/acr/EgovAdministCodeDetail";
@@ -152,7 +154,7 @@ public class EgovAdministCodeRecptnController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> administCodeRecptnList = administCodeManageService.selectAdministCodeRecptnList(searchVO);
+        List<EgovMap> administCodeRecptnList = administCodeManageService.selectAdministCodeRecptnList(searchVO);
         model.addAttribute("resultList", administCodeRecptnList);
 
         int totCnt = administCodeManageService.selectAdministCodeRecptnListTotCnt(searchVO);
@@ -178,7 +180,7 @@ public class EgovAdministCodeRecptnController {
 		searchVO.setRecordCountPerPage(6);
 		searchVO.setFirstIndex(0);
 
-        List<?> administCodeRecptnList = administCodeManageService.selectAdministCodeRecptnList(searchVO);
+        List<EgovMap> administCodeRecptnList = administCodeManageService.selectAdministCodeRecptnList(searchVO);
         model.addAttribute("resultList", administCodeRecptnList);
 
         int totCnt = administCodeManageService.selectAdministCodeRecptnListTotCnt(searchVO);

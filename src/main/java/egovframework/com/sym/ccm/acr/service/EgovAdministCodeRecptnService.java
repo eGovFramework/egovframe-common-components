@@ -2,6 +2,8 @@ package egovframework.com.sym.ccm.acr.service;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 /**
  *
  * 법정동코드에 관한 서비스 인터페이스 클래스를 정의한다
@@ -43,7 +45,7 @@ public interface EgovAdministCodeRecptnService {
 	 * @return List(법정동코드 목록)
 	 * @throws Exception
 	 */
-	List<?> selectAdministCodeRecptnList(AdministCodeRecptnVO searchVO) throws Exception;
+	List<EgovMap> selectAdministCodeRecptnList(AdministCodeRecptnVO searchVO) throws Exception;
 
     /**
 	 * 법정동코드수신 총 개수를 조회한다.
@@ -58,7 +60,7 @@ public interface EgovAdministCodeRecptnService {
 	 * @return List(법정동코드 목록)
 	 * @throws Exception
 	 */
-	List<?> selectAdministCodeList(AdministCodeRecptnVO searchVO) throws Exception;
+	List<EgovMap> selectAdministCodeList(AdministCodeRecptnVO searchVO) throws Exception;
 
     /**
 	 * 법정동코드 총 개수를 조회한다.
