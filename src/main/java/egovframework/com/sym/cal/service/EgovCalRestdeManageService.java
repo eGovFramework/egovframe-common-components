@@ -37,7 +37,7 @@ public interface EgovCalRestdeManageService {
 	 * @return List(행정달력 팝업 날짜정보)
 	 * @throws Exception
 	 */
-	List<?> selectAdministRestdePopup(Restde restde)	throws Exception;
+	List<EgovMap> selectAdministRestdePopup(Restde restde)	throws Exception;
 
 	/**
 	 * 일반달력 일간 정보를 조회한다.

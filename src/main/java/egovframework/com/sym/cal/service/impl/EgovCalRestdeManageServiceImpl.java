@@ -50,7 +50,7 @@ public class EgovCalRestdeManageServiceImpl extends EgovAbstractServiceImpl impl
 	 * 행정달력 팝업 정보를 조회한다.
 	 */
     @Override
-	public List<?> selectAdministRestdePopup(Restde restde) throws Exception {
+	public List<EgovMap> selectAdministRestdePopup(Restde restde) throws Exception {
 		return restdeManageDAO.selectAdministRestdePopup(restde);
 	}
 

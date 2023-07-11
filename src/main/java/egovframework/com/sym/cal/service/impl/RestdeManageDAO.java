@@ -45,7 +45,7 @@ public class RestdeManageDAO extends EgovComAbstractDAO {
 	 * @return List(행정달력 팝업 날짜정보)
 	 * @throws Exception
 	 */
-    public List<?> selectAdministRestdePopup(Restde restde) throws Exception {
+    public List<EgovMap> selectAdministRestdePopup(Restde restde) throws Exception {
         return selectList("RestdeManageDAO.selectAdministRestdePopup", restde);
 	}
 
