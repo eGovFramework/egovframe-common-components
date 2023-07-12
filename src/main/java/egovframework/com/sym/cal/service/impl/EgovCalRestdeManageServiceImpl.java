@@ -7,6 +7,7 @@ import egovframework.com.sym.cal.service.Restde;
 import egovframework.com.sym.cal.service.RestdeVO;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 import javax.annotation.Resource;
 
@@ -41,7 +42,7 @@ public class EgovCalRestdeManageServiceImpl extends EgovAbstractServiceImpl impl
 	 * 일반달력 팝업 정보를 조회한다.
 	 */
     @Override
-	public List<?> selectNormalRestdePopup(Restde restde) throws Exception {
+	public List<EgovMap> selectNormalRestdePopup(Restde restde) throws Exception {
 		return restdeManageDAO.selectNormalRestdePopup(restde);
 	}
 
@@ -49,7 +50,7 @@ public class EgovCalRestdeManageServiceImpl extends EgovAbstractServiceImpl impl
 	 * 행정달력 팝업 정보를 조회한다.
 	 */
     @Override
-	public List<?> selectAdministRestdePopup(Restde restde) throws Exception {
+	public List<EgovMap> selectAdministRestdePopup(Restde restde) throws Exception {
 		return restdeManageDAO.selectAdministRestdePopup(restde);
 	}
 

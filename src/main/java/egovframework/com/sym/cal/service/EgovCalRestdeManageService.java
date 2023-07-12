@@ -2,6 +2,8 @@ package egovframework.com.sym.cal.service;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 /**
  *
  * 휴일에 관한 서비스 인터페이스 클래스를 정의한다
@@ -27,7 +29,7 @@ public interface EgovCalRestdeManageService {
 	 * @return List(일반달력 팝업 날짜정보)
 	 * @throws Exception
 	 */
-	List<?> selectNormalRestdePopup(Restde restde)	throws Exception;
+	List<EgovMap> selectNormalRestdePopup(Restde restde)	throws Exception;
 
 	/**
 	 * 행정달력 팝업 정보를 조회한다.
@@ -35,7 +37,7 @@ public interface EgovCalRestdeManageService {
 	 * @return List(행정달력 팝업 날짜정보)
 	 * @throws Exception
 	 */
-	List<?> selectAdministRestdePopup(Restde restde)	throws Exception;
+	List<EgovMap> selectAdministRestdePopup(Restde restde)	throws Exception;
 
 	/**
 	 * 일반달력 일간 정보를 조회한다.
