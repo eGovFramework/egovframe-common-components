@@ -41,6 +41,8 @@ import org.egovframe.rte.bat.core.item.database.EgovJdbcBatchItemWriter;
 import org.egovframe.rte.bat.core.item.database.support.EgovMethodMapItemPreparedStatementSetter;
 import org.egovframe.rte.bat.core.item.file.transform.EgovFieldExtractor;
 import org.egovframe.rte.bat.core.item.file.transform.EgovFixedLengthLineAggregator;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 /**
  * @author 서경석
@@ -59,6 +61,8 @@ import org.egovframe.rte.bat.core.item.file.transform.EgovFixedLengthLineAggrega
  * </pre>
  */
 public class DefaultItemWriter<T> implements ItemStreamWriter<T> {
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultItemWriter.class);
 
 	// Output Resource Type - key
 	private static final String XML_CONF_FLAG_KEY = ".writer.xml.conf.flag";
@@ -274,7 +278,7 @@ public class DefaultItemWriter<T> implements ItemStreamWriter<T> {
 	private void printXmlConfig() {
 		if (printXmlConf) {
 			if (DELIMITED_FILE_TYPE.equalsIgnoreCase(this.writerResourceType)) {
-				System.out.println("======= " + stepName + " WRITER 설정(XML 버전) =========\n"
+				LOGGER.info("======= " + stepName + " WRITER 설정(XML 버전) =========\n"
 					+ "<bean id=\"" + stepName
 					+ ".writer\" class=\"org.springframework.batch.item.file.FlatFileItemWriter\" scope=\"step\">\n"
 					+ "  <property name=\"resource\" value=\"" + this.resourceName + "\" />\n"
@@ -291,7 +295,7 @@ public class DefaultItemWriter<T> implements ItemStreamWriter<T> {
 					+ "</bean>\n"
 					+ "================================================");
 			} else if (FIXED_LENGTH_FILE_TYPE.equalsIgnoreCase(this.writerResourceType)) {
-				System.out.println("======= " + stepName + " Writer 설정(XML 버전) =========\n"
+				LOGGER.info("======= " + stepName + " Writer 설정(XML 버전) =========\n"
 					+ "<bean id=\"" + stepName
 					+ ".writer\" class=\"org.springframework.batch.item.file.FlatFileItemWriter\" scope=\"step\">\n"
 					+ "  <property name=\"resource\" value=\"" + this.resourceName + "\" />\n"
@@ -308,7 +312,7 @@ public class DefaultItemWriter<T> implements ItemStreamWriter<T> {
 					+ "</bean>\n"
 					+ "================================================");
 			} else if (JDBC_DB_TYPE.equalsIgnoreCase(this.writerResourceType)) {
-				System.out.println("======= " + stepName + " Writer 설정(XML 버전) =========\n"
+				LOGGER.info("======= " + stepName + " Writer 설정(XML 버전) =========\n"
 					+ "<bean id=\"" + stepName
 					+ ".writer\" class=\"org.egovframe.rte.bat.core.item.database.EgovJdbcBatchItemWriter\">\n"
 					+ "  <property name=\"assertUpdates\" value=\"true\" />\n"
