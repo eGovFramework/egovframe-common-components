@@ -2,6 +2,8 @@ package egovframework.com.sym.ccm.adc.service;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 /**
  *
  * 행정코드에 관한 서비스 인터페이스 클래스를 정의한다
@@ -49,7 +51,7 @@ public interface EgovCcmAdministCodeManageService {
 	 * @return List(행정코드 목록)
 	 * @throws Exception
 	 */
-	List<?> selectAdministCodeList(AdministCodeVO searchVO) throws Exception;
+	List<EgovMap> selectAdministCodeList(AdministCodeVO searchVO) throws Exception;
 
     /**
 	 * 행정코드 총 개수를 조회한다.

@@ -6,6 +6,7 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sym.ccm.adc.service.AdministCode;
 import egovframework.com.sym.ccm.adc.service.AdministCodeVO;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -63,7 +64,7 @@ public class AdministCodeManageDAO extends EgovComAbstractDAO {
      * @return List(행정코드 목록)
      * @throws Exception
      */
-    public List<?> selectAdministCodeList(AdministCodeVO searchVO) throws Exception {
+    public List<EgovMap> selectAdministCodeList(AdministCodeVO searchVO) throws Exception {
         return selectList("AdministCodeManageDAO.selectAdministCodeList", searchVO);
     }
 

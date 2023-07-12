@@ -10,6 +10,7 @@ import egovframework.com.sym.ccm.adc.service.AdministCodeVO;
 import egovframework.com.sym.ccm.adc.service.EgovCcmAdministCodeManageService;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 import javax.annotation.Resource;
@@ -166,7 +167,7 @@ public class EgovCcmAdministCodeManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> CmmnCodeList = administCodeManageService.selectAdministCodeList(searchVO);
+        List<EgovMap> CmmnCodeList = administCodeManageService.selectAdministCodeList(searchVO);
         model.addAttribute("resultList", CmmnCodeList);
 
         int totCnt = administCodeManageService.selectAdministCodeListTotCnt(searchVO);
@@ -215,7 +216,7 @@ public class EgovCcmAdministCodeManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> CmmnCodeList = administCodeManageService.selectAdministCodeList(searchVO);
+        List<EgovMap> CmmnCodeList = administCodeManageService.selectAdministCodeList(searchVO);
         model.addAttribute("resultList", CmmnCodeList);
 
         int totCnt = administCodeManageService.selectAdministCodeListTotCnt(searchVO);
