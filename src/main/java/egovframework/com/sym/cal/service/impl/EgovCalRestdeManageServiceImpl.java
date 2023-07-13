@@ -58,7 +58,7 @@ public class EgovCalRestdeManageServiceImpl extends EgovAbstractServiceImpl impl
 	 * 일반달력 일간 정보를 조회한다.
 	 */
     @Override
-	public List<?> selectNormalDayCal(Restde restde) throws Exception {
+	public List<EgovMap> selectNormalDayCal(Restde restde) throws Exception {
 		return restdeManageDAO.selectNormalDayCal(restde);
 	}
 
@@ -66,7 +66,7 @@ public class EgovCalRestdeManageServiceImpl extends EgovAbstractServiceImpl impl
 	 * 일반달력 일간 휴일을 조회한다.
 	 */
     @Override
-	public List<?> selectNormalDayRestde(Restde restde) throws Exception {
+	public List<EgovMap> selectNormalDayRestde(Restde restde) throws Exception {
 		return restdeManageDAO.selectNormalDayRestde(restde);
 	}
 
