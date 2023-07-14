@@ -222,7 +222,7 @@
 	<select id="selectNcrdUseInfs" parameterType="egovframework.com.cop.ncm.service.NameCardUser" resultMap="ncrdUserList">
 		
 			SELECT 
-				a.NCRD_ID, b.NM, b.CMPNY_NM, b.DEPT_NM, DATE_FORMAT(B.FRST_REGIST_PNTTM,'%Y-%m-%d') AS FRST_REGIST_PNTTM,
+				a.NCRD_ID, b.NM, b.CMPNY_NM, b.DEPT_NM, DATE_FORMAT(b.FRST_REGIST_PNTTM,'%Y-%m-%d') AS FRST_REGIST_PNTTM,
 				a.EMPLYR_ID, a.USE_AT, c.USER_NM, DATE_FORMAT(a.CREAT_DT, '%Y-%m-%d') AS CREAT_DT, b.FRST_REGISTER_ID
 			FROM
 				COMTNNCRDUSER a 
