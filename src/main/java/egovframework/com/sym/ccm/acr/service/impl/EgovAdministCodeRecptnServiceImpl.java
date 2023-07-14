@@ -21,6 +21,7 @@ import egovframework.com.sym.ccm.acr.service.EgovAdministCodeRecptnService;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 import javax.annotation.Resource;
 
@@ -410,7 +411,7 @@ public class EgovAdministCodeRecptnServiceImpl extends EgovAbstractServiceImpl i
 	/**
 	 * 법정동코드수신 목록을 조회한다.
 	 */
-	public List<?> selectAdministCodeRecptnList(AdministCodeRecptnVO searchVO) throws Exception {
+	public List<EgovMap> selectAdministCodeRecptnList(AdministCodeRecptnVO searchVO) throws Exception {
 		return administCodeRecptnDAO.selectAdministCodeRecptnList(searchVO);
 	}
 
@@ -424,7 +425,7 @@ public class EgovAdministCodeRecptnServiceImpl extends EgovAbstractServiceImpl i
 	/**
 	 * 법정동코드 목록을 조회한다.
 	 */
-	public List<?> selectAdministCodeList(AdministCodeRecptnVO searchVO) throws Exception {
+	public List<EgovMap> selectAdministCodeList(AdministCodeRecptnVO searchVO) throws Exception {
 		return administCodeRecptnDAO.selectAdministCodeList(searchVO);
 	}
 
