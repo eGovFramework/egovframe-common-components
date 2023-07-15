@@ -158,6 +158,7 @@ public class EgovCcmCmmnCodeManageController {
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		
 		CmmnClCodeVO searchVO = new CmmnClCodeVO();
+        searchVO.setFirstIndex(0);
 	
 		beanValidator.validate(cmmnCodeVO, bindingResult);
 	
@@ -174,7 +175,6 @@ public class EgovCcmCmmnCodeManageController {
 			if(vo != null){
 				model.addAttribute("message", egovMessageSource.getMessage("comSymCcmCca.validate.codeCheck"));
 				
-				searchVO.setFirstIndex(0);
 		        List<CmmnClCodeVO> CmmnCodeList = cmmnClCodeManageService.selectCmmnClCodeList(searchVO);
 		        model.addAttribute("clCodeList", CmmnCodeList);
 		        
