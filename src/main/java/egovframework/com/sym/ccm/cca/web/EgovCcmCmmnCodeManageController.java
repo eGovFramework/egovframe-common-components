@@ -175,7 +175,7 @@ public class EgovCcmCmmnCodeManageController {
 				model.addAttribute("message", egovMessageSource.getMessage("comSymCcmCca.validate.codeCheck"));
 				
 				searchVO.setFirstIndex(0);
-		        List<?> CmmnCodeList = cmmnClCodeManageService.selectCmmnClCodeList(searchVO);
+		        List<CmmnClCodeVO> CmmnCodeList = cmmnClCodeManageService.selectCmmnClCodeList(searchVO);
 		        model.addAttribute("clCodeList", CmmnCodeList);
 		        
 				return "egovframework/com/sym/ccm/cca/EgovCcmCmmnCodeRegist";
