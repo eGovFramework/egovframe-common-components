@@ -134,9 +134,9 @@ public class EgovCcmCmmnCodeManageController {
 		
 		CmmnClCodeVO searchVO = new CmmnClCodeVO();
 		searchVO.setFirstIndex(0);
-        List<CmmnClCodeVO> CmmnCodeList = cmmnClCodeManageService.selectCmmnClCodeList(searchVO);
-        
-        model.addAttribute("clCodeList", CmmnCodeList);
+        List<CmmnClCodeVO> clCodeList = cmmnClCodeManageService.selectCmmnClCodeList(searchVO);
+
+        model.addAttribute("clCodeList", clCodeList);
 
 		return "egovframework/com/sym/ccm/cca/EgovCcmCmmnCodeRegist";
 	}
@@ -164,9 +164,9 @@ public class EgovCcmCmmnCodeManageController {
 	
 		if (bindingResult.hasErrors()) {
 			
-	        List<CmmnClCodeVO> CmmnCodeList = cmmnClCodeManageService.selectCmmnClCodeList(searchVO);
-	        model.addAttribute("clCodeList", CmmnCodeList);
-	        
+            List<CmmnClCodeVO> clCodeList = cmmnClCodeManageService.selectCmmnClCodeList(searchVO);
+            model.addAttribute("clCodeList", clCodeList);
+
 		    return "egovframework/com/sym/ccm/cca/EgovCcmCmmnCodeRegist";
 		}
 		
@@ -175,9 +175,9 @@ public class EgovCcmCmmnCodeManageController {
 			if(vo != null){
 				model.addAttribute("message", egovMessageSource.getMessage("comSymCcmCca.validate.codeCheck"));
 				
-		        List<CmmnClCodeVO> CmmnCodeList = cmmnClCodeManageService.selectCmmnClCodeList(searchVO);
-		        model.addAttribute("clCodeList", CmmnCodeList);
-		        
+                List<CmmnClCodeVO> clCodeList = cmmnClCodeManageService.selectCmmnClCodeList(searchVO);
+                model.addAttribute("clCodeList", clCodeList);
+
 				return "egovframework/com/sym/ccm/cca/EgovCcmCmmnCodeRegist";
 			}
 		}
