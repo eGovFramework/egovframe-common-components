@@ -2,6 +2,8 @@ package egovframework.com.sym.ccm.icr.service;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 /**
  *
  * 기관코드에 관한 서비스 인터페이스 클래스를 정의한다
@@ -43,7 +45,7 @@ public interface EgovInsttCodeRecptnService {
 	 * @return List(기관코드 목록)
 	 * @throws Exception
 	 */
-	List<?> selectInsttCodeRecptnList(InsttCodeRecptnVO searchVO) throws Exception;
+	List<EgovMap> selectInsttCodeRecptnList(InsttCodeRecptnVO searchVO) throws Exception;
 
     /**
 	 * 기관코드수신 총 개수를 조회한다.
@@ -58,7 +60,7 @@ public interface EgovInsttCodeRecptnService {
 	 * @return List(기관코드 목록)
 	 * @throws Exception
 	 */
-	List<?> selectInsttCodeList(InsttCodeRecptnVO searchVO) throws Exception;
+	List<EgovMap> selectInsttCodeList(InsttCodeRecptnVO searchVO) throws Exception;
 
     /**
 	 * 기관코드 총 개수를 조회한다.
