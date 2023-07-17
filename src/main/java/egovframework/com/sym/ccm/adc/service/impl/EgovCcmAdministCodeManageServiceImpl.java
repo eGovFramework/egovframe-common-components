@@ -7,6 +7,7 @@ import egovframework.com.sym.ccm.adc.service.AdministCodeVO;
 import egovframework.com.sym.ccm.adc.service.EgovCcmAdministCodeManageService;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 import javax.annotation.Resource;
 
@@ -66,7 +67,7 @@ public class EgovCcmAdministCodeManageServiceImpl extends EgovAbstractServiceImp
 	 * 행정코드 목록을 조회한다.
 	 */
 	@Override
-	public List<?> selectAdministCodeList(AdministCodeVO searchVO) throws Exception {
+	public List<EgovMap> selectAdministCodeList(AdministCodeVO searchVO) throws Exception {
         return administCodeManageDAO.selectAdministCodeList(searchVO);
 	}
 
