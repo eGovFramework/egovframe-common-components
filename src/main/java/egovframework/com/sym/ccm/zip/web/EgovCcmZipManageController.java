@@ -37,6 +37,7 @@ import egovframework.com.sym.ccm.zip.service.ZipVO;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
@@ -122,14 +123,14 @@ public class EgovCcmZipManageController {
 		model.addAttribute("searchList", sList);
 
 		if (!sList.equals("2")) {
-			List<?> CmmnCodeList = zipManageService.selectZipList(searchVO);
+			List<EgovMap> CmmnCodeList = zipManageService.selectZipList(searchVO);
 			model.addAttribute("resultList", CmmnCodeList);
 
 			int totCnt = zipManageService.selectZipListTotCnt(searchVO);
 			paginationInfo.setTotalRecordCount(totCnt);
 			model.addAttribute("paginationInfo", paginationInfo);
 		} else {
-			List<?> CmmnCodeList = rdnmadZipService.selectZipList(searchVO);
+			List<EgovMap> CmmnCodeList = rdnmadZipService.selectZipList(searchVO);
 			model.addAttribute("resultList", CmmnCodeList);
 
 			int totCnt = rdnmadZipService.selectZipListTotCnt(searchVO);
@@ -321,14 +322,14 @@ public class EgovCcmZipManageController {
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
 		if (!searchVO.getSearchList().equals("2")) {
-			List<?> CmmnCodeList = zipManageService.selectZipList(searchVO);
+			List<EgovMap> CmmnCodeList = zipManageService.selectZipList(searchVO);
 			model.addAttribute("resultList", CmmnCodeList);
 
 			int totCnt = zipManageService.selectZipListTotCnt(searchVO);
 			paginationInfo.setTotalRecordCount(totCnt);
 			model.addAttribute("paginationInfo", paginationInfo);
 		} else {
-			List<?> CmmnCodeList = rdnmadZipService.selectZipList(searchVO);
+			List<EgovMap> CmmnCodeList = rdnmadZipService.selectZipList(searchVO);
 			model.addAttribute("resultList", CmmnCodeList);
 
 			int totCnt = rdnmadZipService.selectZipListTotCnt(searchVO);
