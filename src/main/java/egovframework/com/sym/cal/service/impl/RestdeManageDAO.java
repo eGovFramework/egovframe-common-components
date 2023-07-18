@@ -55,7 +55,7 @@ public class RestdeManageDAO extends EgovComAbstractDAO {
 	 * @return List(일반달력 일간 날짜정보)
 	 * @throws Exception
 	 */
-    public List<?> selectNormalDayCal(Restde restde) throws Exception {
+    public List<EgovMap> selectNormalDayCal(Restde restde) throws Exception {
         return selectList("RestdeManageDAO.selectNormalDayCal", restde);
 	}
 
@@ -65,7 +65,7 @@ public class RestdeManageDAO extends EgovComAbstractDAO {
 	 * @return List(일반달력 일간 휴일정보)
 	 * @throws Exception
 	 */
-    public List<?> selectNormalDayRestde(Restde restde) throws Exception {
+    public List<EgovMap> selectNormalDayRestde(Restde restde) throws Exception {
         return selectList("RestdeManageDAO.selectNormalDayRestde", restde);
 	}
 
