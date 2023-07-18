@@ -1,5 +1,7 @@
 package egovframework.com.test;
 
+import java.sql.SQLException;
+
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -8,21 +10,23 @@ import org.junit.runner.OrderWith;
 import org.junit.runner.RunWith;
 import org.junit.runner.manipulation.Alphanumeric;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StopWatch;
 
+import egovframework.com.cmm.EgovMessageSource;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * DAO 단위 테스트
+ * DAO 테스트
  * 
  * @author 이백행
- * @since 2023-07-17
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -37,6 +41,8 @@ import lombok.extern.slf4j.Slf4j;
 //@ActiveProfiles({ "postgres", "dummy" })
 //@ActiveProfiles({ "goldilocks", "dummy" })
 
+@Transactional
+
 @ContextConfiguration(locations = {
 
 //		"classpath*:egovframework/spring/com/**/context-*.xml",
@@ -49,20 +55,18 @@ import lombok.extern.slf4j.Slf4j;
 
 })
 
-@Transactional
-
 @RequiredArgsConstructor
 @Slf4j
 
-public abstract class EgovTestAbstractDAO2 {
+public class EgovTestAbstractDAO2 {
 
     /**
-     * STOP_WATCH
+     * BeforeClass AfterClass
      */
     private static final StopWatch STOP_WATCH = new StopWatch();
 
     /**
-     * stopWatch
+     * Before After
      */
     private final StopWatch stopWatch = new StopWatch();
 
@@ -76,6 +80,19 @@ public abstract class EgovTestAbstractDAO2 {
      */
     @Autowired
     private ApplicationContext context;
+
+    /**
+     * 메시지 리소스 사용을 위한 MessageSource 인터페이스 및 ReloadableResourceBundleMessageSource 클래스의 구현체
+     */
+//    @Resource(name = "egovMessageSource")
+    @Autowired
+    @Qualifier("egovMessageSource")
+    protected EgovMessageSource egovMessageSource;
+
+    /**
+     * 조회에 실패하였습니다.
+     */
+    protected static final String FAIL_COMMON_SELECT = "fail.common.select";
 
     /**
      * setUpBeforeClass
@@ -94,10 +111,12 @@ public abstract class EgovTestAbstractDAO2 {
     public static void tearDownAfterClass() {
         STOP_WATCH.stop();
 
-        log.debug("tearDownAfterClass stop");
+        if (log.isDebugEnabled()) {
+            log.debug("tearDownAfterClass stop");
 
-        log.debug("totalTimeMillis={}", STOP_WATCH.getTotalTimeMillis());
-        log.debug("totalTimeSeconds={}", STOP_WATCH.getTotalTimeSeconds());
+            log.debug("totalTimeMillis={}", STOP_WATCH.getTotalTimeMillis());
+            log.debug("totalTimeSeconds={}", STOP_WATCH.getTotalTimeSeconds());
+        }
     }
 
     /**
@@ -125,10 +144,27 @@ public abstract class EgovTestAbstractDAO2 {
     public void tearDown() {
         stopWatch.stop();
 
-        log.debug("tearDown stop");
+        if (log.isDebugEnabled()) {
+            log.debug("tearDown stop");
 
-        log.debug("totalTimeMillis={}", stopWatch.getTotalTimeMillis());
-        log.debug("totalTimeSeconds={}", stopWatch.getTotalTimeSeconds());
+            log.debug("totalTimeMillis={}", STOP_WATCH.getTotalTimeMillis());
+            log.debug("totalTimeSeconds={}", STOP_WATCH.getTotalTimeSeconds());
+        }
+    }
+
+    /**
+     * error
+     * 
+     * @param e
+     */
+    protected void error(final DataAccessException e) {
+        final SQLException sqlException = (SQLException) e.getCause();
+        if (log.isErrorEnabled()) {
+            log.error(egovMessageSource.getMessageArgs("fail.common.sql",
+                    new Object[] { sqlException.getErrorCode(), sqlException.getMessage() }));
+            log.error(egovMessageSource.getMessageArgs("fail.common.sql",
+                    new Object[] { sqlException.getSQLState(), sqlException.getMessage() }));
+        }
     }
 
 }
