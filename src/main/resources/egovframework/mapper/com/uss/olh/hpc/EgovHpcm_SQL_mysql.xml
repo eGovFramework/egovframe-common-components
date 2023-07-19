@@ -56,10 +56,10 @@
 			WHERE	1=1   			
 							
 			<if test="searchCnd == 0">AND
-				b.CODE_NM LIKE CONCAT('%', #{searchWrd}, '%')
+				B.CODE_NM LIKE CONCAT('%', #{searchWrd}, '%')
 			</if>
 			<if test="searchCnd == 1">AND
-				a.HPCM_DFN LIKE CONCAT('%', #{searchWrd}, '%')
+				A.HPCM_DFN LIKE CONCAT('%', #{searchWrd}, '%')
 			</if>
 			ORDER BY HPCM_ID DESC			
 			LIMIT  #{recordCountPerPage} OFFSET #{firstIndex}	
@@ -74,10 +74,10 @@
 			WHERE 	1=1
 					
 			<if test="searchCnd == 0">AND
-				b.CODE_NM LIKE CONCAT('%', #{searchWrd}, '%')
+				B.CODE_NM LIKE CONCAT('%', #{searchWrd}, '%')
 			</if>
 			<if test="searchCnd == 1">AND
-				a.HPCM_DFN LIKE CONCAT('%', #{searchWrd}, '%')
+				A.HPCM_DFN LIKE CONCAT('%', #{searchWrd}, '%')
 			</if>
 	</select>
 	
