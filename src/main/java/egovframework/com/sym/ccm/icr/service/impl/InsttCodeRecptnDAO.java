@@ -6,6 +6,7 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sym.ccm.icr.service.InsttCodeRecptn;
 import egovframework.com.sym.ccm.icr.service.InsttCodeRecptnVO;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -103,7 +104,7 @@ public class InsttCodeRecptnDAO extends EgovComAbstractDAO {
      * @return List(기관코드 목록)
      * @throws Exception
      */
-    public List<?> selectInsttCodeRecptnList(InsttCodeRecptnVO searchVO) throws Exception {
+    public List<EgovMap> selectInsttCodeRecptnList(InsttCodeRecptnVO searchVO) throws Exception {
         return selectList("InsttCodeRecptnDAO.selectInsttCodeRecptnList", searchVO);
     }
 
@@ -122,7 +123,7 @@ public class InsttCodeRecptnDAO extends EgovComAbstractDAO {
      * @return List(기관코드 목록)
      * @throws Exception
      */
-    public List<?> selectInsttCodeList(InsttCodeRecptnVO searchVO) throws Exception {
+    public List<EgovMap> selectInsttCodeList(InsttCodeRecptnVO searchVO) throws Exception {
         return selectList("InsttCodeRecptnDAO.selectInsttCodeList", searchVO);
     }
 
