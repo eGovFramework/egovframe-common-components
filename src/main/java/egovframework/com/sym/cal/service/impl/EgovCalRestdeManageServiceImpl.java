@@ -74,7 +74,7 @@ public class EgovCalRestdeManageServiceImpl extends EgovAbstractServiceImpl impl
 	 * 일반달력 월간 휴일을 조회한다.
 	 */
     @Override
-	public List<?> selectNormalMonthRestde(Restde restde) throws Exception {
+	public List<EgovMap> selectNormalMonthRestde(Restde restde) throws Exception {
 		return restdeManageDAO.selectNormalMonthRestde(restde);
 	}
 

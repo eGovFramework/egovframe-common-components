@@ -75,7 +75,7 @@ public class RestdeManageDAO extends EgovComAbstractDAO {
 	 * @return List(일반달력 월간 휴일정보)
 	 * @throws Exception
 	 */
-    public List<?> selectNormalMonthRestde(Restde restde) throws Exception {
+    public List<EgovMap> selectNormalMonthRestde(Restde restde) throws Exception {
         return selectList("RestdeManageDAO.selectNormalMonthRestde", restde);
 	}
 
