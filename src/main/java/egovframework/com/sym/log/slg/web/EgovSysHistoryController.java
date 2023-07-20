@@ -1,6 +1,5 @@
 package egovframework.com.sym.log.slg.web;
 
-import java.util.HashMap;
 import java.util.List;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
@@ -237,42 +236,39 @@ public class EgovSysHistoryController {
 		return "forward:/sym/log/slg/SelectSysHistoryList.do";
 	}
 
-	/**
-	 * 시스템이력 목록 조회
-	 *
-	 * @param history
-	 * @param model
-	 * @return
-	 * @throws Exception
-	 */
-	@IncludedInfo(name="시스템이력관리", listUrl="/sym/log/slg/SelectSysHistoryList.do", order = 1060 ,gid = 60)
-	@RequestMapping(value="/sym/log/slg/SelectSysHistoryList.do")
-	public String selectSysHistoryList(@ModelAttribute("searchVO") SysHistoryVO historyVO,
-			ModelMap model) throws Exception{
+    /**
+     * 시스템이력 목록 조회
+     *
+     * @param history
+     * @param model
+     * @return
+     * @throws Exception
+     */
+    @IncludedInfo(name = "시스템이력관리", listUrl = "/sym/log/slg/SelectSysHistoryList.do", order = 1060, gid = 60)
+    @RequestMapping(value = "/sym/log/slg/SelectSysHistoryList.do")
+    public String selectSysHistoryList(@ModelAttribute("searchVO") SysHistoryVO historyVO, ModelMap model)
+            throws Exception {
 
-		historyVO.setPageUnit(propertyService.getInt("pageUnit"));
-		historyVO.setPageSize(propertyService.getInt("pageSize"));
+        historyVO.setPageUnit(propertyService.getInt("pageUnit"));
+        historyVO.setPageSize(propertyService.getInt("pageSize"));
 
-		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(historyVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(historyVO.getPageUnit());
-		paginationInfo.setPageSize(historyVO.getPageSize());
+        PaginationInfo paginationInfo = new PaginationInfo();
+        paginationInfo.setCurrentPageNo(historyVO.getPageIndex());
+        paginationInfo.setRecordCountPerPage(historyVO.getPageUnit());
+        paginationInfo.setPageSize(historyVO.getPageSize());
 
-		historyVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		historyVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		historyVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+        historyVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+        historyVO.setLastIndex(paginationInfo.getLastRecordIndex());
+        historyVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		HashMap<?, ?> _map = (HashMap<?, ?>)sysHistoryService.selectSysHistoryList(historyVO);
-		int totCnt = Integer.parseInt((String)_map.get("resultCnt"));
+        sysHistoryService.selectSysHistoryList(historyVO, model);
+        int totCnt = (Integer) model.get("resultCnt");
 
-		model.addAttribute("resultList", _map.get("resultList"));
-		model.addAttribute("resultCnt", _map.get("resultCnt"));
+        paginationInfo.setTotalRecordCount(totCnt);
+        model.addAttribute("paginationInfo", paginationInfo);
 
-		paginationInfo.setTotalRecordCount(totCnt);
-		model.addAttribute("paginationInfo", paginationInfo);
-
-		return "egovframework/com/sym/log/slg/EgovSysHistList";
-	}
+        return "egovframework/com/sym/log/slg/EgovSysHistList";
+    }
 
 	/**
 	 * 시스템이력 상세 조회

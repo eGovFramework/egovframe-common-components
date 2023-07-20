@@ -2,6 +2,8 @@ package egovframework.com.sym.log.slg.service;
 
 import java.util.Map;
 
+import org.springframework.ui.ModelMap;
+
 
 
 /**
@@ -59,6 +61,6 @@ public interface EgovSysHistoryService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Map<?, ?> selectSysHistoryList(SysHistoryVO historyVO) throws Exception;
+	public void selectSysHistoryList(SysHistoryVO historyVO, ModelMap model) throws Exception;
 
 }
