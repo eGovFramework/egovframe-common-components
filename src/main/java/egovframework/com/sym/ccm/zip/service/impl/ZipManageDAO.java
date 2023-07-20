@@ -6,6 +6,7 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sym.ccm.zip.service.Zip;
 import egovframework.com.sym.ccm.zip.service.ZipVO;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -80,7 +81,7 @@ public class ZipManageDAO extends EgovComAbstractDAO {
      * @return List(우편번호 목록)
      * @throws Exception
      */
-	public List<?> selectZipList(ZipVO searchVO) throws Exception {
+	public List<EgovMap> selectZipList(ZipVO searchVO) throws Exception {
         return selectList("ZipManageDAO.selectZipList", searchVO);
     }
 

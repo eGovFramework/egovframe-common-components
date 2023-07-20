@@ -9,6 +9,7 @@ import egovframework.com.sym.ccm.zip.service.ZipVO;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.excel.EgovExcelService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 import javax.annotation.Resource;
 
@@ -89,7 +90,7 @@ public class EgovCcmRdnmadZipServiceImpl extends EgovAbstractServiceImpl impleme
 	 * 우편번호 목록을 조회한다.
 	 */
 	@Override
-	public List<?> selectZipList(ZipVO searchVO) throws Exception {
+	public List<EgovMap> selectZipList(ZipVO searchVO) throws Exception {
         return rdnmadZipDAO.selectZipList(searchVO);
 	}
 

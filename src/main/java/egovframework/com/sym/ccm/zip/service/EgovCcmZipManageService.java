@@ -3,6 +3,8 @@ package egovframework.com.sym.ccm.zip.service;
 import java.io.InputStream;
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 
 /**
  *
@@ -64,7 +66,7 @@ public interface EgovCcmZipManageService {
 	 * @return List(우편번호 목록)
 	 * @throws Exception
 	 */
-	List<?> selectZipList(ZipVO searchVO) throws Exception;
+	List<EgovMap> selectZipList(ZipVO searchVO) throws Exception;
 
     /**
 	 * 우편번호 총 개수를 조회한다.
