@@ -5,6 +5,7 @@ import java.util.List;
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
@@ -92,7 +93,7 @@ public class EgovSysHistoryController {
 		if (bindingResult.hasErrors()) {
 			ComDefaultCodeVO vo = new ComDefaultCodeVO();
 			vo.setCodeId("COM002");
-			List<?> _result = cmmUseService.selectCmmCodeDetail(vo);
+			List<CmmnDetailCode> _result = cmmUseService.selectCmmCodeDetail(vo);
 			model.addAttribute("resultList", _result);
 			return "egovframework/com/sym/log/slg/EgovSysHistRegist";
 		}
@@ -128,7 +129,7 @@ public class EgovSysHistoryController {
 
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM002");
-		List<?> _result = cmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> _result = cmmUseService.selectCmmCodeDetail(vo);
 		model.addAttribute("resultList", _result);
 		return "egovframework/com/sym/log/slg/EgovSysHistRegist";
 	}
@@ -159,7 +160,7 @@ public class EgovSysHistoryController {
 			model.addAttribute("history", history);
 			ComDefaultCodeVO vo = new ComDefaultCodeVO();
 			vo.setCodeId("COM002");
-			List<?> _result = cmmUseService.selectCmmCodeDetail(vo);
+			List<CmmnDetailCode> _result = cmmUseService.selectCmmCodeDetail(vo);
 			model.addAttribute("resultList", _result);
 			return "egovframework/com/sym/log/slg/EgovSysHistUpdt";
 		}
@@ -207,7 +208,7 @@ public class EgovSysHistoryController {
 		model.addAttribute("history", history);
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM002");
-		List<?> _result = cmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> _result = cmmUseService.selectCmmCodeDetail(vo);
 		model.addAttribute("resultList", _result);
 		return "egovframework/com/sym/log/slg/EgovSysHistUpdt";
 	}
