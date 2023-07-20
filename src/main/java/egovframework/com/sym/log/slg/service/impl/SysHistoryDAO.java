@@ -58,8 +58,7 @@ public class SysHistoryDAO extends EgovComAbstractDAO {
 	 *
 	 * @param history - 시스템 이력정보가 담긴 모델 객체
 	 */
-	public List<?> selectSysHistorList(SysHistoryVO historyVO) throws Exception{
-
+	public List<SysHistoryVO> selectSysHistorList(SysHistoryVO historyVO) throws Exception{
 		return selectList("SysHistoryDAO.selectSysHistoryList", historyVO);
 	}
 

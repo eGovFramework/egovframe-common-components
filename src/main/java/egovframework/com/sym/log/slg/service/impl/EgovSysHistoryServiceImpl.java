@@ -87,7 +87,7 @@ public class EgovSysHistoryServiceImpl extends EgovAbstractServiceImpl implement
 	 */
 	@Override
 	public Map<String, Object> selectSysHistoryList(SysHistoryVO historyVO) throws Exception {
-		 List<?> _result = sysHistoryDAO.selectSysHistorList(historyVO);
+		 List<SysHistoryVO> _result = sysHistoryDAO.selectSysHistorList(historyVO);
 		 int _cnt = sysHistoryDAO.selectSysHistortListCnt(historyVO);
 		 Map<String, Object> _map = new HashMap<String, Object>();
 		 _map.put("resultList", _result);
