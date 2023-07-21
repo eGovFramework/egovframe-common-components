@@ -52,40 +52,41 @@ public class EgovTrsmrcvLogController {
 	@Resource(name = "EgovCmmUseService")
 	private EgovCmmUseService cmmUseService;
 
-	/**
-	 * 송수신 로그 목록 조회
-	 *
-	 * @param trsmrcvLog
-	 * @return sym/log/tlg/EgovTrsmrcvLogList
-	 * @throws Exception
-	 */
-	@IncludedInfo(name = "송/수신로그관리", listUrl = "/sym/log/tlg/SelectTrsmrcvLogList.do", order = 1050, gid = 60)
-	@RequestMapping(value = "/sym/log/tlg/SelectTrsmrcvLogList.do")
-	public String selectTrsmrcvLogInf(@ModelAttribute("searchVO") TrsmrcvLog trsmrcvLog, ModelMap model) throws Exception {
+    /**
+     * 송수신 로그 목록 조회
+     *
+     * @param trsmrcvLog
+     * @return sym/log/tlg/EgovTrsmrcvLogList
+     * @throws Exception
+     */
+    @IncludedInfo(name = "송/수신로그관리", listUrl = "/sym/log/tlg/SelectTrsmrcvLogList.do", order = 1050, gid = 60)
+    @RequestMapping(value = "/sym/log/tlg/SelectTrsmrcvLogList.do")
+    public String selectTrsmrcvLogInf(@ModelAttribute("searchVO") TrsmrcvLog trsmrcvLog, ModelMap model)
+            throws Exception {
 
-		trsmrcvLog.setPageUnit(propertyService.getInt("pageUnit"));
-		trsmrcvLog.setPageSize(propertyService.getInt("pageSize"));
+        trsmrcvLog.setPageUnit(propertyService.getInt("pageUnit"));
+        trsmrcvLog.setPageSize(propertyService.getInt("pageSize"));
 
-		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(trsmrcvLog.getPageIndex());
-		paginationInfo.setRecordCountPerPage(trsmrcvLog.getPageUnit());
-		paginationInfo.setPageSize(trsmrcvLog.getPageSize());
+        PaginationInfo paginationInfo = new PaginationInfo();
+        paginationInfo.setCurrentPageNo(trsmrcvLog.getPageIndex());
+        paginationInfo.setRecordCountPerPage(trsmrcvLog.getPageUnit());
+        paginationInfo.setPageSize(trsmrcvLog.getPageSize());
 
-		trsmrcvLog.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		trsmrcvLog.setLastIndex(paginationInfo.getLastRecordIndex());
-		trsmrcvLog.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+        trsmrcvLog.setFirstIndex(paginationInfo.getFirstRecordIndex());
+        trsmrcvLog.setLastIndex(paginationInfo.getLastRecordIndex());
+        trsmrcvLog.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		Map<String, Object> map = trsmrcvLogService.selectTrsmrcvLogInf(trsmrcvLog);
-		int totCnt = MapUtils.getIntValue(map, "resultCnt");
+        Map<String, Object> map = trsmrcvLogService.selectTrsmrcvLogInf(trsmrcvLog);
+        int totCnt = MapUtils.getIntValue(map, "resultCnt");
 
-		model.addAttribute("resultList", map.get("resultList"));
-		model.addAttribute("resultCnt", totCnt);
+        model.addAttribute("resultList", map.get("resultList"));
+        model.addAttribute("resultCnt", totCnt);
 
-		paginationInfo.setTotalRecordCount(totCnt);
-		model.addAttribute("paginationInfo", paginationInfo);
+        paginationInfo.setTotalRecordCount(totCnt);
+        model.addAttribute("paginationInfo", paginationInfo);
 
-		return "egovframework/com/sym/log/tlg/EgovTrsmrcvLogList";
-	}
+        return "egovframework/com/sym/log/tlg/EgovTrsmrcvLogList";
+    }
 
 	/**
 	 * 송수신 로그 상세 조회
@@ -105,22 +106,21 @@ public class EgovTrsmrcvLogController {
 		return "egovframework/com/sym/log/tlg/EgovTrsmrcvLogInqire";
 	}
 
-	/**
-	 * 송수신 로그 테스트 화면
-	 *
-	 * @param trsmrcvLog
-	 * @return sym/log/slg/EgovSysHistRegist
-	 * @throws Exception
-	 */
-	@RequestMapping(value = "/sym/log/tlg/AddTrsmrcvLog.do")
-	public String addTrsmrcvLog(@ModelAttribute("searchVO") TrsmrcvLog trsmrcvLog, ModelMap model) throws Exception {
-
-//		ComDefaultCodeVO vo = new ComDefaultCodeVO();
-//		vo.setCodeId("COM002");
-//		List<CmmnDetailCode> resultList = cmmUseService.selectCmmCodeDetail(vo);
-//		model.addAttribute("resultList", resultList);
-		return "egovframework/com/sym/log/tlg/EgovTrsmrcvLogRegist";
-	}
+    /**
+     * 송수신 로그 테스트 화면
+     *
+     * @param trsmrcvLog
+     * @return sym/log/slg/EgovSysHistRegist
+     * @throws Exception
+     */
+    @RequestMapping(value = "/sym/log/tlg/AddTrsmrcvLog.do")
+    public String addTrsmrcvLog(@ModelAttribute("searchVO") TrsmrcvLog trsmrcvLog, ModelMap model) throws Exception {
+//        ComDefaultCodeVO vo = new ComDefaultCodeVO();
+//        vo.setCodeId("COM002");
+//        List<CmmnDetailCode> resultList = cmmUseService.selectCmmCodeDetail(vo);
+//        model.addAttribute("resultList", resultList);
+        return "egovframework/com/sym/log/tlg/EgovTrsmrcvLogRegist";
+    }
 
 	/**
 	 * 송수신 로그 테스트
