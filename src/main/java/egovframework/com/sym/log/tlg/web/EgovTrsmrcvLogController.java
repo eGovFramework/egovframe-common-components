@@ -6,6 +6,7 @@ import java.util.List;
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.log.tlg.service.EgovTrsmrcvLogService;
@@ -118,7 +119,7 @@ public class EgovTrsmrcvLogController {
 
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM002");
-		List<?> _result = cmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> _result = cmmUseService.selectCmmCodeDetail(vo);
 		model.addAttribute("resultList", _result);
 		return "egovframework/com/sym/log/tlg/EgovTrsmrcvLogRegist";
 	}

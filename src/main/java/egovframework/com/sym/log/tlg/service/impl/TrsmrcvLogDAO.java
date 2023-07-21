@@ -68,7 +68,7 @@ public class TrsmrcvLogDAO extends EgovComAbstractDAO {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<?> selectTrsmrcvLogInf(TrsmrcvLog trsmrcvLog) throws Exception{
+	public List<TrsmrcvLog> selectTrsmrcvLogInf(TrsmrcvLog trsmrcvLog) throws Exception{
 		return selectList("TrsmrcvLogDAO.selectTrsmrcvLogInf", trsmrcvLog);
 	}
 

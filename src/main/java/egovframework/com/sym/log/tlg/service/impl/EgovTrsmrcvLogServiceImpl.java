@@ -86,7 +86,7 @@ public class EgovTrsmrcvLogServiceImpl extends EgovAbstractServiceImpl implement
 	@Override
 	@SuppressWarnings({ "rawtypes", "unchecked" })
 	public Map<?, ?> selectTrsmrcvLogInf(TrsmrcvLog trsmrcvLog) throws Exception {
-		List<?> _result = trsmrcvLogDAO.selectTrsmrcvLogInf(trsmrcvLog);
+		List<TrsmrcvLog> _result = trsmrcvLogDAO.selectTrsmrcvLogInf(trsmrcvLog);
 		int _cnt = trsmrcvLogDAO.selectTrsmrcvLogInfCnt(trsmrcvLog);
 
 		Map<String, Object> _map = new HashMap();
