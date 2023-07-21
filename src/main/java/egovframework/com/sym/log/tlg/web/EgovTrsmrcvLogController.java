@@ -1,7 +1,7 @@
 package egovframework.com.sym.log.tlg.web;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.LoginVO;
@@ -12,6 +12,7 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.log.tlg.service.EgovTrsmrcvLogService;
 import egovframework.com.sym.log.tlg.service.TrsmrcvLog;
 
+import org.apache.commons.collections4.MapUtils;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
@@ -77,11 +78,11 @@ public class EgovTrsmrcvLogController {
 		trsmrcvLog.setLastIndex(paginationInfo.getLastRecordIndex());
 		trsmrcvLog.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		HashMap<?, ?> _map = (HashMap<?, ?>) trsmrcvLogService.selectTrsmrcvLogInf(trsmrcvLog);
-		int totCnt = Integer.parseInt((String) _map.get("resultCnt"));
+		Map<String, Object> map = trsmrcvLogService.selectTrsmrcvLogInf(trsmrcvLog);
+		int totCnt = MapUtils.getIntValue(map, "resultCnt");
 
-		model.addAttribute("resultList", _map.get("resultList"));
-		model.addAttribute("resultCnt", _map.get("resultCnt"));
+		model.addAttribute("resultList", map.get("resultList"));
+		model.addAttribute("resultCnt", totCnt);
 
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);

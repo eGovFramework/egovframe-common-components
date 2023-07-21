@@ -49,6 +49,6 @@ public interface EgovTrsmrcvLogService {
 	 *
 	 * @param TrsmrcvLog
 	 */
-	public Map<?, ?> selectTrsmrcvLogInf(TrsmrcvLog trsmrcvLog) throws Exception;
+	public Map<String, Object> selectTrsmrcvLogInf(TrsmrcvLog trsmrcvLog) throws Exception;
 
 }

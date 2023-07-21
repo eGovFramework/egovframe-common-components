@@ -84,16 +84,15 @@ public class EgovTrsmrcvLogServiceImpl extends EgovAbstractServiceImpl implement
 	 * @param TrsmrcvLog
 	 */
 	@Override
-	@SuppressWarnings({ "rawtypes", "unchecked" })
-	public Map<?, ?> selectTrsmrcvLogInf(TrsmrcvLog trsmrcvLog) throws Exception {
-		List<TrsmrcvLog> _result = trsmrcvLogDAO.selectTrsmrcvLogInf(trsmrcvLog);
-		int _cnt = trsmrcvLogDAO.selectTrsmrcvLogInfCnt(trsmrcvLog);
+	public Map<String, Object> selectTrsmrcvLogInf(TrsmrcvLog trsmrcvLog) throws Exception {
+		List<TrsmrcvLog> resultList = trsmrcvLogDAO.selectTrsmrcvLogInf(trsmrcvLog);
+		int totCnt = trsmrcvLogDAO.selectTrsmrcvLogInfCnt(trsmrcvLog);
 
-		Map<String, Object> _map = new HashMap();
-		_map.put("resultList", _result);
-		_map.put("resultCnt", Integer.toString(_cnt));
+		Map<String, Object> map = new HashMap<>();
+		map.put("resultList", resultList);
+		map.put("resultCnt", totCnt);
 
-		return _map;
+		return map;
 	}
 
 }
