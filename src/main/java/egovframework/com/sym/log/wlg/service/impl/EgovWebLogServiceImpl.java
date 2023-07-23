@@ -78,21 +78,21 @@ public class EgovWebLogServiceImpl extends EgovAbstractServiceImpl implements
 		return webLogDAO.selectWebLog(webLog);
 	}
 
-	/**
-	 * 웹 로그정보 목록을 조회한다.
-	 *
-	 * @param WebLog
-	 */
-	@Override
-	public Map<String, Object> selectWebLogInf(WebLog webLog) throws Exception {
-		List<WebLog> resultList = webLogDAO.selectWebLogInf(webLog);
-		int totCnt = webLogDAO.selectWebLogInfCnt(webLog);
+    /**
+     * 웹 로그정보 목록을 조회한다.
+     *
+     * @param WebLog
+     */
+    @Override
+    public Map<String, Object> selectWebLogInf(WebLog webLog) throws Exception {
+        List<WebLog> resultList = webLogDAO.selectWebLogInf(webLog);
+        int totCnt = webLogDAO.selectWebLogInfCnt(webLog);
 
-		Map<String, Object> map = new HashMap<>();
-		map.put("resultList", resultList);
-		map.put("resultCnt", totCnt);
+        Map<String, Object> map = new HashMap<>();
+        map.put("resultList", resultList);
+        map.put("resultCnt", totCnt);
 
-		return map;
-	}
+        return map;
+    }
 
 }

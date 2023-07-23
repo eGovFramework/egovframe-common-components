@@ -44,11 +44,11 @@ public interface EgovWebLogService {
 	 */
 	public WebLog selectWebLog(WebLog webLog) throws Exception;
 
-	/**
-	 * 웹 로그정보 목록을 조회한다.
-	 *
-	 * @param WebLog
-	 */
-	public Map<String, Object> selectWebLogInf(WebLog webLog) throws Exception;
+    /**
+     * 웹 로그정보 목록을 조회한다.
+     *
+     * @param WebLog
+     */
+    public Map<String, Object> selectWebLogInf(WebLog webLog) throws Exception;
 
 }
