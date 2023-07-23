@@ -85,14 +85,14 @@ public class EgovWebLogServiceImpl extends EgovAbstractServiceImpl implements
 	 */
 	@Override
 	public Map<String, Object> selectWebLogInf(WebLog webLog) throws Exception {
-		List<WebLog> _result = webLogDAO.selectWebLogInf(webLog);
-		int _cnt = webLogDAO.selectWebLogInfCnt(webLog);
+		List<WebLog> resultList = webLogDAO.selectWebLogInf(webLog);
+		int totCnt = webLogDAO.selectWebLogInfCnt(webLog);
 
-		Map<String, Object> _map = new HashMap<String, Object>();
-		_map.put("resultList", _result);
-		_map.put("resultCnt", Integer.toString(_cnt));
+		Map<String, Object> map = new HashMap<>();
+		map.put("resultList", resultList);
+		map.put("resultCnt", totCnt);
 
-		return _map;
+		return map;
 	}
 
 }

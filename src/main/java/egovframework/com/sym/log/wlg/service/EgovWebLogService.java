@@ -49,6 +49,6 @@ public interface EgovWebLogService {
 	 *
 	 * @param WebLog
 	 */
-	public Map<?, ?> selectWebLogInf(WebLog webLog) throws Exception;
+	public Map<String, Object> selectWebLogInf(WebLog webLog) throws Exception;
 
 }

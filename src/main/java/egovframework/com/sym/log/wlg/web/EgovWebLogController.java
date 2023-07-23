@@ -1,11 +1,12 @@
 package egovframework.com.sym.log.wlg.web;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.sym.log.wlg.service.EgovWebLogService;
 import egovframework.com.sym.log.wlg.service.WebLog;
 
+import org.apache.commons.collections4.MapUtils;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
@@ -68,11 +69,10 @@ public class EgovWebLogController {
 		webLog.setLastIndex(paginationInfo.getLastRecordIndex());
 		webLog.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		HashMap<?, ?> _map = (HashMap<?, ?>)webLogService.selectWebLogInf(webLog);
-		int totCnt = Integer.parseInt((String)_map.get("resultCnt"));
+		Map<String, Object> map = webLogService.selectWebLogInf(webLog);
+		int totCnt = MapUtils.getInteger(map, "resultCnt");
 
-		model.addAttribute("resultList", _map.get("resultList"));
-		model.addAttribute("resultCnt", _map.get("resultCnt"));
+		model.addAttribute("resultList", map.get("resultList"));
 
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
