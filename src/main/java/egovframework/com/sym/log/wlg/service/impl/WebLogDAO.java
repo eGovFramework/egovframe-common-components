@@ -68,7 +68,7 @@ public class WebLogDAO extends EgovComAbstractDAO {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<?> selectWebLogInf(WebLog webLog) throws Exception{
+	public List<WebLog> selectWebLogInf(WebLog webLog) throws Exception{
 		return selectList("WebLog.selectWebLogInf", webLog);
 	}
 
