@@ -91,10 +91,11 @@ public interface EgovMenuCreateManageService {
 
 	 /**
 	 * 사이트맵 등록
+	 * 개발환경에서 테스트용 함수로 보안 취약
 	 * @param vo MenuSiteMapVO
 	 * @param vHtmlValue String
 	 * @return boolean
 	 * @exception Exception
 	 */
-	 boolean creatSiteMap(MenuSiteMapVO vo, String vHtmlValue) throws Exception;
+	 //boolean creatSiteMap(MenuSiteMapVO vo, String vHtmlValue) throws Exception;
 }

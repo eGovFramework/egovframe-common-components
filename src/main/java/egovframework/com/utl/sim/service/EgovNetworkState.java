@@ -40,10 +40,11 @@ import egovframework.com.cmm.util.EgovResourceCloseHelper;
  * <pre>
  * == 개정이력(Modification Information) ==
  *
- *  수정일                수정자           수정내용
- *  ----------   --------   ---------------------------
- *  2020.12.07   신용호            KISA 보안약점 조치
- *  2022.11.11   김혜준            시큐어코딩 처리
+ *  수정일		수정자		수정내용
+ *  ----------	--------	---------------------------
+ *  2020.12.07	신용호		KISA 보안약점 조치
+ *  2022.11.11	김혜준		시큐어코딩 처리
+ *  2023.06.09	김신해		NSR 보안조치 (SCAN 기능 구현 추가)
  *  
  * </pre>
  */
@@ -256,6 +257,8 @@ public class EgovNetworkState {
 					outValue = getCharFilter(tmp);
 				} else if ("DNS".equals(stringOne)) {
 					//tmp = "was은(는) 192.168.200.21입니다";
+					outValue = getCharFilter(tmp);
+				} else if ("SCAN".equals(stringOne)) {
 					outValue = getCharFilter(tmp);
 				} else {
 					outValue = "데이타가 존재하지 않습니다.";
