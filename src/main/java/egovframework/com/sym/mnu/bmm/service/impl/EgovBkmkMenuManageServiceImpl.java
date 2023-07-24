@@ -116,11 +116,10 @@ public class EgovBkmkMenuManageServiceImpl extends EgovAbstractServiceImpl imple
      * 미리보기를 할 바로가기메뉴관리의 목록을 조회한다.
      * 
      * @param BkmkMenuManageVO
-     * @return  List<MenuManageVO> 
+     * @return List<MenuManageVO>
      * @throws Exception
      */
-    public List<MenuManageVO>  selectBkmkPreviewList(BkmkMenuManageVO bkmkMenuManageVO)
-            throws Exception {
+    public List<MenuManageVO> selectBkmkPreviewList(BkmkMenuManageVO bkmkMenuManageVO) throws Exception {
         return bkmkMenuManageDAO.selectBkmkPreview(bkmkMenuManageVO);
     }
 
