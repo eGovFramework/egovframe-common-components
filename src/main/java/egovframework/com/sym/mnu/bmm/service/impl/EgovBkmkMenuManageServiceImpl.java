@@ -121,11 +121,7 @@ public class EgovBkmkMenuManageServiceImpl extends EgovAbstractServiceImpl imple
      */
     public List<MenuManageVO>  selectBkmkPreviewList(BkmkMenuManageVO bkmkMenuManageVO)
             throws Exception {
-        
-                
-        List<MenuManageVO> result = bkmkMenuManageDAO.selectBkmkPreview(bkmkMenuManageVO);
-        
-        return result;
+        return bkmkMenuManageDAO.selectBkmkPreview(bkmkMenuManageVO);
     }
 
     /**
