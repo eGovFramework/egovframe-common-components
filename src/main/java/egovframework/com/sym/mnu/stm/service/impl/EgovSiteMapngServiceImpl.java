@@ -44,7 +44,6 @@ public class EgovSiteMapngServiceImpl extends EgovAbstractServiceImpl implements
 	public SiteMapngVO selectSiteMapng(ComDefaultVO vo) throws Exception{
 		String sMapCreatID = null;
 
-		SiteMapngVO sitemapngvo = new SiteMapngVO();
 		sMapCreatID = siteMapngDAO.selectSiteMapngByMapCreatID(vo);
 		vo.setSearchKeyword(sMapCreatID);
         return siteMapngDAO.selectSiteMapng(vo);

@@ -47,7 +47,6 @@ var getContextPath = "${pageContext.request.contextPath}";
 /* 절대 path내  사이트맵 jsp를 저장할 장소 지정 */
 //var vSiteMapPath = "/html/egovframework/com/sym/mnu/mcm/";
 
-
 /* ********************************************************
  * 조회 함수
  ******************************************************** */
@@ -86,7 +85,7 @@ function fCallUrl(url) {
 </script>
 
 </head>
-<body>
+<body onload="init()">
 <noscript class="noScriptTitle"><spring:message code="comSymMnuMpm.MenuCreatSiteMap.title" /></noscript>
 
 <form name="menuCreatManageSiteMapForm" action ="<c:url value='/sym/mnu/mcm/EgovMenuCreatSiteMapSelect.do' />" method="post">
@@ -99,7 +98,7 @@ function fCallUrl(url) {
 <input name="tmp_rootPath"   type="hidden" />
 
 <div class="board" style="width:530px">
-	<h1><spring:message code="comSymMnuMpm.MenuCreatSiteMap.pageTop.title" /></h1><!-- 메뉴사이트맵생성 -->
+	<h1><spring:message code="comSymMnuStm.siteMapng.siteMap" /></h1><!-- 사이트맵 -->
 
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
 		<ul>
@@ -108,7 +107,7 @@ function fCallUrl(url) {
 				<input class="s_input2 vat" name="authorCode" type="text" value="<c:out value='${resultVO.authorCode}'/>" size="20" maxlength="30" title="<spring:message code="comSymMnuMpm.MenuCreatSiteMap.authName" />" readonly="readonly" /><!-- 권한명 -->
 				<input class="s_input2 vat" name="chkCreat" type="text" value="<c:out value='${resultBoolean.chkCreat}'/>" size="10" maxlength="10" title="<spring:message code="comSymMnuMpm.MenuCreatSiteMap.authCode" />" readonly="readonly" /><!-- 권한코드 -->
 				
-				<span class="btn_b"><a href="#LINK" onclick="CreatSiteMap(); return false;" title="<spring:message code="comSymMnuMpm.MenuCreatSiteMap.createSitemap" />"><spring:message code="comSymMnuMpm.MenuCreatSiteMap.createSitemap" /></a></span><!-- 사이트맵생성 -->
+				<!-- <span class="btn_b"><a href="#LINK" onclick="CreatSiteMap(); return false;" title="<spring:message code="comSymMnuMpm.MenuCreatSiteMap.createSitemap" />"><spring:message code="comSymMnuMpm.MenuCreatSiteMap.createSitemap" /></a></span> --><!-- 사이트맵생성 불필요-->
 			</li>
 		</ul>
 	</div>
@@ -119,18 +118,21 @@ function fCallUrl(url) {
 	
 	<div class="tree" style="width:480px;" id="treeSiteMap">
 		<script language="javascript" type="text/javaScript">
-			var Tree = new Array;
-			var baseObj = document.getElementById("treeSiteMap");
-			if ( typeof document.menuCreatManageSiteMapForm.tmp_menuNmVal == "undefined" 
-					|| typeof document.menuCreatManageSiteMapForm.tmp_menuNmVal.length == "undefined" ) {
-            	alert("<spring:message code="comSymMnuMpm.MenuCreatSiteMap.validate.menuNmVal.none2" />"); //사이트맵 생성 데이타가 존재하지 않습니다. \n 메뉴를 생성하신 후 작업하세요.
-            	window.close();
-			} else {
-				for (var j = 0; j < document.menuCreatManageSiteMapForm.tmp_menuNmVal.length; j++) {
-					Tree[j] = document.menuCreatManageSiteMapForm.tmp_menuNmVal[j].value;
-				}
-				createTree(baseObj,Tree);
-            }
+			function init() {
+				var Tree = new Array;
+				var baseObj = document.getElementById("treeSiteMap");
+				debugger;
+				if ( typeof document.getElementsByName("tmp_menuNmVal") == "undefined" 
+						|| typeof document.getElementsByName("tmp_menuNmVal").length == "undefined" ) {
+	            	alert("<spring:message code="comSymMnuMpm.MenuCreatSiteMap.validate.menuNmVal.none2" />"); //사이트맵 생성 데이타가 존재하지 않습니다. \n 메뉴를 생성하신 후 작업하세요.
+	            	window.close();
+				} else {
+					for (var j = 0; j < document.getElementsByName("tmp_menuNmVal").length; j++) {
+						Tree[j] = document.getElementsByName("tmp_menuNmVal")[j].value;
+					}
+					createTree(baseObj,Tree);
+	            }
+			}
 		</script>
 	</div>
 </div>

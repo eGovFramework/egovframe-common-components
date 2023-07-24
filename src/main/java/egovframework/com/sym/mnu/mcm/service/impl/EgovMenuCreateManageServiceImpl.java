@@ -148,11 +148,13 @@ public class EgovMenuCreateManageServiceImpl extends EgovAbstractServiceImpl imp
 
 	/**
 	 * 사이트맵 등록
+	 * 개발환경에서 테스트용 함수로 보안 취약
 	 * @param menuSiteMapvo MenuSiteMapVO
 	 * @param vHtmlValue   String
 	 * @return boolean
 	 * @exception Exception
 	 */
+	/*
 	public boolean creatSiteMap(MenuSiteMapVO menuSiteMapvo, String vHtmlValue) throws Exception {
 		boolean chkCreat = false;
 		String vSiteMapName = null;
@@ -179,14 +181,17 @@ public class EgovMenuCreateManageServiceImpl extends EgovAbstractServiceImpl imp
 		}
 		return chkCreat;
 	}
+	*/
 
 	/**
 	 * 메뉴생성 사이트맵 Html 파일 생성
+	 * 개발환경에서 테스트용 함수로 보안 취약
 	 * @param vSiteMapName String
 	 * @param vHtmlValue   String
 	 * @return boolean
 	 * @exception Exception
 	 */
+	/*
 	private boolean siteMapCreat(String vSiteMapName, String vHtmlValue) throws Exception {
 		boolean success = false;
 		String FileName = null;
@@ -213,4 +218,5 @@ public class EgovMenuCreateManageServiceImpl extends EgovAbstractServiceImpl imp
 		
 		return success;
 	}
+	*/
 }

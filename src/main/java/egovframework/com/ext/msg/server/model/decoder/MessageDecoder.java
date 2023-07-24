@@ -80,10 +80,10 @@ public class MessageDecoder implements Decoder.Text<Message> {
 				stringReader.close();
 			}
 			if (jsonReader != null) {
-				jsonReader.close();
+				jsonReader = null;
 			}
 			if (jsonObject != null) {
-				jsonObject.clear();
+				jsonObject = null;
 			}
 		}
 

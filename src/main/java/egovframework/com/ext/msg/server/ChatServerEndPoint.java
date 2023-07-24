@@ -23,6 +23,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
+import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.ext.msg.server.config.ChatServerAppConfig;
 import egovframework.com.ext.msg.server.model.ChatMessage;
 import egovframework.com.ext.msg.server.model.Message;
@@ -47,9 +48,10 @@ import org.slf4j.LoggerFactory;
 * @Description : 두 명의 사용자가 대화할 때 접속 처리및 메시지처리 기능을 하는 WebSocket 서버클래스
 * @Modification Information
 *
-*    수정일       수정자         수정내용
-*    -------        -------     -------------------
-*    2014. 11. 27.    이영지
+*    수정일			수정자		수정내용
+*    -------		-------		-------------------
+*    2014.11.27		이영지
+*    2023.06.09		김장하		NSR 보안조치 (사용자목록 크로스사이트 스크립트 방지)
 *
 */
 @ServerEndpoint(value = "/chat/{room}", encoders={MessageEncoder.class}, decoders={MessageDecoder.class}, configurator=ChatServerAppConfig.class)
@@ -82,9 +84,11 @@ public class ChatServerEndPoint {
 		ChatMessage outgoingChatMessage = new ChatMessage();
 
 		String username = (String) userSession.getUserProperties().get("username");
+		String filteredIncommingMessage = (String) EgovWebUtil.clearXSSMaximum(incomingChatMessage.getMessage());
+		
 		if (username == null) {
-
-			username = incomingChatMessage.getMessage();
+			username = filteredIncommingMessage;
+			
 			if (username != null) {
 				userSession.getUserProperties().put("username", username);
 			}
@@ -96,7 +100,7 @@ public class ChatServerEndPoint {
 			}
 		} else {
 			outgoingChatMessage.setName(username);
-			outgoingChatMessage.setMessage(incomingChatMessage.getMessage());
+			outgoingChatMessage.setMessage(filteredIncommingMessage);
 
 			for (Session session : chatroomUsers){
 				session.getBasicRemote().sendObject(outgoingChatMessage);

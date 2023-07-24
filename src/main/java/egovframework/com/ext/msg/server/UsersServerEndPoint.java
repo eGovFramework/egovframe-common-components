@@ -39,15 +39,18 @@ import javax.websocket.server.ServerEndpoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import egovframework.com.cmm.EgovWebUtil;
+
 /**
 * @Class Name : UsersServerEndPoint.java
 * @Description : 현재 가능한 대화사용자 리스트를 처리하는 WebSocket 서버클래스
 * @Modification Information
 *
-*    수정일               수정자                수정내용
-*    ----------   ---------    ---------------------------------
-*    2014.11.27   이영지
-*    2020.11.02   신용호               KISA 보안약점 조치 (Random Seed값 추가)
+*    수정일			수정자		수정내용
+*    ----------		---------	---------------------------------
+*    2014.11.27		이영지
+*    2020.11.02		신용호		KISA 보안약점 조치 (Random Seed값 추가)
+*    2023.06.09		김장하		NSR 보안조치 (사용자이름 크로스사이트 스크립트 방지)
 *
 */
 @ServerEndpoint(value = "/usersServerEndpoint"/* ,configurator=ServerAppConfig.class*/)
@@ -89,7 +92,7 @@ public class UsersServerEndPoint {
 			if ("firstConnection".equals(connectionType) && username == null) {
 				// 맨 처음 접속 시,
 				// 사용자의 이름을 가져옴
-				username = jsonObject.getString("username");
+				username = EgovWebUtil.clearXSSMaximum(jsonObject.getString("username"));
 
 				LOGGER.info(username + " is entered.");
 
@@ -114,7 +117,7 @@ public class UsersServerEndPoint {
 				chatroomMembers.add(userSession);
 
 				// 선택한 사용자를 사용자들 안에서 찾기.
-				String connectingUser = jsonObject.getString("connectingUser");
+				String connectingUser = EgovWebUtil.clearXSSMaximum(jsonObject.getString("connectingUser"));
 
 				if (connectingUser != null && !username.equals(connectingUser)) {
 					// 사용자들 중 선택한 유저와 연결
