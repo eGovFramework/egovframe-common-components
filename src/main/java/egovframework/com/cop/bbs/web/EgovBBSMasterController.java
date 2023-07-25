@@ -20,6 +20,7 @@ import egovframework.com.cmm.EgovComponentChecker;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.bbs.service.Blog;
@@ -99,7 +100,7 @@ public class EgovBBSMasterController {
 		//공통코드(게시판유형)
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM101");
-		List<?> codeResult = cmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> codeResult = cmmUseService.selectCmmCodeDetail(vo);
 		model.addAttribute("bbsTyCode", codeResult);
 		model.addAttribute("boardMasterVO", boardMaster);
 	
@@ -141,7 +142,7 @@ public class EgovBBSMasterController {
 		    
 		    //게시판유형코드
 		    vo.setCodeId("COM101");
-		    List<?> codeResult = cmmUseService.selectCmmCodeDetail(vo);
+		    List<CmmnDetailCode> codeResult = cmmUseService.selectCmmCodeDetail(vo);
 		    model.addAttribute("bbsTyCode", codeResult);
 	
 		    return "egovframework/com/cop/bbs/EgovBBSMasterRegist";
@@ -396,7 +397,7 @@ public class EgovBBSMasterController {
         //게시판유형코드
         ComDefaultCodeVO vo = new ComDefaultCodeVO();
         vo.setCodeId("COM101");
-        List<?> codeResult = cmmUseService.selectCmmCodeDetail(vo);
+        List<CmmnDetailCode> codeResult = cmmUseService.selectCmmCodeDetail(vo);
         model.addAttribute("bbsTyCode", codeResult);
         
         // Primary Key 값 세팅
@@ -443,7 +444,7 @@ public class EgovBBSMasterController {
 	
 		    ComDefaultCodeVO comVo = new ComDefaultCodeVO();
 	        comVo.setCodeId("COM101");
-	        List<?> codeResult = cmmUseService.selectCmmCodeDetail(comVo);
+	        List<CmmnDetailCode> codeResult = cmmUseService.selectCmmCodeDetail(comVo);
 	        model.addAttribute("bbsTyCode", codeResult);
 		    
 		    return "egovframework/com/cop/bbs/EgovBBSMasterUpdt";
