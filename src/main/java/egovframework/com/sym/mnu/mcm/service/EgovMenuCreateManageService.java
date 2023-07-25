@@ -2,6 +2,8 @@ package egovframework.com.sym.mnu.mcm.service;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 import egovframework.com.cmm.ComDefaultVO;
 
 
@@ -62,7 +64,7 @@ public interface EgovMenuCreateManageService {
 	 * @return List
 	 * @exception Exception
 	 */
-	List<?> selectMenuCreatList(MenuCreatVO vo) throws Exception;
+	List<EgovMap> selectMenuCreatList(MenuCreatVO vo) throws Exception;
 
 
 	/**

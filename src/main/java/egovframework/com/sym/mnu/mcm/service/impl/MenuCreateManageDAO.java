@@ -7,6 +7,7 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sym.mnu.mcm.service.MenuCreatVO;
 import egovframework.com.sym.mnu.mcm.service.MenuSiteMapVO;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -79,7 +80,7 @@ public class MenuCreateManageDAO extends EgovComAbstractDAO{
 	 * @return List
 	 * @exception Exception
 	 */
-	public List<?> selectMenuCreatList(MenuCreatVO vo) throws Exception{
+	public List<EgovMap> selectMenuCreatList(MenuCreatVO vo) throws Exception{
 		return selectList("menuManageDAO.selectMenuCreatList_D", vo);
 	}
 
