@@ -658,7 +658,7 @@ public class EgovCalRestdeManageController {
         List<EgovMap> CalInfoList = restdeManageService.selectNormalRestdePopup(restde);
 
 
-        List<?> NormalMonthRestdeList = restdeManageService.selectNormalMonthRestde(restde);
+        List<EgovMap> NormalMonthRestdeList = restdeManageService.selectNormalMonthRestde(restde);
 
         model.addAttribute("resultList", CalInfoList);
         model.addAttribute("RestdeList", NormalMonthRestdeList);
@@ -725,7 +725,7 @@ public class EgovCalRestdeManageController {
 		restde.setStartWeekMonth(cal.get(Calendar.DAY_OF_WEEK));
 		restde.setLastDayMonth(cal.getActualMaximum(Calendar.DATE));
         List<EgovMap> CalInfoList_1 = restdeManageService.selectNormalRestdePopup(restde);
-        List<?> NormalMonthRestdeList_1 = restdeManageService.selectNormalMonthRestde(restde);
+        List<EgovMap> NormalMonthRestdeList_1 = restdeManageService.selectNormalMonthRestde(restde);
 
 		/* 2월 */
 		iMonth = 2;
@@ -734,7 +734,7 @@ public class EgovCalRestdeManageController {
 		restde.setStartWeekMonth(cal.get(Calendar.DAY_OF_WEEK));
 		restde.setLastDayMonth(cal.getActualMaximum(Calendar.DATE));
         List<EgovMap> CalInfoList_2 = restdeManageService.selectNormalRestdePopup(restde);
-        List<?> NormalMonthRestdeList_2 = restdeManageService.selectNormalMonthRestde(restde);
+        List<EgovMap> NormalMonthRestdeList_2 = restdeManageService.selectNormalMonthRestde(restde);
 
 		/* 3월 */
 		iMonth = 3;
@@ -743,7 +743,7 @@ public class EgovCalRestdeManageController {
 		restde.setStartWeekMonth(cal.get(Calendar.DAY_OF_WEEK));
 		restde.setLastDayMonth(cal.getActualMaximum(Calendar.DATE));
         List<EgovMap> CalInfoList_3 = restdeManageService.selectNormalRestdePopup(restde);
-        List<?> NormalMonthRestdeList_3 = restdeManageService.selectNormalMonthRestde(restde);
+        List<EgovMap> NormalMonthRestdeList_3 = restdeManageService.selectNormalMonthRestde(restde);
 
 		/* 4월 */
 		iMonth = 4;
@@ -752,7 +752,7 @@ public class EgovCalRestdeManageController {
 		restde.setStartWeekMonth(cal.get(Calendar.DAY_OF_WEEK));
 		restde.setLastDayMonth(cal.getActualMaximum(Calendar.DATE));
         List<EgovMap> CalInfoList_4 = restdeManageService.selectNormalRestdePopup(restde);
-        List<?> NormalMonthRestdeList_4 = restdeManageService.selectNormalMonthRestde(restde);
+        List<EgovMap> NormalMonthRestdeList_4 = restdeManageService.selectNormalMonthRestde(restde);
 
 		/* 5월 */
 		iMonth = 5;
@@ -761,7 +761,7 @@ public class EgovCalRestdeManageController {
 		restde.setStartWeekMonth(cal.get(Calendar.DAY_OF_WEEK));
 		restde.setLastDayMonth(cal.getActualMaximum(Calendar.DATE));
         List<EgovMap> CalInfoList_5 = restdeManageService.selectNormalRestdePopup(restde);
-        List<?> NormalMonthRestdeList_5 = restdeManageService.selectNormalMonthRestde(restde);
+        List<EgovMap> NormalMonthRestdeList_5 = restdeManageService.selectNormalMonthRestde(restde);
 
 		/* 6월 */
 		iMonth = 6;
@@ -770,7 +770,7 @@ public class EgovCalRestdeManageController {
 		restde.setStartWeekMonth(cal.get(Calendar.DAY_OF_WEEK));
 		restde.setLastDayMonth(cal.getActualMaximum(Calendar.DATE));
         List<EgovMap> CalInfoList_6 = restdeManageService.selectNormalRestdePopup(restde);
-        List<?> NormalMonthRestdeList_6 = restdeManageService.selectNormalMonthRestde(restde);
+        List<EgovMap> NormalMonthRestdeList_6 = restdeManageService.selectNormalMonthRestde(restde);
 
 		/* 7월 */
 		iMonth = 7;
@@ -779,7 +779,7 @@ public class EgovCalRestdeManageController {
 		restde.setStartWeekMonth(cal.get(Calendar.DAY_OF_WEEK));
 		restde.setLastDayMonth(cal.getActualMaximum(Calendar.DATE));
         List<EgovMap> CalInfoList_7 = restdeManageService.selectNormalRestdePopup(restde);
-        List<?> NormalMonthRestdeList_7 = restdeManageService.selectNormalMonthRestde(restde);
+        List<EgovMap> NormalMonthRestdeList_7 = restdeManageService.selectNormalMonthRestde(restde);
 
 		/* 8월 */
 		iMonth = 8;
@@ -788,7 +788,7 @@ public class EgovCalRestdeManageController {
 		restde.setStartWeekMonth(cal.get(Calendar.DAY_OF_WEEK));
 		restde.setLastDayMonth(cal.getActualMaximum(Calendar.DATE));
         List<EgovMap> CalInfoList_8 = restdeManageService.selectNormalRestdePopup(restde);
-        List<?> NormalMonthRestdeList_8 = restdeManageService.selectNormalMonthRestde(restde);
+        List<EgovMap> NormalMonthRestdeList_8 = restdeManageService.selectNormalMonthRestde(restde);
 
 		/* 9월 */
 		iMonth = 9;
@@ -797,7 +797,7 @@ public class EgovCalRestdeManageController {
 		restde.setStartWeekMonth(cal.get(Calendar.DAY_OF_WEEK));
 		restde.setLastDayMonth(cal.getActualMaximum(Calendar.DATE));
         List<EgovMap> CalInfoList_9 = restdeManageService.selectNormalRestdePopup(restde);
-        List<?> NormalMonthRestdeList_9 = restdeManageService.selectNormalMonthRestde(restde);
+        List<EgovMap> NormalMonthRestdeList_9 = restdeManageService.selectNormalMonthRestde(restde);
 
 		/* 10월 */
 		iMonth = 10;
@@ -806,7 +806,7 @@ public class EgovCalRestdeManageController {
 		restde.setStartWeekMonth(cal.get(Calendar.DAY_OF_WEEK));
 		restde.setLastDayMonth(cal.getActualMaximum(Calendar.DATE));
         List<EgovMap> CalInfoList_10 = restdeManageService.selectNormalRestdePopup(restde);
-        List<?> NormalMonthRestdeList_10 = restdeManageService.selectNormalMonthRestde(restde);
+        List<EgovMap> NormalMonthRestdeList_10 = restdeManageService.selectNormalMonthRestde(restde);
 
 		/* 11월 */
 		iMonth = 11;
@@ -815,7 +815,7 @@ public class EgovCalRestdeManageController {
 		restde.setStartWeekMonth(cal.get(Calendar.DAY_OF_WEEK));
 		restde.setLastDayMonth(cal.getActualMaximum(Calendar.DATE));
         List<EgovMap> CalInfoList_11 = restdeManageService.selectNormalRestdePopup(restde);
-        List<?> NormalMonthRestdeList_11 = restdeManageService.selectNormalMonthRestde(restde);
+        List<EgovMap> NormalMonthRestdeList_11 = restdeManageService.selectNormalMonthRestde(restde);
 
 		/* 12월 */
 		iMonth = 12;
@@ -824,7 +824,7 @@ public class EgovCalRestdeManageController {
 		restde.setStartWeekMonth(cal.get(Calendar.DAY_OF_WEEK));
 		restde.setLastDayMonth(cal.getActualMaximum(Calendar.DATE));
         List<EgovMap> CalInfoList_12 = restdeManageService.selectNormalRestdePopup(restde);
-        List<?> NormalMonthRestdeList_12 = restdeManageService.selectNormalMonthRestde(restde);
+        List<EgovMap> NormalMonthRestdeList_12 = restdeManageService.selectNormalMonthRestde(restde);
 
         model.addAttribute("resultList_1" , CalInfoList_1 );
         model.addAttribute("resultList_2" , CalInfoList_2 );
