@@ -147,8 +147,8 @@ public class EgovMenuManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<EgovMap> list_menumanage = menuManageService.selectMenuManageList(searchVO);
-		model.addAttribute("list_menumanage", list_menumanage);
+		List<EgovMap> resultList = menuManageService.selectMenuManageList(searchVO);
+		model.addAttribute("resultList", resultList);
 
 		int totCnt = menuManageService.selectMenuManageListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
