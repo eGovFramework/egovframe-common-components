@@ -36,13 +36,14 @@ public interface EgovMenuManageService {
 	 */
 	MenuManageVO selectMenuManage(ComDefaultVO vo) throws Exception;
 
-	/**
-	 * 메뉴 목록을 조회
-	 * @param vo ComDefaultVO
-	 * @return List
-	 * @exception Exception
-	 */
-	List<EgovMap> selectMenuManageList(ComDefaultVO vo) throws Exception;
+    /**
+     * 메뉴 목록을 조회
+     * 
+     * @param vo ComDefaultVO
+     * @return List
+     * @exception Exception
+     */
+    List<EgovMap> selectMenuManageList(ComDefaultVO vo) throws Exception;
 
 	/**
 	 * 메뉴목록 총건수를 조회한다.

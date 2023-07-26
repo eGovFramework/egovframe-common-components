@@ -30,15 +30,16 @@ import org.springframework.stereotype.Repository;
 @Repository("menuManageDAO")
 public class MenuManageDAO extends EgovComAbstractDAO{
 
-	/**
-	 * 메뉴목록을 조회
-	 * @param vo ComDefaultVO
-	 * @return List
-	 * @exception Exception
-	 */
-	public List<EgovMap> selectMenuManageList(ComDefaultVO vo) throws Exception{
-		return selectList("menuManageDAO.selectMenuManageList_D", vo);
-	}
+    /**
+     * 메뉴목록을 조회
+     * 
+     * @param vo ComDefaultVO
+     * @return List
+     * @exception Exception
+     */
+    public List<EgovMap> selectMenuManageList(ComDefaultVO vo) throws Exception {
+        return selectList("menuManageDAO.selectMenuManageList_D", vo);
+    }
 
     /**
 	 * 메뉴목록관리 총건수를 조회한다.

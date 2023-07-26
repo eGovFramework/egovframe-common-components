@@ -67,15 +67,16 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 		return menuManageDAO.selectMenuManage(vo);
 	}
 
-	/**
-	 * 메뉴 목록을 조회
-	 * @param vo ComDefaultVO
-	 * @return List
-	 * @exception Exception
-	 */
-	public List<EgovMap> selectMenuManageList(ComDefaultVO vo) throws Exception {
-		return menuManageDAO.selectMenuManageList(vo);
-	}
+    /**
+     * 메뉴 목록을 조회
+     * 
+     * @param vo ComDefaultVO
+     * @return List
+     * @exception Exception
+     */
+    public List<EgovMap> selectMenuManageList(ComDefaultVO vo) throws Exception {
+        return menuManageDAO.selectMenuManageList(vo);
+    }
 
 	/**
 	 * 메뉴목록 총건수를 조회한다.
