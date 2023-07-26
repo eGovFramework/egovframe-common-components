@@ -22,6 +22,7 @@ import egovframework.com.sym.prm.service.impl.ProgrmManageDAO;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.cmmn.exception.BaseException;
 import org.egovframe.rte.fdl.excel.EgovExcelService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 /**
  * 메뉴목록관리, 생성, 사이트맵을 처리하는 비즈니스 구현 클래스를 정의한다.
@@ -72,7 +73,7 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 	 * @return List
 	 * @exception Exception
 	 */
-	public List<?> selectMenuManageList(ComDefaultVO vo) throws Exception {
+	public List<EgovMap> selectMenuManageList(ComDefaultVO vo) throws Exception {
 		return menuManageDAO.selectMenuManageList(vo);
 	}
 

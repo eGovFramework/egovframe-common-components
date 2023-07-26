@@ -37,6 +37,7 @@ import egovframework.com.sym.prm.service.EgovProgrmManageService;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
@@ -146,7 +147,7 @@ public class EgovMenuManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<?> list_menumanage = menuManageService.selectMenuManageList(searchVO);
+		List<EgovMap> list_menumanage = menuManageService.selectMenuManageList(searchVO);
 		model.addAttribute("list_menumanage", list_menumanage);
 
 		int totCnt = menuManageService.selectMenuManageListTotCnt(searchVO);
