@@ -63,21 +63,23 @@ public interface EgovCalRestdeManageService {
 	 */
 	List<EgovMap> selectNormalMonthRestde(Restde restde)	throws Exception;
 
-	/**
-	 * 행정달력 일간 정보를 조회한다.
-	 * @param restde
-	 * @return List(행정달력 일간 날짜정보)
-	 * @throws Exception
-	 */
-	List<EgovMap> selectAdministDayCal(Restde restde)	throws Exception;
+    /**
+     * 행정달력 일간 정보를 조회한다.
+     * 
+     * @param restde
+     * @return List(행정달력 일간 날짜정보)
+     * @throws Exception
+     */
+    List<EgovMap> selectAdministDayCal(Restde restde) throws Exception;
 
-	/**
-	 * 행정달력 일간 휴일을 조회한다.
-	 * @param restde
-	 * @return List(행정달력 일간 휴일정보)
-	 * @throws Exception
-	 */
-	List<EgovMap> selectAdministDayRestde(Restde restde)	throws Exception;
+    /**
+     * 행정달력 일간 휴일을 조회한다.
+     * 
+     * @param restde
+     * @return List(행정달력 일간 휴일정보)
+     * @throws Exception
+     */
+    List<EgovMap> selectAdministDayRestde(Restde restde) throws Exception;
 
 	/**
 	 * 행정달력 월간 휴일을 조회한다.
