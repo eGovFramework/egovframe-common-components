@@ -28,15 +28,16 @@ import org.springframework.stereotype.Repository;
 @Repository("progrmManageDAO")
 public class ProgrmManageDAO extends EgovComAbstractDAO {
 
-	/**
-	 * 프로그램 목록을 조회
-	 * @param vo ComDefaultVO
-	 * @return List
-	 * @exception Exception
-	 */
-	public List<ProgrmManageVO> selectProgrmList(ComDefaultVO vo) throws Exception{
-		return selectList("progrmManageDAO.selectProgrmList_D", vo);
-	}
+    /**
+     * 프로그램 목록을 조회
+     * 
+     * @param vo ComDefaultVO
+     * @return List
+     * @exception Exception
+     */
+    public List<ProgrmManageVO> selectProgrmList(ComDefaultVO vo) throws Exception {
+        return selectList("progrmManageDAO.selectProgrmList_D", vo);
+    }
 
     /**
 	 * 프로그램목록 총건수를 조회한다.

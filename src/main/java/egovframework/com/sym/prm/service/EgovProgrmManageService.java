@@ -29,13 +29,16 @@ public interface EgovProgrmManageService {
 	 * @exception Exception
 	 */
 	ProgrmManageVO selectProgrm(ProgrmManageVO vo) throws Exception;
-	/**
-	 * 프로그램 목록을 조회
-	 * @param vo ComDefaultVO
-	 * @return List
-	 * @exception Exception
-	 */
-	List<ProgrmManageVO> selectProgrmList(ComDefaultVO vo) throws Exception;
+
+    /**
+     * 프로그램 목록을 조회
+     * 
+     * @param vo ComDefaultVO
+     * @return List
+     * @exception Exception
+     */
+    List<ProgrmManageVO> selectProgrmList(ComDefaultVO vo) throws Exception;
+
 	/**
 	 * 프로그램목록 총건수를 조회한다.
 	 * @param vo ComDefaultVO
