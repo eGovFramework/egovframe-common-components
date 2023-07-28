@@ -33,7 +33,7 @@
 		<link href="<c:url value='/css/egovframework/com/com.css' />" rel="stylesheet" type="text/css">
 		<link href="<c:url value='/css/egovframework/com/button.css' />" rel="stylesheet" type="text/css">
 		
-		<script type="text/javascript" src="/js/egovframework/com/cmm/utl/EgovCmmUtl.js"></script>		
+		<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/utl/EgovCmmUtl.js' />"></script>		
 		<script type="text/javaScript" language="javascript">
 		<!--
 		/* ********************************************************
@@ -88,7 +88,7 @@
 		   					<option value='1' <c:if test="${searchVO.searchCondition == '1'}">selected="selected"</c:if>><spring:message code="comUtlSysHtm.comUtlHttpMon.managerName" /></option><!-- 관리자명 -->
 		   					<option value='2' <c:if test="${searchVO.searchCondition == '2'}">selected="selected"</c:if>><spring:message code="comUtlSysHtm.comUtlHttpMon.status" /></option><!-- 상태 -->		   
 	   					</select>
-						<input class="s_input2 vat" name="searchKeyword" type="text" value='${searchVO.searchKeyword}' maxlength="35" size="35" onkeypress="press();" title="검색어 입력" />
+						<input class="s_input2 vat" name="searchKeyword" type="text" value='${searchVO.searchKeyword}' maxlength="35" size="35" title="검색어 입력" />
 						
 						<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fnSearch(); return false;" />
 						<span class="btn_b"><a href="<c:url value='/utl/sys/htm/EgovComUtlHttpMonRegist.do'/>" onclick="" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
@@ -148,7 +148,7 @@
 					<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/>
 				</ul>
 			</div>
-
+            <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 		</form>
 		</div>
 
