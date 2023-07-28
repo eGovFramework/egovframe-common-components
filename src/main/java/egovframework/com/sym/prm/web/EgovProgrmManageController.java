@@ -128,8 +128,8 @@ public class EgovProgrmManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<ProgrmManageVO> list_progrmmanage = progrmManageService.selectProgrmList(searchVO);
-        model.addAttribute("list_progrmmanage", list_progrmmanage);
+        List<ProgrmManageVO> resultList = progrmManageService.selectProgrmList(searchVO);
+        model.addAttribute("resultList", resultList);
         model.addAttribute("searchVO", searchVO);
 
         int totCnt = progrmManageService.selectProgrmListTotCnt(searchVO);
@@ -753,8 +753,8 @@ public class EgovProgrmManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<ProgrmManageVO> list_progrmmanage = progrmManageService.selectProgrmList(searchVO);
-        model.addAttribute("list_progrmmanage", list_progrmmanage);
+        List<ProgrmManageVO> resultList = progrmManageService.selectProgrmList(searchVO);
+        model.addAttribute("resultList", resultList);
 
         int totCnt = progrmManageService.selectProgrmListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -795,8 +795,8 @@ public class EgovProgrmManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<ProgrmManageVO> list_progrmmanage = progrmManageService.selectProgrmList(searchVO);
-        model.addAttribute("list_progrmmanage", list_progrmmanage);
+        List<ProgrmManageVO> resultList = progrmManageService.selectProgrmList(searchVO);
+        model.addAttribute("resultList", resultList);
 
         int totCnt = progrmManageService.selectProgrmListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
