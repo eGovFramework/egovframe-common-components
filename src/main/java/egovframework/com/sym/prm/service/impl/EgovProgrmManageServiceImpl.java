@@ -53,7 +53,7 @@ public class EgovProgrmManageServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @exception Exception
 	 */
 	@Override
-	public List<?> selectProgrmList(ComDefaultVO vo) throws Exception {
+	public List<ProgrmManageVO> selectProgrmList(ComDefaultVO vo) throws Exception {
    		return progrmManageDAO.selectProgrmList(vo);
 	}
 	/**

@@ -34,7 +34,7 @@ public class ProgrmManageDAO extends EgovComAbstractDAO {
 	 * @return List
 	 * @exception Exception
 	 */
-	public List<?> selectProgrmList(ComDefaultVO vo) throws Exception{
+	public List<ProgrmManageVO> selectProgrmList(ComDefaultVO vo) throws Exception{
 		return selectList("progrmManageDAO.selectProgrmList_D", vo);
 	}
 
