@@ -1,9 +1,12 @@
 package egovframework.com.sym.log.tlg.web;
 
+import java.util.List;
 import java.util.Map;
 
+import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.log.tlg.service.EgovTrsmrcvLogService;
@@ -115,10 +118,10 @@ public class EgovTrsmrcvLogController {
      */
     @RequestMapping(value = "/sym/log/tlg/AddTrsmrcvLog.do")
     public String addTrsmrcvLog(@ModelAttribute("searchVO") TrsmrcvLog trsmrcvLog, ModelMap model) throws Exception {
-//        ComDefaultCodeVO vo = new ComDefaultCodeVO();
-//        vo.setCodeId("COM002");
-//        List<CmmnDetailCode> resultList = cmmUseService.selectCmmCodeDetail(vo);
-//        model.addAttribute("resultList", resultList);
+        ComDefaultCodeVO vo = new ComDefaultCodeVO();
+        vo.setCodeId("COM002");
+        List<CmmnDetailCode> resultList = cmmUseService.selectCmmCodeDetail(vo);
+        model.addAttribute("resultList", resultList);
         return "egovframework/com/sym/log/tlg/EgovTrsmrcvLogRegist";
     }
 
