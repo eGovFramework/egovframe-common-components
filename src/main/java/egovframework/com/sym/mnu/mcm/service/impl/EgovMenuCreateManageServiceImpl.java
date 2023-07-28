@@ -1,24 +1,17 @@
 package egovframework.com.sym.mnu.mcm.service.impl;
 
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
 import java.util.List;
 
 import egovframework.com.cmm.ComDefaultVO;
-import egovframework.com.cmm.EgovWebUtil;
-import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import egovframework.com.sym.mnu.mcm.service.EgovMenuCreateManageService;
 import egovframework.com.sym.mnu.mcm.service.MenuCreatVO;
 import egovframework.com.sym.mnu.mcm.service.MenuSiteMapVO;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 import javax.annotation.Resource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 /**
@@ -44,8 +37,6 @@ import org.springframework.stereotype.Service;
 @Service("meunCreateManageService")
 public class EgovMenuCreateManageServiceImpl extends EgovAbstractServiceImpl implements EgovMenuCreateManageService {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovMenuCreateManageServiceImpl.class);
-
 	@Resource(name = "menuCreateManageDAO")
 	private MenuCreateManageDAO menuCreateManageDAO;
 
@@ -59,15 +50,16 @@ public class EgovMenuCreateManageServiceImpl extends EgovAbstractServiceImpl imp
 		return menuCreateManageDAO.selectUsrByPk(vo);
 	}
 
-	/**
-	 * 메뉴생성 내역을 조회
-	 * @param  vo MenuCreatVO
-	 * @return List
-	 * @exception Exception
-	 */
-	public List<?> selectMenuCreatList(MenuCreatVO vo) throws Exception {
-		return menuCreateManageDAO.selectMenuCreatList(vo);
-	}
+    /**
+     * 메뉴생성 내역을 조회
+     * 
+     * @param vo MenuCreatVO
+     * @return List
+     * @exception Exception
+     */
+    public List<EgovMap> selectMenuCreatList(MenuCreatVO vo) throws Exception {
+        return menuCreateManageDAO.selectMenuCreatList(vo);
+    }
 
 	/**
 	 * 화면에 조회된 메뉴정보로 메뉴생성내역 데이터베이스에서 입력

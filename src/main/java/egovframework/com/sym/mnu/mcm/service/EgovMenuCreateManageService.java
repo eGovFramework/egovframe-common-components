@@ -2,6 +2,8 @@ package egovframework.com.sym.mnu.mcm.service;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 import egovframework.com.cmm.ComDefaultVO;
 
 
@@ -56,14 +58,14 @@ public interface EgovMenuCreateManageService {
 	 */
 	int selectMenuCreatManagTotCnt(ComDefaultVO vo) throws Exception;
 
-	/**
-	 * 메뉴생성 내역을 조회
-	 * @param  vo MenuCreatVO
-	 * @return List
-	 * @exception Exception
-	 */
-	List<?> selectMenuCreatList(MenuCreatVO vo) throws Exception;
-
+    /**
+     * 메뉴생성 내역을 조회
+     * 
+     * @param vo MenuCreatVO
+     * @return List
+     * @exception Exception
+     */
+    List<EgovMap> selectMenuCreatList(MenuCreatVO vo) throws Exception;
 
 	/**
 	 * 화면에 조회된 메뉴정보로 메뉴생성내역 데이터베이스에서 입력

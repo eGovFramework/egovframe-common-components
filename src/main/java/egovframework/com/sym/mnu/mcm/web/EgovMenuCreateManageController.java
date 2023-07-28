@@ -3,7 +3,6 @@ package egovframework.com.sym.mnu.mcm.web;
 import java.util.List;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 
 //import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +22,7 @@ import egovframework.com.sym.mnu.mcm.service.MenuCreatVO;
 import egovframework.com.sym.mnu.mcm.service.MenuSiteMapVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
@@ -123,29 +123,27 @@ public class EgovMenuCreateManageController {
 		return "egovframework/com/sym/mnu/mcm/EgovMenuCreatManage";
 	}
 
-	/* 메뉴생성 세부조회 */
-	/**
-	 * 메뉴생성 세부화면을 조회한다.
-	 *
-	 * @param menuCreatVO
-	 *            MenuCreatVO
-	 * @return 출력페이지정보 "sym/mnu/mcm/EgovMenuCreat"
-	 * @exception Exception
-	 */
-	@RequestMapping(value = "/sym/mnu/mcm/EgovMenuCreatSelect.do")
-	public String selectMenuCreatList(@ModelAttribute("menuCreatVO") MenuCreatVO menuCreatVO, ModelMap model) throws Exception {
-		// 0. Spring Security 사용자권한 처리
-		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "redirect:/uat/uia/egovLoginUsr.do";
-		}
-		List<?> list_menulist = menuCreateManageService.selectMenuCreatList(menuCreatVO);
-		model.addAttribute("list_menulist", list_menulist);
-		model.addAttribute("resultVO", menuCreatVO);
+    /**
+     * 메뉴생성 세부화면을 조회한다.
+     *
+     * @param menuCreatVO MenuCreatVO
+     * @return 출력페이지정보 "sym/mnu/mcm/EgovMenuCreat"
+     * @exception Exception
+     */
+    @RequestMapping(value = "/sym/mnu/mcm/EgovMenuCreatSelect.do")
+    public String selectMenuCreatList(@ModelAttribute MenuCreatVO menuCreatVO, ModelMap model) throws Exception {
+        // 0. Spring Security 사용자권한 처리
+        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+        if (!isAuthenticated) {
+            model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+            return "redirect:/uat/uia/egovLoginUsr.do";
+        }
+        List<EgovMap> resultList = menuCreateManageService.selectMenuCreatList(menuCreatVO);
+        model.addAttribute("resultList", resultList);
+        model.addAttribute("resultVO", menuCreatVO);
 
-		return "egovframework/com/sym/mnu/mcm/EgovMenuCreat";
-	}
+        return "egovframework/com/sym/mnu/mcm/EgovMenuCreat";
+    }
 
 	/**
 	 * 메뉴생성처리 및 메뉴생성내역을 등록한다.

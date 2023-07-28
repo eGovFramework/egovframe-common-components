@@ -7,6 +7,7 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sym.mnu.mcm.service.MenuCreatVO;
 import egovframework.com.sym.mnu.mcm.service.MenuSiteMapVO;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -73,15 +74,16 @@ public class MenuCreateManageDAO extends EgovComAbstractDAO{
     }
 
     /*********** 메뉴 생성 관리 ***************/
-	/**
-	 * 메뉴생성 내역을 조회
-	 * @param vo MenuCreatVO
-	 * @return List
-	 * @exception Exception
-	 */
-	public List<?> selectMenuCreatList(MenuCreatVO vo) throws Exception{
-		return selectList("menuManageDAO.selectMenuCreatList_D", vo);
-	}
+    /**
+     * 메뉴생성 내역을 조회
+     * 
+     * @param vo MenuCreatVO
+     * @return List
+     * @exception Exception
+     */
+    public List<EgovMap> selectMenuCreatList(MenuCreatVO vo) throws Exception {
+        return selectList("menuManageDAO.selectMenuCreatList_D", vo);
+    }
 
 	/**
 	 * 메뉴생성내역 등록

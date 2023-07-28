@@ -120,7 +120,7 @@ function fMenuCreatSiteMap() {
 		</ul>
 	</div>
 	
-	<c:forEach var="result1" items="${list_menulist}" varStatus="status" >
+	<c:forEach var="result1" items="${resultList}" varStatus="status" >
 	<input type="hidden" name="tmp_menuNmVal" value="${result1.menuNo}|${result1.upperMenuId}|${result1.menuNm}|${result1.progrmFileNm}|${result1.chkYeoBu}|">
 	</c:forEach>
 		
