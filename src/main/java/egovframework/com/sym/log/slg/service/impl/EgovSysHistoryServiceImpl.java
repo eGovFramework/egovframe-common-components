@@ -1,6 +1,5 @@
 package egovframework.com.sym.log.slg.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,6 +13,7 @@ import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import javax.annotation.Resource;
 
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 
 /**
  * @Class Name : EgovSysHistoryServiceImpl.java
@@ -79,22 +79,20 @@ public class EgovSysHistoryServiceImpl extends EgovAbstractServiceImpl implement
 		sysHistoryDAO.deleteSysHistory(history);
 	}
 
-	/**
-	 * 시스템 이력정보 목록을 조회한다.
-	 * @param history - 시스템 이력정보가 담긴 모델 객체
-	 * @return
-	 * @throws Exception
-	 */
-	@Override
-	public Map<String, Object> selectSysHistoryList(SysHistoryVO historyVO) throws Exception {
-		 List<?> _result = sysHistoryDAO.selectSysHistorList(historyVO);
-		 int _cnt = sysHistoryDAO.selectSysHistortListCnt(historyVO);
-		 Map<String, Object> _map = new HashMap<String, Object>();
-		 _map.put("resultList", _result);
-		 _map.put("resultCnt", Integer.toString(_cnt));
-
-		 return _map;
-	}
+    /**
+     * 시스템 이력정보 목록을 조회한다.
+     * 
+     * @param history - 시스템 이력정보가 담긴 모델 객체
+     * @return
+     * @throws Exception
+     */
+    @Override
+    public void selectSysHistoryList(SysHistoryVO historyVO, ModelMap model) throws Exception {
+        List<SysHistoryVO> resultList = sysHistoryDAO.selectSysHistorList(historyVO);
+        int totCnt = sysHistoryDAO.selectSysHistortListCnt(historyVO);
+        model.addAttribute("resultList", resultList);
+        model.addAttribute("resultCnt", totCnt);
+    }
 
 	/**
 	 * 시스템 이력정보를 상세조회한다.

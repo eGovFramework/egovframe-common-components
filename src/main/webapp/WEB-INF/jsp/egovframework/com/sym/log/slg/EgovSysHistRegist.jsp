@@ -37,7 +37,6 @@
 <validator:javascript formName="history" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javascript">
 	function fn_egov_regist_sysHist(){
-		debugger;
 		var varForm = document.getElementById("history");
 	    if(!validateHistory(varForm)){
 	        return;
