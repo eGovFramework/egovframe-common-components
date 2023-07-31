@@ -23,8 +23,8 @@ import egovframework.com.uss.cmt.service.EgovCmtManageService;
 import egovframework.com.utl.fcc.service.EgovDateUtil;
 
 /**
- * 업무사용자관련 요청을  비지니스 클래스로 전달하고 처리된결과를  해당
- * 웹 화면으로 전달하는  Controller를 정의한다
+ * 업무사용자관련 요청을 비지니스 클래스로 전달하고 처리된 결과를 해당
+ * 웹 화면으로 전달하는 Controller를 정의한다
  * @author 표준프레임워크 개발팀
  * @since 2014.08.29
  * @version 1.0
@@ -33,10 +33,10 @@ import egovframework.com.utl.fcc.service.EgovDateUtil;
  * <pre>
  * << 개정이력(Modification Information) >>
  *
- *  수정일         수정자       수정내용
+ *  수정일          수정자       수정내용
  *  ----------    --------    ---------------------------
- *  2014.08.29    개발팀       최초 생성
- *  2019.01.10    이정은       출근 중복 확인, 퇴근 전 출근여부 확인 추가
+ *  2014.08.29     개발팀       최초 생성
+ *  2019.01.10     이정은       출근 중복 확인, 퇴근 전 출근여부 확인 추가
  *
  * </pre>
  */
@@ -73,8 +73,7 @@ public class EgovCmtManageController {
      * @throws Exception
      */
     @RequestMapping(value = "/uss/cmt/EgovCmtWrkStartInsert.do")
-    public String insertWrkStartCmtInfo(@ModelAttribute("cmtManageVO") CmtManageVO cmtManageVO,
-            BindingResult bindingResult, Model model) throws Exception {
+    public String insertWrkStartCmtInfo(@ModelAttribute("cmtManageVO") CmtManageVO cmtManageVO, BindingResult bindingResult, Model model) throws Exception {
 
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
@@ -106,8 +105,7 @@ public class EgovCmtManageController {
      * @throws Exception
      */
     @RequestMapping(value = "/uss/cmt/EgovCmtWrkEndInsert.do")
-    public String insertWrkEndCmtInfo(@ModelAttribute("cmtManageVO") CmtManageVO cmtManageVO,
-            BindingResult bindingResult, Model model) throws Exception {
+    public String insertWrkEndCmtInfo(@ModelAttribute("cmtManageVO") CmtManageVO cmtManageVO, BindingResult bindingResult, Model model) throws Exception {
 
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
@@ -140,11 +138,10 @@ public class EgovCmtManageController {
      */
     @IncludedInfo(name = "출퇴근관리", order = 950, gid = 50)
     @RequestMapping(value = "/uss/cmt/EgovCmtManageList.do")
-    public String selectUserCmtList(@ModelAttribute("cmtSearchVO") CmtDefaultVO cmtSearchVO, ModelMap model)
-            throws Exception {
+    public String selectUserCmtList(@ModelAttribute("cmtSearchVO") CmtDefaultVO cmtSearchVO, ModelMap model) throws Exception {
 
-        List<CmtManageVO> cmtManageList = cmtManageService.selectCmtInfoList(cmtSearchVO);
-        model.addAttribute("resultList", cmtManageList);
+        List<CmtManageVO> resultList = cmtManageService.selectCmtInfoList(cmtSearchVO);
+        model.addAttribute("resultList", resultList);
 
         return "egovframework/com/uss/cmt/EgovCmtManageList";
     }
