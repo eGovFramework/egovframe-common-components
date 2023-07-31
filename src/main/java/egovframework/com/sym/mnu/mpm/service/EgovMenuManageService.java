@@ -3,6 +3,8 @@ package egovframework.com.sym.mnu.mpm.service;
 import java.io.InputStream;
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 import egovframework.com.cmm.ComDefaultVO;
 
 /**
@@ -34,13 +36,14 @@ public interface EgovMenuManageService {
 	 */
 	MenuManageVO selectMenuManage(ComDefaultVO vo) throws Exception;
 
-	/**
-	 * 메뉴 목록을 조회
-	 * @param vo ComDefaultVO
-	 * @return List
-	 * @exception Exception
-	 */
-	List<?> selectMenuManageList(ComDefaultVO vo) throws Exception;
+    /**
+     * 메뉴 목록을 조회
+     * 
+     * @param vo ComDefaultVO
+     * @return List
+     * @exception Exception
+     */
+    List<EgovMap> selectMenuManageList(ComDefaultVO vo) throws Exception;
 
 	/**
 	 * 메뉴목록 총건수를 조회한다.

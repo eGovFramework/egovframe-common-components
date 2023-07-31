@@ -6,6 +6,7 @@ import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sym.mnu.mpm.service.MenuManageVO;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 /**
  * 메뉴관리, 메뉴생성, 사이트맵 생성에 대한 DAO 클래스를 정의한다.
@@ -29,15 +30,16 @@ import org.springframework.stereotype.Repository;
 @Repository("menuManageDAO")
 public class MenuManageDAO extends EgovComAbstractDAO{
 
-	/**
-	 * 메뉴목록을 조회
-	 * @param vo ComDefaultVO
-	 * @return List
-	 * @exception Exception
-	 */
-	public List<?> selectMenuManageList(ComDefaultVO vo) throws Exception{
-		return selectList("menuManageDAO.selectMenuManageList_D", vo);
-	}
+    /**
+     * 메뉴목록을 조회
+     * 
+     * @param vo ComDefaultVO
+     * @return List
+     * @exception Exception
+     */
+    public List<EgovMap> selectMenuManageList(ComDefaultVO vo) throws Exception {
+        return selectList("menuManageDAO.selectMenuManageList_D", vo);
+    }
 
     /**
 	 * 메뉴목록관리 총건수를 조회한다.

@@ -204,7 +204,7 @@ function fMenuManageSelect(){
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="result" items="${list_menumanage}" varStatus="status">
+			<c:forEach var="result" items="${resultList}" varStatus="status">
 			  <tr>
 			    <td>
 			       <input type="checkbox" name="checkField" class="check2" title="선택"/>
