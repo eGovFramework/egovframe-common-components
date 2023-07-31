@@ -88,15 +88,16 @@ public class EgovMenuCreateManageServiceImpl extends EgovAbstractServiceImpl imp
 		}
 	}
 
-	/**
-	 * 메뉴생성관리 목록을 조회
-	 * @param vo ComDefaultVO
-	 * @return List
-	 * @exception Exception
-	 */
-	public List<?> selectMenuCreatManagList(ComDefaultVO vo) throws Exception {
-		return menuCreateManageDAO.selectMenuCreatManagList(vo);
-	}
+    /**
+     * 메뉴생성관리 목록을 조회
+     * 
+     * @param vo ComDefaultVO
+     * @return List
+     * @exception Exception
+     */
+    public List<EgovMap> selectMenuCreatManagList(ComDefaultVO vo) throws Exception {
+        return menuCreateManageDAO.selectMenuCreatManagList(vo);
+    }
 
 	/**
 	 * ID에 대한 권한코드를 조회

@@ -53,15 +53,16 @@ public class MenuCreateManageDAO extends EgovComAbstractDAO{
 		return (MenuCreatVO)selectOne("menuManageDAO.selectAuthorByUsr", vo);
 	}
 
-	/**
-	 * 메뉴생성관리 내역을 조회
-	 * @param vo ComDefaultVO
-	 * @return List
-	 * @exception Exception
-	 */
-	public List<?> selectMenuCreatManagList(ComDefaultVO vo) throws Exception{
-		return selectList("menuManageDAO.selectMenuCreatManageList_D", vo);
-	}
+    /**
+     * 메뉴생성관리 내역을 조회
+     * 
+     * @param vo ComDefaultVO
+     * @return List
+     * @exception Exception
+     */
+    public List<EgovMap> selectMenuCreatManagList(ComDefaultVO vo) throws Exception {
+        return selectList("menuManageDAO.selectMenuCreatManageList_D", vo);
+    }
 
 	/**
 	 * 메뉴생성관리 총건수를 조회한다.

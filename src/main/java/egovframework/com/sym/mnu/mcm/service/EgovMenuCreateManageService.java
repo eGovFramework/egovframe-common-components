@@ -42,13 +42,14 @@ public interface EgovMenuCreateManageService {
 	MenuCreatVO selectAuthorByUsr(ComDefaultVO vo) throws Exception;
 
 
-	/**
-	 * 메뉴생성관리 목록을 조회
-	 * @param vo ComDefaultVO
-	 * @return List
-	 * @exception Exception
-	 */
-	List<?> selectMenuCreatManagList(ComDefaultVO vo) throws Exception;
+    /**
+     * 메뉴생성관리 목록을 조회
+     * 
+     * @param vo ComDefaultVO
+     * @return List
+     * @exception Exception
+     */
+    List<EgovMap> selectMenuCreatManagList(ComDefaultVO vo) throws Exception;
 
 	/**
 	 * 메뉴생성관리 총건수를 조회한다.

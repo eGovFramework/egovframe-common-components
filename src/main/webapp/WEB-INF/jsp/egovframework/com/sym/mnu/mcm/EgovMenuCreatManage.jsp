@@ -112,7 +112,7 @@ function selectMenuCreat(vAuthorCode) {
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="result" items="${list_menumanage}" varStatus="status">
+			<c:forEach var="result" items="${resultList}" varStatus="status">
 			  <tr>
 			    <td><c:out value="${result.authorCode}"/></td>
 			    <td><c:out value="${result.authorNm}"/></td>
