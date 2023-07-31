@@ -97,47 +97,43 @@ public class EgovProgrmManageController {
 
     /**
      * 프로그램목록 리스트조회한다.
+     * 
      * @param searchVO ComDefaultVO
      * @return 출력페이지정보 "sym/prm/EgovProgramListManage"
      * @exception Exception
      */
-    @IncludedInfo(name="프로그램관리",order = 1111 ,gid = 60)
-    @RequestMapping(value="/sym/prm/EgovProgramListManageSelect.do")
-    public String selectProgrmList(
-    		@ModelAttribute("searchVO") ComDefaultVO searchVO,
-    		ModelMap model)
-            throws Exception {
+    @IncludedInfo(name = "프로그램관리", order = 1111, gid = 60)
+    @RequestMapping(value = "/sym/prm/EgovProgramListManageSelect.do")
+    public String selectProgrmList(@ModelAttribute("searchVO") ComDefaultVO searchVO, ModelMap model) throws Exception {
         // 0. Spring Security 사용자권한 처리
-    	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-    	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "redirect:/uat/uia/egovLoginUsr.do";
-    	}
-    	// 내역 조회
-    	/** EgovPropertyService.sample */
-    	searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-    	searchVO.setPageSize(propertiesService.getInt("pageSize"));
+        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+        if (!isAuthenticated) {
+            model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+            return "redirect:/uat/uia/egovLoginUsr.do";
+        }
+        // 내역 조회
+        /** EgovPropertyService.sample */
+        searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
+        searchVO.setPageSize(propertiesService.getInt("pageSize"));
 
-    	/** pageing */
-    	PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
+        /** pageing */
+        PaginationInfo paginationInfo = new PaginationInfo();
+        paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
+        paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
+        paginationInfo.setPageSize(searchVO.getPageSize());
 
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+        searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+        searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
+        searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> list_progrmmanage = progrmManageService.selectProgrmList(searchVO);
-        model.addAttribute("list_progrmmanage", list_progrmmanage);
-        model.addAttribute("searchVO", searchVO);
+        List<ProgrmManageVO> resultList = progrmManageService.selectProgrmList(searchVO);
+        model.addAttribute("resultList", resultList);
 
         int totCnt = progrmManageService.selectProgrmListTotCnt(searchVO);
-		paginationInfo.setTotalRecordCount(totCnt);
+        paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);
 
-      	return "egovframework/com/sym/prm/EgovProgramListManage";
-
+        return "egovframework/com/sym/prm/EgovProgramListManage";
     }
 
     /**
@@ -724,85 +720,82 @@ public class EgovProgrmManageController {
 
     /**
      * 프로그램파일명을 조회한다.
+     * 
      * @param searchVO ComDefaultVO
      * @return 출력페이지정보 "sym/prm/EgovFileNmSearch"
      * @exception Exception
      */
-    @RequestMapping(value="/sym/prm/EgovProgramListSearch.do")
-    public String selectProgrmListSearch(
-    		@ModelAttribute("searchVO") ComDefaultVO searchVO,
-    		ModelMap model)
+    @RequestMapping(value = "/sym/prm/EgovProgramListSearch.do")
+    public String selectProgrmListSearch(@ModelAttribute("searchVO") ComDefaultVO searchVO, ModelMap model)
             throws Exception {
         // 0. Spring Security 사용자권한 처리
-    	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-    	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "redirect:/uat/uia/egovLoginUsr.do";
-    	}
-    	// 내역 조회
-    	searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-    	searchVO.setPageSize(propertiesService.getInt("pageSize"));
+        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+        if (!isAuthenticated) {
+            model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+            return "redirect:/uat/uia/egovLoginUsr.do";
+        }
+        // 내역 조회
+        searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
+        searchVO.setPageSize(propertiesService.getInt("pageSize"));
 
-    	/** pageing */
-    	PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
+        /** pageing */
+        PaginationInfo paginationInfo = new PaginationInfo();
+        paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
+        paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
+        paginationInfo.setPageSize(searchVO.getPageSize());
 
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+        searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+        searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
+        searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> list_progrmmanage = progrmManageService.selectProgrmList(searchVO);
-        model.addAttribute("list_progrmmanage", list_progrmmanage);
+        List<ProgrmManageVO> resultList = progrmManageService.selectProgrmList(searchVO);
+        model.addAttribute("resultList", resultList);
 
         int totCnt = progrmManageService.selectProgrmListTotCnt(searchVO);
-		paginationInfo.setTotalRecordCount(totCnt);
+        paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);
 
-      	return "egovframework/com/sym/prm/EgovFileNmSearch";
-
+        return "egovframework/com/sym/prm/EgovFileNmSearch";
     }
 
     /**
      * 프로그램파일명을 조회한다. (New)
+     * 
      * @param searchVO ComDefaultVO
      * @return 출력페이지정보 "sym/prm/EgovFileNmSearch"
      * @exception Exception
      */
-    @RequestMapping(value="/sym/prm/EgovProgramListSearchNew.do")
-    public String selectProgrmListSearchNew(
-    		@ModelAttribute("searchVO") ComDefaultVO searchVO,
-    		ModelMap model)
+    @RequestMapping(value = "/sym/prm/EgovProgramListSearchNew.do")
+    public String selectProgrmListSearchNew(@ModelAttribute("searchVO") ComDefaultVO searchVO, ModelMap model)
             throws Exception {
         // 0. Spring Security 사용자권한 처리
-    	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-    	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "redirect:/uat/uia/egovLoginUsr.do";
-    	}
-    	// 내역 조회
-    	searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-    	searchVO.setPageSize(propertiesService.getInt("pageSize"));
+        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+        if (!isAuthenticated) {
+            model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+            return "redirect:/uat/uia/egovLoginUsr.do";
+        }
+        // 내역 조회
+        searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
+        searchVO.setPageSize(propertiesService.getInt("pageSize"));
 
-    	/** pageing */
-    	PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
+        /** pageing */
+        PaginationInfo paginationInfo = new PaginationInfo();
+        paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
+        paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
+        paginationInfo.setPageSize(searchVO.getPageSize());
 
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+        searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+        searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
+        searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> list_progrmmanage = progrmManageService.selectProgrmList(searchVO);
-        model.addAttribute("list_progrmmanage", list_progrmmanage);
+        List<ProgrmManageVO> resultList = progrmManageService.selectProgrmList(searchVO);
+        model.addAttribute("resultList", resultList);
 
         int totCnt = progrmManageService.selectProgrmListTotCnt(searchVO);
-		paginationInfo.setTotalRecordCount(totCnt);
+        paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);
 
-      	return "egovframework/com/sym/prm/EgovFileNmSearchNew";
-
+        return "egovframework/com/sym/prm/EgovFileNmSearchNew";
     }
+
 }

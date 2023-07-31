@@ -183,7 +183,7 @@ function selectUpdtProgramListDetail(progrmFileNm) {
 		</thead>
 		<tbody>
 			<%-- 데이터를 없을때 화면에 메세지를 출력해준다 --%>
-			 <c:if test="${fn:length(list_progrmmanage) == 0}">
+			 <c:if test="${fn:length(resultList) == 0}">
 			 <tr>
 			 <td colspan="5">
 				<spring:message code="common.nodata.msg" />
@@ -191,7 +191,7 @@ function selectUpdtProgramListDetail(progrmFileNm) {
 			 </tr>
 			 </c:if>
 			 
-			 <c:forEach var="result" items="${list_progrmmanage}" varStatus="status">
+			 <c:forEach var="result" items="${resultList}" varStatus="status">
 			  <tr>
 			    <td>
 			       <input type="checkbox" name="checkField" class="check2" title="선택">

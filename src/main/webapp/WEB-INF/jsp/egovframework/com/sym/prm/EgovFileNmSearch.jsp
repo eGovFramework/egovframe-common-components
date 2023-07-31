@@ -96,7 +96,7 @@ function choisProgramListSearch(vFileNm) {
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="result" items="${list_progrmmanage}" varStatus="status">
+			<c:forEach var="result" items="${resultList}" varStatus="status">
 			  <tr>
 			    <td>
 			      <span class="link"><a href="#LINK" onclick="choisProgramListSearch('<c:out value="${result.progrmFileNm}"/>'); return false;">
