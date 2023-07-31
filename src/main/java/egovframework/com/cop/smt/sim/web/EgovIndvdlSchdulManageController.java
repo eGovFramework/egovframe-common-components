@@ -439,7 +439,7 @@ public class EgovIndvdlSchdulManageController {
 	     	//공통코드  중요도 조회
 	    	ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
 	    	voComCode.setCodeId("COM019");
-	    	List<?> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+	    	List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
 	    	model.addAttribute("schdulIpcrCode", listComCode);
 	    	//공통코드  일정구분 조회
 	    	voComCode = new ComDefaultCodeVO();
@@ -497,7 +497,7 @@ public class EgovIndvdlSchdulManageController {
      	//공통코드  중요도 조회
     	ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
     	voComCode.setCodeId("COM019");
-    	List<?> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+    	List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
     	model.addAttribute("schdulIpcrCode", listComCode);
     	//공통코드  일정구분 조회
     	voComCode = new ComDefaultCodeVO();
@@ -584,7 +584,7 @@ public class EgovIndvdlSchdulManageController {
     	     	//공통코드  중요도 조회
     	    	ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
     	    	voComCode.setCodeId("COM019");
-    	    	List<?> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+    	    	List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
     	    	model.addAttribute("schdulIpcrCode", listComCode);
     	    	//공통코드  일정구분 조회
     	    	voComCode = new ComDefaultCodeVO();
@@ -681,7 +681,7 @@ public class EgovIndvdlSchdulManageController {
      	//공통코드  중요도 조회
     	ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
     	voComCode.setCodeId("COM019");
-    	List<?> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+    	List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
     	model.addAttribute("schdulIpcrCode", listComCode);
     	//공통코드  일정구분 조회
     	voComCode = new ComDefaultCodeVO();
