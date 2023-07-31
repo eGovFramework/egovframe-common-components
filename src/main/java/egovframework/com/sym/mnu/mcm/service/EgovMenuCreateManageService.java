@@ -48,7 +48,7 @@ public interface EgovMenuCreateManageService {
 	 * @return List
 	 * @exception Exception
 	 */
-	List<?> selectMenuCreatManagList(ComDefaultVO vo) throws Exception;
+	List<EgovMap> selectMenuCreatManagList(ComDefaultVO vo) throws Exception;
 
 	/**
 	 * 메뉴생성관리 총건수를 조회한다.

@@ -94,7 +94,7 @@ public class EgovMenuCreateManageServiceImpl extends EgovAbstractServiceImpl imp
 	 * @return List
 	 * @exception Exception
 	 */
-	public List<?> selectMenuCreatManagList(ComDefaultVO vo) throws Exception {
+	public List<EgovMap> selectMenuCreatManagList(ComDefaultVO vo) throws Exception {
 		return menuCreateManageDAO.selectMenuCreatManagList(vo);
 	}
 

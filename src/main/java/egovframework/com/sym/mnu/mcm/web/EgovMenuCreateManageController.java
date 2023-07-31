@@ -111,7 +111,7 @@ public class EgovMenuCreateManageController {
 			}
 		}
 		*/
-		List<?> list_menumanage = menuCreateManageService.selectMenuCreatManagList(searchVO);
+		List<EgovMap> list_menumanage = menuCreateManageService.selectMenuCreatManagList(searchVO);
 		if ( list_menumanage.size() == 0 ) 
 			resultMsg = egovMessageSource.getMessage("info.nodata.msg");
 		model.addAttribute("list_menumanage", list_menumanage);
