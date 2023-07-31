@@ -52,7 +52,7 @@ public interface EgovBackupOpertService {
 	 * @param searchVO    조회조건VO
 	 * @exception Exception Exception
 	 */
-	public List<?> selectBackupOpertList(BackupOpert searchVO) throws Exception;
+	public List<BackupOpert> selectBackupOpertList(BackupOpert searchVO) throws Exception;
 
 	/**
 	 * 백업작업 목록 전체 건수를(을) 조회한다.

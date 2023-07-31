@@ -85,9 +85,9 @@ public class EgovBackupOpertServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @exception Exception Exception
 	 */
 	@Override
-	public List<?> selectBackupOpertList(BackupOpert searchVO)
+	public List<BackupOpert> selectBackupOpertList(BackupOpert searchVO)
 	  throws Exception{
-		List<?> result = backupOpertDao.selectBackupOpertList(searchVO);
+		List<BackupOpert> result = backupOpertDao.selectBackupOpertList(searchVO);
 		return result;
 	}
 
