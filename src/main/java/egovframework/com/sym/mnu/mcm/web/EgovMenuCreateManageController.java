@@ -111,10 +111,11 @@ public class EgovMenuCreateManageController {
 			}
 		}
 		*/
-		List<EgovMap> list_menumanage = menuCreateManageService.selectMenuCreatManagList(searchVO);
-		if ( list_menumanage.size() == 0 ) 
+		List<EgovMap> resultList = menuCreateManageService.selectMenuCreatManagList(searchVO);
+		if ( resultList.size() == 0 ) {
 			resultMsg = egovMessageSource.getMessage("info.nodata.msg");
-		model.addAttribute("list_menumanage", list_menumanage);
+		}
+		model.addAttribute("resultList", resultList);
 		
 		int totCnt = menuCreateManageService.selectMenuCreatManagTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
