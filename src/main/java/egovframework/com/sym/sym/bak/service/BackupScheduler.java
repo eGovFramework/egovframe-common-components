@@ -173,16 +173,14 @@ public class BackupScheduler {
 	 * 배치스케줄테이블을 읽어서 Quartz 스케줄러를 초기화한다.
 	 *
 	 */
-	@SuppressWarnings("unchecked")
 	public void init() throws Exception {
-		// 모니터링 대상 정보 읽어들이기~~~
-		List<BackupOpert> targetList = null;
 		BackupOpert searchVO = new BackupOpert();
 		// 모니터링 대상 검색 조건 초기화
 		searchVO.setPageIndex(1);
 		searchVO.setFirstIndex(0);
 		searchVO.setRecordCountPerPage(RECORD_COUNT_PER_PAGE);
-		targetList = (List<BackupOpert>) egovBackupOpertService.selectBackupOpertList(searchVO);
+        // 모니터링 대상 정보 읽어들이기~~~
+		List<BackupOpert> targetList = egovBackupOpertService.selectBackupOpertList(searchVO);
 		LOGGER.debug("조회조건 {}", searchVO);
 		LOGGER.debug("Result 건수 : {}", targetList.size());
 
@@ -199,9 +197,7 @@ public class BackupScheduler {
         sched.getListenerManager().addJobListener(listener);
 
 		// 스케줄러에 Job, Trigger 등록하기
-        BackupOpert target = null;
-		for (int i = 0; i < targetList.size(); i++) {
-			target = targetList.get(i);
+		for (BackupOpert target : targetList) {
 			LOGGER.debug("Data : {}", target);
 
 			insertBackupOpert(target);

@@ -227,7 +227,6 @@ public class EgovBackupOpertController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-	@SuppressWarnings("unchecked")
 	@IncludedInfo(name="백업관리", order = 1150 ,gid = 60)
 	@RequestMapping("/sym/sym/bak/getBackupOpertList.do")
 	public String selectBackupOpertList(@ModelAttribute("searchVO")BackupOpert searchVO, ModelMap model)
@@ -244,13 +243,12 @@ public class EgovBackupOpertController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<BackupOpert> resultList = (List<BackupOpert>) egovBackupOpertService.selectBackupOpertList(searchVO);
+		List<BackupOpert> resultList = egovBackupOpertService.selectBackupOpertList(searchVO);
 		int totCnt = egovBackupOpertService.selectBackupOpertListCnt(searchVO);
 
 		paginationInfo.setTotalRecordCount(totCnt);
 
 		model.addAttribute("resultList", resultList);
-		model.addAttribute("resultCnt", totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 
 		return "egovframework/com/sym/sym/bak/EgovBackupOpertList";

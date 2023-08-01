@@ -99,15 +99,10 @@ public class BackupOpertDao extends EgovComAbstractDAO {
 	  throws Exception{
 		List<BackupOpert> resultList = selectList("BackupOpertDao.selectBackupOpertList", searchVO);
 
-		for (int i = 0; i < resultList.size(); i++) {
-			BackupOpert result = (BackupOpert) resultList.get(i);
+		for (BackupOpert result : resultList) {
 			// 스케줄요일정보를 가져온다.
 			List<BackupSchdulDfk> dfkSeList = selectList("BackupOpertDao.selectBackupSchdulDfkList", result.getBackupOpertId());
-			String [] dfkSes = new String [dfkSeList.size()];
-			for (int j = 0; j < dfkSeList.size(); j++) {
-				dfkSes[j] = dfkSeList.get(j).getExecutSchdulDfkSe();
-			}
-			result.setExecutSchdulDfkSes(dfkSes);
+			result.setExecutSchdulDfkSes(dfkSeList.stream().map(BackupSchdulDfk::getExecutSchdulDfkSe).toArray(String[]::new));
 			// 화면표시용 실행스케줄 속성을 만든다.
 			result.makeExecutSchdul(dfkSeList);
 		}
