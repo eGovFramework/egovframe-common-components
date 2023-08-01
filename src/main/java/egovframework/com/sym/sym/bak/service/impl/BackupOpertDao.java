@@ -88,26 +88,28 @@ public class BackupOpertDao extends EgovComAbstractDAO {
 		return result ;
 	}
 
-	/**
-	 * 백업작업정보목록을  조회한다.
-	 * @return 백업작업목록
-	 *
-	 * @param searchVO    조회조건이 저장된 VO
-	 * @exception Exception Exception
-	 */
-	public List<BackupOpert> selectBackupOpertList(BackupOpert searchVO)
-	  throws Exception{
-		List<BackupOpert> resultList = selectList("BackupOpertDao.selectBackupOpertList", searchVO);
+    /**
+     * 백업작업정보목록을 조회한다.
+     * 
+     * @return 백업작업목록
+     *
+     * @param searchVO 조회조건이 저장된 VO
+     * @exception Exception Exception
+     */
+    public List<BackupOpert> selectBackupOpertList(BackupOpert searchVO) throws Exception {
+        List<BackupOpert> resultList = selectList("BackupOpertDao.selectBackupOpertList", searchVO);
 
-		for (BackupOpert result : resultList) {
-			// 스케줄요일정보를 가져온다.
-			List<BackupSchdulDfk> dfkSeList = selectList("BackupOpertDao.selectBackupSchdulDfkList", result.getBackupOpertId());
-			result.setExecutSchdulDfkSes(dfkSeList.stream().map(BackupSchdulDfk::getExecutSchdulDfkSe).toArray(String[]::new));
-			// 화면표시용 실행스케줄 속성을 만든다.
-			result.makeExecutSchdul(dfkSeList);
-		}
-		return resultList;
-	}
+        for (BackupOpert result : resultList) {
+            // 스케줄요일정보를 가져온다.
+            List<BackupSchdulDfk> dfkSeList = selectList("BackupOpertDao.selectBackupSchdulDfkList",
+                    result.getBackupOpertId());
+            result.setExecutSchdulDfkSes(
+                    dfkSeList.stream().map(BackupSchdulDfk::getExecutSchdulDfkSe).toArray(String[]::new));
+            // 화면표시용 실행스케줄 속성을 만든다.
+            result.makeExecutSchdul(dfkSeList);
+        }
+        return resultList;
+    }
 
 	/**
 	 * 백업작업 목록 전체 건수를(을) 조회한다.

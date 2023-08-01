@@ -168,42 +168,41 @@ public class BackupScheduler {
 		}
 	}
 
-	/**
-	 * 클래스 초기화메소드.
-	 * 배치스케줄테이블을 읽어서 Quartz 스케줄러를 초기화한다.
-	 *
-	 */
-	public void init() throws Exception {
-		BackupOpert searchVO = new BackupOpert();
-		// 모니터링 대상 검색 조건 초기화
-		searchVO.setPageIndex(1);
-		searchVO.setFirstIndex(0);
-		searchVO.setRecordCountPerPage(RECORD_COUNT_PER_PAGE);
+    /**
+     * 클래스 초기화메소드. 배치스케줄테이블을 읽어서 Quartz 스케줄러를 초기화한다.
+     *
+     */
+    public void init() throws Exception {
+        BackupOpert searchVO = new BackupOpert();
+        // 모니터링 대상 검색 조건 초기화
+        searchVO.setPageIndex(1);
+        searchVO.setFirstIndex(0);
+        searchVO.setRecordCountPerPage(RECORD_COUNT_PER_PAGE);
         // 모니터링 대상 정보 읽어들이기~~~
-		List<BackupOpert> targetList = egovBackupOpertService.selectBackupOpertList(searchVO);
-		LOGGER.debug("조회조건 {}", searchVO);
-		LOGGER.debug("Result 건수 : {}", targetList.size());
+        List<BackupOpert> targetList = egovBackupOpertService.selectBackupOpertList(searchVO);
+        LOGGER.debug("조회조건 {}", searchVO);
+        LOGGER.debug("Result 건수 : {}", targetList.size());
 
-		// 스케줄러 생성하기
-		SchedulerFactory schedFact = new org.quartz.impl.StdSchedulerFactory();
-		sched = schedFact.getScheduler();
+        // 스케줄러 생성하기
+        SchedulerFactory schedFact = new org.quartz.impl.StdSchedulerFactory();
+        sched = schedFact.getScheduler();
 
         // Set up the listener
-		BackupJobListener listener = new BackupJobListener();
+        BackupJobListener listener = new BackupJobListener();
 
         listener.setEgovBackupOpertService(egovBackupOpertService);
         listener.setIdgenService(idgenService);
 
         sched.getListenerManager().addJobListener(listener);
 
-		// 스케줄러에 Job, Trigger 등록하기
-		for (BackupOpert target : targetList) {
-			LOGGER.debug("Data : {}", target);
+        // 스케줄러에 Job, Trigger 등록하기
+        for (BackupOpert target : targetList) {
+            LOGGER.debug("Data : {}", target);
 
-			insertBackupOpert(target);
-		}
-		sched.start();
-	}
+            insertBackupOpert(target);
+        }
+        sched.start();
+    }
 
 	/**
 	 * 클래스 destroy메소드.
