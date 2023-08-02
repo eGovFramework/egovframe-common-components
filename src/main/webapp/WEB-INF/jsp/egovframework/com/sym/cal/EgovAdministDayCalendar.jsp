@@ -156,7 +156,7 @@ function fn_egov_change_Calendar(form){
 			</td>
 
 		    <td style={height:150px;text-align:center;vertical-align:middle;} nowrap STYLE="color:red">
-		    <c:forEach var="restde" items="${restdeList}" varStatus="status">
+		    <c:forEach var="restde" items="${RestdeList}" varStatus="status">
 		    	<c:if test="${resultList[0].year eq restde.year && resultList[0].month eq restde.month && resultList[0].day eq restde.day}">
 		    	<div style='width:92px;border:solid 0px;'>${restde.restdeNm}</div>
 		    	</c:if>

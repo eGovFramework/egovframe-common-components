@@ -118,13 +118,13 @@ function fn_egov_change_Calendar(form){
 
 		<tr>
 			<td style={height:50px;text-align:center;vertical-align:middle;color:red;} >일</td>
-			<td style={height:50px;text-align:center;vertical-align:middle;<c:if test="${result1List[0].restAt == 'Y'}">color:red;</c:if>} >
-				${result1List[0].year}년 ${result1List[0].month}월 ${result1List[0].day}일
+			<td style={height:50px;text-align:center;vertical-align:middle;<c:if test="${resultList_1[0].restAt == 'Y'}">color:red;</c:if>} >
+				${resultList_1[0].year}년 ${resultList_1[0].month}월 ${resultList_1[0].day}일
 			</td>
 
-			<td style={height:50px;text-align:center;vertical-align:middle;<c:if test="${result1List[0].restAt == 'Y'}">color:red;</c:if>} >
-		    <c:forEach var="restde" items="${restde1List}" varStatus="status">
-		    	<c:if test="${result1List[0].year eq restde.year && result1List[0].month eq restde.month && result1List[0].day eq restde.day}">
+			<td style={height:50px;text-align:center;vertical-align:middle;<c:if test="${resultList_1[0].restAt == 'Y'}">color:red;</c:if>} >
+		    <c:forEach var="restde" items="${RestdeList_1}" varStatus="status">
+		    	<c:if test="${resultList_1[0].year eq restde.year && resultList_1[0].month eq restde.month && resultList_1[0].day eq restde.day}">
 		    	<div style='width:92px;border:solid 0px;'>${restde.restdeNm}</div>
 		    	</c:if>
 		    </c:forEach>
@@ -132,13 +132,13 @@ function fn_egov_change_Calendar(form){
 		</tr>
 		<tr>
 			<td style={height:50px;text-align:center;vertical-align:middle;color:black;} >월</td>
-			<td style={height:50px;text-align:center;vertical-align:middle;<c:if test="${result2List[0].restAt == 'Y'}">color:red;</c:if>} >
-				${result2List[0].year}년 ${result2List[0].month}월 ${result2List[0].day}일
+			<td style={height:50px;text-align:center;vertical-align:middle;<c:if test="${resultList_2[0].restAt == 'Y'}">color:red;</c:if>} >
+				${resultList_2[0].year}년 ${resultList_2[0].month}월 ${resultList_2[0].day}일
 			</td>
 
-			<td style={height:50px;text-align:center;vertical-align:middle;<c:if test="${result2List[0].restAt == 'Y'}">color:red;</c:if>} >
-		    <c:forEach var="restde" items="${restde2List}" varStatus="status">
-		    	<c:if test="${result2List[0].year eq restde.year && result2List[0].month eq restde.month && result2List[0].day eq restde.day}">
+			<td style={height:50px;text-align:center;vertical-align:middle;<c:if test="${resultList_2[0].restAt == 'Y'}">color:red;</c:if>} >
+		    <c:forEach var="restde" items="${RestdeList_2}" varStatus="status">
+		    	<c:if test="${resultList_2[0].year eq restde.year && resultList_2[0].month eq restde.month && resultList_2[0].day eq restde.day}">
 		    	<div style='width:92px;border:solid 0px;'>${restde.restdeNm}</div>
 		    	</c:if>
 		    </c:forEach>
@@ -146,13 +146,13 @@ function fn_egov_change_Calendar(form){
 		</tr>
 		<tr>
 			<td style={height:50px;text-align:center;vertical-align:middle;color:black;} >화</td>
-			<td style={height:50px;text-align:center;vertical-align:middle;<c:if test="${result3List[0].restAt == 'Y'}">color:red;</c:if>} >
-				${result3List[0].year}년 ${result3List[0].month}월 ${result3List[0].day}일
+			<td style={height:50px;text-align:center;vertical-align:middle;<c:if test="${resultList_3[0].restAt == 'Y'}">color:red;</c:if>} >
+				${resultList_3[0].year}년 ${resultList_3[0].month}월 ${resultList_3[0].day}일
 			</td>
 
-			<td style={height:50px;text-align:center;vertical-align:middle;<c:if test="${result3List[0].restAt == 'Y'}">color:red;</c:if>} >
-		    <c:forEach var="restde" items="${restde3List}" varStatus="status">
-		    	<c:if test="${result3List[0].year eq restde.year && result3List[0].month eq restde.month && result3List[0].day eq restde.day}">
+			<td style={height:50px;text-align:center;vertical-align:middle;<c:if test="${resultList_3[0].restAt == 'Y'}">color:red;</c:if>} >
+		    <c:forEach var="restde" items="${RestdeList_3}" varStatus="status">
+		    	<c:if test="${resultList_3[0].year eq restde.year && resultList_3[0].month eq restde.month && resultList_3[0].day eq restde.day}">
 		    	<div style='width:92px;border:solid 0px;'>${restde.restdeNm}</div>
 		    	</c:if>
 		    </c:forEach>
@@ -160,13 +160,13 @@ function fn_egov_change_Calendar(form){
 		</tr>
 		<tr>
 			<td style={height:50px;text-align:center;vertical-align:middle;color:black;} >수</td>
-			<td style={height:50px;text-align:center;vertical-align:middle;<c:if test="${result4List[0].restAt == 'Y'}">color:red;</c:if>} >
-				${result4List[0].year}년 ${result4List[0].month}월 ${result4List[0].day}일
+			<td style={height:50px;text-align:center;vertical-align:middle;<c:if test="${resultList_4[0].restAt == 'Y'}">color:red;</c:if>} >
+				${resultList_4[0].year}년 ${resultList_4[0].month}월 ${resultList_4[0].day}일
 			</td>
 
-			<td style={height:50px;text-align:center;vertical-align:middle;<c:if test="${result4List[0].restAt == 'Y'}">color:red;</c:if>} >
-		    <c:forEach var="restde" items="${restde4List}" varStatus="status">
-		    	<c:if test="${result4List[0].year eq restde.year && result4List[0].month eq restde.month && result4List[0].day eq restde.day}">
+			<td style={height:50px;text-align:center;vertical-align:middle;<c:if test="${resultList_4[0].restAt == 'Y'}">color:red;</c:if>} >
+		    <c:forEach var="restde" items="${RestdeList_4}" varStatus="status">
+		    	<c:if test="${resultList_4[0].year eq restde.year && resultList_4[0].month eq restde.month && resultList_4[0].day eq restde.day}">
 		    	<div style='width:92px;border:solid 0px;'>${restde.restdeNm}</div>
 		    	</c:if>
 		    </c:forEach>
@@ -174,13 +174,13 @@ function fn_egov_change_Calendar(form){
 		</tr>
 		<tr>
 			<td style={height:50px;text-align:center;vertical-align:middle;color:black;} >목</td>
-			<td style={height:50px;text-align:center;vertical-align:middle;<c:if test="${result5List[0].restAt == 'Y'}">color:red;</c:if>} >
-				${result5List[0].year}년 ${result5List[0].month}월 ${result5List[0].day}일
+			<td style={height:50px;text-align:center;vertical-align:middle;<c:if test="${resultList_5[0].restAt == 'Y'}">color:red;</c:if>} >
+				${resultList_5[0].year}년 ${resultList_5[0].month}월 ${resultList_5[0].day}일
 			</td>
 
-			<td style={height:50px;text-align:center;vertical-align:middle;<c:if test="${result5List[0].restAt == 'Y'}">color:red;</c:if>} >
-		    <c:forEach var="restde" items="${restde5List}" varStatus="status">
-		    	<c:if test="${result5List[0].year eq restde.year && result5List[0].month eq restde.month && result5List[0].day eq restde.day}">
+			<td style={height:50px;text-align:center;vertical-align:middle;<c:if test="${resultList_5[0].restAt == 'Y'}">color:red;</c:if>} >
+		    <c:forEach var="restde" items="${RestdeList_5}" varStatus="status">
+		    	<c:if test="${resultList_5[0].year eq restde.year && resultList_5[0].month eq restde.month && resultList_5[0].day eq restde.day}">
 		    	<div style='width:92px;border:solid 0px;'>${restde.restdeNm}</div>
 		    	</c:if>
 		    </c:forEach>
@@ -188,13 +188,13 @@ function fn_egov_change_Calendar(form){
 		</tr>
 		<tr>
 			<td style={height:50px;text-align:center;vertical-align:middle;color:black;} >금</td>
-			<td style={height:50px;text-align:center;vertical-align:middle;<c:if test="${result6List[0].restAt == 'Y'}">color:red;</c:if>} >
-				${result6List[0].year}년 ${result6List[0].month}월 ${result6List[0].day}일
+			<td style={height:50px;text-align:center;vertical-align:middle;<c:if test="${resultList_6[0].restAt == 'Y'}">color:red;</c:if>} >
+				${resultList_6[0].year}년 ${resultList_6[0].month}월 ${resultList_6[0].day}일
 			</td>
 
-			<td style={height:50px;text-align:center;vertical-align:middle;<c:if test="${result6List[0].restAt == 'Y'}">color:red;</c:if>} >
-		    <c:forEach var="restde" items="${restde6List}" varStatus="status">
-		    	<c:if test="${result6List[0].year eq restde.year && result6List[0].month eq restde.month && result6List[0].day eq restde.day}">
+			<td style={height:50px;text-align:center;vertical-align:middle;<c:if test="${resultList_6[0].restAt == 'Y'}">color:red;</c:if>} >
+		    <c:forEach var="restde" items="${RestdeList_6}" varStatus="status">
+		    	<c:if test="${resultList_6[0].year eq restde.year && resultList_6[0].month eq restde.month && resultList_6[0].day eq restde.day}">
 		    	<div style='width:92px;border:solid 0px;'>${restde.restdeNm}</div>
 		    	</c:if>
 		    </c:forEach>
@@ -202,13 +202,13 @@ function fn_egov_change_Calendar(form){
 		</tr>
 		<tr>
 			<td style={height:50px;text-align:center;vertical-align:middle;color:red;} >토</td>
-			<td style={height:50px;text-align:center;vertical-align:middle;<c:if test="${result7List[0].restAt == 'Y'}">color:red;</c:if>} >
-				${result7List[0].year}년 ${result7List[0].month}월 ${result7List[0].day}일
+			<td style={height:50px;text-align:center;vertical-align:middle;<c:if test="${resultList_7[0].restAt == 'Y'}">color:red;</c:if>} >
+				${resultList_7[0].year}년 ${resultList_7[0].month}월 ${resultList_7[0].day}일
 			</td>
 
-			<td style={height:50px;text-align:center;vertical-align:middle;<c:if test="${result7List[0].restAt == 'Y'}">color:red;</c:if>} >
-		    <c:forEach var="restde" items="${restde7List}" varStatus="status">
-		    	<c:if test="${result7List[0].year eq restde.year && result7List[0].month eq restde.month && result7List[0].day eq restde.day}">
+			<td style={height:50px;text-align:center;vertical-align:middle;<c:if test="${resultList_7[0].restAt == 'Y'}">color:red;</c:if>} >
+		    <c:forEach var="restde" items="${RestdeList_7}" varStatus="status">
+		    	<c:if test="${resultList_7[0].year eq restde.year && resultList_7[0].month eq restde.month && resultList_7[0].day eq restde.day}">
 		    	<div style='width:92px;border:solid 0px;'>${restde.restdeNm}</div>
 		    	</c:if>
 		    </c:forEach>
