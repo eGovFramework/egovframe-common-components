@@ -854,233 +854,236 @@ public class EgovCalRestdeManageController {
         return "egovframework/com/sym/cal/EgovNormalYearCalendar";
 	}
 
-    /**
-     * 행정달력 일간
-     * 
-     * @param restde
-     * @param model
-     * @return "egovframework/com/sym/cal/EgovAdministDayCalendar"
-     * @throws Exception
-     */
-    @RequestMapping(value = "/sym/cal/EgovAdministDayCalendar.do")
-    public String selectAdministDayCalendar(Restde restde, BindingResult bindingResult, ModelMap model)
-            throws Exception {
 
-        // 2011.10.18 달력 출력을 위해 필요한 숫자 이외의 값을 사용하는 경우 체크
-        bindingResult = checkRestdeWithValidator(restde, bindingResult);
+	/**
+	 * 행정달력 일간
+	 * @param restde
+	 * @param model
+	 * @return "egovframework/com/sym/cal/EgovAdministDayCalendar"
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/sym/cal/EgovAdministDayCalendar.do")
+ 	public String selectAdministDayCalendar (Restde restde, BindingResult bindingResult
+ 			, ModelMap model
+ 			) throws Exception {
 
-        if (bindingResult.hasErrors()) {
+		//2011.10.18 달력 출력을 위해 필요한 숫자 이외의 값을 사용하는 경우 체크
+		bindingResult = checkRestdeWithValidator(restde, bindingResult);
 
-            return "egovframework/com/cmm/error/dataAccessFailure";
+		if(bindingResult.hasErrors()){
 
-        }
+			return "egovframework/com/cmm/error/dataAccessFailure";
 
-        Calendar cal = Calendar.getInstance();
+		}
 
-        if (restde.getYear() == null || restde.getYear().equals("")) {
-            restde.setYear(Integer.toString(cal.get(Calendar.YEAR)));
-        }
-        if (restde.getMonth() == null || restde.getMonth().equals("")) {
-            restde.setMonth(Integer.toString(cal.get(Calendar.MONTH) + 1));
-        }
-        if (restde.getDay() == null || restde.getDay().equals("")) {
-            restde.setDay(Integer.toString(cal.get(Calendar.DATE)));
-        }
+		Calendar cal = Calendar.getInstance();
 
-        int iYear = Integer.parseInt(restde.getYear());
-        int iMonth = Integer.parseInt(restde.getMonth());
-        int iDay = Integer.parseInt(restde.getDay());
 
-        if (iMonth < 1) {
-            iYear--;
-            iMonth = 12;
-        }
-        if (iMonth > 12) {
-            iYear++;
-            iMonth = 1;
-        }
-        if (iYear < 1) {
-            iYear = 1;
-            iMonth = 1;
-        }
-        if (iYear > 9999) {
-            iYear = 9999;
-            iMonth = 12;
-        }
-        restde.setYear(Integer.toString(iYear));
-        restde.setMonth(Integer.toString(iMonth));
+		if(restde.getYear()==null || restde.getYear().equals("")){
+			restde.setYear(Integer.toString(cal.get(Calendar.YEAR)));
+		}
+		if(restde.getMonth()==null || restde.getMonth().equals("")){
+			restde.setMonth(Integer.toString(cal.get(Calendar.MONTH)+1));
+		}
+		if(restde.getDay()==null || restde.getDay().equals("")){
+			restde.setDay(Integer.toString(cal.get(Calendar.DATE)));
+		}
 
-        cal.set(iYear, iMonth - 1, iDay);
-        restde.setStartWeekMonth(cal.get(Calendar.DAY_OF_WEEK));
+		int iYear  = Integer.parseInt(restde.getYear());
+		int iMonth = Integer.parseInt(restde.getMonth());
+		int iDay   = Integer.parseInt(restde.getDay());
 
-        cal.set(iYear, iMonth - 1, Integer.parseInt(restde.getDay()));
-        restde.setLastDayMonth(cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+		if (iMonth<1){
+			iYear--;
+			iMonth = 12;
+		}
+		if (iMonth>12){
+			iYear++;
+			iMonth = 1;
+		}
+		if (iYear<1){
+			iYear = 1;
+			iMonth = 1;
+		}
+		if (iYear>9999){
+			iYear = 9999;
+			iMonth = 12;
+		}
+		restde.setYear(Integer.toString(iYear));
+		restde.setMonth(Integer.toString(iMonth));
 
-        restde.setYear(Integer.toString(cal.get(Calendar.YEAR)));
-        restde.setMonth(Integer.toString(cal.get(Calendar.MONTH) + 1));
-        restde.setDay(Integer.toString(cal.get(Calendar.DAY_OF_MONTH)));
-        restde.setWeek(cal.get(Calendar.DAY_OF_WEEK));
-        restde.setLastDayMonth(cal.getActualMaximum(Calendar.DATE));
+		cal.set(iYear,iMonth-1,iDay);
+		restde.setStartWeekMonth(cal.get(Calendar.DAY_OF_WEEK));
 
-        List<EgovMap> resultList = restdeManageService.selectAdministDayCal(restde);
+		cal.set(iYear,iMonth-1,Integer.parseInt(restde.getDay()));
+		restde.setLastDayMonth(cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+
+		restde.setYear(Integer.toString(cal.get(Calendar.YEAR)));
+		restde.setMonth(Integer.toString(cal.get(Calendar.MONTH)+1));
+		restde.setDay(Integer.toString(cal.get(Calendar.DAY_OF_MONTH)));
+		restde.setWeek(cal.get(Calendar.DAY_OF_WEEK));
+		restde.setLastDayMonth(cal.getActualMaximum(Calendar.DATE));
+
+		List<EgovMap> resultList          = restdeManageService.selectAdministDayCal(restde);
         List<EgovMap> restdeList = restdeManageService.selectAdministDayRestde(restde);
 
         model.addAttribute("resultList", resultList);
         model.addAttribute("restdeList", restdeList);
 
-        return "egovframework/com/sym/cal/EgovAdministDayCalendar";
-    }
+		return "egovframework/com/sym/cal/EgovAdministDayCalendar";
+	}
 
-    /**
-     * 행정달력 주간
-     * 
-     * @param restde
-     * @param model
-     * @return "egovframework/com/sym/cal/EgovAdministWeekCalendar"
-     * @throws Exception
-     */
-    @RequestMapping(value = "/sym/cal/EgovAdministWeekCalendar.do")
-    public String selectAdministWeekCalendar(Restde restde, BindingResult bindingResult, ModelMap model)
-            throws Exception {
 
-        // 2011.10.18 달력 출력을 위해 필요한 숫자 이외의 값을 사용하는 경우 체크
-        bindingResult = checkRestdeWithValidator(restde, bindingResult);
+	/**
+	 * 행정달력 주간
+	 * @param restde
+	 * @param model
+	 * @return "egovframework/com/sym/cal/EgovAdministWeekCalendar"
+	 * @throws Exception
+	 */
+	@RequestMapping(value="/sym/cal/EgovAdministWeekCalendar.do")
+ 	public String selectAdministWeekCalendar (Restde restde, BindingResult bindingResult
+ 			, ModelMap model
+ 			) throws Exception {
 
-        if (bindingResult.hasErrors()) {
+		//2011.10.18 달력 출력을 위해 필요한 숫자 이외의 값을 사용하는 경우 체크
+		bindingResult = checkRestdeWithValidator(restde, bindingResult);
 
-            return "egovframework/com/cmm/error/dataAccessFailure";
+		if(bindingResult.hasErrors()){
 
-        }
+			return "egovframework/com/cmm/error/dataAccessFailure";
 
-        Calendar cal = Calendar.getInstance();
+		}
 
-        if (restde.getYear() == null || restde.getYear().equals("")) {
-            restde.setYear(Integer.toString(cal.get(Calendar.YEAR)));
-        }
-        if (restde.getMonth() == null || restde.getMonth().equals("")) {
-            restde.setMonth(Integer.toString(cal.get(Calendar.MONTH) + 1));
-        }
-        if (restde.getDay() == null || restde.getDay().equals("")) {
-            restde.setDay(Integer.toString(cal.get(Calendar.DATE)));
-        }
+		Calendar cal = Calendar.getInstance();
 
-        int iYear = Integer.parseInt(restde.getYear());
-        int iMonth = Integer.parseInt(restde.getMonth());
+		if(restde.getYear()==null || restde.getYear().equals("")){
+			restde.setYear(Integer.toString(cal.get(Calendar.YEAR)));
+		}
+		if(restde.getMonth()==null || restde.getMonth().equals("")){
+			restde.setMonth(Integer.toString(cal.get(Calendar.MONTH)+1));
+		}
+		if(restde.getDay()==null || restde.getDay().equals("")){
+			restde.setDay(Integer.toString(cal.get(Calendar.DATE)));
+		}
 
-        if (iMonth < 1) {
-            iYear--;
-            iMonth = 12;
-        }
-        if (iMonth > 12) {
-            iYear++;
-            iMonth = 1;
-        }
-        if (iYear < 1) {
-            iYear = 1;
-            iMonth = 1;
-        }
-        if (iYear > 9999) {
-            iYear = 9999;
-            iMonth = 12;
-        }
-        restde.setYear(Integer.toString(iYear));
-        restde.setMonth(Integer.toString(iMonth));
+		int iYear  = Integer.parseInt(restde.getYear());
+		int iMonth = Integer.parseInt(restde.getMonth());
 
-        cal.set(iYear, iMonth - 1, 1);
-        restde.setStartWeekMonth(cal.get(Calendar.DAY_OF_WEEK));
+		if (iMonth<1){
+			iYear--;
+			iMonth = 12;
+		}
+		if (iMonth>12){
+			iYear++;
+			iMonth = 1;
+		}
+		if (iYear<1){
+			iYear = 1;
+			iMonth = 1;
+		}
+		if (iYear>9999){
+			iYear = 9999;
+			iMonth = 12;
+		}
+		restde.setYear(Integer.toString(iYear));
+		restde.setMonth(Integer.toString(iMonth));
 
-        cal.set(iYear, iMonth - 1, Integer.parseInt(restde.getDay()));
-        restde.setLastDayMonth(cal.getActualMaximum(Calendar.DAY_OF_MONTH));
+		cal.set(iYear,iMonth-1,1);
+		restde.setStartWeekMonth(cal.get(Calendar.DAY_OF_WEEK));
 
-        int iStartWeek = restde.getStartWeekMonth();
-        int iLastDate = restde.getLastDayMonth();
-        int iDayWeek = cal.get(Calendar.DAY_OF_WEEK);
+		cal.set(iYear,iMonth-1,Integer.parseInt(restde.getDay()));
+		restde.setLastDayMonth(cal.getActualMaximum(Calendar.DAY_OF_MONTH));
 
-        int iMaxWeeks = iLastDate / 7;
-        iMaxWeeks = iMaxWeeks + (int) Math.ceil(((iLastDate - iMaxWeeks * 7) + iStartWeek - 1) / 7.0);
-        restde.setMaxWeeks(iMaxWeeks);
+		int iStartWeek = restde.getStartWeekMonth();
+		int iLastDate  = restde.getLastDayMonth();
+		int iDayWeek  = cal.get(Calendar.DAY_OF_WEEK);
 
-        if (iMaxWeeks < restde.getWeeks()) {
-            restde.setWeeks(iMaxWeeks);
-        }
+		int iMaxWeeks = iLastDate / 7;
+		iMaxWeeks = iMaxWeeks + (int)Math.ceil(((iLastDate - iMaxWeeks * 7) + iStartWeek - 1) / 7.0);
+		restde.setMaxWeeks(iMaxWeeks);
 
-        Restde vo = new Restde();
-        Calendar weekCal = Calendar.getInstance();
-        weekCal.setTime(cal.getTime());
+		if (iMaxWeeks < restde.getWeeks()) {
+			restde.setWeeks(iMaxWeeks);
+		}
 
-        if (restde.getWeeks() != 0) {
-            weekCal.set(Calendar.DATE, (restde.getWeeks() - 1) * 7 + 1);
-            if (restde.getWeeks() > 1) {
-                iDayWeek = weekCal.get(Calendar.DAY_OF_WEEK);
-                weekCal.add(Calendar.DATE, (-1) * (iDayWeek - 1));
-            }
-            restde.setDay(Integer.toString(weekCal.get(Calendar.DAY_OF_MONTH) + 1));
-        }
-        List<EgovMap> resultList = restdeManageService.selectAdministDayCal(restde);
+		Restde vo = new Restde();
+		Calendar weekCal = Calendar.getInstance();
+		weekCal.setTime(cal.getTime());
 
-        iDayWeek = weekCal.get(Calendar.DAY_OF_WEEK);
+		if(restde.getWeeks()!=0){
+			weekCal.set(Calendar.DATE, (restde.getWeeks() - 1) * 7 + 1);
+			if(restde.getWeeks()>1){
+				iDayWeek  = weekCal.get(Calendar.DAY_OF_WEEK);
+				weekCal.add(Calendar.DATE, (-1)*(iDayWeek-1));
+			}
+			restde.setDay(Integer.toString(weekCal.get(Calendar.DAY_OF_MONTH)+1));
+		}
+		List<EgovMap> resultList = restdeManageService.selectAdministDayCal(restde);
 
-        // 일요일
-        weekCal.add(Calendar.DATE, (-1) * (iDayWeek - 1));
-        vo.setYear(Integer.toString(weekCal.get(Calendar.YEAR)));
-        vo.setMonth(Integer.toString(weekCal.get(Calendar.MONTH) + 1));
-        vo.setDay(Integer.toString(weekCal.get(Calendar.DAY_OF_MONTH)));
-        vo.setWeek(weekCal.get(Calendar.DAY_OF_WEEK));
-        List<EgovMap> result1List = restdeManageService.selectAdministDayCal(vo);
+		iDayWeek  = weekCal.get(Calendar.DAY_OF_WEEK);
+
+		// 일요일
+		weekCal.add(Calendar.DATE, (-1)*(iDayWeek-1));
+		vo.setYear(Integer.toString(weekCal.get(Calendar.YEAR)));
+		vo.setMonth(Integer.toString(weekCal.get(Calendar.MONTH)+1));
+		vo.setDay(Integer.toString(weekCal.get(Calendar.DAY_OF_MONTH)));
+		vo.setWeek(weekCal.get(Calendar.DAY_OF_WEEK));
+		List<EgovMap> result1List          = restdeManageService.selectAdministDayCal(vo);
         List<EgovMap> restde1List = restdeManageService.selectAdministDayRestde(vo);
 
-        // 월요일
-        weekCal.add(Calendar.DATE, 1);
-        vo.setYear(Integer.toString(weekCal.get(Calendar.YEAR)));
-        vo.setMonth(Integer.toString(weekCal.get(Calendar.MONTH) + 1));
-        vo.setDay(Integer.toString(weekCal.get(Calendar.DAY_OF_MONTH)));
-        vo.setWeek(weekCal.get(Calendar.DAY_OF_WEEK));
-        List<EgovMap> result2List = restdeManageService.selectAdministDayCal(vo);
+		// 월요일
+		weekCal.add(Calendar.DATE, 1);
+		vo.setYear(Integer.toString(weekCal.get(Calendar.YEAR)));
+		vo.setMonth(Integer.toString(weekCal.get(Calendar.MONTH)+1));
+		vo.setDay(Integer.toString(weekCal.get(Calendar.DAY_OF_MONTH)));
+		vo.setWeek(weekCal.get(Calendar.DAY_OF_WEEK));
+		List<EgovMap> result2List          = restdeManageService.selectAdministDayCal(vo);
         List<EgovMap> restde2List = restdeManageService.selectAdministDayRestde(vo);
 
-        // 화요일
-        weekCal.add(Calendar.DATE, 1);
-        vo.setYear(Integer.toString(weekCal.get(Calendar.YEAR)));
-        vo.setMonth(Integer.toString(weekCal.get(Calendar.MONTH) + 1));
-        vo.setDay(Integer.toString(weekCal.get(Calendar.DAY_OF_MONTH)));
-        vo.setWeek(weekCal.get(Calendar.DAY_OF_WEEK));
-        List<EgovMap> result3List = restdeManageService.selectAdministDayCal(vo);
+		// 화요일
+		weekCal.add(Calendar.DATE, 1);
+		vo.setYear(Integer.toString(weekCal.get(Calendar.YEAR)));
+		vo.setMonth(Integer.toString(weekCal.get(Calendar.MONTH)+1));
+		vo.setDay(Integer.toString(weekCal.get(Calendar.DAY_OF_MONTH)));
+		vo.setWeek(weekCal.get(Calendar.DAY_OF_WEEK));
+		List<EgovMap> result3List          = restdeManageService.selectAdministDayCal(vo);
         List<EgovMap> restde3List = restdeManageService.selectAdministDayRestde(vo);
 
-        // 수요일
-        weekCal.add(Calendar.DATE, 1);
-        vo.setYear(Integer.toString(weekCal.get(Calendar.YEAR)));
-        vo.setMonth(Integer.toString(weekCal.get(Calendar.MONTH) + 1));
-        vo.setDay(Integer.toString(weekCal.get(Calendar.DAY_OF_MONTH)));
-        vo.setWeek(weekCal.get(Calendar.DAY_OF_WEEK));
-        List<EgovMap> result4List = restdeManageService.selectAdministDayCal(vo);
+		// 수요일
+		weekCal.add(Calendar.DATE, 1);
+		vo.setYear(Integer.toString(weekCal.get(Calendar.YEAR)));
+		vo.setMonth(Integer.toString(weekCal.get(Calendar.MONTH)+1));
+		vo.setDay(Integer.toString(weekCal.get(Calendar.DAY_OF_MONTH)));
+		vo.setWeek(weekCal.get(Calendar.DAY_OF_WEEK));
+		List<EgovMap> result4List          = restdeManageService.selectAdministDayCal(vo);
         List<EgovMap> restde4List = restdeManageService.selectAdministDayRestde(vo);
 
-        // 목요일
-        weekCal.add(Calendar.DATE, 1);
-        vo.setYear(Integer.toString(weekCal.get(Calendar.YEAR)));
-        vo.setMonth(Integer.toString(weekCal.get(Calendar.MONTH) + 1));
-        vo.setDay(Integer.toString(weekCal.get(Calendar.DAY_OF_MONTH)));
-        vo.setWeek(weekCal.get(Calendar.DAY_OF_WEEK));
-        List<EgovMap> result5List = restdeManageService.selectAdministDayCal(vo);
+		// 목요일
+		weekCal.add(Calendar.DATE, 1);
+		vo.setYear(Integer.toString(weekCal.get(Calendar.YEAR)));
+		vo.setMonth(Integer.toString(weekCal.get(Calendar.MONTH)+1));
+		vo.setDay(Integer.toString(weekCal.get(Calendar.DAY_OF_MONTH)));
+		vo.setWeek(weekCal.get(Calendar.DAY_OF_WEEK));
+		List<EgovMap> result5List          = restdeManageService.selectAdministDayCal(vo);
         List<EgovMap> restde5List = restdeManageService.selectAdministDayRestde(vo);
 
-        // 금요일
-        weekCal.add(Calendar.DATE, 1);
-        vo.setYear(Integer.toString(weekCal.get(Calendar.YEAR)));
-        vo.setMonth(Integer.toString(weekCal.get(Calendar.MONTH) + 1));
-        vo.setDay(Integer.toString(weekCal.get(Calendar.DAY_OF_MONTH)));
-        vo.setWeek(weekCal.get(Calendar.DAY_OF_WEEK));
-        List<EgovMap> result6List = restdeManageService.selectAdministDayCal(vo);
+		// 금요일
+		weekCal.add(Calendar.DATE, 1);
+		vo.setYear(Integer.toString(weekCal.get(Calendar.YEAR)));
+		vo.setMonth(Integer.toString(weekCal.get(Calendar.MONTH)+1));
+		vo.setDay(Integer.toString(weekCal.get(Calendar.DAY_OF_MONTH)));
+		vo.setWeek(weekCal.get(Calendar.DAY_OF_WEEK));
+		List<EgovMap> result6List          = restdeManageService.selectAdministDayCal(vo);
         List<EgovMap> restde6List = restdeManageService.selectAdministDayRestde(vo);
 
-        // 토요일
-        weekCal.add(Calendar.DATE, 1);
-        vo.setYear(Integer.toString(weekCal.get(Calendar.YEAR)));
-        vo.setMonth(Integer.toString(weekCal.get(Calendar.MONTH) + 1));
-        vo.setDay(Integer.toString(weekCal.get(Calendar.DAY_OF_MONTH)));
-        vo.setWeek(weekCal.get(Calendar.DAY_OF_WEEK));
-        List<EgovMap> result7List = restdeManageService.selectAdministDayCal(vo);
+		// 토요일
+		weekCal.add(Calendar.DATE, 1);
+		vo.setYear(Integer.toString(weekCal.get(weekCal.YEAR)));
+		vo.setMonth(Integer.toString(weekCal.get(Calendar.MONTH)+1));
+		vo.setDay(Integer.toString(weekCal.get(Calendar.DAY_OF_MONTH)));
+		vo.setWeek(weekCal.get(Calendar.DAY_OF_WEEK));
+		List<EgovMap> result7List          = restdeManageService.selectAdministDayCal(vo);
         List<EgovMap> restde7List = restdeManageService.selectAdministDayRestde(vo);
 
         model.addAttribute("result1List", result1List);
@@ -1100,8 +1103,8 @@ public class EgovCalRestdeManageController {
 
         model.addAttribute("resultList", resultList);
 
-        return "egovframework/com/sym/cal/EgovAdministWeekCalendar";
-    }
+		return "egovframework/com/sym/cal/EgovAdministWeekCalendar";
+	}
 
 	/**
 	 * 행정달력 월간
