@@ -4,7 +4,7 @@
 <mapper namespace="progrmManageDAO">
 
     <!-- 프로그램 변경요청  --> 
-	<resultMap id="progrmManageDtlVO" type="egovframework.com.sym.prm.service.ProgrmManageDtlVO">
+	<resultMap id="progrmManageDtl" type="egovframework.com.sym.prm.service.ProgrmManageDtlVO">
 	  <result property="progrmFileNm" column="PROGRM_FILE_NM"/>
       <result property="rqesterNo" column="REQUST_NO"/>
       <result property="rqesterPersonId" column="RQESTER_ID"/>
@@ -22,19 +22,19 @@
       <result property="rqesterNo" column="REQUST_NO"/>
 	</resultMap>
 
-	<select id="selectProgrmChangeRequstList_D" parameterType="comDefaultVO" resultType="egovMap">
+	<select id="selectProgrmChangeRequstList_D" parameterType="comDefaultVO" resultMap="progrmManageDtl">
 		
 			SELECT
-				  PROGRM_FILE_NM AS progrmFileNm 
-				, REQUST_NO AS rqesterNo 
-				, RQESTER_ID AS rqesterPersonId 
-				, CHANGE_REQUST_CN AS changerqesterCn 
-				, REQUST_PROCESS_CN AS rqesterProcessCn
-				, OPETR_ID AS opetrId 
-				, PROCESS_STTUS_CODE AS processSttus 
-				, PROCESS_DE AS processDe 
-				, RQESTDE AS rqesterDe 
-				, REQUST_SJ AS rqesterSj
+				  PROGRM_FILE_NM
+				, REQUST_NO
+				, RQESTER_ID
+				, CHANGE_REQUST_CN
+				, REQUST_PROCESS_CN
+				, OPETR_ID
+				, PROCESS_STTUS_CODE
+				, PROCESS_DE
+				, RQESTDE
+				, REQUST_SJ
 			FROM COMTHPROGRMCHANGEDTLS
 			WHERE binary(PROGRM_FILE_NM) like CONCAT('%', #{searchKeyword}, '%')
 			LIMIT  #{recordCountPerPage} OFFSET #{firstIndex}
