@@ -18,25 +18,31 @@ import org.slf4j.LoggerFactory;
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 
+
 /**
- *  Class Name : EgovProperties.java
+ * EgovProperties 클래스
+ * 
+ * <p>
  *  Description : properties값들을 파일로부터 읽어와   Globals클래스의 정적변수로 로드시켜주는 클래스로
  *   문자열 정보 기준으로 사용할 전역변수를 시스템 재시작으로 반영할 수 있도록 한다.
- *  Modification Information
+ * </p>
+ *
+ *  @since 2009. 01. 19
+ *  @version 1.0
+ *  @author 공통 서비스 개발팀 박지욱
+ *  @see
+ *
+ * <pre>
+ * << 개정이력(Modification Information) >>
  *
  *   수정일              수정자          수정내용
  *   ----------  --------  ---------------------------
  *   2009.01.19  박지욱          최초 생성
- *	 2011.07.20    서준식 	   Globals파일의 상대경로를 읽은 메서드 추가
- *	 2014.10.13    이기하 	   Globals.properties 값이 null일 경우 오류처리
- *   2019.04.26    신용호 	   RELATIVE_PATH_PREFIX Path 적용 방식 개선
- *   2022.01.21    윤주호 	   Try-catch-resource 조치 및 Method Refactoring
- *
- *  @author 공통 서비스 개발팀 박지욱
- *  @since 2009. 01. 19
- *  @version 1.0
- *  @see
- *
+ *   2011.07.20    서준식     Globals파일의 상대경로를 읽은 메서드 추가
+ *   2014.10.13    이기하     Globals.properties 값이 null일 경우 오류처리
+ *   2019.04.26    신용호     RELATIVE_PATH_PREFIX Path 적용 방식 개선
+ *   2022.01.21    윤주호     Try-catch-resource 조치 및 Method Refactoring
+ *</pre>
  */
 
 public class EgovProperties {
