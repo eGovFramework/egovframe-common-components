@@ -97,21 +97,21 @@ public class EgovEntrprsManageController {
 
 	/** 그룹 정보 조회 목록 */
 	@ModelAttribute("groupId_result")
-	private List<?> getGroupId_result(ComDefaultCodeVO vo) throws Exception {
+	private List<CmmnDetailCode> getGroupId_result(ComDefaultCodeVO vo) throws Exception {
 		vo.setTableNm("COMTNORGNZTINFO");
 		return cmmUseService.selectGroupIdDetail(vo);
 	}
 
 	/** 기업 구분 조회 목록 */
 	@ModelAttribute("entrprsSeCode_result")
-	private List<?> getEntrprsSeCode_result(ComDefaultCodeVO vo) throws Exception {
+	private List<CmmnDetailCode> getEntrprsSeCode_result(ComDefaultCodeVO vo) throws Exception {
 		vo.setCodeId("COM026");
 		return cmmUseService.selectCmmCodeDetail(vo);
 	}
 
 	/** 업종 구분 조회 목록 */
 	@ModelAttribute("indutyCode_result")
-	private List<?> getIndutyCode_result(ComDefaultCodeVO vo) throws Exception {
+	private List<CmmnDetailCode> getIndutyCode_result(ComDefaultCodeVO vo) throws Exception {
 		vo.setCodeId("COM027");
 		return cmmUseService.selectCmmCodeDetail(vo);
 	}
