@@ -101,7 +101,7 @@ public class MenuCreateManageDAO extends EgovComAbstractDAO{
 	 * @return List
 	 * @exception Exception
 	 */
-	public List<?> selectMenuCreatSiteMapList(MenuSiteMapVO vo) throws Exception{
+	public List<EgovMap> selectMenuCreatSiteMapList(MenuSiteMapVO vo) throws Exception{
 		return selectList("menuManageDAO.selectMenuCreatSiteMapList_D", vo);
 	}
 
