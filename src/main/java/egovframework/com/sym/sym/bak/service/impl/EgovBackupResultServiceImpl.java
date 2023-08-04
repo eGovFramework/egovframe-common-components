@@ -67,10 +67,9 @@ public class EgovBackupResultServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @exception Exception Exception
 	 */
 	@Override
-	public List<?> selectBackupResultList(BackupResult searchVO)
+	public List<BackupResult> selectBackupResultList(BackupResult searchVO)
 	  throws Exception{
-		List<?> result = dao.selectBackupResultList(searchVO);
-		return result;
+	    return dao.selectBackupResultList(searchVO);
 	}
 
 	/**
