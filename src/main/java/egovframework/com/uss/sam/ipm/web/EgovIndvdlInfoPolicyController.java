@@ -5,6 +5,9 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -22,8 +25,6 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.sam.ipm.service.EgovIndvdlInfoPolicyService;
 import egovframework.com.uss.sam.ipm.service.IndvdlInfoPolicy;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import org.egovframe.rte.fdl.property.EgovPropertyService;
-import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
  * 개인정보보호정책를 처리하는 Controller Class 구현
@@ -33,10 +34,10 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  * @see <pre>
  * &lt;&lt; 개정이력(Modification Information) &gt;&gt;
  *
- *   수정일      수정자           수정내용
- *  -------    --------    ---------------------------
- *   2009.07.03  장동한          최초 생성
- *   2011.8.26	정진오			IncludedInfo annotation 추가
+ *   수정일          수정자       수정내용
+ *  -----------    --------    ---------------------------
+ *   2009.07.03     장동한       최초 생성
+ *   2011.08.26     정진오       IncludedInfo annotation 추가
  *
  * </pre>
  */
@@ -69,15 +70,11 @@ public class EgovIndvdlInfoPolicyController {
      * @return "egovframework/com/uss/sam/ipm/EgovOnlinePollList"
      * @throws Exception
      */
-    @SuppressWarnings("unused")
-	@IncludedInfo(name="개인정보보호정책확인", order = 510 ,gid = 50)
+    @IncludedInfo(name="개인정보보호정책확인", order = 510 ,gid = 50)
     @RequestMapping(value = "/uss/sam/ipm/listIndvdlInfoPolicy.do")
-    public String egovIndvdlInfoPolicyList(
-            @ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap,
-            IndvdlInfoPolicy indvdlInfoPolicy, ModelMap model)
-            throws Exception {
+    public String egovIndvdlInfoPolicyList(@ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap, IndvdlInfoPolicy indvdlInfoPolicy, ModelMap model) throws Exception {
 
-        String sSearchMode = commandMap.get("searchMode") == null ? "" : (String) commandMap.get("searchMode");
+        // String sSearchMode = commandMap.get("searchMode") == null ? "" : (String) commandMap.get("searchMode");
 
         /** EgovPropertyService.sample */
         searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -93,7 +90,7 @@ public class EgovIndvdlInfoPolicyController {
         searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
         searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> resultList = egovIndvdlInfoPolicyService.selectIndvdlInfoPolicyList(searchVO);
+        List<EgovMap> resultList = egovIndvdlInfoPolicyService.selectIndvdlInfoPolicyList(searchVO);
         model.addAttribute("resultList", resultList);
 
         model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword"));
@@ -117,10 +114,7 @@ public class EgovIndvdlInfoPolicyController {
      * @throws Exception
      */
     @RequestMapping(value = "/uss/sam/ipm/detailIndvdlInfoPolicy.do")
-    public String egovIndvdlInfoPolicyDetail(
-            @ModelAttribute("searchVO") ComDefaultVO searchVO,
-            IndvdlInfoPolicy indvdlInfoPolicy, @RequestParam Map<?, ?> commandMap,
-            ModelMap model) throws Exception {
+    public String egovIndvdlInfoPolicyDetail(@ModelAttribute("searchVO") ComDefaultVO searchVO, IndvdlInfoPolicy indvdlInfoPolicy, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
         String sLocationUrl = "egovframework/com/uss/sam/ipm/EgovIndvdlInfoPolicyDetail";
 
@@ -149,11 +143,7 @@ public class EgovIndvdlInfoPolicyController {
      * @throws Exception
      */
     @RequestMapping(value = "/uss/sam/ipm/updtIndvdlInfoPolicy.do")
-    public String egovIndvdlInfoPolicyModify(
-            @ModelAttribute("searchVO") ComDefaultVO searchVO,
-            @RequestParam Map<?, ?> commandMap,
-            @ModelAttribute("indvdlInfoPolicy") IndvdlInfoPolicy indvdlInfoPolicy,
-            BindingResult bindingResult, ModelMap model) throws Exception {
+    public String egovIndvdlInfoPolicyModify(@ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap, @ModelAttribute("indvdlInfoPolicy") IndvdlInfoPolicy indvdlInfoPolicy, BindingResult bindingResult, ModelMap model) throws Exception {
         // 0. Spring Security 사용자권한 처리
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
         if (!isAuthenticated) {
@@ -200,11 +190,7 @@ public class EgovIndvdlInfoPolicyController {
      * @throws Exception
      */
     @RequestMapping(value = "/uss/sam/ipm/registIndvdlInfoPolicy.do")
-    public String egovIndvdlInfoPolicyRegist(
-            @ModelAttribute("searchVO") ComDefaultVO searchVO,
-            @RequestParam Map<?, ?> commandMap,
-            @ModelAttribute("indvdlInfoPolicy") IndvdlInfoPolicy indvdlInfoPolicy,
-            BindingResult bindingResult, ModelMap model) throws Exception {
+    public String egovIndvdlInfoPolicyRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap, @ModelAttribute("indvdlInfoPolicy") IndvdlInfoPolicy indvdlInfoPolicy, BindingResult bindingResult, ModelMap model) throws Exception {
         // 0. Spring Security 사용자권한 처리
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
         if (!isAuthenticated) {
@@ -235,6 +221,5 @@ public class EgovIndvdlInfoPolicyController {
 
         return sLocationUrl;
     }
-
 
 }
