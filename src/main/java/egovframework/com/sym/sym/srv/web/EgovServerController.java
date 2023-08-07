@@ -93,7 +93,7 @@ public class EgovServerController {
 	 */
     @IncludedInfo(name="서버정보관리", order = 1170 ,gid = 60)
     @RequestMapping(value="/sym/sym/srv/selectServerEqpmnList.do")
-	public String selectServerEqpmnList(@ModelAttribute("serverEqpmnVO") ServerEqpmnVO serverEqpmnVO,
+	public String selectServerEqpmnList(@ModelAttribute ServerEqpmnVO serverEqpmnVO,
 			                             ModelMap model) throws Exception {
 
     	/** paging */
