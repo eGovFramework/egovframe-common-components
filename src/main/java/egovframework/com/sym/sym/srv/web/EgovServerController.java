@@ -255,7 +255,7 @@ public class EgovServerController {
 	 */
     @IncludedInfo(name="서버(S/W)목록", order = 1171 ,gid = 60)
     @RequestMapping(value="/sym/sym/srv/selectServerList.do")
-	public String selectServerList(@ModelAttribute("serverVO") ServerVO serverVO,
+	public String selectServerList(@ModelAttribute ServerVO serverVO,
 			                        ModelMap model) throws Exception {
 
     	/** paging */
