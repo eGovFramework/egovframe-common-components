@@ -188,7 +188,7 @@ function press() {
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="serverEqpmnRelate" items="${serverEqpmnRelateList}" varStatus="status">
+			<c:forEach var="serverEqpmnRelate" items="${serverEqpmnRelateVO.serverEqpmnRelateList}" varStatus="status">
 			  <tr>
 			    <td><c:out value="${serverEqpmnRelate.serverEqpmnId}"/></td>
 			    <td><c:out value="${serverEqpmnRelate.serverEqpmnNm}"/></td>

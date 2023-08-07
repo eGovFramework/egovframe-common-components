@@ -119,7 +119,7 @@ function windowOpen(serverId) {
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="server" items="${serverList}" varStatus="status">
+			<c:forEach var="server" items="${serverVO.serverList}" varStatus="status">
 			  <tr>
 			    <td>
 			        <form name="item" method="post" action="<c:url value='/sym/sym/srv/getServer.do'/>">

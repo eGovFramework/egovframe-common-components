@@ -29,7 +29,7 @@ public class ServerEqpmnRelateVO extends ServerEqpmnRelate {
 	/**
 	 * 서버장비관계 목록
 	 */
-	private List<?> serverEqpmnRelateList;
+	private List<ServerEqpmnRelateVO> serverEqpmnRelateList;
 	/**
 	 * 삭제대상 목록
 	 */
@@ -47,14 +47,14 @@ public class ServerEqpmnRelateVO extends ServerEqpmnRelate {
 	/**
 	 * @return the serverEqpmnRelateList
 	 */
-	public List<?> getServerEqpmnRelateList() {
+	public List<ServerEqpmnRelateVO> getServerEqpmnRelateList() {
 		return serverEqpmnRelateList;
 	}
 
 	/**
 	 * @param serverEqpmnRelateList the serverEqpmnRelateList to set
 	 */
-	public void setServerEqpmnRelateList(List<?> serverEqpmnRelateList) {
+	public void setServerEqpmnRelateList(List<ServerEqpmnRelateVO> serverEqpmnRelateList) {
 		this.serverEqpmnRelateList = Collections.unmodifiableList(serverEqpmnRelateList);
 	}
 

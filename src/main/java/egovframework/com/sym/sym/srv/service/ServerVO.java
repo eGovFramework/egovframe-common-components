@@ -30,7 +30,7 @@ public class ServerVO extends Server {
 	/**
 	 * 서버 목록
 	 */
-	private List<?> serverList;
+	private List<ServerVO> serverList;
 
 	/**
 	 * 삭제대상 목록
@@ -44,13 +44,13 @@ public class ServerVO extends Server {
 	/**
 	 * @return the serverList
 	 */
-	public List<?> getServerList() {
+	public List<ServerVO> getServerList() {
 		return serverList;
 	}
 	/**
 	 * @param serverList the serverList to set
 	 */
-	public void setServerList(List<?> serverList) {
+	public void setServerList(List<ServerVO> serverList) {
 		this.serverList = Collections.unmodifiableList(serverList);
 	}
 	/**

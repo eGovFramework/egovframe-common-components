@@ -29,7 +29,7 @@ public class ServerEqpmnVO extends ServerEqpmn {
 	/**
 	 * 서버 장비 목록
 	 */
-	private List<?> serverEqpmnList;
+	private List<ServerEqpmnVO> serverEqpmnList;
 	/**
 	 * 삭제대상 목록
 	 */
@@ -42,13 +42,13 @@ public class ServerEqpmnVO extends ServerEqpmn {
 	/**
 	 * @return the serverEqpmnList
 	 */
-	public List<?> getServerEqpmnList() {
+	public List<ServerEqpmnVO> getServerEqpmnList() {
 		return serverEqpmnList;
 	}
 	/**
 	 * @param serverEqpmnList the serverEqpmnList to set
 	 */
-	public void setServerEqpmnList(List<?> serverEqpmnList) {
+	public void setServerEqpmnList(List<ServerEqpmnVO> serverEqpmnList) {
 		this.serverEqpmnList = Collections.unmodifiableList(serverEqpmnList);
 	}
 	/**

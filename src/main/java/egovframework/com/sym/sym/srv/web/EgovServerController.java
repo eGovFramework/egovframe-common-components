@@ -18,6 +18,7 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.sym.srv.service.EgovServerService;
@@ -106,8 +107,6 @@ public class EgovServerController {
 		serverEqpmnVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
 		serverEqpmnVO.setServerEqpmnList(egovServerService.selectServerEqpmnList(serverEqpmnVO));
-
-		model.addAttribute("serverEqpmnList", serverEqpmnVO.getServerEqpmnList());
 
         int totCnt = egovServerService.selectServerEqpmnListTotCnt(serverEqpmnVO);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -271,8 +270,6 @@ public class EgovServerController {
 
 		serverVO.setServerList(egovServerService.selectServerList(serverVO));
 
-		model.addAttribute("serverList", serverVO.getServerList());
-
         int totCnt = egovServerService.selectServerListTotCnt(serverVO);
 		paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);
@@ -418,7 +415,7 @@ public class EgovServerController {
     @RequestMapping(value="/sym/sym/srv/selectServerEqpmnRelateList.do")
 	public String selectServerEqpmnRelateList(@RequestParam("strServerId") String strServerId,
 			                                  @ModelAttribute("serverVO") ServerVO serverVO,
-			                                  @ModelAttribute("serverEqpmnRelateVO") ServerEqpmnRelateVO serverEqpmnRelateVO,
+			                                  @ModelAttribute ServerEqpmnRelateVO serverEqpmnRelateVO,
 			                                   ModelMap model) throws Exception {
 
     	/** paging */
@@ -436,7 +433,6 @@ public class EgovServerController {
 
 		serverEqpmnRelateVO.setServerEqpmnRelateList(egovServerService.selectServerEqpmnRelateList(serverEqpmnRelateVO));
 
-		model.addAttribute("serverEqpmnRelateList", serverEqpmnRelateVO.getServerEqpmnRelateList());
 		model.addAttribute("server", egovServerService.selectServer(serverVO));
 
         int totCnt = egovServerService.selectServerEqpmnRelateListTotCnt(serverEqpmnRelateVO);
@@ -489,7 +485,7 @@ public class EgovServerController {
 	 * @return List
 	 * @exception Exception
 	 */
-    public List<?> getCmmCodeDetailList(ComDefaultCodeVO comDefaultCodeVO, String codeId)  throws Exception {
+    public List<CmmnDetailCode> getCmmCodeDetailList(ComDefaultCodeVO comDefaultCodeVO, String codeId)  throws Exception {
     	comDefaultCodeVO.setCodeId(codeId);
     	return EgovCmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
     }

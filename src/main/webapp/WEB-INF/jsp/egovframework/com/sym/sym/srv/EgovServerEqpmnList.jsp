@@ -115,7 +115,7 @@ function press() {
 			</tr>
 		</thead>
 		<tbody>
-			<c:forEach var="serverEqpmn" items="${serverEqpmnList}" varStatus="status">
+			<c:forEach var="serverEqpmn" items="${serverEqpmnVO.serverEqpmnList}" varStatus="status">
 			  <tr>
 			    <td>
 			        <form name="item" method="post" action="<c:url value='/sym/sym/srv/getServerEqpmn.do'/>">
