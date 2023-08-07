@@ -413,8 +413,8 @@ public class EgovServerController {
 	 * @param serverEqpmnRelateVO
 	 */
     @RequestMapping(value="/sym/sym/srv/selectServerEqpmnRelateList.do")
-	public String selectServerEqpmnRelateList(@RequestParam("strServerId") String strServerId,
-			                                  @ModelAttribute("serverVO") ServerVO serverVO,
+	public String selectServerEqpmnRelateList(@RequestParam String strServerId,
+			                                  @ModelAttribute ServerVO serverVO,
 			                                  @ModelAttribute ServerEqpmnRelateVO serverEqpmnRelateVO,
 			                                   ModelMap model) throws Exception {
 
