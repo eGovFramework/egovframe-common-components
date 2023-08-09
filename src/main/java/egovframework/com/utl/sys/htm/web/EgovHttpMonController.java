@@ -45,298 +45,263 @@ import egovframework.com.utl.sys.htm.service.HttpMonVO;
  *  <pre>
  * == 개정이력(Modification Information) ==
  *
- *   수정일       수정자           수정내용
- *  -------     --------    ---------------------------
- *  2010.06.17   박종선     최초 생성
- *  2011.8.26	정진오			IncludedInfo annotation 추가
+ *  수정일           수정자       수정내용
+ *  ----------     --------    ---------------------------
+ *  2010.06.17      박종선       최초 생성
+ *  2011.08.26      정진오       IncludedInfo annotation 추가
  * </pre>
  */
 
 @Controller
 public class EgovHttpMonController {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovHttpMonController.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EgovHttpMonController.class);
 
-	@Resource(name = "EgovHttpMonService")
-	protected EgovHttpMonService egovHttpMonService;
+    @Resource(name = "EgovHttpMonService")
+    protected EgovHttpMonService egovHttpMonService;
 
     /** EgovPropertyService */
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertiesService;
 
-	@Autowired
-	private DefaultBeanValidator beanValidator;
+    @Autowired
+    private DefaultBeanValidator beanValidator;
 
-	/** EgovMessageSource */
+    /** EgovMessageSource */
     @Resource(name="egovMessageSource")
     EgovMessageSource egovMessageSource;
 
-	/**
-	 * 등록된 HTTP서비스모니터링 정보를 조회 한다.
-	 * @param httpMonVO- HTTP서비스모니터링 VO
-	 * @return String - 리턴 Url
-	 *
-	 * @param httpMonVO
-	 */
-    @IncludedInfo(name="HTTP서비스모니터링", order = 2100 ,gid = 90)
-    @RequestMapping(value="/utl/sys/htm/EgovComUtlHttpMonList.do")
-	public String selectHttpMonList (@ModelAttribute("loginVO") LoginVO loginVO
-			, @ModelAttribute("searchVO") HttpMonVO searchVO
-			, ModelMap model
-			) throws Exception {
-    	/** EgovPropertyService.sample */
-    	searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-    	searchVO.setPageSize(propertiesService.getInt("pageSize"));
+    /**
+     * 등록된 HTTP서비스모니터링 정보를 조회 한다.
+     *
+     * @param httpMonVO- HTTP서비스모니터링 VO
+     * @return String - 리턴 Url
+     */
+    @IncludedInfo(name = "HTTP서비스모니터링", order = 2100, gid = 90)
+    @RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonList.do")
+    public String selectHttpMonList (@ModelAttribute("loginVO") LoginVO loginVO, @ModelAttribute("searchVO") HttpMonVO searchVO, ModelMap model) throws Exception {
+        /** EgovPropertyService.sample */
+        searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
+        searchVO.setPageSize(propertiesService.getInt("pageSize"));
 
-    	/** pageing */
-    	PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
+        /** pageing */
+        PaginationInfo paginationInfo = new PaginationInfo();
+        paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
+        paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
+        paginationInfo.setPageSize(searchVO.getPageSize());
 
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+        searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+        searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
+        searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> HttpMonList = egovHttpMonService.selectHttpMonList(searchVO);
-        model.addAttribute("resultList", HttpMonList);
+        List<HttpMon> resultList = egovHttpMonService.selectHttpMonList(searchVO);
+        model.addAttribute("resultList", resultList);
 
         int totCnt = egovHttpMonService.selectHttpMonTotCnt(searchVO);
-		paginationInfo.setTotalRecordCount(totCnt);
+        paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);
 
         return "egovframework/com/utl/sys/htm/EgovComUtlHttpMonList";
-	}
+    }
 
-	/**
-	 * HTTP서비스모니터링상세 정보를 조회 한다.
-	 * @param HttpMonVO - HTTP서비스모니터링 VO
-	 * @return String - 리턴 Url
-	 *
-	 * @param httpMonVO
-	 */
-	@RequestMapping(value="/utl/sys/htm/EgovComUtlHttpMonDetail.do")
- 	public String selectHttpMonDetail (@ModelAttribute("loginVO") LoginVO loginVO
- 			, HttpMon httpMon
- 			, ModelMap model
- 			) throws Exception {
-		HttpMon vo = egovHttpMonService.selectHttpMonDetail(httpMon);
-		model.addAttribute("result", vo);
+    /**
+     * HTTP서비스모니터링상세 정보를 조회 한다.
+     *
+     * @param HttpMonVO - HTTP서비스모니터링 VO
+     * @return String - 리턴 Url
+     */
+    @RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonDetail.do")
+    public String selectHttpMonDetail(@ModelAttribute("loginVO") LoginVO loginVO, HttpMon httpMon, ModelMap model) throws Exception {
+        HttpMon vo = egovHttpMonService.selectHttpMonDetail(httpMon);
+        model.addAttribute("result", vo);
 
-		//System.out.println("SiteUrl============================컨트롤러 파라미터 확인========================>" + vo.getSiteUrl());
-    	//model.addAttribute("siteUrl", HttpMntrngChecker.getPrductStatus(vo.getSiteUrl()));
+        // System.out.println("SiteUrl============================컨트롤러 파라미터
+        // 확인========================>" + vo.getSiteUrl());
+        // model.addAttribute("siteUrl",
+        // HttpMntrngChecker.getPrductStatus(vo.getSiteUrl()));
 
-		return "egovframework/com/utl/sys/htm/EgovComUtlHttpMonDetail";
-	}
+        return "egovframework/com/utl/sys/htm/EgovComUtlHttpMonDetail";
+    }
 
-	/**
-	 * Http서비스모니터링 정보를 신규로 등록한다.
-	 * @param siteUrl - Http서비스모니터링 model
-	 * @return String - 리턴 Url
-	 *
-	 * @param siteUrl
-	 */
+    /**
+     * Http서비스모니터링 정보를 신규로 등록한다.
+     *
+     * @param siteUrl - Http서비스모니터링 model
+     * @return String - 리턴 Url
+     */
     @RequestMapping(value="/utl/sys/htm/EgovComUtlHttpMonRegist.do")
-	public String insertHttpMon (
-			@ModelAttribute("httpMon") HttpMon httpMon
-			, BindingResult bindingResult
-			, ModelMap model
-			) throws Exception {
+    public String insertHttpMon(@ModelAttribute("httpMon") HttpMon httpMon, BindingResult bindingResult, ModelMap model) throws Exception {
 
-    	// Spring Security 사용자권한 처리
-    	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-    	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "redirect:/uat/uia/egovLoginUsr.do";
-    	}
+        // Spring Security 사용자권한 처리
+        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+        if (!isAuthenticated) {
+            model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+            return "redirect:/uat/uia/egovLoginUsr.do";
+        }
 
-		//로그인 객체 선언
-		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+        // 로그인 객체 선언
+        LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-    	if   (httpMon.getWebKind() == null
-    		||httpMon.getWebKind().equals("")) {
-    		return "egovframework/com/utl/sys/htm/EgovComUtlHttpMonRegist";
-    	}
+        if (httpMon.getWebKind() == null || httpMon.getWebKind().equals("")) {
+            return "egovframework/com/utl/sys/htm/EgovComUtlHttpMonRegist";
+        }
 
         beanValidator.validate(httpMon, bindingResult);
-		if (bindingResult.hasErrors()){
-    		return "egovframework/com/utl/sys/htm/EgovComUtlHttpMonRegist";
-		}
+        if (bindingResult.hasErrors()) {
+            return "egovframework/com/utl/sys/htm/EgovComUtlHttpMonRegist";
+        }
 
-		//아이디 설정
-		httpMon.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-		httpMon.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-		egovHttpMonService.insertHttpMon(httpMon);
+        // 아이디 설정
+        httpMon.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+        httpMon.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+        egovHttpMonService.insertHttpMon(httpMon);
         return "forward:/utl/sys/htm/EgovComUtlHttpMonList.do";
     }
 
-	/**
-	 * 기 등록 된 Http서비스모니터링 정보를 수정 한다.
-	 * @param siteUrl - Http서비스모니터링 model
-	 * @return String - 리턴 Url
-	 *
-	 * @param siteUrl
-	 */
-    @RequestMapping(value="/utl/sys/htm/EgovComUtlHttpMonModify.do")
-	public String updateHttpMon (@ModelAttribute("loginVO") LoginVO loginVO
-			, @ModelAttribute("httpMon") HttpMon httpMon
-			, BindingResult bindingResult
-			, @RequestParam Map<?, ?> commandMap
-			, ModelMap model
-			) throws Exception {
-		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
-    	if (sCmd.equals("")) {
-    		HttpMon vo = egovHttpMonService.selectHttpMonDetail(httpMon);
-    		model.addAttribute("httpMon", vo);
+    /**
+     * 기 등록 된 Http서비스모니터링 정보를 수정 한다.
+     *
+     * @param siteUrl - Http서비스모니터링 model
+     * @return String - 리턴 Url
+     */
+    @RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonModify.do")
+    public String updateHttpMon(@ModelAttribute("loginVO") LoginVO loginVO, @ModelAttribute("httpMon") HttpMon httpMon, BindingResult bindingResult, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+        String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
+        if (sCmd.equals("")) {
+            HttpMon vo = egovHttpMonService.selectHttpMonDetail(httpMon);
+            model.addAttribute("httpMon", vo);
 
-    		return "egovframework/com/utl/sys/htm/EgovComUtlHttpMonModify";
-    	} else if (sCmd.equals("Modify")) {
+            return "egovframework/com/utl/sys/htm/EgovComUtlHttpMonModify";
+        } else if (sCmd.equals("Modify")) {
             beanValidator.validate(httpMon, bindingResult);
-    		if (bindingResult.hasErrors()){
-    			HttpMon vo = egovHttpMonService.selectHttpMonDetail(httpMon);
-        		model.addAttribute("httpMon", vo);
+            if (bindingResult.hasErrors()) {
+                HttpMon vo = egovHttpMonService.selectHttpMonDetail(httpMon);
+                model.addAttribute("httpMon", vo);
 
-        		return "egovframework/com/utl/sys/htm/EgovComUtlHttpMonModify";
-    		}
-    		httpMon.setLastUpdusrId(loginVO.getUniqId());
-    		egovHttpMonService.updateHttpMon(httpMon);
-	        return "forward:/utl/sys/htm/EgovComUtlHttpMonList.do";
-    	} else {
-    		return "forward:/utl/sys/htm/EgovComUtlHttpMonList.do";
-    	}
+                return "egovframework/com/utl/sys/htm/EgovComUtlHttpMonModify";
+            }
+            httpMon.setLastUpdusrId(loginVO.getUniqId());
+            egovHttpMonService.updateHttpMon(httpMon);
+            return "forward:/utl/sys/htm/EgovComUtlHttpMonList.do";
+        } else {
+            return "forward:/utl/sys/htm/EgovComUtlHttpMonList.do";
+        }
     }
 
-	/**
-	 * 기 등록된 HTTP서비스모니터링 정보를 삭제한다.
-	 * @param siteUrl - HTTP서비스모니터링 model
-	 * @return String - 리턴 Url
-	 *
-	 * @param siteUrl
-	 */
-    @RequestMapping(value="/utl/sys/htm/EgovComUtlHttpMonRemove.do")
-	public String deleteHttpMon (@ModelAttribute("loginVO") LoginVO loginVO
-			, HttpMon cmmWebKind
-			, ModelMap model
-			) throws Exception {
-    	egovHttpMonService.deleteHttpMon(cmmWebKind);
+    /**
+     * 기 등록된 HTTP서비스모니터링 정보를 삭제한다.
+     *
+     * @param siteUrl - HTTP서비스모니터링 model
+     * @return String - 리턴 Url
+     */
+    @RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonRemove.do")
+    public String deleteHttpMon(@ModelAttribute("loginVO") LoginVO loginVO, HttpMon cmmWebKind, ModelMap model) throws Exception {
+        egovHttpMonService.deleteHttpMon(cmmWebKind);
         return "forward:/utl/sys/htm/EgovComUtlHttpMonList.do";
-	}
+    }
 
-	/**
-	 * HTTP 서비스 상태를 조회한다.
-	 * @param httpMon
-	 * @return  String
-	 *
-	 * @param httpSttusCd
-	 */
+    /**
+     * HTTP 서비스 상태를 조회한다.
+     *
+     * @param httpMon
+     * @return String
+     */
     @RequestMapping("/utl/sys/htm/selectHttpMonSttus.do")
-	public String selectProcessSttus(
-			@ModelAttribute("httpMonVO") HttpMonVO httpMonVO
-			, ModelMap model
-			) throws Exception {
+    public String selectProcessSttus(@ModelAttribute("httpMonVO") HttpMonVO httpMonVO, ModelMap model) throws Exception {
+        LOGGER.info("SiteUrl" + httpMonVO.getSiteUrl());
+        model.addAttribute("httpSttusCd", HttpMntrngChecker.getPrductStatus(httpMonVO.getSiteUrl()));
+        model.addAttribute("httpMonVO", httpMonVO);
 
-    	LOGGER.info("SiteUrl" + httpMonVO.getSiteUrl());
-    	model.addAttribute("httpSttusCd", HttpMntrngChecker.getPrductStatus(httpMonVO.getSiteUrl()));
-    	model.addAttribute("httpMonVO", httpMonVO);
+        return "egovframework/com/utl/sys/htm/EgovComUtlHttpMonRegist";
+    }
 
+    /**
+     * 등록된 HTTP서비스모니터링로그 정보를 조회 한다.
+     *
+     * @param httpMonVO- HTTP서비스모니터링 VO
+     * @return String - 리턴 Url
+     */
+    @RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonLogList.do")
+    public String selectHttpMonLogList(@ModelAttribute("loginVO") LoginVO loginVO, @ModelAttribute("searchVO") HttpMonLogVO httpMonLogVO, ModelMap model) throws Exception {
+        /** EgovPropertyService.sample */
+        httpMonLogVO.setPageUnit(propertiesService.getInt("pageUnit"));
+        httpMonLogVO.setPageSize(propertiesService.getInt("pageSize"));
 
-		return "egovframework/com/utl/sys/htm/EgovComUtlHttpMonRegist";
-	}
+        /** pageing */
+        PaginationInfo paginationInfo = new PaginationInfo();
+        paginationInfo.setCurrentPageNo(httpMonLogVO.getPageIndex());
+        paginationInfo.setRecordCountPerPage(httpMonLogVO.getPageUnit());
+        paginationInfo.setPageSize(httpMonLogVO.getPageSize());
 
-	/**
-	 * 등록된 HTTP서비스모니터링로그 정보를 조회 한다.
-	 * @param httpMonVO- HTTP서비스모니터링 VO
-	 * @return String - 리턴 Url
-	 *
-	 * @param httpMonVO
-	 */
-    @RequestMapping(value="/utl/sys/htm/EgovComUtlHttpMonLogList.do")
-	public String selectHttpMonLogList (@ModelAttribute("loginVO") LoginVO loginVO
-			, @ModelAttribute("searchVO") HttpMonLogVO httpMonLogVO
-			, ModelMap model
-			) throws Exception {
-    	/** EgovPropertyService.sample */
-    	httpMonLogVO.setPageUnit(propertiesService.getInt("pageUnit"));
-    	httpMonLogVO.setPageSize(propertiesService.getInt("pageSize"));
+        httpMonLogVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+        httpMonLogVO.setLastIndex(paginationInfo.getLastRecordIndex());
+        httpMonLogVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-    	/** pageing */
-    	PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(httpMonLogVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(httpMonLogVO.getPageUnit());
-		paginationInfo.setPageSize(httpMonLogVO.getPageSize());
+        // 조회기간설정
+        if (httpMonLogVO.getSearchBgnDe() != null && httpMonLogVO.getSearchEndDe() != null) {
+            if (!httpMonLogVO.getSearchBgnDe().equals("") && !httpMonLogVO.getSearchEndDe().equals("")) {
+                httpMonLogVO.setSearchBgnDt(httpMonLogVO.getSearchBgnDe() + " " + httpMonLogVO.getSearchBgnHour());
+                httpMonLogVO.setSearchEndDt(httpMonLogVO.getSearchEndDe() + " " + httpMonLogVO.getSearchEndHour());
+            }
+        }
 
-		httpMonLogVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		httpMonLogVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		httpMonLogVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+        Map<String, Object> map = egovHttpMonService.selectHttpMonLogList(httpMonLogVO);
+        int totCnt = Integer.parseInt((String) map.get("resultCnt"));
+        paginationInfo.setTotalRecordCount(totCnt);
 
-		// 조회기간설정
-		if(httpMonLogVO.getSearchBgnDe() != null && httpMonLogVO.getSearchEndDe() != null){
-			if(!httpMonLogVO.getSearchBgnDe().equals("") && !httpMonLogVO.getSearchEndDe().equals("")){
-				httpMonLogVO.setSearchBgnDt(httpMonLogVO.getSearchBgnDe() + " " + httpMonLogVO.getSearchBgnHour());
-				httpMonLogVO.setSearchEndDt(httpMonLogVO.getSearchEndDe() + " " + httpMonLogVO.getSearchEndHour());
-			}
-		}
+        // 조회시작시
+        model.addAttribute("searchBgnHour", getTimeHH());
+        // 조회종료시
+        model.addAttribute("searchEndHour", getTimeHH());
 
-		Map<String, Object> map = egovHttpMonService.selectHttpMonLogList(httpMonLogVO);
-		int totCnt = Integer.parseInt((String)map.get("resultCnt"));
-		paginationInfo.setTotalRecordCount(totCnt);
-
-		// 조회시작시
-    	model.addAttribute("searchBgnHour", getTimeHH());
-    	// 조회종료시
-    	model.addAttribute("searchEndHour", getTimeHH());
-
-		model.addAttribute("resultList", map.get("resultList"));
-		model.addAttribute("resultCnt", map.get("resultCnt"));
+        model.addAttribute("resultList", map.get("resultList"));
+        model.addAttribute("resultCnt", map.get("resultCnt"));
         model.addAttribute("paginationInfo", paginationInfo);
 
         return "egovframework/com/utl/sys/htm/EgovComUtlHttpMonLogList";
 
-	}
+    }
 
-	/**
-	 * HTTP서비스모니터링로그상세 정보를 조회 한다.
-	 * @param HttpMonVO - HTTP서비스모니터링 VO
-	 * @return String - 리턴 Url
-	 *
-	 * @param httpMonVO
-	 */
-	@RequestMapping(value="/utl/sys/htm/EgovComUtlHttpMonDetailLog.do")
- 	public String selectHttpMonDetailLog (@ModelAttribute("loginVO") LoginVO loginVO
- 			, HttpMonLog httpMonLog
- 			, ModelMap model
- 			) throws Exception {
-		HttpMonLog vo = egovHttpMonService.selectHttpMonDetailLog(httpMonLog);
-		model.addAttribute("result", vo);
+    /**
+     * HTTP서비스모니터링로그상세 정보를 조회 한다.
+     *
+     * @param HttpMonVO - HTTP서비스모니터링 VO
+     * @return String - 리턴 Url
+     */
+    @RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonDetailLog.do")
+    public String selectHttpMonDetailLog(@ModelAttribute("loginVO") LoginVO loginVO, HttpMonLog httpMonLog, ModelMap model) throws Exception {
+        HttpMonLog vo = egovHttpMonService.selectHttpMonDetailLog(httpMonLog);
+        model.addAttribute("result", vo);
 
-		return "egovframework/com/utl/sys/htm/EgovComUtlHttpMonDetailLog";
-	}
+        return "egovframework/com/utl/sys/htm/EgovComUtlHttpMonDetailLog";
+    }
 
-	/**
-	 * 시간의 LIST를 반환한다.
-	 * @return  List
-	 * @throws
-	 */
-	private List<ComDefaultCodeVO> getTimeHH (){
-    	ArrayList<ComDefaultCodeVO> listHH = new ArrayList<ComDefaultCodeVO>();
-    	//HashMap hmHHMM;
-    	for(int i=0;i < 24; i++){
-    		String sHH = "";
-    		String strI = String.valueOf(i);
-    		if(i<10){
-    			sHH = "0" + strI;
-    		}else{
-    			sHH = strI;
-    		}
+    /**
+     * 시간의 LIST를 반환한다.
+     *
+     * @return List
+     * @throws
+     */
+    private List<ComDefaultCodeVO> getTimeHH() {
+        ArrayList<ComDefaultCodeVO> listHH = new ArrayList<ComDefaultCodeVO>();
+        // HashMap hmHHMM;
+        for (int i = 0; i < 24; i++) {
+            String sHH = "";
+            String strI = String.valueOf(i);
+            if (i < 10) {
+                sHH = "0" + strI;
+            } else {
+                sHH = strI;
+            }
 
-    		ComDefaultCodeVO codeVO = new ComDefaultCodeVO();
-    		codeVO.setCode(sHH);
-    		codeVO.setCodeNm(sHH + ":00");
+            ComDefaultCodeVO codeVO = new ComDefaultCodeVO();
+            codeVO.setCode(sHH);
+            codeVO.setCodeNm(sHH + ":00");
 
-    		listHH.add(codeVO);
-    	}
+            listHH.add(codeVO);
+        }
 
-    	return listHH;
-	}
-
+        return listHH;
+    }
 }
+
