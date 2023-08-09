@@ -1,7 +1,7 @@
 package egovframework.com.cop.cmy.service.impl;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.fail;
 
 import java.util.List;
@@ -146,8 +146,7 @@ public class EgovCommuMasterDAOTest extends EgovTestAbstractDAO {
         /**
          * egovCmmntyIdGnrService 사용
          */
-        /*
-        try {
+        /*        try {
             community.setCmmntyId(egovCmmntyIdGnrService.getNextStringId());
         } catch (FdlException e) {
             log.error("FdlException egovCmmntyIdGnrService");
@@ -297,13 +296,11 @@ public class EgovCommuMasterDAOTest extends EgovTestAbstractDAO {
         List<CommunityVO> resultList = null;
         try {
             resultList = egovCommuMasterDAO.selectCommuMasterListPortlet(cmmntyVO);
-        } catch (DataAccessException e) {
-            // e.printStackTrace();
+        } catch (DataAccessException eDAE) {
+            // eDAE.printStackTrace();
             log.error("DataAccessException selectCommuMasterListPortlet");
-            error(e);
+            error(eDAE);
             fail("DataAccessException selectCommuMasterListPortlet");
-        } catch (Exception e) {
-
         }
 
         // log.info("resultList=[{}]", resultList);
@@ -315,6 +312,12 @@ public class EgovCommuMasterDAOTest extends EgovTestAbstractDAO {
         }
 
         // then
-        assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 0 < resultList.size());
+        assertSelectCommuMasterListPortlet(resultList);
+    }
+
+    private void assertSelectCommuMasterListPortlet(final List<CommunityVO> resultList) {
+        if (resultList != null) {
+            assertFalse(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.isEmpty());
+        }
     }
 }
