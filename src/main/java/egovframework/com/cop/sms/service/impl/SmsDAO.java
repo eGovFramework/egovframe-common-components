@@ -50,9 +50,8 @@ public class SmsDAO extends EgovComAbstractDAO {
     /**
      * 문자메시지 정보를 등록한다.
      * 
-     * @param notification
-     * @return
-     * @throws Exception
+     * @param sms
+     * @return int
      */
     public int insertSmsInf(Sms sms) {
         return insert("SmsDAO.insertSmsInf", sms);
