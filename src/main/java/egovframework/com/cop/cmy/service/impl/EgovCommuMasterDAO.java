@@ -16,26 +16,26 @@ public class EgovCommuMasterDAO extends EgovComAbstractDAO{
 	}
 
 	public int selectCommuMasterListCnt(CommunityVO cmmntyVO) {
-		return (Integer)selectOne("CommuMaster.selectCommuMasterListCnt", cmmntyVO);
+		return selectOne("CommuMaster.selectCommuMasterListCnt", cmmntyVO);
 	}
 
-	public void insertCommuMaster(Community community) {
-		insert("CommuMaster.insertCommuMaster", community);
-		
+	public int insertCommuMaster(Community community) {
+		return insert("CommuMaster.insertCommuMaster", community);
+
 	}
 
 	public CommunityVO selectCommuMasterDetail(CommunityVO cmmntyVO) {
-		return (CommunityVO) selectOne("CommuMaster.selectCommuMasterDetail", cmmntyVO);
+		return selectOne("CommuMaster.selectCommuMasterDetail", cmmntyVO);
 	}
 
-	public void updateCommuMaster(Community community) {
-		update("CommuMaster.updateCommuMaster", community);
+	public int updateCommuMaster(Community community) {
+		return update("CommuMaster.updateCommuMaster", community);
 	}
 
-	public void deleteCommuMaster(Community community) {
-		update("CommuMaster.deleteCommuMaster", community);
+	public int deleteCommuMaster(Community community) {
+		return update("CommuMaster.deleteCommuMaster", community);
 	}
-	
+
     /**
      * 포트릿을 위한 커뮤니티 정보 목록 정보를 조회한다.
      *
