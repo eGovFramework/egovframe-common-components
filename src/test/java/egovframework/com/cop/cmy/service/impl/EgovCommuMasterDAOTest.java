@@ -1,6 +1,8 @@
 package egovframework.com.cop.cmy.service.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 import java.util.List;
 
@@ -14,6 +16,7 @@ import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cmm.LoginVO;
@@ -98,17 +101,17 @@ public class EgovCommuMasterDAOTest extends EgovTestAbstractDAO {
      */
     private int testCommunityAdd(final Community community, final LoginVO loginVO)
     {
-          // 커뮤니티명 설정
-          community.setCmmntyNm("테스트 커뮤니티");
-//
-//        // 커뮤니티소개 설정
-//        community.setCmmntyIntrcn("테스트 커뮤니티입니다.");
-//
-//        // 사용여부 설정
-//        community.setUseAt("Y");
-//
-          // 등록구분코드 설정
-          community.setRegistSeCode("REGC02"); // 커뮤니티 등록
+        // 커뮤니티명 설정
+        community.setCmmntyNm("테스트 커뮤니티");
+
+        // 커뮤니티소개 설정
+        community.setCmmntyIntrcn("테스트 커뮤니티입니다.");
+
+        // 사용여부 설정
+        community.setUseAt("Y");
+
+        // 등록구분코드 설정
+        community.setRegistSeCode("REGC02"); // 커뮤니티 등록
 //
 //        // 템플릿ID
 //        community.setTmplatId("TMPT02"); // 커뮤니티 템플릿
@@ -176,7 +179,7 @@ public class EgovCommuMasterDAOTest extends EgovTestAbstractDAO {
     }
 
     /**
-     * 커뮤니티 목록 개수 가져오기 테스트
+     * 커뮤니티 목록 개수 조회 테스트
      */
     @Test
     public void testSelectCommuMasterListCnt() {
@@ -193,7 +196,7 @@ public class EgovCommuMasterDAOTest extends EgovTestAbstractDAO {
     }
 
     /**
-     * 커뮤니티 목록 가져오기 테스트
+     * 커뮤니티 목록 조회 테스트
      */
     @Test
     public void testSelectCommuMasterList() {
@@ -230,7 +233,7 @@ public class EgovCommuMasterDAOTest extends EgovTestAbstractDAO {
 
 
     /**
-     * 커뮤니티 상세 정보 가져오기 테스트
+     * 커뮤니티 상세 정보 조회 테스트
      */
     @Test
     public void testSelectCommuMasterDetail() {
@@ -246,20 +249,72 @@ public class EgovCommuMasterDAOTest extends EgovTestAbstractDAO {
         assertSelectCommuMaster(cmmntyVO, result);
     }
 
-    /*
+    /**
+     * 커뮤니터 정보 업데이트 테스트
+     */
     @Test
     public void testUpdateCommuMaster() {
-        fail("Not yet implemented");
+        // given
+        final CommunityVO cmmntyVO = new CommunityVO();
+        cmmntyVO.setCmmntyId(testCommunity.getCmmntyId());
+        cmmntyVO.setCmmntyNm(testCommunity.getCmmntyNm() + " - 수정");
+        cmmntyVO.setCmmntyIntrcn(testCommunity.getCmmntyIntrcn());
+        cmmntyVO.setTmplatId(testCommunity.getTmplatId());
+        cmmntyVO.setLastUpdusrId(testCommunity.getLastUpdusrId());
+        cmmntyVO.setUseAt(testCommunity.getUseAt());
+
+        // when
+        final int result = egovCommuMasterDAO.updateCommuMaster(cmmntyVO);
+
+        assertEquals(egovMessageSource.getMessage("fail.common.update"), 1, result);
     }
 
+    /**
+     * 커뮤니티 정보 삭제 테스트
+     */
     @Test
     public void testDeleteCommuMaster() {
-        fail("Not yet implemented");
+        // given
+        final CommunityVO cmmntyVO = new CommunityVO();
+        cmmntyVO.setCmmntyId(testCommunity.getCmmntyId());
+        cmmntyVO.setLastUpdusrId(testCommunity.getLastUpdusrId());
+
+        // when
+        final int result = egovCommuMasterDAO.updateCommuMaster(cmmntyVO);
+
+        assertEquals(egovMessageSource.getMessage("fail.common.delete"), 1, result);
     }
 
+    /**
+     * 포트릿을 위한 커뮤니티 정보 목록 조회 테스트
+     */
     @Test
     public void testSelectCommuMasterListPortlet() {
-        fail("Not yet implemented");
+        // given
+        final CommunityVO cmmntyVO = new CommunityVO();
+
+        // when
+        List<CommunityVO> resultList = null;
+        try {
+            resultList = egovCommuMasterDAO.selectCommuMasterListPortlet(cmmntyVO);
+        } catch (DataAccessException e) {
+            // e.printStackTrace();
+            log.error("DataAccessException selectCommuMasterListPortlet");
+            error(e);
+            fail("DataAccessException selectCommuMasterListPortlet");
+        } catch (Exception e) {
+
+        }
+
+        // log.info("resultList=[{}]", resultList);
+        for (final CommunityVO result : resultList) {
+            if (log.isDebugEnabled()) {
+                log.debug("result={}", result);
+                log.debug("getCmmntyId={}, {}", cmmntyVO.getCmmntyId(), result.getCmmntyId());
+            }
+        }
+
+        // then
+        assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 0 < resultList.size());
     }
-*/
 }
