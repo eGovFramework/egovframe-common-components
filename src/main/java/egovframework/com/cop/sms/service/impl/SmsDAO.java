@@ -46,7 +46,7 @@ public class SmsDAO extends EgovComAbstractDAO {
     public int selectSmsInfsCnt(SmsVO vo) throws Exception {
 	return (Integer)selectOne("SmsDAO.selectSmsInfsCnt", vo);
     }
-    
+
     /**
      * 문자메시지 정보를 등록한다.
      * 
@@ -54,10 +54,10 @@ public class SmsDAO extends EgovComAbstractDAO {
      * @return
      * @throws Exception
      */
-    public String insertSmsInf(Sms sms) throws Exception {    	
-    	return Integer.toString(insert("SmsDAO.insertSmsInf", sms)); 
+    public int insertSmsInf(Sms sms) {
+        return insert("SmsDAO.insertSmsInf", sms);
     }
-    
+
     /**
      * 문자메시지 수신정보 및 결과 정보를 등록한다.
      * @param smsRecptn
