@@ -59,14 +59,14 @@ public class SmsDAO extends EgovComAbstractDAO {
 
     /**
      * 문자메시지 수신정보 및 결과 정보를 등록한다.
+     * 
      * @param smsRecptn
-     * @return
-     * @throws Exception
+     * @return int
      */
-    public String insertSmsRecptnInf(SmsRecptn smsRecptn) throws Exception {
-    	return Integer.toString(insert("SmsDAO.insertSmsRecptnInf", smsRecptn));
+    public int insertSmsRecptnInf(SmsRecptn smsRecptn) {
+        return insert("SmsDAO.insertSmsRecptnInf", smsRecptn);
     }
-    
+
     /**
      * 문자메시지에 대한 상세정보를 조회한다.
      * 

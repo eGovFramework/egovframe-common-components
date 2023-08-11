@@ -19,6 +19,7 @@ import org.springframework.test.context.ContextConfiguration;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.sms.service.Sms;
+import egovframework.com.cop.sms.service.SmsRecptn;
 import egovframework.com.test.EgovTestAbstractDAO;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -88,6 +89,23 @@ public class SmsDAOTest extends EgovTestAbstractDAO {
     private EgovIdGnrService egovSmsIdGnrService;
 
     /**
+     * testDataSms
+     * 
+     * @param sms
+     */
+    private void testDataSms(final Sms testDataSms) {
+        try {
+            testDataSms.setSmsId(egovSmsIdGnrService.getNextStringId());
+        } catch (FdlException e) {
+//            e.printStackTrace();
+            log.error("FdlException egovSmsIdGnrService");
+//            fail("FdlException egovSmsIdGnrService");
+        }
+
+        smsDAO.insertSmsInf(testDataSms);
+    }
+
+    /**
      * 문자메시지 정보를 등록한다.
      */
     @Test
@@ -118,6 +136,28 @@ public class SmsDAOTest extends EgovTestAbstractDAO {
             log.debug("sms={}", sms);
             log.debug("result={}", result);
         }
+
+        // then
+        assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
+    }
+
+    /**
+     * 문자메시지 수신정보 및 결과 정보를 등록한다.
+     */
+    @Test
+    public void insertSmsRecptnInf() {
+        // given
+        final Sms testDataSms = new Sms();
+        testDataSms(testDataSms);
+
+        final SmsRecptn smsRecptn = new SmsRecptn();
+        smsRecptn.setSmsId(testDataSms.getSmsId()); // 문자메시지ID
+        smsRecptn.setRecptnTelno("수신전화번호"); // 수신전화번호
+        smsRecptn.setResultCode("결과코드"); // 결과코드
+        smsRecptn.setResultMssage("test 이백행 결과메시지 " + LocalDateTime.now()); // 결과메시지
+
+        // when
+        final int result = smsDAO.insertSmsRecptnInf(smsRecptn);
 
         // then
         assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
