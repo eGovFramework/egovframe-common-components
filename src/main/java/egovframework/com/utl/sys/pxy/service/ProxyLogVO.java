@@ -1,7 +1,5 @@
 package egovframework.com.utl.sys.pxy.service;
 
-import java.util.List;
-
 /**
  * 개요
  * - 프록시로그정보에 대한 Vo 클래스를 정의한다.
@@ -13,55 +11,43 @@ import java.util.List;
  * @created 28-6-2010 오전 10:44:50
  */
 public class ProxyLogVO extends ProxyLog {
+    private static final long serialVersionUID = 1L;
 
-	private static final long serialVersionUID = 1L;
-	/**
-	 * 프록시서비스접속 시작일자 조회조건
-	 */
-	public String strStartDate;
-	/**
-	 * 프록시서비스접속 종료일자 조회조건
-	 */
-	public String strEndDate;
-	/**
-	 * 프록시 로그 목록
-	 */
-	public List<?> proxyLogList;
+    /**
+     * 프록시서비스접속 시작일자 조회조건
+     */
+    public String strStartDate;
 
-	/**
-	 * @return the strStartDate
-	 */
-	public String getStrStartDate() {
-		return strStartDate;
-	}
-	/**
-	 * @param strStartDate the strStartDate to set
-	 */
-	public void setStrStartDate(String strStartDate) {
-		this.strStartDate = strStartDate;
-	}
-	/**
-	 * @return the strEndDate
-	 */
-	public String getStrEndDate() {
-		return strEndDate;
-	}
-	/**
-	 * @param strEndDate the strEndDate to set
-	 */
-	public void setStrEndDate(String strEndDate) {
-		this.strEndDate = strEndDate;
-	}
-	/**
-	 * @return the proxyLogList
-	 */
-	public List<?> getProxyLogList() {
-		return proxyLogList;
-	}
-	/**
-	 * @param proxyLogList the proxyLogList to set
-	 */
-	public void setProxyLogList(List<?> proxyLogList) {
-		this.proxyLogList = proxyLogList;
-	}
+    /**
+     * 프록시서비스접속 종료일자 조회조건
+     */
+    public String strEndDate;
+
+    /**
+     * @return the strStartDate
+     */
+    public String getStrStartDate() {
+        return strStartDate;
+    }
+
+    /**
+     * @param strStartDate the strStartDate to set
+     */
+    public void setStrStartDate(String strStartDate) {
+        this.strStartDate = strStartDate;
+    }
+
+    /**
+     * @return the strEndDate
+     */
+    public String getStrEndDate() {
+        return strEndDate;
+    }
+
+    /**
+     * @param strEndDate the strEndDate to set
+     */
+    public void setStrEndDate(String strEndDate) {
+        this.strEndDate = strEndDate;
+    }
 }
