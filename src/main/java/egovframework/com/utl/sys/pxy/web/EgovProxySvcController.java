@@ -140,6 +140,7 @@ public class EgovProxySvcController {
 
         model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(), "COM072"));
         model.addAttribute("proxySvc", proxySvcVO);
+
         return "egovframework/com/utl/sys/pxy/EgovProxySvcRegist";
     }
 
