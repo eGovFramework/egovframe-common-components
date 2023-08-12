@@ -128,9 +128,9 @@ public class SmsDAOTest extends EgovTestAbstractDAO {
 
 //        smsVO.setSearchCnd("0");
 //        smsVO.setSearchWrd("");
-//
-//        smsVO.setSearchCnd("1");
-//        smsVO.setSearchWrd("");
+
+        smsVO.setSearchCnd("1");
+        smsVO.setSearchWrd(testDataSms.getTrnsmitCn());
 
         // when
         final List<SmsVO> resultList = smsDAO.selectSmsInfs(smsVO);
