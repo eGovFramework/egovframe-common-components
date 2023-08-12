@@ -27,13 +27,15 @@ import org.springframework.stereotype.Repository;
  */
 @Repository("SmsDAO")
 public class SmsDAO extends EgovComAbstractDAO {
+
     /**
      * 문자메시지 목록을 조회한다.
      * 
      * @param SmsVO
+     * @return List<SmsVO>
      */
-    public List<SmsVO> selectSmsInfs(SmsVO vo) throws Exception {
-	return selectList("SmsDAO.selectSmsInfs", vo);
+    public List<SmsVO> selectSmsInfs(SmsVO smsVO) {
+        return selectList("SmsDAO.selectSmsInfs", smsVO);
     }
 
     /**
