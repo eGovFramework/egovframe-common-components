@@ -106,8 +106,8 @@ public class EgovMberManageController {
         userSearchVO.setLastIndex(paginationInfo.getLastRecordIndex());
         userSearchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<MberManageVO> mberList = mberManageService.selectMberList(userSearchVO);
-        model.addAttribute("resultList", mberList);
+        List<MberManageVO> resultList = mberManageService.selectMberList(userSearchVO);
+        model.addAttribute("resultList", resultList);
 
         int totCnt = mberManageService.selectMberListTotCnt(userSearchVO);
         paginationInfo.setTotalRecordCount(totCnt);
