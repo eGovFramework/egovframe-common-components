@@ -26,6 +26,7 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.bnt.service.BndtCeckManage;
@@ -318,7 +319,7 @@ public class EgovBndtManageController {
 
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM071");
-		List<?> bndtCeckSeList = cmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> bndtCeckSeList = cmmUseService.selectCmmCodeDetail(vo);
 		model.addAttribute("bndtCeckSeList", bndtCeckSeList);
 
 		bndtCeckManageVO.setBndtCeckManageList(egovBndtManageService.selectBndtCeckManageList(bndtCeckManageVO));
@@ -377,7 +378,7 @@ public class EgovBndtManageController {
 
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM071");
-		List<?> bndtCeckSeList = cmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> bndtCeckSeList = cmmUseService.selectCmmCodeDetail(vo);
 		model.addAttribute("bndtCeckSeList", bndtCeckSeList);
 
 		bndtCeckManage.setBndtCeckCd("");
@@ -403,7 +404,7 @@ public class EgovBndtManageController {
 		if (bindingResult.hasErrors()) {
 			ComDefaultCodeVO vo = new ComDefaultCodeVO();
 			vo.setCodeId("COM071");
-			List<?> bndtCeckSeList = cmmUseService.selectCmmCodeDetail(vo);
+			List<CmmnDetailCode> bndtCeckSeList = cmmUseService.selectCmmCodeDetail(vo);
 			model.addAttribute("bndtCeckSeList", bndtCeckSeList);
 			model.addAttribute("bndtCeckManageVO", bndtCeckManageVO);
 			return "egovframework/com/uss/ion/bnt/EgovBndtCeckManageRegist";
@@ -419,7 +420,7 @@ public class EgovBndtManageController {
 			} else {
 				ComDefaultCodeVO vo = new ComDefaultCodeVO();
 				vo.setCodeId("COM071");
-				List<?> bndtCeckSeList = cmmUseService.selectCmmCodeDetail(vo);
+				List<CmmnDetailCode> bndtCeckSeList = cmmUseService.selectCmmCodeDetail(vo);
 				model.addAttribute("bndtCeckSeList", bndtCeckSeList);
 				model.addAttribute("bndtCeckManageVO", bndtCeckManageVO);
 				model.addAttribute("dplctMessage", "이미 등록된 데이타입니다. 해당 데이타를 확인해 주세요");
