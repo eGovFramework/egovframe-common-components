@@ -295,7 +295,43 @@ public class EgovUserInfManageDAOTest extends EgovTestAbstractDAO {
      */
     @Test
     public void testSelectCmmntyUserList() {
-        fail("Not yet implemented");
+        // given
+        /* 기본 사용자 목록
+         * ESNTL_ID                 USER_ID        USER_NM
+         * USRCNFRM_00000000000     TEST1          테스트1
+         * USRCNFRM_00000000001     USER           일반회원
+         * USRCNFRM_00000000002     ENTERPRISE     NIA
+         * USRCNFRM_99999999999     webmaster      웹마스터
+         */
+        UserInfVO userInfVO = new UserInfVO();
+        userInfVO.setTrgetId(testCommunityUser.getCmmntyId());
+        userInfVO.setRecordCountPerPage(10);
+        userInfVO.setFirstIndex(0);
+        userInfVO.setSearchCnd("0");
+        userInfVO.setSearchWrd("테스트1");
+
+        List<UserInfVO> resultList = null;
+
+        // when
+        try {
+            resultList = egovUserInfManageDAO.selectCmmntyUserList(userInfVO);
+        } catch (Exception e) {
+            // e.printStackTrace();
+            log.error("Exception SelectUserList");
+            // error(e);
+            fail("Exception SelectUserList");
+        }
+
+        // log.debug("resultList=[{}]", resultList);
+        for (final UserInfVO result : resultList) {
+            if (log.isDebugEnabled()) {
+                log.debug("result={}", result);
+                log.debug("getUserNm={}, {}", userInfVO.getSearchWrd(), result.getUserNm());
+            }
+
+            // then
+            assertSelectUserList(userInfVO, result);
+        }
     }
 
     /**
