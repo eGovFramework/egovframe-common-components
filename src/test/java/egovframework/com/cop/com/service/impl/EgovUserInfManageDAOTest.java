@@ -255,22 +255,59 @@ public class EgovUserInfManageDAOTest extends EgovTestAbstractDAO {
         assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), userInfVO.getSearchWrd(), result.getUserNm());
     }
 
-/*
+
+    /**
+     * 사용자 정보 목록 개수 조회 테스트
+     *
+     */
     @Test
     public void testSelectUserListCnt() {
-        fail("Not yet implemented");
-    }
+        /* 기본 사용자 목록
+         * ESNTL_ID                 USER_ID        USER_NM
+         * USRCNFRM_00000000000     TEST1          테스트1
+         * USRCNFRM_00000000001     USER           일반회원
+         * USRCNFRM_00000000002     ENTERPRISE     NIA
+         * USRCNFRM_99999999999     webmaster      웹마스터
+         */
+        UserInfVO userInfVO = new UserInfVO();
+        userInfVO.setRecordCountPerPage(10);
+        userInfVO.setFirstIndex(0);
+        userInfVO.setSearchCnd("0");
+        userInfVO.setSearchWrd("테스트1");
 
+        int result = 0;
+        // when
+        try {
+            result = egovUserInfManageDAO.selectUserListCnt(userInfVO);
+        } catch (Exception e) {
+            // e.printStackTrace();
+            log.error("Exception SelectUserList");
+            // error(e);
+            fail("Exception SelectUserList");
+        }
+
+        // then
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);    }
+
+    /**
+     * 커뮤니티 사용자 정보 목록 조회 테스트
+     *
+     */
     @Test
     public void testSelectCmmntyUserList() {
         fail("Not yet implemented");
     }
 
+    /**
+     * 커뮤니티 사용자 정보 목록 개수 조회 테스트
+     *
+     */
     @Test
     public void testSelectCmmntyUserListCnt() {
         fail("Not yet implemented");
     }
 
+    /*
     @Test
     public void testSelectCmmntyMngrList() {
         fail("Not yet implemented");
