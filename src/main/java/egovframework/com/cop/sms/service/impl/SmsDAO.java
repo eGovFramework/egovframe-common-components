@@ -42,11 +42,10 @@ public class SmsDAO extends EgovComAbstractDAO {
      * 문자메시지 목록 숫자를 조회한다
      * 
      * @param SmsVO
-     * @return
-     * @throws Exception
+     * @return int
      */
-    public int selectSmsInfsCnt(SmsVO vo) throws Exception {
-	return (Integer)selectOne("SmsDAO.selectSmsInfsCnt", vo);
+    public int selectSmsInfsCnt(SmsVO smsVO) {
+        return selectOne("SmsDAO.selectSmsInfsCnt", smsVO);
     }
 
     /**

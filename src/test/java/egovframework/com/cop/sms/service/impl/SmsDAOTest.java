@@ -153,6 +153,36 @@ public class SmsDAOTest extends EgovTestAbstractDAO {
     }
 
     /**
+     * 문자메시지 목록 숫자를 조회한다
+     */
+    @Test
+    public void selectSmsInfsCnt() {
+        // given
+        final SmsVO testDataSms = new SmsVO();
+        testDataSms(testDataSms);
+
+        final SmsVO smsVO = new SmsVO();
+
+        smsVO.setSearchCnd(null);
+
+//        smsVO.setSearchCnd("0");
+//        smsVO.setSearchWrd("");
+
+        smsVO.setSearchCnd("1");
+        smsVO.setSearchWrd(testDataSms.getTrnsmitCn());
+
+        // when
+        final int totCnt = smsDAO.selectSmsInfsCnt(smsVO);
+
+        // then
+        if (log.isDebugEnabled()) {
+            log.debug("totCnt={}", totCnt);
+        }
+
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, totCnt);
+    }
+
+    /**
      * 문자메시지 정보를 등록한다.
      */
     @Test
