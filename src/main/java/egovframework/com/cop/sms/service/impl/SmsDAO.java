@@ -71,13 +71,13 @@ public class SmsDAO extends EgovComAbstractDAO {
     /**
      * 문자메시지에 대한 상세정보를 조회한다.
      * 
-     * @param searchVO
+     * @param smsVO
      * @return
      */
-    public SmsVO selectSmsInf(SmsVO searchVO) {
-	return (SmsVO)selectOne("SmsDAO.selectSmsInf", searchVO);
+    public SmsVO selectSmsInf(SmsVO smsVO) {
+        return selectOne("SmsDAO.selectSmsInf", smsVO);
     }
-    
+
     /**
      * 문자메시지 수신 및 결과 목록을 조회한다.
      * 

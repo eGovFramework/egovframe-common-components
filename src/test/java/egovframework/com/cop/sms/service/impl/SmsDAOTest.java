@@ -96,6 +96,8 @@ public class SmsDAOTest extends EgovTestAbstractDAO {
      * @param sms
      */
     private void testDataSms(final Sms testDataSms) {
+        final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
         try {
             testDataSms.setSmsId(egovSmsIdGnrService.getNextStringId()); // 문자메시지ID
         } catch (FdlException e) {
@@ -106,6 +108,10 @@ public class SmsDAOTest extends EgovTestAbstractDAO {
 
         testDataSms.setTrnsmitTelno("전송전화번호"); // 전송전화번호
         testDataSms.setTrnsmitCn("test 이백행 전송내용 " + LocalDateTime.now()); // 전송내용
+
+        if (loginVO != null) {
+            testDataSms.setFrstRegisterId(loginVO.getUniqId());
+        }
 
         smsDAO.insertSmsInf(testDataSms);
     }
@@ -238,6 +244,39 @@ public class SmsDAOTest extends EgovTestAbstractDAO {
 
         // then
         assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
+    }
+
+    /**
+     * 문자메시지에 대한 상세정보를 조회한다.
+     */
+    @Test
+    public void selectSmsInf() {
+        // given
+        final SmsVO testDataSms = new SmsVO();
+        testDataSms(testDataSms);
+
+        final SmsVO smsVO = new SmsVO();
+        smsVO.setSmsId(testDataSms.getSmsId());
+
+        // when
+        final SmsVO result = smsDAO.selectSmsInf(smsVO);
+
+        // then
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testDataSms.getSmsId(), result.getSmsId());
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testDataSms.getTrnsmitTelno(),
+                result.getTrnsmitTelno());
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testDataSms.getTrnsmitCn(),
+                result.getTrnsmitCn());
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testDataSms.getFrstRegisterId(),
+                result.getFrstRegisterId());
+
+        if (log.isDebugEnabled()) {
+            log.debug("result={}", result);
+            log.debug("getSmsId={}, {}", testDataSms.getSmsId(), result.getSmsId());
+            log.debug("getTrnsmitTelno={}, {}", testDataSms.getTrnsmitTelno(), result.getTrnsmitTelno());
+            log.debug("getTrnsmitCn={}, {}", testDataSms.getTrnsmitCn(), result.getTrnsmitCn());
+            log.debug("getFrstRegisterId={}, {}", testDataSms.getFrstRegisterId(), result.getFrstRegisterId());
+        }
     }
 
 }
