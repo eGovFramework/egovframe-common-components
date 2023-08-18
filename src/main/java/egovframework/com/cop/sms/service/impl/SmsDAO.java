@@ -83,10 +83,10 @@ public class SmsDAO extends EgovComAbstractDAO {
      * 
      * @param SmsRecptn
      */
-    public List<SmsRecptn> selectSmsRecptnInfs(SmsRecptn vo) throws Exception {
-	return selectList("SmsDAO.selectSmsRecptnInfs", vo);
+    public List<SmsRecptn> selectSmsRecptnInfs(SmsRecptn smsRecptn) {
+        return selectList("SmsDAO.selectSmsRecptnInfs", smsRecptn);
     }
-    
+
     /**
      * 문자메시지 전송 결과 수신을 처리한다.
      * EgovSmsInfoReceiver(Schedule job)에 의해 호출된다.

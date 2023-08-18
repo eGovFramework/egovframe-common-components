@@ -93,7 +93,7 @@ public class SmsDAOTest extends EgovTestAbstractDAO {
     /**
      * testDataSms
      * 
-     * @param sms
+     * @param testDataSms
      */
     private void testDataSms(final Sms testDataSms) {
         final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -114,6 +114,23 @@ public class SmsDAOTest extends EgovTestAbstractDAO {
         }
 
         smsDAO.insertSmsInf(testDataSms);
+    }
+
+    /**
+     * testDataSmsRecptn
+     * 
+     * @param testDataSmsRecptn
+     */
+    private void testDataSmsRecptn(final SmsRecptn testDataSmsRecptn) {
+        final Sms testDataSms = new Sms();
+        testDataSms(testDataSms);
+
+        testDataSmsRecptn.setSmsId(testDataSms.getSmsId()); // 문자메시지ID
+        testDataSmsRecptn.setRecptnTelno("수신전화번호"); // 수신전화번호
+        testDataSmsRecptn.setResultCode("결과코드"); // 결과코드
+        testDataSmsRecptn.setResultMssage("test 이백행 결과메시지 " + LocalDateTime.now()); // 결과메시지
+
+        smsDAO.insertSmsRecptnInf(testDataSmsRecptn);
     }
 
     /**
@@ -276,6 +293,42 @@ public class SmsDAOTest extends EgovTestAbstractDAO {
             log.debug("getTrnsmitTelno={}, {}", testDataSms.getTrnsmitTelno(), result.getTrnsmitTelno());
             log.debug("getTrnsmitCn={}, {}", testDataSms.getTrnsmitCn(), result.getTrnsmitCn());
             log.debug("getFrstRegisterId={}, {}", testDataSms.getFrstRegisterId(), result.getFrstRegisterId());
+        }
+    }
+
+    /**
+     * 문자메시지 수신 및 결과 목록을 조회한다.
+     */
+    @Test
+    public void selectSmsRecptnInfs() {
+        // given
+        final SmsRecptn testDataSmsRecptn = new SmsRecptn();
+        testDataSmsRecptn(testDataSmsRecptn);
+
+        final SmsRecptn smsRecptn = new SmsRecptn();
+        smsRecptn.setSmsId(testDataSmsRecptn.getSmsId());
+
+        // when
+        final List<SmsRecptn> resultList = smsDAO.selectSmsRecptnInfs(smsRecptn);
+
+        // then
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testDataSmsRecptn.getSmsId(),
+                resultList.get(0).getSmsId());
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testDataSmsRecptn.getRecptnTelno(),
+                resultList.get(0).getRecptnTelno());
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testDataSmsRecptn.getResultCode(),
+                resultList.get(0).getResultCode());
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testDataSmsRecptn.getResultMssage(),
+                resultList.get(0).getResultMssage());
+
+        if (log.isDebugEnabled()) {
+            log.debug("resultList={}", resultList);
+            for (SmsRecptn result : resultList) {
+                log.debug("getSmsId={}, {}", testDataSmsRecptn.getSmsId(), result.getSmsId());
+                log.debug("getRecptnTelno={}, {}", testDataSmsRecptn.getRecptnTelno(), result.getRecptnTelno());
+                log.debug("getResultCode={}, {}", testDataSmsRecptn.getResultCode(), result.getResultCode());
+                log.debug("getResultMssage={}, {}", testDataSmsRecptn.getResultMssage(), result.getResultMssage());
+            }
         }
     }
 
