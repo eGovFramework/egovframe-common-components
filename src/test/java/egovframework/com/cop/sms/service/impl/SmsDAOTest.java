@@ -332,4 +332,30 @@ public class SmsDAOTest extends EgovTestAbstractDAO {
         }
     }
 
+    /**
+     * 문자메시지 전송 결과 수신을 처리한다. EgovSmsInfoReceiver(Schedule job)에 의해 호출된다.
+     */
+    @Test
+    public void updateSmsRecptnInf() {
+        // given
+        final SmsRecptn testDataSmsRecptn = new SmsRecptn();
+        testDataSmsRecptn(testDataSmsRecptn);
+
+        final SmsRecptn smsRecptn = new SmsRecptn();
+        smsRecptn.setSmsId(testDataSmsRecptn.getSmsId());
+        smsRecptn.setRecptnTelno(testDataSmsRecptn.getRecptnTelno());
+        smsRecptn.setResultCode("수정"); // 결과코드
+        smsRecptn.setResultMssage("test 이백행 결과메시지 수정 " + LocalDateTime.now()); // 결과메시지
+
+        // when
+        final int result = smsDAO.updateSmsRecptnInf(smsRecptn);
+
+        // then
+        assertEquals(egovMessageSource.getMessage("fail.common.update"), 1, result);
+
+        if (log.isDebugEnabled()) {
+            log.debug("result={}", result);
+        }
+    }
+
 }

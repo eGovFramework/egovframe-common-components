@@ -88,14 +88,13 @@ public class SmsDAO extends EgovComAbstractDAO {
     }
 
     /**
-     * 문자메시지 전송 결과 수신을 처리한다.
-     * EgovSmsInfoReceiver(Schedule job)에 의해 호출된다.
+     * 문자메시지 전송 결과 수신을 처리한다. EgovSmsInfoReceiver(Schedule job)에 의해 호출된다.
      * 
      * @param smsRecptn
-     * @return
-     * @throws Exception
+     * @return int
      */
-    public String updateSmsRecptnInf(SmsRecptn smsRecptn) throws Exception {
-    	return Integer.toString(insert("SmsDAO.updateSmsRecptnInf", smsRecptn));
+    public int updateSmsRecptnInf(SmsRecptn smsRecptn) {
+        return update("SmsDAO.updateSmsRecptnInf", smsRecptn);
     }
+
 }
