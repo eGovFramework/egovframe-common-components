@@ -32,7 +32,7 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      * @return
      * @throws Exception
      */
-    public List<UserInfVO> selectUserList(UserInfVO userVO) throws Exception {
+    public List<UserInfVO> selectUserList(UserInfVO userVO) {
         return selectList("EgovUserInfManageDAO.selectUserList", userVO);
     }
 
@@ -43,7 +43,7 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      * @return
      * @throws Exception
      */
-    public int selectUserListCnt(UserInfVO userVO) throws Exception {
+    public int selectUserListCnt(UserInfVO userVO) {
         return selectOne("EgovUserInfManageDAO.selectUserListCnt", userVO);
     }
 
@@ -54,7 +54,7 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      * @return
      * @throws Exception
      */
-    public List<UserInfVO> selectCmmntyUserList(UserInfVO userVO) throws Exception {
+    public List<UserInfVO> selectCmmntyUserList(UserInfVO userVO) {
         return selectList("EgovUserInfManageDAO.selectCmmntyUserList", userVO);
     }
 
@@ -65,7 +65,7 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      * @return
      * @throws Exception
      */
-    public int selectCmmntyUserListCnt(UserInfVO userVO) throws Exception {
+    public int selectCmmntyUserListCnt(UserInfVO userVO) {
         return selectOne("EgovUserInfManageDAO.selectCmmntyUserListCnt", userVO);
     }
 
@@ -76,7 +76,7 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      * @return
      * @throws Exception
      */
-    public List<UserInfVO> selectCmmntyMngrList(UserInfVO userVO) throws Exception {
+    public List<UserInfVO> selectCmmntyMngrList(UserInfVO userVO) {
         return selectList("EgovUserInfManageDAO.selectCmmntyMngrList", userVO);
     }
 
@@ -87,7 +87,7 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      * @return
      * @throws Exception
      */
-    public int selectCmmntyMngrListCnt(UserInfVO userVO) throws Exception {
+    public int selectCmmntyMngrListCnt(UserInfVO userVO) {
         return selectOne("EgovUserInfManageDAO.selectCmmntyMngrListCnt", userVO);
     }
 
@@ -153,7 +153,7 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      * @return
      * @throws Exception
      */
-    public List<UserInfVO> selectAllCmmntyUser(UserInfVO userVO) throws Exception {
+    public List<UserInfVO> selectAllCmmntyUser(UserInfVO userVO) {
         return selectList("EgovUserInfManageDAO.selectAllCmmntyUser", userVO);
     }
 }

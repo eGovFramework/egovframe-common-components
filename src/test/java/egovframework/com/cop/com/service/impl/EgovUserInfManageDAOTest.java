@@ -1,7 +1,6 @@
 package egovframework.com.cop.com.service.impl;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 import java.util.List;
 
@@ -29,7 +28,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 커뮤니티정보 관리 DAO 단위 테스트
+ * 협업 활용 사용자 정보 조회 DAO 단위 테스트
  *
  * @author 주레피
  *
@@ -154,18 +153,18 @@ public class EgovUserInfManageDAOTest extends EgovTestAbstractDAO {
 
         // 등록구분코드 설정
         community.setRegistSeCode("REGC02"); // 커뮤니티 등록
-//
-//        // 템플릿ID
-//        community.setTmplatId("TMPT02"); // 커뮤니티 템플릿
+
+        // 템플릿ID
+        // community.setTmplatId("TMPT02"); // 커뮤니티 템플릿
 
         if (loginVO != null) {
             // 최초등록자ID 설정
-            testCommunity.setFrstRegisterId(loginVO.getUniqId());
-            testCommunity.setLastUpdusrId(loginVO.getUniqId());
+            community.setFrstRegisterId(loginVO.getUniqId());
+            community.setLastUpdusrId(loginVO.getUniqId());
         }
 
         // 커뮤니티 등록
-        egovCommuMasterDAO.insertCommuMaster(testCommunity);
+        egovCommuMasterDAO.insertCommuMaster(community);
     }
 
     /**
@@ -173,35 +172,38 @@ public class EgovUserInfManageDAOTest extends EgovTestAbstractDAO {
      */
     @Before
     public void testData() {
+        /*
+         * 테스트 커뮤니티 생성
+         */
         testCommunity = new Community();
         final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
         // 커뮤니티ID 설정
-        final String cmmntyId = "TEST_CMMNTY_99999000";
-        testCommunity.setCmmntyId(cmmntyId);
+        testCommunity.setCmmntyId("TEST_CMMNTY_99999000");
+
         /**
          * egovCmmntyIdGnrService 사용
          */
-
         /*
          * try {
-         *     community.setCmmntyId(egovCmmntyIdGnrService.getNextStringId());
+         *     testCommunity.setCmmntyId(egovCmmntyIdGnrService.getNextStringId());
          * } catch (FdlException e) {
          *     log.error("FdlException egovCmmntyIdGnrService");
          *     fail("FdlException egovCmmntyIdGnrService");
          * }
          *
-         * community.setCmmntyId(cmmntyId);
          */
 
         testCommunityAdd(testCommunity, loginVO);
 
+        /*
+         * 테스트 사용자 생성
+         */
         testCommunityUser = new CommunityUser();
 
         // 커뮤니티ID 설정
         testCommunityUser.setCmmntyId(testCommunity.getCmmntyId());
 
-        // 테스트 사용자 생성
         testCommunityUserAdd(testCommunityUser, loginVO);
     }
 
@@ -220,28 +222,19 @@ public class EgovUserInfManageDAOTest extends EgovTestAbstractDAO {
          * USRCNFRM_00000000002 ENTERPRISE  NIA
          * USRCNFRM_99999999999 webmaster   웹마스터
          */
-        UserInfVO userInfVO = new UserInfVO();
+        final UserInfVO userInfVO = new UserInfVO();
         userInfVO.setRecordCountPerPage(10);
         userInfVO.setFirstIndex(0);
         userInfVO.setSearchCnd("0");
         userInfVO.setSearchWrd("테스트1");
 
-        List<UserInfVO> resultList = null;
-
         // when
-        try {
-            resultList = egovUserInfManageDAO.selectUserList(userInfVO);
-        } catch (Exception e) {
-            // e.printStackTrace();
-            log.error("Exception SelectUserList");
-            // error(e);
-            fail("Exception SelectUserList");
-        }
+        final List<UserInfVO> resultList = egovUserInfManageDAO.selectUserList(userInfVO);
 
         // log.debug("resultList=[{}]", resultList);
         for (final UserInfVO result : resultList) {
             if (log.isDebugEnabled()) {
-                log.debug("result={}", result);
+                // log.debug("result={}", result);
                 log.debug("getUserNm={}, {}", userInfVO.getSearchWrd(), result.getUserNm());
             }
 
@@ -263,6 +256,7 @@ public class EgovUserInfManageDAOTest extends EgovTestAbstractDAO {
      */
     @Test
     public void testSelectUserListCnt() {
+        // given
         /*
          * 기본 사용자 목록
          * ESNTL_ID             USER_ID     USER_NM
@@ -271,22 +265,14 @@ public class EgovUserInfManageDAOTest extends EgovTestAbstractDAO {
          * USRCNFRM_00000000002 ENTERPRISE  NIA
          * USRCNFRM_99999999999 webmaster   웹마스터
          */
-        UserInfVO userInfVO = new UserInfVO();
+        final UserInfVO userInfVO = new UserInfVO();
         userInfVO.setRecordCountPerPage(10);
         userInfVO.setFirstIndex(0);
         userInfVO.setSearchCnd("0");
         userInfVO.setSearchWrd("테스트1");
 
-        int result = 0;
         // when
-        try {
-            result = egovUserInfManageDAO.selectUserListCnt(userInfVO);
-        } catch (Exception e) {
-            // e.printStackTrace();
-            log.error("Exception SelectUserListCnt");
-            // error(e);
-            fail("Exception SelectUserListCnt");
-        }
+        final int result = egovUserInfManageDAO.selectUserListCnt(userInfVO);
 
         // then
         assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);
@@ -307,24 +293,15 @@ public class EgovUserInfManageDAOTest extends EgovTestAbstractDAO {
          * USRCNFRM_00000000002 ENTERPRISE  NIA
          * USRCNFRM_99999999999 webmaster   웹마스터
          */
-        UserInfVO userInfVO = new UserInfVO();
+        final UserInfVO userInfVO = new UserInfVO();
         userInfVO.setTrgetId(testCommunityUser.getCmmntyId());
         userInfVO.setRecordCountPerPage(10);
         userInfVO.setFirstIndex(0);
         userInfVO.setSearchCnd("0");
         userInfVO.setSearchWrd("테스트1");
 
-        List<UserInfVO> resultList = null;
-
         // when
-        try {
-            resultList = egovUserInfManageDAO.selectCmmntyUserList(userInfVO);
-        } catch (Exception e) {
-            // e.printStackTrace();
-            log.error("Exception SelectUserList");
-            // error(e);
-            fail("Exception SelectUserList");
-        }
+        final List<UserInfVO> resultList = egovUserInfManageDAO.selectCmmntyUserList(userInfVO);
 
         // log.debug("resultList=[{}]", resultList);
         for (final UserInfVO result : resultList) {
@@ -353,28 +330,18 @@ public class EgovUserInfManageDAOTest extends EgovTestAbstractDAO {
          * USRCNFRM_00000000002 ENTERPRISE  NIA
          * USRCNFRM_99999999999 webmaster   웹마스터
          */
-        UserInfVO userInfVO = new UserInfVO();
+        final UserInfVO userInfVO = new UserInfVO();
         userInfVO.setTrgetId(testCommunityUser.getCmmntyId());
         userInfVO.setRecordCountPerPage(10);
         userInfVO.setFirstIndex(0);
         userInfVO.setSearchCnd("0");
         userInfVO.setSearchWrd("테스트1");
 
-        int result = 0;
-
         // when
-        try {
-            result = egovUserInfManageDAO.selectCmmntyUserListCnt(userInfVO);
-        } catch (Exception e) {
-            // e.printStackTrace();
-            log.error("Exception SelectCmmntyUserListCnt");
-            // error(e);
-            fail("Exception SelectCmmntyUserListCnt");
-        }
+        final int result = egovUserInfManageDAO.selectCmmntyUserListCnt(userInfVO);
 
         // then
         assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);
-
     }
 
     /**
@@ -392,24 +359,15 @@ public class EgovUserInfManageDAOTest extends EgovTestAbstractDAO {
          * USRCNFRM_00000000002 ENTERPRISE  NIA
          * USRCNFRM_99999999999 webmaster   웹마스터
          */
-        UserInfVO userInfVO = new UserInfVO();
+        final UserInfVO userInfVO = new UserInfVO();
         userInfVO.setTrgetId(testCommunityUser.getCmmntyId());
         userInfVO.setRecordCountPerPage(10);
         userInfVO.setFirstIndex(0);
         userInfVO.setSearchCnd("0");
         userInfVO.setSearchWrd("테스트1");
 
-        List<UserInfVO> resultList = null;
-
         // when
-        try {
-            resultList = egovUserInfManageDAO.selectCmmntyMngrList(userInfVO);
-        } catch (Exception e) {
-            // e.printStackTrace();
-            log.error("Exception SelectUserList");
-            // error(e);
-            fail("Exception SelectUserList");
-        }
+        final List<UserInfVO> resultList = egovUserInfManageDAO.selectCmmntyMngrList(userInfVO);
 
         // log.debug("resultList=[{}]", resultList);
         for (final UserInfVO result : resultList) {
@@ -439,29 +397,24 @@ public class EgovUserInfManageDAOTest extends EgovTestAbstractDAO {
          * USRCNFRM_00000000002 ENTERPRISE  NIA
          * USRCNFRM_99999999999 webmaster   웹마스터
          */
-        UserInfVO userInfVO = new UserInfVO();
+        final UserInfVO userInfVO = new UserInfVO();
         userInfVO.setTrgetId(testCommunityUser.getCmmntyId());
         userInfVO.setRecordCountPerPage(10);
         userInfVO.setFirstIndex(0);
         userInfVO.setSearchCnd("0");
         userInfVO.setSearchWrd("테스트1");
 
-        int result = 0;
-
         // when
-        try {
-            result = egovUserInfManageDAO.selectCmmntyMngrListCnt(userInfVO);
-        } catch (Exception e) {
-            // e.printStackTrace();
-            log.error("Exception SelectCmmntyMngrListCnt");
-            // error(e);
-            fail("Exception SelectCmmntyMngrListCnt");
-        }
+        final int result = egovUserInfManageDAO.selectCmmntyMngrListCnt(userInfVO);
 
         // then
         assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);
     }
 
+    /**
+     * 커뮤니티 전체 사용자 목록 조회 테스트
+     *
+     */
     @Test
     public void testSelectAllCmmntyUser() {
         // given
@@ -473,20 +426,11 @@ public class EgovUserInfManageDAOTest extends EgovTestAbstractDAO {
          * USRCNFRM_00000000002 ENTERPRISE  NIA
          * USRCNFRM_99999999999 webmaster   웹마스터
          */
-        UserInfVO userInfVO = new UserInfVO();
+        final UserInfVO userInfVO = new UserInfVO();
         userInfVO.setTrgetId(testCommunityUser.getCmmntyId());
 
-        List<UserInfVO> resultList = null;
-
         // when
-        try {
-            resultList = egovUserInfManageDAO.selectCmmntyMngrList(userInfVO);
-        } catch (Exception e) {
-            // e.printStackTrace();
-            log.error("Exception SelectUserList");
-            // error(e);
-            fail("Exception SelectUserList");
-        }
+        final List<UserInfVO> resultList = egovUserInfManageDAO.selectCmmntyMngrList(userInfVO);
 
         // log.debug("resultList=[{}]", resultList);
         for (final UserInfVO result : resultList) {
