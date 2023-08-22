@@ -18,6 +18,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.cop.smt.djm.service.DeptJob;
 import egovframework.com.cop.smt.djm.service.DeptJobBx;
 import egovframework.com.test.EgovTestAbstractDAO;
 import lombok.NoArgsConstructor;
@@ -86,6 +87,13 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
     private EgovIdGnrService egovDeptJobBxIdGnrService;
 
     /**
+     * 부서업무
+     */
+    @Autowired
+    @Qualifier("egovDeptJobIdGnrService")
+    private EgovIdGnrService egovDeptJobIdGnrService;
+
+    /**
      * 부서업무함 정보를 등록한다.
      */
     @Test
@@ -95,7 +103,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
         final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
         try {
-            deptJobBx.setDeptJobBxId(String.valueOf(egovDeptJobBxIdGnrService.getNextLongId()));
+            deptJobBx.setDeptJobBxId(egovDeptJobBxIdGnrService.getNextStringId());
         } catch (FdlException e) {
 //            e.printStackTrace();
             log.error("FdlException egovDeptJobBxIdGnrService");
@@ -112,6 +120,45 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
 
         // when
         int result = deptJobDAO.insertDeptJobBx(deptJobBx);
+
+        // then
+        assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
+
+        if (log.isDebugEnabled()) {
+            log.debug("result={}", result);
+        }
+    }
+
+    /**
+     * 부서업무 정보를 등록한다.
+     */
+    @Test
+    public void test_a20_insertDeptJob() {
+        // given
+        final DeptJob deptJob = new DeptJob();
+        final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+        try {
+            deptJob.setDeptJobId(egovDeptJobIdGnrService.getNextStringId());
+            deptJob.setDeptJobBxId(egovDeptJobBxIdGnrService.getNextStringId());
+        } catch (FdlException e) {
+//            e.printStackTrace();
+            log.error("FdlException egovDeptJobBxIdGnrService");
+        }
+
+        deptJob.setDeptJobNm("test 이백행 부서업무명 " + LocalDateTime.now());
+        deptJob.setDeptJobCn("test 이백행 부서업무내용 " + LocalDateTime.now());
+        deptJob.setPriort("1"); // 우선순위
+
+        if (loginVO != null) {
+            deptJob.setChargerId(loginVO.getUniqId());
+
+            deptJob.setFrstRegisterId(loginVO.getUniqId());
+            deptJob.setLastUpdusrId(loginVO.getUniqId());
+        }
+
+        // when
+        int result = deptJobDAO.insertDeptJob(deptJob);
 
         // then
         assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);

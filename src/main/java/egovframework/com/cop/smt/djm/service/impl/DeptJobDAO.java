@@ -279,15 +279,14 @@ public class DeptJobDAO extends EgovComAbstractDAO{
 		update("DeptJobDAO.updateDeptJob", deptJob);
 	}
 
-	/**
-	 * 부서업무 정보를 등록한다.
-	 * @param DeptJob
-	 * 
-	 * @param deptJob
-	 */
-	public void insertDeptJob(DeptJob deptJob) throws Exception{
-		insert("DeptJobDAO.insertDeptJob", deptJob);
-	}
+    /**
+     * 부서업무 정보를 등록한다.
+     * 
+     * @param deptJob
+     */
+    public int insertDeptJob(DeptJob deptJob) {
+        return insert("DeptJobDAO.insertDeptJob", deptJob);
+    }
 
 	/**
 	 * 부서업무 정보를 삭제한다.
