@@ -3,6 +3,7 @@ package egovframework.com.cop.smt.djm.service.impl;
 import static org.junit.Assert.assertEquals;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
@@ -18,6 +19,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.cop.smt.djm.service.ChargerVO;
 import egovframework.com.cop.smt.djm.service.DeptJob;
 import egovframework.com.cop.smt.djm.service.DeptJobBx;
 import egovframework.com.test.EgovTestAbstractDAO;
@@ -119,7 +121,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
         }
 
         // when
-        int result = deptJobDAO.insertDeptJobBx(deptJobBx);
+        final int result = deptJobDAO.insertDeptJobBx(deptJobBx);
 
         // then
         assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
@@ -158,13 +160,49 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
         }
 
         // when
-        int result = deptJobDAO.insertDeptJob(deptJob);
+        final int result = deptJobDAO.insertDeptJob(deptJob);
 
         // then
         assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
 
         if (log.isDebugEnabled()) {
             log.debug("result={}", result);
+        }
+    }
+
+    /**
+     * 주어진 조건에 맞는 담당자를 불러온다.
+     */
+    @Test
+    public void test_a30_selectChargerList() {
+        // given
+        final ChargerVO chargerVO = new ChargerVO();
+//        final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+        chargerVO.setFirstIndex(0);
+        chargerVO.setRecordCountPerPage(10);
+
+        chargerVO.setSearchCnd("0");
+        chargerVO.setSearchWrd("기본조직");
+
+//        if (loginVO != null) {
+//            chargerVO.setSearchCnd("1");
+//            chargerVO.setSearchWrd(loginVO.getName());
+//        }
+
+        // when
+        final List<ChargerVO> resultList = deptJobDAO.selectChargerList(chargerVO);
+
+        // then
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), chargerVO.getSearchWrd(),
+                resultList.get(0).getOrgnztNm());
+
+        if (log.isDebugEnabled()) {
+            for (final ChargerVO result : resultList) {
+                log.debug("result={}", result);
+                log.debug("getUniqId={}", result.getUniqId());
+                log.debug("getOrgnztNm={}, {}", chargerVO.getSearchWrd(), result.getOrgnztNm());
+            }
         }
     }
 

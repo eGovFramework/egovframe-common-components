@@ -32,18 +32,17 @@ import org.springframework.stereotype.Repository;
  */
 @Repository("DeptJobDAO")
 public class DeptJobDAO extends EgovComAbstractDAO{
-	
-	/**
-	 * 주어진 조건에 맞는 담당자를 불러온다.
-	 * @param ChargerVO
-	 * @return List
-	 * 
-	 * @param chargerVO
-	 */
-	public List<ChargerVO> selectChargerList(ChargerVO chargerVO) throws Exception{
-		return selectList("DeptJobDAO.selectChargerList", chargerVO);
-	}
-	
+
+    /**
+     * 주어진 조건에 맞는 담당자를 불러온다.
+     * 
+     * @param chargerVO
+     * @return List
+     */
+    public List<ChargerVO> selectChargerList(ChargerVO chargerVO) {
+        return selectList("DeptJobDAO.selectChargerList", chargerVO);
+    }
+
 	/**
 	 * 담당자 목록에 대한 전체 건수를 조회한다.
 	 * @param ChargerVO
