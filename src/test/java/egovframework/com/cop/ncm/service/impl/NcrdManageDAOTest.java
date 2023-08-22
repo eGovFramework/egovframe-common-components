@@ -1,6 +1,7 @@
 package egovframework.com.cop.ncm.service.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNull;
 
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.junit.Before;
@@ -18,6 +19,7 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.ncm.service.NameCard;
 import egovframework.com.cop.ncm.service.NameCardUser;
+import egovframework.com.cop.ncm.service.NameCardVO;
 import egovframework.com.test.EgovTestAbstractDAO;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -197,15 +199,55 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
         assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
     }
 
+    /**
+     * 명함 정보 assert
+     */
+    private void assertSelectNcrdItem(final NameCardVO expected, final NameCardVO actual) {
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), expected.getNcrdId(), actual.getNcrdId());
+    }
+
+    /**
+     * 명함 정보 상제정보 조회 테스트: 긍정
+     */
+    @Test
+    public void testSelectNcrdItem() {
+        // given
+        final NameCardVO nameCardVO = new NameCardVO();
+        nameCardVO.setNcrdId(testNameCard.getNcrdId());
+
+        // when
+        final NameCardVO result = ncrdManageDAO.selectNcrdItem(nameCardVO);
+
+        // then
+        assertSelectNcrdItem(nameCardVO, result);
+    }
+
+    /**
+     * 명함 정보 상제정보 조회 테스트: 부정
+     */
+    @Test
+    public void testSelectNcrdItem_Empty() {
+        // given
+        final NameCardVO nameCardVO = new NameCardVO();
+
+        // when
+        final NameCardVO result = ncrdManageDAO.selectNcrdItem(nameCardVO);
+
+        // then
+        assertNull(egovMessageSource.getMessage(FAIL_COMMON_SELECT), result);
+    }
+
+//  @Test
+//  public void testDeleteNcrdItem() {
+//      fail("Not yet implemented");
+//  }
+
+
 //    @Test
 //    public void testDeleteNcrdItemUser() {
 //        fail("Not yet implemented");
 //    }
 //
-//    @Test
-//    public void testDeleteNcrdItem() {
-//        fail("Not yet implemented");
-//    }
 //
 //
 //    @Test
@@ -213,10 +255,6 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
 //        fail("Not yet implemented");
 //    }
 //
-//    @Test
-//    public void testSelectNcrdItem() {
-//        fail("Not yet implemented");
-//    }
 //
 //    @Test
 //    public void testSelectNcrdItemList() {

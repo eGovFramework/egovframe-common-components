@@ -71,11 +71,8 @@ public class NcrdManageDAO extends EgovComAbstractDAO {
      * @return
      * @throws Exception
      */
-    public NameCardVO selectNcrdItem(NameCard nameCard) throws Exception {
-
-        NameCardVO vo = new NameCardVO();
-        vo = (NameCardVO) selectOne("NcrdManageDAO.selectNcrdItem", nameCard);
-        return vo;
+    public NameCardVO selectNcrdItem(NameCard nameCard) {
+        return selectOne("NcrdManageDAO.selectNcrdItem", nameCard);
     }
 
     /**
