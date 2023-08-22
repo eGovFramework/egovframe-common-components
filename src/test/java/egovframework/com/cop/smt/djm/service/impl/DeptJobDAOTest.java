@@ -99,7 +99,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
      * 부서업무함 정보를 등록한다.
      */
     @Test
-    public void test_a10_insertDeptJobBx() {
+    public void insertDeptJobBx() {
         // given
         final DeptJobBx deptJobBx = new DeptJobBx();
         final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -135,7 +135,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
      * 부서업무 정보를 등록한다.
      */
     @Test
-    public void test_a20_insertDeptJob() {
+    public void insertDeptJob() {
         // given
         final DeptJob deptJob = new DeptJob();
         final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -174,7 +174,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
      * 주어진 조건에 맞는 담당자를 불러온다.
      */
     @Test
-    public void test_a30_selectChargerList() {
+    public void selectChargerList() {
         // given
         final ChargerVO chargerVO = new ChargerVO();
 //        final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
