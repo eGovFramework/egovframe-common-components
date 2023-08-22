@@ -6,6 +6,7 @@ import java.util.Map;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.ntr.service.NoteRecptn;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 /**
  * 받은쪽지함관리를 처리하는 Dao Class 구현
@@ -31,7 +32,7 @@ public class NoteRecptnDao extends EgovComAbstractDAO {
      * @return List -조회한목록
      * @throws Exception
      */
-    public List<?> selectNoteRecptnList(NoteRecptn noteRecptn) throws Exception {
+    public List<EgovMap> selectNoteRecptnList(NoteRecptn noteRecptn) throws Exception {
     	return selectList("NoteRecptn.selectNoteRecptn", noteRecptn);
     }
 
