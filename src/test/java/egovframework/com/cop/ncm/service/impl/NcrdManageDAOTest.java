@@ -3,6 +3,8 @@ package egovframework.com.cop.ncm.service.impl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNull;
 
+import java.util.List;
+
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.junit.Before;
 import org.junit.Test;
@@ -171,6 +173,8 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
         testNameCard.setOfcpsNm("대리"); // 직위명
         testNameCard.setEmailAdres("egovframesupport@gmail.com"); // 이메일주소
 
+        testNameCard.setOthbcAt("Y"); // 공개여부
+
         testNcrdItemAdd(testNameCard, loginVO);
 
         /*
@@ -202,8 +206,12 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
     /**
      * 명함 정보 assert
      */
-    private void assertSelectNcrdItem(final NameCardVO expected, final NameCardVO actual) {
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), expected.getNcrdId(), actual.getNcrdId());
+    private void assertSelectNcrdItem(final Object expected, final Object actual) {
+        if (expected instanceof NameCardVO) {
+            assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), ((NameCardVO) expected).getNcrdId(), ((NameCardVO) actual).getNcrdId());
+        } else {
+            assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), expected, actual);
+        }
     }
 
     /**
@@ -237,6 +245,34 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
         assertNull(egovMessageSource.getMessage(FAIL_COMMON_SELECT), result);
     }
 
+    /**
+     * 명함 정보 목록 조회 테스트
+     */
+    @Test
+    public void testSelectNcrdItemList() {
+        // given
+        final NameCardVO nameCardVO = new NameCardVO();
+        nameCardVO.setRecordCountPerPage(10);
+        nameCardVO.setFirstIndex(0);
+        nameCardVO.setSearchCnd("1"); // 회사명
+        nameCardVO.setSearchWrd("표준프레임워크센터");
+
+        // when
+        final List<NameCardVO> resultList = ncrdManageDAO.selectNcrdItemList(nameCardVO);
+
+        // log.debug("resultList=[{}]", resultList);
+        for (final NameCardVO result : resultList) {
+            if (log.isDebugEnabled()) {
+                log.debug("result={}", result);
+                log.debug("getUserNm={}, {}", nameCardVO.getSearchWrd(), result.getCmpnyNm());
+            }
+
+            // then
+            assertSelectNcrdItem( nameCardVO.getSearchWrd(), result.getCmpnyNm());
+        }
+    }
+
+
 //  @Test
 //  public void testDeleteNcrdItem() {
 //      fail("Not yet implemented");
@@ -252,12 +288,6 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
 //
 //    @Test
 //    public void testInsertNcrdUseInf() {
-//        fail("Not yet implemented");
-//    }
-//
-//
-//    @Test
-//    public void testSelectNcrdItemList() {
 //        fail("Not yet implemented");
 //    }
 //
