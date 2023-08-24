@@ -272,6 +272,22 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
         }
     }
 
+    /**
+     * 명함 정보 목록 개수 조회 테스트 (로그인한 사람은 제외)
+     */
+    @Test
+    public void testSelectNcrdItemListCnt() {
+        // given
+        final NameCardVO nameCardVO = new NameCardVO();
+        nameCardVO.setSearchCnd("1"); // 회사명
+        nameCardVO.setSearchWrd("표준프레임워크센터");
+
+        // when
+        final int result = ncrdManageDAO.selectNcrdItemListCnt(nameCardVO);
+
+        // then
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);
+    }
 
 //  @Test
 //  public void testDeleteNcrdItem() {
@@ -288,11 +304,6 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
 //
 //    @Test
 //    public void testInsertNcrdUseInf() {
-//        fail("Not yet implemented");
-//    }
-//
-//    @Test
-//    public void testSelectNcrdItemListCnt() {
 //        fail("Not yet implemented");
 //    }
 //
