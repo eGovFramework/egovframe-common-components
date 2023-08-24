@@ -22,6 +22,7 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.smt.djm.service.ChargerVO;
 import egovframework.com.cop.smt.djm.service.DeptJob;
 import egovframework.com.cop.smt.djm.service.DeptJobBx;
+import egovframework.com.cop.smt.djm.service.DeptVO;
 import egovframework.com.test.EgovTestAbstractDAO;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -232,6 +233,55 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
         }
 
         assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), true, totCnt > -1);
+    }
+
+    /**
+     * 주어진 조건에 맞는 부서를 불러온다.
+     */
+    @Test
+    public void selectDeptList() {
+        // given
+        final DeptVO deptVO = new DeptVO();
+        final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+        deptVO.setFirstIndex(0);
+        deptVO.setRecordCountPerPage(10);
+
+        deptVO.setSearchCnd("0");
+        deptVO.setSearchWrd("기본조직");
+
+//        if (loginVO != null) {
+//            deptVO.setSearchCnd("1");
+//            deptVO.setSearchWrd("기본조직");
+//        }
+
+        // when
+        final List<DeptVO> resultList = deptJobDAO.selectDeptList(deptVO);
+
+        // then
+        if (log.isDebugEnabled()) {
+            log.debug("totCnt={}", resultList);
+            for (final DeptVO result : resultList) {
+                log.debug("result={}", result);
+                log.debug("getOrgnztId={}, {}", loginVO.getOrgnztId(), result.getOrgnztId());
+                if ("0".equals(deptVO.getSearchCnd())) {
+                    log.debug("getOrgnztId={}, {}", deptVO.getSearchWrd(), result.getOrgnztNm());
+                } else if ("1".equals(deptVO.getSearchCnd())) {
+                    log.debug("getOrgnztNm={}, {}", deptVO.getSearchWrd(), result.getOrgnztDc());
+                }
+            }
+        }
+
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), loginVO.getOrgnztId(),
+                resultList.get(0).getOrgnztId());
+        if ("0".equals(deptVO.getSearchCnd())) {
+            assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), deptVO.getSearchWrd(),
+                    resultList.get(0).getOrgnztNm());
+        } else if ("1".equals(deptVO.getSearchCnd())) {
+            assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), deptVO.getSearchWrd(),
+                    resultList.get(0).getOrgnztDc());
+        }
+
     }
 
 }
