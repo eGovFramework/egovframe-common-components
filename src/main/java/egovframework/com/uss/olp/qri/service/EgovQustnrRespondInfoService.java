@@ -3,6 +3,8 @@ package egovframework.com.uss.olp.qri.service;
 import java.util.List;
 import java.util.Map;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 import egovframework.com.cmm.ComDefaultVO;
 /**
  * 설문조사 Service Class 구현
@@ -68,13 +70,15 @@ public interface EgovQustnrRespondInfoService {
 	 * @throws Exception
 	 */
 	public List<?> selectQustnrRespondInfoManageComtnqustnrqesitm(Map<?, ?> map) throws Exception;
+
     /**
-	 * 항목정보를 조회한다.
-	 * @param map - 조회할 정보가 담긴 map
-	 * @return List
-	 * @throws Exception
-	 */
-	public List<?> selectQustnrRespondInfoManageComtnqustnriem(Map<?, ?> map) throws Exception;
+     * 항목정보를 조회한다.
+     *
+     * @param map - 조회할 정보가 담긴 map
+     * @return List
+     * @throws Exception
+     */
+    public List<EgovMap> selectQustnrRespondInfoManageComtnqustnriem(Map<?, ?> map) throws Exception;
 
     /**
 	 *  설문조사(설문등록)를(을) 목록을 조회한다.
