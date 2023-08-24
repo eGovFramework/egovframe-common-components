@@ -346,7 +346,7 @@ public class EgovPopupManageController {
 	@RequestMapping(value = "/uss/ion/pwm/listMainPopup.do")
 	
 	public ModelAndView egovPopupManageMainList(PopupManageVO popupManageVO, ModelMap model) throws Exception {
-		List<?> resultList = egovPopupManageService.selectPopupMainList(popupManageVO);
+		List<EgovMap> resultList = egovPopupManageService.selectPopupMainList(popupManageVO);
 		ModelAndView mav = new ModelAndView("jsonView");
     	mav.addObject("resultList", resultList);
     	return mav;
