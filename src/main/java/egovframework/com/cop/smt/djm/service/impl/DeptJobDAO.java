@@ -43,17 +43,16 @@ public class DeptJobDAO extends EgovComAbstractDAO{
         return selectList("DeptJobDAO.selectChargerList", chargerVO);
     }
 
-	/**
-	 * 담당자 목록에 대한 전체 건수를 조회한다.
-	 * @param ChargerVO
-	 * @return int
-	 * 
-	 * @param chargerVO
-	 */
-	public int selectChargerListCnt(ChargerVO chargerVO) throws Exception{
-		return (Integer)selectOne("DeptJobDAO.selectChargerListCnt", chargerVO);
-	}
-	
+    /**
+     * 담당자 목록에 대한 전체 건수를 조회한다.
+     * 
+     * @param chargerVO
+     * @return int
+     */
+    public int selectChargerListCnt(ChargerVO chargerVO) {
+        return selectOne("DeptJobDAO.selectChargerListCnt", chargerVO);
+    }
+
 	/**
 	 * 주어진 조건에 맞는 부서를 불러온다.
 	 * @param DeptVO

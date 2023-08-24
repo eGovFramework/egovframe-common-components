@@ -206,4 +206,32 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
         }
     }
 
+    /**
+     * 담당자 목록에 대한 전체 건수를 조회한다.
+     */
+    @Test
+    public void selectChargerListCnt() {
+        // given
+        final ChargerVO chargerVO = new ChargerVO();
+//        final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+        chargerVO.setSearchCnd("0");
+        chargerVO.setSearchWrd("기본조직");
+
+//        if (loginVO != null) {
+//            chargerVO.setSearchCnd("1");
+//            chargerVO.setSearchWrd(loginVO.getName());
+//        }
+
+        // when
+        final int totCnt = deptJobDAO.selectChargerListCnt(chargerVO);
+
+        // then
+        if (log.isDebugEnabled()) {
+            log.debug("totCnt={}", totCnt);
+        }
+
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), true, totCnt > -1);
+    }
+
 }
