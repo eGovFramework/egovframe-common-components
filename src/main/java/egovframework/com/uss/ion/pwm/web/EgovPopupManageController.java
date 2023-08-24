@@ -104,7 +104,7 @@ public class EgovPopupManageController {
 		popupManageVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		popupManageVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<?> reusltList = egovPopupManageService.selectPopupList(popupManageVO);
+		List<EgovMap> reusltList = egovPopupManageService.selectPopupList(popupManageVO);
 		model.addAttribute("resultList", reusltList);
 
 		model.addAttribute("searchKeyword",

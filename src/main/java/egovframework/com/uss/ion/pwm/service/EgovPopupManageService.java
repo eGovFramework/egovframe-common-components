@@ -2,6 +2,8 @@ package egovframework.com.uss.ion.pwm.service;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 /**
  * 개요
  * - 팝업창에 대한 Service Interface를 정의한다.
@@ -67,7 +69,7 @@ public interface EgovPopupManageService {
 	 *
 	 * @param popupManageVO
 	 */
-	public List<?> selectPopupList(PopupManageVO popupManageVO) throws Exception;
+	public List<EgovMap> selectPopupList(PopupManageVO popupManageVO) throws Exception;
 
 	/**
 	 * 팝업창를 관리하기 위해 등록된 팝업창목록을 조회한다.
