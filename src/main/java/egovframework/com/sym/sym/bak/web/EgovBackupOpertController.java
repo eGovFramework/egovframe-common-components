@@ -219,42 +219,41 @@ public class EgovBackupOpertController {
         return "egovframework/com/sym/sym/bak/EgovBackupOpertUpdt";
 	}
 
-	/**
-	 * 백업작업 목록을 조회한다.
-	 * @return 리턴URL
-	 *
-	 * @param searchVO 목록조회조건VO
-	 * @param model		ModelMap
-	 * @exception Exception Exception
-	 */
-	@SuppressWarnings("unchecked")
-	@IncludedInfo(name="백업관리", order = 1150 ,gid = 60)
-	@RequestMapping("/sym/sym/bak/getBackupOpertList.do")
-	public String selectBackupOpertList(@ModelAttribute("searchVO")BackupOpert searchVO, ModelMap model)
-	  throws Exception{
-		searchVO.setPageUnit(propertyService.getInt("pageUnit"));
-		searchVO.setPageSize(propertyService.getInt("pageSize"));
+    /**
+     * 백업작업 목록을 조회한다.
+     * 
+     * @return 리턴URL
+     *
+     * @param searchVO 목록조회조건VO
+     * @param model    ModelMap
+     * @exception Exception Exception
+     */
+    @IncludedInfo(name = "백업관리", order = 1150, gid = 60)
+    @RequestMapping("/sym/sym/bak/getBackupOpertList.do")
+    public String selectBackupOpertList(@ModelAttribute("searchVO") BackupOpert searchVO, ModelMap model)
+            throws Exception {
+        searchVO.setPageUnit(propertyService.getInt("pageUnit"));
+        searchVO.setPageSize(propertyService.getInt("pageSize"));
 
-		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
+        PaginationInfo paginationInfo = new PaginationInfo();
+        paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
+        paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
+        paginationInfo.setPageSize(searchVO.getPageSize());
 
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+        searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+        searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
+        searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<BackupOpert> resultList = (List<BackupOpert>) egovBackupOpertService.selectBackupOpertList(searchVO);
-		int totCnt = egovBackupOpertService.selectBackupOpertListCnt(searchVO);
+        List<BackupOpert> resultList = egovBackupOpertService.selectBackupOpertList(searchVO);
+        int totCnt = egovBackupOpertService.selectBackupOpertListCnt(searchVO);
 
-		paginationInfo.setTotalRecordCount(totCnt);
+        paginationInfo.setTotalRecordCount(totCnt);
 
-		model.addAttribute("resultList", resultList);
-		model.addAttribute("resultCnt", totCnt);
-		model.addAttribute("paginationInfo", paginationInfo);
+        model.addAttribute("resultList", resultList);
+        model.addAttribute("paginationInfo", paginationInfo);
 
-		return "egovframework/com/sym/sym/bak/EgovBackupOpertList";
-	}
+        return "egovframework/com/sym/sym/bak/EgovBackupOpertList";
+    }
 
 	/**
 	 * 백업작업을 수정한다.

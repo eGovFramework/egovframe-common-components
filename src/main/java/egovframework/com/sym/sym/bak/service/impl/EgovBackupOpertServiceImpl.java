@@ -77,19 +77,18 @@ public class EgovBackupOpertServiceImpl extends EgovAbstractServiceImpl implemen
 		return backupOpertDao.selectBackupOpert(backupOpert);
 	}
 
-	/**
-	 * 백업작업의 목록을 조회 한다.
-	 * @return 백업작업목록
-	 *
-	 * @param searchVO 	조회정보가 담긴 VO
-	 * @exception Exception Exception
-	 */
-	@Override
-	public List<?> selectBackupOpertList(BackupOpert searchVO)
-	  throws Exception{
-		List<?> result = backupOpertDao.selectBackupOpertList(searchVO);
-		return result;
-	}
+    /**
+     * 백업작업의 목록을 조회 한다.
+     * 
+     * @return 백업작업목록
+     *
+     * @param searchVO 조회정보가 담긴 VO
+     * @exception Exception Exception
+     */
+    @Override
+    public List<BackupOpert> selectBackupOpertList(BackupOpert searchVO) throws Exception {
+        return backupOpertDao.selectBackupOpertList(searchVO);
+    }
 
 	/**
 	 * 백업작업 목록 전체 건수를(을) 조회한다.
