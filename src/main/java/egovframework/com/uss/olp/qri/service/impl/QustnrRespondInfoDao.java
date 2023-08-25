@@ -3,11 +3,12 @@ package egovframework.com.uss.olp.qri.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.olp.qri.service.QustnrRespondInfoVO;
-
-import org.springframework.stereotype.Repository;
 /**
  * 설문조사 Dao Class 구현
  * @author 공통서비스 장동한
@@ -97,14 +98,15 @@ public class QustnrRespondInfoDao extends EgovComAbstractDAO {
 	}
 
     /**
-	 *  설문조사(설문등록)를(을) 목록을 조회한다.
-	 * @param searchVO - 조회할 정보가 담긴 VO
-	 * @return List
-	 * @throws Exception
-	 */
-	public List<?> selectQustnrRespondInfoManageList(ComDefaultVO searchVO) throws Exception{
-		return selectList("QustnrRespondInfo.selectQustnrRespondInfoManage", searchVO);
-	}
+     * 설문조사(설문등록)를(을) 목록을 조회한다.
+     *
+     * @param searchVO - 조회할 정보가 담긴 VO
+     * @return List
+     * @throws Exception
+     */
+    public List<EgovMap> selectQustnrRespondInfoManageList(ComDefaultVO searchVO){
+        return selectList("QustnrRespondInfo.selectQustnrRespondInfoManage", searchVO);
+    }
 
     /**
 	 * 설문조사(설문등록)를(을) 목록 전체 건수를(을) 조회한다.
@@ -170,7 +172,7 @@ public class QustnrRespondInfoDao extends EgovComAbstractDAO {
 	public void deleteQustnrRespondInfo(QustnrRespondInfoVO qustnrRespondInfoVO) throws Exception{
 		insert("QustnrRespondInfo.deleteQustnrRespondInfo", qustnrRespondInfoVO);
 	}
-	
+
     /**
 	 * 설문템플릿 화이트리스트를 조회한다.
 	 * @param map - 조회할 정보가 담긴 map
