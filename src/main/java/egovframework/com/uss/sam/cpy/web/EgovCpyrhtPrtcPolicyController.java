@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,8 +25,6 @@ import egovframework.com.uss.sam.cpy.service.CpyrhtPrtcPolicyDefaultVO;
 import egovframework.com.uss.sam.cpy.service.CpyrhtPrtcPolicyVO;
 import egovframework.com.uss.sam.cpy.service.EgovCpyrhtPrtcPolicyService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import org.egovframe.rte.fdl.property.EgovPropertyService;
-import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 
 
@@ -38,10 +39,10 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  * <pre>
  * << 개정이력(Modification Information) >>
  *
- *   수정일      수정자           수정내용
- *  -------    --------    ---------------------------
- *   2009.04.01  박정규          최초 생성
- *   2011.8.26	정진오			IncludedInfo annotation 추가
+ *   수정일          수정자       수정내용
+ *  -----------    --------    ---------------------------
+ *   2009.04.01     박정규       최초 생성
+ *   2011.08.26     정진오       IncludedInfo annotation 추가
  *
  * </pre>
  */
@@ -56,66 +57,66 @@ public class EgovCpyrhtPrtcPolicyController {
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertiesService;
 
-	/** EgovMessageSource */
+    /** EgovMessageSource */
     @Resource(name="egovMessageSource")
     EgovMessageSource egovMessageSource;
 
     // Validation 관련
-	@Autowired
-	private DefaultBeanValidator beanValidator;
+    @Autowired
+    private DefaultBeanValidator beanValidator;
 
     /**
      * 개별 배포시 메인메뉴를 조회한다.
      * @param model
-     * @return	"/uss/sam/cpy/"
+     * @return "/uss/sam/cpy/"
      * @throws Exception
      */
     @RequestMapping(value="/uss/sam/cpy/EgovMain.do")
     public String egovMain(ModelMap model) throws Exception {
-    	return "egovframework/com/uss/sam/cpy/EgovMain";
+        return "egovframework/com/uss/sam/cpy/EgovMain";
     }
 
     /**
      * 메뉴를 조회한다.
      * @param model
-     * @return	"/uss/sam/cpy/EgovLeft"
+     * @return "/uss/sam/cpy/EgovLeft"
      * @throws Exception
      */
     @RequestMapping(value="/uss/sam/cpy/EgovLeft.do")
     public String egovLeft(ModelMap model) throws Exception {
-    	return "egovframework/com/uss/sam/cpy/EgovLeft";
+        return "egovframework/com/uss/sam/cpy/EgovLeft";
     }
 
     /**
      * 저작권보호정책 목록을 조회한다. (pageing)
      * @param searchVO
      * @param model
-     * @return	"/uss/sam/cpy/EgovCpyrhtPrtcPolicyListInqire"
+     * @return "/uss/sam/cpy/EgovCpyrhtPrtcPolicyListInqire"
      * @throws Exception
      */
     @IncludedInfo(name="저작권보호정책", order = 500 ,gid = 50)
     @RequestMapping(value="/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do")
     public String selectCpyrhtPrtcPolicyList(@ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO, ModelMap model) throws Exception {
 
-    	/** EgovPropertyService.SiteList */
-    	searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-    	searchVO.setPageSize(propertiesService.getInt("pageSize"));
+        /** EgovPropertyService.SiteList */
+        searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
+        searchVO.setPageSize(propertiesService.getInt("pageSize"));
 
-    	/** pageing */
-    	PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
+        /** pageing */
+        PaginationInfo paginationInfo = new PaginationInfo();
+        paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
+        paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
+        paginationInfo.setPageSize(searchVO.getPageSize());
 
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+        searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+        searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
+        searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> CpyrhtPrtcPolicyList = cpyrhtPrtcPolicyService.selectCpyrhtPrtcPolicyList(searchVO);
-        model.addAttribute("resultList", CpyrhtPrtcPolicyList);
+        List<EgovMap> resultList = cpyrhtPrtcPolicyService.selectCpyrhtPrtcPolicyList(searchVO);
+        model.addAttribute("resultList", resultList);
 
         int totCnt = cpyrhtPrtcPolicyService.selectCpyrhtPrtcPolicyListTotCnt(searchVO);
-		paginationInfo.setTotalRecordCount(totCnt);
+        paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);
 
         return "egovframework/com/uss/sam/cpy/EgovCpyrhtPrtcPolicyListInqire";
@@ -126,32 +127,28 @@ public class EgovCpyrhtPrtcPolicyController {
      * @param cpyrhtPrtcPolicyVO
      * @param searchVO
      * @param model
-     * @return	"/uss/sam/cpy/EgovCpyrhtPrtcPolicyDetailInqire"
+     * @return "/uss/sam/cpy/EgovCpyrhtPrtcPolicyDetailInqire"
      * @throws Exception
      */
     @RequestMapping("/uss/sam/cpy/CpyrhtPrtcPolicyDetailInqire.do")
-    public String	selectCpyrhtPrtcPolicyDetail(CpyrhtPrtcPolicyVO cpyrhtPrtcPolicyVO,
-            @ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO,
-            ModelMap model) throws Exception {
+    public String selectCpyrhtPrtcPolicyDetail(CpyrhtPrtcPolicyVO cpyrhtPrtcPolicyVO, @ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO, ModelMap model) throws Exception {
 
-		CpyrhtPrtcPolicyVO vo = cpyrhtPrtcPolicyService.selectCpyrhtPrtcPolicyDetail(cpyrhtPrtcPolicyVO);
+        CpyrhtPrtcPolicyVO vo = cpyrhtPrtcPolicyService.selectCpyrhtPrtcPolicyDetail(cpyrhtPrtcPolicyVO);
 
-		model.addAttribute("result", vo);
+        model.addAttribute("result", vo);
 
-        return	"egovframework/com/uss/sam/cpy/EgovCpyrhtPrtcPolicyDetailInqire";
+        return "egovframework/com/uss/sam/cpy/EgovCpyrhtPrtcPolicyDetailInqire";
     }
 
     /**
      * 저작권보호정책를 등록하기 위한 전 처리
      * @param searchVO
      * @param model
-     * @return	"/uss/sam/cpy/EgovCpyrhtPrtcPolicyCnRegist"
+     * @return "/uss/sam/cpy/EgovCpyrhtPrtcPolicyCnRegist"
      * @throws Exception
      */
     @RequestMapping("/uss/sam/cpy/CpyrhtPrtcPolicyCnRegistView.do")
-    public String insertCpyrhtPrtcPolicyCnView(
-            @ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO, Model model)
-            throws Exception {
+    public String insertCpyrhtPrtcPolicyCnView(@ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO, Model model) throws Exception {
 
         model.addAttribute("cpyrhtPrtcPolicyVO", new CpyrhtPrtcPolicyVO());
 
@@ -164,31 +161,27 @@ public class EgovCpyrhtPrtcPolicyController {
      * @param searchVO
      * @param cpyrhtPrtcPolicyVO
      * @param bindingResult
-     * @return	"forward:/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do"
+     * @return "forward:/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do"
      * @throws Exception
      */
     @RequestMapping("/uss/sam/cpy/CpyrhtPrtcPolicyCnRegist.do")
-    public String insertCpyrhtPrtcPolicyCn(
-            @ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO,
-    		@ModelAttribute("cpyrhtPrtcPolicyVO") CpyrhtPrtcPolicyVO cpyrhtPrtcPolicyVO,
-            BindingResult bindingResult)
-            throws Exception {
+    public String insertCpyrhtPrtcPolicyCn(@ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO, @ModelAttribute("cpyrhtPrtcPolicyVO") CpyrhtPrtcPolicyVO cpyrhtPrtcPolicyVO, BindingResult bindingResult) throws Exception {
 
-    	beanValidator.validate(cpyrhtPrtcPolicyVO, bindingResult);
+        beanValidator.validate(cpyrhtPrtcPolicyVO, bindingResult);
 
-		if(bindingResult.hasErrors()){
+        if(bindingResult.hasErrors()){
 
-			return "egovframework/com/uss/sam/cpy/EgovCpyrhtPrtcPolicyCnRegist";
+            return "egovframework/com/uss/sam/cpy/EgovCpyrhtPrtcPolicyCnRegist";
 
-		}
+        }
 
-    	// 로그인VO에서  사용자 정보 가져오기
-    	LoginVO	loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+        // 로그인VO에서  사용자 정보 가져오기
+        LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
-    	String	frstRegisterId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
+        String frstRegisterId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 
-    	cpyrhtPrtcPolicyVO.setFrstRegisterId(frstRegisterId);		// 최초등록자ID
-    	cpyrhtPrtcPolicyVO.setLastUpdusrId(frstRegisterId);    	// 최종수정자ID
+        cpyrhtPrtcPolicyVO.setFrstRegisterId(frstRegisterId);        // 최초등록자ID
+        cpyrhtPrtcPolicyVO.setLastUpdusrId(frstRegisterId);          // 최종수정자ID
 
         cpyrhtPrtcPolicyService.insertCpyrhtPrtcPolicyCn(cpyrhtPrtcPolicyVO);
 
@@ -200,13 +193,11 @@ public class EgovCpyrhtPrtcPolicyController {
      * @param cpyrhtId
      * @param searchVO
      * @param model
-     * @return	"/uss/sam/cpy/EgovCpyrhtPrtcPolicyCnUpdt"
+     * @return "/uss/sam/cpy/EgovCpyrhtPrtcPolicyCnUpdt"
      * @throws Exception
      */
     @RequestMapping("/uss/sam/cpy/CpyrhtPrtcPolicyCnUpdtView.do")
-    public String updateCpyrhtPrtcPolicyCnView(@RequestParam("cpyrhtId") String cpyrhtId ,
-            @ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO, ModelMap model)
-            throws Exception {
+    public String updateCpyrhtPrtcPolicyCnView(@RequestParam("cpyrhtId") String cpyrhtId, @ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO, ModelMap model) throws Exception {
 
 
         CpyrhtPrtcPolicyVO cpyrhtPrtcPolicyVO = new CpyrhtPrtcPolicyVO();
@@ -223,38 +214,34 @@ public class EgovCpyrhtPrtcPolicyController {
         return "egovframework/com/uss/sam/cpy/EgovCpyrhtPrtcPolicyCnUpdt";
     }
 
-   /**
-    * 저작권보호정책를 수정처리한다.
-    * @param searchVO
-    * @param cpyrhtPrtcPolicyVO
-    * @param bindingResult
-    * @return	"forward:/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do"
-    * @throws Exception
-    */
+    /**
+     * 저작권보호정책를 수정처리한다.
+     * @param searchVO
+     * @param cpyrhtPrtcPolicyVO
+     * @param bindingResult
+     * @return "forward:/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do"
+     * @throws Exception
+     */
     @RequestMapping("/uss/sam/cpy/CpyrhtPrtcPolicyCnUpdt.do")
-    public String updateCpyrhtPrtcPolicyCn(
-            @ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO,
-    		@ModelAttribute("cpyrhtPrtcPolicyVO") CpyrhtPrtcPolicyVO cpyrhtPrtcPolicyVO,
-            BindingResult bindingResult)
-            throws Exception {
+    public String updateCpyrhtPrtcPolicyCn(@ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO, @ModelAttribute("cpyrhtPrtcPolicyVO") CpyrhtPrtcPolicyVO cpyrhtPrtcPolicyVO, BindingResult bindingResult) throws Exception {
 
-    	// Validation
-    	beanValidator.validate(cpyrhtPrtcPolicyVO, bindingResult);
+        // Validation
+        beanValidator.validate(cpyrhtPrtcPolicyVO, bindingResult);
 
-		if(bindingResult.hasErrors()){
+        if(bindingResult.hasErrors()){
 
-			return "egovframework/com/uss/olh/wor/EgovCpyrhtPrtcPolicyCnUpdt";
+            return "egovframework/com/uss/olh/wor/EgovCpyrhtPrtcPolicyCnUpdt";
 
-		}
+        }
 
-    	// 로그인VO에서  사용자 정보 가져오기
-    	LoginVO	loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+        // 로그인VO에서  사용자 정보 가져오기
+        LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
-    	String	lastUpdusrId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
+        String lastUpdusrId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 
-    	cpyrhtPrtcPolicyVO.setLastUpdusrId(lastUpdusrId);    	// 최종수정자ID
+        cpyrhtPrtcPolicyVO.setLastUpdusrId(lastUpdusrId);        // 최종수정자ID
 
-    	cpyrhtPrtcPolicyService.updateCpyrhtPrtcPolicyCn(cpyrhtPrtcPolicyVO);
+        cpyrhtPrtcPolicyService.updateCpyrhtPrtcPolicyCn(cpyrhtPrtcPolicyVO);
 
         return "forward:/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do";
 
@@ -264,16 +251,13 @@ public class EgovCpyrhtPrtcPolicyController {
      * 저작권보호정책를 삭제처리한다.
      * @param cpyrhtPrtcPolicyVO
      * @param searchVO
-     * @return	"forward:/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do"
+     * @return "forward:/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do"
      * @throws Exception
      */
     @RequestMapping("/uss/sam/cpy/CpyrhtPrtcPolicyCnDelete.do")
-    public String deleteCpyrhtPrtcPolicyCn(
-            CpyrhtPrtcPolicyVO cpyrhtPrtcPolicyVO,
-            @ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO)
-            throws Exception {
+    public String deleteCpyrhtPrtcPolicyCn(CpyrhtPrtcPolicyVO cpyrhtPrtcPolicyVO, @ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO) throws Exception {
 
-    	cpyrhtPrtcPolicyService.deleteCpyrhtPrtcPolicyCn(cpyrhtPrtcPolicyVO);
+        cpyrhtPrtcPolicyService.deleteCpyrhtPrtcPolicyCn(cpyrhtPrtcPolicyVO);
 
         return "forward:/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do";
     }
