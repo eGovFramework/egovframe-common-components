@@ -12,17 +12,17 @@ import java.io.Serializable;
  * <pre>
  * << 개정이력(Modification Information) >>
  *
- *   수정일      수정자           수정내용
- *  -------    --------    ---------------------------
- *   2014.12.20  개발팀         최초 생성
+ *   수정일          수정자       수정내용
+ *  -----------    --------    ---------------------------
+ *   2014.12.20     개발팀       최초 생성
  *
  * </pre>
  */
 public class CmtDefaultVO implements Serializable {
 
-	private static final long serialVersionUID = -2782974258506027986L;
+    private static final long serialVersionUID = -2782974258506027986L;
 
-	/** 검색조건 */
+    /** 검색조건 */
     private String searchCondition = "";
 
     /** 검색Keyword */
@@ -49,151 +49,166 @@ public class CmtDefaultVO implements Serializable {
     /** recordCountPerPage */
     private int recordCountPerPage = 10;
 
+    /**
+     * searchCondition attribute 값을 리턴한다.
+     *
+     * @return String
+     */
+    public String getSearchCondition() {
+        return searchCondition;
+    }
 
-	/**
-	 * searchCondition attribute 값을  리턴한다.
-	 * @return String
-	 */
-	public String getSearchCondition() {
-		return searchCondition;
-	}
+    /**
+     * searchCondition attribute 값을 설정한다.
+     *
+     * @param searchCondition String
+     */
+    public void setSearchCondition(String searchCondition) {
+        this.searchCondition = searchCondition;
+    }
 
-	/**
-	 * searchCondition attribute 값을 설정한다.
-	 * @param searchCondition String
-	 */
-	public void setSearchCondition(String searchCondition) {
-		this.searchCondition = searchCondition;
-	}
+    /**
+     * searchKeyword attribute 값을 리턴한다.
+     *
+     * @return String
+     */
+    public String getSearchKeyword() {
+        return searchKeyword;
+    }
 
-	/**
-	 * searchKeyword attribute 값을  리턴한다.
-	 * @return String
-	 */
-	public String getSearchKeyword() {
-		return searchKeyword;
-	}
+    /**
+     * searchKeyword attribute 값을 설정한다.
+     *
+     * @param searchKeyword String
+     */
+    public void setSearchKeyword(String searchKeyword) {
+        this.searchKeyword = searchKeyword;
+    }
 
-	/**
-	 * searchKeyword attribute 값을 설정한다.
-	 * @param searchKeyword String
-	 */
-	public void setSearchKeyword(String searchKeyword) {
-		this.searchKeyword = searchKeyword;
-	}
+    /**
+     * searchUseYn attribute 값을 리턴한다.
+     *
+     * @return String
+     */
+    public String getSearchUseYn() {
+        return searchUseYn;
+    }
 
-	/**
-	 * searchUseYn attribute 값을  리턴한다.
-	 * @return String
-	 */
-	public String getSearchUseYn() {
-		return searchUseYn;
-	}
+    /**
+     * searchUseYn attribute 값을 설정한다.
+     *
+     * @param searchUseYn String
+     */
+    public void setSearchUseYn(String searchUseYn) {
+        this.searchUseYn = searchUseYn;
+    }
 
-	/**
-	 * searchUseYn attribute 값을 설정한다.
-	 * @param searchUseYn String
-	 */
-	public void setSearchUseYn(String searchUseYn) {
-		this.searchUseYn = searchUseYn;
-	}
+    /**
+     * pageIndex attribute 값을 리턴한다.
+     *
+     * @return int
+     */
+    public int getPageIndex() {
+        return pageIndex;
+    }
 
-	/**
-	 * pageIndex attribute 값을  리턴한다.
-	 * @return int
-	 */
-	public int getPageIndex() {
-		return pageIndex;
-	}
+    /**
+     * pageIndex attribute 값을 설정한다.
+     *
+     * @param pageIndex int
+     */
+    public void setPageIndex(int pageIndex) {
+        this.pageIndex = pageIndex;
+    }
 
-	/**
-	 * pageIndex attribute 값을 설정한다.
-	 * @param pageIndex int
-	 */
-	public void setPageIndex(int pageIndex) {
-		this.pageIndex = pageIndex;
-	}
+    /**
+     * pageUnit attribute 값을 리턴한다.
+     *
+     * @return int
+     */
+    public int getPageUnit() {
+        return pageUnit;
+    }
 
-	/**
-	 * pageUnit attribute 값을  리턴한다.
-	 * @return int
-	 */
-	public int getPageUnit() {
-		return pageUnit;
-	}
+    /**
+     * pageUnit attribute 값을 설정한다.
+     *
+     * @param pageUnit int
+     */
+    public void setPageUnit(int pageUnit) {
+        this.pageUnit = pageUnit;
+    }
 
-	/**
-	 * pageUnit attribute 값을 설정한다.
-	 * @param pageUnit int
-	 */
-	public void setPageUnit(int pageUnit) {
-		this.pageUnit = pageUnit;
-	}
+    /**
+     * pageSize attribute 값을 리턴한다.
+     *
+     * @return int
+     */
+    public int getPageSize() {
+        return pageSize;
+    }
 
-	/**
-	 * pageSize attribute 값을  리턴한다.
-	 * @return int
-	 */
-	public int getPageSize() {
-		return pageSize;
-	}
+    /**
+     * pageSize attribute 값을 설정한다.
+     *
+     * @param pageSize int
+     */
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
 
-	/**
-	 * pageSize attribute 값을 설정한다.
-	 * @param pageSize int
-	 */
-	public void setPageSize(int pageSize) {
-		this.pageSize = pageSize;
-	}
+    /**
+     * firstIndex attribute 값을 리턴한다.
+     *
+     * @return int
+     */
+    public int getFirstIndex() {
+        return firstIndex;
+    }
 
-	/**
-	 * firstIndex attribute 값을  리턴한다.
-	 * @return int
-	 */
-	public int getFirstIndex() {
-		return firstIndex;
-	}
+    /**
+     * firstIndex attribute 값을 설정한다.
+     *
+     * @param firstIndex int
+     */
+    public void setFirstIndex(int firstIndex) {
+        this.firstIndex = firstIndex;
+    }
 
-	/**
-	 * firstIndex attribute 값을 설정한다.
-	 * @param firstIndex int
-	 */
-	public void setFirstIndex(int firstIndex) {
-		this.firstIndex = firstIndex;
-	}
+    /**
+     * lastIndex attribute 값을 리턴한다.
+     *
+     * @return int
+     */
+    public int getLastIndex() {
+        return lastIndex;
+    }
 
-	/**
-	 * lastIndex attribute 값을  리턴한다.
-	 * @return int
-	 */
-	public int getLastIndex() {
-		return lastIndex;
-	}
+    /**
+     * lastIndex attribute 값을 설정한다.
+     *
+     * @param lastIndex int
+     */
+    public void setLastIndex(int lastIndex) {
+        this.lastIndex = lastIndex;
+    }
 
-	/**
-	 * lastIndex attribute 값을 설정한다.
-	 * @param lastIndex int
-	 */
-	public void setLastIndex(int lastIndex) {
-		this.lastIndex = lastIndex;
-	}
+    /**
+     * recordCountPerPage attribute 값을 리턴한다.
+     *
+     * @return int
+     */
+    public int getRecordCountPerPage() {
+        return recordCountPerPage;
+    }
 
-	/**
-	 * recordCountPerPage attribute 값을  리턴한다.
-	 * @return int
-	 */
-	public int getRecordCountPerPage() {
-		return recordCountPerPage;
-	}
-
-	/**
-	 * recordCountPerPage attribute 값을 설정한다.
-	 * @param recordCountPerPage int
-	 */
-	public void setRecordCountPerPage(int recordCountPerPage) {
-		this.recordCountPerPage = recordCountPerPage;
-	}
-
-
+    /**
+     * recordCountPerPage attribute 값을 설정한다.
+     *
+     * @param recordCountPerPage int
+     */
+    public void setRecordCountPerPage(int recordCountPerPage) {
+        this.recordCountPerPage = recordCountPerPage;
+    }
 
 }
