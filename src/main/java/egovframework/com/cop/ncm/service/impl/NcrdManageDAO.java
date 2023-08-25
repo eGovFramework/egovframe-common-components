@@ -141,12 +141,12 @@ public class NcrdManageDAO extends EgovComAbstractDAO {
     /**
      * 내 명함 정보에 대한 목록을 조회한다.
      *
-     * @param ncrdVO
+     * @param nameCardVO
      * @return
      * @throws Exception
      */
-    public List<NameCardVO> selectMyNcrdItemList(NameCardVO ncrdVO) throws Exception {
-        return selectList("NcrdManageDAO.selectMyNcrdItemList", ncrdVO);
+    public List<NameCardVO> selectMyNcrdItemList(NameCardVO nameCardVO) {
+        return selectList("NcrdManageDAO.selectMyNcrdItemList", nameCardVO);
     }
 
     /**
