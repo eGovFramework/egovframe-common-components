@@ -93,7 +93,7 @@ public class MenuManageDAO extends EgovComAbstractDAO{
 	 * @return list
 	 * @exception Exception
 	 */
-	public List<?> selectMenuList() throws Exception{
+	public List<EgovMap> selectMenuList() throws Exception{
 		ComDefaultVO vo  = new ComDefaultVO();
 		return selectList("menuManageDAO.selectMenuListT_D", vo);
 	}
