@@ -238,7 +238,7 @@ public class EgovQustnrItemManageController {
             	//설문항목(을)를  정보 불러오기
                 List<EgovMap> listQustnrTmplat = egovQustnrItemManageService.selectQustnrTmplatManageList(qustnrItemManageVO);
                 model.addAttribute("listQustnrTmplat", listQustnrTmplat);
-            	//게시물 불러오기
+                //게시물 불러오기
                 List<EgovMap> sampleList = egovQustnrItemManageService.selectQustnrItemManageDetail(qustnrItemManageVO);
                 model.addAttribute("resultList", sampleList);
 
