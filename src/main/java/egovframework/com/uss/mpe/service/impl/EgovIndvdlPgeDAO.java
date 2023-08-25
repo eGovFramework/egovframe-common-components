@@ -10,7 +10,7 @@ import egovframework.com.uss.mpe.service.IndvdlPgeVO;
 @Repository("EgovIndvdlPgeDAO")
 public class EgovIndvdlPgeDAO extends EgovComAbstractDAO {
 
-	public List<?> selectIndvdlPgeList(IndvdlPgeVO searchVO) {
+	public List<IndvdlPgeVO> selectIndvdlPgeList(IndvdlPgeVO searchVO) {
 		return selectList("IndvdlPge.selectIndvdlPgeList", searchVO);
 	}
 
