@@ -321,6 +321,32 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
         }
     }
 
+    /**
+     * 내 명함 정보 목록 개수 조회 테스트
+     */
+    @Test
+    public void testSelectMyNcrdItemListCnt() {
+        // given
+        final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+        final NameCardVO nameCardVO = new NameCardVO();
+        nameCardVO.setRecordCountPerPage(10);
+        nameCardVO.setFirstIndex(0);
+        nameCardVO.setSearchCnd("0"); // 명함 이름
+        nameCardVO.setSearchWrd("테스터");
+
+        if (loginVO != null) {
+            nameCardVO.setFrstRegisterId(loginVO.getUniqId()); // 내 정보 설정
+        }
+
+        // when
+        final int result = ncrdManageDAO.selectMyNcrdItemListCnt(nameCardVO);
+
+        // then
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);
+    }
+
+
+
 //    @Test
 //    public void testDeleteNcrdItem() {
 //        fail("Not yet implemented");
@@ -353,11 +379,6 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
 //
 //    @Test
 //    public void testUpdateNcrdUseInf() {
-//        fail("Not yet implemented");
-//    }
-//
-//    @Test
-//    public void testSelectMyNcrdItemListCnt() {
 //        fail("Not yet implemented");
 //    }
 
