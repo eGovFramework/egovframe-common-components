@@ -21,6 +21,7 @@ import egovframework.com.uss.ion.rmm.service.RoughMapDefaultVO;
 import egovframework.com.uss.ion.rmm.service.RoughMapVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
@@ -91,7 +92,7 @@ public class EgovRoughMapController {
         searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
         searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> roughMapList = egovRoughMapService.selectRoughMapList(searchVO);
+        List<EgovMap> roughMapList = egovRoughMapService.selectRoughMapList(searchVO);
 
         int totCnt = egovRoughMapService.selectRoughMapListTotCnt(searchVO);
         paginationInfo.setTotalRecordCount(totCnt);
