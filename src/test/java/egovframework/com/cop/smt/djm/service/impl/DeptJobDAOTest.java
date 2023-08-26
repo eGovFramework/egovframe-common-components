@@ -250,20 +250,23 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
         deptVO.setSearchCnd("0");
         deptVO.setSearchWrd("기본조직");
 
-//        if (loginVO != null) {
-//            deptVO.setSearchCnd("1");
-//            deptVO.setSearchWrd("기본조직");
-//        }
+//        deptVO.setSearchCnd("1");
+//        deptVO.setSearchWrd("기본조직");
+
+        String orgnztId = null;
+        if (loginVO != null) {
+            orgnztId = loginVO.getOrgnztId();
+        }
 
         // when
         final List<DeptVO> resultList = deptJobDAO.selectDeptList(deptVO);
 
         // then
         if (log.isDebugEnabled()) {
-            log.debug("totCnt={}", resultList);
+            log.debug("resultList={}", resultList);
             for (final DeptVO result : resultList) {
                 log.debug("result={}", result);
-                log.debug("getOrgnztId={}, {}", loginVO.getOrgnztId(), result.getOrgnztId());
+                log.debug("getOrgnztId={}, {}", orgnztId, result.getOrgnztId());
                 if ("0".equals(deptVO.getSearchCnd())) {
                     log.debug("getOrgnztId={}, {}", deptVO.getSearchWrd(), result.getOrgnztNm());
                 } else if ("1".equals(deptVO.getSearchCnd())) {
@@ -272,8 +275,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
             }
         }
 
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), loginVO.getOrgnztId(),
-                resultList.get(0).getOrgnztId());
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), orgnztId, resultList.get(0).getOrgnztId());
         if ("0".equals(deptVO.getSearchCnd())) {
             assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), deptVO.getSearchWrd(),
                     resultList.get(0).getOrgnztNm());
@@ -281,7 +283,31 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
             assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), deptVO.getSearchWrd(),
                     resultList.get(0).getOrgnztDc());
         }
+    }
 
+    /**
+     * 부서 목록에 대한 전체 건수를 조회한다.
+     */
+    @Test
+    public void selectDeptListCnt() {
+        // given
+        final DeptVO deptVO = new DeptVO();
+
+        deptVO.setSearchCnd("0");
+        deptVO.setSearchWrd("기본조직");
+
+//        deptVO.setSearchCnd("1");
+//        deptVO.setSearchWrd("기본조직");
+
+        // when
+        final int totCnt = deptJobDAO.selectDeptListCnt(deptVO);
+
+        // then
+        if (log.isDebugEnabled()) {
+            log.debug("totCnt={}", totCnt);
+        }
+
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), true, totCnt > -1);
     }
 
 }

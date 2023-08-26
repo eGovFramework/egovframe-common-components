@@ -144,10 +144,10 @@
 				COMTNORGNZTINFO 
 			WHERE 1=1
 		
-			<if test="searchCnd == 0">AND
+			<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(searchCnd, 0)">AND
 					binary(ORGNZT_NM) LIKE CONCAT('%', #{searchWrd}, '%')  		
 			</if>
-			<if test="searchCnd == 1">AND
+			<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(searchCnd, 1)">AND
 					binary(ORGNZT_DC) LIKE CONCAT('%', #{searchWrd}, '%')  		
 			</if>		
 	</select>
