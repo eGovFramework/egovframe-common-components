@@ -47,9 +47,9 @@ public class EgovSessionCookieUtil {
 	/**
 	 * HttpSession에 주어진 키 값으로 세션 객체를 생성하는 기능
 	 *
-	 * @param request
-	 * @param keyStr - 세션 키
-	 * @param valStr - 세션 값
+	 * @param request - HttpServletRequest 객체
+	 * @param keyStr  - 설정할 세션의 키
+	 * @param obj     - 설정할 세션의 값(객체)
 	 * @throws Exception
 	 */
 	public static void setSessionAttribute(HttpServletRequest request, String keyStr, Object obj) throws Exception {
