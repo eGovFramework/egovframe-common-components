@@ -6,6 +6,7 @@ import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.olp.mgt.service.MeetingManageVO;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 /**
  * 회의관리를 처리하기 위한 Dao 구현 Class
@@ -32,7 +33,7 @@ public class MeetingManageDao extends EgovComAbstractDAO {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> egovMeetingManageLisAuthorGroupPopup(ComDefaultVO searchVO){
+	public List<EgovMap> egovMeetingManageLisAuthorGroupPopup(ComDefaultVO searchVO){
 		return selectList("MeetingManage.EgovMeetingManageLisAuthorGroupPopup", searchVO);
 	}
 
@@ -42,7 +43,7 @@ public class MeetingManageDao extends EgovComAbstractDAO {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> egovMeetingManageLisEmpLyrPopup(ComDefaultVO searchVO){
+	public List<EgovMap> egovMeetingManageLisEmpLyrPopup(ComDefaultVO searchVO){
 		return selectList("MeetingManage.EgovMeetingManageLisEmpLyrPopup", searchVO);
 	}
 
@@ -52,7 +53,7 @@ public class MeetingManageDao extends EgovComAbstractDAO {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectMeetingManageList(ComDefaultVO searchVO){
+	public List<EgovMap> selectMeetingManageList(ComDefaultVO searchVO){
 		return selectList("MeetingManage.selectMeetingManage", searchVO);
 	}
 
@@ -62,7 +63,7 @@ public class MeetingManageDao extends EgovComAbstractDAO {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectMeetingManageDetail(MeetingManageVO meetingManageVO){
+	public List<EgovMap> selectMeetingManageDetail(MeetingManageVO meetingManageVO){
 		return selectList("MeetingManage.selectMeetingManageDetail", meetingManageVO);
 	}
 
