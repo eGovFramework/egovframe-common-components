@@ -4,6 +4,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.string.EgovDateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -19,7 +20,6 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.yrc.service.EgovIndvdlYrycManageService;
 import egovframework.com.uss.ion.yrc.service.IndvdlYrycManage;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import org.egovframe.rte.fdl.string.EgovDateUtil;
 
 /**
  * 개요
@@ -49,27 +49,29 @@ public class EgovIndvdlYrycManageController {
     @Autowired
 	 private DefaultBeanValidator beanValidator;
 
-	/**
-	 * 개인연차관리정보를 관리하기 위해 등록된 개인연차관리 목록을 조회한다.
-	 * @param IndvdlYrycManage - 개인연차관리 VO
-	 * @return String - 리턴 Url
-	 */
-    @IncludedInfo(name="개인연차관리", order = 902 ,gid = 50)
-    @RequestMapping(value="/uss/ion/yrc/EgovIndvdlYrycManageList.do")
-	public String selectIndvdlYrycManageList(IndvdlYrycManage indvdlYrycManage, ModelMap model) throws Exception {
+     /**
+      * 개인연차관리정보를 관리하기 위해 등록된 개인연차관리 목록을 조회한다.
+      *
+      * @param IndvdlYrycManage - 개인연차관리 VO
+      * @return String - 리턴 Url
+      */
+     @IncludedInfo(name = "개인연차관리", order = 902, gid = 50)
+     @RequestMapping(value = "/uss/ion/yrc/EgovIndvdlYrycManageList.do")
+     public String selectIndvdlYrycManageList(IndvdlYrycManage indvdlYrycManage, ModelMap model) throws Exception {
 
-    	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-    	if (user == null) {
-    		return "redirect:/uat/uia/egovLoginUsr.do";
-    	}
-    	
-    	indvdlYrycManage.setMberId(user.getUniqId());
+         LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+         if (user == null) {
+             return "redirect:/uat/uia/egovLoginUsr.do";
+         }
 
-    	List<?> indvdlYrycManageList = egovIndvdlYrycManageService.selectIndvdlYrycManageList(indvdlYrycManage);
-		model.addAttribute("resultList", indvdlYrycManageList);
+         indvdlYrycManage.setMberId(user.getUniqId());
 
-		return "egovframework/com/uss/ion/yrc/EgovIndvdlYrycManageList";
-	}
+         List<IndvdlYrycManage> resultList = egovIndvdlYrycManageService.selectIndvdlYrycManageList(indvdlYrycManage);
+         model.addAttribute("resultList", resultList);
+
+         return "egovframework/com/uss/ion/yrc/EgovIndvdlYrycManageList";
+     }
+
     /**
 	 * 개인별연차관리 등록 화면으로 이동한다.
 	 * @param indvdlYrycManage - 연차관리 model
