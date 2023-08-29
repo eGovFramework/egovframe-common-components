@@ -106,7 +106,7 @@ public class EgovRecentSrchwrdController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<?> reusltList = egovRecentSrchwrdService.selectRecentSrchwrdList(searchVO);
+		List<EgovMap> reusltList = egovRecentSrchwrdService.selectRecentSrchwrdList(searchVO);
 		model.addAttribute("resultList", reusltList);
 
 		model.addAttribute("searchKeyword",
