@@ -19,6 +19,7 @@ import org.springmodules.validation.commons.DefaultBeanValidator;
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.umt.service.EgovEntrprsManageService;
@@ -75,42 +76,42 @@ public class EgovEntrprsManageController {
 
 	/** 비밀번호 힌트 조회 목록*/
 	@ModelAttribute("passwordHint_result")
-	private List<?> getPasswordHintResult(ComDefaultCodeVO vo) throws Exception {
+	private List<CmmnDetailCode> getPasswordHintResult(ComDefaultCodeVO vo) throws Exception {
 		vo.setCodeId("COM022");
 		return cmmUseService.selectCmmCodeDetail(vo);
 	}
 
 	/** 성별 조회 목록 */
 	@ModelAttribute("sexdstnCode_result")
-	private List<?> getSexdstnCode_result(ComDefaultCodeVO vo) throws Exception {
+	private List<CmmnDetailCode> getSexdstnCode_result(ComDefaultCodeVO vo) throws Exception {
 		vo.setCodeId("COM014");
 		return cmmUseService.selectCmmCodeDetail(vo);
 	}
 
 	/** 사용자 상태 조회 목록 */
 	@ModelAttribute("entrprsMberSttus_result")
-	private List<?> getEntrprsMberSttus_result(ComDefaultCodeVO vo) throws Exception {
+	private List<CmmnDetailCode> getEntrprsMberSttus_result(ComDefaultCodeVO vo) throws Exception {
 		vo.setCodeId("COM013");
 		return cmmUseService.selectCmmCodeDetail(vo);
 	}
 
 	/** 그룹 정보 조회 목록 */
 	@ModelAttribute("groupId_result")
-	private List<?> getGroupId_result(ComDefaultCodeVO vo) throws Exception {
+	private List<CmmnDetailCode> getGroupId_result(ComDefaultCodeVO vo) throws Exception {
 		vo.setTableNm("COMTNORGNZTINFO");
 		return cmmUseService.selectGroupIdDetail(vo);
 	}
 
 	/** 기업 구분 조회 목록 */
 	@ModelAttribute("entrprsSeCode_result")
-	private List<?> getEntrprsSeCode_result(ComDefaultCodeVO vo) throws Exception {
+	private List<CmmnDetailCode> getEntrprsSeCode_result(ComDefaultCodeVO vo) throws Exception {
 		vo.setCodeId("COM026");
 		return cmmUseService.selectCmmCodeDetail(vo);
 	}
 
 	/** 업종 구분 조회 목록 */
 	@ModelAttribute("indutyCode_result")
-	private List<?> getIndutyCode_result(ComDefaultCodeVO vo) throws Exception {
+	private List<CmmnDetailCode> getIndutyCode_result(ComDefaultCodeVO vo) throws Exception {
 		vo.setCodeId("COM027");
 		return cmmUseService.selectCmmCodeDetail(vo);
 	}
