@@ -38,6 +38,14 @@ public class EgovResourceCloseHelper {
 					resource.close();
 				} catch (IOException ignore) {//KISA 보안약점 조치 (2018-10-29, 윤창원)
 					EgovBasicLogger.ignore("Occurred IOException to close resource is ingored!!");
+				} finally {
+				    if (resource != null) {
+    				    try {
+    				        resource.close();
+    				    } catch (IOException ioe) {
+    				        EgovBasicLogger.ignore("Occurred IOException to close resource is ingored!!");
+    				    }
+				    }
 				}
 			}
 		}
