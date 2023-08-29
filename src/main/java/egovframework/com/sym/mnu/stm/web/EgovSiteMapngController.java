@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -21,7 +22,7 @@ import egovframework.com.sym.mnu.mcm.service.EgovMenuCreateManageService;
 import egovframework.com.sym.mnu.mcm.service.MenuCreatVO;
 import egovframework.com.sym.mnu.mcm.service.MenuSiteMapVO;
 import egovframework.com.sym.mnu.stm.service.EgovSiteMapngService;
-import egovframework.com.sym.mnu.stm.service.SiteMapngVO;
+
 /**
  * 사이트맵 조회 처리를 하는 비즈니스 구현 클래스
  * @author 개발환경 개발팀 이용
@@ -81,7 +82,7 @@ public class EgovSiteMapngController {
 
     	MenuSiteMapVO menuSiteMapVO = new MenuSiteMapVO();
     	menuSiteMapVO.setAuthorCode(menuVO.getAuthorCode());
-    	List<?> resultList = menuCreateManageService.selectMenuCreatSiteMapList(menuSiteMapVO);
+    	List<EgovMap> resultList = menuCreateManageService.selectMenuCreatSiteMapList(menuSiteMapVO);
 
     	LOGGER.debug("Count SiteMap ResultList = "+resultList.size());
         model.addAttribute("resultList", resultList);
