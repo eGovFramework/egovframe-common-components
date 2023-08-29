@@ -82,6 +82,8 @@ public class SmsDAO extends EgovComAbstractDAO {
      * 문자메시지 수신 및 결과 목록을 조회한다.
      * 
      * @param SmsRecptn
+     * @return
+     * @throws Exception
      */
     public List<SmsRecptn> selectSmsRecptnInfs(SmsRecptn vo) throws Exception {
 	return selectList("SmsDAO.selectSmsRecptnInfs", vo);
