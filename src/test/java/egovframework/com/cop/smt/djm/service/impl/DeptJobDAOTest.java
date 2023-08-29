@@ -310,4 +310,28 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
         assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), true, totCnt > -1);
     }
 
+    /**
+     * 주어진 조건에 맞는 부서를 불러온다.
+     */
+    @Test
+    public void selectDept() {
+        // given
+        final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+        String orgnztId = null;
+        if (loginVO != null) {
+            orgnztId = loginVO.getOrgnztId();
+        }
+
+        // when
+        final String result = deptJobDAO.selectDept(orgnztId);
+
+        // then
+        if (log.isDebugEnabled()) {
+            log.debug("result={}", result);
+        }
+
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), "기본조직", result);
+    }
+
 }
