@@ -362,6 +362,7 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
 
     /**
      * 명함 정보 삭제 테스트
+     * 명함사용자를 먼저 삭제해야 한다.
      */
     @Test
     public void testDeleteNcrdItem() {
@@ -379,13 +380,42 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
         assertEquals(egovMessageSource.getMessage("fail.common.delete"), 1, result);
     }
 
+    /**
+     * 명함사용자 정보 등록 테스트
+     * 명함을 먼저 등록해야 명함사용자를 등록할 수 있다.
+     */
+    @Test
+    public void testInsertNcrdUseInf() {
+        // given
+        final NameCard nameCard = new NameCard();
+        nameCard.setNcrdId("TEST_NCRD_9999999001");
+        nameCard.setNcrdNm("TEST2");
+        nameCard.setOthbcAt("Y"); // 공개여부
+
+        final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+        if (loginVO != null) {
+            nameCard.setFrstRegisterId(loginVO.getUniqId());
+            nameCard.setLastUpdusrId(loginVO.getUniqId());
+            nameCard.setNcrdTrgterId(loginVO.getUniqId()); // 명함대상자아이디
+        }
+
+        ncrdManageDAO.insertNcrdItem(nameCard);
+
+        final NameCardUser nameCardUser = new NameCardUser();
+        nameCardUser.setNcrdId("TEST_NCRD_9999999001"); // 명함아이디
+        nameCardUser.setEmplyrId(nameCard.getFrstRegisterId()); // 사용자아이디
+        nameCardUser.setRegistSeCode("REGC04"); // 등록구분코드
+        nameCardUser.setUseAt("Y"); // 사용여부
+
+        // when
+        final int result = ncrdManageDAO.insertNcrdUseInf(nameCardUser);
+
+        // then
+        assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
+    }
+
 //    @Test
 //    public void testDeleteNcrdItemUser() {
-//        fail("Not yet implemented");
-//    }
-//
-//    @Test
-//    public void testInsertNcrdUseInf() {
 //        fail("Not yet implemented");
 //    }
 //
