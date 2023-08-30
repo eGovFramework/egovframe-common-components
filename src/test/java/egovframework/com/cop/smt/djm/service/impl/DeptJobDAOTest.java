@@ -22,6 +22,7 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.smt.djm.service.ChargerVO;
 import egovframework.com.cop.smt.djm.service.DeptJob;
 import egovframework.com.cop.smt.djm.service.DeptJobBx;
+import egovframework.com.cop.smt.djm.service.DeptJobBxVO;
 import egovframework.com.cop.smt.djm.service.DeptVO;
 import egovframework.com.test.EgovTestAbstractDAO;
 import lombok.NoArgsConstructor;
@@ -95,6 +96,28 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
     @Autowired
     @Qualifier("egovDeptJobIdGnrService")
     private EgovIdGnrService egovDeptJobIdGnrService;
+
+    private void testDataDeptJobBx(final DeptJobBx testDataDeptJobBx) {
+        final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+        try {
+            testDataDeptJobBx.setDeptJobBxId(egovDeptJobBxIdGnrService.getNextStringId());
+        } catch (FdlException e) {
+//            e.printStackTrace();
+            log.error("FdlException egovDeptJobBxIdGnrService");
+        }
+
+        testDataDeptJobBx.setDeptJobBxNm("test 이백행 부서업무함명 " + LocalDateTime.now());
+
+        if (loginVO != null) {
+            testDataDeptJobBx.setDeptId(loginVO.getOrgnztId());
+
+            testDataDeptJobBx.setFrstRegisterId(loginVO.getUniqId());
+            testDataDeptJobBx.setLastUpdusrId(loginVO.getUniqId());
+        }
+
+        deptJobDAO.insertDeptJobBx(testDataDeptJobBx);
+    }
 
     /**
      * 부서업무함 정보를 등록한다.
@@ -332,6 +355,57 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
         }
 
         assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), "기본조직", result);
+    }
+
+    /**
+     * 주어진 조건에 따른 부서업무함 목록을 불러온다.
+     */
+    @Test
+    public void selectDeptJobBxList() {
+        // given
+        final DeptJobBx testDataDeptJobBx = new DeptJobBx();
+        testDataDeptJobBx(testDataDeptJobBx);
+
+        final DeptJobBxVO deptJobBxVO = new DeptJobBxVO();
+//        final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+        deptJobBxVO.setFirstIndex(0);
+        deptJobBxVO.setRecordCountPerPage(10);
+
+//        if (loginVO != null) {
+//            deptJobBxVO.setPopupCnd(loginVO.getOrgnztId());
+//            deptJobBxVO.setDeptId(loginVO.getOrgnztId());
+//        }
+
+//        deptJobBxVO.setSearchCnd("0");
+//        deptJobBxVO.setSearchWrd("기본조직");
+
+        deptJobBxVO.setSearchCnd("1");
+        deptJobBxVO.setSearchWrd(testDataDeptJobBx.getDeptJobBxNm());
+
+        // when
+        final List<DeptJobBxVO> resultList = deptJobDAO.selectDeptJobBxList(deptJobBxVO);
+
+        // then
+        if (log.isDebugEnabled()) {
+            log.debug("resultList={}", resultList);
+            for (final DeptJobBxVO result : resultList) {
+                log.debug("result={}", result);
+                if ("0".equals(deptJobBxVO.getSearchCnd())) {
+                    log.debug("getDeptNm={}, {}", deptJobBxVO.getSearchWrd(), result.getDeptNm());
+                } else if ("1".equals(deptJobBxVO.getSearchCnd())) {
+                    log.debug("getDeptJobBxNm={}, {}", deptJobBxVO.getSearchWrd(), result.getDeptJobBxNm());
+                }
+            }
+        }
+
+        if ("0".equals(deptJobBxVO.getSearchCnd())) {
+            assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), deptJobBxVO.getSearchWrd(),
+                    resultList.get(0).getDeptNm());
+        } else if ("1".equals(deptJobBxVO.getSearchCnd())) {
+            assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), deptJobBxVO.getSearchWrd(),
+                    resultList.get(0).getDeptJobBxNm());
+        }
     }
 
 }
