@@ -145,34 +145,31 @@ public class EgovSessionCookieUtil {
 	}
 
 	/**
-	 * 쿠키생성 - 쿠키의 유효시간을 설정하지 않을 경우 쿠키의 생명주기는 브라우저가 종료될 때까지
+	 * 쿠키 생성 및 설정.
+	 * 이 메서드를 사용하여 생성된 쿠키는 브라우저 세션 동안만 유지됩니다. (유효시간 설정이 없으므로)
 	 *
-	 * @param response - Response
-	 * @param cookieNm - 쿠키명
-	 * @param cookieValue - 쿠키값
-	 * @return
-	 * @exception
-	 * @see
+	 * @param response - 웹 응답 객체
+	 * @param cookieNm - 생성할 쿠키의 이름
+	 * @param cookieVal - 생성할 쿠키의 값
+	 * @throws UnsupportedEncodingException - UTF-8 인코딩을 지원하지 않는 경우 발생
 	 */
-
 	public static void setCookie(HttpServletResponse response, String cookieNm, String cookieVal)
-		throws UnsupportedEncodingException {
+			throws UnsupportedEncodingException {
 
-		// 특정의 encode 방식을 사용해 캐릭터 라인을 application/x-www-form-urlencoded 형식으로 변환
-		// 일반 문자열을 웹에서 통용되는 'x-www-form-urlencoded' 형식으로 변환하는 역할
+		// 문자열을 'x-www-form-urlencoded' 형식으로 인코딩
 		String cookieValue = URLEncoder.encode(cookieVal, "utf-8");
 
-		// 쿠키생성
+		// 쿠키 생성 (보안 위험을 줄이기 위해 CRLF 문자 제거)
 		Cookie cookie = new Cookie(EgovWebUtil.removeCRLF(cookieNm), EgovWebUtil.removeCRLF(cookieValue));
 
-		// 2011.10.10 보안점검 후속조치
-		cookie.setSecure(true);
+		// 보안 설정
+		cookie.setSecure(true);   // HTTPS에서만 쿠키 사용
+		cookie.setHttpOnly(true); // 자바스크립트에서 쿠키 접근 방지
 
-		cookie.setHttpOnly(true);//2022.01. Cookie without the HttpOnly flag 처리
-
-		// response 내장 객체를 이용해 쿠키를 전송
+		// 응답에 쿠키 추가
 		response.addCookie(cookie);
 	}
+
 
 	/**
 	 * 쿠키값 사용 - 쿠키값을 읽어들인다.
