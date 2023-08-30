@@ -2,6 +2,8 @@ package egovframework.com.uss.ion.rsm.service;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 /**
  * 최근검색어를 처리하는 Service Class 구현
  * @author 공통서비스 장동한
@@ -71,7 +73,7 @@ public interface EgovRecentSrchwrdService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectRecentSrchwrdResultInquire(RecentSrchwrd recentSrchwrd) throws Exception;
+	public List<EgovMap> selectRecentSrchwrdResultInquire(RecentSrchwrd recentSrchwrd) throws Exception;
 
 	/**
 	 * 최근검색어결과 목록을 조회한다.

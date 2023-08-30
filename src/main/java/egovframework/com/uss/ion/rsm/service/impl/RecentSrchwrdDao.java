@@ -5,6 +5,7 @@ import java.util.List;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.rsm.service.RecentSrchwrd;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -87,7 +88,7 @@ public class RecentSrchwrdDao extends EgovComAbstractDAO {
      * @return List
      * @throws Exception
      */
-    public List<?> selectRecentSrchwrdResultInquire(RecentSrchwrd recentSrchwrd) throws Exception {
+    public List<EgovMap> selectRecentSrchwrdResultInquire(RecentSrchwrd recentSrchwrd) throws Exception {
         return selectList("RecentSrchwrd.selectRecentSrchwrdResultInquire", recentSrchwrd);
     }
 
