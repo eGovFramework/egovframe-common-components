@@ -360,11 +360,25 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
         assertEquals(egovMessageSource.getMessage("fail.common.update"), 1, result);
     }
 
-//    @Test
-//    public void testDeleteNcrdItem() {
-//        fail("Not yet implemented");
-//    }
-//
+    /**
+     * 명함 정보 삭제 테스트
+     */
+    @Test
+    public void testDeleteNcrdItem() {
+        // given
+        final NameCardVO nameCardVO = new NameCardVO();
+        nameCardVO.setNcrdId(testNameCard.getNcrdId());
+        nameCardVO.setEmplyrId(testNameCardUser.getEmplyrId());
+
+        ncrdManageDAO.deleteNcrdItemUser(nameCardVO); // 1. foreign key NaceCardUser delete
+
+        // when
+        final int result = ncrdManageDAO.deleteNcrdItem(nameCardVO); // 2. NameCardItem delete
+
+        // then
+        assertEquals(egovMessageSource.getMessage("fail.common.delete"), 1, result);
+    }
+
 //    @Test
 //    public void testDeleteNcrdItemUser() {
 //        fail("Not yet implemented");
