@@ -47,9 +47,9 @@ public class EgovSessionCookieUtil {
 	/**
 	 * HttpSession에 주어진 키 값으로 세션 객체를 생성하는 기능
 	 *
-	 * @param request
-	 * @param keyStr - 세션 키
-	 * @param valStr - 세션 값
+	 * @param request - HttpServletRequest 객체
+	 * @param keyStr  - 설정할 세션의 키
+	 * @param obj     - 설정할 세션의 값(객체)
 	 * @throws Exception
 	 */
 	public static void setSessionAttribute(HttpServletRequest request, String keyStr, Object obj) throws Exception {
@@ -107,15 +107,15 @@ public class EgovSessionCookieUtil {
 
 	/**
 	 * 쿠키생성 - 입력받은 분만큼 쿠키를 유지되도록 세팅한다.
-	 * 쿠키의 유효시간을 5분으로 설정 =>(cookie.setMaxAge(60 * 5)
-	 * 쿠키의 유효시간을 10일로 설정 =>(cookie.setMaxAge(60 * 60 * 24 * 10)
+	 * 쿠키의 유효시간은 minute 파라미터에 따라 설정되며, 최대 24시간으로 제한된다.
+	 * 예) minute이 5이면, 쿠키의 유효시간을 5분으로 설정 =>(cookie.setMaxAge(60 * 5))
 	 *
 	 * @param response - Response
 	 * @param cookieNm - 쿠키명
-	 * @param cookieValue - 쿠키값
-	 * @param minute - 지속시킬 시간(분)
-	 * @return
-	 * @exception
+	 * @param cookieVal - 쿠키값
+	 * @param minute - 지속시킬 시간(분, 최대 24시간)
+	 * @return 없음
+	 * @exception UnsupportedEncodingException
 	 * @see
 	 */
 	public static void setCookie(HttpServletResponse response, String cookieNm, String cookieVal, int minute)
