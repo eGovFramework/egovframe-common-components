@@ -99,12 +99,12 @@ public class NcrdManageDAO extends EgovComAbstractDAO {
     /**
      * 명함 정보에 대한 목록 전체 건수를 조회한다.
      *
-     * @param ncrdUser
+     * @param nameCardUser
      * @return
      * @throws Exception
      */
-    public List<NameCardUser> selectNcrdUseInfs(NameCardUser ncrdUser) throws Exception {
-        return selectList("NcrdManageDAO.selectNcrdUseInfs", ncrdUser);
+    public List<NameCardUser> selectNcrdUseInfs(NameCardUser nameCardUser) {
+        return selectList("NcrdManageDAO.selectNcrdUseInfs", nameCardUser);
     }
 
     /**

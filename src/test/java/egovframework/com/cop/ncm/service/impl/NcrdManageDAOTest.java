@@ -414,13 +414,46 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
         assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
     }
 
+    /**
+     * 명함사용자 정보 assert
+     */
+    private void assertSelectNcrdUser(final Object expected, final Object actual) {
+        if (expected instanceof NameCardUser) {
+            assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), ((NameCardUser) expected).getEmplyrId(), ((NameCardVO) actual).getEmplyrId());
+        } else {
+            assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), expected, actual);
+        }
+    }
+
+
+    /**
+     * 명함사용자 목록 조회 테스트
+     */
+    @Test
+    public void testSelectNcrdUseInfs() {
+        // given
+        final NameCardUser nameCardUser = new NameCardUser();
+        nameCardUser.setEmplyrId(testNameCardUser.getEmplyrId());
+        nameCardUser.setSearchCnd("0");
+        nameCardUser.setSearchWrd(testNameCardUser.getNcrdNm());
+
+        // when
+        final List<NameCardUser> resultList = ncrdManageDAO.selectNcrdUseInfs(nameCardUser);
+
+        // log.debug("resultList=[{}]", resultList);
+        for (final NameCardUser result : resultList) {
+            if (log.isDebugEnabled()) {
+                log.debug("result={}", result);
+                log.debug("getCmpnyNm={}, {}", nameCardUser.getSearchWrd(), result.getNcrdNm());
+            }
+
+            // then
+            assertSelectNcrdUser(nameCardUser.getSearchWrd(), result.getNcrdNm());
+        }
+    }
+
 //    @Test
 //    public void testDeleteNcrdItemUser() {
-//        fail("Not yet implemented");
-//    }
-//
-//    @Test
-//    public void testSelectNcrdUseInfs() {
 //        fail("Not yet implemented");
 //    }
 //
