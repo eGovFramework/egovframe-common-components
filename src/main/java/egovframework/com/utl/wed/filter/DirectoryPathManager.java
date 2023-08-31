@@ -75,6 +75,15 @@ public class DirectoryPathManager {
 		return sb.toString();
 	}
 
+	/**
+	 * 주어진 기본 디렉터리, 하위 디렉터리 및 원래 파일 이름에 대한 고유한 파일 이름을 생성합니다.
+	 * 이 메서드는 주어진 이름을 가진 파일이 이미 존재하는 경우 파일의 기본 이름에 순차 번호를 추가하여 새 이름이 생성되도록 보장합니다.
+	 *
+	 * @param imageBaseDir 파일이 저장될 예정인 기본 디렉터리.
+	 * @param subDir 기본 디렉터리 아래의 하위 디렉터리.
+	 * @param fileName 파일의 원래 이름.
+	 * @return 고유한 파일 경로를 가리키는 File 객체. 주어진 이름의 파일이 이미 존재하면, 기본 이름에 숫자를 추가하여 고유한 파일 이름이 생성됩니다.
+	 */
 	public static File getUniqueFile(String imageBaseDir, String subDir, String fileName) {
 		
 		File file = new File(fileStorePath + EgovWebUtil.filePathBlackList(imageBaseDir + subDir) + FilenameUtils.getName(fileName));
