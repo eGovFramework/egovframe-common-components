@@ -101,13 +101,19 @@ public class LoginLog implements Serializable {
 	 * 검색종료일_화면용
 	 */
 	private String searchEndDeView = "";//2011.09.14
-
+	/**
+	 * 검색종료일_화면용
+	 */
 	public String getSearchEndDeView() {
 		return searchEndDeView;
 	}
 	public void setSearchEndDeView(String searchEndDeView) {
 		this.searchEndDeView = searchEndDeView;
 	}
+
+	/**
+	 * 검색시작일_화면용
+	 */
 	public String getSearchBgnDeView() {
 		return searchBgnDeView;
 	}
@@ -115,173 +121,214 @@ public class LoginLog implements Serializable {
 		this.searchBgnDeView = searchBgnDeView;
 	}
 
+	/**
+	 * 로그 ID
+	 */
 	public String getLogId() {
 		return logId;
 	}
-
 	public void setLogId(String logId) {
 		this.logId = logId;
 	}
 
+	/**
+	 * 로그인 ID
+	 */
 	public String getLoginId() {
 		return loginId;
 	}
-
 	public void setLoginId(String loginId) {
 		this.loginId = loginId;
 	}
 
+	/**
+	 * 로그인 IP
+	 */
 	public String getLoginIp() {
 		return loginIp;
 	}
-
 	public void setLoginIp(String loginIp) {
 		this.loginIp = loginIp;
 	}
 
+	/**
+	 * 로그인 방식
+	 */
 	public String getLoginMthd() {
 		return loginMthd;
 	}
-
 	public void setLoginMthd(String loginMthd) {
 		this.loginMthd = loginMthd;
 	}
 
+	/**
+	 * 오류 발생 여부
+	 */
 	public String getErrOccrrAt() {
 		return errOccrrAt;
 	}
-
 	public void setErrOccrrAt(String errOccrrAt) {
 		this.errOccrrAt = errOccrrAt;
 	}
 
+	/**
+	 * 오류 코드
+	 */
 	public String getErrorCode() {
 		return errorCode;
 	}
-
 	public void setErrorCode(String errorCode) {
 		this.errorCode = errorCode;
 	}
 
+	/**
+	 * 생성 날짜
+	 */
 	public String getCreatDt() {
 		return creatDt;
 	}
-
 	public void setCreatDt(String creatDt) {
 		this.creatDt = creatDt;
 	}
 
+	/**
+	 * 검색 시작일
+	 */
 	public String getSearchBgnDe() {
 		return searchBgnDe;
 	}
-
 	public void setSearchBgnDe(String searchBgnDe) {
 		this.searchBgnDe = searchBgnDe;
 	}
 
+	/**
+	 * 검색 조건
+	 */
 	public String getSearchCnd() {
 		return searchCnd;
 	}
-
 	public void setSearchCnd(String searchCnd) {
 		this.searchCnd = searchCnd;
 	}
 
+	/**
+	 * 검색 종료일
+	 */
 	public String getSearchEndDe() {
 		return searchEndDe;
 	}
-
 	public void setSearchEndDe(String searchEndDe) {
 		this.searchEndDe = searchEndDe;
 	}
 
+	/**
+	 * 검색 단어
+	 */
 	public String getSearchWrd() {
 		return searchWrd;
 	}
-
 	public void setSearchWrd(String searchWrd) {
 		this.searchWrd = searchWrd;
 	}
 
+	/**
+	 * 정렬 순서
+	 */
 	public String getSortOrdr() {
 		return sortOrdr;
 	}
-
 	public void setSortOrdr(String sortOrdr) {
 		this.sortOrdr = sortOrdr;
 	}
 
+	/**
+	 * 검색 사용 여부
+	 */
 	public String getSearchUseYn() {
 		return searchUseYn;
 	}
-
 	public void setSearchUseYn(String searchUseYn) {
 		this.searchUseYn = searchUseYn;
 	}
 
+	/**
+	 * 페이지 인덱스
+	 */
 	public int getPageIndex() {
 		return pageIndex;
 	}
-
 	public void setPageIndex(int pageIndex) {
 		this.pageIndex = pageIndex;
 	}
 
+	/**
+	 * 페이지 단위
+	 */
 	public int getPageUnit() {
 		return pageUnit;
 	}
-
 	public void setPageUnit(int pageUnit) {
 		this.pageUnit = pageUnit;
 	}
 
+	/**
+	 * 페이지 크기
+	 */
 	public int getPageSize() {
 		return pageSize;
 	}
-
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
 
+	/**
+	 * 첫번째 인덱스
+	 */
 	public int getFirstIndex() {
 		return firstIndex;
 	}
-
 	public void setFirstIndex(int firstIndex) {
 		this.firstIndex = firstIndex;
 	}
 
+	/**
+	 * 마지막 인덱스
+	 */
 	public int getLastIndex() {
 		return lastIndex;
 	}
-
 	public void setLastIndex(int lastIndex) {
 		this.lastIndex = lastIndex;
 	}
 
+	/**
+	 * 페이지 당 레코드 개수
+	 */
 	public int getRecordCountPerPage() {
 		return recordCountPerPage;
 	}
-
 	public void setRecordCountPerPage(int recordCountPerPage) {
 		this.recordCountPerPage = recordCountPerPage;
 	}
 
+	/**
+	 * 행 번호
+	 */
 	public int getRowNo() {
 		return rowNo;
 	}
-
 	public void setRowNo(int rowNo) {
 		this.rowNo = rowNo;
 	}
 
+	/**
+	 * 로그인 이름
+	 */
 	public String getLoginNm() {
 		return loginNm;
 	}
-
 	public void setLoginNm(String loginNm) {
 		this.loginNm = loginNm;
 	}
-
 
 }
