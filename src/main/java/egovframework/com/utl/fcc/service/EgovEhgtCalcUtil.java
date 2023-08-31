@@ -101,6 +101,16 @@ public class EgovEhgtCalcUtil {
 		}
 	}
 
+
+	/**
+	 * 주어진 소스 화폐 유형 및 금액에 따라 대상 화폐 유형으로의 환율을 계산하는 메서드.
+	 *
+	 * @param srcType    원래 화폐 유형
+	 * @param srcAmount  변환하려는 금액
+	 * @param cnvrType   대상 화폐 유형
+	 * @return 변환된 금액과 대상 화폐 유형을 포함하는 문자열
+	 * @throws Exception 예외 발생 시
+	 */
 	public static String getEhgtCalc(String srcType, long srcAmount, String cnvrType) throws Exception {
 
 		String rtnStr = null;
