@@ -114,7 +114,16 @@ public class EgovMessageUtil {
 
 		return getMessage("confirm", strCode, arrParam);
 	}
-
+	/**
+	 * 주어진 작업 코드, 문자열 코드, 그리고 파라미터 배열을 사용하여 메시지를 반환합니다.
+	 * 문자열 코드를 사용하여 메시지 속성 파일에서 메시지를 가져옵니다.
+	 * 파라미터 배열이 제공되면 해당 파라미터로 메시지를 교체합니다.
+	 *
+	 * @param wrkCode  작업을 지정하는 코드
+	 * @param strCode  메시지 속성 파일에서 메시지를 찾는데 사용되는 코드
+	 * @param arrParam 메시지 내의 파라미터를 교체하는데 사용되는 배열
+	 * @return 교체된 메시지 또는 기본 메시지를 반환
+	 */
 	private static String getMessage(String wrkCode, String strCode, String[] arrParam) {
 
 		String message = null;
