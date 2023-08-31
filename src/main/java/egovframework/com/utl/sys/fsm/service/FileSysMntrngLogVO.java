@@ -55,117 +55,202 @@ public class FileSysMntrngLogVO extends FileSysMntrngLog {
     /** 페이지당 레코드 개수 */
     private int recordCountPerPage = 10;
 
+	/**
+	 * 검색 조건 반환
+	 */
 	public String getSearchCnd() {
 		return searchCnd;
 	}
 
+	/**
+	 * 검색 조건 설정
+	 */
 	public void setSearchCnd(String searchCnd) {
 		this.searchCnd = searchCnd;
 	}
 
+	/**
+	 * 검색어 반환
+	 */
 	public String getSearchWrd() {
 		return searchWrd;
 	}
 
+	/**
+	 * 검색어 설정
+	 */
 	public void setSearchWrd(String searchWrd) {
 		this.searchWrd = searchWrd;
 	}
 
+	/**
+	 * 검색 시작일 반환
+	 */
 	public String getSearchBgnDe() {
 		return searchBgnDe;
 	}
 
+	/**
+	 * 검색 시작일 설정
+	 */
 	public void setSearchBgnDe(String searchBgnDe) {
 		this.searchBgnDe = searchBgnDe;
 	}
 
+	/**
+	 * 검색 시작 시간 반환
+	 */
 	public String getSearchBgnHour() {
 		return searchBgnHour;
 	}
 
+	/**
+	 * 검색 시작 시간 설정
+	 */
 	public void setSearchBgnHour(String searchBgnHour) {
 		this.searchBgnHour = searchBgnHour;
 	}
 
+	/**
+	 * 검색 시작 일시 반환
+	 */
 	public String getSearchBgnDt() {
 		return searchBgnDt;
 	}
 
+	/**
+	 * 검색 시작 일시 설정
+	 */
 	public void setSearchBgnDt(String searchBgnDt) {
 		this.searchBgnDt = searchBgnDt;
 	}
 
+	/**
+	 * 검색 종료일 반환
+	 */
 	public String getSearchEndDe() {
 		return searchEndDe;
 	}
 
+	/**
+	 * 검색 종료일 설정
+	 */
 	public void setSearchEndDe(String searchEndDe) {
 		this.searchEndDe = searchEndDe;
 	}
 
+	/**
+	 * 검색 종료 시간 반환
+	 */
 	public String getSearchEndHour() {
 		return searchEndHour;
 	}
 
+	/**
+	 * 검색 종료 시간 설정
+	 */
 	public void setSearchEndHour(String searchEndHour) {
 		this.searchEndHour = searchEndHour;
 	}
 
+	/**
+	 * 검색 종료 일시 반환
+	 */
 	public String getSearchEndDt() {
 		return searchEndDt;
 	}
 
+	/**
+	 * 검색 종료 일시 설정
+	 */
 	public void setSearchEndDt(String searchEndDt) {
 		this.searchEndDt = searchEndDt;
 	}
 
+	/**
+	 * 페이지 인덱스 반환
+	 */
 	public int getPageIndex() {
 		return pageIndex;
 	}
 
+	/**
+	 * 페이지 인덱스 설정
+	 */
 	public void setPageIndex(int pageIndex) {
 		this.pageIndex = pageIndex;
 	}
 
+	/**
+	 * 페이지 단위 반환
+	 */
 	public int getPageUnit() {
 		return pageUnit;
 	}
 
+	/**
+	 * 페이지 단위 설정
+	 */
 	public void setPageUnit(int pageUnit) {
 		this.pageUnit = pageUnit;
 	}
 
+	/**
+	 * 페이지 크기 반환
+	 */
 	public int getPageSize() {
 		return pageSize;
 	}
 
+	/**
+	 * 페이지 크기 설정
+	 */
 	public void setPageSize(int pageSize) {
 		this.pageSize = pageSize;
 	}
 
+	/**
+	 * 첫 페이지 인덱스 반환
+	 */
 	public int getFirstIndex() {
 		return firstIndex;
 	}
 
+	/**
+	 * 첫 페이지 인덱스 설정
+	 */
 	public void setFirstIndex(int firstIndex) {
 		this.firstIndex = firstIndex;
 	}
 
+	/**
+	 * 마지막 페이지 인덱스 반환
+	 */
 	public int getLastIndex() {
 		return lastIndex;
 	}
 
+	/**
+	 * 마지막 페이지 인덱스 설정
+	 */
 	public void setLastIndex(int lastIndex) {
 		this.lastIndex = lastIndex;
 	}
 
+	/**
+	 * 페이지당 레코드 수 반환
+	 */
 	public int getRecordCountPerPage() {
 		return recordCountPerPage;
 	}
 
+	/**
+	 * 페이지당 레코드 수 설정
+	 */
 	public void setRecordCountPerPage(int recordCountPerPage) {
 		this.recordCountPerPage = recordCountPerPage;
 	}
 
-	
+
+
 }
