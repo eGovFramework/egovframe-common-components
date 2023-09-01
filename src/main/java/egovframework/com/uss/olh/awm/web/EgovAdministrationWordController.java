@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,13 +20,12 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olh.awm.service.AdministrationWordVO;
 import egovframework.com.uss.olh.awm.service.EgovAdministrationWordService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import org.egovframe.rte.fdl.property.EgovPropertyService;
-import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
  * 행정전문용어사전관리를 처리하는 Controller Class 구현
@@ -40,7 +41,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *   2011.8.26	 정진오			IncludedInfo annotation 추가
  *   2011.09.19  서준식          삭제 후 리스트 상세조회시 다시 삭제되는 문제 수정
  *   2016.08.10  김연호          표준프레임워크 3.6
- *   
+ *
  * </pre>
  */
 
@@ -57,15 +58,15 @@ public class EgovAdministrationWordController {
     /** egovOnlinePollService */
     @Resource(name = "EgovAdministrationWordService")
     private EgovAdministrationWordService egovAdministrationWordService;
-    
+
     @Resource(name="EgovCmmUseService")
 	private EgovCmmUseService cmmUseService;
 
     /** EgovPropertyService */
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertiesService;
-    
-    
+
+
     /**
      * 행정전문용어사전 목록을 조회한다.
      * @param searchVO
@@ -101,7 +102,7 @@ public class EgovAdministrationWordController {
 
         return "egovframework/com/uss/olh/awm/EgovAdministrationWordList";
     }
-    
+
     /**
      * 행정전문용어사전 목록을 상세조회 조회한다.
      * @param searchVO
@@ -120,7 +121,7 @@ public class EgovAdministrationWordController {
 
         return "egovframework/com/uss/olh/awm/EgovAdministrationWordDetail";
     }
-    
+
     /**
      * 행정전문용어사전관리 목록을 조회한다.
      * @param searchVO
@@ -154,7 +155,7 @@ public class EgovAdministrationWordController {
 
         return "egovframework/com/uss/olh/awm/EgovAdministrationWordManageList";
     }
-    
+
     /**
      * 행정전문용어사전관리 목록을 상세조회 조회한다.
      * @param searchVO
@@ -173,30 +174,30 @@ public class EgovAdministrationWordController {
 
         return "egovframework/com/uss/olh/awm/EgovAdministrationWordManageDetail";
     }
-    
+
     /**
      * 행정전문용어사전을 등록하기 위한 전 처리(공통코드 처리)
+     *
      * @param searchVO
      * @param model
-     * @return	"/uss/olh/awm/EgovAdministrationWordRegist"
+     * @return "/uss/olh/awm/EgovAdministrationWordRegist"
      * @throws Exception
      */
     @RequestMapping("/uss/olh/awm/insertAdministrationWordView.do")
     public String insertAdministrationWordView(@ModelAttribute("searchVO") AdministrationWordVO searchVO, Model model) throws Exception {
 
-    	// 공통코드를 가져오기 위한 Vo
-    	ComDefaultCodeVO vo = new ComDefaultCodeVO();
-		vo.setCodeId("COM102");
+        // 공통코드를 가져오기 위한 Vo
+        ComDefaultCodeVO vo = new ComDefaultCodeVO();
+        vo.setCodeId("COM102");
 
-		List<?> _result = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("wordSeCode", _result);
+        List<CmmnDetailCode> _result = cmmUseService.selectCmmCodeDetail(vo);
+        model.addAttribute("wordSeCode", _result);
 
         model.addAttribute("administrationWordVO", new AdministrationWordVO());
 
         return "egovframework/com/uss/olh/awm/EgovAdministrationWordRegist";
-
     }
-    
+
     /**
      * 행정전문용어사전을 등록한다.
      * @param searchVO
@@ -227,35 +228,34 @@ public class EgovAdministrationWordController {
 
         return "forward:/uss/olh/awm/selectAdministrationWordManageList.do";
     }
-    
+
     /**
      * 행정전문용어사전을 수정하기 위한 전 처리(공통코드 처리)
+     *
      * @param administWordId
      * @param searchVO
      * @param model
-     * @return	"/uss/olh/hpc/EgovAdministrationWordUpdt"
+     * @return "/uss/olh/hpc/EgovAdministrationWordUpdt"
      * @throws Exception
      */
     @RequestMapping("/uss/olh/awm/updateAdministrationWordView.do")
-    public String updateAdministrationWordView(@RequestParam("administWordId") String administWordId ,
-            @ModelAttribute("searchVO") AdministrationWordVO searchVO, ModelMap model)
-            throws Exception {
+    public String updateAdministrationWordView(@RequestParam("administWordId") String administWordId, @ModelAttribute("searchVO") AdministrationWordVO searchVO, ModelMap model) throws Exception {
 
-    	// 공통코드를 가져오기 위한 Vo
-    	ComDefaultCodeVO vo = new ComDefaultCodeVO();
-		vo.setCodeId("COM102");
+        // 공통코드를 가져오기 위한 Vo
+        ComDefaultCodeVO vo = new ComDefaultCodeVO();
+        vo.setCodeId("COM102");
 
-		List<?> _result = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("wordSeCode", _result);
+        List<CmmnDetailCode> _result = cmmUseService.selectCmmCodeDetail(vo);
+        model.addAttribute("wordSeCode", _result);
 
-		AdministrationWordVO administrationWordVO = new AdministrationWordVO();
-		administrationWordVO.setAdministWordId(administWordId);
+        AdministrationWordVO administrationWordVO = new AdministrationWordVO();
+        administrationWordVO.setAdministWordId(administWordId);
 
         model.addAttribute("administrationWordVO", egovAdministrationWordService.selectAdministrationWordDetail(administrationWordVO));
 
         return "egovframework/com/uss/olh/awm/EgovAdministrationWordUpdt";
     }
-    
+
     /**
      * 행정전문용어사전을 수정한다.
      * @param searchVO
@@ -287,7 +287,7 @@ public class EgovAdministrationWordController {
         return "forward:/uss/olh/awm/selectAdministrationWordManageList.do";
 
     }
-    
+
     /**
      * 행정전문용어사전을 삭제한다.
      * @param hpcmVO
@@ -302,5 +302,5 @@ public class EgovAdministrationWordController {
 
         return "forward:/uss/olh/awm/selectAdministrationWordManageList.do";
     }
-    
+
 }
