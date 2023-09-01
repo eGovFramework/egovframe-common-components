@@ -291,7 +291,7 @@ public class EgovRecentSrchwrdController {
 			egovRecentSrchwrdService.deleteRecentSrchwrdResultAll(searchVO);
 		}
 
-		List<?> reusltList = egovRecentSrchwrdService.selectRecentSrchwrdResultList(searchVO);
+		List<EgovMap> reusltList = egovRecentSrchwrdService.selectRecentSrchwrdResultList(searchVO);
 		model.addAttribute("resultList", reusltList);
 
 		model.addAttribute("searchKeyword",

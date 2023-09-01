@@ -7,6 +7,7 @@ import egovframework.com.uss.ion.rsm.service.RecentSrchwrd;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 import javax.annotation.Resource;
 
@@ -122,7 +123,7 @@ public class EgovRecentSrchwrdServiceImpl extends EgovAbstractServiceImpl
      * @throws Exception
      */
     @Override
-	public List<?> selectRecentSrchwrdResultList(RecentSrchwrd searchVO) throws Exception {
+	public List<EgovMap> selectRecentSrchwrdResultList(RecentSrchwrd searchVO) throws Exception {
         return dao.selectRecentSrchwrdResultList(searchVO);
     }
 
