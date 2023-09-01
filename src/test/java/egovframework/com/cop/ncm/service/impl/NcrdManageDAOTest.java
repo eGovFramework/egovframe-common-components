@@ -452,13 +452,27 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
         }
     }
 
+    /**
+     * 명함사용자 정보 목록 개수 조회 테스트
+     */
+    @Test
+    public void testSelectNcrdUseInfsCnt() {
+        // given
+        final NameCardUser nameCardUser = new NameCardUser();
+        nameCardUser.setEmplyrId(testNameCardUser.getEmplyrId());
+        nameCardUser.setSearchCnd("0");
+        nameCardUser.setSearchWrd(testNameCardUser.getNcrdNm());
+
+
+        // when
+        final int result = ncrdManageDAO.selectNcrdUseInfsCnt(nameCardUser);
+
+        // then
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);
+    }
+
 //    @Test
 //    public void testDeleteNcrdItemUser() {
-//        fail("Not yet implemented");
-//    }
-//
-//    @Test
-//    public void testSelectNcrdUseInfsCnt() {
 //        fail("Not yet implemented");
 //    }
 //
