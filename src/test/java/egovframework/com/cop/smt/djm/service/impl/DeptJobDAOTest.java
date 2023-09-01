@@ -408,4 +408,32 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
         }
     }
 
+    /**
+     * 주어진 조건에 따른 부서업무함 목록 전체를 불러온다.
+     */
+    @Test
+    public void selectDeptJobBxListAll() {
+        // given
+        final DeptJobBx testDataDeptJobBx = new DeptJobBx();
+        testDataDeptJobBx(testDataDeptJobBx);
+
+        // when
+        final List<DeptJobBxVO> resultList = deptJobDAO.selectDeptJobBxListAll();
+
+        // then
+        if (log.isDebugEnabled()) {
+            log.debug("resultList={}", resultList);
+            log.debug("size={}", resultList.size());
+            for (final DeptJobBxVO result : resultList) {
+                log.debug("result={}", result);
+                log.debug("getDeptId={}", result.getDeptId());
+                log.debug("getDeptNm={}", result.getDeptNm());
+                log.debug("getDeptJobBxId={}", result.getDeptJobBxId());
+                log.debug("getDeptJobBxNm={}", result.getDeptJobBxNm());
+            }
+        }
+
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), true, resultList != null);
+    }
+
 }
