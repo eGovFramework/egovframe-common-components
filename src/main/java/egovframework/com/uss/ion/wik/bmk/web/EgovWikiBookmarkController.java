@@ -4,6 +4,9 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +24,6 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.wik.bmk.service.EgovWikiBookmarkService;
 import egovframework.com.uss.ion.wik.bmk.service.WikiBookmark;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import org.egovframe.rte.fdl.property.EgovPropertyService;
-import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
  * 위키북마크를 처리하는 Controller Class 구현
@@ -61,53 +62,48 @@ public class EgovWikiBookmarkController {
     protected EgovPropertyService propertiesService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EgovWikiBookmarkController.class);
-    
+
     /**
      * 위키북마크 목록을 조회한다.
-     * @param searchVO -위키북마크 model
-     * @param searchVO -위키북마크 model
+     *
+     * @param searchVO   -위키북마크 model
+     * @param searchVO   -위키북마크 model
      * @param commandMap -Request Variable
-     * @param model -Spring 제공하는 ModelMap
+     * @param model      -Spring 제공하는 ModelMap
      * @return String -리턴 URL
      * @throws Exception
      */
-    @IncludedInfo(name="Wiki기능", order = 810 ,gid = 50)
+    @IncludedInfo(name = "Wiki기능", order = 810, gid = 50)
     @RequestMapping(value = "/uss/ion/wik/bmk/listWikiBookmark.do")
-    public String EgovWikiBookmarkList(
-    		@ModelAttribute("searchVO") WikiBookmark searchVO,
-    		WikiBookmark wikiBookmark,
-    		@RequestParam Map<?, ?> commandMap,
-    		@RequestParam(value="checkList", required=false) List<String> checkList,
-            ModelMap model) throws Exception {
+    public String EgovWikiBookmarkList(@ModelAttribute("searchVO") WikiBookmark searchVO, WikiBookmark wikiBookmark, @RequestParam Map<?, ?> commandMap, @RequestParam(value = "checkList", required = false) List<String> checkList, ModelMap model) throws Exception {
 
-    	//변수 설정
-    	String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
+        // 변수 설정
+        String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
-		//Spring Security 사용자권한 처리
-	    Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-	    if (!isAuthenticated) {
-	        model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-	        return "redirect:/uat/uia/egovLoginUsr.do";
-	    }
-
-        //로그인 객체 선언
-        LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-
-        //삭제 모드로 실행시
-        if(sCmd.equals("del")){
-	              	
-        	for(String checkData : checkList) {
-        		LOGGER.debug("===>>> checkData = "+checkData);   
-                wikiBookmark.setWikiBkmkId(checkData);
-	            egovWikiBookmarkService.deleteWikiBookmark(wikiBookmark);
-            }
-
-	        //페이지 인텍스 설정
-	        searchVO.setPageIndex(1);
-
-	        return "redirect:/uss/ion/wik/bmk/listWikiBookmark.do";
+        // Spring Security 사용자권한 처리
+        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+        if (!isAuthenticated) {
+            model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
+        // 로그인 객체 선언
+        LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+        // 삭제 모드로 실행시
+        if (sCmd.equals("del")) {
+
+            for (String checkData : checkList) {
+                LOGGER.debug("===>>> checkData = " + checkData);
+                wikiBookmark.setWikiBkmkId(checkData);
+                egovWikiBookmarkService.deleteWikiBookmark(wikiBookmark);
+            }
+
+            // 페이지 인텍스 설정
+            searchVO.setPageIndex(1);
+
+            return "redirect:/uss/ion/wik/bmk/listWikiBookmark.do";
+        }
 
         /** EgovPropertyService.sample */
         searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -125,7 +121,7 @@ public class EgovWikiBookmarkController {
 
         searchVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 
-        List<?> reusltList = egovWikiBookmarkService.selectWikiBookmarkList(searchVO);
+        List<EgovMap> reusltList = egovWikiBookmarkService.selectWikiBookmarkList(searchVO);
         model.addAttribute("resultList", reusltList);
 
         model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword"));
@@ -135,8 +131,8 @@ public class EgovWikiBookmarkController {
         paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);
 
-    	return "egovframework/com/uss/ion/wik/bmk/EgovWikiBookmarkList";
-	}
+        return "egovframework/com/uss/ion/wik/bmk/EgovWikiBookmarkList";
+    }
 
     /**
      * 위키북마크를 등록 한다.

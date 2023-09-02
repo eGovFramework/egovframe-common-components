@@ -2,17 +2,17 @@ package egovframework.com.uss.ion.wik.bmk.service.impl;
 
 import java.util.List;
 
-import egovframework.com.uss.ion.wik.bmk.service.EgovWikiBookmarkService;
-import egovframework.com.uss.ion.wik.bmk.service.WikiBookmark;
+import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-
-import javax.annotation.Resource;
-
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import egovframework.com.uss.ion.wik.bmk.service.EgovWikiBookmarkService;
+import egovframework.com.uss.ion.wik.bmk.service.WikiBookmark;
 
 /**
  * 위키북마크를 처리하는 ServiceImpl Class 구현
@@ -42,15 +42,16 @@ public class EgovWikiBookmarkServiceImpl extends EgovAbstractServiceImpl impleme
     private static final Logger LOGGER = LoggerFactory.getLogger(EgovWikiBookmarkServiceImpl.class);
 
     /**
-	 * 위키북마크 목록을 조회한다.
-	 * @param wikiBookmark -조회할 정보가 담긴 객체
-	 * @return List
-	 * @throws Exception
-	 */
-	@Override
-	public List<?> selectWikiBookmarkList(WikiBookmark wikiBookmark) throws Exception{
-		return dao.selectWikiBookmarkList(wikiBookmark);
-	}
+     * 위키북마크 목록을 조회한다.
+     *
+     * @param wikiBookmark -조회할 정보가 담긴 객체
+     * @return List
+     * @throws Exception
+     */
+    @Override
+    public List<EgovMap> selectWikiBookmarkList(WikiBookmark wikiBookmark) throws Exception {
+        return dao.selectWikiBookmarkList(wikiBookmark);
+    }
 
     /**
      * 위키북마크를(을) 목록 전체 건수를(을) 조회한다.
