@@ -110,7 +110,7 @@ public class NcrdManageDAO extends EgovComAbstractDAO {
     /**
      * 명함사용자 정보에 대한 목록 전체 건수를 조회한다.
      *
-     * @param nameCardUser
+     * @param ncrdUser
      * @return
      * @throws Exception
      */
@@ -131,11 +131,11 @@ public class NcrdManageDAO extends EgovComAbstractDAO {
     /**
      * 명함사용자 정보를 수정한다.
      *
-     * @param ncrdUser
+     * @param nameCardUser
      * @throws Exception
      */
-    public void updateNcrdUseInf(NameCardUser ncrdUser) throws Exception {
-        update("NcrdManageDAO.updateNcrdUseInf", ncrdUser);
+    public int updateNcrdUseInf(NameCardUser nameCardUser) {
+        return update("NcrdManageDAO.updateNcrdUseInf", nameCardUser);
     }
 
     /**

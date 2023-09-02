@@ -471,14 +471,25 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
         assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);
     }
 
+    /**
+     * 명함사용자 정보 수정(등록구분코드) 테스트
+     */
+    @Test
+    public void testUpdateNcrdUseInf() {
+        // given
+        testNameCardUser.setRegistSeCode("REGC05");
+
+        // when
+        final int result = ncrdManageDAO.updateNcrdUseInf(testNameCardUser);
+
+        // then
+        assertEquals(egovMessageSource.getMessage("fail.common.update"), 1, result);
+    }
+
 //    @Test
 //    public void testDeleteNcrdItemUser() {
 //        fail("Not yet implemented");
 //    }
 //
-//    @Test
-//    public void testUpdateNcrdUseInf() {
-//        fail("Not yet implemented");
-//    }
 
 }
