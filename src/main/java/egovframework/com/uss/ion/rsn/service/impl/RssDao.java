@@ -30,7 +30,7 @@ public class RssDao extends EgovComAbstractDAO {
      * @return List -조회한목록이담긴List
      * @throws Exception
      */
-    public List<?> selectRssTagServiceTable(Map<?, ?> param) throws Exception {
+    public List<Map<String, String>> selectRssTagServiceTable(Map<?, ?> param) throws Exception {
     	return selectList("RssTagService.selectRssTagServiceTable",param);
     }
 
