@@ -59,10 +59,11 @@
 			
 	<!-- 2018.05.23 delete 문 외래키(FK) constraint 때문에 두 개 작성-->	
 	<delete id="deleteNcrdItemUser" parameterType="egovframework.com.cop.ncm.service.NameCardVO">
-	DELETE FROM COMTNNCRDUSER
-	WHERE NCRD_ID = #{ncrdId} 
-	AND EMPLYR_ID = #{emplyrId}
-	</delete> 
+        DELETE FROM COMTNNCRDUSER
+        WHERE NCRD_ID = #{ncrdId} 
+            AND EMPLYR_ID = #{emplyrId}
+	</delete>
+
 	<delete id="deleteNcrdItem" parameterType="egovframework.com.cop.ncm.service.NameCardVO">
 	DELETE FROM COMTNNCRD
 	WHERE NCRD_ID = #{ncrdId}
