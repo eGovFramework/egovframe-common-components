@@ -10,6 +10,7 @@ import egovframework.com.uss.ion.rsn.service.EgovRssService;
 import egovframework.com.uss.ion.rsn.service.RssInfo;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 import javax.annotation.Resource;
@@ -84,7 +85,7 @@ public class EgovRssController {
         searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
         searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> reusltList = egovRssService.selectRssTagServiceList(searchVO);
+        List<EgovMap> reusltList = egovRssService.selectRssTagServiceList(searchVO);
         model.addAttribute("resultList", reusltList);
 
         model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword"));
