@@ -114,16 +114,15 @@ public class DeptJobDAO extends EgovComAbstractDAO{
         return selectOne("DeptJobDAO.selectDeptJobBxListCnt", deptJobBxVO);
     }
 
-	/**
-	 * 주어진 조건에 맞는 부서업무함을 불러온다.
-	 * @param DeptJobBxVO
-	 * @return DeptJobBxVO
-	 * 
-	 * @param deptJobBxVO
-	 */
-	public DeptJobBxVO selectDeptJobBx(DeptJobBxVO deptJobBxVO) throws Exception{
-		return (DeptJobBxVO)selectOne("DeptJobDAO.selectDeptJobBx", deptJobBxVO);
-	}
+    /**
+     * 주어진 조건에 맞는 부서업무함을 불러온다.
+     * 
+     * @param deptJobBxVO
+     * @return DeptJobBxVO
+     */
+    public DeptJobBxVO selectDeptJobBx(DeptJobBxVO deptJobBxVO) {
+        return selectOne("DeptJobDAO.selectDeptJobBx", deptJobBxVO);
+    }
 
 	/**
 	 * 부서업무함 정보를 수정한다.
