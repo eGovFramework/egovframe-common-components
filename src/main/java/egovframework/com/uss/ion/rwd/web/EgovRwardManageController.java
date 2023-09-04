@@ -133,51 +133,46 @@ public class EgovRwardManageController {
          return "egovframework/com/uss/ion/rwd/EgovRwardManageList";
      }
 
-	/**
-	 * 등록된 포상관리의 상세정보를 조회한다.
-	 * @param rwardManageVO - 포상관리 VO
-	 * @return String - 리턴 Url
-	 */
-    @RequestMapping(value="/uss/ion/rwd/EgovRwardManageDetail.do")
-	 public String selectRwardManage(   @ModelAttribute("rwardManage") RwardManage rwardManage,
-                                        @ModelAttribute("rwardManageVO") RwardManageVO rwardManageVO,
-                                        @RequestParam Map<?, ?> commandMap,
-			                            ModelMap model) throws Exception {
-    	String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd"); // 상세정보 구분
-    	rwardManageVO.setRwardDe(EgovStringUtil.removeMinusChar(rwardManageVO.getRwardDe()));
+     /**
+      * 등록된 포상관리의 상세정보를 조회한다.
+      *
+      * @param rwardManageVO - 포상관리 VO
+      * @return String - 리턴 Url
+      */
+     @RequestMapping(value = "/uss/ion/rwd/EgovRwardManageDetail.do")
+     public String selectRwardManage(@ModelAttribute("rwardManage") RwardManage rwardManage, @ModelAttribute("rwardManageVO") RwardManageVO rwardManageVO, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+         String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd"); // 상세정보 구분
+         rwardManageVO.setRwardDe(EgovStringUtil.removeMinusChar(rwardManageVO.getRwardDe()));
 
+         // 등록 상세정보
+         RwardManageVO rwardManageVOTemp = egovRwardManageService.selectRwardManage(rwardManageVO);
 
+         model.addAttribute("rwardManageVO", rwardManageVOTemp);
+         model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
-        // 등록 상세정보
-    	RwardManageVO rwardManageVOTemp = egovRwardManageService.selectRwardManage(rwardManageVO);
+         if (sCmd.equals("updt")) {
+             RwardManage rwardManage_1 = new RwardManage();
 
-    	model.addAttribute("rwardManageVO", rwardManageVOTemp);
-    	model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
+             rwardManage_1.setRwardId(rwardManageVOTemp.getRwardId());
+             rwardManage_1.setRwardNm(rwardManageVOTemp.getRwardNm());
+             rwardManage_1.setPblenCn(rwardManageVOTemp.getPblenCn());
+             rwardManage_1.setRwardManId(rwardManageVOTemp.getRwardManId());
+             rwardManage_1.setRwardCd(rwardManageVOTemp.getRwardCd());
+             rwardManage_1.setRwardDe(rwardManageVOTemp.getRwardDe());
+             rwardManage_1.setInfrmlSanctnId(rwardManageVOTemp.getInfrmlSanctnId());
+             rwardManage_1.setSanctnerId(rwardManageVOTemp.getSanctnerId());
 
-		if(sCmd.equals("updt")){
-			RwardManage rwardManage_1 = new RwardManage();
+             ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
+             comDefaultCodeVO.setCodeId("COM055");
+             List<CmmnDetailCode> rwardCdCodeList = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+             model.addAttribute("rwardCodeList", rwardCdCodeList);
+             model.addAttribute("rwardManage", rwardManage_1);
+             return "egovframework/com/uss/ion/rwd/EgovRwardUpdt";
+         } else {
+             return "egovframework/com/uss/ion/rwd/EgovRwardDetail";
+         }
 
-			rwardManage_1.setRwardId(rwardManageVOTemp.getRwardId());
-			rwardManage_1.setRwardNm(rwardManageVOTemp.getRwardNm());
-			rwardManage_1.setPblenCn(rwardManageVOTemp.getPblenCn());
-			rwardManage_1.setRwardManId(rwardManageVOTemp.getRwardManId());
-			rwardManage_1.setRwardCd(rwardManageVOTemp.getRwardCd());
-			rwardManage_1.setRwardDe(rwardManageVOTemp.getRwardDe());
-			rwardManage_1.setInfrmlSanctnId(rwardManageVOTemp.getInfrmlSanctnId());
-			rwardManage_1.setSanctnerId(rwardManageVOTemp.getSanctnerId());
-
-	    	List<?> rwardCdCodeList = null;
-	    	ComDefaultCodeVO vo = new ComDefaultCodeVO();
-			vo.setCodeId("COM055");
-			rwardCdCodeList = cmmUseService.selectCmmCodeDetail(vo);
-	        model.addAttribute("rwardCodeList",    rwardCdCodeList);
-			model.addAttribute("rwardManage", rwardManage_1);
-			return "egovframework/com/uss/ion/rwd/EgovRwardUpdt";
-		}else{
-			return "egovframework/com/uss/ion/rwd/EgovRwardDetail";
-		}
-
-	}
+     }
 
 	/**
 	 * 포상관리 등록 화면으로 이동한다.
