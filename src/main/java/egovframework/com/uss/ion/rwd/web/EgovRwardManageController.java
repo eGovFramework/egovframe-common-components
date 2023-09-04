@@ -3,24 +3,9 @@ package egovframework.com.uss.ion.rwd.web;
 import java.util.List;
 import java.util.Map;
 
-import egovframework.com.cmm.ComDefaultCodeVO;
-import egovframework.com.cmm.EgovMessageSource;
-import egovframework.com.cmm.LoginVO;
-import egovframework.com.cmm.annotation.IncludedInfo;
-import egovframework.com.cmm.service.EgovCmmUseService;
-import egovframework.com.cmm.service.EgovFileMngService;
-import egovframework.com.cmm.service.EgovFileMngUtil;
-import egovframework.com.cmm.service.FileVO;
-import egovframework.com.cmm.util.EgovUserDetailsHelper;
-import egovframework.com.uss.ion.rwd.service.EgovRwardManageService;
-import egovframework.com.uss.ion.rwd.service.RwardManage;
-import egovframework.com.uss.ion.rwd.service.RwardManageVO;
-import egovframework.com.utl.fcc.service.EgovStringUtil;
-
-import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-
 import javax.annotation.Resource;
 
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -32,6 +17,21 @@ import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springmodules.validation.commons.DefaultBeanValidator;
+
+import egovframework.com.cmm.ComDefaultCodeVO;
+import egovframework.com.cmm.EgovMessageSource;
+import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.CmmnDetailCode;
+import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.service.EgovFileMngService;
+import egovframework.com.cmm.service.EgovFileMngUtil;
+import egovframework.com.cmm.service.FileVO;
+import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.uss.ion.rwd.service.EgovRwardManageService;
+import egovframework.com.uss.ion.rwd.service.RwardManage;
+import egovframework.com.uss.ion.rwd.service.RwardManageVO;
+import egovframework.com.utl.fcc.service.EgovStringUtil;
 
 /**
  * 개요
@@ -77,22 +77,23 @@ public class EgovRwardManageController {
     @Autowired
 	 private DefaultBeanValidator beanValidator;
 
-    /**
-	 * 포상관리 목록화면 이동
-	 * @return String
-	 * @exception Exception
-	 */
-    @RequestMapping("/uss/ion/rwd/EgovRwardManageListView.do")
-    public String selectRwardManageListView(/*@ModelAttribute("vcatnManageVO") VcatnManageVO vcatnManageVO,*/ // 2011.8.16 수정분
-			                                ModelMap model) throws Exception {
-    	List<?> rwardCdCodeList = null;
-    	ComDefaultCodeVO vo = new ComDefaultCodeVO();
-		vo.setCodeId("COM055");
-		rwardCdCodeList = cmmUseService.selectCmmCodeDetail(vo);
-        model.addAttribute("rwardCodeList",    rwardCdCodeList);
+     /**
+      * 포상관리 목록화면 이동
+      *
+      * @return String
+      * @exception Exception
+      */
+     @RequestMapping("/uss/ion/rwd/EgovRwardManageListView.do")
+     public String selectRwardManageListView(/* @ModelAttribute("vcatnManageVO") VcatnManageVO vcatnManageVO, */ // 2011.8.16 수정분
+             ModelMap model) throws Exception {
+         List<CmmnDetailCode> rwardCdCodeList = null;
+         ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
+         comDefaultCodeVO.setCodeId("COM055");
+         rwardCdCodeList = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+         model.addAttribute("rwardCodeList", rwardCdCodeList);
 
-        return "egovframework/com/uss/ion/rwd/EgovRwardManageList";
-    }
+         return "egovframework/com/uss/ion/rwd/EgovRwardManageList";
+     }
 
 	/**
 	 * 포상관리정보를 관리하기 위해 등록된 포상관리 목록을 조회한다.
@@ -220,7 +221,7 @@ public class EgovRwardManageController {
 
 			//final Map<String, MultipartFile> files = multiRequest.getFileMap();
 			final List<MultipartFile> files = multiRequest.getFiles("file_1");
-			
+
 			if(!files.isEmpty()){
 			 _result = fileUtil.parseFileInf(files, "RWD_", 0, "", "");
 			 _atchFileId = fileMngService.insertFileInfs(_result);  //파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
@@ -346,7 +347,7 @@ public class EgovRwardManageController {
     	if (user == null) {
     		return "redirect:/uat/uia/egovLoginUsr.do";
     	}
-    	
+
     	rwardManageVO.setSanctnerId(user.getUniqId()); //사용자가 승인권자인지 조건값 setting   selectRwardManageList
 
     	rwardManageVO.setRwardManageList(egovRwardManageService.selectRwardManageConfmList(rwardManageVO));
