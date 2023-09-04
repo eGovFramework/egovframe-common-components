@@ -174,21 +174,19 @@ public class EgovRwardManageController {
 
      }
 
-	/**
-	 * 포상관리 등록 화면으로 이동한다.
-	 * @return String - 리턴 Url
-	 */
-    @RequestMapping(value="/uss/ion/rwd/EgovRwardRegist.do")
-	 public String insertViewRwardManage(@ModelAttribute("rwardManage")   RwardManage   rwardManage,
-			                             @ModelAttribute("rwardManageVO") RwardManageVO rwardManageVO,
-			 							 ModelMap model) throws Exception {
-    	List<?> rwardCdCodeList = null;
-    	ComDefaultCodeVO vo = new ComDefaultCodeVO();
-		vo.setCodeId("COM055");
-		rwardCdCodeList = cmmUseService.selectCmmCodeDetail(vo);
-        model.addAttribute("rwardCodeList",    rwardCdCodeList);
-    	return "egovframework/com/uss/ion/rwd/EgovRwardRegist";
-	}
+     /**
+      * 포상관리 등록 화면으로 이동한다.
+      *
+      * @return String - 리턴 Url
+      */
+     @RequestMapping(value = "/uss/ion/rwd/EgovRwardRegist.do")
+     public String insertViewRwardManage(@ModelAttribute("rwardManage") RwardManage rwardManage, @ModelAttribute("rwardManageVO") RwardManageVO rwardManageVO, ModelMap model) throws Exception {
+         ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
+         comDefaultCodeVO.setCodeId("COM055");
+         List<CmmnDetailCode> rwardCdCodeList = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+         model.addAttribute("rwardCodeList", rwardCdCodeList);
+         return "egovframework/com/uss/ion/rwd/EgovRwardRegist";
+     }
 
 	/**
 	 * 포상관리정보를 신규로 등록한다.
