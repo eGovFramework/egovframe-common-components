@@ -95,44 +95,43 @@ public class EgovRwardManageController {
          return "egovframework/com/uss/ion/rwd/EgovRwardManageList";
      }
 
-	/**
-	 * 포상관리정보를 관리하기 위해 등록된 포상관리 목록을 조회한다.
-	 * @param rwardManageVO - 포상관리 VO
-	 * @return String - 리턴 Url
-	 */
-    @IncludedInfo(name="포상관리", order = 920 ,gid = 50)
-    @RequestMapping(value="/uss/ion/rwd/selectRwardManageList.do")
-	 public String selectRwardManageList(@ModelAttribute("rwardManageVO") RwardManageVO rwardManageVO,
-			                             ModelMap model) throws Exception {
+     /**
+      * 포상관리정보를 관리하기 위해 등록된 포상관리 목록을 조회한다.
+      *
+      * @param rwardManageVO - 포상관리 VO
+      * @return String - 리턴 Url
+      */
+     @IncludedInfo(name = "포상관리", order = 920, gid = 50)
+     @RequestMapping(value = "/uss/ion/rwd/selectRwardManageList.do")
+     public String selectRwardManageList(@ModelAttribute("rwardManageVO") RwardManageVO rwardManageVO, ModelMap model) throws Exception {
 
-		/** paging */
-		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(rwardManageVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(rwardManageVO.getPageUnit());
-		paginationInfo.setPageSize(rwardManageVO.getPageSize());
+         /** paging */
+         PaginationInfo paginationInfo = new PaginationInfo();
+         paginationInfo.setCurrentPageNo(rwardManageVO.getPageIndex());
+         paginationInfo.setRecordCountPerPage(rwardManageVO.getPageUnit());
+         paginationInfo.setPageSize(rwardManageVO.getPageSize());
 
-		rwardManageVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		rwardManageVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		rwardManageVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+         rwardManageVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+         rwardManageVO.setLastIndex(paginationInfo.getLastRecordIndex());
+         rwardManageVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		rwardManageVO.setRwardManageList(egovRwardManageService.selectRwardManageList(rwardManageVO));
+         rwardManageVO.setRwardManageList(egovRwardManageService.selectRwardManageList(rwardManageVO));
 
-		model.addAttribute("rwardManageList", rwardManageVO.getRwardManageList());
+         model.addAttribute("rwardManageList", rwardManageVO.getRwardManageList());
 
-		int totCnt = egovRwardManageService.selectRwardManageListTotCnt(rwardManageVO);
-		paginationInfo.setTotalRecordCount(totCnt);
+         int totCnt = egovRwardManageService.selectRwardManageListTotCnt(rwardManageVO);
+         paginationInfo.setTotalRecordCount(totCnt);
 
-    	List<?> rwardCdCodeList = null;
-    	ComDefaultCodeVO vo = new ComDefaultCodeVO();
-		vo.setCodeId("COM055");
-		rwardCdCodeList = cmmUseService.selectCmmCodeDetail(vo);
+         ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
+         comDefaultCodeVO.setCodeId("COM055");
+         List<CmmnDetailCode> rwardCdCodeList = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 
-		model.addAttribute("rwardCodeList",    rwardCdCodeList);
-		model.addAttribute("paginationInfo",   paginationInfo );
-		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
+         model.addAttribute("rwardCodeList", rwardCdCodeList);
+         model.addAttribute("paginationInfo", paginationInfo);
+         model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
-		return "egovframework/com/uss/ion/rwd/EgovRwardManageList";
-	}
+         return "egovframework/com/uss/ion/rwd/EgovRwardManageList";
+     }
 
 	/**
 	 * 등록된 포상관리의 상세정보를 조회한다.
