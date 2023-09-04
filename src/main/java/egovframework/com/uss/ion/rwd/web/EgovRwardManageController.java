@@ -316,50 +316,49 @@ public class EgovRwardManageController {
 	}
 
     /*** 승인관련 ***/
-	/**
-	 * 포상관리정보 승인 처리를 위해 신청된 포상관리 목록을 조회한다.
-	 * @param rwardManageVO - 포상관리 VO
-	 * @return String - 리턴 Url
-	 */
-    @IncludedInfo(name="포상승인관리", order = 921 ,gid = 50)
-    @RequestMapping(value="/uss/ion/rwd/EgovRwardConfmList.do")
-	 public String selectRwardManageConfmList(@ModelAttribute("rwardManageVO") RwardManageVO rwardManageVO,
-			                                  ModelMap model) throws Exception {
-		/** paging */
-		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(rwardManageVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(rwardManageVO.getPageUnit());
-		paginationInfo.setPageSize(rwardManageVO.getPageSize());
+    /**
+     * 포상관리정보 승인 처리를 위해 신청된 포상관리 목록을 조회한다.
+     *
+     * @param rwardManageVO - 포상관리 VO
+     * @return String - 리턴 Url
+     */
+    @IncludedInfo(name = "포상승인관리", order = 921, gid = 50)
+    @RequestMapping(value = "/uss/ion/rwd/EgovRwardConfmList.do")
+    public String selectRwardManageConfmList(@ModelAttribute("rwardManageVO") RwardManageVO rwardManageVO, ModelMap model) throws Exception {
+        /** paging */
+        PaginationInfo paginationInfo = new PaginationInfo();
+        paginationInfo.setCurrentPageNo(rwardManageVO.getPageIndex());
+        paginationInfo.setRecordCountPerPage(rwardManageVO.getPageUnit());
+        paginationInfo.setPageSize(rwardManageVO.getPageSize());
 
-		rwardManageVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		rwardManageVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		rwardManageVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+        rwardManageVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+        rwardManageVO.setLastIndex(paginationInfo.getLastRecordIndex());
+        rwardManageVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-    	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-    	if (user == null) {
-    		return "redirect:/uat/uia/egovLoginUsr.do";
-    	}
+        LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+        if (user == null) {
+            return "redirect:/uat/uia/egovLoginUsr.do";
+        }
 
-    	rwardManageVO.setSanctnerId(user.getUniqId()); //사용자가 승인권자인지 조건값 setting   selectRwardManageList
+        rwardManageVO.setSanctnerId(user.getUniqId()); // 사용자가 승인권자인지 조건값 setting selectRwardManageList
 
-    	rwardManageVO.setRwardManageList(egovRwardManageService.selectRwardManageConfmList(rwardManageVO));
+        rwardManageVO.setRwardManageList(egovRwardManageService.selectRwardManageConfmList(rwardManageVO));
 
-		model.addAttribute("rwardManageList", rwardManageVO.getRwardManageList());
+        model.addAttribute("rwardManageList", rwardManageVO.getRwardManageList());
 
-		int totCnt = egovRwardManageService.selectRwardManageConfmListTotCnt(rwardManageVO);
-		paginationInfo.setTotalRecordCount(totCnt);
-		model.addAttribute("paginationInfo", paginationInfo);
+        int totCnt = egovRwardManageService.selectRwardManageConfmListTotCnt(rwardManageVO);
+        paginationInfo.setTotalRecordCount(totCnt);
+        model.addAttribute("paginationInfo", paginationInfo);
 
-    	List<?> rwardCdCodeList = null;
-    	ComDefaultCodeVO vo = new ComDefaultCodeVO();
-		vo.setCodeId("COM055");
-		rwardCdCodeList = cmmUseService.selectCmmCodeDetail(vo);
+        ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
+        comDefaultCodeVO.setCodeId("COM055");
+        List<CmmnDetailCode> rwardCdCodeList = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 
-		model.addAttribute("rwardCodeList",    rwardCdCodeList);
-		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
+        model.addAttribute("rwardCodeList", rwardCdCodeList);
+        model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
-		return "egovframework/com/uss/ion/rwd/EgovRwardConfmList";
-	}
+        return "egovframework/com/uss/ion/rwd/EgovRwardConfmList";
+    }
 
 	/**
 	 * 포상승인관리 상세정보를 조회한다.
