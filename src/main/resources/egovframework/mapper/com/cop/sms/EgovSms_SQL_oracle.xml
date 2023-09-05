@@ -119,7 +119,7 @@
 						
 	</select> 
 	
-		<insert id="updateSmsRecptnInf" parameterType="egovframework.com.cop.sms.service.SmsRecptn">
+		<update id="updateSmsRecptnInf" parameterType="egovframework.com.cop.sms.service.SmsRecptn">
 		
 			UPDATE COMTNSMSRECPTN SET
 				RESULT_CODE = #{resultCode},
@@ -128,6 +128,6 @@
 				SMS_ID = #{smsId} AND
 				RECPTN_TELNO = #{recptnTelno}
 		
-	</insert>
+	</update>
 
 </mapper>
