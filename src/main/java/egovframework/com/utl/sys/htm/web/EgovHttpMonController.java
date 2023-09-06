@@ -94,7 +94,7 @@ public class EgovHttpMonController {
         searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
         searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<HttpMon> resultList = egovHttpMonService.selectHttpMonList(searchVO);
+        List<HttpMonVO> resultList = egovHttpMonService.selectHttpMonList(searchVO);
         model.addAttribute("resultList", resultList);
 
         int totCnt = egovHttpMonService.selectHttpMonTotCnt(searchVO);

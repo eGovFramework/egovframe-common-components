@@ -48,7 +48,7 @@ public class EgovHttpMonServiceImpl extends EgovAbstractServiceImpl implements E
      * @return List - HTTP서비스모니터링 목록
      */
     @Override
-    public List<HttpMon> selectHttpMonList(HttpMonVO searchVO) throws Exception {
+    public List<HttpMonVO> selectHttpMonList(HttpMonVO searchVO) throws Exception {
         return HttpMonDAO.selectHttpMonList(searchVO);
     }
 
