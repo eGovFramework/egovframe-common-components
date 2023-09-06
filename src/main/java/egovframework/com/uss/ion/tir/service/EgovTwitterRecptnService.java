@@ -28,6 +28,6 @@ public interface EgovTwitterRecptnService {
      * @return List 		-조회 결과
      * @throws Exception	-Exception Throws
 	 */
-	public List<?> twitterRecptnList(Map<?, ?> map, int nPageSize) throws Exception;
+	public List<TwitterInfo> twitterRecptnList(Map<?, ?> map, int nPageSize) throws Exception;
 
 }
