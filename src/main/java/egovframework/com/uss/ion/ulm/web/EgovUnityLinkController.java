@@ -238,21 +238,17 @@ public class EgovUnityLinkController {
 
     /**
      * 통합링크관리를 등록한다.
+     *
      * @param searchVO
      * @param commandMap
      * @param unityLinkVO
      * @param bindingResult
      * @param model
-     * @return
-     *         "/uss/ion/ulm/EgovOnlinePollRegist"
+     * @return "/uss/ion/ulm/EgovOnlinePollRegist"
      * @throws Exception
      */
     @RequestMapping(value = "/uss/ion/ulm/registUnityLink.do")
-    public String egovUnityLinkRegist(
-            @ModelAttribute("searchVO") ComDefaultVO searchVO,
-            @RequestParam Map<?, ?> commandMap,
-            @ModelAttribute("unityLink") UnityLink unityLink,
-            BindingResult bindingResult, ModelMap model) throws Exception {
+    public String egovUnityLinkRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap, @ModelAttribute("unityLink") UnityLink unityLink, BindingResult bindingResult, ModelMap model) throws Exception {
         // 0. Spring Security 사용자권한 처리
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
         if (!isAuthenticated) {
@@ -269,29 +265,27 @@ public class EgovUnityLinkController {
         LOGGER.info("cmd => {}", sCmd);
 
         if (sCmd.equals("save")) {
-            //서버  validate 체크
+            // 서버 validate 체크
             beanValidator.validate(unityLink, bindingResult);
-            if(bindingResult.hasErrors()){
+            if (bindingResult.hasErrors()) {
                 return sLocationUrl;
             }
-            //아이디 설정
+            // 아이디 설정
             unityLink.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
             unityLink.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-            //저장
+            // 저장
             egovUnityLinkService.insertUnityLink(unityLink);
 
             sLocationUrl = "forward:/uss/ion/ulm/listUnityLink.do";
         } else {
-            //통합링크구분설정
+            // 통합링크구분설정
             ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
             voComCode = new ComDefaultCodeVO();
             voComCode.setCodeId("COM039");
-            List<?> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
-            model.addAttribute("unityLinkSeCodeList", listComCode );
+            List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+            model.addAttribute("unityLinkSeCodeList", listComCode);
         }
 
         return sLocationUrl;
     }
-
-
 }
