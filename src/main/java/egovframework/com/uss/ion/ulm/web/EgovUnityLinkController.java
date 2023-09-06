@@ -24,6 +24,7 @@ import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.ulm.service.EgovUnityLinkService;
@@ -92,6 +93,7 @@ public class EgovUnityLinkController {
 
     /**
      * 통합링크관리 목록을 조회한다.
+     *
      * @param searchVO
      * @param commandMap
      * @param unityLinkVO
@@ -100,12 +102,9 @@ public class EgovUnityLinkController {
      * @throws Exception
      */
     @SuppressWarnings("unused")
-	@IncludedInfo(name="통합링크관리", order = 780 ,gid = 50)
+    @IncludedInfo(name = "통합링크관리", order = 780, gid = 50)
     @RequestMapping(value = "/uss/ion/ulm/listUnityLink.do")
-    public String egovUnityLinkList(
-            @ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap,
-            UnityLink unityLinkVO, ModelMap model)
-            throws Exception {
+    public String egovUnityLinkList(@ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap, UnityLink unityLinkVO, ModelMap model) throws Exception {
 
         String sSearchMode = commandMap.get("searchMode") == null ? "" : (String) commandMap.get("searchMode");
 
@@ -123,8 +122,8 @@ public class EgovUnityLinkController {
         searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
         searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> reusltList = egovUnityLinkService.selectUnityLinkList(searchVO);
-        model.addAttribute("resultList", reusltList);
+        List<EgovMap> resultList = egovUnityLinkService.selectUnityLinkList(searchVO);
+        model.addAttribute("resultList", resultList);
 
         model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword"));
         model.addAttribute("searchCondition", commandMap.get("searchCondition") == null ? "" : (String) commandMap.get("searchCondition"));
@@ -133,12 +132,12 @@ public class EgovUnityLinkController {
         paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);
 
-        //통합링크구분설정
+        // 통합링크구분설정
         ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
         voComCode = new ComDefaultCodeVO();
         voComCode.setCodeId("COM039");
-        List<?> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
-        model.addAttribute("unityLinkSeCodeList", listComCode );
+        List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+        model.addAttribute("unityLinkSeCodeList", listComCode);
 
         return "egovframework/com/uss/ion/ulm/EgovUnityLinkList";
     }

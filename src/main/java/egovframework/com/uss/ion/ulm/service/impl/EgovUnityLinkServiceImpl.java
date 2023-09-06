@@ -38,24 +38,26 @@ public class EgovUnityLinkServiceImpl extends EgovAbstractServiceImpl
     private EgovIdGnrService idgenService;
 
     /**
-     *통합링크관리 메인 샘플 목록을 조회한다.
-     * @param unityLink  통합링크관리 정보 담김 VO
+     * 통합링크관리 메인 샘플 목록을 조회한다.
+     *
+     * @param unityLink 통합링크관리 정보 담김 VO
      * @return List
      * @throws Exception
      */
     @Override
-	public List<EgovMap> selectUnityLinkSample(UnityLink unityLink) throws Exception {
+    public List<EgovMap> selectUnityLinkSample(UnityLink unityLink) throws Exception {
         return dao.selectUnityLinkSample(unityLink);
     }
 
     /**
      * 통합링크관리를(을) 목록을 조회 한다.
+     *
      * @param searchVO 조회할 정보가 담김 VO
      * @return List
      * @throws Exception
      */
     @Override
-	public List<?> selectUnityLinkList(ComDefaultVO searchVO) throws Exception {
+    public List<EgovMap> selectUnityLinkList(ComDefaultVO searchVO) throws Exception {
         return dao.selectUnityLinkList(searchVO);
     }
 

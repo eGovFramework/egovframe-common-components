@@ -24,21 +24,23 @@ import egovframework.com.cmm.ComDefaultVO;
  */
 public interface EgovUnityLinkService {
 
-	/**
-	 * 통합링크관리 메인 샘플 목록을 조회한다.
-	 * @param unityLink  통합링크관리 정보 담김 VO
-	 * @return List
-	 * @throws Exception
-	 */
-	public List<EgovMap> selectUnityLinkSample(UnityLink unityLink) throws Exception;
+    /**
+     * 통합링크관리 메인 샘플 목록을 조회한다.
+     *
+     * @param unityLink 통합링크관리 정보 담김 VO
+     * @return List
+     * @throws Exception
+     */
+    public List<EgovMap> selectUnityLinkSample(UnityLink unityLink) throws Exception;
 
-	/**
-	* 통합링크관리 목록을 조회한다.
-	* @param searchVO  조회할 정보가 담긴 VO
-	* @return List
-	* @throws Exception
-	*/
-	public List<?> selectUnityLinkList(ComDefaultVO searchVO) throws Exception;
+    /**
+     * 통합링크관리 목록을 조회한다.
+     *
+     * @param searchVO 조회할 정보가 담긴 VO
+     * @return List
+     * @throws Exception
+     */
+    public List<EgovMap> selectUnityLinkList(ComDefaultVO searchVO) throws Exception;
 
 	/**
 	* 통합링크관리를(을) 목록 전체 건수를(을) 조회한다.

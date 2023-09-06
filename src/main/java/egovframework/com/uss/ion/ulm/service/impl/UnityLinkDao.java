@@ -40,11 +40,12 @@ public class UnityLinkDao extends EgovComAbstractDAO {
 
     /**
      * 통합링크관리를(을) 목록을 한다.
+     *
      * @param searchVO 조회할 정보가 담긴 VO
      * @return List
      * @throws Exception
      */
-    public List<?> selectUnityLinkList(ComDefaultVO searchVO) throws Exception {
+    public List<EgovMap> selectUnityLinkList(ComDefaultVO searchVO) throws Exception {
         return selectList("UnityLink.selectUnityLink", searchVO);
     }
 
