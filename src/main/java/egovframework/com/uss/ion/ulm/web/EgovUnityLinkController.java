@@ -5,6 +5,9 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,8 +29,6 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.ulm.service.EgovUnityLinkService;
 import egovframework.com.uss.ion.ulm.service.UnityLink;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import org.egovframe.rte.fdl.property.EgovPropertyService;
-import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
  * 통합링크관리를 처리하는 Controller Class 구현
@@ -71,7 +72,8 @@ public class EgovUnityLinkController {
     private EgovCmmUseService cmmUseService;
 
     /**
-     * 통합링크관리 메인 셈플 목록을 조회한다.
+     * 통합링크관리 메인 샘플 목록을 조회한다.
+     *
      * @param searchVO
      * @param commandMap
      * @param unityLinkVO
@@ -80,13 +82,10 @@ public class EgovUnityLinkController {
      * @throws Exception
      */
     @RequestMapping(value = "/uss/ion/ulm/listUnityLinkSample.do")
-    public String egovUnityLinkSample1List(
-            UnityLink unityLinkVO,
-            ModelMap model)
-            throws Exception {
+    public String egovUnityLinkSample1List(UnityLink unityLinkVO, ModelMap model) throws Exception {
 
-        List<?> reusltList = egovUnityLinkService.selectUnityLinkSample(unityLinkVO);
-        model.addAttribute("resultList", reusltList);
+        List<EgovMap> resultList = egovUnityLinkService.selectUnityLinkSample(unityLinkVO);
+        model.addAttribute("resultList", resultList);
 
         return "egovframework/com/uss/ion/ulm/UnityLinkSample";
     }

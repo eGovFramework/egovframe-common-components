@@ -2,16 +2,16 @@ package egovframework.com.uss.ion.ulm.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.ComDefaultVO;
-import egovframework.com.uss.ion.ulm.service.EgovUnityLinkService;
-import egovframework.com.uss.ion.ulm.service.UnityLink;
+import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-
-import javax.annotation.Resource;
-
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Service;
+
+import egovframework.com.cmm.ComDefaultVO;
+import egovframework.com.uss.ion.ulm.service.EgovUnityLinkService;
+import egovframework.com.uss.ion.ulm.service.UnityLink;
 
 /**
  * 통합링크관리를 처리하는 ServiceImpl Class 구현
@@ -38,13 +38,13 @@ public class EgovUnityLinkServiceImpl extends EgovAbstractServiceImpl
     private EgovIdGnrService idgenService;
 
     /**
-     *통합링크관리 메인 셈플 목록을 조회한다.
+     *통합링크관리 메인 샘플 목록을 조회한다.
      * @param unityLink  통합링크관리 정보 담김 VO
      * @return List
      * @throws Exception
      */
     @Override
-	public List<?> selectUnityLinkSample(UnityLink unityLink) throws Exception {
+	public List<EgovMap> selectUnityLinkSample(UnityLink unityLink) throws Exception {
         return dao.selectUnityLinkSample(unityLink);
     }
 

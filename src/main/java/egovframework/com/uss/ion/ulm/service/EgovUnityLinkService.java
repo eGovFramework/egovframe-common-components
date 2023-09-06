@@ -2,6 +2,8 @@ package egovframework.com.uss.ion.ulm.service;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 import egovframework.com.cmm.ComDefaultVO;
 
 /**
@@ -23,12 +25,12 @@ import egovframework.com.cmm.ComDefaultVO;
 public interface EgovUnityLinkService {
 
 	/**
-	 * 통합링크관리 메인 셈플 목록을 조회한다.
+	 * 통합링크관리 메인 샘플 목록을 조회한다.
 	 * @param unityLink  통합링크관리 정보 담김 VO
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectUnityLinkSample(UnityLink unityLink) throws Exception;
+	public List<EgovMap> selectUnityLinkSample(UnityLink unityLink) throws Exception;
 
 	/**
 	* 통합링크관리 목록을 조회한다.
