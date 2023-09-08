@@ -6,6 +6,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.apache.commons.lang.StringUtils;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.MailSender;
@@ -14,9 +16,6 @@ import org.springframework.stereotype.Service;
 
 import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-
-import org.apache.commons.lang.StringUtils;
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 /**
  * @Class Name : HttpMntrngScheduling.java
@@ -63,7 +62,7 @@ public class HttpMntrngScheduling extends EgovAbstractServiceImpl {
 	public void monitorHttp() throws Exception {
 
 		// 모니터링 대상 정보 읽어들이기
-		List<HttpMon> targetList = null;
+		List<HttpMonVO> targetList = null;
 		HttpMonVO searchVO = new HttpMonVO();
 
 		// 모니터링 대상 검색 조건 초기화
@@ -76,7 +75,7 @@ public class HttpMntrngScheduling extends EgovAbstractServiceImpl {
 		LOGGER.debug("Result 건수 : {}", targetList.size());
 
 		// 서비스체크 함수 호출.
-		Iterator<HttpMon> iter = targetList.iterator();
+		Iterator<HttpMonVO> iter = targetList.iterator();
 		HttpMon target = null;
 
 		String webKind = null;
@@ -89,7 +88,7 @@ public class HttpMntrngScheduling extends EgovAbstractServiceImpl {
 		while (iter.hasNext()) {
 
 			nrmltAt = true;
-			target = (HttpMon) iter.next();
+			target = iter.next();
 			siteUrl = target.getSiteUrl();
 			LOGGER.debug("Data : {}", target);
 
