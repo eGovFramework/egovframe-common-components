@@ -134,33 +134,33 @@ public class EgovEntrprsManageController {
             return "index";
         }
 
-        ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
+        // ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
 
         // 패스워드힌트목록을 코드정보로부터 조회
-        comDefaultCodeVO.setCodeId("COM022");
-        List<CmmnDetailCode> passwordHint_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+        // comDefaultCodeVO.setCodeId("COM022");
+        // List<CmmnDetailCode> passwordHint_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
         // 성별구분코드를 코드정보로부터 조회
-        comDefaultCodeVO.setCodeId("COM014");
-        List<CmmnDetailCode> sexdstnCode_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+        // comDefaultCodeVO.setCodeId("COM014");
+        // List<CmmnDetailCode> sexdstnCode_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
         // 사용자상태코드를 코드정보로부터 조회
-        comDefaultCodeVO.setCodeId("COM013");
-        List<CmmnDetailCode> entrprsMberSttus_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+        // comDefaultCodeVO.setCodeId("COM013");
+        // List<CmmnDetailCode> entrprsMberSttus_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
         // 그룹정보를 조회 - GROUP_ID정보
-        comDefaultCodeVO.setTableNm("COMTNORGNZTINFO");
-        List<CmmnDetailCode> groupId_result = cmmUseService.selectGroupIdDetail(comDefaultCodeVO);
+        // comDefaultCodeVO.setTableNm("COMTNORGNZTINFO");
+        // List<CmmnDetailCode> groupId_result = cmmUseService.selectGroupIdDetail(comDefaultCodeVO);
         // 기업구분코드를 코드정보로부터 조회 - COM026
-        comDefaultCodeVO.setCodeId("COM026");
-        List<CmmnDetailCode> entrprsSeCode_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+        // comDefaultCodeVO.setCodeId("COM026");
+        // List<CmmnDetailCode> entrprsSeCode_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
         // 업종코드를 코드정보로부터 조회 - COM027
-        comDefaultCodeVO.setCodeId("COM027");
-        List<CmmnDetailCode> indutyCode_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+        // comDefaultCodeVO.setCodeId("COM027");
+        // List<CmmnDetailCode> indutyCode_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 
-        model.addAttribute("passwordHint_result", passwordHint_result); // 패스워트힌트목록
-        model.addAttribute("sexdstnCode_result", sexdstnCode_result); // 성별구분코드목록
-        model.addAttribute("entrprsMberSttus_result", entrprsMberSttus_result);// 사용자상태코드목록
-        model.addAttribute("groupId_result", groupId_result); // 그룹정보 목록
-        model.addAttribute("entrprsSeCode_result", entrprsSeCode_result); // 기업구분코드 목록
-        model.addAttribute("indutyCode_result", indutyCode_result); // 업종코드목록
+        // model.addAttribute("passwordHint_result", passwordHint_result); // 패스워트힌트목록
+        // model.addAttribute("sexdstnCode_result", sexdstnCode_result); // 성별구분코드목록
+        // model.addAttribute("entrprsMberSttus_result", entrprsMberSttus_result);// 사용자상태코드목록
+        // model.addAttribute("groupId_result", groupId_result); // 그룹정보 목록
+        // model.addAttribute("entrprsSeCode_result", entrprsSeCode_result); // 기업구분코드 목록
+        // model.addAttribute("indutyCode_result", indutyCode_result); // 업종코드목록
 
         return "egovframework/com/uss/umt/EgovEntrprsMberInsert";
     }
@@ -224,32 +224,32 @@ public class EgovEntrprsManageController {
         model.addAttribute("entrprsManageVO", entrprsManageVO);
         model.addAttribute("userSearchVO", userSearchVO);
 
-        ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
+        // ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
         // 패스워드힌트목록을 코드정보로부터 조회
-        comDefaultCodeVO.setCodeId("COM022");
-        List<CmmnDetailCode> passwordHint_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+        // comDefaultCodeVO.setCodeId("COM022");
+        // List<CmmnDetailCode> passwordHint_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
         // 성별구분코드를 코드정보로부터 조회
-        comDefaultCodeVO.setCodeId("COM014");
-        List<CmmnDetailCode> sexdstnCode_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+        // comDefaultCodeVO.setCodeId("COM014");
+        // List<CmmnDetailCode> sexdstnCode_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
         // 사용자상태코드를 코드정보로부터 조회
-        comDefaultCodeVO.setCodeId("COM013");
-        List<CmmnDetailCode> entrprsMberSttus_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+        // comDefaultCodeVO.setCodeId("COM013");
+        // List<CmmnDetailCode> entrprsMberSttus_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
         // 그룹정보를 조회 - GROUP_ID정보
-        comDefaultCodeVO.setTableNm("COMTNORGNZTINFO");
-        List<CmmnDetailCode> groupId_result = cmmUseService.selectGroupIdDetail(comDefaultCodeVO);
+        // comDefaultCodeVO.setTableNm("COMTNORGNZTINFO");
+        // List<CmmnDetailCode> groupId_result = cmmUseService.selectGroupIdDetail(comDefaultCodeVO);
         // 기업구분코드를 코드정보로부터 조회 - COM026
-        comDefaultCodeVO.setCodeId("COM026");
-        List<CmmnDetailCode> entrprsSeCode_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+        // comDefaultCodeVO.setCodeId("COM026");
+        // List<CmmnDetailCode> entrprsSeCode_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
         // 업종코드를 코드정보로부터 조회 - COM027
-        comDefaultCodeVO.setCodeId("COM027");
-        List<CmmnDetailCode> indutyCode_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+        // comDefaultCodeVO.setCodeId("COM027");
+        // List<CmmnDetailCode> indutyCode_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 
-        model.addAttribute("passwordHint_result", passwordHint_result); // 패스워트힌트목록
-        model.addAttribute("sexdstnCode_result", sexdstnCode_result); // 성별구분코드목록
-        model.addAttribute("entrprsMberSttus_result", entrprsMberSttus_result);// 사용자상태코드목록
-        model.addAttribute("groupId_result", groupId_result); // 그룹정보 목록
-        model.addAttribute("entrprsSeCode_result", entrprsSeCode_result); // 기업구분코드 목록
-        model.addAttribute("indutyCode_result", indutyCode_result); // 업종코드목록
+        // model.addAttribute("passwordHint_result", passwordHint_result); // 패스워트힌트목록
+        // model.addAttribute("sexdstnCode_result", sexdstnCode_result); // 성별구분코드목록
+        // model.addAttribute("entrprsMberSttus_result", entrprsMberSttus_result);// 사용자상태코드목록
+        // model.addAttribute("groupId_result", groupId_result); // 그룹정보 목록
+        // model.addAttribute("entrprsSeCode_result", entrprsSeCode_result); // 기업구분코드 목록
+        // model.addAttribute("indutyCode_result", indutyCode_result); // 업종코드목록
 
         // 2021.05.30, 정진오, 디지털원패스 정보 조회
         LoginVO loginVO = (LoginVO) request.getSession().getAttribute("loginVO");
@@ -395,10 +395,10 @@ public class EgovEntrprsManageController {
         model.addAttribute("paginationInfo", paginationInfo);
 
         // 사용자상태코드를 코드정보로부터 조회
-        ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
-        comDefaultCodeVO.setCodeId("COM013");
-        List<CmmnDetailCode> entrprsMberSttus_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
-        model.addAttribute("entrprsMberSttus_result", entrprsMberSttus_result);// 기업회원상태코드목록
+        // ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
+        // comDefaultCodeVO.setCodeId("COM013");
+        // List<CmmnDetailCode> entrprsMberSttus_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+        // model.addAttribute("entrprsMberSttus_result", entrprsMberSttus_result);// 기업회원상태코드목록
 
         return "egovframework/com/uss/umt/EgovEntrprsMberManage";
     }
@@ -416,24 +416,24 @@ public class EgovEntrprsManageController {
     @RequestMapping("/uss/umt/EgovEntrprsMberSbscrbView.do")
     public String sbscrbEntrprsMberView(@ModelAttribute("userSearchVO") UserDefaultVO userSearchVO, @ModelAttribute("entrprsManageVO") EntrprsManageVO entrprsManageVO, @RequestParam Map<String, Object> commandMap, Model model) throws Exception {
 
-        ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
+        // ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
         // 패스워드힌트목록을 코드정보로부터 조회
-        comDefaultCodeVO.setCodeId("COM022");
-        List<CmmnDetailCode> passwordHint_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+        // comDefaultCodeVO.setCodeId("COM022");
+        // List<CmmnDetailCode> passwordHint_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
         // 성별구분코드를 코드정보로부터 조회
-        comDefaultCodeVO.setCodeId("COM014");
-        List<CmmnDetailCode> sexdstnCode_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+        // comDefaultCodeVO.setCodeId("COM014");
+        // List<CmmnDetailCode> sexdstnCode_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
         // 기업구분코드를 코드정보로부터 조회 - COM026
-        comDefaultCodeVO.setCodeId("COM026");
-        List<CmmnDetailCode> entrprsSeCode_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+        // comDefaultCodeVO.setCodeId("COM026");
+        // List<CmmnDetailCode> entrprsSeCode_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
         // 업종코드를 코드정보로부터 조회 - COM027
-        comDefaultCodeVO.setCodeId("COM027");
-        List<CmmnDetailCode> indutyCode_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+        // comDefaultCodeVO.setCodeId("COM027");
+        // List<CmmnDetailCode> indutyCode_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 
-        model.addAttribute("passwordHint_result", passwordHint_result); // 패스워트힌트목록
-        model.addAttribute("sexdstnCode_result", sexdstnCode_result); // 성별구분코드목록
-        model.addAttribute("entrprsSeCode_result", entrprsSeCode_result); // 기업구분코드 목록
-        model.addAttribute("indutyCode_result", indutyCode_result); // 업종코드목록
+        // model.addAttribute("passwordHint_result", passwordHint_result); // 패스워트힌트목록
+        // model.addAttribute("sexdstnCode_result", sexdstnCode_result); // 성별구분코드목록
+        // model.addAttribute("entrprsSeCode_result", entrprsSeCode_result); // 기업구분코드 목록
+        // model.addAttribute("indutyCode_result", indutyCode_result); // 업종코드목록
 
         if (!"".equals(commandMap.get("realname"))) {
             model.addAttribute("applcntNm", commandMap.get("realname")); // 실명인증된 이름 - 주민번호인증
