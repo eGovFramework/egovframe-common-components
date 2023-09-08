@@ -88,7 +88,7 @@ public class EgovProcessMonController {
         processMonVO.setLastIndex(paginationInfo.getLastRecordIndex());
         processMonVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<ProcessMon> resultList = processMonService.selectProcessMonList(processMonVO);
+        List<ProcessMonVO> resultList = processMonService.selectProcessMonList(processMonVO);
         model.addAttribute("resultList", resultList);
 
         int totCnt = processMonService.selectProcessMonTotCnt(processMonVO);
