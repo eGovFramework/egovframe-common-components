@@ -55,7 +55,7 @@ public class EgovRssTagManageServiceImpl extends EgovAbstractServiceImpl
      */
     @SuppressWarnings({ "unchecked", "rawtypes" })
 	@Override
-	public List<?> selectRssTagManageTableColumnList(Map map) throws Exception {
+	public List<Map<String, String>> selectRssTagManageTableColumnList(Map map) throws Exception {
     	return dao.selectRssTagManageTableColumnList(map);
     }
     /**

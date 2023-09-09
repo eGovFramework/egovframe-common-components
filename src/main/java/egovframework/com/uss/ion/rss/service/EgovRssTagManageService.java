@@ -33,7 +33,7 @@ public interface EgovRssTagManageService {
      * @return List
      * @throws Exception
      */
-    public List<?> selectRssTagManageTableColumnList(Map<?, ?> map) throws Exception;
+    public List<Map<String, String>> selectRssTagManageTableColumnList(Map<?, ?> map) throws Exception;
 
     /**
 	 * RSS태그관리 목록을 조회한다.
