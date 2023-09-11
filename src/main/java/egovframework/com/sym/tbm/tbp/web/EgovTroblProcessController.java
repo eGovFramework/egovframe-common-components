@@ -5,6 +5,7 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.tbm.tbp.service.EgovTroblProcessService;
@@ -179,7 +180,7 @@ public class EgovTroblProcessController {
 	 * @return List
 	 * @exception Exception
 	 */
-    public List<?> getCmmCodeDetailList(ComDefaultCodeVO comDefaultCodeVO, String codeId)  throws Exception {
+    public List<CmmnDetailCode> getCmmCodeDetailList(ComDefaultCodeVO comDefaultCodeVO, String codeId)  throws Exception {
     	comDefaultCodeVO.setCodeId(codeId);
     	return EgovCmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
     }

@@ -29,7 +29,7 @@ public class NtwrkVO extends Ntwrk {
 	/**
 	 * 네트워크목록
 	 */
-    private List<?> ntwrkList;
+    private List<NtwrkVO> ntwrkList;
 	/**
 	 * 삭제여부
 	 */
@@ -62,13 +62,13 @@ public class NtwrkVO extends Ntwrk {
 	/**
 	 * @return the ntwrkList
 	 */
-	public List<?> getNtwrkList() {
+	public List<NtwrkVO> getNtwrkList() {
 		return ntwrkList;
 	}
 	/**
 	 * @param ntwrkList the ntwrkList to set
 	 */
-	public void setNtwrkList(List<?> ntwrkList) {
+	public void setNtwrkList(List<NtwrkVO> ntwrkList) {
 		this.ntwrkList = Collections.unmodifiableList(ntwrkList);
 	}
 	/**

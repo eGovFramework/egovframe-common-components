@@ -21,7 +21,7 @@ public interface EgovNtwrkService {
 	 * @param ntwrkVO - 네트워크 Vo
 	 * @return List - 네트워크 목록
 	 */
-    public List<?> selectNtwrkList(NtwrkVO ntwrkVO) throws Exception;
+    public List<NtwrkVO> selectNtwrkList(NtwrkVO ntwrkVO) throws Exception;
 
     /**
 	 * 네트워크 목록 총 개수를 조회한다.

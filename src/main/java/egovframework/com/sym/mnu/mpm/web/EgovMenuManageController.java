@@ -340,7 +340,7 @@ public class EgovMenuManageController {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
-		List<?> list_menulist = menuManageService.selectMenuList();
+		List<EgovMap> list_menulist = menuManageService.selectMenuList();
 //		resultMsg = egovMessageSource.getMessage("success.common.select");
 		model.addAttribute("list_menulist", list_menulist);
 		//        model.addAttribute("resultMsg", resultMsg);
@@ -484,7 +484,7 @@ public class EgovMenuManageController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		List<?> list_menulist = menuManageService.selectMenuList();
+		List<EgovMap> list_menulist = menuManageService.selectMenuList();
 		model.addAttribute("list_menulist", list_menulist);
 		return "egovframework/com/sym/mnu/mpm/EgovMenuMvmn";
 	}
@@ -507,7 +507,7 @@ public class EgovMenuManageController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		List<?> list_menulist = menuManageService.selectMenuList();
+		List<EgovMap> list_menulist = menuManageService.selectMenuList();
 		model.addAttribute("list_menulist", list_menulist);
 		return "egovframework/com/sym/mnu/mpm/EgovMenuMvmnNew";
 	}

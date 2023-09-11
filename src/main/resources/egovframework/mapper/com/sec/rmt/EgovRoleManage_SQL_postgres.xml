@@ -64,7 +64,7 @@
                   , #{roleDc}
                   , #{roleTyp}
                   , #{roleSort}
-				  , TO_CHAR(NOW(), 'YYYY-mm-dd HH24:MI:SS'))
+				  , NOW())
 		
 	</insert>
 
@@ -76,7 +76,7 @@
                  , ROLE_DC=#{roleDc}
                  , ROLE_TY=#{roleTyp}
                  , ROLE_SORT=#{roleSort}
-				 , ROLE_CREAT_DE=TO_CHAR(NOW(), 'YYYY-mm-dd HH24:MI:SS')
+				 , ROLE_CREAT_DE=NOW()
 		  	 WHERE ROLE_CODE=#{roleCode}
 		
 	</update>
