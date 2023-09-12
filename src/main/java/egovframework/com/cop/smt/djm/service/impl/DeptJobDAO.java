@@ -133,17 +133,16 @@ public class DeptJobDAO extends EgovComAbstractDAO{
     public int updateDeptJobBx(DeptJobBx deptJobBx) {
         return update("DeptJobDAO.updateDeptJobBx", deptJobBx);
     }
-	
-	/**
-	 * 부서업무함의 표시순서가 중복되는지를 조회한다.
-	 * @param DeptJobBxVO
-	 * @return int
-	 * 
-	 * @param deptJobBxVO
-	 */
-	public int selectDeptJobBxOrdr(DeptJobBxVO deptJobBxVO) throws Exception{
-		return (Integer)selectOne("DeptJobDAO.selectDeptJobBxOrdr", deptJobBxVO);
-	}
+
+    /**
+     * 부서업무함의 표시순서가 중복되는지를 조회한다.
+     * 
+     * @param deptJobBxVO
+     * @return int
+     */
+    public int selectDeptJobBxOrdr(DeptJobBxVO deptJobBxVO) {
+        return selectOne("DeptJobDAO.selectDeptJobBxOrdr", deptJobBxVO);
+    }
 	
 	/**
 	 * 부서업무함 정보의 표시순서를 수정한다. (표시순서 증가)

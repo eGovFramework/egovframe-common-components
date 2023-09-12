@@ -533,4 +533,31 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
         assertEquals(egovMessageSource.getMessage("fail.common.update"), 1, result);
     }
 
+    /**
+     * 부서업무함의 표시순서가 중복되는지를 조회한다.
+     */
+    @Test
+    public void selectDeptJobBxOrdr() {
+        // given
+        final DeptJobBx testDataDeptJobBx = new DeptJobBx();
+        testDataDeptJobBx(testDataDeptJobBx);
+
+        final DeptJobBxVO deptJobBxVO = new DeptJobBxVO();
+        deptJobBxVO.setDeptJobBxId(testDataDeptJobBx.getDeptJobBxId());
+        deptJobBxVO.setDeptId(testDataDeptJobBx.getDeptId());
+        deptJobBxVO.setIndictOrdr(testDataDeptJobBx.getIndictOrdr());
+//        deptJobBxVO.setOrdrCnd("up");
+//        deptJobBxVO.setOrdrCnd("down");
+
+        // when
+        final int result = deptJobDAO.selectDeptJobBxOrdr(deptJobBxVO);
+
+        // then
+        if (log.isDebugEnabled()) {
+            log.debug("result={}", result);
+        }
+
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), true, result > -1);
+    }
+
 }
