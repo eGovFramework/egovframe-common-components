@@ -569,7 +569,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
         final DeptJobBx testDataDeptJobBx = new DeptJobBx();
         testDataDeptJobBx(testDataDeptJobBx);
 
-        final DeptJobBxVO deptJobBxVO = new DeptJobBxVO();
+        final DeptJobBx deptJobBxVO = new DeptJobBx();
         deptJobBxVO.setDeptId(testDataDeptJobBx.getDeptId());
         deptJobBxVO.setIndictOrdr(testDataDeptJobBx.getIndictOrdr());
 
@@ -583,7 +583,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
 
         assertEquals(egovMessageSource.getMessage("fail.common.update"), true, result > -1);
     }
-    
+
     /**
      * 부서업무함 정보의 표시순서를 수정한다. (표시순서 감소)
      */
@@ -592,20 +592,44 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
         // given
         final DeptJobBx testDataDeptJobBx = new DeptJobBx();
         testDataDeptJobBx(testDataDeptJobBx);
-        
-        final DeptJobBxVO deptJobBxVO = new DeptJobBxVO();
+
+        final DeptJobBx deptJobBxVO = new DeptJobBx();
         deptJobBxVO.setDeptId(testDataDeptJobBx.getDeptId());
         deptJobBxVO.setIndictOrdr(testDataDeptJobBx.getIndictOrdr());
-        
+
         // when
         final int result = deptJobDAO.updateDeptJobBxOrdrDown(deptJobBxVO);
-        
+
         // then
         if (log.isDebugEnabled()) {
             log.debug("result={}", result);
         }
-        
+
         assertEquals(egovMessageSource.getMessage("fail.common.update"), true, result > -1);
+    }
+
+    /**
+     * 부서업무함 정보의 표시순서를 수정한다.
+     */
+    @Test
+    public void updateDeptJobBxOrdr() {
+        // given
+        final DeptJobBx testDataDeptJobBx = new DeptJobBx();
+        testDataDeptJobBx(testDataDeptJobBx);
+
+        final DeptJobBx deptJobBxVO = new DeptJobBx();
+        deptJobBxVO.setDeptJobBxId(testDataDeptJobBx.getDeptJobBxId());
+        deptJobBxVO.setIndictOrdr(1);
+
+        // when
+        final int result = deptJobDAO.updateDeptJobBxOrdr(deptJobBxVO);
+
+        // then
+        if (log.isDebugEnabled()) {
+            log.debug("result={}", result);
+        }
+
+        assertEquals(egovMessageSource.getMessage("fail.common.update"), true, result > 0);
     }
 
 }
