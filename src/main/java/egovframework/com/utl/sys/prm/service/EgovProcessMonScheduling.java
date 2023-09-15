@@ -61,7 +61,7 @@ public class EgovProcessMonScheduling extends EgovAbstractServiceImpl {
 	public void monitorProcess() throws Exception {
 
 		// 모니터링 대상 정보 읽어들이기
-		List<ProcessMon> targetList = null;
+		List<ProcessMonVO> targetList = null;
 		ProcessMonVO searchVO = new ProcessMonVO();
 
 		// 모니터링 대상 검색 조건 초기화
@@ -74,7 +74,7 @@ public class EgovProcessMonScheduling extends EgovAbstractServiceImpl {
 		LOGGER.debug("Result 건수 : {}", targetList.size());
 
 		// 서비스체크 함수 호출.
-		Iterator<ProcessMon> iter = targetList.iterator();
+		Iterator<ProcessMonVO> iter = targetList.iterator();
 		ProcessMon target = null;
 		String procsSttus = null;
 		String processNm = "";
