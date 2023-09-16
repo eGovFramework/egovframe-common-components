@@ -569,12 +569,12 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
         final DeptJobBx testDataDeptJobBx = new DeptJobBx();
         testDataDeptJobBx(testDataDeptJobBx);
 
-        final DeptJobBx deptJobBxVO = new DeptJobBx();
-        deptJobBxVO.setDeptId(testDataDeptJobBx.getDeptId());
-        deptJobBxVO.setIndictOrdr(testDataDeptJobBx.getIndictOrdr());
+        final DeptJobBx deptJobBx = new DeptJobBx();
+        deptJobBx.setDeptId(testDataDeptJobBx.getDeptId());
+        deptJobBx.setIndictOrdr(testDataDeptJobBx.getIndictOrdr());
 
         // when
-        final int result = deptJobDAO.updateDeptJobBxOrdrUp(deptJobBxVO);
+        final int result = deptJobDAO.updateDeptJobBxOrdrUp(deptJobBx);
 
         // then
         if (log.isDebugEnabled()) {
@@ -593,12 +593,12 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
         final DeptJobBx testDataDeptJobBx = new DeptJobBx();
         testDataDeptJobBx(testDataDeptJobBx);
 
-        final DeptJobBx deptJobBxVO = new DeptJobBx();
-        deptJobBxVO.setDeptId(testDataDeptJobBx.getDeptId());
-        deptJobBxVO.setIndictOrdr(testDataDeptJobBx.getIndictOrdr());
+        final DeptJobBx deptJobBx = new DeptJobBx();
+        deptJobBx.setDeptId(testDataDeptJobBx.getDeptId());
+        deptJobBx.setIndictOrdr(testDataDeptJobBx.getIndictOrdr());
 
         // when
-        final int result = deptJobDAO.updateDeptJobBxOrdrDown(deptJobBxVO);
+        final int result = deptJobDAO.updateDeptJobBxOrdrDown(deptJobBx);
 
         // then
         if (log.isDebugEnabled()) {
@@ -617,12 +617,36 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
         final DeptJobBx testDataDeptJobBx = new DeptJobBx();
         testDataDeptJobBx(testDataDeptJobBx);
 
-        final DeptJobBx deptJobBxVO = new DeptJobBx();
-        deptJobBxVO.setDeptJobBxId(testDataDeptJobBx.getDeptJobBxId());
-        deptJobBxVO.setIndictOrdr(1);
+        final DeptJobBx deptJobBx = new DeptJobBx();
+        deptJobBx.setDeptJobBxId(testDataDeptJobBx.getDeptJobBxId());
+        deptJobBx.setIndictOrdr(1);
 
         // when
-        final int result = deptJobDAO.updateDeptJobBxOrdr(deptJobBxVO);
+        final int result = deptJobDAO.updateDeptJobBxOrdr(deptJobBx);
+
+        // then
+        if (log.isDebugEnabled()) {
+            log.debug("result={}", result);
+        }
+
+        assertEquals(egovMessageSource.getMessage("fail.common.update"), true, result > 0);
+    }
+
+    /**
+     * 주어진 조건에 만족하는 전체 부서업무함 정보의 표시순서를 수정한다.
+     */
+    @Test
+    public void updateDeptJobBxOrdrAll() {
+        // given
+        final DeptJobBx testDataDeptJobBx = new DeptJobBx();
+        testDataDeptJobBx(testDataDeptJobBx);
+
+        final DeptJobBxVO deptJobBxVO = new DeptJobBxVO();
+        deptJobBxVO.setDeptId(testDataDeptJobBx.getDeptId());
+        deptJobBxVO.setIndictOrdr(testDataDeptJobBx.getIndictOrdr());
+
+        // when
+        final int result = deptJobDAO.updateDeptJobBxOrdrAll(deptJobBxVO);
 
         // then
         if (log.isDebugEnabled()) {
