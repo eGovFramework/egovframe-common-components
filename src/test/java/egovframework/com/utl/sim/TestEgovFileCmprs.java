@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 
 import org.apache.commons.compress.archivers.ArchiveException;
 import org.apache.commons.csv.CSVFormat;
@@ -49,8 +50,8 @@ public class TestEgovFileCmprs {
         // ???θ??ڵ?_??ü.txt (파일 이름, 디렉터리 이름 또는 볼륨 레이블 구문이 잘못되었습니다)
         // 압축이 잘못된 것 같음
 
-//        codeFullDown(specSource, pathnameDestination);
-//        decmprsFile(pathnameDestination);
+        codeFullDown(specSource, pathnameDestination);
+        decmprsFile(pathnameDestination);
 //        header(readLinesFilePathname);
         sql00001(readLinesFilePathname);
     }
@@ -203,11 +204,11 @@ public class TestEgovFileCmprs {
             String changeDe = record.get(header21);
 //            String change_time = record.get(header0);
             String bsisDe = record.get(header19);
-            String sort_ordr = record.get(header1);
-            String frst_register_id = record.get(header1);
-            String frst_regist_pnttm = record.get(header1);
-            String last_updusr_id = record.get(header1);
-            String last_updt_pnttm = record.get(header1);
+//            String sort_ordr = record.get(header0);
+//            String frst_register_id = record.get(header0);
+//            String frst_regist_pnttm = record.get(header0);
+//            String last_updusr_id = record.get(header0);
+//            String last_updt_pnttm = record.get(header0);
 
             sb.append("INSERT INTO comtninsttcode");
             sb.append(
@@ -431,7 +432,19 @@ public class TestEgovFileCmprs {
             sb.append("\n");
         }
 
-        log.debug(sb.toString());
+        String data = sb.toString();
+        log.debug(data);
+
+        try {
+            FileUtils.writeStringToFile(new File(readLinesFilePathname + ".sql"), data, StandardCharsets.UTF_8);
+        } catch (IOException e) {
+//            e.printStackTrace();
+            log.error("IOException writeStringToFile");
+            fail("IOException writeStringToFile");
+        }
+
+        log.debug(
+                "\n실행\nset PGCLIENTENCODING=UTF8\npsql -U com -d com -a -f \"D:\\EGOVFRAME2\\eGovFrameDev-4.1.0-64bit\\workspace\\egovframe-common-components\\target\\test\\code.go.kr\\기관코드 전체자료\\기관코드 전체자료.txt.sql\"");
     }
 
 }
