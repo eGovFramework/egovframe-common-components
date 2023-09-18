@@ -113,7 +113,7 @@ public class TestEgovFileCmprs {
             if (record.getRecordNumber() > 1) {
                 break;
             }
-            int i = 1;
+            int i = 0;
             for (String s : record.toList()) {
                 log.debug(s);
                 sb.append("String header");
@@ -139,39 +139,39 @@ public class TestEgovFileCmprs {
      * @param pathnameDestination
      */
     private void sql00001(String readLinesFilePathname) {
-        String header1 = "기관코드";
-        String header2 = "전체기관명";
-        String header3 = "최하위기관명";
-        String header4 = "차수";
-        String header5 = "서열";
-        String header6 = "소속기관차수";
-        String header7 = "차상위기관코드";
-        String header8 = "최상위기관코드";
-        String header9 = "대표기관코드";
-        String header10 = "유형분류_대";
-        String header11 = "유형분류_중";
-        String header12 = "유형분류_소";
-        String header13 = "우편번호";
-        String header14 = "행정동코드";
-        String header15 = "소재지코드";
-        String header16 = "나머지주소";
-        String header17 = "지번";
-        String header18 = "전화번호";
-        String header19 = "팩스번호";
-        String header20 = "생성일자";
-        String header21 = "폐지일자";
-        String header22 = "변경일자";
-        String header23 = "존폐여부";
-        String header24 = "이전기관코드";
+        String header0 = "기관코드";
+        String header1 = "전체기관명";
+        String header2 = "최하위기관명";
+        String header3 = "차수";
+        String header4 = "서열";
+        String header5 = "소속기관차수";
+        String header6 = "차상위기관코드";
+        String header7 = "최상위기관코드";
+        String header8 = "대표기관코드";
+        String header9 = "유형분류_대";
+        String header10 = "유형분류_중";
+        String header11 = "유형분류_소";
+        String header12 = "우편번호";
+        String header13 = "행정동코드";
+        String header14 = "소재지코드";
+        String header15 = "나머지주소";
+        String header16 = "지번";
+        String header17 = "전화번호";
+        String header18 = "팩스번호";
+        String header19 = "생성일자";
+        String header20 = "폐지일자";
+        String header21 = "변경일자";
+        String header22 = "존폐여부";
+        String header23 = "이전기관코드";
 
         Iterable<CSVRecord> records = null;
         try {
 //            records = CSVFormat.TDF.parse(in);
             records = CSVParser.parse(new File(readLinesFilePathname), Charset.forName("EUC-KR"),
                     CSVFormat.TDF.builder()
-                            .setHeader(header1, header2, header3, header4, header5, header6, header7, header8, header9,
-                                    header10, header11, header12, header13, header14, header15, header16, header17,
-                                    header18, header19, header20, header21, header22, header23, header24)
+                            .setHeader(header0, header1, header2, header3, header4, header5, header6, header7, header8,
+                                    header9, header10, header11, header12, header13, header14, header15, header16,
+                                    header17, header18, header19, header20, header21, header22, header23)
                             .setSkipHeaderRecord(true).build());
         } catch (IOException e) {
             // TODO Auto-generated catch block
@@ -182,27 +182,27 @@ public class TestEgovFileCmprs {
         sb.append("TRUNCATE TABLE comtninsttcode;\n\n");
         sb.append("DELETE FROM comtninsttcode;\n\n");
         for (CSVRecord record : records) {
-            String insttCode = record.get(header1);
-            String allInsttNm = record.get(header2);
-            String lowestInsttNm = record.get(header3);
+            String insttCode = record.get(header0);
+            String allInsttNm = record.get(header1);
+            String lowestInsttNm = record.get(header2);
 //            String instt_abrv_nm = record.get(header0);
-            String odr = record.get(header4);
-            String ord = record.get(header5);
-            String instt_odr = record.get(header1);
-            String upper_instt_code = record.get(header1);
-            String best_instt_code = record.get(header1);
-            String reprsnt_instt_code = record.get(header1);
-            String instt_ty_lclas = record.get(header1);
-            String instt_ty_mlsfc = record.get(header1);
-            String instt_ty_sclas = record.get(header1);
-            String telno = record.get(header1);
-            String fxnum = record.get(header1);
-            String creat_de = record.get(header1);
-            String abl_de = record.get(header1);
-            String abl_ennc = record.get(header1);
-            String change_de = record.get(header1);
-            String change_time = record.get(header1);
-            String bsis_de = record.get(header1);
+            String odr = record.get(header3);
+            String ord = record.get(header4);
+            String insttOdr = record.get(header5);
+            String upperInsttCode = record.get(header6);
+            String bestInsttCode = record.get(header7);
+            String reprsntInsttCode = record.get(header8);
+            String insttTyLclas = record.get(header9);
+            String insttTyMlsfc = record.get(header10);
+            String insttTySclas = record.get(header11);
+            String telno = record.get(header17);
+            String fxnum = record.get(header18);
+            String creatDe = record.get(header19);
+            String ablDe = record.get(header20);
+            String ablEnnc = record.get(header22);
+            String changeDe = record.get(header21);
+//            String change_time = record.get(header0);
+            String bsisDe = record.get(header19);
             String sort_ordr = record.get(header1);
             String frst_register_id = record.get(header1);
             String frst_regist_pnttm = record.get(header1);
@@ -216,32 +216,215 @@ public class TestEgovFileCmprs {
             sb.append("VALUES(");
 
             // instt_code 기관코드
-            sb.append("'");
-            sb.append(insttCode);
-            sb.append("',");
+            if ("NULL".equals(insttCode)) {
+                sb.append("NULL");
+            } else {
+                sb.append("'");
+                sb.append(insttCode);
+                sb.append("'");
+            }
+            sb.append(",");
 
             // all_instt_nm 전체기관명
-            sb.append("'");
-            sb.append(allInsttNm);
-            sb.append("',");
+            if ("NULL".equals(allInsttNm)) {
+                sb.append("NULL");
+            } else {
+                sb.append("'");
+                sb.append(allInsttNm);
+                sb.append("'");
+            }
+            sb.append(",");
 
             // lowest_instt_nm 최하위기관명
-            sb.append("'");
-            sb.append(lowestInsttNm);
-            sb.append("',");
+            if ("NULL".equals(lowestInsttNm)) {
+                sb.append("NULL");
+            } else {
+                sb.append("'");
+                sb.append(lowestInsttNm);
+                sb.append("'");
+            }
+            sb.append(",");
 
             // instt_abrv_nm 기관약어명
             sb.append("NULL,");
 
             // odr 차수
-            sb.append("'");
-            sb.append(odr);
-            sb.append("',");
+            if ("NULL".equals(odr)) {
+                sb.append("NULL");
+            } else {
+                sb.append("'");
+                sb.append(odr);
+                sb.append("'");
+            }
+            sb.append(",");
 
             // ord 서열
-            sb.append("'");
-            sb.append(ord);
-            sb.append("',");
+            if ("NULL".equals(ord)) {
+                sb.append("NULL");
+            } else {
+                sb.append("'");
+                sb.append(ord);
+                sb.append("'");
+            }
+            sb.append(",");
+
+            // instt_odr 기관차수
+            if ("NULL".equals(insttOdr)) {
+                sb.append("NULL");
+            } else {
+                sb.append("'");
+                sb.append(insttOdr);
+                sb.append("'");
+            }
+            sb.append(",");
+
+            // upper_instt_code 상위기관코드
+            if ("NULL".equals(upperInsttCode)) {
+                sb.append("NULL");
+            } else {
+                sb.append("'");
+                sb.append(upperInsttCode);
+                sb.append("'");
+            }
+            sb.append(",");
+
+            // best_instt_code 최상위기관코드
+            if ("NULL".equals(bestInsttCode)) {
+                sb.append("NULL");
+            } else {
+                sb.append("'");
+                sb.append(bestInsttCode);
+                sb.append("'");
+            }
+            sb.append(",");
+
+            // reprsnt_instt_code 대표기관코드
+            if ("NULL".equals(reprsntInsttCode)) {
+                sb.append("NULL");
+            } else {
+                sb.append("'");
+                sb.append(reprsntInsttCode);
+                sb.append("'");
+            }
+            sb.append(",");
+
+            // instt_ty_lclas 기관유형대분류
+            if ("NULL".equals(insttTyLclas)) {
+                sb.append("NULL");
+            } else {
+                sb.append("'");
+                sb.append(insttTyLclas);
+                sb.append("'");
+            }
+            sb.append(",");
+
+            // instt_ty_mlsfc 기관유형중분류
+            if ("NULL".equals(insttTyMlsfc)) {
+                sb.append("NULL");
+            } else {
+                sb.append("'");
+                sb.append(insttTyMlsfc);
+                sb.append("'");
+            }
+            sb.append(",");
+
+            // instt_ty_sclas 기관유형소분류
+            if ("NULL".equals(insttTySclas)) {
+                sb.append("NULL");
+            } else {
+                sb.append("'");
+                sb.append(insttTySclas);
+                sb.append("'");
+            }
+            sb.append(",");
+
+            // telno 전화번호
+            if ("NULL".equals(telno)) {
+                sb.append("NULL");
+            } else {
+                sb.append("'");
+                sb.append(telno);
+                sb.append("'");
+            }
+            sb.append(",");
+
+            // fxnum 팩스번호
+            if ("NULL".equals(fxnum)) {
+                sb.append("NULL");
+            } else {
+                sb.append("'");
+                sb.append(fxnum);
+                sb.append("'");
+            }
+            sb.append(",");
+
+            // creat_de 생성일
+            if ("NULL".equals(creatDe)) {
+                sb.append("NULL");
+            } else {
+                sb.append("'");
+                sb.append(creatDe);
+                sb.append("'");
+            }
+            sb.append(",");
+
+            // abl_de 폐지일
+            if ("NULL".equals(ablDe)) {
+                sb.append("NULL");
+            } else {
+                sb.append("'");
+                sb.append(ablDe);
+                sb.append("'");
+            }
+            sb.append(",");
+
+            // abl_ennc 폐지유무
+            if ("NULL".equals(ablEnnc)) {
+                sb.append("NULL");
+            } else {
+                sb.append("'");
+                sb.append(ablEnnc);
+                sb.append("'");
+            }
+            sb.append(",");
+
+            // change_de 변경일
+            if ("NULL".equals(changeDe)) {
+                sb.append("NULL");
+            } else {
+                sb.append("'");
+                sb.append(changeDe);
+                sb.append("'");
+            }
+            sb.append(",");
+
+            // change_time 변경시간
+            sb.append("NULL,");
+
+            // bsis_de 기초일
+            if ("NULL".equals(changeDe)) {
+                sb.append("NULL");
+            } else {
+                sb.append("'");
+                sb.append(bsisDe);
+                sb.append("'");
+            }
+            sb.append(",");
+
+            // sort_ordr 정렬순서
+            sb.append("NULL,");
+
+            // frst_register_id 최초등록자ID
+            sb.append("NULL,");
+
+            // frst_regist_pnttm 최초등록시점
+            sb.append("NULL,");
+
+            // last_updusr_id 최종수정자ID
+            sb.append("NULL,");
+
+            // last_updt_pnttm 최종수정시점
+            sb.append("NULL");
 
             sb.append(");");
             sb.append("");
