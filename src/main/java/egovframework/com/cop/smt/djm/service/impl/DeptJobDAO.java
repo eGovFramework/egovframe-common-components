@@ -183,17 +183,16 @@ public class DeptJobDAO extends EgovComAbstractDAO{
     public int updateDeptJobBxOrdrAll(DeptJobBxVO deptJobBxVO) {
         return update("DeptJobDAO.updateDeptJobBxOrdrAll", deptJobBxVO);
     }
-	
-	/**
-	 * 등록시 부서업무함의 표시순서를 조회한다.
-	 * @param String
-	 * @return int
-	 * 
-	 * @param deptId
-	 */
-	public int selectMaxDeptJobBxOrdr(String deptId) throws Exception{
-		return (Integer)selectOne("DeptJobDAO.selectMaxDeptJobBxOrdr", deptId);
-	}
+
+    /**
+     * 등록시 부서업무함의 표시순서를 조회한다.
+     * 
+     * @param deptId
+     * @return int
+     */
+    public int selectMaxDeptJobBxOrdr(String deptId) {
+        return selectOne("DeptJobDAO.selectMaxDeptJobBxOrdr", deptId);
+    }
 
     /**
      * 부서업무함 정보를 등록한다.
