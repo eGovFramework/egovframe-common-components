@@ -215,15 +215,15 @@ public class DeptJobDAO extends EgovComAbstractDAO{
         return selectOne("DeptJobDAO.selectDeptJobBxCheck", deptJobBx);
     }
 
-	/**
-	 * 부서업무함 정보를 삭제한다.
-	 * @param DeptJobBx
-	 * 
-	 * @param deptJobBx
-	 */
-	public void deleteDeptJobBx(DeptJobBx deptJobBx) throws Exception{
-		delete("DeptJobDAO.deleteDeptJobBx", deptJobBx);
-	}
+    /**
+     * 부서업무함 정보를 삭제한다.
+     * 
+     * @param deptJobBx
+     * @return int
+     */
+    public int deleteDeptJobBx(DeptJobBx deptJobBx) {
+        return delete("DeptJobDAO.deleteDeptJobBx", deptJobBx);
+    }
 
 	/**
 	 * 주어진 조건에 따른 부서업무 목록을 불러온다.
