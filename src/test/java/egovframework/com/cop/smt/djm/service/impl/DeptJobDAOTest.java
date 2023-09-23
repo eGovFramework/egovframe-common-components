@@ -789,4 +789,28 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
                 resultList.get(0).getDeptId());
     }
 
+    /**
+     * 부서업무 목록에 대한 전체 건수를 조회한다.
+     */
+    @Test
+    public void selectDeptJobListCnt() {
+        // given
+        final DeptJobBx testDataDeptJobBx = new DeptJobBx();
+        testDataDeptJobBx(testDataDeptJobBx);
+        final DeptJob testDataDeptJob = new DeptJob();
+        testDataDeptJob(testDataDeptJobBx, testDataDeptJob);
+
+        final DeptJobVO deptJobVO = new DeptJobVO();
+//        deptJobVO.setSearchDeptJobBxId(FAIL_COMMON_SELECT);
+        deptJobVO.setSearchDeptId(testDataDeptJobBx.getDeptId());
+
+        // when
+        final int totCnt = deptJobDAO.selectDeptJobListCnt(deptJobVO);
+
+        // then
+        log.debug("totCnt={}", totCnt);
+
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), true, totCnt > -1);
+    }
+
 }
