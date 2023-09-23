@@ -837,4 +837,33 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
                 result.getDeptJobId());
     }
 
+    /**
+     * 부서업무 정보를 수정한다.
+     */
+    @Test
+    public void updateDeptJob() {
+        // given
+        final DeptJobBx testDataDeptJobBx = new DeptJobBx();
+        testDataDeptJobBx(testDataDeptJobBx);
+        final DeptJob testDataDeptJob = new DeptJob();
+        testDataDeptJob(testDataDeptJobBx, testDataDeptJob);
+
+        final DeptJob deptJob = new DeptJob();
+        deptJob.setDeptJobBxId(testDataDeptJob.getDeptJobBxId());
+        deptJob.setDeptJobNm(testDataDeptJob.getDeptJobNm());
+        deptJob.setDeptJobCn(testDataDeptJob.getDeptJobCn());
+        deptJob.setChargerId(testDataDeptJob.getChargerId());
+        deptJob.setPriort(testDataDeptJob.getPriort());
+        
+        deptJob.setDeptJobId(testDataDeptJob.getDeptJobId());
+
+        // when
+        final int result = deptJobDAO.updateDeptJob(deptJob);
+
+        // then
+        log.debug("result={}", result);
+
+        assertEquals(egovMessageSource.getMessage("fail.common.update"), 1, result);
+    }
+
 }
