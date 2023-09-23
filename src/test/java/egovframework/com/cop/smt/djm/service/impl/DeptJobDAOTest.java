@@ -124,30 +124,29 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
 
     private void testDataDeptJob(final DeptJobBx testDataDeptJobBx, final DeptJob testDataDeptJob) {
         // given
-        final DeptJob deptJob = new DeptJob();
         final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
         try {
-            deptJob.setDeptJobId(egovDeptJobIdGnrService.getNextStringId());
-            deptJob.setDeptJobBxId(testDataDeptJobBx.getDeptJobBxId());
+            testDataDeptJob.setDeptJobId(egovDeptJobIdGnrService.getNextStringId());
+            testDataDeptJob.setDeptJobBxId(testDataDeptJobBx.getDeptJobBxId());
         } catch (FdlException e) {
 //            e.printStackTrace();
             log.error("FdlException egovDeptJobBxIdGnrService");
             fail("FdlException egovDeptJobBxIdGnrService");
         }
 
-        deptJob.setDeptJobNm("test 이백행 부서업무명 " + LocalDateTime.now());
-        deptJob.setDeptJobCn("test 이백행 부서업무내용 " + LocalDateTime.now());
-        deptJob.setPriort("1"); // 우선순위
+        testDataDeptJob.setDeptJobNm("test 이백행 부서업무명 " + LocalDateTime.now());
+        testDataDeptJob.setDeptJobCn("test 이백행 부서업무내용 " + LocalDateTime.now());
+        testDataDeptJob.setPriort("1"); // 우선순위
 
         if (loginVO != null) {
-            deptJob.setChargerId(loginVO.getUniqId());
+            testDataDeptJob.setChargerId(loginVO.getUniqId());
 
-            deptJob.setFrstRegisterId(loginVO.getUniqId());
-            deptJob.setLastUpdusrId(loginVO.getUniqId());
+            testDataDeptJob.setFrstRegisterId(loginVO.getUniqId());
+            testDataDeptJob.setLastUpdusrId(loginVO.getUniqId());
         }
 
-        deptJobDAO.insertDeptJob(deptJob);
+        deptJobDAO.insertDeptJob(testDataDeptJob);
     }
 
     /**
@@ -811,6 +810,31 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
         log.debug("totCnt={}", totCnt);
 
         assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), true, totCnt > -1);
+    }
+
+    /**
+     * 주어진 조건에 맞는 부서업무를 불러온다.
+     */
+    @Test
+    public void selectDeptJob() {
+        // given
+        final DeptJobBx testDataDeptJobBx = new DeptJobBx();
+        testDataDeptJobBx(testDataDeptJobBx);
+        final DeptJob testDataDeptJob = new DeptJob();
+        testDataDeptJob(testDataDeptJobBx, testDataDeptJob);
+
+        final DeptJobVO deptJobVO = new DeptJobVO();
+        deptJobVO.setDeptJobId(testDataDeptJob.getDeptJobId());
+
+        // when
+        final DeptJobVO result = deptJobDAO.selectDeptJob(deptJobVO);
+
+        // then
+        log.debug("result={}", result);
+        log.debug("getDeptId={}, {}", testDataDeptJobBx.getDeptJobBxId(), result.getDeptJobId());
+
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testDataDeptJob.getDeptJobId(),
+                result.getDeptJobId());
     }
 
 }
