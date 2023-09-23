@@ -24,6 +24,7 @@ import egovframework.com.uss.ion.rss.service.EgovRssTagManageService;
 import egovframework.com.uss.ion.rss.service.RssManage;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
@@ -147,7 +148,7 @@ public class EgovRssTagManageController {
         searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
         searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> reusltList = egovRssManageService.selectRssTagManageList(searchVO);
+        List<EgovMap> reusltList = egovRssManageService.selectRssTagManageList(searchVO);
         model.addAttribute("resultList", reusltList);
 
         model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword"));

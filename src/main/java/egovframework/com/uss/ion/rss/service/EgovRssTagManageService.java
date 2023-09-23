@@ -2,6 +2,8 @@ package egovframework.com.uss.ion.rss.service;
 
 import java.util.List;
 import java.util.Map;
+
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 /**
  * RSS태그관리를 처리하는 Service Class 구현
  * @author 공통서비스 장동한
@@ -41,7 +43,7 @@ public interface EgovRssTagManageService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectRssTagManageList(RssManage rssManage) throws Exception;
+	public List<EgovMap> selectRssTagManageList(RssManage rssManage) throws Exception;
 
     /**
      * RSS태그관리를(을) 목록 전체 건수를(을) 조회한다.

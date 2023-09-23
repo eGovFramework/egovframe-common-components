@@ -12,6 +12,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
@@ -155,8 +156,8 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 	 * @return -조회한목록이담긴List
 	 * @throws Exception
 	 */
-	public List<?> selectRssTagManageList(RssManage rssManage) throws Exception {
-		return (List<?>) selectList("RssTagManage.selectRssTagManage", rssManage);
+	public List<EgovMap> selectRssTagManageList(RssManage rssManage) throws Exception {
+		return selectList("RssTagManage.selectRssTagManage", rssManage);
 
 	}
 
