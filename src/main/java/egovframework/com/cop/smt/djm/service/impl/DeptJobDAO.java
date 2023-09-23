@@ -1,5 +1,8 @@
 package egovframework.com.cop.smt.djm.service.impl;
+
 import java.util.List;
+
+import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.cop.smt.djm.service.ChargerVO;
@@ -9,29 +12,26 @@ import egovframework.com.cop.smt.djm.service.DeptJobBxVO;
 import egovframework.com.cop.smt.djm.service.DeptJobVO;
 import egovframework.com.cop.smt.djm.service.DeptVO;
 
-import org.springframework.stereotype.Repository;
-
 /**
- * 개요
- * - 부서업무에 대한 DAO 클래스를 정의한다.
+ * 개요 - 부서업무에 대한 DAO 클래스를 정의한다.
  * 
- * 상세내용
- * - 부서업무에 대한 등록, 수정, 삭제, 조회기능을 제공한다.
- * -  부서업무의 조회기능은 목록조회, 상세조회로 구분된다.
+ * 상세내용 - 부서업무에 대한 등록, 수정, 삭제, 조회기능을 제공한다. - 부서업무의 조회기능은 목록조회, 상세조회로 구분된다.
+ * 
  * @author 장철호
  * @version 1.0
  * @created 28-6-2010 오전 10:59:05
- *  <pre>
+ * 
+ *          <pre>
  * << 개정이력(Modification Information) >>
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2010.6.28	장철호          최초 생성
  *
- * </pre>
+ *          </pre>
  */
 @Repository("DeptJobDAO")
-public class DeptJobDAO extends EgovComAbstractDAO{
+public class DeptJobDAO extends EgovComAbstractDAO {
 
     /**
      * 주어진 조건에 맞는 담당자를 불러온다.
@@ -269,21 +269,20 @@ public class DeptJobDAO extends EgovComAbstractDAO{
      * 부서업무 정보를 등록한다.
      * 
      * @param deptJob
+     * @return int
      */
     public int insertDeptJob(DeptJob deptJob) {
         return insert("DeptJobDAO.insertDeptJob", deptJob);
     }
 
-	/**
-	 * 부서업무 정보를 삭제한다.
-	 * @param DeptJob
-	 * 
-	 * @param deptJob
-	 */
-	public void deleteDeptJob(DeptJob deptJob) throws Exception{
-		delete("DeptJobDAO.deleteDeptJob", deptJob);
-	}
-
-	
+    /**
+     * 부서업무 정보를 삭제한다.
+     * 
+     * @param deptJob
+     * @return int
+     */
+    public int deleteDeptJob(DeptJob deptJob) {
+        return delete("DeptJobDAO.deleteDeptJob", deptJob);
+    }
 
 }

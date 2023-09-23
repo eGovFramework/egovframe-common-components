@@ -854,7 +854,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
         deptJob.setDeptJobCn(testDataDeptJob.getDeptJobCn());
         deptJob.setChargerId(testDataDeptJob.getChargerId());
         deptJob.setPriort(testDataDeptJob.getPriort());
-        
+
         deptJob.setDeptJobId(testDataDeptJob.getDeptJobId());
 
         // when
@@ -864,6 +864,29 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
         log.debug("result={}", result);
 
         assertEquals(egovMessageSource.getMessage("fail.common.update"), 1, result);
+    }
+
+    /**
+     * 부서업무 정보를 삭제한다.
+     */
+    @Test
+    public void deleteDeptJob() {
+        // given
+        final DeptJobBx testDataDeptJobBx = new DeptJobBx();
+        testDataDeptJobBx(testDataDeptJobBx);
+        final DeptJob testDataDeptJob = new DeptJob();
+        testDataDeptJob(testDataDeptJobBx, testDataDeptJob);
+
+        final DeptJob deptJob = new DeptJob();
+        deptJob.setDeptJobId(testDataDeptJob.getDeptJobId());
+
+        // when
+        final int result = deptJobDAO.deleteDeptJob(deptJob);
+
+        // then
+        log.debug("result={}", result);
+
+        assertEquals(egovMessageSource.getMessage("fail.common.delete"), 1, result);
     }
 
 }
