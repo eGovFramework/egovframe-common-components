@@ -121,7 +121,6 @@ function fCallUrl(url) {
 			function init() {
 				var Tree = new Array;
 				var baseObj = document.getElementById("treeSiteMap");
-				debugger;
 				if ( typeof document.getElementsByName("tmp_menuNmVal") == "undefined" 
 						|| typeof document.getElementsByName("tmp_menuNmVal").length == "undefined" ) {
 	            	alert("<spring:message code="comSymMnuMpm.MenuCreatSiteMap.validate.menuNmVal.none2" />"); //사이트맵 생성 데이타가 존재하지 않습니다. \n 메뉴를 생성하신 후 작업하세요.

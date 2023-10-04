@@ -121,7 +121,7 @@ public interface EgovBndtManageService {
 	 * @param bndtDiaryVO - 당직일지관리 VO
 	 * @return BndtDiaryVO - 당직일지관리 VO
 	 */
-	public List<?> selectBndtDiary(BndtDiaryVO bndtDiaryVO) throws Exception;
+	public List<BndtDiaryVO> selectBndtDiary(BndtDiaryVO bndtDiaryVO) throws Exception;
 
 	/**
 	 * 당직일지관리 정보를 신규로 등록한다.

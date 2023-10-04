@@ -305,7 +305,7 @@ public class EgovProgrmManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> list_changerequst = progrmManageService.selectProgrmChangeRequstList(searchVO);
+        List<ProgrmManageDtlVO> list_changerequst = progrmManageService.selectProgrmChangeRequstList(searchVO);
         model.addAttribute("list_changerequst", list_changerequst);
 
         int totCnt = progrmManageService.selectProgrmChangeRequstListTotCnt(searchVO);
@@ -680,7 +680,7 @@ public class EgovProgrmManageController {
  		 searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
  		 searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-         List<?> list_changerequst = progrmManageService.selectProgrmChangeRequstList(searchVO);
+         List<ProgrmManageDtlVO> list_changerequst = progrmManageService.selectProgrmChangeRequstList(searchVO);
          model.addAttribute("list_changerequst", list_changerequst);
 
          int totCnt = progrmManageService.selectProgrmChangeRequstListTotCnt(searchVO);

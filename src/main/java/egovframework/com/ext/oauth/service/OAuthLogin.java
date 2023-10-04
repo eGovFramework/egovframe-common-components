@@ -11,11 +11,15 @@ import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
+import org.apache.commons.lang3.StringUtils;
+
+import java.util.Iterator;
 
 public class OAuthLogin {
 	private OAuth20Service oauthService;
 	private OAuthVO oauthVO;
-	
+
+	private static final ObjectMapper mapper = new ObjectMapper(); // 매 요청마다 객체를 생성하지 않기 위함
 	private static final Logger LOGGER = LoggerFactory.getLogger(OAuthLogin.class);
 	
 	public OAuthLogin(OAuthVO oauthVO) {
@@ -47,46 +51,43 @@ public class OAuthLogin {
 	private OAuthUniversalUser parseJson(String body) throws Exception {
 		LOGGER.info("============================\n" + body + "\n==================");
 		OAuthUniversalUser user = new OAuthUniversalUser();
-		
-		ObjectMapper mapper = new ObjectMapper();
+
 		JsonNode rootNode = mapper.readTree(body);
-		
-		if (this.oauthVO.isGoogle()) {
-			String id = rootNode.get("sub").asText();
+
+		if (oauthVO.getOrigin().equals("google")) {
 			user.setServiceName(OAuthConfig.GOOGLE_SERVICE_NAME);
-			if (oauthVO.isGoogle())
-				user.setUserId(id);
-			//JsonNode nameNode = rootNode.path("name");
+			user.setUserId(rootNode.get("sub").asText());
 			String uname = rootNode.get("name").asText();
 			user.setUserName(uname);
+//			getEmails(user, rootNode);
 
-			/*
-			Iterator<JsonNode> iterEmails = rootNode.path("emails").elements();
-			while(iterEmails.hasNext()) {
-				JsonNode emailNode = iterEmails.next();
-				String type = emailNode.get("type").asText();
-				if (StringUtils.equals(type, "account")) {
-					user.setEmail(emailNode.get("value").asText());
-					break;
-				}
-			}
-			*/
-			
-		} else if (this.oauthVO.isNaver()) {
+		} else if (oauthVO.getOrigin().equals("naver")) {
 			user.setServiceName(OAuthConfig.NAVER_SERVICE_NAME);
 			JsonNode resNode = rootNode.get("response");
 			user.setUserId(resNode.get("id").asText());
 			user.setNickName(resNode.get("nickname").asText());
 			user.setEmail(resNode.get("email").asText());
-			
-		} else if (this.oauthVO.isKakao()) {
+
+		} else if (oauthVO.getOrigin().equals("kakao")) {
 			user.setServiceName(OAuthConfig.KAKAO_SERVICE_NAME);
 			JsonNode resNode = rootNode.get("properties");
 			user.setUserId(rootNode.get("id").asText());
 			user.setNickName(resNode.get("nickname").asText());
 		}
-		
+
 		return user;
 	}
-	
+
+	private void getEmails(OAuthUniversalUser user, JsonNode rootNode) {
+		Iterator<JsonNode> iterEmails = rootNode.path("emails").elements();
+		while(iterEmails.hasNext()) {
+			JsonNode emailNode = iterEmails.next();
+			String type = emailNode.get("type").asText();
+			if (StringUtils.equals(type, "account")) {
+				user.setEmail(emailNode.get("value").asText());
+				break;
+			}
+		}
+	}
+
 }

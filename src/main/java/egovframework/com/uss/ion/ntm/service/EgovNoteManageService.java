@@ -5,6 +5,7 @@ import java.util.Map;
 
 import egovframework.com.cmm.ComDefaultVO;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.web.bind.annotation.RequestParam;
 /**
  * 쪽지 관리(보내기)를 처리하는 Service Class 구현
@@ -45,7 +46,7 @@ public interface EgovNoteManageService {
 	 * @return List -회원정보 리스트
 	 * @throws Exception
 	 */
-	public List<?> selectNoteEmpListPopup(ComDefaultVO searchVO) throws Exception;
+	public List<EgovMap> selectNoteEmpListPopup(ComDefaultVO searchVO) throws Exception;
 
     /**
 	 *  수신자/참조자선택팝업 개수를 조회한다.

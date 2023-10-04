@@ -3,20 +3,11 @@ package egovframework.com.uss.umt.web;
 import java.util.List;
 import java.util.Map;
 
-import egovframework.com.cmm.ComDefaultCodeVO;
-import egovframework.com.cmm.annotation.IncludedInfo;
-import egovframework.com.cmm.service.EgovCmmUseService;
-import egovframework.com.cmm.util.EgovUserDetailsHelper;
-import egovframework.com.uss.umt.service.EgovUserManageService;
-import egovframework.com.uss.umt.service.UserDefaultVO;
-import egovframework.com.uss.umt.service.UserManageVO;
-import egovframework.com.utl.sim.service.EgovFileScrty;
+import javax.annotation.Resource;
+
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,6 +19,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
+import egovframework.com.cmm.ComDefaultCodeVO;
+import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.CmmnDetailCode;
+import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.uss.umt.service.EgovUserManageService;
+import egovframework.com.uss.umt.service.UserDefaultVO;
+import egovframework.com.uss.umt.service.UserManageVO;
+import egovframework.com.utl.sim.service.EgovFileScrty;
+
 /**
  * 업무사용자관련 요청을  비지니스 클래스로 전달하고 처리된결과를  해당   웹 화면으로 전달하는  Controller를 정의한다
  * @author 공통서비스 개발팀 조재영
@@ -38,15 +39,15 @@ import org.springmodules.validation.commons.DefaultBeanValidator;
  * <pre>
  * << 개정이력(Modification Information) >>
  *
- *   수정일      수정자           수정내용
- *  -------    --------    ---------------------------
- *   2009.04.10  조재영          최초 생성
- *   2011.08.26	 정진오			IncludedInfo annotation 추가
- *   2014.12.08	 이기하			암호화방식 변경(EgovFileScrty.encryptPassword)
- *   2015.06.16	 조정국			수정시 유효성체크 후 에러발생 시 목록으로 이동하여 에러메시지 표시
- *   2015.06.19	 조정국			미인증 사용자에 대한 보안처리 기준 수정 (!isAuthenticated)
- *   2017.07.21  장동한 		로그인인증제한 작업
- *   2022.11.11  김혜준			시큐어코딩 처리
+ *   수정일          수정자       수정내용
+ *  -----------    --------    ---------------------------
+ *   2009.04.10     조재영       최초 생성
+ *   2011.08.26     정진오       IncludedInfo annotation 추가
+ *   2014.12.08     이기하       암호화방식 변경(EgovFileScrty.encryptPassword)
+ *   2015.06.16     조정국       수정시 유효성체크 후 에러발생 시 목록으로 이동하여 에러메시지 표시
+ *   2015.06.19     조정국       미인증 사용자에 대한 보안처리 기준 수정 (!isAuthenticated)
+ *   2017.07.21     장동한       로그인인증제한 작업
+ *   2022.11.11     김혜준       시큐어코딩 처리
  *
  * </pre>
  */
@@ -109,9 +110,9 @@ public class EgovUserManageController {
 		model.addAttribute("paginationInfo", paginationInfo);
 
 		//사용자상태코드를 코드정보로부터 조회
-		ComDefaultCodeVO vo = new ComDefaultCodeVO();
-		vo.setCodeId("COM013");
-		List<?> emplyrSttusCode_result = cmmUseService.selectCmmCodeDetail(vo);
+		ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
+		comDefaultCodeVO.setCodeId("COM013");
+		List<CmmnDetailCode> emplyrSttusCode_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 		model.addAttribute("emplyrSttusCode_result", emplyrSttusCode_result);//사용자상태코드목록
 
 		return "egovframework/com/uss/umt/EgovUserManage";
@@ -135,26 +136,26 @@ public class EgovUserManageController {
 			return "index";
 		}
 
-		ComDefaultCodeVO vo = new ComDefaultCodeVO();
+		ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
 
 		//패스워드힌트목록을 코드정보로부터 조회
-		vo.setCodeId("COM022");
-		List<?> passwordHint_result = cmmUseService.selectCmmCodeDetail(vo);
+		comDefaultCodeVO.setCodeId("COM022");
+		List<CmmnDetailCode> passwordHint_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 		//성별구분코드를 코드정보로부터 조회
-		vo.setCodeId("COM014");
-		List<?> sexdstnCode_result = cmmUseService.selectCmmCodeDetail(vo);
+		comDefaultCodeVO.setCodeId("COM014");
+		List<CmmnDetailCode> sexdstnCode_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 		//사용자상태코드를 코드정보로부터 조회
-		vo.setCodeId("COM013");
-		List<?> emplyrSttusCode_result = cmmUseService.selectCmmCodeDetail(vo);
+		comDefaultCodeVO.setCodeId("COM013");
+		List<CmmnDetailCode> emplyrSttusCode_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 		//소속기관코드를 코드정보로부터 조회 - COM025
-		vo.setCodeId("COM025");
-		List<?> insttCode_result = cmmUseService.selectCmmCodeDetail(vo);
+		comDefaultCodeVO.setCodeId("COM025");
+		List<CmmnDetailCode> insttCode_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 		//조직정보를 조회 - ORGNZT_ID정보
-		vo.setTableNm("COMTNORGNZTINFO");
-		List<?> orgnztId_result = cmmUseService.selectOgrnztIdDetail(vo);
+		comDefaultCodeVO.setTableNm("COMTNORGNZTINFO");
+		List<CmmnDetailCode> orgnztId_result = cmmUseService.selectOgrnztIdDetail(comDefaultCodeVO);
 		//그룹정보를 조회 - GROUP_ID정보
-		vo.setTableNm("COMTNORGNZTINFO");
-		List<?> groupId_result = cmmUseService.selectGroupIdDetail(vo);
+		comDefaultCodeVO.setTableNm("COMTNORGNZTINFO");
+		List<CmmnDetailCode> groupId_result = cmmUseService.selectGroupIdDetail(comDefaultCodeVO);
 
 		model.addAttribute("passwordHint_result", passwordHint_result); //패스워트힌트목록
 		model.addAttribute("sexdstnCode_result", sexdstnCode_result); //성별구분코드목록
@@ -221,22 +222,22 @@ public class EgovUserManageController {
 
 		//패스워드힌트목록을 코드정보로부터 조회
 		vo.setCodeId("COM022");
-		List<?> passwordHint_result = cmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> passwordHint_result = cmmUseService.selectCmmCodeDetail(vo);
 		//성별구분코드를 코드정보로부터 조회
 		vo.setCodeId("COM014");
-		List<?> sexdstnCode_result = cmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> sexdstnCode_result = cmmUseService.selectCmmCodeDetail(vo);
 		//사용자상태코드를 코드정보로부터 조회
 		vo.setCodeId("COM013");
-		List<?> emplyrSttusCode_result = cmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> emplyrSttusCode_result = cmmUseService.selectCmmCodeDetail(vo);
 		//소속기관코드를 코드정보로부터 조회 - COM025
 		vo.setCodeId("COM025");
-		List<?> insttCode_result = cmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> insttCode_result = cmmUseService.selectCmmCodeDetail(vo);
 		//조직정보를 조회 - ORGNZT_ID정보
 		vo.setTableNm("COMTNORGNZTINFO");
-		List<?> orgnztId_result = cmmUseService.selectOgrnztIdDetail(vo);
+		List<CmmnDetailCode> orgnztId_result = cmmUseService.selectOgrnztIdDetail(vo);
 		//그룹정보를 조회 - GROUP_ID정보
 		vo.setTableNm("COMTNORGNZTINFO");
-		List<?> groupId_result = cmmUseService.selectGroupIdDetail(vo);
+		List<CmmnDetailCode> groupId_result = cmmUseService.selectGroupIdDetail(vo);
 
 		model.addAttribute("passwordHint_result", passwordHint_result); //패스워트힌트목록
 		model.addAttribute("sexdstnCode_result", sexdstnCode_result); //성별구분코드목록
@@ -252,9 +253,9 @@ public class EgovUserManageController {
 
 		return "egovframework/com/uss/umt/EgovUserSelectUpdt";
 	}
-	
+
 	/**
-	 * 로그인인증제한 해제 
+	 * 로그인인증제한 해제
 	 * @param userManageVO 사용자정보
 	 * @param model 화면모델
 	 * @return uss/umt/EgovUserSelectUpdtView.do
@@ -263,15 +264,15 @@ public class EgovUserManageController {
 	@RequestMapping("/uss/umt/EgovUserLockIncorrect.do")
 	public String updateLockIncorrect(UserManageVO userManageVO, Model model)
 			throws Exception {
-		
+
 		// 미인증 사용자에 대한 보안처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			return "index";
 		}
-		
+
 		userManageService.updateLockIncorrect(userManageVO);
-		
+
 		return "forward:/uss/umt/EgovUserSelectUpdtView.do";
 	}
 
@@ -385,8 +386,8 @@ public class EgovUserManageController {
 
 		return "egovframework/com/uss/umt/EgovIdDplctCnfirm";
 	}
-	
-	
+
+
 	/**
 	 * 입력한 사용자아이디의 중복여부를 체크하여 사용가능여부를 확인
 	 * @param commandMap 파라메터전달용 commandMap
