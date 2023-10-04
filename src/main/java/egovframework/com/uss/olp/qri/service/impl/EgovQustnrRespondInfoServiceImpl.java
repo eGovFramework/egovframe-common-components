@@ -65,15 +65,16 @@ public class EgovQustnrRespondInfoServiceImpl extends EgovAbstractServiceImpl im
     }
 
     /**
-	 * 주관식 통계를 조회 조회한다.
-	 * @param map - 조회할 정보가 담긴 map
-	 * @return List
-	 * @throws Exception
-	 */
-	@Override
-	public List<?> selectQustnrRespondInfoManageStatistics2(Map<?, ?> map) throws Exception{
-		return dao.selectQustnrRespondInfoManageStatistics2(map);
-	}
+     * 주관식 통계를 조회 조회한다.
+     *
+     * @param map - 조회할 정보가 담긴 map
+     * @return List
+     * @throws Exception
+     */
+    @Override
+    public List<EgovMap> selectQustnrRespondInfoManageStatistics2(Map<?, ?> map) throws Exception {
+        return dao.selectQustnrRespondInfoManageStatistics2(map);
+    }
 
     /**
 	 * 회원정보를 조회한다.
