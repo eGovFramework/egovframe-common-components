@@ -69,7 +69,7 @@ public interface EgovCalRestdeManageService {
 	 * @return List(행정달력 일간 날짜정보)
 	 * @throws Exception
 	 */
-	List<?> selectAdministDayCal(Restde restde)	throws Exception;
+	List<EgovMap> selectAdministDayCal(Restde restde)	throws Exception;
 
 	/**
 	 * 행정달력 일간 휴일을 조회한다.
@@ -77,7 +77,7 @@ public interface EgovCalRestdeManageService {
 	 * @return List(행정달력 일간 휴일정보)
 	 * @throws Exception
 	 */
-	List<?> selectAdministDayRestde(Restde restde)	throws Exception;
+	List<EgovMap> selectAdministDayRestde(Restde restde)	throws Exception;
 
 	/**
 	 * 행정달력 월간 휴일을 조회한다.

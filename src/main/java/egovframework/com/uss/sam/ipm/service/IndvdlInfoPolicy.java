@@ -10,17 +10,17 @@ import java.io.Serializable;
  * @see <pre>
  * &lt;&lt; 개정이력(Modification Information) &gt;&gt;
  *
- *   수정일      수정자           수정내용
- *  -------    --------    ---------------------------
- *   2009.07.03  장동한          최초 생성
+ *   수정일          수정자       수정내용
+ *  -----------    --------    ---------------------------
+ *   2009.07.03     장동한       최초 생성
  *
  * </pre>
  */
 public class IndvdlInfoPolicy implements Serializable {
 
-	private static final long serialVersionUID = 2087042986899364386L;
+    private static final long serialVersionUID = 2087042986899364386L;
 
-	/** 개인정보보호정책 아이디 */
+    /** 개인정보보호정책 아이디 */
     private String indvdlInfoId;
 
     /** 개인정보보호정책 명 */
@@ -209,6 +209,5 @@ public class IndvdlInfoPolicy implements Serializable {
     public void setCmd(String cmd) {
         this.cmd = cmd;
     }
-
 
 }

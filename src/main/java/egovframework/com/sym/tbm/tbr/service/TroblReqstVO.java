@@ -19,7 +19,7 @@ public class TroblReqstVO extends TroblReqst {
 	/**
 	 * 장애정보 목록
 	 */
-	private List<?> troblReqstList;
+	private List<TroblReqstVO> troblReqstList;
 	/**
 	 * 장애명 조회조건
 	 */
@@ -41,14 +41,14 @@ public class TroblReqstVO extends TroblReqst {
 	/**
 	 * @return the troblReqstList
 	 */
-	public List<?> getTroblReqstList() {
+	public List<TroblReqstVO> getTroblReqstList() {
 		return troblReqstList;
 	}
 
 	/**
 	 * @param troblReqstList the troblReqstList to set
 	 */
-	public void setTroblReqstList(List<?> troblReqstList) {
+	public void setTroblReqstList(List<TroblReqstVO> troblReqstList) {
 		this.troblReqstList = Collections.unmodifiableList(troblReqstList);
 	}
 

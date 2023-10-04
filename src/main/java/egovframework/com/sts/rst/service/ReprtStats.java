@@ -1,3 +1,7 @@
+package egovframework.com.sts.rst.service;
+
+import egovframework.com.cmm.ComDefaultVO;
+
 /**
  * 개요
  * - 보고서통계에 대한 model 클래스를 정의한다.
@@ -13,15 +17,10 @@
  *   수정일      수정자          수정내용
  *  -------    --------    ---------------------------
  *  2009.8.3   lee.m.j          최초 생성 *  
- *  2011.8.26	정진오			IncludedInfo annotation 추가
+ *  2011.8.26   정진오         IncludedInfo annotation 추가
  *
  *  </pre>
  */
-
-package egovframework.com.sts.rst.service;
-
-import egovframework.com.cmm.ComDefaultVO;
-
 public class ReprtStats extends ComDefaultVO {
 	
 	/** serialVersionUID */

@@ -22,6 +22,7 @@ import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.config.EgovLoginConfig;
+import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.service.Globals;
@@ -365,7 +366,7 @@ public class EgovLoginController {
 		// 1. 비밀번호 힌트 공통코드 조회
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM022");
-		List<?> code = cmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> code = cmmUseService.selectCmmCodeDetail(vo);
 		model.addAttribute("pwhtCdList", code);
 
 		return "egovframework/com/uat/uia/EgovIdPasswordSearch";

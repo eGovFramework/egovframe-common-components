@@ -98,7 +98,7 @@ public interface EgovMenuManageService {
 	 * @return List
 	 * @exception Exception
 	 */
-	List<?> selectMenuList() throws Exception;
+	List<EgovMap> selectMenuList() throws Exception;
 
 	/*### 메뉴관련 프로세스 ###*/
 	/**

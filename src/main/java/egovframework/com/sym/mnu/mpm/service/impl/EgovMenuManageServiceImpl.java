@@ -162,7 +162,7 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 	 * @return List
 	 * @exception Exception
 	 */
-	public List<?> selectMenuList() throws Exception {
+	public List<EgovMap> selectMenuList() throws Exception {
 		return menuManageDAO.selectMenuList();
 	}
 
