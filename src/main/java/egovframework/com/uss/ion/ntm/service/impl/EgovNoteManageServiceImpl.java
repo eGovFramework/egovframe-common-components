@@ -9,6 +9,7 @@ import egovframework.com.uss.ion.ntm.service.NoteManageVO;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 import javax.annotation.Resource;
 
@@ -121,7 +122,7 @@ public class EgovNoteManageServiceImpl extends EgovAbstractServiceImpl
 	 * @throws Exception
 	 */
 	@Override
-	public List<?> selectNoteEmpListPopup(ComDefaultVO searchVO) throws Exception{
+	public List<EgovMap> selectNoteEmpListPopup(ComDefaultVO searchVO) throws Exception{
 		return dao.selectNoteEmpListPopup(searchVO);
 	}
 
