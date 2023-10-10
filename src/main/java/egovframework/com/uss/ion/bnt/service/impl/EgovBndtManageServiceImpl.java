@@ -225,7 +225,7 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 	 * @return BndtDiaryVO - 당직일지관리 VO
 	 */
 	@Override
-	public List<?> selectBndtDiary(BndtDiaryVO bndtDiaryVO) throws Exception {
+	public List<BndtDiaryVO> selectBndtDiary(BndtDiaryVO bndtDiaryVO) throws Exception {
 		return bndtManageDAO.selectBndtDiary(bndtDiaryVO);
 	}
 

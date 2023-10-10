@@ -22,6 +22,7 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
@@ -139,7 +140,7 @@ public class EgovMtgPlaceManageController {
     	String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd"); // 상세정보 구분
     	ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM070");
-        List<?> lcSeCodeList = cmmUseService.selectCmmCodeDetail(vo);
+        List<CmmnDetailCode> lcSeCodeList = cmmUseService.selectCmmCodeDetail(vo);
                 
         model.addAttribute("lcSeCode",          lcSeCodeList);
     	model.addAttribute("mtgPlaceManage",  egovMtgPlaceManageService.selectMtgPlaceManage(mtgPlaceManageVO));
@@ -163,7 +164,7 @@ public class EgovMtgPlaceManageController {
 
     	ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM070");
-        List<?> lcSeCodeList = cmmUseService.selectCmmCodeDetail(vo);
+        List<CmmnDetailCode> lcSeCodeList = cmmUseService.selectCmmCodeDetail(vo);
 
         model.addAttribute("lcSeCode",        lcSeCodeList);
 

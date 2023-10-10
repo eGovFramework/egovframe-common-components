@@ -44,7 +44,7 @@ public interface EgovBackupResultService {
 	 * @param searchVO    조회조건VO
 	 * @exception Exception Exception
 	 */
-	public List<?> selectBackupResultList(BackupResult searchVO) throws Exception;
+	public List<BackupResult> selectBackupResultList(BackupResult searchVO) throws Exception;
 
 	/**
 	 * 백업결과 목록 전체 건수를(을) 조회한다.

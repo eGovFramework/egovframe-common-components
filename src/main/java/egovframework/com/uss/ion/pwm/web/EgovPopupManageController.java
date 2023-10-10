@@ -104,7 +104,7 @@ public class EgovPopupManageController {
 		popupManageVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		popupManageVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<?> reusltList = egovPopupManageService.selectPopupList(popupManageVO);
+		List<EgovMap> reusltList = egovPopupManageService.selectPopupList(popupManageVO);
 		model.addAttribute("resultList", reusltList);
 
 		model.addAttribute("searchKeyword",
@@ -318,7 +318,7 @@ public class EgovPopupManageController {
 
 		fileUrl = EgovWebUtil.filePathBlackList(fileUrl);
 
-		List<?> popupWhiteList = egovPopupManageService.selectPopupWhiteList();
+		List<EgovMap> popupWhiteList = egovPopupManageService.selectPopupWhiteList();
 		LOGGER.debug("Open Popup > WhiteList Count = {}", popupWhiteList.size());
 		if (fileUrl == null) {
 			fileUrl = "";

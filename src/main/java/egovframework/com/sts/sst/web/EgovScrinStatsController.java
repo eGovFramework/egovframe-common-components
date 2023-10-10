@@ -9,6 +9,7 @@ import egovframework.com.sym.mnu.mpm.service.EgovMenuManageService;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -56,7 +57,7 @@ public class EgovScrinStatsController {
 			ModelMap model) throws Exception {
 
     	// 트리메뉴 조회
-    	List<?> list_menulist = menuManageService.selectMenuList();
+    	List<EgovMap> list_menulist = menuManageService.selectMenuList();
         model.addAttribute("list_menulist", list_menulist);
 
 		if (statsVO.getFromDate() != null && !"".equals(statsVO.getFromDate())) {

@@ -2,11 +2,12 @@ package egovframework.com.uss.sam.ipm.service.impl;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.sam.ipm.service.IndvdlInfoPolicy;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 개인정보보호정책를 처리하는 Dao Class 구현
@@ -16,9 +17,9 @@ import org.springframework.stereotype.Repository;
  * @see <pre>
  * &lt;&lt; 개정이력(Modification Information) &gt;&gt;
  *
- *   수정일      수정자           수정내용
- *  -------    --------    ---------------------------
- *   2009.07.03  장동한          최초 생성
+ *   수정일          수정자       수정내용
+ *  -----------    --------    ---------------------------
+ *   2009.07.03     장동한       최초 생성
  *
  * </pre>
  */
@@ -31,7 +32,7 @@ public class IndvdlInfoPolicyDao extends EgovComAbstractDAO {
      * @return List
      * @throws Exception
      */
-    public List<?> selectIndvdlInfoPolicyList(ComDefaultVO searchVO) throws Exception {
+    public List<EgovMap> selectIndvdlInfoPolicyList(ComDefaultVO searchVO) throws Exception {
         return selectList("IndvdlInfoPolicy.selectIndvdlInfoPolicy", searchVO);
     }
 

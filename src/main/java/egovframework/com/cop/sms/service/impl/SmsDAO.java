@@ -27,75 +27,76 @@ import org.springframework.stereotype.Repository;
  */
 @Repository("SmsDAO")
 public class SmsDAO extends EgovComAbstractDAO {
+
     /**
      * 문자메시지 목록을 조회한다.
      * 
      * @param SmsVO
+     * @return List<SmsVO>
      */
-    public List<SmsVO> selectSmsInfs(SmsVO vo) throws Exception {
-	return selectList("SmsDAO.selectSmsInfs", vo);
+    public List<SmsVO> selectSmsInfs(SmsVO smsVO) {
+        return selectList("SmsDAO.selectSmsInfs", smsVO);
     }
 
     /**
      * 문자메시지 목록 숫자를 조회한다
      * 
      * @param SmsVO
-     * @return
-     * @throws Exception
+     * @return int
      */
-    public int selectSmsInfsCnt(SmsVO vo) throws Exception {
-	return (Integer)selectOne("SmsDAO.selectSmsInfsCnt", vo);
+    public int selectSmsInfsCnt(SmsVO smsVO) {
+        return selectOne("SmsDAO.selectSmsInfsCnt", smsVO);
     }
-    
+
     /**
      * 문자메시지 정보를 등록한다.
      * 
-     * @param notification
-     * @return
-     * @throws Exception
+     * @param sms
+     * @return int
      */
-    public String insertSmsInf(Sms sms) throws Exception {    	
-    	return Integer.toString(insert("SmsDAO.insertSmsInf", sms)); 
+    public int insertSmsInf(Sms sms) {
+        return insert("SmsDAO.insertSmsInf", sms);
     }
-    
+
     /**
      * 문자메시지 수신정보 및 결과 정보를 등록한다.
+     * 
      * @param smsRecptn
-     * @return
-     * @throws Exception
+     * @return int
      */
-    public String insertSmsRecptnInf(SmsRecptn smsRecptn) throws Exception {
-    	return Integer.toString(insert("SmsDAO.insertSmsRecptnInf", smsRecptn));
+    public int insertSmsRecptnInf(SmsRecptn smsRecptn) {
+        return insert("SmsDAO.insertSmsRecptnInf", smsRecptn);
     }
-    
+
     /**
      * 문자메시지에 대한 상세정보를 조회한다.
      * 
-     * @param searchVO
+     * @param smsVO
      * @return
      */
-    public SmsVO selectSmsInf(SmsVO searchVO) {
-	return (SmsVO)selectOne("SmsDAO.selectSmsInf", searchVO);
+    public SmsVO selectSmsInf(SmsVO smsVO) {
+        return selectOne("SmsDAO.selectSmsInf", smsVO);
     }
-    
+
     /**
      * 문자메시지 수신 및 결과 목록을 조회한다.
      * 
      * @param SmsRecptn
-     */
-    public List<SmsRecptn> selectSmsRecptnInfs(SmsRecptn vo) throws Exception {
-	return selectList("SmsDAO.selectSmsRecptnInfs", vo);
-    }
-    
-    /**
-     * 문자메시지 전송 결과 수신을 처리한다.
-     * EgovSmsInfoReceiver(Schedule job)에 의해 호출된다.
-     * 
-     * @param smsRecptn
      * @return
      * @throws Exception
      */
-    public String updateSmsRecptnInf(SmsRecptn smsRecptn) throws Exception {
-    	return Integer.toString(insert("SmsDAO.updateSmsRecptnInf", smsRecptn));
+    public List<SmsRecptn> selectSmsRecptnInfs(SmsRecptn smsRecptn) {
+        return selectList("SmsDAO.selectSmsRecptnInfs", smsRecptn);
     }
+
+    /**
+     * 문자메시지 전송 결과 수신을 처리한다. EgovSmsInfoReceiver(Schedule job)에 의해 호출된다.
+     * 
+     * @param smsRecptn
+     * @return int
+     */
+    public int updateSmsRecptnInf(SmsRecptn smsRecptn) {
+        return update("SmsDAO.updateSmsRecptnInf", smsRecptn);
+    }
+
 }

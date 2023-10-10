@@ -21,6 +21,7 @@ import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
@@ -30,6 +31,7 @@ import egovframework.com.uss.ion.ntm.service.EgovNoteManageService;
 import egovframework.com.uss.ion.ntm.service.NoteManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 /**
  * 쪽지 관리(보내기)를 처리하는 Controller Class 구현
@@ -101,7 +103,7 @@ public class EgovNoteManageController {
      	//수신구분
     	ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
     	voComCode.setCodeId("COM050");
-    	List<?> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+    	List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
     	model.addAttribute("recptnSe", listComCode);
 
     	//답변처리
@@ -231,7 +233,7 @@ public class EgovNoteManageController {
             ModelMap model) throws Exception {
 
 
-    		List<?> resultList = egovNoteManageService.selectNoteEmpListPopup(searchVO);
+    		List<EgovMap> resultList = egovNoteManageService.selectNoteEmpListPopup(searchVO);
 			model.addAttribute("resultList", resultList);
 
 	        /** EgovPropertyService.sample */
@@ -248,7 +250,7 @@ public class EgovNoteManageController {
 	        searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 	        searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-	        List<?> reusltList = egovNoteManageService.selectNoteEmpListPopup(searchVO);
+	        List<EgovMap> reusltList = egovNoteManageService.selectNoteEmpListPopup(searchVO);
 	        model.addAttribute("resultList", reusltList);
 
 	        model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword"));
