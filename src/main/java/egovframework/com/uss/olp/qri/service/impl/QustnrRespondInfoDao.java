@@ -95,14 +95,15 @@ public class QustnrRespondInfoDao extends EgovComAbstractDAO {
     }
 
     /**
-	 * 항목정보를 조회한다.
-	 * @param map - 조회할 정보가 담긴 map
-	 * @return List
-	 * @throws Exception
-	 */
-	public List<?> selectQustnrRespondInfoManageComtnqustnriem(Map<?, ?> map) throws Exception{
-		return selectList("QustnrRespondInfo.selectQustnrRespondInfoManageComtnqustnriem", map);
-	}
+     * 항목정보를 조회한다.
+     *
+     * @param map - 조회할 정보가 담긴 map
+     * @return List
+     * @throws Exception
+     */
+    public List<EgovMap> selectQustnrRespondInfoManageComtnqustnriem(Map<?, ?> map) throws Exception {
+        return selectList("QustnrRespondInfo.selectQustnrRespondInfoManageComtnqustnriem", map);
+    }
 
     /**
 	 *  설문조사(설문등록)를(을) 목록을 조회한다.
