@@ -85,7 +85,7 @@ public class PopupManageDAO extends EgovComAbstractDAO {
 	 *
 	 * @param popupManageVO
 	 */
-	public List<?> selectPopupList(PopupManageVO popupManageVO) throws Exception {
+	public List<EgovMap> selectPopupList(PopupManageVO popupManageVO) throws Exception {
 	    return selectList("PopupManage.selectPopupManage", popupManageVO);
 	}
 

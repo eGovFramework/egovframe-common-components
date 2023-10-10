@@ -107,7 +107,7 @@ public class EgovPopupManageServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @param popupManageVO
 	 */
 	@Override
-	public List<?> selectPopupList(PopupManageVO popupManageVO) throws Exception {
+	public List<EgovMap> selectPopupList(PopupManageVO popupManageVO) throws Exception {
 		return dao.selectPopupList(popupManageVO);
 	}
 
