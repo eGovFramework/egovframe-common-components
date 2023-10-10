@@ -27,6 +27,7 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.ans.service.AnnvrsryManage;
@@ -184,7 +185,7 @@ public class EgovAnnvrsryManageController {
 
 			ComDefaultCodeVO vo = new ComDefaultCodeVO();
 			vo.setCodeId("COM069");
-			List<?> annvrsrySeCodeList = cmmUseService.selectCmmCodeDetail(vo);
+			List<CmmnDetailCode> annvrsrySeCodeList = cmmUseService.selectCmmCodeDetail(vo);
 			model.addAttribute("annvrsrySeCode", annvrsrySeCodeList);
 			model.addAttribute("annvrsryManage", annvrsryManage);
 			return "egovframework/com/uss/ion/ans/EgovAnnvrsryUpdt";
@@ -213,7 +214,7 @@ public class EgovAnnvrsryManageController {
 
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM069");
-		List<?> annvrsrySeCodeList = cmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> annvrsrySeCodeList = cmmUseService.selectCmmCodeDetail(vo);
 		model.addAttribute("annvrsrySeCode", annvrsrySeCodeList);
 		model.addAttribute("annvrsryManage", annvrsryManage);
 		model.addAttribute("annvrsryManageVO", annvrsryManageVO);
@@ -237,7 +238,7 @@ public class EgovAnnvrsryManageController {
 		if (bindingResult.hasErrors()) {
 			ComDefaultCodeVO vo = new ComDefaultCodeVO();
 			vo.setCodeId("COM069");
-			List<?> annvrsrySeCodeList = cmmUseService.selectCmmCodeDetail(vo);
+			List<CmmnDetailCode> annvrsrySeCodeList = cmmUseService.selectCmmCodeDetail(vo);
 			model.addAttribute("annvrsrySeCode", annvrsrySeCodeList);
 
 			model.addAttribute("annvrsryManageVO", annvrsryManageVO);
@@ -257,7 +258,7 @@ public class EgovAnnvrsryManageController {
 			} else {
 				ComDefaultCodeVO vo = new ComDefaultCodeVO();
 				vo.setCodeId("COM069");
-				List<?> annvrsrySeCodeList = cmmUseService.selectCmmCodeDetail(vo);
+				List<CmmnDetailCode> annvrsrySeCodeList = cmmUseService.selectCmmCodeDetail(vo);
 				annvrsryManageVO.setAnnvrsryTemp1(user == null ? "" : EgovStringUtil.isNullToString(user.getName()));
 				annvrsryManageVO
 					.setAnnvrsryTemp2(user == null ? "" : EgovStringUtil.isNullToString(user.getOrgnztNm()));
@@ -299,7 +300,7 @@ public class EgovAnnvrsryManageController {
 			} else {
 				ComDefaultCodeVO vo = new ComDefaultCodeVO();
 				vo.setCodeId("COM069");
-				List<?> annvrsrySeCodeList = cmmUseService.selectCmmCodeDetail(vo);
+				List<CmmnDetailCode> annvrsrySeCodeList = cmmUseService.selectCmmCodeDetail(vo);
 				annvrsryManageVO.setAnnvrsryTemp1(user == null ? "" : EgovStringUtil.isNullToString(user.getName()));
 				annvrsryManageVO
 					.setAnnvrsryTemp2(user == null ? "" : EgovStringUtil.isNullToString(user.getOrgnztNm()));

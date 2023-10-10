@@ -82,7 +82,7 @@ public interface EgovMenuCreateManageService {
 	 * @return List
 	 * @exception Exception
 	 */
-	List<?> selectMenuCreatSiteMapList(MenuSiteMapVO vo) throws Exception;
+	List<EgovMap> selectMenuCreatSiteMapList(MenuSiteMapVO vo) throws Exception;
 
 	/**
 	 * 사용자 권한별 사이트맵 내용 조회

@@ -89,7 +89,7 @@ public interface EgovProgrmManageService {
 	 * @return List
 	 * @exception Exception
 	 */
-	List<?> selectProgrmChangeRequstList(ComDefaultVO vo) throws Exception;
+	List<ProgrmManageDtlVO> selectProgrmChangeRequstList(ComDefaultVO vo) throws Exception;
 	/**
 	 * 프로그램변경요청목록 총건수를 조회한다.
 	 * @param vo ComDefaultVO

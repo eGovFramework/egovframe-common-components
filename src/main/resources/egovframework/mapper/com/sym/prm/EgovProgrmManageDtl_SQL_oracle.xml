@@ -4,7 +4,7 @@
 <mapper namespace="progrmManageDAO">
 
     <!-- 프로그램 변경요청  --> 
-	<resultMap id="progrmManageDtlVO" type="egovframework.com.sym.prm.service.ProgrmManageDtlVO">
+	<resultMap id="progrmManageDtl" type="egovframework.com.sym.prm.service.ProgrmManageDtlVO">
 	  <result property="progrmFileNm" column="PROGRM_FILE_NM"/>
       <result property="rqesterNo" column="REQUST_NO"/>
       <result property="rqesterPersonId" column="RQESTER_ID"/>
@@ -22,20 +22,20 @@
       <result property="rqesterNo" column="REQUST_NO"/>
 	</resultMap>
 
-	<select id="selectProgrmChangeRequstList_D" parameterType="comDefaultVO" resultType="egovMap">
+	<select id="selectProgrmChangeRequstList_D" parameterType="comDefaultVO" resultMap="progrmManageDtl">
 		
 	       SELECT * FROM ( SELECT rownum rn, TB.* FROM (
 				SELECT
-					  PROGRM_FILE_NM AS "progrmFileNm" 
-					, REQUST_NO AS "rqesterNo" 
-					, RQESTER_ID AS "rqesterPersonId" 
-					, dbms_lob.substr(CHANGE_REQUST_CN, 10, 1)||'...'   AS "changerqesterCn" 
-					, dbms_lob.substr(REQUST_PROCESS_CN, 10, 1)||'...' AS "rqesterProcessCn"
-					, OPETR_ID AS "opetrId" 
-					, trim(PROCESS_STTUS_CODE) AS "processSttus"
-					, PROCESS_DE AS "processDe"   
-					, RQESTDE AS "rqesterDe" 
-					, REQUST_SJ AS "rqesterSj"
+					  PROGRM_FILE_NM
+					, REQUST_NO
+					, RQESTER_ID
+					, dbms_lob.substr(CHANGE_REQUST_CN, 10, 1)||'...'   AS CHANGE_REQUST_CN
+					, dbms_lob.substr(REQUST_PROCESS_CN, 10, 1)||'...' AS REQUST_PROCESS_CN
+					, OPETR_ID
+					, trim(PROCESS_STTUS_CODE) AS PROCESS_STTUS_CODE
+					, PROCESS_DE
+					, RQESTDE
+					, REQUST_SJ
 				FROM COMTHPROGRMCHANGEDTLS
 				WHERE PROGRM_FILE_NM like '%'|| #{searchKeyword}||'%'
 	       ) TB )  WHERE rn BETWEEN #{firstIndex} + 1 AND #{firstIndex} + #{recordCountPerPage}

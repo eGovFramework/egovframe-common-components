@@ -7,6 +7,7 @@ import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.ntm.service.NoteManageVO;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 /**
  * 쪽지 관리(보내기)를 처리하는 Dao Class 구현
@@ -70,7 +71,7 @@ public class NoteManageDao extends EgovComAbstractDAO {
 	 * @return List -회원정보 리스트
 	 * @throws Exception
 	 */
-	public List<?> selectNoteEmpListPopup(ComDefaultVO searchVO) throws Exception {
+	public List<EgovMap> selectNoteEmpListPopup(ComDefaultVO searchVO) throws Exception {
 		return selectList("NoteManage.EovNoteEmpListPopup", searchVO);
 	}
 

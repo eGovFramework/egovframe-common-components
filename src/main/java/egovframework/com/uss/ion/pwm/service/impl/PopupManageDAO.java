@@ -4,6 +4,7 @@ import java.util.List;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.pwm.service.PopupManageVO;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -73,7 +74,7 @@ public class PopupManageDAO extends EgovComAbstractDAO {
 	 *
 	 * @param popupManageVO
 	 */
-	public List<?> selectPopupWhiteList() throws Exception {
+	public List<EgovMap> selectPopupWhiteList() throws Exception {
 	    return selectList("PopupManage.selectPopupWhiteList");
 	}
 	

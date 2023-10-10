@@ -7,6 +7,7 @@ import egovframework.com.uss.ion.pwm.service.PopupManageVO;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 import javax.annotation.Resource;
 
@@ -94,7 +95,7 @@ public class EgovPopupManageServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @param popupManageVO
 	 */
 	@Override
-	public List<?> selectPopupWhiteList() throws Exception {
+	public List<EgovMap> selectPopupWhiteList() throws Exception {
 		return dao.selectPopupWhiteList();
 	}
 	

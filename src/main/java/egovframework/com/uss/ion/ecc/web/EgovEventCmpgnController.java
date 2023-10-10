@@ -18,6 +18,7 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.ecc.service.EgovEventCmpgnService;
@@ -172,7 +173,7 @@ public class EgovEventCmpgnController {
     	ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM035");
 
-		List<?> _result = cmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> _result = cmmUseService.selectCmmCodeDetail(vo);
 		model.addAttribute("eventTyCode", _result);
 
 
@@ -229,7 +230,7 @@ public class EgovEventCmpgnController {
      	ComDefaultCodeVO vo = new ComDefaultCodeVO();
  		vo.setCodeId("COM035");
 
- 		List<?> _result = cmmUseService.selectCmmCodeDetail(vo);
+ 		List<CmmnDetailCode> _result = cmmUseService.selectCmmCodeDetail(vo);
  		model.addAttribute("eventTyCode", _result);
     	 
     	 EventCmpgnVO eventCmpgnVO = new EventCmpgnVO();
@@ -355,7 +356,7 @@ public class EgovEventCmpgnController {
     	// 공통코드를 가져오기 위한 Vo
     	ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM014"); //성별
-		List<?> _result = cmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> _result = cmmUseService.selectCmmCodeDetail(vo);
 		model.addAttribute("sexdstnCode", _result);
 
 		vo.setCodeId("COM034"); //직업코드
@@ -416,7 +417,7 @@ public class EgovEventCmpgnController {
     	// 공통코드를 가져오기 위한 Vo
      	ComDefaultCodeVO vo = new ComDefaultCodeVO();
  		vo.setCodeId("COM014"); //성별
- 		List<?> _result = cmmUseService.selectCmmCodeDetail(vo);
+ 		List<CmmnDetailCode> _result = cmmUseService.selectCmmCodeDetail(vo);
  		model.addAttribute("sexdstnCode", _result);
 
  		vo.setCodeId("COM034"); //직업코드
