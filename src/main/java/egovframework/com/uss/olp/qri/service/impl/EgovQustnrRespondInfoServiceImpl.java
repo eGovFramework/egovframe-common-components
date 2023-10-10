@@ -100,15 +100,17 @@ public class EgovQustnrRespondInfoServiceImpl extends EgovAbstractServiceImpl im
     }
 
     /**
-	 * 문항정보를 조회한다.
-	 * @param map - 조회할 정보가 담긴 map
-	 * @return List
-	 * @throws Exception
-	 */
-	@Override
-	public List<?> selectQustnrRespondInfoManageComtnqustnrqesitm(Map<?, ?> map) throws Exception{
-		return dao.selectQustnrRespondInfoManageComtnqustnrqesitm(map);
-	}
+     * 문항정보를 조회한다.
+     *
+     * @param map - 조회할 정보가 담긴 map
+     * @return List
+     * @throws Exception
+     */
+    @Override
+    public List<EgovMap> selectQustnrRespondInfoManageComtnqustnrqesitm(Map<?, ?> map) throws Exception {
+        return dao.selectQustnrRespondInfoManageComtnqustnrqesitm(map);
+    }
+
     /**
 	 * 항목정보를 조회한다.
 	 * @param map - 조회할 정보가 담긴 map
