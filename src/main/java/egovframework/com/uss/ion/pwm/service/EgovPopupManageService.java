@@ -87,6 +87,6 @@ public interface EgovPopupManageService {
 	 *
 	 * @param popupManageVO
 	 */
-	public List<?> selectPopupMainList(PopupManageVO popupManageVO) throws Exception;
+	public List<EgovMap> selectPopupMainList(PopupManageVO popupManageVO) throws Exception;
 
 }
