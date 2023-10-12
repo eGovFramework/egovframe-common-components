@@ -47,9 +47,9 @@ public class EgovSessionCookieUtil {
 	/**
 	 * HttpSession에 주어진 키 값으로 세션 객체를 생성하는 기능
 	 *
-	 * @param request
-	 * @param keyStr - 세션 키
-	 * @param valStr - 세션 값
+	 * @param request - HttpServletRequest 객체
+	 * @param keyStr  - 설정할 세션의 키
+	 * @param obj     - 설정할 세션의 값(객체)
 	 * @throws Exception
 	 */
 	public static void setSessionAttribute(HttpServletRequest request, String keyStr, Object obj) throws Exception {
@@ -107,15 +107,15 @@ public class EgovSessionCookieUtil {
 
 	/**
 	 * 쿠키생성 - 입력받은 분만큼 쿠키를 유지되도록 세팅한다.
-	 * 쿠키의 유효시간을 5분으로 설정 =>(cookie.setMaxAge(60 * 5)
-	 * 쿠키의 유효시간을 10일로 설정 =>(cookie.setMaxAge(60 * 60 * 24 * 10)
+	 * 쿠키의 유효시간은 minute 파라미터에 따라 설정되며, 최대 24시간으로 제한된다.
+	 * 예) minute이 5이면, 쿠키의 유효시간을 5분으로 설정 =>(cookie.setMaxAge(60 * 5))
 	 *
 	 * @param response - Response
 	 * @param cookieNm - 쿠키명
-	 * @param cookieValue - 쿠키값
-	 * @param minute - 지속시킬 시간(분)
-	 * @return
-	 * @exception
+	 * @param cookieVal - 쿠키값
+	 * @param minute - 지속시킬 시간(분, 최대 24시간)
+	 * @return 없음
+	 * @exception UnsupportedEncodingException
 	 * @see
 	 */
 	public static void setCookie(HttpServletResponse response, String cookieNm, String cookieVal, int minute)
@@ -145,34 +145,31 @@ public class EgovSessionCookieUtil {
 	}
 
 	/**
-	 * 쿠키생성 - 쿠키의 유효시간을 설정하지 않을 경우 쿠키의 생명주기는 브라우저가 종료될 때까지
+	 * 쿠키 생성 및 설정.
+	 * 이 메서드를 사용하여 생성된 쿠키는 브라우저 세션 동안만 유지됩니다. (유효시간 설정이 없으므로)
 	 *
-	 * @param response - Response
-	 * @param cookieNm - 쿠키명
-	 * @param cookieValue - 쿠키값
-	 * @return
-	 * @exception
-	 * @see
+	 * @param response - 웹 응답 객체
+	 * @param cookieNm - 생성할 쿠키의 이름
+	 * @param cookieVal - 생성할 쿠키의 값
+	 * @throws UnsupportedEncodingException - UTF-8 인코딩을 지원하지 않는 경우 발생
 	 */
-
 	public static void setCookie(HttpServletResponse response, String cookieNm, String cookieVal)
-		throws UnsupportedEncodingException {
+			throws UnsupportedEncodingException {
 
-		// 특정의 encode 방식을 사용해 캐릭터 라인을 application/x-www-form-urlencoded 형식으로 변환
-		// 일반 문자열을 웹에서 통용되는 'x-www-form-urlencoded' 형식으로 변환하는 역할
+		// 문자열을 'x-www-form-urlencoded' 형식으로 인코딩
 		String cookieValue = URLEncoder.encode(cookieVal, "utf-8");
 
-		// 쿠키생성
+		// 쿠키 생성 (보안 위험을 줄이기 위해 CRLF 문자 제거)
 		Cookie cookie = new Cookie(EgovWebUtil.removeCRLF(cookieNm), EgovWebUtil.removeCRLF(cookieValue));
 
-		// 2011.10.10 보안점검 후속조치
-		cookie.setSecure(true);
+		// 보안 설정
+		cookie.setSecure(true);   // HTTPS에서만 쿠키 사용
+		cookie.setHttpOnly(true); // 자바스크립트에서 쿠키 접근 방지
 
-		cookie.setHttpOnly(true);//2022.01. Cookie without the HttpOnly flag 처리
-
-		// response 내장 객체를 이용해 쿠키를 전송
+		// 응답에 쿠키 추가
 		response.addCookie(cookie);
 	}
+
 
 	/**
 	 * 쿠키값 사용 - 쿠키값을 읽어들인다.
