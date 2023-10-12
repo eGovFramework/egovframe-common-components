@@ -6,6 +6,7 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.rmm.service.RoughMapDefaultVO;
 import egovframework.com.uss.ion.rmm.service.RoughMapVO;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -40,7 +41,7 @@ public class EgovRoughMapDAO extends EgovComAbstractDAO {
      * @return List<RoughMapVO> 건물 위치정보 리스트
      * @throws Exception
     */
-	public List<?> selectRoughMapList(RoughMapDefaultVO searchVO) throws Exception {
+	public List<EgovMap> selectRoughMapList(RoughMapDefaultVO searchVO) throws Exception {
         return selectList("RoughMapDAO.selectRoughMapList", searchVO);
     }
 
