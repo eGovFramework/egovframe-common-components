@@ -21,6 +21,7 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cmm.util.EgovXssChecker;
@@ -399,7 +400,7 @@ public class EgovQnaController {
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM028");
 
-		List<?> _result = cmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> _result = cmmUseService.selectCmmCodeDetail(vo);
 		model.addAttribute("qnaProcessSttusCode", _result);
 
 		qnaVO = egovQnaService.selectQnaDetail(qnaVO);
