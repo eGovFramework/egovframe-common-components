@@ -2,6 +2,8 @@ package egovframework.com.uss.olp.mgt.service;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 import egovframework.com.cmm.ComDefaultVO;
 /**
  * 회의관리를 처리하기 위한 Service 구현 Class
@@ -27,21 +29,21 @@ public interface EgovMeetingManageService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> egovMeetingManageLisAuthorGroupPopup(ComDefaultVO searchVO) throws Exception;
+	public List<EgovMap> egovMeetingManageLisAuthorGroupPopup(ComDefaultVO searchVO) throws Exception;
     /**
 	 * 아이디 목록을 조회한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> egovMeetingManageLisEmpLyrPopup(ComDefaultVO searchVO) throws Exception;
+	public List<EgovMap> egovMeetingManageLisEmpLyrPopup(ComDefaultVO searchVO) throws Exception;
     /**
 	 * 회의정보 목록을 조회한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectMeetingManageList(ComDefaultVO searchVO) throws Exception;
+	public List<EgovMap> selectMeetingManageList(ComDefaultVO searchVO) throws Exception;
 
     /**
 	 * 회의정보를 상세조회 한다.
@@ -49,7 +51,7 @@ public interface EgovMeetingManageService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectMeetingManageDetail(MeetingManageVO meetingManageVO) throws Exception;
+	public List<EgovMap> selectMeetingManageDetail(MeetingManageVO meetingManageVO) throws Exception;
 
     /**
 	 * 회의정보를 목록 전체 건수를 조회한다.
