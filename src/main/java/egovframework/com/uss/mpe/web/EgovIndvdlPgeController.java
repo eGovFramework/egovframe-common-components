@@ -87,7 +87,7 @@ public class EgovIndvdlPgeController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> list = egovIndvdlPgeService.selectIndvdlPgeList(searchVO);
+        List<IndvdlPgeVO> list = egovIndvdlPgeService.selectIndvdlPgeList(searchVO);
         model.addAttribute("resultList", list);
 
         int totCnt = egovIndvdlPgeService.selectIndvdlPgeListCnt(searchVO);

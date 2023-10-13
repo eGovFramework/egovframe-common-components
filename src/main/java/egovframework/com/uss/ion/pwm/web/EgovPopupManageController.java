@@ -104,7 +104,7 @@ public class EgovPopupManageController {
 		popupManageVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		popupManageVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<?> reusltList = egovPopupManageService.selectPopupList(popupManageVO);
+		List<EgovMap> reusltList = egovPopupManageService.selectPopupList(popupManageVO);
 		model.addAttribute("resultList", reusltList);
 
 		model.addAttribute("searchKeyword",
@@ -318,7 +318,7 @@ public class EgovPopupManageController {
 
 		fileUrl = EgovWebUtil.filePathBlackList(fileUrl);
 
-		List<?> popupWhiteList = egovPopupManageService.selectPopupWhiteList();
+		List<EgovMap> popupWhiteList = egovPopupManageService.selectPopupWhiteList();
 		LOGGER.debug("Open Popup > WhiteList Count = {}", popupWhiteList.size());
 		if (fileUrl == null) {
 			fileUrl = "";
@@ -346,7 +346,7 @@ public class EgovPopupManageController {
 	@RequestMapping(value = "/uss/ion/pwm/listMainPopup.do")
 	
 	public ModelAndView egovPopupManageMainList(PopupManageVO popupManageVO, ModelMap model) throws Exception {
-		List<?> resultList = egovPopupManageService.selectPopupMainList(popupManageVO);
+		List<EgovMap> resultList = egovPopupManageService.selectPopupMainList(popupManageVO);
 		ModelAndView mav = new ModelAndView("jsonView");
     	mav.addObject("resultList", resultList);
     	return mav;

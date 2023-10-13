@@ -4,18 +4,17 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.springframework.stereotype.Service;
+
 import egovframework.com.utl.sys.prm.service.EgovProcessMonService;
 import egovframework.com.utl.sys.prm.service.ProcessMon;
 import egovframework.com.utl.sys.prm.service.ProcessMonLog;
 import egovframework.com.utl.sys.prm.service.ProcessMonLogVO;
 import egovframework.com.utl.sys.prm.service.ProcessMonVO;
-
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
 
 /**
  * 개요
@@ -41,18 +40,18 @@ public class EgovProcessMonServiceImpl extends EgovAbstractServiceImpl implement
 	@Resource(name="egovProcessMonLogIdGnrService")
 	private EgovIdGnrService idgenServiceProcessMonLog;
 
-	/**
-	 * 등록된 PROCESS모니터링 목록을 조회한다.
-	 * @param processMonVO - PROCESS모니터링 Vo
-	 * @return List - PROCESS모니터링 목록
-	 *
-	 * @param processMonVO
-	 */
-	@SuppressWarnings({ "unchecked", "rawtypes" })
-	@Override
-	public List selectProcessMonList(ProcessMonVO processMonVO) throws Exception {
+    /**
+     * 등록된 PROCESS모니터링 목록을 조회한다.
+     *
+     * @param processMonVO - PROCESS모니터링 Vo
+     * @return List - PROCESS모니터링 목록
+     *
+     * @param processMonVO
+     */
+    @Override
+    public List<ProcessMonVO> selectProcessMonList(ProcessMonVO processMonVO) throws Exception {
         return processMonDAO.selectProcessMonList(processMonVO);
-	}
+    }
 
 	/**
 	 * PROCESS모니터링 목록 총 개수를 조회한다.

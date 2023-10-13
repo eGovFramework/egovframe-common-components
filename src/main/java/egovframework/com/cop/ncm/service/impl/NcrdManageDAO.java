@@ -2,12 +2,12 @@ package egovframework.com.cop.ncm.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.cop.ncm.service.NameCard;
 import egovframework.com.cop.ncm.service.NameCardUser;
 import egovframework.com.cop.ncm.service.NameCardVO;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 명함정보를 관리하기 위한 데이터 접근 클래스
@@ -18,151 +18,145 @@ import org.springframework.stereotype.Repository;
  *
  * <pre>
  * << 개정이력(Modification Information) >>
- *   
- *   수정일      수정자           수정내용
- *  -------       --------    ---------------------------
- *   2009.3.28  이삼섭          최초 생성
+ *
+ *   수정일         수정자       수정내용
+ *  ----------    --------    ---------------------------
+ *   2009.3.28     이삼섭       최초 생성
  *
  * </pre>
  */
 @Repository("NcrdManageDAO")
 public class NcrdManageDAO extends EgovComAbstractDAO {
 
-    //Logger log = Logger.getLogger(this.getClass());
+    // Logger log = Logger.getLogger(this.getClass());
 
     /**
      * 명함 정보를 삭제한다.
-     * 
+     *
      * @param nameCard
      * @throws Exception
      */
-    public void deleteNcrdItemUser(NameCardVO nameCardVO) throws Exception {
-    update("NcrdManageDAO.deleteNcrdItemUser", nameCardVO);
+    public int deleteNcrdItemUser(NameCardVO nameCardVO){
+        return delete("NcrdManageDAO.deleteNcrdItemUser", nameCardVO);
     }
-	
-    public void deleteNcrdItem(NameCardVO nameCardVO) throws Exception {
-	update("NcrdManageDAO.deleteNcrdItem", nameCardVO);
-    }
-    
 
+    public int deleteNcrdItem(NameCardVO nameCardVO) {
+        return delete("NcrdManageDAO.deleteNcrdItem", nameCardVO);
+    }
 
     /**
      * 명함 정보를 등록한다.
-     * 
+     *
      * @param nameCard
      * @throws Exception
      */
-    public void insertNcrdItem(NameCard nameCard) throws Exception {
-	insert("NcrdManageDAO.insertNcrdItem", nameCard);
+    public int insertNcrdItem(NameCard nameCard) {
+        return insert("NcrdManageDAO.insertNcrdItem", nameCard);
     }
 
     /**
      * 명함사용자 정보를 등록한다.
-     * 
+     *
      * @param ncrdUser
      * @throws Exception
      */
-    public void insertNcrdUseInf(NameCardUser ncrdUser) throws Exception {
-	insert("NcrdManageDAO.insertNcrdUseInf", ncrdUser);
+    public int insertNcrdUseInf(NameCardUser ncrdUser) {
+        return insert("NcrdManageDAO.insertNcrdUseInf", ncrdUser);
     }
 
     /**
      * 명함 정보에 대한 상세정보를 조회한다.
-     * 
+     *
      * @param nameCard
      * @return
      * @throws Exception
      */
-    public NameCardVO selectNcrdItem(NameCard nameCard) throws Exception {
-
-	NameCardVO vo = new NameCardVO();
-	vo = (NameCardVO)selectOne("NcrdManageDAO.selectNcrdItem", nameCard);
-	return vo;
+    public NameCardVO selectNcrdItem(NameCard nameCard) {
+        return selectOne("NcrdManageDAO.selectNcrdItem", nameCard);
     }
 
     /**
      * 명함 정보에 대한 목록을 조회한다.
-     * 
+     *
      * @param nameCard
      * @return
      * @throws Exception
      */
-    public List<NameCardVO> selectNcrdItemList(NameCardVO ncrdVO) throws Exception {
-	return selectList("NcrdManageDAO.selectNcrdItemList", ncrdVO);
-
+    public List<NameCardVO> selectNcrdItemList(NameCardVO nameCardVO) {
+        return selectList("NcrdManageDAO.selectNcrdItemList", nameCardVO);
     }
 
     /**
-     * 
+     *
      * @param nameCard
      * @return
      * @throws Exception
      */
-    public int selectNcrdItemListCnt(NameCardVO ncrdVO) throws Exception {
-	return (Integer)selectOne("NcrdManageDAO.selectNcrdItemListCnt", ncrdVO);
+    public int selectNcrdItemListCnt(NameCardVO nameCardVO) {
+        return selectOne("NcrdManageDAO.selectNcrdItemListCnt", nameCardVO);
     }
 
     /**
      * 명함 정보에 대한 목록 전체 건수를 조회한다.
-     * 
-     * @param ncrdUser
+     *
+     * @param nameCardUser
      * @return
      * @throws Exception
      */
-    public List<NameCardUser> selectNcrdUseInfs(NameCardUser ncrdUser) throws Exception {
-	return selectList("NcrdManageDAO.selectNcrdUseInfs", ncrdUser);
+    public List<NameCardUser> selectNcrdUseInfs(NameCardUser nameCardUser) {
+        return selectList("NcrdManageDAO.selectNcrdUseInfs", nameCardUser);
     }
 
     /**
      * 명함사용자 정보에 대한 목록 전체 건수를 조회한다.
-     * 
+     *
      * @param ncrdUser
      * @return
      * @throws Exception
      */
-    public int selectNcrdUseInfsCnt(NameCardUser ncrdUser) throws Exception {
-	return (Integer)selectOne("NcrdManageDAO.selectNcrdUseInfsCnt", ncrdUser);
+    public int selectNcrdUseInfsCnt(NameCardUser nameCardUser) {
+        return selectOne("NcrdManageDAO.selectNcrdUseInfsCnt", nameCardUser);
     }
 
     /**
      * 명함 정보를 수정한다.
-     * 
+     *
      * @param nameCard
      * @throws Exception
      */
-    public void updateNcrdItem(NameCard nameCard) throws Exception {
-	update("NcrdManageDAO.updateNcrdItem", nameCard);
+    public int updateNcrdItem(NameCard nameCard) {
+        return update("NcrdManageDAO.updateNcrdItem", nameCard);
     }
 
     /**
      * 명함사용자 정보를 수정한다.
-     * 
-     * @param ncrdUser
+     *
+     * @param nameCardUser
      * @throws Exception
      */
-    public void updateNcrdUseInf(NameCardUser ncrdUser) throws Exception {
-	update("NcrdManageDAO.updateNcrdUseInf", ncrdUser);
+    public int updateNcrdUseInf(NameCardUser nameCardUser) {
+        return update("NcrdManageDAO.updateNcrdUseInf", nameCardUser);
     }
 
     /**
      * 내 명함 정보에 대한 목록을 조회한다.
-     * 
-     * @param ncrdVO
+     *
+     * @param nameCardVO
      * @return
      * @throws Exception
      */
-    public List<NameCardVO> selectMyNcrdItemList(NameCardVO ncrdVO) throws Exception {
-	return selectList("NcrdManageDAO.selectMyNcrdItemList", ncrdVO);
+    public List<NameCardVO> selectMyNcrdItemList(NameCardVO nameCardVO) {
+        return selectList("NcrdManageDAO.selectMyNcrdItemList", nameCardVO);
     }
 
     /**
      * 내 명함 정보에 대한 목록 전체 건수를 조회한다.
-     * 
-     * @param ncrdVO
+     *
+     * @param nameCardVO
      * @return
      * @throws Exception
      */
-    public int selectMyNcrdItemListCnt(NameCardVO ncrdVO) throws Exception {
-	return (Integer)selectOne("NcrdManageDAO.selectMyNcrdItemListCnt", ncrdVO);
+    public int selectMyNcrdItemListCnt(NameCardVO nameCardVO) {
+        return selectOne("NcrdManageDAO.selectMyNcrdItemListCnt", nameCardVO);
     }
 }

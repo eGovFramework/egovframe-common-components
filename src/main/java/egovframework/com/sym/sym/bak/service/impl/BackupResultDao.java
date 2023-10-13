@@ -66,7 +66,7 @@ public class BackupResultDao extends EgovComAbstractDAO {
 	 * @param searchVO    조회조건이 저장된 VO
 	 * @exception Exception Exception
 	 */
-	public List<?> selectBackupResultList(BackupResult searchVO)
+	public List<BackupResult> selectBackupResultList(BackupResult searchVO)
 	  throws Exception{
 		return selectList("BackupResultDao.selectBackupResultList", searchVO);
 	}

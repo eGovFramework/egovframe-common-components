@@ -7,9 +7,9 @@ import egovframework.com.cmm.service.EgovUserDetailsService;
 /**
  * EgovUserDetails Helper 클래스
  *
- * @author sjyoon
  * @since 2009.06.01
  * @version 1.0
+ * @author sjyoon
  * @see
  *
  * <pre>

@@ -107,7 +107,6 @@ public class EgovBackupResultController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-	@SuppressWarnings("unchecked")
 	@IncludedInfo(name="백업결과관리", order = 1151 ,gid = 60)
 	@RequestMapping("/sym/sym/bak/getBackupResultList.do")
 	public String selectBackupResultList(@ModelAttribute("searchVO")BackupResult searchVO, ModelMap model)
@@ -124,7 +123,7 @@ public class EgovBackupResultController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<BackupResult> resultList = (List<BackupResult>) egovBackupResultService.selectBackupResultList(searchVO);
+		List<BackupResult> resultList = egovBackupResultService.selectBackupResultList(searchVO);
 		int totCnt = egovBackupResultService.selectBackupResultListCnt(searchVO);
 
 		paginationInfo.setTotalRecordCount(totCnt);

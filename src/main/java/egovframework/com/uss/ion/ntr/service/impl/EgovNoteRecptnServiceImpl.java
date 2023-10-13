@@ -7,6 +7,7 @@ import egovframework.com.uss.ion.ntr.service.EgovNoteRecptnService;
 import egovframework.com.uss.ion.ntr.service.NoteRecptn;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -43,7 +44,7 @@ public class EgovNoteRecptnServiceImpl extends EgovAbstractServiceImpl
      * @throws Exception
      */
     @Override
-	public List<?> selectNoteRecptnList(NoteRecptn noteRecptn) throws Exception {
+	public List<EgovMap> selectNoteRecptnList(NoteRecptn noteRecptn) throws Exception {
     	return dao.selectNoteRecptnList(noteRecptn);
     }
 

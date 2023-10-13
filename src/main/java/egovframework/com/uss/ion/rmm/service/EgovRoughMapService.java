@@ -2,6 +2,8 @@ package egovframework.com.uss.ion.rmm.service;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 /**
  * 개요
  * - 위치정보연계에 대한 Service Interface를 정의한다.
@@ -33,7 +35,7 @@ public interface EgovRoughMapService {
      * @return Map<String, Object> 주변건물 위치정보 리스트
      * @throws Exception
     */
-    List<?> selectRoughMapList(RoughMapDefaultVO searchVO) throws Exception;
+    List<EgovMap> selectRoughMapList(RoughMapDefaultVO searchVO) throws Exception;
 
     /**
      * 글 총 개수를 조회한다
