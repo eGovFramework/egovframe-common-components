@@ -3,12 +3,12 @@ package egovframework.com.uss.olp.qqm.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.olp.qqm.service.QustnrQestnManageVO;
-
-import org.egovframe.rte.psl.dataaccess.util.EgovMap;
-import org.springframework.stereotype.Repository;
 /**
  * 설문문항을 처리하는 Dao Class 구현
  * @author 공통서비스 장동한
@@ -30,14 +30,15 @@ import org.springframework.stereotype.Repository;
 public class QustnrQestnManageDao extends EgovComAbstractDAO {
 
     /**
-	 * 설문조사 응답자답변내용결과/기타답변내용결과 통계를 조회한다.
-	 * @param Map - 설문지 정보가 담김 Parameter
-	 * @return Map
-	 * @throws Exception
-	 */
-	public List<?> selectQustnrManageStatistics2(Map<?, ?> map) throws Exception{
-		return selectList("QustnrQestnManage.selectQustnrManageStatistics2", map);
-	}
+     * 설문조사 응답자답변내용결과/기타답변내용결과 통계를 조회한다.
+     *
+     * @param Map - 설문지 정보가 담김 Parameter
+     * @return Map
+     * @throws Exception
+     */
+    public List<EgovMap> selectQustnrManageStatistics2(Map<?, ?> map) throws Exception {
+        return selectList("QustnrQestnManage.selectQustnrManageStatistics2", map);
+    }
 
     /**
 	 * 설문조사 통계를 조회한다.

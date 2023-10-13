@@ -6,7 +6,7 @@ import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 
 public interface EgovIndvdlPgeService {
 
-	List<?> selectIndvdlPgeList(IndvdlPgeVO searchVO);
+	List<IndvdlPgeVO> selectIndvdlPgeList(IndvdlPgeVO searchVO);
 
 	int selectIndvdlPgeListCnt(IndvdlPgeVO searchVO);
 

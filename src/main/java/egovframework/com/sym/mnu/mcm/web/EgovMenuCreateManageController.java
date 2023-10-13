@@ -3,7 +3,6 @@ package egovframework.com.sym.mnu.mcm.web;
 import java.util.List;
 
 import javax.annotation.Resource;
-import javax.servlet.http.HttpServletResponse;
 
 //import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -23,6 +22,7 @@ import egovframework.com.sym.mnu.mcm.service.MenuCreatVO;
 import egovframework.com.sym.mnu.mcm.service.MenuSiteMapVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
@@ -63,89 +63,79 @@ public class EgovMenuCreateManageController {
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
 
-	/*********** 메뉴 생성 관리 ***************/
+    /*********** 메뉴 생성 관리 ***************/
 
-	/**
-	 * *메뉴생성목록을 조회한다.
-	 *
-	 * @param searchVO
-	 *            ComDefaultVO
-	 * @return 출력페이지정보 "sym/mnu/mcm/EgovMenuCreatManage"
-	 * @exception Exception
-	 */
-	@IncludedInfo(name = "메뉴생성관리", order = 1100, gid = 60)
-	@RequestMapping(value = "/sym/mnu/mcm/EgovMenuCreatManageSelect.do")
-	public String selectMenuCreatManagList(@ModelAttribute("searchVO") ComDefaultVO searchVO, ModelMap model) throws Exception {
-		String resultMsg = "";
-		// 0. Spring Security 사용자권한 처리
-		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "redirect:/uat/uia/egovLoginUsr.do";
-		}
-		// 내역 조회
-		/** EgovPropertyService.sample */
-		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-		searchVO.setPageSize(propertiesService.getInt("pageSize"));
+    /**
+     * *메뉴생성목록을 조회한다.
+     *
+     * @param searchVO ComDefaultVO
+     * @return 출력페이지정보 "sym/mnu/mcm/EgovMenuCreatManage"
+     * @exception Exception
+     */
+    @IncludedInfo(name = "메뉴생성관리", order = 1100, gid = 60)
+    @RequestMapping(value = "/sym/mnu/mcm/EgovMenuCreatManageSelect.do")
+    public String selectMenuCreatManagList(@ModelAttribute("searchVO") ComDefaultVO searchVO, ModelMap model)
+            throws Exception {
+        String resultMsg = "";
+        // 0. Spring Security 사용자권한 처리
+        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+        if (!isAuthenticated) {
+            model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+            return "redirect:/uat/uia/egovLoginUsr.do";
+        }
+        // 내역 조회
+        /** EgovPropertyService.sample */
+        searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
+        searchVO.setPageSize(propertiesService.getInt("pageSize"));
 
-		/** pageing */
-		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
+        /** pageing */
+        PaginationInfo paginationInfo = new PaginationInfo();
+        paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
+        paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
+        paginationInfo.setPageSize(searchVO.getPageSize());
 
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-		/*
-		if (searchVO.getSearchKeyword() != null && !searchVO.getSearchKeyword().equals("")) {
-		
-			int IDcnt = menuCreateManageService.selectUsrByPk(searchVO);
-			if (IDcnt == 0) {
-				resultMsg = egovMessageSource.getMessage("info.nodata.msg");
-			} else {
-				// AuthorCode 검색
-				MenuCreatVO vo = new MenuCreatVO();
-				vo = menuCreateManageService.selectAuthorByUsr(searchVO);
-				searchVO.setSearchKeyword(vo.getAuthorCode());
-			}
-		}
-		*/
-		List<?> list_menumanage = menuCreateManageService.selectMenuCreatManagList(searchVO);
-		if ( list_menumanage.size() == 0 ) 
-			resultMsg = egovMessageSource.getMessage("info.nodata.msg");
-		model.addAttribute("list_menumanage", list_menumanage);
-		
-		int totCnt = menuCreateManageService.selectMenuCreatManagTotCnt(searchVO);
-		paginationInfo.setTotalRecordCount(totCnt);
-		model.addAttribute("paginationInfo", paginationInfo);
-		model.addAttribute("resultMsg", resultMsg);
-		return "egovframework/com/sym/mnu/mcm/EgovMenuCreatManage";
-	}
+        searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+        searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
+        searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+        /*
+         * if (searchVO.getSearchKeyword() != null && !searchVO.getSearchKeyword().equals("")) {
+         * 
+         * int IDcnt = menuCreateManageService.selectUsrByPk(searchVO); if (IDcnt == 0) { resultMsg = egovMessageSource.getMessage("info.nodata.msg"); } else { // AuthorCode 검색 MenuCreatVO vo = new MenuCreatVO(); vo = menuCreateManageService.selectAuthorByUsr(searchVO); searchVO.setSearchKeyword(vo.getAuthorCode()); } }
+         */
+        List<EgovMap> resultList = menuCreateManageService.selectMenuCreatManagList(searchVO);
+        if (resultList.size() == 0) {
+            resultMsg = egovMessageSource.getMessage("info.nodata.msg");
+        }
+        model.addAttribute("resultList", resultList);
 
-	/* 메뉴생성 세부조회 */
-	/**
-	 * 메뉴생성 세부화면을 조회한다.
-	 *
-	 * @param menuCreatVO
-	 *            MenuCreatVO
-	 * @return 출력페이지정보 "sym/mnu/mcm/EgovMenuCreat"
-	 * @exception Exception
-	 */
-	@RequestMapping(value = "/sym/mnu/mcm/EgovMenuCreatSelect.do")
-	public String selectMenuCreatList(@ModelAttribute("menuCreatVO") MenuCreatVO menuCreatVO, ModelMap model) throws Exception {
-		// 0. Spring Security 사용자권한 처리
-		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "redirect:/uat/uia/egovLoginUsr.do";
-		}
-		List<?> list_menulist = menuCreateManageService.selectMenuCreatList(menuCreatVO);
-		model.addAttribute("list_menulist", list_menulist);
-		model.addAttribute("resultVO", menuCreatVO);
+        int totCnt = menuCreateManageService.selectMenuCreatManagTotCnt(searchVO);
+        paginationInfo.setTotalRecordCount(totCnt);
+        model.addAttribute("paginationInfo", paginationInfo);
+        model.addAttribute("resultMsg", resultMsg);
+        return "egovframework/com/sym/mnu/mcm/EgovMenuCreatManage";
+    }
 
-		return "egovframework/com/sym/mnu/mcm/EgovMenuCreat";
-	}
+    /**
+     * 메뉴생성 세부화면을 조회한다.
+     *
+     * @param menuCreatVO MenuCreatVO
+     * @return 출력페이지정보 "sym/mnu/mcm/EgovMenuCreat"
+     * @exception Exception
+     */
+    @RequestMapping(value = "/sym/mnu/mcm/EgovMenuCreatSelect.do")
+    public String selectMenuCreatList(@ModelAttribute MenuCreatVO menuCreatVO, ModelMap model) throws Exception {
+        // 0. Spring Security 사용자권한 처리
+        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+        if (!isAuthenticated) {
+            model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+            return "redirect:/uat/uia/egovLoginUsr.do";
+        }
+        List<EgovMap> resultList = menuCreateManageService.selectMenuCreatList(menuCreatVO);
+        model.addAttribute("resultList", resultList);
+        model.addAttribute("resultVO", menuCreatVO);
+
+        return "egovframework/com/sym/mnu/mcm/EgovMenuCreat";
+    }
 
 	/**
 	 * 메뉴생성처리 및 메뉴생성내역을 등록한다.
@@ -195,7 +185,7 @@ public class EgovMenuCreateManageController {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
-		List<?> list_menulist = menuCreateManageService.selectMenuCreatSiteMapList(menuSiteMapVO);
+		List<EgovMap> list_menulist = menuCreateManageService.selectMenuCreatSiteMapList(menuSiteMapVO);
 		model.addAttribute("list_menulist", list_menulist);
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		menuSiteMapVO.setCreatPersonId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
@@ -205,6 +195,7 @@ public class EgovMenuCreateManageController {
 
 	/**
 	 * 메뉴사이트맵 생성처리 및 사이트맵을 등록한다.
+	 * 개발환경에서 테스트용 함수로 보안 취약
 	 *
 	 * @param menuSiteMapVO
 	 *            MenuSiteMapVO
@@ -213,6 +204,7 @@ public class EgovMenuCreateManageController {
 	 * @return 출력페이지정보 "sym/mnu/mcm/EgovMenuCreatSiteMap"
 	 * @exception Exception
 	 */
+	/*
 	@RequestMapping(value = "/sym/mnu/mcm/EgovMenuCreatSiteMapInsert.do")
 	public String selectMenuCreatSiteMapInsert(@ModelAttribute("menuSiteMapVO") MenuSiteMapVO menuSiteMapVO, @RequestParam("valueHtml") String valueHtml, ModelMap model
 			,HttpServletResponse response)
@@ -226,11 +218,11 @@ public class EgovMenuCreateManageController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		/*menuSiteMapVO.setTmpRootPath(EgovProperties.RELATIVE_PATH_PREFIX
-				+ ".." + System.getProperty("file.separator") + ".."
-				+ System.getProperty("file.separator") + "..");*/
+		//menuSiteMapVO.setTmpRootPath(EgovProperties.RELATIVE_PATH_PREFIX
+		//		+ ".." + System.getProperty("file.separator") + ".."
+		//		+ System.getProperty("file.separator") + "..");
 
-		/* 사이트맵 파일 생성 위치 지정 */
+		// 사이트맵 파일 생성 위치 지정
 		//String currentPath = EgovMenuCreateManageController.class.getResource("").getPath();
 		String currentPath = EgovMenuCreateManageController.class.getProtectionDomain().getCodeSource() == null ? "" : EgovStringUtil.isNullToString(EgovMenuCreateManageController.class.getProtectionDomain().getCodeSource().getLocation().getPath());
 		//System.out.println("===>>> currentPath = "+currentPath);
@@ -240,14 +232,13 @@ public class EgovMenuCreateManageController {
 		//System.out.println("===>>> path = "+path);
 		//System.out.println("===>>> menuSiteMapVO.getMapCreatId() = "+menuSiteMapVO.getMapCreatId());
 		
-		/*
-		 * 사이트맵 파일 생성 위치 지정 if ("WINDOWS".equals(Globals.OS_TYPE)) {
-		 * menuSiteMapVO
-		 * .setTmp_rootPath("D:/egovframework/workspace/egovcmm/src/main/webapp"
-		 * ); }else{menuSiteMapVO.setTmp_rootPath(
-		 * "/product/jeus/webhome/was_com/egovframework-com-1_0/egovframework-com-1_0_war___"
-		 * ); }
-		 */
+		// 사이트맵 파일 생성 위치 지정 if ("WINDOWS".equals(Globals.OS_TYPE)) {
+		// menuSiteMapVO
+		// .setTmp_rootPath("D:/egovframework/workspace/egovcmm/src/main/webapp"
+		// ); }else{menuSiteMapVO.setTmp_rootPath(
+		// "/product/jeus/webhome/was_com/egovframework-com-1_0/egovframework-com-1_0_war___"
+		// ); }
+		
 		chkCreat = menuCreateManageService.creatSiteMap(menuSiteMapVO, valueHtml);
 		if (!chkCreat) {
 			resultMsg = egovMessageSource.getMessage("fail.common.insert");
@@ -262,6 +253,7 @@ public class EgovMenuCreateManageController {
 
 		return "egovframework/com/sym/mnu/mcm/EgovMenuCreatSiteMap";
 	}
+	*/
 
 	/* 메뉴사이트맵 생성조회 */
 	/**

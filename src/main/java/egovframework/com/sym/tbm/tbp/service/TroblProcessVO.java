@@ -19,7 +19,7 @@ public class TroblProcessVO extends TroblProcess {
 	/**
 	 * 장애정보 목록
 	 */
-	private List<?> troblProcessList;
+	private List<TroblProcessVO> troblProcessList;
 	/**
 	 * 장애명 조회조건
 	 */
@@ -39,13 +39,13 @@ public class TroblProcessVO extends TroblProcess {
 	/**
 	 * @return the troblProcessList
 	 */
-	public List<?> getTroblProcessList() {
+	public List<TroblProcessVO> getTroblProcessList() {
 		return troblProcessList;
 	}
 	/**
 	 * @param troblProcessList the troblProcessList to set
 	 */
-	public void setTroblProcessList(List<?> troblProcessList) {
+	public void setTroblProcessList(List<TroblProcessVO> troblProcessList) {
 		this.troblProcessList = Collections.unmodifiableList(troblProcessList);
 	}
 	/**

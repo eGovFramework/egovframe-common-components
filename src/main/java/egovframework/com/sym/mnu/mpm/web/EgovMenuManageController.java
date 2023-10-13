@@ -37,6 +37,7 @@ import egovframework.com.sym.prm.service.EgovProgrmManageService;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
@@ -113,48 +114,47 @@ public class EgovMenuManageController {
 		return "egovframework/com/sym/mnu/mpm/EgovMenuDetailSelectUpdt";
 	}
 
-	/**
-	 * 메뉴목록 리스트조회한다.
-	 * @param searchVO ComDefaultVO
-	 * @return 출력페이지정보 "sym/mnu/mpm/EgovMenuManage"
-	 * @exception Exception
-	 */
-	@IncludedInfo(name = "메뉴관리리스트", order = 1091, gid = 60)
-	@RequestMapping(value = "/sym/mnu/mpm/EgovMenuManageSelect.do")
-	public String selectMenuManageList(
-		@ModelAttribute("searchVO") ComDefaultVO searchVO,
-		ModelMap model)
-		throws Exception {
-		// 0. Spring Security 사용자권한 처리
-		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "redirect:/uat/uia/egovLoginUsr.do";
-		}
-		// 내역 조회
-		/** EgovPropertyService.sample */
-		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-		searchVO.setPageSize(propertiesService.getInt("pageSize"));
+    /**
+     * 메뉴목록 리스트조회한다.
+     * 
+     * @param searchVO ComDefaultVO
+     * @return 출력페이지정보 "sym/mnu/mpm/EgovMenuManage"
+     * @exception Exception
+     */
+    @IncludedInfo(name = "메뉴관리리스트", order = 1091, gid = 60)
+    @RequestMapping(value = "/sym/mnu/mpm/EgovMenuManageSelect.do")
+    public String selectMenuManageList(@ModelAttribute("searchVO") ComDefaultVO searchVO, ModelMap model)
+            throws Exception {
+        // 0. Spring Security 사용자권한 처리
+        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+        if (!isAuthenticated) {
+            model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+            return "redirect:/uat/uia/egovLoginUsr.do";
+        }
+        // 내역 조회
+        /** EgovPropertyService.sample */
+        searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
+        searchVO.setPageSize(propertiesService.getInt("pageSize"));
 
-		/** pageing */
-		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
+        /** pageing */
+        PaginationInfo paginationInfo = new PaginationInfo();
+        paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
+        paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
+        paginationInfo.setPageSize(searchVO.getPageSize());
 
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+        searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+        searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
+        searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<?> list_menumanage = menuManageService.selectMenuManageList(searchVO);
-		model.addAttribute("list_menumanage", list_menumanage);
+        List<EgovMap> resultList = menuManageService.selectMenuManageList(searchVO);
+        model.addAttribute("resultList", resultList);
 
-		int totCnt = menuManageService.selectMenuManageListTotCnt(searchVO);
-		paginationInfo.setTotalRecordCount(totCnt);
-		model.addAttribute("paginationInfo", paginationInfo);
+        int totCnt = menuManageService.selectMenuManageListTotCnt(searchVO);
+        paginationInfo.setTotalRecordCount(totCnt);
+        model.addAttribute("paginationInfo", paginationInfo);
 
-		return "egovframework/com/sym/mnu/mpm/EgovMenuManage";
-	}
+        return "egovframework/com/sym/mnu/mpm/EgovMenuManage";
+    }
 
 	/**
 	 * 메뉴목록 멀티 삭제한다.
@@ -340,7 +340,7 @@ public class EgovMenuManageController {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
-		List<?> list_menulist = menuManageService.selectMenuList();
+		List<EgovMap> list_menulist = menuManageService.selectMenuList();
 //		resultMsg = egovMessageSource.getMessage("success.common.select");
 		model.addAttribute("list_menulist", list_menulist);
 		//        model.addAttribute("resultMsg", resultMsg);
@@ -484,7 +484,7 @@ public class EgovMenuManageController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		List<?> list_menulist = menuManageService.selectMenuList();
+		List<EgovMap> list_menulist = menuManageService.selectMenuList();
 		model.addAttribute("list_menulist", list_menulist);
 		return "egovframework/com/sym/mnu/mpm/EgovMenuMvmn";
 	}
@@ -507,7 +507,7 @@ public class EgovMenuManageController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		List<?> list_menulist = menuManageService.selectMenuList();
+		List<EgovMap> list_menulist = menuManageService.selectMenuList();
 		model.addAttribute("list_menulist", list_menulist);
 		return "egovframework/com/sym/mnu/mpm/EgovMenuMvmnNew";
 	}

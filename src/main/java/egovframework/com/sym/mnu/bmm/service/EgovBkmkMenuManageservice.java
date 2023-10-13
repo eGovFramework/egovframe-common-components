@@ -3,6 +3,8 @@ package egovframework.com.sym.mnu.bmm.service;
 import java.util.List;
 import java.util.Map;
 
+import egovframework.com.sym.mnu.mpm.service.MenuManageVO;
+
 
 /**
  * 바로가기메뉴관리 정보를 관리하기 위한 서비스 인터페이스 클래스
@@ -66,10 +68,10 @@ public interface EgovBkmkMenuManageservice {
      * 미리보기를 할 바로가기메뉴관리의 목록을 조회한다.
      *
      * @param BkmkMenuManageVO
-     * @return  List<MenuManageVO>
+     * @return List<MenuManageVO>
      * @throws Exception
      */
-    public List<?> selectBkmkPreviewList(BkmkMenuManageVO bkmkMenuManageVO) throws Exception;
+    public List<MenuManageVO> selectBkmkPreviewList(BkmkMenuManageVO bkmkMenuManageVO) throws Exception;
 
     /**
      * 선택된 메뉴의 URL 을 조회한다.

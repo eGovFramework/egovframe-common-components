@@ -117,8 +117,7 @@ public class BkmkMenuManageDAO extends EgovComAbstractDAO{
      * @return
      * @throws Exception
      */
-	public List<MenuManageVO> selectBkmkPreview(BkmkMenuManageVO bkmkMenuManageVO)
-            throws Exception {
+    public List<MenuManageVO> selectBkmkPreview(BkmkMenuManageVO bkmkMenuManageVO) throws Exception {
         return selectList("BkmkMenuManageDAO.selectBkmkPreview", bkmkMenuManageVO);
     }
 

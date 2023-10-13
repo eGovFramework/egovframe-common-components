@@ -61,16 +61,16 @@ public class TrsmrcvLogDAO extends EgovComAbstractDAO {
 		return (TrsmrcvLog) selectOne("TrsmrcvLogDAO.selectTrsmrcvLog", trsmrcvLog);
 	}
 
-	/**
-	 * 송수신 로그정보 목록을 조회한다.
-	 *
-	 * @param TrsmrcvLog
-	 * @return
-	 * @throws Exception
-	 */
-	public List<?> selectTrsmrcvLogInf(TrsmrcvLog trsmrcvLog) throws Exception{
-		return selectList("TrsmrcvLogDAO.selectTrsmrcvLogInf", trsmrcvLog);
-	}
+    /**
+     * 송수신 로그정보 목록을 조회한다.
+     *
+     * @param TrsmrcvLog
+     * @return
+     * @throws Exception
+     */
+    public List<TrsmrcvLog> selectTrsmrcvLogInf(TrsmrcvLog trsmrcvLog) throws Exception {
+        return selectList("TrsmrcvLogDAO.selectTrsmrcvLogInf", trsmrcvLog);
+    }
 
 	/**
 	 * 송수신 로그정보 목록의 숫자를 조회한다.

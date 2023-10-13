@@ -6,6 +6,9 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +30,6 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olp.qqm.service.EgovQustnrQestnManageService;
 import egovframework.com.uss.olp.qqm.service.QustnrQestnManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import org.egovframe.rte.fdl.property.EgovPropertyService;
-import org.egovframe.rte.psl.dataaccess.util.EgovMap;
-import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 /**
  * 설문문항을 처리하는 Controller Class 구현
  * @author 공통서비스 장동한
@@ -73,6 +73,7 @@ public class EgovQustnrQestnManageController {
 
     /**
      * 설문문항 통계를 조회한다.
+     *
      * @param searchVO
      * @param qustnrQestnManageVO
      * @param commandMap
@@ -80,40 +81,36 @@ public class EgovQustnrQestnManageController {
      * @return "egovframework/com/uss/olp/qqm/EgovQustnrQestnManageStatistics"
      * @throws Exception
      */
-    @RequestMapping(value="/uss/olp/qqm/EgovQustnrQestnManageStatistics.do")
-	public String egovQustnrQestnManageStatistics(
-			@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			QustnrQestnManageVO qustnrQestnManageVO,
-			@RequestParam Map<?, ?> commandMap,
-    		ModelMap model)
-    throws Exception {
+    @RequestMapping(value = "/uss/olp/qqm/EgovQustnrQestnManageStatistics.do")
+    public String egovQustnrQestnManageStatistics(@ModelAttribute("searchVO") ComDefaultVO searchVO, QustnrQestnManageVO qustnrQestnManageVO, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
-		String sLocationUrl = "egovframework/com/uss/olp/qqm/EgovQustnrQestnManageStatistics";
+        String sLocationUrl = "egovframework/com/uss/olp/qqm/EgovQustnrQestnManageStatistics";
 
         List<EgovMap> sampleList = egovQustnrQestnManageService.selectQustnrQestnManageDetail(qustnrQestnManageVO);
         model.addAttribute("resultList", sampleList);
-        
+
         HashMap<String, String> mapParam = new HashMap<String, String>();
         mapParam.put("qestnrQesitmId", qustnrQestnManageVO.getQestnrQesitmId());
-       
-        //System.out.println("qustnrQestnManageVO.getQestnTyCode() : "+qustnrQestnManageVO.getQestnTyCode());
-        
-	    if(qustnrQestnManageVO.getQestnTyCode().equals("2")){ 
-	        //주관식 설문통계
-	    	List<?> statisticsList2 = egovQustnrQestnManageService.selectQustnrManageStatistics2(mapParam);
-	    	model.addAttribute("statisticsList2", statisticsList2);
-       
-       }else{ 
-    	    //객관식설문통계
-    	   	List<?> statisticsList = egovQustnrQestnManageService.selectQustnrManageStatistics(mapParam);
-    	   	model.addAttribute("statisticsList", statisticsList);
-		    //객관식과 주관식 문항이 동시에 달렸을 경우 주관식 설문 통계
-		    List<?> statisticsList2 = egovQustnrQestnManageService.selectQustnrManageStatistics2(mapParam);
-		    model.addAttribute("statisticsList2", statisticsList2);
-       } 
-        
-	    return sLocationUrl;
-	}
+
+        // System.out.println("qustnrQestnManageVO.getQestnTyCode() :
+        // "+qustnrQestnManageVO.getQestnTyCode());
+
+        if (qustnrQestnManageVO.getQestnTyCode().equals("2")) {
+            // 주관식 설문통계
+            List<EgovMap> statisticsList2 = egovQustnrQestnManageService.selectQustnrManageStatistics2(mapParam);
+            model.addAttribute("statisticsList2", statisticsList2);
+
+        } else {
+            // 객관식설문통계
+            List<?> statisticsList = egovQustnrQestnManageService.selectQustnrManageStatistics(mapParam);
+            model.addAttribute("statisticsList", statisticsList);
+            // 객관식과 주관식 문항이 동시에 달렸을 경우 주관식 설문 통계
+            List<EgovMap> statisticsList2 = egovQustnrQestnManageService.selectQustnrManageStatistics2(mapParam);
+            model.addAttribute("statisticsList2", statisticsList2);
+        }
+
+        return sLocationUrl;
+    }
 
 	/**
 	 * 설문문항 팝업 목록을 조회한다.
@@ -225,7 +222,7 @@ public class EgovQustnrQestnManageController {
         /** 2017.09.04 model에 addAttribute 추가 */
         model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String)commandMap.get("searchKeyword"));
         model.addAttribute("searchCondition", commandMap.get("searchCondition") == null ? "" : (String)commandMap.get("searchCondition"));
-        
+
         int totCnt = egovQustnrQestnManageService.selectQustnrQestnManageListCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);

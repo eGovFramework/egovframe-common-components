@@ -7,6 +7,7 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.evt.service.EgovEventManageService;
@@ -98,7 +99,7 @@ public class EgovEventManageController {
         //행사구분
     	ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM053");
-        List<?> eventSeCodeList = cmmUseService.selectCmmCodeDetail(vo);
+        List<CmmnDetailCode> eventSeCodeList = cmmUseService.selectCmmCodeDetail(vo);
         model.addAttribute("eventSeCode", eventSeCodeList);
 
     	/** paging */
@@ -183,7 +184,7 @@ public class EgovEventManageController {
 
     	ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM053");
-        List<?> eventSeCodeList = cmmUseService.selectCmmCodeDetail(vo);
+        List<CmmnDetailCode> eventSeCodeList = cmmUseService.selectCmmCodeDetail(vo);
         model.addAttribute("eventSeCode", eventSeCodeList);
 
     	return "egovframework/com/uss/ion/evt/EgovEventReqstRegist";
@@ -281,7 +282,7 @@ public class EgovEventManageController {
         //행사구분
     	ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM053");
-        List<?> eventSeCodeList = cmmUseService.selectCmmCodeDetail(vo);
+        List<CmmnDetailCode> eventSeCodeList = cmmUseService.selectCmmCodeDetail(vo);
         model.addAttribute("eventSeCode", eventSeCodeList);
 
 		/** paging */
@@ -466,7 +467,7 @@ public class EgovEventManageController {
         //행사구분
     	ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM053");
-        List<?> eventSeCodeList = cmmUseService.selectCmmCodeDetail(vo);
+        List<CmmnDetailCode> eventSeCodeList = cmmUseService.selectCmmCodeDetail(vo);
         model.addAttribute("eventSeCode", eventSeCodeList);
 
 		/** paging */

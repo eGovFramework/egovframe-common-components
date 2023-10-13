@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -18,13 +20,12 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olh.hpc.service.EgovHpcmService;
 import egovframework.com.uss.olh.hpc.service.HpcmVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import org.egovframe.rte.fdl.property.EgovPropertyService;
-import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
 *
@@ -136,7 +137,7 @@ public class EgovHpcmController {
     	ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM021");
 
-		List<?> _result = cmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> _result = cmmUseService.selectCmmCodeDetail(vo);
 		model.addAttribute("hpcmSeCode", _result);
 
         model.addAttribute("hpcmVO", new HpcmVO());
@@ -193,7 +194,7 @@ public class EgovHpcmController {
     	ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM021");
 
-		List<?> _result = cmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> _result = cmmUseService.selectCmmCodeDetail(vo);
 		model.addAttribute("hpcmSeCode", _result);
 
         HpcmVO hpcmVO = new HpcmVO();

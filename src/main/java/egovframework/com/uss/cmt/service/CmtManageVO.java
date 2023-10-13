@@ -13,9 +13,9 @@ import java.util.List;
  * <pre>
  * << 개정이력(Modification Information) >>
  *
- *   수정일      수정자           수정내용
- *  -------    --------    ---------------------------
- *   2014.12.20  개발팀         최초 생성
+ *   수정일          수정자       수정내용
+ *  -----------    --------    ---------------------------
+ *   2014.12.20     개발팀       최초 생성
  *
  * </pre>
  */
@@ -286,7 +286,5 @@ public class CmtManageVO implements Serializable {
 	public void setWrktDt(String wrkt_dt) {
 		this.wrktDt = wrkt_dt;
 	}
-
-
 
 }

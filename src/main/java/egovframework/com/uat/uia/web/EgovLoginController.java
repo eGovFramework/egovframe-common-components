@@ -22,6 +22,7 @@ import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.config.EgovLoginConfig;
+import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.service.Globals;
@@ -47,21 +48,22 @@ import com.gpki.servlet.GPKIHttpServletResponse;
  * <pre>
  * << 개정이력(Modification Information) >>
  *
- *  수정일               수정자            수정내용
- *  ----------   --------   ---------------------------
- *  2009.03.06   박지욱           최초 생성
- *  2011.08.26   정진오           IncludedInfo annotation 추가
- *  2011.09.07   서준식           스프링 시큐리티 로그인 및 SSO 인증 로직을 필터로 분리
- *  2011.09.25   서준식           사용자 관리 컴포넌트 미포함에 대한 점검 로직 추가
- *  2011.09.27   서준식           인증서 로그인시 스프링 시큐리티 사용에 대한 체크 로직 추가
- *  2011.10.27   서준식           아이디 찾기 기능에서 사용자 리름 공백 제거 기능 추가
- *  2017.07.21   장동한           로그인인증제한 작업
- *  2018.10.26   신용호           로그인 화면에 message 파라미터 전달 수정
- *  2019.10.01   정진오           로그인 인증세션 추가
- *  2020.06.25   신용호           로그인 메시지 처리 수정
- *  2021.01.15   신용호           로그아웃시 권한 초기화 추가 : session 모드 actionLogout()
- *  2021.05.30   정진오           디지털원패스 처리하기 위해 로그인 화면에 인증방식 전달
- *  2022.11.11   김혜준			  시큐어코딩 처리
+ *  수정일		수정자		수정내용
+ *  ----------	--------	---------------------------
+ *  2009.03.06	박지욱		최초 생성
+ *  2011.08.26	정진오		IncludedInfo annotation 추가
+ *  2011.09.07	서준식		스프링 시큐리티 로그인 및 SSO 인증 로직을 필터로 분리
+ *  2011.09.25	서준식		사용자 관리 컴포넌트 미포함에 대한 점검 로직 추가
+ *  2011.09.27	서준식		인증서 로그인시 스프링 시큐리티 사용에 대한 체크 로직 추가
+ *  2011.10.27	서준식		아이디 찾기 기능에서 사용자 리름 공백 제거 기능 추가
+ *  2017.07.21	장동한		로그인인증제한 작업
+ *  2018.10.26	신용호		로그인 화면에 message 파라미터 전달 수정
+ *  2019.10.01	정진오		로그인 인증세션 추가
+ *  2020.06.25	신용호		로그인 메시지 처리 수정
+ *  2021.01.15	신용호		로그아웃시 권한 초기화 추가 : session 모드 actionLogout()
+ *  2021.05.30	정진오		디지털원패스 처리하기 위해 로그인 화면에 인증방식 전달
+ *  2022.11.11	김혜준		시큐어코딩 처리
+ *  2023.06.09	김신해		NSR 보안조치 (GPKI 인증서 등록 OOB 방지)
  *  
  *  </pre>
  */
@@ -364,7 +366,7 @@ public class EgovLoginController {
 		// 1. 비밀번호 힌트 공통코드 조회
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM022");
-		List<?> code = cmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> code = cmmUseService.selectCmmCodeDetail(vo);
 		model.addAttribute("pwhtCdList", code);
 
 		return "egovframework/com/uat/uia/EgovIdPasswordSearch";
@@ -528,9 +530,7 @@ public class EgovLoginController {
 		String dn = "";
 
 		// 브라우저 이름을 받기위한 처리
-		String webKind = EgovClntInfo.getClntWebKind(request);
-		String[] ss = webKind.split(" ");
-		String browser = ss[1];
+		String browser = EgovClntInfo.getClntWebKind(request);
 		model.addAttribute("browser", browser);
 		/*
 		// -- 여기까지

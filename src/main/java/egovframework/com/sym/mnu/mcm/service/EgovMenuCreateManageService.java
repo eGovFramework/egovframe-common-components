@@ -2,6 +2,8 @@ package egovframework.com.sym.mnu.mcm.service;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 import egovframework.com.cmm.ComDefaultVO;
 
 
@@ -40,13 +42,14 @@ public interface EgovMenuCreateManageService {
 	MenuCreatVO selectAuthorByUsr(ComDefaultVO vo) throws Exception;
 
 
-	/**
-	 * 메뉴생성관리 목록을 조회
-	 * @param vo ComDefaultVO
-	 * @return List
-	 * @exception Exception
-	 */
-	List<?> selectMenuCreatManagList(ComDefaultVO vo) throws Exception;
+    /**
+     * 메뉴생성관리 목록을 조회
+     * 
+     * @param vo ComDefaultVO
+     * @return List
+     * @exception Exception
+     */
+    List<EgovMap> selectMenuCreatManagList(ComDefaultVO vo) throws Exception;
 
 	/**
 	 * 메뉴생성관리 총건수를 조회한다.
@@ -56,14 +59,14 @@ public interface EgovMenuCreateManageService {
 	 */
 	int selectMenuCreatManagTotCnt(ComDefaultVO vo) throws Exception;
 
-	/**
-	 * 메뉴생성 내역을 조회
-	 * @param  vo MenuCreatVO
-	 * @return List
-	 * @exception Exception
-	 */
-	List<?> selectMenuCreatList(MenuCreatVO vo) throws Exception;
-
+    /**
+     * 메뉴생성 내역을 조회
+     * 
+     * @param vo MenuCreatVO
+     * @return List
+     * @exception Exception
+     */
+    List<EgovMap> selectMenuCreatList(MenuCreatVO vo) throws Exception;
 
 	/**
 	 * 화면에 조회된 메뉴정보로 메뉴생성내역 데이터베이스에서 입력
@@ -79,7 +82,7 @@ public interface EgovMenuCreateManageService {
 	 * @return List
 	 * @exception Exception
 	 */
-	List<?> selectMenuCreatSiteMapList(MenuSiteMapVO vo) throws Exception;
+	List<EgovMap> selectMenuCreatSiteMapList(MenuSiteMapVO vo) throws Exception;
 
 	/**
 	 * 사용자 권한별 사이트맵 내용 조회
@@ -91,10 +94,11 @@ public interface EgovMenuCreateManageService {
 
 	 /**
 	 * 사이트맵 등록
+	 * 개발환경에서 테스트용 함수로 보안 취약
 	 * @param vo MenuSiteMapVO
 	 * @param vHtmlValue String
 	 * @return boolean
 	 * @exception Exception
 	 */
-	 boolean creatSiteMap(MenuSiteMapVO vo, String vHtmlValue) throws Exception;
+	 //boolean creatSiteMap(MenuSiteMapVO vo, String vHtmlValue) throws Exception;
 }

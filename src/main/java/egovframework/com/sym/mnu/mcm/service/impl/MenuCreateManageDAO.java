@@ -7,6 +7,7 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sym.mnu.mcm.service.MenuCreatVO;
 import egovframework.com.sym.mnu.mcm.service.MenuSiteMapVO;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
 /**
@@ -52,15 +53,16 @@ public class MenuCreateManageDAO extends EgovComAbstractDAO{
 		return (MenuCreatVO)selectOne("menuManageDAO.selectAuthorByUsr", vo);
 	}
 
-	/**
-	 * 메뉴생성관리 내역을 조회
-	 * @param vo ComDefaultVO
-	 * @return List
-	 * @exception Exception
-	 */
-	public List<?> selectMenuCreatManagList(ComDefaultVO vo) throws Exception{
-		return selectList("menuManageDAO.selectMenuCreatManageList_D", vo);
-	}
+    /**
+     * 메뉴생성관리 내역을 조회
+     * 
+     * @param vo ComDefaultVO
+     * @return List
+     * @exception Exception
+     */
+    public List<EgovMap> selectMenuCreatManagList(ComDefaultVO vo) throws Exception {
+        return selectList("menuManageDAO.selectMenuCreatManageList_D", vo);
+    }
 
 	/**
 	 * 메뉴생성관리 총건수를 조회한다.
@@ -73,15 +75,16 @@ public class MenuCreateManageDAO extends EgovComAbstractDAO{
     }
 
     /*********** 메뉴 생성 관리 ***************/
-	/**
-	 * 메뉴생성 내역을 조회
-	 * @param vo MenuCreatVO
-	 * @return List
-	 * @exception Exception
-	 */
-	public List<?> selectMenuCreatList(MenuCreatVO vo) throws Exception{
-		return selectList("menuManageDAO.selectMenuCreatList_D", vo);
-	}
+    /**
+     * 메뉴생성 내역을 조회
+     * 
+     * @param vo MenuCreatVO
+     * @return List
+     * @exception Exception
+     */
+    public List<EgovMap> selectMenuCreatList(MenuCreatVO vo) throws Exception {
+        return selectList("menuManageDAO.selectMenuCreatList_D", vo);
+    }
 
 	/**
 	 * 메뉴생성내역 등록
@@ -98,7 +101,7 @@ public class MenuCreateManageDAO extends EgovComAbstractDAO{
 	 * @return List
 	 * @exception Exception
 	 */
-	public List<?> selectMenuCreatSiteMapList(MenuSiteMapVO vo) throws Exception{
+	public List<EgovMap> selectMenuCreatSiteMapList(MenuSiteMapVO vo) throws Exception{
 		return selectList("menuManageDAO.selectMenuCreatSiteMapList_D", vo);
 	}
 

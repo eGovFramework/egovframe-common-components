@@ -23,7 +23,7 @@ public class EgovIndvdlPgeServiceImpl extends EgovAbstractServiceImpl implements
 	private EgovIdGnrService idgenService;
 	
 	@Override
-	public List<?> selectIndvdlPgeList(IndvdlPgeVO searchVO) {
+	public List<IndvdlPgeVO> selectIndvdlPgeList(IndvdlPgeVO searchVO) {
 		return egovIndvdlPgeDao.selectIndvdlPgeList(searchVO);
 	}
 

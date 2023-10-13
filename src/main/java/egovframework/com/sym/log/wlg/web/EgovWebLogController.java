@@ -1,11 +1,12 @@
 package egovframework.com.sym.log.wlg.web;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.sym.log.wlg.service.EgovWebLogService;
 import egovframework.com.sym.log.wlg.service.WebLog;
 
+import org.apache.commons.collections4.MapUtils;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
@@ -44,41 +45,39 @@ public class EgovWebLogController {
 	@Resource(name="propertiesService")
 	protected EgovPropertyService propertyService;
 
-	/**
-	 * 웹 로그 목록 조회
-	 *
-	 * @param webLog
-	 * @return sym/log/wlg/EgovWebLogList
-	 * @throws Exception
-	 */
-	@IncludedInfo(name="웹로그관리", listUrl="/sym/log/wlg/SelectWebLogList.do", order = 1070 ,gid = 60)
-	@RequestMapping(value="/sym/log/wlg/SelectWebLogList.do")
-	public String selectWebLogInf(@ModelAttribute("searchVO") WebLog webLog,
-			ModelMap model) throws Exception{
+    /**
+     * 웹 로그 목록 조회
+     *
+     * @param webLog
+     * @return sym/log/wlg/EgovWebLogList
+     * @throws Exception
+     */
+    @IncludedInfo(name = "웹로그관리", listUrl = "/sym/log/wlg/SelectWebLogList.do", order = 1070, gid = 60)
+    @RequestMapping(value = "/sym/log/wlg/SelectWebLogList.do")
+    public String selectWebLogInf(@ModelAttribute("searchVO") WebLog webLog, ModelMap model) throws Exception {
 
-		webLog.setPageUnit(propertyService.getInt("pageUnit"));
-		webLog.setPageSize(propertyService.getInt("pageSize"));
+        webLog.setPageUnit(propertyService.getInt("pageUnit"));
+        webLog.setPageSize(propertyService.getInt("pageSize"));
 
-		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(webLog.getPageIndex());
-		paginationInfo.setRecordCountPerPage(webLog.getPageUnit());
-		paginationInfo.setPageSize(webLog.getPageSize());
+        PaginationInfo paginationInfo = new PaginationInfo();
+        paginationInfo.setCurrentPageNo(webLog.getPageIndex());
+        paginationInfo.setRecordCountPerPage(webLog.getPageUnit());
+        paginationInfo.setPageSize(webLog.getPageSize());
 
-		webLog.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		webLog.setLastIndex(paginationInfo.getLastRecordIndex());
-		webLog.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+        webLog.setFirstIndex(paginationInfo.getFirstRecordIndex());
+        webLog.setLastIndex(paginationInfo.getLastRecordIndex());
+        webLog.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		HashMap<?, ?> _map = (HashMap<?, ?>)webLogService.selectWebLogInf(webLog);
-		int totCnt = Integer.parseInt((String)_map.get("resultCnt"));
+        Map<String, Object> map = webLogService.selectWebLogInf(webLog);
+        int totCnt = MapUtils.getInteger(map, "resultCnt");
 
-		model.addAttribute("resultList", _map.get("resultList"));
-		model.addAttribute("resultCnt", _map.get("resultCnt"));
+        model.addAttribute("resultList", map.get("resultList"));
 
-		paginationInfo.setTotalRecordCount(totCnt);
-		model.addAttribute("paginationInfo", paginationInfo);
+        paginationInfo.setTotalRecordCount(totCnt);
+        model.addAttribute("paginationInfo", paginationInfo);
 
-		return "egovframework/com/sym/log/wlg/EgovWebLogList";
-	}
+        return "egovframework/com/sym/log/wlg/EgovWebLogList";
+    }
 
 	/**
 	 * 웹 로그 상세 조회

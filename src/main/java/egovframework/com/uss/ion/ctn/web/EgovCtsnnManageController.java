@@ -7,6 +7,7 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.ctn.service.CtsnnManage;
@@ -72,7 +73,7 @@ public class EgovCtsnnManageController {
     @RequestMapping("/uss/ion/ctn/EgovCtsnnManageListView.do")
     public String selectCtsnnManageListView(@ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
                                             ModelMap model) throws Exception {
-    	List<?> ctsnnCdCodeList = null;
+    	List<CmmnDetailCode> ctsnnCdCodeList = null;
     	ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM054");
 		ctsnnCdCodeList = cmmUseService.selectCmmCodeDetail(vo);
@@ -105,7 +106,7 @@ public class EgovCtsnnManageController {
 		int totCnt = egovCtsnnManageService.selectCtsnnManageListTotCnt(ctsnnManageVO);
 		paginationInfo.setTotalRecordCount(totCnt);
 
-    	List<?> ctsnnCdCodeList = null;
+    	List<CmmnDetailCode> ctsnnCdCodeList = null;
     	ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM054");
 		ctsnnCdCodeList = cmmUseService.selectCmmCodeDetail(vo);
@@ -140,8 +141,8 @@ public class EgovCtsnnManageController {
 
 		if(sCmd.equals("updt")){
 
-	    	List<?> ctsnnCdCodeList = null;
-	    	List<?> relateCodeList  = null;
+	    	List<CmmnDetailCode> ctsnnCdCodeList = null;
+	    	List<CmmnDetailCode> relateCodeList  = null;
 	    	ComDefaultCodeVO vo  = new ComDefaultCodeVO();
 			vo.setCodeId("COM054");
 			ctsnnCdCodeList = cmmUseService.selectCmmCodeDetail(vo);
@@ -182,8 +183,8 @@ public class EgovCtsnnManageController {
                                          @ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 			                             ModelMap model) throws Exception {
 
-    	List<?> ctsnnCdCodeList = null;
-    	List<?> relateCodeList  = null;
+    	List<CmmnDetailCode> ctsnnCdCodeList = null;
+    	List<CmmnDetailCode> relateCodeList  = null;
     	ComDefaultCodeVO vo  = new ComDefaultCodeVO();
 		vo.setCodeId("COM054");
 		ctsnnCdCodeList = cmmUseService.selectCmmCodeDetail(vo);
@@ -294,7 +295,7 @@ public class EgovCtsnnManageController {
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 
-    	List<?> ctsnnCdCodeList = null;
+    	List<CmmnDetailCode> ctsnnCdCodeList = null;
     	ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM054");
 		ctsnnCdCodeList = cmmUseService.selectCmmCodeDetail(vo);
