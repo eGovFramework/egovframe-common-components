@@ -21,209 +21,270 @@ import java.util.List;
  */
 public class CmtManageVO implements Serializable {
 
-    /**
-     * serialVersionUID
-     */
-    private static final long serialVersionUID = 1L;
+	/**
+	 * serialVersionUID
+	 */
+	private static final long serialVersionUID = 1L;
+	/**
+	 * 기본 생성자.
+	 */
+	public CmtManageVO() {
+		// constructor
+	}
 
-    public CmtManageVO() {
-        // constructor
-    }
+	/** 댓글 관리 목록 */
+	private List<CmtManageVO> cmtManageList;
 
-    public List<CmtManageVO> getCmtManageList() {
-        return cmtManageList;
-    }
+	/**
+	 * @return 댓글 관리 목록을 반환합니다.
+	 */
+	public List<CmtManageVO> getCmtManageList() {
+		return cmtManageList;
+	}
 
-    public void setCmtManageList(List<CmtManageVO> cmtManageList) {
-        this.cmtManageList = cmtManageList;
-    }
+	/**
+	 * @param cmtManageList 설정할 댓글 관리 목록
+	 */
+	public void setCmtManageList(List<CmtManageVO> cmtManageList) {
+		this.cmtManageList = cmtManageList;
+	}
 
-    public String getUserNmString() {
-        return userNmString;
-    }
+	/** 사용자 이름 문자열 */
+	private String userNmString;
 
-    public void setUserNmString(String userNmString) {
-        this.userNmString = userNmString;
-    }
+	/**
+	 * @return 사용자 이름 문자열을 반환합니다.
+	 */
+	public String getUserNmString() {
+		return userNmString;
+	}
 
-    public String getUsid() {
-        return usid;
-    }
+	/**
+	 * @param userNmString 설정할 사용자 이름 문자열
+	 */
+	public void setUserNmString(String userNmString) {
+		this.userNmString = userNmString;
+	}
 
-    public void setUsid(String usid) {
-        this.usid = usid;
-    }
+	/** 사용자 식별자 */
+	private String usid;
 
-    public String getWrkStartStatus() {
-        return wrkStartStatus;
-    }
+	/**
+	 * @return 사용자 식별자를 반환합니다.
+	 */
+	public String getUsid() {
+		return usid;
+	}
 
-    public void setWrkStartStatus(String workStartStatus) {
-        this.wrkStartStatus = workStartStatus;
-    }
+	/**
+	 * @param usid 설정할 사용자 식별자
+	 */
+	public void setUsid(String usid) {
+		this.usid = usid;
+	}
 
-    public String getWrkEndStatus() {
-        return wrkEndStatus;
-    }
+	/** 작업 시작 상태 */
+	private String wrkStartStatus;
 
-    public void setWrkEndStatus(String workEndStatus) {
-        this.wrkEndStatus = workEndStatus;
-    }
+	/**
+	 * @return 작업 시작 상태를 반환합니다.
+	 */
+	public String getWrkStartStatus() {
+		return wrkStartStatus;
+	}
 
-    public String getDate() {
-        return date;
-    }
+	/**
+	 * @param workStartStatus 설정할 작업 시작 상태
+	 */
+	public void setWrkStartStatus(String workStartStatus) {
+		this.wrkStartStatus = workStartStatus;
+	}
 
-    public void setDate(String date) {
-        this.date = date;
-    }
+	/** 작업 종료 상태 */
+	private String wrkEndStatus;
 
-    public String getWrkHours() {
-        return wrkHours;
-    }
+	/**
+	 * @return 작업 종료 상태를 반환합니다.
+	 */
+	public String getWrkEndStatus() {
+		return wrkEndStatus;
+	}
 
-    public void setWrkHours(String workHours) {
-        this.wrkHours = workHours;
-    }
+	/**
+	 * @param workEndStatus 설정할 작업 종료 상태
+	 */
+	public void setWrkEndStatus(String workEndStatus) {
+		this.wrkEndStatus = workEndStatus;
+	}
 
-    public String getWrktmId() {
-        return wrktmId;
-    }
+	/** 날짜 */
+	private String date;
 
-    public void setWrktmId(String wrktmId) {
-        this.wrktmId = wrktmId;
-    }
+	/**
+	 * @return 날짜를 반환합니다.
+	 */
+	public String getDate() {
+		return date;
+	}
 
-    public String getWrkStartTime() {
-        return wrkStartTime;
-    }
+	/**
+	 * @param date 설정할 날짜
+	 */
+	public void setDate(String date) {
+		this.date = date;
+	}
 
-    public void setWrkStartTime(String wrkStartTime) {
-        this.wrkStartTime = wrkStartTime;
-    }
+	/** 작업 시간 */
+	private String wrkHours;
 
-    public String getWrkEndTime() {
-        return wrkEndTime;
-    }
+	/**
+	 * @return 작업 시간을 반환합니다.
+	 */
+	public String getWrkHours() {
+		return wrkHours;
+	}
 
-    public void setWrkEndTime(String wrkEndTime) {
-        this.wrkEndTime = wrkEndTime;
-    }
+	/**
+	 * @param workHours 설정할 작업 시간
+	 */
+	public void setWrkHours(String workHours) {
+		this.wrkHours = workHours;
+	}
 
-    public String getOvtmwrkHours() {
-        return ovtmwrkHours;
-    }
+	/** 작업 시간 ID */
+	private String wrktmId;
 
-    public void setOvtmwrkHours(String ovtmwrkHours) {
-        this.ovtmwrkHours = ovtmwrkHours;
-    }
+	/**
+	 * @return 작업 시간 ID를 반환합니다.
+	 */
+	public String getWrktmId() {
+		return wrktmId;
+	}
 
-    public String getRm() {
-        return rm;
-    }
+	/**
+	 * @param wrktmId 설정할 작업 시간 ID
+	 */
+	public void setWrktmId(String wrktmId) {
+		this.wrktmId = wrktmId;
+	}
 
-    public void setRm(String rm) {
-        this.rm = rm;
-    }
+	/** 작업 시작 시간 */
+	private String wrkStartTime;
 
-    public String getEmplyrId() {
-        return emplyrId;
-    }
+	/**
+	 * @return 작업 시작 시간을 반환합니다.
+	 */
+	public String getWrkStartTime() {
+		return wrkStartTime;
+	}
 
-    public void setEmplyrId(String emplyrId) {
-        this.emplyrId = emplyrId;
-    }
+	/**
+	 * @param wrkStartTime 설정할 작업 시작 시간
+	 */
+	public void setWrkStartTime(String wrkStartTime) {
+		this.wrkStartTime = wrkStartTime;
+	}
 
-    public String getOrgnztId() {
-        return orgnztId;
-    }
+	/** 작업 종료 시간 */
+	private String wrkEndTime;
 
-    public void setOrgnztId(String orgnztId) {
-        this.orgnztId = orgnztId;
-    }
+	/**
+	 * @return 작업 종료 시간을 반환합니다.
+	 */
+	public String getWrkEndTime() {
+		return wrkEndTime;
+	}
 
-    public String getWrktDt() {
-        return wrktDt;
-    }
+	/**
+	 * @param wrkEndTime 설정할 작업 종료 시간
+	 */
+	public void setWrkEndTime(String wrkEndTime) {
+		this.wrkEndTime = wrkEndTime;
+	}
 
-    public void setWrktDt(String wrkt_dt) {
-        this.wrktDt = wrkt_dt;
-    }
+	/** 초과 작업 시간 */
+	private String ovtmwrkHours;
 
-    /**
-     * 출퇴근 목록
-     */
-    List<CmtManageVO> cmtManageList;
+	/**
+	 * @return 초과 작업 시간을 반환합니다.
+	 */
+	public String getOvtmwrkHours() {
+		return ovtmwrkHours;
+	}
 
-    /**
-     * 사용자명
-     */
-    private String userNmString;
+	/**
+	 * @param ovtmwrkHours 설정할 초과 작업 시간
+	 */
+	public void setOvtmwrkHours(String ovtmwrkHours) {
+		this.ovtmwrkHours = ovtmwrkHours;
+	}
 
-    /**
-     * 사용자ID
-     */
-    private String usid;
+	/** 비고 */
+	private String rm;
 
-    /**
-     * employee ID
-     */
-    private String emplyrId;
+	/**
+	 * @return 비고를 반환합니다.
+	 */
+	public String getRm() {
+		return rm;
+	}
 
-    /**
-     * 부서Id
-     */
-    private String orgnztId;
+	/**
+	 * @param rm 설정할 비고
+	 */
+	public void setRm(String rm) {
+		this.rm = rm;
+	}
 
-    /**
-     * 근무시간
-     */
-    private String wrkHours;
+	/** 직원 ID */
+	private String emplyrId;
 
-    /**
-     * 출퇴근 구분 ID
-     *
-     */
-    private String wrktmId;
+	/**
+	 * @return 직원 ID를 반환합니다.
+	 */
+	public String getEmplyrId() {
+		return emplyrId;
+	}
 
-    /**
-     * 출근날짜
-     */
-    private String wrktDt;
+	/**
+	 * @param emplyrId 설정할 직원 ID
+	 */
+	public void setEmplyrId(String emplyrId) {
+		this.emplyrId = emplyrId;
+	}
 
-    /**
-     * 출근시간
-     */
-    private String wrkStartTime;
+	/** 조직 ID */
+	private String orgnztId;
 
-    /**
-     * 퇴근시간
-     */
-    private String wrkEndTime;
+	/**
+	 * @return 조직 ID를 반환합니다.
+	 */
+	public String getOrgnztId() {
+		return orgnztId;
+	}
 
-    /**
-     * 출근상태
-     */
-    private String wrkStartStatus;
+	/**
+	 * @param orgnztId 설정할 조직 ID
+	 */
+	public void setOrgnztId(String orgnztId) {
+		this.orgnztId = orgnztId;
+	}
 
-    /**
-     * 출근상태
-     */
-    private String wrkEndStatus;
+	/** 작업 날짜 */
+	private String wrktDt;
 
-    /**
-     * 초과근무시간
-     */
-    private String ovtmwrkHours;
+	/**
+	 * @return 작업 날짜를 반환합니다.
+	 */
+	public String getWrktDt() {
+		return wrktDt;
+	}
 
-    /**
-     * 비고
-     */
-    private String rm;
-
-    /**
-     * date
-     */
-    private String date;
+	/**
+	 * @param wrkt_dt 설정할 작업 날짜
+	 */
+	public void setWrktDt(String wrkt_dt) {
+		this.wrktDt = wrkt_dt;
+	}
 
 }
