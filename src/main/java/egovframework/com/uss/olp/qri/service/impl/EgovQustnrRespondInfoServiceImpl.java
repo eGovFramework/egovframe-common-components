@@ -159,15 +159,16 @@ public class EgovQustnrRespondInfoServiceImpl extends EgovAbstractServiceImpl im
     }
 
     /**
-	 * 응답자결과(설문조사)를(을) 상세조회 한다.
-	 * @param QustnrRespondInfo - 회정정보가 담김 VO
-	 * @return List
-	 * @throws Exception
-	 */
-	@Override
-	public List<?> selectQustnrRespondInfoDetail(QustnrRespondInfoVO qustnrRespondInfoVO) throws Exception{
-		return dao.selectQustnrRespondInfoDetail(qustnrRespondInfoVO);
-	}
+     * 응답자결과(설문조사)를(을) 상세조회 한다.
+     *
+     * @param QustnrRespondInfo - 회정정보가 담김 VO
+     * @return List
+     * @throws Exception
+     */
+    @Override
+    public List<EgovMap> selectQustnrRespondInfoDetail(QustnrRespondInfoVO qustnrRespondInfoVO) throws Exception {
+        return dao.selectQustnrRespondInfoDetail(qustnrRespondInfoVO);
+    }
 
     /**
 	 * 응답자결과(설문조사)를(을) 목록 전체 건수를(을) 조회한다.
