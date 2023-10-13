@@ -25,12 +25,13 @@ import egovframework.com.cmm.ComDefaultVO;
 public interface EgovQustnrQestnManageService {
 
     /**
-	 * 설문조사 응답자답변내용결과/기타답변내용결과 통계를 조회한다.
-	 * @param Map - 설문지 정보가 담김 Parameter
-	 * @return Map
-	 * @throws Exception
-	 */
-	public List<?> selectQustnrManageStatistics2(Map<?, ?> map) throws Exception;
+     * 설문조사 응답자답변내용결과/기타답변내용결과 통계를 조회한다.
+     *
+     * @param Map - 설문지 정보가 담김 Parameter
+     * @return Map
+     * @throws Exception
+     */
+    public List<EgovMap> selectQustnrManageStatistics2(Map<?, ?> map) throws Exception;
 
     /**
 	 * 설문조사 통계를 조회한다.
