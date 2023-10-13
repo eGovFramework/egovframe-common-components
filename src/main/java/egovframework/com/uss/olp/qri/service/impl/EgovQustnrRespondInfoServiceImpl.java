@@ -216,14 +216,15 @@ public class EgovQustnrRespondInfoServiceImpl extends EgovAbstractServiceImpl im
 	}
 
     /**
-	 * 설문템플릿을 조회한다.
-	 * @param map - 조회할 정보가 담긴 map
-	 * @return List
-	 * @throws Exception
-	 */
-	@Override
-	public List<?> selectQustnrTmplatWhiteList() throws Exception{
-		return dao.selectQustnrTmplatWhiteList();
-	}
+     * 설문템플릿을 조회한다.
+     *
+     * @param map - 조회할 정보가 담긴 map
+     * @return List
+     * @throws Exception
+     */
+    @Override
+    public List<EgovMap> selectQustnrTmplatWhiteList() throws Exception {
+        return dao.selectQustnrTmplatWhiteList();
+    }
 
 }
