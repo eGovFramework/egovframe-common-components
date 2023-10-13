@@ -83,10 +83,10 @@
 				ON a.ORGNZT_ID = b.ORGNZT_ID
 			WHERE 1=1
 		
-			<if test="searchCnd == 0">AND
+			<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(searchCnd, 0)">AND
 					COALESCE(b.ORGNZT_NM, ' ') LIKE CONCAT('%', #{searchWrd}, '%') 		
 			</if>
-			<if test="searchCnd == 1">AND
+			<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(searchCnd, 1)">AND
 					COALESCE(a.USER_NM, ' ') LIKE CONCAT('%', #{searchWrd}, '%') 		
 			</if>
 		
@@ -123,10 +123,10 @@
 		FROM COMTNORGNZTINFO
 		WHERE 1=1
 	 
-	 <if test="searchCnd == 0">AND
+	 <if test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(searchCnd, 0)">AND
 		 	ORGNZT_NM LIKE CONCAT('%', #{searchWrd}, '%')  		
 	 </if>
-	 <if test="searchCnd == 1">AND
+	 <if test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(searchCnd, 1)">AND
 		 	ORGNZT_DC LIKE CONCAT('%', #{searchWrd}, '%')  		
 	 </if>
 	 
@@ -144,10 +144,10 @@
 				COMTNORGNZTINFO 
 			WHERE 1=1
 		
-			<if test="searchCnd == 0">AND
+			<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(searchCnd, 0)">AND
 					ORGNZT_NM LIKE CONCAT('%', #{searchWrd}, '%')  		
 			</if>
-			<if test="searchCnd == 1">AND
+			<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(searchCnd, 1)">AND
 					ORGNZT_DC LIKE CONCAT('%', #{searchWrd}, '%')  		
 			</if>		
 	</select>
@@ -200,10 +200,10 @@
 			 A.DEPT_ID = #{deptId}
 		 </if>
 	 </if>
-	 <if test="searchCnd == 0">AND
+	 <if test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(searchCnd, 0)">AND
 		 	COALESCE(B.ORGNZT_NM, ' ') LIKE CONCAT('%', #{searchWrd}, '%')  		
 	 </if>
-	 <if test="searchCnd == 1">AND
+	 <if test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(searchCnd, 1)">AND
 		 	A.DEPT_JOBBX_NM LIKE CONCAT('%', #{searchWrd}, '%')  		
 	 </if>
 	 
@@ -228,10 +228,10 @@
 			 A.DEPT_ID = #{deptId}
 		 </if>
 	 	</if>
-		<if test="searchCnd == 0">AND
+		<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(searchCnd, 0)">AND
 		 		COALESCE(B.ORGNZT_NM, ' ') LIKE CONCAT('%', #{searchWrd}, '%')  		
 	 	</if>
-		<if test="searchCnd == 1">AND
+		<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(searchCnd, 1)">AND
 				A.DEPT_JOBBX_NM LIKE CONCAT('%', #{searchWrd}, '%')  		
 		</if>	
 	</select>

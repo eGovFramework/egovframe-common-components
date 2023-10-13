@@ -25,6 +25,7 @@ import egovframework.com.uss.olp.mgt.service.EgovMeetingManageService;
 import egovframework.com.uss.olp.mgt.service.MeetingManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 /**
  * 회의관리를 처리하기 위한 Controller 구현 Class
@@ -114,7 +115,7 @@ public class EgovMeetingManageController {
     		ModelMap model)
     throws Exception {
 
-    	 List<?> resultList = egovMeetingManageService.egovMeetingManageLisAuthorGroupPopup(searchVO);
+    	 List<EgovMap> resultList = egovMeetingManageService.egovMeetingManageLisAuthorGroupPopup(searchVO);
          model.addAttribute("resultList", resultList);
 
     	return "egovframework/com/uss/olp/mgt/EgovMeetingManageLisAuthorGroupPopup";
@@ -135,7 +136,7 @@ public class EgovMeetingManageController {
     		ModelMap model)
     throws Exception {
 
-    	 List<?> resultList = egovMeetingManageService.egovMeetingManageLisEmpLyrPopup(searchVO);
+    	 List<EgovMap> resultList = egovMeetingManageService.egovMeetingManageLisEmpLyrPopup(searchVO);
          model.addAttribute("resultList", resultList);
 
     	return "egovframework/com/uss/olp/mgt/EgovMeetingManageLisEmpLyrPopup";
@@ -173,7 +174,7 @@ public class EgovMeetingManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> sampleList = egovMeetingManageService.selectMeetingManageList(searchVO);
+        List<EgovMap> sampleList = egovMeetingManageService.selectMeetingManageList(searchVO);
         model.addAttribute("resultList", sampleList);
 
         model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String)commandMap.get("searchKeyword"));
@@ -211,7 +212,7 @@ public class EgovMeetingManageController {
 			egovMeetingManageService.deleteMeetingManage(meetingManageVO);
 			sLocationUrl = "redirect:/uss/olp/mgt/EgovMeetingManageList.do";
 		}else{
-			List<?> sampleList = egovMeetingManageService.selectMeetingManageDetail(meetingManageVO);
+			List<EgovMap> sampleList = egovMeetingManageService.selectMeetingManageDetail(meetingManageVO);
         	model.addAttribute("resultList", sampleList);
 		}
 
@@ -254,7 +255,7 @@ public class EgovMeetingManageController {
     		//서버  validate 체크
             beanValidator.validate(meetingManageVO, bindingResult);
     		if(bindingResult.hasErrors()){
-                List<?> resultList = egovMeetingManageService.selectMeetingManageDetail(meetingManageVO);
+                List<EgovMap> resultList = egovMeetingManageService.selectMeetingManageDetail(meetingManageVO);
                 model.addAttribute("resultList", resultList);
     			return sLocationUrl;
     		}
@@ -265,7 +266,7 @@ public class EgovMeetingManageController {
         	egovMeetingManageService.updateMeetingManage(meetingManageVO);
         	sLocationUrl = "redirect:/uss/olp/mgt/EgovMeetingManageList.do";
         }else{
-            List<?> resultList = egovMeetingManageService.selectMeetingManageDetail(meetingManageVO);
+            List<EgovMap> resultList = egovMeetingManageService.selectMeetingManageDetail(meetingManageVO);
             model.addAttribute("resultList", resultList);
         }
 

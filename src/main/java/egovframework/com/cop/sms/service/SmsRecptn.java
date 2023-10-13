@@ -35,7 +35,7 @@ public class SmsRecptn implements Serializable {
     private String resultMssage = "";
 
     /**
-     * smsId attribute를 리턴한다.
+     * 문자메시지ID smsId attribute를 리턴한다.
      * @return the smsId
      */
     public String getSmsId() {
@@ -43,7 +43,7 @@ public class SmsRecptn implements Serializable {
     }
 
     /**
-     * smsId attribute 값을 설정한다.
+     * 문자메시지ID smsId attribute 값을 설정한다.
      * @param smsId the smsId to set
      */
     public void setSmsId(String smsId) {
@@ -51,7 +51,7 @@ public class SmsRecptn implements Serializable {
     }
 
     /**
-     * recptnTelno attribute를 리턴한다.
+     * 수신전화번호 recptnTelno attribute를 리턴한다.
      * @return the recptnTelno
      */
     public String getRecptnTelno() {
@@ -59,7 +59,7 @@ public class SmsRecptn implements Serializable {
     }
 
     /**
-     * recptnTelno attribute 값을 설정한다.
+     * 수신전화번호 recptnTelno attribute 값을 설정한다.
      * @param recptnTelno the recptnTelno to set
      */
     public void setRecptnTelno(String recptnTelno) {
@@ -67,7 +67,7 @@ public class SmsRecptn implements Serializable {
     }
 
     /**
-     * resultCode attribute를 리턴한다.
+     * 결과코드 resultCode attribute를 리턴한다.
      * @return the resultCode
      */
     public String getResultCode() {
@@ -75,7 +75,7 @@ public class SmsRecptn implements Serializable {
     }
 
     /**
-     * resultCode attribute 값을 설정한다.
+     * 결과코드 resultCode attribute 값을 설정한다.
      * @param resultCode the resultCode to set
      */
     public void setResultCode(String resultCode) {
@@ -83,7 +83,7 @@ public class SmsRecptn implements Serializable {
     }
     
     /**
-     * resultMssage attribute를 리턴한다.
+     * 결과메시지 resultMssage attribute를 리턴한다.
      * @return the resultMssage
      */
     public String getResultMssage() {
@@ -91,7 +91,7 @@ public class SmsRecptn implements Serializable {
     }
 
     /**
-     * resultMssage attribute 값을 설정한다.
+     * 결과메시지 resultMssage attribute 값을 설정한다.
      * @param resultMssage the resultMssage to set
      */
     public void setResultMssage(String resultMssage) {

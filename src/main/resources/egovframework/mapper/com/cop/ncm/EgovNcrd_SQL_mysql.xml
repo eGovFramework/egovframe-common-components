@@ -59,10 +59,11 @@
 			
 	<!-- 2018.05.23 delete 문 외래키(FK) constraint 때문에 두 개 작성-->	
 	<delete id="deleteNcrdItemUser" parameterType="egovframework.com.cop.ncm.service.NameCardVO">
-	DELETE FROM COMTNNCRDUSER
-	WHERE NCRD_ID = #{ncrdId} 
-	AND EMPLYR_ID = #{emplyrId}
-	</delete> 
+        DELETE FROM COMTNNCRDUSER
+        WHERE NCRD_ID = #{ncrdId} 
+            AND EMPLYR_ID = #{emplyrId}
+	</delete>
+
 	<delete id="deleteNcrdItem" parameterType="egovframework.com.cop.ncm.service.NameCardVO">
 	DELETE FROM COMTNNCRD
 	WHERE NCRD_ID = #{ncrdId}
@@ -145,7 +146,7 @@
 	<select id="selectMyNcrdItemList" parameterType="egovframework.com.cop.ncm.service.NameCardVO" resultMap="ncrdList">
 		
 			SELECT 
-				NCRD_ID, NM, NCRD_TRGTER_ID, OTHBC_AT, EXTRL_USER_AT, OTHBC_AT
+				NCRD_ID, NM, NCRD_TRGTER_ID, OTHBC_AT, EXTRL_USER_AT, OTHBC_AT, 
 				CMPNY_NM, DEPT_NM, IDNTFC_NO, MIDDLE_MBTLNUM, END_MBTLNUM, 
 				DATE_FORMAT(FRST_REGIST_PNTTM, '%Y-%m-%d') AS FRST_REGIST_PNTTM, FRST_REGISTER_ID
 			FROM
@@ -270,5 +271,12 @@
 			</if>
 	</select>	
 	
+    <update id="updateNcrdUseInf" parameterType="egovframework.com.cop.ncm.service.NameCardUser">
+            UPDATE COMTNNCRDUSER
+            SET REGIST_SE_CODE = #{registSeCode}
+            WHERE
+                EMPLYR_ID = #{emplyrId}
+                AND NCRD_ID = #{ncrdId}
+    </update>
 	
 </mapper>

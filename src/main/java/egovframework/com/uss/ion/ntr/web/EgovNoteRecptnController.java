@@ -162,7 +162,7 @@ public class EgovNoteRecptnController {
         //수신자설정
         searchVO.setRcverId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 
-        List<?> reusltList = egovNoteRecptnService.selectNoteRecptnList(searchVO);
+        List<EgovMap> reusltList = egovNoteRecptnService.selectNoteRecptnList(searchVO);
         model.addAttribute("resultList", reusltList);
 
         model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword"));
