@@ -73,7 +73,7 @@ public interface EgovRecentSrchwrdService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectRecentSrchwrdResultInquire(RecentSrchwrd recentSrchwrd) throws Exception;
+	public List<EgovMap> selectRecentSrchwrdResultInquire(RecentSrchwrd recentSrchwrd) throws Exception;
 
 	/**
 	 * 최근검색어결과 목록을 조회한다.

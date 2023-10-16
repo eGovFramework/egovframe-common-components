@@ -88,7 +88,7 @@ public class RecentSrchwrdDao extends EgovComAbstractDAO {
      * @return List
      * @throws Exception
      */
-    public List<?> selectRecentSrchwrdResultInquire(RecentSrchwrd recentSrchwrd) throws Exception {
+    public List<EgovMap> selectRecentSrchwrdResultInquire(RecentSrchwrd recentSrchwrd) throws Exception {
         return selectList("RecentSrchwrd.selectRecentSrchwrdResultInquire", recentSrchwrd);
     }
 

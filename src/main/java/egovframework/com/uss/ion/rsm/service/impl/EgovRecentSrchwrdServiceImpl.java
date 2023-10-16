@@ -112,7 +112,7 @@ public class EgovRecentSrchwrdServiceImpl extends EgovAbstractServiceImpl
      * @throws Exception
      */
     @Override
-	public List<?> selectRecentSrchwrdResultInquire(RecentSrchwrd recentSrchwrd) throws Exception {
+	public List<EgovMap> selectRecentSrchwrdResultInquire(RecentSrchwrd recentSrchwrd) throws Exception {
         return dao.selectRecentSrchwrdResultInquire(recentSrchwrd);
     }
 
