@@ -642,21 +642,6 @@
 		<!-- Utility for Omnione End -->
 		<!-- 모바일 운전면허증 라이브러리 끝 -->
 
-        <dependency>
-            <groupId>org.seleniumhq.selenium</groupId>
-            <artifactId>selenium-java</artifactId>
-            <version>4.11.0</version>
-            <scope>test</scope>
-        </dependency>
-
-        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>32.1.2-jre</version>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
 
     <build>
