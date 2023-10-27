@@ -26,7 +26,7 @@ public interface EgovRssService {
      * @return List -조회한목록이담긴List
      * @throws Exception
      */
-	public List<?> selectRssTagServiceTable(Map<?, ?> param) throws Exception;
+	public List<Map<String, String>> selectRssTagServiceTable(Map<?, ?> param) throws Exception;
 
     /**
 	 * RSS서비스 목록을 조회한다.

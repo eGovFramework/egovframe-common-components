@@ -43,7 +43,7 @@ public class EgovRssServiceImpl extends EgovAbstractServiceImpl
 	@Override
 	public List<Map<String, String>> selectRssTagServiceTable(Map<?, ?> param) throws Exception{
 
-		List<?> listResult = dao.selectRssTagServiceTable(param);
+		List<Map<String, String>> listResult = dao.selectRssTagServiceTable(param);
 		List<Map<String, String>> listReturn = new ArrayList<Map<String, String>>();
 
 		String sBDT_TITLE = (String)param.get("BDT_TITLE");
