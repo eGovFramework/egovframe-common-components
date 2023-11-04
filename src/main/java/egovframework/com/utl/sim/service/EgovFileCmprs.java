@@ -25,8 +25,13 @@ package egovframework.com.utl.sim.service;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
+
+import org.apache.commons.compress.archivers.ArchiveException;
+import org.apache.commons.compress.archivers.ArchiveInputStream;
+import org.apache.commons.compress.archivers.ArchiveStreamFactory;
+
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
 
@@ -40,8 +45,10 @@ public class EgovFileCmprs {
 	 * @param source 압축파일명
 	 * @param target 압출이 풀릴 디렉토리
 	 * @return boolean result 압축해제성공여부 True / False
+	 * @throws ArchiveException 
+	 * @throws IOException 
 	 */
-	public static boolean decmprsFile(String source, String target) throws Exception {
+	public static boolean decmprsFile(String source, String target) throws ArchiveException, IOException  {
 
 		// 압축해제성공여부
 		boolean result = false;
@@ -51,7 +58,7 @@ public class EgovFileCmprs {
 
 		FileInputStream finput = null;
 		FileOutputStream foutput = null;
-		ZipInputStream zinput = null;
+		ArchiveInputStream zinput = null;
 
 		String source1 = source.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR);
 		String target1 = target.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR);
@@ -62,14 +69,14 @@ public class EgovFileCmprs {
 			String target2 = EgovFileTool.createNewDirectory(target1);
 			File tarFile = new File(target2);
 			finput = new FileInputStream(srcFile);
-			zinput = new ZipInputStream(finput);
+			zinput = new ArchiveStreamFactory().createArchiveInputStream(ArchiveStreamFactory.ZIP, finput);
 
 			ZipEntry entry;
 
 			try {
 
 				File efile;
-				while ((entry = zinput.getNextEntry()) != null) {
+				while ((entry = (ZipEntry) zinput.getNextEntry()) != null) {
 
 					String filename = entry.getName();
 					String entryFilePath = tarFile.getAbsolutePath() + FILE_SEPARATOR + filename;

@@ -642,6 +642,13 @@
 		<!-- Utility for Omnione End -->
 		<!-- 모바일 운전면허증 라이브러리 끝 -->
 
+        <!-- https://mvnrepository.com/artifact/org.apache.commons/commons-csv -->
+        <dependency>
+            <groupId>org.apache.commons</groupId>
+            <artifactId>commons-csv</artifactId>
+            <version>1.10.0</version>
+        </dependency>
+
     </dependencies>
 
     <build>

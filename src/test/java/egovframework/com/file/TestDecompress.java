@@ -1,52 +1,50 @@
 package egovframework.com.file;
 
-import java.io.File;
 import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+
+import org.apache.commons.compress.archivers.ArchiveException;
 
 import egovframework.com.utl.sim.service.EgovFileCmprs;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class TestDecompress {
 
-	public static void main(String[] args) {
-		
-		// 프로젝트 ROOT
-		//String strDirPath = "C:\\eGovFrameDev-4.0.0-64bit\\workspace\\test.simple_homepage";
-	    String strDirPath = "";
-		strDirPath = System.getProperty("user.dir");
-	    System.out.println("Working Directory = " + strDirPath);
+    /**
+     * 파일(디렉토리)을 압축해제하는 기능 테스트
+     * 
+     * @param args
+     */
+    public static void main(String[] args) {
 
-	    //Path relativePath = Paths.get("");
-	    //strDirPath = relativePath.toAbsolutePath().toString();
-	    //System.out.println("Working Directory = " + strDirPath);
+        String strDirPath = "src/test/resources/egovframework/data";
+        log.debug("Working Directory = {}", strDirPath);
 
-	    String source = strDirPath + File.separator + "target" + File.separator + "sample.zip";
-	    String target = strDirPath + File.separator + "target" + File.separator + "result";
-	    String moved = target + File.separator + "sample.zip.bak";
-	    System.out.println("source = " + source);
-	    System.out.println("target = " + target);
-	    boolean result = false;
-	    try {
-	    	result = EgovFileCmprs.decmprsFile(source, target);
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	    
-	    System.out.println("result = " + result);
+        String source = strDirPath + "/sample.zip";
+        String target = "target/test/sample";
+        decmprsFile(source, target);
 
-	    // source => target 파일 이동
-	    // sample.zip => sample.zip.bak
-	    try {
-	        Path filePath = Paths.get(source);
-	        Path filePathToMove = Paths.get(moved);
-	        Files.move(filePath, filePathToMove);
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
-		
-	}
+        source = strDirPath + "/샘플.zip";
+        target = "target/test/샘플";
+        decmprsFile(source, target);
+
+    }
+
+    private static void decmprsFile(String source, String target) {
+        log.debug("source = {}", source);
+        log.debug("target = {}", target);
+        boolean result = false;
+        try {
+            result = EgovFileCmprs.decmprsFile(source, target);
+        } catch (ArchiveException e) {
+//            e.printStackTrace();
+            log.error("ArchiveException decmprsFile");
+        } catch (IOException e) {
+//            e.printStackTrace();
+            log.error("IOException decmprsFile");
+        }
+
+        log.debug("result = {}", result);
+    }
 
 }
