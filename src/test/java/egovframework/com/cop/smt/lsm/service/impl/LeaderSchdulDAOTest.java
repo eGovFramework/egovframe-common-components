@@ -56,7 +56,7 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
     private EgovIdGnrService egovLeaderSchdulIdGnrService;
 
     /**
-     * NcrdManageDAO
+     * LeaderSchdulDAO
      */
     @Autowired
     private LeaderSchdulDAO leaderSchdulDAO;
