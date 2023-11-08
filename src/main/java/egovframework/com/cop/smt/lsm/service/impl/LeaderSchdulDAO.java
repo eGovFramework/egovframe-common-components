@@ -42,8 +42,8 @@ public class LeaderSchdulDAO extends EgovComAbstractDAO {
 	 *
 	 * @param emplyrVO
 	 */
-	public int selectEmplyrListCnt(EmplyrVO emplyrVO) throws Exception{
-		return (Integer)selectOne("LeaderSchdulDAO.selectEmplyrListCnt", emplyrVO);
+	public Integer selectEmplyrListCnt(EmplyrVO emplyrVO) {
+		return selectOne("LeaderSchdulDAO.selectEmplyrListCnt", emplyrVO);
 	}
 
 	/**
