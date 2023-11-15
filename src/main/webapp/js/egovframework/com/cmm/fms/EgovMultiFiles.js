@@ -26,7 +26,6 @@ function MultiSelector(list_target, max, file_label) {
 	/**
 	 * Add a new file input element
 	 */
-	_base = this;
 	this.addElement = function(element) {
 		// Make sure it's a file input element
 		if (element.tagName == 'INPUT' && element.type == 'file') {
@@ -39,14 +38,14 @@ function MultiSelector(list_target, max, file_label) {
 
 				var i = 0;
 
-				var sErrMsg = "첨부파일 개수는 [" + _base.max + "]까지 첨부할 수 있습니다!";
+				var sErrMsg = "첨부파일 개수는 [" + element.multi_selector.max + "]까지 첨부할 수 있습니다!";
 				var files_length = 1;
 				// HTML5 지원여부 체크
 				if (typeof element.files != "undefined") {
 					files_length = element.files.length;
 				}
 
-				if (_base.max < files_length) {
+				if (element.multi_selector.max < files_length) {
 					element.value = "";
 					alert(sErrMsg);
 
@@ -63,7 +62,7 @@ function MultiSelector(list_target, max, file_label) {
 							+ document.getElementById("egov_file_view_table")
 									.getElementsByTagName("img").length;
 
-					if (_base.max < sum) {
+					if (element.multi_selector.max < sum) {
 						element.value = "";
 						alert(sErrMsg);
 						return;
