@@ -58,7 +58,7 @@
 		document.body.appendChild(newForm);
 		
 		newfileSn.setAttribute("name","fileSn");
-		newAtchFileId.setAttribute("name","atchFileId");
+		newAtchFileId.setAttribute("name","param_atchFileId");
 		
 		newfileSn.setAttribute("type","hidden");
 		newAtchFileId.setAttribute("type","hidden");

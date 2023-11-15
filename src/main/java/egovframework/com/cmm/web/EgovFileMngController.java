@@ -151,12 +151,22 @@ public class EgovFileMngController {
 	 */
 	@RequestMapping("/cmm/fms/deleteFileInfs.do")
 	public String deleteFileInf(@ModelAttribute("searchVO") FileVO fileVO,
+			@RequestParam Map<String, Object> commandMap,
 			// SessionVO sessionVO,
 			HttpServletRequest request, ModelMap model) throws Exception {
 
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (isAuthenticated) {
+			String param_atchFileId = (String) commandMap.get("param_atchFileId");
+			String decodedAtchFileId = "";
+			
+			if (param_atchFileId != null && !"".equals(param_atchFileId) ) {
+				decodedAtchFileId = cryptoService.decrypt(param_atchFileId);
+			}
+
+			fileVO.setAtchFileId(decodedAtchFileId);
+
 			fileService.deleteFileInf(fileVO);
 		}
 
