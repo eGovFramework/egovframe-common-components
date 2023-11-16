@@ -66,7 +66,7 @@ public class LeaderSchdulDAO extends EgovComAbstractDAO {
 	 * @param leaderSchdulVO
 	 */
 	public LeaderSchdulVO selectLeaderSchdul(LeaderSchdulVO leaderSchdulVO) {
-		return (LeaderSchdulVO)selectOne("LeaderSchdulDAO.selectLeaderSchdul", leaderSchdulVO);
+		return selectOne("LeaderSchdulDAO.selectLeaderSchdul", leaderSchdulVO);
 	}
 
 	/**
@@ -95,7 +95,7 @@ public class LeaderSchdulDAO extends EgovComAbstractDAO {
 	 *
 	 * @param leaderSchdul
 	 */
-	public void insertLeaderSchdulDe(LeaderSchdul leaderSchdul) throws Exception{
+	public void insertLeaderSchdulDe(LeaderSchdul leaderSchdul) {
 		insert("LeaderSchdulDAO.insertLeaderSchdulDe", leaderSchdul);
 	}
 
