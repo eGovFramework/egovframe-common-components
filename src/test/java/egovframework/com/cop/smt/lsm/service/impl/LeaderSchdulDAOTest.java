@@ -1,7 +1,6 @@
 package egovframework.com.cop.smt.lsm.service.impl;
 
 import static org.junit.Assert.assertEquals;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 
 import java.util.List;
 
@@ -11,10 +10,10 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.ImportResource;
-import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cmm.LoginVO;
@@ -232,5 +231,23 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
         } else {
             assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), expected, actual);
         }
+    }
+
+    /**
+     * 주어진 조건에 맞는 간부일정 상세정보를 가져온다.
+     */
+    @Test
+    public void testSelectLeaderSchdul() {
+        // given
+        final LeaderSchdulVO leaderSchdulVO = new LeaderSchdulVO();
+        leaderSchdulVO.setSchdulId(testLeaderScheduleVO.getSchdulId());
+        leaderSchdulVO.setSchdulDe(testLeaderScheduleVO.getSchdulDe());
+
+        // when
+        final LeaderSchdulVO result = leaderSchdulDAO.selectLeaderSchdul(leaderSchdulVO);
+        // log.debug("result = {}", result);
+
+        // then
+        assertSelectLeaderSchedule( leaderSchdulVO, result);
     }
 }
