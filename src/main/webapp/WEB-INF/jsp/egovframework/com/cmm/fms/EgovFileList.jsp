@@ -96,9 +96,9 @@
 </script>
 
 <!-- <form name="fileForm" action="" method="post" >  -->
-<input type="hidden" name="atchFileId" value="<c:out value='${atchFileId}'/>">
-<input type="hidden" name="fileSn" >
-<input type="hidden" name="fileListCnt" id="fileListCnt" value="<c:out value='${fileListCnt}'/>">
+<%-- <input type="hidden" name="atchFileId" value="<c:out value='${atchFileId}'/>"> --%>
+<!-- <input type="hidden" name="fileSn" > -->
+<%-- <input type="hidden" name="fileListCnt" id="fileListCnt" value="<c:out value='${fileListCnt}'/>"> --%>
 <c:set var="fileCount" value="${fn:length(fileList) }" />
 <!-- </form>  -->
 
@@ -111,10 +111,10 @@
 			<c:choose>
 				<c:when test="${updateFlag eq 'Y'}">
 					<c:out value="${fileVO.orignlFileNm}"/>&nbsp;[<c:out value="${fileVO.fileMg}"/>&nbsp;byte]
-					<img src="<c:url value='/images/egovframework/com/cmm/btn/btn_del.png' />" class="cursor" onClick="fn_egov_deleteFile('<c:out value="${atchFileId}"/>','<c:out value="${fileVO.fileSn}"/>','egov_file_view_table_tr_${status.count}');" alt="<spring:message code="title.attachedFileDelete" />">
+					<img src="<c:url value='/images/egovframework/com/cmm/btn/btn_del.png' />" class="cursor" onClick="fn_egov_deleteFile('<c:out value="${param.param_atchFileId}"/>','<c:out value="${fileVO.fileSn}"/>','egov_file_view_table_tr_${status.count}');" alt="<spring:message code="title.attachedFileDelete" />">
 				</c:when>
 				<c:otherwise>
-					<a href="javascript:fn_egov_downFile('<c:out value="${fileVO.atchFileId}"/>','<c:out value="${fileVO.fileSn}"/>')">
+					<a href="javascript:fn_egov_downFile('<c:out value="${param.param_atchFileId}"/>','<c:out value="${fileVO.fileSn}"/>')">
 					<c:out value="${fileVO.orignlFileNm}"/>&nbsp;[<c:out value="${fileVO.fileMg}"/>&nbsp;byte]
 					</a>
 				</c:otherwise>
