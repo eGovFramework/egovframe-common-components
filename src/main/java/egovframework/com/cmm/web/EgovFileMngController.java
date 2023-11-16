@@ -81,13 +81,6 @@ public class EgovFileMngController {
 		fileVO.setAtchFileId(decodedAtchFileId);
 		List<FileVO> result = fileService.selectFileInfs(fileVO);
 
-		// FileId를 유추하지 못하도록 세션ID와 함께 암호화하여 표시한다. (2022.12.06 추가) - 파일아이디가 유추 불가능하도록 조치
-		for (FileVO file : result) {
-			String sessionId = request.getSession().getId();
-			String toEncrypt = sessionId + "|" + file.atchFileId;
-			file.setAtchFileId(Base64.getEncoder().encodeToString(cryptoService.encrypt(toEncrypt).getBytes()));
-		}
-
 		model.addAttribute("fileList", result);
 		model.addAttribute("updateFlag", "N");
 		model.addAttribute("fileListCnt", result.size());
@@ -122,13 +115,6 @@ public class EgovFileMngController {
 		fileVO.setAtchFileId(decodedAtchFileId);
 
 		List<FileVO> result = fileService.selectFileInfs(fileVO);
-
-		// FileId를 유추하지 못하도록 세션ID와 함께 암호화하여 표시한다. (2022.12.06 추가) - 파일아이디가 유추 불가능하도록 조치
-		for (FileVO file : result) {
-			String sessionId = request.getSession().getId();
-			String toEncrypt = sessionId + "|" + file.atchFileId;
-			file.setAtchFileId(Base64.getEncoder().encodeToString(cryptoService.encrypt(toEncrypt).getBytes()));
-		}
 
 		model.addAttribute("fileList", result);
 		model.addAttribute("updateFlag", "Y");
