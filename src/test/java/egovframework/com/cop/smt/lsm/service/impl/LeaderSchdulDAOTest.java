@@ -1,6 +1,7 @@
 package egovframework.com.cop.smt.lsm.service.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
@@ -158,7 +159,7 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
     }
 
     /**
-     * 주어진 조건에 맞는 간부명을 가져온다.
+     * 주어진 조건에 맞는 간부명 조회 테스트 코드
      */
     @Test
     public void testSelectEmplyrList() {
@@ -202,7 +203,26 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
     }
 
     /**
-     * 주어진 조건에 맞는 간부일정 목록을 가져온다.
+     * 주어진 조건에 맞는 간부명 전체 개수 조회 테스트 코드
+     */
+    @Test
+    public void testSelectEmplyrListCnt() {
+        // given
+        final EmplyrVO emplyrVO = new EmplyrVO();
+        emplyrVO.setSearchCnd("1");
+        emplyrVO.setSearchWrd("테스트1");
+
+        // when
+        final int resultAll = leaderSchdulDAO.selectEmplyrListCnt(new EmplyrVO());
+        final int result = leaderSchdulDAO.selectEmplyrListCnt(emplyrVO);
+
+        // then
+        assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultAll > 0);
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);
+    }
+
+    /**
+     * 주어진 조건에 맞는 간부일정 목록 조회 테스트 코드
      */
     @Test
     public void testSelectLeaderSchdulList() {
@@ -240,7 +260,7 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
     }
 
     /**
-     * 주어진 조건에 맞는 간부일정 상세정보를 가져온다.
+     * 주어진 조건에 맞는 간부일정 상세정보 조회 테스트 코드
      */
     @Test
     public void testSelectLeaderSchdul() {
@@ -256,4 +276,25 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
         // then
         assertSelectLeaderSchedule( leaderSchdulVO, result);
     }
+
+    /**
+     * 간부일정 상세정보 수정 테스트 코드
+     */
+    @Test
+    public void testUpdateLeaderSchdul() {
+        // given
+
+        // when
+
+        // then
+    }
+
+
+
+
+
+
+
+
+
 }
