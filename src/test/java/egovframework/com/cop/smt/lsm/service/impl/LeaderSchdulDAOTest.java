@@ -66,10 +66,15 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
     @Autowired
     private LeaderSchdulDAO leaderSchdulDAO;
 
-    /*
+    /**
      * testLeasderScheduleVO
      */
     private LeaderSchdulVO testLeaderScheduleVO;
+
+    /**
+     * default testUserVO
+     */
+    private LoginVO testUserVO;
 
     /**
      * 테스트 데이터 생성
@@ -78,10 +83,14 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
     public void testData() {
 
         /*
+         * 테스트 간부 정보를 가져옴
+         */
+        testUserVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+        /*
          * 테스트 간부일정 정보 생성
          */
         testLeaderScheduleVO = new LeaderSchdulVO();
-        final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
         /*
          * 일정ID
@@ -107,7 +116,7 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
          * 간부ID
          * 테스트1, USRCNFRM_00000000000
          */
-        testLeaderScheduleVO.setLeaderId(loginVO.getUniqId());
+        testLeaderScheduleVO.setLeaderId(testUserVO.getUniqId());
         /*
          * 반복구분코드
          */
@@ -128,15 +137,15 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
          * 일정담당자ID
          * 테스트1, USRCNFRM_00000000000
          */
-        testLeaderScheduleVO.setSchdulChargerId(loginVO.getUniqId());
+        testLeaderScheduleVO.setSchdulChargerId(testUserVO.getUniqId());
         /*
          * 최초등록자ID
          */
-        testLeaderScheduleVO.setFrstRegisterId(loginVO.getUniqId());
+        testLeaderScheduleVO.setFrstRegisterId(testUserVO.getUniqId());
         /*
          * 최종수정자ID
          */
-        testLeaderScheduleVO.setLastUpdusrId(loginVO.getUniqId());
+        testLeaderScheduleVO.setLastUpdusrId(testUserVO.getUniqId());
 
         /*
          * 간부일정 등록
@@ -198,9 +207,6 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
     @Test
     public void testSelectLeaderSchdulList() {
         // given
-        final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-        log.info("loginVO = {} {}", loginVO, loginVO.getName());
-
         final LeaderSchdulVO leaderSchdulVO = new LeaderSchdulVO();
         leaderSchdulVO.setSearchMode("MONTH");
         leaderSchdulVO.setMonth("10");
