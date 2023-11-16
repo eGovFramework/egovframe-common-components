@@ -75,8 +75,8 @@ public class LeaderSchdulDAO extends EgovComAbstractDAO {
 	 *
 	 * @param leaderSchdul
 	 */
-	public void updateLeaderSchdul(LeaderSchdul leaderSchdul) throws Exception{
-		update("LeaderSchdulDAO.updateLeaderSchdul", leaderSchdul);
+	public int updateLeaderSchdul(LeaderSchdul leaderSchdul) {
+		return update("LeaderSchdulDAO.updateLeaderSchdul", leaderSchdul);
 	}
 
 	/**
@@ -85,8 +85,8 @@ public class LeaderSchdulDAO extends EgovComAbstractDAO {
 	 *
 	 * @param leaderSchdul
 	 */
-	public void insertLeaderSchdul(LeaderSchdul leaderSchdul) {
-		insert("LeaderSchdulDAO.insertLeaderSchdul", leaderSchdul);
+	public int insertLeaderSchdul(LeaderSchdul leaderSchdul) {
+		return insert("LeaderSchdulDAO.insertLeaderSchdul", leaderSchdul);
 	}
 
 	/**
@@ -95,8 +95,8 @@ public class LeaderSchdulDAO extends EgovComAbstractDAO {
 	 *
 	 * @param leaderSchdul
 	 */
-	public void insertLeaderSchdulDe(LeaderSchdul leaderSchdul) {
-		insert("LeaderSchdulDAO.insertLeaderSchdulDe", leaderSchdul);
+	public int insertLeaderSchdulDe(LeaderSchdul leaderSchdul) {
+		return insert("LeaderSchdulDAO.insertLeaderSchdulDe", leaderSchdul);
 	}
 
 	/**
@@ -105,8 +105,8 @@ public class LeaderSchdulDAO extends EgovComAbstractDAO {
 	 *
 	 * @param leaderSchdul
 	 */
-	public void deleteLeaderSchdul(LeaderSchdul leaderSchdul) throws Exception{
-		delete("LeaderSchdulDAO.deleteLeaderSchdul", leaderSchdul);
+	public int deleteLeaderSchdul(LeaderSchdul leaderSchdul) {
+		return delete("LeaderSchdulDAO.deleteLeaderSchdul", leaderSchdul);
 	}
 
 	/**
@@ -115,8 +115,8 @@ public class LeaderSchdulDAO extends EgovComAbstractDAO {
 	 *
 	 * @param leaderSchdul
 	 */
-	public void deleteLeaderSchdulDe(LeaderSchdul leaderSchdul) throws Exception{
-		delete("LeaderSchdulDAO.deleteLeaderSchdulDe", leaderSchdul);
+	public int deleteLeaderSchdulDe(LeaderSchdul leaderSchdul) {
+		return delete("LeaderSchdulDAO.deleteLeaderSchdulDe", leaderSchdul);
 	}
 
 	/**
