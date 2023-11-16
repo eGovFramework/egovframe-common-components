@@ -127,7 +127,7 @@
                 }
                 if (fields.length > 0) {
                    		try{
-                   			fields.focus();
+                   			focusField.focus();
                    	    }catch(e){
                     	    console.log(e);
                         }
