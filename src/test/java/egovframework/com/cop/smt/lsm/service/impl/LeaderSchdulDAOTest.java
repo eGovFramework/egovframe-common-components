@@ -372,6 +372,21 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
         assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
     }
 
+    /**
+     * 간부일정 일자 정보 삭제 테스트 코드
+     */
+    @Test
+    public void testDeleteLeaderSchdulDe() {
+        // given
+        final LeaderSchdulVO leaderScheduleVO = new LeaderSchdulVO();
+        leaderScheduleVO.setSchdulId(testLeaderScheduleVO.getSchdulId());
+
+        // when
+        final int result = leaderSchdulDAO.deleteLeaderSchdulDe(leaderScheduleVO);
+
+        // then
+        assertEquals(egovMessageSource.getMessage("fail.common.delete"), 1, result);
+    }
 
 
 
