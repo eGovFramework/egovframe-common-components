@@ -5,6 +5,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.junit.Before;
 import org.junit.Test;
@@ -77,79 +78,107 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
      */
     private LoginVO testUserVO;
 
-    /**
-     * 테스트 데이터 생성
-     */
-    @Before
-    public void testData() {
 
+    /**
+     * 간부일정 더미데이터 생성
+     * @param scheduleId: 간부일정 ID
+     * @param scheduleSep: 간부일정 구분
+     * @param scheduleName: 간부일정명
+     * @param scheduleCont: 간부일정 내용
+     * @param SchedulePlace: 간부일정 장소
+     * @param repetSepCode: 반복구분
+     * @param beginYYYYMMDDHHMM: 일정시작
+     * @param endYYYYMMDDHHMM: 일정종료
+     * @return
+     */
+    private LeaderSchdulVO makeLeaderSchedule(String scheduleId, String scheduleSep, String scheduleName, String scheduleCont, String SchedulePlace, String repetSepCode, String beginYYYYMMDDHHMM, String endYYYYMMDDHHMM) {
         /*
          * 테스트 간부 정보를 가져옴
          */
         testUserVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-        /*
-         * 테스트 간부일정 정보 생성
-         */
-        testLeaderScheduleVO = new LeaderSchdulVO();
+        LeaderSchdulVO leaderScheduleVO = new LeaderSchdulVO();
 
         /*
          * 일정ID
          */
-        testLeaderScheduleVO.setSchdulId("LDSCHDUL_99999999001");
+        leaderScheduleVO.setSchdulId(scheduleId);
         /*
          * 일정구분
          */
-        testLeaderScheduleVO.setSchdulSe("1");
+        leaderScheduleVO.setSchdulSe(scheduleSep);
         /*
          * 일정명
          */
-        testLeaderScheduleVO.setSchdulNm("간부일정 테스트");
+        leaderScheduleVO.setSchdulNm(scheduleName);
         /*
          * 일정내용
          */
-        testLeaderScheduleVO.setSchdulCn("간부일정 테스트 내용입니다.");
+        leaderScheduleVO.setSchdulCn(scheduleCont);
         /*
          * 일정장소
          */
-        testLeaderScheduleVO.setSchdulPlace("표준프레임워크센터");
+        leaderScheduleVO.setSchdulPlace(SchedulePlace);
         /*
          * 간부ID
          * 테스트1, USRCNFRM_00000000000
          */
-        testLeaderScheduleVO.setLeaderId(testUserVO.getUniqId());
+        leaderScheduleVO.setLeaderId(testUserVO.getUniqId());
         /*
          * 반복구분코드
          */
-        testLeaderScheduleVO.setReptitSeCode("1");
+        leaderScheduleVO.setReptitSeCode(repetSepCode);
         /*
          * 일정시작일자
          */
-        testLeaderScheduleVO.setSchdulBgnDe("202311010000");
+        leaderScheduleVO.setSchdulBgnDe(beginYYYYMMDDHHMM);
         /*
          * 일정종료일자
          */
-        testLeaderScheduleVO.setSchdulEndDe("202311010000");
+        leaderScheduleVO.setSchdulEndDe(endYYYYMMDDHHMM);
         /*
          * 일정일자
          */
-        testLeaderScheduleVO.setSchdulDe("20231101");
+        if(StringUtils.isNotBlank(beginYYYYMMDDHHMM) && beginYYYYMMDDHHMM.length()>=8)
+        leaderScheduleVO.setSchdulDe(beginYYYYMMDDHHMM.substring(0, 8));
         /*
          * 일정담당자ID
          * 테스트1, USRCNFRM_00000000000
          */
-        testLeaderScheduleVO.setSchdulChargerId(testUserVO.getUniqId());
+        leaderScheduleVO.setSchdulChargerId(testUserVO.getUniqId());
         /*
          * 최초등록자ID
          */
-        testLeaderScheduleVO.setFrstRegisterId(testUserVO.getUniqId());
+        leaderScheduleVO.setFrstRegisterId(testUserVO.getUniqId());
         /*
          * 최종수정자ID
          */
-        testLeaderScheduleVO.setLastUpdusrId(testUserVO.getUniqId());
+        leaderScheduleVO.setLastUpdusrId(testUserVO.getUniqId());
+
+        return leaderScheduleVO;
+    }
+
+    /**
+     * 테스트 데이터 생성
+     */
+    @Before
+    public void testData() {
+        /*
+         * 테스트 간부일정 정보 생성
+         */
+        testLeaderScheduleVO = makeLeaderSchedule("LDSCHDUL_99999999001",
+                "1",
+                "간부일정 테스트",
+                "간부일정 테스트 내용입니다",
+                "표준프레임워크센터",
+                "1",
+                "202311010930",
+                "202311011030"
+                );
 
         /*
          * 간부일정 등록
+         *
          */
         leaderSchdulDAO.insertLeaderSchdul(testLeaderScheduleVO);
         /*
@@ -292,8 +321,30 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
         assertEquals(egovMessageSource.getMessage("fail.common.update"), 1, result);
     }
 
+    /**
+     * 간부일정 등록 테스트 코드
+     */
+    @Test
+    public void testInsertLeaderSchdul() {
+        // given
+        LeaderSchdulVO leaderScheduleVO = makeLeaderSchedule("LDSCHDUL_99999999002",
+                "2",
+                "간부일정 테스트2",
+                "간부일정 테스트2 내용입니다",
+                "표준프레임워크센터",
+                "3",
+                "202311070930",
+                "202311071030"
+                );
 
+        log.debug("scheduleId = {}", leaderScheduleVO.getSchdulId());
 
+        // when
+        final int result = leaderSchdulDAO.insertLeaderSchdul(leaderScheduleVO);
+
+        // then
+        assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
+    }
 
 
 
