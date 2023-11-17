@@ -39,7 +39,7 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param reportrVO
 	 */
-	public List<ReportrVO> selectReportrList(ReportrVO reportrVO) throws Exception{
+	public List<ReportrVO> selectReportrList(ReportrVO reportrVO) {
 		return selectList("MemoReprtDAO.selectReportrList", reportrVO);
 	}
 	

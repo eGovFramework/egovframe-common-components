@@ -1,8 +1,10 @@
 package egovframework.com.cop.smt.mrm.service.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
@@ -20,6 +22,7 @@ import org.springframework.test.context.ContextConfiguration;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.smt.mrm.service.MemoReprt;
+import egovframework.com.cop.smt.mrm.service.ReportrVO;
 import egovframework.com.test.EgovTestAbstractDAO;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -111,6 +114,42 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 
 		if (result == 0) {
 			throw new BaseRuntimeException(egovMessageSource.getMessage("fail.common.insert"));
+		}
+	}
+
+	/**
+	 * 주어진 조건에 맞는 보고자를 불러온다.
+	 */
+	@Test
+	public void selectReportrList() {
+		// given
+		final ReportrVO reportrVO = new ReportrVO();
+		reportrVO.setFirstIndex(0);
+		reportrVO.setRecordCountPerPage(10);
+
+//		reportrVO.setSearchCnd("0");
+//		reportrVO.setSearchWrd("기본조직");
+
+//		reportrVO.setSearchCnd("1");
+//		reportrVO.setSearchWrd("테스트1");
+
+		// when
+		final List<ReportrVO> resultList = memoReprtDAO.selectReportrList(reportrVO);
+
+		// then
+		assertFalse(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.isEmpty());
+
+		log.debug("resultList={}", resultList);
+
+		for (final ReportrVO result : resultList) {
+			if (log.isDebugEnabled()) {
+				log.debug("result={}", result);
+				log.debug("orgnztNm 조직정보.조직명={}", result.getOrgnztNm());
+				log.debug("uniqId 업무사용자정보.고유ID={}", result.getUniqId());
+				log.debug("emplyrNm 업무사용자정보.사용자명={}", result.getEmplyrNm());
+				log.debug("emplNo 업무사용자정보.사원번호={}", result.getEmplNo());
+				log.debug("ofcpsNm 업무사용자정보.직위명={}", result.getOfcpsNm());
+			}
 		}
 	}
 
