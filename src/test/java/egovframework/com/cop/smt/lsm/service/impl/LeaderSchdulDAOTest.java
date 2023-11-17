@@ -91,13 +91,13 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
      * @param endYYYYMMDDHHMM: 일정종료
      * @return
      */
-    private LeaderSchdulVO makeLeaderSchedule(String scheduleId, String scheduleSep, String scheduleName, String scheduleCont, String SchedulePlace, String repetSepCode, String beginYYYYMMDDHHMM, String endYYYYMMDDHHMM) {
+    private LeaderSchdulVO makeLeaderSchedule(final String scheduleId, final String scheduleSep, final String scheduleName, final String scheduleCont, final String SchedulePlace, final String repetSepCode, final String beginYYYYMMDDHHMM, final String endYYYYMMDDHHMM) {
         /*
          * 테스트 간부 정보를 가져옴
          */
         testUserVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-        LeaderSchdulVO leaderScheduleVO = new LeaderSchdulVO();
+        final LeaderSchdulVO leaderScheduleVO = new LeaderSchdulVO();
 
         /*
          * 일정ID
@@ -139,8 +139,9 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
         /*
          * 일정일자
          */
-        if(StringUtils.isNotBlank(beginYYYYMMDDHHMM) && beginYYYYMMDDHHMM.length()>=8)
-        leaderScheduleVO.setSchdulDe(beginYYYYMMDDHHMM.substring(0, 8));
+        if(StringUtils.isNotBlank(beginYYYYMMDDHHMM) && beginYYYYMMDDHHMM.length()>=8) {
+            leaderScheduleVO.setSchdulDe(beginYYYYMMDDHHMM.substring(0, 8));
+        }
         /*
          * 일정담당자ID
          * 테스트1, USRCNFRM_00000000000
@@ -327,7 +328,7 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
     @Test
     public void testInsertLeaderSchdul() {
         // given
-        LeaderSchdulVO leaderScheduleVO = makeLeaderSchedule("LDSCHDUL_99999999002",
+        final LeaderSchdulVO leaderScheduleVO = makeLeaderSchedule("LDSCHDUL_99999999002",
                 "2",
                 "간부일정 테스트2",
                 "간부일정 테스트2 내용입니다",
@@ -336,8 +337,7 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
                 "202311070930",
                 "202311071030"
                 );
-
-        log.debug("scheduleId = {}", leaderScheduleVO.getSchdulId());
+        // log.debug("scheduleId = {}", leaderScheduleVO.getSchdulId());
 
         // when
         final int result = leaderSchdulDAO.insertLeaderSchdul(leaderScheduleVO);
@@ -346,6 +346,31 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
         assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
     }
 
+    /**
+     * 간부일정 일자 정보 등록 테스트 코드
+     */
+    @Test
+    public void testInsertLeaderSchdulDe() {
+        // given
+        final LeaderSchdulVO leaderScheduleVO = makeLeaderSchedule("LDSCHDUL_99999999002",
+                "2",
+                "간부일정 테스트2",
+                "간부일정 테스트2 내용입니다",
+                "표준프레임워크센터",
+                "3",
+                "202311070930",
+                "202311071030"
+                );
+        // log.debug("scheduleId = {}", leaderScheduleVO.getSchdulId());
+        // 간부일정을 먼저 등록해야 됨.
+        leaderSchdulDAO.insertLeaderSchdul(leaderScheduleVO);
+
+        // when
+        final int result = leaderSchdulDAO.insertLeaderSchdulDe(leaderScheduleVO);
+
+        // then
+        assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
+    }
 
 
 
