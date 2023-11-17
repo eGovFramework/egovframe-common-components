@@ -44,7 +44,7 @@
 		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>							
 	</resultMap> 
 	
-	<select id="selectReportrList" parameterType="egovframework.com.cop.smt.mrm.service.MemoReprtVO" resultMap="memoReportrList">
+	<select id="selectReportrList" parameterType="egovframework.com.cop.smt.mrm.service.ReportrVO" resultMap="memoReportrList">
 		
 			SELECT
 				b.ORGNZT_NM, a.ESNTL_ID, a.USER_NM, 

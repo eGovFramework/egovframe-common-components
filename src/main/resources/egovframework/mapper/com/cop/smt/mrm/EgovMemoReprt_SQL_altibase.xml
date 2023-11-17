@@ -45,7 +45,7 @@
 	</resultMap> 
 	
 	
-	<select id="selectReportrList" parameterType="egovframework.com.cop.smt.mrm.service.MemoReprtVO" resultMap="memoReportrList">
+	<select id="selectReportrList" parameterType="egovframework.com.cop.smt.mrm.service.ReportrVO" resultMap="memoReportrList">
 		
 	SELECT *
 	FROM (
