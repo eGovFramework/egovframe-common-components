@@ -373,6 +373,25 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
     }
 
     /**
+     * 간부일정 삭제 테스트 코드
+     */
+    @Test
+    public void testDeleteLeaderSchdul() {
+        // given
+        final LeaderSchdulVO leaderScheduleVO = new LeaderSchdulVO();
+        leaderScheduleVO.setSchdulId(testLeaderScheduleVO.getSchdulId());
+
+        // foreign key constraint로 일정 정보부터 삭제해야 함
+        leaderSchdulDAO.deleteLeaderSchdulDe(leaderScheduleVO);
+
+        // when
+        final int result = leaderSchdulDAO.deleteLeaderSchdul(leaderScheduleVO);
+
+        // then
+        assertEquals(egovMessageSource.getMessage("fail.common.delete"), 1, result);
+    }
+
+    /**
      * 간부일정 일자 정보 삭제 테스트 코드
      */
     @Test
