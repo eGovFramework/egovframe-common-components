@@ -283,10 +283,13 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
     @Test
     public void testUpdateLeaderSchdul() {
         // given
+        testLeaderScheduleVO.setSchdulNm(testLeaderScheduleVO.getSchdulNm() + " (수정)");
 
         // when
+        final int result = leaderSchdulDAO.updateLeaderSchdul(testLeaderScheduleVO);
 
         // then
+        assertEquals(egovMessageSource.getMessage("fail.common.update"), 1, result);
     }
 
 
