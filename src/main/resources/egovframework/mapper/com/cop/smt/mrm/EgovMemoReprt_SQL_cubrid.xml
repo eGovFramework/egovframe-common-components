@@ -81,7 +81,7 @@
 		
 	</select>
 	
-	<select id="selectReportrListCnt" parameterType="egovframework.com.cop.smt.mrm.service.MemoReprtVO" resultType="java.lang.Integer">
+	<select id="selectReportrListCnt" parameterType="egovframework.com.cop.smt.mrm.service.ReportrVO" resultType="java.lang.Integer">
 		
 			SELECT
 				COUNT(EMPLYR_ID) as cnt

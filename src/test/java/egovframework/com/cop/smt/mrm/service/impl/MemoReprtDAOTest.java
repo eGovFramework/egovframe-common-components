@@ -2,6 +2,7 @@ package egovframework.com.cop.smt.mrm.service.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDateTime;
 import java.util.List;
@@ -93,8 +94,8 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 		try {
 			testDataMemoReprt.setReprtId(egovMemoReprtIdGnrService.getNextStringId());
 		} catch (FdlException e) {
-//			e.printStackTrace();
-			throw new BaseRuntimeException("FdlException egovMemoReprtIdGnrService");
+			log.error("FdlException egovMemoReprtIdGnrService");
+			throw new BaseRuntimeException(e);
 		}
 
 		testDataMemoReprt.setReprtSj("test 이백행 보고서제목 " + LocalDateTime.now());
@@ -154,6 +155,29 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 	}
 
 	/**
+	 * 보고자 목록에 대한 전체 건수를 조회한다.
+	 */
+	@Test
+	public void selectReportrListCnt() {
+		// given
+		final ReportrVO reportrVO = new ReportrVO();
+
+//		reportrVO.setSearchCnd("0");
+//		reportrVO.setSearchWrd("기본조직");
+
+//		reportrVO.setSearchCnd("1");
+//		reportrVO.setSearchWrd("테스트1");
+
+		// when
+		final int totCnt = memoReprtDAO.selectReportrListCnt(reportrVO);
+
+		log.debug("totCnt={}", totCnt);
+
+		// then
+		assertTrue(FAIL_COMMON_SELECT, totCnt > -1);
+	}
+
+	/**
 	 * 메모보고 정보를 등록한다.
 	 */
 	@Test
@@ -164,8 +188,8 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 		try {
 			memoReprt.setReprtId(egovMemoReprtIdGnrService.getNextStringId());
 		} catch (FdlException e) {
-//			e.printStackTrace();
-			throw new BaseRuntimeException("FdlException egovMemoReprtIdGnrService");
+			log.error("FdlException egovMemoReprtIdGnrService");
+			throw new BaseRuntimeException(e);
 		}
 
 		memoReprt.setReprtSj("test 이백행 보고서제목 " + LocalDateTime.now());

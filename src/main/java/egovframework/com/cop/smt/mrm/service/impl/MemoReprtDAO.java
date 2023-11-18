@@ -50,8 +50,8 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param reportrVO
 	 */
-	public int selectReportrListCnt(ReportrVO reportrVO) throws Exception{
-		return (Integer)selectOne("MemoReprtDAO.selectReportrListCnt", reportrVO);
+	public int selectReportrListCnt(ReportrVO reportrVO) {
+		return selectOne("MemoReprtDAO.selectReportrListCnt", reportrVO);
 	}
 	
 	/**
