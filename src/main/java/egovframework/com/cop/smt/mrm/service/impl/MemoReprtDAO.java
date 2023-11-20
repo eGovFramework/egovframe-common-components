@@ -61,8 +61,8 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param DeptVO
 	 */
-	public String selectWrterClsfNm(String wrterId) throws Exception{
-		return (String)selectOne("MemoReprtDAO.selectWrterClsfNm", wrterId);
+	public String selectWrterClsfNm(String wrterId) {
+		return selectOne("MemoReprtDAO.selectWrterClsfNm", wrterId);
 	}
 	
 	/**

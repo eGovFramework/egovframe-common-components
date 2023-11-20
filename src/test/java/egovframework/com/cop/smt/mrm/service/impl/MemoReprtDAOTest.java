@@ -178,6 +178,25 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 	}
 
 	/**
+	 * 주어진 조건에 맞는 직위명을 불러온다.
+	 */
+	@Test
+	public void selectWrterClsfNm() {
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+		// given
+		final String wrterId = loginVO.getUniqId();
+
+		// when
+		final String result = memoReprtDAO.selectWrterClsfNm(wrterId);
+
+		log.debug("result={}", result);
+
+		// then
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), "관리자", result);
+	}
+
+	/**
 	 * 메모보고 정보를 등록한다.
 	 */
 	@Test
