@@ -72,7 +72,7 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoReprtVO
 	 */
-	public List<MemoReprtVO> selectMemoReprtList(MemoReprtVO memoReprtVO) throws Exception{
+	public List<MemoReprtVO> selectMemoReprtList(MemoReprtVO memoReprtVO) {
 		//날짜관련
 		memoReprtVO.setSearchBgnDe(memoReprtVO.getSearchBgnDe().replaceAll("-", ""));
 		memoReprtVO.setSearchEndDe(memoReprtVO.getSearchEndDe().replaceAll("-", ""));

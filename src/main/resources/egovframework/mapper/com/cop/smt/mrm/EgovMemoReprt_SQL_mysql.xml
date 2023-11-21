@@ -128,7 +128,7 @@
 			 	binary(A.REPRT_SJ) LIKE CONCAT('%', #{searchWrd}, '%') 		
 		 </if>
 		 <if test="searchCnd == 1">AND
-			 	binary(A.REPORT_CN) LIKE CONCAT('%', #{searchWrd}, '%')' 		
+			 	binary(A.REPORT_CN) LIKE CONCAT('%', #{searchWrd}, '%')
 		 </if>
 		 <if test="searchCnd == 2">AND
 			 	binary(B.USER_NM) LIKE CONCAT('%', #{searchWrd}, '%') 		

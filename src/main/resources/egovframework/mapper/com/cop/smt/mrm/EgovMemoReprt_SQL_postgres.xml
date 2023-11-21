@@ -128,7 +128,7 @@
 			 	A.REPRT_SJ LIKE CONCAT('%', #{searchWrd}, '%') 		
 		 </if>
 		 <if test="searchCnd == 1">AND
-			 	A.REPORT_CN LIKE CONCAT('%', #{searchWrd}, '%')' 		
+			 	A.REPORT_CN LIKE CONCAT('%', #{searchWrd}, '%')
 		 </if>
 		 <if test="searchCnd == 2">AND
 			 	B.USER_NM LIKE CONCAT('%', #{searchWrd}, '%') 		
