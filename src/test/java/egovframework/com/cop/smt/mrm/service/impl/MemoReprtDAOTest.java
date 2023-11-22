@@ -241,6 +241,13 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 		// when
 		final List<MemoReprtVO> resultList = memoReprtDAO.selectMemoReprtList(memoReprtVO);
 
+		debug(resultList);
+
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.size() > -1);
+	}
+
+	private void debug(final List<MemoReprtVO> resultList) {
 		if (log.isDebugEnabled()) {
 			log.debug("resultList={}", resultList);
 			log.debug("size={}", resultList.size());
@@ -257,16 +264,13 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 				log.debug("getReportrInqireDt={}", resultVO.getReportrInqireDt());
 			}
 		}
-
-		// then
-		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.size() > -1);
 	}
 
 	/**
 	 * 주어진 조건에 따른 메모보고 목록을 불러온다.
 	 */
 	@Test
-	public void selectMemoReprtList_searchBgnDe() {
+	public void selectMemoReprtListSearchBgnDe() {
 		// given
 		final MemoReprt testData = new MemoReprt();
 		testData(testData);
@@ -302,22 +306,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 		// when
 		final List<MemoReprtVO> resultList = memoReprtDAO.selectMemoReprtList(memoReprtVO);
 
-		if (log.isDebugEnabled()) {
-			log.debug("resultList={}", resultList);
-			log.debug("size={}", resultList.size());
-			log.debug("isEmpty={}", resultList.isEmpty());
-		}
-
-		for (final MemoReprtVO resultVO : resultList) {
-			if (log.isDebugEnabled()) {
-				log.debug("resultVO={}", resultVO);
-				log.debug("getReprtId={}", resultVO.getReprtId());
-				log.debug("getReprtSj={}", resultVO.getReprtSj());
-				log.debug("getWrterNm={}", resultVO.getWrterNm());
-				log.debug("getDrctMatterRegistDt={}", resultVO.getDrctMatterRegistDt());
-				log.debug("getReportrInqireDt={}", resultVO.getReportrInqireDt());
-			}
-		}
+		debug(resultList);
 
 		// then
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.size() > -1);
@@ -327,7 +316,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 	 * 주어진 조건에 따른 메모보고 목록을 불러온다.
 	 */
 	@Test
-	public void selectMemoReprtList_searchCnd_0() {
+	public void selectMemoReprtListSearchCnd0() {
 		// given
 		final MemoReprt testData = new MemoReprt();
 		testData(testData);
@@ -363,22 +352,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 		// when
 		final List<MemoReprtVO> resultList = memoReprtDAO.selectMemoReprtList(memoReprtVO);
 
-		if (log.isDebugEnabled()) {
-			log.debug("resultList={}", resultList);
-			log.debug("size={}", resultList.size());
-			log.debug("isEmpty={}", resultList.isEmpty());
-		}
-
-		for (final MemoReprtVO resultVO : resultList) {
-			if (log.isDebugEnabled()) {
-				log.debug("resultVO={}", resultVO);
-				log.debug("getReprtId={}", resultVO.getReprtId());
-				log.debug("getReprtSj={}", resultVO.getReprtSj());
-				log.debug("getWrterNm={}", resultVO.getWrterNm());
-				log.debug("getDrctMatterRegistDt={}", resultVO.getDrctMatterRegistDt());
-				log.debug("getReportrInqireDt={}", resultVO.getReportrInqireDt());
-			}
-		}
+		debug(resultList);
 
 		// then
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.size() > -1);
@@ -388,7 +362,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 	 * 주어진 조건에 따른 메모보고 목록을 불러온다.
 	 */
 	@Test
-	public void selectMemoReprtList_searchCnd_1() {
+	public void selectMemoReprtListSearchCnd1() {
 		// given
 		final MemoReprt testData = new MemoReprt();
 		testData(testData);
@@ -424,22 +398,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 		// when
 		final List<MemoReprtVO> resultList = memoReprtDAO.selectMemoReprtList(memoReprtVO);
 
-		if (log.isDebugEnabled()) {
-			log.debug("resultList={}", resultList);
-			log.debug("size={}", resultList.size());
-			log.debug("isEmpty={}", resultList.isEmpty());
-		}
-
-		for (final MemoReprtVO resultVO : resultList) {
-			if (log.isDebugEnabled()) {
-				log.debug("resultVO={}", resultVO);
-				log.debug("getReprtId={}", resultVO.getReprtId());
-				log.debug("getReprtSj={}", resultVO.getReprtSj());
-				log.debug("getWrterNm={}", resultVO.getWrterNm());
-				log.debug("getDrctMatterRegistDt={}", resultVO.getDrctMatterRegistDt());
-				log.debug("getReportrInqireDt={}", resultVO.getReportrInqireDt());
-			}
-		}
+		debug(resultList);
 
 		// then
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.size() > -1);
@@ -449,7 +408,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 	 * 주어진 조건에 따른 메모보고 목록을 불러온다.
 	 */
 	@Test
-	public void selectMemoReprtList_searchCnd_2() {
+	public void selectMemoReprtListSearchCnd2() {
 		// given
 		final MemoReprt testData = new MemoReprt();
 		testData(testData);
@@ -485,22 +444,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 		// when
 		final List<MemoReprtVO> resultList = memoReprtDAO.selectMemoReprtList(memoReprtVO);
 
-		if (log.isDebugEnabled()) {
-			log.debug("resultList={}", resultList);
-			log.debug("size={}", resultList.size());
-			log.debug("isEmpty={}", resultList.isEmpty());
-		}
-
-		for (final MemoReprtVO resultVO : resultList) {
-			if (log.isDebugEnabled()) {
-				log.debug("resultVO={}", resultVO);
-				log.debug("getReprtId={}", resultVO.getReprtId());
-				log.debug("getReprtSj={}", resultVO.getReprtSj());
-				log.debug("getWrterNm={}", resultVO.getWrterNm());
-				log.debug("getDrctMatterRegistDt={}", resultVO.getDrctMatterRegistDt());
-				log.debug("getReportrInqireDt={}", resultVO.getReportrInqireDt());
-			}
-		}
+		debug(resultList);
 
 		// then
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.size() > -1);
@@ -510,7 +454,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 	 * 주어진 조건에 따른 메모보고 목록을 불러온다.
 	 */
 	@Test
-	public void selectMemoReprtList_searchDrctMatter_0() {
+	public void selectMemoReprtListSearchDrctMatter0() {
 		// given
 		final MemoReprt testData = new MemoReprt();
 		testData(testData);
@@ -546,22 +490,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 		// when
 		final List<MemoReprtVO> resultList = memoReprtDAO.selectMemoReprtList(memoReprtVO);
 
-		if (log.isDebugEnabled()) {
-			log.debug("resultList={}", resultList);
-			log.debug("size={}", resultList.size());
-			log.debug("isEmpty={}", resultList.isEmpty());
-		}
-
-		for (final MemoReprtVO resultVO : resultList) {
-			if (log.isDebugEnabled()) {
-				log.debug("resultVO={}", resultVO);
-				log.debug("getReprtId={}", resultVO.getReprtId());
-				log.debug("getReprtSj={}", resultVO.getReprtSj());
-				log.debug("getWrterNm={}", resultVO.getWrterNm());
-				log.debug("getDrctMatterRegistDt={}", resultVO.getDrctMatterRegistDt());
-				log.debug("getReportrInqireDt={}", resultVO.getReportrInqireDt());
-			}
-		}
+		debug(resultList);
 
 		// then
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.size() > -1);
@@ -571,7 +500,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 	 * 주어진 조건에 따른 메모보고 목록을 불러온다.
 	 */
 	@Test
-	public void selectMemoReprtList_searchDrctMatter_1() {
+	public void selectMemoReprtListsearchDrctMatter1() {
 		// given
 		final MemoReprt testData = new MemoReprt();
 		testData(testData);
@@ -607,22 +536,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 		// when
 		final List<MemoReprtVO> resultList = memoReprtDAO.selectMemoReprtList(memoReprtVO);
 
-		if (log.isDebugEnabled()) {
-			log.debug("resultList={}", resultList);
-			log.debug("size={}", resultList.size());
-			log.debug("isEmpty={}", resultList.isEmpty());
-		}
-
-		for (final MemoReprtVO resultVO : resultList) {
-			if (log.isDebugEnabled()) {
-				log.debug("resultVO={}", resultVO);
-				log.debug("getReprtId={}", resultVO.getReprtId());
-				log.debug("getReprtSj={}", resultVO.getReprtSj());
-				log.debug("getWrterNm={}", resultVO.getWrterNm());
-				log.debug("getDrctMatterRegistDt={}", resultVO.getDrctMatterRegistDt());
-				log.debug("getReportrInqireDt={}", resultVO.getReportrInqireDt());
-			}
-		}
+		debug(resultList);
 
 		// then
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.size() > -1);
@@ -632,7 +546,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 	 * 주어진 조건에 따른 메모보고 목록을 불러온다.
 	 */
 	@Test
-	public void selectMemoReprtList_searchSttus_0() {
+	public void selectMemoReprtListSearchSttus0() {
 		// given
 		final MemoReprt testData = new MemoReprt();
 		testData(testData);
@@ -668,22 +582,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 		// when
 		final List<MemoReprtVO> resultList = memoReprtDAO.selectMemoReprtList(memoReprtVO);
 
-		if (log.isDebugEnabled()) {
-			log.debug("resultList={}", resultList);
-			log.debug("size={}", resultList.size());
-			log.debug("isEmpty={}", resultList.isEmpty());
-		}
-
-		for (final MemoReprtVO resultVO : resultList) {
-			if (log.isDebugEnabled()) {
-				log.debug("resultVO={}", resultVO);
-				log.debug("getReprtId={}", resultVO.getReprtId());
-				log.debug("getReprtSj={}", resultVO.getReprtSj());
-				log.debug("getWrterNm={}", resultVO.getWrterNm());
-				log.debug("getDrctMatterRegistDt={}", resultVO.getDrctMatterRegistDt());
-				log.debug("getReportrInqireDt={}", resultVO.getReportrInqireDt());
-			}
-		}
+		debug(resultList);
 
 		// then
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.size() > -1);
@@ -693,7 +592,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 	 * 주어진 조건에 따른 메모보고 목록을 불러온다.
 	 */
 	@Test
-	public void selectMemoReprtList_searchSttus_1() {
+	public void selectMemoReprtListSearchSttus1() {
 		// given
 		final MemoReprt testData = new MemoReprt();
 		testData(testData);
@@ -729,25 +628,54 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 		// when
 		final List<MemoReprtVO> resultList = memoReprtDAO.selectMemoReprtList(memoReprtVO);
 
-		if (log.isDebugEnabled()) {
-			log.debug("resultList={}", resultList);
-			log.debug("size={}", resultList.size());
-			log.debug("isEmpty={}", resultList.isEmpty());
-		}
-
-		for (final MemoReprtVO resultVO : resultList) {
-			if (log.isDebugEnabled()) {
-				log.debug("resultVO={}", resultVO);
-				log.debug("getReprtId={}", resultVO.getReprtId());
-				log.debug("getReprtSj={}", resultVO.getReprtSj());
-				log.debug("getWrterNm={}", resultVO.getWrterNm());
-				log.debug("getDrctMatterRegistDt={}", resultVO.getDrctMatterRegistDt());
-				log.debug("getReportrInqireDt={}", resultVO.getReportrInqireDt());
-			}
-		}
+		debug(resultList);
 
 		// then
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.size() > -1);
+	}
+
+	/**
+	 * 주어진 조건에 맞는 메모보고를 불러온다.
+	 */
+	@Test
+	public void selectMemoReprt() {
+		// given
+		final MemoReprt testData = new MemoReprt();
+		testData(testData);
+
+		final MemoReprtVO memoReprtVO = new MemoReprtVO();
+		memoReprtVO.setReprtId(testData.getReprtId());
+
+		// when
+		final MemoReprtVO resultVO = memoReprtDAO.selectMemoReprt(memoReprtVO);
+
+		if (log.isDebugEnabled()) {
+			log.debug("resultVO={}", resultVO);
+			log.debug("getReprtId={}, {}", testData.getReprtId(), resultVO.getReprtId());
+			log.debug("getReprtSj={}, {}", testData.getReprtSj(), resultVO.getReprtSj());
+			log.debug("getReprtDe={}, {}", egovframework.com.utl.fcc.service.EgovDateUtil
+					.convertDate(testData.getReprtDe(), "0000", "yyyy-MM-dd"), resultVO.getReprtDe());
+			log.debug("getWrterId={}, {}", testData.getWrterId(), resultVO.getWrterId());
+			log.debug("getReportrId={}, {}", testData.getReportrId(), resultVO.getReportrId());
+			log.debug("getFrstRegisterId={}, {}", testData.getFrstRegisterId(), resultVO.getFrstRegisterId());
+			log.debug("getLastUpdusrId={}, {}", testData.getLastUpdusrId(), resultVO.getLastUpdusrId());
+			log.debug("getReprtCn={}, {}", testData.getReprtCn(), resultVO.getReprtCn());
+		}
+
+		// then
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getReprtId(), resultVO.getReprtId());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getReprtSj(), resultVO.getReprtSj());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT),
+				egovframework.com.utl.fcc.service.EgovDateUtil.convertDate(testData.getReprtDe(), "0000", "yyyy-MM-dd"),
+				resultVO.getReprtDe());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getWrterId(), resultVO.getWrterId());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getReportrId(),
+				resultVO.getReportrId());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getFrstRegisterId(),
+				resultVO.getFrstRegisterId());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getLastUpdusrId(),
+				resultVO.getLastUpdusrId());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getReprtCn(), resultVO.getReprtCn());
 	}
 
 	/**
