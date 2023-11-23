@@ -105,8 +105,8 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoReprt
 	 */
-	public void readMemoReprt(final MemoReprt memoReprt) throws Exception{
-		update("MemoReprtDAO.readMemoReprt", memoReprt);
+	public int readMemoReprt(final MemoReprt memoReprt) {
+		return update("MemoReprtDAO.readMemoReprt", memoReprt);
 	}
 
 	/**

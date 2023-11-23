@@ -679,6 +679,30 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 	}
 
 	/**
+	 * 메모보고 정보의 보고자 조회일시를 수정한다.
+	 */
+	@Test
+	public void readMemoReprt() {
+		// given
+		final MemoReprt testData = new MemoReprt();
+		testData(testData);
+
+		final MemoReprt memoReprt = new MemoReprt();
+		memoReprt.setReprtId(testData.getReprtId());
+		memoReprt.setReportrInqireDt(EgovDateUtil.toString(new Date(), "yyyyMMddHHmmss", null)); // 보고자조회일시
+
+		// when
+		final int result = memoReprtDAO.readMemoReprt(memoReprt);
+
+		if (log.isDebugEnabled()) {
+			log.debug("result={}", result);
+		}
+
+		// then
+		assertEquals(egovMessageSource.getMessage("fail.common.update"), 1, result);
+	}
+
+	/**
 	 * 메모보고 정보를 등록한다.
 	 */
 	@Test
