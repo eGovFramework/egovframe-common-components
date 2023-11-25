@@ -126,6 +126,16 @@ public class MemoReprt implements Serializable{
 	public String getAtchFileId() {
 		return atchFileId;
 	}
+	/**
+	 * 첨부파일ID 값설정
+	 * 
+	 * <pre>
+	 * comtnmemoreprt.ATCH_FILE_ID char(20) NULL
+	 * 메모보고관리.첨부파일ID
+	 * </pre>
+	 * 
+	 * @param atchFileId
+	 */
 	public void setAtchFileId(String atchFileId) {
 		this.atchFileId = atchFileId;
 	}

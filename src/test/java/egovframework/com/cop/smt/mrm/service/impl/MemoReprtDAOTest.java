@@ -703,6 +703,45 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 	}
 
 	/**
+	 * 메모보고 정보를 수정한다.
+	 */
+	@Test
+	public void updateMemoReprt() {
+		// given
+		final MemoReprt testData = new MemoReprt();
+		testData(testData);
+
+		final MemoReprt memoReprt = new MemoReprt();
+		memoReprt.setReprtId(testData.getReprtId());
+
+		memoReprt.setReprtSj("test 이백행 보고서제목 수정 " + LocalDateTime.now()); // 보고서제목
+
+		memoReprt.setReprtDe(EgovDateUtil.toString(new Date(), "yyyy-MM-dd", null));// 보고일
+
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO != null) {
+			memoReprt.setWrterId(loginVO.getUniqId()); // 작성자ID
+			memoReprt.setReportrId(loginVO.getUniqId()); // 보고자ID
+
+			memoReprt.setLastUpdusrId(loginVO.getUniqId()); // 최종수정자ID
+		}
+
+		memoReprt.setReprtCn("test 이백행 보고내용 수정 " + LocalDateTime.now()); // 보고내용
+
+		memoReprt.setAtchFileId("FILE_000000000000001");
+
+		// when
+		final int result = memoReprtDAO.updateMemoReprt(memoReprt);
+
+		if (log.isDebugEnabled()) {
+			log.debug("result={}", result);
+		}
+
+		// then
+		assertEquals(egovMessageSource.getMessage("fail.common.update"), 1, result);
+	}
+
+	/**
 	 * 메모보고 정보를 등록한다.
 	 */
 	@Test

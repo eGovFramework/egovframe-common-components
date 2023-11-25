@@ -115,10 +115,10 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoReprt
 	 */
-	public void updateMemoReprt(final MemoReprt memoReprt) throws Exception{
+	public int updateMemoReprt(final MemoReprt memoReprt) {
 		//날짜관련
 		memoReprt.setReprtDe(EgovStringUtil.isNullToString(memoReprt.getReprtDe()).replaceAll("-", ""));//KISA 보안약점 조치 (2018-10-29, 윤창원)
-		update("MemoReprtDAO.updateMemoReprt", memoReprt);
+		return update("MemoReprtDAO.updateMemoReprt", memoReprt);
 	}
 
 	/**
