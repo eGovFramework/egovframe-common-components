@@ -782,6 +782,29 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 	}
 
 	/**
+	 * 메모보고 정보를 수정한다.
+	 */
+	@Test
+	public void deleteMemoReprt() {
+		// given
+		final MemoReprt testData = new MemoReprt();
+		testData(testData);
+
+		final MemoReprt memoReprt = new MemoReprt();
+		memoReprt.setReprtId(testData.getReprtId());
+
+		// when
+		final int result = memoReprtDAO.deleteMemoReprt(memoReprt);
+
+		if (log.isDebugEnabled()) {
+			log.debug(RESULT, result);
+		}
+
+		// then
+		assertEquals(egovMessageSource.getMessage("fail.common.delete"), 1, result);
+	}
+
+	/**
 	 * 메모보고 정보를 등록한다.
 	 */
 	@Test
