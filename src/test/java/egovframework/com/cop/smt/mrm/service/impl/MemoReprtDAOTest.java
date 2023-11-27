@@ -93,6 +93,20 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 	@Qualifier("egovMemoReprtIdGnrService")
 	private EgovIdGnrService egovMemoReprtIdGnrService;
 
+	/**
+	 * result={}
+	 */
+	public static final String RESULT = "result={}";
+
+	/**
+	 * 보고일 값읽기
+	 * 
+	 * @return
+	 */
+	private String getReprtDe() {
+		return EgovDateUtil.toString(new Date(), "yyyy-MM-dd", null);
+	}
+
 	private void testData(final MemoReprt testData) {
 		try {
 			testData.setReprtId(egovMemoReprtIdGnrService.getNextStringId()); // 보고서ID
@@ -103,7 +117,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 
 		testData.setReprtSj("test 이백행 보고서제목 " + LocalDateTime.now()); // 보고서제목
 
-		testData.setReprtDe(EgovDateUtil.toString(new Date(), "yyyy-MM-dd", null));// 보고일
+		testData.setReprtDe(getReprtDe());// 보고일
 
 		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		if (loginVO != null) {
@@ -149,7 +163,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 
 		for (final ReportrVO result : resultList) {
 			if (log.isDebugEnabled()) {
-				log.debug("result={}", result);
+				log.debug(RESULT, result);
 				log.debug("orgnztNm 조직정보.조직명={}", result.getOrgnztNm());
 				log.debug("uniqId 업무사용자정보.고유ID={}", result.getUniqId());
 				log.debug("emplyrNm 업무사용자정보.사용자명={}", result.getEmplyrNm());
@@ -195,7 +209,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 		// when
 		final String result = memoReprtDAO.selectWrterClsfNm(wrterId);
 
-		log.debug("result={}", result);
+		log.debug(RESULT, result);
 
 		// then
 		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), "관리자", result);
@@ -695,7 +709,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 		final int result = memoReprtDAO.readMemoReprt(memoReprt);
 
 		if (log.isDebugEnabled()) {
-			log.debug("result={}", result);
+			log.debug(RESULT, result);
 		}
 
 		// then
@@ -716,7 +730,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 
 		memoReprt.setReprtSj("test 이백행 보고서제목 수정 " + LocalDateTime.now()); // 보고서제목
 
-		memoReprt.setReprtDe(EgovDateUtil.toString(new Date(), "yyyy-MM-dd", null));// 보고일
+		memoReprt.setReprtDe(getReprtDe());// 보고일
 
 		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		if (loginVO != null) {
@@ -734,7 +748,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 		final int result = memoReprtDAO.updateMemoReprt(memoReprt);
 
 		if (log.isDebugEnabled()) {
-			log.debug("result={}", result);
+			log.debug(RESULT, result);
 		}
 
 		// then
@@ -760,7 +774,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 		final int result = memoReprtDAO.updateMemoReprtDrctMatter(memoReprt);
 
 		if (log.isDebugEnabled()) {
-			log.debug("result={}", result);
+			log.debug(RESULT, result);
 		}
 
 		// then
@@ -801,7 +815,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 		// then
 		assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
 
-		log.debug("result={}", result);
+		log.debug(RESULT, result);
 	}
 
 }
