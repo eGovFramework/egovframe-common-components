@@ -46,10 +46,27 @@ public class MemoReprt implements Serializable{
 	private String reprtCn;
 	/** 첨부파일ID */
 	private String atchFileId;
-	/** 지시사항 */
+
+	/**
+	 * 지시사항 값읽기
+	 * 
+	 * <pre>
+	 * comtnmemoreprt.DRCT_MATTER varchar(2500) NULL
+	 * 메모보고관리.지시사항
+	 * </pre> 
+	 */
 	private String drctMatter;
-	/** 지시사항등록일시 */
+
+	/**
+	 * 지시사항등록일시 값읽기
+	 * 
+	 * <pre>
+	 * comtnmemoreprt.DRCT_MATTER_REGIST_DT varchar(14) NULL
+	 * 메모보고관리.지시사항등록일시
+	 * </pre>
+	 */
 	private String drctMatterRegistDt;
+
 	/** 보고자조회일시 */
 	private String reportrInqireDt;
 	/** 보고서상태 */
@@ -139,18 +156,63 @@ public class MemoReprt implements Serializable{
 	public void setAtchFileId(String atchFileId) {
 		this.atchFileId = atchFileId;
 	}
+
+	/**
+	 * 지시사항 값읽기
+	 * 
+	 * <pre>
+	 * comtnmemoreprt.DRCT_MATTER varchar(2500) NULL
+	 * 메모보고관리.지시사항
+	 * </pre>
+	 *  
+	 * @return
+	 */
 	public String getDrctMatter() {
 		return drctMatter;
 	}
+
+	/**
+	 * 지시사항 값설정
+	 * 
+	 * <pre>
+	 * comtnmemoreprt.DRCT_MATTER varchar(2500) NULL
+	 * 메모보고관리.지시사항
+	 * </pre>
+	 *  
+	 * @param drctMatter
+	 */
 	public void setDrctMatter(String drctMatter) {
 		this.drctMatter = drctMatter;
 	}
+
+	/**
+	 * 지시사항등록일시 값읽기
+	 * 
+	 * <pre>
+	 * comtnmemoreprt.DRCT_MATTER_REGIST_DT varchar(14) NULL
+	 * 메모보고관리.지시사항등록일시
+	 * </pre>
+	 * 
+	 * @return
+	 */
 	public String getDrctMatterRegistDt() {
 		return drctMatterRegistDt;
 	}
+
+	/**
+	 * 지시사항등록일시 값설정
+	 * 
+	 * <pre>
+	 * comtnmemoreprt.DRCT_MATTER_REGIST_DT varchar(14) NULL
+	 * 메모보고관리.지시사항등록일시
+	 * </pre>
+	 *  
+	 * @param drctMatterRegistDt
+	 */
 	public void setDrctMatterRegistDt(String drctMatterRegistDt) {
 		this.drctMatterRegistDt = drctMatterRegistDt;
 	}
+
 	public String getReportrInqireDt() {
 		return reportrInqireDt;
 	}
