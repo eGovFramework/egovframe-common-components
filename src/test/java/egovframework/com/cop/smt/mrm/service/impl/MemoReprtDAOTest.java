@@ -190,10 +190,14 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 		// when
 		final int totCnt = memoReprtDAO.selectReportrListCnt(reportrVO);
 
-		log.debug("totCnt={}", totCnt);
+		debugTotCnt(totCnt);
 
 		// then
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+	}
+
+	private void debugTotCnt(final int totCnt) {
+		log.debug("totCnt={}", totCnt);
 	}
 
 	/**
@@ -878,7 +882,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 		// when
 		final int totCnt = memoReprtDAO.selectMemoReprtListCnt(memoReprtVO);
 
-		log.debug("totCnt={}", totCnt);
+		debugTotCnt(totCnt);
 
 		// then
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
@@ -921,7 +925,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 		// when
 		final int totCnt = memoReprtDAO.selectMemoReprtListCnt(memoReprtVO);
 
-		log.debug("totCnt={}", totCnt);
+		debugTotCnt(totCnt);
 
 		// then
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
@@ -964,7 +968,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 		// when
 		final int totCnt = memoReprtDAO.selectMemoReprtListCnt(memoReprtVO);
 
-		log.debug("totCnt={}", totCnt);
+		debugTotCnt(totCnt);
 
 		// then
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
@@ -1007,7 +1011,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 		// when
 		final int totCnt = memoReprtDAO.selectMemoReprtListCnt(memoReprtVO);
 
-		log.debug("totCnt={}", totCnt);
+		debugTotCnt(totCnt);
 
 		// then
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
@@ -1050,7 +1054,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 		// when
 		final int totCnt = memoReprtDAO.selectMemoReprtListCnt(memoReprtVO);
 
-		log.debug("totCnt={}", totCnt);
+		debugTotCnt(totCnt);
 
 		// then
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
@@ -1093,7 +1097,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 		// when
 		final int totCnt = memoReprtDAO.selectMemoReprtListCnt(memoReprtVO);
 
-		log.debug("totCnt={}", totCnt);
+		debugTotCnt(totCnt);
 
 		// then
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
@@ -1136,7 +1140,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 		// when
 		final int totCnt = memoReprtDAO.selectMemoReprtListCnt(memoReprtVO);
 
-		log.debug("totCnt={}", totCnt);
+		debugTotCnt(totCnt);
 
 		// then
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
@@ -1179,7 +1183,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 		// when
 		final int totCnt = memoReprtDAO.selectMemoReprtListCnt(memoReprtVO);
 
-		log.debug("totCnt={}", totCnt);
+		debugTotCnt(totCnt);
 
 		// then
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
@@ -1222,7 +1226,7 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 		// when
 		final int totCnt = memoReprtDAO.selectMemoReprtListCnt(memoReprtVO);
 
-		log.debug("totCnt={}", totCnt);
+		debugTotCnt(totCnt);
 
 		// then
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
