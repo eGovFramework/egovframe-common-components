@@ -160,12 +160,12 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoReprtVO
 	 */
-	public int selectMemoReprtListCnt(final MemoReprtVO memoReprtVO) throws Exception{
+	public int selectMemoReprtListCnt(final MemoReprtVO memoReprtVO) {
 		//날짜관련
 		memoReprtVO.setSearchBgnDe(memoReprtVO.getSearchBgnDe().replaceAll("-", ""));
 		memoReprtVO.setSearchEndDe(memoReprtVO.getSearchEndDe().replaceAll("-", ""));
 		
-		return (Integer)selectOne("MemoReprtDAO.selectMemoReprtListCnt", memoReprtVO);
+		return selectOne("MemoReprtDAO.selectMemoReprtListCnt", memoReprtVO);
 	}
 
 }
