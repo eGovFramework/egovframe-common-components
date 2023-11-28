@@ -873,6 +873,350 @@ public class MemoReprtDAOTest extends EgovTestAbstractDAO {
 //		memoReprtVO.setSearchDrctMatter("1");
 
 //		memoReprtVO.setSearchSttus("0");
+//		memoReprtVO.setSearchSttus("1");
+
+		// when
+		final int totCnt = memoReprtDAO.selectMemoReprtListCnt(memoReprtVO);
+
+		log.debug("totCnt={}", totCnt);
+
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+	}
+
+	/**
+	 * 메모보고 목록에 대한 전체 건수를 조회한다.
+	 */
+	@Test
+	public void selectMemoReprtListCntSetSearchBgnDe() {
+		// given
+		final MemoReprt testData = new MemoReprt();
+		testData(testData);
+
+		final MemoReprtVO memoReprtVO = new MemoReprtVO();
+
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO != null) {
+			memoReprtVO.setSearchId(loginVO.getUniqId());
+		}
+
+		memoReprtVO.setSearchBgnDe(testData.getReprtDe());
+		memoReprtVO.setSearchEndDe(testData.getReprtDe());
+
+//		memoReprtVO.setSearchCnd("0");
+//		memoReprtVO.setSearchWrd(testData.getReprtSj());
+
+//		memoReprtVO.setSearchCnd("1");
+//		memoReprtVO.setSearchWrd(testData.getReprtCn());
+
+//		memoReprtVO.setSearchCnd("2");
+//		memoReprtVO.setSearchWrd(loginVO.getName());
+
+//		memoReprtVO.setSearchDrctMatter("0");
+//		memoReprtVO.setSearchDrctMatter("1");
+
+//		memoReprtVO.setSearchSttus("0");
+//		memoReprtVO.setSearchSttus("1");
+
+		// when
+		final int totCnt = memoReprtDAO.selectMemoReprtListCnt(memoReprtVO);
+
+		log.debug("totCnt={}", totCnt);
+
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+	}
+
+	/**
+	 * 메모보고 목록에 대한 전체 건수를 조회한다.
+	 */
+	@Test
+	public void selectMemoReprtListCntSetSearchCnd0() {
+		// given
+		final MemoReprt testData = new MemoReprt();
+		testData(testData);
+
+		final MemoReprtVO memoReprtVO = new MemoReprtVO();
+
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO != null) {
+			memoReprtVO.setSearchId(loginVO.getUniqId());
+		}
+
+//		memoReprtVO.setSearchBgnDe(testData.getReprtDe());
+//		memoReprtVO.setSearchEndDe(testData.getReprtDe());
+
+		memoReprtVO.setSearchCnd("0");
+		memoReprtVO.setSearchWrd(testData.getReprtSj());
+
+//		memoReprtVO.setSearchCnd("1");
+//		memoReprtVO.setSearchWrd(testData.getReprtCn());
+
+//		memoReprtVO.setSearchCnd("2");
+//		memoReprtVO.setSearchWrd(loginVO.getName());
+
+//		memoReprtVO.setSearchDrctMatter("0");
+//		memoReprtVO.setSearchDrctMatter("1");
+
+//		memoReprtVO.setSearchSttus("0");
+//		memoReprtVO.setSearchSttus("1");
+
+		// when
+		final int totCnt = memoReprtDAO.selectMemoReprtListCnt(memoReprtVO);
+
+		log.debug("totCnt={}", totCnt);
+
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+	}
+
+	/**
+	 * 메모보고 목록에 대한 전체 건수를 조회한다.
+	 */
+	@Test
+	public void selectMemoReprtListCntSetSearchCnd1() {
+		// given
+		final MemoReprt testData = new MemoReprt();
+		testData(testData);
+
+		final MemoReprtVO memoReprtVO = new MemoReprtVO();
+
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO != null) {
+			memoReprtVO.setSearchId(loginVO.getUniqId());
+		}
+
+//		memoReprtVO.setSearchBgnDe(testData.getReprtDe());
+//		memoReprtVO.setSearchEndDe(testData.getReprtDe());
+
+//		memoReprtVO.setSearchCnd("0");
+//		memoReprtVO.setSearchWrd(testData.getReprtSj());
+
+		memoReprtVO.setSearchCnd("1");
+		memoReprtVO.setSearchWrd(testData.getReprtCn());
+
+//		memoReprtVO.setSearchCnd("2");
+//		memoReprtVO.setSearchWrd(loginVO.getName());
+
+//		memoReprtVO.setSearchDrctMatter("0");
+//		memoReprtVO.setSearchDrctMatter("1");
+
+//		memoReprtVO.setSearchSttus("0");
+//		memoReprtVO.setSearchSttus("1");
+
+		// when
+		final int totCnt = memoReprtDAO.selectMemoReprtListCnt(memoReprtVO);
+
+		log.debug("totCnt={}", totCnt);
+
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+	}
+
+	/**
+	 * 메모보고 목록에 대한 전체 건수를 조회한다.
+	 */
+	@Test
+	public void selectMemoReprtListCntSetSearchCnd2() {
+		// given
+		final MemoReprt testData = new MemoReprt();
+		testData(testData);
+
+		final MemoReprtVO memoReprtVO = new MemoReprtVO();
+
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO != null) {
+			memoReprtVO.setSearchId(loginVO.getUniqId());
+		}
+
+//		memoReprtVO.setSearchBgnDe(testData.getReprtDe());
+//		memoReprtVO.setSearchEndDe(testData.getReprtDe());
+
+//		memoReprtVO.setSearchCnd("0");
+//		memoReprtVO.setSearchWrd(testData.getReprtSj());
+
+//		memoReprtVO.setSearchCnd("1");
+//		memoReprtVO.setSearchWrd(testData.getReprtCn());
+
+		memoReprtVO.setSearchCnd("2");
+		memoReprtVO.setSearchWrd(loginVO.getName());
+
+//		memoReprtVO.setSearchDrctMatter("0");
+//		memoReprtVO.setSearchDrctMatter("1");
+
+//		memoReprtVO.setSearchSttus("0");
+//		memoReprtVO.setSearchSttus("1");
+
+		// when
+		final int totCnt = memoReprtDAO.selectMemoReprtListCnt(memoReprtVO);
+
+		log.debug("totCnt={}", totCnt);
+
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+	}
+
+	/**
+	 * 메모보고 목록에 대한 전체 건수를 조회한다.
+	 */
+	@Test
+	public void selectMemoReprtListCntSetSearchDrctMatter0() {
+		// given
+		final MemoReprt testData = new MemoReprt();
+		testData(testData);
+
+		final MemoReprtVO memoReprtVO = new MemoReprtVO();
+
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO != null) {
+			memoReprtVO.setSearchId(loginVO.getUniqId());
+		}
+
+//		memoReprtVO.setSearchBgnDe(testData.getReprtDe());
+//		memoReprtVO.setSearchEndDe(testData.getReprtDe());
+
+//		memoReprtVO.setSearchCnd("0");
+//		memoReprtVO.setSearchWrd(testData.getReprtSj());
+
+//		memoReprtVO.setSearchCnd("1");
+//		memoReprtVO.setSearchWrd(testData.getReprtCn());
+
+//		memoReprtVO.setSearchCnd("2");
+//		memoReprtVO.setSearchWrd(loginVO.getName());
+
+		memoReprtVO.setSearchDrctMatter("0");
+//		memoReprtVO.setSearchDrctMatter("1");
+
+//		memoReprtVO.setSearchSttus("0");
+//		memoReprtVO.setSearchSttus("1");
+
+		// when
+		final int totCnt = memoReprtDAO.selectMemoReprtListCnt(memoReprtVO);
+
+		log.debug("totCnt={}", totCnt);
+
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+	}
+
+	/**
+	 * 메모보고 목록에 대한 전체 건수를 조회한다.
+	 */
+	@Test
+	public void selectMemoReprtListCntSetSearchDrctMatter1() {
+		// given
+		final MemoReprt testData = new MemoReprt();
+		testData(testData);
+
+		final MemoReprtVO memoReprtVO = new MemoReprtVO();
+
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO != null) {
+			memoReprtVO.setSearchId(loginVO.getUniqId());
+		}
+
+//		memoReprtVO.setSearchBgnDe(testData.getReprtDe());
+//		memoReprtVO.setSearchEndDe(testData.getReprtDe());
+
+//		memoReprtVO.setSearchCnd("0");
+//		memoReprtVO.setSearchWrd(testData.getReprtSj());
+
+//		memoReprtVO.setSearchCnd("1");
+//		memoReprtVO.setSearchWrd(testData.getReprtCn());
+
+//		memoReprtVO.setSearchCnd("2");
+//		memoReprtVO.setSearchWrd(loginVO.getName());
+
+//		memoReprtVO.setSearchDrctMatter("0");
+		memoReprtVO.setSearchDrctMatter("1");
+
+//		memoReprtVO.setSearchSttus("0");
+//		memoReprtVO.setSearchSttus("1");
+
+		// when
+		final int totCnt = memoReprtDAO.selectMemoReprtListCnt(memoReprtVO);
+
+		log.debug("totCnt={}", totCnt);
+
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+	}
+
+	/**
+	 * 메모보고 목록에 대한 전체 건수를 조회한다.
+	 */
+	@Test
+	public void selectMemoReprtListCntSetSearchSttus0() {
+		// given
+		final MemoReprt testData = new MemoReprt();
+		testData(testData);
+
+		final MemoReprtVO memoReprtVO = new MemoReprtVO();
+
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO != null) {
+			memoReprtVO.setSearchId(loginVO.getUniqId());
+		}
+
+//		memoReprtVO.setSearchBgnDe(testData.getReprtDe());
+//		memoReprtVO.setSearchEndDe(testData.getReprtDe());
+
+//		memoReprtVO.setSearchCnd("0");
+//		memoReprtVO.setSearchWrd(testData.getReprtSj());
+
+//		memoReprtVO.setSearchCnd("1");
+//		memoReprtVO.setSearchWrd(testData.getReprtCn());
+
+//		memoReprtVO.setSearchCnd("2");
+//		memoReprtVO.setSearchWrd(loginVO.getName());
+
+//		memoReprtVO.setSearchDrctMatter("0");
+//		memoReprtVO.setSearchDrctMatter("1");
+
+		memoReprtVO.setSearchSttus("0");
+//		memoReprtVO.setSearchSttus("1");
+
+		// when
+		final int totCnt = memoReprtDAO.selectMemoReprtListCnt(memoReprtVO);
+
+		log.debug("totCnt={}", totCnt);
+
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+	}
+
+	/**
+	 * 메모보고 목록에 대한 전체 건수를 조회한다.
+	 */
+	@Test
+	public void selectMemoReprtListCntSetSearchSttus1() {
+		// given
+		final MemoReprt testData = new MemoReprt();
+		testData(testData);
+
+		final MemoReprtVO memoReprtVO = new MemoReprtVO();
+
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO != null) {
+			memoReprtVO.setSearchId(loginVO.getUniqId());
+		}
+
+//		memoReprtVO.setSearchBgnDe(testData.getReprtDe());
+//		memoReprtVO.setSearchEndDe(testData.getReprtDe());
+
+//		memoReprtVO.setSearchCnd("0");
+//		memoReprtVO.setSearchWrd(testData.getReprtSj());
+
+//		memoReprtVO.setSearchCnd("1");
+//		memoReprtVO.setSearchWrd(testData.getReprtCn());
+
+//		memoReprtVO.setSearchCnd("2");
+//		memoReprtVO.setSearchWrd(loginVO.getName());
+
+//		memoReprtVO.setSearchDrctMatter("0");
+//		memoReprtVO.setSearchDrctMatter("1");
+
+//		memoReprtVO.setSearchSttus("0");
 		memoReprtVO.setSearchSttus("1");
 
 		// when
