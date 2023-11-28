@@ -44,7 +44,7 @@
 		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>							
 	</resultMap> 
 	
-	<select id="selectReportrList" parameterType="egovframework.com.cop.smt.mrm.service.MemoReprtVO" resultMap="memoReportrList">
+	<select id="selectReportrList" parameterType="egovframework.com.cop.smt.mrm.service.ReportrVO" resultMap="memoReportrList">
 		
 			SELECT
 				b.ORGNZT_NM, a.ESNTL_ID, a.USER_NM, 
@@ -69,7 +69,7 @@
 						
 	</select>	
 	
-	<select id="selectReportrListCnt" parameterType="egovframework.com.cop.smt.mrm.service.MemoReprtVO" resultType="java.lang.Integer">
+	<select id="selectReportrListCnt" parameterType="egovframework.com.cop.smt.mrm.service.ReportrVO" resultType="java.lang.Integer">
 		
 			SELECT
 				COUNT(EMPLYR_ID) as cnt
@@ -128,7 +128,7 @@
 			 	binary(A.REPRT_SJ) LIKE CONCAT('%', #{searchWrd}, '%') 		
 		 </if>
 		 <if test="searchCnd == 1">AND
-			 	binary(A.REPORT_CN) LIKE CONCAT('%', #{searchWrd}, '%')' 		
+			 	binary(A.REPORT_CN) LIKE CONCAT('%', #{searchWrd}, '%')
 		 </if>
 		 <if test="searchCnd == 2">AND
 			 	binary(B.USER_NM) LIKE CONCAT('%', #{searchWrd}, '%') 		
