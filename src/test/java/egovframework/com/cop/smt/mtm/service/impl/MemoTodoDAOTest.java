@@ -23,7 +23,7 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.smt.mtm.service.MemoTodo;
 import egovframework.com.test.EgovTestAbstractDAO;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -71,9 +71,8 @@ import lombok.extern.slf4j.Slf4j;
 
 )
 
-@RequiredArgsConstructor
+@NoArgsConstructor
 @Slf4j
-//@Commit
 public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 
 	/**
@@ -91,6 +90,8 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 
 	/**
 	 * 메모할일 정보를 등록한다.
+	 * 
+	 * @throws FdlException, EgovBizException
 	 */
 	@Test
 	public void insertMemoTodo() {
@@ -100,13 +101,12 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 		try {
 			memoTodo.setTodoId(String.valueOf(egovMemoTodoIdGnrService.getNextStringId()));
 		} catch (FdlException e) {
-			throw new BaseRuntimeException("FdlException egovMemoTodoIdGnrService");
-//			throw new BaseRuntimeException(e);
+			throw new BaseRuntimeException(egovMessageSource.getMessage("fail.common.msg"), e);
 		}
 
 		memoTodo.setTodoNm("test 이백행 할일제목 " + LocalDateTime.now());
 
-		String today = EgovDateUtil.toString(new Date(), "yyyyMMdd", null);
+		final String today = EgovDateUtil.toString(new Date(), "yyyyMMdd", null);
 		memoTodo.setTodoBeginTime(today + "090000");
 		memoTodo.setTodoEndTime(today + "180000");
 
