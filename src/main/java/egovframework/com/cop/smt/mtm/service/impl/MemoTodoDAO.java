@@ -84,8 +84,8 @@ public class MemoTodoDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoTodo
 	 */
-	public void insertMemoTodo(MemoTodo memoTodo) throws Exception{
-		insert("MemoTodoDAO.insertMemoTodo", memoTodo);
+	public int insertMemoTodo(MemoTodo memoTodo) {
+		return insert("MemoTodoDAO.insertMemoTodo", memoTodo);
 	}
 
 	/**
