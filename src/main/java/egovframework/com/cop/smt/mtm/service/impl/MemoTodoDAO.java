@@ -36,10 +36,10 @@ public class MemoTodoDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoTodoVO
 	 */	
-	public List<MemoTodoVO> selectMemoTodoList(MemoTodoVO memoTodoVO) throws Exception{
-		List<MemoTodoVO> resultList = selectList("MemoTodoDAO.selectMemoTodoList", memoTodoVO);
+	public List<MemoTodoVO> selectMemoTodoList(final MemoTodoVO memoTodoVO) {
+		final List<MemoTodoVO> resultList = selectList("MemoTodoDAO.selectMemoTodoList", memoTodoVO);
 		for(int i=0; i < resultList.size(); i++){
-			MemoTodoVO resultVO = resultList.get(i);
+			final MemoTodoVO resultVO = resultList.get(i);
 			resultVO.setTodoDe(resultVO.getTodoBeginTime().substring(0,10));
 			resultVO.setTodoBeginHour(resultVO.getTodoBeginTime().substring(10,12));
 			resultVO.setTodoBeginMin(resultVO.getTodoBeginTime().substring(12,14));
@@ -84,7 +84,7 @@ public class MemoTodoDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoTodo
 	 */
-	public int insertMemoTodo(MemoTodo memoTodo) {
+	public int insertMemoTodo(final MemoTodo memoTodo) {
 		return insert("MemoTodoDAO.insertMemoTodo", memoTodo);
 	}
 
