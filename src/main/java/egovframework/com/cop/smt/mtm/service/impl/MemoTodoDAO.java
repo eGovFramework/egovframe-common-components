@@ -105,8 +105,8 @@ public class MemoTodoDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoTodoVO
 	 */
-	public int selectMemoTodoListCnt(MemoTodoVO memoTodoVO) throws Exception{
-		return (Integer)selectOne("MemoTodoDAO.selectMemoTodoListCnt", memoTodoVO);
+	public int selectMemoTodoListCnt(final MemoTodoVO memoTodoVO) {
+		return selectOne("MemoTodoDAO.selectMemoTodoListCnt", memoTodoVO);
 	}
 	
 	/**
