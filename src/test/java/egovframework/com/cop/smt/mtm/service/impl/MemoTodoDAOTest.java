@@ -269,117 +269,6 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 	}
 
 	/**
-	 * 메모할일 목록에 대한 전체 건수를 조회한다.
-	 */
-	@Test
-	public void selectMemoTodoListCntSearchDe1() {
-		// given
-		final MemoTodo testData = new MemoTodo();
-		testData(testData);
-
-		final MemoTodoVO memoTodoVO = new MemoTodoVO();
-
-		memoTodoVO.setSearchId(testData.getWrterId());
-
-		memoTodoVO.setSearchDe("1");
-		memoTodoVO.setSearchBgnDe(EgovDateUtil.toString(new Date(), "", null));
-		memoTodoVO.setSearchEndDe(EgovDateUtil.toString(new Date(), "", null));
-
-		// when
-		final int totCnt = memoTodoDAO.selectMemoTodoListCnt(memoTodoVO);
-
-		debugTotCnt(totCnt);
-
-		// then
-		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
-	}
-
-	/**
-	 * 메모할일 목록에 대한 전체 건수를 조회한다.
-	 */
-	@Test
-	public void selectMemoTodoListCntSearchDe0() {
-		// given
-		final MemoTodo testData = new MemoTodo();
-		testData(testData);
-
-		final MemoTodoVO memoTodoVO = new MemoTodoVO();
-
-		memoTodoVO.setFirstIndex(0);
-		memoTodoVO.setRecordCountPerPage(10);
-
-		memoTodoVO.setSearchId(testData.getWrterId());
-
-		memoTodoVO.setSearchDe("0");
-		memoTodoVO.setSearchBgnDe(testData.getTodoBeginTime().substring(0, 10));
-		memoTodoVO.setSearchEndDe(testData.getTodoEndTime().substring(0, 10));
-
-		// when
-		final int totCnt = memoTodoDAO.selectMemoTodoListCnt(memoTodoVO);
-
-		debugTotCnt(totCnt);
-
-		// then
-		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
-	}
-
-	/**
-	 * 메모할일 목록에 대한 전체 건수를 조회한다.
-	 */
-	@Test
-	public void selectMemoTodoListCntSearchCnd0() {
-		// given
-		final MemoTodo testData = new MemoTodo();
-		testData(testData);
-
-		final MemoTodoVO memoTodoVO = new MemoTodoVO();
-
-		memoTodoVO.setFirstIndex(0);
-		memoTodoVO.setRecordCountPerPage(10);
-
-		memoTodoVO.setSearchId(testData.getWrterId());
-
-		memoTodoVO.setSearchCnd("0");
-		memoTodoVO.setSearchWrd(testData.getTodoNm());
-
-		// when
-		final int totCnt = memoTodoDAO.selectMemoTodoListCnt(memoTodoVO);
-
-		debugTotCnt(totCnt);
-
-		// then
-		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
-	}
-
-	/**
-	 * 메모할일 목록에 대한 전체 건수를 조회한다.
-	 */
-	@Test
-	public void selectMemoTodoListCntSearchCnd1() {
-		// given
-		final MemoTodo testData = new MemoTodo();
-		testData(testData);
-
-		final MemoTodoVO memoTodoVO = new MemoTodoVO();
-
-		memoTodoVO.setFirstIndex(0);
-		memoTodoVO.setRecordCountPerPage(10);
-
-		memoTodoVO.setSearchId(testData.getWrterId());
-
-		memoTodoVO.setSearchCnd("1");
-		memoTodoVO.setSearchWrd(testData.getTodoCn());
-
-		// when
-		final int totCnt = memoTodoDAO.selectMemoTodoListCnt(memoTodoVO);
-
-		debugTotCnt(totCnt);
-
-		// then
-		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
-	}
-
-	/**
 	 * 메모할일 정보를 등록한다.
 	 */
 	@Test
@@ -417,6 +306,117 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 
 		// then
 		assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
+	}
+
+	/**
+	 * 메모할일 목록에 대한 전체 건수를 조회한다.
+	 */
+	@Test
+	public void selectMemoTodoListCntSearchDe1() {
+		// given
+		final MemoTodo testData = new MemoTodo();
+		testData(testData);
+	
+		final MemoTodoVO memoTodoVO = new MemoTodoVO();
+	
+		memoTodoVO.setSearchId(testData.getWrterId());
+	
+		memoTodoVO.setSearchDe("1");
+		memoTodoVO.setSearchBgnDe(EgovDateUtil.toString(new Date(), "", null));
+		memoTodoVO.setSearchEndDe(EgovDateUtil.toString(new Date(), "", null));
+	
+		// when
+		final int totCnt = memoTodoDAO.selectMemoTodoListCnt(memoTodoVO);
+	
+		debugTotCnt(totCnt);
+	
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+	}
+
+	/**
+	 * 메모할일 목록에 대한 전체 건수를 조회한다.
+	 */
+	@Test
+	public void selectMemoTodoListCntSearchDe0() {
+		// given
+		final MemoTodo testData = new MemoTodo();
+		testData(testData);
+	
+		final MemoTodoVO memoTodoVO = new MemoTodoVO();
+	
+		memoTodoVO.setFirstIndex(0);
+		memoTodoVO.setRecordCountPerPage(10);
+	
+		memoTodoVO.setSearchId(testData.getWrterId());
+	
+		memoTodoVO.setSearchDe("0");
+		memoTodoVO.setSearchBgnDe(testData.getTodoBeginTime().substring(0, 10));
+		memoTodoVO.setSearchEndDe(testData.getTodoEndTime().substring(0, 10));
+	
+		// when
+		final int totCnt = memoTodoDAO.selectMemoTodoListCnt(memoTodoVO);
+	
+		debugTotCnt(totCnt);
+	
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+	}
+
+	/**
+	 * 메모할일 목록에 대한 전체 건수를 조회한다.
+	 */
+	@Test
+	public void selectMemoTodoListCntSearchCnd0() {
+		// given
+		final MemoTodo testData = new MemoTodo();
+		testData(testData);
+	
+		final MemoTodoVO memoTodoVO = new MemoTodoVO();
+	
+		memoTodoVO.setFirstIndex(0);
+		memoTodoVO.setRecordCountPerPage(10);
+	
+		memoTodoVO.setSearchId(testData.getWrterId());
+	
+		memoTodoVO.setSearchCnd("0");
+		memoTodoVO.setSearchWrd(testData.getTodoNm());
+	
+		// when
+		final int totCnt = memoTodoDAO.selectMemoTodoListCnt(memoTodoVO);
+	
+		debugTotCnt(totCnt);
+	
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+	}
+
+	/**
+	 * 메모할일 목록에 대한 전체 건수를 조회한다.
+	 */
+	@Test
+	public void selectMemoTodoListCntSearchCnd1() {
+		// given
+		final MemoTodo testData = new MemoTodo();
+		testData(testData);
+	
+		final MemoTodoVO memoTodoVO = new MemoTodoVO();
+	
+		memoTodoVO.setFirstIndex(0);
+		memoTodoVO.setRecordCountPerPage(10);
+	
+		memoTodoVO.setSearchId(testData.getWrterId());
+	
+		memoTodoVO.setSearchCnd("1");
+		memoTodoVO.setSearchWrd(testData.getTodoCn());
+	
+		// when
+		final int totCnt = memoTodoDAO.selectMemoTodoListCnt(memoTodoVO);
+	
+		debugTotCnt(totCnt);
+	
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
 	}
 
 }
