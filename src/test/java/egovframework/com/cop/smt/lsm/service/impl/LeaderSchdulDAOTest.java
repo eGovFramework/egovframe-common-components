@@ -2,6 +2,7 @@ package egovframework.com.cop.smt.lsm.service.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.log;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
@@ -10,10 +11,10 @@ import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.ImportResource;
+import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.test.context.ContextConfiguration;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
@@ -528,4 +529,18 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
         assertSelectLeaderSttus(leaderSttusVO, result);
     }
 
+    /**
+     * 간부상태 상세정보 수정 테스트 코드
+     */
+    @Test
+    public void testUpdateLeaderSttus() {
+        // given
+        testLeaderSttus.setLeaderSttus("2");
+
+        // when
+        final int result = leaderSchdulDAO.updateLeaderSttus(testLeaderSttus);
+
+        // then
+        assertEquals(egovMessageSource.getMessage("fail.common.update"), 1, result);
+    }
 }
