@@ -2,9 +2,7 @@ package egovframework.com.cop.smt.lsm.service.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
-
 import java.util.List;
-
 import org.apache.commons.lang3.StringUtils;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.junit.Before;
@@ -17,11 +15,12 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.test.context.ContextConfiguration;
-
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.smt.lsm.service.EmplyrVO;
 import egovframework.com.cop.smt.lsm.service.LeaderSchdulVO;
+import egovframework.com.cop.smt.lsm.service.LeaderSttus;
+import egovframework.com.cop.smt.lsm.service.LeaderSttusVO;
 import egovframework.com.test.EgovTestAbstractDAO;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,19 +37,19 @@ import lombok.extern.slf4j.Slf4j;
     "classpath*:egovframework/spring/com/idgn/context-idgn-LeaderSchdu.xml",
 })
 @ComponentScan(
-    useDefaultFilters = false,
-    basePackages = {
-        "egovframework.com.cop.smt.lsm.service.impl;"
-    },
-    includeFilters = {
-        @Filter(
-            type = FilterType.ASSIGNABLE_TYPE,
-            classes = {
-                LeaderSchdulDAO.class
-            }
+        useDefaultFilters = false,
+        basePackages = {
+                "egovframework.com.cop.smt.lsm.service.impl;"
+        },
+        includeFilters = {
+                @Filter(
+                        type = FilterType.ASSIGNABLE_TYPE,
+                        classes = {
+                                LeaderSchdulDAO.class
+                        }
+                        )
+        }
         )
-    }
-)
 @NoArgsConstructor
 @Slf4j
 // @Commit
@@ -159,6 +158,41 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
         return leaderScheduleVO;
     }
 
+
+    /**
+     * 간부상태 정보 더미데이터 생성
+     * @param leaderSttus: 간부상태
+     * @return
+     */
+    private LeaderSttus makeLeaderSttus(String leaderSttus) {
+        /*
+         * 테스트 간부 정보를 가져옴
+         */
+        testUserVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+        final LeaderSttus leaderSttusVO = new LeaderSttus();
+        /*
+         * 간부ID
+         * 테스트1, USRCNFRM_00000000000
+         */
+        leaderSttusVO.setLeaderId(testUserVO.getUniqId());
+        /*
+         * 간부상태
+         * 1(재실), 2(자리비움), 3(회의중), 4(출장중), 5(휴가중)
+         */
+        leaderSttusVO.setLeaderSttus(leaderSttus);
+        /*
+         * 최초등록자ID
+         */
+        leaderSttusVO.setFrstRegisterId(testUserVO.getUniqId());
+        /*
+         * 최종수정자ID
+         */
+        leaderSttusVO.setFrstRegisterId(testUserVO.getUniqId());
+
+        return leaderSttusVO;
+    }
+
     /**
      * 테스트 데이터 생성
      */
@@ -182,10 +216,17 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
          *
          */
         leaderSchdulDAO.insertLeaderSchdul(testLeaderScheduleVO);
+
         /*
          * 간부일정 일자 정보 등록
          */
         leaderSchdulDAO.insertLeaderSchdulDe(testLeaderScheduleVO);
+
+        /*
+         * 간부상태 정보 등록
+         */
+        LeaderSttus leaderSttus = makeLeaderSttus("1");
+        leaderSchdulDAO.insertLeaderSttus(leaderSttus);
     }
 
     /**
@@ -408,6 +449,29 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
     }
 
 
+    /**
+     * 간부상태정보 목록 조회 테스트 코드
+     */
+    @Test
+    public void testSelectLeaderSttusList() {
+        // given
+        final LeaderSttusVO leaderSttusVO = new LeaderSttusVO();
+        leaderSttusVO.setFirstIndex(0);
+        leaderSttusVO.setSearchCnd("1");
+        leaderSttusVO.setSearchWrd("테스트1");
 
+        // when
+        final List<LeaderSttusVO> resultList = leaderSchdulDAO.selectLeaderSttusList(leaderSttusVO);
 
+        for (final LeaderSttusVO result : resultList) {
+            log.debug("result={}", result);
+            if (log.isDebugEnabled()) {
+                log.debug("result={}", result);
+                log.debug("getLeaderNm={}, {}", leaderSttusVO.getSearchWrd(), result.getLeaderNm());
+            }
+
+            // then
+            assertSelectLeaderSchedule( leaderSttusVO.getSearchWrd(), result.getLeaderNm());
+        }
+    }
 }
