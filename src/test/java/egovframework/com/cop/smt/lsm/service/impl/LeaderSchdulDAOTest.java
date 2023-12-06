@@ -169,7 +169,7 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
      * @param leaderSttus: 간부상태
      * @return
      */
-    private LeaderSttus makeLeaderSttus(String leaderId, String leaderSttus) {
+    private LeaderSttus makeLeaderSttus(final String leaderId, final String leaderSttus) {
         final LeaderSttus leaderSttusVO = new LeaderSttus();
         /*
          * 간부ID
@@ -570,4 +570,19 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
         assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);
     }
 
+    /**
+     * 간부상태 정보 삭제 테스트 코드
+     */
+    @Test
+    public void testDeleteLeaderSttus() {
+        // given
+        final LeaderSttus leaderSttus = new LeaderSttus();
+        leaderSttus.setLeaderId(testLeaderSttus.getLeaderId());
+
+        // when
+        final int result = leaderSchdulDAO.deleteLeaderSttus(leaderSttus);
+
+        // then
+        assertEquals(egovMessageSource.getMessage("fail.common.delete"), 1, result);
+    }
 }
