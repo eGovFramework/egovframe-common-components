@@ -554,4 +554,20 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
         assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
     }
 
+    /**
+     * 간부상태 중복 체크 개수 조회 테스트 코드
+     */
+    @Test
+    public void testSelectLeaderSttusCheck() {
+        // given
+        final LeaderSttus leaderSttus = new LeaderSttus();
+        leaderSttus.setLeaderId(testLeaderSttus.getLeaderId());
+
+        // when
+        final int result = leaderSchdulDAO.selectLeaderSttusCheck(leaderSttus);
+
+        // then
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);
+    }
+
 }
