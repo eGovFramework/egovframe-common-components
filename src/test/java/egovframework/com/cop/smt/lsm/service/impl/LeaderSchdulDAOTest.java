@@ -73,6 +73,11 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
     private LeaderSchdulVO testLeaderScheduleVO;
 
     /**
+     * testLeasderSttusVO
+     */
+    private LeaderSttus testLeaderSttus;
+
+    /**
      * default testUserVO
      */
     private LoginVO testUserVO;
@@ -225,8 +230,9 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
         /*
          * 간부상태 정보 등록
          */
-        LeaderSttus leaderSttus = makeLeaderSttus("1");
-        leaderSchdulDAO.insertLeaderSttus(leaderSttus);
+        testLeaderSttus = makeLeaderSttus("1");
+
+        leaderSchdulDAO.insertLeaderSttus(testLeaderSttus);
     }
 
     /**
@@ -325,6 +331,17 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
     private void assertSelectLeaderSchedule(final Object expected, final Object actual) {
         if (expected instanceof LeaderSchdulVO) {
             assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), ((LeaderSchdulVO) expected).getSchdulId(), ((LeaderSchdulVO) actual).getSchdulId());
+        } else {
+            assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), expected, actual);
+        }
+    }
+
+    /**
+     * 간부상태 정보 assert
+     */
+    private void assertSelectLeaderSttus(final Object expected, final Object actual) {
+        if (expected instanceof LeaderSttusVO) {
+            assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), ((LeaderSttusVO) expected).getLeaderId(), ((LeaderSttusVO) actual).getLeaderId());
         } else {
             assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), expected, actual);
         }
@@ -471,10 +488,9 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
             }
 
             // then
-            assertSelectLeaderSchedule( leaderSttusVO.getSearchWrd(), result.getLeaderNm());
+            assertSelectLeaderSttus( leaderSttusVO.getSearchWrd(), result.getLeaderNm());
         }
     }
-
 
     /**
      * 주어진 조건에 맞는 간부상태 전체 개수 조회 테스트 코드
@@ -494,4 +510,22 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
         assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultAll > 0);
         assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);
     }
+
+    /**
+     * 주어진 조건에 맞는 간부상태 상세정보 조회 테스트 코드
+     */
+    @Test
+    public void testSelectLeaderSttus() {
+        // given
+        final LeaderSttusVO leaderSttusVO = new LeaderSttusVO();
+        leaderSttusVO.setLeaderId(testLeaderSttus.getLeaderId());
+
+        // when
+        final LeaderSttusVO result = leaderSchdulDAO.selectLeaderSttus(leaderSttusVO);
+        // log.debug("result = {}", result);
+
+        // then
+        assertSelectLeaderSttus(leaderSttusVO, result);
+    }
+
 }
