@@ -316,20 +316,20 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 		// given
 		final MemoTodo testData = new MemoTodo();
 		testData(testData);
-	
+
 		final MemoTodoVO memoTodoVO = new MemoTodoVO();
-	
+
 		memoTodoVO.setSearchId(testData.getWrterId());
-	
+
 		memoTodoVO.setSearchDe("1");
 		memoTodoVO.setSearchBgnDe(EgovDateUtil.toString(new Date(), "", null));
 		memoTodoVO.setSearchEndDe(EgovDateUtil.toString(new Date(), "", null));
-	
+
 		// when
 		final int totCnt = memoTodoDAO.selectMemoTodoListCnt(memoTodoVO);
-	
+
 		debugTotCnt(totCnt);
-	
+
 		// then
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
 	}
@@ -342,23 +342,23 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 		// given
 		final MemoTodo testData = new MemoTodo();
 		testData(testData);
-	
+
 		final MemoTodoVO memoTodoVO = new MemoTodoVO();
-	
+
 		memoTodoVO.setFirstIndex(0);
 		memoTodoVO.setRecordCountPerPage(10);
-	
+
 		memoTodoVO.setSearchId(testData.getWrterId());
-	
+
 		memoTodoVO.setSearchDe("0");
 		memoTodoVO.setSearchBgnDe(testData.getTodoBeginTime().substring(0, 10));
 		memoTodoVO.setSearchEndDe(testData.getTodoEndTime().substring(0, 10));
-	
+
 		// when
 		final int totCnt = memoTodoDAO.selectMemoTodoListCnt(memoTodoVO);
-	
+
 		debugTotCnt(totCnt);
-	
+
 		// then
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
 	}
@@ -371,22 +371,22 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 		// given
 		final MemoTodo testData = new MemoTodo();
 		testData(testData);
-	
+
 		final MemoTodoVO memoTodoVO = new MemoTodoVO();
-	
+
 		memoTodoVO.setFirstIndex(0);
 		memoTodoVO.setRecordCountPerPage(10);
-	
+
 		memoTodoVO.setSearchId(testData.getWrterId());
-	
+
 		memoTodoVO.setSearchCnd("0");
 		memoTodoVO.setSearchWrd(testData.getTodoNm());
-	
+
 		// when
 		final int totCnt = memoTodoDAO.selectMemoTodoListCnt(memoTodoVO);
-	
+
 		debugTotCnt(totCnt);
-	
+
 		// then
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
 	}
@@ -399,24 +399,71 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 		// given
 		final MemoTodo testData = new MemoTodo();
 		testData(testData);
-	
+
 		final MemoTodoVO memoTodoVO = new MemoTodoVO();
-	
+
 		memoTodoVO.setFirstIndex(0);
 		memoTodoVO.setRecordCountPerPage(10);
-	
+
 		memoTodoVO.setSearchId(testData.getWrterId());
-	
+
 		memoTodoVO.setSearchCnd("1");
 		memoTodoVO.setSearchWrd(testData.getTodoCn());
-	
+
 		// when
 		final int totCnt = memoTodoDAO.selectMemoTodoListCnt(memoTodoVO);
-	
+
 		debugTotCnt(totCnt);
-	
+
 		// then
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+	}
+
+	/**
+	 * 메모할일 목록 중 오늘의 할일을 조회한다.
+	 */
+	@Test
+	public void selectMemoTodoListToday() {
+		// given
+		final MemoTodo testData = new MemoTodo();
+		testData(testData);
+
+		final MemoTodoVO memoTodoVO = new MemoTodoVO();
+
+		memoTodoVO.setSearchId(testData.getWrterId());
+
+		final String today = EgovDateUtil.toString(new Date(), "yyyyMMdd", null);
+		memoTodoVO.setSearchBgnDe(today + "000000");
+		memoTodoVO.setSearchEndDe(today + "235959");
+
+		// when
+		final List<MemoTodoVO> resultList = memoTodoDAO.selectMemoTodoListToday(memoTodoVO);
+
+		if (log.isDebugEnabled()) {
+			log.debug("resultList={}", resultList);
+			log.debug("size={}", resultList.size());
+
+			for (final MemoTodoVO resultVO : resultList) {
+				log.debug("resultVO={}", resultVO);
+				log.debug("getTodoId={}, {}", testData.getTodoId(), resultVO.getTodoId());
+				log.debug("getTodoNm={}, {}", testData.getTodoNm(), resultVO.getTodoNm());
+				log.debug("getTodoBeginTime={}, {}", testData.getTodoBeginTime(), resultVO.getTodoBeginTime());
+				log.debug("getTodoEndTime={}, {}", testData.getTodoEndTime(), resultVO.getTodoEndTime());
+				log.debug("getWrterNm={}", resultVO.getWrterNm());
+				log.debug("getFrstRegisterPnttm={}", resultVO.getFrstRegisterPnttm());
+			}
+		}
+
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.size() > -1);
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTodoId(),
+				resultList.get(0).getTodoId());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTodoNm(),
+				resultList.get(0).getTodoNm());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTodoBeginTime(),
+				resultList.get(0).getTodoBeginTime());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTodoEndTime(),
+				resultList.get(0).getTodoEndTime());
 	}
 
 }
