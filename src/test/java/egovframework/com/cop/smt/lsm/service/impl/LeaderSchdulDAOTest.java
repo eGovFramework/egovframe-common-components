@@ -474,4 +474,24 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
             assertSelectLeaderSchedule( leaderSttusVO.getSearchWrd(), result.getLeaderNm());
         }
     }
+
+
+    /**
+     * 주어진 조건에 맞는 간부상태 전체 개수 조회 테스트 코드
+     */
+    @Test
+    public void testSelectLeaderSttusListCnt() {
+        // given
+        final LeaderSttusVO leaderSttusVO = new LeaderSttusVO();
+        leaderSttusVO.setSearchCnd("1");
+        leaderSttusVO.setSearchWrd("테스트1");
+
+        // when
+        final int resultAll = leaderSchdulDAO.selectLeaderSttusListCnt(new LeaderSttusVO());
+        final int result = leaderSchdulDAO.selectLeaderSttusListCnt(leaderSttusVO);
+
+        // then
+        assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultAll > 0);
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);
+    }
 }
