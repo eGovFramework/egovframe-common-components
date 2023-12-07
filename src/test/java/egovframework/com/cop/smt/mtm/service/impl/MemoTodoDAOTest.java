@@ -269,6 +269,52 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 	}
 
 	/**
+	 * 주어진 조건에 맞는 메모할일을 불러온다.
+	 */
+	@Test
+	public void selectMemoTodo() {
+		// given
+		final MemoTodo testData = new MemoTodo();
+		testData(testData);
+
+		final MemoTodoVO memoTodoVO = new MemoTodoVO();
+		memoTodoVO.setTodoId(testData.getTodoId());
+
+		// when
+		final MemoTodoVO resultVO = memoTodoDAO.selectMemoTodo(memoTodoVO);
+
+		if (log.isDebugEnabled()) {
+			log.debug("resultVO={}", resultVO);
+			log.debug("getTodoId={}, {}", testData.getTodoId(), resultVO.getTodoId());
+			log.debug("getTodoNm={}, {}", testData.getTodoNm(), resultVO.getTodoNm());
+			log.debug("getTodoBeginTime={}, {}", testData.getTodoBeginTime(), resultVO.getTodoBeginTime());
+			log.debug("getTodoEndTime={}, {}", testData.getTodoEndTime(), resultVO.getTodoEndTime());
+			log.debug("getWrterId={}, {}", testData.getWrterId(), resultVO.getWrterId());
+			log.debug("getWrterNm={}", resultVO.getWrterNm());
+			log.debug("getTodoCn={}, {}", testData.getTodoCn(), resultVO.getTodoCn());
+			log.debug("getFrstRegisterPnttm={}", resultVO.getFrstRegisterPnttm());
+			log.debug("getFrstRegisterId={}, {}", testData.getFrstRegisterId(), resultVO.getFrstRegisterId());
+			log.debug("getLastUpdusrPnttm={}", resultVO.getLastUpdusrPnttm());
+			log.debug("getLastUpdusrId={}, {}", testData.getLastUpdusrId(), resultVO.getLastUpdusrId());
+		}
+
+		// then
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTodoId(), resultVO.getTodoId());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTodoNm(), resultVO.getTodoNm());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTodoBeginTime(),
+				resultVO.getTodoBeginTime());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTodoEndTime(),
+				resultVO.getTodoEndTime());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getWrterId(), resultVO.getWrterId());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTodoCn(), resultVO.getTodoCn());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTodoCn(), resultVO.getTodoCn());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getFrstRegisterId(),
+				resultVO.getFrstRegisterId());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getLastUpdusrId(),
+				resultVO.getLastUpdusrId());
+	}
+
+	/**
 	 * 메모할일 정보를 등록한다.
 	 */
 	@Test

@@ -57,8 +57,8 @@ public class MemoTodoDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoTodoVO
 	 */
-	public MemoTodoVO selectMemoTodo(MemoTodoVO memoTodoVO) throws Exception{
-		MemoTodoVO resultVO = (MemoTodoVO)selectOne("MemoTodoDAO.selectMemoTodo", memoTodoVO);
+	public MemoTodoVO selectMemoTodo(final MemoTodoVO memoTodoVO) {
+		final MemoTodoVO resultVO = selectOne("MemoTodoDAO.selectMemoTodo", memoTodoVO);
 		resultVO.setTodoDe(resultVO.getTodoBeginTime().substring(0,10));
 		resultVO.setTodoBeginHour(resultVO.getTodoBeginTime().substring(10,12));
 		resultVO.setTodoBeginMin(resultVO.getTodoBeginTime().substring(12,14));
