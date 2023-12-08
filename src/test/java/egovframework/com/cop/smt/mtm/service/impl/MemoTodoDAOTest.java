@@ -93,6 +93,16 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 	private EgovIdGnrService egovMemoTodoIdGnrService;
 
 	/**
+	 * Debug Result
+	 */
+	public static final String DEBUG_RESULT = "result={}";
+
+	/**
+	 * Egovdateutil Format
+	 */
+	public static final String EGOVDATEUTIL_FORMAT = "yyyyMMdd";
+
+	/**
 	 * 주어진 조건에 맞는 메모할일 목록을 불러온다.
 	 */
 	@Test
@@ -216,7 +226,7 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 
 		testData.setTodoNm("test 이백행 할일제목 " + LocalDateTime.now());
 
-		final String today = EgovDateUtil.toString(new Date(), "yyyyMMdd", null);
+		final String today = EgovDateUtil.toString(new Date(), EGOVDATEUTIL_FORMAT, null);
 		testData.setTodoBeginTime(today + "090000");
 		testData.setTodoEndTime(today + "180000");
 
@@ -233,7 +243,7 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 		final int result = memoTodoDAO.insertMemoTodo(testData);
 
 		if (log.isDebugEnabled()) {
-			log.debug("result={}", result);
+			log.debug(DEBUG_RESULT, result);
 		}
 
 		// then
@@ -246,7 +256,7 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 			log.debug("size={}", resultList.size());
 
 			for (final MemoTodoVO result : resultList) {
-				log.debug("result={}", result);
+				log.debug(DEBUG_RESULT, result);
 				log.debug("getWrterId={}, {}", testData.getWrterId(), result.getWrterId());
 				log.debug("getTodoBeginTime={}, {}", testData.getTodoBeginTime(), result.getTodoBeginTime());
 				log.debug("getTodoBeginHour={}", result.getTodoBeginHour());
@@ -315,6 +325,43 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 	}
 
 	/**
+	 * 메모할일 정보를 수정한다.
+	 */
+	@Test
+	public void updateMemoTodo() {
+		// given
+		final MemoTodo testData = new MemoTodo();
+		testData(testData);
+
+		final MemoTodo memoTodo = new MemoTodo();
+
+		memoTodo.setTodoId(testData.getTodoId());
+
+		memoTodo.setTodoNm("test 이백행 할일제목 수정 " + LocalDateTime.now());
+
+		final String today = EgovDateUtil.toString(new Date(), EGOVDATEUTIL_FORMAT, null);
+		memoTodo.setTodoBeginTime(today + "090001");
+		memoTodo.setTodoEndTime(today + "180001");
+
+		memoTodo.setTodoCn("test 이백행 할일내용 수정 " + LocalDateTime.now());
+
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO != null) {
+			memoTodo.setLastUpdusrId(loginVO.getUniqId());
+		}
+
+		// when
+		final int result = memoTodoDAO.updateMemoTodo(memoTodo);
+
+		if (log.isDebugEnabled()) {
+			log.debug(DEBUG_RESULT, result);
+		}
+
+		// then
+		assertEquals(egovMessageSource.getMessage("fail.common.update"), 1, result);
+	}
+
+	/**
 	 * 메모할일 정보를 등록한다.
 	 */
 	@Test
@@ -330,7 +377,7 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 
 		memoTodo.setTodoNm("test 이백행 할일제목 " + LocalDateTime.now());
 
-		final String today = EgovDateUtil.toString(new Date(), "yyyyMMdd", null);
+		final String today = EgovDateUtil.toString(new Date(), EGOVDATEUTIL_FORMAT, null);
 		memoTodo.setTodoBeginTime(today + "090000");
 		memoTodo.setTodoEndTime(today + "180000");
 
@@ -347,7 +394,7 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 		final int result = memoTodoDAO.insertMemoTodo(memoTodo);
 
 		if (log.isDebugEnabled()) {
-			log.debug("result={}", result);
+			log.debug(DEBUG_RESULT, result);
 		}
 
 		// then
@@ -478,7 +525,7 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 
 		memoTodoVO.setSearchId(testData.getWrterId());
 
-		final String today = EgovDateUtil.toString(new Date(), "yyyyMMdd", null);
+		final String today = EgovDateUtil.toString(new Date(), EGOVDATEUTIL_FORMAT, null);
 		memoTodoVO.setSearchBgnDe(today + "000000");
 		memoTodoVO.setSearchEndDe(today + "235959");
 

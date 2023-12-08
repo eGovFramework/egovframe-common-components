@@ -74,8 +74,8 @@ public class MemoTodoDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoTodo
 	 */
-	public void updateMemoTodo(MemoTodo memoTodo) throws Exception{
-		update("MemoTodoDAO.updateMemoTodo", memoTodo);
+	public int updateMemoTodo(final MemoTodo memoTodo) {
+		return update("MemoTodoDAO.updateMemoTodo", memoTodo);
 	}
 
 	/**
