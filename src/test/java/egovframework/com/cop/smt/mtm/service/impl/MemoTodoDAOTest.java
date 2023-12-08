@@ -106,7 +106,7 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 	 * 주어진 조건에 맞는 메모할일 목록을 불러온다.
 	 */
 	@Test
-	public void selectMemoTodoListSearchDe1() {
+	public void a01selectMemoTodoListSearchDe1() {
 		// given
 		final MemoTodo testData = new MemoTodo();
 		testData(testData);
@@ -135,7 +135,7 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 	 * 주어진 조건에 맞는 메모할일 목록을 불러온다.
 	 */
 	@Test
-	public void selectMemoTodoListSearchDe0() {
+	public void a01aselectMemoTodoListSearchDe0() {
 		// given
 		final MemoTodo testData = new MemoTodo();
 		testData(testData);
@@ -164,7 +164,7 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 	 * 주어진 조건에 맞는 메모할일 목록을 불러온다.
 	 */
 	@Test
-	public void selectMemoTodoListSearchCnd0() {
+	public void a01bselectMemoTodoListSearchCnd0() {
 		// given
 		final MemoTodo testData = new MemoTodo();
 		testData(testData);
@@ -192,7 +192,7 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 	 * 주어진 조건에 맞는 메모할일 목록을 불러온다.
 	 */
 	@Test
-	public void selectMemoTodoListSearchCnd1() {
+	public void a01cselectMemoTodoListSearchCnd1() {
 		// given
 		final MemoTodo testData = new MemoTodo();
 		testData(testData);
@@ -282,7 +282,7 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 	 * 주어진 조건에 맞는 메모할일을 불러온다.
 	 */
 	@Test
-	public void selectMemoTodo() {
+	public void a02selectMemoTodo() {
 		// given
 		final MemoTodo testData = new MemoTodo();
 		testData(testData);
@@ -328,7 +328,7 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 	 * 메모할일 정보를 수정한다.
 	 */
 	@Test
-	public void updateMemoTodo() {
+	public void a03updateMemoTodo() {
 		// given
 		final MemoTodo testData = new MemoTodo();
 		testData(testData);
@@ -365,7 +365,7 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 	 * 메모할일 정보를 등록한다.
 	 */
 	@Test
-	public void insertMemoTodo() {
+	public void a04insertMemoTodo() {
 		// given
 		final MemoTodo memoTodo = new MemoTodo();
 
@@ -405,7 +405,7 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 	 * 메모할일 목록에 대한 전체 건수를 조회한다.
 	 */
 	@Test
-	public void selectMemoTodoListCntSearchDe1() {
+	public void a06selectMemoTodoListCntSearchDe1() {
 		// given
 		final MemoTodo testData = new MemoTodo();
 		testData(testData);
@@ -431,7 +431,7 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 	 * 메모할일 목록에 대한 전체 건수를 조회한다.
 	 */
 	@Test
-	public void selectMemoTodoListCntSearchDe0() {
+	public void a06aselectMemoTodoListCntSearchDe0() {
 		// given
 		final MemoTodo testData = new MemoTodo();
 		testData(testData);
@@ -460,7 +460,7 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 	 * 메모할일 목록에 대한 전체 건수를 조회한다.
 	 */
 	@Test
-	public void selectMemoTodoListCntSearchCnd0() {
+	public void a06bselectMemoTodoListCntSearchCnd0() {
 		// given
 		final MemoTodo testData = new MemoTodo();
 		testData(testData);
@@ -488,7 +488,7 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 	 * 메모할일 목록에 대한 전체 건수를 조회한다.
 	 */
 	@Test
-	public void selectMemoTodoListCntSearchCnd1() {
+	public void a06cselectMemoTodoListCntSearchCnd1() {
 		// given
 		final MemoTodo testData = new MemoTodo();
 		testData(testData);
@@ -516,7 +516,7 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 	 * 메모할일 목록 중 오늘의 할일을 조회한다.
 	 */
 	@Test
-	public void selectMemoTodoListToday() {
+	public void a07selectMemoTodoListToday() {
 		// given
 		final MemoTodo testData = new MemoTodo();
 		testData(testData);
