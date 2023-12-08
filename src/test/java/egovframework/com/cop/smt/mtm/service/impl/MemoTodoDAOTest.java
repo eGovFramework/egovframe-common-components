@@ -1,7 +1,6 @@
 package egovframework.com.cop.smt.mtm.service.impl;
 
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDateTime;
 import java.util.Date;
@@ -91,11 +90,6 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 	@Autowired
 	@Qualifier("egovMemoTodoIdGnrService")
 	private EgovIdGnrService egovMemoTodoIdGnrService;
-
-	/**
-	 * Debug Result
-	 */
-	public static final String DEBUG_RESULT = "result={}";
 
 	/**
 	 * Egovdateutil Format
@@ -221,7 +215,8 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 		try {
 			testData.setTodoId(egovMemoTodoIdGnrService.getNextStringId());
 		} catch (FdlException e) {
-			throw new BaseRuntimeException(egovMessageSource.getMessage("fail.common.msg"), e);
+			throw new BaseRuntimeException(
+					"FdlException egovMemoTodoIdGnrService " + egovMessageSource.getMessage(FAIL_COMMON_MSG), e);
 		}
 
 		testData.setTodoNm("test 이백행 할일제목 " + LocalDateTime.now());
@@ -242,18 +237,16 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 		// when
 		final int result = memoTodoDAO.insertMemoTodo(testData);
 
-		if (log.isDebugEnabled()) {
-			log.debug(DEBUG_RESULT, result);
-		}
+		debugResult(result);
 
 		// then
-		assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
+		assertEqualsInsert(result);
 	}
 
 	private void debug(final List<MemoTodoVO> resultList, final MemoTodo testData) {
 		if (log.isDebugEnabled()) {
-			log.debug("resultList={}", resultList);
-			log.debug("size={}", resultList.size());
+			log.debug(DEBUG_RESULT_LIST, resultList);
+			log.debug(DEBUG_SIZE, resultList.size());
 
 			for (final MemoTodoVO result : resultList) {
 				log.debug(DEBUG_RESULT, result);
@@ -269,7 +262,7 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 	}
 
 	private void assertSelectMemoTodoList(final List<MemoTodoVO> resultList, final MemoTodo testData) {
-		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.size() > -1);
+		assertTrueResultListSize(resultList.size());
 		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTodoBeginTime(),
 				resultList.get(0).getTodoBeginTime());
 		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTodoEndTime(),
@@ -291,37 +284,37 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 		memoTodoVO.setTodoId(testData.getTodoId());
 
 		// when
-		final MemoTodoVO resultVO = memoTodoDAO.selectMemoTodo(memoTodoVO);
+		final MemoTodoVO result = memoTodoDAO.selectMemoTodo(memoTodoVO);
 
 		if (log.isDebugEnabled()) {
-			log.debug("resultVO={}", resultVO);
-			log.debug("getTodoId={}, {}", testData.getTodoId(), resultVO.getTodoId());
-			log.debug("getTodoNm={}, {}", testData.getTodoNm(), resultVO.getTodoNm());
-			log.debug("getTodoBeginTime={}, {}", testData.getTodoBeginTime(), resultVO.getTodoBeginTime());
-			log.debug("getTodoEndTime={}, {}", testData.getTodoEndTime(), resultVO.getTodoEndTime());
-			log.debug("getWrterId={}, {}", testData.getWrterId(), resultVO.getWrterId());
-			log.debug("getWrterNm={}", resultVO.getWrterNm());
-			log.debug("getTodoCn={}, {}", testData.getTodoCn(), resultVO.getTodoCn());
-			log.debug("getFrstRegisterPnttm={}", resultVO.getFrstRegisterPnttm());
-			log.debug("getFrstRegisterId={}, {}", testData.getFrstRegisterId(), resultVO.getFrstRegisterId());
-			log.debug("getLastUpdusrPnttm={}", resultVO.getLastUpdusrPnttm());
-			log.debug("getLastUpdusrId={}, {}", testData.getLastUpdusrId(), resultVO.getLastUpdusrId());
+			log.debug(DEBUG_RESULT, result);
+			log.debug("getTodoId={}, {}", testData.getTodoId(), result.getTodoId());
+			log.debug("getTodoNm={}, {}", testData.getTodoNm(), result.getTodoNm());
+			log.debug("getTodoBeginTime={}, {}", testData.getTodoBeginTime(), result.getTodoBeginTime());
+			log.debug("getTodoEndTime={}, {}", testData.getTodoEndTime(), result.getTodoEndTime());
+			log.debug("getWrterId={}, {}", testData.getWrterId(), result.getWrterId());
+			log.debug("getWrterNm={}", result.getWrterNm());
+			log.debug("getTodoCn={}, {}", testData.getTodoCn(), result.getTodoCn());
+			log.debug("getFrstRegisterPnttm={}", result.getFrstRegisterPnttm());
+			log.debug("getFrstRegisterId={}, {}", testData.getFrstRegisterId(), result.getFrstRegisterId());
+			log.debug("getLastUpdusrPnttm={}", result.getLastUpdusrPnttm());
+			log.debug("getLastUpdusrId={}, {}", testData.getLastUpdusrId(), result.getLastUpdusrId());
 		}
 
 		// then
-		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTodoId(), resultVO.getTodoId());
-		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTodoNm(), resultVO.getTodoNm());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTodoId(), result.getTodoId());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTodoNm(), result.getTodoNm());
 		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTodoBeginTime(),
-				resultVO.getTodoBeginTime());
+				result.getTodoBeginTime());
 		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTodoEndTime(),
-				resultVO.getTodoEndTime());
-		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getWrterId(), resultVO.getWrterId());
-		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTodoCn(), resultVO.getTodoCn());
-		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTodoCn(), resultVO.getTodoCn());
+				result.getTodoEndTime());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getWrterId(), result.getWrterId());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTodoCn(), result.getTodoCn());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTodoCn(), result.getTodoCn());
 		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getFrstRegisterId(),
-				resultVO.getFrstRegisterId());
+				result.getFrstRegisterId());
 		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getLastUpdusrId(),
-				resultVO.getLastUpdusrId());
+				result.getLastUpdusrId());
 	}
 
 	/**
@@ -353,12 +346,10 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 		// when
 		final int result = memoTodoDAO.updateMemoTodo(memoTodo);
 
-		if (log.isDebugEnabled()) {
-			log.debug(DEBUG_RESULT, result);
-		}
+		debugResult(result);
 
 		// then
-		assertEquals(egovMessageSource.getMessage("fail.common.update"), 1, result);
+		assertEqualsUpdate(result);
 	}
 
 	/**
@@ -372,7 +363,8 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 		try {
 			memoTodo.setTodoId(egovMemoTodoIdGnrService.getNextStringId());
 		} catch (FdlException e) {
-			throw new BaseRuntimeException(egovMessageSource.getMessage("fail.common.msg"), e);
+			throw new BaseRuntimeException(
+					"FdlException egovMemoTodoIdGnrService " + egovMessageSource.getMessage(FAIL_COMMON_MSG), e);
 		}
 
 		memoTodo.setTodoNm("test 이백행 할일제목 " + LocalDateTime.now());
@@ -393,12 +385,10 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 		// when
 		final int result = memoTodoDAO.insertMemoTodo(memoTodo);
 
-		if (log.isDebugEnabled()) {
-			log.debug(DEBUG_RESULT, result);
-		}
+		debugResult(result);
 
 		// then
-		assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
+		assertEqualsInsert(result);
 	}
 
 	/**
@@ -424,7 +414,7 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 		debugTotCnt(totCnt);
 
 		// then
-		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+		assertTrueTotCnt(totCnt);
 	}
 
 	/**
@@ -453,7 +443,7 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 		debugTotCnt(totCnt);
 
 		// then
-		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+		assertTrueTotCnt(totCnt);
 	}
 
 	/**
@@ -481,7 +471,7 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 		debugTotCnt(totCnt);
 
 		// then
-		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+		assertTrueTotCnt(totCnt);
 	}
 
 	/**
@@ -509,7 +499,7 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 		debugTotCnt(totCnt);
 
 		// then
-		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+		assertTrueTotCnt(totCnt);
 	}
 
 	/**
@@ -533,22 +523,22 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 		final List<MemoTodoVO> resultList = memoTodoDAO.selectMemoTodoListToday(memoTodoVO);
 
 		if (log.isDebugEnabled()) {
-			log.debug("resultList={}", resultList);
-			log.debug("size={}", resultList.size());
+			log.debug(DEBUG_RESULT_LIST, resultList);
+			log.debug(DEBUG_SIZE, resultList.size());
 
-			for (final MemoTodoVO resultVO : resultList) {
-				log.debug("resultVO={}", resultVO);
-				log.debug("getTodoId={}, {}", testData.getTodoId(), resultVO.getTodoId());
-				log.debug("getTodoNm={}, {}", testData.getTodoNm(), resultVO.getTodoNm());
-				log.debug("getTodoBeginTime={}, {}", testData.getTodoBeginTime(), resultVO.getTodoBeginTime());
-				log.debug("getTodoEndTime={}, {}", testData.getTodoEndTime(), resultVO.getTodoEndTime());
-				log.debug("getWrterNm={}", resultVO.getWrterNm());
-				log.debug("getFrstRegisterPnttm={}", resultVO.getFrstRegisterPnttm());
+			for (final MemoTodoVO result : resultList) {
+				log.debug(DEBUG_RESULT, result);
+				log.debug("getTodoId={}, {}", testData.getTodoId(), result.getTodoId());
+				log.debug("getTodoNm={}, {}", testData.getTodoNm(), result.getTodoNm());
+				log.debug("getTodoBeginTime={}, {}", testData.getTodoBeginTime(), result.getTodoBeginTime());
+				log.debug("getTodoEndTime={}, {}", testData.getTodoEndTime(), result.getTodoEndTime());
+				log.debug("getWrterNm={}", result.getWrterNm());
+				log.debug("getFrstRegisterPnttm={}", result.getFrstRegisterPnttm());
 			}
 		}
 
 		// then
-		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.size() > -1);
+		assertTrueResultListSize(resultList.size());
 		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTodoId(),
 				resultList.get(0).getTodoId());
 		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTodoNm(),

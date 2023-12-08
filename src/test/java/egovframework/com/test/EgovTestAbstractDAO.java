@@ -1,5 +1,8 @@
 package egovframework.com.test;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+
 import java.sql.SQLException;
 
 import org.junit.After;
@@ -96,6 +99,41 @@ public class EgovTestAbstractDAO {
 	protected EgovMessageSource egovMessageSource;
 
 	/**
+	 * Debug Result
+	 */
+	public static final String DEBUG_RESULT = "result={}";
+
+	/**
+	 * Debug Result List
+	 */
+	public static final String DEBUG_RESULT_LIST = "resultList={}";
+
+	/**
+	 * Debug Size
+	 */
+	public static final String DEBUG_SIZE = "size={}";
+
+	/**
+	 * fail.common.msg=에러가 발생했습니다!
+	 */
+	protected static final String FAIL_COMMON_MSG = "fail.common.msg";
+
+	/**
+	 * fail.common.insert = 생성이 실패하였습니다.
+	 */
+	protected static final String FAIL_COMMON_INSERT = "fail.common.insert";
+
+	/**
+	 * fail.common.update = 수정이 실패하였습니다.
+	 */
+	protected static final String FAIL_COMMON_UPDATE = "fail.common.update";
+
+	/**
+	 * fail.common.delete = 삭제가 실패하였습니다.
+	 */
+	protected static final String FAIL_COMMON_DELETE = "fail.common.delete";
+
+	/**
 	 * 조회에 실패하였습니다.
 	 */
 	protected static final String FAIL_COMMON_SELECT = "fail.common.select";
@@ -174,6 +212,17 @@ public class EgovTestAbstractDAO {
 	}
 
 	/**
+	 * Debug Result
+	 * 
+	 * @param result
+	 */
+	protected void debugResult(final int result) {
+		if (log.isDebugEnabled()) {
+			log.debug("result={}", result);
+		}
+	}
+
+	/**
 	 * debug totCnt
 	 * 
 	 * @param totCnt
@@ -182,6 +231,51 @@ public class EgovTestAbstractDAO {
 		if (log.isDebugEnabled()) {
 			log.debug("totCnt={}", totCnt);
 		}
+	}
+
+	/**
+	 * assertEquals Insert
+	 * 
+	 * @param result
+	 */
+	protected void assertEqualsInsert(final int result) {
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_INSERT), 1, result);
+	}
+
+	/**
+	 * assertEquals Update
+	 * 
+	 * @param result
+	 */
+	protected void assertEqualsUpdate(final int result) {
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_UPDATE), 1, result);
+	}
+
+	/**
+	 * assertEquals Delete
+	 * 
+	 * @param result
+	 */
+	protected void assertEqualsDelete(final int result) {
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_DELETE), 1, result);
+	}
+
+	/**
+	 * assertTrue TotCnt
+	 * 
+	 * @param totCnt
+	 */
+	protected void assertTrueTotCnt(final int totCnt) {
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+	}
+
+	/**
+	 * assertTrue ResultListSize
+	 * 
+	 * @param resultListSize
+	 */
+	protected void assertTrueResultListSize(final int resultListSize) {
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultListSize > -1);
 	}
 
 }
