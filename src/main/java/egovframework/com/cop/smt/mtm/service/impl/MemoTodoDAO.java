@@ -94,8 +94,8 @@ public class MemoTodoDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoTodo
 	 */
-	public void deleteMemoTodo(MemoTodo memoTodo) throws Exception{
-		delete("MemoTodoDAO.deleteMemoTodo", memoTodo);
+	public int deleteMemoTodo(final MemoTodo memoTodo) {
+		return delete("MemoTodoDAO.deleteMemoTodo", memoTodo);
 	}
 
 	/**

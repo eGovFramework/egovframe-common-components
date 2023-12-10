@@ -392,6 +392,28 @@ public class MemoTodoDAOTest extends EgovTestAbstractDAO {
 	}
 
 	/**
+	 * 메모할일 정보를 삭제한다. 테스트
+	 */
+	@Test
+	public void a05deleteMemoTodo() {
+		// given
+		final MemoTodo testData = new MemoTodo();
+		testData(testData);
+
+		final MemoTodo memoTodo = new MemoTodo();
+
+		memoTodo.setTodoId(testData.getTodoId());
+
+		// when
+		final int result = memoTodoDAO.deleteMemoTodo(memoTodo);
+
+		debugResult(result);
+
+		// then
+		assertEqualsDelete(result);
+	}
+
+	/**
 	 * 메모할일 목록에 대한 전체 건수를 조회한다.
 	 */
 	@Test
