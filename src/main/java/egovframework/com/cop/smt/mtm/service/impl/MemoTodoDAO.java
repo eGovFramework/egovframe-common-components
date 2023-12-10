@@ -36,10 +36,10 @@ public class MemoTodoDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoTodoVO
 	 */	
-	public List<MemoTodoVO> selectMemoTodoList(MemoTodoVO memoTodoVO) throws Exception{
-		List<MemoTodoVO> resultList = selectList("MemoTodoDAO.selectMemoTodoList", memoTodoVO);
+	public List<MemoTodoVO> selectMemoTodoList(final MemoTodoVO memoTodoVO) {
+		final List<MemoTodoVO> resultList = selectList("MemoTodoDAO.selectMemoTodoList", memoTodoVO);
 		for(int i=0; i < resultList.size(); i++){
-			MemoTodoVO resultVO = resultList.get(i);
+			final MemoTodoVO resultVO = resultList.get(i);
 			resultVO.setTodoDe(resultVO.getTodoBeginTime().substring(0,10));
 			resultVO.setTodoBeginHour(resultVO.getTodoBeginTime().substring(10,12));
 			resultVO.setTodoBeginMin(resultVO.getTodoBeginTime().substring(12,14));
@@ -57,8 +57,8 @@ public class MemoTodoDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoTodoVO
 	 */
-	public MemoTodoVO selectMemoTodo(MemoTodoVO memoTodoVO) throws Exception{
-		MemoTodoVO resultVO = (MemoTodoVO)selectOne("MemoTodoDAO.selectMemoTodo", memoTodoVO);
+	public MemoTodoVO selectMemoTodo(final MemoTodoVO memoTodoVO) {
+		final MemoTodoVO resultVO = selectOne("MemoTodoDAO.selectMemoTodo", memoTodoVO);
 		resultVO.setTodoDe(resultVO.getTodoBeginTime().substring(0,10));
 		resultVO.setTodoBeginHour(resultVO.getTodoBeginTime().substring(10,12));
 		resultVO.setTodoBeginMin(resultVO.getTodoBeginTime().substring(12,14));
@@ -74,8 +74,8 @@ public class MemoTodoDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoTodo
 	 */
-	public void updateMemoTodo(MemoTodo memoTodo) throws Exception{
-		update("MemoTodoDAO.updateMemoTodo", memoTodo);
+	public int updateMemoTodo(final MemoTodo memoTodo) {
+		return update("MemoTodoDAO.updateMemoTodo", memoTodo);
 	}
 
 	/**
@@ -84,8 +84,8 @@ public class MemoTodoDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoTodo
 	 */
-	public void insertMemoTodo(MemoTodo memoTodo) throws Exception{
-		insert("MemoTodoDAO.insertMemoTodo", memoTodo);
+	public int insertMemoTodo(final MemoTodo memoTodo) {
+		return insert("MemoTodoDAO.insertMemoTodo", memoTodo);
 	}
 
 	/**
@@ -94,8 +94,8 @@ public class MemoTodoDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoTodo
 	 */
-	public void deleteMemoTodo(MemoTodo memoTodo) throws Exception{
-		delete("MemoTodoDAO.deleteMemoTodo", memoTodo);
+	public int deleteMemoTodo(final MemoTodo memoTodo) {
+		return delete("MemoTodoDAO.deleteMemoTodo", memoTodo);
 	}
 
 	/**
@@ -105,8 +105,8 @@ public class MemoTodoDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoTodoVO
 	 */
-	public int selectMemoTodoListCnt(MemoTodoVO memoTodoVO) throws Exception{
-		return (Integer)selectOne("MemoTodoDAO.selectMemoTodoListCnt", memoTodoVO);
+	public int selectMemoTodoListCnt(final MemoTodoVO memoTodoVO) {
+		return selectOne("MemoTodoDAO.selectMemoTodoListCnt", memoTodoVO);
 	}
 	
 	/**
@@ -116,10 +116,10 @@ public class MemoTodoDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoTodoVO
 	 */
-	public List<MemoTodoVO> selectMemoTodoListToday(MemoTodoVO memoTodoVO) throws Exception{
-		List<MemoTodoVO> resultList = selectList("MemoTodoDAO.selectMemoTodoListToday", memoTodoVO);
+	public List<MemoTodoVO> selectMemoTodoListToday(final MemoTodoVO memoTodoVO) {
+		final List<MemoTodoVO> resultList = selectList("MemoTodoDAO.selectMemoTodoListToday", memoTodoVO);
 		for(int i=0; i < resultList.size(); i++){
-			MemoTodoVO resultVO = resultList.get(i);
+			final MemoTodoVO resultVO = resultList.get(i);
 			resultVO.setTodoDe(resultVO.getTodoBeginTime().substring(0,10));
 			resultVO.setTodoBeginHour(resultVO.getTodoBeginTime().substring(10,12));
 			resultVO.setTodoBeginMin(resultVO.getTodoBeginTime().substring(12,14));
