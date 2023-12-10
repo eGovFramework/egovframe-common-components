@@ -11,8 +11,8 @@ public class BlogTest_JavaParser {
 
 	@Test
 	public void test() throws Exception {
-		CompilationUnit cu = StaticJavaParser.parse(Paths.get(
-				"C:\\EGOVFRAME-3.10.0\\git\\egovframe-common-components\\src\\main\\java\\egovframework\\com\\cop\\bbs\\service\\Blog.java"));
+		CompilationUnit cu = StaticJavaParser
+				.parse(Paths.get("src/main/java/egovframework/com/cop/bbs/service/Blog.java"));
 
 		StringBuffer sb = new StringBuffer();
 

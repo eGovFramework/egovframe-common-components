@@ -41,7 +41,7 @@ public class EgovArticleServiceImplTest_AAA_JavaParser {
 						log.debug("methodName={}", methodName);
 
 						sb.append(primaryTypeName);
-						sb.append("Test_");
+						sb.append("Test.");
 						sb.append(methodName);
 						sb.append("\n");
 

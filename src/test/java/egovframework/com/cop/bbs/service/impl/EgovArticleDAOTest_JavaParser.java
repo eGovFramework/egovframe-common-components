@@ -17,8 +17,7 @@ public class EgovArticleDAOTest_JavaParser {
 
 	@Test
 	public void test() throws FileNotFoundException {
-		File file = new File(
-				"C:\\EGOVFRAME-3.10.0\\git\\egovframe-common-components\\src\\main\\java\\egovframework\\com\\cop\\bbs\\service\\impl\\EgovArticleDAO.java");
+		File file = new File("src/main/java/egovframework/com/cop/bbs/service/impl/EgovArticleDAO.java");
 
 		CompilationUnit compilationUnit = StaticJavaParser.parse(file);
 
@@ -44,7 +43,7 @@ public class EgovArticleDAOTest_JavaParser {
 //			log.debug("getDescription={}", method.getJavadoc().get().getDescription().toText());
 
 			sb.append(classEgovArticleDAO.get().getNameAsString());
-			sb.append("Test_");
+			sb.append("Test.");
 			sb.append(method.getNameAsString());
 			sb.append("\n");
 		});
