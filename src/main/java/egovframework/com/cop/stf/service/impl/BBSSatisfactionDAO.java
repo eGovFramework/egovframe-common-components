@@ -53,10 +53,9 @@ public class BBSSatisfactionDAO extends EgovComAbstractDAO {
      * 만족도조사를 등록한다.
      * 
      * @param satisfaction
-     * @throws Exception
      */
-    public void insertSatisfaction(Satisfaction satisfaction) throws Exception {	
-	insert("BBSSatisfactionDAO.insertSatisfaction", satisfaction);
+    public int insertSatisfaction(final Satisfaction satisfaction) {
+        return insert("BBSSatisfactionDAO.insertSatisfaction", satisfaction);
     }
     
     /**
