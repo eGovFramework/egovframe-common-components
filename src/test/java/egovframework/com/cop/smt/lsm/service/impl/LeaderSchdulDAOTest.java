@@ -2,7 +2,9 @@ package egovframework.com.cop.smt.lsm.service.impl;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+
 import java.util.List;
+
 import org.apache.commons.lang3.StringUtils;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.junit.Before;
@@ -15,6 +17,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.ImportResource;
 import org.springframework.test.context.ContextConfiguration;
+
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.smt.lsm.service.EmplyrVO;
@@ -39,7 +42,7 @@ import lombok.extern.slf4j.Slf4j;
 @ComponentScan(
         useDefaultFilters = false,
         basePackages = {
-                "egovframework.com.cop.smt.lsm.service.impl;"
+                "egovframework.com.cop.smt.lsm.service.impl"
         },
         includeFilters = {
                 @Filter(
@@ -96,66 +99,66 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
      * @return
      */
     private LeaderSchdulVO makeLeaderSchedule(final String scheduleId, final String scheduleSep, final String scheduleName, final String scheduleCont, final String SchedulePlace, final String repetSepCode, final String beginYYYYMMDDHHMM, final String endYYYYMMDDHHMM) {
-        /*
+        /**
          * 테스트 간부 정보를 가져옴
          */
         testUserVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
         final LeaderSchdulVO leaderScheduleVO = new LeaderSchdulVO();
 
-        /*
+        /**
          * 일정ID
          */
         leaderScheduleVO.setSchdulId(scheduleId);
-        /*
+        /**
          * 일정구분
          */
         leaderScheduleVO.setSchdulSe(scheduleSep);
-        /*
+        /**
          * 일정명
          */
         leaderScheduleVO.setSchdulNm(scheduleName);
-        /*
+        /**
          * 일정내용
          */
         leaderScheduleVO.setSchdulCn(scheduleCont);
-        /*
+        /**
          * 일정장소
          */
         leaderScheduleVO.setSchdulPlace(SchedulePlace);
-        /*
+        /**
          * 간부ID
          * 테스트1, USRCNFRM_00000000000
          */
         leaderScheduleVO.setLeaderId(testUserVO.getUniqId());
-        /*
+        /**
          * 반복구분코드
          */
         leaderScheduleVO.setReptitSeCode(repetSepCode);
-        /*
+        /**
          * 일정시작일자
          */
         leaderScheduleVO.setSchdulBgnDe(beginYYYYMMDDHHMM);
-        /*
+        /**
          * 일정종료일자
          */
         leaderScheduleVO.setSchdulEndDe(endYYYYMMDDHHMM);
-        /*
+        /**
          * 일정일자
          */
         if(StringUtils.isNotBlank(beginYYYYMMDDHHMM) && beginYYYYMMDDHHMM.length()>=8) {
             leaderScheduleVO.setSchdulDe(beginYYYYMMDDHHMM.substring(0, 8));
         }
-        /*
+        /**
          * 일정담당자ID
          * 테스트1, USRCNFRM_00000000000
          */
         leaderScheduleVO.setSchdulChargerId(testUserVO.getUniqId());
-        /*
+        /**
          * 최초등록자ID
          */
         leaderScheduleVO.setFrstRegisterId(testUserVO.getUniqId());
-        /*
+        /**
          * 최종수정자ID
          */
         leaderScheduleVO.setLastUpdusrId(testUserVO.getUniqId());
@@ -171,20 +174,20 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
      */
     private LeaderSttus makeLeaderSttus(final String leaderId, final String leaderSttus) {
         final LeaderSttus leaderSttusVO = new LeaderSttus();
-        /*
+        /**
          * 간부ID
          */
         leaderSttusVO.setLeaderId(leaderId);
-        /*
+        /**
          * 간부상태
          * 1(재실), 2(자리비움), 3(회의중), 4(출장중), 5(휴가중)
          */
         leaderSttusVO.setLeaderSttus(leaderSttus);
-        /*
+        /**
          * 최초등록자ID
          */
         leaderSttusVO.setFrstRegisterId(leaderId);
-        /*
+        /**
          * 최종수정자ID
          */
         leaderSttusVO.setFrstRegisterId(leaderId);
@@ -197,7 +200,7 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
      */
     @Before
     public void testData() {
-        /*
+        /**
          * 테스트 간부일정 정보 생성
          */
         testLeaderScheduleVO = makeLeaderSchedule("LDSCHDUL_99999999001",
@@ -210,18 +213,18 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
                 "202311011030"
                 );
 
-        /*
+        /**
          * 간부일정 등록
          *
          */
         leaderSchdulDAO.insertLeaderSchdul(testLeaderScheduleVO);
 
-        /*
+        /**
          * 간부일정 일자 정보 등록
          */
         leaderSchdulDAO.insertLeaderSchdulDe(testLeaderScheduleVO);
 
-        /*
+        /**
          * 간부상태 정보 등록
          */
         testLeaderSttus = makeLeaderSttus(testUserVO.getUniqId(), "1");
@@ -241,7 +244,7 @@ public class LeaderSchdulDAOTest extends EgovTestAbstractDAO {
         emplyrVO.setSearchCnd("1");
         emplyrVO.setSearchWrd("테스트1");
 
-        /*
+        /**
          * 로그인 사용자 정보
          * ESNTL_ID(고유ID)         EMPLYR_ID    USER_NM
          * USRCNFRM_00000000000    TEST1        테스트1
