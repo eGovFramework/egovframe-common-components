@@ -24,9 +24,11 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStreamReader;
 import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FilenameUtils;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.service.EgovProperties;
@@ -195,14 +197,19 @@ public class EgovFileScrty {
      * @return
      * @throws Exception
      */
-    public static String encryptPassword(String password, String id) throws Exception {
+    public static String encryptPassword(String password, String id) {
 
 		if (password == null) return "";
 		if (id == null) return ""; // KISA 보안약점 조치 (2018-12-11, 신용호)
 		
 		byte[] hashValue = null; // 해쉬값
 	
-		MessageDigest md = MessageDigest.getInstance("SHA-256");
+		MessageDigest md;
+		try {
+			md = MessageDigest.getInstance("SHA-256");
+		} catch (NoSuchAlgorithmException e) {
+			throw new BaseRuntimeException("NoSuchAlgorithmException getInstance 에러가 발생했습니다!", e);
+		}
 		
 		md.reset();
 		md.update(id.getBytes());

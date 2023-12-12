@@ -15,12 +15,12 @@ import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.FilterType;
 import org.springframework.context.annotation.ImportResource;
-import org.springframework.test.annotation.Commit;
 import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.bbs.service.Satisfaction;
+import egovframework.com.cop.bbs.service.SatisfactionVO;
 import egovframework.com.test.EgovTestAbstractDAO;
 import egovframework.com.utl.sim.service.EgovFileScrty;
 import lombok.NoArgsConstructor;
@@ -93,7 +93,6 @@ public class BBSSatisfactionDAOTest extends EgovTestAbstractDAO {
 	 * 만족도조사를 등록한다. 테스트
 	 */
 	@Test
-	@Commit
 	public void a03insertSatisfaction() {
 		// given
 		final Satisfaction satisfaction = new Satisfaction();
@@ -112,12 +111,8 @@ public class BBSSatisfactionDAOTest extends EgovTestAbstractDAO {
 			satisfaction.setFrstRegisterId(loginVO.getUniqId());
 		}
 
-		try {
-			satisfaction.setStsfdgPassword(EgovFileScrty.encryptPassword("rhdxhd12", satisfaction.getStsfdgNo()));
-		} catch (Exception e) {
-			throw new BaseRuntimeException(
-					"Exception encryptPassword " + egovMessageSource.getMessage("fail.common.msg"), e);
-		}
+		satisfaction.setStsfdgPassword(EgovFileScrty.encryptPassword("rhdxhd12", satisfaction.getStsfdgNo()));
+
 		satisfaction.setStsfdg(9);
 		satisfaction.setStsfdgCn("test 이백행 만족도내용 " + LocalDateTime.now());
 		satisfaction.setUseAt("Y");
@@ -131,6 +126,79 @@ public class BBSSatisfactionDAOTest extends EgovTestAbstractDAO {
 
 		// then
 		assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
+	}
+
+	private void testData(final Satisfaction testData) {
+		// given
+		try {
+			testData.setStsfdgNo(String.valueOf(egovStsfdgNoGnrService.getNextLongId()));
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(
+					"FdlException egovStsfdgNoGnrService " + egovMessageSource.getMessage("fail.common.msg"), e);
+		}
+
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO != null) {
+			testData.setWrterId(loginVO.getUniqId());
+			testData.setWrterNm(loginVO.getName());
+			testData.setFrstRegisterId(loginVO.getUniqId());
+		}
+
+		testData.setStsfdgPassword(EgovFileScrty.encryptPassword("rhdxhd12", testData.getStsfdgNo()));
+
+		testData.setStsfdg(9);
+		testData.setStsfdgCn("test 이백행 만족도내용 " + LocalDateTime.now());
+		testData.setUseAt("Y");
+
+		// when
+		final int result = bbsSatisfactionDAO.insertSatisfaction(testData);
+
+		if (log.isDebugEnabled()) {
+			log.debug("result={}", result);
+		}
+
+		// then
+		assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
+	}
+
+	/**
+	 * 만족도조사에 대한 내용을 조회한다. 테스트
+	 */
+	@Test
+	public void a05selectSatisfaction() {
+		// given
+		final Satisfaction testData = new Satisfaction();
+		testData(testData);
+
+		final SatisfactionVO satisfactionVO = new SatisfactionVO();
+
+		satisfactionVO.setStsfdgNo(testData.getStsfdgNo());
+
+		// when
+		final Satisfaction result = bbsSatisfactionDAO.selectSatisfaction(satisfactionVO);
+
+		if (log.isDebugEnabled()) {
+			log.debug("result={}", result);
+			log.debug("getStsfdgNo={}, {}", testData.getStsfdgNo(), result.getStsfdgNo());
+			log.debug("getWrterId={}, {}", testData.getWrterId(), result.getWrterId());
+			log.debug("getWrterNm={}, {}", testData.getWrterNm(), result.getWrterNm());
+			log.debug("getStsfdgPassword={}, {}", testData.getStsfdgPassword(), result.getStsfdgPassword());
+			log.debug("getStsfdgCn={}, {}", testData.getStsfdgCn(), result.getStsfdgCn());
+			log.debug("getStsfdg={}, {}", testData.getStsfdg(), result.getStsfdg());
+			log.debug("getUseAt={}, {}", testData.getUseAt(), result.getUseAt());
+			log.debug("getFrstRegisterPnttm={}, {}", testData.getFrstRegisterPnttm(), result.getFrstRegisterPnttm());
+			log.debug("getFrstRegisterNm={}, {}", testData.getFrstRegisterNm(), result.getFrstRegisterNm());
+		}
+
+		// then
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getStsfdgNo(), result.getStsfdgNo());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getWrterId(), result.getWrterId());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getWrterNm(), result.getWrterNm());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getStsfdgPassword(),
+				result.getStsfdgPassword());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getStsfdgCn(), result.getStsfdgCn());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getStsfdg(), result.getStsfdg());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getUseAt(), result.getUseAt());
 	}
 
 }
