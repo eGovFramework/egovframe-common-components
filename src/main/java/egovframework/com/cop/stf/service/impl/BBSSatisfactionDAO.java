@@ -32,10 +32,9 @@ public class BBSSatisfactionDAO extends EgovComAbstractDAO {
      * 
      * @param satisfactionVO
      * @return
-     * @throws Exception
      */
-    public List<SatisfactionVO> selectSatisfactionList(SatisfactionVO satisfactionVO) throws Exception {
-	return selectList("BBSSatisfactionDAO.selectSatisfactionList", satisfactionVO);
+    public List<SatisfactionVO> selectSatisfactionList(final SatisfactionVO satisfactionVO) {
+        return selectList("BBSSatisfactionDAO.selectSatisfactionList", satisfactionVO);
     }
     
     /**

@@ -1,15 +1,19 @@
 package egovframework.com.cop.stf.service.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDateTime;
+import java.util.Date;
+import java.util.List;
+
+import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.fdl.string.EgovDateUtil;
 import org.junit.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.ComponentScan.Filter;
 import org.springframework.context.annotation.Configuration;
@@ -79,15 +83,74 @@ public class BBSSatisfactionDAOTest extends EgovTestAbstractDAO {
 	/**
 	 * 만족도조사를 위한 데이터 접근 클래스
 	 */
-	@Autowired
+	@Resource
 	private BBSSatisfactionDAO bbsSatisfactionDAO;
 
 	/**
 	 * 만족도 ID
 	 */
-	@Autowired
-	@Qualifier("egovStsfdgNoGnrService")
+	@Resource(name = "egovStsfdgNoGnrService")
 	private EgovIdGnrService egovStsfdgNoGnrService;
+
+	/**
+	 * 만족도조사에 대한 목록을 조회 한다. 테스트
+	 */
+	@Test
+	public void a01selectSatisfactionList() {
+		// given
+		final Satisfaction testData = new Satisfaction();
+		testData(testData);
+
+		final SatisfactionVO satisfactionVO = new SatisfactionVO();
+
+		satisfactionVO.setBbsId("");
+		satisfactionVO.setNttId(testData.getNttId());
+		satisfactionVO.setSubFirstIndex(0);
+		satisfactionVO.setSubRecordCountPerPage(10);
+
+		// when
+		final List<SatisfactionVO> resultList = bbsSatisfactionDAO.selectSatisfactionList(satisfactionVO);
+		final int resultListSize = resultList.size();
+		final int resultListSize2 = resultList.size() - 1;
+
+		if (log.isDebugEnabled()) {
+			log.debug("resultList={}", resultList);
+			log.debug("resultListSize={}", resultListSize);
+			for (final SatisfactionVO result : resultList) {
+				log.debug("getStsfdgNo={}, {}", testData.getStsfdgNo(), result.getStsfdgNo());
+				log.debug("getNttId={}, {}", testData.getNttId(), result.getNttId());
+				log.debug("getWrterId={}, {}", testData.getWrterId(), result.getWrterId());
+				log.debug("getWrterNm={}, {}", testData.getWrterNm(), result.getWrterNm());
+				log.debug("getStsfdgPassword={}, {}", testData.getStsfdgPassword(), result.getStsfdgPassword());
+				log.debug("getStsfdgCn={}, {}", testData.getStsfdgCn(), result.getStsfdgCn());
+				log.debug("getStsfdg={}, {}", testData.getStsfdg(), result.getStsfdg());
+				log.debug("getUseAt={}, {}", testData.getUseAt(), result.getUseAt());
+				log.debug("getFrstRegisterPnttm={}, {}", testData.getFrstRegisterPnttm(),
+						result.getFrstRegisterPnttm());
+				log.debug("getFrstRegisterNm={}, {}", testData.getFrstRegisterNm(), result.getFrstRegisterNm());
+				log.debug("");
+			}
+		}
+
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultListSize > -1);
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getStsfdgNo(),
+				resultList.get(resultListSize2).getStsfdgNo());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getNttId(),
+				resultList.get(resultListSize2).getNttId());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getWrterId(),
+				resultList.get(resultListSize2).getWrterId());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getWrterNm(),
+				resultList.get(resultListSize2).getWrterNm());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getStsfdgPassword(),
+				resultList.get(resultListSize2).getStsfdgPassword());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getStsfdgCn(),
+				resultList.get(resultListSize2).getStsfdgCn());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getStsfdg(),
+				resultList.get(resultListSize2).getStsfdg());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getUseAt(),
+				resultList.get(resultListSize2).getUseAt());
+	}
 
 	/**
 	 * 만족도조사를 등록한다. 테스트
@@ -136,6 +199,8 @@ public class BBSSatisfactionDAOTest extends EgovTestAbstractDAO {
 			throw new BaseRuntimeException(
 					"FdlException egovStsfdgNoGnrService " + egovMessageSource.getMessage("fail.common.msg"), e);
 		}
+
+		testData.setNttId(Long.valueOf(EgovDateUtil.toString(new Date(), "yyyyMMddHHmmss", null)));
 
 		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		if (loginVO != null) {
