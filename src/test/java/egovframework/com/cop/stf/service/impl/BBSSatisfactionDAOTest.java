@@ -153,6 +153,31 @@ public class BBSSatisfactionDAOTest extends EgovTestAbstractDAO {
 	}
 
 	/**
+	 * 만족도조사에 대한 목록 건수를 조회 한다. 테스트
+	 */
+	@Test
+	public void a02selectSatisfactionListCnt() {
+		// given
+		final Satisfaction testData = new Satisfaction();
+		testData(testData);
+
+		final SatisfactionVO satisfactionVO = new SatisfactionVO();
+
+		satisfactionVO.setBbsId("");
+		satisfactionVO.setNttId(testData.getNttId());
+
+		// when
+		final int totCnt = bbsSatisfactionDAO.selectSatisfactionListCnt(satisfactionVO);
+
+		if (log.isDebugEnabled()) {
+			log.debug("totCnt={}", totCnt);
+		}
+
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+	}
+
+	/**
 	 * 만족도조사를 등록한다. 테스트
 	 */
 	@Test
