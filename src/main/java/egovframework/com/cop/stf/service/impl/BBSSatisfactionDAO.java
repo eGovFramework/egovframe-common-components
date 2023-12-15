@@ -91,10 +91,9 @@ public class BBSSatisfactionDAO extends EgovComAbstractDAO {
      * 
      * @param satisfaction
      * @return
-     * @throws Exception
      */
-    public String getSatisfactionPassword(Satisfaction satisfaction) throws Exception {
-	return (String)selectOne("BBSSatisfactionDAO.getSatisfactionPassword", satisfaction);
+    public String getSatisfactionPassword(final Satisfaction satisfaction) {
+        return selectOne("BBSSatisfactionDAO.getSatisfactionPassword", satisfaction);
     }
     
     /**

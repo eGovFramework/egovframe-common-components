@@ -291,4 +291,28 @@ public class BBSSatisfactionDAOTest extends EgovTestAbstractDAO {
 		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getUseAt(), result.getUseAt());
 	}
 
+	/**
+	 * 만족도조사에 대한 패스워드를 조회 한다. 테스트
+	 */
+	@Test
+	public void a07getSatisfactionPassword() {
+		// given
+		final Satisfaction testData = new Satisfaction();
+		testData(testData);
+
+		final Satisfaction satisfaction = new Satisfaction();
+
+		satisfaction.setStsfdgNo(testData.getStsfdgNo());
+
+		// when
+		final String result = bbsSatisfactionDAO.getSatisfactionPassword(satisfaction);
+
+		if (log.isDebugEnabled()) {
+			log.debug("result={}, {}", testData.getStsfdgPassword(), result);
+		}
+
+		// then
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getStsfdgPassword(), result);
+	}
+
 }
