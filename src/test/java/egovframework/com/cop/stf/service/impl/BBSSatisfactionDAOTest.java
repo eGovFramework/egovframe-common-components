@@ -93,6 +93,11 @@ public class BBSSatisfactionDAOTest extends EgovTestAbstractDAO {
 	private EgovIdGnrService egovStsfdgNoGnrService;
 
 	/**
+	 * Debug Result
+	 */
+	public static final String DEBUG_RESULT = "result={}";
+
+	/**
 	 * 만족도조사에 대한 목록을 조회 한다. 테스트
 	 */
 	@Test
@@ -209,7 +214,7 @@ public class BBSSatisfactionDAOTest extends EgovTestAbstractDAO {
 		final int result = bbsSatisfactionDAO.insertSatisfaction(satisfaction);
 
 		if (log.isDebugEnabled()) {
-			log.debug("result={}", result);
+			log.debug(DEBUG_RESULT, result);
 		}
 
 		// then
@@ -244,7 +249,7 @@ public class BBSSatisfactionDAOTest extends EgovTestAbstractDAO {
 		final int result = bbsSatisfactionDAO.insertSatisfaction(testData);
 
 		if (log.isDebugEnabled()) {
-			log.debug("result={}", result);
+			log.debug(DEBUG_RESULT, result);
 		}
 
 		// then
@@ -268,7 +273,7 @@ public class BBSSatisfactionDAOTest extends EgovTestAbstractDAO {
 		final Satisfaction result = bbsSatisfactionDAO.selectSatisfaction(satisfactionVO);
 
 		if (log.isDebugEnabled()) {
-			log.debug("result={}", result);
+			log.debug(DEBUG_RESULT, result);
 			log.debug("getStsfdgNo={}, {}", testData.getStsfdgNo(), result.getStsfdgNo());
 			log.debug("getWrterId={}, {}", testData.getWrterId(), result.getWrterId());
 			log.debug("getWrterNm={}, {}", testData.getWrterNm(), result.getWrterNm());
@@ -313,6 +318,30 @@ public class BBSSatisfactionDAOTest extends EgovTestAbstractDAO {
 
 		// then
 		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getStsfdgPassword(), result);
+	}
+
+	/**
+	 * 만족도 전체 점수를 제공한다. 테스트
+	 */
+	@Test
+	public void a08getSummary() {
+		// given
+		final Satisfaction testData = new Satisfaction();
+		testData(testData);
+
+		final SatisfactionVO satisfactionVO = new SatisfactionVO();
+
+		satisfactionVO.setStsfdgNo(testData.getStsfdgNo());
+
+		// when
+		final Float result = bbsSatisfactionDAO.getSummary(satisfactionVO);
+
+		if (log.isDebugEnabled()) {
+			log.debug(DEBUG_RESULT, result);
+		}
+
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), result > -1);
 	}
 
 }

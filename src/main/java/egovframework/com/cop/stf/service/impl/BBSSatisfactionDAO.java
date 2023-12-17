@@ -101,9 +101,8 @@ public class BBSSatisfactionDAO extends EgovComAbstractDAO {
      * 
      * @param satisfactionVO
      * @return
-     * @throws Exception
      */
-    public Float getSummary(SatisfactionVO satisfactionVO) throws Exception {
-	return (Float)selectOne("BBSSatisfactionDAO.getSummary", satisfactionVO);
+    public Float getSummary(final SatisfactionVO satisfactionVO) {
+        return selectOne("BBSSatisfactionDAO.getSummary", satisfactionVO);
     }
 }
