@@ -297,6 +297,41 @@ public class BBSSatisfactionDAOTest extends EgovTestAbstractDAO {
 	}
 
 	/**
+	 * 만족도조사에 대한 내용을 수정한다. 테스트
+	 */
+	@Test
+	public void a06updateSatisfaction() {
+		// given
+		final Satisfaction testData = new Satisfaction();
+		testData(testData);
+
+		final Satisfaction satisfaction = new Satisfaction();
+
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO != null) {
+			satisfaction.setWrterNm(loginVO.getName());
+			satisfaction.setLastUpdusrId(loginVO.getUniqId());
+		}
+
+		satisfaction.setStsfdgPassword(EgovFileScrty.encryptPassword("rhdxhd12#", satisfaction.getStsfdgNo()));
+
+		satisfaction.setStsfdgCn("test 이백행 만족도내용 수정 " + LocalDateTime.now());
+		satisfaction.setStsfdg(7);
+
+		satisfaction.setStsfdgNo(testData.getStsfdgNo());
+
+		// when
+		final int result = bbsSatisfactionDAO.updateSatisfaction(satisfaction);
+
+		if (log.isDebugEnabled()) {
+			log.debug(DEBUG_RESULT, result);
+		}
+
+		// then
+		assertEquals(egovMessageSource.getMessage("fail.common.update"), 1, result);
+	}
+
+	/**
 	 * 만족도조사에 대한 패스워드를 조회 한다. 테스트
 	 */
 	@Test
