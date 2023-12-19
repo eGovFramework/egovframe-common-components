@@ -15,7 +15,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 
-import egovframework.com.cop.stf.service.impl.BBSSatisfactionDAO;
+import egovframework.com.cop.tpl.service.impl.TemplateManageDAO;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -37,7 +37,8 @@ public class EgovTestJavaParser {
 	 */
 	@Test
 	public void test() {
-		final Class<?> clazz = BBSSatisfactionDAO.class;
+//		final Class<?> clazz = BBSSatisfactionDAO.class;
+		final Class<?> clazz = TemplateManageDAO.class;
 
 		if (log.isDebugEnabled()) {
 			log.debug("getName={}", clazz.getName());
@@ -86,8 +87,11 @@ public class EgovTestJavaParser {
 //			log.debug("getDescription={}", method.getJavadoc().get().getDescription().toText());
 
 			buffer.append(classOrInterfaceDeclaration.get().getNameAsString());
-			buffer.append("Test.");
+//			buffer.append("Test.");
+			buffer.append('.');
 			buffer.append(method.getNameAsString());
+			buffer.append(' ');
+			buffer.append(method.getJavadoc().get().getDescription().toText());
 			buffer.append('\n');
 		});
 
@@ -102,9 +106,10 @@ public class EgovTestJavaParser {
 		int index = 1;
 
 		for (final MethodDeclaration method : methods) {
-			buffer.append('a');
+			buffer.append("- a");
 			buffer.append(String.format("%02d", index));
 			buffer.append(method.getNameAsString());
+			buffer.append(" 테스트 메서드 추가");
 			buffer.append('\n');
 
 			index++;
