@@ -32,10 +32,9 @@ public class BBSSatisfactionDAO extends EgovComAbstractDAO {
      * 
      * @param satisfactionVO
      * @return
-     * @throws Exception
      */
-    public List<SatisfactionVO> selectSatisfactionList(SatisfactionVO satisfactionVO) throws Exception {
-	return selectList("BBSSatisfactionDAO.selectSatisfactionList", satisfactionVO);
+    public List<SatisfactionVO> selectSatisfactionList(final SatisfactionVO satisfactionVO) {
+        return selectList("BBSSatisfactionDAO.selectSatisfactionList", satisfactionVO);
     }
     
     /**
@@ -43,30 +42,27 @@ public class BBSSatisfactionDAO extends EgovComAbstractDAO {
      * 
      * @param satisfactionVO
      * @return
-     * @throws Exception
      */
-    public int selectSatisfactionListCnt(SatisfactionVO satisfactionVO) throws Exception {
-	return (Integer)selectOne("BBSSatisfactionDAO.selectSatisfactionListCnt", satisfactionVO);
+    public int selectSatisfactionListCnt(final SatisfactionVO satisfactionVO) {
+        return selectOne("BBSSatisfactionDAO.selectSatisfactionListCnt", satisfactionVO);
     }
     
     /**
      * 만족도조사를 등록한다.
      * 
      * @param satisfaction
-     * @throws Exception
      */
-    public void insertSatisfaction(Satisfaction satisfaction) throws Exception {	
-	insert("BBSSatisfactionDAO.insertSatisfaction", satisfaction);
+    public int insertSatisfaction(final Satisfaction satisfaction) {
+        return insert("BBSSatisfactionDAO.insertSatisfaction", satisfaction);
     }
     
     /**
      * 만족도조사를 삭제한다.
      * 
      * @param satisfactionVO
-     * @throws Exception
      */
-    public void deleteSatisfaction(SatisfactionVO satisfactionVO) throws Exception {
-	update("BBSSatisfactionDAO.deleteSatisfaction", satisfactionVO);
+    public int deleteSatisfaction(final SatisfactionVO satisfactionVO) {
+        return update("BBSSatisfactionDAO.deleteSatisfaction", satisfactionVO);
     }
     
     /**
@@ -74,20 +70,18 @@ public class BBSSatisfactionDAO extends EgovComAbstractDAO {
      * 
      * @param satisfactionVO
      * @return
-     * @throws Exception
      */
-    public Satisfaction selectSatisfaction(SatisfactionVO satisfactionVO) throws Exception {
-	return (Satisfaction)selectOne("BBSSatisfactionDAO.selectSatisfaction", satisfactionVO);
+    public Satisfaction selectSatisfaction(final SatisfactionVO satisfactionVO) {
+        return selectOne("BBSSatisfactionDAO.selectSatisfaction", satisfactionVO);
     }
     
     /**
      * 만족도조사에 대한 내용을 수정한다.
      * 
      * @param satisfaction
-     * @throws Exception
      */
-    public void updateSatisfaction(Satisfaction satisfaction) throws Exception {	
-	insert("BBSSatisfactionDAO.updateSatisfaction", satisfaction);
+    public int updateSatisfaction(final Satisfaction satisfaction) {	
+        return update("BBSSatisfactionDAO.updateSatisfaction", satisfaction);
     }
     
     /**
@@ -95,10 +89,9 @@ public class BBSSatisfactionDAO extends EgovComAbstractDAO {
      * 
      * @param satisfaction
      * @return
-     * @throws Exception
      */
-    public String getSatisfactionPassword(Satisfaction satisfaction) throws Exception {
-	return (String)selectOne("BBSSatisfactionDAO.getSatisfactionPassword", satisfaction);
+    public String getSatisfactionPassword(final Satisfaction satisfaction) {
+        return selectOne("BBSSatisfactionDAO.getSatisfactionPassword", satisfaction);
     }
     
     /**
@@ -106,9 +99,8 @@ public class BBSSatisfactionDAO extends EgovComAbstractDAO {
      * 
      * @param satisfactionVO
      * @return
-     * @throws Exception
      */
-    public Float getSummary(SatisfactionVO satisfactionVO) throws Exception {
-	return (Float)selectOne("BBSSatisfactionDAO.getSummary", satisfactionVO);
+    public Float getSummary(final SatisfactionVO satisfactionVO) {
+        return selectOne("BBSSatisfactionDAO.getSummary", satisfactionVO);
     }
 }

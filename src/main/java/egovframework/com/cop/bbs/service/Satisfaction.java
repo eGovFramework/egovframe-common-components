@@ -69,6 +69,7 @@ public class Satisfaction implements Serializable {
 
     /**
      * stsfdgNo attribute를 리턴한다.
+     * <p>`STSFDG_NO` decimal(20,0) NOT NULL COMMENT '만족도번호',</p>
      * @return the stsfdgNo
      */
     public String getStsfdgNo() {
@@ -77,6 +78,7 @@ public class Satisfaction implements Serializable {
 
     /**
      * stsfdgNo attribute 값을 설정한다.
+     * <p>`STSFDG_NO` decimal(20,0) NOT NULL COMMENT '만족도번호',</p>
      * @param stsfdgNo the stsfdgNo to set
      */
     public void setStsfdgNo(String stsfdgNo) {
@@ -213,6 +215,7 @@ public class Satisfaction implements Serializable {
 
     /**
      * frstRegisterId attribute를 리턴한다.
+     * <p>`FRST_REGISTER_ID` varchar(20) NOT NULL COMMENT '최초등록자ID',</p>
      * @return the frstRegisterId
      */
     public String getFrstRegisterId() {
@@ -221,6 +224,7 @@ public class Satisfaction implements Serializable {
 
     /**
      * frstRegisterId attribute 값을 설정한다.
+     * <p>`FRST_REGISTER_ID` varchar(20) NOT NULL COMMENT '최초등록자ID',</p>
      * @param frstRegisterId the frstRegisterId to set
      */
     public void setFrstRegisterId(String frstRegisterId) {
