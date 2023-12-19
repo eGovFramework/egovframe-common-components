@@ -256,6 +256,31 @@ public class BBSSatisfactionDAOTest extends EgovTestAbstractDAO {
 		assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
 	}
 
+
+	/**
+	 * 만족도조사를 삭제한다. 테스트
+	 */
+	@Test
+	public void a04deleteSatisfaction() {
+		// given
+		final Satisfaction testData = new Satisfaction();
+		testData(testData);
+
+		final SatisfactionVO satisfactionVO = new SatisfactionVO();
+
+		satisfactionVO.setStsfdgNo(testData.getStsfdgNo());
+
+		// when
+		final int result = bbsSatisfactionDAO.deleteSatisfaction(satisfactionVO);
+
+		if (log.isDebugEnabled()) {
+			log.debug(DEBUG_RESULT, result);
+		}
+
+		// then
+		assertEquals(egovMessageSource.getMessage("fail.common.delete"), 1, result);
+	}
+	
 	/**
 	 * 만족도조사에 대한 내용을 조회한다. 테스트
 	 */

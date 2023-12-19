@@ -60,10 +60,9 @@ public class BBSSatisfactionDAO extends EgovComAbstractDAO {
      * 만족도조사를 삭제한다.
      * 
      * @param satisfactionVO
-     * @throws Exception
      */
-    public void deleteSatisfaction(SatisfactionVO satisfactionVO) throws Exception {
-	update("BBSSatisfactionDAO.deleteSatisfaction", satisfactionVO);
+    public int deleteSatisfaction(final SatisfactionVO satisfactionVO) {
+        return update("BBSSatisfactionDAO.deleteSatisfaction", satisfactionVO);
     }
     
     /**
