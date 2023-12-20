@@ -32,20 +32,18 @@ public class TemplateManageDAO extends EgovComAbstractDAO {
      * 템플릿 정보를 삭제한다.
      * 
      * @param tmplatInf
-     * @throws Exception
      */
-    public void deleteTemplateInf(TemplateInf tmplatInf) throws Exception {
-	update("TemplateManageDAO.deleteTemplateInf", tmplatInf);
+    public int deleteTemplateInf(final TemplateInf tmplatInf) {
+        return update("TemplateManageDAO.deleteTemplateInf", tmplatInf);
     }
 
     /**
      * 템플릿 정보를 등록한다.
      * 
      * @param tmplatInf
-     * @throws Exception
      */
-    public void insertTemplateInf(TemplateInf tmplatInf) throws Exception {
-	insert("TemplateManageDAO.insertTemplateInf", tmplatInf);
+    public int insertTemplateInf(final TemplateInf tmplatInf) {
+        return insert("TemplateManageDAO.insertTemplateInf", tmplatInf);
     }
 
     /**
