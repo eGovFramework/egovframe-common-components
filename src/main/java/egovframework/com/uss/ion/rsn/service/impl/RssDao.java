@@ -6,6 +6,7 @@ import java.util.Map;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.rsn.service.RssInfo;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 /**
  * RSS서비스를 처리하는 Dao Class 구현
@@ -40,7 +41,7 @@ public class RssDao extends EgovComAbstractDAO {
      * @return List
      * @throws Exception
      */
-    public List<?> selectRssTagServiceList(RssInfo rssInfo) throws Exception {
+    public List<EgovMap> selectRssTagServiceList(RssInfo rssInfo) throws Exception {
     	return selectList("RssTagService.selectRssTagService",rssInfo);
     }
 

@@ -8,6 +8,7 @@ import egovframework.com.uss.ion.rsn.service.EgovRssService;
 import egovframework.com.uss.ion.rsn.service.RssInfo;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 import javax.annotation.Resource;
 
@@ -99,7 +100,7 @@ public class EgovRssServiceImpl extends EgovAbstractServiceImpl
      * @throws Exception
      */
     @Override
-	public List<?> selectRssTagServiceList(RssInfo rssInfo) throws Exception {
+	public List<EgovMap> selectRssTagServiceList(RssInfo rssInfo) throws Exception {
     	return dao.selectRssTagServiceList(rssInfo);
     }
 
