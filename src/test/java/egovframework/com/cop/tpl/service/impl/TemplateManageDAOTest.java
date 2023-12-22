@@ -235,4 +235,36 @@ public class TemplateManageDAOTest extends EgovTestAbstractDAO {
 		assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
 	}
 
+	/**
+	 * 템플릿 정보를 수정한다. 테스트
+	 */
+	@Test
+	public void a03updateTemplateInf() {
+		// given
+		final TemplateInf testData = new TemplateInf();
+		testData(testData);
+
+		final TemplateInf tmplatInf = new TemplateInf();
+		tmplatInf.setTmplatSeCode("TMPT02");
+		tmplatInf.setTmplatCours("/test2/css/egovframework/com/cop/tpl/egovbbsTemplate.css");
+		tmplatInf.setUseAt("N");
+
+		tmplatInf.setTmplatId(testData.getTmplatId());
+
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO != null) {
+			tmplatInf.setLastUpdusrId(loginVO.getUniqId());
+		}
+
+		// when
+		final int result = templateManageDAO.updateTemplateInf(tmplatInf);
+
+		if (log.isDebugEnabled()) {
+			log.debug(DEBUG_RESULT, result);
+		}
+
+		// then
+		assertEquals(egovMessageSource.getMessage("fail.common.update"), result, 1);
+	}
+
 }

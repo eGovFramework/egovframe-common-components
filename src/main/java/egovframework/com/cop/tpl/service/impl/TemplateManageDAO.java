@@ -50,10 +50,9 @@ public class TemplateManageDAO extends EgovComAbstractDAO {
      * 템플릿 정보를 수정한다.
      * 
      * @param tmplatInf
-     * @throws Exception
      */
-    public void updateTemplateInf(TemplateInf tmplatInf) throws Exception {
-	update("TemplateManageDAO.updateTemplateInf", tmplatInf);
+    public int updateTemplateInf(final TemplateInf tmplatInf) {
+        return update("TemplateManageDAO.updateTemplateInf", tmplatInf);
     }
 
     /**
