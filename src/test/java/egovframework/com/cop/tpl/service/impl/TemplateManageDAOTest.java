@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import javax.annotation.Resource;
 
@@ -23,6 +24,7 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.bbs.service.BoardMaster;
 import egovframework.com.cop.bbs.service.impl.EgovBBSMasterDAO;
 import egovframework.com.cop.tpl.service.TemplateInf;
+import egovframework.com.cop.tpl.service.TemplateInfVO;
 import egovframework.com.test.EgovTestAbstractDAO;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -265,6 +267,29 @@ public class TemplateManageDAOTest extends EgovTestAbstractDAO {
 
 		// then
 		assertEquals(egovMessageSource.getMessage("fail.common.update"), result, 1);
+	}
+
+	/**
+	 * 템플릿에 대한 화이트리스트 목록를 조회한다. 테스트
+	 */
+	@Test
+	public void a04selectTemplateWhiteList() {
+		// given
+
+		// when
+		final List<TemplateInfVO> resultList = templateManageDAO.selectTemplateWhiteList();
+
+		if (log.isDebugEnabled()) {
+			log.debug("resultList={}", resultList);
+			log.debug("size={}", resultList.size());
+			for (final TemplateInfVO result : resultList) {
+				log.debug("result={}", result);
+				log.debug("getTmplatCours={}", result.getTmplatCours());
+			}
+		}
+
+		// then
+		assertTrue(egovMessageSource.getMessage("fail.common.select"), resultList.size() > -1);
 	}
 
 }
