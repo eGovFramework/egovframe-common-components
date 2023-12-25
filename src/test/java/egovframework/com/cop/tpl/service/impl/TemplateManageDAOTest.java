@@ -292,4 +292,39 @@ public class TemplateManageDAOTest extends EgovTestAbstractDAO {
 		assertTrue(egovMessageSource.getMessage("fail.common.select"), resultList.size() > -1);
 	}
 
+	/**
+	 * 템플릿에 대한 목록를 조회한다. 테스트
+	 */
+	@Test
+	public void a05selectTemplateInfs() {
+		// given
+		final TemplateInf testData = new TemplateInf();
+		testData(testData);
+
+		final TemplateInfVO tmplatInfVO = new TemplateInfVO();
+		tmplatInfVO.setFirstIndex(0);
+		tmplatInfVO.setRecordCountPerPage(10);
+
+		tmplatInfVO.setSearchCnd("0");
+		tmplatInfVO.setSearchWrd(testData.getTmplatNm());
+
+		// when
+		final List<TemplateInfVO> resultList = templateManageDAO.selectTemplateInfs(tmplatInfVO);
+
+		if (log.isDebugEnabled()) {
+			log.debug("resultList={}", resultList);
+			log.debug("size={}", resultList.size());
+			for (final TemplateInfVO result : resultList) {
+				log.debug("result={}", result);
+				log.debug("getTmplatNm={}, {}", testData.getTmplatNm(), result.getTmplatNm());
+				log.debug("getTmplatCours={}", result.getTmplatCours());
+			}
+		}
+
+		// then
+		assertTrue(egovMessageSource.getMessage("fail.common.select"), resultList.size() > -1);
+		assertEquals(egovMessageSource.getMessage("fail.common.select"), testData.getTmplatNm(),
+				resultList.get(0).getTmplatNm());
+	}
+
 }
