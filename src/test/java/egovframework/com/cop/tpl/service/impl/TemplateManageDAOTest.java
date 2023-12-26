@@ -289,7 +289,7 @@ public class TemplateManageDAOTest extends EgovTestAbstractDAO {
 		}
 
 		// then
-		assertTrue(egovMessageSource.getMessage("fail.common.select"), resultList.size() > -1);
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.size() > -1);
 	}
 
 	/**
@@ -305,26 +305,110 @@ public class TemplateManageDAOTest extends EgovTestAbstractDAO {
 		tmplatInfVO.setFirstIndex(0);
 		tmplatInfVO.setRecordCountPerPage(10);
 
+		// when
+		final List<TemplateInfVO> resultList = templateManageDAO.selectTemplateInfs(tmplatInfVO);
+
+		// then
+		asserta05selectTemplateInfsassert(resultList, testData);
+	}
+
+	private void asserta05selectTemplateInfsassert(final List<TemplateInfVO> resultList, final TemplateInf testData) {
+		if (log.isDebugEnabled()) {
+			log.debug("resultList={}", resultList);
+			log.debug("size={}", resultList.size());
+			for (final TemplateInfVO result : resultList) {
+				log.debug("result={}", result);
+				log.debug("getTmplatId={}, {}", testData.getTmplatId(), result.getTmplatId());
+				log.debug("getTmplatNm={}, {}", testData.getTmplatNm(), result.getTmplatNm());
+				log.debug("getTmplatSeCode={}, {}", testData.getTmplatSeCode(), result.getTmplatSeCode());
+				log.debug("getTmplatCours={}", testData.getTmplatCours(), result.getTmplatCours());
+				log.debug("getUseAt={}", testData.getUseAt(), result.getUseAt());
+				log.debug("getFrstRegisterId={}", testData.getFrstRegisterId(), result.getFrstRegisterId());
+			}
+		}
+
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.size() > -1);
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTmplatId(),
+				resultList.get(0).getTmplatId());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTmplatNm(),
+				resultList.get(0).getTmplatNm());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTmplatSeCode(),
+				resultList.get(0).getTmplatSeCode());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTmplatCours(),
+				resultList.get(0).getTmplatCours());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getUseAt(),
+				resultList.get(0).getUseAt());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getFrstRegisterId(),
+				resultList.get(0).getFrstRegisterId());
+	}
+
+	/**
+	 * 템플릿에 대한 목록를 조회한다. 테스트
+	 */
+	@Test
+	public void a05selectTemplateInfstTypeFlag() {
+		// given
+		final TemplateInf testData = new TemplateInf();
+		testData(testData);
+
+		final TemplateInfVO tmplatInfVO = new TemplateInfVO();
+		tmplatInfVO.setFirstIndex(0);
+		tmplatInfVO.setRecordCountPerPage(10);
+
+		tmplatInfVO.setTypeFlag(testData.getTmplatSeCode());
+		tmplatInfVO.setTmplatSeCode(testData.getTmplatSeCode());
+
+		// when
+		final List<TemplateInfVO> resultList = templateManageDAO.selectTemplateInfs(tmplatInfVO);
+
+		// then
+		asserta05selectTemplateInfsassert(resultList, testData);
+	}
+
+	/**
+	 * 템플릿에 대한 목록를 조회한다. 테스트
+	 */
+	@Test
+	public void a05selectTemplateInfsSearchCnd0() {
+		// given
+		final TemplateInf testData = new TemplateInf();
+		testData(testData);
+
+		final TemplateInfVO tmplatInfVO = new TemplateInfVO();
+		tmplatInfVO.setFirstIndex(0);
+		tmplatInfVO.setRecordCountPerPage(10);
+
 		tmplatInfVO.setSearchCnd("0");
 		tmplatInfVO.setSearchWrd(testData.getTmplatNm());
 
 		// when
 		final List<TemplateInfVO> resultList = templateManageDAO.selectTemplateInfs(tmplatInfVO);
 
-		if (log.isDebugEnabled()) {
-			log.debug("resultList={}", resultList);
-			log.debug("size={}", resultList.size());
-			for (final TemplateInfVO result : resultList) {
-				log.debug("result={}", result);
-				log.debug("getTmplatNm={}, {}", testData.getTmplatNm(), result.getTmplatNm());
-				log.debug("getTmplatCours={}", result.getTmplatCours());
-			}
-		}
+		// then
+		asserta05selectTemplateInfsassert(resultList, testData);
+	}
+
+	/**
+	 * 템플릿에 대한 목록를 조회한다. 테스트
+	 */
+	@Test
+	public void a05selectTemplateInfsSearchCnd1() {
+		// given
+		final TemplateInf testData = new TemplateInf();
+		testData(testData);
+
+		final TemplateInfVO tmplatInfVO = new TemplateInfVO();
+		tmplatInfVO.setFirstIndex(0);
+		tmplatInfVO.setRecordCountPerPage(10);
+
+		tmplatInfVO.setSearchCnd("1");
+		tmplatInfVO.setSearchWrd("게시판템플릿");
+
+		// when
+		final List<TemplateInfVO> resultList = templateManageDAO.selectTemplateInfs(tmplatInfVO);
 
 		// then
-		assertTrue(egovMessageSource.getMessage("fail.common.select"), resultList.size() > -1);
-		assertEquals(egovMessageSource.getMessage("fail.common.select"), testData.getTmplatNm(),
-				resultList.get(0).getTmplatNm());
+		asserta05selectTemplateInfsassert(resultList, testData);
 	}
 
 }
