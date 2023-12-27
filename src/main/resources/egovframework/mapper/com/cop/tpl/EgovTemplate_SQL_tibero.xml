@@ -105,10 +105,10 @@
 			<if test="typeFlag != null and typeFlag != ''">
 				AND a.TMPLAT_SE_CODE = #{tmplatSeCode}
 			</if>		
-			<if test="searchCnd == 0">AND
+			<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(searchCnd, '0')">AND
 					a.TMPLAT_NM LIKE '%' || #{searchWrd} || '%' 		
 			</if>
-			<if test="searchCnd == 1">AND
+			<if test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(searchCnd, '1')">AND
 					c.CODE_NM LIKE '%' || #{searchWrd} || '%' 		
 			</if>		
 	</select>	

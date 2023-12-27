@@ -115,6 +115,11 @@ public class TemplateManageDAOTest extends EgovTestAbstractDAO {
 	public static final String DEBUG_RESULT = "result={}";
 
 	/**
+	 * Debug totCnt
+	 */
+	public static final String DEBUG_TOT_CNT = "totCnt={}";
+
+	/**
 	 * 템플릿 정보를 삭제한다. 테스트
 	 */
 	@Test
@@ -409,6 +414,97 @@ public class TemplateManageDAOTest extends EgovTestAbstractDAO {
 
 		// then
 		asserta05selectTemplateInfsassert(resultList, testData);
+	}
+
+	/**
+	 * 템플릿에 대한 목록 전체 건수를 조회한다. 테스트
+	 */
+	@Test
+	public void a06selectTemplateInfsCnt() {
+		// given
+		final TemplateInfVO tmplatInfVO = new TemplateInfVO();
+
+		// when
+		final int totCnt = templateManageDAO.selectTemplateInfsCnt(tmplatInfVO);
+
+		if (log.isDebugEnabled()) {
+			log.debug(DEBUG_TOT_CNT, totCnt);
+		}
+
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+	}
+
+	/**
+	 * 템플릿에 대한 목록 전체 건수를 조회한다. 테스트
+	 */
+	@Test
+	public void a06selectTemplateInfsCntTypeFlag() {
+		// given
+		final TemplateInf testData = new TemplateInf();
+		testData(testData);
+
+		final TemplateInfVO tmplatInfVO = new TemplateInfVO();
+
+		tmplatInfVO.setTypeFlag(testData.getTmplatSeCode());
+		tmplatInfVO.setTmplatSeCode(testData.getTmplatSeCode());
+
+		// when
+		final int totCnt = templateManageDAO.selectTemplateInfsCnt(tmplatInfVO);
+
+		if (log.isDebugEnabled()) {
+			log.debug(DEBUG_TOT_CNT, totCnt);
+		}
+
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+	}
+
+	/**
+	 * 템플릿에 대한 목록 전체 건수를 조회한다. 테스트
+	 */
+	@Test
+	public void a06selectTemplateInfsCntSearchCnd0() {
+		// given
+		final TemplateInf testData = new TemplateInf();
+		testData(testData);
+
+		final TemplateInfVO tmplatInfVO = new TemplateInfVO();
+
+		tmplatInfVO.setSearchCnd("0");
+		tmplatInfVO.setSearchWrd(testData.getTmplatNm());
+
+		// when
+		final int totCnt = templateManageDAO.selectTemplateInfsCnt(tmplatInfVO);
+
+		if (log.isDebugEnabled()) {
+			log.debug(DEBUG_TOT_CNT, totCnt);
+		}
+
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+	}
+
+	/**
+	 * 템플릿에 대한 목록 전체 건수를 조회한다. 테스트
+	 */
+	@Test
+	public void a06selectTemplateInfsCntSearchCnd1() {
+		// given
+		final TemplateInfVO tmplatInfVO = new TemplateInfVO();
+
+		tmplatInfVO.setSearchCnd("1");
+		tmplatInfVO.setSearchWrd("게시판템플릿");
+
+		// when
+		final int totCnt = templateManageDAO.selectTemplateInfsCnt(tmplatInfVO);
+
+		if (log.isDebugEnabled()) {
+			log.debug(DEBUG_TOT_CNT, totCnt);
+		}
+
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
 	}
 
 }

@@ -80,10 +80,9 @@ public class TemplateManageDAO extends EgovComAbstractDAO {
      * 
      * @param tmplatInfVO
      * @return
-     * @throws Exception
      */
-    public int selectTemplateInfsCnt(TemplateInfVO tmplatInfVO) throws Exception {
-	return (Integer)selectOne("TemplateManageDAO.selectTemplateInfsCnt", tmplatInfVO);
+    public int selectTemplateInfsCnt(final TemplateInfVO tmplatInfVO) {
+        return selectOne("TemplateManageDAO.selectTemplateInfsCnt", tmplatInfVO);
     }
 
     /**
