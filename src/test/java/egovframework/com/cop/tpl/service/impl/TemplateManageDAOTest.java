@@ -507,4 +507,41 @@ public class TemplateManageDAOTest extends EgovTestAbstractDAO {
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
 	}
 
+	/**
+	 * 템플릿에 대한 상세정보를 조회한다. 테스트
+	 */
+	@Test
+	public void a07selectTemplateInf() {
+		// given
+		final TemplateInf testData = new TemplateInf();
+		testData(testData);
+
+		final TemplateInfVO tmplatInfVO = new TemplateInfVO();
+		tmplatInfVO.setTmplatId(testData.getTmplatId());
+
+		// when
+		final TemplateInfVO result = templateManageDAO.selectTemplateInf(tmplatInfVO);
+
+		if (log.isDebugEnabled()) {
+			log.debug(DEBUG_RESULT, result);
+			log.debug("getTmplatId={}, {}", testData.getTmplatId(), result.getTmplatId());
+			log.debug("getTmplatNm={}, {}", testData.getTmplatNm(), result.getTmplatNm());
+			log.debug("getTmplatSeCode={}, {}", testData.getTmplatSeCode(), result.getTmplatSeCode());
+			log.debug("getTmplatCours={}", testData.getTmplatCours(), result.getTmplatCours());
+			log.debug("getUseAt={}", testData.getUseAt(), result.getUseAt());
+			log.debug("getFrstRegisterId={}", testData.getFrstRegisterId(), result.getFrstRegisterId());
+		}
+
+		// then
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTmplatId(), result.getTmplatId());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTmplatNm(), result.getTmplatNm());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTmplatSeCode(),
+				result.getTmplatSeCode());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getTmplatCours(),
+				result.getTmplatCours());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getUseAt(), result.getUseAt());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getFrstRegisterId(),
+				result.getFrstRegisterId());
+	}
+
 }
