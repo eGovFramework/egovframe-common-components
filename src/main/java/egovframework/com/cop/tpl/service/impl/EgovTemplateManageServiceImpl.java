@@ -101,18 +101,6 @@ public class EgovTemplateManageServiceImpl extends EgovAbstractServiceImpl imple
 	return map;
     }
 
-    /**
-     * 템플릿에 대한 미리보기 정보를 조회한다.
-     * 
-     * @see egovframework.com.cop.bbs.com.service.EgovTemplateManageService#selectTemplatePreview(egovframework.com.cop.bbs.com.service.TemplateInfVO)
-     */
-    public TemplateInfVO selectTemplatePreview(TemplateInfVO tmplatInfVO) throws Exception {
-	TemplateInfVO vo = new TemplateInfVO();
-	
-	vo = tmplatDAO.selectTemplatePreview(tmplatInfVO);
-	
-	return vo;
-    }
 
     /**
      * 템플릿 정보를 수정한다.
