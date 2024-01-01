@@ -32,30 +32,27 @@ public class TemplateManageDAO extends EgovComAbstractDAO {
      * 템플릿 정보를 삭제한다.
      * 
      * @param tmplatInf
-     * @throws Exception
      */
-    public void deleteTemplateInf(TemplateInf tmplatInf) throws Exception {
-	update("TemplateManageDAO.deleteTemplateInf", tmplatInf);
+    public int deleteTemplateInf(final TemplateInf tmplatInf) {
+        return update("TemplateManageDAO.deleteTemplateInf", tmplatInf);
     }
 
     /**
      * 템플릿 정보를 등록한다.
      * 
      * @param tmplatInf
-     * @throws Exception
      */
-    public void insertTemplateInf(TemplateInf tmplatInf) throws Exception {
-	insert("TemplateManageDAO.insertTemplateInf", tmplatInf);
+    public int insertTemplateInf(final TemplateInf tmplatInf) {
+        return insert("TemplateManageDAO.insertTemplateInf", tmplatInf);
     }
 
     /**
      * 템플릿 정보를 수정한다.
      * 
      * @param tmplatInf
-     * @throws Exception
      */
-    public void updateTemplateInf(TemplateInf tmplatInf) throws Exception {
-	update("TemplateManageDAO.updateTemplateInf", tmplatInf);
+    public int updateTemplateInf(final TemplateInf tmplatInf) {
+        return update("TemplateManageDAO.updateTemplateInf", tmplatInf);
     }
 
     /**
@@ -63,10 +60,9 @@ public class TemplateManageDAO extends EgovComAbstractDAO {
      * 
      * @param tmplatInfVO
      * @return
-     * @throws Exception
      */
-    public List<TemplateInfVO> selectTemplateWhiteList() throws Exception {
-    	return selectList("TemplateManageDAO.selectTemplateWhiteList");
+    public List<TemplateInfVO> selectTemplateWhiteList() {
+        return selectList("TemplateManageDAO.selectTemplateWhiteList");
     }
     
     /**
@@ -74,10 +70,9 @@ public class TemplateManageDAO extends EgovComAbstractDAO {
      * 
      * @param tmplatInfVO
      * @return
-     * @throws Exception
      */
-    public List<TemplateInfVO> selectTemplateInfs(TemplateInfVO tmplatInfVO) throws Exception {
-	return selectList("TemplateManageDAO.selectTemplateInfs", tmplatInfVO);
+    public List<TemplateInfVO> selectTemplateInfs(final TemplateInfVO tmplatInfVO) {
+        return selectList("TemplateManageDAO.selectTemplateInfs", tmplatInfVO);
     }
 
     /**
@@ -85,10 +80,9 @@ public class TemplateManageDAO extends EgovComAbstractDAO {
      * 
      * @param tmplatInfVO
      * @return
-     * @throws Exception
      */
-    public int selectTemplateInfsCnt(TemplateInfVO tmplatInfVO) throws Exception {
-	return (Integer)selectOne("TemplateManageDAO.selectTemplateInfsCnt", tmplatInfVO);
+    public int selectTemplateInfsCnt(final TemplateInfVO tmplatInfVO) {
+        return selectOne("TemplateManageDAO.selectTemplateInfsCnt", tmplatInfVO);
     }
 
     /**
@@ -96,22 +90,9 @@ public class TemplateManageDAO extends EgovComAbstractDAO {
      * 
      * @param tmplatInfVO
      * @return
-     * @throws Exception
      */
-    public TemplateInfVO selectTemplateInf(TemplateInfVO tmplatInfVO) throws Exception {
-	return (TemplateInfVO)selectOne("TemplateManageDAO.selectTemplateInf", tmplatInfVO);
-
-    }
-
-    /**
-     * 템플릿에 대한 미리보기 정보를 조회한다.
-     * 
-     * @param tmplatInfVO
-     * @return
-     * @throws Exception
-     */
-    public TemplateInfVO selectTemplatePreview(TemplateInfVO tmplatInfVO) throws Exception {
-	return null;
+    public TemplateInfVO selectTemplateInf(final TemplateInfVO tmplatInfVO) {
+        return selectOne("TemplateManageDAO.selectTemplateInf", tmplatInfVO);
     }
 
     /**
@@ -119,10 +100,9 @@ public class TemplateManageDAO extends EgovComAbstractDAO {
      * 
      * @param tmplatInfVO
      * @return
-     * @throws Exception
      */
-    public List<TemplateInfVO> selectTemplateInfsByCode(TemplateInfVO tmplatInfVO) throws Exception {
-	return selectList("TemplateManageDAO.selectTemplateInfsByCode", tmplatInfVO);
+    public List<TemplateInfVO> selectTemplateInfsByCode(final TemplateInfVO tmplatInfVO) {
+        return selectList("TemplateManageDAO.selectTemplateInfsByCode", tmplatInfVO);
     }
 	
 }

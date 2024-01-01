@@ -74,14 +74,6 @@ public interface EgovTemplateManageService {
      */
     public TemplateInfVO selectTemplateInf(TemplateInfVO tmplatInfVO) throws Exception;
 
-    /**
-     * 템플릿에 대한 미리보기 정보를 조회한다.
-     * 
-     * @param tmplatInfVO
-     * @return
-     * @throws Exception
-     */
-    public TemplateInfVO selectTemplatePreview(TemplateInfVO tmplatInfVO) throws Exception;
 
     /**
      * 템플릿 구분에 따른 목록을 조회한다.
