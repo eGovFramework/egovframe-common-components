@@ -544,4 +544,23 @@ public class TemplateManageDAOTest extends EgovTestAbstractDAO {
 				result.getFrstRegisterId());
 	}
 
+	/**
+	 * 템플릿 구분에 따른 목록을 조회한다. 테스트
+	 */
+	@Test
+	public void a09selectTemplateInfsByCode() {
+		// given
+		final TemplateInf testData = new TemplateInf();
+		testData(testData);
+
+		final TemplateInfVO tmplatInfVO = new TemplateInfVO();
+		tmplatInfVO.setTmplatSeCode(testData.getTmplatSeCode());
+
+		// when
+		final List<TemplateInfVO> resultList = templateManageDAO.selectTemplateInfsByCode(tmplatInfVO);
+
+		// then
+		asserta05selectTemplateInfsassert(resultList, testData);
+	}
+
 }

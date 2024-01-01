@@ -100,10 +100,9 @@ public class TemplateManageDAO extends EgovComAbstractDAO {
      * 
      * @param tmplatInfVO
      * @return
-     * @throws Exception
      */
-    public List<TemplateInfVO> selectTemplateInfsByCode(TemplateInfVO tmplatInfVO) throws Exception {
-	return selectList("TemplateManageDAO.selectTemplateInfsByCode", tmplatInfVO);
+    public List<TemplateInfVO> selectTemplateInfsByCode(final TemplateInfVO tmplatInfVO) {
+        return selectList("TemplateManageDAO.selectTemplateInfsByCode", tmplatInfVO);
     }
 	
 }
