@@ -15,7 +15,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 
-import egovframework.com.dam.app.service.impl.KnoAppraisalDAO;
+import egovframework.com.dam.map.mat.service.impl.MapMaterialDAO;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,7 +39,8 @@ public class EgovTestJavaParser {
 	public void test() {
 //		final Class<?> clazz = BBSSatisfactionDAO.class;
 //		final Class<?> clazz = TemplateManageDAO.class;
-		final Class<?> clazz = KnoAppraisalDAO.class;
+//		final Class<?> clazz = KnoAppraisalDAO.class;
+		final Class<?> clazz = MapMaterialDAO.class;
 
 		if (log.isDebugEnabled()) {
 			log.debug("getName={}", clazz.getName());
