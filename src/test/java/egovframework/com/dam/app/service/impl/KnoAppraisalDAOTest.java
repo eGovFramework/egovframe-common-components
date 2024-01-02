@@ -3,6 +3,7 @@ package egovframework.com.dam.app.service.impl;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 import java.util.List;
 
@@ -162,6 +163,8 @@ public class KnoAppraisalDAOTest extends EgovTestAbstractDAO {
 
 		testDataKnoPersonal.setOrgnztId(testDataMapTeam.getOrgnztId());
 
+		testDataKnoPersonal.setKnoNm("test 이백행 지식명 " + LocalDateTime.now());
+
 		testDataKnoPersonal.setOthbcAt("Y");
 
 		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -253,7 +256,7 @@ public class KnoAppraisalDAOTest extends EgovTestAbstractDAO {
 	}
 
 	/**
-	 * 
+	 * 등록된 지식정보평가 정보를 조회 한다. 테스트
 	 */
 	@Test
 	public void a01selectKnoAppraisalList() {
@@ -282,6 +285,50 @@ public class KnoAppraisalDAOTest extends EgovTestAbstractDAO {
 
 		// then
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.size() > -1);
+	}
+
+	/**
+	 * 등록된 지식정보평가 정보를 조회 한다. 테스트: 지식명
+	 */
+	@Test
+	public void a01selectKnoAppraisalListSearchCondition1() {
+		// given
+		final MapTeam testDataMapTeam = new MapTeam();
+		testDataMapTeam(testDataMapTeam);
+		final MapMaterial testDataMapMaterial = new MapMaterial();
+		testDataMapMaterial(testDataMapMaterial, testDataMapTeam);
+		final KnoPersonal testDataKnoPersonal = new KnoPersonal();
+		testDataKnoPersonal(testDataKnoPersonal, testDataMapMaterial, testDataMapTeam);
+		final KnoSpecialist testDataKnoSpecialist = new KnoSpecialist();
+		testDataKnoSpecialist(testDataKnoSpecialist, testDataMapMaterial);
+
+		final KnoAppraisalVO searchVO = new KnoAppraisalVO();
+
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO != null) {
+			searchVO.setEmplyrId(loginVO.getUniqId());
+		}
+
+		searchVO.setSearchCondition("1");
+		searchVO.setSearchKeyword(testDataKnoPersonal.getKnoNm());
+
+		searchVO.setFirstIndex(0);
+		searchVO.setRecordCountPerPage(10);
+
+		// when
+		final List<EgovMap> resultList = knoAppraisalDAO.selectKnoAppraisalList(searchVO);
+
+		for (final EgovMap result : resultList) {
+			if (log.isDebugEnabled()) {
+				log.debug("result={}", result);
+				log.debug("knoNm={}, {}", testDataKnoPersonal.getKnoNm(), result.get("knoNm"));
+			}
+		}
+
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.size() > -1);
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testDataKnoPersonal.getKnoNm(),
+				resultList.get(0).get("knoNm"));
 	}
 
 }
