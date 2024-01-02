@@ -62,8 +62,8 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 *
 	 * @param MapMaterialVO
 	 */
-	public void insertMapMaterial(MapMaterial mapMaterial) throws Exception {
-		insert("MapMaterialDAO.insertMapMaterial", mapMaterial);
+	public int insertMapMaterial(final MapMaterial mapMaterial) {
+		return insert("MapMaterialDAO.insertMapMaterial", mapMaterial);
 	}
 
 	/**

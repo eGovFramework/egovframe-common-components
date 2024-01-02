@@ -31,8 +31,8 @@ public class KnoAppraisalDAO extends EgovComAbstractDAO {
 	 *
 	 * @param KnoAppraisalVO
 	 */
-	public List<EgovMap> selectKnoAppraisalList(KnoAppraisalVO searchVO) throws Exception {
-		return  selectList("KnoAppraisalDAO.selectKnoAppraisalList", searchVO);
+	public List<EgovMap> selectKnoAppraisalList(final KnoAppraisalVO searchVO) {
+		return selectList("KnoAppraisalDAO.selectKnoAppraisalList", searchVO);
 	}
 
 	/**
