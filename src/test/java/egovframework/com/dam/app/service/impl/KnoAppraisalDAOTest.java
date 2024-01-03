@@ -374,4 +374,109 @@ public class KnoAppraisalDAOTest extends EgovTestAbstractDAO {
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.size() > -1);
 	}
 
+	/**
+	 * 등록된 지식정보평가 정보를 조회 한다. 테스트
+	 */
+	@Test
+	public void a02selectKnoAppraisalTotCnt() {
+		// given
+		final MapTeam testDataMapTeam = new MapTeam();
+		testDataMapTeam(testDataMapTeam);
+		final MapMaterial testDataMapMaterial = new MapMaterial();
+		testDataMapMaterial(testDataMapMaterial, testDataMapTeam);
+		final KnoPersonal testDataKnoPersonal = new KnoPersonal();
+		testDataKnoPersonal(testDataKnoPersonal, testDataMapMaterial, testDataMapTeam);
+		final KnoSpecialist testDataKnoSpecialist = new KnoSpecialist();
+		testDataKnoSpecialist(testDataKnoSpecialist, testDataMapMaterial);
+
+		final KnoAppraisalVO searchVO = new KnoAppraisalVO();
+
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO != null) {
+			searchVO.setEmplyrId(loginVO.getUniqId());
+		}
+
+		// when
+		final int totCnt = knoAppraisalDAO.selectKnoAppraisalTotCnt(searchVO);
+
+		if (log.isDebugEnabled()) {
+			log.debug("totCnt={}", totCnt);
+		}
+
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+	}
+
+	/**
+	 * 등록된 지식정보평가 정보를 조회 한다. 테스트
+	 */
+	@Test
+	public void a02selectKnoAppraisalTotCntSearchCondition1() {
+		// given
+		final MapTeam testDataMapTeam = new MapTeam();
+		testDataMapTeam(testDataMapTeam);
+		final MapMaterial testDataMapMaterial = new MapMaterial();
+		testDataMapMaterial(testDataMapMaterial, testDataMapTeam);
+		final KnoPersonal testDataKnoPersonal = new KnoPersonal();
+		testDataKnoPersonal(testDataKnoPersonal, testDataMapMaterial, testDataMapTeam);
+		final KnoSpecialist testDataKnoSpecialist = new KnoSpecialist();
+		testDataKnoSpecialist(testDataKnoSpecialist, testDataMapMaterial);
+
+		final KnoAppraisalVO searchVO = new KnoAppraisalVO();
+
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO != null) {
+			searchVO.setEmplyrId(loginVO.getUniqId());
+		}
+
+		searchVO.setSearchCondition("1");
+		searchVO.setSearchKeyword(testDataKnoPersonal.getKnoNm());
+
+		// when
+		final int totCnt = knoAppraisalDAO.selectKnoAppraisalTotCnt(searchVO);
+
+		if (log.isDebugEnabled()) {
+			log.debug("totCnt={}", totCnt);
+		}
+
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+	}
+
+	/**
+	 * 등록된 지식정보평가 정보를 조회 한다. 테스트
+	 */
+	@Test
+	public void a02selectKnoAppraisalTotCntSearchCondition2() {
+		// given
+		final MapTeam testDataMapTeam = new MapTeam();
+		testDataMapTeam(testDataMapTeam);
+		final MapMaterial testDataMapMaterial = new MapMaterial();
+		testDataMapMaterial(testDataMapMaterial, testDataMapTeam);
+		final KnoPersonal testDataKnoPersonal = new KnoPersonal();
+		testDataKnoPersonal(testDataKnoPersonal, testDataMapMaterial, testDataMapTeam);
+		final KnoSpecialist testDataKnoSpecialist = new KnoSpecialist();
+		testDataKnoSpecialist(testDataKnoSpecialist, testDataMapMaterial);
+
+		final KnoAppraisalVO searchVO = new KnoAppraisalVO();
+
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO != null) {
+			searchVO.setEmplyrId(loginVO.getUniqId());
+		}
+
+		searchVO.setSearchCondition("2");
+		searchVO.setSearchKeyword("테스트1");
+
+		// when
+		final int totCnt = knoAppraisalDAO.selectKnoAppraisalTotCnt(searchVO);
+
+		if (log.isDebugEnabled()) {
+			log.debug("totCnt={}", totCnt);
+		}
+
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+	}
+
 }
