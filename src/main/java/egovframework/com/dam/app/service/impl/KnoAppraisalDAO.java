@@ -53,8 +53,8 @@ public class KnoAppraisalDAO extends EgovComAbstractDAO {
 	 *
 	 * @param KnoAppraisalVO
 	 */
-	public KnoAppraisal selectKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception {
-		return (KnoAppraisal)selectOne("KnoAppraisalDAO.selectKnoAppraisal", knoAppraisal);
+	public KnoAppraisal selectKnoAppraisal(final KnoAppraisal knoAppraisal) {
+		return selectOne("KnoAppraisalDAO.selectKnoAppraisal", knoAppraisal);
 	}
 
 	/**

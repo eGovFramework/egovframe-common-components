@@ -24,6 +24,7 @@ import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.dam.app.service.KnoAppraisal;
 import egovframework.com.dam.app.service.KnoAppraisalVO;
 import egovframework.com.dam.map.mat.service.MapMaterial;
 import egovframework.com.dam.map.mat.service.impl.MapMaterialDAO;
@@ -163,9 +164,13 @@ public class KnoAppraisalDAOTest extends EgovTestAbstractDAO {
 
 		testDataKnoPersonal.setOrgnztId(testDataMapTeam.getOrgnztId());
 
-		testDataKnoPersonal.setKnoNm("test 이백행 지식명 " + LocalDateTime.now());
+		final LocalDateTime now = LocalDateTime.now();
+
+		testDataKnoPersonal.setKnoNm("test 이백행 지식명 " + now);
+		testDataKnoPersonal.setKnoCn("test 이백행 지식내용 " + now);
 
 		testDataKnoPersonal.setOthbcAt("Y");
+		testDataKnoPersonal.setAtchFileId("test 이백행 첨부파일ID");
 
 		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		if (loginVO != null) {
@@ -320,7 +325,7 @@ public class KnoAppraisalDAOTest extends EgovTestAbstractDAO {
 
 		for (final EgovMap result : resultList) {
 			if (log.isDebugEnabled()) {
-				log.debug("result={}", result);
+				log.debug(DEBUG_RESULT, result);
 				log.debug("knoNm={}, {}", testDataKnoPersonal.getKnoNm(), result.get("knoNm"));
 			}
 		}
@@ -365,7 +370,7 @@ public class KnoAppraisalDAOTest extends EgovTestAbstractDAO {
 
 		for (final EgovMap result : resultList) {
 			if (log.isDebugEnabled()) {
-				log.debug("result={}", result);
+				log.debug(DEBUG_RESULT, result);
 				log.debug("userNm={}, {}", loginVO.getName(), result.get("userNm"));
 			}
 		}
@@ -477,6 +482,66 @@ public class KnoAppraisalDAOTest extends EgovTestAbstractDAO {
 
 		// then
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+	}
+
+	/**
+	 * 지식정보평가 상세 정보를 조회 한다. 테스트
+	 */
+	@Test
+	public void a03selectKnoAppraisal() {
+		// given
+		final MapTeam testDataMapTeam = new MapTeam();
+		testDataMapTeam(testDataMapTeam);
+		final MapMaterial testDataMapMaterial = new MapMaterial();
+		testDataMapMaterial(testDataMapMaterial, testDataMapTeam);
+		final KnoPersonal testDataKnoPersonal = new KnoPersonal();
+		testDataKnoPersonal(testDataKnoPersonal, testDataMapMaterial, testDataMapTeam);
+
+		final KnoAppraisal knoAppraisal = new KnoAppraisal();
+		knoAppraisal.setKnoId(testDataKnoPersonal.getKnoId());
+
+		// when
+		final KnoAppraisal result = knoAppraisalDAO.selectKnoAppraisal(knoAppraisal);
+
+		if (log.isDebugEnabled()) {
+			log.debug(DEBUG_RESULT, result);
+			log.debug("getOrgnztNm={}, {}", testDataKnoPersonal.getOrgnztNm(), result.getOrgnztNm());
+			log.debug("getOrgnztId={}, {}", testDataKnoPersonal.getOrgnztId(), result.getOrgnztId());
+			log.debug("getKnoTypeNm={}, {}", testDataKnoPersonal.getKnoTypeNm(), result.getKnoTypeNm());
+			log.debug("getKnoTypeCd={}, {}", testDataKnoPersonal.getKnoTypeCd(), result.getKnoTypeCd());
+			log.debug("getKnoId={}, {}", testDataKnoPersonal.getKnoId(), result.getKnoId());
+			log.debug("getKnoNm={}, {}", testDataKnoPersonal.getKnoNm(), result.getKnoNm());
+			log.debug("getKnoCn={}, {}", testDataKnoPersonal.getKnoCn(), result.getKnoCn());
+			log.debug("getOthbcAt={}, {}", testDataKnoPersonal.getOthbcAt(), result.getOthbcAt());
+			log.debug("getAtchFileId={}, {}", testDataKnoPersonal.getAtchFileId(), result.getAtchFileId());
+			log.debug("getAtchFileId={}, {}", testDataKnoPersonal.getAtchFileId(), result.getAtchFileId());
+			log.debug("getFrstRegisterId={}, {}", testDataKnoPersonal.getFrstRegisterId(), result.getFrstRegisterId());
+			log.debug("getLastUpdusrId={}, {}", testDataKnoPersonal.getLastUpdusrId(), result.getLastUpdusrId());
+		}
+
+		// then
+//		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testDataKnoPersonal.getOrgnztNm(),
+//				result.getOrgnztNm());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testDataKnoPersonal.getOrgnztId(),
+				result.getOrgnztId());
+//		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testDataKnoPersonal.getKnoTypeNm(),
+//				result.getKnoTypeNm());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testDataKnoPersonal.getKnoTypeCd(),
+				result.getKnoTypeCd());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testDataKnoPersonal.getKnoId(),
+				result.getKnoId());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testDataKnoPersonal.getKnoNm(),
+				result.getKnoNm());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testDataKnoPersonal.getKnoCn(),
+				result.getKnoCn());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testDataKnoPersonal.getOthbcAt(),
+				result.getOthbcAt());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testDataKnoPersonal.getAtchFileId(),
+				result.getAtchFileId());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testDataKnoPersonal.getFrstRegisterId(),
+				result.getFrstRegisterId());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testDataKnoPersonal.getLastUpdusrId(),
+				result.getLastUpdusrId());
 	}
 
 }
