@@ -61,8 +61,8 @@ public class MapTeamDAO extends EgovComAbstractDAO{
 	 *
 	 * @param orgnztNm
 	 */
-	public void insertMapTeam(MapTeam mapTeam) throws Exception {
-		insert("MapTeamDAO.insertMapTeam", mapTeam);
+	public int insertMapTeam(final MapTeam mapTeam) {
+		return insert("MapTeamDAO.insertMapTeam", mapTeam);
 	}
 
 	/**

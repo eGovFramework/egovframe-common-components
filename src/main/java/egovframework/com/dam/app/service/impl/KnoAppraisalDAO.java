@@ -5,6 +5,7 @@ import java.util.List;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.dam.app.service.KnoAppraisal;
 import egovframework.com.dam.app.service.KnoAppraisalVO;
+import lombok.NoArgsConstructor;
 
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository("KnoAppraisalDAO")
+@NoArgsConstructor
 public class KnoAppraisalDAO extends EgovComAbstractDAO {
 
 	/**
@@ -31,8 +33,8 @@ public class KnoAppraisalDAO extends EgovComAbstractDAO {
 	 *
 	 * @param KnoAppraisalVO
 	 */
-	public List<EgovMap> selectKnoAppraisalList(KnoAppraisalVO searchVO) throws Exception {
-		return  selectList("KnoAppraisalDAO.selectKnoAppraisalList", searchVO);
+	public List<EgovMap> selectKnoAppraisalList(final KnoAppraisalVO searchVO) {
+		return selectList("KnoAppraisalDAO.selectKnoAppraisalList", searchVO);
 	}
 
 	/**
@@ -42,8 +44,8 @@ public class KnoAppraisalDAO extends EgovComAbstractDAO {
 	 *
 	 * @param KnoAppraisalVO
 	 */
-	public int selectKnoAppraisalTotCnt(KnoAppraisalVO searchVO) throws Exception {
-		return  (Integer)selectOne("KnoAppraisalDAO.selectKnoAppraisalTotCnt", searchVO);
+	public int selectKnoAppraisalTotCnt(final KnoAppraisalVO searchVO) {
+		return selectOne("KnoAppraisalDAO.selectKnoAppraisalTotCnt", searchVO);
 	}
 
 	/**
@@ -53,18 +55,8 @@ public class KnoAppraisalDAO extends EgovComAbstractDAO {
 	 *
 	 * @param KnoAppraisalVO
 	 */
-	public KnoAppraisal selectKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception {
-		return (KnoAppraisal)selectOne("KnoAppraisalDAO.selectKnoAppraisal", knoAppraisal);
-	}
-
-	/**
-	 * 지식정보평가 정보를 신규로 등록한다.
-	 * @param knoAps - 지식정보평가 model
-	 *
-	 * @param knoAps
-	 */
-	public void insertKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception {
-		insert("KnoAppraisalDAO.insertKnoAppraisal", knoAppraisal);
+	public KnoAppraisal selectKnoAppraisal(final KnoAppraisal knoAppraisal) {
+		return selectOne("KnoAppraisalDAO.selectKnoAppraisal", knoAppraisal);
 	}
 
 	/**
@@ -73,18 +65,8 @@ public class KnoAppraisalDAO extends EgovComAbstractDAO {
 	 *
 	 * @param knoAps
 	 */
-	public void updateKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception {
-		update("KnoAppraisalDAO.updateKnoAppraisal", knoAppraisal);
-	}
-
-	/**
-	 * 기 등록된 지식정보평가 정보를 삭제한다.
-	 * @param AppraisalknoAps - 지식정보평가 model
-	 *
-	 * @param knoAps
-	 */
-	public void deleteKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception {
-		delete("KnoAppraisalDAO.deleteKnoAppraisal", knoAppraisal);
+	public int updateKnoAppraisal(final KnoAppraisal knoAppraisal) {
+		return update("KnoAppraisalDAO.updateKnoAppraisal", knoAppraisal);
 	}
 
 }
