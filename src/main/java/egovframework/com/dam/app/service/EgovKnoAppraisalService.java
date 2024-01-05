@@ -53,12 +53,4 @@ public interface EgovKnoAppraisalService {
 	 */
 	void updateKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception;
 
-	/**
-	 * 기 등록된 지식정보평가 정보를 삭제한다.
-	 * @param AppraisalknoAps - 지식정보평가 model
-	 *
-	 * @param knoAps
-	 */
-	void deleteKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception;
-
 }

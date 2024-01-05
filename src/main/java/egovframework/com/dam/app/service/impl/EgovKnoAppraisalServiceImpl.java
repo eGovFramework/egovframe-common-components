@@ -79,15 +79,4 @@ public class EgovKnoAppraisalServiceImpl extends EgovAbstractServiceImpl impleme
 		KnoAppraisalDAO.updateKnoAppraisal(knoAppraisal);
 	}
 
-	/**
-	 * 기 등록된 지식정보평가 정보를 삭제한다.
-	 * @param AppraisalknoAps - 지식정보평가 model
-	 *
-	 * @param knoAps
-	 */
-	@Override
-	public void deleteKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception {
-		KnoAppraisalDAO.deleteKnoAppraisal(knoAppraisal);
-	}
-
 }

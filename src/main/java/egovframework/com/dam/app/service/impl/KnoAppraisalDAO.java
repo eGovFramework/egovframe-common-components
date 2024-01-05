@@ -5,6 +5,7 @@ import java.util.List;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.dam.app.service.KnoAppraisal;
 import egovframework.com.dam.app.service.KnoAppraisalVO;
+import lombok.NoArgsConstructor;
 
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
@@ -22,6 +23,7 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository("KnoAppraisalDAO")
+@NoArgsConstructor
 public class KnoAppraisalDAO extends EgovComAbstractDAO {
 
 	/**
@@ -65,16 +67,6 @@ public class KnoAppraisalDAO extends EgovComAbstractDAO {
 	 */
 	public int updateKnoAppraisal(final KnoAppraisal knoAppraisal) {
 		return update("KnoAppraisalDAO.updateKnoAppraisal", knoAppraisal);
-	}
-
-	/**
-	 * 기 등록된 지식정보평가 정보를 삭제한다.
-	 * @param AppraisalknoAps - 지식정보평가 model
-	 *
-	 * @param knoAps
-	 */
-	public void deleteKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception {
-		delete("KnoAppraisalDAO.deleteKnoAppraisal", knoAppraisal);
 	}
 
 }
