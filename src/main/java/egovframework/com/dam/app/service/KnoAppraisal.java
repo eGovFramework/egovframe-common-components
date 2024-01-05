@@ -219,7 +219,9 @@ public class KnoAppraisal {
 		return appYmd;
 	}
 	/**
+	 * 평가일자 값설정
 	 * @param appYmd the appYmd to set
+	 * @column_name `EVL_DE` char(20) DEFAULT NULL COMMENT '평가일자',
 	 */
 	public void setAppYmd(String appYmd) {
 		this.appYmd = appYmd;

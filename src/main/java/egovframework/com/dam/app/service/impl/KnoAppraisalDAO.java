@@ -63,8 +63,8 @@ public class KnoAppraisalDAO extends EgovComAbstractDAO {
 	 *
 	 * @param knoAps
 	 */
-	public void updateKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception {
-		update("KnoAppraisalDAO.updateKnoAppraisal", knoAppraisal);
+	public int updateKnoAppraisal(final KnoAppraisal knoAppraisal) {
+		return update("KnoAppraisalDAO.updateKnoAppraisal", knoAppraisal);
 	}
 
 	/**

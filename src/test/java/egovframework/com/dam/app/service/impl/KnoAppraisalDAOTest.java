@@ -544,4 +544,41 @@ public class KnoAppraisalDAOTest extends EgovTestAbstractDAO {
 				result.getLastUpdusrId());
 	}
 
+	/**
+	 * 지식정보평가 상세 정보를 조회 한다. 테스트
+	 */
+	@Test
+	public void a05updateKnoAppraisal() {
+		// given
+		final MapTeam testDataMapTeam = new MapTeam();
+		testDataMapTeam(testDataMapTeam);
+		final MapMaterial testDataMapMaterial = new MapMaterial();
+		testDataMapMaterial(testDataMapMaterial, testDataMapTeam);
+		final KnoPersonal testDataKnoPersonal = new KnoPersonal();
+		testDataKnoPersonal(testDataKnoPersonal, testDataMapMaterial, testDataMapTeam);
+
+		final KnoAppraisal knoAppraisal = new KnoAppraisal();
+		knoAppraisal.setKnoId(testDataKnoPersonal.getKnoId());
+
+		knoAppraisal.setAppYmd(EgovDateUtil.toString(new Date(), "yyyyMMddHHmmss", null));
+		knoAppraisal.setKnoAps("1");
+
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO != null) {
+			knoAppraisal.setSpeId(loginVO.getUniqId());
+
+			knoAppraisal.setLastUpdusrId(loginVO.getUniqId());
+		}
+
+		// when
+		final int result = knoAppraisalDAO.updateKnoAppraisal(knoAppraisal);
+
+		if (log.isDebugEnabled()) {
+			log.debug(DEBUG_RESULT, result);
+		}
+
+		// then
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);
+	}
+
 }
