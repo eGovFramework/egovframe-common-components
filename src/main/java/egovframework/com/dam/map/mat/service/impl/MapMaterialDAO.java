@@ -30,8 +30,8 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 *
 	 * @param MapMaterialVO
 	 */
-	public List<MapMaterialVO> selectMapMaterialList(MapMaterialVO searchVO) throws Exception {
-		return  selectList("MapMaterialDAO.selectMapMaterialList", searchVO);
+	public List<MapMaterialVO> selectMapMaterialList(final MapMaterialVO searchVO) {
+		return selectList("MapMaterialDAO.selectMapMaterialList", searchVO);
 	}
 
 	/**
@@ -62,8 +62,8 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 *
 	 * @param MapMaterialVO
 	 */
-	public void insertMapMaterial(MapMaterial mapMaterial) throws Exception {
-		insert("MapMaterialDAO.insertMapMaterial", mapMaterial);
+	public int insertMapMaterial(final MapMaterial mapMaterial) {
+		return insert("MapMaterialDAO.insertMapMaterial", mapMaterial);
 	}
 
 	/**

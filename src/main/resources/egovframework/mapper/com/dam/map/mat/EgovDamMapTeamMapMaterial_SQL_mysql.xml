@@ -3,7 +3,7 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="MapMaterialDAO">
 
-	<select id="selectMapMaterialList" parameterType="egovframework.com.dam.map.mat.service.MapMaterialVO" resultType="egovMap">
+	<select id="selectMapMaterialList" parameterType="egovframework.com.dam.map.mat.service.MapMaterialVO" resultType="egovframework.com.dam.map.mat.service.MapMaterialVO">
 		
 			SELECT  B.ORGNZT_NM						ORGNZT_NM
 				 ,	A.KNWLDG_TY_CODE				KNO_TYPE_CD
