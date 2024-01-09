@@ -131,7 +131,7 @@ public class MapMaterialDAOTest extends EgovTestAbstractDAO {
 
 	private void testData(final MapMaterial testData, final MapTeam testDataMapTeam) {
 		// given
-		testData.setKnoTypeCd("002");
+		testData.setKnoTypeCd("000");
 		final LocalDateTime now = LocalDateTime.now();
 		testData.setOrgnztId(testDataMapTeam.getOrgnztId());
 //		testData.setOrgnztId("test 이백행 조직ID " + now);
@@ -177,6 +177,70 @@ public class MapMaterialDAOTest extends EgovTestAbstractDAO {
 		// when
 		final List<MapMaterialVO> resultList = dao.selectMapMaterialList(searchVO);
 
+		debug(resultList, testDataMapTeam, testData);
+
+		// then
+		asserta01selectMapMaterialList(resultList, testDataMapTeam, testData);
+	}
+
+	/**
+	 * 등록된 지식맵(지식유형) 정보를 조회 한다. 테스트
+	 */
+	@Test
+	public void a01selectMapMaterialListSearchCondition1() {
+		// given
+		final MapTeam testDataMapTeam = new MapTeam();
+		testDataMapTeam(testDataMapTeam);
+
+		final MapMaterial testData = new MapMaterial();
+		testData(testData, testDataMapTeam);
+
+		final MapMaterialVO searchVO = new MapMaterialVO();
+		searchVO.setSearchCondition("1");
+		searchVO.setSearchKeyword(testDataMapTeam.getOrgnztNm());
+
+		searchVO.setFirstIndex(0);
+		searchVO.setRecordCountPerPage(10);
+
+		// when
+		final List<MapMaterialVO> resultList = dao.selectMapMaterialList(searchVO);
+
+		debug(resultList, testDataMapTeam, testData);
+
+		// then
+		asserta01selectMapMaterialList(resultList, testDataMapTeam, testData);
+	}
+
+	/**
+	 * 등록된 지식맵(지식유형) 정보를 조회 한다. 테스트
+	 */
+	@Test
+	public void a01selectMapMaterialListSearchCondition2() {
+		// given
+		final MapTeam testDataMapTeam = new MapTeam();
+		testDataMapTeam(testDataMapTeam);
+
+		final MapMaterial testData = new MapMaterial();
+		testData(testData, testDataMapTeam);
+
+		final MapMaterialVO searchVO = new MapMaterialVO();
+		searchVO.setSearchCondition("2");
+		searchVO.setSearchKeyword(testData.getKnoTypeNm());
+
+		searchVO.setFirstIndex(0);
+		searchVO.setRecordCountPerPage(10);
+
+		// when
+		final List<MapMaterialVO> resultList = dao.selectMapMaterialList(searchVO);
+
+		debug(resultList, testDataMapTeam, testData);
+
+		// then
+		asserta01selectMapMaterialList(resultList, testDataMapTeam, testData);
+	}
+
+	private void debug(final List<MapMaterialVO> resultList, final MapTeam testDataMapTeam,
+			final MapMaterial testData) {
 		if (log.isDebugEnabled()) {
 			log.debug("resultList={}", resultList);
 			log.debug("size={}", resultList.size());
@@ -199,13 +263,15 @@ public class MapMaterialDAOTest extends EgovTestAbstractDAO {
 						result.getLastUpdusrPnttm());
 			}
 		}
+	}
 
-		// then
+	private void asserta01selectMapMaterialList(final List<MapMaterialVO> resultList, final MapTeam testDataMapTeam,
+			final MapMaterial testData) {
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.size() > -1);
 		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT) + " 조직명", testDataMapTeam.getOrgnztNm(),
 				resultList.get(0).getOrgnztNm());
-//		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT) + " 지식유형코드", testData.getKnoTypeCd(),
-//				resultList.get(0).getKnoTypeCd());
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT) + " 지식유형코드", testData.getKnoTypeCd(),
+				resultList.get(0).getKnoTypeCd());
 		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT) + " 전문가ID", testData.getSpeId(),
 				resultList.get(0).getSpeId());
 		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT) + " 지식유형명", testData.getKnoTypeNm(),

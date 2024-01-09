@@ -3,20 +3,7 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="MapMaterialDAO">
 
-	<resultMap id="MapMaterialList" type="egovframework.com.dam.map.mat.service.MapMaterialVO">
-		<result property="orgnztNm" column="ORGNZT_NM"/>	
-		<result property="knoTypeCd" column="KNO_TYPE_CD"/>
-		<result property="speId" column="SPE_ID"/>
-		<result property="knoTypeNm" column="KNO_TYPE_NM"/>
-		<result property="clYmd" column="CL_YMD"/>
-		<result property="knoUrl" column="KNO_URL"/>
-		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
-		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
-		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
-		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
-	</resultMap>
-
-	<select id="selectMapMaterialList" parameterType="egovframework.com.dam.map.mat.service.MapMaterialVO" resultMap="MapMaterialList">
+	<select id="selectMapMaterialList" parameterType="egovframework.com.dam.map.mat.service.MapMaterialVO" resultType="egovframework.com.dam.map.mat.service.MapMaterialVO">
 		
 			SELECT  B.ORGNZT_NM						ORGNZT_NM
 				 ,	A.KNWLDG_TY_CODE				KNO_TYPE_CD
