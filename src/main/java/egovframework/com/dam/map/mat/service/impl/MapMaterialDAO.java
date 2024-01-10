@@ -41,8 +41,8 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 *
 	 * @param MapMaterialVO
 	 */
-	public int selectMapMaterialTotCnt(MapMaterialVO searchVO) throws Exception {
-		return  (Integer)selectOne("MapMaterialDAO.selectMapMaterialTotCnt", searchVO);
+	public int selectMapMaterialTotCnt(final MapMaterialVO searchVO) {
+		return selectOne("MapMaterialDAO.selectMapMaterialTotCnt", searchVO);
 	}
 
 	/**
