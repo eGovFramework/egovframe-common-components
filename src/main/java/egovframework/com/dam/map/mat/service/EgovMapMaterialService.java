@@ -40,7 +40,7 @@ public interface EgovMapMaterialService {
 	 *
 	 * @param MapMaterialVO
 	 */
-	MapMaterial selectMapMaterial(MapMaterial mapMaterial) throws Exception;
+	MapMaterialVO selectMapMaterial(MapMaterialVO mapMaterial);
 
 	/**
 	 * 지식맵(지식유형) 정보를 신규로 등록한다.
@@ -56,7 +56,7 @@ public interface EgovMapMaterialService {
 	 *
 	 * @param MapMaterialVO
 	 */
-	void updateMapMaterial(MapMaterial mapMaterial) throws Exception;
+	void updateMapMaterial(MapMaterial mapMaterial);
 
 	/**
 	 * 기 등록된 지식맵(지식유형) 정보를 삭제한다.

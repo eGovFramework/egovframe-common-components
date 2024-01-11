@@ -3,7 +3,7 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="MapMaterialDAO">
 
-	<resultMap id="MapMaterial" type="egovframework.com.dam.map.mat.service.MapMaterial">
+	<resultMap id="MapMaterial" type="egovframework.com.dam.map.mat.service.MapMaterialVO">
 		<result property="knoTypeCd" column="KNWLDG_TY_CODE"/>	
 		<result property="orgnztId" column="ORGNZT_ID"/>
 		<result property="orgnztNm" column="ORGNZT_NM"/>
@@ -69,7 +69,7 @@
 			</if>
 	</select>
 
-	<select id="selectMapMaterial" parameterType="egovframework.com.dam.map.mat.service.MapMaterial" resultMap="MapMaterial">
+	<select id="selectMapMaterial" parameterType="egovframework.com.dam.map.mat.service.MapMaterialVO" resultMap="MapMaterial">
 		
             SELECT  A.KNWLDG_TY_CODE
 				 ,	A.ORGNZT_ID

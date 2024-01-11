@@ -62,9 +62,8 @@ public class EgovMapMaterialServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @param MapMaterialVO
 	 */
 	@Override
-	public MapMaterial selectMapMaterial(MapMaterial mapMaterial) throws Exception {
-		MapMaterial mtm = MapMaterialDAO.selectMapMaterial(mapMaterial);
-		return mtm;
+	public MapMaterialVO selectMapMaterial(MapMaterialVO mapMaterial) {
+		return MapMaterialDAO.selectMapMaterial(mapMaterial);
 	}
 
 	/**
@@ -85,7 +84,7 @@ public class EgovMapMaterialServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @param MapMaterialVO
 	 */
 	@Override
-	public void updateMapMaterial(MapMaterial mapMaterial) throws Exception {
+	public void updateMapMaterial(MapMaterial mapMaterial) {
 		MapMaterialDAO.updateMapMaterial(mapMaterial);
 	}
 

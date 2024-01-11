@@ -110,10 +110,10 @@ public class EgovMapMaterialController {
 	 */
 	@RequestMapping(value="/dam/map/mat/EgovComDamMapMaterial.do")
 	public String selectMapMaterial(@ModelAttribute("loginVO") LoginVO loginVO
-			, MapMaterial mapMaterial
+			, MapMaterialVO mapMaterial
 			, ModelMap model
-			) throws Exception {
-		MapMaterial vo = mapMaterialService.selectMapMaterial(mapMaterial);
+			) {
+		MapMaterialVO vo = mapMaterialService.selectMapMaterial(mapMaterial);
 		model.addAttribute("result", vo);
 		return "egovframework/com/dam/map/mat/EgovComDamMapMaterialDetail";
 	}
@@ -173,20 +173,20 @@ public class EgovMapMaterialController {
 	 */
 	@RequestMapping(value="/dam/map/mat/EgovComDamMapMaterialModify.do")
 	public String updateMapMaterial(@ModelAttribute("loginVO") LoginVO loginVO
-			, @ModelAttribute("knoTypeCd") MapMaterial mapMaterial
+			, @ModelAttribute("knoTypeCd") MapMaterialVO mapMaterial
 			, BindingResult bindingResult
 			, @RequestParam Map<?, ?> commandMap
 			, ModelMap model
-			) throws Exception {
+			) {
 		String sCmd = commandMap.get("cmd") == null ? "": (String)commandMap.get("cmd");
 		if (sCmd.equals("")) {
-			MapMaterial vo = mapMaterialService.selectMapMaterial(mapMaterial);
+			MapMaterialVO vo = mapMaterialService.selectMapMaterial(mapMaterial);
 			model.addAttribute("mapMaterial", vo);
 			return "egovframework/com/dam/map/mat/EgovComDamMapMaterialModify";
 		} else if (sCmd.equals("Modify")) {
 			beanValidator.validate(mapMaterial, bindingResult);
 			if (bindingResult.hasErrors()){
-				MapMaterial vo = mapMaterialService.selectMapMaterial(mapMaterial);
+				MapMaterialVO vo = mapMaterialService.selectMapMaterial(mapMaterial);
 				model.addAttribute("mapMaterial", vo);
 				return "egovframework/com/dam/map/mat/EgovComDamMapMaterialModify";
 			}

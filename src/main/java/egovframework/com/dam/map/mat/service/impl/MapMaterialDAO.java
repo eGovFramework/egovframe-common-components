@@ -1,12 +1,17 @@
 package egovframework.com.dam.map.mat.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.string.EgovDateUtil;
+import org.springframework.stereotype.Repository;
+
+import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.dam.map.mat.service.MapMaterial;
 import egovframework.com.dam.map.mat.service.MapMaterialVO;
-
-import org.springframework.stereotype.Repository;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 개요
@@ -21,8 +26,17 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository("MapMaterialDAO")
+@RequiredArgsConstructor
 public class MapMaterialDAO extends EgovComAbstractDAO {
 
+	/**
+	 * 메시지
+	 */
+//	@Resource(name = "egovMessageSource")
+//	@Resource
+//	private EgovMessageSource egovMessageSource;
+	private final EgovMessageSource egovMessageSource;
+	
 	/**
 	 * 등록된 지식맵(지식유형) 정보를 조회 한다.
 	 * @param mapMaterialVO- 지식맵(지식유형) VO
@@ -52,8 +66,12 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 *
 	 * @param MapMaterialVO
 	 */
-	public MapMaterial selectMapMaterial(MapMaterial mapMaterial) throws Exception {
-		return (MapMaterial)selectOne("MapMaterialDAO.selectMapMaterial", mapMaterial);
+	public MapMaterialVO selectMapMaterial(final MapMaterialVO mapMaterial) {
+		final MapMaterialVO result = selectOne("MapMaterialDAO.selectMapMaterial", mapMaterial);
+		if (result == null) {
+			throw new BaseRuntimeException(egovMessageSource.getMessage("info.nodata.msg"));
+		}
+		return result;
 	}
 
 	/**
@@ -63,6 +81,8 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 * @param MapMaterialVO
 	 */
 	public int insertMapMaterial(final MapMaterial mapMaterial) {
+//		mapMaterial.setFrstRegistPnttm(LocalDateTime.now().toString());
+		mapMaterial.setFrstRegistPnttm(EgovDateUtil.toString(new Date(), "", null));
 		return insert("MapMaterialDAO.insertMapMaterial", mapMaterial);
 	}
 
@@ -72,7 +92,7 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 *
 	 * @param MapMaterialVO
 	 */
-	public void updateMapMaterial(MapMaterial mapMaterial) throws Exception {
+	public void updateMapMaterial(MapMaterial mapMaterial) {
 		update("MapMaterialDAO.updateMapMaterial", mapMaterial);
 	}
 

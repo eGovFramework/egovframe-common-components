@@ -9,6 +9,8 @@ package egovframework.com.dam.map.mat.service;
  * @author 박종선
  * @version 1.0
  * @created 12-8-2010 오후 3:44:52
+ * 
+ * @테이블 COMTNDAMMAPKNO 지식맵(유형별)
  */
 public class MapMaterial {
 
@@ -47,7 +49,14 @@ public class MapMaterial {
 	/** 
 	 * 최초등록시점
 	 */
+	@Deprecated
 	private String frstRegisterPnttm = "";
+	/** 
+	 * 최초등록시점
+	 * 
+	 * @컬럼 `FRST_REGIST_PNTTM` datetime DEFAULT NULL COMMENT '최초등록시점',
+	 */
+	private String frstRegistPnttm;
 	/**
 	 * 최종수정자ID
 	 */
@@ -156,15 +165,40 @@ public class MapMaterial {
 	/**
 	 * @return the frstRegisterPnttm
 	 */
+	@Deprecated
 	public String getFrstRegisterPnttm() {
 		return frstRegisterPnttm;
 	}
 	/**
 	 * @param frstRegisterPnttm the frstRegisterPnttm to set
 	 */
+	@Deprecated
 	public void setFrstRegisterPnttm(String frstRegisterPnttm) {
 		this.frstRegisterPnttm = frstRegisterPnttm;
 	}
+
+	/**
+	 * 최초등록시점
+	 * 
+	 * @return
+	 * 
+	 * @컬럼 `FRST_REGIST_PNTTM` datetime DEFAULT NULL COMMENT '최초등록시점',
+	 */
+	public String getFrstRegistPnttm() {
+		return frstRegistPnttm;
+	}
+
+	/**
+	 * 최초등록시점
+	 * 
+	 * @param frstRegistPnttm
+	 * 
+	 * @컬럼 `FRST_REGIST_PNTTM` datetime DEFAULT NULL COMMENT '최초등록시점',
+	 */
+	public void setFrstRegistPnttm(final String frstRegistPnttm) {
+		this.frstRegistPnttm = frstRegistPnttm;
+	}
+
 	/**
 	 * @return the lastUpdusrId
 	 */

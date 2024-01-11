@@ -41,7 +41,7 @@
 			</if>
 	</select>
 
-	<select id="selectMapMaterial" parameterType="egovframework.com.dam.map.mat.service.MapMaterial" resultType="egovframework.com.dam.map.mat.service.MapMaterial">
+	<select id="selectMapMaterial" parameterType="egovframework.com.dam.map.mat.service.MapMaterialVO" resultType="egovframework.com.dam.map.mat.service.MapMaterialVO">
 		
             SELECT  A.KNWLDG_TY_CODE 					knoTypeCd
 				 ,	A.ORGNZT_ID							orgnztId
