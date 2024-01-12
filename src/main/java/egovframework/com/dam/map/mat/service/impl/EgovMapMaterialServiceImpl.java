@@ -28,7 +28,7 @@ import org.springframework.stereotype.Service;
 public class EgovMapMaterialServiceImpl extends EgovAbstractServiceImpl implements EgovMapMaterialService {
 
 	@Resource(name="MapMaterialDAO")
-	private MapMaterialDAO MapMaterialDAO;
+	private MapMaterialDAO mapMaterialDAO;
 
 	/**
 	 * 등록된 지식맵(지식유형) 정보를 조회 한다.
@@ -39,7 +39,7 @@ public class EgovMapMaterialServiceImpl extends EgovAbstractServiceImpl implemen
 	 */
 	@Override
 	public List<MapMaterialVO> selectMapMaterialList(MapMaterialVO searchVO) throws Exception {
-		return MapMaterialDAO.selectMapMaterialList(searchVO);
+		return mapMaterialDAO.selectMapMaterialList(searchVO);
 	}
 
 	/**
@@ -51,7 +51,7 @@ public class EgovMapMaterialServiceImpl extends EgovAbstractServiceImpl implemen
 	 */
 	@Override
 	public int selectMapMaterialTotCnt(MapMaterialVO searchVO) throws Exception {
-		return MapMaterialDAO.selectMapMaterialTotCnt(searchVO);
+		return mapMaterialDAO.selectMapMaterialTotCnt(searchVO);
 	}
 
 	/**
@@ -63,7 +63,7 @@ public class EgovMapMaterialServiceImpl extends EgovAbstractServiceImpl implemen
 	 */
 	@Override
 	public MapMaterialVO selectMapMaterial(MapMaterialVO mapMaterial) {
-		return MapMaterialDAO.selectMapMaterial(mapMaterial);
+		return mapMaterialDAO.selectMapMaterial(mapMaterial);
 	}
 
 	/**
@@ -73,8 +73,8 @@ public class EgovMapMaterialServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @param MapMaterialVO
 	 */
 	@Override
-	public void insertMapMaterial(MapMaterial mapMaterial) throws Exception {
-		MapMaterialDAO.insertMapMaterial(mapMaterial);
+	public void insertMapMaterial(final MapMaterialVO mapMaterialVO)  {
+		mapMaterialDAO.insertMapMaterial(mapMaterialVO);
 	}
 
 	/**
@@ -85,7 +85,7 @@ public class EgovMapMaterialServiceImpl extends EgovAbstractServiceImpl implemen
 	 */
 	@Override
 	public void updateMapMaterial(MapMaterial mapMaterial) {
-		MapMaterialDAO.updateMapMaterial(mapMaterial);
+		mapMaterialDAO.updateMapMaterial(mapMaterial);
 	}
 
 	/**
@@ -96,7 +96,7 @@ public class EgovMapMaterialServiceImpl extends EgovAbstractServiceImpl implemen
 	 */
 	@Override
 	public void deleteMapMaterial(MapMaterial mapMaterial) throws Exception {
-		MapMaterialDAO.deleteMapMaterial(mapMaterial);
+		mapMaterialDAO.deleteMapMaterial(mapMaterial);
 	}
 
 	/**
@@ -107,6 +107,6 @@ public class EgovMapMaterialServiceImpl extends EgovAbstractServiceImpl implemen
 	 */
 	@Override
 	public int knoTypeCdCheck(String knoTypeCd) throws Exception {
-		return MapMaterialDAO.knoTypeCdCheck(knoTypeCd);
+		return mapMaterialDAO.knoTypeCdCheck(knoTypeCd);
 	}
 }

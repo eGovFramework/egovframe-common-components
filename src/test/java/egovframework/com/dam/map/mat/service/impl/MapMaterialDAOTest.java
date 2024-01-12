@@ -129,7 +129,7 @@ public class MapMaterialDAOTest extends EgovTestAbstractDAO {
 		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_INSERT), 1, result);
 	}
 
-	private void testData(final MapMaterial testData, final MapTeam testDataMapTeam) {
+	private void testData(final MapMaterialVO testData, final MapTeam testDataMapTeam) {
 		// given
 		testData.setKnoTypeCd("000");
 		final LocalDateTime now = LocalDateTime.now();
@@ -168,7 +168,7 @@ public class MapMaterialDAOTest extends EgovTestAbstractDAO {
 		final MapTeam testDataMapTeam = new MapTeam();
 		testDataMapTeam(testDataMapTeam);
 
-		final MapMaterial testData = new MapMaterial();
+		final MapMaterialVO testData = new MapMaterialVO();
 		testData(testData, testDataMapTeam);
 
 		final MapMaterialVO searchVO = new MapMaterialVO();
@@ -194,7 +194,7 @@ public class MapMaterialDAOTest extends EgovTestAbstractDAO {
 		final MapTeam testDataMapTeam = new MapTeam();
 		testDataMapTeam(testDataMapTeam);
 
-		final MapMaterial testData = new MapMaterial();
+		final MapMaterialVO testData = new MapMaterialVO();
 		testData(testData, testDataMapTeam);
 
 		final MapMaterialVO searchVO = new MapMaterialVO();
@@ -223,7 +223,7 @@ public class MapMaterialDAOTest extends EgovTestAbstractDAO {
 		final MapTeam testDataMapTeam = new MapTeam();
 		testDataMapTeam(testDataMapTeam);
 
-		final MapMaterial testData = new MapMaterial();
+		final MapMaterialVO testData = new MapMaterialVO();
 		testData(testData, testDataMapTeam);
 
 		final MapMaterialVO searchVO = new MapMaterialVO();
@@ -304,7 +304,7 @@ public class MapMaterialDAOTest extends EgovTestAbstractDAO {
 		final MapTeam testDataMapTeam = new MapTeam();
 		testDataMapTeam(testDataMapTeam);
 
-		final MapMaterial testData = new MapMaterial();
+		final MapMaterialVO testData = new MapMaterialVO();
 		testData(testData, testDataMapTeam);
 
 		final MapMaterialVO searchVO = new MapMaterialVO();
@@ -329,7 +329,7 @@ public class MapMaterialDAOTest extends EgovTestAbstractDAO {
 		final MapTeam testDataMapTeam = new MapTeam();
 		testDataMapTeam(testDataMapTeam);
 
-		final MapMaterial testData = new MapMaterial();
+		final MapMaterialVO testData = new MapMaterialVO();
 		testData(testData, testDataMapTeam);
 
 		final MapMaterialVO searchVO = new MapMaterialVO();
@@ -356,7 +356,7 @@ public class MapMaterialDAOTest extends EgovTestAbstractDAO {
 		final MapTeam testDataMapTeam = new MapTeam();
 		testDataMapTeam(testDataMapTeam);
 
-		final MapMaterial testData = new MapMaterial();
+		final MapMaterialVO testData = new MapMaterialVO();
 		testData(testData, testDataMapTeam);
 
 		final MapMaterialVO searchVO = new MapMaterialVO();
@@ -383,7 +383,7 @@ public class MapMaterialDAOTest extends EgovTestAbstractDAO {
 		final MapTeam testDataMapTeam = new MapTeam();
 		testDataMapTeam(testDataMapTeam);
 
-		final MapMaterial testData = new MapMaterial();
+		final MapMaterialVO testData = new MapMaterialVO();
 		testData(testData, testDataMapTeam);
 
 		final MapMaterialVO mapMaterial = new MapMaterialVO();
@@ -434,6 +434,44 @@ public class MapMaterialDAOTest extends EgovTestAbstractDAO {
 				result.getLastUpdusrId());
 //		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT) + " 최종수정시점", testData.getLastUpdusrPnttm(),
 //				result.getLastUpdusrPnttm());
+	}
+
+	/**
+	 * 지식맵(지식유형) 정보를 신규로 등록한다. 테스트
+	 */
+	@Test
+	public void a04insertMapMaterial() {
+		// given
+		final MapTeam testDataMapTeam = new MapTeam();
+		testDataMapTeam(testDataMapTeam);
+
+		final MapMaterialVO mapMaterialVO = new MapMaterialVO();
+		mapMaterialVO.setKnoTypeCd("000");
+		mapMaterialVO.setOrgnztId(testDataMapTeam.getOrgnztId());
+		final LocalDateTime now = LocalDateTime.now();
+//		testData.setOrgnztId("test 이백행 조직ID " + now);
+		mapMaterialVO.setSpeId("test 이백행 전문가ID");
+		mapMaterialVO.setKnoTypeNm("test 이백행 지식유형명 " + now);
+//		testData.setClYmd(EgovDateUtil.toString(new Date(), "yyyyMMddHHmmss", null));
+//		testData.setClYmd(EgovDateUtil.toString(new Date(), "yyyy-MM-dd", null));
+		mapMaterialVO.setClYmd(EgovDateUtil.toString(new Date(), "", null));
+		mapMaterialVO.setKnoUrl("test 이백행 지식URL " + now);
+
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO != null) {
+			mapMaterialVO.setFrstRegisterId(loginVO.getUniqId());
+			mapMaterialVO.setLastUpdusrId(loginVO.getUniqId());
+		}
+
+		// when
+		final int result = dao.insertMapMaterial(mapMaterialVO);
+
+		if (log.isDebugEnabled()) {
+			log.debug(DEBUG_RESULT, result);
+		}
+
+		// then
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_INSERT), 1, result);
 	}
 
 }

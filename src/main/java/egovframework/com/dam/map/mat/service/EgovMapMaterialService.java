@@ -48,7 +48,7 @@ public interface EgovMapMaterialService {
 	 *
 	 * @param MapMaterialVO
 	 */
-	void insertMapMaterial(MapMaterial mapMaterial) throws Exception;
+	void insertMapMaterial(MapMaterialVO mapMaterialVO);
 
 	/**
 	 * 기 등록 된 지식맵(지식유형)링 정보를 수정 한다.

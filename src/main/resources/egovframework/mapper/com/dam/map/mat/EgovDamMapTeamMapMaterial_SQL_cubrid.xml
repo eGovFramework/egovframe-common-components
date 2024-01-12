@@ -84,7 +84,7 @@
 		
 	</select>
 
-	<insert id="insertMapMaterial">
+	<insert id="insertMapMaterial" parameterType="egovframework.com.dam.map.mat.service.MapMaterialVO">
 		
 		    INSERT 
 		      INTO  COMTNDAMMAPKNO

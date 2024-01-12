@@ -80,10 +80,10 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 *
 	 * @param MapMaterialVO
 	 */
-	public int insertMapMaterial(final MapMaterial mapMaterial) {
-//		mapMaterial.setFrstRegistPnttm(LocalDateTime.now().toString());
-		mapMaterial.setFrstRegistPnttm(EgovDateUtil.toString(new Date(), "", null));
-		return insert("MapMaterialDAO.insertMapMaterial", mapMaterial);
+	public int insertMapMaterial(final MapMaterialVO mapMaterialVO) {
+//		mapMaterialVO.setFrstRegistPnttm(LocalDateTime.now().toString());
+		mapMaterialVO.setFrstRegistPnttm(EgovDateUtil.toString(new Date(), "", null));
+		return insert("MapMaterialDAO.insertMapMaterial", mapMaterialVO);
 	}
 
 	/**
