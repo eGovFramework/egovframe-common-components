@@ -56,7 +56,7 @@ public interface EgovMapMaterialService {
 	 *
 	 * @param MapMaterialVO
 	 */
-	void updateMapMaterial(MapMaterial mapMaterial);
+	int updateMapMaterial(MapMaterialVO mapMaterialVO);
 
 	/**
 	 * 기 등록된 지식맵(지식유형) 정보를 삭제한다.

@@ -107,6 +107,11 @@ public class MapMaterialDAOTest extends EgovTestAbstractDAO {
 	 */
 	protected static final String FAIL_COMMON_INSERT = "fail.common.insert";
 
+	/**
+	 * 수정이 실패하였습니다.
+	 */
+	protected static final String FAIL_COMMON_UPDATE = "fail.common.update";
+
 	private void testDataMapTeam(final MapTeam testDataMapTeam) {
 		// given
 		testDataMapTeam.setOrgnztId("TEST1_" + EgovDateUtil.toString(new Date(), "yyyyMMddHHmmss", null));
@@ -472,6 +477,47 @@ public class MapMaterialDAOTest extends EgovTestAbstractDAO {
 
 		// then
 		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_INSERT), 1, result);
+	}
+
+	/**
+	 * 기 등록 된 지식맵(지식유형)링 정보를 수정 한다. 테스트
+	 */
+	@Test
+	public void a05updateMapMaterial() {
+		// given
+		final MapTeam testDataMapTeam = new MapTeam();
+		testDataMapTeam(testDataMapTeam);
+
+		final MapMaterialVO testData = new MapMaterialVO();
+		testData(testData, testDataMapTeam);
+
+		final MapMaterialVO mapMaterialVO = new MapMaterialVO();
+		mapMaterialVO.setKnoTypeCd("000");
+		mapMaterialVO.setOrgnztId(testDataMapTeam.getOrgnztId());
+		final LocalDateTime now = LocalDateTime.now();
+//		testData.setOrgnztId("test 이백행 조직ID " + now);
+		mapMaterialVO.setSpeId("test 이백행 전문가ID 수정");
+		mapMaterialVO.setKnoTypeNm("test 이백행 지식유형명 수정 " + now);
+//		testData.setClYmd(EgovDateUtil.toString(new Date(), "yyyyMMddHHmmss", null));
+//		testData.setClYmd(EgovDateUtil.toString(new Date(), "yyyy-MM-dd", null));
+		mapMaterialVO.setClYmd(EgovDateUtil.toString(new Date(), "", null));
+		mapMaterialVO.setKnoUrl("test 이백행 지식URL 수정 " + now);
+
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO != null) {
+//			mapMaterialVO.setFrstRegisterId(loginVO.getUniqId());
+			mapMaterialVO.setLastUpdusrId(loginVO.getUniqId());
+		}
+
+		// when
+		final int result = dao.updateMapMaterial(mapMaterialVO);
+
+		if (log.isDebugEnabled()) {
+			log.debug(DEBUG_RESULT, result);
+		}
+
+		// then
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_UPDATE), 1, result);
 	}
 
 }

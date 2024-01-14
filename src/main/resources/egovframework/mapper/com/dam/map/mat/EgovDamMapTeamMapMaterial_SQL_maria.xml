@@ -90,7 +90,7 @@
 		
 	</insert>
 
-	<update id="updateMapMaterial">
+	<update id="updateMapMaterial" parameterType="egovframework.com.dam.map.mat.service.MapMaterialVO">
 		
             UPDATE  COMTNDAMMAPKNO 
                SET  ORGNZT_ID         = #{orgnztId}

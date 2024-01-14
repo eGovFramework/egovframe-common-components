@@ -84,8 +84,8 @@ public class EgovMapMaterialServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @param MapMaterialVO
 	 */
 	@Override
-	public void updateMapMaterial(MapMaterial mapMaterial) {
-		mapMaterialDAO.updateMapMaterial(mapMaterial);
+	public int updateMapMaterial(MapMaterialVO mapMaterialVO) {
+		return mapMaterialDAO.updateMapMaterial(mapMaterialVO);
 	}
 
 	/**

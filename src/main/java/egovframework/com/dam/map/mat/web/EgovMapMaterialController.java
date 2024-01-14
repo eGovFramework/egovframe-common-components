@@ -173,25 +173,25 @@ public class EgovMapMaterialController {
 	 */
 	@RequestMapping(value="/dam/map/mat/EgovComDamMapMaterialModify.do")
 	public String updateMapMaterial(@ModelAttribute("loginVO") LoginVO loginVO
-			, @ModelAttribute("knoTypeCd") MapMaterialVO mapMaterial
+			, @ModelAttribute("knoTypeCd") MapMaterialVO mapMaterialVO
 			, BindingResult bindingResult
 			, @RequestParam Map<?, ?> commandMap
 			, ModelMap model
 			) {
 		String sCmd = commandMap.get("cmd") == null ? "": (String)commandMap.get("cmd");
 		if (sCmd.equals("")) {
-			MapMaterialVO vo = mapMaterialService.selectMapMaterial(mapMaterial);
+			MapMaterialVO vo = mapMaterialService.selectMapMaterial(mapMaterialVO);
 			model.addAttribute("mapMaterial", vo);
 			return "egovframework/com/dam/map/mat/EgovComDamMapMaterialModify";
 		} else if (sCmd.equals("Modify")) {
-			beanValidator.validate(mapMaterial, bindingResult);
+			beanValidator.validate(mapMaterialVO, bindingResult);
 			if (bindingResult.hasErrors()){
-				MapMaterialVO vo = mapMaterialService.selectMapMaterial(mapMaterial);
+				MapMaterialVO vo = mapMaterialService.selectMapMaterial(mapMaterialVO);
 				model.addAttribute("mapMaterial", vo);
 				return "egovframework/com/dam/map/mat/EgovComDamMapMaterialModify";
 			}
-			mapMaterial.setFrstRegisterId(loginVO.getUniqId());
-			mapMaterialService.updateMapMaterial(mapMaterial);
+			mapMaterialVO.setFrstRegisterId(loginVO.getUniqId());
+			mapMaterialService.updateMapMaterial(mapMaterialVO);
 			return "forward:/dam/map/mat/EgovComDamMapMaterialList.do";
 		} else {
 			return "forward:/dam/map/mat/EgovComDamMapMaterialList.do";

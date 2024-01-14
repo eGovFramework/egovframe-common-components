@@ -92,8 +92,8 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 *
 	 * @param MapMaterialVO
 	 */
-	public void updateMapMaterial(MapMaterial mapMaterial) {
-		update("MapMaterialDAO.updateMapMaterial", mapMaterial);
+	public int updateMapMaterial(final MapMaterialVO mapMaterialVO) {
+		return update("MapMaterialDAO.updateMapMaterial", mapMaterialVO);
 	}
 
 	/**
