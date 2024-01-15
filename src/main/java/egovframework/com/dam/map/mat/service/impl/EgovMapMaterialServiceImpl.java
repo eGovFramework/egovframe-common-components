@@ -95,8 +95,8 @@ public class EgovMapMaterialServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @param MapMaterialVO
 	 */
 	@Override
-	public void deleteMapMaterial(MapMaterial mapMaterial) throws Exception {
-		mapMaterialDAO.deleteMapMaterial(mapMaterial);
+	public int deleteMapMaterial(MapMaterialVO mapMaterialVO) {
+		return mapMaterialDAO.deleteMapMaterial(mapMaterialVO);
 	}
 
 	/**

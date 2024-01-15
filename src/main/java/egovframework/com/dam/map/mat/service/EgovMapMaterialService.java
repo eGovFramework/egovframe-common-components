@@ -64,7 +64,7 @@ public interface EgovMapMaterialService {
 	 *
 	 * @param MapMaterialVO
 	 */
-	void deleteMapMaterial(MapMaterial mapMaterial) throws Exception;
+	int deleteMapMaterial(MapMaterialVO mapMaterialVO);
 
 	/**
 	 * 지식유형코드 중복 여부 체크(위치 : 1260.지식맵관리(유형) > 등록)

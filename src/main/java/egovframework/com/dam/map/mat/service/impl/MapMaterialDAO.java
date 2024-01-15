@@ -102,8 +102,8 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 *
 	 * @param MapMaterialVO
 	 */
-	public void deleteMapMaterial(MapMaterial mapMaterial) throws Exception {
-		delete("MapMaterialDAO.deleteMapMaterial", mapMaterial);
+	public int deleteMapMaterial(final MapMaterialVO mapMaterialVO) {
+		return delete("MapMaterialDAO.deleteMapMaterial", mapMaterialVO);
 	}
 
 	/**

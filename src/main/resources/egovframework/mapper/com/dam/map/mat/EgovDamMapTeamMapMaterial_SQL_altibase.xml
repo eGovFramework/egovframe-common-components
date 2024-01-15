@@ -132,7 +132,7 @@
 		
 	</update>
 
-	<delete id="deleteMapMaterial">
+	<delete id="deleteMapMaterial" parameterType="egovframework.com.dam.map.mat.service.MapMaterialVO">
 		
             DELETE  FROM COMTNDAMMAPKNO 
             WHERE   KNWLDG_TY_CODE = #{knoTypeCd}

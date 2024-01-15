@@ -112,6 +112,11 @@ public class MapMaterialDAOTest extends EgovTestAbstractDAO {
 	 */
 	protected static final String FAIL_COMMON_UPDATE = "fail.common.update";
 
+	/**
+	 * 삭제가 실패하였습니다.
+	 */
+	protected static final String FAIL_COMMON_DELETE = "fail.common.delete";
+
 	private void testDataMapTeam(final MapTeam testDataMapTeam) {
 		// given
 		testDataMapTeam.setOrgnztId("TEST1_" + EgovDateUtil.toString(new Date(), "yyyyMMddHHmmss", null));
@@ -492,7 +497,8 @@ public class MapMaterialDAOTest extends EgovTestAbstractDAO {
 		testData(testData, testDataMapTeam);
 
 		final MapMaterialVO mapMaterialVO = new MapMaterialVO();
-		mapMaterialVO.setKnoTypeCd("000");
+		mapMaterialVO.setKnoTypeCd(testData.getKnoTypeCd());
+
 		mapMaterialVO.setOrgnztId(testDataMapTeam.getOrgnztId());
 		final LocalDateTime now = LocalDateTime.now();
 //		testData.setOrgnztId("test 이백행 조직ID " + now);
@@ -518,6 +524,32 @@ public class MapMaterialDAOTest extends EgovTestAbstractDAO {
 
 		// then
 		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_UPDATE), 1, result);
+	}
+
+	/**
+	 * 기 등록된 지식맵(지식유형) 정보를 삭제한다. 테스트
+	 */
+	@Test
+	public void a06deleteMapMaterial() {
+		// given
+		final MapTeam testDataMapTeam = new MapTeam();
+		testDataMapTeam(testDataMapTeam);
+
+		final MapMaterialVO testData = new MapMaterialVO();
+		testData(testData, testDataMapTeam);
+
+		final MapMaterialVO mapMaterialVO = new MapMaterialVO();
+		mapMaterialVO.setKnoTypeCd(testData.getKnoTypeCd());
+
+		// when
+		final int result = dao.deleteMapMaterial(mapMaterialVO);
+
+		if (log.isDebugEnabled()) {
+			log.debug(DEBUG_RESULT, result);
+		}
+
+		// then
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_DELETE), 1, result);
 	}
 
 }

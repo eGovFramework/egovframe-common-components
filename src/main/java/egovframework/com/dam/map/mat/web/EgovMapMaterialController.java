@@ -207,10 +207,10 @@ public class EgovMapMaterialController {
 	 */
 	@RequestMapping(value="/dam/map/mat/EgovComDamMapMaterialRemove.do")
 	public String deleteMapMaterial(@ModelAttribute("loginVO") LoginVO loginVO
-			, MapMaterial mapMaterial
+			, MapMaterialVO mapMaterialVO
 			, ModelMap model
-			) throws Exception {
-		mapMaterialService.deleteMapMaterial(mapMaterial);
+			) {
+		mapMaterialService.deleteMapMaterial(mapMaterialVO);
 		return "forward:/dam/map/mat/EgovComDamMapMaterialList.do";
 	}
 
