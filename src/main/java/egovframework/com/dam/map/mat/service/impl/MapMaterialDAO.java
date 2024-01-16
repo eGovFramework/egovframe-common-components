@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
-import egovframework.com.dam.map.mat.service.MapMaterial;
 import egovframework.com.dam.map.mat.service.MapMaterialVO;
 import lombok.RequiredArgsConstructor;
 
@@ -110,9 +109,9 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 * 지식유형코드 중복 여부 체크(위치 : 1260.지식맵관리(유형) > 등록)
 	 * @param knoTypeCd
 	 * @return 중복 여부
-	 * @throws Exception
 	 */
-	public int knoTypeCdCheck(String knoTypeCd) throws Exception {
-		return (Integer)selectOne("MapMaterialDAO.selectKnoTypeCdCheck", knoTypeCd);
+	public int knoTypeCdCheck(final String knoTypeCd) {
+		return selectOne("MapMaterialDAO.selectKnoTypeCdCheck", knoTypeCd);
 	}
+
 }

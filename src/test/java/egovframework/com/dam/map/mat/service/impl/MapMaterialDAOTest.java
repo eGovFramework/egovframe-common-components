@@ -552,4 +552,30 @@ public class MapMaterialDAOTest extends EgovTestAbstractDAO {
 		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_DELETE), 1, result);
 	}
 
+	/**
+	 * 기 등록된 지식맵(지식유형) 정보를 삭제한다. 테스트
+	 */
+	@Test
+	public void a07knoTypeCdCheck() {
+		// given
+		final MapTeam testDataMapTeam = new MapTeam();
+		testDataMapTeam(testDataMapTeam);
+
+		final MapMaterialVO testData = new MapMaterialVO();
+		testData(testData, testDataMapTeam);
+
+		final MapMaterialVO mapMaterialVO = new MapMaterialVO();
+		mapMaterialVO.setKnoTypeCd(testData.getKnoTypeCd());
+
+		// when
+		final int result = dao.knoTypeCdCheck(mapMaterialVO.getKnoTypeCd());
+
+		if (log.isDebugEnabled()) {
+			log.debug(DEBUG_RESULT, result);
+		}
+
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), result > -1);
+	}
+
 }
