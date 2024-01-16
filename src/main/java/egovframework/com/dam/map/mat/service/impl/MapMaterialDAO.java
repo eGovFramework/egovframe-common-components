@@ -1,12 +1,16 @@
 package egovframework.com.dam.map.mat.service.impl;
 
+import java.util.Date;
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
-import egovframework.com.dam.map.mat.service.MapMaterial;
-import egovframework.com.dam.map.mat.service.MapMaterialVO;
-
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.string.EgovDateUtil;
 import org.springframework.stereotype.Repository;
+
+import egovframework.com.cmm.EgovMessageSource;
+import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.dam.map.mat.service.MapMaterialVO;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 개요
@@ -21,8 +25,17 @@ import org.springframework.stereotype.Repository;
  */
 
 @Repository("MapMaterialDAO")
+@RequiredArgsConstructor
 public class MapMaterialDAO extends EgovComAbstractDAO {
 
+	/**
+	 * 메시지
+	 */
+//	@Resource(name = "egovMessageSource")
+//	@Resource
+//	private EgovMessageSource egovMessageSource;
+	private final EgovMessageSource egovMessageSource;
+	
 	/**
 	 * 등록된 지식맵(지식유형) 정보를 조회 한다.
 	 * @param mapMaterialVO- 지식맵(지식유형) VO
@@ -30,8 +43,8 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 *
 	 * @param MapMaterialVO
 	 */
-	public List<MapMaterialVO> selectMapMaterialList(MapMaterialVO searchVO) throws Exception {
-		return  selectList("MapMaterialDAO.selectMapMaterialList", searchVO);
+	public List<MapMaterialVO> selectMapMaterialList(final MapMaterialVO searchVO) {
+		return selectList("MapMaterialDAO.selectMapMaterialList", searchVO);
 	}
 
 	/**
@@ -41,8 +54,8 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 *
 	 * @param MapMaterialVO
 	 */
-	public int selectMapMaterialTotCnt(MapMaterialVO searchVO) throws Exception {
-		return  (Integer)selectOne("MapMaterialDAO.selectMapMaterialTotCnt", searchVO);
+	public int selectMapMaterialTotCnt(final MapMaterialVO searchVO) {
+		return selectOne("MapMaterialDAO.selectMapMaterialTotCnt", searchVO);
 	}
 
 	/**
@@ -52,8 +65,12 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 *
 	 * @param MapMaterialVO
 	 */
-	public MapMaterial selectMapMaterial(MapMaterial mapMaterial) throws Exception {
-		return (MapMaterial)selectOne("MapMaterialDAO.selectMapMaterial", mapMaterial);
+	public MapMaterialVO selectMapMaterial(final MapMaterialVO mapMaterial) {
+		final MapMaterialVO result = selectOne("MapMaterialDAO.selectMapMaterial", mapMaterial);
+		if (result == null) {
+			throw new BaseRuntimeException(egovMessageSource.getMessage("info.nodata.msg"));
+		}
+		return result;
 	}
 
 	/**
@@ -62,8 +79,10 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 *
 	 * @param MapMaterialVO
 	 */
-	public void insertMapMaterial(MapMaterial mapMaterial) throws Exception {
-		insert("MapMaterialDAO.insertMapMaterial", mapMaterial);
+	public int insertMapMaterial(final MapMaterialVO mapMaterialVO) {
+//		mapMaterialVO.setFrstRegistPnttm(LocalDateTime.now().toString());
+		mapMaterialVO.setFrstRegistPnttm(EgovDateUtil.toString(new Date(), "", null));
+		return insert("MapMaterialDAO.insertMapMaterial", mapMaterialVO);
 	}
 
 	/**
@@ -72,8 +91,8 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 *
 	 * @param MapMaterialVO
 	 */
-	public void updateMapMaterial(MapMaterial mapMaterial) throws Exception {
-		update("MapMaterialDAO.updateMapMaterial", mapMaterial);
+	public int updateMapMaterial(final MapMaterialVO mapMaterialVO) {
+		return update("MapMaterialDAO.updateMapMaterial", mapMaterialVO);
 	}
 
 	/**
@@ -82,17 +101,17 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 *
 	 * @param MapMaterialVO
 	 */
-	public void deleteMapMaterial(MapMaterial mapMaterial) throws Exception {
-		delete("MapMaterialDAO.deleteMapMaterial", mapMaterial);
+	public int deleteMapMaterial(final MapMaterialVO mapMaterialVO) {
+		return delete("MapMaterialDAO.deleteMapMaterial", mapMaterialVO);
 	}
 
 	/**
 	 * 지식유형코드 중복 여부 체크(위치 : 1260.지식맵관리(유형) > 등록)
 	 * @param knoTypeCd
 	 * @return 중복 여부
-	 * @throws Exception
 	 */
-	public int knoTypeCdCheck(String knoTypeCd) throws Exception {
-		return (Integer)selectOne("MapMaterialDAO.selectKnoTypeCdCheck", knoTypeCd);
+	public int knoTypeCdCheck(final String knoTypeCd) {
+		return selectOne("MapMaterialDAO.selectKnoTypeCdCheck", knoTypeCd);
 	}
+
 }

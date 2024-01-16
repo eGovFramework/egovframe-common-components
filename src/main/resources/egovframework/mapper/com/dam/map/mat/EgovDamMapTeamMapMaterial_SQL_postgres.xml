@@ -3,7 +3,7 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="MapMaterialDAO">
 
-	<select id="selectMapMaterialList" parameterType="egovframework.com.dam.map.mat.service.MapMaterialVO" resultType="egovMap">
+	<select id="selectMapMaterialList" parameterType="egovframework.com.dam.map.mat.service.MapMaterialVO" resultMap="MapMaterialList">
 		
 			SELECT  B.ORGNZT_NM						ORGNZT_NM
 				 ,	A.KNWLDG_TY_CODE				KNO_TYPE_CD
@@ -41,7 +41,7 @@
 			</if>
 	</select>
 
-	<select id="selectMapMaterial" parameterType="egovframework.com.dam.map.mat.service.MapMaterial" resultType="egovframework.com.dam.map.mat.service.MapMaterial">
+	<select id="selectMapMaterial" parameterType="egovframework.com.dam.map.mat.service.MapMaterialVO" resultType="egovframework.com.dam.map.mat.service.MapMaterialVO">
 		
             SELECT  A.KNWLDG_TY_CODE 					knoTypeCd
 				 ,	A.ORGNZT_ID							orgnztId
@@ -60,7 +60,7 @@
 		
 	</select>
 
-	<insert id="insertMapMaterial">
+	<insert id="insertMapMaterial" parameterType="egovframework.com.dam.map.mat.service.MapMaterialVO">
 		
 		    INSERT 
 		      INTO  COMTNDAMMAPKNO
@@ -90,7 +90,7 @@
 		
 	</insert>
 
-	<update id="updateMapMaterial">
+	<update id="updateMapMaterial" parameterType="egovframework.com.dam.map.mat.service.MapMaterialVO">
 		
             UPDATE  COMTNDAMMAPKNO 
                SET  ORGNZT_ID         = #{orgnztId}
@@ -104,7 +104,7 @@
 		
 	</update>
 
-	<delete id="deleteMapMaterial">
+	<delete id="deleteMapMaterial" parameterType="egovframework.com.dam.map.mat.service.MapMaterialVO">
 		
             DELETE  FROM COMTNDAMMAPKNO 
             WHERE   KNWLDG_TY_CODE = #{knoTypeCd}
