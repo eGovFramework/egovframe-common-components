@@ -311,5 +311,28 @@ public class WikMnthngReprtDAOTest extends EgovTestAbstractDAO{
         assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultAll > 0);
         assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);
     }
+
+
+    /**
+     * 주어진 조건에 맞는 직위명 조회 테스트 코드
+     */
+    @Test
+    public void testSelectWrterClsfNm() {
+        // given
+        final String writerId = testUserVO.getUniqId(); // 관리자
+        /**
+         * 로그인 사용자 정보
+         * ESNTL_ID(고유ID)         EMPLYR_ID    USER_NM    OFCPS_NM
+         * USRCNFRM_00000000000    TEST1        테스트1     관리자
+         * USRCNFRM_99999999999    webmaster    웹마스터     웹관리자
+         */
+
+        // when
+        final String result = wikMnthngReprtDAO.selectWrterClsfNm(writerId);
+
+        // then
+        assertSelectReportr("관리자", result);
+    }
+
 }
 
