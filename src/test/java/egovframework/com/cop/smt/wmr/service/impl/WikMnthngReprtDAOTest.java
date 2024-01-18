@@ -1,6 +1,7 @@
 package egovframework.com.cop.smt.wmr.service.impl;
 
 import static org.junit.Assert.assertEquals;
+import java.util.List;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.junit.Before;
 import org.junit.Test;
@@ -14,6 +15,7 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.test.context.ContextConfiguration;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.cop.smt.wmr.service.ReportrVO;
 import egovframework.com.cop.smt.wmr.service.WikMnthngReprt;
 import egovframework.com.test.EgovTestAbstractDAO;
 import lombok.NoArgsConstructor;
@@ -217,6 +219,17 @@ public class WikMnthngReprtDAOTest extends EgovTestAbstractDAO{
     }
 
     /**
+     * 보고자 정보 assert
+     */
+    private void assertSelectReportr(final Object expected, final Object actual) {
+        if (expected instanceof ReportrVO) {
+            assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), ((ReportrVO) expected).getEmplNo(), ((ReportrVO) actual).getEmplNo());
+        } else {
+            assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), expected, actual);
+        }
+    }
+
+    /**
      * 주간월간보고 정보 등록 테스트 코드
      */
     @Test
@@ -244,6 +257,39 @@ public class WikMnthngReprtDAOTest extends EgovTestAbstractDAO{
 
         // then
         assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
+    }
+
+    /**
+     * 주어진 조건에 맞는 보고자 조회 테스트 코드
+     */
+    @Test
+    public void testselectReportrList() {
+        // given
+        final ReportrVO reportrVO = new ReportrVO();
+        reportrVO.setRecordCountPerPage(10);
+        reportrVO.setFirstIndex(0);
+        reportrVO.setSearchCnd("1"); // USER_NM
+        reportrVO.setSearchWrd("테스트1");
+
+        /**
+         * 로그인 사용자 정보
+         * ESNTL_ID(고유ID)         EMPLYR_ID    USER_NM
+         * USRCNFRM_00000000000    TEST1        테스트1
+         * USRCNFRM_99999999999    webmaster    웹마스터
+         */
+
+        // when
+        final List<ReportrVO> resultList = wikMnthngReprtDAO.selectReportrList(reportrVO);
+
+        for (final ReportrVO result : resultList) {
+            if (log.isDebugEnabled()) {
+                log.debug("result={}", result);
+                log.debug("UserNm={}, {}", result.getSearchWrd(), result.getEmplyrNm());
+            }
+
+            // then
+            assertSelectReportr(reportrVO.getSearchWrd(), result.getEmplyrNm());
+        }
     }
 }
 

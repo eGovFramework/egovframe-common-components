@@ -18,12 +18,12 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  * @author 장철호
  * @version 1.0
  * @created 19-7-2010 오전 10:12:48
- *   <pre>
+ * <pre>
  * << 개정이력(Modification Information) >>
  *
- *   수정일      수정자           수정내용
- *  -------    --------    ---------------------------
- *   2010.7.19	장철호          최초 생성
+ * 수정일         수정자        수정내용
+ * ----------    --------    ---------------------------
+ * 2010.07.19    장철호        최초 생성
  *
  * </pre>
  */
