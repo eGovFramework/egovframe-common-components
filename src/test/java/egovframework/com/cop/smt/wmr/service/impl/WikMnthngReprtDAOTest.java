@@ -1,6 +1,7 @@
 package egovframework.com.cop.smt.wmr.service.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import java.util.List;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.junit.Before;
@@ -263,7 +264,7 @@ public class WikMnthngReprtDAOTest extends EgovTestAbstractDAO{
      * 주어진 조건에 맞는 보고자 조회 테스트 코드
      */
     @Test
-    public void testselectReportrList() {
+    public void testSelectReportrList() {
         // given
         final ReportrVO reportrVO = new ReportrVO();
         reportrVO.setRecordCountPerPage(10);
@@ -290,6 +291,25 @@ public class WikMnthngReprtDAOTest extends EgovTestAbstractDAO{
             // then
             assertSelectReportr(reportrVO.getSearchWrd(), result.getEmplyrNm());
         }
+    }
+
+    /**
+     * 보고자 목록 전체 개수 조회 테스트 코드
+     */
+    @Test
+    public void testSelectReportrListCnt() {
+        // given
+        final ReportrVO reportrVO = new ReportrVO();
+        reportrVO.setSearchCnd("1");
+        reportrVO.setSearchWrd("테스트1");
+
+        // when
+        final int resultAll = wikMnthngReprtDAO.selectReportrListCnt(new ReportrVO());
+        final int result = wikMnthngReprtDAO.selectReportrListCnt(reportrVO);
+
+        // then
+        assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultAll > 0);
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);
     }
 }
 
