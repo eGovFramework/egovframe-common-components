@@ -423,14 +423,30 @@ public class WikMnthngReprtDAOTest extends EgovTestAbstractDAO{
     @Test
     public void testUpdateWikMnthngReprt() {
         // given
+        testWeekReport.setReprtSj(testWeekReport.getReprtSj() + " - (수정)");
         final WikMnthngReprt weekMonthReport = testWeekReport;
-        weekMonthReport.setReprtSj(weekMonthReport.getReprtSj() + " - (수정)");
 
         // when
         final int result = wikMnthngReprtDAO.updateWikMnthngReprt(weekMonthReport);
 
         // then
         assertEquals(egovMessageSource.getMessage("fail.common.update"), 1, result);
+    }
+
+    /**
+     * 주간월간보고 삭제 테스트 코드
+     */
+    @Test
+    public void testDeleteWikMnthngReprt() {
+        // given
+        final WikMnthngReprt weekMonthReport = new WikMnthngReprt();
+        weekMonthReport.setReprtId(testMonthReport.getReprtId());
+
+        // when
+        final int result = wikMnthngReprtDAO.deleteWikMnthngReprt(weekMonthReport);
+
+        // then
+        assertEquals(egovMessageSource.getMessage("fail.common.delete"), 1, result);
     }
 
 }
