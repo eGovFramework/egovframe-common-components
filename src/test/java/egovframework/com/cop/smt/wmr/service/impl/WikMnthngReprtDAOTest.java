@@ -18,6 +18,7 @@ import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.smt.wmr.service.ReportrVO;
 import egovframework.com.cop.smt.wmr.service.WikMnthngReprt;
+import egovframework.com.cop.smt.wmr.service.WikMnthngReprtVO;
 import egovframework.com.test.EgovTestAbstractDAO;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -49,7 +50,7 @@ import lombok.extern.slf4j.Slf4j;
         )
 @NoArgsConstructor
 @Slf4j
-// @Commit
+// @Commit // 주석을 없애면 테이블에 입력됨
 public class WikMnthngReprtDAOTest extends EgovTestAbstractDAO{
 
     /**
@@ -285,7 +286,7 @@ public class WikMnthngReprtDAOTest extends EgovTestAbstractDAO{
         for (final ReportrVO result : resultList) {
             if (log.isDebugEnabled()) {
                 log.debug("result={}", result);
-                log.debug("UserNm={}, {}", result.getSearchWrd(), result.getEmplyrNm());
+                log.debug("UserNm={}, {}", reportrVO.getSearchWrd(), result.getEmplyrNm());
             }
 
             // then
@@ -312,7 +313,6 @@ public class WikMnthngReprtDAOTest extends EgovTestAbstractDAO{
         assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);
     }
 
-
     /**
      * 주어진 조건에 맞는 직위명 조회 테스트 코드
      */
@@ -334,5 +334,41 @@ public class WikMnthngReprtDAOTest extends EgovTestAbstractDAO{
         assertSelectReportr("관리자", result);
     }
 
+    /**
+     * 주어진 조건에 맞는 주간월간보고 목록 조회 테스트 코드
+     */
+    @Test
+    public void testSelectWikMnthngReprtList() {
+        // given
+        final WikMnthngReprtVO weekMonthReportVO = new WikMnthngReprtVO();
+        weekMonthReportVO.setRecordCountPerPage(10);
+        weekMonthReportVO.setFirstIndex(0);
+        // 2023년 전체 보고 목록을 가져 온다.
+        weekMonthReportVO.setSearchDe("0");
+        weekMonthReportVO.setSearchBgnDe("2023-01-01");
+        weekMonthReportVO.setSearchEndDe("2023-12-31");
+        // 테스트 보고의 보고자 정보를 검색ID에 전달
+        weekMonthReportVO.setSearchId(testWeekReport.getReportrId());
+        // 제목으로 조회
+        weekMonthReportVO.setSearchCnd("0");
+        weekMonthReportVO.setSearchWrd(testWeekReport.getReprtSj());
+        // 미승인 조회
+        weekMonthReportVO.setSearchSttus("0");
+        // 주간보고 조회
+        weekMonthReportVO.setSearchSe("1");
+
+        // when
+        final List<WikMnthngReprtVO> resultList = wikMnthngReprtDAO.selectWikMnthngReprtList(weekMonthReportVO);
+
+        for (final WikMnthngReprtVO result : resultList) {
+            if (log.isDebugEnabled()) {
+                log.debug("result={}", result);
+                log.debug("reportId={}, {}", testWeekReport.getReprtId(), result.getReprtId());
+            }
+
+            // then
+            assertSelectReportr(testWeekReport.getReprtId(), result.getReprtId());
+        }
+    }
 }
 
