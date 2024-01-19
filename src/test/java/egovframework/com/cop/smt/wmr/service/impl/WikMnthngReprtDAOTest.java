@@ -223,9 +223,11 @@ public class WikMnthngReprtDAOTest extends EgovTestAbstractDAO{
     /**
      * 보고자 정보 assert
      */
-    private void assertSelectReportr(final Object expected, final Object actual) {
+    private void assertSelectReport(final Object expected, final Object actual) {
         if (expected instanceof ReportrVO) {
             assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), ((ReportrVO) expected).getEmplNo(), ((ReportrVO) actual).getEmplNo());
+        } else if (expected instanceof WikMnthngReprtVO) {
+            assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), ((WikMnthngReprtVO) expected).getReprtId(), ((WikMnthngReprtVO) actual).getReprtId());
         } else {
             assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), expected, actual);
         }
@@ -290,7 +292,7 @@ public class WikMnthngReprtDAOTest extends EgovTestAbstractDAO{
             }
 
             // then
-            assertSelectReportr(reportrVO.getSearchWrd(), result.getEmplyrNm());
+            assertSelectReport(reportrVO.getSearchWrd(), result.getEmplyrNm());
         }
     }
 
@@ -331,14 +333,14 @@ public class WikMnthngReprtDAOTest extends EgovTestAbstractDAO{
         final String result = wikMnthngReprtDAO.selectWrterClsfNm(writerId);
 
         // then
-        assertSelectReportr("관리자", result);
+        assertSelectReport("관리자", result);
     }
 
     /**
      * 주어진 조건에 맞는 주간월간보고 목록 조회 테스트 코드
      */
     @Test
-    public void testSelectWikMnthngReprtList() {
+    public void testSelectWikMnthngReprtListCnt() {
         // given
         final WikMnthngReprtVO weekMonthReportVO = new WikMnthngReprtVO();
         weekMonthReportVO.setRecordCountPerPage(10);
@@ -367,8 +369,25 @@ public class WikMnthngReprtDAOTest extends EgovTestAbstractDAO{
             }
 
             // then
-            assertSelectReportr(testWeekReport.getReprtId(), result.getReprtId());
+            assertSelectReport(testWeekReport.getReprtId(), result.getReprtId());
         }
+    }
+
+
+    /**
+     * 주어진 조건에 맞는 주간월간보고 조회 테스트 코드
+     */
+    @Test
+    public void testSelectWikMnthngReprt() {
+        // given
+        final WikMnthngReprtVO weekMonthReportVO = new WikMnthngReprtVO();
+        weekMonthReportVO.setReprtId(testMonthReport.getReprtId());
+
+        // when
+        final WikMnthngReprtVO result = wikMnthngReprtDAO.selectWikMnthngReprt(weekMonthReportVO);
+
+        // then
+        assertSelectReport(weekMonthReportVO, result);
     }
 }
 
