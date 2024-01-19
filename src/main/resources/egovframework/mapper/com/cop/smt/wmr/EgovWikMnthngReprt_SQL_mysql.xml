@@ -33,166 +33,142 @@
 		<result property="reportrId" column="REPORTR_ID"/>
 		<result property="reportrNm" column="REPORTR_NM"/>
 		<result property="reportrClsfNm" column="REPORTR_CLSF_NM"/>
-		
 		<result property="reprtBgnDe" column="REPORT_BGNDE"/>
 		<result property="reprtEndDe" column="REPORT_ENDDE"/>
-	
 		<result property="reprtThswikCn" column="THSWIK_REPORT_CN"/>
 		<result property="reprtLesseeCn" column="NEXTWIK_REPORT_CN"/>
-		
 		<result property="partclrMatter" column="PARTCLR_MATTER"/>
 		<result property="atchFileId" column="ATCH_FILE_ID"/>
 		<result property="confmDt" column="CONFM_DT"/>
-		    
 		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
 		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
 		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
-		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>				
+		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
 	</resultMap>
 	
 	<select id="selectReportrList" parameterType="egovframework.com.cop.smt.wmr.service.WikMnthngReprtVO" resultMap="wikMnthngReportrList">
-		
-			SELECT
-				b.ORGNZT_NM, a.ESNTL_ID, a.USER_NM, 
-				a.EMPL_NO, a.OFCPS_NM
-			FROM
-				COMTNEMPLYRINFO a
-			LEFT OUTER JOIN COMTNORGNZTINFO b
-				ON a.ORGNZT_ID = b.ORGNZT_ID
-			WHERE 1=1
-		
-			<if test="searchCnd == 0">AND
-					binary(IFNULL(b.ORGNZT_NM, ' ')) LIKE CONCAT('%', #{searchWrd}, '%') 		
-			</if>
-			<if test="searchCnd == 1">AND
-					binary(IFNULL(a.USER_NM, ' ')) LIKE CONCAT('%', #{searchWrd}, '%') 		
-			</if>
-		
-			ORDER BY b.ORGNZT_NM, a.USER_NM ASC
-			LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
-						
+		SELECT
+			b.ORGNZT_NM, a.ESNTL_ID, a.USER_NM, 
+			a.EMPL_NO, a.OFCPS_NM
+		FROM
+			COMTNEMPLYRINFO a
+		LEFT OUTER JOIN COMTNORGNZTINFO b
+			ON a.ORGNZT_ID = b.ORGNZT_ID
+		WHERE 1=1
+		<if test="searchCnd == 0">AND
+			binary(IFNULL(b.ORGNZT_NM, ' ')) LIKE CONCAT('%', #{searchWrd}, '%')
+		</if>
+		<if test="searchCnd == 1">AND
+			binary(IFNULL(a.USER_NM, ' ')) LIKE CONCAT('%', #{searchWrd}, '%')
+		</if>
+		ORDER BY b.ORGNZT_NM, a.USER_NM ASC
+		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
 	</select>	
 	
 	<select id="selectReportrListCnt" parameterType="egovframework.com.cop.smt.wmr.service.WikMnthngReprtVO" resultType="java.lang.Integer">
-		
-			SELECT
-				COUNT(EMPLYR_ID) as cnt
-			FROM
-				COMTNEMPLYRINFO a
-			LEFT OUTER JOIN COMTNORGNZTINFO b
-				ON a.ORGNZT_ID = b.ORGNZT_ID
-			WHERE 1=1
-		
-			<if test="searchCnd == 0">AND
-					binary(IFNULL(b.ORGNZT_NM, ' ')) LIKE CONCAT('%', #{searchWrd}, '%') 		
-			</if>
-			<if test="searchCnd == 1">AND
-					binary(IFNULL(a.USER_NM, ' ')) LIKE CONCAT('%', #{searchWrd}, '%') 		
-			</if>		
+		SELECT
+			COUNT(EMPLYR_ID) as cnt
+		FROM
+			COMTNEMPLYRINFO a
+		LEFT OUTER JOIN COMTNORGNZTINFO b
+			ON a.ORGNZT_ID = b.ORGNZT_ID
+		WHERE 1=1
+		<if test="searchCnd == 0">AND
+			binary(IFNULL(b.ORGNZT_NM, ' ')) LIKE CONCAT('%', #{searchWrd}, '%')
+		</if>
+		<if test="searchCnd == 1">AND
+			binary(IFNULL(a.USER_NM, ' ')) LIKE CONCAT('%', #{searchWrd}, '%')
+		</if>
 	</select>
 	
 	<!-- 사용자::조회 -->
 	<select id="selectWrterClsfNm" parameterType="java.lang.String" resultType="java.lang.String">
-	 
 		SELECT 
 			OFCPS_NM 
 		FROM COMTNEMPLYRINFO
 		WHERE ESNTL_ID = #{wrterId}
-	 
 	</select>
 	
 	<!-- 주간/월간보고::목록조회 -->
 	<select id="selectWikMnthngReprtList" parameterType="egovframework.com.cop.smt.wmr.service.WikMnthngReprtVO" resultMap="WikMnthngReprtList">
-	 
-		SELECT 
-			A.REPRT_ID,
-			C.CODE_NM REPRT_SE,
-			A.REPRT_SJ,
-			A.REPORT_DE,
-			B.USER_NM WRTER_NM,
-			A.REPORT_BGNDE,
-			A.REPORT_ENDDE,
-			(CASE WHEN A.CONFM_DT = '' THEN '미승인' ELSE '승인' END) CONFM_DT
-		FROM COMTNWIKMNTHNGREPRT A
-		LEFT OUTER JOIN COMTNEMPLYRINFO B
-			ON A.WRTER_ID = B.ESNTL_ID
-		LEFT OUTER JOIN COMTCCMMNDETAILCODE C
-			ON C.CODE_ID = 'COM060' 
-			AND A.REPRT_SE = C.CODE
-		WHERE (A.WRTER_ID = #{searchId} || A.REPORTR_ID = #{searchId})
-	 
-	 
-	 <if test="searchDe.equals('0')">AND
-		 	A.REPORT_DE BETWEEN #{searchBgnDe} AND #{searchEndDe}		
-	 </if>
-	 <if test="searchDe.equals('1')">AND
-		 	(A.REPORT_BGNDE BETWEEN #{searchBgnDe} AND #{searchEndDe}		
-		 			||	A.REPORT_ENDDE BETWEEN #{searchBgnDe} AND #{searchEndDe}	)
-		 
-	 </if>
-	 <if test="searchCnd.equals('0')">AND
-		 	binary(A.REPRT_SJ) LIKE CONCAT('%', #{searchWrd}, '%') 		
-	 </if>
-	 <if test="searchCnd.equals('1')">AND
-		 	binary(B.USER_NM) LIKE CONCAT('%', #{searchWrd}, '%') 		
-	 </if>
-	 <if test="searchSttus.equals('0')">AND
-		 	A.CONFM_DT = '' 		
-	 </if>
-	 <if test="searchSttus.equals('1')">AND
-		 	A.CONFM_DT != '' 		
-	 </if>
-	 <if test="searchSe.equals('1')">AND
-		 	A.REPRT_SE = '1' 		
-	 </if>
-	 <if test="searchSe.equals('2')">AND
-		 	A.REPRT_SE = '2' 		
-	 </if>
-	 
-		ORDER BY A.FRST_REGIST_PNTTM DESC
-		LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
-	 	
-
+        SELECT 
+            A.REPRT_ID,
+            C.CODE_NM REPRT_SE,
+            A.REPRT_SJ,
+            A.REPORT_DE,
+            B.USER_NM WRTER_NM,
+            A.REPORT_BGNDE,
+            A.REPORT_ENDDE,
+            (CASE WHEN A.CONFM_DT = '' THEN '미승인' ELSE '승인' END) CONFM_DT
+        FROM COMTNWIKMNTHNGREPRT A
+        LEFT OUTER JOIN COMTNEMPLYRINFO B
+            ON A.WRTER_ID = B.ESNTL_ID
+        LEFT OUTER JOIN COMTCCMMNDETAILCODE C
+            ON C.CODE_ID = 'COM060' 
+            AND A.REPRT_SE = C.CODE
+        WHERE (A.WRTER_ID = #{searchId} || A.REPORTR_ID = #{searchId})
+        <if test="searchDe == 0">AND
+            A.REPORT_DE BETWEEN #{searchBgnDe} AND #{searchEndDe}
+        </if>
+        <if test="searchDe == 1">AND
+            (A.REPORT_BGNDE BETWEEN #{searchBgnDe} AND #{searchEndDe}
+            || A.REPORT_ENDDE BETWEEN #{searchBgnDe} AND #{searchEndDe})
+        </if>
+        <if test="searchCnd == 0">AND
+            binary(A.REPRT_SJ) LIKE CONCAT('%', #{searchWrd}, '%')
+        </if>
+        <if test="searchCnd == 1">AND
+            binary(B.USER_NM) LIKE CONCAT('%', #{searchWrd}, '%')
+        </if>
+        <if test="searchSttus == 0">AND
+            A.CONFM_DT = ''
+        </if>
+        <if test="searchSttus == 1">AND
+            A.CONFM_DT != ''
+        </if>
+        <if test="searchSe == 1">AND
+            A.REPRT_SE = '1'
+        </if>
+        <if test="searchSe == 2">AND
+            A.REPRT_SE = '2'
+        </if>
+        ORDER BY A.FRST_REGIST_PNTTM DESC
+        LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
 	</select>
 	
 	<!-- 주간/월간보고::목록조회 Count -->
 	<select id="selectWikMnthngReprtListCnt" parameterType="egovframework.com.cop.smt.wmr.service.WikMnthngReprtVO" resultType="java.lang.Integer">
-	 
-		SELECT 
-			COUNT(A.REPRT_ID) as cnt
-		FROM COMTNWIKMNTHNGREPRT A
-		LEFT OUTER JOIN COMTNEMPLYRINFO B
-			ON A.WRTER_ID = B.ESNTL_ID
-		WHERE (A.WRTER_ID = #{searchId} || A.REPORTR_ID = #{searchId})
-	 
-	 
-	 <if test="searchDe.equals('0')">AND
-		 	A.REPORT_DE BETWEEN #{searchBgnDe} AND #{searchEndDe}		
-	 </if>
-	 <if test="searchDe.equals('1')">AND
-		 	(A.REPORT_BGNDE BETWEEN #{searchBgnDe} AND #{searchEndDe}		
-		 			||	A.REPORT_ENDDE BETWEEN #{searchBgnDe} AND #{searchEndDe}	)
-		 
-	 </if>
-	 <if test="searchCnd.equals('0')">AND
-		 	binary(A.REPRT_SJ) LIKE CONCAT('%', #{searchWrd}, '%') 		
-	 </if>
-	 <if test="searchCnd.equals('1')">AND
-		 	binary(B.USER_NM) LIKE CONCAT('%', #{searchWrd}, '%') 		
-	 </if>
-	 <if test="searchSttus.equals('0')">AND
-		 	A.CONFM_DT = '' 		
-	 </if>
-	 <if test="searchSttus.equals('1')">AND
-		 	A.CONFM_DT != '' 		
-	 </if>
-	 <if test="searchSe.equals('1')">AND
-		 	A.REPRT_SE = '1' 		
-	 </if>
-	 <if test="searchSe.equals('2')">AND
-		 	A.REPRT_SE = '2' 		
-	 </if>
-	 
+        SELECT 
+            COUNT(A.REPRT_ID) as cnt
+        FROM COMTNWIKMNTHNGREPRT A
+        LEFT OUTER JOIN COMTNEMPLYRINFO B
+            ON A.WRTER_ID = B.ESNTL_ID
+        WHERE (A.WRTER_ID = #{searchId} || A.REPORTR_ID = #{searchId})
+        <if test="searchDe == 0">AND
+            A.REPORT_DE BETWEEN #{searchBgnDe} AND #{searchEndDe}
+        </if>
+        <if test="searchDe == 1">AND
+            (A.REPORT_BGNDE BETWEEN #{searchBgnDe} AND #{searchEndDe}
+            || A.REPORT_ENDDE BETWEEN #{searchBgnDe} AND #{searchEndDe} )
+        </if>
+        <if test="searchCnd == 0">AND
+            binary(A.REPRT_SJ) LIKE CONCAT('%', #{searchWrd}, '%')
+        </if>
+        <if test="searchCnd == 1">AND
+            binary(B.USER_NM) LIKE CONCAT('%', #{searchWrd}, '%')
+        </if>
+        <if test="searchSttus == 0">AND
+            A.CONFM_DT = ''
+        </if>
+        <if test="searchSttus == 1">AND
+            A.CONFM_DT != ''
+        </if>
+        <if test="searchSe == 1">AND
+            A.REPRT_SE = '1
+        </if>
+        <if test="searchSe == 2">AND
+            A.REPRT_SE = '2'
+        </if>
 	</select>
 	
 	<!-- 주간/월간보고::상세보기 -->
@@ -250,23 +226,19 @@
 	<!-- 주간/월간보고::승인  -->
 	<update id="confirmWikMnthngReprt" parameterType="egovframework.com.cop.smt.wmr.service.WikMnthngReprt"> 
 		UPDATE COMTNWIKMNTHNGREPRT 
-		SET  
+		SET
 			CONFM_DT=#{confmDt}
 		WHERE REPRT_ID = #{reprtId}
 	</update>
 	
 	<!-- 주간/월간보고::삭제  -->
 	<delete id="deleteWikMnthngReprt" parameterType="egovframework.com.cop.smt.wmr.service.WikMnthngReprt"> 
-		
-			DELETE FROM COMTNWIKMNTHNGREPRT 
-			WHERE REPRT_ID = #{reprtId}
-		
+		DELETE FROM COMTNWIKMNTHNGREPRT 
+		WHERE REPRT_ID = #{reprtId}
 	</delete>
 	
 	<!-- 주간/월간보고::입력  -->
 	<insert id="insertWikMnthngReprt" parameterType="egovframework.com.cop.smt.wmr.service.WikMnthngReprt">
-	 
-	 
 		INSERT INTO COMTNWIKMNTHNGREPRT ( 
 			REPRT_ID,
 			REPRT_SE,
@@ -285,7 +257,7 @@
 			FRST_REGISTER_ID,
 			LAST_UPDT_PNTTM,
 			LAST_UPDUSR_ID
-		)VALUES( 
+		) VALUES ( 
 			#{reprtId},
 			#{reprtSe},
 			#{reprtSj},
@@ -304,9 +276,5 @@
 			sysdate(),
 			#{lastUpdusrId} 
 		)
-
-	 
 	</insert>
-	
-
 </mapper>
