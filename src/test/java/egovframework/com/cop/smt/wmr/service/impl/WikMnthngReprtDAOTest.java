@@ -416,5 +416,22 @@ public class WikMnthngReprtDAOTest extends EgovTestAbstractDAO{
         // then
         assertSelectReport(weekMonthReportVO, result);
     }
+
+    /**
+     * 주간월간보고 수정 테스트 코드
+     */
+    @Test
+    public void testUpdateWikMnthngReprt() {
+        // given
+        final WikMnthngReprt weekMonthReport = testWeekReport;
+        weekMonthReport.setReprtSj(weekMonthReport.getReprtSj() + " - (수정)");
+
+        // when
+        final int result = wikMnthngReprtDAO.updateWikMnthngReprt(weekMonthReport);
+
+        // then
+        assertEquals(egovMessageSource.getMessage("fail.common.update"), 1, result);
+    }
+
 }
 
