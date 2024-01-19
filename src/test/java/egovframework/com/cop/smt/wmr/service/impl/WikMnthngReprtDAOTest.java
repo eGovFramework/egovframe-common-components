@@ -340,7 +340,7 @@ public class WikMnthngReprtDAOTest extends EgovTestAbstractDAO{
      * 주어진 조건에 맞는 주간월간보고 목록 조회 테스트 코드
      */
     @Test
-    public void testSelectWikMnthngReprtListCnt() {
+    public void testSelectWikMnthngReprtList() {
         // given
         final WikMnthngReprtVO weekMonthReportVO = new WikMnthngReprtVO();
         weekMonthReportVO.setRecordCountPerPage(10);
@@ -373,6 +373,33 @@ public class WikMnthngReprtDAOTest extends EgovTestAbstractDAO{
         }
     }
 
+    /**
+     * 주어진 조건에 맞는 주간월간보고 전체 개수 조회 테스트 코드
+     */
+    @Test
+    public void testSelectWikMnthngReprtListCnt() {
+        // given
+        final WikMnthngReprtVO weekMonthReportVO = new WikMnthngReprtVO();
+        // 2023년 전체 보고 목록을 가져 온다.
+        weekMonthReportVO.setSearchDe("0");
+        weekMonthReportVO.setSearchBgnDe("2023-01-01");
+        weekMonthReportVO.setSearchEndDe("2023-12-31");
+        // 테스트 보고의 보고자 정보를 검색ID에 전달
+        weekMonthReportVO.setSearchId(testMonthReport.getReportrId());
+        // 제목으로 조회
+        weekMonthReportVO.setSearchCnd("0");
+        weekMonthReportVO.setSearchWrd(testMonthReport.getReprtSj());
+        // 미승인 조회
+        weekMonthReportVO.setSearchSttus("0");
+        // 월간보고 조회
+        weekMonthReportVO.setSearchSe(testMonthReport.getReprtSe());
+
+        // when
+        final Integer result = wikMnthngReprtDAO.selectWikMnthngReprtListCnt(weekMonthReportVO);
+
+        // then
+        assertSelectReport(1, result);
+    }
 
     /**
      * 주어진 조건에 맞는 주간월간보고 조회 테스트 코드
