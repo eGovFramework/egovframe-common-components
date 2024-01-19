@@ -449,5 +449,21 @@ public class WikMnthngReprtDAOTest extends EgovTestAbstractDAO{
         assertEquals(egovMessageSource.getMessage("fail.common.delete"), 1, result);
     }
 
+    /**
+     * 주간월간보고 정보 승인 테스트 코드
+     */
+    @Test
+    public void testConfirmWikMnthngReprt() {
+        // given
+        testWeekReport.setConfmDt("2023-12-15");
+        final WikMnthngReprt weekMonthReport = testWeekReport;
+
+        // when
+        final int result = wikMnthngReprtDAO.confirmWikMnthngReprt(weekMonthReport);
+
+        // then
+        assertEquals(egovMessageSource.getMessage("fail.common.update"), 1, result);
+    }
+
 }
 
