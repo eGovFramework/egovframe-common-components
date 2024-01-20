@@ -23,10 +23,14 @@ import egovframework.com.dam.map.tea.service.MapTeam;
 import egovframework.com.dam.map.tea.service.MapTeamVO;
 
 /**
- * 개요 - 지식맵(조직별)에 대한 controller 클래스를 정의한다.
+ * <pre>
+ * 개요
+ * - 지식맵(조직별)에 대한 controller 클래스를 정의한다.
  *
- * 상세내용 - 지식맵(조직별)에 대한 등록, 수정, 삭제, 조회 기능을 제공한다. - 지식맵(조직별)의 조회기능은 목록조회, 상세조회로
- * 구분된다.
+ * 상세내용
+ * - 지식맵(조직별)에 대한 등록, 수정, 삭제, 조회 기능을 제공한다.
+ * - 지식맵(조직별)의 조회기능은 목록조회, 상세조회로 구분된다.
+ * </pre>
  * 
  * @author 박종선
  * @version 1.0
