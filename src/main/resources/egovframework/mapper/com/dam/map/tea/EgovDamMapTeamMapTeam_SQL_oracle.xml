@@ -2,14 +2,7 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="MapTeamDAO">
-	
-	<resultMap id="MapTeamList" type="egovframework.com.dam.map.tea.service.MapTeamVO">
-		<result property="orgnztId" column="ORGNZT_ID"/>	
-		<result property="orgnztNm" column="ORGNZT_NM"/>
-		<result property="clYmd" column="CL_DE"/>
-		<result property="knoUrl" column="KNWLDG_URL"/>
-	</resultMap>
-	
+
 	<resultMap id="MapTeamDetail" type="egovframework.com.dam.map.tea.service.MapTeam">
 		<result property="orgnztId" column="ORGNZT_ID"/>	
 		<result property="orgnztNm" column="ORGNZT_NM"/>
@@ -17,7 +10,7 @@
 		<result property="knoUrl" column="KNWLDG_URL"/>
 	</resultMap>
 
-	<select id="selectMapTeamList" parameterType="egovframework.com.dam.map.tea.service.MapTeamVO" resultMap="MapTeamList">
+	<select id="selectMapTeamList" parameterType="egovframework.com.dam.map.tea.service.MapTeamVO" resultType="egovframework.com.dam.map.tea.service.MapTeamVO">
 		
 	SELECT *
 	FROM (
@@ -27,8 +20,8 @@
 		
 			SELECT  ORGNZT_ID
 			     ,  ORGNZT_NM
-                 ,  TO_CHAR(TO_DATE(CL_DE, 'YYYYmmdd'), 'YYYY-mm-dd') AS CL_DE
-			     ,  KNWLDG_URL
+                 ,  TO_CHAR(TO_DATE(CL_DE, 'YYYYmmdd'), 'YYYY-mm-dd') AS CL_YMD
+			     ,  KNWLDG_URL KNO_URL
 			  FROM  COMTNDAMMAPTEAM
 			 WHERE  1 = 1
 		
