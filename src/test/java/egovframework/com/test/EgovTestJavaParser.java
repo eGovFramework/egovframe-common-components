@@ -15,7 +15,7 @@ import com.github.javaparser.ast.CompilationUnit;
 import com.github.javaparser.ast.body.ClassOrInterfaceDeclaration;
 import com.github.javaparser.ast.body.MethodDeclaration;
 
-import egovframework.com.dam.map.mat.service.impl.MapMaterialDAO;
+import egovframework.com.dam.mgm.service.impl.KnoManagementDAO;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -40,15 +40,17 @@ public class EgovTestJavaParser {
 //		final Class<?> clazz = BBSSatisfactionDAO.class;
 //		final Class<?> clazz = TemplateManageDAO.class;
 //		final Class<?> clazz = KnoAppraisalDAO.class;
-		final Class<?> clazz = MapMaterialDAO.class;
+//		final Class<?> clazz = MapMaterialDAO.class;
+//		final Class<?> clazz = MapTeamDAO.class;
+		final Class<?> clazz = KnoManagementDAO.class;
 
-		if (log.isDebugEnabled()) {
-			log.debug("getName={}", clazz.getName());
-			log.debug("getCanonicalName={}", clazz.getCanonicalName());
-			log.debug("getSimpleName={}", clazz.getSimpleName());
-			log.debug("getTypeName={}", clazz.getTypeName());
-			log.debug("\n");
-		}
+//		if (log.isDebugEnabled()) {
+//			log.debug("getName={}", clazz.getName());
+//			log.debug("getCanonicalName={}", clazz.getCanonicalName());
+//			log.debug("getSimpleName={}", clazz.getSimpleName());
+//			log.debug("getTypeName={}", clazz.getTypeName());
+//			log.debug("\n");
+//		}
 
 		final File file = new File("src/main/java/" + clazz.getName().replaceAll("\\.", "/") + ".java");
 
@@ -97,7 +99,7 @@ public class EgovTestJavaParser {
 			buffer.append('\n');
 		});
 
-		log.debug("buffer={}", buffer);
+		log.debug("{}", buffer);
 	}
 
 	private void debugMethods2(final Optional<ClassOrInterfaceDeclaration> classOrInterfaceDeclaration) {
@@ -117,7 +119,7 @@ public class EgovTestJavaParser {
 			index++;
 		}
 
-		log.debug("buffer={}", buffer);
+		log.debug("{}", buffer);
 	}
 
 }
