@@ -3,51 +3,73 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="MapTeamDAO">
 
-	<select id="selectMapTeamList" parameterType="egovframework.com.dam.map.tea.service.MapTeamVO" resultType="egovframework.com.dam.map.tea.service.MapTeamVO">
-		
-			SELECT  ORGNZT_ID						ORGNZT_ID
-			     ,  ORGNZT_NM						ORGNZT_NM
-                 ,  DATE_FORMAT(CL_DE,'%Y-%m-%d')	CL_YMD
-			     ,  KNWLDG_URL						KNO_URL
-			  FROM  COMTNDAMMAPTEAM
-			 WHERE  1 = 1
-		
-			<if test='searchCondition == "1"'>AND
-				binary(ORGNZT_NM) LIKE CONCAT('%', #{searchKeyword}, '%')
-			</if>
-			<if test='searchCondition == "2"'>AND
-				binary(ORGNZT_ID) LIKE CONCAT('%', #{searchKeyword}, '%')
-			</if>
-			 LIMIT  #{recordCountPerPage} OFFSET #{firstIndex}
+	<select id="selectMapTeamList"
+		parameterType="egovframework.com.dam.map.tea.service.MapTeamVO"
+		resultType="egovframework.com.dam.map.tea.service.MapTeamVO">
+<![CDATA[
+SELECT  /* MapTeamDAO.selectMapTeamList */
+        A.ORGNZT_ID
+      , A.ORGNZT_NM
+      , DATE_FORMAT(A.CL_DE,'%Y-%m-%d')	CL_YMD
+      , A.KNWLDG_URL					KNO_URL
+]]>
+		<include refid="selectMapTeamFromWhere"></include>
+<![CDATA[
+  LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
+]]>
 	</select>
 
-	<select id="selectMapTeamTotCnt" parameterType="egovframework.com.dam.map.tea.service.MapTeamVO" resultType="int">
-		
-			SELECT  COUNT(*) totcnt 
-			  FROM  COMTNDAMMAPTEAM
-			 WHERE  1 = 1
-		
-			<if test='searchCondition == "1"'>AND
-				binary(ORGNZT_NM) LIKE CONCAT('%', #{searchKeyword}, '%')
-			</if>
-			<if test='searchCondition == "2"'>AND
-				binary(ORGNZT_ID) LIKE CONCAT('%', #{searchKeyword}, '%')
-			</if>
+	<select id="selectMapTeamTotCnt"
+		parameterType="egovframework.com.dam.map.tea.service.MapTeamVO"
+		resultType="int">
+<![CDATA[ 
+SELECT /* MapTeamDAO.selectMapTeamTotCnt */
+       COUNT(*) TOT_CNT
+]]>
+		<include refid="selectMapTeamFromWhere"></include>
 	</select>
 
-	<select id="selectMapTeamDetail" parameterType="egovframework.com.dam.map.tea.service.MapTeam" resultType="egovframework.com.dam.map.tea.service.MapTeam">
-		
+	<sql id="selectMapTeamFromWhere">
+<![CDATA[
+  FROM COMTNDAMMAPTEAM A
+ WHERE 1 = 1
+]]>
+		<choose>
+			<when
+				test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(searchCondition, '1')">
+<![CDATA[
+   AND BINARY(A.ORGNZT_NM) LIKE CONCAT('%', #{searchKeyword}, '%')
+]]>
+			</when>
+			<when
+				test="@egovframework.com.cmm.util.EgovMybatisUtil@isEquals(searchCondition, '2')">
+<![CDATA[
+   AND BINARY(A.ORGNZT_ID) LIKE CONCAT('%', #{searchKeyword}, '%')
+]]>
+			</when>
+			<otherwise>
+<![CDATA[
+   /* otherwise */
+]]>
+			</otherwise>
+		</choose>
+	</sql>
+
+	<select id="selectMapTeamDetail"
+		parameterType="egovframework.com.dam.map.tea.service.MapTeam"
+		resultType="egovframework.com.dam.map.tea.service.MapTeam">
+<![CDATA[
             SELECT  ORGNZT_ID 						orgnztId
 			     ,  ORGNZT_NM  						orgnztNm
                  ,  DATE_FORMAT(CL_DE,'%Y-%m-%d') 	clYmd
                  ,  KNWLDG_URL         				knoUrl
               FROM  COMTNDAMMAPTEAM
              WHERE  ORGNZT_ID = #{orgnztId}
-		
+]]>
 	</select>
 
 	<insert id="insertMapTeam">
-		
+<![CDATA[
 		    INSERT 
 		      INTO  COMTNDAMMAPTEAM
 		         (  ORGNZT_ID
@@ -65,11 +87,11 @@
 		         ,  sysdate()
 		         ,  #{frstRegisterId}
 		         ) 
-		
+]]>
 	</insert>
 
 	<update id="updateMapTeam">
-		
+<![CDATA[
             UPDATE  COMTNDAMMAPTEAM 
                SET  ORGNZT_ID         = #{orgnztId}
                  ,  ORGNZT_NM         = #{orgnztNm}
@@ -78,14 +100,14 @@
                  ,  LAST_UPDT_PNTTM = sysdate()
                  ,  LAST_UPDUSR_ID    = #{lastUpdusrId}
              WHERE  ORGNZT_ID         = #{orgnztId} 
-		
+]]>
 	</update>
 
 	<delete id="deleteMapTeam">
-		
+<![CDATA[
             DELETE  FROM COMTNDAMMAPTEAM 
             WHERE   ORGNZT_ID = #{orgnztId}
-		
+]]>
 	</delete>
 
 

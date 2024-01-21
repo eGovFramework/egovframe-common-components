@@ -19,6 +19,7 @@ import org.springframework.context.annotation.ImportResource;
 import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.util.EgovMybatisUtil;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.dam.map.tea.service.MapTeamVO;
 import egovframework.com.test.EgovTestAbstractDAO;
@@ -114,6 +115,103 @@ public class MapTeamDAOTest extends EgovTestAbstractDAO {
 		mapTeamVOTestData(mapTeamVOTestData);
 
 		final MapTeamVO mapTeamVO = new MapTeamVO();
+
+		if (EgovMybatisUtil.isEquals(mapTeamVO.getSearchCondition(), "1")) {
+			if (log.isDebugEnabled()) {
+				log.debug("조직명 검색 true");
+			}
+		} else if (EgovMybatisUtil.isEquals(mapTeamVO.getSearchCondition(), "2")) {
+			if (log.isDebugEnabled()) {
+				log.debug("조직ID 검색 true");
+			}
+		} else {
+			if (log.isDebugEnabled()) {
+				log.debug("otherwise");
+			}
+		}
+
+		mapTeamVO.setFirstIndex(0);
+		mapTeamVO.setRecordCountPerPage(10);
+
+		// when
+		final List<MapTeamVO> resultList = mapTeamDAO.selectMapTeamList(mapTeamVO);
+
+		debug(mapTeamVOTestData, resultList);
+
+		// then
+//		asserta01selectMapMaterialList(resultList, testDataMapTeam, testData);
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.size() > -1);
+	}
+
+	/**
+	 * [기능추가][DAO단위테스트]등록된 지식맵(조직별) 목록을 조회 한다.
+	 */
+	@Test
+	public void a01selectMapTeamListSearchCondition1() {
+		// given
+		final MapTeamVO mapTeamVOTestData = new MapTeamVO();
+		mapTeamVOTestData(mapTeamVOTestData);
+
+		final MapTeamVO mapTeamVO = new MapTeamVO();
+
+		mapTeamVO.setSearchCondition("1");
+		mapTeamVO.setSearchKeyword(mapTeamVOTestData.getOrgnztNm());
+
+		if (EgovMybatisUtil.isEquals(mapTeamVO.getSearchCondition(), "1")) {
+			if (log.isDebugEnabled()) {
+				log.debug("조직명 검색 true");
+			}
+		} else if (EgovMybatisUtil.isEquals(mapTeamVO.getSearchCondition(), "2")) {
+			if (log.isDebugEnabled()) {
+				log.debug("조직ID 검색 true");
+			}
+		} else {
+			if (log.isDebugEnabled()) {
+				log.debug("otherwise");
+			}
+		}
+
+		mapTeamVO.setFirstIndex(0);
+		mapTeamVO.setRecordCountPerPage(10);
+
+		// when
+		final List<MapTeamVO> resultList = mapTeamDAO.selectMapTeamList(mapTeamVO);
+
+		debug(mapTeamVOTestData, resultList);
+
+		// then
+//		asserta01selectMapMaterialList(resultList, testDataMapTeam, testData);
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.size() > -1);
+	}
+
+	/**
+	 * [기능추가][DAO단위테스트]등록된 지식맵(조직별) 목록을 조회 한다.
+	 */
+	@Test
+	public void a01selectMapTeamListSearchCondition2() {
+		// given
+		final MapTeamVO mapTeamVOTestData = new MapTeamVO();
+		mapTeamVOTestData(mapTeamVOTestData);
+
+		final MapTeamVO mapTeamVO = new MapTeamVO();
+
+		mapTeamVO.setSearchCondition("2");
+		mapTeamVO.setSearchKeyword(mapTeamVOTestData.getOrgnztId());
+
+		if (EgovMybatisUtil.isEquals(mapTeamVO.getSearchCondition(), "1")) {
+			if (log.isDebugEnabled()) {
+				log.debug("조직명 검색 true");
+			}
+		} else if (EgovMybatisUtil.isEquals(mapTeamVO.getSearchCondition(), "2")) {
+			if (log.isDebugEnabled()) {
+				log.debug("조직ID 검색 true");
+			}
+		} else {
+			if (log.isDebugEnabled()) {
+				log.debug("otherwise");
+			}
+		}
+
 		mapTeamVO.setFirstIndex(0);
 		mapTeamVO.setRecordCountPerPage(10);
 
