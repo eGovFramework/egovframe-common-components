@@ -106,7 +106,7 @@ public class MapTeamDAOTest extends EgovTestAbstractDAO {
 	protected static final String FAIL_COMMON_DELETE = "fail.common.delete";
 
 	/**
-	 * [기능추가][DAO단위테스트]등록된 지식맵(조직별) 목록을 조회 한다.
+	 * 등록된 지식맵(조직별) 목록을 조회 한다.
 	 */
 	@Test
 	public void a01selectMapTeamList() {
@@ -144,7 +144,7 @@ public class MapTeamDAOTest extends EgovTestAbstractDAO {
 	}
 
 	/**
-	 * [기능추가][DAO단위테스트]등록된 지식맵(조직별) 목록을 조회 한다.
+	 * 등록된 지식맵(조직별) 목록을 조회 한다.
 	 */
 	@Test
 	public void a01selectMapTeamListSearchCondition1() {
@@ -185,7 +185,7 @@ public class MapTeamDAOTest extends EgovTestAbstractDAO {
 	}
 
 	/**
-	 * [기능추가][DAO단위테스트]등록된 지식맵(조직별) 목록을 조회 한다.
+	 * 등록된 지식맵(조직별) 목록을 조회 한다.
 	 */
 	@Test
 	public void a01selectMapTeamListSearchCondition2() {
@@ -223,6 +223,72 @@ public class MapTeamDAOTest extends EgovTestAbstractDAO {
 		// then
 //		asserta01selectMapMaterialList(resultList, testDataMapTeam, testData);
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.size() > -1);
+	}
+
+	/**
+	 * 지식맵(조직별) 목록 총 개수를 조회한다.
+	 */
+	@Test
+	public void a02selectMapTeamTotCnt() {
+		// given
+		final MapTeamVO mapTeamVOTestData = new MapTeamVO();
+		mapTeamVOTestData(mapTeamVOTestData);
+
+		final MapTeamVO mapTeamVO = new MapTeamVO();
+
+		// when
+		final int totCnt = mapTeamDAO.selectMapTeamTotCnt(mapTeamVO);
+
+		debug(totCnt);
+
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+	}
+
+	/**
+	 * 지식맵(조직별) 목록 총 개수를 조회한다.
+	 */
+	@Test
+	public void a02selectMapTeamTotCntSearchCondition1() {
+		// given
+		final MapTeamVO mapTeamVOTestData = new MapTeamVO();
+		mapTeamVOTestData(mapTeamVOTestData);
+
+		final MapTeamVO mapTeamVO = new MapTeamVO();
+
+		mapTeamVO.setSearchCondition("1");
+		mapTeamVO.setSearchKeyword(mapTeamVOTestData.getOrgnztNm());
+
+		// when
+		final int totCnt = mapTeamDAO.selectMapTeamTotCnt(mapTeamVO);
+
+		debug(totCnt);
+
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+	}
+
+	/**
+	 * 지식맵(조직별) 목록 총 개수를 조회한다.
+	 */
+	@Test
+	public void a02selectMapTeamTotCntSearchCondition2() {
+		// given
+		final MapTeamVO mapTeamVOTestData = new MapTeamVO();
+		mapTeamVOTestData(mapTeamVOTestData);
+
+		final MapTeamVO mapTeamVO = new MapTeamVO();
+
+		mapTeamVO.setSearchCondition("2");
+		mapTeamVO.setSearchKeyword(mapTeamVOTestData.getOrgnztId());
+
+		// when
+		final int totCnt = mapTeamDAO.selectMapTeamTotCnt(mapTeamVO);
+
+		debug(totCnt);
+
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
 	}
 
 	private void mapTeamVOTestData(final MapTeamVO mapTeamVOTestData) {
@@ -266,6 +332,12 @@ public class MapTeamDAOTest extends EgovTestAbstractDAO {
 				log.debug("getKnoUrl 지식URL={}, {}", mapTeamVOTestData.getKnoUrl(), result.getKnoUrl());
 				log.debug("");
 			}
+		}
+	}
+
+	private void debug(final int totCnt) {
+		if (log.isDebugEnabled()) {
+			log.debug("totCnt={}", totCnt);
 		}
 	}
 
