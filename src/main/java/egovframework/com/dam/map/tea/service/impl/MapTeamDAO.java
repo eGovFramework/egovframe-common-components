@@ -57,8 +57,8 @@ public class MapTeamDAO extends EgovComAbstractDAO {
 	 *
 	 * @param MapTeamVO
 	 */
-	public MapTeam selectMapTeamDetail(MapTeam mapTeam) throws Exception {
-		return (MapTeam) selectOne("MapTeamDAO.selectMapTeamDetail", mapTeam);
+	public MapTeamVO selectMapTeamDetail(final MapTeamVO mapTeamVO) {
+		return selectOne("MapTeamDAO.selectMapTeamDetail", mapTeamVO);
 	}
 
 	/**

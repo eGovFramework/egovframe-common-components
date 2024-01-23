@@ -291,12 +291,46 @@ public class MapTeamDAOTest extends EgovTestAbstractDAO {
 		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
 	}
 
+	/**
+	 * 지식맵(조직별)상세 정보를 조회 한다.
+	 */
+	@Test
+	public void a03selectMapTeamDetail() {
+		// given
+		final MapTeamVO mapTeamVOTestData = new MapTeamVO();
+		mapTeamVOTestData(mapTeamVOTestData);
+
+		final MapTeamVO mapTeamVO = new MapTeamVO();
+
+		mapTeamVO.setOrgnztId(mapTeamVOTestData.getOrgnztId());
+
+		// when
+		final MapTeamVO result = mapTeamDAO.selectMapTeamDetail(mapTeamVO);
+
+		if (log.isDebugEnabled()) {
+			log.debug(DEBUG_RESULT, result);
+			log.debug("getOrgnztId 조직ID={}, {}", mapTeamVOTestData.getOrgnztId(), result.getOrgnztId());
+			log.debug("getOrgnztNm 조직명={}, {}", mapTeamVOTestData.getOrgnztNm(), result.getOrgnztNm());
+			log.debug("getClDe 분류일={}, {}", mapTeamVOTestData.getClDe(), result.getClDe());
+			log.debug("getClYmd 분류일={}, {}", mapTeamVOTestData.getClYmd(), result.getClYmd());
+			log.debug("getKnoUrl 지식URL={}, {}", mapTeamVOTestData.getKnoUrl(), result.getKnoUrl());
+		}
+
+		// then
+		assertEquals("조직ID", mapTeamVOTestData.getOrgnztId(), result.getOrgnztId());
+		assertEquals("조직명", mapTeamVOTestData.getOrgnztNm(), result.getOrgnztNm());
+		assertEquals("분류일", mapTeamVOTestData.getClYmd(), result.getClDe());
+		assertEquals("지식URL", mapTeamVOTestData.getKnoUrl(), result.getKnoUrl());
+	}
+
 	private void mapTeamVOTestData(final MapTeamVO mapTeamVOTestData) {
 		// given
 		final String today = EgovDateUtil.toString(new Date(), "yyyyMMddHHmmss", null);
 		mapTeamVOTestData.setOrgnztId("TEST1_" + today);
 		mapTeamVOTestData.setOrgnztNm("test 조직명 " + EgovDateUtil.toString(new Date(), "yyyyMMdd", null));
-		mapTeamVOTestData.setClYmd(today);
+		mapTeamVOTestData.setClDe(EgovDateUtil.toString(new Date(), "yyyyMMdd", null));
+//		mapTeamVOTestData.setClYmd(today);
+		mapTeamVOTestData.setClYmd(mapTeamVOTestData.getClDe());
 		final String now = " " + LocalDateTime.now().toString();
 		mapTeamVOTestData.setKnoUrl("test 이백행 지식URL" + now);
 

@@ -35,7 +35,7 @@
 			</if>
 	</select>
 
-	<select id="selectMapTeamDetail" parameterType="egovframework.com.dam.map.tea.service.MapTeam" resultType="egovframework.com.dam.map.tea.service.MapTeam">
+	<select id="selectMapTeamDetail" parameterType="egovframework.com.dam.map.tea.service.MapTeamVO" resultType="egovframework.com.dam.map.tea.service.MapTeamVO">
 		
             SELECT  ORGNZT_ID 						orgnztId
 			     ,  ORGNZT_NM  						orgnztNm

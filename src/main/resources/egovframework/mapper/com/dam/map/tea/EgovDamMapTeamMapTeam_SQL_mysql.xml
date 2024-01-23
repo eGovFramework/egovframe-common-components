@@ -56,15 +56,16 @@ SELECT /* MapTeamDAO.selectMapTeamTotCnt */
 	</sql>
 
 	<select id="selectMapTeamDetail"
-		parameterType="egovframework.com.dam.map.tea.service.MapTeam"
-		resultType="egovframework.com.dam.map.tea.service.MapTeam">
+		parameterType="egovframework.com.dam.map.tea.service.MapTeamVO"
+		resultType="egovframework.com.dam.map.tea.service.MapTeamVO">
 <![CDATA[
-            SELECT  ORGNZT_ID 						orgnztId
-			     ,  ORGNZT_NM  						orgnztNm
-                 ,  DATE_FORMAT(CL_DE,'%Y-%m-%d') 	clYmd
-                 ,  KNWLDG_URL         				knoUrl
-              FROM  COMTNDAMMAPTEAM
-             WHERE  ORGNZT_ID = #{orgnztId}
+SELECT A.ORGNZT_ID
+     , A.ORGNZT_NM
+     , A.CL_DE
+     , DATE_FORMAT(A.CL_DE,'%Y-%m-%d')	CL_YMD
+     , A.KNWLDG_URL						KNO_URL
+  FROM COMTNDAMMAPTEAM A
+ WHERE A.ORGNZT_ID = #{orgnztId}
 ]]>
 	</select>
 

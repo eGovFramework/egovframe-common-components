@@ -46,7 +46,7 @@ public interface EgovMapTeamService {
 	 *
 	 * @param MapTeamVO
 	 */
-	MapTeam selectMapTeamDetail(MapTeam mapTeam) throws Exception;
+	MapTeamVO selectMapTeamDetail(MapTeamVO mapTeamVO);
 
 	/**
 	 * 지식맵(조직별) 정보를 신규로 등록한다.

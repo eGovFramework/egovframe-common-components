@@ -3,7 +3,7 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="MapTeamDAO">
 
-	<resultMap id="MapTeamDetail" type="egovframework.com.dam.map.tea.service.MapTeam">
+	<resultMap id="MapTeamDetail" type="egovframework.com.dam.map.tea.service.MapTeamVO">
 		<result property="orgnztId" column="ORGNZT_ID"/>	
 		<result property="orgnztNm" column="ORGNZT_NM"/>
 		<result property="clYmd" column="CL_DE"/>
@@ -52,7 +52,7 @@
 			</if>
 	</select>
 
-	<select id="selectMapTeamDetail" parameterType="egovframework.com.dam.map.tea.service.MapTeam" resultMap="MapTeamDetail">
+	<select id="selectMapTeamDetail" parameterType="egovframework.com.dam.map.tea.service.MapTeamVO" resultMap="MapTeamDetail">
 		
             SELECT  ORGNZT_ID
 			     ,  ORGNZT_NM

@@ -105,10 +105,8 @@ public class EgovMapTeamController {
 	 * @param MapTeamVO
 	 */
 	@RequestMapping(value = "/dam/map/tea/EgovComDamMapTeamDetail.do")
-	public String selectMapTeamDetail(@ModelAttribute("loginVO") LoginVO loginVO, MapTeam mapTeam, ModelMap model)
-			throws Exception {
-		MapTeam vo = mapTeamService.selectMapTeamDetail(mapTeam);
-		model.addAttribute("result", vo);
+	public String selectMapTeamDetail(@ModelAttribute("loginVO") LoginVO loginVO, MapTeamVO mapTeamVO, ModelMap model) {
+		model.addAttribute("result", mapTeamService.selectMapTeamDetail(mapTeamVO));
 		return "egovframework/com/dam/map/tea/EgovComDamMapTeamDetail";
 	}
 
@@ -143,23 +141,23 @@ public class EgovMapTeamController {
 	 * @param orgnztNm - 지식맵(조직별) model
 	 * @return String - 리턴 Url
 	 *
-	 * @param mapTeam
+	 * @param mapTeamVO
 	 */
 	@RequestMapping(value = "/dam/map/tea/EgovComDamMapTeamModify.do")
-	public String updateMapTeam(@ModelAttribute("loginVO") LoginVO loginVO, @ModelAttribute("mapTeam") MapTeam mapTeam,
-			BindingResult bindingResult, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+	public String updateMapTeam(@ModelAttribute("loginVO") LoginVO loginVO,
+			@ModelAttribute("mapTeam") MapTeamVO mapTeamVO, BindingResult bindingResult,
+			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 		if (sCmd.equals("")) {
-			MapTeam vo = mapTeamService.selectMapTeamDetail(mapTeam);
-			model.addAttribute("mapTeam", vo);
+			model.addAttribute("mapTeam", mapTeamService.selectMapTeamDetail(mapTeamVO));
 			return "egovframework/com/dam/map/tea/EgovComDamMapTeamModify";
 		} else if (sCmd.equals("Modify")) {
-			beanValidator.validate(mapTeam, bindingResult);
+			beanValidator.validate(mapTeamVO, bindingResult);
 			if (bindingResult.hasErrors()) {
 				return "egovframework/com/dam/map/tea/EgovComDamMapTeamModify";
 			}
-			mapTeam.setFrstRegisterId(loginVO.getUniqId());
-			mapTeamService.updateMapTeam(mapTeam);
+			mapTeamVO.setFrstRegisterId(loginVO.getUniqId());
+			mapTeamService.updateMapTeam(mapTeamVO);
 			return "forward:/dam/map/tea/EgovComDamMapTeamList.do";
 		} else {
 			return "forward:/dam/map/tea/EgovComDamMapTeamList.do";
