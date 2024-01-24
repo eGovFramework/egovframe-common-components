@@ -63,7 +63,7 @@
 		
 	</select>
 
-	<insert id="insertMapTeam">
+	<insert id="insertMapTeam" parameterType="egovframework.com.dam.map.tea.service.MapTeamVO">
 		
 		    INSERT 
 		      INTO  COMTNDAMMAPTEAM

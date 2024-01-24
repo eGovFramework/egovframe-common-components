@@ -59,7 +59,8 @@ SELECT /* MapTeamDAO.selectMapTeamTotCnt */
 		parameterType="egovframework.com.dam.map.tea.service.MapTeamVO"
 		resultType="egovframework.com.dam.map.tea.service.MapTeamVO">
 <![CDATA[
-SELECT A.ORGNZT_ID
+SELECT /* MapTeamDAO.selectMapTeamDetail */
+       A.ORGNZT_ID
      , A.ORGNZT_NM
      , A.CL_DE
      , DATE_FORMAT(A.CL_DE,'%Y-%m-%d')	CL_YMD
@@ -69,25 +70,25 @@ SELECT A.ORGNZT_ID
 ]]>
 	</select>
 
-	<insert id="insertMapTeam">
+	<insert id="insertMapTeam"
+		parameterType="egovframework.com.dam.map.tea.service.MapTeamVO">
 <![CDATA[
-		    INSERT 
-		      INTO  COMTNDAMMAPTEAM
-		         (  ORGNZT_ID
-		         ,  ORGNZT_NM
-		         ,  CL_DE
-		         ,  KNWLDG_URL
-		         ,  LAST_UPDT_PNTTM
-		         ,  LAST_UPDUSR_ID
-		         ) 
-		    VALUES  
-		         (  #{orgnztId}
-		         ,  #{orgnztNm}
-		         ,  #{clYmd}
-		         ,  #{knoUrl}
-		         ,  sysdate()
-		         ,  #{frstRegisterId}
-		         ) 
+INSERT /* MapTeamDAO.insertMapTeam 지식URL 등록 */
+  INTO COMTNDAMMAPTEAM (
+       ORGNZT_ID
+     , ORGNZT_NM
+     , CL_DE
+     , KNWLDG_URL
+     , LAST_UPDT_PNTTM
+     , LAST_UPDUSR_ID
+     ) VALUES (
+       #{orgnztId}
+     , #{orgnztNm}
+     , #{clYmd}
+     , #{knoUrl}
+     , sysdate()
+     , #{frstRegisterId}
+     )
 ]]>
 	</insert>
 

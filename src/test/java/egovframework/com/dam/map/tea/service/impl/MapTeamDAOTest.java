@@ -323,6 +323,39 @@ public class MapTeamDAOTest extends EgovTestAbstractDAO {
 		assertEquals("지식URL", mapTeamVOTestData.getKnoUrl(), result.getKnoUrl());
 	}
 
+	/**
+	 * 지식맵(조직별) 정보를 신규로 등록한다.
+	 */
+	@Test
+	public void a04insertMapTeam() {
+		// given
+		final MapTeamVO mapTeamVO = new MapTeamVO();
+		final String today = EgovDateUtil.toString(new Date(), "yyyyMMddHHmmss", null);
+		mapTeamVO.setOrgnztId("TEST1_" + today);
+		mapTeamVO.setOrgnztNm("test 조직명 " + EgovDateUtil.toString(new Date(), "yyyyMMdd", null));
+		mapTeamVO.setClDe(EgovDateUtil.toString(new Date(), "yyyyMMdd", null));
+//		mapTeamVOTestData.setClYmd(today);
+		mapTeamVO.setClYmd(mapTeamVO.getClDe());
+		final String now = " " + LocalDateTime.now();
+		mapTeamVO.setKnoUrl("test 이백행 지식URL" + now);
+
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO != null) {
+			mapTeamVO.setFrstRegisterId(loginVO.getUniqId());
+			mapTeamVO.setLastUpdusrId(loginVO.getUniqId());
+		}
+
+		// when
+		final int result = mapTeamDAO.insertMapTeam(mapTeamVO);
+
+		if (log.isDebugEnabled()) {
+			log.debug(DEBUG_RESULT, result);
+		}
+
+		// then
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_INSERT), 1, result);
+	}
+
 	private void mapTeamVOTestData(final MapTeamVO mapTeamVOTestData) {
 		// given
 		final String today = EgovDateUtil.toString(new Date(), "yyyyMMddHHmmss", null);
@@ -331,7 +364,7 @@ public class MapTeamDAOTest extends EgovTestAbstractDAO {
 		mapTeamVOTestData.setClDe(EgovDateUtil.toString(new Date(), "yyyyMMdd", null));
 //		mapTeamVOTestData.setClYmd(today);
 		mapTeamVOTestData.setClYmd(mapTeamVOTestData.getClDe());
-		final String now = " " + LocalDateTime.now().toString();
+		final String now = " " + LocalDateTime.now();
 		mapTeamVOTestData.setKnoUrl("test 이백행 지식URL" + now);
 
 		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
