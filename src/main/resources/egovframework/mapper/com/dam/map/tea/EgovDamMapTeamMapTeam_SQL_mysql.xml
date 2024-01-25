@@ -92,16 +92,17 @@ INSERT /* MapTeamDAO.insertMapTeam 지식URL 등록 */
 ]]>
 	</insert>
 
-	<update id="updateMapTeam">
+	<update id="updateMapTeam"
+		parameterType="egovframework.com.dam.map.tea.service.MapTeamVO">
 <![CDATA[
-            UPDATE  COMTNDAMMAPTEAM 
-               SET  ORGNZT_ID         = #{orgnztId}
-                 ,  ORGNZT_NM         = #{orgnztNm}
-                 ,  CL_DE  		  = #{clYmd}
-                 ,  KNWLDG_URL           = #{knoUrl}
-                 ,  LAST_UPDT_PNTTM = sysdate()
-                 ,  LAST_UPDUSR_ID    = #{lastUpdusrId}
-             WHERE  ORGNZT_ID         = #{orgnztId} 
+UPDATE /* MapTeamDAO.updateMapTeam 지식맵(조직별) 수정 */
+       COMTNDAMMAPTEAM 
+   SET ORGNZT_NM       = #{orgnztNm}
+     , CL_DE           = #{clYmd}
+     , KNWLDG_URL      = #{knoUrl}
+     , LAST_UPDT_PNTTM = sysdate()
+     , LAST_UPDUSR_ID  = #{lastUpdusrId}
+ WHERE ORGNZT_ID       = #{orgnztId} 
 ]]>
 	</update>
 

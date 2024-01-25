@@ -90,8 +90,8 @@ public class EgovMapTeamServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @param orgnztNm
 	 */
 	@Override
-	public void updateMapTeam(MapTeam mapTeam) throws Exception {
-		mapTeamDAO.updateMapTeam(mapTeam);
+	public int updateMapTeam(MapTeamVO mapTeamVO) {
+		return mapTeamDAO.updateMapTeam(mapTeamVO);
 	}
 
 	/**

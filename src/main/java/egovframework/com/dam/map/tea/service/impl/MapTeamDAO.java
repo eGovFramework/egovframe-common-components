@@ -79,8 +79,8 @@ public class MapTeamDAO extends EgovComAbstractDAO {
 	 *
 	 * @param orgnztNm
 	 */
-	public void updateMapTeam(MapTeam mapTeam) throws Exception {
-		update("MapTeamDAO.updateMapTeam", mapTeam);
+	public int updateMapTeam(final MapTeamVO mapTeamVO) {
+		return update("MapTeamDAO.updateMapTeam", mapTeamVO);
 	}
 
 	/**

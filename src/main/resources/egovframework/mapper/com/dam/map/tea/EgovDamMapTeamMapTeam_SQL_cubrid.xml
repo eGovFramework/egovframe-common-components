@@ -85,11 +85,10 @@
 		
 	</insert>
 
-	<update id="updateMapTeam">
+	<update id="updateMapTeam" parameterType="egovframework.com.dam.map.tea.service.MapTeamVO">
 		
             UPDATE  COMTNDAMMAPTEAM 
-               SET  ORGNZT_ID         = #{orgnztId}
-                 ,  ORGNZT_NM         = #{orgnztNm}
+               SET  ORGNZT_NM         = #{orgnztNm}
                  ,  CL_DE  		  = #{clYmd}
                  ,  KNWLDG_URL           = #{knoUrl}
                  ,  LAST_UPDT_PNTTM = SYSDATETIME

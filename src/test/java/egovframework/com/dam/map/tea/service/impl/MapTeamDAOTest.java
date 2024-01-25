@@ -356,6 +356,41 @@ public class MapTeamDAOTest extends EgovTestAbstractDAO {
 		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_INSERT), 1, result);
 	}
 
+	/**
+	 * 기 등록 된 지식맵(조직별) 정보를 수정 한다.
+	 */
+	@Test
+	public void a05updateMapTeam() {
+		// given
+		final MapTeamVO mapTeamVOTestData = new MapTeamVO();
+		mapTeamVOTestData(mapTeamVOTestData);
+
+		final MapTeamVO mapTeamVO = new MapTeamVO();
+		final String today = EgovDateUtil.toString(new Date(), "yyyyMMddHHmmss", null);
+		mapTeamVO.setOrgnztId("TEST1_" + today);
+		mapTeamVO.setOrgnztNm("test 조직명 수정 " + EgovDateUtil.toString(new Date(), "yyyyMMdd", null));
+		mapTeamVO.setClDe(EgovDateUtil.toString(new Date(), "yyyyMMdd", null));
+//		mapTeamVOTestData.setClYmd(today);
+		mapTeamVO.setClYmd(mapTeamVO.getClDe());
+		final String now = " " + LocalDateTime.now();
+		mapTeamVO.setKnoUrl("test 이백행 지식URL 수정" + now);
+
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO != null) {
+			mapTeamVO.setLastUpdusrId(loginVO.getUniqId());
+		}
+
+		// when
+		final int result = mapTeamDAO.updateMapTeam(mapTeamVO);
+
+		if (log.isDebugEnabled()) {
+			log.debug(DEBUG_RESULT, result);
+		}
+
+		// then
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_UPDATE), 1, result);
+	}
+
 	private void mapTeamVOTestData(final MapTeamVO mapTeamVOTestData) {
 		// given
 		final String today = EgovDateUtil.toString(new Date(), "yyyyMMddHHmmss", null);

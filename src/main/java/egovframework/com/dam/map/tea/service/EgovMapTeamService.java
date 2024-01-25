@@ -64,7 +64,7 @@ public interface EgovMapTeamService {
 	 *
 	 * @param orgnztNm
 	 */
-	void updateMapTeam(MapTeam mapTeam) throws Exception;
+	int updateMapTeam(MapTeamVO mapTeamVO);
 
 	/**
 	 * 기 등록된 지식맵(조직별) 정보를 삭제한다.
