@@ -19,7 +19,6 @@ import org.springmodules.validation.commons.DefaultBeanValidator;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.dam.map.tea.service.EgovMapTeamService;
-import egovframework.com.dam.map.tea.service.MapTeam;
 import egovframework.com.dam.map.tea.service.MapTeamVO;
 
 /**
@@ -173,10 +172,9 @@ public class EgovMapTeamController {
 	 * @param orgnztNm
 	 */
 	@RequestMapping(value = "/dam/map/tea/EgovComDamMapTeamRemove.do")
-	public String deleteMapTeam(@ModelAttribute("loginVO") LoginVO loginVO, MapTeam mapTeam, ModelMap model)
-			throws Exception {
-		mapTeamService.deleteMapTeam(mapTeam);
-		return "forward:/dam/map/tea/EgovComDamMapTeamList.do";
+	public String deleteMapTeam(MapTeamVO mapTeamVO, BindingResult bindingResult, ModelMap model) {
+		model.addAttribute("deleteMapTeam", mapTeamService.deleteMapTeam(mapTeamVO));
+		return "redirect:/dam/map/tea/EgovComDamMapTeamList.do";
 	}
 
 }

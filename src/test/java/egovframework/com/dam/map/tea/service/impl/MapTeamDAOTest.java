@@ -391,6 +391,29 @@ public class MapTeamDAOTest extends EgovTestAbstractDAO {
 		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_UPDATE), 1, result);
 	}
 
+	/**
+	 * 기 등록된 지식맵(조직별) 정보를 삭제한다.
+	 */
+	@Test
+	public void a06deleteMapTeam() {
+		// given
+		final MapTeamVO mapTeamVOTestData = new MapTeamVO();
+		mapTeamVOTestData(mapTeamVOTestData);
+
+		final MapTeamVO mapTeamVO = new MapTeamVO();
+		mapTeamVO.setOrgnztId(mapTeamVOTestData.getOrgnztId());
+
+		// when
+		final int result = mapTeamDAO.deleteMapTeam(mapTeamVO);
+
+		if (log.isDebugEnabled()) {
+			log.debug(DEBUG_RESULT, result);
+		}
+
+		// then
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_DELETE), 1, result);
+	}
+
 	private void mapTeamVOTestData(final MapTeamVO mapTeamVOTestData) {
 		// given
 		final String today = EgovDateUtil.toString(new Date(), "yyyyMMddHHmmss", null);

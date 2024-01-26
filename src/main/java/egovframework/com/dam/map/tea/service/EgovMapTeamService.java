@@ -73,6 +73,6 @@ public interface EgovMapTeamService {
 	 *
 	 * @param orgnztNm
 	 */
-	void deleteMapTeam(MapTeam mapTeam) throws Exception;
+	int deleteMapTeam(MapTeamVO mapTeamVO);
 
 }

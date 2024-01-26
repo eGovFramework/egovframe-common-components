@@ -80,7 +80,7 @@
 		
 	</update>
 
-	<delete id="deleteMapTeam">
+	<delete id="deleteMapTeam" parameterType="egovframework.com.dam.map.tea.service.MapTeamVO">
 		
             DELETE  FROM COMTNDAMMAPTEAM 
             WHERE   ORGNZT_ID = #{orgnztId}

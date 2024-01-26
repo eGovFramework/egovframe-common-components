@@ -5,8 +5,8 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
-import egovframework.com.dam.map.tea.service.MapTeam;
 import egovframework.com.dam.map.tea.service.MapTeamVO;
+import lombok.NoArgsConstructor;
 
 /**
  * <pre>
@@ -23,6 +23,7 @@ import egovframework.com.dam.map.tea.service.MapTeamVO;
  * @created 22-7-2010 오전 10:57:44
  */
 @Repository("MapTeamDAO")
+@NoArgsConstructor
 public class MapTeamDAO extends EgovComAbstractDAO {
 
 	/**
@@ -90,8 +91,8 @@ public class MapTeamDAO extends EgovComAbstractDAO {
 	 *
 	 * @param orgnztNm
 	 */
-	public void deleteMapTeam(MapTeam mapTeam) throws Exception {
-		delete("MapTeamDAO.deleteMapTeam", mapTeam);
+	public int deleteMapTeam(final MapTeamVO mapTeamVO) {
+		return delete("MapTeamDAO.deleteMapTeam", mapTeamVO);
 	}
 
 }

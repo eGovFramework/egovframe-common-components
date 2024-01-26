@@ -8,7 +8,6 @@ import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.dam.map.tea.service.EgovMapTeamService;
-import egovframework.com.dam.map.tea.service.MapTeam;
 import egovframework.com.dam.map.tea.service.MapTeamVO;
 
 /**
@@ -102,8 +101,8 @@ public class EgovMapTeamServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @param orgnztNm
 	 */
 	@Override
-	public void deleteMapTeam(MapTeam mapTeam) throws Exception {
-		mapTeamDAO.deleteMapTeam(mapTeam);
+	public int deleteMapTeam(MapTeamVO mapTeamVO) {
+		return mapTeamDAO.deleteMapTeam(mapTeamVO);
 	}
 
 }

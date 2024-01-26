@@ -106,10 +106,12 @@ UPDATE /* MapTeamDAO.updateMapTeam 지식맵(조직별) 수정 */
 ]]>
 	</update>
 
-	<delete id="deleteMapTeam">
+	<delete id="deleteMapTeam"
+		parameterType="egovframework.com.dam.map.tea.service.MapTeamVO">
 <![CDATA[
-            DELETE  FROM COMTNDAMMAPTEAM 
-            WHERE   ORGNZT_ID = #{orgnztId}
+DELETE /* MapTeamDAO.deleteMapTeam 지식맵(조직별) 삭제 */
+  FROM COMTNDAMMAPTEAM
+ WHERE ORGNZT_ID = #{orgnztId}
 ]]>
 	</delete>
 
