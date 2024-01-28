@@ -106,196 +106,43 @@ public class MapTeamDAOTest extends EgovTestAbstractDAO {
 	protected static final String FAIL_COMMON_DELETE = "fail.common.delete";
 
 	/**
-	 * 등록된 지식맵(조직별) 목록을 조회 한다.
+	 * 지식맵(조직별) 정보를 신규로 등록한다.
 	 */
 	@Test
-	public void a01selectMapTeamList() {
+	public void a01insertMapTeam() {
 		// given
-		final MapTeamVO mapTeamVOTestData = new MapTeamVO();
-		mapTeamVOTestData(mapTeamVOTestData);
-
 		final MapTeamVO mapTeamVO = new MapTeamVO();
+		final String today = EgovDateUtil.toString(new Date(), "yyyyMMddHHmmss", null);
+		mapTeamVO.setOrgnztId("TEST1_" + today);
+		mapTeamVO.setOrgnztNm("test 조직명 " + EgovDateUtil.toString(new Date(), "yyyyMMdd", null));
+		mapTeamVO.setClDe(EgovDateUtil.toString(new Date(), "yyyyMMdd", null));
+		// mapTeamVOTestData.setClYmd(today);
+		mapTeamVO.setClYmd(mapTeamVO.getClDe());
+		final String now = " " + LocalDateTime.now();
+		mapTeamVO.setKnoUrl("test 이백행 지식URL" + now);
 
-		if (EgovMybatisUtil.isEquals(mapTeamVO.getSearchCondition(), "1")) {
-			if (log.isDebugEnabled()) {
-				log.debug("조직명 검색 true");
-			}
-		} else if (EgovMybatisUtil.isEquals(mapTeamVO.getSearchCondition(), "2")) {
-			if (log.isDebugEnabled()) {
-				log.debug("조직ID 검색 true");
-			}
-		} else {
-			if (log.isDebugEnabled()) {
-				log.debug("otherwise");
-			}
+		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO != null) {
+			mapTeamVO.setFrstRegisterId(loginVO.getUniqId());
+			mapTeamVO.setLastUpdusrId(loginVO.getUniqId());
 		}
 
-		mapTeamVO.setFirstIndex(0);
-		mapTeamVO.setRecordCountPerPage(10);
-
 		// when
-		final List<MapTeamVO> resultList = mapTeamDAO.selectMapTeamList(mapTeamVO);
+		final int result = mapTeamDAO.insertMapTeam(mapTeamVO);
 
-		debug(mapTeamVOTestData, resultList);
-
-		// then
-//		asserta01selectMapMaterialList(resultList, testDataMapTeam, testData);
-		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.size() > -1);
-	}
-
-	/**
-	 * 등록된 지식맵(조직별) 목록을 조회 한다.
-	 */
-	@Test
-	public void a01selectMapTeamListSearchCondition1() {
-		// given
-		final MapTeamVO mapTeamVOTestData = new MapTeamVO();
-		mapTeamVOTestData(mapTeamVOTestData);
-
-		final MapTeamVO mapTeamVO = new MapTeamVO();
-
-		mapTeamVO.setSearchCondition("1");
-		mapTeamVO.setSearchKeyword(mapTeamVOTestData.getOrgnztNm());
-
-		if (EgovMybatisUtil.isEquals(mapTeamVO.getSearchCondition(), "1")) {
-			if (log.isDebugEnabled()) {
-				log.debug("조직명 검색 true");
-			}
-		} else if (EgovMybatisUtil.isEquals(mapTeamVO.getSearchCondition(), "2")) {
-			if (log.isDebugEnabled()) {
-				log.debug("조직ID 검색 true");
-			}
-		} else {
-			if (log.isDebugEnabled()) {
-				log.debug("otherwise");
-			}
+		if (log.isDebugEnabled()) {
+			log.debug(DEBUG_RESULT, result);
 		}
 
-		mapTeamVO.setFirstIndex(0);
-		mapTeamVO.setRecordCountPerPage(10);
-
-		// when
-		final List<MapTeamVO> resultList = mapTeamDAO.selectMapTeamList(mapTeamVO);
-
-		debug(mapTeamVOTestData, resultList);
-
 		// then
-//		asserta01selectMapMaterialList(resultList, testDataMapTeam, testData);
-		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.size() > -1);
-	}
-
-	/**
-	 * 등록된 지식맵(조직별) 목록을 조회 한다.
-	 */
-	@Test
-	public void a01selectMapTeamListSearchCondition2() {
-		// given
-		final MapTeamVO mapTeamVOTestData = new MapTeamVO();
-		mapTeamVOTestData(mapTeamVOTestData);
-
-		final MapTeamVO mapTeamVO = new MapTeamVO();
-
-		mapTeamVO.setSearchCondition("2");
-		mapTeamVO.setSearchKeyword(mapTeamVOTestData.getOrgnztId());
-
-		if (EgovMybatisUtil.isEquals(mapTeamVO.getSearchCondition(), "1")) {
-			if (log.isDebugEnabled()) {
-				log.debug("조직명 검색 true");
-			}
-		} else if (EgovMybatisUtil.isEquals(mapTeamVO.getSearchCondition(), "2")) {
-			if (log.isDebugEnabled()) {
-				log.debug("조직ID 검색 true");
-			}
-		} else {
-			if (log.isDebugEnabled()) {
-				log.debug("otherwise");
-			}
-		}
-
-		mapTeamVO.setFirstIndex(0);
-		mapTeamVO.setRecordCountPerPage(10);
-
-		// when
-		final List<MapTeamVO> resultList = mapTeamDAO.selectMapTeamList(mapTeamVO);
-
-		debug(mapTeamVOTestData, resultList);
-
-		// then
-//		asserta01selectMapMaterialList(resultList, testDataMapTeam, testData);
-		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.size() > -1);
-	}
-
-	/**
-	 * 지식맵(조직별) 목록 총 개수를 조회한다.
-	 */
-	@Test
-	public void a02selectMapTeamTotCnt() {
-		// given
-		final MapTeamVO mapTeamVOTestData = new MapTeamVO();
-		mapTeamVOTestData(mapTeamVOTestData);
-
-		final MapTeamVO mapTeamVO = new MapTeamVO();
-
-		// when
-		final int totCnt = mapTeamDAO.selectMapTeamTotCnt(mapTeamVO);
-
-		debug(totCnt);
-
-		// then
-		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
-	}
-
-	/**
-	 * 지식맵(조직별) 목록 총 개수를 조회한다.
-	 */
-	@Test
-	public void a02selectMapTeamTotCntSearchCondition1() {
-		// given
-		final MapTeamVO mapTeamVOTestData = new MapTeamVO();
-		mapTeamVOTestData(mapTeamVOTestData);
-
-		final MapTeamVO mapTeamVO = new MapTeamVO();
-
-		mapTeamVO.setSearchCondition("1");
-		mapTeamVO.setSearchKeyword(mapTeamVOTestData.getOrgnztNm());
-
-		// when
-		final int totCnt = mapTeamDAO.selectMapTeamTotCnt(mapTeamVO);
-
-		debug(totCnt);
-
-		// then
-		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
-	}
-
-	/**
-	 * 지식맵(조직별) 목록 총 개수를 조회한다.
-	 */
-	@Test
-	public void a02selectMapTeamTotCntSearchCondition2() {
-		// given
-		final MapTeamVO mapTeamVOTestData = new MapTeamVO();
-		mapTeamVOTestData(mapTeamVOTestData);
-
-		final MapTeamVO mapTeamVO = new MapTeamVO();
-
-		mapTeamVO.setSearchCondition("2");
-		mapTeamVO.setSearchKeyword(mapTeamVOTestData.getOrgnztId());
-
-		// when
-		final int totCnt = mapTeamDAO.selectMapTeamTotCnt(mapTeamVO);
-
-		debug(totCnt);
-
-		// then
-		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_INSERT), 1, result);
 	}
 
 	/**
 	 * 지식맵(조직별)상세 정보를 조회 한다.
 	 */
 	@Test
-	public void a03selectMapTeamDetail() {
+	public void a02selectMapTeamDetail() {
 		// given
 		final MapTeamVO mapTeamVOTestData = new MapTeamVO();
 		mapTeamVOTestData(mapTeamVOTestData);
@@ -324,36 +171,189 @@ public class MapTeamDAOTest extends EgovTestAbstractDAO {
 	}
 
 	/**
-	 * 지식맵(조직별) 정보를 신규로 등록한다.
+	 * 등록된 지식맵(조직별) 목록을 조회 한다.
 	 */
 	@Test
-	public void a04insertMapTeam() {
+	public void a03selectMapTeamList() {
 		// given
-		final MapTeamVO mapTeamVO = new MapTeamVO();
-		final String today = EgovDateUtil.toString(new Date(), "yyyyMMddHHmmss", null);
-		mapTeamVO.setOrgnztId("TEST1_" + today);
-		mapTeamVO.setOrgnztNm("test 조직명 " + EgovDateUtil.toString(new Date(), "yyyyMMdd", null));
-		mapTeamVO.setClDe(EgovDateUtil.toString(new Date(), "yyyyMMdd", null));
-//		mapTeamVOTestData.setClYmd(today);
-		mapTeamVO.setClYmd(mapTeamVO.getClDe());
-		final String now = " " + LocalDateTime.now();
-		mapTeamVO.setKnoUrl("test 이백행 지식URL" + now);
+		final MapTeamVO mapTeamVOTestData = new MapTeamVO();
+		mapTeamVOTestData(mapTeamVOTestData);
 
-		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		if (loginVO != null) {
-			mapTeamVO.setFrstRegisterId(loginVO.getUniqId());
-			mapTeamVO.setLastUpdusrId(loginVO.getUniqId());
+		final MapTeamVO mapTeamVO = new MapTeamVO();
+
+		if (EgovMybatisUtil.isEquals(mapTeamVO.getSearchCondition(), "1")) {
+			if (log.isDebugEnabled()) {
+				log.debug("조직명 검색 true");
+			}
+		} else if (EgovMybatisUtil.isEquals(mapTeamVO.getSearchCondition(), "2")) {
+			if (log.isDebugEnabled()) {
+				log.debug("조직ID 검색 true");
+			}
+		} else {
+			if (log.isDebugEnabled()) {
+				log.debug("otherwise");
+			}
 		}
+
+		mapTeamVO.setFirstIndex(0);
+		mapTeamVO.setRecordCountPerPage(10);
 
 		// when
-		final int result = mapTeamDAO.insertMapTeam(mapTeamVO);
+		final List<MapTeamVO> resultList = mapTeamDAO.selectMapTeamList(mapTeamVO);
 
-		if (log.isDebugEnabled()) {
-			log.debug(DEBUG_RESULT, result);
-		}
+		debug(mapTeamVOTestData, resultList);
 
 		// then
-		assertEquals(egovMessageSource.getMessage(FAIL_COMMON_INSERT), 1, result);
+//		asserta01selectMapMaterialList(resultList, testDataMapTeam, testData);
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.size() > -1);
+	}
+
+	/**
+	 * 등록된 지식맵(조직별) 목록을 조회 한다.
+	 */
+	@Test
+	public void a03selectMapTeamListSearchCondition1() {
+		// given
+		final MapTeamVO mapTeamVOTestData = new MapTeamVO();
+		mapTeamVOTestData(mapTeamVOTestData);
+
+		final MapTeamVO mapTeamVO = new MapTeamVO();
+
+		mapTeamVO.setSearchCondition("1");
+		mapTeamVO.setSearchKeyword(mapTeamVOTestData.getOrgnztNm());
+
+		if (EgovMybatisUtil.isEquals(mapTeamVO.getSearchCondition(), "1")) {
+			if (log.isDebugEnabled()) {
+				log.debug("조직명 검색 true");
+			}
+		} else if (EgovMybatisUtil.isEquals(mapTeamVO.getSearchCondition(), "2")) {
+			if (log.isDebugEnabled()) {
+				log.debug("조직ID 검색 true");
+			}
+		} else {
+			if (log.isDebugEnabled()) {
+				log.debug("otherwise");
+			}
+		}
+
+		mapTeamVO.setFirstIndex(0);
+		mapTeamVO.setRecordCountPerPage(10);
+
+		// when
+		final List<MapTeamVO> resultList = mapTeamDAO.selectMapTeamList(mapTeamVO);
+
+		debug(mapTeamVOTestData, resultList);
+
+		// then
+//		asserta01selectMapMaterialList(resultList, testDataMapTeam, testData);
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.size() > -1);
+	}
+
+	/**
+	 * 등록된 지식맵(조직별) 목록을 조회 한다.
+	 */
+	@Test
+	public void a03selectMapTeamListSearchCondition2() {
+		// given
+		final MapTeamVO mapTeamVOTestData = new MapTeamVO();
+		mapTeamVOTestData(mapTeamVOTestData);
+
+		final MapTeamVO mapTeamVO = new MapTeamVO();
+
+		mapTeamVO.setSearchCondition("2");
+		mapTeamVO.setSearchKeyword(mapTeamVOTestData.getOrgnztId());
+
+		if (EgovMybatisUtil.isEquals(mapTeamVO.getSearchCondition(), "1")) {
+			if (log.isDebugEnabled()) {
+				log.debug("조직명 검색 true");
+			}
+		} else if (EgovMybatisUtil.isEquals(mapTeamVO.getSearchCondition(), "2")) {
+			if (log.isDebugEnabled()) {
+				log.debug("조직ID 검색 true");
+			}
+		} else {
+			if (log.isDebugEnabled()) {
+				log.debug("otherwise");
+			}
+		}
+
+		mapTeamVO.setFirstIndex(0);
+		mapTeamVO.setRecordCountPerPage(10);
+
+		// when
+		final List<MapTeamVO> resultList = mapTeamDAO.selectMapTeamList(mapTeamVO);
+
+		debug(mapTeamVOTestData, resultList);
+
+		// then
+//		asserta01selectMapMaterialList(resultList, testDataMapTeam, testData);
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.size() > -1);
+	}
+
+	/**
+	 * 지식맵(조직별) 목록 총 개수를 조회한다.
+	 */
+	@Test
+	public void a04selectMapTeamTotCnt() {
+		// given
+		final MapTeamVO mapTeamVOTestData = new MapTeamVO();
+		mapTeamVOTestData(mapTeamVOTestData);
+
+		final MapTeamVO mapTeamVO = new MapTeamVO();
+
+		// when
+		final int totCnt = mapTeamDAO.selectMapTeamTotCnt(mapTeamVO);
+
+		debug(totCnt);
+
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+	}
+
+	/**
+	 * 지식맵(조직별) 목록 총 개수를 조회한다.
+	 */
+	@Test
+	public void a04selectMapTeamTotCntSearchCondition1() {
+		// given
+		final MapTeamVO mapTeamVOTestData = new MapTeamVO();
+		mapTeamVOTestData(mapTeamVOTestData);
+
+		final MapTeamVO mapTeamVO = new MapTeamVO();
+
+		mapTeamVO.setSearchCondition("1");
+		mapTeamVO.setSearchKeyword(mapTeamVOTestData.getOrgnztNm());
+
+		// when
+		final int totCnt = mapTeamDAO.selectMapTeamTotCnt(mapTeamVO);
+
+		debug(totCnt);
+
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
+	}
+
+	/**
+	 * 지식맵(조직별) 목록 총 개수를 조회한다.
+	 */
+	@Test
+	public void a04selectMapTeamTotCntSearchCondition2() {
+		// given
+		final MapTeamVO mapTeamVOTestData = new MapTeamVO();
+		mapTeamVOTestData(mapTeamVOTestData);
+
+		final MapTeamVO mapTeamVO = new MapTeamVO();
+
+		mapTeamVO.setSearchCondition("2");
+		mapTeamVO.setSearchKeyword(mapTeamVOTestData.getOrgnztId());
+
+		// when
+		final int totCnt = mapTeamDAO.selectMapTeamTotCnt(mapTeamVO);
+
+		debug(totCnt);
+
+		// then
+		assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), totCnt > -1);
 	}
 
 	/**

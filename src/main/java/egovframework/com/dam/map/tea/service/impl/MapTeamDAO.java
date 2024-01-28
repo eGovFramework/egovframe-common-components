@@ -27,6 +27,29 @@ import lombok.NoArgsConstructor;
 public class MapTeamDAO extends EgovComAbstractDAO {
 
 	/**
+	 * 지식맵(조직별) 정보를 신규로 등록한다.
+	 * 
+	 * @param siteUrl  - 지식맵(조직별) model
+	 *
+	 * @param orgnztNm
+	 */
+	public int insertMapTeam(final MapTeamVO mapTeamVO) {
+		return insert("MapTeamDAO.insertMapTeam", mapTeamVO);
+	}
+
+	/**
+	 * 지식맵(조직별)상세 정보를 조회 한다.
+	 * 
+	 * @param MapTeamVO - 지식맵(조직별) VO
+	 * @return String - 지식맵(조직별) VO
+	 *
+	 * @param MapTeamVO
+	 */
+	public MapTeamVO selectMapTeamDetail(final MapTeamVO mapTeamVO) {
+		return selectOne("MapTeamDAO.selectMapTeamDetail", mapTeamVO);
+	}
+
+	/**
 	 * 등록된 지식맵(조직별) 목록을 조회 한다.
 	 * 
 	 * @param mapTeamVO- 지식맵(조직별) VO
@@ -48,29 +71,6 @@ public class MapTeamDAO extends EgovComAbstractDAO {
 	 */
 	public int selectMapTeamTotCnt(final MapTeamVO mapTeamVO) {
 		return selectOne("MapTeamDAO.selectMapTeamTotCnt", mapTeamVO);
-	}
-
-	/**
-	 * 지식맵(조직별)상세 정보를 조회 한다.
-	 * 
-	 * @param MapTeamVO - 지식맵(조직별) VO
-	 * @return String - 지식맵(조직별) VO
-	 *
-	 * @param MapTeamVO
-	 */
-	public MapTeamVO selectMapTeamDetail(final MapTeamVO mapTeamVO) {
-		return selectOne("MapTeamDAO.selectMapTeamDetail", mapTeamVO);
-	}
-
-	/**
-	 * 지식맵(조직별) 정보를 신규로 등록한다.
-	 * 
-	 * @param siteUrl  - 지식맵(조직별) model
-	 *
-	 * @param orgnztNm
-	 */
-	public int insertMapTeam(final MapTeamVO mapTeamVO) {
-		return insert("MapTeamDAO.insertMapTeam", mapTeamVO);
 	}
 
 	/**
