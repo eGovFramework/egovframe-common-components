@@ -2,13 +2,13 @@ package egovframework.com.dam.map.tea.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.dam.map.tea.service.EgovMapTeamService;
 import egovframework.com.dam.map.tea.service.MapTeamVO;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <pre>
@@ -25,10 +25,11 @@ import egovframework.com.dam.map.tea.service.MapTeamVO;
  * @created 22-7-2010 오전 10:57:37
  */
 @Service("MapTeamService")
+@RequiredArgsConstructor
+@Slf4j
 public class EgovMapTeamServiceImpl extends EgovAbstractServiceImpl implements EgovMapTeamService {
 
-	@Resource(name = "MapTeamDAO")
-	private MapTeamDAO mapTeamDAO;
+	private final MapTeamDAO mapTeamDAO;
 
 	/**
 	 * 등록된 지식맵(조직별) 목록을 조회 한다.
@@ -40,6 +41,9 @@ public class EgovMapTeamServiceImpl extends EgovAbstractServiceImpl implements E
 	 */
 	@Override
 	public List<MapTeamVO> selectMapTeamList(MapTeamVO searchVO) throws Exception {
+		if (log.isDebugEnabled()) {
+			log.debug("searchVO={}", searchVO);
+		}
 		return mapTeamDAO.selectMapTeamList(searchVO);
 	}
 

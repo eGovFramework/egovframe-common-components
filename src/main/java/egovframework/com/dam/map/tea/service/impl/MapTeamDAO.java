@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
  * @version 1.0
  * @created 22-7-2010 오전 10:57:44
  */
-@Repository("MapTeamDAO")
+@Repository
 @NoArgsConstructor
 public class MapTeamDAO extends EgovComAbstractDAO {
 
