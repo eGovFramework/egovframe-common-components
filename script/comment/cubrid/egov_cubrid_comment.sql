@@ -800,6 +800,8 @@ Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATE
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtndammapkno','orgnzt_id','조직ID',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtndammapteam','cl_de','분류일',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtndammapteam','knwldg_url','지식URL',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtndammapteam','frst_regist_pnttm','최초등록시점',SYS_TIMESTAMP,'DBA');
+Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtndammapteam','frst_register_id','최초등록자ID',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtndammapteam','last_updt_pnttm','최종수정시점',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtndammapteam','last_updusr_id','최종수정자ID',SYS_TIMESTAMP,'DBA');
 Insert into _cub_schema_comments (TABLE_NAME,COLUMN_NAME,DESCRIPTION,LAST_UPDATED,LAST_UPDATED_USER) values ('comtndammapteam','orgnzt_id','조직ID',SYS_TIMESTAMP,'DBA');
