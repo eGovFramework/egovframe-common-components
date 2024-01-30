@@ -1,5 +1,8 @@
 package egovframework.com.dam.map.tea.service;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+
 /**
  * <pre>
  * 개요
@@ -45,6 +48,21 @@ public class MapTeam {
 	 * 최초등록자ID
 	 */
 	private String frstRegisterId = "";
+
+	/**
+	 * 최초등록시점
+	 * 
+	 * @컬럼 `FRST_REGIST_PNTTM` datetime DEFAULT NULL COMMENT '최초등록시점',
+	 */
+	private LocalDateTime frstRegistPnttm;
+
+	/**
+	 * 최초등록시점
+	 * 
+	 * @컬럼 `FRST_REGIST_PNTTM` datetime DEFAULT NULL COMMENT '최초등록시점',
+	 */
+	private String frstRegistPnttm2;
+
 	/**
 	 * 최종수정자ID
 	 */
@@ -114,6 +132,51 @@ public class MapTeam {
 
 	public void setFrstRegisterId(String frstRegisterId) {
 		this.frstRegisterId = frstRegisterId;
+	}
+
+	/**
+	 * 최초등록시점 값읽기
+	 * 
+	 * @return
+	 * 
+	 * @컬럼 `FRST_REGIST_PNTTM` datetime DEFAULT NULL COMMENT '최초등록시점',
+	 */
+	public LocalDateTime getFrstRegistPnttm() {
+		return frstRegistPnttm;
+	}
+
+	/**
+	 * 최초등록시점 값설정
+	 * 
+	 * @param frstRegistPnttm
+	 * 
+	 * @컬럼 `FRST_REGIST_PNTTM` datetime DEFAULT NULL COMMENT '최초등록시점',
+	 */
+	public void setFrstRegistPnttm(LocalDateTime frstRegistPnttm) {
+		this.frstRegistPnttm = frstRegistPnttm;
+		this.frstRegistPnttm2 = frstRegistPnttm.format(DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss"));
+	}
+
+	/**
+	 * 최초등록시점 값읽기
+	 * 
+	 * @return
+	 * 
+	 * @컬럼 `FRST_REGIST_PNTTM` datetime DEFAULT NULL COMMENT '최초등록시점',
+	 */
+	public String getFrstRegistPnttm2() {
+		return frstRegistPnttm2;
+	}
+
+	/**
+	 * 최초등록시점 값설정
+	 * 
+	 * @param frstRegistPnttm2
+	 * 
+	 * @컬럼 `FRST_REGIST_PNTTM` datetime DEFAULT NULL COMMENT '최초등록시점',
+	 */
+	public void setFrstRegistPnttm2(String frstRegistPnttm2) {
+		this.frstRegistPnttm2 = frstRegistPnttm2;
 	}
 
 	public String getLastUpdusrId() {

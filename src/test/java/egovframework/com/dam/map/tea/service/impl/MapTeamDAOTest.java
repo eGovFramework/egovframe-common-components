@@ -124,6 +124,7 @@ public class MapTeamDAOTest extends EgovTestAbstractDAO {
 		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		if (loginVO != null) {
 			mapTeamVO.setFrstRegisterId(loginVO.getUniqId());
+			mapTeamVO.setFrstRegistPnttm(LocalDateTime.now());
 			mapTeamVO.setLastUpdusrId(loginVO.getUniqId());
 		}
 
@@ -161,6 +162,11 @@ public class MapTeamDAOTest extends EgovTestAbstractDAO {
 			log.debug("getClDe 분류일={}, {}", mapTeamVOTestData.getClDe(), result.getClDe());
 			log.debug("getClYmd 분류일={}, {}", mapTeamVOTestData.getClYmd(), result.getClYmd());
 			log.debug("getKnoUrl 지식URL={}, {}", mapTeamVOTestData.getKnoUrl(), result.getKnoUrl());
+
+			log.debug("getFrstRegistPnttm 최초등록시점={}, {}", mapTeamVOTestData.getFrstRegistPnttm(),
+					result.getFrstRegistPnttm());
+			log.debug("getFrstRegistPnttm2 최초등록시점={}, {}", mapTeamVOTestData.getFrstRegistPnttm2(),
+					result.getFrstRegistPnttm2());
 		}
 
 		// then
@@ -168,6 +174,8 @@ public class MapTeamDAOTest extends EgovTestAbstractDAO {
 		assertEquals("조직명", mapTeamVOTestData.getOrgnztNm(), result.getOrgnztNm());
 		assertEquals("분류일", mapTeamVOTestData.getClYmd(), result.getClDe());
 		assertEquals("지식URL", mapTeamVOTestData.getKnoUrl(), result.getKnoUrl());
+
+		assertEquals("최초등록시점", mapTeamVOTestData.getFrstRegistPnttm2(), result.getFrstRegistPnttm2());
 	}
 
 	/**
@@ -428,6 +436,7 @@ public class MapTeamDAOTest extends EgovTestAbstractDAO {
 		final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		if (loginVO != null) {
 			mapTeamVOTestData.setFrstRegisterId(loginVO.getUniqId());
+			mapTeamVOTestData.setFrstRegistPnttm(LocalDateTime.now());
 			mapTeamVOTestData.setLastUpdusrId(loginVO.getUniqId());
 		}
 
