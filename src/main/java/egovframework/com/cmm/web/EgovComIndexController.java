@@ -1,6 +1,5 @@
 package egovframework.com.cmm.web;
 
-
 import java.lang.reflect.Method;
 import java.util.Map;
 import java.util.TreeMap;
@@ -26,25 +25,22 @@ import egovframework.com.uat.uia.service.EgovLoginService;
  * EgovComIndexController 클래스
  * 
  * <p>
- * 컴포넌트 설치 후 설치된 컴포넌트들을 IncludedInfo annotation을 통해 찾아낸 후
- * 화면에 표시할 정보를 처리하는 Controller 클래스<br>
- * notice :  
- *  개발시 메뉴 구조가 잡히기 전에 배포파일들에 포함된 공통 컴포넌트들의 목록성 화면에
- *  URL을 제공하여 개발자가 편하게 활용하도록 하기 위해 작성된 것으로,
- *  실제 운영되는 시스템에서는 적용해서는 안 됨
- *  실 운영 시에는 삭제해서 배포해도 좋음<br>
- * disclaimer :
- *  운영시에 본 컨트롤을 사용하여 메뉴를 구성하는 경우 성능 문제를 일으키거나
- *  사용자별 메뉴 구성에 오류를 발생할 수 있음
-
+ * 컴포넌트 설치 후 설치된 컴포넌트들을 IncludedInfo annotation을 통해 찾아낸 후 화면에 표시할 정보를 처리하는
+ * Controller 클래스<br>
+ * notice : 개발시 메뉴 구조가 잡히기 전에 배포파일들에 포함된 공통 컴포넌트들의 목록성 화면에 URL을 제공하여 개발자가 편하게
+ * 활용하도록 하기 위해 작성된 것으로, 실제 운영되는 시스템에서는 적용해서는 안 됨 실 운영 시에는 삭제해서 배포해도 좋음<br>
+ * disclaimer : 운영시에 본 컨트롤을 사용하여 메뉴를 구성하는 경우 성능 문제를 일으키거나 사용자별 메뉴 구성에 오류를 발생할 수
+ * 있음
+ * 
  * </p>
- *  * 
+ * *
+ * 
  * @author 공통컴포넌트 정진오
  * @since 2011.08.26
  * @version 2.0.0
  * @see
  *
- * <pre>
+ *      <pre>
  * << 개정이력(Modification Information) >>
  *
  *  수정일       수정자       수정내용
@@ -55,10 +51,10 @@ import egovframework.com.uat.uia.service.EgovLoginService;
  *  2019.12.04   신용호            KISA 보안코드 점검 : Map<Integer, IncludedCompInfoVO> map를 지역변수로 수정
  *  2020.07.08   신용호            비밀번호를 수정한후 경과한 날짜 조회
  *  2020.08.28   정진오            표준프레임워크 v3.10 개선
- * </pre>
+ *  2024.02.01   이백행            보안약점 조치: 오류메시지를 통한 정보노출, 부적절한 예외 처리 (광범위한 예외객체 선언)
+ *      </pre>
  * 
  */
-
 
 @Controller
 public class EgovComIndexController {
@@ -88,15 +84,15 @@ public class EgovComIndexController {
 	}
 
 	@RequestMapping("/EgovContent.do")
-	public String setContent(ModelMap model) throws Exception {
+	public String setContent(ModelMap model) {
 
 		// 설정된 비밀번호 유효기간을 가져온다. ex) 180이면 비밀번호 변경후 만료일이 앞으로 180일
 		String propertyExpirePwdDay = EgovProperties.getProperty("Globals.ExpirePwdDay");
-		int expirePwdDay = 0 ;
+		int expirePwdDay = 0;
 		try {
-			expirePwdDay =  Integer.parseInt(propertyExpirePwdDay);
+			expirePwdDay = Integer.parseInt(propertyExpirePwdDay);
 		} catch (NumberFormatException Nfe) {
-			LOGGER.debug("convert expirePwdDay Err : "+Nfe.getMessage());
+			LOGGER.error("NumberFormatException parseInt");
 		}
 
 		model.addAttribute("expirePwdDay", expirePwdDay);
@@ -105,13 +101,13 @@ public class EgovComIndexController {
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		model.addAttribute("loginVO", loginVO);
 		int passedDayChangePWD = 0;
-		if ( loginVO != null ) {
-			LOGGER.debug("===>>> loginVO.getId() = "+loginVO.getId());
-			LOGGER.debug("===>>> loginVO.getUniqId() = "+loginVO.getUniqId());
-			LOGGER.debug("===>>> loginVO.getUserSe() = "+loginVO.getUserSe());
+		if (loginVO != null) {
+			LOGGER.debug("===>>> loginVO.getId() = " + loginVO.getId());
+			LOGGER.debug("===>>> loginVO.getUniqId() = " + loginVO.getUniqId());
+			LOGGER.debug("===>>> loginVO.getUserSe() = " + loginVO.getUserSe());
 			// 비밀번호 변경후 경과한 일수
 			passedDayChangePWD = loginService.selectPassedDayChangePWD(loginVO);
-			LOGGER.debug("===>>> passedDayChangePWD = "+passedDayChangePWD);
+			LOGGER.debug("===>>> passedDayChangePWD = " + passedDayChangePWD);
 			model.addAttribute("passedDay", passedDayChangePWD);
 		}
 
@@ -159,7 +155,7 @@ public class EgovComIndexController {
 		}
 		/* 여기까지 AOP Proxy로 인한 코드 */
 
-		/*@Controller Annotation 처리된 클래스를 모두 찾는다.*/
+		/* @Controller Annotation 처리된 클래스를 모두 찾는다. */
 		Map<String, Object> myZoos = applicationContext.getBeansWithAnnotation(Controller.class);
 		LOGGER.debug("How many Controllers : ", myZoos.size());
 		for (final Object myZoo : myZoos.values()) {
@@ -171,7 +167,7 @@ public class EgovComIndexController {
 				annotation = methods[i].getAnnotation(IncludedInfo.class);
 
 				if (annotation != null) {
-					//LOG.debug("Found @IncludedInfo Method : " + methods[i] );
+					// LOG.debug("Found @IncludedInfo Method : " + methods[i] );
 					zooVO = new IncludedCompInfoVO();
 					zooVO.setName(annotation.name());
 					zooVO.setOrder(annotation.order());
