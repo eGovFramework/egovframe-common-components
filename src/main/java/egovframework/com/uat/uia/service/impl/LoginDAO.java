@@ -9,12 +9,13 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 
 /**
  * 일반 로그인, 인증서 로그인을 처리하는 DAO 클래스
+ * 
  * @author 공통서비스 개발팀 박지욱
  * @since 2009.03.06
  * @version 1.0
  * @see
  *
- * <pre>
+ *      <pre>
  * << 개정이력(Modification Information) >>
  *
  *  수정일               수정자            수정내용
@@ -24,113 +25,122 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
  *  2017.07.21   장동한            로그인인증제한 작업
  *  2020.07.08   신용호            비밀번호를 수정한후 경과한 날짜 조회
  *  2021.05.30   정진오            디지털원패스 인증 회원 조회
- *  </pre>
+ *  2024.02.03   이백행            보안약점 조치: 부적절한 예외 처리 (광범위한 예외객체 선언)
+ *      </pre>
  */
 @Repository("loginDAO")
 public class LoginDAO extends EgovComAbstractDAO {
 
-    /**
-     * 2011.08.26
-	 * EsntlId를 이용한 로그인을 처리한다
+	/**
+	 * 2011.08.26 EsntlId를 이용한 로그인을 처리한다
+	 * 
 	 * @param vo LoginVO
 	 * @return LoginVO
 	 * @exception Exception
 	 */
-    public LoginVO actionLoginByEsntlId(LoginVO vo) throws Exception {
-    	return (LoginVO)selectOne("LoginUsr.ssoLoginByEsntlId", vo);
-    }
+	public LoginVO actionLoginByEsntlId(LoginVO vo) {
+		return (LoginVO) selectOne("LoginUsr.ssoLoginByEsntlId", vo);
+	}
 
 	/**
 	 * 일반 로그인을 처리한다
+	 * 
 	 * @param vo LoginVO
 	 * @return LoginVO
 	 * @exception Exception
 	 */
-    public LoginVO actionLogin(LoginVO vo) throws Exception {
-    	return (LoginVO)selectOne("LoginUsr.actionLogin", vo);
-    }
+	public LoginVO actionLogin(LoginVO vo) {
+		return (LoginVO) selectOne("LoginUsr.actionLogin", vo);
+	}
 
-    /**
+	/**
 	 * 인증서 로그인을 처리한다
+	 * 
 	 * @param vo LoginVO
 	 * @return LoginVO
 	 * @exception Exception
 	 */
-    public LoginVO actionCrtfctLogin(LoginVO vo) throws Exception {
+	public LoginVO actionCrtfctLogin(LoginVO vo) {
 
-    	return (LoginVO)selectOne("LoginUsr.actionCrtfctLogin", vo);
-    }
+		return (LoginVO) selectOne("LoginUsr.actionCrtfctLogin", vo);
+	}
 
-    /**
+	/**
 	 * 아이디를 찾는다.
+	 * 
 	 * @param vo LoginVO
 	 * @return LoginVO
 	 * @exception Exception
 	 */
-    public LoginVO searchId(LoginVO vo) throws Exception {
+	public LoginVO searchId(LoginVO vo) {
 
-    	return (LoginVO)selectOne("LoginUsr.searchId", vo);
-    }
+		return (LoginVO) selectOne("LoginUsr.searchId", vo);
+	}
 
-    /**
+	/**
 	 * 비밀번호를 찾는다.
+	 * 
 	 * @param vo LoginVO
 	 * @return LoginVO
 	 * @exception Exception
 	 */
-    public LoginVO searchPassword(LoginVO vo) throws Exception {
+	public LoginVO searchPassword(LoginVO vo) {
 
-    	return (LoginVO)selectOne("LoginUsr.searchPassword", vo);
-    }
+		return (LoginVO) selectOne("LoginUsr.searchPassword", vo);
+	}
 
-    /**
+	/**
 	 * 변경된 비밀번호를 저장한다.
+	 * 
 	 * @param vo LoginVO
 	 * @exception Exception
 	 */
-    public void updatePassword(LoginVO vo) throws Exception {
-    	update("LoginUsr.updatePassword", vo);
-    }
-    
-    
-    /**
+	public void updatePassword(LoginVO vo) {
+		update("LoginUsr.updatePassword", vo);
+	}
+
+	/**
 	 * 로그인인증제한 내역을 조회한다.
+	 * 
 	 * @param vo LoginVO
 	 * @return LoginVO
 	 * @exception Exception
 	 */
-	public Map<?,?> selectLoginIncorrect(LoginVO vo) throws Exception {
-    	return (Map<?,?>)selectOne("LoginUsr.selectLoginIncorrect", vo);
-    }
+	public Map<?, ?> selectLoginIncorrect(LoginVO vo) {
+		return (Map<?, ?>) selectOne("LoginUsr.selectLoginIncorrect", vo);
+	}
 
-    /**
+	/**
 	 * 로그인인증제한 내역을 업데이트 한다.
+	 * 
 	 * @param vo LoginVO
 	 * @return vod
 	 * @exception Exception
 	 */
-    public void updateLoginIncorrect(Map<?,?> map) throws Exception {
-    	update("LoginUsr.updateLoginIncorrect"+map.get("USER_SE"), map);
-    }
-    
-    /**
+	public void updateLoginIncorrect(Map<?, ?> map) {
+		update("LoginUsr.updateLoginIncorrect" + map.get("USER_SE"), map);
+	}
+
+	/**
 	 * 비밀번호를 수정한후 경과한 날짜를 조회한다.
+	 * 
 	 * @param vo LoginVO
 	 * @return LoginVO
 	 * @exception Exception
 	 */
-    public int selectPassedDayChangePWD(LoginVO vo) throws Exception {
-    	return selectOne("LoginUsr.selectPassedDayChangePWD", vo);
-    }
+	public int selectPassedDayChangePWD(LoginVO vo) {
+		return selectOne("LoginUsr.selectPassedDayChangePWD", vo);
+	}
 
 	/**
 	 * 디지털원패스 인증 회원 조회한다.
+	 * 
 	 * @param id
 	 * @return LoginVO
 	 * @exception Exception
 	 */
-    public LoginVO onepassLogin(String id) throws Exception {
-    	return (LoginVO)selectOne("LoginUsr.onepassLogin", id);
-    }
+	public LoginVO onepassLogin(String id) {
+		return (LoginVO) selectOne("LoginUsr.onepassLogin", id);
+	}
 
 }
