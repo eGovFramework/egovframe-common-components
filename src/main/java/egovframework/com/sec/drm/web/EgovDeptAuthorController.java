@@ -1,5 +1,16 @@
 package egovframework.com.sec.drm.web;
 
+import javax.annotation.Resource;
+
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.SessionAttributes;
+
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.SessionVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
@@ -10,79 +21,68 @@ import egovframework.com.sec.drm.service.EgovDeptAuthorService;
 import egovframework.com.sec.ram.service.AuthorManageVO;
 import egovframework.com.sec.ram.service.EgovAuthorManageService;
 
-import org.egovframe.rte.fdl.property.EgovPropertyService;
-import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Controller;
-import org.springframework.ui.ModelMap;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.SessionAttributes;
-
 /**
  * 부서권한에 관한 controller 클래스를 정의한다.
+ * 
  * @author 공통서비스 개발팀 이문준
  * @since 2009.06.01
  * @version 1.0
  * @see
  *
- * <pre>
+ *      <pre>
  * << 개정이력(Modification Information) >>
  *   
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.03.11  이문준          최초 생성
  *   2011.8.26	정진오			IncludedInfo annotation 추가
+ *   2024.02.10	이백행			보안약점 조치: 부적절한 예외 처리 (광범위한 예외객체 선언)
  *
- * </pre>
+ *      </pre>
  */
 
-
 @Controller
-@SessionAttributes(types=SessionVO.class)
+@SessionAttributes(types = SessionVO.class)
 public class EgovDeptAuthorController extends EgovComAbstractController {
 
-    @Resource(name="egovMessageSource")
-    EgovMessageSource egovMessageSource;
-    
-    @Resource(name = "egovDeptAuthorService")
-    private EgovDeptAuthorService egovDeptAuthorService;
-    
-    @Resource(name = "egovAuthorManageService")
-    private EgovAuthorManageService egovAuthorManageService;
-    
-    /** EgovPropertyService */
-    @Resource(name = "propertiesService")
-    protected EgovPropertyService propertiesService;
+	@Resource(name = "egovMessageSource")
+	EgovMessageSource egovMessageSource;
 
-    /**
+	@Resource(name = "egovDeptAuthorService")
+	private EgovDeptAuthorService egovDeptAuthorService;
+
+	@Resource(name = "egovAuthorManageService")
+	private EgovAuthorManageService egovAuthorManageService;
+
+	/** EgovPropertyService */
+	@Resource(name = "propertiesService")
+	protected EgovPropertyService propertiesService;
+
+	/**
 	 * 권한 목록화면 이동
+	 * 
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping("/sec/drm/EgovDeptAuthorListView.do")
-    public String selectDeptAuthorListView() throws Exception {
-        return "egovframework/com/sec/drm/EgovDeptAuthorManage";
-    }    
+	@RequestMapping("/sec/drm/EgovDeptAuthorListView.do")
+	public String selectDeptAuthorListView() {
+		return "egovframework/com/sec/drm/EgovDeptAuthorManage";
+	}
 
 	/**
 	 * 부서별 할당된 권한목록 조회
 	 * 
-	 * @param deptAuthorVO DeptAuthorVO
+	 * @param deptAuthorVO   DeptAuthorVO
 	 * @param authorManageVO AuthorManageVO
 	 * @return String
 	 * @exception Exception
 	 */
-    @IncludedInfo(name="부서권한관리", listUrl="/sec/drm/EgovDeptAuthorList.do", order = 100,gid = 20)
-    @RequestMapping(value="/sec/drm/EgovDeptAuthorList.do")
+	@IncludedInfo(name = "부서권한관리", listUrl = "/sec/drm/EgovDeptAuthorList.do", order = 100, gid = 20)
+	@RequestMapping(value = "/sec/drm/EgovDeptAuthorList.do")
 	public String selectDeptAuthorList(@ModelAttribute("deptAuthorVO") DeptAuthorVO deptAuthorVO,
-			                            @ModelAttribute("authorManageVO") AuthorManageVO authorManageVO,
-			                             ModelMap model) throws Exception {
+			@ModelAttribute("authorManageVO") AuthorManageVO authorManageVO, ModelMap model) {
 
-    	/** paging */
+		/** paging */
 //    	PaginationInfo paginationInfo = new PaginationInfo();
 //		paginationInfo.setCurrentPageNo(deptAuthorVO.getPageIndex());
 //		paginationInfo.setRecordCountPerPage(deptAuthorVO.getPageUnit());
@@ -91,119 +91,118 @@ public class EgovDeptAuthorController extends EgovComAbstractController {
 //		deptAuthorVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
 //		deptAuthorVO.setLastIndex(paginationInfo.getLastRecordIndex());
 //		deptAuthorVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-    	PaginationInfo paginationInfo = builderPaginationInfo(deptAuthorVO);
-		
+		PaginationInfo paginationInfo = builderPaginationInfo(deptAuthorVO);
+
 		deptAuthorVO.setDeptAuthorList(egovDeptAuthorService.selectDeptAuthorList(deptAuthorVO));
-        model.addAttribute("deptAuthorList", deptAuthorVO.getDeptAuthorList());
-        
-        int totCnt = egovDeptAuthorService.selectDeptAuthorListTotCnt(deptAuthorVO);
+		model.addAttribute("deptAuthorList", deptAuthorVO.getDeptAuthorList());
+
+		int totCnt = egovDeptAuthorService.selectDeptAuthorListTotCnt(deptAuthorVO);
 		paginationInfo.setTotalRecordCount(totCnt);
-        model.addAttribute("paginationInfo", paginationInfo);
+		model.addAttribute("paginationInfo", paginationInfo);
 
-    	authorManageVO.setAuthorManageList(egovAuthorManageService.selectAuthorAllList(authorManageVO));
-        model.addAttribute("authorManageList", authorManageVO.getAuthorManageList());
+		authorManageVO.setAuthorManageList(egovAuthorManageService.selectAuthorAllList(authorManageVO));
+		model.addAttribute("authorManageList", authorManageVO.getAuthorManageList());
 
-        model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
-        
-        return "egovframework/com/sec/drm/EgovDeptAuthorManage";
+		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
+
+		return "egovframework/com/sec/drm/EgovDeptAuthorManage";
 	}
-	
+
 	/**
 	 * 부서에 권한정보를 할당하여 데이터베이스에 등록
 	 * 
-	 * @param userIds String
+	 * @param userIds     String
 	 * @param authorCodes String
-	 * @param regYns String
-	 * @param deptAuthor DeptAuthor
+	 * @param regYns      String
+	 * @param deptAuthor  DeptAuthor
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value="/sec/drm/EgovDeptAuthorInsert.do")
+	@RequestMapping(value = "/sec/drm/EgovDeptAuthorInsert.do")
 	public String insertDeptAuthor(@RequestParam("userIds") String userIds,
-			                       @RequestParam("authorCodes") String authorCodes,
-			                       @RequestParam("regYns") String regYns,
-			                       @ModelAttribute("deptAuthor") DeptAuthor deptAuthor,
-			                         ModelMap model) throws Exception {
-		
-    	String [] strUserIds = userIds.split(";");
-    	String [] strAuthorCodes = authorCodes.split(";");
-    	String [] strRegYns = regYns.split(";");
-    	
-    	for(int i=0; i<strUserIds.length;i++) {
-    		deptAuthor.setUniqId(strUserIds[i]);
-    		deptAuthor.setAuthorCode(strAuthorCodes[i]);
-    		if(strRegYns[i].equals("N"))
-    			egovDeptAuthorService.insertDeptAuthor(deptAuthor);
-    		else 
-    			egovDeptAuthorService.updateDeptAuthor(deptAuthor);
-    	}
+			@RequestParam("authorCodes") String authorCodes, @RequestParam("regYns") String regYns,
+			@ModelAttribute("deptAuthor") DeptAuthor deptAuthor, ModelMap model) {
 
-        model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));		
+		String[] strUserIds = userIds.split(";");
+		String[] strAuthorCodes = authorCodes.split(";");
+		String[] strRegYns = regYns.split(";");
+
+		for (int i = 0; i < strUserIds.length; i++) {
+			deptAuthor.setUniqId(strUserIds[i]);
+			deptAuthor.setAuthorCode(strAuthorCodes[i]);
+			if (strRegYns[i].equals("N"))
+				egovDeptAuthorService.insertDeptAuthor(deptAuthor);
+			else
+				egovDeptAuthorService.updateDeptAuthor(deptAuthor);
+		}
+
+		model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
 		return "forward:/sec/drm/EgovDeptAuthorList.do";
 	}
 
 	/**
 	 * 부서별 할당된 시스템 메뉴 접근권한을 삭제
-	 * @param userIds String
+	 * 
+	 * @param userIds    String
 	 * @param deptAuthor DeptAuthor
 	 * @return String
 	 * @exception Exception
-	 */ 
-	@RequestMapping(value="/sec/drm/EgovDeptAuthorDelete.do")
-	public String deleteDeptAuthor (@RequestParam("userIds") String userIds,
-			                        @ModelAttribute("deptAuthor") DeptAuthor deptAuthor,
-                                     ModelMap model) throws Exception {
-		
-    	String [] strUserIds = userIds.split(";");
-    	for(int i=0; i<strUserIds.length;i++) {
-    		deptAuthor.setUniqId(strUserIds[i]);
-    		egovDeptAuthorService.deleteDeptAuthor(deptAuthor);
-    	}
-    	
+	 */
+	@RequestMapping(value = "/sec/drm/EgovDeptAuthorDelete.do")
+	public String deleteDeptAuthor(@RequestParam("userIds") String userIds,
+			@ModelAttribute("deptAuthor") DeptAuthor deptAuthor, ModelMap model) {
+
+		String[] strUserIds = userIds.split(";");
+		for (int i = 0; i < strUserIds.length; i++) {
+			deptAuthor.setUniqId(strUserIds[i]);
+			egovDeptAuthorService.deleteDeptAuthor(deptAuthor);
+		}
+
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		return "forward:/sec/drm/EgovDeptAuthorList.do";
 	}
-	
-    /**
+
+	/**
 	 * 부서조회 팝업 이동
+	 * 
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping("/sec/drm/EgovDeptSearchView.do")
-    public String selectDeptListView() throws Exception {
-        return "egovframework/com/sec/drm/EgovDeptSearch";
-    }    	
-	
+	@RequestMapping("/sec/drm/EgovDeptSearchView.do")
+	public String selectDeptListView() {
+		return "egovframework/com/sec/drm/EgovDeptSearch";
+	}
+
 	/**
 	 * 부서별 할당된 권한목록 조회
+	 * 
 	 * @param deptAuthorVO DeptAuthorVO
 	 * @return String
 	 * @exception Exception
 	 */
-    //@IncludedInfo(name="부서목록관리", order = 101)
-    @RequestMapping(value="/sec/drm/EgovDeptSearchList.do")
-	public String selectDeptList(@ModelAttribute("deptAuthorVO") DeptAuthorVO deptAuthorVO,
-			                             ModelMap model) throws Exception {
+	// @IncludedInfo(name="부서목록관리", order = 101)
+	@RequestMapping(value = "/sec/drm/EgovDeptSearchList.do")
+	public String selectDeptList(@ModelAttribute("deptAuthorVO") DeptAuthorVO deptAuthorVO, ModelMap model) {
 
-    	/** paging */
-    	PaginationInfo paginationInfo = new PaginationInfo();
+		/** paging */
+		PaginationInfo paginationInfo = new PaginationInfo();
 		paginationInfo.setCurrentPageNo(deptAuthorVO.getPageIndex());
 		paginationInfo.setRecordCountPerPage(deptAuthorVO.getPageUnit());
 		paginationInfo.setPageSize(deptAuthorVO.getPageSize());
-		
+
 		deptAuthorVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
 		deptAuthorVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		deptAuthorVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-		
-		deptAuthorVO.setDeptList(egovDeptAuthorService.selectDeptList(deptAuthorVO));
-        model.addAttribute("deptList", deptAuthorVO.getDeptList());
-        
-        int totCnt = egovDeptAuthorService.selectDeptListTotCnt(deptAuthorVO);
-		paginationInfo.setTotalRecordCount(totCnt);
-        model.addAttribute("paginationInfo", paginationInfo);
 
-        model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
-        
-        return "egovframework/com/sec/drm/EgovDeptSearch";
+		deptAuthorVO.setDeptList(egovDeptAuthorService.selectDeptList(deptAuthorVO));
+		model.addAttribute("deptList", deptAuthorVO.getDeptList());
+
+		int totCnt = egovDeptAuthorService.selectDeptListTotCnt(deptAuthorVO);
+		paginationInfo.setTotalRecordCount(totCnt);
+		model.addAttribute("paginationInfo", paginationInfo);
+
+		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
+
+		return "egovframework/com/sec/drm/EgovDeptSearch";
 	}
 }
