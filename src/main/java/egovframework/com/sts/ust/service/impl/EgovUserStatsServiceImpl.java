@@ -2,56 +2,58 @@ package egovframework.com.sts.ust.service.impl;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.springframework.stereotype.Service;
+
 import egovframework.com.sts.com.StatsVO;
 import egovframework.com.sts.ust.service.EgovUserStatsService;
 
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-
 /**
  * 사용자 통계 검색 비즈니스 구현 클래스
+ * 
  * @author 공통서비스 개발팀 박지욱
  * @since 2009.03.12
  * @version 1.0
  * @see
  *
- * <pre>
+ *      <pre>
  * << 개정이력(Modification Information) >>
  *
  *   수정일     수정자          수정내용
  *  -------    --------    ---------------------------
  *  2009.03.19  박지욱          최초 생성
  *  2011.06.30  이기하          패키지 분리(sts -> sts.ust)
+ *  2024.02.14  이백행          보안약점 조치: 부적절한 예외 처리 (광범위한 예외객체 선언)
  *
- *  </pre>
+ *      </pre>
  */
 @Service("userStatsService")
-public class EgovUserStatsServiceImpl extends EgovAbstractServiceImpl implements
-	EgovUserStatsService {
+public class EgovUserStatsServiceImpl extends EgovAbstractServiceImpl implements EgovUserStatsService {
 
-    @Resource(name="userStatsDAO")
-    private UserStatsDAO userStatsDAO;
+	@Resource(name = "userStatsDAO")
+	private UserStatsDAO userStatsDAO;
 
-    /**
+	/**
 	 * 사용자 통계를 조회한다
+	 * 
 	 * @param vo StatsVO
 	 * @return List
 	 * @exception Exception
 	 */
-    @Override
-	public List<StatsVO> selectUserStats(StatsVO vo) throws Exception {
-        return userStatsDAO.selectUserStats(vo);
+	@Override
+	public List<StatsVO> selectUserStats(StatsVO vo) {
+		return userStatsDAO.selectUserStats(vo);
 	}
 
-    /**
+	/**
 	 * 사용자 통계를 위한 집계를 하루단위로 작업하는 배치 프로그램
+	 * 
 	 * @exception Exception
 	 */
 	@Override
-	public void summaryUserStats() throws Exception {
+	public void summaryUserStats() {
 		userStatsDAO.summaryUserStats();
 	}
 }
