@@ -2,47 +2,48 @@ package egovframework.com.sts.sst.service.impl;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.springframework.stereotype.Service;
+
 import egovframework.com.sts.com.StatsVO;
 import egovframework.com.sts.sst.service.EgovScrinStatsService;
 
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-
 /**
  * 화면 통계 검색 비즈니스 구현 클래스
+ * 
  * @author 공통서비스 개발팀 박지욱
  * @since 2009.03.12
  * @version 1.0
  * @see
  *
- * <pre>
+ *      <pre>
  * << 개정이력(Modification Information) >>
  *
  *   수정일      수정자          수정내용
  *  -------    --------    ---------------------------
  *  2009.03.19  박지욱          최초 생성
  *  2011.06.30  이기하          패키지 분리(sts -> sts.sst)
+ *  2024.02.16  이백행          보안약점 조치: 부적절한 예외 처리 (광범위한 예외객체 선언)
  *
- *  </pre>
+ *      </pre>
  */
 @Service("scrinStatsService")
-public class EgovScrinStatsServiceImpl extends EgovAbstractServiceImpl implements
-	EgovScrinStatsService {
+public class EgovScrinStatsServiceImpl extends EgovAbstractServiceImpl implements EgovScrinStatsService {
 
-    @Resource(name="scrinStatsDAO")
-    private ScrinStatsDAO scrinStatsDAO;
+	@Resource(name = "scrinStatsDAO")
+	private ScrinStatsDAO scrinStatsDAO;
 
-    /**
+	/**
 	 * 화면 통계를 조회한다
+	 * 
 	 * @param vo StatsVO
 	 * @return List
 	 * @exception Exception
 	 */
-    @Override
-	public List<StatsVO> selectScrinStats(StatsVO vo) throws Exception {
-        return scrinStatsDAO.selectScrinStats(vo);
+	@Override
+	public List<StatsVO> selectScrinStats(StatsVO vo) {
+		return scrinStatsDAO.selectScrinStats(vo);
 	}
 }
