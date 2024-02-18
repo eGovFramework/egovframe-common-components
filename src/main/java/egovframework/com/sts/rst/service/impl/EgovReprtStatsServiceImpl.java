@@ -15,6 +15,7 @@
  *  -------    --------    ---------------------------
  *  2009.8.3   lee.m.j          최초 생성 *  
  *  2011.8.26	정진오			IncludedInfo annotation 추가
+ *  2024.02.17 이백행              보안약점 조치: 부적절한 예외 처리 (광범위한 예외객체 선언)
  *
  *  </pre> 
  */
@@ -23,90 +24,105 @@ package egovframework.com.sts.rst.service.impl;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.springframework.stereotype.Service;
+
 import egovframework.com.sts.rst.service.EgovReprtStatsService;
 import egovframework.com.sts.rst.service.ReprtStats;
 import egovframework.com.sts.rst.service.ReprtStatsVO;
 
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
-
 @Service("egovReprtStatsService")
 public class EgovReprtStatsServiceImpl extends EgovAbstractServiceImpl implements EgovReprtStatsService {
 
-	@Resource(name="reprtStatsDAO")
+	@Resource(name = "reprtStatsDAO")
 	private ReprtStatsDAO reprtStatsDAO;
 
 	/**
 	 * 보고서 통계정보의 대상목록을 조회한다.
+	 * 
 	 * @param reprtStatsVO - 보고서통계 VO
 	 * @return List - 보고서통계 목록
 	 */
-	public List<ReprtStatsVO> selectReprtStatsList(ReprtStatsVO reprtStatsVO) throws Exception {
+	@Override
+	public List<ReprtStatsVO> selectReprtStatsList(ReprtStatsVO reprtStatsVO) {
 		return reprtStatsDAO.selectReprtStatsList(reprtStatsVO);
 	}
 
-    /**
+	/**
 	 * 보고서통계목록 페이징 총 개수를 조회한다.
+	 * 
 	 * @param reprtStatsVO - 보고서통계 VO
 	 * @return int
 	 */
-	public int selectReprtStatsListTotCnt(ReprtStatsVO reprtStatsVO) throws Exception {
+	@Override
+	public int selectReprtStatsListTotCnt(ReprtStatsVO reprtStatsVO) {
 		return reprtStatsDAO.selectReprtStatsListTotCnt(reprtStatsVO);
 	}
-	
-    /**
+
+	/**
 	 * 보고서통계목록 총 개수를 조회한다.
+	 * 
 	 * @param reprtStatsVO - 보고서통계 VO
 	 * @return int
 	 */
-	public int selectReprtStatsListBarTotCnt(ReprtStatsVO reprtStatsVO) throws Exception {
+	@Override
+	public int selectReprtStatsListBarTotCnt(ReprtStatsVO reprtStatsVO) {
 		return reprtStatsDAO.selectReprtStatsListBarTotCnt(reprtStatsVO);
-	}	
-	
+	}
+
 	/**
 	 * 보고서 통계정보의 상세정보를 조회한다.
+	 * 
 	 * @param reprtStatsVO - 보고서통계 VO
 	 * @return ReprtStatsVO - 보고서통계 VO
 	 */
-	public List<ReprtStatsVO> selectReprtStats(ReprtStatsVO reprtStatsVO) throws Exception {
+	@Override
+	public List<ReprtStatsVO> selectReprtStats(ReprtStatsVO reprtStatsVO) {
 		return reprtStatsDAO.selectReprtStats(reprtStatsVO);
 	}
 
 	/**
 	 * 보고서 통계정보를 생성한 뒤 저장한다.
+	 * 
 	 * @param reprtStats - 보고서통계 model
 	 */
-	public void insertReprtStats(ReprtStats reprtStats) throws Exception {
+	@Override
+	public void insertReprtStats(ReprtStats reprtStats) {
 		reprtStatsDAO.insertReprtStats(reprtStats);
 	}
-	
+
 	/**
 	 * 등록일자별 통계정보를 그래프로 표현한다.
+	 * 
 	 * @param reprtStatsVO - 보고서통계 VO
 	 * @return List - 보고서통계 VO
 	 */
-	public List<ReprtStatsVO> selectReprtStatsBarList(ReprtStatsVO reprtStatsVO) throws Exception {
+	@Override
+	public List<ReprtStatsVO> selectReprtStatsBarList(ReprtStatsVO reprtStatsVO) {
 		return reprtStatsDAO.selectReprtStatsBarList(reprtStatsVO);
-	}   
-	
+	}
+
 	/**
 	 * 보고서유형별 통계정보를 그래프로 표현한다.
+	 * 
 	 * @param reprtStatsVO - 보고서통계 VO
 	 * @return List - 보고서통계 VO
 	 */
-	public List<ReprtStatsVO> selectReprtStatsByReprtTyList(ReprtStatsVO reprtStatsVO) throws Exception {
+	@Override
+	public List<ReprtStatsVO> selectReprtStatsByReprtTyList(ReprtStatsVO reprtStatsVO) {
 		return reprtStatsDAO.selectReprtStatsByReprtTyList(reprtStatsVO);
-	} 	
-	
+	}
+
 	/**
 	 * 진행상태별 통계정보를 그래프로 표현한다.
+	 * 
 	 * @param reprtStatsVO - 보고서통계 VO
 	 * @return List - 보고서통계 VO
 	 */
-	public List<ReprtStatsVO> selectReprtStatsByReprtSttusList(ReprtStatsVO reprtStatsVO) throws Exception {
+	@Override
+	public List<ReprtStatsVO> selectReprtStatsByReprtSttusList(ReprtStatsVO reprtStatsVO) {
 		return reprtStatsDAO.selectReprtStatsByReprtSttusList(reprtStatsVO);
-	} 	
+	}
 }
