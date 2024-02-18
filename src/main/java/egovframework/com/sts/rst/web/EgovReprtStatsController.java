@@ -24,6 +24,8 @@ package egovframework.com.sts.rst.web;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -216,7 +218,11 @@ public class EgovReprtStatsController {
 		} else {
 			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-			reprtStats.setReprtId(egovReprtStatsIdGnrService.getNextStringId());
+			try {
+				reprtStats.setReprtId(egovReprtStatsIdGnrService.getNextStringId());
+			} catch (FdlException e) {
+				throw new BaseRuntimeException("FdlException egovReprtStatsIdGnrService", e);
+			}
 			reprtStats.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
 
 			egovReprtStatsService.insertReprtStats(reprtStats);
