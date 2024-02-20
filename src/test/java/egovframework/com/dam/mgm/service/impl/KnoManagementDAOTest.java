@@ -1,6 +1,7 @@
 package egovframework.com.dam.mgm.service.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 import java.util.List;
 import javax.sql.DataSource;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
@@ -152,4 +153,22 @@ public class KnoManagementDAOTest extends EgovTestAbstractDAO{
         }
     }
 
+    /**
+     * 지식정보 목록 전체 개수 조회 테스트 코드
+     */
+    @Test
+    public void a02selectKnoManagementTotCnt() {
+        // given
+        final KnoManagementVO searchVO = new KnoManagementVO();
+        searchVO.setSearchCondition("2");
+        searchVO.setSearchKeyword("테스트1");
+
+        // when
+        final int resultAll = knoManagementDAO.selectKnoManagementTotCnt(new KnoManagementVO());
+        final int result = knoManagementDAO.selectKnoManagementTotCnt(searchVO);
+
+        // then
+        assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultAll > 0);
+        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);
+    }
 }
