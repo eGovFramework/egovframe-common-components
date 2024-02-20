@@ -47,9 +47,17 @@ import lombok.extern.slf4j.Slf4j;
 // @Commit // 주석을 없애면 테이블에 입력됨
 public class KnoManagementDAOTest extends EgovTestAbstractDAO{
 
+    /**
+     * DataSource
+     */
     @Autowired
-    private DataSource ds;
+    private DataSource dataSource;
 
+    /**
+     * JdbcTemplate
+     * Mybatis 지식관리 Mapper(EgovKnoManagement_SQL_*.xml)내에 insert 구문이 없음
+     * 임시 방편으로 추가하기 위해 jdbcTemplate를 사용하고자 함.
+     */
     private JdbcTemplate jdbcTemplate;
 
     /**
@@ -68,11 +76,13 @@ public class KnoManagementDAOTest extends EgovTestAbstractDAO{
      */
     @Before
     public void testData() {
-        jdbcTemplate = new JdbcTemplate(ds);
-        testUserVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+        jdbcTemplate = new JdbcTemplate(dataSource); // 데이터소스로부터 jdbcTemplate를 가져옴
+        testUserVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser(); // 사용자 정보
+        final String organId = "COMTNDAMMAPTEAM_0001"; // 지색맵 조직 ID
+        final String knoTypeId = "001"; // 지식 유형 ID
+        final String knowId = "COMTNDAMKNOIFM_00001"; // 지식 ID
 
         // 지식맵(조직별) 추가
-        String organId = "COMTNDAMMAPTEAM_0001";
         String insertSql = "INSERT INTO COMTNDAMMAPTEAM(ORGNZT_ID, ORGNZT_NM, CL_DE, KNWLDG_URL, LAST_UPDUSR_ID, LAST_UPDT_PNTTM) "
                 + "VALUES('" + organId + "', '기획팀', '2024-02-01'"
                 + ", 'https://www.egovframe.go.kr/wiki/doku.php?id=egovframework:%EC%A7%80%EC%8B%9D%EC%A0%95%EB%B3%B4%EA%B4%80%EB%A6%AC'"
@@ -80,7 +90,6 @@ public class KnoManagementDAOTest extends EgovTestAbstractDAO{
         jdbcTemplate.execute(insertSql);
 
         // 지식맵(유형별) 추가
-        String knoTypeId = "001";
         insertSql = "INSERT INTO com.COMTNDAMMAPKNO(KNWLDG_TY_CODE, ORGNZT_ID, EXPERT_ID, KNWLDG_TY_NM, CL_DE, KNWLDG_URL"
                 + ", FRST_REGISTER_ID, FRST_REGIST_PNTTM, LAST_UPDUSR_ID, LAST_UPDT_PNTTM) "
                 + "VALUES('" + knoTypeId + "', '" + organId + "', '" + testUserVO.getUniqId() + "', '회계', '2024-02-01'"
@@ -89,7 +98,6 @@ public class KnoManagementDAOTest extends EgovTestAbstractDAO{
         jdbcTemplate.execute(insertSql);
 
         // 지식정보 추가
-        String knowId = "COMTNDAMKNOIFM_00001";
         insertSql = "INSERT INTO com.COMTNDAMKNOIFM(KNWLDG_ID, KNWLDG_TY_CODE, ORGNZT_ID, EXPERT_ID, EMPLYR_ID"
                 + ", KNWLDG_NM, KNWLDG_CN, KWRD, OTHBC_AT, KNWLDG_EVL, COLCT_DE, EVL_DE, ATCH_FILE_ID"
                 + ", FRST_REGISTER_ID, FRST_REGIST_PNTTM, LAST_UPDUSR_ID, LAST_UPDT_PNTTM, DSUSE_DE) "
@@ -132,7 +140,6 @@ public class KnoManagementDAOTest extends EgovTestAbstractDAO{
 
         // when
         final List<EgovMap> resultList = knoManagementDAO.selectKnoManagementList(searchVO);
-        System.out.println("결과: " + resultList.isEmpty());
 
         for (final EgovMap result : resultList) {
             if (log.isDebugEnabled()) {
