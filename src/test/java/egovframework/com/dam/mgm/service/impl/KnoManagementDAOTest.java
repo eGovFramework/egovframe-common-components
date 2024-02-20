@@ -16,6 +16,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.test.context.ContextConfiguration;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.dam.mgm.service.KnoManagement;
 import egovframework.com.dam.mgm.service.KnoManagementVO;
 import egovframework.com.test.EgovTestAbstractDAO;
 import lombok.NoArgsConstructor;
@@ -73,6 +74,11 @@ public class KnoManagementDAOTest extends EgovTestAbstractDAO{
     private LoginVO testUserVO;
 
     /**
+     *
+     */
+    private String knoId = "COMTNDAMKNOIFM_00001"; // 지식 ID
+
+    /**
      * 테스트 데이터 생성
      */
     @Before
@@ -81,7 +87,7 @@ public class KnoManagementDAOTest extends EgovTestAbstractDAO{
         testUserVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser(); // 사용자 정보
         final String organId = "COMTNDAMMAPTEAM_0001"; // 지색맵 조직 ID
         final String knoTypeId = "001"; // 지식 유형 ID
-        final String knowId = "COMTNDAMKNOIFM_00001"; // 지식 ID
+        final String knoId = "COMTNDAMKNOIFM_00001"; // 지식 ID
 
         // 지식맵(조직별) 추가
         String insertSql = "INSERT INTO COMTNDAMMAPTEAM(ORGNZT_ID, ORGNZT_NM, CL_DE, KNWLDG_URL, LAST_UPDUSR_ID, LAST_UPDT_PNTTM) "
@@ -102,10 +108,10 @@ public class KnoManagementDAOTest extends EgovTestAbstractDAO{
         insertSql = "INSERT INTO com.COMTNDAMKNOIFM(KNWLDG_ID, KNWLDG_TY_CODE, ORGNZT_ID, EXPERT_ID, EMPLYR_ID"
                 + ", KNWLDG_NM, KNWLDG_CN, KWRD, OTHBC_AT, KNWLDG_EVL, COLCT_DE, EVL_DE, ATCH_FILE_ID"
                 + ", FRST_REGISTER_ID, FRST_REGIST_PNTTM, LAST_UPDUSR_ID, LAST_UPDT_PNTTM, DSUSE_DE) "
-                + "VALUES('" + knowId + "', '" + knoTypeId + "', '" + organId + "', '" + testUserVO.getUniqId() + "', '" + testUserVO.getUniqId() + "'"
+                + "VALUES('" + knoId + "', '" + knoTypeId + "', '" + organId + "', '" + testUserVO.getUniqId() + "', '" + testUserVO.getUniqId() + "'"
                 + ", '세금계산서', '세금계산서 작성법', '세금계산서', 'Y', '1', '2024-02-01', '2024-02-20', NULL"
                 + ", '" + testUserVO.getUniqId() + "', NOW(), '" + testUserVO.getUniqId() + "', NOW(), '2024-02-28')";
-
+        this.knoId = knoId;
         jdbcTemplate.execute(insertSql);
     }
 
@@ -121,7 +127,7 @@ public class KnoManagementDAOTest extends EgovTestAbstractDAO{
     }
 
     /**
-     * 주어진 조건에 맞는 지식정보 조회 테스트 코드
+     * 주어진 조건에 맞는 지식정보 목록 조회 테스트 코드
      */
     @Test
     public void a01selectKnoManagementList() {
@@ -170,5 +176,28 @@ public class KnoManagementDAOTest extends EgovTestAbstractDAO{
         // then
         assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultAll > 0);
         assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);
+    }
+
+    /**
+     * 주어진 조건에 맞는 지식정보 조회 테스트 코드
+     */
+    @Test
+    public void a03selectKnoManagement() {
+        // given
+        final KnoManagement knoManagement = new KnoManagement(); // 관리자
+        /**
+         * 로그인 사용자 정보
+         * ESNTL_ID(고유ID)         EMPLYR_ID    USER_NM    OFCPS_NM
+         * USRCNFRM_00000000000    TEST1        테스트1     관리자
+         * USRCNFRM_99999999999    webmaster    웹마스터     웹관리자
+         */
+        knoManagement.setEmplyrId(testUserVO.getUniqId());
+        knoManagement.setKnoId(knoId);
+
+        // when
+        final KnoManagement result = knoManagementDAO.selectKnoManagement(knoManagement);
+
+        // then
+        assertSelectKnowInfo(knoId, result.getKnoId());
     }
 }
