@@ -1,7 +1,6 @@
 package egovframework.com.dam.mgm.service;
 
 import java.util.List;
-
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 /**
@@ -18,55 +17,57 @@ import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 public interface EgovKnoManagementService {
 
-	/**
-	 * 등록된 지식정보 정보를 조회 한다.
-	 * @param KnoManagementVO - 지식정보 VO
-	 * @return String - 지식정보 VO
-	 *
-	 * @param KnoManagementVO
-	 */
-	List<EgovMap> selectKnoManagementList(KnoManagementVO searchVO) throws Exception;
+    /**
+     * 등록된 지식정보 정보를 조회 한다.
+     * @param KnoManagementVO - 지식정보 VO
+     * @return String - 지식정보 VO
+     *
+     * @param KnoManagementVO
+     */
+    List<EgovMap> selectKnoManagementList(KnoManagementVO searchVO) throws Exception;
 
-	/**
-	 * 지식정보 목록 총 개수를 조회한다.
-	 * @param KnoManagementVO - 지식정보 Vo
-	 * @return int - 지식정보 토탈 카운트 수
-	 *
-	 * @param KnoManagementVO
-	 */
-	int selectKnoManagementTotCnt(KnoManagementVO searchVO) throws Exception;
+    /**
+     * 지식정보 목록 총 개수를 조회한다.
+     * @param KnoManagementVO - 지식정보 Vo
+     * @return int - 지식정보 토탈 카운트 수
+     *
+     * @param KnoManagementVO
+     */
+    int selectKnoManagementTotCnt(KnoManagementVO searchVO) throws Exception;
 
-	/**
-	 * 지식정보 상세 정보를 조회 한다.
-	 * @param KnoManagementVO - 지식정보 VO
-	 * @return String - 지식정보 VO
-	 *
-	 * @param KnoManagementVO
-	 */
-	KnoManagement selectKnoManagement(KnoManagement knoManagement) throws Exception;
+    /**
+     * 지식정보 상세 정보를 조회 한다.
+     * @param KnoManagementVO - 지식정보 VO
+     * @return String - 지식정보 VO
+     *
+     * @param KnoManagementVO
+     */
+    KnoManagement selectKnoManagement(KnoManagement knoManagement) throws Exception;
 
-	/**
-	 * 지식정보 정보를 신규로 등록한다.
-	 * @param KnoNm - 지식정보 model
-	 *
-	 * @param knoNm
-	 */
-	void insertKnoManagement(KnoManagement knoManagement) throws Exception;
+    /**
+     * 지식정보 정보를 신규로 등록한다.
+     * @param KnoNm - 지식정보 model
+     *
+     * @param knoNm
+     */
+    @Deprecated
+    void insertKnoManagement(KnoManagement knoManagement) throws Exception;
 
-	/**
-	 * 기 등록 된 지식정보 정보를 수정 한다.
-	 * @param ManagementKnoNm - 지식정보 model
-	 *
-	 * @param knoNm
-	 */
-	void updateKnoManagement(KnoManagement knoManagement) throws Exception;
+    /**
+     * 기 등록 된 지식정보 정보를 수정 한다.
+     * @param ManagementKnoNm - 지식정보 model
+     *
+     * @param knoNm
+     */
+    void updateKnoManagement(KnoManagement knoManagement) throws Exception;
 
-	/**
-	 * 기 등록된 지식정보 정보를 삭제한다.
-	 * @param ManagementKnoNm - 지식정보 model
-	 *
-	 * @param knoNm
-	 */
-	void deleteKnoManagement(KnoManagement knoManagement) throws Exception;
+    /**
+     * 기 등록된 지식정보 정보를 삭제한다.
+     * @param ManagementKnoNm - 지식정보 model
+     *
+     * @param knoNm
+     */
+    @Deprecated
+    void deleteKnoManagement(KnoManagement knoManagement) throws Exception;
 
 }

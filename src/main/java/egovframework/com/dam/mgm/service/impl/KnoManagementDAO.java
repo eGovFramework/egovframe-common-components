@@ -60,7 +60,9 @@ public class KnoManagementDAO extends EgovComAbstractDAO {
      * @param KnoNm - 지식정보 model
      *
      * @param knoNm
+     * EgovKnoManagement_SQL_*.xml내에 KnoManagementDAO.insertKnoManagement가 존재하지 않음
      */
+    @Deprecated
     public int insertKnoManagement(KnoManagement knoManagement) {
         return insert("KnoManagementDAO.insertKnoManagement", knoManagement);
     }
@@ -81,6 +83,7 @@ public class KnoManagementDAO extends EgovComAbstractDAO {
      *
      * @param knoNm
      */
+    @Deprecated
     public int deleteKnoManagement(KnoManagement knoManagement) {
         return delete("KnoManagementDAO.deleteKnoManagement", knoManagement);
     }
