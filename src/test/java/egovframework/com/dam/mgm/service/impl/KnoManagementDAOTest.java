@@ -121,7 +121,11 @@ public class KnoManagementDAOTest extends EgovTestAbstractDAO{
     private void assertSelectKnowInfo(final Object expected, final Object actual) {
         if (expected instanceof KnoManagementVO) {
             assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), ((KnoManagementVO) expected).getKnoId(), ((KnoManagementVO) actual).getKnoId());
-        } else {
+        }
+        else if (actual instanceof KnoManagement) {
+            assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), expected, ((KnoManagement) actual).getKnoId());
+        }
+        else {
             assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), expected, actual);
         }
     }
@@ -179,12 +183,12 @@ public class KnoManagementDAOTest extends EgovTestAbstractDAO{
     }
 
     /**
-     * 주어진 조건에 맞는 지식정보 조회 테스트 코드
+     * 주어진 조건에 맞는 지식정보 상세 조회 테스트 코드
      */
     @Test
     public void a03selectKnoManagement() {
         // given
-        final KnoManagement knoManagement = new KnoManagement(); // 관리자
+        final KnoManagement knoManagement = new KnoManagement();
         /**
          * 로그인 사용자 정보
          * ESNTL_ID(고유ID)         EMPLYR_ID    USER_NM    OFCPS_NM
@@ -198,6 +202,25 @@ public class KnoManagementDAOTest extends EgovTestAbstractDAO{
         final KnoManagement result = knoManagementDAO.selectKnoManagement(knoManagement);
 
         // then
-        assertSelectKnowInfo(knoId, result.getKnoId());
+        assertSelectKnowInfo(knoId, result);
+    }
+
+    /**
+     * 지식정보 평가 수정 테스트 코드
+     */
+    @Test
+    public void a05updateKnoManagement() {
+        // given
+        final KnoManagement knoManagement = new KnoManagement();
+        knoManagement.setKnoId(knoId);
+        knoManagement.setJunkYmd("2024-02-20");
+        knoManagement.setKnoAps("2"); // 지식 평가 (null:평가중, 1: 승인, 2: 반려)
+        knoManagement.setLastUpdusrId(testUserVO.getUniqId());
+
+        // when
+        final int result = knoManagementDAO.updateKnoManagement(knoManagement);
+
+        // then
+        assertEquals(egovMessageSource.getMessage("fail.common.update"), 1, result);
     }
 }
