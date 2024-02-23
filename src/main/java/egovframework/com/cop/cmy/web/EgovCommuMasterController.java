@@ -6,6 +6,9 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -23,17 +26,16 @@ import egovframework.com.cop.cmy.service.CommunityVO;
 import egovframework.com.cop.cmy.service.EgovCommuManageService;
 import egovframework.com.cop.cmy.service.EgovCommuMasterService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import org.egovframe.rte.fdl.property.EgovPropertyService;
-import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
  * 커뮤니티 정보를 관리하기 위한 컨트롤러 클래스
+ * 
  * @author 공통서비스개발팀 이삼섭
  * @since 2009.06.01
  * @version 1.0
  * @see
  *
- * <pre>
+ *      <pre>
  * << 개정이력(Modification Information) >>
  *   
  *   수정일      수정자           수정내용
@@ -45,240 +47,235 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *   							세션에서 가져온 값(탈퇴신청자)을 탈퇴승인자로 설정하도록 되어 있었음
  *   2016.06.13 김연호          표준프레임워크 v3.6 개선
  *   2022.11.11 김혜준          시큐어코딩 처리
- * </pre>
+ *   2024.02.23 이백행          보안약점 조치: 부적절한 예외 처리 (광범위한 예외객체 선언)
+ *      </pre>
  */
 
 @Controller
 public class EgovCommuMasterController {
-	
-    @Resource(name = "EgovCommuMasterService")
-    private EgovCommuMasterService egovCommuMasterService;
-    
-    @Resource(name = "EgovCommuManageService")
-    private EgovCommuManageService egovCommuManageService;
 
-    @Resource(name = "propertiesService")
-    protected EgovPropertyService propertyService;
+	@Resource(name = "EgovCommuMasterService")
+	private EgovCommuMasterService egovCommuMasterService;
 
-    @Autowired
-    private DefaultBeanValidator beanValidator;
+	@Resource(name = "EgovCommuManageService")
+	private EgovCommuManageService egovCommuManageService;
 
-    //Logger log = Logger.getLogger(this.getClass());
-	
+	@Resource(name = "propertiesService")
+	protected EgovPropertyService propertyService;
+
+	@Autowired
+	private DefaultBeanValidator beanValidator;
+
+	// Logger log = Logger.getLogger(this.getClass());
+
 	/**
-     * 커뮤니티에 대한 목록을 조회한다.
-     * 
-     * @param cmmntyVO
-     * @param model
-     * @return
-     * @throws Exception
-     */
-    @IncludedInfo(name="커뮤니티관리", order = 270 ,gid = 40)
-    @RequestMapping("/cop/cmy/selectCommuMasterList.do")
-    public String selectCommuMasterList(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) throws Exception {
-	cmmntyVO.setPageUnit(propertyService.getInt("pageUnit"));
-	cmmntyVO.setPageSize(propertyService.getInt("pageSize"));
+	 * 커뮤니티에 대한 목록을 조회한다.
+	 * 
+	 * @param cmmntyVO
+	 * @param model
+	 * @return @
+	 */
+	@IncludedInfo(name = "커뮤니티관리", order = 270, gid = 40)
+	@RequestMapping("/cop/cmy/selectCommuMasterList.do")
+	public String selectCommuMasterList(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) {
+		cmmntyVO.setPageUnit(propertyService.getInt("pageUnit"));
+		cmmntyVO.setPageSize(propertyService.getInt("pageSize"));
 
-	PaginationInfo paginationInfo = new PaginationInfo();
-	
-	paginationInfo.setCurrentPageNo(cmmntyVO.getPageIndex());
-	paginationInfo.setRecordCountPerPage(cmmntyVO.getPageUnit());
-	paginationInfo.setPageSize(cmmntyVO.getPageSize());
+		PaginationInfo paginationInfo = new PaginationInfo();
 
-	cmmntyVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-	cmmntyVO.setLastIndex(paginationInfo.getLastRecordIndex());
-	cmmntyVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		paginationInfo.setCurrentPageNo(cmmntyVO.getPageIndex());
+		paginationInfo.setRecordCountPerPage(cmmntyVO.getPageUnit());
+		paginationInfo.setPageSize(cmmntyVO.getPageSize());
 
-	Map<String, Object> map = egovCommuMasterService.selectCommuMasterList(cmmntyVO);
-	int totCnt = Integer.parseInt((String)map.get("resultCnt"));
-	
-	paginationInfo.setTotalRecordCount(totCnt);
+		cmmntyVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		cmmntyVO.setLastIndex(paginationInfo.getLastRecordIndex());
+		cmmntyVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-	model.addAttribute("resultList", map.get("resultList"));
-	model.addAttribute("resultCnt", map.get("resultCnt"));
-	model.addAttribute("paginationInfo", paginationInfo);
+		Map<String, Object> map = egovCommuMasterService.selectCommuMasterList(cmmntyVO);
+		int totCnt = Integer.parseInt((String) map.get("resultCnt"));
 
-	return "egovframework/com/cop/cmy/EgovCommuMasterList";
-    }
+		paginationInfo.setTotalRecordCount(totCnt);
 
-    /**
-     * 커뮤니티 등록을 위한 등록페이지로 이동한다.
-     * 
-     * @param cmmntyVO
-     * @param model
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping("/cop/cmy/insertCommuMasterView.do")
-    public String insertCommuMasterView(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) throws Exception {
-    	model.addAttribute("commuMasterVO", new CommunityVO());
-    	
-	return "egovframework/com/cop/cmy/EgovCommuMasterRegist";
-    }
+		model.addAttribute("resultList", map.get("resultList"));
+		model.addAttribute("resultCnt", map.get("resultCnt"));
+		model.addAttribute("paginationInfo", paginationInfo);
 
-    /**
-     * 커뮤니티 정보를 등록한다.
-     * 
-     * @param cmmntyVO
-     * @param cmmnty
-     * @param status
-     * @param model
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping("/cop/cmy/insertCommuMaster.do")
-    public String insertCommuMaster(@ModelAttribute("searchVO") CommunityVO cmmntyVO, @ModelAttribute("commuMaster") Community community,
-	    BindingResult bindingResult, ModelMap model) throws Exception {
+		return "egovframework/com/cop/cmy/EgovCommuMasterList";
+	}
 
-		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+	/**
+	 * 커뮤니티 등록을 위한 등록페이지로 이동한다.
+	 * 
+	 * @param cmmntyVO
+	 * @param model
+	 * @return @
+	 */
+	@RequestMapping("/cop/cmy/insertCommuMasterView.do")
+	public String insertCommuMasterView(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) {
+		model.addAttribute("commuMasterVO", new CommunityVO());
+
+		return "egovframework/com/cop/cmy/EgovCommuMasterRegist";
+	}
+
+	/**
+	 * 커뮤니티 정보를 등록한다.
+	 * 
+	 * @param cmmntyVO
+	 * @param cmmnty
+	 * @param status
+	 * @param model
+	 * @return @
+	 * @throws FdlException
+	 */
+	@RequestMapping("/cop/cmy/insertCommuMaster.do")
+	public String insertCommuMaster(@ModelAttribute("searchVO") CommunityVO cmmntyVO,
+			@ModelAttribute("commuMaster") Community community, BindingResult bindingResult, ModelMap model)
+			throws FdlException {
+
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-   	 	// KISA 보안취약점 조치 (2018-12-10, 신용호)
-        if(!isAuthenticated) {
-            return "redirect:/uat/uia/egovLoginUsr.do";
-        }
-        
-		beanValidator.validate(community, bindingResult);
-	
-		if (bindingResult.hasErrors()) {
-		    return "egovframework/com/cop/cmy/EgovCommuMasterRegist";
+		// KISA 보안취약점 조치 (2018-12-10, 신용호)
+		if (!isAuthenticated) {
+			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
-	
+
+		beanValidator.validate(community, bindingResult);
+
+		if (bindingResult.hasErrors()) {
+			return "egovframework/com/cop/cmy/EgovCommuMasterRegist";
+		}
+
 		community.setRegistSeCode("REGC02");
 		community.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 
 		// 2022.11.11 시큐어코딩 처리
 		String cmmntyId = egovCommuMasterService.insertCommuMaster(community);
 
-	    //커뮤니티 개설자의 정보를 등록한다.
-	    CommunityUserVO cmmntyUserVO = new CommunityUserVO();
-	    cmmntyUserVO.setCmmntyId(cmmntyId);
-	    cmmntyUserVO.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-	    cmmntyUserVO.setMngrAt("Y");
-	    cmmntyUserVO.setMberSttus("P");
-	    cmmntyUserVO.setUseAt("Y");
-	    cmmntyUserVO.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-	    
-	    egovCommuManageService.insertCommuUserRqst(cmmntyUserVO);
+		// 커뮤니티 개설자의 정보를 등록한다.
+		CommunityUserVO cmmntyUserVO = new CommunityUserVO();
+		cmmntyUserVO.setCmmntyId(cmmntyId);
+		cmmntyUserVO.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+		cmmntyUserVO.setMngrAt("Y");
+		cmmntyUserVO.setMberSttus("P");
+		cmmntyUserVO.setUseAt("Y");
+		cmmntyUserVO.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+
+		egovCommuManageService.insertCommuUserRqst(cmmntyUserVO);
 
 		return "forward:/cop/cmy/selectCommuMasterList.do";
-    }
+	}
 
-    /**
-     * 커뮤니티에 대한 상세정보를 조회한다.
-     * 
-     * @param cmmntyVO
-     * @param model
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping("/cop/cmy/selectCommuMasterDetail.do")
-    public String selectCommuMasterDetail(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model, HttpServletRequest request) throws Exception {
+	/**
+	 * 커뮤니티에 대한 상세정보를 조회한다.
+	 * 
+	 * @param cmmntyVO
+	 * @param model
+	 * @return @
+	 */
+	@RequestMapping("/cop/cmy/selectCommuMasterDetail.do")
+	public String selectCommuMasterDetail(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model,
+			HttpServletRequest request) {
 		CommunityVO result = egovCommuMasterService.selectCommuMaster(cmmntyVO);
 
-		//-----------------------
-		// 제공 URL 
-		//-----------------------
-		result.setProvdUrl(request.getContextPath()+ "/cop/cmy/CommuMainPage.do?cmmntyId=" + result.getCmmntyId());
-		////---------------------
-	
+		// -----------------------
+		// 제공 URL
+		// -----------------------
+		result.setProvdUrl(request.getContextPath() + "/cop/cmy/CommuMainPage.do?cmmntyId=" + result.getCmmntyId());
+		//// ---------------------
+
 		model.addAttribute("result", result);
-	
+
 		return "egovframework/com/cop/cmy/EgovCommuMasterDetail";
-    }
+	}
 
-    /**
-     * 커뮤니티 정보 수정을 위한 수정페이지로 이동한다.
-     * 
-     * @param cmmntyVO
-     * @param model
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping("/cop/cmy/updateCommuMasterView.do")
-    public String updateCommuMasterView(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model)
-	    throws Exception {
-		
+	/**
+	 * 커뮤니티 정보 수정을 위한 수정페이지로 이동한다.
+	 * 
+	 * @param cmmntyVO
+	 * @param model
+	 * @return @
+	 */
+	@RequestMapping("/cop/cmy/updateCommuMasterView.do")
+	public String updateCommuMasterView(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) {
+
 		CommunityVO result = egovCommuMasterService.selectCommuMaster(cmmntyVO);
-		
+
 		model.addAttribute("commuMasterVO", result);
-	
+
 		return "egovframework/com/cop/cmy/EgovCommuMasterUpdt";
-    }
+	}
 
-    /**
-     * 커뮤니티 정보를 수정한다.
-     * 
-     * @param cmmntyVO
-     * @param status
-     * @param model
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping("/cop/cmy/updateCommuMaster.do")
-    public String updateCommuMaster(@ModelAttribute("searchVO") CommunityVO cmmntyVO, @ModelAttribute("commuMaster") Community community,
-	    BindingResult bindingResult, ModelMap model) throws Exception {
+	/**
+	 * 커뮤니티 정보를 수정한다.
+	 * 
+	 * @param cmmntyVO
+	 * @param status
+	 * @param model
+	 * @return @
+	 */
+	@RequestMapping("/cop/cmy/updateCommuMaster.do")
+	public String updateCommuMaster(@ModelAttribute("searchVO") CommunityVO cmmntyVO,
+			@ModelAttribute("commuMaster") Community community, BindingResult bindingResult, ModelMap model) {
 
-		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		// KISA 보안취약점 조치 (2018-12-10, 신용호)
-        if(!isAuthenticated) {
-            return "redirect:/uat/uia/egovLoginUsr.do";
-        }
-	
+		if (!isAuthenticated) {
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+
 		beanValidator.validate(community, bindingResult);
 		if (bindingResult.hasErrors()) {
-	
-		    CommunityVO result = egovCommuMasterService.selectCommuMaster(cmmntyVO);
-		    model.addAttribute("result", result);
-	
-		    return "egovframework/com/cop/cmy/EgovCommuMasterUpdt";
+
+			CommunityVO result = egovCommuMasterService.selectCommuMaster(cmmntyVO);
+			model.addAttribute("result", result);
+
+			return "egovframework/com/cop/cmy/EgovCommuMasterUpdt";
 		}
-	
+
 		community.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-		
+
 		egovCommuMasterService.updateCommuMaster(community);
-	
+
 		return "forward:/cop/cmy/selectCommuMasterList.do";
-    }
-    
-    /**
-     * 커뮤니티 정보를 삭제한다.
-     * 
-     * @param cmmntyVO
-     * @param status
-     * @param model
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping("/cop/cmy/deleteCommuMaster.do")
-    public String deleteCommuMaster(@ModelAttribute("searchVO") CommunityVO cmmntyVO, @ModelAttribute("commuMaster") Community community,
-	    BindingResult bindingResult, ModelMap model) throws Exception {
+	}
 
-    	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-    	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+	/**
+	 * 커뮤니티 정보를 삭제한다.
+	 * 
+	 * @param cmmntyVO
+	 * @param status
+	 * @param model
+	 * @return @
+	 */
+	@RequestMapping("/cop/cmy/deleteCommuMaster.do")
+	public String deleteCommuMaster(@ModelAttribute("searchVO") CommunityVO cmmntyVO,
+			@ModelAttribute("commuMaster") Community community, BindingResult bindingResult, ModelMap model) {
 
-    	if (isAuthenticated) {
-    		community.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-    	    egovCommuMasterService.deleteBBSMasterInf(community);
-    	}
-    	return "forward:/cop/cmy/selectCommuMasterList.do";
-        }
-    
-    /**
-     * 포트릿을 위한 커뮤니티 정보 목록 정보를 조회한다.
-     * 
-     * @param cmmntyVO
-     * @param sessionVO
-     * @param model
-     * @return
-     * @throws Exception
-     */
-    @RequestMapping("/cop/cmy/selectCommuMasterListPortlet.do")
-    public String selectCmmntyListPortlet(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) throws Exception {
-	List<CommunityVO> result = egovCommuMasterService.selectCommuMasterListPortlet(cmmntyVO);
-	
-	model.addAttribute("resultList", result);
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-	return "egovframework/com/cop/cmy/EgovCommuMasterListPortlet";
-    }
+		if (isAuthenticated) {
+			community.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+			egovCommuMasterService.deleteBBSMasterInf(community);
+		}
+		return "forward:/cop/cmy/selectCommuMasterList.do";
+	}
+
+	/**
+	 * 포트릿을 위한 커뮤니티 정보 목록 정보를 조회한다.
+	 * 
+	 * @param cmmntyVO
+	 * @param sessionVO
+	 * @param model
+	 * @return @
+	 */
+	@RequestMapping("/cop/cmy/selectCommuMasterListPortlet.do")
+	public String selectCmmntyListPortlet(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) {
+		List<CommunityVO> result = egovCommuMasterService.selectCommuMasterListPortlet(cmmntyVO);
+
+		model.addAttribute("resultList", result);
+
+		return "egovframework/com/cop/cmy/EgovCommuMasterListPortlet";
+	}
 }
