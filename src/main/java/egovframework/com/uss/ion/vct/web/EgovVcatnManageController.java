@@ -46,7 +46,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.6.15  이용          최초 생성
- *   2011.8.26  정진오         IncludedInfo annotation 추가
+ *   2011.8.26	정진오			IncludedInfo annotation 추가
  *
  * </pre>
  */
@@ -54,7 +54,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
 @Controller
 public class EgovVcatnManageController {
 
-    @Resource(name = "egovMessageSource")
+	@Resource(name = "egovMessageSource")
     EgovMessageSource egovMessageSource;
 
     @Resource(name = "egovVcatnManageService")

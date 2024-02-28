@@ -46,7 +46,7 @@ public class TestWhiteListLink {
 
 		boolean resultTrue = EgovWhiteList.check(link);
 		egovLogger.debug("===>>> result = "+resultTrue);
-
+		
 		boolean resultTrueNew = EgovWhiteList.checkNew(link);
 		egovLogger.debug("===>>> resultNew = "+resultTrueNew);
 
@@ -62,7 +62,7 @@ public class TestWhiteListLink {
 		
 		boolean resultFalse = EgovWhiteList.check(link);
 		egovLogger.debug("===>>> result = "+resultFalse);
-
+		
 		boolean resultFalseNew = EgovWhiteList.checkNew(link);
 		egovLogger.debug("===>>> resultNew = "+resultFalseNew);
 		
@@ -78,7 +78,7 @@ public class TestWhiteListLink {
 
 		boolean resultFalse = EgovWhiteList.check(link);
 		egovLogger.debug("===>>> result = "+resultFalse);
-
+		
 		boolean resultFalseNew = EgovWhiteList.checkNew(link);
 		egovLogger.debug("===>>> resultNew = "+resultFalseNew);
 		

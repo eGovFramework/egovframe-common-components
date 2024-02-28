@@ -8,8 +8,6 @@ import javax.servlet.jsp.JspWriter;
 import javax.servlet.jsp.PageContext;
 import javax.servlet.jsp.tagext.BodyTagSupport;
 
-import org.apache.taglibs.standard.tag.common.core.Util;
-
 import com.raonsecure.omnione.core.eoscommander.util.StringUtils;
 
 /**
@@ -60,6 +58,17 @@ public class EgovComCrossSiteHndlr extends BodyTagSupport {
 						"&#37;","&#33;",
 						"&#43;","&#45;"
 						};
+	
+	// 23.06.08 taglibs 라이브러리 취약점 패치 간 변경사항	김혜준
+	public static final int HIGHEST_SPECIAL = '>';
+    public static char[][] specialCharactersRepresentation = new char[HIGHEST_SPECIAL + 1][];
+    static {
+        specialCharactersRepresentation['&'] = "&amp;".toCharArray();
+        specialCharactersRepresentation['<'] = "&lt;".toCharArray();
+        specialCharactersRepresentation['>'] = "&gt;".toCharArray();
+        specialCharactersRepresentation['"'] = "&#034;".toCharArray();
+        specialCharactersRepresentation['\''] = "&#039;".toCharArray();
+    }
 
 	/**
 	 * Constructs a new handler. As with TagSupport, subclasses should not
@@ -187,8 +196,8 @@ public class EgovComCrossSiteHndlr extends BodyTagSupport {
 		int start = 0;
 		for (int i = 0; i < length; i++) {
 			char c = buffer[i];
-			if (c <= Util.HIGHEST_SPECIAL) {
-				char[] escaped = Util.specialCharactersRepresentation[c];
+			if (c <= HIGHEST_SPECIAL) {
+				char[] escaped = specialCharactersRepresentation[c];
 				if (escaped != null) {
 					// add unescaped portion
 					if (start < i) {
@@ -236,8 +245,8 @@ public class EgovComCrossSiteHndlr extends BodyTagSupport {
 
 			if(booleanDiff) continue;
 
-			if (c <= Util.HIGHEST_SPECIAL) {
-				char[] escaped = Util.specialCharactersRepresentation[c];
+			if (c <= HIGHEST_SPECIAL) {
+				char[] escaped = specialCharactersRepresentation[c];
 				if (escaped != null) {
 					for (int j = 0; j < escaped.length; j++) {
 						sRtn = sRtn + escaped[j];
@@ -284,8 +293,8 @@ public class EgovComCrossSiteHndlr extends BodyTagSupport {
 
 			if(booleanDiff) continue;
 
-			if (c <= Util.HIGHEST_SPECIAL) {
-				char[] escaped = Util.specialCharactersRepresentation[c];
+			if (c <= HIGHEST_SPECIAL) {
+				char[] escaped = specialCharactersRepresentation[c];
 				if (escaped != null) {
 					for (int j = 0; j < escaped.length; j++) {
 						sRtn = sRtn + escaped[j];

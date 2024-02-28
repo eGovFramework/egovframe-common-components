@@ -35,7 +35,7 @@
 
 function getAddr(){
 	$.ajax({
-		 //url :"http://10.182.60.22/addrlink/addrLinkApiJsonp.do"  //행정망
+		 //url :"http://행정망 IP/addrlink/addrLinkApiJsonp.do"		//행정망
 		 url :"http://www.juso.go.kr/addrlink/addrLinkApiJsonp.do"  //인터넷망
 		,type:"post"
 		,data:$("#form").serialize()

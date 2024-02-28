@@ -18,7 +18,6 @@
  */
 package egovframework.com.ext.ldapumt.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,6 +47,7 @@ import org.springframework.stereotype.Service;
 *  ----------   --------   ---------------------------
 *  2014.10.12   전우성            최초 생성
 *  2020.08.28   정진오            표준프레임워크 v3.10 개선
+*  2023.08.10   신용호            LDAP 오류 수정
 *
 * </pre>
 */
@@ -63,16 +63,10 @@ public class EgovOrgManageLdapServiceImpl extends EgovAbstractServiceImpl implem
 	/**
 	 * 등록된 부서의 정보를 조회한다.
 	 */
-	public Map<String, Object> selectDeptManage(String dn) {
+	public Map<Object, Object> selectDeptManage(String dn) {
 		UcorgVO vo = deptManageLdapDAO.selectDeptManageByDn(dn);
 
-		Map<Object, Object> mapObject = new org.apache.commons.beanutils.BeanMap(vo);
-		Map<String, Object> map = new HashMap<String, Object>();
-		for (Map.Entry<Object, Object> entry : mapObject.entrySet()) {
-			if(entry.getValue() instanceof String){
-				map.put((String) entry.getKey(), (String) entry.getValue());
-			}
-		}
+		Map<Object, Object> map = new org.apache.commons.beanutils.BeanMap(vo);
 
 		return map;
 	}
@@ -80,16 +74,10 @@ public class EgovOrgManageLdapServiceImpl extends EgovAbstractServiceImpl implem
 	/**
 	 * 등록된 사용자의 정보를 조회한다.
 	 */
-	public Map<String, Object> selectUserManage(String dn) {
+	public Map<Object, Object> selectUserManage(String dn) {
 		UserVO vo = userManageLdapDAO.selectUserManageByDn(dn);
 		
-		Map<Object, Object> mapObject = new org.apache.commons.beanutils.BeanMap(vo);
-		Map<String, Object> map = new HashMap<String, Object>();
-		for (Map.Entry<Object, Object> entry : mapObject.entrySet()) {
-			if(entry.getValue() instanceof String){
-				map.put((String) entry.getKey(), (String) entry.getValue());
-			}
-		}
+		Map<Object, Object> map = new org.apache.commons.beanutils.BeanMap(vo);
 		
 		return map;
 	}
@@ -97,7 +85,7 @@ public class EgovOrgManageLdapServiceImpl extends EgovAbstractServiceImpl implem
 	/**
 	 * 등록된 부서의 목록을 조회한다.
 	 */
-	public Map<String, Object> selectDeptManageSubList(String dn) throws Exception {
+	public Map<Object, Object> selectDeptManageSubList(String dn) throws Exception {
 		UcorgVO u = deptManageLdapDAO.selectDeptManageByDn(dn);
 
 		LdapTreeObject object = new LdapTreeObject(u.getOu(), dn);
@@ -117,13 +105,7 @@ public class EgovOrgManageLdapServiceImpl extends EgovAbstractServiceImpl implem
 			object.addChild(vo);
 		}
 
-		Map<Object, Object> mapObject = new org.apache.commons.beanutils.BeanMap(object);
-		Map<String, Object> map = new HashMap<String, Object>();
-		for (Map.Entry<Object, Object> entry : mapObject.entrySet()) {
-			if(entry.getValue() instanceof String){
-				map.put((String) entry.getKey(), (String) entry.getValue());
-			}
-		}
+		Map<Object, Object> map = new org.apache.commons.beanutils.BeanMap(object);
 
 		return map;
 	}
@@ -153,21 +135,19 @@ public class EgovOrgManageLdapServiceImpl extends EgovAbstractServiceImpl implem
 	/**
 	 * 부서를 추가한다.
 	 */
-	public Map<String, Object> insertDeptManage(String parentDn, String ou) throws Exception {
+	public Map<Object, Object> insertDeptManage(String parentDn, String ou) throws Exception {
 		UcorgVO vo = new UcorgVO();
-		vo.setDn("ou=" + ou + ", " + parentDn);
+		if ("j1_1".equals(parentDn)) // Root에서 생성
+			vo.setDn("ou=" + ou);
+		else
+			vo.setDn("ou=" + ou + ", " + parentDn);
 		vo.setOu(ou);
 		vo.setOuCode("0000000");
 
 		deptManageLdapDAO.insertDeptManage(vo);
 		LdapTreeObject object = new LdapTreeObject(vo.getOu(), vo.getDn());
-		Map<Object, Object> mapObject = new org.apache.commons.beanutils.BeanMap(object);
-		Map<String, Object> map = new HashMap<String, Object>();
-		for (Map.Entry<Object, Object> entry : mapObject.entrySet()) {
-			if(entry.getValue() instanceof String){
-				map.put((String) entry.getKey(), (String) entry.getValue());
-			}
-		}
+		
+		Map<Object, Object> map = new org.apache.commons.beanutils.BeanMap(object);
 
 		return map;
 	}
@@ -175,7 +155,7 @@ public class EgovOrgManageLdapServiceImpl extends EgovAbstractServiceImpl implem
 	/**
 	 * 사용자를 추가한다.
 	 */
-	public Map<String, Object> insertUserManage(String parentDn, String cn) throws Exception {
+	public Map<Object, Object> insertUserManage(String parentDn, String cn) throws Exception {
 		UserVO vo = new UserVO();
 		vo.setDn("cn=" + cn + ", " + parentDn);
 		vo.setCn(cn);
@@ -183,13 +163,8 @@ public class EgovOrgManageLdapServiceImpl extends EgovAbstractServiceImpl implem
 		userManageLdapDAO.insertUserManage(vo);
 
 		LdapTreeObject object = new LdapTreeObject(vo.getOu(), vo.getDn());
-		Map<Object, Object> mapObject = new org.apache.commons.beanutils.BeanMap(object);
-		Map<String, Object> map = new HashMap<String, Object>();
-		for (Map.Entry<Object, Object> entry : mapObject.entrySet()) {
-		       if(entry.getValue() instanceof String){
-		    	   map.put((String) entry.getKey(), (String) entry.getValue());
-		          }
-		 }
+		
+		Map<Object, Object> map = new org.apache.commons.beanutils.BeanMap(object);
 
 		return map;
 	}

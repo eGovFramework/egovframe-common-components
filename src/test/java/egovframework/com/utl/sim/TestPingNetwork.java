@@ -33,7 +33,7 @@ import egovframework.com.utl.sim.service.EgovNetworkState;
 public class TestPingNetwork {
 
 	protected static Logger egovLogger = LoggerFactory.getLogger(TestPingNetwork.class);
-
+	
 	public static void main(String[] args) {
 
 		try {

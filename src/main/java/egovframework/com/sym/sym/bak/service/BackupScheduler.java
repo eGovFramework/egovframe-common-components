@@ -168,7 +168,7 @@ public class BackupScheduler {
 		}
 	}
 
-    /**
+	/**
      * 클래스 초기화메소드. 배치스케줄테이블을 읽어서 Quartz 스케줄러를 초기화한다.
      *
      */
@@ -188,21 +188,21 @@ public class BackupScheduler {
         sched = schedFact.getScheduler();
 
         // Set up the listener
-        BackupJobListener listener = new BackupJobListener();
+		BackupJobListener listener = new BackupJobListener();
 
         listener.setEgovBackupOpertService(egovBackupOpertService);
         listener.setIdgenService(idgenService);
 
         sched.getListenerManager().addJobListener(listener);
 
-        // 스케줄러에 Job, Trigger 등록하기
+     // 스케줄러에 Job, Trigger 등록하기
         for (BackupOpert target : targetList) {
             LOGGER.debug("Data : {}", target);
 
-            insertBackupOpert(target);
-        }
-        sched.start();
-    }
+			insertBackupOpert(target);
+		}
+		sched.start();
+	}
 
 	/**
 	 * 클래스 destroy메소드.

@@ -35,7 +35,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  */
 @Controller
 public class EgovAuthorRoleController {
-
+	
     @Resource(name="egovMessageSource")
     EgovMessageSource egovMessageSource;
     

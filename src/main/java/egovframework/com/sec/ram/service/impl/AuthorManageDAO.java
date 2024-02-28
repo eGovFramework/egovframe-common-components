@@ -35,7 +35,7 @@ public class AuthorManageDAO extends EgovComAbstractDAO {
 	 * @exception Exception
 	 */
 	public List<AuthorManageVO> selectAuthorList(AuthorManageVO authorManageVO) throws Exception {
-        return selectList("authorManageDAO.selectAuthorList", authorManageVO);
+		return selectList("authorManageDAO.selectAuthorList", authorManageVO);
     }
 	
 	/**
@@ -92,6 +92,6 @@ public class AuthorManageDAO extends EgovComAbstractDAO {
 	 * @exception Exception
 	 */
 	public List<AuthorManageVO> selectAuthorAllList(AuthorManageVO authorManageVO) throws Exception {
-        return selectList("authorManageDAO.selectAuthorAllList", authorManageVO);
+		return selectList("authorManageDAO.selectAuthorAllList", authorManageVO);
     }    
 }

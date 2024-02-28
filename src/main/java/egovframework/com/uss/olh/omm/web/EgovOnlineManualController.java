@@ -17,8 +17,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
-import com.github.javaparser.utils.Log;
-
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -98,8 +96,8 @@ public class EgovOnlineManualController {
         searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
         searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<OnlineManualVO> reusltList = egovOnlineManualService.selectOnlineManualList(searchVO);
-        model.addAttribute("resultList", reusltList);
+        List<OnlineManualVO> resultList = egovOnlineManualService.selectOnlineManualList(searchVO);
+        model.addAttribute("resultList", resultList);
 
         int totCnt = egovOnlineManualService.selectOnlineManualListCnt(searchVO);
         paginationInfo.setTotalRecordCount(totCnt);
@@ -153,8 +151,8 @@ public class EgovOnlineManualController {
         searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
         searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<OnlineManualVO> reusltList = egovOnlineManualService.selectOnlineManualList(searchVO);
-        model.addAttribute("resultList", reusltList);
+        List<OnlineManualVO> resultList = egovOnlineManualService.selectOnlineManualList(searchVO);
+        model.addAttribute("resultList", resultList);
 
         int totCnt = egovOnlineManualService.selectOnlineManualListCnt(searchVO);
         paginationInfo.setTotalRecordCount(totCnt);

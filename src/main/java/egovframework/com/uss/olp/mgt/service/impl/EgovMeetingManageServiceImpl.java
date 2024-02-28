@@ -48,7 +48,7 @@ public class EgovMeetingManageServiceImpl extends EgovAbstractServiceImpl implem
 	 */
 	@Override
 	public List<EgovMap> egovMeetingManageLisAuthorGroupPopup(ComDefaultVO searchVO){
-		return (List<EgovMap>) dao.egovMeetingManageLisAuthorGroupPopup(searchVO);
+		return dao.egovMeetingManageLisAuthorGroupPopup(searchVO);
 	}
 
     /**
@@ -59,7 +59,7 @@ public class EgovMeetingManageServiceImpl extends EgovAbstractServiceImpl implem
 	 */
 	@Override
 	public List<EgovMap> egovMeetingManageLisEmpLyrPopup(ComDefaultVO searchVO){
-		return (List<EgovMap>) dao.egovMeetingManageLisEmpLyrPopup(searchVO);
+		return dao.egovMeetingManageLisEmpLyrPopup(searchVO);
 	}
 
     /**
@@ -70,7 +70,7 @@ public class EgovMeetingManageServiceImpl extends EgovAbstractServiceImpl implem
 	 */
 	@Override
 	public List<EgovMap> selectMeetingManageList(ComDefaultVO searchVO) throws Exception{
-		return (List<EgovMap>) dao.selectMeetingManageList(searchVO);
+		return dao.selectMeetingManageList(searchVO);
 	}
 
     /**
@@ -81,7 +81,7 @@ public class EgovMeetingManageServiceImpl extends EgovAbstractServiceImpl implem
 	 */
 	@Override
 	public List<EgovMap> selectMeetingManageDetail(MeetingManageVO meetingManageVO) throws Exception{
-		return (List<EgovMap>) dao.selectMeetingManageDetail(meetingManageVO);
+		return dao.selectMeetingManageDetail(meetingManageVO);
 	}
 
     /**

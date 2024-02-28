@@ -4,7 +4,7 @@
 	xmlns:egov-security="http://maven.egovframe.go.kr/schema/egov-security"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
         http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
-		http://maven.egovframe.go.kr/schema/egov-security http://maven.egovframe.go.kr/schema/egov-security/egov-security-4.1.0.xsd">
+		http://maven.egovframe.go.kr/schema/egov-security http://maven.egovframe.go.kr/schema/egov-security/egov-security-4.2.0.xsd">
 
 <!--
 수정일               수정자			수정내용
@@ -15,7 +15,7 @@
 2017.07.10   장동한                   실행행환경 v3.7 적용[보안기능 추가(sniff, xFrameOptions, xssProtection csrf)]
 2018.10.26   신용호                   실행행환경 v3.8 적용
 2020.08.28   정진오                   표준프레임워크 v3.10 개선
-
+2023.12.20   정진오                   표준프레임워크 v4.2 개선(SpEL(use-expressions) 설정 추가)
 -->
 
 	<security:http pattern="/css/**" security="none"/>

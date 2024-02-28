@@ -51,6 +51,7 @@ function fn_egov_list_IndvdlInfoPolicy(){
  * 저장처리화면
  ******************************************************** */
 function fn_egov_save_IndvdlInfoPolicy(){
+	CKEDITOR.instances.indvdlInfoDc.updateElement();
 	var varFrom = document.indvdlInfoPolicy;
 	if(confirm("<spring:message code="common.save.msg" />")){
 		varFrom.action =  "<c:url value='/uss/sam/ipm/updtIndvdlInfoPolicy.do' />";

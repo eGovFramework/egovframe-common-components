@@ -88,7 +88,7 @@ public class BackupOpertDao extends EgovComAbstractDAO {
 		return result ;
 	}
 
-    /**
+	/**
      * 백업작업정보목록을 조회한다.
      * 
      * @return 백업작업목록

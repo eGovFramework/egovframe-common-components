@@ -61,16 +61,16 @@ public class WebLogDAO extends EgovComAbstractDAO {
 		return (WebLog) selectOne("WebLog.selectWebLog", webLog);
 	}
 
-    /**
-     * 웹 로그정보 목록을 조회한다.
-     *
-     * @param webLog
-     * @return
-     * @throws Exception
-     */
-    public List<WebLog> selectWebLogInf(WebLog webLog) throws Exception {
-        return selectList("WebLog.selectWebLogInf", webLog);
-    }
+	/**
+	 * 웹 로그정보 목록을 조회한다.
+	 *
+	 * @param webLog
+	 * @return
+	 * @throws Exception
+	 */
+	public List<WebLog> selectWebLogInf(WebLog webLog) throws Exception{
+		return selectList("WebLog.selectWebLogInf", webLog);
+	}
 
 	/**
 	 * 웹 로그정보 목록의 숫자를 조회한다.

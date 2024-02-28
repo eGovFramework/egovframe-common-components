@@ -56,6 +56,15 @@ public class OAuthVO implements OAuthConfig {
 	public String getOrigin() {
 		return origin;
 	}
+	
+	// scope 추가
+	public String getScope() {
+		return scope;
+	}
+
+	public void setScope(String scope) {
+		this.scope = scope;
+	}
 
 	private String serviceName;
 	private String clientId;
@@ -63,14 +72,16 @@ public class OAuthVO implements OAuthConfig {
 	private String redirectUrl;
 	private DefaultApi20 api20Instance;
 	private String profileUrl;
-
+	private String scope;
+	
 	private String origin;
-
-	public OAuthVO(String serviceName, String clientId, String clientSecret, String redirectUrl) {
+	
+	public OAuthVO(String serviceName, String clientId, String clientSecret, String redirectUrl, String scope) {
 		this.serviceName = serviceName;
 		this.clientId = clientId;
 		this.clientSecret = clientSecret;
 		this.redirectUrl = redirectUrl;
+		this.scope = scope;
 		this.origin = serviceName;
 
 

@@ -3,18 +3,17 @@ package egovframework.com.utl.sys.pxy.service;
 import java.util.List;
 
 /**
- * 개요
- * - 프록시서비스정보에 대한 Service Interface를 정의한다.
+ * 개요 - 프록시서비스정보에 대한 Service Interface를 정의한다.
  *
- * 상세내용
- * - 프록시서비스정보에 대한 등록, 수정, 삭제, 조회 기능을 제공한다.
- * - 프록시서비스정보의 조회기능은 목록조회, 상세조회로 구분된다.
+ * 상세내용 - 프록시서비스정보에 대한 등록, 수정, 삭제, 조회 기능을 제공한다. - 프록시서비스정보의 조회기능은 목록조회, 상세조회로
+ * 구분된다.
+ * 
  * @author lee.m.j
  * @version 1.0
  * @created 28-6-2010 오전 10:44:27
  */
 public interface EgovProxySvcService {
-    /**
+	/**
      * 프록시서비스를 관리하기 위해 등록된 프록시정보 목록을 조회한다.
      *
      * @param proxySvcVO - 프록시서비스 Vo
@@ -91,5 +90,5 @@ public interface EgovProxySvcService {
      * @param proxySvc - 프록시서비스 model
      */
     public void runProxyServer(ProxySvcVO proxySvcVO, ProxySvc proxySvc) throws Exception;
-
+    
 }

@@ -479,7 +479,6 @@ public class EgovBndtManageController {
 	 * @param bndtDiaryVO - 당직일지 VO
 	 * @return String - 리턴 Url
 	 */
-	@SuppressWarnings("unchecked")
 	@RequestMapping(value = "/uss/ion/bnt/selectBndtDiary.do")
 	public String selectBndtDiary(@ModelAttribute("bndtDiaryVO") BndtDiaryVO bndtDiaryVO,
 		@RequestParam Map<?, ?> commandMap,

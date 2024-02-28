@@ -6,11 +6,6 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
 
-import egovframework.com.cmm.EgovWebUtil;
-import egovframework.com.cmm.service.Globals;
-import egovframework.com.cop.ems.service.EgovSndngMailDetailService;
-import egovframework.com.cop.ems.service.SndngMailVO;
-
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletResponse;
 
@@ -21,6 +16,11 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import egovframework.com.cmm.EgovWebUtil;
+import egovframework.com.cmm.service.EgovProperties;
+import egovframework.com.cop.ems.service.EgovSndngMailDetailService;
+import egovframework.com.cop.ems.service.SndngMailVO;
 
 /**
  * 발송메일을 상세 조회하는 컨트롤러 클래스
@@ -120,7 +120,13 @@ public class EgovSndngMailDetailController {
 	 */
 	@RequestMapping(value = "/cop/ems/selectSndngMailXml.do")
 	public void selectSndngMailXml(@ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, HttpServletResponse response, ModelMap model) throws Exception {
-		String xmlFile = Globals.MAIL_REQUEST_PATH + sndngMailVO.getMssageId() + ".xml";
+		
+		// 메일 등록 시 기본 생성 경로로 변경 처리 : 23.08.09
+		//String xmlFile = Globals.MAIL_REQUEST_PATH + sndngMailVO.getMssageId() + ".xml";
+		
+		String storePathString = EgovProperties.getProperty("Globals.fileStorePath");
+		String xmlFile = storePathString + sndngMailVO.getMssageId() + ".xml";
+		
 		File uFile = new File(EgovWebUtil.filePathBlackList(xmlFile));
 		int fSize = (int) uFile.length();
 

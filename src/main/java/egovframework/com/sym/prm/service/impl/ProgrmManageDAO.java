@@ -28,7 +28,7 @@ import org.springframework.stereotype.Repository;
 @Repository("progrmManageDAO")
 public class ProgrmManageDAO extends EgovComAbstractDAO {
 
-    /**
+	/**
      * 프로그램 목록을 조회
      * 
      * @param vo ComDefaultVO

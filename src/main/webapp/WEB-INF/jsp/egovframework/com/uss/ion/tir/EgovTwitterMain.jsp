@@ -75,7 +75,7 @@ if( !rtoken.equals("") && !rtoken.equals("") &&
 %>
 </script>
 </head>
-<body onLoad="fn_egov_popupOpen_Init()">
+<body>
 <DIV id="content" style="width:712px">
 <!-- noscript 테그 -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
@@ -83,16 +83,21 @@ if( !rtoken.equals("") && !rtoken.equals("") &&
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2><spring:message code="ussIonTir.twitterMain.twitterMain"/></h2><!-- 트위터(Twitter) 앱등록 안내 -->
+	<sup><spring:message code="ussIonTir.twitterMain.version"/></sup>
 	
 	<ol class="twit_list mt20">
-		<li>1) <a href="https://developer.twitter.com" target="_blank"  title="새 창으로 이동" >https://developer.twitter.com</a> <spring:message code="ussIonTir.twitterMain.app"/></li><!-- 트위터 사이트에 로그인한다. -->
-		<li>2) Create an app >> <spring:message code="ussIonTir.twitterMain.buttonClick"/><br><!-- 버튼을 클릭하고 등록 페이지에 아래와 같이 트위터 어플리케이션 서비스를 등록한다. -->
-		<img src="<c:url value='/images/egovframework/com/uss/ion/tir/twitter_regist.jpg'/>" alt="트위터 어플 등록 이미지" title="트위터 어플 등록 이미지">
-		<br>※ Callback URL: http://common.egovframe.go.kr/uss/ion/tir/selectTwitterPopupProcess.do
-		<br><spring:message code="ussIonTir.twitterMain.returnUrl"/></li><!-- (키 발급 후 리턴되는 URL) -->
+		<li>1) <a style="text-decoration: underline; color:blue;" href="https://developer.twitter.com" target="_blank"  title="새 창으로 이동" >https://developer.twitter.com</a> <spring:message code="ussIonTir.twitterMain.app"/></li><!-- 트위터 사이트에 로그인한다. -->
+				<img src="<c:url value='/images/egovframework/com/uss/ion/tir/twitter_developer.png'/>" alt="트위터 어플 등록 사이트 이미지" title="트위터 어플 등록 사이트">
+		<li>2) Developer Portal  <spring:message code="ussIonTir.twitterMain.buttonClick"/><br><!-- 버튼을 클릭하고 등록 페이지에 아래와 같이 트위터 어플리케이션 서비스를 등록한다. -->
+			<ul style = "margin: 20px 0;">
+				<h3 style="margin: 10px 0;">※<spring:message code="ussIonTir.twitterMain.notice" />※</h3>
+				<li>- App Permissions : Read and Write</li>
+				<li>- Type of App : Navtive App</li>
+				<li>- CallBack URI : http://common.egovframe.go.kr/uss/ion/tir/selectTwitterPopupProcess.do<spring:message code="ussIonTir.twitterMain.returnUrl"/></li><!-- (키 발급 후 리턴되는 URL) -->
+			</ul>
 		<li>3) <spring:message code="ussIonTir.twitterMain.key"/><br><!-- Consumer key, Consumer secret 등이 아래와 같이 발급된다. -->
-		<img src="<c:url value='/images/egovframework/com/uss/ion/tir/twitter_regist_detail.jpg'/>" alt="트위터 어플 등록 완료 이미지" title="트위터 어플 등록 완료 이미지"></li>
 	</ol>
+		<span class="btn_s"><a onclick = "fn_egov_popupOpen_Init()"><spring:message code="ussIonTir.twitterMain.auth"/></a></span>
 </div>
 
 </DIV>

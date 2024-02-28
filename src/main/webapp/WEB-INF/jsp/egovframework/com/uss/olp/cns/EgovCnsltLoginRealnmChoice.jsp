@@ -99,7 +99,7 @@ function fn_egov_confirm_callback(ls_loginRealnmAt){
 	
 	// 부모화면으로 결과값을 True 넘긴다.
 	window.returnValue = true;	
-	setReturnValue(true);
+// 	setReturnValue(true);
 	window.close();	
 	
 		

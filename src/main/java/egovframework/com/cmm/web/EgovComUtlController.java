@@ -27,6 +27,7 @@ import org.egovframe.rte.fdl.property.EgovPropertyService;
  *   2015.11.12  김연호      한국인터넷진흥원 웹 취약점 개선
  *   2019.04.25  신용호      moveToPage() 화이트리스트 처리
  *   2022.11.11  김혜준      시큐어코딩 처리
+ *   2023.05.23  신용호      moveToPage() 추가 보완 조치
  *
  *  @author 공통서비스 개발팀 조재영
  *  @since 2009.03.02
@@ -52,26 +53,21 @@ public class EgovComUtlController {
 	 * JSP 호출작업만 처리하는 공통 함수
 	 */
 	@RequestMapping(value="/EgovPageLink.do")
-	public String moveToPage(@RequestParam("link") String linkPage){
-		String link = "";
+	public String moveToPage(@RequestParam(value="linkIndex",required=true,defaultValue="0") Integer linkIndex){
 
-		// service 사용하여 리턴할 결과값 처리하는 부분은 생략하고 단순 페이지 링크만 처리함
-		// 2022.11.11 시큐어코딩 처리
-		if (StringUtils.isEmpty(link)) {
+		String link = "";
+		// 화이트 리스트가 비었는지 확인
+		if (egovWhitelist == null || egovWhitelist.isEmpty() || egovWhitelist.size() <= linkIndex) {
 			link="egovframework/com/cmm/egovError";
+			return link;
 		}
 
-		link = linkPage;
+		link = egovWhitelist.get(linkIndex);
+		
 		link = link.replace(";", "");
+		link = link.replace("%", "");
 		link = link.replace(".", "");
 
-		// 화이트 리스트 처리
-		// whitelist 목록에 있는 경우 결과가 true, 결과가 false인 경우 FAIL처리
-		if (egovWhitelist.contains(linkPage) == false) {
-			LOGGER.debug("Page Link WhiteList Error! Please check whitelist!");
-			link="egovframework/com/cmm/egovError";
-		}
-		
 		// 안전한 경로 문자열로 조치
 		link = EgovWebUtil.filePathBlackList(link);
 		

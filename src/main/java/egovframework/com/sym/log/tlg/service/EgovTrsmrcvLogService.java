@@ -44,7 +44,7 @@ public interface EgovTrsmrcvLogService {
 	 */
 	public TrsmrcvLog selectTrsmrcvLog(TrsmrcvLog trsmrcvLog) throws Exception;
 
-    /**
+	/**
      * 송수신 로그정보 목록을 조회한다.
      *
      * @param TrsmrcvLog

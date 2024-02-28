@@ -11,7 +11,6 @@ import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
 /**
  * 지식정보제공/지식정보요청를 처리하는 Dao Class 구현
  * @author 공통콤포넌트 장동한
@@ -30,7 +29,7 @@ import org.slf4j.LoggerFactory;
 public class RequestOfferDao extends EgovComAbstractDAO {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(RequestOfferDao.class);
-	
+
     /**
      * 삭제시 하위 답변 건수를 조회한다.
      * @param RequestOfferVO  조회할 정보가 담긴 객체

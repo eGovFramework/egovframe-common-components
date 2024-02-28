@@ -78,7 +78,7 @@ public class EgovTrsmrcvLogServiceImpl extends EgovAbstractServiceImpl implement
 		return trsmrcvLogDAO.selectTrsmrcvLog(trsmrcvLog);
 	}
 
-    /**
+	/**
      * 송수신 로그정보 목록을 조회한다.
      *
      * @param TrsmrcvLog

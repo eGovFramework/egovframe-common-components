@@ -63,7 +63,7 @@ public class CnsltManageDAO extends EgovComAbstractDAO {
 	 */
     public List<EgovMap> selectCnsltList(CnsltManageDefaultVO searchVO) throws Exception {
 
-        return selectList("CnsltManageDAO.selectCnsltList", searchVO);
+    	return selectList("CnsltManageDAO.selectCnsltList", searchVO);
 
     }
 
@@ -144,7 +144,7 @@ public class CnsltManageDAO extends EgovComAbstractDAO {
 	 */
     public List<EgovMap> selectCnsltAnswerList(CnsltManageDefaultVO searchVO) throws Exception {
 
-        return selectList("CnsltManageDAO.selectCnsltAnswerList", searchVO);
+    	return selectList("CnsltManageDAO.selectCnsltAnswerList", searchVO);
 
     }
 

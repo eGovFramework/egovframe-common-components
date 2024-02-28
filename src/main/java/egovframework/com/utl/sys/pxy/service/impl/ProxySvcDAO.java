@@ -12,7 +12,7 @@ import egovframework.com.utl.sys.pxy.service.ProxySvcVO;
 /**
  * 개요
  * - 프록시서비스정보 및 프록시로그정보에 대한 DAO 클래스를 정의한다.
- *
+ * 
  * 상세내용
  * - 프록시서비스정보 및 프록시로그정보에 대한 등록, 수정, 삭제, 조회 기능을 제공한다.
  * - 프록시서비스정보의 조회기능은 목록조회, 상세조회로 구분된다.
@@ -23,7 +23,7 @@ import egovframework.com.utl.sys.pxy.service.ProxySvcVO;
 @Repository("proxySvcDAO")
 public class ProxySvcDAO extends EgovComAbstractDAO {
 
-    /**
+	/**
      * 프록시서비스를 관리하기 위해 등록된 프록시정보 목록을 조회한다.
      *
      * @param proxySvcVO - 프록시서비스 Vo
@@ -108,4 +108,5 @@ public class ProxySvcDAO extends EgovComAbstractDAO {
     public int insertProxyLog(ProxyLog proxyLog) throws Exception {
         return insert("proxySvcDAO.insertProxyLog", proxyLog);
     }
+
 }

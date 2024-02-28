@@ -29,9 +29,9 @@ import egovframework.com.sym.ccm.ccc.service.CmmnClCodeVO;
 */
 @Repository("CmmnClCodeManageDAO")
 public class CmmnClCodeManageDAO extends EgovComAbstractDAO {
-		
-		private static final Logger LOGGER = LoggerFactory.getLogger(CmmnClCodeManageDAO.class);
-
+	
+	private static final Logger LOGGER = LoggerFactory.getLogger(CmmnClCodeManageDAO.class);
+	
 	   /**
 		 * 공통분류코드 총 개수를 조회한다.
 	     * @param searchVO
@@ -66,8 +66,8 @@ public class CmmnClCodeManageDAO extends EgovComAbstractDAO {
 		 * @throws Exception
 		 */
 		public void insertCmmnClCode(CmmnClCodeVO cmmnClCodeVO) throws Exception{
-			 LOGGER.info("TEST5 : 등록 DAO");
-			 insert("CmmnClCodeManage.insertCmmnClCode", cmmnClCodeVO);
+			LOGGER.info("TEST5 : 등록 DAO");
+			insert("CmmnClCodeManage.insertCmmnClCode", cmmnClCodeVO);
 		}
 
 		/**

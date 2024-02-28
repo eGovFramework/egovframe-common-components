@@ -201,7 +201,7 @@ public class EgovKnoSpecialistController {
 	            searchMatVO.setSearchCondition("orgnztId");
 
 	            if (mapMaterial.getOrgnztId().equals("")) {
-	                MapTeamVO emp = MapTeamList.get(0);
+	            	MapTeamVO emp = MapTeamList.get(0);
 	            	mapMaterial.setOrgnztId(emp.getOrgnztId());
 	            }
 	            searchMatVO.setSearchKeyword(mapMaterial.getOrgnztId());

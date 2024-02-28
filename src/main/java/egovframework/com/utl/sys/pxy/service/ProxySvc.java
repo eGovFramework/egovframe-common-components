@@ -3,17 +3,17 @@ package egovframework.com.utl.sys.pxy.service;
 import egovframework.com.cmm.ComDefaultVO;
 
 /**
- * 개요
- * - 프록시서비스정보에 대한 model 클래스를 정의한다.
- *
- * 상세내용
- * - 프록시서비스정보의 ID, 프록시 명, 프록시 IP, 프록시 포트, 서비스 명, 서비스 설명, 서비스 IP, 서비스 포트, 서비스 상태 등의
- * 항목을 관리한다.
+ * 개요 - 프록시서비스정보에 대한 model 클래스를 정의한다.
+ * 
+ * 상세내용 - 프록시서비스정보의 ID, 프록시 명, 프록시 IP, 프록시 포트, 서비스 명, 서비스 설명, 서비스 IP, 서비스 포트,
+ * 서비스 상태 등의 항목을 관리한다.
+ * 
  * @author lee.m.j
  * @version 1.0
  * @created 28-6-2010 오전 10:44:50
  */
 public class ProxySvc extends ComDefaultVO {
+
 	private static final long serialVersionUID = 1L;
 
     /**
@@ -281,4 +281,5 @@ public class ProxySvc extends ComDefaultVO {
     public void setLastUpdusrId(String lastUpdusrId) {
         this.lastUpdusrId = lastUpdusrId;
     }
+
 }

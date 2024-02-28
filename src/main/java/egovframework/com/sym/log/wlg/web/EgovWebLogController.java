@@ -45,7 +45,7 @@ public class EgovWebLogController {
 	@Resource(name="propertiesService")
 	protected EgovPropertyService propertyService;
 
-    /**
+	/**
      * 웹 로그 목록 조회
      *
      * @param webLog
@@ -56,28 +56,28 @@ public class EgovWebLogController {
     @RequestMapping(value = "/sym/log/wlg/SelectWebLogList.do")
     public String selectWebLogInf(@ModelAttribute("searchVO") WebLog webLog, ModelMap model) throws Exception {
 
-        webLog.setPageUnit(propertyService.getInt("pageUnit"));
-        webLog.setPageSize(propertyService.getInt("pageSize"));
+		webLog.setPageUnit(propertyService.getInt("pageUnit"));
+		webLog.setPageSize(propertyService.getInt("pageSize"));
 
-        PaginationInfo paginationInfo = new PaginationInfo();
-        paginationInfo.setCurrentPageNo(webLog.getPageIndex());
-        paginationInfo.setRecordCountPerPage(webLog.getPageUnit());
-        paginationInfo.setPageSize(webLog.getPageSize());
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(webLog.getPageIndex());
+		paginationInfo.setRecordCountPerPage(webLog.getPageUnit());
+		paginationInfo.setPageSize(webLog.getPageSize());
 
-        webLog.setFirstIndex(paginationInfo.getFirstRecordIndex());
-        webLog.setLastIndex(paginationInfo.getLastRecordIndex());
-        webLog.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		webLog.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		webLog.setLastIndex(paginationInfo.getLastRecordIndex());
+		webLog.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        Map<String, Object> map = webLogService.selectWebLogInf(webLog);
+		Map<String, Object> map = webLogService.selectWebLogInf(webLog);
         int totCnt = MapUtils.getInteger(map, "resultCnt");
 
         model.addAttribute("resultList", map.get("resultList"));
 
-        paginationInfo.setTotalRecordCount(totCnt);
-        model.addAttribute("paginationInfo", paginationInfo);
+		paginationInfo.setTotalRecordCount(totCnt);
+		model.addAttribute("paginationInfo", paginationInfo);
 
-        return "egovframework/com/sym/log/wlg/EgovWebLogList";
-    }
+		return "egovframework/com/sym/log/wlg/EgovWebLogList";
+	}
 
 	/**
 	 * 웹 로그 상세 조회

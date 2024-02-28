@@ -14,8 +14,9 @@
  * 
  *   수정일      수정자          수정내용
  *  -------    --------    ---------------------------
- *  2010.8.3	lee.m.j          최초 생성 
- *  2011.8.26	정진오			IncludedInfo annotation 추가
+ *  2010.08.03	lee.m.j		최초 생성 
+ *  2011.08.26	정진오		IncludedInfo annotation 추가
+ *  2023.06.09	김수용		NSR 보안조치 (특수문자 복원 기능 제거)
  *  
  *  </pre>
  */
@@ -222,7 +223,7 @@ public class EgovIntnetSvcGuidanceController {
 		List<IntnetSvcGuidanceVO> intnetSvcGuidanceList = egovIntnetSvcGuidanceService.selectIntnetSvcGuidanceResult(intnetSvcGuidanceVO);
 
 		for(int i=0; i<intnetSvcGuidanceList.size(); i++) {
-			intnetSvcGuidanceList.get(i).setIntnetSvcDc(EgovStringUtil.getHtmlStrCnvr(intnetSvcGuidanceList.get(i).getIntnetSvcDc()));
+			intnetSvcGuidanceList.get(i).setIntnetSvcDc(intnetSvcGuidanceList.get(i).getIntnetSvcDc());
 		}
 
 		model.addAttribute("intnetSvcGuidanceList", intnetSvcGuidanceList);

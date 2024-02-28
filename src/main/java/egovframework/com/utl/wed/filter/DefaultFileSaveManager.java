@@ -46,6 +46,7 @@ import egovframework.com.cmm.service.EgovProperties;
  *  ----------  --------    ---------------------------
  *  2014.12.04	표준프레임워크	최초 적용 (패키지 변경 및 소스 정리)
  *  2018.12.28	신용호             saveFile() 파라미터 수정
+ *  2023.12.20  신용호         CK-Editor 업로드 오류 수정
  * </pre>
  */
 public class DefaultFileSaveManager implements FileSaveManager {
@@ -59,8 +60,9 @@ public class DefaultFileSaveManager implements FileSaveManager {
 		// filename
 		String subDir = File.separator + DirectoryPathManager.getDirectoryPathByDateType(DirectoryPathManager.DIR_DATE_TYPE.DATE_POLICY_YYYY_MM);
 		String fileName = RandomStringUtils.randomAlphanumeric(20) + "." + StringUtils.lowerCase(StringUtils.substringAfterLast(originalFileName, "."));
+		String saveFileName = fileName+"_upfile";
 		
-		File fileToSave = DirectoryPathManager.getUniqueFile(imageBaseDir, subDir, fileName);
+		File fileToSave = DirectoryPathManager.getUniqueFile(imageBaseDir, subDir, saveFileName);
 		
 		try {
 			FileUtils.writeByteArrayToFile(fileToSave, fileItem.get());
@@ -69,8 +71,7 @@ public class DefaultFileSaveManager implements FileSaveManager {
 			LOGGER.debug("File IO exception" + e.getMessage());
 		}
 
-		String savedFileName = FilenameUtils.getName(fileToSave.getAbsolutePath());
-		relUrl = StringUtils.replace(subDir, "\\", "/") + savedFileName;
+		relUrl = StringUtils.replace(subDir, "\\", "/") + fileName;
 
 		return relUrl;
 	}

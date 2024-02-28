@@ -23,8 +23,8 @@ import egovframework.com.uss.cmt.service.EgovCmtManageService;
 import egovframework.com.utl.fcc.service.EgovDateUtil;
 
 /**
- * 업무사용자관련 요청을 비지니스 클래스로 전달하고 처리된 결과를 해당
- * 웹 화면으로 전달하는 Controller를 정의한다
+ * 업무사용자관련 요청을  비지니스 클래스로 전달하고 처리된 결과를  해당
+ * 웹 화면으로 전달하는  Controller를 정의한다
  * @author 표준프레임워크 개발팀
  * @since 2014.08.29
  * @version 1.0
@@ -44,7 +44,7 @@ import egovframework.com.utl.fcc.service.EgovDateUtil;
 @Controller
 public class EgovCmtManageController {
 
-    /** cmtManageService */
+	/** cmtManageService */
     @Resource(name = "cmtManageService")
     private EgovCmtManageService cmtManageService;
 

@@ -40,7 +40,7 @@ public class AuthenticInterceptor implements HandlerInterceptor {
 	@SuppressWarnings("unused")
 	@Autowired
 	private Environment environment;
-
+	
 	/** 관리자 접근 권한 패턴 목록 */
 	private List<String> adminAuthPatternList;
 	

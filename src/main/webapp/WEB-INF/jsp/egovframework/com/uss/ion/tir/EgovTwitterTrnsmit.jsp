@@ -104,6 +104,7 @@ function fn_egov_save_Twitter(){
 			<col style="width:16%" />
 			<col style="" />
 		</colgroup>
+		<h3><spring:message code="ussIonTir.twitterTrnsmit.linklUser"/> : ${userID }<span style = "font-weight:normal;">(@${userName })</span></h3>
 		<tr>
 			<th><spring:message code="ussIonTir.twitterTrnsmit.twitterText"/> <span class="pilsu">*</span></th><!-- Twitter 내용 -->
 			<td class="left">

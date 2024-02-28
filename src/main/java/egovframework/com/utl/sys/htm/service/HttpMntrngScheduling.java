@@ -22,13 +22,11 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  * @Description : HTTP서비스모니터링을 위한 스케쥴링 클래스
  * @Modification Information
  *
- *    수정일                수정자          수정내용
- *    ----------   -------   -------------------
- *    2010.09.01   박종선          최초생성
- *    2019.12.06   신용호          KISA 보안약점 조치 (부적절한 예외처리)
- *    2022.11.11   김혜준          시큐어코딩 처리
+ *               수정일 수정자 수정내용 ---------- ------- ------------------- 2010.09.01
+ *               박종선 최초생성 2019.12.06 신용호 KISA 보안약점 조치 (부적절한 예외처리) 2022.11.11 김혜준
+ *               시큐어코딩 처리
  *
- * @author  박종선
+ * @author 박종선
  * @since 2010.05.01
  * @version
  * @see
@@ -93,7 +91,8 @@ public class HttpMntrngScheduling extends EgovAbstractServiceImpl {
 			LOGGER.debug("Data : {}", target);
 
 			// 서비스 체크 수행.
-			java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyyMMddHHmmss", java.util.Locale.KOREA);
+			java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyyMMddHHmmss",
+					java.util.Locale.KOREA);
 			target.setCreatDt(formatter.format(new java.util.Date()));
 
 			sysId = target.getSysId();
@@ -132,6 +131,7 @@ public class HttpMntrngScheduling extends EgovAbstractServiceImpl {
 
 	/**
 	 * 이메일을 전송한다.
+	 * 
 	 * @return
 	 *
 	 * @param target
@@ -154,7 +154,7 @@ public class HttpMntrngScheduling extends EgovAbstractServiceImpl {
 		// 메일내용
 		text = msg.getText();
 		// 2022.11.11 시큐어코딩 처리
-			if (StringUtils.isNotEmpty(text)) {
+		if (StringUtils.isNotEmpty(text)) {
 			text = EgovStringUtil.replace(text, "{모니터링종류}", "HTTP서비스 모니터링");
 			errorContents = "웹서비스종류 : ";
 			errorContents += target.getWebKind();

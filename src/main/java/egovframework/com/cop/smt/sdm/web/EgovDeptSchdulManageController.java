@@ -218,7 +218,7 @@ public class EgovDeptSchdulManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<EgovMap> resultList = egovDeptSchdulManageService.selectDeptSchdulManageList(searchVO);
+		List<EgovMap> resultList = egovDeptSchdulManageService.selectDeptSchdulManageList(searchVO);
         model.addAttribute("resultList", resultList);
 
         int totCnt = egovDeptSchdulManageService.selectDeptSchdulManageListCnt(searchVO);
@@ -429,7 +429,7 @@ public class EgovDeptSchdulManageController {
 		commandMap.put("schdulBgnde", (String)listWeek.get(0));
 		commandMap.put("schdulEndde", (String)listWeek.get(listWeek.size()-1));
 
-		List<EgovMap> resultList = egovDeptSchdulManageService.selectDeptSchdulManageRetrieve(commandMap);
+		List<?> resultList = egovDeptSchdulManageService.selectDeptSchdulManageRetrieve(commandMap);
         model.addAttribute("resultList", resultList);
 
 		return "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageWeekList";
@@ -547,7 +547,7 @@ public class EgovDeptSchdulManageController {
 	    	listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
 	    	model.addAttribute("reptitSeCode", listComCode);
 
-	        List<EgovMap> resultList = egovDeptSchdulManageService.selectDeptSchdulManageDetail(deptSchdulManageVO);
+	    	List<EgovMap> resultList = egovDeptSchdulManageService.selectDeptSchdulManageDetail(deptSchdulManageVO);
 	        model.addAttribute("resultList", resultList);
 		}
 
@@ -649,7 +649,7 @@ public class EgovDeptSchdulManageController {
 
 		String sCmd = commandMap.get("cmd");
 
-        if("save".equals(sCmd)){
+		if("save".equals(sCmd)){
     		//서버  validate 체크
             beanValidator.validate(deptSchdulManageVO, bindingResult);
     		if(bindingResult.hasErrors()){
@@ -697,7 +697,7 @@ public class EgovDeptSchdulManageController {
 
     		if(!files.isEmpty()){
     			String atchFileAt = commandMap.get("atchFileAt");
-    			if("N".equals(atchFileAt)){
+    			if("N".equals(atchFileAt) || "".equals(atchFileAt)){
     				List<FileVO> _result = fileUtil.parseFileInf(files, "DSCH_", 0, _atchFileId, "");
     				_atchFileId = fileMngService.insertFileInfs(_result);
 

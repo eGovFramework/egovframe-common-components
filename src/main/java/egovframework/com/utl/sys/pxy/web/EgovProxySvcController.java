@@ -32,30 +32,31 @@ import egovframework.com.utl.sys.pxy.service.ProxySvc;
 import egovframework.com.utl.sys.pxy.service.ProxySvcVO;
 
 /**
- * 개요 - 프록시서비스정보에 대한 controller 클래스를 정의한다.
+ * 개요
+ * - 프록시서비스정보에 대한 controller 클래스를 정의한다.
  *
- * 상세내용 - 프록시서비스정보에 대한 등록, 수정, 삭제, 조회 기능을 제공한다. - 프록시서비스정보의 조회기능은 목록조회, 상세조회로
- * 구분된다.
- *
+ * 상세내용
+ * - 프록시서비스정보에 대한 등록, 수정, 삭제, 조회 기능을 제공한다.
+ * - 프록시서비스정보의 조회기능은 목록조회, 상세조회로 구분된다.
  * @author lee.m.j
  * @version 1.0
  * @created 28-6-2010 오전 10:44:26
- *
- *          <pre>
+ *  <pre>
  * == 개정이력(Modification Information) ==
  *
- *  수정일          수정자       수정내용
- *  ----------    --------    ---------------------------
- *  2010.06.28     lee.m.j     최초 생성
- *  2011.08.26     정진오       IncludedInfo annotation 추가
- *  2019.12.05     신용호       KISA 보안약점 조치 (경로조작및 자원 삽입)
- *
- *          </pre>
+ *  수정일               수정자           수정내용
+ *  ----------   --------   ---------------------------
+ *  2010.06.28   lee.m.j    최초 생성
+ *  2011.08.26   정진오            IncludedInfo annotation 추가
+ *  2019.12.05   신용호            KISA 보안약점 조치 (경로조작및 자원 삽입)
+ *  
+ * </pre>
  */
 
 @Controller
 public class EgovProxySvcController {
-    @Resource(name = "egovProxySvcService")
+
+	@Resource(name = "egovProxySvcService")
     private EgovProxySvcService egovProxySvcService;
 
     @Resource(name = "egovMessageSource")

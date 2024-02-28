@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.uss.olp.qri.service.EgovQustnrRespondInfoService;
 import egovframework.com.uss.olp.qri.service.QustnrRespondInfoVO;
+
 /**
  * 설문조사 ServiceImpl Class 구현
  * @author 공통서비스 장동한
@@ -52,19 +53,19 @@ public class EgovQustnrRespondInfoServiceImpl extends EgovAbstractServiceImpl im
 		return dao.selectQustnrTmplatManage(map);
 	}
 
-    /**
-     * 객관식 통계를 조회 조회한다.
-     *
-     * @param map - 조회할 정보가 담긴 map
-     * @return List
-     * @throws Exception
-     */
-    @Override
-    public List<EgovMap> selectQustnrRespondInfoManageStatistics1(Map<?, ?> map) throws Exception {
-        return dao.selectQustnrRespondInfoManageStatistics1(map);
-    }
+	/**
+	 * 객관식 통계를 조회 조회한다.
+	 *
+	 * @param map - 조회할 정보가 담긴 map
+	 * @return List
+	 * @throws Exception
+	 */
+	@Override
+	public List<EgovMap> selectQustnrRespondInfoManageStatistics1(Map<?, ?> map) throws Exception {
+		return dao.selectQustnrRespondInfoManageStatistics1(map);
+	}
 
-    /**
+	/**
      * 주관식 통계를 조회 조회한다.
      *
      * @param map - 조회할 정보가 담긴 map

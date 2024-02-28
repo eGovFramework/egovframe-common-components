@@ -25,9 +25,9 @@
 		 WHERE 1 = 1
 		   <!-- 시작일자~종료일자 기간제한 -->
 		   AND a.OCCRRNC_DE BETWEEN #{fromDate} AND #{toDate} 
-		   AND a.URL LIKE CONCAT(b.URL,'%')
+		   AND INSTR(a.URL, b.URL) > 0
 		 GROUP BY statsDate
-		 ORDER BY statsDate   
+		 ORDER BY statsDate
 	</select>
 	
 </mapper>

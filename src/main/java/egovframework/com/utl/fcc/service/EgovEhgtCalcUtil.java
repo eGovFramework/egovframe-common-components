@@ -24,35 +24,54 @@ import java.math.BigDecimal;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
+import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
+import twitter4j.JSONArray;
+import twitter4j.JSONObject;
 
 import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.parser.ParserDelegator;
 
+/**
+ * 
+ * @Class name	: EgovEhgtCalcUtl.java
+ * @Description	: 요소기술 - 환율계산
+ * 
+ * 수정일			수정자		수정내용
+ * ----------	----------	------------------------------
+ * 2023.08.25	김혜준		외환은행 제공 환율 api에서 한국수출입은행 제공 환율 api로 변경
+ *
+ */
+
 public class EgovEhgtCalcUtil {
 
-	static private final String EHGT_URL = "http://community.fxkeb.com";
+	static private final String EHGT_URL = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON";
+	static private final String AUTH_KEY = EgovProperties.getProperty("ehgtCalc.authKey");
 	// 환율....
-	static final char EGHT_USD = 'U'; 	// 미국
-	static final char EGHT_JPY = 'J'; 	// 일본
-	static final char EGHT_EUR = 'E'; 	// 유럽연합
-	static final char EGHT_CNY = 'C'; 	// 중국연합
+	static final char EGHT_USD = 'U'; // 미국
+	static final char EGHT_JPY = 'J'; // 일본
+	static final char EGHT_EUR = 'E'; // 유럽연합
+	static final char EGHT_CNY = 'C'; // 중국연합
 
-	static final char EGHT_KWR = 'K'; 	// 대한민국
+	static final char EGHT_KWR = 'K'; // 대한민국
 
 	static StringBuffer sb = new StringBuffer();
 
 	/**
-	 * 대한민국(KRW), 미국(USD), 유럽연합(EUR), 일본(JPY), 중국원화(CNY) 사이의 환율을 계산하는 기능이다
-	 * 환율표 - 매매기준율 => 미국(USD) - 1485.00(USD), 일본-100(JPY) - 1596.26(JPY)
-	 * 계산법: 대한민원(KRW) - 1,000원 -> 미국(USD)로 변환 시 => 1,000(원)/1485(매매기준율) = 0.67(URS)
-	 * 계산법: 일본(JPY) - 100,000원 -> 대한민국(KRW) 변환 시 => (100,000(원) * 1596.26(매매기준율)) / 100(100엔당 기준표이므로) = 1,596,260.00 (KRW)
-	 * 계산법: 일본(JPY) - 100,000원 -> 미국(USD) 변환 시     => (
-	 * (100,000(원) * 1596.26(매매기준율)) / 100(100엔당 기준표이므로) = 1,596,260.00 (KRW))  / 1,485.00 = 1,074.92 (USD)
-	 * @param srcType 			- 환율기준
-	 * @param srcAmount 		- 금액
-	 * @param cnvrType 			- 변환환율
+	 * 대한민국(KRW), 미국(USD), 유럽연합(EUR), 일본(JPY), 중국원화(CNY) 사이의 환율을 계산하는 기능이다 환율표 -
+	 * 매매기준율 => 미국(USD) - 1485.00(USD), 일본-100(JPY) - 1596.26(JPY) 계산법: 대한민원(KRW) -
+	 * 1,000원 -> 미국(USD)로 변환 시 => 1,000(원)/1485(매매기준율) = 0.67(URS) 계산법: 일본(JPY) -
+	 * 100,000원 -> 대한민국(KRW) 변환 시 => (100,000(원) * 1596.26(매매기준율)) / 100(100엔당
+	 * 기준표이므로) = 1,596,260.00 (KRW) 계산법: 일본(JPY) - 100,000원 -> 미국(USD) 변환 시 => (
+	 * (100,000(원) * 1596.26(매매기준율)) / 100(100엔당 기준표이므로) = 1,596,260.00 (KRW)) /
+	 * 1,485.00 = 1,074.92 (USD)
+	 * 
+	 * @param srcType   - 환율기준
+	 * @param srcAmount - 금액
+	 * @param cnvrType  - 변환환율
 	 * @return 환율금액
 	 * @exception MyException
 	 * @see
@@ -62,14 +81,15 @@ public class EgovEhgtCalcUtil {
 		InputStream is = null;
 		InputStreamReader reader = null;
 		try {
-			//입력받은 URL에 연결하여 InputStream을 통해 읽은 후 파싱 한다.
+			// 입력받은 URL에 연결하여 InputStream을 통해 읽은 후 파싱 한다.
 			URL url = new URL(EHGT_URL + str);
 
 			con = (HttpURLConnection) url.openConnection();
 
 			is = con.getInputStream();
 			reader = new InputStreamReader(is, "euc-kr");
-			//InputStreamReader reader = new InputStreamReader(con.getInputStream(), "utf-8");
+			// InputStreamReader reader = new InputStreamReader(con.getInputStream(),
+			// "utf-8");
 
 			new ParserDelegator().parse(reader, new CallbackHandler(), true);
 
@@ -88,7 +108,7 @@ public class EgovEhgtCalcUtil {
 		}
 	}
 
-	//파서는 콜백 형식으로 되어 있다. 각 태그가 들어 올때 적절한 메소드가 호출됨
+	// 파서는 콜백 형식으로 되어 있다. 각 태그가 들어 올때 적절한 메소드가 호출됨
 	private class CallbackHandler extends HTMLEditorKit.ParserCallback {
 
 		public void handleText(char[] data, int pos) {
@@ -101,7 +121,6 @@ public class EgovEhgtCalcUtil {
 		}
 	}
 
-
 	/**
 	 * 주어진 소스 화폐 유형 및 금액에 따라 대상 화폐 유형으로의 환율을 계산하는 메서드.
 	 *
@@ -113,9 +132,10 @@ public class EgovEhgtCalcUtil {
 	 */
 	public static String getEhgtCalc(String srcType, long srcAmount, String cnvrType) throws Exception {
 
+		sb.setLength(0);	// 일자 변경 후 재호출 시 오류 방지를 위한 초기화
 		String rtnStr = null;
 
-		String[] eghtStdrRt = null; // Html에서 파싱한 환율매매기준율을 저장하기 위한 문자열배열
+		JSONArray eghtStdrRt = null; // Html에서 파싱한 환율매매기준율을 저장하기 위한 문자열배열
 
 		double srcStdrRt = 0.00; // 원래 매매기준율
 		double cnvrStdrRt = 0.00; // 변환 매매기준율
@@ -131,15 +151,28 @@ public class EgovEhgtCalcUtil {
 
 		EgovEhgtCalcUtil parser = new EgovEhgtCalcUtil();
 
-		parser.readHtmlParsing("/fxportal/jsp/RS/DEPLOY_EXRATE/4176_0.html");
+		LocalDate currentDate = LocalDate.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
+		String searchDate = "";
+		
+		for(int i = 0 ; i < 10 ; i++) {					// 비영업일/비영업시간 조회 시 전날 데이터 조회하도록 일자 변경 후 요청 반복
+			searchDate = currentDate.format(formatter);
+			parser.readHtmlParsing("?authkey="+AUTH_KEY+"&data=AP01&searchdate="+searchDate);
+			eghtStdrRt = new JSONArray(sb.toString());
+			
+			if(eghtStdrRt.length() != 0) {
+				break;
+			}
+			
+			sb.setLength(0);
+			currentDate = currentDate.minusDays(1);
+		}
 
 		if (sb == null) {
 			throw new RuntimeException("StringBuffer is null!!");
 		}
-
-		eghtStdrRt = EgovStringUtil.split(sb.toString(), "/");
-
-		if (eghtStdrRt == null || (eghtStdrRt.length == 0))
+		
+		if (eghtStdrRt == null || (eghtStdrRt.length() == 0))
 			throw new RuntimeException("String Split Error!");
 
 		char srcChr = srcTypeCnvr.charAt(0);
@@ -153,7 +186,7 @@ public class EgovEhgtCalcUtil {
 				break;
 
 			case EGHT_JPY: // 일본
-				srcStr = "JPY";
+				srcStr = "JPY(100)";
 				break;
 
 			case EGHT_EUR: // 유럽연합
@@ -161,7 +194,7 @@ public class EgovEhgtCalcUtil {
 				break;
 
 			case EGHT_CNY: // 중국연합
-				srcStr = "CNY";
+				srcStr = "CNH";
 				break;
 
 			default:
@@ -177,7 +210,7 @@ public class EgovEhgtCalcUtil {
 				break;
 
 			case EGHT_JPY: // 일본
-				cnvrStr = "JPY";
+				cnvrStr = "JPY(100)";
 				break;
 
 			case EGHT_EUR: // 유럽연합
@@ -185,7 +218,7 @@ public class EgovEhgtCalcUtil {
 				break;
 
 			case EGHT_CNY: // 중국연합
-				cnvrStr = "CNY";
+				cnvrStr = "CNH";
 				break;
 
 			default:
@@ -194,24 +227,22 @@ public class EgovEhgtCalcUtil {
 		}
 
 		// 변환하고자 하는 국가의 환율매매기준율 추출...
-		for (int i = 0; i < eghtStdrRt.length; i++) {
-
-			// 원래  매매기준율 추출
-			if (eghtStdrRt[i].equals(srcStr)) {
-				srcStdrRt = Double.parseDouble(eghtStdrRt[i + 1]);
-
-				if (i == (eghtStdrRt.length - 1))
-					break;
-			}
-
-			// 변환 매매기준율 추출
-			if (eghtStdrRt[i].equals(cnvrStr)) {
-				cnvrStdrRt = Double.parseDouble(eghtStdrRt[i + 1]);
-
-				if (i == (eghtStdrRt.length - 1))
-					break;
-			}
-		}
+		// 원래  매매기준율 추출
+		for (int i = 0; i < eghtStdrRt.length(); i++) {
+            JSONObject jsonObject = eghtStdrRt.getJSONObject(i);
+            if (srcStr.equals(jsonObject.getString("cur_unit"))) {
+                srcStdrRt = Double.parseDouble(jsonObject.getString("deal_bas_r").replace(",", ""));
+                break;
+            }
+        }
+		// 변환 매매기준율 추출
+		for (int i = 0; i < eghtStdrRt.length(); i++) {
+            JSONObject jsonObject = eghtStdrRt.getJSONObject(i);
+            if (cnvrStr.equals(jsonObject.getString("cur_unit"))) {
+                cnvrStdrRt = Double.parseDouble(jsonObject.getString("deal_bas_r").replace(",", ""));
+                break;
+            }
+        }
 
 		// 정확한 계산을 위한 BigDecimal 형태로 구현.
 		BigDecimal bSrcAmount = new BigDecimal(String.valueOf(srcAmount)); // 변환하고자 하는 금액

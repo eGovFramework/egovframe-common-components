@@ -11,7 +11,6 @@ import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
-import org.springframework.web.filter.HiddenHttpMethodFilter;
 import org.springframework.web.multipart.support.MultipartFilter;
 import org.springframework.web.servlet.DispatcherServlet;
 
@@ -97,8 +96,7 @@ public class EgovWebApplicationInitializer implements WebApplicationInitializer 
 			// springSecurityFilterChain 설정
 			//-------------------------------------------------------------		
 			FilterRegistration.Dynamic springSecurityFilterChain = servletContext.addFilter("springSecurityFilterChain", new DelegatingFilterProxy());
-			springSecurityFilterChain.addMappingForUrlPatterns(null, false, "*");
-			//servletContext.addFilter("springSecurityFilterChain", new DelegatingFilterProxy("springSecurityFilterChain")).addMappingForUrlPatterns(null, false, "/*");
+			springSecurityFilterChain.addMappingForUrlPatterns(null, false, "/*");
 
 			//-------------------------------------------------------------
 			// HttpSessionEventPublisher 설정
@@ -141,8 +139,8 @@ public class EgovWebApplicationInitializer implements WebApplicationInitializer 
 		//-------------------------------------------------------------
 		// HiddenHttpMethodFilter 설정 (Facebook OAuth 사용시 설정)
 		//-------------------------------------------------------------
-		FilterRegistration.Dynamic hiddenHttpMethodFilter = servletContext.addFilter("hiddenHttpMethodFilter", new HiddenHttpMethodFilter());
-		hiddenHttpMethodFilter.addMappingForUrlPatterns(null, false, "/*");
+		//FilterRegistration.Dynamic hiddenHttpMethodFilter = servletContext.addFilter("hiddenHttpMethodFilter", new HiddenHttpMethodFilter());
+		//hiddenHttpMethodFilter.addMappingForUrlPatterns(null, false, "/*");
 		
 		//-------------------------------------------------------------
 		// Tomcat의 경우 allowCasualMultipartParsing="true" 추가

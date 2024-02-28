@@ -30,6 +30,7 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olp.qqm.service.EgovQustnrQestnManageService;
 import egovframework.com.uss.olp.qqm.service.QustnrQestnManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+
 /**
  * 설문문항을 처리하는 Controller Class 구현
  * @author 공통서비스 장동한
@@ -73,7 +74,7 @@ public class EgovQustnrQestnManageController {
 
     /**
      * 설문문항 통계를 조회한다.
-     *
+     * 
      * @param searchVO
      * @param qustnrQestnManageVO
      * @param commandMap
@@ -81,7 +82,7 @@ public class EgovQustnrQestnManageController {
      * @return "egovframework/com/uss/olp/qqm/EgovQustnrQestnManageStatistics"
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/olp/qqm/EgovQustnrQestnManageStatistics.do")
+	@RequestMapping(value = "/uss/olp/qqm/EgovQustnrQestnManageStatistics.do")
     public String egovQustnrQestnManageStatistics(@ModelAttribute("searchVO") ComDefaultVO searchVO, QustnrQestnManageVO qustnrQestnManageVO, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
         String sLocationUrl = "egovframework/com/uss/olp/qqm/EgovQustnrQestnManageStatistics";
@@ -222,7 +223,7 @@ public class EgovQustnrQestnManageController {
         /** 2017.09.04 model에 addAttribute 추가 */
         model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String)commandMap.get("searchKeyword"));
         model.addAttribute("searchCondition", commandMap.get("searchCondition") == null ? "" : (String)commandMap.get("searchCondition"));
-
+        
         int totCnt = egovQustnrQestnManageService.selectQustnrQestnManageListCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);

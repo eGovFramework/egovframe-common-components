@@ -3,17 +3,16 @@ package egovframework.com.utl.sys.pxy.service;
 import egovframework.com.cmm.ComDefaultVO;
 
 /**
- * 개요
- * - 프록시로그정보에 대한 model 클래스를 정의한다.
- *
- * 상세내용
- * - 프록시로그정보의 프록시 ID, 로그 ID, 클라이언트 IP, 클라이언트 포트, 접속 시간 등의 항목을 관리한다.
+ * 개요 - 프록시로그정보에 대한 model 클래스를 정의한다.
+ * 
+ * 상세내용 - 프록시로그정보의 프록시 ID, 로그 ID, 클라이언트 IP, 클라이언트 포트, 접속 시간 등의 항목을 관리한다.
+ * 
  * @author lee.m.j
  * @version 1.0
  * @created 28-6-2010 오전 10:44:49
  */
 public class ProxyLog extends ComDefaultVO {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
     /**
      * 프록시 ID

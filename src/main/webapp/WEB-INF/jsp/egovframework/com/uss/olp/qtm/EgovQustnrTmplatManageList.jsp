@@ -166,7 +166,7 @@ function fn_egov_search_QustnrTmplatManage(){
 		<!-- 작성자명 -->
 		<td class="lt_text3">${resultInfo.frstRegisterNm}</td>
 		<!-- 등록일자 -->
-		<td class="lt_text3">${fn:substring(resultInfo.frstRegisterPnttm, 0, 10)}</td>
+		<td class="lt_text3">${fn:substring(resultInfo.frstRegistPnttm, 0, 10)}</td>
 	  </tr>	  
 	</c:forEach>	
 	</tbody>

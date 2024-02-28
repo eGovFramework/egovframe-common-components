@@ -67,9 +67,9 @@ function fn_egov_submit_WebStandardInspection(form, nNmm){
 	} 
 	
 	if(form.rdoUri[0].checked == true){
-		form.action='/EgovPageLink.do?link=utl/sys/wsi/EgovWebStandardInspectionUriDirect';
+		form.action='/EgovPageLink.do?linkIndexIndex=5';
 	}else{
-		form.action='/EgovPageLink.do?link=utl/sys/wsi/EgovWebStandardInspectionUri';
+		form.action='/EgovPageLink.do?linkIndexIndex=6';
 	}
 	
 	return true;
@@ -90,7 +90,7 @@ function fn_egov_submit_WebStandardInspection(form, nNmm){
 	 document.formHidden.uri.value = form.uri.value;
 
 	 if(form.rdoUri[0].checked == true){
-		 document.formHidden.action = "/EgovPageLink.do?link=utl/sys/wsi/EgovWebStandardInspectionUriDirectLink";
+		 document.formHidden.action = "/EgovPageLink.do?linkIndex=7";
 	 }else{
 		 document.formHidden.action = "http://validator.w3.org/check";
 	 }
@@ -143,7 +143,7 @@ summary="이 표는 웹표준검사 대상 정보를 제공하며, URL명, Publi
 <%
 	for(int i=1 ; i<10; i++){ 
 %>
-<form name="webInspection" method="post" action="/EgovPageLink.do?link=utl/sys/wsi/EgovWebStandardInspectionUri" target="ifr_hidden">
+<form name="webInspection" method="post" action="/EgovPageLink.do?linkIndex=6" target="ifr_hidden">
 <table width="100%" border="1" cellpadding="0" cellspacing="1" class="table-register" summary=" ">
 <tr> 
 	<td style="padding:2px 2px 2px 2px;" height="23">

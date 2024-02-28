@@ -112,7 +112,7 @@ public class EgovArticleDAOTest_AaaTestData {
 
 		return board;
 	}
-
+	
 	public BoardVO selectArticleDetailDefaultCnt() {
 		BoardVO boardVO = new BoardVO();
 
@@ -122,7 +122,7 @@ public class EgovArticleDAOTest_AaaTestData {
 
 		return boardVO;
 	}
-
+	
 	public BoardVO selectBlogListManagerCnt() {
 		BoardVO boardVO = new BoardVO();
 

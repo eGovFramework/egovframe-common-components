@@ -191,7 +191,7 @@
 				    <select name="knoAps" title="<spring:message code="comDamMgm.comDamManagementModify.knoAps"/>"><!-- 지식정제 선택 -->
 					    <option value="3" <c:if test="${knoManagement.knoAps == '3'}">selected</c:if> ><spring:message code="comDamMgm.comDamManagementModify.status.disposal"/></option><!-- 폐기 -->
 					</select>
-                    <form:errors path="knoAps" />
+					<form:errors path="knoAps" />
 				</td>
 			</tr>
 			<tr>

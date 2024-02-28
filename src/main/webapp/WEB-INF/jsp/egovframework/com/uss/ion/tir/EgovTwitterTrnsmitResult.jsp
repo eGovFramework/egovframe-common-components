@@ -13,6 +13,7 @@
     since    : 2010.07.13
    
 --%>
+<%@page import="egovframework.com.uss.ion.tir.service.TwitterInfo"%>
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ page import="twitter4j.Status"%>
 <%@ page import="twitter4j.User"%>
@@ -25,12 +26,7 @@
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%
-
-Status status = (Status)request.getAttribute("status");
-
-User user = (User)status.getUser();
-
-
+TwitterInfo twitterInfo = (TwitterInfo) request.getAttribute("twitterInfo");
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -39,6 +35,39 @@ User user = (User)status.getUser();
 <title><spring:message code="ussIonTir.twitterTrnsmitResult.twitterTrnsmitResult"/></title><!-- 트위터(Twitter) 송신(등록)결과확인 -->
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css'/>">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/button.css'/>">
+<script  src="<c:url value='/js/egovframework/com/cmm/jquery.js'/>"></script>
+<script script type="text/javascript">
+	
+		function deleteTweet(){
+			var tID = $("#tweetID").val();
+			console.log("tID >>> " + tID);
+			
+			if(confirm("<spring:message code='ussIonTir.twitterTrnsmitResult.delete.confirmMessage' />")){
+					$.ajax({
+						url : "twitterDelete.do",
+						data : {"tweetID" : JSON.stringify(tID)},
+						dataType : "text",
+						type : "POST",
+						success : function(result){
+							if(result){
+								alert("<spring:message code='ussIonTir.twitterTrnsmitResult.delete.success' />");
+								$("#tID").text("");
+								$("#tText").text("");
+								$("#tweetID").val("");
+							}else{
+								alert("<spring:message code='ussIonTir.twitterTrnsmitResult.delete.unsuccess' />");
+							}
+						},error : (function(result){
+							console.log("Error");
+						})
+					});
+					if($("#tweetID").val()){
+						$(".btn_del").css("display", "none");
+					};
+				}
+			}
+	
+</script>
 </head>
 <body>
 <DIV id="content" style="width:712px">
@@ -55,75 +84,67 @@ User user = (User)status.getUser();
 			<col style="width:20%" />
 			<col style="" />
 		</colgroup>
-		<tr>
-			<th><spring:message code="ussIonTir.twitterTrnsmitResult.id"/></th><!-- 등록ID -->
-			<td class="left">
-			    <%=EgovWebUtil.clearXSSMinimum(""+user.getId()) %>
-			</td>
-		</tr>
-		<tr>
-			<th><spring:message code="ussIonTir.twitterTrnsmitResult.screenName"/></th><!-- 계정ID -->
-			<td class="left">
-			    <%=EgovWebUtil.clearXSSMinimum(user.getScreenName()) %>
-			</td>
-		</tr>
-		<tr>
-			<th><spring:message code="ussIonTir.twitterTrnsmitResult.name"/></th><!-- 별명 -->
-			<td class="left">
-			    <%=EgovWebUtil.clearXSSMinimum(user.getName()) %>
-			</td>
-		</tr>
-		<tr>
-			<th><spring:message code="ussIonTir.twitterTrnsmitResult.url"/></th><!-- URL -->
-			<td class="left">
-			    <%=EgovWebUtil.clearXSSMinimum(user.getURL()) %>
-			</td>
-		</tr>
-		<tr>
-			<th><spring:message code="ussIonTir.twitterTrnsmitResult.text"/></th><!-- 트위터 내용 -->
-			<td class="left">
-			    <%=EgovWebUtil.clearXSSMinimum(status.getText()) %>
-			</td>
-		</tr>
-		<tr>
-			<th><spring:message code="ussIonTir.twitterTrnsmitResult.profileImage"/></th><!-- Profile Image -->
-			<td class="left">
-			    <img src="<%=EgovWebUtil.clearXSSMinimum(user.getProfileImageURL()) %>" title="profileImageUrl" alt="profileImageUrl">
-			</td>
-		</tr>
-		<%
-		java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-		%>
-		<tr>
-			<th><spring:message code="ussIonTir.twitterTrnsmitResult.createdAt"/></th><!-- 등록일 -->
-			<td class="left">
-			    <%=format.format(user.getCreatedAt()) %>
-			</td>
-		</tr>
-		<tr>
-			<th><spring:message code="ussIonTir.twitterTrnsmitResult.isFavorited"/></th><!-- favorite -->
-			<td class="left">
-			    <%=EgovWebUtil.clearXSSMinimum(""+status.isFavorited()) %>
-			</td>
-		</tr>
-		<tr>
-			<th><spring:message code="ussIonTir.twitterTrnsmitResult.isRetweet"/></th>
-			<td class="left">
-			    <%=EgovWebUtil.clearXSSMinimum(""+status.isRetweet()) %>
-			</td>
-		</tr>
-		<tr>
-			<th><spring:message code="ussIonTir.twitterTrnsmitResult.isTruncated"/></th>
-			<td class="left">
-			    <%=EgovWebUtil.clearXSSMinimum(""+status.isTruncated()) %>
-			</td>
-		</tr>
+				<tr>
+					<th><spring:message code="ussIonTir.twitterTrnsmitResult.id" /></th>
+			<!-- 등록ID -->
+					<td class="left"><%=EgovWebUtil.clearXSSMinimum(Long.toString(twitterInfo.getTwitterId()))%></td>
+				</tr>
+				<tr>
+					<th><spring:message code="ussIonTir.twitterTrnsmitResult.screenName" /></th> 
+			<!-- 계정ID -->
+					<td class="left"><%=EgovWebUtil.clearXSSMinimum(twitterInfo.getTwitterScreenName())%></td>
+				</tr>
+				<tr>
+					<th><spring:message code="ussIonTir.twitterTrnsmitResult.name" /></th>
+			<!-- 별명  -->
+					<td class="left"><%=EgovWebUtil.clearXSSMinimum(twitterInfo.getTwitterNmae())%></td>
+				</tr>
+				<tr>
+					<th><spring:message code="ussIonTir.twitterTrnsmitResult.tweetId" /></th>
+					<!-- 트윗 아이디 -->
+					<td class="left" id = "tID"><%=EgovWebUtil.clearXSSMinimum(Long.toString(twitterInfo.getTwitterTweetId()))%></td>
+				</tr>
+				<tr>
+					<th><spring:message code="ussIonTir.twitterTrnsmitResult.text" /></th>
+					<!-- 트윗 내용 -->
+					<td class="left" id="tText" ><%=EgovWebUtil.clearXSSMinimum(twitterInfo.getTwitterText())%></td>
+				</tr>
+
+				<tr>
+					<th><spring:message code="ussIonTir.twitterTrnsmitResult.profileImage" /></th> 
+			<!-- Profile Image -->
+					<td class="left"><img src="<%=EgovWebUtil.clearXSSMinimum(twitterInfo.getTwitterProfileImageURL())%>" title="profileImageUrl" alt="profileImageUrl"></td>
+				</tr>
+				<%
+ 				java.text.SimpleDateFormat format = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+  				%>  
+				<tr>
+					<th><spring:message code="ussIonTir.twitterTrnsmitResult.createdAt" /></th>
+			<!-- 등록일 -->
+					<td class="left"><%=format.format(twitterInfo.getTwitterCreatedAt())%>
+					</td>
+				</tr>
 	</table>
 
 	<!-- 하단 버튼 -->
-	<div class="btn">
-		<span class="btn_s"><a href="<c:url value='/uss/ion/tir/registTwitterTrnsmit.do'/>" onclick=""><spring:message code="ussIonTir.twitterTrnsmitResult.confirm"/></a></span><!-- 확인 -->
-	</div>
+	<!--  작성된 트윗  확인(트위터 페이지) -->
+			<div class ="btn" style = "float:none;">
+				<span class = "btn_s" style="width:auto !important; padding: 0 5px !important;">
+					<a href="https://twitter.com/egovtest2/status/<%=twitterInfo.getTwitterTweetId()%>"  target="_blank" >
+						<spring:message code="ussIonTir.twitterTrnsmitResult.viewTweet" /></a></span><!-- 트윗 확인 -->
+			</div>
+			
+			<!-- 트윗 삭제 -->			
+			<div class="btn btn_del" >
+					<span class="btn_s" style="width:auto; padding: 0 5px;"><a onclick="deleteTweet()" id="tweetDel"><spring:message code="ussIonTir.twitterTrnsmitResult.delete" /></a></span>
+					<input type = "hidden" id ="tweetID" value = "<%=EgovWebUtil.clearXSSMinimum(Long.toString(twitterInfo.getTwitterTweetId()))%>">
+			</div>
+			
+			<!--  트윗 작성 페이지로 돌아가기 -->
+			<div class = "btn" style = "margin-right:5px">
+				<span class="btn_s" style="width:auto; padding: 0 5px;">
+				<a href = "/egovframework-all-in-one/uss/ion/tir/selectTwitterMain.do" id="tweetRe"><spring:message code="ussIonTir.twitterTrnsmitResult.reWrite" /></a></span><!-- 재작성 -->
+			</div>
 	<div style="clear:both;"></div>
 </div>
 

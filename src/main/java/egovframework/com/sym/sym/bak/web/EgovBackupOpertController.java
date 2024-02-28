@@ -219,7 +219,7 @@ public class EgovBackupOpertController {
         return "egovframework/com/sym/sym/bak/EgovBackupOpertUpdt";
 	}
 
-    /**
+	/**
      * 백업작업 목록을 조회한다.
      * 
      * @return 리턴URL

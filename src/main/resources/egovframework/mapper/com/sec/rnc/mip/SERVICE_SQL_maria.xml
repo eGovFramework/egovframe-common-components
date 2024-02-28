@@ -40,13 +40,13 @@
 		     , attrList
 		     , predList
 			 , callBackUrl
-		  FROM TB_SERVICE
+		  FROM COMTCMOBILEIDSERVICE
 		 WHERE svcCode = #{svcCode}
 	</select>
 	
 	<insert id="insertSvc">
 		INSERT
-		  INTO TB_SERVICE
+		  INTO COMTCMOBILEIDSERVICE
 		(
 		       svcCode
 		     , presentType
@@ -103,8 +103,8 @@
 		     , b.attrList       AS attrList
 		     , b.predList       AS predList
 		     , b.callBackUrl    AS callBackUrl
-		  FROM TB_TRX_INFO a
-		  JOIN TB_SERVICE b
+		  FROM COMTSMOBILEIDTRXINFO a
+		  JOIN COMTCMOBILEIDSERVICE b
 		    ON a.svcCode = b.svcCode
 		 WHERE trxcode = #{trxcode}
 	</select>

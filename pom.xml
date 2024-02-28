@@ -17,8 +17,8 @@
     </licenses>
  
     <properties>
-        <spring.maven.artifact.version>5.3.20</spring.maven.artifact.version>
-        <org.egovframe.rte.version>4.1.0</org.egovframe.rte.version>
+        <spring.maven.artifact.version>5.3.27</spring.maven.artifact.version>
+        <org.egovframe.rte.version>4.2.0</org.egovframe.rte.version>
     </properties>
 
     <repositories>
@@ -48,7 +48,7 @@
 		    <url>file://${project.basedir}/src/main/webapp/WEB-INF/lib</url>
 		</repository>
     </repositories>
-    
+
     <dependencies>
         <!-- 실행환경 라이브러리 -->
         <!--
@@ -152,24 +152,22 @@
             <groupId>javax.servlet.jsp.jstl</groupId>
             <artifactId>jstl-api</artifactId>
             <version>1.2</version>
+            <exclusions>
+                <exclusion>
+                	<groupId>javax.servlet</groupId>
+                	<artifactId>servlet-api</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
-            <groupId>taglibs</groupId>
-            <artifactId>standard</artifactId>
-            <version>1.1.2</version>
+            <groupId>org.apache.taglibs</groupId>
+            <artifactId>taglibs-standard-impl</artifactId>
+            <version>1.2.5</version>
         </dependency>
-		<!-- 
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <version>2.5</version>
-            <scope>provided</scope>
-        </dependency>
-         -->
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>javax.servlet-api</artifactId>
-			<version>3.1.0</version>
+			<version>4.0.1</version>
 		</dependency>
         <dependency>
             <groupId>org.jasypt</groupId>
@@ -184,7 +182,7 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
-            <version>1.21</version>
+            <version>1.23.0</version>
         </dependency>
         <dependency>
             <groupId>xerces</groupId>
@@ -250,14 +248,14 @@
         <dependency>
             <groupId>com.ibm.icu</groupId>
             <artifactId>icu4j</artifactId>
-            <version>71.1</version>
+            <version>73.2</version>
         </dependency>
 
         <!-- FTP용 3rd party 라이브러리 -->
         <dependency>
             <groupId>commons-net</groupId>
             <artifactId>commons-net</artifactId>
-            <version>3.8.0</version>
+            <version>3.9.0</version>
         </dependency>
 
         <!-- Email -->
@@ -278,13 +276,6 @@
             <artifactId>javax.servlet.jsp-api</artifactId>
             <version>2.3.3</version>
             <scope>provided</scope>
-        </dependency>
-
-        <!-- LDAP SDK -->
-        <dependency>
-            <groupId>ldapsdk</groupId>
-            <artifactId>ldapsdk</artifactId>
-            <version>4.1</version>
         </dependency>
 
         <!-- PDF변환용 라이브러리 -->
@@ -330,6 +321,12 @@
             <artifactId>twitter4j-core</artifactId>
             <version>4.0.7</version>
         </dependency>
+		<!-- Twitter v2 -->
+		<dependency>
+		    <groupId>io.github.takke</groupId>
+		    <artifactId>jp.takke.twitter4j-v2</artifactId>
+		    <version>1.4.2</version>
+		</dependency>
 
         <!-- Ajax -->
         <dependency>
@@ -349,52 +346,19 @@
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>batik-ext</artifactId>
-            <version>1.14</version>
+            <version>1.16</version>
         </dependency>
-        
-        <!-- facebook 연동시 추가 -->
-        <dependency>
-		    <groupId>org.springframework.social</groupId>
-		    <artifactId>spring-social-facebook</artifactId>
-		    <version>2.0.3.RELEASE</version>
-		    <exclusions>
-            	<exclusion>
-            		<artifactId>spring-web</artifactId>
-            		<groupId>org.springframework</groupId>
-            	</exclusion>
-            	<exclusion>
-            		<artifactId>spring-webmvc</artifactId>
-            		<groupId>org.springframework</groupId>
-            	</exclusion>
-            </exclusions>
-		</dependency>
         
         <!-- oauth2 login -->
 	    <dependency>
               <groupId>com.github.scribejava</groupId>
               <artifactId>scribejava-apis</artifactId>
-              <version>8.3.1</version>
+              <version>8.3.3</version>
         </dependency>
         <dependency>
               <groupId>com.github.scribejava</groupId>
               <artifactId>scribejava-core</artifactId>
-              <version>8.3.1</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.httpcomponents</groupId>
-            <artifactId>httpclient</artifactId>
-            <version>4.5.13</version>
-            <exclusions>
-                <exclusion>
-                    <artifactId>commons-logging</artifactId>
-                    <groupId>commons-logging</groupId>
-                </exclusion>
-            </exclusions>
-        </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>2.1.212</version>
+              <version>8.3.3</version>
         </dependency>
         
         <!-- WebSocket Messenger -->
@@ -415,24 +379,24 @@
 		<dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.13.3</version>
+            <version>2.15.2</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.13.3</version>
+            <version>2.15.2</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.13.3</version>
+            <version>2.15.2</version>
         </dependency>
 
         <!-- LDAP조직도관리 관련 라이브러리  -->
         <dependency>
             <groupId>org.springframework.ldap</groupId>
             <artifactId>spring-ldap-core</artifactId>
-            <version>2.4.0</version>
+            <version>2.4.1</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework</groupId>
@@ -456,7 +420,7 @@
                 </exclusion>
             </exclusions>
         </dependency>
-        <dependency>  
+        <dependency>
             <groupId>org.codehaus.jackson</groupId>
             <artifactId>jackson-mapper-asl</artifactId>
             <version>1.9.13</version>
@@ -465,45 +429,53 @@
         <dependency>
             <groupId>mysql</groupId>
             <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.29</version>
+            <version>8.0.33</version>
         </dependency>
 		<dependency>
 		    <groupId>org.mariadb.jdbc</groupId>
 		    <artifactId>mariadb-java-client</artifactId>
-		    <version>3.0.4</version>
+		    <version>3.1.4</version>
 		</dependency>
 		<dependency>
 		     <groupId>org.postgresql</groupId>
 		     <artifactId>postgresql</artifactId>
-		     <version>42.3.6</version>
+		     <version>42.6.0</version>
 		</dependency>
 
-        <!-- https://mvnrepository.com/artifact/junit/junit -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.28</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+		    <groupId>com.github.javaparser</groupId>
+		    <artifactId>javaparser-core</artifactId>
+		    <version>3.25.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.xmlbeans</groupId>
+			<artifactId>xmlbeans</artifactId>
+			<version>2.6.0</version>
+		</dependency>
+
+        <!-- 3rd party 라이브러리로 별도의 설치 필요 끝 -->
+
+		<!-- 법정도코드, 기관코드 연계 -->
+		<dependency>
+			<groupId>com.googlecode.json-simple</groupId>
+			<artifactId>json-simple</artifactId>
+			<version>1.1.1</version>
+		</dependency>
+
+        <!-- 공통컴포넌트 끝 -->
+
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>4.13.2</version>
 			<scope>test</scope>
 		</dependency>
-
-		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
-		<dependency>
-			<groupId>org.projectlombok</groupId>
-			<artifactId>lombok</artifactId>
-			<version>1.18.24</version>
-			<scope>provided</scope>
-		</dependency>
-		
-		<!-- https://mvnrepository.com/artifact/com.github.javaparser/javaparser-core -->
-		<dependency>
-		    <groupId>com.github.javaparser</groupId>
-		    <artifactId>javaparser-core</artifactId>
-		    <version>3.22.1</version>
-		</dependency>
-        <!-- 3rd party 라이브러리로 별도의 설치 필요 끝 -->
-
-        <!-- 공통컴포넌트 끝 -->
-
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-test</artifactId>
@@ -642,6 +614,12 @@
 		<!-- Utility for Omnione End -->
 		<!-- 모바일 운전면허증 라이브러리 끝 -->
 
+		<dependency>
+		    <groupId>javax.faces</groupId>
+		    <artifactId>javax.faces-api</artifactId>
+		    <version>2.3</version>
+		</dependency>
+
     </dependencies>
 
     <build>
@@ -653,7 +631,7 @@
 				<plugin>
 					<groupId>org.codehaus.cargo</groupId>
 					<artifactId>cargo-maven3-plugin</artifactId>
-					<version>1.9.13</version>
+					<version>1.10.7</version>
 					<configuration>
 						<container>
 							<containerId>tomcat8x</containerId>
@@ -667,7 +645,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.10.1</version>
+                    <version>3.11.0</version>
                     <configuration>
                         <source>1.8</source>
                         <target>1.8</target>
@@ -702,7 +680,7 @@
                         <dependency>
                             <groupId>org.hsqldb</groupId>
                             <artifactId>hsqldb</artifactId>
-                            <version>2.5.2</version>
+                            <version>2.7.2</version>
                         </dependency>
                     </dependencies>
                 </plugin>
@@ -716,7 +694,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-pmd-plugin</artifactId>
-                    <version>3.17.0</version>
+                    <version>3.21.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -725,7 +703,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>2.22.2</version>
+                <version>3.1.2</version>
                 <configuration>
                     <skipTests>true</skipTests>
                     <forkMode>once</forkMode>
@@ -763,7 +741,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.4.0</version>
+                <version>3.5.0</version>
             </plugin>
         </plugins>
     </build>
@@ -774,7 +752,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>3.3.0</version>
+                <version>3.4.4</version>
                 <reportSets>
                     <reportSet>
                         <id>sunlink</id>

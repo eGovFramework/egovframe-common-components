@@ -55,11 +55,8 @@ function fnAgree(){
             }
         }
     }
-    
-    //실명인증 기본페이지는 주민번호 실명확인으로 한다.
-    //패키지 변경 document.stplatForm.action = "<c:url value='/uss/umt/EgovRlnmCnfirm.do'/>";
-    //실명인증은 전자정부 G4C 연계모듈을 이용하므로 연계모듈은 행정안전부 민원제도과에 개별로 신청하여 제공받아야 한다 document.stplatForm.action = "<c:url value='/sec/rnc/EgovRlnmCnfirm.do'/>";
-	document.QustnrManageForm.action = <c:url value='document.QustnrManageForm.nextUrl.value'/>;
+
+	document.QustnrManageForm.action = "<c:url value='/uss/umt/EgovRlnmCnfirm.do'/>";
     document.QustnrManageForm.submit();
 }
 
@@ -73,7 +70,7 @@ function fnDisAgree(){
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="QustnrManageForm" action="<c:url value='/sec/rnc/EgovRlnmCnfirm.do'/>" method="post">
+<form name="QustnrManageForm" method="post">
 <div class="wTableFrm">
 		<!-- 타이틀 -->
 		<h2>${pageTitle}</h2>
@@ -86,9 +83,9 @@ function fnDisAgree(){
         <!-- 실명인증후 다음단계에 대한 셋팅정보 -->
         <input type="hidden" name ="nextUrlName" value="button.subscribe"/>
         <input type="hidden" name ="nextUrl" value=
-        <c:if test="${sbscrbTy == 'USR01'}"><c:url value='/uss/umt/EgovMberSbscrbView.do'/></c:if>
-        <c:if test="${sbscrbTy == 'USR02'}"><c:url value='/uss/umt/EgovEntrprsMberSbscrbView.do'/></c:if>
-        <c:if test="${empty sbscrbTy}">""</c:if>
+        <c:if test="${sbscrbTy == 'USR01'}">0</c:if>
+        <c:if test="${sbscrbTy == 'USR02'}">1</c:if>
+        <c:if test="${empty sbscrbTy}">-1</c:if>
         />
         <c:forEach var="result" items="${stplatList}" varStatus="status">
         <!-- 약관확인 -->

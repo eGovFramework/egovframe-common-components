@@ -10,7 +10,39 @@
 	<!-- RSS서비스::해당RSS서비스 조회 --> 
 	<select id="selectRssTagServiceTable" parameterType="java.util.Map" resultType="java.util.HashMap">
 
-		SELECT *
+		SELECT
+		<choose>
+			<when test="TRGET_SVC_TABLE.equalsIgnoreCase('comthtrsmrcvmntrngloginfo')">
+				LOG_ID,
+				CNTC_ID,
+				TEST_CLASS_NM,
+				MNGR_NM,
+				MNGR_EMAIL_ADRES,
+				MNTRNG_STTUS,
+				LOG_INFO,
+				CREAT_DT,
+				FRST_REGISTER_ID,
+				TO_CHAR(FRST_REGIST_PNTTM,'YYYY-MM-DD'),
+				LAST_UPDUSR_ID,
+				TO_CHAR(LAST_UPDT_PNTTM,'YYYY-MM-DD')
+			</when>
+			<when test="TRGET_SVC_TABLE.equalsIgnoreCase('comtczip')">
+				ZIP,
+				SN,
+				CTPRVN_NM,
+				SIGNGU_NM,
+				EMD_NM,
+				LI_BULD_NM,
+				LNBR_DONG_HO,
+				TO_CHAR(FRST_REGIST_PNTTM,'YYYY-MM-DD'),
+				FRST_REGISTER_ID,
+				TO_CHAR(LAST_UPDT_PNTTM,'YYYY-MM-DD'),
+				LAST_UPDUSR_ID
+			</when>
+			<otherwise><!-- 사용할 목록 WhiteList로 추가 필요함. -->
+		    	*
+			</otherwise>
+		</choose>
 		FROM (
 			SELECT * FROM
 		<choose>

@@ -1,6 +1,7 @@
 package egovframework.com.uss.ion.tir.service;
 
 import java.io.Serializable;
+import java.util.Date;
 
 import egovframework.com.cmm.ComDefaultVO;
 
@@ -22,7 +23,7 @@ import egovframework.com.cmm.ComDefaultVO;
 public class TwitterInfo extends ComDefaultVO implements Serializable{
  
 	/** 트위터 아이디 */
-	private String twitterId;
+	private Long twitterId;
 	
 	/** 트위터 비밀번호 */
 	private String twitterPw;
@@ -40,25 +41,37 @@ public class TwitterInfo extends ComDefaultVO implements Serializable{
 	private String twitterText;
 	
 	/** 트위터 등록일 */
-	private String twitterCreatedAt;
+	private Date twitterCreatedAt;
 	
 	/** 트위터 프로파일 이미지명 */
 	private String twitterProfileImageURL;
 	
 	/** 트위터 소스 */
 	 private String twitterSource;
+	 
+	 /** 등록한 트윗 아이디*/
+	 /* 2023 08 23 추가*/
+	 private Long twitterTweetId;
+
+	public Long getTwitterTweetId() {
+		return twitterTweetId;
+	}
+
+	public void setTwitterTweetId(Long twitterTweetId) {
+		this.twitterTweetId = twitterTweetId;
+	}
 
 	/**
 	 * @return the twitterId
 	 */
-	public String getTwitterId() {
+	public Long getTwitterId() {
 		return twitterId;
 	}
 
 	/**
 	 * @param twitterId the twitterId to set
 	 */
-	public void setTwitterId(String twitterId) {
+	public void setTwitterId(Long twitterId) {
 		this.twitterId = twitterId;
 	}
 
@@ -135,15 +148,15 @@ public class TwitterInfo extends ComDefaultVO implements Serializable{
 	/**
 	 * @return the twitterCreatedAt
 	 */
-	public String getTwitterCreatedAt() {
+	public Date getTwitterCreatedAt() {
 		return twitterCreatedAt;
 	}
 
 	/**
-	 * @param twitterCreatedAt the twitterCreatedAt to set
+	 * @param date the twitterCreatedAt to set
 	 */
-	public void setTwitterCreatedAt(String twitterCreatedAt) {
-		this.twitterCreatedAt = twitterCreatedAt;
+	public void setTwitterCreatedAt(Date date) {
+		this.twitterCreatedAt = date;
 	}
 
 	/**

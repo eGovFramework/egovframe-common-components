@@ -77,30 +77,12 @@
 		  p:prefix="/WEB-INF/jsp/" p:suffix=".jsp"/>
 		  
 	<bean id="jsonView" class="org.springframework.web.servlet.view.json.MappingJackson2JsonView">
-		<property name="contentType" value="text/html;charset=UTF-8"/>
+		<property name="contentType" value="application/json;charset=UTF-8"/>
 	</bean>
 	
 	<!-- Facebook 설정 -->
 	<mvc:default-servlet-handler />
-	<bean class="org.springframework.social.connect.web.ProviderSignInController">
-		<constructor-arg ref="connectionFactoryLocator" />
-		<constructor-arg ref="usersConnectionRepository" />
-		<constructor-arg>
-			<bean class="egovframework.com.uss.ion.fbk.web.FacebookSimpleSignInAdapter"/>
-		</constructor-arg>
-		<property name="signInUrl" value="/uss/ion/fbk/facebookSignin.do"/>
-		<property name="postSignInUrl" value="/uss/ion/fbk/facebook.do"/>
-	</bean>
-	<mvc:interceptors>
-		<mvc:interceptor>
-			<mvc:mapping path="/uss/ion/fbk/**" />
-			<bean class="egovframework.com.uss.ion.fbk.web.FacebookUserInterceptor" >
-				<constructor-arg ref="usersConnectionRepository"/>
-			</bean>
-		</mvc:interceptor>
-	</mvc:interceptors>
-	<mvc:view-controller path="/uss/ion/fbk/facebook.do" view-name="egovframework/com/uss/ion/fbk/EgovFacebookHome" />
+	
 	<mvc:view-controller path="/uss/ion/fbk/facebookSignin.do" view-name="egovframework/com/uss/ion/fbk/EgovFacebookSignin" />
-	<mvc:view-controller path="/uss/ion/fbk/facebookSignout.do" view-name="egovframework/com/uss/ion/fbk/EgovFacebookHome" />
 
 </beans>

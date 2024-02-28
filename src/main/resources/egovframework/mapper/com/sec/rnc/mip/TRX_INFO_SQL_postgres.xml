@@ -20,13 +20,13 @@
 			 , regDt
 			 , udtDt
 			 , CONCAT(SUBSTRING(vpName, 1, 1), RPAD('*', CHAR_LENGTH(vpName)-1, '*'))	AS vpName
-		  FROM tb_trx_info
+		  FROM COMTSMOBILEIDTRXINFO
 		 WHERE trxcode = #{trxcode}
 	</select>
 	
 	<insert id="insertTrxInfo">
 		INSERT
-		  INTO tb_trx_info
+		  INTO COMTSMOBILEIDTRXINFO
 		(
 		       trxcode
 			 , svcCode
@@ -49,7 +49,7 @@
 	</insert>
 	
 	<update id="updateTrxInfo">
-		UPDATE tb_trx_info
+		UPDATE COMTSMOBILEIDTRXINFO
 		   SET trxStsCode = #{trxStsCode}
 			<if test="trxStsCode eq '0002'.toString()">
 		     , profileSendDt = NOW()
@@ -77,13 +77,13 @@
 	
 	<delete id="deleteTrxInfo">
 		DELETE
-		  FROM tb_trx_info
+		  FROM COMTSMOBILEIDTRXINFO
 		 WHERE trxcode = #{trxcode}
 	</delete>
 	
 	<insert id="insertVp">
 		INSERT
-		  INTO tb_trx_info
+		  INTO COMTSMOBILEIDTRXINFO
 		(
 		       trxcode
 			 , svcCode

@@ -26,7 +26,6 @@
 String sCmd = request.getParameter("cmd") == null ? "": (String)request.getParameter("cmd");
 String sVerify = request.getParameter("verify") == null ? "": (String)request.getParameter("verify");
 
-
 String sConsumerKey = request.getAttribute("consumerKey") == null ? "": (String)request.getAttribute("consumerKey");
 String sConsumerSecret = request.getAttribute("consumerSecret") == null ? "": (String)request.getAttribute("consumerSecret");
 
@@ -101,13 +100,13 @@ function fn_egov_search_TwitterRecptn(){
 		<tr>
 			<th>Consumer key <span class="pilsu">*</span></th>
 			<td class="left">
-			    <input type="text" id="ConsumerKey" name="ConsumerKey" title="ConsumerKey" value="gCrpRrhlKCq9iqqV447NW551N" maxlength="255" style="width:100%">
+			    <input type="text" id="ConsumerKey" name="ConsumerKey" title="ConsumerKey" value="" maxlength="255" style="width:100%">
 			</td>
 		</tr>
 		<tr>
 			<th>Consumer secret <span class="pilsu">*</span></th>
 			<td class="left">
-			    <input type="password" id="ConsumerSecret" name="ConsumerSecret" title="ConsumerSecret" value="DWsv7EAVzkBxEZvjhtGwgDpgKQULsZoBZ9v1eSYSTOgtkm6xeg" maxlength="255" style="width:100%; height:24px;">
+			    <input type="password" id="ConsumerSecret" name="ConsumerSecret" title="ConsumerSecret" value="" maxlength="255" style="width:100%; height:24px;">
 			</td>
 		</tr>
 		<tr>

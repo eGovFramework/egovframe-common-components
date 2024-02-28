@@ -45,7 +45,7 @@ public interface EgovBackupOpertService {
 	 */
 	public BackupOpert selectBackupOpert(BackupOpert backupOpert) throws Exception;
 
-    /**
+	/**
      * 백업작업 목록을 조회한다.
      * 
      * @return 백업작업목록

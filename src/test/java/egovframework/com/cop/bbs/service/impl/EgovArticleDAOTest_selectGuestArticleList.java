@@ -43,7 +43,7 @@ public class EgovArticleDAOTest_selectGuestArticleList extends EgovTestV1 {
 //	@Commit
 	public void test() {
 		log.debug("test");
-
+		
 		// given
 		Board board = testData();
 

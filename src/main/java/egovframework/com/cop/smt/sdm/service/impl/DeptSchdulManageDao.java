@@ -56,7 +56,7 @@ public class DeptSchdulManageDao extends EgovComAbstractDAO {
 	 * @exception Exception
 	 */
 	public List<EgovMap> selectDeptSchdulManageMainList(Map<String, String> map) throws Exception{
-		return selectList("DeptSchdulManage.selectDeptSchdulManageMainList", map);
+		 return selectList("DeptSchdulManage.selectDeptSchdulManageMainList", map);
 	}
 	
     /**
@@ -66,7 +66,7 @@ public class DeptSchdulManageDao extends EgovComAbstractDAO {
 	 * @exception Exception
 	 */
 	public List<EgovMap> selectDeptSchdulManageRetrieve(Map<String, String> map) throws Exception{
-		return selectList("DeptSchdulManage.selectDeptSchdulManageRetrieve", map);
+		 return selectList("DeptSchdulManage.selectDeptSchdulManageRetrieve", map);
 	}
 	
 	

@@ -18,32 +18,21 @@
  */
 package egovframework.com.ext.oauth.web;
 
-import javax.annotation.Resource;
-import javax.inject.Inject;
-import javax.servlet.http.HttpSession;
-
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.social.connect.Connection;
-import org.springframework.social.connect.ConnectionFactoryLocator;
-import org.springframework.social.connect.UserProfile;
-import org.springframework.social.connect.UsersConnectionRepository;
-import org.springframework.social.connect.web.ProviderSignInUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.context.request.WebRequest;
 
-import egovframework.com.ext.oauth.service.EgovSignupService;
 import egovframework.com.ext.oauth.service.OAuthConfig;
 import egovframework.com.ext.oauth.service.OAuthLogin;
 import egovframework.com.ext.oauth.service.OAuthUniversalUser;
 import egovframework.com.ext.oauth.service.OAuthVO;
-import egovframework.com.utl.fcc.service.EgovStringUtil;
 
 /**
  * 소셜 계정으로 일반회원 가입을 처리하는 컨트롤러 클래스
@@ -57,10 +46,10 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *
  *   수정일     	수정자          수정내용
  *  -----------    --------    ---------------------------
- *  2014.10.08		이기하          최초 생성
- *  2018.10.02		신용호          Facebook 관련 ProviderSignInUtils 초기화 수정
- *  2022.11.11      김혜준          시큐어코딩 처리
- *  2023.07.26      송인서          필요하지 않은 필드 값 교체 및 구조 단순화
+ *  2014.10.08		이기하		최초 생성
+ *  2018.10.02		신용호		Facebook 관련 ProviderSignInUtils 초기화 수정
+ *  2022.11.11      김혜준		시큐어코딩 처리
+ *  2023.07.26		송인서		필요하지 않은 필드 값 교체 및 구조 단순화
  *  </pre>
  */
 
@@ -69,46 +58,19 @@ public class EgovSignupController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovSignupController.class);
 
-	@Resource(name="signupService")
-	private EgovSignupService signupService;
-
-    //private ConnectionRepository connectionRepository;
-	private final ProviderSignInUtils providerSignInUtils;
-
-	@Inject
+	@Autowired
 	private OAuthVO naverAuthVO;
-
-	@Inject
+	
+	@Autowired
 	private OAuthVO googleAuthVO;
 
-	@Inject
+	@Autowired
 	private OAuthVO kakaoAuthVO;
-
-	@Inject
-	public EgovSignupController(ConnectionFactoryLocator connectionFactoryLocator,UsersConnectionRepository connectionRepository) {
-		this.providerSignInUtils = new ProviderSignInUtils(connectionFactoryLocator, connectionRepository);
-	}
-
-	@RequestMapping(value="/signup", method=RequestMethod.GET)
-	public String signupForm(WebRequest request) throws Exception {
-		Connection<?> connection = providerSignInUtils.getConnectionFromSession(request);
-		if (connection != null) {
-			UserProfile profile = connection.fetchUserProfile();
-
-			String key =  EgovStringUtil.remove(connection.getKey().toString(), ':');
-			String account = signupService.signup(profile, request, key);
-			if (account != null) {
-				providerSignInUtils.doPostSignUp(key, request);
-				return "redirect:/";
-			}
-		}
-		return "redirect:/";
-	}
-
+	
 	@RequestMapping(value = "/uat/uia/oauthLoginUsr", method = RequestMethod.GET)
 	public String login(Model model) throws Exception {
 		LOGGER.debug("===>>> OAuth Login .....");
-
+		
 		OAuthLogin naverLogin = new OAuthLogin(naverAuthVO);
 		LOGGER.debug("naverLogin.getOAuthURL() = "+naverLogin.getOAuthURL());
 		model.addAttribute("naver_url", naverLogin.getOAuthURL());
@@ -126,10 +88,11 @@ public class EgovSignupController {
 
 	@RequestMapping(value = "/auth/{oauthService}/callback", method = { RequestMethod.GET, RequestMethod.POST })
 	public String oauthLoginCallback(@PathVariable String oauthService, Model model, @RequestParam String code) throws Exception {
+		
 		LOGGER.debug("oauthLoginCallback: service={}", oauthService);
 		LOGGER.debug("===>>> code = "+ code);
-
-		OAuthVO oauthVO;
+		
+		OAuthVO oauthVO = null;
 		if (StringUtils.equals(OAuthConfig.GOOGLE_SERVICE_NAME, oauthService))
 			oauthVO = googleAuthVO;
 		else if (StringUtils.equals(OAuthConfig.NAVER_SERVICE_NAME, oauthService))

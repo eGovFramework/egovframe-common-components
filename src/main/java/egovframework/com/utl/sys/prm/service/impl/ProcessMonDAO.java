@@ -13,7 +13,7 @@ import egovframework.com.utl.sys.prm.service.ProcessMonVO;
 /**
  * 개요
  * - PROCESS모니터링에 대한 DAO 클래스를 정의한다.
- *
+ * 
  * 상세내용
  * - PROCESS모니터링에 대한 등록, 수정, 삭제, 조회 기능을 제공한다.
  * - PROCESS모니터링의 조회기능은 목록조회, 상세조회로 구분된다.
@@ -25,7 +25,7 @@ import egovframework.com.utl.sys.prm.service.ProcessMonVO;
 @Repository("ProcessMonDAO")
 public class ProcessMonDAO extends EgovComAbstractDAO {
 
-    /**
+	/**
      * 등록된 PROCESS모니터링 목록을 조회한다.
      *
      * @param processMonVO - PROCESS모니터링 Vo
