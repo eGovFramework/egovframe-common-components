@@ -3,7 +3,6 @@ package egovframework.com.uss.ion.tir.service;
 import java.util.Map;
 
 import twitter4j.CreateTweetResponse;
-import twitter4j.Status;
 /**
  * 트위터송신을 처리하는 Service Class 구현
  * @author 공통서비스 장동한
@@ -64,15 +63,15 @@ public interface EgovTwitterTrnsmitService {
 	 * @param param - 조회할 정보가 담긴 Map
 	 */
 	public void deleteTwitterAccount(Map<?, ?> param) throws Exception;
-	
+
 	/**
 	 * 트위터 계정을 조회한다.
 	 * @param map - 인증 정보가 담긴 Map
 	 * 	 */
 	public Map<?, ?> twitterUserAccount(Map<?, ?> map) throws Exception;
-	
+
 	/**
-	 *	전송한 트윗을 삭제한다. 
+	 *	전송한 트윗을 삭제한다.
 	 * @param map - 인증 정보가 담긴 Map
 	 **/
 	public boolean twitterDelete(Map<?, ?> map, String tID) throws Exception;

@@ -13,7 +13,6 @@ import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 import twitter4j.BooleanResponse;
 import twitter4j.CreateTweetResponse;
-import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.TwitterV2;
@@ -63,22 +62,22 @@ public class EgovTwitterTrnsmitServiceImpl extends EgovAbstractServiceImpl
     	AccessToken accessToken = new AccessToken((String)map.get("atoken"), (String)map.get("astoken"));
     	//엑서스 토큰 설정
     	twitter.setOAuthAccessToken(accessToken);
-    	
+
         //트위터  글 게시
     	final TwitterV2 v2 = TwitterV2ExKt.getV2(twitter);
     	final CreateTweetResponse tweets = v2.createTweet(null, null, null, null, null, null, null, null, null, null, null, sTwitterText);
-    	
+
         return tweets;
 
 	}
-	
+
 	/**
 	 * 트위터 계정 정보를 조회한다.
 	 * @param map - 인증 정보가 담긴 Map
 	 */
 	@Override
 	public Map<?, ?> twitterUserAccount(Map<?, ?> map) throws Exception {
-		
+
 		// 유저정보
 		String sCONSUMER_KEY = (String)map.get("sCONSUMER_KEY");
 		String sCONSUMER_SECRET = (String)map.get("sCONSUMER_SECRET");
@@ -90,36 +89,36 @@ public class EgovTwitterTrnsmitServiceImpl extends EgovAbstractServiceImpl
     	AccessToken accessToken = new AccessToken((String)map.get("atoken"), (String)map.get("astoken"));
     	//엑서스 토큰 설정
     	twitter.setOAuthAccessToken(accessToken);
-    	
+
     	final TwitterV2 v2 = TwitterV2ExKt.getV2(twitter);
-    	
+
     	final UsersResponse users = v2.getMe("pinned_tweet_id", "author_id", "created_at,profile_image_url");
-    	
+
     	Long userId = users.getUsers().get(0).getId();
     	String userName = users.getUsers().get(0).getName();
     	String userScreenName = users.getUsers().get(0).getScreenName();
     	Date userCreate_at = users.getUsers().get(0).getCreatedAt();
     	String userProfile_url = users.getUsers().get(0).getProfileImageUrl();
-    	
+
     	Map<String, Object> userResult = new HashMap<String, Object>();
     	userResult.put("userId", userId);
     	userResult.put("userName", userName);
     	userResult.put("userScreenName", userScreenName);
     	userResult.put("userCreate_At", userCreate_at);
     	userResult.put("userProfile_url", userProfile_url);
-    	
+
 		return userResult;
 	}
 
 	/**
 	 * 트윗 내용삭제
-	 * 
+	 *
 	 */
 	@Override
 	public boolean twitterDelete(Map<?, ?> map, String tID) throws Exception {
-		
+
 				System.out.println("아이디 >>> " + tID );
-		
+
 				String sCONSUMER_KEY = (String)map.get("sCONSUMER_KEY");
 				String sCONSUMER_SECRET = (String)map.get("sCONSUMER_SECRET");
 				//트위터 객체선언
@@ -130,14 +129,14 @@ public class EgovTwitterTrnsmitServiceImpl extends EgovAbstractServiceImpl
 		    	AccessToken accessToken = new AccessToken((String)map.get("atoken"), (String)map.get("astoken"));
 		    	//엑서스 토큰 설정
 		    	twitter.setOAuthAccessToken(accessToken);
-		    	
+
 		    	final TwitterV2 v2 = TwitterV2ExKt.getV2(twitter);
 		    	final BooleanResponse deleteResult = v2.deleteTweet(Long.parseLong(tID));
-		    	
+
 		    	System.out.println("deleteResult >>> " + deleteResult);
-		    	
+
 		    	return deleteResult.getResult();
-		
+
 	}
 
     /**
