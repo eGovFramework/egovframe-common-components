@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.IncludedCompInfoVO;
@@ -63,22 +64,22 @@ public class EgovComIndexController {
 	@Resource(name = "loginService")
 	private EgovLoginService loginService;
 
-	@RequestMapping("/index.do")
+	@GetMapping("/index.do")
 	public String index(ModelMap model) {
 		return "egovframework/com/cmm/EgovUnitMain";
 	}
 
-	@RequestMapping("/EgovTop.do")
+	@GetMapping("/EgovTop.do")
 	public String top() {
 		return "egovframework/com/cmm/EgovUnitTop";
 	}
 
-	@RequestMapping("/EgovBottom.do")
+	@GetMapping("/EgovBottom.do")
 	public String bottom() {
 		return "egovframework/com/cmm/EgovUnitBottom";
 	}
 
-	@RequestMapping("/EgovContent.do")
+	@GetMapping("/EgovContent.do")
 	public String setContent(ModelMap model) throws Exception {
 
 		// 설정된 비밀번호 유효기간을 가져온다. ex) 180이면 비밀번호 변경후 만료일이 앞으로 180일
@@ -112,7 +113,7 @@ public class EgovComIndexController {
 		return "egovframework/com/cmm/EgovUnitContent";
 	}
 
-	@RequestMapping("/EgovLeft.do")
+	@GetMapping("/EgovLeft.do")
 	public String setLeftMenu(ModelMap model) {
 
 		Map<Integer, IncludedCompInfoVO> map = new TreeMap<Integer, IncludedCompInfoVO>();
@@ -192,7 +193,7 @@ public class EgovComIndexController {
 	// context-security.xml 설정
 	// csrf="true"인 경우 csrf Token이 없는경우 이동하는 페이지
 	// csrfAccessDeniedUrl="/egovCSRFAccessDenied.do"
-	@RequestMapping("/egovCSRFAccessDenied.do")
+	@GetMapping("/egovCSRFAccessDenied.do")
 	public String egovCSRFAccessDenied() {
 		return "egovframework/com/cmm/error/csrfAccessDenied";
 	}
