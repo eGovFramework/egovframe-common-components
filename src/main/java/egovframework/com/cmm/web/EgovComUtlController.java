@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -50,7 +51,7 @@ public class EgovComUtlController {
     /**
 	 * JSP 호출작업만 처리하는 공통 함수
 	 */
-	@RequestMapping(value="/EgovPageLink.do")
+	@GetMapping(value="/EgovPageLink.do")
 	public String moveToPage(@RequestParam(value="linkIndex",required=true,defaultValue="0") Integer linkIndex){
 
 		String link = "";

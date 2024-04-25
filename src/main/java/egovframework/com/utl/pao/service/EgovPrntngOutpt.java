@@ -22,6 +22,6 @@ public interface EgovPrntngOutpt {
 	/**
 	 * 전자관인 정보를 제공하는 기능
 	 */
-	PrntngOutptVO selectErncsl(PrntngOutptVO searchVO) throws Exception;
+	PrntngOutptVO selectErncsl(PrntngOutptVO searchVO);
 
 }
