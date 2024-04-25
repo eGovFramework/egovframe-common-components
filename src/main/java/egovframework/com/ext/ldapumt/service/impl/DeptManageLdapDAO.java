@@ -23,7 +23,6 @@ import static org.springframework.ldap.query.LdapQueryBuilder.*;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.BasicAttribute;
@@ -34,7 +33,6 @@ import javax.naming.directory.SearchResult;
 import org.apache.commons.beanutils.BeanMap;
 import org.springframework.ldap.NameNotFoundException;
 import org.springframework.ldap.core.ContextSource;
-import org.springframework.ldap.core.LdapTemplate;
 import org.springframework.ldap.query.ContainerCriteria;
 import org.springframework.stereotype.Repository;
 
@@ -62,9 +60,6 @@ import egovframework.com.ext.ldapumt.service.UcorgVO;
 */
 @Repository("DeptManageLdapDAO")
 public class DeptManageLdapDAO extends OrgManageLdapDAO {
-
-	@Resource(name = "ldapTemplate")
-	public LdapTemplate ldapTemplate;
 
 	/**
 	 * DN의 하위부서 목록을 조회
