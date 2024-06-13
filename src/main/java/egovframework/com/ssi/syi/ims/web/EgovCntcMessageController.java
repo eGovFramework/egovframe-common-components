@@ -44,7 +44,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *   2009.04.01  이중호          최초 생성
  *   2011.8.26	정진오			IncludedInfo annotation 추가
  *
- * Copyright (C) 2009 by MOPAS  All right reserved.
+ * Copyright (C) 2009 by MOPAS  All rights reserved.
  * </pre>
  */
 

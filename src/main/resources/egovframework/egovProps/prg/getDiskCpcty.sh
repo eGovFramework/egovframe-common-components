@@ -11,7 +11,7 @@
 # @version 1.0
 # @see
 #
-# Copyright (C) 2009 by MOPAS  All right reserved.
+# Copyright (C) 2009 by MOPAS  All rights reserved.
 for B in `df -k | grep / | awk '{print $2} {print $3} {print $4} {print $7}'`
     do
     echo $B

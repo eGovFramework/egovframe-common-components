@@ -46,7 +46,7 @@ import egovframework.com.sym.ccm.acr.service.EgovAdministCodeRecptnService;
  *   2022.11.11  김혜준          시큐어코딩 처리
  *   2023.08.10  정진오          법정동코드수신 방식 수정(공공데이터포털 이용)
  *
- * Copyright (C) 2009 by MOPAS  All right reserved.
+ * Copyright (C) 2009 by MOPAS  All rights reserved.
  * </pre>
  */
 @Service("AdministCodeRecptnService")
