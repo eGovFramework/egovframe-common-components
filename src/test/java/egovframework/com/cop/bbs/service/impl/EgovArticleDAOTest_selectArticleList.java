@@ -28,7 +28,7 @@ public class EgovArticleDAOTest_selectArticleList extends EgovTestV1 {
 
 	@Autowired
 	private EgovArticleDAO egovArticleDAO;
-
+	
 	@Autowired
 	@Qualifier("egovBBSMstrIdGnrService")
 	private EgovIdGnrService egovBBSMstrIdGnrService;
@@ -40,9 +40,9 @@ public class EgovArticleDAOTest_selectArticleList extends EgovTestV1 {
 	@Test
 //	@Rollback(true)
 //	@Rollback(false)
-	public void test() {
+	public void test() throws Exception {
 		log.debug("test");
-
+		
 		Board board = testData();
 
 		// given
@@ -70,7 +70,7 @@ public class EgovArticleDAOTest_selectArticleList extends EgovTestV1 {
 			log.debug("getNttId={}", result.getNttId());
 			log.debug("getNttSj={}", result.getNttSj());
 		}
-
+		
 		log.debug("board={}", board);
 		log.debug("getBbsId={}", board.getBbsId());
 		log.debug("getNttId={}", board.getNttId());
@@ -81,7 +81,7 @@ public class EgovArticleDAOTest_selectArticleList extends EgovTestV1 {
 		assertEquals(results.get(0).getBbsId(), board.getBbsId());
 		assertEquals(results.get(0).getNttSj(), board.getNttSj());
 	}
-
+	
 	private Board testData() {
 		log.debug("testData");
 

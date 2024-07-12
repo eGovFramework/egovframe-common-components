@@ -3,7 +3,6 @@ package egovframework.com.cmm.annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-
 /**
  * IncludedInfo 클래스
  * 
@@ -11,7 +10,7 @@ import java.lang.annotation.RetentionPolicy;
  * 컴포넌트의 포함 정보 표현을 위한 annotation 클래스
  * 기본적으로 Controller 클래스에 annotation을 부여하되, 
  * 하나의 Controller에 여러 개의 목록성 url mapping이 제공되는 경우에는
- * 메소드에 annotation을 부여한다. 
+ * 메소드에 annotation을 부여한다.
  * </p>
  * 
  * @author 공통컴포넌트 정진오
@@ -28,6 +27,7 @@ import java.lang.annotation.RetentionPolicy;
  *
  * </pre>
  */
+
 
 @Retention(RetentionPolicy.RUNTIME) 
 public @interface IncludedInfo {

@@ -114,7 +114,7 @@ public class EgovMenuManageController {
 		return "egovframework/com/sym/mnu/mpm/EgovMenuDetailSelectUpdt";
 	}
 
-    /**
+	/**
      * 메뉴목록 리스트조회한다.
      * 
      * @param searchVO ComDefaultVO

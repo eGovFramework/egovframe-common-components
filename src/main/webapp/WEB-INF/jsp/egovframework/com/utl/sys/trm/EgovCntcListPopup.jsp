@@ -79,7 +79,7 @@
 <div class="board">
 	<h1>연계 조회</h1>
 
-<form:form modelAttribute="searchVO" name="frm" id="frm" action="${pageContext.request.contextPath}/utl/sys/trm/getCntcList.do" method="get">
+	<form:form modelAttribute="searchVO" name="frm" id="frm" action="${pageContext.request.contextPath}/utl/sys/trm/getCntcList.do" method="get">
 	<div class="search_box" title="이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다.">
 		<ul>
 			<li>
@@ -93,7 +93,7 @@
 			</li>
 		</ul>
 	</div>
-</form:form>
+	</form:form>
 
 	<table class="board_list">
 		<caption></caption>

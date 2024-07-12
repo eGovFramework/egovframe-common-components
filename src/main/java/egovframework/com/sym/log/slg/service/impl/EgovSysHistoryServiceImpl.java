@@ -79,7 +79,7 @@ public class EgovSysHistoryServiceImpl extends EgovAbstractServiceImpl implement
 		sysHistoryDAO.deleteSysHistory(history);
 	}
 
-    /**
+	/**
      * 시스템 이력정보 목록을 조회한다.
      * 
      * @param history - 시스템 이력정보가 담긴 모델 객체

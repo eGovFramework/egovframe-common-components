@@ -106,9 +106,9 @@ public class EgovIndvdlSchdulManageController {
     	}
 
 		//로그인 객체 선언
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+    	LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-		Map<String, String> hmParam = new HashMap<String, String>();
+    	Map<String, String> hmParam = new HashMap<String, String>();
 
 		hmParam.put("uniqId", loginVO.getUniqId());
 
@@ -138,8 +138,9 @@ public class EgovIndvdlSchdulManageController {
     throws Exception {
 
 		//일정구분 검색 유지
-        model.addAttribute("searchKeyword", commandMap.get("searchKeyword"));
-        model.addAttribute("searchCondition", commandMap.get("searchCondition"));
+		model.addAttribute("searchKeyword", commandMap.get("searchKeyword"));
+		
+		model.addAttribute("searchCondition", commandMap.get("searchCondition"));
 
 		//공통코드 일정종류
 		ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
@@ -379,7 +380,7 @@ public class EgovIndvdlSchdulManageController {
     	commandMap.put("searchMonth", sSearchDate);
     	commandMap.put("searchMode", "MONTH");
 
-        List<EgovMap> resultList = egovIndvdlSchdulManageService.selectIndvdlSchdulManageRetrieve(commandMap);
+    	List<EgovMap> resultList = egovIndvdlSchdulManageService.selectIndvdlSchdulManageRetrieve(commandMap);
         model.addAttribute("resultList", resultList);
 
 		return "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageMonthList";

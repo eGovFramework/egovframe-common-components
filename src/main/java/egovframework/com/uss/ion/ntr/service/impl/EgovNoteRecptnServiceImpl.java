@@ -35,7 +35,7 @@ public class EgovNoteRecptnServiceImpl extends EgovAbstractServiceImpl
     @Resource(name = "noteRecptnDao")
     private NoteRecptnDao dao;
     
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovNoteRecptnServiceImpl.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(EgovNoteRecptnServiceImpl.class);
 
     /**
      * 받은쪽지함관리를(을) 목록을 조회 한다.

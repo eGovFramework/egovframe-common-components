@@ -3,7 +3,7 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="KnoPersonalDAO">
 
-    <resultMap id="KnoPersonalList" type="egovframework.com.dam.per.service.KnoPersonalVO">
+	<resultMap id="KnoPersonalList" type="egovframework.com.dam.per.service.KnoPersonalVO">
         <result property="orgnztNm" column="ORGNZT_NM"/>    
         <result property="knoTypeNm" column="KNWLDG_TY_NM"/>
         <result property="knoId" column="KNWLDG_ID"/>

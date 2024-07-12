@@ -17,9 +17,9 @@ import java.util.List;
 
 public class SynchrnServerVO extends SynchrnServer {
 
-    private static final long serialVersionUID = 1L;
-
-    /**
+	private static final long serialVersionUID = 1L;
+	
+	/**
      * 동기화대상 서버명 조회조건
      */
     private String strSynchrnServerNm;
@@ -132,4 +132,5 @@ public class SynchrnServerVO extends SynchrnServer {
     public void setStrReflctAt(String strReflctAt) {
         this.strReflctAt = strReflctAt;
     }
+
 }

@@ -77,7 +77,7 @@ public class EgovBackupOpertServiceImpl extends EgovAbstractServiceImpl implemen
 		return backupOpertDao.selectBackupOpert(backupOpert);
 	}
 
-    /**
+	/**
      * 백업작업의 목록을 조회 한다.
      * 
      * @return 백업작업목록

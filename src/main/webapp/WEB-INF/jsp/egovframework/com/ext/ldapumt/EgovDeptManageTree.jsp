@@ -143,9 +143,9 @@
 					} else {
 						url="<c:url value='/ext/ldapumt/dpt/createUserNode.do' />";
 					}
-						
 					$.get(url, { 'dn' : data.node.parent, 'text' : data.node.text })
 						.done(function (d) {
+							d = getDataBody(d);
 							data.instance.set_id(data.node, d.id);
 						})
 						.fail(function () {
@@ -163,12 +163,12 @@
 				           type: "GET",
 				           url: url+"?id="+data.node.id+"&text="+data.text,
 				           data: $("#form1").serialize(),
-				           success: function(data)
+				           success: function(result)
 				           {
 				        	   
 				           }
 				         });
-					
+					data.instance.refresh();
 				})
 				.on('move_node.jstree', function (e, data) {
 					$.get('<c:url value="/ext/ldapumt/dpt/moveOrgNode.do" />', { 'id' : data.node.id, 'parent' : data.parent })
@@ -205,9 +205,9 @@
 							url = "<c:url value='/ext/ldapumt/dpt/getUserManage.do' />";
 							htmlfile = "<c:url value='/html/egovframework/com/ext/ldapumt/user_html.jsp' />";
 						}
-
+						if ( dn == "j1_1" ) return;
 						$.get(url+"?dn="+dn, function (d) {
-							
+							d = getDataBody(d);
 							 $("#data .default").load(htmlfile, function() {
 									$.each($("input"), function(i,v) {
 									    $(v).val(d[v.name]);
@@ -216,34 +216,43 @@
 
 						});
 						
-						
-						
 					} else {
 						$('#data .content').hide();
 						$('#data .default').html('Select a file from the tree.').show();
 					}
 				});
 		});
-		
-			function modifyOrgManage(str){
-				var url="";
-				if(str=='dept') {
-					url = '<c:url value="/ext/ldapumt/dpt/modifyDeptManage.do" />';
-				} else {
-					url = '<c:url value="/ext/ldapumt/dpt/modifyUserManage.do" />';					
-				}
 
-				$.ajax({
-			           type: "POST",
-			           url: url,
-			           data: $("#form1").serialize(),
-			           success: function(data)
-			           {
-			        	   
-			           }
-			         });
-				return;
+		function getDataBody(data) {
+			var body;
+			if ( typeof data.deptManage != "undefined" ) {
+				body = data.deptManage
 			}
+			if ( typeof data.userManage != "undefined" ) {
+				body = data.userManage
+			}
+			return body;
+		}
+
+		function modifyOrgManage(str){
+			var url="";
+			if(str=='dept') {
+				url = '<c:url value="/ext/ldapumt/dpt/modifyDeptManage.do" />';
+			} else {
+				url = '<c:url value="/ext/ldapumt/dpt/modifyUserManage.do" />';					
+			}
+
+			$.ajax({
+		           type: "POST",
+		           url: url,
+		           data: $("#form1").serialize(),
+		           success: function(data)
+		           {
+		        	   
+		           }
+		         });
+			return;
+		}
 		
 		</script>
 	</body>

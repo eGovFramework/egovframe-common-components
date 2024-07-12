@@ -31,7 +31,7 @@ import egovframework.com.utl.sys.pxy.service.ProxySvcVO;
 @Service("egovProxySvcService")
 public class EgovProxySvcServiceImpl extends EgovAbstractServiceImpl implements EgovProxySvcService {
 
-    // 파일구분자
+	// 파일구분자
     static final char FILE_SEPARATOR = File.separatorChar;
 
     /** ID Generation */

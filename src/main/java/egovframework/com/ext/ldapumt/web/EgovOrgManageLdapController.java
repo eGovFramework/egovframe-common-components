@@ -100,7 +100,7 @@ public class EgovOrgManageLdapController {
 	 */
 	@RequestMapping(value = "/ext/ldapumt/dpt/createNode.do")
 	public ModelAndView createDeptManage(@RequestParam("dn") String parentDn, @RequestParam("text") String ou, ModelMap model) throws Exception {
-		Map<String, Object> map = orgManageLdapService.insertDeptManage(parentDn, ou);
+		Map<Object, Object> map = orgManageLdapService.insertDeptManage(parentDn, ou);
 
 		model.addAttribute("deptManage", map);
 
@@ -119,7 +119,7 @@ public class EgovOrgManageLdapController {
 	 */
 	@RequestMapping(value = "/ext/ldapumt/dpt/createUserNode.do")
 	public ModelAndView createUserManage(@RequestParam("dn") String parentDn, @RequestParam("text") String cn, ModelMap model) throws Exception {
-		Map<String, Object> map = orgManageLdapService.insertUserManage(parentDn, cn);
+		Map<Object, Object> map = orgManageLdapService.insertUserManage(parentDn, cn);
 
 		model.addAttribute("deptManage", map);
 

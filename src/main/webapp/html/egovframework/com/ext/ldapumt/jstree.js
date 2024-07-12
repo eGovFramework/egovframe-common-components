@@ -1162,7 +1162,7 @@
 								var type = x.getResponseHeader('Content-Type');
 								if(type.indexOf('json') !== -1 || typeof d === "object") {
 									// 전우성 수정
-//									d = d.deptManage;
+									d = d.deptManage;
 									//alert(JSON.stringify(d));
 
 									return this._append_json_data(obj, d, function (status) { callback.call(this, status); });

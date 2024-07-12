@@ -49,87 +49,87 @@ public class EgovIndvdlYrycManageController {
     @Autowired
 	 private DefaultBeanValidator beanValidator;
 
-     /**
-      * 개인연차관리정보를 관리하기 위해 등록된 개인연차관리 목록을 조회한다.
-      *
-      * @param IndvdlYrycManage - 개인연차관리 VO
-      * @return String - 리턴 Url
-      */
-     @IncludedInfo(name = "개인연차관리", order = 902, gid = 50)
-     @RequestMapping(value = "/uss/ion/yrc/EgovIndvdlYrycManageList.do")
-     public String selectIndvdlYrycManageList(IndvdlYrycManage indvdlYrycManage, ModelMap model) throws Exception {
+    /**
+     * 개인연차관리정보를 관리하기 위해 등록된 개인연차관리 목록을 조회한다.
+     *
+     * @param IndvdlYrycManage - 개인연차관리 VO
+     * @return String - 리턴 Url
+     */
+    @IncludedInfo(name = "개인연차관리", order = 902, gid = 50)
+    @RequestMapping(value = "/uss/ion/yrc/EgovIndvdlYrycManageList.do")
+    public String selectIndvdlYrycManageList(IndvdlYrycManage indvdlYrycManage, ModelMap model) throws Exception {
 
-         LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-         if (user == null) {
-             return "redirect:/uat/uia/egovLoginUsr.do";
-         }
+        LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+        if (user == null) {
+            return "redirect:/uat/uia/egovLoginUsr.do";
+        }
 
-         indvdlYrycManage.setMberId(user.getUniqId());
+        indvdlYrycManage.setMberId(user.getUniqId());
 
-         List<IndvdlYrycManage> resultList = egovIndvdlYrycManageService.selectIndvdlYrycManageList(indvdlYrycManage);
-         model.addAttribute("resultList", resultList);
+        List<IndvdlYrycManage> resultList = egovIndvdlYrycManageService.selectIndvdlYrycManageList(indvdlYrycManage);
+        model.addAttribute("resultList", resultList);
 
-         return "egovframework/com/uss/ion/yrc/EgovIndvdlYrycManageList";
-     }
+        return "egovframework/com/uss/ion/yrc/EgovIndvdlYrycManageList";
+    }
 
-     /**
-      * 개인별연차관리 등록 화면으로 이동한다.
-      *
-      * @param indvdlYrycManage - 연차관리 model
-      * @return String - 리턴 Url
-      */
-     @RequestMapping(value = "/uss/ion/yrc/EgovIndvdlYrycRegist.do", method = RequestMethod.GET)
-     public String insertViewIndvdlYrycManage(@ModelAttribute IndvdlYrycManage indvdlYrycManage, ModelMap model) throws Exception {
+    /**
+     * 개인별연차관리 등록 화면으로 이동한다.
+     *
+     * @param indvdlYrycManage - 연차관리 model
+     * @return String - 리턴 Url
+     */
+    @RequestMapping(value = "/uss/ion/yrc/EgovIndvdlYrycRegist.do", method = RequestMethod.GET)
+    public String insertViewIndvdlYrycManage(@ModelAttribute IndvdlYrycManage indvdlYrycManage, ModelMap model) throws Exception {
 
-         LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-         indvdlYrycManage.setMberId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-         indvdlYrycManage.setMberNm(user == null ? "" : EgovStringUtil.isNullToString(user.getName()));
+        LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+        indvdlYrycManage.setMberId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+        indvdlYrycManage.setMberNm(user == null ? "" : EgovStringUtil.isNullToString(user.getName()));
 
-         List<IndvdlYrycManage> resultList = egovIndvdlYrycManageService.selectIndvdlYrycManageList(indvdlYrycManage);
-         indvdlYrycManage.setOccrrncYear(EgovDateUtil.getCurrentYearAsString());
+        List<IndvdlYrycManage> resultList = egovIndvdlYrycManageService.selectIndvdlYrycManageList(indvdlYrycManage);
+        indvdlYrycManage.setOccrrncYear(EgovDateUtil.getCurrentYearAsString());
 
-         int totCnt = egovIndvdlYrycManageService.selectIndvdlYrycManageListTotCnt(indvdlYrycManage);
+        int totCnt = egovIndvdlYrycManageService.selectIndvdlYrycManageListTotCnt(indvdlYrycManage);
 
-         model.addAttribute("resultList", resultList);
-         model.addAttribute("totCnt", totCnt);
+        model.addAttribute("resultList", resultList);
+        model.addAttribute("totCnt", totCnt);
 
-         return "egovframework/com/uss/ion/yrc/EgovIndvdlYrycRegist";
-     }
+        return "egovframework/com/uss/ion/yrc/EgovIndvdlYrycRegist";
+    }
 
-     /**
-      * 개인별연차관리 등록한다.
-      *
-      * @param indvdlYrycManage - 연차관리 model
-      * @return String - 리턴 Url
-      */
-     @RequestMapping(value = "/uss/ion/yrc/EgovIndvdlYrycRegist.do", method = RequestMethod.POST)
-     public String insertIndvdlYrycManage(@ModelAttribute IndvdlYrycManage indvdlYrycManage, BindingResult bindingResult, ModelMap model) throws Exception {
+    /**
+     * 개인별연차관리 등록한다.
+     *
+     * @param indvdlYrycManage - 연차관리 model
+     * @return String - 리턴 Url
+     */
+    @RequestMapping(value = "/uss/ion/yrc/EgovIndvdlYrycRegist.do", method = RequestMethod.POST)
+    public String insertIndvdlYrycManage(@ModelAttribute IndvdlYrycManage indvdlYrycManage, BindingResult bindingResult, ModelMap model) throws Exception {
 
-         beanValidator.validate(indvdlYrycManage, bindingResult); // validation 수행
+        beanValidator.validate(indvdlYrycManage, bindingResult); // validation 수행
 
-         if (bindingResult.hasErrors()) {
-             model.addAttribute("indvdlYrycManage", indvdlYrycManage);
-             return "egovframework/com/uss/ion/yrc/EgovIndvdlYrycRegist";
-         } else {
-             LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-             indvdlYrycManage.setMberId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
-             indvdlYrycManage.setRemndrYrycCo(indvdlYrycManage.getOccrncYrycCo() - indvdlYrycManage.getUseYrycCo());
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("indvdlYrycManage", indvdlYrycManage);
+            return "egovframework/com/uss/ion/yrc/EgovIndvdlYrycRegist";
+        } else {
+            LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+            indvdlYrycManage.setMberId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
+            indvdlYrycManage.setRemndrYrycCo(indvdlYrycManage.getOccrncYrycCo() - indvdlYrycManage.getUseYrycCo());
 
-             int totCnt = egovIndvdlYrycManageService.selectIndvdlYrycManageListTotCnt(indvdlYrycManage);
+            int totCnt = egovIndvdlYrycManageService.selectIndvdlYrycManageListTotCnt(indvdlYrycManage);
 
-             if (totCnt >= 1) {
-                 egovIndvdlYrycManageService.updtIndvdlYrycManage(indvdlYrycManage);
-             } else {
-                 egovIndvdlYrycManageService.insertIndvdlYrycManage(indvdlYrycManage);
-             }
+            if (totCnt >= 1) {
+                egovIndvdlYrycManageService.updtIndvdlYrycManage(indvdlYrycManage);
+            } else {
+                egovIndvdlYrycManageService.insertIndvdlYrycManage(indvdlYrycManage);
+            }
 
-             List<IndvdlYrycManage> resultList = egovIndvdlYrycManageService.selectIndvdlYrycManageList(indvdlYrycManage);
-             model.addAttribute("resultList", resultList);
-             model.addAttribute("totCnt", totCnt);
+            List<IndvdlYrycManage> resultList = egovIndvdlYrycManageService.selectIndvdlYrycManageList(indvdlYrycManage);
+            model.addAttribute("resultList", resultList);
+            model.addAttribute("totCnt", totCnt);
 
-             return "egovframework/com/uss/ion/yrc/EgovIndvdlYrycManageList";
-         }
-     }
+            return "egovframework/com/uss/ion/yrc/EgovIndvdlYrycManageList";
+        }
+    }
 
 	/**
 	 * 개인별연차관리 삭제한다.

@@ -148,7 +148,7 @@
 					<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/>
 				</ul>
 			</div>
-            <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
+			<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 		</form>
 		</div>
 

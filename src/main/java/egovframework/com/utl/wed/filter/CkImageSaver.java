@@ -38,7 +38,6 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import egovframework.com.cmm.EgovWebUtil;
-import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import org.egovframe.rte.fdl.cryptography.EgovEnvCryptoService;
 

@@ -1,4 +1,4 @@
-# 표준프레임워크 공통컴포넌트 4.1.0
+# 표준프레임워크 공통컴포넌트 4.2.0
 
 ![java](https://img.shields.io/badge/java-007396?style=for-the-badge&logo=JAVA&logoColor=white)
 ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)

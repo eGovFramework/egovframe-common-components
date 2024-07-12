@@ -103,7 +103,7 @@ public class EgovKnoPersonalController {
 			@ModelAttribute("searchVO") KnoPersonalVO searchVO
 			, ModelMap model
 			) throws Exception {
-        LOGGER.debug("searchVO={}", searchVO);
+    	LOGGER.debug("searchVO={}", searchVO);
 		//Spring Security 사용자권한 처리
 	    Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 	    if (!isAuthenticated) {
@@ -167,11 +167,11 @@ public class EgovKnoPersonalController {
 			KnoPersonal knoPersonal
 			, ModelMap model
 			) throws Exception {
-        insertKnoPersonalView(model);
+		insertKnoPersonalView(model);
 		return "egovframework/com/dam/per/EgovComDamPersonalRegist";
 	}
-
-    /**
+	
+	/**
      * 개인지식 정보를 등록폼. 초기값
      * 
      * @param model
@@ -191,7 +191,7 @@ public class EgovKnoPersonalController {
         List<MapMaterialVO> mapMaterialList = mapMaterialService.selectMapMaterialList(mapMaterialVO);
         model.addAttribute("mapMaterialList", mapMaterialList);
     }
-	
+
 	/**
 	 * 개인지식 정보를 신규로 등록한다.
 	 * @param KnoNm - 개인지식정보 model
@@ -220,7 +220,7 @@ public class EgovKnoPersonalController {
 
 		beanValidator.validate(knoPersonal, bindingResult);
 		if (bindingResult.hasErrors()){
-            insertKnoPersonalView(model);
+			insertKnoPersonalView(model);
 			return sLocationUrl;
 		}
 
@@ -258,11 +258,11 @@ public class EgovKnoPersonalController {
 	public String updateKnoPersonalView(KnoPersonal knoPersonal
 			, ModelMap model
 			) throws Exception {
-        updateKnoPersonalViewInit(knoPersonal, model);
+		updateKnoPersonalViewInit(knoPersonal, model);
 		return "egovframework/com/dam/per/EgovComDamPersonalModify";
 	}
-
-    /**
+	
+	/**
      * 기 등록 된 개인지식 정보를 수정폼. 초기값
      * 
      * @param knoPersonal
@@ -321,7 +321,6 @@ public class EgovKnoPersonalController {
 		****************************************************************** */
 		String _atchFileId = knoPersonal.getAtchFileId();
 
-
 		//final Map<String, MultipartFile> files = multiRequest.getFileMap();
 		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
@@ -342,7 +341,7 @@ public class EgovKnoPersonalController {
 				fileMngService.updateFileInfs(_result);
 			}
 		}
-
+		
 		//저장
 		knoPersonalService.updateKnoPersonal(knoPersonal);
         sLocationUrl = "forward:/dam/per/EgovComDamPersonalList.do";

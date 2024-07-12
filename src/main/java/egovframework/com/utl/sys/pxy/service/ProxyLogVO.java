@@ -1,17 +1,16 @@
 package egovframework.com.utl.sys.pxy.service;
 
 /**
- * 개요
- * - 프록시로그정보에 대한 Vo 클래스를 정의한다.
+ * 개요 - 프록시로그정보에 대한 Vo 클래스를 정의한다.
  *
- * 상세내용
- * - 프록시로그정보의 목록 항목, 조회조건, 삭제대상 목록 등을 관리한다.
+ * 상세내용 - 프록시로그정보의 목록 항목, 조회조건, 삭제대상 목록 등을 관리한다.
+ * 
  * @author lee.m.j
  * @version 1.0
  * @created 28-6-2010 오전 10:44:50
  */
 public class ProxyLogVO extends ProxyLog {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
     /**
      * 프록시서비스접속 시작일자 조회조건

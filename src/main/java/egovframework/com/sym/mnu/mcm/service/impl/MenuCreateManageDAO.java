@@ -53,7 +53,7 @@ public class MenuCreateManageDAO extends EgovComAbstractDAO{
 		return (MenuCreatVO)selectOne("menuManageDAO.selectAuthorByUsr", vo);
 	}
 
-    /**
+	/**
      * 메뉴생성관리 내역을 조회
      * 
      * @param vo ComDefaultVO

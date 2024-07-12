@@ -68,6 +68,7 @@
 				 ON B.CODE_ID = 'COM072' 
 				 AND A.HTTP_STTUS_CODE = B.CODE			  
 			WHERE  1 = 1
+				AND A.DELETE_AT = 'N'
 		
 			<if test="searchCondition == 1">AND
 				binary(A.MNGR_NM) LIKE CONCAT('%', #{searchKeyword}, '%')
@@ -86,6 +87,7 @@
 				   ON B.CODE_ID = 'COM072' 
 				   AND A.HTTP_STTUS_CODE = B.CODE		  
 			WHERE  1 = 1
+				AND A.DELETE_AT = 'N'
 		
 			<if test="searchCondition == 1">AND
 				binary(A.MNGR_NM) LIKE CONCAT('%', #{searchKeyword}, '%')
@@ -127,19 +129,21 @@
 			     ,	FRST_REGIST_PNTTM
 		         ,  LAST_UPDUSR_ID			     	         
 		         ,  LAST_UPDT_PNTTM
+		         ,	DELETE_AT
 		         ) 
 		    VALUES  
 		         (  #{sysId}
 		         ,  #{webKind}
 		         ,  #{siteUrl}
 		         ,  #{httpSttusCd}
-		         ,  #{creatDt}		         
+		         ,  sysdate()		         
 		         ,  #{mngrNm}
 		         ,  #{mngrEmailAddr}
 		         ,  #{frstRegisterId}
 		         ,  sysdate()		         		         
 		         ,  #{lastUpdusrId}
 		         ,  sysdate()
+		         ,	'N'
 		         ) 
 		
 	</insert>
@@ -159,8 +163,9 @@
 
 	<delete id="deleteHttpMon">
 		
-            DELETE  FROM COMTNHTTPMON 
-            WHERE   SYS_ID = #{sysId} 
+            UPDATE  COMTNHTTPMON
+			   SET  DELETE_AT		= 'Y'
+			 WHERE  SYS_ID			= #{sysId}
 		
 	</delete>	
 	

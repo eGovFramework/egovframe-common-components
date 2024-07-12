@@ -67,16 +67,15 @@ function fn_egov_regist_cnsltdtls(){
 
 	// 로그인을 할 것인자? 실명확인을 할것인지? 판단 화면
 	var loginRealnm_url 	= "<c:url value='/uss/olp/cns/LoginRealnmChoice.do'/>";
-	var	loginRealnm_status 	= "dialogWidth=350px;dialogHeight=150px;resizable=no;center=yes";
+	var	loginRealnm_status 	= "width=350px, height=150px, resizable=no, center=yes";
 
 	// 로그인 화면
 	var	login_url 		= "<c:url value='/uat/uia/egovLoginUsr.do'/>";
-	var login_status 	= "dialogWidth=700px;dialogHeight=420px;resizable=no;center=yes";
-
+	var login_status 	= "width=700px, height=420px, resizable=no, center=yes";
 
 	// 실명확인 화면
-	var	realnm_url 	= "<c:url value='/sec/rnc/EgovRlnmCnfirm.do?nextUrlName=button.cnsltregist&nextUrl=C'/>";
-	var realnm_status 	= "dialogWidth=740px;dialogHeight=180px;resizable=no;center=yes";
+	var	realnm_url 	= "<c:url value='/uat/uia/egovLoginUsr.do'/>";
+	var realnm_status 	= "width=700px, height=420px, resizable=no, center=yes";
 
 	var	returnValue = false;
 
@@ -87,62 +86,51 @@ function fn_egov_regist_cnsltdtls(){
 	if (certificationAt == "N") {
 
 		// 로그인? 실명확인 여부 화면 호출
-		returnValue = window.showModalDialog(loginRealnm_url, self, loginRealnm_status);
+		var loginRealnmWindow = window.open(loginRealnm_url, "_blank", loginRealnm_status);
+		
+		var checkPopupClosed = setInterval(function() {
+			if(loginRealnmWindow.closed) {
+				clearInterval(checkPopupClosed);
+				returnValue = loginRealnmWindow.returnValue;
+				
+				// 결과값을 받아. 결과를 Submit한다.
+				if(returnValue) {
+					ls_loginRealnmAt = document.CnsltListForm.loginRealnmAt.value;
+					
+					// 로그인처리
+			 		if (ls_loginRealnmAt == "L")		{
 
-		// 결과값을 받아. 결과를 Submit한다.
-	 	if	(returnValue)	{
+						// 로그인 화면 호출
+					    /* 추후 진행 예정..
+			 			returnValue = window.showModalDialog(login_url, self, login_status);
 
-	 		ls_loginRealnmAt = document.CnsltListForm.loginRealnmAt.value;
+			 			returnValue = true;
+						*/
 
-	 		// 로그인처리
-	 		if (ls_loginRealnmAt == "L")		{
+						// 팝업이 아닌 메인 화면으로 처리.
+			 			document.CnsltListForm.action = "<c:url value='/uat/uia/egovLoginUsr.do'/>";
+			 			document.CnsltListForm.submit();
 
-				// 로그인 화면 호출
-			    /* 추후 진행 예정..
-	 			returnValue = window.showModalDialog(login_url, self, login_status);
+			 			returnValue = false;
 
-	 			returnValue = true;
-				*/
-
-				// 팝업이 아닌 메인 화면으로 처리.
-	 			document.CnsltListForm.action = "<c:url value='/uat/uia/egovLoginUsr.do'/>";
-	 			document.CnsltListForm.submit();
-
-
-	 			returnValue = false;
-
-	 		// 실명확인처리
-	 		} else if (ls_loginRealnmAt == "R")	{
-
-				// 실명확인 화면 호출
-	 			returnValue = window.showModalDialog(realnm_url, self, realnm_status);
-
-	 			ls_wrterNm = document.CnsltListForm.realname.value;
-
-	 			document.CnsltListForm.wrterNm.value = ls_wrterNm;
-
-
-
-	 		}  // 로그인처리 혹은 실명확인 경우 end...
-
-
- 			if	(returnValue)	{
-
- 				// 상담등록화면 호출..
- 				fn_egov_regist_cnsltcn();
-
- 			}
-
-
-	 	}	// 결과값을 받아. 결과를 Submit한다. end..
-
+			 		// 실명확인처리
+			 		} else if (ls_loginRealnmAt == "R")	{
+						// 실명확인 화면 호출
+						/* 
+			 			returnValue = window.open(realnm_url, '_blank', realnm_status);
+						 */
+						 
+						 // 팝업이 아닌 메인 화면으로 처리.
+						document.CnsltListForm.action = realnm_url;
+						document.CnsltListForm.submit();
+			 		}  // 로그인처리 혹은 실명확인 경우 end...
+				}	// 결과값을 받아. 결과를 Submit한다. end..
+			}
+		}, 500);
 	} else	{
-
 		// 상담등록화면 호출..
 		fn_egov_regist_cnsltcn();
-
 	}
-
 }
 
 function showModalDialogCallback(returnValue) {
@@ -250,7 +238,7 @@ function fn_egov_inquire_cnsltdetail(cnsltId) {
 <input type="hidden" name="ihidnum" value="">
 <input type="hidden" name="realname" value="">
 <input type="hidden" name ="nextUrlName" value="Q&amp;A 작성">
-<input type="hidden" name ="nextUrl" value="<c:url value='/uss/olh/qna/QnaCnRegistView.do' />">
+<input type="hidden" name ="nextUrl" value=2>
 <input type="hidden" name="certificationAt" value="${certificationAt}">
 <input type="hidden" name="loginRealnmAt" value="">
 <input type="hidden" name="wrterNm" value="">

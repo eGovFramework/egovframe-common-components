@@ -20,6 +20,7 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
+import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
@@ -67,6 +68,9 @@ public class EgovUserManageController {
 	@Resource(name = "propertiesService")
 	protected EgovPropertyService propertiesService;
 
+	@Resource(name = "egovNextUrlWhitelist")
+    protected List<String> nextUrlWhitelist;
+	
 	/** DefaultBeanValidator beanValidator */
 	@Autowired
 	private DefaultBeanValidator beanValidator;
@@ -496,6 +500,41 @@ public class EgovUserManageController {
 		model.addAttribute("userManageVO", userManageVO);
 		model.addAttribute("userSearchVO", userSearchVO);
 		return "egovframework/com/uss/umt/EgovUserPasswordUpdt";
+	}
+
+	/**
+	 * 약관동의 후 화면 이동
+	 * @return 이동할 화면은 화이트리스트로 처리함
+	 * @throws Exception
+	 */
+	@RequestMapping("/uss/umt/EgovRlnmCnfirm.do")
+	public String rlnmCnfirm(Model model, @RequestParam Map<String, Object> commandMap) throws Exception {
+
+		model.addAttribute("ihidnum", (String) commandMap.get("ihidnum")); 					//주민번호
+		model.addAttribute("realname", (String) commandMap.get("realname")); 				//사용자이름
+		model.addAttribute("sbscrbTy", (String) commandMap.get("sbscrbTy")); 					//사용자유형
+		model.addAttribute("nextUrlName", (String) commandMap.get("nextUrlName")); 	//다음단계버튼명(이동할 URL에 따른)
+		Integer linkIndex = Integer.parseInt((String) commandMap.get("nextUrl"));
+		model.addAttribute("nextUrl", linkIndex); 						//다음단계로 이동할 URL
+
+		// 화이트 리스트 처리
+		String link = "";
+		// 화이트 리스트가 비었는지 확인
+		if (nextUrlWhitelist == null || nextUrlWhitelist.isEmpty() || nextUrlWhitelist.size() <= linkIndex) {
+			link="egovframework/com/cmm/egovError";
+			return link;
+		}
+
+		link = nextUrlWhitelist.get(linkIndex);
+		
+		link = link.replace(";", "");
+		link = link.replace("%", "");
+
+		// 안전한 경로 문자열로 조치
+		link = EgovWebUtil.filePathBlackList(link);
+
+		// 실명인증기능 미탑재로 바로 회원가입 페이지로 이동.
+		return "forward:" + link;
 	}
 
 }

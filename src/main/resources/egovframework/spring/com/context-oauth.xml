@@ -6,25 +6,28 @@
 	<!-- GOOGLE OAuth Configuration -->
 	<bean id="googleAuthVO" class="egovframework.com.ext.oauth.service.OAuthVO">
 		<constructor-arg value="google" /><!-- Service Name -->
-		<constructor-arg value="1044767185911-oev6uo5pkro2n5u3se4lragkb9o8ipg7.apps.googleusercontent.com" /><!-- googleClientID -->
-		<constructor-arg value="5qAMYyDD9CkN3f38w0a8zomn" /><!-- googleClientSecret -->
-		<constructor-arg value="http://localhost:8500/auth/google/callback" /><!-- googleRedirectUrl -->
+		<constructor-arg value="googleClientID" /><!-- googleClientID -->
+		<constructor-arg value="googleClientSecret" /><!-- googleClientSecret -->
+		<constructor-arg value="http://localhost:8080/auth/google/callback" /><!-- googleRedirectUrl -->
+		<constructor-arg value="profile email" /><!-- googleScope -->
 	</bean>
 	
 	<!-- NAVER OAuth Configuration -->
 	<bean id="naverAuthVO" class="egovframework.com.ext.oauth.service.OAuthVO">
 		<constructor-arg value="naver" /><!-- Service Name -->
-		<constructor-arg value="2NUTY4QHkWzCuEA3dNJo" /><!-- naverClientID -->
-		<constructor-arg value="I4UqcbjJbW" /><!-- naverClientSecret -->
-		<constructor-arg value="http://127.0.0.1:8500/auth/naver/callback" /><!-- naverRedirectUrl -->
+		<constructor-arg value="naverClientID" /><!-- naverClientID -->
+		<constructor-arg value="naverClientSecret" /><!-- naverClientSecret -->
+		<constructor-arg value="http://127.0.0.1:8080/auth/naver/callback" /><!-- naverRedirectUrl -->
+		<constructor-arg value = "profile" /><!-- naverScope -->
 	</bean>
 	
 	<!-- KAKAO OAuth Configuration -->
 	<bean id="kakaoAuthVO" class="egovframework.com.ext.oauth.service.OAuthVO">
 		<constructor-arg value="kakao" /><!-- Service Name -->
-		<constructor-arg value="8fc0e5fc8b29f5224f7ee2101c6e3547" /><!-- kakaoClientID -->
-		<constructor-arg value="AGxiWEwu2ytIifA1AY2PoqVSrdnRZiao" /><!-- kakaoClientSecret -->
-		<constructor-arg value="http://localhost:8500/auth/kakao/callback" /><!-- kakaoRedirectUrl -->
+		<constructor-arg value="kakaoClientID" /><!-- kakaoClientID -->
+		<constructor-arg value="kakaoClientSecret" /><!-- kakaoClientSecret -->
+		<constructor-arg value="http://localhost:8080/auth/kakao/callback" /><!-- kakaoRedirectUrl -->
+		<constructor-arg value ="profile_nickname account_email" /><!-- kakaoScope -->
 	</bean>
     
 </beans>

@@ -33,6 +33,6 @@
 		<frame src="<c:url value='/sym/mnu/mpm/EgovMainMenuLeft.do' />?vStartP=<c:out value="${resultVO.menuNo}" />" scrolling="no" name="main_left" marginwidth="0" marginheight="0">
 		<frame src="<c:url value='/sym/mnu/mpm/EgovMainMenuRight.do' />?vStartP=<c:out value="${resultVO.menuNo}" />" name="main_right" marginwidth="0" marginheight="0">
 	</frameset>
-	<frame src="<c:url value='/EgovPageLink.do' />?link=/egovframework/com/main_bottom" scrolling="no" name="main_bottom" marginwidth="0" marginheight="0">
+	<frame src="<c:url value='/EgovPageLink.do' />?linkIndex=2" scrolling="no" name="main_bottom" marginwidth="0" marginheight="0">
 </frameset>
 </html>

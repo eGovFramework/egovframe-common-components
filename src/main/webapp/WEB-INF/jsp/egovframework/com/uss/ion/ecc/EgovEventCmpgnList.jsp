@@ -122,7 +122,7 @@ function fn_egov_inquire_eventdetail(eventId) {
 		<td class="left"><a href="<c:url value='/uss/ion/ecc/selectEventCmpgnDetail.do?eventId=${resultInfo.eventId}'/>" onClick="fn_egov_inquire_eventdetail('<c:out value="${resultInfo.eventId}"/>');return false;"><c:out value='${fn:substring(resultInfo.eventCn, 0, 40)}'/></a></td>
 		<td><c:out value='${resultInfo.eventSvcBeginDe}'/></td>
 		<td><c:out value='${resultInfo.eventSvcEndDe}'/></td>
-		<td><c:out value='${resultInfo.frstRegisterPnttm}'/></td>
+		<td><c:out value='${fn:substring(resultInfo.frstRegisterPnttm, 0, 10)}'/></td>
 	</tr>
 	</c:forEach>
 	</tbody>

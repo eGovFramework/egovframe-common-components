@@ -61,7 +61,7 @@ public class TrsmrcvLogDAO extends EgovComAbstractDAO {
 		return (TrsmrcvLog) selectOne("TrsmrcvLogDAO.selectTrsmrcvLog", trsmrcvLog);
 	}
 
-    /**
+	/**
      * 송수신 로그정보 목록을 조회한다.
      *
      * @param TrsmrcvLog

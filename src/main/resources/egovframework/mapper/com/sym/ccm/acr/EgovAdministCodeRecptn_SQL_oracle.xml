@@ -30,17 +30,17 @@
               FROM  COMTCADMINISTCODERECPTNLOG
              WHERE  1 = 1
         
-        <if test="searchCondition == 1">AND
+        <if test='searchCondition == "1"'>AND
         
                     ADMINIST_ZONE_NM     LIKE '%' || #{searchKeyword} || '%'
         
         </if>
-        <if test="searchCondition == 'CodeList'">AND
+        <if test='searchCondition == "CodeList"'>AND
         
                     ADMINIST_ZONE_SE     = #{administZoneSe}
         
         </if>
-        <if test="searchCondition == 'CodeList'">AND
+        <if test='searchCondition == "CodeList"'>AND
         
                     ADMINIST_ZONE_CODE     = #{administZoneCode}
         
@@ -61,17 +61,17 @@
               FROM  COMTCADMINISTCODERECPTNLOG
              WHERE  1 = 1
         
-        <if test="searchCondition == 1">AND
+        <if test='searchCondition == "1"'>AND
         
                     ADMINIST_ZONE_NM     LIKE '%' || #{searchKeyword} || '%'
         
         </if>
-        <if test="searchCondition == 'CodeList'">AND
+        <if test='searchCondition == "CodeList"'>AND
         
                     ADMINIST_ZONE_SE     = #{administZoneSe}
         
         </if>
-        <if test="searchCondition == 'CodeList'">AND
+        <if test='searchCondition == "CodeList"'>AND
         
                     ADMINIST_ZONE_CODE     = #{administZoneCode}
         

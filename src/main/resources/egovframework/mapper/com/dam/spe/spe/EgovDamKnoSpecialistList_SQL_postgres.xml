@@ -3,7 +3,7 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="KnoSpecialistDAO">
 
-    <resultMap id="KnoSpecialistList" type="egovframework.com.dam.spe.spe.service.KnoSpecialistVO">
+	<resultMap id="KnoSpecialistList" type="egovframework.com.dam.spe.spe.service.KnoSpecialistVO">
         <result property="orgnztNm" column="ORGNZT_NM"/>    
         <result property="knoTypeCd" column="KNWLDG_TY_CODE"/>
         <result property="knoTypeNm" column="KNWLDG_TY_NM"/>

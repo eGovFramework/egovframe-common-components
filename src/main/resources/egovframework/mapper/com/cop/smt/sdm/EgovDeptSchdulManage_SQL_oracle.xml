@@ -320,7 +320,7 @@
 	</update>
 	
 	<!-- 부서일정정보::상세보기 -->
-	<select id="selectDeptSchdulManageDetail" resultType="egovMap">
+	<select id="selectDeptSchdulManageDetail" parameterType="egovframework.com.cop.smt.sdm.service.DeptSchdulManageVO" resultType="egovMap">
 		SELECT 
 			A.SCHDUL_ID,
 			A.SCHDUL_SE,

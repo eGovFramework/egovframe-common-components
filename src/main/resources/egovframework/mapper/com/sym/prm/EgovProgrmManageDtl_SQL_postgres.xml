@@ -52,7 +52,7 @@
 
 	<select id="selectProgrmChangeRequstNo_D" parameterType="egovframework.com.sym.prm.service.ProgrmManageDtlVO" resultMap="progrmManageDtl_Temp">
 	
-			select COALESCE(max(REQUST_NO),0)+1 AS rqesterNo
+			select COALESCE(max(REQUST_NO),0)+1 AS REQUST_NO
 			from COMTHPROGRMCHANGEDTLS
 		 
 	</select>

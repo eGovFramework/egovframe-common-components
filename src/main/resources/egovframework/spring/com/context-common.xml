@@ -82,5 +82,10 @@
     <!-- choose one from above and alias it to the name Spring expects -->
     <alias name="local.MultiCommonsMultipartResolver" alias="multipartResolver" />
     <!-- <alias name="spring.RegularCommonsMultipartResolver" alias="multipartResolver" /> -->
+    
+    <!-- custom customProperties -->
+    <bean id="customProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
+        <property name="location" value="classpath:/egovframework/egovProps/globals.properties"/>
+    </bean>
 
 </beans>

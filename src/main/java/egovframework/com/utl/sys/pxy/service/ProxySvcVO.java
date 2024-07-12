@@ -11,7 +11,8 @@ package egovframework.com.utl.sys.pxy.service;
  * @created 28-6-2010 오전 10:44:51
  */
 public class ProxySvcVO extends ProxySvc {
-    private static final long serialVersionUID = 1L;
+
+	private static final long serialVersionUID = 1L;
     /**
      * 프록시 명 조회조건
      */
@@ -49,4 +50,5 @@ public class ProxySvcVO extends ProxySvc {
     public void setStrPreSvcSttus(String strPreSvcSttus) {
         this.strPreSvcSttus = strPreSvcSttus;
     }
+
 }

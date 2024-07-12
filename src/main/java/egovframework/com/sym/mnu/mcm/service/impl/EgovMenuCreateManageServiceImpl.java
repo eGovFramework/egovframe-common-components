@@ -50,7 +50,7 @@ public class EgovMenuCreateManageServiceImpl extends EgovAbstractServiceImpl imp
 		return menuCreateManageDAO.selectUsrByPk(vo);
 	}
 
-    /**
+	/**
      * 메뉴생성 내역을 조회
      * 
      * @param vo MenuCreatVO
@@ -88,7 +88,7 @@ public class EgovMenuCreateManageServiceImpl extends EgovAbstractServiceImpl imp
 		}
 	}
 
-    /**
+	/**
      * 메뉴생성관리 목록을 조회
      * 
      * @param vo ComDefaultVO

@@ -55,8 +55,8 @@ import org.slf4j.LoggerFactory;
 @Controller
 public class EgovKnoManagementController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EgovKnoManagementController.class);
-
+	private static final Logger LOGGER = LoggerFactory.getLogger(EgovKnoManagementController.class);
+	
 	@Resource(name = "KnoManagementService")
     private EgovKnoManagementService knoManagementService;
 
@@ -80,7 +80,7 @@ public class EgovKnoManagementController {
 	 */
     @IncludedInfo(name="지식정보관리", listUrl="/dam/mgm/EgovComDamManagementList.do", order = 1280 ,gid = 80)
 	@RequestMapping(value="/dam/mgm/EgovComDamManagementList.do")
-	public String selectKnoManagementList(@ModelAttribute("searchVO") KnoManagementVO searchVO
+    public String selectKnoManagementList(@ModelAttribute("searchVO") KnoManagementVO searchVO
 			, ModelMap model
 			) throws Exception {
 
@@ -128,9 +128,9 @@ public class EgovKnoManagementController {
 	        return "redirect:/uat/uia/egovLoginUsr.do";
 	    }
         // 로그인 객체 선언
-        LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+	    LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-        knoManagement.setEmplyrId(loginVO.getUniqId());
+	    knoManagement.setEmplyrId(loginVO.getUniqId());
 
 		KnoManagement result = knoManagementService.selectKnoManagement(knoManagement);
 		model.addAttribute("result", result);
@@ -157,15 +157,16 @@ public class EgovKnoManagementController {
 	    }
 
 		//로그인 객체 선언
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+	    LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
         if (loginVO != null) {
             knoManagement.setEmplyrId(loginVO.getUniqId());
         }
         updateKnoManagementViewInit(knoManagement, model);
+
 		return "egovframework/com/dam/mgm/EgovComDamManagementModify";
 	}
 
-    /**
+	/**
      * 기 등록 된 지식정보 정보를 수정 한다. 초기값
      * 
      * @param knoManagement
@@ -215,6 +216,6 @@ public class EgovKnoManagementController {
 
         knoManagementService.updateKnoManagement(knoManagement);
         return "forward:/dam/mgm/EgovComDamManagementList.do";
-    }
+	}
 
 }

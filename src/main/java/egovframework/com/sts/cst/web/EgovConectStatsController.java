@@ -91,7 +91,7 @@ public class EgovConectStatsController {
 				model.addAttribute("conectStats", conectStats);
 				model.addAttribute("statsInfo", statsVO);
 			}
-            if (GenericValidator.isDate(statsVO.getFromDate(), "yyyyMMdd", true)) {
+			if (GenericValidator.isDate(statsVO.getFromDate(), "yyyyMMdd", true)) {
                 model.addAttribute("fDate", (LocalDate.parse(statsVO.getFromDate(), DateTimeFormatter.BASIC_ISO_DATE).format(DateTimeFormatter.ISO_LOCAL_DATE)));
             }
             if (GenericValidator.isDate(statsVO.getToDate(), "yyyyMMdd", true)) {

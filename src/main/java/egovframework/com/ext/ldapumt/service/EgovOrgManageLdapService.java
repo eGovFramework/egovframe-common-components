@@ -35,6 +35,8 @@ import java.util.Map;
 *   수정일      수정자           수정내용
 *  -------    --------    ---------------------------
 *   2014.10.12  전우성          최초 생성
+*   2023.08.10  신용호          LDAP 오류 수정
+
 *
 * </pre>
 */
@@ -47,7 +49,7 @@ public interface EgovOrgManageLdapService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Map<String, Object> selectDeptManageSubList(String dn) throws Exception;
+	public Map<Object, Object> selectDeptManageSubList(String dn) throws Exception;
 
 	/**
 	 * 하위부서의 목록 조회
@@ -78,7 +80,7 @@ public interface EgovOrgManageLdapService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Map<String, Object> insertDeptManage(String parentDn, String ou) throws Exception;
+	public Map<Object, Object> insertDeptManage(String parentDn, String ou) throws Exception;
 	
 	/**
 	 * 신규 사용자를 등록 
@@ -87,7 +89,7 @@ public interface EgovOrgManageLdapService {
 	 * @return
 	 * @throws Exception
 	 */
-	public Map<String, Object> insertUserManage(String parentDn, String cn) throws Exception;
+	public Map<Object, Object> insertUserManage(String parentDn, String cn) throws Exception;
 
 	/**
 	 * 부서 정보 삭제  
@@ -121,14 +123,14 @@ public interface EgovOrgManageLdapService {
 	 * @param dn 부서의 DN
 	 * @return
 	 */
-	public Map<String, Object> selectDeptManage(String dn);
+	public Map<Object, Object> selectDeptManage(String dn);
 
 	/**
 	 * 등록된 사용자의 상세정보를 조회한다.
 	 * @param dn 사용자의 DN
 	 * @return
 	 */
-	public Map<String, Object> selectUserManage(String dn);
+	public Map<Object, Object> selectUserManage(String dn);
 
 	/**
 	 * 등록된 부서의 정보를 수정한다.

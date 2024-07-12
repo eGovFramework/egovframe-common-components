@@ -30,6 +30,7 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olp.qmc.service.EgovQustnrManageService;
 import egovframework.com.uss.olp.qmc.service.QustnrManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+
 /**
  * 설문관리를 처리하는 Controller Class 구현
  * @author 공통서비스 장동한
@@ -170,7 +171,7 @@ public class EgovQustnrManageController {
 		return "egovframework/com/uss/olp/qmc/EgovQustnrManageList";
 	}
 
-    /**
+	/**
      * 설문관리 목록을 상세조회 조회한다.
      *
      * @param searchVO

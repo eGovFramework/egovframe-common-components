@@ -40,7 +40,7 @@ public class EgovProcessMonServiceImpl extends EgovAbstractServiceImpl implement
 	@Resource(name="egovProcessMonLogIdGnrService")
 	private EgovIdGnrService idgenServiceProcessMonLog;
 
-    /**
+	/**
      * 등록된 PROCESS모니터링 목록을 조회한다.
      *
      * @param processMonVO - PROCESS모니터링 Vo

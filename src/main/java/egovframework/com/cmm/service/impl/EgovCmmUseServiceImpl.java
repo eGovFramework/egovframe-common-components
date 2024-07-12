@@ -60,7 +60,7 @@ public class EgovCmmUseServiceImpl extends EgovAbstractServiceImpl implements Eg
 
 		Iterator<ComDefaultCodeVO> iter = voList.iterator();
 		while (iter.hasNext()) {
-		    vo = iter.next();
+			vo = iter.next();
 		    map.put(vo.getCodeId(), cmmUseDAO.selectCmmCodeDetail(vo));
 		}
 

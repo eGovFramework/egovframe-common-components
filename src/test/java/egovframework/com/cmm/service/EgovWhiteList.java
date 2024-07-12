@@ -22,23 +22,23 @@ public class EgovWhiteList {
 	public static final String RELATIVE_PATH_PREFIX = EgovProperties.RELATIVE_PATH_PREFIX;
 
 	public static boolean checkNew(String keyword) {
-		
+
 		String fName = EgovProperties.getProperty("Globals.linkWhitelistFile");
 		if ( fName == null || "".equals(fName) ) {
 			throw new RuntimeException("Globals.linkWhitelistFile is not defined!");
 		}
 		return checkNew(keyword, fName);
 	}
-	
+
 	public static boolean checkNew(String keyword, String whiteListFile) {
-		
+
 		String filePath = RELATIVE_PATH_PREFIX+"egovProps"+FILE_SEPARATOR+whiteListFile;
 
 		List<String> whiteList = loadWhiteListNew(EgovWebUtil.filePathBlackList(filePath));
 		if ( whiteList == null ) return false;
-		
+
 		for (String whiteListData : whiteList) {
-			
+
 			if ( whiteListData != null ) {
 				if ( !whiteListData.trim().equals("") ) {
 					if ("#".equals(whiteListData.substring(0,1))) {
@@ -49,10 +49,10 @@ public class EgovWhiteList {
 				}
 			}
 		}
-		
+
 		return false;
 	}
-
+	
 	public static boolean check(String keyword) {
 		
 		String fName = EgovProperties.getProperty("Globals.linkWhitelistFile");

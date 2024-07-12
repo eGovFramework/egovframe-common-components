@@ -23,7 +23,7 @@
             	CNTC_MSSAGE_NM LIKE '%' || #{searchKeyword} || '%'
            	
         </if>
-        <if test="searchCondition == 'CodeList'">AND
+        <if test='searchCondition == "CodeList"'>AND
             1 = 1
         </if>
         /* 구현 Sql */
@@ -46,7 +46,7 @@
             	CNTC_MSSAGE_NM LIKE '%' || #{searchKeyword} || '%'
            	
         </if>
-        <if test="searchCondition == 'CodeList'">AND
+        <if test='searchCondition == "CodeList"'>AND
             1 = 1
         </if>
     </select>
@@ -73,7 +73,7 @@
             	IEM_NM LIKE '%' || #{searchKeyword} || '%'
            	
         </if>
-        <if test="searchCondition == 'CodeList'">AND
+        <if test='searchCondition == "CodeList"'>AND
             
             	CNTC_MSSAGE_ID = #{cntcMessageId}
            	
@@ -99,7 +99,7 @@
             	IEM_NM LIKE '%' || #{searchKeyword} || '%'
            	
         </if>
-        <if test="searchCondition == 'CodeList'">AND
+        <if test='searchCondition == "CodeList"'>AND
             
             	IEM_ID = #{itemId}
            	

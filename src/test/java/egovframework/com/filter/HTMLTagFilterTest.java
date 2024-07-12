@@ -35,7 +35,7 @@ import egovframework.com.cmm.filter.HTMLTagFilterRequestWrapper;
  * @author Sebastien Deleuze
  */
 public class HTMLTagFilterTest {
-
+	
 	protected Logger egovLogger = LoggerFactory.getLogger(HTMLTagFilterTest.class);
 
 	HTMLTagFilter filter = new HTMLTagFilter();

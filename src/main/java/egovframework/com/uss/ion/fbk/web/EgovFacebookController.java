@@ -19,12 +19,6 @@
  */
 package egovframework.com.uss.ion.fbk.web;
 
-import javax.inject.Inject;
-
-import org.springframework.social.connect.Connection;
-import org.springframework.social.connect.ConnectionRepository;
-import org.springframework.social.facebook.api.Facebook;
-import org.springframework.social.facebook.api.User;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -51,45 +45,24 @@ import egovframework.com.cmm.annotation.IncludedInfo;
  */
 @Controller
 public class EgovFacebookController {
-
-	private final Facebook facebook;
-
-	@Inject
-	public EgovFacebookController(Facebook facebook) {
-		this.facebook = facebook;
-	}
-
-	@Inject
-	private ConnectionRepository connectionRepository;
-
+	
 	/**
-	 * facebook 연동을 위한 목록을 보여준다.
+	 * facebook 로그인 버튼을 보여준 후, 로그인이 완료되면 연동을 위한 목록을 보여준다.
 	 * @return String - 리턴 Url
 	 */
 	@IncludedInfo(name="Facebook 연동",order = 831 ,gid = 50)
-	@RequestMapping(value = "/uss/ion/fbk/facebook.do", method = RequestMethod.GET)
+	@RequestMapping(value = "/uss/ion/fbk/EgovFacebookSignin.do", method = RequestMethod.GET)
 	public String home() {
-		return "egovframework/com/uss/ion/fbk/EgovFacebookHome";
+		return "egovframework/com/uss/ion/fbk/EgovFacebookSignin";
 	}
 
 	/**
 	 * facebook 담벼락 목록을 보여준다.
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value="/uss/ion/fbk/feed.do", method=RequestMethod.GET)
-	public String showFeed(Model model) {
-		model.addAttribute("feed", facebook.feedOperations().getFeed());
-		return "egovframework/com/uss/ion/fbk/EgovFacebookFeed";
-	}
-
-	/**
-	 * facebook 담벼락 내용을 입력한다.
-	 * @return String - 리턴 Url
-	 */
 	@RequestMapping(value="/uss/ion/fbk/feed.do", method=RequestMethod.POST)
-	public String postUpdate(String message) {
-		facebook.feedOperations().updateStatus(message);
-		return "redirect:/uss/ion/fbk/feed.do";
+	public String showFeed() {
+		return "egovframework/com/uss/ion/fbk/EgovFacebookFeed";
 	}
 
 	/**
@@ -98,18 +71,16 @@ public class EgovFacebookController {
 	 */
 	@RequestMapping(value="/uss/ion/fbk/albums.do", method=RequestMethod.GET)
 	public String showAlbums(Model model) {
-		model.addAttribute("albums", facebook.mediaOperations().getAlbums());
 		return "egovframework/com/uss/ion/fbk/EgovFacebookAlbums";
 	}
 
 	/**
-	 * facebook 앨범을 보여준다.
+	 * facebook 앨범 내용을 보여준다.
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value="/uss/ion/fbk/album/{albumId}", method=RequestMethod.GET)
 	public String showAlbum(@PathVariable("albumId") String albumId, Model model) {
-		model.addAttribute("album", facebook.mediaOperations().getAlbum(albumId));
-		model.addAttribute("photos", facebook.mediaOperations().getPhotos(albumId));
+		model.addAttribute("albumId", albumId);
 		return "egovframework/com/uss/ion/fbk/EgovFacebookAlbum";
 	}
 
@@ -119,14 +90,6 @@ public class EgovFacebookController {
 	 */
 	@RequestMapping(value="/uss/ion/fbk/profile.do", method=RequestMethod.GET)
 	public String profile(Model model) {
-		Connection<Facebook> connection = connectionRepository.findPrimaryConnection(Facebook.class);
-		if (connection == null) {
-			return "redirect:/connect/facebook";
-		}
-		//model.addAttribute("profile", connection.getApi().userOperations().getUserProfile());
-		String [] fields = { "id", "email",  "first_name", "last_name" };
-		User userProfile = facebook.fetchObject("me", User.class, fields);
-		model.addAttribute("profile", userProfile);
 		return "egovframework/com/uss/ion/fbk/EgovFacebookProfile";
 	}
 

@@ -1,33 +1,31 @@
 package egovframework.com.sym.ccm.acr.service.impl;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.text.SimpleDateFormat;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
-import java.util.Locale;
 
-import egovframework.com.cmm.LoginVO;
-import egovframework.com.cmm.service.EgovProperties;
-import egovframework.com.cmm.service.FileSystemUtils;
-import egovframework.com.cmm.util.EgovResourceCloseHelper;
-import egovframework.com.cmm.util.EgovUserDetailsHelper;
-import egovframework.com.sym.ccm.acr.service.AdministCodeRecptn;
-import egovframework.com.sym.ccm.acr.service.AdministCodeRecptnVO;
-import egovframework.com.sym.ccm.acr.service.EgovAdministCodeRecptnService;
+import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
-
-import javax.annotation.Resource;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
+
+import egovframework.com.cmm.service.EgovProperties;
+import egovframework.com.sym.ccm.acr.service.AdministCodeRecptn;
+import egovframework.com.sym.ccm.acr.service.AdministCodeRecptnVO;
+import egovframework.com.sym.ccm.acr.service.EgovAdministCodeRecptnService;
 
 /**
  *
@@ -46,15 +44,13 @@ import org.springframework.stereotype.Service;
  *   2011.10.07  이기하          finally문을 추가하여 에러시 자원반환할 수 있도록 추가
  *   2017.02.08	 이정은          시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
  *   2022.11.11  김혜준          시큐어코딩 처리
+ *   2023.08.10  정진오          법정동코드수신 방식 수정(공공데이터포털 이용)
  *
  * Copyright (C) 2009 by MOPAS  All right reserved.
  * </pre>
  */
 @Service("AdministCodeRecptnService")
 public class EgovAdministCodeRecptnServiceImpl extends EgovAbstractServiceImpl implements EgovAdministCodeRecptnService {
-
-	/** log */
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovAdministCodeRecptnServiceImpl.class);
 
 	@Resource(name = "AdministCodeRecptnDAO")
 	private AdministCodeRecptnDAO administCodeRecptnDAO;
@@ -67,337 +63,173 @@ public class EgovAdministCodeRecptnServiceImpl extends EgovAbstractServiceImpl i
 	 * 법정동코드수신을 처리한다.
 	 */
 	public void insertAdministCodeRecptn() throws Exception {
-		SimpleDateFormat sDate = new SimpleDateFormat("yyyyMMddHHmm", Locale.getDefault());
-		String strdate = sDate.format(new java.util.Date());
+		List<HashMap<String, String>> list = apiLink();
+		for(int i = 0; i < list.size(); i++) {
+			HashMap<String, String> row = list.get(i);
+			AdministCodeRecptn administCodeRecptn = new AdministCodeRecptn();
+			administCodeRecptn.setOccrrDe(ObjectUtils.isEmpty(row.get("adptDe")) ? "20000101" : row.get("adptDe")); // 날짜 >> adpt_de 생성일 x 20000101
+			administCodeRecptn.setAdministZoneSe("1"); // 행정구역부분 1 법정동 2 행정동
+			administCodeRecptn.setAdministZoneCode(row.get("regionCd")); // 행정구역코드 >> region_cd
+			administCodeRecptn.setOpertSn(idgenService.getNextIntegerId()); // 작업일련번호 >> idgenService.getNextIntegerId()
+			administCodeRecptn.setChangeSeCode("01"); // 변경구분코드 01 코드생성 02 코드변경 03 코드말소 >> 01 / 02
+			administCodeRecptn.setProcessSe("00"); // 작업구분 00 수신처리 01 처리완료 11 생성오류 12 변경오류 13 말소오류>> 00
+			administCodeRecptn.setAdministZoneNm(row.get("locataddNm")); // 행정구역명 >> locatadd_nm 지역주소명
+			administCodeRecptn.setLowestAdministZoneNm(row.get("locallowNm")); // 최하위행정구역명 >> locallow_nm 최하위지역명
+			administCodeRecptn.setCtprvnCode(row.get("sidoCd")); // 시도코드 >> sido_cd 시도코드
+			administCodeRecptn.setSignguCode(row.get("sggCd")); // 시군구코드 >> sgg_cd 시군구코드
+			administCodeRecptn.setEmdCode(row.get("umdCd")); // 읍면동코드  >> umd_cd 읍면동코드
+			administCodeRecptn.setLiCode(row.get("riCd")); // 리코드 >> ri_cd 리코드
+			administCodeRecptn.setCreatDe(row.get("adptDe")); // 생성일자 >> adpt_de 생성일
+			administCodeRecptn.setAblDe(""); // 폐지일자 >> x
+			administCodeRecptn.setAblEnnc(""); // 폐지유무 >> x
+			administCodeRecptn.setFrstRegisterId("Batch System"); // 등록자 Batch System
+			administCodeRecptn.setLastUpdusrId("Batch System"); // 수정자 Batch System
 
-		String rcvDir = EgovProperties.getProperty("CNTC.INSTTCODE.DIR.rcv");
-		String rcvOldDir = EgovProperties.getProperty("CNTC.INSTTCODE.DIR.rcvold");
-		String binDir = EgovProperties.getProperty("CNTC.INSTTCODE.DIR.bin");
-
-		String rcvListCmd = EgovProperties.getProperty("CNTC.INSTTCODE.CMD.edircv");
-		String rcvMesgCmd = EgovProperties.getProperty("CNTC.INSTTCODE.CMD.edircvmsg");
-
-		String userId = EgovProperties.getProperty("CNTC.INSTTCODE.INFO.userid");
-		String userPw = EgovProperties.getProperty("CNTC.INSTTCODE.INFO.userpw");
-
-		String rcvListName = "unSEENlst";
-		String CODULD = "CODULD"; // DocCode선언
-
-		String rcvListFullCmd = binDir + rcvListCmd;
-		String rcvMesgFullCmd = binDir + rcvMesgCmd;
-		String rcvListFullName = rcvDir + rcvListName + "." + strdate;
-
-		String systemCmdFull = null;
-
-		FileInputStream fin = null;
-		InputStreamReader sin = null;
-		BufferedReader in = null;
-
-		File listFile = null;
-		File dataFile = null;
-
-		File recvOldFile = null;
-
-		InputStream is = null;
-		BufferedReader br = null;
-
-		// 연계목록을 가져온다.
-		try {
-			systemCmdFull = rcvListFullCmd + " " + userId + " " + userPw + " *UNSEEN *ALL*ALL " + rcvListFullName;
-			// 2022.11.11 시큐어코딩 처리
-			FileSystemUtils util = new FileSystemUtils();
-			Process process = util.processOperate("EgovAdministCodeRecptnService", systemCmdFull);
-			is = process.getInputStream();
-			br = new BufferedReader(new InputStreamReader(is));
-			String tmp;
-			String temp = "";
-			//KISA 보안약점 조치 (2018-10-29, 윤창원)
-			while (true) {
-				tmp = br.readLine();
-				if (tmp == null) break;
-				temp += tmp;
+			AdministCodeRecptnVO vo = new AdministCodeRecptnVO();
+			vo.setSearchCondition("CodeList");
+			vo.setAdministZoneSe("1");
+			vo.setAdministZoneCode(row.get("regionCd"));
+			int count = administCodeRecptnDAO.selectAdministCodeRecptnListTotCnt(vo);
+			if (count > 0) {
+				administCodeRecptnDAO.updateAdministCode(administCodeRecptn);
+			} else {
+				administCodeRecptnDAO.insertAdministCodeRecptn(administCodeRecptn);
+				administCodeRecptnDAO.insertAdministCode(administCodeRecptn);
 			}
+		}
+	}
 
-			egovLogger.debug("List command console output : {}", temp);
+	/**
+	 * 법정동코드를 수신하기 위한 요청을 설정한다.
+	 */
+	public static String requestString(int pageNo, int numOfRows) throws IOException {
+		String serviceKey = EgovProperties.getProperty("Globals.data.serviceKey");
+		StringBuilder sb = new StringBuilder();
+		sb.append("https://apis.data.go.kr/1741000/StanReginCd/getStanReginCdList"); /*URL*/
+		sb.append("?" + URLEncoder.encode("serviceKey","UTF-8") + "=" + serviceKey); /*Service Key*/
+		sb.append("&" + URLEncoder.encode("pageNo","UTF-8") + "=" + URLEncoder.encode(Integer.toString(pageNo), "UTF-8")); /*페이지번호*/
+		sb.append("&" + URLEncoder.encode("numOfRows","UTF-8") + "=" + URLEncoder.encode(Integer.toString(numOfRows), "UTF-8")); /*한 페이지 결과 수*/
+		sb.append("&" + URLEncoder.encode("type","UTF-8") + "=" + URLEncoder.encode("JSON", "UTF-8")); /*요청자료형식(XML/JSON) Default: XML*/
+		sb.append("&" + URLEncoder.encode("locatadd_nm","UTF-8") + "=" + URLEncoder.encode("서울특별시", "UTF-8")); /*지역주소명(옵션)*/
+        return sb.toString();
+	}
 
-		} catch (IOException e) {
-			egovLogger.error("IO Exception", e);
-			throw e;
-		} finally {
-			EgovResourceCloseHelper.close(br, is);
+	/**
+	 * 법정동코드 페이지수를 확인한다.
+	 */
+	public static int numberOfRows() throws IOException, ParseException {
+		int pageNo = 1;
+
+		String requestString = requestString(1, 1);
+
+        URL url = new URL(requestString);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+		conn.setRequestMethod("GET");
+		conn.setRequestProperty("Content-Type", "application/json");
+		conn.setRequestProperty("Accept", "*/*;q=0.9");
+		conn.setDoOutput(true);
+		conn.setUseCaches(false);
+
+        BufferedReader br;
+        if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+
+        	br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        	StringBuilder sb = new StringBuilder();
+            String line;
+            while ((line = br.readLine()) != null) {
+                sb.append(line);
+            }
+            br.close();
+
+            JSONParser jsonParser = new JSONParser();
+            JSONObject jsonObject = (JSONObject) jsonParser.parse(sb.toString());
+            JSONArray jsonArray = (JSONArray) jsonObject.get("StanReginCd");
+            JSONObject headObject = (JSONObject) jsonArray.get(0);
+            JSONArray headArray = (JSONArray) headObject.get("head");
+            JSONObject object = (JSONObject) headArray.get(0);
+    		int totalCount = Integer.parseInt(object.get("totalCount").toString());
+    		pageNo = (int) Math.ceil((double) totalCount/1000);
+
+        } else {
+        	System.out.println("##### AdministCodeRecptnService.numberOfRows() Error Code >>> " + conn.getResponseCode());
+        }
+
+        conn.disconnect();
+
+        return pageNo;
+	}
+
+	/**
+	 * 법정동코드를 수신한다.
+	 */
+	public static List<HashMap<String, String>> apiLink() throws IOException, ParseException {
+		List<HashMap<String, String>> administCodeList = new ArrayList<>();
+
+		int pageNo = 1;
+		int numOfRows = 1000;
+
+		pageNo = numberOfRows();
+
+		for (int p = 1; p <= pageNo; p++) {
+
+			String requestString = requestString(p, numOfRows);
+
+			URL url = new URL(requestString);
+			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+			conn.setRequestMethod("GET");
+			conn.setRequestProperty("Content-Type", "application/json");
+			conn.setRequestProperty("Accept", "*/*;q=0.9");
+			conn.setDoOutput(true);
+			conn.setUseCaches(false);
+
+	        BufferedReader br;
+	        if (conn.getResponseCode() >= 200 && conn.getResponseCode() <= 300) {
+
+	        	br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+	        	StringBuilder sb = new StringBuilder();
+	            String line;
+	            while ((line = br.readLine()) != null) {
+	                sb.append(line);
+	            }
+	            br.close();
+
+	            JSONParser jsonParser = new JSONParser();
+	            JSONObject jsonObject = (JSONObject) jsonParser.parse(sb.toString());
+	            JSONArray jsonArray = (JSONArray) jsonObject.get("StanReginCd");
+	            JSONObject bodyObject = (JSONObject) jsonArray.get(1);
+	            JSONArray row = (JSONArray) bodyObject.get("row");
+
+	            for (int r = 0; r < row.size(); r++) {
+	            	JSONObject object = (JSONObject) row.get(r);
+	            	HashMap<String, String> administCode = new HashMap<>();
+	            	administCode.put("regionCd", stringValueOf(object.get("region_cd")));
+	    			administCode.put("sidoCd", stringValueOf(object.get("sido_cd")));
+	    			administCode.put("sggCd", stringValueOf(object.get("sgg_cd")));
+	    			administCode.put("umdCd", stringValueOf(object.get("umd_cd")));
+	    			administCode.put("riCd", stringValueOf(object.get("ri_cd")));
+	    			administCode.put("locatjuminCd", stringValueOf(object.get("locatjumin_cd")));
+	    			administCode.put("locatjijukCd", stringValueOf(object.get("locatjijuk_cd")));
+	    			administCode.put("locataddNm", stringValueOf(object.get("locatadd_nm")));
+	    			administCode.put("locatOrder", stringValueOf(object.get("locat_order")));
+	    			administCode.put("locatRm", stringValueOf(object.get("locat_rm")));
+	    			administCode.put("locathighCd", stringValueOf(object.get("locathigh_cd")));
+	    			administCode.put("locallowNm", stringValueOf(object.get("locallow_nm")));
+	    			administCode.put("adptDe", stringValueOf(object.get("adpt_de")));
+	    			administCodeList.add(administCode);
+	    		}
+
+	        } else {
+	        	System.out.println("##### AdministCodeRecptnService.apiLink() Error Code >>> " + conn.getResponseCode());
+	        }
+
+	        conn.disconnect();
 		}
 
-		// 연계목록을 확인하여 연계파일을 가져온다.
-		try {
-			listFile = new File(rcvListFullName);
+        return administCodeList;
+	}
 
-			if (listFile.exists()) {
-				fin = new FileInputStream(listFile);
-				sin = new InputStreamReader(fin);
-				in = new BufferedReader(sin);
-
-				String readList = null;
-				int listCount = 0;
-
-				// 연계목록을 확인
-				//KISA 보안약점 조치 (2018-10-29, 윤창원)
-				while (true) {
-					readList = in.readLine();
-					if (readList == null) {
-						break;
-					}
-					
-					listCount++;
-
-					if (listCount < 5) {
-						continue;
-					}
-
-					String messageID = null; // messageID
-					String docCode = null; // DocCode
-					String fileID = null; // fileID
-
-					messageID = readList.substring(0, 20);
-					fileID = readList.substring(20, readList.indexOf(" "));
-					docCode = readList.substring(50, 56);
-
-					if (CODULD.equals(docCode)) {
-						// 연계파일을 가져온다.
-						try {
-							systemCmdFull = rcvMesgFullCmd + " " + userId + " " + userPw + " " + messageID + " *ALL*ALL " + rcvDir + fileID;
-							// 2022.11.11 시큐어코딩 처리
-							FileSystemUtils util = new FileSystemUtils();
-							Process process = util.processOperate("EgovAdministCodeRecptnService", systemCmdFull);
-							is = process.getInputStream();
-							br = new BufferedReader(new InputStreamReader(is));
-							String tmp;
-							String temp = "";
-							//KISA 보안약점 조치 (2018-10-29, 윤창원)
-							while (true) {
-								tmp = br.readLine();
-								if (tmp == null) {
-									break;
-								}
-								temp += tmp;
-							}
-	
-							egovLogger.debug("Message command console output : {}", temp);
-							
-						} finally {
-							EgovResourceCloseHelper.close(br, is);
-						}
-					}
-				}
-				
-				EgovResourceCloseHelper.close(in);
-
-				// 연계파일 수신이 완료되면  listFile:=rcvListFullName 파일을 recvOldFileDir 로 이동한다.
-				recvOldFile = new File(rcvOldDir + listFile.getName());
-				if (listFile.isFile()) {
-					if (recvOldFile.getParentFile() != null) {//KISA 보안약점 조치 (2018-10-29, 윤창원)
-						if (recvOldFile.getParentFile().isDirectory()) {
-							//2017.02.08 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-							if(listFile.renameTo(recvOldFile)){
-								LOGGER.debug("[file.renameTo] listFile : File Rename Successs ");
-							}else{							
-								LOGGER.error("[file.renameTo] listFile : File Rename Fail ");
-							}
-						}
-					}
-				} else {
-					// 진행종료
-					processException("recvList filename or rcvold path is not valid!!!");
-				}
-			}
-		} catch (IOException e) {
-			egovLogger.error("IOException", e);
-			throw e;
-		} finally {
-			EgovResourceCloseHelper.close(fin, sin, in);
-		}
-
-		// 수신디렉토리의 모든 연계파일을 확인하여 연계정보를 처리한다.
-		String buf = "";
-		//String buf2[] = null;
-
-		File recvFileDir = new File(rcvDir);
-		File recvFileList[] = recvFileDir.listFiles();
-
-		int fileCount = 0;
-
-		// 2022.11.11 시큐어코딩 처리
-		if (recvFileList != null) {
-
-			do {
-				if (recvFileList[fileCount] == null) {//KISA 보안약점 조치 (2018-10-29, 윤창원)
-					fileCount++;
-					continue;
-				}
-				
-				if (recvFileList[fileCount].getName().indexOf(".rec") > -1) {
-					dataFile = new File(recvFileList[fileCount].getPath());
-				} else {
-					fileCount++;
-					continue;
-				}
-	
-				buf += "\n\n++++++++++++++++++++++++++++++++++++++++++++++++++++\n";
-	
-				String readData = null;
-	
-				try {
-					if (dataFile.exists()) {
-	
-						fin = new FileInputStream(dataFile);
-						sin = new InputStreamReader(fin);
-						in = new BufferedReader(sin);
-						//KISA 보안약점 조치 (2018-10-29, 윤창원)
-						while (true) {
-							readData = in.readLine();
-							if (readData == null) {
-								break;
-							}
-	
-							AdministCodeRecptn administCodeRecptn = new AdministCodeRecptn();
-	
-							String tokenData[] = readData.split("	", 12);
-							int tokenLength = tokenData.length;
-	
-							String strTmp = null;
-							for (int i = 0; i < tokenLength; i++) {
-								strTmp = tokenData[i].trim();
-								tokenData[i] = strTmp;
-							}
-	
-							buf += "\n\n++++++++++++++++++++++++++++++++++++++++++++++++++++\n";
-							buf += "tokenLength" + Integer.toString(tokenLength);
-	
-							if (tokenLength >= 12) {
-								// 마지막 문자 ';' 제거
-								tokenData[tokenLength - 1] = tokenData[tokenLength - 1].replace(";", "").trim();
-	
-								buf += "\n" + "[ F]" + dataFile.getName() // 파일명
-										+ "\n";
-	
-								// 명령 변경구분코드로 변환
-								strTmp = "INS".equals(tokenData[0]) ? "01" : ("UPD".equals(tokenData[0]) ? "02" : ("DEL".equals(tokenData[0]) ? "03" : ""));
-	
-								// 기본셋팅
-								administCodeRecptn.setAdministZoneSe("1"); 								// 행정구역구분 1.법정동; 2.행정동
-	
-								// 실제 연계 항목 Mapping 작업
-								administCodeRecptn.setChangeSeCode(strTmp);							// 명령                	:: 변경구분코드
-								administCodeRecptn.setOccrrDe(tokenData[1]); 							// 날짜                	:: 발생일자
-								administCodeRecptn.setAdministZoneCode(tokenData[2]); 			// 행정구역코드     	:: 행정구역코드
-								administCodeRecptn.setAdministZoneNm(tokenData[7]); 			// 행정구역명        	:: 행정구역명
-								administCodeRecptn.setLowestAdministZoneNm(tokenData[8]); 	// 최하위행정구역명	:: 최하위행정구역명
-								administCodeRecptn.setCtprvnCode(tokenData[3]); 					// 시도코드            	:: 시도코드
-								administCodeRecptn.setSignguCode(tokenData[4]); 					// 시군구코드         	:: 시군구코드
-								administCodeRecptn.setEmdCode(tokenData[5]); 						// 읍면동코드         	:: 읍면동코드
-								administCodeRecptn.setLiCode(tokenData[6]); 							// 리코드               	:: 리코드
-								administCodeRecptn.setCreatDe(tokenData[9]); 							// 생성일자            	:: 생성일자
-								administCodeRecptn.setAblDe(tokenData[10]); 							// 폐지일자            	:: 폐지일자
-								administCodeRecptn.setAblEnnc(tokenData[11]); 						// 폐지유무            	:: 폐지유무
-								administCodeRecptn.setUseAt(tokenData[11]); 							// 폐지유무            	:: 폐지유무
-	
-								// 작업일자
-								if (administCodeRecptn.getOccrrDe().equals("") || administCodeRecptn.getOccrrDe() == null) {
-									administCodeRecptn.setOccrrDe(strdate.substring(0, 8));
-								}
-	
-								// 상위기관코드 계산
-								String upperCode = administCodeRecptn.getSignguCode().equals("000") ? "" : (administCodeRecptn.getEmdCode().equals("000") ? administCodeRecptn
-										.getCtprvnCode() + "000" + "000" + "00" : (administCodeRecptn.getLiCode().equals("00") ? administCodeRecptn.getCtprvnCode()
-										+ administCodeRecptn.getSignguCode() + "000" + "00" : administCodeRecptn.getCtprvnCode() + administCodeRecptn.getSignguCode()
-										+ administCodeRecptn.getEmdCode() + "00"));
-								administCodeRecptn.setUpperAdministZoneCode(upperCode);
-	
-								// 작업일련번호 확인 Generation
-								int iOpertSn = idgenService.getNextIntegerId();
-								administCodeRecptn.setOpertSn(iOpertSn);
-	
-								buf += "\n-all--------------\n";
-	
-								for (int i = 0; i < tokenLength; i++) {
-									buf += "SPLIT [" + Integer.toString(tokenData[i].length()) + "]>>>>>> " + Integer.toString(i) + "	: [" + tokenData[i] + "]\n";
-								}
-	
-							} else {
-	
-								LOGGER.debug("\n\n*****************************************************************");
-								LOGGER.debug(buf);
-								LOGGER.debug("\n\n*****************************************************************");
-								LOGGER.debug(readData);
-	
-								continue;
-							}
-							LOGGER.debug("\n\n*****************************************************************");
-							LOGGER.debug("\n\n*****************************************************************");
-							LOGGER.debug(buf);
-	
-							buf += "\n---------------\n";
-	
-							// 로그인VO에서  사용자 정보 가져오기
-							LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-							String uniqId = loginVO.getUniqId();
-							administCodeRecptn.setFrstRegisterId(uniqId);
-							administCodeRecptn.setLastUpdusrId(uniqId);
-	
-							// changeSeCode 변경구분코드
-							// '01' 코드생성
-							// '02' 코드변경
-							// '03' 코드말소
-	
-							// processSe 처리구분
-							// '00' 수신처리
-							// '01' 처리완료
-							// '11' 생성오류
-							// '12' 변경오류
-							// '13' 말소오류
-	
-							// 작업구분 - 수신
-							administCodeRecptn.setProcessSe("00");
-							administCodeRecptnDAO.insertAdministCodeRecptn(administCodeRecptn);
-	
-							// 작업구분 - 처리
-							administCodeRecptn.setProcessSe("01");
-							if ("01".equals(administCodeRecptn.getChangeSeCode())) {
-								// 코드생성
-								administCodeRecptnDAO.insertAdministCode(administCodeRecptn);
-							} else if ("02".equals(administCodeRecptn.getChangeSeCode())) {
-								// 코드변경
-								administCodeRecptnDAO.updateAdministCode(administCodeRecptn);
-							} else if ("03".equals(administCodeRecptn.getChangeSeCode())) {
-								// 코드말소
-								administCodeRecptnDAO.deleteAdministCode(administCodeRecptn);
-							}
-						}
-						EgovResourceCloseHelper.close(in);
-	
-						// 연계파일 수신이 완료되면  dataFile 파일을 recvOldFileDir 로 이동한다.
-						recvOldFile = new File(rcvOldDir + dataFile.getName());
-						if (dataFile.isFile()) {
-							if (recvOldFile.getParentFile() != null) {//KISA 보안약점 조치 (2018-10-29, 윤창원)
-								if (recvOldFile.getParentFile().isDirectory()) {
-									dataFile.renameTo(recvOldFile);
-								}
-							}
-						} else {
-							// 진행종료
-							processException("dataFile filename or rcvold path is not valid!!!");
-							//throw new Exception("dataFile filename or rcvold path is not valid!!!");
-						}
-					}
-				} catch (IOException e) {
-					LOGGER.error("IO Exception", e);
-				} finally {
-					EgovResourceCloseHelper.close(in);
-	
-					fileCount++;
-				}
-
-			} while (fileCount < recvFileList.length);
-		}
+	private static String stringValueOf(Object object) {
+		return object == null ? "" : String.valueOf(object);
 	}
 
 	/**

@@ -237,7 +237,7 @@ public class EgovSysHistoryController {
 		return "forward:/sym/log/slg/SelectSysHistoryList.do";
 	}
 
-    /**
+	/**
      * 시스템이력 목록 조회
      *
      * @param history

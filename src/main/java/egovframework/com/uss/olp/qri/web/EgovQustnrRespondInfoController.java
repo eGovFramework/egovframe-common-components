@@ -34,6 +34,7 @@ import egovframework.com.uss.olp.qri.service.EgovQustnrRespondInfoService;
 import egovframework.com.uss.olp.qri.service.QustnrRespondInfoVO;
 import egovframework.com.uss.olp.qrm.service.EgovQustnrRespondManageService;
 import egovframework.com.uss.olp.qrm.service.QustnrRespondManageVO;
+
 /**
  * 설문조사 Controller Class 구현
  * @author 공통서비스 장동한
@@ -79,7 +80,8 @@ public class EgovQustnrRespondInfoController {
 	@Resource(name="EgovCmmUseService")
 	private EgovCmmUseService cmmUseService;
 
-    /**
+
+	/**
      * 설문템플릿을 적용한다.
      *
      * @param searchVO
@@ -136,7 +138,7 @@ public class EgovQustnrRespondInfoController {
                 return sTemplateUrl;
             }
         }
-
+		
 		LOGGER.debug("QustnrTmplat > WhiteList mismatch! Please check Admin page!");
 		return "egovframework/com/cmm/egovError";
 	}
@@ -185,7 +187,7 @@ public class EgovQustnrRespondInfoController {
 		return sLocationUrl;
 	}
 
-    /**
+	/**
      * 설문조사(설문등록) 목록을 조회한다.
      *
      * @param searchVO
@@ -243,7 +245,7 @@ public class EgovQustnrRespondInfoController {
 			HttpServletRequest request,
     		ModelMap model)
     throws Exception {
-
+		
     	// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
@@ -288,9 +290,9 @@ public class EgovQustnrRespondInfoController {
            			//설문조사 등록
 	           		//객관식 답안 처리
 	           		if( commandMap.get("TY_"+key).equals("1") ){
-
+	           			
 	           			String[] arrayParam = request.getParameterValues(key.toString());
-
+	           			
            				if( arrayParam.length == 1 ){
 	           				sVal = arrayParam[0];
 
@@ -391,7 +393,7 @@ public class EgovQustnrRespondInfoController {
 	        	 //사용자정보
 	        	 model.addAttribute("Emplyrinfo",  egovQustnrRespondInfoService.selectQustnrRespondInfoManageEmplyrinfo(commandMap));
         	 }
-
+        	 
      		 //설문템플릿정보
     		 model.addAttribute("QustnrTmplatManage",  egovQustnrRespondInfoService.selectQustnrTmplatManage(commandMap));
 
@@ -411,7 +413,7 @@ public class EgovQustnrRespondInfoController {
 		return sLocationUrl;
 	}
 
-    /**
+	/**
      * 응답자결과(설문조사) 목록을 조회한다.
      *
      * @param searchVO

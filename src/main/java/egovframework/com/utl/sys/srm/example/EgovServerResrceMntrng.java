@@ -28,7 +28,7 @@ import java.lang.reflect.Modifier;
  */
 
 public class EgovServerResrceMntrng implements EgovServerResrceMntrngMBean {
-
+	
 	private Object getOSInfo(String getMethod) {
 		
 		OperatingSystemMXBean operatingSystemMXBean = ManagementFactory.getOperatingSystemMXBean();

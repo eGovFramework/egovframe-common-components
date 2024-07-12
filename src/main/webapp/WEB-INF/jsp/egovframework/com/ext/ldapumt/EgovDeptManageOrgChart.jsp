@@ -40,6 +40,7 @@
 		var url = "<c:url value='/ext/ldapumt/dpt/getDeptManageSublist.do' />";							
   		
   		$.get(url, { 'dn' : dn}).done(function (d) {
+  			d = d.deptManage;
   			if(obj==null) {
   				obj = [[ {v:d.id, f:d.text+'<div style="color:red; font-style:italic"></div>'},'', 'parent']];
   			}

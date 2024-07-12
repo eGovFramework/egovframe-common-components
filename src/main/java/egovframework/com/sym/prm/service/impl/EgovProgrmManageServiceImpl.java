@@ -46,8 +46,8 @@ public class EgovProgrmManageServiceImpl extends EgovAbstractServiceImpl impleme
 	public ProgrmManageVO selectProgrm(ProgrmManageVO vo) throws Exception{
          	return progrmManageDAO.selectProgrm(vo);
 	}
-
-    /**
+	
+	/**
      * 프로그램 목록을 조회
      * 
      * @param vo ComDefaultVO
@@ -58,7 +58,7 @@ public class EgovProgrmManageServiceImpl extends EgovAbstractServiceImpl impleme
     public List<ProgrmManageVO> selectProgrmList(ComDefaultVO vo) throws Exception {
         return progrmManageDAO.selectProgrmList(vo);
     }
-
+    
 	/**
 	 * 프로그램목록 총건수를 조회한다.
 	 * @param vo  ComDefaultVO
