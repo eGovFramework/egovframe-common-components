@@ -23,6 +23,7 @@ import egovframework.com.cmm.service.EgovCmmUseService;
  *    수정일       수정자         수정내용
  *    -------        -------     -------------------
  *    2009. 3. 11.     이삼섭
+ *   2024.07.29  이백행          시큐어코딩 Exception 제거
  *               </pre>
  * 
  * @author 공통 서비스 개발팀 이삼섭
@@ -42,10 +43,9 @@ public class EgovCmmUseServiceImpl extends EgovAbstractServiceImpl implements Eg
 	 *
 	 * @param vo
 	 * @return
-	 * @throws Exception
 	 */
 	@Override
-	public List<CmmnDetailCode> selectCmmCodeDetail(ComDefaultCodeVO vo) throws Exception {
+	public List<CmmnDetailCode> selectCmmCodeDetail(ComDefaultCodeVO vo) {
 		return cmmUseDAO.selectCmmCodeDetail(vo);
 	}
 
@@ -54,10 +54,9 @@ public class EgovCmmUseServiceImpl extends EgovAbstractServiceImpl implements Eg
 	 *
 	 * @param voList
 	 * @return
-	 * @throws Exception
 	 */
 	@Override
-	public Map<String, List<CmmnDetailCode>> selectCmmCodeDetails(List<ComDefaultCodeVO> voList) throws Exception {
+	public Map<String, List<CmmnDetailCode>> selectCmmCodeDetails(List<ComDefaultCodeVO> voList) {
 		ComDefaultCodeVO vo;
 		Map<String, List<CmmnDetailCode>> map = new HashMap<String, List<CmmnDetailCode>>();
 
@@ -75,10 +74,9 @@ public class EgovCmmUseServiceImpl extends EgovAbstractServiceImpl implements Eg
 	 *
 	 * @param 조회조건정보 vo
 	 * @return 조직정보 List
-	 * @throws Exception
 	 */
 	@Override
-	public List<CmmnDetailCode> selectOgrnztIdDetail(ComDefaultCodeVO vo) throws Exception {
+	public List<CmmnDetailCode> selectOgrnztIdDetail(ComDefaultCodeVO vo) {
 		return cmmUseDAO.selectOgrnztIdDetail(vo);
 	}
 
@@ -87,10 +85,9 @@ public class EgovCmmUseServiceImpl extends EgovAbstractServiceImpl implements Eg
 	 *
 	 * @param 조회조건정보 vo
 	 * @return 그룹정보 List
-	 * @throws Exception
 	 */
 	@Override
-	public List<CmmnDetailCode> selectGroupIdDetail(ComDefaultCodeVO vo) throws Exception {
+	public List<CmmnDetailCode> selectGroupIdDetail(ComDefaultCodeVO vo) {
 		return cmmUseDAO.selectGroupIdDetail(vo);
 	}
 }
