@@ -6,6 +6,8 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
 
@@ -37,6 +39,7 @@ import noNamespace.SndngMailDocument;
  *  2011.07.27  서준식          메일 발송내역 DB 저장시 첨부파일이 없으면 NULL로 변경
  *  2011.12.06  이기하          메일 첨부파일이 기능 추가
  *  2015.02.02  표준프레임워크  메일 첨부파일 오류 수정
+ *   2024.07.29  이백행          시큐어코딩 Exception 제거
  *      </pre>
  */
 @Service("sndngMailRegistService")
@@ -61,10 +64,9 @@ public class EgovSndngMailRegistServiceImpl extends EgovAbstractServiceImpl impl
 	 * 
 	 * @param vo SndngMailVO
 	 * @return boolean
-	 * @exception Exception
 	 */
 	@Override
-	public boolean insertSndngMail(SndngMailVO vo) throws Exception {
+	public boolean insertSndngMail(SndngMailVO vo) {
 		// KISA 보안약점 조치 (2018-10-29, 윤창원)
 		String recptnPersons = EgovStringUtil.isNullToString(vo.getRecptnPerson()).replaceAll(" ", "");
 		String[] recptnPersonList = recptnPersons.split(";");
@@ -72,7 +74,12 @@ public class EgovSndngMailRegistServiceImpl extends EgovAbstractServiceImpl impl
 		for (int j = 0; j < recptnPersonList.length; j++) {
 
 			// 1-0.메세지ID를 생성한다.
-			String mssageId = egovMailMsgIdGnrService.getNextStringId();
+			String mssageId;
+			try {
+				mssageId = egovMailMsgIdGnrService.getNextStringId();
+			} catch (FdlException e) {
+				throw new BaseRuntimeException(e);
+			}
 
 			// 1-1.발송메일 데이터를 만든다.
 			SndngMailVO mailVO = new SndngMailVO();
@@ -124,10 +131,9 @@ public class EgovSndngMailRegistServiceImpl extends EgovAbstractServiceImpl impl
 	 * 
 	 * @param vo SndngMailVO
 	 * @return boolean
-	 * @exception Exception
 	 */
 	@Override
-	public boolean trnsmitXmlData(SndngMailVO vo) throws Exception {
+	public boolean trnsmitXmlData(SndngMailVO vo) {
 
 		// 1. 첨부파일 목록 (원파일명, 저장파일명)
 		String orignlFileList = "";
@@ -169,10 +175,9 @@ public class EgovSndngMailRegistServiceImpl extends EgovAbstractServiceImpl impl
 	 * 
 	 * @param xml String
 	 * @return boolean
-	 * @exception Exception
 	 */
 	@Override
-	public boolean recptnXmlData(String xmlFile) throws Exception {
+	public boolean recptnXmlData(String xmlFile) {
 
 		// 1. XML파일에서 발송결과코드를 가져온다.
 		SndngMailDocument mailDoc = EgovXMLDoc.getXMLToClass(xmlFile);
