@@ -30,6 +30,7 @@ import egovframework.com.cop.ems.service.SndngMailVO;
  *  2011.09.09  서준식       최초 작성
  *  2011.12.06  이기하       메일 첨부파일이 기능 추가
  *  2013.05.23  이기하       메일 첨부파일이 없을 때 로직 추가
+ *   2024.07.29  이백행          시큐어코딩 Exception 제거
  *
  *      </pre>
  */
@@ -50,11 +51,10 @@ public class EgovSndngMailServiceImpl extends EgovAbstractServiceImpl implements
 	 * 
 	 * @param vo SndngMailVO
 	 * @return boolean
-	 * @exception Exception
 	 */
 	@Override
 	@SuppressWarnings("unused")
-	public boolean sndngMail(SndngMailVO sndngMailVO) throws Exception {
+	public boolean sndngMail(SndngMailVO sndngMailVO) {
 
 		String recptnPerson = (sndngMailVO.getRecptnPerson() == null) ? "" : sndngMailVO.getRecptnPerson(); // 수신자
 		String subject = (sndngMailVO.getSj() == null) ? "" : sndngMailVO.getSj(); // 메일제목
