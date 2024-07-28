@@ -22,6 +22,7 @@ import egovframework.com.cop.ems.service.SndngMailVO;
  *   수정일      수정자          수정내용
  *  -------    --------    ---------------------------
  *  2009.03.12  박지욱          최초 생성
+ *   2024.07.29  이백행          시큐어코딩 Exception 제거
  *
  *      </pre>
  */
@@ -33,9 +34,8 @@ public class SndngMailRegistDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param vo SndngMailVO
 	 * @return SndngMailVO
-	 * @exception Exception
 	 */
-	public SndngMailVO insertSndngMail(SndngMailVO vo) throws Exception {
+	public SndngMailVO insertSndngMail(SndngMailVO vo) {
 		insert("sndngMailRegistDAO.insertSndngMail", vo);
 		return new SndngMailVO();
 	}
@@ -45,9 +45,8 @@ public class SndngMailRegistDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param vo SndngMailVO
 	 * @return List
-	 * @exception Exception
 	 */
-	public List<AtchmnFileVO> selectAtchmnFileList(SndngMailVO vo) throws Exception {
+	public List<AtchmnFileVO> selectAtchmnFileList(SndngMailVO vo) {
 		return selectList("sndngMailRegistDAO.selectAtchmnFileList", vo);
 	}
 
@@ -56,9 +55,8 @@ public class SndngMailRegistDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param vo SndngMailVO
 	 * @return SndngMailVO
-	 * @exception Exception
 	 */
-	public SndngMailVO updateSndngMail(SndngMailVO vo) throws Exception {
+	public SndngMailVO updateSndngMail(SndngMailVO vo) {
 		update("sndngMailRegistDAO.updateSndngMail", vo);
 		return new SndngMailVO();
 	}
