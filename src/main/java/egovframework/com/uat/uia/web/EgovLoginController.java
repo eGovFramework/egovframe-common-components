@@ -64,6 +64,7 @@ import com.gpki.servlet.GPKIHttpServletResponse;
  *  2021.05.30	정진오		디지털원패스 처리하기 위해 로그인 화면에 인증방식 전달
  *  2022.11.11	김혜준		시큐어코딩 처리
  *  2023.06.09	김신해		NSR 보안조치 (GPKI 인증서 등록 OOB 방지)
+ *   2024.07.29  이백행          시큐어코딩 Exception 제거
  * 
  *      </pre>
  */
@@ -98,7 +99,7 @@ public class EgovLoginController {
 	@IncludedInfo(name = "로그인", listUrl = "/uat/uia/egovLoginUsr.do", order = 10, gid = 10)
 	@RequestMapping(value = "/uat/uia/egovLoginUsr.do")
 	public String loginUsrView(@ModelAttribute("loginVO") LoginVO loginVO, HttpServletRequest request,
-			HttpServletResponse response, ModelMap model) throws Exception {
+			HttpServletResponse response, ModelMap model) {
 		if (EgovComponentChecker.hasComponent("mberManageService")) {
 			model.addAttribute("useMemberManage", "true");
 		}
@@ -144,8 +145,7 @@ public class EgovLoginController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/uat/uia/actionLogin.do")
-	public String actionLogin(@ModelAttribute("loginVO") LoginVO loginVO, HttpServletRequest request, ModelMap model)
-			throws Exception {
+	public String actionLogin(@ModelAttribute("loginVO") LoginVO loginVO, HttpServletRequest request, ModelMap model) {
 
 		// 1. 로그인인증제한 활성화시
 		if (egovLoginConfig.isLock()) {
@@ -202,7 +202,7 @@ public class EgovLoginController {
 	 */
 	@RequestMapping(value = "/uat/uia/actionCrtfctLogin.do")
 	public String actionCrtfctLogin(@ModelAttribute("loginVO") LoginVO loginVO, HttpServletRequest request,
-			HttpServletResponse response, ModelMap model) throws Exception {
+			HttpServletResponse response, ModelMap model) {
 
 		// 접속IP
 		String userIp = EgovClntInfo.getClntIP(request);
@@ -265,7 +265,7 @@ public class EgovLoginController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/uat/uia/actionMain.do")
-	public String actionMain(HttpServletRequest request, ModelMap model) throws Exception {
+	public String actionMain(HttpServletRequest request, ModelMap model) {
 
 		// 1. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -325,7 +325,7 @@ public class EgovLoginController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/uat/uia/actionLogout.do")
-	public String actionLogout(HttpServletRequest request, ModelMap model) throws Exception {
+	public String actionLogout(HttpServletRequest request, ModelMap model) {
 
 		/*
 		 * String userIp = EgovClntInfo.getClntIP(request);
@@ -350,7 +350,7 @@ public class EgovLoginController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/uat/uia/egovIdPasswordSearch.do")
-	public String idPasswordSearchView(ModelMap model) throws Exception {
+	public String idPasswordSearchView(ModelMap model) {
 
 		// 1. 비밀번호 힌트 공통코드 조회
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
@@ -368,7 +368,7 @@ public class EgovLoginController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/uat/uia/egovGpkiIssu.do")
-	public String gpkiIssuView(ModelMap model) throws Exception {
+	public String gpkiIssuView(ModelMap model) {
 		return "egovframework/com/uat/uia/EgovGpkiIssu";
 	}
 
@@ -380,7 +380,7 @@ public class EgovLoginController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/uat/uia/searchId.do")
-	public String searchId(@ModelAttribute("loginVO") LoginVO loginVO, ModelMap model) throws Exception {
+	public String searchId(@ModelAttribute("loginVO") LoginVO loginVO, ModelMap model) {
 
 		if (loginVO == null || loginVO.getName() == null || loginVO.getName().equals("") && loginVO.getEmail() == null
 				|| loginVO.getEmail().equals("") && loginVO.getUserSe() == null || loginVO.getUserSe().equals("")) {
@@ -409,7 +409,7 @@ public class EgovLoginController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/uat/uia/searchPassword.do")
-	public String searchPassword(@ModelAttribute("loginVO") LoginVO loginVO, ModelMap model) throws Exception {
+	public String searchPassword(@ModelAttribute("loginVO") LoginVO loginVO, ModelMap model) {
 
 		// KISA 보안약점 조치 (2018-10-29, 윤창원)
 		if (loginVO == null || loginVO.getId() == null || loginVO.getId().equals("") && loginVO.getName() == null
@@ -442,7 +442,7 @@ public class EgovLoginController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/uat/uia/getEncodingData.do")
-	public void getEncodingData() throws Exception {
+	public void getEncodingData() {
 
 		/*
 		 * X509Certificate x509Cert = null; byte[] cert = null; String base64cert =
@@ -462,8 +462,7 @@ public class EgovLoginController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/uat/uia/EgovGpkiRegist.do")
-	public String gpkiRegistView(HttpServletRequest request, HttpServletResponse response, ModelMap model)
-			throws Exception {
+	public String gpkiRegistView(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 
 		/** GPKI 인증 부분 */
 		// OS에 따라 (local NT(로컬) / server Unix(서버)) 구분
@@ -500,8 +499,7 @@ public class EgovLoginController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/uat/uia/actionGpkiRegist.do")
-	public String actionGpkiRegist(HttpServletRequest request, HttpServletResponse response, ModelMap model)
-			throws Exception {
+	public String actionGpkiRegist(HttpServletRequest request, HttpServletResponse response, ModelMap model) {
 
 		/** GPKI 인증 부분 */
 		// OS에 따라 (local NT(로컬) / server Unix(서버)) 구분
@@ -545,7 +543,7 @@ public class EgovLoginController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/uat/uia/refreshSessionTimeout.do")
-	public ModelAndView refreshSessionTimeout(@RequestParam Map<String, Object> commandMap) throws Exception {
+	public ModelAndView refreshSessionTimeout(@RequestParam Map<String, Object> commandMap) {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("jsonView");
 
@@ -562,7 +560,7 @@ public class EgovLoginController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/uat/uia/noticeExpirePwd.do")
-	public String noticeExpirePwd(@RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
+	public String noticeExpirePwd(@RequestParam Map<String, Object> commandMap, ModelMap model) {
 
 		// 설정된 비밀번호 유효기간을 가져온다. ex) 180이면 비밀번호 변경후 만료일이 앞으로 180일
 		String propertyExpirePwdDay = EgovProperties.getProperty("Globals.ExpirePwdDay");
