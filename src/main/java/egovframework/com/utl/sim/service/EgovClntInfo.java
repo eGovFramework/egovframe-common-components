@@ -16,6 +16,7 @@ import egovframework.com.cmm.service.Globals;
  *     수정일         수정자                   수정내용
  *   -------    --------    ---------------------------
  *   2009.01.19    박지욱          최초 생성
+ *   2024.07.29  이백행          시큐어코딩 Exception 제거
  * </pre>
  * 
  * @author 공통 서비스 개발팀 박지욱
@@ -32,9 +33,8 @@ public class EgovClntInfo {
 	 * 
 	 * @param HttpServletRequest request Request객체
 	 * @return String ipAddr IP주소
-	 * @exception Exception
 	 */
-	public static String getClntIP(HttpServletRequest request) throws Exception {
+	public static String getClntIP(HttpServletRequest request) {
 
 		String ipAddr = null;
 
@@ -76,9 +76,8 @@ public class EgovClntInfo {
 	 * 
 	 * @param HttpServletRequest request Request객체
 	 * @return String osInfo OS 정보
-	 * @exception Exception
 	 */
-	public static String getClntOsInfo(HttpServletRequest request) throws Exception {
+	public static String getClntOsInfo(HttpServletRequest request) {
 
 		String user_agent = request.getHeader("user-agent");
 		String os_info = user_agent.toUpperCase().split(";")[2].split("\\)")[0];
@@ -97,9 +96,8 @@ public class EgovClntInfo {
 	 * 
 	 * @param HttpServletRequest request Request객체
 	 * @return String webKind 웹브라우저 종류
-	 * @exception Exception
 	 */
-	public static String getClntWebKind(HttpServletRequest request) throws Exception {
+	public static String getClntWebKind(HttpServletRequest request) {
 
 		String user_agent = request.getHeader("user-agent");
 
@@ -138,9 +136,8 @@ public class EgovClntInfo {
 	 * 
 	 * @param HttpServletRequest request Request객체
 	 * @return String webVer 웹브라우저 버전
-	 * @exception Exception
 	 */
-	public static String getClntWebVer(HttpServletRequest request) throws Exception {
+	public static String getClntWebVer(HttpServletRequest request) {
 
 		String user_agent = request.getHeader("user-agent");
 
