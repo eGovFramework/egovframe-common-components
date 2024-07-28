@@ -20,6 +20,7 @@ import egovframework.com.cmm.ComDefaultCodeVO;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.03.11  이삼섭          최초 생성
+ *   2024.07.29  이백행          시큐어코딩 Exception 제거
  *
  *      </pre>
  */
@@ -30,34 +31,30 @@ public interface EgovCmmUseService {
 	 *
 	 * @param vo
 	 * @return List(코드)
-	 * @throws Exception
 	 */
-	public List<CmmnDetailCode> selectCmmCodeDetail(ComDefaultCodeVO vo) throws Exception;
+	public List<CmmnDetailCode> selectCmmCodeDetail(ComDefaultCodeVO vo);
 
 	/**
 	 * ComDefaultCodeVO의 리스트를 받아서 여러개의 코드 리스트를 맵에 담아서 리턴한다.
 	 *
 	 * @param voList
 	 * @return Map(코드)
-	 * @throws Exception
 	 */
-	public Map<String, List<CmmnDetailCode>> selectCmmCodeDetails(List<ComDefaultCodeVO> voList) throws Exception;
+	public Map<String, List<CmmnDetailCode>> selectCmmCodeDetails(List<ComDefaultCodeVO> voList);
 
 	/**
 	 * 조직정보를 코드형태로 리턴한다.
 	 *
 	 * @param 조회조건정보 vo
 	 * @return 조직정보 List
-	 * @throws Exception
 	 */
-	public List<CmmnDetailCode> selectOgrnztIdDetail(ComDefaultCodeVO vo) throws Exception;
+	public List<CmmnDetailCode> selectOgrnztIdDetail(ComDefaultCodeVO vo);
 
 	/**
 	 * 그룹정보를 코드형태로 리턴한다.
 	 *
 	 * @param 조회조건정보 vo
 	 * @return 그룹정보 List
-	 * @throws Exception
 	 */
-	public List<CmmnDetailCode> selectGroupIdDetail(ComDefaultCodeVO vo) throws Exception;
+	public List<CmmnDetailCode> selectGroupIdDetail(ComDefaultCodeVO vo);
 }
