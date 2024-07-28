@@ -13,6 +13,7 @@ package egovframework.com.cop.ems.service;
  *   수정일      수정자          수정내용
  *  -------    --------    ---------------------------
  *  2011.09.09  서준식       최초 작성
+ *   2024.07.29  이백행          시큐어코딩 Exception 제거
  *
  *      </pre>
  */
@@ -24,7 +25,6 @@ public interface EgovSndngMailService {
 	 * 
 	 * @param vo SndngMailVO
 	 * @return boolean
-	 * @exception Exception
 	 */
-	boolean sndngMail(SndngMailVO vo) throws Exception;
+	boolean sndngMail(SndngMailVO vo);
 }
