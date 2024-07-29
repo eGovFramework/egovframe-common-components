@@ -15,7 +15,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class TestLoginUsrViewEgovLoginControllerSelenium {
 
-	WebDriver driver;
+	private WebDriver driver;
 
 	@Before
 	public void setup() {
