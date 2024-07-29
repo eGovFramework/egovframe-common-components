@@ -49,24 +49,24 @@ public class TestLoginUsrViewEgovLoginControllerSelenium {
 		driver.get("http://localhost:8080/egovframework-all-in-one/uat/uia/egovLoginUsr.do");
 		sleep();
 
-		JavascriptExecutor executor = (JavascriptExecutor) driver;
+		final JavascriptExecutor executor = (JavascriptExecutor) driver;
 
 		// 새로고침
 		executor.executeScript("location.reload();");
 		sleep();
 
 		// 업무 탭 클릭
-		WebElement typeUsr = driver.findElement(By.id("typeUsr"));
+		final WebElement typeUsr = driver.findElement(By.id("typeUsr"));
 		typeUsr.click();
 		sleep();
 
 		// 아이디 입력
-		WebElement id = driver.findElement(By.id("id"));
+		final WebElement id = driver.findElement(By.id("id"));
 		id.sendKeys("TEST1");
 		sleep();
 
 		// 비밀번호 입력
-		WebElement password = driver.findElement(By.id("password"));
+		final WebElement password = driver.findElement(By.id("password"));
 		password.sendKeys("rhdxhd12");
 		sleep();
 
@@ -74,8 +74,8 @@ public class TestLoginUsrViewEgovLoginControllerSelenium {
 		executor.executeScript("actionLogin();");
 
 		// 확인
-		WebElement a = driver.findElement(By.tagName("a"));
-		String aString = a.getText();
+		final WebElement a = driver.findElement(By.tagName("a"));
+		final String aString = a.getText();
 		assertEquals("", "로그아웃", aString);
 	}
 
