@@ -40,11 +40,9 @@ public class TestLoginUsrViewEgovLoginControllerSelenium {
 
 	/**
 	 * 10. 로그인 셀레늄 단위 테스트
-	 * 
-	 * @throws InterruptedException
 	 */
 	@Test
-	public void test() throws InterruptedException {
+	public void test() {
 		// 로그인 화면 이동
 		driver.get("http://localhost:8080/egovframework-all-in-one/uat/uia/egovLoginUsr.do");
 		sleep();
@@ -61,8 +59,8 @@ public class TestLoginUsrViewEgovLoginControllerSelenium {
 		sleep();
 
 		// 아이디 입력
-		final WebElement id = driver.findElement(By.id("id"));
-		id.sendKeys("TEST1");
+		final WebElement idElement = driver.findElement(By.id("id"));
+		idElement.sendKeys("TEST1");
 		sleep();
 
 		// 비밀번호 입력
@@ -74,8 +72,8 @@ public class TestLoginUsrViewEgovLoginControllerSelenium {
 		executor.executeScript("actionLogin();");
 
 		// 확인
-		final WebElement a = driver.findElement(By.tagName("a"));
-		final String aString = a.getText();
+		final WebElement aElement = driver.findElement(By.tagName("a"));
+		final String aString = aElement.getText();
 		assertEquals("", "로그아웃", aString);
 	}
 
