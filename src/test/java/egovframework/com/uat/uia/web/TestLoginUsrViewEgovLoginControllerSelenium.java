@@ -12,16 +12,34 @@ import org.openqa.selenium.chrome.ChromeDriver;
 
 import lombok.NoArgsConstructor;
 
+/**
+ * 10. 로그인 셀레늄 단위 테스트
+ * 
+ * @author 이백행
+ * @since 2027-07-30
+ *
+ */
 @NoArgsConstructor
 public class TestLoginUsrViewEgovLoginControllerSelenium {
 
+	/**
+	 * 
+	 */
 	private WebDriver driver;
 
+	/**
+	 * 
+	 */
 	@Before
 	public void setup() {
 		driver = new ChromeDriver();
 	}
 
+	/**
+	 * 10. 로그인 셀레늄 단위 테스트
+	 * 
+	 * @throws InterruptedException
+	 */
 	@Test
 	public void test() throws InterruptedException {
 		// 로그인 화면 이동
