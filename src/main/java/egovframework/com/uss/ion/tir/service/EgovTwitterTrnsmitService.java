@@ -3,7 +3,6 @@ package egovframework.com.uss.ion.tir.service;
 import java.util.Map;
 
 import twitter4j.CreateTweetResponse;
-import twitter4j.Status;
 
 /**
  * 트위터송신을 처리하는 Service Class 구현
@@ -19,6 +18,7 @@ import twitter4j.Status;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.07.03  장동한          최초 생성
+ *   2024.07.30  이백행          import 정리
  *
  *      </pre>
  */
