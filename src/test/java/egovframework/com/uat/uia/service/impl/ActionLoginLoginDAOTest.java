@@ -62,7 +62,7 @@ public class ActionLoginLoginDAOTest extends EgovTestAbstractDAO {
 		}
 
 		// then
-		String message = egovMessageSource.getMessage(FAIL_COMMON_SELECT);
+		final String message = egovMessageSource.getMessage(FAIL_COMMON_SELECT);
 		assertEquals(message, vo.getUserSe(), result.getUserSe());
 		assertEquals(message, vo.getId(), result.getId());
 		assertEquals(message, vo.getPassword(), result.getPassword());
