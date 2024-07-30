@@ -141,30 +141,30 @@
 		WHERE (A.WRTER_ID = #{searchId} OR A.REPORTR_ID = #{searchId})
 	 
 	 
-	 <if test="searchDe.equals('0')">AND
+	 <if test='searchDe.equals("0")'>AND
 		 	A.REPORT_DE BETWEEN #{searchBgnDe} AND #{searchEndDe}		
 	 </if>
-	 <if test="searchDe.equals('1')">AND
+	 <if test='searchDe.equals("1")'>AND
 		 	(A.REPORT_BGNDE BETWEEN #{searchBgnDe} AND #{searchEndDe}		
 		 			OR	A.REPORT_ENDDE BETWEEN #{searchBgnDe} AND #{searchEndDe}	)
 		 
 	 </if>
-	 <if test="searchCnd.equals('0')">AND
+	 <if test='searchCnd.equals("0")'>AND
 		 	A.REPRT_SJ LIKE '%'||#{searchWrd}||'%' 		
 	 </if>
-	 <if test="searchCnd.equals('1')">AND
+	 <if test='searchCnd.equals("1")'>AND
 		 	B.USER_NM LIKE '%'||#{searchWrd}||'%' 		
 	 </if>
-	 <if test="searchSttus.equals('0')">AND
+	 <if test='searchSttus.equals("0")'>AND
 		 	NVL(A.CONFM_DT, ' ') = ' ' 		
 	 </if>
-	 <if test="searchSttus.equals('1')">AND
+	 <if test='searchSttus.equals("1")'>AND
 		 	NVL(A.CONFM_DT, ' ') != ' ' 		
 	 </if>
-	 <if test="searchSe.equals('1')">AND
+	 <if test='searchSe.equals("1")'>AND
 		 	A.REPRT_SE = '1' 		
 	 </if>
-	 <if test="searchSe.equals('2')">AND
+	 <if test='searchSe.equals("2")'>AND
 		 	A.REPRT_SE = '2' 		
 	 </if>
 	 
@@ -189,30 +189,30 @@
 		WHERE (A.WRTER_ID = #{searchId} OR A.REPORTR_ID = #{searchId})
 	 
 	 
-	 <if test="searchDe.equals('0')">AND
+	 <if test='searchDe.equals("0")'>AND
 		 	A.REPORT_DE BETWEEN #{searchBgnDe} AND #{searchEndDe}		
 	 </if>
-	 <if test="searchDe.equals('1')">AND
+	 <if test='searchDe.equals("1")'>AND
 		 	(A.REPORT_BGNDE BETWEEN #{searchBgnDe} AND #{searchEndDe}		
 		 			OR	A.REPORT_ENDDE BETWEEN #{searchBgnDe} AND #{searchEndDe}	)
 		 
 	 </if>
-	 <if test="searchCnd.equals('0')">AND
+	 <if test='searchCnd.equals("0")'>AND
 		 	A.REPRT_SJ LIKE '%'||#{searchWrd}||'%' 		
 	 </if>
-	 <if test="searchCnd.equals('1')">AND
+	 <if test='searchCnd.equals("1")'>AND
 		 	B.USER_NM LIKE '%'||#{searchWrd}||'%' 		
 	 </if>
-	 <if test="searchSttus.equals('0')">AND
+	 <if test='searchSttus.equals("0")'>AND
 		 	NVL(A.CONFM_DT, ' ') = ' '  		
 	 </if>
-	 <if test="searchSttus.equals('1')">AND
+	 <if test='searchSttus.equals("1")'>AND
 		 	NVL(A.CONFM_DT, ' ') != ' '  		
 	 </if>
-	 <if test="searchSe.equals('1')">AND
+	 <if test='searchSe.equals("1")'>AND
 		 	A.REPRT_SE = '1' 		
 	 </if>
-	 <if test="searchSe.equals('2')">AND
+	 <if test='searchSe.equals("2")'>AND
 		 	A.REPRT_SE = '2' 		
 	 </if>
 
