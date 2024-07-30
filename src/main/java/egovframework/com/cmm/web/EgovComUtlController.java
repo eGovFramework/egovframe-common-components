@@ -4,16 +4,14 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.raonsecure.omnione.core.eoscommander.util.StringUtils;
-
 import egovframework.com.cmm.EgovWebUtil;
-import org.egovframe.rte.fdl.property.EgovPropertyService;
 
 /**
  * @Class Name : EgovComUtlController.java
