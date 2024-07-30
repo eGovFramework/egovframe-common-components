@@ -38,7 +38,7 @@ import org.springframework.stereotype.Service;
  *  ----------   --------   ---------------------------
  *  2017.03.03 	 조성원 	시큐어코딩(ES)-Null Pointer 역참조[CWE-476]
  *  2022.11.11   김혜준     시큐어코딩 처리
- * 
+ *  2024.05.02   김수용   NSR 보안조치 (파일시스템명에서 악의적인 문자열 제거)
  */
 
 @Service("egovFileSysMntrngScheduling")
@@ -88,7 +88,7 @@ public class EgovFileSystemMntrngScheduling extends EgovAbstractServiceImpl {
 		Iterator<FileSysMntrng> iter = targetList.iterator();
 		FileSysMntrng target = null;
 
-		String fileSysNm = "";
+		String safeFileSysNm = "";
 		int fileSysMg = 0;
 		int fileSysThrhld = 0;
 		int fileSysUsgQty = 0;
@@ -101,11 +101,11 @@ public class EgovFileSystemMntrngScheduling extends EgovAbstractServiceImpl {
 			java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyyMMddHHmmss", java.util.Locale.KOREA);
 			target.setCreatDt(formatter.format(new java.util.Date()));
 
-			fileSysNm = target.getFileSysNm();
+			safeFileSysNm = EgovWebUtil.removeCRLF(target.getFileSysNm()).replaceAll("\\|", "").replaceAll("&", "");
 			fileSysThrhld = target.getFileSysThrhld();
 			try{
-				fileSysMg = FileSystemChecker.totalSpaceGb(fileSysNm);
-				fileSysUsgQty = fileSysMg - FileSystemChecker.freeSpaceGb(fileSysNm);
+				fileSysMg = FileSystemChecker.totalSpaceGb(safeFileSysNm);
+				fileSysUsgQty = fileSysMg - FileSystemChecker.freeSpaceGb(safeFileSysNm);
 
 				target.setFileSysMg(fileSysMg);
 				target.setFileSysUsgQty(fileSysUsgQty);
