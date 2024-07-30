@@ -48,6 +48,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *  2010.06.28	장철호		최초 생성
  *  2011.08.26	정진오		IncludedInfo annotation 추가
  *  2023.06.09	김수용		NSR 보안조치 (파일시스템 변수에서 개행문자 제거)
+ *  2024.05.02  김수용        NSR 보안조치 (파일시스템명에서 악의적인 문자열 제거)
  * </pre>
  */
 
@@ -198,6 +199,11 @@ public class EgovFileSysMntrngController {
 
 		if (isAuthenticated) {
 			fileSysMntrngVO.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+			
+			String fileSysNm = fileSysMntrngVO.getFileSysNm();
+			String safeFileSysNm = EgovWebUtil.removeCRLF(fileSysNm).replaceAll("\\|", "").replaceAll("&", "");
+			fileSysMntrngVO.setFileSysNm(safeFileSysNm);
+			
 			fileSysMntrngService.updateFileSysMntrng(fileSysMntrngVO);
 		}
 
@@ -234,6 +240,10 @@ public class EgovFileSysMntrngController {
 		//아이디 설정
 		fileSysMntrngVO.setFrstRegisterId((String) (loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId())));
 		fileSysMntrngVO.setLastUpdusrId((String) (loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId())));
+		
+		String fileSysNm = fileSysMntrngVO.getFileSysNm();
+		String safeFileSysNm = EgovWebUtil.removeCRLF(fileSysNm).replaceAll("\\|", "").replaceAll("&", "");
+		fileSysMntrngVO.setFileSysNm(safeFileSysNm);
 
 		fileSysMntrngService.insertFileSysMntrng(fileSysMntrngVO);
 		sLocationUrl = "forward:/utl/sys/fsm/selectFileSysMntrngList.do";
