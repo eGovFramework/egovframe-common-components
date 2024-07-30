@@ -1,8 +1,5 @@
 package egovframework.com.ext.oauth.service;
 
-import java.util.Iterator;
-
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -83,16 +80,16 @@ public class OAuthLogin {
 		return user;
 	}
 
-	private void getEmails(OAuthUniversalUser user, JsonNode rootNode) {
-		Iterator<JsonNode> iterEmails = rootNode.path("emails").elements();
-		while (iterEmails.hasNext()) {
-			JsonNode emailNode = iterEmails.next();
-			String type = emailNode.get("type").asText();
-			if (StringUtils.equals(type, "account")) {
-				user.setEmail(emailNode.get("value").asText());
-				break;
-			}
-		}
-	}
+//	private void getEmails(OAuthUniversalUser user, JsonNode rootNode) {
+//		Iterator<JsonNode> iterEmails = rootNode.path("emails").elements();
+//		while (iterEmails.hasNext()) {
+//			JsonNode emailNode = iterEmails.next();
+//			String type = emailNode.get("type").asText();
+//			if (StringUtils.equals(type, "account")) {
+//				user.setEmail(emailNode.get("value").asText());
+//				break;
+//			}
+//		}
+//	}
 
 }
