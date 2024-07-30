@@ -6,14 +6,12 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.uss.ion.tir.service.EgovTwitterTrnsmitService;
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-
 import twitter4j.BooleanResponse;
 import twitter4j.CreateTweetResponse;
-import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.TwitterV2;
@@ -37,6 +35,7 @@ import twitter4j.auth.AccessToken;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.07.03  장동한          최초 생성
+ *   2024.07.30  이백행          import 정리
  *
  *      </pre>
  */
