@@ -81,7 +81,7 @@ public interface EgovRecentSrchwrdService {
 	 * @return List
 	 * @throws Exception
 	 */
-	public List<?> selectRecentSrchwrdResultList(RecentSrchwrd searchVO) throws Exception;
+	public List<EgovMap> selectRecentSrchwrdResultList(RecentSrchwrd searchVO) throws Exception;
 
 	/**
 	 * 최근검색어결과를(을) 목록 전체 건수를(을) 조회한다.
