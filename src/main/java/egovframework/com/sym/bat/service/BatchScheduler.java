@@ -7,7 +7,6 @@ import static org.quartz.TriggerBuilder.newTrigger;
 import java.util.List;
 
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-
 import org.quartz.CronTrigger;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
@@ -170,7 +169,7 @@ public class BatchScheduler {
 		searchVO.setPageIndex(1);
 		searchVO.setFirstIndex(0);
 		searchVO.setRecordCountPerPage(RECORD_COUNT_PER_PAGE);
-		targetList = (List<BatchSchdul>) egovBatchSchdulService.selectBatchSchdulList(searchVO);
+		targetList = egovBatchSchdulService.selectBatchSchdulList(searchVO);
 		LOGGER.debug("조회조건 {}", searchVO);
 		LOGGER.debug("Result 건수 : {}", targetList.size());
 
