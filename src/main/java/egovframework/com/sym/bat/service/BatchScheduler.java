@@ -28,7 +28,8 @@ import org.slf4j.LoggerFactory;
  *
  *   수정일       수정자           수정내용
  *  -------     --------    ---------------------------
- *  2010.08.30   김진만     최초 생성
+ *   2010.08.30  김진만          최초 생성
+ *   2024.07.30  이백행          불필요한 @SuppressWarnings("unchecked") 제거
  *      </pre>
  */
 
@@ -161,7 +162,6 @@ public class BatchScheduler {
 	 * 클래스 초기화메소드. 배치스케줄테이블을 읽어서 Quartz 스케줄러를 초기화한다.
 	 *
 	 */
-	@SuppressWarnings("unchecked")
 	public void init() throws Exception {
 		// 모니터링 대상 정보 읽어들이기~~~
 		List<BatchSchdul> targetList = null;
