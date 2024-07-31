@@ -1,23 +1,3 @@
-/**
- * 개요
- * - 로그인정책에 대한 controller 클래스를 정의한다.
- * 
- * 상세내용
- * - 로그인정책에 대한 등록, 수정, 삭제, 조회, 반영확인 기능을 제공한다.
- * - 로그인정책의 조회기능은 목록조회, 상세조회로 구분된다.
- * @author lee.m.j
- * @version 1.0
- * @created 03-8-2009 오후 2:08:53
- * <pre>
- * == 개정이력(Modification Information) ==
- * 
- *   수정일       수정자           수정내용
- *  -------     --------    ---------------------------
- *  2009.8.3    이문준     최초 생성
- *  2011.8.26	정진오			IncludedInfo annotation 추가
- * </pre>
- */
-
 package egovframework.com.uat.uap.web;
 
 import javax.annotation.Resource;
@@ -41,6 +21,26 @@ import egovframework.com.uat.uap.service.LoginPolicy;
 import egovframework.com.uat.uap.service.LoginPolicyVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 
+/**
+ * 개요 - 로그인정책에 대한 controller 클래스를 정의한다.
+ * 
+ * 상세내용 - 로그인정책에 대한 등록, 수정, 삭제, 조회, 반영확인 기능을 제공한다. - 로그인정책의 조회기능은 목록조회, 상세조회로
+ * 구분된다.
+ * 
+ * @author lee.m.j
+ * @version 1.0
+ * @created 03-8-2009 오후 2:08:53
+ * 
+ *          <pre>
+ * == 개정이력(Modification Information) ==
+ * 
+ *   수정일       수정자           수정내용
+ *  -------     --------    ---------------------------
+ *  2009.8.3    이문준     최초 생성
+ *  2011.8.26	정진오			IncludedInfo annotation 추가
+ *   2024.08.01  이백행          시큐어코딩 Exception 제거
+ *          </pre>
+ */
 @Controller
 public class EgovLoginPolicyController {
 
@@ -59,7 +59,7 @@ public class EgovLoginPolicyController {
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping("/uat/uap/selectLoginPolicyListView.do")
-	public String selectLoginPolicyListView() throws Exception {
+	public String selectLoginPolicyListView() {
 		return "egovframework/com/uat/uap/EgovLoginPolicyList";
 	}
 
@@ -71,8 +71,7 @@ public class EgovLoginPolicyController {
 	 */
 	@IncludedInfo(name = "로그인정책관리", order = 30, gid = 10)
 	@RequestMapping("/uat/uap/selectLoginPolicyList.do")
-	public String selectLoginPolicyList(@ModelAttribute("loginPolicyVO") LoginPolicyVO loginPolicyVO, ModelMap model)
-			throws Exception {
+	public String selectLoginPolicyList(@ModelAttribute("loginPolicyVO") LoginPolicyVO loginPolicyVO, ModelMap model) {
 
 		/** paging */
 		PaginationInfo paginationInfo = new PaginationInfo();
@@ -103,7 +102,7 @@ public class EgovLoginPolicyController {
 	 */
 	@RequestMapping("/uat/uap/getLoginPolicy.do")
 	public String selectLoginPolicy(@RequestParam("emplyrId") String emplyrId,
-			@ModelAttribute("loginPolicyVO") LoginPolicyVO loginPolicyVO, ModelMap model) throws Exception {
+			@ModelAttribute("loginPolicyVO") LoginPolicyVO loginPolicyVO, ModelMap model) {
 
 		loginPolicyVO.setEmplyrId(emplyrId);
 
@@ -126,7 +125,7 @@ public class EgovLoginPolicyController {
 	 */
 	@RequestMapping("/uat/uap/addLoginPolicyView.do")
 	public String insertLoginPolicyView(@RequestParam("emplyrId") String emplyrId,
-			@ModelAttribute("loginPolicyVO") LoginPolicyVO loginPolicyVO, ModelMap model) throws Exception {
+			@ModelAttribute("loginPolicyVO") LoginPolicyVO loginPolicyVO, ModelMap model) {
 
 		loginPolicyVO.setEmplyrId(emplyrId);
 
@@ -144,7 +143,7 @@ public class EgovLoginPolicyController {
 	 */
 	@RequestMapping("/uat/uap/addLoginPolicy.do")
 	public String insertLoginPolicy(@ModelAttribute("loginPolicy") LoginPolicy loginPolicy, BindingResult bindingResult,
-			ModelMap model) throws Exception {
+			ModelMap model) {
 
 		beanValidator.validate(loginPolicy, bindingResult); // validation 수행
 
@@ -171,7 +170,7 @@ public class EgovLoginPolicyController {
 	 */
 	@RequestMapping("/uat/uap/updtLoginPolicy.do")
 	public String updateLoginPolicy(@ModelAttribute("loginPolicy") LoginPolicy loginPolicy, BindingResult bindingResult,
-			ModelMap model) throws Exception {
+			ModelMap model) {
 
 		beanValidator.validate(loginPolicy, bindingResult); // validation 수행
 
@@ -196,8 +195,7 @@ public class EgovLoginPolicyController {
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping("/uat/uap/removeLoginPolicy.do")
-	public String deleteLoginPolicy(@ModelAttribute("loginPolicy") LoginPolicy loginPolicy, ModelMap model)
-			throws Exception {
+	public String deleteLoginPolicy(@ModelAttribute("loginPolicy") LoginPolicy loginPolicy, ModelMap model) {
 
 		egovLoginPolicyService.deleteLoginPolicy(loginPolicy);
 
