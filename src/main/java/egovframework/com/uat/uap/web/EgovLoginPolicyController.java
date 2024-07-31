@@ -22,10 +22,14 @@ import egovframework.com.uat.uap.service.LoginPolicyVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 
 /**
- * 개요 - 로그인정책에 대한 controller 클래스를 정의한다.
+ * <pre>
+ * 개요
+ * - 로그인정책에 대한 controller 클래스를 정의한다.
  * 
- * 상세내용 - 로그인정책에 대한 등록, 수정, 삭제, 조회, 반영확인 기능을 제공한다. - 로그인정책의 조회기능은 목록조회, 상세조회로
- * 구분된다.
+ * 상세내용
+ * - 로그인정책에 대한 등록, 수정, 삭제, 조회, 반영확인 기능을 제공한다.
+ * - 로그인정책의 조회기능은 목록조회, 상세조회로 구분된다.
+ * </pre>
  * 
  * @author lee.m.j
  * @version 1.0
