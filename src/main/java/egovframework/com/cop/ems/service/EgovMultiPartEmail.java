@@ -8,6 +8,8 @@ import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
 import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 발송메일에 첨부파일용으로 사용되는 VO 클래스
  * 
@@ -28,6 +30,7 @@ import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
  *
  *      </pre>
  */
+@Slf4j
 public class EgovMultiPartEmail implements Serializable {
 
 	private static final long serialVersionUID = -4322006921324597283L;
@@ -104,7 +107,11 @@ public class EgovMultiPartEmail implements Serializable {
 
 			return email.send();
 		} catch (EmailException e) {
-			throw new BaseRuntimeException(e);
+			String msg = "EmailException send";
+			if (log.isErrorEnabled()) {
+				log.error(msg);
+			}
+			throw new BaseRuntimeException(msg, e);
 		}
 	}
 
@@ -136,7 +143,11 @@ public class EgovMultiPartEmail implements Serializable {
 
 			return email.send();
 		} catch (EmailException e) {
-			throw new BaseRuntimeException(e);
+			String defaultMessage = "EmailException send";
+			if (log.isErrorEnabled()) {
+				log.error(defaultMessage);
+			}
+			throw new BaseRuntimeException(defaultMessage, e);
 		}
 
 	}

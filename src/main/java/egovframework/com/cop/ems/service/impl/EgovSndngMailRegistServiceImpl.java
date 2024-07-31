@@ -20,6 +20,7 @@ import egovframework.com.cop.ems.service.EgovSndngMailService;
 import egovframework.com.cop.ems.service.SndngMailVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovXMLDoc;
+import lombok.extern.slf4j.Slf4j;
 import noNamespace.SndngMailDocument;
 
 /**
@@ -43,6 +44,7 @@ import noNamespace.SndngMailDocument;
  *      </pre>
  */
 @Service("sndngMailRegistService")
+@Slf4j
 public class EgovSndngMailRegistServiceImpl extends EgovAbstractServiceImpl implements EgovSndngMailRegistService {
 
 	/** SndngMailRegistDAO */
@@ -78,7 +80,11 @@ public class EgovSndngMailRegistServiceImpl extends EgovAbstractServiceImpl impl
 			try {
 				mssageId = egovMailMsgIdGnrService.getNextStringId();
 			} catch (FdlException e) {
-				throw new BaseRuntimeException(e);
+				String msg = "FdlException egovMailMsgIdGnrService";
+				if (log.isErrorEnabled()) {
+					log.error(msg);
+				}
+				throw new BaseRuntimeException(msg, e);
 			}
 
 			// 1-1.발송메일 데이터를 만든다.

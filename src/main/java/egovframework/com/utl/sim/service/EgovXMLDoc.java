@@ -31,6 +31,7 @@ import org.xml.sax.SAXException;
 
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
+import lombok.extern.slf4j.Slf4j;
 import noNamespace.SndngMailDocument;
 
 /**
@@ -52,6 +53,7 @@ import noNamespace.SndngMailDocument;
  *
  *      Copyright (C) 2009 by MOPAS All right reserved.
  */
+@Slf4j
 public class EgovXMLDoc {
 
 	// 파일구분자
@@ -81,7 +83,11 @@ public class EgovXMLDoc {
 
 			}
 		} catch (IOException | XmlException e) {
-			throw new BaseRuntimeException(e);
+			String msg = "IOException | XmlException getXMLToClass";
+			if (log.isErrorEnabled()) {
+				log.error(msg);
+			}
+			throw new BaseRuntimeException(msg, e);
 		} finally {
 			EgovResourceCloseHelper.close(fis);
 		}
@@ -116,7 +122,11 @@ public class EgovXMLDoc {
 			result = true;
 
 		} catch (IOException e) {
-			throw new BaseRuntimeException(e);
+			String msg = "IOException getClassToXML";
+			if (log.isErrorEnabled()) {
+				log.error(msg);
+			}
+			throw new BaseRuntimeException(msg, e);
 		} finally {
 			EgovResourceCloseHelper.close(fos);
 		}
@@ -152,7 +162,11 @@ public class EgovXMLDoc {
 				xmlDoc = builder.parse(fis);
 			}
 		} catch (IOException | ParserConfigurationException | SAXException e) {
-			throw new BaseRuntimeException(e);
+			String msg = "IOException | ParserConfigurationException | SAXException getXMLDocument";
+			if (log.isErrorEnabled()) {
+				log.error(msg);
+			}
+			throw new BaseRuntimeException(msg, e);
 		} finally {
 			EgovResourceCloseHelper.close(fis);
 		}
@@ -280,7 +294,11 @@ public class EgovXMLDoc {
 				transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 				transformer.transform(source, result);
 			} catch (IllegalArgumentException | TransformerException e) {
-				throw new BaseRuntimeException(e);
+				String msg = "IllegalArgumentException | TransformerException getXMLFile";
+				if (log.isErrorEnabled()) {
+					log.error(msg);
+				}
+				throw new BaseRuntimeException(msg, e);
 			}
 		}
 

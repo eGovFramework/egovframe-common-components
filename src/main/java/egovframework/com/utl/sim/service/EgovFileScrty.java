@@ -18,6 +18,7 @@ import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * @Class Name : EgovFileScrty.java
@@ -36,6 +37,7 @@ import egovframework.com.cmm.util.EgovResourceCloseHelper;
  * @since 2009.08.26
  * @version 1.0
  */
+@Slf4j
 public class EgovFileScrty {
 
 	private static final String STORE_FILE_PATH = EgovProperties.getProperty("Globals.fileStorePath");
@@ -80,7 +82,11 @@ public class EgovFileScrty {
 				result = true;
 			}
 		} catch (IOException e) {
-			throw new BaseRuntimeException(e);
+			String msg = "IOException encryptFile";
+			if (log.isErrorEnabled()) {
+				log.error(msg);
+			}
+			throw new BaseRuntimeException(msg, e);
 		} finally {
 			EgovResourceCloseHelper.close(input, output);
 		}
@@ -123,7 +129,11 @@ public class EgovFileScrty {
 				result = true;
 			}
 		} catch (IOException e) {
-			throw new BaseRuntimeException(e);
+			String msg = "IOException decryptFile";
+			if (log.isErrorEnabled()) {
+				log.error(msg);
+			}
+			throw new BaseRuntimeException(msg, e);
 		} finally {
 			EgovResourceCloseHelper.close(input, output);
 		}
@@ -197,7 +207,11 @@ public class EgovFileScrty {
 		try {
 			md = MessageDigest.getInstance("SHA-256");
 		} catch (NoSuchAlgorithmException e) {
-			throw new BaseRuntimeException(e);
+			String msg = "NoSuchAlgorithmException encryptPassword";
+			if (log.isErrorEnabled()) {
+				log.error(msg);
+			}
+			throw new BaseRuntimeException(msg, e);
 		}
 
 		md.reset();
@@ -227,7 +241,11 @@ public class EgovFileScrty {
 		try {
 			md = MessageDigest.getInstance("SHA-256");
 		} catch (NoSuchAlgorithmException e) {
-			throw new BaseRuntimeException(e);
+			String msg = "NoSuchAlgorithmException encryptPassword";
+			if (log.isErrorEnabled()) {
+				log.error(msg);
+			}
+			throw new BaseRuntimeException(msg, e);
 		}
 
 		md.reset();
@@ -252,7 +270,11 @@ public class EgovFileScrty {
 		try {
 			md = MessageDigest.getInstance("SHA-256");
 		} catch (NoSuchAlgorithmException e) {
-			throw new BaseRuntimeException(e);
+			String msg = "NoSuchAlgorithmException checkPassword";
+			if (log.isErrorEnabled()) {
+				log.error(msg);
+			}
+			throw new BaseRuntimeException(msg, e);
 		}
 
 		md.reset();
