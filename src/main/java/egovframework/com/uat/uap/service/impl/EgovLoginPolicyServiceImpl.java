@@ -1,23 +1,3 @@
-/**
- * 개요
- * - 로그인정책에 대한 ServiceImpl 클래스를 정의한다.
- * 
- * 상세내용
- * - 로그인정책에 대한 등록, 수정, 삭제, 조회, 반영확인 기능을 제공한다.
- * - 로그인정책의 조회기능은 목록조회, 상세조회로 구분된다.
- * @author lee.m.j
- * @version 1.0
- * @created 03-8-2009 오후 2:08:54
- *   <pre>
- * == 개정이력(Modification Information) ==
- * 
- *  수정일               수정자            수정내용
- *  ----------   --------   ---------------------------
- *  2009.08.03   이문준            최초 생성
- *  2021.02.18   신용호            selectLoginPolicyResult() 삭제
- * </pre>
- */
-
 package egovframework.com.uat.uap.service.impl;
 
 import java.util.List;
@@ -31,6 +11,30 @@ import egovframework.com.uat.uap.service.EgovLoginPolicyService;
 import egovframework.com.uat.uap.service.LoginPolicy;
 import egovframework.com.uat.uap.service.LoginPolicyVO;
 
+/**
+ * <pre>
+ * 개요
+ * - 로그인정책에 대한 ServiceImpl 클래스를 정의한다.
+ * 
+ * 상세내용
+ * - 로그인정책에 대한 등록, 수정, 삭제, 조회, 반영확인 기능을 제공한다.
+ * - 로그인정책의 조회기능은 목록조회, 상세조회로 구분된다.
+ * </pre>
+ * 
+ * @author lee.m.j
+ * @version 1.0
+ * @created 03-8-2009 오후 2:08:54
+ * 
+ *          <pre>
+ * == 개정이력(Modification Information) ==
+ * 
+ *  수정일               수정자            수정내용
+ *  ----------   --------   ---------------------------
+ *  2009.08.03   이문준            최초 생성
+ *  2021.02.18   신용호            selectLoginPolicyResult() 삭제
+ *   2024.08.01  이백행          시큐어코딩 Exception 제거
+ *          </pre>
+ */
 @Service("egovLoginPolicyService")
 public class EgovLoginPolicyServiceImpl extends EgovAbstractServiceImpl implements EgovLoginPolicyService {
 
@@ -44,7 +48,7 @@ public class EgovLoginPolicyServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @return List - 로그인정책 목록
 	 */
 	@Override
-	public List<LoginPolicyVO> selectLoginPolicyList(LoginPolicyVO loginPolicyVO) throws Exception {
+	public List<LoginPolicyVO> selectLoginPolicyList(LoginPolicyVO loginPolicyVO) {
 		return loginPolicyDAO.selectLoginPolicyList(loginPolicyVO);
 	}
 
@@ -55,7 +59,7 @@ public class EgovLoginPolicyServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @return int
 	 */
 	@Override
-	public int selectLoginPolicyListTotCnt(LoginPolicyVO loginPolicyVO) throws Exception {
+	public int selectLoginPolicyListTotCnt(LoginPolicyVO loginPolicyVO) {
 		return loginPolicyDAO.selectLoginPolicyListTotCnt(loginPolicyVO);
 	}
 
@@ -66,7 +70,7 @@ public class EgovLoginPolicyServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @return LoginPolicyVO - 로그인정책 VO
 	 */
 	@Override
-	public LoginPolicyVO selectLoginPolicy(LoginPolicyVO loginPolicyVO) throws Exception {
+	public LoginPolicyVO selectLoginPolicy(LoginPolicyVO loginPolicyVO) {
 		return loginPolicyDAO.selectLoginPolicy(loginPolicyVO);
 	}
 
@@ -76,7 +80,7 @@ public class EgovLoginPolicyServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @param loginPolicy - 로그인정책 model
 	 */
 	@Override
-	public void insertLoginPolicy(LoginPolicy loginPolicy) throws Exception {
+	public void insertLoginPolicy(LoginPolicy loginPolicy) {
 		loginPolicyDAO.insertLoginPolicy(loginPolicy);
 	}
 
@@ -86,7 +90,7 @@ public class EgovLoginPolicyServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @param loginPolicy - 로그인정책 model
 	 */
 	@Override
-	public void updateLoginPolicy(LoginPolicy loginPolicy) throws Exception {
+	public void updateLoginPolicy(LoginPolicy loginPolicy) {
 		loginPolicyDAO.updateLoginPolicy(loginPolicy);
 	}
 
@@ -96,7 +100,7 @@ public class EgovLoginPolicyServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @param loginPolicy - 로그인정책 model
 	 */
 	@Override
-	public void deleteLoginPolicy(LoginPolicy loginPolicy) throws Exception {
+	public void deleteLoginPolicy(LoginPolicy loginPolicy) {
 		loginPolicyDAO.deleteLoginPolicy(loginPolicy);
 	}
 
@@ -107,8 +111,7 @@ public class EgovLoginPolicyServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @return LoginPolicyVO - 로그인정책 VO
 	 */
 	/*
-	 * public LoginPolicyVO selectLoginPolicyResult(LoginPolicyVO loginPolicyVO)
-	 * throws Exception { return
-	 * loginPolicyDAO.selectLoginPolicyResult(loginPolicyVO); }
+	 * public LoginPolicyVO selectLoginPolicyResult(LoginPolicyVO loginPolicyVO) {
+	 * return loginPolicyDAO.selectLoginPolicyResult(loginPolicyVO); }
 	 */
 }
