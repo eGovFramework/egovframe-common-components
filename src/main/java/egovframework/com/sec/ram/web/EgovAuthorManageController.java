@@ -36,7 +36,8 @@ import egovframework.com.sec.ram.service.EgovAuthorManageService;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.03.11  이문준          최초 생성
- *   2011.8.26	정진오			IncludedInfo annotation 추가s
+ *   2011.8.26	정진오			IncludedInfo annotation 추가
+ *   2024.08.02  이백행          시큐어코딩 Exception 제거
  *
  *      </pre>
  */
@@ -65,7 +66,7 @@ public class EgovAuthorManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping("/sec/ram/EgovAuthorListView.do")
-	public String selectAuthorListView() throws Exception {
+	public String selectAuthorListView() {
 		return "egovframework/com/sec/ram/EgovAuthorManage";
 	}
 
@@ -78,8 +79,7 @@ public class EgovAuthorManageController {
 	 */
 	@IncludedInfo(name = "권한관리", listUrl = "/sec/ram/EgovAuthorList.do", order = 60, gid = 20)
 	@RequestMapping(value = "/sec/ram/EgovAuthorList.do")
-	public String selectAuthorList(@ModelAttribute("authorManageVO") AuthorManageVO authorManageVO, ModelMap model)
-			throws Exception {
+	public String selectAuthorList(@ModelAttribute("authorManageVO") AuthorManageVO authorManageVO, ModelMap model) {
 
 		/** EgovPropertyService.sample */
 		// authorManageVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -116,7 +116,7 @@ public class EgovAuthorManageController {
 	 */
 	@RequestMapping(value = "/sec/ram/EgovAuthor.do")
 	public String selectAuthor(@RequestParam("authorCode") String authorCode,
-			@ModelAttribute("authorManageVO") AuthorManageVO authorManageVO, ModelMap model) throws Exception {
+			@ModelAttribute("authorManageVO") AuthorManageVO authorManageVO, ModelMap model) {
 
 		authorManageVO.setAuthorCode(authorCode);
 
@@ -132,7 +132,7 @@ public class EgovAuthorManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping("/sec/ram/EgovAuthorInsertView.do")
-	public String insertAuthorView(@ModelAttribute("authorManage") AuthorManage authorManage) throws Exception {
+	public String insertAuthorView(@ModelAttribute("authorManage") AuthorManage authorManage) {
 		return "egovframework/com/sec/ram/EgovAuthorInsert";
 	}
 
@@ -146,7 +146,7 @@ public class EgovAuthorManageController {
 	 */
 	@RequestMapping(value = "/sec/ram/EgovAuthorInsert.do")
 	public String insertAuthor(@ModelAttribute("authorManage") AuthorManage authorManage, BindingResult bindingResult,
-			ModelMap model) throws Exception {
+			ModelMap model) {
 
 		beanValidator.validate(authorManage, bindingResult); // validation 수행
 
@@ -169,7 +169,7 @@ public class EgovAuthorManageController {
 	 */
 	@RequestMapping(value = "/sec/ram/EgovAuthorUpdate.do")
 	public String updateAuthor(@ModelAttribute("authorManage") AuthorManage authorManage, BindingResult bindingResult,
-			Model model) throws Exception {
+			Model model) {
 
 		beanValidator.validate(authorManage, bindingResult); // validation 수행
 
@@ -190,8 +190,7 @@ public class EgovAuthorManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sec/ram/EgovAuthorDelete.do")
-	public String deleteAuthor(@ModelAttribute("authorManage") AuthorManage authorManage, Model model)
-			throws Exception {
+	public String deleteAuthor(@ModelAttribute("authorManage") AuthorManage authorManage, Model model) {
 
 		egovAuthorManageService.deleteAuthor(authorManage);
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
@@ -208,7 +207,7 @@ public class EgovAuthorManageController {
 	 */
 	@RequestMapping(value = "/sec/ram/EgovAuthorListDelete.do")
 	public String deleteAuthorList(@RequestParam("authorCodes") String authorCodes,
-			@ModelAttribute("authorManage") AuthorManage authorManage, Model model) throws Exception {
+			@ModelAttribute("authorManage") AuthorManage authorManage, Model model) {
 
 		String[] strAuthorCodes = authorCodes.split(";");
 		for (int i = 0; i < strAuthorCodes.length; i++) {
@@ -226,7 +225,7 @@ public class EgovAuthorManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping("/sec/ram/accessDenied.do")
-	public String accessDenied() throws Exception {
+	public String accessDenied() {
 		return "egovframework/com/sec/accessDenied";
 	}
 }
