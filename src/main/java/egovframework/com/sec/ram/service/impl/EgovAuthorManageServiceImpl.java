@@ -6,10 +6,13 @@ import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Assert;
 
+import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.sec.ram.service.AuthorManage;
 import egovframework.com.sec.ram.service.AuthorManageVO;
 import egovframework.com.sec.ram.service.EgovAuthorManageService;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 권한관리에 관한 ServiceImpl 클래스를 정의한다.
@@ -31,10 +34,14 @@ import egovframework.com.sec.ram.service.EgovAuthorManageService;
  */
 
 @Service("egovAuthorManageService")
+@RequiredArgsConstructor
 public class EgovAuthorManageServiceImpl extends EgovAbstractServiceImpl implements EgovAuthorManageService {
 
 	@Resource(name = "authorManageDAO")
 	private AuthorManageDAO authorManageDAO;
+
+//	@Resource(name = "egovMessageSource")
+	private final EgovMessageSource egovMessageSource;
 
 	/**
 	 * 권한 목록을 조회한다.
@@ -86,8 +93,7 @@ public class EgovAuthorManageServiceImpl extends EgovAbstractServiceImpl impleme
 	@Override
 	public AuthorManageVO selectAuthor(AuthorManageVO authorManageVO) {
 		AuthorManageVO resultVO = authorManageDAO.selectAuthor(authorManageVO);
-		if (resultVO == null)
-			throw processException("info.nodata.msg");
+		Assert.notNull(resultVO, egovMessageSource.getMessage("info.nodata.msg"));
 		return resultVO;
 	}
 
