@@ -63,7 +63,6 @@ public class EgovAuthorManageController {
 	 * 권한 목록화면 이동
 	 * 
 	 * @return String
-	 * @exception Exception
 	 */
 	@RequestMapping("/sec/ram/EgovAuthorListView.do")
 	public String selectAuthorListView() {
@@ -75,7 +74,6 @@ public class EgovAuthorManageController {
 	 * 
 	 * @param authorManageVO AuthorManageVO
 	 * @return String
-	 * @exception Exception
 	 */
 	@IncludedInfo(name = "권한관리", listUrl = "/sec/ram/EgovAuthorList.do", order = 60, gid = 20)
 	@RequestMapping(value = "/sec/ram/EgovAuthorList.do")
@@ -112,7 +110,6 @@ public class EgovAuthorManageController {
 	 * @param authorCode     String
 	 * @param authorManageVO AuthorManageVO
 	 * @return String
-	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sec/ram/EgovAuthor.do")
 	public String selectAuthor(@RequestParam("authorCode") String authorCode,
@@ -129,7 +126,6 @@ public class EgovAuthorManageController {
 	 * 권한 등록화면 이동
 	 * 
 	 * @return String
-	 * @exception Exception
 	 */
 	@RequestMapping("/sec/ram/EgovAuthorInsertView.do")
 	public String insertAuthorView(@ModelAttribute("authorManage") AuthorManage authorManage) {
@@ -142,7 +138,6 @@ public class EgovAuthorManageController {
 	 * @param authorManage  AuthorManage
 	 * @param bindingResult BindingResult
 	 * @return String
-	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sec/ram/EgovAuthorInsert.do")
 	public String insertAuthor(@ModelAttribute("authorManage") AuthorManage authorManage, BindingResult bindingResult,
@@ -165,7 +160,6 @@ public class EgovAuthorManageController {
 	 * @param authorManage  AuthorManage
 	 * @param bindingResult BindingResult
 	 * @return String
-	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sec/ram/EgovAuthorUpdate.do")
 	public String updateAuthor(@ModelAttribute("authorManage") AuthorManage authorManage, BindingResult bindingResult,
@@ -187,7 +181,6 @@ public class EgovAuthorManageController {
 	 * 
 	 * @param authorManage AuthorManage
 	 * @return String
-	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sec/ram/EgovAuthorDelete.do")
 	public String deleteAuthor(@ModelAttribute("authorManage") AuthorManage authorManage, Model model) {
@@ -203,7 +196,6 @@ public class EgovAuthorManageController {
 	 * @param authorCodes  String
 	 * @param authorManage AuthorManage
 	 * @return String
-	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sec/ram/EgovAuthorListDelete.do")
 	public String deleteAuthorList(@RequestParam("authorCodes") String authorCodes,
@@ -222,7 +214,6 @@ public class EgovAuthorManageController {
 	 * 권한제한 화면 이동
 	 * 
 	 * @return String
-	 * @exception Exception
 	 */
 	@RequestMapping("/sec/ram/accessDenied.do")
 	public String accessDenied() {
