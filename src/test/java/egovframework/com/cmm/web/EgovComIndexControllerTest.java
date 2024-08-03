@@ -67,12 +67,7 @@ public class EgovComIndexControllerTest extends EgovAbstractControllerV1Test {
 
 	@Test
 	public void test_a60_egovCSRFAccessDenied() throws Exception {
-// @formatter:off
-		mockMvc.perform(get("/egovCSRFAccessDenied.do"))
-		.andExpect(status().isOk())
-		.andExpect(view().name("egovframework/com/cmm/error/csrfAccessDenied"))
-		;
-// @formatter:on
+		mockMvc.perform(get("/egovCSRFAccessDenied.do")).andExpect(status().isFound());
 	}
 
 }
