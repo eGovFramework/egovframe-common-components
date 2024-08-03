@@ -36,6 +36,7 @@ import egovframework.com.sec.rgm.service.EgovAuthorGroupService;
  *   2009.03.11  이문준          최초 생성
  *   2011.08.04  서준식          mberTyCodes 구분자 부분 추가
  *   2011.8.26	정진오			IncludedInfo annotation 추가
+ *   2024.08.03  이백행          시큐어코딩 Exception 제거
  *      </pre>
  */
 
@@ -60,10 +61,9 @@ public class EgovAuthorGroupController {
 	 * 권한 목록화면 이동
 	 * 
 	 * @return String
-	 * @exception Exception
 	 */
 	@RequestMapping("/sec/rgm/EgovAuthorGroupListView.do")
-	public String selectAuthorGroupListView() throws Exception {
+	public String selectAuthorGroupListView() {
 
 		return "egovframework/com/sec/rgm/EgovAuthorGroupManage";
 	}
@@ -74,12 +74,11 @@ public class EgovAuthorGroupController {
 	 * @param authorGroupVO  AuthorGroupVO
 	 * @param authorManageVO AuthorManageVO
 	 * @return String
-	 * @exception Exception
 	 */
 	@IncludedInfo(name = "권한그룹관리", listUrl = "/sec/rgm/EgovAuthorGroupList.do", order = 70, gid = 20)
 	@RequestMapping(value = "/sec/rgm/EgovAuthorGroupList.do")
 	public String selectAuthorGroupList(@ModelAttribute("authorGroupVO") AuthorGroupVO authorGroupVO,
-			@ModelAttribute("authorManageVO") AuthorManageVO authorManageVO, ModelMap model) throws Exception {
+			@ModelAttribute("authorManageVO") AuthorManageVO authorManageVO, ModelMap model) {
 
 		/** paging */
 		PaginationInfo paginationInfo = new PaginationInfo();
@@ -114,13 +113,12 @@ public class EgovAuthorGroupController {
 	 * @param regYns      String
 	 * @param authorGroup AuthorGroup
 	 * @return String
-	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sec/rgm/EgovAuthorGroupInsert.do")
 	public String insertAuthorGroup(@RequestParam("userIds") String userIds,
 			@RequestParam("authorCodes") String authorCodes, @RequestParam("regYns") String regYns,
 			@RequestParam("mberTyCodes") String mberTyCodes, // 2011.08.04 수정 부분
-			@ModelAttribute("authorGroup") AuthorGroup authorGroup, ModelMap model) throws Exception {
+			@ModelAttribute("authorGroup") AuthorGroup authorGroup, ModelMap model) {
 
 		String[] strUserIds = userIds.split(";");
 		String[] strAuthorCodes = authorCodes.split(";");
@@ -147,11 +145,10 @@ public class EgovAuthorGroupController {
 	 * @param userIds     String
 	 * @param authorGroup AuthorGroup
 	 * @return String
-	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sec/rgm/EgovAuthorGroupDelete.do")
 	public String deleteAuthorGroup(@RequestParam("userIds") String userIds,
-			@ModelAttribute("authorGroup") AuthorGroup authorGroup, ModelMap model) throws Exception {
+			@ModelAttribute("authorGroup") AuthorGroup authorGroup, ModelMap model) {
 
 		String[] strUserIds = userIds.split(";");
 		for (int i = 0; i < strUserIds.length; i++) {
