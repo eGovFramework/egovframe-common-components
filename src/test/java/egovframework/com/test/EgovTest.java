@@ -1,15 +1,25 @@
 package egovframework.com.test;
 
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+/**
+ * 테스트
+ * 
+ * @author 이백행
+ * @since 2023-04-17
+ *
+ */
+
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = { "classpath*:egovframework/spring/com/context-*.xml",
 		"classpath*:egovframework/spring/com/idgn/context-*.xml" })
 @ActiveProfiles({ "mysql", "dummy" })
 @Transactional
+@Ignore
 public class EgovTest {
 }
