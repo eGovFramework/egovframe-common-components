@@ -22,6 +22,7 @@ import egovframework.com.sec.rgm.service.AuthorGroupVO;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.03.20  이문준          최초 생성
+ *   2024.08.03  이백행          시큐어코딩 Exception 제거
  *
  *      </pre>
  */
@@ -34,9 +35,8 @@ public class AuthorGroupDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param authorGroupVO AuthorGroupVO
 	 * @return List<AuthorGroupVO>
-	 * @exception Exception
 	 */
-	public List<AuthorGroupVO> selectAuthorGroupList(AuthorGroupVO authorGroupVO) throws Exception {
+	public List<AuthorGroupVO> selectAuthorGroupList(AuthorGroupVO authorGroupVO) {
 		return selectList("authorGroupDAO.selectAuthorGroupList", authorGroupVO);
 	}
 
@@ -44,9 +44,8 @@ public class AuthorGroupDAO extends EgovComAbstractDAO {
 	 * 그룹에 권한정보를 할당하여 데이터베이스에 등록
 	 * 
 	 * @param authorGroup AuthorGroup
-	 * @exception Exception
 	 */
-	public void insertAuthorGroup(AuthorGroup authorGroup) throws Exception {
+	public void insertAuthorGroup(AuthorGroup authorGroup) {
 		insert("authorGroupDAO.insertAuthorGroup", authorGroup);
 	}
 
@@ -54,9 +53,8 @@ public class AuthorGroupDAO extends EgovComAbstractDAO {
 	 * 화면에 조회된 그룹권한정보를 수정하여 항목의 정합성을 체크하고 수정된 데이터를 데이터베이스에 반영
 	 * 
 	 * @param authorGroup AuthorGroup
-	 * @exception Exception
 	 */
-	public void updateAuthorGroup(AuthorGroup authorGroup) throws Exception {
+	public void updateAuthorGroup(AuthorGroup authorGroup) {
 		update("authorGroupDAO.updateAuthorGroup", authorGroup);
 	}
 
@@ -64,9 +62,8 @@ public class AuthorGroupDAO extends EgovComAbstractDAO {
 	 * 그룹별 할당된 시스템 메뉴 접근권한을 삭제
 	 * 
 	 * @param authorGroup AuthorGroup
-	 * @exception Exception
 	 */
-	public void deleteAuthorGroup(AuthorGroup authorGroup) throws Exception {
+	public void deleteAuthorGroup(AuthorGroup authorGroup) {
 		delete("authorGroupDAO.deleteAuthorGroup", authorGroup);
 	}
 
@@ -75,9 +72,8 @@ public class AuthorGroupDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param authorGroupVO AuthorGroupVO
 	 * @return int
-	 * @exception Exception
 	 */
-	public int selectAuthorGroupListTotCnt(AuthorGroupVO authorGroupVO) throws Exception {
+	public int selectAuthorGroupListTotCnt(AuthorGroupVO authorGroupVO) {
 		return (Integer) selectOne("authorGroupDAO.selectAuthorGroupListTotCnt", authorGroupVO);
 	}
 }
