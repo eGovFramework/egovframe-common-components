@@ -7,8 +7,6 @@ import org.junit.BeforeClass;
 import org.junit.runner.OrderWith;
 import org.junit.runner.RunWith;
 import org.junit.runner.manipulation.Alphanumeric;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -18,6 +16,17 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.StopWatch;
 import org.springframework.web.context.WebApplicationContext;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+/**
+ * Controller 단위 테스트
+ * 
+ * @author 이백행
+ * @since 2023-05-30
+ *
+ */
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @OrderWith(Alphanumeric.class)
@@ -47,63 +56,97 @@ import org.springframework.web.context.WebApplicationContext;
 
 })
 
-public abstract class EgovAbstractControllerV1Test {
+@RequiredArgsConstructor
+@Slf4j
 
-	protected static Logger EGOV_LOGGER = LoggerFactory.getLogger(EgovAbstractControllerV1Test.class);
-	protected Logger egovLogger = LoggerFactory.getLogger(EgovAbstractControllerV1Test.class);
+public class EgovTestAbstractController {
 
+	/**
+	 * 스톱워치
+	 */
 	protected static final StopWatch STOP_WATCH = new StopWatch();
+
+	/**
+	 * 스톱워치
+	 */
 	protected final StopWatch stopWatch = new StopWatch();
 
-	private static String[] beanDefinitionNames = null;
+	/**
+	 * 빈 정의 이름
+	 */
+	private static String[] beanDefinitionNames;
 
+	/**
+	 * 웹 애플리케이션 컨텍스트
+	 */
 	@Autowired
 	private WebApplicationContext context;
 
+	/**
+	 * 모의 Mvc
+	 */
 	protected static MockMvc mockMvc;
 
+	/**
+	 * 수업 전, 수업 전 설정
+	 */
 	@BeforeClass
 	public static void setUpBeforeClass() {
 		STOP_WATCH.start();
 
-		EGOV_LOGGER.debug("setUpBeforeClass start");
+		log.debug("setUpBeforeClass start");
 	}
 
+	/**
+	 * 방과후, 수업 후 해체
+	 */
 	@AfterClass
 	public static void tearDownAfterClass() {
 		STOP_WATCH.stop();
 
-		EGOV_LOGGER.debug("tearDownAfterClass stop");
+		if (log.isDebugEnabled()) {
+			log.debug("tearDownAfterClass stop");
 
-		EGOV_LOGGER.debug("totalTimeMillis={}", STOP_WATCH.getTotalTimeMillis());
-		EGOV_LOGGER.debug("totalTimeSeconds={}", STOP_WATCH.getTotalTimeSeconds());
+			log.debug("totalTimeMillis={}", STOP_WATCH.getTotalTimeMillis());
+			log.debug("totalTimeSeconds={}", STOP_WATCH.getTotalTimeSeconds());
+		}
 	}
 
+	/**
+	 * 전에, 설정
+	 */
 	@Before
 	public void setUp() {
 		stopWatch.start();
 
-		egovLogger.debug("setUp start");
+		log.debug("setUp start");
 
 		if (beanDefinitionNames == null) {
 			beanDefinitionNames = context.getBeanDefinitionNames();
-			for (String beanDefinitionName : beanDefinitionNames) {
-				egovLogger.debug("beanDefinitionName={}", beanDefinitionName);
+			for (final String beanDefinitionName : beanDefinitionNames) {
+				log.debug("beanDefinitionName={}", beanDefinitionName);
 			}
-			egovLogger.debug("length={}", beanDefinitionNames.length);
+			if (log.isDebugEnabled()) {
+				log.debug("length={}", beanDefinitionNames.length);
+			}
 
 			mockMvc = MockMvcBuilders.webAppContextSetup(context).build();
 		}
 	}
 
+	/**
+	 * 후에, 분해
+	 */
 	@After
 	public void tearDown() {
 		stopWatch.stop();
 
-		egovLogger.debug("tearDown stop");
+		if (log.isDebugEnabled()) {
+			log.debug("tearDown stop");
 
-		egovLogger.debug("totalTimeMillis={}", stopWatch.getTotalTimeMillis());
-		egovLogger.debug("totalTimeSeconds={}", stopWatch.getTotalTimeSeconds());
+			log.debug("totalTimeMillis={}", stopWatch.getTotalTimeMillis());
+			log.debug("totalTimeSeconds={}", stopWatch.getTotalTimeSeconds());
+		}
 	}
 
 }

@@ -6,32 +6,48 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.junit.Test;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+/**
+ * EgovAtchFileIdPropertyEditor 테스트
+ * 
+ * @author 이백행
+ * @since 2023-05-09
+ *
+ */
+@RequiredArgsConstructor
+@Slf4j
 public class EgovAtchFileIdPropertyEditorTest {
 
-	protected Logger egovLogger = LoggerFactory.getLogger(EgovAtchFileIdPropertyEditorTest.class);
-
+	/**
+	 * EgovAtchFileIdPropertyEditor 테스트
+	 */
 	@Test
 	public void test() {
-		String text = "test 이백행 2023-05-09";
+		final String text = "test 이백행 2023-05-09";
 
-		String enc = StandardCharsets.UTF_8.name();
+		final String enc = StandardCharsets.UTF_8.name();
 
-		egovLogger.debug("enc={}", enc);
+		if (log.isDebugEnabled()) {
+			log.debug("enc={}", enc);
+		}
 
-		String encText = null;
+		String encText;
 		try {
 			encText = URLEncoder.encode(text, enc);
 		} catch (UnsupportedEncodingException e) {
-			egovLogger.error("UnsupportedEncodingException");
+			throw new BaseRuntimeException("UnsupportedEncodingException encode", e);
 		}
 
-		egovLogger.debug("encText={}", encText);
+		if (log.isDebugEnabled()) {
+			log.debug("encText={}", encText);
+		}
 
-		assertEquals("test+%EC%9D%B4%EB%B0%B1%ED%96%89+2023-05-09", encText);
+		assertEquals("", "test+%EC%9D%B4%EB%B0%B1%ED%96%89+2023-05-09", encText);
 	}
 
 }
