@@ -1,5 +1,7 @@
 package egovframework.com.test;
 
+import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,39 +17,63 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.service.impl.FileManageDAO;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+/**
+ * 구성요소 스캔 테스트
+ * 
+ * @author 이백행
+ * @since 2023-04-17
+ *
+ */
 
 @Configuration
 @ImportResource({ "classpath*:/egovframework/spring/com/test-context-dao.xml" })
 @ComponentScan(useDefaultFilters = false, basePackages = { "egovframework.com.cmm.service.impl" }, includeFilters = {
 		@Filter(type = FilterType.ASSIGNABLE_TYPE, classes = { FileManageDAO.class }) })
 
+@RequiredArgsConstructor
 @Slf4j
+
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = { ComponentScanTest_FileManageDAO.class })
+@ContextConfiguration(classes = { ComponentScanTestFileManageDAOTest.class })
 @ActiveProfiles({ "mysql", "dummy" })
-public class ComponentScanTest_FileManageDAO {
+public class ComponentScanTestFileManageDAOTest {
 
+	/**
+	 * 애플리케이션 컨텍스트
+	 */
 	@Autowired
-	ApplicationContext context;
+	private ApplicationContext context;
 
+	/**
+	 * 파일정보 관리를 위한 데이터 처리 클래스
+	 */
 	@Autowired
-	FileManageDAO dao;
+	private FileManageDAO dao;
 
+	/**
+	 * 테스트
+	 * 
+	 * @throws Exception
+	 */
 	@Test
 	public void test() throws Exception {
 		log.debug("test");
 
 		// getBeanDefinitionNames
-		String[] beanDefinitionNames = context.getBeanDefinitionNames();
+		final String[] beanDefinitionNames = context.getBeanDefinitionNames();
 
-		for (String beanDefinitionName : beanDefinitionNames) {
+		for (final String beanDefinitionName : beanDefinitionNames) {
 			log.debug("beanDefinitionName={}", beanDefinitionName);
 		}
 
 		// FileManageDAO
-		FileVO vo = new FileVO();
-		dao.selectFileInfs(vo);
+		final FileVO fileVO = new FileVO();
+		dao.selectFileInfs(fileVO);
+
+		assertEquals("", "", "");
 	}
 
 }

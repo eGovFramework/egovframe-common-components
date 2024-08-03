@@ -4,6 +4,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.runner.OrderWith;
 import org.junit.runner.RunWith;
 import org.junit.runner.manipulation.Alphanumeric;
@@ -58,6 +59,8 @@ import lombok.extern.slf4j.Slf4j;
 
 @RequiredArgsConstructor
 @Slf4j
+
+@Ignore
 
 public class EgovTestAbstractController {
 

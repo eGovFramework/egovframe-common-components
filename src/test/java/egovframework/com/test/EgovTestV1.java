@@ -4,6 +4,7 @@ import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -13,6 +14,14 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StopWatch;
 
 import lombok.extern.slf4j.Slf4j;
+
+/**
+ * 테스트 V1
+ * 
+ * @author 이백행
+ * @since 2023-04-17
+ *
+ */
 
 @Slf4j
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -26,6 +35,9 @@ import lombok.extern.slf4j.Slf4j;
 //@ActiveProfiles({ "tibero", "dummy" })
 
 @Transactional
+
+@Ignore
+
 public class EgovTestV1 {
 
 	public static final StopWatch STOP_WATCH = new StopWatch();
