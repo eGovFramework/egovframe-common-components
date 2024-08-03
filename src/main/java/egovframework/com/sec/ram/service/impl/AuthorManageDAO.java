@@ -22,6 +22,7 @@ import egovframework.com.sec.ram.service.AuthorManageVO;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.03.11  이문준          최초 생성
+ *   2024.08.03  이백행          시큐어코딩 Exception 제거
  *
  *      </pre>
  */
@@ -34,9 +35,8 @@ public class AuthorManageDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param authorManageVO AuthorManageVO
 	 * @return List<AuthorManageVO>
-	 * @exception Exception
 	 */
-	public List<AuthorManageVO> selectAuthorList(AuthorManageVO authorManageVO) throws Exception {
+	public List<AuthorManageVO> selectAuthorList(AuthorManageVO authorManageVO) {
 		return selectList("authorManageDAO.selectAuthorList", authorManageVO);
 	}
 
@@ -44,9 +44,8 @@ public class AuthorManageDAO extends EgovComAbstractDAO {
 	 * 권한을 등록한다.
 	 * 
 	 * @param authorManage AuthorManage
-	 * @exception Exception
 	 */
-	public void insertAuthor(AuthorManage authorManage) throws Exception {
+	public void insertAuthor(AuthorManage authorManage) {
 		insert("authorManageDAO.insertAuthor", authorManage);
 	}
 
@@ -54,9 +53,8 @@ public class AuthorManageDAO extends EgovComAbstractDAO {
 	 * 권한을 수정한다.
 	 * 
 	 * @param authorManage AuthorManage
-	 * @exception Exception
 	 */
-	public void updateAuthor(AuthorManage authorManage) throws Exception {
+	public void updateAuthor(AuthorManage authorManage) {
 		update("authorManageDAO.updateAuthor", authorManage);
 	}
 
@@ -64,9 +62,8 @@ public class AuthorManageDAO extends EgovComAbstractDAO {
 	 * 권한을 삭제한다.
 	 * 
 	 * @param authorManage AuthorManage
-	 * @exception Exception
 	 */
-	public void deleteAuthor(AuthorManage authorManage) throws Exception {
+	public void deleteAuthor(AuthorManage authorManage) {
 		delete("authorManageDAO.deleteAuthor", authorManage);
 	}
 
@@ -75,9 +72,8 @@ public class AuthorManageDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param authorManageVO AuthorManageVO
 	 * @return AuthorManageVO
-	 * @exception Exception
 	 */
-	public AuthorManageVO selectAuthor(AuthorManageVO authorManageVO) throws Exception {
+	public AuthorManageVO selectAuthor(AuthorManageVO authorManageVO) {
 		return (AuthorManageVO) selectOne("authorManageDAO.selectAuthor", authorManageVO);
 	}
 
@@ -86,9 +82,8 @@ public class AuthorManageDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param authorManageVO AuthorManageVO
 	 * @return int
-	 * @exception Exception
 	 */
-	public int selectAuthorListTotCnt(AuthorManageVO authorManageVO) throws Exception {
+	public int selectAuthorListTotCnt(AuthorManageVO authorManageVO) {
 		return (Integer) selectOne("authorManageDAO.selectAuthorListTotCnt", authorManageVO);
 	}
 
@@ -97,9 +92,8 @@ public class AuthorManageDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param authorManageVO AuthorManageVO
 	 * @return List<AuthorManageVO>
-	 * @exception Exception
 	 */
-	public List<AuthorManageVO> selectAuthorAllList(AuthorManageVO authorManageVO) throws Exception {
+	public List<AuthorManageVO> selectAuthorAllList(AuthorManageVO authorManageVO) {
 		return selectList("authorManageDAO.selectAuthorAllList", authorManageVO);
 	}
 }
