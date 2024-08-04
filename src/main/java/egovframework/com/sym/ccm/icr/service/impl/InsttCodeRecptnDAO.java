@@ -24,7 +24,7 @@ import org.springframework.stereotype.Repository;
  *  -------    --------    ---------------------------
  *   2009.04.01  이중호          최초 생성
  *   2011.09.05  서준식          beforeData에 대한 null체크 추가
- * Copyright (C) 2009 by MOPAS  All right reserved.
+ * Copyright (C) 2009 by MOPAS  All rights reserved.
  * </pre>
  */
 @Repository("InsttCodeRecptnDAO")

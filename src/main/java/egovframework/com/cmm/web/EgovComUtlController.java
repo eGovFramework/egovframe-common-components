@@ -10,8 +10,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.raonsecure.omnione.core.eoscommander.util.StringUtils;
-
 import egovframework.com.cmm.EgovWebUtil;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 
@@ -41,7 +39,7 @@ public class EgovComUtlController {
     //@Resource(name = "egovUserManageService")
     //private EgovUserManageService egovUserManageService;
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovComUtlController.class);
-	
+
 	@Resource(name = "egovPageLinkWhitelist")
     protected List<String> egovWhitelist;
 
@@ -63,17 +61,17 @@ public class EgovComUtlController {
 		}
 
 		link = egovWhitelist.get(linkIndex);
-		
+
 		link = link.replace(";", "");
 		link = link.replace("%", "");
 		link = link.replace(".", "");
 
 		// 안전한 경로 문자열로 조치
 		link = EgovWebUtil.filePathBlackList(link);
-		
+
 		return link;
 	}
-	
+
     /**
 	 * 모달조회
 	 * @return String
@@ -83,7 +81,7 @@ public class EgovComUtlController {
     public String selectUtlJsonInquire()  throws Exception {
         return "egovframework/com/cmm/EgovModal";
     }
-    
+
     /**
 	 * validato rule dynamic Javascript
 	 */

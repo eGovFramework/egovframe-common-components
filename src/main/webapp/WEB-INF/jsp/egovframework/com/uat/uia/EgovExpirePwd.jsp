@@ -18,7 +18,7 @@
   *  @version 3.10
   *  @see
   *
-  *  Copyright (C) 2009 by MOPAS  All right reserved.
+  *  Copyright (C) 2009 by MOPAS  All rights reserved.
   */
 %>
 <!DOCTYPE html>

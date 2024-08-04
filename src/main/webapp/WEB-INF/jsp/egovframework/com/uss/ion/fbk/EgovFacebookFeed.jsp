@@ -22,7 +22,7 @@
  *  @version 1.0
  *  @see
  *
- *  Copyright (C) 2014 by MOGAHA  All right reserved.
+ *  Copyright (C) 2014 by MOGAHA  All rights reserved.
  */
 
 %>

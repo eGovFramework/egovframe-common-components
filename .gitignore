@@ -12,6 +12,7 @@
 
 # Package Files #
 *.jar
+!src/main/lib/project/**/*.jar
 *.war
 *.nar
 *.ear
@@ -24,6 +25,7 @@
 .settings/
 .project
 .classpath
+.factorypath
 
 .git/
 .svn/
