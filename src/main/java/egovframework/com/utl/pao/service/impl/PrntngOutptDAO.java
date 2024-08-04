@@ -31,7 +31,7 @@ public class PrntngOutptDAO extends EgovComAbstractDAO {
 	 * @return
 	 * @throws Exception
 	 */
-	public PrntngOutptVO selectErncsl(PrntngOutptVO vo) throws Exception{
+	public PrntngOutptVO selectErncsl(PrntngOutptVO vo) {
 		String queryId = "PrntngOutptDAO.selectErncsl";
 		return (PrntngOutptVO) selectOne(queryId, vo);
 	}

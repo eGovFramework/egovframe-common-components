@@ -53,14 +53,14 @@ function createTree(arrName ) {
 }
 // Returns the position of a node in the array
 function getArrayId(node) {
-	for (i=0; i<nodes.length; i++) {
+	for (let i=0; i<nodes.length; i++) {
 		var nodeValues = nodes[i].split("|");
 		if (nodeValues[0]==node) return i;
 	}
 }
 // Puts in array nodes that will be open
 function setOpenNodes(openNode) {
-	for (i=0; i<nodes.length; i++) {
+	for (let i=0; i<nodes.length; i++) {
 		var nodeValues = nodes[i].split("|");
 		if (nodeValues[0]==openNode) {
 			openNodes.push(nodeValues[0]);
@@ -70,13 +70,13 @@ function setOpenNodes(openNode) {
 }
 // Checks if a node is open
 function isNodeOpen(node) {
-	for (i=0; i<openNodes.length; i++)
+	for (let i=0; i<openNodes.length; i++)
 		if (openNodes[i]==node) return true;
 	return false;
 }
 // Checks if a node has any children
 function hasChildNode(parentNode) {
-	for (i=0; i< nodes.length; i++) {
+	for (let i=0; i< nodes.length; i++) {
 		var nodeValues = nodes[i].split("|");
 		if (nodeValues[1] == parentNode) return true;
 	}
@@ -85,7 +85,7 @@ function hasChildNode(parentNode) {
 // Checks if a node is the last sibling
 function lastSibling (node, parentNode) {
 	var lastChild = 0;
-	for (i=0; i< nodes.length; i++) {
+	for (let i=0; i< nodes.length; i++) {
 		var nodeValues = nodes[i].split("|");
 		if (nodeValues[1] == parentNode)
 			lastChild = nodeValues[0];
@@ -106,7 +106,7 @@ function addNode(parentNode, recursedNodes) {
 			var ino = isNodeOpen(nodeValues[0]);
 
 			// Write out line & empty icons
-			for (g=0; g<recursedNodes.length; g++) {
+			for (let g=0; g<recursedNodes.length; g++) {
 				if (recursedNodes[g] == 1) document.write("<img src='"+imgpath+"menu_line.gif' border='0' align='absbottom' alt='' >");
 				else  document.write("<img src='"+imgpath+"menu_empty.gif' border='0' align='absbottom' alt='' >");
 			}

@@ -17,8 +17,8 @@ this.showModalDialogSupported = true;
 this.callbackMethod = null;
 
 if (!window.showModalDialog) {
-	
-	showModalDialogSupported = false;
+
+	this.showModalDialogSupported = false;
 
 	window.showModalDialog = function(arg1, arg2, arg3, callback) {
 
@@ -30,15 +30,15 @@ if (!window.showModalDialog) {
 
 		// get the modal specs
 		var mdattrs = arg3.split(";");
-		for (i = 0; i < mdattrs.length; i++) {
-			
+		for (let i = 0; i < mdattrs.length; i++) {
+
 			/* 2016.09.09 modify by 장동한[mdattr 처리 개선] */
 			var mdattr = null;
-			
+
 			if(mdattrs[i].indexOf("=") > -1){
 				mdattr = mdattrs[i].split("=");
 			}else{
-				mdattr = mdattrs[i].split(":");	
+				mdattr = mdattrs[i].split(":");
 			}
 
 			var n = mdattr[0];
@@ -70,11 +70,11 @@ if (!window.showModalDialog) {
 		var targetWin = window.open(arg1, "ShowModalDialog" + arg1, 'toolbar=no, location=no, directories=no, status=' + status + ', menubar=no, scrollbars=' + scroll + ', resizable=' + resizable + ', copyhistory=no, width=' + w	+ ', height=' + h + ', top=' + top + ', left=' + left);
 
 		this.dialogArguments = arg2;
-		
+
 		if (callback != null) {
-			callbackMethod = callback;
+			this.callbackMethod = callback;
 		} else {
-			callbackMethod = null;
+			this.callbackMethod = null;
 		}
 
 		targetWin.focus();
@@ -82,8 +82,8 @@ if (!window.showModalDialog) {
 
 	window.getDialogArgumentsInner = function() {
 		return this.dialogArguments;
-	}; 
-	
+	};
+
 	window.getCallbackMethodName = function() {
 		return this.callbackMethod;
 	}

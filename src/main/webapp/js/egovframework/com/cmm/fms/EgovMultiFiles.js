@@ -21,12 +21,12 @@ function MultiSelector(list_target, max, file_label) {
 	} else {
 		this.max = -1;
 	}
-	
+
 	this.file_label = file_label;
 	/**
 	 * Add a new file input element
 	 */
-	_base = this;
+	const _base = this;
 	this.addElement = function(element) {
 		// Make sure it's a file input element
 		if (element.tagName == 'INPUT' && element.type == 'file') {
@@ -116,18 +116,18 @@ var EgovMultiFilesChecker = {
 	    var __lastDot = filename.lastIndexOf('.');
 	    if (__lastDot < 0 ) return "";
 	    var __fileExt = filename.substring(__lastDot, __fileLen).toLowerCase();
-	 
+
 	    return __fileExt;
 	}
 	// 결과가 true 인경우 허용
-	// 결과가 false 인경우 불가 
+	// 결과가 false 인경우 불가
 	,checkExtensions: function(fileObjId, allowTypes) {
 		if ( document.getElementById( fileObjId ) == null ) return false; // file객체가 없으면 승인하지 않는다.
 		if ( typeof document.getElementById( fileObjId ).files == "undefined" )
 			return this.checkExtensionsOldIE(fileObjId, allowTypes);
 		else
 			return this.checkExtensionsHTML5(fileObjId, allowTypes);
-			
+
 	}
 	,checkExtensionsHTML5: function(fileObjId, allowTypes) {
 		var __filelen = document.getElementById( fileObjId ).files.length;
@@ -144,7 +144,7 @@ var EgovMultiFilesChecker = {
 	    		return false;
 	    	}
 	    }
-	    
+
 	    return true;
 	}
 	,checkExtensionsOldIE: function(fileObjId, allowTypes) {
@@ -157,7 +157,7 @@ var EgovMultiFilesChecker = {
     		alert("2.허용되지 않는 확장자 입니다.["+__fileExt+"]");
     		return false;
     	}
-	    
+
 	    return true;
 	}
 
@@ -179,23 +179,23 @@ var EgovMultiFilesChecker = {
 	    	console.log(__fileObj.name);
 	    	console.log(this.getFileExtension(__fileObj.name));
 	    	console.log(__fileObj.size);
-	    	
+
 	    	if ( __fileObj.size > allowSize ) {
 	    		alert("허용되지 않는 파일 사이즈 입니다.["+__fileObj.name+" : "+__fileObj.size+" bytes / "+allowSize+" bytes]");
 	    		return false;
 	    	}
 	    }
-	    
+
 	    return true;
 	}
 	// 구형 IE 브라우저의 경우 사이즈 체크의 제한이 있습니다.
 	,checkFileSizeOldIE: function(fileObjId, allowSize) {
-		
+
 		var __filelPath = document.getElementById( fileObjId ).value;
 	    console.log(__filelPath);
 
     	alert("구형 브라우저에서는 파일 사이즈 체크를 할수 없습니다.");
-	    
+
 	    return true;
 	}
 

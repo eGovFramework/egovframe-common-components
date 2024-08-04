@@ -35,7 +35,7 @@ public class EgovPrntngOutptImpl extends EgovAbstractServiceImpl implements Egov
 	/**
 	 * 관인이미지를 조회한다.
 	 */
-	public PrntngOutptVO selectErncsl(PrntngOutptVO searchVO) throws Exception {
+	public PrntngOutptVO selectErncsl(PrntngOutptVO searchVO) {
 		return prntngOutptDAO.selectErncsl(searchVO);
 	}
 

@@ -1,13 +1,13 @@
 /*
- * 요소기술 스크립트  
+ * 요소기술 스크립트
  */
 
 // 숫자체크
 function isNumber(control, msg) {
-	
+
 	var val = control;
 	var Num = "1234567890";
-	for (i=0; i<val.length; i++) {
+	for (let i=0; i<val.length; i++) {
 		if(Num.indexOf(val.substring(i,i+1))<0) {
 			alert(msg+' 형식이 잘못되었습니다.');
 			return false;
@@ -18,16 +18,16 @@ function isNumber(control, msg) {
 
 // 날짜체크
 function isDate(control, msg) {
-	
+
 	// '/'나 '-' 구분자 제거
 	var val = getRemoveFormat(control);
-	
+
 	// 숫자, length 확인
 	if (isNumber(val, msg) && val.length == 8) {
 		var year = val.substring(0,4);
 		var month = val.substring(4,6);
 		var day = val.substring(6,8);
-		
+
 		// 유효날짜 확인
 		if(checkDate(year,month,day,msg)){
 			return true;
@@ -51,13 +51,13 @@ function getRemoveFormat(val) {
 		return arrDate[0] + arrDate[1] + arrDate[2];
 	} else {
 		return val;
-	}	
+	}
 }
 
 // 유효날짜 확인
 function checkDate(varCk1, varCk2, varCk3, msg) {
 	if (varCk1>="0001" && varCk1<="9999" && varCk2>="01" && varCk2<="12") {
-		febDays = "29";
+		let febDays = "29";
 		if ((parseInt(varCk1,10) % 4) == 0) {
 			if ((parseInt(varCk1,10) % 100) == 0 && (parseInt(varCk1,10) % 400) != 0){
 				febDays = "28";

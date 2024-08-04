@@ -1,7 +1,6 @@
 package egovframework.com.utl.pao.web;
 
 import java.io.IOException;
-import java.sql.SQLException;
 
 import javax.annotation.Resource;
 import javax.servlet.ServletConfig;
@@ -13,7 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.utl.pao.service.EgovPrntngOutpt;
@@ -60,12 +59,12 @@ public class EgovErncslController extends HttpServlet {
 	 * @param
 	 * @param
 	 * @return
-	 * @exception MyException
+	 * @throws IOException
 	 * @see
 	*/
-	@RequestMapping(value = "/utl/pao/EgovErncsl.do")
+	@GetMapping(value = "/utl/pao/EgovErncsl.do")
 	public void doGet(@RequestParam("sOrgCode") String orgCode, @RequestParam("sErncslSe") String erncslSe, HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
+			throws IOException {
 
 		LOGGER.info("EgovErncsl start....");
 
@@ -74,22 +73,7 @@ public class EgovErncslController extends HttpServlet {
 		req.setOrgCode(orgCode);
 		req.setErncslSe(erncslSe);
 
-		PrntngOutptVO res = null;
-		try {
-			res = prntngOutpt.selectErncsl(req);
-		} catch (SQLException e) {
-			LOGGER.error("["+ e.getClass() +"] : ", e.getMessage());
-			throw new RuntimeException("Service call error", e);
-		} catch (Exception e) {
-//			LOGGER.error(e.getMessage());
-			// 2017-02-14  이정은          시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-			LOGGER.error("["+ e.getClass() +"] : ", e.getMessage());
-			throw new RuntimeException("Service call error", e);
-		}
-
-		if (res == null) {
-			throw new RuntimeException("image not found!!!");
-		}
+		PrntngOutptVO res = prntngOutpt.selectErncsl(req);
 
 		byte[] img = res.getImgInfo();
 		String imgtype = res.getImgType();
@@ -107,9 +91,13 @@ public class EgovErncslController extends HttpServlet {
 
 		response.setHeader("Content-Type", type.replaceAll("\r", "").replaceAll("\n", ""));
 		response.setHeader("Content-Length", "" + img.length);
-		response.getOutputStream().write(img);
-		response.getOutputStream().flush();
-		response.getOutputStream().close();
+		try {
+			response.getOutputStream().write(img);
+			response.getOutputStream().flush();
+			response.getOutputStream().close();
+		} catch (IOException e) {
+			LOGGER.debug(e.getMessage());
+		}
 
 		LOGGER.info("EgovErncsl end....");
 	}

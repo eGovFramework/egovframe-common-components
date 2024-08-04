@@ -23,7 +23,7 @@ function MultiSelector( list_target, max , file_label ){
 	this.count = 0;
 	// How many elements?
 	this.id = 0;
-	
+
 	this.update_count = 0;
 	// Is there a maximum?
 	if( max ){
@@ -32,29 +32,29 @@ function MultiSelector( list_target, max , file_label ){
 		this.max = -1;
 	};
 	this.file_label = file_label
-	
+
 	this.current_count = 0;
 	//console.log('update!!!!!!');
 	/**
 	 * Add a new file input element
 	 */
-	_base = this;
+	const _base = this;
 	this.addElement = function( element ){
 
 		//console.log('update_count>'+this.update_count);
 		//console.log('max>'+this.max);
 		//console.log('count>'+this.count);
-		
+
 		// Make sure it's a file input element
 		if( element.tagName == 'INPUT' && element.type == 'file' ){
-			
+
 			//console.log('check step addElement start');
 
 			// Element name -- what number am I?
 			element.name = 'file_' + this.id;
 			element.id =  'egovfile_' + this.id;
 			element.class = "";
-			
+
 			//document.getElementById(this.file_label).setAttribute("for","egovfile_"+this.id);
 			//console.log('file_label>'+element.name);
 
@@ -65,7 +65,7 @@ function MultiSelector( list_target, max , file_label ){
 
 			// What to do when a file is selected
 			element.onchange = function(){
-				
+
 				var sErrMsg = "첨부파일 개수는 ["+_base.max+"]이상 첨부할 수 없습니다!";
 				if( _base.update_count > 0 ){
 					if( _base.count > (_base.max-_base.update_count) ){
@@ -73,7 +73,7 @@ function MultiSelector( list_target, max , file_label ){
 						alert(sErrMsg);	return;
 					}
 				}
-				
+
 				if( _base.max > 0  && _base.count > _base.max ){
 					element.value = "";
 					alert(sErrMsg); return;
@@ -91,7 +91,7 @@ function MultiSelector( list_target, max , file_label ){
 
 				// Update list
 				this.multi_selector.addListRowNew( this );
-				
+
 				// Hide this: we can't use display:none because Safari doesn't like it
 				this.style.position = 'absolute';
 				this.style.left = '-1000px';
@@ -116,7 +116,7 @@ function MultiSelector( list_target, max , file_label ){
 			this.count++;
 			// Most recent element
 			this.current_element = element;
-			
+
 		} else {
 			// This can only be applied to file input elements!
 			alert( 'Error: not a file input element' );
@@ -132,7 +132,7 @@ function MultiSelector( list_target, max , file_label ){
 		// Row div
 		var new_row = document.createElement( 'div' );
 		new_row.className = "file_add";
-		
+
 		// Delete button
 		var new_row_button = document.createElement( 'input' );
 		new_row_button.type = 'button';
@@ -142,7 +142,7 @@ function MultiSelector( list_target, max , file_label ){
 
 		// References
 		new_row.element = element;
-		
+
 		// Delete function
 		new_row_button.onclick= function(){
 
@@ -164,14 +164,14 @@ function MultiSelector( list_target, max , file_label ){
 		// Set row value
 		//new_row.innerHTML = element.value;
 		new_row.innerHTML = "<span>"+element.value+"</span>&nbsp;&nbsp;";
-		
+
 		// Add button
 		new_row.appendChild( new_row_button );
 
 		// Add it to the list
 		this.list_target.appendChild( new_row );
 	};
-	
+
 	/**
 	 * Add a new row to the list of files
 	 */
