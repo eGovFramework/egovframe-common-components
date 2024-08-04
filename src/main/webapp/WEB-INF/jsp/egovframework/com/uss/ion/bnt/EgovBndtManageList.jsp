@@ -29,7 +29,7 @@
  *  @version 1.0
  *  @see
  *
- *  Copyright (C) 2009 by MOPAS  All right reserved.
+ *  Copyright (C) 2009 by MOPAS  All rights reserved.
  */
 
  java.util.Calendar cal = java.util.Calendar.getInstance();

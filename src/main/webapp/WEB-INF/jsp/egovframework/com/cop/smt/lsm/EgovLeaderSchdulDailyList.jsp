@@ -14,7 +14,7 @@
  *  @version 1.0
  *  @see
  *  
- *  Copyright (C) 2010 by MOPAS  All right reserved.
+ *  Copyright (C) 2010 by MOPAS  All rights reserved.
  */
 --%>
 <%@ page contentType="text/html; charset=utf-8"%>

@@ -16,7 +16,7 @@ import java.io.Serializable;
  * @version 1.0
  * @see 
  * 
- *  Copyright (C) 2008 by MOPAS  All right reserved.
+ *  Copyright (C) 2008 by MOPAS  All rights reserved.
  */
 @SuppressWarnings("serial")
 public class EgovFormBasedFileVo implements Serializable {

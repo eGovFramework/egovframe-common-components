@@ -54,7 +54,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *    2011.8.26	정진오			IncludedInfo annotation 추가
  *	  2011.9.1	정진오			10월 주별 달력 테이블에 날짜가 이상하게 나와서 수정함
  *
- * Copyright (C) 2009 by MOPAS  All right reserved.
+ * Copyright (C) 2009 by MOPAS  All rights reserved.
  * </pre>
  */
 

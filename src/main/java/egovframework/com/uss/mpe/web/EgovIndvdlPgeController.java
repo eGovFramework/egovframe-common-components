@@ -42,7 +42,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *  2011.8.26	정진오			IncludedInfo annotation 추가
  *  2016.8.31	김연호			표준프레임워크 3.6 개선
  *
- * Copyright (C) 2009 by MOPAS  All right reserved.
+ * Copyright (C) 2009 by MOPAS  All rights reserved.
  * </pre>
  */
 @Controller

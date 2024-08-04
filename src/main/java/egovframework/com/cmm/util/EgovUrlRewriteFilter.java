@@ -30,7 +30,7 @@ import egovframework.com.cmm.EgovWebUtil;
  * @version 1.0
  * @see
  *
- *  Copyright (C) by MOPAS All right reserved.
+ *  Copyright (C) by MOPAS All rights reserved.
  */
 public class EgovUrlRewriteFilter implements Filter {
 

@@ -47,7 +47,7 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
  *   2018.08.28		신용호          Safari, Chrome, Firefox, Opera 한글파일 다운로드 처리 수정 (macOS에서 확장자 exe붙는 문제 처리)
  *   2022.12.02     윤창원          File ID 암호화 처리
  *
- * Copyright (C) 2009 by MOPAS  All right reserved.
+ * Copyright (C) 2009 by MOPAS  All rights reserved.
  *      </pre>
  */
 @Controller
