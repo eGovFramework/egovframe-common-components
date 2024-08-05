@@ -6,6 +6,7 @@ import javax.annotation.Resource;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -21,46 +22,46 @@ import egovframework.com.uss.olh.hpc.service.HpcmVO;
  * @since 2019.04.23
  * @version 3.8
  * @see
- * <pre>
+ * 
+ *      <pre>
  *
  *  수정일              수정자          수정내용
  *  ----------  --------  ---------------------------
  *  2019.04.23  신용호          최초 생성
+ *   2024.08.06  이백행          예상되는 DataIntegrityViolationException 추가
  *
- * @ 특징
+ * &#64; 특징
    - 사용자 지원 도움말 DB Insert 테스트
-   
- * </pre>
+ * 
+ *      </pre>
  */
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = { 
-		"file:src/main/resources/egovframework/spring/com/context-*.xml",
-		"file:src/main/resources/egovframework/spring/com/idgn/context-*.xml"
-})
+@ContextConfiguration(locations = { "file:src/main/resources/egovframework/spring/com/context-*.xml",
+		"file:src/main/resources/egovframework/spring/com/idgn/context-*.xml" })
 
 @WebAppConfiguration
-@ActiveProfiles({"mysql","session"})
+@ActiveProfiles({ "mysql", "session" })
 public class TestService {
 
 	@Resource(name = "EgovHpcmService")
-    private EgovHpcmService egovHpcmService;
-	
+	private EgovHpcmService egovHpcmService;
+
 	@Test
 	public void test() throws Exception {
-		//fail("Not yet implemented");
-		//mockMvc.perform(MockMvcRequestBuilders.get("/cmm/main/mainPage.do"));
-		//mockMvc.perform(MockMvcRequestBuilders.get("/cmm/main/mainPage.do"));
-		
+		// fail("Not yet implemented");
+		// mockMvc.perform(MockMvcRequestBuilders.get("/cmm/main/mainPage.do"));
+		// mockMvc.perform(MockMvcRequestBuilders.get("/cmm/main/mainPage.do"));
+
 		System.out.println("start test~~~");
 		HpcmVO searchVO = new HpcmVO();
 		searchVO.setFirstIndex(0);
 		List<HpcmVO> HpcmList = egovHpcmService.selectHpcmList(searchVO);
-		System.out.println("====> count = "+HpcmList.size());
+		System.out.println("====> count = " + HpcmList.size());
 	}
 
 	// 도움말 Insert 테스트
-	@Test
+	@Test(expected = DataIntegrityViolationException.class)
 	@Transactional
 	public void insertHpcmCn() throws Exception {
 
@@ -68,13 +69,13 @@ public class TestService {
 		hpcmVO.setHpcmDf("테스트 title -5");
 		hpcmVO.setHpcmDc("테스트 content -5");
 		hpcmVO.setHpcmSeCode("1");
-    	hpcmVO.setFrstRegisterId("USRCNFRM_00000000000");		// 최초등록자ID
-    	hpcmVO.setLastUpdusrId("USRCNFRM_00000000000");    	// 최종수정자ID
-		
+		hpcmVO.setFrstRegisterId("USRCNFRM_00000000000"); // 최초등록자ID
+		hpcmVO.setLastUpdusrId("USRCNFRM_00000000000"); // 최종수정자ID
+
 		egovHpcmService.insertHpcm(hpcmVO);
 		// induce length error
 		hpcmVO.setHpcmSeCode("11");
 		egovHpcmService.insertHpcm(hpcmVO);
 	}
-	
+
 }
