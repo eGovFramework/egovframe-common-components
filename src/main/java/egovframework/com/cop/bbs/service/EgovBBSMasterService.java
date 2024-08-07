@@ -2,7 +2,6 @@ package egovframework.com.cop.bbs.service;
 
 import java.util.List;
 import java.util.Map;
-
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 
 public interface EgovBBSMasterService {
@@ -29,9 +28,11 @@ public interface EgovBBSMasterService {
 	BlogVO checkBlogUser2(BlogVO blogVO);
 
 	void insertBoardBlogUserRqst(BlogUser blogUser);
-	
+
 	void insertBlogMaster(Blog blog) throws FdlException;
-	
+
+	void insertBlogMasterAndBoardBlogUserRqst(Blog blog, BlogUser blogUser ) throws Exception;
+
 	BlogVO selectBlogDetail(BlogVO blogVO) throws Exception;
 
 	List<BlogVO> selectBlogListPortlet(BlogVO blogVO) throws Exception;
