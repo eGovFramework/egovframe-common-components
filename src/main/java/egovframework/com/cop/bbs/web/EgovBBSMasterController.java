@@ -9,7 +9,6 @@ import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.bbs.service.Blog;
-import egovframework.com.cop.bbs.service.BlogUserVO;
 import egovframework.com.cop.bbs.service.BlogVO;
 import egovframework.com.cop.bbs.service.BoardMaster;
 import egovframework.com.cop.bbs.service.BoardMasterVO;
@@ -310,6 +309,7 @@ public class EgovBBSMasterController {
     }
 
     blogVO.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+
     BlogVO vo = egovBBSMasterService.checkBlogUser2(blogVO);
 
     if (vo != null) {
@@ -325,28 +325,9 @@ public class EgovBBSMasterController {
       return "egovframework/com/cop/bbs/EgovBlogRegist";
     }
 
-    String blogId = idgenServiceBlog.getNextStringId(); //블로그 아이디 채번
-    String bbsId = idgenServiceBbs.getNextStringId(); //게시판 아이디 채번
-
-    blog.setRegistSeCode("REGC02");
-    blog.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-    blog.setBbsId(bbsId);
-    blog.setBlogId(blogId);
-    blog.setBlogAt("Y");
-
-    // 블로그 개설자의 정보를 등록한다.
-    // 2022.11.11 시큐어코딩 처리
-    BlogUserVO blogUserVO = new BlogUserVO();
-    blogUserVO.setBlogId(blogId);
-    blogUserVO.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-    blogUserVO.setMngrAt("Y");
-    blogUserVO.setMberSttus("P");
-    blogUserVO.setUseAt("Y");
-    blogUserVO.setFrstRegisterId(
-        user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
     // 블로그 정보와 개설자 정보 등록한다
     // Controller는 Transaction처리를 하지 않아 Controller에서 오류 발생 시 데이터 정합성 오류 문제 발생
-    egovBBSMasterService.insertBlogMasterAndBoardBlogUserRqst(blog, blogUserVO);
+    egovBBSMasterService.insertBlogMasterAndBoardBlogUserRqst(blog, user);
 
     return "forward:/cop/bbs/selectBlogList.do";
   }
