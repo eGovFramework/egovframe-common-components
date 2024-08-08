@@ -12,16 +12,20 @@ import egovframework.com.sec.rnc.mip.mva.sp.comm.vo.SvcVO;
 import egovframework.com.sec.rnc.mip.mva.sp.comm.vo.TrxInfoSvcVO;
 
 /**
- * @Project     : 모바일 운전면허증 서비스 구축 사업
+ * @Project : 모바일 운전면허증 서비스 구축 사업
  * @PackageName : mip.mva.sp.comm.service.impl
- * @FileName    : SvcServiceImpl.java
- * @Author      : Min Gi Ju
- * @Date        : 2022. 6. 3.
+ * @FileName : SvcServiceImpl.java
+ * @Author : Min Gi Ju
+ * @Date : 2022. 6. 3.
  * @Description : 서비스 ServiceImpl
+ * 
+ *              <pre>
  * ==================================================
  * DATE            AUTHOR           NOTE
  * ==================================================
  * 2022. 6. 3.    Min Gi Ju        최초생성
+ *   2024.08.09  이백행          시큐어코딩 Exception 제거
+ *              </pre>
  */
 @Service
 public class SvcServiceImpl implements SvcService {
@@ -61,8 +65,6 @@ public class SvcServiceImpl implements SvcService {
 				throw new SpException(MipErrorEnum.SP_INVALID_DATA, null, "Service Code");
 			}
 		} catch (SpException e) {
-			throw e;
-		} catch (Exception e) {
 			throw new SpException(MipErrorEnum.SP_DB_ERROR, null, "Service select");
 		}
 
@@ -85,7 +87,11 @@ public class SvcServiceImpl implements SvcService {
 
 		try {
 			trxInfoSvc = svcDAO.selectTrxInfoSvc(trxcode);
-		} catch (Exception e) {
+
+			if (trxInfoSvc == null) {
+				throw new SpException(MipErrorEnum.SP_INVALID_DATA, trxcode, "TrxInfo select for Service");
+			}
+		} catch (SpException e) {
 			throw new SpException(MipErrorEnum.SP_DB_ERROR, trxcode, "TrxInfo select for Service");
 		}
 

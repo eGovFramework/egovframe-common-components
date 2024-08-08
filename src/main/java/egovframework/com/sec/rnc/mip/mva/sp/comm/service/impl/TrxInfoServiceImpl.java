@@ -9,16 +9,20 @@ import egovframework.com.sec.rnc.mip.mva.sp.comm.service.TrxInfoService;
 import egovframework.com.sec.rnc.mip.mva.sp.comm.vo.TrxInfoVO;
 
 /**
- * @Project     : 모바일 운전면허증 서비스 구축 사업
+ * @Project : 모바일 운전면허증 서비스 구축 사업
  * @PackageName : mip.mva.sp.comm.service.impl
- * @FileName    : TrxInfoServiceImpl.java
- * @Author      : Min Gi Ju
- * @Date        : 2022. 6. 3.
+ * @FileName : TrxInfoServiceImpl.java
+ * @Author : Min Gi Ju
+ * @Date : 2022. 6. 3.
  * @Description : 거래정보 ServiceImpl
+ * 
+ *              <pre>
  * ==================================================
  * DATE            AUTHOR           NOTE
  * ==================================================
  * 2022. 6. 3.    Min Gi Ju        최초생성
+ *   2024.08.09  이백행          시큐어코딩 Exception 제거
+ *              </pre>
  */
 @Service
 public class TrxInfoServiceImpl implements TrxInfoService {
@@ -54,8 +58,6 @@ public class TrxInfoServiceImpl implements TrxInfoService {
 				throw new SpException(MipErrorEnum.SP_TRXCODE_NOT_FOUND, trxcode);
 			}
 		} catch (SpException e) {
-			throw e;
-		} catch (Exception e) {
 			throw new SpException(MipErrorEnum.SP_DB_ERROR, trxcode, "trxInfo select");
 		}
 
@@ -72,8 +74,12 @@ public class TrxInfoServiceImpl implements TrxInfoService {
 	@Override
 	public void registTrxInfo(TrxInfoVO trxInfo) throws SpException {
 		try {
-			trxInfoDAO.insertTrxInfo(trxInfo);
-		} catch (Exception e) {
+			int result = trxInfoDAO.insertTrxInfo(trxInfo);
+
+			if (result == 0) {
+				throw new SpException(MipErrorEnum.SP_DB_ERROR, trxInfo.getTrxcode(), "trxInfo insert");
+			}
+		} catch (SpException e) {
 			throw new SpException(MipErrorEnum.SP_DB_ERROR, trxInfo.getTrxcode(), "trxInfo insert");
 		}
 	}
@@ -88,8 +94,12 @@ public class TrxInfoServiceImpl implements TrxInfoService {
 	@Override
 	public void modifyTrxInfo(TrxInfoVO trxInfo) throws SpException {
 		try {
-			trxInfoDAO.updateTrxInfo(trxInfo);
-		} catch (Exception e) {
+			int result = trxInfoDAO.updateTrxInfo(trxInfo);
+
+			if (result == 0) {
+				throw new SpException(MipErrorEnum.SP_DB_ERROR, trxInfo.getTrxcode(), "trxInfo update");
+			}
+		} catch (SpException e) {
 			throw new SpException(MipErrorEnum.SP_DB_ERROR, trxInfo.getTrxcode(), "trxInfo update");
 		}
 	}
@@ -104,12 +114,16 @@ public class TrxInfoServiceImpl implements TrxInfoService {
 	@Override
 	public void removeTrxInfo(String trxcode) throws SpException {
 		try {
-			trxInfoDAO.deleteTrxInfo(trxcode);
-		} catch (Exception e) {
+			int result = trxInfoDAO.deleteTrxInfo(trxcode);
+
+			if (result == 0) {
+				throw new SpException(MipErrorEnum.SP_DB_ERROR, trxcode, "trxInfo delete");
+			}
+		} catch (SpException e) {
 			throw new SpException(MipErrorEnum.SP_DB_ERROR, trxcode, "trxInfo delete");
 		}
 	}
-	
+
 	/**
 	 * VP 정보 저장
 	 * 
@@ -120,8 +134,12 @@ public class TrxInfoServiceImpl implements TrxInfoService {
 	@Override
 	public void insertVp(String vpName) throws SpException {
 		try {
-			trxInfoDAO.insertVp(vpName);
-		} catch (Exception e) {
+			int result = trxInfoDAO.insertVp(vpName);
+
+			if (result == 0) {
+				throw new SpException(MipErrorEnum.SP_DB_ERROR, null, "VP insert");
+			}
+		} catch (SpException e) {
 			throw new SpException(MipErrorEnum.SP_DB_ERROR, null, "VP insert");
 		}
 	}

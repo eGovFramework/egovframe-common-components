@@ -5,24 +5,28 @@ import egovframework.com.sec.rnc.mip.mva.sp.comm.vo.TrxInfoSvcVO;
 import egovframework.com.sec.rnc.mip.mva.sp.comm.vo.VP;
 
 /**
- * @Project     : 모바일 운전면허증 서비스 구축 사업
+ * @Project : 모바일 운전면허증 서비스 구축 사업
  * @PackageName : mip.mva.sp.comm.service
- * @FileName    : MipDidVpService.java
- * @Author      : Min Gi Ju
- * @Date        : 2022. 6. 3.
+ * @FileName : MipDidVpService.java
+ * @Author : Min Gi Ju
+ * @Date : 2022. 6. 3.
  * @Description : VP 검증 Service
+ * 
+ *              <pre>
  * ==================================================
  * DATE            AUTHOR           NOTE
  * ==================================================
  * 2022. 6. 3.    Min Gi Ju        최초생성
+ *   2024.08.09  이백행          시큐어코딩 Exception 제거
+ *              </pre>
  */
 public interface MipDidVpService {
 
 	/**
 	 * 초기 설정
 	 */
-	public void apiInit() throws Exception;
-	
+	public void apiInit();
+
 	/**
 	 * DID Assertion 생성
 	 * 
@@ -48,7 +52,7 @@ public interface MipDidVpService {
 	 * 
 	 * @MethodName : verifyVP
 	 * @param trxcode 거래코드
-	 * @param vp VP 정보
+	 * @param vp      VP 정보
 	 * @return 검증 결과
 	 * @throws SpException
 	 */
