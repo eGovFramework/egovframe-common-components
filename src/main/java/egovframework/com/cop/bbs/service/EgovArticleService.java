@@ -2,7 +2,6 @@ package egovframework.com.cop.bbs.service;
 
 import java.util.List;
 import java.util.Map;
-import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.springframework.web.multipart.MultipartFile;
 
 public interface EgovArticleService {
@@ -11,7 +10,7 @@ public interface EgovArticleService {
 
   BoardVO selectArticleDetail(BoardVO boardVO);
 
-  void insertArticle(Board board) throws FdlException;
+  void insertArticleAndFiles(Board board, List<MultipartFile> files) throws Exception;
 
   void updateArticle(Board board);
 

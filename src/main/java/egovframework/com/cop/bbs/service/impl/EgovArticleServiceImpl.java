@@ -12,7 +12,6 @@ import java.util.List;
 import java.util.Map;
 import javax.annotation.Resource;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.springframework.stereotype.Service;
@@ -79,7 +78,15 @@ public class EgovArticleServiceImpl extends EgovAbstractServiceImpl implements E
   }
 
   @Override
-  public void insertArticle(Board board) throws FdlException {
+  public void insertArticleAndFiles(Board board, List<MultipartFile> files) throws Exception {
+    List<FileVO> result = null;
+    String atchFileId = "";
+
+    if (files != null && !files.isEmpty()) {
+      result = fileUtil.parseFileInf(files, "BBS_", 0, "", "");
+      atchFileId = fileMngService.insertFileInfs(result);
+    }
+    board.setAtchFileId(atchFileId);
 
     if ("Y".equals(board.getReplyAt())) {
       // 답글인 경우 1. Parnts를 세팅, 2.Parnts의 sortOrdr을 현재글의 sortOrdr로 가져오도록, 3.nttNo는 현재 게시판의 순서대로
@@ -120,7 +127,7 @@ public class EgovArticleServiceImpl extends EgovAbstractServiceImpl implements E
         fileMngService.updateFileInfs(_result);
       }
     }
-		
+
     this.updateArticle(board);
   }
 

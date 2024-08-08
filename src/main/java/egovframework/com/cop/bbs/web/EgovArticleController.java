@@ -5,7 +5,6 @@ import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
-import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cmm.util.EgovXssChecker;
 import egovframework.com.cop.bbs.service.BlogVO;
@@ -354,16 +353,10 @@ public class EgovArticleController {
     }
 
     // 2022.11.11 시큐어코딩 처리
-    List<FileVO> result = null;
-    String atchFileId = "";
 
     //final Map<String, MultipartFile> files = multiRequest.getFileMap();
     final List<MultipartFile> files = multiRequest.getFiles("file_1");
-    if (!files.isEmpty()) {
-      result = fileUtil.parseFileInf(files, "BBS_", 0, "", "");
-      atchFileId = fileMngService.insertFileInfs(result);
-    }
-    board.setAtchFileId(atchFileId);
+
     board.setFrstRegisterId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
     board.setBbsId(boardVO.getBbsId());
     board.setBlogId(boardVO.getBlogId());
@@ -383,7 +376,7 @@ public class EgovArticleController {
     }
 
     board.setNttCn(unscript(board.getNttCn()));  // XSS 방지
-    egovArticleService.insertArticle(board);
+    egovArticleService.insertArticleAndFiles(board, files);
 
     if (boardVO.getBlogAt().equals("Y")) {
       return "forward:/cop/bbs/selectArticleBlogList.do";
@@ -504,14 +497,7 @@ public class EgovArticleController {
 
     // 2022.11.11 시큐어코딩 처리
     final List<MultipartFile> files = multiRequest.getFiles("file_1");
-    String atchFileId = "";
 
-    if (!files.isEmpty()) {
-      List<FileVO> result = fileUtil.parseFileInf(files, "BBS_", 0, "", "");
-      atchFileId = fileMngService.insertFileInfs(result);
-    }
-
-    board.setAtchFileId(atchFileId);
     board.setReplyAt("Y");
     board.setFrstRegisterId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
     board.setBbsId(board.getBbsId());
@@ -534,7 +520,7 @@ public class EgovArticleController {
     }
     board.setNttCn(unscript(board.getNttCn()));  // XSS 방지
 
-    egovArticleService.insertArticle(board);
+    egovArticleService.insertArticleAndFiles(board, files);
 
     return "forward:/cop/bbs/selectArticleList.do";
   }
@@ -858,7 +844,7 @@ public class EgovArticleController {
     // 2022.11.11 시큐어코딩 처리
     board.setFrstRegisterId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 
-    egovArticleService.insertArticle(board);
+    egovArticleService.insertArticleAndFiles(board, null);
 
     boardVO.setNttCn("");
     boardVO.setPassword("");
