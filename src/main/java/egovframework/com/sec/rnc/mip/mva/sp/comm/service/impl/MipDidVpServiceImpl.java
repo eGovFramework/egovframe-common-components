@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 import org.springframework.util.ResourceUtils;
+
 import com.google.gson.JsonSyntaxException;
 import com.raonsecure.omnione.core.crypto.GDPCryptoHelperClient;
 import com.raonsecure.omnione.core.data.did.DIDAssertionType;
@@ -61,16 +62,20 @@ import egovframework.com.sec.rnc.mip.mva.sp.comm.vo.VP;
 import egovframework.com.sec.rnc.mip.mva.sp.config.ConfigBean;
 
 /**
- * @Project     : 모바일 운전면허증 서비스 구축 사업
+ * @Project : 모바일 운전면허증 서비스 구축 사업
  * @PackageName : mip.mva.sp.comm.service.impl
- * @FileName    : MipDidVpServiceImpl.java
- * @Author      : Min Gi Ju
- * @Date        : 2022. 5. 31.
+ * @FileName : MipDidVpServiceImpl.java
+ * @Author : Min Gi Ju
+ * @Date : 2022. 5. 31.
  * @Description : VP 검증 ServiceImpl
+ * 
+ *              <pre>
  * ==================================================
  * DATE            AUTHOR           NOTE
  * ==================================================
  * 2022. 5. 31.    Min Gi Ju        최초생성
+ *   2024.08.09  이백행          시큐어코딩 Exception 제거
+ *              </pre>
  */
 @SuppressWarnings("unchecked")
 @Service
@@ -97,8 +102,8 @@ public class MipDidVpServiceImpl implements MipDidVpService {
 	/**
 	 * 생성자
 	 * 
-	 * @param configBean 커스텀 프로퍼티
-	 * @param svcService 서비스 Service
+	 * @param configBean     커스텀 프로퍼티
+	 * @param svcService     서비스 Service
 	 * @param trxInfoService 거래정보 Service
 	 */
 	public MipDidVpServiceImpl(ConfigBean configBean, SvcService svcService, TrxInfoService trxInfoService) {
@@ -110,7 +115,8 @@ public class MipDidVpServiceImpl implements MipDidVpService {
 	/**
 	 * 초기 설정
 	 */
-	public void apiInit() throws Exception {
+	@Override
+	public void apiInit() {
 		try {
 			LOGGER.debug("blockchainServerDomain : {}", configBean.getBlockchainServerDomain());
 			LOGGER.debug("keyManagerPath : {}", configBean.getKeymanagerPath());
@@ -121,8 +127,9 @@ public class MipDidVpServiceImpl implements MipDidVpService {
 			File keyManagerFile = ResourceUtils.getFile(configBean.getKeymanagerPath());
 			String keyManagerPath = keyManagerFile.getAbsolutePath();
 
-			keyManager = KeyManagerFactory.getKeyManager(KeyManagerType.DEFAULT, keyManagerPath, configBean.getKeymanagerPassword().toCharArray());
-			
+			keyManager = KeyManagerFactory.getKeyManager(KeyManagerType.DEFAULT, keyManagerPath,
+					configBean.getKeymanagerPassword().toCharArray());
+
 			keyManager.unLock(configBean.getKeymanagerPassword().toCharArray(), new OnUnLockListener() {
 				@Override
 				public void onSuccess() {
@@ -167,7 +174,8 @@ public class MipDidVpServiceImpl implements MipDidVpService {
 		try {
 			IWDIDManager didManager = new IWDIDManager(didFilePath);
 
-			didAssertion = didManager.makeDIDAssertion2(DIDAssertionType.DEFAULT, configBean.getSpKeyId(), HexUtils.toBytes(nonce), null, keyManager);
+			didAssertion = didManager.makeDIDAssertion2(DIDAssertionType.DEFAULT, configBean.getSpKeyId(),
+					HexUtils.toBytes(nonce), null, keyManager);
 		} catch (IWException e) {
 			throw new SpException(MipErrorEnum.UNKNOWN_ERROR, null, e.getErrorMsg());
 		}
@@ -243,8 +251,9 @@ public class MipDidVpServiceImpl implements MipDidVpService {
 		String nonce = Sha256.from(tempNonce).toString();
 
 		profile.setNonce(nonce);
-		
-		SpProfileParam spProfileParam = new SpProfileParam(blockChainServerInfo, keyManager, configBean.getSpKeyId(), svcCode, profile, didDoc.getId(), configBean.getSpAccount());
+
+		SpProfileParam spProfileParam = new SpProfileParam(blockChainServerInfo, keyManager, configBean.getSpKeyId(),
+				svcCode, profile, didDoc.getId(), configBean.getSpAccount());
 
 		if (profile.getKeyType() == EncryptKeyTypeEnum.ALGORITHM_RSA.getVal()) {
 			try {
@@ -270,7 +279,8 @@ public class MipDidVpServiceImpl implements MipDidVpService {
 		resultJson.setResult(true);
 		resultJson.setProfileJson(spProfileJson);
 
-		CommonProfile commonProfile = ConfigBean.gson.fromJson(Base64Util.decode(resultJson.getProfileBase64()), CommonProfile.class);
+		CommonProfile commonProfile = ConfigBean.gson.fromJson(Base64Util.decode(resultJson.getProfileBase64()),
+				CommonProfile.class);
 
 		TrxInfoVO trxInfo = new TrxInfoVO();
 
@@ -288,7 +298,7 @@ public class MipDidVpServiceImpl implements MipDidVpService {
 	 * 
 	 * @MethodName : verifyVP
 	 * @param trxcode 거래코드
-	 * @param vp VP 정보
+	 * @param vp      VP 정보
 	 * @return 검증 결과
 	 * @throws SpException
 	 */
@@ -341,7 +351,8 @@ public class MipDidVpServiceImpl implements MipDidVpService {
 			try {
 				AESType aESType = vCVerifyProfileResult.getEncryptType() == 1 ? AESType.AES128 : AESType.AES256;
 
-				byte[] vpDataByte = keyManager.rsaDecrypt(configBean.getSpRsaKeyId(), HexUtils.toBytes(vCVerifyProfileResult.getData()), aESType);
+				byte[] vpDataByte = keyManager.rsaDecrypt(configBean.getSpRsaKeyId(),
+						HexUtils.toBytes(vCVerifyProfileResult.getData()), aESType);
 
 				data = new String(vpDataByte, StandardCharsets.UTF_8);
 
@@ -350,14 +361,15 @@ public class MipDidVpServiceImpl implements MipDidVpService {
 				throw new SpException(MipErrorEnum.UNKNOWN_ERROR, trxcode, e.getErrorMsg());
 			}
 		}
-		
+
 		try {
 			vpDataMap = ConfigBean.gson.fromJson(data, HashMap.class);
 		} catch (JsonSyntaxException e) {
 			throw new SpException(MipErrorEnum.SP_UNEXPECTED_MSG_FORMAT, trxcode, "data");
 		}
-		
-		List<Map<String, Object>> verifiableCredentialList = (List<Map<String, Object>>) vpDataMap.get("verifiableCredential");
+
+		List<Map<String, Object>> verifiableCredentialList = (List<Map<String, Object>>) vpDataMap
+				.get("verifiableCredential");
 
 		if (ObjectUtils.isEmpty(verifiableCredentialList)) {
 			throw new SpException(MipErrorEnum.SP_UNEXPECTED_MSG_FORMAT, trxcode, "vp");
@@ -391,47 +403,47 @@ public class MipDidVpServiceImpl implements MipDidVpService {
 			throw new SpException(MipErrorEnum.UNKNOWN_ERROR, trxcode, "제출불가 상태 : " + vcStatus);
 		}
 		// VP 상태 확인 End
-		
+
 		// Nonce 위변조 확인 Start
 		TrxInfoVO curTrxInfo = trxInfoService.getTrxInfo(trxcode);
-		
+
 		if (curTrxInfo == null) {
 			throw new SpException(MipErrorEnum.SP_TRXCODE_NOT_FOUND, trxcode);
 		}
-		
+
 		String curVpVerifyResult = curTrxInfo.getVpVerifyResult();
-		
+
 		// 이미 verify 된 trx
 		if ("Y".equals(curVpVerifyResult)) {
 			throw new SpException(MipErrorEnum.SP_MSG_SEQ_ERROR, trxcode, "verifyResult == Y");
 		}
-		
+
 		String profileNonce = curTrxInfo.getNonce();
-		
+
 		// 일반인증시 proof를 사용하고 안심인증시 proofs를 사용
 		Map<String, Object> proof = (Map<String, Object>) vpDataMap.get("proof");
 		List<Map<String, Object>> proofs = (List<Map<String, Object>>) vpDataMap.get("proofs");
-		
+
 		if (ObjectUtils.isEmpty(proof) && ObjectUtils.isEmpty(proofs)) {
 			throw new SpException(MipErrorEnum.SP_UNEXPECTED_MSG_FORMAT, trxcode, "proof");
 		}
-		
+
 		if (!ObjectUtils.isEmpty(proof)) {
 			String vpNonce = (String) proof.get("nonce");
-			
+
 			LOGGER.debug("profileNonce : {}, vpNonce : {}", profileNonce, vpNonce);
-			
+
 			if (!profileNonce.equals(vpNonce)) {
 				throw new SpException(MipErrorEnum.SP_MISMATCHING_NONCE, trxcode);
 			}
 		}
-		
+
 		if (!ObjectUtils.isEmpty(proofs)) {
 			for (Map<String, Object> obj : proofs) {
 				String vpNonce = (String) obj.get("nonce");
-				
+
 				LOGGER.debug("profileNonce : {}, vpNonce : {}", profileNonce, vpNonce);
-				
+
 				if (!profileNonce.equals(vpNonce)) {
 					throw new SpException(MipErrorEnum.SP_MISMATCHING_NONCE, trxcode);
 				}
@@ -444,10 +456,11 @@ public class MipDidVpServiceImpl implements MipDidVpService {
 		trxInfo.setTrxcode(trxcode);
 		trxInfo.setTrxStsCode(TrxStsCodeEnum.VERIFY_COM.getVal());
 		trxInfo.setVpVerifyResult(vpVerifyResult);
-		
+
 		// VP 정보 추출 및 저장
-		if(result) {
-			Map<String, Object> credentialSubject = (Map<String, Object>) verifiableCredentialList.get(8).get("credentialSubject");
+		if (result) {
+			Map<String, Object> credentialSubject = (Map<String, Object>) verifiableCredentialList.get(8)
+					.get("credentialSubject");
 			List<Map<String, Object>> privacy = (List<Map<String, Object>>) credentialSubject.get("privacy");
 			trxInfo.setVpName((String) privacy.get(0).get("value"));
 		}
@@ -457,7 +470,7 @@ public class MipDidVpServiceImpl implements MipDidVpService {
 
 		return result;
 	}
-	
+
 	/**
 	 * VC 상태 조회
 	 * 
@@ -494,7 +507,7 @@ public class MipDidVpServiceImpl implements MipDidVpService {
 	 * 
 	 * @MethodName : verify
 	 * @param vCVerifyProfileResult 검증 파라미터
-	 * @param trxcode 거래코드
+	 * @param trxcode               거래코드
 	 * @return 검증 결과
 	 * @throws SpException
 	 */
@@ -505,8 +518,8 @@ public class MipDidVpServiceImpl implements MipDidVpService {
 
 		String svcCode = trxInfo.getSvcCode();
 
-		VcVerifyProfileParam vcVerifyProfileParam = new VcVerifyProfileParam(blockChainServerInfo, keyManager, configBean.getSpKeyId(),
-				configBean.getSpAccount(), vCVerifyProfileResult, didFilePath);
+		VcVerifyProfileParam vcVerifyProfileParam = new VcVerifyProfileParam(blockChainServerInfo, keyManager,
+				configBean.getSpKeyId(), configBean.getSpAccount(), vCVerifyProfileResult, didFilePath);
 
 		vcVerifyProfileParam.setServiceCode(svcCode);
 		vcVerifyProfileParam.setCheckVCExpirationDate(true);

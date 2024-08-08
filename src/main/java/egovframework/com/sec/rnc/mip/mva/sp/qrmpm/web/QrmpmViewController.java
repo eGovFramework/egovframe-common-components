@@ -10,26 +10,30 @@ import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.sec.rnc.mip.mva.sp.comm.service.MipDidVpService;
 
 /**
- * @Project     : 모바일 운전면허증 서비스 구축 사업
+ * @Project : 모바일 운전면허증 서비스 구축 사업
  * @PackageName : mip.mva.sp.qrmpm.web
- * @FileName    : QrmpmViewController.java
- * @Author      : Min Gi Ju
- * @Date        : 2022. 6. 3.
+ * @FileName : QrmpmViewController.java
+ * @Author : Min Gi Ju
+ * @Date : 2022. 6. 3.
  * @Description : QR-MPM 페이지 이동 Controller
+ * 
+ *              <pre>
  * ==================================================
  * DATE            AUTHOR           NOTE
  * ==================================================
  * 2022. 6. 3.    Min Gi Ju        최초생성
+ *   2024.08.09  이백행          시큐어코딩 Exception 제거
+ *              </pre>
  */
 @Controller
 @RequestMapping("/qrmpm")
 public class QrmpmViewController {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(QrmpmController.class);
-	
+
 	/** MipDidVpService */
 	private final MipDidVpService mipDidVpService;
-	
+
 	/**
 	 * 생성자
 	 * 
@@ -49,13 +53,9 @@ public class QrmpmViewController {
 	@GetMapping("/qrmpmView.do")
 	public String qrmpmView() {
 		LOGGER.debug("Mip SP Service 시작!");
-		
-		try {
-			mipDidVpService.apiInit();
-		} catch (Exception e) {
-			LOGGER.error("[OMN] API Init Error - Check Log", e);
-		}
-		
+
+		mipDidVpService.apiInit();
+
 		return "egovframework/com/sec/rnc/mip/qrmpm/qrmpmView";
 	}
 
