@@ -2,10 +2,11 @@ package egovframework.com.uss.ion.wik.bmk.service.impl;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.wik.bmk.service.WikiBookmark;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 위키북마크를 처리하는 Dao Class 구현
@@ -24,14 +25,15 @@ import org.springframework.stereotype.Repository;
 @Repository("wikiBookmarkDao")
 public class WikiBookmarkDao extends EgovComAbstractDAO {
     /**
-	 * 위키북마크 목록을 조회한다.
-	 * @param wikiBookmark -조회할 정보가 담긴 객체
-	 * @return List
-	 * @throws Exception
-	 */
-	public List<?> selectWikiBookmarkList(WikiBookmark wikiBookmark) throws Exception{
-		return selectList("WikiBookmark.selectWikiBookmarkList", wikiBookmark);
-	}
+     * 위키북마크 목록을 조회한다.
+     *
+     * @param wikiBookmark -조회할 정보가 담긴 객체
+     * @return List
+     * @throws Exception
+     */
+    public List<EgovMap> selectWikiBookmarkList(WikiBookmark wikiBookmark) throws Exception {
+        return selectList("WikiBookmark.selectWikiBookmarkList", wikiBookmark);
+    }
 
     /**
      * 위키북마크를(을) 중복을 조회한다.

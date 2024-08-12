@@ -2,6 +2,8 @@ package egovframework.com.uss.ion.wik.bmk.service;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+
 /**
  * 위키북마크를 처리하는 Service Class 구현
  * @author 공통콤포넌트 장동한
@@ -19,12 +21,13 @@ import java.util.List;
 public interface EgovWikiBookmarkService {
 
     /**
-	 * 위키북마크 목록을 조회한다.
-	 * @param wikiBookmark -조회할 정보가 담긴 객체
-	 * @return List
-	 * @throws Exception
-	 */
-	public List<?> selectWikiBookmarkList(WikiBookmark wikiBookmark) throws Exception;
+     * 위키북마크 목록을 조회한다.
+     *
+     * @param wikiBookmark -조회할 정보가 담긴 객체
+     * @return List
+     * @throws Exception
+     */
+    public List<EgovMap> selectWikiBookmarkList(WikiBookmark wikiBookmark) throws Exception;
 
     /**
      * 위키북마크를(을) 목록 전체 건수를(을) 조회한다.
