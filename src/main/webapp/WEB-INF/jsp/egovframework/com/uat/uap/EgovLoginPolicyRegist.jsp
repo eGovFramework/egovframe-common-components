@@ -25,6 +25,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -126,6 +127,7 @@ function ipValidate() {
 			<th><spring:message code="comUatUap.loginPolicyRegist.emplyrId"/> <span class="pilsu">*</span></th><!-- 사용자ID -->
 			<td class="left">
 			    <input id="emplyrId" name="emplyrId" type="text" value="<c:out value='${loginPolicy.emplyrId}'/>" title="<spring:message code="comUatUap.loginPolicyRegist.emplyrId"/>" size="30" maxlength="30" readonly="readonly" /><!-- 사용자ID -->
+			    <input name="emplyrIdEncrypt" id="emplyrIdEncrypt" value="${egovc:encrypt(loginPolicy.emplyrId)}" type="hidden">
 			</td>
 		</tr>
 		<tr>

@@ -26,6 +26,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <html lang="ko">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -134,7 +135,8 @@ function ipValidate() {
 		<tr>
 			<th><spring:message code="comUatUap.loginPolicyUpdt.emplyrId"/> <span class="pilsu">*</span></th><!-- 사용자ID -->
 			<td class="left">
-			    <input name="emplyrId" id="emplyrId" title="<spring:message code="comUatUap.loginPolicyUpdt.emplyrId"/>" type="text" <c:if test="${registerFlag == 'UPDATE'}">readonly</c:if> value="<c:out value='${loginPolicy.emplyrId}'/>" readonly="readonly" style="width:180px" />
+			    <input name="emplyrId" id="emplyrId" title="<spring:message code="comUatUap.loginPolicyUpdt.emplyrId"/>" type="text" <c:if test="${registerFlag == 'UPDATE'}">disabled</c:if> value="<c:out value='${loginPolicy.emplyrId}'/>" disabled="disabled" style="width:180px" />
+			    <input name="emplyrIdEncrypt" id="emplyrIdEncrypt" value="${egovc:encrypt(loginPolicy.emplyrId)}" type="hidden">
 			</td>
 		</tr>
 		<tr>
@@ -169,7 +171,7 @@ function ipValidate() {
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fncLoginPolicyUpdate();return false;" /><!-- 저장 -->
-		<span class="btn_s"><a href="<c:url value='/uat/uap/removeLoginPolicy.do'/>?emplyrId=<c:out value='${loginPolicyVO.emplyrId}'/>" onclick="fncLoginPolicyDelete(); return false;"><spring:message code="button.delete" /></a></span><!-- 삭제 -->
+		<span class="btn_s"><a href="<c:url value='/uat/uap/removeLoginPolicy.do'/>?emplyrId=&emplyrIdEncrypt=<c:out value='${egovc:encrypt(loginPolicy.emplyrId)}'/>" onclick="fncLoginPolicyDelete(); return false;"><spring:message code="button.delete" /></a></span><!-- 삭제 -->
 		<span class="btn_s"><a href="<c:url value='/uat/uap/selectLoginPolicyList.do'/>?pageIndex=<c:out value='${loginPolicyVO.pageIndex}'/>&amp;searchKeyword=<c:out value="${loginPolicyVO.searchKeyword}"/>&amp;searchCondition=1" onclick="fncSelectLoginPolicyList(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
 	</div>
 	<div style="clear:both;"></div>

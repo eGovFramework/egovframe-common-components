@@ -3,6 +3,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <%@ page import="egovframework.com.cmm.LoginVO" %>
 <%@ page import="egovframework.com.cmm.util.EgovUserDetailsHelper" %>
 <%
@@ -111,8 +112,8 @@ function fncSelectLoginPolicyList(pageNo){
     document.listForm.submit();
 }
 
-function fncSelectLoginPolicy(emplyrId) {
-    document.listForm.emplyrId.value = emplyrId;
+function fncSelectLoginPolicy(emplyrIdEncrypt) {
+    document.listForm.emplyrIdEncrypt.value = emplyrIdEncrypt;
     document.listForm.action = "<c:url value='/uat/uap/getLoginPolicy.do'/>";
     document.listForm.submit();
 }
@@ -137,7 +138,7 @@ function fncInsertCheckId() {
                     return;
                 }
                 checkedCounter++;
-                document.listForm.emplyrId.value = checkIdv[i].value;
+                document.listForm.emplyrIdEncrypt.value = checkIdv[i].value;
             }
         }
 
@@ -206,6 +207,7 @@ function press() {
 			</li>
 		</ul>
 		<input type="hidden" name="emplyrId">
+		<input type="hidden" name="emplyrIdEncrypt">
 		<input type="hidden" name="pageIndex" value="<c:if test="${empty loginPolicyVO.pageIndex }">1</c:if><c:if test="${!empty loginPolicyVO.pageIndex }"><c:out value='${loginPolicyVO.pageIndex}'/></c:if>">
 		<input type="hidden" name="searchCondition" value="1" >
 		</form>
@@ -240,11 +242,11 @@ function press() {
 			<tr>
 				<td>
 					<form name="item" action="<c:url value='/uat/uap/getLoginPolicy.do'/>">
-					    <input type="hidden" name="emplyrId" value="<c:out value="${loginPolicy.emplyrId}"/>">
+					    <input type="hidden" name="emplyrIdEncrypt" value="<c:out value="${egovc:encrypt(loginPolicy.emplyrId)}"/>">
 					    <input type="hidden" name="pageIndex" value="<c:out value='${loginPolicyVO.pageIndex}'/>">
 					    <input type="hidden" name="searchCondition" value="<c:out value='${loginPolicyVO.searchCondition}'/>">
 					    <input type="hidden" name="searchKeyword" value="<c:out value="${loginPolicyVO.searchKeyword}"/>">
-					    <span class="link ac"><input type="submit" value="<c:out value="${loginPolicy.emplyrId}"/>" onclick="fncSelectLoginPolicy('<c:out value="${loginPolicy.emplyrId}"/>'); return false;"></span>
+					    <span class="link ac"><input type="submit" value="<c:out value="${loginPolicy.emplyrId}"/>" onclick="fncSelectLoginPolicy('<c:out value="${egovc:encrypt(loginPolicy.emplyrId)}"/>'); return false;"></span>
 					</form>
 				</td>
 				<td><c:out value="${loginPolicy.emplyrNm}"/></td>
