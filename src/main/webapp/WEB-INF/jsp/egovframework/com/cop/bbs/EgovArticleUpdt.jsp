@@ -265,12 +265,14 @@ function fn_egov_inqire_articlelist() {
 			<!-- 하단 버튼 -->
 			<div class="btn">
 				<input type="submit" class="s_submit" value="<spring:message code="button.update" />" title="<spring:message code="button.update" /> <spring:message code="input.button" />" /><!-- 수정 -->
-				<span class="btn_s"><a href="<c:url value='/cop/bbs/selectArticleList.do' />?bbsId=${boardMasterVO.bbsId}"  title="<spring:message code="button.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span><!-- 목록 -->
+				<span class="btn_s"><a href="<c:url value='/cop/bbs/selectArticleList.do' />?bbsId=${boardMasterVO.bbsId}&searchCnd=${searchVO.searchCnd}&searchWrd=${searchVO.searchWrd}&pageIndex=${searchVO.pageIndex}"  title="<spring:message code="button.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span><!-- 목록 -->
 			</div>
 			<div style="clear: both;"></div>
 
 		</div>
 
+		<input name="searchCnd" type="hidden" value="<c:out value='${searchVO.searchCnd}'/>" />
+		<input name="searchWrd" type="hidden" value="<c:out value='${searchVO.searchWrd}'/>" />
 		<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>" />
 		<input type="hidden" name="bbsTyCode" value="<c:out value='${boardMasterVO.bbsTyCode}'/>" />
 		<input type="hidden" name="replyPosblAt"	value="<c:out value='${boardMasterVO.replyPosblAt}'/>" />
