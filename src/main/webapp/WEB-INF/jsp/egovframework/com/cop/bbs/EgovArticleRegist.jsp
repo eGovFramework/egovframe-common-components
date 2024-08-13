@@ -270,11 +270,13 @@ function fn_egov_init(){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input type="submit" class="s_submit" value="<spring:message code="button.create" />" title="<spring:message code="button.create" /> <spring:message code="input.button" />" /><!-- 등록 -->
-		<span class="btn_s"><a href="<c:url value='/cop/bbs/selectArticleList.do' />?bbsId=${boardMasterVO.bbsId}"  title="<spring:message code="button.list" />  <spring:message code="input.button" />"><spring:message code="button.list" /></a></span><!-- 목록 -->
+		<span class="btn_s"><a href="<c:url value='/cop/bbs/selectArticleList.do' />?bbsId=${boardMasterVO.bbsId}&searchCnd=${searchVO.searchCnd}&searchWrd=${searchVO.searchWrd}&pageIndex=${searchVO.pageIndex}"  title="<spring:message code="button.list" />  <spring:message code="input.button" />"><spring:message code="button.list" /></a></span><!-- 목록 -->
 	</div><div style="clear:both;"></div>
 	
 </div>
 
+<input type="hidden" name="searchCnd"  value="<c:out value='${searchVO.searchCnd}'/>"/>
+<input type="hidden" name="searchWrd"  value="<c:out value='${searchVO.searchWrd}'/>"/>
 <input type="hidden" name="pageIndex"  value="<c:out value='${searchVO.pageIndex}'/>"/>
 <input type="hidden" name="bbsTyCode" value="<c:out value='${boardMasterVO.bbsTyCode}'/>" />
 <input type="hidden" name="replyPosblAt" value="<c:out value='${boardMasterVO.replyPosblAt}'/>" />
