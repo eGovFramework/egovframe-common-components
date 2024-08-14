@@ -22,6 +22,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <c:set var="pageTitle"><spring:message code="comCopSecRam.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -109,8 +110,9 @@ function fncSelectAuthorList(pageNo){
 }
 
 function fncSelectAuthor(author) {
-    document.listForm.authorCode.value = author;
+    document.listForm.authorCodeEncrypt.value = author;
     document.listForm.action = "<c:url value='/sec/ram/EgovAuthor.do'/>";
+    document.listForm.method = 'get';
     document.listForm.submit();
 }
 
@@ -205,8 +207,8 @@ function press() {
 	</c:if>
 	<c:forEach var="author" items="${authorList}" varStatus="status">
 	<tr>
-		<td><input type="checkbox" name="delYn" class="check2" title="선택"><input type="hidden" name="checkId" value="<c:out value="${author.authorCode}"/>" /></td>
-		<td><a href="#LINK" onclick="javascript:fncSelectAuthor('<c:out value="${author.authorCode}"/>')"><c:out value="${author.authorCode}"/></a></td>
+		<td><input type="checkbox" name="delYn" class="check2" title="선택"><input type="hidden" name="checkId" value="<c:out value="${egovc:encrypt(author.authorCode)}"/>" /></td>
+		<td><a href="#LINK" onclick="javascript:fncSelectAuthor('<c:out value="${egovc:encrypt(author.authorCode)}"/>')"><c:out value="${author.authorCode}"/></a></td>
 		<td><c:out value="${author.authorNm}"/></td>
 		<td><c:out value="${author.authorDc}"/></td>
 		<td><c:out value="${fn:substring(author.authorCreatDe,0,10)}"/></td>
@@ -228,6 +230,7 @@ function press() {
 
 
 <input type="hidden" name="authorCode"/>
+<input type="hidden" name="authorCodeEncrypt"/>
 <input type="hidden" name="authorCodes"/>
 <input type="hidden" name="pageIndex" value="<c:out value='${authorManageVO.pageIndex}'/>"/>
 <input type="hidden" name="searchCondition" value="1"/>

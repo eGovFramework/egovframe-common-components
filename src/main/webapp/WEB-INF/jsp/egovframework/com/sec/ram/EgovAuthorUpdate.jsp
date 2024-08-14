@@ -24,6 +24,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <c:set var="pageTitle"><spring:message code="comCopSecRam.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -86,7 +87,8 @@ function fncAuthorDelete() {
 			<th>${title} <span class="pilsu">*</span></th>
 			<td class="left">
 			    <form:input path="authorCode" title="${title} ${inputTxt}" size="40" maxlength="30" />
-   				<div><form:errors path="authorCode" cssClass="error" /></div> 
+   				<div><form:errors path="authorCode" cssClass="error" /></div>
+   				<input type="hidden" name="authorCodeEncrypt" value="<c:out value="${egovc:encrypt(authorManageVO.authorCodeEncrypt)}" />"> 
 			</td>
 		</tr>
 		<!-- 권한명 -->
