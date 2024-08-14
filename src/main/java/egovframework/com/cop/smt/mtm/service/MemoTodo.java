@@ -64,26 +64,86 @@ public class MemoTodo implements Serializable {
 		this.todoId = todoId;
 	}
 
+	/**
+	 * 할일제목 값읽기
+	 * 
+	 * <pre>
+	 * 메모할일정보.할일제목
+	 * comtnmemotodo.`TODO_SJ` varchar(255) NOT NULL COMMENT '할일제목',
+	 * </pre>
+	 * 
+	 * @return
+	 */
 	public String getTodoNm() {
 		return todoNm;
 	}
 
+	/**
+	 * 할일제목 값설정
+	 * 
+	 * <pre>
+	 * 메모할일정보.할일제목
+	 * comtnmemotodo.`TODO_SJ` varchar(255) NOT NULL COMMENT '할일제목',
+	 * </pre>
+	 * 
+	 * @param todoNm
+	 */
 	public void setTodoNm(String todoNm) {
 		this.todoNm = todoNm;
 	}
 
+	/**
+	 * 할일시작시간 값읽기
+	 * 
+	 * <pre>
+	 * 메모할일정보.할일시작시간
+	 * comtnmemotodo.`TODO_BEGIN_TIME` varchar(14) NOT NULL COMMENT '할일시작시간',
+	 * </pre>
+	 *  
+	 * @return
+	 */
 	public String getTodoBeginTime() {
 		return todoBeginTime;
 	}
 
+	/**
+	 * 할일시작시간 값설정
+	 * 
+	 * <pre>
+	 * 메모할일정보.할일시작시간
+	 * comtnmemotodo.`TODO_BEGIN_TIME` varchar(14) NOT NULL COMMENT '할일시작시간',
+	 * </pre>
+	 * 
+	 * @param todoBeginTime
+	 */
 	public void setTodoBeginTime(String todoBeginTime) {
 		this.todoBeginTime = todoBeginTime;
 	}
 
+	/**
+	 * 할일종료시간 값읽기
+	 * 
+	 * <pre>
+	 * 메모할일정보.할일종료시간
+	 * comtnmemotodo.`TODO_END_TIME` varchar(14) NOT NULL COMMENT '할일종료시간',
+	 * </pre>
+	 * 
+	 * @return
+	 */
 	public String getTodoEndTime() {
 		return todoEndTime;
 	}
 
+	/**
+	 * 할일종료시간 값설정
+	 * 
+	 * <pre>
+	 * 메모할일정보.할일종료시간
+	 * comtnmemotodo.`TODO_END_TIME` varchar(14) NOT NULL COMMENT '할일종료시간',
+	 * </pre>
+	 * 
+	 * @param todoEndTime
+	 */
 	public void setTodoEndTime(String todoEndTime) {
 		this.todoEndTime = todoEndTime;
 	}
@@ -128,10 +188,30 @@ public class MemoTodo implements Serializable {
 		this.todoEndMin = todoEndMin;
 	}
 
+	/**
+	 * 작성자ID 값읽기
+	 * 
+	 * <pre>
+	 * 메모할일정보.작성자ID
+	 * comtnmemotodo.`WRTER_ID` varchar(20) NOT NULL COMMENT '작성자ID',
+	 * </pre>
+	 * 
+	 * @return
+	 */
 	public String getWrterId() {
 		return wrterId;
 	}
 
+	/**
+	 * 작성자ID 값설정
+	 * 
+	 * <pre>
+	 * 메모할일정보.작성자ID
+	 * comtnmemotodo.`WRTER_ID` varchar(20) NOT NULL COMMENT '작성자ID',
+	 * </pre>
+	 * 
+	 * @param wrterId
+	 */
 	public void setWrterId(String wrterId) {
 		this.wrterId = wrterId;
 	}
@@ -144,42 +224,142 @@ public class MemoTodo implements Serializable {
 		this.wrterNm = wrterNm;
 	}
 
+	/**
+	 * 할일내용 값읽기
+	 * 
+	 * <pre>
+	 * 메모할일정보.할일내용
+	 * comtnmemotodo.`TODO_CN` varchar(2500) NOT NULL COMMENT '할일내용',
+	 * </pre>
+	 * 
+	 * @return
+	 */
 	public String getTodoCn() {
 		return todoCn;
 	}
 
+	/**
+	 * 할일내용 값설정
+	 * 
+	 * <pre>
+	 * 메모할일정보.할일내용
+	 * comtnmemotodo.`TODO_CN` varchar(2500) NOT NULL COMMENT '할일내용',
+	 * </pre>
+	 * 
+	 * @param todoCn
+	 */
 	public void setTodoCn(String todoCn) {
 		this.todoCn = todoCn;
 	}
 
+	/**
+	 * 최초등록자ID 값읽기
+	 * 
+	 * <pre>
+	 * 메모할일정보.최초등록자ID
+	 * comtnmemotodo.`FRST_REGISTER_ID` varchar(20) NOT NULL COMMENT '최초등록자ID',
+	 * </pre>
+	 * 
+	 * @return
+	 */
 	public String getFrstRegisterId() {
 		return frstRegisterId;
 	}
 
+	/**
+	 * 최초등록자ID 값설정
+	 * 
+	 * <pre>
+	 * 메모할일정보.최초등록자ID
+	 * comtnmemotodo.`FRST_REGISTER_ID` varchar(20) NOT NULL COMMENT '최초등록자ID',
+	 * </pre>
+	 * 
+	 * @param frstRegisterId
+	 */
 	public void setFrstRegisterId(String frstRegisterId) {
 		this.frstRegisterId = frstRegisterId;
 	}
 
+	/**
+	 * 최초등록시점 값읽기
+	 * 
+	 * <pre>
+	 * 메모할일정보.최초등록시점
+	 * comtnmemotodo.`FRST_REGIST_PNTTM` datetime NOT NULL COMMENT '최초등록시점',
+	 * </pre>
+	 * 
+	 * @return
+	 */
 	public String getFrstRegisterPnttm() {
 		return frstRegisterPnttm;
 	}
 
+	/**
+	 * 최초등록시점 값설정
+	 * 
+	 * <pre>
+	 * 메모할일정보.최초등록시점
+	 * comtnmemotodo.`FRST_REGIST_PNTTM` datetime NOT NULL COMMENT '최초등록시점',
+	 * </pre>
+	 * 
+	 * @param frstRegisterPnttm
+	 */
 	public void setFrstRegisterPnttm(String frstRegisterPnttm) {
 		this.frstRegisterPnttm = frstRegisterPnttm;
 	}
 
+	/**
+	 * 최종수정자ID 값읽기
+	 * 
+	 * <pre>
+	 * 메모할일정보.최종수정자ID
+	 * comtnmemotodo.`LAST_UPDUSR_ID` varchar(20) DEFAULT NULL COMMENT '최종수정자ID',
+	 * </pre>
+	 * 
+	 * @return
+	 */
 	public String getLastUpdusrId() {
 		return lastUpdusrId;
 	}
 
+	/**
+	 * 최종수정자ID 값설정
+	 * 
+	 * <pre>
+	 * 메모할일정보.최종수정자ID
+	 * comtnmemotodo.`LAST_UPDUSR_ID` varchar(20) DEFAULT NULL COMMENT '최종수정자ID',
+	 * </pre>
+	 * 
+	 * @param lastUpdusrId
+	 */
 	public void setLastUpdusrId(String lastUpdusrId) {
 		this.lastUpdusrId = lastUpdusrId;
 	}
 
+	/**
+	 * 최종수정시점 값읽기
+	 * 
+	 * <pre>
+	 * 메모할일정보.최종수정시점
+	 * comtnmemotodo.`LAST_UPDT_PNTTM` datetime DEFAULT NULL COMMENT '최종수정시점',
+	 * </pre>
+	 * 
+	 * @return
+	 */
 	public String getLastUpdusrPnttm() {
 		return lastUpdusrPnttm;
 	}
 
+	/**
+	 * 최종수정시점 값설정
+	 * 
+	 * <pre>
+	 * 메모할일정보.최종수정시점
+	 * comtnmemotodo.`LAST_UPDT_PNTTM` datetime DEFAULT NULL COMMENT '최종수정시점',
+	 * </pre>
+	 * 
+	 * @param lastUpdusrPnttm
+	 */
 	public void setLastUpdusrPnttm(String lastUpdusrPnttm) {
 		this.lastUpdusrPnttm = lastUpdusrPnttm;
 	}
