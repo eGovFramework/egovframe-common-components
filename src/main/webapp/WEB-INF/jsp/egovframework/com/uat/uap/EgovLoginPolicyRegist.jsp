@@ -41,6 +41,7 @@
 function fncSelectLoginPolicyList() {
     var varFrom = document.getElementById("loginPolicy");
     varFrom.action = "<c:url value='/uat/uap/selectLoginPolicyList.do'/>";
+    varFrom.method = 'get';
     varFrom.submit();
 }
 
