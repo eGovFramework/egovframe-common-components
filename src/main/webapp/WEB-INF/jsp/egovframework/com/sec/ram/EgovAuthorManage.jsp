@@ -109,13 +109,15 @@ function fncSelectAuthorList(pageNo){
 }
 
 function fncSelectAuthor(author) {
+	event.preventDefault();
     document.listForm.authorCode.value = author;
-    document.listForm.action = "<c:url value='/sec/ram/EgovAuthor.do'/>";
+    document.listForm.action = '<c:url value="/sec/ram/EgovAuthor.do" />';
     document.listForm.submit();
 }
 
 function fncAddAuthorInsert() {
-    location.replace("<c:url value='/sec/ram/EgovAuthorInsertView.do'/>");
+	event.preventDefault();
+	location.href = '<c:url value="/sec/ram/EgovAuthorInsertView.do" />?searchCondition=<c:out value="${authorManageVO.searchCondition}" />&searchKeyword=<c:out value="${authorManageVO.searchKeyword}" />&pageIndex=<c:out value="${authorManageVO.pageIndex}" />';
 }
 
 function fncAuthorDeleteList() {
@@ -154,12 +156,18 @@ function press() {
     }
 }
 
+function fn_egov_onload() {
+	var message = '<c:out value="${param.message}" />';
+	if (!!message) {
+		alert(message);
+	}
+}
 </script>
 </head>
-<body>
+<body onload="fn_egov_onload();">
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
-<form:form name="listForm" action="${pageContext.request.contextPath}/sec/ram/EgovAuthorList.do" method="post">
+<form:form name="listForm" action="${pageContext.request.contextPath}/sec/ram/EgovAuthorList.do" method="get">
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1><!-- 권한관리 목록 -->
 	<!-- 검색영역 -->
@@ -170,8 +178,9 @@ function press() {
 			<li style="border: 0px solid #d2d2d2;">
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${authorManageVO.searchKeyword}"/>'  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
+				<span class="btn_b"><a href="<c:url value="/sec/ram/EgovAuthorList.do" />" title="<spring:message code="button.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
 				<input type="button" class="s_btn" onClick="fncAuthorDeleteList()" value="<spring:message code="title.delete" />" title="<spring:message code="title.delete" /> <spring:message code="input.button" />" />
-				<span class="btn_b"><a href="<c:url value='/sec/ram/EgovAuthorInsertView.do'/>" onClick="javascript:fncAddAuthorInsert();"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="<c:url value="/sec/ram/EgovAuthorInsertView.do" />?searchCondition=<c:out value="${authorManageVO.searchCondition}" />&searchKeyword=<c:out value="${authorManageVO.searchKeyword}" />&pageIndex=<c:out value="${authorManageVO.pageIndex}" />" onclick="fncAddAuthorInsert();" title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
@@ -206,7 +215,7 @@ function press() {
 	<c:forEach var="author" items="${authorList}" varStatus="status">
 	<tr>
 		<td><input type="checkbox" name="delYn" class="check2" title="선택"><input type="hidden" name="checkId" value="<c:out value="${author.authorCode}"/>" /></td>
-		<td><a href="#LINK" onclick="javascript:fncSelectAuthor('<c:out value="${author.authorCode}"/>')"><c:out value="${author.authorCode}"/></a></td>
+		<td><a href="<c:url value="/sec/ram/EgovAuthor.do" />?authorCode=<c:out value="${author.authorCode}" />" onclick="fncSelectAuthor('<c:out value="${author.authorCode}" />');"><c:out value="${author.authorCode}"/></a></td>
 		<td><c:out value="${author.authorNm}"/></td>
 		<td><c:out value="${author.authorDc}"/></td>
 		<td><c:out value="${fn:substring(author.authorCreatDe,0,10)}"/></td>
