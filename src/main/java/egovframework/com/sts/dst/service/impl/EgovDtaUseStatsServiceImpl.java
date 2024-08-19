@@ -7,6 +7,7 @@ import javax.annotation.Resource;
 
 import org.aspectj.lang.JoinPoint;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
@@ -138,8 +139,7 @@ public class EgovDtaUseStatsServiceImpl extends EgovAbstractServiceImpl implemen
 			try {
 				vo.setDtaUseStatsId(egovDtaUseStatsIdGnrService.getNextStringId());
 			} catch (FdlException e) {
-				processException("fail.common.msg");
-//				throw new BaseRuntimeException("FdlException: egovDtaUseStatsIdGnrService", e);
+				throw new BaseRuntimeException("FdlException: egovDtaUseStatsIdGnrService", e);
 			}
 			vo.setBbsId(dtaUseStats.getBbsId());
 			vo.setNttId(dtaUseStats.getNttId());
