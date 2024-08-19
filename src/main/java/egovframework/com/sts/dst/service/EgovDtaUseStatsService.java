@@ -67,8 +67,9 @@ public interface EgovDtaUseStatsService {
 	 * 
 	 * @param jp          - AOP의 pointcut을 위한 JoinPoint
 	 * @param dtaUseStats - 자료이용현황 model
+	 * @throws Exception
 	 */
-	public void insertDtaUseStats(JoinPoint jp, @RequestParam Map<String, Object> commandMap);
+	public void insertDtaUseStats(JoinPoint jp, @RequestParam Map<String, Object> commandMap) throws Exception;
 
 	/**
 	 * 등록일자별 통계정보를 그래프로 표현한다.

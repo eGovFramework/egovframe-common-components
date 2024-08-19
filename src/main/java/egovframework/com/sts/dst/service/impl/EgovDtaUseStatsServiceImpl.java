@@ -7,7 +7,6 @@ import javax.annotation.Resource;
 
 import org.aspectj.lang.JoinPoint;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
@@ -116,9 +115,10 @@ public class EgovDtaUseStatsServiceImpl extends EgovAbstractServiceImpl implemen
 	 * 
 	 * @param jp          - AOP의 pointcut을 위한 JoinPoint
 	 * @param dtaUseStats - 자료이용현황 model
+	 * @throws Exception
 	 */
 	@Override
-	public void insertDtaUseStats(JoinPoint jp, @RequestParam Map<String, Object> commandMap) {
+	public void insertDtaUseStats(JoinPoint jp, @RequestParam Map<String, Object> commandMap) throws Exception {
 
 		String atchFileId = (String) commandMap.get("atchFileId");
 		String fileSn = (String) commandMap.get("fileSn");
@@ -139,7 +139,7 @@ public class EgovDtaUseStatsServiceImpl extends EgovAbstractServiceImpl implemen
 			try {
 				vo.setDtaUseStatsId(egovDtaUseStatsIdGnrService.getNextStringId());
 			} catch (FdlException e) {
-				throw new BaseRuntimeException("FdlException: egovDtaUseStatsIdGnrService", e);
+				throw processException("fail.common.msg", e);
 			}
 			vo.setBbsId(dtaUseStats.getBbsId());
 			vo.setNttId(dtaUseStats.getNttId());
