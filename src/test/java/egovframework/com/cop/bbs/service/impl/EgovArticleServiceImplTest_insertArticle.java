@@ -9,7 +9,6 @@ import org.springframework.test.context.ContextConfiguration;
 import egovframework.com.cop.bbs.service.Board;
 import egovframework.com.cop.bbs.service.EgovArticleService;
 import egovframework.com.test.EgovTestV1;
-import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -34,7 +33,7 @@ public class EgovArticleServiceImplTest_insertArticle extends EgovTestV1 {
 		// when
 		try {
 			egovArticleService.insertArticle(board);
-		} catch (FdlException e) {
+		} catch (Exception e) {
 			log.error(e.getMessage());
 			result = false;
 		}

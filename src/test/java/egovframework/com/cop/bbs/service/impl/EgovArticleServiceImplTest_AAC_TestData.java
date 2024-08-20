@@ -4,6 +4,9 @@ import java.util.Date;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.fdl.string.EgovDateUtil;
 import org.springframework.stereotype.Service;
 
 import com.github.javaparser.utils.Log;
@@ -14,11 +17,6 @@ import egovframework.com.cop.bbs.service.Board;
 import egovframework.com.cop.bbs.service.BoardMaster;
 import egovframework.com.cop.bbs.service.BoardVO;
 import egovframework.com.cop.bbs.service.EgovArticleService;
-
-import org.egovframe.rte.fdl.cmmn.exception.FdlException;
-import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-import org.egovframe.rte.fdl.string.EgovDateUtil;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -52,7 +50,7 @@ public class EgovArticleServiceImplTest_AAC_TestData {
 
 		return boardMaster;
 	}
-	
+
 	public Board insertArticle() {
 		// insertBBSMasterInf
 		BoardMaster boardMaster = new BoardMaster();
@@ -87,25 +85,25 @@ public class EgovArticleServiceImplTest_AAC_TestData {
 
 		return board;
 	}
-	
+
 	public BoardVO selectArticleList() {
 		Board board = insertArticle();
 
 		BoardVO boardVO = new BoardVO();
 		boardVO.setBbsId(board.getBbsId());
-		
+
 		boardVO.setNttSj(board.getNttSj());
 		boardVO.setLastUpdusrId(board.getFrstRegisterId());
 		board.setUseAt(board.getUseAt());
 
 		boardVO.setNttCn(board.getNttCn());
-		
+
 		try {
 			egovArticleService.insertArticle(board);
-		} catch (FdlException e) {
+		} catch (Exception e) {
 			log.error(e.getMessage());
 		}
-		
+
 		boardVO.setNttId(board.getNttId());
 
 		return boardVO;
