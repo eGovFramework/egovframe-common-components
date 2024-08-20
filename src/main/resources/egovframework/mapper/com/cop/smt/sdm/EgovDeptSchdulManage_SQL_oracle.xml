@@ -182,7 +182,7 @@
 		)
 		]]>
 	 </if>
-	 <if test='searchMode == "DAILY""'>
+	 <if test='searchMode == "DAILY"'>
 	 <![CDATA[
 	 	 AND (#{searchDay} BETWEEN SUBSTR(A.SCHDUL_BGNDE, 1, 8)  AND SUBSTR(A.SCHDUL_ENDDE, 1, 8) )
 	 ]]>  
