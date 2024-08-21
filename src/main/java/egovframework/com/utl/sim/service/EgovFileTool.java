@@ -98,10 +98,10 @@ public class EgovFileTool {
 		if (!file.exists()) {
 			if (file.mkdirs()) {
 				LOGGER.debug("[file.mkdirs] file : Path Creation Success");
+				result = file.getAbsolutePath();
 			} else {
 				LOGGER.error("[file.mkdirs] file : Path Creation Fail");
 			}
-			file.getAbsolutePath();
 		}
 
 		return result;
