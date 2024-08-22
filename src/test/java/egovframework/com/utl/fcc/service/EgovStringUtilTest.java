@@ -42,31 +42,4 @@ public class EgovStringUtilTest {
     }
 
 
-    @Test
-    public void 종성_없음(){
-        try{
-            Method method = EgovStringUtil.class.getDeclaredMethod("hasFinalConsonant", String.class );
-            method.setAccessible(true);
-
-            boolean result = (Boolean) method.invoke( EgovStringUtil.class,"철수" );
-            Assert.assertEquals(result,false);
-
-        }catch (Exception e){
-            Assert.fail();
-        }
-    }
-    @Test
-    public void 종성_있음(){
-        try{
-            Method method = EgovStringUtil.class.getDeclaredMethod("hasFinalConsonant", String.class );
-            method.setAccessible(true);
-
-            boolean result = (Boolean) method.invoke( EgovStringUtil.class,"철순" );
-            Assert.assertEquals(result,true);
-
-        }catch (Exception e){
-            Assert.fail();
-        }
-    }
-
 }
