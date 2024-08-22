@@ -6,31 +6,31 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.cop.scp.service.EgovArticleScrapService;
 import egovframework.com.cop.scp.service.Scrap;
 import egovframework.com.cop.scp.service.ScrapVO;
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import org.egovframe.rte.fdl.cmmn.exception.FdlException;
-import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 
 @Service("EgovArticleScrapService")
-public class EgovArticleScrapServiceImpl extends EgovAbstractServiceImpl implements EgovArticleScrapService{
+public class EgovArticleScrapServiceImpl extends EgovAbstractServiceImpl implements EgovArticleScrapService {
 
 	@Resource(name = "EgovArticleScrapDAO")
-    private EgovArticleScrapDAO egovArticleScrapDao;
-    
-    @Resource(name="egovScrapIdGnrService")
-    private EgovIdGnrService idgenService;
-	
+	private EgovArticleScrapDAO egovArticleScrapDao;
+
+	@Resource(name = "egovScrapIdGnrService")
+	private EgovIdGnrService idgenService;
+
 	@Override
 	public Map<String, Object> selectArticleScrapList(ScrapVO scrapVO) {
 		List<ScrapVO> result = egovArticleScrapDao.selectArticleScrapList(scrapVO);
 		int cnt = egovArticleScrapDao.selectArticleScrapListCnt(scrapVO);
-		
+
 		Map<String, Object> map = new HashMap<String, Object>();
-		
+
 		map.put("resultList", result);
 		map.put("resultCnt", Integer.toString(cnt));
 
@@ -38,11 +38,16 @@ public class EgovArticleScrapServiceImpl extends EgovAbstractServiceImpl impleme
 	}
 
 	@Override
-	public void insertArticleScrap(Scrap scrap) throws FdlException {
-		
-		String scrapId = idgenService.getNextStringId();
+	public void insertArticleScrap(Scrap scrap) throws Exception {
+
+		String scrapId;
+		try {
+			scrapId = idgenService.getNextStringId();
+		} catch (FdlException e) {
+			throw processException("fail.common.msg", e);
+		}
 		scrap.setScrapId(scrapId);
-		
+
 		egovArticleScrapDao.insertArticleScrap(scrap);
 	}
 
