@@ -3,10 +3,7 @@ package egovframework.com.utl.fcc.service;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.lang.reflect.Method;
-
 public class EgovStringUtilTest {
-
     @Test
     public void 보조사_은(){
         String expect = EgovStringUtil.getAuxiliaryParticle("이름");
@@ -40,6 +37,4 @@ public class EgovStringUtilTest {
         String expect = EgovStringUtil.getObjectParticle("나이");
         Assert.assertEquals( expect , "나이를" );
     }
-
-
 }
