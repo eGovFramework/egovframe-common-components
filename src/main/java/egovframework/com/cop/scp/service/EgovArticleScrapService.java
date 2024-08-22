@@ -2,13 +2,11 @@ package egovframework.com.cop.scp.service;
 
 import java.util.Map;
 
-import org.egovframe.rte.fdl.cmmn.exception.FdlException;
-
 public interface EgovArticleScrapService {
 
 	Map<String, Object> selectArticleScrapList(ScrapVO scrapVO);
 
-	void insertArticleScrap(Scrap scrap) throws FdlException;
+	void insertArticleScrap(Scrap scrap) throws Exception;
 
 	ScrapVO selectArticleScrapDetail(ScrapVO scrapVO);
 
