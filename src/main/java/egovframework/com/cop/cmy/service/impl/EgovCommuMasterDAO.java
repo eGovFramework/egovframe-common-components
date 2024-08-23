@@ -2,7 +2,6 @@ package egovframework.com.cop.cmy.service.impl;
 
 import java.util.List;
 
-import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
@@ -41,9 +40,8 @@ public class EgovCommuMasterDAO extends EgovComAbstractDAO {
 	 *
 	 * @param cmmntyVO
 	 * @return
-	 * @throws Exception
 	 */
-	public List<CommunityVO> selectCommuMasterListPortlet(CommunityVO cmmntyVO) throws DataAccessException {
+	public List<CommunityVO> selectCommuMasterListPortlet(CommunityVO cmmntyVO) {
 		return selectList("CommuMaster.selectCommuMasterListPortlet", cmmntyVO);
 	}
 
