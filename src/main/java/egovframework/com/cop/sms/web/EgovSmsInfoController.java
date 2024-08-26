@@ -4,6 +4,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -21,25 +23,25 @@ import egovframework.com.cop.sms.service.EgovSmsInfoService;
 import egovframework.com.cop.sms.service.Sms;
 import egovframework.com.cop.sms.service.SmsVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import org.egovframe.rte.fdl.property.EgovPropertyService;
-import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
  * 문자메시지 서비스 컨트롤러 클래스
+ * 
  * @author 공통컴포넌트개발팀 한성곤
  * @since 2009.06.18
  * @version 1.0
  * @see
  *
- * <pre>
+ *      <pre>
  * << 개정이력(Modification Information) >>
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.06.18 한성곤          최초 생성
- *   2011.8.26	정진오			IncludedInfo annotation 추가
+ *   2009.06.18  한성곤          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2024.08.27  이백행          컨트리뷰션 시큐어코딩 Exception 제거
  *
- * </pre>
+ *      </pre>
  */
 
 @Controller
@@ -57,7 +59,8 @@ public class EgovSmsInfoController {
 	@Autowired
 	private DefaultBeanValidator beanValidator;
 
-	//private static final Logger LOGGER = LoggerFactory.getLogger(EgovSmsInfoController.class);
+	// private static final Logger LOGGER =
+	// LoggerFactory.getLogger(EgovSmsInfoController.class);
 
 	/**
 	 * 문자메시지 목록을 조회한다.
@@ -65,18 +68,17 @@ public class EgovSmsInfoController {
 	 * @param smsVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@IncludedInfo(name = "문자메시지", order = 310, gid = 40)
 	@RequestMapping("/cop/sms/selectSmsList.do")
-	public String selectSmsList(@ModelAttribute("searchVO") SmsVO smsVO, ModelMap model) throws Exception {
+	public String selectSmsList(@ModelAttribute("searchVO") SmsVO smsVO, ModelMap model) {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-   	 	// KISA 보안취약점 조치 (2018-12-10, 신용호)
-        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		// KISA 보안취약점 조치 (2018-12-10, 신용호)
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-        if(!isAuthenticated) {
-            return "redirect:/uat/uia/egovLoginUsr.do";
-        }
+		if (!isAuthenticated) {
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
 		smsVO.setUniqId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 
@@ -111,10 +113,9 @@ public class EgovSmsInfoController {
 	 * @param smsVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@RequestMapping("/cop/sms/addSms.do")
-	public String addSms(@ModelAttribute("searchVO") SmsVO smsVO, ModelMap model) throws Exception {
+	public String addSms(@ModelAttribute("searchVO") SmsVO smsVO, ModelMap model) {
 
 		Sms sms = new Sms();
 
@@ -135,8 +136,8 @@ public class EgovSmsInfoController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/cop/sms/insertSms.do")
-	public String insertSms(@ModelAttribute("searchVO") SmsVO smsVO, @ModelAttribute("sms") Sms sms, BindingResult bindingResult, SessionStatus status, ModelMap model)
-			throws Exception {
+	public String insertSms(@ModelAttribute("searchVO") SmsVO smsVO, @ModelAttribute("sms") Sms sms,
+			BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -148,11 +149,9 @@ public class EgovSmsInfoController {
 
 		// 서버 점검 추가
 		/*
-		if (true) {
-		    model.addAttribute("msg", "서버와의 연결이 정상적이지 않습니다.");
-		    return "egovframework/com/cop/sms/EgovSmsInfoRegist";
-		}
-		*/
+		 * if (true) { model.addAttribute("msg", "서버와의 연결이 정상적이지 않습니다."); return
+		 * "egovframework/com/cop/sms/EgovSmsInfoRegist"; }
+		 */
 
 		if (isAuthenticated) {
 			sms.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
@@ -169,17 +168,16 @@ public class EgovSmsInfoController {
 	 * @param smsVO
 	 * @param model
 	 * @return
-	 * @throws Exception
 	 */
 	@RequestMapping("/cop/sms/selectSms.do")
-	public String selectSms(@ModelAttribute("searchVO") SmsVO smsVO, ModelMap model) throws Exception {
+	public String selectSms(@ModelAttribute("searchVO") SmsVO smsVO, ModelMap model) {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-   	 	// KISA 보안취약점 조치 (2018-12-10, 신용호)
-        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		// KISA 보안취약점 조치 (2018-12-10, 신용호)
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-        if(!isAuthenticated) {
-            return "redirect:/uat/uia/egovLoginUsr.do";
-        }
+		if (!isAuthenticated) {
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
 		SmsVO vo = smsInfoService.selectSmsInf(smsVO);
 
