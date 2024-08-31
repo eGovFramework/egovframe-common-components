@@ -25,62 +25,62 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <html lang="ko">
 <head>
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
-<title><spring:message code="comSymCcmZip.ccmZipSearchList.title"/></title><!-- 우편번호 찾기 -->
-<link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
-<link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialogCallee.js'/>" ></script>
-<script type="text/javascript">
-<!--
-/* ********************************************************
- * 페이징 처리 함수
- ******************************************************** */
-function fn_egov_pageview(pageNo){
-	document.listForm.pageIndex.value = pageNo;
-	document.listForm.action = "<c:url value='/sym/ccm/zip/EgovCcmZipSearchList.do'/>";
-   	document.listForm.submit();
-}
-/* ********************************************************
- * 조회 처리
- ******************************************************** */
-function fn_egov_search_Zip(){
-	document.listForm.pageIndex.value = 1;
-	document.listForm.searchList.value = document.getElementById("searchList").value;
-	document.listForm.searchCondition.value = document.getElementById("searchCondition").value;
-	document.listForm.searchCondition2.value = document.getElementById("searchCondition2").value;
-   	document.listForm.submit();
-}
-/* ********************************************************
- * 결과 우편번호,주소 반환
- ******************************************************** */
-function fn_egov_return_Zip(zip,addr){
-	var retVal   = new Object();
-	var sZip     = zip;
-	var vZip     = zip.substring(0,3)+zip.substring(3,6);
-	var sAddr    = addr.replace(/^\s+|\s+$/g,"");
-	retVal.sZip  = sZip;
-	retVal.vZip  = vZip;
-	retVal.sAddr = sAddr;
-	
-	setReturnValue(retVal);
-	
-	parent.window.returnValue = retVal;
-	parent.window.close();
-}
-/* ********************************************************
- * 목록회면 처리 함수
- ******************************************************** */
-function fn_egov_list(){
-	if (document.getElementById("searchList").value == 1) {
-		document.getElementById("searchCondition").style.display="";
-		document.getElementById("searchCondition2").style.display="none";
-	} else {
-		document.getElementById("searchCondition").style.display="none";
-		document.getElementById("searchCondition2").style.display="";
-	}
-}
--->
-</script>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8" >
+	<title><spring:message code="comSymCcmZip.ccmZipSearchList.title"/></title><!-- 우편번호 찾기 -->
+	<link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
+	<link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialogCallee.js'/>" ></script>
+	<script type="text/javascript">
+		<!--
+		/* ********************************************************
+         * 페이징 처리 함수
+         ******************************************************** */
+		function fn_egov_pageview(pageNo){
+			document.listForm.pageIndex.value = pageNo;
+			document.listForm.action = "<c:url value='/sym/ccm/zip/EgovCcmZipSearchList.do'/>";
+			document.listForm.submit();
+		}
+		/* ********************************************************
+         * 조회 처리
+         ******************************************************** */
+		function fn_egov_search_Zip(){
+			document.listForm.pageIndex.value = 1;
+			document.listForm.searchList.value = document.getElementById("searchList").value;
+			document.listForm.searchCondition.value = document.getElementById("searchCondition").value;
+			document.listForm.searchCondition2.value = document.getElementById("searchCondition2").value;
+			document.listForm.submit();
+		}
+		/* ********************************************************
+         * 결과 우편번호,주소 반환
+         ******************************************************** */
+		function fn_egov_return_Zip(zip,addr){
+			var retVal   = new Object();
+			var sZip     = zip;
+			var vZip     = zip.substring(0,3)+zip.substring(3,6);
+			var sAddr    = addr.replace(/^\s+|\s+$/g,"");
+			retVal.sZip  = sZip;
+			retVal.vZip  = vZip;
+			retVal.sAddr = sAddr;
+
+			setReturnValue(retVal);
+
+			parent.window.returnValue = retVal;
+			parent.window.close();
+		}
+		/* ********************************************************
+         * 목록회면 처리 함수
+         ******************************************************** */
+		function fn_egov_list(){
+			if (document.getElementById("searchList").value == 1) {
+				document.getElementById("searchCondition").style.display="";
+				document.getElementById("searchCondition2").style.display="none";
+			} else {
+				document.getElementById("searchCondition").style.display="none";
+				document.getElementById("searchCondition2").style.display="";
+			}
+		}
+		-->
+	</script>
 </head>
 
 <body onLoad="fn_egov_list()">
@@ -89,59 +89,59 @@ function fn_egov_list(){
 
 <form name="listForm" action="<c:url value='/sym/ccm/zip/EgovCcmZipSearchList.do'/>" method="post">
 
-<div class="board" style="width:680px">
+	<div class="board" style="width:680px">
 
-	<h1><spring:message code="comSymCcmZip.ccmZipSearchList.title"/></h1><!-- 우편번호 찾기 -->
+		<h1><spring:message code="comSymCcmZip.ccmZipSearchList.title"/></h1><!-- 우편번호 찾기 -->
 
-	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
-		<ul>
-			<li>
-				<select name="searchList" id="searchList" title="searchList" onchange="fn_egov_list()"> 
-					<option value='1' <c:if test="${searchList == '1'}">selected="selected"</c:if>><spring:message code="comSymCcmZip.zipVO.SearchAddr"/></option><!-- 주소 -->
-					<option value='2' <c:if test="${searchList == '2'}">selected="selected"</c:if>><spring:message code="comSymCcmZip.zipVO.SearchRdmn"/></option><!-- 도로명주소 -->
-				</select>
-				<select name="searchCondition" id="searchCondition" title="searchCondition" style="display:none">
-				   <option value='1' <c:if test="${searchVO.searchCondition == '1'}">selected="selected"</c:if>><spring:message code="comSymCcmZip.zipVO.zip"/></option><!-- 우편번호 -->
-				   <option value='2' <c:if test="${searchVO.searchCondition == '2'}">selected="selected"</c:if>><spring:message code="comSymCcmZip.zipVO.ctprvnNm"/></option><!-- 시도명 -->
-				   <option value='3' <c:if test="${searchVO.searchCondition == '3'}">selected="selected"</c:if>><spring:message code="comSymCcmZip.zipVO.signguNm"/></option><!-- 시군구명 -->
-				   <option value='4' <c:if test="${searchVO.searchCondition == '4'}">selected="selected"</c:if>><spring:message code="comSymCcmZip.zipVO.emdNm"/></option><!-- 읍면동명 -->
-				   <option value='5' <c:if test="${searchVO.searchCondition == '5'}">selected="selected"</c:if>><spring:message code="comSymCcmZip.zipVO.liBuldNm"/></option><!-- 리건물명 -->
-				</select>
-			   	<select name="searchCondition2" id="searchCondition2" title="searchCondition" style="display:none">
-				   <option value='1' <c:if test="${searchVO.searchCondition2 == '1'}">selected="selected"</c:if>><spring:message code="comSymCcmZip.zipVO.zip"/></option><!-- 우편번호 -->
-				   <option value='2' <c:if test="${searchVO.searchCondition2 == '2'}">selected="selected"</c:if>><spring:message code="comSymCcmZip.zipVO.ctprvnNm"/></option><!-- 시도명 -->
-				   <option value='3' <c:if test="${searchVO.searchCondition2 == '3'}">selected="selected"</c:if>><spring:message code="comSymCcmZip.zipVO.signguNm"/></option><!-- 시군구명 -->
-				   <option value='4' <c:if test="${searchVO.searchCondition2 == '4'}">selected="selected"</c:if>><spring:message code="comSymCcmZip.zipVO.rdmn"/></option><!-- 도로명 -->
-				   <option value='5' <c:if test="${searchVO.searchCondition2 == '5'}">selected="selected"</c:if>><spring:message code="comSymCcmZip.zipVO.buldNm"/></option><!-- 건물명 -->
-				   <option value='6' <c:if test="${searchVO.searchCondition2 == '6'}">selected="selected"</c:if>><spring:message code="comSymCcmZip.zipVO.detailBuldNm"/></option><!-- 상세건물명 -->
-				</select>
-				<input class="s_input2 vat" name="searchKeyword" type="text" value="${searchVO.searchKeyword}" maxlength="20" size="20" title="<spring:message code="comSymCcmZip.ccmZipSearchList.inputText"/>" /><!-- 입력창 -->
-				
-				<input class="s_btn" type="submit" value="<spring:message code="title.inquire"/>"  title="<spring:message code="title.inquire"/>" onclick="fn_egov_search_Zip();" /><!-- 조회 -->
-			</li>
-		</ul>
-	</div>
+		<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
+			<ul>
+				<li>
+					<select name="searchList" id="searchList" title="searchList" onchange="fn_egov_list()">
+						<option value='1' <c:if test="${searchList == '1'}">selected="selected"</c:if>><spring:message code="comSymCcmZip.zipVO.SearchAddr"/></option><!-- 주소 -->
+						<option value='2' <c:if test="${searchList == '2'}">selected="selected"</c:if>><spring:message code="comSymCcmZip.zipVO.SearchRdmn"/></option><!-- 도로명주소 -->
+					</select>
+					<select name="searchCondition" id="searchCondition" title="searchCondition" style="display:none">
+						<option value='1' <c:if test="${searchVO.searchCondition == '1'}">selected="selected"</c:if>><spring:message code="comSymCcmZip.zipVO.zip"/></option><!-- 우편번호 -->
+						<option value='2' <c:if test="${searchVO.searchCondition == '2'}">selected="selected"</c:if>><spring:message code="comSymCcmZip.zipVO.ctprvnNm"/></option><!-- 시도명 -->
+						<option value='3' <c:if test="${searchVO.searchCondition == '3'}">selected="selected"</c:if>><spring:message code="comSymCcmZip.zipVO.signguNm"/></option><!-- 시군구명 -->
+						<option value='4' <c:if test="${searchVO.searchCondition == '4'}">selected="selected"</c:if>><spring:message code="comSymCcmZip.zipVO.emdNm"/></option><!-- 읍면동명 -->
+						<option value='5' <c:if test="${searchVO.searchCondition == '5'}">selected="selected"</c:if>><spring:message code="comSymCcmZip.zipVO.liBuldNm"/></option><!-- 리건물명 -->
+					</select>
+					<select name="searchCondition2" id="searchCondition2" title="searchCondition" style="display:none">
+						<option value='1' <c:if test="${searchVO.searchCondition2 == '1'}">selected="selected"</c:if>><spring:message code="comSymCcmZip.zipVO.zip"/></option><!-- 우편번호 -->
+						<option value='2' <c:if test="${searchVO.searchCondition2 == '2'}">selected="selected"</c:if>><spring:message code="comSymCcmZip.zipVO.ctprvnNm"/></option><!-- 시도명 -->
+						<option value='3' <c:if test="${searchVO.searchCondition2 == '3'}">selected="selected"</c:if>><spring:message code="comSymCcmZip.zipVO.signguNm"/></option><!-- 시군구명 -->
+						<option value='4' <c:if test="${searchVO.searchCondition2 == '4'}">selected="selected"</c:if>><spring:message code="comSymCcmZip.zipVO.rdmn"/></option><!-- 도로명 -->
+						<option value='5' <c:if test="${searchVO.searchCondition2 == '5'}">selected="selected"</c:if>><spring:message code="comSymCcmZip.zipVO.buldNm"/></option><!-- 건물명 -->
+						<option value='6' <c:if test="${searchVO.searchCondition2 == '6'}">selected="selected"</c:if>><spring:message code="comSymCcmZip.zipVO.detailBuldNm"/></option><!-- 상세건물명 -->
+					</select>
+					<input class="s_input2 vat" name="searchKeyword" type="text" value="${searchVO.searchKeyword}" maxlength="20" size="20" title="<spring:message code="comSymCcmZip.ccmZipSearchList.inputText"/>" /><!-- 입력창 -->
 
-	<table class="board_list">
-		<caption></caption>
-		<colgroup>
-			<col style="width:25%" />
-			<col style="width:75%" />
-		</colgroup>
-		<thead>
+					<input class="s_btn" type="submit" value="<spring:message code="title.inquire"/>"  title="<spring:message code="title.inquire"/>" onclick="fn_egov_search_Zip();" /><!-- 조회 -->
+				</li>
+			</ul>
+		</div>
+
+		<table class="board_list">
+			<caption></caption>
+			<colgroup>
+				<col style="width:25%" />
+				<col style="width:75%" />
+			</colgroup>
+			<thead>
 			<tr>
-			   <th scope="col"></th>
-			   <th scope="col"></th>
+				<th scope="col"></th>
+				<th scope="col"></th>
 			</tr>
-		</thead>
-		<tbody>
+			</thead>
+			<tbody>
 			<%-- 데이터를 없을때 화면에 메세지를 출력해준다 --%>
 			<c:if test="${fn:length(resultList) == 0}">
-			<tr>
-			<td class="lt_text3" colspan="2">
-				<spring:message code="common.nodata.msg" />
-			</td>
-			</tr>
+				<tr>
+					<td class="lt_text3" colspan="2">
+						<spring:message code="common.nodata.msg" />
+					</td>
+				</tr>
 			</c:if>
 			<c:if test="${searchList == '1'}">
 				<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
@@ -159,18 +159,18 @@ function fn_egov_list(){
 					</tr>
 				</c:forEach>
 			</c:if>
-		</tbody>
-	</table>
+			</tbody>
+		</table>
 
-	<!-- paging navigation -->
-	<div class="pagination">
-		<ul>
-			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_pageview"/>
-		</ul>
+		<!-- paging navigation -->
+		<div class="pagination">
+			<ul>
+				<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_pageview"/>
+			</ul>
+		</div>
 	</div>
-</div>
-<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-<input type=hidden name="searchList">
+	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
+	<input type=hidden name="searchList">
 </form>
 </body>
 </html>

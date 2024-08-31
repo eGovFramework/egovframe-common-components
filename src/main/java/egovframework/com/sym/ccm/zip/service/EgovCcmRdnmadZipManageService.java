@@ -43,7 +43,7 @@ public interface EgovCcmRdnmadZipManageService {
 	 * @param zip
 	 * @throws Exception
 	 */
-	void insertZip(Zip zip) throws Exception;
+	void insertZip(Zip zip);
 
 	/**
 	 * 우편번호 엑셀파일을 등록한다.

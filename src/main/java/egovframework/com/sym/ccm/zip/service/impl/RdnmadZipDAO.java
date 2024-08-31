@@ -51,7 +51,7 @@ public class RdnmadZipDAO extends EgovComAbstractDAO {
 	 * @param zip
 	 * @throws Exception
 	 */
-	public void insertZip(Zip zip) throws Exception {
+	public void insertZip(Zip zip) {
         insert("RdnmadZipDAO.insertZip", zip);
 	}
 

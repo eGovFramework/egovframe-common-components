@@ -62,7 +62,7 @@ public class EgovCcmRdnmadZipServiceImpl extends EgovAbstractServiceImpl impleme
 	 * 우편번호를 등록한다.
 	 */
 	@Override
-	public void insertZip(Zip zip) throws Exception {
+	public void insertZip(Zip zip) {
 		rdnmadZipDAO.insertZip(zip);
 	}
 
