@@ -45,10 +45,10 @@ function fn_egov_list_Restde(){
  * 저장처리화면
  ******************************************************** */
 function fn_egov_regist_Restde(form){
-	if(confirm("<spring:message code='common.save.msg'/>")){
-		if(!validateRestde(form)){
-			return;
-		}else{
+	if (confirm("<spring:message code='common.save.msg'/>")) {
+		if (!validateRestde(form)) {
+		 	return;
+		} else {
 			form.submit();
 		}
 	}
@@ -59,7 +59,7 @@ function fn_egov_regist_Restde(form){
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form modelAttribute="restde" name="restde" method="post">
+<form:form modelAttribute="restde" name="restde" method="post" action="/sym/cal/EgovRestdeModify.do">
 <input name="cmd" type="hidden" value="Modify">
 <form:hidden path="restdeNo"/>
 <form:hidden path="restdeDe"/>

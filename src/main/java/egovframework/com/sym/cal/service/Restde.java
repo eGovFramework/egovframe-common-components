@@ -1,5 +1,6 @@
 package egovframework.com.sym.cal.service;
 
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 /**
@@ -30,21 +31,25 @@ public class Restde implements Serializable {
     /*
      * 휴일일자
      */
+	@NotEmpty(message = "휴일일자{common.required.msg}")
     private String restdeDe       = "";
 
     /*
      * 휴일명
      */
+	@NotEmpty(message = "휴일명{common.required.msg}")
     private String restdeNm       = "";
 
     /*
      * 휴일설명
      */
+	@NotEmpty(message = "휴일설명{common.required.msg}")
     private String restdeDc       = "";
 
     /*
      * 휴일구분
      */
+	@NotEmpty(message = "휴일구분{common.required.msg}")
     private String restdeSe       = "";
 
     /*
@@ -400,5 +405,19 @@ public class Restde implements Serializable {
 		this.lastDayMonth = lastDayMonth;
 	}
 
+	/**
+	 * restdeDe 값을 "yyyy-mm-dd" 형식으로 반환한다.
+	 * @return
+	 */
+	public String getFormattedRestdeDe() {
+		if (restdeDe != null && restdeDe.length() == 8 && restdeDe.matches("\\d{8}")) {
+			String year = restdeDe.substring(0, 4);
+			String month = restdeDe.substring(4, 6);
+			String day = restdeDe.substring(6, 8);
+			return year + "-" + month + "-" + day;
+		} else {
+			return restdeDe;
+		}
+	}
 
 }
