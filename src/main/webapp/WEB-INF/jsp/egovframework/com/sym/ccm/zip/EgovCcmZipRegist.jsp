@@ -46,11 +46,11 @@ function fn_egov_list_Zip(){
  ******************************************************** */
 function fn_egov_regist_Zip(form){
 	if(confirm("<spring:message code='common.save.msg'/>")){
-		if(!validateZip(form)){
-			return;
-		}else{
+//		if(!validateZip(form)){
+//			return;
+//		}else{
 			form.submit();
-		}
+//		}
 	}
 }
 /* ********************************************************
@@ -80,17 +80,17 @@ function jusoCallBack(zipNo,rnMgtSn,siNm,sggNm,roadFullAddr,buldMnnm,buldSlno,bd
 </head>
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg"/></noscript>
-<form:form modelAttribute="zip" name="zip" method="post">
+<form:form modelAttribute="zip" name="zip" method="post" action="/sym/ccm/zip/EgovCcmZipRegist.do">
 <div class="note">
 
 <!-- 상단 타이틀  영역 -->
   <h1>
   <c:set var="titleZip"><spring:message code="comSymCcmZip.zipVO.zipCreate"/></c:set>
   <c:set var="titleRdmn"><spring:message code="comSymCcmZip.zipVO.rdmnCreate"/></c:set>
-  <c:if test="${searchList == '1'}">
+  <c:if test="${!isRoadAddr}">
    <img src="<c:url value='/images/egovframework/com/cmm/icon/tit_icon.gif' />" width="16" height="16" hspace="3" style="vertical-align: middle" alt="제목아이콘이미지">&nbsp;${titleZip }</h1></td>
   </c:if>
-  <c:if test="${searchList == '2'}">
+  <c:if test="${isRoadAddr}">
    <img src="<c:url value='/images/egovframework/com/cmm/icon/tit_icon.gif' />" width="16" height="16" hspace="3" style="vertical-align: middle" alt="제목아이콘이미지">&nbsp;${titleRdmn }</h1></td>
   </c:if>
 
@@ -102,7 +102,7 @@ function jusoCallBack(zipNo,rnMgtSn,siNm,sggNm,roadFullAddr,buldMnnm,buldSlno,bd
 	<col style="width: 20%;"><col style="width: ;">
 </colgroup>
 <tbody>
-  <c:if test="${searchList == '1'}">
+  <c:if test="${!isRoadAddr}">
   	  <!-- 우편번호  -->
 	  <c:set var="title"><spring:message code="comSymCcmZip.zipVO.zip"/></c:set>
 	  <tr>
@@ -160,7 +160,7 @@ function jusoCallBack(zipNo,rnMgtSn,siNm,sggNm,roadFullAddr,buldMnnm,buldSlno,bd
 	  <input type=hidden name="rdmnCode" id="rdmnCode" value="0"/>
 	  <input type=hidden name="rdmn" id="rdmn" value="0"/>
   </c:if>
-  <c:if test="${searchList == '2'}">
+  <c:if test="${isRoadAddr}">
   	  <!-- 우편번호  -->
 	  <c:set var="title"><spring:message code="comSymCcmZip.zipVO.zip"/></c:set>
 	  <c:set var="address"><spring:message code="comSymCcmZip.zipVO.rdmnSearch"/></c:set>

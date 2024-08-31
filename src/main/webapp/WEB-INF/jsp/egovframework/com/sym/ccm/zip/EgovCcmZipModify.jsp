@@ -56,7 +56,7 @@ function fn_egov_modify_Zip(form){
 </script>
 </head>
 <body>
-<form:form modelAttribute="zip" name="zip" method="post">
+<form:form modelAttribute="zip" name="zip" method="post" action="/sym/ccm/zip/EgovCcmZipModify.do">
 <input name="cmd" type="hidden" value="Modify">
 	<form:hidden path="zip"/>
 	<form:hidden path="sn"/>
@@ -91,7 +91,7 @@ function fn_egov_modify_Zip(form){
 	  <tr>
 	    <th class="ic_none" width="20%" height="23" scope="row" nowrap><spring:message code="comSymCcmZip.zipVO.zip"/> <span class="pilsu">*</span></th> <!-- 우편번호 -->          
 	    <td>
-	    	<c:out value='${fn:substring(zip.zip, 0,3)}'/>-<c:out value='${fn:substring(zip.zip, 3,6)}'/>
+	    	<c:out value='${zip.zip}'/>
 	    </td>
 	  </tr> 
 	  <tr> 
@@ -138,7 +138,7 @@ function fn_egov_modify_Zip(form){
 	  </tr>
 	  <tr>
 	    <th class="ic_none" width="20%" height="23" scope="row" nowrap><spring:message code="comSymCcmZip.zipVO.ctprvnNm"/> <span class="pilsu">*</span></th> <!-- 시도명 -->
-	    <td><c:out value='${zip.ctprvnNm}'/>}</td>
+	    <td><c:out value='${zip.ctprvnNm}'/></td>
 	  </tr>
 	  <tr>
 	    <th class="ic_none" width="20%" height="23" scope="row" nowrap><spring:message code="comSymCcmZip.zipVO.signguNm"/> <span class="pilsu">*</span></th> <!-- 시군구명 -->

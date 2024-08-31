@@ -1,5 +1,6 @@
 package egovframework.com.sym.ccm.zip.service;
 
+import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 
 /**
@@ -26,6 +27,7 @@ public class Zip implements Serializable {
 	/*
 	 * 우편번호
 	 */
+	@NotEmpty(message = "우편번호{common.required.msg}")
     private String zip            = "";
 
     /*
@@ -36,16 +38,19 @@ public class Zip implements Serializable {
     /*
      * 시도명
      */
+    @NotEmpty(message = "시도명{common.required.msg}")
 	private String ctprvnNm       = "";
 
 	/*
 	 * 시군구명
 	 */
+	@NotEmpty(message = "시군구명{common.required.msg}")
     private String signguNm       = "";
 
     /*
      * 읍면동명
      */
+    @NotEmpty(message = "읍면동명{common.required.msg}")
     private String emdNm          = "";
 
     /*

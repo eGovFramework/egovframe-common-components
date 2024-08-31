@@ -18,9 +18,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.util.WebUtils;
@@ -53,12 +51,13 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *
  *  수정일               수정자            수정내용
  *  ----------   --------   ---------------------------
- *  2009.04.01   이중호            최초 생성
- *  2011.08.26   정진오            IncludedInfo annotation 추가
- *  2011.10.07   이기하            보안취약점 수정(파일 업로드시 엑셀파일만 가능하도록 추가)
- *  2011.11.21   이기하            도로명주소 추가(rdnmadZip)
- *  2021.02.16   신용호            WebUtils.getNativeRequest(request,MultipartHttpServletRequest.class);
- *  2022.11.11   김혜준			   시큐어코딩 처리
+ *  2009.04.01   이중호         최초 생성
+ *  2011.08.26   정진오         IncludedInfo annotation 추가
+ *  2011.10.07   이기하         보안취약점 수정(파일 업로드시 엑셀파일만 가능하도록 추가)
+ *  2011.11.21   이기하         도로명주소 추가(rdnmadZip)
+ *  2021.02.16   신용호         WebUtils.getNativeRequest(request,MultipartHttpServletRequest.class);
+ *  2022.11.11   김혜준         시큐어코딩 처리
+ *  2024.08.31   권태성         등록 & 수정의 화면과 데이터를 처리하는 method 분리, validation 적용
  *
  * </pre>
  */
@@ -162,44 +161,65 @@ public class EgovCcmZipManageController {
 	}
 
 	/**
-	 * 우편번호를 등록한다.
+	 * 우편번호 등록 화면
+	 * @param loginVO
+	 * @param zip
+	 * @param model
+	 * @return "egovframework/com/sym/ccm/zip/EgovCcmZipRegist"
+	 */
+	@RequestMapping(value = "/sym/ccm/zip/EgovCcmZipRegistView.do")
+	public String insertZip(@ModelAttribute("loginVO") LoginVO loginVO
+						, @ModelAttribute("zip") Zip zip
+						, ZipVO searchVO
+						, ModelMap model) {
+		model.addAttribute("searchList", searchVO.getSearchList());
+		model.addAttribute("isRoadAddr", ("2".equals(searchVO.getSearchList()))); // true : 도로명주소등록, false : 일반주소등록
+		return "egovframework/com/sym/ccm/zip/EgovCcmZipRegist";
+	}
+
+	/**
+	 * 우편번호를 등록 한다.
 	 * @param loginVO
 	 * @param zip
 	 * @param bindingResult
+	 * @param searchVO
 	 * @param model
-	 * @return "egovframework/com/sym/ccm/zip/EgovCcmZipRegist"
+	 * @return
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/ccm/zip/EgovCcmZipRegist.do")
-	public String insertZip(@ModelAttribute("loginVO") LoginVO loginVO, @ModelAttribute("zip") Zip zip, ZipVO searchVO,
-		BindingResult bindingResult, ModelMap model)
-		throws Exception {
-
+	public String insertZip(@ModelAttribute("loginVO") LoginVO loginVO
+						, @ModelAttribute("zip") Zip zip
+						, BindingResult bindingResult
+						, ZipVO searchVO
+						, ModelMap model) {
 		model.addAttribute("searchList", searchVO.getSearchList());
 
-		if (zip.getZip() == null || zip.getZip().equals("")) {
+		boolean isRoadAddr = ("2".equals(searchVO.getSearchList()));
 
+		beanValidator.validate(zip, bindingResult);
+		if (!isRoadAddr && bindingResult.hasErrors()) {
+			model.addAttribute("errorMessage", bindingResult.getAllErrors());
+			model.addAttribute("zip", zip);
 			return "egovframework/com/sym/ccm/zip/EgovCcmZipRegist";
 		}
-
-		if (searchVO.getSearchList().equals("1")) {
+		/* 2024-08-31 권태성 - 기존 코드에서 도로명주소 일 때 validate를 주석 처리해두어 주석을 유지함
+		else {
 			beanValidator.validate(zip, bindingResult);
-			if (bindingResult.hasErrors()) {
-				return "egovframework/com/sym/ccm/zip/EgovCcmZipRegist";
-			}
-
-			zip.setFrstRegisterId(loginVO.getUniqId());
-			zipManageService.insertZip(zip);
-		} else {
-			/*beanValidator.validate(zip, bindingResult);
 			if (bindingResult.hasErrors()){
 				return "egovframework/com/sym/ccm/zip/EgovCcmZipRegist";
-			}*/
-
-			zip.setFrstRegisterId(loginVO.getUniqId());
-			rdnmadZipService.insertZip(zip);
+			}
 		}
-		return "forward:/sym/ccm/zip/EgovCcmZipList.do";
+		*/
+
+		zip.setFrstRegisterId(loginVO.getUniqId());
+		if (isRoadAddr) {
+			rdnmadZipService.insertZip(zip);
+		} else {
+			zipManageService.insertZip(zip);
+		}
+
+		return "redirect:/sym/ccm/zip/EgovCcmZipList.do";
 	}
 
 	/**
@@ -341,54 +361,74 @@ public class EgovCcmZipManageController {
 	}
 
 	/**
-	 * 우편번호를 수정한다.
+	 * 우편번호 수정화면
 	 * @param loginVO
 	 * @param zip
-	 * @param bindingResult
-	 * @param commandMap
 	 * @param model
 	 * @return "egovframework/com/sym/ccm/zip/EgovCcmZipModify"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/ccm/zip/EgovCcmZipModify.do")
-	public String updateZip(@ModelAttribute("loginVO") LoginVO loginVO, @ModelAttribute("zip") Zip zip, ZipVO searchVO,
-		BindingResult bindingResult, @RequestParam Map<String, Object> commandMap,
-		ModelMap model) throws Exception {
-		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
+	@RequestMapping(value = "/sym/ccm/zip/EgovCcmZipModifyView.do")
+	public String updateZip(@ModelAttribute("loginVO") LoginVO loginVO
+						, @ModelAttribute("zip") Zip zip
+						, ZipVO searchVO
+						, ModelMap model) throws Exception {
 		model.addAttribute("searchList", searchVO.getSearchList());
-		if (sCmd.equals("")) {
-			if (searchVO.getSearchList().equals("1")) {
-				Zip vo = zipManageService.selectZipDetail(zip);
-				model.addAttribute("zip", vo);
-			} else {
-				Zip vo = rdnmadZipService.selectZipDetail(zip);
-				model.addAttribute("zip", vo);
-			}
-			return "egovframework/com/sym/ccm/zip/EgovCcmZipModify";
-		} else if (sCmd.equals("Modify")) {
-			if (searchVO.getSearchList().equals("1")) {
-				beanValidator.validate(zip, bindingResult);
-				if (bindingResult.hasErrors()) {
-					return "egovframework/com/sym/ccm/zip/EgovCcmZipModify";
-				}
-
-				zip.setLastUpdusrId(loginVO.getUniqId());
-				zipManageService.updateZip(zip);
-			} else {
-				/*beanValidator.validate(zip, bindingResult);
-				if (bindingResult.hasErrors()){
-					return "egovframework/com/sym/ccm/zip/EgovCcmZipModify";
-				}*/
-
-				zip.setLastUpdusrId(loginVO.getUniqId());
-				rdnmadZipService.updateZip(zip);
-			}
-
-			return "forward:/sym/ccm/zip/EgovCcmZipList.do";
+		boolean isRoadAddr = ("2".equals(searchVO.getSearchList()));
+		Zip vo = null;
+		if (isRoadAddr) {
+			vo = rdnmadZipService.selectZipDetail(zip);
 		} else {
-			return "forward:/sym/ccm/zip/EgovCcmZipList.do";
+			vo = zipManageService.selectZipDetail(zip);
 		}
+		model.addAttribute("zip", vo);
+		model.addAttribute("isRoadAddr", isRoadAddr);
+		return "egovframework/com/sym/ccm/zip/EgovCcmZipModify";
 	}
+
+	/**
+	 * 우편번호를 수정한다.
+	 * @param loginVO
+	 * @param zip
+	 * @param bindingResult
+	 * @param searchVO
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/sym/ccm/zip/EgovCcmZipModify.do")
+	public String updateZip(@ModelAttribute("loginVO") LoginVO loginVO
+						, @ModelAttribute("zip") Zip zip
+						, BindingResult bindingResult
+						, ZipVO searchVO
+						, ModelMap model) throws Exception {
+		if (zip.getSn() == 0) {
+			return "redirect:/sym/ccm/zip/EgovCcmZipList.do";
+		}
+		boolean isRoadAddr = ("2".equals(searchVO.getSearchList()));
+		beanValidator.validate(zip, bindingResult);
+		if (!isRoadAddr && bindingResult.hasErrors()) {
+			model.addAttribute("searchList", searchVO.getSearchList());
+			return "egovframework/com/sym/ccm/zip/EgovCcmZipModify";
+		}
+		/* 2024-08-31 권태성 - 기존 코드에서 도로명주소 일 때 validate를 주석 처리해두어 주석을 유지함
+		else {
+			beanValidator.validate(zip, bindingResult);
+			if (bindingResult.hasErrors()){
+				return "egovframework/com/sym/ccm/zip/EgovCcmZipModify";
+			}
+		}
+		*/
+
+		zip.setLastUpdusrId(loginVO.getUniqId());
+		if (isRoadAddr) {
+			rdnmadZipService.updateZip(zip);
+		} else {
+			zipManageService.updateZip(zip);
+		}
+		return "redirect:/sym/ccm/zip/EgovCcmZipList.do";
+	}
+
 
 	/**
 	 * 주소정보연계 팝업을 위한 입력 페이지를 호출한다.

@@ -40,7 +40,7 @@ function fn_egov_list_Zip(){
  ******************************************************** */
 function fn_egov_modify_Zip(){
 	var varForm				 = document.getElementById("Form");
-	varForm.action           = "<c:url value='/sym/ccm/zip/EgovCcmZipModify.do'/>";
+	varForm.action           = "<c:url value='/sym/ccm/zip/EgovCcmZipModifyView.do'/>";
 	if (${searchList} == "1") {
 		varForm.zip.value        = "${result.zip}";
 		varForm.sn.value         = "${result.sn}";

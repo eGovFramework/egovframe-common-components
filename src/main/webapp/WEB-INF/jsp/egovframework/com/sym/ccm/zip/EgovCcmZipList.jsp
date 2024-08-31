@@ -55,9 +55,9 @@ function fn_egov_search_Zip(){
  * 등록 처리 함수
  ******************************************************** */
 function fn_egov_regist_Zip(no){
-//	location.href = "<c:url value='/sym/ccm/zip/EgovCcmZipRegist.do'/>";
+//	location.href = "<c:url value='/sym/ccm/zip/EgovCcmZipRegistView.do'/>";
 	var varForm	   			 = document.getElementById("Form");
-	varForm.action 			 = "<c:url value='/sym/ccm/zip/EgovCcmZipRegist.do'/>";
+	varForm.action 			 = "<c:url value='/sym/ccm/zip/EgovCcmZipRegistView.do'/>";
 	varForm.searchList.value = no;
 	varForm.submit();
 }
