@@ -26,10 +26,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
 /**
@@ -1393,7 +1390,7 @@ public class EgovCalRestdeManageController {
 	 * @return "egovframework/com/sym/cal/EgovRestdeRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/cal/EgovRestdeRegist.do", method = RequestMethod.GET)
+	@GetMapping("/sym/cal/EgovRestdeRegist.do")
 	public String insertRestde(@ModelAttribute("loginVO") LoginVO loginVO
 			, ModelMap model
 	) throws Exception {
@@ -1415,7 +1412,7 @@ public class EgovCalRestdeManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/cal/EgovRestdeRegist.do", method = RequestMethod.POST)
+	@PostMapping(value = "/sym/cal/EgovRestdeRegist.do")
 	public String insertRestde(@ModelAttribute("loginVO") LoginVO loginVO
 			, @ModelAttribute("restde") Restde restde
 			, BindingResult bindingResult
@@ -1505,7 +1502,7 @@ public class EgovCalRestdeManageController {
 	 * @return "egovframework/com/sym/cal/EgovRestdeModify"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/cal/EgovRestdeModify.do", method = RequestMethod.GET)
+	@GetMapping("/sym/cal/EgovRestdeModify.do")
 	public String updateRestde(@ModelAttribute("loginVO") LoginVO loginVO
 			, @ModelAttribute("restde") Restde restde
 			, ModelMap model
@@ -1532,7 +1529,7 @@ public class EgovCalRestdeManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/cal/EgovRestdeModify.do", method = RequestMethod.POST)
+	@PostMapping("/sym/cal/EgovRestdeModify.do")
 	public String updateRestde(@ModelAttribute("loginVO") LoginVO loginVO
 			, @ModelAttribute("restde") Restde restde
 			, BindingResult bindingResult
