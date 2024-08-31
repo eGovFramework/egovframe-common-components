@@ -42,7 +42,7 @@ function fn_egov_list_Restde(){
  ******************************************************** */
 function fn_egov_modify_Restde(){
 	var varForm				 = document.all["Form"];
-	varForm.action           = "<c:url value='/sym/cal/EgovRestdeModify.do'/>";
+	varForm.action           = "<c:url value='/sym/cal/EgovRestdeModifyView.do'/>";
 	varForm.restdeNo.value   = "${result.restdeNo}";
 	varForm.method = "get";
 	varForm.submit();

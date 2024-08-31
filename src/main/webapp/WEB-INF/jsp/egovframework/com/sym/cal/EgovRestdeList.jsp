@@ -51,7 +51,7 @@ function fn_egov_search_Restde(){
  * 등록 처리 함수
  ******************************************************** */
 function fn_egov_regist_Restde(){
-	location.href = "<c:url value='/sym/cal/EgovRestdeRegist.do' />";
+	location.href = "<c:url value='/sym/cal/EgovRestdeRegistView.do' />";
 }
 /* ********************************************************
  * 상세회면 처리 함수

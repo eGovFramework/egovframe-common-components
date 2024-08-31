@@ -60,7 +60,7 @@ function fn_egov_list_Restde(){
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form modelAttribute="restde" name="restde" method="post">
+<form:form modelAttribute="restde" name="restde" method="post" action="/sym/cal/EgovRestdeRegist.do">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->

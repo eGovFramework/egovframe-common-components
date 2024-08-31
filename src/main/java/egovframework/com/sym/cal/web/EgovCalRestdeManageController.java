@@ -1390,7 +1390,7 @@ public class EgovCalRestdeManageController {
 	 * @return "egovframework/com/sym/cal/EgovRestdeRegist"
 	 * @throws Exception
 	 */
-	@GetMapping("/sym/cal/EgovRestdeRegist.do")
+	@GetMapping("/sym/cal/EgovRestdeRegistView.do")
 	public String insertRestde(@ModelAttribute("loginVO") LoginVO loginVO
 			, ModelMap model
 	) throws Exception {
@@ -1502,7 +1502,7 @@ public class EgovCalRestdeManageController {
 	 * @return "egovframework/com/sym/cal/EgovRestdeModify"
 	 * @throws Exception
 	 */
-	@GetMapping("/sym/cal/EgovRestdeModify.do")
+	@GetMapping("/sym/cal/EgovRestdeModifyView.do")
 	public String updateRestde(@ModelAttribute("loginVO") LoginVO loginVO
 			, @ModelAttribute("restde") Restde restde
 			, ModelMap model
