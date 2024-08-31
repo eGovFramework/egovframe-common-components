@@ -46,10 +46,10 @@ function fn_egov_list_Restde(){
  * 저장처리화면
  ******************************************************** */
  function fn_egov_regist_Restde(form){
-	if(confirm("<spring:message code='common.save.msg' />")){
-		if(!validateRestde(form)){
+	if (confirm("<spring:message code='common.save.msg' />")) {
+		if (!validateRestde(form)) {
 			return;
-		}else{
+		} else {
 			form.submit();
 		}
 	}
@@ -75,30 +75,30 @@ function fn_egov_list_Restde(){
 		<tr>
 			<th><spring:message code="sym.cal.restDay" /> <span class="pilsu">*</span></th><!-- 휴일일자 -->
 			<td class="left">
-			    <input type="hidden" name="cal_url" value="<c:url value='/sym/cal/EgovNormalCalPopup.do'/>" />
-		    	<form:hidden path="restdeDe" />
-				<input name="vrestdeDe" type="text" value=""  maxlength="10" readonly="readonly" onclick="fn_egov_NormalCalendar(document.restde, document.restde.restdeDe, document.restde.vrestdeDe);" title="<spring:message code="sym.cal.restDay" />(새창)" style="width:70px"/>
+				<input type="hidden" name="cal_url" value="<c:url value='/sym/cal/EgovNormalCalPopup.do'/>" />
+				<form:hidden path="restdeDe" />
+				<input name="vrestdeDe" type="text" value="${restde.formattedRestdeDe}"  maxlength="10" readonly="readonly" onclick="fn_egov_NormalCalendar(document.restde, document.restde.restdeDe, document.restde.vrestdeDe);" title="<spring:message code="sym.cal.restDay" />(새창)" style="width:70px"/>
 				<a href="#noscript" onclick="fn_egov_NormalCalendar(document.restde, document.restde.restdeDe, document.restde.vrestdeDe); return false;"><img src="<c:url value='/images/egovframework/com/cmm/icon/bu_icon_carlendar.gif' />" alt="달력창팝업버튼이미지"/></a>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="sym.cal.restName" /> <span class="pilsu">*</span></th><!-- 휴일명 -->
 			<td class="left">
-			    <form:input  path="restdeNm" size="50" maxlength="50" title="<spring:message code='sym.cal.restName' />"/>
-      			<form:errors path="restdeNm"/>
+				<form:input  path="restdeNm" size="50" maxlength="50" title="<spring:message code='sym.cal.restName' />"/>
+				<form:errors path="restdeNm"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="sym.cal.restDetail" /> <span class="pilsu">*</span></th><!-- 휴일설명 -->
 			<td class="left">
-			    <form:textarea path="restdeDc" rows="3" cols="60" title="<spring:message code='sym.cal.restDetail' />"/>
-      			<form:errors   path="restdeDc"/>
+				<form:textarea path="restdeDc" rows="3" cols="60" title="<spring:message code='sym.cal.restDetail' />"/>
+				<form:errors   path="restdeDc"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="sym.cal.restCategory" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <form:select path="restdeSeCode" title="<spring:message code='sym.cal.restCategory' />">
+				<form:select path="restdeSeCode" title="<spring:message code='sym.cal.restCategory' />">
 				<form:options items="${restdeCode}" itemValue="code" itemLabel="codeNm" />
 				</form:select>
 			</td>

@@ -25,11 +25,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springmodules.validation.commons.DefaultBeanValidator;
-
 
 /**
  *
@@ -44,9 +45,10 @@ import org.springmodules.validation.commons.DefaultBeanValidator;
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.04.01  이중호          최초 생성
- *   2011.8.26	  정진오	   IncludedInfo annotation 추가
- *   2011.10.18  서준식          보안점검 조치 사항으로 sql injection에 대비한 파라미터 체크(달력 출력을 위한 숫자만 가능하도록)
+ *   2009.04.01  이중호        최초 생성
+ *   2011.08.26  정진오        IncludedInfo annotation 추가
+ *   2011.10.18  서준식        보안점검 조치 사항으로 sql injection에 대비한 파라미터 체크(달력 출력을 위한 숫자만 가능하도록)
+ *   2024.08.31  권태성        휴일 등록 & 수정의 화면과 데이터를 처리하는 method 분리, validation 적용
  * </pre>
  */
 
@@ -1383,43 +1385,59 @@ public class EgovCalRestdeManageController {
 	}
 
 
-    /**
-     * 휴일을 등록한다.
-     * @param loginVO
-     * @param restde
-     * @param bindingResult
-     * @param model
-     * @return "egovframework/com/sym/cal/EgovRestdeRegist"
-     * @throws Exception
-     */
-    @RequestMapping(value="/sym/cal/EgovRestdeRegist.do")
-	public String insertRestde (@ModelAttribute("loginVO") LoginVO loginVO
+	/**
+	 * 휴일 등록 화면
+	 *
+	 * @param loginVO
+	 * @param model
+	 * @return "egovframework/com/sym/cal/EgovRestdeRegist"
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/sym/cal/EgovRestdeRegist.do", method = RequestMethod.GET)
+	public String insertRestde(@ModelAttribute("loginVO") LoginVO loginVO
+			, ModelMap model
+	) throws Exception {
+		ComDefaultCodeVO vo = new ComDefaultCodeVO();
+		vo.setCodeId("COM017");
+		List<?> restdeCodeList = cmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("restdeCode", restdeCodeList);
+		model.addAttribute("restde", new Restde());
+		return "egovframework/com/sym/cal/EgovRestdeRegist";
+	}
+
+	/**
+	 * 휴일을 등록한다.
+	 *
+	 * @param loginVO
+	 * @param restde
+	 * @param bindingResult
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/sym/cal/EgovRestdeRegist.do", method = RequestMethod.POST)
+	public String insertRestde(@ModelAttribute("loginVO") LoginVO loginVO
 			, @ModelAttribute("restde") Restde restde
 			, BindingResult bindingResult
 			, ModelMap model
-			) throws Exception {
-    	if   (restde.getRestdeDe() == null
-    		||restde.getRestdeDe().equals("")) {
-
-    		ComDefaultCodeVO vo = new ComDefaultCodeVO();
-    		vo.setCodeId("COM017");
-            List<?> restdeCodeList = cmmUseService.selectCmmCodeDetail(vo);
-            model.addAttribute("restdeCode", restdeCodeList);
-
-            return "egovframework/com/sym/cal/EgovRestdeRegist";
-    	}
-
-        beanValidator.validate(restde, bindingResult);
-		if (bindingResult.hasErrors()){
-            return "egovframework/com/sym/cal/EgovRestdeRegist";
+	) throws Exception {
+		beanValidator.validate(restde, bindingResult);
+		if (bindingResult.hasErrors()) {
+			ComDefaultCodeVO vo = new ComDefaultCodeVO();
+			vo.setCodeId("COM017");
+			List<?> restdeCodeList = cmmUseService.selectCmmCodeDetail(vo);
+			model.addAttribute("restdeCode", restdeCodeList);
+			model.addAttribute("restde", restde);
+			return "egovframework/com/sym/cal/EgovRestdeRegist";
 		}
 
-    	restde.setRestdeNo(idgenService.getNextIntegerId()%1000000);
-    	restde.setFrstRegisterId(loginVO.getUniqId());
+		restde.setRestdeNo(idgenService.getNextIntegerId() % 1000000);
+		restde.setFrstRegisterId(loginVO.getUniqId());
 
-    	restdeManageService.insertRestde(restde);
-        return "forward:/sym/cal/EgovRestdeList.do";
-    }
+		restdeManageService.insertRestde(restde);
+		return "forward:/sym/cal/EgovRestdeList.do";
+	}
+
 
 
     /**
@@ -1479,52 +1497,59 @@ public class EgovCalRestdeManageController {
         return "egovframework/com/sym/cal/EgovRestdeList";
 	}
 
-    /**
+	/**
+	 * 휴일 수정 화면
+	 * @param loginVO
+	 * @param restde
+	 * @param model
+	 * @return "egovframework/com/sym/cal/EgovRestdeModify"
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/sym/cal/EgovRestdeModify.do", method = RequestMethod.GET)
+	public String updateRestde(@ModelAttribute("loginVO") LoginVO loginVO
+			, @ModelAttribute("restde") Restde restde
+			, ModelMap model
+	) throws Exception {
+		Restde vo = restdeManageService.selectRestdeDetail(restde);
+		model.addAttribute("restde", vo);
+
+		ComDefaultCodeVO CodeVO = new ComDefaultCodeVO();
+		CodeVO.setCodeId("COM017");
+		List<?> restdeCodeList = cmmUseService.selectCmmCodeDetail(CodeVO);
+		model.addAttribute("restdeCode", restdeCodeList);
+
+		return "egovframework/com/sym/cal/EgovRestdeModify";
+	}
+
+
+	/**
 	 * 휴일을 수정한다.
-     * @param loginVO
-     * @param restde
-     * @param bindingResult
-     * @param commandMap
-     * @param model
-     * @return "egovframework/com/sym/cal/EgovRestdeModify"
-     * @throws Exception
-     */
-    @RequestMapping(value="/sym/cal/EgovRestdeModify.do")
-	public String updateRestde (@ModelAttribute("loginVO") LoginVO loginVO
+	 *
+	 * @param loginVO
+	 * @param restde
+	 * @param bindingResult
+	 * @param model
+	 * @return
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/sym/cal/EgovRestdeModify.do", method = RequestMethod.POST)
+	public String updateRestde(@ModelAttribute("loginVO") LoginVO loginVO
 			, @ModelAttribute("restde") Restde restde
 			, BindingResult bindingResult
-			, @RequestParam Map<?, ?> commandMap
-			, ModelMap model
-			) throws Exception {
-		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
-    	if (sCmd.equals("")) {
-    		Restde vo = restdeManageService.selectRestdeDetail(restde);
-    		model.addAttribute("restde", vo);
+			, ModelMap model) throws Exception {
+		beanValidator.validate(restde, bindingResult);
+		if (bindingResult.hasErrors()) {
+			ComDefaultCodeVO CodeVO = new ComDefaultCodeVO();
+			CodeVO.setCodeId("COM017");
+			List<?> restdeCodeList = cmmUseService.selectCmmCodeDetail(CodeVO);
+			model.addAttribute("restdeCode", restdeCodeList);
 
-    		ComDefaultCodeVO CodeVO = new ComDefaultCodeVO();
-    		CodeVO.setCodeId("COM017");
-            List<?> restdeCodeList = cmmUseService.selectCmmCodeDetail(CodeVO);
-            model.addAttribute("restdeCode", restdeCodeList);
+			return "egovframework/com/sym/cal/EgovRestdeModify";
+		}
 
-            return "egovframework/com/sym/cal/EgovRestdeModify";
-    	} else if (sCmd.equals("Modify")) {
-            beanValidator.validate(restde, bindingResult);
-    		if (bindingResult.hasErrors()){
-        		ComDefaultCodeVO CodeVO = new ComDefaultCodeVO();
-        		CodeVO.setCodeId("COM017");
-                List<?> restdeCodeList = cmmUseService.selectCmmCodeDetail(CodeVO);
-                model.addAttribute("restdeCode", restdeCodeList);
-
-                return "egovframework/com/sym/cal/EgovRestdeModify";
-    		}
-
-    		restde.setLastUpdusrId(loginVO.getUniqId());
-    		restdeManageService.updateRestde(restde);
-	        return "forward:/sym/cal/EgovRestdeList.do";
-    	} else {
-    		return "forward:/sym/cal/EgovRestdeList.do";
-    	}
-    }
-
+		restde.setLastUpdusrId(loginVO.getUniqId());
+		restdeManageService.updateRestde(restde);
+		return "forward:/sym/cal/EgovRestdeList.do";
+	}
 
 }
