@@ -189,7 +189,7 @@ function fn_egov_list(){
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr style="cursor:pointer;cursor:hand;" onclick="javascript:fn_egov_detail_RdmnCode_Zip('${resultInfo.rdmnCode}','${resultInfo.sn}');">
 		<td class="lt_text3" nowrap><c:out value="${(searchVO.pageIndex - 1) * searchVO.pageSize + status.count}"/></td>
-		<td class="lt_text3" nowrap><c:out value='${fn:substring(resultInfo.zip, 0,3)}'/>-<c:out value='${fn:substring(resultInfo.zip, 3,6)}'/></td>
+		<td class="lt_text3" nowrap>${resultInfo.zip}</td>
 		<td class="lt_text"  nowrap>${resultInfo.ctprvnNm} ${resultInfo.signguNm} ${resultInfo.rdmn} ${resultInfo.bdnbrMnnm} <c:if test="${resultInfo.bdnbrSlno != ''}">- ${resultInfo.bdnbrSlno}</c:if> ${resultInfo.buldNm} ${resultInfo.detailBuldNm}</td>
 	</tr>
 	</c:forEach>
