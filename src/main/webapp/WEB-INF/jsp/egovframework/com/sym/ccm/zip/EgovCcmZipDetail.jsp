@@ -84,7 +84,7 @@ function fn_egov_delete_Zip(){
   <c:if test="${searchList == '1'}">
 	  <tr>
 	    <th class="ic_none" width="20%" height="23" scope="row" nowrap ><spring:message code="comSymCcmZip.zipVO.zip"/> <span class="pilsu">*</span></th> <!-- 우편번호 -->
-	    <td><c:out value='${fn:substring(result.zip, 0,3)}'/>-<c:out value='${fn:substring(result.zip, 3,6)}'/></td>
+	    <td>${result.zip}</td>
 	  </tr>
 	  <tr>
 	    <th class="ic_none" width="20%" height="23" scope="row" nowrap ><spring:message code="comSymCcmZip.zipVO.ctprvnNm"/> <span class="pilsu">*</span></th> <!-- 시도명 -->
@@ -110,7 +110,7 @@ function fn_egov_delete_Zip(){
   <c:if test="${searchList == '2'}">
 	  <tr>
 	    <th class="ic_none" width="20%" height="23" scope="row" nowrap ><spring:message code="comSymCcmZip.zipVO.zip"/> <span class="pilsu">*</span></th><!-- 우편번호 -->
-	    <td><c:out value='${fn:substring(result.zip, 0,3)}'/>-<c:out value='${fn:substring(result.zip, 3,6)}'/></td>
+	    <td>${result.zip}</td>
 	  </tr>
 	  <tr>
 	    <th class="ic_none" width="20%" height="23" scope="row" nowrap ><spring:message code="comSymCcmZip.zipVO.rdmnCode"/> <span class="pilsu">*</span></th><!-- 도로명코드 -->
