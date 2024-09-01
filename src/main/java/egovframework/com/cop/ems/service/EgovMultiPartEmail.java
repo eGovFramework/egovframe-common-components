@@ -6,24 +6,27 @@ import org.apache.commons.mail.DefaultAuthenticator;
 import org.apache.commons.mail.EmailAttachment;
 import org.apache.commons.mail.EmailException;
 import org.apache.commons.mail.MultiPartEmail;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 
 /**
  * 발송메일에 첨부파일용으로 사용되는 VO 클래스
+ * 
  * @author 공통서비스 개발팀 이기하
  * @since 2011.12.06
  * @version 1.0
  * @see
  *
- * <pre>
+ *      <pre>
  * << 개정이력(Modification Information) >>
  *
  *    수정일      	수정자          수정내용
  *  ----------     --------    ---------------------------
- *  2011.12.06		이기하          최초 생성
- *  2013.05.23		이기하          thread-safe 하게 변경
- *  2022.11.11      김혜준          시큐어코딩 처리
+ *   2011.12.06  이기하          최초 생성
+ *   2013.05.23  이기하          thread-safe 하게 변경
+ *   2022.11.11  김혜준          시큐어코딩 처리
+ *   2024.09.02  이백행          컨트리뷰션 시큐어코딩 Exception 제거
  *
- *  </pre>
+ *      </pre>
  */
 
 public class EgovMultiPartEmail implements Serializable {
@@ -85,50 +88,58 @@ public class EgovMultiPartEmail implements Serializable {
 	}
 
 	@Deprecated
-	public String send() throws EmailException {
-		MultiPartEmail email = new MultiPartEmail();
+	public String send() {
+		try {
+			MultiPartEmail email = new MultiPartEmail();
 
-		email.setCharset("UTF-8");
-		email.setHostName(this.host);
-		email.setSmtpPort(this.port);
-		email.setStartTLSEnabled(true);
-		// 2022.11.11 시큐어코딩 처리
-		email.setSSLCheckServerIdentity(true);
-		email.setAuthenticator(new DefaultAuthenticator(this.id, this.password));
-		email.setSocketConnectionTimeout(60000);
-		email.setSocketTimeout(60000);
-		email.setFrom(this.emailAddress, this.senderName);
+			email.setCharset("UTF-8");
+			email.setHostName(this.host);
+			email.setSmtpPort(this.port);
+			email.setStartTLSEnabled(true);
+			// 2022.11.11 시큐어코딩 처리
+			email.setSSLCheckServerIdentity(true);
+			email.setAuthenticator(new DefaultAuthenticator(this.id, this.password));
+			email.setSocketConnectionTimeout(60000);
+			email.setSocketTimeout(60000);
+			email.setFrom(this.emailAddress, this.senderName);
 
-		return email.send();
+			return email.send();
+		} catch (EmailException e) {
+			throw new BaseRuntimeException("EmailException: send()", e);
+		}
 	}
 
-	public String send(String addTo, String subject, String msg) throws EmailException {
+	public String send(String addTo, String subject, String msg) {
 		return send(addTo, subject, msg, null);
 	}
 
-	public String send(String addTo, String subject, String msg, EmailAttachment attachment) throws EmailException {
-		MultiPartEmail email = new MultiPartEmail();
+	public String send(String addTo, String subject, String msg, EmailAttachment attachment) {
+		try {
+			MultiPartEmail email = new MultiPartEmail();
 
-		email.setCharset("UTF-8");
-		email.setHostName(this.host);
-		email.setSmtpPort(this.port);
-		email.setStartTLSEnabled(true);
-		// 2022.11.11 시큐어코딩 처리
-		email.setSSLCheckServerIdentity(true);
-		email.setAuthenticator(new DefaultAuthenticator(this.id, this.password));
-		email.setSocketConnectionTimeout(60000);
-		email.setSocketTimeout(60000);
-		email.setFrom(this.emailAddress, this.senderName);
-		email.addTo(addTo);
-		email.setSubject(subject);
-		email.setMsg(msg);
+			email.setCharset("UTF-8");
+			email.setHostName(this.host);
+			email.setSmtpPort(this.port);
+			email.setStartTLSEnabled(true);
+			// 2022.11.11 시큐어코딩 처리
+			email.setSSLCheckServerIdentity(true);
+			email.setAuthenticator(new DefaultAuthenticator(this.id, this.password));
+			email.setSocketConnectionTimeout(60000);
+			email.setSocketTimeout(60000);
+			email.setFrom(this.emailAddress, this.senderName);
+			email.addTo(addTo);
+			email.setSubject(subject);
+			email.setMsg(msg);
 
-		if (attachment != null) {
-			email.attach(attachment);
+			if (attachment != null) {
+				email.attach(attachment);
+			}
+
+			return email.send();
+		} catch (EmailException e) {
+			throw new BaseRuntimeException(
+					"EmailException: send(String addTo, String subject, String msg, EmailAttachment attachment)", e);
 		}
-
-		return email.send();
-
 	}
 
 }
