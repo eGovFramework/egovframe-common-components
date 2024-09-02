@@ -21,7 +21,8 @@ import egovframework.com.cop.ems.service.SndngMailVO;
  *
  *   수정일         수정자       수정내용
  *  ----------    --------    ---------------------------
- *  2009.03.12     박지욱       최초 생성
+ *   2009.03.12  박지욱          최초 생성
+ *   2024.09.03  이백행          컨트리뷰션 시큐어코딩 Exception 제거
  *
  *      </pre>
  */
@@ -33,9 +34,8 @@ public class SndngMailDtlsDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param vo ComDefaultVO
 	 * @return List
-	 * @exception Exception
 	 */
-	public List<SndngMailVO> selectSndngMailList(ComDefaultVO vo) throws Exception {
+	public List<SndngMailVO> selectSndngMailList(ComDefaultVO vo) {
 		return selectList("SndngMailDtlsDAO.selectSndngMailList_D", vo);
 	}
 
@@ -44,7 +44,6 @@ public class SndngMailDtlsDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param vo ComDefaultVO
 	 * @return int
-	 * @exception
 	 */
 	public int selectSndngMailListTotCnt(ComDefaultVO vo) {
 		return (Integer) selectOne("SndngMailDtlsDAO.selectSndngMailListTotCnt_S", vo);
