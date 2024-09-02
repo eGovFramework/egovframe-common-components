@@ -32,8 +32,10 @@
 /* ********************************************************
  * 목록 으로 가기
  ******************************************************** */
-function fn_egov_list_Zip(){
-	location.href = "<c:url value='/sym/ccm/zip/EgovCcmZipList.do' />";
+function fn_egov_list_Zip() {
+	var varForm = document.getElementById("Form");
+	varForm.action = "<c:url value='/sym/ccm/zip/EgovCcmZipList.do'/>";
+	varForm.submit();
 }
 /* ********************************************************
  * 수정화면으로  바로가기
@@ -157,10 +159,12 @@ function fn_egov_delete_Zip(){
 <input class="btnStyle02" type="submit" value="<spring:message code="button.list" />" onclick="fn_egov_list_Zip(); return false;"></td>
 </div>
 <form name="Form" id="Form" method="post" action="">
-	<input type=hidden name="zip">
-	<input type=hidden name="sn">
-	<input type=hidden name="rdmnCode">
-	<input type=hidden name="searchList" value="${searchList}">
+	<input type=hidden id="sn" name="sn" value="${not empty result.sn ? result.sn : 0}" />
+	<input type=hidden id="zip" name="zip" />
+	<input type=hidden id="rdmnCode" name="rdmnCode" />
+	<input type=hidden id="searchList" name="searchList" value="${searchVO.searchList}" />
+	<input type=hidden id="searchCondition2" name="searchCondition2" value="${searchVO.searchKeyword}" />
+	<input type=hidden id="searchKeyword" name="searchKeyword" value="${searchVO.searchKeyword}" />
 </form>
 </div>
 </body>

@@ -291,7 +291,7 @@ public class EgovCcmZipManageController {
 			model.addAttribute("result", vo);
 			model.addAttribute("searchList", searchVO.getSearchList());
 		}
-
+		model.addAttribute("searchVO", searchVO);
 		return "egovframework/com/sym/ccm/zip/EgovCcmZipDetail";
 	}
 
