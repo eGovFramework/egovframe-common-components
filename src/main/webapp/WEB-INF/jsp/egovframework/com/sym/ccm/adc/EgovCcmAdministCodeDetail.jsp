@@ -47,7 +47,7 @@ function fnList(){
  ******************************************************** */
 function fnModify(){
 	var varForm				       = document.getElementById("Form");
-	varForm.action                 = "<c:url value='/sym/ccm/adc/EgovCcmAdministCodeModify.do'/>";
+	varForm.action                 = "<c:url value='/sym/ccm/adc/EgovCcmAdministCodeModifyView.do'/>";
 	varForm.administZoneSe.value   = "${result.administZoneSe}";
 	varForm.administZoneCode.value = "${result.administZoneCode}";
 	varForm.submit();

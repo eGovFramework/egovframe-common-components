@@ -112,7 +112,7 @@
 <body onLoad="fnInit();">
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form modelAttribute="administCode" name="administCode" method="post">
+<form:form modelAttribute="administCode" name="administCode" method="post" action="/sym/ccm/adc/EgovCcmAdministCodeModify.do">
 <input name="cmd" type="hidden" value="Modify">
 <form:hidden path="administZoneSe"/>
 <form:hidden path="administZoneCode"/>

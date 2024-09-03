@@ -50,7 +50,7 @@ function fnSearch(){
  * 등록 처리 함수
  ******************************************************** */
 function fnRegist(){
-	location.href = "<c:url value='/sym/ccm/adc/EgovCcmAdministCodeRegist.do' />";
+	location.href = "<c:url value='/sym/ccm/adc/EgovCcmAdministCodeRegistView.do' />";
 }
 /* ********************************************************
  * 수정 처리 함수
