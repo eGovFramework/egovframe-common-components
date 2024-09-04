@@ -119,7 +119,7 @@ function selectProgramListManage() {
  * 입력 화면 호출 함수
  ******************************************************** */
 function insertProgramListManage() {
-   	document.progrmManageForm.action = "<c:url value='/sym/prm/EgovProgramListRegist.do'/>";
+   	document.progrmManageForm.action = "<c:url value='/sym/prm/EgovProgramListRegistView.do'/>";
    	document.progrmManageForm.submit();
 }
 /* ********************************************************
