@@ -86,7 +86,7 @@ function selectList(){
   <tr>
     <td width="700">
 <!-- ********** 여기서 부터 본문 내용 *************** -->
-<form:form modelAttribute="progrmManageVO" method="post" >
+<form:form modelAttribute="progrmManageVO" method="post" action="/sym/prm/EgovProgramListRegist.do">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -127,7 +127,7 @@ function selectList(){
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="comSymPrm.programListRegist.progrmDc"/></th><!-- 프로그램설명 -->
+			<th><spring:message code="comSymPrm.programListRegist.progrmDc"/> <span class="pilsu">*</span></th><!-- 프로그램설명 -->
 			<td class="left">
 			    <form:textarea path="progrmDc" rows="14" cols="75" cssClass="txaClass" title="${vprogrmDc}"/><!-- 프로그램설명 -->
       			<form:errors path="progrmDc"/>
