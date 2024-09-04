@@ -14,9 +14,15 @@ import egovframework.com.cop.adb.service.AddressBookVO;
  * @Class Name : AdressBookDAO.java
  * @Description : 주소록을 관리하는 서비스를 정의하기위한 데이터 접근 클래스
  * @Modification Information
- *
- *               수정일 수정자 수정내용 ------- ------- ------------------- 2009.9.25. 윤성록
- *               최초 생성 2016.12.13 최두영 클래스명 변경
+ * 
+ *               <pre>
+ *    수정일          수정자         수정내용
+ *   -------        -------     -------------------
+ *   2009.09.25  윤성록          최초 생성
+ *   2016.12.13  최두영          클래스명 변경
+ *   2024.09.05  이백행          컨트리뷰션 시큐어코딩 Exception 제거
+ *               </pre>
+ * 
  * @author 공통 컴포넌트 개발팀 윤성록
  * @since 2009. 9. 25.
  * @version
@@ -31,9 +37,8 @@ public class AddressBookDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param AddressBookVO
 	 * @return
-	 * @throws Exception
 	 */
-	public List<AddressBookVO> selectAdressBookList(AddressBookVO adbkVO) throws Exception {
+	public List<AddressBookVO> selectAdressBookList(AddressBookVO adbkVO) {
 		return selectList("AdressBookDAO.selectAdressBookList", adbkVO);
 	}
 
@@ -42,9 +47,8 @@ public class AddressBookDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param AddressBookUserVO
 	 * @return
-	 * @throws Exception
 	 */
-	public List<AddressBookUserVO> selectManList(AddressBookUserVO adbkUserVO) throws Exception {
+	public List<AddressBookUserVO> selectManList(AddressBookUserVO adbkUserVO) {
 		return selectList("AdressBookDAO.selectManList", adbkUserVO);
 	}
 
@@ -53,9 +57,8 @@ public class AddressBookDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param AddressBookUserVO
 	 * @return
-	 * @throws Exception
 	 */
-	public List<AddressBookUserVO> selectCardList(AddressBookUserVO adbkUserVO) throws Exception {
+	public List<AddressBookUserVO> selectCardList(AddressBookUserVO adbkUserVO) {
 		return selectList("AdressBookDAO.selectCardList", adbkUserVO);
 	}
 
@@ -64,9 +67,8 @@ public class AddressBookDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param AddressBookVO
 	 * @return
-	 * @throws Exception
 	 */
-	public List<AddressBookUser> selectUserList(AddressBookVO adbkVO) throws Exception {
+	public List<AddressBookUser> selectUserList(AddressBookVO adbkVO) {
 		return selectList("AdressBookDAO.selectUserList", adbkVO);
 	}
 
@@ -75,9 +77,8 @@ public class AddressBookDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param AddressBookVO
 	 * @return
-	 * @throws Exception
 	 */
-	public AddressBookVO selectAdressBook(AddressBookVO adbkVO) throws Exception {
+	public AddressBookVO selectAdressBook(AddressBookVO adbkVO) {
 		return (AddressBookVO) selectOne("AdressBookDAO.selectAdressBook", adbkVO);
 	}
 
@@ -85,9 +86,8 @@ public class AddressBookDAO extends EgovComAbstractDAO {
 	 * 주소록 정보를 등록한다.
 	 * 
 	 * @param AddressBook
-	 * @throws Exception
 	 */
-	public void insertAdressBook(AddressBook addressBook) throws Exception {
+	public void insertAdressBook(AddressBook addressBook) {
 		insert("AdressBookDAO.insertAdressBook", addressBook);
 	}
 
@@ -95,9 +95,8 @@ public class AddressBookDAO extends EgovComAbstractDAO {
 	 * 주소록을 구성하는 구성원을 등록한다.
 	 * 
 	 * @param AddressBookUser
-	 * @throws Exception
 	 */
-	public void insertAdressBookUser(AddressBookUser addressBookUser) throws Exception {
+	public void insertAdressBookUser(AddressBookUser addressBookUser) {
 		insert("AdressBookDAO.insertAdressBookUser", addressBookUser);
 	}
 
@@ -105,9 +104,8 @@ public class AddressBookDAO extends EgovComAbstractDAO {
 	 * 주소록 정보를 수정한다.
 	 * 
 	 * @param AddressBook
-	 * @throws Exception
 	 */
-	public void updateAdressBook(AddressBook addressBook) throws Exception {
+	public void updateAdressBook(AddressBook addressBook) {
 		update("AdressBookDAO.updateAdressBook", addressBook);
 	}
 
@@ -115,9 +113,8 @@ public class AddressBookDAO extends EgovComAbstractDAO {
 	 * 주소록 구성원을 삭제한다.
 	 * 
 	 * @param AddressBookUser
-	 * @throws Exception
 	 */
-	public void deleteAdressBookUser(AddressBookUser adbkUser) throws Exception {
+	public void deleteAdressBookUser(AddressBookUser adbkUser) {
 		delete("AdressBookDAO.deleteAdressBookUser", adbkUser);
 	}
 
@@ -125,9 +122,8 @@ public class AddressBookDAO extends EgovComAbstractDAO {
 	 * 주소록 목록에 대한 전체 건수를 조회한다.
 	 * 
 	 * @param AddressBookUser
-	 * @throws Exception
 	 */
-	public int selectAdressBookListCnt(AddressBookVO adbkVO) throws Exception {
+	public int selectAdressBookListCnt(AddressBookVO adbkVO) {
 		return (Integer) selectOne("AdressBookDAO.selectAdressBookListCnt", adbkVO);
 	}
 
@@ -135,9 +131,8 @@ public class AddressBookDAO extends EgovComAbstractDAO {
 	 * 사용자 목록에 대한 전체 건수를 조회한다.
 	 * 
 	 * @param AddressBookUser
-	 * @throws Exception
 	 */
-	public int selectManListCnt(AddressBookUserVO adbkUserVO) throws Exception {
+	public int selectManListCnt(AddressBookUserVO adbkUserVO) {
 		return (Integer) selectOne("AdressBookDAO.selectManListCnt", adbkUserVO);
 	}
 
@@ -145,9 +140,8 @@ public class AddressBookDAO extends EgovComAbstractDAO {
 	 * 명함 목록에 대한 전체 건수를 조회한다.
 	 * 
 	 * @param AddressBookUser
-	 * @throws Exception
 	 */
-	public int selectCardListCnt(AddressBookUserVO adbkUserVO) throws Exception {
+	public int selectCardListCnt(AddressBookUserVO adbkUserVO) {
 		return (Integer) selectOne("AdressBookDAO.selectCardListCnt", adbkUserVO);
 	}
 
@@ -155,9 +149,8 @@ public class AddressBookDAO extends EgovComAbstractDAO {
 	 * 주소록을 구성할 사용자의 정보를 조회한다.
 	 * 
 	 * @param AddressBookUser
-	 * @throws Exception
 	 */
-	public AddressBookUser selectManUser(String id) throws Exception {
+	public AddressBookUser selectManUser(String id) {
 		return (AddressBookUser) selectOne("AdressBookDAO.selectManUser", id);
 	}
 
@@ -165,9 +158,8 @@ public class AddressBookDAO extends EgovComAbstractDAO {
 	 * 주소록을 구성할 명함의 정보를 조회한다.
 	 * 
 	 * @param AddressBookUser
-	 * @throws Exception
 	 */
-	public AddressBookUser selectCardUser(String id) throws Exception {
+	public AddressBookUser selectCardUser(String id) {
 		return (AddressBookUser) selectOne("AdressBookDAO.selectCardUser", id);
 	}
 

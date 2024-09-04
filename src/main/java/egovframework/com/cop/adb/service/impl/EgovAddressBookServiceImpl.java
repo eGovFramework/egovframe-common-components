@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
 
@@ -29,8 +30,9 @@ import egovframework.com.cop.adb.service.EgovAddressBookService;
  *   
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.9.25  윤성록          최초 생성
- *   2016.12.13 최두영          클래스명 변경
+ *   2009.09.25  윤성록          최초 생성
+ *   2016.12.13  최두영          클래스명 변경
+ *   2024.09.05  이백행          컨트리뷰션 시큐어코딩 Exception 제거
  *
  *      </pre>
  */
@@ -51,10 +53,9 @@ public class EgovAddressBookServiceImpl extends EgovAbstractServiceImpl implemen
 	 * 
 	 * @param AddressBookVO
 	 * @return Map<String, Object>
-	 * @exception Exception
 	 */
 	@Override
-	public Map<String, Object> selectAdressBookList(AddressBookVO adbkVO) throws Exception {
+	public Map<String, Object> selectAdressBookList(AddressBookVO adbkVO) {
 
 		List<AddressBookVO> result = adbkDAO.selectAdressBookList(adbkVO);
 
@@ -73,10 +74,9 @@ public class EgovAddressBookServiceImpl extends EgovAbstractServiceImpl implemen
 	 * 
 	 * @param AddressBookVO
 	 * @return AdressBookVO
-	 * @exception Exception
 	 */
 	@Override
-	public AddressBookVO selectAdressBook(AddressBookVO addressBookVO) throws Exception {
+	public AddressBookVO selectAdressBook(AddressBookVO addressBookVO) {
 
 		AddressBookVO adbkVO = adbkDAO.selectAdressBook(addressBookVO);
 
@@ -92,10 +92,9 @@ public class EgovAddressBookServiceImpl extends EgovAbstractServiceImpl implemen
 	 * 
 	 * @param AddressBook
 	 * @return
-	 * @exception Exception
 	 */
 	@Override
-	public void deleteAdressBook(AddressBook addressBook) throws Exception {
+	public void deleteAdressBook(AddressBook addressBook) {
 		adbkDAO.updateAdressBook(addressBook);
 	}
 
@@ -104,10 +103,9 @@ public class EgovAddressBookServiceImpl extends EgovAbstractServiceImpl implemen
 	 * 
 	 * @param AddressBookUserVO
 	 * @return Map<String, Object>
-	 * @exception Exception
 	 */
 	@Override
-	public Map<String, Object> selectManList(AddressBookUserVO addressBookUserVO) throws Exception {
+	public Map<String, Object> selectManList(AddressBookUserVO addressBookUserVO) {
 
 		List<AddressBookUserVO> result = adbkDAO.selectManList(addressBookUserVO);
 		int cnt = adbkDAO.selectManListCnt(addressBookUserVO);
@@ -125,10 +123,9 @@ public class EgovAddressBookServiceImpl extends EgovAbstractServiceImpl implemen
 	 * 
 	 * @param AddressBookUserVO
 	 * @return Map<String, Object>
-	 * @exception Exception
 	 */
 	@Override
-	public Map<String, Object> selectCardList(AddressBookUserVO addressBookUserVO) throws Exception {
+	public Map<String, Object> selectCardList(AddressBookUserVO addressBookUserVO) {
 
 		List<AddressBookUserVO> result = adbkDAO.selectCardList(addressBookUserVO);
 		int cnt = adbkDAO.selectCardListCnt(addressBookUserVO);
@@ -146,18 +143,26 @@ public class EgovAddressBookServiceImpl extends EgovAbstractServiceImpl implemen
 	 * 
 	 * @param AddressBookVO
 	 * @return M
-	 * @exception Exception
+	 * @throws Exception
 	 */
 	@Override
 	public void insertAdressBook(AddressBookVO adbkVO) throws Exception {
 
-		adbkVO.setAdbkId(idgenService.getNextStringId());
+		try {
+			adbkVO.setAdbkId(idgenService.getNextStringId());
+		} catch (FdlException e) {
+			throw processException("FdlException: egovAdbkIdGnrService", e);
+		}
 		adbkVO.setUseAt("Y");
 
 		adbkDAO.insertAdressBook(adbkVO);
 
 		for (int i = 0; i < adbkVO.getAdbkMan().size(); i++) {
-			adbkVO.getAdbkMan().get(i).setAdbkUserId(idgenService2.getNextStringId());
+			try {
+				adbkVO.getAdbkMan().get(i).setAdbkUserId(idgenService2.getNextStringId());
+			} catch (FdlException e) {
+				throw processException("FdlException: egovAdbkUserIdGnrService", e);
+			}
 			adbkVO.getAdbkMan().get(i).setAdbkId(adbkVO.getAdbkId());
 			adbkDAO.insertAdressBookUser(adbkVO.getAdbkMan().get(i));
 		}
@@ -168,7 +173,7 @@ public class EgovAddressBookServiceImpl extends EgovAbstractServiceImpl implemen
 	 * 
 	 * @param AddressBookVO
 	 * @return
-	 * @exception Exception
+	 * @throws Exception
 	 */
 	@Override
 	public void updateAdressBook(AddressBookVO adbkVO) throws Exception {
@@ -211,7 +216,11 @@ public class EgovAddressBookServiceImpl extends EgovAbstractServiceImpl implemen
 				}
 			}
 			if (!check) {
-				adbkVO.getAdbkMan().get(i).setAdbkUserId(idgenService2.getNextStringId());
+				try {
+					adbkVO.getAdbkMan().get(i).setAdbkUserId(idgenService2.getNextStringId());
+				} catch (FdlException e) {
+					throw processException("FdlException: egovAdbkUserIdGnrService", e);
+				}
 				adbkVO.getAdbkMan().get(i).setAdbkId(adbkVO.getAdbkId());
 				adbkDAO.insertAdressBookUser(adbkVO.getAdbkMan().get(i));
 			}
@@ -239,10 +248,9 @@ public class EgovAddressBookServiceImpl extends EgovAbstractServiceImpl implemen
 	 * 
 	 * @param String
 	 * @return
-	 * @exception Exception
 	 */
 	@Override
-	public AddressBookUser selectAdbkUser(String id) throws Exception {
+	public AddressBookUser selectAdbkUser(String id) {
 
 		AddressBookUser adbkUser = new AddressBookUser();
 

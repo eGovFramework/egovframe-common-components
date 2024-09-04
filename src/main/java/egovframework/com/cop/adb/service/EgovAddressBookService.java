@@ -15,8 +15,9 @@ import java.util.Map;
  *   
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.9.25  윤성록          최초 생성
- *   2016.12.13 최두영          클래스명 변경
+ *   2009.09.25  윤성록          최초 생성
+ *   2016.12.13  최두영          클래스명 변경
+ *   2024.09.05  이백행          컨트리뷰션 시큐어코딩 Exception 제거
  *      </pre>
  */
 public interface EgovAddressBookService {
@@ -26,51 +27,45 @@ public interface EgovAddressBookService {
 	 * 
 	 * @param AddressBookVO
 	 * @return Map<String, Object>
-	 * @exception Exception
 	 */
-	public Map<String, Object> selectAdressBookList(AddressBookVO addressBookVO) throws Exception;
+	public Map<String, Object> selectAdressBookList(AddressBookVO addressBookVO);
 
 	/**
 	 * 주소록 정보를 조회한다.
 	 * 
 	 * @param AddressBookVO
 	 * @return AdressBookVO
-	 * @exception Exception
 	 */
-	public AddressBookVO selectAdressBook(AddressBookVO addressBookVO) throws Exception;
+	public AddressBookVO selectAdressBook(AddressBookVO addressBookVO);
 
 	/**
 	 * 주소록 정보를 삭제한다.
 	 * 
 	 * @param AddressBook
 	 * @return
-	 * @exception Exception
 	 */
-	public void deleteAdressBook(AddressBook addressBook) throws Exception;
+	public void deleteAdressBook(AddressBook addressBook);
 
 	/**
 	 * 사용자 목록을 조회한다.
 	 * 
 	 * @param AddressBookUserVO
 	 * @return Map<String, Object>
-	 * @exception Exception
 	 */
-	public Map<String, Object> selectManList(AddressBookUserVO addressBookUserVO) throws Exception;
+	public Map<String, Object> selectManList(AddressBookUserVO addressBookUserVO);
 
 	/**
 	 * 명함 목록을 조회한다.
 	 * 
 	 * @param AddressBookUserVO
 	 * @return Map<String, Object>
-	 * @exception Exception
 	 */
-	public Map<String, Object> selectCardList(AddressBookUserVO addressBookUserVO) throws Exception;
+	public Map<String, Object> selectCardList(AddressBookUserVO addressBookUserVO);
 
 	/**
 	 * 주소록 정보를 등록한다.
 	 * 
-	 * @param AddressBook
-	 * @throws Exception
+	 * @param AddressBook @
 	 */
 	public void insertAdressBook(AddressBookVO adbkVO) throws Exception;
 
@@ -79,7 +74,6 @@ public interface EgovAddressBookService {
 	 * 
 	 * @param AddressBookVO
 	 * @return
-	 * @exception Exception
 	 */
 	public void updateAdressBook(AddressBookVO addressBookVO) throws Exception;
 
@@ -88,8 +82,7 @@ public interface EgovAddressBookService {
 	 * 
 	 * @param String
 	 * @return
-	 * @exception Exception
 	 */
-	public AddressBookUser selectAdbkUser(String id) throws Exception;
+	public AddressBookUser selectAdbkUser(String id);
 
 }
