@@ -105,13 +105,13 @@ public class EgovRoughMapController {
 
     /**
      * 약도 상세조회 Service interface 호출 및 결과를 반환한다.
-     * @param RoughMapDefaultVO
+     * @param searchVO
      * @param model
      * @return String 건물 위치정보 상세조회 화면
      * @throws Exception
     */
     @RequestMapping("/com/uss/ion/rmm/selectRoughMapDetail.do")
-    public String selectRoughMap(RoughMapVO roughMapVO, ModelMap model) throws Exception {
+    public String selectRoughMap(RoughMapVO searchVO, ModelMap model) throws Exception {
 
         // 권한 체크
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -120,8 +120,9 @@ public class EgovRoughMapController {
             return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
-        RoughMapVO roughMap = egovRoughMapService.selectRoughMapDetail(roughMapVO);
+        RoughMapVO roughMap = egovRoughMapService.selectRoughMapDetail(searchVO);
         model.addAttribute("roughMap", roughMap);
+        model.addAttribute("searchVO", searchVO);
 
         return "egovframework/com/uss/ion/rmm/EgovRoughMapDetail";
     }
