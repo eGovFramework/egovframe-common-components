@@ -159,6 +159,10 @@
 	<h2><spring:message code="comUssIonRmm.roughMapInfoDetail.title" /></h2><!-- 약도 상세 -->
 	
 <form id="roughMap" name="roughMap" method="post">
+    <input type="hidden" id="searchCondition" name="searchCondition" value="${searchVO.searchCondition}" />
+    <input type="hidden" id="searchKeyword" name="searchKeyword" value="${searchVO.searchKeyword}" />
+    <input type="hidden" id="pageIndex" name="pageIndex" value="${searchVO.pageIndex}" />
+
 	<!-- 등록폼 -->
 	<table class="wTable">
 		<colgroup>
