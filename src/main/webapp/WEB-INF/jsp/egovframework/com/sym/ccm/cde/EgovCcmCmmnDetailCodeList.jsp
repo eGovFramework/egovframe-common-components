@@ -1,19 +1,20 @@
 <%
- /**
-  * @Class Name : EgovCcmCmmnDetailCodeList.jsp
-  * @Description : 공통상세코드 목록 화면
-  * @Modification Information
-  * @
-  * @  수정일             수정자                   수정내용
-  * @ -------    --------    ---------------------------
-  * @ 2009.02.01   박정규              최초 생성
-  *   2017.08.31   이정은              표준프레임워크 v3.7 개선
-  *  @author 공통서비스팀
-  *  @since 2009.02.01
-  *  @version 1.0
-  *  @see
-  *
-  */
+/**
+ * @Class Name : EgovCcmCmmnDetailCodeList.jsp
+ * @Description : 공통상세코드 목록 화면
+ * @Modification Information
+ * @
+ * @  수정일             수정자                   수정내용
+ * @ -------    --------    ---------------------------
+ * @ 2009.02.01  박정규          최초 생성
+ *   2017.08.31  이정은          표준프레임워크 v3.7 개선
+ *   2024.09.07  이백행          컨트리뷰션 검색 조건 유지
+ *  @author 공통서비스팀
+ *  @since 2009.02.01
+ *  @version 1.0
+ *  @see
+ *
+ */
 %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -65,7 +66,7 @@ function fn_egov_inquire_codedetail(codeId, code) {
 </head>
 <body onload="fn_egov_init()">
 
-<form name="CcmDeCodeForm" action="<c:url value='/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do'/>" method="post" onSubmit="fn_egov_search_code(); return false;"> 
+<form name="CcmDeCodeForm" action="<c:url value='/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do'/>" method="get" onsubmit="fn_egov_search_code(); return false;"> 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	
@@ -85,7 +86,7 @@ function fn_egov_inquire_codedetail(codeId, code) {
 			<li>
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${searchVO.searchKeyword}"/>'  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
-				<span class="btn_b"><a href="<c:url value='/sym/ccm/cde/RegistCcmCmmnDetailCodeView.do' />"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="<c:url value='/sym/ccm/cde/RegistCcmCmmnDetailCodeView.do' />?searchCondition=<c:out value="${searchVO.searchCondition}" />&searchKeyword=<c:out value="${searchVO.searchKeyword}" />&pageIndex=<c:out value="${searchVO.pageIndex}" />"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>

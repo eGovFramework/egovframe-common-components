@@ -1,19 +1,20 @@
 <%
- /**
-  * @Class Name : EgovCcmCmmnDetailCodeDetail.jsp
-  * @Description : 공통상세코드 상세조회 화면
-  * @Modification Information
-  * @
-  * @  수정일             수정자                   수정내용
-  * @ -------    --------    ---------------------------
-  * @ 2009.02.01   박정규              최초 생성
-  *   2017.08.09   이정은              표준프레임워크 v3.7 개선
-  *  @author 공통서비스팀 
-  *  @since 2009.02.01
-  *  @version 1.0
-  *  @see
-  *  
-  */
+/**
+ * @Class Name : EgovCcmCmmnDetailCodeDetail.jsp
+ * @Description : 공통상세코드 상세조회 화면
+ * @Modification Information
+ * @
+ * @  수정일             수정자                   수정내용
+ * @ -------    --------    ---------------------------
+ * @ 2009.02.01  박정규          최초 생성
+ *   2017.08.09  이정은          표준프레임워크 v3.7 개선
+ *   2024.09.07  이백행          컨트리뷰션 검색 조건 유지
+ *  @author 공통서비스팀 
+ *  @since 2009.02.01
+ *  @version 1.0
+ *  @see
+ *  
+ */
 %>
 <%@ page language="java" contentType="text/html; charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -33,11 +34,13 @@
  * 삭제처리
  ******************************************************** */
  function fn_egov_delete_code(codeId, code){
+	event.preventDefault();
 	if(confirm("<spring:message code="common.delete.msg" />")){	
 		// Delete하기 위한 키값을 셋팅
 		document.CcmDeCodeForm.codeId.value = codeId;
 		document.CcmDeCodeForm.code.value = code;	
 		document.CcmDeCodeForm.action = "<c:url value='/sym/ccm/cde/RemoveCcmCmmnDetailCode.do'/>";
+		document.CcmDeCodeForm.method = 'post';
 		document.CcmDeCodeForm.submit();
 	}	
 }	
@@ -45,7 +48,7 @@
 </head>
 <body>
 
-<form name="CcmDeCodeForm" action="<c:url value='/sym/ccm/cde/UpdateCcmCmmnDetailCodeView.do'/>" method="post">
+<form name="CcmDeCodeForm" action="<c:url value='/sym/ccm/cde/UpdateCcmCmmnDetailCodeView.do'/>" method="get">
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.detail" /></h2>
@@ -92,14 +95,18 @@
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input type="submit" class="s_submit" value="<spring:message code="button.update" />" title="<spring:message code="title.update" /> <spring:message code="input.button" />" />
-		<span class="btn_s"><a href="<c:url value='/sym/ccm/cde/RemoveCcmCmmnDetailCode.do?codeId=${result.codeId}&amp;code=${result.code}' />" onClick="fn_egov_delete_code('<c:out value="${result.codeId}"/>','<c:out value="${result.code}"/>'); return false;" title="<spring:message code="title.delete" /> <spring:message code="input.button" />"><spring:message code="button.delete" /></a></span>
-		<span class="btn_s"><a href="<c:url value='/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do' />"  title="<spring:message code="title.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="<c:url value='/sym/ccm/cde/RemoveCcmCmmnDetailCode.do?codeId=${result.codeId}&amp;code=${result.code}' />" onclick="fn_egov_delete_code('<c:out value="${result.codeId}"/>','<c:out value="${result.code}"/>');" title="<spring:message code="title.delete" /> <spring:message code="input.button" />"><spring:message code="button.delete" /></a></span>
+		<span class="btn_s"><a href="<c:url value='/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do' />?searchCondition=<c:out value="${cmmnDetailCodeVO.searchCondition}" />&searchKeyword=<c:out value="${cmmnDetailCodeVO.searchKeyword}" />&pageIndex=<c:out value="${cmmnDetailCodeVO.pageIndex}" />"  title="<spring:message code="title.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
 	</div><div style="clear:both;"></div>
 	
 </div>
 
 <input name="codeId" type="hidden" value="<c:out value="${result.codeId}" />">
 <input name="code" type="hidden" value="<c:out value="${result.code}" />">
+
+<input name="searchCondition" type="hidden" value="<c:out value="${cmmnDetailCodeVO.searchCondition}" />">
+<input name="searchKeyword" type="hidden" value="<c:out value="${cmmnDetailCodeVO.searchKeyword}" />">
+<input name="pageIndex" type="hidden" value="<c:out value="${cmmnDetailCodeVO.pageIndex}" />">
 </form>
 
 </body>

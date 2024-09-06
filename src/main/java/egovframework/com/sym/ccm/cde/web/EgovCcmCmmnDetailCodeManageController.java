@@ -10,8 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -37,13 +38,14 @@ import egovframework.com.sym.ccm.cde.service.EgovCcmCmmnDetailCodeManageService;
  * @see
  *
  *      <pre>
-* << 개정이력(Modification Information) >>
-*
-*   수정일      수정자           수정내용
-*  -------    --------    ---------------------------
-*   2009.04.01  이중호       최초 생성
-*   2011.08.26	정진오	IncludedInfo annotation 추가
-*   2017.08.08	이정은	표준프레임워크 v3.7 개선
+ * << 개정이력(Modification Information) >>
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.04.01  이중호          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2017.08.08  이정은          표준프레임워크 v3.7 개선
+ *   2024.09.07  이백행          컨트리뷰션 검색 조건 유지
  *
  *      </pre>
  */
@@ -81,7 +83,7 @@ public class EgovCcmCmmnDetailCodeManageController {
 	 * @throws Exception
 	 */
 	@IncludedInfo(name = "공통상세코드", listUrl = "/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do", order = 970, gid = 60)
-	@RequestMapping(value = "/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do")
+	@GetMapping(value = "/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do")
 	public String selectCmmnDetailCodeList(@ModelAttribute("loginVO") LoginVO loginVO,
 			@ModelAttribute("searchVO") CmmnDetailCodeVO searchVO, ModelMap model) throws Exception {
 
@@ -118,7 +120,7 @@ public class EgovCcmCmmnDetailCodeManageController {
 	 * @return "egovframework/com/sym/ccm/cde/EgovCcmCmmnDetailCodeDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/ccm/cde/SelectCcmCmmnDetailCodeDetail.do")
+	@GetMapping(value = "/sym/ccm/cde/SelectCcmCmmnDetailCodeDetail.do")
 	public String selectCmmnDetailCodeDetail(@ModelAttribute("loginVO") LoginVO loginVO,
 			CmmnDetailCodeVO cmmnDetailCodeVO, ModelMap model) throws Exception {
 		CmmnDetailCode vo = cmmnDetailCodeManageService.selectCmmnDetailCodeDetail(cmmnDetailCodeVO);
@@ -136,12 +138,16 @@ public class EgovCcmCmmnDetailCodeManageController {
 	 * @return "forward:/sym/ccm/cde/EgovCcmCmmnDetailCodeList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/ccm/cde/RemoveCcmCmmnDetailCode.do")
+	@PostMapping(value = "/sym/ccm/cde/RemoveCcmCmmnDetailCode.do")
 	public String deleteCmmnDetailCode(@ModelAttribute("loginVO") LoginVO loginVO, CmmnDetailCodeVO cmmnDetailCodeVO,
 			ModelMap model) throws Exception {
 		cmmnDetailCodeManageService.deleteCmmnDetailCode(cmmnDetailCodeVO);
 
-		return "forward:/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do";
+		model.addAttribute("searchCondition", cmmnDetailCodeVO.getSearchCondition());
+		model.addAttribute("searchKeyword", cmmnDetailCodeVO.getSearchKeyword());
+		model.addAttribute("pageIndex", cmmnDetailCodeVO.getPageIndex());
+
+		return "redirect:/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do";
 	}
 
 	/**
@@ -152,7 +158,7 @@ public class EgovCcmCmmnDetailCodeManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/sym/ccm/cde/RegistCcmCmmnDetailCodeView.do")
+	@GetMapping("/sym/ccm/cde/RegistCcmCmmnDetailCodeView.do")
 	public String insertCmmnDetailCodeView(@ModelAttribute("loginVO") LoginVO loginVO,
 			@ModelAttribute("cmmnCodeVO") CmmnCodeVO cmmnCodeVO,
 			@ModelAttribute("cmmnDetailCodeVO") CmmnDetailCodeVO cmmnDetailCodeVO, ModelMap model) throws Exception {
@@ -190,7 +196,7 @@ public class EgovCcmCmmnDetailCodeManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/sym/ccm/cde/RegistCcmCmmnDetailCode.do")
+	@PostMapping("/sym/ccm/cde/RegistCcmCmmnDetailCode.do")
 	public String insertCmmnDetailCode(@ModelAttribute("cmmnDetailCodeVO") CmmnDetailCodeVO cmmnDetailCodeVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -225,7 +231,11 @@ public class EgovCcmCmmnDetailCodeManageController {
 		cmmnDetailCodeVO.setFrstRegisterId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 		cmmnDetailCodeManageService.insertCmmnDetailCode(cmmnDetailCodeVO);
 
-		return "forward:/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do";
+		model.addAttribute("searchCondition", cmmnDetailCodeVO.getSearchCondition());
+		model.addAttribute("searchKeyword", cmmnDetailCodeVO.getSearchKeyword());
+		model.addAttribute("pageIndex", cmmnDetailCodeVO.getPageIndex());
+
+		return "redirect:/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do";
 	}
 
 	/**
@@ -236,7 +246,7 @@ public class EgovCcmCmmnDetailCodeManageController {
 	 * @return "egovframework/com/sym/ccm/cde/EgovCcmCmmnDetailCodeUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping("/sym/ccm/cde/UpdateCcmCmmnDetailCodeView.do")
+	@GetMapping("/sym/ccm/cde/UpdateCcmCmmnDetailCodeView.do")
 	public String updateCmmnDetailCodeView(@ModelAttribute("loginVO") LoginVO loginVO,
 			@ModelAttribute("cmmnDetailCodeVO") CmmnDetailCodeVO cmmnDetailCodeVO, ModelMap model) throws Exception {
 
@@ -255,7 +265,7 @@ public class EgovCcmCmmnDetailCodeManageController {
 	 *         "/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/sym/ccm/cde/UpdateCcmCmmnDetailCode.do")
+	@PostMapping("/sym/ccm/cde/UpdateCcmCmmnDetailCode.do")
 	public String updateCmmnDetailCode(@ModelAttribute("cmmnDetailCodeVO") CmmnDetailCodeVO cmmnDetailCodeVO,
 			ModelMap model, BindingResult bindingResult) throws Exception {
 
@@ -273,7 +283,11 @@ public class EgovCcmCmmnDetailCodeManageController {
 		cmmnDetailCodeVO.setLastUpdusrId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 		cmmnDetailCodeManageService.updateCmmnDetailCode(cmmnDetailCodeVO);
 
-		return "forward:/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do";
+		model.addAttribute("searchCondition", cmmnDetailCodeVO.getSearchCondition());
+		model.addAttribute("searchKeyword", cmmnDetailCodeVO.getSearchKeyword());
+		model.addAttribute("pageIndex", cmmnDetailCodeVO.getPageIndex());
+
+		return "redirect:/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do";
 	}
 
 }
