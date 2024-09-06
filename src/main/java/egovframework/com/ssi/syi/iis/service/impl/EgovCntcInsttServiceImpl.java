@@ -2,8 +2,6 @@ package egovframework.com.ssi.syi.iis.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Service;
@@ -15,6 +13,7 @@ import egovframework.com.ssi.syi.iis.service.CntcServiceVO;
 import egovframework.com.ssi.syi.iis.service.CntcSystem;
 import egovframework.com.ssi.syi.iis.service.CntcSystemVO;
 import egovframework.com.ssi.syi.iis.service.EgovCntcInsttService;
+import lombok.RequiredArgsConstructor;
 
 /**
  *
@@ -31,15 +30,16 @@ import egovframework.com.ssi.syi.iis.service.EgovCntcInsttService;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.04.01  이중호          최초 생성
+ *   2024.09.07  이백행          컨트리뷰션 롬복 생성자 기반 종속성 주입
  *
  * Copyright (C) 2009 by MOPAS  All right reserved.
  *      </pre>
  */
-@Service("CntcInsttService")
+@Service
+@RequiredArgsConstructor
 public class EgovCntcInsttServiceImpl extends EgovAbstractServiceImpl implements EgovCntcInsttService {
 
-	@Resource(name = "CntcInsttDAO")
-	private CntcInsttDAO cntcInsttDAO;
+	private final CntcInsttDAO cntcInsttDAO;
 
 	/**
 	 * 연계기관을 삭제한다.

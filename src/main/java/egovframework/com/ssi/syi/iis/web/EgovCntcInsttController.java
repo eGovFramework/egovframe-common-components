@@ -3,13 +3,10 @@ package egovframework.com.ssi.syi.iis.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -31,6 +28,7 @@ import egovframework.com.ssi.syi.iis.service.EgovCntcInsttService;
 import egovframework.com.ssi.syi.ims.service.CntcMessageVO;
 import egovframework.com.ssi.syi.ims.service.EgovCntcMessageService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import lombok.RequiredArgsConstructor;
 
 /**
  *
@@ -48,39 +46,34 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.04.01  이중호          최초 생성
- *   2011.8.26	 정진오			IncludedInfo annotation 추가
- *   2011.09.14  서준식			연계시스템 수정시 입력 데이터 표신 안되는 문제 수정
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2011.09.14  서준식          연계시스템 수정시 입력 데이터 표신 안되는 문제 수정
+ *   2024.09.07  이백행          컨트리뷰션 롬복 생성자 기반 종속성 주입
  * Copyright (C) 2009 by MOPAS  All right reserved.
  *      </pre>
  */
 
 @Controller
+@RequiredArgsConstructor
 public class EgovCntcInsttController {
 
-	@Resource(name = "CntcInsttService")
-	private EgovCntcInsttService cntcInsttService;
+	private final EgovCntcInsttService cntcInsttService;
 
-	@Resource(name = "CntcMessageService")
-	private EgovCntcMessageService cntcMessageService;
+	private final EgovCntcMessageService cntcMessageService;
 
 	/** EgovIdGnrService */
-	@Resource(name = "egovCntcInsttIdGnrService")
-	private EgovIdGnrService idgenService;
+	private final EgovIdGnrService egovCntcInsttIdGnrService;
 
 	/** EgovIdGnrService */
-	@Resource(name = "egovCntcSystemIdGnrService")
-	private EgovIdGnrService idgenServiceSys;
+	private final EgovIdGnrService egovCntcSystemIdGnrService;
 
 	/** EgovIdGnrService */
-	@Resource(name = "egovCntcServiceIdGnrService")
-	private EgovIdGnrService idgenServiceSvc;
+	private final EgovIdGnrService egovCntcServiceIdGnrService;
 
 	/** EgovPropertyService */
-	@Resource(name = "propertiesService")
-	protected EgovPropertyService propertiesService;
+	private final EgovPropertyService propertiesService;
 
-	@Autowired
-	private DefaultBeanValidator beanValidator;
+	private final DefaultBeanValidator beanValidator;
 
 	/**
 	 * 연계기관을 삭제한다.
@@ -158,7 +151,7 @@ public class EgovCntcInsttController {
 			cntcInstt.setFrstRegisterId(uniqId);
 
 			// ID Generation
-			String sInsttId = idgenService.getNextStringId();
+			String sInsttId = egovCntcInsttIdGnrService.getNextStringId();
 			cntcInstt.setInsttId(sInsttId);
 
 			cntcInsttService.insertCntcInstt(cntcInstt);
@@ -216,7 +209,7 @@ public class EgovCntcInsttController {
 			cntcSystem.setFrstRegisterId(uniqId);
 
 			// ID Generation
-			String sSysId = idgenServiceSys.getNextStringId();
+			String sSysId = egovCntcSystemIdGnrService.getNextStringId();
 			cntcSystem.setSysId(sSysId);
 
 			cntcInsttService.insertCntcSystem(cntcSystem);
@@ -323,7 +316,7 @@ public class EgovCntcInsttController {
 			cntcService.setFrstRegisterId(uniqId);
 
 			// ID Generation
-			String sSvcId = idgenServiceSvc.getNextStringId();
+			String sSvcId = egovCntcServiceIdGnrService.getNextStringId();
 			cntcService.setSvcId(sSvcId);
 
 			cntcInsttService.insertCntcService(cntcService);

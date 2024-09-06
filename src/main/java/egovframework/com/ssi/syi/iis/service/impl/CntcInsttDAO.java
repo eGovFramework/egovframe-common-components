@@ -28,11 +28,12 @@ import egovframework.com.ssi.syi.iis.service.CntcSystemVO;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.04.01  이중호          최초 생성
+ *   2024.09.07  이백행          컨트리뷰션 롬복 생성자 기반 종속성 주입
  *
  * Copyright (C) 2009 by MOPAS  All right reserved.
  *      </pre>
  */
-@Repository("CntcInsttDAO")
+@Repository
 public class CntcInsttDAO extends EgovComAbstractDAO {
 
 	/**
