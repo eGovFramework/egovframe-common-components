@@ -84,18 +84,20 @@ function fncInsertMtgPlaceResve() {
 
 <div class="board">
 	<h1><spring:message code="comUssIonMtg.mtgPlaceResveManageList.title" /></h1><!-- 회의실예약관리 목록 -->
-	<form name="listForm" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageList.do'/>" method="post"> 
-	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
-		<ul>
-			<li>
-				<label for=""><spring:message code="comUssIonMtg.mtgPlaceResveManageList.meetingDate" /> : </label><!-- 회의일자 -->
-				<input type="hidden" name="cal_url" value="<c:url value='/sym/cal/EgovNormalCalPopup.do'/>" />
-				<input id="resveDe" name="resveDe" type="hidden" value="<c:out value='${mtgPlaceManageVO.resveDe}'/>"/>
-				<input id="resveDeView" name="resveDeView" type="text" value="${mtgPlaceManageVO.resveDeView}" readonly="readonly" title="<spring:message code="comUssIonMtg.mtgPlaceResveManageList.meetingDate" />" style="width:80px; margin-right:-8px" />
-				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fncSelectMtgPlaceResveManageList('1'); return false;" />
-			</li>
-		</ul>
-	</div>
+	<form id="listForm" name="listForm" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageList.do'/>" method="post"> 
+        <input type="hidden" id="searchCondition" name="searchCondition" value="" />
+        <input type="hidden" id="pageIndex" name="pageIndex" value="" />
+    	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
+    		<ul>
+    			<li>
+    				<label for=""><spring:message code="comUssIonMtg.mtgPlaceResveManageList.meetingDate" /> : </label><!-- 회의일자 -->
+    				<input type="hidden" name="cal_url" value="<c:url value='/sym/cal/EgovNormalCalPopup.do'/>" />
+    				<input id="resveDe" name="resveDe" type="hidden" value="<c:out value='${mtgPlaceManageVO.resveDe}'/>"/>
+    				<input id="resveDeView" name="resveDeView" type="text" value="${mtgPlaceManageVO.resveDeView}" readonly="readonly" title="<spring:message code="comUssIonMtg.mtgPlaceResveManageList.meetingDate" />" style="width:80px; margin-right:-8px" />
+    				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fncSelectMtgPlaceResveManageList('1'); return false;" />
+    			</li>
+    		</ul>
+    	</div>
 	</form>
 	<p class="mb5">※<spring:message code="comUssIonMtg.mtgPlaceResveManageList.interfaceSearch" /><br /><!-- 회의일자 변경시 조회 버튼 클릭하셔야 예약 리스트가 조회됩니다. -->
 	※<spring:message code="comUssIonMtg.mtgPlaceResveManageList.interfaceDetail" /></p><!-- 회의실 예약은 회의실의 색이 없는 빈 시간을 클릭하시면 예약신청화면으로 이동합니다. (그래프 클릭시 상세화면 이동.) -->
