@@ -143,6 +143,8 @@ function fn_egov_save_QustnrItemManage(){
 			    </a>
 			    <input name="qestnrId" id="qestnrId" type="hidden" value="">
 			    <input name="qestnrTmplatId" id="qestnrTmplatId" type="hidden" value="">
+                <form:errors path="qestnrId" cssClass="error" />
+                <form:errors path="qestnrTmplatId" cssClass="error" />
 			</td>
 		</tr>
 		<!-- 설문문항정보 -->	

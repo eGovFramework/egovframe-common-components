@@ -39,9 +39,9 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.03.20  장동한          최초 생성
- *   2011.8.26	정진오			IncludedInfo annotation 추가
- *
+ *   2009.03.20  장동한         최초 생성
+ *   2011.08.26  정진오         IncludedInfo annotation 추가
+ *   2024.09.07  권태성         등록 & 수정의 화면과 데이터를 처리하는 method 분리, validation 적용
  * </pre>
  */
 
@@ -199,129 +199,151 @@ public class EgovQustnrItemManageController {
 	}
 
 	/**
-	 * 설문항목를 수정한다.
+	 * 설문항목 수정화면
+	 * @param searchVO
+	 * @param qustnrItemManageVO
+	 * @param model
+	 * @return "egovframework/com/uss/olp/qim/EgovQustnrItemManageModify"
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/uss/olp/qim/EgovQustnrItemManageModifyView.do")
+	public String qustnrItemManageModifyView(@ModelAttribute("searchVO") ComDefaultVO searchVO,
+			@ModelAttribute("qustnrItemManageVO") QustnrItemManageVO qustnrItemManageVO, ModelMap model)
+			throws Exception {
+		// 0. Spring Security 사용자권한 처리
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+
+		List<?> sampleList = egovQustnrItemManageService.selectQustnrItemManageDetail(qustnrItemManageVO);
+		model.addAttribute("resultList", sampleList);
+
+		// 설문항목(을)를 정보 불러오기
+		List<?> listQustnrTmplat = egovQustnrItemManageService.selectQustnrTmplatManageList(qustnrItemManageVO);
+		model.addAttribute("listQustnrTmplat", listQustnrTmplat);
+
+		return "egovframework/com/uss/olp/qim/EgovQustnrItemManageModify";
+	}
+
+	
+	/**
+	 * 설문항목을 수정한다.
 	 * @param searchVO
 	 * @param commandMap
 	 * @param qustnrItemManageVO
 	 * @param bindingResult
 	 * @param model
-	 * @return "egovframework/com/uss/olp/qim/EgovQustnrItemManageModify"
+	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/uss/olp/qim/EgovQustnrItemManageModify.do")
-	public String qustnrItemManageModify(
-			@ModelAttribute("searchVO") ComDefaultVO searchVO,
+	@RequestMapping(value = "/uss/olp/qim/EgovQustnrItemManageModify.do")
+	public String qustnrItemManageModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap,
-			@ModelAttribute("qustnrItemManageVO") QustnrItemManageVO qustnrItemManageVO,
-			BindingResult bindingResult,
-    		ModelMap model)
-    throws Exception {
-    	// 0. Spring Security 사용자권한 처리
-    	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-    	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "redirect:/uat/uia/egovLoginUsr.do";
-    	}
+			@ModelAttribute("qustnrItemManageVO") QustnrItemManageVO qustnrItemManageVO, BindingResult bindingResult,
+			ModelMap model) throws Exception {
+		// 0. Spring Security 사용자권한 처리
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
-		//로그인 객체 선언
-		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		// 로그인 객체 선언
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-		String sLocationUrl = "egovframework/com/uss/olp/qim/EgovQustnrItemManageModify";
+		// 서버 validate 체크
+		beanValidator.validate(qustnrItemManageVO, bindingResult);
+		if (bindingResult.hasErrors()) {
+			// 설문항목(을)를 정보 불러오기
+			List<EgovMap> listQustnrTmplat = egovQustnrItemManageService
+					.selectQustnrTmplatManageList(qustnrItemManageVO);
+			model.addAttribute("listQustnrTmplat", listQustnrTmplat);
+			// 게시물 불러오기
+			List<EgovMap> sampleList = egovQustnrItemManageService.selectQustnrItemManageDetail(qustnrItemManageVO);
+			model.addAttribute("resultList", sampleList);
 
-		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
+			return "egovframework/com/uss/olp/qim/EgovQustnrItemManageModify";
+		}
 
-        if(sCmd.equals("save")){
+		// 아이디 설정
+		qustnrItemManageVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+		qustnrItemManageVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 
-    		//서버  validate 체크
-            beanValidator.validate(qustnrItemManageVO, bindingResult);
-    		if(bindingResult.hasErrors()){
-            	//설문항목(을)를  정보 불러오기
-                List<EgovMap> listQustnrTmplat = egovQustnrItemManageService.selectQustnrTmplatManageList(qustnrItemManageVO);
-                model.addAttribute("listQustnrTmplat", listQustnrTmplat);
-            	//게시물 불러오기
-                List<EgovMap> sampleList = egovQustnrItemManageService.selectQustnrItemManageDetail(qustnrItemManageVO);
-                model.addAttribute("resultList", sampleList);
+		egovQustnrItemManageService.updateQustnrItemManage(qustnrItemManageVO);
 
-                return "egovframework/com/uss/olp/qim/EgovQustnrItemManageModify";
-    		}
+		return "redirect:/uss/olp/qim/EgovQustnrItemManageList.do";
+	}
 
-    		//아이디 설정
-    		qustnrItemManageVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-    		qustnrItemManageVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+	/**
+	 * 설문항목 등록 화면
+	 * @param searchVO
+	 * @param qustnrItemManageVO
+	 * @param model
+	 * @return "egovframework/com/uss/olp/qim/EgovQustnrItemManageRegist"
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/uss/olp/qim/EgovQustnrItemManageRegistView.do")
+	public String qustnrItemManageRegistView(@ModelAttribute("searchVO") ComDefaultVO searchVO,
+			@ModelAttribute("qustnrItemManageVO") QustnrItemManageVO qustnrItemManageVO, ModelMap model)
+			throws Exception {
+		// 0. Spring Security 사용자권한 처리
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
-        	egovQustnrItemManageService.updateQustnrItemManage(qustnrItemManageVO);
-        	sLocationUrl = "redirect:/uss/olp/qim/EgovQustnrItemManageList.do";
-        }else{
-            List<?> sampleList = egovQustnrItemManageService.selectQustnrItemManageDetail(qustnrItemManageVO);
-            model.addAttribute("resultList", sampleList);
+		// 설문항목(을)를 정보 불러오기
+		List<?> listQustnrTmplat = egovQustnrItemManageService.selectQustnrTmplatManageList(qustnrItemManageVO);
+		model.addAttribute("listQustnrTmplat", listQustnrTmplat);
 
-        	//설문항목(을)를  정보 불러오기
-            List<?> listQustnrTmplat = egovQustnrItemManageService.selectQustnrTmplatManageList(qustnrItemManageVO);
-            model.addAttribute("listQustnrTmplat", listQustnrTmplat);
-        }
-
-		return sLocationUrl;
+		return "egovframework/com/uss/olp/qim/EgovQustnrItemManageRegist";
 	}
 
 	/**
 	 * 설문항목를 등록한다.
 	 * @param searchVO
-	 * @param commandMap
 	 * @param qustnrItemManageVO
 	 * @param bindingResult
 	 * @param model
-	 * @return "egovframework/com/uss/olp/qim/EgovQustnrItemManageRegist"
+	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/uss/olp/qim/EgovQustnrItemManageRegist.do")
-	public String qustnrItemManageRegist(
-			@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<?, ?> commandMap,
-			@ModelAttribute("qustnrItemManageVO") QustnrItemManageVO qustnrItemManageVO,
-			BindingResult bindingResult,
-    		ModelMap model)
-    throws Exception {
-    	// 0. Spring Security 사용자권한 처리
-    	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-    	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "redirect:/uat/uia/egovLoginUsr.do";
-    	}
+	@RequestMapping(value = "/uss/olp/qim/EgovQustnrItemManageRegist.do")
+	public String qustnrItemManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
+			@ModelAttribute("qustnrItemManageVO") QustnrItemManageVO qustnrItemManageVO, BindingResult bindingResult,
+			ModelMap model) throws Exception {
+		// 0. Spring Security 사용자권한 처리
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
-		//로그인 객체 선언
-		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		// 로그인 객체 선언
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-		String sLocationUrl = "egovframework/com/uss/olp/qim/EgovQustnrItemManageRegist";
+		// 서버 validate 체크
+		beanValidator.validate(qustnrItemManageVO, bindingResult);
+		if (bindingResult.hasErrors()) {
+			// 설문항목(을)를 정보 불러오기
+			List<EgovMap> listQustnrTmplat = egovQustnrItemManageService
+					.selectQustnrTmplatManageList(qustnrItemManageVO);
+			model.addAttribute("listQustnrTmplat", listQustnrTmplat);
+			return "egovframework/com/uss/olp/qim/EgovQustnrItemManageRegist";
+		}
 
-		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
-		LOGGER.info("cmd => {}", sCmd);
+		// 아이디 설정
+		qustnrItemManageVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+		qustnrItemManageVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 
-        if(sCmd.equals("save")){
+		egovQustnrItemManageService.insertQustnrItemManage(qustnrItemManageVO);
 
-    		//서버  validate 체크
-            beanValidator.validate(qustnrItemManageVO, bindingResult);
-    		if(bindingResult.hasErrors()){
-            	//설문항목(을)를  정보 불러오기
-                List<EgovMap> listQustnrTmplat = egovQustnrItemManageService.selectQustnrTmplatManageList(qustnrItemManageVO);
-                model.addAttribute("listQustnrTmplat", listQustnrTmplat);
-                return "egovframework/com/uss/olp/qim/EgovQustnrItemManageRegist";
-    		}
-
-    		//아이디 설정
-    		qustnrItemManageVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-    		qustnrItemManageVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-
-        	egovQustnrItemManageService.insertQustnrItemManage(qustnrItemManageVO);
-        	sLocationUrl = "redirect:/uss/olp/qim/EgovQustnrItemManageList.do";
-        }else{
-        	//설문항목(을)를  정보 불러오기
-            List<?> listQustnrTmplat = egovQustnrItemManageService.selectQustnrTmplatManageList(qustnrItemManageVO);
-            model.addAttribute("listQustnrTmplat", listQustnrTmplat);
-        }
-
-		return sLocationUrl;
+		return "redirect:/uss/olp/qim/EgovQustnrItemManageList.do";
 	}
-
+	
+	
+	
 }
-
-

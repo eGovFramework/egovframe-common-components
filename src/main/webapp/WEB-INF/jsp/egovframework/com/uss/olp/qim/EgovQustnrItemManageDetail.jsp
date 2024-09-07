@@ -45,7 +45,7 @@ function fn_egov_list_QustnrItemManage(){
 function fn_egov_modify_QustnrItemManage(){
 	var vFrom = document.QustnrItemManageForm;
 	vFrom.cmd.value = '';
-	vFrom.action = "<c:url value='/uss/olp/qim/EgovQustnrItemManageModify.do' />";;
+	vFrom.action = "<c:url value='/uss/olp/qim/EgovQustnrItemManageModifyView.do' />";;
 	vFrom.submit();
 
 }
