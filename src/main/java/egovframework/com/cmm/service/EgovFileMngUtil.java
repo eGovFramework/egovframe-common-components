@@ -25,6 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -41,14 +43,18 @@ import egovframework.com.cmm.util.EgovResourceCloseHelper;
  * @Class Name : EgovFileMngUtil.java
  * @Description : 메시지 처리 관련 유틸리티
  * @Modification Information
- *
- *               수정일 수정자 수정내용 ---------- -------- ---------------------------
- *               2009.02.13 이삼섭 최초 생성 2011.08.09 서준식 utl.fcc패키지와 Dependency제거를
- *               위해 getTimeStamp()메서드 추가 2017.03.03 조성원 시큐어코딩(ES)-부적절한 예외
- *               처리[CWE-253, CWE-440, CWE-754] 2020.10.26 신용호
- *               parseFileInf(List<MultipartFile> files ...) 추가 2022.11.11 김혜준
- *               시큐어코딩 처리
- *
+ * 
+ *               <pre>
+ *   수정일               수정자            수정내용
+ *   ----------   --------   ---------------------------
+ *   2009.02.13  이삼섭          최초 생성
+ *   2011.08.09  서준식          utl.fcc패키지와 Dependency제거를 위해 getTimeStamp()메서드 추가
+ *   2017.03.03  조성원          시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+ *   2020.10.26  신용호          parseFileInf(List<MultipartFile> files ...) 추가
+ *   2022.11.11  김혜준          시큐어코딩 처리
+ *   2024.09.09  이백행          컨트리뷰션 시큐어코딩 Exception 제거
+ *               </pre>
+ * 
  * @see
  * @since 2009. 02. 13
  *
@@ -142,10 +148,9 @@ public class EgovFileMngUtil {
 	 *
 	 * @param files
 	 * @return
-	 * @throws Exception
 	 */
 	public List<FileVO> parseFileInf(List<MultipartFile> files, String KeyStr, int fileKeyParam, String atchFileId,
-			String storePath) throws Exception {
+			String storePath) {
 		int fileKey = fileKeyParam;
 
 		String storePathString = "";
@@ -158,7 +163,12 @@ public class EgovFileMngUtil {
 		}
 
 		if (atchFileId == null || "".equals(atchFileId)) {
-			atchFileIdString = idgenService.getNextStringId();
+			try {
+				atchFileIdString = idgenService.getNextStringId();
+			} catch (FdlException e) {
+				throw new BaseRuntimeException(
+						"FdlException: parseFileInf(List<MultipartFile> files, egovFileIdGnrService", e);
+			}
 		} else {
 			atchFileIdString = atchFileId;
 		}
@@ -189,7 +199,12 @@ public class EgovFileMngUtil {
 			String newName = KeyStr + getTimeStamp() + fileKey;
 			long size = file.getSize();
 			String filePath = storePathString + File.separator + newName;
-			file.transferTo(new File(EgovWebUtil.filePathBlackList(filePath)));
+			try {
+				file.transferTo(new File(EgovWebUtil.filePathBlackList(filePath)));
+			} catch (IllegalStateException | IOException e) {
+				throw new BaseRuntimeException(
+						"IllegalStateException | IOException: parseFileInf(List<MultipartFile> files, transferTo", e);
+			}
 
 			fvo = new FileVO();
 			fvo.setFileExtsn(fileExt);

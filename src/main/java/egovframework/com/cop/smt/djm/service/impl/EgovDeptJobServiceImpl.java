@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
 
@@ -37,7 +38,8 @@ import egovframework.com.cop.smt.djm.service.EgovDeptJobService;
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2010.6.28	장철호          최초 생성
+ *   2010.06.28  장철호          최초 생성
+ *   2024.09.09  이백행          컨트리뷰션 시큐어코딩 Exception 제거
  *
  *          </pre>
  */
@@ -62,7 +64,7 @@ public class EgovDeptJobServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @param chargerVO
 	 */
 	@Override
-	public Map<String, Object> selectChargerList(ChargerVO chargerVO) throws Exception {
+	public Map<String, Object> selectChargerList(ChargerVO chargerVO) {
 		List<ChargerVO> result = deptJobDAO.selectChargerList(chargerVO);
 		int cnt = deptJobDAO.selectChargerListCnt(chargerVO);
 
@@ -83,7 +85,7 @@ public class EgovDeptJobServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @param deptVO
 	 */
 	@Override
-	public Map<String, Object> selectDeptList(DeptVO deptVO) throws Exception {
+	public Map<String, Object> selectDeptList(DeptVO deptVO) {
 		List<DeptVO> result = deptJobDAO.selectDeptList(deptVO);
 		int cnt = deptJobDAO.selectDeptListCnt(deptVO);
 
@@ -104,7 +106,7 @@ public class EgovDeptJobServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @param String
 	 */
 	@Override
-	public String selectDept(String deptVO) throws Exception {
+	public String selectDept(String deptVO) {
 		return deptJobDAO.selectDept(deptVO);
 	}
 
@@ -117,7 +119,7 @@ public class EgovDeptJobServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @param deptJobBxVO
 	 */
 	@Override
-	public List<DeptJobBxVO> selectDeptJobBxListAll() throws Exception {
+	public List<DeptJobBxVO> selectDeptJobBxListAll() {
 		return deptJobDAO.selectDeptJobBxListAll();
 	}
 
@@ -130,7 +132,7 @@ public class EgovDeptJobServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @param deptJobBxVO
 	 */
 	@Override
-	public Map<String, Object> selectDeptJobBxList(DeptJobBxVO deptJobBxVO) throws Exception {
+	public Map<String, Object> selectDeptJobBxList(DeptJobBxVO deptJobBxVO) {
 		List<DeptJobBxVO> result = deptJobDAO.selectDeptJobBxList(deptJobBxVO);
 		int cnt = deptJobDAO.selectDeptJobBxListCnt(deptJobBxVO);
 
@@ -151,7 +153,7 @@ public class EgovDeptJobServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @param deptJobBxVO
 	 */
 	@Override
-	public DeptJobBxVO selectDeptJobBx(DeptJobBxVO deptJobBxVO) throws Exception {
+	public DeptJobBxVO selectDeptJobBx(DeptJobBxVO deptJobBxVO) {
 		return deptJobDAO.selectDeptJobBx(deptJobBxVO);
 	}
 
@@ -164,7 +166,7 @@ public class EgovDeptJobServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @param deptJobBxVO
 	 */
 	@Override
-	public void updateDeptJobBx(DeptJobBxVO deptJobBxVO) throws Exception {
+	public void updateDeptJobBx(DeptJobBxVO deptJobBxVO) {
 		if (deptJobDAO.selectDeptJobBxOrdr(deptJobBxVO) > 0) {
 			deptJobDAO.updateDeptJobBxOrdrAll(deptJobBxVO);
 		}
@@ -180,7 +182,7 @@ public class EgovDeptJobServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @param deptJobBx
 	 */
 	@Override
-	public boolean updateDeptJobBxOrdr(DeptJobBxVO deptJobBxVO) throws Exception {
+	public boolean updateDeptJobBxOrdr(DeptJobBxVO deptJobBxVO) {
 
 		boolean changed = false;
 		if (deptJobBxVO.getOrdrCnd().equals("up")) {
@@ -213,7 +215,7 @@ public class EgovDeptJobServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @param deptId
 	 */
 	@Override
-	public int selectDeptJobBxOrdr(String deptId) throws Exception {
+	public int selectDeptJobBxOrdr(String deptId) {
 		return deptJobDAO.selectMaxDeptJobBxOrdr(deptId);
 	}
 
@@ -224,10 +226,15 @@ public class EgovDeptJobServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @return
 	 * 
 	 * @param deptJobBxVO
+	 * @throws Exception
 	 */
 	@Override
 	public void insertDeptJobBx(DeptJobBxVO deptJobBxVO) throws Exception {
-		deptJobBxVO.setDeptJobBxId(idgenServiceDeptJobBx.getNextStringId());
+		try {
+			deptJobBxVO.setDeptJobBxId(idgenServiceDeptJobBx.getNextStringId());
+		} catch (FdlException e) {
+			throw processException("FdlException: insertDeptJobBx( egovDeptJobBxIdGnrService", e);
+		}
 		if (deptJobDAO.selectDeptJobBxOrdr(deptJobBxVO) > 0) {
 			deptJobDAO.updateDeptJobBxOrdrAll(deptJobBxVO);
 		}
@@ -243,7 +250,7 @@ public class EgovDeptJobServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @param deptJobBx
 	 */
 	@Override
-	public int selectDeptJobBxCheck(DeptJobBx deptJobBx) throws Exception {
+	public int selectDeptJobBxCheck(DeptJobBx deptJobBx) {
 		return deptJobDAO.selectDeptJobBxCheck(deptJobBx);
 	}
 
@@ -256,7 +263,7 @@ public class EgovDeptJobServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @param deptJobBx
 	 */
 	@Override
-	public void deleteDeptJobBx(DeptJobBx deptJobBx) throws Exception {
+	public void deleteDeptJobBx(DeptJobBx deptJobBx) {
 		deptJobDAO.deleteDeptJobBx(deptJobBx);
 	}
 
@@ -269,7 +276,7 @@ public class EgovDeptJobServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @param deptJobVO
 	 */
 	@Override
-	public Map<String, Object> selectDeptJobList(DeptJobVO deptJobVO) throws Exception {
+	public Map<String, Object> selectDeptJobList(DeptJobVO deptJobVO) {
 		List<DeptJobVO> result = deptJobDAO.selectDeptJobList(deptJobVO);
 		int cnt = deptJobDAO.selectDeptJobListCnt(deptJobVO);
 
@@ -290,7 +297,7 @@ public class EgovDeptJobServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @param deptJobVO
 	 */
 	@Override
-	public DeptJobVO selectDeptJob(DeptJobVO deptJobVO) throws Exception {
+	public DeptJobVO selectDeptJob(DeptJobVO deptJobVO) {
 		return deptJobDAO.selectDeptJob(deptJobVO);
 	}
 
@@ -302,7 +309,7 @@ public class EgovDeptJobServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @param deptJob
 	 */
 	@Override
-	public void updateDeptJob(DeptJob deptJob) throws Exception {
+	public void updateDeptJob(DeptJob deptJob) {
 		deptJobDAO.updateDeptJob(deptJob);
 	}
 
@@ -312,10 +319,15 @@ public class EgovDeptJobServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @param DeptJob
 	 * 
 	 * @param deptJob
+	 * @throws Exception
 	 */
 	@Override
 	public void insertDeptJob(DeptJob deptJob) throws Exception {
-		deptJob.setDeptJobId(idgenServiceDeptJob.getNextStringId());
+		try {
+			deptJob.setDeptJobId(idgenServiceDeptJob.getNextStringId());
+		} catch (FdlException e) {
+			throw processException("FdlException: insertDeptJobBx( egovDeptJobIdGnrService", e);
+		}
 		deptJobDAO.insertDeptJob(deptJob);
 	}
 
@@ -327,7 +339,7 @@ public class EgovDeptJobServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @param deptJob
 	 */
 	@Override
-	public void deleteDeptJob(DeptJob deptJob) throws Exception {
+	public void deleteDeptJob(DeptJob deptJob) {
 		deptJobDAO.deleteDeptJob(deptJob);
 	}
 
