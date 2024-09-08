@@ -1,10 +1,13 @@
 package egovframework.com.cop.smt.djm.web;
+
 import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -35,20 +38,22 @@ import egovframework.com.cop.smt.djm.service.DeptJobVO;
 import egovframework.com.cop.smt.djm.service.DeptVO;
 import egovframework.com.cop.smt.djm.service.EgovDeptJobService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import org.egovframe.rte.fdl.property.EgovPropertyService;
-import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
+ * <pre>
  * 개요
  * - 부서업무에 대한 controller 클래스를 정의한다.
  *
  * 상세내용
  * - 부서업무에 대한 등록, 수정, 삭제, 조회기능을 제공한다.
  * - 부서업무의 조회기능은 목록조회, 상세조회로 구분된다.
+ * </pre>
+ * 
  * @author 장철호
  * @version 1.0
  * @created 28-6-2010 오전 10:59:05
- *  <pre>
+ * 
+ *          <pre>
  * << 개정이력(Modification Information) >>
  *
  *  수정일               수정자            수정내용
@@ -59,61 +64,64 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *  2020.10.27   신용호            파일 업로드 수정 (multiRequest.getFiles), 널(null) 값 체크
  *  2022.11.11   김혜준            시큐어코딩 처리
  *
- * </pre>
+ *          </pre>
  *
  */
 
 @Controller
 public class EgovDeptJobController {
 
-	@Resource(name="EgovDeptJobService")
-    protected EgovDeptJobService deptJobService;
+	@Resource(name = "EgovDeptJobService")
+	protected EgovDeptJobService deptJobService;
 
-	@Resource(name="EgovCmmUseService")
+	@Resource(name = "EgovCmmUseService")
 	private EgovCmmUseService cmmUseService;
 
-	@Resource(name="propertiesService")
-    protected EgovPropertyService propertyService;
+	@Resource(name = "propertiesService")
+	protected EgovPropertyService propertyService;
 
-    @Resource(name="egovMessageSource")
-    EgovMessageSource egovMessageSource;
+	@Resource(name = "egovMessageSource")
+	EgovMessageSource egovMessageSource;
 
-    @Autowired
-    private DefaultBeanValidator beanValidator;
+	@Autowired
+	private DefaultBeanValidator beanValidator;
 
-    // 첨부파일 관련
-	@Resource(name="EgovFileMngService")
+	// 첨부파일 관련
+	@Resource(name = "EgovFileMngService")
 	private EgovFileMngService fileMngService;
 
-	@Resource(name="EgovFileMngUtil")
+	@Resource(name = "EgovFileMngUtil")
 	private EgovFileMngUtil fileUtil;
 
-    //Logger log = Logger.getLogger(this.getClass());
+	// Logger log = Logger.getLogger(this.getClass());
 
-    /**
+	/**
 	 * 담당자 정보에 대한 팝업 목록을 조회한다.
+	 * 
 	 * @param ChargerVO
-	 * @return  String
+	 * @return String
 	 *
 	 * @param chargerVO
 	 */
 	@RequestMapping("/cop/smt/djm/selectChargerListPopup.do")
-	public String selectChargerListPopup(@ModelAttribute("searchVO") ChargerVO chargerVO, ModelMap model) throws Exception{
+	public String selectChargerListPopup(@ModelAttribute("searchVO") ChargerVO chargerVO, ModelMap model)
+			throws Exception {
 		return "egovframework/com/cop/smt/djm/EgovChargerListPopup";
 	}
 
 	/**
 	 * 담당자 정보에 대한 목록을 조회한다.
+	 * 
 	 * @param ChargerVO
-	 * @return  String
+	 * @return String
 	 *
 	 * @param chargerVO
 	 */
 	@RequestMapping("/cop/smt/djm/selectChargerList.do")
-	public String selectChargerList(@ModelAttribute("searchVO") ChargerVO chargerVO, ModelMap model) throws Exception{
-		//LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+	public String selectChargerList(@ModelAttribute("searchVO") ChargerVO chargerVO, ModelMap model) throws Exception {
+		// LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
-		//chargerVO.setUniqId(user.getUniqId());
+		// chargerVO.setUniqId(user.getUniqId());
 
 		chargerVO.setPageUnit(propertyService.getInt("pageUnit"));
 		chargerVO.setPageSize(propertyService.getInt("pageSize"));
@@ -128,7 +136,7 @@ public class EgovDeptJobController {
 		chargerVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
 		Map<String, Object> map = deptJobService.selectChargerList(chargerVO);
-		int totCnt = Integer.parseInt((String)map.get("resultCnt"));
+		int totCnt = Integer.parseInt((String) map.get("resultCnt"));
 		paginationInfo.setTotalRecordCount(totCnt);
 
 		model.addAttribute("resultList", map.get("resultList"));
@@ -140,26 +148,28 @@ public class EgovDeptJobController {
 
 	/**
 	 * 부서 정보에 대한 팝업 목록을 조회한다.
+	 * 
 	 * @param DeptVO
-	 * @return  String
+	 * @return String
 	 *
 	 * @param deptVO
 	 */
 	@RequestMapping("/cop/smt/djm/selectDeptListPopup.do")
-	public String selectDeptListPopup(@ModelAttribute("searchVO") DeptVO deptVO, ModelMap model) throws Exception{
+	public String selectDeptListPopup(@ModelAttribute("searchVO") DeptVO deptVO, ModelMap model) throws Exception {
 		return "egovframework/com/cop/smt/djm/EgovDeptListPopup";
 	}
 
 	/**
 	 * 부서 정보에 대한 목록을 조회한다.
+	 * 
 	 * @param DeptVO
-	 * @return  String
+	 * @return String
 	 *
 	 * @param deptVO
 	 */
 	@RequestMapping("/cop/smt/djm/selectDeptList.do")
-	public String selectDeptList(@ModelAttribute("searchVO") DeptVO deptVO, ModelMap model) throws Exception{
-		//LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+	public String selectDeptList(@ModelAttribute("searchVO") DeptVO deptVO, ModelMap model) throws Exception {
+		// LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
 		deptVO.setPageUnit(propertyService.getInt("pageUnit"));
 		deptVO.setPageSize(propertyService.getInt("pageSize"));
@@ -174,7 +184,7 @@ public class EgovDeptJobController {
 		deptVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
 		Map<String, Object> map = deptJobService.selectDeptList(deptVO);
-		int totCnt = Integer.parseInt((String)map.get("resultCnt"));
+		int totCnt = Integer.parseInt((String) map.get("resultCnt"));
 		paginationInfo.setTotalRecordCount(totCnt);
 
 		model.addAttribute("resultList", map.get("resultList"));
@@ -184,35 +194,38 @@ public class EgovDeptJobController {
 		return "egovframework/com/cop/smt/djm/EgovDeptList";
 	}
 
-
 	/**
 	 * 부서업무함 정보에 대한 팝업 목록을 조회한다.
+	 * 
 	 * @param DeptVO
-	 * @return  String
+	 * @return String
 	 *
 	 * @param deptVO
 	 */
 	@RequestMapping("/cop/smt/djm/selectDeptJobBxListPopup.do")
-	public String selectDeptJobBxListPopup(@ModelAttribute("searchVO") DeptJobBxVO deptJobBxVO, ModelMap model) throws Exception{
+	public String selectDeptJobBxListPopup(@ModelAttribute("searchVO") DeptJobBxVO deptJobBxVO, ModelMap model)
+			throws Exception {
 		return "egovframework/com/cop/smt/djm/EgovDeptJobBxListPopup";
 	}
 
-
 	/**
 	 * 부서업무함 정보에 대한 목록을 조회한다.
+	 * 
 	 * @param DeptJobBxVO
-	 * @return  String
+	 * @return String
 	 *
 	 * @param deptJobBxVO
 	 */
 	@SuppressWarnings("unchecked")
-	@IncludedInfo(name="부서업무함관리", order = 400 ,gid = 40)
+	@IncludedInfo(name = "부서업무함관리", order = 400, gid = 40)
 	@RequestMapping("/cop/smt/djm/selectDeptJobBxList.do")
-	public String selectDeptJobBxList(@ModelAttribute("searchVO") DeptJobBxVO deptJobBxVO, ModelMap model) throws Exception{
-		//LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+	public String selectDeptJobBxList(@ModelAttribute("searchVO") DeptJobBxVO deptJobBxVO, ModelMap model)
+			throws Exception {
+		// LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		String sLocationUrl = "egovframework/com/cop/smt/djm/EgovDeptJobBxList";
 
-		if(deptJobBxVO.getPopupCnd() != null && !deptJobBxVO.getPopupCnd().equals("")) sLocationUrl = "egovframework/com/cop/smt/djm/EgovDeptJobBxListS";
+		if (deptJobBxVO.getPopupCnd() != null && !deptJobBxVO.getPopupCnd().equals(""))
+			sLocationUrl = "egovframework/com/cop/smt/djm/EgovDeptJobBxListS";
 
 		deptJobBxVO.setPageUnit(propertyService.getInt("pageUnit"));
 		deptJobBxVO.setPageSize(propertyService.getInt("pageSize"));
@@ -227,15 +240,15 @@ public class EgovDeptJobController {
 		deptJobBxVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
 		Map<String, Object> map = deptJobService.selectDeptJobBxList(deptJobBxVO);
-		int totCnt = Integer.parseInt((String)map.get("resultCnt"));
+		int totCnt = Integer.parseInt((String) map.get("resultCnt"));
 		paginationInfo.setTotalRecordCount(totCnt);
 
-		List<DeptJobBxVO> list = (List<DeptJobBxVO>)map.get("resultList");
+		List<DeptJobBxVO> list = (List<DeptJobBxVO>) map.get("resultList");
 
 		model.addAttribute("resultList", map.get("resultList"));
 		model.addAttribute("resultCnt", map.get("resultCnt"));
 		// KISA 보안약점 조치 - 널(null) 값 체크
-		if ( list == null )
+		if (list == null)
 			model.addAttribute("resultNum", 0);
 		else
 			model.addAttribute("resultNum", list.size());
@@ -246,8 +259,9 @@ public class EgovDeptJobController {
 
 	/**
 	 * 부서업무함 정보를 조회한다.
+	 * 
 	 * @param DeptJobBxVO
-	 * @return  String
+	 * @return String
 	 *
 	 * @param deptJobBxVO
 	 */
@@ -262,99 +276,102 @@ public class EgovDeptJobController {
 
 	/**
 	 * 부서업무함 정보의 등록화면으로 이동한다.
+	 * 
 	 * @param DeptJobBx
-	 * @return  String
+	 * @return String
 	 *
 	 * @param DeptJobBx
 	 */
 	@RequestMapping("/cop/smt/djm/addDeptJobBx.do")
-	public String addDeptJobBx(
-			@ModelAttribute("deptJobBxVO") DeptJobBxVO deptJobBxVO,
-			ModelMap model) throws Exception{
+	public String addDeptJobBx(@ModelAttribute("deptJobBxVO") DeptJobBxVO deptJobBxVO, ModelMap model)
+			throws Exception {
 		String sLocationUrl = "egovframework/com/cop/smt/djm/EgovDeptJobBxRegist";
 
-    	// 0. Spring Security 사용자권한 처리
-    	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-    	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "redirect:/uat/uia/egovLoginUsr.do";
-    	}
+		// 0. Spring Security 사용자권한 처리
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
-    	return sLocationUrl;
+		return sLocationUrl;
 	}
 
 	/**
 	 * 부서업무함 등록시 표시순서를 조회한다.
+	 * 
 	 * @param DeptJobBx
-	 * @return  String
+	 * @return String
 	 *
 	 * @param DeptJobBx
 	 */
 	@RequestMapping("/cop/smt/djm/getDeptJobBxOrdr.do")
-	public String getDeptJobBxOrdr(
-			final HttpServletRequest request,
-			@ModelAttribute("deptJobBxVO") DeptJobBxVO deptJobBxVO,
-			ModelMap model) throws Exception{
+	public String getDeptJobBxOrdr(final HttpServletRequest request,
+			@ModelAttribute("deptJobBxVO") DeptJobBxVO deptJobBxVO, ModelMap model) throws Exception {
 
 		String sLocationUrl = "egovframework/com/cop/smt/djm/EgovDeptJobBxRegist";
 
-		if(request.getHeader("Referer").indexOf("addDeptJobBx.do") < 0){
+		if (request.getHeader("Referer").indexOf("addDeptJobBx.do") < 0) {
 			sLocationUrl = "egovframework/com/cop/smt/djm/EgovDeptJobBxUpdt";
 		}
 
-    	// 0. Spring Security 사용자권한 처리
-    	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-    	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "redirect:/uat/uia/egovLoginUsr.do";
-    	}
+		// 0. Spring Security 사용자권한 처리
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
-    	model.addAttribute("indictOrdrValue", deptJobService.selectDeptJobBxOrdr(deptJobBxVO.getDeptId()) + 1);
-    	return sLocationUrl;
+		model.addAttribute("indictOrdrValue", deptJobService.selectDeptJobBxOrdr(deptJobBxVO.getDeptId()) + 1);
+		return sLocationUrl;
 	}
 
 	/**
 	 * 부서업무함 정보의 수정화면으로 이동한다.
+	 * 
 	 * @param DeptJobBx
-	 * @return  String
+	 * @return String
 	 *
 	 * @param DeptJobBx
 	 */
 	@RequestMapping("/cop/smt/djm/modifyDeptJobBx.do")
-	public String modifyDeptJobBx(@ModelAttribute("deptJobBxVO") DeptJobBxVO deptJobBxVO, ModelMap model) throws Exception{
+	public String modifyDeptJobBx(@ModelAttribute("deptJobBxVO") DeptJobBxVO deptJobBxVO, ModelMap model)
+			throws Exception {
 		// 0. Spring Security 사용자권한 처리
-    	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-    	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "redirect:/uat/uia/egovLoginUsr.do";
-    	}
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
-    	DeptJobBxVO resultVO = deptJobService.selectDeptJobBx(deptJobBxVO);
+		DeptJobBxVO resultVO = deptJobService.selectDeptJobBx(deptJobBxVO);
 		resultVO.setSearchCnd(deptJobBxVO.getSearchCnd());
 		resultVO.setSearchWrd(deptJobBxVO.getSearchWrd());
 		resultVO.setPageIndex(deptJobBxVO.getPageIndex());
 
 		model.addAttribute("indictOrdrValue", resultVO.getIndictOrdr());
-        model.addAttribute("deptJobBxVO", resultVO);
+		model.addAttribute("deptJobBxVO", resultVO);
 
 		return "egovframework/com/cop/smt/djm/EgovDeptJobBxUpdt";
 	}
 
 	/**
 	 * 부서업무함 정보를 수정한다.
+	 * 
 	 * @param DeptJobBxVO
-	 * @return  String
+	 * @return String
 	 *
 	 * @param deptJobBxVO
 	 */
 	@RequestMapping("/cop/smt/djm/updateDeptJobBx.do")
-	public String updateDeptJobBx(@ModelAttribute("deptJobBxVO") DeptJobBxVO deptJobBxVO, BindingResult bindingResult, ModelMap model) throws Exception{
-		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+	public String updateDeptJobBx(@ModelAttribute("deptJobBxVO") DeptJobBxVO deptJobBxVO, BindingResult bindingResult,
+			ModelMap model) throws Exception {
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		beanValidator.validate(deptJobBxVO, bindingResult);
 		if (bindingResult.hasErrors()) {
-		    return "egovframework/com/cop/smt/djm/EgovDeptJobBxUpdt";
+			return "egovframework/com/cop/smt/djm/EgovDeptJobBxUpdt";
 		}
 
 		if (isAuthenticated) {
@@ -367,14 +384,16 @@ public class EgovDeptJobController {
 
 	/**
 	 * 부서업무함 정보의 표시순서를 수정한다.
+	 * 
 	 * @param DeptJobBx
-	 * @return  String
+	 * @return String
 	 *
 	 * @param deptJobBx
 	 */
 	@RequestMapping("/cop/smt/djm/updateDeptJobBxOrdr.do")
-	public String updateDeptJobBxOrdr(@ModelAttribute("searchVO") DeptJobBxVO deptJobBxVO, ModelMap model) throws Exception{
-		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+	public String updateDeptJobBxOrdr(@ModelAttribute("searchVO") DeptJobBxVO deptJobBxVO, ModelMap model)
+			throws Exception {
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		boolean changed = false;
 
@@ -383,7 +402,7 @@ public class EgovDeptJobController {
 			changed = deptJobService.updateDeptJobBxOrdr(deptJobBxVO);
 		}
 
-		if(!changed){
+		if (!changed) {
 			model.addAttribute("indictOrdrChanged", "false");
 		}
 
@@ -392,83 +411,87 @@ public class EgovDeptJobController {
 
 	/**
 	 * 부서업무함 정보를 등록한다.
+	 * 
 	 * @param DeptJobBxVO
-	 * @return  String
+	 * @return String
 	 *
 	 * @param deptJobBxVO
 	 */
 	@RequestMapping("/cop/smt/djm/insertDeptJobBx.do")
-	public String insertDeptJobBx(@ModelAttribute("deptJobBxVO") DeptJobBxVO deptJobBxVO, BindingResult bindingResult, ModelMap model) throws Exception{
+	public String insertDeptJobBx(@ModelAttribute("deptJobBxVO") DeptJobBxVO deptJobBxVO, BindingResult bindingResult,
+			ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
-    	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-    	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "redirect:/uat/uia/egovLoginUsr.do";
-    	}
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
-		//로그인 객체 선언
-		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		// 로그인 객체 선언
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		String sLocationUrl = "egovframework/com/cop/smt/djm/EgovDeptJobBxRegist";
 
-		//서버  validate 체크
-        beanValidator.validate(deptJobBxVO, bindingResult);
-		if(bindingResult.hasErrors()){
+		// 서버 validate 체크
+		beanValidator.validate(deptJobBxVO, bindingResult);
+		if (bindingResult.hasErrors()) {
 			return sLocationUrl;
 		}
 
-		//아이디 설정
+		// 아이디 설정
 		deptJobBxVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 		deptJobBxVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 
-		//부서내 부서업무함명 중복체크
-		if(deptJobService.selectDeptJobBxCheck(deptJobBxVO) > 0){
+		// 부서내 부서업무함명 중복체크
+		if (deptJobService.selectDeptJobBxCheck(deptJobBxVO) > 0) {
 			model.addAttribute("deptJobBxNmDuplicated", "true");
 			sLocationUrl = "forward:/cop/smt/djm/addDeptJobBx.do";
-		}else{
+		} else {
 			deptJobService.insertDeptJobBx(deptJobBxVO);
-	    	sLocationUrl = "forward:/cop/smt/djm/selectDeptJobBxList.do";
+			sLocationUrl = "forward:/cop/smt/djm/selectDeptJobBxList.do";
 		}
 		return sLocationUrl;
 	}
 
 	/**
 	 * 부서업무함 정보를 삭제한다.
+	 * 
 	 * @param DeptJobBx
-	 * @return  String
+	 * @return String
 	 *
 	 * @param DeptJobBx
 	 */
 	@RequestMapping("/cop/smt/djm/deleteDeptJobBx.do")
-	public String deleteDeptJobBx(@ModelAttribute("deptJobBxVO") DeptJobBx deptJobBx, ModelMap model) throws Exception{
+	public String deleteDeptJobBx(@ModelAttribute("deptJobBxVO") DeptJobBx deptJobBx, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
-    	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-    	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "redirect:/uat/uia/egovLoginUsr.do";
-    	}
-    	deptJobService.deleteDeptJobBx(deptJobBx);
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+		deptJobService.deleteDeptJobBx(deptJobBx);
 		return "forward:/cop/smt/djm/selectDeptJobBxList.do";
 	}
 
 	/**
 	 * 부서업무 정보에 대한 목록을 조회한다.
+	 * 
 	 * @param DeptJobVO
-	 * @return  String
+	 * @return String
 	 *
 	 * @param deptJobVO
 	 */
-	@IncludedInfo(name="부서업무정보", order = 401 ,gid = 40)
+	@IncludedInfo(name = "부서업무정보", order = 401, gid = 40)
 	@RequestMapping("/cop/smt/djm/selectDeptJobList.do")
-	public String selectDeptJobList(@ModelAttribute("searchVO") DeptJobVO deptJobVO, ModelMap model) throws Exception{
-		//로그인 객체 선언
-		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-   	 	// KISA 보안취약점 조치 (2018-12-10, 신용호)
-        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+	public String selectDeptJobList(@ModelAttribute("searchVO") DeptJobVO deptJobVO, ModelMap model) throws Exception {
+		// 로그인 객체 선언
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		// KISA 보안취약점 조치 (2018-12-10, 신용호)
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-        if(!isAuthenticated) {
-            return "redirect:/uat/uia/egovLoginUsr.do";
-        }
+		if (!isAuthenticated) {
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
 		deptJobVO.setPageUnit(propertyService.getInt("pageUnit"));
 		deptJobVO.setPageSize(propertyService.getInt("pageSize"));
@@ -482,12 +505,12 @@ public class EgovDeptJobController {
 		deptJobVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		deptJobVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		if(deptJobVO.getSearchDeptId() == null || deptJobVO.getSearchDeptId().equals("")){
+		if (deptJobVO.getSearchDeptId() == null || deptJobVO.getSearchDeptId().equals("")) {
 			deptJobVO.setSearchDeptId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getOrgnztId()));
 		}
 
 		Map<String, Object> map = deptJobService.selectDeptJobList(deptJobVO);
-		int totCnt = Integer.parseInt((String)map.get("resultCnt"));
+		int totCnt = Integer.parseInt((String) map.get("resultCnt"));
 		paginationInfo.setTotalRecordCount(totCnt);
 
 		model.addAttribute("resultBxList", deptJobService.selectDeptJobBxListAll());
@@ -500,51 +523,53 @@ public class EgovDeptJobController {
 
 	/**
 	 * 부서업무 정보의 등록화면으로 이동한다.
+	 * 
 	 * @param DeptJob
-	 * @return  String
+	 * @return String
 	 *
 	 * @param deptJob
 	 */
 	@RequestMapping("/cop/smt/djm/addDeptJob.do")
-	public String addDeptJob(@ModelAttribute("deptJobVO") DeptJobVO deptJobVO, ModelMap model) throws Exception{
+	public String addDeptJob(@ModelAttribute("deptJobVO") DeptJobVO deptJobVO, ModelMap model) throws Exception {
 		String sLocationUrl = "egovframework/com/cop/smt/djm/EgovDeptJobRegist";
 
-    	// 0. Spring Security 사용자권한 처리
-    	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-    	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "redirect:/uat/uia/egovLoginUsr.do";
-    	}
+		// 0. Spring Security 사용자권한 처리
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
-    	deptJobVO.setDeptId(deptJobVO.getSearchDeptId());
-    	deptJobVO.setDeptNm(deptJobService.selectDept(deptJobVO.getSearchDeptId()));
-    	deptJobVO.setDeptJobBxId(deptJobVO.getSearchDeptJobBxId());
+		deptJobVO.setDeptId(deptJobVO.getSearchDeptId());
+		deptJobVO.setDeptNm(deptJobService.selectDept(deptJobVO.getSearchDeptId()));
+		deptJobVO.setDeptJobBxId(deptJobVO.getSearchDeptJobBxId());
 
-    	// 파일업로드 제한
-    	String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
-    	String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
+		// 파일업로드 제한
+		String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
+		String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
 
-        model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
-        model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
-    	
-    	return sLocationUrl;
+		model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
+		model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
+
+		return sLocationUrl;
 	}
 
 	/**
 	 * 부서업무 정보의 수정화면으로 이동한다.
+	 * 
 	 * @param DeptJob
-	 * @return  String
+	 * @return String
 	 *
 	 * @param deptJob
 	 */
 	@RequestMapping("/cop/smt/djm/modifyDeptJob.do")
-	public String modifyDeptJob(@ModelAttribute("deptJobVO") DeptJobVO deptJobVO, ModelMap model) throws Exception{
+	public String modifyDeptJob(@ModelAttribute("deptJobVO") DeptJobVO deptJobVO, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
-    	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-    	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "redirect:/uat/uia/egovLoginUsr.do";
-    	}
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
 		DeptJobVO resultVO = deptJobService.selectDeptJob(deptJobVO);
 		resultVO.setSearchCnd(deptJobVO.getSearchCnd());
@@ -552,78 +577,81 @@ public class EgovDeptJobController {
 		resultVO.setSearchDeptId(deptJobVO.getSearchDeptId());
 		resultVO.setSearchDeptJobBxId(deptJobVO.getSearchDeptJobBxId());
 		resultVO.setPageIndex(deptJobVO.getPageIndex());
-        model.addAttribute("deptJobVO", resultVO);
+		model.addAttribute("deptJobVO", resultVO);
 
 		return "egovframework/com/cop/smt/djm/EgovDeptJobUpdt";
 	}
 
 	/**
 	 * 부서업무 정보를 조회한다.
+	 * 
 	 * @param DeptJobVO
-	 * @return  String
+	 * @return String
 	 *
 	 * @param deptJobVO
 	 */
 	@RequestMapping("/cop/smt/djm/selectDeptJob.do")
-	public String selectDeptJob(@ModelAttribute("deptJobVO") DeptJobVO deptJobVO, ModelMap model) throws Exception{
+	public String selectDeptJob(@ModelAttribute("deptJobVO") DeptJobVO deptJobVO, ModelMap model) throws Exception {
 		DeptJob deptJob = deptJobService.selectDeptJob(deptJobVO);
 		model.addAttribute("deptJob", deptJob);
 
 		/*
-    	 * 공통코드
-    	 * 우선순위 조회
-    	 */
+		 * 공통코드 우선순위 조회
+		 */
 		ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
-    	voComCode.setCodeId("COM059");
-    	List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
-    	model.addAttribute("priort", listComCode);
+		voComCode.setCodeId("COM059");
+		List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+		model.addAttribute("priort", listComCode);
 
 		return "egovframework/com/cop/smt/djm/EgovDeptJobDetail";
 	}
 
-
 	/**
 	 * 부서업무 정보를 수정한다.
+	 * 
 	 * @param DeptJob
-	 * @return  String
+	 * @return String
 	 *
 	 * @param deptJob
 	 */
 	@RequestMapping("/cop/smt/djm/updateDeptJob.do")
-	public String updateDeptJob(final MultipartHttpServletRequest multiRequest, @RequestParam Map<String, Object> commandMap, @ModelAttribute("deptJobVO") DeptJobVO deptJobVO, BindingResult bindingResult, ModelMap model) throws Exception{
-		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+	public String updateDeptJob(final MultipartHttpServletRequest multiRequest,
+			@RequestParam Map<String, Object> commandMap, @ModelAttribute("deptJobVO") DeptJobVO deptJobVO,
+			BindingResult bindingResult, ModelMap model) throws Exception {
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-   	 	// KISA 보안취약점 조치 (2018-12-10, 신용호)
+		// KISA 보안취약점 조치 (2018-12-10, 신용호)
 
-        if(!isAuthenticated) {
-            return "redirect:/uat/uia/egovLoginUsr.do";
-        }
+		if (!isAuthenticated) {
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
 		beanValidator.validate(deptJobVO, bindingResult);
 		if (bindingResult.hasErrors()) {
 			DeptJob deptJob = deptJobService.selectDeptJob(deptJobVO);
-		    model.addAttribute("deptJob", deptJob);
-		    return "egovframework/com/cop/smt/djm/EgovDeptJobUpdt";
+			model.addAttribute("deptJob", deptJob);
+			return "egovframework/com/cop/smt/djm/EgovDeptJobUpdt";
 		}
 
-		/* *****************************************************************
-    	// 첨부파일 관련 ID 생성 start....
-		****************************************************************** */
+		/*
+		 * ***************************************************************** // 첨부파일 관련
+		 * ID 생성 start....
+		 */
 		// 2022.11.11 시큐어코딩 처리
 		String _atchFileId = deptJobVO.getAtchFileId();
 
-		//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		// final Map<String, MultipartFile> files = multiRequest.getFileMap();
 		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
-		if(!files.isEmpty()){
-			String atchFileAt = commandMap.get("atchFileAt") == null ? "" : (String)commandMap.get("atchFileAt");
-			if("N".equals(atchFileAt)){
+		if (!files.isEmpty()) {
+			String atchFileAt = commandMap.get("atchFileAt") == null ? "" : (String) commandMap.get("atchFileAt");
+			if ("N".equals(atchFileAt)) {
 				List<FileVO> _result = fileUtil.parseFileInf(files, "DSCH_", 0, _atchFileId, "");
 				_atchFileId = fileMngService.insertFileInfs(_result);
 				// 첨부파일 ID 셋팅
-				deptJobVO.setAtchFileId(_atchFileId);    	// 첨부파일 ID
+				deptJobVO.setAtchFileId(_atchFileId); // 첨부파일 ID
 
-			}else{
+			} else {
 				FileVO fvo = new FileVO();
 				fvo.setAtchFileId(_atchFileId);
 				int _cnt = fileMngService.getMaxFileSN(fvo);
@@ -640,35 +668,38 @@ public class EgovDeptJobController {
 
 	/**
 	 * 부서업무 정보를 등록한다.
+	 * 
 	 * @param DeptJob
-	 * @return  String
+	 * @return String
 	 *
 	 * @param deptJob
 	 */
 	@RequestMapping("/cop/smt/djm/insertDeptJob.do")
-	public String insertDeptJob(final MultipartHttpServletRequest multiRequest, @ModelAttribute("deptJobVO") DeptJobVO deptJobVO, BindingResult bindingResult, ModelMap model) throws Exception{
+	public String insertDeptJob(final MultipartHttpServletRequest multiRequest,
+			@ModelAttribute("deptJobVO") DeptJobVO deptJobVO, BindingResult bindingResult, ModelMap model)
+			throws Exception {
 		// 0. Spring Security 사용자권한 처리
-    	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-    	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "redirect:/uat/uia/egovLoginUsr.do";
-    	}
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
-		//로그인 객체 선언
-		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		// 로그인 객체 선언
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		String sLocationUrl = "egovframework/com/cop/smt/djm/EgovDeptJobRegist";
 
-		//서버  validate 체크
-        beanValidator.validate(deptJobVO, bindingResult);
-		if(bindingResult.hasErrors()){
-			
-			// 파일업로드 제한
-	    	String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
-	    	String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
+		// 서버 validate 체크
+		beanValidator.validate(deptJobVO, bindingResult);
+		if (bindingResult.hasErrors()) {
 
-	        model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
-	        model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
+			// 파일업로드 제한
+			String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
+			String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
+
+			model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
+			model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
 
 			return sLocationUrl;
 		}
@@ -677,54 +708,55 @@ public class EgovDeptJobController {
 		List<FileVO> _result = null;
 		String _atchFileId = "";
 
-		//final Map<String, MultipartFile> files = multiRequest.getFileMap();
+		// final Map<String, MultipartFile> files = multiRequest.getFileMap();
 		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
-		if(!files.isEmpty()){
+		if (!files.isEmpty()) {
 			_result = fileUtil.parseFileInf(files, "DSCH_", 0, "", "");
-			_atchFileId = fileMngService.insertFileInfs(_result);  //파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
+			_atchFileId = fileMngService.insertFileInfs(_result); // 파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
 		}
 
-    	// 리턴받은 첨부파일ID를 셋팅한다..
-		deptJobVO.setAtchFileId(_atchFileId);			// 첨부파일 ID
+		// 리턴받은 첨부파일ID를 셋팅한다..
+		deptJobVO.setAtchFileId(_atchFileId); // 첨부파일 ID
 
-		//아이디 설정
+		// 아이디 설정
 		deptJobVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 		deptJobVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 
 		deptJobService.insertDeptJob(deptJobVO);
-    	sLocationUrl = "forward:/cop/smt/djm/selectDeptJobList.do";
+		sLocationUrl = "forward:/cop/smt/djm/selectDeptJobList.do";
 
-        return sLocationUrl;
+		return sLocationUrl;
 	}
 
 	/**
 	 * 부서업무 정보를 삭제한다.
+	 * 
 	 * @param DeptJob
-	 * @return  String
+	 * @return String
 	 *
 	 * @param deptJob
 	 */
 	@RequestMapping("/cop/smt/djm/deleteDeptJob.do")
-	public String deleteDeptJob(@ModelAttribute("deptJobVO") DeptJob deptJob, ModelMap model) throws Exception{
+	public String deleteDeptJob(@ModelAttribute("deptJobVO") DeptJob deptJob, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
-    	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-    	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "redirect:/uat/uia/egovLoginUsr.do";
-    	}
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
 
-    	// 첨부파일 삭제를 위한 ID 생성 start....
+		// 첨부파일 삭제를 위한 ID 생성 start....
 		String _atchFileId = deptJob.getAtchFileId();
 
-		// 첨부파일을 삭제하기 위한  Vo
-    	FileVO fvo = new FileVO();
-    	fvo.setAtchFileId(_atchFileId);
+		// 첨부파일을 삭제하기 위한 Vo
+		FileVO fvo = new FileVO();
+		fvo.setAtchFileId(_atchFileId);
 
-    	fileMngService.deleteAllFileInf(fvo);
-    	// 첨부파일 삭제 End.............
+		fileMngService.deleteAllFileInf(fvo);
+		// 첨부파일 삭제 End.............
 
-    	deptJobService.deleteDeptJob(deptJob);
+		deptJobService.deleteDeptJob(deptJob);
 		return "forward:/cop/smt/djm/selectDeptJobList.do";
 	}
 
