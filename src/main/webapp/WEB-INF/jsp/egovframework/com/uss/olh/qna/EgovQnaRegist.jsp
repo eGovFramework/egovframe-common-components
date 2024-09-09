@@ -113,7 +113,7 @@ function fn_egov_regist_qna(form){
    				<div><form:errors path="emailAdres" cssClass="error" /></div>     
 			</td>
 			<c:set var="title"><spring:message code="comUssOlhQna.qnaVO.emailAnswerAt"/> </c:set>
-			<th><label for="emailAnswerAt">${title}</label></th>
+			<th><label for="emailAnswerAt1">${title}</label></th>
 			<td class="left"><form:checkbox path="emailAnswerAt" value="Y"/>
 			<div><form:errors path="emailAdres" cssClass="error" /></div></td>
 		</tr>
