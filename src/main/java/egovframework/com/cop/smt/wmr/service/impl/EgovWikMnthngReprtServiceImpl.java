@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,8 @@ import egovframework.com.cop.smt.wmr.service.WikMnthngReprtVO;
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2010.7.19	장철호          최초 생성
+ *   2010.07.19  장철호          최초 생성
+ *   2024.09.10  이백행          컨트리뷰션 시큐어코딩 Exception 제거
  *
  *          </pre>
  */
@@ -56,7 +58,7 @@ public class EgovWikMnthngReprtServiceImpl extends EgovAbstractServiceImpl imple
 	 * @param reportrVO
 	 */
 	@Override
-	public Map<String, Object> selectReportrList(ReportrVO reportrVO) throws Exception {
+	public Map<String, Object> selectReportrList(ReportrVO reportrVO) {
 		List<ReportrVO> result = wikMnthngReprtDAO.selectReportrList(reportrVO);
 		int cnt = wikMnthngReprtDAO.selectReportrListCnt(reportrVO);
 
@@ -77,7 +79,7 @@ public class EgovWikMnthngReprtServiceImpl extends EgovAbstractServiceImpl imple
 	 * @param String
 	 */
 	@Override
-	public String selectWrterClsfNm(String wrterId) throws Exception {
+	public String selectWrterClsfNm(String wrterId) {
 		return wikMnthngReprtDAO.selectWrterClsfNm(wrterId);
 	}
 
@@ -90,7 +92,7 @@ public class EgovWikMnthngReprtServiceImpl extends EgovAbstractServiceImpl imple
 	 * @param wikMnthngReprtVO
 	 */
 	@Override
-	public Map<String, Object> selectWikMnthngReprtList(WikMnthngReprtVO wikMnthngReprtVO) throws Exception {
+	public Map<String, Object> selectWikMnthngReprtList(WikMnthngReprtVO wikMnthngReprtVO) {
 		List<WikMnthngReprtVO> result = wikMnthngReprtDAO.selectWikMnthngReprtList(wikMnthngReprtVO);
 		int cnt = wikMnthngReprtDAO.selectWikMnthngReprtListCnt(wikMnthngReprtVO);
 
@@ -111,7 +113,7 @@ public class EgovWikMnthngReprtServiceImpl extends EgovAbstractServiceImpl imple
 	 * @param wikMnthngReprtVO
 	 */
 	@Override
-	public WikMnthngReprtVO selectWikMnthngReprt(WikMnthngReprtVO wikMnthngReprtVO) throws Exception {
+	public WikMnthngReprtVO selectWikMnthngReprt(WikMnthngReprtVO wikMnthngReprtVO) {
 
 		WikMnthngReprtVO resultVO = wikMnthngReprtDAO.selectWikMnthngReprt(wikMnthngReprtVO);
 		if (resultVO.getConfmDt() == null || resultVO.getConfmDt().equals("")) {
@@ -145,7 +147,7 @@ public class EgovWikMnthngReprtServiceImpl extends EgovAbstractServiceImpl imple
 	 * @param wikMnthngReprt
 	 */
 	@Override
-	public void updateWikMnthngReprt(WikMnthngReprt wikMnthngReprt) throws Exception {
+	public void updateWikMnthngReprt(WikMnthngReprt wikMnthngReprt) {
 		wikMnthngReprtDAO.updateWikMnthngReprt(wikMnthngReprt);
 	}
 
@@ -155,10 +157,15 @@ public class EgovWikMnthngReprtServiceImpl extends EgovAbstractServiceImpl imple
 	 * @param WikMnthngReprt - 주간월간보고 model
 	 * 
 	 * @param wikMnthngReprt
+	 * @throws Exception
 	 */
 	@Override
 	public void insertWikMnthngReprt(WikMnthngReprt wikMnthngReprt) throws Exception {
-		wikMnthngReprt.setReprtId(idgenServiceWikMnthngReprt.getNextStringId());
+		try {
+			wikMnthngReprt.setReprtId(idgenServiceWikMnthngReprt.getNextStringId());
+		} catch (FdlException e) {
+			throw processException("FdlException: egovWikMnthngReprtIdGnrService", e);
+		}
 		wikMnthngReprtDAO.insertWikMnthngReprt(wikMnthngReprt);
 	}
 
@@ -170,7 +177,7 @@ public class EgovWikMnthngReprtServiceImpl extends EgovAbstractServiceImpl imple
 	 * @param wikMnthngReprt
 	 */
 	@Override
-	public void confirmWikMnthngReprt(WikMnthngReprt wikMnthngReprt) throws Exception {
+	public void confirmWikMnthngReprt(WikMnthngReprt wikMnthngReprt) {
 		java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyyMMddHHmmss", java.util.Locale.KOREA);
 		wikMnthngReprt.setConfmDt(formatter.format(new java.util.Date()));
 		wikMnthngReprtDAO.confirmWikMnthngReprt(wikMnthngReprt);
@@ -184,7 +191,7 @@ public class EgovWikMnthngReprtServiceImpl extends EgovAbstractServiceImpl imple
 	 * @param wikMnthngReprt
 	 */
 	@Override
-	public void deleteWikMnthngReprt(WikMnthngReprt wikMnthngReprt) throws Exception {
+	public void deleteWikMnthngReprt(WikMnthngReprt wikMnthngReprt) {
 		wikMnthngReprtDAO.deleteWikMnthngReprt(wikMnthngReprt);
 	}
 }

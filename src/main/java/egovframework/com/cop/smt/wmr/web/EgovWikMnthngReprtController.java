@@ -54,9 +54,10 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *
  *  수정일               수정자            수정내용
  *  ----------   --------   ---------------------------
- *  2010.07.19   장철호            최초 생성
- *  2011.08.26   정진오            IncludedInfo annotation 추가
- *  2019.12.06   신용호            KISA 보안약점 조치 (위험한 형식 파일 업로드)
+ *   2010.07.19  장철호          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2019.12.06  신용호          KISA 보안약점 조치 (위험한 형식 파일 업로드)
+ *   2024.09.10  이백행          컨트리뷰션 시큐어코딩 Exception 제거
  *
  *          </pre>
  */
@@ -97,8 +98,7 @@ public class EgovWikMnthngReprtController {
 	 * @param reportrVO
 	 */
 	@RequestMapping("/cop/smt/wmr/selectReportrListPopup.do")
-	public String selectReportrListPopup(@ModelAttribute("searchVO") ReportrVO reportrVO, ModelMap model)
-			throws Exception {
+	public String selectReportrListPopup(@ModelAttribute("searchVO") ReportrVO reportrVO, ModelMap model) {
 		return "egovframework/com/cop/smt/wmr/EgovReportrListPopup";
 	}
 
@@ -111,7 +111,7 @@ public class EgovWikMnthngReprtController {
 	 * @param reportrVO
 	 */
 	@RequestMapping("/cop/smt/wmr/selectReportrList.do")
-	public String selectReportrList(@ModelAttribute("searchVO") ReportrVO reportrVO, ModelMap model) throws Exception {
+	public String selectReportrList(@ModelAttribute("searchVO") ReportrVO reportrVO, ModelMap model) {
 		// LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
 		// reportrVO.setUniqId(user.getUniqId());
@@ -150,7 +150,7 @@ public class EgovWikMnthngReprtController {
 	@IncludedInfo(name = "주간/월간보고관리", order = 410, gid = 40)
 	@RequestMapping("/cop/smt/wmr/selectWikMnthngReprtList.do")
 	public String selectWikMnthngReprtList(@ModelAttribute("searchVO") WikMnthngReprtVO wikMnthngReprtVO,
-			ModelMap model) throws Exception {
+			ModelMap model) {
 		// LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
 		// 로그인 객체 선언
@@ -191,7 +191,7 @@ public class EgovWikMnthngReprtController {
 	 */
 	@RequestMapping("/cop/smt/wmr/addWikMnthngReprt.do")
 	public String addWikMnthngReprt(@ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO,
-			BindingResult bindingResult, ModelMap model) throws Exception {
+			BindingResult bindingResult, ModelMap model) {
 		String sLocationUrl = "egovframework/com/cop/smt/wmr/EgovWikMnthngReprtRegist";
 
 		// 파일업로드 제한
@@ -231,7 +231,7 @@ public class EgovWikMnthngReprtController {
 	 */
 	@RequestMapping("/cop/smt/wmr/modifyWikMnthngReprt.do")
 	public String modifyWikMnthngReprt(@ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO,
-			BindingResult bindingResult, ModelMap model) throws Exception {
+			BindingResult bindingResult, ModelMap model) {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
@@ -268,7 +268,7 @@ public class EgovWikMnthngReprtController {
 	 */
 	@RequestMapping("/cop/smt/wmr/selectWikMnthngReprt.do")
 	public String selectWikMnthngReprt(@ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO,
-			ModelMap model) throws Exception {
+			ModelMap model) {
 		WikMnthngReprt wikMnthngReprt = wikMnthngReprtService.selectWikMnthngReprt(wikMnthngReprtVO);
 		model.addAttribute("wikMnthngReprt", wikMnthngReprt);
 
@@ -298,7 +298,7 @@ public class EgovWikMnthngReprtController {
 	@RequestMapping("/cop/smt/wmr/updateWikMnthngReprt.do")
 	public String updateWikMnthngReprt(final MultipartHttpServletRequest multiRequest,
 			@RequestParam Map<?, ?> commandMap, @ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO,
-			BindingResult bindingResult, ModelMap model) throws Exception {
+			BindingResult bindingResult, ModelMap model) {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
@@ -359,6 +359,7 @@ public class EgovWikMnthngReprtController {
 	 * @return String - 리턴 URL
 	 *
 	 * @param wikMnthngReprt
+	 * @throws Exception
 	 */
 	@RequestMapping("/cop/smt/wmr/insertWikMnthngReprt.do")
 	public String insertWikMnthngReprt(final MultipartHttpServletRequest multiRequest,
@@ -424,7 +425,7 @@ public class EgovWikMnthngReprtController {
 	 */
 	@RequestMapping("/cop/smt/wmr/deleteWikMnthngReprt.do")
 	public String deleteWikMnthngReprt(@ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO,
-			ModelMap model) throws Exception {
+			ModelMap model) {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
@@ -457,7 +458,7 @@ public class EgovWikMnthngReprtController {
 	@SuppressWarnings("unused")
 	@RequestMapping("/cop/smt/wmr/confirmWikMnthngReprt.do")
 	public String confirmWikMnthngReprt(@ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO,
-			ModelMap model) throws Exception {
+			ModelMap model) {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 

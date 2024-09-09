@@ -21,7 +21,8 @@ import java.util.Map;
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2010.7.19	장철호          최초 생성
+ *   2010.07.19  장철호          최초 생성
+ *   2024.09.10  이백행          컨트리뷰션 시큐어코딩 Exception 제거
  *
  *          </pre>
  */
@@ -35,7 +36,7 @@ public interface EgovWikMnthngReprtService {
 	 * 
 	 * @param reportrVO
 	 */
-	public Map<String, Object> selectReportrList(ReportrVO reportrVO) throws Exception;
+	public Map<String, Object> selectReportrList(ReportrVO reportrVO);
 
 	/**
 	 * 사용자 직위명 정보를 조회한다.
@@ -45,7 +46,7 @@ public interface EgovWikMnthngReprtService {
 	 * 
 	 * @param String
 	 */
-	public String selectWrterClsfNm(String wrterId) throws Exception;
+	public String selectWrterClsfNm(String wrterId);
 
 	/**
 	 * 주간월간보고 목록을 조회한다.
@@ -55,7 +56,7 @@ public interface EgovWikMnthngReprtService {
 	 * 
 	 * @param wikMnthngReprtVO
 	 */
-	public Map<String, Object> selectWikMnthngReprtList(WikMnthngReprtVO wikMnthngReprtVO) throws Exception;
+	public Map<String, Object> selectWikMnthngReprtList(WikMnthngReprtVO wikMnthngReprtVO);
 
 	/**
 	 * 주간월간보고 정보를 조회한다.
@@ -65,7 +66,7 @@ public interface EgovWikMnthngReprtService {
 	 * 
 	 * @param wikMnthngReprtVO
 	 */
-	public WikMnthngReprtVO selectWikMnthngReprt(WikMnthngReprtVO wikMnthngReprtVO) throws Exception;
+	public WikMnthngReprtVO selectWikMnthngReprt(WikMnthngReprtVO wikMnthngReprtVO);
 
 	/**
 	 * 주간월간보고 정보를 수정한다.
@@ -74,7 +75,7 @@ public interface EgovWikMnthngReprtService {
 	 * 
 	 * @param wikMnthngReprt
 	 */
-	public void updateWikMnthngReprt(WikMnthngReprt wikMnthngReprt) throws Exception;
+	public void updateWikMnthngReprt(WikMnthngReprt wikMnthngReprt);
 
 	/**
 	 * 주간월간보고 정보를 등록한다.
@@ -92,7 +93,7 @@ public interface EgovWikMnthngReprtService {
 	 * 
 	 * @param wikMnthngReprt
 	 */
-	public void confirmWikMnthngReprt(WikMnthngReprt wikMnthngReprt) throws Exception;
+	public void confirmWikMnthngReprt(WikMnthngReprt wikMnthngReprt);
 
 	/**
 	 * 주간월간보고 정보를 삭제한다.
@@ -101,6 +102,6 @@ public interface EgovWikMnthngReprtService {
 	 * 
 	 * @param wikMnthngReprt
 	 */
-	public void deleteWikMnthngReprt(WikMnthngReprt wikMnthngReprt) throws Exception;
+	public void deleteWikMnthngReprt(WikMnthngReprt wikMnthngReprt);
 
 }
