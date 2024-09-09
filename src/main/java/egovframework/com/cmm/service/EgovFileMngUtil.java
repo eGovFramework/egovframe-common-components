@@ -25,6 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -38,18 +40,21 @@ import egovframework.com.cmm.util.EgovResourceCloseHelper;
 /**
  * @author 공통 서비스 개발팀 이삼섭
  * @version 1.0
- * @Class Name  : EgovFileMngUtil.java
+ * @Class Name : EgovFileMngUtil.java
  * @Description : 메시지 처리 관련 유틸리티
  * @Modification Information
- *
+ * 
+ *               <pre>
  *   수정일               수정자            수정내용
  *   ----------   --------   ---------------------------
- *   2009.02.13   이삼섭            최초 생성
- *   2011.08.09   서준식            utl.fcc패키지와 Dependency제거를 위해 getTimeStamp()메서드 추가
- *   2017.03.03   조성원            시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
- *   2020.10.26   신용호            parseFileInf(List<MultipartFile> files ...) 추가
- *   2022.11.11   김혜준            시큐어코딩 처리
- *
+ *   2009.02.13  이삼섭          최초 생성
+ *   2011.08.09  서준식          utl.fcc패키지와 Dependency제거를 위해 getTimeStamp()메서드 추가
+ *   2017.03.03  조성원          시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+ *   2020.10.26  신용호          parseFileInf(List<MultipartFile> files ...) 추가
+ *   2022.11.11  김혜준          시큐어코딩 처리
+ *   2024.09.10  이백행          컨트리뷰션 시큐어코딩 Exception 제거
+ *               </pre>
+ * 
  * @see
  * @since 2009. 02. 13
  *
@@ -72,7 +77,8 @@ public class EgovFileMngUtil {
 	 * @return
 	 * @throws Exception
 	 */
-	public List<FileVO> parseFileInf(Map<String, MultipartFile> files, String KeyStr, int fileKeyParam, String atchFileId, String storePath) throws Exception {
+	public List<FileVO> parseFileInf(Map<String, MultipartFile> files, String KeyStr, int fileKeyParam,
+			String atchFileId, String storePath) throws Exception {
 		int fileKey = fileKeyParam;
 
 		String storePathString = "";
@@ -93,7 +99,7 @@ public class EgovFileMngUtil {
 		File saveFolder = new File(EgovWebUtil.filePathBlackList(storePathString));
 
 		if (!saveFolder.exists() || saveFolder.isFile()) {
-			//2017.03.03 	조성원 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+			// 2017.03.03 조성원 시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
 			if (saveFolder.mkdirs()) {
 				LOGGER.debug("[file.mkdirs] saveFolder : Creation Success ");
 			} else {
@@ -142,9 +148,9 @@ public class EgovFileMngUtil {
 	 *
 	 * @param files
 	 * @return
-	 * @throws Exception
 	 */
-	public List<FileVO> parseFileInf(List<MultipartFile> files, String KeyStr, int fileKeyParam, String atchFileId, String storePath) throws Exception {
+	public List<FileVO> parseFileInf(List<MultipartFile> files, String KeyStr, int fileKeyParam, String atchFileId,
+			String storePath) {
 		int fileKey = fileKeyParam;
 
 		String storePathString = "";
@@ -157,7 +163,11 @@ public class EgovFileMngUtil {
 		}
 
 		if (atchFileId == null || "".equals(atchFileId)) {
-			atchFileIdString = idgenService.getNextStringId();
+			try {
+				atchFileIdString = idgenService.getNextStringId();
+			} catch (FdlException e) {
+				throw new BaseRuntimeException("FdlException: egovFileIdGnrService", e);
+			}
 		} else {
 			atchFileIdString = atchFileId;
 		}
@@ -188,7 +198,11 @@ public class EgovFileMngUtil {
 			String newName = KeyStr + getTimeStamp() + fileKey;
 			long size = file.getSize();
 			String filePath = storePathString + File.separator + newName;
-			file.transferTo(new File(EgovWebUtil.filePathBlackList(filePath)));
+			try {
+				file.transferTo(new File(EgovWebUtil.filePathBlackList(filePath)));
+			} catch (IllegalStateException | IOException e) {
+				throw new BaseRuntimeException("IllegalStateException | IOException: transferTo", e);
+			}
 
 			fvo = new FileVO();
 			fvo.setFileExtsn(fileExt);
@@ -230,7 +244,8 @@ public class EgovFileMngUtil {
 				}
 			}
 
-			String writeFilePath = EgovWebUtil.filePathBlackList(FILE_STORE_PATH + File.separator + FilenameUtils.getName(newName));
+			String writeFilePath = EgovWebUtil
+					.filePathBlackList(FILE_STORE_PATH + File.separator + FilenameUtils.getName(newName));
 			bos = new FileOutputStream(writeFilePath);
 
 			int bytesRead = 0;
@@ -280,10 +295,11 @@ public class EgovFileMngUtil {
 			throw new FileNotFoundException(downFileName);
 		}
 
-		byte[] buffer = new byte[BUFF_SIZE]; //buffer size 2K.
+		byte[] buffer = new byte[BUFF_SIZE]; // buffer size 2K.
 
 		response.setContentType("application/x-msdownload");
-		response.setHeader("Content-Disposition:", "attachment; filename=" + new String(orgFileName.getBytes(), "UTF-8"));
+		response.setHeader("Content-Disposition:",
+				"attachment; filename=" + new String(orgFileName.getBytes(), "UTF-8"));
 		response.setHeader("Content-Transfer-Encoding", "binary");
 		response.setHeader("Pragma", "no-cache");
 		response.setHeader("Expires", "0");
@@ -329,7 +345,7 @@ public class EgovFileMngUtil {
 		map.put(Globals.ORIGIN_FILE_NM, orginFileName);
 		map.put(Globals.UPLOAD_FILE_NM, newName);
 		map.put(Globals.FILE_EXT, fileExt);
-		map.put(Globals.FILE_PATH, FILE_STORE_PATH );
+		map.put(Globals.FILE_PATH, FILE_STORE_PATH);
 		map.put(Globals.FILE_SIZE, String.valueOf(size));
 
 		return map;
@@ -349,18 +365,19 @@ public class EgovFileMngUtil {
 
 		try {
 			stream = file.getInputStream();
-			File cFile = new File(EgovWebUtil.filePathBlackList(FILE_STORE_PATH ));
+			File cFile = new File(EgovWebUtil.filePathBlackList(FILE_STORE_PATH));
 
 			if (!cFile.isDirectory()) {
-				//2017.03.03 	조성원 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-				if (cFile.mkdirs()){
+				// 2017.03.03 조성원 시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+				if (cFile.mkdirs()) {
 					LOGGER.debug("[file.mkdirs] saveFolder : Creation Success ");
 				} else {
 					LOGGER.error("[file.mkdirs] saveFolder : Creation Fail ");
 				}
 			}
 
-			bos = new FileOutputStream(EgovWebUtil.filePathBlackList(FILE_STORE_PATH  + File.separator + FilenameUtils.getName(newName)));
+			bos = new FileOutputStream(
+					EgovWebUtil.filePathBlackList(FILE_STORE_PATH + File.separator + FilenameUtils.getName(newName)));
 
 			int bytesRead = 0;
 			byte[] buffer = new byte[BUFF_SIZE];
@@ -377,7 +394,7 @@ public class EgovFileMngUtil {
 	 * 서버 파일에 대하여 다운로드를 처리한다.
 	 *
 	 * @param response
-	 * @param streFileNm 파일저장 경로가 포함된 형태
+	 * @param streFileNm  파일저장 경로가 포함된 형태
 	 * @param orignFileNm
 	 * @throws Exception
 	 */
@@ -404,13 +421,13 @@ public class EgovFileMngUtil {
 
 				String mimetype = "application/x-msdownload";
 
-				//response.setBufferSize(fSize);
+				// response.setBufferSize(fSize);
 				response.setContentType(mimetype);
 				response.setHeader("Content-Disposition:", "attachment; filename=" + orgFileName);
 				response.setContentLength(fSize);
-				//response.setHeader("Content-Transfer-Encoding","binary");
-				//response.setHeader("Pragma","no-cache");
-				//response.setHeader("Expires","0");
+				// response.setHeader("Content-Transfer-Encoding","binary");
+				// response.setHeader("Pragma","no-cache");
+				// response.setHeader("Expires","0");
 				FileCopyUtils.copy(in, response.getOutputStream());
 			} finally {
 				EgovResourceCloseHelper.close(in);
@@ -420,62 +437,54 @@ public class EgovFileMngUtil {
 		}
 
 		/*
-		String uploadPath = propertiesService.getString("fileDir");
-
-		File uFile = new File(uploadPath, requestedFile);
-		int fSize = (int) uFile.length();
-
-		if (fSize > 0) {
-		    BufferedInputStream in = new BufferedInputStream(new FileInputStream(uFile));
-
-		    String mimetype = "text/html";
-
-		    //response.setBufferSize(fSize);
-		    response.setContentType(mimetype);
-		    response.setHeader("Content-Disposition", "attachment; filename=\"" + requestedFile + "\"");
-		    response.setContentLength(fSize);
-
-		    FileCopyUtils.copy(in, response.getOutputStream());
-		    in.close();
-		    response.getOutputStream().flush();
-		    response.getOutputStream().close();
-		} else {
-		    response.setContentType("text/html");
-		    PrintWriter printwriter = response.getWriter();
-		    printwriter.println("<html>");
-		    printwriter.println("<br><br><br><h2>Could not get file name:<br>" + requestedFile + "</h2>");
-		    printwriter.println("<br><br><br><center><h3><a href='javascript: history.go(-1)'>Back</a></h3></center>");
-		    printwriter.println("<br><br><br>&copy; webAccess");
-		    printwriter.println("</html>");
-		    printwriter.flush();
-		    printwriter.close();
-		}
-		//*/
+		 * String uploadPath = propertiesService.getString("fileDir");
+		 * 
+		 * File uFile = new File(uploadPath, requestedFile); int fSize = (int)
+		 * uFile.length();
+		 * 
+		 * if (fSize > 0) { BufferedInputStream in = new BufferedInputStream(new
+		 * FileInputStream(uFile));
+		 * 
+		 * String mimetype = "text/html";
+		 * 
+		 * //response.setBufferSize(fSize); response.setContentType(mimetype);
+		 * response.setHeader("Content-Disposition", "attachment; filename=\"" +
+		 * requestedFile + "\""); response.setContentLength(fSize);
+		 * 
+		 * FileCopyUtils.copy(in, response.getOutputStream()); in.close();
+		 * response.getOutputStream().flush(); response.getOutputStream().close(); }
+		 * else { response.setContentType("text/html"); PrintWriter printwriter =
+		 * response.getWriter(); printwriter.println("<html>");
+		 * printwriter.println("<br><br><br><h2>Could not get file name:<br>" +
+		 * requestedFile + "</h2>"); printwriter.
+		 * println("<br><br><br><center><h3><a href='javascript: history.go(-1)'>Back</a></h3></center>"
+		 * ); printwriter.println("<br><br><br>&copy; webAccess");
+		 * printwriter.println("</html>"); printwriter.flush(); printwriter.close(); }
+		 * //
+		 */
 
 		/*
-		response.setContentType("application/x-msdownload");
-		response.setHeader("Content-Disposition:", "attachment; filename=" + new String(orgFileName.getBytes(),"UTF-8" ));
-		response.setHeader("Content-Transfer-Encoding","binary");
-		response.setHeader("Pragma","no-cache");
-		response.setHeader("Expires","0");
-
-		BufferedInputStream fin = new BufferedInputStream(new FileInputStream(file));
-		BufferedOutputStream outs = new BufferedOutputStream(response.getOutputStream());
-		int read = 0;
-
-		while ((read = fin.read(b)) != -1) {
-		    outs.write(b,0,read);
-		}
-		log.debug(this.getClass().getName()+" BufferedOutputStream Write Complete!!! ");
-
-		outs.close();
-		fin.close();
-		//*/
+		 * response.setContentType("application/x-msdownload");
+		 * response.setHeader("Content-Disposition:", "attachment; filename=" + new
+		 * String(orgFileName.getBytes(),"UTF-8" ));
+		 * response.setHeader("Content-Transfer-Encoding","binary");
+		 * response.setHeader("Pragma","no-cache"); response.setHeader("Expires","0");
+		 * 
+		 * BufferedInputStream fin = new BufferedInputStream(new FileInputStream(file));
+		 * BufferedOutputStream outs = new
+		 * BufferedOutputStream(response.getOutputStream()); int read = 0;
+		 * 
+		 * while ((read = fin.read(b)) != -1) { outs.write(b,0,read); }
+		 * log.debug(this.getClass().getName()
+		 * +" BufferedOutputStream Write Complete!!! ");
+		 * 
+		 * outs.close(); fin.close(); //
+		 */
 	}
 
 	/**
-	 * 공통 컴포넌트 utl.fcc 패키지와 Dependency 제거를 위해 내부 메서드로 추가 정의함
-	 * 응용어플리케이션에서 고유값을 사용하기 위해 시스템에서 17자리의 TIMESTAMP값을 구하는 기능
+	 * 공통 컴포넌트 utl.fcc 패키지와 Dependency 제거를 위해 내부 메서드로 추가 정의함 응용어플리케이션에서 고유값을 사용하기 위해
+	 * 시스템에서 17자리의 TIMESTAMP값을 구하는 기능
 	 *
 	 * @param
 	 * @return Timestamp 값
