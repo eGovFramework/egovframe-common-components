@@ -103,6 +103,11 @@ function fn_egov_passwordConfirm(){
 }
 
 
+function fn_egov_search_list() {
+    document.formList.action = "<c:url value='/uss/olp/cns/CnsltListInqire.do'/>";
+    document.formList.submit();
+}
+
 </script>
 </head>
 <body>
@@ -288,7 +293,7 @@ function fn_egov_passwordConfirm(){
 		</form>
 
 		<form name="formList" action="<c:url value='/uss/olp/cns/CnsltListInqire.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
-		  <input type="submit" class="s_submit" value="<spring:message code="button.list" />" onclick="fn_egov_search_OnlinePollManage(); return false;">
+		  <input type="submit" class="s_submit" value="<spring:message code="button.list" />" onclick="fn_egov_search_list(); return false;">
 		</form>
 		
 	</div><div style="clear:both;"></div>
