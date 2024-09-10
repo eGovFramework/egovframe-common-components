@@ -7,6 +7,7 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
 
@@ -55,7 +56,7 @@ public class EgovMemoTodoServiceImpl extends EgovAbstractServiceImpl implements 
 	 * @param memoTodoVO
 	 */
 	@Override
-	public Map<String, Object> selectMemoTodoList(MemoTodoVO memoTodoVO) throws Exception {
+	public Map<String, Object> selectMemoTodoList(MemoTodoVO memoTodoVO) {
 		List<MemoTodoVO> result = memoTodoDAO.selectMemoTodoList(memoTodoVO);
 		int cnt = memoTodoDAO.selectMemoTodoListCnt(memoTodoVO);
 
@@ -76,7 +77,7 @@ public class EgovMemoTodoServiceImpl extends EgovAbstractServiceImpl implements 
 	 * @param memoTodoVO - 메모할일 VO
 	 */
 	@Override
-	public MemoTodoVO selectMemoTodo(MemoTodoVO memoTodoVO) throws Exception {
+	public MemoTodoVO selectMemoTodo(MemoTodoVO memoTodoVO) {
 		return memoTodoDAO.selectMemoTodo(memoTodoVO);
 	}
 
@@ -88,7 +89,7 @@ public class EgovMemoTodoServiceImpl extends EgovAbstractServiceImpl implements 
 	 * @param memoTodo - 메모할일 model
 	 */
 	@Override
-	public void updateMemoTodo(MemoTodo memoTodo) throws Exception {
+	public void updateMemoTodo(MemoTodo memoTodo) {
 		memoTodoDAO.updateMemoTodo(memoTodo);
 	}
 
@@ -98,10 +99,15 @@ public class EgovMemoTodoServiceImpl extends EgovAbstractServiceImpl implements 
 	 * @param MemoTodo - 메모할일 model
 	 * 
 	 * @param memoTodo - 메모할일 model
+	 * @throws Exception
 	 */
 	@Override
 	public void insertMemoTodo(MemoTodo memoTodo) throws Exception {
-		memoTodo.setTodoId(idgenServiceMemoTodo.getNextStringId());
+		try {
+			memoTodo.setTodoId(idgenServiceMemoTodo.getNextStringId());
+		} catch (FdlException e) {
+			throw processException("FdlException: egovMemoTodoIdGnrService", e);
+		}
 		memoTodoDAO.insertMemoTodo(memoTodo);
 	}
 
@@ -113,7 +119,7 @@ public class EgovMemoTodoServiceImpl extends EgovAbstractServiceImpl implements 
 	 * @param memoTodo - 메모할일 model
 	 */
 	@Override
-	public void deleteMemoTodo(MemoTodo memoTodo) throws Exception {
+	public void deleteMemoTodo(MemoTodo memoTodo) {
 		memoTodoDAO.deleteMemoTodo(memoTodo);
 	}
 
@@ -126,7 +132,7 @@ public class EgovMemoTodoServiceImpl extends EgovAbstractServiceImpl implements 
 	 * @param memoTodoVO - 메모할일 VO
 	 */
 	@Override
-	public List<MemoTodoVO> selectMemoTodoListToday(MemoTodoVO memoTodoVO) throws Exception {
+	public List<MemoTodoVO> selectMemoTodoListToday(MemoTodoVO memoTodoVO) {
 		return memoTodoDAO.selectMemoTodoListToday(memoTodoVO);
 	}
 
