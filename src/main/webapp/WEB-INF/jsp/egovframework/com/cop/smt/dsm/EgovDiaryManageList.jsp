@@ -74,7 +74,7 @@ function fn_egov_search_DiaryManage(){
 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
-	<form name="StplatListForm" action="<c:url value='/cop/smt/dsm/EgovDiaryManageList.do'/>" method="post"> 
+	<form id="listForm" name="listForm" action="<c:url value='/cop/smt/dsm/EgovDiaryManageList.do'/>" method="post"> 
 		<!-- 검색영역 -->
 		<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
 			<ul>
@@ -95,8 +95,8 @@ function fn_egov_search_DiaryManage(){
 				</li>
 			</ul>
 		</div>
-	<input name="diaryId" type="hidden" value="">
-	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
+        <input id="diaryId" name="diaryId" type="hidden" value="">
+        <input id="pageIndex" name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 	</form>
 
 	<!-- 목록영역 -->
