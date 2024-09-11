@@ -51,9 +51,10 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *   
  *  수정일               수정자             수정내용
  *  ----------   --------   ---------------------------
- *  2010.07.19   장철호            최초 생성
- *  2011.08.26   정진오            IncludedInfo annotation 추가
- *  2019.12.09   신용호            KISA 보안약점 조치 (위험한 형식 파일 업로드)
+ *   2010.07.19  장철호          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2019.12.09  신용호          KISA 보안약점 조치 (위험한 형식 파일 업로드)
+ *   2024.09.12  이백행          컨트리뷰션 시큐어코딩 Exception 제거
  *
  *          </pre>
  */
@@ -91,8 +92,7 @@ public class EgovMemoReprtController {
 	 * @param reportrVO
 	 */
 	@RequestMapping("/cop/smt/mrm/selectReportrListPopup.do")
-	public String selectReportrListPopup(@ModelAttribute("searchVO") ReportrVO reportrVO, ModelMap model)
-			throws Exception {
+	public String selectReportrListPopup(@ModelAttribute("searchVO") ReportrVO reportrVO, ModelMap model) {
 		return "egovframework/com/cop/smt/mrm/EgovReportrListPopup";
 	}
 
@@ -105,7 +105,7 @@ public class EgovMemoReprtController {
 	 * @param reportrVO
 	 */
 	@RequestMapping("/cop/smt/mrm/selectReportrList.do")
-	public String selectReportrList(@ModelAttribute("searchVO") ReportrVO reportrVO, ModelMap model) throws Exception {
+	public String selectReportrList(@ModelAttribute("searchVO") ReportrVO reportrVO, ModelMap model) {
 		// LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
 		// reportrVO.setUniqId(user.getUniqId());
@@ -144,8 +144,7 @@ public class EgovMemoReprtController {
 	 */
 	@IncludedInfo(name = "메모보고", order = 430, gid = 40)
 	@RequestMapping("/cop/smt/mrm/selectMemoReprtList.do")
-	public String selectMemoReprtList(@ModelAttribute("searchVO") MemoReprtVO memoReprtVO, ModelMap model)
-			throws Exception {
+	public String selectMemoReprtList(@ModelAttribute("searchVO") MemoReprtVO memoReprtVO, ModelMap model) {
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		// KISA 보안취약점 조치 (2018-12-10, 신용호)
@@ -190,8 +189,7 @@ public class EgovMemoReprtController {
 	 * @param model
 	 */
 	@RequestMapping("/cop/smt/mrm/selectMemoReprt.do")
-	public String selectMemoReprt(@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, ModelMap model)
-			throws Exception {
+	public String selectMemoReprt(@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, ModelMap model) {
 		MemoReprt memoReprt = memoReprtService.selectMemoReprt(memoReprtVO);
 		model.addAttribute("memoReprt", memoReprt);
 
@@ -224,7 +222,7 @@ public class EgovMemoReprtController {
 	 */
 	@RequestMapping("/cop/smt/mrm/addMemoReprt.do")
 	public String addMemoReprt(@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, BindingResult bindingResult,
-			ModelMap model) throws Exception {
+			ModelMap model) {
 		String sLocationUrl = "egovframework/com/cop/smt/mrm/EgovMemoReprtRegist";
 
 		// 파일업로드 제한
@@ -265,7 +263,7 @@ public class EgovMemoReprtController {
 	 */
 	@RequestMapping("/cop/smt/mrm/modifyMemoReprt.do")
 	public String modifyMemoReprt(@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, BindingResult bindingResult,
-			ModelMap model) throws Exception {
+			ModelMap model) {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
@@ -297,8 +295,7 @@ public class EgovMemoReprtController {
 	 */
 	@RequestMapping("/cop/smt/mrm/updateMemoReprt.do")
 	public String updateMemoReprt(final MultipartHttpServletRequest multiRequest, @RequestParam Map<?, ?> commandMap,
-			@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, BindingResult bindingResult, ModelMap model)
-			throws Exception {
+			@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, BindingResult bindingResult, ModelMap model) {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
@@ -355,8 +352,7 @@ public class EgovMemoReprtController {
 	 */
 	@SuppressWarnings("unused")
 	@RequestMapping("/cop/smt/mrm/updateMemoReprtDrctMatter.do")
-	public String updateMemoReprtDrctMatter(@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, ModelMap model)
-			throws Exception {
+	public String updateMemoReprtDrctMatter(@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, ModelMap model) {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
@@ -375,6 +371,7 @@ public class EgovMemoReprtController {
 	 * 
 	 * @param memoReprt
 	 * @param model
+	 * @throws Exception
 	 */
 	@RequestMapping("/cop/smt/mrm/insertMemoReprt.do")
 	public String insertMemoReprt(final MultipartHttpServletRequest multiRequest,
@@ -441,8 +438,7 @@ public class EgovMemoReprtController {
 	 * @param model
 	 */
 	@RequestMapping("/cop/smt/mrm/deleteMemoReprt.do")
-	public String deleteMemoReprt(@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, ModelMap model)
-			throws Exception {
+	public String deleteMemoReprt(@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, ModelMap model) {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {

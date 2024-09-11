@@ -43,17 +43,15 @@ public interface EgovFileMngService {
 	 * 여러 개의 파일에 대한 정보(속성 및 상세)를 등록한다.
 	 *
 	 * @param fvoList
-	 * @throws Exception
 	 */
-	public String insertFileInfs(List<FileVO> fvoList) throws Exception;
+	public String insertFileInfs(List<FileVO> fvoList);
 
 	/**
 	 * 여러 개의 파일에 대한 정보(속성 및 상세)를 수정한다.
 	 *
 	 * @param fvoList
-	 * @throws Exception
 	 */
-	public void updateFileInfs(List<FileVO> fvoList) throws Exception;
+	public void updateFileInfs(List<FileVO> fvoList);
 
 	/**
 	 * 여러 개의 파일을 삭제한다.
@@ -85,17 +83,15 @@ public interface EgovFileMngService {
 	 *
 	 * @param fvo
 	 * @return
-	 * @throws Exception
 	 */
-	public int getMaxFileSN(FileVO fvo) throws Exception;
+	public int getMaxFileSN(FileVO fvo);
 
 	/**
 	 * 전체 파일을 삭제한다.
 	 *
 	 * @param fvo
-	 * @throws Exception
 	 */
-	public void deleteAllFileInf(FileVO fvo) throws Exception;
+	public void deleteAllFileInf(FileVO fvo);
 
 	/**
 	 * 파일명 검색에 대한 목록을 조회한다.

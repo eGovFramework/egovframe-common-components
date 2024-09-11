@@ -65,7 +65,7 @@ public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @see egovframework.com.cmm.service.EgovFileMngService#insertFileInfs(java.util.List)
 	 */
 	@Override
-	public String insertFileInfs(List<FileVO> fvoList) throws Exception {
+	public String insertFileInfs(List<FileVO> fvoList) {
 		String atchFileId = "";
 
 		if (fvoList.size() != 0) {
@@ -93,7 +93,7 @@ public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @see egovframework.com.cmm.service.EgovFileMngService#updateFileInfs(java.util.List)
 	 */
 	@Override
-	public void updateFileInfs(List<FileVO> fvoList) throws Exception {
+	public void updateFileInfs(List<FileVO> fvoList) {
 		// Delete & Insert
 		fileMngDAO.updateFileInfs(fvoList);
 	}
@@ -124,7 +124,7 @@ public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @see egovframework.com.cmm.service.EgovFileMngService#getMaxFileSN(egovframework.com.cmm.service.FileVO)
 	 */
 	@Override
-	public int getMaxFileSN(FileVO fvo) throws Exception {
+	public int getMaxFileSN(FileVO fvo) {
 		return fileMngDAO.getMaxFileSN(fvo);
 	}
 
@@ -134,7 +134,7 @@ public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @see egovframework.com.cmm.service.EgovFileMngService#deleteAllFileInf(egovframework.com.cmm.service.FileVO)
 	 */
 	@Override
-	public void deleteAllFileInf(FileVO fvo) throws Exception {
+	public void deleteAllFileInf(FileVO fvo) {
 		fileMngDAO.deleteAllFileInf(fvo);
 	}
 

@@ -30,7 +30,8 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *   
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2010.7.19	장철호          최초 생성
+ *   2010.07.19  장철호          최초 생성
+ *   2024.09.12  이백행          컨트리뷰션 시큐어코딩 Exception 제거
  *
  *          </pre>
  */
@@ -45,7 +46,7 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param reportrVO
 	 */
-	public List<ReportrVO> selectReportrList(ReportrVO reportrVO) throws Exception {
+	public List<ReportrVO> selectReportrList(ReportrVO reportrVO) {
 		return selectList("MemoReprtDAO.selectReportrList", reportrVO);
 	}
 
@@ -57,7 +58,7 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param reportrVO
 	 */
-	public int selectReportrListCnt(ReportrVO reportrVO) throws Exception {
+	public int selectReportrListCnt(ReportrVO reportrVO) {
 		return (Integer) selectOne("MemoReprtDAO.selectReportrListCnt", reportrVO);
 	}
 
@@ -69,7 +70,7 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param DeptVO
 	 */
-	public String selectWrterClsfNm(String wrterId) throws Exception {
+	public String selectWrterClsfNm(String wrterId) {
 		return (String) selectOne("MemoReprtDAO.selectWrterClsfNm", wrterId);
 	}
 
@@ -81,7 +82,7 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoReprtVO
 	 */
-	public List<MemoReprtVO> selectMemoReprtList(MemoReprtVO memoReprtVO) throws Exception {
+	public List<MemoReprtVO> selectMemoReprtList(MemoReprtVO memoReprtVO) {
 		// 날짜관련
 		memoReprtVO.setSearchBgnDe(memoReprtVO.getSearchBgnDe().replaceAll("-", ""));
 		memoReprtVO.setSearchEndDe(memoReprtVO.getSearchEndDe().replaceAll("-", ""));
@@ -103,7 +104,7 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoReprtVO
 	 */
-	public MemoReprtVO selectMemoReprt(MemoReprtVO memoReprtVO) throws Exception {
+	public MemoReprtVO selectMemoReprt(MemoReprtVO memoReprtVO) {
 		MemoReprtVO resultVO = (MemoReprtVO) selectOne("MemoReprtDAO.selectMemoReprt", memoReprtVO);
 		resultVO.setReprtDe(EgovDateUtil.convertDate(resultVO.getReprtDe(), "0000", "yyyy-MM-dd"));
 		return resultVO;
@@ -116,7 +117,7 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoReprt
 	 */
-	public void readMemoReprt(MemoReprt memoReprt) throws Exception {
+	public void readMemoReprt(MemoReprt memoReprt) {
 		update("MemoReprtDAO.readMemoReprt", memoReprt);
 	}
 
@@ -127,7 +128,7 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoReprt
 	 */
-	public void updateMemoReprt(MemoReprt memoReprt) throws Exception {
+	public void updateMemoReprt(MemoReprt memoReprt) {
 		// 날짜관련
 		memoReprt.setReprtDe(EgovStringUtil.isNullToString(memoReprt.getReprtDe()).replaceAll("-", ""));// KISA 보안약점 조치
 																										// (2018-10-29,
@@ -142,7 +143,7 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoReprt
 	 */
-	public void updateMemoReprtDrctMatter(MemoReprt memoReprt) throws Exception {
+	public void updateMemoReprtDrctMatter(MemoReprt memoReprt) {
 		update("MemoReprtDAO.updateMemoReprtDrctMatter", memoReprt);
 	}
 
@@ -153,7 +154,7 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoReprt
 	 */
-	public void insertMemoReprt(MemoReprt memoReprt) throws Exception {
+	public void insertMemoReprt(MemoReprt memoReprt) {
 		// 날짜관련
 		memoReprt.setReprtDe(EgovStringUtil.isNullToString(memoReprt.getReprtDe()).replaceAll("-", ""));// KISA 보안약점 조치
 																										// (2018-10-29,
@@ -168,7 +169,7 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoReprt
 	 */
-	public void deleteMemoReprt(MemoReprt memoReprt) throws Exception {
+	public void deleteMemoReprt(MemoReprt memoReprt) {
 		delete("MemoReprtDAO.deleteMemoReprt", memoReprt);
 	}
 
@@ -180,7 +181,7 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoReprtVO
 	 */
-	public int selectMemoReprtListCnt(MemoReprtVO memoReprtVO) throws Exception {
+	public int selectMemoReprtListCnt(MemoReprtVO memoReprtVO) {
 		// 날짜관련
 		memoReprtVO.setSearchBgnDe(memoReprtVO.getSearchBgnDe().replaceAll("-", ""));
 		memoReprtVO.setSearchEndDe(memoReprtVO.getSearchEndDe().replaceAll("-", ""));

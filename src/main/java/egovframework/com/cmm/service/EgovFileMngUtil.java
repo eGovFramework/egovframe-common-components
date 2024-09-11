@@ -25,6 +25,8 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -145,10 +147,9 @@ public class EgovFileMngUtil {
 	 *
 	 * @param files
 	 * @return
-	 * @throws Exception
 	 */
 	public List<FileVO> parseFileInf(List<MultipartFile> files, String KeyStr, int fileKeyParam, String atchFileId,
-			String storePath) throws Exception {
+			String storePath) {
 		int fileKey = fileKeyParam;
 
 		String storePathString = "";
@@ -161,7 +162,11 @@ public class EgovFileMngUtil {
 		}
 
 		if (atchFileId == null || "".equals(atchFileId)) {
-			atchFileIdString = idgenService.getNextStringId();
+			try {
+				atchFileIdString = idgenService.getNextStringId();
+			} catch (FdlException e) {
+				throw new BaseRuntimeException("FdlException: egovFileIdGnrService", e);
+			}
 		} else {
 			atchFileIdString = atchFileId;
 		}
@@ -192,7 +197,11 @@ public class EgovFileMngUtil {
 			String newName = KeyStr + getTimeStamp() + fileKey;
 			long size = file.getSize();
 			String filePath = storePathString + File.separator + newName;
-			file.transferTo(new File(EgovWebUtil.filePathBlackList(filePath)));
+			try {
+				file.transferTo(new File(EgovWebUtil.filePathBlackList(filePath)));
+			} catch (IllegalStateException | IOException e) {
+				throw new BaseRuntimeException("IllegalStateException | IOException: transferTo", e);
+			}
 
 			fvo = new FileVO();
 			fvo.setFileExtsn(fileExt);

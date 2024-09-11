@@ -21,7 +21,8 @@ import java.util.Map;
  *   
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2010.7.19	장철호          최초 생성
+ *   2010.07.19  장철호          최초 생성
+ *   2024.09.12  이백행          컨트리뷰션 시큐어코딩 Exception 제거
  *
  *          </pre>
  */
@@ -34,7 +35,7 @@ public interface EgovMemoReprtService {
 	 * 
 	 * @param reportrVO
 	 */
-	public Map<String, Object> selectReportrList(ReportrVO reportrVO) throws Exception;
+	public Map<String, Object> selectReportrList(ReportrVO reportrVO);
 
 	/**
 	 * 사용자 직위명을 정보를 조회한다.
@@ -44,7 +45,7 @@ public interface EgovMemoReprtService {
 	 * 
 	 * @param String
 	 */
-	public String selectWrterClsfNm(String wrterId) throws Exception;
+	public String selectWrterClsfNm(String wrterId);
 
 	/**
 	 * 메모보고 목록을 조회한다.
@@ -54,7 +55,7 @@ public interface EgovMemoReprtService {
 	 * 
 	 * @param memoReprtVO
 	 */
-	public Map<String, Object> selectMemoReprtList(MemoReprtVO memoReprtVO) throws Exception;
+	public Map<String, Object> selectMemoReprtList(MemoReprtVO memoReprtVO);
 
 	/**
 	 * 메모보고 정보를 조회한다.
@@ -64,7 +65,7 @@ public interface EgovMemoReprtService {
 	 * 
 	 * @param memoReprtVO
 	 */
-	public MemoReprtVO selectMemoReprt(MemoReprtVO memoReprtVO) throws Exception;
+	public MemoReprtVO selectMemoReprt(MemoReprtVO memoReprtVO);
 
 	/**
 	 * 메모보고 정보의 보고자 조회일시를 수정한다.
@@ -73,7 +74,7 @@ public interface EgovMemoReprtService {
 	 * 
 	 * @param memoReprt
 	 */
-	public void readMemoReprt(MemoReprt memoReprt) throws Exception;
+	public void readMemoReprt(MemoReprt memoReprt);
 
 	/**
 	 * 메모보고 정보를 수정한다.
@@ -82,7 +83,7 @@ public interface EgovMemoReprtService {
 	 * 
 	 * @param memoReprt
 	 */
-	public void updateMemoReprt(MemoReprt memoReprt) throws Exception;
+	public void updateMemoReprt(MemoReprt memoReprt);
 
 	/**
 	 * 메모보고 정보의 지시사항을 등록한다.
@@ -91,7 +92,7 @@ public interface EgovMemoReprtService {
 	 * 
 	 * @param memoReprt
 	 */
-	public void updateMemoReprtDrctMatter(MemoReprt memoReprt) throws Exception;
+	public void updateMemoReprtDrctMatter(MemoReprt memoReprt);
 
 	/**
 	 * 메모보고 정보를 등록한다.
@@ -109,6 +110,6 @@ public interface EgovMemoReprtService {
 	 * 
 	 * @param memoReprt
 	 */
-	public void deleteMemoReprt(MemoReprt memoReprt) throws Exception;
+	public void deleteMemoReprt(MemoReprt memoReprt);
 
 }

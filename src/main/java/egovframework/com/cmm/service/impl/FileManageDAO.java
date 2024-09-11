@@ -32,9 +32,8 @@ public class FileManageDAO extends EgovComAbstractDAO {
 	 *
 	 * @param fileList
 	 * @return
-	 * @throws Exception
 	 */
-	public String insertFileInfs(List<FileVO> fileList) throws Exception {
+	public String insertFileInfs(List<FileVO> fileList) {
 		FileVO vo = fileList.get(0);
 		String atchFileId = vo.getAtchFileId();
 
@@ -65,9 +64,8 @@ public class FileManageDAO extends EgovComAbstractDAO {
 	 * 여러 개의 파일에 대한 정보(속성 및 상세)를 수정한다.
 	 *
 	 * @param fileList
-	 * @throws Exception
 	 */
-	public void updateFileInfs(List<FileVO> fileList) throws Exception {
+	public void updateFileInfs(List<FileVO> fileList) {
 		FileVO vo;
 		Iterator<FileVO> iter = fileList.iterator();
 		while (iter.hasNext()) {
@@ -118,9 +116,8 @@ public class FileManageDAO extends EgovComAbstractDAO {
 	 *
 	 * @param fvo
 	 * @return
-	 * @throws Exception
 	 */
-	public int getMaxFileSN(FileVO fvo) throws Exception {
+	public int getMaxFileSN(FileVO fvo) {
 		return (Integer) selectOne("FileManageDAO.getMaxFileSN", fvo);
 	}
 
@@ -139,9 +136,8 @@ public class FileManageDAO extends EgovComAbstractDAO {
 	 * 전체 파일을 삭제한다.
 	 *
 	 * @param fvo
-	 * @throws Exception
 	 */
-	public void deleteAllFileInf(FileVO fvo) throws Exception {
+	public void deleteAllFileInf(FileVO fvo) {
 		update("FileManageDAO.deleteCOMTNFILE", fvo);
 	}
 
