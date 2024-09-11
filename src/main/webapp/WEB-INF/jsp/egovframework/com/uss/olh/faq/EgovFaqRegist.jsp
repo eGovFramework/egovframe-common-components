@@ -127,11 +127,11 @@ function fn_egov_regist_faq(form){
 		<!-- 첨부파일  -->
 		<c:set var="title"><spring:message code="comUssOlhFaq.faqVO.atchFile"/></c:set>
 		<tr>
-			<th><label for="file_1">${title}</label> </th>
+			<th><label for="egovComFileUploader">${title}</label> </th>
 			<td class="nopd">
 			<!-- attached file Start -->
 			<div>
-				<input id="file_1" name="file_1" id="egovComFileUploader" type="file" multiple/><!-- 첨부파일명 입력 -->
+				<input name="file_1" id="egovComFileUploader" type="file" multiple/><!-- 첨부파일명 입력 -->
 				<div id="egovComFileList"></div>
 			</div>
 			<!-- attached file End -->
