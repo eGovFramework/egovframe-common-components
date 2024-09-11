@@ -131,7 +131,7 @@ function fn_egov_regist_faq(form){
 			<td class="nopd">
 			<!-- attached file Start -->
 			<div>
-				<input name="file_1" id="egovComFileUploader" type="file" multiple/><!-- 첨부파일명 입력 -->
+				<input id="file_1" name="file_1" id="egovComFileUploader" type="file" multiple/><!-- 첨부파일명 입력 -->
 				<div id="egovComFileList"></div>
 			</div>
 			<!-- attached file End -->
