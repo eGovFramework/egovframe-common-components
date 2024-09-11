@@ -127,7 +127,7 @@ function fn_egov_regist_faq(form){
 		<!-- 첨부파일  -->
 		<c:set var="title"><spring:message code="comUssOlhFaq.faqVO.atchFile"/></c:set>
 		<tr>
-			<th><label for="file_1">${title}</label> </th>
+			<th><label for="egovComFileUploader">${title}</label> </th>
 			<td class="nopd">
 			<!-- attached file Start -->
 			<div>
