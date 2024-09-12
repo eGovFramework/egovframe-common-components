@@ -76,7 +76,7 @@ function fn_egov_search_UnityLink(){
 				<input class="s_input2 vat" name="searchKeyword" type="text" value="<c:out value="${searchVO.searchKeyword}"/>" size="10" maxlength="35" onkeypress="press();" title="<spring:message code="title.search" />" /><!-- 검색어 -->
 				
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fn_egov_search_UnityLink(); return false;" />
-				<span class="btn_b"><a href="<c:url value='/uss/ion/ulm/registUnityLink.do' />?pageIndex=<c:out value='${searchVO.pageIndex}' />" onclick="" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="<c:url value='/uss/ion/ulm/registUnityLinkView.do' />?pageIndex=<c:out value='${searchVO.pageIndex}' />" onclick="" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>

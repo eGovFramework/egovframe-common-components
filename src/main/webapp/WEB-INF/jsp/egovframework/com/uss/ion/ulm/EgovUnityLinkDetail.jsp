@@ -45,7 +45,7 @@ function fn_egov_list_UnityLink(){
 function fn_egov_modify_UnityLink(){
 	var vFrom = document.UnityLinkForm;
 	vFrom.cmd.value = '';
-	vFrom.action = "<c:url value='/uss/ion/ulm/updtUnityLink.do' />";;
+	vFrom.action = "<c:url value='/uss/ion/ulm/updtUnityLinkView.do' />";
 	vFrom.submit();
 
 }
@@ -115,7 +115,7 @@ function fn_egov_delete_UnityLink(){
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<form name="formUpdt" action="<c:url value='/uss/ion/ulm/updtUnityLink.do'/>" method="post" style="display:inline-block; vertical-align:top">
+		<form name="formUpdt" action="<c:url value='/uss/ion/ulm/updtUnityLinkView.do'/>" method="post" style="display:inline-block; vertical-align:top">
 			<input name="unityLinkId" type="hidden" value="${unityLink.unityLinkId}">
 			<input class="s_submit" type="submit" value="<spring:message code="button.update" />" onclick="fn_egov_modify_UnityLink(); return false;">
 		</form>
