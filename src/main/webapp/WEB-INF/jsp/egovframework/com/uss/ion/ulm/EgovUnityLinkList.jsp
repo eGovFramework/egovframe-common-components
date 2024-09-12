@@ -133,7 +133,7 @@ function fn_egov_search_UnityLink(){
 			    </td>
 			    <td class="left"><c:out value="${resultInfo.unityLinkUrl}"/></td>
 			    <td><c:out value="${resultInfo.frstRegisterNm}"/></td>
-			    <td><c:out value="${fn:substring(resultInfo.frstRegisterPnttm, 0, 10)}"/></td>
+			    <td><c:out value="${resultInfo.frstRegistPnttm}"/></td>
 			</tr>
 			</c:forEach>
 		</tbody>
