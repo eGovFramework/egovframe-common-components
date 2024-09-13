@@ -116,7 +116,7 @@ $(document).ready(function(){
 				<!--Ajax Tags 등록 -->				
 				<input type="hidden" name="rsm_url" id="rsm_url" value="<c:url value='/uss/ion/rsm/registRecentSrchwrdResult.do'/>" >
 				<span class="btn_b"><a id="btnInquire" href="" onclick="fn_egov_regist_RecentSrchwrdResult('SRCMGR_0000000000001',$('searchKeyword').value,'fn_egov_search_RecentSrchwrd()', document.listForm); return false;" title='<spring:message code="button.inquire" />'><spring:message code="button.inquire" /></a></span>
-				<span class="btn_b"><a href="<c:url value='/uss/ion/rsm/registRecentSrchwrd.do' />" onclick="" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="<c:url value='/uss/ion/rsm/registRecentSrchwrdView.do' />" onclick="" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
 				<!--Ajax Tags 끝 -->
 			</li>
 		</ul>

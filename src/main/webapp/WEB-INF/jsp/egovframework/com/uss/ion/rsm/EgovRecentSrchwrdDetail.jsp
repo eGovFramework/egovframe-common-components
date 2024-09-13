@@ -46,7 +46,7 @@ function fn_egov_list_RecentSrchwrd(){
 function fn_egov_modify_RecentSrchwrd(){
 	var vFrom = document.RecentSrchwrdForm;
 	vFrom.cmd.value = '';
-	vFrom.action = "<c:url value='/uss/ion/rsm/updtRecentSrchwrd.do' />";;
+	vFrom.action = "<c:url value='/uss/ion/rsm/updtRecentSrchwrdView.do' />";;
 	vFrom.submit();
 
 }
