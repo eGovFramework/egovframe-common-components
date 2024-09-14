@@ -23,11 +23,12 @@ import egovframework.com.uss.umt.service.UserDefaultVO;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.04.10  조재영          최초 생성
- *   2017.07.21  장동한 			로그인인증제한 작업
+ *   2017.07.21  장동한          로그인인증제한 작업
+ *   2024.09.14  안단희          컨트리뷰션 롬복 생성자 기반 종속성 주입 개정이력 수정
  *
  *      </pre>
  */
-@Repository("entrprsManageDAO")
+@Repository
 public class EntrprsManageDAO extends EgovComAbstractDAO {
 
 	/**

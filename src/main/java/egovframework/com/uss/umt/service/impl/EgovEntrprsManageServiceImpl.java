@@ -2,8 +2,6 @@ package egovframework.com.uss.umt.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
@@ -14,6 +12,7 @@ import egovframework.com.uss.umt.service.StplatVO;
 import egovframework.com.uss.umt.service.UserDefaultVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovFileScrty;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 기업회원관리에 관한 비지니스클래스를 정의한다.
@@ -29,29 +28,27 @@ import egovframework.com.utl.sim.service.EgovFileScrty;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.04.10  조재영          최초 생성
- *   2014.12.08	 이기하			암호화방식 변경(EgovFileScrty.encryptPassword)
- *   2017.07.21  장동한 			로그인인증제한 작업
+ *   2014.12.08  이기하          암호화방식 변경(EgovFileScrty.encryptPassword)
+ *   2017.07.21  장동한          로그인인증제한 작업
+ *   2024.09.14  안단희          컨트리뷰션 롬복 생성자 기반 종속성 주입 개정이력 수정
  *
  *      </pre>
  */
-@Service("entrprsManageService")
+@Service
+@RequiredArgsConstructor
 public class EgovEntrprsManageServiceImpl extends EgovAbstractServiceImpl implements EgovEntrprsManageService {
 
 	/** userManageDAO */
-	@Resource(name = "userManageDAO")
-	private UserManageDAO userManageDAO;
+	private final UserManageDAO userManageDAO;
 
 	/** mberManageDAO */
-	@Resource(name = "mberManageDAO")
-	private MberManageDAO mberManageDAO;
+	private final MberManageDAO mberManageDAO;
 
 	/** entrprsManageDAO */
-	@Resource(name = "entrprsManageDAO")
-	private EntrprsManageDAO entrprsManageDAO;
+	private final EntrprsManageDAO entrprsManageDAO;
 
 	/** egovUsrCnfrmIdGnrService */
-	@Resource(name = "egovUsrCnfrmIdGnrService")
-	private EgovIdGnrService idgenService;
+	private EgovIdGnrService egovUsrCnfrmIdGnrService;
 
 	/**
 	 * 기업회원의 기본정보를 화면에서 입력하여 항목의 정합성을 체크하고 데이터베이스에 저장
@@ -63,7 +60,7 @@ public class EgovEntrprsManageServiceImpl extends EgovAbstractServiceImpl implem
 	@Override
 	public String insertEntrprsmber(EntrprsManageVO entrprsManageVO) throws Exception {
 		// 고유아이디 셋팅
-		String uniqId = idgenService.getNextStringId();
+		String uniqId = egovUsrCnfrmIdGnrService.getNextStringId();
 		entrprsManageVO.setUniqId(uniqId);
 		// 패스워드 암호화
 		String pass = EgovFileScrty.encryptPassword(entrprsManageVO.getEntrprsMberPassword(), EgovStringUtil.isNullToString(entrprsManageVO.getEntrprsmberId()));// KISA 보안약점 조치 (2018-10-29, 윤창원)

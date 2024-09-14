@@ -3,13 +3,11 @@ package egovframework.com.uss.umt.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.lang3.StringUtils;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -30,6 +28,7 @@ import egovframework.com.uss.umt.service.EntrprsManageVO;
 import egovframework.com.uss.umt.service.StplatVO;
 import egovframework.com.uss.umt.service.UserDefaultVO;
 import egovframework.com.utl.sim.service.EgovFileScrty;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 기업회원관련 요청을 비지니스 클래스로 전달하고 처리된결과를 해당 웹 화면으로 전달하는 Controller를 정의한다
@@ -44,36 +43,34 @@ import egovframework.com.utl.sim.service.EgovFileScrty;
  *
  *   수정일          수정자       수정내용
  *  -----------    --------    ---------------------------
- *   2009.04.10     조재영       최초 생성
- *   2011.08.26     정진오       IncludedInfo annotation 추가
- *   2014.12.08     이기하       암호화방식 변경(EgovFileScrty.encryptPassword)
- *   2015.06.16     조정국       수정시 유효성체크 후 에러발생 시 목록으로 이동하여 에러메시지 표시
- *   2015.06.19     조정국       미인증 사용자에 대한 보안처리 기준 수정 (!isAuthenticated)
- *   2017.07.21     장동한       로그인인증제한 작업
- *   2020.07.18     윤주호       암호 설정 규칙 강화 및 버그 수정
- *   2021.05.30     정진오       디지털원패스 정보 조회
- *   2022.07.13     김해준       디지털원패스 정보 조회 null 판별 수정
+ *   2009.04.10  조재영          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2014.12.08  이기하          암호화방식 변경(EgovFileScrty.encryptPassword)
+ *   2015.06.16  조정국          수정시 유효성체크 후 에러발생 시 목록으로 이동하여 에러메시지 표시
+ *   2015.06.19  조정국          미인증 사용자에 대한 보안처리 기준 수정 (!isAuthenticated)
+ *   2017.07.21  장동한          로그인인증제한 작업
+ *   2020.07.18  윤주호          암호 설정 규칙 강화 및 버그 수정
+ *   2021.05.30  정진오          디지털원패스 정보 조회
+ *   2022.07.13  김해준          디지털원패스 정보 조회 null 판별 수정
+ *   2024.09.14  안단희          컨트리뷰션 롬복 생성자 기반 종속성 주입 개정이력 수정
  *      </pre>
  */
 
 @Controller
+@RequiredArgsConstructor
 public class EgovEntrprsManageController {
 
 	/** entrprsManageService */
-	@Resource(name = "entrprsManageService")
-	private EgovEntrprsManageService entrprsManageService;
+	private final EgovEntrprsManageService entrprsManageService;
 
 	/** cmmUseService */
-	@Resource(name = "EgovCmmUseService")
-	private EgovCmmUseService cmmUseService;
+	private final EgovCmmUseService cmmUseService;
 
 	/** EgovPropertyService */
-	@Resource(name = "propertiesService")
-	protected EgovPropertyService propertiesService;
+	private final EgovPropertyService propertiesService;
 
 	/** DefaultBeanValidator beanValidator */
-	@Autowired
-	private DefaultBeanValidator beanValidator;
+	private final DefaultBeanValidator beanValidator;
 
 	/** 비밀번호 힌트 조회 목록 */
 	@ModelAttribute("passwordHint_result")
