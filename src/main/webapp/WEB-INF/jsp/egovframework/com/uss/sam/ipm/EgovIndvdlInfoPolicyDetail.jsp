@@ -48,7 +48,7 @@ function fn_egov_list_IndvdlInfoPolicy(){
  ******************************************************** */
 function fn_egov_modify_IndvdlInfoPolicy(){
 	var vFrom = document.formUpdt;
-	vFrom.action = "<c:url value='/uss/sam/ipm/updtIndvdlInfoPolicy.do' />";;
+	vFrom.action = "<c:url value='/uss/sam/ipm/updtIndvdlInfoPolicyView.do' />";
 	vFrom.submit();
 
 }

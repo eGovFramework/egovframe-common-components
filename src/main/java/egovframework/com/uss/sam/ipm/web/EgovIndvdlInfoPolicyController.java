@@ -140,6 +140,31 @@ public class EgovIndvdlInfoPolicyController {
 	}
 
 	/**
+	 * 개인정보보호정책 수정화면
+	 * 
+	 * @param searchVO
+	 * @param indvdlInfoPolicy
+	 * @param model
+	 * @return "/uss/sam/ipm/EgovOnlinePollUpdt"
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/uss/sam/ipm/updtIndvdlInfoPolicyView.do")
+	public String egovIndvdlInfoPolicyModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
+			@ModelAttribute("indvdlInfoPolicy") IndvdlInfoPolicy indvdlInfoPolicy, ModelMap model) throws Exception {
+		// 0. Spring Security 사용자권한 처리
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+
+		IndvdlInfoPolicy indvdlInfoPolicyVO = egovIndvdlInfoPolicyService.selectIndvdlInfoPolicyDetail(indvdlInfoPolicy);
+		model.addAttribute("indvdlInfoPolicy", indvdlInfoPolicyVO);
+
+		return "egovframework/com/uss/sam/ipm/EgovIndvdlInfoPolicyUpdt";
+	}
+	
+	/**
 	 * 개인정보보호정책를 수정한다.
 	 * 
 	 * @param searchVO
@@ -147,7 +172,7 @@ public class EgovIndvdlInfoPolicyController {
 	 * @param indvdlInfoPolicy
 	 * @param bindingResult
 	 * @param model
-	 * @return "/uss/sam/ipm/EgovOnlinePollUpdt"
+	 * @return "redirect:/uss/sam/ipm/listIndvdlInfoPolicy.do"
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/sam/ipm/updtIndvdlInfoPolicy.do")
@@ -161,35 +186,49 @@ public class EgovIndvdlInfoPolicyController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		// 로그인 객체 선언
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-
-		String sLocationUrl = "egovframework/com/uss/sam/ipm/EgovIndvdlInfoPolicyUpdt";
-
-		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
-
-		if (sCmd.equals("save")) {
-			// 서버 validate 체크
-			beanValidator.validate(indvdlInfoPolicy, bindingResult);
-			if (bindingResult.hasErrors()) {
-				return sLocationUrl;
-			}
-			// 아이디 설정
-			indvdlInfoPolicy
-					.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-			indvdlInfoPolicy.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-
-			egovIndvdlInfoPolicyService.updateIndvdlInfoPolicy(indvdlInfoPolicy);
-			sLocationUrl = "forward:/uss/sam/ipm/listIndvdlInfoPolicy.do";
-		} else {
-			IndvdlInfoPolicy indvdlInfoPolicyVO = egovIndvdlInfoPolicyService
-					.selectIndvdlInfoPolicyDetail(indvdlInfoPolicy);
-			model.addAttribute("indvdlInfoPolicy", indvdlInfoPolicyVO);
+		// 서버 validate 체크
+		beanValidator.validate(indvdlInfoPolicy, bindingResult);
+		if (bindingResult.hasErrors()) {
+			return "egovframework/com/uss/sam/ipm/EgovIndvdlInfoPolicyUpdt";
 		}
 
-		return sLocationUrl;
-	}
+		// 로그인 객체 선언
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		String uniqId = (loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 
+		// 아이디 설정
+		indvdlInfoPolicy.setFrstRegisterId(uniqId);
+		indvdlInfoPolicy.setLastUpdusrId(uniqId);
+
+		egovIndvdlInfoPolicyService.updateIndvdlInfoPolicy(indvdlInfoPolicy);
+
+		return "redirect:/uss/sam/ipm/listIndvdlInfoPolicy.do";
+	}
+	
+	/**
+	 * 개인정보보호정책 등록화면
+	 * 
+	 * @param searchVO
+	 * @param indvdlInfoPolicy
+	 * @param model
+	 * @return "/uss/sam/ipm/EgovOnlinePollRegist"
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/uss/sam/ipm/registIndvdlInfoPolicyView.do")
+	public String egovIndvdlInfoPolicyRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
+			@ModelAttribute("indvdlInfoPolicy") IndvdlInfoPolicy indvdlInfoPolicy,
+			ModelMap model) throws Exception {
+		// 0. Spring Security 사용자권한 처리
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+
+		return "egovframework/com/uss/sam/ipm/EgovIndvdlInfoPolicyRegist";
+	}
+	
+	
 	/**
 	 * 개인정보보호정책를 등록한다.
 	 * 
@@ -212,29 +251,25 @@ public class EgovIndvdlInfoPolicyController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		// 로그인 객체 선언
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-
-		String sLocationUrl = "egovframework/com/uss/sam/ipm/EgovIndvdlInfoPolicyRegist";
-
-		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
-
-		if (sCmd.equals("save")) {
-			// 서버 validate 체크
-			beanValidator.validate(indvdlInfoPolicy, bindingResult);
-			if (bindingResult.hasErrors()) {
-				return sLocationUrl;
-			}
-			// 아이디 설정
-			indvdlInfoPolicy
-					.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-			indvdlInfoPolicy.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-			// 저장
-			egovIndvdlInfoPolicyService.insertIndvdlInfoPolicy(indvdlInfoPolicy);
-			sLocationUrl = "forward:/uss/sam/ipm/listIndvdlInfoPolicy.do";
+		// 서버 validate 체크
+		beanValidator.validate(indvdlInfoPolicy, bindingResult);
+		if (bindingResult.hasErrors()) {
+			return "egovframework/com/uss/sam/ipm/EgovIndvdlInfoPolicyRegist";
 		}
 
-		return sLocationUrl;
+		// 로그인 객체 선언
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		String uniqId = (loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+
+		// 아이디 설정
+		indvdlInfoPolicy.setFrstRegisterId(uniqId);
+		indvdlInfoPolicy.setLastUpdusrId(uniqId);
+
+		// 저장
+		egovIndvdlInfoPolicyService.insertIndvdlInfoPolicy(indvdlInfoPolicy);
+
+		return "forward:/uss/sam/ipm/listIndvdlInfoPolicy.do";
 	}
+	
 
 }

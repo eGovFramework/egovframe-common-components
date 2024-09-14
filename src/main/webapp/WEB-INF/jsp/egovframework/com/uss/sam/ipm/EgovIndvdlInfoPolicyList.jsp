@@ -77,7 +77,7 @@ function fn_egov_search_IndvdlInfoPolicy(){
 				<input class="s_input2 vat" type="text" name="searchKeyword" value="${searchVO.searchKeyword}" size="25" title="<spring:message code="title.search"/>" /><!-- 검색어 -->
 				
 				<input class="s_btn" type="submit" value="<spring:message code="button.inquire" />" title="<spring:message code="button.inquire" />" onclick="fn_egov_search_IndvdlInfoPolicy(); return false;" />
-				<span class="btn_b"><a href="<c:url value='/uss/sam/ipm/registIndvdlInfoPolicy.do' />"><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="<c:url value='/uss/sam/ipm/registIndvdlInfoPolicyView.do' />"><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
