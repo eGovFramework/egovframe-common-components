@@ -110,9 +110,9 @@ function fn_egov_search_QustnrRespondManage(){
 		</ul>
 	</div>
 	
-<%-- <input name="qestnrRespondId" type="hidden" value="${resultInfo.qestnrRespondId}">
-<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-<input name="searchMode" type="hidden" value=""> --%>	
+    <input name="qestnrRespondId" type="hidden" value="${resultInfo.qestnrRespondId}" />
+    <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>" />
+    <input name="searchMode" type="hidden" value="" />
 	
 </form>
 
