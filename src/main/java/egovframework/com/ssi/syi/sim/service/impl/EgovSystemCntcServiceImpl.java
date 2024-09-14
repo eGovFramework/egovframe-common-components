@@ -2,8 +2,6 @@ package egovframework.com.ssi.syi.sim.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Service;
@@ -11,6 +9,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.ssi.syi.sim.service.EgovSystemCntcService;
 import egovframework.com.ssi.syi.sim.service.SystemCntc;
 import egovframework.com.ssi.syi.sim.service.SystemCntcVO;
+import lombok.RequiredArgsConstructor;
 
 /**
  *
@@ -27,15 +26,16 @@ import egovframework.com.ssi.syi.sim.service.SystemCntcVO;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.04.01  이중호          최초 생성
+ *   2024.09.14  이백행          컨트리뷰션 롬복 생성자 기반 종속성 주입
  *
  * Copyright (C) 2009 by MOPAS  All right reserved.
  *      </pre>
  */
-@Service("SystemCntcService")
+@Service
+@RequiredArgsConstructor
 public class EgovSystemCntcServiceImpl extends EgovAbstractServiceImpl implements EgovSystemCntcService {
 
-	@Resource(name = "SystemCntcDAO")
-	private SystemCntcDAO systemCntcDAO;
+	private final SystemCntcDAO systemCntcDAO;
 
 	/**
 	 * 시스템연계를 삭제한다.

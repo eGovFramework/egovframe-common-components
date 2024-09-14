@@ -3,13 +3,10 @@ package egovframework.com.ssi.syi.sim.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -25,11 +22,11 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.ssi.syi.iis.service.CntcInsttVO;
 import egovframework.com.ssi.syi.iis.service.CntcServiceVO;
 import egovframework.com.ssi.syi.iis.service.CntcSystemVO;
-import egovframework.com.ssi.syi.iis.service.EgovCntcInsttService;
 import egovframework.com.ssi.syi.sim.service.EgovSystemCntcService;
 import egovframework.com.ssi.syi.sim.service.SystemCntc;
 import egovframework.com.ssi.syi.sim.service.SystemCntcVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import lombok.RequiredArgsConstructor;
 
 /**
  *
@@ -47,35 +44,29 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.04.01  이중호          최초 생성
- *   2011.8.26	정진오			IncludedInfo annotation 추가
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2024.09.14  이백행          컨트리뷰션 롬복 생성자 기반 종속성 주입
  *
  * Copyright (C) 2009 by MOPAS  All right reserved.
  *      </pre>
  */
 
 @Controller
+@RequiredArgsConstructor
 public class EgovSystemCntcController {
 
-	@Resource(name = "SystemCntcService")
-	private EgovSystemCntcService systemCntcService;
-
-	@Resource(name = "CntcInsttService")
-	private EgovCntcInsttService cntcInsttService;
+	private final EgovSystemCntcService systemCntcService;
 
 	/** EgovIdGnrService */
-	@Resource(name = "egovSystemCntcIdGnrService")
-	private EgovIdGnrService idgenService;
+	private final EgovIdGnrService egovSystemCntcIdGnrService;
 
 	/** EgovMessageSource */
-	@Resource(name = "egovMessageSource")
-	EgovMessageSource egovMessageSource;
+	private final EgovMessageSource egovMessageSource;
 
 	/** EgovPropertyService */
-	@Resource(name = "propertiesService")
-	protected EgovPropertyService propertiesService;
+	private final EgovPropertyService propertiesService;
 
-	@Autowired
-	private DefaultBeanValidator beanValidator;
+	private final DefaultBeanValidator beanValidator;
 
 	/**
 	 * 시스템연계를 삭제한다.
@@ -174,7 +165,7 @@ public class EgovSystemCntcController {
 			systemCntc.setFrstRegisterId(uniqId);
 
 			// ID Generation
-			String sCntcId = idgenService.getNextStringId();
+			String sCntcId = egovSystemCntcIdGnrService.getNextStringId();
 			systemCntc.setCntcId(sCntcId);
 
 			systemCntcService.insertSystemCntc(systemCntc);
