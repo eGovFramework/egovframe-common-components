@@ -41,7 +41,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *  -----------    --------    ---------------------------
  *   2009.07.03     장동한       최초 생성
  *   2011.08.26     정진오       IncludedInfo annotation 추가
- *
+ *   2024.09.14     권태성       등록 화면과 데이터를 처리하는 method 분리
  *      </pre>
  */
 
