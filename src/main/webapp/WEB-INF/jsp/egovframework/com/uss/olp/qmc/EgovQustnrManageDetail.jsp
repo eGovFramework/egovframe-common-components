@@ -44,8 +44,7 @@ function fn_egov_list_QustnrManage(){
  ******************************************************** */
 function fn_egov_modify_QustnrManage(){
 	var vFrom = document.QustnrManageForm;
-	vFrom.cmd.value = '';
-	vFrom.action = "<c:url value='/uss/olp/qmc/EgovQustnrManageModify.do' />";;
+	vFrom.action = "<c:url value='/uss/olp/qmc/EgovQustnrManageModifyView.do' />";;
 	vFrom.submit();
 
 }
@@ -71,7 +70,7 @@ function fn_egov_delete_QustnrManage(){
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
 <div class="wTableFrm">
-<form name="QustnrTmplatManageForm" id="QustnrTmplatManageForm" action="<c:url value='/uss/olp/qmc/EgovQustnrManageModify.do'/>" method="post">
+<form name="QustnrTmplatManageForm" id="QustnrTmplatManageForm" action="<c:url value='/uss/olp/qmc/EgovQustnrManageModifyView.do'/>" method="post">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.detail" /></h2>
 
@@ -144,7 +143,6 @@ function fn_egov_delete_QustnrManage(){
 	</table>
 	
 	<input name="qestnrId" type="hidden" value="${resultList[0].qestnrId}">
-	<input name="cmd" type="hidden" value="<c:out value=''/>">
 	<div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="<spring:message code='comUssOlpQmc.title.submit'/>" title="<spring:message code='comUssOlpQmc.title.submit'/>"></div><!-- value="전송" title="전송" -->
 	
 	</form>
@@ -152,7 +150,7 @@ function fn_egov_delete_QustnrManage(){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<!-- 수정 버튼 -->
-		<form name="formUpdt" action="<c:url value='/uss/olp/qmc/EgovQustnrManageModify.do'/>" method="post" onsubmit="fn_egov_modify_QustnrManage(); return false;" style="float:left;">
+		<form name="formUpdt" action="<c:url value='/uss/olp/qmc/EgovQustnrManageModifyView.do'/>" method="post" onsubmit="fn_egov_modify_QustnrManage(); return false;" style="float:left;">
 		<input type="submit" class="s_submit" value="<spring:message code='button.update' />" title="<spring:message code='title.update' /> <spring:message code='input.button' />" />
 		<input name="qestnrId" type="hidden" value="${resultList[0].qestnrId}">
 		</form>
