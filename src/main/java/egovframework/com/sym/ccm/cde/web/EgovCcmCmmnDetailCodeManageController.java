@@ -25,6 +25,7 @@ import egovframework.com.sym.ccm.ccc.service.CmmnClCodeVO;
 import egovframework.com.sym.ccm.ccc.service.EgovCcmCmmnClCodeManageService;
 import egovframework.com.sym.ccm.cde.service.CmmnDetailCodeVO;
 import egovframework.com.sym.ccm.cde.service.EgovCcmCmmnDetailCodeManageService;
+import lombok.RequiredArgsConstructor;
 
 /**
  *
@@ -37,25 +38,26 @@ import egovframework.com.sym.ccm.cde.service.EgovCcmCmmnDetailCodeManageService;
  * @see
  *
  *      <pre>
-* << 개정이력(Modification Information) >>
-*
-*   수정일      수정자           수정내용
-*  -------    --------    ---------------------------
-*   2009.04.01  이중호       최초 생성
-*   2011.08.26	정진오	IncludedInfo annotation 추가
-*   2017.08.08	이정은	표준프레임워크 v3.7 개선
+ * << 개정이력(Modification Information) >>
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.04.01  이중호          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2017.08.08  이정은          표준프레임워크 v3.7 개선
+ *   2024.09.14  강동휘          컨트리뷰션 롬복 생성자 기반 종속성 주입
  *
  *      </pre>
  */
 
 @Controller
+@RequiredArgsConstructor
 public class EgovCcmCmmnDetailCodeManageController {
 
 	@Resource(name = "CmmnDetailCodeManageService")
 	private EgovCcmCmmnDetailCodeManageService cmmnDetailCodeManageService;
 
-	@Resource(name = "CmmnClCodeManageService")
-	private EgovCcmCmmnClCodeManageService cmmnClCodeManageService;
+	private final EgovCcmCmmnClCodeManageService cmmnClCodeManageService;
 
 	@Resource(name = "CmmnCodeManageService")
 	private EgovCcmCmmnCodeManageService cmmnCodeManageService;

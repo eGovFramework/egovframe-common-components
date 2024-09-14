@@ -2,8 +2,6 @@ package egovframework.com.sym.ccm.ccc.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -12,6 +10,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.sym.ccm.ccc.service.CmmnClCode;
 import egovframework.com.sym.ccm.ccc.service.CmmnClCodeVO;
 import egovframework.com.sym.ccm.ccc.service.EgovCcmCmmnClCodeManageService;
+import lombok.RequiredArgsConstructor;
 
 /**
  *
@@ -23,20 +22,21 @@ import egovframework.com.sym.ccm.ccc.service.EgovCcmCmmnClCodeManageService;
  * @see
  *
  *      <pre>
-* << 개정이력(Modification Information) >>
-* 
-*   수정일      수정자           수정내용
-*  -------    --------    ---------------------------
-*   2009.04.01  이중호          최초 생성
+ * << 개정이력(Modification Information) >>
+ * 
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.04.01  이중호          최초 생성
+ *   2024.09.14  강동휘          컨트리뷰션 롬복 생성자 기반 종속성 주입
  *
  *      </pre>
  */
-@Service("CmmnClCodeManageService")
+@Service
+@RequiredArgsConstructor
 public class EgovCcmCmmnClCodeManageServiceImpl extends EgovAbstractServiceImpl
 		implements EgovCcmCmmnClCodeManageService {
 
-	@Resource(name = "CmmnClCodeManageDAO")
-	private CmmnClCodeManageDAO cmmnClCodeManageDAO;
+	private final CmmnClCodeManageDAO cmmnClCodeManageDAO;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovCcmCmmnClCodeManageServiceImpl.class);
 

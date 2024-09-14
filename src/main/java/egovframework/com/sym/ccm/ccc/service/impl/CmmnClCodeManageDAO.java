@@ -20,15 +20,16 @@ import egovframework.com.sym.ccm.ccc.service.CmmnClCodeVO;
  * @see
  *
  *      <pre>
-* << 개정이력(Modification Information) >>
-*
-*   수정일      수정자           수정내용
-*  -------    --------    ---------------------------
-*   2009.04.01  이중호          최초 생성
+ * << 개정이력(Modification Information) >>
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.04.01  이중호          최초 생성
+ *   2024.09.14  강동휘          컨트리뷰션 롬복 생성자 기반 종속성 주입
  *
  *      </pre>
  */
-@Repository("CmmnClCodeManageDAO")
+@Repository
 public class CmmnClCodeManageDAO extends EgovComAbstractDAO {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(CmmnClCodeManageDAO.class);
