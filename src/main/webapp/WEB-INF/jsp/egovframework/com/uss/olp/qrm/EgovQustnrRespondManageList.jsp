@@ -47,7 +47,7 @@ function linkPage(pageNo){
  * 등록 처리 함수
  ******************************************************** */
 function fn_egov_regist_QustnrRespondManage(){
-	location.href = "<c:url value='/uss/olp/qrm/EgovQustnrRespondManageRegist.do' />";
+	location.href = "<c:url value='/uss/olp/qrm/EgovQustnrRespondManageRegistView.do' />";
 }
 /* ********************************************************
  * 상세회면 처리 함수
@@ -105,7 +105,7 @@ function fn_egov_search_QustnrRespondManage(){
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code='title.search' /> <spring:message code='input.input' />" value="<c:out value='${searchKeyword}'/>" maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code='button.inquire' />" title="<spring:message code='title.inquire' /> <spring:message code='input.button' />" onclick="fn_egov_search_QustnrRespondManage(); return false;" />
 				<!-- 등록버튼 -->
-				<span class="btn_b"><a href="<c:url value='/uss/olp/qrm/EgovQustnrRespondManageRegist.do' />"  title="<spring:message code='button.create' /> <spring:message code='input.button' />"><spring:message code="button.create" /></a></span> 
+				<span class="btn_b"><a href="<c:url value='/uss/olp/qrm/EgovQustnrRespondManageRegistView.do' />"  title="<spring:message code='button.create' /> <spring:message code='input.button' />"><spring:message code="button.create" /></a></span> 
 			</li>
 		</ul>
 	</div>

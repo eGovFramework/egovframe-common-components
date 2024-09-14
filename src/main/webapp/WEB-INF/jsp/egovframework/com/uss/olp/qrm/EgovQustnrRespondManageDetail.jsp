@@ -46,7 +46,7 @@ function fn_egov_modify_QustnrRespondManage(){
 	var vFrom = document.QustnrRespondManageForm;
 	vFrom.cmd.value = '';
 	//document.getElementById("cmd").value='';
-	vFrom.action = "<c:url value='/uss/olp/qrm/EgovQustnrRespondManageModify.do' />";;
+	vFrom.action = "<c:url value='/uss/olp/qrm/EgovQustnrRespondManageModifyView.do' />";;
 	vFrom.submit();
 
 }
@@ -74,7 +74,7 @@ function fn_egov_delete_QustnrRespondManage(){
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
 <div class="wTableFrm">
-<form name="QustnrRespondManageForm" id="QustnrRespondManageForm" action="<c:url value='/uss/olp/qrm/EgovQustnrRespondManageModify.do'/>" method="post">
+<form name="QustnrRespondManageForm" id="QustnrRespondManageForm" action="<c:url value='/uss/olp/qrm/EgovQustnrRespondManageModifyView.do'/>" method="post">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.detail" /></h2>
 
@@ -139,7 +139,7 @@ function fn_egov_delete_QustnrRespondManage(){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<!-- 수정 버튼 -->
-		<form name="formUpdt" action="<c:url value='/uss/olp/qrm/EgovQustnrRespondManageModify.do'/>" method="post" onsubmit="fn_egov_modify_QustnrRespondManage(document.forms[0]); return false;" style="float:left;">
+		<form name="formUpdt" action="<c:url value='/uss/olp/qrm/EgovQustnrRespondManageModifyView.do'/>" method="post" onsubmit="fn_egov_modify_QustnrRespondManage(document.forms[0]); return false;" style="float:left;">
 			<input type="submit" class="s_submit" value="<spring:message code='button.update' />" title="<spring:message code='title.update' /> <spring:message code='input.button' />" />
 			<input name="qestnrRespondId" type="hidden" value="${resultList[0].qestnrRespondId}">
 		</form>
