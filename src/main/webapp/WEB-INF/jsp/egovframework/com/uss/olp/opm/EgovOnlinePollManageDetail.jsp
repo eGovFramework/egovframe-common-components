@@ -51,7 +51,7 @@
 	function fn_egov_modify_OnlinePollManage(){
 		var vFrom = document.OnlinePollManageForm;
 		vFrom.cmd.value = '';
-		vFrom.action = "<c:url value='/uss/olp/opm/updtOnlinePollManage.do' />";;
+		vFrom.action = "<c:url value='/uss/olp/opm/updtOnlinePollManageView.do' />";;
 		vFrom.submit();
 
 	}
@@ -155,7 +155,7 @@
 
 <!-- 하단 버튼 -->
 <div class="btn">
-	<form name="formUpdt" action="<c:url value='/uss/olp/opm/updtOnlinePollManage.do'/>" method="post" style="float:left;">
+	<form name="formUpdt" action="<c:url value='/uss/olp/opm/updtOnlinePollManageView.do'/>" method="post" style="float:left;">
 		<input type="submit" class="s_submit" value="<spring:message code="button.update" />" onclick="fn_egov_modify_OnlinePollManage(); return false;">
 		<input name="pollId" type="hidden" value="${onlinePollManage.pollId}">
 	</form>
