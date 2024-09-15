@@ -135,7 +135,7 @@ function fn_egov_delete_QustnrManage(){
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-  				<c:out value="${resultList[0].qestnrTmplatTy}" /> <img src="<c:url value='/uss/olp/qtm/EgovQustnrTmplatManageImg.do' />?qestnrTmplatId=${resultList[0].qestnrTmplatId}" align="middle" alt="<spring:message code='comUssOlpQmc.regist.qestnrTmplatTy'/><spring:message code='comUssOlpQmc.title.image'/>" title="<spring:message code='comUssOlpQmc.regist.qestnrTmplatTy'/><spring:message code='comUssOlpQmc.title.image'/>"><!-- alt="템플릿유형 이미지" title="템플릿유형 이미지" -->
+  				<c:out value="${resultList[0].qestnrTmplatTy}" /> <img src="<c:url value='/uss/olp/qtm/EgovQustnrTmplatManageImg.do' />?qestnrTmplatId=${resultList[0].qestnrTmplatId}" align="middle" alt="<spring:message code='comUssOlpQmc.regist.qestnrTmplatTy'/><spring:message code='comUssOlpQmc.title.image'/>" title="<spring:message code='comUssOlpQmc.regist.qestnrTmplatTy'/><spring:message code='comUssOlpQmc.title.image'/>" width="100%"><!-- alt="템플릿유형 이미지" title="템플릿유형 이미지" -->
 			</td>
 		</tr>
 		
