@@ -43,7 +43,7 @@ function linkPage(pageNo){
  * 등록 처리 함수
  ******************************************************** */
 function fn_egov_regist_OnlinePollManage(){
-	location.href = "<c:url value='/uss/olp/opm/registOnlinePollManage.do' />";
+	location.href = "<c:url value='/uss/olp/opm/registOnlinePollManageView.do' />";
 }
 /* ********************************************************
  * 상세회면 처리 함수
@@ -86,7 +86,7 @@ function fn_egov_search_OnlinePollManage(){
 			<li>
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${searchVO.searchKeyword}"/>'  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
-				<span class="btn_b"><a href="<c:url value='/uss/olp/opm/registOnlinePollManage.do' />?pageIndex=${searchVO.pageIndex}"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="<c:url value='/uss/olp/opm/registOnlinePollManageView.do' />?pageIndex=${searchVO.pageIndex}"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
