@@ -179,24 +179,24 @@ String.prototype.replaceAll = function(src, repl){
 		<!-- POLL페기유무 -->
 		<c:set var="title"><spring:message code="comUssOlpOpm.regist.pollDsuseYn"/></c:set>
 		<tr>
-			<th><label for="pollDsuseYn">${title}</label> <span class="pilsu">*</span></th>
+			<th>${title} <span class="pilsu">*</span></th>
 			<td class="nopd">
-		 		<div style="float:left;"><input type="radio" name="pollDsuseYn" value="N" <c:if test="${onlinePollManage.pollDsuseYn eq 'N'}">checked</c:if>></div>
-		 		<div style="float:left;margin:0 0 0 10px;">N</div>
-		   		<div style="float:left;margin:0 0 0 10px;"><input type="radio" name="pollDsuseYn" value="Y" <c:if test="${onlinePollManage.pollDsuseYn eq 'Y'}">checked</c:if>></div>
-		   		<div style="float:left;margin:0 0 0 10px;">Y</div>
+		 		<div style="float:left;"><input type="radio" id="pollDsuseYn1" name="pollDsuseYn" value="N" title="POLL페기유무 사용안함" <c:if test="${onlinePollManage.pollDsuseYn eq 'N'}">checked</c:if>></div>
+		 		<div style="float:left;margin:0 0 0 10px;"><label for="pollDsuseYn1">N</label></div>
+		   		<div style="float:left;margin:0 0 0 10px;"><input type="radio" id="pollDsuseYn2" name="pollDsuseYn" value="Y" title="POLL페기유무 사용함" <c:if test="${onlinePollManage.pollDsuseYn eq 'Y'}">checked</c:if>></div>
+		   		<div style="float:left;margin:0 0 0 10px;"><label for="pollDsuseYn2">Y</label></div>
 		   		<div style="clear:both;"></div>
 			</td>
 		</tr>
 		<!-- POLL자동페기유무 -->
 		<c:set var="title"><spring:message code="comUssOlpOpm.regist.pollAutoDsuseYn"/></c:set>
 		<tr>
-			<th><label for="pollAutoDsuseYn">${title}</label> <span class="pilsu">*</span></th>
+			<th>${title} <span class="pilsu">*</span></th>
 			<td class="nopd">
-		    	<div style="float:left;"><input type="radio" name="pollAutoDsuseYn" value="N" <c:if test="${onlinePollManage.pollAutoDsuseYn eq 'N'}">checked</c:if>></div>
-		    	<div style="float:left;margin:0 0 0 10px;">N</div>
-		   		<div style="float:left;margin:0 0 0 10px;"><input type="radio" name="pollAutoDsuseYn" value="Y" <c:if test="${onlinePollManage.pollAutoDsuseYn eq 'Y'}">checked</c:if>></div>
-		   		<div style="float:left;margin:0 0 0 10px;">Y</div>
+		    	<div style="float:left;"><input type="radio" id="pollAutoDsuseYn1" name="pollAutoDsuseYn" value="N" title="POLL자동페기유무 사용안함" <c:if test="${onlinePollManage.pollAutoDsuseYn eq 'N'}">checked</c:if>></div>
+		    	<div style="float:left;margin:0 0 0 10px;"><label for="pollAutoDsuseYn1">N</label></div>
+		   		<div style="float:left;margin:0 0 0 10px;"><input type="radio" id="pollAutoDsuseYn2" name="pollAutoDsuseYn" value="Y" title="POLL자동페기유무 사용함" <c:if test="${onlinePollManage.pollAutoDsuseYn eq 'Y'}">checked</c:if>></div>
+		   		<div style="float:left;margin:0 0 0 10px;"><label for="pollAutoDsuseYn2">Y</label></div>
 		   		<div style="clear:both;"></div>
 			</td>
 		</tr>	
