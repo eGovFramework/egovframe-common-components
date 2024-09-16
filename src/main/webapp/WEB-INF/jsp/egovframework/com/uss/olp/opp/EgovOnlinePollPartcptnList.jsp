@@ -44,7 +44,7 @@ function linkPage(pageNo){
  * 상세회면 처리 함수
  ******************************************************** */
 function fn_egov_regist_OnlinePollPartcptn(pollId,sDate,eDate){
-	var iToDate = <fmt:formatDate value="${now}" pattern="yyyyMMdd" />;
+	var iToDate = <c:out value="${now}" />;
 	var iBeginDate = Number(sDate.replaceAll("-",""));
 	var iEndDate = Number(eDate.replaceAll("-",""));
 
