@@ -227,8 +227,8 @@
 			<if test="searchCondition == 'wrterNm'">AND
 				WRTER_NM LIKE CONCAT('%', #{searchKeyword}, '%')
 			</if>
-			<if test="searchCondition == 'qnaProcessSttusCodeNm'">AND
-				CODE_NM LIKE CONCAT('%', #{searchKeyword}, '%')
+			<if test="searchCondition == 'cnsltSj'">AND
+				CNSLT_SJ LIKE CONCAT('%', #{searchKeyword}, '%')
 			</if>
 			ORDER BY CNSLT_SJ DESC
 			LIMIT  #{recordCountPerPage} OFFSET #{firstIndex}
@@ -243,9 +243,9 @@
 			<if test="searchCondition == 'wrterNm'">AND
 				WRTER_NM LIKE CONCAT('%', #{searchKeyword}, '%')
 			</if>
-			<if test="searchCondition == 'qnaProcessSttusCodeNm'">AND
-				QNA_PROCESS_STTUS_CODE_NM LIKE CONCAT('%', #{searchKeyword}, '%')
-			</if>
+            <if test="searchCondition == 'cnsltSj'">AND
+                CNSLT_SJ LIKE CONCAT('%', #{searchKeyword}, '%')
+            </if>
 	</select>
 
 	<update id="updateCnsltDtlsAnswer">
