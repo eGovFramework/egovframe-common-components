@@ -157,7 +157,7 @@ function fn_egov_search_QustnrTmplatManage(){
 		<!-- 템플릿 유형 -->
 		<td class="lt_text3L"><div class="divDotText" style="width:100px;">${resultInfo.qestnrTmplatTy}</div></td>
 		<!-- 템플릿유형 이미지 정보 -->
-		<td class="lt_text3"><img src="<c:url value='/uss/olp/qtm/EgovQustnrTmplatManageImg.do'/>?qestnrTmplatId=${resultInfo.qestnrTmplatId}" alt="${resultInfo.qestnrTmplatTy}<spring:message code='comUssOlpQtm.regist.qestnrTmplatImage' />" title="${resultInfo.qestnrTmplatTy}<spring:message code='comUssOlpQtm.regist.qestnrTmplatImage' />"></td>
+		<td class="lt_text3"><img src="<c:url value='/uss/olp/qtm/EgovQustnrTmplatManageImg.do'/>?qestnrTmplatId=${resultInfo.qestnrTmplatId}" alt="${resultInfo.qestnrTmplatTy}<spring:message code='comUssOlpQtm.regist.qestnrTmplatImage' />" title="${resultInfo.qestnrTmplatTy}<spring:message code='comUssOlpQtm.regist.qestnrTmplatImage' />" height="100"></td>
 		<!-- onLoad="if(this.width>65){this.width=65}" -->
 		<!-- 템플릿 설명 -->
 		<td class="lt_text3L">
