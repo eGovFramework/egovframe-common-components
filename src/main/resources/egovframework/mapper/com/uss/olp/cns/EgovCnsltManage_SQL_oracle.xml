@@ -289,9 +289,9 @@
 			<if test="searchCondition == 'wrterNm'">AND
 				WRTER_NM LIKE '%' || #{searchKeyword} || '%'
 			</if>
-			<if test="searchCondition == 'qnaProcessSttusCodeNm'">AND
-				QNA_PROCESS_STTUS_CODE_NM LIKE '%' || #{searchKeyword} || '%'
-			</if>
+            <if test="searchCondition == 'cnsltSj'">AND
+                CNSLT_SJ LIKE CONCAT('%', #{searchKeyword}, '%')
+            </if>
 	</select>
 
 	<update id="updateCnsltDtlsAnswer">
