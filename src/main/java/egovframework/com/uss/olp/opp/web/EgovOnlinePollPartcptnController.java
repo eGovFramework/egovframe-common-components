@@ -1,5 +1,7 @@
 package egovframework.com.uss.olp.opp.web;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -149,6 +151,7 @@ public class EgovOnlinePollPartcptnController {
         int totCnt = egovOnlinePollPartcptnService.selectOnlinePollManageListCnt(searchVO);
         paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);
+        model.addAttribute("now", LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
 
         return "egovframework/com/uss/olp/opp/EgovOnlinePollPartcptnList";
     }
