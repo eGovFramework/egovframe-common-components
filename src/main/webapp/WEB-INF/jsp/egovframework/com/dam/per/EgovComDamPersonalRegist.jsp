@@ -92,8 +92,10 @@ function fn_egov_initl_knoPersonal(){
 /* ********************************************************
  * 목록 으로 가기
  ******************************************************** */
-function fn_egov_list_KnoPersonal(){
-	location.href = "<c:url value='/dam/per/EgovComDamPersonalList.do'/>";
+function fnList(){
+    var varForm         = document.knoPersonal;
+    varForm.action      = "<c:url value='/dam/per/EgovComDamPersonalList.do'/>";
+    varForm.submit();
 }
 /* ********************************************************
  * 저장처리화면
@@ -122,92 +124,95 @@ function fn_egov_get_CodeId(form){
 
 <body onLoad="fn_egov_initl_knoPersonal();">
 
-<form:form modelAttribute="knoPersonal" name="knoPersonal" method="post" enctype="multipart/form-data">
-
-<div class="wTableFrm">
-	<!-- 타이틀 -->
-<h2><spring:message code="comDamPer.comDamPersonalRegist.pageTop.title"/></h2><!-- 개인지식 등록 -->
-
-<!-- 등록폼 -->
-<table class="wTable">
-	<colgroup>
-		<col style="width:16%" />
-		<col style="" />
-	</colgroup>
-	<tr>
-		<th><spring:message code="comDamPer.comDamPersonalRegist.orgnztNm"/> <span class="pilsu">*</span></th><!-- 조직명 -->
-		<td class="left">
-		    <select name="orgnztId" class="select" >
-			<option value=""><spring:message code="input.cSelect"/></option><!-- 선택 -->
-			<c:forEach var="item" items="${mapTeamList}" varStatus="status">
-			<option value="<c:out value="${item.orgnztId}"/>"<c:if test="${item.orgnztId == knoPersonal.orgnztId}"> selected="selected"</c:if>><c:out value="${item.orgnztNm}"/></option>
-			</c:forEach>
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<th><spring:message code="comDamPer.comDamPersonalRegist.knoTypeNm"/> <span class="pilsu">*</span></th><!-- 지식유형명 -->
-		<td class="left">
-		    <select name="knoTypeCd" class="select">
-			<option value=""><spring:message code="input.cSelect"/></option><!-- 선택 -->
-			<c:forEach var="item" items="${mapMaterialList}" varStatus="status">
-			<option value="<c:out value="${item.knoTypeCd}"/>"<c:if test="${item.knoTypeCd == knoPersonal.knoTypeCd}"> selected="selected"</c:if>><c:out value="${item.knoTypeNm}"/></option>
-			</c:forEach>
-			</select>
-		</td>
-	</tr>
-	<tr>
-		<th><spring:message code="comDamPer.comDamPersonalRegist.knoNm"/> <span class="pilsu">*</span></th><!-- 지식명 -->
-		<td class="left">
-		    <form:input  path="knoNm" title="<spring:message code='comDamPer.comDamPersonalRegist.knoNm'/>" size="60" maxlength="60"/>
-      		<form:errors path="knoNm"/>
-		</td>
-	</tr>
-	<tr>
-		<th><spring:message code="comDamPer.comDamPersonalRegist.knoCn"/> <span class="pilsu">*</span></th><!-- 지식내용 -->
-		<td class="left">
-		    <form:textarea  path="knoCn" title="<spring:message code='comDamPer.comDamPersonalRegist.knoCn'/>" cols="300" rows="10" cssClass="txaClass"/><!-- 지식내용 -->
-      		<form:errors path="knoCn"/>
-		</td>
-	</tr>
-	<tr>
-		<th><spring:message code="comDamPer.comDamPersonalRegist.colYmd"/> <span class="pilsu">*</span></th><!-- 수집일자 -->
-		<td class="left">
-		    <input type="hidden" name="cal_url" value="<c:url value='/sym/cal/EgovNormalCalPopup.do'/>" />
-   			<input id="colYmd" name="colYmd" type="hidden" value=""/>
-			<input id="vcolYmd" name="vcolYmd" type="text" title="<spring:message code="comDamPer.comDamPersonalRegist.colYmd"/>" value="" maxlength="10" readonly="readonly" style="width:70px"/><!-- 수집일자 -->
-		</td>
-	</tr>
-	<tr>
-		<th><spring:message code="comDamPer.comDamPersonalRegist.othbcAt"/></th><!-- 공개여부 -->
-		<td class="left">
-		    <spring:message code="comDamPer.comDamPersonalRegist.public" /> : <input type="radio" name="othbcAt" class="radio2" value="Y">&nbsp;
-	     	<spring:message code="comDamPer.comDamPersonalRegist.private" /> : <input type="radio" name="othbcAt" class="radio2" value="N" checked="checked"/><br/>
-	     	<form:errors path="othbcAt" />
-		</td>
-	</tr>
-	<tr>
-		<th><spring:message code="comDamPer.comDamPersonalRegist.fileUpload"/></th><!-- 파일첨부 -->
-		<td class="left">
-		    <input name="file_1" id="egovComFileUploader" type="file" multiple title="<spring:message code="comDamPer.comDamPersonalRegist.fileUpload"/>" multiple/><!-- 첨부파일명 입력 -->
-		    <div id="egovComFileList"></div>
-		</td>
-	</tr>
-</table>
-
-<!-- 하단 버튼 -->
-<div class="btn">
-	<input class="s_submit" type="submit" value="<spring:message code="button.save" />" onclick="fn_egov_regist_KnoPersonal(document.knoPersonal); return false;" /><!-- 저장 -->
-	<input class="s_submit" type="submit" value='<spring:message code="button.list" />' onclick="fn_egov_list_KnoPersonal(); return false;" /><!-- 목록 -->
-</div>
-<div style="clear:both;"></div>
-</div>
-
-<input type="hidden" name="posblAtchFileNumber" id="posblAtchFileNumber" value="3" />
-<!-- <input name="cmd" type="hidden" value="<c:out value='save'/>"> -->
-<input name="cmd" type="hidden" value="<c:out value='Regist'/>">
-
-</form:form>
+    <form:form modelAttribute="knoPersonal" name="knoPersonal" method="post" enctype="multipart/form-data">
+        <input type="hidden" id="searchCondition" name="searchCondition" value="${knoPersonal.searchCondition}" />
+        <input type="hidden" id="searchKeyword" name="searchKeyword" value="${knoPersonal.searchKeyword}" />
+        <input type="hidden" id="pageIndex" name="pageIndex" value="${knoPersonal.pageIndex}" />
+    
+        <div class="wTableFrm">
+        	<!-- 타이틀 -->
+        <h2><spring:message code="comDamPer.comDamPersonalRegist.pageTop.title"/></h2><!-- 개인지식 등록 -->
+        
+        <!-- 등록폼 -->
+        <table class="wTable">
+        	<colgroup>
+        		<col style="width:16%" />
+        		<col style="" />
+        	</colgroup>
+        	<tr>
+        		<th><spring:message code="comDamPer.comDamPersonalRegist.orgnztNm"/> <span class="pilsu">*</span></th><!-- 조직명 -->
+        		<td class="left">
+        		    <select name="orgnztId" class="select" >
+        			<option value=""><spring:message code="input.cSelect"/></option><!-- 선택 -->
+        			<c:forEach var="item" items="${mapTeamList}" varStatus="status">
+        			<option value="<c:out value="${item.orgnztId}"/>"<c:if test="${item.orgnztId == knoPersonal.orgnztId}"> selected="selected"</c:if>><c:out value="${item.orgnztNm}"/></option>
+        			</c:forEach>
+        			</select>
+        		</td>
+        	</tr>
+        	<tr>
+        		<th><spring:message code="comDamPer.comDamPersonalRegist.knoTypeNm"/> <span class="pilsu">*</span></th><!-- 지식유형명 -->
+        		<td class="left">
+        		    <select name="knoTypeCd" class="select">
+        			<option value=""><spring:message code="input.cSelect"/></option><!-- 선택 -->
+        			<c:forEach var="item" items="${mapMaterialList}" varStatus="status">
+        			<option value="<c:out value="${item.knoTypeCd}"/>"<c:if test="${item.knoTypeCd == knoPersonal.knoTypeCd}"> selected="selected"</c:if>><c:out value="${item.knoTypeNm}"/></option>
+        			</c:forEach>
+        			</select>
+        		</td>
+        	</tr>
+        	<tr>
+        		<th><spring:message code="comDamPer.comDamPersonalRegist.knoNm"/> <span class="pilsu">*</span></th><!-- 지식명 -->
+        		<td class="left">
+        		    <form:input  path="knoNm" title="<spring:message code='comDamPer.comDamPersonalRegist.knoNm'/>" size="60" maxlength="60"/>
+              		<form:errors path="knoNm"/>
+        		</td>
+        	</tr>
+        	<tr>
+        		<th><spring:message code="comDamPer.comDamPersonalRegist.knoCn"/> <span class="pilsu">*</span></th><!-- 지식내용 -->
+        		<td class="left">
+        		    <form:textarea  path="knoCn" title="<spring:message code='comDamPer.comDamPersonalRegist.knoCn'/>" cols="300" rows="10" cssClass="txaClass"/><!-- 지식내용 -->
+              		<form:errors path="knoCn"/>
+        		</td>
+        	</tr>
+        	<tr>
+        		<th><spring:message code="comDamPer.comDamPersonalRegist.colYmd"/> <span class="pilsu">*</span></th><!-- 수집일자 -->
+        		<td class="left">
+        		    <input type="hidden" name="cal_url" value="<c:url value='/sym/cal/EgovNormalCalPopup.do'/>" />
+           			<input id="colYmd" name="colYmd" type="hidden" value=""/>
+        			<input id="vcolYmd" name="vcolYmd" type="text" title="<spring:message code="comDamPer.comDamPersonalRegist.colYmd"/>" value="" maxlength="10" readonly="readonly" style="width:70px"/><!-- 수집일자 -->
+        		</td>
+        	</tr>
+        	<tr>
+        		<th><spring:message code="comDamPer.comDamPersonalRegist.othbcAt"/></th><!-- 공개여부 -->
+        		<td class="left">
+        		    <spring:message code="comDamPer.comDamPersonalRegist.public" /> : <input type="radio" name="othbcAt" class="radio2" value="Y">&nbsp;
+        	     	<spring:message code="comDamPer.comDamPersonalRegist.private" /> : <input type="radio" name="othbcAt" class="radio2" value="N" checked="checked"/><br/>
+        	     	<form:errors path="othbcAt" />
+        		</td>
+        	</tr>
+        	<tr>
+        		<th><spring:message code="comDamPer.comDamPersonalRegist.fileUpload"/></th><!-- 파일첨부 -->
+        		<td class="left">
+        		    <input name="file_1" id="egovComFileUploader" type="file" multiple title="<spring:message code="comDamPer.comDamPersonalRegist.fileUpload"/>" multiple/><!-- 첨부파일명 입력 -->
+        		    <div id="egovComFileList"></div>
+        		</td>
+        	</tr>
+        </table>
+        
+        <!-- 하단 버튼 -->
+        <div class="btn">
+        	<input class="s_submit" type="submit" value="<spring:message code="button.save" />" onclick="fn_egov_regist_KnoPersonal(document.knoPersonal); return false;" /><!-- 저장 -->
+        	<input class="s_submit" type="submit" value='<spring:message code="button.list" />' onclick="fnList(); return false;" /><!-- 목록 -->
+        </div>
+        <div style="clear:both;"></div>
+        </div>
+        
+        <input type="hidden" name="posblAtchFileNumber" id="posblAtchFileNumber" value="3" />
+        <!-- <input name="cmd" type="hidden" value="<c:out value='save'/>"> -->
+        <input name="cmd" type="hidden" value="<c:out value='Regist'/>">
+    
+    </form:form>
 
 </body>
 </html>
