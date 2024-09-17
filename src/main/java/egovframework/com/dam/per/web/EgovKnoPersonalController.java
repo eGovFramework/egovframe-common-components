@@ -135,6 +135,7 @@ public class EgovKnoPersonalController {
 		int totCnt = knoPersonalService.selectKnoPersonalTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
+		model.addAttribute("searchVO", searchVO);
 
 		return "egovframework/com/dam/per/EgovComDamPersonalList";
 	}
@@ -147,11 +148,12 @@ public class EgovKnoPersonalController {
 	 * @param KnoPersonalVO
 	 */
 	@RequestMapping(value="/dam/per/EgovComDamPersonal.do")
-	public String selectKnoPersonal(KnoPersonal knoPersonal
+	public String selectKnoPersonal(KnoPersonalVO knoPersonal
 			, ModelMap model
 			) throws Exception {
 		KnoPersonal result = knoPersonalService.selectKnoPersonal(knoPersonal);
 		model.addAttribute("result", result);
+		model.addAttribute("searchVO", knoPersonal);
 		return "egovframework/com/dam/per/EgovComDamPersonalDetail";
 	}
 
@@ -162,12 +164,12 @@ public class EgovKnoPersonalController {
 	 *
 	 * @param KnoNm
 	 */
-	@GetMapping(value="/dam/per/EgovComDamPersonalRegistView.do")
+	@RequestMapping(value="/dam/per/EgovComDamPersonalRegistView.do")
 	public String insertKnoPersonalView(
-			KnoPersonal knoPersonal
+			KnoPersonalVO knoPersonal
 			, ModelMap model
 			) throws Exception {
-		insertKnoPersonalView(model);
+		setInsertKnoPersonalViewModel(knoPersonal, model);
 		return "egovframework/com/dam/per/EgovComDamPersonalRegist";
 	}
 	
@@ -177,7 +179,8 @@ public class EgovKnoPersonalController {
      * @param model
      * @throws Exception
      */
-    private void insertKnoPersonalView(ModelMap model) throws Exception {
+    private void setInsertKnoPersonalViewModel(KnoPersonalVO knoPersonal, ModelMap model) throws Exception {
+    	model.addAttribute("knoPersonal", knoPersonal);
         MapTeamVO mapTeamVO = new MapTeamVO();
         mapTeamVO.setRecordCountPerPage(Integer.MAX_VALUE);
         mapTeamVO.setFirstIndex(0);
@@ -202,7 +205,7 @@ public class EgovKnoPersonalController {
 	@PostMapping(value="/dam/per/EgovComDamPersonalRegist.do")
 	public String insertKnoPersonal(
 			final MultipartHttpServletRequest multiRequest
-			, KnoPersonal knoPersonal
+			, KnoPersonalVO knoPersonal
 			, BindingResult bindingResult
 			, ModelMap model
 			) throws Exception {
@@ -220,7 +223,7 @@ public class EgovKnoPersonalController {
 
 		beanValidator.validate(knoPersonal, bindingResult);
 		if (bindingResult.hasErrors()){
-			insertKnoPersonalView(model);
+			setInsertKnoPersonalViewModel(knoPersonal, model);
 			return sLocationUrl;
 		}
 
@@ -255,10 +258,11 @@ public class EgovKnoPersonalController {
 	 * @param KnoNm
 	 */
 	@PostMapping(value="/dam/per/EgovComDamPersonalModifyView.do")
-	public String updateKnoPersonalView(KnoPersonal knoPersonal
+	public String updateKnoPersonalView(KnoPersonalVO knoPersonal
 			, ModelMap model
 			) throws Exception {
 		updateKnoPersonalViewInit(knoPersonal, model);
+		model.addAttribute("searchVO", knoPersonal);
 		return "egovframework/com/dam/per/EgovComDamPersonalModify";
 	}
 	
