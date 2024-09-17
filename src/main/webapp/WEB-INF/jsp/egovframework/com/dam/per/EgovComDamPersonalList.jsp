@@ -62,6 +62,11 @@
 			location.href = "<c:url value='/dam/per/EgovComDamPersonalRegist.do' />";
 		}
 		-->
+        function press(event) {
+            if (event.keyCode == 13) {
+                fnSearch();
+            }
+        }
 		</script>
 	</head>
 	
@@ -83,7 +88,7 @@
 						<option value='1' <c:if test="${searchVO.searchCondition == '1'}">selected="selected"</c:if>><spring:message code="comDamPer.comDamPersonalList.knoTypeNm"/></option><!-- 지식유형명 -->
 						<option value='2' <c:if test="${searchVO.searchCondition == '2'}">selected="selected"</c:if>><spring:message code="comDamPer.comDamPersonalList.knoNm"/></option><!-- 지식명 -->
 						</select>
-						<input class="s_input2 vat" name="searchKeyword" type="text" value="${searchVO.searchKeyword}" maxlength="35" size="35" onkeypress="press();" title="<spring:message code="title.searchCondition"/>" /><!-- 검색어 입력 -->
+						<input class="s_input2 vat" name="searchKeyword" type="text" value="${searchVO.searchKeyword}" maxlength="35" size="35" onkeypress="press(event);" title="<spring:message code="title.searchCondition"/>" /><!-- 검색어 입력 -->
 						
 						<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fnSearch(); return false;" /><!-- 조회 -->
 						<span class="btn_b"><a href="<c:url value='/dam/per/EgovComDamPersonalRegistView.do'/>" onclick="" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span><!-- 등록 -->
