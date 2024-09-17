@@ -19,7 +19,7 @@ import lombok.extern.slf4j.Slf4j;
  * [10. 로그인][LoginDAO.searchPassword] DAO 단위 테스트
  * 
  * @author 이백행
- * @since 2024-09-16
+ * @since 2024-09-17
  *
  */
 @ContextConfiguration(classes = { LoginDAOTestSearchPasswordTest.class, EgovTestAbstractDAO.class })
