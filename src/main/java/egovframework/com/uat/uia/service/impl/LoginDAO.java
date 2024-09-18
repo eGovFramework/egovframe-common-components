@@ -25,7 +25,7 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
  *   2017.07.21  장동한          로그인인증제한 작업
  *   2020.07.08  신용호          비밀번호를 수정한후 경과한 날짜 조회
  *   2021.05.30  정진오          디지털원패스 인증 회원 조회
- *   2024.09.18  이백행          컨트리뷰션 updatePassword return 을 void 에서 int 로 수정
+ *   2024.09.18  이백행          컨트리뷰션 update return 을 void 에서 int 로 수정
  *      </pre>
  */
 @Repository("loginDAO")
@@ -114,11 +114,11 @@ public class LoginDAO extends EgovComAbstractDAO {
 	 * 로그인인증제한 내역을 업데이트 한다.
 	 * 
 	 * @param vo LoginVO
-	 * @return vod
+	 * @return int
 	 * @exception Exception
 	 */
-	public void updateLoginIncorrect(Map<?, ?> map) throws Exception {
-		update("LoginUsr.updateLoginIncorrect" + map.get("USER_SE"), map);
+	public int updateLoginIncorrect(Map<?, ?> map) throws Exception {
+		return update("LoginUsr.updateLoginIncorrect" + map.get("USER_SE"), map);
 	}
 
 	/**
