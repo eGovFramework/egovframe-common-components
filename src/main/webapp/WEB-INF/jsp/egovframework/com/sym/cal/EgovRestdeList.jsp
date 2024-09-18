@@ -63,6 +63,11 @@ function fn_egov_detail_Restde(restdeNo){
 	varForm.submit();
 }
 -->
+function press(event) {
+    if (event.keyCode == 13) {
+        fn_egov_pageview(1);
+    }
+}
 </script>
 </head>
 <body>
@@ -81,7 +86,7 @@ function fn_egov_detail_Restde(restdeNo){
 				<option value='1' <c:if test="${searchVO.searchCondition == '1'}">selected="selected"</c:if>><spring:message code="sym.cal.restDay" /></option><!-- 휴일일자 -->
 				<option value='2' <c:if test="${searchVO.searchCondition == '2'}">selected="selected"</c:if>><spring:message code="sym.cal.restName" /></option><!-- 휴일명 -->
 				</select>
-				<input id="searchKeyword" class="s_input2 vat" name="searchKeyword" type="text" value="${searchVO.searchKeyword}" maxlength="35" size="35" onkeypress="press();" />
+				<input id="searchKeyword" class="s_input2 vat" name="searchKeyword" type="text" value="${searchVO.searchKeyword}" maxlength="35" size="35" onkeypress="press(event);" />
 				
 				<span class="btn_b"><a href="#noscript" onclick="fn_egov_search_Restde(); return false;" title="<spring:message code="button.inquire" />"><spring:message code="button.inquire" /></a></span>
 				<input class="s_btn" type="submit" value="<spring:message code="button.create" />" title="<spring:message code="button.create" />" onclick="fn_egov_regist_Restde(); return false;" />
