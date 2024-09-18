@@ -20,11 +20,12 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
  *
  *  수정일               수정자            수정내용
  *  ----------   --------   ---------------------------
- *  2009.03.06   박지욱            최초 생성
- *  2011.08.26   서준식            EsntlId를 이용한 로그인 추가
- *  2017.07.21   장동한            로그인인증제한 작업
- *  2020.07.08   신용호            비밀번호를 수정한후 경과한 날짜 조회
- *  2021.05.30   정진오            디지털원패스 인증 회원 조회
+ *   2009.03.06  박지욱          최초 생성
+ *   2011.08.26  서준식          EsntlId를 이용한 로그인 추가
+ *   2017.07.21  장동한          로그인인증제한 작업
+ *   2020.07.08  신용호          비밀번호를 수정한후 경과한 날짜 조회
+ *   2021.05.30  정진오          디지털원패스 인증 회원 조회
+ *   2024.09.18  이백행          컨트리뷰션 updatePassword return 을 void 에서 int 로 수정
  *      </pre>
  */
 @Repository("loginDAO")
@@ -94,8 +95,8 @@ public class LoginDAO extends EgovComAbstractDAO {
 	 * @param vo LoginVO
 	 * @exception Exception
 	 */
-	public void updatePassword(LoginVO vo) throws Exception {
-		update("LoginUsr.updatePassword", vo);
+	public int updatePassword(LoginVO vo) throws Exception {
+		return update("LoginUsr.updatePassword", vo);
 	}
 
 	/**
