@@ -84,7 +84,7 @@ function fn_egov_detail_Restde(restdeNo){
 				<input id="searchKeyword" class="s_input2 vat" name="searchKeyword" type="text" value="${searchVO.searchKeyword}" maxlength="35" size="35" onkeypress="press();" />
 				
 				<span class="btn_b"><a href="#noscript" onclick="fn_egov_search_Restde(); return false;" title="<spring:message code="button.inquire" />"><spring:message code="button.inquire" /></a></span>
-				<input class="s_btn" type="submit" value="<spring:message code="button.create" />" title="<spring:message code="button.create" />" onclick="fn_egov_regist_Restde(); return false;" />
+				<input class="s_btn" type="button" value="<spring:message code="button.create" />" title="<spring:message code="button.create" />" onclick="fn_egov_regist_Restde(); return false;" />
 			</li>
 		</ul>
 	</div>
