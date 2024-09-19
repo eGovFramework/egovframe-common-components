@@ -164,8 +164,7 @@ function fnViewCheck(){
 	<caption>${pageTitle} <spring:message code="title.list" /></caption>
 	<colgroup>
 		<col style="width: 5%;">
-		<col style="width: 3%;">
-		
+		<col style="width: 4%;">
 		<col style="width: 15%;">
 		<col style="width: 15%;">
 		<col style="width: 20%;">
