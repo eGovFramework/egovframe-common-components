@@ -24,10 +24,10 @@ import egovframework.com.uss.umt.service.UserManageVO;
  *  -------    --------    ---------------------------
  *   2009.04.10  조재영          최초 생성
  *   2017.07.21  장동한          로그인인증제한 작업
- *
+ *   2024.09.19  안단희          롬복 생성자 기반 종속성 주입
  *      </pre>
  */
-@Repository("userManageDAO")
+@Repository
 public class UserManageDAO extends EgovComAbstractDAO {
 
 	/**

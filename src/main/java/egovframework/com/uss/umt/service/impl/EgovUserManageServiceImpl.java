@@ -2,8 +2,6 @@ package egovframework.com.uss.umt.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
@@ -14,6 +12,7 @@ import egovframework.com.uss.umt.service.UserDefaultVO;
 import egovframework.com.uss.umt.service.UserManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovFileScrty;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 사용자관리에 관한 비지니스 클래스를 정의한다.
@@ -31,27 +30,24 @@ import egovframework.com.utl.sim.service.EgovFileScrty;
  *   2009.04.10  조재영          최초 생성
  *   2014.12.08  이기하          암호화방식 변경(EgovFileScrty.encryptPassword)
  *   2017.07.21  장동한          로그인인증제한 작업
- *
+ *   2024.09.19  안단희          롬복 생성자 기반 종속성 주입
  *      </pre>
  */
-@Service("userManageService")
+@Service
+@RequiredArgsConstructor
 public class EgovUserManageServiceImpl extends EgovAbstractServiceImpl implements EgovUserManageService {
 
 	/** userManageDAO */
-	@Resource(name = "userManageDAO")
-	private UserManageDAO userManageDAO;
+	private final UserManageDAO userManageDAO;
 
 	/** mberManageDAO */
-	@Resource(name = "mberManageDAO")
-	private MberManageDAO mberManageDAO;
+	private final MberManageDAO mberManageDAO;
 
 	/** entrprsManageDAO */
-	@Resource(name = "entrprsManageDAO")
-	private EntrprsManageDAO entrprsManageDAO;
+	private final EntrprsManageDAO entrprsManageDAO;
 
 	/** egovUsrCnfrmIdGnrService */
-	@Resource(name = "egovUsrCnfrmIdGnrService")
-	private EgovIdGnrService idgenService;
+	private EgovIdGnrService egovUsrCnfrmIdGnrService;
 
 	/**
 	 * 입력한 사용자아이디의 중복여부를 체크하여 사용가능여부를 확인
@@ -98,7 +94,7 @@ public class EgovUserManageServiceImpl extends EgovAbstractServiceImpl implement
 	@Override
 	public String insertUser(UserManageVO userManageVO) throws Exception {
 		// 고유아이디 셋팅
-		String uniqId = idgenService.getNextStringId();
+		String uniqId = egovUsrCnfrmIdGnrService.getNextStringId();
 		userManageVO.setUniqId(uniqId);
 		// 패스워드 암호화
 		String pass = EgovFileScrty.encryptPassword(userManageVO.getPassword(), EgovStringUtil.isNullToString(userManageVO.getEmplyrId()));// KISA 보안약점 조치 (2018-10-29, 윤창원)

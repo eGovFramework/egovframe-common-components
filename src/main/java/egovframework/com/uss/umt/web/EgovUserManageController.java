@@ -29,6 +29,7 @@ import egovframework.com.uss.umt.service.EgovUserManageService;
 import egovframework.com.uss.umt.service.UserDefaultVO;
 import egovframework.com.uss.umt.service.UserManageVO;
 import egovframework.com.utl.sim.service.EgovFileScrty;
+import lombok.RequiredArgsConstructor;
 
 /**
  * 업무사용자관련 요청을 비지니스 클래스로 전달하고 처리된결과를 해당 웹 화면으로 전달하는 Controller를 정의한다
@@ -50,31 +51,30 @@ import egovframework.com.utl.sim.service.EgovFileScrty;
  *   2015.06.19  조정국          미인증 사용자에 대한 보안처리 기준 수정 (!isAuthenticated)
  *   2017.07.21  장동한          로그인인증제한 작업
  *   2022.11.11  김혜준          시큐어코딩 처리
- *
+ *   2024.09.19  안단희          롬복 생성자 기반 종속성 주입
  *      </pre>
  */
 
 @Controller
+@RequiredArgsConstructor
 public class EgovUserManageController {
 
 	/** userManageService */
-	@Resource(name = "userManageService")
-	private EgovUserManageService userManageService;
+	private final EgovUserManageService userManageService;
 
 	/** cmmUseService */
-	@Resource(name = "EgovCmmUseService")
-	private EgovCmmUseService cmmUseService;
+	private final EgovCmmUseService cmmUseService;
 
 	/** EgovPropertyService */
 	@Resource(name = "propertiesService")
-	protected EgovPropertyService propertiesService;
+	private final EgovPropertyService propertiesService;
 
 	@Resource(name = "egovNextUrlWhitelist")
-	protected List<String> nextUrlWhitelist;
+	private final List<String> nextUrlWhitelist;
 
 	/** DefaultBeanValidator beanValidator */
 	@Autowired
-	private DefaultBeanValidator beanValidator;
+	private final DefaultBeanValidator beanValidator;
 
 	/**
 	 * 사용자목록을 조회한다. (pageing)
