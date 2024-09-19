@@ -3,8 +3,6 @@ package egovframework.com.ssi.syi.ist.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -18,6 +16,7 @@ import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.ssi.syi.ist.service.CntcSttus;
 import egovframework.com.ssi.syi.ist.service.CntcSttusVO;
 import egovframework.com.ssi.syi.ist.service.EgovCntcSttusService;
+import lombok.RequiredArgsConstructor;
 
 /**
  *
@@ -35,21 +34,21 @@ import egovframework.com.ssi.syi.ist.service.EgovCntcSttusService;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.04.01  이중호          최초 생성
- *   2011.8.26	정진오			IncludedInfo annotation 추가
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2024.09.19  이백행          컨트리뷰션 롬복 생성자 기반 종속성 주입
  *
  * Copyright (C) 2009 by MOPAS  All right reserved.
  *      </pre>
  */
 
 @Controller
+@RequiredArgsConstructor
 public class EgovCntcSttusController {
 
-	@Resource(name = "CntcSttusService")
-	private EgovCntcSttusService cntcSttusService;
+	private final EgovCntcSttusService cntcSttusService;
 
 	/** EgovPropertyService */
-	@Resource(name = "propertiesService")
-	protected EgovPropertyService propertiesService;
+	private final EgovPropertyService propertiesService;
 
 	/**
 	 * 연계현황 상세내역을 조회한다.
