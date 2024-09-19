@@ -2,13 +2,14 @@ package egovframework.com.sym.ccm.cde.service.impl;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.sym.ccm.cde.service.CmmnDetailCodeVO;
 import egovframework.com.sym.ccm.cde.service.EgovCcmCmmnDetailCodeManageService;
-import lombok.RequiredArgsConstructor;
 
 /**
  *
@@ -20,20 +21,20 @@ import lombok.RequiredArgsConstructor;
  * @see
  *
  *      <pre>
- * << 개정이력(Modification Information) >>
+* << 개정이력(Modification Information) >>
+*
+*   수정일      수정자           수정내용
+*  -------    --------    ---------------------------
+*   2009.04.01  이중호          최초 생성
  *
- *   수정일      수정자           수정내용
- *  -------    --------    ---------------------------
- *   2009.04.01  이중호          최초 생성
- *   2024.09.19  강동휘          컨트리뷰션 롬복 생성자 기반 종속성 주입
  *      </pre>
  */
-@Service
-@RequiredArgsConstructor
+@Service("CmmnDetailCodeManageService")
 public class EgovCcmCmmnDetailCodeManageServiceImpl extends EgovAbstractServiceImpl
 		implements EgovCcmCmmnDetailCodeManageService {
 
-	private final CmmnDetailCodeManageDAO cmmnDetailCodeManageDAO;
+	@Resource(name = "CmmnDetailCodeManageDAO")
+	private CmmnDetailCodeManageDAO cmmnDetailCodeManageDAO;
 
 	/**
 	 * 공통상세코드 총 개수를 조회한다.
