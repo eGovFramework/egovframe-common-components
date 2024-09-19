@@ -83,6 +83,15 @@ public class RestdeVO extends Restde implements Serializable {
 	}
 
 	/**
+	 * 날짜 검색 시 검색어를 DB에 저장된 포맷으로 변환하여 반환
+	 * 
+	 * @return
+	 */
+	public String getFormattedDtKeyword() {
+		return (this.searchKeyword != null  ? this.searchKeyword.replace("-", "") : "");
+	}
+	
+	/**
 	 * searchUseYn attribute 를 리턴한다.
 	 * @return String
 	 */

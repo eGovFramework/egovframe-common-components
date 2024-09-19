@@ -224,7 +224,7 @@
 			   AND  A.RESTDE_SE_CODE = B.CODE
 		
 			<if test="searchCondition == 1">AND
-				A.RESTDE = #{searchKeyword}
+				A.RESTDE = #{formattedDtKeyword}
 			</if>
 			<if test="searchCondition == 2">AND
 				A.RESTDE_NM LIKE '%' || #{searchKeyword} || '%'
@@ -247,7 +247,7 @@
 			   AND  A.RESTDE_SE_CODE = B.CODE
 		
 			<if test="searchCondition == 1">AND
-				RESTDE = #{searchKeyword}
+				RESTDE = #{formattedDtKeyword}
 			</if>
 			<if test="searchCondition == 2">AND
 				RESTDE_NM LIKE '%' || #{searchKeyword} || '%'
