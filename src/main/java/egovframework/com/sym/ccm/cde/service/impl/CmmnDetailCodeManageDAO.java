@@ -18,16 +18,17 @@ import egovframework.com.sym.ccm.cde.service.CmmnDetailCodeVO;
  * @see
  *
  *      <pre>
-* << 개정이력(Modification Information) >>
-*
-*   수정일      수정자           수정내용
-*  -------    --------    ---------------------------
-*   2009.04.01  이중호          최초 생성
+ * << 개정이력(Modification Information) >>
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.04.01  이중호          최초 생성
+ *   2024.09.19  강동휘          컨트리뷰션 롬복 생성자 기반 종속성 주입
  *
  *      </pre>
  */
 
-@Repository("CmmnDetailCodeManageDAO")
+@Repository
 public class CmmnDetailCodeManageDAO extends EgovComAbstractDAO {
 
 	/**
