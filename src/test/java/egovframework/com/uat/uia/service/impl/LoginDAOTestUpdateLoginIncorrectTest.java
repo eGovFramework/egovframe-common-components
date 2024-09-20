@@ -87,12 +87,12 @@ public class LoginDAOTestUpdateLoginIncorrectTest extends EgovTestAbstractDAO {
 			log.debug("result={}", result);
 			log.debug("아이디={}, {}", loginVO.getId(), userId);
 			log.debug("lockAt={}, {}", "N", lockAt);
-			log.debug("lockCnt={}, {}", new BigDecimal(0), lockCnt);
+			log.debug("lockCnt={}, {}", BigDecimal.ZERO, lockCnt);
 		}
 
 		assertEquals("로그인인증제한 내역을 업데이트 한다. LOCK 해제 userId", loginVO.getId(), userId);
 		assertEquals("로그인인증제한 내역을 업데이트 한다. LOCK 해제 lockAt", "N", lockAt);
-		assertEquals("로그인인증제한 내역을 업데이트 한다. LOCK 해제 lockCnt", new BigDecimal(0), lockCnt);
+		assertEquals("로그인인증제한 내역을 업데이트 한다. LOCK 해제 lockCnt", BigDecimal.ZERO, lockCnt);
 	}
 
 }
