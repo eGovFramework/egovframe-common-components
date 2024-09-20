@@ -100,7 +100,7 @@ function fn_egov_open_Popup(cnt, schdulId){
 </head>
 <body>
 
-<form name="listForm" action="<c:url value='/cop/smt/sam/EgovAllSchdulManageList.do'/>" method="post" onSubmit="fn_egov_search_stplatcn(); return false;"> 
+<form name="listForm" action="<c:url value='/cop/smt/sam/EgovAllSchdulManageList.do'/>" method="post"> 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<!-- 검색영역 -->
