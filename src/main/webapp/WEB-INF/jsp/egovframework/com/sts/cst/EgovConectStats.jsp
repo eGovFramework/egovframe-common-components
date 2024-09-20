@@ -277,42 +277,49 @@ function getNextWeek(v,t){
 
 	<!-- 개인별 결과 -->
 	<c:if test='${statsInfo.statsKind == "PRSONAL" }'>
-	<h3><spring:message code="comStsCst.conectStats.subTitle1" /></h3> <!-- 그래프 (단위, 횟수) -->
-	<table class="e001 mb10">
-		<colgroup>
-			<col style="width:14%" />
-			<col style="" />
-		</colgroup>
-		        <c:forEach items="${conectStats}" var="resultInfo" varStatus="status">
-			      <tr>
-			        <td width="100" height="10" class="lt_text3" nowrap>${resultInfo.statsDate}</td>
-			        <td width="560" height="10">
-					  <img src="<c:url value='/images/egovframework/com/cmm/left_bg.gif' />" width="<c:out value='${resultInfo.statsCo * statsInfo.maxUnit}' />" height="10" align="left" alt="">&nbsp;&nbsp;${resultInfo.statsCo}&nbsp;<spring:message code="comStsCst.conectStats.results.unit"/> <!-- 회 -->
+		<h3><spring:message code="comStsCst.conectStats.subTitle1" /></h3> <!-- 그래프 (단위, 횟수) -->
+		<table class="e001 mb10">
+			<colgroup>
+				<col style="width:14%" />
+				<col style="" />
+			</colgroup>
+			<c:forEach items="${conectStats}" var="resultInfo" varStatus="status">
+				<tr>
+					<td width="100" height="10" class="lt_text3" nowrap>${resultInfo.statsDate}</td>
+					<td width="560" height="10">
+						<img src="<c:url value='/images/egovframework/com/cmm/left_bg.gif' />" width="<c:out value='${resultInfo.statsCo * statsInfo.maxUnit}' />" height="10" align="left" alt="">&nbsp;&nbsp;${resultInfo.statsCo}&nbsp;<spring:message code="comStsCst.conectStats.results.unit"/> <!-- 회 -->
 					</td>
-			      </tr>
-			    </c:forEach>
-	    <c:if test="${fn:length(userStatsList) == 0}">
-	    <tr><td></td></tr>
-	    </c:if>
-	</table>
-
-	<h3><spring:message code="comStsCst.conectStats.subTitle2" /></h3> <!-- 텍스트 (단위, 횟수) -->
-	<table class="e001">
-		<colgroup>
-			<col style="width:14%" />
-			<col style="" />
-		</colgroup>
-		        <c:forEach items="${conectStats}" var="resultInfo" varStatus="status">
-		        <tr>
-		          <td>${resultInfo.statsDate} &nbsp;&nbsp;&nbsp;${resultInfo.statsCo}&nbsp;<spring:message code="comStsCst.conectStats.results.unit"/></td> <!-- 회 -->
-		        </tr>
-		        </c:forEach>
-		        <c:if test="${fn:length(userStatsList) == 0}">
-			    <tr><td></td></tr>
-			    </c:if>
-	</table>
+				</tr>
+			</c:forEach>
+			<c:if test="${fn:length(userStatsList) == 0}">
+				<tr>
+					<td>
+						<spring:message code="ussIonLsi.loginScrinImageList.failInquire"/>
+					</td>
+				</tr>
+			</c:if>
+		</table>
+	
+		<h3><spring:message code="comStsCst.conectStats.subTitle2" /></h3> <!-- 텍스트 (단위, 횟수) -->
+		<table class="e001">
+			<colgroup>
+				<col style="width:14%" />
+				<col style="" />
+			</colgroup>
+			<c:forEach items="${conectStats}" var="resultInfo" varStatus="status">
+				<tr>
+					<td>${resultInfo.statsDate} &nbsp;&nbsp;&nbsp;${resultInfo.statsCo}&nbsp;<spring:message code="comStsCst.conectStats.results.unit"/></td> <!-- 회 -->
+				</tr>
+			</c:forEach>
+			<c:if test="${fn:length(userStatsList) == 0}">
+				<tr>
+					<td>
+						<spring:message code="ussIonLsi.loginScrinImageList.failInquire"/>
+					</td>
+				</tr>
+			</c:if>
+		</table>
 	</c:if>
-
 	</form>
 	
 </div>
