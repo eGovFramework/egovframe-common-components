@@ -198,14 +198,6 @@ function fncSelectDeptAuthorPop() {
     window.open(url,"<spring:message code="comCopSecDrm.list.searchDept" />",'width=500,height=485,scrollbars=no,resizable=no,status=no,center:yes'); //부서검색
 
 }
-
-function press() {
-
-    if (event.keyCode==13) {
-    	fncSelectDeptAuthorList('1');
-    }
-}
-
 </script>
 <script type="text/javascript">
     $(document).ready(function () {
@@ -243,8 +235,8 @@ function press() {
 			<li><div style="line-height:4px;">&nbsp;</div><div><spring:message code="comCopSecDrm.searchCondition.searchKeywordText" /> : </div></li><!-- 부서권한관리 -->
 			<!-- 검색키워드 및 조회버튼 -->
 			<li>
-				<input name="deptCode" type="text" value="<c:out value='${deptAuthorVO.deptCode}' />" size="22" title="<spring:message code="comCopSecDrm.list.deptCd" />" onkeypress="press();" readonly="readonly" /><!-- 부서코드 -->
-				<input name="deptNm" type="text" value="<c:out value='${deptAuthorVO.deptNm}'/>" size="15" title="<spring:message code="comCopSecDrm.list.deptNm" />" onkeypress="press();" readonly="readonly" /><!-- 부서명 -->
+				<input name="deptCode" type="text" value="<c:out value='${deptAuthorVO.deptCode}' />" size="22" title="<spring:message code="comCopSecDrm.list.deptCd" />" readonly="readonly" /><!-- 부서코드 -->
+				<input name="deptNm" type="text" value="<c:out value='${deptAuthorVO.deptNm}'/>" size="15" title="<spring:message code="comCopSecDrm.list.deptNm" />" readonly="readonly" /><!-- 부서명 -->
 				<input id="deptSelectPopup" type="button" class="s_btn" value="<spring:message code="comCopSecDrm.btn.deptSelectPopup" />" title="<spring:message code="comCopSecDrm.btn.deptSelectPopup" /> <spring:message code="input.button" />" /><!-- 부서조회팝업 -->
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="button.inquire" /> <spring:message code="input.button" />" /><!-- 조회 -->
 				<input type="button" class="s_btn" onClick="fncDeptAuthorDeleteList();return false;" value="<spring:message code="button.delete" />" title="<spring:message code="button.delete" /> <spring:message code="input.button" />" /><!-- 삭제 -->
