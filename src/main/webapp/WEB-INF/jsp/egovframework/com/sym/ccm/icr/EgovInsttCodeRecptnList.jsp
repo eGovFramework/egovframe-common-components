@@ -57,6 +57,12 @@ function fn_egov_detail_InsttCodeRecptn(insttCode){
     varForm.insttCode.value  = insttCode;
     varForm.submit();
 }
+
+function press(event) {
+    if (event.keyCode == 13) {
+        fn_egov_pageview(1);
+    }
+}
 -->
 </script>
 </head>
@@ -77,7 +83,7 @@ function fn_egov_detail_InsttCodeRecptn(insttCode){
 					<option value='1' <c:if test="${searchVO.searchCondition == '1'}">selected="selected"</c:if>><spring:message code="comSymCcmIcr.insttCodeRecptn.orgNm"/></option> <!-- 기관명 -->
 				</select>
 				
-				<input class="s_input2 vat" name="searchKeyword" type="text" value='<c:out value="${searchVO.searchKeyword}"/>' size="25" onkeypress="press();" title="<spring:message code="title.search"/>" />
+				<input class="s_input2 vat" name="searchKeyword" type="text" value='<c:out value="${searchVO.searchKeyword}"/>' size="25" onkeypress="press(event);" title="<spring:message code="title.search"/>" />
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fn_egov_search_InsttCodeRecptn(); return false;" />
 			</li>
 		</ul>
