@@ -65,7 +65,8 @@ function fn_egov_detail_InsttCodeRecptn(insttCode){
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
 <form name="listForm" action="<c:url value='/sym/ccm/icr/getInsttCodeRecptnList.do'/>" method="post">
-
+<input name="insttCode" type="hidden" value=""/>
+<input name="pageIndex" type="hidden" value="${searchVO.pageIndex}"/>
 <div class="board">
 	<h1>${pageTitle}</h1>
 
