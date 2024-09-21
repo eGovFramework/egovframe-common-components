@@ -34,6 +34,10 @@ public class RwardManage extends ComDefaultVO {
 	*  포상자명	      
 	*/ 
 	private String rwardManNm;
+	/**
+	 * 포상자 소속
+	 */
+	private String rwardManOrgnztNm;
 
 	public String getRwardManNm() {
 		return rwardManNm;
@@ -336,5 +340,17 @@ public class RwardManage extends ComDefaultVO {
 	public void setLastUpdusrPnttm(String lastUpdusrPnttm) {
 		this.lastUpdusrPnttm = lastUpdusrPnttm;
 	}
-	
+
+	public String getRwardManOrgnztNm() {
+		return rwardManOrgnztNm;
+	}
+
+	public void setRwardManOrgnztNm(String rwardManOrgnztNm) {
+		this.rwardManOrgnztNm = rwardManOrgnztNm;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 }

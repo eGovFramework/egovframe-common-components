@@ -134,6 +134,8 @@
 	<h2><spring:message code="comUssIonRwd.rwardRegist.rwardAppl"/></h2><!-- 포상신청 -->
 	
 	<h3 class="tit02" style="margin:0 0 5px 0"><spring:message code="comUssIonRwd.common.searchNm"/></h3><!-- 포상자 -->
+	<spring:message code="comUssIonRwd.common.searchNm" var="searchNm"/>
+	<spring:message code="comUssIonRwd.common.orgnztNm" var="orgnztNm"/>
 
 	<!-- 등록폼 -->
 	<table class="wTable mb20">
@@ -144,25 +146,24 @@
 			<col style="" />
 		</colgroup>
 		<tr>
-			<th><spring:message code="comUssIonRwd.common.searchNm"/> <span class="pilsu">*</span></th><!-- 포상자 -->
+			<th>${searchNm} <span class="pilsu">*</span></th><!-- 포상자 -->
 			<td class="left">
-			    <%-- <input name="rwardManNm" id="rwardManNm" type="text" size="20" title="<spring:message code="comUssIonRwd.common.searchNm"/>" readonly="readonly" style="width:128px" /> --%><!-- 포상자 -->
-		        <form:input path="rwardManNm"  readonly="true" maxlength="10" size="20" title="포상자명" cssStyle="width:128px" />
-		        <form:hidden path="rwardManId"/>
-			    <span class="link">
-			    <a id="RwardRegist" title="<spring:message code="comUssIonRwd.common.searchNm"/>" style="selector-dummy: expression(this.hideFocus=false);"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif' />"
-	     			style="vertical-align: middle" alt="<spring:message code="comUssIonRwd.common.searchNm"/>" title="<spring:message code="comUssIonRwd.common.searchNm"/>"></a><!-- 포상자 -->
-	     			</span>
+				<form:input path="rwardManNm"  readonly="true" maxlength="10" size="20" title="${searchNm}" cssStyle="width:128px" /> <!-- 포상자 -->
+				<form:hidden path="rwardManId"/>
+				<span class="link">
+				<a id="RwardRegist" title="<spring:message code="comUssIonRwd.common.searchNm"/>" style="selector-dummy: expression(this.hideFocus=false);"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif' />"
+					style="vertical-align: middle" alt="<spring:message code="comUssIonRwd.common.searchNm"/>" title="<spring:message code="comUssIonRwd.common.searchNm"/>"></a><!-- 포상자 -->
+					</span>
 			</td>
-			<th><spring:message code="comUssIonRwd.common.orgnztNm"/></th><!-- 소속 -->
+			<th>${orgnztNm}</th><!-- 소속 -->
 			<td class="left">
-				<input name="rwardManOrgnztNm" id="rwardManOrgnztNm" type="text" value="" title="<spring:message code="comUssIonRwd.common.orgnztNm"/>" readonly="readonly" style="width:128px" /><!-- 소속 -->
+				<form:input path="rwardManOrgnztNm" readonly="true" cssStyle="width:128px" title="${orgnztNm}" /> <!-- 소속 -->
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUssIonRwd.common.searchKeyword"/> <span class="pilsu">*</span></th><!-- 포상구분 -->
 			<td class="left" colspan="3">
-				 <c:set var="rwardCd"><spring:message code="comUssIonRwd.common.searchKeyword"/></c:set>
+				<c:set var="rwardCd"><spring:message code="comUssIonRwd.common.searchKeyword"/></c:set>
 				<form:select path="rwardCd" title="${rwardCd}"><!-- 포상구분 -->
 				<form:options items="${rwardCodeList}" itemValue="code" itemLabel="codeNm"/>
 				</form:select>
@@ -171,28 +172,28 @@
 		<tr>
 			<th><spring:message code="comUssIonRwd.common.rwardNm"/> <span class="pilsu">*</span></th><!-- 포상명 -->
 			<td class="left">
-				 <c:set var="rwardNm"><spring:message code="comUssIonRwd.common.rwardNm"/></c:set><!-- 포상명 -->
-			    <form:input  path="rwardNm" title="${rwardNm}"/>
+				<c:set var="rwardNm"><spring:message code="comUssIonRwd.common.rwardNm"/></c:set><!-- 포상명 -->
+				<form:input  path="rwardNm" title="${rwardNm}"/>
 			</td>
 			<th><spring:message code="comUssIonRwd.common.rwardDe"/> <span class="pilsu">*</span></th><!-- 포상일자 -->
 			<td class="left">
-				 <c:set var="rwardDe"><spring:message code="comUssIonRwd.common.rwardDe"/></c:set>
+				<c:set var="rwardDe"><spring:message code="comUssIonRwd.common.rwardDe"/></c:set>
 				<form:input path="rwardDe" maxlength="10" readonly="true"  title="${rwardDe}" style="width:68px" /><!-- 포상일자 -->
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUssIonRwd.common.pblenCn"/> <span class="pilsu">*</span></th><!-- 공적사항 -->
 			<td class="left" colspan="3">
-				 <c:set var="pblenCn"><spring:message code="comUssIonRwd.common.pblenCn"/></c:set>
-			    <form:textarea path="pblenCn" rows="4" cols="70" cssClass="txaClass" title="${pblenCn}"/><!-- 공적사항 -->
-      			<form:errors path="pblenCn"/>
+				<c:set var="pblenCn"><spring:message code="comUssIonRwd.common.pblenCn"/></c:set>
+				<form:textarea path="pblenCn" rows="4" cols="70" cssClass="txaClass" title="${pblenCn}"/><!-- 공적사항 -->
+				<form:errors path="pblenCn"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUssIonRwd.common.atchFileId"/></th><!-- 첨부파일 -->
 			<td class="left" colspan="3">
-			    <input name="file_1" id="egovComFileUploader" type="file" multiple title="<spring:message code="comUssIonRwd.common.atchFileId"/>"/><!-- 첨부파일 -->
-			    <div id="egovComFileList"></div>
+				<input name="file_1" id="egovComFileUploader" type="file" multiple title="<spring:message code="comUssIonRwd.common.atchFileId"/>"/><!-- 첨부파일 -->
+				<div id="egovComFileList"></div>
 			</td>
 		</tr>
 	</table>
