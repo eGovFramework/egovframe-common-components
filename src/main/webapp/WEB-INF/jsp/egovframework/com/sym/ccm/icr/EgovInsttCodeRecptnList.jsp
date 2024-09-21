@@ -102,11 +102,7 @@ function fn_egov_detail_InsttCodeRecptn(insttCode){
 			<tr style="cursor:pointer" onclick="fn_egov_detail_InsttCodeRecptn('<c:out value="${resultInfo.insttCode}"/>');">
 				<td><c:out value="${(searchVO.pageIndex - 1) * searchVO.pageSize + status.count}"/></td>
 				<td>
-					<form name="subForm" method="post" action="<c:url value='/sym/ccm/icr/getInsttCodeDetail.do'/>">
-						<input name="insttCode" type="hidden" value="<c:out value="${resultInfo.insttCode}"/>">
-						<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-						<span class="link"><input type="submit" value="<c:out value="${resultInfo.insttCode}"/>" onclick="fn_egov_detail_InsttCodeRecptn('<c:out value="${resultInfo.insttCode}"/>'); return false;"></span>
-					</form>
+					<span class="link"><a href="#" onclick="fn_egov_detail_InsttCodeRecptn('<c:out value="${resultInfo.insttCode}"/>'); return false;">${resultInfo.insttCode}</a></span>
 				</td>
 				<td class="lt_text" ><c:out value="${resultInfo.allInsttNm}"/></td>
 			</tr>
