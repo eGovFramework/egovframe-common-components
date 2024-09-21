@@ -90,6 +90,11 @@ function fn_egov_detail_SystemCntc(cntcId){
 	varForm.submit();
 }
 
+function press(event) {
+	if (event.keyCode == 13) {
+		fn_egov_pageview(1);
+	}
+}
 -->
 </script>
 </head>
@@ -113,7 +118,7 @@ function fn_egov_detail_SystemCntc(cntcId){
 					<option selected value=''>--<spring:message code="input.select" />--</option><!-- 선택하세요 -->
 					<option value='1' <c:if test="${searchVO.searchCondition == '1'}">selected="selected"</c:if>><spring:message code="comSsiSyiSim.systemCntcList.cntcNm"/></option><!-- 시스템연계명 -->
 				</select>
-				<input class="s_input2 vat" name="searchKeyword" type="text" value='<c:out value='${searchVO.searchKeyword}'/>' maxlength="35" size="35" onkeypress="press();" title="<spring:message code="title.searchCondition"/>" /><!-- 검색조건 -->
+				<input class="s_input2 vat" name="searchKeyword" type="text" value='<c:out value='${searchVO.searchKeyword}'/>' maxlength="35" size="35" onkeypress="press(event);" title="<spring:message code="title.searchCondition"/>" /><!-- 검색조건 -->
 				
 				<input class="s_btn" type="submit" value="<spring:message code="title.inquire"/>" title="<spring:message code="title.inquire"/>" onclick="fn_egov_search_SystemCntc(); return false;" /><!-- 조회 -->
 				
