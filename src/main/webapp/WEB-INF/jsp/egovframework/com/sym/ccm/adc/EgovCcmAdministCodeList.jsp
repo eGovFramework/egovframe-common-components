@@ -68,11 +68,10 @@ function fnDetail(administZoneSe,administZoneCode){
 	varForm.administZoneCode.value = administZoneCode;
 	varForm.submit();
 }
-/* ********************************************************
- * 삭제 처리 함수
- ******************************************************** */
-function fnDelete(){
-	//
+function press(event) {
+	if (event.keyCode == 13) {
+		linkPage(1);
+	}
 }
 -->
 </script>
@@ -93,7 +92,7 @@ function fnDelete(){
 					<option value='1' <c:if test="${searchVO.searchCondition == '1'}">selected="selected"</c:if>><spring:message code="comSymCcmAdc.ccmAdministCode.lawAddrName" /></option> <!-- 법정동 지역명 -->
 					<option value='2' <c:if test="${searchVO.searchCondition == '2'}">selected="selected"</c:if>><spring:message code="comSymCcmAdc.ccmAdministCode.admAddrName" /></option> <!-- 행정동 지역명 -->
 				</select>
-				<input id="searchKeyword" class="s_input2 vat" name="searchKeyword" type="text" value="${searchVO.searchKeyword}" size="25" onkeypress="press();" title="사용자명검색" />
+				<input id="searchKeyword" class="s_input2 vat" name="searchKeyword" type="text" value="${searchVO.searchKeyword}" size="25" onkeypress="press(event);" title="사용자명검색" />
 				
 				<input class="s_btn" type="submit" value="<spring:message code="title.inquire" />" title="<spring:message code="title.inquire" />" onclick="fnSearch(); return false;" /> <!-- 조회 -->
 				<input class="s_btn" type="submit" value="<spring:message code="title.create" />" title="<spring:message code="title.create" />" onclick="fnRegist(); return false;" /> <!-- 등록 -->
