@@ -84,6 +84,7 @@ public class EgovAdministCodeRecptnServiceImpl extends EgovAbstractServiceImpl i
 			administCodeRecptn.setAblEnnc(""); // 폐지유무 >> x
 			administCodeRecptn.setFrstRegisterId("Batch System"); // 등록자 Batch System
 			administCodeRecptn.setLastUpdusrId("Batch System"); // 수정자 Batch System
+			administCodeRecptn.setUseAt("Y"); // 사용여부 >> Y
 
 			AdministCodeRecptnVO vo = new AdministCodeRecptnVO();
 			vo.setSearchCondition("CodeList");
