@@ -47,19 +47,19 @@ public class AdministCodeRecptnDAO extends EgovComAbstractDAO {
 	public void insertAdministCode(AdministCodeRecptn administCodeRecptn) throws Exception {
 		AdministCodeRecptn beforeData = (AdministCodeRecptn) selectOne("AdministCodeRecptnDAO.selectAdministCodeDetail", administCodeRecptn);
 
-		if (beforeData.getAdministZoneCode().equals(administCodeRecptn.getAdministZoneCode())
-		&&  beforeData.getAdministZoneSe()  .equals(administCodeRecptn.getAdministZoneSe()  )
-		) {
+		if (beforeData != null
+			&& beforeData.getAdministZoneCode().equals(administCodeRecptn.getAdministZoneCode())
+			&& beforeData.getAdministZoneSe().equals(administCodeRecptn.getAdministZoneSe())) {
 			// 기등록 자료
-        	administCodeRecptn.setProcessSe("10");
+			administCodeRecptn.setProcessSe("10");
 		} else {
 			int rtnValue = update("AdministCodeRecptnDAO.insertAdministCode", administCodeRecptn);
-	        if (rtnValue != 1) {
-	        	// 등록 오류
-	        	administCodeRecptn.setProcessSe("11");
-	        }
-        }
-    	update("AdministCodeRecptnDAO.updateAdministCodeRecptn", administCodeRecptn);
+			if (rtnValue != 1) {
+				// 등록 오류
+				administCodeRecptn.setProcessSe("11");
+			}
+		}
+		update("AdministCodeRecptnDAO.updateAdministCodeRecptn", administCodeRecptn);
 	}
 
 	/**
