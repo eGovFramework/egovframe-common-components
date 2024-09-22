@@ -172,17 +172,17 @@
 
     <update id="updateAdministCode">
             UPDATE  COMTCADMINISTCODE
-               SET  ADMINIST_ZONE_SE            = #{AdministZoneSe}
-                 ,  ADMINIST_ZONE_CODE          = #{AdministZoneCode}
-                 ,  ADMINIST_ZONE_NM            = #{AdministZoneNm}
-                 ,  UPPER_ADMINIST_ZONE_CODE    = #{UpperAdministZoneCode}
-                 ,  CREAT_DE                    = #{CreatDe}
-                 ,  ABL_DE                      = #{AblDe}
+               SET  ADMINIST_ZONE_SE            = #{administZoneSe}
+                 ,  ADMINIST_ZONE_CODE          = #{administZoneCode}
+                 ,  ADMINIST_ZONE_NM            = #{administZoneNm}
+                 ,  UPPER_ADMINIST_ZONE_CODE    = #{upperAdministZoneCode}
+                 ,  CREAT_DE                    = #{creatDe}
+                 ,  ABL_DE                      = #{ablDe}
                  ,  USE_AT                      = #{useAt}
                  ,  LAST_UPDUSR_ID              = #{lastUpdusrId}
                  ,  LAST_UPDT_PNTTM           = sysdate()
-             WHERE  ADMINIST_ZONE_SE            = #{AdministZoneSe}
-               AND  ADMINIST_ZONE_CODE          = #{AdministZoneCode}
+             WHERE  ADMINIST_ZONE_SE            = #{administZoneSe}
+               AND  ADMINIST_ZONE_CODE          = #{administZoneCode}
     </update>
 
     <update id="deleteAdministCode">
@@ -192,8 +192,8 @@
                  ,  ABL_DE                      = #{ablDe}
                  ,  LAST_UPDUSR_ID              = #{lastUpdusrId}
                  ,  LAST_UPDT_PNTTM           = sysdate()
-             WHERE  ADMINIST_ZONE_SE            = #{AdministZoneSe}
-               AND  ADMINIST_ZONE_CODE          = #{AdministZoneCode}
+             WHERE  ADMINIST_ZONE_SE            = #{administZoneSe}
+               AND  ADMINIST_ZONE_CODE          = #{administZoneCode}
         
     </update>
 
