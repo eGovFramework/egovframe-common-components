@@ -56,7 +56,7 @@
 <body>
 <form name="frm" action ="" method="post">
 <input type="hidden" name="tmplatId" value="" />
-
+<input type="hidden" name="pageIndex" value="${searchVO.pageIndex}" />
 
 <div class="board">
 	<h1>${pageTitle}</h1> <!-- 템플릿 목록 -->
