@@ -1,6 +1,7 @@
 package egovframework.com.uat.uia.service.impl;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,18 +40,60 @@ public class LoginDAOTestOnepassLoginTest extends EgovTestAbstractDAO {
 
 	/**
 	 * 테스트
-	 * 
-	 * @throws Exception
 	 */
 	@Test
-	public void test() throws Exception {
+	public void test() {
 		// given
 		final String id = "USER";
 
 		// when
-		final LoginVO resultLoginVO = loginDAO.onepassLogin(id);
+		final LoginVO resultLoginVO = onepassLogin(id);
 
 		// then
+		asserts(id, resultLoginVO);
+	}
+
+	/**
+	 * 테스트
+	 */
+	@Test
+	public void test2() {
+		// given
+		final String id = "ENTERPRISE";
+
+		// when
+		final LoginVO resultLoginVO = onepassLogin(id);
+
+		// then
+		asserts(id, resultLoginVO);
+	}
+
+	/**
+	 * 테스트
+	 */
+	@Test
+	public void test3() {
+		// given
+		final String id = "TEST1";
+
+		// when
+		final LoginVO resultLoginVO = onepassLogin(id);
+
+		// then
+		asserts(id, resultLoginVO);
+	}
+
+	private LoginVO onepassLogin(final String id) {
+		LoginVO resultLoginVO = null;
+		try {
+			resultLoginVO = loginDAO.onepassLogin(id);
+		} catch (Exception e) {
+			fail("Exception: onepassLogin");
+		}
+		return resultLoginVO;
+	}
+
+	private void asserts(final String id, final LoginVO resultLoginVO) {
 		if (log.isDebugEnabled()) {
 			log.debug("id={}", id);
 
