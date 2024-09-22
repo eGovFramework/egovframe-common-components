@@ -47,6 +47,12 @@ function fn_egov_inqire_sysHist(histId){
 	document.frm.action = "<c:url value='/sym/log/slg/InqireSysHistory.do'/>";
 	document.frm.submit();
 }
+
+function press(event) {
+	if (event.keyCode == 13) {
+		fn_egov_select_sysHist(1);
+	}
+}
 </script>
 </head>
 <body>
@@ -67,7 +73,7 @@ function fn_egov_inqire_sysHist(histId){
 				<option value="0" <c:if test="${searchVO.searchCnd == '0'}">selected="selected"</c:if> ><spring:message code="comSymLogSlg.sysHistList.sysNm"/></option><!-- 시스템명 -->
 				<option value="1" <c:if test="${searchVO.searchCnd == '1'}">selected="selected"</c:if> ><spring:message code="comSymLogSlg.sysHistList.histSeCodeNm"/></option><!-- 이력구분 -->
 				</select>
-				<input id="searchWrd" class="s_input2 vat" name="searchWrd" type="text" value='<c:out value='${searchVO.searchWrd}'/>' maxlength="35" size="35" onkeypress="press();" title="<spring:message code="title.search"/>" /><!-- 사용자명검색 -->
+				<input id="searchWrd" class="s_input2 vat" name="searchWrd" type="text" value='<c:out value='${searchVO.searchWrd}'/>' maxlength="35" size="35" onkeypress="press(event);" title="<spring:message code="title.search"/>" /><!-- 사용자명검색 -->
 				
 				<span class="btn_b"><a href="" onclick="fn_egov_select_sysHist('1'); return false;" title="<spring:message code="title.inquire"/>"><spring:message code="button.inquire" /></a></span><!-- 조회 -->
 				<input class="s_btn" type="submit" value="<spring:message code="button.create" />" title="<spring:message code="title.create" />" onclick="fn_egov_insert_sysHist(); return false;" /><!-- 등록 -->
