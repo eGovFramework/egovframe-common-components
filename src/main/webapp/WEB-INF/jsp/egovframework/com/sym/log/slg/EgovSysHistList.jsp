@@ -69,8 +69,8 @@ function fn_egov_inqire_sysHist(histId){
 				</select>
 				<input id="searchWrd" class="s_input2 vat" name="searchWrd" type="text" value='<c:out value='${searchVO.searchWrd}'/>' maxlength="35" size="35" onkeypress="press();" title="<spring:message code="title.search"/>" /><!-- 사용자명검색 -->
 				
-				<span class="btn_b"><a href="" onclick="fn_egov_select_sysHist('1'); return false;" title="<spring:message code="title.inquire"/>"><spring:message code="button.inquire" /></a></span><!-- 조회 -->
-				<input class="s_btn" type="submit" value="<spring:message code="button.create" />" title="<spring:message code="title.create" />" onclick="fn_egov_insert_sysHist(); return false;" /><!-- 등록 -->
+				<span class="btn_b"><a href="#" onclick="fn_egov_select_sysHist('1'); return false;" title="<spring:message code="title.inquire"/>"><spring:message code="button.inquire" /></a></span><!-- 조회 -->
+				<input class="s_btn" type="button" value="<spring:message code="button.create" />" title="<spring:message code="title.create" />" onclick="fn_egov_insert_sysHist(); return false;" /><!-- 등록 -->
 			</li>
 		</ul>
 	</div>
