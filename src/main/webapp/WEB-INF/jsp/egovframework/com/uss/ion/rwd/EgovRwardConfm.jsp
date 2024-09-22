@@ -54,8 +54,6 @@
 	function modalDialogCallback(retVal) {
 		if(retVal != null){
 			
-			debugger; 
-			
 			var tmp = retVal.split(",");		
 			
 			var varForm	= document.all["rwardManage"];
