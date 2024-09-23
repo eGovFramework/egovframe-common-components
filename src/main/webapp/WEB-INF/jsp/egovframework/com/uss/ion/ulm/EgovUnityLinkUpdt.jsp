@@ -45,7 +45,6 @@ function fn_egov_init_UnityLink(){
  ******************************************************** */
 function fn_egov_save_UnityLink(){
 	var varFrom = document.unityLink;
-	varFrom.onsubmit();
 	if(confirm("<spring:message code="common.save.msg" />")){
 		varFrom.action =  "<c:url value='/uss/ion/ulm/updtUnityLink.do' />";
 		if(!validateUnityLink(varFrom)){
