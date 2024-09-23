@@ -31,7 +31,7 @@ import lombok.extern.slf4j.Slf4j;
  * @since 2024-09-24
  *
  */
-@ContextConfiguration(classes = { EgovLoginServiceImplTestactionLoginByEsntlIdTest.class, EgovTestAbstractDAO.class })
+@ContextConfiguration(classes = { EgovLoginServiceImplTestActionLoginByEsntlIdTest.class, EgovTestAbstractDAO.class })
 @Configuration
 @ImportResource({ "classpath*:egovframework/spring/com/idgn/context-idgn-MailMsg.xml", })
 @ComponentScan(useDefaultFilters = false, basePackages = { "egovframework.com.uat.uia.service.impl",
@@ -49,7 +49,7 @@ import lombok.extern.slf4j.Slf4j;
 				}) })
 @NoArgsConstructor
 @Slf4j
-public class EgovLoginServiceImplTestactionLoginByEsntlIdTest extends EgovTestAbstractDAO {
+public class EgovLoginServiceImplTestActionLoginByEsntlIdTest extends EgovTestAbstractDAO {
 
 	/**
 	 * 일반 로그인, 인증서 로그인을 처리하는 비즈니스 인터페이스 클래스
