@@ -131,8 +131,9 @@ function fn_egov_delete_PopupManage(){
 		<form name="formUpdt" action="<c:url value='/uss/ion/pwm/updtPopup.do'/>" method="post" style="display:inline">
 			<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="fn_egov_modify_PopupManage(); return false;" />
 			<input name="popupId" type="hidden" value="${popupManageVO.popupId}">
-			</form>
-		
+			<input name="cmd" type="hidden" value="<c:out value=''/>">
+		</form>
+
 		<form name="formDelete" action="<c:url value='/uss/ion/pwm/detailPopup.do'/>" method="post" style="display:inline">
 			<input class="s_submit" type="submit" value='<spring:message code="button.delete" />' onclick="fn_egov_delete_PopupManage(); return false;" />
 			<input name="popupId" type="hidden" value="${popupManageVO.popupId}">
