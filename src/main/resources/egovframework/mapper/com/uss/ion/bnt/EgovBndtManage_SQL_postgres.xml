@@ -284,14 +284,14 @@
     </delete>  
 
 <!-- 엑셀일괄 등록 처리  -->
-    <select id="selectBndtManageBnde" resultType="egovframework.com.uss.ion.bnt.service.BndtManageVO">
+    <select id="selectBndtManageBnde" resultType="egovframework.com.uss.ion.bnt.service.BndtManageVO" flushCache="true">
         
 				select A.ESNTL_ID as bndtId ,
 				       A.USER_NM as tempBndtNm ,
 				      (select info.ORGNZT_NM from COMTNORGNZTINFO info where  info.ORGNZT_ID = A.ORGNZT_ID )  AS tempOrgnztNm,
 				      (select count(user_nm) from  COMVNUSERMASTER where user_nm = A.USER_NM) tempCount
 				from COMVNUSERMASTER A
-				WHERE  USER_ID   = #{tempBndtId}
+				WHERE  ESNTL_ID   = #{tempBndtId}
 				AND    USER_NM   = #{tempBndtNm}
 				limit 1
         

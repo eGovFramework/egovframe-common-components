@@ -178,7 +178,7 @@
 		<tbody>
 			<c:forEach items="${bndtManageList}" var="resultInfo" varStatus="status">
 			<input type="hidden" name="bndtDe" id="bndtDe" value="${resultInfo.bndtDe}">
-			<input type="hidden" name="bndtId" id="bndtId" value="${resultInfo.tempBndtId}">
+			<input type="hidden" name="bndtId" id="bndtId" value="${resultInfo.bndtId}">
 			<tr>
 				<td>
 					<font <c:if test="${(resultInfo.dateWeek ) == 1}"> color="red" </c:if> <c:if test="${(resultInfo.dateWeek ) == 7}"> color="blue"</c:if> size='2'>
