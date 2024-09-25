@@ -92,9 +92,9 @@
 	}
 
 	function fn_egov_inqire_wikmnthngreprt(reprtId) {
-		document.wikMnthngReprtVO.reprtId.value = reprtId;
-		document.wikMnthngReprtVO.action = "<c:url value='/cop/smt/wmr/selectWikMnthngReprt.do'/>";
-		document.wikMnthngReprtVO.submit();
+		document.wikMnthngReprtFrm.reprtId.value = reprtId;
+		document.wikMnthngReprtFrm.action = "<c:url value='/cop/smt/wmr/selectWikMnthngReprt.do'/>";
+		document.wikMnthngReprtFrm.submit();
 	}
 
 	function fn_egov_insert_wikmnthngreprt(){
@@ -239,7 +239,7 @@
 		</ul>
 	</div>
 
-	<form name="wikMnthngReprtVO" method="post" action="<c:url value='/cop/smt/wmr/selectWikMnthngReprt.do'/>">
+	<form name="wikMnthngReprtFrm" method="post" action="<c:url value='/cop/smt/wmr/selectWikMnthngReprt.do'/>">
 		<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 		<input name="searchCnd" type="hidden" value="<c:out value='${searchVO.searchCnd}'/>">
 		<input name="searchWrd" type="hidden" value="<c:out value='${searchVO.searchWrd}'/>">
