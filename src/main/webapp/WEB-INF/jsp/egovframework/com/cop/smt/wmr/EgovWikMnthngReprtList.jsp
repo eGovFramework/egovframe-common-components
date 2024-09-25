@@ -92,9 +92,9 @@
 	}
 
 	function fn_egov_inqire_wikmnthngreprt(reprtId) {
-		document.frm.reprtId.value = reprtId;
-		document.frm.action = "<c:url value='/cop/smt/wmr/selectWikMnthngReprt.do'/>";
-		document.frm.submit();
+		document.wikMnthngReprtVO.reprtId.value = reprtId;
+		document.wikMnthngReprtVO.action = "<c:url value='/cop/smt/wmr/selectWikMnthngReprt.do'/>";
+		document.wikMnthngReprtVO.submit();
 	}
 
 	function fn_egov_insert_wikmnthngreprt(){
@@ -156,8 +156,8 @@
 					<option value="3"><spring:message code="copSmtWmr.wikMnthngReprtList.searchSttus"/></option><!-- 승인여부 -->
 					<option value="0" <c:if test="${searchVO.searchSttus == '0'}">selected="selected"</c:if> ><spring:message code="copSmtWmr.wikMnthngReprtList.unapproved"/></option><!-- 미승인 -->
 					<option value="1" <c:if test="${searchVO.searchSttus == '1'}">selected="selected"</c:if> ><spring:message code="copSmtWmr.wikMnthngReprtList.approval"/></option><!-- 승인 -->
-			   </select>
-			   
+				</select>
+
 				<select name="searchDe" class="select" title="<spring:message code="input.cSelect"/>" style="width:90px"><!-- 선택 -->
 					<option value="3"><spring:message code="copSmtWmr.wikMnthngReprtList.searchDe"/></option>
 					<option value="0" <c:if test="${searchVO.searchDe == '0'}">selected="selected"</c:if> ><spring:message code="copSmtWmr.wikMnthngReprtList.reprtDe"/></option><!-- 보고일자 -->
@@ -201,44 +201,34 @@
 		</colgroup>
 		<thead>
 			<tr>
-			   <th scope="col"><spring:message code="table.num"/></th><!-- 번호 -->
-			   <th scope="col"><spring:message code="copSmtWmr.wikMnthngReprtList.searchSe"/></th><!-- 보고유형 -->
-			   <th scope="col"><spring:message code="copSmtWmr.wikMnthngReprtList.reprtDe"/></th><!-- 보고일자 -->
-			   <th scope="col"><spring:message code="copSmtWmr.wikMnthngReprtList.reprtSuj"/></th><!-- 보고서제목 -->
-			   <th scope="col"><spring:message code="copSmtWmr.wikMnthngReprtList.reprtBgnEndDe"/></th><!-- 해당일자 -->
-			   <th scope="col"><spring:message code="copSmtWmr.wikMnthngReprtList.wrterNm"/></th><!-- 작성자 -->
-			   <th scope="col"><spring:message code="copSmtWmr.wikMnthngReprtList.approval"/></th><!-- 승인 -->
+				<th scope="col"><spring:message code="table.num"/></th><!-- 번호 -->
+				<th scope="col"><spring:message code="copSmtWmr.wikMnthngReprtList.searchSe"/></th><!-- 보고유형 -->
+				<th scope="col"><spring:message code="copSmtWmr.wikMnthngReprtList.reprtDe"/></th><!-- 보고일자 -->
+				<th scope="col"><spring:message code="copSmtWmr.wikMnthngReprtList.reprtSuj"/></th><!-- 보고서제목 -->
+				<th scope="col"><spring:message code="copSmtWmr.wikMnthngReprtList.reprtBgnEndDe"/></th><!-- 해당일자 -->
+				<th scope="col"><spring:message code="copSmtWmr.wikMnthngReprtList.wrterNm"/></th><!-- 작성자 -->
+				<th scope="col"><spring:message code="copSmtWmr.wikMnthngReprtList.approval"/></th><!-- 승인 -->
 			</tr>
 		</thead>
 		<tbody>
 			<c:forEach var="result" items="${resultList}" varStatus="status">
-			  <tr>
-			    <td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-			    <td><c:out value="${result.reprtSe}"/></td>
-			    <td><c:out value="${result.reprtDe}"/></td>
-			    <td>
-			     <form name="wikMnthngReprtVO" method="post" action="<c:url value='/cop/smt/wmr/selectWikMnthngReprt.do'/>">
-			    	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-			    	<input name="searchCnd" type="hidden" value="<c:out value='${searchVO.searchCnd}'/>">
-			    	<input name="searchWrd" type="hidden" value="<c:out value='${searchVO.searchWrd}'/>">
-			    	<input name="searchDe" type="hidden" value="<c:out value='${searchVO.searchDe}'/>">
-			    	<input name="searchBgnDe" type="hidden" value="<c:out value='${searchVO.searchBgnDe}'/>">
-			    	<input name="searchEndDe" type="hidden" value="<c:out value='${searchVO.searchEndDe}'/>">
-			    	<input name="searchSttus" type="hidden" value="<c:out value='${searchVO.searchSttus}'/>">
-					<input type="hidden" name="reprtId" value="<c:out value="${result.reprtId}"/>">
-					<span class="link"><input type="submit" value="<c:out value="${result.reprtSj}"/>" onclick="fn_egov_inqire_wikmnthngreprt('<c:out value="${result.reprtId}"/>'); return false;" style="text-align : left;"></span>
-				 </form>
+				<tr>
+				<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
+				<td><c:out value="${result.reprtSe}"/></td>
+				<td><c:out value="${result.reprtDe}"/></td>
+				<td>
+					<a href="#" onclick="fn_egov_inqire_wikmnthngreprt('<c:out value="${result.reprtId}"/>'); return false;"><c:out value="${result.reprtSj}"/></a>
 				</td>
 				<td><c:out value="${result.reprtBgnDe}"/>~<c:out value="${result.reprtEndDe}"/></td>
 				<td><c:out value="${result.wrterNm}"/></td>
-			    <td><c:out value="${result.confmDt}"/></td>
-			  </tr>
-			 </c:forEach>
-			 <c:if test="${fn:length(resultList) == 0}">
-			  <tr>
-			    <td colspan="7"><spring:message code="common.nodata.msg" /></td>
-			  </tr>
-			 </c:if>
+				<td><c:out value="${result.confmDt}"/></td>
+				</tr>
+			</c:forEach>
+			<c:if test="${fn:length(resultList) == 0}">
+				<tr>
+				<td colspan="7"><spring:message code="common.nodata.msg" /></td>
+				</tr>
+			</c:if>
 		</tbody>
 	</table>
 
@@ -248,7 +238,17 @@
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_linkPage"/>
 		</ul>
 	</div>
-	
+
+	<form name="wikMnthngReprtVO" method="post" action="<c:url value='/cop/smt/wmr/selectWikMnthngReprt.do'/>">
+		<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
+		<input name="searchCnd" type="hidden" value="<c:out value='${searchVO.searchCnd}'/>">
+		<input name="searchWrd" type="hidden" value="<c:out value='${searchVO.searchWrd}'/>">
+		<input name="searchDe" type="hidden" value="<c:out value='${searchVO.searchDe}'/>">
+		<input name="searchBgnDe" type="hidden" value="<c:out value='${searchVO.searchBgnDe}'/>">
+		<input name="searchEndDe" type="hidden" value="<c:out value='${searchVO.searchEndDe}'/>">
+		<input name="searchSttus" type="hidden" value="<c:out value='${searchVO.searchSttus}'/>">
+		<input type="hidden" name="reprtId" value="<c:out value="${result.reprtId}"/>">
+	</form>
 </div>
 </body>
 </html>
