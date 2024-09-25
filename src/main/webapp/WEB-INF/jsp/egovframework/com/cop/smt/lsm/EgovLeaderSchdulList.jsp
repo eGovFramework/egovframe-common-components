@@ -137,22 +137,6 @@ $(function() {
 	}else{
 		$(".tab01 li:eq(0) a").addClass("on");
 	}
-	
-	
-	if(searchMode == "MONTH"){
-		vFrom.action = "<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulMonthList.do' />";
-		document.getElementById("tabMenu0").bgColor = '#BBBBBB';
-	}else if(searchMode == "WEEK"){
-		vFrom.action = "<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulWeekList.do' />";
-		document.getElementById("tabMenu1").bgColor = '#BBBBBB';
-	}else if(searchMode == "DAILY"){
-		vFrom.action = "<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulDailyList.do' />";
-		document.getElementById("tabMenu2").bgColor = '#BBBBBB';
-	}else{
-		vFrom.action = "<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulMonthList.do' />"; 
-		document.getElementById("tabMenu0").bgColor = '#BBBBBB';
-	}
-	vFrom.submit();
 });
 
 </script>
