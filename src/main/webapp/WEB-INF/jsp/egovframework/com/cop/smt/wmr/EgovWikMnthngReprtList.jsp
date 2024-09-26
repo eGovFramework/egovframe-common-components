@@ -59,15 +59,10 @@
 
 	function fn_egov_select_wikmnthngreprt() {
 		document.frm.pageIndex.value = "1";
-		console.log(document.frm.pageIndex.value);
 		document.frm.action = "<c:url value='/cop/smt/wmr/selectWikMnthngReprtList.do'/>";
 
-		
 		var bgnDe = document.frm.searchBgnDe.value.split("-").join("");
 		var endDe = document.frm.searchEndDe.value.split("-").join("");
-		
-		console.log(bgnDe);
-		console.log(endDe);
 
 		if(bgnDe != ""){
 			if(isDate(bgnDe, "<spring:message code="copSmtWmr.wikMnthngReprtList.searchBgnDe"/>") == false) {/* 검색시작일자 */
