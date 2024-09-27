@@ -136,6 +136,39 @@ function fncCheckValiDay() {
 
 }
 
+function validateTroblReqst(varFrom) {
+    if (varFrom.troblNm.value.trim() === "") {
+        alert("장애명을 입력해주세요.");
+        varFrom.troblNm.focus();
+        return false;
+    }
+
+    if (varFrom.troblDc.value.trim() === "") {
+        alert("장애 설명을 입력해주세요.");
+        varFrom.troblDc.focus();
+        return false;
+    }
+
+    if (varFrom.troblOccrrncD.value.trim() === "") {
+        alert("장애 발생 일자를 입력해주세요.");
+        varFrom.troblOccrrncD.focus();
+        return false;
+    }
+
+    if (varFrom.troblRqesterNm.value.trim() === "") {
+        alert("장애 등록자를 입력해주세요.");
+        varFrom.troblRqesterNm.focus();
+        return false;
+    }
+
+    if (varFrom.troblKnd.value === "") {
+        alert("장애 종류를 선택해주세요.");
+        varFrom.troblKnd.focus();
+        return false;
+    }
+
+    return true;
+}
 -->
 </script>
 </head>
