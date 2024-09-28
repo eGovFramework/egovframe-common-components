@@ -63,7 +63,7 @@ public class EgovAdressCntcController {
 
 			response.setCharacterEncoding("UTF-8");
 			response.setContentType("text/xml");
-			response.getWriter().write(EgovWebUtil.clearXSSMaximum(sb.toString()));
+			response.getWriter().write(sb.toString());
 		}
 	}
 
