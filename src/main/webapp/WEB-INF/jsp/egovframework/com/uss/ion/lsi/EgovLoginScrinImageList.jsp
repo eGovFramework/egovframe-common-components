@@ -149,19 +149,19 @@ function press() {
 	<h1><spring:message code="ussIonLsi.loginScrinImageList.loginScrinImageList"/></h1><!-- 로그인화면이미지 관리 -->
 
 	<form name="listForm" action="<c:url value='/uss/ion/lsi/selectLoginScrinImageList.do'/>" method="post">
-	
-	<div class="search_box" title=<spring:message code="common.searchCondition.msg"/>><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
-		<ul>
-			<li>
-				<label for="searchKeyword"><spring:message code="ussIonLsi.loginScrinImageList.imageNm"/> : </label><!-- 이미지 명 -->
-				<input id="searchKeyword" class="s_input2 vat" name="searchKeyword" type="text" value='<c:out value="${loginScrinImageVO.searchKeyword}"/>' size="25" onkeypress="press();" title=<spring:message code="button.search"/> /><!-- 검색 -->
-				
-				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fncSelectLoginScrinImageList('1'); return false;" />
-				<span class="btn_b"><a href="<c:url value='/uss/ion/lsi/addViewLoginScrinImage.do'/>?pageIndex=<c:out value='${loginScrinImageVO.pageIndex}'/>&amp;searchKeyword=<c:out value="${loginScrinImageVO.searchKeyword}"/>&amp;searchCondition=1" onclick="fncAddLoginScrinImageInsert(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
-			</li>
-		</ul>
-	</div>
-	<input type="hidden" name="searchCondition" value="1">
+		<div class="search_box" title=<spring:message code="common.searchCondition.msg"/>><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
+			<ul>
+				<li>
+					<label for="searchKeyword"><spring:message code="ussIonLsi.loginScrinImageList.imageNm"/> : </label><!-- 이미지 명 -->
+					<input id="searchKeyword" class="s_input2 vat" name="searchKeyword" type="text" value='<c:out value="${loginScrinImageVO.searchKeyword}"/>' size="25" onkeypress="press();" title=<spring:message code="button.search"/> /><!-- 검색 -->
+
+					<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fncSelectLoginScrinImageList('1'); return false;" />
+					<span class="btn_b"><a href="<c:url value='/uss/ion/lsi/addViewLoginScrinImage.do'/>?pageIndex=<c:out value='${loginScrinImageVO.pageIndex}'/>&amp;searchKeyword=<c:out value="${loginScrinImageVO.searchKeyword}"/>&amp;searchCondition=1" onclick="fncAddLoginScrinImageInsert(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+				</li>
+			</ul>
+		</div>
+		<input type="hidden" name="searchCondition" value="1">
+		<input type="hidden" name="pageIndex" value="<c:out value='${loginScrinImageVO.pageIndex}'/>">
 	</form>
 
 	<table class="board_list">
