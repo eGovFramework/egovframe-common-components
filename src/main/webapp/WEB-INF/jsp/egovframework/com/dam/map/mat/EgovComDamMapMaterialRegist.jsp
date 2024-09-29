@@ -196,7 +196,7 @@
 			<!-- 하단 버튼 -->
 			<div class="btn">
 				<input class="s_submit" type="submit" value="<spring:message code="button.save" />" onclick="fn_egov_regist_MapMaterial(document.mapMaterial); return false;" /><!-- 저장 -->
-				<input class="s_submit" type="submit" value='<spring:message code="button.list" />' onclick="fn_egov_list_MapMaterial(); return false;" /><!-- 목록 -->
+				<input class="s_submit" type="button" value='<spring:message code="button.list" />' onclick="fn_egov_list_MapMaterial(); return false;" /><!-- 목록 -->
 			</div>
 			<div style="clear:both;"></div>
 		</div>
