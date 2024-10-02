@@ -39,7 +39,7 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param reportrVO
 	 */
-	public List<ReportrVO> selectReportrList(ReportrVO reportrVO) throws Exception{
+	public List<ReportrVO> selectReportrList(final ReportrVO reportrVO) {
 		return selectList("MemoReprtDAO.selectReportrList", reportrVO);
 	}
 	
@@ -50,8 +50,8 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param reportrVO
 	 */
-	public int selectReportrListCnt(ReportrVO reportrVO) throws Exception{
-		return (Integer)selectOne("MemoReprtDAO.selectReportrListCnt", reportrVO);
+	public int selectReportrListCnt(final ReportrVO reportrVO) {
+		return selectOne("MemoReprtDAO.selectReportrListCnt", reportrVO);
 	}
 	
 	/**
@@ -61,8 +61,8 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param DeptVO
 	 */
-	public String selectWrterClsfNm(String wrterId) throws Exception{
-		return (String)selectOne("MemoReprtDAO.selectWrterClsfNm", wrterId);
+	public String selectWrterClsfNm(final String wrterId) {
+		return selectOne("MemoReprtDAO.selectWrterClsfNm", wrterId);
 	}
 	
 	/**
@@ -72,14 +72,14 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoReprtVO
 	 */
-	public List<MemoReprtVO> selectMemoReprtList(MemoReprtVO memoReprtVO) throws Exception{
+	public List<MemoReprtVO> selectMemoReprtList(final MemoReprtVO memoReprtVO) {
 		//날짜관련
 		memoReprtVO.setSearchBgnDe(memoReprtVO.getSearchBgnDe().replaceAll("-", ""));
 		memoReprtVO.setSearchEndDe(memoReprtVO.getSearchEndDe().replaceAll("-", ""));
 		
-		List<MemoReprtVO> resultList = selectList("MemoReprtDAO.selectMemoReprtList", memoReprtVO);
+		final List<MemoReprtVO> resultList = selectList("MemoReprtDAO.selectMemoReprtList", memoReprtVO);
 		for(int i=0; i < resultList.size(); i++){
-			MemoReprtVO resultVO = resultList.get(i);
+			final MemoReprtVO resultVO = resultList.get(i);
 			resultVO.setReprtDe(EgovDateUtil.convertDate(resultVO.getReprtDe(), "0000", "yyyy-MM-dd"));
 			resultList.set(i, resultVO);
 		}
@@ -93,8 +93,8 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoReprtVO
 	 */
-	public MemoReprtVO selectMemoReprt(MemoReprtVO memoReprtVO) throws Exception{
-		MemoReprtVO resultVO = (MemoReprtVO)selectOne("MemoReprtDAO.selectMemoReprt", memoReprtVO);
+	public MemoReprtVO selectMemoReprt(final MemoReprtVO memoReprtVO) {
+		final MemoReprtVO resultVO = selectOne("MemoReprtDAO.selectMemoReprt", memoReprtVO);
 		resultVO.setReprtDe(EgovDateUtil.convertDate(resultVO.getReprtDe(), "0000", "yyyy-MM-dd"));
 		return resultVO;
 	}
@@ -105,8 +105,8 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoReprt
 	 */
-	public void readMemoReprt(MemoReprt memoReprt) throws Exception{
-		update("MemoReprtDAO.readMemoReprt", memoReprt);
+	public int readMemoReprt(final MemoReprt memoReprt) {
+		return update("MemoReprtDAO.readMemoReprt", memoReprt);
 	}
 
 	/**
@@ -115,10 +115,10 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoReprt
 	 */
-	public void updateMemoReprt(MemoReprt memoReprt) throws Exception{
+	public int updateMemoReprt(final MemoReprt memoReprt) {
 		//날짜관련
 		memoReprt.setReprtDe(EgovStringUtil.isNullToString(memoReprt.getReprtDe()).replaceAll("-", ""));//KISA 보안약점 조치 (2018-10-29, 윤창원)
-		update("MemoReprtDAO.updateMemoReprt", memoReprt);
+		return update("MemoReprtDAO.updateMemoReprt", memoReprt);
 	}
 
 	/**
@@ -127,8 +127,8 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoReprt
 	 */
-	public void updateMemoReprtDrctMatter(MemoReprt memoReprt) throws Exception{
-		update("MemoReprtDAO.updateMemoReprtDrctMatter", memoReprt);
+	public int updateMemoReprtDrctMatter(final MemoReprt memoReprt) {
+		return update("MemoReprtDAO.updateMemoReprtDrctMatter", memoReprt);
 	}
 
 	/**
@@ -137,10 +137,10 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoReprt
 	 */
-	public void insertMemoReprt(MemoReprt memoReprt) throws Exception{
+	public int insertMemoReprt(final MemoReprt memoReprt) {
 		//날짜관련
 		memoReprt.setReprtDe(EgovStringUtil.isNullToString(memoReprt.getReprtDe()).replaceAll("-", ""));//KISA 보안약점 조치 (2018-10-29, 윤창원)
-		insert("MemoReprtDAO.insertMemoReprt", memoReprt);
+		return insert("MemoReprtDAO.insertMemoReprt", memoReprt);
 	}
 
 	/**
@@ -149,8 +149,8 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoReprt
 	 */
-	public void deleteMemoReprt(MemoReprt memoReprt) throws Exception{
-		delete("MemoReprtDAO.deleteMemoReprt", memoReprt);
+	public int deleteMemoReprt(final MemoReprt memoReprt) {
+		return delete("MemoReprtDAO.deleteMemoReprt", memoReprt);
 	}
 
 	/**
@@ -160,12 +160,12 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoReprtVO
 	 */
-	public int selectMemoReprtListCnt(MemoReprtVO memoReprtVO) throws Exception{
+	public int selectMemoReprtListCnt(final MemoReprtVO memoReprtVO) {
 		//날짜관련
 		memoReprtVO.setSearchBgnDe(memoReprtVO.getSearchBgnDe().replaceAll("-", ""));
 		memoReprtVO.setSearchEndDe(memoReprtVO.getSearchEndDe().replaceAll("-", ""));
 		
-		return (Integer)selectOne("MemoReprtDAO.selectMemoReprtListCnt", memoReprtVO);
+		return selectOne("MemoReprtDAO.selectMemoReprtListCnt", memoReprtVO);
 	}
 
 }
