@@ -2,6 +2,8 @@ package egovframework.com.uss.ion.rss.service;
 
 import java.util.List;
 import java.util.Map;
+
+import egovframework.com.cmm.ComDefaultCodeVO;
 /**
  * RSS태그관리를 처리하는 Service Class 구현
  * @author 공통서비스 장동한
@@ -25,7 +27,7 @@ public interface EgovRssTagManageService {
      * @return List
      * @throws Exception
      */
-    public List<?> selectRssTagManageTableList() throws Exception;
+    public List<ComDefaultCodeVO> selectRssTagManageTableList() throws Exception;
 
     /**
      * JDBC 테이블 컬럼 목록을 조회한다.

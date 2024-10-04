@@ -3,6 +3,7 @@ package egovframework.com.uss.ion.rss.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.uss.ion.rss.service.EgovRssTagManageService;
 import egovframework.com.uss.ion.rss.service.RssManage;
 
@@ -44,7 +45,7 @@ public class EgovRssTagManageServiceImpl extends EgovAbstractServiceImpl
      * @throws Exception
      */
     @Override
-	public List<?> selectRssTagManageTableList() throws Exception {
+	public List<ComDefaultCodeVO> selectRssTagManageTableList() throws Exception {
     	return dao.selectRssTagManageTableList();
     }
     /**
