@@ -80,7 +80,7 @@ public class EgovRssTagManageController {
     	hmParam.put("dbType", sDbType);
     	hmParam.put("tableName", sTableName);
 
-    	ArrayList<?> arrListResult = (ArrayList<?>)egovRssManageService.selectRssTagManageTableColumnList(hmParam);
+    	List<Map<String, String>> arrListResult = egovRssManageService.selectRssTagManageTableColumnList(hmParam);
 
     	model.addAttribute("ColumnList",arrListResult);
     	return "egovframework/com/uss/ion/rss/EgovRssTagManageTableColumnList";
