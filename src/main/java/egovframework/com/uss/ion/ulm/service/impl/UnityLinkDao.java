@@ -2,11 +2,12 @@ package egovframework.com.uss.ion.ulm.service.impl;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.ulm.service.UnityLink;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 통합링크관리를 처리하는 Dao Class 구현
@@ -26,23 +27,25 @@ import org.springframework.stereotype.Repository;
 public class UnityLinkDao extends EgovComAbstractDAO {
 
     /**
-     * 통합링크관리 메인 셈플 목록을 조회한다.
+     * 통합링크관리 메인 샘플 목록을 조회한다.
+     *
      * @param popupManageVO - 팝업창 Vo
      * @return List - 팝업창 목록
      *
      * @param popupManageVO
      */
-    public List<?> selectUnityLinkSample(UnityLink unityLink) throws Exception {
+    public List<EgovMap> selectUnityLinkSample(UnityLink unityLink) throws Exception {
         return selectList("UnityLink.selectUnityLinkSample", unityLink);
     }
 
     /**
      * 통합링크관리를(을) 목록을 한다.
+     *
      * @param searchVO 조회할 정보가 담긴 VO
      * @return List
      * @throws Exception
      */
-    public List<?> selectUnityLinkList(ComDefaultVO searchVO) throws Exception {
+    public List<EgovMap> selectUnityLinkList(ComDefaultVO searchVO) throws Exception {
         return selectList("UnityLink.selectUnityLink", searchVO);
     }
 
