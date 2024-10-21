@@ -22,7 +22,7 @@ public class EgovStringUtilTest {
         Assert.assertEquals( expect , "광현이" );
     }
     @Test
-    public void 주격_empty(){
+    public void 주격_null(){
         String expect = EgovStringUtil.getSubjectParticle("철수");
         Assert.assertEquals( expect , "철수" );
     }
