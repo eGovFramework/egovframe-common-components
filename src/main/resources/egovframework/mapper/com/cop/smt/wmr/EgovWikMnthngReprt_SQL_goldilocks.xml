@@ -133,7 +133,7 @@
 			A.REPORT_ENDDE,
 			(CASE WHEN NVL(A.CONFM_DT, ' ') = ' ' THEN '미승인' ELSE '승인' END) CONFM_DT
 		FROM COMTNWIKMNTHNGREPRT A
-		LEFT OUTER JOIN COMTNEMPLYRINFO B
+		LEFT OUTER JOIN COMVNUSERMASTER B
 			ON A.WRTER_ID = B.ESNTL_ID
 		LEFT OUTER JOIN COMTCCMMNDETAILCODE C
 			ON C.CODE_ID = 'COM060' 
@@ -183,7 +183,7 @@
 		SELECT 
 			COUNT(A.REPRT_ID) as cnt
 		FROM COMTNWIKMNTHNGREPRT A
-		LEFT OUTER JOIN COMTNEMPLYRINFO B
+		LEFT OUTER JOIN COMVNUSERMASTER B
 			ON A.WRTER_ID = B.ESNTL_ID
 		WHERE (A.WRTER_ID = #{searchId} OR A.REPORTR_ID = #{searchId})
 	 
@@ -226,7 +226,6 @@
 			A.REPORT_DE,
 			A.WRTER_ID,
 			B.USER_NM WRTER_NM,
-			B.OFCPS_NM WRTER_CLSF_NM,
 			A.REPORTR_ID,
 			C.USER_NM REPORTR_NM,	
 			C.OFCPS_NM REPORTR_CLSF_NM,	
@@ -242,11 +241,13 @@
 			TO_CHAR(A.LAST_UPDT_PNTTM, 'YYYYmmddHH24mi') AS LAST_UPDT_PNTTM,
 			A.LAST_UPDUSR_ID 
 		FROM COMTNWIKMNTHNGREPRT A
-		LEFT OUTER JOIN COMTNEMPLYRINFO B
+		LEFT OUTER JOIN COMVNUSERMASTER B
 			ON A.WRTER_ID = B.ESNTL_ID
 		LEFT OUTER JOIN COMTNEMPLYRINFO C
 			ON A.REPORTR_ID = C.ESNTL_ID
-		WHERE A.REPRT_ID = #{reprtId}
+		WHERE 1=1
+			AND (A.WRTER_ID = #{searchId} || A.REPORTR_ID = #{searchId})
+			AND A.REPRT_ID = #{reprtId}
 	</select>
 	
 	<!-- 주간/월간보고::수정  -->
@@ -266,7 +267,9 @@
 			ATCH_FILE_ID=#{atchFileId},
 			LAST_UPDT_PNTTM = sysdate,
 			LAST_UPDUSR_ID = #{lastUpdusrId}
-		WHERE REPRT_ID = #{reprtId}
+		WHERE 1=1
+			AND WRTER_ID = #{searchId}
+			AND REPRT_ID = #{reprtId}
 	</update>
 	
 	<!-- 주간/월간보고::승인  -->
@@ -274,14 +277,18 @@
 		UPDATE COMTNWIKMNTHNGREPRT 
 		SET  
 			CONFM_DT=#{confmDt}
-		WHERE REPRT_ID = #{reprtId}
+		WHERE 1=1
+			AND REPORTR_ID = #{searchId}
+			AND REPRT_ID = #{reprtId}
 	</update>
 	
 	<!-- 주간/월간보고::삭제  -->
 	<delete id="deleteWikMnthngReprt" parameterType="egovframework.com.cop.smt.wmr.service.WikMnthngReprt"> 
 		
 			DELETE FROM COMTNWIKMNTHNGREPRT 
-			WHERE REPRT_ID = #{reprtId}
+			WHERE 1=1
+				AND WRTER_ID = #{searchId}
+				AND REPRT_ID = #{reprtId}
 		
 	</delete>
 	

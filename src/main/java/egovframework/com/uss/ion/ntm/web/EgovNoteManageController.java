@@ -21,6 +21,7 @@ import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.resolver.EgovSecurityMap;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.service.EgovFileMngService;
@@ -89,7 +90,7 @@ public class EgovNoteManageController {
      */
     @IncludedInfo(name="쪽지관리", order = 840 ,gid = 50)
     @RequestMapping(value = "/uss/ion/ntm/registEgovNoteManage.do")
-    public String EgovNoteRecptnRegistForm(NoteManageVO noteManage, @RequestParam Map<?, ?> commandMap,ModelMap model) throws Exception {
+    public String EgovNoteRecptnRegistForm(NoteManageVO noteManage, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
     	String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
@@ -113,29 +114,6 @@ public class EgovNoteManageController {
     		Map<?, ?> mapNoteManage = egovNoteManageService.selectNoteManage(noteManage);
 
     		noteManage.setNoteSj("RE : " + (String)mapNoteManage.get("noteSj"));
-    		/*
-    		HTML EDIT 용
-    		noteManage.setNoteCn(
-    				"<br><br><br><br><font color='green' size='2'>" +
-    				"[ 원 본 글 ]=================================================================<br>" +
-    				"* 발 신 자 : " + (String)mapNoteManage.get("trnsmiterNm") + "("+ (String)mapNoteManage.get("trnsmiterNm") +")<br>" +
-    				"* 발신시각 : "+ (String)mapNoteManage.get("trnsmiterPnttm") + "</font><br>" +
-    				(String)mapNoteManage.get("noteCn")
-    		);
-    		*/
-    		noteManage.setNoteCn(
-    				"\r\n" +
-    				"\r\n" +
-    				"\r\n" +
-    				"\r\n" +
-    				"\r\n" +
-    				"[ 원 본 글 ]================================================================" + "\r\n" +
-    				"* 발 신 자 : " + (String)mapNoteManage.get("trnsmiterNm") + "("+ (String)mapNoteManage.get("trnsmiterNm") +")<br>" + "\r\n" +
-    				"* 발신시각 : "+ (String)mapNoteManage.get("trnsmiterPnttm") + "\r\n" +
-    				(String)mapNoteManage.get("noteCn")
-      		);
-
-    		noteManage.setAtchFileId((String)mapNoteManage.get("atchFileId"));
 
     		model.addAttribute("noteManage", noteManage);
     		model.addAttribute("noteManageMap", mapNoteManage);
@@ -166,7 +144,13 @@ public class EgovNoteManageController {
             ModelMap model) throws Exception {
 
     	String sLocationUrl = "egovframework/com/uss/ion/ntm/EgovNoteManage";
-
+    	
+    	//변수 설정
+    	String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
+    	if(sCmd.equals("reply")){
+    		sLocationUrl = "redirect:/uss/ion/ntr/listNoteRecptn.do";
+    	}
+    	
 		//Spring Security 사용자권한 처리
 	    Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 	    if (!isAuthenticated) {

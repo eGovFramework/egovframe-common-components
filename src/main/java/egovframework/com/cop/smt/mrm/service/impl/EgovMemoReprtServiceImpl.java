@@ -168,8 +168,8 @@ public class EgovMemoReprtServiceImpl extends EgovAbstractServiceImpl implements
 	 * 
 	 * @param memoReprt
 	 */
-	public void deleteMemoReprt(MemoReprt memoReprt) throws Exception{
-		memoReprtDAO.deleteMemoReprt(memoReprt);
+	public void deleteMemoReprt(MemoReprtVO memoReprtVO) throws Exception{
+		memoReprtDAO.deleteMemoReprt(memoReprtVO);
 	}
 
 }

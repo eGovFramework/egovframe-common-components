@@ -198,8 +198,6 @@
 		<tr>
 			<th><spring:message code="copSmtWmr.wikMnthngReprtUpdt.wrterNm"/> <span class="pilsu">*</span></th><!-- 작성자 -->
 			<td class="left">
-			    <c:out value="${wikMnthngReprtVO.wrterClsfNm}" escapeXml="false" />
-				&nbsp;
 				<c:out value="${wikMnthngReprtVO.wrterNm}" escapeXml="false" />
 				<input type="hidden" name="wrterId" id="wrterId" value="${wikMnthngReprtVO.wrterId}"/>
 				<input type="hidden" name="wrterNm" id="wrterNm" value="${wikMnthngReprtVO.wrterNm}"/>
@@ -255,7 +253,7 @@
 			<th><spring:message code="copSmtWmr.wikMnthngReprtUpdt.atchFile"/></th><!-- 첨부파일 목록 -->
 			<td class="left">
 			    <c:import charEncoding="utf-8" url="/cmm/fms/selectFileInfsForUpdate.do" >
-					<c:param name="param_atchFileId" value="${egovc:encrypt(wikMnthngReprtVO.atchFileId)}" />
+					<c:param name="param_atchFileId" value="${egovc:encryptId(wikMnthngReprtVO.atchFileId)}" />
 				</c:import>&nbsp;
 			</td>
 		</tr>
@@ -266,6 +264,14 @@
 				<input name="file_1" id="egovComFileUploader" type="file" title="${title}" multiple/><!-- 첨부파일명 입력 -->
 				<div id="egovComFileList"></div>  
 			</td>
+			<c:choose>
+				<c:when test="${empty wikMnthngReprtVO.atchFileId}">
+					<input name="atchFileAt" type="hidden" value="N">
+				</c:when>
+				<c:otherwise>
+					<input name="atchFileAt" type="hidden" value="Y">
+				</c:otherwise>
+			</c:choose>
 		</tr>
 		<tr>
 			<th><spring:message code="copSmtWmr.wikMnthngReprtUpdt.reprtSttus"/></th><!-- 보고서 상태 -->
@@ -284,7 +290,9 @@
 </div>
 
 	<input type="hidden" name="returnUrl" value="<c:url value='/cop/smt/wmr/modifyWikMnthngReprt.do' />" />
-	<form:hidden path="reprtId" />
+	<!--form:hidden path="reprtId" / -->
+	<input type="hidden" name="reprtId" value="<c:out value='${egovc:encryptId(wikMnthngReprtVO.reprtId)}'/>" />
+	
 
 	<input type="hidden" name="posblAtchFileNumber" id="posblAtchFileNumber" value="3" />
 	<!-- //첨부파일 개수를 위한 hidden -->

@@ -17,6 +17,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <c:set var="pageTitle"><spring:message code="comUssIonNts.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -122,11 +123,11 @@ function fn_egov_checkAll_NoteTrnsmit(){
 	//undefined
 	if( FLength == 1){
 		document.listForm.checkList.checked = checkAllValue;
-	}{
-			for(var i=0; i < FLength; i++)
-			{
-				document.getElementsByName("checkList")[i].checked = checkAllValue;
-			}
+	}else{
+		for(var i=0; i < FLength; i++)
+		{
+			document.getElementsByName("checkList")[i].checked = checkAllValue;
+		}
 	}
 
 }
@@ -143,11 +144,11 @@ function fn_egov_delCnt_NoteRecptn(){
 	//undefined
 	if( FLength == 1){
 		if(document.listForm.checkList.checked == true){g_nDelCount++;}
-	}{
-			for(var i=0; i < FLength; i++)
-			{
-				if(document.getElementsByName("checkList")[i].checked == true){g_nDelCount++;}
-			}
+	}else{
+		for(var i=0; i < FLength; i++)
+		{
+			if(document.getElementsByName("checkList")[i].checked == true){g_nDelCount++;}
+		}
 	}
 
 	return g_nDelCount;
@@ -159,6 +160,11 @@ function fn_egov_delCnt_NoteRecptn(){
 ******************************************************** */
 function fn_egov_delete_NoteTrnsmit(){
 	var vFrom = document.listForm;
+	var checkList = vFrom.checkList;
+	var noteId = new Array();
+	var noteTrnsmitId = new Array();
+	var noteIdAll = vFrom.noteIdAll;
+	var noteTrnsmitIdAll = vFrom.noteTrnsmitIdAll;
 
 	if(fn_egov_delCnt_NoteRecptn() == 0){
 		alert("<spring:message code="comUssIonNts.validate.noDelList" />"); //삭제할 목록을 선택해주세요!
@@ -166,12 +172,19 @@ function fn_egov_delete_NoteTrnsmit(){
 		return;
 	}
 
+	var checkedElements = vFrom.querySelectorAll('input[name="checkList"]:checked');
+	Array.from(checkedElements).map(function(checkbox) {
+		noteId.push(checkbox.parentElement.querySelector('input[name="noteId"]').value);
+	 	noteTrnsmitId.push(checkbox.parentElement.querySelector('input[name="noteTrnsmitId"]').value);
+	});
+	
 	if(confirm("<spring:message code="comUssIonNts.validate.deleteCnfirmt" />")){ //선택된 보낸쪽지함을 삭제 하시겠습니까?
+		noteIdAll.value = noteId;
+		noteTrnsmitIdAll.value = noteTrnsmitId;
 		vFrom.action = "<c:url value='/uss/ion/nts/listNoteTrnsmit.do'/>";
 		vFrom.cmd.value = 'del';
 		vFrom.submit();
 	}
-
 }
 
 /* ********************************************************
@@ -259,14 +272,24 @@ function fn_egov_search_NoteRecptn(){
 	</c:if>
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr>
-		<td><input type="checkbox" name="checkList" title="선택" value="${resultInfo.noteId},${resultInfo.noteTrnsmitId}"></td>
+		<td><input type="checkbox" name="checkList" title="선택">
+		<input type="hidden" name="noteId" value="<c:out value="${egovc:encrypt(resultInfo.noteId)}"/>" />
+		<input type="hidden" name="noteTrnsmitId" value="<c:out value="${egovc:encrypt(resultInfo.noteTrnsmitId)}"/>" /></td>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 		<td class="left">
-			<a href="<c:url value='/uss/ion/nts/detailNoteTrnsmit.do'/>?pageIndex=${searchVO.pageIndex}&amp;noteId=${resultInfo.noteId}&amp;noteTrnsmitId=${resultInfo.noteTrnsmitId}"><c:out value='${fn:substring(resultInfo.noteSj, 0, 40)}'/></a>
+			<a href="<c:url value='/uss/ion/nts/detailNoteTrnsmit.do'/>?pageIndex=${searchVO.pageIndex}&amp;noteId=${egovc:encrypt(resultInfo.noteId)}&amp;noteTrnsmitId=${egovc:encrypt(resultInfo.noteTrnsmitId)}">
+ 				<c:set var="noteTrnsmitNoteSj" value="${fn:escapeXml(resultInfo.noteSj)}"/>
+				<c:set var="noteTrnsmitNoteSj" value="${fn:replace(resultInfo.noteSj , crlf , '<br>')}"/>
+				<c:out value="${resultInfo.noteSj}" escapeXml="false" />
+			</a>
 		</td>
-		<td><c:out value="${resultInfo.rcverNm}"/><c:if test="${resultInfo.rcverCnt ne '0'}">&nbsp;외&nbsp; ${resultInfo.rcverCnt}명</c:if></td>
 		<td>
-			<span class="btn_s"><a href="<c:url value='/uss/ion/nts/selectNoteTrnsmitCnfirm.do'/>?noteId=${resultInfo.noteId}" onClick="fn_egov_cnfirm_NoteTrnsmit('${resultInfo.noteId}');return false;"  title="<spring:message code="comUssIonNts.list.openAt" /> <spring:message code="input.button" />">${resultInfo.openY}/${resultInfo.openN}</a></span>
+			<c:out value="${resultInfo.rcverNm}" />
+			<c:if test="${empty resultInfo.rcverNm }"><spring:message code="comUssIonNts.list.deleteRcver" /></c:if>
+			<c:if test="${resultInfo.rcverCnt > 0}">&nbsp;외&nbsp; ${resultInfo.rcverCnt}명</c:if>
+		</td>
+		<td>
+			<span class="btn_s"><a href="<c:url value='/uss/ion/nts/selectNoteTrnsmitCnfirm.do'/>?noteId=${egovc:encrypt(resultInfo.noteId)}" onClick="fn_egov_cnfirm_NoteTrnsmit('${egovc:encrypt(resultInfo.noteId)}');return false;"  title="<spring:message code="comUssIonNts.list.openAt" /> <spring:message code="input.button" />">${resultInfo.openY}/${resultInfo.openN}</a></span>
 		</td>
 		<td><c:out value="${resultInfo.frstRegisterPnttm}"/></td>
 	</tr>
@@ -280,8 +303,8 @@ function fn_egov_search_NoteRecptn(){
 	</div>
 	
 	<input name="cmd" type="hidden" value="">
-	<input name="noteId" type="hidden" value="">
-	<input name="noteTrnsmitId" type="hidden" value="">
+	<input name="noteIdAll" type="hidden" value="">
+	<input name="noteTrnsmitIdAll" type="hidden" value="">
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 	</form>
 </div><!-- end div board -->

@@ -149,8 +149,8 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoReprt
 	 */
-	public void deleteMemoReprt(MemoReprt memoReprt) throws Exception{
-		delete("MemoReprtDAO.deleteMemoReprt", memoReprt);
+	public void deleteMemoReprt(MemoReprtVO memoReprtVO) throws Exception{
+		delete("MemoReprtDAO.deleteMemoReprt", memoReprtVO);
 	}
 
 	/**

@@ -17,6 +17,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <c:set var="pageTitle"><spring:message code="comUssIonNtr.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -116,7 +117,7 @@ function fn_egov_checkAll_NoteRecptn(){
 	//undefined
 	if( FLength == 1){
 		document.listForm.checkList.checked = checkAllValue;
-	}{
+	}else{
 			for(var i=0; i < FLength; i++)
 			{
 				document.getElementsByName("checkList")[i].checked = checkAllValue;
@@ -136,7 +137,7 @@ function fn_egov_delCnt_NoteRecptn(){
 	//undefined
 	if( FLength == 1){
 		if(document.listForm.checkList.checked == true){g_nDelCount++;}
-	}{
+	}else{
 			for(var i=0; i < FLength; i++)
 			{
 				if(document.getElementsByName("checkList")[i].checked == true){g_nDelCount++;}
@@ -150,8 +151,14 @@ function fn_egov_delCnt_NoteRecptn(){
 * 목록 삭제
 ******************************************************** */
 function fn_egov_delete_NoteRecptn(){
-	
 	var vFrom = document.listForm;
+	var checkList = vFrom.checkList;
+	var noteId = new Array();
+	var noteTrnsmitId = new Array();
+	var noteRecptnId = new Array();
+	var noteIdAll = vFrom.noteIdAll;
+	var noteRecptnIdAll = vFrom.noteRecptnIdAll;
+	var noteTrnsmitIdAll = vFrom.noteTrnsmitIdAll;
 
 	if(fn_egov_delCnt_NoteRecptn() == 0){
 		alert("<spring:message code="comUssIonNtr.validate.noDelList" />   "); //삭제할 목록을 선택해주세요!
@@ -159,7 +166,17 @@ function fn_egov_delete_NoteRecptn(){
 		return;
 	}
 	
-	if(confirm("<spring:message code="comUssIonNtr.validate.deleteCnfirmt" />")){ //선택된 받은쪽지함을 삭제 하시겠습니까?
+	var checkedElements = vFrom.querySelectorAll('input[name="checkList"]:checked');
+	Array.from(checkedElements).map(function(checkbox) {
+		noteId.push(checkbox.parentElement.querySelector('input[name="noteId"]').value);
+		noteTrnsmitId.push(checkbox.parentElement.querySelector('input[name="noteTrnsmitId"]').value);
+		noteRecptnId.push(checkbox.parentElement.querySelector('input[name="noteRecptnId"]').value);
+	});
+	
+	if(confirm("<spring:message code="comUssIonNts.validate.deleteCnfirmt" />")){ //선택된 보낸쪽지함을 삭제 하시겠습니까?
+		noteIdAll.value = noteId;
+		noteTrnsmitIdAll.value = noteTrnsmitId;
+		noteRecptnIdAll.value = noteRecptnId;
 		vFrom.action = "<c:url value='/uss/ion/ntr/listNoteRecptn.do'/>";
 		vFrom.cmd.value = 'del';
 		vFrom.submit();
@@ -228,12 +245,20 @@ function fn_egov_delete_NoteRecptn(){
 	</c:if>
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr>
-		<td><input type="checkbox" name="checkList" title="<spring:message code="input.cSelect" />" value="${resultInfo.noteId},${resultInfo.noteTrnsmitId},${resultInfo.noteRecptnId}"></td>
+		<td><input type="checkbox" name="checkList" title="<spring:message code="input.cSelect" />">
+		<input type="hidden" name="noteId" value="<c:out value="${egovc:encrypt(resultInfo.noteId)}"/>" />
+		<input type="hidden" name="noteTrnsmitId" value="<c:out value="${egovc:encrypt(resultInfo.noteTrnsmitId)}"/>" />
+		<input type="hidden" name="noteRecptnId" value="<c:out value="${egovc:encrypt(resultInfo.noteRecptnId)}"/>" />
+		</td>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 		<td class="left">
-			<a href="<c:url value='/uss/ion/ntr/detailNoteRecptn.do'/>?pageIndex=${searchVO.pageIndex}&amp;noteId=${resultInfo.noteId}&amp;noteTrnsmitId=${resultInfo.noteTrnsmitId}&amp;noteRecptnId=${resultInfo.noteRecptnId}"><c:out value='${fn:substring(resultInfo.noteSj, 0, 40)}'/></a>
+			<a href="<c:url value='/uss/ion/ntr/detailNoteRecptn.do'/>?pageIndex=${searchVO.pageIndex}&amp;noteId=${egovc:encrypt(resultInfo.noteId)}&amp;noteTrnsmitId=${egovc:encrypt(resultInfo.noteTrnsmitId)}&amp;noteRecptnId=${egovc:encrypt(resultInfo.noteRecptnId)}">
+ 				<c:set var="noteRecptnNoteSj" value='${fn:escapeXml(resultInfo.noteSj)}'/>
+ 				<c:set var="noteRecptnNoteCn" value="${fn:replace(resultInfo.noteSj, crlf , '<br>')}"/>
+				<c:out value='${resultInfo.noteSj }' escapeXml='false'/>
+			</a>
 		</td>
-		<td><c:out value="${resultInfo.rcverNm}"/></td>
+		<td><c:out value="${resultInfo.trnsmiterNm}"/></td>
 		<td><c:out value="${resultInfo.frstRegisterPnttm}"/></td>
 	</tr>
 	</c:forEach>
@@ -247,8 +272,9 @@ function fn_egov_delete_NoteRecptn(){
 	
 
 	<input name="cmd" type="hidden" value="">
-	<input name="noteId" type="hidden" value="">
-	<input name="noteTrnsmitId" type="hidden" value="">
+	<input name="noteIdAll" type="hidden" value="">
+	<input name="noteTrnsmitIdAll" type="hidden" value="">
+	<input name="noteRecptnIdAll" type="hidden" value="">
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 	</form>
 </div><!-- end div board -->

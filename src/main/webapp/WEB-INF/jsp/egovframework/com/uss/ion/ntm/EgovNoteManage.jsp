@@ -38,8 +38,17 @@
 ******************************************************** */
 function fn_egov_save_NoteManage(){
 	var vFrom = document.noteManage;
+	<c:if test="${cmd eq 'reply'}">
+		vFrom.cmd.value = "${cmd}";
+		var recptnEmp = document.getElementById("recptnEmpId").value;
+		console.log(document.getElementById("recptnEmpId"));
+		document.getElementById("recptnEmpList").value = recptnEmp;
+		document.getElementById("recptnSeList").value = 1;
+	</c:if>
 	//수신자 처리
-	fn_egov_empList_NoteManage();
+	<c:if test="${cmd == null}">
+		fn_egov_empList_NoteManage();
+	</c:if>
 	if(confirm("<spring:message code="common.save.msg"/>")){
 		vFrom.action = "<c:url value='/uss/ion/ntm/registEgovNoteManageActor.do'/>";
 		if(!validateNoteManage(vFrom)){
@@ -55,20 +64,22 @@ function fn_egov_save_NoteManage(){
 * 초기화
 ******************************************************** */
 function fn_egov_init_NoteManage(){
+	<c:if test="${cmd == null}">
 	//수신구분 초기화
 	document.getElementsByName("recptnSe")[0].checked = true;
 	//초기 recptnEmp 삭제 0
    	document.getElementById("recptnEmp").options[0].selected = true;
 	fn_egov_delete_NoteManage(0);
-
-	<c:if test="${cmd eq 'reply'}">
-		//답변 수신자 처리
-		var option = document.createElement("option");
-		option.appendChild(document.createTextNode("수신:${noteManageMap.trnsmiterNm}(${noteManageMap.trnsmiterId})"));
-		option.setAttribute("value", "${noteManageMap.trnsmiterOrgId}");
-		option.recptnSe = "1";
-		document.getElementById("recptnEmp").appendChild(option);
 	</c:if>
+
+// 	<c:if test="${cmd eq 'reply'}">
+		//답변 수신자 처리
+// 		var option = document.createElement("option");
+// 		option.appendChild(document.createTextNode("수신:${noteManageMap.trnsmiterNm}(${noteManageMap.trnsmiterId})"));
+// 		option.setAttribute("value", "${noteManageMap.trnsmiterOrgId}");
+// 		option.recptnSe = "1";
+// 		document.getElementById("recptnEmp").appendChild(option);
+// 	</c:if>
 }
 
 /* ********************************************************
@@ -111,6 +122,7 @@ function fn_egov_empList_NoteManage(){
 	sRecptnSeList = sRecptnSeList.substring(0,sRecptnSeList.length-1);
 	document.getElementById("recptnEmpList").value = sEmpList;
 	document.getElementById("recptnSeList").value = sRecptnSeList;
+	
 }
 
 /* ********************************************************
@@ -193,7 +205,7 @@ function  fn_egov_recptnEmpSearchPupup(){
 			</colgroup>
 		<tbody>
 				<tr>
-					<th><img src="<c:url value='/images/egovframework/com/uss/ion/ntm/check.png'/>" alt="check"/><label for="noteSj"><spring:message code="comUssIonNtm.NoteMange.subject"/></label></th><!-- 제목 -->
+					<th><img src="<c:url value='/images/egovframework/com/uss/ion/ntm/check.png'/>" alt="check"/> <spring:message code="comUssIonNtm.NoteMange.subject"/></th><!-- 제목 -->
 					<!-- 제목 -->
 					<c:set var="subject"><spring:message code="comUssIonNtm.NoteManage.title"/></c:set>
 					<td><form:input path="noteSj" title="${subject}" size="87" maxlength="255"/><!-- 제목 : 쪽지내용 입력 -->
@@ -201,6 +213,7 @@ function  fn_egov_recptnEmpSearchPupup(){
 				</tr>
 				<tr>
 					<th><img src="<c:url value='/images/egovframework/com/uss/ion/ntm/check.png'/>" alt="check"/> <spring:message code="comUssIonNtm.NoteMange.receiver"/></th>
+					<c:if test="${cmd == null}">
 					<td>
 						<div style="clear:both;"></div>
 				   		<div style="text-align: left;">		
@@ -225,6 +238,12 @@ function  fn_egov_recptnEmpSearchPupup(){
 						</div>
 						</div>
 					</td>
+					</c:if>
+
+					<c:if test="${cmd eq 'reply'}">
+						<td class="left"><c:out value="${noteManageMap.trnsmiterNm}" /></td>
+						<input type="hidden" id="recptnEmpId" value="${noteManageMap.trnsmiterOrgId }">
+					</c:if>
 				</tr>
 				<tr>
 					<!-- 쪽지 내용 입력 -->
@@ -249,6 +268,7 @@ function  fn_egov_recptnEmpSearchPupup(){
 </div><div style="clear:both;"></div>
 
 </div>
+<input name="cmd" type="hidden" value="<c:out value=''/>">
 </form:form>
 </body>
 </html>

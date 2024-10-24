@@ -181,17 +181,20 @@ public class EgovMemoReprtController {
 	 */
     @RequestMapping("/cop/smt/mrm/selectMemoReprt.do")
 	public String selectMemoReprt(@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, ModelMap model) throws Exception{
-    	MemoReprt memoReprt = memoReprtService.selectMemoReprt(memoReprtVO);
-		model.addAttribute("memoReprt", memoReprt);
-    	
-    	// 1. 로그인 객체 선언
-		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+
    	 	// KISA 보안취약점 조치 (2018-12-10, 신용호)
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
         if(!isAuthenticated) {
             return "redirect:/uat/uia/egovLoginUsr.do";
         }
+        
+        // 1. 로그인 객체 선언
+ 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+        
+        memoReprtVO.setSearchId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+        MemoReprt memoReprt = memoReprtService.selectMemoReprt(memoReprtVO);
+		model.addAttribute("memoReprt", memoReprt);
 		
 		model.addAttribute("uniqId", loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
     	
@@ -255,6 +258,11 @@ public class EgovMemoReprtController {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
+    	
+    	// 1. 로그인 객체 선언
+		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		
+		memoReprtVO.setSearchId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 		
     	MemoReprtVO resultVO = memoReprtService.selectMemoReprt(memoReprtVO);
 		resultVO.setSearchCnd(memoReprtVO.getSearchCnd());
@@ -422,6 +430,11 @@ public class EgovMemoReprtController {
     		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
+    	
+    	// 1. 로그인 객체 선언
+		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		
+		memoReprtVO.setSearchId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
     	
     	// 첨부파일 삭제를 위한 ID 생성 start....
 		String _atchFileId = memoReprtVO.getAtchFileId();	

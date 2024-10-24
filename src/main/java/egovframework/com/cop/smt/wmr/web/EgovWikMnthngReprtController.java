@@ -4,13 +4,14 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springmodules.validation.commons.DefaultBeanValidator;
@@ -19,6 +20,7 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.resolver.EgovSecurityMap;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.service.EgovFileMngService;
@@ -31,8 +33,6 @@ import egovframework.com.cop.smt.wmr.service.ReportrVO;
 import egovframework.com.cop.smt.wmr.service.WikMnthngReprt;
 import egovframework.com.cop.smt.wmr.service.WikMnthngReprtVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import org.egovframe.rte.fdl.property.EgovPropertyService;
-import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
  * 개요
@@ -228,6 +228,9 @@ public class EgovWikMnthngReprtController {
     	String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
     	String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
     	
+		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();	 
+		wikMnthngReprtVO.setSearchId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+		
     	WikMnthngReprtVO resultVO = wikMnthngReprtService.selectWikMnthngReprt(wikMnthngReprtVO);
 		resultVO.setSearchCnd(wikMnthngReprtVO.getSearchCnd());
 		resultVO.setSearchWrd(wikMnthngReprtVO.getSearchWrd());
@@ -254,6 +257,10 @@ public class EgovWikMnthngReprtController {
 	 */
     @RequestMapping("/cop/smt/wmr/selectWikMnthngReprt.do")
 	public String selectWikMnthngReprt(@ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO, ModelMap model) throws Exception{
+    	
+    	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+    	wikMnthngReprtVO.setSearchId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+    	
     	WikMnthngReprt wikMnthngReprt = wikMnthngReprtService.selectWikMnthngReprt(wikMnthngReprtVO);
 		model.addAttribute("wikMnthngReprt", wikMnthngReprt);
 
@@ -281,7 +288,7 @@ public class EgovWikMnthngReprtController {
 	 * @param wikMnthngReprt
 	 */
     @RequestMapping("/cop/smt/wmr/updateWikMnthngReprt.do")
-	public String updateWikMnthngReprt(final MultipartHttpServletRequest multiRequest, @RequestParam Map<?, ?> commandMap, @ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO, BindingResult bindingResult, ModelMap model) throws Exception{
+	public String updateWikMnthngReprt(final MultipartHttpServletRequest multiRequest, EgovSecurityMap securityMap, @ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO, BindingResult bindingResult, ModelMap model) throws Exception{
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
@@ -311,7 +318,7 @@ public class EgovWikMnthngReprtController {
     		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
     		if(!files.isEmpty()){
-    			String atchFileAt = commandMap.get("atchFileAt") == null ? "" : (String)commandMap.get("atchFileAt");
+    			String atchFileAt = securityMap.get("atchFileAt") == null ? "" : (String)securityMap.get("atchFileAt");
     			if("N".equals(atchFileAt)){
     				List<FileVO> _result = fileUtil.parseFileInf(files, "DSCH_", 0, _atchFileId, "");
     				_atchFileId = fileMngService.insertFileInfs(_result);
@@ -329,6 +336,8 @@ public class EgovWikMnthngReprtController {
     		}
 
     		wikMnthngReprtVO.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+    		// 수정 시 작성자만 가능하도록
+        	wikMnthngReprtVO.setSearchId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
     		wikMnthngReprtService.updateWikMnthngReprt(wikMnthngReprtVO);
 		}
 
@@ -403,6 +412,7 @@ public class EgovWikMnthngReprtController {
 	 */
     @RequestMapping("/cop/smt/wmr/deleteWikMnthngReprt.do")
 	public String deleteWikMnthngReprt(@ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO, ModelMap model) throws Exception{
+    	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
     	// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
@@ -420,6 +430,8 @@ public class EgovWikMnthngReprtController {
     	fileMngService.deleteAllFileInf(fvo);
     	// 첨부파일 삭제 End.............
 
+    	wikMnthngReprtVO.setSearchId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+    	
     	wikMnthngReprtService.deleteWikMnthngReprt(wikMnthngReprtVO);
 		return "forward:/cop/smt/wmr/selectWikMnthngReprtList.do";
 	}
@@ -431,12 +443,13 @@ public class EgovWikMnthngReprtController {
 	 *
 	 * @param wikMnthngReprt
 	 */
-    @SuppressWarnings("unused")
 	@RequestMapping("/cop/smt/wmr/confirmWikMnthngReprt.do")
 	public String confirmWikMnthngReprt(@ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO, ModelMap model) throws Exception{
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
+		wikMnthngReprtVO.setSearchId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+		
 		if (isAuthenticated) {
     		wikMnthngReprtService.confirmWikMnthngReprt(wikMnthngReprtVO);
 		}
