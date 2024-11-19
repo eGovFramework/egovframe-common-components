@@ -11,11 +11,11 @@ public interface EgovCommuMasterService {
 
 	String insertCommuMaster(Community community) throws FdlException;
 
-	CommunityVO selectCommuMaster(CommunityVO cmmntyVO) throws Exception;
+	CommunityVO selectCommuMaster(CommunityVO cmmntyVO);
 
 	void updateCommuMaster(Community community);
 
 	void deleteBBSMasterInf(Community community);
-	
-	List<CommunityVO> selectCommuMasterListPortlet(CommunityVO cmmntyVO) throws Exception;
+
+	List<CommunityVO> selectCommuMasterListPortlet(CommunityVO cmmntyVO);
 }
