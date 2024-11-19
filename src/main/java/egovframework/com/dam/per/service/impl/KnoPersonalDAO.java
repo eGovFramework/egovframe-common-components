@@ -62,8 +62,8 @@ public class KnoPersonalDAO extends EgovComAbstractDAO {
 	 *
 	 * @param KnoNm
 	 */
-	public void insertKnoPersonal(KnoPersonal knoPersonal) throws Exception {
-		insert("KnoPersonalDAO.insertKnoPersonal", knoPersonal);
+	public int insertKnoPersonal(final KnoPersonal knoPersonal) {
+		return insert("KnoPersonalDAO.insertKnoPersonal", knoPersonal);
 	}
 
 	/**

@@ -62,8 +62,8 @@ public class KnoSpecialistDAO extends EgovComAbstractDAO {
 	 *
 	 * @param speNm
 	 */
-	public void insertKnoSpecialist(KnoSpecialist knoSpecialist) throws Exception {
-		insert("KnoSpecialistDAO.insertKnoSpecialist", knoSpecialist);
+	public int insertKnoSpecialist(final KnoSpecialist knoSpecialist) {
+		return insert("KnoSpecialistDAO.insertKnoSpecialist", knoSpecialist);
 	}
 
 	/**
