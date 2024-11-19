@@ -3,7 +3,7 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="MapTeamDAO">
 
-	<select id="selectMapTeamList" parameterType="egovframework.com.dam.map.tea.service.MapTeamVO" resultType="egovMap">
+	<select id="selectMapTeamList" parameterType="egovframework.com.dam.map.tea.service.MapTeamVO" resultType="egovframework.com.dam.map.tea.service.MapTeamVO">
 		
 			SELECT  TRIM(ORGNZT_ID)					ORGNZT_ID
 			     ,  ORGNZT_NM						ORGNZT_NM
@@ -35,7 +35,7 @@
 			</if>
 	</select>
 
-	<select id="selectMapTeamDetail" parameterType="egovframework.com.dam.map.tea.service.MapTeam" resultType="egovframework.com.dam.map.tea.service.MapTeam">
+	<select id="selectMapTeamDetail" parameterType="egovframework.com.dam.map.tea.service.MapTeamVO" resultType="egovframework.com.dam.map.tea.service.MapTeamVO">
 		
             SELECT  ORGNZT_ID 						orgnztId
 			     ,  ORGNZT_NM  						orgnztNm
@@ -46,7 +46,7 @@
 		
 	</select>
 
-	<insert id="insertMapTeam">
+	<insert id="insertMapTeam" parameterType="egovframework.com.dam.map.tea.service.MapTeamVO">
 		
 		    INSERT 
 		      INTO  COMTNDAMMAPTEAM
@@ -68,11 +68,10 @@
 		
 	</insert>
 
-	<update id="updateMapTeam">
+	<update id="updateMapTeam" parameterType="egovframework.com.dam.map.tea.service.MapTeamVO">
 		
             UPDATE  COMTNDAMMAPTEAM 
-               SET  ORGNZT_ID         = #{orgnztId}
-                 ,  ORGNZT_NM         = #{orgnztNm}
+               SET  ORGNZT_NM         = #{orgnztNm}
                  ,  CL_DE  		  = #{clYmd}
                  ,  KNWLDG_URL           = #{knoUrl}
                  ,  LAST_UPDT_PNTTM = NOW()
@@ -81,7 +80,7 @@
 		
 	</update>
 
-	<delete id="deleteMapTeam">
+	<delete id="deleteMapTeam" parameterType="egovframework.com.dam.map.tea.service.MapTeamVO">
 		
             DELETE  FROM COMTNDAMMAPTEAM 
             WHERE   ORGNZT_ID = #{orgnztId}
