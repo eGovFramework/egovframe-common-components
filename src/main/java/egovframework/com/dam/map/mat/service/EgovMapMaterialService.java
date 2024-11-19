@@ -40,7 +40,7 @@ public interface EgovMapMaterialService {
 	 *
 	 * @param MapMaterialVO
 	 */
-	MapMaterial selectMapMaterial(MapMaterial mapMaterial) throws Exception;
+	MapMaterialVO selectMapMaterial(MapMaterialVO mapMaterial);
 
 	/**
 	 * 지식맵(지식유형) 정보를 신규로 등록한다.
@@ -48,7 +48,7 @@ public interface EgovMapMaterialService {
 	 *
 	 * @param MapMaterialVO
 	 */
-	void insertMapMaterial(MapMaterial mapMaterial) throws Exception;
+	void insertMapMaterial(MapMaterialVO mapMaterialVO);
 
 	/**
 	 * 기 등록 된 지식맵(지식유형)링 정보를 수정 한다.
@@ -56,7 +56,7 @@ public interface EgovMapMaterialService {
 	 *
 	 * @param MapMaterialVO
 	 */
-	void updateMapMaterial(MapMaterial mapMaterial) throws Exception;
+	int updateMapMaterial(MapMaterialVO mapMaterialVO);
 
 	/**
 	 * 기 등록된 지식맵(지식유형) 정보를 삭제한다.
@@ -64,7 +64,7 @@ public interface EgovMapMaterialService {
 	 *
 	 * @param MapMaterialVO
 	 */
-	void deleteMapMaterial(MapMaterial mapMaterial) throws Exception;
+	int deleteMapMaterial(MapMaterialVO mapMaterialVO);
 
 	/**
 	 * 지식유형코드 중복 여부 체크(위치 : 1260.지식맵관리(유형) > 등록)

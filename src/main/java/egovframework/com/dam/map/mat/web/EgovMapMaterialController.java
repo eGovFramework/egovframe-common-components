@@ -110,10 +110,10 @@ public class EgovMapMaterialController {
 	 */
 	@RequestMapping(value="/dam/map/mat/EgovComDamMapMaterial.do")
 	public String selectMapMaterial(@ModelAttribute("loginVO") LoginVO loginVO
-			, MapMaterial mapMaterial
+			, MapMaterialVO mapMaterial
 			, ModelMap model
-			) throws Exception {
-		MapMaterial vo = mapMaterialService.selectMapMaterial(mapMaterial);
+			) {
+		MapMaterialVO vo = mapMaterialService.selectMapMaterial(mapMaterial);
 		model.addAttribute("result", vo);
 		return "egovframework/com/dam/map/mat/EgovComDamMapMaterialDetail";
 	}
@@ -127,12 +127,12 @@ public class EgovMapMaterialController {
 	 */
 	@RequestMapping(value="/dam/map/mat/EgovComDamMapMaterialRegist.do")
 	public String insertMapMaterial(@ModelAttribute("loginVO") LoginVO loginVO
-			, @ModelAttribute("mapMaterial") MapMaterial mapMaterial
+			, @ModelAttribute("mapMaterial") MapMaterialVO mapMaterialVO
 			, BindingResult bindingResult
 			, ModelMap model
 			) throws Exception {
-		if (mapMaterial.getKnoTypeCd() == null
-				||mapMaterial.getKnoTypeCd().equals("")) {
+		if (mapMaterialVO.getKnoTypeCd() == null
+				||mapMaterialVO.getKnoTypeCd().equals("")) {
 
 			MapTeamVO searchVO;
     		searchVO = new MapTeamVO();
@@ -145,7 +145,7 @@ public class EgovMapMaterialController {
 			return "egovframework/com/dam/map/mat/EgovComDamMapMaterialRegist";
 		}
 
-		beanValidator.validate(mapMaterial, bindingResult);
+		beanValidator.validate(mapMaterialVO, bindingResult);
 		if (bindingResult.hasErrors()){
 
 			MapTeamVO searchVO;
@@ -159,8 +159,8 @@ public class EgovMapMaterialController {
 			return "egovframework/com/dam/map/mat/EgovComDamMapMaterialRegist";
 		}
 
-		mapMaterial.setFrstRegisterId(loginVO.getUniqId());
-		mapMaterialService.insertMapMaterial(mapMaterial);
+		mapMaterialVO.setFrstRegisterId(loginVO.getUniqId());
+		mapMaterialService.insertMapMaterial(mapMaterialVO);
 		return "forward:/dam/map/mat/EgovComDamMapMaterialList.do";
 	}
 
@@ -173,25 +173,25 @@ public class EgovMapMaterialController {
 	 */
 	@RequestMapping(value="/dam/map/mat/EgovComDamMapMaterialModify.do")
 	public String updateMapMaterial(@ModelAttribute("loginVO") LoginVO loginVO
-			, @ModelAttribute("knoTypeCd") MapMaterial mapMaterial
+			, @ModelAttribute("knoTypeCd") MapMaterialVO mapMaterialVO
 			, BindingResult bindingResult
 			, @RequestParam Map<?, ?> commandMap
 			, ModelMap model
-			) throws Exception {
+			) {
 		String sCmd = commandMap.get("cmd") == null ? "": (String)commandMap.get("cmd");
 		if (sCmd.equals("")) {
-			MapMaterial vo = mapMaterialService.selectMapMaterial(mapMaterial);
+			MapMaterialVO vo = mapMaterialService.selectMapMaterial(mapMaterialVO);
 			model.addAttribute("mapMaterial", vo);
 			return "egovframework/com/dam/map/mat/EgovComDamMapMaterialModify";
 		} else if (sCmd.equals("Modify")) {
-			beanValidator.validate(mapMaterial, bindingResult);
+			beanValidator.validate(mapMaterialVO, bindingResult);
 			if (bindingResult.hasErrors()){
-				MapMaterial vo = mapMaterialService.selectMapMaterial(mapMaterial);
+				MapMaterialVO vo = mapMaterialService.selectMapMaterial(mapMaterialVO);
 				model.addAttribute("mapMaterial", vo);
 				return "egovframework/com/dam/map/mat/EgovComDamMapMaterialModify";
 			}
-			mapMaterial.setFrstRegisterId(loginVO.getUniqId());
-			mapMaterialService.updateMapMaterial(mapMaterial);
+			mapMaterialVO.setFrstRegisterId(loginVO.getUniqId());
+			mapMaterialService.updateMapMaterial(mapMaterialVO);
 			return "forward:/dam/map/mat/EgovComDamMapMaterialList.do";
 		} else {
 			return "forward:/dam/map/mat/EgovComDamMapMaterialList.do";
@@ -207,10 +207,10 @@ public class EgovMapMaterialController {
 	 */
 	@RequestMapping(value="/dam/map/mat/EgovComDamMapMaterialRemove.do")
 	public String deleteMapMaterial(@ModelAttribute("loginVO") LoginVO loginVO
-			, MapMaterial mapMaterial
+			, MapMaterialVO mapMaterialVO
 			, ModelMap model
-			) throws Exception {
-		mapMaterialService.deleteMapMaterial(mapMaterial);
+			) {
+		mapMaterialService.deleteMapMaterial(mapMaterialVO);
 		return "forward:/dam/map/mat/EgovComDamMapMaterialList.do";
 	}
 

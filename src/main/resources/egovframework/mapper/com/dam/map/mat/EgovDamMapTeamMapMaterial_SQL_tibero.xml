@@ -2,27 +2,14 @@
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="MapMaterialDAO">
-	
-	<resultMap id="MapMaterialList" type="egovframework.com.dam.map.mat.service.MapMaterialVO">
-		<result property="orgnztNm" column="ORGNZT_NM"/>	
-		<result property="knoTypeCd" column="KNWLDG_TY_CODE"/>
-		<result property="speId" column="EXPERT_ID"/>
-		<result property="knoTypeNm" column="KNWLDG_TY_NM"/>
-		<result property="clYmd" column="CL_DE"/>
-		<result property="knoUrl" column="KNWLDG_URL"/>
-		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
-		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
-		<result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
-		<result property="lastUpdusrPnttm" column="LAST_UPDT_PNTTM"/>
-	</resultMap>
-	
-	<resultMap id="MapMaterial" type="egovframework.com.dam.map.mat.service.MapMaterial">
+
+	<resultMap id="MapMaterial" type="egovframework.com.dam.map.mat.service.MapMaterialVO">
 		<result property="knoTypeCd" column="KNWLDG_TY_CODE"/>	
 		<result property="orgnztId" column="ORGNZT_ID"/>
 		<result property="orgnztNm" column="ORGNZT_NM"/>
 		<result property="speId" column="EXPERT_ID"/>
 		<result property="knoTypeNm" column="KNWLDG_TY_NM"/>
-		<result property="clYmd" column="CL_DE"/>
+		<result property="clYmd" column="CL_YMD"/>
 		<result property="knoUrl" column="KNWLDG_URL"/>
 		<result property="frstRegisterId" column="FRST_REGISTER_ID"/>
 		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
@@ -38,12 +25,12 @@
 		FROM (
 	
 		
-			SELECT  B.ORGNZT_NM
-				 ,	A.KNWLDG_TY_CODE
-			     ,  A.EXPERT_ID
-			     ,  A.KNWLDG_TY_NM			     
-                 ,  TO_CHAR(TO_DATE(A.CL_DE, 'YYYYmmdd'), 'YYYY-mm-dd') AS CL_DE
-			     ,  A.KNWLDG_URL
+			SELECT  B.ORGNZT_NM						ORGNZT_NM
+				 ,	A.KNWLDG_TY_CODE				KNO_TYPE_CD
+			     ,  A.EXPERT_ID						SPE_ID
+			     ,  A.KNWLDG_TY_NM					KNO_TYPE_NM
+                 ,  TO_CHAR(TO_DATE(A.CL_DE, 'YYYYmmdd'), 'YYYY-mm-dd') AS CL_YMD
+			     ,  A.KNWLDG_URL					KNO_URL
 			     ,	A.FRST_REGISTER_ID
 			     ,	A.FRST_REGIST_PNTTM
 			     ,  A.LAST_UPDUSR_ID
@@ -78,7 +65,7 @@
 			</if>
 	</select>
 
-	<select id="selectMapMaterial" parameterType="egovframework.com.dam.map.mat.service.MapMaterial" resultMap="MapMaterial">
+	<select id="selectMapMaterial" parameterType="egovframework.com.dam.map.mat.service.MapMaterialVO" resultMap="MapMaterial">
 		
             SELECT  A.KNWLDG_TY_CODE
 				 ,	A.ORGNZT_ID
@@ -97,7 +84,7 @@
 		
 	</select>
 
-	<insert id="insertMapMaterial">
+	<insert id="insertMapMaterial" parameterType="egovframework.com.dam.map.mat.service.MapMaterialVO">
 		
 		    INSERT 
 		      INTO  COMTNDAMMAPKNO
@@ -127,7 +114,7 @@
 		
 	</insert>
 
-	<update id="updateMapMaterial">
+	<update id="updateMapMaterial" parameterType="egovframework.com.dam.map.mat.service.MapMaterialVO">
 		
             UPDATE  COMTNDAMMAPKNO 
                SET  ORGNZT_ID         = #{orgnztId}
@@ -141,7 +128,7 @@
 		
 	</update>
 
-	<delete id="deleteMapMaterial">
+	<delete id="deleteMapMaterial" parameterType="egovframework.com.dam.map.mat.service.MapMaterialVO">
 		
             DELETE  FROM COMTNDAMMAPKNO 
             WHERE   KNWLDG_TY_CODE = #{knoTypeCd}
