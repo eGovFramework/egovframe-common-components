@@ -2,16 +2,15 @@ package egovframework.com.dam.per.service.impl;
 
 import java.util.List;
 
-import egovframework.com.dam.per.service.EgovKnoPersonalService;
-import egovframework.com.dam.per.service.KnoPersonal;
-import egovframework.com.dam.per.service.KnoPersonalVO;
+import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
+
+import egovframework.com.dam.per.service.EgovKnoPersonalService;
+import egovframework.com.dam.per.service.KnoPersonal;
+import egovframework.com.dam.per.service.KnoPersonalVO;
 
 
 /**

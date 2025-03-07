@@ -6,18 +6,29 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 
 import egovframework.com.cmm.service.EgovFileMngService;
+import egovframework.com.cmm.service.EgovFileMngUtil;
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cop.bbs.service.Board;
 import egovframework.com.cop.bbs.service.BoardMasterVO;
 import egovframework.com.cop.bbs.service.BoardVO;
 import egovframework.com.cop.bbs.service.EgovArticleService;
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import org.egovframe.rte.fdl.cmmn.exception.FdlException;
-import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-import org.egovframe.rte.fdl.property.EgovPropertyService;
+
+/**
+ * <pre>
+ * << 개정이력(Modification Information) >>
+ *   
+ *   수정일			수정자		수정내용
+ *  -------			--------	---------------------------
+ *   2024.10.29		inganyoyo	Transaction 처리 오류 수정(Article)
+ * </pre>
+ */
 
 @Service("EgovArticleService")
 public class EgovArticleServiceImpl extends EgovAbstractServiceImpl implements EgovArticleService {
@@ -33,6 +44,10 @@ public class EgovArticleServiceImpl extends EgovAbstractServiceImpl implements E
 
     @Resource(name = "egovNttIdGnrService")
     private EgovIdGnrService nttIdgenService;
+  @Resource(name = "EgovFileMngUtil")
+  private EgovFileMngUtil fileUtil;
+  @Resource(name = "EgovFileMngService")
+  private EgovFileMngService fileMngService;
 	
 	@Override
 	public Map<String, Object> selectArticleList(BoardVO boardVO) {
@@ -79,12 +94,20 @@ public class EgovArticleServiceImpl extends EgovAbstractServiceImpl implements E
 		return egovArticleDao.selectArticleDetailCn(boardVO);
 	}
 
-	@Override
-	public void insertArticle(Board board) throws FdlException {
+  @Override
+  public void insertArticleAndFiles(Board board, List<MultipartFile> files) throws Exception {
+    List<FileVO> result = null;
+    String atchFileId = "";
 
-		if ("Y".equals(board.getReplyAt())) {
-		    // 답글인 경우 1. Parnts를 세팅, 2.Parnts의 sortOrdr을 현재글의 sortOrdr로 가져오도록, 3.nttNo는 현재 게시판의 순서대로
-		    // replyLc는 부모글의 ReplyLc + 1
+    if (files != null && !files.isEmpty()) {
+      result = fileUtil.parseFileInf(files, "BBS_", 0, "", "");
+      atchFileId = fileMngService.insertFileInfs(result);
+    }
+    board.setAtchFileId(atchFileId);
+
+    if ("Y".equals(board.getReplyAt())) {
+      // 답글인 경우 1. Parnts를 세팅, 2.Parnts의 sortOrdr을 현재글의 sortOrdr로 가져오도록, 3.nttNo는 현재 게시판의 순서대로
+      // replyLc는 부모글의 ReplyLc + 1
 
 		    board.setNttId(nttIdgenService.getNextIntegerId());	// 답글에 대한 nttId 생성
 		    egovArticleDao.replyArticle(board);
@@ -105,9 +128,29 @@ public class EgovArticleServiceImpl extends EgovAbstractServiceImpl implements E
 		egovArticleDao.updateArticle(board);
 	}
 
-	@Override
-	public void deleteArticle(Board board) throws Exception {
-		FileVO fvo = new FileVO();
+  @Override
+  public void updateArticleAndFiles(Board board, List<MultipartFile> files, String atchFileId)
+      throws Exception {
+    if (!files.isEmpty()) {
+      if (atchFileId == null || "".equals(atchFileId)) {
+        List<FileVO> result = fileUtil.parseFileInf(files, "BBS_", 0, atchFileId, "");
+        atchFileId = fileMngService.insertFileInfs(result);
+        board.setAtchFileId(atchFileId);
+      } else {
+        FileVO fvo = new FileVO();
+        fvo.setAtchFileId(atchFileId);
+        int cnt = fileMngService.getMaxFileSN(fvo);
+        List<FileVO> _result = fileUtil.parseFileInf(files, "BBS_", cnt, atchFileId, "");
+        fileMngService.updateFileInfs(_result);
+      }
+    }
+		
+    this.updateArticle(board);
+  }
+
+  @Override
+  public void deleteArticle(Board board) throws Exception {
+    FileVO fvo = new FileVO();
 
 		fvo.setAtchFileId(board.getAtchFileId());
 

@@ -4,14 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import egovframework.com.cop.com.service.EgovUserInfManageService;
-import egovframework.com.cop.com.service.UserInfVO;
-
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
+
+import egovframework.com.cop.com.service.EgovUserInfManageService;
+import egovframework.com.cop.com.service.UserInfVO;
 
 /**
  * 협업에서 사용할 사용자 조회 서비스 기능 구현 클래스

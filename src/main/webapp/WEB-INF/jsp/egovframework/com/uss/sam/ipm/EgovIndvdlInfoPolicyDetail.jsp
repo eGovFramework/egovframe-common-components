@@ -5,8 +5,9 @@
  
       수정일         수정자                   수정내용
     -------    --------    ---------------------------
-     2008.03.09    장동한          최초 생성
-     2018.09.03    이정은          공통컴포넌트 3.8 개선  
+     2008.03.09    장동한		최초 생성
+     2018.09.03    이정은		공통컴포넌트 3.8 개선 
+     2024.10.29    권태성		수정 페이지 신규 경로로 변경
  
     author   : 공통서비스 개발팀 장동한
     since    : 2009.03.09
@@ -48,7 +49,7 @@ function fn_egov_list_IndvdlInfoPolicy(){
  ******************************************************** */
 function fn_egov_modify_IndvdlInfoPolicy(){
 	var vFrom = document.formUpdt;
-	vFrom.action = "<c:url value='/uss/sam/ipm/updtIndvdlInfoPolicy.do' />";;
+	vFrom.action = "<c:url value='/uss/sam/ipm/updtIndvdlInfoPolicyView.do' />";;
 	vFrom.submit();
 
 }

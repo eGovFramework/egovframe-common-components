@@ -5,6 +5,9 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -24,15 +27,11 @@ import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.bbs.service.Blog;
-import egovframework.com.cop.bbs.service.BlogUserVO;
 import egovframework.com.cop.bbs.service.BlogVO;
 import egovframework.com.cop.bbs.service.BoardMaster;
 import egovframework.com.cop.bbs.service.BoardMasterVO;
 import egovframework.com.cop.bbs.service.EgovBBSMasterService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-import org.egovframe.rte.fdl.property.EgovPropertyService;
-import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 
 /**
@@ -54,6 +53,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *   2011.09.15  서준식      2단계 기능 추가 (댓글관리, 만족도조사) 적용방법 변경
  *   2016.06.13  김연호      표준프레임워크 v3.6 개선
  *   2022.11.11  김혜준      시큐어코딩 처리
+ *   2024.10.29	inganyoyo	Controller는 Transaction 처리를 하지 않아 Controller에서 오류 발생 시 데이터 정합성 오류 문제 발생
  * </pre>
  */
 
@@ -326,27 +326,9 @@ public class EgovBBSMasterController {
 		    return "egovframework/com/cop/bbs/EgovBlogRegist";
 		}
 		
-		String blogId = idgenServiceBlog.getNextStringId(); //블로그 아이디 채번
-		String bbsId = idgenServiceBbs.getNextStringId(); //게시판 아이디 채번
-		
-		blog.setRegistSeCode("REGC02");
-		blog.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-		blog.setBbsId(bbsId);
-		blog.setBlogId(blogId);
-		blog.setBlogAt("Y");
-		egovBBSMasterService.insertBlogMaster(blog);
-		
-	    // 블로그 개설자의 정보를 등록한다.
-		// 2022.11.11 시큐어코딩 처리
-		BlogUserVO blogUserVO = new BlogUserVO();
-	    blogUserVO.setBlogId(blogId);
-	    blogUserVO.setEmplyrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-	    blogUserVO.setMngrAt("Y");
-	    blogUserVO.setMberSttus("P");
-	    blogUserVO.setUseAt("Y");
-	    blogUserVO.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-	    
-	    egovBBSMasterService.insertBoardBlogUserRqst(blogUserVO);
+    // 블로그 정보와 개설자 정보 등록한다
+    // Controller는 Transaction처리를 하지 않아 Controller에서 오류 발생 시 데이터 정합성 오류 문제 발생
+    egovBBSMasterService.insertBlogMasterAndBoardBlogUserRqst(blog, user);
 
 		return "forward:/cop/bbs/selectBlogList.do";
     }

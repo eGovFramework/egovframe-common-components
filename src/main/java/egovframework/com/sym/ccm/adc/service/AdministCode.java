@@ -2,6 +2,8 @@ package egovframework.com.sym.ccm.adc.service;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotEmpty;
+
 /**
  * 행정코드 모델 클래스
  * @author 공통서비스 개발팀 이중호
@@ -14,7 +16,8 @@ import java.io.Serializable;
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.04.01  이중호          최초 생성
+ *   2009.04.01  이중호			최초 생성
+ *   2024.10.29  권태성			필수값 BindingResult 검증을 위한 @NotEmpty 추가
  *
  * </pre>
  */
@@ -25,16 +28,19 @@ public class AdministCode implements Serializable {
 	/*
 	 * 행정구역구분
 	 */
+	@NotEmpty(message = "행정구역구분{common.required.msg}")
     private String administZoneSe = "";
 
     /*
      * 행정구역코드
      */
+	@NotEmpty(message = "행정구역코드{common.required.msg}")
     private String administZoneCode = "";
 
     /*
      * 행정구역명
      */
+	@NotEmpty(message = "행정구역명{common.required.msg}")
 	private String administZoneNm = "";
 
 	/*
@@ -50,6 +56,7 @@ public class AdministCode implements Serializable {
     /*
 	 * 생성일자
 	 */
+	@NotEmpty(message = "생성일자{common.required.msg}")
     private String creatDe = "";
 
     /*
@@ -60,6 +67,7 @@ public class AdministCode implements Serializable {
     /*
 	 * 사용여부
 	 */
+	@NotEmpty(message = "사용여부{common.required.msg}")
     private String useAt = "";
 
     /*
@@ -231,6 +239,5 @@ public class AdministCode implements Serializable {
 	public void setLastUpdusrId(String lastUpdusrId) {
 		this.lastUpdusrId = lastUpdusrId;
 	}
-
 
 }

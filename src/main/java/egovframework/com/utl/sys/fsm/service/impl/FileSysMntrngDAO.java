@@ -1,13 +1,13 @@
 package egovframework.com.utl.sys.fsm.service.impl;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.utl.sys.fsm.service.FileSysMntrng;
 import egovframework.com.utl.sys.fsm.service.FileSysMntrngLog;
 import egovframework.com.utl.sys.fsm.service.FileSysMntrngLogVO;
 import egovframework.com.utl.sys.fsm.service.FileSysMntrngVO;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 개요

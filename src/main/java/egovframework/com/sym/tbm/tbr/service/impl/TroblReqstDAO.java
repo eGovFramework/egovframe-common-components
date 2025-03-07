@@ -1,11 +1,11 @@
 package egovframework.com.sym.tbm.tbr.service.impl;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sym.tbm.tbr.service.TroblReqst;
 import egovframework.com.sym.tbm.tbr.service.TroblReqstVO;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 개요

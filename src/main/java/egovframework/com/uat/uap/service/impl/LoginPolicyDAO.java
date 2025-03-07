@@ -22,11 +22,11 @@ package egovframework.com.uat.uap.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uat.uap.service.LoginPolicy;
 import egovframework.com.uat.uap.service.LoginPolicyVO;
-
-import org.springframework.stereotype.Repository;
 
 @Repository("loginPolicyDAO")
 public class LoginPolicyDAO extends EgovComAbstractDAO {

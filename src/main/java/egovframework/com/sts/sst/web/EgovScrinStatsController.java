@@ -2,11 +2,6 @@ package egovframework.com.sts.sst.web;
 
 import java.util.List;
 
-import egovframework.com.cmm.annotation.IncludedInfo;
-import egovframework.com.sts.com.StatsVO;
-import egovframework.com.sts.sst.service.EgovScrinStatsService;
-import egovframework.com.sym.mnu.mpm.service.EgovMenuManageService;
-
 import javax.annotation.Resource;
 
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
@@ -14,6 +9,11 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.sts.com.StatsVO;
+import egovframework.com.sts.sst.service.EgovScrinStatsService;
+import egovframework.com.sym.mnu.mpm.service.EgovMenuManageService;
 
 /**
  * 화면 통계 검색 컨트롤러 클래스

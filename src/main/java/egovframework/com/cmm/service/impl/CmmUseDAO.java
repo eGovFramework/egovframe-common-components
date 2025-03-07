@@ -2,10 +2,10 @@ package egovframework.com.cmm.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.service.CmmnDetailCode;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * @Class Name : CmmUseDAO.java

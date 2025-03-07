@@ -2,11 +2,11 @@ package egovframework.com.cop.ems.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.cop.ems.service.AtchmnFileVO;
 import egovframework.com.cop.ems.service.SndngMailVO;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 발송메일을 등록하는 DAO 클래스

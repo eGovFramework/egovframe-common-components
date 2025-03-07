@@ -261,7 +261,8 @@
 			ON A.WRTER_ID = D.ESNTL_ID
 		LEFT OUTER JOIN COMTNGNRLMBER E
 			ON A.REPORTR_ID = E.ESNTL_ID
-		WHERE A.REPRT_ID = #{reprtId}
+		WHERE (A.WRTER_ID = #{searchId} OR A.REPORTR_ID = #{searchId})
+			AND A.REPRT_ID = #{reprtId}
 	</select>
 	
 	<!-- 메모보고::수정  -->
@@ -276,7 +277,8 @@
 			ATCH_FILE_ID=#{atchFileId},
 			LAST_UPDT_PNTTM = sysdate,
 			LAST_UPDUSR_ID = #{lastUpdusrId}
-		WHERE REPRT_ID = #{reprtId}
+		WHERE FRST_REGISTER_ID = #{lastUpdusrId}
+			AND REPRT_ID = #{reprtId}
 	</update>
 	
 	<!-- 메모보고::확인  -->
@@ -297,10 +299,11 @@
 	</update>
 	
 	<!-- 메모보고::삭제  -->
-	<delete id="deleteMemoReprt" parameterType="egovframework.com.cop.smt.mrm.service.MemoReprt"> 
+	<delete id="deleteMemoReprt" parameterType="egovframework.com.cop.smt.mrm.service.MemoReprtVO"> 
 		
 			DELETE FROM COMTNMEMOREPRT 
-			WHERE REPRT_ID = #{reprtId}
+			WHERE FRST_REGISTER_ID = #{searchId}
+				AND REPRT_ID = #{reprtId}
 		
 	</delete>
 	

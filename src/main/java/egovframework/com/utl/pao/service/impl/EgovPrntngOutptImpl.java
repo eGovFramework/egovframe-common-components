@@ -1,13 +1,12 @@
 package egovframework.com.utl.pao.service.impl;
 
-import egovframework.com.utl.pao.service.EgovPrntngOutpt;
-import egovframework.com.utl.pao.service.PrntngOutptVO;
-
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
+
+import egovframework.com.utl.pao.service.EgovPrntngOutpt;
+import egovframework.com.utl.pao.service.PrntngOutptVO;
 
 /**
  * 

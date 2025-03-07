@@ -33,6 +33,11 @@
 				<bean class="org.springframework.http.converter.json.MappingJackson2HttpMessageConverter" />
 			</list>
 		</property>
+		<property name="customArgumentResolvers">
+			<list>
+				<bean class="egovframework.com.cmm.resolver.EgovSecurityArgumentResolver" />
+			</list>
+		</property>
     </bean>
     
     <!-- setting Locale Locale Interceptor 설정하기  -->
@@ -82,7 +87,5 @@
 	
 	<!-- Facebook 설정 -->
 	<mvc:default-servlet-handler />
-	
-	<mvc:view-controller path="/uss/ion/fbk/facebookSignin.do" view-name="egovframework/com/uss/ion/fbk/EgovFacebookSignin" />
 
 </beans>

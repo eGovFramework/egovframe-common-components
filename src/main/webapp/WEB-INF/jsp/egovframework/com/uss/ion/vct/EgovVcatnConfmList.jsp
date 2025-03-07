@@ -72,7 +72,7 @@
 /* ********************************************************
  * 승인처리회면 호출함수
  ******************************************************** */
-function fncVcatnManageDetail(applcntId,vcatnSe,bgnde,endde,infrmlSanctnId){
+function fncVcatnManageDetail(applcntId,vcatnSe,bgnde,endde,infrmlSanctnId) {
 	var varForm				 = document.all["listForm"];
 	varForm.applcntId.value  = applcntId;
 	varForm.vcatnSe.value    = vcatnSe;

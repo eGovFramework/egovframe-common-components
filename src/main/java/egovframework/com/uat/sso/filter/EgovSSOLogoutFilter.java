@@ -2,8 +2,6 @@ package egovframework.com.uat.sso.filter;
 
 import java.io.IOException;
 
-import egovframework.com.uat.sso.service.EgovSSOService;
-
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
 import javax.servlet.FilterConfig;
@@ -14,6 +12,8 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.context.ApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+
+import egovframework.com.uat.sso.service.EgovSSOService;
 
 /**
  *

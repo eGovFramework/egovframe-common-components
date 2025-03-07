@@ -82,7 +82,7 @@ function fncOnChangeImage() {
 	<h2><spring:message code="uss.ion.msi.mainImageUpdt.mainImageUpdt" /></h2><!-- 메인화면이미지 수정 -->
 
 	<!-- 등록폼 -->
-<form:form modelAttribute="mainImage" method="post" action="${pageContext.request.contextPath}/uss/ion/msi/updtMainImage.do' />" enctype="multipart/form-data">  
+<form:form modelAttribute="mainImage" method="post" action="${pageContext.request.contextPath}/uss/ion/msi/updtMainImage.do" enctype="multipart/form-data">  
 <input type="hidden" name="posblAtchFileNumber" value="1" >
 	<table class="wTable">
 		<colgroup>

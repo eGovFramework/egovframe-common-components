@@ -15,7 +15,8 @@ import java.io.Serializable;
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.04.01  이중호          최초 생성
+ *   2009.04.01  이중호			최초 생성
+ *   2024.10.29  권태성			날짜 검색 시 검색어를 DB에 저장된 포맷으로 변환하여 반환
  *
  * </pre>
  */
@@ -80,6 +81,15 @@ public class RestdeVO extends Restde implements Serializable {
 	 */
 	public void setSearchKeyword(String searchKeyword) {
 		this.searchKeyword = searchKeyword;
+	}
+
+	/**
+	 * 날짜 검색 시 검색어를 DB에 저장된 포맷으로 변환하여 반환
+	 * 
+	 * @return
+	 */
+	public String getFormattedDtKeyword() {
+		return (this.searchKeyword != null  ? this.searchKeyword.replace("-", "") : "");
 	}
 
 	/**

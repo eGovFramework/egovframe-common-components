@@ -5,15 +5,14 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.springframework.stereotype.Service;
+
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
-
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
 
 /**
  * @Class Name : EgovCmmUseServiceImpl.java
@@ -23,6 +22,7 @@ import org.springframework.stereotype.Service;
  *    수정일       수정자         수정내용
  *    -------        -------     -------------------
  *    2009. 3. 11.     이삼섭
+ *    2024.10.29.	LeeBaekHaeng	@Override 표기
  *
  * @author 공통 서비스 개발팀 이삼섭
  * @since 2009. 3. 11.
@@ -43,6 +43,7 @@ public class EgovCmmUseServiceImpl extends EgovAbstractServiceImpl implements Eg
      * @return
      * @throws Exception
      */
+	@Override
     public List<CmmnDetailCode> selectCmmCodeDetail(ComDefaultCodeVO vo) throws Exception {
     	return cmmUseDAO.selectCmmCodeDetail(vo);
     }
@@ -54,6 +55,7 @@ public class EgovCmmUseServiceImpl extends EgovAbstractServiceImpl implements Eg
      * @return
      * @throws Exception
      */
+	@Override
     public Map<String, List<CmmnDetailCode>> selectCmmCodeDetails(List<ComDefaultCodeVO> voList) throws Exception {
 		ComDefaultCodeVO vo;
 		Map<String, List<CmmnDetailCode>> map = new HashMap<String, List<CmmnDetailCode>>();
@@ -74,6 +76,7 @@ public class EgovCmmUseServiceImpl extends EgovAbstractServiceImpl implements Eg
      * @return 조직정보 List
      * @throws Exception
      */
+	@Override
     public List<CmmnDetailCode> selectOgrnztIdDetail(ComDefaultCodeVO vo) throws Exception {
     	return cmmUseDAO.selectOgrnztIdDetail(vo);
     }
@@ -85,6 +88,7 @@ public class EgovCmmUseServiceImpl extends EgovAbstractServiceImpl implements Eg
      * @return 그룹정보 List
      * @throws Exception
      */
+	@Override
     public List<CmmnDetailCode> selectGroupIdDetail(ComDefaultCodeVO vo) throws Exception {
     	return cmmUseDAO.selectGroupIdDetail(vo);
     }

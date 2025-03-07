@@ -4,17 +4,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.springframework.stereotype.Service;
+
 import egovframework.com.cop.ncm.service.EgovNcrdManageService;
 import egovframework.com.cop.ncm.service.NameCard;
 import egovframework.com.cop.ncm.service.NameCardUser;
 import egovframework.com.cop.ncm.service.NameCardVO;
-
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
 
 /**
  * 명함정보를 관리하기 위한 서비스 구현  클래스

@@ -6,8 +6,10 @@
  * @
  * @  수정일      수정자            수정내용
  * @ -------        --------    ---------------------------
- * @ 2010.07.19   장철호          최초 생성
- * @ 2018.09.27   이정은          공통컴포넌트 3.8 개선
+ * @ 2010.07.19  장철호			최초 생성
+ * @ 2018.09.27  이정은			공통컴포넌트 3.8 개선
+ * @ 2024.10.29  권태성			디버깅용 console.log 제거(fn_egov_select_wikmnthngreprt())
+ * @ 2024.10.29  권태성			reprtId 을 포함하고 있는 form 이름으로 변경(fn_egov_inqire_wikmnthngreprt())
  *
  *  @author 공통컴포넌트개발팀 장철호
  *  @since 2010.07.19
@@ -21,6 +23,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -59,15 +62,10 @@
 
 	function fn_egov_select_wikmnthngreprt() {
 		document.frm.pageIndex.value = "1";
-		console.log(document.frm.pageIndex.value);
 		document.frm.action = "<c:url value='/cop/smt/wmr/selectWikMnthngReprtList.do'/>";
 
-		
 		var bgnDe = document.frm.searchBgnDe.value.split("-").join("");
 		var endDe = document.frm.searchEndDe.value.split("-").join("");
-		
-		console.log(bgnDe);
-		console.log(endDe);
 
 		if(bgnDe != ""){
 			if(isDate(bgnDe, "<spring:message code="copSmtWmr.wikMnthngReprtList.searchBgnDe"/>") == false) {/* 검색시작일자 */
@@ -225,8 +223,8 @@
 			    	<input name="searchBgnDe" type="hidden" value="<c:out value='${searchVO.searchBgnDe}'/>">
 			    	<input name="searchEndDe" type="hidden" value="<c:out value='${searchVO.searchEndDe}'/>">
 			    	<input name="searchSttus" type="hidden" value="<c:out value='${searchVO.searchSttus}'/>">
-					<input type="hidden" name="reprtId" value="<c:out value="${result.reprtId}"/>">
-					<span class="link"><input type="submit" value="<c:out value="${result.reprtSj}"/>" onclick="fn_egov_inqire_wikmnthngreprt('<c:out value="${result.reprtId}"/>'); return false;" style="text-align : left;"></span>
+					<input type="hidden" name="reprtId" value="<c:out value="${egovc:encryptId(result.reprtId)}"/>">
+					<span class="link"><input type="submit" value="<c:out value="${result.reprtSj}"/>" style="text-align : left;"></span>
 				 </form>
 				</td>
 				<td><c:out value="${result.reprtBgnDe}"/>~<c:out value="${result.reprtEndDe}"/></td>
@@ -249,6 +247,7 @@
 		</ul>
 	</div>
 	
+</form>
 </div>
 </body>
 </html>

@@ -6,17 +6,6 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import kr.go.onepass.client.dto.api.send.OnepassUserResponse;
-import kr.go.onepass.client.dto.api.send.OnepassUserResponse.PROCESS_RESULT;
-import kr.go.onepass.client.dto.api.send.OnepassUserResponse.USER_STATUS;
-import kr.go.onepass.client.dto.saml.OnepassResponse;
-import kr.go.onepass.client.handler.api.ApiSendHandler;
-import kr.go.onepass.client.handler.saml.OnepassRequestHandler;
-import kr.go.onepass.client.handler.saml.OnepassResponseHandler;
-import kr.go.onepass.client.handler.saml.OnepassResponseHandler.RESULT_CODE;
-import kr.go.onepass.client.handler.saml.OnepassResponseHandler.STATUS;
-import kr.go.onepass.client.handler.saml.OnepassResponseHandler.TYPE;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -28,6 +17,16 @@ import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.uat.uia.onepass.service.EgovOnepassService;
 import egovframework.com.uat.uia.service.EgovLoginService;
+import kr.go.onepass.client.dto.api.send.OnepassUserResponse;
+import kr.go.onepass.client.dto.api.send.OnepassUserResponse.PROCESS_RESULT;
+import kr.go.onepass.client.dto.api.send.OnepassUserResponse.USER_STATUS;
+import kr.go.onepass.client.dto.saml.OnepassResponse;
+import kr.go.onepass.client.handler.api.ApiSendHandler;
+import kr.go.onepass.client.handler.saml.OnepassRequestHandler;
+import kr.go.onepass.client.handler.saml.OnepassResponseHandler;
+import kr.go.onepass.client.handler.saml.OnepassResponseHandler.RESULT_CODE;
+import kr.go.onepass.client.handler.saml.OnepassResponseHandler.STATUS;
+import kr.go.onepass.client.handler.saml.OnepassResponseHandler.TYPE;
 
 /**
  * 디티털원패스 연동을 처리하는 컨트롤러 클래스

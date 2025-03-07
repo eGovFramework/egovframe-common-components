@@ -5,8 +5,9 @@
  
       수정일         수정자                   수정내용
     -------    --------    ---------------------------
-     2008.03.09    장동한          최초 생성
-     2017.07.18    김예영          표준프레임워크 v3.7 개선
+     2008.03.09    장동한		최초 생성
+     2017.07.18    김예영		표준프레임워크 v3.7 개선
+     2024.10.29    권태성		등록 페이지 신규 경로로 변경
      
     author   : 공통서비스 개발팀 장동한
     since    : 2009.03.09
@@ -39,7 +40,7 @@ function linkPage(pageNo){
  * 등록 처리 함수 
  ******************************************************** */
 function fn_egov_regist_QustnrItemManage(){
-	location.href = "<c:url value='/uss/olp/qim/EgovQustnrItemManageRegist.do' />";
+	location.href = "<c:url value='/uss/olp/qim/EgovQustnrItemManageRegistView.do' />";
 }
 /* ********************************************************
  * 수정 처리 함수
@@ -125,7 +126,7 @@ function fn_egov_list_QustnrQestnManag(qestnrId, qestnrTmplatId){
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code='title.search' /> <spring:message code='input.input' />" value="<c:out value='${searchVO.searchKeyword}'/>"  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code='button.inquire' />" title="<spring:message code='title.inquire' /> <spring:message code='input.button' />" onclick="fn_egov_search_QustnrItemManage(); return false;" />
 				<!-- 등록버튼 -->
-				<span class="btn_b"> <a href="<c:url value='/uss/olp/qim/EgovQustnrItemManageRegist.do'/>" title="<spring:message code='button.create' /> <spring:message code='input.button' />"><spring:message code="button.create" /></a></span> 
+				<span class="btn_b"> <a href="<c:url value='/uss/olp/qim/EgovQustnrItemManageRegistView.do'/>" title="<spring:message code='button.create' /> <spring:message code='input.button' />"><spring:message code="button.create" /></a></span> 
 			</li>
 		</ul>
 	</div>

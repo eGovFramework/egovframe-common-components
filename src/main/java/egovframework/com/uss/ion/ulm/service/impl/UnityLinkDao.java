@@ -2,11 +2,11 @@ package egovframework.com.uss.ion.ulm.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.ulm.service.UnityLink;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 통합링크관리를 처리하는 Dao Class 구현

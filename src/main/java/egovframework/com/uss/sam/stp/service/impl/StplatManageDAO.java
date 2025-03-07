@@ -2,11 +2,11 @@ package egovframework.com.uss.sam.stp.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.sam.stp.service.StplatManageDefaultVO;
 import egovframework.com.uss.sam.stp.service.StplatManageVO;
-
-import org.springframework.stereotype.Repository;
 
 
 /**

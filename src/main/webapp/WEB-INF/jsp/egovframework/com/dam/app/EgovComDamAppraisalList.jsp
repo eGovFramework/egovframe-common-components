@@ -4,10 +4,11 @@
   * @Description : EgovComDamAppraisalList 화면
   * @Modification Information
   * @
-  * @ 수정일              수정자          수정내용
+  * @ 수정일      수정자          수정내용
   * @ ----------  --------  ---------------------------
-  * @ 2010.08.12  박종선          최초 생성
-  *   2018.09.11  신용호          공통컴포넌트 3.8 개선
+  * @ 2010.08.12  박종선	최초 생성
+  *   2018.09.11  신용호	공통컴포넌트 3.8 개선
+  *   2024.10.29  권태성	press(event) 추가
   *
   *  @author 공통서비스팀 
   *  @since 2010.05.01
@@ -56,6 +57,12 @@
 			document.listForm.pageIndex.value = 1;
 		   	document.listForm.submit();
 		}
+		
+		function press(event) {
+            if (event.keyCode == 13) {
+                fnSearch();
+            }
+        }
 		-->
 		</script>
 	</head>
@@ -78,7 +85,7 @@
 					<option value='1' <c:if test="${searchVO.searchCondition == '1'}">selected="selected"</c:if>><spring:message code="comDamApp.comDamAppraisalList.knoNm"/></option><!-- 지식명 -->
 					<option value='2' <c:if test="${searchVO.searchCondition == '2'}">selected="selected"</c:if>><spring:message code="comDamApp.comDamAppraisalList.userNm"/></option><!-- 등록자명 -->
 					</select>
-					<input class="s_input2 vat" name="searchKeyword" type="text" value="${searchVO.searchKeyword}" maxlength="35" size="35" onkeypress="press();" title="<spring:message code="title.search"/>" /><!-- 검색어 입력 -->
+					<input class="s_input2 vat" name="searchKeyword" type="text" value="${searchVO.searchKeyword}" maxlength="35" size="35" onkeypress="press(event);" title="<spring:message code="title.search"/>" /><!-- 검색어 입력 -->
 					
 					<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fnSearch(); return false;" /><!-- 조회 -->
 				</li>

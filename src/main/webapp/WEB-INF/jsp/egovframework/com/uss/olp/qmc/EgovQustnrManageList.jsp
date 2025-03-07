@@ -3,11 +3,12 @@
   Description : 설문관리 목록 페이지
   Modification Information
 
-       수정일               수정자            수정내용
+       수정일		수정자            수정내용
     ----------   --------   ---------------------------
-    2008.03.09   장동한            최초 생성
-    2017.07.14   김예영            표준프레임워크 v3.7 개선
-    2019.12.11   신용호            KISA 보안약점 조치 (크로스사이트 스크립트)
+    2008.03.09   장동한			최초 생성
+    2017.07.14   김예영			표준프레임워크 v3.7 개선
+    2019.12.11   신용호			KISA 보안약점 조치 (크로스사이트 스크립트)
+    2024.10.29   권태성			등록 페이지 신규 경로로 변경
 
     author   : 공통서비스 개발팀 장동한
     since    : 2009.03.09
@@ -40,13 +41,13 @@ function linkPage(pageNo){
  * 등록 처리 함수
  ******************************************************** */
 function fn_egov_regist_QustnrManage(){
-	location.href = "<c:url value='/uss/olp/qmc/EgovQustnrManageRegist.do' />";
+	location.href = "<c:url value='/uss/olp/qmc/EgovQustnrManageRegistView.do' />";
 }
 /* ********************************************************
  * 수정 처리 함수
  ******************************************************** */
 function fn_egov_modify_QustnrManage(){
-	location.href = "<c:url value='/uss/olp/qmc/EgovQustnrManageModify.do' />";
+	location.href = "<c:url value='/uss/olp/qmc/EgovQustnrManageModifyView.do' />";
 }
 /* ********************************************************
  * 상세회면 처리 함수
@@ -148,7 +149,7 @@ function fn_egov_statistics_QustnrQestnManag(qestnrId, qestnrTmplatId){
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code='title.search' /> <spring:message code='input.input' />" value="<c:out value='${searchKeyword}'/>"  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code='button.inquire' />" title="<spring:message code='title.inquire' /> <spring:message code='input.button' />" onclick="fn_egov_search_QustnrManage(); return false;" />
 				<!-- 등록버튼 -->
-				<span class="btn_b"> <a href="<c:url value='/uss/olp/qmc/EgovQustnrManageRegist.do'/>" title="<spring:message code='button.create' /> <spring:message code='input.button' />"><spring:message code="button.create" /></a></span> 
+				<span class="btn_b"> <a href="<c:url value='/uss/olp/qmc/EgovQustnrManageRegistView.do'/>" title="<spring:message code='button.create' /> <spring:message code='input.button' />"><spring:message code="button.create" /></a></span> 
 			</li>
 		</ul>
 	</div>

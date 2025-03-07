@@ -6,10 +6,11 @@
   * @
   * @  수정일   	수정자		수정내용
   * @ ----------	------		---------------------------
-  * @ 2014.08.28	옥찬우		최초 생성
-  * @ 2018.09.10   최두영       v3.8 퍼블리싱 점검
-  * @ 2018.09.12   최두영       다국어처리
-  * @ 2018.10.10   최두영       약도 관리 API 테스트 및 변경
+  * @ 2014.08.28  옥찬우		최초 생성
+  * @ 2018.09.10  최두영		v3.8 퍼블리싱 점검
+  * @ 2018.09.12  최두영		다국어처리
+  * @ 2018.10.10  최두영		약도 관리 API 테스트 및 변경
+  * @ 2024.10.29  권태성		상세 페이지에서 목록으로 이동 시 검색 결과로 이동하도록 수정
   *
   *  @author 유지보수팀 
   *  @since 2014.08.28
@@ -36,7 +37,7 @@
 	 ******************************************************** */
 	function fn_egov_init_roughmaplist(){
 	    // 첫 입력란에 포커스..
-	    document.searchVO.searchKeyword.focus();
+	    document.RoughMapForm.searchKeyword.focus();
 	}
 	
 	/*********************************************************
@@ -90,30 +91,30 @@
 
 <div class="board">
 	<h1><spring:message code="comUssIonRmm.roughMapList.title" /> <spring:message code="title.inquire" /></h1><!-- 약도목록 조회 -->
-	<span><spring:message code="comUssIonRmm.roughMapList.info"/></span><!-- 약도관리는 Daum 지도 API 키를 발급받아야 합니다. -->
-	<span>(※ Guide Link : <a href="http://apis.map.daum.net/web/guide/" target="_new"><spring:message code="comUssIonRmm.roughMapList.info2"/></a>)</span> <!-- Daum 지도 API 가이드 -->
+	<span><spring:message code="comUssIonRmm.roughMapList.info"/></span><!-- 약도관리는 Kakao 지도 API 키를 발급받아야 합니다. -->
+	<span>(※ Guide Link : <a href="https://apis.map.kakao.com/web/guide/" target="_new"><spring:message code="comUssIonRmm.roughMapList.info2"/></a>)</span> <!-- Kakao 지도 API 가이드 -->
 
-	<form name="searchVO" action="<c:url value='/com/uss/ion/rmm/selectRoughMapList.do'/>" method="post">
+	<form id="RoughMapForm" name="RoughMapForm" action="<c:url value='/com/uss/ion/rmm/selectRoughMapList.do'/>" method="post">
 
-	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
-		<ul>
-			<li>
-				<select name="searchCondition" class="select" title="<spring:message code="select.searchCondition" />"><!-- 조회조건 선택 -->
-					<option selected value=''>--<spring:message code="input.select" />--</option><!-- 선택하세요 -->
-					<option value="roughMapSj" <c:if test="${searchVO.searchCondition == 'roughMapSj'}">selected="selected"</c:if> ><spring:message code="comUssIonRmm.roughMapList.roughMapSj" /></option><!-- 약도제목 -->
-					<option value="roughMapAddress" <c:if test="${searchVO.searchCondition == 'roughMapAddress'}">selected="selected"</c:if> ><spring:message code="comUssIonRmm.roughMapList.roughMapAddress" /></option><!-- 약도주소 -->
-				</select>
-				<input class="s_input2 vat" name="searchKeyword" type="text" value='<c:out value="${searchVO.searchKeyword}"/>' size="35" maxlength="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" /><!-- 검색어 입력 -->
-				
-				<input class="s_btn" type="submit" value="<spring:message code="title.inquire" />" title="<spring:message code="title.inquire" />" onclick="fn_egov_search_roughmap(); return false;" />
-				<span class="btn_b"><a href="<c:url value='/com/uss/ion/rmm/registRoughMap.do'/>" onclick="fn_egov_regist_roughmap(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
-			</li>
-		</ul>
-	</div>
-		<input name="roughMapId" type="hidden" value="">
-		<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
+    	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
+    		<ul>
+    			<li>
+    				<select id="searchCondition" name="searchCondition" class="select" title="<spring:message code="select.searchCondition" />"><!-- 조회조건 선택 -->
+    					<option selected value=''>--<spring:message code="input.select" />--</option><!-- 선택하세요 -->
+    					<option value="roughMapSj" <c:if test="${searchVO.searchCondition == 'roughMapSj'}">selected="selected"</c:if> ><spring:message code="comUssIonRmm.roughMapList.roughMapSj" /></option><!-- 약도제목 -->
+    					<option value="roughMapAddress" <c:if test="${searchVO.searchCondition == 'roughMapAddress'}">selected="selected"</c:if> ><spring:message code="comUssIonRmm.roughMapList.roughMapAddress" /></option><!-- 약도주소 -->
+    				</select>
+    				<input class="s_input2 vat" id="searchKeyword" name="searchKeyword" type="text" value='<c:out value="${searchVO.searchKeyword}"/>' size="35" maxlength="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" /><!-- 검색어 입력 -->
+    				
+    				<input class="s_btn" type="submit" value="<spring:message code="title.inquire" />" title="<spring:message code="title.inquire" />" onclick="fn_egov_search_roughmap(); return false;" />
+    				<span class="btn_b"><a href="<c:url value='/com/uss/ion/rmm/registRoughMap.do'/>" onclick="fn_egov_regist_roughmap(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+    			</li>
+    		</ul>
+    	</div>
+		<input id="roughMapId" name="roughMapId" type="hidden" value="" />
+		<input id="pageIndex" name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 	</form>
-	
+
 	<table class="board_list">
 		<caption><spring:message code="comUssIonRmm.roughMapList.title" /></caption><!-- 약도목록 -->
 		<colgroup>

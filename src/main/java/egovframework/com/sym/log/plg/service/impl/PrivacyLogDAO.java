@@ -2,10 +2,10 @@ package egovframework.com.sym.log.plg.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sym.log.plg.service.PrivacyLog;
-
-import org.springframework.stereotype.Repository;
 
 @Repository("privacyLogDAO")
 public class PrivacyLogDAO extends EgovComAbstractDAO {

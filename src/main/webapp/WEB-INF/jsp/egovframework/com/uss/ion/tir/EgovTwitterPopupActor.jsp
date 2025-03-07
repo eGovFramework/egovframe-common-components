@@ -11,9 +11,6 @@ String sCONSUMER_SECRET= request.getParameter("ConsumerSecret") == null ? "": (S
 String sCmd = request.getParameter("cmd") == null ? "": (String)request.getParameter("cmd");
 String sAt = request.getParameter("at") == null ? "": (String)request.getParameter("at");
 
-System.out.println("sCONSUMER_KEY" +sCONSUMER_KEY);
-System.out.println(sCONSUMER_SECRET);
-
 Twitter twitter = new TwitterFactory().getInstance();
 //Twitter twitter = TwitterFactory.getSingleton();
 twitter.setOAuthConsumer(sCONSUMER_KEY, sCONSUMER_SECRET);

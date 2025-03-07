@@ -1,14 +1,13 @@
 package egovframework.com.sym.sym.bak.service.impl;
 import java.util.List;
 
-import egovframework.com.sym.sym.bak.service.BackupResult;
-import egovframework.com.sym.sym.bak.service.EgovBackupResultService;
-
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
+
+import egovframework.com.sym.sym.bak.service.BackupResult;
+import egovframework.com.sym.sym.bak.service.EgovBackupResultService;
 
 /**
  * 백업결과관리에 대한 ServiceImpl 클래스를 정의한다.

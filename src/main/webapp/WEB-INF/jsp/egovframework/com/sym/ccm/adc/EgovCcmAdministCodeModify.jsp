@@ -7,7 +7,8 @@
   * @
   * @  수정일             수정자                   수정내용
   * @ -------    --------    ---------------------------
-  * @ 2009.04.01   이중호              최초 생성
+  * @ 2009.04.01   이중호			최초 생성
+  * @ 2024.10.29   권태성			수정 페이지 신규 경로로 변경
   *
   *  @author 공통서비스팀
   *  @since 2009.04.01
@@ -112,7 +113,7 @@
 <body onLoad="fnInit();">
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form modelAttribute="administCode" name="administCode" method="post">
+<form:form modelAttribute="administCode" name="administCode" method="post" action="${pageContext.request.contextPath}/sym/ccm/adc/EgovCcmAdministCodeModify.do">
 <input name="cmd" type="hidden" value="Modify">
 <form:hidden path="administZoneSe"/>
 <form:hidden path="administZoneCode"/>

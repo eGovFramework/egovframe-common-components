@@ -37,6 +37,7 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
  *  2016.10.13     장동한        deleteFileInf 메소드 return 방식 수정
  *  2022.12.02     윤창원        File ID 암호화 처리
  *  2022.12.22     신용호        JSTL 커스텀 태그 추가 및 기능 보완
+ *  2024.10.29		LeeBaekHaeng	정적 필드 EgovFileMngController.cryptoService는 정적 방식으로 액세스
  *
  *      </pre>
  */
@@ -53,7 +54,7 @@ public class EgovFileMngController {
 
 	@Resource(name = "egovEnvCryptoService")
 	public void setEgovEnvCryptoService(EgovEnvCryptoService cryptoService) {
-		this.cryptoService = cryptoService;
+		EgovFileMngController.cryptoService = cryptoService;
 	}
 	
 	/**

@@ -2,14 +2,13 @@ package egovframework.com.auth.pattern;
 
 import static org.junit.Assert.assertEquals;
 
+import org.egovframe.rte.fdl.access.interceptor.EgovAccessUtil;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import org.egovframe.rte.fdl.access.interceptor.EgovAccessUtil;
 
 /**
  * @TestSessionURLPattern Test Class 구현 (AntPattern 검증 및 RegexPattern URL 검증)

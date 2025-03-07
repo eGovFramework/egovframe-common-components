@@ -4,11 +4,12 @@
   * @Description : POLL관리 목록 페이지
   * @Modification Information
   * @
-  * @  수정일             수정자                   수정내용
+  * @ 수정일      수정자        수정내용
   * @ -------    --------    ---------------------------
-  * @ 2008.03.09	장동한		최초 생성
-  *   2011.07.06 	옥찬우		Tag 변수값수정( 160 Line : frstRegisterPnttm -> frstRegistPnttm )
-  *   2016.06.13 	장동한        표준프레임워크 v3.6 개선
+  * @ 2008.03.09  장동한		최초 생성
+  *   2011.07.06  옥찬우		Tag 변수값수정( 160 Line : frstRegisterPnttm -> frstRegistPnttm )
+  *   2016.06.13  장동한		표준프레임워크 v3.6 개선
+  *   2024.10.29  권태성		등록 페이지 신규 경로로 변경
   *  
   *  @author 공통서비스 개발팀 장동한
   *  @since 2009.03.09
@@ -43,7 +44,7 @@ function linkPage(pageNo){
  * 등록 처리 함수
  ******************************************************** */
 function fn_egov_regist_OnlinePollManage(){
-	location.href = "<c:url value='/uss/olp/opm/registOnlinePollManage.do' />";
+	location.href = "<c:url value='/uss/olp/opm/registOnlinePollManageView.do' />";
 }
 /* ********************************************************
  * 상세회면 처리 함수
@@ -86,7 +87,7 @@ function fn_egov_search_OnlinePollManage(){
 			<li>
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${searchVO.searchKeyword}"/>'  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
-				<span class="btn_b"><a href="<c:url value='/uss/olp/opm/registOnlinePollManage.do' />?pageIndex=${searchVO.pageIndex}"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="<c:url value='/uss/olp/opm/registOnlinePollManageView.do' />?pageIndex=${searchVO.pageIndex}"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>

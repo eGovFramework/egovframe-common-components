@@ -2,6 +2,8 @@ package egovframework.com.sym.cal.service;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotEmpty;
+
 /**
  * 휴일 모델 클래스
  * @author 공통서비스 개발팀 이중호
@@ -14,7 +16,8 @@ import java.io.Serializable;
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.04.01  이중호          최초 생성
+ *   2009.04.01  이중호			최초 생성
+ *   2024.10.20  권태성		필수값 BindingResult 검증을 위한 @NotEmpty 추가
  *
  * </pre>
  */
@@ -30,21 +33,25 @@ public class Restde implements Serializable {
     /*
      * 휴일일자
      */
+	@NotEmpty(message = "휴일일자{common.required.msg}")
     private String restdeDe       = "";
 
     /*
      * 휴일명
      */
+	@NotEmpty(message = "휴일명{common.required.msg}")
     private String restdeNm       = "";
 
     /*
      * 휴일설명
      */
+	@NotEmpty(message = "휴일설명{common.required.msg}")
     private String restdeDc       = "";
 
     /*
      * 휴일구분
      */
+	@NotEmpty(message = "휴일구분{common.required.msg}")
     private String restdeSe       = "";
 
     /*
@@ -400,5 +407,19 @@ public class Restde implements Serializable {
 		this.lastDayMonth = lastDayMonth;
 	}
 
+	/**
+	 * restdeDe 값을 "yyyy-mm-dd" 형식으로 반환한다.
+	 * @return
+	 */
+	public String getFormattedRestdeDe() {
+		if (restdeDe != null && restdeDe.length() == 8 && restdeDe.matches("\\d{8}")) {
+			String year = restdeDe.substring(0, 4);
+			String month = restdeDe.substring(4, 6);
+			String day = restdeDe.substring(6, 8);
+			return year + "-" + month + "-" + day;
+		} else {
+			return restdeDe;
+		}
+	}
 
 }

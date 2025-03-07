@@ -2,14 +2,13 @@ package egovframework.com.uss.ion.yrc.service.impl;
 
 import java.util.List;
 
-import egovframework.com.uss.ion.yrc.service.EgovIndvdlYrycManageService;
-import egovframework.com.uss.ion.yrc.service.IndvdlYrycManage;
-
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
+
+import egovframework.com.uss.ion.yrc.service.EgovIndvdlYrycManageService;
+import egovframework.com.uss.ion.yrc.service.IndvdlYrycManage;
 
 /**
  * 개요

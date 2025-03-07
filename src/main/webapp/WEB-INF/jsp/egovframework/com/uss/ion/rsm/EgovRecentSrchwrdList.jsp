@@ -5,10 +5,11 @@
 
        수정일                수정자           수정내용
     ----------   --------   ---------------------------
-    2008.03.09   장동한           최초 생성
-    2011.12.14   이기하           최근검색어 오류 수정
-    2018.08.16   이정은           공통컴포넌트 3.8 개선(다국어처리, 퍼블리싱 확인)
-    2019.12.10   신용호           KISA 보안약점 조치
+    2008.03.09   장동한				최초 생성
+    2011.12.14   이기하				최근검색어 오류 수정
+    2018.08.16   이정은				공통컴포넌트 3.8 개선(다국어처리, 퍼블리싱 확인)
+    2019.12.10   신용호				KISA 보안약점 조치
+    2024.10.29   권태성				수정 페이지 신규 경로로 변경
 
     author   : 공통서비스 개발팀 장동한
     since    : 2009.03.09
@@ -116,7 +117,7 @@ $(document).ready(function(){
 				<!--Ajax Tags 등록 -->				
 				<input type="hidden" name="rsm_url" id="rsm_url" value="<c:url value='/uss/ion/rsm/registRecentSrchwrdResult.do'/>" >
 				<span class="btn_b"><a id="btnInquire" href="" onclick="fn_egov_regist_RecentSrchwrdResult('SRCMGR_0000000000001',$('searchKeyword').value,'fn_egov_search_RecentSrchwrd()', document.listForm); return false;" title='<spring:message code="button.inquire" />'><spring:message code="button.inquire" /></a></span>
-				<span class="btn_b"><a href="<c:url value='/uss/ion/rsm/registRecentSrchwrd.do' />" onclick="" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="<c:url value='/uss/ion/rsm/registRecentSrchwrdView.do' />" onclick="" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
 				<!--Ajax Tags 끝 -->
 			</li>
 		</ul>

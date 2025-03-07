@@ -2,12 +2,12 @@ package egovframework.com.sym.ccm.zip.service.impl;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sym.ccm.zip.service.Zip;
 import egovframework.com.sym.ccm.zip.service.ZipVO;
-
-import org.egovframe.rte.psl.dataaccess.util.EgovMap;
-import org.springframework.stereotype.Repository;
 
 /**
  *
@@ -51,7 +51,7 @@ public class RdnmadZipDAO extends EgovComAbstractDAO {
 	 * @param zip
 	 * @throws Exception
 	 */
-	public void insertZip(Zip zip) throws Exception {
+	public void insertZip(Zip zip) {
         insert("RdnmadZipDAO.insertZip", zip);
 	}
 

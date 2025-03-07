@@ -2,11 +2,11 @@ package egovframework.com.sec.ram.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sec.ram.service.AuthorManage;
 import egovframework.com.sec.ram.service.AuthorManageVO;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 권한관리에 대한 DAO 클래스를 정의한다.

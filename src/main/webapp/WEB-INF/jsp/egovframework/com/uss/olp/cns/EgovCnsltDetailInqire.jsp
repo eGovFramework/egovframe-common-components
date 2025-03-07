@@ -8,6 +8,7 @@
   * @ -------    --------    ---------------------------
   * @ 2009.02.01   박정규              최초 생성
   *   2016.06.18   장동한              표준프레임워크 v3.6 개선
+  *   2024.10.29   권태성              목록 버튼 onclick 이벤트 수정
   *
   *  @author 공통서비스팀
   *  @since 2009.02.01
@@ -36,10 +37,10 @@
 /* ********************************************************
  * 목록 으로 가기
  ******************************************************** */
-function fn_egov_inqire_cnsltlist() {
+function fn_egov_search_list() {
 
-	document.CnsltManageForm.action = "<c:url value='/uss/olp/cns/CnsltListInqire.do'/>";
-	document.CnsltManageForm.submit();
+	document.formList.action = "<c:url value='/uss/olp/cns/CnsltListInqire.do'/>";
+	document.formList.submit();
 
 }
 
@@ -281,14 +282,14 @@ function fn_egov_passwordConfirm(){
 		<input name="passwordConfirmAt" type="hidden" value="">
 		</form>
 		
-		<form name="formDelete" action="<c:url value='/uss/olp/cns/CnsltDtlsDelete.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+		<form name="formDelete" method="post" style="float:left; margin:0 0 0 3px;">
 			<input type="submit" class="s_submit" value="<spring:message code="button.delete" />" onclick="fn_egov_delete_cnsltdtls('<c:out value="${result.cnsltId}"/>'); return false;">
 			<input name="cnsltId" type="hidden" value="${result.cnsltId}">
 			<input name="cmd" type="hidden" value="<c:out value='del'/>"/>
 		</form>
 
-		<form name="formList" action="<c:url value='/uss/olp/cns/CnsltListInqire.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
-		  <input type="submit" class="s_submit" value="<spring:message code="button.list" />" onclick="fn_egov_search_OnlinePollManage(); return false;">
+		<form name="formList" method="post" style="float:left; margin:0 0 0 3px;">
+		  <input type="submit" class="s_submit" value="<spring:message code="button.list" />" onclick="fn_egov_search_list(); return false;">
 		</form>
 		
 	</div><div style="clear:both;"></div>

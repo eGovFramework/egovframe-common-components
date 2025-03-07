@@ -2,12 +2,12 @@ package egovframework.com.sym.ccm.acr.service.impl;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sym.ccm.acr.service.AdministCodeRecptn;
 import egovframework.com.sym.ccm.acr.service.AdministCodeRecptnVO;
-
-import org.egovframe.rte.psl.dataaccess.util.EgovMap;
-import org.springframework.stereotype.Repository;
 
 /**
  *
@@ -22,7 +22,8 @@ import org.springframework.stereotype.Repository;
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.04.01  이중호          최초 생성
+ *   2009.04.01  이중호         최초 생성
+ *   2024.10.29	 권태성			법정동코드 저장 시 NullPointerException 수정(insertAdministCode())
  *
  * Copyright (C) 2009 by MOPAS  All right reserved.
  * </pre>
@@ -47,11 +48,12 @@ public class AdministCodeRecptnDAO extends EgovComAbstractDAO {
 	public void insertAdministCode(AdministCodeRecptn administCodeRecptn) throws Exception {
 		AdministCodeRecptn beforeData = (AdministCodeRecptn) selectOne("AdministCodeRecptnDAO.selectAdministCodeDetail", administCodeRecptn);
 
-		if (beforeData.getAdministZoneCode().equals(administCodeRecptn.getAdministZoneCode())
-		&&  beforeData.getAdministZoneSe()  .equals(administCodeRecptn.getAdministZoneSe()  )
+		if (beforeData != null
+				&& beforeData.getAdministZoneCode().equals(administCodeRecptn.getAdministZoneCode())
+				&& beforeData.getAdministZoneSe().equals(administCodeRecptn.getAdministZoneSe())
 		) {
 			// 기등록 자료
-        	administCodeRecptn.setProcessSe("10");
+			administCodeRecptn.setProcessSe("10");
 		} else {
 			int rtnValue = update("AdministCodeRecptnDAO.insertAdministCode", administCodeRecptn);
 	        if (rtnValue != 1) {

@@ -18,6 +18,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 <c:set var="pageTitle"><spring:message code="comUssIonNtr.title"/></c:set>
 <!DOCTYPE html>
@@ -90,8 +91,8 @@ function fn_egov_delete_NoteRecptn(){
 			<th><spring:message code="comUssIonNtr.detail.noteSj" /></th>
 			<td colspan="3" class="left">
 				<c:set var="noteRecptnNoteSj" value="${fn:escapeXml(noteRecptn.noteSj)}"/>
-				<c:set var="noteRecptnNoteSj" value="${fn:replace(noteRecptnNoteSj , crlf , '<br>')}"/>
-				<c:out value="${noteRecptnNoteSj}" escapeXml="false" />
+				<c:set var="noteRecptnNoteSj" value="${fn:replace(noteRecptn.noteSj , crlf , '<br>')}"/>
+				<c:out value="${noteRecptn.noteSj}" escapeXml="false" />
 			</td>
 		</tr>
 		<!-- 발신자, 발신시각 -->
@@ -121,19 +122,19 @@ function fn_egov_delete_NoteRecptn(){
 		</tr>
 		<!-- 쪽지내용 -->
 		<tr>
-			<th class="vtop"><spring:message code="comUssIonNtr.detail.noteRecptn" /></th>
+			<th><spring:message code="comUssIonNtr.detail.noteRecptn" /></th>
 			<td colspan="3" class="cnt">
 				<c:set var="noteRecptnNoteCn" value="${fn:escapeXml(noteRecptn.noteCn)}"/>
-				<c:set var="noteRecptnNoteCn" value="${fn:replace(noteRecptnNoteCn , crlf , '<br>')}"/>
-				<c:out value="${noteRecptnNoteCn}" escapeXml="false" />
+				<c:set var="noteRecptnNoteCn" value="${fn:replace(noteRecptn.noteCn , crlf , '<br>')}"/>
+				<c:out value="${noteRecptn.noteCn}" escapeXml="false" />
 			</td>
 		</tr>
 	</tbody>
 	</table>
 	
-	<input name="noteId" type="hidden" value="${noteRecptn.noteId}">
-	<input name="noteTrnsmitId" type="hidden" value="${noteRecptn.noteTrnsmitId}">
-	<input name="noteRecptnId" type="hidden" value="${noteRecptn.noteRecptnId}">
+	<input name="noteId" type="hidden" value="${egovc:encryptId(noteRecptn.noteId)}">
+	<input name="noteTrnsmitId" type="hidden" value="${egovc:encryptId(noteRecptn.noteTrnsmitId)}">
+	<input name="noteRecptnId" type="hidden" value="${egovc:encryptId(noteRecptn.noteRecptnId)}">
 	<input name="cmd" type="hidden" value="<c:out value=''/>">
 	</form>
 
@@ -142,15 +143,15 @@ function fn_egov_delete_NoteRecptn(){
 
 		<form name="formUpdt" action="<c:url value='/uss/ion/ntm/registEgovNoteManage.do'/>" method="post" style="float:left;">
 			<input type="submit" class="s_submit" value="<spring:message code="comUssIonNtr.btn.replay" />">
-			<input name="noteId" type="hidden" value="${noteRecptn.noteId}">
+			<input name="noteId" type="hidden" value="${egovc:encryptId(noteRecptn.noteId)}">
 			<input name="cmd" type="hidden" value="<c:out value='reply'/>">
 		</form>
 		
 		<form name="formDelete" action="<c:url value='/uss/ion/ntr/detailNoteRecptn.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
 			<input type="submit" class="s_submit" value="<spring:message code="button.delete" />" onClick="fn_egov_delete_NoteRecptn(); return false;">
-			<input name="noteId" type="hidden" value="${noteRecptn.noteId}">
-			<input name="noteTrnsmitId" type="hidden" value="${noteRecptn.noteTrnsmitId}">
-			<input name="noteRecptnId" type="hidden" value="${noteRecptn.noteRecptnId}">
+			<input name="noteId" type="hidden" value="${egovc:encryptId(noteRecptn.noteId)}">
+			<input name="noteTrnsmitId" type="hidden" value="${egovc:encryptId(noteRecptn.noteTrnsmitId)}">
+			<input name="noteRecptnId" type="hidden" value="${egovc:encryptId(noteRecptn.noteRecptnId)}">
 			<input name="cmd" type="hidden" value="<c:out value='del'/>">
 		</form>
 	

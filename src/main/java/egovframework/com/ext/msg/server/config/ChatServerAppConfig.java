@@ -21,12 +21,12 @@ package egovframework.com.ext.msg.server.config;
 import java.util.HashMap;
 import java.util.Map;
 
-import egovframework.com.ext.msg.server.ChatServerEndPoint;
-
 import javax.websocket.HandshakeResponse;
 import javax.websocket.server.HandshakeRequest;
 import javax.websocket.server.ServerEndpointConfig;
 import javax.websocket.server.ServerEndpointConfig.Configurator;
+
+import egovframework.com.ext.msg.server.ChatServerEndPoint;
 
 /**
 * @Class Name : ChatServerAppConfig.java

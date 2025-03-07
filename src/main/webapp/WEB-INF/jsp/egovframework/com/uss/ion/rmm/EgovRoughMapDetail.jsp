@@ -6,10 +6,11 @@
   * @
   * @  수정일   	수정자		수정내용
   * @ ----------	------		---------------------------
-  * @ 2014.08.28	옥찬우		최초 생성
-  * @ 2018.09.10   최두영       v3.8 퍼블리싱 점검
-  * @ 2018.09.13   최두영       다국어처리
-  * @ 2018.10.10   최두영       약도 관리 API 테스트 및 변경
+  * @ 2014.08.28  옥찬우		최초 생성
+  * @ 2018.09.10  최두영		v3.8 퍼블리싱 점검
+  * @ 2018.09.13  최두영		다국어처리
+  * @ 2018.10.10  최두영		약도 관리 API 테스트 및 변경
+  * @ 2024.10.29  권태성		상세 페이지에서 목록으로 이동 시 검색 결과로 이동하도록 수정
   *
   *  @author 유지보수팀 
   *  @since 2014.08.28
@@ -46,14 +47,14 @@
 	 ******************************************************** */
 	 function fn_createMap() {
 		
-		 var mapContainer = document.getElementById('mapCanvas'), // 지도를 표시할 div 
-		    mapOption = { 
-		        center: new daum.maps.LatLng(0, 0), // 지도의 중심좌표
-		        level: 3 // 지도의 확대 레벨
-		    };
+		 var mapContainer = document.getElementById('mapCanvas'); // 지도를 표시할 div 
+		 var options = {
+			center: new kakao.maps.LatLng(0, 0), // 지도의 중심좌표
+			level: 3 // 지도의 확대 레벨
+		};
 
 		// 지도를 표시할 div와  지도 옵션으로  지도를 생성합니다
-		var map = new daum.maps.Map(mapContainer, mapOption); 
+		var map = new kakao.maps.Map(mapContainer, options); 
 		
 		 var query = document.roughMap.roughMapAddress.value;
          if(query == null || query.length <= 0){
@@ -62,18 +63,18 @@
          }
 
      	// 주소-좌표 변환 객체를 생성합니다
-     	var geocoder = new daum.maps.services.Geocoder();     	
+     	var geocoder = new kakao.maps.services.Geocoder();     	
 
      	// 주소로 좌표를 검색합니다
      	geocoder.addressSearch(query, function(result, status) {
 
      	    // 정상적으로 검색이 완료됐으면 
-     	     if (status === daum.maps.services.Status.OK) {
+     	     if (status === kakao.maps.services.Status.OK) {
 
-     	        var coords = new daum.maps.LatLng(result[0].y, result[0].x);
+     	        var coords = new kakao.maps.LatLng(result[0].y, result[0].x);
 
      	        // 결과값으로 받은 위치를 마커로 표시합니다
-     	        var marker = new daum.maps.Marker({
+     	        var marker = new kakao.maps.Marker({
      	            map: map,
      	            position: coords
      	        });
@@ -81,7 +82,7 @@
      	        var iwRemoveable = true;
 
      	        // 인포윈도우로 장소에 대한 설명을 표시합니다
-     	        var infoWindow = new daum.maps.InfoWindow({
+     	        var infoWindow = new kakao.maps.InfoWindow({
      	            content: '<div style="width:150px;text-align:center;padding:6px 0;">'+query+'</div>',
      	            removable : iwRemoveable
      	        });
@@ -100,7 +101,7 @@
 	 ******************************************************** */
 	function fn_egov_find_roughmap(){
 		window.open(
-			'http://map.daum.net/link/to/' + 
+			'https://map.kakao.com/link/to/' + 
 			document.roughMap.infoWindow.value + ',' + 
 			document.roughMap.markerLa.value + ',' + 
 			document.roughMap.markerLo.value
@@ -112,7 +113,7 @@
 	 ******************************************************** */
 	function fn_egov_magnify_roughmap(){
 		window.open(
-			'http://map.daum.net/link/map/' + 
+			'	https://map.kakao.com/link/map/' + 
 			document.roughMap.infoWindow.value + ',' + 
 			document.roughMap.markerLa.value + ',' + 
 			document.roughMap.markerLo.value
@@ -159,6 +160,10 @@
 	<h2><spring:message code="comUssIonRmm.roughMapInfoDetail.title" /></h2><!-- 약도 상세 -->
 	
 <form id="roughMap" name="roughMap" method="post">
+<input type="hidden" id="searchCondition" name="searchCondition" value="${searchVO.searchCondition}" />
+<input type="hidden" id="searchKeyword" name="searchKeyword" value="${searchVO.searchKeyword}" />
+<input type="hidden" id="pageIndex" name="pageIndex" value="${searchVO.pageIndex}" />
+
 	<!-- 등록폼 -->
 	<table class="wTable">
 		<colgroup>
@@ -202,15 +207,15 @@
 	</form>
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<input class="s_submit" type="submit" value="<spring:message code="comUssIonRmm.roughMapInfoDetail.findRoughMap" />" onclick="fn_egov_find_roughmap(); return false;" /><!-- 길찾기 -->
+		<input class="s_submit" type="button" value="<spring:message code="comUssIonRmm.roughMapInfoDetail.findRoughMap" />" onclick="fn_egov_find_roughmap(); return false;" /><!-- 길찾기 -->
 		
-		<input class="s_submit" type="submit" value="<spring:message code="comUssIonRmm.roughMapInfoDetail.magnifyRoughMap" />" onclick="fn_egov_magnify_roughmap(); return false;" /><!-- 크게보기 -->
+		<input class="s_submit" type="button" value="<spring:message code="comUssIonRmm.roughMapInfoDetail.magnifyRoughMap" />" onclick="fn_egov_magnify_roughmap(); return false;" /><!-- 크게보기 -->
 		
-		<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="fn_egov_updt_roughmap('<c:out value="${roughMap.roughMapId}"/>'); return false;" />
+		<input class="s_submit" type="button" value='<spring:message code="button.update" />' onclick="fn_egov_updt_roughmap('<c:out value="${roughMap.roughMapId}"/>'); return false;" />
 		
-		<span class="btn_s"><a href="<c:url value='/com/uss/ion/rmm/deleteRoughMap.do'/>?roughMapId=<c:out value='${roughMap.roughMapId}'/>" onclick="fn_egov_delete_roughmap('<c:out value="${roughMap.roughMapId}"/>'); return false;"><spring:message code="button.delete" /></a></span>
+		<span class="btn_s"><a href="#" onclick="fn_egov_delete_roughmap('<c:out value="${roughMap.roughMapId}"/>'); return false;"><spring:message code="button.delete" /></a></span>
 		
-		<span class="btn_s"><a href="<c:url value='/com/uss/ion/rmm/selectRoughMapList.do'/>" onclick="fn_egov_inqire_roughmaplist(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="#" onclick="fn_egov_inqire_roughmaplist(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

@@ -2,16 +2,15 @@ package egovframework.com.ssi.syi.ist.service.impl;
 
 import java.util.List;
 
-import egovframework.com.ssi.syi.ist.service.CntcSttus;
-import egovframework.com.ssi.syi.ist.service.CntcSttusVO;
-import egovframework.com.ssi.syi.ist.service.EgovCntcSttusService;
+import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
-
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
+
+import egovframework.com.ssi.syi.ist.service.CntcSttus;
+import egovframework.com.ssi.syi.ist.service.CntcSttusVO;
+import egovframework.com.ssi.syi.ist.service.EgovCntcSttusService;
 
 
 

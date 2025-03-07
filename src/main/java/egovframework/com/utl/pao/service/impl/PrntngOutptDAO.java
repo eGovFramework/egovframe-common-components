@@ -1,9 +1,9 @@
 package egovframework.com.utl.pao.service.impl;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.utl.pao.service.PrntngOutptVO;
-
-import org.springframework.stereotype.Repository;
 
 /**
  *

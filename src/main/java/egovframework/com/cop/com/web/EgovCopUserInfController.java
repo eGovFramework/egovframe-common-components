@@ -2,19 +2,18 @@ package egovframework.com.cop.com.web;
 
 import java.util.Map;
 
-import egovframework.com.cop.com.service.EgovUserInfManageService;
-import egovframework.com.cop.com.service.UserInfVO;
+import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+
+import egovframework.com.cop.com.service.EgovUserInfManageService;
+import egovframework.com.cop.com.service.UserInfVO;
 
 /**
  * 협업기능에서 활용하는 사용자 정보 조회용 컨트롤러 클래스

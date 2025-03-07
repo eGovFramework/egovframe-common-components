@@ -2,15 +2,14 @@ package egovframework.com.sec.rmt.service.impl;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.springframework.stereotype.Service;
+
 import egovframework.com.sec.rmt.service.EgovRoleManageService;
 import egovframework.com.sec.rmt.service.RoleManage;
 import egovframework.com.sec.rmt.service.RoleManageVO;
-
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
 
 /**
  * 롤관리에 관한 ServiceImpl 클래스를 정의한다.

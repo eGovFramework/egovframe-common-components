@@ -3,12 +3,12 @@ package egovframework.com.uss.ion.ntm.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.ntm.service.NoteManageVO;
-
-import org.egovframe.rte.psl.dataaccess.util.EgovMap;
-import org.springframework.stereotype.Repository;
 /**
  * 쪽지 관리(보내기)를 처리하는 Dao Class 구현
  * @author 공통콤포넌트 장동한

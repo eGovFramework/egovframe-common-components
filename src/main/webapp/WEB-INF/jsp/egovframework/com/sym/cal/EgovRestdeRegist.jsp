@@ -7,7 +7,8 @@
   * @
   * @  수정일             수정자                   수정내용
   * @ -------    --------    ---------------------------
-  *   2011.08.12   서준식              CSS 경로 수정
+  *   2011.08.12   서준식			CSS 경로 수정
+  *   2024.10.29   권태성			등록 페이지 신규 경로로 변경
   *
   *  @author 공통서비스팀
   *  @since 2009.04.01
@@ -46,10 +47,10 @@ function fn_egov_list_Restde(){
  * 저장처리화면
  ******************************************************** */
  function fn_egov_regist_Restde(form){
-	if(confirm("<spring:message code='common.save.msg' />")){
-		if(!validateRestde(form)){
+	 if (confirm("<spring:message code='common.save.msg' />")) {
+		if (!validateRestde(form)) {
 			return;
-		}else{
+		} else {
 			form.submit();
 		}
 	}
@@ -60,7 +61,7 @@ function fn_egov_list_Restde(){
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form modelAttribute="restde" name="restde" method="post">
+<form:form modelAttribute="restde" name="restde" method="post" action="${pageContext.request.contextPath}/sym/cal/EgovRestdeRegist.do">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -77,7 +78,7 @@ function fn_egov_list_Restde(){
 			<td class="left">
 			    <input type="hidden" name="cal_url" value="<c:url value='/sym/cal/EgovNormalCalPopup.do'/>" />
 		    	<form:hidden path="restdeDe" />
-				<input name="vrestdeDe" type="text" value=""  maxlength="10" readonly="readonly" onclick="fn_egov_NormalCalendar(document.restde, document.restde.restdeDe, document.restde.vrestdeDe);" title="<spring:message code="sym.cal.restDay" />(새창)" style="width:70px"/>
+				<input name="vrestdeDe" type="text" value="${restde.formattedRestdeDe}"  maxlength="10" readonly="readonly" onclick="fn_egov_NormalCalendar(document.restde, document.restde.restdeDe, document.restde.vrestdeDe);" title="<spring:message code="sym.cal.restDay" />(새창)" style="width:70px"/>
 				<a href="#noscript" onclick="fn_egov_NormalCalendar(document.restde, document.restde.restdeDe, document.restde.vrestdeDe); return false;"><img src="<c:url value='/images/egovframework/com/cmm/icon/bu_icon_carlendar.gif' />" alt="달력창팝업버튼이미지"/></a>
 			</td>
 		</tr>

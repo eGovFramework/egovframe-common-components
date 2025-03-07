@@ -21,12 +21,11 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.egovframe.rte.psl.orm.ibatis.support.AbstractLobTypeHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.support.lob.LobCreator;
 import org.springframework.jdbc.support.lob.LobHandler;
-
-import org.egovframe.rte.psl.orm.ibatis.support.AbstractLobTypeHandler;
 
 /**
  * iBATIS TypeHandler implementation for Strings that get mapped to CLOBs.

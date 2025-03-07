@@ -6,8 +6,9 @@
   * @
   * @  수정일             수정자                   수정내용
   * @ -------    --------    ---------------------------
-  * @ 2009.02.01   박정규              최초 생성
-  *   2016.06.13   김연호              표준프레임워크 v3.6 개선
+  * @ 2009.02.01   박정규		최초 생성
+  *   2016.06.13   김연호		표준프레임워크 v3.6 개선
+  *   2024.10.29   권태성		Form의 라벨 수정	
   *
   *  @author 공통서비스팀 
   *  @since 2009.02.01
@@ -47,14 +48,21 @@ function fn_egov_init(){
  * 저장처리화면
  ******************************************************** */
 function fn_egov_regist_qna(form){
-	//input item Client-Side validate
+	var emailValue = document.getElementById("emailAdres").value.length;
+	var emailCheck = document.getElementById("emailAnswerAt1").checked;
+	if (emailCheck && emailValue < 1) {
+		alert("Enter your email address");
+		return false;
+	}
+
 	if (!validateQnaVO(form)) {	
 		return false;
 	} else {
 		if(confirm("<spring:message code="common.regist.msg" />")){	
+			form.action = "<c:url value='/uss/olh/qna/insertQna.do'/>";
 			form.submit();	
 		}
-	} 
+	}
 }
 </script>
 
@@ -64,7 +72,7 @@ function fn_egov_regist_qna(form){
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form modelAttribute="qnaVO" action="${pageContext.request.contextPath}/uss/olh/qna/insertQna.do" method="post" onSubmit="fn_egov_regist_qna(document.forms[0]); return false;"> 
+<form:form modelAttribute="qnaVO" method="post" onSubmit="fn_egov_regist_qna(document.forms[0]); return false;">
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.create" /></h2>
@@ -113,7 +121,7 @@ function fn_egov_regist_qna(form){
    				<div><form:errors path="emailAdres" cssClass="error" /></div>     
 			</td>
 			<c:set var="title"><spring:message code="comUssOlhQna.qnaVO.emailAnswerAt"/> </c:set>
-			<th><label for="emailAnswerAt">${title}</label></th>
+			<th><label for="emailAnswerAt1">${title}</label></th>
 			<td class="left"><form:checkbox path="emailAnswerAt" value="Y"/>
 			<div><form:errors path="emailAdres" cssClass="error" /></div></td>
 		</tr>

@@ -2,12 +2,12 @@ package egovframework.com.uss.ion.vct.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.vct.service.IndvdlYrycManage;
 import egovframework.com.uss.ion.vct.service.VcatnManage;
 import egovframework.com.uss.ion.vct.service.VcatnManageVO;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 개요

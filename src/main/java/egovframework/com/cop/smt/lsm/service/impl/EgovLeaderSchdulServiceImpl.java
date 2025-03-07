@@ -5,21 +5,20 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.stereotype.Service;
+
 import egovframework.com.cop.smt.lsm.service.EgovLeaderSchdulService;
 import egovframework.com.cop.smt.lsm.service.EmplyrVO;
 import egovframework.com.cop.smt.lsm.service.LeaderSchdul;
 import egovframework.com.cop.smt.lsm.service.LeaderSchdulVO;
 import egovframework.com.cop.smt.lsm.service.LeaderSttus;
 import egovframework.com.cop.smt.lsm.service.LeaderSttusVO;
-
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
 
 /**
  * 개요
@@ -31,6 +30,14 @@ import org.springframework.stereotype.Service;
  * @author 장철호
  * @version 1.0
  * @created 28-6-2010 오전 10:59:05
+ * <pre>
+ * << 개정이력(Modification Information) >>
+ *   
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2024.10.29	LeeBaekHaeng	@Override 표기, 불필요 형변환 제거
+ *
+ * </pre>
  */
 @Service("EgovLeaderSchdulService")
 public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl implements EgovLeaderSchdulService {
@@ -50,6 +57,7 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 	 * 
 	 * @param emplyrVO
 	 */
+	@Override
 	public Map<String, Object> selectEmplyrList(EmplyrVO emplyrVO) throws Exception{
 		List<EmplyrVO> result = leaderSchdulDAO.selectEmplyrList(emplyrVO);
 		int cnt = leaderSchdulDAO.selectEmplyrListCnt(emplyrVO);
@@ -69,8 +77,9 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 	 * 
 	 * @param leaderSchdulVo
 	 */
+	@Override
 	public List<LeaderSchdulVO> selectLeaderSchdulList(LeaderSchdulVO leaderSchdulVo) throws Exception{
-		return (List<LeaderSchdulVO>)leaderSchdulDAO.selectLeaderSchdulList(leaderSchdulVo);
+		return leaderSchdulDAO.selectLeaderSchdulList(leaderSchdulVo);
 	}
 
 
@@ -81,6 +90,7 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 	 * 
 	 * @param leaderSchdulVO
 	 */
+	@Override
 	public LeaderSchdulVO selectLeaderSchdul(LeaderSchdulVO leaderSchdulVO) throws Exception{
 		return leaderSchdulDAO.selectLeaderSchdul(leaderSchdulVO);
 	}
@@ -91,6 +101,7 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 	 * 
 	 * @param leaderSchdul
 	 */
+	@Override
 	public void updateLeaderSchdul(LeaderSchdul leaderSchdul) throws Exception{
 		leaderSchdulDAO.updateLeaderSchdul(leaderSchdul);
 		leaderSchdulDAO.deleteLeaderSchdulDe(leaderSchdul);
@@ -104,6 +115,7 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 	 * 
 	 * @param leaderSchdul
 	 */
+	@Override
 	public void insertLeaderSchdul(LeaderSchdul leaderSchdul) throws Exception{
 		String schdulID = idgenService.getNextStringId();
 		leaderSchdul.setSchdulId(schdulID);
@@ -216,6 +228,7 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 	 * 
 	 * @param leaderSchdul
 	 */
+	@Override
 	public void deleteLeaderSchdul(LeaderSchdul leaderSchdul) throws Exception{
 		leaderSchdulDAO.deleteLeaderSchdulDe(leaderSchdul);
 		leaderSchdulDAO.deleteLeaderSchdul(leaderSchdul);
@@ -228,6 +241,7 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 	 * 
 	 * @param leaderSttusVO
 	 */
+	@Override
 	public Map<String, Object> selectLeaderSttusList(LeaderSttusVO leaderSttusVO) throws Exception{
 		List<LeaderSttusVO> result = leaderSchdulDAO.selectLeaderSttusList(leaderSttusVO);
 		int cnt = leaderSchdulDAO.selectLeaderSttusListCnt(leaderSttusVO);
@@ -247,6 +261,7 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 	 * 
 	 * @param leaderSttusVO
 	 */
+	@Override
 	public LeaderSttusVO selectLeaderSttus(LeaderSttusVO leaderSttusVO) throws Exception{
 		return leaderSchdulDAO.selectLeaderSttus(leaderSttusVO);
 	}
@@ -257,6 +272,7 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 	 * 
 	 * @param leaderSttus
 	 */
+	@Override
 	public void updateLeaderSttus(LeaderSttus leaderSttus) throws Exception{
 		leaderSchdulDAO.updateLeaderSttus(leaderSttus);
 	}
@@ -267,6 +283,7 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 	 * 
 	 * @param leaderSttus
 	 */
+	@Override
 	public void insertLeaderSttus(LeaderSttus leaderSttus) throws Exception{
 		leaderSchdulDAO.insertLeaderSttus(leaderSttus);
 	}
@@ -278,6 +295,7 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 	 * 
 	 * @param leaderSttus
 	 */
+	@Override
 	public int selectLeaderSttusCheck(LeaderSttus leaderSttus) throws Exception{
 		return leaderSchdulDAO.selectLeaderSttusCheck(leaderSttus);
 	}
@@ -288,6 +306,7 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 	 * 
 	 * @param leaderSttus
 	 */
+	@Override
 	public void deleteLeaderSttus(LeaderSttus leaderSttus) throws Exception{
 		leaderSchdulDAO.deleteLeaderSttus(leaderSttus);
 	}

@@ -5,9 +5,10 @@
  
        수정일               수정자            수정내용
     ----------   --------   ---------------------------
-    2010.06.29   장철호            최초 생성
-    2018.09.14   최두영            다국어처리
-    2019.12.11   신용호            KISA 보안약점 조치 (크로스사이트 스크립트)
+    2010.06.29   장철호			최초 생성
+    2018.09.14   최두영			다국어처리
+    2019.12.11   신용호			KISA 보안약점 조치 (크로스사이트 스크립트)
+    2024.10.29   권태성			불필요한 코드 삭제
  
     author   : 공통서비스 개발팀 장철호
     since    : 2010.06.29
@@ -137,22 +138,7 @@ $(function() {
 	}else{
 		$(".tab01 li:eq(0) a").addClass("on");
 	}
-	
-	
-	if(searchMode == "MONTH"){
-		vFrom.action = "<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulMonthList.do' />";
-		document.getElementById("tabMenu0").bgColor = '#BBBBBB';
-	}else if(searchMode == "WEEK"){
-		vFrom.action = "<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulWeekList.do' />";
-		document.getElementById("tabMenu1").bgColor = '#BBBBBB';
-	}else if(searchMode == "DAILY"){
-		vFrom.action = "<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulDailyList.do' />";
-		document.getElementById("tabMenu2").bgColor = '#BBBBBB';
-	}else{
-		vFrom.action = "<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulMonthList.do' />"; 
-		document.getElementById("tabMenu0").bgColor = '#BBBBBB';
-	}
-	vFrom.submit();
+
 });
 
 </script>

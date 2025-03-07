@@ -4,15 +4,16 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
-import egovframework.com.cmm.EgovWebUtil;
-import egovframework.com.cmm.annotation.IncludedInfo;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import egovframework.com.cmm.EgovWebUtil;
+import egovframework.com.cmm.annotation.IncludedInfo;
 
 /**
  * 도로명 주소 연계를 위한 Controller

@@ -2,10 +2,10 @@ package egovframework.com.uss.olp.opr.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.olp.opr.service.OnlinePollResult;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 온라인POLL결과를 처리하는 Dao Class 구현

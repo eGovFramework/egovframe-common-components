@@ -12,9 +12,10 @@
   * @
   * @  수정일             수정자             수정내용
   * @ ----------   --------   ---------------------------
-  * @ 2009.03.10   이용               최초 생성
-  *   2018.09.03   신용호            공통컴포넌트 3.8 개선
-  *   2019.12.11   신용호            KISA 보안약점 조치 (크로스사이트 스크립트)
+  * @ 2009.03.10   이용			최초 생성
+  *   2018.09.03   신용호		공통컴포넌트 3.8 개선
+  *   2019.12.11   신용호		KISA 보안약점 조치 (크로스사이트 스크립트)
+  *   2024.10.29   권태성		등록 페이지 신규 경로로 변경
   *
   *  @author 공통서비스 개발팀 이용
   *  @since 2009.03.10
@@ -119,7 +120,7 @@ function selectProgramListManage() {
  * 입력 화면 호출 함수
  ******************************************************** */
 function insertProgramListManage() {
-   	document.progrmManageForm.action = "<c:url value='/sym/prm/EgovProgramListRegist.do'/>";
+   	document.progrmManageForm.action = "<c:url value='/sym/prm/EgovProgramListRegistView.do'/>";
    	document.progrmManageForm.submit();
 }
 /* ********************************************************

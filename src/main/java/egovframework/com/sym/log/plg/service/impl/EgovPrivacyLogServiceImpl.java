@@ -4,15 +4,14 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import egovframework.com.sym.log.plg.service.EgovPrivacyLogService;
-import egovframework.com.sym.log.plg.service.PrivacyLog;
+import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
+
+import egovframework.com.sym.log.plg.service.EgovPrivacyLogService;
+import egovframework.com.sym.log.plg.service.PrivacyLog;
 
 /**
  * @Class Name : EgovPrivacyLogServiceImpl.java

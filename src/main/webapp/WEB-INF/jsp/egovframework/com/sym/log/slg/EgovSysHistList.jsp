@@ -16,6 +16,7 @@
   * @ 2009.03.06  이삼섭             최초 생성
   *   2011.07.08  이기하             패키지 분리로 경로 수정(sym.log -> sym.log.slg)
   *   2018.09.28  신용호             공통컴포넌트 3.8 개선
+  *	  2024.10.29  권태성			 버튼 용도에 맞는 속성으로 수정, press(event) 추가, 사용자명검색
   *
   *  @author 공통서비스 개발팀 이삼섭
   *  @since 2009.03.06
@@ -47,6 +48,12 @@ function fn_egov_inqire_sysHist(histId){
 	document.frm.action = "<c:url value='/sym/log/slg/InqireSysHistory.do'/>";
 	document.frm.submit();
 }
+
+function press(event) {
+	if (event.keyCode == 13) {
+		fn_egov_select_sysHist(1);
+	}
+}
 </script>
 </head>
 <body>
@@ -67,10 +74,10 @@ function fn_egov_inqire_sysHist(histId){
 				<option value="0" <c:if test="${searchVO.searchCnd == '0'}">selected="selected"</c:if> ><spring:message code="comSymLogSlg.sysHistList.sysNm"/></option><!-- 시스템명 -->
 				<option value="1" <c:if test="${searchVO.searchCnd == '1'}">selected="selected"</c:if> ><spring:message code="comSymLogSlg.sysHistList.histSeCodeNm"/></option><!-- 이력구분 -->
 				</select>
-				<input id="searchWrd" class="s_input2 vat" name="searchWrd" type="text" value='<c:out value='${searchVO.searchWrd}'/>' maxlength="35" size="35" onkeypress="press();" title="<spring:message code="title.search"/>" /><!-- 사용자명검색 -->
+				<input id="searchWrd" class="s_input2 vat" name="searchWrd" type="text" value='<c:out value='${searchVO.searchWrd}'/>' maxlength="35" size="35" onkeypress="press(event);" title="<spring:message code="title.search"/>" /><!-- 사용자명검색 -->
 				
 				<span class="btn_b"><a href="" onclick="fn_egov_select_sysHist('1'); return false;" title="<spring:message code="title.inquire"/>"><spring:message code="button.inquire" /></a></span><!-- 조회 -->
-				<input class="s_btn" type="submit" value="<spring:message code="button.create" />" title="<spring:message code="title.create" />" onclick="fn_egov_insert_sysHist(); return false;" /><!-- 등록 -->
+				<input class="s_btn" type="button" value="<spring:message code="button.create" />" title="<spring:message code="title.create" />" onclick="fn_egov_insert_sysHist(); return false;" /><!-- 등록 -->
 			</li>
 		</ul>
 	</div>

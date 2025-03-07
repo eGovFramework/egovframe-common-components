@@ -14,12 +14,12 @@ package egovframework.com.uss.ion.lsi.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.lsi.service.LoginScrinImage;
 import egovframework.com.uss.ion.lsi.service.LoginScrinImageVO;
-
-import org.springframework.stereotype.Repository;
 
 @Repository("loginScrinImageDAO")
 public class LoginScrinImageDAO extends EgovComAbstractDAO {

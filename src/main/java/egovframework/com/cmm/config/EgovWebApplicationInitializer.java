@@ -87,7 +87,7 @@ public class EgovWebApplicationInitializer implements WebApplicationInitializer 
 		xmlWebApplicationContext.setConfigLocation("/WEB-INF/config/egovframework/springmvc/egov-com-*.xml");
 		ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher", new DispatcherServlet(xmlWebApplicationContext));
 		//dispatcher.addMapping("*.do");
-		dispatcher.addMapping("/"); // Facebook OAuth 혹은 모바일신분증 에서 사용
+		dispatcher.addMapping("/"); // Facebook OAuth 에서 사용
 		dispatcher.setLoadOnStartup(1);
 		
 		if("security".equals(EgovProperties.getProperty("Globals.Auth").trim())) {

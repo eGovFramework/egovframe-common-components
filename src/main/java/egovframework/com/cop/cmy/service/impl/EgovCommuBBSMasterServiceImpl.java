@@ -4,12 +4,12 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.cop.bbs.service.BoardMasterVO;
 import egovframework.com.cop.cmy.service.EgovCommuBBSMasterService;
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 
 @Service("EgovCommuBBSMasterService")
 public class EgovCommuBBSMasterServiceImpl extends EgovAbstractServiceImpl implements EgovCommuBBSMasterService {

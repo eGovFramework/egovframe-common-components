@@ -7,6 +7,7 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
@@ -14,7 +15,6 @@ import org.springframework.test.context.ContextConfiguration;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.test.EgovTestV1;
-import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

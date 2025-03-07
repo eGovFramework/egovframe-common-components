@@ -22,6 +22,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -222,8 +223,8 @@
 			    	<input name="searchEndDe" type="hidden" value="<c:out value='${searchVO.searchEndDe}'/>">
 			    	<input name="searchSttus" type="hidden" value="<c:out value='${searchVO.searchSttus}'/>">
 			    	<input name="searchDrctMatter" type="hidden" value="<c:out value='${searchVO.searchDrctMatter}'/>">
-					<input type="hidden" name="reprtId" value="<c:out value="${result.reprtId}"/>">
-					<span class="link" ><input type="submit" value="<c:out value="${result.reprtSj}"/>" onclick="fn_egov_inqire_memoreprt('<c:out value="${result.reprtId}"/>'); return false;"  style="text-align : left;"></span>			
+					<input type="hidden" name="reprtId" value="<c:out value="${egovc:encryptId(result.reprtId)}"/>">
+					<span class="link" ><input type="submit" value="<c:out value="${result.reprtSj}"/>" onclick="fn_egov_inqire_memoreprt('<c:out value="${egovc:encryptId(result.reprtId)}"/>'); return false;"  style="text-align : left;"></span>			
 				 </form>
 				</td>
 				<td><c:out value="${result.wrterNm}"/></td>

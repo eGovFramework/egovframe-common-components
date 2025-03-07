@@ -1,14 +1,14 @@
 package egovframework.com.cop.smt.mrm.service.impl;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.cop.smt.mrm.service.MemoReprt;
 import egovframework.com.cop.smt.mrm.service.MemoReprtVO;
 import egovframework.com.cop.smt.mrm.service.ReportrVO;
 import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 개요
@@ -149,8 +149,8 @@ public class MemoReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param memoReprt
 	 */
-	public void deleteMemoReprt(MemoReprt memoReprt) throws Exception{
-		delete("MemoReprtDAO.deleteMemoReprt", memoReprt);
+	public void deleteMemoReprt(MemoReprtVO memoReprtVO) throws Exception{
+		delete("MemoReprtDAO.deleteMemoReprt", memoReprtVO);
 	}
 
 	/**

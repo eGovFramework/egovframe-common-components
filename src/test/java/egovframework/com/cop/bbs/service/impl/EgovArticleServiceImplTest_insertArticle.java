@@ -9,8 +9,16 @@ import org.springframework.test.context.ContextConfiguration;
 import egovframework.com.cop.bbs.service.Board;
 import egovframework.com.cop.bbs.service.EgovArticleService;
 import egovframework.com.test.EgovTestV1;
-import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import lombok.extern.slf4j.Slf4j;
+/**
+ * <pre>
+ * << 개정이력(Modification Information) >>
+ *   
+ *   수정일			수정자		수정내용
+ *  -------			--------	---------------------------
+ *   2024.10.29		inganyoyo	Transaction 처리 오류 수정(Article)
+ * </pre>
+ */
 
 @Slf4j
 @ContextConfiguration(classes = { EgovArticleServiceImplTest_AAB_Configuration.class })
@@ -33,8 +41,8 @@ public class EgovArticleServiceImplTest_insertArticle extends EgovTestV1 {
 
 		// when
 		try {
-			egovArticleService.insertArticle(board);
-		} catch (FdlException e) {
+      egovArticleService.insertArticleAndFiles(board, null);
+    } catch (Exception e) {
 			log.error(e.getMessage());
 			result = false;
 		}

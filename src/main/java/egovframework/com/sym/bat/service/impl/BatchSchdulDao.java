@@ -1,11 +1,11 @@
 package egovframework.com.sym.bat.service.impl;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sym.bat.service.BatchSchdul;
 import egovframework.com.sym.bat.service.BatchSchdulDfk;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 배치스케줄관리에 대한 DAO 클래스를 정의한다.

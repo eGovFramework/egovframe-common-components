@@ -2,10 +2,10 @@ package egovframework.com.sts.cst.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sts.com.StatsVO;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 접속 통계 검색 DAO 클래스

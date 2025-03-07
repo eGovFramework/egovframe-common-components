@@ -7,7 +7,8 @@
   * @
   * @  수정일             수정자                   수정내용
   * @ -------    --------    ---------------------------
-  * @ 2009.08.11   이중호              최초 생성
+  * @ 2009.08.11   이중호			최초 생성
+  * @ 2024.10.29   권태성			중첩된 form 제거, insttCode & pageIndex 파라미터 추가, onkeypress에서 호출할 press 함수를 페이지에 추가
   *
   *  @author 공통컴포넌트팀
   *  @since 2009.08.11
@@ -57,6 +58,12 @@ function fn_egov_detail_InsttCodeRecptn(insttCode){
     varForm.insttCode.value  = insttCode;
     varForm.submit();
 }
+
+function press(event) {
+    if (event.keyCode == 13) {
+        fn_egov_pageview(1);
+    }
+}
 -->
 </script>
 </head>
@@ -65,7 +72,8 @@ function fn_egov_detail_InsttCodeRecptn(insttCode){
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
 <form name="listForm" action="<c:url value='/sym/ccm/icr/getInsttCodeRecptnList.do'/>" method="post">
-
+<input name="insttCode" type="hidden" value=""/>
+<input name="pageIndex" type="hidden" value="${searchVO.pageIndex}"/>
 <div class="board">
 	<h1>${pageTitle}</h1>
 
@@ -77,7 +85,7 @@ function fn_egov_detail_InsttCodeRecptn(insttCode){
 					<option value='1' <c:if test="${searchVO.searchCondition == '1'}">selected="selected"</c:if>><spring:message code="comSymCcmIcr.insttCodeRecptn.orgNm"/></option> <!-- 기관명 -->
 				</select>
 				
-				<input class="s_input2 vat" name="searchKeyword" type="text" value='<c:out value="${searchVO.searchKeyword}"/>' size="25" onkeypress="press();" title="<spring:message code="title.search"/>" />
+				<input class="s_input2 vat" name="searchKeyword" type="text" value='<c:out value="${searchVO.searchKeyword}"/>' size="25" onkeypress="press(event);" title="<spring:message code="title.search"/>" />
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fn_egov_search_InsttCodeRecptn(); return false;" />
 			</li>
 		</ul>
@@ -102,11 +110,7 @@ function fn_egov_detail_InsttCodeRecptn(insttCode){
 			<tr style="cursor:pointer" onclick="fn_egov_detail_InsttCodeRecptn('<c:out value="${resultInfo.insttCode}"/>');">
 				<td><c:out value="${(searchVO.pageIndex - 1) * searchVO.pageSize + status.count}"/></td>
 				<td>
-					<form name="subForm" method="post" action="<c:url value='/sym/ccm/icr/getInsttCodeDetail.do'/>">
-						<input name="insttCode" type="hidden" value="<c:out value="${resultInfo.insttCode}"/>">
-						<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-						<span class="link"><input type="submit" value="<c:out value="${resultInfo.insttCode}"/>" onclick="fn_egov_detail_InsttCodeRecptn('<c:out value="${resultInfo.insttCode}"/>'); return false;"></span>
-					</form>
+					<span class="link"><a href="#" onclick="fn_egov_detail_InsttCodeRecptn('<c:out value="${resultInfo.insttCode}"/>'); return false;">${resultInfo.insttCode}</a></span>
 				</td>
 				<td class="lt_text" ><c:out value="${resultInfo.allInsttNm}"/></td>
 			</tr>

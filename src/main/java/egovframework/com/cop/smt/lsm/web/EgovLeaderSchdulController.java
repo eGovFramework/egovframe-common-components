@@ -6,6 +6,8 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -27,8 +29,6 @@ import egovframework.com.cop.smt.lsm.service.LeaderSchdulVO;
 import egovframework.com.cop.smt.lsm.service.LeaderSttus;
 import egovframework.com.cop.smt.lsm.service.LeaderSttusVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import org.egovframe.rte.fdl.property.EgovPropertyService;
-import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
  * 개요
@@ -48,6 +48,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *  2010.06.28   장철호            최초 생성
  *  2011.08.26   정진오            IncludedInfo annotation 추가
  *  2020.11.02   신용호            KISA 보안약점 조치 - 널(null) 값 체크
+ *  2024.10.29	LeeBaekHaeng	불필요 형변환 정리
  *
  * </pre>
  */
@@ -467,13 +468,13 @@ public class EgovLeaderSchdulController {
     	model.addAttribute("reptitSeCode", listComCode);
     	
     	//일정시작일자(시)
-    	model.addAttribute("schdulBgndeHH", (List<ComDefaultCodeVO>)getTimeHH());
+		model.addAttribute("schdulBgndeHH", getTimeHH());
     	//일정시작일자(분)
-    	model.addAttribute("schdulBgndeMM", (List<ComDefaultCodeVO>)getTimeMM());
+		model.addAttribute("schdulBgndeMM", getTimeMM());
     	//일정종료일자(시)
-    	model.addAttribute("schdulEnddeHH", (List<ComDefaultCodeVO>)getTimeHH());
+		model.addAttribute("schdulEnddeHH", getTimeHH());
     	//일정정료일자(분)
-    	model.addAttribute("schdulEnddeMM", (List<ComDefaultCodeVO>)getTimeMM());
+		model.addAttribute("schdulEnddeMM", getTimeMM());
 
     	LeaderSchdulVO resultVO = leaderSchdulService.selectLeaderSchdul(leaderSchdulVO);
     	
@@ -544,13 +545,13 @@ public class EgovLeaderSchdulController {
     	model.addAttribute("reptitSeCode", listComCode);
     	
     	//일정시작일자(시)
-    	model.addAttribute("schdulBgndeHH", (List<ComDefaultCodeVO>)getTimeHH());
+		model.addAttribute("schdulBgndeHH", getTimeHH());
     	//일정시작일자(분)
-    	model.addAttribute("schdulBgndeMM", (List<ComDefaultCodeVO>)getTimeMM());
+		model.addAttribute("schdulBgndeMM", getTimeMM());
     	//일정종료일자(시)
-    	model.addAttribute("schdulEnddeHH", (List<ComDefaultCodeVO>)getTimeHH());
+		model.addAttribute("schdulEnddeHH", getTimeHH());
     	//일정정료일자(분)
-    	model.addAttribute("schdulEnddeMM", (List<ComDefaultCodeVO>)getTimeMM());
+		model.addAttribute("schdulEnddeMM", getTimeMM());
     	
     	model.addAttribute("searchMode", leaderSchdulVO.getSearchMode());
     	model.addAttribute("year", leaderSchdulVO.getYear());

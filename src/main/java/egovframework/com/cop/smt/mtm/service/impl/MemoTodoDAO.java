@@ -1,11 +1,11 @@
 package egovframework.com.cop.smt.mtm.service.impl;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.cop.smt.mtm.service.MemoTodo;
 import egovframework.com.cop.smt.mtm.service.MemoTodoVO;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 개요

@@ -198,9 +198,18 @@
 </div>
 
 	<input type="hidden" name="returnUrl" value="<c:url value='/cop/smt/mrm/modifyMemoReprt.do' />" />
-	<form:hidden path="reprtId" />
+	<!--form:hidden path="reprtId" /-->
+	<input type="hidden" name="reprtId" value="<c:out value='${egovc:encryptId(memoReprtVO.reprtId)}'/>" />
 	<input type="hidden" name="posblAtchFileNumber" id="posblAtchFileNumber" value="3" />
 	<!-- //첨부파일 개수를 위한 hidden -->
+	<c:choose>
+        <c:when test="${not empty memoReprtVO.atchFileId}">
+            <input type="hidden" id="atchFileAt" name="atchFileAt" value="Y" />
+        </c:when>
+        <c:otherwise>
+            <input type="hidden" id="atchFileAt" name="atchFileAt" value="N" />
+        </c:otherwise>
+    </c:choose>
 
 	<!-- 검색조건 유지 -->
     <input type="hidden" name="searchWrd" value="<c:out value='${memoReprtVO.searchWrd}'/>" />

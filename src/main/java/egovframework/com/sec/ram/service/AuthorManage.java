@@ -15,7 +15,7 @@ import egovframework.com.cmm.ComDefaultVO;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.03.20  이문준          최초 생성
- *
+ *   2024.10.29	LeeBaekHaeng	시큐어코딩 일련번호 PK 파라미터 암복호화
  * </pre>
  */
 
@@ -33,6 +33,10 @@ public class AuthorManage extends ComDefaultVO {
 	 * 권한코드
 	 */
 	private String authorCode;
+	/**
+	 * 권한코드 암호화
+	 */
+	private String authorCodeEncrypt;
 	/**
 	 * 권한등록일자
 	 */
@@ -74,6 +78,15 @@ public class AuthorManage extends ComDefaultVO {
 	public void setAuthorCode(String authorCode) {
 		this.authorCode = authorCode;
 	}
+
+	public String getAuthorCodeEncrypt() {
+		return authorCodeEncrypt;
+	}
+
+	public void setAuthorCodeEncrypt(String authorCodeEncrypt) {
+		this.authorCodeEncrypt = authorCodeEncrypt;
+	}
+
 	/**
 	 * authorCreatDe attribute 를 리턴한다.
 	 * @return String

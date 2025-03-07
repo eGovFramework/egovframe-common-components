@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.egovframe.rte.fdl.string.EgovDateUtil;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
@@ -15,7 +16,6 @@ import egovframework.com.cop.adb.service.AddressBookUser;
 import egovframework.com.cop.adb.service.AddressBookVO;
 import egovframework.com.cop.adb.service.EgovAddressBookService;
 import egovframework.com.test.EgovTestV1;
-import org.egovframe.rte.fdl.string.EgovDateUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

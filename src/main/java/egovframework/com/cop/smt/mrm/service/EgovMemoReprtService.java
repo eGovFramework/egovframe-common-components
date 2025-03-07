@@ -97,6 +97,6 @@ public interface EgovMemoReprtService {
 	 * 
 	 * @param memoReprt
 	 */
-	public void deleteMemoReprt(MemoReprt memoReprt) throws Exception;
+	public void deleteMemoReprt(MemoReprtVO memoReprtVO) throws Exception;
 
 }

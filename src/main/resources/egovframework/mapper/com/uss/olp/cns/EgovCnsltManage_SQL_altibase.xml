@@ -236,6 +236,7 @@
 		
 	</select>
 
+	<!-- 2024.10.29  권태성  목록 검색 조건이 작동하지 않는 오류 수정 -->
 	<select id="selectCnsltAnswerList" parameterType="egovframework.com.uss.olp.cns.service.CnsltManageDefaultVO" resultType="egovMap">
 
 			SELECT CNSLT_ID, CNSLT_SJ, CNSLT_CN, OTHBC_AT, WRITNG_PASSWORD,
@@ -269,8 +270,8 @@
 				WRTER_NM LIKE '%' || #{searchKeyword} || '%'
 			</if>
 			<if test="searchCondition == 'cnsltSj'">AND
-				CNSLT_SJ LIKE '%' || #{searchKeyword} || '%'
-			</if>
+                CNSLT_SJ LIKE CONCAT('%', #{searchKeyword}, '%')
+            </if>
 		<![CDATA[
 							ORDER BY CNSLT_SJ DESC
 						  ) CNS

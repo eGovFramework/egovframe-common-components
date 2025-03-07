@@ -2,16 +2,15 @@ package egovframework.com.utl.sys.srm.service.impl;
 
 import java.util.List;
 
-import egovframework.com.utl.sys.srm.service.EgovServerResrceMntrngService;
-import egovframework.com.utl.sys.srm.service.ServerResrceMntrng;
-import egovframework.com.utl.sys.srm.service.ServerResrceMntrngVO;
+import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
+
+import egovframework.com.utl.sys.srm.service.EgovServerResrceMntrngService;
+import egovframework.com.utl.sys.srm.service.ServerResrceMntrng;
+import egovframework.com.utl.sys.srm.service.ServerResrceMntrngVO;
 
 /**
  * 개요

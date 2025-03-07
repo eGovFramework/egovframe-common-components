@@ -8,6 +8,7 @@
  * @ -------    --------    ---------------------------
  * @ 2009.02.01    lee.m.j          최초 생성
  *   2016.06.13    장동한          표준프레임워크 v3.6 개선
+ * @ 2024.10.29	LeeBaekHaeng	검색조건 유지
  *
  *  @author lee.m.j
  *  @since 2009.03.11
@@ -113,7 +114,7 @@ function fncAuthorDelete() {
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input type="submit" class="s_submit" value="<spring:message code="button.update" />" title="<spring:message code="button.update" /> <spring:message code="input.button" />" /><!-- 수정 -->
-		<span class="btn_s"><a href="<c:url value='/sec/ram/EgovAuthorList.do' />"  title="<spring:message code="button.list" />  <spring:message code="input.button" />"><spring:message code="button.list" /></a></span><!-- 목록 -->
+		<span class="btn_s"><a href="<c:url value="/sec/ram/EgovAuthorList.do" />?searchCondition=<c:out value="${authorManageVO.searchCondition}" />&searchKeyword=<c:out value="${authorManageVO.searchKeyword}" />&pageIndex=<c:out value="${authorManageVO.pageIndex}" />"  title="<spring:message code="button.list" />  <spring:message code="input.button" />"><spring:message code="button.list" /></a></span><!-- 목록 -->
 	</div><div style="clear:both;"></div>
 	
 </div>

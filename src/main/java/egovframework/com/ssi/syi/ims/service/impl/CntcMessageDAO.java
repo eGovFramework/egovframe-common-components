@@ -2,14 +2,14 @@ package egovframework.com.ssi.syi.ims.service.impl;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.ssi.syi.ims.service.CntcMessage;
 import egovframework.com.ssi.syi.ims.service.CntcMessageItem;
 import egovframework.com.ssi.syi.ims.service.CntcMessageItemVO;
 import egovframework.com.ssi.syi.ims.service.CntcMessageVO;
-
-import org.egovframe.rte.psl.dataaccess.util.EgovMap;
-import org.springframework.stereotype.Repository;
 
 /**
  *

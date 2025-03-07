@@ -13,14 +13,13 @@ import java.security.MessageDigest;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.cryptography.EgovCryptoService;
+import org.egovframe.rte.fdl.cryptography.EgovDigestService;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-
-import org.egovframe.rte.fdl.cryptography.EgovCryptoService;
-import org.egovframe.rte.fdl.cryptography.EgovDigestService;
 
 /**
  * ID Generation Test Class 구현

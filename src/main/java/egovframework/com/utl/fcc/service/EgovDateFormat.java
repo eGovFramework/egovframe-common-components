@@ -6,6 +6,7 @@ import java.util.Locale;
 
 /**
  * 날짜 및 시간에 대한 변환을 수행하는 클래스
+ *  2024.10.29	LeeBaekHaeng	중복 코드 제거 리팩토링
  */
 public class EgovDateFormat {
 
@@ -16,7 +17,7 @@ public class EgovDateFormat {
 	 * @return 날짜 문자열
 	 */
 	public static String formatDate(Date date) {
-		return DateFormat.getDateInstance().format(date);
+		return formatDate(DateFormat.DEFAULT, Locale.getDefault(), date);
 	}
 	
 	/**
@@ -27,7 +28,7 @@ public class EgovDateFormat {
 	 * @return 날짜 문자열
 	 */
 	public static String formatDate(Locale locale, Date date) {
-		return DateFormat.getDateInstance(DateFormat.DEFAULT, locale).format(date);
+		return formatDate(DateFormat.DEFAULT, locale, date);
 	}
 	
 	/**
@@ -38,7 +39,7 @@ public class EgovDateFormat {
 	 * @return 날짜 문자열
 	 */
 	public static String formatDate(int style, Date date) {
-		return DateFormat.getDateInstance(style).format(date);
+		return formatDate(style, Locale.getDefault(), date);
 	}
 	
 	/**
@@ -60,7 +61,7 @@ public class EgovDateFormat {
 	 * @return 날짜 및 시간 문자열
 	 */
 	public static String formatDateTime(Date date) {
-		return DateFormat.getDateTimeInstance().format(date);
+		return formatDateTime(DateFormat.DEFAULT, DateFormat.DEFAULT, Locale.getDefault(), date);
 	}
 	
 	/**
@@ -71,7 +72,7 @@ public class EgovDateFormat {
 	 * @return 날짜 및 시간 문자열
 	 */
 	public static String formatDateTime(Locale locale, Date date) {
-		return DateFormat.getDateTimeInstance(DateFormat.DEFAULT, DateFormat.DEFAULT, locale).format(date);
+		return formatDateTime(DateFormat.DEFAULT, DateFormat.DEFAULT, locale, date);
 	}
 	
 	/**
@@ -83,7 +84,7 @@ public class EgovDateFormat {
 	 * @return 날짜 및 시간 문자열
 	 */
 	public static String formatDateTime(int dateStyle, int timeStyle, Date date) {
-		return DateFormat.getDateTimeInstance(dateStyle, timeStyle).format(date);
+		return formatDateTime(dateStyle, timeStyle, Locale.getDefault(), date);
 	}
 	
 	/**
@@ -106,7 +107,7 @@ public class EgovDateFormat {
 	 * @return 시간 문자열
 	 */
 	public static String formatTime(Date date) {
-		return DateFormat.getTimeInstance().format(date);
+		return formatTime(DateFormat.DEFAULT, Locale.getDefault(), date);
 	}
 	
 	/**
@@ -117,7 +118,7 @@ public class EgovDateFormat {
 	 * @return 시간 문자열
 	 */
 	public static String formatTime(Locale locale, Date date) {
-		return DateFormat.getTimeInstance(DateFormat.DEFAULT, locale).format(date);
+		return formatTime(DateFormat.DEFAULT, locale, date);
 	}
 
 	/**
@@ -128,7 +129,7 @@ public class EgovDateFormat {
 	 * @return 시간 문자열
 	 */
 	public static String formatTime(int style, Date date) {
-		return DateFormat.getTimeInstance(style).format(date);
+		return formatTime(style, Locale.getDefault(), date);
 	}
 
 	/**

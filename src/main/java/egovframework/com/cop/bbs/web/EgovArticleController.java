@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +27,6 @@ import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
-import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cmm.util.EgovXssChecker;
 import egovframework.com.cop.bbs.service.BlogVO;
@@ -40,9 +41,7 @@ import egovframework.com.cop.cmt.service.CommentVO;
 import egovframework.com.cop.cmt.service.EgovArticleCommentService;
 import egovframework.com.cop.tpl.service.EgovTemplateManageService;
 import egovframework.com.cop.tpl.service.TemplateInfVO;
-import org.egovframe.rte.fdl.property.EgovPropertyService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
  * 게시물 관리를 위한 컨트롤러 클래스
@@ -65,6 +64,8 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *  2019.05.17   신용호            KISA 취약점 조치 및 보완
  *  2020.10.27   신용호            파일 업로드 수정 (multiRequest.getFiles)
  *  2022.11.11   김혜준            시큐어코딩 처리
+ *  2024.10.29	LeeBaekHaeng	게시판 검색조건 유지
+ *  2024.10.29	inganyoyo		Transaction 처리 오류 수정(Article)
  *  
  * </pre>
  */
@@ -363,16 +364,10 @@ public class EgovArticleController {
 		}
 
 		// 2022.11.11 시큐어코딩 처리
-		List<FileVO> result = null;
-	    String atchFileId = "";
 	    
 	    //final Map<String, MultipartFile> files = multiRequest.getFileMap();
 	    final List<MultipartFile> files = multiRequest.getFiles("file_1");
-	    if (!files.isEmpty()) {
-	    	result = fileUtil.parseFileInf(files, "BBS_", 0, "", "");
-	    	atchFileId = fileMngService.insertFileInfs(result);
-	    }
-	    board.setAtchFileId(atchFileId);
+
 	    board.setFrstRegisterId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 	    board.setBbsId(boardVO.getBbsId());
 	    board.setBlogId(boardVO.getBlogId());
@@ -391,12 +386,16 @@ public class EgovArticleController {
 	    }
 	    
 	    board.setNttCn(unscript(board.getNttCn()));	// XSS 방지
-	    egovArticleService.insertArticle(board);
+    egovArticleService.insertArticleAndFiles(board, files);
 
 		if(boardVO.getBlogAt().equals("Y")){
 			return "forward:/cop/bbs/selectArticleBlogList.do";
-		}else{
-			return "forward:/cop/bbs/selectArticleList.do";
+		} else {
+			model.addAttribute("bbsId", boardVO.getBbsId());
+			model.addAttribute("searchCnd", boardVO.getSearchCnd());
+			model.addAttribute("searchWrd", boardVO.getSearchWrd());
+			model.addAttribute("pageIndex", boardVO.getPageIndex());
+			return "redirect:/cop/bbs/selectArticleList.do";
 		}
 		
     }
@@ -492,7 +491,7 @@ public class EgovArticleController {
 		}
 
 		//인증된 권한 목록
-		List<String> authList = (List<String>)EgovUserDetailsHelper.getAuthorities();
+		List<String> authList = EgovUserDetailsHelper.getAuthorities();
 		//관리자 권한 체크
 		if(!authList.contains("ROLE_ADMIN")){
 			BoardVO vo = egovArticleService.selectArticleDetail(boardVO);
@@ -509,14 +508,7 @@ public class EgovArticleController {
 		
 		// 2022.11.11 시큐어코딩 처리
 	    final List<MultipartFile> files = multiRequest.getFiles("file_1");
-	    String atchFileId = "";
 
-	    if (!files.isEmpty()) {
-			List<FileVO> result = fileUtil.parseFileInf(files, "BBS_", 0, "", "");
-			atchFileId = fileMngService.insertFileInfs(result);
-	    }
-
-	    board.setAtchFileId(atchFileId);
 	    board.setReplyAt("Y");
 	    board.setFrstRegisterId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 	    board.setBbsId(board.getBbsId());
@@ -537,7 +529,7 @@ public class EgovArticleController {
 	    }
 	    board.setNttCn(unscript(board.getNttCn()));	// XSS 방지
 	    
-	    egovArticleService.insertArticle(board);
+    egovArticleService.insertArticleAndFiles(board, files);
 		
 		return "forward:/cop/bbs/selectArticleList.do";
     }
@@ -654,22 +646,6 @@ public class EgovArticleController {
 	
 		    return "egovframework/com/cop/bbs/EgovArticleUpdt";
 		}
-		
-		// 2022.11.11 시큐어코딩 처리
-		final List<MultipartFile> files = multiRequest.getFiles("file_1");
-	    if (!files.isEmpty()) {
-			if (atchFileId == null || "".equals(atchFileId)) {
-			    List<FileVO> result = fileUtil.parseFileInf(files, "BBS_", 0, atchFileId, "");
-			    atchFileId = fileMngService.insertFileInfs(result);
-			    board.setAtchFileId(atchFileId);
-			} else {
-			    FileVO fvo = new FileVO();
-			    fvo.setAtchFileId(atchFileId);
-			    int cnt = fileMngService.getMaxFileSN(fvo);
-			    List<FileVO> _result = fileUtil.parseFileInf(files, "BBS_", cnt, atchFileId, "");
-			    fileMngService.updateFileInfs(_result);
-			}
-	    }
 
 	    board.setLastUpdusrId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 	    
@@ -678,11 +654,18 @@ public class EgovArticleController {
 	    
 	    board.setNttCn(unscript(board.getNttCn()));	// XSS 방지
 	    
-	    egovArticleService.updateArticle(board);
+	    // 2022.11.11 시큐어코딩 처리
+    	final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
-		
-		return "forward:/cop/bbs/selectArticleList.do";
-    }
+    	egovArticleService.updateArticleAndFiles(board, files, atchFileId);
+
+		model.addAttribute("bbsId", boardVO.getBbsId());
+		model.addAttribute("searchCnd", boardVO.getSearchCnd());
+		model.addAttribute("searchWrd", boardVO.getSearchWrd());
+		model.addAttribute("pageIndex", boardVO.getPageIndex());
+
+		return "redirect:/cop/bbs/selectArticleList.do";
+	}
 
     /**
      * 게시물에 대한 내용을 삭제한다.
@@ -731,8 +714,12 @@ public class EgovArticleController {
 		
 		if(boardVO.getBlogAt().equals("chkBlog")){
 			return "forward:/cop/bbs/selectArticleBlogList.do";
-		}else{
-			return "forward:/cop/bbs/selectArticleList.do";
+		} else {
+			model.addAttribute("bbsId", boardVO.getBbsId());
+			model.addAttribute("searchCnd", boardVO.getSearchCnd());
+			model.addAttribute("searchWrd", boardVO.getSearchWrd());
+			model.addAttribute("pageIndex", boardVO.getPageIndex());
+			return "redirect:/cop/bbs/selectArticleList.do";
 		}
     }
     
@@ -869,7 +856,7 @@ public class EgovArticleController {
 		// 2022.11.11 시큐어코딩 처리
 	    board.setFrstRegisterId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 	    
-	    egovArticleService.insertArticle(board);
+    egovArticleService.insertArticleAndFiles(board, null);
 
 	    boardVO.setNttCn("");
 	    boardVO.setPassword("");

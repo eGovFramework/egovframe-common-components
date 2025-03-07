@@ -2,11 +2,11 @@ package egovframework.com.dam.per.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.dam.per.service.KnoPersonal;
 import egovframework.com.dam.per.service.KnoPersonalVO;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 개요

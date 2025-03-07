@@ -1,7 +1,9 @@
 package egovframework.com.utl.message;
 
 import static org.junit.Assert.assertEquals;
+
 import org.junit.Test;
+
 import egovframework.com.utl.cas.service.EgovMessageUtil;
 
 /**

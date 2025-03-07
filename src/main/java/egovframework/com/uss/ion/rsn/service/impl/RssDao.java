@@ -3,10 +3,10 @@ package egovframework.com.uss.ion.rsn.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.rsn.service.RssInfo;
-
-import org.springframework.stereotype.Repository;
 /**
  * RSS서비스를 처리하는 Dao Class 구현
  * @author 공통콤포넌트 장동한

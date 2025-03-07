@@ -6,20 +6,19 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import egovframework.com.cmm.EgovWebUtil;
-import egovframework.com.utl.fcc.service.EgovDateUtil;
-import egovframework.com.utl.fcc.service.EgovStringUtil;
+import javax.annotation.Resource;
 
 import org.apache.commons.lang.StringUtils;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-
-import javax.annotation.Resource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
+
+import egovframework.com.cmm.EgovWebUtil;
+import egovframework.com.utl.fcc.service.EgovDateUtil;
+import egovframework.com.utl.fcc.service.EgovStringUtil;
 
 /**
  * 개요
@@ -38,8 +37,9 @@ import org.springframework.stereotype.Service;
  *  수정일       수정자     수정내용
  *  ----------   --------   ---------------------------
  *  2017.03.03 	 조성원 	시큐어코딩(ES)-Null Pointer 역참조[CWE-476]
- *  2022.11.11   김혜준     시큐어코딩 처리
+ *  2022.11.11   김혜준   시큐어코딩 처리
  *  2024.05.02   김수용   NSR 보안조치 (파일시스템명에서 악의적인 문자열 제거)
+ * 
  */
 
 @Service("egovFileSysMntrngScheduling")
@@ -89,7 +89,7 @@ public class EgovFileSystemMntrngScheduling extends EgovAbstractServiceImpl {
 		Iterator<FileSysMntrng> iter = targetList.iterator();
 		FileSysMntrng target = null;
 
-		String safeFileSysNm = "";
+		String safeFileSysNm = "";		
 		int fileSysMg = 0;
 		int fileSysThrhld = 0;
 		int fileSysUsgQty = 0;

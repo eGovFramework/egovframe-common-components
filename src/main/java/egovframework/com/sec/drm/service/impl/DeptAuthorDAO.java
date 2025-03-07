@@ -2,11 +2,11 @@ package egovframework.com.sec.drm.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sec.drm.service.DeptAuthor;
 import egovframework.com.sec.drm.service.DeptAuthorVO;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 부서권한에 대한 DAO 클래스를 정의한다.

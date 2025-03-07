@@ -2,15 +2,14 @@ package egovframework.com.sec.gmt.service.impl;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.springframework.stereotype.Service;
+
 import egovframework.com.sec.gmt.service.EgovGroupManageService;
 import egovframework.com.sec.gmt.service.GroupManage;
 import egovframework.com.sec.gmt.service.GroupManageVO;
-
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
 
 /**
  * 그룹관리에 관한 ServiceImpl 클래스를 정의한다.

@@ -12,8 +12,9 @@
   * @
   * @  수정일         수정자                   수정내용
   * @ -------    --------    ---------------------------
-  * @ 2009.03.23    박지욱          최초 생성
-  * @ 2011.07.17    이기하          패키지 분리(sts -> sts.cst)
+  * @ 2009.03.23    박지욱		최초 생성
+  * @ 2011.07.17    이기하		패키지 분리(sts -> sts.cst)
+  * @ 2024.10.29    권태성		개인별 통계의 데이터가 없는 경우 안내 메시지 추가
   *
   *  @author 공통서비스 개발팀 박지욱
   *  @since 2009.03.23
@@ -292,7 +293,11 @@ function getNextWeek(v,t){
 			      </tr>
 			    </c:forEach>
 	    <c:if test="${fn:length(userStatsList) == 0}">
-	    <tr><td></td></tr>
+	    <tr>
+	    	<td>
+	    		<spring:message code="ussIonLsi.loginScrinImageList.failInquire"/>
+	    	</td>
+	    </tr>
 	    </c:if>
 	</table>
 
@@ -308,7 +313,11 @@ function getNextWeek(v,t){
 		        </tr>
 		        </c:forEach>
 		        <c:if test="${fn:length(userStatsList) == 0}">
-			    <tr><td></td></tr>
+			    <tr>
+				    <td>
+				    	<spring:message code="ussIonLsi.loginScrinImageList.failInquire"/>
+				    </td>
+			    </tr>
 			    </c:if>
 	</table>
 	</c:if>

@@ -6,8 +6,10 @@
   * @
   * @  수정일             수정자                   수정내용
   * @ -------    --------    ---------------------------
-  * @ 2009.04.01   이중호              최초 생성
-  * @ 2017.09.01   양희훈              표준프레임워크 v3.7 개선
+  * @ 2009.04.01   이중호		최초 생성
+  * @ 2017.09.01   양희훈		표준프레임워크 v3.7 개선
+  * @ 2024.10.29   권태성		수정 페이지 신규 경로로 변경, 2015년 개정된 5자리 우편번호에 맞게 우편번호 표기 방식 개선, 이전페이지로 이동하도록 수정
+  *
   *  @author 공통서비스팀
   *  @since 2009.04.01
   *  @version 1.0
@@ -32,15 +34,17 @@
 /* ********************************************************
  * 목록 으로 가기
  ******************************************************** */
-function fn_egov_list_Zip(){
-	location.href = "<c:url value='/sym/ccm/zip/EgovCcmZipList.do' />";
+function fn_egov_list_Zip() {
+	var varForm = document.getElementById("Form");
+	varForm.action = "<c:url value='/sym/ccm/zip/EgovCcmZipList.do'/>";
+	varForm.submit();
 }
 /* ********************************************************
  * 수정화면으로  바로가기
  ******************************************************** */
 function fn_egov_modify_Zip(){
 	var varForm				 = document.getElementById("Form");
-	varForm.action           = "<c:url value='/sym/ccm/zip/EgovCcmZipModify.do'/>";
+			varForm.action           = "<c:url value='/sym/ccm/zip/EgovCcmZipModifyView.do'/>";
 	if (${searchList} == "1") {
 		varForm.zip.value        = "${result.zip}";
 		varForm.sn.value         = "${result.sn}";
@@ -84,7 +88,7 @@ function fn_egov_delete_Zip(){
   <c:if test="${searchList == '1'}">
 	  <tr>
 	    <th class="ic_none" width="20%" height="23" scope="row" nowrap ><spring:message code="comSymCcmZip.zipVO.zip"/> <span class="pilsu">*</span></th> <!-- 우편번호 -->
-	    <td><c:out value='${fn:substring(result.zip, 0,3)}'/>-<c:out value='${fn:substring(result.zip, 3,6)}'/></td>
+	    <td>${result.zip}</td>
 	  </tr>
 	  <tr>
 	    <th class="ic_none" width="20%" height="23" scope="row" nowrap ><spring:message code="comSymCcmZip.zipVO.ctprvnNm"/> <span class="pilsu">*</span></th> <!-- 시도명 -->
@@ -110,7 +114,7 @@ function fn_egov_delete_Zip(){
   <c:if test="${searchList == '2'}">
 	  <tr>
 	    <th class="ic_none" width="20%" height="23" scope="row" nowrap ><spring:message code="comSymCcmZip.zipVO.zip"/> <span class="pilsu">*</span></th><!-- 우편번호 -->
-	    <td><c:out value='${fn:substring(result.zip, 0,3)}'/>-<c:out value='${fn:substring(result.zip, 3,6)}'/></td>
+	    <td>${result.zip}</td>
 	  </tr>
 	  <tr>
 	    <th class="ic_none" width="20%" height="23" scope="row" nowrap ><spring:message code="comSymCcmZip.zipVO.rdmnCode"/> <span class="pilsu">*</span></th><!-- 도로명코드 -->
@@ -158,9 +162,11 @@ function fn_egov_delete_Zip(){
 </div>
 <form name="Form" id="Form" method="post" action="">
 	<input type=hidden name="zip">
-	<input type=hidden name="sn">
-	<input type=hidden name="rdmnCode">
-	<input type=hidden name="searchList" value="${searchList}">
+	<input type=hidden id="sn" name="sn" value="${not empty result.sn ? result.sn : 0}" />
+	<input type=hidden id="rdmnCode" name="rdmnCode" />
+	<input type=hidden id="searchList" name="searchList" value="${searchVO.searchList}" />
+	<input type=hidden id="searchCondition2" name="searchCondition2" value="${searchVO.searchKeyword}" />
+	<input type=hidden id="searchKeyword" name="searchKeyword" value="${searchVO.searchKeyword}" />
 </form>
 </div>
 </body>

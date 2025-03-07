@@ -30,7 +30,6 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uat.uia.service.EgovLoginService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovClntInfo;
-import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 
 /*
 import com.gpki.gpkiapi.cert.X509Certificate;
@@ -64,6 +63,8 @@ import com.gpki.servlet.GPKIHttpServletResponse;
  *  2021.05.30	정진오		디지털원패스 처리하기 위해 로그인 화면에 인증방식 전달
  *  2022.11.11	김혜준		시큐어코딩 처리
  *  2023.06.09	김신해		NSR 보안조치 (GPKI 인증서 등록 OOB 방지)
+ *  2024.10.29	LeeBaekHaeng	불필요 형변환 제거 (request.getParameter("loginMessage"); loginService.selectLoginIncorrect(loginVO);)
+
  *  
  *  </pre>
  */
@@ -128,7 +129,7 @@ public class EgovLoginController {
 		String authType = EgovProperties.getProperty("Globals.Auth").trim();
 		model.addAttribute("authType", authType);
 
-		String message = (String)request.getParameter("loginMessage");
+		String message = request.getParameter("loginMessage");
 		if (message!=null) model.addAttribute("loginMessage", message);
 		
 		return "egovframework/com/uat/uia/EgovLoginUsr";
@@ -146,7 +147,7 @@ public class EgovLoginController {
 
 		// 1. 로그인인증제한 활성화시 
 		if( egovLoginConfig.isLock()){
-		    Map<?,?> mapLockUserInfo = (EgovMap)loginService.selectLoginIncorrect(loginVO);
+		    Map<?,?> mapLockUserInfo = loginService.selectLoginIncorrect(loginVO);
 		    if(mapLockUserInfo != null){			
 				//2.1 로그인인증제한 처리
 				String sLoginIncorrectCode = loginService.processLoginIncorrect(loginVO, mapLockUserInfo);

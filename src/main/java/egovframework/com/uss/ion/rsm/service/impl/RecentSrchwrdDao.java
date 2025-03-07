@@ -2,11 +2,11 @@ package egovframework.com.uss.ion.rsm.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
-import egovframework.com.uss.ion.rsm.service.RecentSrchwrd;
-
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
+
+import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import egovframework.com.uss.ion.rsm.service.RecentSrchwrd;
 
 /**
  * 최근검색어를 처리하는 Dao Class 구현

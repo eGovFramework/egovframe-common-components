@@ -2,11 +2,11 @@ package egovframework.com.sec.rmt.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sec.rmt.service.RoleManage;
 import egovframework.com.sec.rmt.service.RoleManageVO;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 롤관리에 대한 DAO 클래스를 정의한다.

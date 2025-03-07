@@ -8,6 +8,7 @@
   * @ ----------  --------  ---------------------------
   * @ 2010.08.12  박종선          최초 생성
   *   2018.09.11  신용호          공통컴포넌트 3.8 개선
+  *   2024.10.29  권태성        등록 페이지 마크업 개선, button 역할에 맞는 type으로 변경
   *
   *  @author 공통서비스팀 
   *  @since 2010.05.01
@@ -152,9 +153,9 @@
 					<col style="" />
 				</colgroup>
 				<tr>
-					<th><spring:message code="comDamMapMat.comDamMapMaterialRegist.orgnztNm"/> <span class="pilsu">*</span></th><!-- 조직명 -->
+					<th><label for="orgnztId"><spring:message code="comDamMapMat.comDamMapMaterialRegist.orgnztNm"/></label> <span class="pilsu">*</span></th><!-- 조직명 -->
 					<td class="left">
-					    <select name="orgnztId" class="select" title="<spring:message code="comDamMapMat.comDamMapMaterialRegist.orgnztNm"/>"><!-- 조직명 -->
+					    <select id="orgnztId" name="orgnztId" class="select" title="<spring:message code="comDamMapMat.comDamMapMaterialRegist.orgnztNm"/>"><!-- 조직명 -->
 						<c:forEach var="mapMaterial" items="${mapTeam}" varStatus="status">
 						<option value='<c:out value="${mapMaterial.orgnztId}"/>'><c:out value="${mapMaterial.orgnztNm}"/></option>
 						</c:forEach>			  		   
@@ -162,29 +163,29 @@
 					</td>
 				</tr>
 				<tr>
-					<th><spring:message code="comDamMapMat.comDamMapMaterialRegist.knoTypeCd"/> <span class="pilsu">*</span></th><!-- 지식유형코드 -->
+					<th><label for="knoTypeCd"><spring:message code="comDamMapMat.comDamMapMaterialRegist.knoTypeCd"/></label> <span class="pilsu">*</span></th><!-- 지식유형코드 -->
 					<td class="left">
-					    <form:input  path="knoTypeCd" title="<spring:message code='comDamMapMat.comDamMapMaterialRegist.knoTypeCd'/>" maxlength="3" style="width:200px"/><!-- 지식유형코드 -->
+					    <form:input path="knoTypeCd" title="<spring:message code='comDamMapMat.comDamMapMaterialRegist.knoTypeCd'/>" maxlength="3" style="width:200px"/><!-- 지식유형코드 -->
 						<form:errors path="knoTypeCd"/>
 						<button id="btnKnoTypeCd" class="btn_s2" onclick="return false;" title="지식유형코드 중복확인">중복확인</button>
 					</td>
 				</tr>
 				<tr>
-					<th><spring:message code="comDamMapMat.comDamMapMaterialRegist.knoTypeNm"/> <span class="pilsu">*</span></th><!-- 지식유형명 -->
+					<th><label for="knoTypeNm"><spring:message code="comDamMapMat.comDamMapMaterialRegist.knoTypeNm"/></label> <span class="pilsu">*</span></th><!-- 지식유형명 -->
 					<td class="left">
 					    <form:input  path="knoTypeNm" title="<spring:message code='comDamMapMat.comDamMapMaterialRegist.knoTypeNm'/>" size="60" maxlength="20"/><!-- 지식유형명 -->
 						<form:errors path="knoTypeNm"/>
 					</td>
 				</tr>
 				<tr>
-					<th><spring:message code="comDamMapMat.comDamMapMaterialRegist.knoUrl"/> <span class="pilsu">*</span></th><!-- 지식URL -->
+					<th><label for="knoUrl"><spring:message code="comDamMapMat.comDamMapMaterialRegist.knoUrl"/></label> <span class="pilsu">*</span></th><!-- 지식URL -->
 					<td class="left">
 					    <form:input  path="knoUrl" title="<spring:message code='comDamMapMat.comDamMapMaterialRegist.knoUrl'/>" size="60" maxlength="100"/><!-- 지식URL -->
 						<form:errors path="knoUrl"/>
 					</td>
 				</tr>
 				<tr>
-					<th><spring:message code="comDamMapMat.comDamMapMaterialRegist.clYmd"/> <span class="pilsu">*</span></th><!-- 분류일자 -->
+					<th><label for="clYmd"><spring:message code="comDamMapMat.comDamMapMaterialRegist.clYmd"/></label> <span class="pilsu">*</span></th><!-- 분류일자 -->
 					<td class="left">
 					    <input type="hidden" name="cal_url" value="<c:url value='/sym/cal/EgovNormalCalPopup.do'/>" />
 						<input id="clYmd" name="clYmd" type="hidden" value=""/>
@@ -196,7 +197,7 @@
 			<!-- 하단 버튼 -->
 			<div class="btn">
 				<input class="s_submit" type="submit" value="<spring:message code="button.save" />" onclick="fn_egov_regist_MapMaterial(document.mapMaterial); return false;" /><!-- 저장 -->
-				<input class="s_submit" type="submit" value='<spring:message code="button.list" />' onclick="fn_egov_list_MapMaterial(); return false;" /><!-- 목록 -->
+				<input class="s_submit" type="button" value='<spring:message code="button.list" />' onclick="fn_egov_list_MapMaterial(); return false;" /><!-- 목록 -->
 			</div>
 			<div style="clear:both;"></div>
 		</div>

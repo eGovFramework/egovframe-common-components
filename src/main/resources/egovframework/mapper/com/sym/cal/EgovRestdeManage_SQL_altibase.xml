@@ -205,6 +205,7 @@
 		
 	</select>
 
+	<!-- 2024.10.29 권태성 휴일일자 검색 조건인 경우 searchKeyword를 formattedDtKeyword로 변경 -->
 	<select id="selectRestdeList" parameterType="egovframework.com.sym.cal.service.RestdeVO" resultType="egovMap">
 		
 			SELECT  * 
@@ -225,7 +226,7 @@
 			   AND  A.RESTDE_SE_CODE = B.CODE
 		
 			<if test="searchCondition == 1">AND
-				A.RESTDE = #{searchKeyword}
+				A.RESTDE = #{formattedDtKeyword}
 			</if>
 			<if test="searchCondition == 2">AND
 				A.RESTDE_NM LIKE '%' || #{searchKeyword} || '%'
@@ -239,6 +240,7 @@
 		]]>
 	</select>
 
+	<!-- 2024.10.29 권태성 휴일일자 검색 조건인 경우 searchKeyword를 formattedDtKeyword로 변경 -->
 	<select id="selectRestdeListTotCnt" parameterType="egovframework.com.sym.cal.service.RestdeVO" resultType="int">
 		
 			SELECT  COUNT(*) totcnt 
@@ -248,7 +250,7 @@
 			   AND  A.RESTDE_SE_CODE = B.CODE
 		
 			<if test="searchCondition == 1">AND
-				RESTDE = #{searchKeyword}
+				RESTDE = #{formattedDtKeyword}
 			</if>
 			<if test="searchCondition == 2">AND
 				RESTDE_NM LIKE '%' || #{searchKeyword} || '%'

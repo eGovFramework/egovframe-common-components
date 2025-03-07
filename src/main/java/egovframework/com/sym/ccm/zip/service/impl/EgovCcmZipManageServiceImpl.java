@@ -3,17 +3,16 @@ package egovframework.com.sym.ccm.zip.service.impl;
 import java.io.InputStream;
 import java.util.List;
 
-import egovframework.com.sym.ccm.zip.service.EgovCcmZipManageService;
-import egovframework.com.sym.ccm.zip.service.Zip;
-import egovframework.com.sym.ccm.zip.service.ZipVO;
+import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.excel.EgovExcelService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
-
-import javax.annotation.Resource;
-
 import org.springframework.stereotype.Service;
+
+import egovframework.com.sym.ccm.zip.service.EgovCcmZipManageService;
+import egovframework.com.sym.ccm.zip.service.Zip;
+import egovframework.com.sym.ccm.zip.service.ZipVO;
 
 
 /**
@@ -63,7 +62,7 @@ public class EgovCcmZipManageServiceImpl extends EgovAbstractServiceImpl impleme
 	 * 우편번호를 등록한다.
 	 */
 	@Override
-	public void insertZip(Zip zip) throws Exception {
+	public void insertZip(Zip zip) {
     	zipManageDAO.insertZip(zip);
 	}
 

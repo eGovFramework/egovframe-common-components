@@ -7,6 +7,7 @@
     -------    --------    ---------------------------
   2008.03.09    장동한          최초 생성
   2018.08.16    이정은          공통컴포넌트 3.8 개선
+  2024.10.29    권태성			수정 페이지 신규 경로로 변경
 
     author   : 공통서비스 개발팀 장동한
     since    : 2009.03.09
@@ -45,7 +46,7 @@ function fn_egov_list_UnityLink(){
 function fn_egov_modify_UnityLink(){
 	var vFrom = document.UnityLinkForm;
 	vFrom.cmd.value = '';
-	vFrom.action = "<c:url value='/uss/ion/ulm/updtUnityLink.do' />";;
+	vFrom.action = "<c:url value='/uss/ion/ulm/updtUnityLinkView.do' />";;
 	vFrom.submit();
 
 }
@@ -115,7 +116,7 @@ function fn_egov_delete_UnityLink(){
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<form name="formUpdt" action="<c:url value='/uss/ion/ulm/updtUnityLink.do'/>" method="post" style="display:inline-block; vertical-align:top">
+		<form name="formUpdt" action="<c:url value='/uss/ion/ulm/updtUnityLinkView.do'/>" method="post" style="display:inline-block; vertical-align:top">
 			<input name="unityLinkId" type="hidden" value="${unityLink.unityLinkId}">
 			<input class="s_submit" type="submit" value="<spring:message code="button.update" />" onclick="fn_egov_modify_UnityLink(); return false;">
 		</form>

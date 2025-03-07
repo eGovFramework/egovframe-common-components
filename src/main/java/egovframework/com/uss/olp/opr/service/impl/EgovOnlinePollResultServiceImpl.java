@@ -2,14 +2,13 @@ package egovframework.com.uss.olp.opr.service.impl;
 
 import java.util.List;
 
-import egovframework.com.uss.olp.opr.service.EgovOnlinePollResultService;
-import egovframework.com.uss.olp.opr.service.OnlinePollResult;
-
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
+
+import egovframework.com.uss.olp.opr.service.EgovOnlinePollResultService;
+import egovframework.com.uss.olp.opr.service.OnlinePollResult;
 
 /**
  * 온라인POLL결과를 처리하는 ServiceImpl Class 구현

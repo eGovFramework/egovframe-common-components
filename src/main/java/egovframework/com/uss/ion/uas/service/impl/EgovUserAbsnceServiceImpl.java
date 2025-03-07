@@ -14,15 +14,14 @@ package egovframework.com.uss.ion.uas.service.impl;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.springframework.stereotype.Service;
+
 import egovframework.com.uss.ion.uas.service.EgovUserAbsnceService;
 import egovframework.com.uss.ion.uas.service.UserAbsnce;
 import egovframework.com.uss.ion.uas.service.UserAbsnceVO;
-
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
 
 @Service("egovUserAbsnceService")
 public class EgovUserAbsnceServiceImpl extends EgovAbstractServiceImpl implements EgovUserAbsnceService {

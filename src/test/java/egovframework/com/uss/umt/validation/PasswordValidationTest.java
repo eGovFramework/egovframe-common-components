@@ -4,9 +4,8 @@ package egovframework.com.uss.umt.validation;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-import org.junit.Test;
-
 import org.egovframe.rte.ptl.mvc.validation.RteGenericValidator;
+import org.junit.Test;
 
 /**
  * 비밀번호 생성 Test Class 구현

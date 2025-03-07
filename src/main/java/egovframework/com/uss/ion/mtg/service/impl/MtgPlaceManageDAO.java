@@ -14,12 +14,12 @@ package egovframework.com.uss.ion.mtg.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.mtg.service.MtgPlaceManage;
 import egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO;
 import egovframework.com.uss.ion.mtg.service.MtgPlaceResve;
-
-import org.springframework.stereotype.Repository;
 
 @Repository("mtgPlaceManageDAO")
 public class MtgPlaceManageDAO extends EgovComAbstractDAO {

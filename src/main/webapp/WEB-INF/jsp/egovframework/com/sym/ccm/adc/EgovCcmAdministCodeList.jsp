@@ -5,9 +5,10 @@
   * @Description : EgovCcmAdministCodeList 화면
   * @Modification Information
   * @
-  * @  수정일             수정자                   수정내용
+  * @  수정일    수정자         수정내용
   * @ -------    --------    ---------------------------
-  * @ 2009.04.01   이중호              최초 생성
+  * @ 2009.04.01   이중호		최초 생성
+  * @ 2024.10.25   권태성		사용하지 않고 있는 fnDelete 함수를 제거, 등록 페이지 신규 경로로 변경
   *
   *  @author 공통서비스팀
   *  @since 2009.04.01
@@ -50,7 +51,7 @@ function fnSearch(){
  * 등록 처리 함수
  ******************************************************** */
 function fnRegist(){
-	location.href = "<c:url value='/sym/ccm/adc/EgovCcmAdministCodeRegist.do' />";
+	location.href = "<c:url value='/sym/ccm/adc/EgovCcmAdministCodeRegistView.do' />";
 }
 /* ********************************************************
  * 수정 처리 함수
@@ -68,11 +69,11 @@ function fnDetail(administZoneSe,administZoneCode){
 	varForm.administZoneCode.value = administZoneCode;
 	varForm.submit();
 }
-/* ********************************************************
- * 삭제 처리 함수
- ******************************************************** */
-function fnDelete(){
-	//
+
+function press(event) {
+	if (event.keyCode == 13) {
+		linkPage(1);
+	}
 }
 -->
 </script>
@@ -93,7 +94,7 @@ function fnDelete(){
 					<option value='1' <c:if test="${searchVO.searchCondition == '1'}">selected="selected"</c:if>><spring:message code="comSymCcmAdc.ccmAdministCode.lawAddrName" /></option> <!-- 법정동 지역명 -->
 					<option value='2' <c:if test="${searchVO.searchCondition == '2'}">selected="selected"</c:if>><spring:message code="comSymCcmAdc.ccmAdministCode.admAddrName" /></option> <!-- 행정동 지역명 -->
 				</select>
-				<input id="searchKeyword" class="s_input2 vat" name="searchKeyword" type="text" value="${searchVO.searchKeyword}" size="25" onkeypress="press();" title="사용자명검색" />
+				<input id="searchKeyword" class="s_input2 vat" name="searchKeyword" type="text" value="${searchVO.searchKeyword}" size="25" onkeypress="press(event);" title="사용자명검색" />
 				
 				<input class="s_btn" type="submit" value="<spring:message code="title.inquire" />" title="<spring:message code="title.inquire" />" onclick="fnSearch(); return false;" /> <!-- 조회 -->
 				<input class="s_btn" type="submit" value="<spring:message code="title.create" />" title="<spring:message code="title.create" />" onclick="fnRegist(); return false;" /> <!-- 등록 -->

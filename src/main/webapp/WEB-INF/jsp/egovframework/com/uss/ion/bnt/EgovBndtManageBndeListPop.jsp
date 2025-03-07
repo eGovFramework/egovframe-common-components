@@ -4,11 +4,12 @@
  * @Description : EgovBndtManageBndeListPop jsp
  * @Modification Information
  * @
- * @  수정일                    수정자                수정내용
+ * @  수정일       수정자      수정내용
  * @ ---------     --------    ---------------------------
- * @ 2010.07.20    이      용                최초 생성
- * @ 2018.08.14    최 두 영              퍼블리싱 점검, 소스 오류 점검 
- * @ 2018.09.27    최 두 영              다국어처리
+ * @ 2010.07.20    이용			최초 생성
+ * @ 2018.08.14    최두영		퍼블리싱 점검, 소스 오류 점검 
+ * @ 2018.09.27    최두영		다국어처리
+ * @ 2024.10.29	   권태성		당직엑셀등록 오류 수정(엑셀 업로드 후 결과 값 변수명을 엑셀 데이터에 맞게 수정)
  *
  *  @author 이      용
  *  @since 2010.07.20
@@ -108,10 +109,10 @@
 		}
 	
 		var  str_dotlocation,str_ext,str_low;
-		str_value  = document.listForm.file.value;
-		str_low   = str_value.toLowerCase(str_value);
+		str_value = document.listForm.file.value;
+		str_low = str_value.toLowerCase(str_value);
 		str_dotlocation = str_low.lastIndexOf(".");
-		str_ext   = str_low.substring(str_dotlocation+1);
+		str_ext = str_low.substring(str_dotlocation+1);
 		
 		switch (str_ext) {
 		  case "xls" :
@@ -178,7 +179,7 @@
 		<tbody>
 			<c:forEach items="${bndtManageList}" var="resultInfo" varStatus="status">
 			<input type="hidden" name="bndtDe" id="bndtDe" value="${resultInfo.bndtDe}">
-			<input type="hidden" name="bndtId" id="bndtId" value="${resultInfo.tempBndtId}">
+			<input type="hidden" name="bndtId" id="bndtId" value="${resultInfo.bndtId}">
 			<tr>
 				<td>
 					<font <c:if test="${(resultInfo.dateWeek ) == 1}"> color="red" </c:if> <c:if test="${(resultInfo.dateWeek ) == 7}"> color="blue"</c:if> size='2'>

@@ -2,11 +2,11 @@ package egovframework.com.sec.gmt.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sec.gmt.service.GroupManage;
 import egovframework.com.sec.gmt.service.GroupManageVO;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 그룹관리에 대한 DAO 클래스를 정의한다.

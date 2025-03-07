@@ -2,15 +2,14 @@ package egovframework.com.sec.ram.service.impl;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.springframework.stereotype.Service;
+
 import egovframework.com.sec.ram.service.AuthorManage;
 import egovframework.com.sec.ram.service.AuthorManageVO;
 import egovframework.com.sec.ram.service.EgovAuthorManageService;
-
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
 
 /**
  * 권한관리에 관한 ServiceImpl 클래스를 정의한다.
@@ -25,6 +24,7 @@ import org.springframework.stereotype.Service;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.03.11  이문준          최초 생성
+ *   2024.10.29	LeeBaekHaeng	@Override 표기
  *
  * </pre>
  */
@@ -41,6 +41,7 @@ public class EgovAuthorManageServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @return List<AuthorManageVO>
 	 * @exception Exception
 	 */
+	@Override
     public List<AuthorManageVO> selectAuthorList(AuthorManageVO authorManageVO) throws Exception {
         return authorManageDAO.selectAuthorList(authorManageVO);
     }
@@ -50,6 +51,7 @@ public class EgovAuthorManageServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @param authorManage AuthorManage
 	 * @exception Exception
 	 */
+	@Override
     public void insertAuthor(AuthorManage authorManage) throws Exception {
     	authorManageDAO.insertAuthor(authorManage);
     }
@@ -59,6 +61,7 @@ public class EgovAuthorManageServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @param authorManage AuthorManage
 	 * @exception Exception
 	 */
+	@Override
     public void updateAuthor(AuthorManage authorManage) throws Exception {
     	authorManageDAO.updateAuthor(authorManage);
     }
@@ -68,6 +71,7 @@ public class EgovAuthorManageServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @param authorManage AuthorManage
 	 * @exception Exception
 	 */
+	@Override
     public void deleteAuthor(AuthorManage authorManage) throws Exception {
     	authorManageDAO.deleteAuthor(authorManage);
     }
@@ -78,6 +82,7 @@ public class EgovAuthorManageServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @return AuthorManageVO
 	 * @exception Exception
 	 */
+	@Override
     public AuthorManageVO selectAuthor(AuthorManageVO authorManageVO) throws Exception {
     	AuthorManageVO resultVO = authorManageDAO.selectAuthor(authorManageVO);
         if (resultVO == null)
@@ -91,6 +96,7 @@ public class EgovAuthorManageServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @return int
 	 * @exception Exception
 	 */
+	@Override
     public int selectAuthorListTotCnt(AuthorManageVO authorManageVO) throws Exception {
         return authorManageDAO.selectAuthorListTotCnt(authorManageVO);
     }    
@@ -101,6 +107,7 @@ public class EgovAuthorManageServiceImpl extends EgovAbstractServiceImpl impleme
 	 * @return List<AuthorManageVO>
 	 * @exception Exception
 	 */
+	@Override
 	public List<AuthorManageVO> selectAuthorAllList(AuthorManageVO authorManageVO) throws Exception {
     	return authorManageDAO.selectAuthorAllList(authorManageVO);
     }      

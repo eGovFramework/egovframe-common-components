@@ -1,5 +1,7 @@
 package egovframework.com.web;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 import javax.inject.Inject;
 
 import org.junit.Before;
@@ -13,8 +15,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 /**
  * @ Spring MVC 기반 Controller 및 Dispatcher Test Class 구현

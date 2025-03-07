@@ -30,7 +30,7 @@
 <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
 <validator:javascript formName="template" staticJavascript="false" xhtml="true" cdata="false"/>
 
-<form:form name="template" id="template" action="/uss/olp/qri/template.do" method="post">
+<form:form name="template" id="template" action="${pageContext.request.contextPath}/uss/olp/qri/template.do" method="post">
 <c:forEach items="${Comtnqustnrqesitm}" var="QestmInfo" varStatus="status1">
 <tr>
     <td colspan="2">

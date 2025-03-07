@@ -6,12 +6,12 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.sym.log.lgm.service.EgovSysLogService;
 import egovframework.com.sym.log.lgm.service.SysLog;
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 
 /**
  * @Class Name : EgovSysLogServiceImpl.java

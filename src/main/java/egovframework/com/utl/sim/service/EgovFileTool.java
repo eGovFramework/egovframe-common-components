@@ -28,9 +28,12 @@ import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
 import egovframework.com.cmm.EgovWebUtil;
+import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 
@@ -44,8 +47,10 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *
  *  수정일                수정자           수정내용
  *  ----------   --------   ---------------------------
- *  2020.12.07   신용호            KISA 보안약점 조치
- *  2022.11.11   김혜준			   시큐어코딩 처리
+ *  2020.12.07   신용호       KISA 보안약점 조치
+ *  2022.11.11   김혜준       시큐어코딩 처리
+ *  2024.10.29   win777	    디렉토리 생성 성공 시 생성된 절대경로를 리턴하도록 변경
+ *  2025.02.06   신용호       deleteFile() KISA 시큐어코딩 처리
  *
  * </pre>
  */
@@ -60,6 +65,9 @@ public class EgovFileTool {
 
 	// LOGGER
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovFileTool.class);
+	
+	private static final String FILE_STORE_PATH = EgovProperties.getProperty("Globals.fileStorePath");
+
 
 	/**
 	 * <pre>
@@ -70,9 +78,28 @@ public class EgovFileTool {
 	 * @return 성공하면 삭제된 절대경로, 아니면블랭크
 	 */
 	public static String deletePath(String filePath) {
+		return deletePath(FILE_STORE_PATH, filePath);
+	}
+	
+	/**
+	 * <pre>
+	 * Comment : 디렉토리(파일)를 삭제한다. (파일,디렉토리 구분없이 존재하는 경우 무조건 삭제한다)
+	 * </pre>
+	 *
+	 * @param basePath 기본 경로
+	 * @param filePath 삭제하고자 하는 파일의 절대경로 + 파일명
+	 * @return 성공하면 삭제된 절대경로, 아니면블랭크
+	 */
+	public static String deletePath(String basePath, String filePath) {
+		
+		// 인자 값이 없는 경우 "Globals.fileStorePath" 기본 경로를 지정한다.
+		if (basePath == null || basePath.equals("")) {
+			basePath = FILE_STORE_PATH;
+		}
+		
 		String result = "";
 
-		File file = new File(EgovWebUtil.filePathBlackList(filePath));
+		File file = new File(EgovWebUtil.filePathBlackList(basePath + filePath));
 		if (file.exists()) {
 			result = file.getAbsolutePath();
 			if (!file.delete()) {
@@ -88,20 +115,39 @@ public class EgovFileTool {
 	 * Comment : 디렉토리를 생성한다. (여러 레벨의 경로를 동시에 생성)
 	 * </pre>
 	 *
+	 * @param basePath 기본 경로
 	 * @param dirPath 생성하고자 하는 절대경로
 	 * @return 성공하면 생성된 절대경로, 아니면 블랭크
 	 */
 	public static String createDirectories(String dirPath) {
+		return createDirectories(FILE_STORE_PATH, dirPath);
+	}
+	
+	/**
+	 * <pre>
+	 * Comment : 디렉토리를 생성한다. (여러 레벨의 경로를 동시에 생성)
+	 * </pre>
+	 *
+	 * @param basePath 기본 경로
+	 * @param dirPath 생성하고자 하는 절대경로
+	 * @return 성공하면 생성된 절대경로, 아니면 블랭크
+	 */
+	public static String createDirectories(String basePath, String dirPath) {
 		String result = "";
+		
+		// 인자 값이 없는 경우 "Globals.fileStorePath" 기본 경로를 지정한다.
+		if (basePath == null || basePath.equals("")) {
+			basePath = FILE_STORE_PATH;
+		}
 
-		File file = new File(EgovWebUtil.filePathBlackList(dirPath));
+		File file = new File(EgovWebUtil.filePathBlackList(basePath + dirPath));
 		if (!file.exists()) {
 			if (file.mkdirs()) {
 				LOGGER.debug("[file.mkdirs] file : Path Creation Success");
+				file.getAbsolutePath();
 			} else {
 				LOGGER.error("[file.mkdirs] file : Path Creation Fail");
 			}
-			file.getAbsolutePath();
 		}
 
 		return result;
@@ -140,12 +186,31 @@ public class EgovFileTool {
 	 */
 	public static String createNewDirectory(String dirPath) {
 
+		return createNewDirectory(FILE_STORE_PATH, dirPath);
+	}
+	
+	/**
+	 * <pre>
+	 * Comment : 디렉토리를 생성한다.
+	 * </pre>
+	 *
+	 * @param basePath 기본 경로
+	 * @param dirPath 생성하고자 하는 절대경로
+	 * @return 성공하면 새성된 절대경로, 아니면 블랭크
+	 */
+	public static String createNewDirectory(String basePath, String dirPath) {
+
+		// 인자 값이 없는 경우 "Globals.fileStorePath" 기본 경로를 지정한다.
+		if (basePath == null || basePath.equals("")) {
+			basePath = FILE_STORE_PATH;
+		}
+		
 		// 인자값 유효하지 않은 경우 블랭크 리턴
 		if (dirPath == null || dirPath.equals("")) {
 			return "";
 		}
 
-		File file = new File(EgovWebUtil.filePathBlackList(dirPath));
+		File file = new File(EgovWebUtil.filePathBlackList(basePath + dirPath));
 		String result = "";
 		// 없으면 생성
 		if (file.exists()) {
@@ -167,6 +232,7 @@ public class EgovFileTool {
 
 		return result;
 	}
+	
 	/**
 	 * <pre>
 	 * Comment : 파일을 생성한다.
@@ -176,12 +242,31 @@ public class EgovFileTool {
 	 * @return 성공하면 생성된 파일의 절대경로, 아니면블랭크
 	 */
 	public static String createNewFile(String filePath) {
+		return createNewFile(FILE_STORE_PATH, filePath);
+	}
+	
+	/**
+	 * <pre>
+	 * Comment : 파일을 생성한다.
+	 * </pre>
+	 *
+	 * @param basePath 기본 경로
+	 * @param filePath fileName 파일의 절대경로 + 파일명
+	 * @return 성공하면 생성된 파일의 절대경로, 아니면블랭크
+	 */
+	public static String createNewFile(String basePath, String filePath) {
+		
+		// 인자 값이 없는 경우 "Globals.fileStorePath" 기본 경로를 지정한다.
+		if (basePath == null || basePath.equals("")) {
+			basePath = FILE_STORE_PATH;
+		}
+
 		// 인자값 유효하지 않은 경우 블랭크 리턴
 		if (filePath == null || filePath.equals("")) {
 			return "";
 		}
 
-		File file = new File(EgovWebUtil.filePathBlackList(filePath));
+		File file = new File(EgovWebUtil.filePathBlackList(basePath + filePath));
 		String result = "";
 		try {
 			if (file.exists()) {
@@ -215,6 +300,25 @@ public class EgovFileTool {
 	 * @return 성공하면 삭제된 파일의 절대경로, 아니면블랭크
 	 */
 	public static String deleteFile(String fileDeletePath) {
+		return deleteFile(FILE_STORE_PATH, fileDeletePath);
+	}
+	
+	/**
+	 * <pre>
+	 * Comment : 파일을 삭제한다.
+	 * </pre>
+	 *
+	 * @param basePath 기본 경로
+	 * @param fileDeletePath 삭제하고자 하는파일의 절대경로
+	 * @return 성공하면 삭제된 파일의 절대경로, 아니면블랭크
+	 */
+	public static String deleteFile(String basePath, String fileDeletePath) {
+		
+		// 인자 값이 없는 경우 "Globals.fileStorePath" 기본 경로를 지정한다.
+		if (basePath == null || basePath.equals("")) {
+			basePath = FILE_STORE_PATH;
+		}
+
 		// 인자값 유효하지 않은 경우 블랭크 리턴
 		if (fileDeletePath == null || fileDeletePath.equals("")) {
 			return "";
@@ -222,7 +326,7 @@ public class EgovFileTool {
 		String result = "";
 		File file = new File(EgovWebUtil.filePathBlackList(fileDeletePath));
 		if (file.isFile()) {
-			result = deletePath(fileDeletePath);
+			result = deletePath(basePath, fileDeletePath);
 		} else {
 			result = "";
 		}

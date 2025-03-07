@@ -5,11 +5,12 @@
   * @Description : EgovRestdeList 화면
   * @Modification Information
   * @
-  * @  수정일             수정자                   수정내용
+  * @  수정일     수정자      수정내용
   * @ -------    --------    ---------------------------
-  * @ 2009.04.01   이중호              최초 생성
-  *   2011.08.12   서준식              페이징 번호 정렬이 리스트와 일치하도록 수정
-  							   CSS 경로 수정
+  * @ 2009.04.01   이중호		최초 생성
+  *   2011.08.12   서준식		페이징 번호 정렬이 리스트와 일치하도록 수정, CSS 경로 수정
+  *   2024.10.29   권태성		press(event) 추가, 등록 버튼을 역할에 맞는 타입으로 변경 (submit → button)
+  *
   *  @author 공통서비스팀
   *  @since 2009.04.01
   *  @version 1.0
@@ -51,7 +52,7 @@ function fn_egov_search_Restde(){
  * 등록 처리 함수
  ******************************************************** */
 function fn_egov_regist_Restde(){
-	location.href = "<c:url value='/sym/cal/EgovRestdeRegist.do' />";
+	location.href = "<c:url value='/sym/cal/EgovRestdeRegistView.do' />";
 }
 /* ********************************************************
  * 상세회면 처리 함수
@@ -61,6 +62,12 @@ function fn_egov_detail_Restde(restdeNo){
 	varForm.action           = "<c:url value='/sym/cal/EgovRestdeDetail.do'/>";
 	varForm.restdeNo.value   = restdeNo;
 	varForm.submit();
+}
+
+function press(event) {
+    if (event.keyCode == 13) {
+        fn_egov_pageview(1);
+    }
 }
 -->
 </script>
@@ -81,10 +88,10 @@ function fn_egov_detail_Restde(restdeNo){
 				<option value='1' <c:if test="${searchVO.searchCondition == '1'}">selected="selected"</c:if>><spring:message code="sym.cal.restDay" /></option><!-- 휴일일자 -->
 				<option value='2' <c:if test="${searchVO.searchCondition == '2'}">selected="selected"</c:if>><spring:message code="sym.cal.restName" /></option><!-- 휴일명 -->
 				</select>
-				<input id="searchKeyword" class="s_input2 vat" name="searchKeyword" type="text" value="${searchVO.searchKeyword}" maxlength="35" size="35" onkeypress="press();" />
+				<input id="searchKeyword" class="s_input2 vat" name="searchKeyword" type="text" value="${searchVO.searchKeyword}" maxlength="35" size="35" onkeypress="press(event);" />
 				
 				<span class="btn_b"><a href="#noscript" onclick="fn_egov_search_Restde(); return false;" title="<spring:message code="button.inquire" />"><spring:message code="button.inquire" /></a></span>
-				<input class="s_btn" type="submit" value="<spring:message code="button.create" />" title="<spring:message code="button.create" />" onclick="fn_egov_regist_Restde(); return false;" />
+				<input class="s_btn" type="button" value="<spring:message code="button.create" />" title="<spring:message code="button.create" />" onclick="fn_egov_regist_Restde(); return false;" />
 			</li>
 		</ul>
 	</div>

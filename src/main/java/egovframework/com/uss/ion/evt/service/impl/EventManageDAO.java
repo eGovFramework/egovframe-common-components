@@ -2,12 +2,12 @@ package egovframework.com.uss.ion.evt.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.evt.service.EventAtdrn;
 import egovframework.com.uss.ion.evt.service.EventManage;
 import egovframework.com.uss.ion.evt.service.EventManageVO;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 개요

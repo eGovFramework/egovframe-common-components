@@ -105,7 +105,7 @@ function selectList(){
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg"/></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
-<form:form modelAttribute="progrmManageDtlVO" name="progrmManageDtlVO" action ="<c:url value='/sym/prm/EgovProgramChangRequstStre.do'/>" method="post">
+<form:form modelAttribute="progrmManageDtlVO" name="progrmManageDtlVO" action="${pageContext.request.contextPath}/sym/prm/EgovProgramChangRequstStre.do" method="post">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->

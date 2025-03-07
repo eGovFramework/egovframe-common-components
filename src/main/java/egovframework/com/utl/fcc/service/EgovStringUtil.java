@@ -7,6 +7,7 @@
  *     -------          --------        ---------------------------
  *   2009.01.13     박정규          최초 생성
  *   2009.02.13     이삼섭          내용 추가
+ *   2024.10.29		Chung10Kr		명사에 맞는 조사 반환 기능 개발
  *
  * @author 공통 서비스 개발팀 박정규
  * @since 2009. 01. 13
@@ -916,5 +917,53 @@ public class EgovStringUtil {
 		} else {
 			return "";
 		}
+	}
+
+	/**
+	 * 주어진 명사에 맞는 보조사를 반환한다.
+	 * 예: "이름" -> "이름은", "나이" -> "나이는"
+	 *
+	 * @param noun 명사
+	 * @return 보조사 조사 ("은" 또는 "는")
+	 */
+	public static String getAuxiliaryParticle(String noun){
+		return noun+( hasFinalConsonant(noun) ? "은" : "는") ;
+	}
+
+
+	/**
+	 * 주어진 명사에 맞는 주격 조사를 반환한다.
+	 * 예: "책상" -> "책상이", "청소기" -> "청소기"
+	 *
+	 * @param noun 명사
+	 * @return 주격 조사 ("이" 또는 "")
+	 */
+	public static String getSubjectParticle(String noun) {
+		return hasFinalConsonant(noun) ? noun+"이" : noun;
+	}
+
+
+
+	/**
+	 * 주어진 명사에 맞는 목적격 조사를 반환한다.
+	 * 예: "책상" -> "책상을", "청소기" -> "청소기를"
+	 *
+	 * @param noun 명사
+	 * @return 목적격 조사 ("을" 또는 "를")
+	 */
+	public static String getObjectParticle(String noun) {
+		return noun + (hasFinalConsonant(noun) ? "을" : "를");
+	}
+
+
+	/**
+	 * 주어진 명사가 종성을 가지는지 여부를 확인한다.
+	 *
+	 * @param noun 명사
+	 * @return 종성이 있으면 true, 없으면 false
+	 */
+	private static boolean hasFinalConsonant(String noun) {
+		char lastChar = noun.charAt(noun.length() - 1);
+		return (lastChar - 0xAC00) % 28 != 0;
 	}
 }

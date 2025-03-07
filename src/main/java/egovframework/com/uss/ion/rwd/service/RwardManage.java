@@ -11,6 +11,15 @@ import egovframework.com.cmm.ComDefaultVO;
  * @author 이용
  * @version 1.0
  * @created 06-15-2010 오후 2:08:56
+ * <pre>
+ * == 개정이력(Modification Information) ==
+ *
+ *   수정일       수정자          수정내용
+ *  ----------   --------   ---------------------------
+ *   2010.06.15  이용			최초 생성
+ *   2024.10.29  권태성			포상자 소속을 처리할 변수와 getter, setter 추가
+ *  
+ * </pre>
  */
 
 public class RwardManage extends ComDefaultVO {
@@ -35,6 +44,11 @@ public class RwardManage extends ComDefaultVO {
 	*/ 
 	private String rwardManNm;
 
+	/**
+	 * 포상자 소속
+	 */
+	private String rwardManOrgnztNm;
+	
 	public String getRwardManNm() {
 		return rwardManNm;
 	}
@@ -336,5 +350,20 @@ public class RwardManage extends ComDefaultVO {
 	public void setLastUpdusrPnttm(String lastUpdusrPnttm) {
 		this.lastUpdusrPnttm = lastUpdusrPnttm;
 	}
-	
+
+	/**
+	 * 포상자 소속 Getter Setter
+	 */
+	public String getRwardManOrgnztNm() {
+		return rwardManOrgnztNm;
+	}
+
+	public void setRwardManOrgnztNm(String rwardManOrgnztNm) {
+		this.rwardManOrgnztNm = rwardManOrgnztNm;
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
 }
