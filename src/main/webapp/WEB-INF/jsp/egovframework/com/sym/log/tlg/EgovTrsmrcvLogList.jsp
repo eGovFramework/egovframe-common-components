@@ -14,9 +14,11 @@
   * @
   * @  수정일         수정자             수정내용
   * @ -------        --------    ---------------------------
-  * @ 2009.03.11      이삼섭          최초 생성
-  * @ 2011.07.08      이기하          패키지 분리로 경로 수정(sym.log -> sym.log.tlg)
-  *   2011.09.14      서준식          검색 후 화면에 검색일자 표시안되는 오류 수정
+  * @ 2009.03.11      이삼섭		최초 생성
+  * @ 2011.07.08      이기하		패키지 분리로 경로 수정(sym.log -> sym.log.tlg)
+  *   2011.09.14      서준식		검색 후 화면에 검색일자 표시안되는 오류 수정
+  *	  2024.10.29      ryeon8		정의되지 않은 함수 호출에 따른 콘솔 오류 제거
+  *
   *  @author 공통서비스 개발팀 이삼섭
   *  @since 2009.03.11
   *  @version 1.0
@@ -114,7 +116,7 @@
 				<input type="text" name="searchBgnDe" id="searchBgnDe" size="15" maxlength="10" value="${searchVO.searchBgnDe}" title="<spring:message code="comSymLogPlg.seachWrd.searchBeginDate" />" > ~ <!-- 검색시작일  -->
 				<input type="text" name="searchEndDe" id="searchEndDe" size="15" maxlength="10" value="${searchVO.searchEndDe}" title="<spring:message code="comSymLogPlg.seachWrd.searchEndDate" />" >&nbsp;<!-- 검색종료일  -->
 				<label for="" style="margin-left:10px"><spring:message code="comSymLogTlg.trsmrcvLog.trsmrcvType" /> : </label> <!-- 송수신구분 -->
-				<input id="searchWrd" class="s_input2 vat" name="searchWrd" type="text" value='<c:out value='${searchVO.searchWrd}'/>' size="15" maxlength="15" onkeypress="press();" title="<spring:message code="title.search" /> <spring:message code="input.input" />"  />
+				<input id="searchWrd" class="s_input2 vat" name="searchWrd" type="text" value='<c:out value='${searchVO.searchWrd}'/>' size="15" maxlength="15" title="<spring:message code="title.search" /> <spring:message code="input.input" />"  />
 				<input class="s_btn" type="button" value="<spring:message code="title.inquire" />" title="<spring:message code="title.inquire" />" onclick="fn_egov_select_trsmrcvLog('1'); return false;" /> <!-- 조회 -->
 				<input class="s_btn" type="submit" value="<spring:message code="comSymLogTlg.trsmrcvLog.test" />" title="<spring:message code="comSymLogTlg.trsmrcvLog.test" />" onclick="fn_egov_add_trsmrcvLog(); return false;" /> <!-- 송수신테스트 -->
 			</li>

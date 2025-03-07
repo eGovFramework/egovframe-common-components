@@ -23,11 +23,11 @@ package egovframework.com.sts.rst.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sts.rst.service.ReprtStats;
 import egovframework.com.sts.rst.service.ReprtStatsVO;
-
-import org.springframework.stereotype.Repository;
 
 @Repository("reprtStatsDAO")
 public class ReprtStatsDAO extends EgovComAbstractDAO {

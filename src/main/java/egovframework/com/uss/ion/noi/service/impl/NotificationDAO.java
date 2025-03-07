@@ -2,11 +2,11 @@ package egovframework.com.uss.ion.noi.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.noi.service.Notification;
 import egovframework.com.uss.ion.noi.service.NotificationVO;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 정보알림이를 위한 데이터 접근 클래스

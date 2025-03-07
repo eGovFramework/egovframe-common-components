@@ -2,15 +2,14 @@ package egovframework.com.sec.rgm.service.impl;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.springframework.stereotype.Service;
+
 import egovframework.com.sec.rgm.service.AuthorGroup;
 import egovframework.com.sec.rgm.service.AuthorGroupVO;
 import egovframework.com.sec.rgm.service.EgovAuthorGroupService;
-
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
 
 /**
  * 권한그룹에 관한 ServiceImpl 클래스를 정의한다.
@@ -25,6 +24,7 @@ import org.springframework.stereotype.Service;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.03.11  이문준          최초 생성
+ *   2024.10.29	LeeBaekHaeng	@Override 표기
  *
  * </pre>
  */
@@ -41,6 +41,7 @@ public class EgovAuthorGroupServiceImpl  extends EgovAbstractServiceImpl impleme
 	 * @return List<AuthorGroupVO>
 	 * @exception Exception
 	 */
+	@Override
 	public List<AuthorGroupVO> selectAuthorGroupList(AuthorGroupVO authorGroupVO) throws Exception{
 		return authorGroupDAO.selectAuthorGroupList(authorGroupVO);
 	}
@@ -50,6 +51,7 @@ public class EgovAuthorGroupServiceImpl  extends EgovAbstractServiceImpl impleme
 	 * @param authorGroup AuthorGroup
 	 * @exception Exception
 	 */
+	@Override
 	public void insertAuthorGroup(AuthorGroup authorGroup) throws Exception{
 		authorGroupDAO.insertAuthorGroup(authorGroup);
 	}
@@ -59,6 +61,7 @@ public class EgovAuthorGroupServiceImpl  extends EgovAbstractServiceImpl impleme
 	 * @param authorGroup AuthorGroup
 	 * @exception Exception
 	 */
+	@Override
 	public void updateAuthorGroup(AuthorGroup authorGroup) throws Exception{
 		authorGroupDAO.updateAuthorGroup(authorGroup);
 	}
@@ -68,6 +71,7 @@ public class EgovAuthorGroupServiceImpl  extends EgovAbstractServiceImpl impleme
 	 * @param authorGroup AuthorGroup
 	 * @exception Exception
 	 */
+	@Override
 	public void deleteAuthorGroup(AuthorGroup authorGroup) throws Exception {
 		authorGroupDAO.deleteAuthorGroup(authorGroup);
 	}
@@ -78,6 +82,7 @@ public class EgovAuthorGroupServiceImpl  extends EgovAbstractServiceImpl impleme
 	 * @return int
 	 * @exception Exception
 	 */
+	@Override
 	public int selectAuthorGroupListTotCnt(AuthorGroupVO authorGroupVO) throws Exception {
 		return authorGroupDAO.selectAuthorGroupListTotCnt(authorGroupVO);
     }

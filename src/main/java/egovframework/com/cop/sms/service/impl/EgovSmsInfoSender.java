@@ -1,10 +1,9 @@
 package egovframework.com.cop.sms.service.impl;
 
-import egovframework.com.cop.sms.service.SmsConnection;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import egovframework.com.cop.sms.service.SmsConnection;
 import x3.client.smeapi.SMEConnection;
 import x3.client.smeapi.SMEConnectionFactory;
 import x3.client.smeapi.SMEException;

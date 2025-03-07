@@ -6,8 +6,9 @@
   * @
   * @ 수정일             수정자           수정내용
   * @ ----------  --------  ---------------------------
-  * @ 2010.08.17  박종선          최초 생성
-  *   2018.09.11  신용호          공통컴포넌트 3.8 개선
+  * @ 2010.08.17  박종선         최초 생성
+  *   2018.09.11  신용호         공통컴포넌트 3.8 개선
+  *   2024.10.29  권태성		 목록으로 돌아올 때 검색 조건이 유지되도록 수정(#2)
   *
   *  @author 공통서비스팀 
   *  @since 2010.05.01
@@ -43,13 +44,15 @@
 		 * 목록 으로 가기
 		 ******************************************************** */
 		function fnList(){
-			location.href = "<c:url value='/dam/per/EgovComDamPersonalList.do'/>";
+			var varForm         = document.frm;
+            varForm.action      = "<c:url value='/dam/per/EgovComDamPersonalList.do'/>";
+            varForm.submit();
 		}
 		/* ********************************************************
 		 * 수정화면으로  바로가기
 		 ******************************************************** */
 		function fnModify(){
-			var varForm			= document.all["Form"];
+			var varForm			= document.frm;
 			varForm.action      = "<c:url value='/dam/per/EgovComDamPersonalModifyView.do'/>";
 			varForm.knoId.value = "${result.knoId}";
 			varForm.submit();
@@ -59,7 +62,7 @@
 		 ******************************************************** */
 		function fnDelete(){
 			if (confirm("<spring:message code="common.delete.msg" />")) {
-				var varForm			= document.all["Form"];
+				var varForm			= document.frm;
 				varForm.action      = "<c:url value='/dam/per/EgovComDamPersonalRemove.do'/>";
 				varForm.knoId.value = "${result.knoId}";
 				varForm.submit();
@@ -74,8 +77,11 @@
 	<!-- 자바스크립트 경고 태그  -->
 	<noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 	
-	<form name="Form" action="<c:url value='/dam/per/EgovComDamPersonalModify.do'/>" method="post">
+	<form id="frm" name="frm" action="<c:url value='/dam/per/EgovComDamPersonalModify.do'/>" method="post">
 	<input name="knoId" type="hidden">
+	<input type="hidden" id="searchCondition" name="searchCondition" value="${searchVO.searchCondition}" />
+	<input type="hidden" id="searchKeyword" name="searchKeyword" value="${searchVO.searchKeyword}" />
+	<input type="hidden" id="pageIndex" name="pageIndex" value="${searchVO.pageIndex}" />
 	
 	<div class="wTableFrm">
 		<!-- 타이틀 -->

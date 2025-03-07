@@ -2,12 +2,12 @@ package egovframework.com.uss.olp.mgt.service.impl;
 
 import java.util.List;
 
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.olp.mgt.service.MeetingManageVO;
-
-import org.egovframe.rte.psl.dataaccess.util.EgovMap;
-import org.springframework.stereotype.Repository;
 /**
  * 회의관리를 처리하기 위한 Dao 구현 Class
  * @author 공통서비스 장동한

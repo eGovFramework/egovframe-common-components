@@ -19,10 +19,13 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import egovframework.com.cmm.service.EgovProperties;
+import egovframework.com.cop.cmy.service.impl.EgovCommuManageServiceImpl;
 import egovframework.com.sym.ccm.acr.service.AdministCodeRecptn;
 import egovframework.com.sym.ccm.acr.service.AdministCodeRecptnVO;
 import egovframework.com.sym.ccm.acr.service.EgovAdministCodeRecptnService;
@@ -40,11 +43,12 @@ import egovframework.com.sym.ccm.acr.service.EgovAdministCodeRecptnService;
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.04.01  이중호          최초 생성
- *   2011.10.07  이기하          finally문을 추가하여 에러시 자원반환할 수 있도록 추가
- *   2017.02.08	 이정은          시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
- *   2022.11.11  김혜준          시큐어코딩 처리
- *   2023.08.10  정진오          법정동코드수신 방식 수정(공공데이터포털 이용)
+ *   2009.04.01  이중호			최초 생성
+ *   2011.10.07  이기하			finally문을 추가하여 에러시 자원반환할 수 있도록 추가
+ *   2017.02.08	 이정은			시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+ *   2022.11.11  김혜준			시큐어코딩 처리
+ *   2023.08.10  정진오			법정동코드수신 방식 수정(공공데이터포털 이용)
+ *   2024.10.29  권태성			API 수신 데이터 등록 시 기본 사용여부 값 적용(insertAdministCodeRecptn())
  *
  * Copyright (C) 2009 by MOPAS  All right reserved.
  * </pre>
@@ -52,6 +56,8 @@ import egovframework.com.sym.ccm.acr.service.EgovAdministCodeRecptnService;
 @Service("AdministCodeRecptnService")
 public class EgovAdministCodeRecptnServiceImpl extends EgovAbstractServiceImpl implements EgovAdministCodeRecptnService {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(EgovAdministCodeRecptnServiceImpl.class);
+	
 	@Resource(name = "AdministCodeRecptnDAO")
 	private AdministCodeRecptnDAO administCodeRecptnDAO;
 
@@ -84,6 +90,7 @@ public class EgovAdministCodeRecptnServiceImpl extends EgovAbstractServiceImpl i
 			administCodeRecptn.setAblEnnc(""); // 폐지유무 >> x
 			administCodeRecptn.setFrstRegisterId("Batch System"); // 등록자 Batch System
 			administCodeRecptn.setLastUpdusrId("Batch System"); // 수정자 Batch System
+			administCodeRecptn.setUseAt("Y"); // 사용여부 >> Y
 
 			AdministCodeRecptnVO vo = new AdministCodeRecptnVO();
 			vo.setSearchCondition("CodeList");
@@ -151,7 +158,7 @@ public class EgovAdministCodeRecptnServiceImpl extends EgovAbstractServiceImpl i
     		pageNo = (int) Math.ceil((double) totalCount/1000);
 
         } else {
-        	System.out.println("##### AdministCodeRecptnService.numberOfRows() Error Code >>> " + conn.getResponseCode());
+        	LOGGER.debug("##### AdministCodeRecptnService.numberOfRows() Error Code >>> " + conn.getResponseCode());
         }
 
         conn.disconnect();
@@ -219,7 +226,7 @@ public class EgovAdministCodeRecptnServiceImpl extends EgovAbstractServiceImpl i
 	    		}
 
 	        } else {
-	        	System.out.println("##### AdministCodeRecptnService.apiLink() Error Code >>> " + conn.getResponseCode());
+	        	LOGGER.debug("##### AdministCodeRecptnService.apiLink() Error Code >>> " + conn.getResponseCode());
 	        }
 
 	        conn.disconnect();

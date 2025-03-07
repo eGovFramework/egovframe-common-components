@@ -16,13 +16,13 @@
  */
 package egovframework.com.utl.sim.service;
 
-import egovframework.com.cmm.service.EgovProperties;
-import egovframework.com.cmm.service.Globals;
-
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+
+import egovframework.com.cmm.service.EgovProperties;
+import egovframework.com.cmm.service.Globals;
 
 public class EgovClntInfo {
 	

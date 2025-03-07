@@ -19,10 +19,13 @@ import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
 import egovframework.com.cmm.service.EgovProperties;
+import egovframework.com.sym.ccm.acr.service.impl.EgovAdministCodeRecptnServiceImpl;
 import egovframework.com.sym.ccm.icr.service.EgovInsttCodeRecptnService;
 import egovframework.com.sym.ccm.icr.service.InsttCodeRecptn;
 import egovframework.com.sym.ccm.icr.service.InsttCodeRecptnVO;
@@ -53,6 +56,8 @@ import egovframework.com.sym.ccm.icr.service.InsttCodeRecptnVO;
 @Service("InsttCodeRecptnService")
 public class EgovInsttCodeRecptnServiceImpl extends EgovAbstractServiceImpl implements EgovInsttCodeRecptnService {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(EgovInsttCodeRecptnServiceImpl.class);
+	
 	@Resource(name = "InsttCodeRecptnDAO")
 	private InsttCodeRecptnDAO insttCodeRecptnDAO;
 
@@ -164,7 +169,7 @@ public class EgovInsttCodeRecptnServiceImpl extends EgovAbstractServiceImpl impl
     		pageNo = (int) Math.ceil((double) totalCount/1000);
 
         } else {
-        	System.out.println("##### InsttCodeRecptnService.numberOfRows() Error Code >>> " + conn.getResponseCode());
+        	LOGGER.debug("##### InsttCodeRecptnService.numberOfRows() Error Code >>> " + conn.getResponseCode());
         }
 
         conn.disconnect();
@@ -241,7 +246,7 @@ public class EgovInsttCodeRecptnServiceImpl extends EgovAbstractServiceImpl impl
 	    		}
 
 	        } else {
-	        	System.out.println("##### InsttCodeRecptnService.apiLink() Error Code >>> " + conn.getResponseCode());
+	        	LOGGER.debug("##### InsttCodeRecptnService.apiLink() Error Code >>> " + conn.getResponseCode());
 	        }
 
 	        conn.disconnect();

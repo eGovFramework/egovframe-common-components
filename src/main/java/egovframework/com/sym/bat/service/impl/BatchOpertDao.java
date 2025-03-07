@@ -2,10 +2,10 @@ package egovframework.com.sym.bat.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sym.bat.service.BatchOpert;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 배치작업관리에 대한 DAO 클래스를 정의한다.

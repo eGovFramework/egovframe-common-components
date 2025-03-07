@@ -1,5 +1,7 @@
 package egovframework.com.uss.olp.opp.web;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -39,11 +41,12 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  * @see <pre>
  * &lt;&lt; 개정이력(Modification Information) &gt;&gt;
  *
- *   수정일      수정자           수정내용
+ *   수정일      수정자      수정내용
  *  -------    --------    ---------------------------
- *   2009.07.03  장동한          최초 생성
- *   2011.08.26	  정진오	   IncludedInfo annotation 추가
- *   2011.10.27  서준식          온라인 POLL 중복 투표 방지 기능 추가
+ *   2009.07.03  장동한		최초 생성
+ *   2011.08.26	 정진오		IncludedInfo annotation 추가
+ *   2011.10.27  서준식		온라인 POLL 중복 투표 방지 기능 추가
+ *   2024.10.29  권태성		화면에서 사용할 현재일자 정보 model에 추가(egovOnlinePollPartcptnList())
  * </pre>
  */
 
@@ -149,6 +152,7 @@ public class EgovOnlinePollPartcptnController {
         int totCnt = egovOnlinePollPartcptnService.selectOnlinePollManageListCnt(searchVO);
         paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);
+        model.addAttribute("now", LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd")));
 
         return "egovframework/com/uss/olp/opp/EgovOnlinePollPartcptnList";
     }

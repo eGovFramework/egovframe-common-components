@@ -12,14 +12,13 @@ import java.sql.SQLException;
 import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSocketFactory;
 
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import egovframework.com.utl.sys.pxy.service.impl.ProxySvcDAO;
-
-import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 
 /**
  * 프록시서비스 처리 클래스

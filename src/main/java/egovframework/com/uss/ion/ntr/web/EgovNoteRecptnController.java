@@ -7,6 +7,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 //import org.springframework.beans.factory.annotation.Autowired;
@@ -20,14 +23,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.resolver.EgovSecurityMap;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.ntr.service.EgovNoteRecptnService;
 import egovframework.com.uss.ion.ntr.service.NoteRecptn;
 import egovframework.com.uss.ion.nts.service.EgovNoteTrnsmitService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import org.egovframe.rte.fdl.property.EgovPropertyService;
-import org.egovframe.rte.psl.dataaccess.util.EgovMap;
-import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
  * 받은쪽지함관리를 처리하는 Controller Class 구현
@@ -87,6 +88,7 @@ public class EgovNoteRecptnController {
     		@ModelAttribute("searchVO") NoteRecptn searchVO,
     		@RequestParam Map<?, ?> commandMap,
             @ModelAttribute("noteRecptn") NoteRecptn noteRecptn,
+            EgovSecurityMap securitymap,
             ModelMap model) throws Exception {
 
     	//변수 설정
@@ -104,43 +106,36 @@ public class EgovNoteRecptnController {
 
         //삭제 모드로 실행시
         if(sCmd.equals("del")){
-	        //한개의 값으로 삭제가 넘어올때 처리
-	        if(commandMap.get("checkList") instanceof String){
-	            String sCheckList = (String)commandMap.get("checkList");
-
-	            String[] sArrCheckListValue = sCheckList.split(",");
-
-	            LOGGER.debug("==================================EgovNoteRecptnList");
-	            LOGGER.debug("checkList {}", sCheckList);
-	            LOGGER.debug("sArrCheckListValue[0]> {}", sArrCheckListValue[0]);
-	            LOGGER.debug("sArrCheckListValue[1]> {}", sArrCheckListValue[1]);
-
+        	LOGGER.debug("##### EgovNoteRecptnController EgovNoteRecptnList()  start");
+        	LOGGER.debug("noteId > {}", commandMap.get("noteIdAll"));
+        	LOGGER.debug("noteTrnsmitId > {}", commandMap.get("noteTrnsmitIdAll"));
+        	LOGGER.debug("noteRecptnId > {}", commandMap.get("noteRecptnIdAll"));
+        	
+        	String[] aNoteId = ((String) commandMap.get("noteIdAll")).split(",");
+            String[] aNoteTrnsmitId = ((String)commandMap.get("noteTrnsmitIdAll")).split(",");
+            String[] aNoteRecptnId = ((String)commandMap.get("noteRecptnIdAll")).split(",");
+        	
+            for(int i=0; i < aNoteId.length; i++) {
+            	String sNoteId = aNoteId[i];
+            	String sNoteTrnsmitId = aNoteTrnsmitId[i];
+            	String sNoteRecptnId = aNoteRecptnId[i];
+            	
+            	securitymap.put("noteId", sNoteId);
+	            securitymap.put("noteTrnsmitId", sNoteTrnsmitId);
+	            securitymap.put("noteRecptnId", sNoteRecptnId);
+            	
+	            LOGGER.debug("sArrCheckListValue[0] > {}", securitymap.get("noteId"));
+	            LOGGER.debug("sArrCheckListValue[1] > {}", securitymap.get("noteTrnsmitId"));
+	            LOGGER.debug("sArrCheckListValue[2] > {}", securitymap.get("noteRecptnId"));
+	            
 	            noteRecptn.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 	            noteRecptn.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-	            noteRecptn.setNoteId(sArrCheckListValue[0]);
-	            noteRecptn.setNoteTrnsmitId(sArrCheckListValue[1]);
-	            noteRecptn.setNoteRecptnId(sArrCheckListValue[2]);
-
+	            noteRecptn.setNoteId(securitymap.get("noteId"));
+	            noteRecptn.setNoteTrnsmitId(securitymap.get("noteTrnsmitId"));
+	            noteRecptn.setNoteRecptnId(securitymap.get("noteRecptnId"));
+	            noteRecptn.setRcverId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+	            
 	            egovNoteRecptnService.deleteNoteRecptn(noteRecptn);
-
-	        }
-
-	        //여러개의 값으로 삭제가 넘어올때 처리
-	        if(commandMap.get("checkList") instanceof String[]){
-	            String[] sArrCheckList  = (String[])commandMap.get("checkList");
-	            //log.debug("sArrCheckList" + sArrCheckList);
-
-	            for(int i=0;i<sArrCheckList.length;i++){
-	                String[] sArrCheckListValue = sArrCheckList[i].split(",");
-
-		            noteRecptn.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-		            noteRecptn.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-		            noteRecptn.setNoteId(sArrCheckListValue[0]);
-		            noteRecptn.setNoteTrnsmitId(sArrCheckListValue[1]);
-		            noteRecptn.setNoteRecptnId(sArrCheckListValue[2]);
-
-		            egovNoteRecptnService.deleteNoteRecptn(noteRecptn);
-	            }
 	        }
 	        //삭제후 페이지 인덱스 설정
 	        searchVO.setPageIndex(1);
@@ -189,28 +184,34 @@ public class EgovNoteRecptnController {
 	@RequestMapping(value = "/uss/ion/ntr/detailNoteRecptn.do")
     public String EgovNoteRecptnDetail(
     		@ModelAttribute("searchVO") NoteRecptn searchVO,
-    		@RequestParam Map<?, ?> commandMap,
             @ModelAttribute("noteRecptn") NoteRecptn noteRecptn,
+    		EgovSecurityMap securityMap,
             ModelMap model) throws Exception {
 
 		String sLocationUrl = "egovframework/com/uss/ion/nts/EgovNoteTrnsmitDetail";
 
-        String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
+        String sCmd = securityMap.get("cmd") == null ? "" : (String) securityMap.get("cmd");
 
         if(sCmd.equals("del")){
+        	LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+            searchVO.setRcverId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));      
         	egovNoteRecptnService.deleteNoteRecptn(searchVO);
+      
         	return "redirect:/uss/ion/ntr/listNoteRecptn.do";
         }else{
             //로그인 객체 선언/아이디설정
             LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
             searchVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
             searchVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+            searchVO.setRcverId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 
         	Map<?, ?> noteRecptnMap = egovNoteRecptnService.selectNoteRecptnDetail(searchVO);
         	model.addAttribute("noteRecptn", noteRecptnMap);
 
         	egovframework.com.uss.ion.nts.service.NoteTrnsmit noteTrnsmit = new egovframework.com.uss.ion.nts.service.NoteTrnsmit();
-        	noteTrnsmit.setNoteId((String)commandMap.get("noteId"));
+        	LOGGER.debug("===> SecurityMap = "+securityMap);
+        	securityMap.put("noteId", searchVO.getNoteId());
+        	noteTrnsmit.setNoteId(searchVO.getNoteId());
 
             List<EgovMap> resultRecptnEmp = egovNoteTrnsmitService.selectNoteTrnsmitCnfirm(noteTrnsmit);
         	model.addAttribute("resultRecptnEmp", resultRecptnEmp);

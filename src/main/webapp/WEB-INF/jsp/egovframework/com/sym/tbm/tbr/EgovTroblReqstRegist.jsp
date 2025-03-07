@@ -6,8 +6,9 @@
  * @
  * @ 수정일                수정자             수정내용
  * @ ----------   --------    ---------------------------
- * @ 2010.07.01   lee.m.j     최초 생성
- *   2018.09.07   신용호             공통컴포넌트 3.8 개선
+ * @ 2010.07.01   lee.m.j		최초 생성
+ *   2018.09.07   신용호		공통컴포넌트 3.8 개선
+ *   2024.10.29   권태성		validateTroblReqst 함수 추가
  *
  *  @author lee.m.j
  *  @since 2010.07.01
@@ -136,6 +137,34 @@ function fncCheckValiDay() {
 
 }
 
+function validateTroblReqst(varFrom) {
+    if (varFrom.troblNm.value.trim() === "") {
+        alert("장애명을 입력해주세요.");
+        varFrom.troblNm.focus();
+        return false;
+    }
+    if (varFrom.troblDc.value.trim() === "") {
+        alert("장애 설명을 입력해주세요.");
+        varFrom.troblDc.focus();
+        return false;
+    }
+    if (varFrom.troblOccrrncD.value.trim() === "") {
+        alert("장애 발생 일자를 입력해주세요.");
+        varFrom.troblOccrrncD.focus();
+        return false;
+    }
+    if (varFrom.troblRqesterNm.value.trim() === "") {
+        alert("장애 등록자를 입력해주세요.");
+        varFrom.troblRqesterNm.focus();
+        return false;
+    }
+    if (varFrom.troblKnd.value === "") {
+        alert("장애 종류를 선택해주세요.");
+        varFrom.troblKnd.focus();
+        return false;
+    }
+    return true;
+}
 -->
 </script>
 </head>

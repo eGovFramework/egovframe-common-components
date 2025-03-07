@@ -18,7 +18,7 @@
  */
 package egovframework.com.ext.ldapumt.service.impl;
 
-import static org.springframework.ldap.query.LdapQueryBuilder.*;
+import static org.springframework.ldap.query.LdapQueryBuilder.query;
 
 import java.util.List;
 import java.util.Map;

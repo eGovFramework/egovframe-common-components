@@ -4,11 +4,12 @@
  * @Description : EgovMtgPlaceResveRegist.jsp
  * @Modification Information 
  * @
- * @  수정일                    수정자                수정내용
+ * @  수정일       수정자                수정내용
  * @ ---------     --------    ---------------------------
- * @ 2010.06.29    이      용                최초 생성
- * @ 2018.08.21    최 두 영           퍼블리싱 점검/비품정보 기능제거
- * @ 2018.09.12    최 두 영           다국어처리 & datepicker 적용
+ * @ 2010.06.29    이용				최초 생성
+ * @ 2018.08.21    최두영			퍼블리싱 점검/비품정보 기능제거
+ * @ 2018.09.12    최두영			다국어처리 & datepicker 적용
+ * @ 2024.10.29    권태성			searchCondition, pageIndex 파라미터 추가
  *
  *  @author 이      용
  *  @since 2010.06.29
@@ -85,6 +86,9 @@ function fncInsertMtgPlaceResve() {
 <div class="board">
 	<h1><spring:message code="comUssIonMtg.mtgPlaceResveManageList.title" /></h1><!-- 회의실예약관리 목록 -->
 	<form name="listForm" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageList.do'/>" method="post"> 
+	<input type="hidden" id="searchCondition" name="searchCondition" value="" />
+	<input type="hidden" id="pageIndex" name="pageIndex" value="" />
+
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
 		<ul>
 			<li>

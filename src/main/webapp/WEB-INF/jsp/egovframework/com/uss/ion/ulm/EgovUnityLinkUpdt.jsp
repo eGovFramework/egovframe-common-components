@@ -5,9 +5,10 @@
 
        수정일               수정자            수정내용
     ----------   --------   ---------------------------
-    2008.03.09   장동한            최초 생성
-    2018.08.16   이정은            공통컴포넌트 3.8 개선
-    2019.12.10   신용호            KISA 보안약점 조치 (HTMLArea Editor삭제)
+    2008.03.09   장동한			최초 생성
+    2018.08.16   이정은			공통컴포넌트 3.8 개선
+    2019.12.10   신용호			KISA 보안약점 조치 (HTMLArea Editor삭제)
+    2024.10.29   권태성			fn_egov_save_UnityLink 함수내에서 varFrom.onsubmit(); 코드 제거
 
     author   : 공통서비스 개발팀 장동한
     since    : 2009.03.09
@@ -45,7 +46,6 @@ function fn_egov_init_UnityLink(){
  ******************************************************** */
 function fn_egov_save_UnityLink(){
 	var varFrom = document.unityLink;
-	varFrom.onsubmit();
 	if(confirm("<spring:message code="common.save.msg" />")){
 		varFrom.action =  "<c:url value='/uss/ion/ulm/updtUnityLink.do' />";
 		if(!validateUnityLink(varFrom)){

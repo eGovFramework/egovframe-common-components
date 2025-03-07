@@ -4,11 +4,12 @@
  * @Description : EgovVcatnConfm.jsp
  * @Modification Information
  * @
- * @  수정일            수정자       수정내용
+ * @  수정일       수정자       수정내용
  * @ ---------     --------    ---------------------------
- * @ 2010.07.20    이      용      최초 생성
- * @ 2018.08.16    최 두 영       퍼블리싱 점검
- * @ 2018.09.18    최 두 영       다국어처리
+ * @ 2010.07.20    이용			최초 생성
+ * @ 2018.08.16    최두영		퍼블리싱 점검
+ * @ 2018.09.18    최두영		다국어처리
+ * @ 2024.10.29    권태성		debugger 코드 제거(modalDialogCallback())
  *
  *  @author 이      용
  *  @since 2010.08.05
@@ -51,9 +52,7 @@
 	   
 	function modalDialogCallback(retVal) {
 		if(retVal != null){
-			
-			debugger; 
-			
+
 			var tmp = retVal.split(",");		
 			
 			var varForm	= document.all["vcatnManage"];
@@ -146,7 +145,7 @@
 	<!-- 타이틀 -->
 	<h2 class=""><spring:message code="comUssIonVct.vcatnConfm.title"/></h2><!-- 휴가승인 -->
 	
-	<form:form modelAttribute="vcatnManage" name="vcatnManage" method="post" action="<c:url value='/uss/ion/vct/EgovVcatnConfm.do'/>">
+	<form:form modelAttribute="vcatnManage" name="vcatnManage" method="post" action="${pageContext.request.contextPath}/uss/ion/vct/EgovVcatnConfm.do">
 	<div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="<spring:message code="comUssIonVct.vcatnConfm.submit"/>" title="<spring:message code="comUssIonVct.vcatnConfm.submit"/>"></div><!-- 전송 -->
 	<form:hidden  path="applcntId"/>
 	<form:hidden  path="vcatnSe"/>

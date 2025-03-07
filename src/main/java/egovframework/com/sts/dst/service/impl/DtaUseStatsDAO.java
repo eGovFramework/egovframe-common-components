@@ -14,11 +14,11 @@ package egovframework.com.sts.dst.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sts.dst.service.DtaUseStats;
 import egovframework.com.sts.dst.service.DtaUseStatsVO;
-
-import org.springframework.stereotype.Repository;
 
 @Repository("dtaUseStatsDAO")
 public class DtaUseStatsDAO extends EgovComAbstractDAO {

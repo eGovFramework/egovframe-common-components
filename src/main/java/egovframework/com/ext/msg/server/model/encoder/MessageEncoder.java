@@ -20,15 +20,15 @@ package egovframework.com.ext.msg.server.model.encoder;
 
 import java.util.Set;
 
-import egovframework.com.ext.msg.server.model.ChatMessage;
-import egovframework.com.ext.msg.server.model.Message;
-import egovframework.com.ext.msg.server.model.UsersMessage;
-
 import javax.json.Json;
 import javax.json.JsonArrayBuilder;
 import javax.websocket.EncodeException;
 import javax.websocket.Encoder;
 import javax.websocket.EndpointConfig;
+
+import egovframework.com.ext.msg.server.model.ChatMessage;
+import egovframework.com.ext.msg.server.model.Message;
+import egovframework.com.ext.msg.server.model.UsersMessage;
 
 
 /**

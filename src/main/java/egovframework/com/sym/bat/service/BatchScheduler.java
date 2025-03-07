@@ -7,7 +7,6 @@ import static org.quartz.TriggerBuilder.newTrigger;
 import java.util.List;
 
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-
 import org.quartz.CronTrigger;
 import org.quartz.JobDetail;
 import org.quartz.JobKey;
@@ -28,6 +27,7 @@ import org.slf4j.LoggerFactory;
  *   수정일       수정자           수정내용
  *  -------     --------    ---------------------------
  *  2010.08.30   김진만     최초 생성
+ *  2024.10.29	LeeBaekHaeng	불필요 @SuppressWarnings("unchecked") 및 형변환 제거
  * </pre>
  */
 
@@ -154,7 +154,6 @@ public class BatchScheduler {
 	 * 배치스케줄테이블을 읽어서 Quartz 스케줄러를 초기화한다.
 	 *
 	 */
-	@SuppressWarnings("unchecked")
 	public void init() throws Exception {
 		// 모니터링 대상 정보 읽어들이기~~~
 		List<BatchSchdul> targetList = null;
@@ -163,7 +162,7 @@ public class BatchScheduler {
 		searchVO.setPageIndex(1);
 		searchVO.setFirstIndex(0);
 		searchVO.setRecordCountPerPage(RECORD_COUNT_PER_PAGE);
-		targetList = (List<BatchSchdul>) egovBatchSchdulService.selectBatchSchdulList(searchVO);
+		targetList = egovBatchSchdulService.selectBatchSchdulList(searchVO);
 		LOGGER.debug("조회조건 {}", searchVO);
 		LOGGER.debug("Result 건수 : {}", targetList.size());
 

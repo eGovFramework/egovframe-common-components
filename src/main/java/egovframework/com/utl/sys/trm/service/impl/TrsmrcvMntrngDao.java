@@ -2,12 +2,12 @@ package egovframework.com.utl.sys.trm.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.utl.sys.trm.service.CntcVO;
 import egovframework.com.utl.sys.trm.service.TrsmrcvMntrng;
 import egovframework.com.utl.sys.trm.service.TrsmrcvMntrngLog;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 송수신모니터링관리에 대한 DAO 클래스를 정의한다.

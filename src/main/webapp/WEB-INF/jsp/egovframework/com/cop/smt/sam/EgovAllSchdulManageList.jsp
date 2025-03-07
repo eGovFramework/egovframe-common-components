@@ -6,8 +6,10 @@
   * @
   * @  수정일             수정자                   수정내용
   * @ -------    --------    ---------------------------
-  * @ 2008.03.09    장동한          최초 생성
-  * @ 2016.08.02    장동한          표준프레임워크 v3.6 개선
+  * @ 2008.03.09  장동한			최초 생성
+  * @ 2016.08.02  장동한			표준프레임워크 v3.6 개선
+  * @ 2024.10.29  권태성			href 속성과 onclick 속성의 중복 사용 수정
+  * @ 2024.10.29  권태성			listForm에서 불필요한 onsubmit 속성을 제거
   *  
   *  @author 공통서비스팀
   *  @since 2009.03.09
@@ -54,7 +56,7 @@ function fn_egov_modify_AllSchdulManage(){
  * 상세회면 처리 함수
  ******************************************************** */
 function fn_egov_detail_AllSchdulManage(schdulKindCode, schdulId){
-	var vFrom = document.subForm;
+	var vFrom = document.listForm;
 	vFrom.schdulId.value = schdulId;
 
 	if(schdulKindCode == "1"){
@@ -100,7 +102,7 @@ function fn_egov_open_Popup(cnt, schdulId){
 </head>
 <body>
 
-<form name="listForm" action="<c:url value='/cop/smt/sam/EgovAllSchdulManageList.do'/>" method="post" onSubmit="fn_egov_search_stplatcn(); return false;"> 
+<form name="listForm" action="<c:url value='/cop/smt/sam/EgovAllSchdulManageList.do'/>" method="post"> 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<!-- 검색영역 -->
@@ -154,7 +156,7 @@ function fn_egov_open_Popup(cnt, schdulId){
 		 	<c:if test="${resultInfo.schdulKindCode == '2'}">개인일정</c:if>
 		</td>
 		<td class="left">
-			<a href="<c:url value='/cop/smt/sdm/EgovDeptSchdulManageDetail.do'/>?schdulId=${resultInfo.schdulId}&pageIndex=${searchVO.pageIndex}" onclick="JavaScript:fn_egov_detail_AllSchdulManage('${resultInfo.schdulKindCode}','${resultInfo.schdulId}'); return false;"><c:out value='${fn:substring(resultInfo.schdulNm, 0, 40)}'/>
+			<a href="#" onclick="fn_egov_detail_AllSchdulManage('${resultInfo.schdulKindCode}','${resultInfo.schdulId}'); return false;"><c:out value='${fn:substring(resultInfo.schdulNm, 0, 40)}'/>
 		</a></td>
 		<td>${resultInfo.frstRegisterNm}</td>
 		<td>${fn:substring(resultInfo.frstRegisterPnttm, 0, 10)}</td>
@@ -171,10 +173,9 @@ function fn_egov_open_Popup(cnt, schdulId){
 	
 </div><!-- end div board -->
 
-<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
+<input type="hidden" id="pageIndex" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>">
+<input type="hidden" id="schdulId" name="schdulId" value="">
 </form>
  
- </body>
- </html>
-
-
+</body>
+</html>

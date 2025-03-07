@@ -2,10 +2,10 @@ package egovframework.com.sec.ram.service.impl;
 
 import java.util.List;
 
-import egovframework.com.cmm.service.EgovUserDetailsService;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.security.userdetails.util.EgovUserDetailsHelper;
+
+import egovframework.com.cmm.service.EgovUserDetailsService;
 
 /**
  *권한관리 인증에 대한 ServiceImpl 클래스를 정의한다.

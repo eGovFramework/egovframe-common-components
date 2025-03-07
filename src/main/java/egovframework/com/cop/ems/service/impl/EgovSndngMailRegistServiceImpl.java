@@ -3,6 +3,12 @@ package egovframework.com.cop.ems.service.impl;
 import java.io.File;
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.springframework.stereotype.Service;
+
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.service.Globals;
@@ -12,15 +18,7 @@ import egovframework.com.cop.ems.service.EgovSndngMailService;
 import egovframework.com.cop.ems.service.SndngMailVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovXMLDoc;
-
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-
-import javax.annotation.Resource;
-
 import noNamespace.SndngMailDocument;
-
-import org.springframework.stereotype.Service;
 
 /**
  * 발송메일등록, 발송요청XML파일 생성하는 비즈니스 구현 클래스

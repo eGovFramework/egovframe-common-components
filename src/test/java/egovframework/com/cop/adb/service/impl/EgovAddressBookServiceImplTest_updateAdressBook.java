@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 
 import java.util.Date;
 
+import org.egovframe.rte.fdl.string.EgovDateUtil;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.annotation.Rollback;
@@ -12,7 +13,6 @@ import org.springframework.test.context.ContextConfiguration;
 import egovframework.com.cop.adb.service.AddressBookVO;
 import egovframework.com.cop.adb.service.EgovAddressBookService;
 import egovframework.com.test.EgovTestV1;
-import org.egovframe.rte.fdl.string.EgovDateUtil;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

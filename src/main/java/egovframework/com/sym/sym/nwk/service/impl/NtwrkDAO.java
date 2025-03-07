@@ -14,11 +14,11 @@ package egovframework.com.sym.sym.nwk.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sym.sym.nwk.service.Ntwrk;
 import egovframework.com.sym.sym.nwk.service.NtwrkVO;
-
-import org.springframework.stereotype.Repository;
 
 @Repository("ntwrkDAO")
 public class NtwrkDAO extends EgovComAbstractDAO {

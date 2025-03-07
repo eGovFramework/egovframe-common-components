@@ -9,30 +9,31 @@
 	<name>common component</name>
 	<url>http://www.egovframe.go.kr</url>
 
-    <licenses>
-        <license>
-            <name>The Apache Software License, Version 2.0</name>
-            <url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
-        </license>
-    </licenses>
- 
-    <properties>
-        <spring.maven.artifact.version>5.3.27</spring.maven.artifact.version>
-        <org.egovframe.rte.version>4.2.0</org.egovframe.rte.version>
-    </properties>
+	<licenses>
+		<license>
+			<name>The Apache Software License, Version 2.0</name>
+			<url>http://www.apache.org/licenses/LICENSE-2.0.txt</url>
+		</license>
+	</licenses>
 
-    <repositories>
-        <repository>
-            <id>mvn2s</id>
-            <url>https://repo1.maven.org/maven2/</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
+	<properties>
+		<spring.maven.artifact.version>5.3.37</spring.maven.artifact.version>
+		<org.egovframe.rte.version>4.3.0</org.egovframe.rte.version>
+		<java.version>1.8</java.version>
+	</properties>
+
+	<repositories>
+		<repository>
+			<id>mvn2s</id>
+			<url>https://repo1.maven.org/maven2/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
 			<id>egovframe</id>
 			<url>https://maven.egovframe.go.kr/maven/</url>
 			<releases>
@@ -43,11 +44,11 @@
 			</snapshots>
 		</repository>
 		<repository>
-		    <id>projectRepository</id> 
-		    <name>Project Repository</name> 
-		    <url>file://${project.basedir}/src/main/webapp/WEB-INF/lib</url>
+			<id>projectRepository</id>
+			<name>Project Repository</name>
+			<url>file://${project.basedir}/src/main/webapp/WEB-INF/lib</url>
 		</repository>
-    </repositories>
+	</repositories>
 
     <dependencies>
         <!-- 실행환경 라이브러리 -->
@@ -68,7 +69,7 @@
           <dependency>
            <groupId>org.mybatis</groupId>
            <artifactId>mybatis</artifactId>
-           <version>3.1.1</version>
+			<version>3.5.16</version>
           </dependency>
         -->
         <dependency>
@@ -146,7 +147,7 @@
 		<dependency>
 		    <groupId>org.apache.commons</groupId>
 		    <artifactId>commons-dbcp2</artifactId>
-		    <version>2.9.0</version>
+			<version>2.12.0</version>
 		</dependency>
         <dependency>
             <groupId>javax.servlet.jsp.jstl</groupId>
@@ -182,19 +183,18 @@
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-compress</artifactId>
-            <version>1.23.0</version>
+			<version>1.26.2</version>
         </dependency>
-        <dependency>
-            <groupId>xerces</groupId>
-            <artifactId>xercesImpl</artifactId>
-            <version>2.12.2</version>
-        </dependency>
-
+		<dependency>
+			<groupId>xerces</groupId>
+			<artifactId>xercesImpl</artifactId>
+			<version>2.12.2</version>
+		</dependency>
         <!-- cache -->
         <!-- <dependency>
             <groupId>net.sf.ehcache</groupId>
             <artifactId>ehcache-core</artifactId>
-            <version>2.6.9</version>
+            <version>2.10.9.2</version>
             <exclusions>
                 <exclusion>
                     <artifactId>slf4j-api</artifactId>
@@ -205,7 +205,7 @@
         <dependency>
 		    <groupId>net.sf.ehcache</groupId>
 		    <artifactId>ehcache</artifactId>
-		    <version>2.9.0</version>
+		    <version>2.10.9.2</version>
 		</dependency> -->
         <!-- cache end -->
 
@@ -248,21 +248,21 @@
         <dependency>
             <groupId>com.ibm.icu</groupId>
             <artifactId>icu4j</artifactId>
-            <version>73.2</version>
+			<version>75.1</version>
         </dependency>
 
         <!-- FTP용 3rd party 라이브러리 -->
         <dependency>
             <groupId>commons-net</groupId>
             <artifactId>commons-net</artifactId>
-            <version>3.9.0</version>
+			<version>3.11.1</version>
         </dependency>
 
         <!-- Email -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-email</artifactId>
-            <version>1.5</version>
+            <version>1.6.0</version>
         </dependency>
         <dependency>
             <groupId>egovframework.com.ems</groupId>
@@ -277,7 +277,12 @@
             <version>2.3.3</version>
             <scope>provided</scope>
         </dependency>
-
+		<!-- LDAP SDK -->
+		<dependency>
+			<groupId>ldapsdk</groupId>
+			<artifactId>ldapsdk</artifactId>
+			<version>4.1</version>
+		</dependency>
         <!-- PDF변환용 라이브러리 -->
         <dependency>
             <groupId>com.artofsolving</groupId>
@@ -294,13 +299,6 @@
                 </exclusion>
             </exclusions>
         </dependency>
-
-        <!-- XML스키마를 자바클래스로 생성하는 라이브러리 -->
-        <!-- <dependency>
-            <groupId>xmlbeans</groupId>
-            <artifactId>xbean</artifactId>
-            <version>2.2.0</version>
-        </dependency> -->
 
         <!-- fileupload -->
         <dependency>
@@ -346,7 +344,7 @@
         <dependency>
             <groupId>org.apache.xmlgraphics</groupId>
             <artifactId>batik-ext</artifactId>
-            <version>1.16</version>
+			<version>1.17</version>
         </dependency>
         
         <!-- oauth2 login -->
@@ -379,17 +377,17 @@
 		<dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-core</artifactId>
-            <version>2.15.2</version>
+			<version>2.17.1</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-annotations</artifactId>
-            <version>2.15.2</version>
+			<version>2.17.1</version>
         </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.core</groupId>
             <artifactId>jackson-databind</artifactId>
-            <version>2.15.2</version>
+			<version>2.17.1</version>
         </dependency>
 
         <!-- LDAP조직도관리 관련 라이브러리  -->
@@ -434,24 +432,24 @@
 		<dependency>
 		    <groupId>org.mariadb.jdbc</groupId>
 		    <artifactId>mariadb-java-client</artifactId>
-		    <version>3.1.4</version>
+			<version>3.4.0</version>
 		</dependency>
 		<dependency>
 		     <groupId>org.postgresql</groupId>
 		     <artifactId>postgresql</artifactId>
-		     <version>42.6.0</version>
+			<version>42.7.3</version>
 		</dependency>
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
-			<version>1.18.28</version>
+			<version>1.18.34</version>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 		    <groupId>com.github.javaparser</groupId>
 		    <artifactId>javaparser-core</artifactId>
-		    <version>3.25.3</version>
+			<version>3.26.1</version>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.xmlbeans</groupId>
@@ -554,66 +552,6 @@
 		</dependency>
 		<!-- 디지털원패스 라이브러리 끝 -->
 		
-		<!-- 모바일 운전면허증 라이브러리 시작 -->
-		<!-- Omnione Start -->
-		<dependency>
-			<groupId>project</groupId>
-			<artifactId>OmniEntSDKCore</artifactId>
-			<version>1.0.3.5</version>
-		</dependency>
-				
-		<dependency>
-			<groupId>project</groupId>
-			<artifactId>OmniEntSDKServerCore</artifactId>
-			<version>1.0.3.5</version>
-		</dependency>
-				
-		<dependency>
-			<groupId>project</groupId>
-			<artifactId>OmniEntSDKVerifier</artifactId>
-			<version>1.0.3.6</version>
-		</dependency>
-				
-		<dependency>
-			<groupId>project</groupId>
-			<artifactId>RSLicenseSDK</artifactId>
-			<version>1.0.4</version>
-		</dependency>
-		<!-- Omnione End -->
-
-		<!-- Utility for Omnione Start -->
-		<dependency>
-			<groupId>com.google.code.gson</groupId>
-			<artifactId>gson</artifactId>
-			<version>2.8.9</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.google.guava</groupId>
-			<artifactId>guava</artifactId>
-			<version>20.0</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>com.madgag.spongycastle</groupId>
-			<artifactId>pkix</artifactId>
-			<version>1.54.0.0</version>
-		</dependency>
-		
-		<dependency>
-			<groupId>org.bouncycastle</groupId>
-			<artifactId>bcprov-jdk15on</artifactId>
-			<version>1.70</version>
-		</dependency>
-		
-		<dependency>
-		    <groupId>org.apache.commons</groupId>
-		    <artifactId>commons-lang3</artifactId>
-		    <version>3.12.0</version>
-		</dependency>
-		<!-- Utility for Omnione End -->
-		<!-- 모바일 운전면허증 라이브러리 끝 -->
-
 		<dependency>
 		    <groupId>javax.faces</groupId>
 		    <artifactId>javax.faces-api</artifactId>
@@ -631,7 +569,7 @@
 				<plugin>
 					<groupId>org.codehaus.cargo</groupId>
 					<artifactId>cargo-maven3-plugin</artifactId>
-					<version>1.10.7</version>
+					<version>1.10.14</version>
 					<configuration>
 						<container>
 							<containerId>tomcat8x</containerId>
@@ -645,17 +583,16 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-compiler-plugin</artifactId>
-                    <version>3.11.0</version>
+					<version>3.13.0</version>
                     <configuration>
-                        <source>1.8</source>
-                        <target>1.8</target>
-                        <encoding>UTF-8</encoding>
+						<source>${java.version}</source>
+						<target>${java.version}</target>
                     </configuration>
                 </plugin>
                 <plugin>
                 	<groupId>org.apache.maven.plugins</groupId>
                 	<artifactId>maven-war-plugin</artifactId>
-                	<version>3.3.2</version>
+					<version>3.4.0</version>
                 	<configuration>
                 		<failOnMissingWebXml>false</failOnMissingWebXml>
                 	</configuration>
@@ -664,18 +601,6 @@
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>hibernate3-maven-plugin</artifactId>
                     <version>3.0</version>
-                    <executions>
-	                    <execution>
-		                    <configuration>
-		                        <components>
-		                            <component>
-		                                <name>hbm2ddl</name>
-		                                <implementation>annotationconfiguration</implementation>
-		                            </component>
-		                        </components>
-		                    </configuration>
-	                    </execution>
-                    </executions>
                     <dependencies>
                         <dependency>
                             <groupId>org.hsqldb</groupId>
@@ -694,7 +619,7 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-pmd-plugin</artifactId>
-                    <version>3.21.0</version>
+					<version>3.23.0</version>
                 </plugin>
             </plugins>
         </pluginManagement>
@@ -703,7 +628,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
-                <version>3.1.2</version>
+				<version>3.3.0</version>
                 <configuration>
                     <skipTests>true</skipTests>
                     <forkMode>once</forkMode>
@@ -732,84 +657,30 @@
                 </configuration>
             </plugin>
             -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>emma-maven-plugin</artifactId>
-                <inherited>true</inherited>
-            </plugin>
-            <!--  JavaDoc -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.5.0</version>
-            </plugin>
-        </plugins>
-    </build>
-
-    <reporting>
-        <outputDirectory>${basedir}/target/site</outputDirectory>
-        <plugins>
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-project-info-reports-plugin</artifactId>
-                <version>3.4.4</version>
-                <reportSets>
-                    <reportSet>
-                        <id>sunlink</id>
-                        <reports>
-                            <report>javadoc</report>
-                        </reports>
-                        <inherited>true</inherited>
-                        <configuration>
-                            <links>
-                                <link>https://docs.oracle.com/javase/8/docs/api/</link>
-                            </links>
-                        </configuration>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-            <!-- JUnit Test Results & EMMA Coverage Reporting -->
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>emma-maven-plugin</artifactId>
-                <inherited>true</inherited>
-            </plugin>
-            <plugin>
-                <groupId>org.codehaus.mojo</groupId>
-                <artifactId>surefire-report-maven-plugin</artifactId>
-                <inherited>true</inherited>
-                <reportSets>
-                    <reportSet>
-                        <reports>
-                            <report>report-only</report>
-                        </reports>
-                    </reportSet>
-                </reportSets>
-            </plugin>
-            <!-- Generating JavaDoc Report -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <configuration>
-                    <minmemory>128m</minmemory>
-                    <maxmemory>512m</maxmemory>
-                    <encoding>${encoding}</encoding>
-                    <docencoding>${encoding}</docencoding>
-                    <charset>${encoding}</charset>
-                </configuration>
-            </plugin>
-            <!-- Generating Java Source in HTML -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jxr-plugin</artifactId>
-                <configuration>
-                    <inputEncoding>${encoding}</inputEncoding>
-                    <outputEncoding>${encoding}</outputEncoding>
-                    <linkJavadoc>true</linkJavadoc>
-                    <javadocDir>apidocs</javadocDir>
-                </configuration>
-            </plugin>
-        </plugins>
-    </reporting>
+			<plugin>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>emma-maven-plugin</artifactId>
+				<version>1.0-alpha-3</version>
+				<inherited>true</inherited>
+			</plugin>
+			<!--  JavaDoc -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.7.0</version>
+				<configuration>
+					<doclint>none</doclint>
+				</configuration>
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+		</plugins>
+	</build>
 
 </project>

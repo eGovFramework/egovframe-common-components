@@ -8,6 +8,7 @@
  * @ -------    --------    ---------------------------
  * @ 2009.02.01    lee.m.j          최초 생성
  *   2016.06.13    장동한            표준프레임워크 v3.6 개선
+ * @ 2024.10.29	LeeBaekHaeng	검색조건 유지
  *
  *  @author lee.m.j
  *  @since 2009.03.11
@@ -78,6 +79,9 @@ function fncAuthorDelete() {
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 <form:form modelAttribute="authorManage" action="${pageContext.request.contextPath}/sec/ram/EgovAuthorInsert.do" method="post" onSubmit="fncAuthorInsert(document.forms[0]); return false;"> 
+<input type="hidden" name="searchCondition" id="searchCondition" value="<c:out value="${authorManage.searchCondition}" />">
+<input type="hidden" name="searchKeyword" id="searchKeyword" value="<c:out value="${authorManage.searchKeyword}" />">
+<input type="hidden" name="pageIndex" id="pageIndex" value="<c:out value="${authorManage.pageIndex}" />">
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.create" /></h2><!-- 권한관리 등록 -->
@@ -124,7 +128,7 @@ function fncAuthorDelete() {
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input type="submit" class="s_submit" value="<spring:message code="button.create" />" title="<spring:message code="button.create" /> <spring:message code="input.button" />" /><!-- 등록 -->
-		<span class="btn_s"><a href="<c:url value='/sec/ram/EgovAuthorList.do' />"  title="<spring:message code="button.list" />  <spring:message code="input.button" />"><spring:message code="button.list" /></a></span><!-- 목록 -->
+		<span class="btn_s"><a href="<c:url value="/sec/ram/EgovAuthorList.do" />?searchCondition=<c:out value="${authorManage.searchCondition}" />&searchKeyword=<c:out value="${authorManage.searchKeyword}" />&pageIndex=<c:out value="${authorManage.pageIndex}" />"  title="<spring:message code="button.list" />  <spring:message code="input.button" />"><spring:message code="button.list" /></a></span><!-- 목록 -->
 	</div><div style="clear:both;"></div>
 	
 </div>

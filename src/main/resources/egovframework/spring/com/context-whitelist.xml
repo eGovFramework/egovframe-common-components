@@ -11,9 +11,7 @@
 		<value>/egovframework/com/sym/mnu/stm/EgovSiteMap</value>
 		<value>/cmm/sym/mpm/EgovSiteMap</value>
 		<value>/egovframework/com/main_bottom</value>
-		<!-- <value>/egovframework/com/sec/rnc/EgovCallGpin</value>
-		<value>cmm/sec/rnc/EgovCallGpin</value>
-		<value>utl/sys/wsi/EgovWebStandardInspectionUriDirect</value>
+		<!-- <value>utl/sys/wsi/EgovWebStandardInspectionUriDirect</value>
 		<value>utl/sys/wsi/EgovWebStandardInspectionUri</value>
 		<value>utl/sys/wsi/EgovWebStandardInspectionUriDirectLink</value> -->
 	</util:list>

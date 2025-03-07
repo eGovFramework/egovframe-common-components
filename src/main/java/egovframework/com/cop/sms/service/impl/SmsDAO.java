@@ -2,12 +2,12 @@
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.cop.sms.service.Sms;
 import egovframework.com.cop.sms.service.SmsRecptn;
 import egovframework.com.cop.sms.service.SmsVO;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 문자메시지를 위한 데이터 접근 클래스

@@ -2,14 +2,13 @@ package egovframework.com.sts.ust.service.impl;
 
 import java.util.List;
 
-import egovframework.com.sts.com.StatsVO;
-import egovframework.com.sts.ust.service.EgovUserStatsService;
-
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
+
+import egovframework.com.sts.com.StatsVO;
+import egovframework.com.sts.ust.service.EgovUserStatsService;
 
 /**
  * 사용자 통계 검색 비즈니스 구현 클래스

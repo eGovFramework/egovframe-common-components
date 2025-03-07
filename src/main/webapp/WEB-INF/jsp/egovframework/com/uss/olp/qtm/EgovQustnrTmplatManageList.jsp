@@ -5,8 +5,9 @@
 
       수정일         수정자                   수정내용
     -------    --------    ---------------------------
-     2008.03.09    장동한          최초 생성
-     2017.06.21    김예영          표준프레임워크 v3.7 개선
+     2008.03.09    장동한		최초 생성
+     2017.06.21    김예영		표준프레임워크 v3.7 개선
+     2024.10.29    권태성		템플릿 유형 이미지에 height 속성을 추가
 
     author   : 공통서비스 개발팀 장동한
     since    : 2009.03.09
@@ -157,7 +158,7 @@ function fn_egov_search_QustnrTmplatManage(){
 		<!-- 템플릿 유형 -->
 		<td class="lt_text3L"><div class="divDotText" style="width:100px;">${resultInfo.qestnrTmplatTy}</div></td>
 		<!-- 템플릿유형 이미지 정보 -->
-		<td class="lt_text3"><img src="<c:url value='/uss/olp/qtm/EgovQustnrTmplatManageImg.do'/>?qestnrTmplatId=${resultInfo.qestnrTmplatId}" alt="${resultInfo.qestnrTmplatTy}<spring:message code='comUssOlpQtm.regist.qestnrTmplatImage' />" title="${resultInfo.qestnrTmplatTy}<spring:message code='comUssOlpQtm.regist.qestnrTmplatImage' />"></td>
+		<td class="lt_text3"><img src="<c:url value='/uss/olp/qtm/EgovQustnrTmplatManageImg.do'/>?qestnrTmplatId=${resultInfo.qestnrTmplatId}" alt="${resultInfo.qestnrTmplatTy}<spring:message code='comUssOlpQtm.regist.qestnrTmplatImage' />" title="${resultInfo.qestnrTmplatTy}<spring:message code='comUssOlpQtm.regist.qestnrTmplatImage' />" height="100"></td>
 		<!-- onLoad="if(this.width>65){this.width=65}" -->
 		<!-- 템플릿 설명 -->
 		<td class="lt_text3L">

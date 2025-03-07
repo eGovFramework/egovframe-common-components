@@ -10,10 +10,9 @@ import javax.management.remote.JMXConnector;
 import javax.management.remote.JMXConnectorFactory;
 import javax.management.remote.JMXServiceURL;
 
+import org.egovframe.rte.fdl.cmmn.exception.EgovBizException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.egovframe.rte.fdl.cmmn.exception.EgovBizException;
 
 /*
  *       수정일         수정자                   수정내용

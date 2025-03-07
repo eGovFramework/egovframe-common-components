@@ -10,10 +10,11 @@
  * @Description : EgovLoginScrinImageList jsp
  * @Modification Information
  * @
- * @  수정일                    수정자                수정내용
+ * @  수정일       수정자				수정내용
  * @ ---------     --------    ---------------------------
- * @ 2009.07.01    lee.m.j     최초 생성
+ * @ 2009.07.01    lee.m.j				최초 생성
  * @ 2018.09.14    이정은               공통컴포넌트 3.8 개선
+ * @ 2024.10.29    권태성				pageIndex 파라미터 추가
  *
  *  @author lee.m.j
  *  @since 2009.07.01
@@ -132,7 +133,6 @@ function fncLoginScrinImageListDelete() {
 }
 
 function press() {
-
     if (event.keyCode==13) {
     	fncSelectLoginScrinImageList('1');
     }
@@ -150,18 +150,19 @@ function press() {
 
 	<form name="listForm" action="<c:url value='/uss/ion/lsi/selectLoginScrinImageList.do'/>" method="post">
 	
-	<div class="search_box" title=<spring:message code="common.searchCondition.msg"/>><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
-		<ul>
-			<li>
-				<label for="searchKeyword"><spring:message code="ussIonLsi.loginScrinImageList.imageNm"/> : </label><!-- 이미지 명 -->
-				<input id="searchKeyword" class="s_input2 vat" name="searchKeyword" type="text" value='<c:out value="${loginScrinImageVO.searchKeyword}"/>' size="25" onkeypress="press();" title=<spring:message code="button.search"/> /><!-- 검색 -->
-				
-				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fncSelectLoginScrinImageList('1'); return false;" />
-				<span class="btn_b"><a href="<c:url value='/uss/ion/lsi/addViewLoginScrinImage.do'/>?pageIndex=<c:out value='${loginScrinImageVO.pageIndex}'/>&amp;searchKeyword=<c:out value="${loginScrinImageVO.searchKeyword}"/>&amp;searchCondition=1" onclick="fncAddLoginScrinImageInsert(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
-			</li>
-		</ul>
-	</div>
-	<input type="hidden" name="searchCondition" value="1">
+		<div class="search_box" title=<spring:message code="common.searchCondition.msg"/>><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
+			<ul>
+				<li>
+					<label for="searchKeyword"><spring:message code="ussIonLsi.loginScrinImageList.imageNm"/> : </label><!-- 이미지 명 -->
+					<input id="searchKeyword" class="s_input2 vat" name="searchKeyword" type="text" value='<c:out value="${loginScrinImageVO.searchKeyword}"/>' size="25" onkeypress="press();" title=<spring:message code="button.search"/> /><!-- 검색 -->
+					
+					<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fncSelectLoginScrinImageList('1'); return false;" />
+					<span class="btn_b"><a href="<c:url value='/uss/ion/lsi/addViewLoginScrinImage.do'/>?pageIndex=<c:out value='${loginScrinImageVO.pageIndex}'/>&amp;searchKeyword=<c:out value="${loginScrinImageVO.searchKeyword}"/>&amp;searchCondition=1" onclick="fncAddLoginScrinImageInsert(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+				</li>
+			</ul>
+		</div>
+		<input type="hidden" name="searchCondition" value="1">
+		<input type="hidden" name="pageIndex" value="<c:out value='${loginScrinImageVO.pageIndex}'/>">
 	</form>
 
 	<table class="board_list">
@@ -198,7 +199,7 @@ function press() {
 						<input type="hidden" name="pageIndex" value="<c:out value='${loginScrinImageVO.pageIndex}'/>">
 						<input type="hidden" name="searchCondition" value="<c:out value='${loginScrinImageVO.searchCondition}'/>">
 						<input type="hidden" name="searchKeyword" value="<c:out value="${loginScrinImageVO.searchKeyword}"/>">
-						<input class="link" type="submit" value="<c:out value="${loginScrinImage.imageNm}"/>" onclick="fncSelectLoginScrinImage('<c:out value="${loginScrinImage.imageId}"/>'); return false;">
+						<input class="link" type="submit" value="<c:out value="${loginScrinImage.imageNm}"/>">
 					</form>
 				</td>
 				<td><c:out value="${loginScrinImage.image}"/></td>

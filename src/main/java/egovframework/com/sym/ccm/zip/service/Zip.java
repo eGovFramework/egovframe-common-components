@@ -2,6 +2,8 @@ package egovframework.com.sym.ccm.zip.service;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotEmpty;
+
 /**
  * 우편번호 모델 클래스
  * @author 공통서비스 개발팀 이중호
@@ -14,8 +16,9 @@ import java.io.Serializable;
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.04.01  이중호          최초 생성
- *   2011.11.21  이기하          도로명주소 추가(rdmn, bdnbrMnnm, bdnbrSlno, buldNm, detailBuldNm)
+ *   2009.04.01  이중호			최초 생성
+ *   2011.11.21  이기하			도로명주소 추가(rdmn, bdnbrMnnm, bdnbrSlno, buldNm, detailBuldNm)
+ *   2024.10.29	 권태성			필수값 BindingResult 검증을 위한 @NotEmpty 추가
  *
  * </pre>
  */
@@ -26,6 +29,7 @@ public class Zip implements Serializable {
 	/*
 	 * 우편번호
 	 */
+	@NotEmpty(message = "우편번호{common.required.msg}")
     private String zip            = "";
 
     /*
@@ -36,16 +40,19 @@ public class Zip implements Serializable {
     /*
      * 시도명
      */
+    @NotEmpty(message = "시도명{common.required.msg}")
 	private String ctprvnNm       = "";
 
 	/*
 	 * 시군구명
 	 */
+	@NotEmpty(message = "시군구명{common.required.msg}")
     private String signguNm       = "";
 
     /*
      * 읍면동명
      */
+    @NotEmpty(message = "읍면동명{common.required.msg}")
     private String emdNm          = "";
 
     /*

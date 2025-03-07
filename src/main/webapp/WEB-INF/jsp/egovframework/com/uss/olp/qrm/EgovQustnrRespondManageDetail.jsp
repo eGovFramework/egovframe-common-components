@@ -5,8 +5,9 @@
 
       수정일         수정자                   수정내용
     -------    --------    ---------------------------
-     2008.03.09    장동한          최초 생성
-     2017.07.19    김예영          표준프레임워크 v3.7 개선
+     2008.03.09    장동한		최초 생성
+     2017.07.19    김예영		표준프레임워크 v3.7 개선
+     2024.10.29    권태성		수정 페이지 신규 경로로 변경
 
     author   : 공통서비스 개발팀 장동한
     since    : 2009.03.09
@@ -43,10 +44,8 @@ function fn_egov_list_QustnrRespondManage(){
  * 저장처리화면
  ******************************************************** */
 function fn_egov_modify_QustnrRespondManage(){
-	var vFrom = document.QustnrRespondManageForm;
-	vFrom.cmd.value = '';
-	//document.getElementById("cmd").value='';
-	vFrom.action = "<c:url value='/uss/olp/qrm/EgovQustnrRespondManageModify.do' />";;
+	var vFrom = document.formUpdt;
+	vFrom.action = "<c:url value='/uss/olp/qrm/EgovQustnrRespondManageModifyView.do' />";;
 	vFrom.submit();
 
 }
@@ -54,27 +53,24 @@ function fn_egov_modify_QustnrRespondManage(){
  * 삭제처리
  ******************************************************** */
 function fn_egov_delete_QustnrRespondManage(){
-	var vFrom = document.QustnrRespondManageForm;
-	//var vFrom = document.getElementById("QustnrRespondManageForm");
+	var vFrom = document.formDelete;
 	if(confirm("<spring:message code='common.delete.msg' />")){ //삭제 하시겠습니까?
-		vFrom.cmd.value = 'del';
-		//document.getElementsByName("cmd").value="<c:out value='del'/>";
+		vFrom.cmd.value = "del";
 		vFrom.action = "<c:url value='/uss/olp/qrm/EgovQustnrRespondManageDetail.do' />";
 		vFrom.submit();
 	}else{
 		vFrom.cmd.value = '';
-		//document.getElementsByName("cmd").value='';
 	}
 }
 </script>
 </head>
-<body onLoad="fn_egov_init_QustnrRespondManage();">
+<body>
 
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
 <div class="wTableFrm">
-<form name="QustnrRespondManageForm" id="QustnrRespondManageForm" action="<c:url value='/uss/olp/qrm/EgovQustnrRespondManageModify.do'/>" method="post">
+<form name="QustnrRespondManageForm" id="QustnrRespondManageForm" action="<c:url value='/uss/olp/qrm/EgovQustnrRespondManageModifyView.do'/>" method="post">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.detail" /></h2>
 
@@ -139,7 +135,7 @@ function fn_egov_delete_QustnrRespondManage(){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<!-- 수정 버튼 -->
-		<form name="formUpdt" action="<c:url value='/uss/olp/qrm/EgovQustnrRespondManageModify.do'/>" method="post" onsubmit="fn_egov_modify_QustnrRespondManage(document.forms[0]); return false;" style="float:left;">
+		<form name="formUpdt" action="<c:url value='/uss/olp/qrm/EgovQustnrRespondManageModifyView.do'/>" method="post" onsubmit="fn_egov_modify_QustnrRespondManage(document.forms[0]); return false;" style="float:left;">
 			<input type="submit" class="s_submit" value="<spring:message code='button.update' />" title="<spring:message code='title.update' /> <spring:message code='input.button' />" />
 			<input name="qestnrRespondId" type="hidden" value="${resultList[0].qestnrRespondId}">
 		</form>

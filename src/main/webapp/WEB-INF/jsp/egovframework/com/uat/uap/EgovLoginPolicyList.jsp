@@ -16,6 +16,7 @@
  * @ 2009.02.01   lee.m.j     최초 생성
  * @ 2011.09.30   이기하             데이터 없을시 메시지 추가
  * @ 2018.09.03   신용호             공통컴포넌트 3.8 개선
+ * @ 2024.10.29	LeeBaekHaeng	검색조건 유지
  *
  *  @author lee.m.j
  *  @since 2009.03.21
@@ -183,6 +184,10 @@ function press() {
     	fncSelectLoginPolicyList('1');
     }
 }
+
+function fn_buttonList() {
+	location.href = '<c:url value="/uat/uap/selectLoginPolicyList.do" />';
+}
 -->
 </script>
 
@@ -196,13 +201,15 @@ function press() {
 	<h1><spring:message code="comUatUap.LoginPolicyList.caption" /></h1>
 	
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
-		<form name="listForm" action="<c:url value='/uat/uap/selectLoginPolicyList.do'/>" method="post">
+		<form name="listForm" action="<c:url value='/uat/uap/selectLoginPolicyList.do'/>" method="get">
 		
 		<ul>
 			<li>
 				<label for=""><spring:message code="comUatUap.LoginPolicyList.userName" /> : </label><!-- 사용자 명 -->
-				<input class="s_input2 vat" name="searchKeyword" type="text" value="<c:out value="${loginPolicyVO.searchKeyword}"/>" size="25" onkeypress="press();" title="<spring:message code="comUatUap.LoginPolicyList.userNameSearch" />" /><!-- 사용자명검색 -->
-				<input class="s_btn" type="submit" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire"/>" onclick="fncSelectLoginPolicyList('1'); return false;" /><!-- 조회 -->
+				<input class="s_input2 vat" name="searchKeyword" id="searchKeyword" type="text" value="<c:out value="${loginPolicyVO.searchKeyword}"/>" size="25" onkeypress="press();" title="<spring:message code="comUatUap.LoginPolicyList.userNameSearch" />"><!-- 사용자명검색 -->
+				<input class="s_btn" type="submit" value="<spring:message code="button.inquire" />" title="<spring:message code="button.inquire" />" onclick="fncSelectLoginPolicyList('1');"><!-- 조회 -->
+				<input class="s_btn" type="reset" value="<spring:message code="button.reset" />" title="<spring:message code="button.reset" />"><!-- 취소 -->
+				<input class="s_btn" type="button" value="<spring:message code="button.list" />" title="<spring:message code="button.list" />" onclick="fn_buttonList();"><!-- 목록 -->
 			</li>
 		</ul>
 		<input type="hidden" name="emplyrId">

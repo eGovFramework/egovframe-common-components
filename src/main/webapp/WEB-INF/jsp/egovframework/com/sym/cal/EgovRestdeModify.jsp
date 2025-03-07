@@ -7,8 +7,10 @@
   * @
   * @  수정일             수정자                   수정내용
   * @ -------    --------    ---------------------------
-  * @ 2009.04.01   이중호              최초 생성
-  *   2011.08.12   서준식              CSS 경로 수정
+  * @ 2009.04.01   이중호			최초 생성
+  *   2011.08.12   서준식			CSS 경로 수정
+  *   2024.10.29   권태성			수정 페이지 신규 경로로 변경
+  *
   *  @author 공통서비스팀
   *  @since 2009.04.01
   *  @version 1.0
@@ -45,10 +47,10 @@ function fn_egov_list_Restde(){
  * 저장처리화면
  ******************************************************** */
 function fn_egov_regist_Restde(form){
-	if(confirm("<spring:message code='common.save.msg'/>")){
-		if(!validateRestde(form)){
-			return;
-		}else{
+	if (confirm("<spring:message code='common.save.msg'/>")) {
+		if (!validateRestde(form)) {
+		 	return;
+		} else {
 			form.submit();
 		}
 	}
@@ -59,7 +61,7 @@ function fn_egov_regist_Restde(form){
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form modelAttribute="restde" name="restde" method="post">
+<form:form modelAttribute="restde" name="restde" method="post" action="${pageContext.request.contextPath}/sym/cal/EgovRestdeModify.do">
 <input name="cmd" type="hidden" value="Modify">
 <form:hidden path="restdeNo"/>
 <form:hidden path="restdeDe"/>

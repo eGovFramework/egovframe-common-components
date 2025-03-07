@@ -6,14 +6,12 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.uss.ion.tir.service.EgovTwitterTrnsmitService;
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-
 import twitter4j.BooleanResponse;
 import twitter4j.CreateTweetResponse;
-import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterFactory;
 import twitter4j.TwitterV2;
@@ -33,6 +31,7 @@ import twitter4j.auth.AccessToken;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.07.03  장동한          최초 생성
+ *   2024.10.29	LeeBaekHaeng	미사용 import 정리
  *
  * </pre>
  */
@@ -117,9 +116,7 @@ public class EgovTwitterTrnsmitServiceImpl extends EgovAbstractServiceImpl
 	 */
 	@Override
 	public boolean twitterDelete(Map<?, ?> map, String tID) throws Exception {
-		
-				System.out.println("아이디 >>> " + tID );
-		
+
 				String sCONSUMER_KEY = (String)map.get("sCONSUMER_KEY");
 				String sCONSUMER_SECRET = (String)map.get("sCONSUMER_SECRET");
 				//트위터 객체선언
@@ -133,9 +130,7 @@ public class EgovTwitterTrnsmitServiceImpl extends EgovAbstractServiceImpl
 		    	
 		    	final TwitterV2 v2 = TwitterV2ExKt.getV2(twitter);
 		    	final BooleanResponse deleteResult = v2.deleteTweet(Long.parseLong(tID));
-		    	
-		    	System.out.println("deleteResult >>> " + deleteResult);
-		    	
+
 		    	return deleteResult.getResult();
 		
 	}

@@ -8,6 +8,9 @@ import javax.annotation.Resource;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 //import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -24,10 +27,6 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.tir.service.EgovTwitterTrnsmitService;
 import egovframework.com.uss.ion.tir.service.TwitterInfo;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import org.egovframe.rte.fdl.property.EgovPropertyService;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import twitter4j.CreateTweetResponse;
 
 /**

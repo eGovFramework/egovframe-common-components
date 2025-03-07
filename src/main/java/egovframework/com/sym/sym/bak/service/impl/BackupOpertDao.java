@@ -1,11 +1,11 @@
 package egovframework.com.sym.sym.bak.service.impl;
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sym.sym.bak.service.BackupOpert;
 import egovframework.com.sym.sym.bak.service.BackupSchdulDfk;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 백업작업관리에 대한 DAO 클래스를 정의한다.

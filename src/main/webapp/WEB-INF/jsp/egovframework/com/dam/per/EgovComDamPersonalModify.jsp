@@ -8,6 +8,7 @@
   * @ ----------  --------  ---------------------------
   * @ 2010.08.17  박종선          최초 생성
   *   2018.09.11  신용호          공통컴포넌트 3.8 개선
+  *   2024.10.29  권태성		  목록으로 돌아올 때 검색 조건이 유지되도록 수정(#4)
   *
   *  @author 공통서비스팀
   *  @since 2010.05.01
@@ -85,8 +86,10 @@ function fn_egov_initl_knoPersonal(){
 /* ********************************************************
  * 목록 으로 가기
  ******************************************************** */
-function fn_egov_list_KnoPersonal(){
-	location.href = "<c:url value='/dam/per/EgovComDamPersonalList.do'/>";
+ function fnList(){
+	    var varForm         = document.knoPersonal;
+	    varForm.action      = "<c:url value='/dam/per/EgovComDamPersonalList.do'/>";
+	    varForm.submit();
 }
 /* ********************************************************
  * 저장처리화면
@@ -114,7 +117,7 @@ function fn_egov_modify_KnoPersonal(){
 
 
 <!-- 파일첨부를 위한 폼명 및 Enctype 설정 -->
-<form:form modelAttribute="knoPersonal" name="knoPersonal" action="<c:url value='/dam/per/EgovComDamPersonalModifyView.do'/>" method="post" enctype="multipart/form-data">
+<form:form modelAttribute="knoPersonal" name="knoPersonal" action="${pageContext.request.contextPath}/dam/per/EgovComDamPersonalModifyView.do" method="post" enctype="multipart/form-data">
 
 <input name="cmd" type="hidden" value="Modify">
 <input name="knoId" type="hidden" value="<c:out value='${knoPersonal.knoId}'/>">
@@ -122,6 +125,9 @@ function fn_egov_modify_KnoPersonal(){
 <form:hidden path="knoTypeCd"/>
 <form:hidden path="orgnztNm"/>
 <form:hidden path="knoTypeNm"/>
+<input type="hidden" id="searchCondition" name="searchCondition" value="${searchVO.searchCondition}" />
+<input type="hidden" id="searchKeyword" name="searchKeyword" value="${searchVO.searchKeyword}" />
+<input type="hidden" id="pageIndex" name="pageIndex" value="${searchVO.pageIndex}" />
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -201,7 +207,7 @@ function fn_egov_modify_KnoPersonal(){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value="<spring:message code="button.save" />" onclick="fn_egov_modify_KnoPersonal(); return false;" /><!-- 저장 -->
-		<input class="s_submit" type="submit" value='<spring:message code="button.list" />' onclick="fn_egov_list_KnoPersonal(); return false;" /><!-- 목록 -->
+		<input class="s_submit" type="submit" value='<spring:message code="button.list" />' onclick="fnList(); return false;" /><!-- 목록 -->
 	</div>
 	<div style="clear:both;"></div>
 	</div>

@@ -11,8 +11,9 @@
   * @
   * @  수정일      수정자            수정내용
   * @ -------        --------    ---------------------------
-  * @ 2009.03.30   이삼섭          최초 생성
-  * @ 2018.09.13   최두영          다국어처리
+  * @ 2009.03.30   이삼섭			최초 생성
+  * @ 2018.09.13   최두영			다국어처리
+  * @ 2024.10.29   권태성			pageIndex 파라미터 추가
   *
   *  @author 공통서비스 개발팀 이삼섭
   *  @since 2009.03.30
@@ -54,7 +55,8 @@
 </script>
 </head>
 <body>
-<form name="frm" method="post" action="<c:url value='/cop/ncm/selectMyNcrdUseInf.do'/>">
+<form name="frm" method="post" action="${pageContext.request.contextPath}/cop/ncm/selectMyNcrdUseInf.do">
+<input type="hidden" name="pageIndex" value="${searchVO.pageIndex}" />
 <input type="hidden" name="ncrdId" />
 
 <div class="board">

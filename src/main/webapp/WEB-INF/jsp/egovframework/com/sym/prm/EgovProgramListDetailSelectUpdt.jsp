@@ -7,8 +7,9 @@
   * @
   * @  수정일              수정자            수정내용
   * @ ----------   --------   ---------------------------
-  * @ 2009.03.10   이용               최초 생성
-  *   2018.09.03   신용호            공통컴포넌트 3.8 개선
+  * @ 2009.03.10   이용			최초 생성
+  *   2018.09.03   신용호		공통컴포넌트 3.8 개선
+  *   2024.10.29   권태성		수정 페이지 신규 경로로 변경
   *
   *  @author 공통서비스 개발팀 이용
   *  @since 2009.03.10
@@ -86,7 +87,7 @@ function selectList(){
 <c:set var="vurl"><spring:message code="comSymPrm.programListDetailSelectUpdt.url"/></c:set>
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
-<form:form modelAttribute="progrmManageVO" method="post">
+<form:form modelAttribute="progrmManageVO" method="post" action="${pageContext.request.contextPath}/sym/prm/EgovProgramListDetailSelectUpdt.do">
     <!-- 검색조건 유지 -->
     <input type="hidden" name="searchCondition" value="<c:out value='${searchVO.searchCondition}'/>"/>
     <input type="hidden" name="searchKeyword" value="<c:out value='${searchVO.searchKeyword}'/>"/>
@@ -105,8 +106,7 @@ function selectList(){
 		<tr>
 			<th><spring:message code="comSymPrm.programListDetailSelectUpdt.progrmFileNm"/> <span class="pilsu">*</span></th><!-- 프로그램파일명 -->
 			<td class="left">
-			    <form:input  path="progrmFileNm" size="50"  maxlength="50" title="${vprogrmFileNm}"/><!-- 프로그램파일명 -->
-      			<form:errors path="progrmFileNm"/>
+			    <form:input  path="progrmFileNm" size="50"  maxlength="50" title="${vprogrmFileNm}" readonly="true"/><!-- 프로그램파일명 -->
 			</td>
 		</tr>
 		<tr>

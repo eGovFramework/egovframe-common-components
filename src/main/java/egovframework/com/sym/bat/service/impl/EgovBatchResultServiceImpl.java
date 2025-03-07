@@ -2,14 +2,13 @@ package egovframework.com.sym.bat.service.impl;
 
 import java.util.List;
 
-import egovframework.com.sym.bat.service.BatchResult;
-import egovframework.com.sym.bat.service.EgovBatchResultService;
-
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
+
+import egovframework.com.sym.bat.service.BatchResult;
+import egovframework.com.sym.bat.service.EgovBatchResultService;
 
 /**
  * 배치결과관리에 대한 ServiceImpl 클래스를 정의한다.

@@ -13,6 +13,7 @@
  *   수정일       수정자           수정내용
  *  -------     --------    ---------------------------
  *  2009.8.3    이문준     최초 생성
+ *  2024.10.29	LeeBaekHaeng	시큐어코딩 일련번호 PK 파라미터 암복호화
  * </pre>
  */
 
@@ -30,7 +31,11 @@ public class LoginPolicy extends ComDefaultVO {
 	 * 사용자 ID
 	 */	
 	private String emplyrId;
-    /**
+	/**
+	 * 사용자 ID 암호화
+	 */
+	private String emplyrIdEncrypt;
+	/**
 	 * 사용자 명
 	 */	
 	private String emplyrNm;	
@@ -75,6 +80,15 @@ public class LoginPolicy extends ComDefaultVO {
 	public void setEmplyrId(String emplyrId) {
 		this.emplyrId = emplyrId;
 	}
+
+	public String getEmplyrIdEncrypt() {
+		return emplyrIdEncrypt;
+	}
+
+	public void setEmplyrIdEncrypt(String emplyrIdEncrypt) {
+		this.emplyrIdEncrypt = emplyrIdEncrypt;
+	}
+
 	/**
 	 * @return the emplyrNm
 	 */

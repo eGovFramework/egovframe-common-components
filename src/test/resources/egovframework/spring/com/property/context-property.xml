@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
+
+	<!--
+    <bean name="localPropertiesService" class="org.egovframe.rte.fdl.property.impl.EgovPropertyServiceImpl" 
+         destroy-method="destroy">
+    -->
+        <!-- 
+        <property name="properties">
+            <map>
+		        <entry key="pageUnit" value="20"/>
+	            <entry key="pageSize" value="10"/>
+            </map>
+        </property>
+        -->
+        <!-- 
+        <property name="extFileName">
+            <set>
+                <map>
+                    <entry key="encoding" value="UTF-8"/>
+                    <entry key="filename" value="classpath*:/egovframework/egovProps/conf/config.properties"/>
+                </map>
+            </set>
+        </property>
+        -->
+        <!--
+        <property name="extFileName">
+            <set>
+                <value>classpath*:/egovframework/egovProps/conf/config.properties</value>
+            </set>
+        </property>
+        -->
+    <!--
+    </bean>
+    -->
+    
+</beans>

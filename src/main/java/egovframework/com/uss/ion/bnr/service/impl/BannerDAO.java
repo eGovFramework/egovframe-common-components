@@ -14,12 +14,12 @@ package egovframework.com.uss.ion.bnr.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.bnr.service.Banner;
 import egovframework.com.uss.ion.bnr.service.BannerVO;
-
-import org.springframework.stereotype.Repository;
 
 @Repository("bannerDAO")
 public class BannerDAO extends EgovComAbstractDAO {

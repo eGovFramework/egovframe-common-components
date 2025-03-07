@@ -6,7 +6,8 @@
  * @
  * @  수정일                    수정자                수정내용
  * @ ---------     --------    ---------------------------
- * @ 2010.07.01    lee.m.j     최초 생성
+ * @ 2010.07.01    lee.m.j		최초 생성
+ * @ 2024.10.29    권태성		pageIndex 파라미터 추가
  *
  *  @author lee.m.j
  *  @since 2010.07.01
@@ -76,6 +77,7 @@ function press() {
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<form name="listForm" action="<c:url value='/utl/sys/pxy/selectProxySvcList.do'/>" method="post">
+	<input type="hidden" name="pageIndex" value="<c:out value='${proxySvcVO.pageIndex}'/>">
 	<div class="search_box" title="<spring:message code='common.searchCondition.msg' />">
 		<ul>
 			<li>
@@ -116,7 +118,7 @@ function press() {
 			          <input type="hidden" name="proxyId" value="<c:out value="${proxySvc.proxyId}"/>">
 			          <input type="hidden" name="pageIndex" value="<c:out value='${proxySvcVO.pageIndex}'/>">
 			          <input type="hidden" name="strProxyNm" value="<c:out value="${proxySvcVO.strProxyNm}"/>">
-			          <span class="link"><input type="submit" value="<c:out value="${proxySvc.proxyId}"/>" onclick="fncSelectProxySvc('<c:out value="${proxySvc.proxyId}"/>'); return false;"></span>
+			          <span class="link"><input type="submit" value="<c:out value="${proxySvc.proxyId}"/>"></span>
 			      </form>
 			  </td>
 			  <td><c:out value="${proxySvc.proxyNm}"/></td>

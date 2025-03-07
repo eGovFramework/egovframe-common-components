@@ -4,6 +4,9 @@ import java.util.Date;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.egovframe.rte.fdl.string.EgovDateUtil;
 import org.springframework.stereotype.Service;
 
 import com.github.javaparser.utils.Log;
@@ -14,13 +17,18 @@ import egovframework.com.cop.bbs.service.Board;
 import egovframework.com.cop.bbs.service.BoardMaster;
 import egovframework.com.cop.bbs.service.BoardVO;
 import egovframework.com.cop.bbs.service.EgovArticleService;
-
-import org.egovframe.rte.fdl.cmmn.exception.FdlException;
-import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-import org.egovframe.rte.fdl.string.EgovDateUtil;
-
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+
+/**
+ * <pre>
+ * << 개정이력(Modification Information) >>
+ *   
+ *   수정일			수정자		수정내용
+ *  -------			--------	---------------------------
+ *   2024.10.29		inganyoyo	Transaction 처리 오류 수정(Article)
+ * </pre>
+ */
 
 @Service
 @RequiredArgsConstructor
@@ -101,8 +109,8 @@ public class EgovArticleServiceImplTest_AAC_TestData {
 		boardVO.setNttCn(board.getNttCn());
 		
 		try {
-			egovArticleService.insertArticle(board);
-		} catch (FdlException e) {
+      egovArticleService.insertArticleAndFiles(board, null);
+    } catch (Exception e) {
 			log.error(e.getMessage());
 		}
 		

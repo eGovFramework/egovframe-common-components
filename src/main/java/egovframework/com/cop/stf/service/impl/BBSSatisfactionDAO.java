@@ -2,11 +2,11 @@ package egovframework.com.cop.stf.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.cop.bbs.service.Satisfaction;
 import egovframework.com.cop.bbs.service.SatisfactionVO;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 만족도조사를 위한 데이터 접근 클래스

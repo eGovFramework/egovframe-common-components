@@ -5,8 +5,9 @@
  
       수정일         수정자                   수정내용
     -------    --------    ---------------------------
-     2008.03.09    장동한          최초 생성
-     2017.07.19    김예영          표준프레임워크 v3.7 개선
+     2008.03.09    장동한		최초 생성
+     2017.07.19    김예영		표준프레임워크 v3.7 개선
+     2024.10.29    권태성		수정 페이지 신규 경로로 변경
  
     author   : 공통서비스 개발팀 장동한
     since    : 2009.03.09
@@ -45,7 +46,7 @@ function fn_egov_list_QustnrItemManage(){
 function fn_egov_modify_QustnrItemManage(){
 	var vFrom = document.QustnrItemManageForm;
 	vFrom.cmd.value = '';
-	vFrom.action = "<c:url value='/uss/olp/qim/EgovQustnrItemManageModify.do' />";;
+	vFrom.action = "<c:url value='/uss/olp/qim/EgovQustnrItemManageModifyView.do' />";;
 	vFrom.submit();
 
 }

@@ -18,6 +18,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 <c:set var="pageTitle"><spring:message code="comUssIonNts.title"/></c:set>
 <!DOCTYPE html>
@@ -103,6 +104,7 @@ function fn_egov_delete_NoteTrnsmit(){
 			<td class="left">
 				<c:forEach items="${resultRecptnEmp}" var="resultInfo" varStatus="status">
 					<c:out value="${resultInfo.rcverNm}" />
+					<c:if test="${empty resultInfo.rcverNm }"><spring:message code="comUssIonNts.detail.deleteRcver" /></c:if>
 					<c:if test="${fn:length(resultRecptnEmp) != status.count}">,</c:if>
 				</c:forEach>
 			</td>
@@ -115,18 +117,18 @@ function fn_egov_delete_NoteTrnsmit(){
 		</tr>
 		<!-- 쪽지내용 -->
 		<tr>
-			<th class="vtop"><spring:message code="comUssIonNts.detail.noteRecptn" /></th>
+			<th><spring:message code="comUssIonNts.detail.noteRecptn" /></th>
 			<td colspan="3" class="cnt">
 				<c:set var="noteTrnsmitNoteCn" value="${fn:escapeXml(noteTrnsmit.noteCn)}"/>
-				<c:set var="noteTrnsmitNoteCn" value="${fn:replace(noteTrnsmitNoteCn , crlf , '<br>')}"/>
-				<c:out value="${noteTrnsmitNoteCn}" escapeXml="false" />
+				<c:set var="noteTrnsmitNoteCn" value="${fn:replace(noteTrnsmit.noteCn , crlf , '<br>')}"/>
+				<c:out value="${noteTrnsmit.noteCn}" escapeXml="false" />
 			</td>
 		</tr>
 	</tbody>
 	</table>
 	
-	<input name="noteId" type="hidden" value="${noteTrnsmit.noteId}">
-	<input name="noteTrnsmitId" type="hidden" value="${noteTrnsmit.noteTrnsmitId}">
+	<input name="noteId" type="hidden" value="${egovc:encryptId(noteTrnsmit.noteId)}">
+	<input name="noteTrnsmitId" type="hidden" value="${egovc:encryptId(noteTrnsmit.noteTrnsmitId)}">
 	<input name="cmd" type="hidden" value="<c:out value=''/>">
 
 	</form>
@@ -136,8 +138,8 @@ function fn_egov_delete_NoteTrnsmit(){
 	
 		<form name="formDelete" action="<c:url value='/uss/ion/nts/detailNoteTrnsmit.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
 			<input type="submit" class="s_submit" value="<spring:message code="button.delete" />" onClick="fn_egov_delete_NoteTrnsmit(); return false;">
-			<input name="noteId" type="hidden" value="${noteTrnsmit.noteId}">
-			<input name="noteTrnsmitId" type="hidden" value="${noteTrnsmit.noteTrnsmitId}">
+			<input name="noteId" type="hidden" value="${egovc:encryptId(noteTrnsmit.noteId)}">
+			<input name="noteTrnsmitId" type="hidden" value="${egovc:encryptId(noteTrnsmit.noteTrnsmitId)}">
 			<input name="popupId" type="hidden" value="${popupManageVO.popupId}">
 			<input name="cmd" type="hidden" value="<c:out value='del'/>">
 		</form>

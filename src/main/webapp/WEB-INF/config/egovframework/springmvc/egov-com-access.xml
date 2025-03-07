@@ -3,7 +3,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:egov-access="http://maven.egovframe.go.kr/schema/egov-access"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://maven.egovframe.go.kr/schema/egov-access http://maven.egovframe.go.kr/schema/egov-access/egov-access-4.2.0.xsd">
+		http://maven.egovframe.go.kr/schema/egov-access http://maven.egovframe.go.kr/schema/egov-access/egov-access-4.3.0.xsd">
 
     <!--
     	globalAuthen : globals.properties 설정(전자정부 프레임워크 기본 설정 중 dummy, security 사용 시 session 으로 재설정됨)
@@ -42,7 +42,6 @@
 	<!--
 		* 예외 목록 URL
 		회원관리 : /uat/uia/**
-		실명확인 : /sec/rnc/**
 		우편번호 : /sym/ccm/zip/**
 		로그인이미지관리 : /uss/ion/lsi/**
 		약관확인 : /uss/umt/**
@@ -62,7 +61,7 @@
 		댓글 선택       : /cop/cmt/updateArticleCommentView.do
 		
 	    excludeList="/uat/uia/**, /index.do, /EgovLeft.do, /EgovContent.do, /EgovTop.do, /EgovBottom.do"
-		excludeList="/uat/uia/**, /uss/umt/**, /sec/rnc/**, /sym/ccm/zip/**, /uss/ion/lsi/**, /cmm/fms/getImage.do, /uss/ion/bnr/getBannerImage.do, /index.do, /EgovLeft.do, /EgovContent.do, /EgovTop.do, /EgovBottom.do, /EgovModal.do, /cop/cmt/selectArticleCommentList.do, /cop/stf/selectSatisfactionList.do, /cop/stf/selectSingleSatisfaction.do, /cop/cmt/updateArticleCommentView.do"
+		excludeList="/uat/uia/**, /uss/umt/**, /sym/ccm/zip/**, /uss/ion/lsi/**, /cmm/fms/getImage.do, /uss/ion/bnr/getBannerImage.do, /index.do, /EgovLeft.do, /EgovContent.do, /EgovTop.do, /EgovBottom.do, /EgovModal.do, /cop/cmt/selectArticleCommentList.do, /cop/stf/selectSatisfactionList.do, /cop/stf/selectSingleSatisfaction.do, /cop/cmt/updateArticleCommentView.do"
 	 -->
 
 </beans>

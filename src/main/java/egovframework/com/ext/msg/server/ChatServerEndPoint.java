@@ -23,14 +23,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import egovframework.com.cmm.EgovWebUtil;
-import egovframework.com.ext.msg.server.config.ChatServerAppConfig;
-import egovframework.com.ext.msg.server.model.ChatMessage;
-import egovframework.com.ext.msg.server.model.Message;
-import egovframework.com.ext.msg.server.model.UsersMessage;
-import egovframework.com.ext.msg.server.model.decoder.MessageDecoder;
-import egovframework.com.ext.msg.server.model.encoder.MessageEncoder;
-
 import javax.websocket.EncodeException;
 import javax.websocket.OnClose;
 import javax.websocket.OnError;
@@ -42,6 +34,14 @@ import javax.websocket.server.ServerEndpoint;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import egovframework.com.cmm.EgovWebUtil;
+import egovframework.com.ext.msg.server.config.ChatServerAppConfig;
+import egovframework.com.ext.msg.server.model.ChatMessage;
+import egovframework.com.ext.msg.server.model.Message;
+import egovframework.com.ext.msg.server.model.UsersMessage;
+import egovframework.com.ext.msg.server.model.decoder.MessageDecoder;
+import egovframework.com.ext.msg.server.model.encoder.MessageEncoder;
 
 /**
 * @Class Name : ChatServerEndPoint.java

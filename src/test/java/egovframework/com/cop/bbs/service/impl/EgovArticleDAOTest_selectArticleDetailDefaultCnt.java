@@ -4,13 +4,13 @@ import static org.junit.Assert.assertEquals;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 
 import egovframework.com.cop.bbs.service.BoardVO;
 import egovframework.com.test.EgovTestV1;
-import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j

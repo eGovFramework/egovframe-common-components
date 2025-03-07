@@ -3,6 +3,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.springframework.stereotype.Service;
+
 import egovframework.com.cop.smt.djm.service.ChargerVO;
 import egovframework.com.cop.smt.djm.service.DeptJob;
 import egovframework.com.cop.smt.djm.service.DeptJobBx;
@@ -10,13 +16,6 @@ import egovframework.com.cop.smt.djm.service.DeptJobBxVO;
 import egovframework.com.cop.smt.djm.service.DeptJobVO;
 import egovframework.com.cop.smt.djm.service.DeptVO;
 import egovframework.com.cop.smt.djm.service.EgovDeptJobService;
-
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
 
 /**
  * 개요

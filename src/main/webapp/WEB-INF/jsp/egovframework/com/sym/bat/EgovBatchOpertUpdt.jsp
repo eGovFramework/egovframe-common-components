@@ -64,7 +64,7 @@ function fn_egov_save(){
 <%-- noscript 태그 --%>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
-<form:form modelAttribute="batchOpert" id="batchOpert" action="/sym/bat/updateBatchOpert.do" method="post">
+<form:form modelAttribute="batchOpert" id="batchOpert" action="${pageContext.request.contextPath}/sym/bat/updateBatchOpert.do" method="post">
 
     <!-- 검색조건 유지 -->
     <input type="hidden" name="searchCondition" value="<c:out value='${searchVO.searchCondition}'/>"/>

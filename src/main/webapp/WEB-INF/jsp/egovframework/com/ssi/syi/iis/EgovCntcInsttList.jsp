@@ -5,10 +5,11 @@
   * @Description : EgovCntcInsttList 화면
   * @Modification Information
   * @
-  * @ 수정일               수정자              수정내용
+  * @ 수정일       수정자              수정내용
   * @ ----------   --------    ---------------------------
-  * @ 2009.08.11   이중호              최초 생성
-  *   2018.09.10   신용호              표준프레임워크 v3.8 개선
+  * @ 2009.08.11   이중호       최초 생성
+  *   2018.09.10   신용호       표준프레임워크 v3.8 개선
+  *   2024.10.29   권태성		press(event) 추가
   *
   *  @author 공통컴포넌트팀
   *  @since 2009.08.11
@@ -63,6 +64,12 @@ function fn_egov_detail_CntcInstt(insttId){
 	varForm.insttId.value    = insttId;
 	varForm.submit();
 }
+
+function press(event) {
+	if (event.keyCode == 13) {
+		fn_egov_pageview(1);
+	}
+}
 -->
 </script>
 </head>
@@ -83,7 +90,7 @@ function fn_egov_detail_CntcInstt(insttId){
 				<option selected value=''>--<spring:message code="input.select" />--</option><!-- 선택하세요 -->
 				<option value='1' <c:if test="${searchVO.searchCondition == '1'}">selected="selected"</c:if>><spring:message code="comSsiSyiIis.cntcInsttList.insttNm"/></option><!-- 기관명 -->
 				</select>
-				<input class="s_input2 vat" name="searchKeyword" type="text" value='<c:out value='${searchVO.searchKeyword}'/>' size="35" maxlength="35" onkeypress="press();" title="<spring:message code="title.searchCondition"/>" /><!-- 검색조건 -->
+				<input class="s_input2 vat" name="searchKeyword" type="text" value='<c:out value='${searchVO.searchKeyword}'/>' size="35" maxlength="35" onkeypress="press(event);" title="<spring:message code="title.searchCondition"/>" /><!-- 검색조건 -->
 				
 				<input class="s_btn" type="submit" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire"/>" onclick="fn_egov_search_CntcInstt(); return false;" /><!-- 조회 -->
 				<span class="btn_b"><a href="<c:url value='/ssi/syi/iis/addCntcInstt.do'/>?pageIndex=<c:out value='${searchVO.pageIndex}'/>" onclick="" title="<spring:message code="title.create"/>"><spring:message code="button.create" /></a></span><!-- 등록 -->

@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Map;
 
 import javax.annotation.Resource;
+
 import org.apache.ibatis.session.ResultHandler;
 import org.apache.ibatis.session.RowBounds;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.egovframe.rte.psl.dataaccess.EgovAbstractMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-
-import org.egovframe.rte.psl.dataaccess.EgovAbstractMapper;
 /**
  * EgovComAbstractDAO.java 클래스
  *

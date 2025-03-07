@@ -4,6 +4,9 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -20,9 +23,6 @@ import egovframework.com.uss.ion.rmm.service.EgovRoughMapService;
 import egovframework.com.uss.ion.rmm.service.RoughMapDefaultVO;
 import egovframework.com.uss.ion.rmm.service.RoughMapVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import org.egovframe.rte.fdl.property.EgovPropertyService;
-import org.egovframe.rte.psl.dataaccess.util.EgovMap;
-import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 /**
  * 개요
@@ -43,6 +43,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
  *  -----------		------		---------
  *   2014.08.27		옥찬우		최초 생성
  *   2022.11.11     김혜준		시큐어코딩 처리
+ *   2024.10.29     권태성		상세 페이지에서 목록으로 이동 시 검색 결과로 이동하기 위한 인자 전달
  *
  * </pre>
  */
@@ -105,13 +106,13 @@ public class EgovRoughMapController {
 
     /**
      * 약도 상세조회 Service interface 호출 및 결과를 반환한다.
-     * @param RoughMapDefaultVO
+     * @param searchVO
      * @param model
      * @return String 건물 위치정보 상세조회 화면
      * @throws Exception
     */
     @RequestMapping("/com/uss/ion/rmm/selectRoughMapDetail.do")
-    public String selectRoughMap(RoughMapVO roughMapVO, ModelMap model) throws Exception {
+    public String selectRoughMap(RoughMapVO searchVO, ModelMap model) throws Exception {
 
         // 권한 체크
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -120,7 +121,7 @@ public class EgovRoughMapController {
             return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
-        RoughMapVO roughMap = egovRoughMapService.selectRoughMapDetail(roughMapVO);
+        RoughMapVO roughMap = egovRoughMapService.selectRoughMapDetail(searchVO);
         model.addAttribute("roughMap", roughMap);
 
         return "egovframework/com/uss/ion/rmm/EgovRoughMapDetail";

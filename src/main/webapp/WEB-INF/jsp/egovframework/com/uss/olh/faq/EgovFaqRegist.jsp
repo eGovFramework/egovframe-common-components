@@ -6,9 +6,10 @@
   * @
   * @ 수정일               수정자                수정내용
   * @ ----------   ---------    ---------------------------
-  * @ 2009.02.01   박정규                최초 생성
-  * @ 2016.06.13   김연호                표준프레임워크 v3.6 개선
-  * @ 2020.10.30   신용호                파일 확장자 및 사이즈 체크 누락 수정
+  * @ 2009.02.01   박정규			최초 생성
+  * @ 2016.06.13   김연호			표준프레임워크 v3.6 개선
+  * @ 2020.10.30   신용호			파일 확장자 및 사이즈 체크 누락 수정
+  * @ 2024.10.29   권태성			element들의 올바른 id 값을 지정
   *
   *  @author 공통서비스팀 
   *  @since 2009.02.01
@@ -127,7 +128,7 @@ function fn_egov_regist_faq(form){
 		<!-- 첨부파일  -->
 		<c:set var="title"><spring:message code="comUssOlhFaq.faqVO.atchFile"/></c:set>
 		<tr>
-			<th><label for="file_1">${title}</label> </th>
+			<th><label for="egovComFileUploader">${title}</label> </th>
 			<td class="nopd">
 			<!-- attached file Start -->
 			<div>

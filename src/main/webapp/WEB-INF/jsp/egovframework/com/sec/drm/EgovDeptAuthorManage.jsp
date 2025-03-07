@@ -4,12 +4,13 @@
   * @Description : EgovDeptAuthorManage List 화면
   * @Modification Information
   * @
-  * @ 수정일                 수정자               수정내용
+  * @ 수정일        수정자       수정내용
   * @ ----------    ---------    ---------------------------
-  * @ 2009.03.23    Lee.m.j      최초 생성
-  * @ 2011.11.11       이기하		  부서권한관리 등록시 오류 수정
-  *   2016.07.06    장동한               표준프레임워크 v3.6 개선
-  *   2018.12.03    신용호               표준프레임워크 v3.8 개선
+  * @ 2009.03.23  Lee.m.j		최초 생성
+  * @ 2011.11.11  이기하		부서권한관리 등록시 오류 수정
+  *   2016.07.06  장동한		표준프레임워크 v3.6 개선
+  *   2018.12.03  신용호		표준프레임워크 v3.8 개선
+  *   2024.10.29  권태성		readonly 속성의 inputbox에서 사용하지 않는 이벤트 핸들링 제거
   *
   *  @author Lee.m.j
   *  @since 2009.03.23
@@ -198,14 +199,6 @@ function fncSelectDeptAuthorPop() {
     window.open(url,"<spring:message code="comCopSecDrm.list.searchDept" />",'width=500,height=485,scrollbars=no,resizable=no,status=no,center:yes'); //부서검색
 
 }
-
-function press() {
-
-    if (event.keyCode==13) {
-    	fncSelectDeptAuthorList('1');
-    }
-}
-
 </script>
 <script type="text/javascript">
     $(document).ready(function () {
@@ -243,8 +236,8 @@ function press() {
 			<li><div style="line-height:4px;">&nbsp;</div><div><spring:message code="comCopSecDrm.searchCondition.searchKeywordText" /> : </div></li><!-- 부서권한관리 -->
 			<!-- 검색키워드 및 조회버튼 -->
 			<li>
-				<input name="deptCode" type="text" value="<c:out value='${deptAuthorVO.deptCode}' />" size="22" title="<spring:message code="comCopSecDrm.list.deptCd" />" onkeypress="press();" readonly="readonly" /><!-- 부서코드 -->
-				<input name="deptNm" type="text" value="<c:out value='${deptAuthorVO.deptNm}'/>" size="15" title="<spring:message code="comCopSecDrm.list.deptNm" />" onkeypress="press();" readonly="readonly" /><!-- 부서명 -->
+				<input name="deptCode" type="text" value="<c:out value='${deptAuthorVO.deptCode}' />" size="22" title="<spring:message code="comCopSecDrm.list.deptCd" />" readonly="readonly" /><!-- 부서코드 -->
+				<input name="deptNm" type="text" value="<c:out value='${deptAuthorVO.deptNm}'/>" size="15" title="<spring:message code="comCopSecDrm.list.deptNm" />" readonly="readonly" /><!-- 부서명 -->
 				<input id="deptSelectPopup" type="button" class="s_btn" value="<spring:message code="comCopSecDrm.btn.deptSelectPopup" />" title="<spring:message code="comCopSecDrm.btn.deptSelectPopup" /> <spring:message code="input.button" />" /><!-- 부서조회팝업 -->
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="button.inquire" /> <spring:message code="input.button" />" /><!-- 조회 -->
 				<input type="button" class="s_btn" onClick="fncDeptAuthorDeleteList();return false;" value="<spring:message code="button.delete" />" title="<spring:message code="button.delete" /> <spring:message code="input.button" />" /><!-- 삭제 -->

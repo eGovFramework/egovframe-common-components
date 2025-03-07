@@ -6,7 +6,7 @@
     <bean name="testSeqIdGnrService" class="org.egovframe.rte.fdl.idgnr.impl.EgovSequenceIdGnrService" destroy-method="destroy">
         <property name="dataSource" ref="egov.dataSource" />
         <property name="strategy"   ref="prefixSeqBoard" />
-        <property name="query" value="sELECT SEQ_NO.NEXTVAL FROM DUAL" />
+        <property name="query" value="SELECT 1 FROM DUAL" />
     </bean>
     
     <!-- TEST (Table) -->
@@ -15,7 +15,7 @@
         <property name="strategy"   ref="prefixSeqBoard" />
         <property name="blockSize"  value="10"/>
         <property name="table"      value="COMTECOPSEQ"/>
-        <property name="tableName"  value="SYH_ID"/>
+        <property name="tableName"  value="TEST_ID"/>
     </bean>
 
 	<bean name="prefixSeqBoard" class="org.egovframe.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl">

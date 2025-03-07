@@ -3,9 +3,9 @@ package egovframework.com.cmm.service.impl;
 import java.util.Iterator;
 import java.util.List;
 
-import egovframework.com.cmm.service.FileVO;
-
 import org.springframework.stereotype.Repository;
+
+import egovframework.com.cmm.service.FileVO;
 
 /**
  * @Class Name : EgovFileMngDAO.java

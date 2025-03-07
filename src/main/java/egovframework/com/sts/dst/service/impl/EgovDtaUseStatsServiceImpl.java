@@ -30,6 +30,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.aspectj.lang.JoinPoint;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -39,8 +41,6 @@ import egovframework.com.sts.dst.service.DtaUseStats;
 import egovframework.com.sts.dst.service.DtaUseStatsVO;
 import egovframework.com.sts.dst.service.EgovDtaUseStatsService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 
 @Service("egovDtaUseStatsService")
 public class EgovDtaUseStatsServiceImpl extends EgovAbstractServiceImpl implements EgovDtaUseStatsService {

@@ -15,6 +15,7 @@
  *  -------     --------    ---------------------------
  *  2009.8.3    이문준     최초 생성
  *  2011.8.26	정진오			IncludedInfo annotation 추가
+ *  2024.10.29	LeeBaekHaeng	검색조건 유지
  * </pre>
  */
 
@@ -22,6 +23,7 @@ package egovframework.com.uat.uap.web;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -39,7 +41,6 @@ import egovframework.com.uat.uap.service.EgovLoginPolicyService;
 import egovframework.com.uat.uap.service.LoginPolicy;
 import egovframework.com.uat.uap.service.LoginPolicyVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 
 @Controller
@@ -159,9 +160,14 @@ public class EgovLoginPolicyController {
 			loginPolicy.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
 			
 			egovLoginPolicyService.insertLoginPolicy(loginPolicy);
-	    	model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
-	    	
-			return "forward:/uat/uap/getLoginPolicy.do";		
+			model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
+
+			model.addAttribute("emplyrId", loginPolicy.getEmplyrId());
+			model.addAttribute("searchCondition", loginPolicy.getSearchCondition());
+			model.addAttribute("searchKeyword", loginPolicy.getSearchKeyword());
+			model.addAttribute("pageIndex", loginPolicy.getPageIndex());
+
+			return "redirect:/uat/uap/getLoginPolicy.do";
 		}
 	}                             		
 
@@ -185,9 +191,13 @@ public class EgovLoginPolicyController {
 			loginPolicy.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
 			
 			egovLoginPolicyService.updateLoginPolicy(loginPolicy);
-	    	model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
-	    	
-	    	return "forward:/uat/uap/selectLoginPolicyList.do";
+			model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
+
+			model.addAttribute("searchCondition", loginPolicy.getSearchCondition());
+			model.addAttribute("searchKeyword", loginPolicy.getSearchKeyword());
+			model.addAttribute("pageIndex", loginPolicy.getPageIndex());
+
+			return "redirect:/uat/uap/selectLoginPolicyList.do";
 		}
 	}
 
@@ -203,7 +213,12 @@ public class EgovLoginPolicyController {
 		egovLoginPolicyService.deleteLoginPolicy(loginPolicy);
 
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
-		return "forward:/uat/uap/selectLoginPolicyList.do";
+
+		model.addAttribute("searchCondition", loginPolicy.getSearchCondition());
+		model.addAttribute("searchKeyword", loginPolicy.getSearchKeyword());
+		model.addAttribute("pageIndex", loginPolicy.getPageIndex());
+
+		return "redirect:/uat/uap/selectLoginPolicyList.do";
 	}
 
 

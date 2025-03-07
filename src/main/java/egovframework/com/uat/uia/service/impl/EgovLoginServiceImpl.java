@@ -5,6 +5,7 @@ import java.util.Map;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.cmm.LoginVO;
@@ -15,7 +16,6 @@ import egovframework.com.uat.uia.service.EgovLoginService;
 import egovframework.com.utl.fcc.service.EgovNumberUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovFileScrty;
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 /**
  * 일반 로그인, 인증서 로그인을 처리하는 비즈니스 구현 클래스
@@ -35,6 +35,7 @@ import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
  *  2017.07.21   장동한            로그인인증제한 작업
  *  2020.07.08   신용호            비밀번호를 수정한후 경과한 날짜 조회
  *  2021.05.30   정진오            디지털원패스 인증 회원 조회
+ *  2024.10.29   LeeBaekHaeng		불필요 형변환 제거 (mapLockUserInfo.get("lockAt") ), @Override 표기
  *  </pre>
  */
 @Service("loginService")
@@ -200,6 +201,7 @@ public class EgovLoginServiceImpl extends EgovAbstractServiceImpl implements Ego
 	 * @return Map
 	 * @exception Exception
 	 */
+	@Override
     public Map<?,?> selectLoginIncorrect(LoginVO vo) throws Exception{
     	return loginDAO.selectLoginIncorrect(vo);
     }
@@ -211,6 +213,7 @@ public class EgovLoginServiceImpl extends EgovAbstractServiceImpl implements Ego
 	 * @return String
 	 * @exception Exception
 	 */
+	@Override
     public String processLoginIncorrect(LoginVO vo, Map<?,?> mapLockUserInfo) throws Exception{    	
     	String sRtnCode = "C";
     	//KISA 보안약점 조치 (2018-10-29, 윤창원)
@@ -219,7 +222,7 @@ public class EgovLoginServiceImpl extends EgovAbstractServiceImpl implements Ego
     	mapParam.put("USER_SE", vo.getUserSe());
 		mapParam.put("id", EgovStringUtil.isNullToString(vo.getId()));//KISA 보안약점 조치 (2018-10-29, 윤창원)
     	//잠김시 
-		if("Y".equals(((String)mapLockUserInfo.get("lockAt")))){
+		if ("Y".equals((mapLockUserInfo.get("lockAt")))) {
 			sRtnCode = "L";
 		//패드워드 인증시 
 		}else if( ((String)mapLockUserInfo.get("userPw")).equals(enpassword) ){
@@ -228,7 +231,7 @@ public class EgovLoginServiceImpl extends EgovAbstractServiceImpl implements Ego
     		loginDAO.updateLoginIncorrect(mapParam);
     		sRtnCode = "E";
         //패드워드 비인증시 
-    	}else if(!"Y".equals(((String)mapLockUserInfo.get("lockAt")))){
+		} else if (!"Y".equals((mapLockUserInfo.get("lockAt")))) {
     		//LOCK 설정
     		if( Integer.parseInt(String.valueOf(mapLockUserInfo.get("lockCnt")))+1 >= egovLoginConfig.getLockCount() ){    			
 	    		mapParam.put("updateAt", "L");
@@ -250,6 +253,7 @@ public class EgovLoginServiceImpl extends EgovAbstractServiceImpl implements Ego
 	 * @return int
 	 * @exception Exception
 	 */
+	@Override
 	public int selectPassedDayChangePWD(LoginVO vo) throws Exception {
 		return loginDAO.selectPassedDayChangePWD(vo);
 	}

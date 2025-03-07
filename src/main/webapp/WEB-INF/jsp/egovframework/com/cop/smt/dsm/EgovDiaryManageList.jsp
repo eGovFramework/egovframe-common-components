@@ -8,6 +8,7 @@
   * @ -------    --------    ---------------------------
   * @ 2009.03.09   장동한          최초 생성
   *   2016.08.05   장동한          표준프레임워크 v3.6 개선
+  *   2024.10.29   권태성          element들의 올바른 id 값을 지정
   *  
   *  @author 공통서비스팀
   *  @since 2009.03.09
@@ -74,7 +75,7 @@ function fn_egov_search_DiaryManage(){
 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
-	<form name="StplatListForm" action="<c:url value='/cop/smt/dsm/EgovDiaryManageList.do'/>" method="post"> 
+	<form id="listForm" name="listForm" action="<c:url value='/cop/smt/dsm/EgovDiaryManageList.do'/>" method="post">
 		<!-- 검색영역 -->
 		<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
 			<ul>
@@ -95,8 +96,8 @@ function fn_egov_search_DiaryManage(){
 				</li>
 			</ul>
 		</div>
-	<input name="diaryId" type="hidden" value="">
-	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
+	<input id="diaryId" name="diaryId" type="hidden" value="">
+    <input id="pageIndex" name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 	</form>
 
 	<!-- 목록영역 -->

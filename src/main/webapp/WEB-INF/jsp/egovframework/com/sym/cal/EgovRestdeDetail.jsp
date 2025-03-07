@@ -7,8 +7,10 @@
   * @
   * @  수정일             수정자                   수정내용
   * @ -------    --------    ---------------------------
-  * @ 2009.04.01   이중호              최초 생성
-  *   2011.08.12   서준식              CSS 경로 수정
+  * @ 2009.04.01   이중호		최초 생성
+  *   2011.08.12   서준식		CSS 경로 수정
+  *   2024.10.29   권태성		수정 페이지 신규 경로로 변경, 수정 페이지 Method 명시
+  *
   *  @author 공통서비스팀
   *  @since 2009.04.01
   *  @version 1.0
@@ -41,9 +43,10 @@ function fn_egov_list_Restde(){
  * 수정화면으로  바로가기
  ******************************************************** */
 function fn_egov_modify_Restde(){
-	var varForm				 = document.all["Form"];
-	varForm.action           = "<c:url value='/sym/cal/EgovRestdeModify.do'/>";
-	varForm.restdeNo.value   = "${result.restdeNo}";
+	var varForm = document.all["Form"];
+	varForm.action = "<c:url value='/sym/cal/EgovRestdeModifyView.do'/>";
+	varForm.restdeNo.value = "${result.restdeNo}";
+	varForm.method = "get";
 	varForm.submit();
 }
 /* ********************************************************

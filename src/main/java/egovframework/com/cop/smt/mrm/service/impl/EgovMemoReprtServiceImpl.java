@@ -3,17 +3,16 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.annotation.Resource;
+
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
+import org.springframework.stereotype.Service;
+
 import egovframework.com.cop.smt.mrm.service.EgovMemoReprtService;
 import egovframework.com.cop.smt.mrm.service.MemoReprt;
 import egovframework.com.cop.smt.mrm.service.MemoReprtVO;
 import egovframework.com.cop.smt.mrm.service.ReportrVO;
-
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
 
 /**
  * 개요
@@ -168,8 +167,8 @@ public class EgovMemoReprtServiceImpl extends EgovAbstractServiceImpl implements
 	 * 
 	 * @param memoReprt
 	 */
-	public void deleteMemoReprt(MemoReprt memoReprt) throws Exception{
-		memoReprtDAO.deleteMemoReprt(memoReprt);
+	public void deleteMemoReprt(MemoReprtVO memoReprtVO) throws Exception{
+		memoReprtDAO.deleteMemoReprt(memoReprtVO);
 	}
 
 }

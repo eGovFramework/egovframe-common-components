@@ -2,11 +2,11 @@ package egovframework.com.cop.tpl.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.cop.tpl.service.TemplateInf;
 import egovframework.com.cop.tpl.service.TemplateInfVO;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 템플릿 정보관리를 위한 데이터 접근 클래스

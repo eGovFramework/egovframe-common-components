@@ -1,9 +1,9 @@
 package egovframework.com.sym.log.clg.service;
 
+import javax.annotation.Resource;
+
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
-
-import javax.annotation.Resource;
 
 /**
  * @Class Name : EgovLoginLogAspect.java

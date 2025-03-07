@@ -189,7 +189,7 @@
 		
 		<c:if test="${fn:substring(wikMnthngReprt.reprtSttus,0,2) eq '등록' && wikMnthngReprt.wrterId eq uniqId}">	
 		<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="fn_egov_modify_wikmnthngreprt(); return false;" /><!-- 수정 -->
-		<span class="btn_s"><a href="<c:url value='/cop/smt/wmr/deleteWikMnthngReprt.do'/>?reprtId=<c:out value='${wikMnthngReprtVO.reprtId}'/>" onclick="fn_egov_delete_wikmnthngreprt(); return false;"><spring:message code="button.delete" /></a></span>
+		<span class="btn_s"><a href="<c:url value='/cop/smt/wmr/deleteWikMnthngReprt.do'/>?reprtId=<c:out value='${egovc:encryptId(wikMnthngReprtVO.reprtId)}'/>" onclick="fn_egov_delete_wikmnthngreprt(); return false;"><spring:message code="button.delete" /></a></span>
 		</c:if>
 		
 		<input class="s_submit" type="submit" value='<spring:message code="button.list" />' onclick="fn_egov_list_wikmnthngreprt(); return false;" /><!-- 목록 -->
@@ -197,7 +197,8 @@
 	<div style="clear:both;"></div>
 </div>
 
-	<form:hidden path="reprtId" />
+	<!--form:hidden path="reprtId" / -->
+	<input type="hidden" name="reprtId" value="<c:out value='${egovc:encryptId(wikMnthngReprtVO.reprtId)}'/>" />
 	
 	<!-- 검색조건 유지 -->
     <input type="hidden" name="searchWrd" value="<c:out value='${wikMnthngReprtVO.searchWrd}'/>" />

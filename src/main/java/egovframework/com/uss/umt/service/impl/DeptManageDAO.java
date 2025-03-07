@@ -2,10 +2,10 @@ package egovframework.com.uss.umt.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.umt.service.DeptManageVO;
-
-import org.springframework.stereotype.Repository;
 
 @Repository("deptManageDAO")
 public class DeptManageDAO extends EgovComAbstractDAO {

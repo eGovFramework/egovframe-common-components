@@ -3,13 +3,12 @@ package egovframework.com.crypto.err;
 import java.util.Random;
 
 import org.apache.commons.codec.binary.Base64;
+import org.egovframe.rte.fdl.cryptography.EgovARIACryptoService;
+import org.egovframe.rte.fdl.cryptography.EgovPasswordEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import org.egovframe.rte.fdl.cryptography.EgovARIACryptoService;
-import org.egovframe.rte.fdl.cryptography.EgovPasswordEncoder;
 
 /**
  * org.egovframe.rte.fdl.crypto v3.7 이하의 오류 테스트

@@ -4,10 +4,11 @@
   * @Description : EgovComDamMapTeamList 화면
   * @Modification Information
   * @
-  * @ 수정일             수정자           수정내용
+  * @ 수정일      수정자           수정내용
   * @ ----------  --------  ---------------------------
   * @ 2010.07.23  박종선          최초 생성
   *   2018.09.11  신용호          공통컴포넌트 3.8 개선
+  *   2024.10.29  권태성		  press(event) 추가
   *
   *  @author 공통서비스팀 
   *  @since 2010.05.01
@@ -64,6 +65,12 @@
 		function fnRegist(){
 			location.href = "<c:url value='/dam/map/tea/EgovComDamMapTeamRegist.do'/>";
 		}
+		
+		function press(event) {
+            if (event.keyCode == 13) {
+                fnSearch();
+            }
+        }
 		-->
 		</script>
 	</head>
@@ -85,7 +92,7 @@
 					<option value='1' <c:if test="${searchVO.searchCondition == '1'}">selected="selected"</c:if>><spring:message code="comDamMapTea.comDamMapTeamList.orgnztNm"/></option><!-- 조직명 -->
 					<option value='2' <c:if test="${searchVO.searchCondition == '2'}">selected="selected"</c:if>><spring:message code="comDamMapTea.comDamMapTeamList.orgnztId"/></option><!-- 조직ID -->
 					</select>
-					<input class="s_input2 vat" name="searchKeyword" type="text" value="${searchVO.searchKeyword}" maxlength="35" size="35" onkeypress="press();" title="<spring:message code="title.search"/>" /><!-- 검색어 입력 -->
+					<input class="s_input2 vat" name="searchKeyword" type="text" value="${searchVO.searchKeyword}" maxlength="35" size="35" onkeypress="press(event);" title="<spring:message code="title.search"/>" /><!-- 검색어 입력 -->
 					
 					<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fnSearch(); return false;" /><!-- 조회 -->
 					<span class="btn_b"><a href="<c:url value='/dam/map/tea/EgovComDamMapTeamRegist.do'/>" onclick="" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span><!-- 등록 -->

@@ -64,7 +64,7 @@ function fn_egov_save_db_mntrng(){
 <%-- noscript 테그 --%>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form modelAttribute="dbMntrng"  action="<c:url value='/utl/sys/dbm/addDbMntrng.do'/>" method="post">
+<form:form modelAttribute="dbMntrng"  action="${pageContext.request.contextPath}/utl/sys/dbm/addDbMntrng.do" method="post">
 
 <!-- 검색조건 유지 -->
 <input type="hidden" name="searchCondition" value="<c:out value='${searchVO.searchCondition}'/>"/>

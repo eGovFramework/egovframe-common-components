@@ -92,7 +92,6 @@ function fn_egov_list_SystemCntc(){
  ******************************************************** */
 function fn_egov_regist_SystemCntc(form){
 	if(confirm("<spring:message code='common.save.msg' />")){
-		debugger;
 		if(!validateSystemCntc(form)){
 			return;
 		}else{

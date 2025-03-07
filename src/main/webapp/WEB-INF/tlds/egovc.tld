@@ -569,4 +569,14 @@ body content should be processed.
     </example>
   </function>
 
+  <function>
+    <description>문자열 암호화 메서드(None UrlEncode)</description>
+    <name>encryptId</name>
+    <function-class>egovframework.com.cmm.web.EgovComUtlController</function-class>
+    <function-signature>java.lang.String encryptId(java.lang.String)</function-signature>
+    <example>
+    ${egovc:encryptId(java.lang.String source)}
+    </example>
+  </function>
+
 </taglib>

@@ -8,6 +8,7 @@
  * @ -------      --------   ---------------------------
  * @ 2009.02.01   lee.m.j    최초 생성
  * @ 2018.09.03   신용호            공통컴포넌트 3.8 개선
+ * @ 2024.10.29	LeeBaekHaeng	검색조건 유지
  *
  *  @author lee.m.j
  *  @since 2009.03.11
@@ -25,6 +26,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -41,6 +43,7 @@
 function fncSelectLoginPolicyList() {
     var varFrom = document.getElementById("loginPolicy");
     varFrom.action = "<c:url value='/uat/uap/selectLoginPolicyList.do'/>";
+    varFrom.method = 'get';
     varFrom.submit();
 }
 
@@ -126,6 +129,7 @@ function ipValidate() {
 			<th><spring:message code="comUatUap.loginPolicyRegist.emplyrId"/> <span class="pilsu">*</span></th><!-- 사용자ID -->
 			<td class="left">
 			    <input id="emplyrId" name="emplyrId" type="text" value="<c:out value='${loginPolicy.emplyrId}'/>" title="<spring:message code="comUatUap.loginPolicyRegist.emplyrId"/>" size="30" maxlength="30" readonly="readonly" /><!-- 사용자ID -->
+			    <input name="emplyrIdEncrypt" id="emplyrIdEncrypt" value="${egovc:encrypt(loginPolicy.emplyrId)}" type="hidden">
 			</td>
 		</tr>
 		<tr>

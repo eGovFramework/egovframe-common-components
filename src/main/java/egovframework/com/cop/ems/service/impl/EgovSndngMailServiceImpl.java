@@ -1,20 +1,19 @@
 package egovframework.com.cop.ems.service.impl;
 
-import egovframework.com.cop.ems.service.EgovMultiPartEmail;
-import egovframework.com.cop.ems.service.EgovSndngMailService;
-import egovframework.com.cop.ems.service.SndngMailVO;
-
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-
 import javax.annotation.Resource;
 
 import org.apache.commons.mail.EmailAttachment;
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.mail.MailAuthenticationException;
 import org.springframework.mail.MailParseException;
 import org.springframework.mail.MailSendException;
 import org.springframework.stereotype.Service;
+
+import egovframework.com.cop.ems.service.EgovMultiPartEmail;
+import egovframework.com.cop.ems.service.EgovSndngMailService;
+import egovframework.com.cop.ems.service.SndngMailVO;
 
 /**
  * 메일 솔루션과 연동해서 이용해서 메일을 보내는 서비스 구현 클래스

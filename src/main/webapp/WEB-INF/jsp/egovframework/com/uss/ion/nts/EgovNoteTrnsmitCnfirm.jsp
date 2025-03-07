@@ -17,6 +17,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <c:set var="pageTitle"><spring:message code="comUssIonNts.popupTrnsmitCnfirm.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -55,7 +56,6 @@ function fn_egov_close(){
 
 	<!-- 타이틀 -->
 	<h1>${pageTitle}</h1>
-	<form name="frm"  method="post" action = "<c:url value='/cop/adb/selectManList.do'/>">
 
 	<table class="popwTable" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
 	<caption>${pageTitle} <spring:message code="title.update" /></caption>
@@ -72,14 +72,14 @@ function fn_egov_close(){
 		</tr>
 		
 		<!-- 발신자 아이디-->
-		<c:set var="title"><spring:message code="comUssIonNts.detail.trnsmitNm"/> id</c:set>
+		<c:set var="title"><spring:message code="comUssIonNts.detail.trnsmitNm"/>ID</c:set>
 		<tr>
 			<th><label for="schdulCn">${title}</label> </th>
 			<td class="left"><c:out value="${resultList[0].trnsmiterIds}"/></td>
 		</tr>
 		
 		<!-- 발신자 명 -->
-		<c:set var="title"><spring:message code="comUssIonNts.detail.trnsmitNm"/> name</c:set>
+		<c:set var="title"><spring:message code="comUssIonNts.detail.trnsmitNm"/>명</c:set>
 		<tr>
 			<th><label for="schdulCn">${title}</label> </th>
 			<td class="left"><c:out value="${resultList[0].trnsmiterNm}"/></td>
@@ -105,9 +105,8 @@ function fn_egov_close(){
 		<col style="width: 10%;">
 		<col style="width: ;">
 		<col style="width: 10%;">
-		<col style="width: 10%;">
+		<col style="width: 30%;">
 		<col style="width: 20%;">
-		<col style="width: 10%;">
 	</colgroup>
 	<thead>
 	<tr>
@@ -117,7 +116,6 @@ function fn_egov_close(){
 		<th><spring:message code="comUssIonNts.popupTrnsmitCnfirmList.openAt" /></th><!-- 개봉/미개봉 -->
 		<th><spring:message code="comUssIonNts.popupTrnsmitCnfirmList.gbn" /></th><!-- 구분 -->
 		<th><spring:message code="comUssIonNts.popupTrnsmitCnfirmList.rcverDateTime" /></th><!-- 수신시각 -->
-		<th></th><!-- 삭제 -->
 		
 	</tr>
 	</thead>
@@ -137,23 +135,11 @@ function fn_egov_close(){
 			<c:if test="${resultInfo.openYn eq 'N'}">미개봉</c:if>
 		</td>
 		<td>
-			<c:if test="${resultInfo.recptnSe eq '01'}">수신</c:if>
-			<c:if test="${resultInfo.recptnSe eq '02'}">참조</c:if>
+			<c:if test="${resultInfo.recptnSe eq '1'}">수신</c:if>
+			<c:if test="${resultInfo.recptnSe eq '2'}">참조</c:if>
 		</td>
 	    <td><c:if test="${resultInfo.openYn eq 'Y'}"><c:out value="${resultInfo.rcverPnttm}"/></c:if></td>
     
-    
-		<td><%-- 미개봉만 삭제가능하게  --%>
-			<c:if test="${resultInfo.openYn eq 'N'}">
-			<form name="formUpdt" action="<c:url value='/uss/ion/nts/selectNoteTrnsmitCnfirm.do?noteId='/>${resultInfo.noteId}"  method="post">
-				<input type="submit" class="btn_style3c" value="<spring:message code="button.delete" />" onClick="fn_egov_delete_TrnsmitCnfirm(this.form);return false;">
-				<input type="hidden" name="cmd" value="del">
-				<input type="hidden" name="noteTrnsmitId" value="${resultInfo.noteTrnsmitId}">
-				<input type="hidden" name="noteRecptnId" value="${resultInfo.noteRecptnId}">
-			</form>
-			</c:if>
-		 </td>
-		    
 	</tr>
 	</c:forEach>
 	</tbody>
@@ -166,7 +152,6 @@ function fn_egov_close(){
 		<button class="btn_style3" onClick="fn_egov_close();" title="<spring:message code="button.close" /> <spring:message code="input.button" />"><spring:message code="button.close" /></button>
 		<div style="clear:both;"></div>
 	</div>
-</form>
 </div>
 
 

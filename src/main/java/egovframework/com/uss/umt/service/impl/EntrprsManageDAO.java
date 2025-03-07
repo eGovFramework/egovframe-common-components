@@ -2,12 +2,12 @@ package egovframework.com.uss.umt.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.umt.service.EntrprsManageVO;
 import egovframework.com.uss.umt.service.StplatVO;
 import egovframework.com.uss.umt.service.UserDefaultVO;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 기업회원관리에 관한 데이터 접근 클래스를 정의한다.

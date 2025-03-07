@@ -2,11 +2,11 @@ package egovframework.com.utl.sys.srm.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.utl.sys.srm.service.ServerResrceMntrng;
 import egovframework.com.utl.sys.srm.service.ServerResrceMntrngVO;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 개요

@@ -2,16 +2,15 @@ package egovframework.com.uss.olp.opr.web;
 
 import java.util.List;
 
-import egovframework.com.uss.olp.opr.service.EgovOnlinePollResultService;
-import egovframework.com.uss.olp.opr.service.OnlinePollResult;
-
-import org.egovframe.rte.fdl.property.EgovPropertyService;
-
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import egovframework.com.uss.olp.opr.service.EgovOnlinePollResultService;
+import egovframework.com.uss.olp.opr.service.OnlinePollResult;
 
 /**
  * 온라인POLL결과를 처리하는 Controller Class 구현

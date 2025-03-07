@@ -7,8 +7,9 @@
   * @
   * @  수정일              수정자            수정내용
   * @ ----------   --------   ---------------------------
-  * @ 2009.03.10   이용              최초 생성
-  *   2018.09.03   신용호            공통컴포넌트 3.8 개선
+  * @ 2009.03.10   이용			최초 생성
+  *   2018.09.03   신용호		공통컴포넌트 3.8 개선
+  *   2024.10.29   권태성		등록 페이지 신규 경로로 변경
   *
   *  @author 공통서비스 개발팀 이용
   *  @since 2009.03.10
@@ -86,7 +87,7 @@ function selectList(){
   <tr>
     <td width="700">
 <!-- ********** 여기서 부터 본문 내용 *************** -->
-<form:form modelAttribute="progrmManageVO" method="post" >
+<form:form modelAttribute="progrmManageVO" method="post" action="${pageContext.request.contextPath}/sym/prm/EgovProgramListRegist.do">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -127,7 +128,7 @@ function selectList(){
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="comSymPrm.programListRegist.progrmDc"/></th><!-- 프로그램설명 -->
+			<th><spring:message code="comSymPrm.programListRegist.progrmDc"/> <span class="pilsu">*</span></th><!-- 프로그램설명 -->
 			<td class="left">
 			    <form:textarea path="progrmDc" rows="14" cols="75" cssClass="txaClass" title="${vprogrmDc}"/><!-- 프로그램설명 -->
       			<form:errors path="progrmDc"/>

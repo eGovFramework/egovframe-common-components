@@ -5,8 +5,9 @@
 
       수정일         수정자                   수정내용
 -------    --------    ---------------------------
-2008.03.09    장동한          최초 생성
-2018.08.16        이정은	       공통컴포넌트 3.8 개선
+2008.03.09  장동한			최초 생성
+2018.08.16  이정은			공통컴포넌트 3.8 개선
+2024.10.29  권태성			목록의 등록일자 미표시 수정, 등록 페이지 신규 경로로 변경
 
     author   : 공통서비스 개발팀 장동한
     since    : 2009.03.09
@@ -76,7 +77,7 @@ function fn_egov_search_UnityLink(){
 				<input class="s_input2 vat" name="searchKeyword" type="text" value="<c:out value="${searchVO.searchKeyword}"/>" size="10" maxlength="35" onkeypress="press();" title="<spring:message code="title.search" />" /><!-- 검색어 -->
 				
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fn_egov_search_UnityLink(); return false;" />
-				<span class="btn_b"><a href="<c:url value='/uss/ion/ulm/registUnityLink.do' />?pageIndex=<c:out value='${searchVO.pageIndex}' />" onclick="" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="<c:url value='/uss/ion/ulm/registUnityLinkView.do' />?pageIndex=<c:out value='${searchVO.pageIndex}' />" onclick="" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
@@ -133,7 +134,7 @@ function fn_egov_search_UnityLink(){
 			    </td>
 			    <td class="left"><c:out value="${resultInfo.unityLinkUrl}"/></td>
 			    <td><c:out value="${resultInfo.frstRegisterNm}"/></td>
-			    <td><c:out value="${fn:substring(resultInfo.frstRegisterPnttm, 0, 10)}"/></td>
+			    <td><c:out value="${resultInfo.frstRegistPnttm}"/></td>
 			</tr>
 			</c:forEach>
 		</tbody>

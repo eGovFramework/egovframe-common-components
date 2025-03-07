@@ -5,9 +5,10 @@
  
       수정일         수정자                   수정내용
     -------    --------    ---------------------------
-     2008.03.09    장동한          최초 생성
-     2011.12.14    이기하          최근검색어관리번호 추가
-     2018.08.16    이정은          공통컴포넌트 3.8 개선(퍼블리싱 확인 및 다국어처리)
+     2008.03.09    장동한			최초 생성
+     2011.12.14    이기하			최근검색어관리번호 추가
+     2018.08.16    이정은			공통컴포넌트 3.8 개선(퍼블리싱 확인 및 다국어처리)
+     2024.10.29    권태성			수정 페이지 신규 경로로 변경
  
     author   : 공통서비스 개발팀 장동한
     since    : 2009.03.09
@@ -46,7 +47,7 @@ function fn_egov_list_RecentSrchwrd(){
 function fn_egov_modify_RecentSrchwrd(){
 	var vFrom = document.RecentSrchwrdForm;
 	vFrom.cmd.value = '';
-	vFrom.action = "<c:url value='/uss/ion/rsm/updtRecentSrchwrd.do' />";;
+	vFrom.action = "<c:url value='/uss/ion/rsm/updtRecentSrchwrdView.do' />";;
 	vFrom.submit();
 
 }

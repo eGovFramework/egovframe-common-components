@@ -8,6 +8,7 @@
   * @ -------    --------    ---------------------------
   * @ 2009.02.01   박정규              최초 생성
   *   2017.09.04  이정은              표준프레임워크 v3.7 개선
+  *   2024.10.29	LeeBaekHaeng	검색조건 유지
   *  @author 공통서비스팀 
   *  @since 2009.02.01
   *  @version 1.0
@@ -141,10 +142,13 @@ function fn_egov_inqire_code() {
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input type="submit" class="s_submit" value="<spring:message code="button.update" />" title="<spring:message code="button.update" /> <spring:message code="input.button" />" />
-		<a href="<c:url value='/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do' />" class="btn_s" title="<spring:message code="button.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a>
+		<a href="<c:url value='/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do' />?searchCondition=<c:out value="${cmmnDetailCodeVO.searchCondition}" />&searchKeyword=<c:out value="${cmmnDetailCodeVO.searchKeyword}" />&pageIndex=<c:out value="${cmmnDetailCodeVO.pageIndex}" />" class="btn_s" title="<spring:message code="button.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a>
 	</div><div style="clear:both;"></div>
 	
 </div>
+	<input name="searchCondition" type="hidden" value="<c:out value="${param.searchCondition}" />">
+	<input name="searchKeyword" type="hidden" value="<c:out value="${param.searchKeyword}" />">
+	<input name="pageIndex" type="hidden" value="<c:out value="${param.pageIndex}" />">
 </form:form>
 
 </body>

@@ -6,8 +6,9 @@
  * @
  * @  수정일                    수정자                수정내용
  * @ ---------     --------    ---------------------------
- * @ 2010.07.20    이      용                최초 생성
- * @ 2018.09.19    최 두 영              다국어처리
+ * @ 2010.07.20    이용				최초 생성
+ * @ 2018.09.19    최두영			다국어처리
+ * @ 2024.10.29    권태성			debugger 코드 제거(modalDialogCallback())
  *
  *  @author 이      용
  *  @since 2010.08.05
@@ -53,9 +54,7 @@
 	   
 	function modalDialogCallback(retVal) {
 		if(retVal != null){
-			
-			debugger; 
-			
+
 			var tmp = retVal.split(",");		
 			
 			var varForm	= document.all["rwardManage"];
@@ -113,7 +112,7 @@
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
-<form:form modelAttribute="rwardManage" name="rwardManage" method="post" action="<c:url value='/uss/ion/rwd/EgovRwardConfm.do'/>">
+<form:form modelAttribute="rwardManage" name="rwardManage" method="post" action="${pageContext.request.contextPath}/uss/ion/rwd/EgovRwardConfm.do">
 <div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="<spring:message code="comUssIonRwd.common.submit"/>" title="<spring:message code="comUssIonRwd.common.submit"/>"></div><!-- 전송 -->
 <form:hidden  path="rwardId"/>
 <form:hidden  path="rwardManId"/>

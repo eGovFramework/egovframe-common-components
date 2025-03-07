@@ -7,8 +7,9 @@
   * @
   * @ 수정일               수정자              수정내용
   * @ ----------   --------    ---------------------------
-  * @ 2009.08.11   이중호             최초 생성
-  *   2018.09.10   신용호             표준프레임워크 v3.8 개선
+  * @ 2009.08.11   이중호			최초 생성
+  *   2018.09.10   신용호			표준프레임워크 v3.8 개선
+  *   2024.10.29   권태성			onkeypress에서 호출 할 press 함수를 페이지에 추가
   *
   *  @author 공통컴포넌트팀
   *  @since 2009.08.11
@@ -90,6 +91,11 @@ function fn_egov_detail_SystemCntc(cntcId){
 	varForm.submit();
 }
 
+function press(event) {
+	if (event.keyCode == 13) {
+		fn_egov_pageview(1);
+	}
+}
 -->
 </script>
 </head>
@@ -113,7 +119,7 @@ function fn_egov_detail_SystemCntc(cntcId){
 					<option selected value=''>--<spring:message code="input.select" />--</option><!-- 선택하세요 -->
 					<option value='1' <c:if test="${searchVO.searchCondition == '1'}">selected="selected"</c:if>><spring:message code="comSsiSyiSim.systemCntcList.cntcNm"/></option><!-- 시스템연계명 -->
 				</select>
-				<input class="s_input2 vat" name="searchKeyword" type="text" value='<c:out value='${searchVO.searchKeyword}'/>' maxlength="35" size="35" onkeypress="press();" title="<spring:message code="title.searchCondition"/>" /><!-- 검색조건 -->
+				<input class="s_input2 vat" name="searchKeyword" type="text" value='<c:out value='${searchVO.searchKeyword}'/>' maxlength="35" size="35" onkeypress="press(event);" title="<spring:message code="title.searchCondition"/>" /><!-- 검색조건 -->
 				
 				<input class="s_btn" type="submit" value="<spring:message code="title.inquire"/>" title="<spring:message code="title.inquire"/>" onclick="fn_egov_search_SystemCntc(); return false;" /><!-- 조회 -->
 				

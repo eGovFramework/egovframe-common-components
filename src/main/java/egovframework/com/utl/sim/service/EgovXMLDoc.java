@@ -7,6 +7,7 @@
  *   -------    --------    ---------------------------
  *   2009.02.03    박지욱          최초 생성
  *   2022.11.11    김혜준          시큐어코딩 처리
+ *   2024.10.29		LeeBaekHaeng	불필요 형변환 제거 (SndngMailDocument.Factory.parse(xmlFile);)
  *
  *  @author 공통 서비스 개발팀 박지욱
  *  @since 2009. 02. 03
@@ -22,7 +23,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.nio.charset.StandardCharsets;
 
-import javax.xml.XMLConstants;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.transform.OutputKeys;
@@ -68,7 +68,7 @@ public class EgovXMLDoc {
 			File xmlFile = new File(storePathString,FilenameUtils.getName(file));
 			if (xmlFile.exists() && xmlFile.isFile()) {
 				fis = new FileInputStream(xmlFile);
-				mailDoc = (SndngMailDocument) SndngMailDocument.Factory.parse(xmlFile);
+				mailDoc = SndngMailDocument.Factory.parse(xmlFile);
 
 			}
 		} finally {
@@ -91,7 +91,7 @@ public class EgovXMLDoc {
 		String storePathString = EgovProperties.getProperty("Globals.fileStorePath");
 
 		try {
-			file = EgovFileTool.createNewFile(storePathString+FilenameUtils.getName(file));
+			file = EgovFileTool.createNewFile(storePathString,FilenameUtils.getName(file));
 			File xmlFile = new File(storePathString,FilenameUtils.getName(file));
 			fos = new FileOutputStream(xmlFile);
 
@@ -126,7 +126,7 @@ public class EgovXMLDoc {
 				fis = new FileInputStream(srcFile);
 				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 				factory.setNamespaceAware(true);
-				factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+				factory.setFeature(EgovXMLConstants.FEATURE_SECURE_PROCESSING, true);
 				factory.setFeature(EXTERNAL_GENERAL_ENTITIES, false);
 				factory.setFeature(EXTERNAL_PARAMETER_ENTITIES, false);
 				factory.setAttribute(ACCESS_EXTERNAL_DTD, "");
@@ -247,7 +247,7 @@ public class EgovXMLDoc {
 			Source source = new DOMSource(document);
 			Result result = new StreamResult(srcFile);
 			TransformerFactory factory = TransformerFactory.newInstance();
-			factory.setFeature(XMLConstants.FEATURE_SECURE_PROCESSING, true);
+			factory.setFeature(EgovXMLConstants.FEATURE_SECURE_PROCESSING, true);
 			factory.setAttribute(ACCESS_EXTERNAL_DTD, "");
 			factory.setAttribute(ACCESS_EXTERNAL_STYLESHEET, "");
 			Transformer transformer = factory.newTransformer();

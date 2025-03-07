@@ -7,9 +7,10 @@
   * @
   * @ 수정일               수정자            수정내용
   * @ ----------   --------   ---------------------------
-  * @ 2009.04.01   이중호            최초 생성
-  * @ 2017.08.30   양희훈            표준프레임워크 v3.7 개선
-  * @ 2019.12.11   신용호            KISA 보안약점 조치 (크로스사이트 스크립트)
+  * @ 2009.04.01   이중호		최초 생성
+  * @ 2017.08.30   양희훈		표준프레임워크 v3.7 개선
+  * @ 2019.12.11   신용호		KISA 보안약점 조치 (크로스사이트 스크립트)
+  * @ 2024.10.29   권태성		등록 페이지 신규 경로로 변경
   * 
   *  @author 공통서비스팀
   *  @since 2009.04.01
@@ -80,17 +81,17 @@ function jusoCallBack(zipNo,rnMgtSn,siNm,sggNm,roadFullAddr,buldMnnm,buldSlno,bd
 </head>
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg"/></noscript>
-<form:form modelAttribute="zip" name="zip" method="post">
+<form:form modelAttribute="zip" name="zip" method="post" action="${pageContext.request.contextPath}/sym/ccm/zip/EgovCcmZipRegist.do">
 <div class="note">
 
 <!-- 상단 타이틀  영역 -->
   <h1>
   <c:set var="titleZip"><spring:message code="comSymCcmZip.zipVO.zipCreate"/></c:set>
   <c:set var="titleRdmn"><spring:message code="comSymCcmZip.zipVO.rdmnCreate"/></c:set>
-  <c:if test="${searchList == '1'}">
+		<c:if test="${!isRoadAddr}">
    <img src="<c:url value='/images/egovframework/com/cmm/icon/tit_icon.gif' />" width="16" height="16" hspace="3" style="vertical-align: middle" alt="제목아이콘이미지">&nbsp;${titleZip }</h1></td>
   </c:if>
-  <c:if test="${searchList == '2'}">
+	<c:if test="${isRoadAddr}">
    <img src="<c:url value='/images/egovframework/com/cmm/icon/tit_icon.gif' />" width="16" height="16" hspace="3" style="vertical-align: middle" alt="제목아이콘이미지">&nbsp;${titleRdmn }</h1></td>
   </c:if>
 
@@ -102,7 +103,7 @@ function jusoCallBack(zipNo,rnMgtSn,siNm,sggNm,roadFullAddr,buldMnnm,buldSlno,bd
 	<col style="width: 20%;"><col style="width: ;">
 </colgroup>
 <tbody>
-  <c:if test="${searchList == '1'}">
+		<c:if test="${!isRoadAddr}">
   	  <!-- 우편번호  -->
 	  <c:set var="title"><spring:message code="comSymCcmZip.zipVO.zip"/></c:set>
 	  <tr>
@@ -160,7 +161,7 @@ function jusoCallBack(zipNo,rnMgtSn,siNm,sggNm,roadFullAddr,buldMnnm,buldSlno,bd
 	  <input type=hidden name="rdmnCode" id="rdmnCode" value="0"/>
 	  <input type=hidden name="rdmn" id="rdmn" value="0"/>
   </c:if>
-  <c:if test="${searchList == '2'}">
+		<c:if test="${isRoadAddr}">
   	  <!-- 우편번호  -->
 	  <c:set var="title"><spring:message code="comSymCcmZip.zipVO.zip"/></c:set>
 	  <c:set var="address"><spring:message code="comSymCcmZip.zipVO.rdmnSearch"/></c:set>

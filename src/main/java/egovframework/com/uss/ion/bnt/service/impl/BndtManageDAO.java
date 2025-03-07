@@ -2,6 +2,8 @@ package egovframework.com.uss.ion.bnt.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.bnt.service.BndtCeckManage;
 import egovframework.com.uss.ion.bnt.service.BndtCeckManageVO;
@@ -9,8 +11,6 @@ import egovframework.com.uss.ion.bnt.service.BndtDiary;
 import egovframework.com.uss.ion.bnt.service.BndtDiaryVO;
 import egovframework.com.uss.ion.bnt.service.BndtManage;
 import egovframework.com.uss.ion.bnt.service.BndtManageVO;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 개요

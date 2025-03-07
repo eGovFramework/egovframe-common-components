@@ -71,7 +71,7 @@
 
 </head>
 <body>
-<form name="frm" method="post" action="<c:url value='/cop/ncm/selectNcrdInfs.do'/>">
+<form name="frm" method="post" action="${pageContext.request.contextPath}/cop/ncm/selectNcrdInfs.do">
 <div style="visibility:hidden;display:none;">
 <input name="iptSubmit" type="submit" value="<spring:message code="comCopNcm.ncrdList.submit" />" title="<spring:message code="comCopNcm.ncrdList.submit" />">
 </div>

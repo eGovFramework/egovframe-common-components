@@ -1,12 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?><!-- 
 	수정일                 수정자                          수정내용
   =========     =======    =================================================
-  2011.9.2   	정진오     	 	FRST_REGIST_PNTTM컬럼에 FRST_REGISTER_PNTTM Alias 추가
+  2011.9.2   	정진오		FRST_REGIST_PNTTM컬럼에 FRST_REGISTER_PNTTM Alias 추가
   							SCHDUL_KND_CODE컬럼에 SCHDUL_KIND_CODE Alias 추가
   							(egovMap을 사용하는 조회 쿼리의경우)
   							DeptSchdulManage.selectDeptSchdulManageRetrieve에 SCHDUL_CHARGER_NAME 추가(Daily 조회시 필요)
-  2011.10.05    서준식               보안 취약점 점검사항 반영 $->#변경
-  2018.10.15  	이정은               메인페이지/일정관리조회 - 오늘날짜 일정 안나오는 오류 처리
+  2011.10.05    서준식		보안 취약점 점검사항 반영 $->#변경
+  2018.10.15  	이정은		메인페이지/일정관리조회 - 오늘날짜 일정 안나오는 오류 처리
+  2024.10.29  	win777		동적쿼리 조건문 수정(selectDeptSchdulManageRetrieve)
 -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
@@ -182,7 +183,7 @@
 		)
 		]]>
 	 </if>
-	 <if test='searchMode == "DAILY""'>
+	 <if test='searchMode == "DAILY"'>
 	 <![CDATA[
 	 	 AND (#{searchDay} BETWEEN SUBSTR(A.SCHDUL_BGNDE, 1, 8)  AND SUBSTR(A.SCHDUL_ENDDE, 1, 8) )
 	 ]]>  

@@ -14,11 +14,11 @@ package egovframework.com.uss.ion.isg.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.isg.service.IntnetSvcGuidance;
 import egovframework.com.uss.ion.isg.service.IntnetSvcGuidanceVO;
-
-import org.springframework.stereotype.Repository;
 
 @Repository("intnetSvcGuidanceDAO")
 public class IntnetSvcGuidanceDAO extends EgovComAbstractDAO {

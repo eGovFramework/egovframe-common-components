@@ -2,23 +2,22 @@ package egovframework.com.sym.bat.web;
 
 import java.util.List;
 
-import egovframework.com.cmm.EgovMessageSource;
-import egovframework.com.cmm.annotation.IncludedInfo;
-import egovframework.com.cmm.util.EgovUserDetailsHelper;
-import egovframework.com.sym.bat.service.BatchResult;
-import egovframework.com.sym.bat.service.EgovBatchResultService;
+import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-
-import javax.annotation.Resource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+
+import egovframework.com.cmm.EgovMessageSource;
+import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.sym.bat.service.BatchResult;
+import egovframework.com.sym.bat.service.EgovBatchResultService;
 
 /**
  * 배치결과관리에 대한 controller 클래스

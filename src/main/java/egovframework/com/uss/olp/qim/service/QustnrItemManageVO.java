@@ -1,6 +1,8 @@
 package egovframework.com.uss.olp.qim.service;
 
 import java.io.Serializable;
+
+import javax.validation.constraints.NotEmpty;
 /**
  * 설문항목관리 VO Class 구현
  * @author 공통서비스 장동한
@@ -13,7 +15,8 @@ import java.io.Serializable;
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.03.20  장동한          최초 생성
+ *   2009.03.20  장동한			최초 생성
+ *   2024.10.29  권태성			필수값 BindingResult 검증을 위한 @NotEmpty 추가
  *
  * </pre>
  */
@@ -25,21 +28,26 @@ public class QustnrItemManageVO implements Serializable {
 	private String qestnrQesitmId = "";
 
 	/** 설문지 아이디 */
+	@NotEmpty(message = "설문정보{common.required.msg}")
 	private String qestnrId = "";
 
 	/** 항목순번 */
+	@NotEmpty(message = "항목순번{common.required.msg}")
 	private String iemSn = "";
 
 	/** 항목내용 */
+	@NotEmpty(message = "항목내용{common.required.msg}")
 	private String qustnrIemId = "";
 
 	/** 설문항목아이디 */
 	private String iemCn = "";
 
-	/** 키타답변여부 */
+	/** 기타답변여부 */
+	@NotEmpty(message = "기타답변여부{common.required.msg}")
 	private String etcAnswerAt = "";
 
 	/** 설문항목(을)를 아이디 */
+	@NotEmpty(message = "설문문항정보{common.required.msg}")
 	private String qestnrTmplatId = "";
 
 	/** 최초등록시점  */

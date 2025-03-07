@@ -2,11 +2,11 @@ package egovframework.com.uss.ion.ans.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.ans.service.AnnvrsryManage;
 import egovframework.com.uss.ion.ans.service.AnnvrsryManageVO;
-
-import org.springframework.stereotype.Repository;
 
 /**
  * 개요

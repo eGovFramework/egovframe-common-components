@@ -6,8 +6,10 @@
   * @
   * @  수정일             수정자                   수정내용
   * @ -------    --------    ---------------------------
-  * @ 2009.04.01   이중호              최초 생성
-  * @ 2017.09.01   양희훈              표준프레임워크 v3.7 개선
+  * @ 2009.04.01   이중호		최초 생성
+  * @ 2017.09.01   양희훈		표준프레임워크 v3.7 개선
+  * @ 2024.10.29   권태성		등록 페이지 신규 경로로 변경, 2015년 개정된 5자리 우편번호에 맞게 우편번호 표기 방식 개선
+  *
   *  @author 공통서비스팀
   *  @since 2009.04.01
   *  @version 1.0
@@ -55,9 +57,9 @@ function fn_egov_search_Zip(){
  * 등록 처리 함수
  ******************************************************** */
 function fn_egov_regist_Zip(no){
-//	location.href = "<c:url value='/sym/ccm/zip/EgovCcmZipRegist.do'/>";
+//	location.href = "<c:url value='/sym/ccm/zip/EgovCcmZipRegistView.do'/>";
 	var varForm	   			 = document.getElementById("Form");
-	varForm.action 			 = "<c:url value='/sym/ccm/zip/EgovCcmZipRegist.do'/>";
+			varForm.action 			 = "<c:url value='/sym/ccm/zip/EgovCcmZipRegistView.do'/>";
 	varForm.searchList.value = no;
 	varForm.submit();
 }
@@ -180,7 +182,7 @@ function fn_egov_list(){
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr style="cursor:pointer;cursor:hand;" onclick="javascript:fn_egov_detail_Zip('${resultInfo.zip}','${resultInfo.sn}');">
 		<td class="lt_text3" nowrap><c:out value="${(searchVO.pageIndex - 1) * searchVO.pageSize + status.count}"/></td>
-		<td class="lt_text3" nowrap><c:out value='${fn:substring(resultInfo.zip, 0,5)}'/></td>
+		<td class="lt_text3" nowrap><c:out value='${resultInfo.zip}'/></td>
 		<td class="lt_text"  nowrap>${resultInfo.ctprvnNm} ${resultInfo.signguNm} ${resultInfo.emdNm} ${resultInfo.liBuldNm} ${resultInfo.lnbrDongHo}</td>
 	</tr>
 	</c:forEach>
@@ -189,7 +191,7 @@ function fn_egov_list(){
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr style="cursor:pointer;cursor:hand;" onclick="javascript:fn_egov_detail_RdmnCode_Zip('${resultInfo.rdmnCode}','${resultInfo.sn}');">
 		<td class="lt_text3" nowrap><c:out value="${(searchVO.pageIndex - 1) * searchVO.pageSize + status.count}"/></td>
-		<td class="lt_text3" nowrap><c:out value='${fn:substring(resultInfo.zip, 0,3)}'/>-<c:out value='${fn:substring(resultInfo.zip, 3,6)}'/></td>
+		<td class="lt_text3" nowrap>${resultInfo.zip}</td>
 		<td class="lt_text"  nowrap>${resultInfo.ctprvnNm} ${resultInfo.signguNm} ${resultInfo.rdmn} ${resultInfo.bdnbrMnnm} <c:if test="${resultInfo.bdnbrSlno != ''}">- ${resultInfo.bdnbrSlno}</c:if> ${resultInfo.buldNm} ${resultInfo.detailBuldNm}</td>
 	</tr>
 	</c:forEach>

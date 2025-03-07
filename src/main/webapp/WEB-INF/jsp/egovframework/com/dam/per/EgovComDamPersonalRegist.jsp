@@ -7,9 +7,10 @@
   * @ 수정일              수정자          수정내용
   * @ ----------  --------  ---------------------------
   * @ 2010.08.12  박종선          최초 생성
-  *   2011.08.12    정진오		"지식유형명" 항목 필수 항목 표시 image가 보이도록 수정함
-  *   2011.10.07    이기하		조직명 선택 후 화면 재로딩되는 오류 주석처리
+  *   2011.08.12  정진오		  "지식유형명" 항목 필수 항목 표시 image가 보이도록 수정함
+  *   2011.10.07  이기하		  조직명 선택 후 화면 재로딩되는 오류 주석처리
   *   2018.09.11  신용호          공통컴포넌트 3.8 개선
+  *   2024.10.29  권태성		  목록으로 돌아올 때 검색 조건이 유지되도록 수정(#5)
   *
   *  @author 공통서비스팀
   *  @since 2010.05.01
@@ -92,8 +93,10 @@ function fn_egov_initl_knoPersonal(){
 /* ********************************************************
  * 목록 으로 가기
  ******************************************************** */
-function fn_egov_list_KnoPersonal(){
-	location.href = "<c:url value='/dam/per/EgovComDamPersonalList.do'/>";
+ function fnList(){
+	    var varForm         = document.knoPersonal;
+	    varForm.action      = "<c:url value='/dam/per/EgovComDamPersonalList.do'/>";
+	    varForm.submit();
 }
 /* ********************************************************
  * 저장처리화면
@@ -123,6 +126,10 @@ function fn_egov_get_CodeId(form){
 <body onLoad="fn_egov_initl_knoPersonal();">
 
 <form:form modelAttribute="knoPersonal" name="knoPersonal" method="post" enctype="multipart/form-data">
+	<input type="hidden" id="searchCondition" name="searchCondition" value="${knoPersonal.searchCondition}" />
+	<input type="hidden" id="searchKeyword" name="searchKeyword" value="${knoPersonal.searchKeyword}" />
+	<input type="hidden" id="pageIndex" name="pageIndex" value="${knoPersonal.pageIndex}" />
+
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -198,7 +205,7 @@ function fn_egov_get_CodeId(form){
 <!-- 하단 버튼 -->
 <div class="btn">
 	<input class="s_submit" type="submit" value="<spring:message code="button.save" />" onclick="fn_egov_regist_KnoPersonal(document.knoPersonal); return false;" /><!-- 저장 -->
-	<input class="s_submit" type="submit" value='<spring:message code="button.list" />' onclick="fn_egov_list_KnoPersonal(); return false;" /><!-- 목록 -->
+	<input class="s_submit" type="submit" value='<spring:message code="button.list" />' onclick="fnList(); return false;" /><!-- 목록 -->
 </div>
 <div style="clear:both;"></div>
 </div>

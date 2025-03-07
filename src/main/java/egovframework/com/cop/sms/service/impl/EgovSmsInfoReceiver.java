@@ -2,6 +2,7 @@ package egovframework.com.cop.sms.service.impl;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -21,8 +22,6 @@ import x3.client.smeapi.SMESession;
 import x3.client.smeapi.impl.SMEConfig;
 import x3.client.smeapi.impl.SMEConnectionFactoryImpl;
 import x3.client.smeapi.impl.SMELogger;
-
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 
 /**
  * 문자메시지 연동 결과 수신 처리를 위한 클래스

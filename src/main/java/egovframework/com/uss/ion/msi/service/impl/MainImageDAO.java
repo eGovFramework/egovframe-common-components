@@ -14,12 +14,12 @@ package egovframework.com.uss.ion.msi.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.msi.service.MainImage;
 import egovframework.com.uss.ion.msi.service.MainImageVO;
-
-import org.springframework.stereotype.Repository;
 
 @Repository("mainImageDAO")
 public class MainImageDAO extends EgovComAbstractDAO {

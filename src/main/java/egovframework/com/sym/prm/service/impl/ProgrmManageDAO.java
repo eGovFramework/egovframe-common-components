@@ -2,12 +2,12 @@ package egovframework.com.sym.prm.service.impl;
 
 import java.util.List;
 
+import org.springframework.stereotype.Repository;
+
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sym.prm.service.ProgrmManageDtlVO;
 import egovframework.com.sym.prm.service.ProgrmManageVO;
-
-import org.springframework.stereotype.Repository;
 /**
  * 프로그램 목록관리및 프로그램변경관리에 대한 DAO 클래스를 정의한다.
  * @author 개발환경 개발팀 이용

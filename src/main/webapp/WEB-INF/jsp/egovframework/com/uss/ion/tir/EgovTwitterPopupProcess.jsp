@@ -30,39 +30,21 @@
 <%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator"%>
 <%
 	//조회 모드 세션에서 가져오기
-	System.out.println("sTWITTER_SE1 : " +session.getAttribute("sTWITTER_SE"));
 	String sCmd = session.getAttribute("sTWITTER_SE") == null ? "" : (String) session.getAttribute("sTWITTER_SE");
-	System.out.println("sTWITTER_SE2 : " +session.getAttribute("sTWITTER_SE"));
 
 	String sCONSUMER_KEY = session.getAttribute("sCONSUMER_KEY").toString().trim();
 	String sCONSUMER_SECRET = session.getAttribute("sCONSUMER_SECRET").toString().trim();
-	System.out.println("3");
 	
 	Twitter twitter = new TwitterFactory().getInstance();
-	System.out.println("4");
 	twitter.setOAuthConsumer(sCONSUMER_KEY, sCONSUMER_SECRET);
-	System.out.println("5");
 	
 	String oauthToken = request.getParameter("oauth_token");
-	System.out.println("6");
 	String oauthVerifier = request.getParameter("oauth_verifier");
-	System.out.println("7");
 	
 	String rtoken = session.getAttribute("rtoken").toString().trim();
-	System.out.println("8");
 	String rstoken = session.getAttribute("rstoken").toString().trim();
-	System.out.println("9");
 	RequestToken requestToken = new RequestToken(rtoken,rstoken);
-	System.out.println("10");
-	
-	System.out.println("=============================");
-	//System.out.println("sCONSUMER_KEY : "+sCONSUMER_KEY);
-	//System.out.println("sCONSUMER_SECRET : "+sCONSUMER_SECRET);
-	//System.out.println("oauthToken : "+oauthToken);
-	//System.out.println("oauthVerifier : "+oauthVerifier);
-	//System.out.println("rtoken : "+rtoken);
-	//System.out.println("rstoken : "+rstoken);
-	
+
 	AccessToken accessToken = null;
 	if (rtoken.equals(oauthToken)) {
 		try {

@@ -2,18 +2,17 @@ package egovframework.com.ssi.syi.ims.service.impl;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.psl.dataaccess.util.EgovMap;
+import org.springframework.stereotype.Service;
+
 import egovframework.com.ssi.syi.ims.service.CntcMessage;
 import egovframework.com.ssi.syi.ims.service.CntcMessageItem;
 import egovframework.com.ssi.syi.ims.service.CntcMessageItemVO;
 import egovframework.com.ssi.syi.ims.service.CntcMessageVO;
 import egovframework.com.ssi.syi.ims.service.EgovCntcMessageService;
-
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import org.egovframe.rte.psl.dataaccess.util.EgovMap;
-
-import javax.annotation.Resource;
-
-import org.springframework.stereotype.Service;
 
 /**
  *

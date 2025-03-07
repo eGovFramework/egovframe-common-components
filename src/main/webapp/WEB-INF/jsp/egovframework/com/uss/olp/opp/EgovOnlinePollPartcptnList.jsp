@@ -7,7 +7,8 @@
   * @  수정일             수정자                   수정내용
   * @ -------    --------    ---------------------------
   * @ 2008.03.09	장동한		최초 생성
-  *   2016.06.13 	장동한        표준프레임워크 v3.6 개선
+  *   2016.06.13 	장동한		표준프레임워크 v3.6 개선
+  *   2024.10.29 	권태성		now 변수를 model의 값을 사용하도록 수정(fn_egov_regist_OnlinePollPartcptn())
   *  
   *  @author 공통서비스 개발팀 장동한
   *  @since 2009.03.09
@@ -44,7 +45,7 @@ function linkPage(pageNo){
  * 상세회면 처리 함수
  ******************************************************** */
 function fn_egov_regist_OnlinePollPartcptn(pollId,sDate,eDate){
-	var iToDate = <fmt:formatDate value="${now}" pattern="yyyyMMdd" />;
+	var iToDate = <c:out value="${now}" />;
 	var iBeginDate = Number(sDate.replaceAll("-",""));
 	var iEndDate = Number(eDate.replaceAll("-",""));
 

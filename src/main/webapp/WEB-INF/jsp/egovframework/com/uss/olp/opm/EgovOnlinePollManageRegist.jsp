@@ -4,10 +4,11 @@
   * @Description : 온라인POLL관리 등록
   * @Modification Information
   * @
-  * @  수정일             수정자                   수정내용
+  * @ 수정일     수정자      수정내용
   * @ -------    --------    ---------------------------
-  * @ 2008.03.09    장동한          최초 생성
-  *   2016.06.13   장동한              표준프레임워크 v3.6 개선
+  * @ 2008.03.09   장동한		최초 생성
+  *   2016.06.13   장동한		표준프레임워크 v3.6 개선
+  *   2024.10.29   권태성		존재하지 않는 id를 참조하는 label 제거
   *
   *  @author 공통서비스팀 
   *  @since 2008.03.09
@@ -189,24 +190,24 @@ function fn_egov_save_OnlinePollManage(){
 		<!-- POLL페기유무 -->
 		<c:set var="title"><spring:message code="comUssOlpOpm.regist.pollDsuseYn"/></c:set>
 		<tr>
-			<th><label for="pollDsuseYn">${title}</label> <span class="pilsu">*</span></th>
+			<th>${title} <span class="pilsu">*</span></th>
 			<td class="nopd">
-		 		<div style="float:left;"><input type="radio" name="pollDsuseYn" value="N"  checked></div>
-		 		<div style="float:left;margin:0 0 0 10px;">N</div>
-		   		<div style="float:left;margin:0 0 0 10px;"><input type="radio" name="pollDsuseYn" value="Y"></div>
-		   		<div style="float:left;margin:0 0 0 10px;">Y</div>
+		 		<div style="float:left;"><input type="radio" id="pollDsuseYn1" name="pollDsuseYn" value="N" checked title="POLL페기유무 사용안함"></div>
+		 		<div style="float:left;margin:0 0 0 10px;"><label for="pollDsuseYn1">N</label></div>
+		   		<div style="float:left;margin:0 0 0 10px;"><input type="radio" id="pollDsuseYn2" name="pollDsuseYn" value="Y" title="POLL페기유무 사용함"></div>
+		   		<div style="float:left;margin:0 0 0 10px;"><label for="pollDsuseYn2">Y</label></div>
 		   		<div style="clear:both;"></div>
 			</td>
 		</tr>
 		<!-- POLL자동페기유무 -->
 		<c:set var="title"><spring:message code="comUssOlpOpm.regist.pollAutoDsuseYn"/></c:set>
 		<tr>
-			<th><label for="pollAutoDsuseYn">${title}</label> <span class="pilsu">*</span></th>
+			<th>${title} <span class="pilsu">*</span></th>
 			<td class="nopd">
-		    	<div style="float:left;"><input type="radio" name="pollAutoDsuseYn" value="N"></div>
-		    	<div style="float:left;margin:0 0 0 10px;">N</div>
-		   		<div style="float:left;margin:0 0 0 10px;"><input type="radio" name="pollAutoDsuseYn" value="Y" checked></div>
-		   		<div style="float:left;margin:0 0 0 10px;">Y</div>
+		    	<div style="float:left;"><input type="radio" id="pollAutoDsuseYn1" name="pollAutoDsuseYn" value="N" title="POLL자동페기유무 사용안함"></div>
+		    	<div style="float:left;margin:0 0 0 10px;"><label for="pollAutoDsuseYn1">N</label></div>
+		   		<div style="float:left;margin:0 0 0 10px;"><input type="radio" id="pollAutoDsuseYn2" name="pollAutoDsuseYn" value="Y" checked title="POLL자동페기유무 사용함"></div>
+		   		<div style="float:left;margin:0 0 0 10px;"><label for="pollAutoDsuseYn2">Y</label></div>
 		   		<div style="clear:both;"></div>
 			</td>
 		</tr>	

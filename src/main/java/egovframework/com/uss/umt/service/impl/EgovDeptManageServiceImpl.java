@@ -2,14 +2,13 @@ package egovframework.com.uss.umt.service.impl;
 
 import java.util.List;
 
-import egovframework.com.uss.umt.service.DeptManageVO;
-import egovframework.com.uss.umt.service.EgovDeptManageService;
-
-import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
+
+import egovframework.com.uss.umt.service.DeptManageVO;
+import egovframework.com.uss.umt.service.EgovDeptManageService;
 
 @Service("egovDeptManageService")
 public class EgovDeptManageServiceImpl extends EgovAbstractServiceImpl implements EgovDeptManageService {

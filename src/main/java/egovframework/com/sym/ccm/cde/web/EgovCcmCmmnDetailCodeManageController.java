@@ -4,6 +4,8 @@ import java.util.List;
 
 import javax.annotation.Resource;
 
+import org.egovframe.rte.fdl.property.EgovPropertyService;
+import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -24,9 +26,6 @@ import egovframework.com.sym.ccm.ccc.service.EgovCcmCmmnClCodeManageService;
 import egovframework.com.sym.ccm.cde.service.CmmnDetailCodeVO;
 import egovframework.com.sym.ccm.cde.service.EgovCcmCmmnDetailCodeManageService;
 
-import org.egovframe.rte.fdl.property.EgovPropertyService;
-import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-
 /**
 *
 * 공통상세코드에 관한 요청을 받아 서비스 클래스로 요청을 전달하고 서비스클래스에서 처리한 결과를 웹 화면으로 전달을 위한 Controller를 정의한다
@@ -43,6 +42,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 *   2009.04.01  이중호       최초 생성
 *   2011.08.26	정진오	IncludedInfo annotation 추가
 *   2017.08.08	이정은	표준프레임워크 v3.7 개선
+*	2024.10.29	LeeBaekHaeng	검색조건 유지
 *
 * </pre>
 */
@@ -137,7 +137,11 @@ public class EgovCcmCmmnDetailCodeManageController {
 		ModelMap model) throws Exception {
 		cmmnDetailCodeManageService.deleteCmmnDetailCode(cmmnDetailCodeVO);
 
-		return "forward:/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do";
+		model.addAttribute("searchCondition", cmmnDetailCodeVO.getSearchCondition());
+		model.addAttribute("searchKeyword", cmmnDetailCodeVO.getSearchKeyword());
+		model.addAttribute("pageIndex", cmmnDetailCodeVO.getPageIndex());
+
+		return "redirect:/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do";
 	}
 
 	/**
@@ -221,7 +225,11 @@ public class EgovCcmCmmnDetailCodeManageController {
 		cmmnDetailCodeVO.setFrstRegisterId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 		cmmnDetailCodeManageService.insertCmmnDetailCode(cmmnDetailCodeVO);
 
-		return "forward:/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do";
+		model.addAttribute("searchCondition", cmmnDetailCodeVO.getSearchCondition());
+		model.addAttribute("searchKeyword", cmmnDetailCodeVO.getSearchKeyword());
+		model.addAttribute("pageIndex", cmmnDetailCodeVO.getPageIndex());
+
+		return "redirect:/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do";
 	}
 
 	/**
@@ -270,7 +278,11 @@ public class EgovCcmCmmnDetailCodeManageController {
 		cmmnDetailCodeVO.setLastUpdusrId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 		cmmnDetailCodeManageService.updateCmmnDetailCode(cmmnDetailCodeVO);
 
-		return "forward:/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do";
+		model.addAttribute("searchCondition", cmmnDetailCodeVO.getSearchCondition());
+		model.addAttribute("searchKeyword", cmmnDetailCodeVO.getSearchKeyword());
+		model.addAttribute("pageIndex", cmmnDetailCodeVO.getPageIndex());
+
+		return "redirect:/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do";
 	}
 
 }

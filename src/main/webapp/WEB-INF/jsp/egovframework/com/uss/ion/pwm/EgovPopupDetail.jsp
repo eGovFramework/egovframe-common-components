@@ -5,8 +5,9 @@
  
       수정일         수정자                   수정내용
     -------    --------    ---------------------------
-     2009.09.16    장동한          최초 생성
-     2018.08.29    이정은          공통컴포넌트 3.8 개선
+     2009.09.16    장동한		최초 생성
+     2018.08.29    이정은		공통컴포넌트 3.8 개선
+     2024.10.29    권태성		formUpdt form 내에 cmd input box를 추가
  
     author   : 공통서비스 개발팀 장동한
     since    : 2009.09.16
@@ -131,6 +132,7 @@ function fn_egov_delete_PopupManage(){
 		<form name="formUpdt" action="<c:url value='/uss/ion/pwm/updtPopup.do'/>" method="post" style="display:inline">
 			<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="fn_egov_modify_PopupManage(); return false;" />
 			<input name="popupId" type="hidden" value="${popupManageVO.popupId}">
+			<input name="cmd" type="hidden" value="<c:out value=''/>">
 			</form>
 		
 		<form name="formDelete" action="<c:url value='/uss/ion/pwm/detailPopup.do'/>" method="post" style="display:inline">

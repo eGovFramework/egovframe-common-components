@@ -7,7 +7,8 @@
   * @
   * @  수정일             수정자                   수정내용
   * @ -------    --------    ---------------------------
-  * @ 2009.04.01   이중호              최초 생성
+  * @ 2009.04.01   이중호			최초 생성
+  * @ 2024.10.29   권태성			수정 페이지 신규 경로로 변경
   *
   *  @author 공통서비스팀
   *  @since 2009.04.01
@@ -47,7 +48,7 @@ function fnList(){
  ******************************************************** */
 function fnModify(){
 	var varForm				       = document.getElementById("Form");
-	varForm.action                 = "<c:url value='/sym/ccm/adc/EgovCcmAdministCodeModify.do'/>";
+	varForm.action                 = "<c:url value='/sym/ccm/adc/EgovCcmAdministCodeModifyView.do'/>";
 	varForm.administZoneSe.value   = "${result.administZoneSe}";
 	varForm.administZoneCode.value = "${result.administZoneCode}";
 	varForm.submit();

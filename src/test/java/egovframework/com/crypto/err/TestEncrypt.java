@@ -2,13 +2,12 @@ package egovframework.com.crypto.err;
 
 import java.util.Random;
 
+import org.egovframe.rte.fdl.cryptography.EgovEnvCryptoService;
+import org.egovframe.rte.fdl.cryptography.impl.EgovEnvCryptoServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
-
-import org.egovframe.rte.fdl.cryptography.EgovEnvCryptoService;
-import org.egovframe.rte.fdl.cryptography.impl.EgovEnvCryptoServiceImpl;
 
 /**
  * org.egovframe.rte.fdl.crypto v3.7 이하의 오류 테스트
