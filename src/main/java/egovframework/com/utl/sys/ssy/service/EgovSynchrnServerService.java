@@ -90,7 +90,7 @@ public interface EgovSynchrnServerService {
 	 * @param filePath - 업로드 경로
 	 * @return List - 업로드 파일 리스트
 	 */
-	public List<String> getFileName(String filePath) throws Exception;
+	public List<String> getFileName() throws Exception;
 	
 	/**
 	 * 동기화 대상 파일을 업로드 한다.

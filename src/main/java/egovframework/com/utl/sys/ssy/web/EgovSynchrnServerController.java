@@ -128,7 +128,7 @@ public class EgovSynchrnServerController {
 		int totCnt = egovSynchrnServerService.selectSynchrnServerListTotCnt(synchrnServerVO);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
-		model.addAttribute("fileList", egovSynchrnServerService.getFileName(SYNTH_SERVER_PATH));
+		model.addAttribute("fileList", egovSynchrnServerService.getFileName());
 
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 

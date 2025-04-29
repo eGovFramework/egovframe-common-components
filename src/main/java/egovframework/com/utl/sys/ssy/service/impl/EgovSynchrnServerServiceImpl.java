@@ -417,9 +417,9 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 	 * @param filePath - 업로드 경로
 	 * @return List - 업로드 파일 리스트
 	 */
-	public List<String> getFileName(String filePath) throws Exception {
+	public List<String> getFileName() throws Exception {
 
-		File uploadFile = new File(EgovWebUtil.filePathBlackList(filePath));
+		File uploadFile = new File(EgovWebUtil.filePathBlackList(SYNCH_SERVER_PATH));
 		
 		if(!uploadFile.exists()){
 			//2017.02.08 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
