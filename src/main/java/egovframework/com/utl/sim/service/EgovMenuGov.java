@@ -41,7 +41,7 @@ public class EgovMenuGov {
 	 * @version 1.0 (2009.02.04.)
 	 * @see
 	 */
-	public static Vector<List<String>> parsFileByMenuChar(String parFile, String parChar, int parField) throws Exception {
+	public static Vector<List<String>> parsFileByMenuChar(String basePath, String parFile, String parChar, int parField) throws Exception {
 		Vector<List<String>> list = null;
 		String FileName = null;
 		
@@ -50,7 +50,7 @@ public class EgovMenuGov {
 
 		// 파일이며, 존재하면 파싱 시작
 		if (file.exists() && file.isFile()) {
-			list = EgovFileTool.parsFileByChar(parFile, parChar, parField);
+			list = EgovFileTool.parsFileByChar(basePath, parFile, parChar, parField);
 		} else {
 			list = new Vector<List<String>>();
 		}

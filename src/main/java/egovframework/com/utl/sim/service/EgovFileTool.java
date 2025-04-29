@@ -33,6 +33,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import egovframework.com.cmm.EgovWebUtil;
+import egovframework.com.cmm.aop.EgovFileBasePathSecurityValidator;
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
@@ -343,14 +344,23 @@ public class EgovFileTool {
 	 * @return Vector parResult 파싱결과 구조체
 	 * @exception Exception
 	 */
-	public static Vector<List<String>> parsFileByChar(String parFile, String parChar, int parField) throws Exception {
+	public static Vector<List<String>> parsFileByChar(String basePath, String parFile, String parChar, int parField) throws Exception {
 
+		// 인자 값이 없는 경우 "Globals.fileStorePath" 기본 경로를 지정한다.
+		if (basePath == null || basePath.equals("")) {
+			basePath = FILE_STORE_PATH;
+		}
+		
+		if (!EgovFileBasePathSecurityValidator.validate(basePath)) {
+			throw new SecurityException("Unacceptable base path : " + basePath);
+		}
+		
 		// 파싱결과 구조체
 		Vector<List<String>> parResult = new Vector<List<String>>();
 
 		// 파일 오픈
 		String parFile1 = parFile.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR);
-		File file = new File(EgovWebUtil.filePathBlackList(parFile1));
+		File file = new File(EgovWebUtil.filePathBlackList(basePath + parFile1));
 		BufferedReader br = null;
 		try {
 			// 파일이며, 존재하면 파싱 시작

@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -112,14 +113,20 @@ public class EgovProperties {
 	 * @param property String
 	 * @return ArrayList
 	 */
-	public static ArrayList<Map<String, String>> loadPropertyFile(String property) {
+	public static ArrayList<Map<String, String>> loadPropertyFile(String propertyPath) {
 
 		// key - value 형태로 된 배열 결과
 		ArrayList<Map<String, String>> keyList = new ArrayList<Map<String, String>>();
 
-		String src = property.replace("\\", FILE_SEPARATOR).replace("/", FILE_SEPARATOR);
+		String src = (RELATIVE_PATH_PREFIX + propertyPath).replace("\\", FILE_SEPARATOR).replace("/", FILE_SEPARATOR);
 
-		if (Files.exists(Paths.get(EgovWebUtil.filePathBlackList(src)))) { //2022.01 Potential Path Traversal
+		// Windows OS : 맨 앞에 있는 \ 제거
+		// Linux, Mac : 해당 없음
+        String normalizedPath = src.replaceFirst("^[\\\\]+", "");
+		
+		Path path = Paths.get(EgovWebUtil.filePathBlackList(normalizedPath));
+		
+		if (Files.exists(path)) { //2022.01 Potential Path Traversal
 			Properties props = loadPropertiesFromFile(src);
 
 			Enumeration<?> plist = props.propertyNames();
