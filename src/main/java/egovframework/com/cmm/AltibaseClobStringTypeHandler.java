@@ -23,8 +23,6 @@ import java.sql.SQLException;
 
 import org.apache.commons.io.IOUtils;
 import org.egovframe.rte.psl.orm.ibatis.support.AbstractLobTypeHandler;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.jdbc.support.lob.LobCreator;
 import org.springframework.jdbc.support.lob.LobHandler;
 
@@ -57,8 +55,6 @@ import org.springframework.jdbc.support.lob.LobHandler;
  */
 @SuppressWarnings("deprecation")
 public class AltibaseClobStringTypeHandler extends AbstractLobTypeHandler {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(AltibaseClobStringTypeHandler.class);
 
 	/**
 	 * Constructor used by iBATIS: fetches config-time LobHandler from
