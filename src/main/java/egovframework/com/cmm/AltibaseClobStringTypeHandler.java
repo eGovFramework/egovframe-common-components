@@ -46,12 +46,16 @@ import org.springframework.jdbc.support.lob.LobHandler;
  * @see org.springframework.orm.ibatis.SqlMapClientFactoryBean#setLobHandler
  * 
  *      <pre>
- *    수정일     수정자      수정내용
- *   -------    --------    ---------------------------
- *   2017.03.03  조성원      시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
- *   2022.11.11  김혜준      시큐어코딩 처리
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.03.20  홍길동          최초 생성
+ *   2017.03.03  조성원          시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+ *   2022.11.11  김혜준          시큐어코딩 처리
+ *   2025.05.21  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(지역 변수 명명 규칙), AssignmentInOperand(피연산자의 할당)
+ *
  *      </pre>
- * 
  */
 @SuppressWarnings("deprecation")
 public class AltibaseClobStringTypeHandler extends AbstractLobTypeHandler {
