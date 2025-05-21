@@ -21,6 +21,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import org.apache.commons.io.IOUtils;
 import org.egovframe.rte.psl.orm.ibatis.support.AbstractLobTypeHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -83,34 +84,11 @@ public class AltibaseClobStringTypeHandler extends AbstractLobTypeHandler {
 	}
 
 	@Override
-	protected Object getResultInternal(ResultSet rs, int index, LobHandler lobHandler) throws SQLException {
-
-		Reader rd = null;
-		StringBuffer read_data = new StringBuffer("");
-		int read_length;
-		char[] buf = new char[1024];
-
-		try {
-			// 2022.11.11 시큐어코딩 처리
-			rd = lobHandler.getClobAsCharacterStream(rs, index);
-			while ((read_length = rd.read(buf)) != -1) {
-				read_data.append(buf, 0, read_length);
-			}
-		} catch (IOException ie) {
-			throw new SQLException(ie.getMessage());
-			// 2011.10.10 보안점검 후속조치
-		} finally {
-			if (rd != null) {
-				try {
-					rd.close();
-					// 2017.03.03 조성원 시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-				} catch (IOException ignore) {
-					LOGGER.error("[" + ignore.getClass() + "] Connection Close : " + ignore.getMessage());
-				}
-			}
+	protected Object getResultInternal(ResultSet rs, int index, LobHandler lobHandler)
+			throws SQLException, IOException {
+		try (Reader reader = lobHandler.getClobAsCharacterStream(rs, index);) {
+			return IOUtils.toString(reader);
 		}
-
-		return read_data.toString();
 	}
 
 	@Override
