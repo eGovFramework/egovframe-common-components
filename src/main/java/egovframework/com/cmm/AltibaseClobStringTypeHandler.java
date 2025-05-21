@@ -31,10 +31,13 @@ import org.springframework.jdbc.support.lob.LobHandler;
  * iBATIS TypeHandler implementation for Strings that get mapped to CLOBs.
  * Retrieves the LobHandler to use from SqlMapClientFactoryBean at config time.
  *
- * <p>Particularly useful for storing Strings with more than 4000 characters in an
- * Oracle database (only possible via CLOBs), in combination with OracleLobHandler.
+ * <p>
+ * Particularly useful for storing Strings with more than 4000 characters in an
+ * Oracle database (only possible via CLOBs), in combination with
+ * OracleLobHandler.
  *
- * <p>Can also be defined in generic iBATIS mappings, as DefaultLobCreator will
+ * <p>
+ * Can also be defined in generic iBATIS mappings, as DefaultLobCreator will
  * work with most JDBC-compliant database drivers. In this case, the field type
  * does not have to be BLOB: For databases like MySQL and MS SQL Server, any
  * large enough binary type will work.
@@ -43,12 +46,12 @@ import org.springframework.jdbc.support.lob.LobHandler;
  * @since 1.1.5
  * @see org.springframework.orm.ibatis.SqlMapClientFactoryBean#setLobHandler
  * 
- * 
+ *      <pre>
  *    수정일     수정자      수정내용
  *   -------    --------    ---------------------------
  *   2017.03.03  조성원      시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
  *   2022.11.11  김혜준      시큐어코딩 처리
- * 
+ *      </pre>
  * 
  */
 @SuppressWarnings("deprecation")
@@ -59,6 +62,7 @@ public class AltibaseClobStringTypeHandler extends AbstractLobTypeHandler {
 	/**
 	 * Constructor used by iBATIS: fetches config-time LobHandler from
 	 * SqlMapClientFactoryBean.
+	 * 
 	 * @see org.springframework.orm.ibatis.SqlMapClientFactoryBean#getConfigTimeLobHandler
 	 */
 	public AltibaseClobStringTypeHandler() {
@@ -72,43 +76,44 @@ public class AltibaseClobStringTypeHandler extends AbstractLobTypeHandler {
 		super(lobHandler);
 	}
 
-	protected void setParameterInternal(
-			PreparedStatement ps, int index, Object value, String jdbcType, LobCreator lobCreator)
-			throws SQLException {
+	@Override
+	protected void setParameterInternal(PreparedStatement ps, int index, Object value, String jdbcType,
+			LobCreator lobCreator) throws SQLException {
 		lobCreator.setClobAsString(ps, index, (String) value);
 	}
 
-	protected Object getResultInternal(ResultSet rs, int index, LobHandler lobHandler)
-			throws SQLException {
+	@Override
+	protected Object getResultInternal(ResultSet rs, int index, LobHandler lobHandler) throws SQLException {
 
 		Reader rd = null;
 		StringBuffer read_data = new StringBuffer("");
-	    int read_length;
-		char [] buf = new char[1024];
+		int read_length;
+		char[] buf = new char[1024];
 
-	    try {
-	    	// 2022.11.11 시큐어코딩 처리
-	    	rd =  lobHandler.getClobAsCharacterStream(rs, index);
-	    	while( (read_length=rd.read(buf))  != -1) {
+		try {
+			// 2022.11.11 시큐어코딩 처리
+			rd = lobHandler.getClobAsCharacterStream(rs, index);
+			while ((read_length = rd.read(buf)) != -1) {
 				read_data.append(buf, 0, read_length);
 			}
-	    } catch (IOException ie) {
-	    	throw new SQLException(ie.getMessage());
-    	// 2011.10.10 보안점검 후속조치
-	    } finally {
-		    if (rd != null) {
+		} catch (IOException ie) {
+			throw new SQLException(ie.getMessage());
+			// 2011.10.10 보안점검 후속조치
+		} finally {
+			if (rd != null) {
 				try {
-				    rd.close();
-				//2017.03.03 	조성원 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+					rd.close();
+					// 2017.03.03 조성원 시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
 				} catch (IOException ignore) {
-					LOGGER.error("["+ ignore.getClass() +"] Connection Close : " + ignore.getMessage());
+					LOGGER.error("[" + ignore.getClass() + "] Connection Close : " + ignore.getMessage());
 				}
-		    }
+			}
 		}
 
-	    return read_data.toString();
+		return read_data.toString();
 	}
 
+	@Override
 	public Object valueOf(String s) {
 		return s;
 	}
