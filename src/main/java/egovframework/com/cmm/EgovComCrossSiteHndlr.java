@@ -16,7 +16,9 @@ import org.apache.commons.lang3.StringUtils;
  * @author 공통서비스 장동한
  * @since 2010.11.09
  * @version 1.0
- * @see <pre>
+ * @see
+ * 
+ *      <pre>
  * &lt;&lt; 개정이력(Modification Information) &gt;&gt;
  *
  *    수정일     수정자      수정내용
@@ -24,7 +26,7 @@ import org.apache.commons.lang3.StringUtils;
  *   2010.11.09  장동한      최초 생성
  *   2022.11.11  김혜준      시큐어코딩 처리
  *
- * </pre>
+ *      </pre>
  */
 @SuppressWarnings("serial")
 public class EgovComCrossSiteHndlr extends BodyTagSupport {
@@ -45,35 +47,26 @@ public class EgovComCrossSiteHndlr extends BodyTagSupport {
 	// *********************************************************************
 	// Construction and initialization
 
-	private final String m_sDiffChar ="()[]{}\"',:;= \t\r\n%!+-";
-	private final String m_sArrDiffChar [] = {
-						"&#40;","&#41;",
-						"&#91;","&#93;",
-						"&#123;","&#125;",
-						"&#34;","&#39;",
-						"&#44;","&#58;",
-						"&#59;","&#61;",
-						" ","\t", //" ","\t",
-						"\r","\n", //"\r","\n",
-						"&#37;","&#33;",
-						"&#43;","&#45;"
-						};
-	
-	// 23.06.08 taglibs 라이브러리 취약점 패치 간 변경사항	김혜준
+	private final String m_sDiffChar = "()[]{}\"',:;= \t\r\n%!+-";
+	private final String m_sArrDiffChar[] = { "&#40;", "&#41;", "&#91;", "&#93;", "&#123;", "&#125;", "&#34;", "&#39;",
+			"&#44;", "&#58;", "&#59;", "&#61;", " ", "\t", // " ","\t",
+			"\r", "\n", // "\r","\n",
+			"&#37;", "&#33;", "&#43;", "&#45;" };
+
+	// 23.06.08 taglibs 라이브러리 취약점 패치 간 변경사항 김혜준
 	public static final int HIGHEST_SPECIAL = '>';
-    public static char[][] specialCharactersRepresentation = new char[HIGHEST_SPECIAL + 1][];
-    static {
-        specialCharactersRepresentation['&'] = "&amp;".toCharArray();
-        specialCharactersRepresentation['<'] = "&lt;".toCharArray();
-        specialCharactersRepresentation['>'] = "&gt;".toCharArray();
-        specialCharactersRepresentation['"'] = "&#034;".toCharArray();
-        specialCharactersRepresentation['\''] = "&#039;".toCharArray();
-    }
+	public static char[][] specialCharactersRepresentation = new char[HIGHEST_SPECIAL + 1][];
+	static {
+		specialCharactersRepresentation['&'] = "&amp;".toCharArray();
+		specialCharactersRepresentation['<'] = "&lt;".toCharArray();
+		specialCharactersRepresentation['>'] = "&gt;".toCharArray();
+		specialCharactersRepresentation['"'] = "&#034;".toCharArray();
+		specialCharactersRepresentation['\''] = "&#039;".toCharArray();
+	}
 
 	/**
-	 * Constructs a new handler. As with TagSupport, subclasses should not
-	 * provide other constructors and are expected to call the superclass
-	 * constructor.
+	 * Constructs a new handler. As with TagSupport, subclasses should not provide
+	 * other constructors and are expected to call the superclass constructor.
 	 */
 	public EgovComCrossSiteHndlr() {
 		super();
@@ -88,6 +81,7 @@ public class EgovComCrossSiteHndlr extends BodyTagSupport {
 	}
 
 	// Releases any resources we may have (or inherit)
+	@Override
 	public void release() {
 		super.release();
 		init();
@@ -97,6 +91,7 @@ public class EgovComCrossSiteHndlr extends BodyTagSupport {
 	// Tag logic
 
 	// evaluates 'value' and determines if the body should be evaluted
+	@Override
 	public int doStartTag() throws JspException {
 		needBody = false; // reset state related to 'default'
 		this.bodyContent = null; // clean-up body (just in case container is pooling tag handlers)
@@ -124,13 +119,14 @@ public class EgovComCrossSiteHndlr extends BodyTagSupport {
 	}
 
 	// prints the body if necessary; reports errors
+	@Override
 	public int doEndTag() throws JspException {
 		try {
-			if (!needBody){
+			if (!needBody) {
 				return EVAL_PAGE; // nothing more to do
 			}
 			// trim and print out the body
-			if (bodyContent != null && bodyContent.getString() != null){
+			if (bodyContent != null && bodyContent.getString() != null) {
 				out(pageContext, escapeXml, bodyContent.getString().trim());
 			}
 			return EVAL_PAGE;
@@ -144,8 +140,8 @@ public class EgovComCrossSiteHndlr extends BodyTagSupport {
 
 	/**
 	 * Outputs <tt>text</tt> to <tt>pageContext</tt>'s current JspWriter. If
-	 * <tt>escapeXml</tt> is true, performs the following substring replacements
-	 * (to facilitate output to XML/HTML pages):
+	 * <tt>escapeXml</tt> is true, performs the following substring replacements (to
+	 * facilitate output to XML/HTML pages):
 	 *
 	 * & -> &amp; < -> &lt; > -> &gt; " -> &#034; ' -> &#039;
 	 *
@@ -230,20 +226,22 @@ public class EgovComCrossSiteHndlr extends BodyTagSupport {
 		int start = 0;
 		int length = text.length();
 		char[] buffer = text.toCharArray();
-		char[] cDiffChar =  this.m_sDiffChar.toCharArray();
+		char[] cDiffChar = this.m_sDiffChar.toCharArray();
 
-		for(int i = 0; i < length; i++) {
+		for (int i = 0; i < length; i++) {
 			char c = buffer[i];
 			booleanDiff = false;
-			for(int k = 0; k < cDiffChar.length; k++){
-				if(c == cDiffChar[k]){
+			for (int k = 0; k < cDiffChar.length; k++) {
+				if (c == cDiffChar[k]) {
 					sRtn = sRtn + m_sArrDiffChar[k];
 					booleanDiff = true;
 					continue;
 				}
 			}
 
-			if(booleanDiff) continue;
+			if (booleanDiff) {
+				continue;
+			}
 
 			if (c <= HIGHEST_SPECIAL) {
 				char[] escaped = specialCharactersRepresentation[c];
@@ -252,10 +250,10 @@ public class EgovComCrossSiteHndlr extends BodyTagSupport {
 						sRtn = sRtn + escaped[j];
 					}
 					start = i + 1;
-				}else{
+				} else {
 					sRtn = sRtn + c;
 				}
-			}else{
+			} else {
 				sRtn = sRtn + c;
 			}
 		}
@@ -278,20 +276,22 @@ public class EgovComCrossSiteHndlr extends BodyTagSupport {
 		int start = 0;
 		int length = text.length();
 		char[] buffer = text.toCharArray();
-		char[] cDiffChar =  this.m_sDiffChar.toCharArray();
+		char[] cDiffChar = this.m_sDiffChar.toCharArray();
 
-		for(int i = 0; i < length; i++) {
+		for (int i = 0; i < length; i++) {
 			char c = buffer[i];
 			booleanDiff = false;
 			for (int k = 0; k < cDiffChar.length; k++) {
-				if(c == cDiffChar[k]){
+				if (c == cDiffChar[k]) {
 					sRtn = sRtn + m_sArrDiffChar[k];
 					booleanDiff = true;
 					continue;
 				}
 			}
 
-			if(booleanDiff) continue;
+			if (booleanDiff) {
+				continue;
+			}
 
 			if (c <= HIGHEST_SPECIAL) {
 				char[] escaped = specialCharactersRepresentation[c];
@@ -300,10 +300,10 @@ public class EgovComCrossSiteHndlr extends BodyTagSupport {
 						sRtn = sRtn + escaped[j];
 					}
 					start = i + 1;
-				}else{
+				} else {
 					sRtn = sRtn + c;
 				}
-			}else{
+			} else {
 				sRtn = sRtn + c;
 			}
 		}
@@ -311,19 +311,19 @@ public class EgovComCrossSiteHndlr extends BodyTagSupport {
 		return sRtn;
 	}
 
-    // for tag attribute
-    public void setValue(Object value) {
-        this.value = value;
-    }
+	// for tag attribute
+	public void setValue(Object value) {
+		this.value = value;
+	}
 
-    // for tag attribute
-    public void setDefault(String def) {
-        this.def = def;
-    }
+	// for tag attribute
+	public void setDefault(String def) {
+		this.def = def;
+	}
 
-    // for tag attribute
-    public void setEscapeXml(boolean escapeXml) {
-        this.escapeXml = escapeXml;
-    }
+	// for tag attribute
+	public void setEscapeXml(boolean escapeXml) {
+		this.escapeXml = escapeXml;
+	}
 
 }
