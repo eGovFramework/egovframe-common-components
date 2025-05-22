@@ -13,16 +13,21 @@ import lombok.extern.slf4j.Slf4j;
  * EgovFileBasePathSecurityValidator Class 구현
  * 
  * @author 표준프레임워크 신용호
- * @since 2019.04.25
+ * @since 2025.04.01
  * @version 4.3
  * @see
  * 
  *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
- *  수정일         수정자          수정내용
- *  ----------   -----------   ---------------------------
- *  2025.04.01   신용호          최초 생성
- *  
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2025.04.01  신용호          최초 생성
+ *   2025.05.22  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-InefficientEmptyStringCheck(비효율적인 빈 문자열 검사), SimplifyBooleanExpressions(부울 표현식 단순화)
+ *
+ *      </pre>
+ * 
+ *      <pre>
  *  - String basePath 파라미터에 대해 보안강화 체크를 한다.
  *  - 보안성을 위해 basePath는 ROOT Path를 지정할수 없다.
  *  - basePath에 대해 다음 경로가 추가되어 화이트리스트 방식으로 점검한다. (필요시 화이트리스트를 추가한다)
