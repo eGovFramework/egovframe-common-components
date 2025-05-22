@@ -70,7 +70,7 @@ public class EgovWebApplicationInitializer implements WebApplicationInitializer 
 		// -------------------------------------------------------------
 		// Spring ServletContextListener 설정
 		// -------------------------------------------------------------
-		XmlWebApplicationContext rootContext = new XmlWebApplicationContext();
+		XmlWebApplicationContext rootContext = new XmlWebApplicationContext(); // NOPMD - CloseResource(리소스 닫기)
 		rootContext.setConfigLocations(new String[] { "classpath*:egovframework/spring/com/**/context-*.xml" });
 		// rootContext.setConfigLocations(new String[] {
 		// "classpath*:egovframework/spring/com/context-*.xml","classpath*:egovframework/spring/com/*/context-*.xml"
@@ -83,7 +83,7 @@ public class EgovWebApplicationInitializer implements WebApplicationInitializer 
 		// -------------------------------------------------------------
 		// Spring ServletContextListener 설정
 		// -------------------------------------------------------------
-		XmlWebApplicationContext xmlWebApplicationContext = new XmlWebApplicationContext();
+		XmlWebApplicationContext xmlWebApplicationContext = new XmlWebApplicationContext(); // NOPMD - CloseResource
 		xmlWebApplicationContext.setConfigLocation("/WEB-INF/config/egovframework/springmvc/egov-com-*.xml");
 		ServletRegistration.Dynamic dispatcher = servletContext.addServlet("dispatcher",
 				new DispatcherServlet(xmlWebApplicationContext));
