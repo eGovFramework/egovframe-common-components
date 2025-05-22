@@ -107,4 +107,24 @@ public class EgovFileBasePathSecurityValidatorTest {
 		assertEquals(true, validate);
 	}
 
+	@Test
+	public void test5() {
+		// given
+		String basePath = EgovProperties.getProperty("Globals.SynchrnServerPath") + "/false";
+
+		if (log.isDebugEnabled()) {
+			log.debug("basePath={}", basePath);
+		}
+
+		// when
+		boolean validate = EgovFileBasePathSecurityValidator.validate(basePath);
+
+		if (log.isDebugEnabled()) {
+			log.debug("validate={}", validate);
+		}
+
+		// then
+		assertEquals(false, validate);
+	}
+
 }

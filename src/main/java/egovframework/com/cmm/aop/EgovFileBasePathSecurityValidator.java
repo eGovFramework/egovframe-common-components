@@ -4,6 +4,8 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.springframework.util.ObjectUtils;
+
 import egovframework.com.cmm.service.EgovProperties;
 import lombok.extern.slf4j.Slf4j;
 
@@ -47,8 +49,12 @@ public class EgovFileBasePathSecurityValidator {
 		// 테스트용 Base Path - Linux, Mac OS
 		// whiteList.add("/Users/EgovStoredFiles");
 
-		if (basePath == null || basePath.trim().isEmpty()) {
-			log.error("ERROR : The base path is empty.");
+//		if (!StringUtils.hasLength(basePath)) {
+//		if (!StringUtils.hasText(basePath)) {
+		if (ObjectUtils.isEmpty(basePath)) {
+			if (log.isErrorEnabled()) {
+				log.error("ERROR : The base path is empty.");
+			}
 			return false;
 		}
 
@@ -56,7 +62,9 @@ public class EgovFileBasePathSecurityValidator {
 
 		// 루트 경로 제한 (리눅스 / 또는 윈도우 드라이브 루트 경로들)
 		if (normalizedBasePath.matches("(?i)^[a-z]:/$") || normalizedBasePath.equals("/")) {
-			log.error("ERROR : Root base paths are not allowed. basePath = {}", basePath);
+			if (log.isErrorEnabled()) {
+				log.error("ERROR : Root base paths are not allowed. basePath = {}", basePath);
+			}
 			return false;
 		}
 
@@ -72,11 +80,15 @@ public class EgovFileBasePathSecurityValidator {
 				}
 			}
 		} catch (IOException e) {
-			log.debug("Base Path IO Exception!");
+			if (log.isErrorEnabled()) {
+				log.error("Base Path IO Exception!");
+			}
 		}
 
-		if (validateResult == false) {
-			log.error("ERROR : Unacceptable base path: {} ", basePath);
+		if (!validateResult) {
+			if (log.isErrorEnabled()) {
+				log.error("ERROR : Unacceptable base path: {} ", basePath);
+			}
 		}
 
 		return validateResult;
