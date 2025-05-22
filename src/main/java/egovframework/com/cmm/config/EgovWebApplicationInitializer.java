@@ -31,16 +31,19 @@ import egovframework.com.utl.wed.filter.CkFilter;
  * @since 2016.06.23
  * @version 1.0
  * @see
- *
+ * 
  *      <pre>
- * << 개정이력(Modification Information) >>
+ *  == 개정이력(Modification Information) ==
  *
- *   수정일        수정자           수정내용
- *  -------      -------------  ----------------------
- *   2016.06.23  장동한           최초 생성
- *   2018.10.02  신용호           Facebook 관련 HiddenHttpMethodFilter 추가
- *   2018.10.26  신용호           EgovLoginPolicyFilter 추가 (IP접근처리)
- *   2018.12.03  신용호           springMultipartFilter,HTMLTagFilter 추가 (XSS방지처리)
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.03.20  홍길동          최초 생성
+ *   2016.06.23  장동한          최초 생성
+ *   2018.10.02  신용호          Facebook 관련 HiddenHttpMethodFilter 추가
+ *   2018.10.26  신용호          EgovLoginPolicyFilter 추가 (IP접근처리)
+ *   2018.12.03  신용호          springMultipartFilter,HTMLTagFilter 추가 (XSS방지처리)
+ *   2025.05.23  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(리소스 닫기)
+ *
  *      </pre>
  */
 public class EgovWebApplicationInitializer implements WebApplicationInitializer {
