@@ -25,21 +25,24 @@ import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 
-public class HTMLTagFilter implements Filter{
+public class HTMLTagFilter implements Filter {
 
 	@SuppressWarnings("unused")
 	private FilterConfig config;
 
-	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
 
-		chain.doFilter(new HTMLTagFilterRequestWrapper((HttpServletRequest)request), response);
+		chain.doFilter(new HTMLTagFilterRequestWrapper((HttpServletRequest) request), response);
 	}
 
+	@Override
 	public void init(FilterConfig config) throws ServletException {
 		this.config = config;
 	}
 
+	@Override
 	public void destroy() {
 
 	}
