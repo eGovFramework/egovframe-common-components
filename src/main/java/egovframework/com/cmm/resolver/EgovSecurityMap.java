@@ -3,10 +3,8 @@ package egovframework.com.cmm.resolver;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import egovframework.com.cmm.web.EgovComUtlController;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Map타입 적용 파라미터 복호화를 위한 EgovSecurityMap 클래스
@@ -35,13 +33,12 @@ import egovframework.com.cmm.web.EgovComUtlController;
  * 
  *      </pre>
  */
+@Slf4j
 public class EgovSecurityMap {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovSecurityMap.class);
-	Map<String, String> map = new HashMap<String, String>();
+	Map<String, String> map = new HashMap<>();
 
 	public String get(String key) {
-
 		return map.get(key);
 	}
 
@@ -60,7 +57,9 @@ public class EgovSecurityMap {
 			break;
 
 		case "reprtId":
-			LOGGER.debug("===> {} : {}", key, value);
+			if (log.isDebugEnabled()) {
+				log.debug("===> {} : {}", key, value);
+			}
 			value2 = EgovComUtlController.decryptId(value);
 			break;
 
