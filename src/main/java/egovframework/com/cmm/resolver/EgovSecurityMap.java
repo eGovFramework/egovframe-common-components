@@ -36,17 +36,29 @@ public class EgovSecurityMap {
 	}
 
 	public void put(String key, String value) {
+		String value2 = value;
+
 		// 특정 암호화된 파라미터 복호화 처리
 		switch (key) {
 		case "noteId":
+			break;
+
 		case "noteTrnsmitId":
+			break;
+
 		case "noteRecptnId":
+			break;
+
 		case "reprtId":
 			LOGGER.debug("===> {} : {}", key, value);
-			value = EgovComUtlController.decryptId(value);
+			value2 = EgovComUtlController.decryptId(value);
+			break;
+
+		default:
 			break;
 		}
-		map.put(key, value);
+
+		map.put(key, value2);
 	}
 
 	@Override
