@@ -122,7 +122,7 @@ public class HTMLTagFilterRequestWrapper extends HttpServletRequestWrapper {
 			char c = value.charAt(i);
 			switch (c) {
 			case '<':
-				if (checkNextWhiteListTag(i, value) == false) {
+				if (!checkNextWhiteListTag(i, value)) {
 					strBuff.append("&lt;");
 				} else {
 					strBuff.append(c);
@@ -131,7 +131,7 @@ public class HTMLTagFilterRequestWrapper extends HttpServletRequestWrapper {
 				// value));
 				break;
 			case '>':
-				if (checkPrevWhiteListTag(i, value) == false) {
+				if (!checkPrevWhiteListTag(i, value)) {
 					strBuff.append("&gt;");
 				} else {
 					strBuff.append(c);
@@ -163,8 +163,7 @@ public class HTMLTagFilterRequestWrapper extends HttpServletRequestWrapper {
 			}
 		}
 
-		value = strBuff.toString();
-		return value;
+		return strBuff.toString();
 	}
 
 	private boolean checkNextWhiteListTag(int index, String data) {
