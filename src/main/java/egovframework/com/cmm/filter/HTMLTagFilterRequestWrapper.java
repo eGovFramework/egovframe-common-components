@@ -26,16 +26,18 @@ import javax.servlet.http.HttpServletRequestWrapper;
  * 
  * @author 공통컴포넌트 팀 신용호
  * @since 2018.03.21
- * @version 1.0
+ * @version 3.9.0
  * @see
- *
+ * 
  *      <pre>
-* << 개정이력(Modification Information) >>
-*
-*   수정일              수정자              수정내용
-*  -------      --------    ---------------------------
-*   2018.03.21  신용호              getParameterMap()구현 추가
-*   2019.01.31  신용호              whiteList 태그 추가
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2018.03.21  신용호          getParameterMap()구현 추가
+ *   2019.01.31  신용호          whiteList 태그 추가
+ *   2025.05.24  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-SimplifyBooleanExpressions(부울 표현식 단순화), AvoidReassigningParameters(매개변수 재할당 방지)
+ *
  *      </pre>
  */
 
