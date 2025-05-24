@@ -25,31 +25,31 @@ import egovframework.com.cmm.web.EgovComUtlController;
  *
  *      </pre>
  */
-
 public class EgovSecurityMap {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovSecurityMap.class);
 	Map<String, String> map = new HashMap<String, String>();
 
 	public String get(String key) {
-		
+
 		return map.get(key);
 	}
 
 	public void put(String key, String value) {
 		// 특정 암호화된 파라미터 복호화 처리
 		switch (key) {
-			case "noteId":
-			case "noteTrnsmitId":
-			case "noteRecptnId":
-			case "reprtId":
-				LOGGER.debug("===> {} : {}",key,value);
-				value = EgovComUtlController.decryptId(value);
-				break;
+		case "noteId":
+		case "noteTrnsmitId":
+		case "noteRecptnId":
+		case "reprtId":
+			LOGGER.debug("===> {} : {}", key, value);
+			value = EgovComUtlController.decryptId(value);
+			break;
 		}
 		map.put(key, value);
 	}
 
+	@Override
 	public String toString() {
 		return map.toString();
 	}
