@@ -25,9 +25,9 @@ public class EgovBasicLogger {
 	private static final Level DEBUG_INFO_LEVEL = Level.FINEST;
 	private static final Level INFO_INFO_LEVEL = Level.INFO;
 
-	private static final Logger ignoreLogger = Logger.getLogger("ignore");
-	private static final Logger debugLogger = Logger.getLogger("debug");
-	private static final Logger infoLogger = Logger.getLogger("info");
+	private static final Logger IGNORE_LOGGER = Logger.getLogger("ignore");
+	private static final Logger DEBUG_LOGGER = Logger.getLogger("debug");
+	private static final Logger INFO_LOGGER = Logger.getLogger("info");
 
 	/**
 	 * 기록이나 처리가 불필요한 경우 사용.
@@ -37,9 +37,9 @@ public class EgovBasicLogger {
 	 */
 	public static void ignore(String message, Exception exception) {
 		if (exception == null) {
-			ignoreLogger.log(IGNORE_INFO_LEVEL, message);
+			IGNORE_LOGGER.log(IGNORE_INFO_LEVEL, message);
 		} else {
-			ignoreLogger.log(IGNORE_INFO_LEVEL, message, exception);
+			IGNORE_LOGGER.log(IGNORE_INFO_LEVEL, message, exception);
 		}
 	}
 
@@ -61,9 +61,9 @@ public class EgovBasicLogger {
 	 */
 	public static void debug(String message, Exception exception) {
 		if (exception == null) {
-			debugLogger.log(DEBUG_INFO_LEVEL, message);
+			DEBUG_LOGGER.log(DEBUG_INFO_LEVEL, message);
 		} else {
-			debugLogger.log(DEBUG_INFO_LEVEL, message, exception);
+			DEBUG_LOGGER.log(DEBUG_INFO_LEVEL, message, exception);
 		}
 	}
 
@@ -84,6 +84,6 @@ public class EgovBasicLogger {
 	 * @param exception
 	 */
 	public static void info(String message) {
-		infoLogger.log(INFO_INFO_LEVEL, message);
+		INFO_LOGGER.log(INFO_INFO_LEVEL, message);
 	}
 }
