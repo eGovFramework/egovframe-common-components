@@ -28,7 +28,8 @@ import java.util.List;
 import java.util.StringTokenizer;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * General File System utilities.
@@ -50,6 +51,7 @@ import org.apache.commons.io.IOUtils;
  * @version $Id: FileSystemUtils.java 453889 2006-10-07 11:56:25Z scolebourne $
  * @since Commons IO 1.1
  */
+@Slf4j
 public class FileSystemUtils {
 
 	/** Singleton instance, used mainly for testing. */
@@ -198,7 +200,7 @@ public class FileSystemUtils {
 		}
 		switch (os) {
 		case WINDOWS:
-			return (kb ? freeSpaceWindows(path) / 1024 : freeSpaceWindows(path));
+			return kb ? freeSpaceWindows(path) / 1024 : freeSpaceWindows(path);
 		case UNIX:
 			return freeSpaceUnix(path, kb, false);
 		case POSIX_UNIX:
@@ -219,13 +221,13 @@ public class FileSystemUtils {
 	 * @throws IOException if an error occurs
 	 */
 	private long freeSpaceWindows(String path) throws IOException {
-		path = FilenameUtils.normalize(path);
-		if (path.length() > 2 && path.charAt(1) == ':') {
-			path = path.substring(0, 2); // seems to make it work
+		String path2 = FilenameUtils.normalize(path);
+		if (path2.length() > 2 && path2.charAt(1) == ':') {
+			path2 = path2.substring(0, 2); // seems to make it work
 		}
 
 		// build and run the 'dir' command
-		String[] cmdAttribs = new String[] { "cmd.exe", "/C", "dir /-c " + path };
+		String[] cmdAttribs = new String[] { "cmd.exe", "/C", "dir /-c " + path2 };
 
 		// read in the output of the command to an ArrayList
 		List<String> lines = performCommand(cmdAttribs, Integer.MAX_VALUE);
@@ -237,11 +239,11 @@ public class FileSystemUtils {
 		for (int i = lines.size() - 1; i >= 0; i--) {
 			String line = lines.get(i);
 			if (line.length() > 0) {
-				return parseDir(line, path);
+				return parseDir(line, path2);
 			}
 		}
 		// all lines are blank
-		throw new IOException("Command line 'dir /-c' did not return any info " + "for path '" + path + "'");
+		throw new IOException("Command line 'dir /-c' did not return any info " + "for path '" + path2 + "'");
 	}
 
 	/**
@@ -308,7 +310,7 @@ public class FileSystemUtils {
 		if (path.length() == 0) {
 			throw new IllegalArgumentException("Path must not be empty");
 		}
-		path = FilenameUtils.normalize(path);
+		String path2 = FilenameUtils.normalize(path);
 
 		String osName = System.getProperty("os.name");
 
@@ -327,14 +329,14 @@ public class FileSystemUtils {
 			dfCommand = "bdf";
 		}
 
-		String[] cmdAttribs = (flags.length() > 1 ? new String[] { dfCommand, flags, path }
-				: new String[] { dfCommand, path });
+		String[] cmdAttribs = flags.length() > 1 ? new String[] { dfCommand, flags, path2 }
+				: new String[] { dfCommand, path2 };
 
 		// perform the command, asking for up to 3 lines (header, interesting, overflow)
 		List<String> lines = performCommand(cmdAttribs, 3);
 		if (lines.size() < 2) {
 			// unknown problem, throw exception
-			throw new IOException("Command line 'df' did not return info as expected " + "for path '" + path
+			throw new IOException("Command line 'df' did not return info as expected " + "for path '" + path2
 					+ "'- response was " + lines);
 		}
 		String line2 = lines.get(1); // the line we're interested in
@@ -347,7 +349,7 @@ public class FileSystemUtils {
 				String line3 = lines.get(2); // the line may be interested in
 				tok = new StringTokenizer(line3, " ");
 			} else {
-				throw new IOException("Command line 'df' did not return data as expected " + "for path '" + path
+				throw new IOException("Command line 'df' did not return data as expected " + "for path '" + path2
 						+ "'- check path is valid");
 			}
 		} else {
@@ -357,7 +359,7 @@ public class FileSystemUtils {
 		tok.nextToken(); // Ignore Used
 		String freeSpace = tok.nextToken();
 
-		return parseBytes(freeSpace, path);
+		return parseBytes(freeSpace, path2);
 	}
 
 	// -----------------------------------------------------------------------
@@ -403,17 +405,11 @@ public class FileSystemUtils {
 		// (see commond-exec or ant for a better multi-threaded multi-os solution)
 
 		List<String> lines = new ArrayList<String>(20);
-		Process proc = null;
-		InputStream in = null;
-		OutputStream out = null;
-		InputStream err = null;
-		BufferedReader inr = null;
-		try {
-			proc = openProcess(cmdAttribs);
-			in = proc.getInputStream();
-			out = proc.getOutputStream();
-			err = proc.getErrorStream();
-			inr = new BufferedReader(new InputStreamReader(in));
+		Process proc = openProcess(cmdAttribs);
+		try (InputStream in = proc.getInputStream();
+				OutputStream out = proc.getOutputStream();
+				InputStream err = proc.getErrorStream();
+				BufferedReader inr = new BufferedReader(new InputStreamReader(in));) {
 			String line = inr.readLine();
 			while (line != null && lines.size() < max) {
 				line = line.toLowerCase().trim();
@@ -438,11 +434,6 @@ public class FileSystemUtils {
 			throw new IOException("Command line threw an InterruptedException '" + ex.getMessage() + "' for command "
 					+ Arrays.asList(cmdAttribs));
 		} finally {
-			IOUtils.closeQuietly(in);
-			IOUtils.closeQuietly(out);
-			IOUtils.closeQuietly(err);
-			IOUtils.closeQuietly(inr);
-
 			if (proc != null) {
 				proc.destroy();
 			}
@@ -459,6 +450,10 @@ public class FileSystemUtils {
 	 *                     2022.11.11 김혜준 시큐어코딩 처리
 	 */
 	private Process openProcess(String[] cmdAttribs) throws IOException {
+		if (log.isDebugEnabled()) {
+			log.debug("cmdAttribs={}", Arrays.toString(cmdAttribs));
+		}
+
 		// return Runtime.getRuntime().exec(cmdAttribs);
 		// Runtime.exec 사용 시 Command Injection 위험이 있으므로 사용하지 말 것...
 		// 현재는 빈 프로세스를 리턴하게 구성함...
