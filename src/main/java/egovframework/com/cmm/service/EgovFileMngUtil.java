@@ -35,26 +35,27 @@ import org.springframework.web.multipart.MultipartFile;
 import egovframework.com.cmm.EgovWebUtil;
 
 /**
+ * 파일 관리 유틸리티
+ * 
  * @author 공통 서비스 개발팀 이삼섭
- * @version 1.0
- * @Class Name : EgovFileMngUtil.java
- * @Description : 메시지 처리 관련 유틸리티
- * @Modification Information
- * 
- *               <pre>
- *   수정일               수정자            수정내용
- *   ----------   --------   ---------------------------
- *   2009.02.13   이삼섭            최초 생성
- *   2011.08.09   서준식            utl.fcc패키지와 Dependency제거를 위해 getTimeStamp()메서드 추가
- *   2017.03.03   조성원            시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
- *   2020.10.26   신용호            parseFileInf(List<MultipartFile> files ...) 추가
- *   2022.11.11   김혜준            시큐어코딩 처리
- *   2024.12.04   신용호            downFile() KISA 시큐어코딩 처리
- *               </pre>
- * 
- * @see
  * @since 2009. 02. 13
+ * @version 1.0
+ * @see
+ * 
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.02.13  이삼섭          최초 생성
+ *   2011.08.09  서준식          utl.fcc패키지와 Dependency제거를 위해 getTimeStamp()메서드 추가
+ *   2017.03.03  조성원          시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+ *   2020.10.26  신용호          parseFileInf(List<MultipartFile> files ...) 추가
+ *   2022.11.11  김혜준          시큐어코딩 처리
+ *   2024.12.04  신용호          downFile() KISA 시큐어코딩 처리
+ *   2025.05.26  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-FormalParameterNamingConventions(공식 매개변수 명명 규칙), CloseResource(리소스 닫기), LocalVariableNamingConventions(지역 변수 명명 규칙), AssignmentInOperand(피연산자의 할당)
+ * 
+ *      </pre>
  */
 @Component("EgovFileMngUtil")
 public class EgovFileMngUtil {
