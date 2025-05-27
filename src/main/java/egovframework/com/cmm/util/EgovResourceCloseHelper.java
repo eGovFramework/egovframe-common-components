@@ -34,7 +34,7 @@ public class EgovResourceCloseHelper {
 	 * @param resources
 	 */
 	public static void close(Closeable... resources) {
-		for (Closeable resource : resources) {
+		for (Closeable resource : resources) { // NOPMD - CloseResource
 			if (resource != null) {
 				try {
 					resource.close();
@@ -113,7 +113,7 @@ public class EgovResourceCloseHelper {
 	 * @param sockets
 	 */
 	public static void closeSockets(Socket... sockets) {
-		for (Socket socket : sockets) {
+		for (Socket socket : sockets) { // NOPMD - CloseResource
 			if (socket != null) {
 				try {
 					socket.shutdownOutput();
