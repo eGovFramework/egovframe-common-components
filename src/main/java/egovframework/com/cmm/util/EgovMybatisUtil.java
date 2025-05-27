@@ -4,9 +4,6 @@ import java.lang.reflect.Array;
 import java.util.Collection;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 /**
  * EgovMybatisUtil 클래스
  *
@@ -28,8 +25,6 @@ import org.slf4j.LoggerFactory;
  */
 public class EgovMybatisUtil {
 
-	private static final Logger logger = LoggerFactory.getLogger(EgovMybatisUtil.class);
-
 	/**
 	 * Empty 여부를 확인한다.
 	 * 
@@ -38,7 +33,6 @@ public class EgovMybatisUtil {
 	 * @exception IllegalArgumentException
 	 */
 	public static boolean isEmpty(Object o) {
-		logger.debug("o={}", o);
 		if (o == null) {
 			return true;
 		}
@@ -90,20 +84,20 @@ public class EgovMybatisUtil {
 		}
 
 		if (obj instanceof String && obj2 instanceof String) {
-			if ((String.valueOf(obj)).equals(String.valueOf(obj2))) {
+			if (String.valueOf(obj).equals(String.valueOf(obj2))) {
 				return true;
 			}
 		} else if (obj instanceof String && obj2 instanceof Character) {
-			if ((String.valueOf(obj)).equals(String.valueOf(obj2))) {
+			if (String.valueOf(obj).equals(String.valueOf(obj2))) {
 				return true;
 			}
 		} else if (obj instanceof String && obj2 instanceof Integer) {
-			if ((String.valueOf(obj)).equals(String.valueOf(obj2))) {
+			if (String.valueOf(obj).equals(String.valueOf(obj2))) {
 				return true;
 			}
 
 		} else if (obj instanceof Integer && obj2 instanceof String) {
-			if ((String.valueOf(obj2)).equals(String.valueOf(obj))) {
+			if (String.valueOf(obj2).equals(String.valueOf(obj))) {
 				return true;
 			}
 		} else if (obj instanceof Integer && obj instanceof Integer) {
