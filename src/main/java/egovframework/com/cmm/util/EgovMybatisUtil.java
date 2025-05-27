@@ -11,16 +11,18 @@ import java.util.Map;
  * @since 2016.06.07
  * @version 1.0
  * @see
- *
- *      <pre>
- * << 개정이력(Modification Information) >>
- *
- *   수정일        수정자           수정내용
- *  -------      -------------  ----------------------
- *   2016.06.07  장동한           최초 생성
- *   2017.03.03     조성원 	  시큐어코딩(ES)-오류 메시지를 통한 정보노출[CWE-209]
- *   2017.07.21  장동한 			isEquals에서 String Character 비교 가능하도록
  * 
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2016.06.07  장동한          최초 생성
+ *   2017.03.03  조성원          시큐어코딩(ES)-오류 메시지를 통한 정보노출[CWE-209]
+ *   2017.07.21  장동한          isEquals에서 String Character 비교 가능하도록
+ *   2023.05.01  이백행          컬렉션은 원시 유형입니다. 일반 유형 컬렉션 <e>에 대한 참조는 매개 변수화되어야합니다
+ *   2025.05.28  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-FieldNamingConventions(필드 명명 규칙), UselessParentheses(쓸모없는 괄호)
+ *
  *      </pre>
  */
 public class EgovMybatisUtil {
