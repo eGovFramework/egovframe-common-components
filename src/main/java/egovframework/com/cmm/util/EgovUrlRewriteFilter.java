@@ -21,7 +21,7 @@ import egovframework.com.cmm.EgovWebUtil;
  * @Modification Information
  * 
  *               <pre>
- * @
+ * &#64;
  * &#64; 수정일               수정자              수정내용
  * &#64; ----------   ---------   -------------------------------
  * &#64; 2014.09.30               최초생성
@@ -82,9 +82,8 @@ public class EgovUrlRewriteFilter implements Filter {
 					response.setContentType("text/html");
 
 					String httpsPath = "https" + "://" + getDomain + ":" + httpsPort + uri;
-					String site = new String(httpsPath);
 					res.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
-					res.setHeader("Location", EgovWebUtil.removeCRLF(site));
+					res.setHeader("Location", EgovWebUtil.removeCRLF(httpsPath));
 
 				}
 
@@ -94,9 +93,8 @@ public class EgovUrlRewriteFilter implements Filter {
 
 				String httpPath = "http" + "://" + getDomain + ":" + httpPort + uri;
 
-				String site = new String(httpPath);
 				res.setStatus(HttpServletResponse.SC_MOVED_TEMPORARILY);
-				res.setHeader("Location", EgovWebUtil.removeCRLF(site));
+				res.setHeader("Location", EgovWebUtil.removeCRLF(httpPath));
 
 			}
 		}
