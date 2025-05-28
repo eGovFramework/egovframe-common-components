@@ -16,24 +16,23 @@ import org.springframework.util.AntPathMatcher;
 import egovframework.com.cmm.EgovWebUtil;
 
 /**
- * @Class Name : UrlRewriteFilter.java
- * @Description : UrlRewriteFilter Class
- * @Modification Information
- * 
- *               <pre>
- * &#64;
- * &#64; 수정일               수정자              수정내용
- * &#64; ----------   ---------   -------------------------------
- * &#64; 2014.09.30               최초생성
- * &#64; 2020.11.02   신용호              KISA 보안약점 조치 (CRLF 제거 조치)
- *               </pre>
+ * URL 재작성 필터
  * 
  * @author 전자정부 표준프레임워크 유지보수
  * @since 2014. 09.30
  * @version 1.0
  * @see
  *
- *      Copyright (C) by MOPAS All right reserved.
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2014.09.30  표프센          최초생성
+ *   2020.11.02  신용호          KISA 보안약점 조치 (CRLF 제거 조치)
+ *   2025.05.28  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-StringInstantiation(문자열 인스턴스화)
+ *
+ *      </pre>
  */
 public class EgovUrlRewriteFilter implements Filter {
 
