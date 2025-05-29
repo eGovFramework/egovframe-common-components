@@ -13,21 +13,22 @@ import org.springframework.core.io.support.PathMatchingResourcePatternResolver;
 import org.springframework.core.io.support.ResourcePatternResolver;
 
 /**
- * @Class Name : EgovWildcardReloadableResourceBundleMessageSource
- * @Description : 다국어 properties 파일을 팩키지 구조의 폴더로 읽어드리는 MessageSource
- * @Modification Information
- * 
- *               <pre>
- * &#64;  수정일         수정자                   수정내용
- * &#64; -------    --------    ---------------------------
- * &#64; 2016.06.10    장동한          최초 생성
- *               </pre>
+ * 다국어 properties 파일을 팩키지 구조의 폴더로 읽어드리는 MessageSource
  * 
  * @author 2016 표준프레임워크 유지보수 장동한
  * @since 2016.06.10
  * @version 1.0
  * @see
+ * 
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2016.06.10  장동한          최초 생성
+ *   2025.05.29  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-ImmutableField(불변필드), UnnecessarySemicolon(불필요한 세미콜론)
+ *
+ *      </pre>
  */
 
 public class EgovWildcardReloadableResourceBundleMessageSource
