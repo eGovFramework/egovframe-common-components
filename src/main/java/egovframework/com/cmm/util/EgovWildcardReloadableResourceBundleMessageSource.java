@@ -21,7 +21,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
  * &#64;  수정일         수정자                   수정내용
  * &#64; -------    --------    ---------------------------
  * &#64; 2016.06.10    장동한          최초 생성
- * </pre>
+ *               </pre>
  * 
  * @author 2016 표준프레임워크 유지보수 장동한
  * @since 2016.06.10
@@ -32,7 +32,7 @@ import org.springframework.core.io.support.ResourcePatternResolver;
 
 public class EgovWildcardReloadableResourceBundleMessageSource
 		extends org.springframework.context.support.ReloadableResourceBundleMessageSource {
-	private ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
+	private final ResourcePatternResolver resourcePatternResolver = new PathMatchingResourcePatternResolver();
 
 	public void setEgovBasenames(String... basenames) {
 		if (basenames != null) {
@@ -63,7 +63,6 @@ public class EgovWildcardReloadableResourceBundleMessageSource
 								if (baseNames.indexOf(baseName) > -1) {
 									continue;
 								}
-								;
 
 							} else if (resource instanceof ClassPathResource) {
 								baseName = StringUtils.substringBefore(uri, ".properties");
