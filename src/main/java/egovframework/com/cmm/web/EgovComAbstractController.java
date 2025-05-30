@@ -28,7 +28,7 @@ import egovframework.com.cmm.ComDefaultVO;
  *   2022. 5. 4.   이백행        최초 생성
  *      </pre>
  */
-public abstract class EgovComAbstractController {
+public class EgovComAbstractController {
 
 	protected Logger egovLogger = LoggerFactory.getLogger(EgovComAbstractController.class);
 
