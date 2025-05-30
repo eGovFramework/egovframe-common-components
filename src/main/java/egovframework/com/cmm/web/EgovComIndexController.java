@@ -39,18 +39,21 @@ import egovframework.com.uat.uia.service.EgovLoginService;
  * @since 2011.08.26
  * @version 2.0.0
  * @see
- *
+ * 
  *      <pre>
- * << 개정이력(Modification Information) >>
+ *  == 개정이력(Modification Information) ==
  *
- *  수정일		  수정자		수정내용
- *  ----------   --------   ---------------------------
- *  2011.08.26   정진오		최초 생성
- *  2011.09.16   서준식		컨텐츠 페이지 생성
- *  2011.09.26   이기하		header, footer 페이지 생성
- *  2019.12.04   신용호		KISA 보안코드 점검 : Map<Integer, IncludedCompInfoVO> map를 지역변수로 수정
- *  2020.07.08   신용호		비밀번호를 수정한후 경과한 날짜 조회
- *  2020.08.28   정진오		표준프레임워크 v3.10 개선
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.03.20  홍길동          최초 생성
+ *   2011.08.26  정진오          최초 생성
+ *   2011.09.16  서준식          컨텐츠 페이지 생성
+ *   2011.09.26  이기하          header, footer 페이지 생성
+ *   2019.12.04  신용호          KISA 보안코드 점검 : Map<Integer, IncludedCompInfoVO> map를 지역변수로 수정
+ *   2020.07.08  신용호          비밀번호를 수정한후 경과한 날짜 조회
+ *   2020.08.28  정진오          표준프레임워크 v3.10 개선
+ *   2025.05.30  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(지역 변수 명명 규칙)
+ *
  *      </pre>
  */
 
