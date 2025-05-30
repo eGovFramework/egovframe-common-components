@@ -7,8 +7,6 @@ import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import egovframework.com.cmm.ComDefaultVO;
 
@@ -30,8 +28,6 @@ import egovframework.com.cmm.ComDefaultVO;
  *      </pre>
  */
 public class EgovComAbstractController {
-
-	protected Logger egovLogger = LoggerFactory.getLogger(EgovComAbstractController.class);
 
 	@Resource(name = "propertiesService")
 	private EgovPropertyService egovPropertyService;
