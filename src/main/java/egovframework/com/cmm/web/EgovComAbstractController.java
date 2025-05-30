@@ -16,16 +16,17 @@ import egovframework.com.cmm.ComDefaultVO;
  * EgovComAbstractController.java 클래스
  *
  * @author 이백행
- * @since 2022. 5. 4.
- * @version 1.0
+ * @since 2022.05.04
+ * @version 4.1.0
  * @see
- *
+ * 
  *      <pre>
- * << 개정이력(Modification Information) >>
+ *  == 개정이력(Modification Information) ==
  *
  *   수정일      수정자           수정내용
- *  -------    -------------    ----------------------
- *   2022. 5. 4.   이백행        최초 생성
+ *  -------    --------    ---------------------------
+ *   2022.05.04  이백행          최초 생성
+ *
  *      </pre>
  */
 public class EgovComAbstractController {
