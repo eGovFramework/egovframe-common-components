@@ -89,8 +89,8 @@ public class EgovComIndexController {
 		int expirePwdDay = 0;
 		try {
 			expirePwdDay = Integer.parseInt(propertyExpirePwdDay);
-		} catch (NumberFormatException Nfe) {
-			LOGGER.debug("convert expirePwdDay Err : " + Nfe.getMessage());
+		} catch (NumberFormatException nfe) {
+			LOGGER.debug("convert expirePwdDay Err : " + nfe.getMessage());
 		}
 
 		model.addAttribute("expirePwdDay", expirePwdDay);
