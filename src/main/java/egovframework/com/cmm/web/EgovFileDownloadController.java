@@ -35,18 +35,18 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
  * @since 2009.06.01
  * @version 1.0
  * @see
- *
+ * 
  *      <pre>
- * << 개정이력(Modification Information) >>
+ *  == 개정이력(Modification Information) ==
  *
- *     수정일      	수정자           수정내용
- *  ------------   --------    ---------------------------
- *   2009.03.25  	이삼섭          최초 생성
- *   2014.02.24		이기하          IE11 브라우저 한글 파일 다운로드시 에러 수정
- *   2018.08.28		신용호          Safari, Chrome, Firefox, Opera 한글파일 다운로드 처리 수정 (macOS에서 확장자 exe붙는 문제 처리)
- *   2022.12.02     윤창원          File ID 암호화 처리
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.03.25  이삼섭          최초 생성
+ *   2014.02.24  이기하          IE11 브라우저 한글 파일 다운로드시 에러 수정
+ *   2018.08.28  신용호          Safari, Chrome, Firefox, Opera 한글파일 다운로드 처리 수정 (macOS에서 확장자 exe붙는 문제 처리)
+ *   2022.12.02  윤창원          File ID 암호화 처리
+ *   2025.05.31  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(지역 변수 명명 규칙), CloseResource(리소스 닫기)
  *
- * Copyright (C) 2009 by MOPAS  All right reserved.
  *      </pre>
  */
 @Controller
