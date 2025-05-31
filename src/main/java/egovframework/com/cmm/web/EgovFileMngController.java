@@ -27,17 +27,18 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
  * @since 2009.06.01
  * @version 1.0
  * @see
- *
+ * 
  *      <pre>
- * << 개정이력(Modification Information) >>
+ *  == 개정이력(Modification Information) ==
  *
- *   수정일          수정자        수정내용
- *  ----------     --------    ---------------------------
- *  2009.03.25     이삼섭        최초 생성
- *  2016.10.13     장동한        deleteFileInf 메소드 return 방식 수정
- *  2022.12.02     윤창원        File ID 암호화 처리
- *  2022.12.22     신용호        JSTL 커스텀 태그 추가 및 기능 보완
- *  2024.10.29		LeeBaekHaeng	정적 필드 EgovFileMngController.cryptoService는 정적 방식으로 액세스
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.03.25  이삼섭          최초 생성
+ *   2016.10.13  장동한          deleteFileInf 메소드 return 방식 수정
+ *   2022.12.02  윤창원          File ID 암호화 처리
+ *   2022.12.22  신용호          JSTL 커스텀 태그 추가 및 기능 보완
+ *   2024.10.29  이백행          정적 필드 EgovFileMngController.cryptoService는 정적 방식으로 액세스
+ *   2025.05.31  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(지역 변수 명명 규칙)
  *
  *      </pre>
  */
