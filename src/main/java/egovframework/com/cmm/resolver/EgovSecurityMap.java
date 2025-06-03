@@ -48,12 +48,15 @@ public class EgovSecurityMap {
 		// 특정 암호화된 파라미터 복호화 처리
 		switch (key) {
 		case "noteId":
+			value2 = EgovComUtlController.decryptId(value);
 			break;
 
 		case "noteTrnsmitId":
+			value2 = EgovComUtlController.decryptId(value);
 			break;
 
 		case "noteRecptnId":
+			value2 = EgovComUtlController.decryptId(value);
 			break;
 
 		case "reprtId":
