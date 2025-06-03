@@ -18,6 +18,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -76,9 +77,9 @@ public class EgovImageProcessController extends HttpServlet {
 
 		// 암호화된 atchFileId 를 복호화하고 동일한 세션인 경우만 다운로드할 수 있다. (2022.12.06 추가) - 파일아이디가 유추
 		// 불가능하도록 조치
-		String param_atchFileId = (String) commandMap.get("atchFileId");
-		param_atchFileId = param_atchFileId.replaceAll(" ", "+");
-		byte[] decodedBytes = Base64.getDecoder().decode(param_atchFileId);
+		String atchFileId = (String) commandMap.get("atchFileId");
+		atchFileId = atchFileId.replaceAll(" ", "+");
+		byte[] decodedBytes = Base64.getDecoder().decode(atchFileId);
 		String decodedString = cryptoService.decrypt(new String(decodedBytes));
 		String decodedSessionId = StringUtils.substringBefore(decodedString, "|");
 		String decodedFileId = StringUtils.substringAfter(decodedString, "|");
@@ -111,26 +112,16 @@ public class EgovImageProcessController extends HttpServlet {
 
 		// String fileLoaction = fvo.getFileStreCours() + fvo.getStreFileNm();
 
-		File file = null;
-		FileInputStream fis = null;
-
-		BufferedInputStream in = null;
-		ByteArrayOutputStream bStream = null;
-
 		String fileStreCours = EgovWebUtil.filePathBlackList(fvo.getFileStreCours());
 		String streFileNm = EgovWebUtil.filePathBlackList(fvo.getStreFileNm());
+		File file = new File(fileStreCours, streFileNm);
 
-		try {
-			file = new File(fileStreCours, streFileNm);
-			fis = new FileInputStream(file);
+		ByteArrayOutputStream bStream = null;
 
-			in = new BufferedInputStream(fis);
+		try (FileInputStream fis = new FileInputStream(file); BufferedInputStream in = new BufferedInputStream(fis);) {
 			bStream = new ByteArrayOutputStream();
 
-			int imgByte;
-			while ((imgByte = in.read()) != -1) {
-				bStream.write(imgByte);
-			}
+			FileCopyUtils.copy(in, bStream);
 
 			String type = "";
 
@@ -155,7 +146,7 @@ public class EgovImageProcessController extends HttpServlet {
 			response.getOutputStream().close();
 
 		} finally {
-			EgovResourceCloseHelper.close(bStream, in, fis);
+			EgovResourceCloseHelper.close(bStream);
 		}
 	}
 }
