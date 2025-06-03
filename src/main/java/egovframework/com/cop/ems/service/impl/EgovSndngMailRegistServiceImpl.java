@@ -158,7 +158,7 @@ public class EgovSndngMailRegistServiceImpl extends EgovAbstractServiceImpl impl
 		// 2. XML파일로 저장한다.
 		String xmlFile = Globals.MAIL_REQUEST_PATH + vo.getMssageId() + ".xml";
 		boolean result = EgovXMLDoc.getClassToXML(mailDoc, xmlFile);
-		if (result == true) {
+		if (result) {
 			recptnXmlData(xmlFile);
 		}
 		return result;
