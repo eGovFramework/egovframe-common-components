@@ -133,14 +133,13 @@ public class EgovArticleServiceImpl extends EgovAbstractServiceImpl implements E
 		if (!files.isEmpty()) {
 			if (atchFileId == null || "".equals(atchFileId)) {
 				List<FileVO> result = fileUtil.parseFileInf(files, "BBS_", 0, atchFileId, "");
-				atchFileId = fileMngService.insertFileInfs(result);
-				board.setAtchFileId(atchFileId);
+				board.setAtchFileId(fileMngService.insertFileInfs(result));
 			} else {
 				FileVO fvo = new FileVO();
 				fvo.setAtchFileId(atchFileId);
 				int cnt = fileMngService.getMaxFileSN(fvo);
-				List<FileVO> _result = fileUtil.parseFileInf(files, "BBS_", cnt, atchFileId, "");
-				fileMngService.updateFileInfs(_result);
+				List<FileVO> fvoList = fileUtil.parseFileInf(files, "BBS_", cnt, atchFileId, "");
+				fileMngService.updateFileInfs(fvoList);
 			}
 		}
 
