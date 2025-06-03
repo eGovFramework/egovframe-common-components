@@ -21,12 +21,16 @@ import egovframework.com.cop.bbs.service.BoardVO;
 import egovframework.com.cop.bbs.service.EgovArticleService;
 
 /**
+ * 게시물 관리를 위한 ServiceImpl 클래스
+ * 
  * <pre>
- * << 개정이력(Modification Information) >>
- *   
- *   수정일			수정자		수정내용
- *  -------			--------	---------------------------
- *   2024.10.29		inganyoyo	Transaction 처리 오류 수정(Article)
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2024.10.29  inganyoyo     Transaction 처리 오류 수정(Article)
+ *   2025.06.03  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-AvoidReassigningParameters(매개변수 재할당 방지), LocalVariableNamingConventions(지역 변수 명명 규칙)
+ *
  * </pre>
  */
 
