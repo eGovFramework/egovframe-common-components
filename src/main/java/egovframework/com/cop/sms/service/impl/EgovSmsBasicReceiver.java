@@ -38,9 +38,9 @@ import x3.client.smeapi.impl.SMELogger;
  *      </pre>
  */
 public class EgovSmsBasicReceiver implements SMEListener {
-	private SmsBasicDAO smsDao = new SmsBasicDAO();
+	private final SmsBasicDAO smsDao = new SmsBasicDAO();
 
-	private String smeConfigPath = null;
+	private final String smeConfigPath = null;
 
 	/** SMS 서버 URL */
 	private String connString = null; // ex) sme://000.000.000.000:20000
