@@ -104,24 +104,24 @@ public class EgovSndngMailRegistController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		List<FileVO> _result = new ArrayList<FileVO>();
-		String _atchFileId = "";
+		List<FileVO> fvoList = new ArrayList<FileVO>();
+		String atchFileId = "";
 		final Map<String, MultipartFile> files = multiRequest.getFileMap();
 		if (!files.isEmpty()) {
-			_result = fileUtil.parseFileInf(files, "MSG_", 0, "", "");
-			_atchFileId = fileMngService.insertFileInfs(_result); // 파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
+			fvoList = fileUtil.parseFileInf(files, "MSG_", 0, "", "");
+			atchFileId = fileMngService.insertFileInfs(fvoList); // 파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
 
 		}
 
 		String orignlFileList = "";
 
-		for (int i = 0; i < _result.size(); i++) {
-			FileVO fileVO = _result.get(i);
+		for (int i = 0; i < fvoList.size(); i++) {
+			FileVO fileVO = fvoList.get(i);
 			orignlFileList = fileVO.getOrignlFileNm();
 		}
 
 		if (sndngMailVO != null) {
-			sndngMailVO.setAtchFileId(_atchFileId);
+			sndngMailVO.setAtchFileId(atchFileId);
 			sndngMailVO.setDsptchPerson(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
 			sndngMailVO.setOrignlFileNm(orignlFileList);
 		}
