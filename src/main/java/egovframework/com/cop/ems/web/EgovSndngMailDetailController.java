@@ -166,7 +166,7 @@ public class EgovSndngMailDetailController {
 			response.getOutputStream().close();
 		} else {
 			response.setContentType("application/x-msdownload");
-			PrintWriter printwriter = response.getWriter();
+			PrintWriter printwriter = response.getWriter(); // NOPMD - CloseResource
 			printwriter.println("<html>");
 			printwriter.println(
 					"<br><br><br><h2>Could not get file name:<br>" + EgovWebUtil.clearXSSMinimum(xmlFile) + "</h2>");
