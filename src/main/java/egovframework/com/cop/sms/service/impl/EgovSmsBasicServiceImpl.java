@@ -36,7 +36,7 @@ import egovframework.com.cop.sms.service.SmsVO;
  * @since 2009.11.24
  */
 public class EgovSmsBasicServiceImpl implements EgovSmsInfoService {
-	private SmsBasicDAO smsDao = new SmsBasicDAO();
+	private final SmsBasicDAO smsDao = new SmsBasicDAO();
 
 	private String smeConfigPath = null;
 
@@ -76,11 +76,11 @@ public class EgovSmsBasicServiceImpl implements EgovSmsInfoService {
 		// }
 
 		if (EgovProperties.class.getResource("") != null) {
-			String FILE_SEPARATOR = System.getProperty("file.separator");
+			String fileSeparator = System.getProperty("file.separator");
 
-			smeConfigPath = EgovProperties.class.getResource("").getPath() + FILE_SEPARATOR + ".." + FILE_SEPARATOR
-					+ ".." + FILE_SEPARATOR + ".." + FILE_SEPARATOR + FILE_SEPARATOR + "egovProps" + FILE_SEPARATOR
-					+ "conf" + FILE_SEPARATOR + "SMEConfig.properties";
+			smeConfigPath = EgovProperties.class.getResource("").getPath() + fileSeparator + ".." + fileSeparator + ".."
+					+ fileSeparator + ".." + fileSeparator + fileSeparator + "egovProps" + fileSeparator + "conf"
+					+ fileSeparator + "SMEConfig.properties";
 		}
 
 	}
