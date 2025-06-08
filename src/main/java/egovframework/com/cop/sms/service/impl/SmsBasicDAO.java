@@ -13,19 +13,20 @@ import egovframework.com.cop.sms.service.SmsVO;
 
 /**
  * 문자메시지를 위한 데이터 접근 클래스 (프레임워크 비종속 버전)
+ * 
  * @author 공통컴포넌트개발팀 한성곤
  * @since 2009.11.24
  * @version 1.0
  * @see
  *
- * <pre>
+ *      <pre>
  * << 개정이력(Modification Information) >>
  *   
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.11.24  한성곤          최초 생성
  *
- * </pre>
+ *      </pre>
  */
 public class SmsBasicDAO {
 	/**
@@ -36,7 +37,7 @@ public class SmsBasicDAO {
 	public List<SmsVO> selectSmsInfs(SmsVO vo) throws Exception {
 		List<SmsVO> list = new ArrayList<SmsVO>();
 
-		//variables
+		// variables
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -54,7 +55,8 @@ public class SmsBasicDAO {
 
 			if ("0".equals(vo.getSearchCnd())) {
 				if (!"".equals(vo.getSearchWrd())) {
-					buffer.append("  AND a.SMS_ID in (SELECT SMS_ID FROM COMTNSMSRECPTN WHERE RECPTN_TELNO LIKE CONCAT ('%', ?,'%'))\n");
+					buffer.append(
+							"  AND a.SMS_ID in (SELECT SMS_ID FROM COMTNSMSRECPTN WHERE RECPTN_TELNO LIKE CONCAT ('%', ?,'%'))\n");
 				}
 			} else if ("1".equals(vo.getSearchCnd())) {
 				buffer.append("  AND a.TRNSMIS_CN LIKE CONCAT ('%', #searchWrd#,'%')\n");
@@ -65,25 +67,23 @@ public class SmsBasicDAO {
 
 			// for Oracle
 			/*
-			buffer.append("SELECT * FROM ( SELECT rownum rn, TB.* FROM (\n");
-			buffer.append("SELECT\n");
-			buffer.append("  a.SMS_ID, a.TRNSMIS_TELNO, a.TRNSMIS_CN,\n");
-			buffer.append("  (SELECT COUNT(*) FROM COMTNSMSRECPTN s WHERE s.SMS_ID = a.SMS_ID) as RECPTN_CNT,\n");
-			buffer.append("  TO_CHAR(a.FRST_REGIST_PNTTM, 'YYYY-MM-DD HH24:MI:SS') as FRST_REGIST_PNTTM\n");
-			buffer.append("FROM COMTNSMS a\n");
-			buffer.append("WHERE 1=1\n");
-
-			if ("0".equals(vo.getSearchCnd())) {
-			if (!"".equals(vo.getSearchWrd())) {
-			    buffer.append("  AND a.SMS_ID in (SELECT SMS_ID FROM COMTNSMSRECPTN WHERE RECPTN_TELNO LIKE '%' || ? || '%')\n");
-			}
-			} else if ("1".equals(vo.getSearchCnd())) {
-			buffer.append("  AND a.TRNSMIS_CN LIKE '%' || ? || '%'\n");
-			}
-
-			buffer.append("ORDER BY a.FRST_REGIST_PNTTM DESC\n");
-			buffer.append(") TB ) WHERE rn BETWEEN ? + 1 AND ? + ?");
-			*/
+			 * buffer.append("SELECT * FROM ( SELECT rownum rn, TB.* FROM (\n");
+			 * buffer.append("SELECT\n");
+			 * buffer.append("  a.SMS_ID, a.TRNSMIS_TELNO, a.TRNSMIS_CN,\n"); buffer.
+			 * append("  (SELECT COUNT(*) FROM COMTNSMSRECPTN s WHERE s.SMS_ID = a.SMS_ID) as RECPTN_CNT,\n"
+			 * ); buffer.
+			 * append("  TO_CHAR(a.FRST_REGIST_PNTTM, 'YYYY-MM-DD HH24:MI:SS') as FRST_REGIST_PNTTM\n"
+			 * ); buffer.append("FROM COMTNSMS a\n"); buffer.append("WHERE 1=1\n");
+			 * 
+			 * if ("0".equals(vo.getSearchCnd())) { if (!"".equals(vo.getSearchWrd())) {
+			 * buffer.
+			 * append("  AND a.SMS_ID in (SELECT SMS_ID FROM COMTNSMSRECPTN WHERE RECPTN_TELNO LIKE '%' || ? || '%')\n"
+			 * ); } } else if ("1".equals(vo.getSearchCnd())) {
+			 * buffer.append("  AND a.TRNSMIS_CN LIKE '%' || ? || '%'\n"); }
+			 * 
+			 * buffer.append("ORDER BY a.FRST_REGIST_PNTTM DESC\n");
+			 * buffer.append(") TB ) WHERE rn BETWEEN ? + 1 AND ? + ?");
+			 */
 
 			conn = SmsBasicDBUtil.getConnection();
 
@@ -105,10 +105,9 @@ public class SmsBasicDAO {
 
 			// for Oracle
 			/*
-			pstmt.setInt(++index, vo.getFirstIndex());
-			pstmt.setInt(++index, vo.getFirstIndex());
-			pstmt.setInt(++index, vo.getRecordCountPerPage());
-			*/
+			 * pstmt.setInt(++index, vo.getFirstIndex()); pstmt.setInt(++index,
+			 * vo.getFirstIndex()); pstmt.setInt(++index, vo.getRecordCountPerPage());
+			 */
 
 			rs = pstmt.executeQuery();
 
@@ -141,7 +140,7 @@ public class SmsBasicDAO {
 	 * @throws Exception
 	 */
 	public int selectSmsInfsCnt(SmsVO vo) throws Exception {
-		//variables
+		// variables
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -157,7 +156,8 @@ public class SmsBasicDAO {
 
 			if ("0".equals(vo.getSearchCnd())) {
 				if (!"".equals(vo.getSearchWrd())) {
-					buffer.append("  AND a.SMS_ID in (SELECT SMS_ID FROM COMTNSMSRECPTN WHERE RECPTN_TELNO LIKE CONCAT ('%', ?,'%'))\n");
+					buffer.append(
+							"  AND a.SMS_ID in (SELECT SMS_ID FROM COMTNSMSRECPTN WHERE RECPTN_TELNO LIKE CONCAT ('%', ?,'%'))\n");
 				}
 			} else if ("1".equals(vo.getSearchCnd())) {
 				buffer.append("  AND a.TRNSMIS_CN LIKE CONCAT ('%', #searchWrd#,'%')\n");
@@ -165,19 +165,15 @@ public class SmsBasicDAO {
 
 			// for Oracle
 			/*
-			buffer.append("SELECT\n");
-			buffer.append("  COUNT(a.SMS_ID) as cnt\n");
-			buffer.append("FROM COMTNSMS a\n");
-			buffer.append("WHERE 1=1\n");
-
-			if ("0".equals(vo.getSearchCnd())) {
-			if (!"".equals(vo.getSearchWrd())) {
-			    buffer.append("  AND a.SMS_ID in (SELECT SMS_ID FROM COMTNSMSRECPTN WHERE RECPTN_TELNO LIKE '%' || ? || '%')\n");
-			}
-			} else if ("1".equals(vo.getSearchCnd())) {
-			buffer.append("  AND a.TRNSMIS_CN LIKE '%' || ? || '%'\n");
-			}
-			*/
+			 * buffer.append("SELECT\n"); buffer.append("  COUNT(a.SMS_ID) as cnt\n");
+			 * buffer.append("FROM COMTNSMS a\n"); buffer.append("WHERE 1=1\n");
+			 * 
+			 * if ("0".equals(vo.getSearchCnd())) { if (!"".equals(vo.getSearchWrd())) {
+			 * buffer.
+			 * append("  AND a.SMS_ID in (SELECT SMS_ID FROM COMTNSMSRECPTN WHERE RECPTN_TELNO LIKE '%' || ? || '%')\n"
+			 * ); } } else if ("1".equals(vo.getSearchCnd())) {
+			 * buffer.append("  AND a.TRNSMIS_CN LIKE '%' || ? || '%'\n"); }
+			 */
 
 			conn = SmsBasicDBUtil.getConnection();
 
@@ -216,7 +212,7 @@ public class SmsBasicDAO {
 	public String insertSmsInf(Sms sms) throws Exception {
 		String smsId = null;
 
-		//variables
+		// variables
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
@@ -232,12 +228,11 @@ public class SmsBasicDAO {
 
 			// for Oracle
 			/*
-			buffer.append("INSERT INTO COMTNSMS\n");
-			buffer.append("  (SMS_ID, TRNSMIS_TELNO, TRNSMIS_CN,\n");
-			buffer.append("   FRST_REGISTER_ID, FRST_REGIST_PNTTM )\n");
-			buffer.append("VALUES\n");
-			buffer.append("(?, ?, ?, ?, SYSDATE)");
-			*/
+			 * buffer.append("INSERT INTO COMTNSMS\n");
+			 * buffer.append("  (SMS_ID, TRNSMIS_TELNO, TRNSMIS_CN,\n");
+			 * buffer.append("   FRST_REGISTER_ID, FRST_REGIST_PNTTM )\n");
+			 * buffer.append("VALUES\n"); buffer.append("(?, ?, ?, ?, SYSDATE)");
+			 */
 
 			conn = SmsBasicDBUtil.getConnection();
 
@@ -259,7 +254,7 @@ public class SmsBasicDAO {
 			conn.commit();
 
 			return smsId;
-		} catch (SQLException ex) {//KISA 보안약점 조치 (2018-10-29, 윤창원)
+		} catch (SQLException ex) {// KISA 보안약점 조치 (2018-10-29, 윤창원)
 			if (conn != null) {
 				conn.rollback();
 			}
@@ -277,11 +272,12 @@ public class SmsBasicDAO {
 
 	/**
 	 * 문자메시지 수신정보 및 결과 정보를 등록한다.
+	 * 
 	 * @param smsRecptn
 	 * @throws Exception
 	 */
 	public void insertSmsRecptnInf(SmsRecptn smsRecptn) throws Exception {
-		//variables
+		// variables
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
@@ -321,7 +317,7 @@ public class SmsBasicDAO {
 	public SmsVO selectSmsInf(SmsVO searchVO) throws Exception {
 		SmsVO smsVO = new SmsVO();
 
-		//variables
+		// variables
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -341,15 +337,16 @@ public class SmsBasicDAO {
 
 			// for Oracle
 			/*
-			buffer.append("SELECT\n");
-			buffer.append("  a.SMS_ID, a.TRNSMIS_TELNO, a.TRNSMIS_CN,\n");
-			buffer.append("  a.FRST_REGISTER_ID, b.USER_NM as FRST_REGISTER_NM,\n");
-			buffer.append("  TO_CHAR(a.FRST_REGIST_PNTTM, 'YYYY-MM-DD') as FRST_REGIST_PNTTM\n");
-			buffer.append("FROM COMTNSMS a\n");
-			buffer.append("LEFT OUTER JOIN COMVNUSERMASTER b\n");
-			buffer.append("  ON a.FRST_REGISTER_ID = b.ESNTL_ID\n");
-			buffer.append("WHERE a.SMS_ID = ?\n");
-			*/
+			 * buffer.append("SELECT\n");
+			 * buffer.append("  a.SMS_ID, a.TRNSMIS_TELNO, a.TRNSMIS_CN,\n");
+			 * buffer.append("  a.FRST_REGISTER_ID, b.USER_NM as FRST_REGISTER_NM,\n");
+			 * buffer.
+			 * append("  TO_CHAR(a.FRST_REGIST_PNTTM, 'YYYY-MM-DD') as FRST_REGIST_PNTTM\n"
+			 * ); buffer.append("FROM COMTNSMS a\n");
+			 * buffer.append("LEFT OUTER JOIN COMVNUSERMASTER b\n");
+			 * buffer.append("  ON a.FRST_REGISTER_ID = b.ESNTL_ID\n");
+			 * buffer.append("WHERE a.SMS_ID = ?\n");
+			 */
 
 			conn = SmsBasicDBUtil.getConnection();
 
@@ -383,7 +380,7 @@ public class SmsBasicDAO {
 	public List<SmsRecptn> selectSmsRecptnInfs(SmsRecptn vo) throws Exception {
 		List<SmsRecptn> list = new ArrayList<SmsRecptn>();
 
-		//variables
+		// variables
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
@@ -428,15 +425,14 @@ public class SmsBasicDAO {
 	}
 
 	/**
-	 * 문자메시지 전송 결과 수신을 처리한다.
-	 * EgovSmsInfoReceiver(Schedule job)에 의해 호출된다.
+	 * 문자메시지 전송 결과 수신을 처리한다. EgovSmsInfoReceiver(Schedule job)에 의해 호출된다.
 	 * 
 	 * @param smsRecptn
 	 * @return
 	 * @throws Exception
 	 */
 	public void updateSmsRecptnInf(SmsRecptn smsRecptn) throws Exception {
-		//variables
+		// variables
 		Connection conn = null;
 		PreparedStatement pstmt = null;
 
@@ -469,14 +465,13 @@ public class SmsBasicDAO {
 	}
 
 	/**
-	 * ID 처리.
-	 * transaction 처리를 위해 Connection을 파라미터로 넘겨받음
+	 * ID 처리. transaction 처리를 위해 Connection을 파라미터로 넘겨받음
 	 * 
 	 * @return
 	 * @throws Exception
 	 */
 	protected String getNextId(Connection conn) throws Exception {
-		//variables
+		// variables
 		PreparedStatement pstmt = null;
 		ResultSet rs = null;
 
@@ -484,14 +479,16 @@ public class SmsBasicDAO {
 
 		try {
 			// for mySql
-			buffer.append("SELECT CONCAT('SMSID_', LPAD(IFNULL(MAX(SUBSTR(SMS_ID, 7, 14)), 0) + 1, 14, '0')) as SMS_ID from COMTNSMS\n");
+			buffer.append(
+					"SELECT CONCAT('SMSID_', LPAD(IFNULL(MAX(SUBSTR(SMS_ID, 7, 14)), 0) + 1, 14, '0')) as SMS_ID from COMTNSMS\n");
 			buffer.append("WHERE SMS_ID LIKE 'SMSID_%'");
 
 			// for Oracle
 			/*
-			buffer.append("SELECT CONCAT('SMSID_', LPAD(IFNULL(MAX(SUBSTR(SMS_ID, 7, 14)), 0) + 1, 14, '0')) as SMS_ID from COMTNSMS\n");
-			buffer.append("WHERE SMS_ID LIKE 'SMSID_%'");
-			*/
+			 * buffer.
+			 * append("SELECT CONCAT('SMSID_', LPAD(IFNULL(MAX(SUBSTR(SMS_ID, 7, 14)), 0) + 1, 14, '0')) as SMS_ID from COMTNSMS\n"
+			 * ); buffer.append("WHERE SMS_ID LIKE 'SMSID_%'");
+			 */
 
 			pstmt = conn.prepareStatement(buffer.toString());
 
