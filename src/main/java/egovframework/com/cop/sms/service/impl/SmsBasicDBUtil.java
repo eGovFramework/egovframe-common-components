@@ -103,7 +103,7 @@ public class SmsBasicDBUtil {
 		poolConfig.setMaxIdle(bds.getMaxIdle());
 		// 커넥션 최대 개수 설정
 		poolConfig.setMaxTotal(bds.getMaxTotal());
-		GenericObjectPool<PoolableConnection> connectionPool = new GenericObjectPool<PoolableConnection>(
+		GenericObjectPool<PoolableConnection> connectionPool = new GenericObjectPool<PoolableConnection>( // NOPMD
 				poolableConnectionFactory, poolConfig);
 		// PoolableConnectionFactory 커넥션 풀 연결
 		poolableConnectionFactory.setPool(connectionPool);
@@ -112,8 +112,8 @@ public class SmsBasicDBUtil {
 
 	}
 
-	protected static synchronized void loadDriver() {
-		BasicDataSource bds = new BasicDataSource();
+	protected static synchronized void loadDriver() { // NOPMD - AvoidSynchronizedAtMethodLevel
+		BasicDataSource bds = new BasicDataSource(); // NOPMD - CloseResource
 
 		bds.setDriverClassName(JDBC_DRIVER);
 		bds.setUrl(JDBC_URL);
