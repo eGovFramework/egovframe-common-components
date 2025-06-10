@@ -42,7 +42,7 @@ import egovframework.com.cop.smt.lsm.service.LeaderSttusVO;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2024.10.29  이백행          @Override 표기, 불필요 형변환 제거
- *   2025.06.10  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-UnnecessaryBoxing(불필요한 박싱), SimpleDateFormatNeedsLocale(간단한 날짜 형식에 로케일이 필요합니다.)
+ *   2025.06.11  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-UnnecessaryBoxing(불필요한 박싱), SimpleDateFormatNeedsLocale(간단한 날짜 형식에 로케일이 필요합니다.)
  *
  *      </pre>
  */
