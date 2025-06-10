@@ -322,7 +322,7 @@ public class EgovMemoReprtController {
 			 * ***************************************************************** // 첨부파일 관련
 			 * ID 생성 start....
 			 */
-			String _atchFileId = memoReprtVO.getAtchFileId();
+			String atchFileId = memoReprtVO.getAtchFileId();
 
 			// final Map<String, MultipartFile> files = multiRequest.getFileMap();
 			final List<MultipartFile> files = multiRequest.getFiles("file_1");
@@ -330,18 +330,18 @@ public class EgovMemoReprtController {
 			if (!files.isEmpty()) {
 				String atchFileAt = commandMap.get("atchFileAt") == null ? "" : (String) commandMap.get("atchFileAt");
 				if ("N".equals(atchFileAt)) {
-					List<FileVO> _result = fileUtil.parseFileInf(files, "DSCH_", 0, _atchFileId, "");
-					_atchFileId = fileMngService.insertFileInfs(_result);
+					List<FileVO> fvoList = fileUtil.parseFileInf(files, "DSCH_", 0, atchFileId, "");
+					atchFileId = fileMngService.insertFileInfs(fvoList);
 
 					// 첨부파일 ID 셋팅
-					memoReprtVO.setAtchFileId(_atchFileId); // 첨부파일 ID
+					memoReprtVO.setAtchFileId(atchFileId); // 첨부파일 ID
 
 				} else {
 					FileVO fvo = new FileVO();
-					fvo.setAtchFileId(_atchFileId);
-					int _cnt = fileMngService.getMaxFileSN(fvo);
-					List<FileVO> _result = fileUtil.parseFileInf(files, "DSCH_", _cnt, _atchFileId, "");
-					fileMngService.updateFileInfs(_result);
+					fvo.setAtchFileId(atchFileId);
+					int fileKeyParam = fileMngService.getMaxFileSN(fvo);
+					List<FileVO> fvoList = fileUtil.parseFileInf(files, "DSCH_", fileKeyParam, atchFileId, "");
+					fileMngService.updateFileInfs(fvoList);
 				}
 			}
 
@@ -415,19 +415,19 @@ public class EgovMemoReprtController {
 		}
 
 		// 첨부파일 관련 첨부파일ID 생성
-		List<FileVO> _result = null;
-		String _atchFileId = "";
+		List<FileVO> fvoList = null;
+		String atchFileId = "";
 
 		// final Map<String, MultipartFile> files = multiRequest.getFileMap();
 		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
 		if (!files.isEmpty()) {
-			_result = fileUtil.parseFileInf(files, "DSCH_", 0, "", "");
-			_atchFileId = fileMngService.insertFileInfs(_result); // 파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
+			fvoList = fileUtil.parseFileInf(files, "DSCH_", 0, "", "");
+			atchFileId = fileMngService.insertFileInfs(fvoList); // 파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
 		}
 
 		// 리턴받은 첨부파일ID를 셋팅한다..
-		memoReprtVO.setAtchFileId(_atchFileId); // 첨부파일 ID
+		memoReprtVO.setAtchFileId(atchFileId); // 첨부파일 ID
 
 		// 아이디 설정
 		memoReprtVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
@@ -464,11 +464,11 @@ public class EgovMemoReprtController {
 		memoReprtVO.setSearchId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 
 		// 첨부파일 삭제를 위한 ID 생성 start....
-		String _atchFileId = memoReprtVO.getAtchFileId();
+		String atchFileId = memoReprtVO.getAtchFileId();
 
 		// 첨부파일을 삭제하기 위한 Vo
 		FileVO fvo = new FileVO();
-		fvo.setAtchFileId(_atchFileId);
+		fvo.setAtchFileId(atchFileId);
 
 		fileMngService.deleteAllFileInf(fvo);
 		// 첨부파일 삭제 End.............
