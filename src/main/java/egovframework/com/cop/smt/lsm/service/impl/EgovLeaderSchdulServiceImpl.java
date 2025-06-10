@@ -32,17 +32,19 @@ import egovframework.com.cop.smt.lsm.service.LeaderSttusVO;
  * </pre>
  * 
  * @author 장철호
+ * @since 28-6-2010 오전 10:59:05
  * @version 1.0
- * @created 28-6-2010 오전 10:59:05
+ * @see
  * 
- *          <pre>
- * << 개정이력(Modification Information) >>
- *   
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2024.10.29	LeeBaekHaeng	@Override 표기, 불필요 형변환 제거
+ *   2024.10.29  이백행          @Override 표기, 불필요 형변환 제거
+ *   2025.06.10  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-UnnecessaryBoxing(불필요한 박싱), SimpleDateFormatNeedsLocale(간단한 날짜 형식에 로케일이 필요합니다.)
  *
- *          </pre>
+ *      </pre>
  */
 @Service("EgovLeaderSchdulService")
 public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl implements EgovLeaderSchdulService {
