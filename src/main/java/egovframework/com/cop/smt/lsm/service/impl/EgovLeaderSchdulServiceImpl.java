@@ -150,8 +150,8 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 		} else {
 			String sBgnDe = leaderSchdul.getSchdulBgndeYYYMMDD().replaceAll("-", "");
 			String sEndDe = leaderSchdul.getSchdulEnddeYYYMMDD().replaceAll("-", "");
-			int iBgnDe = Integer.valueOf(sBgnDe);
-			int iEndDe = Integer.valueOf(sEndDe);
+			int iBgnDe = Integer.parseInt(sBgnDe);
+			int iEndDe = Integer.parseInt(sEndDe);
 
 			int iNowDe = iBgnDe;
 			int iNowYear = 0;
@@ -174,9 +174,9 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 					LOGGER.info("[jino] [1-1] iBgnDe ==> " + iBgnDe);
 					LOGGER.info("[jino]#######################");
 					if (iNowDe != iBgnDe) {
-						iNowYear = Integer.valueOf(String.valueOf(iNowDe).substring(0, 4));
-						iNowMonth = Integer.valueOf(String.valueOf(iNowDe).substring(4, 6));
-						iNowDay = Integer.valueOf(String.valueOf(iNowDe).substring(6, 8));
+						iNowYear = Integer.parseInt(String.valueOf(iNowDe).substring(0, 4));
+						iNowMonth = Integer.parseInt(String.valueOf(iNowDe).substring(4, 6));
+						iNowDay = Integer.parseInt(String.valueOf(iNowDe).substring(6, 8));
 
 						if ("2".equals(leaderSchdul.getReptitSeCode()) || "3".equals(leaderSchdul.getReptitSeCode())) {
 							cal.set(iNowYear, iNowMonth - 1, 1);
@@ -208,7 +208,7 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 							sNowDay = "0" + sNowDay;
 						}
 
-						iNowDe = Integer.valueOf(sNowYear + sNowMonth + sNowDay);
+						iNowDe = Integer.parseInt(sNowYear + sNowMonth + sNowDay);
 					}
 
 					if (iNowDe > iEndDe) {
@@ -224,14 +224,14 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 					if ("2".equals(leaderSchdul.getReptitSeCode())) {
 						iNowDe = iNowDe + 1;
 					} else if ("3".equals(leaderSchdul.getReptitSeCode())) {
-						int year = Integer.valueOf(String.valueOf(iNowDe).substring(0, 4));
-						int month = Integer.valueOf(String.valueOf(iNowDe).substring(4, 6));
-						int day = Integer.valueOf(String.valueOf(iNowDe).substring(6, 8));
+						int year = Integer.parseInt(String.valueOf(iNowDe).substring(0, 4));
+						int month = Integer.parseInt(String.valueOf(iNowDe).substring(4, 6));
+						int day = Integer.parseInt(String.valueOf(iNowDe).substring(6, 8));
 						java.util.Calendar calendar = java.util.Calendar.getInstance();
 						calendar.set(year, month - 1, day);
 						calendar.add(Calendar.DAY_OF_YEAR, 7);
-						SimpleDateFormat fm = new SimpleDateFormat("yyyyMMdd");
-						iNowDe = Integer.valueOf(fm.format(calendar.getTime()));
+						SimpleDateFormat fm = new SimpleDateFormat("yyyyMMdd"); // NOPMD - SimpleDateFormatNeedsLocale
+						iNowDe = Integer.parseInt(fm.format(calendar.getTime()));
 					} else if ("4".equals(leaderSchdul.getReptitSeCode())) {
 						iNowDe = iNowDe + 100;
 					}
