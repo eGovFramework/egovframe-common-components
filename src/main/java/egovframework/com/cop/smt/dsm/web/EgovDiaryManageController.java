@@ -47,7 +47,6 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.03.20  홍길동          최초 생성
  *   2009.04.10  장동한          최초 생성
  *   2011.08.26  정진오          IncludedInfo annotation 추가
  *   2019.12.09  신용호          KISA 보안약점 조치 (위험한 형식 파일 업로드)
