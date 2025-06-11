@@ -676,7 +676,7 @@ public class EgovDeptSchdulManageController {
 			 * ***************************************************************** // 첨부파일 관련
 			 * ID 생성 start....
 			 */
-			String _atchFileId = deptSchdulManageVO.getAtchFileId();
+			String atchFileId = deptSchdulManageVO.getAtchFileId();
 
 			// final Map<String, MultipartFile> files = multiRequest.getFileMap();
 			final List<MultipartFile> files = multiRequest.getFiles("file_1");
@@ -684,17 +684,17 @@ public class EgovDeptSchdulManageController {
 			if (!files.isEmpty()) {
 				String atchFileAt = commandMap.get("atchFileAt");
 				if ("N".equals(atchFileAt) || "".equals(atchFileAt)) {
-					List<FileVO> _result = fileUtil.parseFileInf(files, "DSCH_", 0, _atchFileId, "");
-					_atchFileId = fileMngService.insertFileInfs(_result);
+					List<FileVO> fvoList = fileUtil.parseFileInf(files, "DSCH_", 0, atchFileId, "");
+					atchFileId = fileMngService.insertFileInfs(fvoList);
 
 					// 첨부파일 ID 셋팅
-					deptSchdulManageVO.setAtchFileId(_atchFileId); // 첨부파일 ID
+					deptSchdulManageVO.setAtchFileId(atchFileId); // 첨부파일 ID
 				} else {
 					FileVO fvo = new FileVO();
-					fvo.setAtchFileId(_atchFileId);
-					int _cnt = fileMngService.getMaxFileSN(fvo);
-					List<FileVO> _result = fileUtil.parseFileInf(files, "DSCH_", _cnt, _atchFileId, "");
-					fileMngService.updateFileInfs(_result);
+					fvo.setAtchFileId(atchFileId);
+					int fileKeyParam = fileMngService.getMaxFileSN(fvo);
+					List<FileVO> fvoList = fileUtil.parseFileInf(files, "DSCH_", fileKeyParam, atchFileId, "");
+					fileMngService.updateFileInfs(fvoList);
 				}
 			}
 
@@ -802,19 +802,19 @@ public class EgovDeptSchdulManageController {
 			}
 
 			// 첨부파일 관련 첨부파일ID 생성
-			List<FileVO> _result = null;
-			String _atchFileId = "";
+			List<FileVO> fvoList = null;
+			String atchFileId = "";
 
 			// final Map<String, MultipartFile> files = multiRequest.getFileMap();
 			final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
 			if (!files.isEmpty()) {
-				_result = fileUtil.parseFileInf(files, "DSCH_", 0, "", "");
-				_atchFileId = fileMngService.insertFileInfs(_result); // 파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
+				fvoList = fileUtil.parseFileInf(files, "DSCH_", 0, "", "");
+				atchFileId = fileMngService.insertFileInfs(fvoList); // 파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
 			}
 
 			// 리턴받은 첨부파일ID를 셋팅한다..
-			deptSchdulManageVO.setAtchFileId(_atchFileId); // 첨부파일 ID
+			deptSchdulManageVO.setAtchFileId(atchFileId); // 첨부파일 ID
 
 			// 아이디 설정
 			deptSchdulManageVO
