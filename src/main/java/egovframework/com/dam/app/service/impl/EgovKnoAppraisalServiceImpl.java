@@ -23,8 +23,19 @@ import egovframework.com.dam.app.service.KnoAppraisalVO;
  * </pre>
  * 
  * @author 박종선
+ * @since 12-8-2010 오후 3:44:38
  * @version 1.0
- * @created 12-8-2010 오후 3:44:38
+ * @see
+ * 
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.12.08  박종선          최초 생성
+ *   2025.06.13  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(지역 변수 명명 규칙)
+ *
+ *      </pre>
  */
 @Service("KnoAppraisalService")
 public class EgovKnoAppraisalServiceImpl extends EgovAbstractServiceImpl implements EgovKnoAppraisalService {
