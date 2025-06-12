@@ -105,8 +105,8 @@ public class EgovKnoAppraisalController {
 
 		searchVO.setEmplyrId(loginVO.getUniqId());
 
-		List<EgovMap> KnoAppraisalList = knoAppraisalService.selectKnoAppraisalList(searchVO);
-		model.addAttribute("resultList", KnoAppraisalList);
+		List<EgovMap> resultList = knoAppraisalService.selectKnoAppraisalList(searchVO);
+		model.addAttribute("resultList", resultList);
 
 		int totCnt = knoAppraisalService.selectKnoAppraisalTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
