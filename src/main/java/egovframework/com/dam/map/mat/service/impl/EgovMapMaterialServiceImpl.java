@@ -22,10 +22,20 @@ import egovframework.com.dam.map.mat.service.MapMaterialVO;
  * </pre>
  * 
  * @author 박종선
+ * @since 2010.08.12
  * @version 1.0
- * @created 12-8-2010 오후 3:44:45
+ * @see
+ * 
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.08.12  박종선          최초 생성
+ *   2025.06.14  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-FieldNamingConventions(필드 명명 규칙)
+ *
+ *      </pre>
  */
-
 @Service("MapMaterialService")
 public class EgovMapMaterialServiceImpl extends EgovAbstractServiceImpl implements EgovMapMaterialService {
 
