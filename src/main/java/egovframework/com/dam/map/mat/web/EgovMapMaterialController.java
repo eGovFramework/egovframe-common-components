@@ -26,55 +26,60 @@ import egovframework.com.dam.map.tea.service.EgovMapTeamService;
 import egovframework.com.dam.map.tea.service.MapTeamVO;
 
 /**
+ * <pre>
  * 개요
  * - 지식맵(지식유형)에 대한 controller 클래스를 정의한다.
  *
  * 상세내용
  * - 지식맵(지식유형)에 대한 등록, 수정, 삭제, 조회 기능을 제공한다.
  * - 지식맵(지식유형)의 조회기능은 목록조회, 상세조회로 구분된다.
+ * </pre>
+ * 
  * @author 박종선
+ * @since 2010.08.12
  * @version 1.0
- * @created 12-8-2010 오후 3:44:44
- *  <pre>
- * << 개정이력(Modification Information) >>
+ * @see
+ * 
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
  *   수정일      수정자           수정내용
- *  -------        --------    ---------------------------
- *   2010.8.12  박종선          최초 생성
- *   2011.8.26	정진오			IncludedInfo annotation 추가
+ *  -------    --------    ---------------------------
+ *   2010.08.12  박종선          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2025.06.14  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(지역 변수 명명 규칙)
  *
- * </pre>
+ *      </pre>
  */
 
 @Controller
 public class EgovMapMaterialController {
 
 	@Resource(name = "MapTeamService")
-    private EgovMapTeamService mapTeamService;
+	private EgovMapTeamService mapTeamService;
 
 	@Resource(name = "MapMaterialService")
 	public EgovMapMaterialService mapMaterialService;
 
-    /** EgovPropertyService */
-    @Resource(name = "propertiesService")
-    protected EgovPropertyService propertiesService;
+	/** EgovPropertyService */
+	@Resource(name = "propertiesService")
+	protected EgovPropertyService propertiesService;
 
 	@Autowired
 	private DefaultBeanValidator beanValidator;
 
 	/**
 	 * 등록된 지식맵(지식유형) 정보를 조회 한다.
+	 * 
 	 * @param mapMaterialVO- 지식맵(지식유형) VO
 	 * @return String - 리턴 Url
 	 *
 	 * @param MapMaterialVO
 	 */
-	@IncludedInfo(name="지식맵관리(유형)", listUrl="/dam/map/mat/EgovComDamMapMaterialList.do", order = 1260 ,gid = 80)
-	@RequestMapping(value="/dam/map/mat/EgovComDamMapMaterialList.do")
-	public String selectMapMaterialList(@ModelAttribute("loginVO") LoginVO loginVO
-			, @ModelAttribute("searchVO") MapMaterialVO searchVO
-			, ModelMap model
-			) throws Exception {
+	@IncludedInfo(name = "지식맵관리(유형)", listUrl = "/dam/map/mat/EgovComDamMapMaterialList.do", order = 1260, gid = 80)
+	@RequestMapping(value = "/dam/map/mat/EgovComDamMapMaterialList.do")
+	public String selectMapMaterialList(@ModelAttribute("loginVO") LoginVO loginVO,
+			@ModelAttribute("searchVO") MapMaterialVO searchVO, ModelMap model) throws Exception {
 
 		/** EgovPropertyService.mapMaterial */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -90,8 +95,8 @@ public class EgovMapMaterialController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<MapMaterialVO> MapMaterialList = mapMaterialService.selectMapMaterialList(searchVO);
-		model.addAttribute("resultList", MapMaterialList);
+		List<MapMaterialVO> resultList = mapMaterialService.selectMapMaterialList(searchVO);
+		model.addAttribute("resultList", resultList);
 
 		int totCnt = mapMaterialService.selectMapMaterialTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -102,16 +107,15 @@ public class EgovMapMaterialController {
 
 	/**
 	 * 지식맵(지식유형)상세 정보를 조회 한다.
+	 * 
 	 * @param MapMaterialVO - 지식맵(지식유형) VO
 	 * @return String - 리턴 Url
 	 *
 	 * @param MapMaterialVO
 	 */
-	@RequestMapping(value="/dam/map/mat/EgovComDamMapMaterial.do")
-	public String selectMapMaterial(@ModelAttribute("loginVO") LoginVO loginVO
-			, MapMaterial mapMaterial
-			, ModelMap model
-			) throws Exception {
+	@RequestMapping(value = "/dam/map/mat/EgovComDamMapMaterial.do")
+	public String selectMapMaterial(@ModelAttribute("loginVO") LoginVO loginVO, MapMaterial mapMaterial, ModelMap model)
+			throws Exception {
 		MapMaterial vo = mapMaterialService.selectMapMaterial(mapMaterial);
 		model.addAttribute("result", vo);
 		return "egovframework/com/dam/map/mat/EgovComDamMapMaterialDetail";
@@ -119,41 +123,39 @@ public class EgovMapMaterialController {
 
 	/**
 	 * 지식맵(지식유형) 정보를 신규로 등록한다.
+	 * 
 	 * @param konTypeNm - 지식맵(지식유형) model
 	 * @return String - 리턴 Url
 	 *
 	 * @param MapMaterialVO
 	 */
-	@RequestMapping(value="/dam/map/mat/EgovComDamMapMaterialRegist.do")
-	public String insertMapMaterial(@ModelAttribute("loginVO") LoginVO loginVO
-			, @ModelAttribute("mapMaterial") MapMaterial mapMaterial
-			, BindingResult bindingResult
-			, ModelMap model
-			) throws Exception {
-		if (mapMaterial.getKnoTypeCd() == null
-				||mapMaterial.getKnoTypeCd().equals("")) {
+	@RequestMapping(value = "/dam/map/mat/EgovComDamMapMaterialRegist.do")
+	public String insertMapMaterial(@ModelAttribute("loginVO") LoginVO loginVO,
+			@ModelAttribute("mapMaterial") MapMaterial mapMaterial, BindingResult bindingResult, ModelMap model)
+			throws Exception {
+		if (mapMaterial.getKnoTypeCd() == null || mapMaterial.getKnoTypeCd().equals("")) {
 
 			MapTeamVO searchVO;
-    		searchVO = new MapTeamVO();
-    		searchVO.setRecordCountPerPage(999999);
-    		searchVO.setFirstIndex(0);
-    		searchVO.setSearchCondition("MapTeamList");
-            List<MapTeamVO> MapMaterialList = mapTeamService.selectMapTeamList(searchVO);
-            model.addAttribute("mapTeam", MapMaterialList);
+			searchVO = new MapTeamVO();
+			searchVO.setRecordCountPerPage(999999);
+			searchVO.setFirstIndex(0);
+			searchVO.setSearchCondition("MapTeamList");
+			List<MapTeamVO> mapTeam = mapTeamService.selectMapTeamList(searchVO);
+			model.addAttribute("mapTeam", mapTeam);
 
 			return "egovframework/com/dam/map/mat/EgovComDamMapMaterialRegist";
 		}
 
 		beanValidator.validate(mapMaterial, bindingResult);
-		if (bindingResult.hasErrors()){
+		if (bindingResult.hasErrors()) {
 
 			MapTeamVO searchVO;
-    		searchVO = new MapTeamVO();
-    		searchVO.setRecordCountPerPage(999999);
-    		searchVO.setFirstIndex(0);
-    		searchVO.setSearchCondition("MapTeamList");
-            List<MapTeamVO> MapMaterialList = mapTeamService.selectMapTeamList(searchVO);
-            model.addAttribute("mapTeam", MapMaterialList);
+			searchVO = new MapTeamVO();
+			searchVO.setRecordCountPerPage(999999);
+			searchVO.setFirstIndex(0);
+			searchVO.setSearchCondition("MapTeamList");
+			List<MapTeamVO> mapTeam = mapTeamService.selectMapTeamList(searchVO);
+			model.addAttribute("mapTeam", mapTeam);
 
 			return "egovframework/com/dam/map/mat/EgovComDamMapMaterialRegist";
 		}
@@ -165,26 +167,24 @@ public class EgovMapMaterialController {
 
 	/**
 	 * 기 등록 된 지식맵(지식유형)링 정보를 수정 한다.
+	 * 
 	 * @param konTypeNm - 지식맵(지식유형) model
 	 * @return String - 리턴 Url
 	 *
 	 * @param MapMaterialVO
 	 */
-	@RequestMapping(value="/dam/map/mat/EgovComDamMapMaterialModify.do")
-	public String updateMapMaterial(@ModelAttribute("loginVO") LoginVO loginVO
-			, @ModelAttribute("knoTypeCd") MapMaterial mapMaterial
-			, BindingResult bindingResult
-			, @RequestParam Map<?, ?> commandMap
-			, ModelMap model
-			) throws Exception {
-		String sCmd = commandMap.get("cmd") == null ? "": (String)commandMap.get("cmd");
+	@RequestMapping(value = "/dam/map/mat/EgovComDamMapMaterialModify.do")
+	public String updateMapMaterial(@ModelAttribute("loginVO") LoginVO loginVO,
+			@ModelAttribute("knoTypeCd") MapMaterial mapMaterial, BindingResult bindingResult,
+			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 		if (sCmd.equals("")) {
 			MapMaterial vo = mapMaterialService.selectMapMaterial(mapMaterial);
 			model.addAttribute("mapMaterial", vo);
 			return "egovframework/com/dam/map/mat/EgovComDamMapMaterialModify";
 		} else if (sCmd.equals("Modify")) {
 			beanValidator.validate(mapMaterial, bindingResult);
-			if (bindingResult.hasErrors()){
+			if (bindingResult.hasErrors()) {
 				MapMaterial vo = mapMaterialService.selectMapMaterial(mapMaterial);
 				model.addAttribute("mapMaterial", vo);
 				return "egovframework/com/dam/map/mat/EgovComDamMapMaterialModify";
@@ -199,27 +199,27 @@ public class EgovMapMaterialController {
 
 	/**
 	 * 기 등록된 지식맵(지식유형) 정보를 삭제한다.
+	 * 
 	 * @param konTypeNm - 지식맵(지식유형) model
 	 * @return String - 리턴 Url
 	 *
 	 * @param MapMaterialVO
 	 */
-	@RequestMapping(value="/dam/map/mat/EgovComDamMapMaterialRemove.do")
-	public String deleteMapMaterial(@ModelAttribute("loginVO") LoginVO loginVO
-			, MapMaterial mapMaterial
-			, ModelMap model
-			) throws Exception {
+	@RequestMapping(value = "/dam/map/mat/EgovComDamMapMaterialRemove.do")
+	public String deleteMapMaterial(@ModelAttribute("loginVO") LoginVO loginVO, MapMaterial mapMaterial, ModelMap model)
+			throws Exception {
 		mapMaterialService.deleteMapMaterial(mapMaterial);
 		return "forward:/dam/map/mat/EgovComDamMapMaterialList.do";
 	}
 
 	/**
 	 * 지식유형코드 중복 여부 체크(위치 : 1260.지식맵관리(유형) > 등록)
+	 * 
 	 * @param commandMap
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/dam/map/mat/EgovKnoTypeCdCheckAjax.do")
+	@RequestMapping(value = "/dam/map/mat/EgovKnoTypeCdCheckAjax.do")
 	public ModelAndView EgovKnoTypeCdCheckAjax(@RequestParam Map<String, Object> commandMap) throws Exception {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("jsonView");
