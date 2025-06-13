@@ -93,8 +93,8 @@ public class EgovMapMaterialController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<MapMaterialVO> MapMaterialList = mapMaterialService.selectMapMaterialList(searchVO);
-		model.addAttribute("resultList", MapMaterialList);
+		List<MapMaterialVO> resultList = mapMaterialService.selectMapMaterialList(searchVO);
+		model.addAttribute("resultList", resultList);
 
 		int totCnt = mapMaterialService.selectMapMaterialTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -138,8 +138,8 @@ public class EgovMapMaterialController {
 			searchVO.setRecordCountPerPage(999999);
 			searchVO.setFirstIndex(0);
 			searchVO.setSearchCondition("MapTeamList");
-			List<MapTeamVO> MapMaterialList = mapTeamService.selectMapTeamList(searchVO);
-			model.addAttribute("mapTeam", MapMaterialList);
+			List<MapTeamVO> mapTeam = mapTeamService.selectMapTeamList(searchVO);
+			model.addAttribute("mapTeam", mapTeam);
 
 			return "egovframework/com/dam/map/mat/EgovComDamMapMaterialRegist";
 		}
@@ -152,8 +152,8 @@ public class EgovMapMaterialController {
 			searchVO.setRecordCountPerPage(999999);
 			searchVO.setFirstIndex(0);
 			searchVO.setSearchCondition("MapTeamList");
-			List<MapTeamVO> MapMaterialList = mapTeamService.selectMapTeamList(searchVO);
-			model.addAttribute("mapTeam", MapMaterialList);
+			List<MapTeamVO> mapTeam = mapTeamService.selectMapTeamList(searchVO);
+			model.addAttribute("mapTeam", mapTeam);
 
 			return "egovframework/com/dam/map/mat/EgovComDamMapMaterialRegist";
 		}
