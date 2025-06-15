@@ -22,8 +22,19 @@ import egovframework.com.dam.map.tea.service.MapTeamVO;
  * </pre>
  * 
  * @author 박종선
+ * @since 2010.07.22
  * @version 1.0
- * @created 22-7-2010 오전 10:57:37
+ * @see
+ * 
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.07.22  박종선          최초 생성
+ *   2025.06.16  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-FieldNamingConventions(필드 명명 규칙)
+ *
+ *      </pre>
  */
 @Service("MapTeamService")
 public class EgovMapTeamServiceImpl extends EgovAbstractServiceImpl implements EgovMapTeamService {
