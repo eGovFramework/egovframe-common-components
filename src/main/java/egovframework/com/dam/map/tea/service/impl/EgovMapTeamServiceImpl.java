@@ -29,7 +29,7 @@ import egovframework.com.dam.map.tea.service.MapTeamVO;
 public class EgovMapTeamServiceImpl extends EgovAbstractServiceImpl implements EgovMapTeamService {
 
 	@Resource(name = "MapTeamDAO")
-	private MapTeamDAO MapTeamDAO;
+	private MapTeamDAO mapTeamDAO;
 
 	/**
 	 * 등록된 지식맵(조직별) 목록을 조회 한다.
@@ -41,7 +41,7 @@ public class EgovMapTeamServiceImpl extends EgovAbstractServiceImpl implements E
 	 */
 	@Override
 	public List<MapTeamVO> selectMapTeamList(MapTeamVO searchVO) throws Exception {
-		return MapTeamDAO.selectMapTeamList(searchVO);
+		return mapTeamDAO.selectMapTeamList(searchVO);
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class EgovMapTeamServiceImpl extends EgovAbstractServiceImpl implements E
 	 */
 	@Override
 	public int selectMapTeamTotCnt(MapTeamVO searchVO) throws Exception {
-		return MapTeamDAO.selectMapTeamTotCnt(searchVO);
+		return mapTeamDAO.selectMapTeamTotCnt(searchVO);
 	}
 
 	/**
@@ -67,7 +67,7 @@ public class EgovMapTeamServiceImpl extends EgovAbstractServiceImpl implements E
 	 */
 	@Override
 	public MapTeam selectMapTeamDetail(MapTeam mapTeam) throws Exception {
-		MapTeam mtm = MapTeamDAO.selectMapTeamDetail(mapTeam);
+		MapTeam mtm = mapTeamDAO.selectMapTeamDetail(mapTeam);
 		return mtm;
 	}
 
@@ -80,7 +80,7 @@ public class EgovMapTeamServiceImpl extends EgovAbstractServiceImpl implements E
 	 */
 	@Override
 	public void insertMapTeam(MapTeam mapTeam) throws Exception {
-		MapTeamDAO.insertMapTeam(mapTeam);
+		mapTeamDAO.insertMapTeam(mapTeam);
 	}
 
 	/**
@@ -92,7 +92,7 @@ public class EgovMapTeamServiceImpl extends EgovAbstractServiceImpl implements E
 	 */
 	@Override
 	public void updateMapTeam(MapTeam mapTeam) throws Exception {
-		MapTeamDAO.updateMapTeam(mapTeam);
+		mapTeamDAO.updateMapTeam(mapTeam);
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class EgovMapTeamServiceImpl extends EgovAbstractServiceImpl implements E
 	 */
 	@Override
 	public void deleteMapTeam(MapTeam mapTeam) throws Exception {
-		MapTeamDAO.deleteMapTeam(mapTeam);
+		mapTeamDAO.deleteMapTeam(mapTeam);
 	}
 
 }
