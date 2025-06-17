@@ -192,13 +192,13 @@ public class EgovRequestOfferController {
 			// 하위답변 검색 건수를 체크
 			if (egovRequestOfferVOService.selectRequestOfferDelCnt(hmParam) > 0) {
 				// 에러 메세지 출력
-				String ReusltScript = "";
+				String reusltScript = "";
 
-				ReusltScript += "<script type='text/javaScript' language='javascript'>";
-				ReusltScript += "alert(' 하위 답변이 등록되어 있어 삭제할수 없습니다!  ');";
-				ReusltScript += "</script>";
+				reusltScript += "<script type='text/javaScript' language='javascript'>";
+				reusltScript += "alert(' 하위 답변이 등록되어 있어 삭제할수 없습니다!  ');";
+				reusltScript += "</script>";
 
-				model.addAttribute("reusltScript", ReusltScript);
+				model.addAttribute("reusltScript", reusltScript);
 
 				sCmd = "delMsg";
 			} else {
@@ -217,8 +217,8 @@ public class EgovRequestOfferController {
 			mapTeamVO.setRecordCountPerPage(999999);
 			mapTeamVO.setFirstIndex(0);
 			mapTeamVO.setSearchCondition("MaterialList");
-			List<MapTeamVO> MapTeamList = mapTeamService.selectMapTeamList(mapTeamVO);
-			model.addAttribute("mapTeamList", MapTeamList);
+			List<MapTeamVO> mapTeamList = mapTeamService.selectMapTeamList(mapTeamVO);
+			model.addAttribute("mapTeamList", mapTeamList);
 
 			// 지식유형코드불러오기
 			MapMaterialVO searchMatVO = new MapMaterialVO();
@@ -226,8 +226,8 @@ public class EgovRequestOfferController {
 			searchMatVO.setFirstIndex(0);
 			searchMatVO.setSearchCondition("orgnztId");
 			searchMatVO.setSearchKeyword(requestOfferVOs.getOrgnztId());
-			List<MapMaterialVO> MapMaterialList = mapMaterialService.selectMapMaterialList(searchMatVO);
-			model.addAttribute("mapMaterialList", MapMaterialList);
+			List<MapMaterialVO> mapMaterialList = mapMaterialService.selectMapMaterialList(searchMatVO);
+			model.addAttribute("mapMaterialList", mapMaterialList);
 
 			// (지식전문가/지식사용자) 검사 및 설정
 			HashMap<String, String> hmParam = new HashMap<String, String>();
@@ -286,8 +286,8 @@ public class EgovRequestOfferController {
 		mapTeamVO.setRecordCountPerPage(999999);
 		mapTeamVO.setFirstIndex(0);
 		mapTeamVO.setSearchCondition("MaterialList");
-		List<MapTeamVO> MapTeamList = mapTeamService.selectMapTeamList(mapTeamVO);
-		model.addAttribute("mapTeamList", MapTeamList);
+		List<MapTeamVO> mapTeamList = mapTeamService.selectMapTeamList(mapTeamVO);
+		model.addAttribute("mapTeamList", mapTeamList);
 
 		// 지식유형코드불러오기
 		MapMaterialVO searchMatVO = new MapMaterialVO();
@@ -300,8 +300,8 @@ public class EgovRequestOfferController {
 			searchMatVO.setSearchKeyword(requestOfferVOs.getOrgnztId());
 		}
 
-		List<MapMaterialVO> MapMaterialList = mapMaterialService.selectMapMaterialList(searchMatVO);
-		model.addAttribute("mapMaterialList", MapMaterialList);
+		List<MapMaterialVO> mapMaterialList = mapMaterialService.selectMapMaterialList(searchMatVO);
+		model.addAttribute("mapMaterialList", mapMaterialList);
 
 		// 파일업로드 제한
 		String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
@@ -362,7 +362,7 @@ public class EgovRequestOfferController {
 			requestOfferVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 			requestOfferVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 			// 첨부파일 관련 ID 생성 start....
-			String _atchFileId = requestOfferVO.getAtchFileId();
+			String atchFileId = requestOfferVO.getAtchFileId();
 
 			// final Map<String, MultipartFile> files = multiRequest.getFileMap();
 			final List<MultipartFile> files = multiRequest.getFiles("file_1");
@@ -370,18 +370,18 @@ public class EgovRequestOfferController {
 			if (!files.isEmpty()) {
 				String atchFileAt = commandMap.get("atchFileAt") == null ? "" : (String) commandMap.get("atchFileAt");
 				if ("N".equals(atchFileAt)) {
-					List<FileVO> _result = fileUtil.parseFileInf(files, "DSCH_", 0, _atchFileId, "");
-					_atchFileId = fileMngService.insertFileInfs(_result);
+					List<FileVO> fvoList = fileUtil.parseFileInf(files, "DSCH_", 0, atchFileId, "");
+					atchFileId = fileMngService.insertFileInfs(fvoList);
 
 					// 첨부파일 ID 셋팅
-					requestOfferVO.setAtchFileId(_atchFileId); // 첨부파일 ID
+					requestOfferVO.setAtchFileId(atchFileId); // 첨부파일 ID
 
 				} else {
 					FileVO fvo = new FileVO();
-					fvo.setAtchFileId(_atchFileId);
-					int _cnt = fileMngService.getMaxFileSN(fvo);
-					List<FileVO> _result = fileUtil.parseFileInf(files, "DSCH_", _cnt, _atchFileId, "");
-					fileMngService.updateFileInfs(_result);
+					fvo.setAtchFileId(atchFileId);
+					int fileKeyParam = fileMngService.getMaxFileSN(fvo);
+					List<FileVO> fvoList = fileUtil.parseFileInf(files, "DSCH_", fileKeyParam, atchFileId, "");
+					fileMngService.updateFileInfs(fvoList);
 				}
 			}
 			// 저장
@@ -427,8 +427,8 @@ public class EgovRequestOfferController {
 		mapTeamVO.setRecordCountPerPage(999999);
 		mapTeamVO.setFirstIndex(0);
 		mapTeamVO.setSearchCondition("MaterialList");
-		List<MapTeamVO> MapTeamList = mapTeamService.selectMapTeamList(mapTeamVO);
-		model.addAttribute("mapTeamList", MapTeamList);
+		List<MapTeamVO> mapTeamList = mapTeamService.selectMapTeamList(mapTeamVO);
+		model.addAttribute("mapTeamList", mapTeamList);
 
 		MapMaterialVO searchMatVO = new MapMaterialVO();
 		searchMatVO.setRecordCountPerPage(999999);
@@ -441,8 +441,8 @@ public class EgovRequestOfferController {
 		// mapMaterial.setOrgnztId(emp.get("orgnztId").toString());
 		// }
 
-		List<MapMaterialVO> MapMaterialList = mapMaterialService.selectMapMaterialList(searchMatVO);
-		model.addAttribute("mapMaterialList", MapMaterialList);
+		List<MapMaterialVO> mapMaterialList = mapMaterialService.selectMapMaterialList(searchMatVO);
+		model.addAttribute("mapMaterialList", mapMaterialList);
 
 		model.addAttribute("cmd", sCmd);
 
@@ -502,17 +502,17 @@ public class EgovRequestOfferController {
 			}
 
 			// 첨부파일 관련 첨부파일ID 생성
-			String _atchFileId = "";
+			String atchFileId = "";
 
 			// final Map<String, MultipartFile> files = multiRequest.getFileMap();
 			final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
 			if (!files.isEmpty()) {
-				List<FileVO> _result = fileUtil.parseFileInf(files, "DSCH_", 0, "", "");
-				_atchFileId = fileMngService.insertFileInfs(_result); // 파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
+				List<FileVO> fvoList = fileUtil.parseFileInf(files, "DSCH_", 0, "", "");
+				atchFileId = fileMngService.insertFileInfs(fvoList); // 파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
 
 				// 리턴받은 첨부파일ID를 셋팅한다..
-				requestOfferVO.setAtchFileId(_atchFileId);
+				requestOfferVO.setAtchFileId(atchFileId);
 			}
 
 			// 아이디 설정
