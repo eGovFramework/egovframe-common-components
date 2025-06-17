@@ -14,7 +14,7 @@
  *  @version 3.5
  *  @see
  *  
- *  Copyright (C) 2014 by MOPAS  All right reserved.
+ *  Copyright (C) 2014 by MOPAS  All rights reserved.
  */
 %>
 

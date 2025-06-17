@@ -12,7 +12,7 @@
  *  @version 1.0
  *  @see
  * The type com.sun.star.lang.XeventListener cannot be resolved. It is indirectly referenced from required .class files
- *  Copyright (C) 2009 by EGOV  All right reserved.
+ *  Copyright (C) 2009 by EGOV  All rights reserved.
  */
 
 package egovframework.com.utl.sim.service;

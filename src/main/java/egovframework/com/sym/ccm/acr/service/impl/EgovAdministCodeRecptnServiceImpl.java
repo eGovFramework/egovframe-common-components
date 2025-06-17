@@ -50,7 +50,7 @@ import egovframework.com.sym.ccm.acr.service.EgovAdministCodeRecptnService;
  *   2023.08.10  정진오			법정동코드수신 방식 수정(공공데이터포털 이용)
  *   2024.10.29  권태성			API 수신 데이터 등록 시 기본 사용여부 값 적용(insertAdministCodeRecptn())
  *
- * Copyright (C) 2009 by MOPAS  All right reserved.
+ * Copyright (C) 2009 by MOPAS  All rights reserved.
  * </pre>
  */
 @Service("AdministCodeRecptnService")

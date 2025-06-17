@@ -11,7 +11,7 @@
 @rem version 1.0
 @rem see
 @rem
-@rem Copyright (C) 2009 by MOPAS  All right reserved.
+@rem Copyright (C) 2009 by MOPAS  All rights reserved.
 
 IF "%1"=="WEBLOGIC" goto step1
 IF "%1"=="JEUS" goto step2

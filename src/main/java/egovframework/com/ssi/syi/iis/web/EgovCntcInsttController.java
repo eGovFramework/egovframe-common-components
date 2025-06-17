@@ -48,7 +48,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *   2009.04.01  이중호          최초 생성
  *   2011.8.26	 정진오			IncludedInfo annotation 추가
  *   2011.09.14  서준식			연계시스템 수정시 입력 데이터 표신 안되는 문제 수정
- * Copyright (C) 2009 by MOPAS  All right reserved.
+ * Copyright (C) 2009 by MOPAS  All rights reserved.
  * </pre>
  */
 

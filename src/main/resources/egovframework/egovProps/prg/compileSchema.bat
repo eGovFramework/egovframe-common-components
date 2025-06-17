@@ -11,6 +11,6 @@
 @rem version 1.0
 @rem see
 @rem
-@rem Copyright (C) 2009 by MOPAS  All right reserved.
+@rem Copyright (C) 2009 by MOPAS  All rights reserved.
 
 scomp -out %1 %2
