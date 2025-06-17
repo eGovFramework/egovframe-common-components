@@ -31,7 +31,7 @@ import egovframework.com.dam.mgm.service.KnoManagementVO;
 public class EgovKnoManagementServiceImpl extends EgovAbstractServiceImpl implements EgovKnoManagementService {
 
 	@Resource(name = "KnoManagementDAO")
-	private KnoManagementDAO KnoManagementDAO;
+	private KnoManagementDAO knoManagementDAO;
 
 	/**
 	 * 등록된 지식정보 정보를 조회 한다.
@@ -43,7 +43,7 @@ public class EgovKnoManagementServiceImpl extends EgovAbstractServiceImpl implem
 	 */
 	@Override
 	public List<EgovMap> selectKnoManagementList(KnoManagementVO searchVO) throws Exception {
-		return KnoManagementDAO.selectKnoManagementList(searchVO);
+		return knoManagementDAO.selectKnoManagementList(searchVO);
 	}
 
 	/**
@@ -56,7 +56,7 @@ public class EgovKnoManagementServiceImpl extends EgovAbstractServiceImpl implem
 	 */
 	@Override
 	public int selectKnoManagementTotCnt(KnoManagementVO searchVO) throws Exception {
-		return KnoManagementDAO.selectKnoManagementTotCnt(searchVO);
+		return knoManagementDAO.selectKnoManagementTotCnt(searchVO);
 	}
 
 	/**
@@ -69,7 +69,7 @@ public class EgovKnoManagementServiceImpl extends EgovAbstractServiceImpl implem
 	 */
 	@Override
 	public KnoManagement selectKnoManagement(KnoManagement knoManagement) throws Exception {
-		KnoManagement kmt = KnoManagementDAO.selectKnoManagement(knoManagement);
+		KnoManagement kmt = knoManagementDAO.selectKnoManagement(knoManagement);
 		return kmt;
 	}
 
@@ -82,7 +82,7 @@ public class EgovKnoManagementServiceImpl extends EgovAbstractServiceImpl implem
 	 */
 	@Override
 	public void insertKnoManagement(KnoManagement knoManagement) throws Exception {
-		KnoManagementDAO.insertKnoManagement(knoManagement);
+		knoManagementDAO.insertKnoManagement(knoManagement);
 	}
 
 	/**
@@ -94,7 +94,7 @@ public class EgovKnoManagementServiceImpl extends EgovAbstractServiceImpl implem
 	 */
 	@Override
 	public void updateKnoManagement(KnoManagement knoManagement) throws Exception {
-		KnoManagementDAO.updateKnoManagement(knoManagement);
+		knoManagementDAO.updateKnoManagement(knoManagement);
 	}
 
 	/**
@@ -106,7 +106,7 @@ public class EgovKnoManagementServiceImpl extends EgovAbstractServiceImpl implem
 	 */
 	@Override
 	public void deleteKnoManagement(KnoManagement knoManagement) throws Exception {
-		KnoManagementDAO.deleteKnoManagement(knoManagement);
+		knoManagementDAO.deleteKnoManagement(knoManagement);
 	}
 
 }
