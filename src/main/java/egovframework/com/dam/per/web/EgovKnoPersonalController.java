@@ -47,21 +47,22 @@ import egovframework.com.dam.per.service.KnoPersonalVO;
  * </pre>
  * 
  * @author 박종선
+ * @since 2010.08.12
  * @version 1.0
- * @created 12-8-2010 오후 3:44:40
+ * @see
  * 
- *          <pre>
- * << 개정이력(Modification Information) >>
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
  *   수정일      수정자           수정내용
- *  -------        --------    ---------------------------
- *   2010.08.12  박종선			최초 생성
- *   2011.08.26	 정진오			IncludedInfo annotation 추가
- *   2024.10.29	 권태성			목록으로 돌아올 때 검색 조건이 유지되도록 수정(#1)
+ *  -------    --------    ---------------------------
+ *   2010.08.12  박종선          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2024.10.29  권태성          목록으로 돌아올 때 검색 조건이 유지되도록 수정(#1)
+ *   2025.06.17  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(지역 변수 명명 규칙)
  *
- *          </pre>
+ *      </pre>
  */
-
 @Controller
 public class EgovKnoPersonalController {
 
