@@ -46,17 +46,17 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  * @see
  * 
  *      <pre>
- * &lt;&lt; 개정이력(Modification Information) &gt;&gt;
+ *  == 개정이력(Modification Information) ==
  *
- *  수정일               수정자            수정내용
- *  ----------   --------   ---------------------------
- *  2010.08.30   장동한            최초 생성
- *  2011.08.26   정진오            IncludedInfo annotation 추가
- *  2019.12.09   신용호            KISA 보안약점 조치 (위험한 형식 파일 업로드)
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.08.30  장동한          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2019.12.09  신용호          KISA 보안약점 조치 (위험한 형식 파일 업로드)
+ *   2025.06.18  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(지역 변수 명명 규칙)
  *
  *      </pre>
  */
-
 @Controller
 public class EgovRequestOfferController {
 
