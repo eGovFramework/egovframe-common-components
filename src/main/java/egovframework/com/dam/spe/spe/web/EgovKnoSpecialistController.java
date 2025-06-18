@@ -105,8 +105,8 @@ public class EgovKnoSpecialistController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<KnoSpecialistVO> KnoSpecialistList = knoSpecialistService.selectKnoSpecialistList(searchVO);
-		model.addAttribute("resultList", KnoSpecialistList);
+		List<KnoSpecialistVO> resultList = knoSpecialistService.selectKnoSpecialistList(searchVO);
+		model.addAttribute("resultList", resultList);
 
 		int totCnt = knoSpecialistService.selectKnoSpecialistTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -163,8 +163,8 @@ public class EgovKnoSpecialistController {
 			searchVO.setRecordCountPerPage(999999);
 			searchVO.setFirstIndex(0);
 			searchVO.setSearchCondition("MaterialList");
-			List<MapTeamVO> MapTeamList = mapTeamService.selectMapTeamList(searchVO);
-			model.addAttribute("mapTeamList", MapTeamList);
+			List<MapTeamVO> mapTeamList = mapTeamService.selectMapTeamList(searchVO);
+			model.addAttribute("mapTeamList", mapTeamList);
 
 			MapMaterialVO searchMatVO;
 			searchMatVO = new MapMaterialVO();
@@ -173,8 +173,8 @@ public class EgovKnoSpecialistController {
 			searchMatVO.setSearchCondition("orgnztId");
 			searchMatVO.setSearchKeyword(mapMaterial.getOrgnztId());
 
-			List<MapMaterialVO> MapMaterialList = mapMaterialService.selectMapMaterialList(searchMatVO);
-			model.addAttribute("mapMaterialList", MapMaterialList);
+			List<MapMaterialVO> mapMaterialList = mapMaterialService.selectMapMaterialList(searchMatVO);
+			model.addAttribute("mapMaterialList", mapMaterialList);
 
 			return "egovframework/com/dam/spe/spe/EgovComDamSpecialistRegist";
 
@@ -187,8 +187,8 @@ public class EgovKnoSpecialistController {
 				searchVO = new MapTeamVO();
 				searchVO.setRecordCountPerPage(999999);
 				searchVO.setFirstIndex(0);
-				List<MapTeamVO> MapTeamList = mapTeamService.selectMapTeamList(searchVO);
-				model.addAttribute("mapTeamList", MapTeamList);
+				List<MapTeamVO> mapTeamList = mapTeamService.selectMapTeamList(searchVO);
+				model.addAttribute("mapTeamList", mapTeamList);
 
 				MapMaterialVO searchMatVO;
 				searchMatVO = new MapMaterialVO();
@@ -197,13 +197,13 @@ public class EgovKnoSpecialistController {
 				searchMatVO.setSearchCondition("orgnztId");
 
 				if (mapMaterial.getOrgnztId().equals("")) {
-					MapTeamVO emp = MapTeamList.get(0);
+					MapTeamVO emp = mapTeamList.get(0);
 					mapMaterial.setOrgnztId(emp.getOrgnztId());
 				}
 				searchMatVO.setSearchKeyword(mapMaterial.getOrgnztId());
 
-				List<MapMaterialVO> MapMaterialList = mapMaterialService.selectMapMaterialList(searchMatVO);
-				model.addAttribute("mapMaterialList", MapMaterialList);
+				List<MapMaterialVO> mapMaterialList = mapMaterialService.selectMapMaterialList(searchMatVO);
+				model.addAttribute("mapMaterialList", mapMaterialList);
 
 				return "egovframework/com/dam/spe/spe/EgovComDamSpecialistRegist";
 			}
