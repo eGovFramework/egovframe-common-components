@@ -30,7 +30,7 @@ import egovframework.com.dam.spe.spe.service.KnoSpecialistVO;
 public class EgovKnoSpecialistServiceImpl extends EgovAbstractServiceImpl implements EgovKnoSpecialistService {
 
 	@Resource(name = "KnoSpecialistDAO")
-	private KnoSpecialistDAO KnoSpecialistDAO;
+	private KnoSpecialistDAO knoSpecialistDAO;
 
 	/**
 	 * 등록된 지식전문가 정보를 조회 한다.
@@ -42,7 +42,7 @@ public class EgovKnoSpecialistServiceImpl extends EgovAbstractServiceImpl implem
 	 */
 	@Override
 	public List<KnoSpecialistVO> selectKnoSpecialistList(KnoSpecialistVO searchVO) throws Exception {
-		return KnoSpecialistDAO.selectKnoSpecialistList(searchVO);
+		return knoSpecialistDAO.selectKnoSpecialistList(searchVO);
 	}
 
 	/**
@@ -55,7 +55,7 @@ public class EgovKnoSpecialistServiceImpl extends EgovAbstractServiceImpl implem
 	 */
 	@Override
 	public int selectKnoSpecialistTotCnt(KnoSpecialistVO searchVO) throws Exception {
-		return KnoSpecialistDAO.selectKnoSpecialistTotCnt(searchVO);
+		return knoSpecialistDAO.selectKnoSpecialistTotCnt(searchVO);
 	}
 
 	/**
@@ -68,7 +68,7 @@ public class EgovKnoSpecialistServiceImpl extends EgovAbstractServiceImpl implem
 	 */
 	@Override
 	public KnoSpecialist selectKnoSpecialist(KnoSpecialist knoSpecialist) throws Exception {
-		KnoSpecialist ksl = KnoSpecialistDAO.selectKnoSpecialist(knoSpecialist);
+		KnoSpecialist ksl = knoSpecialistDAO.selectKnoSpecialist(knoSpecialist);
 		return ksl;
 	}
 
@@ -81,7 +81,7 @@ public class EgovKnoSpecialistServiceImpl extends EgovAbstractServiceImpl implem
 	 */
 	@Override
 	public void insertKnoSpecialist(KnoSpecialist knoSpecialist) throws Exception {
-		KnoSpecialistDAO.insertKnoSpecialist(knoSpecialist);
+		knoSpecialistDAO.insertKnoSpecialist(knoSpecialist);
 	}
 
 	/**
@@ -93,7 +93,7 @@ public class EgovKnoSpecialistServiceImpl extends EgovAbstractServiceImpl implem
 	 */
 	@Override
 	public void updateKnoSpecialist(KnoSpecialist knoSpecialist) throws Exception {
-		KnoSpecialistDAO.updateKnoSpecialist(knoSpecialist);
+		knoSpecialistDAO.updateKnoSpecialist(knoSpecialist);
 	}
 
 	/**
@@ -105,7 +105,7 @@ public class EgovKnoSpecialistServiceImpl extends EgovAbstractServiceImpl implem
 	 */
 	@Override
 	public void deleteKnoSpecialist(KnoSpecialist knoSpecialist) throws Exception {
-		KnoSpecialistDAO.deleteKnoSpecialist(knoSpecialist);
+		knoSpecialistDAO.deleteKnoSpecialist(knoSpecialist);
 	}
 
 }
