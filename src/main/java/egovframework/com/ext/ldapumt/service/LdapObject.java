@@ -26,13 +26,14 @@ package egovframework.com.ext.ldapumt.service;
  * @since 2014.10.12
  * @version 1.0
  * @see
- *
+ * 
  *      <pre>
-* << 개정이력(Modification Information) >>
-*
-*   수정일      수정자           수정내용
-*  -------    --------    ---------------------------
-*   2014.10.12  전우성          최초 생성
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2014.10.12  전우성          최초 생성
+ *   2025.06.20  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-AbstractClassWithoutAbstractMethod(추상 메서드가 없는 추상 클래스)
  *
  *      </pre>
  */
