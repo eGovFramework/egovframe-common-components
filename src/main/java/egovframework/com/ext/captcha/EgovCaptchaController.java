@@ -24,14 +24,22 @@ import org.springframework.web.bind.annotation.RequestParam;
 import egovframework.com.cmm.annotation.IncludedInfo;
 
 /**
- * @Class Name : EgovCaptchaController.java
- * @Description : Captcha 처리를 위한 컨트롤러
- * @Modification Information
+ * Captcha 처리를 위한 컨트롤러
+ * 
+ * @author 권태성
+ * @since 2024.10.29
+ * @version 1.0
+ * @see
  *
- *    수정일       수정자         수정내용
- *    -------      -------     -------------------
- *    2024.10.29.  권태성         최초 생성
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2024.10.29  권태성          최초 생성
+ *   2025.06.19  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-UselessParentheses(쓸모없는 괄호)
+ *
+ *      </pre>
  */
 @Controller
 public class EgovCaptchaController {
@@ -40,11 +48,12 @@ public class EgovCaptchaController {
 
 	/**
 	 * Captcha 사용자 입력 페이지
+	 * 
 	 * @param session
 	 * @param model
 	 * @return
 	 */
-	@IncludedInfo(name="Captcha", order = 3300, gid = 100)
+	@IncludedInfo(name = "Captcha", order = 3300, gid = 100)
 	@RequestMapping("/ext/captcha/input.do")
 	public String input(HttpSession session, ModelMap model) {
 		return "egovframework/com/ext/captcha/EgovCaptcha";
@@ -52,6 +61,7 @@ public class EgovCaptchaController {
 
 	/**
 	 * Captcha 입력값 검증 결과 페이지
+	 * 
 	 * @param session
 	 * @param model
 	 * @param captcha
@@ -59,11 +69,10 @@ public class EgovCaptchaController {
 	 * @return
 	 */
 	@PostMapping("/ext/captcha/result.do")
-	public String result(HttpSession session, ModelMap model,
-			@RequestParam("captcha") String captcha,
+	public String result(HttpSession session, ModelMap model, @RequestParam("captcha") String captcha,
 			@RequestParam("pgNm") String pgNm) {
 		String expectedCaptcha = (String) session.getAttribute("captcha" + pgNm);
-		boolean result = (expectedCaptcha != null && expectedCaptcha.equalsIgnoreCase(captcha));
+		boolean result = expectedCaptcha != null && expectedCaptcha.equalsIgnoreCase(captcha);
 		if (result) {
 			model.addAttribute("message", "Captcha 값이 올바르게 입력되었습니다.");
 		} else {
@@ -78,18 +87,17 @@ public class EgovCaptchaController {
 	 * 
 	 * @param request
 	 * @param response
-	 * @param width 이미지 가로 크기
-	 * @param height 이미지 세로 크기
-	 * @param length Captcha 문자 길이
-	 * @param pgNm Captcha를 사용하는 프로그램 구분값
+	 * @param width    이미지 가로 크기
+	 * @param height   이미지 세로 크기
+	 * @param length   Captcha 문자 길이
+	 * @param pgNm     Captcha를 사용하는 프로그램 구분값
 	 */
 	@GetMapping("/ext/captcha/generate.do")
 	public void generate(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(value = "width", defaultValue = "150") int width,
 			@RequestParam(value = "height", defaultValue = "50") int height,
 			@RequestParam(value = "lenght", defaultValue = "5") int length,
-			@RequestParam(value = "pgNm", defaultValue = "capt") String pgNm
-			) {
+			@RequestParam(value = "pgNm", defaultValue = "capt") String pgNm) {
 		try {
 			String captchaTxt = generateRandomText(length);
 			request.getSession().setAttribute("captcha" + pgNm, captchaTxt);
