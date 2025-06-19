@@ -65,7 +65,7 @@ public class EgovCaptchaController {
 	public String result(HttpSession session, ModelMap model, @RequestParam("captcha") String captcha,
 			@RequestParam("pgNm") String pgNm) {
 		String expectedCaptcha = (String) session.getAttribute("captcha" + pgNm);
-		boolean result = (expectedCaptcha != null && expectedCaptcha.equalsIgnoreCase(captcha));
+		boolean result = expectedCaptcha != null && expectedCaptcha.equalsIgnoreCase(captcha);
 		if (result) {
 			model.addAttribute("message", "Captcha 값이 올바르게 입력되었습니다.");
 		} else {
