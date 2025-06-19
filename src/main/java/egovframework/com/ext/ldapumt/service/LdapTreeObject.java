@@ -84,13 +84,13 @@ public class LdapTreeObject implements Serializable {
 
 	public String text;
 	public String id;
-	public Icon icon = Icon.dept;
+	public Icon icon = Icon.DEPT;
 
 	public State state = new State();
 	public ArrayList<Child> children = new ArrayList<Child>();
 
 	enum Icon {
-		user, dept
+		USER, DEPT
 	}
 
 	@SuppressWarnings("unused")
@@ -169,15 +169,15 @@ public class LdapTreeObject implements Serializable {
 
 		String text;
 		boolean children = false;
-		Icon icon = Icon.dept;
+		Icon icon = Icon.DEPT;
 	}
 
 	public void addChild(UcorgVO vo, boolean b) {
-		children.add(new Child(vo.getDn(), vo.getOu(), b, Icon.dept));
+		children.add(new Child(vo.getDn(), vo.getOu(), b, Icon.DEPT));
 	}
 
 	public void addChild(UserVO vo) {
-		children.add(new Child(vo.getDn(), vo.getCn(), false, Icon.user));
+		children.add(new Child(vo.getDn(), vo.getCn(), false, Icon.USER));
 
 	}
 }
