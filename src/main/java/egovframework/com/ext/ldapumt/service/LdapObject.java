@@ -36,7 +36,7 @@ package egovframework.com.ext.ldapumt.service;
  *
  *      </pre>
  */
-public abstract class LdapObject {
+public class LdapObject {
 	private String dn = "";
 
 	public String getDn() {
