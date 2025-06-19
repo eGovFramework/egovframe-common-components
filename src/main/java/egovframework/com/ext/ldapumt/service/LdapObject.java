@@ -19,22 +19,23 @@
 package egovframework.com.ext.ldapumt.service;
 
 /**
-*
-* Ldap과 인터페이스 되는 객체의 추상클래스
-* @author 전우성
-* @since 2014.10.12
-* @version 1.0
-* @see
-*
-* <pre>
+ *
+ * Ldap과 인터페이스 되는 객체의 추상클래스
+ * 
+ * @author 전우성
+ * @since 2014.10.12
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
 * << 개정이력(Modification Information) >>
 *
 *   수정일      수정자           수정내용
 *  -------    --------    ---------------------------
 *   2014.10.12  전우성          최초 생성
-*
-* </pre>
-*/
+ *
+ *      </pre>
+ */
 public abstract class LdapObject {
 	private String dn = "";
 
