@@ -22,22 +22,23 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
-*
-* Ldap데이터를 HTML jsTree프레임워크에서 사용할 수 있도록 변환한 객체
-* @author 전우성
-* @since 2014.10.12
-* @version 1.0
-* @see
-*
-* <pre>
+ *
+ * Ldap데이터를 HTML jsTree프레임워크에서 사용할 수 있도록 변환한 객체
+ * 
+ * @author 전우성
+ * @since 2014.10.12
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
 * << 개정이력(Modification Information) >>
 *
 *   수정일      수정자           수정내용
 *  -------    --------    ---------------------------
 *   2014.10.12  전우성          최초 생성
-*
-* </pre>
-*/
+ *
+ *      </pre>
+ */
 public class LdapTreeObject implements Serializable {
 	private static final long serialVersionUID = 1L;
 
