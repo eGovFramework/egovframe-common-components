@@ -19,7 +19,6 @@ import java.io.IOException;
 
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
@@ -28,65 +27,63 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
-*
-* SessionTimeoutCookieFilter 
-* @author 공통컴포넌트 팀 신용호
-* @since 2020.06.17
-* @version 1.0
-* @see
-*
-* <pre>
-* << 개정이력(Modification Information) >>
-*
-*  수정일               수정자           수정내용
-*  ----------   --------   ---------------------------
-*  2020.06.17   신용호            최초 생성
-*
-*/
+ *
+ * SessionTimeoutCookieFilter
+ * 
+ * @author 공통컴포넌트 팀 신용호
+ * @since 2020.06.17
+ * @version 3.10.0
+ * @see
+ * 
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2020.06.17  신용호          최초 생성
+ *   2025.05.24  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-UncommentedEmptyMethodBody(주석 처리되지 않은 빈 메서드 본문)
+ *
+ *      </pre>
+ */
 
-public class SessionTimeoutCookieFilter implements Filter{
+public class SessionTimeoutCookieFilter implements Filter {
 
-	@SuppressWarnings("unused")
-	private FilterConfig config;
-
-	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
 		HttpServletResponse httpResponse = (HttpServletResponse) response;
-        HttpServletRequest httpRequest = (HttpServletRequest) request;
-        long serverTime = System.currentTimeMillis();
-        long sessionExpireTime = serverTime + httpRequest.getSession().getMaxInactiveInterval() * 1000;
-        Cookie cookie = new Cookie("egovLatestServerTime", "" + serverTime);
-        boolean secure = request.isSecure();
-        if ( secure ) cookie.setSecure(true);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        httpResponse.addCookie(cookie);
-        cookie = new Cookie("egovExpireSessionTime", "" + sessionExpireTime);
-        if ( secure ) cookie.setSecure(true);
-        cookie.setHttpOnly(true);
-        cookie.setPath("/");
-        
+		HttpServletRequest httpRequest = (HttpServletRequest) request;
+		long serverTime = System.currentTimeMillis();
+		long sessionExpireTime = serverTime + httpRequest.getSession().getMaxInactiveInterval() * 1000;
+		Cookie cookie = new Cookie("egovLatestServerTime", "" + serverTime);
+		boolean secure = request.isSecure();
+		if (secure) {
+			cookie.setSecure(true);
+		}
+		cookie.setHttpOnly(true);
+		cookie.setPath("/");
+		httpResponse.addCookie(cookie);
+		cookie = new Cookie("egovExpireSessionTime", "" + sessionExpireTime);
+		if (secure) {
+			cookie.setSecure(true);
+		}
+		cookie.setHttpOnly(true);
+		cookie.setPath("/");
+
 //        Date dateServer = new java.util.Date(serverTime);
 //        Date dateExpiry = new java.util.Date(sessionExpireTime);
 //        SimpleDateFormat format = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
 //        String serverYMD = format.format(dateServer);
 //        String expiryYMD = format.format(dateExpiry);
-        //System.out.println("=====>>> serverYMD = "+serverYMD);
-        //System.out.println("=====>>> expiryYMD = "+expiryYMD);
-        //System.out.println("=====>>> server TimeStamp = "+serverTime);
-        //System.out.println("=====>>> expire TimeStamp = "+sessionExpireTime);
-        
-        httpResponse.addCookie(cookie);
+		// System.out.println("=====>>> serverYMD = "+serverYMD);
+		// System.out.println("=====>>> expiryYMD = "+expiryYMD);
+		// System.out.println("=====>>> server TimeStamp = "+serverTime);
+		// System.out.println("=====>>> expire TimeStamp = "+sessionExpireTime);
 
-        chain.doFilter(request, response);
+		httpResponse.addCookie(cookie);
+
+		chain.doFilter(request, response);
 	}
 
-	public void init(FilterConfig config) throws ServletException {
-		this.config = config;
-	}
-
-	public void destroy() {
-
-	}
 }
