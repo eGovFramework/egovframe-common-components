@@ -19,23 +19,25 @@
 package egovframework.com.ext.ldapumt.service;
 
 /**
-*
-* Ldap과 인터페이스 되는 객체의 추상클래스
-* @author 전우성
-* @since 2014.10.12
-* @version 1.0
-* @see
-*
-* <pre>
-* << 개정이력(Modification Information) >>
-*
-*   수정일      수정자           수정내용
-*  -------    --------    ---------------------------
-*   2014.10.12  전우성          최초 생성
-*
-* </pre>
-*/
-public abstract class LdapObject {
+ *
+ * Ldap과 인터페이스 되는 객체의 추상클래스
+ * 
+ * @author 전우성
+ * @since 2014.10.12
+ * @version 1.0
+ * @see
+ * 
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2014.10.12  전우성          최초 생성
+ *   2025.06.20  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-AbstractClassWithoutAbstractMethod(추상 메서드가 없는 추상 클래스)
+ *
+ *      </pre>
+ */
+public class LdapObject {
 	private String dn = "";
 
 	public String getDn() {
