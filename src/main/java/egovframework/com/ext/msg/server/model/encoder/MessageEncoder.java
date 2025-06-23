@@ -30,25 +30,34 @@ import egovframework.com.ext.msg.server.model.ChatMessage;
 import egovframework.com.ext.msg.server.model.Message;
 import egovframework.com.ext.msg.server.model.UsersMessage;
 
-
 /**
-* @Class Name : MessageEncoder.java
-* @Description : 서버에서 클라이언트로 전달되는 메시지를 encoding하는 클래스
-* @Modification Information
-*
-*    수정일       수정자         수정내용
-*    -------        -------     -------------------
-*    2014. 11. 27.    이영지
-*
-*/
-public class MessageEncoder implements Encoder.Text<Message>{
+ * 서버에서 클라이언트로 전달되는 메시지를 encoding하는 클래스
+ * 
+ * @author 이영지
+ * @since 2014.11.27
+ * @version 3.9.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2014.11.27  이영지          최초 생성
+ *   2025.06.24  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-UncommentedEmptyMethodBody(주석 처리되지 않은 빈 메서드 본문)
+ *
+ *      </pre>
+ */
+public class MessageEncoder implements Encoder.Text<Message> {
 
 	@Override
-	public void destroy() {
+	public void init(EndpointConfig config) {
+		// init
 	}
 
 	@Override
-	public void init(EndpointConfig arg0) {
+	public void destroy() {
+		// destroy
 	}
 
 	/**
@@ -58,11 +67,9 @@ public class MessageEncoder implements Encoder.Text<Message>{
 	public String encode(Message message) throws EncodeException {
 		String result = null;
 		if (message instanceof ChatMessage) {
-			 ChatMessage chatMessage = (ChatMessage) message;
-			 result = Json.createObjectBuilder().add("messageType", chatMessage.getClass().getSimpleName())
-					 .add("name", chatMessage.getName())
-					 .add("message", chatMessage.getMessage())
-					 .build().toString();
+			ChatMessage chatMessage = (ChatMessage) message;
+			result = Json.createObjectBuilder().add("messageType", chatMessage.getClass().getSimpleName())
+					.add("name", chatMessage.getName()).add("message", chatMessage.getMessage()).build().toString();
 		} else if (message instanceof UsersMessage) {
 			UsersMessage userMessage = (UsersMessage) message;
 			result = buildJsonUserData(userMessage.getUsers(), userMessage.getClass().getSimpleName());
@@ -73,12 +80,11 @@ public class MessageEncoder implements Encoder.Text<Message>{
 	private String buildJsonUserData(Set<String> set, String messageType) {
 		JsonArrayBuilder jsonArrayBuilder = Json.createArrayBuilder();
 
-		for (String user: set) {
+		for (String user : set) {
 			jsonArrayBuilder.add(user);
 		}
-		return Json.createObjectBuilder().add("messageType", messageType)
-										 .add("users", jsonArrayBuilder)
-										 .build().toString();
+		return Json.createObjectBuilder().add("messageType", messageType).add("users", jsonArrayBuilder).build()
+				.toString();
 	}
 
 }
