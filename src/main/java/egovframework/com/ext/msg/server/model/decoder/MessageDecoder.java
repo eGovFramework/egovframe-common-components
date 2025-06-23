@@ -28,32 +28,40 @@ import javax.websocket.DecodeException;
 import javax.websocket.Decoder;
 import javax.websocket.EndpointConfig;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import egovframework.com.ext.msg.server.model.ChatMessage;
 import egovframework.com.ext.msg.server.model.Message;
-
+import lombok.extern.slf4j.Slf4j;
 
 /**
-* @Class Name : MessageDecoder.java
-* @Description : 클라이언트에서 서버로 전달되는 메시지를 decoding하는 클래스
-* @Modification Information
-*
-*    수정일       수정자         수정내용
-*    -------        -------     -------------------
-*    2014. 11. 27.    이영지
-*
-*/
+ * 클라이언트에서 서버로 전달되는 메시지를 decoding하는 클래스
+ * 
+ * @author 이영지
+ * @since 2014.11.27
+ * @version 3.9.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2014.11.27  이영지          최초 생성
+ *   2025.06.24  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-UncommentedEmptyMethodBody(주석 처리되지 않은 빈 메서드 본문), CloseResource(리소스 닫기)
+ *
+ *      </pre>
+ */
+@Slf4j
 public class MessageDecoder implements Decoder.Text<Message> {
 
 	@Override
-	public void destroy() {}
+	public void init(EndpointConfig config) {
+		// init 주석 추가
+	}
 
 	@Override
-	public void init(EndpointConfig arg0) {}
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(MessageDecoder.class);
+	public void destroy() {
+		// destroy 로그 추가
+	}
 
 	/**
 	 * 화면에서 넘어오는 데이터를 decoding하는 함수
@@ -62,26 +70,19 @@ public class MessageDecoder implements Decoder.Text<Message> {
 	public Message decode(String message) throws DecodeException {
 		ChatMessage chatMessage = new ChatMessage();
 
-		// 221111	김혜준	2022 시큐어코딩 조치
+		// 221111 김혜준 2022 시큐어코딩 조치
 		JsonObject jsonObject = null;
-		JsonReader jsonReader = null;
-		StringReader stringReader = null;
-		
-		try {
-			stringReader = new StringReader(message);
-			jsonReader = Json.createReader(stringReader);
+
+		try (StringReader stringReader = new StringReader(message);
+				JsonReader jsonReader = Json.createReader(stringReader);) {
 			jsonObject = jsonReader.readObject();
 			chatMessage.setMessage(jsonObject.getString("message"));
 			chatMessage.setRoom(jsonObject.getString("room"));
 		} catch (JsonException ex) {
-			LOGGER.debug(ex.getMessage());
+			if (log.isErrorEnabled()) {
+				log.error(ex.getMessage());
+			}
 		} finally {
-			if (stringReader != null) {
-				stringReader.close();
-			}
-			if (jsonReader != null) {
-				jsonReader = null;
-			}
 			if (jsonObject != null) {
 				jsonObject = null;
 			}
@@ -94,9 +95,9 @@ public class MessageDecoder implements Decoder.Text<Message> {
 	public boolean willDecode(String message) {
 		boolean flag = true;
 
-		try (JsonReader jsonReader = Json.createReader(new StringReader(message));){
+		try (JsonReader jsonReader = Json.createReader(new StringReader(message));) {
 			jsonReader.readObject();
-		} catch (JsonException ex) {//KISA 보안약점 조치 (2018-10-29, 윤창원)
+		} catch (JsonException ex) {// KISA 보안약점 조치 (2018-10-29, 윤창원)
 			flag = false;
 		} catch (Exception ex) {
 			flag = false;
