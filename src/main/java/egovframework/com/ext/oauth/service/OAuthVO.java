@@ -4,6 +4,24 @@ import com.github.scribejava.apis.GoogleApi20;
 import com.github.scribejava.apis.KakaoApi;
 import com.github.scribejava.core.builder.api.DefaultApi20;
 
+/**
+ * OAuth VO
+ * 
+ * @author 공통컴포넌트 개발팀 홍길동
+ * @since 2020.03.11
+ * @version 3.9.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2020.03.11  표프센          최초 생성
+ *   2025.06.25  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-ImmutableField(불변필드)
+ *
+ *      </pre>
+ */
 public class OAuthVO implements OAuthConfig {
 	public String getService() {
 		return serviceName;
@@ -56,7 +74,7 @@ public class OAuthVO implements OAuthConfig {
 	public String getOrigin() {
 		return origin;
 	}
-	
+
 	// scope 추가
 	public String getScope() {
 		return scope;
@@ -73,9 +91,9 @@ public class OAuthVO implements OAuthConfig {
 	private DefaultApi20 api20Instance;
 	private String profileUrl;
 	private String scope;
-	
-	private String origin;
-	
+
+	private final String origin;
+
 	public OAuthVO(String serviceName, String clientId, String clientSecret, String redirectUrl, String scope) {
 		this.serviceName = serviceName;
 		this.clientId = clientId;
@@ -83,7 +101,6 @@ public class OAuthVO implements OAuthConfig {
 		this.redirectUrl = redirectUrl;
 		this.scope = scope;
 		this.origin = serviceName;
-
 
 		if (origin.equals(GOOGLE_SERVICE_NAME)) {
 			this.api20Instance = GoogleApi20.instance();
