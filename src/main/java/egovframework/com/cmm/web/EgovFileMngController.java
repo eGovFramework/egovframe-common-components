@@ -27,17 +27,18 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
  * @since 2009.06.01
  * @version 1.0
  * @see
- *
+ * 
  *      <pre>
- * << 개정이력(Modification Information) >>
+ *  == 개정이력(Modification Information) ==
  *
- *   수정일          수정자        수정내용
- *  ----------     --------    ---------------------------
- *  2009.03.25     이삼섭        최초 생성
- *  2016.10.13     장동한        deleteFileInf 메소드 return 방식 수정
- *  2022.12.02     윤창원        File ID 암호화 처리
- *  2022.12.22     신용호        JSTL 커스텀 태그 추가 및 기능 보완
- *  2024.10.29		LeeBaekHaeng	정적 필드 EgovFileMngController.cryptoService는 정적 방식으로 액세스
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.03.25  이삼섭          최초 생성
+ *   2016.10.13  장동한          deleteFileInf 메소드 return 방식 수정
+ *   2022.12.02  윤창원          File ID 암호화 처리
+ *   2022.12.22  신용호          JSTL 커스텀 태그 추가 및 기능 보완
+ *   2024.10.29  이백행          정적 필드 EgovFileMngController.cryptoService는 정적 방식으로 액세스
+ *   2025.05.31  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(지역 변수 명명 규칙)
  *
  *      </pre>
  */
@@ -45,7 +46,7 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 public class EgovFileMngController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovFileMngController.class);
-	
+
 	/** 암호화서비스 */
 	private static EgovEnvCryptoService cryptoService;
 
@@ -56,7 +57,7 @@ public class EgovFileMngController {
 	public void setEgovEnvCryptoService(EgovEnvCryptoService cryptoService) {
 		EgovFileMngController.cryptoService = cryptoService;
 	}
-	
+
 	/**
 	 * 첨부파일에 대한 목록을 조회한다.
 	 *
@@ -68,17 +69,16 @@ public class EgovFileMngController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/cmm/fms/selectFileInfs.do")
-	public String selectFileInfs(@ModelAttribute("searchVO") FileVO fileVO,
-			HttpServletRequest request,
+	public String selectFileInfs(@ModelAttribute("searchVO") FileVO fileVO, HttpServletRequest request,
 			@RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
-		
+
 		String param_atchFileId = (String) commandMap.get("param_atchFileId");
 		String decodedAtchFileId = "";
-		
-		if (param_atchFileId != null && !"".equals(param_atchFileId) ) {
+
+		if (param_atchFileId != null && !"".equals(param_atchFileId)) {
 			decodedAtchFileId = cryptoService.decrypt(param_atchFileId);
 		}
-		
+
 		fileVO.setAtchFileId(decodedAtchFileId);
 		List<FileVO> result = fileService.selectFileInfs(fileVO);
 
@@ -111,13 +111,12 @@ public class EgovFileMngController {
 	public String selectFileInfsForUpdate(@ModelAttribute("searchVO") FileVO fileVO,
 			@RequestParam Map<String, Object> commandMap,
 			// SessionVO sessionVO,
-			HttpServletRequest request,
-			ModelMap model) throws Exception {
+			HttpServletRequest request, ModelMap model) throws Exception {
 
 		String param_atchFileId = (String) commandMap.get("param_atchFileId");
 		String decodedAtchFileId = "";
-		
-		if (param_atchFileId != null && !"".equals(param_atchFileId) ) {
+
+		if (param_atchFileId != null && !"".equals(param_atchFileId)) {
 			decodedAtchFileId = cryptoService.decrypt(param_atchFileId);
 		}
 
@@ -183,41 +182,42 @@ public class EgovFileMngController {
 
 	/**
 	 * 원본 문자열을 암호화 하는 메서드.
+	 * 
 	 * @param source 원본 문자열
 	 * @return 암호화 문자열
 	 */
 	public static String encrypt(String atchFileId) {
 		String returnVal = "";
-		if (atchFileId!=null && !"".equals(atchFileId)) {
+		if (atchFileId != null && !"".equals(atchFileId)) {
 			returnVal = cryptoService.encrypt(atchFileId);
 		}
 		return returnVal;
 	}
 
-	
 	/**
 	 * 원본 문자열을 암호화 하는 메서드.
+	 * 
 	 * @param source 원본 문자열
 	 * @return 암호화 문자열
 	 */
 	public static String encryptSession(String atchFileId, String sessionId) {
 		String returnVal = "";
-		if (atchFileId!=null && !"".equals(atchFileId)) {
+		if (atchFileId != null && !"".equals(atchFileId)) {
 			String toEncrypt = sessionId + "|" + atchFileId;
 			returnVal = Base64.getEncoder().encodeToString(cryptoService.encrypt(toEncrypt).getBytes());
 		}
 		return returnVal;
 	}
 
-	
 	/**
 	 * 암호화 문자열을 복호화 하는 메서드.
+	 * 
 	 * @param source 암호화 문자열
 	 * @return 원본 문자열
 	 */
 	public static String decrypt(String base64AtchFileId) {
 		String returnVal = "FILE_ID_DECRIPT_EXCEPTION_02";
-		if (base64AtchFileId!=null && !"".equals(base64AtchFileId)) {
+		if (base64AtchFileId != null && !"".equals(base64AtchFileId)) {
 			try {
 				returnVal = cryptoService.decrypt(base64AtchFileId);
 			} catch (Exception e) {
