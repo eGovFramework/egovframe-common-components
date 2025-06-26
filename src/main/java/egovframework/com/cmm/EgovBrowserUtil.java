@@ -26,6 +26,7 @@ public class EgovBrowserUtil {
 	public static final String OPERA = "Opera";
 	public static final String MSIE = "MSIE";
 	public static final String EDGE = "Edge";
+	public static final String WHALE = "Whale";
 	public static final String OTHER = "Other";
 	
 	public static final String TYPEKEY = "type";
@@ -79,7 +80,15 @@ public class EgovBrowserUtil {
 		    result.put(VERSIONKEY,matcher.group(1));
 			return result;		    
 		}
-		
+
+		pattern = Pattern.compile("Whale/([0-9]{1,3}\\.[0-9]{1,3})");
+		matcher = pattern.matcher(userAgent);
+		if (matcher.find()) {
+			result.put(TYPEKEY, WHALE);
+			result.put(VERSIONKEY, matcher.group(1));
+			return result;
+		}
+
 		pattern = Pattern.compile("Chrome/([0-9]{1,3}.[0-9]{1,3})");
 		matcher = pattern.matcher(userAgent);
 		if (matcher.find())
