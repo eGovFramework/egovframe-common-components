@@ -24,23 +24,24 @@ import egovframework.com.cop.ems.service.SndngMailVO;
 
 /**
  * 발송메일을 상세 조회하는 컨트롤러 클래스
+ * 
  * @author 공통서비스 개발팀 박지욱
  * @since 2009.03.12
  * @version 1.0
  * @see
+ * 
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
- * <pre>
- * << 개정이력(Modification Information) >>
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.03.12  박지욱          최초 생성
+ *   2011.10.10  이기하          보안점검 후속조치(교차접속 스크립트 공격 취약성 방지(파라미터 문자열 교체), HTTP 응답분할 방지)
+ *   2017.03.03  조성원          시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+ *   2019.11.29  신용호          KISA 보안약점 조치 : HTTP응답분할(HTTP_Response_Splitting,CRLF)취약점 조치
+ *   2025.06.05  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(리소스 닫기)
  *
- *  수정일                 수정자             수정내용
- *  ----------    --------    ---------------------------
- *  2009.03.12    박지욱              최초 생성
- *  2011.10.10	   이기하		    보안점검 후속조치(교차접속 스크립트 공격 취약성 방지(파라미터 문자열 교체),
- *  											  HTTP 응답분할 방지)
- *  2017.03.03 	   조성원 	           시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
- *  2019.11.29 	   신용호 	      KISA 보안약점 조치 : HTTP응답분할(HTTP_Response_Splitting,CRLF)취약점 조치
- *
- *  </pre>
+ *      </pre>
  */
 @Controller
 public class EgovSndngMailDetailController {
@@ -53,12 +54,14 @@ public class EgovSndngMailDetailController {
 
 	/**
 	 * 발송메일을 상세 조회한다.
+	 * 
 	 * @param sndngMailVO SndngMailVO
 	 * @return String
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/cop/ems/selectSndngMailDetail.do")
-	public String selectSndngMail(@ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, ModelMap model) throws Exception {
+	public String selectSndngMail(@ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, ModelMap model)
+			throws Exception {
 
 		if (sndngMailVO == null || sndngMailVO.getMssageId() == null || sndngMailVO.getMssageId().equals("")) {
 			return "egovframework/com/cmm/egovError";
@@ -80,12 +83,14 @@ public class EgovSndngMailDetailController {
 
 	/**
 	 * 발송메일을 삭제한다.
+	 * 
 	 * @param sndngMailVO SndngMailVO
 	 * @return String
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/cop/ems/deleteSndngMail.do")
-	public String deleteSndngMail(@ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, ModelMap model) throws Exception {
+	public String deleteSndngMail(@ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, ModelMap model)
+			throws Exception {
 
 		if (sndngMailVO == null || sndngMailVO.getMssageId() == null || sndngMailVO.getMssageId().equals("")) {
 			return "egovframework/com/cmm/egovError";
@@ -103,30 +108,35 @@ public class EgovSndngMailDetailController {
 
 	/**
 	 * 발송메일 내용조회로 돌아간다.
+	 * 
 	 * @param sndngMailVO SndngMailVO
 	 * @return String
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/cop/ems/backSndngMailDetail.do")
-	public String backSndngMailDtls(@ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, ModelMap model) throws Exception {
+	public String backSndngMailDtls(@ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, ModelMap model)
+			throws Exception {
 
 		return "redirect:/cop/ems/selectSndngMailList.do";
 	}
 
 	/**
 	 * XML형태의 발송요청메일을 조회한다.
+	 * 
 	 * @param sndngMailVO SndngMailVO
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/cop/ems/selectSndngMailXml.do")
-	public void selectSndngMailXml(@ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, HttpServletResponse response, ModelMap model) throws Exception {
-		
+	public void selectSndngMailXml(@ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, HttpServletResponse response,
+			ModelMap model) throws Exception {
+
 		// 메일 등록 시 기본 생성 경로로 변경 처리 : 23.08.09
-		//String xmlFile = Globals.MAIL_REQUEST_PATH + sndngMailVO.getMssageId() + ".xml";
-		
+		// String xmlFile = Globals.MAIL_REQUEST_PATH + sndngMailVO.getMssageId() +
+		// ".xml";
+
 		String storePathString = EgovProperties.getProperty("Globals.fileStorePath");
 		String xmlFile = storePathString + sndngMailVO.getMssageId() + ".xml";
-		
+
 		File uFile = new File(EgovWebUtil.filePathBlackList(xmlFile));
 		int fSize = (int) uFile.length();
 
@@ -134,7 +144,8 @@ public class EgovSndngMailDetailController {
 			String mimetype = "application/x-msdownload;charset=UTF-8";
 
 			response.setContentType(mimetype);
-			response.setHeader("Content-Disposition", "attachment; filename=\"" + EgovWebUtil.removeCRLF(uFile.getName()) + "\"");
+			response.setHeader("Content-Disposition",
+					"attachment; filename=\"" + EgovWebUtil.removeCRLF(uFile.getName()) + "\"");
 			response.setContentLength(fSize);
 
 			BufferedInputStream in = null;
@@ -145,19 +156,20 @@ public class EgovSndngMailDetailController {
 				if (in != null) {
 					try {
 						in.close();
-					 //2017.03.03 	조성원 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-			         }catch (IOException ignore){
-			        	 LOGGER.error("["+ ignore.getClass() +"] : Connection Close");
-			         }
+						// 2017.03.03 조성원 시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+					} catch (IOException ignore) {
+						LOGGER.error("[" + ignore.getClass() + "] : Connection Close");
+					}
 				}
 			}
 			response.getOutputStream().flush();
 			response.getOutputStream().close();
 		} else {
 			response.setContentType("application/x-msdownload");
-			PrintWriter printwriter = response.getWriter();
+			PrintWriter printwriter = response.getWriter(); // NOPMD - CloseResource
 			printwriter.println("<html>");
-			printwriter.println("<br><br><br><h2>Could not get file name:<br>" + EgovWebUtil.clearXSSMinimum(xmlFile) + "</h2>");
+			printwriter.println(
+					"<br><br><br><h2>Could not get file name:<br>" + EgovWebUtil.clearXSSMinimum(xmlFile) + "</h2>");
 			printwriter.println("<br><br><br><center><h3><a href='javascript: history.go(-1)'>Back</a></h3></center>");
 			printwriter.println("<br><br><br>&copy; webAccess");
 			printwriter.println("</html>");
