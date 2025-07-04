@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<c:set var="pageTitle"><spring:message code="symAdr.adressCntcList.Title"/></c:set>  
+<c:set var="pageTitle"><spring:message code="symAdr.adressCntcList.Title"/></c:set>
 <%
  /**
   * @Class Name : EgovAdressCntc.jsp
@@ -33,6 +33,13 @@
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <script type="text/javaScript" language="javascript">
 
+var addrRoad = "<spring:message code='symAdr.list.addrRoad' />";
+var addrRoad1 = "<spring:message code='symAdr.list.addrRoad1' />";
+var addrRoad2 = "<spring:message code='symAdr.list.addrRoad2' />";
+var addrGibun = "<spring:message code='symAdr.list.addrGibun' />";
+var addrEng = "<spring:message code='symAdr.list.addrEng' />";
+var addrPost = "<spring:message code='symAdr.list.post' />";
+
 function getAddr(){
 	$.ajax({
 		 //url :"http://행정망 IP/addrlink/addrLinkApiJsonp.do"		//행정망
@@ -59,79 +66,142 @@ function getAddr(){
 				}
 			}
 		}
-	    ,error: function(xhr,status, error){
-	    	alert("error");
-	    }
-	});
+	    ,error: function(xhr, status, error){
+        	console.log("Error occurred: " + status + " " + error);
+        	alert("주소 정보를 가져오는 데 실패했습니다. 상태 코드: " + xhr.status + ", 오류 메시지: " + error);
+        }
+    });
+}
+
+function decodeXmlEntities(str) {
+    var txt = document.createElement("textarea");
+    txt.innerHTML = str;
+    return txt.value;
 }
 
 function getAddrLoc(){
-	$.ajax({
-		 url :"${contextPath}/sym/adr/getAdressCntcApi.do"
-		,type:"post"
-		,data:$("#form").serialize()
-		,dataType:"xml"
-		,success:function(xmlStr){
-			$("#list").html("");
-			var errCode = $(xmlStr).find("errorCode").text();
-			var errDesc = $(xmlStr).find("errorMessage").text();
-			if(errCode != "0"){
-				alert(errCode+"="+errDesc);
-			}else{
-				if(xmlStr != null){
-					makeList(xmlStr);
-				}
-			}
-		}
-	    ,error: function(xhr,status, error){
-	    	alert("error");
-	    }
-	});
+    $.ajax({
+         url :"${contextPath}/sym/adr/getAdressCntcApi.do"
+        ,type:"post"
+        ,data:$("#form").serialize()
+        ,dataType:"text"
+        ,success:function(xmlStr){
+            // 1. 엔티티 복원
+            var decodedXmlStr = decodeXmlEntities(xmlStr);
+
+            // 2. 파싱
+            var xmlData;
+            if (window.DOMParser) {
+                var parser = new DOMParser();
+                xmlData = parser.parseFromString(decodedXmlStr, "text/xml");
+            } else {
+                xmlData = new ActiveXObject("Microsoft.XMLDOM");
+                xmlData.async = false;
+                xmlData.loadXML(decodedXmlStr);
+            }
+
+            // 3. parsererror 체크
+            if (xmlData.getElementsByTagName("parsererror").length > 0) {
+                alert("XML 파싱 오류!\n" + decodedXmlStr);
+                return;
+            }
+
+            // 이하 기존 코드
+            var errCode = "";
+            var errDesc = "";
+            var commonNodeList = xmlData.getElementsByTagName("common");
+            var commonNode = commonNodeList && commonNodeList.length > 0 ? commonNodeList[0] : null;
+            if (commonNode) {
+                var errorCodeNode = commonNode.getElementsByTagName("errorCode")[0];
+                var errorMessageNode = commonNode.getElementsByTagName("errorMessage")[0];
+                if (errorCodeNode) errCode = errorCodeNode.textContent || errorCodeNode.text || "";
+                if (errorMessageNode) errDesc = errorMessageNode.textContent || errorMessageNode.text || "";
+            }
+
+            if (!errCode && !errDesc) {
+                alert("오류 코드 또는 메시지를 찾을 수 없습니다.\n원본 XML:\n" + decodedXmlStr);
+                return;
+            }
+
+            if (errCode === "0") {
+                makeList(xmlData);
+            } else {
+                alert("오류 코드: " + errCode + "\n오류 메시지: " + errDesc);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.log("Error occurred: " + status + " " + error);
+            alert("주소 정보를 가져오는 데 실패했습니다. 상태 코드: " + xhr.status + ", 오류 메시지: " + error);
+        }
+    });
 }
 
-function makeList(xmlStr){
-	var htmlStr = "";
-	//alert($(xmlStr).find("juso").size());
-	
-	htmlStr += "<table class='board_list'>";
-	htmlStr += "<caption></caption>";
-	htmlStr += "<colgroup>";
-	htmlStr += "	<col style='width:25%' />";
-	htmlStr += "	<col style='width:25%' />";
-	htmlStr += "	<col style='width:25%' />";
-	htmlStr += "	<col style='width:25%' />";
-	htmlStr += "	<col style='width:25%' />";
-	htmlStr += "	<col style='width:25%' />";
-	
-	
-	
-	htmlStr += "</colgroup>";
-	
-	htmlStr += "<thead>";
-	htmlStr += "<tr>";
-	htmlStr += "<th class=title nowrap><spring:message code="symAdr.list.addrRoad" /></th>"; //도로명주소
-	htmlStr += "<th class=title nowrap><spring:message code="symAdr.list.addrRoad1" /></th>"; //도로명주소(1)
-	htmlStr += "<th class=title nowrap><spring:message code="symAdr.list.addrRoad2" /></th>"; //도로명주소(2)
-	htmlStr += "<th class=title nowrap><spring:message code="symAdr.list.addrGibun" /></th>"; //지번주소
-	htmlStr += "<th class=title nowrap><spring:message code="symAdr.list.addrEng" /></th>"; //영문주소
-	htmlStr += "<th class=title nowrap><spring:message code="symAdr.list.post" /></th>"; //우편번호
-	htmlStr += "</tr>";
-	htmlStr += "</thead>";
-	$(xmlStr).find("juso").each(function(){
-		htmlStr += "<tr>";
-		htmlStr += "<td>"+$(this).find('roadAddr').text()      +"</td>";
-		htmlStr += "<td>"+$(this).find('roadAddrPart1').text()      +"</td>";
-		htmlStr += "<td>"+$(this).find('roadAddrPart2').text()      +"</td>";
-		htmlStr += "<td>"+$(this).find('jibunAddr').text()     +"</td>";
-		htmlStr += "<td>"+$(this).find('engAddr').text()     +"</td>";
-		htmlStr += "<td>"+$(this).find('zipNo').text()      +"</td>";
-		
-		htmlStr += "</tr>";
-	});
-	htmlStr += "</table>";
-	$("#list").html(htmlStr);
-}
 
+function makeList(xmlInput){
+    var htmlStr = "";
+    htmlStr += "<table class='board_list'>";
+    htmlStr += "<caption></caption>";
+    htmlStr += "<colgroup>";
+    htmlStr += "	<col style='width:25%' />";
+    htmlStr += "	<col style='width:25%' />";
+    htmlStr += "	<col style='width:25%' />";
+    htmlStr += "	<col style='width:25%' />";
+    htmlStr += "	<col style='width:25%' />";
+    htmlStr += "	<col style='width:25%' />";
+    htmlStr += "</colgroup>";
+    htmlStr += "<thead>";
+    htmlStr += "<tr>";
+    htmlStr += "<th class='title' nowrap>" + addrRoad + "</th>";
+    htmlStr += "<th class='title' nowrap>" + addrRoad1 + "</th>";
+    htmlStr += "<th class='title' nowrap>" + addrRoad2 + "</th>";
+    htmlStr += "<th class='title' nowrap>" + addrGibun + "</th>";
+    htmlStr += "<th class='title' nowrap>" + addrEng + "</th>";
+    htmlStr += "<th class='title' nowrap>" + addrPost + "</th>";
+    htmlStr += "</tr>";
+    htmlStr += "</thead>";
+
+    // XML DOM 객체일 경우
+    if (xmlInput && typeof xmlInput.getElementsByTagName === "function") {
+        var jusoList = xmlInput.getElementsByTagName("juso");
+        for(var i=0; i<jusoList.length; i++){
+            var juso = jusoList[i];
+            // IE와 표준 브라우저 모두 대응
+            var getVal = function(tag) {
+                var node = juso.getElementsByTagName(tag)[0];
+                return node ? (node.textContent || node.text || "") : "";
+            };
+            var roadAddr = getVal("roadAddr");
+            var roadAddrPart1 = getVal("roadAddrPart1");
+            var roadAddrPart2 = getVal("roadAddrPart2");
+            var jibunAddr = getVal("jibunAddr");
+            var engAddr = getVal("engAddr");
+            var zipNo = getVal("zipNo");
+
+            htmlStr += "<tr>";
+            htmlStr += "<td>"+roadAddr+"</td>";
+            htmlStr += "<td>"+roadAddrPart1+"</td>";
+            htmlStr += "<td>"+roadAddrPart2+"</td>";
+            htmlStr += "<td>"+jibunAddr+"</td>";
+            htmlStr += "<td>"+engAddr+"</td>";
+            htmlStr += "<td>"+zipNo+"</td>";
+            htmlStr += "</tr>";
+        }
+    } else {
+        // jQuery 객체(jQuery 방식)
+        $(xmlInput).find("juso").each(function(){
+            htmlStr += "<tr>";
+            htmlStr += "<td>"+$(this).find('roadAddr').text()+"</td>";
+            htmlStr += "<td>"+$(this).find('roadAddrPart1').text()+"</td>";
+            htmlStr += "<td>"+$(this).find('roadAddrPart2').text()+"</td>";
+            htmlStr += "<td>"+$(this).find('jibunAddr').text()+"</td>";
+            htmlStr += "<td>"+$(this).find('engAddr').text()+"</td>";
+            htmlStr += "<td>"+$(this).find('zipNo').text()+"</td>";
+            htmlStr += "</tr>";
+        });
+    }
+    htmlStr += "</table>";
+    $("#list").html(htmlStr);
+}
 </script>
 <title>${pageTitle}</title>
 </head>
@@ -148,14 +218,14 @@ function makeList(xmlStr){
 			<li>
 				<label for="currentPage"><spring:message code="symAdr.adressCntcList.scCurrentPage" /> : </label><!-- 현재 페이지 -->
 				<input type="text" name="currentPage" value="1" title="<spring:message code="symAdr.adressCntcList.scCurrentPage" /> <spring:message code="input.input" />" />
-				
+
 				<label for="countPerPage"><spring:message code="symAdr.adressCntcList.scCountPerPage" /> : </label><!-- 페이지 사이즈  -->
 				<input type="text" name="countPerPage" value="10" title=" <spring:message code="input.input" />" />
 			</li>
 			<li>
 				<label for="keyword"><spring:message code="symAdr.adressCntcList.scKeyword" /> : </label><!-- 검색어 -->
 				<input type="text" name="keyword" value="정보화진흥원" title="<spring:message code="symAdr.adressCntcList.scKeyword" /> <spring:message code="input.input" />" />
-				
+
 				<label for="confmKey"><spring:message code="symAdr.adressCntcList.scConfmKey" /> : </label><!-- 승인키  -->
 				<input type="text" name="confmKey" id="confmKey" style="width:250px;" value="bnVsbDIwMTQxMDAxMTQwNDA1" title="<spring:message code="symAdr.adressCntcList.scConfmKey" /> <spring:message code="input.input" />" />
 			</li>
@@ -165,9 +235,9 @@ function makeList(xmlStr){
 			</li>
 		</ul>
 	</div>
-	
+
 	 <div id="list" class="board_list"></div>
-	
+
 
 </div>
 </form>
