@@ -24,23 +24,25 @@ import egovframework.com.sym.ccm.adc.service.AdministCodeVO;
 import egovframework.com.sym.ccm.adc.service.EgovCcmAdministCodeManageService;
 
 /**
- *
- * 행정코드에 관한 요청을 받아 서비스 클래스로 요청을 전달하고 서비스클래스에서 처리한 결과를 웹 화면으로 전달을 위한 Controller를 정의한다
+ * 행정코드에 관한 요청을 받아 서비스 클래스로 요청을 전달하고 서비스클래스에서 처리한 결과를 웹 화면으로 전달을 위한 Controller를
+ * 정의한다
+ * 
  * @author 공통서비스 개발팀 이중호
  * @since 2009.04.01
  * @version 1.0
  * @see
  *
- * <pre>
- * << 개정이력(Modification Information) >>
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.04.01  이중호			최초 생성
- *   2011.08.26  정진오			IncludedInfo annotation 추가
- *   2024.10.29  권태성			등록 & 수정의 화면과 데이터를 처리하는 method 분리, validation 적용
+ *   2009.04.01  이중호          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2024.10.29  권태성          등록 & 수정의 화면과 데이터를 처리하는 method 분리, validation 적용
+ *   2025.07.05  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
  *
- * </pre>
+ *      </pre>
  */
 @Controller
 public class EgovCcmAdministCodeManageController {
@@ -167,8 +169,8 @@ public class EgovCcmAdministCodeManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<EgovMap> CmmnCodeList = administCodeManageService.selectAdministCodeList(searchVO);
-		model.addAttribute("resultList", CmmnCodeList);
+		List<EgovMap> resultList = administCodeManageService.selectAdministCodeList(searchVO);
+		model.addAttribute("resultList", resultList);
 
 		int totCnt = administCodeManageService.selectAdministCodeListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -215,8 +217,8 @@ public class EgovCcmAdministCodeManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<EgovMap> CmmnCodeList = administCodeManageService.selectAdministCodeList(searchVO);
-		model.addAttribute("resultList", CmmnCodeList);
+		List<EgovMap> resultList = administCodeManageService.selectAdministCodeList(searchVO);
+		model.addAttribute("resultList", resultList);
 
 		int totCnt = administCodeManageService.selectAdministCodeListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
