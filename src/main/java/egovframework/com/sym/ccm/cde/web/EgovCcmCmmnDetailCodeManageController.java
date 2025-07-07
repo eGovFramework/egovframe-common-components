@@ -39,14 +39,33 @@ import egovframework.com.sym.ccm.cde.service.EgovCcmCmmnDetailCodeManageService;
 *
 *   수정일      수정자           수정내용
 *  -------    --------    ---------------------------
-*   2009.04.01  이중호       최초 생성
-*   2011.08.26	정진오	IncludedInfo annotation 추가
-*   2017.08.08	이정은	표준프레임워크 v3.7 개선
-*	2024.10.29	LeeBaekHaeng	검색조건 유지
+
 *
 * </pre>
 */
-
+/**
+ * 공통상세코드에 관한 요청을 받아 서비스 클래스로 요청을 전달하고 서비스클래스에서 처리한 결과를 웹 화면으로 전달을 위한
+ * Controller를 정의한다
+ * 
+ * @author 공통서비스 개발팀 이중호
+ * @since 2009.04.01
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.03.20  홍길동          최초 생성
+ *   2009.04.01  이중호          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2017.08.08  이정은          표준프레임워크 v3.7 개선
+ *   2024.10.29  이백행          검색조건 유지
+ *   2025.07.08  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *
+ *      </pre>
+ */
 @Controller
 public class EgovCcmCmmnDetailCodeManageController {
 
@@ -72,16 +91,17 @@ public class EgovCcmCmmnDetailCodeManageController {
 
 	/**
 	 * 공통상세코드 목록을 조회한다.
-	  * @param loginVO
-	  * @param searchVO
-	  * @param model
-	  * @return "egovframework/com/sym/ccm/cde/EgovCcmCmmnDetailCodeList"
-	  * @throws Exception
-	  */
+	 * 
+	 * @param loginVO
+	 * @param searchVO
+	 * @param model
+	 * @return "egovframework/com/sym/ccm/cde/EgovCcmCmmnDetailCodeList"
+	 * @throws Exception
+	 */
 	@IncludedInfo(name = "공통상세코드", listUrl = "/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do", order = 970, gid = 60)
 	@RequestMapping(value = "/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do")
 	public String selectCmmnDetailCodeList(@ModelAttribute("loginVO") LoginVO loginVO,
-		@ModelAttribute("searchVO") CmmnDetailCodeVO searchVO, ModelMap model) throws Exception {
+			@ModelAttribute("searchVO") CmmnDetailCodeVO searchVO, ModelMap model) throws Exception {
 
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -97,8 +117,8 @@ public class EgovCcmCmmnDetailCodeManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<CmmnDetailCodeVO> CmmnCodeList = cmmnDetailCodeManageService.selectCmmnDetailCodeList(searchVO);
-		model.addAttribute("resultList", CmmnCodeList);
+		List<CmmnDetailCodeVO> resultList = cmmnDetailCodeManageService.selectCmmnDetailCodeList(searchVO);
+		model.addAttribute("resultList", resultList);
 
 		int totCnt = cmmnDetailCodeManageService.selectCmmnDetailCodeListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -109,6 +129,7 @@ public class EgovCcmCmmnDetailCodeManageController {
 
 	/**
 	 * 공통상세코드 상세항목을 조회한다.
+	 * 
 	 * @param loginVO
 	 * @param cmmnDetailCodeVO
 	 * @param model
@@ -117,7 +138,7 @@ public class EgovCcmCmmnDetailCodeManageController {
 	 */
 	@RequestMapping(value = "/sym/ccm/cde/SelectCcmCmmnDetailCodeDetail.do")
 	public String selectCmmnDetailCodeDetail(@ModelAttribute("loginVO") LoginVO loginVO,
-		CmmnDetailCodeVO cmmnDetailCodeVO, ModelMap model) throws Exception {
+			CmmnDetailCodeVO cmmnDetailCodeVO, ModelMap model) throws Exception {
 		CmmnDetailCode vo = cmmnDetailCodeManageService.selectCmmnDetailCodeDetail(cmmnDetailCodeVO);
 		model.addAttribute("result", vo);
 
@@ -126,6 +147,7 @@ public class EgovCcmCmmnDetailCodeManageController {
 
 	/**
 	 * 공통상세코드를 삭제한다.
+	 * 
 	 * @param loginVO
 	 * @param cmmnDetailCodeVO
 	 * @param model
@@ -134,7 +156,7 @@ public class EgovCcmCmmnDetailCodeManageController {
 	 */
 	@RequestMapping(value = "/sym/ccm/cde/RemoveCcmCmmnDetailCode.do")
 	public String deleteCmmnDetailCode(@ModelAttribute("loginVO") LoginVO loginVO, CmmnDetailCodeVO cmmnDetailCodeVO,
-		ModelMap model) throws Exception {
+			ModelMap model) throws Exception {
 		cmmnDetailCodeManageService.deleteCmmnDetailCode(cmmnDetailCodeVO);
 
 		model.addAttribute("searchCondition", cmmnDetailCodeVO.getSearchCondition());
@@ -154,8 +176,8 @@ public class EgovCcmCmmnDetailCodeManageController {
 	 */
 	@RequestMapping("/sym/ccm/cde/RegistCcmCmmnDetailCodeView.do")
 	public String insertCmmnDetailCodeView(@ModelAttribute("loginVO") LoginVO loginVO,
-		@ModelAttribute("cmmnCodeVO") CmmnCodeVO cmmnCodeVO,
-		@ModelAttribute("cmmnDetailCodeVO") CmmnDetailCodeVO cmmnDetailCodeVO, ModelMap model) throws Exception {
+			@ModelAttribute("cmmnCodeVO") CmmnCodeVO cmmnCodeVO,
+			@ModelAttribute("cmmnDetailCodeVO") CmmnDetailCodeVO cmmnDetailCodeVO, ModelMap model) throws Exception {
 
 		CmmnClCodeVO searchClCodeVO = new CmmnClCodeVO();
 		searchClCodeVO.setFirstIndex(0);
@@ -192,9 +214,9 @@ public class EgovCcmCmmnDetailCodeManageController {
 	 */
 	@RequestMapping("/sym/ccm/cde/RegistCcmCmmnDetailCode.do")
 	public String insertCmmnDetailCode(@ModelAttribute("cmmnDetailCodeVO") CmmnDetailCodeVO cmmnDetailCodeVO,
-		BindingResult bindingResult, ModelMap model) throws Exception {
+			BindingResult bindingResult, ModelMap model) throws Exception {
 
-		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		CmmnClCodeVO searchClCodeVO = new CmmnClCodeVO();
 		searchClCodeVO.setFirstIndex(0);
@@ -242,8 +264,7 @@ public class EgovCcmCmmnDetailCodeManageController {
 	 */
 	@RequestMapping("/sym/ccm/cde/UpdateCcmCmmnDetailCodeView.do")
 	public String updateCmmnDetailCodeView(@ModelAttribute("loginVO") LoginVO loginVO,
-		@ModelAttribute("cmmnDetailCodeVO") CmmnDetailCodeVO cmmnDetailCodeVO, ModelMap model)
-		throws Exception {
+			@ModelAttribute("cmmnDetailCodeVO") CmmnDetailCodeVO cmmnDetailCodeVO, ModelMap model) throws Exception {
 
 		CmmnDetailCode result = cmmnDetailCodeManageService.selectCmmnDetailCodeDetail(cmmnDetailCodeVO);
 		model.addAttribute("cmmnDetailCodeVO", result);
@@ -256,15 +277,15 @@ public class EgovCcmCmmnDetailCodeManageController {
 	 *
 	 * @param cmmnDetailCodeVO
 	 * @param model
-	 * @return "egovframework/com/sym/ccm/cde/EgovCcmCmmnDetailCodeUpdt", "/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do"
+	 * @return "egovframework/com/sym/ccm/cde/EgovCcmCmmnDetailCodeUpdt",
+	 *         "/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do"
 	 * @throws Exception
 	 */
 	@RequestMapping("/sym/ccm/cde/UpdateCcmCmmnDetailCode.do")
 	public String updateCmmnDetailCode(@ModelAttribute("cmmnDetailCodeVO") CmmnDetailCodeVO cmmnDetailCodeVO,
-		ModelMap model, BindingResult bindingResult)
-		throws Exception {
+			ModelMap model, BindingResult bindingResult) throws Exception {
 
-		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		beanValidator.validate(cmmnDetailCodeVO, bindingResult);
 
