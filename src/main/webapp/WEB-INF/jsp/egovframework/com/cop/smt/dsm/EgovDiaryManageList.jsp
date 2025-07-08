@@ -101,7 +101,7 @@ function fn_egov_search_DiaryManage(){
 	</form>
 
 	<!-- 목록영역 -->
-	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
+	<table class="board_list">
 	<caption>${pageTitle} <spring:message code="title.list" /></caption>
 	<colgroup>
 		<col style="width: 9%;">
