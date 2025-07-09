@@ -121,15 +121,18 @@ public class EgovMapTeamController {
 	@RequestMapping(value="/dam/map/tea/EgovComDamMapTeamRegist.do")
 	public String insertMapTeam(@ModelAttribute("loginVO") LoginVO loginVO
 			, @ModelAttribute("mapTeam") MapTeam mapTeam
-			, BindingResult bindingResult
-			) throws Exception {
-		if (mapTeam.getOrgnztNm() == null
-				||mapTeam.getOrgnztNm().equals("")) {
+			, BindingResult bindingResult) throws Exception {
+		if (mapTeam.getOrgnztNm() == null || mapTeam.getOrgnztNm().equals("")) {
 			return "egovframework/com/dam/map/tea/EgovComDamMapTeamRegist";
 		}
 
 		beanValidator.validate(mapTeam, bindingResult);
 		if (bindingResult.hasErrors()){
+			return "egovframework/com/dam/map/tea/EgovComDamMapTeamRegist";
+		}
+
+		if (mapTeamService.selectMapTeamDetail(mapTeam) != null) {
+			bindingResult.rejectValue("orgnztId", "error.orgnztId", "이미 등록된 조직ID입니다.");
 			return "egovframework/com/dam/map/tea/EgovComDamMapTeamRegist";
 		}
 
