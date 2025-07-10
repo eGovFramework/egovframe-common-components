@@ -57,23 +57,17 @@ public class EgovSysLogAspect {
 			String methodName = joinPoint.getSignature().getName();
 			String processSeCode = "C";
 			String processTime = Long.toString(stopWatch.getTotalTimeMillis());
-			String uniqId = "";
-			String ip = "";
 
-			/* Authenticated */
-			Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-			if (isAuthenticated.booleanValue()) {
-				LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-				uniqId = (user == null || user.getUniqId() == null) ? "" : user.getUniqId();
-				ip = (user == null || user.getIp() == null) ? "" : user.getIp();
+			LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+			if (loginVO != null) {
+				sysLog.setRqesterId(loginVO.getUniqId());
+				sysLog.setRqesterIp(loginVO.getIp());
 			}
 
 			sysLog.setSrvcNm(className);
 			sysLog.setMethodNm(methodName);
 			sysLog.setProcessSeCode(processSeCode);
 			sysLog.setProcessTime(processTime);
-			sysLog.setRqesterId(uniqId);
-			sysLog.setRqesterIp(ip);
 
 			sysLogService.logInsertSysLog(sysLog);
 
@@ -107,23 +101,17 @@ public class EgovSysLogAspect {
 			String methodName = joinPoint.getSignature().getName();
 			String processSeCode = "U";
 			String processTime = Long.toString(stopWatch.getTotalTimeMillis());
-			String uniqId = "";
-			String ip = "";
 
-			/* Authenticated */
-			Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-			if (isAuthenticated.booleanValue()) {
-				LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-				uniqId = (user == null || user.getUniqId() == null) ? "" : user.getUniqId();
-				ip = (user == null || user.getIp() == null) ? "" : user.getIp();
+			LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+			if (loginVO != null) {
+				sysLog.setRqesterId(loginVO.getUniqId());
+				sysLog.setRqesterIp(loginVO.getIp());
 			}
 
 			sysLog.setSrvcNm(className);
 			sysLog.setMethodNm(methodName);
 			sysLog.setProcessSeCode(processSeCode);
 			sysLog.setProcessTime(processTime);
-			sysLog.setRqesterId(uniqId);
-			sysLog.setRqesterIp(ip);
 
 			sysLogService.logInsertSysLog(sysLog);
 
@@ -157,23 +145,17 @@ public class EgovSysLogAspect {
 			String methodName = joinPoint.getSignature().getName();
 			String processSeCode = "D";
 			String processTime = Long.toString(stopWatch.getTotalTimeMillis());
-			String uniqId = "";
-			String ip = "";
 
-			/* Authenticated */
-			Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-			if (isAuthenticated.booleanValue()) {
-				LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-				uniqId = (user == null || user.getUniqId() == null) ? "" : user.getUniqId();
-				ip = (user == null || user.getIp() == null) ? "" : user.getIp();
+			LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+			if (loginVO != null) {
+				sysLog.setRqesterId(loginVO.getUniqId());
+				sysLog.setRqesterIp(loginVO.getIp());
 			}
 
 			sysLog.setSrvcNm(className);
 			sysLog.setMethodNm(methodName);
 			sysLog.setProcessSeCode(processSeCode);
 			sysLog.setProcessTime(processTime);
-			sysLog.setRqesterId(uniqId);
-			sysLog.setRqesterIp(ip);
 
 			sysLogService.logInsertSysLog(sysLog);
 
@@ -207,23 +189,17 @@ public class EgovSysLogAspect {
 			String methodName = joinPoint.getSignature().getName();
 			String processSeCode = "R";
 			String processTime = Long.toString(stopWatch.getTotalTimeMillis());
-			String uniqId = "";
-			String ip = "";
 
-			/* Authenticated */
-			Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-			if (isAuthenticated.booleanValue()) {
-				LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-				uniqId = (user == null || user.getUniqId() == null) ? "" : user.getUniqId();
-				ip = (user == null || user.getIp() == null) ? "" : user.getIp();
+			LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+			if (loginVO != null) {
+				sysLog.setRqesterId(loginVO.getUniqId());
+				sysLog.setRqesterIp(loginVO.getIp());
 			}
 
 			sysLog.setSrvcNm(className);
 			sysLog.setMethodNm(methodName);
 			sysLog.setProcessSeCode(processSeCode);
 			sysLog.setProcessTime(processTime);
-			sysLog.setRqesterId(uniqId);
-			sysLog.setRqesterIp(ip);
 
 			sysLogService.logInsertSysLog(sysLog);
 
