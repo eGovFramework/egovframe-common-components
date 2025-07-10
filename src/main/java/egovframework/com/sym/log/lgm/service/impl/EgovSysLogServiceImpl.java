@@ -17,11 +17,13 @@ import egovframework.com.sym.log.lgm.service.SysLog;
  * @Class Name : EgovSysLogServiceImpl.java
  * @Description : 로그관리(시스템)를 위한 서비스 구현 클래스
  * @Modification Information
- *
+ * 
+ *               <pre>
  *    수정일       수정자         수정내용
  *    -------        -------     -------------------
  *    2009. 3. 11.     이삼섭
- *
+ *               </pre>
+ * 
  * @author 공통 서비스 개발팀 이삼섭
  * @since 2009. 3. 11.
  * @version
@@ -29,12 +31,12 @@ import egovframework.com.sym.log.lgm.service.SysLog;
  *
  */
 @Service("EgovSysLogService")
-public class EgovSysLogServiceImpl extends EgovAbstractServiceImpl implements EgovSysLogService{
-	@Resource(name="SysLogDAO")
+public class EgovSysLogServiceImpl extends EgovAbstractServiceImpl implements EgovSysLogService {
+	@Resource(name = "SysLogDAO")
 	private SysLogDAO sysLogDAO;
 
-    /** ID Generation */
-	@Resource(name="egovSysLogIdGnrService")
+	/** ID Generation */
+	@Resource(name = "egovSysLogIdGnrService")
 	private EgovIdGnrService egovSysLogIdGnrService;
 
 	/**
@@ -48,7 +50,7 @@ public class EgovSysLogServiceImpl extends EgovAbstractServiceImpl implements Eg
 		sysLog.setRequstId(requstId);
 
 		sysLogDAO.logInsertSysLog(sysLog);
-		
+
 	}
 
 	/**
@@ -59,7 +61,7 @@ public class EgovSysLogServiceImpl extends EgovAbstractServiceImpl implements Eg
 	@Override
 	public void logInsertSysLogSummary() throws Exception {
 		sysLogDAO.logInsertSysLogSummary();
-		
+
 	}
 
 	/**
