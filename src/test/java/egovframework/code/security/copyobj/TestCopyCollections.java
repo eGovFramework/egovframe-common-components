@@ -5,8 +5,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * TestCopyCollections Test Class 구현
@@ -31,9 +30,8 @@ import org.slf4j.LoggerFactory;
  *
  *      </pre>
  */
+@Slf4j
 public class TestCopyCollections {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(TestCopyCollections.class);
 
 	public static void main(String[] args) {
 
@@ -51,18 +49,20 @@ public class TestCopyCollections {
 		try {
 			copyNames.set(0, "copy-edit");
 		} catch (UnsupportedOperationException e) {
-			if (LOGGER.isErrorEnabled()) {
-				LOGGER.error("UnsupportedOperationException", e);
-				LOGGER.error("copyNames.set(0, \"copy-edit\");");
-				LOGGER.error("UnsupportedOperationExceptionm, 지원되지 않는 작업 예외");
-				LOGGER.error("unmodifiableList, 수정 불가능한 목록");
+			if (log.isErrorEnabled()) {
+				log.error("UnsupportedOperationException", e);
+				log.error("copyNames.set(0, \"copy-edit\");");
+				log.error("UnsupportedOperationExceptionm, 지원되지 않는 작업 예외");
+				log.error("unmodifiableList, 수정 불가능한 목록");
 			}
 		}
 
-		LOGGER.debug(supplierNames.get(0));
-		LOGGER.debug("" + supplierNames.hashCode());
-		LOGGER.debug(copyNames.get(0));
-		LOGGER.debug("" + copyNames.hashCode());
+		if (log.isDebugEnabled()) {
+			log.debug(supplierNames.get(0));
+			log.debug("{}", supplierNames.hashCode());
+			log.debug(copyNames.get(0));
+			log.debug("{}", copyNames.hashCode());
+		}
 
 	}
 
