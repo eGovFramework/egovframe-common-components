@@ -14,21 +14,22 @@ import egovframework.com.sym.log.lgm.service.EgovSysLogService;
 import egovframework.com.sym.log.lgm.service.SysLog;
 
 /**
- * @Class Name : EgovSysLogServiceImpl.java
- * @Description : 로그관리(시스템)를 위한 서비스 구현 클래스
- * @Modification Information
- * 
- *               <pre>
- *    수정일       수정자         수정내용
- *    -------        -------     -------------------
- *    2009. 3. 11.     이삼섭
- *               </pre>
+ * 로그관리(시스템)를 위한 서비스 구현 클래스
  * 
  * @author 공통 서비스 개발팀 이삼섭
- * @since 2009. 3. 11.
- * @version
+ * @since 2009.03.11
+ * @version 1.0
  * @see
  *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.03.11  이삼섭          최초 생성
+ *   2025.07.10  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *
+ *      </pre>
  */
 @Service("EgovSysLogService")
 public class EgovSysLogServiceImpl extends EgovAbstractServiceImpl implements EgovSysLogService {
