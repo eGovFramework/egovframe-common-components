@@ -1,6 +1,6 @@
 package egovframework.com.sym.log.lgm.web;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -72,8 +72,8 @@ public class EgovSysLogController {
 		sysLog.setLastIndex(paginationInfo.getLastRecordIndex());
 		sysLog.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		HashMap<?, ?> map = (HashMap<?, ?>) sysLogService.selectSysLogInf(sysLog);
-		int totCnt = Integer.parseInt((String) map.get("resultCnt"));
+		Map<?, ?> map = sysLogService.selectSysLogInf(sysLog);
+		int totCnt = (int) map.get("resultCnt");
 
 		model.addAttribute("resultList", map.get("resultList"));
 		model.addAttribute("resultCnt", map.get("resultCnt"));
