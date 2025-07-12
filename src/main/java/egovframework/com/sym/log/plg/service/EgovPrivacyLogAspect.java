@@ -77,7 +77,9 @@ public class EgovPrivacyLogAspect {
 				if (list.size() > 0) {
 					privacyLogService.innerInsertPrivacyLog(getPrivacyLogFromItemList(list, serviceName));
 
-					if (++count >= maxListCount) { // 최대 기록 수 처리
+					++count;
+
+					if (count >= maxListCount) { // 최대 기록 수 처리
 						LOGGER.info("Max List count reached (skip next list) : maxListCount = {}, target = {}",
 								maxListCount, serviceName);
 						break;
@@ -159,11 +161,9 @@ public class EgovPrivacyLogAspect {
 		log.setServiceName(serviceName);
 		log.setInquiryInfo(getStringFromItemList(list));
 
-		/* Authenticated */
-		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-		if (isAuthenticated.booleanValue()) {
-			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-			log.setRequesterId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO != null) {
+			log.setRequesterId(loginVO.getUniqId());
 		}
 
 		log.setRequesterIp(EgovHttpRequestHelper.getRequestIp());
