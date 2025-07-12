@@ -17,19 +17,24 @@ import egovframework.com.cmm.util.EgovHttpRequestHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 
 /**
- * @Class Name : EgovPrivacyLogAspect.java
- * @Description : 개인정보 조회 이력 관리를 위한 Advice
- * @Modification Information
- * 
- *               <pre>
- *    수정일         수정자         수정내용
- *    -------        -------     -------------------
- *    2014.09.11	표준프레임워크		최초생성
- *               </pre>
+ * 개인정보 조회 이력 관리를 위한 Advice
  * 
  * @author Vincent Han
  * @since 2014.09.11
  * @version 3.5
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.03.20  홍길동          최초 생성
+ *   2014.09.11  표준프레임워크     최초 생성
+ *   2025.07.12  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AssignmentInOperand(피연산자내에 할당문이 사용됨. 해당 코드를 복잡하고 가독성이 떨어지게 만듬)
+ *   2025.07.12  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UnnecessaryBoxing(불필요한 WrapperObject 생성)
+ *
+ *      </pre>
  */
 public class EgovPrivacyLogAspect {
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovPrivacyLogAspect.class);
