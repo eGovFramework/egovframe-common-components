@@ -3,10 +3,8 @@ package egovframework.com.cmm.context;
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import egovframework.com.cmm.service.EgovProperties;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * EgovWebServletContextListener 클래스
@@ -31,40 +29,36 @@ import egovframework.com.cmm.service.EgovProperties;
  *   2017.03.03     조성원 	시큐어코딩(ES)-오류 메시지를 통한 정보노출[CWE-209]
  *      </pre>
  */
-
+@Slf4j
 public class EgovWebServletContextListener implements ServletContextListener {
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovWebServletContextListener.class);
-
-	public EgovWebServletContextListener() {
-		setEgovProfileSetting();
-	}
 
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
-		if (System.getProperty("spring.profiles.active") == null) {
-			setEgovProfileSetting();
-		}
-	}
-
-	@Override
-	public void contextDestroyed(ServletContextEvent event) {
-		if (System.getProperty("spring.profiles.active") != null) {
-			System.clearProperty("spring.profiles.active");
-		}
-	}
-
-	public void setEgovProfileSetting() {
 		try {
-			LOGGER.debug("===========================Start EgovServletContextLoad START ===========");
-			System.setProperty("spring.profiles.active",
-					EgovProperties.getProperty("Globals.DbType") + "," + EgovProperties.getProperty("Globals.Auth"));
-			LOGGER.debug("Setting spring.profiles.active>" + System.getProperty("spring.profiles.active"));
-			LOGGER.debug("===========================END   EgovServletContextLoad END ===========");
+			if (log.isDebugEnabled()) {
+				log.debug("===========================Start EgovServletContextLoad START ===========");
+				log.debug("Setting spring.profiles.active>" + System.getProperty("spring.profiles.active"));
+			}
+
+			if (System.getProperty("spring.profiles.active") == null) {
+				System.setProperty("spring.profiles.active", EgovProperties.getProperty("Globals.DbType") + ","
+						+ EgovProperties.getProperty("Globals.Auth"));
+			}
+
+			if (log.isDebugEnabled()) {
+				log.debug("Setting spring.profiles.active>" + System.getProperty("spring.profiles.active"));
+				log.debug("===========================END   EgovServletContextLoad END ===========");
+			}
 			// 2017.03.03 조성원 시큐어코딩(ES)-오류 메시지를 통한 정보노출[CWE-209]
 		} catch (IllegalArgumentException e) {
-			LOGGER.error("[IllegalArgumentException] Try/Catch...usingParameters Runing : " + e.getMessage());
+			if (log.isErrorEnabled()) {
+				log.error("[IllegalArgumentException] Try/Catch...usingParameters Runing", e);
+			}
 		} catch (RuntimeException e) {
-			LOGGER.error("[" + e.getClass() + "] search fail : " + e.getMessage());
+			if (log.isErrorEnabled()) {
+				log.error("[" + e.getClass() + "] search fail", e);
+			}
 		}
 	}
+
 }
