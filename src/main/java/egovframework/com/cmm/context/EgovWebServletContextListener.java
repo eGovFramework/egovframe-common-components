@@ -31,8 +31,16 @@ import lombok.extern.slf4j.Slf4j;
 @Slf4j
 public class EgovWebServletContextListener implements ServletContextListener {
 
+	public EgovWebServletContextListener() {
+		setEgovProfileSetting();
+	}
+
 	@Override
 	public void contextInitialized(ServletContextEvent event) {
+		setEgovProfileSetting();
+	}
+
+	private void setEgovProfileSetting() {
 		try {
 			if (log.isDebugEnabled()) {
 				log.debug("===========================Start EgovServletContextLoad START ===========");
