@@ -85,29 +85,28 @@ public class EgovSysHistoryController {
 			@ModelAttribute("history") SysHistory history, BindingResult bindingResult, SessionStatus status,
 			ModelMap model) throws Exception {
 
-		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-
 		beanValidator.validate(history, bindingResult);
 		if (bindingResult.hasErrors()) {
 			ComDefaultCodeVO vo = new ComDefaultCodeVO();
 			vo.setCodeId("COM002");
-			List<CmmnDetailCode> _result = cmmUseService.selectCmmCodeDetail(vo);
-			model.addAttribute("resultList", _result);
+			List<CmmnDetailCode> resultCOM002List = cmmUseService.selectCmmCodeDetail(vo);
+			model.addAttribute("resultList", resultCOM002List);
 			return "egovframework/com/sym/log/slg/EgovSysHistRegist";
 		}
 
-		if (isAuthenticated) {
-			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-			List<FileVO> _result = null;
-			String _atchFileId = "";
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+		if (loginVO != null) {
+			List<FileVO> fvoList = null;
+			String atchFileId = "";
 			// final Map<String, MultipartFile> files = multiRequest.getFileMap();
 			final List<MultipartFile> files = multiRequest.getFiles("file_1");
 			if (!files.isEmpty()) {
-				_result = fileUtil.parseFileInf(files, "SHF_", 0, "", "");
-				_atchFileId = fileMngService.insertFileInfs(_result);
+				fvoList = fileUtil.parseFileInf(files, "SHF_", 0, "", "");
+				atchFileId = fileMngService.insertFileInfs(fvoList);
 			}
-			history.setFrstRegisterId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
-			history.setAtchFileId(_atchFileId);
+			history.setFrstRegisterId(loginVO.getUniqId());
+			history.setAtchFileId(atchFileId);
 			sysHistoryService.insertSysHistory(history);
 		}
 
@@ -126,8 +125,8 @@ public class EgovSysHistoryController {
 
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM002");
-		List<CmmnDetailCode> _result = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("resultList", _result);
+		List<CmmnDetailCode> resultCOM002List = cmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("resultList", resultCOM002List);
 		return "egovframework/com/sym/log/slg/EgovSysHistRegist";
 	}
 
@@ -144,34 +143,34 @@ public class EgovSysHistoryController {
 			@ModelAttribute("searchVO") SysHistoryVO historyVO, @ModelAttribute("history") SysHistory history,
 			BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
 
-		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-
 		beanValidator.validate(history, bindingResult);
 		if (bindingResult.hasErrors()) {
 
 			model.addAttribute("history", history);
 			ComDefaultCodeVO vo = new ComDefaultCodeVO();
 			vo.setCodeId("COM002");
-			List<CmmnDetailCode> _result = cmmUseService.selectCmmCodeDetail(vo);
-			model.addAttribute("resultList", _result);
+			List<CmmnDetailCode> resultCOM002List = cmmUseService.selectCmmCodeDetail(vo);
+			model.addAttribute("resultList", resultCOM002List);
 			return "egovframework/com/sym/log/slg/EgovSysHistUpdt";
 		}
 
-		if (isAuthenticated) {
-			String _atchFileId = history.getAtchFileId();
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+		if (loginVO != null) {
+			String atchFileId = history.getAtchFileId();
 			// final Map<String, MultipartFile> files = multiRequest.getFileMap();
 			final List<MultipartFile> files = multiRequest.getFiles("file_1");
 			if (!files.isEmpty()) {
-				if ("".equals(_atchFileId)) {
-					List<FileVO> _result = fileUtil.parseFileInf(files, "SHF_", 0, _atchFileId, "");
-					_atchFileId = fileMngService.insertFileInfs(_result);
-					history.setAtchFileId(_atchFileId);
+				if ("".equals(atchFileId)) {
+					List<FileVO> fvoList = fileUtil.parseFileInf(files, "SHF_", 0, atchFileId, "");
+					atchFileId = fileMngService.insertFileInfs(fvoList);
+					history.setAtchFileId(atchFileId);
 				} else {
 					FileVO fvo = new FileVO();
-					fvo.setAtchFileId(_atchFileId);
-					int _cnt = fileMngService.getMaxFileSN(fvo);
-					List<FileVO> _result = fileUtil.parseFileInf(files, "SHF_", _cnt, _atchFileId, "");
-					fileMngService.updateFileInfs(_result);
+					fvo.setAtchFileId(atchFileId);
+					int fileKeyParam = fileMngService.getMaxFileSN(fvo);
+					List<FileVO> fvoList = fileUtil.parseFileInf(files, "SHF_", fileKeyParam, atchFileId, "");
+					fileMngService.updateFileInfs(fvoList);
 				}
 			}
 			// model.addAttribute("history", history);
@@ -199,8 +198,8 @@ public class EgovSysHistoryController {
 		model.addAttribute("history", history);
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM002");
-		List<CmmnDetailCode> _result = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("resultList", _result);
+		List<CmmnDetailCode> resultCOM002List = cmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("resultList", resultCOM002List);
 		return "egovframework/com/sym/log/slg/EgovSysHistUpdt";
 	}
 
@@ -216,9 +215,9 @@ public class EgovSysHistoryController {
 	public String deleteSysHistory(@ModelAttribute("history") SysHistory history, SessionStatus status, ModelMap model)
 			throws Exception {
 
-		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-		if (isAuthenticated) {
+		if (loginVO != null) {
 			sysHistoryService.deleteSysHistory(history);
 		}
 
