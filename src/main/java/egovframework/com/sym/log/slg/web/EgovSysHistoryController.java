@@ -32,25 +32,25 @@ import egovframework.com.sym.log.slg.service.SysHistory;
 import egovframework.com.sym.log.slg.service.SysHistoryVO;
 
 /**
- * @Class Name : EgovSysHistoryController.java
- * @Description : 시스템 이력관리를 위한 웹 컨트롤러 클래스
- * @Modification Information
- * 
- *               <pre>
- *    수정일               수정자         수정내용
- *    ----------   -------  -------------------
- *    2009.03.09   이삼섭         최초작성
- *    2011.08.26   정진오         IncludedInfo annotation 추가
- *    2018.09.28   정진오         updateSysHistory validation처리시 예외 수정
- *               </pre>
+ * 시스템 이력관리를 위한 웹 컨트롤러 클래스
  * 
  * @author 공통 서비스 개발팀 이삼섭
- * @since 2009. 3. 9.
- * @version
+ * @since 2009.03.09
+ * @version 1.0
  * @see
  *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.03.09  이삼섭          최초 작성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2018.09.28  정진오          updateSysHistory validation처리시 예외 수정
+ *   2025.07.14  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *
+ *      </pre>
  */
-
 @Controller
 public class EgovSysHistoryController {
 
