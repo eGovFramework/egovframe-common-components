@@ -6,8 +6,6 @@ import java.util.TreeMap;
 
 import javax.annotation.Resource;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Controller;
@@ -18,8 +16,10 @@ import egovframework.com.cmm.IncludedCompInfoVO;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.EgovProperties;
+import egovframework.com.cmm.service.Globals;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uat.uia.service.EgovLoginService;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <pre>
@@ -56,14 +56,12 @@ import egovframework.com.uat.uia.service.EgovLoginService;
  *
  *      </pre>
  */
-
 @Controller
+@Slf4j
 public class EgovComIndexController {
 
 	@Autowired
 	private ApplicationContext applicationContext;
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovComIndexController.class);
 
 	/** EgovLoginService */
 	@Resource(name = "loginService")
@@ -93,7 +91,7 @@ public class EgovComIndexController {
 		try {
 			expirePwdDay = Integer.parseInt(propertyExpirePwdDay);
 		} catch (NumberFormatException nfe) {
-			LOGGER.debug("convert expirePwdDay Err : " + nfe.getMessage());
+			log.debug("convert expirePwdDay Err : " + nfe.getMessage());
 		}
 
 		model.addAttribute("expirePwdDay", expirePwdDay);
@@ -103,17 +101,35 @@ public class EgovComIndexController {
 		model.addAttribute("loginVO", loginVO);
 		int passedDayChangePWD = 0;
 		if (loginVO != null) {
-			LOGGER.debug("===>>> loginVO.getId() = " + loginVO.getId());
-			LOGGER.debug("===>>> loginVO.getUniqId() = " + loginVO.getUniqId());
-			LOGGER.debug("===>>> loginVO.getUserSe() = " + loginVO.getUserSe());
+			log.debug("===>>> loginVO.getId() = " + loginVO.getId());
+			log.debug("===>>> loginVO.getUniqId() = " + loginVO.getUniqId());
+			log.debug("===>>> loginVO.getUserSe() = " + loginVO.getUserSe());
 			// 비밀번호 변경후 경과한 일수
 			passedDayChangePWD = loginService.selectPassedDayChangePWD(loginVO);
-			LOGGER.debug("===>>> passedDayChangePWD = " + passedDayChangePWD);
+			log.debug("===>>> passedDayChangePWD = " + passedDayChangePWD);
 			model.addAttribute("passedDay", passedDayChangePWD);
 		}
 
 		// 만료일자로부터 경과한 일수 => ex)1이면 만료일에서 1일 경과
 		model.addAttribute("elapsedTimeExpiration", passedDayChangePWD - expirePwdDay);
+
+		if (Globals.ENV_DEV.equals(Globals.ENV)) {
+			if (log.isDebugEnabled()) {
+				log.debug("개발");
+			}
+		} else if (Globals.ENV_TEST.equals(Globals.ENV)) {
+			if (log.isDebugEnabled()) {
+				log.debug("검증");
+			}
+		} else if (Globals.ENV_PROD.equals(Globals.ENV)) {
+			if (log.isDebugEnabled()) {
+				log.debug("운영");
+			}
+		} else {
+			if (log.isDebugEnabled()) {
+				log.debug("로컬");
+			}
+		}
 
 		return "egovframework/com/cmm/EgovUnitContent";
 	}
@@ -136,7 +152,7 @@ public class EgovComIndexController {
 				annotation = methods[i].getAnnotation(IncludedInfo.class);
 
 				if (annotation != null) {
-					LOGGER.debug("Found @IncludedInfo Method : {}", methods[i]);
+					log.debug("Found @IncludedInfo Method : {}", methods[i]);
 					zooVO = new IncludedCompInfoVO();
 					zooVO.setName(annotation.name());
 					zooVO.setOrder(annotation.order());
@@ -152,18 +168,18 @@ public class EgovComIndexController {
 				}
 			}
 		} catch (ClassNotFoundException e) {
-			LOGGER.error("No egovframework.com.uat.uia.web.EgovLoginController!!");
+			log.error("No egovframework.com.uat.uia.web.EgovLoginController!!");
 		}
 		/* 여기까지 AOP Proxy로 인한 코드 */
 
 		/* @Controller Annotation 처리된 클래스를 모두 찾는다. */
 		Map<String, Object> myZoos = applicationContext.getBeansWithAnnotation(Controller.class);
-		LOGGER.debug("How many Controllers : ", myZoos.size());
+		log.debug("How many Controllers : ", myZoos.size());
 		for (final Object myZoo : myZoos.values()) {
 			Class<? extends Object> zooClass = myZoo.getClass();
 
 			Method[] methods = zooClass.getMethods();
-			LOGGER.debug("Controller Detected {}", zooClass);
+			log.debug("Controller Detected {}", zooClass);
 			for (int i = 0; i < methods.length; i++) {
 				annotation = methods[i].getAnnotation(IncludedInfo.class);
 
@@ -190,7 +206,7 @@ public class EgovComIndexController {
 
 		model.addAttribute("resultList", map.values());
 
-		LOGGER.debug("EgovComIndexController index is called ");
+		log.debug("EgovComIndexController index is called ");
 
 		return "egovframework/com/cmm/EgovUnitLeft";
 	}
