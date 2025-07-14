@@ -78,7 +78,7 @@ public class EgovUserLogServiceImpl extends EgovAbstractServiceImpl implements E
 
 	@Getter
 	@Setter
-	public class SelectUserLogInfResponseDto {
+	public static class SelectUserLogInfResponseDto {
 
 		List<UserLog> resultList;
 
