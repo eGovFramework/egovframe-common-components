@@ -49,17 +49,14 @@ public class EgovWebLogInterceptor implements HandlerInterceptor {
 
 		WebLog webLog = new WebLog();
 		String reqURL = request.getRequestURI();
-		String uniqId = "";
 
-		/* Authenticated */
-		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-		if (isAuthenticated.booleanValue()) {
-			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-			uniqId = (user == null || user.getUniqId() == null) ? "" : user.getUniqId();
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO != null) {
+			webLog.setRqesterId(loginVO.getUniqId());
 		}
 
 		webLog.setUrl(reqURL);
-		webLog.setRqesterId(uniqId);
+
 		webLog.setRqesterIp(request.getRemoteAddr());
 
 		webLogService.logInsertWebLog(webLog);
