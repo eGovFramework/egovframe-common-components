@@ -16,12 +16,14 @@ import egovframework.com.sym.log.ulg.service.UserLog;
  * @Class Name : EgovUserLogServiceImpl.java
  * @Description : 사용로그 관리를 위한 서비스 구현 클래스
  * @Modification Information
- *
+ * 
+ *               <pre>
  *    수정일         수정자         수정내용
  *    -------        -------     -------------------
  *    2009. 3. 11.   이삼섭        최초생성
  *    2011. 7. 01.   이기하        패키지 분리(sym.log -> sym.log.ulg)
- *
+ *               </pre>
+ * 
  * @author 공통 서비스 개발팀 이삼섭
  * @since 2009. 3. 11.
  * @version
@@ -29,10 +31,9 @@ import egovframework.com.sym.log.ulg.service.UserLog;
  *
  */
 @Service("EgovUserLogService")
-public class EgovUserLogServiceImpl extends EgovAbstractServiceImpl implements
-	EgovUserLogService {
+public class EgovUserLogServiceImpl extends EgovAbstractServiceImpl implements EgovUserLogService {
 
-	@Resource(name="userLogDAO")
+	@Resource(name = "userLogDAO")
 	private UserLogDAO userLogDAO;
 
 	/**
@@ -54,7 +55,7 @@ public class EgovUserLogServiceImpl extends EgovAbstractServiceImpl implements
 	 * @throws Exception
 	 */
 	@Override
-	public UserLog selectUserLog(UserLog userLog) throws Exception{
+	public UserLog selectUserLog(UserLog userLog) throws Exception {
 
 		return userLogDAO.selectUserLog(userLog);
 	}
