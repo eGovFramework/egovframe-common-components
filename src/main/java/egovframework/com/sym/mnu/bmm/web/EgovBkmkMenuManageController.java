@@ -21,7 +21,7 @@ import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.mnu.bmm.service.BkmkMenuManage;
 import egovframework.com.sym.mnu.bmm.service.BkmkMenuManageVO;
-import egovframework.com.sym.mnu.bmm.service.EgovBkmkMenuManageservice;
+import egovframework.com.sym.mnu.bmm.service.EgovBkmkMenuManageService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 
 /**
@@ -47,7 +47,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
 public class EgovBkmkMenuManageController {
 
     @Resource(name = "bkmkMenuManageservice")
-    private EgovBkmkMenuManageservice bkmkMenuManageService;
+    private EgovBkmkMenuManageService bkmkMenuManageService;
 
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertyService;
