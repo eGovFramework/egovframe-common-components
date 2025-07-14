@@ -20,14 +20,16 @@ import egovframework.com.sym.log.ulg.service.UserLog;
  * @Class Name : EgovUserLogController.java
  * @Description : 사용로그정보를 관리하기 위한 컨트롤러 클래스
  * @Modification Information
- *
+ * 
+ *               <pre>
  *    수정일         수정자         수정내용
  *    -------        -------     -------------------
  *    2009. 3. 11.   이삼섭         최초생성
  *    2011. 7. 01.   이기하         패키지 분리(sym.log -> sym.log.ulg)
  *    2011.8.26	정진오			IncludedInfo annotation 추가
  *    2017.09.14	이정은			표준프레임워크 v3.7 개선
- *
+ *               </pre>
+ * 
  * @author 공통 서비스 개발팀 이삼섭
  * @since 2009. 3. 11.
  * @version
@@ -38,10 +40,10 @@ import egovframework.com.sym.log.ulg.service.UserLog;
 @Controller
 public class EgovUserLogController {
 
-	@Resource(name="EgovUserLogService")
+	@Resource(name = "EgovUserLogService")
 	private EgovUserLogService userLogService;
 
-	@Resource(name="propertiesService")
+	@Resource(name = "propertiesService")
 	protected EgovPropertyService propertyService;
 
 	/**
@@ -51,10 +53,9 @@ public class EgovUserLogController {
 	 * @return sym/log/ulg/EgovUserLogList
 	 * @throws Exception
 	 */
-	@IncludedInfo(name="사용로그관리", listUrl= "/sym/log/ulg/SelectUserLogList.do", order = 1040 ,gid = 60)
-	@RequestMapping(value="/sym/log/ulg/SelectUserLogList.do")
-	public String selectUserLogInf(@ModelAttribute("searchVO") UserLog userLog,
-			ModelMap model) throws Exception{
+	@IncludedInfo(name = "사용로그관리", listUrl = "/sym/log/ulg/SelectUserLogList.do", order = 1040, gid = 60)
+	@RequestMapping(value = "/sym/log/ulg/SelectUserLogList.do")
+	public String selectUserLogInf(@ModelAttribute("searchVO") UserLog userLog, ModelMap model) throws Exception {
 
 		/** EgovPropertyService.sample */
 		userLog.setPageUnit(propertyService.getInt("pageUnit"));
@@ -70,8 +71,8 @@ public class EgovUserLogController {
 		userLog.setLastIndex(paginationInfo.getLastRecordIndex());
 		userLog.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		HashMap<?, ?> _map = (HashMap<?, ?>)userLogService.selectUserLogInf(userLog);
-		int totCnt = Integer.parseInt((String)_map.get("resultCnt"));
+		HashMap<?, ?> _map = (HashMap<?, ?>) userLogService.selectUserLogInf(userLog);
+		int totCnt = Integer.parseInt((String) _map.get("resultCnt"));
 
 		model.addAttribute("resultList", _map.get("resultList"));
 		model.addAttribute("resultCnt", _map.get("resultCnt"));
@@ -90,13 +91,11 @@ public class EgovUserLogController {
 	 * @return sym/log/ulg/EgovUserLogInqire
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/sym/log/ulg/SelectUserLogDetail.do")
+	@RequestMapping(value = "/sym/log/ulg/SelectUserLogDetail.do")
 	public String selectUserLog(@ModelAttribute("searchVO") UserLog userLog,
-			@RequestParam("occrrncDe") String occrrncDe,
-			@RequestParam("rqesterId") String rqesterId,
-			@RequestParam("srvcNm") String srvcNm,
-			@RequestParam("methodNm") String methodNm,
-			ModelMap model) throws Exception{
+			@RequestParam("occrrncDe") String occrrncDe, @RequestParam("rqesterId") String rqesterId,
+			@RequestParam("srvcNm") String srvcNm, @RequestParam("methodNm") String methodNm, ModelMap model)
+			throws Exception {
 
 		userLog.setOccrrncDe(occrrncDe.trim());
 		userLog.setRqesterId(rqesterId.trim());
