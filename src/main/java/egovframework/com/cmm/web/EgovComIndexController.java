@@ -92,7 +92,9 @@ public class EgovComIndexController {
 		try {
 			expirePwdDay = Integer.parseInt(propertyExpirePwdDay);
 		} catch (NumberFormatException nfe) {
-			log.debug("convert expirePwdDay Err : " + nfe.getMessage());
+			if (log.isErrorEnabled()) {
+				log.error("convert expirePwdDay Err", nfe);
+			}
 		}
 
 		model.addAttribute("expirePwdDay", expirePwdDay);
@@ -102,12 +104,19 @@ public class EgovComIndexController {
 		model.addAttribute("loginVO", loginVO);
 		int passedDayChangePWD = 0;
 		if (loginVO != null) {
-			log.debug("===>>> loginVO.getId() = " + loginVO.getId());
-			log.debug("===>>> loginVO.getUniqId() = " + loginVO.getUniqId());
-			log.debug("===>>> loginVO.getUserSe() = " + loginVO.getUserSe());
+			if (log.isDebugEnabled()) {
+				log.debug("===>>> loginVO.getId() = {}", loginVO.getId());
+				log.debug("===>>> loginVO.getUniqId() = {}", loginVO.getUniqId());
+				log.debug("===>>> loginVO.getUserSe() = {}", loginVO.getUserSe());
+			}
+
 			// 비밀번호 변경후 경과한 일수
 			passedDayChangePWD = loginService.selectPassedDayChangePWD(loginVO);
-			log.debug("===>>> passedDayChangePWD = " + passedDayChangePWD);
+
+			if (log.isDebugEnabled()) {
+				log.debug("===>>> passedDayChangePWD = {}", passedDayChangePWD);
+			}
+
 			model.addAttribute("passedDay", passedDayChangePWD);
 		}
 
@@ -153,7 +162,9 @@ public class EgovComIndexController {
 				annotation = methods[i].getAnnotation(IncludedInfo.class);
 
 				if (annotation != null) {
-					log.debug("Found @IncludedInfo Method : {}", methods[i]);
+					if (log.isDebugEnabled()) {
+						log.debug("Found @IncludedInfo Method : {}", methods[i]);
+					}
 					zooVO = new IncludedCompInfoVO();
 					zooVO.setName(annotation.name());
 					zooVO.setOrder(annotation.order());
@@ -169,18 +180,24 @@ public class EgovComIndexController {
 				}
 			}
 		} catch (ClassNotFoundException e) {
-			log.error("No egovframework.com.uat.uia.web.EgovLoginController!!");
+			if (log.isErrorEnabled()) {
+				log.error("No egovframework.com.uat.uia.web.EgovLoginController!!", e);
+			}
 		}
 		/* 여기까지 AOP Proxy로 인한 코드 */
 
 		/* @Controller Annotation 처리된 클래스를 모두 찾는다. */
 		Map<String, Object> myZoos = applicationContext.getBeansWithAnnotation(Controller.class);
-		log.debug("How many Controllers : ", myZoos.size());
+		if (log.isDebugEnabled()) {
+			log.debug("How many Controllers : {}", myZoos.size());
+		}
 		for (final Object myZoo : myZoos.values()) {
 			Class<? extends Object> zooClass = myZoo.getClass();
 
 			Method[] methods = zooClass.getMethods();
-			log.debug("Controller Detected {}", zooClass);
+			if (log.isDebugEnabled()) {
+				log.debug("Controller Detected {}", zooClass);
+			}
 			for (int i = 0; i < methods.length; i++) {
 				annotation = methods[i].getAnnotation(IncludedInfo.class);
 
@@ -207,7 +224,9 @@ public class EgovComIndexController {
 
 		model.addAttribute("resultList", map.values());
 
-		log.debug("EgovComIndexController index is called ");
+		if (log.isDebugEnabled()) {
+			log.debug("EgovComIndexController index is called ");
+		}
 
 		return "egovframework/com/cmm/EgovUnitLeft";
 	}
