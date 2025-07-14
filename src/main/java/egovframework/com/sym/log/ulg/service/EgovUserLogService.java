@@ -6,12 +6,14 @@ import java.util.Map;
  * @Class Name : EgovUserLogService.java
  * @Description : 사용로그 관리를 위한 서비스 인터페이스
  * @Modification Information
- *
+ * 
+ *               <pre>
  *    수정일         수정자         수정내용
  *    -------        -------     -------------------
  *    2009. 3. 11.   이삼섭         최초생성
  *    2011. 7. 01.   이기하         패키지 분리(sym.log -> sym.log.ulg)
- *
+ *               </pre>
+ * 
  * @author 공통 서비스 개발팀 이삼섭
  * @since 2009. 3. 11.
  * @version
