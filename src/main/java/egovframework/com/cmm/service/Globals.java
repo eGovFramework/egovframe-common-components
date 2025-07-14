@@ -3,20 +3,22 @@ package egovframework.com.cmm.service;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * Class Name : Globals.java Description : 시스템 구동 시 프로퍼티를 통해 사용될 전역변수를 정의한다.
- * Modification Information
- * 
- * <pre>
- *     수정일         수정자                   수정내용
- *   -------    --------    ---------------------------
- *   2009.01.19    박지욱          최초 생성
- * </pre>
+ * 시스템 구동 시 프로퍼티를 통해 사용될 전역변수를 정의한다.
  * 
  * @author 공통 서비스 개발팀 박지욱
- * @since 2009. 01. 19
+ * @since 2009.01.19
  * @version 1.0
  * @see
  *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.01.19  박지욱          최초 생성
+ *   2025.07.15  이백행          2025년 컨트리뷰션 개발(dev) / 검증(test) / 운영(prod) 환경을 구분하게 기능개선
+ *
+ *      </pre>
  */
 @Slf4j
 public class Globals {
