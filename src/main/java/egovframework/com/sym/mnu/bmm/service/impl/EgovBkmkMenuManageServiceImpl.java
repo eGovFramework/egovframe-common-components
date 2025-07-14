@@ -15,21 +15,22 @@ import egovframework.com.sym.mnu.bmm.service.EgovBkmkMenuManageService;
 import egovframework.com.sym.mnu.mpm.service.MenuManageVO;
 
 /**
- * @Class Name : EgovBkmkMenuManageServiceImpl.java
- * @Description : 바로가기메뉴를 관리하는 서비스 구현 클래스
- * @Modification Information
- * 
- *               <pre>
- *    수정일       수정자         수정내용
- *    -------        -------     -------------------
- *    2009. 9. 25.     윤성록
- *               </pre>
+ * 바로가기메뉴를 관리하는 서비스 구현 클래스
  * 
  * @author 공통 컴포넌트 개발팀 윤성록
- * @since 2009. 9. 25.
- * @version
+ * @since 2009.09.25
+ * @version 1.0
  * @see
  *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.09.25  윤성록          최초 생성
+ *   2025.07.15  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-FormalParameterNamingConventions(변수명에 밑줄 사용)
+ *
+ *      </pre>
  */
 @Service("bkmkMenuManageservice")
 public class EgovBkmkMenuManageServiceImpl extends EgovAbstractServiceImpl implements EgovBkmkMenuManageService {
