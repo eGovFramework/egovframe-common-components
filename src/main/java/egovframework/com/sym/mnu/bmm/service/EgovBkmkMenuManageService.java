@@ -29,11 +29,11 @@ public interface EgovBkmkMenuManageService {
 	/**
 	 * 바로가기메뉴관리 정보를 삭제한다.
 	 * 
-	 * @param BkmkMenuManage
+	 * @param bkmkMenuManage
 	 * @return
 	 * @exception Exception
 	 */
-	public void deleteBkmkMenuManage(BkmkMenuManage BkmkMenuManage) throws Exception;
+	public void deleteBkmkMenuManage(BkmkMenuManage bkmkMenuManage) throws Exception;
 
 	/**
 	 * 바로가기메뉴관리 정보를 등록한다.
