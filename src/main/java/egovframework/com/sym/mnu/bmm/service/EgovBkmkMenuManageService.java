@@ -23,7 +23,7 @@ import egovframework.com.sym.mnu.mpm.service.MenuManageVO;
  *
  *      </pre>
  */
-public interface EgovBkmkMenuManageservice {
+public interface EgovBkmkMenuManageService {
 
 	/**
 	 * 바로가기메뉴관리 정보를 삭제한다.

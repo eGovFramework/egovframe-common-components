@@ -11,7 +11,7 @@ import org.springframework.stereotype.Service;
 
 import egovframework.com.sym.mnu.bmm.service.BkmkMenuManage;
 import egovframework.com.sym.mnu.bmm.service.BkmkMenuManageVO;
-import egovframework.com.sym.mnu.bmm.service.EgovBkmkMenuManageservice;
+import egovframework.com.sym.mnu.bmm.service.EgovBkmkMenuManageService;
 import egovframework.com.sym.mnu.mpm.service.MenuManageVO;
 
 /**
@@ -32,7 +32,7 @@ import egovframework.com.sym.mnu.mpm.service.MenuManageVO;
  *
  */
 @Service("bkmkMenuManageservice")
-public class EgovBkmkMenuManageServiceImpl extends EgovAbstractServiceImpl implements EgovBkmkMenuManageservice {
+public class EgovBkmkMenuManageServiceImpl extends EgovAbstractServiceImpl implements EgovBkmkMenuManageService {
 
 	@Resource(name = "bkmkMenuManageDAO")
 	private BkmkMenuManageDAO bkmkMenuManageDAO;
