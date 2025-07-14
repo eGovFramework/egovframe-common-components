@@ -20,8 +20,7 @@ import egovframework.com.sym.log.wlg.service.WebLog;
  *               <pre>
  *    수정일        수정자         수정내용
  *    -------      -------     -------------------
- *    2009. 3. 9.   이삼섭         최초생성
- *    2011. 7. 1.   이기하         패키지 분리(sym.log -> sym.log.wlg)
+
  *               </pre>
  * 
  * @author 공통 서비스 개발팀 이삼섭
@@ -29,6 +28,28 @@ import egovframework.com.sym.log.wlg.service.WebLog;
  * @version
  * @see
  *
+ */
+/**
+ * 사용자 계정을 처리하는 비즈니스 구현 클래스
+ * <p>
+ * <b>NOTE:</b> Exception 종류를 EgovBizException, RuntimeException 에서만 동작한다.
+ * fail.common.msg 메세지키가 Message Resource 에 정의 되어 있어야 한다.
+ * 
+ * @author 공통컴포넌트 개발팀 홍길동
+ * @since 2009.06.01
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.03.09  이삼섭          최초 생성
+ *   2011.07.01  이기하          패키지 분리(sym.log -> sym.log.wlg)
+ *   2025.07.15  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UnnecessaryBoxing(불필요한 WrapperObject 생성)
+ *
+ *      </pre>
  */
 public class EgovWebLogInterceptor implements HandlerInterceptor {
 
