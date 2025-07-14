@@ -16,12 +16,14 @@ import egovframework.com.sym.log.wlg.service.WebLog;
  * @Class Name : EgovWebLogInterceptor.java
  * @Description : 웹로그 생성을 위한 인터셉터 클래스
  * @Modification Information
- *
+ * 
+ *               <pre>
  *    수정일        수정자         수정내용
  *    -------      -------     -------------------
  *    2009. 3. 9.   이삼섭         최초생성
  *    2011. 7. 1.   이기하         패키지 분리(sym.log -> sym.log.wlg)
- *
+ *               </pre>
+ * 
  * @author 공통 서비스 개발팀 이삼섭
  * @since 2009. 3. 9.
  * @version
@@ -30,36 +32,37 @@ import egovframework.com.sym.log.wlg.service.WebLog;
  */
 public class EgovWebLogInterceptor implements HandlerInterceptor {
 
-	@Resource(name="EgovWebLogService")
+	@Resource(name = "EgovWebLogService")
 	private EgovWebLogService webLogService;
 
 	/**
 	 * 웹 로그정보를 생성한다.
 	 * 
-	 * @param HttpServletRequest request, HttpServletResponse response, Object handler 
-	 * @return 
-	 * @throws Exception 
+	 * @param HttpServletRequest request, HttpServletResponse response, Object
+	 *                           handler
+	 * @return
+	 * @throws Exception
 	 */
 	@Override
-	public void postHandle(HttpServletRequest request,
-			HttpServletResponse response, Object handler, ModelAndView modeAndView) throws Exception {
-		
+	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
+			ModelAndView modeAndView) throws Exception {
+
 		WebLog webLog = new WebLog();
 		String reqURL = request.getRequestURI();
 		String uniqId = "";
-		
-    	/* Authenticated  */
-        Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-    	if(isAuthenticated.booleanValue()) {
-			LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+
+		/* Authenticated */
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (isAuthenticated.booleanValue()) {
+			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 			uniqId = (user == null || user.getUniqId() == null) ? "" : user.getUniqId();
-    	}
-    	
+		}
+
 		webLog.setUrl(reqURL);
 		webLog.setRqesterId(uniqId);
 		webLog.setRqesterIp(request.getRemoteAddr());
-		
+
 		webLogService.logInsertWebLog(webLog);
-		
+
 	}
 }
