@@ -1,6 +1,6 @@
 package egovframework.com.sym.log.ulg.service;
 
-import java.util.Map;
+import egovframework.com.sym.log.ulg.service.impl.EgovUserLogServiceImpl.SelectUserLogInfResponseDto;
 
 /**
  * @Class Name : EgovUserLogService.java
@@ -43,6 +43,6 @@ public interface EgovUserLogService {
 	 *
 	 * @param UserLog
 	 */
-	public Map<?, ?> selectUserLogInf(UserLog userLog) throws Exception;
+	SelectUserLogInfResponseDto selectUserLogInf(UserLog userLog) throws Exception;
 
 }

@@ -1,7 +1,5 @@
 package egovframework.com.sym.log.ulg.web;
 
-import java.util.HashMap;
-
 import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
@@ -15,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.sym.log.ulg.service.EgovUserLogService;
 import egovframework.com.sym.log.ulg.service.UserLog;
+import egovframework.com.sym.log.ulg.service.impl.EgovUserLogServiceImpl.SelectUserLogInfResponseDto;
 
 /**
  * @Class Name : EgovUserLogController.java
@@ -71,13 +70,12 @@ public class EgovUserLogController {
 		userLog.setLastIndex(paginationInfo.getLastRecordIndex());
 		userLog.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		HashMap<?, ?> _map = (HashMap<?, ?>) userLogService.selectUserLogInf(userLog);
-		int totCnt = Integer.parseInt((String) _map.get("resultCnt"));
+		SelectUserLogInfResponseDto responseDto = userLogService.selectUserLogInf(userLog);
 
-		model.addAttribute("resultList", _map.get("resultList"));
-		model.addAttribute("resultCnt", _map.get("resultCnt"));
+		model.addAttribute("resultList", responseDto.getResultList());
+		model.addAttribute("resultCnt", responseDto.getResultCnt());
 
-		paginationInfo.setTotalRecordCount(totCnt);
+		paginationInfo.setTotalRecordCount(responseDto.getResultCnt());
 		model.addAttribute("paginationInfo", paginationInfo);
 
 		return "egovframework/com/sym/log/ulg/EgovUserLogList";

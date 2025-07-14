@@ -1,8 +1,6 @@
 package egovframework.com.sym.log.ulg.service.impl;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -11,6 +9,8 @@ import org.springframework.stereotype.Service;
 
 import egovframework.com.sym.log.ulg.service.EgovUserLogService;
 import egovframework.com.sym.log.ulg.service.UserLog;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * @Class Name : EgovUserLogServiceImpl.java
@@ -66,15 +66,23 @@ public class EgovUserLogServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @param UserLog
 	 */
 	@Override
-	public Map<?, ?> selectUserLogInf(UserLog userLog) throws Exception {
-		List<UserLog> _result = userLogDAO.selectUserLogInf(userLog);
-		int _cnt = userLogDAO.selectUserLogInfCnt(userLog);
+	public SelectUserLogInfResponseDto selectUserLogInf(UserLog userLog) throws Exception {
+		SelectUserLogInfResponseDto responseDto = new SelectUserLogInfResponseDto();
 
-		Map<String, Object> _map = new HashMap<String, Object>();
-		_map.put("resultList", _result);
-		_map.put("resultCnt", Integer.toString(_cnt));
+		responseDto.setResultList(userLogDAO.selectUserLogInf(userLog));
+		responseDto.setResultCnt(userLogDAO.selectUserLogInfCnt(userLog));
 
-		return _map;
+		return responseDto;
+	}
+
+	@Getter
+	@Setter
+	public class SelectUserLogInfResponseDto {
+
+		List<UserLog> resultList;
+
+		int resultCnt;
+
 	}
 
 }
