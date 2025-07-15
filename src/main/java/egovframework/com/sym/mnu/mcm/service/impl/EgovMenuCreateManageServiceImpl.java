@@ -22,15 +22,15 @@ import egovframework.com.sym.mnu.mcm.service.MenuSiteMapVO;
  * @see
  *
  *      <pre>
- * << 개정이력(Modification Information) >>
+ *  == 개정이력(Modification Information) ==
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.03.20  이  용          최초 생성
+ *   2009.03.20  이용           최초 생성
  *   2011.07.01  서준식          EgovMenuManageServiceImpl에서 메뉴 생성 관련 부분 분리
  *   2011.10.07  이기하          finally문을 추가하여 에러시 자원반환할 수 있도록 추가
- *   2011.10.12  이기하			 사이트맵 생성시 특수문자 치환
- *
+ *   2011.10.12  이기하          사이트맵 생성시 특수문자 치환
+ *   2025.07.16  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
  *
  *      </pre>
  */
