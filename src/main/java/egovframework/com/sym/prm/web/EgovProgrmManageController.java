@@ -212,7 +212,11 @@ public class EgovProgrmManageController {
 		}
 
 		beanValidator.validate(progrmManageVO, bindingResult);
-		if (bindingResult.hasErrors()) {
+		if (bindingResult.hasErrors() ||
+		    progrmManageService.selectProgrm(progrmManageVO) != null) {
+		    if (!bindingResult.hasErrors()) {
+				bindingResult.rejectValue("progrmFileNm", "error.progrmFileNm", "이미 등록된 프로그램파일명입니다.");
+		    }
 			return "egovframework/com/sym/prm/EgovProgramListRegist";
 		}
 		if (progrmManageVO.getProgrmDc() == null || progrmManageVO.getProgrmDc().equals("")) {
