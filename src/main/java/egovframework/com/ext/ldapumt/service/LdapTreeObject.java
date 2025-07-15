@@ -22,22 +22,33 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
-*
-* Ldap데이터를 HTML jsTree프레임워크에서 사용할 수 있도록 변환한 객체
-* @author 전우성
-* @since 2014.10.12
-* @version 1.0
-* @see
-*
-* <pre>
+ *
+ * Ldap데이터를 HTML jsTree프레임워크에서 사용할 수 있도록 변환한 객체
+ * 
+ * @author 전우성
+ * @since 2014.10.12
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
 * << 개정이력(Modification Information) >>
 *
 *   수정일      수정자           수정내용
 *  -------    --------    ---------------------------
-*   2014.10.12  전우성          최초 생성
-*
-* </pre>
-*/
+ *
+ * 
+ *      </pre>
+ * 
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2014.10.12  전우성          최초 생성
+ *   2025.06.20  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-FieldNamingConventions(필드 명명 규칙)
+ *
+ *      </pre>
+ */
 public class LdapTreeObject implements Serializable {
 	private static final long serialVersionUID = 1L;
 
@@ -83,13 +94,13 @@ public class LdapTreeObject implements Serializable {
 
 	public String text;
 	public String id;
-	public Icon icon = Icon.dept;
+	public Icon icon = Icon.DEPT;
 
 	public State state = new State();
 	public ArrayList<Child> children = new ArrayList<Child>();
 
 	enum Icon {
-		user, dept
+		USER, DEPT
 	}
 
 	@SuppressWarnings("unused")
@@ -168,15 +179,15 @@ public class LdapTreeObject implements Serializable {
 
 		String text;
 		boolean children = false;
-		Icon icon = Icon.dept;
+		Icon icon = Icon.DEPT;
 	}
 
 	public void addChild(UcorgVO vo, boolean b) {
-		children.add(new Child(vo.getDn(), vo.getOu(), b, Icon.dept));
+		children.add(new Child(vo.getDn(), vo.getOu(), b, Icon.DEPT));
 	}
 
 	public void addChild(UserVO vo) {
-		children.add(new Child(vo.getDn(), vo.getCn(), false, Icon.user));
+		children.add(new Child(vo.getDn(), vo.getCn(), false, Icon.USER));
 
 	}
 }
