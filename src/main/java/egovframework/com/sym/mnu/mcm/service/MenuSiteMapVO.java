@@ -228,7 +228,7 @@ public class MenuSiteMapVO {
 	}
 
 	/**
-	 * tmp_Id attribute를 리턴한다.
+	 * tmpId attribute를 리턴한다.
 	 * 
 	 * @return String
 	 */
@@ -237,16 +237,16 @@ public class MenuSiteMapVO {
 	}
 
 	/**
-	 * tmp_Id attribute 값을 설정한다.
+	 * tmpId attribute 값을 설정한다.
 	 * 
-	 * @param tmp_Id String
+	 * @param tmpId String
 	 */
-	public void setTmpId(String tmp_Id) {
-		this.tmpId = tmp_Id;
+	public void setTmpId(String tmpId) {
+		this.tmpId = tmpId;
 	}
 
 	/**
-	 * tmp_Password attribute를 리턴한다.
+	 * tmpPassword attribute를 리턴한다.
 	 * 
 	 * @return String
 	 */
@@ -255,16 +255,16 @@ public class MenuSiteMapVO {
 	}
 
 	/**
-	 * tmp_Password attribute 값을 설정한다.
+	 * tmpPassword attribute 값을 설정한다.
 	 * 
-	 * @param tmp_Password String
+	 * @param tmpPassword String
 	 */
-	public void setTmpPassword(String tmp_Password) {
-		this.tmpPassword = tmp_Password;
+	public void setTmpPassword(String tmpPassword) {
+		this.tmpPassword = tmpPassword;
 	}
 
 	/**
-	 * tmp_Name attribute를 리턴한다.
+	 * tmpName attribute를 리턴한다.
 	 * 
 	 * @return String
 	 */
@@ -273,16 +273,16 @@ public class MenuSiteMapVO {
 	}
 
 	/**
-	 * tmp_Name attribute 값을 설정한다.
+	 * tmpName attribute 값을 설정한다.
 	 * 
-	 * @param tmp_Name String
+	 * @param tmpName String
 	 */
-	public void setTmpName(String tmp_Name) {
-		this.tmpName = tmp_Name;
+	public void setTmpName(String tmpName) {
+		this.tmpName = tmpName;
 	}
 
 	/**
-	 * tmp_UserSe attribute를 리턴한다.
+	 * tmpUserSe attribute를 리턴한다.
 	 * 
 	 * @return String
 	 */
@@ -291,16 +291,16 @@ public class MenuSiteMapVO {
 	}
 
 	/**
-	 * tmp_UserSe attribute 값을 설정한다.
+	 * tmpUserSe attribute 값을 설정한다.
 	 * 
-	 * @param tmp_UserSe String
+	 * @param tmpUserSe String
 	 */
-	public void setTmpUserSe(String tmp_UserSe) {
-		this.tmpUserSe = tmp_UserSe;
+	public void setTmpUserSe(String tmpUserSe) {
+		this.tmpUserSe = tmpUserSe;
 	}
 
 	/**
-	 * tmp_Email attribute를 리턴한다.
+	 * tmpEmail attribute를 리턴한다.
 	 * 
 	 * @return String
 	 */
@@ -309,16 +309,16 @@ public class MenuSiteMapVO {
 	}
 
 	/**
-	 * tmp_Email attribute 값을 설정한다.
+	 * tmpEmail attribute 값을 설정한다.
 	 * 
-	 * @param tmp_Email String
+	 * @param tmpEmail String
 	 */
-	public void setTmpEmail(String tmp_Email) {
-		this.tmpEmail = tmp_Email;
+	public void setTmpEmail(String tmpEmail) {
+		this.tmpEmail = tmpEmail;
 	}
 
 	/**
-	 * tmp_OrgnztId attribute를 리턴한다.
+	 * tmpOrgnztId attribute를 리턴한다.
 	 * 
 	 * @return String
 	 */
@@ -327,16 +327,16 @@ public class MenuSiteMapVO {
 	}
 
 	/**
-	 * tmp_OrgnztId attribute 값을 설정한다.
+	 * tmpOrgnztId attribute 값을 설정한다.
 	 * 
-	 * @param tmp_OrgnztId String
+	 * @param tmpOrgnztId String
 	 */
-	public void setTmpOrgnztId(String tmp_OrgnztId) {
-		this.tmpOrgnztId = tmp_OrgnztId;
+	public void setTmpOrgnztId(String tmpOrgnztId) {
+		this.tmpOrgnztId = tmpOrgnztId;
 	}
 
 	/**
-	 * tmp_UniqId attribute를 리턴한다.
+	 * tmpUniqId attribute를 리턴한다.
 	 * 
 	 * @return String
 	 */
@@ -345,16 +345,16 @@ public class MenuSiteMapVO {
 	}
 
 	/**
-	 * tmp_UniqId attribute 값을 설정한다.
+	 * tmpUniqId attribute 값을 설정한다.
 	 * 
-	 * @param tmp_UniqId String
+	 * @param tmpUniqId String
 	 */
-	public void setTmpUniqId(String tmp_UniqId) {
-		this.tmpUniqId = tmp_UniqId;
+	public void setTmpUniqId(String tmpUniqId) {
+		this.tmpUniqId = tmpUniqId;
 	}
 
 	/**
-	 * tmp_Cmd attribute를 리턴한다.
+	 * tmpCmd attribute를 리턴한다.
 	 * 
 	 * @return String
 	 */
@@ -363,16 +363,16 @@ public class MenuSiteMapVO {
 	}
 
 	/**
-	 * tmp_Cmd attribute 값을 설정한다.
+	 * tmpCmd attribute 값을 설정한다.
 	 * 
-	 * @param tmp_Cmd String
+	 * @param tmpCmd String
 	 */
-	public void setTmpCmd(String tmp_Cmd) {
-		this.tmpCmd = tmp_Cmd;
+	public void setTmpCmd(String tmpCmd) {
+		this.tmpCmd = tmpCmd;
 	}
 
 	/**
-	 * tmp_rootPath attribute를 리턴한다.
+	 * tmprootPath attribute를 리턴한다.
 	 * 
 	 * @return String
 	 */
@@ -381,12 +381,12 @@ public class MenuSiteMapVO {
 	}
 
 	/**
-	 * tmp_rootPath attribute 값을 설정한다.
+	 * tmprootPath attribute 값을 설정한다.
 	 * 
-	 * @param tmp_rootPath String
+	 * @param tmprootPath String
 	 */
-	public void setTmpRootPath(String tmp_rootPath) {
-		this.tmpRootPath = tmp_rootPath;
+	public void setTmpRootPath(String tmprootPath) {
+		this.tmpRootPath = tmprootPath;
 	}
 
 }
