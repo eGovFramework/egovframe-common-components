@@ -9,15 +9,15 @@ package egovframework.com.sym.mnu.mcm.service;
  * @see
  *
  *      <pre>
- * << 개정이력(Modification Information) >>
- *   
+ *  == 개정이력(Modification Information) ==
+ *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.03.20  이  용          최초 생성
+ *   2009.03.20  이용           최초 생성
+ *   2025.07.16  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-FormalParameterNamingConventions(변수명에 밑줄 사용)
  *
  *      </pre>
  */
-
 public class MenuSiteMapVO {
 
 	/** 메뉴번호 */
