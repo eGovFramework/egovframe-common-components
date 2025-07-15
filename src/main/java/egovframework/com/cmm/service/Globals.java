@@ -36,7 +36,7 @@ public class Globals {
 		ENV = System.getProperty("env");
 
 		if (log.isDebugEnabled()) {
-			log.debug("Globals.ENV=", ENV);
+			log.debug("Globals.ENV={}", Globals.ENV);
 		}
 
 		if (Globals.ENV_DEV.equals(Globals.ENV)) {
