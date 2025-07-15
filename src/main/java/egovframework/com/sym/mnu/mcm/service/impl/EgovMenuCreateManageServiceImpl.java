@@ -74,16 +74,15 @@ public class EgovMenuCreateManageServiceImpl extends EgovAbstractServiceImpl imp
 	@Override
 	public void insertMenuCreatList(String checkedAuthorForInsert, String checkedMenuNoForInsert) throws Exception {
 		MenuCreatVO menuCreatVO = null;
-		int AuthorCnt = 0;
 		String[] insertMenuNo = checkedMenuNoForInsert.split(",");
 
 		String insertAuthor = checkedAuthorForInsert;
 		menuCreatVO = new MenuCreatVO();
 		menuCreatVO.setAuthorCode(insertAuthor);
-		AuthorCnt = menuCreateManageDAO.selectMenuCreatCnt(menuCreatVO);
+		int resultMenuCreatCnt = menuCreateManageDAO.selectMenuCreatCnt(menuCreatVO);
 
 		// 이전에 존재하는 권한코드에 대한 메뉴설정내역 삭제
-		if (AuthorCnt > 0) {
+		if (resultMenuCreatCnt > 0) {
 			menuCreateManageDAO.deleteMenuCreat(menuCreatVO);
 		}
 		for (int i = 0; i < insertMenuNo.length; i++) {
