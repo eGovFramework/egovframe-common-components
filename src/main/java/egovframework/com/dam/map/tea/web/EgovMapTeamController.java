@@ -126,13 +126,10 @@ public class EgovMapTeamController {
 			return "egovframework/com/dam/map/tea/EgovComDamMapTeamRegist";
 		}
 
-		beanValidator.validate(mapTeam, bindingResult);
-		if (bindingResult.hasErrors()){
-			return "egovframework/com/dam/map/tea/EgovComDamMapTeamRegist";
-		}
-
-		if (mapTeamService.selectMapTeamDetail(mapTeam) != null) {
-			bindingResult.rejectValue("orgnztId", "error.orgnztId", "이미 등록된 조직ID입니다.");
+		if (bindingResult.hasErrors() || mapTeamService.selectMapTeamDetail(mapTeam) != null) {
+			if (!bindingResult.hasErrors()) {
+				bindingResult.rejectValue("orgnztId", "error.orgnztId", "이미 등록된 조직ID입니다.");
+			}
 			return "egovframework/com/dam/map/tea/EgovComDamMapTeamRegist";
 		}
 
