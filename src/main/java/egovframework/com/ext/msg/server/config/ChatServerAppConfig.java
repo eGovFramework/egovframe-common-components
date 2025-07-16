@@ -31,8 +31,8 @@ import egovframework.com.ext.msg.server.ChatServerEndPoint;
 /**
  * 사용자리스트에서 다른사용자 선택 시, 사용자와 대화가능한 방(새로운 EndPoint 객체)을 만드는 Configurator
  * 
- * @author 공통컴포넌트 개발팀 홍길동
- * @since 2009.06.01
+ * @author 이영지
+ * @since 2014.11.27
  * @version 1.0
  * @see
  *
@@ -41,7 +41,6 @@ import egovframework.com.ext.msg.server.ChatServerEndPoint;
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.03.20  홍길동          최초 생성
  *   2014.11.27  이영지          최초 생성
  *   2025.06.23  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-FieldNamingConventions(필드 명명 규칙)
  *
