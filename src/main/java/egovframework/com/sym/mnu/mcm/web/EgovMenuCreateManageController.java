@@ -191,8 +191,8 @@ public class EgovMenuCreateManageController {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
-		List<EgovMap> list_menulist = menuCreateManageService.selectMenuCreatSiteMapList(menuSiteMapVO);
-		model.addAttribute("list_menulist", list_menulist);
+		List<EgovMap> resultList = menuCreateManageService.selectMenuCreatSiteMapList(menuSiteMapVO);
+		model.addAttribute("list_menulist", resultList);
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		menuSiteMapVO.setCreatPersonId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
 		model.addAttribute("resultVO", menuSiteMapVO);
@@ -277,8 +277,8 @@ public class EgovMenuCreateManageController {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		menuSiteMapVO.setCreatPersonId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
 
-		List<?> list_menulist = menuCreateManageService.selectSiteMapByUser(menuSiteMapVO);
-		model.addAttribute("list_menulist", list_menulist);
+		List<?> resultList = menuCreateManageService.selectSiteMapByUser(menuSiteMapVO);
+		model.addAttribute("list_menulist", resultList);
 
 		model.addAttribute("resultVO", menuSiteMapVO);
 		return "egovframework/com/sym/mnu/mcm/EgovSiteMap";
