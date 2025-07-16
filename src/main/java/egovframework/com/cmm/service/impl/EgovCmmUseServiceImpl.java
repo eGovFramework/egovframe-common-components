@@ -1,11 +1,8 @@
 package egovframework.com.cmm.service.impl;
 
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
@@ -13,6 +10,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import lombok.RequiredArgsConstructor;
 
 /**
  * @Class Name : EgovCmmUseServiceImpl.java
@@ -33,41 +31,34 @@ import egovframework.com.cmm.service.EgovCmmUseService;
  *
  */
 @Service("EgovCmmUseService")
+@RequiredArgsConstructor
 public class EgovCmmUseServiceImpl extends EgovAbstractServiceImpl implements EgovCmmUseService {
 
-	@Resource(name = "cmmUseDAO")
-	private CmmUseDAO cmmUseDAO;
+	private final CmmUseDAO cmmUseDAO;
 
 	/**
 	 * 공통코드를 조회한다.
 	 *
-	 * @param vo
+	 * @param comDefaultCodeVO
 	 * @return
-	 * @throws Exception
 	 */
 	@Override
-	public List<CmmnDetailCode> selectCmmCodeDetail(ComDefaultCodeVO vo) throws Exception {
-		return cmmUseDAO.selectCmmCodeDetail(vo);
+	public List<CmmnDetailCode> selectCmmCodeDetail(ComDefaultCodeVO comDefaultCodeVO) {
+		return cmmUseDAO.selectCmmCodeDetail(comDefaultCodeVO);
 	}
 
 	/**
 	 * ComDefaultCodeVO의 리스트를 받아서 여러개의 코드 리스트를 맵에 담아서 리턴한다.
 	 *
-	 * @param voList
+	 * @param comDefaultCodeVOs
 	 * @return
-	 * @throws Exception
 	 */
 	@Override
-	public Map<String, List<CmmnDetailCode>> selectCmmCodeDetails(List<ComDefaultCodeVO> voList) throws Exception {
-		ComDefaultCodeVO vo;
-		Map<String, List<CmmnDetailCode>> map = new HashMap<String, List<CmmnDetailCode>>();
-
-		Iterator<ComDefaultCodeVO> iter = voList.iterator();
-		while (iter.hasNext()) {
-			vo = iter.next();
-			map.put(vo.getCodeId(), cmmUseDAO.selectCmmCodeDetail(vo));
+	public Map<String, List<CmmnDetailCode>> selectCmmCodeDetails(List<ComDefaultCodeVO> comDefaultCodeVOs) {
+		Map<String, List<CmmnDetailCode>> map = new HashMap<>();
+		for (ComDefaultCodeVO comDefaultCodeVO : comDefaultCodeVOs) {
+			map.put(comDefaultCodeVO.getCodeId(), cmmUseDAO.selectCmmCodeDetail(comDefaultCodeVO));
 		}
-
 		return map;
 	}
 
@@ -76,11 +67,10 @@ public class EgovCmmUseServiceImpl extends EgovAbstractServiceImpl implements Eg
 	 *
 	 * @param 조회조건정보 vo
 	 * @return 조직정보 List
-	 * @throws Exception
 	 */
 	@Override
-	public List<CmmnDetailCode> selectOgrnztIdDetail(ComDefaultCodeVO vo) throws Exception {
-		return cmmUseDAO.selectOgrnztIdDetail(vo);
+	public List<CmmnDetailCode> selectOgrnztIdDetail(ComDefaultCodeVO comDefaultCodeVO) {
+		return cmmUseDAO.selectOgrnztIdDetail(comDefaultCodeVO);
 	}
 
 	/**
@@ -88,10 +78,9 @@ public class EgovCmmUseServiceImpl extends EgovAbstractServiceImpl implements Eg
 	 *
 	 * @param 조회조건정보 vo
 	 * @return 그룹정보 List
-	 * @throws Exception
 	 */
 	@Override
-	public List<CmmnDetailCode> selectGroupIdDetail(ComDefaultCodeVO vo) throws Exception {
-		return cmmUseDAO.selectGroupIdDetail(vo);
+	public List<CmmnDetailCode> selectGroupIdDetail(ComDefaultCodeVO comDefaultCodeVO) {
+		return cmmUseDAO.selectGroupIdDetail(comDefaultCodeVO);
 	}
 }

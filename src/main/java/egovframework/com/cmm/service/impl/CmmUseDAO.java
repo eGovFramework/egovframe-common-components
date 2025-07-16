@@ -24,39 +24,36 @@ import egovframework.com.cmm.service.CmmnDetailCode;
  * @see
  *
  */
-@Repository("cmmUseDAO")
+@Repository
 public class CmmUseDAO extends EgovComAbstractDAO {
 
 	/**
 	 * 주어진 조건에 따른 공통코드를 불러온다.
 	 * 
-	 * @param vo
+	 * @param comDefaultCodeVO
 	 * @return
-	 * @throws Exception
 	 */
-	public List<CmmnDetailCode> selectCmmCodeDetail(ComDefaultCodeVO vo) throws Exception {
-		return selectList("CmmUseDAO.selectCmmCodeDetail", vo);
+	public List<CmmnDetailCode> selectCmmCodeDetail(ComDefaultCodeVO comDefaultCodeVO) {
+		return selectList("CmmUseDAO.selectCmmCodeDetail", comDefaultCodeVO);
 	}
 
 	/**
 	 * 공통코드로 사용할 조직정보를 를 불러온다.
 	 * 
-	 * @param vo
+	 * @param comDefaultCodeVO
 	 * @return
-	 * @throws Exception
 	 */
-	public List<CmmnDetailCode> selectOgrnztIdDetail(ComDefaultCodeVO vo) throws Exception {
-		return selectList("CmmUseDAO.selectOgrnztIdDetail", vo);
+	public List<CmmnDetailCode> selectOgrnztIdDetail(ComDefaultCodeVO comDefaultCodeVO) {
+		return selectList("CmmUseDAO.selectOgrnztIdDetail", comDefaultCodeVO);
 	}
 
 	/**
 	 * 공통코드로 사용할그룹정보를 를 불러온다.
 	 * 
-	 * @param vo
+	 * @param comDefaultCodeVO
 	 * @return
-	 * @throws Exception
 	 */
-	public List<CmmnDetailCode> selectGroupIdDetail(ComDefaultCodeVO vo) throws Exception {
-		return selectList("CmmUseDAO.selectGroupIdDetail", vo);
+	public List<CmmnDetailCode> selectGroupIdDetail(ComDefaultCodeVO comDefaultCodeVO) {
+		return selectList("CmmUseDAO.selectGroupIdDetail", comDefaultCodeVO);
 	}
 }

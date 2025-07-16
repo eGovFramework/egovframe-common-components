@@ -28,36 +28,32 @@ public interface EgovCmmUseService {
 	/**
 	 * 공통코드를 조회한다.
 	 *
-	 * @param vo
+	 * @param comDefaultCodeVO
 	 * @return List(코드)
-	 * @throws Exception
 	 */
-	public List<CmmnDetailCode> selectCmmCodeDetail(ComDefaultCodeVO vo) throws Exception;
+	public List<CmmnDetailCode> selectCmmCodeDetail(ComDefaultCodeVO comDefaultCodeVO);
 
 	/**
 	 * ComDefaultCodeVO의 리스트를 받아서 여러개의 코드 리스트를 맵에 담아서 리턴한다.
 	 *
-	 * @param voList
+	 * @param comDefaultCodeVOs
 	 * @return Map(코드)
-	 * @throws Exception
 	 */
-	public Map<String, List<CmmnDetailCode>> selectCmmCodeDetails(List<ComDefaultCodeVO> voList) throws Exception;
+	public Map<String, List<CmmnDetailCode>> selectCmmCodeDetails(List<ComDefaultCodeVO> comDefaultCodeVOs);
 
 	/**
 	 * 조직정보를 코드형태로 리턴한다.
 	 *
 	 * @param 조회조건정보 vo
 	 * @return 조직정보 List
-	 * @throws Exception
 	 */
-	public List<CmmnDetailCode> selectOgrnztIdDetail(ComDefaultCodeVO vo) throws Exception;
+	public List<CmmnDetailCode> selectOgrnztIdDetail(ComDefaultCodeVO comDefaultCodeVO);
 
 	/**
 	 * 그룹정보를 코드형태로 리턴한다.
 	 *
 	 * @param 조회조건정보 vo
 	 * @return 그룹정보 List
-	 * @throws Exception
 	 */
-	public List<CmmnDetailCode> selectGroupIdDetail(ComDefaultCodeVO vo) throws Exception;
+	public List<CmmnDetailCode> selectGroupIdDetail(ComDefaultCodeVO comDefaultCodeVO);
 }
