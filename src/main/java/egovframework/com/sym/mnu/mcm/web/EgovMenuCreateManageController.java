@@ -27,26 +27,27 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
 
 /**
  * 메뉴목록 관리및 메뉴생성, 사이트맵 생성을 처리하는 비즈니스 구현 클래스
- *
+ * 
  * @author 개발환경 개발팀 이용
- * @since 2009.06.01
+ * @since 2009.03.20
  * @version 1.0
  * @see
- * 
- *      <pre>
- * &lt;&lt; 개정이력(Modification Information) &gt;&gt;
  *
- *     수정일               수정자             수정내용
- *  ------------   --------    ---------------------------
- *   2009.03.20		이  용             최초 생성
- * 	 2011.07.29		서준식             사이트맵 저장경로 수정
- *	 2011.08.26		정진오             IncludedInfo annotation 추가
- *	 2013.06.17		이기하             사이트맵 생성시 경로 오류 수정
- *   2018.08.09		신용호             X-XSS 관련 크롬에서 오탐되는 부분 수정
- *   2018.09.10		신용호             selectMenuCreatManagList 불필요한 로직 제거
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.03.20  이용           최초 생성
+ * 	 2011.07.29  서준식          사이트맵 저장경로 수정
+ *	 2011.08.26  정진오          IncludedInfo annotation 추가
+ *	 2013.06.17  이기하          사이트맵 생성시 경로 오류 수정
+ *   2018.08.09  신용호          X-XSS 관련 크롬에서 오탐되는 부분 수정
+ *   2018.09.10  신용호          selectMenuCreatManagList 불필요한 로직 제거
+ *   2025.07.17  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *
  *      </pre>
  */
-
 @Controller
 public class EgovMenuCreateManageController {
 
