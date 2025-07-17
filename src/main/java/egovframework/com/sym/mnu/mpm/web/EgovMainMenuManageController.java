@@ -105,8 +105,8 @@ public class EgovMainMenuManageController {
 		menuManageVO.setTmpOrgnztId(user == null ? "" : EgovStringUtil.isNullToString(user.getOrgnztId()));
 		menuManageVO.setTmpUniqId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 
-		List<?> list_headmenu = menuManageService.selectMainMenuHead(menuManageVO);
-		model.addAttribute("list_headmenu", list_headmenu);
+		List<?> resultList = menuManageService.selectMainMenuHead(menuManageVO);
+		model.addAttribute("list_headmenu", resultList);
 		if (!(user == null ? "" : EgovStringUtil.isNullToString(user.getId())).equals("")) {
 			// 메인 페이지 이동
 			return "egovframework/com/EgovMainView";
@@ -137,8 +137,8 @@ public class EgovMainMenuManageController {
 		menuManageVO.setTmpOrgnztId(user == null ? "" : EgovStringUtil.isNullToString(user.getOrgnztId()));
 		menuManageVO.setTmpUniqId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 
-		List<?> list_headmenu = menuManageService.selectMainMenuHead(menuManageVO);
-		model.addAttribute("list_headmenu", list_headmenu);
+		List<?> resultList = menuManageService.selectMainMenuHead(menuManageVO);
+		model.addAttribute("list_headmenu", resultList);
 		if (!(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId())).equals("")) {
 			// 메인 페이지 이동
 			return "egovframework/com/main_head";
@@ -173,8 +173,8 @@ public class EgovMainMenuManageController {
 		menuManageVO.setTmpOrgnztId(user == null ? "" : EgovStringUtil.isNullToString(user.getOrgnztId()));
 		menuManageVO.setTmpUniqId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 
-		List<?> list_menulist = menuManageService.selectMainMenuLeft(menuManageVO);
-		model.addAttribute("list_menulist", list_menulist);
+		List<?> resultList = menuManageService.selectMainMenuLeft(menuManageVO);
+		model.addAttribute("list_menulist", resultList);
 		return "egovframework/com/main_left";
 	}
 
@@ -226,8 +226,8 @@ public class EgovMainMenuManageController {
 		menuManageVO.setTmpOrgnztId(user.getOrgnztId());
 		menuManageVO.setTmpUniqId(user.getUniqId());
 
-		List<?> list_headmenu = menuManageService.selectMainMenuHead(menuManageVO);
-		model.addAttribute("list_headmenu", list_headmenu);
+		List<?> resultList = menuManageService.selectMainMenuHead(menuManageVO);
+		model.addAttribute("list_headmenu", resultList);
 
 		LOGGER.debug("## selectMainMenuHome ## getSUserSe 1: {}", user.getUserSe());
 		LOGGER.debug("## selectMainMenuHome ## getSUserId 2: {}", user.getId());
