@@ -10,6 +10,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellType;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.cmmn.exception.BaseException;
 import org.egovframe.rte.fdl.excel.EgovExcelService;
@@ -501,23 +502,20 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 					// int cells = row.getPhysicalNumberOfCells(); //cell 개수 가져오기
 					HSSFCell cell = null;
 					cell = row.getCell(0); // 메뉴번호
-					if (cell != null) {
-						Double doubleCell = new Double(cell.getNumericCellValue());
-						vo.setMenuNo(Integer.parseInt("" + doubleCell.longValue()));
+					if (cell != null && cell.getCellType() == CellType.NUMERIC) {
+						vo.setMenuNo((int) cell.getNumericCellValue());
 					}
 					cell = row.getCell(1); // 메뉴순서
-					if (cell != null) {
-						Double doubleCell = new Double(cell.getNumericCellValue());
-						vo.setMenuOrdr(Integer.parseInt("" + doubleCell.longValue()));
+					if (cell != null && cell.getCellType() == CellType.NUMERIC) {
+						vo.setMenuOrdr((int) cell.getNumericCellValue());
 					}
 					cell = row.getCell(2); // 메뉴명
 					if (cell != null) {
 						vo.setMenuNm("" + cell.getStringCellValue());
 					}
 					cell = row.getCell(3); // 상위메뉴번호
-					if (cell != null) {
-						Double doubleCell = new Double(cell.getNumericCellValue());
-						vo.setUpperMenuId(Integer.parseInt("" + doubleCell.longValue()));
+					if (cell != null && cell.getCellType() == CellType.NUMERIC) {
+						vo.setUpperMenuId((int) cell.getNumericCellValue());
 					}
 					cell = row.getCell(4); // 메뉴설명
 					if (cell != null) {
