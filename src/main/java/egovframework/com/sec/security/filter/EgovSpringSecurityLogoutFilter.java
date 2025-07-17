@@ -18,7 +18,7 @@ import org.slf4j.LoggerFactory;
  * EgovSpringSecurityLogoutFilter
  * 
  * @author 공통서비스 개발팀 서준식
- * @since 2011.08.029
+ * @since 2011.08.29
  * @version 1.0
  * @see
  *
