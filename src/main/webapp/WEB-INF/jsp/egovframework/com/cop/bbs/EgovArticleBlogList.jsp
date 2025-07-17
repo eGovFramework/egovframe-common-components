@@ -226,7 +226,7 @@ $(document).ready(function() {
 			<ul class="gnb r">
 			<c:choose>
 				<c:when test="${loginUserCnt == 1}">
-				<li><a href="<c:url value='/cop/bbs/insertBBSMasterView.do?blogId=${boardMasterVO.blogId}&blogAt=Y' />" onclick="fn_egov_ls()"><spring:message code="comCopBlog.articleBlogList.regCategory" /></a></li><!-- 카테고리등록 -->
+				<li><a href="<c:url value='/cop/bbs/insertBBSMasterView.do?blogId=${boardMasterVO.blogId}&blogAt=Y' />"><spring:message code="comCopBlog.articleBlogList.regCategory" /></a></li><!-- 카테고리등록 -->
 				<li><a href="<c:url value='/cop/bbs/selectBlogListManager.do?blogId=${boardMasterVO.blogId}' />" ><spring:message code="comCopBlog.blogUseMgrMain.btnBoard" /></a></li> <!-- 개인블로그관리  -->
 			</ul>
 				<button class="write" onclick="fn_blog_cn('${boardMasterVO.blogId}')"><spring:message code="button.create" /></button>
