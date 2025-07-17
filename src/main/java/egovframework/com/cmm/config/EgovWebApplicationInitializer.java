@@ -37,7 +37,6 @@ import egovframework.com.utl.wed.filter.CkFilter;
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.03.20  홍길동          최초 생성
  *   2016.06.23  장동한          최초 생성
  *   2018.10.02  신용호          Facebook 관련 HiddenHttpMethodFilter 추가
  *   2018.10.26  신용호          EgovLoginPolicyFilter 추가 (IP접근처리)
