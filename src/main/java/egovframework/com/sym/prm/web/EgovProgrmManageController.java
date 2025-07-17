@@ -44,6 +44,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *   2011.08.22  서준식			selectProgrmChangRequstProcess() 메서드 처리일자 trim 처리
  *   2011.08.26	 정진오			IncludedInfo annotation 추가
  *   2024.09.04  권태성			등록 화면과 데이터를 처리하는 method 분리, validation 적용
+ *   2025.07.15  권태성			프로그램파일명 등록 시 중복 체크 로직 추가
  * </pre>
  */
 
@@ -212,7 +213,11 @@ public class EgovProgrmManageController {
 		}
 
 		beanValidator.validate(progrmManageVO, bindingResult);
-		if (bindingResult.hasErrors()) {
+		if (bindingResult.hasErrors() ||
+		    progrmManageService.selectProgrm(progrmManageVO) != null) {
+		    if (!bindingResult.hasErrors()) {
+				bindingResult.rejectValue("progrmFileNm", "error.progrmFileNm", "이미 등록된 프로그램파일명입니다.");
+		    }
 			return "egovframework/com/sym/prm/EgovProgramListRegist";
 		}
 		if (progrmManageVO.getProgrmDc() == null || progrmManageVO.getProgrmDc().equals("")) {
