@@ -258,12 +258,12 @@ public class MenuManageVO {
 	}
 
 	/**
-	 * tmp_Id attribute 값을 설정한다.
+	 * tmpId attribute 값을 설정한다.
 	 * 
-	 * @param tmp_Id String
+	 * @param tmpId String
 	 */
-	public void setTmpId(String tmp_Id) {
-		this.tmpId = tmp_Id;
+	public void setTmpId(String tmpId) {
+		this.tmpId = tmpId;
 	}
 
 	/**
@@ -276,12 +276,12 @@ public class MenuManageVO {
 	}
 
 	/**
-	 * tmp_Password attribute 값을 설정한다.
+	 * tmpPassword attribute 값을 설정한다.
 	 * 
-	 * @param tmp_Password String
+	 * @param tmpPassword String
 	 */
-	public void setTmpPassword(String tmp_Password) {
-		this.tmpPassword = tmp_Password;
+	public void setTmpPassword(String tmpPassword) {
+		this.tmpPassword = tmpPassword;
 	}
 
 	/**
@@ -294,12 +294,12 @@ public class MenuManageVO {
 	}
 
 	/**
-	 * tmp_Name attribute 값을 설정한다.
+	 * tmpName attribute 값을 설정한다.
 	 * 
-	 * @param tmp_Name String
+	 * @param tmpName String
 	 */
-	public void setTmpName(String tmp_Name) {
-		this.tmpName = tmp_Name;
+	public void setTmpName(String tmpName) {
+		this.tmpName = tmpName;
 	}
 
 	/**
@@ -312,12 +312,12 @@ public class MenuManageVO {
 	}
 
 	/**
-	 * tmp_UserSe attribute 값을 설정한다.
+	 * tmpUserSe attribute 값을 설정한다.
 	 * 
-	 * @param tmp_UserSe String
+	 * @param tmpUserSe String
 	 */
-	public void setTmpUserSe(String tmp_UserSe) {
-		this.tmpUserSe = tmp_UserSe;
+	public void setTmpUserSe(String tmpUserSe) {
+		this.tmpUserSe = tmpUserSe;
 	}
 
 	/**
@@ -330,12 +330,12 @@ public class MenuManageVO {
 	}
 
 	/**
-	 * tmp_Email attribute 값을 설정한다.
+	 * tmpEmail attribute 값을 설정한다.
 	 * 
-	 * @param tmp_Email String
+	 * @param tmpEmail String
 	 */
-	public void setTmpEmail(String tmp_Email) {
-		this.tmpEmail = tmp_Email;
+	public void setTmpEmail(String tmpEmail) {
+		this.tmpEmail = tmpEmail;
 	}
 
 	/**
@@ -348,12 +348,12 @@ public class MenuManageVO {
 	}
 
 	/**
-	 * tmp_OrgnztId attribute 값을 설정한다.
+	 * tmpOrgnztId attribute 값을 설정한다.
 	 * 
-	 * @param tmp_OrgnztId String
+	 * @param tmpOrgnztId String
 	 */
-	public void setTmpOrgnztId(String tmp_OrgnztId) {
-		this.tmpOrgnztId = tmp_OrgnztId;
+	public void setTmpOrgnztId(String tmpOrgnztId) {
+		this.tmpOrgnztId = tmpOrgnztId;
 	}
 
 	/**
@@ -384,12 +384,12 @@ public class MenuManageVO {
 	}
 
 	/**
-	 * tmp_Cmd attribute 값을 설정한다.
+	 * tmpCmd attribute 값을 설정한다.
 	 * 
-	 * @param tmp_Cmd String
+	 * @param tmpCmd String
 	 */
-	public void setTmpCmd(String tmp_Cmd) {
-		this.tmpCmd = tmp_Cmd;
+	public void setTmpCmd(String tmpCmd) {
+		this.tmpCmd = tmpCmd;
 	}
 
 	/**
