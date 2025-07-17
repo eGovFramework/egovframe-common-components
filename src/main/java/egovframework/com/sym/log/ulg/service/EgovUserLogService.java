@@ -1,6 +1,6 @@
 package egovframework.com.sym.log.ulg.service;
 
-import egovframework.com.sym.log.ulg.service.impl.EgovUserLogServiceImpl.SelectUserLogInfResponseDto;
+import egovframework.com.sym.log.ulg.service.impl.EgovUserLogServiceImpl.SelectUserLogInfResultVO;
 
 /**
  * 사용로그 관리를 위한 서비스 인터페이스
@@ -44,6 +44,6 @@ public interface EgovUserLogService {
 	 *
 	 * @param UserLog
 	 */
-	SelectUserLogInfResponseDto selectUserLogInf(UserLog userLog) throws Exception;
+	SelectUserLogInfResultVO selectUserLogInf(UserLog userLog) throws Exception;
 
 }

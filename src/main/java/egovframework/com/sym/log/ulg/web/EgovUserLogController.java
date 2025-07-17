@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.sym.log.ulg.service.EgovUserLogService;
 import egovframework.com.sym.log.ulg.service.UserLog;
-import egovframework.com.sym.log.ulg.service.impl.EgovUserLogServiceImpl.SelectUserLogInfResponseDto;
+import egovframework.com.sym.log.ulg.service.impl.EgovUserLogServiceImpl.SelectUserLogInfResultVO;
 
 /**
  * 사용로그정보를 관리하기 위한 컨트롤러 클래스
@@ -70,12 +70,12 @@ public class EgovUserLogController {
 		userLog.setLastIndex(paginationInfo.getLastRecordIndex());
 		userLog.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		SelectUserLogInfResponseDto responseDto = userLogService.selectUserLogInf(userLog);
+		SelectUserLogInfResultVO resultVO = userLogService.selectUserLogInf(userLog);
 
-		model.addAttribute("resultList", responseDto.getResultList());
-		model.addAttribute("resultCnt", responseDto.getResultCnt());
+		model.addAttribute("resultList", resultVO.getResultList());
+		model.addAttribute("resultCnt", resultVO.getResultCnt());
 
-		paginationInfo.setTotalRecordCount(responseDto.getResultCnt());
+		paginationInfo.setTotalRecordCount(resultVO.getResultCnt());
 		model.addAttribute("paginationInfo", paginationInfo);
 
 		return "egovframework/com/sym/log/ulg/EgovUserLogList";

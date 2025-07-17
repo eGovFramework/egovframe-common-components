@@ -67,18 +67,18 @@ public class EgovUserLogServiceImpl extends EgovAbstractServiceImpl implements E
 	 * @param UserLog
 	 */
 	@Override
-	public SelectUserLogInfResponseDto selectUserLogInf(UserLog userLog) throws Exception {
-		SelectUserLogInfResponseDto responseDto = new SelectUserLogInfResponseDto();
+	public SelectUserLogInfResultVO selectUserLogInf(UserLog userLog) throws Exception {
+		SelectUserLogInfResultVO resultVO = new SelectUserLogInfResultVO();
 
-		responseDto.setResultList(userLogDAO.selectUserLogInf(userLog));
-		responseDto.setResultCnt(userLogDAO.selectUserLogInfCnt(userLog));
+		resultVO.setResultList(userLogDAO.selectUserLogInf(userLog));
+		resultVO.setResultCnt(userLogDAO.selectUserLogInfCnt(userLog));
 
-		return responseDto;
+		return resultVO;
 	}
 
 	@Getter
 	@Setter
-	public static class SelectUserLogInfResponseDto {
+	public static class SelectUserLogInfResultVO {
 
 		List<UserLog> resultList;
 
