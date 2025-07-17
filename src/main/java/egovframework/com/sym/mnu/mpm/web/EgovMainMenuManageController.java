@@ -24,22 +24,23 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  * 메인메뉴 해당링크 처리를 하는 비즈니스 구현 클래스
  * 
  * @author 개발환경 개발팀 이용
- * @since 2009.06.01
+ * @since 2009.03.20
  * @version 1.0
  * @see
  *
  *      <pre>
- * << 개정이력(Modification Information) >>
+ *  == 개정이력(Modification Information) ==
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.03.20  이  용          최초 생성
+ *   2009.03.20  이용           최초 생성
  *   2011.09.07  서준식          사용자 구분 오류 수정
  *   2015.06.19  조정국          미인증사용자에 대한 보안처리
  *   2018.10.12  이정은          메인페이지 통합(업무, 기업, 일반)
+ *   2025.07.18  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *
  *      </pre>
  */
-
 @Controller
 public class EgovMainMenuManageController {
 
