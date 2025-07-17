@@ -29,24 +29,23 @@ import egovframework.com.sym.prm.service.impl.ProgrmManageDAO;
  * 메뉴목록관리, 생성, 사이트맵을 처리하는 비즈니스 구현 클래스를 정의한다.
  * 
  * @author 개발환경 개발팀 이용
- * @since 2009.06.01
+ * @since 2009.03.20
  * @version 1.0
  * @see
  *
  *      <pre>
- * << 개정이력(Modification Information) >>
+ *  == 개정이력(Modification Information) ==
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.03.20  이  용          최초 생성
- *   2011.07.01  서준식			자기 메뉴 정보를 상위메뉴 정보로 참조하는 메뉴정보가 있는지 조회하는
- *   										selectUpperMenuNoByPk() 메서드 추가
+ *   2009.03.20  이용           최초 생성
+ *   2011.07.01  서준식          자기 메뉴 정보를 상위메뉴 정보로 참조하는 메뉴정보가 있는지 조회하는 selectUpperMenuNoByPk() 메서드 추가
  *   2017-02-13  이정은          시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
  *   2019-12-06  신용호          KISA 보안약점 조치 (부적절한 예외처리)
+ *   2025.07.18  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UnnecessaryBoxing(불필요한 WrapperObject 생성)
  *
  *      </pre>
  */
-
 @Service("meunManageService")
 public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implements EgovMenuManageService {
 
