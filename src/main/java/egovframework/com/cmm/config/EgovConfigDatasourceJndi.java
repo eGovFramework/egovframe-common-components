@@ -10,14 +10,7 @@ import org.springframework.jndi.JndiObjectFactoryBean;
  * 
  * <pre>
  * VM arguments
- * -Dspring.profiles.active=mysql-jndi,security
- * -Dspring.profiles.active=oracle-jndi,security
- * -Dspring.profiles.active=altibase-jndi,security
- * -Dspring.profiles.active=tibero-jndi,security
- * -Dspring.profiles.active=cubrid-jndi,security
- * -Dspring.profiles.active=maria-jndi,security
- * -Dspring.profiles.active=postgres-jndi,security
- * -Dspring.profiles.active=goldilocks-jndi,security
+ * -Dspring.profiles.active=datasource-jndi,security
  * </pre>
  * 
  * @author 이백행
@@ -45,102 +38,17 @@ public class EgovConfigDatasourceJndi {
 //               username="com" password="com01" driverClassName="net.sf.log4jdbc.DriverSpy"
 //               url="jdbc:log4jdbc:mysql://127.0.0.1:3306/com"/>
 // 
+//  <Resource name="jdbc/ComDB" auth="Container" type="javax.sql.DataSource"
+//               maxTotal="100" maxIdle="30" maxWaitMillis="10000"
+//               username="com" password="com01" driverClassName="com.p6spy.engine.spy.P6SpyDriver"
+//               url="jdbc:p6spy:mysql://127.0.0.1:3306/com"/>
+// 
 // https://tomcat.apache.org/tomcat-9.0-doc/jndi-datasource-examples-howto.html
 
-	@Profile("mysql-jndi")
-	@Bean(name = "dataSource")
-	public JndiObjectFactoryBean dataSourceMysql() {
-		JndiObjectFactoryBean jndiObjectFactoryBean = new JndiObjectFactoryBean();
-
-		// Apache Tomcat 9
-		jndiObjectFactoryBean.setJndiName("java:/comp/env/jdbc/ComDB");
-
-//		jndiObjectFactoryBean.setJndiName("jdbc/ComDB");
-
-		return jndiObjectFactoryBean;
-	}
-
-	@Profile("oracle-jndi")
-	@Bean(name = "dataSource")
-	public JndiObjectFactoryBean dataSourceOracle() {
-		JndiObjectFactoryBean jndiObjectFactoryBean = new JndiObjectFactoryBean();
-
-		// Apache Tomcat 9
-		jndiObjectFactoryBean.setJndiName("java:/comp/env/jdbc/ComDB");
-
-//		jndiObjectFactoryBean.setJndiName("jdbc/ComDB");
-
-		return jndiObjectFactoryBean;
-	}
-
-	@Profile("altibase-jndi")
-	@Bean(name = "dataSource")
-	public JndiObjectFactoryBean dataSourceAltibase() {
-		JndiObjectFactoryBean jndiObjectFactoryBean = new JndiObjectFactoryBean();
-
-		// Apache Tomcat 9
-		jndiObjectFactoryBean.setJndiName("java:/comp/env/jdbc/ComDB");
-
-//		jndiObjectFactoryBean.setJndiName("jdbc/ComDB");
-
-		return jndiObjectFactoryBean;
-	}
-
-	@Profile("tibero-jndi")
-	@Bean(name = "dataSource")
-	public JndiObjectFactoryBean dataSourceTibero() {
-		JndiObjectFactoryBean jndiObjectFactoryBean = new JndiObjectFactoryBean();
-
-		// Apache Tomcat 9
-		jndiObjectFactoryBean.setJndiName("java:/comp/env/jdbc/ComDB");
-
-//		jndiObjectFactoryBean.setJndiName("jdbc/ComDB");
-
-		return jndiObjectFactoryBean;
-	}
-
-	@Profile("cubrid-jndi")
-	@Bean(name = "dataSource")
-	public JndiObjectFactoryBean dataSourceCubrid() {
-		JndiObjectFactoryBean jndiObjectFactoryBean = new JndiObjectFactoryBean();
-
-		// Apache Tomcat 9
-		jndiObjectFactoryBean.setJndiName("java:/comp/env/jdbc/ComDB");
-
-//		jndiObjectFactoryBean.setJndiName("jdbc/ComDB");
-
-		return jndiObjectFactoryBean;
-	}
-
-	@Profile("maria-jndi")
-	@Bean(name = "dataSource")
-	public JndiObjectFactoryBean dataSourceMaria() {
-		JndiObjectFactoryBean jndiObjectFactoryBean = new JndiObjectFactoryBean();
-
-		// Apache Tomcat 9
-		jndiObjectFactoryBean.setJndiName("java:/comp/env/jdbc/ComDB");
-
-//		jndiObjectFactoryBean.setJndiName("jdbc/ComDB");
-
-		return jndiObjectFactoryBean;
-	}
-
-	@Profile("postgres-jndi")
-	@Bean(name = "dataSource")
-	public JndiObjectFactoryBean dataSourcePostgres() {
-		JndiObjectFactoryBean jndiObjectFactoryBean = new JndiObjectFactoryBean();
-
-		// Apache Tomcat 9
-		jndiObjectFactoryBean.setJndiName("java:/comp/env/jdbc/ComDB");
-
-//		jndiObjectFactoryBean.setJndiName("jdbc/ComDB");
-
-		return jndiObjectFactoryBean;
-	}
-
-	@Profile("goldilocks-jndi")
-	@Bean(name = "dataSource")
-	public JndiObjectFactoryBean dataSourceGoldilocks() {
+	@Profile("datasource-jndi")
+//	@Bean(name = "dataSource")
+	@Bean
+	public JndiObjectFactoryBean dataSource() {
 		JndiObjectFactoryBean jndiObjectFactoryBean = new JndiObjectFactoryBean();
 
 		// Apache Tomcat 9
