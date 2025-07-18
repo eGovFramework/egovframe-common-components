@@ -42,27 +42,30 @@ import egovframework.com.sym.prm.service.EgovProgrmManageService;
  * 메뉴목록 관리및 메뉴생성, 사이트맵 생성을 처리하는 비즈니스 구현 클래스
  * 
  * @author 개발환경 개발팀 이용
- * @since 2009.06.01
+ * @since 2009.03.20
  * @version 1.0
  * @see
  *
  *      <pre>
- * << 개정이력(Modification Information) >>
+ *  == 개정이력(Modification Information) ==
  *
- *  수정일               수정자           수정내용
- *  ----------   --------   ---------------------------
- *  2009.03.20   이  용            최초 생성
- *  2011.07.01   서준식            메뉴정보 삭제시 참조되고 있는 하위 메뉴가 있는지 체크하는 로직 추가
- *  2011.07.27   서준식            deleteMenuManageList() 메서드에서 메뉴 멀티 삭제 버그 수정
- *  2011.08.26   정진오            IncludedInfo annotation 추가
- *  2011.10.07   이기하            보안취약점 수정(파일 업로드시 엑셀파일만 가능하도록 추가)
- *  2015.05.28   조정국            메뉴리스트관리 선택시 "정상적으로 조회되었습니다"라는 alert창이 제일 먼저 뜨는것 수정 : 출력메시지 주석처리
- *  2020.11.02   신용호            KISA 보안약점 조치 - 자원해제
- *  2021.02.16   신용호            WebUtils.getNativeRequest(request,MultipartHttpServletRequest.class);
- *  2022.11.11   김혜준			   시큐어코딩 처리
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.03.20  이용           최초 생성
+ *   2011.07.01  서준식          메뉴정보 삭제시 참조되고 있는 하위 메뉴가 있는지 체크하는 로직 추가
+ *   2011.07.27  서준식          deleteMenuManageList() 메서드에서 메뉴 멀티 삭제 버그 수정
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2011.10.07  이기하          보안취약점 수정(파일 업로드시 엑셀파일만 가능하도록 추가)
+ *   2015.05.28  조정국          메뉴리스트관리 선택시 "정상적으로 조회되었습니다"라는 alert창이 제일 먼저 뜨는것 수정 : 출력메시지 주석처리
+ *   2020.11.02  신용호          KISA 보안약점 조치 - 자원해제
+ *   2021.02.16  신용호          WebUtils.getNativeRequest(request,MultipartHttpServletRequest.class);
+ *   2022.11.11  김혜준          시큐어코딩 처리
+ *   2025.07.19  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-FormalParameterNamingConventions(변수명에 밑줄 사용)
+ *   2025.07.19  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *   2025.07.19  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(부적절한 자원 해제)
+ *
  *      </pre>
  */
-
 @Controller
 public class EgovMenuManageController {
 
