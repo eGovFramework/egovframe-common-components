@@ -22,39 +22,48 @@ import egovframework.com.cmm.service.Globals;
  * 배치쉘스크립트를 실행하는 Quartz Job 클래스를 정의한다.
  *
  * @author 김진만
+ * @since 2010.08.30
+ * @version 1.0
  * @see
- * <pre>
- * == 개정이력(Modification Information) ==
  *
- *  수정일                수정자           수정내용
- *  ----------   --------   ---------------------------
- *  2010.08.30   김진만            최초 생성
- *  2020.11.05   신용호            KISA 보안약점 조치 - WhiteList처리
- *  2022.11.11   김혜준            시큐어코딩 처리
- *  
- * </pre>
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.08.30  김진만          최초 생성
+ *   2020.11.05  신용호          KISA 보안약점 조치 - WhiteList처리
+ *   2022.11.11  김혜준          시큐어코딩 처리
+ *   2025.07.03  이백행          컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UnusedFormalParameter(메소드 선언 내에사용되지 않는 파라미터를 탐지)
+ *
+ *      </pre>
  */
-
 public class BatchShellScriptJob implements Job {
 
 	/** logger */
 	private static final Logger LOGGER = LoggerFactory.getLogger(BatchShellScriptJob.class);
 
 	@Resource(name = "egovNextUrlWhitelist")
-    protected List<String> nextUrlWhitelist;
+	protected List<String> nextUrlWhitelist;
 
 	/**
 	 * (non-Javadoc)
+	 * 
 	 * @see org.quartz.Job#execute(org.quartz.JobExecutionContext)
 	 */
+	@Override
 	public void execute(JobExecutionContext jobContext) throws JobExecutionException {
 
 		JobDataMap dataMap = jobContext.getJobDetail().getJobDataMap();
 
-		LOGGER.debug("job[{}] Trigger이름 : ", jobContext.getJobDetail().getKey().getName(), jobContext.getTrigger().getKey().getName());
-		LOGGER.debug("job[{}] BatchOpert이름 : ", jobContext.getJobDetail().getKey().getName(), dataMap.getString("batchOpertId"));
-		LOGGER.debug("job[{}] BatchProgram이름 : ", jobContext.getJobDetail().getKey().getName(), dataMap.getString("batchProgrm"));
-		LOGGER.debug("job[{}] Parameter이름 : ", jobContext.getJobDetail().getKey().getName(), dataMap.getString("paramtr"));
+		LOGGER.debug("job[{}] Trigger이름 : ", jobContext.getJobDetail().getKey().getName(),
+				jobContext.getTrigger().getKey().getName());
+		LOGGER.debug("job[{}] BatchOpert이름 : ", jobContext.getJobDetail().getKey().getName(),
+				dataMap.getString("batchOpertId"));
+		LOGGER.debug("job[{}] BatchProgram이름 : ", jobContext.getJobDetail().getKey().getName(),
+				dataMap.getString("batchProgrm"));
+		LOGGER.debug("job[{}] Parameter이름 : ", jobContext.getJobDetail().getKey().getName(),
+				dataMap.getString("paramtr"));
 
 		int result = executeProgram(dataMap.getString("batchProgrm"), dataMap.getString("paramtr"));
 
@@ -64,12 +73,16 @@ public class BatchShellScriptJob implements Job {
 
 	/**
 	 * 시스템에서 특정 쉘프로그램을 실행한다.
+	 * 
 	 * @param batchProgrm 배치실행화일
-	 * @param paramtr 배치실행화일에 전달될 파라미터
+	 * @param paramtr     배치실행화일에 전달될 파라미터
 	 * @return 배치실행화일리턴값(integer)
 	 * @exception Exception
-	*/
+	 */
 	private int executeProgram(String batchProgrm, String paramtr) {
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("paramtr={}", paramtr);
+		}
 
 		int result = 0;
 
@@ -83,13 +96,14 @@ public class BatchShellScriptJob implements Job {
 
 		} else {
 
-			LOGGER.debug("SHELL.UNIX/WINDOWS.batchShellFiles properties = "+propertyValue);
+			LOGGER.debug("SHELL.UNIX/WINDOWS.batchShellFiles properties = " + propertyValue);
 			List<String> cmdShell = Arrays.asList(propertyValue.split(","));
-			LOGGER.debug("SHELL.UNIX/WINDOWS.batchShellFiles size() = "+cmdShell.size());
-			
-			for(String item : cmdShell) {
+			LOGGER.debug("SHELL.UNIX/WINDOWS.batchShellFiles size() = " + cmdShell.size());
+
+			for (String item : cmdShell) {
 				boolean whiteListStatus = batchProgrm.contains(item);
-				LOGGER.debug("SHELL.UNIX/WINDOWS.batchShellFiles WhiteList item = "+item+", status = "+whiteListStatus);
+				LOGGER.debug("SHELL.UNIX/WINDOWS.batchShellFiles WhiteList item = " + item + ", status = "
+						+ whiteListStatus);
 				if (whiteListStatus) {
 					try {
 						// 2022.11.11 시큐어코딩 처리

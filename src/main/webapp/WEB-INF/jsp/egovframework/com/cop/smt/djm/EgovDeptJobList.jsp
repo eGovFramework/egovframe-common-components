@@ -35,10 +35,17 @@
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <script type="text/javascript">
 
+	// display 속성 변경 시 null 체크와 HTMLElement 타입 체크를 수행하는 함수로 수정
+	function setDisplayById(id, displayValue) {
+		var el = document.getElementById(id);
+		if (el && el instanceof HTMLElement) {
+			el.style.display = displayValue;
+		}
+	}
+
 	function fn_egov_init_deptjob(){
 		fn_egov_hide_ListStyle();
-		var idsrc = document.getElementById(document.frm.searchDeptId.value);
-		idsrc.style.display="";
+		setDisplayById(document.frm.searchDeptId.value, "");
 	}
 
 	function press(event) {
@@ -83,17 +90,14 @@
 
 	function fn_egov_change_ListStyle(list){
 		fn_egov_hide_ListStyle();
-
-		var idsrc = document.getElementById(list);
-		idsrc.style.display="";
+		setDisplayById(list, "");
 	}
 
 	function fn_egov_hide_ListStyle(){
 		<c:forEach var="resultBxFn" items="${resultBxList}" varStatus="st">
 		<c:if test="${tmpDeptId != resultBxFn.deptId}">
 		<c:set var="tmpDeptId" value="${resultBxFn.deptId}"/>
-		var idsrc${st.count} = document.getElementById("${resultBxFn.deptId}");
-		idsrc${st.count}.style.display="none";
+		setDisplayById("${resultBxFn.deptId}", "none");
 		</c:if>
 		</c:forEach>	 
 	}

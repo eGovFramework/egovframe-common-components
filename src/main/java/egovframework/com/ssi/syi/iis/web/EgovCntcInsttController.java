@@ -34,24 +34,41 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
 
 /**
  *
- * 연계기관 관리에 관한 요청을 받아 서비스 클래스로 요청을 전달하고 서비스클래스에서 처리한 결과를 웹 화면으로 전달을 위한 Controller를 정의한다
+
+ * 
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
+ * << 개정이력(Modification Information) >>
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+
+ * Copyright (C) 2009 by MOPAS  All rights reserved.
+ *      </pre>
+ */
+/**
+ * 연계기관 관리에 관한 요청을 받아 서비스 클래스로 요청을 전달하고 서비스클래스에서 처리한 결과를 웹 화면으로 전달을 위한
+ * Controller를 정의한다
+ * 
  * @author 공통서비스 개발팀 이중호
  * @since 2009.04.01
  * @version 1.0
  * @see
  *
- * <pre>
- * << 개정이력(Modification Information) >>
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.04.01  이중호          최초 생성
- *   2011.8.26	 정진오			IncludedInfo annotation 추가
- *   2011.09.14  서준식			연계시스템 수정시 입력 데이터 표신 안되는 문제 수정
- * Copyright (C) 2009 by MOPAS  All rights reserved.
- * </pre>
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2011.09.14  서준식          연계시스템 수정시 입력 데이터 표신 안되는 문제 수정
+ *   2025.06.27  이백행          컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(지역 변수 명명 규칙)
+ *
+ *      </pre>
  */
-
 @Controller
 public class EgovCntcInsttController {
 
@@ -82,6 +99,7 @@ public class EgovCntcInsttController {
 
 	/**
 	 * 연계기관을 삭제한다.
+	 * 
 	 * @param loginVO
 	 * @param cntcInstt
 	 * @param model
@@ -96,6 +114,7 @@ public class EgovCntcInsttController {
 
 	/**
 	 * 연계시스템을 삭제한다.
+	 * 
 	 * @param loginVO
 	 * @param cntcSystem
 	 * @param model
@@ -110,6 +129,7 @@ public class EgovCntcInsttController {
 
 	/**
 	 * 연계서비스를 삭제한다.
+	 * 
 	 * @param loginVO
 	 * @param cntcSystem
 	 * @param model
@@ -124,6 +144,7 @@ public class EgovCntcInsttController {
 
 	/**
 	 * 연계기관을 등록한다.
+	 * 
 	 * @param loginVO
 	 * @param cntcInstt
 	 * @param bindingResult
@@ -132,8 +153,8 @@ public class EgovCntcInsttController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/ssi/syi/iis/addCntcInstt.do")
-	public String insertCntcInstt(@ModelAttribute("cntcInstt") CntcInstt cntcInstt, BindingResult bindingResult, @RequestParam Map<?, ?> commandMap, ModelMap model)
-			throws Exception {
+	public String insertCntcInstt(@ModelAttribute("cntcInstt") CntcInstt cntcInstt, BindingResult bindingResult,
+			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 		if (sCmd.equals("")) {
 
@@ -146,7 +167,7 @@ public class EgovCntcInsttController {
 				return "egovframework/com/ssi/syi/iis/EgovCntcInsttRegist";
 			}
 
-			// 로그인VO에서  사용자 정보 가져오기
+			// 로그인VO에서 사용자 정보 가져오기
 			LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 			String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 			cntcInstt.setFrstRegisterId(uniqId);
@@ -165,6 +186,7 @@ public class EgovCntcInsttController {
 
 	/**
 	 * 연계시스템을 등록한다.
+	 * 
 	 * @param loginVO
 	 * @param cntcSystem
 	 * @param bindingResult
@@ -173,8 +195,8 @@ public class EgovCntcInsttController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/ssi/syi/iis/addCntcSystem.do")
-	public String insertCntcSystem(@ModelAttribute("cntcSystem") CntcSystem cntcSystem, BindingResult bindingResult, @RequestParam Map<?, ?> commandMap, ModelMap model)
-			throws Exception {
+	public String insertCntcSystem(@ModelAttribute("cntcSystem") CntcSystem cntcSystem, BindingResult bindingResult,
+			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 		if (sCmd.equals("")) {
 			// 연계기관 리스트박스 데이터
@@ -203,7 +225,7 @@ public class EgovCntcInsttController {
 				return "egovframework/com/ssi/syi/iis/EgovCntcSystemRegist";
 			}
 
-			// 로그인VO에서  사용자 정보 가져오기
+			// 로그인VO에서 사용자 정보 가져오기
 			LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 			String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 			cntcSystem.setFrstRegisterId(uniqId);
@@ -221,6 +243,7 @@ public class EgovCntcInsttController {
 
 	/**
 	 * 연계서비스를 등록한다.
+	 * 
 	 * @param loginVO
 	 * @param cntcService
 	 * @param bindingResult
@@ -229,8 +252,8 @@ public class EgovCntcInsttController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/ssi/syi/iis/addCntcService.do")
-	public String insertCntcService(@ModelAttribute("cntcService") CntcService cntcService, BindingResult bindingResult, @RequestParam Map<?, ?> commandMap, ModelMap model)
-			throws Exception {
+	public String insertCntcService(@ModelAttribute("cntcService") CntcService cntcService, BindingResult bindingResult,
+			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 		if (sCmd.equals("")) {
 			// 연계기관 리스트박스 데이터
@@ -250,7 +273,7 @@ public class EgovCntcInsttController {
 			searchCntcSystemVO.setSearchCondition("CodeList");
 			if (cntcService.getInsttId().equals("")) {
 				if (cntcInsttList.size() > 0) {
-					EgovMap emp = (EgovMap) cntcInsttList.get(0);
+					EgovMap emp = cntcInsttList.get(0);
 					cntcService.setInsttId(emp.get("insttId").toString());
 				}
 			}
@@ -289,7 +312,7 @@ public class EgovCntcInsttController {
 				searchCntcSystemVO.setSearchCondition("CodeList");
 				if (cntcService.getInsttId().equals("")) {
 					if (cntcInsttList.size() > 0) {
-						EgovMap emp = (EgovMap) cntcInsttList.get(0);
+						EgovMap emp = cntcInsttList.get(0);
 						cntcService.setInsttId(emp.get("insttId").toString());
 					}
 				}
@@ -309,7 +332,7 @@ public class EgovCntcInsttController {
 				return "egovframework/com/ssi/syi/iis/EgovCntcServiceRegist";
 			}
 
-			// 로그인VO에서  사용자 정보 가져오기
+			// 로그인VO에서 사용자 정보 가져오기
 			LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 			String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 			cntcService.setFrstRegisterId(uniqId);
@@ -327,6 +350,7 @@ public class EgovCntcInsttController {
 
 	/**
 	 * 연계기관 상세내역을 조회한다.
+	 * 
 	 * @param loginVO
 	 * @param cntcInstt
 	 * @param model
@@ -334,7 +358,8 @@ public class EgovCntcInsttController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/ssi/syi/iis/getCntcInsttDetail.do")
-	public String selectCntcInsttDetail(@ModelAttribute("cntcInstt") CntcInstt cntcInstt, @ModelAttribute("cntcSystemVO") CntcSystemVO cntcSystemVO,
+	public String selectCntcInsttDetail(@ModelAttribute("cntcInstt") CntcInstt cntcInstt,
+			@ModelAttribute("cntcSystemVO") CntcSystemVO cntcSystemVO,
 			@ModelAttribute("cntcServiceVO") CntcServiceVO cntcServiceVO, ModelMap model) throws Exception {
 		// 연계메시지 리스트박스 데이터
 		CntcMessageVO searchCntcMessageVO;
@@ -368,6 +393,7 @@ public class EgovCntcInsttController {
 
 	/**
 	 * 연계기관 목록을 조회한다.
+	 * 
 	 * @param loginVO
 	 * @param searchVO
 	 * @param model
@@ -376,7 +402,8 @@ public class EgovCntcInsttController {
 	 */
 	@IncludedInfo(name = "연계기관관리", listUrl = "/ssi/syi/iis/getCntcInsttList.do", order = 1240, gid = 70)
 	@RequestMapping(value = "/ssi/syi/iis/getCntcInsttList.do")
-	public String selectCntcInsttList(@ModelAttribute("searchVO") CntcInsttVO searchVO, ModelMap model) throws Exception {
+	public String selectCntcInsttList(@ModelAttribute("searchVO") CntcInsttVO searchVO, ModelMap model)
+			throws Exception {
 		/** EgovPropertyService.sample */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
 		searchVO.setPageSize(propertiesService.getInt("pageSize"));
@@ -391,8 +418,8 @@ public class EgovCntcInsttController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<EgovMap> CmmnCodeList = cntcInsttService.selectCntcInsttList(searchVO);
-		model.addAttribute("resultList", CmmnCodeList);
+		List<EgovMap> resultList = cntcInsttService.selectCntcInsttList(searchVO);
+		model.addAttribute("resultList", resultList);
 
 		int totCnt = cntcInsttService.selectCntcInsttListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -403,6 +430,7 @@ public class EgovCntcInsttController {
 
 	/**
 	 * 연계기관을 수정한다.
+	 * 
 	 * @param loginVO
 	 * @param cntcInstt
 	 * @param bindingResult
@@ -412,8 +440,8 @@ public class EgovCntcInsttController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/ssi/syi/iis/updateCntcInstt.do")
-	public String updateCntcInstt(@ModelAttribute("cntcInstt") CntcInstt cntcInstt, BindingResult bindingResult, @RequestParam Map<?, ?> commandMap, ModelMap model)
-			throws Exception {
+	public String updateCntcInstt(@ModelAttribute("cntcInstt") CntcInstt cntcInstt, BindingResult bindingResult,
+			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 		if (sCmd.equals("")) {
 			CntcInstt vo = cntcInsttService.selectCntcInsttDetail(cntcInstt);
@@ -429,7 +457,7 @@ public class EgovCntcInsttController {
 				return "egovframework/com/ssi/syi/iis/EgovCntcInsttUpdt";
 			}
 
-			// 로그인VO에서  사용자 정보 가져오기
+			// 로그인VO에서 사용자 정보 가져오기
 			LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 			String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 
@@ -443,6 +471,7 @@ public class EgovCntcInsttController {
 
 	/**
 	 * 연계시스템을 수정한다.
+	 * 
 	 * @param loginVO
 	 * @param cntcInstt
 	 * @param bindingResult
@@ -452,8 +481,8 @@ public class EgovCntcInsttController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/ssi/syi/iis/updateCntcSystem.do")
-	public String updateCntcSystem(@ModelAttribute("cntcSystem") CntcSystem cntcSystem, BindingResult bindingResult, @RequestParam Map<?, ?> commandMap, ModelMap model)
-			throws Exception {
+	public String updateCntcSystem(@ModelAttribute("cntcSystem") CntcSystem cntcSystem, BindingResult bindingResult,
+			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 		if (sCmd.equals("")) {
 			// 연계기관 리스트박스 데이터
@@ -473,7 +502,7 @@ public class EgovCntcInsttController {
 			searchCntcSystemVO.setSearchCondition("CodeList");
 			if (cntcSystem.getInsttId().equals("")) {
 				if (cntcInsttList.size() > 0) {
-					EgovMap emp = (EgovMap) cntcInsttList.get(0);
+					EgovMap emp = cntcInsttList.get(0);
 					cntcSystem.setInsttId(emp.get("insttId").toString());
 				}
 			}
@@ -514,7 +543,7 @@ public class EgovCntcInsttController {
 				searchCntcSystemVO.setSearchCondition("CodeList");
 				if (cntcSystem.getInsttId().equals("")) {
 					if (cntcInsttList.size() > 0) {
-						EgovMap emp = (EgovMap) cntcInsttList.get(0);
+						EgovMap emp = cntcInsttList.get(0);
 						cntcSystem.setInsttId(emp.get("insttId").toString());
 					}
 				}
@@ -537,7 +566,7 @@ public class EgovCntcInsttController {
 				return "egovframework/com/ssi/syi/iis/EgovCntcSystemUpdt";
 			}
 
-			// 로그인VO에서  사용자 정보 가져오기
+			// 로그인VO에서 사용자 정보 가져오기
 			LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 			String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 
@@ -551,6 +580,7 @@ public class EgovCntcInsttController {
 
 	/**
 	 * 연계서비스를 수정한다.
+	 * 
 	 * @param loginVO
 	 * @param cntcService
 	 * @param bindingResult
@@ -560,8 +590,8 @@ public class EgovCntcInsttController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/ssi/syi/iis/updateCntcService.do")
-	public String updateCntcService(@ModelAttribute("cntcService") CntcService cntcService, BindingResult bindingResult, @RequestParam Map<?, ?> commandMap, ModelMap model)
-			throws Exception {
+	public String updateCntcService(@ModelAttribute("cntcService") CntcService cntcService, BindingResult bindingResult,
+			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 		if (sCmd.equals("")) {
 			// 연계기관 리스트박스 데이터
@@ -581,7 +611,7 @@ public class EgovCntcInsttController {
 			searchCntcSystemVO.setSearchCondition("CodeList");
 			if (cntcService.getInsttId().equals("")) {
 				if (cntcInsttList.size() > 0) {
-					EgovMap emp = (EgovMap) cntcInsttList.get(0);
+					EgovMap emp = cntcInsttList.get(0);
 					cntcService.setInsttId(emp.get("insttId").toString());
 				}
 			}
@@ -622,7 +652,7 @@ public class EgovCntcInsttController {
 				searchCntcSystemVO.setSearchCondition("CodeList");
 				if (cntcService.getInsttId().equals("")) {
 					if (cntcInsttList.size() > 0) {
-						EgovMap emp = (EgovMap) cntcInsttList.get(0);
+						EgovMap emp = cntcInsttList.get(0);
 						cntcService.setInsttId(emp.get("insttId").toString());
 					}
 				}
@@ -645,7 +675,7 @@ public class EgovCntcInsttController {
 				return "egovframework/com/ssi/syi/iis/EgovCntcServiceUpdt";
 			}
 
-			// 로그인VO에서  사용자 정보 가져오기
+			// 로그인VO에서 사용자 정보 가져오기
 			LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 			String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 
@@ -659,6 +689,7 @@ public class EgovCntcInsttController {
 
 	/**
 	 * Map 내용을 확인한다.
+	 * 
 	 * @param commandMap
 	 * @return
 	 */

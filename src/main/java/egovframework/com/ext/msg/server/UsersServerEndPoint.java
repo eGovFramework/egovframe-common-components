@@ -42,29 +42,38 @@ import org.slf4j.LoggerFactory;
 import egovframework.com.cmm.EgovWebUtil;
 
 /**
-* @Class Name : UsersServerEndPoint.java
-* @Description : 현재 가능한 대화사용자 리스트를 처리하는 WebSocket 서버클래스
-* @Modification Information
-*
-*    수정일			수정자		수정내용
-*    ----------		---------	---------------------------------
-*    2014.11.27		이영지
-*    2020.11.02		신용호		KISA 보안약점 조치 (Random Seed값 추가)
-*    2023.06.09		김장하		NSR 보안조치 (사용자이름 크로스사이트 스크립트 방지)
-*
-*/
-@ServerEndpoint(value = "/usersServerEndpoint"/* ,configurator=ServerAppConfig.class*/)
+ * 현재 가능한 대화사용자 리스트를 처리하는 WebSocket 서버클래스
+ * 
+ * @author 이영지
+ * @since 2014.11.27
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2014.11.27  이영지          최초 생성
+ *   2020.11.02  신용호          KISA 보안약점 조치 (Random Seed값 추가)
+ *   2023.06.09  김장하          NSR 보안조치 (사용자이름 크로스사이트 스크립트 방지)
+ *   2025.06.23  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(리소스 닫기), EmptyControlStatement(빈 제어문), UnnecessarySemicolon(불필요한 세미콜론)
+ *
+ *      </pre>
+ */
+@ServerEndpoint(value = "/usersServerEndpoint"/* ,configurator=ServerAppConfig.class */)
 public class UsersServerEndPoint {
 	private static final Logger LOGGER = LoggerFactory.getLogger(UsersServerEndPoint.class);
 	private static Set<Session> connectedAllUsers = Collections.synchronizedSet(new HashSet<Session>());
 
-	//Spring bean과 연동하기 위해서는 ServerAppConfig를 configurator로 등록해주면 된다.
+	// Spring bean과 연동하기 위해서는 ServerAppConfig를 configurator로 등록해주면 된다.
 	/*
 	 * @Resource(name="TestService") TestService testService;
 	 */
 
 	/**
 	 * Handshaking 함수
+	 * 
 	 * @param userSession 사용자 session
 	 */
 	@OnOpen
@@ -74,16 +83,18 @@ public class UsersServerEndPoint {
 
 	/**
 	 * Message전달 함수
-	 * @param message 메시지
+	 * 
+	 * @param message     메시지
 	 * @param userSession 사용자 session
 	 * @throws IOException
 	 * @throws EncodeException
 	 */
 	@OnMessage
 	public void handleMessage(String message, Session userSession) throws EncodeException {
-		String username = (String)userSession.getUserProperties().get("username");
+		String username = (String) userSession.getUserProperties().get("username");
 
-		try (JsonReader jsonReader = Json.createReader(new StringReader(message));) {//2022.01 Resources should be closed
+		try (JsonReader jsonReader = Json.createReader(new StringReader(message));) {// 2022.01 Resources should be
+																						// closed
 
 			JsonObject jsonObject = jsonReader.readObject();
 
@@ -99,11 +110,13 @@ public class UsersServerEndPoint {
 				if (username != null && !isExisted(username)) {
 					userSession.getUserProperties().put("username", username);
 
-					for (Session session : connectedAllUsers) {
+					for (Session session : connectedAllUsers) { // NOPMD - CloseResource
 						session.getBasicRemote().sendText(buildJsonUserData(getUsers()));
 					}
 				} else {
-					// username을 다시 입력하게하는 로직 넣기.
+					if (LOGGER.isDebugEnabled()) {
+						LOGGER.debug("username을 다시 입력하게하는 로직 넣기.");
+					}
 				}
 
 			} else if ("chatConnection".equals(connectionType)) {
@@ -121,7 +134,7 @@ public class UsersServerEndPoint {
 
 				if (connectingUser != null && !username.equals(connectingUser)) {
 					// 사용자들 중 선택한 유저와 연결
-					for (Session session : connectedAllUsers) {
+					for (Session session : connectedAllUsers) {// NOPMD - CloseResource
 						if (connectingUser.equals(session.getUserProperties().get("username"))) {
 							// 선택한 사용자면 chatroomMember로 추가.
 							chatroomMembers.add(session);
@@ -129,12 +142,12 @@ public class UsersServerEndPoint {
 					}
 
 					// chatroomMembers에게 room입장하라는 신호 보내기
-					for (Session session : chatroomMembers) {
+					for (Session session : chatroomMembers) {// NOPMD - CloseResource
 
-						session.getBasicRemote().sendText(
-							Json.createObjectBuilder().add("enterChatId", chatroomId)
-								.add("username", (String)session.getUserProperties().get("username")).build()
-								.toString());
+						session.getBasicRemote()
+								.sendText(Json.createObjectBuilder().add("enterChatId", chatroomId)
+										.add("username", (String) session.getUserProperties().get("username")).build()
+										.toString());
 					}
 				}
 			}
@@ -149,6 +162,7 @@ public class UsersServerEndPoint {
 
 	/**
 	 * 연결을 끊기 직전에 호출되는 함수
+	 * 
 	 * @param userSession
 	 * @throws IOException
 	 * @throws EncodeException
@@ -157,37 +171,38 @@ public class UsersServerEndPoint {
 	@OnClose
 	public void handleClose(Session userSession) throws IOException, EncodeException {
 
-		String disconnectedUser = (String)userSession.getUserProperties().get("username");
+		String disconnectedUser = (String) userSession.getUserProperties().get("username");
 		connectedAllUsers.remove(userSession);
 
 		if (disconnectedUser != null) {
 			Json.createObjectBuilder().add("disconnectedUser", disconnectedUser).build().toString();
 
-			for (Session session : connectedAllUsers) {
-				session.getBasicRemote()
-					.sendText(Json.createObjectBuilder().add("disconnectedUser", disconnectedUser).build().toString());
+			for (Session session : connectedAllUsers) {// NOPMD - CloseResource
+				session.getBasicRemote().sendText(
+						Json.createObjectBuilder().add("disconnectedUser", disconnectedUser).build().toString());
 			}
 		}
 	}
 
 	/**
 	 * 연결되어있는 user정보를 가져오는 함수
+	 * 
 	 * @return user set
 	 */
 	private Set<String> getUsers() {
 		HashSet<String> returnSet = new HashSet<String>();
 
-		for (Session session : connectedAllUsers) {
+		for (Session session : connectedAllUsers) { // NOPMD - CloseResource
 			if (session.getUserProperties().get("username") != null) {
 				returnSet.add(session.getUserProperties().get("username").toString());
 			}
-			;
 		}
 		return returnSet;
 	}
 
 	/**
 	 * 유저 정보가 담긴 Set<String>을 json으로 변환해주는 함수
+	 * 
 	 * @param set
 	 * @return jsondata
 	 */
@@ -203,12 +218,13 @@ public class UsersServerEndPoint {
 
 	/**
 	 * 동일한 username을 가진 user session이 있는지 확인하는 함수
+	 * 
 	 * @param username 사용자이름
 	 * @return 존재여부
 	 */
 	private boolean isExisted(String username) {
 		// 이미 username을 가진 session이 있는지 검사.
-		for (Session existedUser : connectedAllUsers) {
+		for (Session existedUser : connectedAllUsers) {// NOPMD - CloseResource
 			if (username.equals(existedUser.getUserProperties().get("username"))) {
 				return true;
 			}
@@ -218,13 +234,14 @@ public class UsersServerEndPoint {
 
 	/**
 	 * chatroomId를 위한 랜덤값을 생성하는 함수
+	 * 
 	 * @return chatroomId
 	 */
 	private String genRandom() {
 		String chatroomId = "";
-		SecureRandom rnd = new SecureRandom();			// 221115	김혜준	2022 시큐어코딩 조치
+		SecureRandom rnd = new SecureRandom(); // 221115 김혜준 2022 시큐어코딩 조치
 		for (int i = 0; i < 8; i++) {
-			chatroomId += (char)((rnd.nextDouble() * 26) + 97);//KISA 보안약점 조치 (2018-10-29, 윤창원)
+			chatroomId += (char) ((rnd.nextDouble() * 26) + 97);// KISA 보안약점 조치 (2018-10-29, 윤창원)
 		}
 		return chatroomId;
 	}
