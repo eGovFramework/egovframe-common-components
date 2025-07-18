@@ -279,12 +279,12 @@ public class ProgrmManageDtlVO {
 	}
 
 	/**
-	 * tmp_progrmNm attribute 값을 설정한다.
+	 * tmpProgrmNm attribute 값을 설정한다.
 	 * 
-	 * @param tmp_progrmNm String
+	 * @param tmpProgrmNm String
 	 */
-	public void setTmpProgrmNm(String tmp_progrmNm) {
-		this.tmpProgrmNm = tmp_progrmNm;
+	public void setTmpProgrmNm(String tmpProgrmNm) {
+		this.tmpProgrmNm = tmpProgrmNm;
 	}
 
 	/**
@@ -297,12 +297,12 @@ public class ProgrmManageDtlVO {
 	}
 
 	/**
-	 * tmp_rqesterNo attribute 값을 설정한다.
+	 * tmpRqesterNo attribute 값을 설정한다.
 	 * 
-	 * @param tmp_rqesterNo int
+	 * @param tmpRqesterNo int
 	 */
-	public void setTmpRqesterNo(int tmp_rqesterNo) {
-		this.tmpRqesterNo = tmp_rqesterNo;
+	public void setTmpRqesterNo(int tmpRqesterNo) {
+		this.tmpRqesterNo = tmpRqesterNo;
 	}
 
 	/**
@@ -315,11 +315,11 @@ public class ProgrmManageDtlVO {
 	}
 
 	/**
-	 * tmp_Email attribute 값을 설정한다.
+	 * tmpEmail attribute 값을 설정한다.
 	 * 
-	 * @param tmp_Email String
+	 * @param tmpEmail String
 	 */
-	public void setTmpEmail(String tmp_Email) {
-		this.tmpEmail = tmp_Email;
+	public void setTmpEmail(String tmpEmail) {
+		this.tmpEmail = tmpEmail;
 	}
 }
