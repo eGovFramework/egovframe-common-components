@@ -33,7 +33,6 @@ import org.springmodules.validation.commons.DefaultBeanValidator;
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.annotation.IncludedInfo;
-import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.mnu.mpm.service.EgovMenuManageService;
 import egovframework.com.sym.mnu.mpm.service.MenuManageVO;
@@ -91,12 +90,12 @@ public class EgovMenuManageController {
 	/**
 	 * 메뉴정보목록을 상세화면 호출 및 상세조회한다.
 	 * 
-	 * @param req_menuNo String
+	 * @param searchKeyword String
 	 * @return 출력페이지정보 "sym/mnu/mpm/EgovMenuDetailSelectUpdt"
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/mnu/mpm/EgovMenuManageListDetailSelect.do")
-	public String selectMenuManage(@RequestParam("req_menuNo") String req_menuNo,
+	public String selectMenuManage(@RequestParam("req_menuNo") String searchKeyword,
 			@ModelAttribute("searchVO") ComDefaultVO searchVO, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -104,7 +103,7 @@ public class EgovMenuManageController {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
-		searchVO.setSearchKeyword(req_menuNo);
+		searchVO.setSearchKeyword(searchKeyword);
 
 		MenuManageVO resultVO = menuManageService.selectMenuManage(searchVO);
 		model.addAttribute("menuManageVO", resultVO);
@@ -306,8 +305,7 @@ public class EgovMenuManageController {
 
 		menuManageService.deleteMenuManage(menuManageVO);
 		resultMsg = egovMessageSource.getMessage("success.common.delete");
-		String _MenuNm = "%";
-		menuManageVO.setMenuNm(_MenuNm);
+		menuManageVO.setMenuNm("%");
 		model.addAttribute("resultMsg", resultMsg);
 		return "forward:/sym/mnu/mpm/EgovMenuManageSelect.do";
 	}
@@ -329,9 +327,9 @@ public class EgovMenuManageController {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
-		List<EgovMap> list_menulist = menuManageService.selectMenuList();
+		List<EgovMap> resultList = menuManageService.selectMenuList();
 //		resultMsg = egovMessageSource.getMessage("success.common.select");
-		model.addAttribute("list_menulist", list_menulist);
+		model.addAttribute("list_menulist", resultList);
 		// model.addAttribute("resultMsg", resultMsg);
 		return "egovframework/com/sym/mnu/mpm/EgovMenuList";
 	}
@@ -466,8 +464,8 @@ public class EgovMenuManageController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		List<EgovMap> list_menulist = menuManageService.selectMenuList();
-		model.addAttribute("list_menulist", list_menulist);
+		List<EgovMap> resultList = menuManageService.selectMenuList();
+		model.addAttribute("list_menulist", resultList);
 		return "egovframework/com/sym/mnu/mpm/EgovMenuMvmn";
 	}
 
@@ -488,8 +486,8 @@ public class EgovMenuManageController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		List<EgovMap> list_menulist = menuManageService.selectMenuList();
-		model.addAttribute("list_menulist", list_menulist);
+		List<EgovMap> resultList = menuManageService.selectMenuList();
+		model.addAttribute("list_menulist", resultList);
 		return "egovframework/com/sym/mnu/mpm/EgovMenuMvmnNew";
 	}
 
@@ -570,15 +568,10 @@ public class EgovMenuManageController {
 
 						if (menuManageService.menuBndeAllDelete()) {
 							// KISA 보안약점 조치 - 자원해제
-							InputStream is = null;
-
-							try {
-								is = file.getInputStream();
+							try (InputStream is = file.getInputStream();) {
 								sMessage = menuManageService.menuBndeRegist(menuManageVO, is);
 							} catch (IOException e) {
 								throw new IOException(e);
-							} finally {
-								EgovResourceCloseHelper.close(is);
 							}
 
 							resultMsg = sMessage;
