@@ -103,12 +103,12 @@ public class ProgrmManageVO {
 	}
 
 	/**
-	 * URL attribute 값을 설정한다.
+	 * url attribute 값을 설정한다.
 	 * 
-	 * @param URL String
+	 * @param url String
 	 */
-	public void setURL(String URL) {
-		this.url = URL;
+	public void setURL(String url) {
+		this.url = url;
 	}
 
 	/**
