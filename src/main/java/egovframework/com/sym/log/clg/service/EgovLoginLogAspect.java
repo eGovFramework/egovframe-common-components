@@ -42,12 +42,10 @@ public class EgovLoginLogAspect {
 		String ip = null;
 
 		/* Authenticated  */
-		if (EgovUserDetailsHelper.isAuthenticated()) {
-			LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-			if (loginVO != null) {
-				uniqId = loginVO.getUniqId();
-				ip = loginVO.getIp();
-			}
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO != null) {
+			uniqId = loginVO.getUniqId();
+			ip = loginVO.getIp();
 		}
 
 		LoginLog loginLog = new LoginLog();
@@ -73,12 +71,10 @@ public class EgovLoginLogAspect {
 		String ip = null;
 
 		/* Authenticated  */
-		if (EgovUserDetailsHelper.isAuthenticated()) {
-			LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-			if (loginVO != null) {
-				uniqId = loginVO.getUniqId();
-				ip = loginVO.getIp();
-			}
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO != null) {
+			uniqId = loginVO.getUniqId();
+			ip = loginVO.getIp();
 		}
 
 		LoginLog loginLog = new LoginLog();
