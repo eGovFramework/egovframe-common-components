@@ -74,12 +74,12 @@ public class EgovProgrmManageController {
 	/**
 	 * 프로그램목록을 상세화면 호출 및 상세조회한다.
 	 * 
-	 * @param tmp_progrmNm String
+	 * @param progrmFileNm String
 	 * @return 출력페이지정보 "sym/prm/EgovProgramListDetailSelectUpdt"
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/prm/EgovProgramListDetailSelect.do")
-	public String selectProgrm(@RequestParam("tmp_progrmNm") String tmp_progrmNm,
+	public String selectProgrm(@RequestParam("tmp_progrmNm") String progrmFileNm,
 			@ModelAttribute("searchVO") ComDefaultVO searchVO, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -89,7 +89,7 @@ public class EgovProgrmManageController {
 		}
 
 		ProgrmManageVO vo = new ProgrmManageVO();
-		vo.setProgrmFileNm(tmp_progrmNm);
+		vo.setProgrmFileNm(progrmFileNm);
 		ProgrmManageVO progrmManageVO = progrmManageService.selectProgrm(vo);
 		model.addAttribute("progrmManageVO", progrmManageVO);
 		return "egovframework/com/sym/prm/EgovProgramListDetailSelectUpdt";
@@ -311,8 +311,8 @@ public class EgovProgrmManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<ProgrmManageDtlVO> list_changerequst = progrmManageService.selectProgrmChangeRequstList(searchVO);
-		model.addAttribute("list_changerequst", list_changerequst);
+		List<ProgrmManageDtlVO> resultList = progrmManageService.selectProgrmChangeRequstList(searchVO);
+		model.addAttribute("list_changerequst", resultList);
 
 		int totCnt = progrmManageService.selectProgrmChangeRequstListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -338,8 +338,7 @@ public class EgovProgrmManageController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 		if (progrmManageDtlVO.getProgrmFileNm() == null || progrmManageDtlVO.getProgrmFileNm().equals("")) {
-			String FileNm = progrmManageDtlVO.getTmpProgrmNm();
-			progrmManageDtlVO.setProgrmFileNm(FileNm);
+			progrmManageDtlVO.setProgrmFileNm(progrmManageDtlVO.getTmpProgrmNm());
 			int tmpNo = progrmManageDtlVO.getTmpRqesterNo();
 			progrmManageDtlVO.setRqesterNo(tmpNo);
 		}
@@ -391,9 +390,8 @@ public class EgovProgrmManageController {
 			sLocationUrl = "forward:/sym/prm/EgovProgramChangeRequstSelect.do";
 		} else {
 			/* MAX요청번호 조회 */
-			ProgrmManageDtlVO tmp_vo = progrmManageService.selectProgrmChangeRequstNo(progrmManageDtlVO);
-			int _tmp_no = tmp_vo.getRqesterNo();
-			progrmManageDtlVO.setRqesterNo(_tmp_no);
+			ProgrmManageDtlVO resultVO = progrmManageService.selectProgrmChangeRequstNo(progrmManageDtlVO);
+			progrmManageDtlVO.setRqesterNo(resultVO.getRqesterNo());
 			progrmManageDtlVO.setRqesterPersonId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 			sLocationUrl = "egovframework/com/sym/prm/EgovProgramChangRequstStre";
 		}
@@ -519,8 +517,8 @@ public class EgovProgrmManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<?> list_changerequst = progrmManageService.selectChangeRequstProcessList(searchVO);
-		model.addAttribute("list_changerequst", list_changerequst);
+		List<?> resultList = progrmManageService.selectChangeRequstProcessList(searchVO);
+		model.addAttribute("list_changerequst", resultList);
 
 		int totCnt = progrmManageService.selectChangeRequstProcessListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -546,10 +544,8 @@ public class EgovProgrmManageController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 		if (progrmManageDtlVO.getProgrmFileNm() == null) {
-			String _FileNm = progrmManageDtlVO.getTmpProgrmNm();
-			progrmManageDtlVO.setProgrmFileNm(_FileNm);
-			int _Tmp_no = progrmManageDtlVO.getTmpRqesterNo();
-			progrmManageDtlVO.setRqesterNo(_Tmp_no);
+			progrmManageDtlVO.setProgrmFileNm(progrmManageDtlVO.getTmpProgrmNm());
+			progrmManageDtlVO.setRqesterNo(progrmManageDtlVO.getTmpRqesterNo());
 		}
 		ProgrmManageDtlVO resultVO = progrmManageService.selectProgrmChangeRequst(progrmManageDtlVO);
 		if (resultVO.getProcessDe() != null) {
@@ -709,8 +705,8 @@ public class EgovProgrmManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<ProgrmManageDtlVO> list_changerequst = progrmManageService.selectProgrmChangeRequstList(searchVO);
-		model.addAttribute("list_changerequst", list_changerequst);
+		List<ProgrmManageDtlVO> resultList = progrmManageService.selectProgrmChangeRequstList(searchVO);
+		model.addAttribute("list_changerequst", resultList);
 
 		int totCnt = progrmManageService.selectProgrmChangeRequstListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -736,10 +732,8 @@ public class EgovProgrmManageController {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
-		String _FileNm = progrmManageDtlVO.getTmpProgrmNm();
-		progrmManageDtlVO.setProgrmFileNm(_FileNm);
-		int _tmp_no = progrmManageDtlVO.getTmpRqesterNo();
-		progrmManageDtlVO.setRqesterNo(_tmp_no);
+		progrmManageDtlVO.setProgrmFileNm(progrmManageDtlVO.getTmpProgrmNm());
+		progrmManageDtlVO.setRqesterNo(progrmManageDtlVO.getTmpRqesterNo());
 
 		ProgrmManageDtlVO resultVO = progrmManageService.selectProgrmChangeRequst(progrmManageDtlVO);
 		model.addAttribute("resultVO", resultVO);
