@@ -14,27 +14,30 @@ import egovframework.com.sym.log.lgm.service.EgovSysLogService;
 import egovframework.com.sym.log.lgm.service.SysLog;
 
 /**
- * @Class Name : EgovSysLogServiceImpl.java
- * @Description : 로그관리(시스템)를 위한 서비스 구현 클래스
- * @Modification Information
- *
- *    수정일       수정자         수정내용
- *    -------        -------     -------------------
- *    2009. 3. 11.     이삼섭
- *
+ * 로그관리(시스템)를 위한 서비스 구현 클래스
+ * 
  * @author 공통 서비스 개발팀 이삼섭
- * @since 2009. 3. 11.
- * @version
+ * @since 2009.03.11
+ * @version 1.0
  * @see
  *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.03.11  이삼섭          최초 생성
+ *   2025.07.11  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *
+ *      </pre>
  */
 @Service("EgovSysLogService")
-public class EgovSysLogServiceImpl extends EgovAbstractServiceImpl implements EgovSysLogService{
-	@Resource(name="SysLogDAO")
+public class EgovSysLogServiceImpl extends EgovAbstractServiceImpl implements EgovSysLogService {
+	@Resource(name = "SysLogDAO")
 	private SysLogDAO sysLogDAO;
 
-    /** ID Generation */
-	@Resource(name="egovSysLogIdGnrService")
+	/** ID Generation */
+	@Resource(name = "egovSysLogIdGnrService")
 	private EgovIdGnrService egovSysLogIdGnrService;
 
 	/**
@@ -48,7 +51,7 @@ public class EgovSysLogServiceImpl extends EgovAbstractServiceImpl implements Eg
 		sysLog.setRequstId(requstId);
 
 		sysLogDAO.logInsertSysLog(sysLog);
-		
+
 	}
 
 	/**
@@ -59,7 +62,7 @@ public class EgovSysLogServiceImpl extends EgovAbstractServiceImpl implements Eg
 	@Override
 	public void logInsertSysLogSummary() throws Exception {
 		sysLogDAO.logInsertSysLogSummary();
-		
+
 	}
 
 	/**
@@ -70,14 +73,14 @@ public class EgovSysLogServiceImpl extends EgovAbstractServiceImpl implements Eg
 	@Override
 	public Map<?, ?> selectSysLogInf(SysLog sysLog) throws Exception {
 
-		List<SysLog> _result = sysLogDAO.selectSysLogInf(sysLog);
-		int _cnt = sysLogDAO.selectSysLogInfCnt(sysLog);
+		List<SysLog> resultList = sysLogDAO.selectSysLogInf(sysLog);
+		int resultCnt = sysLogDAO.selectSysLogInfCnt(sysLog);
 
-		Map<String, Object> _map = new HashMap<String, Object>();
-		_map.put("resultList", _result);
-		_map.put("resultCnt", Integer.toString(_cnt));
+		Map<String, Object> map = new HashMap<>();
+		map.put("resultList", resultList);
+		map.put("resultCnt", Integer.toString(resultCnt));
 
-		return _map;
+		return map;
 	}
 
 	/**
