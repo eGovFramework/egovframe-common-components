@@ -209,7 +209,7 @@ public class BackupJob implements Job {
 		} finally {
 			EgovResourceCloseHelper.close(finput, aosOutput, fosOutput);
 
-			if (result == false) {
+			if (!result) {
 				// 2017.02.08 이정은 시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
 				if (targetFile.delete()) {
 					LOGGER.debug("[file.delete] targetFile : File Deletion Success");
