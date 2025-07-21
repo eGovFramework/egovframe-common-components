@@ -14,6 +14,9 @@ package egovframework.com.sym.sym.nwk.service;
 import java.util.Collections;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class NtwrkVO extends Ntwrk {
 
 	private static final long serialVersionUID = 1L;
@@ -33,6 +36,8 @@ public class NtwrkVO extends Ntwrk {
 	/**
 	 * 삭제여부
 	 */
+	@Getter
+	@Setter
 	private String delYn[];
 
 	/**
@@ -76,33 +81,6 @@ public class NtwrkVO extends Ntwrk {
 	 */
 	public void setNtwrkList(List<NtwrkVO> ntwrkList) {
 		this.ntwrkList = Collections.unmodifiableList(ntwrkList);
-	}
-
-	/**
-	 * @return the delYn
-	 */
-	public String[] getDelYn() {
-		String[] ret = null;
-
-		if (delYn != null) {
-			ret = new String[delYn.length];
-
-			for (int i = 0; i < delYn.length; i++) {
-				ret[i] = delYn[i];
-			}
-		}
-		return ret;
-	}
-
-	/**
-	 * @param delYn the delYn to set
-	 */
-	public void setDelYn(String[] delYn) {
-		this.delYn = new String[delYn.length];
-
-		for (int i = 0; i < delYn.length; ++i) {
-			this.delYn[i] = delYn[i];
-		}
 	}
 
 }
