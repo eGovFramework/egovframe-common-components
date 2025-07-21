@@ -34,19 +34,22 @@ import egovframework.com.utl.sim.service.EgovFileTool;
  * 백업작업을 실행하는 Quartz Job 클래스를 정의한다.
  *
  * @author 김진만
+ * @since 2010.09.06
+ * @version 1.0
  * @see
- * 
- *      <pre>
- * == 개정이력(Modification Information) ==
  *
- *   수정일       수정자           수정내용
- *  -------     --------    ---------------------------
- *  2010.09.06   김진만     최초 생성
- *  2017-02-08	  이정은     시큐어코딩(ES) - 시큐어코딩  부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
- *  2022-11-16	  신용호     시큐어코딩 조치
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.09.06  김진만          최초 생성
+ *   2017.02.08  이정은          시큐어코딩(ES) - 시큐어코딩  부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+ *   2022.11.16  신용호          시큐어코딩 조치
+ *   2025.07.22  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-SimplifyBooleanExpressions(boolean 사용 시 불필요한 비교 연산을 피하도록 함)
+ *
  *      </pre>
  */
-
 public class BackupJob implements Job {
 
 	/** logger */
