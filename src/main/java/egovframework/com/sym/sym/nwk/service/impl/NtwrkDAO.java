@@ -1,15 +1,3 @@
-/**
- * <pre>개요
- * - 네트워크에 대한 DAO 클래스를 정의한다.
- * 
- * 상세내용
- * - 네트워크에 대한 등록, 수정, 삭제, 조회 기능을 제공한다.
- * - 네트워크의 조회기능은 목록조회, 상세조회로 구분된다.</pre>
- * @author lee.m.j
- * @version 1.0
- * @created 19-8-2010 오후 4:34:37
- */
-
 package egovframework.com.sym.sym.nwk.service.impl;
 
 import java.util.List;
@@ -20,6 +8,31 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sym.sym.nwk.service.Ntwrk;
 import egovframework.com.sym.sym.nwk.service.NtwrkVO;
 
+/**
+ * <pre>
+ * 개요
+ * - 네트워크에 대한 DAO 클래스를 정의한다.
+ * 
+ * 상세내용
+ * - 네트워크에 대한 등록, 수정, 삭제, 조회 기능을 제공한다.
+ * - 네트워크의 조회기능은 목록조회, 상세조회로 구분된다.
+ * </pre>
+ * 
+ * @author lee.m.j
+ * @since 2010.08.19
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.03.20  lee.m.j       최초 생성
+ *   2025.07.23  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UnnecessaryBoxing(불필요한 WrapperObject 생성)
+ *
+ *      </pre>
+ */
 @Repository("ntwrkDAO")
 public class NtwrkDAO extends EgovComAbstractDAO {
 
