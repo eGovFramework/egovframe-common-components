@@ -70,7 +70,7 @@ public class EgovNtwrkController {
 	private DefaultBeanValidator beanValidator;
 
 	@Resource(name = "EgovCmmUseService")
-	EgovCmmUseService EgovCmmUseService;
+	private EgovCmmUseService egovCmmUseService;
 
 	/**
 	 * 네트워크관리 목록화면 이동
@@ -256,6 +256,6 @@ public class EgovNtwrkController {
 	public List<CmmnDetailCode> getCmmCodeDetailList(ComDefaultCodeVO comDefaultCodeVO, String codeId)
 			throws Exception {
 		comDefaultCodeVO.setCodeId(codeId);
-		return EgovCmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+		return egovCmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 	}
 }
