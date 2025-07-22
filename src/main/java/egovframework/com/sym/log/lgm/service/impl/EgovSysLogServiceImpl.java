@@ -78,7 +78,7 @@ public class EgovSysLogServiceImpl extends EgovAbstractServiceImpl implements Eg
 
 		Map<String, Object> map = new HashMap<>();
 		map.put("resultList", resultList);
-		map.put("resultCnt", Integer.toString(resultCnt));
+		map.put("resultCnt", (resultCnt));
 
 		return map;
 	}
