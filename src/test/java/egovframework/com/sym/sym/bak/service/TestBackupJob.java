@@ -64,7 +64,7 @@ public class TestBackupJob {
 	@Test
 	public void test2zip() throws JobExecutionException {
 		execute("src/main/java/egovframework/com/cmm", "02");
-//		execute("src", "02"); // 매우 올래 걸림
+//		execute("src", "02"); // 매우 오래 걸림
 	}
 
 	public void execute(String pathname, String cmprsSe) throws JobExecutionException {
