@@ -40,7 +40,7 @@ public class NtwrkDAO extends EgovComAbstractDAO {
 	 * @return int - 네트워크 카운트 수
 	 */
 	public int selectNtwrkListTotCnt(NtwrkVO ntwrkVO) throws Exception {
-		return ((Integer) selectOne("ntwrkDAO.selectNtwrkListTotCnt", ntwrkVO)).intValue();
+		return selectOne("ntwrkDAO.selectNtwrkListTotCnt", ntwrkVO);
 	}
 
 	/**
