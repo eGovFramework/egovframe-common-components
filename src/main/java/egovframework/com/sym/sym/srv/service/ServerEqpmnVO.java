@@ -16,18 +16,21 @@ import lombok.Setter;
  * </pre>
  * 
  * @author 이문준
+ * 
+ * @since 2010.06.28
  * @version 1.0
- * @created 28-6-2010 오전 10:44:55
- * 
- *          <pre>
- * << 개정이력(Modification Information) >>
+ * @see
  *
- *  수정일               수정자            수정내용
- *  ----------   --------   ---------------------------
- *  2020-08-28   신용호            보안약점 조치 (Private 배열에 Public 데이터 할당[CWE-496])
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
- *          </pre>
- * 
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.06.28  이문준          최초 생성
+ *   2020-08-28  신용호          보안약점 조치 (Private 배열에 Public 데이터 할당[CWE-496])
+ *   2025.07.24  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-MethodReturnsInternalArray(Private 배열에 Public 데이터 할당)
+ *
+ *      </pre>
  */
 public class ServerEqpmnVO extends ServerEqpmn {
 
