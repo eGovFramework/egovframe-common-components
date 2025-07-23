@@ -3,6 +3,9 @@ package egovframework.com.sym.sym.srv.service;
 import java.util.Collections;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * <pre>
  * 개요
@@ -29,14 +32,19 @@ import java.util.List;
 public class ServerEqpmnRelateVO extends ServerEqpmnRelate {
 
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * 서버장비관계 목록
 	 */
 	private List<?> serverEqpmnRelateList;
+
 	/**
 	 * 삭제대상 목록
 	 */
-	String delYn[];
+	@Getter
+	@Setter
+	private String delYn[];
+
 	/**
 	 * 서버ID 조회조건
 	 */
@@ -59,20 +67,6 @@ public class ServerEqpmnRelateVO extends ServerEqpmnRelate {
 	 */
 	public void setServerEqpmnRelateList(List<?> serverEqpmnRelateList) {
 		this.serverEqpmnRelateList = Collections.unmodifiableList(serverEqpmnRelateList);
-	}
-
-	/**
-	 * @return the delYn
-	 */
-	public String[] getDelYn() {
-		return delYn;
-	}
-
-	/**
-	 * @param delYn the delYn to set
-	 */
-	public void setDelYn(String[] delYn) {
-		this.delYn = delYn.clone();
 	}
 
 	/**
