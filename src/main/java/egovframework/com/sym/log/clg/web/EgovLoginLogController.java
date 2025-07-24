@@ -68,7 +68,7 @@ public class EgovLoginLogController {
 		loginLog.setLastIndex(paginationInfo.getLastRecordIndex());
 		loginLog.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		Map<?, ?> map = loginLogService.selectLoginLogInf(loginLog);
+		Map<String, Object> map = loginLogService.selectLoginLogInf(loginLog);
 		int totCnt = (int) map.get("resultCnt");
 
 		model.addAttribute("resultList", map.get("resultList"));

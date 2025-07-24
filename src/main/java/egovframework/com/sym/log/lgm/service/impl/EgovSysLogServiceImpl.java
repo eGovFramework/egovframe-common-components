@@ -71,7 +71,7 @@ public class EgovSysLogServiceImpl extends EgovAbstractServiceImpl implements Eg
 	 * @param SysLog
 	 */
 	@Override
-	public Map<?, ?> selectSysLogInf(SysLog sysLog) throws Exception {
+	public Map<String, Object> selectSysLogInf(SysLog sysLog) throws Exception {
 
 		List<SysLog> resultList = sysLogDAO.selectSysLogInf(sysLog);
 		int resultCnt = sysLogDAO.selectSysLogInfCnt(sysLog);

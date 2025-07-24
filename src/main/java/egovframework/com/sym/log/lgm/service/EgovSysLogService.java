@@ -40,7 +40,7 @@ public interface EgovSysLogService {
 	 *
 	 * @param SysLog
 	 */
-	public Map<?, ?> selectSysLogInf(SysLog sysLog) throws Exception;
+	public Map<String, Object> selectSysLogInf(SysLog sysLog) throws Exception;
 
 	/**
 	 * 시스템로그 상세정보를 조회한다.

@@ -74,7 +74,7 @@ public class EgovLoginLogServiceImpl extends EgovAbstractServiceImpl implements 
 	 * @param LoginLog
 	 */
 	@Override
-	public Map<?, ?> selectLoginLogInf(LoginLog loinLog) throws Exception {
+	public Map<String, Object> selectLoginLogInf(LoginLog loinLog) throws Exception {
 		List<LoginLog> resultList = loginLogDAO.selectLoginLogInf(loinLog);
 		int resultCnt = loginLogDAO.selectLoginLogInfCnt(loinLog);
 
