@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -44,6 +45,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *   2011.08.22  서준식			selectProgrmChangRequstProcess() 메서드 처리일자 trim 처리
  *   2011.08.26	 정진오			IncludedInfo annotation 추가
  *   2024.09.04  권태성			등록 화면과 데이터를 처리하는 method 분리, validation 적용
+ *   2025.07.15  권태성			프로그램파일명 등록 시 중복 체크 로직 추가
  * </pre>
  */
 
@@ -203,7 +205,6 @@ public class EgovProgrmManageController {
 	@RequestMapping(value = "/sym/prm/EgovProgramListRegist.do")
 	public String insertProgrmList(@ModelAttribute("progrmManageVO") ProgrmManageVO progrmManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
-		String resultMsg = "";
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
@@ -218,10 +219,15 @@ public class EgovProgrmManageController {
 		if (progrmManageVO.getProgrmDc() == null || progrmManageVO.getProgrmDc().equals("")) {
 			progrmManageVO.setProgrmDc(" ");
 		}
-		progrmManageService.insertProgrm(progrmManageVO);
-		resultMsg = egovMessageSource.getMessage("success.common.insert");
-		model.addAttribute("resultMsg", resultMsg);
-		return "redirect:/sym/prm/EgovProgramListManageSelect.do";
+		try {
+			progrmManageService.insertProgrm(progrmManageVO);
+			model.addAttribute("resultMsg", egovMessageSource.getMessage("success.common.insert"));
+			return "redirect:/sym/prm/EgovProgramListManageSelect.do";
+		} catch (DuplicateKeyException e) {
+			// 동시성 등으로 인한 DB 중복 예외 처리
+			bindingResult.rejectValue("progrmFileNm", "error.progrmFileNm", "이미 등록된 프로그램파일명입니다.");
+			return "egovframework/com/sym/prm/EgovProgramListRegist";
+		}
 	}
 
 
