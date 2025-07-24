@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.dam.map.tea.service.EgovMapTeamService;
@@ -91,7 +92,11 @@ public class EgovMapTeamServiceImpl extends EgovAbstractServiceImpl implements E
 	 */
 	@Override
 	public void insertMapTeam(MapTeam mapTeam) throws Exception {
-		mapTeamDAO.insertMapTeam(mapTeam);
+		try {
+			mapTeamDAO.insertMapTeam(mapTeam);
+		} catch (DuplicateKeyException e) {
+			throw new DuplicateKeyException("이미 등록된 조직ID입니다.", e);
+		}
 	}
 
 	/**

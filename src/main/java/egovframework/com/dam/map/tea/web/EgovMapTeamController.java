@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -135,8 +136,13 @@ public class EgovMapTeamController {
 		}
 
 		mapTeam.setFrstRegisterId(loginVO.getUniqId());
-		mapTeamService.insertMapTeam(mapTeam);
-		return "forward:/dam/map/tea/EgovComDamMapTeamList.do";
+		try {
+			mapTeamService.insertMapTeam(mapTeam);
+			return "forward:/dam/map/tea/EgovComDamMapTeamList.do";
+		} catch (DuplicateKeyException e) {
+			bindingResult.rejectValue("orgnztId", "error.orgnztId", "이미 등록된 조직ID입니다.");
+			return "egovframework/com/dam/map/tea/EgovComDamMapTeamRegist";
+		}
 	}
 
 	/**
