@@ -77,7 +77,7 @@ public class EgovServerController {
 	private DefaultBeanValidator beanValidator;
 
 	@Resource(name = "EgovCmmUseService")
-	EgovCmmUseService EgovCmmUseService;
+	private EgovCmmUseService egovCmmUseService;
 
 	/**
 	 * 서버장비관리 목록화면으로 이동
@@ -500,6 +500,6 @@ public class EgovServerController {
 	 */
 	public List<?> getCmmCodeDetailList(ComDefaultCodeVO comDefaultCodeVO, String codeId) throws Exception {
 		comDefaultCodeVO.setCodeId(codeId);
-		return EgovCmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+		return egovCmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 	}
 }
