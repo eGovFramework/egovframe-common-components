@@ -4,8 +4,12 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.charset.Charset;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
@@ -16,11 +20,10 @@ import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveOutputStream;
 import org.apache.commons.compress.archivers.zip.ZipArchiveEntry;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
-import org.quartz.Job;
-import org.quartz.JobDataMap;
-import org.quartz.JobExecutionContext;
+import org.junit.Test;
 import org.quartz.JobExecutionException;
 
 import egovframework.com.cmm.EgovWebUtil;
@@ -30,11 +33,11 @@ import egovframework.com.utl.sim.service.EgovFileTool;
 import lombok.extern.slf4j.Slf4j;
 
 /**
- * 백업작업을 실행하는 Quartz Job 클래스를 정의한다.
- *
- * @author 김진만
- * @since 2010.09.06
- * @version 1.0
+ * 백업작업을 실행하는 Quartz Job 클래스를 정의한다. 단위 테스트 Test
+ * 
+ * @author 공통컴포넌트 컨트리뷰션팀 이백행
+ * @since 2025.07.22
+ * @version 4.3.0
  * @see
  *
  *      <pre>
@@ -42,48 +45,42 @@ import lombok.extern.slf4j.Slf4j;
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2010.09.06  김진만          최초 생성
- *   2017.02.08  이정은          시큐어코딩(ES) - 시큐어코딩  부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
- *   2022.11.16  신용호          시큐어코딩 조치
- *   2025.07.22  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-SimplifyBooleanExpressions(boolean 사용 시 불필요한 비교 연산을 피하도록 함)
- *   2025.07.22  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(부적절한 자원 해제)
+ *   2025.07.22  이백행          2025년 컨트리뷰션 최초 생성
  *
  *      </pre>
  */
 @Slf4j
-public class BackupJob implements Job {
+public class TestBackupJob {
 
 	/** logger */
 	private static final String SOURCE_BASE_DIRECTORY = EgovProperties.getProperty("Globals.SynchrnServerPath");
 	private static final String TARGET_BASE_DIRECTORY = EgovProperties.getProperty("Globals.SynchrnServerPath");
 
-	/**
-	 * (non-Javadoc)
-	 * 
-	 * @see org.quartz.Job#execute(org.quartz.JobExecutionContext)
-	 */
-	@Override
-	public void execute(JobExecutionContext jobContext) throws JobExecutionException {
+	@Test
+	public void test1tar() throws JobExecutionException {
+		execute("script", "01");
+	}
 
-		boolean result = false;
-		JobDataMap dataMap = jobContext.getJobDetail().getJobDataMap();
+	@Test
+	public void test2zip() throws JobExecutionException {
+		execute("src/main/java/egovframework/com/cmm", "02");
+//		execute("src", "02"); // 매우 오래 걸림
+	}
 
-		if (log.isDebugEnabled()) {
-			log.debug("job[{}] Trigger이름 : {}", jobContext.getJobDetail().getKey().getName(),
-					jobContext.getTrigger().getKey().getName());
-			log.debug("job[{}] BackupOpert ID : {}", jobContext.getJobDetail().getKey().getName(),
-					dataMap.getString("backupOpertId"));
-			log.debug("job[{}] 백업원본디렉토리 : {}", jobContext.getJobDetail().getKey().getName(),
-					dataMap.getString("backupOrginlDrctry"));
-			log.debug("job[{}] 백업저장디렉토리 : {}", jobContext.getJobDetail().getKey().getName(),
-					dataMap.getString("backupStreDrctry"));
-			log.debug("job[{}] 압축구분 : {}", jobContext.getJobDetail().getKey().getName(), dataMap.getString("cmprsSe"));
+	public void execute(String pathname, String cmprsSe) throws JobExecutionException {
+//		String pathname = "src";
+		File srcDir = new File(pathname);
+		try {
+			FileUtils.copyDirectory(srcDir, new File(SOURCE_BASE_DIRECTORY + "/" + pathname));
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
 		}
 
-		String backupOpertId = dataMap.getString("backupOpertId");
-		String backupOrginlDrctry = dataMap.getString("backupOrginlDrctry");
-		String backupStreDrctry = dataMap.getString("backupStreDrctry");
-		String cmprsSe = dataMap.getString("cmprsSe");
+		String backupOpertId = LocalDateTime.now().format(DateTimeFormatter.ofPattern("yyyyMMddHHmmssSSSnnnnnnnnn"));
+		String backupOrginlDrctry = pathname; // 백업원본디렉토리
+		String backupStreDrctry = pathname.replaceAll("/", "-") + "_backup_"; // 백업저장디렉토리
+//		String cmprsSe = "02"; // 압축구분: 01 tar, 02 zip
+//		String cmprsSe = ""; // 압축구분: 01 tar, 02 zip
 
 		String backupFileNm = null;
 		if ("01".equals(cmprsSe)) {
@@ -91,25 +88,20 @@ public class BackupJob implements Job {
 		} else if ("02".equals(cmprsSe)) {
 			backupFileNm = File.separator + generateBackupFileNm(backupOpertId) + "." + "zip";
 		} else {
-			String msg = "압축구분값[" + cmprsSe + "]이 잘못지정되었습니다.";
 			if (log.isErrorEnabled()) {
-				log.error(msg);
+				log.error("압축구분값[{}]이 잘못지정되었습니다.", cmprsSe);
 			}
-			throw new JobExecutionException(msg);
+			throw new JobExecutionException("압축구분값[" + cmprsSe + "]이 잘못지정되었습니다.");
 		}
 		if (log.isDebugEnabled()) {
 			log.debug("백업화일명 : {}", backupFileNm);
 		}
-		dataMap.put("backupFile", backupFileNm);
 
-		if ("01".equals(cmprsSe)) {
-			result = excuteBackup(backupOrginlDrctry, backupStreDrctry, backupFileNm, ArchiveStreamFactory.TAR);
-		} else {
-			result = excuteBackup(backupOrginlDrctry, backupStreDrctry, backupFileNm, ArchiveStreamFactory.ZIP);
+		boolean result = excuteBackup(backupOrginlDrctry, backupStreDrctry, backupFileNm, ArchiveStreamFactory.TAR);
+
+		if (log.isDebugEnabled()) {
+			log.debug("result={}", result);
 		}
-
-		// jobContext에 결과값을 저장한다.
-		jobContext.setResult(result);
 	}
 
 	/**
@@ -145,21 +137,19 @@ public class BackupJob implements Job {
 				+ FilenameUtils.getName(targetFileNm));
 
 		if (!srcFile.exists()) {
-			String msg = "백업원본디렉토리[" + srcFile.getAbsolutePath() + "]가 존재하지 않습니다.";
 			if (log.isErrorEnabled()) {
-				log.error(msg);
+				log.error("백업원본디렉토리[{}]가 존재하지 않습니다.", srcFile.getAbsolutePath());
 			}
-			throw new JobExecutionException(msg);
+			throw new JobExecutionException("백업원본디렉토리[" + srcFile.getAbsolutePath() + "]가 존재하지 않습니다.");
 		}
 
 		// 1. 파일인 경우
 		if (srcFile.isFile()) {
 			// 에러처리할 것 ...
-			String msg = "백업원본디렉토리[" + srcFile.getAbsolutePath() + "]가 파일입니다. 디렉토리명을 지정해야 합니다.";
 			if (log.isErrorEnabled()) {
-				log.error(msg);
+				log.error("백업원본디렉토리[{}]가 파일입니다. 디렉토리명을 지정해야 합니다.", srcFile.getAbsolutePath());
 			}
-			throw new JobExecutionException(msg);
+			throw new JobExecutionException("백업원본디렉토리[" + srcFile.getAbsolutePath() + "]가 파일입니다. 디렉토리명을 지정해야 합니다. ");
 		}
 
 		// 압축성공여부
