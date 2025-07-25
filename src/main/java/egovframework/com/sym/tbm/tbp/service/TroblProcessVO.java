@@ -3,6 +3,9 @@ package egovframework.com.sym.tbm.tbp.service;
 import java.util.Collections;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * <pre>
  * 개요
@@ -35,9 +38,12 @@ public class TroblProcessVO extends TroblProcess {
 	 * 처리상태 조회조건
 	 */
 	private String strProcessSttus;
+
 	/**
 	 * 삭제대상 목록
 	 */
+	@Getter
+	@Setter
 	private String delYn[];
 
 	/**
@@ -94,33 +100,6 @@ public class TroblProcessVO extends TroblProcess {
 	 */
 	public void setStrProcessSttus(String strProcessSttus) {
 		this.strProcessSttus = strProcessSttus;
-	}
-
-	/**
-	 * @return the delYn
-	 */
-	public String[] getDelYn() {
-		String[] ret = null;
-
-		if (delYn != null) {
-			ret = new String[delYn.length];
-
-			for (int i = 0; i < delYn.length; i++) {
-				ret[i] = delYn[i];
-			}
-		}
-		return ret;
-	}
-
-	/**
-	 * @param delYn the delYn to set
-	 */
-	public void setDelYn(String[] delYn) {
-		this.delYn = new String[delYn.length];
-
-		for (int i = 0; i < delYn.length; ++i) {
-			this.delYn[i] = delYn[i];
-		}
 	}
 
 }
