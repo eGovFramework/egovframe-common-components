@@ -14,8 +14,6 @@ import egovframework.com.ssi.syi.ist.service.CntcSttusVO;
  * 
  * @author 공통서비스 개발팀 이중호
  * @since 2009.04.01
- * @author 공통컴포넌트 개발팀 홍길동
- * @since 2009.06.01
  * @version 1.0
  * @see
  *

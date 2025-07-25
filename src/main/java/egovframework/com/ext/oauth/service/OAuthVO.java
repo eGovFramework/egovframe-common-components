@@ -7,7 +7,7 @@ import com.github.scribejava.core.builder.api.DefaultApi20;
 /**
  * OAuth VO
  * 
- * @author 공통컴포넌트 개발팀 홍길동
+ * @author 표프센
  * @since 2020.03.11
  * @version 3.9.0
  * @see
