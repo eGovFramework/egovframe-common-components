@@ -73,7 +73,7 @@ public class EgovSysLogController {
 		sysLog.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
 		Map<String, Object> map = sysLogService.selectSysLogInf(sysLog);
-		int totCnt = (int) map.get("resultCnt");
+		int totCnt = (Integer) map.get("resultCnt");
 
 		model.addAttribute("resultList", map.get("resultList"));
 		model.addAttribute("resultCnt", map.get("resultCnt"));
