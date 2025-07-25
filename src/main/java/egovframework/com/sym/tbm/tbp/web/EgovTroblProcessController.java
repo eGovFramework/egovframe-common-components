@@ -64,7 +64,7 @@ public class EgovTroblProcessController {
 	private DefaultBeanValidator beanValidator;
 
 	@Resource(name = "EgovCmmUseService")
-	EgovCmmUseService EgovCmmUseService;
+	private EgovCmmUseService egovCmmUseService;
 
 	/**
 	 * 장애처리관리 목록화면으로 이동
@@ -190,6 +190,6 @@ public class EgovTroblProcessController {
 	public List<CmmnDetailCode> getCmmCodeDetailList(ComDefaultCodeVO comDefaultCodeVO, String codeId)
 			throws Exception {
 		comDefaultCodeVO.setCodeId(codeId);
-		return EgovCmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+		return egovCmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 	}
 }
