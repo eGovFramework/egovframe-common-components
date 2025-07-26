@@ -632,7 +632,6 @@
 				<version>3.3.0</version>
 				<configuration>
 					<skipTests>true</skipTests>
-					<forkMode>once</forkMode>
 					<reportFormat>xml</reportFormat>
 					<excludes>
 						<exclude>**/Abstract*.java</exclude>
@@ -661,7 +660,6 @@
 			<plugin>
 				<groupId>org.codehaus.mojo</groupId>
 				<artifactId>emma-maven-plugin</artifactId>
-				<version>1.0-alpha-3</version>
 				<inherited>true</inherited>
 			</plugin>
 			<!--  JavaDoc -->
