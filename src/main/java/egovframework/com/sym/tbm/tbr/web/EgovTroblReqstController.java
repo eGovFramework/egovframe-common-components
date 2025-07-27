@@ -70,7 +70,7 @@ public class EgovTroblReqstController {
 	private DefaultBeanValidator beanValidator;
 
 	@Resource(name = "EgovCmmUseService")
-	EgovCmmUseService EgovCmmUseService;
+	private EgovCmmUseService egovCmmUseService;
 
 	/**
 	 * 장애요청관리 목록화면으로 이동
@@ -300,6 +300,6 @@ public class EgovTroblReqstController {
 	public List<CmmnDetailCode> getCmmCodeDetailList(ComDefaultCodeVO comDefaultCodeVO, String codeId)
 			throws Exception {
 		comDefaultCodeVO.setCodeId(codeId);
-		return EgovCmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+		return egovCmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 	}
 }
