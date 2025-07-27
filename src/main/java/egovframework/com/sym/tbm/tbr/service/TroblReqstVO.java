@@ -4,11 +4,14 @@ import java.util.Collections;
 import java.util.List;
 
 /**
+ * <pre>
  * 개요
  * - 장애정보에 대한 Vo 클래스를 정의한다.
  *
  * 상세내용
  * - 장애정보의 목록 항목, 조회조건, 삭제대상을 관리한다.
+ * </pre>
+ * 
  * @author lee.m.j
  * @version 1.0
  * @created 28-6-2010 오전 10:44:58
@@ -116,7 +119,7 @@ public class TroblReqstVO extends TroblReqst {
 	public void setDelYn(String[] delYn) {
 		this.delYn = new String[delYn.length];
 
-		for (int i = 0; i <  delYn.length; ++i) {
+		for (int i = 0; i < delYn.length; ++i) {
 			this.delYn[i] = delYn[i];
 		}
 	}
