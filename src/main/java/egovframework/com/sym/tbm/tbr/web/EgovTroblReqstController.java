@@ -39,20 +39,22 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  * - 장애신청정보의 조회기능은 목록조회, 상세조회로 구분된다.
  * </pre>
  * 
- * @author lee.m.j
+ * @author 이문준
+ * @since 2010.06.28
  * @version 1.0
- * @created 28-6-2010 오전 10:44:35
- * 
- *          <pre>
- * == 개정이력(Modification Information) ==
+ * @see
  *
- *   수정일       수정자           수정내용
- *  -------     --------    ---------------------------
- *  2010.06.28   이문준     최초 생성
- *  2011.8.26	정진오			IncludedInfo annotation 추가
- *          </pre>
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.06.28  이문준          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2025.07.28  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-FieldNamingConventions(변수명에 밑줄 사용)
+ *
+ *      </pre>
  */
-
 @Controller
 public class EgovTroblReqstController {
 
