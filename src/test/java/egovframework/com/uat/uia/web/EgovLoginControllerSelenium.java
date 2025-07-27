@@ -8,11 +8,15 @@ import org.junit.AfterClass;
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
+import org.junit.runner.OrderWith;
+import org.junit.runner.manipulation.Alphanumeric;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.edge.EdgeDriver;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -32,6 +36,7 @@ import lombok.extern.slf4j.Slf4j;
  *
  *      </pre>
  */
+@OrderWith(Alphanumeric.class)
 @Slf4j
 public class EgovLoginControllerSelenium {
 
@@ -63,11 +68,16 @@ public class EgovLoginControllerSelenium {
 		// https://storage.googleapis.com/chrome-for-testing-public/137.0.7151.69/win64/chromedriver-win64.zip
 		// https://googlechromelabs.github.io/chrome-for-testing/
 		// https://storage.googleapis.com/chrome-for-testing-public/137.0.7151.69/win64/chrome-win64.zip
-		System.setProperty("webdriver.chrome.driver",
-				"C:\\eGovFrameDev-4.3.0-64bit\\webdriver.chrome.driver\\chromedriver-win64\\chromedriver.exe");
+//		System.setProperty("webdriver.chrome.driver",
+//				"C:\\eGovFrameDev-4.3.0-64bit\\webdriver.chrome.driver\\chromedriver-win64\\chromedriver.exe");
 
-		driver = new ChromeDriver();
-		js = (JavascriptExecutor) driver;
+		// Automated driver management and other helper features for Selenium WebDriver
+		// in Java
+		// Java에서 Selenium WebDriver를 위한 자동화된 드라이버 관리 및 기타 도우미 기능
+//		WebDriverManager.chromedriver().setup(); // 자동 다운로드 + 경로 설정
+
+//		driver = new ChromeDriver();
+//		js = (JavascriptExecutor) driver;
 	}
 
 	@After
@@ -80,7 +90,24 @@ public class EgovLoginControllerSelenium {
 	}
 
 	@Test
-	public void test() {
+	public void test1Chrome() {
+		WebDriverManager.chromedriver().setup();
+		driver = new ChromeDriver();
+		js = (JavascriptExecutor) driver;
+
+		test(driver);
+	}
+
+	@Test
+	public void test2Edge() {
+		WebDriverManager.edgedriver().setup();
+		driver = new EdgeDriver();
+		js = (JavascriptExecutor) driver;
+
+		test(driver);
+	}
+
+	private void test(WebDriver driver) {
 		// 메인페이지 이동
 		if (log.isDebugEnabled()) {
 			log.debug("메인페이지 이동");
@@ -95,7 +122,7 @@ public class EgovLoginControllerSelenium {
 //		js.executeScript("location.reload()");
 //		sleep();
 
-		// 타이틀 같은지 확인 (동일한지 검증)
+		// 타이틀 확인
 		if (log.isDebugEnabled()) {
 			log.debug("타이틀 확인");
 		}
@@ -106,7 +133,7 @@ public class EgovLoginControllerSelenium {
 		assertEquals("에러가 발생했습니다!", "eGovFrame 공통 컴포넌트", title);
 
 		driver.switchTo().frame("_content");
-		sleep();
+//		sleep();
 
 		// 아이디 입력
 		if (log.isDebugEnabled()) {
@@ -137,7 +164,7 @@ public class EgovLoginControllerSelenium {
 			log.debug("aText={}", aText);
 		}
 		assertEquals("에러가 발생했습니다!", "로그아웃", aText);
-		sleep();
+//		sleep();
 	}
 
 	private void sleep() {
