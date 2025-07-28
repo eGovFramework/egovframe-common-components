@@ -46,10 +46,6 @@ public class EgovSSOLoginFilter implements Filter {
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovSSOLoginFilter.class);
 
 	@Override
-	public void destroy() {
-	}
-
-	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 
@@ -76,7 +72,7 @@ public class EgovSSOLoginFilter implements Filter {
 		String isRemotelyAuthenticated = (String) session.getAttribute("isRemotelyAuthenticated");
 		boolean isSSOLoggedOn = false;
 
-		if (isLocallyAuthenticated != null && (isLocallyAuthenticated.equals("true"))) {
+		if (isLocallyAuthenticated != null && isLocallyAuthenticated.equals("true")) {
 			if (isRemotelyAuthenticated == null) {
 				try {
 					if (egovSSOService != null) {// 2022.01 Null pointers should not be dereferenced
