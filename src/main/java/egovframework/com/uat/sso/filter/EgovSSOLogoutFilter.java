@@ -22,34 +22,39 @@ import egovframework.com.uat.sso.service.EgovSSOService;
  * @version 1.0
  * @see
  *
- * <pre>
+ *      <pre>
  * 개정이력(Modification Information)
  *
  *   수정일      수정자          수정내용
  *  -------    --------    ---------------------------
  *  2011. 8. 29.    서준식        최초생성
  *
- *  </pre>
+ *      </pre>
  */
 
-public class EgovSSOLogoutFilter implements Filter{
+public class EgovSSOLogoutFilter implements Filter {
 	private FilterConfig config;
 
-	public void destroy() {}
+	@Override
+	public void destroy() {
+	}
 
-	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
+	@Override
+	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+			throws IOException, ServletException {
 
-		ApplicationContext act = WebApplicationContextUtils.getRequiredWebApplicationContext(config.getServletContext());
+		ApplicationContext act = WebApplicationContextUtils
+				.getRequiredWebApplicationContext(config.getServletContext());
 		EgovSSOService egovSSOService = (EgovSSOService) act.getBean("egovSSOService");
 
 		String returnURL = config.getInitParameter("returnURL");
 
-		((HttpServletRequest)request).getSession().setAttribute("loginVO", null);
-		egovSSOService.ssoLogout(request, response, ((HttpServletRequest)request).getContextPath() + returnURL);
+		((HttpServletRequest) request).getSession().setAttribute("loginVO", null);
+		egovSSOService.ssoLogout(request, response, ((HttpServletRequest) request).getContextPath() + returnURL);
 
 	}
 
+	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 
 		this.config = filterConfig;
