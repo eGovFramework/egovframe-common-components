@@ -20,20 +20,27 @@ package egovframework.com.uat.uap.service;
 
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class LoginPolicyVO extends LoginPolicy {
 
 	/**
 	 * serialVersionUID
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * 로그인 정책 목록
 	 */
-	List<LoginPolicyVO> loginPolicyList;
+	private List<LoginPolicyVO> loginPolicyList;
+
 	/**
 	 * 삭제 여부
 	 */
-	String[] delYn;
+	@Getter
+	@Setter
+	private String[] delYn;
 
 	/**
 	 * @return the loginPolicyList
@@ -47,20 +54,6 @@ public class LoginPolicyVO extends LoginPolicy {
 	 */
 	public void setLoginPolicyList(List<LoginPolicyVO> loginPolicyList) {
 		this.loginPolicyList = loginPolicyList;
-	}
-
-	/**
-	 * @return the delYn
-	 */
-	public String[] getDelYn() {
-		return delYn;
-	}
-
-	/**
-	 * @param delYn the delYn to set
-	 */
-	public void setDelYn(String[] delYn) {
-		this.delYn = delYn;
 	}
 
 }
