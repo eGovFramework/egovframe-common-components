@@ -23,10 +23,7 @@ import egovframework.com.uat.uap.service.LoginPolicyVO;
 import egovframework.com.utl.sim.service.EgovClntInfo;
 
 /**
- * 로그인 정책 체크 필터
- * 
- * @author 공통서비스 개발팀 서준식
- * @since 2011.07.01
+
  * @version 1.0
  * @see
  *
@@ -35,8 +32,26 @@ import egovframework.com.utl.sim.service.EgovClntInfo;
  *
  *   수정일      수정자          수정내용
  *  -------    --------    ---------------------------
- *  2011.07.01  서준식          최초 생성
- *  2017-02-14  이정은          시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+
+ *
+ *      </pre>
+ */
+/**
+ * 로그인 정책 체크 필터
+ * 
+ * @author 공통서비스 개발팀 서준식
+ * @since 2011.07.01
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2011.07.01  서준식          최초 생성
+ *   2017-02-14  이정은          시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+ *   2025.07.30  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UncommentedEmptyMethodBody(빈 메소드에 빈메소드임을 나타내는 주석을 추가할 것)
  *
  *      </pre>
  */
