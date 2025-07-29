@@ -46,10 +46,6 @@ public class EgovLoginPolicyFilter implements Filter {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovLoginPolicyFilter.class);
 
-	@Override
-	public void destroy() {
-	}
-
 	/**
 	 * IP를 이용해 로그인을 제한하는 메서든
 	 * 
