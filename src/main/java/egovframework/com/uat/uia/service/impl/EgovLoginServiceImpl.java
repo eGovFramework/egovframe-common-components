@@ -227,7 +227,7 @@ public class EgovLoginServiceImpl extends EgovAbstractServiceImpl implements Ego
 		mapParam.put("USER_SE", vo.getUserSe());
 		mapParam.put("id", EgovStringUtil.isNullToString(vo.getId()));// KISA 보안약점 조치 (2018-10-29, 윤창원)
 		// 잠김시
-		if ("Y".equals((mapLockUserInfo.get("lockAt")))) {
+		if ("Y".equals(mapLockUserInfo.get("lockAt"))) {
 			sRtnCode = "L";
 			// 패드워드 인증시
 		} else if (((String) mapLockUserInfo.get("userPw")).equals(enpassword)) {
@@ -236,7 +236,7 @@ public class EgovLoginServiceImpl extends EgovAbstractServiceImpl implements Ego
 			loginDAO.updateLoginIncorrect(mapParam);
 			sRtnCode = "E";
 			// 패드워드 비인증시
-		} else if (!"Y".equals((mapLockUserInfo.get("lockAt")))) {
+		} else if (!"Y".equals(mapLockUserInfo.get("lockAt"))) {
 			// LOCK 설정
 			if (Integer.parseInt(String.valueOf(mapLockUserInfo.get("lockCnt"))) + 1 >= egovLoginConfig
 					.getLockCount()) {
