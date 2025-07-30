@@ -26,17 +26,20 @@ import egovframework.com.utl.sim.service.EgovFileScrty;
  * @see
  *
  *      <pre>
- * << 개정이력(Modification Information) >>
+ *  == 개정이력(Modification Information) ==
  *
- *  수정일               수정자            수정내용
- *  ----------   --------   ---------------------------
- *  2009.03.06   박지욱            최초 생성
- *  2011.08.26   서준식            EsntlId를 이용한 로그인 추가
- *  2014.12.08   이기하            암호화방식 변경(EgovFileScrty.encryptPassword)
- *  2017.07.21   장동한            로그인인증제한 작업
- *  2020.07.08   신용호            비밀번호를 수정한후 경과한 날짜 조회
- *  2021.05.30   정진오            디지털원패스 인증 회원 조회
- *  2024.10.29   LeeBaekHaeng		불필요 형변환 제거 (mapLockUserInfo.get("lockAt") ), @Override 표기
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.03.20  홍길동          최초 생성
+ *   2009.03.06  박지욱          최초 생성
+ *   2011.08.26  서준식          EsntlId를 이용한 로그인 추가
+ *   2014.12.08  이기하          암호화방식 변경(EgovFileScrty.encryptPassword)
+ *   2017.07.21  장동한          로그인인증제한 작업
+ *   2020.07.08  신용호          비밀번호를 수정한후 경과한 날짜 조회
+ *   2021.05.30  정진오          디지털원패스 인증 회원 조회
+ *   2024.10.29  이백행          불필요 형변환 제거 (mapLockUserInfo.get("lockAt") ), @Override 표기
+ *   2025.07.31  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UselessParentheses(불필요한 괄호사용)
+ *
  *      </pre>
  */
 @Service("loginService")
