@@ -283,10 +283,10 @@ public class CmtManageVO implements Serializable {
 	}
 
 	/**
-	 * @param wrkt_dt 설정할 작업 날짜
+	 * @param wrktDt 설정할 작업 날짜
 	 */
-	public void setWrktDt(String wrkt_dt) {
-		this.wrktDt = wrkt_dt;
+	public void setWrktDt(String wrktDt) {
+		this.wrktDt = wrktDt;
 	}
 
 }
