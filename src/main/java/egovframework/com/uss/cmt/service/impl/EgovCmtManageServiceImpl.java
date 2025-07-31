@@ -25,11 +25,13 @@ import egovframework.com.uss.cmt.service.EgovCmtManageService;
  * @see
  *
  *      <pre>
- * << 개정이력(Modification Information) >>
+ *  == 개정이력(Modification Information) ==
  *
- *  수정일          수정자       수정내용
- *  ----------    --------    ---------------------------
- *  2009.04.10     개발팀       최초 생성
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.04.10  개발팀          최초 생성
+ *   2025.08.01  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-SimpleDateFormatNeedsLocale(SimpleDateFormat 인스턴스를 생성할때 Locale 을 지정하는 것이 바람직함)
+ *   2025.08.01  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AvoidReassigningParameters(넘겨받는 메소드 parameter 값을 직접 변경하는 코드 탐지)
  *
  *      </pre>
  */
