@@ -5,19 +5,20 @@ import java.util.List;
 
 /**
  * 출퇴근관리 VO 클래스
+ * 
  * @author 표준프레임워크센터 개발팀
  * @since 2014.12.20
  * @version 1.0
  * @see
  *
- * <pre>
+ *      <pre>
  * << 개정이력(Modification Information) >>
  *
  *   수정일          수정자       수정내용
  *  -----------    --------    ---------------------------
  *   2014.12.20     개발팀       최초 생성
  *
- * </pre>
+ *      </pre>
  */
 public class CmtManageVO implements Serializable {
 
@@ -25,6 +26,7 @@ public class CmtManageVO implements Serializable {
 	 * serialVersionUID
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * 기본 생성자.
 	 */
