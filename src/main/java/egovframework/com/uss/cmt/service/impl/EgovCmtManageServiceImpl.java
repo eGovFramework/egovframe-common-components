@@ -75,7 +75,8 @@ public class EgovCmtManageServiceImpl extends EgovAbstractServiceImpl implements
 		String wrktmId = idgenService.getNextStringId();
 		cmtManageVO.setWrktmId(wrktmId);
 		// 출근시간
-		String formattedStartTime = new SimpleDateFormat("HH:mm").format(Calendar.getInstance().getTime());
+		String formattedStartTime = new SimpleDateFormat("HH:mm").format(Calendar.getInstance().getTime()); // NOPMD -
+																											// SimpleDateFormatNeedsLocale
 		cmtManageVO.setWrkStartTime(formattedStartTime);
 
 		return cmtManageDAO.insertWrkStartCmtInfo(cmtManageVO);
@@ -104,19 +105,20 @@ public class EgovCmtManageServiceImpl extends EgovAbstractServiceImpl implements
 	@Override
 	public int insertWrkEndCmtInfo(CmtManageVO cmtManageVO) throws Exception {
 
-		cmtManageVO = cmtManageDAO.selectWrkStartInfo(cmtManageVO);
+		CmtManageVO resultVO = cmtManageDAO.selectWrkStartInfo(cmtManageVO);
 		// 퇴근시간
-		String formattedEndTime = new SimpleDateFormat("HH:mm").format(Calendar.getInstance().getTime());
-		cmtManageVO.setWrkEndTime(formattedEndTime);
+		String formattedEndTime = new SimpleDateFormat("HH:mm").format(Calendar.getInstance().getTime()); // NOPMD -
+																											// SimpleDateFormatNeedsLocale
+		resultVO.setWrkEndTime(formattedEndTime);
 		// 회사별 Rule 기반으로 workhour / overtime_workhour를 결정한다. ex) DB 연동활용
-		cmtManageVO.setWrkHours("8");
-		cmtManageVO.setOvtmwrkHours("0");
+		resultVO.setWrkHours("8");
+		resultVO.setOvtmwrkHours("0");
 		// 출퇴근시간 Rule 기반으로 출퇴근상태를 구분한다. ex) 정상/지각/조회
 		String msg = egovMessageSource.getMessage("ussCmt.cmtManageServiceImpl.normal");
-		cmtManageVO.setWrkStartStatus(msg);
-		cmtManageVO.setWrkEndStatus(msg);
+		resultVO.setWrkStartStatus(msg);
+		resultVO.setWrkEndStatus(msg);
 
-		return cmtManageDAO.insertWrkEndCmtInfo(cmtManageVO);
+		return cmtManageDAO.insertWrkEndCmtInfo(resultVO);
 	}
 
 }
