@@ -156,35 +156,34 @@ public class EgovAnnvrsryManageController {
 		String sTempAnnvrsryDe = null;
 		String sTempCldrSe = null;
 		String sTempAnnvrsrySetup = null;
-		AnnvrsryManageVO annvrsryManageVO_Temp = new AnnvrsryManageVO();
-		annvrsryManageVO_Temp = egovAnnvrsryManageService.selectAnnvrsryManage(annvrsryManageVO);
+		AnnvrsryManageVO resultVO = egovAnnvrsryManageService.selectAnnvrsryManage(annvrsryManageVO);
 
-		if ("1".equals(annvrsryManageVO_Temp.getCldrSe())) {
+		if ("1".equals(resultVO.getCldrSe())) {
 			sTempCldrSe = egovMessageSource.getMessage("comUssIonAns.annvrsryGdcc.cldrSe1");// 양
 		} else {
 			sTempCldrSe = egovMessageSource.getMessage("comUssIonAns.annvrsryGdcc.cldrSe2");// 음
 		}
-		sTempAnnvrsryDe = annvrsryManageVO_Temp.getAnnvrsryDe() + "(" + sTempCldrSe + ")";
-		annvrsryManageVO_Temp.setAnnvrsryTemp4(sTempAnnvrsryDe);
+		sTempAnnvrsryDe = resultVO.getAnnvrsryDe() + "(" + sTempCldrSe + ")";
+		resultVO.setAnnvrsryTemp4(sTempAnnvrsryDe);
 
-		if ("Y".equals(annvrsryManageVO_Temp.getAnnvrsrySetup())) {
+		if ("Y".equals(resultVO.getAnnvrsrySetup())) {
 			sTempAnnvrsrySetup = "ON";
 		} else {
 			sTempAnnvrsrySetup = "OFF";
 		}
-		annvrsryManageVO_Temp.setAnnvrsryTemp5(sTempAnnvrsrySetup);
+		resultVO.setAnnvrsryTemp5(sTempAnnvrsrySetup);
 
-		model.addAttribute("annvrsryManageVO", annvrsryManageVO_Temp);
+		model.addAttribute("annvrsryManageVO", resultVO);
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
 		if (sCmd.equals("update")) {
 
-			annvrsryManage.setAnnId(annvrsryManageVO_Temp.getAnnId());
-			annvrsryManage.setAnnvrsryNm(annvrsryManageVO_Temp.getAnnvrsryNm());
-			annvrsryManage.setAnnvrsryDe(annvrsryManageVO_Temp.getAnnvrsryDe());
-			annvrsryManage.setCldrSe(annvrsryManageVO_Temp.getCldrSe());
-			annvrsryManage.setUsid(annvrsryManageVO_Temp.getUsid());
-			annvrsryManage.setAnnvrsrySe(annvrsryManageVO_Temp.getAnnvrsrySe());
+			annvrsryManage.setAnnId(resultVO.getAnnId());
+			annvrsryManage.setAnnvrsryNm(resultVO.getAnnvrsryNm());
+			annvrsryManage.setAnnvrsryDe(resultVO.getAnnvrsryDe());
+			annvrsryManage.setCldrSe(resultVO.getCldrSe());
+			annvrsryManage.setUsid(resultVO.getUsid());
+			annvrsryManage.setAnnvrsrySe(resultVO.getAnnvrsrySe());
 
 			ComDefaultCodeVO vo = new ComDefaultCodeVO();
 			vo.setCodeId("COM069");
@@ -394,7 +393,6 @@ public class EgovAnnvrsryManageController {
 		String sTempCldrSe = null;
 		String sTempAnnvrsrySetup = null;
 		String sAnnvrsryDe = null;
-		AnnvrsryManageVO annvrsryManageVO_Temp = new AnnvrsryManageVO();
 		/*
 		 * String sAnnvrsryDe_Temp = null;
 		 * 
@@ -404,47 +402,47 @@ public class EgovAnnvrsryManageController {
 		 * sAnnvrsryDe_Temp = EgovDateUtil.toSolar(sAnnvrsryDe_Temp, 0);
 		 * annvrsryManageVO.setAnnvrsryDe(sAnnvrsryDe_Temp); }
 		 */
-		annvrsryManageVO_Temp = egovAnnvrsryManageService.selectAnnvrsryManage(annvrsryManageVO);
-		sAnnvrsryDe = EgovStringUtil.removeMinusChar(annvrsryManageVO_Temp.getAnnvrsryDe());
-		if ("1".equals(annvrsryManageVO_Temp.getCldrSe())) {
+		AnnvrsryManageVO resultVO = egovAnnvrsryManageService.selectAnnvrsryManage(annvrsryManageVO);
+		sAnnvrsryDe = EgovStringUtil.removeMinusChar(resultVO.getAnnvrsryDe());
+		if ("1".equals(resultVO.getCldrSe())) {
 			sTempCldrSe = egovMessageSource.getMessage("comUssIonAns.annvrsryGdcc.cldrSe1");// 양
 		} else {
 			sTempCldrSe = egovMessageSource.getMessage("comUssIonAns.annvrsryGdcc.cldrSe2");// 음
 			sAnnvrsryDe = EgovDateUtil.toSolar(sAnnvrsryDe, 0);
 		}
 
-		sTempAnnvrsryDe = annvrsryManageVO_Temp.getAnnvrsryDe() + "(" + sTempCldrSe + ")";
-		annvrsryManageVO_Temp.setAnnvrsryTemp4(sTempAnnvrsryDe);
+		sTempAnnvrsryDe = resultVO.getAnnvrsryDe() + "(" + sTempCldrSe + ")";
+		resultVO.setAnnvrsryTemp4(sTempAnnvrsryDe);
 
-		if ("Y".equals(annvrsryManageVO_Temp.getAnnvrsrySetup())) {
+		if ("Y".equals(resultVO.getAnnvrsrySetup())) {
 			sTempAnnvrsrySetup = "ON";
 		} else {
 			sTempAnnvrsrySetup = "OFF";
 		}
-		annvrsryManageVO_Temp.setAnnvrsryTemp5(sTempAnnvrsrySetup);
+		resultVO.setAnnvrsryTemp5(sTempAnnvrsrySetup);
 
 		/* 날짜 사이의 기간 산출 */
 		long resultDay = 0;
-		Calendar to_day = Calendar.getInstance(); // Calendar객체를 생성합니다.
-		Calendar target_day = Calendar.getInstance();
+		Calendar today = Calendar.getInstance(); // Calendar객체를 생성합니다.
+		Calendar targetDate = Calendar.getInstance();
 
 		if (sAnnvrsryDe != null && !sAnnvrsryDe.equals("")) {
-			target_day.set(Integer.parseInt(sAnnvrsryDe.substring(0, 4)),
+			targetDate.set(Integer.parseInt(sAnnvrsryDe.substring(0, 4)),
 					Integer.parseInt(sAnnvrsryDe.substring(4, 6)) - 1, Integer.parseInt(sAnnvrsryDe.substring(6, 8)));
 		} else {
-			target_day.set(to_day.get(Calendar.YEAR), to_day.get(Calendar.MONTH) + 1, to_day.get(Calendar.DATE));
+			targetDate.set(today.get(Calendar.YEAR), today.get(Calendar.MONTH) + 1, today.get(Calendar.DATE));
 		}
 
-		long resultTime = target_day.getTime().getTime() - to_day.getTime().getTime(); // 차이 구하기
+		long resultTime = targetDate.getTime().getTime() - today.getTime().getTime(); // 차이 구하기
 		if (resultTime > 0) {
 			resultDay = resultTime / (1000 * 60 * 60 * 24);// 일로 바꾸기
 		} else {
 			resultDay = 0;
 		}
 
-		annvrsryManageVO_Temp.setAnnvrsryBeginDe(Long.toString(resultDay));
+		resultVO.setAnnvrsryBeginDe(Long.toString(resultDay));
 
-		model.addAttribute("annvrsryManageVO", annvrsryManageVO_Temp);
+		model.addAttribute("annvrsryManageVO", resultVO);
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
 		return "egovframework/com/uss/ion/ans/EgovAnnvrsryGdcc";
