@@ -48,21 +48,22 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  * </pre>
  * 
  * @author 이용
+ * @since 2009.06.25
  * @version 1.0
- * @created 06-15-2010 오후 2:08:56
- * 
- *          <pre>
- * << 개정이력(Modification Information) >>
+ * @see
  *
- *  수정일               수정자            수정내용
- *  ----------   --------   ---------------------------
- *  2009.06.25   이용               최초 생성
- *  2011.08.26   정진오            IncludedInfo annotation 추가
- *  2020.11.02   신용호            KISA 보안약점 조치 - 자원해제
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
- *          </pre>
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.06.25  이용           최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2020.11.02  신용호          KISA 보안약점 조치 - 자원해제
+ *   2025.08.02  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *
+ *      </pre>
  */
-
 @Controller
 public class EgovAnnvrsryManageController {
 
