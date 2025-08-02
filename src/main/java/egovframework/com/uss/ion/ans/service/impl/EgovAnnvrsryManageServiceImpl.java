@@ -152,20 +152,20 @@ public class EgovAnnvrsryManageServiceImpl extends EgovAbstractServiceImpl imple
 	@Override
 	public List<AnnvrsryManageVO> selectAnnvrsryGdcc(AnnvrsryManageVO annvrsryManageVO) throws Exception {
 
-		List<AnnvrsryManageVO> result_temp = annvrsryManageDAO.selectAnnvrsryGdcc(annvrsryManageVO);
+		List<AnnvrsryManageVO> resultList = annvrsryManageDAO.selectAnnvrsryGdcc(annvrsryManageVO);
 		List<AnnvrsryManageVO> result = new ArrayList<AnnvrsryManageVO>();
 		long lTemp = 0;
-		int num = result_temp.size();
+		int num = resultList.size();
 
 		for (int i = 0; i < num; i++) {
-			AnnvrsryManageVO annvrsryManageVO1 = result_temp.get(i);
+			AnnvrsryManageVO annvrsryManageVO1 = resultList.get(i);
 			lTemp = getDateCount(annvrsryManageVO1);
 
 			if (lTemp >= 0
 					&& lTemp < Long.parseLong(annvrsryManageVO1.getAnnvrsryBeginDe().replaceAll("\\p{Space}", ""))) {
 				annvrsryManageVO1.setAnnvrsryDe(EgovDateUtil.formatDate(annvrsryManageVO1.getAnnvrsryDe(), "-"));
-				result_temp.set(i, annvrsryManageVO1);
-				result.add(result_temp.get(i));
+				resultList.set(i, annvrsryManageVO1);
+				result.add(resultList.get(i));
 			}
 		}
 		return result;
@@ -192,8 +192,8 @@ public class EgovAnnvrsryManageServiceImpl extends EgovAbstractServiceImpl imple
 
 		/* 날짜 사이의 기간 산출 */
 		long resultDay = 0;
-		Calendar to_day = Calendar.getInstance(); // Calendar객체를 생성합니다.
-		Calendar target_day = Calendar.getInstance();
+		Calendar today = Calendar.getInstance(); // Calendar객체를 생성합니다.
+		Calendar targetDate = Calendar.getInstance();
 
 		String sAnnvrsryDe = null;
 
@@ -201,10 +201,10 @@ public class EgovAnnvrsryManageServiceImpl extends EgovAbstractServiceImpl imple
 
 		// 매년반복일 경우
 		if ("1".equals(annvrsryManageVO.getReptitSe())) {
-			sAnnvrsryDe = Integer.toString(to_day.get(Calendar.YEAR))
-					+ (sAnnvrsryDe == null || sAnnvrsryDe.length() < 8 ? to_day.get(Calendar.MONTH)
+			sAnnvrsryDe = Integer.toString(today.get(Calendar.YEAR))
+					+ (sAnnvrsryDe == null || sAnnvrsryDe.length() < 8 ? today.get(Calendar.MONTH)
 							: sAnnvrsryDe.substring(4, 6))
-					+ (sAnnvrsryDe == null || sAnnvrsryDe.length() < 8 ? to_day.get(Calendar.DATE)
+					+ (sAnnvrsryDe == null || sAnnvrsryDe.length() < 8 ? today.get(Calendar.DATE)
 							: sAnnvrsryDe.substring(6, 8));
 		}
 
@@ -214,13 +214,13 @@ public class EgovAnnvrsryManageServiceImpl extends EgovAbstractServiceImpl imple
 		}
 
 		if (sAnnvrsryDe != null && !sAnnvrsryDe.equals("")) {
-			target_day.set(Integer.parseInt(sAnnvrsryDe.substring(0, 4)),
+			targetDate.set(Integer.parseInt(sAnnvrsryDe.substring(0, 4)),
 					Integer.parseInt(sAnnvrsryDe.substring(4, 6)) - 1, Integer.parseInt(sAnnvrsryDe.substring(6, 8)));
 		} else {
-			target_day.set(to_day.get(Calendar.YEAR), to_day.get(Calendar.MONTH) + 1, to_day.get(Calendar.DATE));
+			targetDate.set(today.get(Calendar.YEAR), today.get(Calendar.MONTH) + 1, today.get(Calendar.DATE));
 		}
 
-		long resultTime = target_day.getTime().getTime() - to_day.getTime().getTime(); // 차이 구하기
+		long resultTime = targetDate.getTime().getTime() - today.getTime().getTime(); // 차이 구하기
 		if (resultTime > 0) {
 			resultDay = resultTime / (1000 * 60 * 60 * 24);// 일로 바꾸기
 		} else {
