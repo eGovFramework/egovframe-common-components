@@ -2,6 +2,7 @@ package egovframework.com.uss.ion.bnt.service.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
@@ -14,9 +15,10 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.xssf.usermodel.XSSFCell;
-import org.apache.poi.xssf.usermodel.XSSFRow;
-import org.apache.poi.xssf.usermodel.XSSFSheet;
+import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.Row;
+import org.apache.poi.ss.usermodel.Sheet;
+import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.excel.EgovExcelService;
@@ -400,57 +402,53 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 		List<BndtManageVO> list = new ArrayList<BndtManageVO>();
 
 		String sBndtDe = null;
-		XSSFWorkbook hssfWB = null;// = (XSSFWorkbook) excelZipService.loadWorkbook(inputStream,null);
-		try {
-			hssfWB = new XSSFWorkbook(inputStream);
+		try (Workbook workbook = new XSSFWorkbook(inputStream);) {
+			// 엑셀 파일 시트 개수 확인 sheet = 1
+			if (workbook != null && workbook.getNumberOfSheets() == 1) {
+				Sheet bndtSheet = workbook.getSheetAt(0); // 당직자 시트 가져오기
+//	            XSSFRow   bndtRow    = bndtSheet.getRow(1); //당직자 row 가져오기
+//	            bndtSheetRowCnt      = bndtRow.getPhysicalNumberOfCells(); //당직자 cell Cnt
+				int rowsCnt = bndtSheet.getPhysicalNumberOfRows(); // 행 개수 가져오기
 
-		} catch (IOException e) {// KISA 보안약점 조치 (2018-10-29, 윤창원)
-			LOGGER.debug("=====>>>>> ERR : IOException " + e.getMessage());
-		}
+				BndtManageVO checkBndtManageVO = new BndtManageVO();
+				for (int j = 1; j < rowsCnt; j++) { // row 루프
+					BndtManageVO bndtManageVO = new BndtManageVO();
+					Row row = bndtSheet.getRow(j); // row 가져오기
+					if (row != null) {
+//	                    int cells = row.getPhysicalNumberOfCells(); //cell 개수 가져오기
+						Cell cell = null;
+						cell = row.getCell(0); // 당직일자
+						if (cell != null) {
+							sBndtDe = cell.getStringCellValue();
+						}
+						cell = row.getCell(1); // 당직자ID
+						if (cell != null) {
+							sTempId = cell.getStringCellValue();
+						}
+						cell = row.getCell(2); // 당직자명
+						if (cell != null) {
+							sTempNm = cell.getStringCellValue();
+						}
+						checkBndtManageVO.setTempBndtNm(sTempNm); // 당직자ID
+						checkBndtManageVO.setTempBndtId(sTempId); // 당직자명
 
-		// 엑셀 파일 시트 개수 확인 sheet = 1
-		if (hssfWB != null && hssfWB.getNumberOfSheets() == 1) {
-			XSSFSheet bndtSheet = hssfWB.getSheetAt(0); // 당직자 시트 가져오기
-//            XSSFRow   bndtRow    = bndtSheet.getRow(1); //당직자 row 가져오기
-//            bndtSheetRowCnt      = bndtRow.getPhysicalNumberOfCells(); //당직자 cell Cnt
-			int rowsCnt = bndtSheet.getPhysicalNumberOfRows(); // 행 개수 가져오기
+						// 최두영 로직변경
+						bndtManageVO = bndtManageDAO.selectBndtManageBnde(checkBndtManageVO);
+						if (bndtManageVO == null) {
+							bndtManageVO = new BndtManageVO();
+							BeanUtils.copyProperties(checkBndtManageVO, bndtManageVO);
+						}
 
-			BndtManageVO checkBndtManageVO = new BndtManageVO();
-			for (int j = 1; j < rowsCnt; j++) { // row 루프
-				BndtManageVO bndtManageVO = new BndtManageVO();
-				XSSFRow row = bndtSheet.getRow(j); // row 가져오기
-				if (row != null) {
-//                    int cells = row.getPhysicalNumberOfCells(); //cell 개수 가져오기
-					XSSFCell cell = null;
-					cell = row.getCell(0); // 당직일자
-					if (cell != null) {
-						sBndtDe = cell.getStringCellValue();
+						bndtManageVO.setBndtDe(sBndtDe);
+						bndtManageVO.setDateWeek(getDateWeekInt(sBndtDe));
+						bndtManageVO.setTempBndtWeek(getDateWeekString(sBndtDe));
+
+						list.add(bndtManageVO);
 					}
-					cell = row.getCell(1); // 당직자ID
-					if (cell != null) {
-						sTempId = cell.getStringCellValue();
-					}
-					cell = row.getCell(2); // 당직자명
-					if (cell != null) {
-						sTempNm = cell.getStringCellValue();
-					}
-					checkBndtManageVO.setTempBndtNm(sTempNm); // 당직자ID
-					checkBndtManageVO.setTempBndtId(sTempId); // 당직자명
-
-					// 최두영 로직변경
-					bndtManageVO = bndtManageDAO.selectBndtManageBnde(checkBndtManageVO);
-					if (bndtManageVO == null) {
-						bndtManageVO = new BndtManageVO();
-						BeanUtils.copyProperties(checkBndtManageVO, bndtManageVO);
-					}
-
-					bndtManageVO.setBndtDe(sBndtDe);
-					bndtManageVO.setDateWeek(getDateWeekInt(sBndtDe));
-					bndtManageVO.setTempBndtWeek(getDateWeekString(sBndtDe));
-
-					list.add(bndtManageVO);
 				}
 			}
+		} catch (IOException e) { // KISA 보안약점 조치 (2018-10-29, 윤창원)
+			throw new UncheckedIOException(e);
 		}
 
 		return list;
@@ -503,7 +501,7 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 	 */
 	@SuppressWarnings("static-access")
 	private int getDateWeekInt(String sDate) throws Exception {
-		Calendar target_day = Calendar.getInstance();
+		Calendar targetDate = Calendar.getInstance();
 		String sDayOfWeek = null;
 		int iWeek = 0;
 		sDayOfWeek = EgovStringUtil.removeMinusChar(sDate);
@@ -511,9 +509,9 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 		if (sDayOfWeek == null) {
 			return 0;
 		}
-		target_day.set(Integer.parseInt(sDayOfWeek.substring(0, 4)), Integer.parseInt(sDayOfWeek.substring(4, 6)) - 1,
+		targetDate.set(Integer.parseInt(sDayOfWeek.substring(0, 4)), Integer.parseInt(sDayOfWeek.substring(4, 6)) - 1,
 				Integer.parseInt(sDayOfWeek.substring(6, 8)));
-		iWeek = target_day.get(target_day.DAY_OF_WEEK);
+		iWeek = targetDate.get(targetDate.DAY_OF_WEEK);
 		return iWeek;
 	}
 
@@ -529,13 +527,13 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 		String sDayOfWeekReturnValue = null;
 		sDayOfWeek = EgovStringUtil.removeMinusChar(sDate);
 		String[] dayOfWeek = { "일", "월", "화", "수", "목", "금", "토" };
-		Calendar target_day = new GregorianCalendar();
+		Calendar targetDate = new GregorianCalendar();
 
 		if (sDayOfWeek != null && sDayOfWeek.length() >= 8) {
-			target_day.set(Integer.parseInt(sDayOfWeek.substring(0, 4)),
+			targetDate.set(Integer.parseInt(sDayOfWeek.substring(0, 4)),
 					Integer.parseInt(sDayOfWeek.substring(4, 6)) - 1, Integer.parseInt(sDayOfWeek.substring(6, 8)));
 			sDayOfWeekReturnValue = EgovDateUtil.formatDate(sDayOfWeek, "-") + " "
-					+ dayOfWeek[target_day.get(Calendar.DAY_OF_WEEK) - 1];
+					+ dayOfWeek[targetDate.get(Calendar.DAY_OF_WEEK) - 1];
 		}
 
 		return sDayOfWeekReturnValue;
