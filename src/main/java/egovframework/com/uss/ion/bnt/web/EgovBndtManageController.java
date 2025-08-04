@@ -59,14 +59,38 @@ import egovframework.com.utl.fcc.service.EgovFileUploadUtil;
  *
  *  수정일              수정자             수정내용
  *  ----------  --------    ---------------------------
- *  2009.06.25   이용              최초 생성
- *  2011.08.26   정진오            IncludedInfo annotation 추가
- *  2018.08.29   신용호            xlsx 업로드 할수 있도록 수정
- *  2020.11.02   신용호            KISA 보안약점 조치 - 자원해제
+
  *
  *          </pre>
  */
-
+/**
+ * <pre>
+ * 개요
+ * - 당직관리에 대한 controller 클래스를 정의한다.
+ *
+ * 상세내용
+ * - 당직관리에 대한 등록, 수정, 삭제, 조회 기능을 제공한다.
+ * - 당직관리의 조회기능은 목록조회, 상세조회로 구분된다.
+ * </pre>
+ * 
+ * @author 이용
+ * @since 2010.06.15
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.06.15 이용            최초 생성
+ *   2011.08.26 정진오           IncludedInfo annotation 추가
+ *   2018.08.29 신용호           xlsx 업로드 할수 있도록 수정
+ *   2020.11.02 신용호           KISA 보안약점 조치 - 자원해제
+ *   2025.08.05  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *
+ *      </pre>
+ */
 @Controller
 public class EgovBndtManageController {
 
