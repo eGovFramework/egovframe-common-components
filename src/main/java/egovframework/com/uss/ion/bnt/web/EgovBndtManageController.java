@@ -172,16 +172,16 @@ public class EgovBndtManageController {
 			@ModelAttribute("bndtManage") BndtManage bndtManage, @RequestParam Map<?, ?> commandMap, ModelMap model)
 			throws Exception {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd"); // 상세정보 구분
-		BndtManageVO bndtManageVO_Temp = new BndtManageVO();
-		bndtManageVO_Temp = egovBndtManageService.selectBndtManage(bndtManageVO);
 
-		model.addAttribute("bndtManageVO", bndtManageVO_Temp);
+		BndtManageVO resultVO = egovBndtManageService.selectBndtManage(bndtManageVO);
+
+		model.addAttribute("bndtManageVO", resultVO);
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
 		if (sCmd.equals("updt")) {
-			bndtManage.setBndtDe(bndtManageVO_Temp.getBndtDe());
-			bndtManage.setBndtId(bndtManageVO_Temp.getBndtId());
-			bndtManage.setRemark(bndtManageVO_Temp.getRemark());
+			bndtManage.setBndtDe(resultVO.getBndtDe());
+			bndtManage.setBndtId(resultVO.getBndtId());
+			bndtManage.setRemark(resultVO.getRemark());
 			model.addAttribute("bndtManage", bndtManage);
 
 			return "egovframework/com/uss/ion/bnt/EgovBndtManageUpdt";
@@ -353,19 +353,19 @@ public class EgovBndtManageController {
 			@ModelAttribute("bndtCeckManage") BndtCeckManage bndtCeckManage, @RequestParam Map<?, ?> commandMap,
 			ModelMap model) throws Exception {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd"); // 상세정보 구분
-		BndtCeckManageVO bndtCeckManageVO_Temp = new BndtCeckManageVO();
-		bndtCeckManageVO_Temp = egovBndtManageService.selectBndtCeckManage(bndtCeckManageVO);
 
-		model.addAttribute("bndtCeckManageVO", bndtCeckManageVO_Temp);
+		BndtCeckManageVO resultBndtCeckManageVO = egovBndtManageService.selectBndtCeckManage(bndtCeckManageVO);
+
+		model.addAttribute("bndtCeckManageVO", resultBndtCeckManageVO);
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
 		if (sCmd.equals("updt")) {
-			BndtCeckManage bndtCeckManage_Temp = new BndtCeckManage();
-			bndtCeckManage_Temp.setBndtCeckSe(bndtCeckManageVO_Temp.getBndtCeckSe());
-			bndtCeckManage_Temp.setBndtCeckCd(bndtCeckManageVO_Temp.getBndtCeckSe());
-			bndtCeckManage_Temp.setBndtCeckCdNm(bndtCeckManageVO_Temp.getBndtCeckCdNm());
-			bndtCeckManage_Temp.setUseAt(bndtCeckManageVO_Temp.getUseAt());
-			model.addAttribute("bndtCeckManage", bndtCeckManage_Temp);
+			BndtCeckManage resultBndtCeckManage = new BndtCeckManage();
+			resultBndtCeckManage.setBndtCeckSe(resultBndtCeckManageVO.getBndtCeckSe());
+			resultBndtCeckManage.setBndtCeckCd(resultBndtCeckManageVO.getBndtCeckSe());
+			resultBndtCeckManage.setBndtCeckCdNm(resultBndtCeckManageVO.getBndtCeckCdNm());
+			resultBndtCeckManage.setUseAt(resultBndtCeckManageVO.getUseAt());
+			model.addAttribute("bndtCeckManage", resultBndtCeckManage);
 			return "egovframework/com/uss/ion/bnt/EgovBndtCeckManageUpdt";
 		} else {
 			return "egovframework/com/uss/ion/bnt/EgovBndtCeckManageDetail";
