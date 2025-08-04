@@ -180,8 +180,8 @@ public class EgovEventCmpgnController {
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM035");
 
-		List<CmmnDetailCode> _result = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("eventTyCode", _result);
+		List<CmmnDetailCode> eventTyCode = cmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("eventTyCode", eventTyCode);
 
 		model.addAttribute("eventCmpgnVO", new EventCmpgnVO());
 
@@ -237,8 +237,8 @@ public class EgovEventCmpgnController {
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM035");
 
-		List<CmmnDetailCode> _result = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("eventTyCode", _result);
+		List<CmmnDetailCode> eventTyCode = cmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("eventTyCode", eventTyCode);
 
 		EventCmpgnVO eventCmpgnVO = new EventCmpgnVO();
 
@@ -369,12 +369,12 @@ public class EgovEventCmpgnController {
 		// 공통코드를 가져오기 위한 Vo
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM014"); // 성별
-		List<CmmnDetailCode> _result = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("sexdstnCode", _result);
+		List<CmmnDetailCode> sexdstnCode = cmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("sexdstnCode", sexdstnCode);
 
 		vo.setCodeId("COM034"); // 직업코드
-		_result = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("occpTyCode", _result);
+		List<CmmnDetailCode> occpTyCode = cmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("occpTyCode", occpTyCode);
 
 		model.addAttribute("tnextrlHrVO", new TnextrlHrVO());
 
@@ -429,12 +429,12 @@ public class EgovEventCmpgnController {
 		// 공통코드를 가져오기 위한 Vo
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM014"); // 성별
-		List<CmmnDetailCode> _result = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("sexdstnCode", _result);
+		List<CmmnDetailCode> sexdstnCode = cmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("sexdstnCode", sexdstnCode);
 
 		vo.setCodeId("COM034"); // 직업코드
-		_result = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("occpTyCode", _result);
+		List<CmmnDetailCode> occpTyCode = cmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("occpTyCode", occpTyCode);
 
 		TnextrlHrVO tnextrlHrVO = new TnextrlHrVO();
 
