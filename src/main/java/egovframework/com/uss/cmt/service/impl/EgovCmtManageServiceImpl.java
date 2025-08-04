@@ -1,6 +1,7 @@
 package egovframework.com.uss.cmt.service.impl;
 
 import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -76,10 +77,11 @@ public class EgovCmtManageServiceImpl extends EgovAbstractServiceImpl implements
 		// Key
 		String wrktmId = idgenService.getNextStringId();
 		cmtManageVO.setWrktmId(wrktmId);
+
 		// 출근시간
-		String formattedStartTime = new SimpleDateFormat("HH:mm").format(Calendar.getInstance().getTime()); // NOPMD -
-																											// SimpleDateFormatNeedsLocale
-		cmtManageVO.setWrkStartTime(formattedStartTime);
+		Date date = Calendar.getInstance().getTime();
+		String wrkStartTime = new SimpleDateFormat("HH:mm").format(date); // NOPMD - SimpleDateFormatNeedsLocale
+		cmtManageVO.setWrkStartTime(wrkStartTime);
 
 		return cmtManageDAO.insertWrkStartCmtInfo(cmtManageVO);
 	}
@@ -108,10 +110,12 @@ public class EgovCmtManageServiceImpl extends EgovAbstractServiceImpl implements
 	public int insertWrkEndCmtInfo(CmtManageVO cmtManageVO) throws Exception {
 
 		CmtManageVO resultVO = cmtManageDAO.selectWrkStartInfo(cmtManageVO);
+
 		// 퇴근시간
-		String formattedEndTime = new SimpleDateFormat("HH:mm").format(Calendar.getInstance().getTime()); // NOPMD -
-																											// SimpleDateFormatNeedsLocale
-		resultVO.setWrkEndTime(formattedEndTime);
+		Date date = Calendar.getInstance().getTime();
+		String wrkEndTime = new SimpleDateFormat("HH:mm").format(date); // NOPMD - SimpleDateFormatNeedsLocale
+		resultVO.setWrkEndTime(wrkEndTime);
+
 		// 회사별 Rule 기반으로 workhour / overtime_workhour를 결정한다. ex) DB 연동활용
 		resultVO.setWrkHours("8");
 		resultVO.setOvtmwrkHours("0");
