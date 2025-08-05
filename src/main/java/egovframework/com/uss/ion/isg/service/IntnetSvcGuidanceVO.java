@@ -13,20 +13,27 @@ package egovframework.com.uss.ion.isg.service;
 
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class IntnetSvcGuidanceVO extends IntnetSvcGuidance {
 
 	/**
 	 * serialVersionUID
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * 인터넷서비스 목록
 	 */
-	List<IntnetSvcGuidanceVO> intnetSvcGuidanceList;
+	private List<IntnetSvcGuidanceVO> intnetSvcGuidanceList;
+
 	/**
 	 * 삭제여부
 	 */
-	String[] delYn;
+	@Getter
+	@Setter
+	private String[] delYn;
 
 	/**
 	 * @return the intnetSvcGuidanceList
@@ -40,20 +47,6 @@ public class IntnetSvcGuidanceVO extends IntnetSvcGuidance {
 	 */
 	public void setIntnetSvcGuidanceList(List<IntnetSvcGuidanceVO> intnetSvcGuidanceList) {
 		this.intnetSvcGuidanceList = intnetSvcGuidanceList;
-	}
-
-	/**
-	 * @return the delYn
-	 */
-	public String[] getDelYn() {
-		return delYn;
-	}
-
-	/**
-	 * @param delYn the delYn to set
-	 */
-	public void setDelYn(String[] delYn) {
-		this.delYn = delYn;
 	}
 
 }
