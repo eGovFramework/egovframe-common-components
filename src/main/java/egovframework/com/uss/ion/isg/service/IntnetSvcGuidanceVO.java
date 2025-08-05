@@ -22,37 +22,38 @@ public class IntnetSvcGuidanceVO extends IntnetSvcGuidance {
 	/**
 	 * 인터넷서비스 목록
 	 */
-	List <IntnetSvcGuidanceVO> intnetSvcGuidanceList;
+	List<IntnetSvcGuidanceVO> intnetSvcGuidanceList;
 	/**
 	 * 삭제여부
-	 */	
-	String [] delYn;
-	
+	 */
+	String[] delYn;
+
 	/**
 	 * @return the intnetSvcGuidanceList
 	 */
 	public List<IntnetSvcGuidanceVO> getIntnetSvcGuidanceList() {
 		return intnetSvcGuidanceList;
 	}
+
 	/**
 	 * @param intnetSvcGuidanceList the intnetSvcGuidanceList to set
 	 */
-	public void setIntnetSvcGuidanceList(
-			List<IntnetSvcGuidanceVO> intnetSvcGuidanceList) {
+	public void setIntnetSvcGuidanceList(List<IntnetSvcGuidanceVO> intnetSvcGuidanceList) {
 		this.intnetSvcGuidanceList = intnetSvcGuidanceList;
 	}
+
 	/**
 	 * @return the delYn
 	 */
 	public String[] getDelYn() {
 		return delYn;
 	}
+
 	/**
 	 * @param delYn the delYn to set
 	 */
 	public void setDelYn(String[] delYn) {
 		this.delYn = delYn;
 	}
-	
-	
+
 }
