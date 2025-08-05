@@ -382,10 +382,8 @@ public class EgovEventManageController {
 			model.addAttribute("eventManageVO", eventManageVO);
 			return "forward:/uss/ion/evt/EgovEventRceptRegist.do";
 		} else {
-			EventManageVO eventManageVO_check = new EventManageVO();
-			eventManageVO_check = egovEventManageService.selectEventManage(eventManageVO);
-			if (eventManageVO_check.getPsncpa() > egovEventManageService
-					.selectEventReqstAtdrnListTotCnt(eventManageVO)) {
+			EventManageVO resultVO = egovEventManageService.selectEventManage(eventManageVO);
+			if (resultVO.getPsncpa() > egovEventManageService.selectEventReqstAtdrnListTotCnt(eventManageVO)) {
 				java.util.Calendar cal = java.util.Calendar.getInstance();
 
 				int iYear = cal.get(java.util.Calendar.YEAR);
