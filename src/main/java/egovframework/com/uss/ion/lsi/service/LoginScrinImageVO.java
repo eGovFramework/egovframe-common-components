@@ -13,20 +13,27 @@ package egovframework.com.uss.ion.lsi.service;
 
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class LoginScrinImageVO extends LoginScrinImage {
 
 	/**
 	 * serialVersionUID
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * 로그인화면이미지 목록
 	 */
-	List<LoginScrinImageVO> loginScrinImageList;
+	private List<LoginScrinImageVO> loginScrinImageList;
+
 	/**
 	 * 삭제대상 목록
 	 */
-	String[] delYn;
+	@Getter
+	@Setter
+	private String[] delYn;
 
 	/**
 	 * @return the loginScrinImageList
@@ -40,20 +47,6 @@ public class LoginScrinImageVO extends LoginScrinImage {
 	 */
 	public void setLoginScrinImageList(List<LoginScrinImageVO> loginScrinImageList) {
 		this.loginScrinImageList = loginScrinImageList;
-	}
-
-	/**
-	 * @return the delYn
-	 */
-	public String[] getDelYn() {
-		return delYn;
-	}
-
-	/**
-	 * @param delYn the delYn to set
-	 */
-	public void setDelYn(String[] delYn) {
-		this.delYn = delYn;
 	}
 
 }
