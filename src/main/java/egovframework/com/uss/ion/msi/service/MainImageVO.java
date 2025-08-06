@@ -13,20 +13,27 @@ package egovframework.com.uss.ion.msi.service;
 
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class MainImageVO extends MainImage {
 
 	/**
 	 * serialVersionUID
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * 메인화면이미지 목록
 	 */
-	List<MainImageVO> mainImageList;
+	private List<MainImageVO> mainImageList;
+
 	/**
 	 * 삭제대상 목록
 	 */
-	String[] delYn;
+	@Getter
+	@Setter
+	private String[] delYn;
 
 	/**
 	 * @return the mainImageList
@@ -40,20 +47,6 @@ public class MainImageVO extends MainImage {
 	 */
 	public void setMainImageList(List<MainImageVO> mainImageList) {
 		this.mainImageList = mainImageList;
-	}
-
-	/**
-	 * @return the delYn
-	 */
-	public String[] getDelYn() {
-		return delYn;
-	}
-
-	/**
-	 * @param delYn the delYn to set
-	 */
-	public void setDelYn(String[] delYn) {
-		this.delYn = delYn;
 	}
 
 }
