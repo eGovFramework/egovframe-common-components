@@ -21,36 +21,39 @@ public class LoginScrinImageVO extends LoginScrinImage {
 	private static final long serialVersionUID = 1L;
 	/**
 	 * 로그인화면이미지 목록
-	 */	
+	 */
 	List<LoginScrinImageVO> loginScrinImageList;
 	/**
 	 * 삭제대상 목록
-	 */		
-    String[] delYn;
-    
+	 */
+	String[] delYn;
+
 	/**
 	 * @return the loginScrinImageList
 	 */
 	public List<LoginScrinImageVO> getLoginScrinImageList() {
 		return loginScrinImageList;
 	}
+
 	/**
 	 * @param loginScrinImageList the loginScrinImageList to set
 	 */
 	public void setLoginScrinImageList(List<LoginScrinImageVO> loginScrinImageList) {
 		this.loginScrinImageList = loginScrinImageList;
 	}
+
 	/**
 	 * @return the delYn
 	 */
 	public String[] getDelYn() {
 		return delYn;
 	}
+
 	/**
 	 * @param delYn the delYn to set
 	 */
 	public void setDelYn(String[] delYn) {
 		this.delYn = delYn;
-	}	
-    
+	}
+
 }
