@@ -13,14 +13,15 @@ import lombok.Setter;
  * @since 2010.06.16
  * @version 1.0
  * @see
- * 
+ *
  *      <pre>
- * &lt;&lt; 개정이력(Modification Information) &gt;&gt;
- *   
+ *  == 개정이력(Modification Information) ==
+ *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.07.03  장동한          최초 생성
- * 
+ *   2010.06.16  장동한          최초 생성
+ *   2025.08.08  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AvoidArrayLoops(배열의 값을 루프문을 이용하여 복사하는 것 보다, System.arraycopy() 메소드를 이용하여 복사하는 것이 효율적이며 수행 속도가 빠름)
+ *
  *      </pre>
  */
 @SuppressWarnings("serial")
