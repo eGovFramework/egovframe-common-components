@@ -6,68 +6,71 @@ import egovframework.com.cmm.ComDefaultVO;
 
 /**
  * 쪽지 관리(보내기) Model and VO Class 구현
+ * 
  * @author 공통서비스 장동한
  * @since 2010.06.16
  * @version 1.0
- * @see <pre>
+ * @see
+ * 
+ *      <pre>
  * &lt;&lt; 개정이력(Modification Information) &gt;&gt;
  *   
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.07.03  장동한          최초 생성
  * 
- * </pre>
+ *      </pre>
  */
 @SuppressWarnings("serial")
-public class NoteManageVO extends ComDefaultVO implements Serializable{
-    	
+public class NoteManageVO extends ComDefaultVO implements Serializable {
+
 	/** 쪽지 ID */
 	private String noteId;
-	
+
 	/** 쪽지 송신 ID */
 	private String noteTrnsmitId;
-	
+
 	/** 쪽지 수신 ID */
 	private String noteRecptnId;
-	
+
 	/** 수신자 ID */
 	private String rcverId;
-	
+
 	/** 개봉여부 */
 	private String openYn;
-	
+
 	/** 수신구분 */
 	private String recptnSe;
-	
+
 	/** 쪽지 내용 */
 	private String noteCn;
-	
+
 	/** 쪽지 제목 */
 	private String noteSj;
 
 	/** 쪽지 발신자 */
 	private String trnsmiterId;
-	
+
 	/** 쪽지 수신자 목록 */
 	private String recptnEmpList;
-	
+
 	/** 쪽지 첨부파일 아이디 */
 	private String atchFileId;
-	
+
 	/** 쪽지 첨부파일 */
 	private byte[] atchFile;
-	
-    /** 최초등록시점 */
-    private String frstRegisterPnttm;
 
-    /** 최초등록아이디 */
-    private String frstRegisterId;
+	/** 최초등록시점 */
+	private String frstRegisterPnttm;
 
-    /** 최종수정일 */
-    private String lastUpdusrPnttm;
+	/** 최초등록아이디 */
+	private String frstRegisterId;
 
-    /** 최종수정자 아이디 */
-    private String lastUpdusrId;
+	/** 최종수정일 */
+	private String lastUpdusrPnttm;
+
+	/** 최종수정자 아이디 */
+	private String lastUpdusrId;
 
 	/**
 	 * @return the noteId
@@ -228,10 +231,10 @@ public class NoteManageVO extends ComDefaultVO implements Serializable{
 	 */
 	public byte[] getAtchFile() {
 		byte[] ret = null;
-		
+
 		if (atchFile != null) {
 			ret = new byte[atchFile.length];
-			
+
 			for (int i = 0; i < atchFile.length; i++) {
 				ret[i] = atchFile[i];
 			}
@@ -244,8 +247,8 @@ public class NoteManageVO extends ComDefaultVO implements Serializable{
 	 */
 	public void setAtchFile(byte[] atchFile) {
 		this.atchFile = new byte[atchFile.length];
-		
-		for (int i = 0; i <  atchFile.length; ++i) {
+
+		for (int i = 0; i < atchFile.length; ++i) {
 			this.atchFile[i] = atchFile[i];
 		}
 	}
@@ -306,5 +309,4 @@ public class NoteManageVO extends ComDefaultVO implements Serializable{
 		this.lastUpdusrId = lastUpdusrId;
 	}
 
-    
 }
