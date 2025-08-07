@@ -3,6 +3,8 @@ package egovframework.com.uss.ion.ntm.service;
 import java.io.Serializable;
 
 import egovframework.com.cmm.ComDefaultVO;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 쪽지 관리(보내기) Model and VO Class 구현
@@ -58,6 +60,8 @@ public class NoteManageVO extends ComDefaultVO implements Serializable {
 	private String atchFileId;
 
 	/** 쪽지 첨부파일 */
+	@Getter
+	@Setter
 	private byte[] atchFile;
 
 	/** 최초등록시점 */
@@ -224,33 +228,6 @@ public class NoteManageVO extends ComDefaultVO implements Serializable {
 	 */
 	public void setAtchFileId(String atchFileId) {
 		this.atchFileId = atchFileId;
-	}
-
-	/**
-	 * @return the atchFile
-	 */
-	public byte[] getAtchFile() {
-		byte[] ret = null;
-
-		if (atchFile != null) {
-			ret = new byte[atchFile.length];
-
-			for (int i = 0; i < atchFile.length; i++) {
-				ret[i] = atchFile[i];
-			}
-		}
-		return ret;
-	}
-
-	/**
-	 * @param atchFile the atchFile to set
-	 */
-	public void setAtchFile(byte[] atchFile) {
-		this.atchFile = new byte[atchFile.length];
-
-		for (int i = 0; i < atchFile.length; ++i) {
-			this.atchFile[i] = atchFile[i];
-		}
 	}
 
 	/**
