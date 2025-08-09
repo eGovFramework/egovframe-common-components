@@ -3,6 +3,8 @@ package egovframework.com.uss.ion.ntr.service;
 import java.io.Serializable;
 
 import egovframework.com.cmm.ComDefaultVO;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 받은쪽지함관리 Model and VO Class 구현
@@ -55,6 +57,8 @@ public class NoteRecptn extends ComDefaultVO implements Serializable {
 	private String searchToDate;
 
 	/** 쪽지 첨부파일 */
+	@Getter
+	@Setter
 	private byte[] atchFileId;
 
 	/** 최초등록시점 */
@@ -207,33 +211,6 @@ public class NoteRecptn extends ComDefaultVO implements Serializable {
 	 */
 	public void setSearchToDate(String searchToDate) {
 		this.searchToDate = searchToDate;
-	}
-
-	/**
-	 * @return the atchFileId
-	 */
-	public byte[] getAtchFileId() {
-		byte[] ret = null;
-
-		if (atchFileId != null) {
-			ret = new byte[atchFileId.length];
-
-			for (int i = 0; i < atchFileId.length; i++) {
-				ret[i] = atchFileId[i];
-			}
-		}
-		return ret;
-	}
-
-	/**
-	 * @param atchFileId the atchFileId to set
-	 */
-	public void setAtchFileId(byte[] atchFileId) {
-		this.atchFileId = new byte[atchFileId.length];
-
-		for (int i = 0; i < atchFileId.length; ++i) {
-			this.atchFileId[i] = atchFileId[i];
-		}
 	}
 
 	/**
