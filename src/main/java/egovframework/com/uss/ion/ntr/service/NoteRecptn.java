@@ -1,7 +1,5 @@
 package egovframework.com.uss.ion.ntr.service;
 
-import java.io.Serializable;
-
 import egovframework.com.cmm.ComDefaultVO;
 import lombok.Getter;
 import lombok.Setter;
@@ -24,8 +22,12 @@ import lombok.Setter;
  *
  *      </pre>
  */
-@SuppressWarnings("serial")
-public class NoteRecptn extends ComDefaultVO implements Serializable {
+public class NoteRecptn extends ComDefaultVO {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	/** 쪽지 ID */
 	private String noteId;
