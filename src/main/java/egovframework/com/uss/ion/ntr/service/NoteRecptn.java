@@ -6,65 +6,68 @@ import egovframework.com.cmm.ComDefaultVO;
 
 /**
  * 받은쪽지함관리 Model and VO Class 구현
+ * 
  * @author 공통서비스 장동한
  * @since 2010.06.16
  * @version 1.0
- * @see <pre>
+ * @see
+ * 
+ *      <pre>
  * &lt;&lt; 개정이력(Modification Information) &gt;&gt;
  *   
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.07.03  장동한          최초 생성
  * 
- * </pre>
+ *      </pre>
  */
 @SuppressWarnings("serial")
-public class NoteRecptn extends ComDefaultVO implements Serializable{
-    	
+public class NoteRecptn extends ComDefaultVO implements Serializable {
+
 	/** 쪽지 ID */
 	private String noteId;
-	
+
 	/** 쪽지 송신 ID */
 	private String noteTrnsmitId;
-	
+
 	/** 쪽지 수신 ID */
 	private String noteRecptnId;
-	
+
 	/** 수신자 ID */
 	private String rcverId;
-	
+
 	/** 개봉여부 */
 	private String openYn;
-	
+
 	/** 수신구분 */
 	private String recptnSe;
-	
+
 	/** 쪽지 제목 */
 	private String noteSj;
-	
+
 	/** 쪽지 내용 */
 	private String noteCn;
-	
+
 	/** 보낸 시작날짜 */
 	private String searchFromDate;
-	
+
 	/** 보낸 종료날짜 */
 	private String searchToDate;
-	
+
 	/** 쪽지 첨부파일 */
 	private byte[] atchFileId;
-	
-    /** 최초등록시점 */
-    private String frstRegisterPnttm;
 
-    /** 최초등록아이디 */
-    private String frstRegisterId;
+	/** 최초등록시점 */
+	private String frstRegisterPnttm;
 
-    /** 최종수정일 */
-    private String lastUpdusrPnttm;
+	/** 최초등록아이디 */
+	private String frstRegisterId;
 
-    /** 최종수정자 아이디 */
-    private String lastUpdusrId;
+	/** 최종수정일 */
+	private String lastUpdusrPnttm;
+
+	/** 최종수정자 아이디 */
+	private String lastUpdusrId;
 
 	/**
 	 * @return the noteId
@@ -211,10 +214,10 @@ public class NoteRecptn extends ComDefaultVO implements Serializable{
 	 */
 	public byte[] getAtchFileId() {
 		byte[] ret = null;
-		
+
 		if (atchFileId != null) {
 			ret = new byte[atchFileId.length];
-			
+
 			for (int i = 0; i < atchFileId.length; i++) {
 				ret[i] = atchFileId[i];
 			}
@@ -227,8 +230,8 @@ public class NoteRecptn extends ComDefaultVO implements Serializable{
 	 */
 	public void setAtchFileId(byte[] atchFileId) {
 		this.atchFileId = new byte[atchFileId.length];
-		
-		for (int i = 0; i <  atchFileId.length; ++i) {
+
+		for (int i = 0; i < atchFileId.length; ++i) {
 			this.atchFileId[i] = atchFileId[i];
 		}
 	}
