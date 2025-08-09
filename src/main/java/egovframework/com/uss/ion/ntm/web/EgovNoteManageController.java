@@ -175,16 +175,16 @@ public class EgovNoteManageController {
 		noteManage.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 
 		// 첨부파일 관련 첨부파일ID 생성
-		List<FileVO> _result = null;
-		String _atchFileId = "";
+		List<FileVO> fvoList = null;
+		String atchFileId = "";
 
 		final Map<String, MultipartFile> files = multiRequest.getFileMap();
 
 		if (!files.isEmpty()) {
-			_result = fileUtil.parseFileInf(files, "DSCH_", 0, "", "");
-			_atchFileId = fileMngService.insertFileInfs(_result); // 파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
+			fvoList = fileUtil.parseFileInf(files, "DSCH_", 0, "", "");
+			atchFileId = fileMngService.insertFileInfs(fvoList); // 파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
 		}
-		noteManage.setAtchFileId(_atchFileId);
+		noteManage.setAtchFileId(atchFileId);
 
 		// 쪽지등록
 		egovNoteManageService.insertNoteManage(noteManage, commandMap);
@@ -192,13 +192,13 @@ public class EgovNoteManageController {
 		model.addAttribute("noteManage", new NoteManageVO());
 
 		// 등록메세지 설정
-		String ReusltScript = "";
+		String reusltScript = "";
 
-		ReusltScript += "<script type='text/javaScript' language='javascript'>";
-		ReusltScript += "alert(' 작성된 쪽지를 전송하였습니다!  ');";
-		ReusltScript += "</script>";
+		reusltScript += "<script type='text/javaScript' language='javascript'>";
+		reusltScript += "alert(' 작성된 쪽지를 전송하였습니다!  ');";
+		reusltScript += "</script>";
 
-		model.addAttribute("reusltScript", ReusltScript);
+		model.addAttribute("reusltScript", reusltScript);
 
 		return sLocationUrl;
 	}
