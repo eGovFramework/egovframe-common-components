@@ -1,7 +1,9 @@
 package egovframework.com.uss.ion.pwm.web;
 
+import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -284,7 +286,10 @@ public class EgovPopupManageController {
 			PopupManageVO popupManageVO) throws Exception {
 
 		response.setHeader("Content-Type", "text/html;charset=utf-8");
-		PrintWriter out = new PrintWriter(new OutputStreamWriter(response.getOutputStream(), "UTF-8"));
+
+		OutputStream out2 = response.getOutputStream(); // NOPMD - CloseResource 규칙 무시
+		Writer out1 = new OutputStreamWriter(out2, "UTF-8"); // NOPMD - CloseResource 규칙 무시
+		PrintWriter out = new PrintWriter(out1); // NOPMD - CloseResource 규칙 무시
 
 		LOGGER.debug("commandMap : {}", commandMap);
 		LOGGER.debug("popupManageVO : {}", popupManageVO);
@@ -318,18 +323,18 @@ public class EgovPopupManageController {
 		model.addAttribute("stopVewAt", stopVewAt);
 		model.addAttribute("popupId", popupId);
 
-		fileUrl = EgovWebUtil.filePathBlackList(fileUrl);
+		String fileUrl2 = EgovWebUtil.filePathBlackList(fileUrl);
 
 		List<EgovMap> popupWhiteList = egovPopupManageService.selectPopupWhiteList();
 		LOGGER.debug("Open Popup > WhiteList Count = {}", popupWhiteList.size());
-		if (fileUrl == null) {
-			fileUrl = "";
+		if (fileUrl2 == null) {
+			fileUrl2 = "";
 		}
 		for (Object obj : popupWhiteList) {
 			EgovMap map = (EgovMap) obj;
 			LOGGER.debug("Open Popup > whiteList fileUrl = " + map.get("fileUrl"));
-			if (fileUrl.equals(map.get("fileUrl"))) {
-				return fileUrl;
+			if (fileUrl2.equals(map.get("fileUrl"))) {
+				return fileUrl2;
 			}
 		}
 		// System.out.println("===>>> "+popupWhiteList.size());
