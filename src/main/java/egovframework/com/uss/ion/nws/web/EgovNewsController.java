@@ -80,8 +80,8 @@ public class EgovNewsController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<NewsVO> NewsList = egovNewsService.selectNewsList(searchVO);
-		model.addAttribute("resultList", NewsList);
+		List<NewsVO> resultList = egovNewsService.selectNewsList(searchVO);
+		model.addAttribute("resultList", resultList);
 
 		int totCnt = egovNewsService.selectNewsListCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -143,19 +143,19 @@ public class EgovNewsController {
 			BindingResult bindingResult) throws Exception {
 
 		// 첨부파일 관련 첨부파일ID 생성
-		List<FileVO> _result = null;
-		String _atchFileId = "";
+		List<FileVO> fvoList = null;
+		String atchFileId = "";
 
 		// final Map<String, MultipartFile> files = multiRequest.getFileMap();
 		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
 		if (!files.isEmpty()) {
-			_result = fileUtil.parseFileInf(files, "NEWS_", 0, "", "");
-			_atchFileId = fileMngService.insertFileInfs(_result); // 파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
+			fvoList = fileUtil.parseFileInf(files, "NEWS_", 0, "", "");
+			atchFileId = fileMngService.insertFileInfs(fvoList); // 파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
 		}
 
 		// 리턴받은 첨부파일ID를 셋팅한다..
-		newsVO.setAtchFileId(_atchFileId); // 첨부파일 ID
+		newsVO.setAtchFileId(atchFileId); // 첨부파일 ID
 
 		beanValidator.validate(newsVO, bindingResult);
 
@@ -224,23 +224,23 @@ public class EgovNewsController {
 		}
 
 		// 첨부파일 관련 ID 생성 start....
-		String _atchFileId = newsVO.getAtchFileId();
+		String atchFileId = newsVO.getAtchFileId();
 
 		// final Map<String, MultipartFile> files = multiRequest.getFileMap();
 		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
 		if (!files.isEmpty()) {
-			if ("".equals(_atchFileId)) {
-				List<FileVO> _result = fileUtil.parseFileInf(files, "NEWS_", 0, _atchFileId, "");
-				_atchFileId = fileMngService.insertFileInfs(_result);
-				newsVO.setAtchFileId(_atchFileId); // 첨부파일 ID
+			if ("".equals(atchFileId)) {
+				List<FileVO> fvoList = fileUtil.parseFileInf(files, "NEWS_", 0, atchFileId, "");
+				atchFileId = fileMngService.insertFileInfs(fvoList);
+				newsVO.setAtchFileId(atchFileId); // 첨부파일 ID
 
 			} else {
 				FileVO fvo = new FileVO();
-				fvo.setAtchFileId(_atchFileId);
-				int _cnt = fileMngService.getMaxFileSN(fvo);
-				List<FileVO> _result = fileUtil.parseFileInf(files, "NEWS_", _cnt, _atchFileId, "");
-				fileMngService.updateFileInfs(_result);
+				fvo.setAtchFileId(atchFileId);
+				int fileKeyParam = fileMngService.getMaxFileSN(fvo);
+				List<FileVO> fvoList = fileUtil.parseFileInf(files, "NEWS_", fileKeyParam, atchFileId, "");
+				fileMngService.updateFileInfs(fvoList);
 			}
 		}
 		// 첨부파일 관련 ID 생성 end...
