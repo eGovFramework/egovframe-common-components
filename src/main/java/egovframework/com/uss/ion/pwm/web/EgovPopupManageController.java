@@ -38,27 +38,31 @@ import egovframework.com.uss.ion.pwm.service.PopupManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 
 /**
+ * <pre>
  * 개요 - 팝업창에 대한 Controller를 정의한다.
  *
  * 상세내용 - 팝업창에 대한 등록, 수정, 삭제, 조회, 반영확인 기능을 제공한다. - 팝업창의 조회기능은 목록조회, 상세조회로, 사용자
  * 화면 보기로 구분된다.
+ * </pre>
  * 
  * @author 이창원
+ * @since 2009.08.05
  * @version 1.0
- * @created 05-8-2009 오후 2:19:57
- * 
- *          <pre>
-  * << 개정이력(Modification Information) >>
-  *
-  *  수정일              수정자           수정내용
-  *  ---------   --------   ---------------------------
-  *  2009.08.05   이창원           최초 생성
-  *  2011.08.26   정진오           IncludedInfo annotation 추가
-  *  2019.05.17   신용호           취약점 조치 및 보완
+ * @see
  *
- *          </pre>
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.08.05  이창원          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2019.05.17  신용호          취약점 조치 및 보완
+ *   2025.08.11  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(부적절한 자원 해제)
+ *   2025.08.11  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AvoidReassigningParameters(넘겨받는 메소드 parameter 값을 직접 변경하는 코드 탐지)
+ *
+ *      </pre>
  */
-
 @Controller
 public class EgovPopupManageController {
 
