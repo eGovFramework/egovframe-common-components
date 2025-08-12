@@ -49,11 +49,11 @@ public class EgovRssServiceImpl extends EgovAbstractServiceImpl implements EgovR
 		List<?> listResult = dao.selectRssTagServiceTable(param);
 		List<Map<String, String>> listReturn = new ArrayList<Map<String, String>>();
 
-		String sBDT_TITLE = (String) param.get("BDT_TITLE");
-		String sBDT_LINK = (String) param.get("BDT_LINK");
-		String sBDT_DESCRIPTION = (String) param.get("BDT_DESCRIPTION");
-		String sBDT_TAG = (String) param.get("BDT_TAG");
-		String sBDT_ETC = (String) param.get("BDT_ETC");
+		String sBdtTitle = (String) param.get("BDT_TITLE");
+		String sBdtLink = (String) param.get("BDT_LINK");
+		String sBdtDescription = (String) param.get("BDT_DESCRIPTION");
+		String sBdtTag = (String) param.get("BDT_TAG");
+		String sBdtEtc = (String) param.get("BDT_ETC");
 
 		Map<String, String> mapRow;
 
@@ -61,32 +61,32 @@ public class EgovRssServiceImpl extends EgovAbstractServiceImpl implements EgovR
 
 			mapRow = (Map<String, String>) listResult.get(i);
 			// null 처리
-			String sM_BDT_TITLE = sBDT_TITLE == null ? "" : sBDT_TITLE;
-			String sM_BDT_LINK = sBDT_LINK == null ? "" : sBDT_LINK;
-			String sM_BDT_DESCRIPTION = sBDT_DESCRIPTION == null ? "" : sBDT_DESCRIPTION;
-			String sM_BDT_TAG = sBDT_TAG == null ? "" : sBDT_TAG;
-			String sM_BDT_ETC = sBDT_ETC == null ? "" : sBDT_ETC;
+			String smBdtTitle = sBdtTitle == null ? "" : sBdtTitle;
+			String smBdtLink = sBdtLink == null ? "" : sBdtLink;
+			String smBdtDescription = sBdtDescription == null ? "" : sBdtDescription;
+			String smBdtTag = sBdtTag == null ? "" : sBdtTag;
+			String smBdtEtc = sBdtEtc == null ? "" : sBdtEtc;
 
-			Object[] Keys = mapRow.keySet().toArray();
+			Object[] keys = mapRow.keySet().toArray();
 
-			for (Object key : Keys) {
+			for (Object key : keys) {
 				if (mapRow.get(key) instanceof String) {
 					// null 처리
 					if (mapRow.get(key) != null && key != null) {
-						sM_BDT_TITLE = sM_BDT_TITLE.replaceAll("#" + key + "#", mapRow.get(key));
-						sM_BDT_LINK = sM_BDT_LINK.replaceAll("#" + key + "#", mapRow.get(key));
-						sM_BDT_DESCRIPTION = sM_BDT_DESCRIPTION.replaceAll("#" + key + "#", mapRow.get(key));
-						sM_BDT_TAG = sM_BDT_TAG.replaceAll("#" + key + "#", mapRow.get(key));
-						sM_BDT_ETC = sM_BDT_ETC.replaceAll("#" + key + "#", mapRow.get(key));
+						smBdtTitle = smBdtTitle.replaceAll("#" + key + "#", mapRow.get(key));
+						smBdtLink = smBdtLink.replaceAll("#" + key + "#", mapRow.get(key));
+						smBdtDescription = smBdtDescription.replaceAll("#" + key + "#", mapRow.get(key));
+						smBdtTag = smBdtTag.replaceAll("#" + key + "#", mapRow.get(key));
+						smBdtEtc = smBdtEtc.replaceAll("#" + key + "#", mapRow.get(key));
 					}
 				}
 			}
 
-			mapRow.put("BDT_TITLE", sM_BDT_TITLE);
-			mapRow.put("BDT_LINK", sM_BDT_LINK);
-			mapRow.put("BDT_DESCRIPTION", sM_BDT_DESCRIPTION);
-			mapRow.put("BDT_TAG", sM_BDT_TAG);
-			mapRow.put("BDT_ETC", sM_BDT_ETC);
+			mapRow.put("BDT_TITLE", smBdtTitle);
+			mapRow.put("BDT_LINK", smBdtLink);
+			mapRow.put("BDT_DESCRIPTION", smBdtDescription);
+			mapRow.put("BDT_TAG", smBdtTag);
+			mapRow.put("BDT_ETC", smBdtEtc);
 
 			listReturn.add(mapRow);
 
