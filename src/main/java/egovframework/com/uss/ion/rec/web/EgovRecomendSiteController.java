@@ -90,8 +90,8 @@ public class EgovRecomendSiteController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<RecomendSiteVO> RecomendSiteList = egovRecomendSiteService.selectRecomendSiteList(searchVO);
-		model.addAttribute("resultList", RecomendSiteList);
+		List<RecomendSiteVO> resultList = egovRecomendSiteService.selectRecomendSiteList(searchVO);
+		model.addAttribute("resultList", resultList);
 
 		int totCnt = egovRecomendSiteService.selectRecomendSiteListCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
