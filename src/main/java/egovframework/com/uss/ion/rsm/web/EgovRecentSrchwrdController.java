@@ -41,19 +41,20 @@ import net.sourceforge.ajaxtags.xml.AjaxXmlBuilder;
  * @since 2009.07.03
  * @version 1.0
  * @see
- * 
+ *
  *      <pre>
- * &lt;&lt; 개정이력(Modification Information) &gt;&gt;
+ *  == 개정이력(Modification Information) ==
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.07.03  장동한          최초 생성
  *   2011.12.15  이기하          검색어 없을 시 미저장, 사용자 검색여부 'N'일 때 자동검색 미사용 수정
  *   2020.10.29  권태성          등록 화면과 데이터를 처리하는 method 분리
- * 
+ *   2025.08.13  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UselessParentheses(불필요한 괄호사용)
+ *   2025.08.13  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(부적절한 자원 해제)
+ *
  *      </pre>
  */
-
 @Controller
 public class EgovRecentSrchwrdController {
 
