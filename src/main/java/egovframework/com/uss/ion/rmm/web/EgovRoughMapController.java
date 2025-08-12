@@ -204,10 +204,10 @@ public class EgovRoughMapController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		roughMap = egovRoughMapService.selectRoughMapDetail(roughMap);
+		RoughMapVO result = egovRoughMapService.selectRoughMapDetail(roughMap);
 
-		model.addAttribute("result", roughMap);
-		model.addAttribute("roughMap", roughMap);
+		model.addAttribute("result", result);
+		model.addAttribute("roughMap", result);
 
 		return "egovframework/com/uss/ion/rmm/EgovRoughMapUpdt";
 	}
