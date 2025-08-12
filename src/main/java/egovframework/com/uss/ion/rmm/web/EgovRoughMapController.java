@@ -39,17 +39,17 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  * @see
  *
  *      <pre>
- * << 개정이력(Modification Information) >>
+ *  == 개정이력(Modification Information) ==
  *
- *   수정일			수정자		수정내용
- *  -----------		------		---------
- *   2014.08.27		옥찬우		최초 생성
- *   2022.11.11     김혜준		시큐어코딩 처리
- *   2024.10.29     권태성		상세 페이지에서 목록으로 이동 시 검색 결과로 이동하기 위한 인자 전달
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2014.08.27  옥찬우          최초 생성
+ *   2022.11.11  김혜준          시큐어코딩 처리
+ *   2024.10.29  권태성          상세 페이지에서 목록으로 이동 시 검색 결과로 이동하기 위한 인자 전달
+ *   2025.08.12  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AvoidReassigningParameters(넘겨받는 메소드 parameter 값을 직접 변경하는 코드 탐지)
  *
  *      </pre>
  */
-
 @Controller
 public class EgovRoughMapController {
 
