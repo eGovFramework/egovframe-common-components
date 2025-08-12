@@ -2,6 +2,7 @@ package egovframework.com.uss.ion.rsm.web;
 
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
+import java.io.Writer;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -31,7 +32,6 @@ import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.rsm.service.EgovRecentSrchwrdService;
 import egovframework.com.uss.ion.rsm.service.RecentSrchwrd;
-import egovframework.com.utl.fcc.service.EgovStringUtil;
 import net.sourceforge.ajaxtags.xml.AjaxXmlBuilder;
 
 /**
@@ -203,9 +203,10 @@ public class EgovRecentSrchwrdController {
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		// 아이디 설정
-		String uniqId = (loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-		recentSrchwrd.setFrstRegisterId(uniqId);
-		recentSrchwrd.setLastUpdusrId(uniqId);
+		if (loginVO != null) {
+			recentSrchwrd.setFrstRegisterId(loginVO.getUniqId());
+			recentSrchwrd.setLastUpdusrId(loginVO.getUniqId());
+		}
 
 		// 저장
 		egovRecentSrchwrdService.updateRecentSrchwrd(recentSrchwrd);
@@ -265,9 +266,10 @@ public class EgovRecentSrchwrdController {
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		// 아이디 설정
-		String uniqId = (loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-		recentSrchwrd.setFrstRegisterId(uniqId);
-		recentSrchwrd.setLastUpdusrId(uniqId);
+		if (loginVO != null) {
+			recentSrchwrd.setFrstRegisterId(loginVO.getUniqId());
+			recentSrchwrd.setLastUpdusrId(loginVO.getUniqId());
+		}
 
 		// 저장
 		egovRecentSrchwrdService.insertRecentSrchwrd(recentSrchwrd);
@@ -389,7 +391,8 @@ public class EgovRecentSrchwrdController {
 			RecentSrchwrd recentSrchwrd) throws Exception {
 
 		response.setHeader("Content-Type", "text/html;charset=utf-8");
-		PrintWriter out = new PrintWriter(new OutputStreamWriter(response.getOutputStream(), "UTF-8"));
+		Writer writer = new OutputStreamWriter(response.getOutputStream(), "UTF-8"); // NOPMD - CloseResource 규칙 무시
+		PrintWriter out = new PrintWriter(writer); // NOPMD - CloseResource 규칙 무시
 
 		LOGGER.debug("commandMap : {}", commandMap);
 		LOGGER.debug("recentSrchwrd : {}", recentSrchwrd);
@@ -398,8 +401,10 @@ public class EgovRecentSrchwrdController {
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		// 아이디 설정
-		recentSrchwrd.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-		recentSrchwrd.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+		if (loginVO != null) {
+			recentSrchwrd.setFrstRegisterId(loginVO.getUniqId());
+			recentSrchwrd.setLastUpdusrId(loginVO.getUniqId());
+		}
 
 		// System.out.println("recentSrchwrd.getSrchwrdNm() : "+
 		// recentSrchwrd.getSrchwrdNm());
