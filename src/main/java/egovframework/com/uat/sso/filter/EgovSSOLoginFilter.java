@@ -23,22 +23,24 @@ import egovframework.com.uat.sso.service.EgovSSOService;
 import egovframework.com.uat.uia.service.EgovLoginService;
 
 /**
- *
+ * Egov SSO 로그인 필터
+ * 
  * @author 공통서비스 개발팀 서준식
- * @since 2011. 8. 2.
+ * @since 2011.08.02
  * @version 1.0
  * @see
  *
- * <pre>
- * 개정이력(Modification Information)
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
- *   수정일      수정자          수정내용
+ *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *  2011. 8. 2.    서준식        최초생성
+ *   2011.08.02  서준식          최초 생성
+ *   2025.07.29  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UncommentedEmptyMethodBody(빈 메소드에 빈메소드임을 나타내는 주석을 추가할 것)
+ *   2025.07.29  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UselessParentheses(불필요한 괄호사용)
  *
- *  </pre>
+ *      </pre>
  */
-
 public class EgovSSOLoginFilter implements Filter {
 
 	private FilterConfig config;
@@ -46,18 +48,15 @@ public class EgovSSOLoginFilter implements Filter {
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovSSOLoginFilter.class);
 
 	@Override
-	public void destroy() {}
-
-	@Override
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
-		throws IOException, ServletException {
+			throws IOException, ServletException {
 
 		ApplicationContext act = WebApplicationContextUtils
-			.getRequiredWebApplicationContext(config.getServletContext());
+				.getRequiredWebApplicationContext(config.getServletContext());
 		EgovSSOService egovSSOService = null;
 		try {
-			egovSSOService = (EgovSSOService)act.getBean("egovSSOService");
-			// 221116	김혜준	2022 시큐어코딩 조치
+			egovSSOService = (EgovSSOService) act.getBean("egovSSOService");
+			// 221116 김혜준 2022 시큐어코딩 조치
 			if (ObjectUtils.isEmpty(egovSSOService)) {
 				LOGGER.error("Fail to create 'EgovSSOService' object");
 				chain.doFilter(request, response);
@@ -67,28 +66,28 @@ public class EgovSSOLoginFilter implements Filter {
 			LOGGER.error("No SSO ServiceImpl Class!");
 		}
 
-		EgovLoginService loginService = (EgovLoginService)act.getBean("loginService");
+		EgovLoginService loginService = (EgovLoginService) act.getBean("loginService");
 
-		HttpServletRequest httpRequest = (HttpServletRequest)request;
+		HttpServletRequest httpRequest = (HttpServletRequest) request;
 		HttpSession session = httpRequest.getSession();
-		String isLocallyAuthenticated = (String)session.getAttribute("isLocallyAuthenticated");
-		String isRemotelyAuthenticated = (String)session.getAttribute("isRemotelyAuthenticated");
+		String isLocallyAuthenticated = (String) session.getAttribute("isLocallyAuthenticated");
+		String isRemotelyAuthenticated = (String) session.getAttribute("isRemotelyAuthenticated");
 		boolean isSSOLoggedOn = false;
 
-		if (isLocallyAuthenticated != null && (isLocallyAuthenticated.equals("true"))) {
+		if (isLocallyAuthenticated != null && isLocallyAuthenticated.equals("true")) {
 			if (isRemotelyAuthenticated == null) {
 				try {
-					if(egovSSOService!=null) {//2022.01 Null pointers should not be dereferenced
+					if (egovSSOService != null) {// 2022.01 Null pointers should not be dereferenced
 						// TODO egovSSOService null 일 경우 프로세스 확인 필요
-						//sso서버에 토큰 생성
+						// sso서버에 토큰 생성
 						egovSSOService.requestIssueToken(request, response);
 					}
-					//로컬 인증 적용 여부 완료를 세션에 저장
+					// 로컬 인증 적용 여부 완료를 세션에 저장
 					session.setAttribute("isLocallyAuthenticated", "true");
-					//sso 인증 완료 여부를 세션에 저장
+					// sso 인증 완료 여부를 세션에 저장
 					session.setAttribute("isRemotelyAuthenticated", "true");
 
-				} catch (IllegalStateException ex) {//KISA 보안약점 조치 (2018-10-29, 윤창원)
+				} catch (IllegalStateException ex) {// KISA 보안약점 조치 (2018-10-29, 윤창원)
 					session.setAttribute("isRemotelyAuthenticated", "fail");
 					LOGGER.debug("SSO Authentication fail : invalidated session {}", ex.getMessage());
 				} catch (Exception ex) {
@@ -99,16 +98,17 @@ public class EgovSSOLoginFilter implements Filter {
 			}
 		} else if (isLocallyAuthenticated == null) {
 			if (isRemotelyAuthenticated == null) {
-				if(egovSSOService!=null) {//2022.01 Null pointers should not be dereferenced
+				if (egovSSOService != null) {// 2022.01 Null pointers should not be dereferenced
 					// TODO egovSSOService null 일 경우 프로세스 확인 필요
-					//sso서버에 토큰이 존재하는지 체크함
+					// sso서버에 토큰이 존재하는지 체크함
 					isSSOLoggedOn = egovSSOService.hasTokenInSSOServer(httpRequest, response);
 					if (isSSOLoggedOn) {
-						//서버에 토큰이 존재할 경우 로컬 인증을 위해 isRemotelyAuthenticated true로 변경
+						// 서버에 토큰이 존재할 경우 로컬 인증을 위해 isRemotelyAuthenticated true로 변경
 						session.setAttribute("isRemotelyAuthenticated", "true");
 
-						//로컬 DB인증을 위한 loginVO 객체를 세션에 저장
-						session.setAttribute("loginVOForDBAuthentication", egovSSOService.getLoginVO(request, response));
+						// 로컬 DB인증을 위한 loginVO 객체를 세션에 저장
+						session.setAttribute("loginVOForDBAuthentication",
+								egovSSOService.getLoginVO(request, response));
 					}
 				}
 			}
@@ -116,28 +116,28 @@ public class EgovSSOLoginFilter implements Filter {
 
 		chain.doFilter(request, response);
 
-		isLocallyAuthenticated = (String)session.getAttribute("isLocallyAuthenticated");
-		isRemotelyAuthenticated = (String)session.getAttribute("isRemotelyAuthenticated");
+		isLocallyAuthenticated = (String) session.getAttribute("isLocallyAuthenticated");
+		isRemotelyAuthenticated = (String) session.getAttribute("isRemotelyAuthenticated");
 
 		if (isLocallyAuthenticated == null) {
 			if (isRemotelyAuthenticated != null && isRemotelyAuthenticated.equals("true")) {
 				try {
-					//세션 토큰 정보를 가지고 DB로부터 사용자 정보를 가져옴
-					LoginVO loginVO = (LoginVO)session.getAttribute("loginVOForDBAuthentication");
+					// 세션 토큰 정보를 가지고 DB로부터 사용자 정보를 가져옴
+					LoginVO loginVO = (LoginVO) session.getAttribute("loginVOForDBAuthentication");
 					loginVO = loginService.actionLoginByEsntlId(loginVO);
 					if (loginVO != null && loginVO.getId() != null && !loginVO.getId().equals("")) {
-						//세션 로그인
+						// 세션 로그인
 						session.setAttribute("loginVO", loginVO);
 
-						//로컬 인증결과 세션에 저장
+						// 로컬 인증결과 세션에 저장
 						session.setAttribute("isLocallyAuthenticated", "true");
 					} else {
 						LOGGER.debug("Local authentication by sso is failed");
 					}
-				} catch (IllegalStateException ex) {//KISA 보안약점 조치 (2018-10-29, 윤창원)
+				} catch (IllegalStateException ex) {// KISA 보안약점 조치 (2018-10-29, 윤창원)
 					LOGGER.debug("Local authentication by sso is failed (Invalidated session) : {}", ex.getMessage());
 				} catch (Exception ex) {
-					//DB인증 예외가 발생할 경우 로그를 남기고 로컬인증을 시키지 않고 그대로 진행함.
+					// DB인증 예외가 발생할 경우 로그를 남기고 로컬인증을 시키지 않고 그대로 진행함.
 					LOGGER.debug("Local authentication by sso is failed : {}", ex.getMessage());
 				}
 
