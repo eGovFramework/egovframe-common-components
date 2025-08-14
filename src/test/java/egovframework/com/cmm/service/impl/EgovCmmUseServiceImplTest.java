@@ -7,12 +7,17 @@ import java.util.List;
 import java.util.Map;
 
 import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
+import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.junit.Test;
+import org.mybatis.spring.SqlSessionTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
+import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import egovframework.com.cmm.service.FileVO;
 import egovframework.com.test.EgovAbstractTestJUnit4;
 import lombok.extern.slf4j.Slf4j;
 
@@ -39,8 +44,20 @@ public class EgovCmmUseServiceImplTest extends EgovAbstractTestJUnit4 {
 	@Autowired
 	private EgovCmmUseService egovCmmUseService;
 
+	@Autowired
+	private FileManageDAO fileManageDAO;
+
+	@Autowired
+	private SqlSessionTemplate egovBatchSqlSessionTemplate;
+
+	@Autowired
+	private EgovIdGnrService egovFileIdGnrService;
+
+	@Autowired
+	private EgovMessageSource egovMessageSource;
+
 	@Test
-	public void test1selectCmmCodeDetail() throws BaseRuntimeException, Exception {
+	public void test1selectCmmCodeDetail() {
 		// given
 		ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
 		comDefaultCodeVO.setCodeId("COM001");
@@ -76,7 +93,7 @@ public class EgovCmmUseServiceImplTest extends EgovAbstractTestJUnit4 {
 	}
 
 	@Test
-	public void test2selectCmmCodeDetails() throws BaseRuntimeException, Exception {
+	public void test2selectCmmCodeDetails() {
 		// given
 		List<ComDefaultCodeVO> comDefaultCodeVOs = new ArrayList<>();
 		ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
@@ -118,7 +135,7 @@ public class EgovCmmUseServiceImplTest extends EgovAbstractTestJUnit4 {
 	}
 
 	@Test
-	public void test3selectOgrnztIdDetail() throws BaseRuntimeException, Exception {
+	public void test3selectOgrnztIdDetail() {
 		// given
 		ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
 		comDefaultCodeVO.setTableNm("COMTNORGNZTINFO");
@@ -160,7 +177,7 @@ public class EgovCmmUseServiceImplTest extends EgovAbstractTestJUnit4 {
 	}
 
 	@Test
-	public void test4selectGroupIdDetail() throws BaseRuntimeException, Exception {
+	public void test4selectGroupIdDetail() {
 		// given
 		ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
 		comDefaultCodeVO.setTableNm("COMTNAUTHORGROUPINFO");
@@ -199,6 +216,120 @@ public class EgovCmmUseServiceImplTest extends EgovAbstractTestJUnit4 {
 				log.debug("getCodeDc={}", result.getCodeDc());
 			}
 		}
+	}
+
+	/**
+	 * 마이바티스 배치 테스트 EgovSqlSessionTemplate
+	 */
+	@Test
+//	@Commit
+	public void test9batchEgovSqlSessionTemplate() {
+		String atchFileId;
+		try {
+			atchFileId = egovFileIdGnrService.getNextStringId();
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
+
+//		final int MAX_COUNT = 1; // 일
+//		final int MAX_COUNT = 10; // 십
+//		final int MAX_COUNT = 100; // 백
+//		final int MAX_COUNT = 1_000; // 천
+//		final int MAX_COUNT = 10_000; // 만
+		final int MAX_COUNT = 100_000; // 십만, 93.2714451 초
+//		final int MAX_COUNT = 1000_000; // 백만
+//		final int MAX_COUNT = 10_000_000; // 천만
+//		final int MAX_COUNT = 100_000_000; // 억
+//		final int MAX_COUNT = 1_000_000_000; // 조
+
+		List<FileVO> fileList = new ArrayList<>();
+
+		for (int i = 1; i < MAX_COUNT; i++) {
+			FileVO fileVO = new FileVO();
+			fileVO.setAtchFileId(atchFileId);
+			fileVO.setFileSn(String.valueOf(i));
+
+			fileVO.setFileMg(String.valueOf(0));
+
+//			if (i == 2) {
+//				fileVO.setFileMg("");
+//			}
+
+			fileList.add(fileVO);
+		}
+
+		String resultAtchFileId;
+		try {
+			resultAtchFileId = fileManageDAO.insertFileInfs(fileList);
+		} catch (BaseRuntimeException e) {
+			throw new BaseRuntimeException(egovMessageSource.getMessage("fail.common.insert"));
+		} catch (Exception e) {
+			throw new BaseRuntimeException(egovMessageSource.getMessage("fail.common.insert"));
+		}
+
+		if (log.isDebugEnabled()) {
+			log.debug("resultAtchFileId={}", resultAtchFileId);
+		}
+
+//		egovBatchSqlSessionTemplate.flushStatements();
+	}
+
+	/**
+	 * 마이바티스 배치2 테스트 EgovBatchSqlSessionTemplate
+	 */
+	@Test
+//	@Commit
+	public void test9batch2EgovBatchSqlSessionTemplate() {
+		String atchFileId;
+		try {
+			atchFileId = egovFileIdGnrService.getNextStringId();
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
+
+		// insertFileMaster
+		FileVO fileVO = new FileVO();
+//		fileVO.setAtchFileId(null);
+		fileVO.setAtchFileId(atchFileId);
+
+		if (egovBatchSqlSessionTemplate.insert("insertFileMaster", fileVO) == 0) {
+			throw new BaseRuntimeException(egovMessageSource.getMessage("fail.common.msg"));
+		}
+
+		// insertFileDetail
+
+//		final int MAX_COUNT = 1; // 일
+//		final int MAX_COUNT = 10; // 십
+//		final int MAX_COUNT = 100; // 백
+//		final int MAX_COUNT = 1_000; // 천
+//		final int MAX_COUNT = 10_000; // 만
+		final int MAX_COUNT = 100_000; // 십만, 48.0607165 초
+//		final int MAX_COUNT = 1000_000; // 백만
+//		final int MAX_COUNT = 10_000_000; // 천만
+//		final int MAX_COUNT = 100_000_000; // 억
+//		final int MAX_COUNT = 1_000_000_000; // 조
+
+		for (int i = 1; i < MAX_COUNT; i++) {
+			fileVO = new FileVO();
+			fileVO.setAtchFileId(atchFileId);
+			fileVO.setFileSn(String.valueOf(i));
+
+			fileVO.setFileMg(String.valueOf(0));
+
+//			if (i == 2) {
+//				fileVO.setFileMg("");
+//			}
+
+			if (egovBatchSqlSessionTemplate.insert("insertFileDetail", fileVO) == 0) {
+				throw new BaseRuntimeException(egovMessageSource.getMessage("fail.common.insert"));
+			}
+
+//			if (i == 1_000) {
+//				egovBatchSqlSessionTemplate.flushStatements();
+//			}
+		}
+
+//		egovBatchSqlSessionTemplate.flushStatements();
 	}
 
 }
