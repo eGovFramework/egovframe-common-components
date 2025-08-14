@@ -39,34 +39,35 @@ import com.gpki.servlet.GPKIHttpServletResponse;
 
 /**
  * 일반 로그인, 인증서 로그인을 처리하는 컨트롤러 클래스
+ * 
  * @author 공통서비스 개발팀 박지욱
  * @since 2009.03.06
  * @version 1.0
  * @see
  *
- * <pre>
- * << 개정이력(Modification Information) >>
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
- *  수정일		수정자		수정내용
- *  ----------	--------	---------------------------
- *  2009.03.06	박지욱		최초 생성
- *  2011.08.26	정진오		IncludedInfo annotation 추가
- *  2011.09.07	서준식		스프링 시큐리티 로그인 및 SSO 인증 로직을 필터로 분리
- *  2011.09.25	서준식		사용자 관리 컴포넌트 미포함에 대한 점검 로직 추가
- *  2011.09.27	서준식		인증서 로그인시 스프링 시큐리티 사용에 대한 체크 로직 추가
- *  2011.10.27	서준식		아이디 찾기 기능에서 사용자 리름 공백 제거 기능 추가
- *  2017.07.21	장동한		로그인인증제한 작업
- *  2018.10.26	신용호		로그인 화면에 message 파라미터 전달 수정
- *  2019.10.01	정진오		로그인 인증세션 추가
- *  2020.06.25	신용호		로그인 메시지 처리 수정
- *  2021.01.15	신용호		로그아웃시 권한 초기화 추가 : session 모드 actionLogout()
- *  2021.05.30	정진오		디지털원패스 처리하기 위해 로그인 화면에 인증방식 전달
- *  2022.11.11	김혜준		시큐어코딩 처리
- *  2023.06.09	김신해		NSR 보안조치 (GPKI 인증서 등록 OOB 방지)
- *  2024.10.29	LeeBaekHaeng	불필요 형변환 제거 (request.getParameter("loginMessage"); loginService.selectLoginIncorrect(loginVO);)
-
- *  
- *  </pre>
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.03.06  박지욱          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2011.09.07  서준식          스프링 시큐리티 로그인 및 SSO 인증 로직을 필터로 분리
+ *   2011.09.25  서준식          사용자 관리 컴포넌트 미포함에 대한 점검 로직 추가
+ *   2011.09.27  서준식          인증서 로그인시 스프링 시큐리티 사용에 대한 체크 로직 추가
+ *   2011.10.27  서준식          아이디 찾기 기능에서 사용자 리름 공백 제거 기능 추가
+ *   2017.07.21  장동한          로그인인증제한 작업
+ *   2018.10.26  신용호          로그인 화면에 message 파라미터 전달 수정
+ *   2019.10.01  정진오          로그인 인증세션 추가
+ *   2020.06.25  신용호          로그인 메시지 처리 수정
+ *   2021.01.15  신용호          로그아웃시 권한 초기화 추가 : session 모드 actionLogout()
+ *   2021.05.30  정진오          디지털원패스 처리하기 위해 로그인 화면에 인증방식 전달
+ *   2022.11.11  김혜준          시큐어코딩 처리
+ *   2023.06.09  김신해          NSR 보안조치 (GPKI 인증서 등록 OOB 방지)
+ *   2024.10.29  이백행          불필요 형변환 제거 (request.getParameter("loginMessage"); loginService.selectLoginIncorrect(loginVO);)
+ *   2025.07.31  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *
+ *      </pre>
  */
 @Controller
 public class EgovLoginController {
@@ -91,85 +92,93 @@ public class EgovLoginController {
 
 	/**
 	 * 로그인 화면으로 들어간다
+	 * 
 	 * @param vo - 로그인후 이동할 URL이 담긴 LoginVO
 	 * @return 로그인 페이지
 	 * @exception Exception
 	 */
 	@IncludedInfo(name = "로그인", listUrl = "/uat/uia/egovLoginUsr.do", order = 10, gid = 10)
 	@RequestMapping(value = "/uat/uia/egovLoginUsr.do")
-	public String loginUsrView(@ModelAttribute("loginVO") LoginVO loginVO, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+	public String loginUsrView(@ModelAttribute("loginVO") LoginVO loginVO, HttpServletRequest request,
+			HttpServletResponse response, ModelMap model) throws Exception {
 		if (EgovComponentChecker.hasComponent("mberManageService")) {
 			model.addAttribute("useMemberManage", "true");
 		}
-				
-		//권한체크시 에러 페이지 이동
-		String auth_error =  request.getParameter("auth_error") == null ? "" : (String)request.getParameter("auth_error");
-		if(auth_error != null && auth_error.equals("1")){
+
+		// 권한체크시 에러 페이지 이동
+		String authError = request.getParameter("auth_error") == null ? ""
+				: (String) request.getParameter("auth_error");
+		if (authError != null && authError.equals("1")) {
 			return "egovframework/com/cmm/error/accessDenied";
 		}
 
 		/*
-		GPKIHttpServletResponse gpkiresponse = null;
-		GPKIHttpServletRequest gpkirequest = null;
-
-		try{
-
-			gpkiresponse=new GPKIHttpServletResponse(response);
-		    gpkirequest= new GPKIHttpServletRequest(request);
-		    gpkiresponse.setRequest(gpkirequest);
-		    model.addAttribute("challenge", gpkiresponse.getChallenge());
-		    return "egovframework/com/uat/uia/EgovLoginUsr";
-
-		}catch(Exception e){
-		    return "egovframework/com/cmm/egovError";
-		}
-		*/
+		 * GPKIHttpServletResponse gpkiresponse = null; GPKIHttpServletRequest
+		 * gpkirequest = null;
+		 * 
+		 * try{
+		 * 
+		 * gpkiresponse=new GPKIHttpServletResponse(response); gpkirequest= new
+		 * GPKIHttpServletRequest(request); gpkiresponse.setRequest(gpkirequest);
+		 * model.addAttribute("challenge", gpkiresponse.getChallenge()); return
+		 * "egovframework/com/uat/uia/EgovLoginUsr";
+		 * 
+		 * }catch(Exception e){ return "egovframework/com/cmm/egovError"; }
+		 */
 
 		// 2021.05.30, 정진오, 디지털원패스 처리하기 위해 로그인 화면에 인증방식 전달
 		String authType = EgovProperties.getProperty("Globals.Auth").trim();
 		model.addAttribute("authType", authType);
 
 		String message = request.getParameter("loginMessage");
-		if (message!=null) model.addAttribute("loginMessage", message);
-		
+		if (message != null) {
+			model.addAttribute("loginMessage", message);
+		}
+
 		return "egovframework/com/uat/uia/EgovLoginUsr";
 	}
 
 	/**
 	 * 일반(세션) 로그인을 처리한다
-	 * @param vo - 아이디, 비밀번호가 담긴 LoginVO
+	 * 
+	 * @param vo      - 아이디, 비밀번호가 담긴 LoginVO
 	 * @param request - 세션처리를 위한 HttpServletRequest
 	 * @return result - 로그인결과(세션정보)
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/uat/uia/actionLogin.do")
-	public String actionLogin(@ModelAttribute("loginVO") LoginVO loginVO, HttpServletRequest request, ModelMap model) throws Exception {
+	public String actionLogin(@ModelAttribute("loginVO") LoginVO loginVO, HttpServletRequest request, ModelMap model)
+			throws Exception {
 
-		// 1. 로그인인증제한 활성화시 
-		if( egovLoginConfig.isLock()){
-		    Map<?,?> mapLockUserInfo = loginService.selectLoginIncorrect(loginVO);
-		    if(mapLockUserInfo != null){			
-				//2.1 로그인인증제한 처리
+		// 1. 로그인인증제한 활성화시
+		if (egovLoginConfig.isLock()) {
+			Map<?, ?> mapLockUserInfo = loginService.selectLoginIncorrect(loginVO);
+			if (mapLockUserInfo != null) {
+				// 2.1 로그인인증제한 처리
 				String sLoginIncorrectCode = loginService.processLoginIncorrect(loginVO, mapLockUserInfo);
-				if(!sLoginIncorrectCode.equals("E")){
-					if(sLoginIncorrectCode.equals("L")){
-						model.addAttribute("loginMessage", egovMessageSource.getMessageArgs("fail.common.loginIncorrect", new Object[] {egovLoginConfig.getLockCount(),request.getLocale()}));
-					}else if(sLoginIncorrectCode.equals("C")){
-						model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
+				if (!sLoginIncorrectCode.equals("E")) {
+					if (sLoginIncorrectCode.equals("L")) {
+						model.addAttribute("loginMessage",
+								egovMessageSource.getMessageArgs("fail.common.loginIncorrect",
+										new Object[] { egovLoginConfig.getLockCount(), request.getLocale() }));
+					} else if (sLoginIncorrectCode.equals("C")) {
+						model.addAttribute("loginMessage",
+								egovMessageSource.getMessage("fail.common.login", request.getLocale()));
 					}
 					return "redirect:/uat/uia/egovLoginUsr.do";
 				}
-		    }else{
-		    	model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
-		    	return "redirect:/uat/uia/egovLoginUsr.do";
-		    }
+			} else {
+				model.addAttribute("loginMessage",
+						egovMessageSource.getMessage("fail.common.login", request.getLocale()));
+				return "redirect:/uat/uia/egovLoginUsr.do";
+			}
 		}
-		
+
 		// 2. 로그인 처리
 		LoginVO resultVO = loginService.actionLogin(loginVO);
 		String userIp = EgovClntInfo.getClntIP(request);
 		resultVO.setIp(userIp);
-		
+
 		// 3. 일반 로그인 처리
 		// 2022.11.11 시큐어코딩 처리
 		if (resultVO.getId() != null && !resultVO.getId().equals("")) {
@@ -182,19 +191,21 @@ public class EgovLoginController {
 			return "redirect:/uat/uia/actionMain.do";
 
 		} else {
-			model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
+			model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login", request.getLocale()));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 	}
 
 	/**
 	 * 인증서 로그인을 처리한다
+	 * 
 	 * @param vo - 주민번호가 담긴 LoginVO
 	 * @return result - 로그인결과(세션정보)
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/uat/uia/actionCrtfctLogin.do")
-	public String actionCrtfctLogin(@ModelAttribute("loginVO") LoginVO loginVO, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+	public String actionCrtfctLogin(@ModelAttribute("loginVO") LoginVO loginVO, HttpServletRequest request,
+			HttpServletResponse response, ModelMap model) throws Exception {
 
 		// 접속IP
 		String userIp = EgovClntInfo.getClntIP(request);
@@ -202,79 +213,62 @@ public class EgovLoginController {
 		LOGGER.debug("User IP : {}", userIp);
 
 		/*
-		// 1. GPKI 인증
-		GPKIHttpServletResponse gpkiresponse = null;
-		GPKIHttpServletRequest gpkirequest = null;
-		String dn = "";
-		try{
-			gpkiresponse = new GPKIHttpServletResponse(response);
-		    gpkirequest = new GPKIHttpServletRequest(request);
-		    gpkiresponse.setRequest(gpkirequest);
-		    X509Certificate cert = null;
-
-		    byte[] signData = null;
-		    byte[] privatekey_random = null;
-		    String signType = "";
-		    String queryString = "";
-
-		    cert = gpkirequest.getSignerCert();
-		    dn = cert.getSubjectDN();
-
-		    java.math.BigInteger b = cert.getSerialNumber();
-		    b.toString();
-		    int message_type =  gpkirequest.getRequestMessageType();
-		    if( message_type == gpkirequest.ENCRYPTED_SIGNDATA || message_type == gpkirequest.LOGIN_ENVELOP_SIGN_DATA ||
-		        message_type == gpkirequest.ENVELOP_SIGNDATA || message_type == gpkirequest.SIGNED_DATA){
-		        signData = gpkirequest.getSignedData();
-		        if(privatekey_random != null) {
-		            privatekey_random   = gpkirequest.getSignerRValue();
-		        }
-		        signType = gpkirequest.getSignType();
-		    }
-		    queryString = gpkirequest.getQueryString();
-		}catch(Exception e){
-			return "cmm/egovError";
-		}
-
-		// 2. 업무사용자 테이블에서 dn값으로 사용자의 ID, PW를 조회하여 이를 일반로그인 형태로 인증하도록 함
-		if (dn != null && !dn.equals("")) {
-
-			loginVO.setDn(dn);
-			LoginVO resultVO = loginService.actionCrtfctLogin(loginVO);
-		    if (resultVO != null && resultVO.getId() != null && !resultVO.getId().equals("")) {
-
-		    	//스프링 시큐리티패키지를 사용하는지 체크하는 로직
-		    	if(EgovComponentChecker.hasComponent("egovAuthorManageService")){
-		    		// 3-1. spring security 연동
-		            return "redirect:/j_spring_security_check?j_username=" + resultVO.getUserSe() + resultVO.getId() + "&j_password=" + resultVO.getUniqId();
-
-		    	}else{
-		    		// 3-2. 로그인 정보를 세션에 저장
-		        	request.getSession().setAttribute("loginVO", resultVO);
-		    		return "redirect:/uat/uia/actionMain.do";
-		    	}
-
-
-		    } else {
-		    	model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-		    	return "redirect:/uat/uia/egovLoginUsr.do";
-		    }
-		} else {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-			return "redirect:/uat/uia/egovLoginUsr.do";
-		}
-		*/
+		 * // 1. GPKI 인증 GPKIHttpServletResponse gpkiresponse = null;
+		 * GPKIHttpServletRequest gpkirequest = null; String dn = ""; try{ gpkiresponse
+		 * = new GPKIHttpServletResponse(response); gpkirequest = new
+		 * GPKIHttpServletRequest(request); gpkiresponse.setRequest(gpkirequest);
+		 * X509Certificate cert = null;
+		 * 
+		 * byte[] signData = null; byte[] privatekey_random = null; String signType =
+		 * ""; String queryString = "";
+		 * 
+		 * cert = gpkirequest.getSignerCert(); dn = cert.getSubjectDN();
+		 * 
+		 * java.math.BigInteger b = cert.getSerialNumber(); b.toString(); int
+		 * message_type = gpkirequest.getRequestMessageType(); if( message_type ==
+		 * gpkirequest.ENCRYPTED_SIGNDATA || message_type ==
+		 * gpkirequest.LOGIN_ENVELOP_SIGN_DATA || message_type ==
+		 * gpkirequest.ENVELOP_SIGNDATA || message_type == gpkirequest.SIGNED_DATA){
+		 * signData = gpkirequest.getSignedData(); if(privatekey_random != null) {
+		 * privatekey_random = gpkirequest.getSignerRValue(); } signType =
+		 * gpkirequest.getSignType(); } queryString = gpkirequest.getQueryString();
+		 * }catch(Exception e){ return "cmm/egovError"; }
+		 * 
+		 * // 2. 업무사용자 테이블에서 dn값으로 사용자의 ID, PW를 조회하여 이를 일반로그인 형태로 인증하도록 함 if (dn != null
+		 * && !dn.equals("")) {
+		 * 
+		 * loginVO.setDn(dn); LoginVO resultVO =
+		 * loginService.actionCrtfctLogin(loginVO); if (resultVO != null &&
+		 * resultVO.getId() != null && !resultVO.getId().equals("")) {
+		 * 
+		 * //스프링 시큐리티패키지를 사용하는지 체크하는 로직
+		 * if(EgovComponentChecker.hasComponent("egovAuthorManageService")){ // 3-1.
+		 * spring security 연동 return "redirect:/j_spring_security_check?j_username=" +
+		 * resultVO.getUserSe() + resultVO.getId() + "&j_password=" +
+		 * resultVO.getUniqId();
+		 * 
+		 * }else{ // 3-2. 로그인 정보를 세션에 저장 request.getSession().setAttribute("loginVO",
+		 * resultVO); return "redirect:/uat/uia/actionMain.do"; }
+		 * 
+		 * 
+		 * } else { model.addAttribute("message",
+		 * egovMessageSource.getMessage("fail.common.login")); return
+		 * "redirect:/uat/uia/egovLoginUsr.do"; } } else { model.addAttribute("message",
+		 * egovMessageSource.getMessage("fail.common.login")); return
+		 * "redirect:/uat/uia/egovLoginUsr.do"; }
+		 */
 		return "redirect:/uat/uia/egovLoginUsr.do";
 	}
 
 	/**
 	 * 로그인 후 메인화면으로 들어간다
+	 * 
 	 * @param
 	 * @return 로그인 페이지
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/uat/uia/actionMain.do")
-	public String actionMain(HttpServletRequest request,ModelMap model) throws Exception {
+	public String actionMain(HttpServletRequest request, ModelMap model) throws Exception {
 
 		// 1. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -283,80 +277,78 @@ public class EgovLoginController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		
-		if (user.getIp().equals(""))
+
+		if (user.getIp().equals("")) {
 			user.setIp(EgovClntInfo.getClntIP(request));
-		
-		// 221116	김혜준	2022 시큐어코딩 조치
+		}
+
+		// 221116 김혜준 2022 시큐어코딩 조치
 		LOGGER.debug("User Id : {}", EgovStringUtil.isNullToString(user.getId()));
 
 		/*
-		// 2. 메뉴조회
-		MenuManageVO menuManageVO = new MenuManageVO();
-		menuManageVO.setTmp_Id(user.getId());
-		menuManageVO.setTmp_UserSe(user.getUserSe());
-		menuManageVO.setTmp_Name(user.getName());
-		menuManageVO.setTmp_Email(user.getEmail());
-		menuManageVO.setTmp_OrgnztId(user.getOrgnztId());
-		menuManageVO.setTmp_UniqId(user.getUniqId());
-		List list_headmenu = menuManageService.selectMainMenuHead(menuManageVO);
-		model.addAttribute("list_headmenu", list_headmenu);
-		*/
+		 * // 2. 메뉴조회 MenuManageVO menuManageVO = new MenuManageVO();
+		 * menuManageVO.setTmp_Id(user.getId());
+		 * menuManageVO.setTmp_UserSe(user.getUserSe());
+		 * menuManageVO.setTmp_Name(user.getName());
+		 * menuManageVO.setTmp_Email(user.getEmail());
+		 * menuManageVO.setTmp_OrgnztId(user.getOrgnztId());
+		 * menuManageVO.setTmp_UniqId(user.getUniqId()); List list_headmenu =
+		 * menuManageService.selectMainMenuHead(menuManageVO);
+		 * model.addAttribute("list_headmenu", list_headmenu);
+		 */
 
 		// 3. 메인 페이지 이동
-		String main_page = Globals.MAIN_PAGE;
+		String mainPage = Globals.MAIN_PAGE;
 
 		LOGGER.debug("Globals.MAIN_PAGE > " + Globals.MAIN_PAGE);
-		LOGGER.debug("main_page > {}", main_page);
+		LOGGER.debug("mainPage > {}", mainPage);
 
-		if (main_page.startsWith("/")) {
-			return "forward:" + main_page;
+		if (mainPage.startsWith("/")) {
+			return "forward:" + mainPage;
 		} else {
-			return main_page;
+			return mainPage;
 		}
 
 		/*
-		if (main_page != null && !main_page.equals("")) {
-
-			// 3-1. 설정된 메인화면이 있는 경우
-			return main_page;
-
-		} else {
-
-			// 3-2. 설정된 메인화면이 없는 경우
-			if (user.getUserSe().equals("USR")) {
-				return "egovframework/com/EgovMainView";
-			} else {
-				return "egovframework/com/EgovMainViewG";
-			}
-		}
-		*/
+		 * if (main_page != null && !main_page.equals("")) {
+		 * 
+		 * // 3-1. 설정된 메인화면이 있는 경우 return main_page;
+		 * 
+		 * } else {
+		 * 
+		 * // 3-2. 설정된 메인화면이 없는 경우 if (user.getUserSe().equals("USR")) { return
+		 * "egovframework/com/EgovMainView"; } else { return
+		 * "egovframework/com/EgovMainViewG"; } }
+		 */
 	}
 
 	/**
 	 * 로그아웃한다.
+	 * 
 	 * @return String
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/uat/uia/actionLogout.do")
 	public String actionLogout(HttpServletRequest request, ModelMap model) throws Exception {
 
-		/*String userIp = EgovClntInfo.getClntIP(request);
-
-		// 1. Security 연동
-		return "redirect:/j_spring_security_logout";*/
+		/*
+		 * String userIp = EgovClntInfo.getClntIP(request);
+		 * 
+		 * // 1. Security 연동 return "redirect:/j_spring_security_logout";
+		 */
 
 		request.getSession().setAttribute("loginVO", null);
 		// 세션모드인경우 Authority 초기화
 		// List<String> authList = (List<String>)EgovUserDetailsHelper.getAuthorities();
 		request.getSession().setAttribute("accessUser", null);
 
-		//return "redirect:/egovDevIndex.jsp";
+		// return "redirect:/egovDevIndex.jsp";
 		return "redirect:/EgovContent.do";
 	}
 
 	/**
 	 * 아이디/비밀번호 찾기 화면으로 들어간다
+	 * 
 	 * @param
 	 * @return 아이디/비밀번호 찾기 페이지
 	 * @exception Exception
@@ -375,6 +367,7 @@ public class EgovLoginController {
 
 	/**
 	 * 인증서안내 화면으로 들어간다
+	 * 
 	 * @return 인증서안내 페이지
 	 * @exception Exception
 	 */
@@ -385,6 +378,7 @@ public class EgovLoginController {
 
 	/**
 	 * 아이디를 찾는다.
+	 * 
 	 * @param vo - 이름, 이메일주소, 사용자구분이 담긴 LoginVO
 	 * @return result - 아이디
 	 * @exception Exception
@@ -392,8 +386,8 @@ public class EgovLoginController {
 	@RequestMapping(value = "/uat/uia/searchId.do")
 	public String searchId(@ModelAttribute("loginVO") LoginVO loginVO, ModelMap model) throws Exception {
 
-		if (loginVO == null || loginVO.getName() == null || loginVO.getName().equals("") && loginVO.getEmail() == null || loginVO.getEmail().equals("")
-				&& loginVO.getUserSe() == null || loginVO.getUserSe().equals("")) {
+		if (loginVO == null || loginVO.getName() == null || loginVO.getName().equals("") && loginVO.getEmail() == null
+				|| loginVO.getEmail().equals("") && loginVO.getUserSe() == null || loginVO.getUserSe().equals("")) {
 			return "egovframework/com/cmm/egovError";
 		}
 
@@ -413,6 +407,7 @@ public class EgovLoginController {
 
 	/**
 	 * 비밀번호를 찾는다.
+	 * 
 	 * @param vo - 아이디, 이름, 이메일주소, 비밀번호 힌트, 비밀번호 정답, 사용자구분이 담긴 LoginVO
 	 * @return result - 임시비밀번호전송결과
 	 * @exception Exception
@@ -420,10 +415,13 @@ public class EgovLoginController {
 	@RequestMapping(value = "/uat/uia/searchPassword.do")
 	public String searchPassword(@ModelAttribute("loginVO") LoginVO loginVO, ModelMap model) throws Exception {
 
-		//KISA 보안약점 조치 (2018-10-29, 윤창원)
-		if (loginVO == null || loginVO.getId() == null || loginVO.getId().equals("") && loginVO.getName() == null || "".equals(loginVO.getName()) && loginVO.getEmail() == null
-				|| loginVO.getEmail().equals("") && loginVO.getPasswordHint() == null || "".equals(loginVO.getPasswordHint()) && loginVO.getPasswordCnsr() == null
-				|| "".equals(loginVO.getPasswordCnsr()) && loginVO.getUserSe() == null || "".equals(loginVO.getUserSe())) {
+		// KISA 보안약점 조치 (2018-10-29, 윤창원)
+		if (loginVO == null || loginVO.getId() == null || loginVO.getId().equals("") && loginVO.getName() == null
+				|| "".equals(loginVO.getName()) && loginVO.getEmail() == null
+				|| loginVO.getEmail().equals("") && loginVO.getPasswordHint() == null
+				|| "".equals(loginVO.getPasswordHint()) && loginVO.getPasswordCnsr() == null
+				|| "".equals(loginVO.getPasswordCnsr()) && loginVO.getUserSe() == null
+				|| "".equals(loginVO.getUserSe())) {
 			return "egovframework/com/cmm/egovError";
 		}
 
@@ -441,8 +439,9 @@ public class EgovLoginController {
 	}
 
 	/**
-	 * 개발 시스템 구축 시 발급된 GPKI 서버용인증서에 대한 암호화데이터를 구한다.
-	 * 최초 한번만 실행하여, 암호화데이터를 EgovGpkiVariables.js의 ServerCert에 넣는다.
+	 * 개발 시스템 구축 시 발급된 GPKI 서버용인증서에 대한 암호화데이터를 구한다. 최초 한번만 실행하여, 암호화데이터를
+	 * EgovGpkiVariables.js의 ServerCert에 넣는다.
+	 * 
 	 * @return String
 	 * @exception Exception
 	 */
@@ -450,82 +449,69 @@ public class EgovLoginController {
 	public void getEncodingData() throws Exception {
 
 		/*
-		X509Certificate x509Cert = null;
-		byte[] cert = null;
-		String base64cert = null;
-		try {
-			x509Cert = Disk.readCert("/product/jeus/egovProps/gpkisecureweb/certs/SVR1311000011_env.cer");
-			cert = x509Cert.getCert();
-			Base64 base64 = new Base64();
-			base64cert = base64.encode(cert);
-			log.info("+++ Base64로 변환된 인증서는 : " + base64cert);
-
-		} catch (GpkiApiException e) {
-			e.printStackTrace();
-		}
-		*/
+		 * X509Certificate x509Cert = null; byte[] cert = null; String base64cert =
+		 * null; try { x509Cert = Disk.readCert(
+		 * "/product/jeus/egovProps/gpkisecureweb/certs/SVR1311000011_env.cer"); cert =
+		 * x509Cert.getCert(); Base64 base64 = new Base64(); base64cert =
+		 * base64.encode(cert); log.info("+++ Base64로 변환된 인증서는 : " + base64cert);
+		 * 
+		 * } catch (GpkiApiException e) { e.printStackTrace(); }
+		 */
 	}
 
 	/**
 	 * 인증서 DN추출 팝업을 호출한다.
+	 * 
 	 * @return 인증서 등록 페이지
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/uat/uia/EgovGpkiRegist.do")
-	public String gpkiRegistView(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+	public String gpkiRegistView(HttpServletRequest request, HttpServletResponse response, ModelMap model)
+			throws Exception {
 
 		/** GPKI 인증 부분 */
 		// OS에 따라 (local NT(로컬) / server Unix(서버)) 구분
 		String os = System.getProperty("os.arch");
 		LOGGER.debug("OS : {}", os);
-		
-		//String virusReturn = null;
+
+		// String virusReturn = null;
 
 		/*
-		// 브라우저 이름을 받기위한 처리
-		String webKind = EgovClntInfo.getClntWebKind(request);
-		String[] ss = webKind.split(" ");
-		String browser = ss[1];
-		model.addAttribute("browser",browser);
-		// -- 여기까지
-		if (os.equalsIgnoreCase("x86")) {
-		    //Local Host TEST 진행중
-		} else {
-		    if (browser.equalsIgnoreCase("Explorer")) {
-		GPKIHttpServletResponse gpkiresponse = null;
-		GPKIHttpServletRequest gpkirequest = null;
-
-		try {
-		    gpkiresponse = new GPKIHttpServletResponse(response);
-		    gpkirequest = new GPKIHttpServletRequest(request);
-
-		    gpkiresponse.setRequest(gpkirequest);
-		    model.addAttribute("challenge", gpkiresponse.getChallenge());
-
-		    return "egovframework/com/uat/uia/EgovGpkiRegist";
-
-		} catch (Exception e) {
-		    return "egovframework/com/cmm/egovError";
-		}
-		}
-		}
-		*/
+		 * // 브라우저 이름을 받기위한 처리 String webKind = EgovClntInfo.getClntWebKind(request);
+		 * String[] ss = webKind.split(" "); String browser = ss[1];
+		 * model.addAttribute("browser",browser); // -- 여기까지 if
+		 * (os.equalsIgnoreCase("x86")) { //Local Host TEST 진행중 } else { if
+		 * (browser.equalsIgnoreCase("Explorer")) { GPKIHttpServletResponse gpkiresponse
+		 * = null; GPKIHttpServletRequest gpkirequest = null;
+		 * 
+		 * try { gpkiresponse = new GPKIHttpServletResponse(response); gpkirequest = new
+		 * GPKIHttpServletRequest(request);
+		 * 
+		 * gpkiresponse.setRequest(gpkirequest); model.addAttribute("challenge",
+		 * gpkiresponse.getChallenge());
+		 * 
+		 * return "egovframework/com/uat/uia/EgovGpkiRegist";
+		 * 
+		 * } catch (Exception e) { return "egovframework/com/cmm/egovError"; } } }
+		 */
 		return "egovframework/com/uat/uia/EgovGpkiRegist";
 	}
 
 	/**
 	 * 인증서 DN값을 추출한다
+	 * 
 	 * @return result - dn값
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/uat/uia/actionGpkiRegist.do")
-	public String actionGpkiRegist(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+	public String actionGpkiRegist(HttpServletRequest request, HttpServletResponse response, ModelMap model)
+			throws Exception {
 
 		/** GPKI 인증 부분 */
 		// OS에 따라 (local NT(로컬) / server Unix(서버)) 구분
 		String os = System.getProperty("os.arch");
 		LOGGER.debug("OS : {}", os);
-		
+
 		// String virusReturn = null;
 		@SuppressWarnings("unused")
 		String dn = "";
@@ -534,47 +520,35 @@ public class EgovLoginController {
 		String browser = EgovClntInfo.getClntWebKind(request);
 		model.addAttribute("browser", browser);
 		/*
-		// -- 여기까지
-		if (os.equalsIgnoreCase("x86")) {
-			// Local Host TEST 진행중
-		} else {
-			if (browser.equalsIgnoreCase("Explorer")) {
-				GPKIHttpServletResponse gpkiresponse = null;
-				GPKIHttpServletRequest gpkirequest = null;
-				try {
-					gpkiresponse = new GPKIHttpServletResponse(response);
-					gpkirequest = new GPKIHttpServletRequest(request);
-					gpkiresponse.setRequest(gpkirequest);
-					X509Certificate cert = null;
-
-					// byte[] signData = null;
-					// byte[] privatekey_random = null;
-					// String signType = "";
-					// String queryString = "";
-
-					cert = gpkirequest.getSignerCert();
-					dn = cert.getSubjectDN();
-
-					model.addAttribute("dn", dn);
-					model.addAttribute("challenge", gpkiresponse.getChallenge());
-
-					return "egovframework/com/uat/uia/EgovGpkiRegist";
-				} catch (Exception e) {
-					return "egovframework/com/cmm/egovError";
-				}
-			}
-		}
-		*/
+		 * // -- 여기까지 if (os.equalsIgnoreCase("x86")) { // Local Host TEST 진행중 } else {
+		 * if (browser.equalsIgnoreCase("Explorer")) { GPKIHttpServletResponse
+		 * gpkiresponse = null; GPKIHttpServletRequest gpkirequest = null; try {
+		 * gpkiresponse = new GPKIHttpServletResponse(response); gpkirequest = new
+		 * GPKIHttpServletRequest(request); gpkiresponse.setRequest(gpkirequest);
+		 * X509Certificate cert = null;
+		 * 
+		 * // byte[] signData = null; // byte[] privatekey_random = null; // String
+		 * signType = ""; // String queryString = "";
+		 * 
+		 * cert = gpkirequest.getSignerCert(); dn = cert.getSubjectDN();
+		 * 
+		 * model.addAttribute("dn", dn); model.addAttribute("challenge",
+		 * gpkiresponse.getChallenge());
+		 * 
+		 * return "egovframework/com/uat/uia/EgovGpkiRegist"; } catch (Exception e) {
+		 * return "egovframework/com/cmm/egovError"; } } }
+		 */
 		return "egovframework/com/uat/uia/EgovGpkiRegist";
 	}
-	
+
 	/**
-	 * 세션타임아웃 시간을 연장한다.
-	 * Cookie에 egovLatestServerTime, egovExpireSessionTime 기록하도록 한다.
+	 * 세션타임아웃 시간을 연장한다. Cookie에 egovLatestServerTime, egovExpireSessionTime 기록하도록
+	 * 한다.
+	 * 
 	 * @return result - String
 	 * @exception Exception
 	 */
-	@RequestMapping(value="/uat/uia/refreshSessionTimeout.do")
+	@RequestMapping(value = "/uat/uia/refreshSessionTimeout.do")
 	public ModelAndView refreshSessionTimeout(@RequestParam Map<String, Object> commandMap) throws Exception {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("jsonView");
@@ -583,44 +557,45 @@ public class EgovLoginController {
 
 		return modelAndView;
 	}
-	
+
 	/**
-	 * 비밀번호 유효기간 팝업을 출력한다.
-	 * Cookie에 egovLatestServerTime, egovExpireSessionTime 기록하도록 한다.
+	 * 비밀번호 유효기간 팝업을 출력한다. Cookie에 egovLatestServerTime, egovExpireSessionTime 기록하도록
+	 * 한다.
+	 * 
 	 * @return result - String
 	 * @exception Exception
 	 */
-	@RequestMapping(value="/uat/uia/noticeExpirePwd.do")
+	@RequestMapping(value = "/uat/uia/noticeExpirePwd.do")
 	public String noticeExpirePwd(@RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
-		
-		// 설정된 비밀번호 유효기간을 가져온다. ex) 180이면 비밀번호 변경후 만료일이 앞으로 180일 
+
+		// 설정된 비밀번호 유효기간을 가져온다. ex) 180이면 비밀번호 변경후 만료일이 앞으로 180일
 		String propertyExpirePwdDay = EgovProperties.getProperty("Globals.ExpirePwdDay");
-		int expirePwdDay = 0 ;
+		int expirePwdDay = 0;
 		try {
-			expirePwdDay =  Integer.parseInt(propertyExpirePwdDay);
+			expirePwdDay = Integer.parseInt(propertyExpirePwdDay);
 		} catch (NumberFormatException e) {
-			LOGGER.debug("convert expirePwdDay Err : "+e.getMessage());
+			LOGGER.debug("convert expirePwdDay Err : " + e.getMessage());
 		}
-		
+
 		model.addAttribute("expirePwdDay", expirePwdDay);
 
 		// 비밀번호 설정일로부터 몇일이 지났는지 확인한다. ex) 3이면 비빌번호 설정후 3일 경과
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		model.addAttribute("loginVO", loginVO);
 		int passedDayChangePWD = 0;
-		if ( loginVO != null ) {
-			LOGGER.debug("===>>> loginVO.getId() = "+loginVO.getId());
-			LOGGER.debug("===>>> loginVO.getUniqId() = "+loginVO.getUniqId());
-			LOGGER.debug("===>>> loginVO.getUserSe() = "+loginVO.getUserSe());
+		if (loginVO != null) {
+			LOGGER.debug("===>>> loginVO.getId() = " + loginVO.getId());
+			LOGGER.debug("===>>> loginVO.getUniqId() = " + loginVO.getUniqId());
+			LOGGER.debug("===>>> loginVO.getUserSe() = " + loginVO.getUserSe());
 			// 비밀번호 변경후 경과한 일수
 			passedDayChangePWD = loginService.selectPassedDayChangePWD(loginVO);
-			LOGGER.debug("===>>> passedDayChangePWD = "+passedDayChangePWD);
+			LOGGER.debug("===>>> passedDayChangePWD = " + passedDayChangePWD);
 			model.addAttribute("passedDay", passedDayChangePWD);
 		}
-		
+
 		// 만료일자로부터 경과한 일수 => ex)1이면 만료일에서 1일 경과
 		model.addAttribute("elapsedTimeExpiration", passedDayChangePWD - expirePwdDay);
-		
+
 		return "egovframework/com/uat/uia/EgovExpirePwd";
 	}
 
