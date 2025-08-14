@@ -16,7 +16,6 @@ import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
-import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import egovframework.com.uss.ion.rss.service.RssManage;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 
@@ -55,40 +54,34 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 	 */
 	public List<ComDefaultCodeVO> selectRssTagManageTableList() throws Exception {
 
-		String TABLE_NAME = "TABLE_NAME";
-		String TABLE_SCHEMA = "TABLE_SCHEM";
-		String[] TABLE_AND_VIEW_TYPES = { "TABLE", "VIEW" };
+		String columnLabelTableName = "TABLE_NAME";
+		String columnLabelTableSchema = "TABLE_SCHEM";
+		String[] types = { "TABLE", "VIEW" };
 		ArrayList<ComDefaultCodeVO> arrListResult = new ArrayList<ComDefaultCodeVO>();
 
-		Connection conn = null;
 		DatabaseMetaData dbmd = null;
-		ResultSet tables = null;
 
-		try {
+		try (Connection conn = getSqlSession().getConnection();) {
 
-			conn = getSqlSession().getConnection(); // getSqlMapClientTemplate().getDataSource().getConnection();
 			dbmd = conn.getMetaData();
 
-			tables = dbmd.getTables(null, null, null, TABLE_AND_VIEW_TYPES);
-			while (tables.next()) {
+			try (ResultSet tables = dbmd.getTables(null, null, null, types);) {
+				while (tables.next()) {
 
-				// KISA 보안약점 조치 (2018-12-05, 신용호)
-				String tableName = tables.getString(TABLE_NAME);
-				if (tableName == null) {
-					tableName = "";
-				}
-				// WhiteList 기능 보완 (2019-05-10, 신용호)
-				if (tableWhiteList.contains(tableName.toLowerCase()) == true) {
-					ComDefaultCodeVO codeVO = new ComDefaultCodeVO();
-					codeVO.setCode(tables.getString(TABLE_NAME));
-					codeVO.setCodeNm(tables.getString(TABLE_SCHEMA));
-					arrListResult.add(codeVO);
+					// KISA 보안약점 조치 (2018-12-05, 신용호)
+					String tableName = tables.getString(columnLabelTableName);
+					if (tableName == null) {
+						tableName = "";
+					}
+					// WhiteList 기능 보완 (2019-05-10, 신용호)
+					if (tableWhiteList.contains(tableName.toLowerCase())) {
+						ComDefaultCodeVO codeVO = new ComDefaultCodeVO();
+						codeVO.setCode(tables.getString(columnLabelTableName));
+						codeVO.setCodeNm(tables.getString(columnLabelTableSchema));
+						arrListResult.add(codeVO);
+					}
 				}
 			}
-
-		} finally {
-			// EgovResourceCloseHelper.closeDBObjects(tables, conn);
-			EgovResourceCloseHelper.closeDBObjects(tables);
 		}
 
 		return arrListResult;
@@ -109,16 +102,13 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 		String sSQL = "";
 		ArrayList<Map<String, String>> arrListResult = new ArrayList<Map<String, String>>();
 
-		Connection conn = null;
 		PreparedStatement st = null;
-		ResultSet rs = null;
 
-		try {
-			conn = getSqlSession().getConnection(); // getSqlMapClientTemplate().getDataSource().getConnection();
+		try (Connection conn = getSqlSession().getConnection();) {
 
 			// KISA 보안약점 조치 (2018-12-05, 신용호)
 			// WhiteList 기능 보완 (2019-05-10, 신용호)
-			if (tableWhiteList.contains(sTableName.toLowerCase()) == true) {
+			if (tableWhiteList.contains(sTableName.toLowerCase())) {
 
 				if (sDbType.equals("mysql") || sDbType.equals("maria") || sDbType.equals("postgres")) {
 					sSQL = "SELECT * FROM (sTableName) LIMIT 1 ";
@@ -135,24 +125,22 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 					st = conn.prepareStatement(sSQL);
 				}
 
-				rs = st.executeQuery();
+				try (ResultSet rs = st.executeQuery();) {
 
-				ResultSetMetaData rsMetaData = rs.getMetaData();
-				int numberOfColumns = rsMetaData == null ? 0 : rsMetaData.getColumnCount();
+					ResultSetMetaData rsMetaData = rs.getMetaData();
+					int numberOfColumns = rsMetaData == null ? 0 : rsMetaData.getColumnCount();
 
-				for (int i = 1; i < numberOfColumns + 1; i++) {
-					Map<String, String> hmResult = new HashMap<String, String>();
-					hmResult.put("code",
-							rsMetaData == null ? "" : EgovStringUtil.isNullToString(rsMetaData.getTableName(i)));
-					hmResult.put("codeNm",
-							rsMetaData == null ? "" : EgovStringUtil.isNullToString(rsMetaData.getColumnName(i)));
+					for (int i = 1; i < numberOfColumns + 1; i++) {
+						Map<String, String> hmResult = new HashMap<String, String>();
+						hmResult.put("code",
+								rsMetaData == null ? "" : EgovStringUtil.isNullToString(rsMetaData.getTableName(i)));
+						hmResult.put("codeNm",
+								rsMetaData == null ? "" : EgovStringUtil.isNullToString(rsMetaData.getColumnName(i)));
 
-					arrListResult.add(hmResult);
+						arrListResult.add(hmResult);
+					}
 				}
 			}
-		} finally {
-			// EgovResourceCloseHelper.closeDBObjects(rs, st, conn);
-			EgovResourceCloseHelper.closeDBObjects(rs, st);
 		}
 
 		return arrListResult;
