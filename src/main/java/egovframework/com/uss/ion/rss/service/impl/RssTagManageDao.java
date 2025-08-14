@@ -36,7 +36,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *   2018.12.05  신용호          selectRssTagManageTableList(),selectRssTagManageTableColumnList() 테이블 목록 화이트리스트 제약
  *   2019.05.10  신용호          WhiteList 기능 보완
  * </pre>
- */
+ */ 
 @Repository("rssManageDao")
 public class RssTagManageDao extends EgovComAbstractDAO {
 
