@@ -26,17 +26,21 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  * @since 2010.06.16
  * @version 1.0
  * @see
- * 
+ *
  *      <pre>
- * &lt;&lt; 개정이력(Modification Information) &gt;&gt;
+ *  == 개정이력(Modification Information) ==
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.07.03  장동한          최초 생성
+ *   2010.06.16  장동한          최초 생성
  *   2011.10.18  서준식          Altibase DB 처리를 위한 코드 추가
  *   2018.10.22  신용호          connection close 관련 수정
  *   2018.12.05  신용호          selectRssTagManageTableList(),selectRssTagManageTableColumnList() 테이블 목록 화이트리스트 제약
  *   2019.05.10  신용호          WhiteList 기능 보완
+ *   2025.08.14  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *   2025.08.14  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(부적절한 자원 해제)
+ *   2025.08.14  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-SimplifyBooleanExpressions(boolean 사용 시 불필요한 비교 연산을 피하도록 함)
+ *
  *      </pre>
  */
 @Repository("rssManageDao")
