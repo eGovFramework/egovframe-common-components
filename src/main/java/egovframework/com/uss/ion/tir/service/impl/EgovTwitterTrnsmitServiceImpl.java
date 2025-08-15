@@ -19,23 +19,22 @@ import twitter4j.TwitterV2ExKt;
 import twitter4j.UsersResponse;
 import twitter4j.auth.AccessToken;
 
-//import twitter4j.conf.Configuration;
-//import twitter4j.conf.ConfigurationBuilder;
 /**
  * 트위터수신을 처리하는 ServiceImpl Class 구현
  * 
  * @author 공통서비스 장동한
- * @since 2010.06.16
+ * @since 2010.10.04
  * @version 1.0
  * @see
- * 
+ *
  *      <pre>
- * &lt;&lt; 개정이력(Modification Information) &gt;&gt;
+ *  == 개정이력(Modification Information) ==
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.07.03  장동한          최초 생성
- *   2024.10.29	LeeBaekHaeng	미사용 import 정리
+ *   2010.10.04  장동한          최초 생성
+ *   2024.10.29  이백행          미사용 import 정리
+ *   2025.08.15  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
  *
  *      </pre>
  */
