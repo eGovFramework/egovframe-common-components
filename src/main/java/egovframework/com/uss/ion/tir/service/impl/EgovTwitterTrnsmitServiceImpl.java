@@ -56,12 +56,12 @@ public class EgovTwitterTrnsmitServiceImpl extends EgovAbstractServiceImpl imple
 	@Override
 	public CreateTweetResponse twitterTrnsmitRegist(Map<?, ?> map, String sTwitterText) throws Exception {
 
-		String sCONSUMER_KEY = (String) map.get("sCONSUMER_KEY");
-		String sCONSUMER_SECRET = (String) map.get("sCONSUMER_SECRET");
+		String consumerKey = (String) map.get("sCONSUMER_KEY");
+		String consumerSecret = (String) map.get("sCONSUMER_SECRET");
 		// 트위터 객체선언
 		Twitter twitter = new TwitterFactory().getInstance();
 		// CONSUMER KEY, CONSUMER SECRET 설정
-		twitter.setOAuthConsumer(sCONSUMER_KEY, sCONSUMER_SECRET);
+		twitter.setOAuthConsumer(consumerKey, consumerSecret);
 		// 엑서스 토큰 키 설정
 		AccessToken accessToken = new AccessToken((String) map.get("atoken"), (String) map.get("astoken"));
 		// 엑서스 토큰 설정
@@ -85,12 +85,12 @@ public class EgovTwitterTrnsmitServiceImpl extends EgovAbstractServiceImpl imple
 	public Map<?, ?> twitterUserAccount(Map<?, ?> map) throws Exception {
 
 		// 유저정보
-		String sCONSUMER_KEY = (String) map.get("sCONSUMER_KEY");
-		String sCONSUMER_SECRET = (String) map.get("sCONSUMER_SECRET");
+		String consumerKey = (String) map.get("sCONSUMER_KEY");
+		String consumerSecret = (String) map.get("sCONSUMER_SECRET");
 		// 트위터 객체선언
 		Twitter twitter = new TwitterFactory().getInstance();
 		// CONSUMER KEY, CONSUMER SECRET 설정
-		twitter.setOAuthConsumer(sCONSUMER_KEY, sCONSUMER_SECRET);
+		twitter.setOAuthConsumer(consumerKey, consumerSecret);
 		// 엑서스 토큰 키 설정
 		AccessToken accessToken = new AccessToken((String) map.get("atoken"), (String) map.get("astoken"));
 		// 엑서스 토큰 설정
@@ -103,15 +103,15 @@ public class EgovTwitterTrnsmitServiceImpl extends EgovAbstractServiceImpl imple
 		Long userId = users.getUsers().get(0).getId();
 		String userName = users.getUsers().get(0).getName();
 		String userScreenName = users.getUsers().get(0).getScreenName();
-		Date userCreate_at = users.getUsers().get(0).getCreatedAt();
-		String userProfile_url = users.getUsers().get(0).getProfileImageUrl();
+		Date userCreateAt = users.getUsers().get(0).getCreatedAt();
+		String userProfileUrl = users.getUsers().get(0).getProfileImageUrl();
 
 		Map<String, Object> userResult = new HashMap<String, Object>();
 		userResult.put("userId", userId);
 		userResult.put("userName", userName);
 		userResult.put("userScreenName", userScreenName);
-		userResult.put("userCreate_At", userCreate_at);
-		userResult.put("userProfile_url", userProfile_url);
+		userResult.put("userCreate_At", userCreateAt);
+		userResult.put("userProfile_url", userProfileUrl);
 
 		return userResult;
 	}
@@ -123,12 +123,12 @@ public class EgovTwitterTrnsmitServiceImpl extends EgovAbstractServiceImpl imple
 	@Override
 	public boolean twitterDelete(Map<?, ?> map, String tID) throws Exception {
 
-		String sCONSUMER_KEY = (String) map.get("sCONSUMER_KEY");
-		String sCONSUMER_SECRET = (String) map.get("sCONSUMER_SECRET");
+		String consumerKey = (String) map.get("sCONSUMER_KEY");
+		String consumerSecret = (String) map.get("sCONSUMER_SECRET");
 		// 트위터 객체선언
 		Twitter twitter = new TwitterFactory().getInstance();
 		// CONSUMER KEY, CONSUMER SECRET 설정
-		twitter.setOAuthConsumer(sCONSUMER_KEY, sCONSUMER_SECRET);
+		twitter.setOAuthConsumer(consumerKey, consumerSecret);
 		// 엑서스 토큰 키 설정
 		AccessToken accessToken = new AccessToken((String) map.get("atoken"), (String) map.get("astoken"));
 		// 엑서스 토큰 설정
