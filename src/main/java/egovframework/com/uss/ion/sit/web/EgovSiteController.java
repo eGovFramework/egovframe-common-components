@@ -93,8 +93,8 @@ public class EgovSiteController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<SiteVO> SiteList = egovSiteService.selectSiteList(searchVO);
-		model.addAttribute("resultList", SiteList);
+		List<SiteVO> resultList = egovSiteService.selectSiteList(searchVO);
+		model.addAttribute("resultList", resultList);
 
 		int totCnt = egovSiteService.selectSiteListCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -138,8 +138,8 @@ public class EgovSiteController {
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM023");
 
-		List<?> _result = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("siteThemaClCode", _result);
+		List<?> siteThemaClCode = cmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("siteThemaClCode", siteThemaClCode);
 
 		model.addAttribute("siteVO", new SiteVO());
 
@@ -195,8 +195,8 @@ public class EgovSiteController {
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM023");
 
-		List<?> _result = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("siteThemaClCode", _result);
+		List<?> siteThemaClCode = cmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("siteThemaClCode", siteThemaClCode);
 
 		SiteVO siteVO = new SiteVO();
 
