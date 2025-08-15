@@ -159,23 +159,23 @@ public class EgovRwardManageController {
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
 		if (sCmd.equals("updt")) {
-			RwardManage rwardManage_1 = new RwardManage();
+			RwardManage rwardManage1 = new RwardManage();
 
-			rwardManage_1.setRwardId(rwardManageVOTemp.getRwardId());
-			rwardManage_1.setRwardNm(rwardManageVOTemp.getRwardNm());
-			rwardManage_1.setPblenCn(rwardManageVOTemp.getPblenCn());
-			rwardManage_1.setRwardManId(rwardManageVOTemp.getRwardManId());
-			rwardManage_1.setRwardCd(rwardManageVOTemp.getRwardCd());
-			rwardManage_1.setRwardDe(rwardManageVOTemp.getRwardDe());
-			rwardManage_1.setInfrmlSanctnId(rwardManageVOTemp.getInfrmlSanctnId());
-			rwardManage_1.setSanctnerId(rwardManageVOTemp.getSanctnerId());
+			rwardManage1.setRwardId(rwardManageVOTemp.getRwardId());
+			rwardManage1.setRwardNm(rwardManageVOTemp.getRwardNm());
+			rwardManage1.setPblenCn(rwardManageVOTemp.getPblenCn());
+			rwardManage1.setRwardManId(rwardManageVOTemp.getRwardManId());
+			rwardManage1.setRwardCd(rwardManageVOTemp.getRwardCd());
+			rwardManage1.setRwardDe(rwardManageVOTemp.getRwardDe());
+			rwardManage1.setInfrmlSanctnId(rwardManageVOTemp.getInfrmlSanctnId());
+			rwardManage1.setSanctnerId(rwardManageVOTemp.getSanctnerId());
 
 			List<?> rwardCdCodeList = null;
 			ComDefaultCodeVO vo = new ComDefaultCodeVO();
 			vo.setCodeId("COM055");
 			rwardCdCodeList = cmmUseService.selectCmmCodeDetail(vo);
 			model.addAttribute("rwardCodeList", rwardCdCodeList);
-			model.addAttribute("rwardManage", rwardManage_1);
+			model.addAttribute("rwardManage", rwardManage1);
 			return "egovframework/com/uss/ion/rwd/EgovRwardUpdt";
 		} else {
 			return "egovframework/com/uss/ion/rwd/EgovRwardDetail";
@@ -218,18 +218,18 @@ public class EgovRwardManageController {
 			return "egovframework/com/uss/ion/rwd/EgovRwardRegist";
 		} else {
 			// 첨부파일 관련 첨부파일ID 생성
-			List<FileVO> _result = null;
-			String _atchFileId = "";
+			List<FileVO> fvoList = null;
+			String atchFileId = "";
 
 			// final Map<String, MultipartFile> files = multiRequest.getFileMap();
 			final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
 			if (!files.isEmpty()) {
-				_result = fileUtil.parseFileInf(files, "RWD_", 0, "", "");
-				_atchFileId = fileMngService.insertFileInfs(_result); // 파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
+				fvoList = fileUtil.parseFileInf(files, "RWD_", 0, "", "");
+				atchFileId = fileMngService.insertFileInfs(fvoList); // 파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
 			}
 			// 리턴받은 첨부파일ID를 셋팅한다..
-			rwardManage.setAtchFileId(_atchFileId); // 첨부파일 ID
+			rwardManage.setAtchFileId(atchFileId); // 첨부파일 ID
 
 			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 			rwardManage.setFrstRegisterId((user == null || user.getUniqId() == null) ? "" : user.getUniqId()); // 최초등록자ID
@@ -261,7 +261,7 @@ public class EgovRwardManageController {
 			return "egovframework/com/uss/ion/rwd/EgovRwardUpdt";
 		} else {
 			// 첨부파일 관련 ID 생성 start....
-			String _atchFileId = rwardManage.getAtchFileId();
+			String atchFileId = rwardManage.getAtchFileId();
 
 			// final Map<String, MultipartFile> files = multiRequest.getFileMap();
 			final List<MultipartFile> files = multiRequest.getFiles("file_1");
@@ -271,19 +271,19 @@ public class EgovRwardManageController {
 				if ("N".equals(atchFileAt)) {
 
 					// System.out.println("updtRwardManage 3");
-					List<FileVO> _result = fileUtil.parseFileInf(files, "RWD_", 0, _atchFileId, "");
-					_atchFileId = fileMngService.insertFileInfs(_result);
+					List<FileVO> fvoList = fileUtil.parseFileInf(files, "RWD_", 0, atchFileId, "");
+					atchFileId = fileMngService.insertFileInfs(fvoList);
 
 					// 첨부파일 ID 셋팅
-					rwardManage.setAtchFileId(_atchFileId); // 첨부파일 ID
+					rwardManage.setAtchFileId(atchFileId); // 첨부파일 ID
 
 				} else {
 					// System.out.println("updtRwardManage 4");
 					FileVO fvo = new FileVO();
-					fvo.setAtchFileId(_atchFileId);
-					int _cnt = fileMngService.getMaxFileSN(fvo);
-					List<FileVO> _result = fileUtil.parseFileInf(files, "RWD_", _cnt, _atchFileId, "");
-					fileMngService.updateFileInfs(_result);
+					fvo.setAtchFileId(atchFileId);
+					int fileKeyParam = fileMngService.getMaxFileSN(fvo);
+					List<FileVO> fvoList = fileUtil.parseFileInf(files, "RWD_", fileKeyParam, atchFileId, "");
+					fileMngService.updateFileInfs(fvoList);
 				}
 			}
 			// 첨부파일 관련 ID 생성 end...
@@ -306,14 +306,14 @@ public class EgovRwardManageController {
 		rwardManage.setRwardDe(EgovStringUtil.removeMinusChar(rwardManage.getRwardDe()));
 
 		// 첨부파일 삭제를 위한 ID 생성 start....
-		String _atchFileId = rwardManage.getAtchFileId();
+		String atchFileId = rwardManage.getAtchFileId();
 
 		// 포상 삭제 처리
 		egovRwardManageService.deleteRwardManage(rwardManage);
 
 		// 첨부파일을 삭제하기 위한 Vo
 		FileVO fvo = new FileVO();
-		fvo.setAtchFileId(_atchFileId);
+		fvo.setAtchFileId(atchFileId);
 
 		fileMngService.deleteAllFileInf(fvo);
 		// 첨부파일 삭제 End.............
