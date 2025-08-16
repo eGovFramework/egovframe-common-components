@@ -173,13 +173,13 @@ public class EgovTwitterController {
 		WebUtils.setSessionAttribute(request, "astoken", null);
 
 		// 저장메세지 설정
-		String ReusltScript = "";
+		String reusltScript = "";
 
-		ReusltScript += "<script type='text/javaScript' language='javascript'>";
-		ReusltScript += "alert(' 작성된  트위터 인증키(ConsumerKey/ConsumerSecret)를 저장 하였습니다!  ');";
-		ReusltScript += "</script>";
+		reusltScript += "<script type='text/javaScript' language='javascript'>";
+		reusltScript += "alert(' 작성된  트위터 인증키(ConsumerKey/ConsumerSecret)를 저장 하였습니다!  ');";
+		reusltScript += "</script>";
 
-		model.addAttribute("reusltScript", ReusltScript);
+		model.addAttribute("reusltScript", reusltScript);
 
 		return "egovframework/com/uss/ion/tir/EgovTwitterAccount";
 	}
@@ -297,16 +297,16 @@ public class EgovTwitterController {
 	@RequestMapping(value = "/uss/ion/tir/registTwitterTrnsmit.do", method = RequestMethod.GET)
 	public String EgovTwitterTrnsmitGet(ModelMap model, HttpServletRequest request) throws Exception {
 
-		String sCONSUMER_KEY = (String) WebUtils.getSessionAttribute(request, "sCONSUMER_KEY");
-		String sCONSUMER_SECRET = (String) WebUtils.getSessionAttribute(request, "sCONSUMER_SECRET");
+		String consumerKey = (String) WebUtils.getSessionAttribute(request, "sCONSUMER_KEY");
+		String consumerSecret = (String) WebUtils.getSessionAttribute(request, "sCONSUMER_SECRET");
 
 		String atoken = (String) WebUtils.getSessionAttribute(request, "atoken");
 		String astoken = (String) WebUtils.getSessionAttribute(request, "astoken");
 
 		HashMap<String, Object> hmParam = new HashMap<String, Object>();
 		// 인증키값 설정
-		hmParam.put("sCONSUMER_KEY", sCONSUMER_KEY);
-		hmParam.put("sCONSUMER_SECRET", sCONSUMER_SECRET);
+		hmParam.put("sCONSUMER_KEY", consumerKey);
+		hmParam.put("sCONSUMER_SECRET", consumerSecret);
 		hmParam.put("atoken", atoken);
 		hmParam.put("astoken", astoken);
 
@@ -335,8 +335,8 @@ public class EgovTwitterController {
 	public String EgovTwitterTrnsmitPost(TwitterInfo twitterInfo, HttpServletRequest request,
 			HttpServletResponse response, ModelMap model) throws Exception {
 
-		String sCONSUMER_KEY = (String) WebUtils.getSessionAttribute(request, "sCONSUMER_KEY");
-		String sCONSUMER_SECRET = (String) WebUtils.getSessionAttribute(request, "sCONSUMER_SECRET");
+		String consumerKey = (String) WebUtils.getSessionAttribute(request, "sCONSUMER_KEY");
+		String consumerSecret = (String) WebUtils.getSessionAttribute(request, "sCONSUMER_SECRET");
 
 		String atoken = (String) WebUtils.getSessionAttribute(request, "atoken");
 		String astoken = (String) WebUtils.getSessionAttribute(request, "astoken");
@@ -344,8 +344,8 @@ public class EgovTwitterController {
 		HashMap<String, Object> hmParam = new HashMap<String, Object>();
 
 		// 인증키값 설정
-		hmParam.put("sCONSUMER_KEY", sCONSUMER_KEY);
-		hmParam.put("sCONSUMER_SECRET", sCONSUMER_SECRET);
+		hmParam.put("sCONSUMER_KEY", consumerKey);
+		hmParam.put("sCONSUMER_SECRET", consumerSecret);
 		hmParam.put("atoken", atoken);
 		hmParam.put("astoken", astoken);
 		LOGGER.info("[Controller]===>>> atoken = " + atoken);
@@ -372,11 +372,11 @@ public class EgovTwitterController {
 	@RequestMapping(value = "/uss/ion/tir/twitterDelete.do")
 	public String deleteTweet(@RequestParam("tweetID") String tID, HttpServletRequest request) throws Exception {
 
-		tID = tID.replace("&quot;", "");
-		LOGGER.info("트윗 아이디 >>> " + tID);
+		String tID2 = tID.replace("&quot;", "");
+		LOGGER.info("트윗 아이디 >>> " + tID2);
 
-		String sCONSUMER_KEY = (String) WebUtils.getSessionAttribute(request, "sCONSUMER_KEY");
-		String sCONSUMER_SECRET = (String) WebUtils.getSessionAttribute(request, "sCONSUMER_SECRET");
+		String consumerKey = (String) WebUtils.getSessionAttribute(request, "sCONSUMER_KEY");
+		String consumerSecret = (String) WebUtils.getSessionAttribute(request, "sCONSUMER_SECRET");
 
 		String atoken = (String) WebUtils.getSessionAttribute(request, "atoken");
 		String astoken = (String) WebUtils.getSessionAttribute(request, "astoken");
@@ -384,12 +384,12 @@ public class EgovTwitterController {
 		HashMap<String, Object> hmParam = new HashMap<String, Object>();
 
 		// 인증키값 설정
-		hmParam.put("sCONSUMER_KEY", sCONSUMER_KEY);
-		hmParam.put("sCONSUMER_SECRET", sCONSUMER_SECRET);
+		hmParam.put("sCONSUMER_KEY", consumerKey);
+		hmParam.put("sCONSUMER_SECRET", consumerSecret);
 		hmParam.put("atoken", atoken);
 		hmParam.put("astoken", astoken);
 
-		boolean deleteResult = egovTwitterTrnsmitService.twitterDelete(hmParam, tID);
+		boolean deleteResult = egovTwitterTrnsmitService.twitterDelete(hmParam, tID2);
 
 		LOGGER.info("트윗 삭제");
 		LOGGER.info("DELETERESULT >>> " + deleteResult);
