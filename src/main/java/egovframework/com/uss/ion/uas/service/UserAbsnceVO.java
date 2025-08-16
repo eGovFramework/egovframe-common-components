@@ -13,23 +13,32 @@ package egovframework.com.uss.ion.uas.service;
 
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 public class UserAbsnceVO extends UserAbsnce {
+
 	/**
 	 * serialVersionUID
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * 사용자부재 목록
 	 */
-	List<UserAbsnceVO> userAbsnceList;
+	private List<UserAbsnceVO> userAbsnceList;
+
 	/**
 	 * 삭제대상 목록
 	 */
-	String[] delYn;
+	@Getter
+	@Setter
+	private String[] delYn;
+
 	/**
 	 * 부재여부 조회조건
 	 */
-	String selAbsnceAt;
+	private String selAbsnceAt;
 
 	/**
 	 * @return the userAbsnceList
@@ -43,20 +52,6 @@ public class UserAbsnceVO extends UserAbsnce {
 	 */
 	public void setUserAbsnceList(List<UserAbsnceVO> userAbsnceList) {
 		this.userAbsnceList = userAbsnceList;
-	}
-
-	/**
-	 * @return the delYn
-	 */
-	public String[] getDelYn() {
-		return delYn;
-	}
-
-	/**
-	 * @param delYn the delYn to set
-	 */
-	public void setDelYn(String[] delYn) {
-		this.delYn = delYn;
 	}
 
 	/**
