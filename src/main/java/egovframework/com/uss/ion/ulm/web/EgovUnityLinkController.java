@@ -27,7 +27,6 @@ import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.ulm.service.EgovUnityLinkService;
 import egovframework.com.uss.ion.ulm.service.UnityLink;
-import egovframework.com.utl.fcc.service.EgovStringUtil;
 
 /**
  * 통합링크관리를 처리하는 Controller Class 구현
@@ -245,9 +244,11 @@ public class EgovUnityLinkController {
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		// 아이디 설정
-		String uniqId = (loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-		unityLink.setFrstRegisterId(uniqId);
-		unityLink.setLastUpdusrId(uniqId);
+		if (loginVO != null) {
+			unityLink.setFrstRegisterId(loginVO.getUniqId());
+			unityLink.setLastUpdusrId(loginVO.getUniqId());
+		}
+
 		// 저장
 		egovUnityLinkService.updateUnityLink(unityLink);
 
@@ -314,9 +315,11 @@ public class EgovUnityLinkController {
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		// 아이디 설정
-		String uniqId = (loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-		unityLink.setFrstRegisterId(uniqId);
-		unityLink.setLastUpdusrId(uniqId);
+		if (loginVO != null) {
+			unityLink.setFrstRegisterId(loginVO.getUniqId());
+			unityLink.setLastUpdusrId(loginVO.getUniqId());
+		}
+
 		// 저장
 		egovUnityLinkService.insertUnityLink(unityLink);
 
