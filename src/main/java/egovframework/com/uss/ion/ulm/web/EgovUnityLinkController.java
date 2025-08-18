@@ -7,8 +7,6 @@ import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -27,6 +25,7 @@ import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.ulm.service.EgovUnityLinkService;
 import egovframework.com.uss.ion.ulm.service.UnityLink;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 통합링크관리를 처리하는 Controller Class 구현
@@ -49,9 +48,8 @@ import egovframework.com.uss.ion.ulm.service.UnityLink;
  *      </pre>
  */
 @Controller
+@Slf4j
 public class EgovUnityLinkController {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovUnityLinkController.class);
 
 	@Autowired
 	private DefaultBeanValidator beanValidator;
@@ -84,6 +82,9 @@ public class EgovUnityLinkController {
 	 */
 	@RequestMapping(value = "/uss/ion/ulm/listUnityLinkSample.do")
 	public String egovUnityLinkSample1List(UnityLink unityLinkVO, ModelMap model) throws Exception {
+		if (log.isDebugEnabled()) {
+			log.debug("unityLinkVO={}", unityLinkVO);
+		}
 
 		List<?> reusltList = egovUnityLinkService.selectUnityLinkSample(unityLinkVO);
 		model.addAttribute("resultList", reusltList);
