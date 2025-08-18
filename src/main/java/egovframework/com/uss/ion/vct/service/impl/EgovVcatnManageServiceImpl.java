@@ -485,18 +485,18 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 		Calendar endDay = Calendar.getInstance();
 		endDay.set(toYear, toMonth, toDate);
 
-		double Count = 0.0;
+		double count = 0.0;
 
 		// 시작일자 부터 종료일자까지 while
 		while (!startDay.after(endDay)) {
 			// 토요일, 일요일은 일수 count에서 제외
 			if (startDay.get(Calendar.DAY_OF_WEEK) != 1 && startDay.get(Calendar.DAY_OF_WEEK) != 7) {
-				Count++;
+				count++;
 			}
 			startDay.add(Calendar.DATE, 1);
 		}
 
-		return Count;
+		return count;
 	}
 
 	/**
