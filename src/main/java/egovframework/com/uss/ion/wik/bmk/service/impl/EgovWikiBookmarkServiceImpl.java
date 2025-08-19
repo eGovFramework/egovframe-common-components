@@ -20,13 +20,14 @@ import egovframework.com.uss.ion.wik.bmk.service.WikiBookmark;
  * @since 2010.10.20
  * @version 1.0
  * @see
- * 
+ *
  *      <pre>
- * &lt;&lt; 개정이력(Modification Information) &gt;&gt;
+ *  == 개정이력(Modification Information) ==
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2010.10.20  장동한          최초 생성
+ *   2025.08.19  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UnnecessarySemicolon(필요없는 ; 문장 존재)
  *
  *      </pre>
  */
