@@ -106,9 +106,9 @@ public class EgovVcatnManageController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		vcatnManageVO = egovVcatnManageService.selectIndvdlYrycManage(user.getUniqId());
+		VcatnManageVO resultVO = egovVcatnManageService.selectIndvdlYrycManage(user.getUniqId());
 
-		if (vcatnManageVO == null) {
+		if (resultVO == null) {
 			model.addAttribute("messageTemp",
 					egovMessageSource.getMessage("comUssIonVct.vcatnManageList.validate.move")); // 휴가 사용을 위한 개인연차 등록을
 																									// 위해 개인연차관리 콤포넌트로
@@ -116,26 +116,26 @@ public class EgovVcatnManageController {
 			return "egovframework/com/uss/ion/yrc/EgovIndvdlYrycManageList";
 		} else {
 
-			vcatnManageVO.setSearchKeyword(searchKeyword);
+			resultVO.setSearchKeyword(searchKeyword);
 
 			/** paging */
 			PaginationInfo paginationInfo = new PaginationInfo();
-			paginationInfo.setCurrentPageNo(vcatnManageVO.getPageIndex());
-			paginationInfo.setRecordCountPerPage(vcatnManageVO.getPageUnit());
-			paginationInfo.setPageSize(vcatnManageVO.getPageSize());
+			paginationInfo.setCurrentPageNo(resultVO.getPageIndex());
+			paginationInfo.setRecordCountPerPage(resultVO.getPageUnit());
+			paginationInfo.setPageSize(resultVO.getPageSize());
 
-			vcatnManageVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-			vcatnManageVO.setLastIndex(paginationInfo.getLastRecordIndex());
-			vcatnManageVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+			resultVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+			resultVO.setLastIndex(paginationInfo.getLastRecordIndex());
+			resultVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-			model.addAttribute("vcatnManageVO", vcatnManageVO);
+			model.addAttribute("vcatnManageVO", resultVO);
 
-			vcatnManageVO.setApplcntId(user.getUniqId());
-			vcatnManageVO.setVcatnManageList(egovVcatnManageService.selectVcatnManageList(vcatnManageVO));
+			resultVO.setApplcntId(user.getUniqId());
+			resultVO.setVcatnManageList(egovVcatnManageService.selectVcatnManageList(resultVO));
 
-			model.addAttribute("vcatnManageList", vcatnManageVO.getVcatnManageList());
+			model.addAttribute("vcatnManageList", resultVO.getVcatnManageList());
 
-			int totCnt = egovVcatnManageService.selectVcatnManageListTotCnt(vcatnManageVO);
+			int totCnt = egovVcatnManageService.selectVcatnManageListTotCnt(resultVO);
 			paginationInfo.setTotalRecordCount(totCnt);
 
 			String accessControll = user.getOrgnztId();
