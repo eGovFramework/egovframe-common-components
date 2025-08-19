@@ -1,6 +1,5 @@
 package egovframework.com.uss.ion.vct.web;
 
-//import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -41,20 +40,21 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  * </pre>
  * 
  * @author 이용
+ * @since 2010.06.15
  * @version 1.0
- * @created 06-15-2010 오후 2:08:56
- * 
- *          <pre>
- * &lt;&lt; 개정이력(Modification Information) &gt;&gt;
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.6.15  이용          최초 생성
- *   2011.8.26	정진오			IncludedInfo annotation 추가
+ *   2010.06.15  이용           최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2025.08.19  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AvoidReassigningParameters(넘겨받는 메소드 parameter 값을 직접 변경하는 코드 탐지)
  *
- *          </pre>
+ *      </pre>
  */
-
 @Controller
 public class EgovVcatnManageController {
 
