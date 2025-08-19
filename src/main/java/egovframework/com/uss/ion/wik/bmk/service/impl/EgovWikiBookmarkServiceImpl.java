@@ -104,8 +104,6 @@ public class EgovWikiBookmarkServiceImpl extends EgovAbstractServiceImpl impleme
 			dao.insertWikiBookmark(wikiBookmark);
 			LOGGER.debug("insertWikiBookmark > {}", sUsid);
 		}
-		;
-
 	}
 
 	/**
