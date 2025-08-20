@@ -104,8 +104,8 @@ public class EgovFaqController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<FaqVO> FaqList = egovFaqService.selectFaqList(searchVO);
-		model.addAttribute("resultList", FaqList);
+		List<FaqVO> resultList = egovFaqService.selectFaqList(searchVO);
+		model.addAttribute("resultList", resultList);
 
 		int totCnt = egovFaqService.selectFaqListCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -180,19 +180,19 @@ public class EgovFaqController {
 		}
 
 		// 첨부파일 관련 첨부파일ID 생성
-		List<FileVO> _result = null;
-		String _atchFileId = "";
+		List<FileVO> fvoList = null;
+		String atchFileId = "";
 
 		// final Map<String, MultipartFile> files = multiRequest.getFileMap();
 		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
 		if (!files.isEmpty()) {
-			_result = fileUtil.parseFileInf(files, "FAQ_", 0, "", "");
-			_atchFileId = fileMngService.insertFileInfs(_result); // 파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
+			fvoList = fileUtil.parseFileInf(files, "FAQ_", 0, "", "");
+			atchFileId = fileMngService.insertFileInfs(fvoList); // 파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
 		}
 
 		// 리턴받은 첨부파일ID를 셋팅한다..
-		faqVO.setAtchFileId(_atchFileId); // 첨부파일 ID
+		faqVO.setAtchFileId(atchFileId); // 첨부파일 ID
 
 		// 로그인VO에서 사용자 정보 가져오기
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -275,8 +275,8 @@ public class EgovFaqController {
 				FileVO fvo = new FileVO();
 				fvo.setAtchFileId(atchFileId);
 				int cnt = fileMngService.getMaxFileSN(fvo);
-				List<FileVO> _result = fileUtil.parseFileInf(files, "FAQ_", cnt, atchFileId, "");
-				fileMngService.updateFileInfs(_result);
+				List<FileVO> fvoList = fileUtil.parseFileInf(files, "FAQ_", cnt, atchFileId, "");
+				fileMngService.updateFileInfs(fvoList);
 			}
 		}
 		// 첨부파일 관련 ID 생성 end...
@@ -304,13 +304,13 @@ public class EgovFaqController {
 	public String deleteFaq(FaqVO faqVO, @ModelAttribute("searchVO") FaqVO searchVO) throws Exception {
 
 		// 첨부파일 삭제를 위한 ID 생성 start....
-		String _atchFileId = faqVO.getAtchFileId();
+		String atchFileId = faqVO.getAtchFileId();
 
 		egovFaqService.deleteFaq(faqVO);
 
 		// 첨부파일을 삭제하기 위한 Vo
 		FileVO fvo = new FileVO();
-		fvo.setAtchFileId(_atchFileId);
+		fvo.setAtchFileId(atchFileId);
 
 		fileMngService.deleteAllFileInf(fvo);
 		// 첨부파일 삭제 End.............
