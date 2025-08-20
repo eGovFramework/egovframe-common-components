@@ -31,7 +31,6 @@ import egovframework.com.uss.olh.faq.service.FaqVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 
 /**
- *
  * FAQ내용을 처리하는 비즈니스 구현 클래스
  * 
  * @author 공통서비스 개발팀 박정규
@@ -40,19 +39,19 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  * @see
  *
  *      <pre>
-* << 개정이력(Modification Information) >>
-*
-*  수정일                수정자           수정내용
-*  ----------   --------   ---------------------------
-*  2009.04.01   박정규            최초 생성
-*  2011.08.26   정진오            IncludedInfo annotation 추가
-*  2016.08.03   김연호            표준프레임워크 3.6 개선
-*  2020.10.27   신용호            파일 업로드 수정 (multiRequest.getFiles)
-*  2021.07.29   정진오            경로 오류 수정
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.04.01  박정규          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2016.08.03  김연호          표준프레임워크 3.6 개선
+ *   2020.10.27  신용호          파일 업로드 수정 (multiRequest.getFiles)
+ *   2021.07.29  정진오          경로 오류 수정
+ *   2025.08.20  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
  *
  *      </pre>
  */
-
 @Controller
 public class EgovFaqController {
 
