@@ -198,8 +198,8 @@ public class EgovAdministrationWordController {
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM102");
 
-		List<?> _result = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("wordSeCode", _result);
+		List<?> wordSeCode = cmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("wordSeCode", wordSeCode);
 
 		model.addAttribute("administrationWordVO", new AdministrationWordVO());
 
@@ -256,8 +256,8 @@ public class EgovAdministrationWordController {
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM102");
 
-		List<?> _result = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("wordSeCode", _result);
+		List<?> wordSeCode = cmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("wordSeCode", wordSeCode);
 
 		AdministrationWordVO administrationWordVO = new AdministrationWordVO();
 		administrationWordVO.setAdministWordId(administWordId);
