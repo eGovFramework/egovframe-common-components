@@ -44,7 +44,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *   2011.08.26  정진오          IncludedInfo annotation 추가
  *   2011.09.28  서준식          return값 오류 수정
  *   2016.08.02  김연호          표준프레임워크 3.6 개선
- *   2025.08.21  이백행          2125년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *   2025.08.21  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
  *
  *      </pre>
  */
