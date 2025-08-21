@@ -95,8 +95,8 @@ public class EgovHpcmController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<HpcmVO> HpcmList = egovHpcmService.selectHpcmList(searchVO);
-		model.addAttribute("resultList", HpcmList);
+		List<HpcmVO> resultList = egovHpcmService.selectHpcmList(searchVO);
+		model.addAttribute("resultList", resultList);
 
 		int totCnt = egovHpcmService.selectHpcmListCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -140,8 +140,8 @@ public class EgovHpcmController {
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM021");
 
-		List<CmmnDetailCode> _result = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("hpcmSeCode", _result);
+		List<CmmnDetailCode> hpcmSeCode = cmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("hpcmSeCode", hpcmSeCode);
 
 		model.addAttribute("hpcmVO", new HpcmVO());
 
@@ -197,8 +197,8 @@ public class EgovHpcmController {
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM021");
 
-		List<CmmnDetailCode> _result = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("hpcmSeCode", _result);
+		List<CmmnDetailCode> hpcmSeCode = cmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("hpcmSeCode", hpcmSeCode);
 
 		HpcmVO hpcmVO = new HpcmVO();
 		hpcmVO.setHpcmId(hpcmId);
