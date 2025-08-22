@@ -46,10 +46,33 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
 *
 *   수정일     	수정자           			수정내용
 *  ------------   --------    ---------------------------------------------
-*   2009.04.01  	박정규          최초 생성
-*   2011.08.26		정진오			IncludedInfo annotation 추가
-*   2011.10.21		이기하			삭제시 비밀번호 확인 추가(최종감리 반영)
-*   2016.08.05		김연호			표준프레임워크 3.6 개선
+
+ *
+ *      </pre>
+ */
+/**
+ * 사용자 계정을 처리하는 비즈니스 구현 클래스
+ * <p>
+ * <b>NOTE:</b> Exception 종류를 EgovBizException, RuntimeException 에서만 동작한다.
+ * fail.common.msg 메세지키가 Message Resource 에 정의 되어 있어야 한다.
+ * 
+ * @author 공통컴포넌트 개발팀 홍길동
+ * @since 2009.06.01
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.04.01  박정규          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2011.10.21  이기하          삭제시 비밀번호 확인 추가(최종감리 반영)
+ *   2016.08.05  김연호          표준프레임워크 3.6 개선
+ *   2025.08.22  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *   2025.08.22  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UnnecessarySemicolon(필요없는 ; 문장 존재)
+ *   2025.08.22  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AvoidReassigningParameters(넘겨받는 메소드 parameter 값을 직접 변경하는 코드 탐지)
  *
  *      </pre>
  */
