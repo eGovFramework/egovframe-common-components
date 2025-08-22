@@ -299,19 +299,19 @@ public class EgovCnsltManageController {
 		}
 
 		// 첨부파일 관련 첨부파일ID 생성
-		List<FileVO> _result = null;
-		String _atchFileId = "";
+		List<FileVO> fvoList = null;
+		String atchFileId = "";
 
 		// final Map<String, MultipartFile> files = multiRequest.getFileMap();
 		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 
 		if (!files.isEmpty()) {
-			_result = fileUtil.parseFileInf(files, "CNSLT_", 0, "", "");
-			_atchFileId = fileMngService.insertFileInfs(_result); // 파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
+			fvoList = fileUtil.parseFileInf(files, "CNSLT_", 0, "", "");
+			atchFileId = fileMngService.insertFileInfs(fvoList); // 파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
 		}
 
 		// 리턴받은 첨부파일ID를 셋팅한다..
-		cnsltManageVO.setAtchFileId(_atchFileId); // 첨부파일 ID
+		cnsltManageVO.setAtchFileId(atchFileId); // 첨부파일 ID
 
 		// 로그인VO에서 사용자 정보 가져오기
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -453,7 +453,7 @@ public class EgovCnsltManageController {
 		}
 
 		// 첨부파일 관련 ID 생성 start....
-		String _atchFileId = cnsltManageVO.getAtchFileId();
+		String atchFileId = cnsltManageVO.getAtchFileId();
 
 		// final Map<String, MultipartFile> files = multiRequest.getFileMap();
 		final List<MultipartFile> files = multiRequest.getFiles("file_1");
@@ -461,18 +461,18 @@ public class EgovCnsltManageController {
 		if (!files.isEmpty()) {
 
 			if ("N".equals(atchFileAt)) {
-				List<FileVO> _result = fileUtil.parseFileInf(files, "CNSLT_", 0, _atchFileId, "");
-				_atchFileId = fileMngService.insertFileInfs(_result);
+				List<FileVO> fvoList = fileUtil.parseFileInf(files, "CNSLT_", 0, atchFileId, "");
+				atchFileId = fileMngService.insertFileInfs(fvoList);
 
 				// 첨부파일 ID 셋팅
-				cnsltManageVO.setAtchFileId(_atchFileId); // 첨부파일 ID
+				cnsltManageVO.setAtchFileId(atchFileId); // 첨부파일 ID
 
 			} else {
 				FileVO fvo = new FileVO();
-				fvo.setAtchFileId(_atchFileId);
-				int _cnt = fileMngService.getMaxFileSN(fvo);
-				List<FileVO> _result = fileUtil.parseFileInf(files, "CNSLT_", _cnt, _atchFileId, "");
-				fileMngService.updateFileInfs(_result);
+				fvo.setAtchFileId(atchFileId);
+				int fileKeyParam = fileMngService.getMaxFileSN(fvo);
+				List<FileVO> fvoList = fileUtil.parseFileInf(files, "CNSLT_", fileKeyParam, atchFileId, "");
+				fileMngService.updateFileInfs(fvoList);
 			}
 		}
 		// 첨부파일 관련 ID 생성 end...
@@ -514,7 +514,6 @@ public class EgovCnsltManageController {
 		// param1 : 사용자고유ID(uniqId,esntlId)
 		// --------------------------------------------------------
 		LOGGER.debug("@ XSS 권한체크 START ----------------------------------------------");
-		;
 
 		// step1 DB에서 해당 게시물의 uniqId 조회
 		CnsltManageVO vo = cnsltManageService.selectCnsltListDetail(cnsltManageVO);
@@ -527,13 +526,13 @@ public class EgovCnsltManageController {
 		// --------------------------------------------------------------------------------------------
 
 		// 첨부파일 삭제를 위한 ID 생성 start....
-		String _atchFileId = cnsltManageVO.getAtchFileId();
+		String atchFileId = cnsltManageVO.getAtchFileId();
 
 		cnsltManageService.deleteCnsltDtls(cnsltManageVO);
 
 		// 첨부파일을 삭제하기 위한 Vo
 		FileVO fvo = new FileVO();
-		fvo.setAtchFileId(_atchFileId);
+		fvo.setAtchFileId(atchFileId);
 
 		fileMngService.deleteAllFileInf(fvo);
 		// 첨부파일 삭제 End.............
@@ -568,8 +567,8 @@ public class EgovCnsltManageController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<EgovMap> CnsltAnswerList = cnsltManageService.selectCnsltAnswerList(searchVO);
-		model.addAttribute("resultList", CnsltAnswerList);
+		List<EgovMap> resultList = cnsltManageService.selectCnsltAnswerList(searchVO);
+		model.addAttribute("resultList", resultList);
 
 		int totCnt = cnsltManageService.selectCnsltAnswerListTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -615,8 +614,8 @@ public class EgovCnsltManageController {
 		ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
 		comDefaultCodeVO.setCodeId("COM028");
 
-		List<CmmnDetailCode> _result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
-		model.addAttribute("resultList", _result);
+		List<CmmnDetailCode> resultList = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+		model.addAttribute("resultList", resultList);
 
 		// 변수명은 CoC 에 따라
 		model.addAttribute(selectCnsltAnswerListDetail(cnsltManageVO, searchVO, model));
