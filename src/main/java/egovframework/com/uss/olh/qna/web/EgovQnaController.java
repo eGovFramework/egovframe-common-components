@@ -102,8 +102,8 @@ public class EgovQnaController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<QnaVO> QnaList = egovQnaService.selectQnaList(searchVO);
-		model.addAttribute("resultList", QnaList);
+		List<QnaVO> resultList = egovQnaService.selectQnaList(searchVO);
+		model.addAttribute("resultList", resultList);
 
 		// 인증여부 체크
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -279,7 +279,6 @@ public class EgovQnaController {
 		LOGGER.debug("@ XSS 권한체크 START ----------------------------------------------");
 		// step1 DB에서 해당 게시물의 uniqId 조회
 		QnaVO vo = egovQnaService.selectQnaDetail(qnaVO);
-		;
 
 		// step2 EgovXssChecker 공통모듈을 이용한 권한체크
 		EgovXssChecker.checkerUserXss(request, vo.getFrstRegisterId());
@@ -326,7 +325,6 @@ public class EgovQnaController {
 
 		// step1 DB에서 해당 게시물의 uniqId 조회
 		QnaVO vo = egovQnaService.selectQnaDetail(qnaVO);
-		;
 
 		// step2 EgovXssChecker 공통모듈을 이용한 권한체크
 		EgovXssChecker.checkerUserXss(request, vo.getFrstRegisterId());
@@ -366,8 +364,8 @@ public class EgovQnaController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<QnaVO> QnaAnswerList = egovQnaService.selectQnaAnswerList(searchVO);
-		model.addAttribute("resultList", QnaAnswerList);
+		List<QnaVO> resultList = egovQnaService.selectQnaAnswerList(searchVO);
+		model.addAttribute("resultList", resultList);
 
 		int totCnt = egovQnaService.selectQnaAnswerListCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -413,11 +411,11 @@ public class EgovQnaController {
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM028");
 
-		List<CmmnDetailCode> _result = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("qnaProcessSttusCode", _result);
+		List<CmmnDetailCode> qnaProcessSttusCode = cmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute("qnaProcessSttusCode", qnaProcessSttusCode);
 
-		qnaVO = egovQnaService.selectQnaDetail(qnaVO);
-		model.addAttribute("qnaVO", qnaVO);
+		QnaVO resultVO = egovQnaService.selectQnaDetail(qnaVO);
+		model.addAttribute("qnaVO", resultVO);
 
 		return "egovframework/com/uss/olh/qna/EgovQnaAnswerUpdt";
 	}
