@@ -222,10 +222,11 @@ public class EgovOnlinePollManageController {
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		String uniqId = (loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 		// 아이디 설정
-		onlinePollManage.setFrstRegisterId(uniqId);
-		onlinePollManage.setLastUpdusrId(uniqId);
+		if (loginVO != null) {
+			onlinePollManage.setFrstRegisterId(loginVO.getUniqId());
+			onlinePollManage.setLastUpdusrId(loginVO.getUniqId());
+		}
 
 		egovOnlinePollManageService.updateOnlinePollManage(onlinePollManage);
 
@@ -290,10 +291,11 @@ public class EgovOnlinePollManageController {
 		}
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		String uniqId = (loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 		// 아이디 설정
-		onlinePollManage.setFrstRegisterId(uniqId);
-		onlinePollManage.setLastUpdusrId(uniqId);
+		if (loginVO != null) {
+			onlinePollManage.setFrstRegisterId(loginVO.getUniqId());
+			onlinePollManage.setLastUpdusrId(loginVO.getUniqId());
+		}
 
 		egovOnlinePollManageService.insertOnlinePollManage(onlinePollManage);
 
