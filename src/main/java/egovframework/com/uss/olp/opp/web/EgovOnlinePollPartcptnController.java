@@ -200,25 +200,25 @@ public class EgovOnlinePollPartcptnController {
 
 			// 투표여부 체크
 			if (egovOnlinePollPartcptnService.selectOnlinePollResult(onlinePollPartcptn) != 0) {
-				String ReusltScript = "";
+				String reusltScript = "";
 
-				ReusltScript += "<script type='text/javaScript' language='javascript'>";
-				ReusltScript += "alert('한 온라인POLL엔 한번만 투표 가능합니다. ');";
-				ReusltScript += "</script>";
+				reusltScript += "<script type='text/javaScript' language='javascript'>";
+				reusltScript += "alert('한 온라인POLL엔 한번만 투표 가능합니다. ');";
+				reusltScript += "</script>";
 
-				model.addAttribute("reusltScript", ReusltScript);
+				model.addAttribute("reusltScript", reusltScript);
 				return "forward:/uss/olp/opp/listOnlinePollPartcptn.do";
 			}
 
 			egovOnlinePollPartcptnService.insertOnlinePollResult(onlinePollPartcptn);
 
-			String ReusltScript = "";
+			String reusltScript = "";
 
-			ReusltScript += "<script type='text/javaScript' language='javascript'>";
-			ReusltScript += "alert(' 온라인POLL참여에 응해주셔서 감사합니다!  ');";
-			ReusltScript += "</script>";
+			reusltScript += "<script type='text/javaScript' language='javascript'>";
+			reusltScript += "alert(' 온라인POLL참여에 응해주셔서 감사합니다!  ');";
+			reusltScript += "</script>";
 
-			model.addAttribute("reusltScript", ReusltScript);
+			model.addAttribute("reusltScript", reusltScript);
 			sLocationUrl = "forward:/uss/olp/opp/listOnlinePollPartcptn.do";
 		} else {
 			// POLL종류 설정
