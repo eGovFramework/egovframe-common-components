@@ -1,0 +1,97 @@
+<project name="MyProject" default="dist" basedir=".">
+	<description>
+배포 파일을 WEB과 WAS를 분리해서 복사하고 압축하기
+
+테스트 실행만 생략
+mvn clean package -DskipTests 후 ant 실행
+
+테스트 컴파일조차 생략
+mvn clean package -Dmaven.test.skip=true 후 ant 실행
+
+    simple example build file
+  </description>
+	<!-- set global properties for this build -->
+	<property name="finalName" value="egovframework-all-in-one" />
+	<property name="frontend.name" value="${finalName}fe" />
+	<property name="backend.name" value="${finalName}be" />
+
+	<property name="src" location="../../target/${finalName}" />
+	<property name="build" location="../../target/build" />
+	<property name="dist" location="../../target/dist" />
+
+	<target name="init">
+		<!-- Create the time stamp -->
+		<!--<tstamp />-->
+
+		<tstamp>
+			<format property="TODAY_KR" pattern="yyyy-MM-dd_HH-mm-ss" locale="ko,KR" />
+		</tstamp>
+
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${build}" />
+	</target>
+
+	<target name="compile" depends="init" description="compile the source">
+		<!-- Compile the Java code from ${src} into ${build} -->
+		<!--<javac srcdir="${src}" destdir="${build}" />-->
+
+		<echo>WEB</echo>
+
+		<copy todir="${build}/${frontend.name}" overwrite="true" verbose="true">
+			<fileset dir="${src}">
+				<include name="**/*.html" />
+				<include name="**/*.css" />
+				<include name="**/*.js" />
+
+				<include name="images/**/*.*" />
+			</fileset>
+		</copy>
+
+		<echo>WAS</echo>
+
+		<copy todir="${build}/${backend.name}" overwrite="true" verbose="true">
+			<fileset dir="${src}">
+				<include name="**/*.jsp" />
+				<include name="WEB-INF/**/*.*" />
+			</fileset>
+		</copy>
+
+		<!--<delete file="${build}/${backend.name}/WEB-INF/classes/log4j2.xml" />
+		<copy file="${build}/${backend.name}/WEB-INF/classes/log4j2.xml.dev" tofile="${build}/${backend.name}/WEB-INF/classes/log4j2.xml" />
+		<delete file="${build}/${backend.name}/WEB-INF/classes/log4j2.xml.dev" />
+		<delete file="${build}/${backend.name}/WEB-INF/classes/log4j2.xml.prod" />
+		<delete file="${build}/${backend.name}/WEB-INF/classes/log4j2.xml.test" />-->
+
+		<!--<delete file="${build}/${backend.name}/WEB-INF/classes/egovframework/egovProps/globals.properties" />
+		<copy file="${build}/${backend.name}/WEB-INF/classes/egovframework/egovProps/globals.dev.properties" tofile="${build}/${backend.name}/WEB-INF/classes/egovframework/egovProps/globals.properties" />
+		<delete file="${build}/${backend.name}/WEB-INF/classes/egovframework/egovProps/globals.dev.properties" />
+		<delete file="${build}/${backend.name}/WEB-INF/classes/egovframework/egovProps/globals.prod.properties" />
+		<delete file="${build}/${backend.name}/WEB-INF/classes/egovframework/egovProps/globals.test.properties" />-->
+
+	</target>
+
+	<target name="dist" depends="compile" description="generate the distribution">
+		<!-- Create the distribution directory -->
+		<!--<mkdir dir="${dist}/lib" />-->
+
+		<!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+		<!--<jar jarfile="${dist}/lib/MyProject-${DSTAMP}.jar" basedir="${build}" />-->
+
+		<tar destfile="${dist}/${frontend.name}.tar" basedir="${build}/${frontend.name}" />
+		<gzip destfile="${dist}/${frontend.name}.tgz" src="${dist}/${frontend.name}.tar" />
+
+		<tar destfile="${dist}/${backend.name}.tar" basedir="${build}/${backend.name}" />
+		<gzip destfile="${dist}/${backend.name}.tgz" src="${dist}/${backend.name}.tar" />
+
+		<echo>src=${src}</echo>
+		<echo>build=${build}</echo>
+		<echo>dist=${dist}</echo>
+		<echo>TODAY_KR=${TODAY_KR}</echo>
+	</target>
+
+	<target name="clean" description="clean up">
+		<!-- Delete the ${build} and ${dist} directory trees -->
+		<delete dir="${build}" />
+		<delete dir="${dist}" />
+	</target>
+</project>
