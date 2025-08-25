@@ -29,7 +29,6 @@ import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olp.qmc.service.EgovQustnrManageService;
 import egovframework.com.uss.olp.qmc.service.QustnrManageVO;
-import egovframework.com.utl.fcc.service.EgovStringUtil;
 
 /**
  * 설문관리를 처리하는 Controller Class 구현
@@ -266,9 +265,6 @@ public class EgovQustnrManageController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		// 로그인 객체 선언
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-
 		// 공통코드 직업유형 조회
 		ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
 		voComCode.setCodeId("COM034");
@@ -288,9 +284,14 @@ public class EgovQustnrManageController {
 			return "egovframework/com/uss/olp/qmc/EgovQustnrManageModify";
 		}
 
+		// 로그인 객체 선언
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
 		// 아이디 설정
-		qustnrManageVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-		qustnrManageVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+		if (loginVO != null) {
+			qustnrManageVO.setFrstRegisterId(loginVO.getUniqId());
+			qustnrManageVO.setLastUpdusrId(loginVO.getUniqId());
+		}
 
 		egovQustnrManageService.updateQustnrManage(qustnrManageVO);
 
@@ -367,10 +368,11 @@ public class EgovQustnrManageController {
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		String uniqId = (loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 		// 아이디 설정
-		qustnrManageVO.setFrstRegisterId(uniqId);
-		qustnrManageVO.setLastUpdusrId(uniqId);
+		if (loginVO != null) {
+			qustnrManageVO.setFrstRegisterId(loginVO.getUniqId());
+			qustnrManageVO.setLastUpdusrId(loginVO.getUniqId());
+		}
 
 		egovQustnrManageService.insertQustnrManage(qustnrManageVO);
 
