@@ -382,13 +382,13 @@ public class EgovQustnrRespondInfoController {
 			qustnrRespondManageVO.setLastUpdusrId(loginVO.getUniqId());
 			egovQustnrRespondManageService.insertQustnrRespondManage(qustnrRespondManageVO);
 
-			String ResultScript = "";
+			String resultScript = "";
 
-			ResultScript += "<script type='text/javaScript' language='javascript'>";
-			ResultScript += "alert(' 설문참여에 응해주셔서 감사합니다!  ');";
-			ResultScript += "</script>";
+			resultScript += "<script type='text/javaScript' language='javascript'>";
+			resultScript += "alert(' 설문참여에 응해주셔서 감사합니다!  ');";
+			resultScript += "</script>";
 
-			model.addAttribute("resultScript", ResultScript);
+			model.addAttribute("resultScript", resultScript);
 			sLocationUrl = "redirect:/uss/olp/qnn/EgovQustnrRespondInfoManageList.do";
 		} else {
 
