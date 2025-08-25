@@ -8,8 +8,6 @@ import javax.annotation.Resource;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -29,6 +27,7 @@ import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olp.qmc.service.EgovQustnrManageService;
 import egovframework.com.uss.olp.qmc.service.QustnrManageVO;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 설문관리를 처리하는 Controller Class 구현
@@ -51,9 +50,8 @@ import egovframework.com.uss.olp.qmc.service.QustnrManageVO;
  *      </pre>
  */
 @Controller
+@Slf4j
 public class EgovQustnrManageController {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovQustnrManageController.class);
 
 	@Autowired
 	private DefaultBeanValidator beanValidator;
@@ -85,6 +83,9 @@ public class EgovQustnrManageController {
 	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageListPopup.do")
 	public String egovQustnrManageListPopup(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, QustnrManageVO qustnrManageVO, ModelMap model) throws Exception {
+		if (log.isDebugEnabled()) {
+			log.debug("searchVO={}", searchVO);
+		}
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 		if (sCmd.equals("del")) {
