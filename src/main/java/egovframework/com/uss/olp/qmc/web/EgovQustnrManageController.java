@@ -39,17 +39,17 @@ import egovframework.com.uss.olp.qmc.service.QustnrManageVO;
  * @see
  *
  *      <pre>
- * << 개정이력(Modification Information) >>
+ *  == 개정이력(Modification Information) ==
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.03.20  장동한			최초 생성
- *   2011.08.26	 정진오			IncludedInfo annotation 추가
- *   2024.10.29  권태성			등록 화면과 데이터를 처리하는 method 분리
+ *   2009.03.20  장동한          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2024.10.29  권태성          등록 화면과 데이터를 처리하는 method 분리
+ *   2025.08.25  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UselessParentheses(불필요한 괄호사용)
  *
  *      </pre>
  */
-
 @Controller
 public class EgovQustnrManageController {
 
