@@ -223,11 +223,10 @@ public class EgovOnlinePollManageController {
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 		// 아이디 설정
-		if (loginVO != null) {
-			onlinePollManage.setFrstRegisterId(loginVO.getUniqId());
-			onlinePollManage.setLastUpdusrId(loginVO.getUniqId());
-		}
+		onlinePollManage.setFrstRegisterId(uniqId);
+		onlinePollManage.setLastUpdusrId(uniqId);
 
 		egovOnlinePollManageService.updateOnlinePollManage(onlinePollManage);
 
@@ -292,11 +291,10 @@ public class EgovOnlinePollManageController {
 		}
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 		// 아이디 설정
-		if (loginVO != null) {
-			onlinePollManage.setFrstRegisterId(loginVO.getUniqId());
-			onlinePollManage.setLastUpdusrId(loginVO.getUniqId());
-		}
+		onlinePollManage.setFrstRegisterId(uniqId);
+		onlinePollManage.setLastUpdusrId(uniqId);
 
 		egovOnlinePollManageService.insertOnlinePollManage(onlinePollManage);
 
@@ -350,10 +348,10 @@ public class EgovOnlinePollManageController {
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 		// 아이디 설정
-		onlinePollItem.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-		onlinePollItem.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+		onlinePollItem.setFrstRegisterId(uniqId);
+		onlinePollItem.setLastUpdusrId(uniqId);
 
 		egovOnlinePollManageService.insertOnlinePollItem(onlinePollItem);
 
@@ -385,10 +383,10 @@ public class EgovOnlinePollManageController {
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 		// 아이디 설정
-		onlinePollItem.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-		onlinePollItem.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+		onlinePollItem.setFrstRegisterId(uniqId);
+		onlinePollItem.setLastUpdusrId(uniqId);
 
 		egovOnlinePollManageService.updateOnlinePollItem(onlinePollItem);
 
