@@ -32,6 +32,7 @@ import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.rsm.service.EgovRecentSrchwrdService;
 import egovframework.com.uss.ion.rsm.service.RecentSrchwrd;
+import egovframework.com.utl.fcc.service.EgovStringUtil;
 import net.sourceforge.ajaxtags.xml.AjaxXmlBuilder;
 
 /**
@@ -203,11 +204,10 @@ public class EgovRecentSrchwrdController {
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 		// 아이디 설정
-		if (loginVO != null) {
-			recentSrchwrd.setFrstRegisterId(loginVO.getUniqId());
-			recentSrchwrd.setLastUpdusrId(loginVO.getUniqId());
-		}
+		recentSrchwrd.setFrstRegisterId(uniqId);
+		recentSrchwrd.setLastUpdusrId(uniqId);
 
 		// 저장
 		egovRecentSrchwrdService.updateRecentSrchwrd(recentSrchwrd);
@@ -266,11 +266,10 @@ public class EgovRecentSrchwrdController {
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 		// 아이디 설정
-		if (loginVO != null) {
-			recentSrchwrd.setFrstRegisterId(loginVO.getUniqId());
-			recentSrchwrd.setLastUpdusrId(loginVO.getUniqId());
-		}
+		recentSrchwrd.setFrstRegisterId(uniqId);
+		recentSrchwrd.setLastUpdusrId(uniqId);
 
 		// 저장
 		egovRecentSrchwrdService.insertRecentSrchwrd(recentSrchwrd);
@@ -400,12 +399,10 @@ public class EgovRecentSrchwrdController {
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 		// 아이디 설정
-		if (loginVO != null) {
-			recentSrchwrd.setFrstRegisterId(loginVO.getUniqId());
-			recentSrchwrd.setLastUpdusrId(loginVO.getUniqId());
-		}
+		recentSrchwrd.setFrstRegisterId(uniqId);
+		recentSrchwrd.setLastUpdusrId(uniqId);
 
 		// System.out.println("recentSrchwrd.getSrchwrdNm() : "+
 		// recentSrchwrd.getSrchwrdNm());
