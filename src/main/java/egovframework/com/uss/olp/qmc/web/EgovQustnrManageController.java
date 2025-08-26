@@ -27,6 +27,7 @@ import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olp.qmc.service.EgovQustnrManageService;
 import egovframework.com.uss.olp.qmc.service.QustnrManageVO;
+import egovframework.com.utl.fcc.service.EgovStringUtil;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -287,12 +288,10 @@ public class EgovQustnrManageController {
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 		// 아이디 설정
-		if (loginVO != null) {
-			qustnrManageVO.setFrstRegisterId(loginVO.getUniqId());
-			qustnrManageVO.setLastUpdusrId(loginVO.getUniqId());
-		}
+		qustnrManageVO.setFrstRegisterId(uniqId);
+		qustnrManageVO.setLastUpdusrId(uniqId);
 
 		egovQustnrManageService.updateQustnrManage(qustnrManageVO);
 
@@ -369,11 +368,10 @@ public class EgovQustnrManageController {
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 		// 아이디 설정
-		if (loginVO != null) {
-			qustnrManageVO.setFrstRegisterId(loginVO.getUniqId());
-			qustnrManageVO.setLastUpdusrId(loginVO.getUniqId());
-		}
+		qustnrManageVO.setFrstRegisterId(uniqId);
+		qustnrManageVO.setLastUpdusrId(uniqId);
 
 		egovQustnrManageService.insertQustnrManage(qustnrManageVO);
 
