@@ -2,6 +2,9 @@ package egovframework.com.uss.olp.qtm.service;
 
 import java.io.Serializable;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 설문템플릿 VO Class 구현
  * 
@@ -30,6 +33,8 @@ public class QustnrTmplatManageVO implements Serializable {
 	private String qestnrTmplatTy = "";
 
 	/** 설문템플 이미지내용 */
+	@Getter
+	@Setter
 	private byte[] qestnrTmplatImagepathnm;
 
 	/** 설문템플릿 설명 */
@@ -87,37 +92,6 @@ public class QustnrTmplatManageVO implements Serializable {
 	 */
 	public void setQestnrTmplatTy(String qestnrTmplatTy) {
 		this.qestnrTmplatTy = qestnrTmplatTy;
-	}
-
-	/**
-	 * qestnrTmplatImagepathnm attribute 를 리턴한다.
-	 * 
-	 * @return the byte[]
-	 */
-	public byte[] getQestnrTmplatImagepathnm() {
-		byte[] ret = null;
-
-		if (qestnrTmplatImagepathnm != null) {
-			ret = new byte[qestnrTmplatImagepathnm.length];
-
-			for (int i = 0; i < qestnrTmplatImagepathnm.length; i++) {
-				ret[i] = qestnrTmplatImagepathnm[i];
-			}
-		}
-		return ret;
-	}
-
-	/**
-	 * qestnrTmplatImagepathnm attribute 값을 설정한다.
-	 * 
-	 * @return qestnrTmplatImagepathnm byte[]
-	 */
-	public void setQestnrTmplatImagepathnm(byte[] qestnrTmplatImagepathnm) {
-		this.qestnrTmplatImagepathnm = new byte[qestnrTmplatImagepathnm.length];
-
-		for (int i = 0; i < qestnrTmplatImagepathnm.length; ++i) {
-			this.qestnrTmplatImagepathnm[i] = qestnrTmplatImagepathnm[i];
-		}
 	}
 
 	/**
