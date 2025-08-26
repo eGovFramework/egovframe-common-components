@@ -25,6 +25,7 @@ import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.ulm.service.EgovUnityLinkService;
 import egovframework.com.uss.ion.ulm.service.UnityLink;
+import egovframework.com.utl.fcc.service.EgovStringUtil;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -243,12 +244,10 @@ public class EgovUnityLinkController {
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 		// 아이디 설정
-		if (loginVO != null) {
-			unityLink.setFrstRegisterId(loginVO.getUniqId());
-			unityLink.setLastUpdusrId(loginVO.getUniqId());
-		}
+		unityLink.setFrstRegisterId(uniqId);
+		unityLink.setLastUpdusrId(uniqId);
 
 		// 저장
 		egovUnityLinkService.updateUnityLink(unityLink);
@@ -314,12 +313,10 @@ public class EgovUnityLinkController {
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 		// 아이디 설정
-		if (loginVO != null) {
-			unityLink.setFrstRegisterId(loginVO.getUniqId());
-			unityLink.setLastUpdusrId(loginVO.getUniqId());
-		}
+		unityLink.setFrstRegisterId(uniqId);
+		unityLink.setLastUpdusrId(uniqId);
 
 		// 저장
 		egovUnityLinkService.insertUnityLink(unityLink);
