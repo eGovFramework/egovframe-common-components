@@ -159,12 +159,13 @@ public class EgovIndvdlInfoPolicyController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		IndvdlInfoPolicy indvdlInfoPolicyVO = egovIndvdlInfoPolicyService.selectIndvdlInfoPolicyDetail(indvdlInfoPolicy);
+		IndvdlInfoPolicy indvdlInfoPolicyVO = egovIndvdlInfoPolicyService
+				.selectIndvdlInfoPolicyDetail(indvdlInfoPolicy);
 		model.addAttribute("indvdlInfoPolicy", indvdlInfoPolicyVO);
 
 		return "egovframework/com/uss/sam/ipm/EgovIndvdlInfoPolicyUpdt";
 	}
-	
+
 	/**
 	 * 개인정보보호정책를 수정한다.
 	 * 
@@ -205,7 +206,7 @@ public class EgovIndvdlInfoPolicyController {
 
 		return "redirect:/uss/sam/ipm/listIndvdlInfoPolicy.do";
 	}
-	
+
 	/**
 	 * 개인정보보호정책 등록화면
 	 * 
@@ -217,8 +218,7 @@ public class EgovIndvdlInfoPolicyController {
 	 */
 	@RequestMapping(value = "/uss/sam/ipm/registIndvdlInfoPolicyView.do")
 	public String egovIndvdlInfoPolicyRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@ModelAttribute("indvdlInfoPolicy") IndvdlInfoPolicy indvdlInfoPolicy,
-			ModelMap model) throws Exception {
+			@ModelAttribute("indvdlInfoPolicy") IndvdlInfoPolicy indvdlInfoPolicy, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
@@ -228,8 +228,7 @@ public class EgovIndvdlInfoPolicyController {
 
 		return "egovframework/com/uss/sam/ipm/EgovIndvdlInfoPolicyRegist";
 	}
-	
-	
+
 	/**
 	 * 개인정보보호정책를 등록한다.
 	 * 
@@ -271,6 +270,5 @@ public class EgovIndvdlInfoPolicyController {
 
 		return "forward:/uss/sam/ipm/listIndvdlInfoPolicy.do";
 	}
-	
 
 }
