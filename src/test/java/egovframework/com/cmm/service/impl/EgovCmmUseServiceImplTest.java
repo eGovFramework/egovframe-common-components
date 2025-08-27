@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.junit.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -40,7 +39,7 @@ public class EgovCmmUseServiceImplTest extends EgovAbstractTestJUnit4 {
 	private EgovCmmUseService egovCmmUseService;
 
 	@Test
-	public void test1selectCmmCodeDetail() throws BaseRuntimeException, Exception {
+	public void test1selectCmmCodeDetail() {
 		// given
 		ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
 		comDefaultCodeVO.setCodeId("COM001");
@@ -76,7 +75,7 @@ public class EgovCmmUseServiceImplTest extends EgovAbstractTestJUnit4 {
 	}
 
 	@Test
-	public void test2selectCmmCodeDetails() throws BaseRuntimeException, Exception {
+	public void test2selectCmmCodeDetails() {
 		// given
 		List<ComDefaultCodeVO> comDefaultCodeVOs = new ArrayList<>();
 		ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
@@ -118,7 +117,7 @@ public class EgovCmmUseServiceImplTest extends EgovAbstractTestJUnit4 {
 	}
 
 	@Test
-	public void test3selectOgrnztIdDetail() throws BaseRuntimeException, Exception {
+	public void test3selectOgrnztIdDetail() {
 		// given
 		ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
 		comDefaultCodeVO.setTableNm("COMTNORGNZTINFO");
@@ -160,7 +159,7 @@ public class EgovCmmUseServiceImplTest extends EgovAbstractTestJUnit4 {
 	}
 
 	@Test
-	public void test4selectGroupIdDetail() throws BaseRuntimeException, Exception {
+	public void test4selectGroupIdDetail() {
 		// given
 		ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
 		comDefaultCodeVO.setTableNm("COMTNAUTHORGROUPINFO");

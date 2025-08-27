@@ -57,4 +57,14 @@ public class CmmUseDAO extends EgovComAbstractDAO {
 	public List<CmmnDetailCode> selectGroupIdDetail(ComDefaultCodeVO comDefaultCodeVO) {
 		return selectList("CmmUseDAO.selectGroupIdDetail", comDefaultCodeVO);
 	}
+
+	/**
+	 * 여러 코드ID에 대한 공통코드를 한번에 조회한다.
+	 * 
+	 * @param codeIds 코드ID 목록
+	 * @return
+	 */
+	public List<CmmnDetailCode> selectCmmCodeDetailsByCodeIds(List<String> codeIds) {
+		return selectList("CmmUseDAO.selectCmmCodeDetailsByCodeIds", codeIds);
+	}
 }

@@ -25,7 +25,7 @@
     <select id="selectOgrnztIdDetail" parameterType="ComDefaultCodeVO" resultMap="CmmCodeDetail">
              
             SELECT 
-                #{tableNm}     CODE_ID, 
+                #{tableNm}     CODE_ID,
                 ORGNZT_ID     CODE, 
                 ORGNZT_NM     CODE_NM, 
                 ORGNZT_DC     CODE_DC
@@ -41,7 +41,7 @@
     <select id="selectGroupIdDetail" parameterType="ComDefaultCodeVO" resultMap="CmmCodeDetail">
              
             SELECT 
-                #{tableNm}     CODE_ID, 
+                #{tableNm}     CODE_ID,
                 GROUP_ID     CODE, 
                 GROUP_NM     CODE_NM, 
                 GROUP_DC     CODE_DC
@@ -52,6 +52,19 @@
             <if test='haveDetailCondition == "Y"'>AND
                 GROUP_ID  LIKE  #{detailCondition}
             </if>
+    </select>
+    
+    <select id="selectCmmCodeDetailsByCodeIds" parameterType="java.util.List" resultMap="CmmCodeDetail">
+        SELECT 
+            CODE_ID, CODE, CODE_NM, CODE_DC
+        FROM 
+            COMTCCMMNDETAILCODE
+        WHERE
+            USE_AT = 'Y'
+            AND CODE_ID IN
+            <foreach collection="list" item="codeId" open="(" separator="," close=")">
+                #{codeId}
+            </foreach>
     </select>
     
 
