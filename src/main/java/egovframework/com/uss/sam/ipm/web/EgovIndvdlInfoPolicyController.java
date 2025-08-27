@@ -196,7 +196,7 @@ public class EgovIndvdlInfoPolicyController {
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		String uniqId = (loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 
 		// 아이디 설정
 		indvdlInfoPolicy.setFrstRegisterId(uniqId);
@@ -259,7 +259,7 @@ public class EgovIndvdlInfoPolicyController {
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		String uniqId = (loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 
 		// 아이디 설정
 		indvdlInfoPolicy.setFrstRegisterId(uniqId);
