@@ -33,19 +33,19 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  * @since 2009.07.03
  * @version 1.0
  * @see
- * 
- *      <pre>
- * &lt;&lt; 개정이력(Modification Information) &gt;&gt;
  *
- *   수정일          수정자       수정내용
- *  -----------    --------    ---------------------------
- *   2009.07.03     장동한		최초 생성
- *   2011.08.26     정진오		IncludedInfo annotation 추가
- *   2024.10.29     권태성		등록 /수정 화면과 처리 로직 분리
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.07.03  장동한          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2024.10.29  권태성          등록 /수정 화면과 처리 로직 분리
+ *   2025.08.27  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UselessParentheses(불필요한 괄호사용)
  *
  *      </pre>
  */
-
 @Controller
 public class EgovIndvdlInfoPolicyController {
 
