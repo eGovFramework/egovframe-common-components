@@ -23,6 +23,17 @@ import java.util.regex.Pattern;
  */
 
 public class EgovWebUtil {
+	
+	/**
+	 * 문자열이 null이거나 빈 문자열인지 확인하는 유틸리티 메서드
+	 * 
+	 * @param value 검사할 문자열
+	 * @return null이거나 빈 문자열이면 true, 그렇지 않으면 false
+	 */
+	private static boolean isEmpty(String value) {
+		return value == null || value.trim().isEmpty();
+	}
+	
 	public static String clearXSSMinimum(String value) {
 		if (value == null || value.trim().equals("")) {
 			return "";
