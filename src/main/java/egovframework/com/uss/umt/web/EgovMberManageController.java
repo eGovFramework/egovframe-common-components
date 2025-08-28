@@ -118,8 +118,8 @@ public class EgovMberManageController {
 		// 일반회원 상태코드를 코드정보로부터 조회
 		ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
 		comDefaultCodeVO.setCodeId("COM013");
-		List<CmmnDetailCode> mberSttus_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
-		model.addAttribute("entrprsMberSttus_result", mberSttus_result);// 기업회원상태코드목록
+		List<CmmnDetailCode> mberSttusResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+		model.addAttribute("entrprsMberSttus_result", mberSttusResult);// 기업회원상태코드목록
 
 		return "egovframework/com/uss/umt/EgovMberManage";
 	}
@@ -147,21 +147,21 @@ public class EgovMberManageController {
 
 		// 패스워드힌트목록을 코드정보로부터 조회
 		comDefaultCodeVO.setCodeId("COM022");
-		List<CmmnDetailCode> passwordHint_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+		List<CmmnDetailCode> passwordHintResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 		// 성별구분코드를 코드정보로부터 조회
 		comDefaultCodeVO.setCodeId("COM014");
-		List<CmmnDetailCode> sexdstnCode_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+		List<CmmnDetailCode> sexdstnCodeResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 		// 사용자상태코드를 코드정보로부터 조회
 		comDefaultCodeVO.setCodeId("COM013");
-		List<CmmnDetailCode> mberSttus_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+		List<CmmnDetailCode> mberSttusResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 		// 그룹정보를 조회 - GROUP_ID정보
 		comDefaultCodeVO.setTableNm("COMTNORGNZTINFO");
-		List<CmmnDetailCode> groupId_result = cmmUseService.selectGroupIdDetail(comDefaultCodeVO);
+		List<CmmnDetailCode> groupIdResult = cmmUseService.selectGroupIdDetail(comDefaultCodeVO);
 
-		model.addAttribute("passwordHint_result", passwordHint_result); // 패스워트힌트목록
-		model.addAttribute("sexdstnCode_result", sexdstnCode_result); // 성별구분코드목록
-		model.addAttribute("mberSttus_result", mberSttus_result); // 사용자상태코드목록
-		model.addAttribute("groupId_result", groupId_result); // 그룹정보 목록
+		model.addAttribute("passwordHint_result", passwordHintResult); // 패스워트힌트목록
+		model.addAttribute("sexdstnCode_result", sexdstnCodeResult); // 성별구분코드목록
+		model.addAttribute("mberSttus_result", mberSttusResult); // 사용자상태코드목록
+		model.addAttribute("groupId_result", groupIdResult); // 그룹정보 목록
 
 		return "egovframework/com/uss/umt/EgovMberInsert";
 	}
@@ -192,21 +192,21 @@ public class EgovMberManageController {
 
 			// 패스워드힌트목록을 코드정보로부터 조회
 			comDefaultCodeVO.setCodeId("COM022");
-			List<CmmnDetailCode> passwordHint_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+			List<CmmnDetailCode> passwordHintResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 			// 성별구분코드를 코드정보로부터 조회
 			comDefaultCodeVO.setCodeId("COM014");
-			List<CmmnDetailCode> sexdstnCode_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+			List<CmmnDetailCode> sexdstnCodeResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 			// 사용자상태코드를 코드정보로부터 조회
 			comDefaultCodeVO.setCodeId("COM013");
-			List<CmmnDetailCode> mberSttus_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+			List<CmmnDetailCode> mberSttusResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 			// 그룹정보를 조회 - GROUP_ID정보
 			comDefaultCodeVO.setTableNm("COMTNORGNZTINFO");
-			List<CmmnDetailCode> groupId_result = cmmUseService.selectGroupIdDetail(comDefaultCodeVO);
+			List<CmmnDetailCode> groupIdResult = cmmUseService.selectGroupIdDetail(comDefaultCodeVO);
 
-			model.addAttribute("passwordHint_result", passwordHint_result); // 패스워트힌트목록
-			model.addAttribute("sexdstnCode_result", sexdstnCode_result); // 성별구분코드목록
-			model.addAttribute("mberSttus_result", mberSttus_result); // 사용자상태코드목록
-			model.addAttribute("groupId_result", groupId_result); // 그룹정보 목록
+			model.addAttribute("passwordHint_result", passwordHintResult); // 패스워트힌트목록
+			model.addAttribute("sexdstnCode_result", sexdstnCodeResult); // 성별구분코드목록
+			model.addAttribute("mberSttus_result", mberSttusResult); // 사용자상태코드목록
+			model.addAttribute("groupId_result", groupIdResult); // 그룹정보 목록
 
 			return "egovframework/com/uss/umt/EgovMberInsert";
 		} else {
@@ -244,24 +244,24 @@ public class EgovMberManageController {
 
 		// 패스워드힌트목록을 코드정보로부터 조회
 		vo.setCodeId("COM022");
-		List<CmmnDetailCode> passwordHint_result = cmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> passwordHintResult = cmmUseService.selectCmmCodeDetail(vo);
 
 		// 성별구분코드를 코드정보로부터 조회
 		vo.setCodeId("COM014");
-		List<CmmnDetailCode> sexdstnCode_result = cmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> sexdstnCodeResult = cmmUseService.selectCmmCodeDetail(vo);
 
 		// 사용자상태코드를 코드정보로부터 조회
 		vo.setCodeId("COM013");
-		List<CmmnDetailCode> mberSttus_result = cmmUseService.selectCmmCodeDetail(vo);
+		List<CmmnDetailCode> mberSttusResult = cmmUseService.selectCmmCodeDetail(vo);
 
 		// 그룹정보를 조회 - GROUP_ID정보
 		vo.setTableNm("COMTNORGNZTINFO");
-		List<CmmnDetailCode> groupId_result = cmmUseService.selectGroupIdDetail(vo);
+		List<CmmnDetailCode> groupIdResult = cmmUseService.selectGroupIdDetail(vo);
 
-		model.addAttribute("passwordHint_result", passwordHint_result); // 패스워트힌트목록
-		model.addAttribute("sexdstnCode_result", sexdstnCode_result); // 성별구분코드목록
-		model.addAttribute("mberSttus_result", mberSttus_result); // 사용자상태코드목록
-		model.addAttribute("groupId_result", groupId_result); // 그룹정보 목록
+		model.addAttribute("passwordHint_result", passwordHintResult); // 패스워트힌트목록
+		model.addAttribute("sexdstnCode_result", sexdstnCodeResult); // 성별구분코드목록
+		model.addAttribute("mberSttus_result", mberSttusResult); // 사용자상태코드목록
+		model.addAttribute("groupId_result", groupIdResult); // 그룹정보 목록
 
 		MberManageVO mberManageVO = mberManageService.selectMber(mberId);
 		model.addAttribute("mberManageVO", mberManageVO);
@@ -414,13 +414,13 @@ public class EgovMberManageController {
 
 		// 패스워드힌트목록을 코드정보로부터 조회
 		comDefaultCodeVO.setCodeId("COM022");
-		List<CmmnDetailCode> passwordHint_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+		List<CmmnDetailCode> passwordHintResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 		// 성별구분코드를 코드정보로부터 조회
 		comDefaultCodeVO.setCodeId("COM014");
-		List<CmmnDetailCode> sexdstnCode_result = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+		List<CmmnDetailCode> sexdstnCodeResult = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 
-		model.addAttribute("passwordHint_result", passwordHint_result); // 패스워트힌트목록
-		model.addAttribute("sexdstnCode_result", sexdstnCode_result); // 성별구분코드목록
+		model.addAttribute("passwordHint_result", passwordHintResult); // 패스워트힌트목록
+		model.addAttribute("sexdstnCode_result", sexdstnCodeResult); // 성별구분코드목록
 		if (!"".equals(commandMap.get("realname"))) {
 			model.addAttribute("mberNm", commandMap.get("realname")); // 실명인증된 이름 - 주민번호 인증
 			model.addAttribute("ihidnum", commandMap.get("ihidnum")); // 실명인증된 주민등록번호 - 주민번호 인증
