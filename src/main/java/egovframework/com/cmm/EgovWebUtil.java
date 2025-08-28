@@ -51,21 +51,17 @@ public class EgovWebUtil {
 	}
 
 	public static String clearXSSMaximum(String value) {
-		String returnValue = value;
-		returnValue = clearXSSMinimum(returnValue);
+		if (value == null || value.trim().isEmpty()) {
+			return "";
+		}
 
-		returnValue = returnValue.replaceAll("%00", null);
-
-		returnValue = returnValue.replaceAll("%", "&#37;");
-
-		// \\. => .
-
-		returnValue = returnValue.replaceAll("\\.\\./", ""); // ../
-		returnValue = returnValue.replaceAll("\\.\\.\\\\", ""); // ..\
-		returnValue = returnValue.replaceAll("\\./", ""); // ./
-		returnValue = returnValue.replaceAll("%2F", "");
-
-		return returnValue;
+		return clearXSSMinimum(value)
+				.replace("%2F", "")
+				.replace("%00", "")
+				.replace("%", "&#37;")
+				.replace("../", "")
+				.replace("..\\", "")
+				.replace("./", "");
 	}
 
 	public static String clearXSS(String value) {
