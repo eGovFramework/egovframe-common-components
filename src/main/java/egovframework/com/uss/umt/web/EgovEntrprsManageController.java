@@ -77,42 +77,42 @@ public class EgovEntrprsManageController {
 
 	/** 비밀번호 힌트 조회 목록 */
 	@ModelAttribute("passwordHint_result")
-	private List<CmmnDetailCode> getPasswordHintResult(ComDefaultCodeVO comDefaultCodeVO) throws Exception {
+	public List<CmmnDetailCode> getPasswordHintResult(ComDefaultCodeVO comDefaultCodeVO) throws Exception {
 		comDefaultCodeVO.setCodeId("COM022");
 		return cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 	}
 
 	/** 성별 조회 목록 */
 	@ModelAttribute("sexdstnCode_result")
-	private List<CmmnDetailCode> getSexdstnCode_result(ComDefaultCodeVO comDefaultCodeVO) throws Exception {
+	public List<CmmnDetailCode> getSexdstnCode_result(ComDefaultCodeVO comDefaultCodeVO) throws Exception {
 		comDefaultCodeVO.setCodeId("COM014");
 		return cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 	}
 
 	/** 사용자 상태 조회 목록 */
 	@ModelAttribute("entrprsMberSttus_result")
-	private List<CmmnDetailCode> getEntrprsMberSttus_result(ComDefaultCodeVO comDefaultCodeVO) throws Exception {
+	public List<CmmnDetailCode> getEntrprsMberSttus_result(ComDefaultCodeVO comDefaultCodeVO) throws Exception {
 		comDefaultCodeVO.setCodeId("COM013");
 		return cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 	}
 
 	/** 그룹 정보 조회 목록 */
 	@ModelAttribute("groupId_result")
-	private List<CmmnDetailCode> getGroupId_result(ComDefaultCodeVO comDefaultCodeVO) throws Exception {
+	public List<CmmnDetailCode> getGroupId_result(ComDefaultCodeVO comDefaultCodeVO) throws Exception {
 		comDefaultCodeVO.setTableNm("COMTNORGNZTINFO");
 		return cmmUseService.selectGroupIdDetail(comDefaultCodeVO);
 	}
 
 	/** 기업 구분 조회 목록 */
 	@ModelAttribute("entrprsSeCode_result")
-	private List<CmmnDetailCode> getEntrprsSeCode_result(ComDefaultCodeVO comDefaultCodeVO) throws Exception {
+	public List<CmmnDetailCode> getEntrprsSeCode_result(ComDefaultCodeVO comDefaultCodeVO) throws Exception {
 		comDefaultCodeVO.setCodeId("COM026");
 		return cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 	}
 
 	/** 업종 구분 조회 목록 */
 	@ModelAttribute("indutyCode_result")
-	private List<CmmnDetailCode> getIndutyCode_result(ComDefaultCodeVO comDefaultCodeVO) throws Exception {
+	public List<CmmnDetailCode> getIndutyCode_result(ComDefaultCodeVO comDefaultCodeVO) throws Exception {
 		comDefaultCodeVO.setCodeId("COM027");
 		return cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 	}
