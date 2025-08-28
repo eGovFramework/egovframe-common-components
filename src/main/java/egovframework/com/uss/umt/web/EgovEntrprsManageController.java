@@ -40,22 +40,23 @@ import egovframework.com.utl.sim.service.EgovFileScrty;
  * @see
  *
  *      <pre>
- * << 개정이력(Modification Information) >>
+ *  == 개정이력(Modification Information) ==
  *
- *   수정일          수정자       수정내용
- *  -----------    --------    ---------------------------
- *   2009.04.10     조재영       최초 생성
- *   2011.08.26     정진오       IncludedInfo annotation 추가
- *   2014.12.08     이기하       암호화방식 변경(EgovFileScrty.encryptPassword)
- *   2015.06.16     조정국       수정시 유효성체크 후 에러발생 시 목록으로 이동하여 에러메시지 표시
- *   2015.06.19     조정국       미인증 사용자에 대한 보안처리 기준 수정 (!isAuthenticated)
- *   2017.07.21     장동한       로그인인증제한 작업
- *   2020.07.18     윤주호       암호 설정 규칙 강화 및 버그 수정
- *   2021.05.30     정진오       디지털원패스 정보 조회
- *   2022.07.13     김해준       디지털원패스 정보 조회 null 판별 수정
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.04.10  조재영          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2014.12.08  이기하          암호화방식 변경(EgovFileScrty.encryptPassword)
+ *   2015.06.16  조정국          수정시 유효성체크 후 에러발생 시 목록으로 이동하여 에러메시지 표시
+ *   2015.06.19  조정국          미인증 사용자에 대한 보안처리 기준 수정 (!isAuthenticated)
+ *   2017.07.21  장동한          로그인인증제한 작업
+ *   2020.07.18  윤주호          암호 설정 규칙 강화 및 버그 수정
+ *   2021.05.30  정진오          디지털원패스 정보 조회
+ *   2022.07.13  김해준          디지털원패스 정보 조회 null 판별 수정
+ *   2025.08.28  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UnusedPrivateMethod(사용되지 않는 Private Method 선언을 탐지)
+ *
  *      </pre>
  */
-
 @Controller
 public class EgovEntrprsManageController {
 
