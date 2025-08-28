@@ -39,17 +39,15 @@ public class EgovWebUtil {
 			return "";
 		}
 
-		String returnValue = value;
-
-		returnValue = returnValue.replaceAll("&", "&amp;");
-		returnValue = returnValue.replaceAll("<", "&lt;");
-		returnValue = returnValue.replaceAll(">", "&gt;");
-		returnValue = returnValue.replaceAll("\"", "&#34;");
-		returnValue = returnValue.replaceAll("\'", "&#39;");
-		returnValue = returnValue.replaceAll("\\.", "&#46;");
-		returnValue = returnValue.replaceAll("%2E", "&#46;");
-		returnValue = returnValue.replaceAll("%2F", "&#47;");
-		return returnValue;
+		return value
+			.replace("&", "&amp;")
+			.replace("<", "&lt;")
+			.replace(">", "&gt;")
+			.replace("\"", "&#34;")
+			.replace("'", "&#39;")
+			.replace(".", "&#46;")
+			.replace("%2E", "&#46;")
+			.replace("%2F", "&#47;");
 	}
 
 	public static String clearXSSMaximum(String value) {
