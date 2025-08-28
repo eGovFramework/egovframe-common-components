@@ -65,20 +65,18 @@ public class EgovWebUtil {
 	}
 
 	public static String clearXSS(String value) {
-		if (value == null || value.trim().equals("")) {
+		if (isEmpty(value)) {
 			return "";
 		}
 
-		String returnValue = value;
-		returnValue = returnValue.replaceAll("&", "&amp;");
-		returnValue = returnValue.replaceAll("%2E", "&#46;");
-		returnValue = returnValue.replaceAll("%2F", "&#47;");
-		returnValue = returnValue.replaceAll("<", "&lt;");
-		returnValue = returnValue.replaceAll(">", "&gt;");
-		returnValue = returnValue.replaceAll("%3C", "&lt;");
-		returnValue = returnValue.replaceAll("%3E", "&gt;");
-
-		return returnValue;
+		return value
+			.replace("&", "&amp;")
+			.replace("%2E", "&#46;")
+			.replace("%2F", "&#47;")
+			.replace("<", "&lt;")
+			.replace(">", "&gt;")
+			.replace("%3C", "&lt;")
+			.replace("%3E", "&gt;");
 	}
 	
 	public static String filePathBlackList(String value) {
