@@ -1,9 +1,7 @@
 package egovframework.com.uss.ion.pwm.web;
 
-import java.io.OutputStream;
 import java.io.OutputStreamWriter;
 import java.io.PrintWriter;
-import java.io.Writer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -291,24 +289,25 @@ public class EgovPopupManageController {
 
 		response.setHeader("Content-Type", "text/html;charset=utf-8");
 
-		OutputStream out2 = response.getOutputStream(); // NOPMD - CloseResource 규칙 무시
-		Writer out1 = new OutputStreamWriter(out2, "UTF-8"); // NOPMD - CloseResource 규칙 무시
-		PrintWriter out = new PrintWriter(out1); // NOPMD - CloseResource 규칙 무시
+		PrintWriter out = null; // NOPMD - CloseResource 규칙 무시
+		try {
+			out = new PrintWriter(new OutputStreamWriter(response.getOutputStream(), "UTF-8"));
 
-		LOGGER.debug("commandMap : {}", commandMap);
-		LOGGER.debug("popupManageVO : {}", popupManageVO);
+			LOGGER.debug("commandMap : {}", commandMap);
+			LOGGER.debug("popupManageVO : {}", popupManageVO);
 
-		PopupManageVO popupManageVOs = egovPopupManageService.selectPopup(popupManageVO);
+			PopupManageVO popupManageVOs = egovPopupManageService.selectPopup(popupManageVO);
 
-		String sPrint = "";
-		sPrint = popupManageVOs.getFileUrl();
-		sPrint = sPrint + "||" + popupManageVOs.getPopupWSize();
-		sPrint = sPrint + "||" + popupManageVOs.getPopupHSize();
-		sPrint = sPrint + "||" + popupManageVOs.getPopupHlc();
-		sPrint = sPrint + "||" + popupManageVOs.getPopupWlc();
-		sPrint = sPrint + "||" + popupManageVOs.getStopVewAt();
-		out.print(EgovWebUtil.clearXSSMinimum(sPrint));// 2022.01 Potential XSS in Servlet
-		out.flush();
+			String sPrint = popupManageVOs.getFileUrl() + "||" + popupManageVOs.getPopupWSize() + "||"
+					+ popupManageVOs.getPopupHSize() + "||" + popupManageVOs.getPopupHlc() + "||"
+					+ popupManageVOs.getPopupWlc() + "||" + popupManageVOs.getStopVewAt();
+
+			out.print(EgovWebUtil.clearXSSMinimum(sPrint));
+		} finally {
+			if (out != null) {
+				out.flush();
+			}
+		}
 	}
 
 	/**
