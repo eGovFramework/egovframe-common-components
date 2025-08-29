@@ -58,7 +58,7 @@ public class EgovMessageUtil {
 	}
 
 	/**
-	 *해당되는 속성키로부터 정보 메시지(파라미터 변환 포함)를 얻는다.
+	 * 해당되는 속성키로부터 정보 메시지(파라미터 변환 포함)를 얻는다.
 	 *
 	 * @param strCode
 	 * @param arrParam
@@ -114,10 +114,10 @@ public class EgovMessageUtil {
 
 		return getMessage("confirm", strCode, arrParam);
 	}
+
 	/**
-	 * 주어진 작업 코드, 문자열 코드, 그리고 파라미터 배열을 사용하여 메시지를 반환합니다.
-	 * 문자열 코드를 사용하여 메시지 속성 파일에서 메시지를 가져옵니다.
-	 * 파라미터 배열이 제공되면 해당 파라미터로 메시지를 교체합니다.
+	 * 주어진 작업 코드, 문자열 코드, 그리고 파라미터 배열을 사용하여 메시지를 반환합니다. 문자열 코드를 사용하여 메시지 속성 파일에서
+	 * 메시지를 가져옵니다. 파라미터 배열이 제공되면 해당 파라미터로 메시지를 교체합니다.
 	 *
 	 * @param wrkCode  작업을 지정하는 코드
 	 * @param strCode  메시지 속성 파일에서 메시지를 찾는데 사용되는 코드
@@ -131,11 +131,16 @@ public class EgovMessageUtil {
 		String strMsg = "";
 		if (!"".equals(EgovStringUtil.isNullToString(strCode.trim()))) {
 
-			strMsg = EgovProperties.getProperty(EgovProperties.RELATIVE_PATH_PREFIX + "egovProps" + PATH_SEP + "conf" + PATH_SEP + wrkCode + "message.properties", strCode);
+			strMsg = EgovProperties.getProperty(EgovProperties.RELATIVE_PATH_PREFIX + "egovProps" + PATH_SEP + "conf"
+					+ PATH_SEP + wrkCode + "message.properties", strCode);
 
-			if(arrParam != null) {
+			if (arrParam != null) {
 				for (int i = (arrParam.length > 0 ? arrParam.length - 1 : -1); i >= 0; i--) {
-					strMsg = EgovStringUtil.replace(EgovStringUtil.isNullToString(strMsg), "{" + i + "}", arrParam[i]);//KISA 보안약점 조치 (2018-10-29, 윤창원)
+					strMsg = EgovStringUtil.replace(EgovStringUtil.isNullToString(strMsg), "{" + i + "}", arrParam[i]);// KISA
+																														// 보안약점
+																														// 조치
+																														// (2018-10-29,
+																														// 윤창원)
 				}
 			}
 			message = strMsg;
