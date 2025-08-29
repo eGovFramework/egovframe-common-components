@@ -23,40 +23,45 @@ import java.util.regex.Pattern;
  */
 
 public class EgovWebUtil {
+	
+	/**
+	 * 문자열이 null이거나 빈 문자열인지 확인하는 유틸리티 메서드
+	 * 
+	 * @param value 검사할 문자열
+	 * @return null이거나 빈 문자열이면 true, 그렇지 않으면 false
+	 */
+	private static boolean isEmpty(String value) {
+		return value == null || value.trim().isEmpty();
+	}
+	
 	public static String clearXSSMinimum(String value) {
 		if (value == null || value.trim().equals("")) {
 			return "";
 		}
 
-		String returnValue = value;
-
-		returnValue = returnValue.replaceAll("&", "&amp;");
-		returnValue = returnValue.replaceAll("<", "&lt;");
-		returnValue = returnValue.replaceAll(">", "&gt;");
-		returnValue = returnValue.replaceAll("\"", "&#34;");
-		returnValue = returnValue.replaceAll("\'", "&#39;");
-		returnValue = returnValue.replaceAll("\\.", "&#46;");
-		returnValue = returnValue.replaceAll("%2E", "&#46;");
-		returnValue = returnValue.replaceAll("%2F", "&#47;");
-		return returnValue;
+		return value
+			.replace("&", "&amp;")
+			.replace("<", "&lt;")
+			.replace(">", "&gt;")
+			.replace("\"", "&#34;")
+			.replace("'", "&#39;")
+			.replace(".", "&#46;")
+			.replace("%2E", "&#46;")
+			.replace("%2F", "&#47;");
 	}
 
 	public static String clearXSSMaximum(String value) {
-		String returnValue = value;
-		returnValue = clearXSSMinimum(returnValue);
+		if (value == null || value.trim().isEmpty()) {
+			return "";
+		}
 
-		returnValue = returnValue.replaceAll("%00", null);
-
-		returnValue = returnValue.replaceAll("%", "&#37;");
-
-		// \\. => .
-
-		returnValue = returnValue.replaceAll("\\.\\./", ""); // ../
-		returnValue = returnValue.replaceAll("\\.\\.\\\\", ""); // ..\
-		returnValue = returnValue.replaceAll("\\./", ""); // ./
-		returnValue = returnValue.replaceAll("%2F", "");
-
-		return returnValue;
+		return clearXSSMinimum(value)
+				.replace("%2F", "")
+				.replace("%00", "")
+				.replace("%", "&#37;")
+				.replace("../", "")
+				.replace("..\\", "")
+				.replace("./", "");
 	}
 
 	public static String clearXSS(String value) {
@@ -64,27 +69,25 @@ public class EgovWebUtil {
 			return "";
 		}
 
-		String returnValue = value;
-		returnValue = returnValue.replaceAll("&", "&amp;");
-		returnValue = returnValue.replaceAll("%2E", "&#46;");
-		returnValue = returnValue.replaceAll("%2F", "&#47;");
-		returnValue = returnValue.replaceAll("<", "&lt;");
-		returnValue = returnValue.replaceAll(">", "&gt;");
-		returnValue = returnValue.replaceAll("%3C", "&lt;");
-		returnValue = returnValue.replaceAll("%3E", "&gt;");
-
-		return returnValue;
+    	return value
+            .replace("%3C", "&lt;")
+            .replace("%3E", "&gt;")
+            .replace("%2E", "&#46;")
+            .replace("%2F", "&#47;")
+            .replace("&", "&amp;")
+            .replace("<", "&lt;")
+            .replace(">", "&gt;");
 	}
-	
+
 	public static String filePathBlackList(String value) {
-		String returnValue = value;
-		if (returnValue == null || returnValue.trim().equals("")) {
+		if (value == null || value.trim().isEmpty()) {
 			return "";
 		}
 
-		returnValue = returnValue.replaceAll("\\.\\.", "");
-
-		return returnValue;
+		return value
+				.replace("../", "")
+				.replace("..\\", "")
+				.replace("..", "");
 	}
 	
 	/**
