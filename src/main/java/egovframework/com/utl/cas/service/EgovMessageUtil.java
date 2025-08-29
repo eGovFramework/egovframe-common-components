@@ -1,24 +1,26 @@
-/**
- * @Class Name  : EgovMessageUtil.java
- * @Description : 메시지 처리 관련 유틸리티
- * @Modification Information
- *
- *     수정일         수정자                   수정내용
- *     -------          --------        ---------------------------
- *   2009.02.13       이삼섭                  최초 생성
- *
- * @author 공통 서비스 개발팀 이삼섭
- * @since 2009. 02. 13
- * @version 1.0
- * @see
- *
- */
-
 package egovframework.com.utl.cas.service;
 
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 
+/**
+ * 메시지 처리 관련 유틸리티
+ * 
+ * @author 공통 서비스 개발팀 이삼섭
+ * @since 2009.02.13
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.02.13  이삼섭          최초 생성
+ *   2025.08.29  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UselessParentheses(불필요한 괄호사용)
+ *
+ *      </pre>
+ */
 public class EgovMessageUtil {
 
 	private static final String PATH_SEP = System.getProperty("file.separator");
