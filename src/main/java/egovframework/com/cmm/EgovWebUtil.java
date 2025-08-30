@@ -1,6 +1,8 @@
 package egovframework.com.cmm;
 
 import java.io.File;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 import java.util.regex.Pattern;
 
 /**
@@ -82,7 +84,22 @@ public class EgovWebUtil {
 			return "";
 		}
 
-		returnValue = returnValue.replaceAll("\\.\\.", "");
+		// URL 디코딩 후 처리
+	    try {
+	        returnValue = URLDecoder.decode(returnValue, "UTF-8");
+	    } catch (UnsupportedEncodingException e) {
+	        // 디코딩 실패시 원본 사용
+	    }
+	    
+	    // 다양한 Path Traversal 패턴 제거
+		returnValue = returnValue.replaceAll("\\.\\.", "")
+					.replaceAll("\\.\\.[\\\\/]", "")
+	                .replaceAll("\\.\\.\\\\", "")
+	                .replaceAll("\\.\\./", "")
+	                .replaceAll("%2e%2e%2f", "")
+	                .replaceAll("%2e%2e%5c", "")
+	                .replaceAll("\\.\\.%2f", "")
+	                .replaceAll("\\.\\.%5c", "");
 
 		return returnValue;
 	}
@@ -151,8 +168,30 @@ public class EgovWebUtil {
 	}
 
 	public static String removeSQLInjectionRisk(String parameter) {
-		return parameter.replaceAll("\\p{Space}", "").replaceAll("\\*", "").replaceAll("%", "").replaceAll(";", "")
-			.replaceAll("-", "").replaceAll("\\+", "").replaceAll(",", "");
+		if (parameter == null) return null;
+		
+		// SQL 키워드 패턴 정의
+		String[] sqlKeywords = {"SELECT", "INSERT", "UPDATE", "DELETE", "DROP", "CREATE", 
+		"ALTER", "EXEC", "EXECUTE", "UNION"};
+		
+		String result = parameter;
+		for (String keyword : sqlKeywords) {
+			result = result.replaceAll("(?i)" + keyword, "");
+		}
+		
+		// 위험한 특수문자 이스케이프 처리
+		result = result.replaceAll("'", "''")
+						.replaceAll("\"", "&quot;")
+						.replaceAll("<", "&lt;")
+						.replaceAll(">", "&gt;")
+						.replaceAll("\\*", "")
+						.replaceAll("%", "")
+						.replaceAll(";", "")
+						.replaceAll("-", "")
+						.replaceAll("\\+", "")
+						.replaceAll(",", "");
+		
+		return result;
 	}
 
 	public static String removeOSCmdRisk(String parameter) {
