@@ -31,7 +31,6 @@ import javax.swing.text.html.HTMLEditorKit;
 import javax.swing.text.html.parser.ParserDelegator;
 
 import egovframework.com.cmm.service.EgovProperties;
-import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import twitter4j.JSONArray;
 import twitter4j.JSONObject;
 
@@ -79,20 +78,19 @@ public class EgovEhgtCalcUtil {
 	 */
 	public void readHtmlParsing(String str) {
 		HttpURLConnection con = null;
-		InputStream is = null;
-		InputStreamReader reader = null;
 		try {
 			// 입력받은 URL에 연결하여 InputStream을 통해 읽은 후 파싱 한다.
 			URL url = new URL(EHGT_URL + str);
 
 			con = (HttpURLConnection) url.openConnection();
 
-			is = con.getInputStream();
-			reader = new InputStreamReader(is, "euc-kr");
-			// InputStreamReader reader = new InputStreamReader(con.getInputStream(),
-			// "utf-8");
+			try (InputStream is = con.getInputStream();
+					InputStreamReader reader = new InputStreamReader(is, "euc-kr");) {
+				// InputStreamReader reader = new InputStreamReader(con.getInputStream(),
+				// "utf-8");
 
-			new ParserDelegator().parse(reader, new CallbackHandler(), true);
+				new ParserDelegator().parse(reader, new CallbackHandler(), true);
+			}
 
 			con.disconnect();
 
@@ -101,8 +99,6 @@ public class EgovEhgtCalcUtil {
 		} catch (IOException e) {
 			throw new RuntimeException(e);
 		} finally {
-			EgovResourceCloseHelper.close(reader, is);
-
 			if (con != null) {
 				con.disconnect();
 			}
@@ -262,7 +258,7 @@ public class EgovEhgtCalcUtil {
 				sCnvrAmount = bSrcAmount.toString();
 			} else if (cnvrChr == 'J') {
 				// 변환금액 = (변환대상금액 / 변환매매비율) * 100;
-				sCnvrAmount = (bSrcAmount.divide(bCnvrStdrRt, 4, 4)).multiply(bStdr).setScale(2, 4).toString();
+				sCnvrAmount = bSrcAmount.divide(bCnvrStdrRt, 4, 4).multiply(bStdr).setScale(2, 4).toString();
 			} else {
 				// 변환금액 = (변환대상금액 / 변환매매비율);
 				sCnvrAmount = bSrcAmount.divide(bCnvrStdrRt, 2, 4).toString();
@@ -278,11 +274,11 @@ public class EgovEhgtCalcUtil {
 				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(2, 4).toString();
 			} else if (cnvrChr == 'J') {
 				// cnvrAmount = ((변환대상금액 * 원래 매매 비율) / 변환 매매 비율) * 100;
-				sCnvrAmount = ((bSrcAmount.multiply(bSrcStdrRt).setScale(4, 4)).divide(bCnvrStdrRt, 2, 4))
-						.multiply(bStdr).setScale(2, 4).toString();
+				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(4, 4).divide(bCnvrStdrRt, 2, 4).multiply(bStdr)
+						.setScale(2, 4).toString();
 			} else {
 				// cnvrAmount = (변환대상금액 * 원래 매매 비율) / 변환 매매 비율;
-				sCnvrAmount = (bSrcAmount.multiply(bSrcStdrRt).setScale(4, 4)).divide(bCnvrStdrRt, 2, 4).toString();
+				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(4, 4).divide(bCnvrStdrRt, 2, 4).toString();
 			}
 			break;
 
@@ -295,11 +291,11 @@ public class EgovEhgtCalcUtil {
 				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(2, 4).toString();
 			} else if (cnvrChr == 'J') {
 				// cnvrAmount = ((변환대상금액 * 원래 매매 비율) / 변환 매매 비율) * 100;
-				sCnvrAmount = ((bSrcAmount.multiply(bSrcStdrRt).setScale(4, 4)).divide(bCnvrStdrRt, 2, 4))
-						.multiply(bStdr).setScale(2, 4).toString();
+				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(4, 4).divide(bCnvrStdrRt, 2, 4).multiply(bStdr)
+						.setScale(2, 4).toString();
 			} else {
 				// cnvrAmount = (변환대상금액 * 원래 매매 비율) / 변환 매매 비율;
-				sCnvrAmount = (bSrcAmount.multiply(bSrcStdrRt).setScale(4, 4)).divide(bCnvrStdrRt, 2, 4).toString();
+				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(4, 4).divide(bCnvrStdrRt, 2, 4).toString();
 			}
 			break;
 
@@ -309,10 +305,10 @@ public class EgovEhgtCalcUtil {
 				sCnvrAmount = bSrcAmount.toString();
 			} else if (cnvrChr == 'K') {
 				// cnvrAmount = (변환대상금액 * 원래 매매 비율) / 100;
-				sCnvrAmount = (bSrcAmount.multiply(bSrcStdrRt).setScale(4, 4)).divide(bStdr, 2, 4).toString();
+				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(4, 4).divide(bStdr, 2, 4).toString();
 			} else {
 				// cnvrAmount = ((변환대상금액 * 원래 매매 비율) / 100) / 변환 매매 비율;
-				sCnvrAmount = ((bSrcAmount.multiply(bSrcStdrRt).setScale(4, 4)).divide(bStdr, 2, 4))
+				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(4, 4).divide(bStdr, 2, 4)
 						.divide(bCnvrStdrRt, 2, 4).toString();
 			}
 			break;
@@ -326,11 +322,11 @@ public class EgovEhgtCalcUtil {
 				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(2, 4).toString();
 			} else if (cnvrChr == 'J') {
 				// cnvrAmount = ((변환대상금액 * 원래 매매 비율) / 변환 매매 비율) * 100;
-				sCnvrAmount = ((bSrcAmount.multiply(bSrcStdrRt).setScale(4, 4)).divide(bCnvrStdrRt, 2, 4))
-						.multiply(bStdr).setScale(2, 4).toString();
+				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(4, 4).divide(bCnvrStdrRt, 2, 4).multiply(bStdr)
+						.setScale(2, 4).toString();
 			} else {
 				// cnvrAmount = (변환대상금액 * 원래 매매 비율) / 변환 매매 비율;
-				sCnvrAmount = (bSrcAmount.multiply(bSrcStdrRt).setScale(4, 4)).divide(bCnvrStdrRt, 2, 4).toString();
+				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(4, 4).divide(bCnvrStdrRt, 2, 4).toString();
 			}
 			break;
 
