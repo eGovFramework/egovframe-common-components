@@ -2,8 +2,8 @@ package egovframework.com.dam.mgm.service;
 
 /**
  * 개요
- * - 지식정보에 대한 model 클래스를 정의한다.
- * 
+ * - 지식정보에 대한 Model 클래스를 정의한다.
+ *
  * 상세내용
  * - 소속조직, 지식유형, 등록일자, 지식명, 지식내용, 첨부파일 항목을 관리한다.
  * @author 박종선
