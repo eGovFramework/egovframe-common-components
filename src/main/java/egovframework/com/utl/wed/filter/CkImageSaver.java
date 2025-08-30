@@ -32,14 +32,14 @@ import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.cryptography.EgovEnvCryptoService;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Created by guava on 1/20/14. 이미지 저장 처리 클래스
@@ -64,15 +64,15 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  * 
  *      </pre>
  */
+@Slf4j
 public class CkImageSaver {
-	private static final Log log = LogFactory.getLog(CkFilter.class);
 
 	private static final String FUNC_NO = "CKEditorFuncNum";
 
-	private String imageBaseDir;
-	private String imageDomain;
-	private String[] allowFileTypeArr;
-	private FileSaveManager fileSaveManager;
+	private final String imageBaseDir;
+	private final String imageDomain;
+	private final String[] allowFileTypeArr;
+	private final FileSaveManager fileSaveManager;
 
 	/**
 	 *
@@ -84,15 +84,15 @@ public class CkImageSaver {
 	public CkImageSaver(String imageBaseDir, String imageDomain, String[] allowFileTypeArr, String saveManagerClass) {
 		this.imageBaseDir = EgovWebUtil.filePathBlackList(imageBaseDir);
 
-		if ((EgovStringUtil.isNullToString(imageBaseDir)).endsWith("/")) {
+		if (EgovStringUtil.isNullToString(imageBaseDir).endsWith("/")) {
 			StringUtils.removeEnd(imageBaseDir, "/");
 		}
-		if ((EgovStringUtil.isNullToString(imageBaseDir)).endsWith("\\")) {
+		if (EgovStringUtil.isNullToString(imageBaseDir).endsWith("\\")) {
 			StringUtils.removeEnd(imageBaseDir, "\\");
 		}
 
 		this.imageDomain = EgovWebUtil.filePathBlackList(imageDomain);
-		if ((EgovStringUtil.isNullToString(this.imageDomain)).endsWith("/")) {
+		if (EgovStringUtil.isNullToString(this.imageDomain).endsWith("/")) {
 			StringUtils.removeEnd(this.imageDomain, "/");
 		}
 
@@ -105,14 +105,11 @@ public class CkImageSaver {
 				Class<?> klass = Class.forName(saveManagerClass);
 				fileSaveManager = (FileSaveManager) klass.newInstance();
 			} catch (ClassNotFoundException e) {
-				log.error(e);
-				throw new RuntimeException(e);
+				throw new BaseRuntimeException(e);
 			} catch (InstantiationException e) {
-				log.error(e);
-				throw new RuntimeException(e);
+				throw new BaseRuntimeException(e);
 			} catch (IllegalAccessException e) {
-				log.error(e);
-				throw new RuntimeException(e);
+				throw new BaseRuntimeException(e);
 			}
 		}
 	}
@@ -170,7 +167,7 @@ public class CkImageSaver {
 				Integer.parseInt(funcNo);
 			} catch (NumberFormatException e) {
 				isInteger = false;
-				log.error(e);
+				throw new BaseRuntimeException(e);
 			}
 			if (!isInteger) {
 				funcNo = "1"; // 가장 많이 사용되는 값
@@ -184,14 +181,14 @@ public class CkImageSaver {
 
 			response.setContentType("text/html");
 			response.setHeader("Cache-Control", "no-cache");
-			PrintWriter out = response.getWriter();
+			PrintWriter out = response.getWriter(); // NOPMD - CloseResource 규칙 무시
 
 			out.print(sb.toString());
 			out.flush();
 			out.close();
 
 		} catch (FileUploadException e) {
-			log.error(e);
+			throw new BaseRuntimeException(e);
 		}
 	}
 
