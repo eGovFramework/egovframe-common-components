@@ -202,8 +202,8 @@ public class EgovDateUtil {
 		}
 
 		if (date1 != null && date2 != null) {
-			int days1 = (int) ((date1.getTime() / 3600000) / 24);
-			int days2 = (int) ((date2.getTime() / 3600000) / 24);
+			int days1 = (int) (date1.getTime() / 3600000) / 24;
+			int days2 = (int) (date2.getTime() / 3600000) / 24;
 			return days2 - days1;
 		} else {
 			return 0;
@@ -585,9 +585,9 @@ public class EgovDateUtil {
 		String retMonth = (pad2Str + month).substring(month.length());
 		String retDay = (pad2Str + day).substring(day.length());
 
-		String SDay = retYear + retMonth + retDay;
+		String sDay = retYear + retMonth + retDay;
 
-		hm.put("day", SDay);
+		hm.put("day", sDay);
 		hm.put("leap", leap);
 
 		return hm;
@@ -715,10 +715,10 @@ public class EgovDateUtil {
 		cal.set(Calendar.MONTH, Integer.parseInt(dateStr.substring(4, 6)) - 1);
 		cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateStr.substring(6, 8)));
 
-		int Week = cal.get(Calendar.DAY_OF_WEEK);
+		int week = cal.get(Calendar.DAY_OF_WEEK);
 
 		if (validDate(sDate)) {
-			if (sWeek == Week) {
+			if (sWeek == week) {
 				ret = true;
 			}
 		}
@@ -743,13 +743,13 @@ public class EgovDateUtil {
 		cal.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeStr.substring(0, 2)));
 		cal.set(Calendar.MINUTE, Integer.parseInt(timeStr.substring(2, 4)));
 
-		String HH = String.valueOf(cal.get(Calendar.HOUR_OF_DAY));
-		String MM = String.valueOf(cal.get(Calendar.MINUTE));
+		String hh = String.valueOf(cal.get(Calendar.HOUR_OF_DAY));
+		String mm = String.valueOf(cal.get(Calendar.MINUTE));
 
 		String pad2Str = "00";
 
-		String retHH = (pad2Str + HH).substring(HH.length());
-		String retMM = (pad2Str + MM).substring(MM.length());
+		String retHH = (pad2Str + hh).substring(hh.length());
+		String retMM = (pad2Str + mm).substring(mm.length());
 
 		String retTime = retHH + retMM;
 
@@ -881,7 +881,7 @@ public class EgovDateUtil {
 		}
 
 		if (timeStr.length() == 5) {
-			timeStr = EgovStringUtil.remove(timeStr, ':');
+			return EgovStringUtil.remove(timeStr, ':');
 		}
 
 		return timeStr;
