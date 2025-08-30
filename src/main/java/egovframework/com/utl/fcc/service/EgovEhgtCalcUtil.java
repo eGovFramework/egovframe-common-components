@@ -1,20 +1,3 @@
-/**
- * @Class Name : EgovEhgtCalcUtil.java
- * @Description : 대한민국, 미국,유럽연합, 일본, 중국연합 사이의 환율계산기능을
- * 제공하는  Business Interface class
- * @Modification Information
- * @
- * @  수정일         수정자                   수정내용
- * @ -------    --------    ---------------------------
- * @ 2009.01.13    박정규          최초 생성
- *
- *  @author 공통 서비스 개발팀 박정규
- *  @since 2009. 01. 13
- *  @version 1.0
- *  @see
- *
- */
-
 package egovframework.com.utl.fcc.service;
 
 import java.io.IOException;
@@ -35,17 +18,27 @@ import twitter4j.JSONArray;
 import twitter4j.JSONObject;
 
 /**
+ * 대한민국, 미국,유럽연합, 일본, 중국연합 사이의 환율계산기능을 제공하는 Business Interface class
+ * <p>
+ * 요소기술 - 환율계산
  * 
- * @Class name : EgovEhgtCalcUtl.java
- * @Description : 요소기술 - 환율계산
- * 
- *              <pre>
- * 수정일			수정자		수정내용
- * ----------	----------	------------------------------
- * 2023.08.25	김혜준		외환은행 제공 환율 api에서 한국수출입은행 제공 환율 api로 변경
- *              </pre>
+ * @author 공통 서비스 개발팀 박정규
+ * @since 2009.01.13
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.01.13  박정규          최초 생성
+ *   2023.08.25  김혜준          외환은행 제공 환율 api에서 한국수출입은행 제공 환율 api로 변경
+ *   2025.08.30  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(부적절한 자원 해제)
+ *   2025.08.30  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UselessParentheses(불필요한 괄호사용)
+ *
+ *      </pre>
  */
-
 public class EgovEhgtCalcUtil {
 
 	static private final String EHGT_URL = "https://www.koreaexim.go.kr/site/program/financial/exchangeJSON";
