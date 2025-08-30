@@ -30,135 +30,143 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olp.qrm.service.EgovQustnrRespondManageService;
 import egovframework.com.uss.olp.qrm.service.QustnrRespondManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+
 /**
  * 설문응답자관리 Controller Class 구현
+ * 
  * @author 공통서비스 장동한
  * @since 2009.03.20
  * @version 1.0
  * @see
  *
- * <pre>
- * << 개정이력(Modification Information) >>
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
- *   수정일          수정자       수정내용
- *  -----------    --------    ---------------------------
- *   2009.03.20  장동한		최초 생성
- *   2011.08.26  정진오		IncludedInfo annotation 추가
- *   2024.10.29  권태성		등록 /수정 화면과 처리 로직 분리
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.03.20  장동한          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2024.10.29  권태성          등록 /수정 화면과 처리 로직 분리
+ *   2025.08.26  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UselessParentheses(불필요한 괄호사용)
  *
- * </pre>
+ *      </pre>
  */
-
 @Controller
 public class EgovQustnrRespondManageController {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(EgovQustnrRespondManageController.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(EgovQustnrRespondManageController.class);
 
-    @Autowired
-    private DefaultBeanValidator beanValidator;
+	@Autowired
+	private DefaultBeanValidator beanValidator;
 
-    /** EgovMessageSource */
-    @Resource(name = "egovMessageSource")
-    EgovMessageSource egovMessageSource;
+	/** EgovMessageSource */
+	@Resource(name = "egovMessageSource")
+	EgovMessageSource egovMessageSource;
 
-    @Resource(name = "egovQustnrRespondManageService")
-    private EgovQustnrRespondManageService egovQustnrRespondManageService;
+	@Resource(name = "egovQustnrRespondManageService")
+	private EgovQustnrRespondManageService egovQustnrRespondManageService;
 
-    /** EgovPropertyService */
-    @Resource(name = "propertiesService")
-    protected EgovPropertyService propertiesService;
+	/** EgovPropertyService */
+	@Resource(name = "propertiesService")
+	protected EgovPropertyService propertiesService;
 
-    @Resource(name = "EgovCmmUseService")
-    private EgovCmmUseService cmmUseService;
+	@Resource(name = "EgovCmmUseService")
+	private EgovCmmUseService cmmUseService;
 
-    /**
-     * 응답자정보 목록을 조회한다.
-     *
-     * @param searchVO
-     * @param commandMap
-     * @param qustnrRespondManageVO
-     * @param model
-     * @return "egovframework/com/uss/olp/qrm/EgovQustnrRespondManageList"
-     * @throws Exception
-     */
-    @IncludedInfo(name = "응답자관리", order = 620, gid = 50)
-    @RequestMapping(value = "/uss/olp/qrm/EgovQustnrRespondManageList.do")
-    public String egovQustnrRespondManageList(@ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap, QustnrRespondManageVO qustnrRespondManageVO, ModelMap model) throws Exception {
+	/**
+	 * 응답자정보 목록을 조회한다.
+	 *
+	 * @param searchVO
+	 * @param commandMap
+	 * @param qustnrRespondManageVO
+	 * @param model
+	 * @return "egovframework/com/uss/olp/qrm/EgovQustnrRespondManageList"
+	 * @throws Exception
+	 */
+	@IncludedInfo(name = "응답자관리", order = 620, gid = 50)
+	@RequestMapping(value = "/uss/olp/qrm/EgovQustnrRespondManageList.do")
+	public String egovQustnrRespondManageList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
+			@RequestParam Map<?, ?> commandMap, QustnrRespondManageVO qustnrRespondManageVO, ModelMap model)
+			throws Exception {
 
-        String sSearchMode = commandMap.get("searchMode") == null ? "" : (String) commandMap.get("searchMode");
+		String sSearchMode = commandMap.get("searchMode") == null ? "" : (String) commandMap.get("searchMode");
 
-        // 설문지정보에서 넘어오면 자동검색 설정
-        if (sSearchMode.equals("Y")) {
-            searchVO.setSearchCondition("QESTNR_ID");
-            searchVO.setSearchKeyword(qustnrRespondManageVO.getQestnrId());
-        }
+		// 설문지정보에서 넘어오면 자동검색 설정
+		if (sSearchMode.equals("Y")) {
+			searchVO.setSearchCondition("QESTNR_ID");
+			searchVO.setSearchKeyword(qustnrRespondManageVO.getQestnrId());
+		}
 
-        /** EgovPropertyService.sample */
-        searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-        searchVO.setPageSize(propertiesService.getInt("pageSize"));
+		/** EgovPropertyService.sample */
+		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
+		searchVO.setPageSize(propertiesService.getInt("pageSize"));
 
-        /** pageing */
-        PaginationInfo paginationInfo = new PaginationInfo();
+		/** pageing */
+		PaginationInfo paginationInfo = new PaginationInfo();
 
-        paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-        paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-        paginationInfo.setPageSize(searchVO.getPageSize());
+		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
+		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
+		paginationInfo.setPageSize(searchVO.getPageSize());
 
-        searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-        searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-        searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
+		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<EgovMap> sampleList = egovQustnrRespondManageService.selectQustnrRespondManageList(searchVO);
-        model.addAttribute("resultList", sampleList);
+		List<EgovMap> sampleList = egovQustnrRespondManageService.selectQustnrRespondManageList(searchVO);
+		model.addAttribute("resultList", sampleList);
 
-        model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword"));
-        model.addAttribute("searchCondition", commandMap.get("searchCondition") == null ? "" : (String) commandMap.get("searchCondition"));
+		model.addAttribute("searchKeyword",
+				commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword"));
+		model.addAttribute("searchCondition",
+				commandMap.get("searchCondition") == null ? "" : (String) commandMap.get("searchCondition"));
 
-        int totCnt = egovQustnrRespondManageService.selectQustnrRespondManageListCnt(searchVO);
-        paginationInfo.setTotalRecordCount(totCnt);
-        model.addAttribute("paginationInfo", paginationInfo);
+		int totCnt = egovQustnrRespondManageService.selectQustnrRespondManageListCnt(searchVO);
+		paginationInfo.setTotalRecordCount(totCnt);
+		model.addAttribute("paginationInfo", paginationInfo);
 
-        return "egovframework/com/uss/olp/qrm/EgovQustnrRespondManageList";
-    }
+		return "egovframework/com/uss/olp/qrm/EgovQustnrRespondManageList";
+	}
 
-    /**
-     * 응답자정보 목록을 상세조회 조회한다.
-     *
-     * @param searchVO
-     * @param qustnrRespondManageVO
-     * @param commandMap
-     * @param model
-     * @return "egovframework/com/uss/olp/qrm/EgovQustnrRespondManageDetail"
-     * @throws Exception
-     */
-    @RequestMapping(value = "/uss/olp/qrm/EgovQustnrRespondManageDetail.do")
-    public String egovQustnrRespondManageDetail(@ModelAttribute QustnrRespondManageVO qustnrRespondManageVO, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+	/**
+	 * 응답자정보 목록을 상세조회 조회한다.
+	 *
+	 * @param searchVO
+	 * @param qustnrRespondManageVO
+	 * @param commandMap
+	 * @param model
+	 * @return "egovframework/com/uss/olp/qrm/EgovQustnrRespondManageDetail"
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/uss/olp/qrm/EgovQustnrRespondManageDetail.do")
+	public String egovQustnrRespondManageDetail(@ModelAttribute QustnrRespondManageVO qustnrRespondManageVO,
+			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
-        String sLocationUrl = "egovframework/com/uss/olp/qrm/EgovQustnrRespondManageDetail";
+		String sLocationUrl = "egovframework/com/uss/olp/qrm/EgovQustnrRespondManageDetail";
 
-        String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
+		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
-        if (sCmd.equals("del")) {
-            egovQustnrRespondManageService.deleteQustnrRespondManage(qustnrRespondManageVO);
-            sLocationUrl = "redirect:/uss/olp/qrm/EgovQustnrRespondManageList.do";
-        } else {
-            // 성별코드조회
-            ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
-            voComCode.setCodeId("COM014");
-            List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
-            model.addAttribute("comCode014", listComCode);
+		if (sCmd.equals("del")) {
+			egovQustnrRespondManageService.deleteQustnrRespondManage(qustnrRespondManageVO);
+			sLocationUrl = "redirect:/uss/olp/qrm/EgovQustnrRespondManageList.do";
+		} else {
+			// 성별코드조회
+			ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
+			voComCode.setCodeId("COM014");
+			List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+			model.addAttribute("comCode014", listComCode);
 
-            // 직업코드조회
-            voComCode.setCodeId("COM034");
-            listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
-            model.addAttribute("comCode034", listComCode);
+			// 직업코드조회
+			voComCode.setCodeId("COM034");
+			listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+			model.addAttribute("comCode034", listComCode);
 
-            List<EgovMap> resultList = egovQustnrRespondManageService.selectQustnrRespondManageDetail(qustnrRespondManageVO);
-            model.addAttribute("resultList", resultList);
-        }
+			List<EgovMap> resultList = egovQustnrRespondManageService
+					.selectQustnrRespondManageDetail(qustnrRespondManageVO);
+			model.addAttribute("resultList", resultList);
+		}
 
-        return sLocationUrl;
-    }
+		return sLocationUrl;
+	}
 
 	/**
 	 * 응답자정보 수정화면
@@ -170,11 +178,12 @@ public class EgovQustnrRespondManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/olp/qrm/EgovQustnrRespondManageModifyView.do")
-	public String qustnrRespondManageModify(@ModelAttribute QustnrRespondManageVO qustnrRespondManageVO, ModelMap model) throws Exception {
+	public String qustnrRespondManageModify(@ModelAttribute QustnrRespondManageVO qustnrRespondManageVO, ModelMap model)
+			throws Exception {
 
-		//###
+		// ###
 		LOGGER.debug("##### qustnrRespondManageModify vo >>> {}", qustnrRespondManageVO.getQestnrRespondId());
-		
+
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
@@ -193,7 +202,8 @@ public class EgovQustnrRespondManageController {
 		listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
 		model.addAttribute("comCode034", listComCode);
 
-		List<EgovMap> resultList = egovQustnrRespondManageService.selectQustnrRespondManageDetail(qustnrRespondManageVO);
+		List<EgovMap> resultList = egovQustnrRespondManageService
+				.selectQustnrRespondManageDetail(qustnrRespondManageVO);
 		model.addAttribute("resultList", resultList);
 
 		return "egovframework/com/uss/olp/qrm/EgovQustnrRespondManageModify";
@@ -211,7 +221,8 @@ public class EgovQustnrRespondManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/olp/qrm/EgovQustnrRespondManageModify.do")
-	public String qustnrRespondManageModify(@ModelAttribute("qustnrRespondManageVO") QustnrRespondManageVO qustnrRespondManageVO,
+	public String qustnrRespondManageModify(
+			@ModelAttribute("qustnrRespondManageVO") QustnrRespondManageVO qustnrRespondManageVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 
 		// 0. Spring Security 사용자권한 처리
@@ -240,7 +251,7 @@ public class EgovQustnrRespondManageController {
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		String uniqId = (loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 		// 아이디 설정
 		qustnrRespondManageVO.setFrstRegisterId(uniqId);
 		qustnrRespondManageVO.setLastUpdusrId(uniqId);
@@ -249,8 +260,6 @@ public class EgovQustnrRespondManageController {
 
 		return "redirect:/uss/olp/qrm/EgovQustnrRespondManageList.do";
 	}
-
-
 
 	/**
 	 * 응답자정보 등록화면
@@ -263,8 +272,8 @@ public class EgovQustnrRespondManageController {
 	 */
 	@RequestMapping(value = "/uss/olp/qrm/EgovQustnrRespondManageRegistView.do")
 	public String qustnrRespondManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@ModelAttribute("qustnrRespondManageVO") QustnrRespondManageVO qustnrRespondManageVO,
-			ModelMap model) throws Exception {
+			@ModelAttribute("qustnrRespondManageVO") QustnrRespondManageVO qustnrRespondManageVO, ModelMap model)
+			throws Exception {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -286,7 +295,7 @@ public class EgovQustnrRespondManageController {
 
 		return "egovframework/com/uss/olp/qrm/EgovQustnrRespondManageRegist";
 	}
-	
+
 	/**
 	 * 응답자정보를 등록한다.
 	 *
@@ -330,7 +339,7 @@ public class EgovQustnrRespondManageController {
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		String uniqId = (loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 		// 아이디 설정
 		qustnrRespondManageVO.setFrstRegisterId(uniqId);
 		qustnrRespondManageVO.setLastUpdusrId(uniqId);
