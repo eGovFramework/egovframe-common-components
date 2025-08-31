@@ -232,15 +232,15 @@ public class EgovFormBasedUUID implements Serializable {
 			components[i] = "0x" + components[i];
 		}
 
-		long mostSigBits = Long.decode(components[0]).longValue();
+		long mostSigBits = Long.decode(components[0]);
 		mostSigBits <<= 16;
-		mostSigBits |= Long.decode(components[1]).longValue();
+		mostSigBits |= Long.decode(components[1]);
 		mostSigBits <<= 16;
-		mostSigBits |= Long.decode(components[2]).longValue();
+		mostSigBits |= Long.decode(components[2]);
 
-		long leastSigBits = Long.decode(components[3]).longValue();
+		long leastSigBits = Long.decode(components[3]);
 		leastSigBits <<= 48;
-		leastSigBits |= Long.decode(components[4]).longValue();
+		leastSigBits |= Long.decode(components[4]);
 
 		return new EgovFormBasedUUID(mostSigBits, leastSigBits);
 	}
@@ -427,8 +427,8 @@ public class EgovFormBasedUUID implements Serializable {
 	 */
 	@Override
 	public String toString() {
-		return (digits(mostSigBits >> 32, 8) + "-" + digits(mostSigBits >> 16, 4) + "-" + digits(mostSigBits, 4) + "-"
-				+ digits(leastSigBits >> 48, 4) + "-" + digits(leastSigBits, 12));
+		return digits(mostSigBits >> 32, 8) + "-" + digits(mostSigBits >> 16, 4) + "-" + digits(mostSigBits, 4) + "-"
+				+ digits(leastSigBits >> 48, 4) + "-" + digits(leastSigBits, 12);
 	}
 
 	/** Returns val represented by the specified number of hex digits. */
@@ -474,7 +474,7 @@ public class EgovFormBasedUUID implements Serializable {
 			return false;
 		}
 		EgovFormBasedUUID id = (EgovFormBasedUUID) obj;
-		return (mostSigBits == id.mostSigBits && leastSigBits == id.leastSigBits);
+		return mostSigBits == id.mostSigBits && leastSigBits == id.leastSigBits;
 	}
 
 	// Comparison Operations
@@ -493,10 +493,9 @@ public class EgovFormBasedUUID implements Serializable {
 	public int compareTo(EgovFormBasedUUID val) {
 		// The ordering is intentionally set up so that the UUIDs
 		// can simply be numerically compared as two numbers
-		return (this.mostSigBits < val.mostSigBits ? -1
-				: (this.mostSigBits > val.mostSigBits ? 1
-						: (this.leastSigBits < val.leastSigBits ? -1
-								: (this.leastSigBits > val.leastSigBits ? 1 : 0))));
+		return this.mostSigBits < val.mostSigBits ? -1
+				: this.mostSigBits > val.mostSigBits ? 1
+						: this.leastSigBits < val.leastSigBits ? -1 : this.leastSigBits > val.leastSigBits ? 1 : 0;
 	}
 
 	/**
