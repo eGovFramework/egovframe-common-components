@@ -21,23 +21,27 @@ import org.springframework.util.FileCopyUtils;
 import egovframework.com.cmm.EgovWebUtil;
 
 /**
- * @Class Name : EgovFormBasedFileUtil.java
- * @Description : Form-based File Upload 유틸리티
- * @Modification Information
- * 
- *               <pre>
- *   수정일			수정자		수정내용
- *   ----------		--------	---------------------------
- *   2009.08.26		한성곤		최초 생성
- *   2017.03.03		조성원		시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
- *   2019.12.09		신용호		KISA 보안약점 조치 (위험한 형식 파일 업로드) : uploadFiles 삭제  => EgovFileUploadUtil.uploadFilesExt(확장자 기록) 대체
- *   2023.06.27		김혜준		NSR 보안조치 (CKEditor 이미지 보기 기능의 스크립트 실행 취약점)
- *               </pre>
+ * Form-based File Upload 유틸리티
  * 
  * @author 공통컴포넌트 개발팀 한성곤
  * @since 2009.08.26
  * @version 1.0
  * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.08.26  한성곤          최초 생성
+ *   2017.03.03  조성원          시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+ *   2019.12.09  신용호          KISA 보안약점 조치 (위험한 형식 파일 업로드) : uploadFiles 삭제  => EgovFileUploadUtil.uploadFilesExt(확장자 기록) 대체
+ *   2023.06.27  김혜준          NSR 보안조치 (CKEditor 이미지 보기 기능의 스크립트 실행 취약점)
+ *   2025.09.01  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(부적절한 자원 해제)
+ *   2025.09.01  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AssignmentInOperand(피연산자내에 할당문이 사용됨. 해당 코드를 복잡하고 가독성이 떨어지게 만듬)
+ *   2025.09.01  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AvoidReassigningParameters(넘겨받는 메소드 parameter 값을 직접 변경하는 코드 탐지)
+ *
+ *      </pre>
  */
 public class EgovFormBasedFileUtil {
 	/** Buffer size */
