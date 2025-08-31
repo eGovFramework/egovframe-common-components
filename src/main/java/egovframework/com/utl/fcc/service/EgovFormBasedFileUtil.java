@@ -24,17 +24,19 @@ import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
 
 /**
- * @Class Name  : EgovFormBasedFileUtil.java
+ * @Class Name : EgovFormBasedFileUtil.java
  * @Description : Form-based File Upload 유틸리티
  * @Modification Information
- *
+ * 
+ *               <pre>
  *   수정일			수정자		수정내용
  *   ----------		--------	---------------------------
  *   2009.08.26		한성곤		최초 생성
  *   2017.03.03		조성원		시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
  *   2019.12.09		신용호		KISA 보안약점 조치 (위험한 형식 파일 업로드) : uploadFiles 삭제  => EgovFileUploadUtil.uploadFilesExt(확장자 기록) 대체
  *   2023.06.27		김혜준		NSR 보안조치 (CKEditor 이미지 보기 기능의 스크립트 실행 취약점)
- *
+ *               </pre>
+ * 
  * @author 공통컴포넌트 개발팀 한성곤
  * @since 2009.08.26
  * @version 1.0
@@ -49,8 +51,8 @@ public class EgovFormBasedFileUtil {
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovFormBasedFileUtil.class);
 
 	/**
-	 * 오늘 날짜 문자열 취득.
-	 * ex) 20090101
+	 * 오늘 날짜 문자열 취득. ex) 20090101
+	 * 
 	 * @return
 	 */
 	public static String getTodayString() {
@@ -61,6 +63,7 @@ public class EgovFormBasedFileUtil {
 
 	/**
 	 * 물리적 파일명 생성.
+	 * 
 	 * @return
 	 */
 	public static String getPhysicalFileName() {
@@ -69,34 +72,36 @@ public class EgovFormBasedFileUtil {
 
 	/**
 	 * 파일명 변환.
+	 * 
 	 * @param filename String
 	 * @return
 	 * @throws Exception
 	 */
 	protected static String convert(String filename) throws Exception {
-		//return java.net.URLEncoder.encode(filename, "utf-8");
+		// return java.net.URLEncoder.encode(filename, "utf-8");
 		return filename;
 	}
 
 	/**
 	 * Stream으로부터 파일을 저장함.
-	 * @param is InputStream
+	 * 
+	 * @param is   InputStream
 	 * @param file File
 	 * @throws IOException
 	 */
 	public static long saveFile(InputStream is, File file) throws IOException {
-		//KISA 보안약점 조치 (2018-10-29, 윤창원)
+		// KISA 보안약점 조치 (2018-10-29, 윤창원)
 		if (file.getParentFile() == null) {
 			LOGGER.debug("file.getParentFile() is null");
 			throw new RuntimeException("file.getParentFile() is null");
 		}
-		
+
 		// 디렉토리 생성
 		if (!file.getParentFile().exists()) {
-			//2017.03.03 	조성원 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-			if(file.getParentFile().mkdirs()){
+			// 2017.03.03 조성원 시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+			if (file.getParentFile().mkdirs()) {
 				LOGGER.debug("[file.mkdirs] file : Directory Creation Success");
-			}else{				
+			} else {
 				LOGGER.error("[file.mkdirs] file : Directory Creation Fail");
 			}
 		}
@@ -122,8 +127,7 @@ public class EgovFormBasedFileUtil {
 	}
 
 	/**
-	 * 파일을 Upload 처리한다. (삭제)
-	 * EgovFileUploadUtil.uploadFilesExt(확장자 확인) 대체
+	 * 파일을 Upload 처리한다. (삭제) EgovFileUploadUtil.uploadFilesExt(확장자 확인) 대체
 	 *
 	 * @param request
 	 * @param where
@@ -132,63 +136,53 @@ public class EgovFormBasedFileUtil {
 	 * @throws Exception
 	 */
 	/*
-	public static List<EgovFormBasedFileVo> uploadFiles(HttpServletRequest request, String where, long maxFileSize) throws Exception {
-		List<EgovFormBasedFileVo> list = new ArrayList<EgovFormBasedFileVo>();
-
-		// Check that we have a file upload request
-		boolean isMultipart = ServletFileUpload.isMultipartContent(request);
-
-		if (isMultipart) {
-			// Create a new file upload handler
-			ServletFileUpload upload = new ServletFileUpload();
-			upload.setFileSizeMax(maxFileSize); // SizeLimitExceededException
-
-			// Parse the request
-			FileItemIterator iter = upload.getItemIterator(request);
-			while (iter.hasNext()) {
-				FileItemStream item = iter.next();
-				String name = item.getFieldName();
-				InputStream stream = item.openStream();
-				if (item.isFormField()) {
-					LOGGER.info("Form field '{}' with value '{}' detected.", name, Streams.asString(stream));
-				} else {
-					LOGGER.info("File field '{}' with file name '{}' detected.", name, item.getName());
-
-					if ("".equals(item.getName())) {
-						continue;
-					}
-
-					// Process the input stream
-					EgovFormBasedFileVo vo = new EgovFormBasedFileVo();
-
-					String tmp = item.getName();
-
-					if (tmp.lastIndexOf("\\") >= 0) {
-						tmp = tmp.substring(tmp.lastIndexOf("\\") + 1);
-					}
-
-					vo.setFileName(tmp);
-					vo.setContentType(item.getContentType());
-					vo.setServerSubPath(getTodayString());
-					vo.setPhysicalName(getPhysicalFileName());
-
-					if (tmp.lastIndexOf(".") >= 0) {
-						vo.setPhysicalName(vo.getPhysicalName() + tmp.substring(tmp.lastIndexOf(".")));
-					}
-
-					long size = saveFile(stream, new File(EgovWebUtil.filePathBlackList(where) + SEPERATOR + vo.getServerSubPath() + SEPERATOR + vo.getPhysicalName()));
-
-					vo.setSize(size);
-
-					list.add(vo);
-				}
-			}
-		} else {
-			throw new IOException("form's 'enctype' attribute have to be 'multipart/form-data'");
-		}
-
-		return list;
-	}*/
+	 * public static List<EgovFormBasedFileVo> uploadFiles(HttpServletRequest
+	 * request, String where, long maxFileSize) throws Exception {
+	 * List<EgovFormBasedFileVo> list = new ArrayList<EgovFormBasedFileVo>();
+	 * 
+	 * // Check that we have a file upload request boolean isMultipart =
+	 * ServletFileUpload.isMultipartContent(request);
+	 * 
+	 * if (isMultipart) { // Create a new file upload handler ServletFileUpload
+	 * upload = new ServletFileUpload(); upload.setFileSizeMax(maxFileSize); //
+	 * SizeLimitExceededException
+	 * 
+	 * // Parse the request FileItemIterator iter = upload.getItemIterator(request);
+	 * while (iter.hasNext()) { FileItemStream item = iter.next(); String name =
+	 * item.getFieldName(); InputStream stream = item.openStream(); if
+	 * (item.isFormField()) {
+	 * LOGGER.info("Form field '{}' with value '{}' detected.", name,
+	 * Streams.asString(stream)); } else {
+	 * LOGGER.info("File field '{}' with file name '{}' detected.", name,
+	 * item.getName());
+	 * 
+	 * if ("".equals(item.getName())) { continue; }
+	 * 
+	 * // Process the input stream EgovFormBasedFileVo vo = new
+	 * EgovFormBasedFileVo();
+	 * 
+	 * String tmp = item.getName();
+	 * 
+	 * if (tmp.lastIndexOf("\\") >= 0) { tmp = tmp.substring(tmp.lastIndexOf("\\") +
+	 * 1); }
+	 * 
+	 * vo.setFileName(tmp); vo.setContentType(item.getContentType());
+	 * vo.setServerSubPath(getTodayString());
+	 * vo.setPhysicalName(getPhysicalFileName());
+	 * 
+	 * if (tmp.lastIndexOf(".") >= 0) { vo.setPhysicalName(vo.getPhysicalName() +
+	 * tmp.substring(tmp.lastIndexOf("."))); }
+	 * 
+	 * long size = saveFile(stream, new File(EgovWebUtil.filePathBlackList(where) +
+	 * SEPERATOR + vo.getServerSubPath() + SEPERATOR + vo.getPhysicalName()));
+	 * 
+	 * vo.setSize(size);
+	 * 
+	 * list.add(vo); } } } else { throw new
+	 * IOException("form's 'enctype' attribute have to be 'multipart/form-data'"); }
+	 * 
+	 * return list; }
+	 */
 
 	/**
 	 * 파일을 Download 처리한다.
@@ -200,7 +194,8 @@ public class EgovFormBasedFileUtil {
 	 * @param original
 	 * @throws Exception
 	 */
-	public static void downloadFile(HttpServletResponse response, String where, String serverSubPath, String physicalName, String original) throws Exception {
+	public static void downloadFile(HttpServletResponse response, String where, String serverSubPath,
+			String physicalName, String original) throws Exception {
 		String downFileName = where + SEPERATOR + serverSubPath + SEPERATOR + physicalName;
 
 		File file = new File(EgovWebUtil.filePathBlackList(downFileName));
@@ -252,7 +247,8 @@ public class EgovFormBasedFileUtil {
 	 * @param mimeType
 	 * @throws Exception
 	 */
-	public static void viewFile(HttpServletResponse response, String where, String serverSubPath, String physicalName, String mimeTypeParam) throws Exception {
+	public static void viewFile(HttpServletResponse response, String where, String serverSubPath, String physicalName,
+			String mimeTypeParam) throws Exception {
 		String mimeType = mimeTypeParam;
 		String downFileName = where + SEPERATOR + serverSubPath + SEPERATOR + physicalName + "_upfile";
 
@@ -273,25 +269,25 @@ public class EgovFormBasedFileUtil {
 		}
 
 		response.setContentType(EgovWebUtil.removeCRLF(mimeType));
-		
+
 		boolean contentTypeFlag = false;
-		if(mimeType != null) {
+		if (mimeType != null) {
 			Map<String, String> contentTypeWL = getContentTypeWL();
-			if(contentTypeWL != null) {
-				for(String ext: contentTypeWL.keySet()) {
+			if (contentTypeWL != null) {
+				for (String ext : contentTypeWL.keySet()) {
 					String matchMimeType = contentTypeWL.get(ext);
-					if(matchMimeType.equals(mimeType)) {
-						response.setContentType(matchMimeType);		// 지정된 값이므로 안전
+					if (matchMimeType.equals(mimeType)) {
+						response.setContentType(matchMimeType); // 지정된 값이므로 안전
 						contentTypeFlag = true;
 						break;
 					}
 				}
 			}
 		}
-		if(!contentTypeFlag) {
+		if (!contentTypeFlag) {
 			response.setContentType("application/octet-stream;");
 		}
-		
+
 		response.setHeader("Content-Disposition", "filename=image;");
 
 		BufferedInputStream fin = null;
@@ -310,15 +306,15 @@ public class EgovFormBasedFileUtil {
 			EgovResourceCloseHelper.close(outs, fin);
 		}
 	}
-	
+
 	public static Map<String, String> getContentTypeWL() {
 		Map<String, String> contentTypeWL = new HashMap<>();
-		
+
 		contentTypeWL.put("gif", "image/gif");
 		contentTypeWL.put("jpg", "image/jpg");
 		contentTypeWL.put("jpeg", "image/jpeg");
 		contentTypeWL.put("png", "image/png");
-		
+
 		return contentTypeWL;
 	}
 }
