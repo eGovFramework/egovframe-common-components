@@ -6,56 +6,23 @@ import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 /**
+ * Egov 양식 기반 UUID
+ * 
+ * @author 공통컴포넌트 개발팀 홍길동
+ * @since 2009.06.01
+ * @version 1.0
+ * @see
  *
- * A class that represents an immutable universally unique identifier (UUID). A
- * UUID represents a 128-bit value.
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
- * <p>
- * There exist different variants of these global identifiers. The methods of
- * this class are for manipulating the Leach-Salz variant, although the
- * constructors allow the creation of any variant of UUID (described below).
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.03.20  홍길동          최초 생성
+ *   2025.09.01  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UnnecessaryBoxing(불필요한 WrapperObject 생성)
+ *   2025.09.01  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UselessParentheses(불필요한 괄호사용)
  *
- * <p>
- * The layout of a variant 2 (Leach-Salz) UUID is as follows:
- *
- * The most significant long consists of the following unsigned fields:
- *
- * <pre>
- *   0xFFFFFFFF00000000 time_low
- *   0x00000000FFFF0000 time_mid
- *   0x000000000000F000 version
- *   0x0000000000000FFF time_hi
- * </pre>
- *
- * The least significant long consists of the following unsigned fields:
- *
- * <pre>
- *   0xC000000000000000 variant
- *   0x3FFF000000000000 clock_seq
- *   0x0000FFFFFFFFFFFF node
- * </pre>
- *
- * <p>
- * The variant field contains a value which identifies the layout of the
- * <tt>UUID</tt>. The bit layout described above is valid only for a
- * <tt>UUID</tt> with a variant value of 2, which indicates the Leach-Salz
- * variant.
- *
- * <p>
- * The version field holds a value that describes the type of this
- * <tt>UUID</tt>. There are four different basic types of UUIDs: time-based, DCE
- * security, name-based, and randomly generated UUIDs. These types have a
- * version value of 1, 2, 3 and 4, respectively.
- *
- * <p>
- * For more information including algorithms used to create <tt>UUID</tt>s, see
- * the Internet-Draft <a href=
- * "http://www.ietf.org/internet-drafts/draft-mealling-uuid-urn-03.txt">UUIDs
- * and GUIDs</a> or the standards body definition at
- * <a href="http://www.iso.ch/cate/d2229.html">ISO/IEC 11578:1996</a>.
- *
- * @version 1.14, 07/12/04
- * @since 1.5
+ *      </pre>
  */
 @SuppressWarnings("serial")
 public class EgovFormBasedUUID implements Serializable {
