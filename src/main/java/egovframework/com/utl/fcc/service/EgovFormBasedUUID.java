@@ -24,8 +24,13 @@ import java.security.SecureRandom;
  *
  *      </pre>
  */
-@SuppressWarnings("serial")
 public class EgovFormBasedUUID implements Serializable {
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	/*
 	 * The most significant 64 bits of this UUID.
 	 *
