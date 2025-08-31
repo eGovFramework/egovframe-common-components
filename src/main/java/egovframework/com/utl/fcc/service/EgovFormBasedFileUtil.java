@@ -1,14 +1,11 @@
 package egovframework.com.utl.fcc.service;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
@@ -19,9 +16,9 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.FileCopyUtils;
 
 import egovframework.com.cmm.EgovWebUtil;
-import egovframework.com.cmm.util.EgovResourceCloseHelper;
 
 /**
  * @Class Name : EgovFormBasedFileUtil.java
@@ -106,24 +103,7 @@ public class EgovFormBasedFileUtil {
 			}
 		}
 
-		OutputStream os = null;
-		long size = 0L;
-
-		try {
-			os = new FileOutputStream(file);
-
-			int bytesRead = 0;
-			byte[] buffer = new byte[BUFFER_SIZE];
-
-			while ((bytesRead = is.read(buffer, 0, BUFFER_SIZE)) != -1) {
-				size += bytesRead;
-				os.write(buffer, 0, bytesRead);
-			}
-		} finally {
-			EgovResourceCloseHelper.close(os);
-		}
-
-		return size;
+		return FileCopyUtils.copy(is, new FileOutputStream(file));
 	}
 
 	/**
@@ -208,30 +188,14 @@ public class EgovFormBasedFileUtil {
 			throw new FileNotFoundException(downFileName);
 		}
 
-		byte[] b = new byte[BUFFER_SIZE];
-
-		original = original.replaceAll("\r", "").replaceAll("\n", "");
+		String original2 = original.replaceAll("\r", "").replaceAll("\n", "");
 		response.setContentType("application/octet-stream");
-		response.setHeader("Content-Disposition", "attachment; filename=\"" + convert(original) + "\";");
+		response.setHeader("Content-Disposition", "attachment; filename=\"" + convert(original2) + "\";");
 		response.setHeader("Content-Transfer-Encoding", "binary");
 		response.setHeader("Pragma", "no-cache");
 		response.setHeader("Expires", "0");
 
-		BufferedInputStream fin = null;
-		BufferedOutputStream outs = null;
-
-		try {
-			fin = new BufferedInputStream(new FileInputStream(file));
-			outs = new BufferedOutputStream(response.getOutputStream());
-
-			int read = 0;
-
-			while ((read = fin.read(b)) != -1) {
-				outs.write(b, 0, read);
-			}
-		} finally {
-			EgovResourceCloseHelper.close(outs, fin);
-		}
+		FileCopyUtils.copy(new FileInputStream(file), response.getOutputStream());
 	}
 
 	/**
@@ -262,8 +226,6 @@ public class EgovFormBasedFileUtil {
 			throw new FileNotFoundException(downFileName);
 		}
 
-		byte[] b = new byte[BUFFER_SIZE];
-
 		if (mimeType == null) {
 			mimeType = "application/octet-stream;";
 		}
@@ -290,21 +252,7 @@ public class EgovFormBasedFileUtil {
 
 		response.setHeader("Content-Disposition", "filename=image;");
 
-		BufferedInputStream fin = null;
-		BufferedOutputStream outs = null;
-
-		try {
-			fin = new BufferedInputStream(new FileInputStream(file));
-			outs = new BufferedOutputStream(response.getOutputStream());
-
-			int read = 0;
-
-			while ((read = fin.read(b)) != -1) {
-				outs.write(b, 0, read);
-			}
-		} finally {
-			EgovResourceCloseHelper.close(outs, fin);
-		}
+		FileCopyUtils.copy(new FileInputStream(file), response.getOutputStream());
 	}
 
 	public static Map<String, String> getContentTypeWL() {
