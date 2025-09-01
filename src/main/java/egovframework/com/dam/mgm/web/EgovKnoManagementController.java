@@ -32,11 +32,12 @@ import egovframework.com.dam.mgm.service.KnoManagementVO;
 
 /**
  * 개요
- * - 지식정보에 대한 controller 클래스를 정의한다.
+ * - 지식정보에 대한 Controller 클래스를 정의한다.
  *
  * 상세내용
  * - 지식정보에 대한 등록, 수정, 삭제, 조회 기능을 제공한다.
- * - 지식정보의 조회기능은 목록조회, 상세조회로 구분된다.
+ * - 지식정보의 조회 기능은 목록 조회, 상세 조회로 구분된다.
+ *
  * @author 박종선
  * @version 1.0
  * @created 12-8-2010 오후 3:44:38
@@ -46,11 +47,10 @@ import egovframework.com.dam.mgm.service.KnoManagementVO;
  *   수정일      수정자           수정내용
  *  -------        --------    ---------------------------
  *   2010.8.12  박종선          최초 생성
- *   2011.8.26	정진오			IncludedInfo annotation 추가
+ *   2011.8.26  정진오          IncludedInfo annotation 추가
  *
  * </pre>
  */
-
 @Controller
 public class EgovKnoManagementController {
 
@@ -70,18 +70,16 @@ public class EgovKnoManagementController {
     @Resource(name="egovMessageSource")
     EgovMessageSource egovMessageSource;
 
-	/**
-	 * 등록된 지식정보 정보를 조회 한다.
-	 * @param KnoManagementVO - 지식정보 VO
-	 * @return String - 리턴 Url
-	 *
-	 * @param KnoManagementVO
+    /**
+	 * 등록된 지식정보 목록을 조회한다.
+	 * @param searchVO 지식정보 조회 조건 VO
+	 * @param model 뷰에 전달할 모델
+	 * @return 목록 화면 경로
+	 * @throws Exception 조회 조건이 유효하지 않거나 데이터 접근 중 오류가 발생한 경우
 	 */
-    @IncludedInfo(name="지식정보관리", listUrl="/dam/mgm/EgovComDamManagementList.do", order = 1280 ,gid = 80)
+	@IncludedInfo(name = "지식정보관리", listUrl = "/dam/mgm/EgovComDamManagementList.do", order = 1280, gid = 80)
 	@RequestMapping(value="/dam/mgm/EgovComDamManagementList.do")
-    public String selectKnoManagementList(@ModelAttribute("searchVO") KnoManagementVO searchVO
-			, ModelMap model
-			) throws Exception {
+    public String selectKnoManagementList(@ModelAttribute("searchVO") KnoManagementVO searchVO, ModelMap model) throws Exception {
 
 		/** EgovPropertyService.mapMaterial */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
@@ -108,17 +106,14 @@ public class EgovKnoManagementController {
 	}
 
 	/**
-	 * 지식정보 상세 정보를 조회 한다.
-	 * @param KnoManagementVO - 지식정보 VO
-	 * @return String - 리턴 Url
-	 *
-	 * @param KnoManagementVO
+	 * 지식정보 상세 정보를 조회한다.
+	 * @param knoManagement 조회할 지식정보 식별 정보가 담긴 모델
+	 * @param model 뷰에 전달할 모델
+	 * @return 상세 화면 경로
+	 * @throws Exception 식별자가 없거나 해당 지식정보가 존재하지 않거나 데이터 접근 오류가 발생한 경우
 	 */
 	@RequestMapping(value="/dam/mgm/EgovComDamManagement.do")
-	public String selectKnoManagement(
-			KnoManagement knoManagement
-			, ModelMap model
-			) throws Exception {
+	public String selectKnoManagement(KnoManagement knoManagement, ModelMap model) throws Exception {
 
 		//Spring Security 사용자권한 처리
 	    Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -137,16 +132,14 @@ public class EgovKnoManagementController {
 	}
 
 	/**
-	 * 기 등록 된 지식정보 정보를 수정 한다.
-	 * @param ManagementKnoNm - 지식정보 model
-	 * @return String - 리턴 Url
-	 *
-	 * @param knoNm
+	 * 지식정보 수정 화면을 표시한다.
+	 * @param knoManagement 수정 대상 지식정보 식별 정보가 담긴 모델
+	 * @param model 뷰에 전달할 모델
+	 * @return 수정 화면 경로
+	 * @throws Exception 조회 중 오류가 발생한 경우
 	 */
 	@GetMapping(value="/dam/mgm/EgovComDamManagementModify.do")
-	public String updateKnoManagementView(KnoManagement knoManagement
-			, ModelMap model
-			) throws Exception {
+	public String updateKnoManagementView(KnoManagement knoManagement, ModelMap model) throws Exception {
 
 		//Spring Security 사용자권한 처리
 	    Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -166,11 +159,10 @@ public class EgovKnoManagementController {
 	}
 
 	/**
-     * 기 등록 된 지식정보 정보를 수정 한다. 초기값
-     * 
-     * @param knoManagement
-     * @param model
-     * @throws Exception
+     * 지식정보 수정 화면 초기 데이터를 설정한다.
+     * @param knoManagement 수정 대상 지식정보 식별 정보가 담긴 모델
+     * @param model 뷰에 전달할 모델
+     * @throws Exception 데이터 조회 중 오류가 발생한 경우
      */
     private void updateKnoManagementViewInit(KnoManagement knoManagement, ModelMap model) throws Exception {
         model.addAttribute("resultKnoManagement", knoManagementService.selectKnoManagement(knoManagement));
@@ -179,16 +171,16 @@ public class EgovKnoManagementController {
         LOGGER.debug("knoManagement>{}", model.get("knoManagement"));
     }
 
-    /**
-     * 기 등록 된 지식정보 정보를 수정 한다.
-     * @param ManagementKnoNm - 지식정보 model
-     * @return String - 리턴 Url
-     *
-     * @param knoNm
-     */
+	/**
+    * 기 등록된 지식정보를 수정한다.
+    * @param knoManagement 수정할 지식정보 모델
+    * @param bindingResult 검증 결과
+    * @param model 뷰에 전달할 모델
+    * @return 목록 화면으로 이동 경로
+    * @throws Exception 대상이 존재하지 않거나 권한 없음, 검증 실패 처리 또는 데이터 접근 오류가 발생한 경우
+    */
     @PostMapping(value = "/dam/mgm/EgovComDamManagementModify.do")
-    public String updateKnoManagement(KnoManagement knoManagement, BindingResult bindingResult, ModelMap model)
-            throws Exception {
+    public String updateKnoManagement(KnoManagement knoManagement, BindingResult bindingResult, ModelMap model) throws Exception {
 
         // Spring Security 사용자권한 처리
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
