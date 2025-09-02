@@ -1,21 +1,3 @@
-/**
- * @Class Name  : EgovStringUtil.java
- * @Description : 문자열 데이터 처리 관련 유틸리티
- * @Modification Information
- *
- *     수정일         수정자                   수정내용
- *     -------          --------        ---------------------------
- *   2009.01.13     박정규          최초 생성
- *   2009.02.13     이삼섭          내용 추가
- *   2024.10.29		Chung10Kr		명사에 맞는 조사 반환 기능 개발
- *
- * @author 공통 서비스 개발팀 박정규
- * @since 2009. 01. 13
- * @version 1.0
- * @see
- *
- */
-
 package egovframework.com.utl.fcc.service;
 
 /*
@@ -40,6 +22,27 @@ import java.sql.Timestamp;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
+/**
+ * 문자열 데이터 처리 관련 유틸리티
+ * 
+ * @author 공통 서비스 개발팀 박정규
+ * @since 2009.01.13
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.01.13  박정규          최초 생성
+ *   2009.02.13  이삼섭          내용 추가
+ *   2024.10.29  Chung10Kr     명사에 맞는 조사 반환 기능 개발
+ *   2025.09.02  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AssignmentInOperand(피연산자내에 할당문이 사용됨. 해당 코드를 복잡하고 가독성이 떨어지게 만듬)
+ *   2025.09.02  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UnnecessaryBoxing(불필요한 WrapperObject 생성)
+ *
+ *      </pre>
+ */
 public class EgovStringUtil {
 	/**
 	 * 빈 문자열 <code>""</code>.
