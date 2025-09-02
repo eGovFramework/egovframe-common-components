@@ -663,8 +663,8 @@ public class EgovStringUtil {
 	 * @return 지정된 문자가 제거된 문자열, null이 입력되면 <code>null</code> 리턴
 	 */
 	public static String stripStart(String str, String stripChars) {
-		int strLen;
-		if (str == null || (strLen = str.length()) == 0) {
+		int strLen = str.length();
+		if (str == null || strLen == 0) {
 			return str;
 		}
 		int start = 0;
@@ -704,8 +704,8 @@ public class EgovStringUtil {
 	 * @return 지정된 문자가 제거된 문자열, null이 입력되면 <code>null</code> 리턴
 	 */
 	public static String stripEnd(String str, String stripChars) {
-		int end;
-		if (str == null || (end = str.length()) == 0) {
+		int end = str.length();
+		if (str == null || end == 0) {
 			return str;
 		}
 
@@ -798,8 +798,8 @@ public class EgovStringUtil {
 		String randomStr = null;
 
 		// 시작문자 및 종료문자를 아스키숫자로 변환한다.
-		int startInt = Integer.valueOf(startChr);
-		int endInt = Integer.valueOf(endChr);
+		int startInt = startChr;
+		int endInt = endChr;
 
 		// 시작문자열이 종료문자열보가 클경우
 		if (startInt > endInt) {
