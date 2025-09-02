@@ -31,10 +31,8 @@ public class EgovNumberCheckUtil {
 	 * @param 6자리 주민앞번호 문자열 , 7자리 주민뒷번호 문자열
 	 * @return 유효한 주민번호인지 여부 (True/False)
 	 */
-	@SuppressWarnings("static-access")
 	public static boolean checkJuminNumber(String jumin1, String jumin2) {
 
-		EgovDateUtil egovDateUtil = new EgovDateUtil();
 		String juminNumber = jumin1 + jumin2;
 		String iDAdd = "234567892345"; // 주민등록번호에 가산할 값
 
@@ -61,7 +59,7 @@ public class EgovNumberCheckUtil {
 				return false;
 			}
 			String temp = "20" + juminNumber.substring(0, 6);
-			if (!egovDateUtil.checkDate(temp)) {
+			if (!EgovDateUtil.checkDate(temp)) {
 				return false;
 			}
 		} else {
@@ -69,7 +67,7 @@ public class EgovNumberCheckUtil {
 				return false;
 			}
 			String temp = "19" + juminNumber.substring(0, 6);
-			if (!egovDateUtil.checkDate(temp)) {
+			if (!EgovDateUtil.checkDate(temp)) {
 				return false;
 			}
 		} // 주민번호 앞자리 날짜유효성체크 & 성별구분 숫자 체크
