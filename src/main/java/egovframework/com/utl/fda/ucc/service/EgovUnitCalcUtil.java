@@ -1,6 +1,7 @@
 package egovframework.com.utl.fda.ucc.service;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 길이, 부피, 넓이, 무게 환산 데이터를 생성하는 Service Class 구현
@@ -24,16 +25,16 @@ import java.util.HashMap;
 public class EgovUnitCalcUtil {
 
 	// 길이
-	HashMap<String, Double> hmVt = new HashMap<String, Double>();
+	private final Map<String, Double> hmVt = new HashMap<>();
 
 	// 부피
-	HashMap<String, Double> hmVl = new HashMap<String, Double>();
+	private final Map<String, Double> hmVl = new HashMap<>();
 
 	// 넓이
-	HashMap<String, Double> hmAr = new HashMap<String, Double>();
+	private final Map<String, Double> hmAr = new HashMap<>();
 
 	// 무게
-	HashMap<String, Double> hmWt = new HashMap<String, Double>();
+	private final Map<String, Double> hmWt = new HashMap<>();
 
 	/**
 	 * 생성자를 통하여 길이, 부피, 넓이, 무게 환산 데이터를 생성한다.
