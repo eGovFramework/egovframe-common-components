@@ -35,11 +35,11 @@ public class EgovNumberCheckUtil {
 
 		EgovDateUtil egovDateUtil = new EgovDateUtil();
 		String juminNumber = jumin1 + jumin2;
-		String IDAdd = "234567892345"; // 주민등록번호에 가산할 값
+		String iDAdd = "234567892345"; // 주민등록번호에 가산할 값
 
-		int count_num = 0;
-		int add_num = 0;
-		int total_id = 0; // 검증을 위한 변수선언
+		int countNum = 0;
+		int addNum = 0;
+		int totalId = 0; // 검증을 위한 변수선언
 
 		if (juminNumber.length() != 13) {
 			return false; // 주민등록번호 자리수가 맞는가를 확인
@@ -49,9 +49,9 @@ public class EgovNumberCheckUtil {
 			if (juminNumber.charAt(i) < '0' || juminNumber.charAt(i) > '9') {
 				return false; // 숫자가 아닌 값이 들어왔는지를 확인
 			}
-			count_num = Character.getNumericValue(juminNumber.charAt(i));
-			add_num = Character.getNumericValue(IDAdd.charAt(i));
-			total_id += count_num * add_num; // 유효자리 검증식을 적용
+			countNum = Character.getNumericValue(juminNumber.charAt(i));
+			addNum = Character.getNumericValue(iDAdd.charAt(i));
+			totalId += countNum * addNum; // 유효자리 검증식을 적용
 		}
 
 		if (Character.getNumericValue(juminNumber.charAt(0)) == 0
@@ -73,7 +73,7 @@ public class EgovNumberCheckUtil {
 			}
 		} // 주민번호 앞자리 날짜유효성체크 & 성별구분 숫자 체크
 
-		if (Character.getNumericValue(juminNumber.charAt(12)) == (11 - (total_id % 11)) % 10) { // 마지막 유효숫자와 검증식을 통한 값의
+		if (Character.getNumericValue(juminNumber.charAt(12)) == (11 - (totalId % 11)) % 10) { // 마지막 유효숫자와 검증식을 통한 값의
 																								// 비교
 			return true;
 		} else { // 마지막 유효숫자와 검증식을 통한 값의 비교
@@ -190,7 +190,7 @@ public class EgovNumberCheckUtil {
 			temp++;
 		}
 
-		hap += (Character.getNumericValue(compNumber.charAt(8)) * 5) / 10;
+		hap += Character.getNumericValue(compNumber.charAt(8)) * 5 / 10;
 
 		if ((10 - (hap % 10)) % 10 == Character.getNumericValue(compNumber.charAt(9))) { // 마지막 유효숫자와 검증식을 통한 값의 비교
 			return true;
