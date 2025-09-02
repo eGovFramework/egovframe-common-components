@@ -1,7 +1,6 @@
 package egovframework.com.utl.fcc.service;
 
 /**
- *
  * 번호유효성체크 에 대한 Util 클래스
  * 
  * @author 공통컴포넌트 개발팀 윤성록
@@ -10,12 +9,14 @@ package egovframework.com.utl.fcc.service;
  * @see
  *
  *      <pre>
- * << 개정이력(Modification Information) >>
+ *  == 개정이력(Modification Information) ==
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.06.10  윤성록          최초 생성
  *   2012.02.27  이기하          법인번호 체크로직 수정
+ *   2025.09.02  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *   2025.09.02  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UselessParentheses(불필요한 괄호사용)
  *
  *      </pre>
  */
