@@ -9,13 +9,15 @@ import java.util.HashMap;
  * @since 2010.06.16
  * @version 1.0
  * @see
- * 
+ *
  *      <pre>
- * 개정이력(Modification Information)
+ *  == 개정이력(Modification Information) ==
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2010.06.16  장동한          최초 생성
+ *   2025.09.03  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-FieldNamingConventions(변수명에 밑줄 사용)
+ *   2025.09.03  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UselessParentheses(불필요한 괄호사용)
  *
  *      </pre>
  */
