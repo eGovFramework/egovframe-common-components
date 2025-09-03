@@ -1,19 +1,3 @@
-/**
- *  Class Name : EgovClntInfo.java
- *  Description : 클라이언트(Client)의 IP주소, OS정보, 웹브라우저정보를 조회하는 Business Interface class
- *  Modification Information
- * 
- *     수정일         수정자                   수정내용
- *   -------    --------    ---------------------------
- *   2009.01.19    박지욱          최초 생성
- *
- *  @author 공통 서비스 개발팀 박지욱
- *  @since 2009. 01. 19
- *  @version 1.0
- *  @see 
- * 
- *  Copyright (C) 2009 by MOPAS  All rights reserved.
- */
 package egovframework.com.utl.sim.service;
 
 import javax.servlet.http.HttpServletRequest;
@@ -24,6 +8,24 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.service.Globals;
 
+/**
+ * 클라이언트(Client)의 IP주소, OS정보, 웹브라우저정보를 조회하는 Business Interface class
+ * 
+ * @author 공통 서비스 개발팀 박지욱
+ * @since 2009.01.19
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.01.19  박지욱          최초 생성
+ *   2025.09.04  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *
+ *      </pre>
+ */
 public class EgovClntInfo {
 
 	/**
