@@ -152,8 +152,8 @@ public class EgovUnitCalcUtil {
 	 */
 	public double convertWidthCalcUnit(double nWidth, String sWidthUnit, String sWidthUnitAs) {
 
-		double nSelAr = hmWt.get(sWidthUnit);
-		double nSelArAs = hmWt.get(sWidthUnitAs);
+		double nSelAr = hmAr.get(sWidthUnit);
+		double nSelArAs = hmAr.get(sWidthUnitAs);
 
 		return nSelAr / nSelArAs * nWidth;
 	}
