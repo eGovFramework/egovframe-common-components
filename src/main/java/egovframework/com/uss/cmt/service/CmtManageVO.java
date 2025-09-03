@@ -5,19 +5,21 @@ import java.util.List;
 
 /**
  * 출퇴근관리 VO 클래스
+ * 
  * @author 표준프레임워크센터 개발팀
  * @since 2014.12.20
  * @version 1.0
  * @see
  *
- * <pre>
- * << 개정이력(Modification Information) >>
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
- *   수정일          수정자       수정내용
- *  -----------    --------    ---------------------------
- *   2014.12.20     개발팀       최초 생성
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2014.12.20  개발팀          최초 생성
+ *   2025.08.01  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-FormalParameterNamingConventions(변수명에 밑줄 사용)
  *
- * </pre>
+ *      </pre>
  */
 public class CmtManageVO implements Serializable {
 
@@ -25,6 +27,7 @@ public class CmtManageVO implements Serializable {
 	 * serialVersionUID
 	 */
 	private static final long serialVersionUID = 1L;
+
 	/**
 	 * 기본 생성자.
 	 */
@@ -281,10 +284,10 @@ public class CmtManageVO implements Serializable {
 	}
 
 	/**
-	 * @param wrkt_dt 설정할 작업 날짜
+	 * @param wrktDt 설정할 작업 날짜
 	 */
-	public void setWrktDt(String wrkt_dt) {
-		this.wrktDt = wrkt_dt;
+	public void setWrktDt(String wrktDt) {
+		this.wrktDt = wrktDt;
 	}
 
 }
