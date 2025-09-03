@@ -79,14 +79,14 @@ public class EgovClntInfo {
 	 */
 	public static String getClntOsInfo(HttpServletRequest request) throws Exception {
 
-		String user_agent = request.getHeader("user-agent");
-		String os_info = user_agent.toUpperCase().split(";")[2].split("\\)")[0];
-		String os_conf = EgovProperties.getProperty(Globals.CLIENT_CONF_PATH, os_info.replaceAll(" ", ""));
+		String userAgent = request.getHeader("user-agent");
+		String osinfo2 = userAgent.toUpperCase().split(";")[2].split("\\)")[0];
+		String osConf = EgovProperties.getProperty(Globals.CLIENT_CONF_PATH, osinfo2.replaceAll(" ", ""));
 		String osInfo = "";
-		if (os_conf != null && !"".equals(os_conf)) {
-			osInfo = os_conf;
+		if (osConf != null && !"".equals(osConf)) {
+			osInfo = osConf;
 		} else {
-			osInfo = os_info;
+			osInfo = osinfo2;
 		}
 		return osInfo;
 	}
@@ -100,31 +100,31 @@ public class EgovClntInfo {
 	 */
 	public static String getClntWebKind(HttpServletRequest request) throws Exception {
 
-		String user_agent = request.getHeader("user-agent");
+		String userAgent = request.getHeader("user-agent");
 
 		// 웹브라우저 종류 조회
 		String webKind = "";
-		if (user_agent.toUpperCase().indexOf("GECKO") != -1) {
-			if (user_agent.toUpperCase().indexOf("NESCAPE") != -1) {
+		if (userAgent.toUpperCase().indexOf("GECKO") != -1) {
+			if (userAgent.toUpperCase().indexOf("NESCAPE") != -1) {
 				webKind = "Netscape (Gecko/Netscape)";
-			} else if (user_agent.toUpperCase().indexOf("FIREFOX") != -1) {
+			} else if (userAgent.toUpperCase().indexOf("FIREFOX") != -1) {
 				webKind = "Mozilla Firefox (Gecko/Firefox)";
 			} else {
 				webKind = "Mozilla (Gecko/Mozilla)";
 			}
-		} else if (user_agent.toUpperCase().indexOf("MSIE") != -1) {
-			if (user_agent.toUpperCase().indexOf("OPERA") != -1) {
+		} else if (userAgent.toUpperCase().indexOf("MSIE") != -1) {
+			if (userAgent.toUpperCase().indexOf("OPERA") != -1) {
 				webKind = "Opera (MSIE/Opera/Compatible)";
 			} else {
 				webKind = "Internet Explorer (MSIE/Compatible)";
 			}
-		} else if (user_agent.toUpperCase().indexOf("SAFARI") != -1) {
-			if (user_agent.toUpperCase().indexOf("CHROME") != -1) {
+		} else if (userAgent.toUpperCase().indexOf("SAFARI") != -1) {
+			if (userAgent.toUpperCase().indexOf("CHROME") != -1) {
 				webKind = "Google Chrome";
 			} else {
 				webKind = "Safari";
 			}
-		} else if (user_agent.toUpperCase().indexOf("THUNDERBIRD") != -1) {
+		} else if (userAgent.toUpperCase().indexOf("THUNDERBIRD") != -1) {
 			webKind = "Thunderbird";
 		} else {
 			webKind = "Other Web Browsers";
@@ -141,16 +141,16 @@ public class EgovClntInfo {
 	 */
 	public static String getClntWebVer(HttpServletRequest request) throws Exception {
 
-		String user_agent = request.getHeader("user-agent");
+		String userAgent = request.getHeader("user-agent");
 
 		// 웹브라우저 버전 조회
 		String webVer = "";
 		String[] arr = { "MSIE", "OPERA", "NETSCAPE", "FIREFOX", "SAFARI" };
 		for (int i = 0; i < arr.length; i++) {
-			int s_loc = user_agent.toUpperCase().indexOf(arr[i]);
-			if (s_loc != -1) {
-				int f_loc = s_loc + arr[i].length();
-				webVer = user_agent.toUpperCase().substring(f_loc, f_loc + 5);
+			int sLoc = userAgent.toUpperCase().indexOf(arr[i]);
+			if (sLoc != -1) {
+				int fLoc = sLoc + arr[i].length();
+				webVer = userAgent.toUpperCase().substring(fLoc, fLoc + 5);
 				webVer = webVer.replaceAll("/", "").replaceAll(";", "").replaceAll("^", "").replaceAll(",", "")
 						.replaceAll("//.", "");
 			}
