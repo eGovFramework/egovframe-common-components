@@ -1,9 +1,7 @@
 package egovframework.com.utl.pao.service;
 
 import java.io.Serializable;
-
-import lombok.Getter;
-import lombok.Setter;
+import java.util.Arrays;
 
 /**
  * 관인이미지 모델 클래스
@@ -30,8 +28,6 @@ public class PrntngOutptVO implements Serializable {
 	/*
 	 * 이미지정보
 	 */
-	@Getter
-	@Setter
 	private byte[] imgInfo;
 
 	/*
@@ -48,6 +44,32 @@ public class PrntngOutptVO implements Serializable {
 	 * 관인구분
 	 */
 	private String erncslSe;
+
+	/**
+	 * imgInfo attribute 를 리턴한다.
+	 * <p>
+	 * null 이면 빈 배열을 반환하며, 내부 배열을 보호하기 위해 복사본을 반환
+	 * 
+	 * @return byte[]
+	 */
+	public byte[] getImgInfo() {
+		return imgInfo == null ? new byte[0] : Arrays.copyOf(imgInfo, imgInfo.length);
+	}
+
+	/**
+	 * imgInfo attribute 값을 설정한다.
+	 * <p>
+	 * null 입력 시 내부 배열은 빈 배열로 초기화, 내부 배열 보호를 위해 입력 배열을 복사
+	 * 
+	 * @param imgInfo byte[]
+	 */
+	public void setImgInfo(byte[] imgInfo) {
+		if (imgInfo == null) {
+			this.imgInfo = new byte[0];
+		} else {
+			this.imgInfo = Arrays.copyOf(imgInfo, imgInfo.length);
+		}
+	}
 
 	/**
 	 * imgType attribute 를 리턴한다.
