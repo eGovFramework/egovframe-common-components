@@ -25,57 +25,60 @@ import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.service.Globals;
 
 public class EgovClntInfo {
-	
+
 	/**
 	 * 클라이언트(Client)의 IP주소를 조회하는 기능
+	 * 
 	 * @param HttpServletRequest request Request객체
 	 * @return String ipAddr IP주소
 	 * @exception Exception
-	*/
+	 */
 	public static String getClntIP(HttpServletRequest request) throws Exception {
-		
+
 		String ipAddr = null;
-		
-		HttpServletRequest req = ((ServletRequestAttributes)RequestContextHolder.currentRequestAttributes()).getRequest();
-		 
-		 ipAddr = request.getHeader("X-Forwarded-For");
- 		 if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) { 
- 			ipAddr = req.getHeader("Proxy-Client-IP"); 
-		 } 
-		 if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) { 
-			 ipAddr = req.getHeader("WL-Proxy-Client-IP"); 
-		 } 
-		 if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) { 
-			 ipAddr = req.getHeader("HTTP_CLIENT_IP"); 
-		 } 
-		 if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) { 
-			 ipAddr = req.getHeader("HTTP_X_FORWARDED_FOR"); 
-		 }
-		 if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) { 
-			 ipAddr = req.getHeader("X-Real-IP"); 
-		 }
-		 if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) { 
-			 ipAddr = req.getHeader("X-RealIP"); 
-		 }
-		 if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) { 
-			 ipAddr = req.getHeader("REMOTE_ADDR");
-		 }
-		 if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) { 
-			 ipAddr = req.getRemoteAddr(); 
-		 }
-		 
-		// IP주소		
+
+		HttpServletRequest req = ((ServletRequestAttributes) RequestContextHolder.currentRequestAttributes())
+				.getRequest();
+
+		ipAddr = request.getHeader("X-Forwarded-For");
+		if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) {
+			ipAddr = req.getHeader("Proxy-Client-IP");
+		}
+		if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) {
+			ipAddr = req.getHeader("WL-Proxy-Client-IP");
+		}
+		if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) {
+			ipAddr = req.getHeader("HTTP_CLIENT_IP");
+		}
+		if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) {
+			ipAddr = req.getHeader("HTTP_X_FORWARDED_FOR");
+		}
+		if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) {
+			ipAddr = req.getHeader("X-Real-IP");
+		}
+		if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) {
+			ipAddr = req.getHeader("X-RealIP");
+		}
+		if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) {
+			ipAddr = req.getHeader("REMOTE_ADDR");
+		}
+		if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) {
+			ipAddr = req.getRemoteAddr();
+		}
+
+		// IP주소
 		return ipAddr;
 	}
-	
+
 	/**
 	 * 클라이언트(Client)의 OS 정보를 조회하는 기능
+	 * 
 	 * @param HttpServletRequest request Request객체
 	 * @return String osInfo OS 정보
 	 * @exception Exception
-	*/
+	 */
 	public static String getClntOsInfo(HttpServletRequest request) throws Exception {
-	
+
 		String user_agent = request.getHeader("user-agent");
 		String os_info = user_agent.toUpperCase().split(";")[2].split("\\)")[0];
 		String os_conf = EgovProperties.getProperty(Globals.CLIENT_CONF_PATH, os_info.replaceAll(" ", ""));
@@ -87,17 +90,18 @@ public class EgovClntInfo {
 		}
 		return osInfo;
 	}
-	
+
 	/**
 	 * 클라이언트(Client)의 웹브라우저 종류를 조회하는 기능
+	 * 
 	 * @param HttpServletRequest request Request객체
 	 * @return String webKind 웹브라우저 종류
 	 * @exception Exception
-	*/
+	 */
 	public static String getClntWebKind(HttpServletRequest request) throws Exception {
-		
+
 		String user_agent = request.getHeader("user-agent");
-		
+
 		// 웹브라우저 종류 조회
 		String webKind = "";
 		if (user_agent.toUpperCase().indexOf("GECKO") != -1) {
@@ -127,26 +131,28 @@ public class EgovClntInfo {
 		}
 		return webKind;
 	}
-	
+
 	/**
 	 * 클라이언트(Client)의 웹브라우저 버전을 조회하는 기능
+	 * 
 	 * @param HttpServletRequest request Request객체
 	 * @return String webVer 웹브라우저 버전
 	 * @exception Exception
-	*/
+	 */
 	public static String getClntWebVer(HttpServletRequest request) throws Exception {
-		
+
 		String user_agent = request.getHeader("user-agent");
-		
+
 		// 웹브라우저 버전 조회
 		String webVer = "";
-		String [] arr = {"MSIE", "OPERA", "NETSCAPE", "FIREFOX", "SAFARI"};
+		String[] arr = { "MSIE", "OPERA", "NETSCAPE", "FIREFOX", "SAFARI" };
 		for (int i = 0; i < arr.length; i++) {
 			int s_loc = user_agent.toUpperCase().indexOf(arr[i]);
 			if (s_loc != -1) {
 				int f_loc = s_loc + arr[i].length();
-				webVer = user_agent.toUpperCase().substring(f_loc, f_loc+5);
-				webVer = webVer.replaceAll("/", "").replaceAll(";", "").replaceAll("^", "").replaceAll(",", "").replaceAll("//.", "");
+				webVer = user_agent.toUpperCase().substring(f_loc, f_loc + 5);
+				webVer = webVer.replaceAll("/", "").replaceAll(";", "").replaceAll("^", "").replaceAll(",", "")
+						.replaceAll("//.", "");
 			}
 		}
 		return webVer;
