@@ -136,8 +136,8 @@ public class EgovUnitCalcUtil {
 	 */
 	public double convertWeightCalcUnit(double nWeight, String sWeightUnit, String sWeightUnitAs) {
 
-		double nSelWt = hmAr.get(sWeightUnit);
-		double nSelWtAs = hmAr.get(sWeightUnitAs);
+		double nSelWt = hmWt.get(sWeightUnit);
+		double nSelWtAs = hmWt.get(sWeightUnitAs);
 
 		return nSelWt / nSelWtAs * nWeight;
 	}
