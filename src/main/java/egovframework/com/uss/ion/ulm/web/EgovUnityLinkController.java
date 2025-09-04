@@ -7,8 +7,6 @@ import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -28,160 +26,162 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.ulm.service.EgovUnityLinkService;
 import egovframework.com.uss.ion.ulm.service.UnityLink;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 통합링크관리를 처리하는 Controller Class 구현
+ * 
  * @author 공통서비스 장동한
  * @since 2009.07.03
  * @version 1.0
  * @see
- * <pre>
- * &lt;&lt; 개정이력(Modification Information) &gt;&gt;
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.07.03  장동한			최초 생성
- *   2011.08.26  정진오			IncludedInfo annotation 추가
- *   2024.10.29  권태성			등록 화면과 데이터를 처리하는 method 분리, validation 적용
+ *   2009.07.03  장동한          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2024.10.29  권태성          등록 화면과 데이터를 처리하는 method 분리, validation 적용
+ *   2025.08.18  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UselessParentheses(불필요한 괄호사용)
  *
- * </pre>
+ *      </pre>
  */
-
 @Controller
+@Slf4j
 public class EgovUnityLinkController {
 
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovUnityLinkController.class);
+	@Autowired
+	private DefaultBeanValidator beanValidator;
 
-    @Autowired
-    private DefaultBeanValidator beanValidator;
+	/** EgovMessageSource */
+	@Resource(name = "egovMessageSource")
+	EgovMessageSource egovMessageSource;
 
-    /** EgovMessageSource */
-    @Resource(name = "egovMessageSource")
-    EgovMessageSource egovMessageSource;
+	/** egovOnlinePollService */
+	@Resource(name = "egovUnityLinkService")
+	private EgovUnityLinkService egovUnityLinkService;
 
-    /** egovOnlinePollService */
-    @Resource(name = "egovUnityLinkService")
-    private EgovUnityLinkService egovUnityLinkService;
+	/** EgovPropertyService */
+	@Resource(name = "propertiesService")
+	protected EgovPropertyService propertiesService;
 
-    /** EgovPropertyService */
-    @Resource(name = "propertiesService")
-    protected EgovPropertyService propertiesService;
+	/** Egov Common Code Service */
+	@Resource(name = "EgovCmmUseService")
+	private EgovCmmUseService cmmUseService;
 
-    /** Egov Common Code Service */
-    @Resource(name="EgovCmmUseService")
-    private EgovCmmUseService cmmUseService;
+	/**
+	 * 통합링크관리 메인 셈플 목록을 조회한다.
+	 * 
+	 * @param searchVO
+	 * @param commandMap
+	 * @param unityLinkVO
+	 * @param model
+	 * @return "egovframework/com/uss/ion/ulm/UnityLinkSample"
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/uss/ion/ulm/listUnityLinkSample.do")
+	public String egovUnityLinkSample1List(UnityLink unityLinkVO, ModelMap model) throws Exception {
+		if (log.isDebugEnabled()) {
+			log.debug("unityLinkVO={}", unityLinkVO);
+		}
 
-    /**
-     * 통합링크관리 메인 셈플 목록을 조회한다.
-     * @param searchVO
-     * @param commandMap
-     * @param unityLinkVO
-     * @param model
-     * @return "egovframework/com/uss/ion/ulm/UnityLinkSample"
-     * @throws Exception
-     */
-    @RequestMapping(value = "/uss/ion/ulm/listUnityLinkSample.do")
-    public String egovUnityLinkSample1List(
-            UnityLink unityLinkVO,
-            ModelMap model)
-            throws Exception {
+		List<?> reusltList = egovUnityLinkService.selectUnityLinkSample(unityLinkVO);
+		model.addAttribute("resultList", reusltList);
 
-        List<?> reusltList = egovUnityLinkService.selectUnityLinkSample(unityLinkVO);
-        model.addAttribute("resultList", reusltList);
+		return "egovframework/com/uss/ion/ulm/UnityLinkSample";
+	}
 
-        return "egovframework/com/uss/ion/ulm/UnityLinkSample";
-    }
+	/**
+	 * 통합링크관리 목록을 조회한다.
+	 * 
+	 * @param searchVO
+	 * @param commandMap
+	 * @param unityLinkVO
+	 * @param model
+	 * @return "egovframework/com/uss/ion/ulm/EgovOnlinePollList"
+	 * @throws Exception
+	 */
+	@SuppressWarnings("unused")
+	@IncludedInfo(name = "통합링크관리", order = 780, gid = 50)
+	@RequestMapping(value = "/uss/ion/ulm/listUnityLink.do")
+	public String egovUnityLinkList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
+			@RequestParam Map<?, ?> commandMap, UnityLink unityLinkVO, ModelMap model) throws Exception {
 
-    /**
-     * 통합링크관리 목록을 조회한다.
-     * @param searchVO
-     * @param commandMap
-     * @param unityLinkVO
-     * @param model
-     * @return "egovframework/com/uss/ion/ulm/EgovOnlinePollList"
-     * @throws Exception
-     */
-    @SuppressWarnings("unused")
-	@IncludedInfo(name="통합링크관리", order = 780 ,gid = 50)
-    @RequestMapping(value = "/uss/ion/ulm/listUnityLink.do")
-    public String egovUnityLinkList(
-            @ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap,
-            UnityLink unityLinkVO, ModelMap model)
-            throws Exception {
+		String sSearchMode = commandMap.get("searchMode") == null ? "" : (String) commandMap.get("searchMode");
 
-        String sSearchMode = commandMap.get("searchMode") == null ? "" : (String) commandMap.get("searchMode");
+		/** EgovPropertyService.sample */
+		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
+		searchVO.setPageSize(propertiesService.getInt("pageSize"));
 
-        /** EgovPropertyService.sample */
-        searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-        searchVO.setPageSize(propertiesService.getInt("pageSize"));
+		/** pageing */
+		PaginationInfo paginationInfo = new PaginationInfo();
+		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
+		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
+		paginationInfo.setPageSize(searchVO.getPageSize());
 
-        /** pageing */
-        PaginationInfo paginationInfo = new PaginationInfo();
-        paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-        paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-        paginationInfo.setPageSize(searchVO.getPageSize());
+		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
+		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-        searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-        searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		List<?> reusltList = egovUnityLinkService.selectUnityLinkList(searchVO);
+		model.addAttribute("resultList", reusltList);
 
-        List<?> reusltList = egovUnityLinkService.selectUnityLinkList(searchVO);
-        model.addAttribute("resultList", reusltList);
+		model.addAttribute("searchKeyword",
+				commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword"));
+		model.addAttribute("searchCondition",
+				commandMap.get("searchCondition") == null ? "" : (String) commandMap.get("searchCondition"));
 
-        model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword"));
-        model.addAttribute("searchCondition", commandMap.get("searchCondition") == null ? "" : (String) commandMap.get("searchCondition"));
+		int totCnt = egovUnityLinkService.selectUnityLinkListCnt(searchVO);
+		paginationInfo.setTotalRecordCount(totCnt);
+		model.addAttribute("paginationInfo", paginationInfo);
 
-        int totCnt = egovUnityLinkService.selectUnityLinkListCnt(searchVO);
-        paginationInfo.setTotalRecordCount(totCnt);
-        model.addAttribute("paginationInfo", paginationInfo);
+		// 통합링크구분설정
+		ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
+		voComCode = new ComDefaultCodeVO();
+		voComCode.setCodeId("COM039");
+		List<?> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+		model.addAttribute("unityLinkSeCodeList", listComCode);
 
-        //통합링크구분설정
-        ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
-        voComCode = new ComDefaultCodeVO();
-        voComCode.setCodeId("COM039");
-        List<?> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
-        model.addAttribute("unityLinkSeCodeList", listComCode );
+		return "egovframework/com/uss/ion/ulm/EgovUnityLinkList";
+	}
 
-        return "egovframework/com/uss/ion/ulm/EgovUnityLinkList";
-    }
+	/**
+	 * 통합링크관리 목록을 상세조회 조회한다.
+	 * 
+	 * @param searchVO
+	 * @param unityLinkVO
+	 * @param commandMap
+	 * @param model
+	 * @return "/uss/ion/ulm/EgovOnlinePollDetail"
+	 * @throws Exception
+	 */
+	@RequestMapping(value = "/uss/ion/ulm/detailUnityLink.do")
+	public String egovUnityLinkDetail(@ModelAttribute("searchVO") ComDefaultVO searchVO, UnityLink unityLink,
+			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
-    /**
-     * 통합링크관리 목록을 상세조회 조회한다.
-     * @param searchVO
-     * @param unityLinkVO
-     * @param commandMap
-     * @param model
-     * @return
-     *         "/uss/ion/ulm/EgovOnlinePollDetail"
-     * @throws Exception
-     */
-    @RequestMapping(value = "/uss/ion/ulm/detailUnityLink.do")
-    public String egovUnityLinkDetail(
-            @ModelAttribute("searchVO") ComDefaultVO searchVO,
-            UnityLink unityLink, @RequestParam Map<?, ?> commandMap,
-            ModelMap model) throws Exception {
+		String sLocationUrl = "egovframework/com/uss/ion/ulm/EgovUnityLinkDetail";
 
-        String sLocationUrl = "egovframework/com/uss/ion/ulm/EgovUnityLinkDetail";
+		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
-        String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
+		if (sCmd.equals("del")) {
+			egovUnityLinkService.deleteUnityLink(unityLink);
+			sLocationUrl = "forward:/uss/ion/ulm/listUnityLink.do";
+		} else {
+			// 통합링크구분설정
+			ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
+			voComCode = new ComDefaultCodeVO();
+			voComCode.setCodeId("COM039");
+			List<?> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+			model.addAttribute("unityLinkSeCodeList", listComCode);
+			// 상세정보 불러오기
+			UnityLink unityLinkVO = egovUnityLinkService.selectUnityLinkDetail(unityLink);
+			model.addAttribute("unityLink", unityLinkVO);
+		}
 
-        if (sCmd.equals("del")) {
-            egovUnityLinkService.deleteUnityLink(unityLink);
-            sLocationUrl = "forward:/uss/ion/ulm/listUnityLink.do";
-        } else {
-            //통합링크구분설정
-            ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
-            voComCode = new ComDefaultCodeVO();
-            voComCode.setCodeId("COM039");
-            List<?> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
-            model.addAttribute("unityLinkSeCodeList", listComCode );
-            //상세정보 불러오기
-            UnityLink unityLinkVO = egovUnityLinkService.selectUnityLinkDetail(unityLink);
-            model.addAttribute("unityLink", unityLinkVO);
-        }
-
-        return sLocationUrl;
-    }
+		return sLocationUrl;
+	}
 
 	/**
 	 * 통합링크관리 수정화면
@@ -194,8 +194,7 @@ public class EgovUnityLinkController {
 	 */
 	@RequestMapping(value = "/uss/ion/ulm/updtUnityLinkView.do")
 	public String egovUnityLinkModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@ModelAttribute("unityLink") UnityLink unityLink, ModelMap model)
-			throws Exception {
+			@ModelAttribute("unityLink") UnityLink unityLink, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
@@ -215,7 +214,7 @@ public class EgovUnityLinkController {
 
 		return "egovframework/com/uss/ion/ulm/EgovUnityLinkUpdt";
 	}
-	
+
 	/**
 	 * 통합링크관리를 수정한다.
 	 * 
@@ -245,11 +244,11 @@ public class EgovUnityLinkController {
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 		// 아이디 설정
-		String uniqId = (loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 		unityLink.setFrstRegisterId(uniqId);
 		unityLink.setLastUpdusrId(uniqId);
+
 		// 저장
 		egovUnityLinkService.updateUnityLink(unityLink);
 
@@ -297,8 +296,8 @@ public class EgovUnityLinkController {
 	 */
 	@RequestMapping(value = "/uss/ion/ulm/registUnityLink.do")
 	public String egovUnityLinkRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@ModelAttribute("unityLink") UnityLink unityLink,
-			BindingResult bindingResult, ModelMap model) throws Exception {
+			@ModelAttribute("unityLink") UnityLink unityLink, BindingResult bindingResult, ModelMap model)
+			throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
@@ -314,11 +313,11 @@ public class EgovUnityLinkController {
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 		// 아이디 설정
-		String uniqId = (loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 		unityLink.setFrstRegisterId(uniqId);
 		unityLink.setLastUpdusrId(uniqId);
+
 		// 저장
 		egovUnityLinkService.insertUnityLink(unityLink);
 
