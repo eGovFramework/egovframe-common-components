@@ -1,4 +1,5 @@
 package egovframework.com.sym.tbm.tbr.web;
+
 import java.util.List;
 
 import javax.annotation.Resource;
@@ -29,68 +30,73 @@ import egovframework.com.sym.tbm.tbr.service.TroblReqstVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 
 /**
+ * <pre>
  * 개요
  * -장애신청정보에 대한 controller 클래스를 정의한다.
  *
  * 상세내용
  * - 장애신청정보에 대한 등록, 수정, 삭제, 조회 등의 기능을 제공한다.
  * - 장애신청정보의 조회기능은 목록조회, 상세조회로 구분된다.
- * @author lee.m.j
- * @version 1.0
- * @created 28-6-2010 오전 10:44:35
- * <pre>
- * == 개정이력(Modification Information) ==
- *
- *   수정일       수정자           수정내용
- *  -------     --------    ---------------------------
- *  2010.06.28   이문준     최초 생성
- *  2011.8.26	정진오			IncludedInfo annotation 추가
  * </pre>
+ * 
+ * @author 이문준
+ * @since 2010.06.28
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.06.28  이문준          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2025.07.28  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-FieldNamingConventions(변수명에 밑줄 사용)
+ *
+ *      </pre>
  */
-
 @Controller
 public class EgovTroblReqstController {
 
-
-
-
-	@Resource(name="egovMessageSource")
-    EgovMessageSource egovMessageSource;
+	@Resource(name = "egovMessageSource")
+	EgovMessageSource egovMessageSource;
 
 	@Resource(name = "egovTroblReqstService")
 	private EgovTroblReqstService egovTroblReqstService;
 
-    /** ID Generation */
-    @Resource(name="egovTroblIdGnrService")
-    private EgovIdGnrService egovTroblIdGnrService;
+	/** ID Generation */
+	@Resource(name = "egovTroblIdGnrService")
+	private EgovIdGnrService egovTroblIdGnrService;
 
-    @Autowired
+	@Autowired
 	private DefaultBeanValidator beanValidator;
 
-    @Resource(name = "EgovCmmUseService")
-    EgovCmmUseService EgovCmmUseService;
+	@Resource(name = "EgovCmmUseService")
+	private EgovCmmUseService egovCmmUseService;
 
 	/**
 	 * 장애요청관리 목록화면으로 이동
+	 * 
 	 * @return String
 	 */
-    @RequestMapping(value="/sym/tbm/tbr/selectTroblReqstListView.do")
+	@RequestMapping(value = "/sym/tbm/tbr/selectTroblReqstListView.do")
 	public String selectTroblReqstListView() throws Exception {
 		return "egovframework/com/sym/tbm/tbr/EgovTroblReqstList";
 	}
 
 	/**
 	 * 장애요청을 관리하기 위해 등록된 장애요청목록을 조회한다.
+	 * 
 	 * @param troblReqstVO - 장애신청관리 Vo
 	 * @return String - 리턴 Url
 	 */
-    @IncludedInfo(name="장애신청관리", order = 1180 ,gid = 60)
-    @RequestMapping(value="/sym/tbm/tbr/selectTroblReqstList.do")
-	public String selectTroblReqstList(@ModelAttribute("troblReqstVO") TroblReqstVO troblReqstVO,
-                                        ModelMap model) throws Exception {
+	@IncludedInfo(name = "장애신청관리", order = 1180, gid = 60)
+	@RequestMapping(value = "/sym/tbm/tbr/selectTroblReqstList.do")
+	public String selectTroblReqstList(@ModelAttribute("troblReqstVO") TroblReqstVO troblReqstVO, ModelMap model)
+			throws Exception {
 
 		/** paging */
-    	PaginationInfo paginationInfo = new PaginationInfo();
+		PaginationInfo paginationInfo = new PaginationInfo();
 		paginationInfo.setCurrentPageNo(troblReqstVO.getPageIndex());
 		paginationInfo.setRecordCountPerPage(troblReqstVO.getPageUnit());
 		paginationInfo.setPageSize(troblReqstVO.getPageSize());
@@ -99,34 +105,38 @@ public class EgovTroblReqstController {
 		troblReqstVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		troblReqstVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		if(troblReqstVO.getStrTroblKnd() == null) troblReqstVO.setStrTroblKnd("00");
-		if(troblReqstVO.getStrProcessSttus() == null) troblReqstVO.setStrProcessSttus("00");
+		if (troblReqstVO.getStrTroblKnd() == null) {
+			troblReqstVO.setStrTroblKnd("00");
+		}
+		if (troblReqstVO.getStrProcessSttus() == null) {
+			troblReqstVO.setStrProcessSttus("00");
+		}
 
 		troblReqstVO.setTroblReqstList(egovTroblReqstService.selectTroblReqstList(troblReqstVO));
 
 		model.addAttribute("troblReqstList", troblReqstVO.getTroblReqstList());
 
-        int totCnt = egovTroblReqstService.selectTroblReqstListTotCnt(troblReqstVO);
+		int totCnt = egovTroblReqstService.selectTroblReqstListTotCnt(troblReqstVO);
 		paginationInfo.setTotalRecordCount(totCnt);
-        model.addAttribute("paginationInfo", paginationInfo);
-        model.addAttribute("cmmCodeDetailList1", getCmmCodeDetailList(new ComDefaultCodeVO(),"COM065"));
-        model.addAttribute("cmmCodeDetailList2", getCmmCodeDetailList(new ComDefaultCodeVO(),"COM068"));
-        model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
+		model.addAttribute("paginationInfo", paginationInfo);
+		model.addAttribute("cmmCodeDetailList1", getCmmCodeDetailList(new ComDefaultCodeVO(), "COM065"));
+		model.addAttribute("cmmCodeDetailList2", getCmmCodeDetailList(new ComDefaultCodeVO(), "COM068"));
+		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
 		return "egovframework/com/sym/tbm/tbr/EgovTroblReqstList";
 	}
 
 	/**
 	 * 등록된 장애요청의 상세정보를 조회한다.
+	 * 
 	 * @param troblReqstVO - 장애신청관리 Vo
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value="/sym/tbm/tbr/getTroblReqst.do")
+	@RequestMapping(value = "/sym/tbm/tbr/getTroblReqst.do")
 	public String selectTroblReqst(@RequestParam("troblId") String troblId,
-			                       @ModelAttribute("troblReqstVO") TroblReqstVO troblReqstVO,
-					                Model model) throws Exception {
+			@ModelAttribute("troblReqstVO") TroblReqstVO troblReqstVO, Model model) throws Exception {
 
-    	troblReqstVO.setTroblId(troblId);
+		troblReqstVO.setTroblId(troblId);
 		model.addAttribute("troblReqst", egovTroblReqstService.selectTroblReqst(troblReqstVO));
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
@@ -134,45 +144,46 @@ public class EgovTroblReqstController {
 	}
 
 	/**
-	 * 장애요청정보  등록 화면으로 이동한다.
+	 * 장애요청정보 등록 화면으로 이동한다.
+	 * 
 	 * @param troblReqstVO - 장애신청관리 Vo
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value="/sym/tbm/tbr/addViewTroblReqst.do")
-	public String insertViewTroblReqst(@ModelAttribute("troblReqstVO") TroblReqstVO troblReqstVO,
-                                        ModelMap model) throws Exception {
+	@RequestMapping(value = "/sym/tbm/tbr/addViewTroblReqst.do")
+	public String insertViewTroblReqst(@ModelAttribute("troblReqstVO") TroblReqstVO troblReqstVO, ModelMap model)
+			throws Exception {
 
-    	model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(),"COM065"));
+		model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(), "COM065"));
 		model.addAttribute("troblReqst", troblReqstVO);
 		return "egovframework/com/sym/tbm/tbr/EgovTroblReqstRegist";
 	}
 
 	/**
 	 * 장애요청정보를 신규로 등록한다.
+	 * 
 	 * @param troblReqst - 장애신청관리 model
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value="/sym/tbm/tbr/addTroblReqst.do")
+	@RequestMapping(value = "/sym/tbm/tbr/addTroblReqst.do")
 	public String insertTroblReqst(@ModelAttribute("troblReqstVO") TroblReqstVO troblReqstVO,
-			                       @ModelAttribute("troblReqst") TroblReqst troblReqst,
-				                    BindingResult bindingResult,
-			                        ModelMap model) throws Exception {
+			@ModelAttribute("troblReqst") TroblReqst troblReqst, BindingResult bindingResult, ModelMap model)
+			throws Exception {
 
-		beanValidator.validate(troblReqst, bindingResult); //validation 수행
+		beanValidator.validate(troblReqst, bindingResult); // validation 수행
 
 		if (bindingResult.hasErrors()) {
-    		model.addAttribute("troblReqstVO", troblReqstVO);
+			model.addAttribute("troblReqstVO", troblReqstVO);
 			return "egovframework/com/sym/tbm/tbr/EgovTroblReqstRegist";
 		} else {
-	   	    LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-	   	    troblReqst.setTroblOccrrncTime(EgovStringUtil.removeMinusChar(troblReqst.getTroblOccrrncTime()));
-	   	    troblReqst.setTroblRequstTime(EgovStringUtil.removeMinusChar(troblReqst.getTroblRequstTime()));
-	   	    troblReqst.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
-	   	    troblReqst.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
-	   	    troblReqst.setProcessSttus("A");
-	   	    troblReqst.setTroblId(egovTroblIdGnrService.getNextStringId());
+			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+			troblReqst.setTroblOccrrncTime(EgovStringUtil.removeMinusChar(troblReqst.getTroblOccrrncTime()));
+			troblReqst.setTroblRequstTime(EgovStringUtil.removeMinusChar(troblReqst.getTroblRequstTime()));
+			troblReqst.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
+			troblReqst.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
+			troblReqst.setProcessSttus("A");
+			troblReqst.setTroblId(egovTroblIdGnrService.getNextStringId());
 
-	   	    model.addAttribute("troblReqst", egovTroblReqstService.insertTroblReqst(troblReqst, troblReqstVO));
+			model.addAttribute("troblReqst", egovTroblReqstService.insertTroblReqst(troblReqst, troblReqstVO));
 			model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
 			return "egovframework/com/sym/tbm/tbr/EgovTroblReqstDetail";
 		}
@@ -180,116 +191,117 @@ public class EgovTroblReqstController {
 
 	/**
 	 * 장애요청정보 수정 화면으로 이동한다.
+	 * 
 	 * @param troblReqstVO - 장애신청관리 Vo
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value="/sym/tbm/tbr/updtViewTroblReqst.do")
-    public String updateViewTroblReqst(@RequestParam("troblId") String troblId,
-    		                           @ModelAttribute("troblReqstVO") TroblReqstVO troblReqstVO,
-                                        Model model) throws Exception {
+	@RequestMapping(value = "/sym/tbm/tbr/updtViewTroblReqst.do")
+	public String updateViewTroblReqst(@RequestParam("troblId") String troblId,
+			@ModelAttribute("troblReqstVO") TroblReqstVO troblReqstVO, Model model) throws Exception {
 
-    	troblReqstVO.setTroblId(troblId);
-    	model.addAttribute("troblReqst", egovTroblReqstService.selectTroblReqst(troblReqstVO));
-    	model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(),"COM065"));
-    	model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
+		troblReqstVO.setTroblId(troblId);
+		model.addAttribute("troblReqst", egovTroblReqstService.selectTroblReqst(troblReqstVO));
+		model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(), "COM065"));
+		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 		return "egovframework/com/sym/tbm/tbr/EgovTroblReqstUpdt";
 	}
 
 	/**
 	 * 기 등록된 장애요청정보를 수정한다.
+	 * 
 	 * @param troblReqst - 장애신청관리 model
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value="/sym/tbm/tbr/updtTroblReqst.do")
-	public String updateTroblReqst(@ModelAttribute("troblReqst") TroblReqst troblReqst,
-			                        BindingResult bindingResult,
-                                    SessionStatus status,
-                                    ModelMap model) throws Exception {
+	@RequestMapping(value = "/sym/tbm/tbr/updtTroblReqst.do")
+	public String updateTroblReqst(@ModelAttribute("troblReqst") TroblReqst troblReqst, BindingResult bindingResult,
+			SessionStatus status, ModelMap model) throws Exception {
 
-    	beanValidator.validate(troblReqst, bindingResult); //validation 수행
+		beanValidator.validate(troblReqst, bindingResult); // validation 수행
 
-    	if (bindingResult.hasErrors()) {
-    		model.addAttribute("troblReqstVO", troblReqst);
-    		return "egovframework/com/sym/tbm/EgovTroblReqstUpdt";
-    	} else {
-    		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-	   	    troblReqst.setTroblOccrrncTime(EgovStringUtil.removeMinusChar(troblReqst.getTroblOccrrncTime()));
-	   	    troblReqst.setTroblRequstTime(EgovStringUtil.removeMinusChar(troblReqst.getTroblRequstTime()));
-    		troblReqst.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
-    		egovTroblReqstService.updateTroblReqst(troblReqst);
-	   	    status.setComplete();
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("troblReqstVO", troblReqst);
+			return "egovframework/com/sym/tbm/EgovTroblReqstUpdt";
+		} else {
+			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+			troblReqst.setTroblOccrrncTime(EgovStringUtil.removeMinusChar(troblReqst.getTroblOccrrncTime()));
+			troblReqst.setTroblRequstTime(EgovStringUtil.removeMinusChar(troblReqst.getTroblRequstTime()));
+			troblReqst.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
+			egovTroblReqstService.updateTroblReqst(troblReqst);
+			status.setComplete();
 			model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
 			return "forward:/sym/tbm/tbr/getTroblReqst.do";
-    	}
+		}
 	}
 
 	/**
 	 * 기 등록된 장애요청정보를 삭제한다.
+	 * 
 	 * @param troblReqst - 장애신청관리 model
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value="/sym/tbm/tbr/removeTroblReqst.do")
+	@RequestMapping(value = "/sym/tbm/tbr/removeTroblReqst.do")
 	public String deleteTroblReqst(@RequestParam("troblId") String troblId,
-			                       @ModelAttribute("troblReqst") TroblReqst troblReqst,
-	                                ModelMap model) throws Exception {
+			@ModelAttribute("troblReqst") TroblReqst troblReqst, ModelMap model) throws Exception {
 
-    	troblReqst.setTroblId(troblId);
-    	egovTroblReqstService.deleteTroblReqst(troblReqst);
+		troblReqst.setTroblId(troblId);
+		egovTroblReqstService.deleteTroblReqst(troblReqst);
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		return "forward:/sym/tbm/tbr/selectTroblReqstList.do";
 	}
 
 	/**
 	 * 장애처리를 요청한다.
+	 * 
 	 * @param troblReqst - 장애신청관리 model
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value="/sym/tbm/tbr/requstTroblReqst.do")
+	@RequestMapping(value = "/sym/tbm/tbr/requstTroblReqst.do")
 	public String requstTroblReqst(@RequestParam("troblId") String troblId,
-		                           @ModelAttribute("troblReqst") TroblReqst troblReqst,
-			                        SessionStatus status,
-	                                ModelMap model) throws Exception {
+			@ModelAttribute("troblReqst") TroblReqst troblReqst, SessionStatus status, ModelMap model)
+			throws Exception {
 
-    	troblReqst.setTroblId(troblId);
-    	troblReqst.setProcessSttus("R");
-		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		troblReqst.setTroblId(troblId);
+		troblReqst.setProcessSttus("R");
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		troblReqst.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
 		egovTroblReqstService.requstTroblReqst(troblReqst);
-   	    status.setComplete();
+		status.setComplete();
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
 		return "forward:/sym/tbm/tbr/getTroblReqst.do";
 	}
 
 	/**
 	 * 장애처리취소를 요청한다.
+	 * 
 	 * @param troblReqst - 장애신청관리 model
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value="/sym/tbm/tbr/requstTroblReqstCancl.do")
+	@RequestMapping(value = "/sym/tbm/tbr/requstTroblReqstCancl.do")
 	public String requstTroblReqstCancl(@RequestParam("troblId") String troblId,
-                                        @ModelAttribute("troblReqst") TroblReqst troblReqst,
-			                             SessionStatus status,
-	                                     ModelMap model) throws Exception {
+			@ModelAttribute("troblReqst") TroblReqst troblReqst, SessionStatus status, ModelMap model)
+			throws Exception {
 
-    	troblReqst.setTroblId(troblId);
-    	troblReqst.setProcessSttus("A");
-		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		troblReqst.setTroblId(troblId);
+		troblReqst.setProcessSttus("A");
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		troblReqst.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
 		egovTroblReqstService.requstTroblReqst(troblReqst);
-   	    status.setComplete();
+		status.setComplete();
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
 		return "forward:/sym/tbm/tbr/getTroblReqst.do";
 	}
 
-    /**
+	/**
 	 * 공통코드 호출
+	 * 
 	 * @param comDefaultCodeVO ComDefaultCodeVO
-	 * @param codeId String
+	 * @param codeId           String
 	 * @return List
 	 * @exception Exception
 	 */
-    public List<CmmnDetailCode> getCmmCodeDetailList(ComDefaultCodeVO comDefaultCodeVO, String codeId)  throws Exception {
-    	comDefaultCodeVO.setCodeId(codeId);
-    	return EgovCmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
-    }
+	public List<CmmnDetailCode> getCmmCodeDetailList(ComDefaultCodeVO comDefaultCodeVO, String codeId)
+			throws Exception {
+		comDefaultCodeVO.setCodeId(codeId);
+		return egovCmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+	}
 }
