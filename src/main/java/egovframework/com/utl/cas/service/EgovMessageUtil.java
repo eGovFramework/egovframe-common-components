@@ -1,24 +1,26 @@
-/**
- * @Class Name  : EgovMessageUtil.java
- * @Description : 메시지 처리 관련 유틸리티
- * @Modification Information
- *
- *     수정일         수정자                   수정내용
- *     -------          --------        ---------------------------
- *   2009.02.13       이삼섭                  최초 생성
- *
- * @author 공통 서비스 개발팀 이삼섭
- * @since 2009. 02. 13
- * @version 1.0
- * @see
- *
- */
-
 package egovframework.com.utl.cas.service;
 
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 
+/**
+ * 메시지 처리 관련 유틸리티
+ * 
+ * @author 공통 서비스 개발팀 이삼섭
+ * @since 2009.02.13
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.02.13  이삼섭          최초 생성
+ *   2025.08.29  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UselessParentheses(불필요한 괄호사용)
+ *
+ *      </pre>
+ */
 public class EgovMessageUtil {
 
 	private static final String PATH_SEP = System.getProperty("file.separator");
@@ -58,7 +60,7 @@ public class EgovMessageUtil {
 	}
 
 	/**
-	 *해당되는 속성키로부터 정보 메시지(파라미터 변환 포함)를 얻는다.
+	 * 해당되는 속성키로부터 정보 메시지(파라미터 변환 포함)를 얻는다.
 	 *
 	 * @param strCode
 	 * @param arrParam
@@ -114,10 +116,10 @@ public class EgovMessageUtil {
 
 		return getMessage("confirm", strCode, arrParam);
 	}
+
 	/**
-	 * 주어진 작업 코드, 문자열 코드, 그리고 파라미터 배열을 사용하여 메시지를 반환합니다.
-	 * 문자열 코드를 사용하여 메시지 속성 파일에서 메시지를 가져옵니다.
-	 * 파라미터 배열이 제공되면 해당 파라미터로 메시지를 교체합니다.
+	 * 주어진 작업 코드, 문자열 코드, 그리고 파라미터 배열을 사용하여 메시지를 반환합니다. 문자열 코드를 사용하여 메시지 속성 파일에서
+	 * 메시지를 가져옵니다. 파라미터 배열이 제공되면 해당 파라미터로 메시지를 교체합니다.
 	 *
 	 * @param wrkCode  작업을 지정하는 코드
 	 * @param strCode  메시지 속성 파일에서 메시지를 찾는데 사용되는 코드
@@ -131,11 +133,13 @@ public class EgovMessageUtil {
 		String strMsg = "";
 		if (!"".equals(EgovStringUtil.isNullToString(strCode.trim()))) {
 
-			strMsg = EgovProperties.getProperty(EgovProperties.RELATIVE_PATH_PREFIX + "egovProps" + PATH_SEP + "conf" + PATH_SEP + wrkCode + "message.properties", strCode);
+			strMsg = EgovProperties.getProperty(EgovProperties.RELATIVE_PATH_PREFIX + "egovProps" + PATH_SEP + "conf"
+					+ PATH_SEP + wrkCode + "message.properties", strCode);
 
-			if(arrParam != null) {
-				for (int i = (arrParam.length > 0 ? arrParam.length - 1 : -1); i >= 0; i--) {
-					strMsg = EgovStringUtil.replace(EgovStringUtil.isNullToString(strMsg), "{" + i + "}", arrParam[i]);//KISA 보안약점 조치 (2018-10-29, 윤창원)
+			if (arrParam != null) {
+				for (int i = arrParam.length > 0 ? arrParam.length - 1 : -1; i >= 0; i--) {
+					// KISA 보안약점 조치 (2018-10-29, 윤창원)
+					strMsg = EgovStringUtil.replace(EgovStringUtil.isNullToString(strMsg), "{" + i + "}", arrParam[i]);
 				}
 			}
 			message = strMsg;
