@@ -32,8 +32,8 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  *  Filter class
@@ -45,14 +45,15 @@ import org.apache.commons.logging.LogFactory;
  * <pre>
  * << 개정이력(Modification Information) >>
  *
- *  수정일              수정자              수정내용
+ *  수정일        수정자       수정내용
  *  ----------  --------    ---------------------------
  *  2014.12.04	표준프레임워크	최초 적용 (패키지 변경 및 소스 정리)
- *  2018.12.28	신용호             CkImageSaver 수정
+ *  2018.12.28	신용호		  CkImageSaver 수정
+ *  2025.09.06	송하영		  2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-FieldNamingConventions(변수명에 밑줄 사용)
  * </pre>
  */
+@Slf4j
 public class CkFilter implements Filter {
-	private static final Log log = LogFactory.getLog(CkFilter.class);
 
 	private static final String IMAGE_BASE_DIR_KEY = "ck.image.dir";
 	private static final String IMAGE_BASE_URL_KEY = "ck.image.url";
@@ -64,17 +65,12 @@ public class CkFilter implements Filter {
 	@Override
 	public void init(FilterConfig filterConfig) throws ServletException {
 		String properties = filterConfig.getInitParameter("properties");
-		InputStream inStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(properties);
 		Properties props = new Properties();
-		try {
+		try (InputStream inStream = Thread.currentThread().getContextClassLoader().getResourceAsStream(properties);) {
 			props.load(inStream);
 		} catch (IOException e) {
-			log.error(e);
-		} finally { //KISA 보안약점 조치 (2018-10-29, 윤창원)
-			try {
-				inStream.close();
-			} catch (IOException e) {
-				log.error(e);
+			if (log.isErrorEnabled()) {
+				log.error("IOException", e);
 			}
 		}
 
