@@ -8,8 +8,8 @@ import java.security.SecureRandom;
 /**
  * Egov 양식 기반 UUID
  * 
- * @author 공통컴포넌트 개발팀 홍길동
- * @since 2009.06.01
+ * @author 익명
+ * @since 2004.12.07
  * @version 1.0
  * @see
  *
@@ -18,7 +18,7 @@ import java.security.SecureRandom;
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.03.20  홍길동          최초 생성
+ *   2004.12.07  익명           최초 생성
  *   2025.09.01  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UnnecessaryBoxing(불필요한 WrapperObject 생성)
  *   2025.09.01  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UselessParentheses(불필요한 괄호사용)
  *
