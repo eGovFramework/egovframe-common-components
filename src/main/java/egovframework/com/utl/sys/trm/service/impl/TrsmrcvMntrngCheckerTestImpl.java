@@ -50,11 +50,10 @@ public class TrsmrcvMntrngCheckerTestImpl implements TrsmrcvMntrngChecker {
 		Boolean b = oRandom.nextBoolean();
 		TrsmrcvMntrngResult result = null;
 
-		if (b.booleanValue()) {
-			result = new TrsmrcvMntrngResult(b.booleanValue(), null);
+		if (b) {
+			result = new TrsmrcvMntrngResult(b, null);
 		} else {
-			result = new TrsmrcvMntrngResult(b.booleanValue(),
-					new UnsupportedOperationException("송수신샘플Check클래스에서 발생한 Exception입니다."));
+			result = new TrsmrcvMntrngResult(b, new UnsupportedOperationException("송수신샘플Check클래스에서 발생한 Exception입니다."));
 		}
 		LOGGER.debug("result cause : {}", result.getCause());
 		return result;
