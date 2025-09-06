@@ -9,22 +9,22 @@ import egovframework.com.utl.sys.trm.service.TrsmrcvMntrngChecker;
 import egovframework.com.utl.sys.trm.service.TrsmrcvMntrngResult;
 
 /**
- * @Class Name : EgovTrsmrcvMntrngCheckerImpl.java
- * @Description : 송수신모니터링을 위한 Check interface 예제 구현클래스
- * @Modification Information
- * 
- *               <pre>
- *    수정일       수정자         수정내용
- *    -------        -------     -------------------
- *    2010.08.16     김진만   최초생성
- *               </pre>
+ * 송수신모니터링을 위한 Check interface 예제 구현클래스
  * 
  * @author 김진만
- * @version
+ * @since 2010.08.16
+ * @version 1.0
  * @see
  *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.08.16  김진만          최초 생성
+ *	 2025.09.06  이선규          2025년 컨트리뷰션 멘토링 PMD로 소프트웨어 보안약점 진단하고 제거하기-UnnecessaryBoxing(불필요한 WrapperObject 생성)
+ *      </pre>
  */
-
 public class TrsmrcvMntrngCheckerTestImpl implements TrsmrcvMntrngChecker {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TrsmrcvMntrngCheckerTestImpl.class);
