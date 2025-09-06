@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -21,12 +20,12 @@ import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.util.EgovBasicLogger;
-import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sys.ssy.service.EgovSynchrnServerService;
 import egovframework.com.utl.sys.ssy.service.SynchrnServer;
@@ -275,13 +274,13 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 		boolean reflctAt = false;
 
 		while (iterator.hasNext()) {
-			SynchrnServerVO SynchrnServerVo = iterator.next();
+			SynchrnServerVO synchrnServerVO2 = iterator.next();
 
-			reflctAt = processFtp(SynchrnServerVo.getServerIp(), Integer.parseInt(SynchrnServerVo.getServerPort()),
-					SynchrnServerVo.getFtpId(), SynchrnServerVo.getFtpPassword(), SynchrnServerVo.getSynchrnLc(),
+			reflctAt = processFtp(synchrnServerVO2.getServerIp(), Integer.parseInt(synchrnServerVO2.getServerPort()),
+					synchrnServerVO2.getFtpId(), synchrnServerVO2.getFtpPassword(), synchrnServerVO2.getSynchrnLc(),
 					synchrnServerVO.getFilePath(), uploadFile);
 
-			synchrnServer.setServerId(SynchrnServerVo.getServerId());
+			synchrnServer.setServerId(synchrnServerVO2.getServerId());
 			if (reflctAt) {
 				synchrnServer.setReflctAt("Y");
 			} else {
@@ -360,18 +359,15 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 
 			FTPFile[] fTPFile = ftpClient.listFiles(synchrnPath);
 
-			FileInputStream fis = null;
 			try {
 				for (int i = 0; i < uploadFile.length; i++) {
 					if (uploadFile[i].isFile()) {
 						if (!isExist(fTPFile, uploadFile[i])) {
-							fis = new FileInputStream(uploadFile[i]);
-							// ftpClient.setFileType(FTP.ASCII_FILE_TYPE); // TEXT FILE 전송
-							ftpClient.setFileType(FTP.BINARY_FILE_TYPE); // 바이너리 파일 전송
-							ftpClient.storeFile(synchrnPath + uploadFile[i].getName(), fis);
-						}
-						if (fis != null) {
-							fis.close();
+							try (FileInputStream fis = new FileInputStream(uploadFile[i]);) {
+								// ftpClient.setFileType(FTP.ASCII_FILE_TYPE); // TEXT FILE 전송
+								ftpClient.setFileType(FTP.BINARY_FILE_TYPE); // 바이너리 파일 전송
+								ftpClient.storeFile(synchrnPath + uploadFile[i].getName(), fis);
+							}
 						}
 					}
 				}
@@ -384,8 +380,6 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 
 			} catch (IOException ex) {
 				EgovBasicLogger.debug("FTP IO error", ex);
-			} finally {
-				EgovResourceCloseHelper.close(fis);
 			}
 			ftpClient.logout();
 
@@ -501,41 +495,25 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 		Iterator<SynchrnServerVO> iterator = synchrnServerList.iterator();
 		SynchrnServer synchrnServer = new SynchrnServer();
 
-		InputStream stream = null;
-		OutputStream bos = null;
+		File cFile = new File(EgovWebUtil.filePathBlackList(SYNCH_SERVER_PATH));
 
-		try {
-			stream = multipartFile.getInputStream();
-			File cFile = new File(EgovWebUtil.filePathBlackList(SYNCH_SERVER_PATH));
-
-			if (!cFile.isDirectory()) {
-				// 2017.02.08 이정은 시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-				if (cFile.mkdir()) {
-					LOGGER.debug("[file.mkdirs] cFile : Directory Creation Success");
-				} else {
-					LOGGER.error("[file.mkdirs] cFile : Directory Creation Fail");
-				}
+		if (!cFile.isDirectory()) {
+			// 2017.02.08 이정은 시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+			if (cFile.mkdir()) {
+				LOGGER.debug("[file.mkdirs] cFile : Directory Creation Success");
+			} else {
+				LOGGER.error("[file.mkdirs] cFile : Directory Creation Fail");
 			}
+		}
 
-			bos = new FileOutputStream(
-					EgovWebUtil.filePathBlackList(SYNCH_SERVER_PATH + File.separator + FilenameUtils.getName(newName)));
+		FileCopyUtils.copy(multipartFile.getInputStream(), new FileOutputStream(
+				EgovWebUtil.filePathBlackList(SYNCH_SERVER_PATH + File.separator + FilenameUtils.getName(newName))));
 
-			int bytesRead = 0;
-			byte[] buffer = new byte[2048];
-
-			while ((bytesRead = stream.read(buffer, 0, 2048)) != -1) {
-				bos.write(buffer, 0, bytesRead);
-			}
-
-			while (iterator.hasNext()) {
-				SynchrnServerVO SynchrnServerVo = iterator.next();
-				synchrnServer.setServerId(SynchrnServerVo.getServerId());
-				synchrnServer.setReflctAt("N");
-				synchrnServerDAO.processSynchrn(synchrnServer);
-			}
-
-		} finally {
-			EgovResourceCloseHelper.close(bos, stream);
+		while (iterator.hasNext()) {
+			SynchrnServerVO synchrnServerVO2 = iterator.next();
+			synchrnServer.setServerId(synchrnServerVO2.getServerId());
+			synchrnServer.setReflctAt("N");
+			synchrnServerDAO.processSynchrn(synchrnServer);
 		}
 	}
 
@@ -565,8 +543,8 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 		}
 
 		while (iterator.hasNext()) {
-			SynchrnServerVO SynchrnServerVo = iterator.next();
-			synchrnServer.setServerId(SynchrnServerVo.getServerId());
+			SynchrnServerVO synchrnServerVO2 = iterator.next();
+			synchrnServer.setServerId(synchrnServerVO2.getServerId());
 			synchrnServer.setReflctAt("N");
 			synchrnServerDAO.processSynchrn(synchrnServer);
 		}
