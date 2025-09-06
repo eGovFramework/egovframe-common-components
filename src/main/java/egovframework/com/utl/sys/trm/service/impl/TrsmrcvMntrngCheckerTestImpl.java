@@ -1,6 +1,5 @@
 package egovframework.com.utl.sys.trm.service.impl;
 
-
 import java.security.SecureRandom;
 
 import org.slf4j.Logger;
@@ -10,50 +9,53 @@ import egovframework.com.utl.sys.trm.service.TrsmrcvMntrngChecker;
 import egovframework.com.utl.sys.trm.service.TrsmrcvMntrngResult;
 
 /**
- * @Class Name : EgovTrsmrcvMntrngCheckerImpl.java
- * @Description : 송수신모니터링을 위한 Check interface 예제 구현클래스
- * @Modification Information
- *
- *    수정일       수정자         수정내용
- *    -------        -------     -------------------
- *    2010.08.16     김진만   최초생성
- *
- * @author  김진만
- * @version
+ * 송수신모니터링을 위한 Check interface 예제 구현클래스
+ * 
+ * @author 김진만
+ * @since 2010.08.16
+ * @version 1.0
  * @see
  *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.08.16  김진만          최초 생성
+ *	 2025.09.06  이선규          2025년 컨트리뷰션 멘토링 PMD로 소프트웨어 보안약점 진단하고 제거하기-UnnecessaryBoxing(불필요한 WrapperObject 생성)
+ *      </pre>
  */
-
 public class TrsmrcvMntrngCheckerTestImpl implements TrsmrcvMntrngChecker {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TrsmrcvMntrngCheckerTestImpl.class);
-	private static SecureRandom oRandom = new SecureRandom();		// 221115	김혜준	2022 시큐어코딩 조치
+	private static SecureRandom oRandom = new SecureRandom(); // 221115 김혜준 2022 시큐어코딩 조치
 
 	/**
 	 * 송수신모니터링을 수행한다.
 	 *
-	 * 연계ID를 이용하여 연계기관과 통신에 필요한 정보를 얻은 다음 연계기관과 통신을 수행한다.
-	 * 통신결과를 TrsmrcvMntrngResult 클래스 객체에 담아서 리턴한다.
+	 * 연계ID를 이용하여 연계기관과 통신에 필요한 정보를 얻은 다음 연계기관과 통신을 수행한다. 통신결과를 TrsmrcvMntrngResult
+	 * 클래스 객체에 담아서 리턴한다.
 	 *
-	 * 통신결과가 true일때 : TrsmrcvMntrngResult의 nrmltAt에 true, cause에 null을 저장.
-	 * 통신결과가 false일때: TrsmrcvMntrngResult의 nrmltAt에 false, cause에 에러원인 Exception을 저장한다.
+	 * 통신결과가 true일때 : TrsmrcvMntrngResult의 nrmltAt에 true, cause에 null을 저장. 통신결과가
+	 * false일때: TrsmrcvMntrngResult의 nrmltAt에 false, cause에 에러원인 Exception을 저장한다.
 	 *
 	 *
 	 * @return 모니터링결과
 	 *
-	 * @param cntcId   모니터링 대상 연계ID
+	 * @param cntcId 모니터링 대상 연계ID
 	 *
 	 */
+	@Override
 	public TrsmrcvMntrngResult check(String cntcId) {
 		Boolean b = oRandom.nextBoolean();
 		TrsmrcvMntrngResult result = null;
 
-		if (b.booleanValue()) {
-			result = new TrsmrcvMntrngResult(b.booleanValue(), null);
+		if (b) {
+			result = new TrsmrcvMntrngResult(b, null);
 		} else {
-			result = new TrsmrcvMntrngResult(b.booleanValue(), new UnsupportedOperationException("송수신샘플Check클래스에서 발생한 Exception입니다."));
+			result = new TrsmrcvMntrngResult(b, new UnsupportedOperationException("송수신샘플Check클래스에서 발생한 Exception입니다."));
 		}
 		LOGGER.debug("result cause : {}", result.getCause());
-		return result ;
+		return result;
 	}
 }
