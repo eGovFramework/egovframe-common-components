@@ -1,8 +1,8 @@
 package egovframework.com.uss.ion.ntm.service;
 
+import java.util.Arrays;
+
 import egovframework.com.cmm.ComDefaultVO;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 쪽지 관리(보내기) Model and VO Class 구현
@@ -63,8 +63,6 @@ public class NoteManageVO extends ComDefaultVO {
 	private String atchFileId;
 
 	/** 쪽지 첨부파일 */
-	@Getter
-	@Setter
 	private byte[] atchFile;
 
 	/** 최초등록시점 */
@@ -231,6 +229,24 @@ public class NoteManageVO extends ComDefaultVO {
 	 */
 	public void setAtchFileId(String atchFileId) {
 		this.atchFileId = atchFileId;
+	}
+
+	/**
+	 * @return the atchFile
+	 */
+	public byte[] getAtchFile() {
+		return atchFile == null ? new byte[0] : Arrays.copyOf(atchFile, atchFile.length);
+	}
+
+	/**
+	 * @param atchFile the atchFile to set
+	 */
+	public void setAtchFile(byte[] atchFile) {
+		if (atchFile == null) {
+			this.atchFile = new byte[0];
+		} else {
+			this.atchFile = Arrays.copyOf(atchFile, atchFile.length);
+		}
 	}
 
 	/**
