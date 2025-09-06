@@ -20,6 +20,7 @@ import egovframework.com.cmm.ComDefaultCodeVO;
  *  -------    --------    ---------------------------
  *   2009.03.11  이삼섭          최초 생성
  *   2025.07.16  이백행          2025년 컨트리뷰션 `throws Exception` 제거
+ *   2025.08.27  문종운          public 접근 제어자 제거
  *
  *      </pre>
  */
@@ -31,7 +32,7 @@ public interface EgovCmmUseService {
 	 * @param comDefaultCodeVO
 	 * @return List(코드)
 	 */
-	public List<CmmnDetailCode> selectCmmCodeDetail(ComDefaultCodeVO comDefaultCodeVO);
+	List<CmmnDetailCode> selectCmmCodeDetail(ComDefaultCodeVO comDefaultCodeVO);
 
 	/**
 	 * ComDefaultCodeVO의 리스트를 받아서 여러개의 코드 리스트를 맵에 담아서 리턴한다.
@@ -39,7 +40,7 @@ public interface EgovCmmUseService {
 	 * @param comDefaultCodeVOs
 	 * @return Map(코드)
 	 */
-	public Map<String, List<CmmnDetailCode>> selectCmmCodeDetails(List<ComDefaultCodeVO> comDefaultCodeVOs);
+	Map<String, List<CmmnDetailCode>> selectCmmCodeDetails(List<ComDefaultCodeVO> comDefaultCodeVOs);
 
 	/**
 	 * 조직정보를 코드형태로 리턴한다.
@@ -47,7 +48,7 @@ public interface EgovCmmUseService {
 	 * @param 조회조건정보 vo
 	 * @return 조직정보 List
 	 */
-	public List<CmmnDetailCode> selectOgrnztIdDetail(ComDefaultCodeVO comDefaultCodeVO);
+	List<CmmnDetailCode> selectOgrnztIdDetail(ComDefaultCodeVO comDefaultCodeVO);
 
 	/**
 	 * 그룹정보를 코드형태로 리턴한다.
@@ -55,5 +56,5 @@ public interface EgovCmmUseService {
 	 * @param 조회조건정보 vo
 	 * @return 그룹정보 List
 	 */
-	public List<CmmnDetailCode> selectGroupIdDetail(ComDefaultCodeVO comDefaultCodeVO);
+	List<CmmnDetailCode> selectGroupIdDetail(ComDefaultCodeVO comDefaultCodeVO);
 }
