@@ -1,10 +1,8 @@
 package egovframework.com.sym.sym.srv.service;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * <pre>
@@ -43,8 +41,6 @@ public class ServerVO extends Server {
 	/**
 	 * 삭제대상 목록
 	 */
-	@Getter
-	@Setter
 	private String delYn[];
 
 	/**
@@ -64,6 +60,24 @@ public class ServerVO extends Server {
 	 */
 	public void setServerList(List<?> serverList) {
 		this.serverList = Collections.unmodifiableList(serverList);
+	}
+
+	/**
+	 * @return the delYn
+	 */
+	public String[] getDelYn() {
+		return delYn == null ? new String[0] : Arrays.copyOf(delYn, delYn.length);
+	}
+
+	/**
+	 * @param delYn the delYn to set
+	 */
+	public void setDelYn(String[] delYn) {
+		if (delYn == null) {
+			this.delYn = new String[0];
+		} else {
+			this.delYn = Arrays.copyOf(delYn, delYn.length);
+		}
 	}
 
 	/**
