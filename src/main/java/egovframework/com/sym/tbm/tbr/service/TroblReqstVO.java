@@ -1,10 +1,8 @@
 package egovframework.com.sym.tbm.tbr.service;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * <pre>
@@ -53,8 +51,6 @@ public class TroblReqstVO extends TroblReqst {
 	/**
 	 * 삭제대상 목록
 	 */
-	@Getter
-	@Setter
 	private String delYn[];
 
 	/**
@@ -111,6 +107,24 @@ public class TroblReqstVO extends TroblReqst {
 	 */
 	public void setStrProcessSttus(String strProcessSttus) {
 		this.strProcessSttus = strProcessSttus;
+	}
+
+	/**
+	 * @return the delYn
+	 */
+	public String[] getDelYn() {
+		return delYn == null ? new String[0] : Arrays.copyOf(delYn, delYn.length);
+	}
+
+	/**
+	 * @param delYn the delYn to set
+	 */
+	public void setDelYn(String[] delYn) {
+		if (delYn == null) {
+			this.delYn = new String[0];
+		} else {
+			this.delYn = Arrays.copyOf(delYn, delYn.length);
+		}
 	}
 
 }
