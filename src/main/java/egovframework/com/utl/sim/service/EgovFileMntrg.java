@@ -31,7 +31,6 @@ import org.apache.commons.io.FilenameUtils;
 
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.util.EgovBasicLogger;
-import egovframework.com.cmm.util.EgovResourceCloseHelper;
 
 public class EgovFileMntrg extends Thread {
 
@@ -283,24 +282,19 @@ public class EgovFileMntrg extends Thread {
 	public boolean writeLog(String logStr) {
 		boolean result = false;
 
-		FileWriter fWriter = null;
-		BufferedWriter bWriter = null;
-		BufferedReader br = null;
-		try {
-			fWriter = new FileWriter(logFile, true);
-			bWriter = new BufferedWriter(fWriter);
-			br = new BufferedReader(new StringReader(logStr));
-			String line = "";
-			while ((line = br.readLine()) != null) {
+		try (FileWriter fWriter = new FileWriter(logFile, true);
+				BufferedWriter bWriter = new BufferedWriter(fWriter);
+				BufferedReader br = new BufferedReader(new StringReader(logStr));) {
+			String line = br.readLine();
+			while (line != null) {
 				if (line.length() <= MAX_STR_LEN) {
 					bWriter.write(line + "\n", 0, line.length() + 1);
 				}
+				line = br.readLine();
 			}
 			result = true;
 		} catch (IOException e) {
 			throw new RuntimeException("File IO exception", e);
-		} finally {
-			EgovResourceCloseHelper.close(br, bWriter, fWriter);
 		}
 
 		return result;
@@ -317,21 +311,18 @@ public class EgovFileMntrg extends Thread {
 		// log.debug("isEnd start");
 		boolean isEnd = false;
 		String lastStr = "";
-		BufferedReader br = null;
-		FileReader fr = null;
 
-		try {
+		try (FileReader fr = new FileReader(logFile); BufferedReader br = new BufferedReader(fr);) {
 			if (logFile.exists()) {
 				// 로그파일을 읽어서 마지막 끝에 END가 있으면 종료된것임
 
-				fr = new FileReader(logFile);
-				br = new BufferedReader(fr);
 				// int ch = 0;
-				String line = "";
-				while ((line = br.readLine()) != null) {
+				String line = br.readLine();
+				while (line != null) {
 					if (line.length() <= MAX_STR_LEN) {
 						lastStr = line;
 					}
+					line = br.readLine();
 				}
 				if (lastStr.equals("END")) {
 					isEnd = true;
@@ -342,8 +333,6 @@ public class EgovFileMntrg extends Thread {
 			}
 		} catch (IOException e) {
 			throw new RuntimeException("File IO exception", e);
-		} finally {
-			EgovResourceCloseHelper.close(br, fr);
 		}
 		return isEnd;
 	}
