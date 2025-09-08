@@ -1,8 +1,8 @@
 package egovframework.com.uss.ion.ntr.service;
 
+import java.util.Arrays;
+
 import egovframework.com.cmm.ComDefaultVO;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 받은쪽지함관리 Model and VO Class 구현
@@ -60,8 +60,6 @@ public class NoteRecptn extends ComDefaultVO {
 	private String searchToDate;
 
 	/** 쪽지 첨부파일 */
-	@Getter
-	@Setter
 	private byte[] atchFileId;
 
 	/** 최초등록시점 */
@@ -214,6 +212,24 @@ public class NoteRecptn extends ComDefaultVO {
 	 */
 	public void setSearchToDate(String searchToDate) {
 		this.searchToDate = searchToDate;
+	}
+
+	/**
+	 * @return the atchFileId
+	 */
+	public byte[] getAtchFileId() {
+		return atchFileId == null ? new byte[0] : Arrays.copyOf(atchFileId, atchFileId.length);
+	}
+
+	/**
+	 * @param atchFileId the atchFileId to set
+	 */
+	public void setAtchFileId(byte[] atchFileId) {
+		if (atchFileId == null) {
+			this.atchFileId = new byte[0];
+		} else {
+			this.atchFileId = Arrays.copyOf(atchFileId, atchFileId.length);
+		}
 	}
 
 	/**
