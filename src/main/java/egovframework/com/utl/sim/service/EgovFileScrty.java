@@ -21,16 +21,19 @@ import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UncheckedIOException;
 import java.security.MessageDigest;
 
 import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.lang3.exception.UncheckedException;
 
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.service.EgovProperties;
-import egovframework.com.cmm.util.EgovResourceCloseHelper;
 
 /**
  * @Class Name : EgovFileScrty.java
@@ -62,38 +65,35 @@ public class EgovFileScrty {
 	 * @param String source 암호화할 파일
 	 * @param String target 암호화된 파일
 	 * @return boolean result 암호화여부 True/False
-	 * @exception Exception
 	 */
-	public static boolean encryptFile(String source, String target) throws Exception {
+	public static boolean encryptFile(String source, String target) {
 
 		// 암호화 여부
 		boolean result = false;
 
 		File srcFile = new File(EgovWebUtil.filePathBlackList(STORE_FILE_PATH + FilenameUtils.getName(source)));
 
-		BufferedInputStream input = null;
-		BufferedOutputStream output = null;
-
 		byte[] buffer = new byte[BUFFER_SIZE];
 
-		try {
+		try (BufferedInputStream input = new BufferedInputStream(new FileInputStream(srcFile));
+				BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(
+						EgovWebUtil.filePathBlackList(STORE_FILE_PATH + FilenameUtils.getName(target))));) {
 			if (srcFile.exists() && srcFile.isFile()) {
 
-				input = new BufferedInputStream(new FileInputStream(srcFile));
-				output = new BufferedOutputStream(new FileOutputStream(
-						EgovWebUtil.filePathBlackList(STORE_FILE_PATH + FilenameUtils.getName(target))));
-
-				int length = 0;
-				while ((length = input.read(buffer)) >= 0) {
+				int length = input.read(buffer);
+				while (length >= 0) {
 					byte[] data = new byte[length];
 					System.arraycopy(buffer, 0, data, 0, length);
 					output.write(encodeBinary(data).getBytes());
 					output.write(System.getProperty("line.separator").getBytes());
+					length = input.read(buffer);
 				}
 				result = true;
 			}
-		} finally {
-			EgovResourceCloseHelper.close(input, output);
+		} catch (FileNotFoundException e) {
+			throw new UncheckedException(e);
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
 		}
 
 		return result;
@@ -105,37 +105,34 @@ public class EgovFileScrty {
 	 * @param String source 복호화할 파일
 	 * @param String target 복호화된 파일
 	 * @return boolean result 복호화여부 True/False
-	 * @exception Exception
 	 */
-	public static boolean decryptFile(String source, String target) throws Exception {
+	public static boolean decryptFile(String source, String target) {
 
 		// 복호화 여부
 		boolean result = false;
 
 		File srcFile = new File(EgovWebUtil.filePathBlackList(STORE_FILE_PATH + FilenameUtils.getName(source)));
 
-		BufferedReader input = null;
-		BufferedOutputStream output = null;
-
 		// byte[] buffer = new byte[BUFFER_SIZE];
-		String line = null;
 
-		try {
+		try (BufferedReader input = new BufferedReader(new InputStreamReader(new FileInputStream(srcFile)));
+				BufferedOutputStream output = new BufferedOutputStream(new FileOutputStream(
+						EgovWebUtil.filePathBlackList(STORE_FILE_PATH + FilenameUtils.getName(target))));) {
 			if (srcFile.exists() && srcFile.isFile()) {
+				String line = input.readLine();
 
-				input = new BufferedReader(new InputStreamReader(new FileInputStream(srcFile)));
-				output = new BufferedOutputStream(new FileOutputStream(
-						EgovWebUtil.filePathBlackList(STORE_FILE_PATH + FilenameUtils.getName(target))));
-
-				while ((line = input.readLine()) != null) {
+				while (line != null) {
 					byte[] data = line.getBytes();
 					output.write(decodeBinary(new String(data)));
+					line = input.readLine();
 				}
 
 				result = true;
 			}
-		} finally {
-			EgovResourceCloseHelper.close(input, output);
+		} catch (FileNotFoundException e) {
+			throw new UncheckedException(e);
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
 		}
 
 		return result;
@@ -146,9 +143,8 @@ public class EgovFileScrty {
 	 *
 	 * @param byte[] data 암호화할 데이터
 	 * @return String result 암호화된 데이터
-	 * @exception Exception
 	 */
-	public static String encodeBinary(byte[] data) throws Exception {
+	public static String encodeBinary(byte[] data) {
 		if (data == null) {
 			return "";
 		}
@@ -173,9 +169,8 @@ public class EgovFileScrty {
 	 *
 	 * @param String data 복호화할 데이터
 	 * @return String result 복호화된 데이터
-	 * @exception Exception
 	 */
-	public static byte[] decodeBinary(String data) throws Exception {
+	public static byte[] decodeBinary(String data) {
 		return Base64.decodeBase64(data.getBytes());
 	}
 
