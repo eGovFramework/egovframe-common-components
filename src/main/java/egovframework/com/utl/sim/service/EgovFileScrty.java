@@ -1,19 +1,3 @@
-/**
- *  Class Name : EgovFileScrty.java
- *  Description : Base64인코딩/디코딩 방식을 이용한 데이터를 암호화/복호화하는 Business Interface class
- *  Modification Information
- *
- *     수정일         수정자                   수정내용
- *   -------    --------    ---------------------------
- *   2009.02.04    박지욱          최초 생성
- *
- *  @author 공통 서비스 개발팀 박지욱
- *  @since 2009. 02. 04
- *  @version 1.0
- *  @see
- *
- *  Copyright (C) 2009 by MOPAS  All rights reserved.
- */
 package egovframework.com.utl.sim.service;
 
 import java.io.BufferedInputStream;
@@ -36,20 +20,27 @@ import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.service.EgovProperties;
 
 /**
- * @Class Name : EgovFileScrty.java
- * @Description : 파일 및 텍스트 문자열 암호화 처리하는 구현 클래스
- * @Modification Information
+ * Base64인코딩/디코딩 방식을 이용한 데이터를 암호화/복호화하는 Business Interface class
+ * <p>
+ * 파일 및 텍스트 문자열 암호화 처리하는 구현 클래스
  * 
- *               <pre>
- *    수정일                 수정자              수정내용
- *    ----------    -------     -------------------
- *    2019.11.29	신용호		encryptPassword(String data) 삭제 : KISA 보안약점 조치 (비밀번호 해시함수 적용 시 솔트를 사용하여야 함)
- *    2022.11.16	신용호        소스코드 보안 조치
- *               </pre>
- * 
- * @author 공통컴포넌트개발팀 한성곤
- * @since 2009.08.26
+ * @author 공통 서비스 개발팀 박지욱
+ * @since 2009.02.04
  * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.02.04  박지욱          최초 생성
+ *   2019.11.29  신용호          encryptPassword(String data) 삭제 : KISA 보안약점 조치 (비밀번호 해시함수 적용 시 솔트를 사용하여야 함)
+ *   2022.11.16  신용호          소스코드 보안 조치
+ *   2025.09.08  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(부적절한 자원 해제)
+ *   2025.09.08  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AssignmentInOperand(피연산자내에 할당문이 사용됨. 해당 코드를 복잡하고 가독성이 떨어지게 만듬)
+ *
+ *      </pre>
  */
 public class EgovFileScrty {
 
