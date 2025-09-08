@@ -1,15 +1,13 @@
 /**
  *  Class Name : EgovFileMntrg.java
- *  Description : 시스템 네트워크 정보를 확인하여 제공하는  Business class
+ *  Description : 
  *  Modification Information
  *
  *     수정일         수정자                   수정내용
  *   -------    --------    ---------------------------
- *   2009.01.13    조재영          최초 생성
- *   2017.03.06    조성원          시큐어코딩(ES)-Null Pointer 역참조[CWE-476]
+
  *
- *  @author 공통 서비스 개발팀 조재영
- *  @since 2009. 01. 13
+
  *  @version 1.0
  *  @see
  *
@@ -32,6 +30,26 @@ import org.apache.commons.io.FilenameUtils;
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.util.EgovBasicLogger;
 
+/**
+ * 시스템 네트워크 정보를 확인하여 제공하는 Business class
+ * 
+ * @author 공통 서비스 개발팀 조재영
+ * @since 2009.01.13
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.01.13  조재영          최초 생성
+ *   2017.03.06  조성원          시큐어코딩(ES)-Null Pointer 역참조[CWE-476]
+ *   2025.09.08  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(부적절한 자원 해제)
+ *   2025.09.08  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AssignmentInOperand(피연산자내에 할당문이 사용됨. 해당 코드를 복잡하고 가독성이 떨어지게 만듬)
+ *
+ *      </pre>
+ */
 public class EgovFileMntrg extends Thread {
 
 	String storePathString = EgovProperties.getProperty("Globals.fileStorePath");
