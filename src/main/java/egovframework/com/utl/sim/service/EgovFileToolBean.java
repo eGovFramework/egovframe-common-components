@@ -89,7 +89,7 @@ public class EgovFileToolBean {
 		if (!EgovFileBasePathSecurityValidator.validate(basePath)) {
 			throw new SecurityException("Unacceptable base path : " + basePath);
 		}
-		
+
 		// 파싱결과 구조체
 		Vector<List<String>> parResult = new Vector<List<String>>();
 
