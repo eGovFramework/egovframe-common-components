@@ -35,59 +35,70 @@ public class EgovWebUtil {
 	}
 	
 	public static String clearXSSMinimum(String value) {
-		if (value == null || value.trim().equals("")) {
+		if (isEmpty(value)) {
 			return "";
 		}
 
-		return value
+		// 1단계: URL 인코딩된 문자 변환
+		String step1 = value
+			.replace("%2E", "&#46;")
+			.replace("%2F", "&#47;");
+		
+		// 2단계: 일반 문자 변환 (순서 중요: &를 먼저 변환)
+		return step1
 			.replace("&", "&amp;")
 			.replace("<", "&lt;")
 			.replace(">", "&gt;")
 			.replace("\"", "&#34;")
 			.replace("'", "&#39;")
-			.replace(".", "&#46;")
-			.replace("%2E", "&#46;")
-			.replace("%2F", "&#47;");
+			.replace(".", "&#46;");
 	}
 
 	public static String clearXSSMaximum(String value) {
-		if (value == null || value.trim().isEmpty()) {
+		if (isEmpty(value)) {
 			return "";
 		}
 
-		return clearXSSMinimum(value)
-				.replace("%2F", "")
-				.replace("%00", "")
-				.replace("%", "&#37;")
-				.replace("../", "")
-				.replace("..\\", "")
-				.replace("./", "");
+		// 1단계: 기본 XSS 방지 처리
+		String step1 = clearXSSMinimum(value);
+		
+		// 2단계: 추가 보안 처리 (순서 중요)
+		return step1
+			.replace("%00", "")      // null 문자 제거
+			.replace("%", "&#37;")   // % 문자 변환
+			.replace("../", "")      // 상위 디렉토리 접근 방지
+			.replace("..\\", "")     // 상위 디렉토리 접근 방지 (Windows)
+			.replace("./", "");      // 현재 디렉토리 접근 방지
 	}
 
 	public static String clearXSS(String value) {
-		if (value == null || value.trim().equals("")) {
+		if (isEmpty(value)) {
 			return "";
 		}
 
-    	return value
-            .replace("%3C", "&lt;")
-            .replace("%3E", "&gt;")
-            .replace("%2E", "&#46;")
-            .replace("%2F", "&#47;")
-            .replace("&", "&amp;")
-            .replace("<", "&lt;")
-            .replace(">", "&gt;");
+		// 1단계: URL 인코딩된 문자 변환
+		String step1 = value
+			.replace("%3C", "&lt;")
+			.replace("%3E", "&gt;")
+			.replace("%2E", "&#46;")
+			.replace("%2F", "&#47;");
+		
+		// 2단계: 일반 문자 변환 (순서 중요: &를 먼저 변환)
+		return step1
+			.replace("&", "&amp;")
+			.replace("<", "&lt;")
+			.replace(">", "&gt;");
 	}
 
 	public static String filePathBlackList(String value) {
-		if (value == null || value.trim().isEmpty()) {
+		if (isEmpty(value)) {
 			return "";
 		}
 
 		return value
-				.replace("../", "")
-				.replace("..\\", "")
-				.replace("..", "");
+			.replace("../", "")
+			.replace("..\\", "")
+			.replace("..", "");
 	}
 	
 	/**
