@@ -25,6 +25,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Vector;
@@ -35,7 +36,6 @@ import org.slf4j.LoggerFactory;
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.aop.EgovFileBasePathSecurityValidator;
 import egovframework.com.cmm.service.EgovProperties;
-import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 
 /**
@@ -92,15 +92,16 @@ public class EgovFileTool {
 	 * @return 성공하면 삭제된 절대경로, 아니면블랭크
 	 */
 	public static String deletePath(String basePath, String filePath) {
+		String basePath2 = null;
 
 		// 인자 값이 없는 경우 "Globals.fileStorePath" 기본 경로를 지정한다.
 		if (basePath == null || basePath.equals("")) {
-			basePath = FILE_STORE_PATH;
+			basePath2 = FILE_STORE_PATH;
 		}
 
 		String result = "";
 
-		File file = new File(EgovWebUtil.filePathBlackList(basePath + filePath));
+		File file = new File(EgovWebUtil.filePathBlackList(basePath2 + filePath));
 		if (file.exists()) {
 			result = file.getAbsolutePath();
 			if (!file.delete()) {
@@ -136,12 +137,14 @@ public class EgovFileTool {
 	public static String createDirectories(String basePath, String dirPath) {
 		String result = "";
 
+		String basePath2 = null;
+
 		// 인자 값이 없는 경우 "Globals.fileStorePath" 기본 경로를 지정한다.
 		if (basePath == null || basePath.equals("")) {
-			basePath = FILE_STORE_PATH;
+			basePath2 = FILE_STORE_PATH;
 		}
 
-		File file = new File(EgovWebUtil.filePathBlackList(basePath + dirPath));
+		File file = new File(EgovWebUtil.filePathBlackList(basePath2 + dirPath));
 		if (!file.exists()) {
 			if (file.mkdirs()) {
 				LOGGER.debug("[file.mkdirs] file : Path Creation Success");
@@ -200,10 +203,11 @@ public class EgovFileTool {
 	 * @return 성공하면 새성된 절대경로, 아니면 블랭크
 	 */
 	public static String createNewDirectory(String basePath, String dirPath) {
+		String basePath2 = null;
 
 		// 인자 값이 없는 경우 "Globals.fileStorePath" 기본 경로를 지정한다.
 		if (basePath == null || basePath.equals("")) {
-			basePath = FILE_STORE_PATH;
+			basePath2 = FILE_STORE_PATH;
 		}
 
 		// 인자값 유효하지 않은 경우 블랭크 리턴
@@ -211,7 +215,7 @@ public class EgovFileTool {
 			return "";
 		}
 
-		File file = new File(EgovWebUtil.filePathBlackList(basePath + dirPath));
+		File file = new File(EgovWebUtil.filePathBlackList(basePath2 + dirPath));
 		String result = "";
 		// 없으면 생성
 		if (file.exists()) {
@@ -256,10 +260,11 @@ public class EgovFileTool {
 	 * @return 성공하면 생성된 파일의 절대경로, 아니면블랭크
 	 */
 	public static String createNewFile(String basePath, String filePath) {
+		String basePath2 = null;
 
 		// 인자 값이 없는 경우 "Globals.fileStorePath" 기본 경로를 지정한다.
 		if (basePath == null || basePath.equals("")) {
-			basePath = FILE_STORE_PATH;
+			basePath2 = FILE_STORE_PATH;
 		}
 
 		// 인자값 유효하지 않은 경우 블랭크 리턴
@@ -267,7 +272,7 @@ public class EgovFileTool {
 			return "";
 		}
 
-		File file = new File(EgovWebUtil.filePathBlackList(basePath + filePath));
+		File file = new File(EgovWebUtil.filePathBlackList(basePath2 + filePath));
 		String result = "";
 		try {
 			if (file.exists()) {
@@ -286,7 +291,7 @@ public class EgovFileTool {
 				}
 			}
 		} catch (IOException e) {
-			throw new RuntimeException(e);
+			throw new UncheckedIOException(e);
 		}
 
 		return result;
@@ -314,10 +319,11 @@ public class EgovFileTool {
 	 * @return 성공하면 삭제된 파일의 절대경로, 아니면블랭크
 	 */
 	public static String deleteFile(String basePath, String fileDeletePath) {
+		String basePath2 = null;
 
 		// 인자 값이 없는 경우 "Globals.fileStorePath" 기본 경로를 지정한다.
 		if (basePath == null || basePath.equals("")) {
-			basePath = FILE_STORE_PATH;
+			basePath2 = FILE_STORE_PATH;
 		}
 
 		// 인자값 유효하지 않은 경우 블랭크 리턴
@@ -327,7 +333,7 @@ public class EgovFileTool {
 		String result = "";
 		File file = new File(EgovWebUtil.filePathBlackList(fileDeletePath));
 		if (file.isFile()) {
-			result = deletePath(basePath, fileDeletePath);
+			result = deletePath(basePath2, fileDeletePath);
 		} else {
 			result = "";
 		}
@@ -346,14 +352,15 @@ public class EgovFileTool {
 	 */
 	public static Vector<List<String>> parsFileByChar(String basePath, String parFile, String parChar, int parField)
 			throws Exception {
+		String basePath2 = null;
 
 		// 인자 값이 없는 경우 "Globals.fileStorePath" 기본 경로를 지정한다.
 		if (basePath == null || basePath.equals("")) {
-			basePath = FILE_STORE_PATH;
+			basePath2 = FILE_STORE_PATH;
 		}
 
-		if (!EgovFileBasePathSecurityValidator.validate(basePath)) {
-			throw new SecurityException("Unacceptable base path : " + basePath);
+		if (!EgovFileBasePathSecurityValidator.validate(basePath2)) {
+			throw new SecurityException("Unacceptable base path : " + basePath2);
 		}
 
 		// 파싱결과 구조체
@@ -361,20 +368,20 @@ public class EgovFileTool {
 
 		// 파일 오픈
 		String parFile1 = parFile.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR);
-		File file = new File(EgovWebUtil.filePathBlackList(basePath + parFile1));
-		BufferedReader br = null;
-		try {
-			// 파일이며, 존재하면 파싱 시작
-			if (file.exists() && file.isFile()) {
+		File file = new File(EgovWebUtil.filePathBlackList(basePath2 + parFile1));
+		// 파일이며, 존재하면 파싱 시작
+		if (file.exists() && file.isFile()) {
+			// 1. 파일 텍스트 내용을 읽어서 StringBuffer에 쌓는다.
+			try (BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));) {
 
-				// 1. 파일 텍스트 내용을 읽어서 StringBuffer에 쌓는다.
-				br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
 				StringBuffer strBuff = new StringBuffer();
-				String line = "";
-				while ((line = br.readLine()) != null) {
+				String line = br.readLine();
+				while (line != null) {
 					if (line.length() < MAX_STR_LEN) {
 						strBuff.append(line);
 					}
+
+					line = br.readLine();
 				}
 
 				// 2. 쌓은 내용을 특정 구분자로 파싱하여 String 배열로 얻는다.
@@ -417,8 +424,6 @@ public class EgovFileTool {
 					filedCnt++;
 				}
 			}
-		} finally {
-			EgovResourceCloseHelper.close(br);
 		}
 
 		return parResult;
