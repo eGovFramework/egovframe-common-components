@@ -1,15 +1,13 @@
 /**
  *  Class Name : EgovMenuGov.java
- *  Description : 메뉴관리 Business Interface class
+ *  Description : 
  *  Modification Information
  *
  *     수정일         수정자                   수정내용
  *   -------    --------    ---------------------------
- *   2009.02.02    이 용          최초 생성
- *   2022.11.11    김혜준		  시큐어코딩 처리
+
  *
- *  @author 공통 서비스 개발팀 이 용
- *  @since 2009. 02. 02
+
  *  @version 1.0
  *  @see
  *
@@ -23,6 +21,26 @@ import java.io.FileWriter;
 import java.util.List;
 import java.util.Vector;
 
+/**
+ * 메뉴관리 Business Interface class
+ * 
+ * @author 공통컴포넌트 개발팀 홍길동
+ * @author 공통 서비스 개발팀 이용
+ * @since 2009.02.02
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.02.02  이용           최초 생성
+ *   2022.11.11  김혜준          시큐어코딩 처리
+ *   2025.09.10  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *   2025.09.10  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(부적절한 자원 해제)
+ *
+ *      </pre>
+ */
 public class EgovMenuGov {
 
 	// 파일구분자
