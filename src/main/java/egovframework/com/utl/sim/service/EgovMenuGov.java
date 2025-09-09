@@ -23,8 +23,6 @@ import java.io.FileWriter;
 import java.util.List;
 import java.util.Vector;
 
-import egovframework.com.cmm.util.EgovResourceCloseHelper;
-
 public class EgovMenuGov {
 
 	// 파일구분자
@@ -45,10 +43,8 @@ public class EgovMenuGov {
 	public static Vector<List<String>> parsFileByMenuChar(String basePath, String parFile, String parChar, int parField)
 			throws Exception {
 		Vector<List<String>> list = null;
-		String FileName = null;
 
-		FileName = parFile.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR);
-		File file = new File(FileName);
+		File file = new File(parFile.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR));
 
 		// 파일이며, 존재하면 파싱 시작
 		if (file.exists() && file.isFile()) {
@@ -76,12 +72,10 @@ public class EgovMenuGov {
 	public static boolean setDataByDATFile(String parFile, String[] menuIDArray, String[] menuNameArray,
 			String[] menuLevelArray, String[] menuURLArray) throws Exception {
 		boolean success = false;
-		String FileName = null;
 
-		FileName = parFile.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR);
-		File file = new File(FileName);
-		BufferedWriter out = new BufferedWriter(new FileWriter(file));
-		try {
+		File file = new File(parFile.replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR));
+
+		try (BufferedWriter out = new BufferedWriter(new FileWriter(file));) {
 
 			for (int i = 0; i < menuIDArray.length; i++) { // nodeId | parentNodeId | nodeName | nodeUrl
 				out.write(menuIDArray[i] + "|" + menuLevelArray[i] + "|" + menuNameArray[i] + "|" + menuURLArray[i]
@@ -89,8 +83,6 @@ public class EgovMenuGov {
 				out.newLine();
 			}
 			success = true;
-		} finally {
-			EgovResourceCloseHelper.close(out);
 		}
 		return success;
 	}
