@@ -1,23 +1,3 @@
-/**
- *  Class Name : EgovFileTool.java
- *  Description : 시스템 디렉토리 정보를 확인하여 제공하는  Business class
- *  Modification Information
- *
- *     수정일         수정자                   수정내용
- *   -------    --------    ---------------------------
- *   2009.01.13    조재영          최초 생성
- *   2017.03.03    조성원 	     시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
- *   2017.03.03    조성원          시큐어코딩(ES)-Null Pointer 역참조[CWE-476]
- *   2018.03.19    신용호          createDirectories() 추가 : 여러 레벨의 디렉토리를 한번에 생성
- *
- *
- *  @author 공통 서비스 개발팀 조재영,박지욱
- *  @since 2009. 01. 13
- *  @version 1.0
- *  @see
- *
- *  Copyright (C) 2009 by MOPAS  All rights reserved.
- */
 package egovframework.com.utl.sim.service;
 
 import java.io.BufferedReader;
@@ -39,24 +19,36 @@ import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 
 /**
+ * 시스템 디렉토리 정보를 확인하여 제공하는 Business class
+ * <p>
  * EgovFileTool 클래스를 정의한다.
- *
- * @author 김진만
- * @see
  * 
- *      <pre>
- * == 개정이력(Modification Information) ==
+ * @author 공통 서비스 개발팀 조재영,박지욱
+ * @author 김진만
+ * @since 2009.01.13
+ * @since 2009.06.01
+ * @version 1.0
+ * @see
  *
- *  수정일                수정자           수정내용
- *  ----------   --------   ---------------------------
- *  2020.12.07   신용호       KISA 보안약점 조치
- *  2022.11.11   김혜준       시큐어코딩 처리
- *  2024.10.29   win777	    디렉토리 생성 성공 시 생성된 절대경로를 리턴하도록 변경
- *  2025.02.06   신용호       deleteFile() KISA 시큐어코딩 처리
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.01.13  조재영          최초 생성
+ *   2017.03.03  조성원 	       시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+ *   2017.03.03  조성원          시큐어코딩(ES)-Null Pointer 역참조[CWE-476]
+ *   2018.03.19  신용호          createDirectories() 추가 : 여러 레벨의 디렉토리를 한번에 생성
+ *   2020.12.07  신용호          KISA 보안약점 조치
+ *   2022.11.11  김혜준          시큐어코딩 처리
+ *   2024.10.29  win777        디렉토리 생성 성공 시 생성된 절대경로를 리턴하도록 변경
+ *   2025.02.06  신용호          deleteFile() KISA 시큐어코딩 처리
+ *   2025.09.09  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AvoidReassigningParameters(넘겨받는 메소드 parameter 값을 직접 변경하는 코드 탐지)
+ *   2025.09.09  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(부적절한 자원 해제)
+ *   2025.09.09  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AssignmentInOperand(피연산자내에 할당문이 사용됨. 해당 코드를 복잡하고 가독성이 떨어지게 만듬)
  *
  *      </pre>
  */
-
 public class EgovFileTool {
 
 	// 파일구분자
