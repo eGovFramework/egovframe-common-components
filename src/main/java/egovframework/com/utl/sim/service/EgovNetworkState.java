@@ -1,20 +1,3 @@
-/**
- *  Class Name : EgovNetworkState.java
- *  Description : 네트워크(Network)상태 체크 Business Interface class
- *  Modification Information
- *
- *     수정일         수정자                   수정내용
- *   -------    --------    ---------------------------
- *   2009.02.02    이 용          최초 생성
- *
- *  @author 공통 서비스 개발팀 이 용
- *  @since 2009. 02. 02
- *  @version 1.0
- *  @see
- * The type com.sun.star.lang.XeventListener cannot be resolved. It is indirectly referenced from required .class files
- *  Copyright (C) 2009 by EGOV  All rights reserved.
- */
-
 package egovframework.com.utl.sim.service;
 
 import java.io.BufferedReader;
@@ -35,23 +18,33 @@ import egovframework.com.cmm.service.FileSystemUtils;
 import egovframework.com.cmm.service.Globals;
 
 /**
+ * 네트워크(Network)상태 체크 Business Interface class
+ * <p>
  * EgovNetworkState 클래스를 정의한다.
- *
+ * 
+ * @author 공통 서비스 개발팀 이용
  * @author 김진만
+ * @since 2009.02.02
+ * @version 1.0
  * @see
- * 
- *      <pre>
- * == 개정이력(Modification Information) ==
  *
- *  수정일		수정자		수정내용
- *  ----------	--------	---------------------------
- *  2020.12.07	신용호		KISA 보안약점 조치
- *  2022.11.11	김혜준		시큐어코딩 처리
- *  2023.06.09	김신해		NSR 보안조치 (SCAN 기능 구현 추가)
- * 
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.02.02  이용           최초 생성
+ *   2020.12.07  신용호          KISA 보안약점 조치
+ *   2022.11.11  김혜준          시큐어코딩 처리
+ *   2023.06.09  김신해          NSR 보안조치 (SCAN 기능 구현 추가)
+ *   2025.09.10  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(부적절한 자원 해제)
+ *   2025.09.10  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AssignmentInOperand(피연산자내에 할당문이 사용됨. 해당 코드를 복잡하고 가독성이 떨어지게 만듬)
+ *   2025.09.10  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-StringInstantiation(불필요한 String Instance를 생성하는 코드를 탐지. 간단한 형태의 코드로 변경 필요)
+ *   2025.09.10  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *   2025.09.10  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UnnecessaryBoxing(불필요한 WrapperObject 생성)
+ *
  *      </pre>
  */
-
 public class EgovNetworkState {
 	public static String addrIP = "";
 	static final char FILE_SEPARATOR = File.separatorChar;
