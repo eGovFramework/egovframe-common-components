@@ -58,20 +58,24 @@ public class EgovPdfCnvr {
 	 * <pre>
 	 * Comment : doc, xls 파일등을 PDF변환 변환한다.
 	 * </pre>
-	 * @param String pdfFileSrc        doc, xls 파일 전체경로
-	 * @param String targetPdf         변환파일명(확장자 제외)
-	 * @return boolean  status         true/false 를 리턴한다.
+	 * 
+	 * @param String pdfFileSrc doc, xls 파일 전체경로
+	 * @param String targetPdf 변환파일명(확장자 제외)
+	 * @return boolean status true/false 를 리턴한다.
 	 * @version 1.0 (2009.02.10)
 	 * @see
 	 */
-	public static boolean getPDF(String targetPdf, HttpServletRequest request, HttpServletResponse response) throws Exception {
+	public static boolean getPDF(String targetPdf, HttpServletRequest request, HttpServletResponse response)
+			throws Exception {
 		boolean status = false;
 
 		try {
-			MultipartHttpServletRequest mptRequest = WebUtils.getNativeRequest(request,MultipartHttpServletRequest.class);
+			MultipartHttpServletRequest mptRequest = WebUtils.getNativeRequest(request,
+					MultipartHttpServletRequest.class);
 
-			// 2022.01 Possible null pointer dereference due to return value of called method 조치
-			if(mptRequest!= null) {
+			// 2022.01 Possible null pointer dereference due to return value of called
+			// method 조치
+			if (mptRequest != null) {
 				Iterator<String> file_iter = mptRequest.getFileNames();
 
 				while (file_iter.hasNext()) {
@@ -84,36 +88,38 @@ public class EgovPdfCnvr {
 					}
 
 					String newName = "";
-	
-					//newName 은 Naming Convention에 의해서 생성
+
+					// newName 은 Naming Convention에 의해서 생성
 					newName = EgovStringUtil.getTimeStamp();
 					writeFile(mFile, newName);
-	
-					File inputFile = new File(EgovWebUtil.filePathBlackList(STORE_FILE_PATH + FilenameUtils.getName(newName)));
-	
+
+					File inputFile = new File(
+							EgovWebUtil.filePathBlackList(STORE_FILE_PATH + FilenameUtils.getName(newName)));
+
 					if (inputFile.exists()) {
-	
+
 						// connect to an OpenOffice.org instance running on port 8100
 						SocketOpenOfficeConnection connection = new SocketOpenOfficeConnection(8100);
 						connection.connect();
-						//원본 디렉토리에 targetPdf 명칭지정
+						// 원본 디렉토리에 targetPdf 명칭지정
 						String valueFile = null;
-						//KISA 보안약점 조치 (2018-10-29, 윤창원)
-						valueFile = EgovStringUtil.isNullToString(inputFile.getParent()).replace('\\', FILE_SEPARATOR).replace('/', FILE_SEPARATOR);
+						// KISA 보안약점 조치 (2018-10-29, 윤창원)
+						valueFile = EgovStringUtil.isNullToString(inputFile.getParent()).replace('\\', FILE_SEPARATOR)
+								.replace('/', FILE_SEPARATOR);
 						File outputFile = new File(valueFile + "/" + targetPdf + ".pdf");
 						// convert
 						DocumentConverter converter = new OpenOfficeDocumentConverter(connection);
 						converter.convert(inputFile, outputFile);
 						// close the connection
 						connection.disconnect();
-	
+
 						if (inputFile.exists()) {
-							//3. 삭제해줍니다.
+							// 3. 삭제해줍니다.
 							status = inputFile.delete();
 						}
-	
+
 						status = true;
-	
+
 					} else {
 						status = false;
 					}
@@ -132,6 +138,7 @@ public class EgovPdfCnvr {
 
 	/**
 	 * 파일을 실제 물리적인 경로에 생성한다.
+	 * 
 	 * @param file
 	 * @param newName
 	 * @param stordFilePath
@@ -155,7 +162,8 @@ public class EgovPdfCnvr {
 				}
 			}
 
-			bos = new FileOutputStream(EgovWebUtil.filePathBlackList(STORE_FILE_PATH + File.separator + FilenameUtils.getName(newName)));
+			bos = new FileOutputStream(
+					EgovWebUtil.filePathBlackList(STORE_FILE_PATH + File.separator + FilenameUtils.getName(newName)));
 
 			int bytesRead = 0;
 			byte[] buffer = new byte[BUFF_SIZE];
