@@ -21,16 +21,14 @@ package egovframework.com.utl.sim.service;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.UncheckedIOException;
 import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FilenameUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.util.WebUtils;
@@ -42,16 +40,16 @@ import com.artofsolving.jodconverter.openoffice.converter.OpenOfficeDocumentConv
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.util.EgovBasicLogger;
-import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 public class EgovPdfCnvr {
 	public static String addrIP = "";
 	static final char FILE_SEPARATOR = File.separatorChar;
 	// 최대 문자길이
 	static final int MAX_STR_LEN = 1024;
 	public static final int BUFF_SIZE = 2048;
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovPdfCnvr.class);
 	private static final String STORE_FILE_PATH = EgovProperties.getProperty("Globals.fileStorePath");
 
 	/**
@@ -65,8 +63,7 @@ public class EgovPdfCnvr {
 	 * @version 1.0 (2009.02.10)
 	 * @see
 	 */
-	public static boolean getPDF(String targetPdf, HttpServletRequest request, HttpServletResponse response)
-			throws Exception {
+	public static boolean getPDF(String targetPdf, HttpServletRequest request, HttpServletResponse response) {
 		boolean status = false;
 
 		try {
@@ -76,11 +73,11 @@ public class EgovPdfCnvr {
 			// 2022.01 Possible null pointer dereference due to return value of called
 			// method 조치
 			if (mptRequest != null) {
-				Iterator<String> file_iter = mptRequest.getFileNames();
+				Iterator<String> fileIter = mptRequest.getFileNames();
 
-				while (file_iter.hasNext()) {
+				while (fileIter.hasNext()) {
 
-					MultipartFile mFile = mptRequest.getFile(file_iter.next());
+					MultipartFile mFile = mptRequest.getFile(fileIter.next());
 
 					// 2022.11.11 김혜준 시큐어코딩 처리
 					if (mFile == null) {
@@ -142,37 +139,18 @@ public class EgovPdfCnvr {
 	 * @param file
 	 * @param newName
 	 * @param stordFilePath
-	 * @throws Exception
 	 */
-	protected static void writeFile(MultipartFile file, String newName) throws IOException {
-		InputStream stream = null;
-		OutputStream bos = null;
+	protected static void writeFile(MultipartFile file, String newName) {
+		if (log.isDebugEnabled()) {
+			log.debug("file={}", file);
+			log.debug("newName={}", newName);
+		}
 
 		try {
-
-			stream = file.getInputStream();
-			File cFile = new File(EgovWebUtil.filePathBlackList(STORE_FILE_PATH));
-
-			if (!cFile.isDirectory()) {
-				// 2017.03.03 조성원 시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-				if (cFile.mkdirs()) {
-					LOGGER.debug("[file.mkdirs] targetDir : Directory Creation Success");
-				} else {
-					LOGGER.error("[file.mkdirs] targetDir : Directory Creation Fail");
-				}
-			}
-
-			bos = new FileOutputStream(
-					EgovWebUtil.filePathBlackList(STORE_FILE_PATH + File.separator + FilenameUtils.getName(newName)));
-
-			int bytesRead = 0;
-			byte[] buffer = new byte[BUFF_SIZE];
-			while ((bytesRead = stream.read(buffer, 0, BUFF_SIZE)) != -1) {
-				bos.write(buffer, 0, bytesRead);
-			}
-
-		} finally {
-			EgovResourceCloseHelper.close(bos, stream);
+			FileCopyUtils.copy(file.getInputStream(), new FileOutputStream(
+					EgovWebUtil.filePathBlackList(STORE_FILE_PATH + File.separator + FilenameUtils.getName(newName))));
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
 		}
 	}
 }
