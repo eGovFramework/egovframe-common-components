@@ -1,21 +1,3 @@
-/**
- *  Class Name : EgovPdfCnvr.java
- *  Description : xls,doc,ppt를 Pdf로 변환하는 화면 Business Interface class
- *  Modification Information
- *
- *     수정일         수정자                   수정내용
- *   -------    --------    ---------------------------
- *   2009.02.02    이 용          최초 생성
- *   2017.03.03          조성원 	    시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
- *
- *  @author 공통 서비스 개발팀 이 용
- *  @since 2009. 02. 02
- *  @version 1.0
- *  @see
- * The type com.sun.star.lang.XeventListener cannot be resolved. It is indirectly referenced from required .class files
- *  Copyright (C) 2009 by EGOV  All rights reserved.
- */
-
 package egovframework.com.utl.sim.service;
 
 import java.io.File;
@@ -43,6 +25,27 @@ import egovframework.com.cmm.util.EgovBasicLogger;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import lombok.extern.slf4j.Slf4j;
 
+/**
+ * xls,doc,ppt를 Pdf로 변환하는 화면 Business Interface class
+ * 
+ * @author 공통 서비스 개발팀 이용
+ * @since 2009.02.02
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.02.02  이용           최초 생성
+ *   2017.03.03  조성원          시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+ *   2025.09.11  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *   2025.09.11  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(부적절한 자원 해제)
+ *   2025.09.11  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AssignmentInOperand(피연산자내에 할당문이 사용됨. 해당 코드를 복잡하고 가독성이 떨어지게 만듬)
+ *
+ *      </pre>
+ */
 @Slf4j
 public class EgovPdfCnvr {
 	public static String addrIP = "";
