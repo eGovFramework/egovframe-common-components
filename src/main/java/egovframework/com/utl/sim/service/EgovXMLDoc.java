@@ -21,10 +21,13 @@ package egovframework.com.utl.sim.service;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.charset.StandardCharsets;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
+import javax.xml.parsers.ParserConfigurationException;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Result;
 import javax.xml.transform.Source;
@@ -34,14 +37,16 @@ import javax.xml.transform.dom.DOMSource;
 import javax.xml.transform.stream.StreamResult;
 
 import org.apache.commons.io.FilenameUtils;
+import org.apache.xmlbeans.XmlException;
 import org.apache.xmlbeans.XmlOptions;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.Text;
+import org.xml.sax.SAXException;
 
 import egovframework.com.cmm.service.EgovProperties;
-import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import noNamespace.SndngMailDocument;
 
 public class EgovXMLDoc {
@@ -60,20 +65,18 @@ public class EgovXMLDoc {
 	 * @param file XML파일
 	 * @return SndngMailDocument mailDoc 메일발송 클래스(XML스키마를 통해 생성된 자바클래스)
 	 */
-	public static SndngMailDocument getXMLToClass(String file) throws Exception {
-		FileInputStream fis = null;
+	public static SndngMailDocument getXMLToClass(String file) {
 		SndngMailDocument mailDoc = null;
 
 		String storePathString = EgovProperties.getProperty("Globals.fileStorePath");
-		try {
-			File xmlFile = new File(storePathString, FilenameUtils.getName(file));
-			if (xmlFile.exists() && xmlFile.isFile()) {
-				fis = new FileInputStream(xmlFile);
-				mailDoc = SndngMailDocument.Factory.parse(xmlFile);
+		File xmlFile = new File(storePathString, FilenameUtils.getName(file));
 
+		if (xmlFile.exists() && xmlFile.isFile()) {
+			try {
+				mailDoc = SndngMailDocument.Factory.parse(xmlFile);
+			} catch (XmlException | IOException e) {
+				throw new BaseRuntimeException(e);
 			}
-		} finally {
-			EgovResourceCloseHelper.close(fis);
 		}
 
 		return mailDoc;
@@ -86,28 +89,26 @@ public class EgovXMLDoc {
 	 * @param file    저장될 파일
 	 * @return boolean 저장여부 True / False
 	 */
-	public static boolean getClassToXML(SndngMailDocument mailDoc, String file) throws Exception {
+	public static boolean getClassToXML(SndngMailDocument mailDoc, String file) {
 		boolean result = false;
 
-		FileOutputStream fos = null;
 		String storePathString = EgovProperties.getProperty("Globals.fileStorePath");
 
-		try {
-			file = EgovFileTool.createNewFile(storePathString, FilenameUtils.getName(file));
-			File xmlFile = new File(storePathString, FilenameUtils.getName(file));
-			fos = new FileOutputStream(xmlFile);
+		String file2 = EgovFileTool.createNewFile(storePathString, FilenameUtils.getName(file));
+		File xmlFile = new File(storePathString, FilenameUtils.getName(file2));
 
+		try (FileOutputStream fos = new FileOutputStream(xmlFile);) {
 			XmlOptions xmlOptions = new XmlOptions();
 			xmlOptions.setSavePrettyPrint();
 			xmlOptions.setSavePrettyPrintIndent(4);
 			xmlOptions.setCharacterEncoding("UTF-8");
 			String xmlStr = mailDoc.xmlText(xmlOptions);
 			fos.write(xmlStr.getBytes(StandardCharsets.UTF_8));
-			result = true;
-
-		} finally {
-			EgovResourceCloseHelper.close(fos);
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
 		}
+
+		result = true;
 
 		return result;
 	}
@@ -118,15 +119,14 @@ public class EgovXMLDoc {
 	 * @param xml XML파일
 	 * @return Document document 문서객체
 	 */
-	public static Document getXMLDocument(String xml) throws Exception {
+	public static Document getXMLDocument(String xml) {
 		Document xmlDoc = null;
-		FileInputStream fis = null;
 		String storePathString = EgovProperties.getProperty("Globals.fileStorePath");
 
-		try {
-			File srcFile = new File(storePathString, FilenameUtils.getName(xml));
-			if (srcFile.exists() && srcFile.isFile()) {
-				fis = new FileInputStream(srcFile);
+		File srcFile = new File(storePathString, FilenameUtils.getName(xml));
+
+		if (srcFile.exists() && srcFile.isFile()) {
+			try (FileInputStream fis = new FileInputStream(srcFile);) {
 				DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 				factory.setNamespaceAware(true);
 				factory.setFeature(EgovXMLConstants.FEATURE_SECURE_PROCESSING, true);
@@ -138,9 +138,13 @@ public class EgovXMLDoc {
 				DocumentBuilder builder;
 				builder = factory.newDocumentBuilder();
 				xmlDoc = builder.parse(fis);
+			} catch (IOException e) {
+				throw new UncheckedIOException(e);
+			} catch (ParserConfigurationException e) {
+				throw new BaseRuntimeException(e);
+			} catch (SAXException e) {
+				throw new BaseRuntimeException(e);
 			}
-		} finally {
-			EgovResourceCloseHelper.close(fis);
 		}
 
 		return xmlDoc;
