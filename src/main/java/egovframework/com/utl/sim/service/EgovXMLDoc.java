@@ -1,21 +1,3 @@
-/**
- *  Class Name : EgovXMLDoc.java
- *  Description : XML파일을 파싱하여 구조체 형태로 반환 또는 구조체 형태의 데이터를 XML파일로 저장하는 Business Interface class
- *  Modification Information
- *
- *     수정일         수정자                   수정내용
- *   -------    --------    ---------------------------
- *   2009.02.03    박지욱          최초 생성
- *   2022.11.11    김혜준          시큐어코딩 처리
- *   2024.10.29		LeeBaekHaeng	불필요 형변환 제거 (SndngMailDocument.Factory.parse(xmlFile);)
- *
- *  @author 공통 서비스 개발팀 박지욱
- *  @since 2009. 02. 03
- *  @version 1.0
- *  @see
- *
- *  Copyright (C) 2009 by MOPAS  All rights reserved.
- */
 package egovframework.com.utl.sim.service;
 
 import java.io.File;
@@ -49,6 +31,27 @@ import org.xml.sax.SAXException;
 import egovframework.com.cmm.service.EgovProperties;
 import noNamespace.SndngMailDocument;
 
+/**
+ * XML파일을 파싱하여 구조체 형태로 반환 또는 구조체 형태의 데이터를 XML파일로 저장하는 Business Interface class
+ * 
+ * @author 공통 서비스 개발팀 박지욱
+ * @since 2009.02.03
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.02.03  박지욱          최초 생성
+ *   2022.11.11  김혜준          시큐어코딩 처리
+ *   2024.10.29  이백행          불필요 형변환 제거 (SndngMailDocument.Factory.parse(xmlFile);)
+ *   2025.09.11  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(부적절한 자원 해제)
+ *   2025.09.11  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AvoidReassigningParameters(넘겨받는 메소드 parameter 값을 직접 변경하는 코드 탐지)
+ *
+ *      </pre>
+ */
 public class EgovXMLDoc {
 
 	// 파일구분자
