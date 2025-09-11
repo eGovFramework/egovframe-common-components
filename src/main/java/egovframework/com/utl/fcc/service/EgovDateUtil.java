@@ -282,20 +282,20 @@ public class EgovDateUtil {
 		String fromFormat = "";
 		String toFormat = "";
 
-		if (EgovStringUtil.isNullToString(strSource).trim().equals("")) {
+		if (EgovStringUtil.isNullToString(strSource).isEmpty()) {
 			return "";
 		}
-		if (EgovStringUtil.isNullToString(fromDateFormat).trim().equals("")) {
+		if (EgovStringUtil.isNullToString(fromDateFormat).isEmpty()) {
 			fromFormat = "yyyyMMddHHmmss"; // default값
 		}
-		if (EgovStringUtil.isNullToString(toDateFormat).trim().equals("")) {
+		if (EgovStringUtil.isNullToString(toDateFormat).isEmpty()) {
 			toFormat = "yyyy-MM-dd HH:mm:ss"; // default값
 		}
 
 		try {
 			simpledateformat = new SimpleDateFormat(fromFormat, Locale.getDefault());
 			date = simpledateformat.parse(strSource);
-			if (!EgovStringUtil.isNullToString(strTimeZone).trim().equals("")) {
+			if (!EgovStringUtil.isNullToString(strTimeZone).isEmpty()) {
 				simpledateformat.setTimeZone(TimeZone.getTimeZone(strTimeZone));
 			}
 			simpledateformat = new SimpleDateFormat(toFormat, Locale.getDefault());
