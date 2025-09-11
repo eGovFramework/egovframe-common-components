@@ -34,7 +34,7 @@ import com.ibm.icu.util.ChineseCalendar;
  *      </pre>
  */
 public class EgovDateUtil {
-
+    private static final  String SIMPLE_DATE_FORMAT = "yyyyMMdd";
 	/**
 	 * <p>
 	 * yyyyMMdd 혹은 yyyy-MM-dd 형식의 날짜 문자열을 입력 받아 년, 월, 일을 증감한다. 년, 월, 일은 가감할 수를 의미하며,
@@ -67,7 +67,7 @@ public class EgovDateUtil {
 		String dateStr = validChkDate(sDate);
 
 		Calendar cal = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
+		SimpleDateFormat sdf = new SimpleDateFormat(SIMPLE_DATE_FORMAT, Locale.getDefault());
 		try {
 			cal.setTime(sdf.parse(dateStr));
 		} catch (ParseException e) {
@@ -192,7 +192,7 @@ public class EgovDateUtil {
 		if (!checkDate(sDate1) || !checkDate(sDate2)) {
 			throw new IllegalArgumentException("Invalid date format: args[0]=" + sDate1 + " args[1]=" + sDate2);
 		}
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.getDefault());
+		SimpleDateFormat sdf = new SimpleDateFormat(SIMPLE_DATE_FORMAT, Locale.getDefault());
 
 		Date date1 = null;
 		Date date2 = null;
@@ -449,7 +449,7 @@ public class EgovDateUtil {
 				+ ((date < 10) ? "0" + Integer.toString(date) : Integer.toString(date));
 
 		if (!"".equals(dateType)) {
-			strDate = convertDate(strDate, "yyyyMMdd", dateType);
+			strDate = convertDate(strDate, SIMPLE_DATE_FORMAT, dateType);
 		}
 
 		return strDate;
@@ -537,8 +537,8 @@ public class EgovDateUtil {
 				+ beginDate.getTimeInMillis();
 
 		GregorianCalendar cal = new GregorianCalendar();
-		// SimpleDateFormat calformat = new SimpleDateFormat("yyyy-MM-dd");
-		SimpleDateFormat calformat = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
+
+		SimpleDateFormat calformat = new SimpleDateFormat(SIMPLE_DATE_FORMAT, Locale.ENGLISH);
 		cal.setTimeInMillis(rand);
 		randomDate = calformat.format(cal.getTime());
 
@@ -777,7 +777,7 @@ public class EgovDateUtil {
 		dateStr = addYearMonthDay(dateStr, year, month, day);
 
 		Calendar cal = Calendar.getInstance();
-		SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMdd", Locale.ENGLISH);
+		SimpleDateFormat sdf = new SimpleDateFormat(SIMPLE_DATE_FORMAT, Locale.ENGLISH);
 		try {
 			cal.setTime(sdf.parse(dateStr));
 		} catch (ParseException e) {
@@ -840,7 +840,7 @@ public class EgovDateUtil {
 	 * @return int(일자)
 	 */
 	public static int datetoInt(String sDate) {
-		return Integer.parseInt(convertDate(sDate, "0000", "yyyyMMdd"));
+		return Integer.parseInt(convertDate(sDate, "0000", SIMPLE_DATE_FORMAT));
 	}
 
 	/**
