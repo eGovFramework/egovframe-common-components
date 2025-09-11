@@ -1,27 +1,33 @@
 package egovframework.com.sym.sym.srv.service;
 
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
 /**
+ * <pre>
  * 개요
  * - 서버정보에 대한 Vo 클래스를 정의한다.
  *
  * 상세내용
  * - 서버정보의 목록 항목 및 조회조건을 관리한다.
- * @author 이문준
- * @version 1.0
- * @created 28-6-2010 오전 10:44:56
- * 
- * <pre>
- * << 개정이력(Modification Information) >>
- *
- *  수정일               수정자            수정내용
- *  ----------   --------   ---------------------------
- *  2020-08-28   신용호            보안약점 조치 (Private 배열에 Public 데이터 할당[CWE-496])
- *
  * </pre>
  * 
+ * @author 이문준
+ * @since 2010.06.28
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.06.28  이문준          최초 생성
+ *   2020-08-28  신용호          보안약점 조치 (Private 배열에 Public 데이터 할당[CWE-496])
+ *   2025.07.25  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-MethodReturnsInternalArray(Private 배열에 Public 데이터 할당)
+ *
+ *      </pre>
  */
 public class ServerVO extends Server {
 
@@ -35,7 +41,8 @@ public class ServerVO extends Server {
 	/**
 	 * 삭제대상 목록
 	 */
-	String delYn[];
+	private String delYn[];
+
 	/**
 	 * 서버명 조회조건
 	 */
@@ -47,30 +54,39 @@ public class ServerVO extends Server {
 	public List<?> getServerList() {
 		return serverList;
 	}
+
 	/**
 	 * @param serverList the serverList to set
 	 */
 	public void setServerList(List<?> serverList) {
 		this.serverList = Collections.unmodifiableList(serverList);
 	}
+
 	/**
 	 * @return the delYn
 	 */
 	public String[] getDelYn() {
-		return delYn;
+		return delYn == null ? new String[0] : Arrays.copyOf(delYn, delYn.length);
 	}
+
 	/**
 	 * @param delYn the delYn to set
 	 */
 	public void setDelYn(String[] delYn) {
-		this.delYn = delYn.clone();
+		if (delYn == null) {
+			this.delYn = new String[0];
+		} else {
+			this.delYn = Arrays.copyOf(delYn, delYn.length);
+		}
 	}
+
 	/**
 	 * @return the strServerNm
 	 */
 	public String getStrServerNm() {
 		return strServerNm;
 	}
+
 	/**
 	 * @param strServerNm the strServerNm to set
 	 */
