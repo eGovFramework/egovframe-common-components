@@ -54,7 +54,7 @@ public class EgovDateUtil {
 	 * DateUtil.addYearMonthDay("20040229", 2, 0, 1)   = "20060301"
 	 * </pre>
 	 *
-	 * @param dateStr 날짜 문자열(yyyyMMdd, yyyy-MM-dd의 형식)
+	 * @param sDate   날짜 문자열(yyyyMMdd, yyyy-MM-dd의 형식)
 	 * @param year    가감할 년. 0이 입력될 경우 가감이 없다
 	 * @param month   가감할 월. 0이 입력될 경우 가감이 없다
 	 * @param day     가감할 일. 0이 입력될 경우 가감이 없다
@@ -179,8 +179,8 @@ public class EgovDateUtil {
 	 * DateUtil.getDaysDiff("20060801","20060801") = 0
 	 * </pre>
 	 *
-	 * @param dateStr1 날짜 문자열(yyyyMMdd, yyyy-MM-dd의 형식)
-	 * @param dateStr2 날짜 문자열(yyyyMMdd, yyyy-MM-dd의 형식)
+	 * @param sDate1 날짜 문자열(yyyyMMdd, yyyy-MM-dd의 형식)
+	 * @param sDate2 날짜 문자열(yyyyMMdd, yyyy-MM-dd의 형식)
 	 * @return 일 수 차이.
 	 * @throws IllegalArgumentException 날짜 포맷이 정해진 바와 다를 경우. 입력 값이
 	 *                                  <code>null</code>인 경우.
@@ -228,7 +228,7 @@ public class EgovDateUtil {
 	 * DateUtil.checkDate("2006-02-28") = true
 	 * </pre>
 	 *
-	 * @param dateStr 날짜 문자열(yyyyMMdd, yyyy-MM-dd의 형식)
+	 * @param sDate 날짜 문자열(yyyyMMdd, yyyy-MM-dd의 형식)
 	 * @return 유효한 날짜인지 여부
 	 */
 	public static boolean checkDate(String sDate) {
@@ -316,7 +316,7 @@ public class EgovDateUtil {
 	* ex) 20040101,ch(/) --> 2004/01/01 로 리턴
 	 * </pre>
 	 *
-	 * @param date yyyyMMdd 형식의 날짜문자열
+	 * @param sDate yyyyMMdd 형식의 날짜문자열
 	 * @param ch   구분자
 	 * @return 변환된 문자열
 	 */
@@ -378,7 +378,7 @@ public class EgovDateUtil {
 	 *     ex) 151241, ch(/) -> 15/12/31
 	 * </pre>
 	 *
-	 * @param str HH24MISS 형식의 시간문자열
+	 * @param sTime HH24MISS 형식의 시간문자열
 	 * @param ch  구분자
 	 * @return 변환된 문자열
 	 */
@@ -856,7 +856,7 @@ public class EgovDateUtil {
 	/**
 	 * 입력된 일자 문자열을 확인하고 8자리로 리턴
 	 * 
-	 * @param sDate
+	 * @param dateStr
 	 * @return
 	 */
 	public static String validChkDate(String dateStr) {
@@ -874,7 +874,7 @@ public class EgovDateUtil {
 	/**
 	 * 입력된 일자 문자열을 확인하고 8자리로 리턴
 	 * 
-	 * @param sDate
+	 * @param timeStr
 	 * @return
 	 */
 	public static String validChkTime(String timeStr) {
