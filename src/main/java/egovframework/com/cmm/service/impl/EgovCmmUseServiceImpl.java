@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import java.util.function.Function;
+import java.util.stream.Collectors;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,7 @@ import lombok.RequiredArgsConstructor;
  *   2009.03.11  이삼섭          최초 생성
  *   2024.10.29  이백행          @Override 표기
  *   2025.07.16  이백행          2025년 컨트리뷰션 `throws Exception` 제거
+ *   2025.08.27  문종운          DB 호출을 줄이기 위한 IN절 조회로 수정
  *
  *      </pre>
  */
@@ -56,11 +59,14 @@ public class EgovCmmUseServiceImpl extends EgovAbstractServiceImpl implements Eg
 	 */
 	@Override
 	public Map<String, List<CmmnDetailCode>> selectCmmCodeDetails(List<ComDefaultCodeVO> comDefaultCodeVOs) {
-		Map<String, List<CmmnDetailCode>> map = new HashMap<>();
-		for (ComDefaultCodeVO comDefaultCodeVO : comDefaultCodeVOs) {
-			map.put(comDefaultCodeVO.getCodeId(), cmmUseDAO.selectCmmCodeDetail(comDefaultCodeVO));
-		}
-		return map;
+		List<String> codeIds = comDefaultCodeVOs.stream()
+			.map(ComDefaultCodeVO::getCodeId)
+			.collect(Collectors.toList());
+
+		List<CmmnDetailCode> allCodes = cmmUseDAO.selectCmmCodeDetailsByCodeIds(codeIds);
+
+		return allCodes.stream()
+			.collect(Collectors.groupingBy(CmmnDetailCode::getCodeId));
 	}
 
 	/**
