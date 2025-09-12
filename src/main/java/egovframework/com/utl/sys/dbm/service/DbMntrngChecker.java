@@ -11,8 +11,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
 
-import egovframework.com.cmm.util.EgovResourceCloseHelper;
-
 /**
  * @Class Name : EgovDbMntrngChecker.java
  * @Description : DB서비스모니터링을 위한 Check 클래스
@@ -48,34 +46,17 @@ public class DbMntrngChecker {
 	 *
 	 */
 	public static DbMntrngResult check(ApplicationContext context, String dataSourcNm, String ceckSql) {
+		DataSource datasource = (DataSource) context.getBean(dataSourcNm);
 
-		Connection conn = null;
-		PreparedStatement stmt = null;
-		DataSource datasource = null;
-		ResultSet rs = null;
-
-		try {
-			datasource = (DataSource) context.getBean(dataSourcNm);
-			conn = datasource.getConnection();
-			stmt = conn.prepareStatement(ceckSql);
-
-			// 2017.02.08 이정은 시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-			rs = stmt.executeQuery();
-
+		try (Connection conn = datasource.getConnection();
+				PreparedStatement stmt = conn.prepareStatement(ceckSql);
+				// 2017.02.08 이정은 시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+				ResultSet rs = stmt.executeQuery();) {
 			return new DbMntrngResult(true, null);
 		} catch (SQLException e) {
 			LOGGER.error("DB서비스모니터링 에러", e);
 			return new DbMntrngResult(false, e);
-		} finally {
-
-			EgovResourceCloseHelper.closeDBObjects(rs, stmt, conn);
-			// 2022.01 "Exception" should not be caught when not required by called methods
-			// 조치
-//			if( rs != null ) try {rs.close();}catch(Exception e){ LOGGER.error("rs.close Exception", e); }
-//			if( stmt != null ) try {stmt.close();}catch(Exception e){ LOGGER.error("stmt.close Exception", e); }
-//			if( conn != null ) try {conn.close();}catch(Exception e){ LOGGER.error("conn.close Exception", e); }
 		}
-
 	}
 
 }
