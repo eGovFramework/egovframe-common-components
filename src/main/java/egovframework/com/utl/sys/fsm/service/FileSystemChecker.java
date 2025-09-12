@@ -5,17 +5,18 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.io.UncheckedIOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.StringTokenizer;
 
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import egovframework.com.cmm.service.FileSystemUtils;
 import egovframework.com.cmm.service.Globals;
-import egovframework.com.cmm.util.EgovResourceCloseHelper;
 
 /**
  * <pre>
@@ -116,13 +117,9 @@ public class FileSystemChecker {
 			}
 		}
 
-		FileWriter fileWriter = null;
-		try {
-			fileWriter = new FileWriter("C:\\temp\\diskpart.sc");
+		try (FileWriter fileWriter = new FileWriter("C:\\temp\\diskpart.sc");) {
 			fileWriter.write("select volume " + windowsPath + "\n");
 			fileWriter.write("detail partition");
-		} finally {
-			EgovResourceCloseHelper.close(fileWriter);
 		}
 
 		// build and run the 'diskpart' command
@@ -142,11 +139,11 @@ public class FileSystemChecker {
 		if (line.indexOf("GB") > 0) {
 			size = line.substring(line.lastIndexOf("GB") - 8, line.lastIndexOf("GB") - 1).trim();
 			size = size.replace(",", "");
-			totalSpace = Long.valueOf(size) * 1024 * 1024;
+			totalSpace = Long.parseLong(size) * 1024 * 1024;
 		} else if (line.indexOf("MB") > 0) {
 			size = line.substring(line.lastIndexOf("MB") - 8, line.lastIndexOf("MB") - 1).trim();
 			size = size.replace(",", "");
-			totalSpace = Long.valueOf(size) * 1024;
+			totalSpace = Long.parseLong(size) * 1024;
 		}
 
 		// 불필요
@@ -189,8 +186,8 @@ public class FileSystemChecker {
 			dfCommand = "bdf";
 		}
 
-		String[] cmdAttribs = (flags.length() > 1 ? new String[] { dfCommand, flags, path }
-				: new String[] { dfCommand, path });
+		String[] cmdAttribs = flags.length() > 1 ? new String[] { dfCommand, flags, path }
+				: new String[] { dfCommand, path };
 
 		// perform the command, asking for up to 3 lines (header, interesting, overflow)
 		List<String> lines = performCommand(cmdAttribs, 3);
@@ -218,7 +215,7 @@ public class FileSystemChecker {
 		String totalSpace = tok.nextToken();
 		long freeSpace = 0;
 		try {
-			freeSpace = Long.valueOf(totalSpace);
+			freeSpace = Long.parseLong(totalSpace);
 			if (freeSpace < 0) {
 				throw new IOException("Command line 'df' did not find free space in response " + "for path '" + path
 						+ "'- check path is valid");
@@ -240,19 +237,19 @@ public class FileSystemChecker {
 	 * @param cmdAttribs
 	 * @param max
 	 */
-	private static List<String> performCommand(String[] cmdAttribs, int max) throws IOException {
+	private static List<String> performCommand(String[] cmdAttribs, int max) {
 		List<String> lines = new ArrayList<String>(20);
 		Process p = null;
-		BufferedReader b_out = null;
 		try {
 			p = Runtime.getRuntime().exec(cmdAttribs);
-			b_out = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			try (BufferedReader bOut = new BufferedReader(new InputStreamReader(p.getInputStream()));) {
 
-			String line = b_out.readLine();
-			while (line != null && lines.size() < max) {
-				line = line.toLowerCase().trim();
-				lines.add(line);
-				line = b_out.readLine();
+				String line = bOut.readLine();
+				while (line != null && lines.size() < max) {
+					line = line.toLowerCase().trim();
+					lines.add(line);
+					line = bOut.readLine();
+				}
 			}
 
 			p.waitFor();
@@ -268,12 +265,12 @@ public class FileSystemChecker {
 			}
 			return lines;
 
+		} catch (IOException e) {
+			throw new UncheckedIOException(e);
 		} catch (InterruptedException ex) {
-			throw new IOException("Command line threw an InterruptedException '" + ex.getMessage() + "' for command "
-					+ Arrays.asList(cmdAttribs));
+			throw new BaseRuntimeException("Command line threw an InterruptedException '" + ex.getMessage()
+					+ "' for command " + Arrays.asList(cmdAttribs), ex);
 		} finally {
-			EgovResourceCloseHelper.close(b_out);
-
 			if (p != null) {
 				p.destroy();
 			}
