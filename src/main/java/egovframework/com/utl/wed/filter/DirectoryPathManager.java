@@ -39,11 +39,12 @@ import egovframework.com.cmm.service.EgovProperties;
  * <pre>
  * << 개정이력(Modification Information) >>
  *
- *  수정일              수정자             수정내용
+ *  수정일        수정자       수정내용
  *  ----------  --------    ---------------------------
- *  2014.12.04  표준프레임워크   최초 적용 (패키지 변경 및 소스 정리)
- *  2018.12.28  신용호             getDirectoryPathByDateType() Month의 범위를 1~12가 되도록 수정
- *  2022.11.16  신용호             보안코드 점검 및 수정
+ *  2014.12.04  표준프레임워크  최초 적용 (패키지 변경 및 소스 정리)
+ *  2018.12.28  신용호        getDirectoryPathByDateType() Month의 범위를 1~12가 되도록 수정
+ *  2022.11.16  신용호        보안코드 점검 및 수정
+ * 	2025.08.30  송하영        2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UnnecessarySemicolon(불필요한 괄호사용)
  * </pre>
  */
 public class DirectoryPathManager {
@@ -52,7 +53,7 @@ public class DirectoryPathManager {
 	
 	public enum DIR_DATE_TYPE {
 		DATE_POLICY_YYYY_MM_DD, DATE_POLICY_YYYY_MM, DATE_POLICY_YYYY
-	};
+	}
 
 	/**
 	 * 2012/12/22/
