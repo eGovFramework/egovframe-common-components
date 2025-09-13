@@ -32,7 +32,7 @@ import egovframework.com.utl.sys.htm.service.HttpMonVO;
 public class EgovHttpMonServiceImpl extends EgovAbstractServiceImpl implements EgovHttpMonService {
 
 	@Resource(name = "HttpMonDAO")
-	private HttpMonDAO HttpMonDAO;
+	private HttpMonDAO httpMonDAO;
 
 	/** ID Generation */
 	@Resource(name = "egovHttpManageIdGnrService")
@@ -52,7 +52,7 @@ public class EgovHttpMonServiceImpl extends EgovAbstractServiceImpl implements E
 	 */
 	@Override
 	public List<HttpMonVO> selectHttpMonList(HttpMonVO searchVO) throws Exception {
-		return HttpMonDAO.selectHttpMonList(searchVO);
+		return httpMonDAO.selectHttpMonList(searchVO);
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class EgovHttpMonServiceImpl extends EgovAbstractServiceImpl implements E
 	 */
 	@Override
 	public int selectHttpMonTotCnt(HttpMonVO searchVO) throws Exception {
-		return HttpMonDAO.selectHttpMonTotCnt(searchVO);
+		return httpMonDAO.selectHttpMonTotCnt(searchVO);
 	}
 
 	/**
@@ -78,7 +78,7 @@ public class EgovHttpMonServiceImpl extends EgovAbstractServiceImpl implements E
 	 */
 	@Override
 	public HttpMon selectHttpMonDetail(HttpMon httpMon) throws Exception {
-		HttpMon ret = HttpMonDAO.selectHttpMonDetail(httpMon);
+		HttpMon ret = httpMonDAO.selectHttpMonDetail(httpMon);
 		return ret;
 	}
 
@@ -92,7 +92,7 @@ public class EgovHttpMonServiceImpl extends EgovAbstractServiceImpl implements E
 	@Override
 	public void insertHttpMon(HttpMon httpMon) throws Exception {
 		httpMon.setSysId(idgenService.getNextStringId());
-		HttpMonDAO.insertHttpMon(httpMon);
+		httpMonDAO.insertHttpMon(httpMon);
 	}
 
 	/**
@@ -104,7 +104,7 @@ public class EgovHttpMonServiceImpl extends EgovAbstractServiceImpl implements E
 	 */
 	@Override
 	public void updateHttpMon(HttpMon httpMon) throws Exception {
-		HttpMonDAO.updateHttpMon(httpMon);
+		httpMonDAO.updateHttpMon(httpMon);
 	}
 
 	/**
@@ -116,7 +116,7 @@ public class EgovHttpMonServiceImpl extends EgovAbstractServiceImpl implements E
 	 */
 	@Override
 	public void deleteHttpMon(HttpMon httpMon) throws Exception {
-		HttpMonDAO.deleteHttpMon(httpMon);
+		httpMonDAO.deleteHttpMon(httpMon);
 	}
 
 	/**
@@ -130,8 +130,8 @@ public class EgovHttpMonServiceImpl extends EgovAbstractServiceImpl implements E
 	@Override
 	public Map<String, Object> selectHttpMonLogList(HttpMonLogVO httpMonLogVO) throws Exception {
 
-		List<HttpMonLogVO> result = HttpMonDAO.selectHttpMonLogList(httpMonLogVO);
-		int cnt = HttpMonDAO.selectHttpMonLogTotCnt(httpMonLogVO);
+		List<HttpMonLogVO> result = httpMonDAO.selectHttpMonLogList(httpMonLogVO);
+		int cnt = httpMonDAO.selectHttpMonLogTotCnt(httpMonLogVO);
 
 		Map<String, Object> map = new HashMap<String, Object>();
 
@@ -152,7 +152,7 @@ public class EgovHttpMonServiceImpl extends EgovAbstractServiceImpl implements E
 	 */
 	@Override
 	public HttpMonLog selectHttpMonDetailLog(HttpMonLog httpMonLog) throws Exception {
-		return HttpMonDAO.selectHttpMonDetailLog(httpMonLog);
+		return httpMonDAO.selectHttpMonDetailLog(httpMonLog);
 	}
 
 	/**
@@ -164,7 +164,7 @@ public class EgovHttpMonServiceImpl extends EgovAbstractServiceImpl implements E
 	 */
 	@Override
 	public void insertHttpMonLog(HttpMonLog httpMonLog) throws Exception {
-		HttpMonDAO.insertHttpMonLog(httpMonLog);
+		httpMonDAO.insertHttpMonLog(httpMonLog);
 	}
 
 	/**
@@ -176,7 +176,7 @@ public class EgovHttpMonServiceImpl extends EgovAbstractServiceImpl implements E
 	 */
 	@Override
 	public void updateHttpMonSttus(HttpMon httpMon) throws Exception {
-		HttpMonDAO.updateHttpMonSttus(httpMon);
+		httpMonDAO.updateHttpMonSttus(httpMon);
 
 		HttpMonLog httpMonLog = new HttpMonLog();
 		httpMonLog.setSysId(httpMon.getSysId());
