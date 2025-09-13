@@ -1,10 +1,10 @@
 package egovframework.com.utl.sys.htm.service;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 
 import egovframework.com.cmm.EgovWebUtil;
+import egovframework.com.cmm.service.Globals;
 
 /**
  * @Class Name : HttpMntrngChecker.java
@@ -27,19 +27,6 @@ import egovframework.com.cmm.EgovWebUtil;
 
 public class HttpMntrngChecker {
 
-	// @Resource(name = "HttpMonService")
-	// private EgovHttpMonService httpMonService;
-
-	// 파일구분자
-	static final char FILE_SEPARATOR = File.separatorChar;
-
-	// 최대 문자길이
-	static final int MAX_STR_LEN = 1024;
-
-	// 화이트 리스트
-	static private String[] whiteListURL = { "wwww.egovwebserver.go.kr", "wwww.egovwasserver.go.kr",
-			"192.168.100.133" };
-
 	/**
 	 * 시스템에 존재하는 서버의 실행상태 정보를 조회하는 기능
 	 * 
@@ -51,7 +38,7 @@ public class HttpMntrngChecker {
 
 		boolean isAuth = false;
 
-		for (String urlPattern : whiteListURL) {
+		for (String urlPattern : Globals.HTTP_MNTRNG_CHECKER_WHITE_LIST_URL) {
 			if (siteUrl.contains(urlPattern)) {
 				isAuth = true;
 				break;
@@ -64,8 +51,7 @@ public class HttpMntrngChecker {
 		String httpSttusCd = null;
 
 		try {
-			siteUrl = EgovWebUtil.filePathBlackList(siteUrl);
-			URL url = new URL(siteUrl);
+			URL url = new URL(EgovWebUtil.filePathBlackList(siteUrl));
 			url.openStream();
 
 			httpSttusCd = "01";

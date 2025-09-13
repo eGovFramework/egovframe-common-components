@@ -61,4 +61,11 @@ public class Globals {
 	public static final String FILE_UP_EXTS = EgovProperties.getProperty("Globals.fileUpload.Extensions");
 	// 파일 업로드 최대 용량
 	public static final String FILE_UP_MAX_SIZE = EgovProperties.getProperty("Globals.fileUpload.maxSize");
+
+	/**
+	 * HTTP서비스모니터링을 위한 Check 클래스 화이트 리스트
+	 */
+	public static final String[] HTTP_MNTRNG_CHECKER_WHITE_LIST_URL = EgovProperties
+			.getProperty("HttpMntrngChecker.whiteListURL").split(",");
+
 }
