@@ -42,14 +42,14 @@ import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 
 /**
- * Created by guava on 1/20/14.
- *  이미지 저장 처리 클래스
+ * Created by guava on 1/20/14. 이미지 저장 처리 클래스
+ * 
  * @author guavatak
  * @since 2014.12.04
  * @version 1.0
  * @see
  *
- * <pre>
+ *      <pre>
  * << 개정이력(Modification Information) >>
  *
  *  수정일		수정자			수정내용
@@ -61,8 +61,8 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *  2020.08.28	신용호			보안약점 조치 (Private 배열에 Public 데이터 할당[CWE-496])
  *  2023.06.09	이택진			NSR 보안조치 (크로스사이트 스크립트 방지를 위한 데이터 변환 코드 수정)
  *  2023.06.27	김혜준			크로스사이트 스크립트 방지 코드 미사용 변수 개선
- *  
- * </pre>
+ * 
+ *      </pre>
  */
 public class CkImageSaver {
 	private static final Log log = LogFactory.getLog(CkFilter.class);
@@ -79,11 +79,11 @@ public class CkImageSaver {
 	 * @param imageBaseDir
 	 * @param imageDomain
 	 * @param allowFileTypeArr
-	 * @param saveManagerClass	 *
+	 * @param saveManagerClass *
 	 */
 	public CkImageSaver(String imageBaseDir, String imageDomain, String[] allowFileTypeArr, String saveManagerClass) {
 		this.imageBaseDir = EgovWebUtil.filePathBlackList(imageBaseDir);
-		
+
 		if ((EgovStringUtil.isNullToString(imageBaseDir)).endsWith("/")) {
 			StringUtils.removeEnd(imageBaseDir, "/");
 		}
@@ -131,7 +131,7 @@ public class CkImageSaver {
 			// Create a new file upload handler
 			ServletFileUpload upload = new ServletFileUpload(factory);
 
-			List<FileItem> /* FileItem */items = upload.parseRequest(request);
+			List<FileItem> /* FileItem */ items = upload.parseRequest(request);
 			// We upload just one file at the same time
 			FileItem uplFile = items.get(0);
 
@@ -140,18 +140,16 @@ public class CkImageSaver {
 
 			if (isAllowFileType(FilenameUtils.getName(uplFile.getName()))) {
 				String uploadFilePath = fileSaveManager.saveFile(uplFile, imageBaseDir);
-				//System.out.println("===>>> uploadFilePath = "+uploadFilePath);
-				
+				// System.out.println("===>>> uploadFilePath = "+uploadFilePath);
+
 				String fileName = uploadFilePath.substring(uploadFilePath.lastIndexOf('/') + 1);
-				String filePath = imageBaseDir+uploadFilePath.substring(0,uploadFilePath.lastIndexOf('/'));
-				
-				relUrl = request.getContextPath()
-					    + "/utl/web/imageSrc.do?"
-					    + "path=" + this.encrypt(filePath,request)
-					    + "&physical=" + this.encrypt(fileName,request)
-					    + "&contentType=" + this.encrypt(uplFile.getContentType(),request);
-				
-				//System.out.println("===>>> relUrl = "+relUrl);
+				String filePath = imageBaseDir + uploadFilePath.substring(0, uploadFilePath.lastIndexOf('/'));
+
+				relUrl = request.getContextPath() + "/utl/web/imageSrc.do?" + "path=" + this.encrypt(filePath, request)
+						+ "&physical=" + this.encrypt(fileName, request) + "&contentType="
+						+ this.encrypt(uplFile.getContentType(), request);
+
+				// System.out.println("===>>> relUrl = "+relUrl);
 			} else {
 				errorMessage = "Restricted Image Format";
 			}
@@ -159,8 +157,12 @@ public class CkImageSaver {
 			StringBuffer sb = new StringBuffer();
 			sb.append("<script type=\"text/javascript\">\n");
 			// Compressed version of the document.domain automatic fix script.
-			// The original script can be found at [fckeditor_dir]/_dev/domain_fix_template.js
-			// sb.append("(function(){var d=document.domain;while (true){try{var A=window.parent.document.domain;break;}catch(e) {};d=d.replace(/.*?(?:\\.|$)/,'');if (d.length==0) break;try{document.domain=d;}catch (e){break;}}})();\n");
+			// The original script can be found at
+			// [fckeditor_dir]/_dev/domain_fix_template.js
+			// sb.append("(function(){var d=document.domain;while (true){try{var
+			// A=window.parent.document.domain;break;}catch(e)
+			// {};d=d.replace(/.*?(?:\\.|$)/,'');if (d.length==0)
+			// break;try{document.domain=d;}catch (e){break;}}})();\n");
 			// KISA 보안약점 조치 (2018-12-11, 신용호)
 			String funcNo = request.getParameter(FUNC_NO);
 			boolean isInteger = true;
@@ -170,8 +172,8 @@ public class CkImageSaver {
 				isInteger = false;
 				log.error(e);
 			}
-			if(!isInteger) {
-				funcNo = "1";		// 가장 많이 사용되는 값
+			if (!isInteger) {
+				funcNo = "1"; // 가장 많이 사용되는 값
 			}
 			sb.append("window.parent.CKEDITOR.tools.callFunction(").append(funcNo).append(", '");
 			sb.append(relUrl);
@@ -213,25 +215,26 @@ public class CkImageSaver {
 
 		return isAllow;
 	}
-	
-    /**
-     * 암호화
-     *
-     * @param encrypt
+
+	/**
+	 * 암호화
+	 *
+	 * @param encrypt
 	 * @param request
 	 * @return
-     */
-    private String encrypt(String encrypt,HttpServletRequest request) {
-    	
-    	WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
-    	EgovEnvCryptoService cryptoService = (EgovEnvCryptoService)wac.getBean("egovEnvCryptoService");
-    	
-    	try {
-    		return cryptoService.encrypt(encrypt);
-        } catch(IllegalArgumentException e) {
-        	log.error("[IllegalArgumentException] Try/Catch...usingParameters Running : "+ e.getMessage());
-        }
+	 */
+	private String encrypt(String encrypt, HttpServletRequest request) {
+
+		WebApplicationContext wac = WebApplicationContextUtils
+				.getRequiredWebApplicationContext(request.getServletContext());
+		EgovEnvCryptoService cryptoService = (EgovEnvCryptoService) wac.getBean("egovEnvCryptoService");
+
+		try {
+			return cryptoService.encrypt(encrypt);
+		} catch (IllegalArgumentException e) {
+			log.error("[IllegalArgumentException] Try/Catch...usingParameters Running : " + e.getMessage());
+		}
 		return encrypt;
-    }
+	}
 
 }
