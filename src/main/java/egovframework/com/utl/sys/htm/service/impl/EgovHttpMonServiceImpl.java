@@ -25,8 +25,19 @@ import egovframework.com.utl.sys.htm.service.HttpMonVO;
  * </pre>
  * 
  * @author 박종선
+ * @since 2010.06.17
  * @version 1.0
- * @created 17-6-2010 오후 5:12:43
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.06.17  박종선          최초 생성
+ *   2025.09.13  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-FieldNamingConventions(변수명에 밑줄 사용)
+ *
+ *      </pre>
  */
 @Service("EgovHttpMonService")
 public class EgovHttpMonServiceImpl extends EgovAbstractServiceImpl implements EgovHttpMonService {
