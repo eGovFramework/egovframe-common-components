@@ -17,10 +17,12 @@ import egovframework.com.utl.sys.htm.service.HttpMonLogVO;
 import egovframework.com.utl.sys.htm.service.HttpMonVO;
 
 /**
+ * <pre>
  * 개요 - HTTP서비스모니터링에 대한 ServiceImpl 클래스를 정의한다.
  *
  * 상세내용 - HTTP서비스모니터링에 대한 등록, 수정, 삭제, 조회 기능을 제공한다. - HTTP서비스모니터링의 조회기능은 목록조회,
  * 상세조회로 구분된다.
+ * </pre>
  * 
  * @author 박종선
  * @version 1.0
