@@ -36,10 +36,35 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *
  *  수정일       수정자     수정내용
  *  ----------   --------   ---------------------------
- *  2022.11.11   김혜준     시큐어코딩 처리
+
  *          </pre>
  */
-
+/**
+ * <pre>
+ * 개요
+ * - 네트워크서비스 모니터링을 위한 스케쥴링클래스를 정의한다.
+ *
+ * 상세내용
+ * - 네트워크서비스 모니터링 기능을 제공한다.
+ * - 네트워크서비스 모니터링 결과를 관리자에게 이메일로 전송한다.
+ * </pre>
+ * 
+ * @author 장철호
+ * @since 2010.06.28
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.06.28  장철호          최초 생성
+ *   2022.11.11  김혜준          시큐어코딩 처리
+ *   2025.09.15  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UnnecessaryBoxing(불필요한 WrapperObject 생성)
+ *
+ *      </pre>
+ */
 @Service("egovNtwrkSvcMntrngScheduling")
 public class EgovNtwrkSvcMntrngScheduling extends EgovAbstractServiceImpl {
 
