@@ -18,21 +18,23 @@ import egovframework.com.cmm.service.Globals;
  * </pre>
  * 
  * @author 박종선
+ * @since 2010.09.07
  * @version 1.0
- * @created 7-9-2010
- * 
- *          <pre>
- * << 개정이력(Modification Information) >>
+ * @see
  *
- *  수정일               수정자            수정내용
- *  ----------   --------   ---------------------------
- *  2019.12.06   신용호             KISA 보안약점 조치 (부적절한 예외처리)
- *  2022.11.11   김혜준             시큐어코딩 처리
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
- *          </pre>
- * 
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.09.07  박종선          최초 생성
+ *   2019.12.06  신용호          KISA 보안약점 조치 (부적절한 예외처리)
+ *   2022.11.11  김혜준          시큐어코딩 처리
+ *   2025.09.15  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(부적절한 자원 해제)
+ *   2025.09.15  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UselessParentheses(불필요한 괄호사용)
+ *
+ *      </pre>
  */
-
 public class ProcessMonChecker {
 
 	// Log
