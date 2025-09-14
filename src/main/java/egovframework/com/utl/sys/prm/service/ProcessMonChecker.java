@@ -7,7 +7,6 @@ import java.io.InputStreamReader;
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.service.FileSystemUtils;
 import egovframework.com.cmm.service.Globals;
-import egovframework.com.cmm.util.EgovResourceCloseHelper;
 
 /**
  * <pre>
@@ -54,7 +53,6 @@ public class ProcessMonChecker {
 
 		Process p = null;
 		String procsSttus = null;
-		BufferedReader buf = null;
 		int cnt = 0;
 
 		try {
@@ -80,9 +78,10 @@ public class ProcessMonChecker {
 			if (p == null) {
 				return "02";
 			}
-			buf = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			while ((buf.readLine()) != null) {
-				cnt++;
+			try (BufferedReader buf = new BufferedReader(new InputStreamReader(p.getInputStream()));) {
+				while (buf.readLine() != null) {
+					cnt++;
+				}
 			}
 			if (cnt > 0) {
 				procsSttus = "01";
@@ -92,8 +91,6 @@ public class ProcessMonChecker {
 
 		} catch (IOException e) {
 			procsSttus = "02";
-		} finally {
-			EgovResourceCloseHelper.close(buf);
 		}
 
 		return procsSttus;
