@@ -89,7 +89,7 @@ public class EgovNtwrkSvcMntrngScheduling extends EgovAbstractServiceImpl {
 			java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyyMMddHHmmss",
 					java.util.Locale.KOREA);
 			target.setCreatDt(formatter.format(new java.util.Date()));
-			result = NtwrkSvcMntrngChecker.check(target.getSysIp(), Integer.valueOf(target.getSysPort()));
+			result = NtwrkSvcMntrngChecker.check(target.getSysIp(), Integer.parseInt(target.getSysPort()));
 
 			// email 전송.
 			if (!result.isNrmltAt()) {
