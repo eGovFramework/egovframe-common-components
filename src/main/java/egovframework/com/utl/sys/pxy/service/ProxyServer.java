@@ -111,34 +111,38 @@ public class ProxyServer extends Thread {
 					insertProxyLog();
 
 					LOGGER.info("client connect");
-					InputStream streamFromClient = client.getInputStream();
-					OutputStream streamToClient = client.getOutputStream();
+					try (InputStream streamFromClient = client.getInputStream();
+							OutputStream streamToClient = client.getOutputStream();) {
 
-					String svcIp = EgovWebUtil.filePathBlackList(getSvcIp());
-					server = SSLSocketFactory.getDefault().createSocket(svcIp, remotePort);// 2022.01. Unencrypted
-																							// Socket 처리
+						String svcIp = EgovWebUtil.filePathBlackList(getSvcIp());
+						server = SSLSocketFactory.getDefault().createSocket(svcIp, remotePort);// 2022.01. Unencrypted
+																								// Socket 처리
 
-					InputStream streamFromServer = server.getInputStream();
-					OutputStream streamToServer = server.getOutputStream();
+						try (InputStream streamFromServer = server.getInputStream();
+								OutputStream streamToServer = server.getOutputStream();) {
 
-					ProxyThread proxyThread = new ProxyThread(client, streamFromClient, streamToClient,
-							streamFromServer, streamToServer);
-					Thread thread = new Thread(proxyThread, getThreadName() + "-" + server.getLocalPort());
-					thread.start();
+							ProxyThread proxyThread = new ProxyThread(client, streamFromClient, streamToClient,
+									streamFromServer, streamToServer);
+							Thread thread = new Thread(proxyThread, getThreadName() + "-" + server.getLocalPort());
+							thread.start();
 
-					int bytesRead;
-					try {
-						while ((bytesRead = streamFromServer.read(reply)) != -1) {
-							streamToClient.write(reply, 0, bytesRead);
-							streamToClient.flush();
-						}
-					} catch (IOException e) {
-						LOGGER.debug("Socket IO exception", e);
-					} finally {
-						streamToClient.close();
-						if (proxyThread.getIsStop()) {
-							runningThread = false;
-							break;
+							int bytesRead = streamFromServer.read(reply);
+							try {
+								while (bytesRead != -1) {
+									streamToClient.write(reply, 0, bytesRead);
+									streamToClient.flush();
+
+									bytesRead = streamFromServer.read(reply);
+								}
+							} catch (IOException e) {
+								LOGGER.debug("Socket IO exception", e);
+							} finally {
+//							streamToClient.close();
+								if (proxyThread.getIsStop()) {
+									runningThread = false;
+									break;
+								}
+							}
 						}
 					}
 				}
@@ -164,7 +168,7 @@ public class ProxyServer extends Thread {
 
 			// KISA 보안약점 조치 (2018-10-29, 윤창원)
 			if (client.getInetAddress() != null) {
-				if (!EgovWebUtil.isIPAddress((client.getInetAddress().getHostAddress()))) {
+				if (!EgovWebUtil.isIPAddress(client.getInetAddress().getHostAddress())) {
 					throw new RuntimeException("IP is needed. (" + client.getInetAddress().getHostAddress() + ")");
 				}
 				proxyLog.setClntIp(client.getInetAddress().getHostAddress());
