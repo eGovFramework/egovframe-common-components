@@ -22,18 +22,23 @@ import egovframework.com.utl.sys.pxy.service.impl.ProxySvcDAO;
 
 /**
  * 프록시서비스 처리 클래스
- *
+ * 
  * @author 김진만
  * @since 2010.07.15
  * @version 1.0
  * @see
- * 
- *      <pre>
- * == 개정이력(Modification Information) ==
  *
- *  수정일                수정자             수정내용
- *  ----------   --------    ---------------------------
- *  2019.12.05   신용호              KISA 보안약점 조치 (경로조작및 자원 삽입, 부적절한 예외처리)
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.07.15  김진만          최초 생성
+ *   2019.12.05  신용호          KISA 보안약점 조치 (경로조작및 자원 삽입, 부적절한 예외처리)
+ *   2025.09.16  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(부적절한 자원 해제)
+ *   2025.09.16  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AssignmentInOperand(피연산자내에 할당문이 사용됨. 해당 코드를 복잡하고 가독성이 떨어지게 만듬)
+ *   2025.09.16  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UselessParentheses(불필요한 괄호사용)
+ *
  *      </pre>
  */
 public class ProxyServer extends Thread {
