@@ -12,6 +12,21 @@ import egovframework.com.cmm.util.EgovResourceCloseHelper;
 
 /**
  * 프록시 스레드 클래스는 클라이언트와 서버 간의 통신을 중계합니다.
+ * 
+ * @author 공통컴포넌트 개발팀
+ * @since
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2025.09.16  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-ImmutableField(생성자를 통해 할당된 변수를 Final로 선언하지 않았음)
+ *   2025.09.16  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AssignmentInOperand(피연산자내에 할당문이 사용됨. 해당 코드를 복잡하고 가독성이 떨어지게 만듬)
+ *
+ *      </pre>
  */
 public class ProxyThread implements Runnable {
 
