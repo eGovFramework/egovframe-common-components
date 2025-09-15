@@ -1,0 +1,66 @@
+<project name="MyProject" default="dist" basedir=".">
+	<description>
+SW 보안 약점 진단받을 소스 복사하고 압축하기
+
+    simple example build file
+  </description>
+	<!-- set global properties for this build -->
+
+	<property name="project.name" value="egovframe-common-components-25a" />
+
+	<property name="src" location="../../" />
+
+	<property name="build.name" value="SW 보안 약점 진단받을 소스" />
+	<property name="build" location="${user.home}/Desktop/${build.name}" />
+
+	<!--<property name="dist" location="${user.home}/Desktop/dist" />-->
+
+	<target name="init">
+		<!-- Create the time stamp -->
+		<!--<tstamp />-->
+
+		<tstamp>
+			<format property="TODAY_KR" pattern="yyyy-MM-dd_HH-mm-ss" locale="ko,KR" />
+		</tstamp>
+
+		<!-- Create the build directory structure used by compile -->
+		<mkdir dir="${build}" />
+	</target>
+
+	<target name="compile" depends="init" description="compile the source">
+		<!-- Compile the Java code from ${src} into ${build} -->
+		<!--<javac srcdir="${src}" destdir="${build}" />-->
+
+		<copy todir="${build}/${build.name}_${TODAY_KR}/${project.name}" overwrite="true" verbose="true">
+			<fileset dir="${src}">
+				<include name="src/main/java/egovframework/**/*.java" />
+				<include name="src/main/resources/egovframework/mapper/com/**/*.xml" />
+				<include name="src/main/webapp/**/*.jsp" />
+				<include name="src/main/webapp/**/*.js" />
+			</fileset>
+		</copy>
+
+	</target>
+
+	<target name="dist" depends="compile" description="generate the distribution">
+		<!-- Create the distribution directory -->
+		<!--<mkdir dir="${dist}/lib" />-->
+
+		<!-- Put everything in ${build} into the MyProject-${DSTAMP}.jar file -->
+		<!--<jar jarfile="${dist}/lib/MyProject-${DSTAMP}.jar" basedir="${build}" />-->
+
+		<!--<zip destfile="${build}/${build.name}_${TODAY_KR}.zip" basedir="${build}/${build.name}_${TODAY_KR}" />-->
+
+		<echo>src=${src}</echo>
+		<echo>build=${build}</echo>
+		<!--<echo>dist=${dist}</echo>-->
+		<echo>TODAY_KR=${TODAY_KR}</echo>
+
+	</target>
+
+	<target name="clean" description="clean up">
+		<!-- Delete the ${build} and ${dist} directory trees -->
+		<delete dir="${build}" />
+		<!--<delete dir="${dist}" />-->
+	</target>
+</project>
