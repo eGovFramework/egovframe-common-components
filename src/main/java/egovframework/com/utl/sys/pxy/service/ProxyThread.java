@@ -20,7 +20,7 @@ public class ProxyThread implements Runnable {
 
 	/** 클라이언트 소켓 */
 	@SuppressWarnings("unused")
-	private Socket client = null;
+	private final Socket client;
 
 	/** 클라이언트로부터의 입력 스트림 */
 	private InputStream streamFromClient = null;
@@ -92,12 +92,12 @@ public class ProxyThread implements Runnable {
 	@Override
 	public void run() {
 
-		int bytesRead;
 		String strReceive = "";
 
 		try {
 			if (streamFromClient != null) {
-				while ((bytesRead = streamFromClient.read(request)) != -1) {
+				int bytesRead = streamFromClient.read(request);
+				while (bytesRead != -1) {
 
 					strReceive = new String(request, 0, bytesRead);
 
@@ -110,6 +110,8 @@ public class ProxyThread implements Runnable {
 					// 클라이언트로부터 받은 데이터를 서버로 전송합니다.
 					streamToServer.write(request, 0, bytesRead);
 					streamToServer.flush();
+
+					bytesRead = streamFromClient.read(request);
 				}
 			}
 		} catch (IOException e) {
