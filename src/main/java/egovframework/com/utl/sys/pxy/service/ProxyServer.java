@@ -27,13 +27,14 @@ import egovframework.com.utl.sys.pxy.service.impl.ProxySvcDAO;
  * @since 2010.07.15
  * @version 1.0
  * @see
- * <pre>
+ * 
+ *      <pre>
  * == 개정이력(Modification Information) ==
  *
  *  수정일                수정자             수정내용
  *  ----------   --------    ---------------------------
  *  2019.12.05   신용호              KISA 보안약점 조치 (경로조작및 자원 삽입, 부적절한 예외처리)
- * </pre>
+ *      </pre>
  */
 public class ProxyServer extends Thread {
 	/** logger */
@@ -61,7 +62,7 @@ public class ProxyServer extends Thread {
 	ProxyLog proxyLog = null;
 
 	public ProxyServer(String svcHost, String localIp, int localPort, int remotePort, String threadName,
-		ProxySvcDAO proxySvcDAO, EgovIdGnrService egovProxyLogIdGnrService) {
+			ProxySvcDAO proxySvcDAO, EgovIdGnrService egovProxyLogIdGnrService) {
 
 		try {
 			setSvcIp(svcHost);
@@ -73,7 +74,8 @@ public class ProxyServer extends Thread {
 			this.proxySvcDAO = proxySvcDAO;
 			this.egovProxyLogIdGnrService = egovProxyLogIdGnrService;
 
-			serverSocket = SSLServerSocketFactory.getDefault().createServerSocket(localPort);//2022.01. Unencrypted Socket
+			serverSocket = SSLServerSocketFactory.getDefault().createServerSocket(localPort);// 2022.01. Unencrypted
+																								// Socket
 
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -113,13 +115,14 @@ public class ProxyServer extends Thread {
 					OutputStream streamToClient = client.getOutputStream();
 
 					String svcIp = EgovWebUtil.filePathBlackList(getSvcIp());
-					server = SSLSocketFactory.getDefault().createSocket(svcIp, remotePort);//2022.01. Unencrypted Socket 처리
+					server = SSLSocketFactory.getDefault().createSocket(svcIp, remotePort);// 2022.01. Unencrypted
+																							// Socket 처리
 
 					InputStream streamFromServer = server.getInputStream();
 					OutputStream streamToServer = server.getOutputStream();
 
 					ProxyThread proxyThread = new ProxyThread(client, streamFromClient, streamToClient,
-						streamFromServer, streamToServer);
+							streamFromServer, streamToServer);
 					Thread thread = new Thread(proxyThread, getThreadName() + "-" + server.getLocalPort());
 					thread.start();
 
@@ -159,7 +162,7 @@ public class ProxyServer extends Thread {
 
 			proxyLog.setLogId(egovProxyLogIdGnrService.getNextStringId());
 
-			//KISA 보안약점 조치 (2018-10-29, 윤창원)
+			// KISA 보안약점 조치 (2018-10-29, 윤창원)
 			if (client.getInetAddress() != null) {
 				if (!EgovWebUtil.isIPAddress((client.getInetAddress().getHostAddress()))) {
 					throw new RuntimeException("IP is needed. (" + client.getInetAddress().getHostAddress() + ")");
