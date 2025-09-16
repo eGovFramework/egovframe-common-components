@@ -75,7 +75,7 @@ public class EgovProxySvcController {
 	private EgovIdGnrService egovProxySvcIdGnrService;
 
 	@Resource(name = "EgovCmmUseService")
-	EgovCmmUseService EgovCmmUseService;
+	private EgovCmmUseService egovCmmUseService;
 
 	/**
 	 * 프록시서비스정보 목록화면 이동
@@ -130,8 +130,8 @@ public class EgovProxySvcController {
 			@ModelAttribute("proxySvcVO") ProxySvcVO proxySvcVO, ModelMap model) throws Exception {
 
 		proxySvcVO.setProxyId(proxyId);
-		proxySvcVO = egovProxySvcService.selectProxySvc(proxySvcVO);
-		model.addAttribute("proxySvc", proxySvcVO);
+		ProxySvcVO proxySvc = egovProxySvcService.selectProxySvc(proxySvcVO);
+		model.addAttribute("proxySvc", proxySvc);
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 		return "egovframework/com/utl/sys/pxy/EgovProxySvcDetail";
 	}
@@ -325,6 +325,6 @@ public class EgovProxySvcController {
 	public List<CmmnDetailCode> getCmmCodeDetailList(ComDefaultCodeVO comDefaultCodeVO, String codeId)
 			throws Exception {
 		comDefaultCodeVO.setCodeId(codeId);
-		return EgovCmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+		return egovCmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 	}
 }
