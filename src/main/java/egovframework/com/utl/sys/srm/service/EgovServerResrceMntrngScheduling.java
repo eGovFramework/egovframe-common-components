@@ -3,7 +3,6 @@ package egovframework.com.utl.sys.srm.service;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -24,7 +23,6 @@ import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.stereotype.Service;
 
-import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import egovframework.com.cop.sms.service.EgovSmsInfoService;
 import egovframework.com.cop.sms.service.Sms;
 import egovframework.com.utl.fcc.service.EgovDateUtil;
@@ -72,8 +70,6 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 	@Resource(name = "mntrngMailSender")
 	private MailSender mntrngMailSender;
 
-	private ServerResrceMntrngVO serverResrceMntrngVO = null;
-
 	/**
 	 * 서버자원 모니터링를 수행한다.
 	 * 
@@ -84,7 +80,6 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 	public void init(ServerResrceMntrngVO serverResrceMntrngVO) throws Exception {
 
 		JMXServiceURL address = null;
-		JMXConnector connector = null;
 		MBeanServerConnection mbs = null;
 		ObjectName name = null;
 		MBeanInfo mBeanInfo = null;
@@ -107,36 +102,36 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 		try {
 			address = new JMXServiceURL(
 					"service:jmx:rmi://" + serverEqpmnIp + ":9999/jndi/rmi://" + serverEqpmnIp + ":9999/server");
-			connector = JMXConnectorFactory.connect(address);
+			try (JMXConnector connector = JMXConnectorFactory.connect(address);) {
 
-			mbs = connector.getMBeanServerConnection();
+				mbs = connector.getMBeanServerConnection();
 
-			name = new ObjectName("egovframework.com.utl.sys.srm.service:type=EgovServerResrceMntrng");
+				name = new ObjectName("egovframework.com.utl.sys.srm.service:type=EgovServerResrceMntrng");
 
-			mBeanInfo = mbs.getMBeanInfo(name);
-			attrInfos = mBeanInfo.getAttributes();
+				mBeanInfo = mbs.getMBeanInfo(name);
+				attrInfos = mBeanInfo.getAttributes();
 
-			for (MBeanAttributeInfo attrInfo : attrInfos) {
-				if (attrInfo.getName().equals("CpuUsage")) {
-					serverResrceMntrng.setCpuUseRt(mbs.getAttribute(name, attrInfo.getName()).toString());
-				} else if (attrInfo.getName().equals("MemoryUsage")) {
-					serverResrceMntrng.setMoryUseRt(mbs.getAttribute(name, attrInfo.getName()).toString());
+				for (MBeanAttributeInfo attrInfo : attrInfos) {
+					if (attrInfo.getName().equals("CpuUsage")) {
+						serverResrceMntrng.setCpuUseRt(mbs.getAttribute(name, attrInfo.getName()).toString());
+					} else if (attrInfo.getName().equals("MemoryUsage")) {
+						serverResrceMntrng.setMoryUseRt(mbs.getAttribute(name, attrInfo.getName()).toString());
+					}
+					LOGGER.info(attrInfo.getName() + " = " + mbs.getAttribute(name, attrInfo.getName()));
 				}
-				LOGGER.info(attrInfo.getName() + " = " + mbs.getAttribute(name, attrInfo.getName()));
-			}
-			serverResrceMntrng.setSvcSttus("01");
-			serverResrceMntrng.setFrstRegisterId(InetAddress.getLocalHost().getHostAddress());
-			serverResrceMntrng.setLastUpdusrId("SYSTEM");
+				serverResrceMntrng.setSvcSttus("01");
+				serverResrceMntrng.setFrstRegisterId(InetAddress.getLocalHost().getHostAddress());
+				serverResrceMntrng.setLastUpdusrId("SYSTEM");
 
-			if (Double.parseDouble(serverResrceMntrng.getCpuUseRt()) > 90
-					|| Double.parseDouble(serverResrceMntrng.getMoryUseRt()) > 90) {
-				serverResrceMntrng.setSvcSttus("02");
-				serverResrceMntrng.setLogInfo("적정수치를 초과하였습니다.");
-				sendEmail(serverResrceMntrng);
-				// sendSMS(egovServerResrceMntrngService.selectServerResrceMntrng(serverResrceMntrngVO));
+				if (Double.parseDouble(serverResrceMntrng.getCpuUseRt()) > 90
+						|| Double.parseDouble(serverResrceMntrng.getMoryUseRt()) > 90) {
+					serverResrceMntrng.setSvcSttus("02");
+					serverResrceMntrng.setLogInfo("적정수치를 초과하였습니다.");
+					sendEmail(serverResrceMntrng);
+					// sendSMS(egovServerResrceMntrngService.selectServerResrceMntrng(serverResrceMntrngVO));
+				}
+				egovServerResrceMntrngService.insertServerResrceMntrng(serverResrceMntrng);
 			}
-			egovServerResrceMntrngService.insertServerResrceMntrng(serverResrceMntrng);
-
 		} catch (IOException e) { // KISA 보안약점 조치 (2018-10-29, 윤창원)
 			serverResrceMntrng.setSvcSttus("02");
 
@@ -178,8 +173,6 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 
 			egovServerResrceMntrngService.insertServerResrceMntrng(serverResrceMntrng);
 
-		} finally {
-			EgovResourceCloseHelper.close(connector);
 		}
 	}
 
@@ -192,13 +185,13 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 	public void monitorServerResrce() {
 
 		try {
-			List<ServerResrceMntrngVO> result = egovServerResrceMntrngService
-					.selectMntrngServerList(serverResrceMntrngVO);
-			Iterator<ServerResrceMntrngVO> iter = result.iterator();
+			ServerResrceMntrngVO serverResrceMntrngVO = new ServerResrceMntrngVO();
 
-			while (iter.hasNext()) {
-				ServerResrceMntrngVO serverResrceMntrngVO = iter.next();
-				init(serverResrceMntrngVO);
+			List<ServerResrceMntrngVO> resultList = egovServerResrceMntrngService
+					.selectMntrngServerList(serverResrceMntrngVO);
+
+			for (ServerResrceMntrngVO result : resultList) {
+				init(result);
 			}
 		} catch (NoSuchElementException e) { // KISA 보안약점 조치 (2018-10-29, 윤창원)
 			LOGGER.debug("Server monitoring error - NoSuchElementException", e);
@@ -237,26 +230,26 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 		if (StringUtils.isNotEmpty(text)) {
 			text = EgovStringUtil.replace(text, "{모니터링종류}", "서버자원서비스모니터링");
 			errorContents = "서버명 : ";
-			errorContents += serverResrceMntrngVO.getServerNm();
+			errorContents += serverResrceMntrng.getServerNm();
 			errorContents += "\n";
 			errorContents += "서버IP : ";
-			errorContents += serverResrceMntrngVO.getServerEqpmnIp();
+			errorContents += serverResrceMntrng.getServerEqpmnIp();
 			errorContents += "\n";
 			errorContents += "CPU사용률 : ";
-			errorContents += serverResrceMntrngVO.getCpuUseRt();
+			errorContents += serverResrceMntrng.getCpuUseRt();
 			errorContents += "\n";
 			errorContents += "메모리사용률 : ";
-			errorContents += serverResrceMntrngVO.getMoryUseRt();
+			errorContents += serverResrceMntrng.getMoryUseRt();
 			errorContents += "\n";
 			errorContents += "서비스상태 : 비정상";
 			errorContents += "\n";
 			errorContents += "내용 : ";
-			errorContents += serverResrceMntrngVO.getLogInfo();
+			errorContents += serverResrceMntrng.getLogInfo();
 			errorContents += "\n";
 			errorContents += "생성일시 : ";
-			errorContents += EgovDateUtil.convertDate(serverResrceMntrngVO.getCreatDt(), "", "", "");
+			errorContents += EgovDateUtil.convertDate(serverResrceMntrng.getCreatDt(), "", "", "");
 			errorContents += "\n";
-			errorContents += serverResrceMntrngVO.getServerNm() + " 의 서버자원 서비스 상태가 비정상입니다. \n로그를 확인해주세요.";
+			errorContents += serverResrceMntrng.getServerNm() + " 의 서버자원 서비스 상태가 비정상입니다. \n로그를 확인해주세요.";
 			text = EgovStringUtil.replace(text, "{에러내용}", errorContents);
 			msg.setText(text);
 		}
