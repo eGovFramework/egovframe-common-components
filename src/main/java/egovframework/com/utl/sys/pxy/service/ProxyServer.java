@@ -79,8 +79,8 @@ public class ProxyServer extends Thread {
 			this.proxySvcDAO = proxySvcDAO;
 			this.egovProxyLogIdGnrService = egovProxyLogIdGnrService;
 
-			serverSocket = SSLServerSocketFactory.getDefault().createServerSocket(localPort);// 2022.01. Unencrypted
-																								// Socket
+			// 2022.01. Unencrypted Socket
+			serverSocket = SSLServerSocketFactory.getDefault().createServerSocket(localPort);
 
 		} catch (IOException e) {
 			throw new RuntimeException(e);
@@ -116,12 +116,13 @@ public class ProxyServer extends Thread {
 					insertProxyLog();
 
 					LOGGER.info("client connect");
-					try (InputStream streamFromClient = client.getInputStream();
-							OutputStream streamToClient = client.getOutputStream();) {
+					try (InputStream streamFromClient = client.getInputStream();) {
+						OutputStream streamToClient = client.getOutputStream();
 
 						String svcIp = EgovWebUtil.filePathBlackList(getSvcIp());
-						server = SSLSocketFactory.getDefault().createSocket(svcIp, remotePort);// 2022.01. Unencrypted
-																								// Socket 처리
+
+						// 2022.01. Unencrypted Socket 처리
+						server = SSLSocketFactory.getDefault().createSocket(svcIp, remotePort);
 
 						try (InputStream streamFromServer = server.getInputStream();
 								OutputStream streamToServer = server.getOutputStream();) {
@@ -142,7 +143,8 @@ public class ProxyServer extends Thread {
 							} catch (IOException e) {
 								LOGGER.debug("Socket IO exception", e);
 							} finally {
-//							streamToClient.close();
+								streamToClient.close();
+
 								if (proxyThread.getIsStop()) {
 									runningThread = false;
 									break;
