@@ -7,39 +7,45 @@ import java.io.InputStreamReader;
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.service.FileSystemUtils;
 import egovframework.com.cmm.service.Globals;
-import egovframework.com.cmm.util.EgovResourceCloseHelper;
 
 /**
+ * <pre>
  * 개요
  * - 프로세스 모니터링을 위한 Check 클래스
  *
  * 상세내용
  * - 프로세스의 상태 결과를 제공한다.
- * @author 박종선
- * @version 1.0
- * @created 7-9-2010
- * 
- * <pre>
- * << 개정이력(Modification Information) >>
- *
- *  수정일               수정자            수정내용
- *  ----------   --------   ---------------------------
- *  2019.12.06   신용호             KISA 보안약점 조치 (부적절한 예외처리)
- *  2022.11.11   김혜준             시큐어코딩 처리
- *
  * </pre>
  * 
+ * @author 박종선
+ * @since 2010.09.07
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.09.07  박종선          최초 생성
+ *   2019.12.06  신용호          KISA 보안약점 조치 (부적절한 예외처리)
+ *   2022.11.11  김혜준          시큐어코딩 처리
+ *   2025.09.15  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(부적절한 자원 해제)
+ *   2025.09.15  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UselessParentheses(불필요한 괄호사용)
+ *
+ *      </pre>
  */
-
 public class ProcessMonChecker {
 
 	// Log
-	//private static final Logger LOGGER = LoggerFactory.getLogger(ProcessMonChecker.class);
+	// private static final Logger LOGGER =
+	// LoggerFactory.getLogger(ProcessMonChecker.class);
 
 	/**
 	 * <pre>
 	 * Comment : 프로세스 정보를 확인한다. (
 	 * </pre>
+	 * 
 	 * @param String processName
 	 * @return List<String[]> 프로세스 정보를 리턴한다.
 	 * @version 1.0 (2009.01.12.)
@@ -49,7 +55,6 @@ public class ProcessMonChecker {
 
 		Process p = null;
 		String procsSttus = null;
-		BufferedReader buf = null;
 		int cnt = 0;
 
 		try {
@@ -59,14 +64,14 @@ public class ProcessMonChecker {
 			// 2011.10.10 보안점검 후속조치 끝
 
 			if ("WINDOWS".equals(Globals.OS_TYPE)) {
-				cnt = -1; //윈도우의 경우 정상 프로세스 일때 두번째 줄에 결과를 리턴한다.
+				cnt = -1; // 윈도우의 경우 정상 프로세스 일때 두번째 줄에 결과를 리턴한다.
 				String execStr = "tasklist /fo table /nh /fi \"imagename eq " + processNm + "\"";
 				// 2022.11.11 시큐어코딩 처리
 				FileSystemUtils util = new FileSystemUtils();
 				p = util.processOperate("EgovNetworkState", execStr);
 
 			} else if ("UNIX".equals(Globals.OS_TYPE)) {
-				String cmd = "/bin/csh" + "-c" + "ps -A | grep " + EgovWebUtil.removeOSCmdRisk(processNm); 
+				String cmd = "/bin/csh" + "-c" + "ps -A | grep " + EgovWebUtil.removeOSCmdRisk(processNm);
 				// 2022.11.11 시큐어코딩 처리
 				FileSystemUtils util = new FileSystemUtils();
 				p = util.processOperate("EgovNetworkState", cmd);
@@ -75,9 +80,10 @@ public class ProcessMonChecker {
 			if (p == null) {
 				return "02";
 			}
-			buf = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			while ((buf.readLine()) != null) {
-				cnt++;
+			try (BufferedReader buf = new BufferedReader(new InputStreamReader(p.getInputStream()));) {
+				while (buf.readLine() != null) {
+					cnt++;
+				}
 			}
 			if (cnt > 0) {
 				procsSttus = "01";
@@ -87,8 +93,6 @@ public class ProcessMonChecker {
 
 		} catch (IOException e) {
 			procsSttus = "02";
-		} finally {
-			EgovResourceCloseHelper.close(buf);
 		}
 
 		return procsSttus;
