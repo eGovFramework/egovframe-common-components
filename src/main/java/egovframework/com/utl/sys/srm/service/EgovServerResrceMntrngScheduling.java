@@ -31,16 +31,19 @@ import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 
 /**
+ * <pre>
  * 개요 
  * - 서버자원모니터링 Service Interface를 invoke 할 수 있는 클래스를 정의한다.
  *
  * 상세내용
  * - 서버자원모니터링 정보 결과를 확인할 수 있는 함수를 호출할 수 있는 기능을 제공한다.
+ * </pre>
+ * 
  * @author lee.m.j
  * @version 1.0
  * @created 06-9-2010 오전 11:23:59
  * 
- * <pre>
+ *          <pre>
  * << 개정이력(Modification Information) >>
  *
  *  수정일      	         수정자              수정내용
@@ -48,7 +51,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *  2020.11.02   신용호              불필요한 멤버변수 지역변수로 변경
  *  2022.11.11   김혜준              시큐어코딩 처리
  *
- * </pre>
+ *          </pre>
  */
 
 @Service("egovServerResrceMntrngScheduling")
@@ -70,9 +73,10 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 	private MailSender mntrngMailSender;
 
 	private ServerResrceMntrngVO serverResrceMntrngVO = null;
-	
+
 	/**
 	 * 서버자원 모니터링를 수행한다.
+	 * 
 	 * @param
 	 * @return
 	 */
@@ -86,7 +90,7 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 		MBeanInfo mBeanInfo = null;
 		MBeanAttributeInfo[] attrInfos = null;
 		ServerResrceMntrng serverResrceMntrng = null;
-		
+
 		String serverId = serverResrceMntrngVO.getServerId();
 		String serverEqpmnId = serverResrceMntrngVO.getServerEqpmnId();
 		String serverNm = serverResrceMntrngVO.getServerNm();
@@ -101,7 +105,8 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 		serverResrceMntrng.setMngrEamilAddr(mngrEamilAddr);
 
 		try {
-			address = new JMXServiceURL("service:jmx:rmi://" + serverEqpmnIp + ":9999/jndi/rmi://" + serverEqpmnIp + ":9999/server");
+			address = new JMXServiceURL(
+					"service:jmx:rmi://" + serverEqpmnIp + ":9999/jndi/rmi://" + serverEqpmnIp + ":9999/server");
 			connector = JMXConnectorFactory.connect(address);
 
 			mbs = connector.getMBeanServerConnection();
@@ -112,17 +117,19 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 			attrInfos = mBeanInfo.getAttributes();
 
 			for (MBeanAttributeInfo attrInfo : attrInfos) {
-				if (attrInfo.getName().equals("CpuUsage"))
+				if (attrInfo.getName().equals("CpuUsage")) {
 					serverResrceMntrng.setCpuUseRt(mbs.getAttribute(name, attrInfo.getName()).toString());
-				else if (attrInfo.getName().equals("MemoryUsage"))
+				} else if (attrInfo.getName().equals("MemoryUsage")) {
 					serverResrceMntrng.setMoryUseRt(mbs.getAttribute(name, attrInfo.getName()).toString());
+				}
 				LOGGER.info(attrInfo.getName() + " = " + mbs.getAttribute(name, attrInfo.getName()));
 			}
 			serverResrceMntrng.setSvcSttus("01");
 			serverResrceMntrng.setFrstRegisterId(InetAddress.getLocalHost().getHostAddress());
 			serverResrceMntrng.setLastUpdusrId("SYSTEM");
 
-			if (Double.parseDouble(serverResrceMntrng.getCpuUseRt()) > 90 || Double.parseDouble(serverResrceMntrng.getMoryUseRt()) > 90) {
+			if (Double.parseDouble(serverResrceMntrng.getCpuUseRt()) > 90
+					|| Double.parseDouble(serverResrceMntrng.getMoryUseRt()) > 90) {
 				serverResrceMntrng.setSvcSttus("02");
 				serverResrceMntrng.setLogInfo("적정수치를 초과하였습니다.");
 				sendEmail(serverResrceMntrng);
@@ -130,7 +137,7 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 			}
 			egovServerResrceMntrngService.insertServerResrceMntrng(serverResrceMntrng);
 
-		} catch (IOException e) { //KISA 보안약점 조치 (2018-10-29, 윤창원)
+		} catch (IOException e) { // KISA 보안약점 조치 (2018-10-29, 윤창원)
 			serverResrceMntrng.setSvcSttus("02");
 
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
@@ -140,15 +147,16 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 			String logInfo = out.toString();
 			byte[] btLogInfo = logInfo.getBytes();
 
-			if (btLogInfo.length > 2000)
+			if (btLogInfo.length > 2000) {
 				logInfo = new String(btLogInfo, 0, 2000);
+			}
 
 			serverResrceMntrng.setLogInfo(logInfo);
 			serverResrceMntrng.setFrstRegisterId(InetAddress.getLocalHost().getHostAddress());
 			serverResrceMntrng.setLastUpdusrId("SYSTEM");
 
 			egovServerResrceMntrngService.insertServerResrceMntrng(serverResrceMntrng);
-			
+
 		} catch (Exception e) {
 
 			serverResrceMntrng.setSvcSttus("02");
@@ -160,8 +168,9 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 			String logInfo = out.toString();
 			byte[] btLogInfo = logInfo.getBytes();
 
-			if (btLogInfo.length > 2000)
+			if (btLogInfo.length > 2000) {
 				logInfo = new String(btLogInfo, 0, 2000);
+			}
 
 			serverResrceMntrng.setLogInfo(logInfo);
 			serverResrceMntrng.setFrstRegisterId(InetAddress.getLocalHost().getHostAddress());
@@ -176,20 +185,22 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 
 	/**
 	 * 서버자원 모니터링를 수행한다.
+	 * 
 	 * @param
 	 * @return
 	 */
 	public void monitorServerResrce() {
 
 		try {
-			List<ServerResrceMntrngVO> result = egovServerResrceMntrngService.selectMntrngServerList(serverResrceMntrngVO);
+			List<ServerResrceMntrngVO> result = egovServerResrceMntrngService
+					.selectMntrngServerList(serverResrceMntrngVO);
 			Iterator<ServerResrceMntrngVO> iter = result.iterator();
 
 			while (iter.hasNext()) {
-				ServerResrceMntrngVO serverResrceMntrngVO = (ServerResrceMntrngVO) iter.next();
+				ServerResrceMntrngVO serverResrceMntrngVO = iter.next();
 				init(serverResrceMntrngVO);
 			}
-		} catch (NoSuchElementException e) { //KISA 보안약점 조치 (2018-10-29, 윤창원)
+		} catch (NoSuchElementException e) { // KISA 보안약점 조치 (2018-10-29, 윤창원)
 			LOGGER.debug("Server monitoring error - NoSuchElementException", e);
 
 		} catch (Exception e) {
@@ -199,6 +210,7 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 
 	/**
 	 * 이메일을 전송한다.
+	 * 
 	 * @param serverResrceMntrngVO - 서버자원모니터링 Vo
 	 * @return
 	 *
