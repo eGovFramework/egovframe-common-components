@@ -38,20 +38,23 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  * </pre>
  * 
  * @author lee.m.j
+ * @since 2010.09.06
  * @version 1.0
- * @created 06-9-2010 오전 11:23:59
- * 
- *          <pre>
- * << 개정이력(Modification Information) >>
+ * @see
  *
- *  수정일      	         수정자              수정내용
- *  ----------   ---------   ---------------------------
- *  2020.11.02   신용호              불필요한 멤버변수 지역변수로 변경
- *  2022.11.11   김혜준              시큐어코딩 처리
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
- *          </pre>
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.09.06  lee.m.j      최초 생성
+ *   2020.11.02  신용호          불필요한 멤버변수 지역변수로 변경
+ *   2022.11.11  김혜준          시큐어코딩 처리
+ *   2025.09.17  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-ImmutableField(생성자를 통해 할당된 변수를 Final로 선언하지 않았음)
+ *   2025.09.17  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(부적절한 자원 해제)
+ *
+ *      </pre>
  */
-
 @Service("egovServerResrceMntrngScheduling")
 public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 
