@@ -42,13 +42,23 @@ import egovframework.com.utl.sys.ssy.service.SynchrnServerVO;
  * </pre>
  * 
  * @author lee.m.j
+ * @since 2009.06.01
  * @version 1.0
- * @created 28-6-2010 오전 10:44:34
- * 
- *          수정일 수정자 수정내용 ------- -------- --------------------------- 2017-02-08
- *          이정은 시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
- *          2018-11-12 이정은 processFtp() FILE_TYPE 설정 수정
- * 
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.06.28  lee.m.j      최초 생성
+ *   2017.02.08  이정은          시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+ *   2018.11.12  이정은          processFtp() FILE_TYPE 설정 수정
+ *   2025.09.18  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *   2025.09.18  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(부적절한 자원 해제)
+ *   2025.09.18  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AssignmentInOperand(피연산자내에 할당문이 사용됨. 해당 코드를 복잡하고 가독성이 떨어지게 만듬)
+ *
+ *      </pre>
  */
 @Service("egovSynchrnServerService")
 public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implements EgovSynchrnServerService {
