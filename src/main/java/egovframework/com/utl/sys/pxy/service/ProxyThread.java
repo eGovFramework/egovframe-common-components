@@ -9,8 +9,24 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
+
 /**
  * 프록시 스레드 클래스는 클라이언트와 서버 간의 통신을 중계합니다.
+ * 
+ * @author 공통컴포넌트 개발팀
+ * @since
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2025.09.16  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-ImmutableField(생성자를 통해 할당된 변수를 Final로 선언하지 않았음)
+ *   2025.09.16  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AssignmentInOperand(피연산자내에 할당문이 사용됨. 해당 코드를 복잡하고 가독성이 떨어지게 만듬)
+ *
+ *      </pre>
  */
 public class ProxyThread implements Runnable {
 
@@ -19,7 +35,7 @@ public class ProxyThread implements Runnable {
 
 	/** 클라이언트 소켓 */
 	@SuppressWarnings("unused")
-	private Socket client = null;
+	private final Socket client;
 
 	/** 클라이언트로부터의 입력 스트림 */
 	private InputStream streamFromClient = null;
@@ -52,13 +68,14 @@ public class ProxyThread implements Runnable {
 	/**
 	 * 스트림 및 클라이언트 소켓을 사용하여 ProxyThread 객체를 생성합니다.
 	 *
-	 * @param client 클라이언트 소켓
+	 * @param client           클라이언트 소켓
 	 * @param streamFromClient 클라이언트로부터의 입력 스트림
-	 * @param streamToClient 클라이언트로의 출력 스트림
+	 * @param streamToClient   클라이언트로의 출력 스트림
 	 * @param streamFromServer 서버로부터의 입력 스트림
-	 * @param streamToServer 서버로의 출력 스트림
+	 * @param streamToServer   서버로의 출력 스트림
 	 */
-	public ProxyThread(Socket client, InputStream streamFromClient, OutputStream streamToClient, InputStream streamFromServer, OutputStream streamToServer) throws IOException {
+	public ProxyThread(Socket client, InputStream streamFromClient, OutputStream streamToClient,
+			InputStream streamFromServer, OutputStream streamToServer) throws IOException {
 		this.client = client;
 		this.streamFromClient = streamFromClient;
 		this.streamToClient = streamToClient;
@@ -85,18 +102,17 @@ public class ProxyThread implements Runnable {
 	}
 
 	/**
-	 * 프록시 스레드의 주 실행 메서드입니다.
-	 * 클라이언트에서 서버로의 데이터 전달을 처리합니다.
+	 * 프록시 스레드의 주 실행 메서드입니다. 클라이언트에서 서버로의 데이터 전달을 처리합니다.
 	 */
 	@Override
 	public void run() {
 
-		int bytesRead;
 		String strReceive = "";
 
 		try {
 			if (streamFromClient != null) {
-				while ((bytesRead = streamFromClient.read(request)) != -1) {
+				int bytesRead = streamFromClient.read(request);
+				while (bytesRead != -1) {
 
 					strReceive = new String(request, 0, bytesRead);
 
@@ -109,6 +125,8 @@ public class ProxyThread implements Runnable {
 					// 클라이언트로부터 받은 데이터를 서버로 전송합니다.
 					streamToServer.write(request, 0, bytesRead);
 					streamToServer.flush();
+
+					bytesRead = streamFromClient.read(request);
 				}
 			}
 		} catch (IOException e) {
