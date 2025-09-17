@@ -26,19 +26,21 @@ import egovframework.com.utl.sys.srm.service.ServerResrceMntrngVO;
  * </pre>
  * 
  * @author lee.m.j
+ * @since 2009.06.01
  * @version 1.0
- * @created 06-9-2010 오전 11:23:59
- * 
- *          <pre>
- * == 개정이력(Modification Information) ==
- * 
- *   수정일       수정자           수정내용
- *  -------     --------    ---------------------------
- *  2010.9.6   lee.m.j    최초 생성
- *  2011.8.26	정진오			IncludedInfo annotation 추가
- *          </pre>
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.09.06  lee.m.j      최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2025.09.18  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AvoidReassigningParameters(넘겨받는 메소드 parameter 값을 직접 변경하는 코드 탐지)
+ *
+ *      </pre>
  */
-
 @Controller
 public class EgovServerResrceMntrngController {
 
