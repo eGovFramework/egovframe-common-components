@@ -158,12 +158,13 @@ public class EgovServerResrceMntrngController {
 			@ModelAttribute("pmServerResrceMntrng") ServerResrceMntrngVO pmServerResrceMntrng, ModelMap model)
 			throws Exception {
 		serverResrceMntrngVO.setLogId(logId);
-		serverResrceMntrngVO = egovServerResrceMntrngService.selectServerResrceMntrng(serverResrceMntrngVO);
+		ServerResrceMntrngVO serverResrceMntrng = egovServerResrceMntrngService
+				.selectServerResrceMntrng(serverResrceMntrngVO);
 
 		pmServerResrceMntrng.setStrStartDt(strStartDt);
 		pmServerResrceMntrng.setStrEndDt(strEndDt);
 
-		model.addAttribute("serverResrceMntrng", serverResrceMntrngVO);
+		model.addAttribute("serverResrceMntrng", serverResrceMntrng);
 		model.addAttribute("pmServerResrceMntrng", pmServerResrceMntrng);
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
