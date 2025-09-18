@@ -43,20 +43,24 @@ import egovframework.com.utl.sys.ssy.service.SynchrnServerVO;
  * </pre>
  * 
  * @author 이문준
+ * @since 2010.06.28
  * @version 1.0
- * @created 28-6-2010 오전 10:44:34
- * 
- *          <pre>
- * == 개정이력(Modification Information) ==
+ * @see
  *
- *  수정일                수정자           수정내용
- *  ----------   --------   ---------------------------
- *  2010.06.28   이문준           최초 생성
- *  2011.08.26   정진오           IncludedInfo annotation 추가
- *  2019.12.09   신용호           KISA 보안약점 조치 (위험한 형식 파일 업로드)
- *          </pre>
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.06.28  이문준          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2019.12.09  신용호          KISA 보안약점 조치 (위험한 형식 파일 업로드)
+ *   2025.09.19  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-FieldNamingConventions(변수명에 밑줄 사용)
+ *   2025.09.19  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AvoidReassigningParameters(넘겨받는 메소드 parameter 값을 직접 변경하는 코드 탐지)
+ *   2025.09.19  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-SimplifyBooleanExpressions(boolean 사용 시 불필요한 비교 연산을 피하도록 함)
+ *
+ *      </pre>
  */
-
 @Controller
 public class EgovSynchrnServerController {
 
