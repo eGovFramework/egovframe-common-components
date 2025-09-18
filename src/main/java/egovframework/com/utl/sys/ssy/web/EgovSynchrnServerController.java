@@ -33,26 +33,34 @@ import egovframework.com.utl.sys.ssy.service.SynchrnServer;
 import egovframework.com.utl.sys.ssy.service.SynchrnServerVO;
 
 /**
+ * <pre>
  * 개요
  * - 동기화대상 서버관리에 대한 controller 클래스를 정의한다.
  *
  * 상세내용
  * - 동기화대상 서버관리에 대한 등록, 수정, 삭제, 조회 기능을 제공한다.
  * - 동기화대상 서버관리의 조회기능은 목록조회, 상세조회로 구분된다.
- * @author 이문준
- * @version 1.0
- * @created 28-6-2010 오전 10:44:34
- * <pre>
- * == 개정이력(Modification Information) ==
- *
- *  수정일                수정자           수정내용
- *  ----------   --------   ---------------------------
- *  2010.06.28   이문준           최초 생성
- *  2011.08.26   정진오           IncludedInfo annotation 추가
- *  2019.12.09   신용호           KISA 보안약점 조치 (위험한 형식 파일 업로드)
  * </pre>
+ * 
+ * @author 이문준
+ * @since 2010.06.28
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.06.28  이문준          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2019.12.09  신용호          KISA 보안약점 조치 (위험한 형식 파일 업로드)
+ *   2025.09.19  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-FieldNamingConventions(변수명에 밑줄 사용)
+ *   2025.09.19  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AvoidReassigningParameters(넘겨받는 메소드 parameter 값을 직접 변경하는 코드 탐지)
+ *   2025.09.19  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-SimplifyBooleanExpressions(boolean 사용 시 불필요한 비교 연산을 피하도록 함)
+ *
+ *      </pre>
  */
-
 @Controller
 public class EgovSynchrnServerController {
 
@@ -60,13 +68,13 @@ public class EgovSynchrnServerController {
 	private EgovSynchrnServerService egovSynchrnServerService;
 
 	@Resource(name = "egovMessageSource")
-	EgovMessageSource egovMessageSource;
+	private EgovMessageSource egovMessageSource;
 
 	@Autowired
 	private DefaultBeanValidator beanValidator;
 
 	@Resource(name = "EgovCmmUseService")
-	EgovCmmUseService EgovCmmUseService;
+	private EgovCmmUseService egovCmmUseService;
 
 	/** ID Generation */
 	@Resource(name = "egovSynchrnServerIdGnrService")
@@ -81,6 +89,7 @@ public class EgovSynchrnServerController {
 
 	/**
 	 * 동기화대상 서버관리 목록화면 이동
+	 * 
 	 * @param synchrnServerVO - 동기화대상 서버 Vo
 	 * @return String - 리턴 Url
 	 */
@@ -99,13 +108,14 @@ public class EgovSynchrnServerController {
 
 	/**
 	 * 동기화대상 서버정보를 관리하기 위해 등록된 동기화대상 서버목록을 조회한다.
+	 * 
 	 * @param synchrnServerVO - 동기화대상 서버 Vo
 	 * @return String - 리턴 Url
 	 */
 	@IncludedInfo(name = "파일동기화(대상서버)", order = 2150, gid = 90)
 	@RequestMapping(value = "/utl/sys/ssy/selectSynchrnServerList.do")
 	public String selectSynchrnServerList(@ModelAttribute("synchrnServerVO") SynchrnServerVO synchrnServerVO,
-		ModelMap model) throws Exception {
+			ModelMap model) throws Exception {
 
 		// 파일업로드 제한
 		String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
@@ -140,19 +150,19 @@ public class EgovSynchrnServerController {
 
 	/**
 	 * 등록된 동기화대상 서버의 상세정보를 조회한다.
+	 * 
 	 * @param synchrnServerVO - 동기화대상 서버 Vo
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/utl/sys/ssy/getSynchrnServer.do")
 	public String selectSynchrnServer(@RequestParam("serverId") String serverId,
-		@ModelAttribute("synchrnServerVO") SynchrnServerVO synchrnServerVO,
-		ModelMap model) throws Exception {
+			@ModelAttribute("synchrnServerVO") SynchrnServerVO synchrnServerVO, ModelMap model) throws Exception {
 
 		synchrnServerVO.setServerId(serverId);
-		synchrnServerVO = egovSynchrnServerService.selectSynchrnServer(synchrnServerVO);
-		model.addAttribute("synchrnServer", synchrnServerVO);
+		SynchrnServerVO synchrnServer = egovSynchrnServerService.selectSynchrnServer(synchrnServerVO);
+		model.addAttribute("synchrnServer", synchrnServer);
 
-		model.addAttribute("fileList", egovSynchrnServerService.selectSynchrnServerFiles(synchrnServerVO));
+		model.addAttribute("fileList", egovSynchrnServerService.selectSynchrnServerFiles(synchrnServer));
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
 		return "egovframework/com/utl/sys/ssy/EgovSynchrnServerDetail";
@@ -160,48 +170,50 @@ public class EgovSynchrnServerController {
 
 	/**
 	 * 등록된 동기화대상 서버의 파일을 삭제한다.
+	 * 
 	 * @param synchrnServerVO - 동기화대상 서버 Vo
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/utl/sys/ssy/removeSynchrnServerFile.do")
 	public String deleteSynchrnServerFile(@RequestParam("serverId") String serverId,
-		@RequestParam("fileNm") String fileNm,
-		@ModelAttribute("synchrnServer") SynchrnServerVO synchrnServerVO) throws Exception {
+			@RequestParam("fileNm") String fileNm, @ModelAttribute("synchrnServer") SynchrnServerVO synchrnServerVO)
+			throws Exception {
 
 		synchrnServerVO.setServerId(serverId);
-		synchrnServerVO = egovSynchrnServerService.selectSynchrnServer(synchrnServerVO);
-		synchrnServerVO.setDeleteFileNm(fileNm);
-		egovSynchrnServerService.deleteSynchrnServerFile(synchrnServerVO);
+		SynchrnServerVO synchrnServer = egovSynchrnServerService.selectSynchrnServer(synchrnServerVO);
+		synchrnServer.setDeleteFileNm(fileNm);
+		egovSynchrnServerService.deleteSynchrnServerFile(synchrnServer);
 		return "forward:/utl/sys/ssy/getSynchrnServer.do";
 	}
 
 	/**
 	 * 등록된 동기화대상 서버의 파일을 다운로드 한다.
-	 * @param serverId - 동기화대상 서버 ID
-	 * @param fileNm - 다운로드 대상 파일
+	 * 
+	 * @param serverId        - 동기화대상 서버 ID
+	 * @param fileNm          - 다운로드 대상 파일
 	 * @param synchrnServerVO - 동기화대상 서버 Vo
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/utl/sys/ssy/getSynchrnServerFile.do")
-	public String downloadFtpFile(@RequestParam("serverId") String serverId,
-		@RequestParam("fileNm") String fileNm,
-		@ModelAttribute("synchrnServer") SynchrnServerVO synchrnServerVO) throws Exception {
+	public String downloadFtpFile(@RequestParam("serverId") String serverId, @RequestParam("fileNm") String fileNm,
+			@ModelAttribute("synchrnServer") SynchrnServerVO synchrnServerVO) throws Exception {
 
 		synchrnServerVO.setServerId(serverId);
-		synchrnServerVO = egovSynchrnServerService.selectSynchrnServer(synchrnServerVO);
-		synchrnServerVO.setFilePath(SYNTH_SERVER_PATH);
-		egovSynchrnServerService.downloadFtpFile(synchrnServerVO, fileNm);
+		SynchrnServerVO synchrnServer = egovSynchrnServerService.selectSynchrnServer(synchrnServerVO);
+		synchrnServer.setFilePath(SYNTH_SERVER_PATH);
+		egovSynchrnServerService.downloadFtpFile(synchrnServer, fileNm);
 		return "forward:/utl/sys/ssy/getSynchrnServer.do";
 	}
 
 	/**
 	 * 동기화대상 서버정보 등록 화면으로 이동한다.
+	 * 
 	 * @param synchrnServer - 동기화대상 서버 model
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/utl/sys/ssy/addViewSynchrnServer.do")
 	public String insertViewSynchrnServer(@ModelAttribute("synchrnServerVO") SynchrnServerVO synchrnServerVO,
-		ModelMap model) throws Exception {
+			ModelMap model) throws Exception {
 
 		model.addAttribute("synchrnServer", synchrnServerVO);
 		return "egovframework/com/utl/sys/ssy/EgovSynchrnServerRegist";
@@ -209,29 +221,29 @@ public class EgovSynchrnServerController {
 
 	/**
 	 * 동기화대상 서버정보를 신규로 등록한다.
+	 * 
 	 * @param synchrnServer - 동기화대상 서버 model
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/utl/sys/ssy/addSynchrnServer.do")
 	public String insertSynchrnServer(@ModelAttribute("synchrnServerVO") SynchrnServerVO synchrnServerVO,
-		@ModelAttribute("synchrnServer") SynchrnServer synchrnServer,
-		BindingResult bindingResult,
-		ModelMap model) throws Exception {
+			@ModelAttribute("synchrnServer") SynchrnServer synchrnServer, BindingResult bindingResult, ModelMap model)
+			throws Exception {
 
-		beanValidator.validate(synchrnServer, bindingResult); //validation 수행
+		beanValidator.validate(synchrnServer, bindingResult); // validation 수행
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("synchrnServerVO", synchrnServerVO);
 			return "egovframework/com/utl/sys/ssy/EgovSynchrnServerRegist";
 		} else {
-			LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-			Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated(); //KISA 보안취약점 조치 (2018-12-10, 이정은)
+			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+			Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated(); // KISA 보안취약점 조치 (2018-12-10, 이정은)
 
 			if (!isAuthenticated) {
 				return "redirect:/uat/uia/egovLoginUsr.do";
 			}
 			synchrnServer.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
-			//KISA 보안약점 조치 (2018-10-29, 윤창원)
+			// KISA 보안약점 조치 (2018-10-29, 윤창원)
 			if (!EgovStringUtil.isNullToString(synchrnServer.getSynchrnLc()).endsWith("/")) {
 				synchrnServer.setSynchrnLc(EgovStringUtil.isNullToString(synchrnServer.getSynchrnLc()).concat("/"));
 			}
@@ -239,7 +251,7 @@ public class EgovSynchrnServerController {
 			synchrnServer.setServerId(egovSynchrnServerIdGnrService.getNextStringId());
 
 			model.addAttribute("synchrnServer",
-				egovSynchrnServerService.insertSynchrnServer(synchrnServer, synchrnServerVO));
+					egovSynchrnServerService.insertSynchrnServer(synchrnServer, synchrnServerVO));
 			model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
 			return "egovframework/com/utl/sys/ssy/EgovSynchrnServerDetail";
 		}
@@ -247,13 +259,13 @@ public class EgovSynchrnServerController {
 
 	/**
 	 * 기 등록된 동기화대상 서버정보를 수정한다.
+	 * 
 	 * @param synchrnServer - 동기화대상 서버 model
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/utl/sys/ssy/updtViewSynchrnServer.do")
 	public String updateViewSynchrnServer(@RequestParam("serverId") String serverId,
-		@ModelAttribute("synchrnServerVO") SynchrnServerVO synchrnServerVO,
-		Model model) throws Exception {
+			@ModelAttribute("synchrnServerVO") SynchrnServerVO synchrnServerVO, Model model) throws Exception {
 		synchrnServerVO.setServerId(serverId);
 		model.addAttribute("synchrnServer", egovSynchrnServerService.selectSynchrnServer(synchrnServerVO));
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
@@ -262,29 +274,28 @@ public class EgovSynchrnServerController {
 
 	/**
 	 * 동기화대상 서버정보 등록 화면으로 이동한다.
+	 * 
 	 * @param synchrnServer - 동기화대상 서버 model
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/utl/sys/ssy/updtSynchrnServer.do")
 	public String updateSynchrnServer(@ModelAttribute("synchrnServer") SynchrnServer synchrnServer,
-		BindingResult bindingResult,
-		SessionStatus status,
-		ModelMap model) throws Exception {
+			BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
 
-		beanValidator.validate(synchrnServer, bindingResult); //validation 수행
+		beanValidator.validate(synchrnServer, bindingResult); // validation 수행
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("synchrnServerVO", synchrnServer);
 			return "egovframework/com/utl/sys/ssy/EgovSynchrnServerUpdt";
 		} else {
-			LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-			Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated(); //KISA 보안취약점 조치 (2018-12-10, 이정은)
+			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+			Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated(); // KISA 보안취약점 조치 (2018-12-10, 이정은)
 
 			if (!isAuthenticated) {
 				return "redirect:/uat/uia/egovLoginUsr.do";
 			}
 			synchrnServer.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
-			//KISA 보안약점 조치 (2018-10-29, 윤창원)
+			// KISA 보안약점 조치 (2018-10-29, 윤창원)
 			if (!EgovStringUtil.isNullToString(synchrnServer.getSynchrnLc()).endsWith("/")) {
 				synchrnServer.setSynchrnLc(EgovStringUtil.isNullToString(synchrnServer.getSynchrnLc()).concat("/"));
 			}
@@ -297,13 +308,13 @@ public class EgovSynchrnServerController {
 
 	/**
 	 * 기 등록된 동기화대상 서버정보를 삭제한다.
+	 * 
 	 * @param synchrnServer - 동기화대상 서버 model
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/utl/sys/ssy/removeSynchrnServer.do")
 	public String deleteSynchrnServer(@RequestParam("serverId") String serverId,
-		@ModelAttribute("synchrnServer") SynchrnServer synchrnServer,
-		Model model) throws Exception {
+			@ModelAttribute("synchrnServer") SynchrnServer synchrnServer, Model model) throws Exception {
 
 		synchrnServer.setServerId(serverId);
 		egovSynchrnServerService.deleteSynchrnServer(synchrnServer);
@@ -313,12 +324,13 @@ public class EgovSynchrnServerController {
 
 	/**
 	 * 업로드 파일을 동기화대상 서버들을 대상으로 동기화 처리를 한다.
+	 * 
 	 * @param synchrnServerVO - 동기화대상 서버 Vo
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/utl/sys/ssy/processSynchrn.do")
-	public String processSynchrn(@ModelAttribute("synchrnServerVO") SynchrnServerVO synchrnServerVO,
-		Model model) throws Exception {
+	public String processSynchrn(@ModelAttribute("synchrnServerVO") SynchrnServerVO synchrnServerVO, Model model)
+			throws Exception {
 
 		synchrnServerVO.setFilePath(SYNTH_SERVER_PATH);
 		File uploadFile = new File(SYNTH_SERVER_PATH);
@@ -331,27 +343,26 @@ public class EgovSynchrnServerController {
 		}
 
 		/*
-		for(int i=0; i<fileList.length; i++) {
-		    if(fileList[i].isFile()) {
-		    	egovSynchrnServerService.processSynchrn(synchrnServerVO, fileList[i]);
-		    }
-		}
-		*/
+		 * for(int i=0; i<fileList.length; i++) { if(fileList[i].isFile()) {
+		 * egovSynchrnServerService.processSynchrn(synchrnServerVO, fileList[i]); } }
+		 */
 
 		return "forward:/utl/sys/ssy/selectSynchrnServerList.do";
 	}
 
 	/**
 	 * 동기화 대상 파일을 업로드 한다.
+	 * 
 	 * @param synchrnServerVO - 동기화대상 서버 Vo
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/utl/sys/ssy/uploadFile.do")
 	public String uploadFile(final MultipartHttpServletRequest multiRequest,
-		@ModelAttribute("synchrnServer") SynchrnServerVO synchrnServerVO, Model model) throws Exception {
+			@ModelAttribute("synchrnServer") SynchrnServerVO synchrnServerVO, Model model) throws Exception {
 
 		MultipartFile multipartFile = multiRequest.getFile("file");
-		if (multipartFile != null) {//2022.01 Possible null pointer dereference due to return value of called method
+		if (multipartFile != null) {// 2022.01 Possible null pointer dereference due to return value of called
+									// method
 			String fileName = multipartFile.getOriginalFilename();
 			String extension = EgovFileUploadUtil.getFileExtension(fileName);
 
@@ -361,18 +372,18 @@ public class EgovSynchrnServerController {
 			long fileSize = multipartFile.getSize();
 
 			boolean resultFileExtention = EgovFileUploadUtil.checkFileExtension(fileName,
-				whiteListFileUploadExtensions);
+					whiteListFileUploadExtensions);
 			boolean resultFileMaxSize = EgovFileUploadUtil.checkFileMaxSize(multipartFile, maxFileSize);
 
 			if (resultFileExtention && resultFileMaxSize) { // true = 허용
 				egovSynchrnServerService.writeFile(multipartFile, fileName, synchrnServerVO);
 			} else {
-				if (resultFileExtention == false) {
+				if (!resultFileExtention) {
 					model.addAttribute("fileUploadResultMessage", "* 허용되지 않는 확장자 입니다.[" + extension + "]");
 				}
-				if (resultFileMaxSize == false) {
-					model.addAttribute("fileUploadResultMessage",
-						"* 허용되지 않는 파일 사이즈 입니다.[" + fileName + " : " + fileSize + " bytes / " + maxFileSize + " bytes]");
+				if (!resultFileMaxSize) {
+					model.addAttribute("fileUploadResultMessage", "* 허용되지 않는 파일 사이즈 입니다.[" + fileName + " : " + fileSize
+							+ " bytes / " + maxFileSize + " bytes]");
 				}
 			}
 
@@ -383,12 +394,13 @@ public class EgovSynchrnServerController {
 
 	/**
 	 * 업로드 파일을 삭제한다.
+	 * 
 	 * @param deleteFiles - 업로드 파일 목록
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/utl/sys/ssy/deleteFile.do")
 	public String deleteFile(@RequestParam("deleteFiles") String deleteFiles,
-		@ModelAttribute("synchrnServerVO") SynchrnServerVO synchrnServerVO) throws Exception {
+			@ModelAttribute("synchrnServerVO") SynchrnServerVO synchrnServerVO) throws Exception {
 
 		synchrnServerVO.setReflctAt("");
 		egovSynchrnServerService.deleteFile(deleteFiles, synchrnServerVO);
