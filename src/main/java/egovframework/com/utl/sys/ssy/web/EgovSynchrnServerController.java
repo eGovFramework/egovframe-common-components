@@ -64,13 +64,13 @@ public class EgovSynchrnServerController {
 	private EgovSynchrnServerService egovSynchrnServerService;
 
 	@Resource(name = "egovMessageSource")
-	EgovMessageSource egovMessageSource;
+	private EgovMessageSource egovMessageSource;
 
 	@Autowired
 	private DefaultBeanValidator beanValidator;
 
 	@Resource(name = "EgovCmmUseService")
-	EgovCmmUseService EgovCmmUseService;
+	private EgovCmmUseService egovCmmUseService;
 
 	/** ID Generation */
 	@Resource(name = "egovSynchrnServerIdGnrService")
@@ -155,10 +155,10 @@ public class EgovSynchrnServerController {
 			@ModelAttribute("synchrnServerVO") SynchrnServerVO synchrnServerVO, ModelMap model) throws Exception {
 
 		synchrnServerVO.setServerId(serverId);
-		synchrnServerVO = egovSynchrnServerService.selectSynchrnServer(synchrnServerVO);
-		model.addAttribute("synchrnServer", synchrnServerVO);
+		SynchrnServerVO synchrnServer = egovSynchrnServerService.selectSynchrnServer(synchrnServerVO);
+		model.addAttribute("synchrnServer", synchrnServer);
 
-		model.addAttribute("fileList", egovSynchrnServerService.selectSynchrnServerFiles(synchrnServerVO));
+		model.addAttribute("fileList", egovSynchrnServerService.selectSynchrnServerFiles(synchrnServer));
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
 		return "egovframework/com/utl/sys/ssy/EgovSynchrnServerDetail";
@@ -176,9 +176,9 @@ public class EgovSynchrnServerController {
 			throws Exception {
 
 		synchrnServerVO.setServerId(serverId);
-		synchrnServerVO = egovSynchrnServerService.selectSynchrnServer(synchrnServerVO);
-		synchrnServerVO.setDeleteFileNm(fileNm);
-		egovSynchrnServerService.deleteSynchrnServerFile(synchrnServerVO);
+		SynchrnServerVO synchrnServer = egovSynchrnServerService.selectSynchrnServer(synchrnServerVO);
+		synchrnServer.setDeleteFileNm(fileNm);
+		egovSynchrnServerService.deleteSynchrnServerFile(synchrnServer);
 		return "forward:/utl/sys/ssy/getSynchrnServer.do";
 	}
 
@@ -195,9 +195,9 @@ public class EgovSynchrnServerController {
 			@ModelAttribute("synchrnServer") SynchrnServerVO synchrnServerVO) throws Exception {
 
 		synchrnServerVO.setServerId(serverId);
-		synchrnServerVO = egovSynchrnServerService.selectSynchrnServer(synchrnServerVO);
-		synchrnServerVO.setFilePath(SYNTH_SERVER_PATH);
-		egovSynchrnServerService.downloadFtpFile(synchrnServerVO, fileNm);
+		SynchrnServerVO synchrnServer = egovSynchrnServerService.selectSynchrnServer(synchrnServerVO);
+		synchrnServer.setFilePath(SYNTH_SERVER_PATH);
+		egovSynchrnServerService.downloadFtpFile(synchrnServer, fileNm);
 		return "forward:/utl/sys/ssy/getSynchrnServer.do";
 	}
 
@@ -374,10 +374,10 @@ public class EgovSynchrnServerController {
 			if (resultFileExtention && resultFileMaxSize) { // true = 허용
 				egovSynchrnServerService.writeFile(multipartFile, fileName, synchrnServerVO);
 			} else {
-				if (resultFileExtention == false) {
+				if (!resultFileExtention) {
 					model.addAttribute("fileUploadResultMessage", "* 허용되지 않는 확장자 입니다.[" + extension + "]");
 				}
-				if (resultFileMaxSize == false) {
+				if (!resultFileMaxSize) {
 					model.addAttribute("fileUploadResultMessage", "* 허용되지 않는 파일 사이즈 입니다.[" + fileName + " : " + fileSize
 							+ " bytes / " + maxFileSize + " bytes]");
 				}
