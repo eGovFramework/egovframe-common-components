@@ -23,68 +23,82 @@ import java.util.regex.Pattern;
  */
 
 public class EgovWebUtil {
+	
+	/**
+	 * 문자열이 null이거나 빈 문자열인지 확인하는 유틸리티 메서드
+	 * 
+	 * @param value 검사할 문자열
+	 * @return null이거나 빈 문자열이면 true, 그렇지 않으면 false
+	 */
+	private static boolean isEmpty(String value) {
+		return value == null || value.trim().isEmpty();
+	}
+	
 	public static String clearXSSMinimum(String value) {
-		if (value == null || value.trim().equals("")) {
+		if (isEmpty(value)) {
 			return "";
 		}
 
-		String returnValue = value;
-
-		returnValue = returnValue.replaceAll("&", "&amp;");
-		returnValue = returnValue.replaceAll("<", "&lt;");
-		returnValue = returnValue.replaceAll(">", "&gt;");
-		returnValue = returnValue.replaceAll("\"", "&#34;");
-		returnValue = returnValue.replaceAll("\'", "&#39;");
-		returnValue = returnValue.replaceAll("\\.", "&#46;");
-		returnValue = returnValue.replaceAll("%2E", "&#46;");
-		returnValue = returnValue.replaceAll("%2F", "&#47;");
-		return returnValue;
+		// 1단계: URL 인코딩된 문자 변환
+		String step1 = value
+			.replace("%2E", "&#46;")
+			.replace("%2F", "&#47;");
+		
+		// 2단계: 일반 문자 변환 (순서 중요: &를 먼저 변환)
+		return step1
+			.replace("&", "&amp;")
+			.replace("<", "&lt;")
+			.replace(">", "&gt;")
+			.replace("\"", "&#34;")
+			.replace("'", "&#39;")
+			.replace(".", "&#46;");
 	}
 
 	public static String clearXSSMaximum(String value) {
-		String returnValue = value;
-		returnValue = clearXSSMinimum(returnValue);
+		if (isEmpty(value)) {
+			return "";
+		}
 
-		returnValue = returnValue.replaceAll("%00", null);
-
-		returnValue = returnValue.replaceAll("%", "&#37;");
-
-		// \\. => .
-
-		returnValue = returnValue.replaceAll("\\.\\./", ""); // ../
-		returnValue = returnValue.replaceAll("\\.\\.\\\\", ""); // ..\
-		returnValue = returnValue.replaceAll("\\./", ""); // ./
-		returnValue = returnValue.replaceAll("%2F", "");
-
-		return returnValue;
+		// 1단계: 기본 XSS 방지 처리
+		String step1 = clearXSSMinimum(value);
+		
+		// 2단계: 추가 보안 처리 (순서 중요)
+		return step1
+			.replace("%00", "")      // null 문자 제거
+			.replace("%", "&#37;")   // % 문자 변환
+			.replace("../", "")      // 상위 디렉토리 접근 방지
+			.replace("..\\", "")     // 상위 디렉토리 접근 방지 (Windows)
+			.replace("./", "");      // 현재 디렉토리 접근 방지
 	}
 
 	public static String clearXSS(String value) {
-		if (value == null || value.trim().equals("")) {
+		if (isEmpty(value)) {
 			return "";
 		}
 
-		String returnValue = value;
-		returnValue = returnValue.replaceAll("&", "&amp;");
-		returnValue = returnValue.replaceAll("%2E", "&#46;");
-		returnValue = returnValue.replaceAll("%2F", "&#47;");
-		returnValue = returnValue.replaceAll("<", "&lt;");
-		returnValue = returnValue.replaceAll(">", "&gt;");
-		returnValue = returnValue.replaceAll("%3C", "&lt;");
-		returnValue = returnValue.replaceAll("%3E", "&gt;");
-
-		return returnValue;
+		// 1단계: URL 인코딩된 문자 변환
+		String step1 = value
+			.replace("%3C", "&lt;")
+			.replace("%3E", "&gt;")
+			.replace("%2E", "&#46;")
+			.replace("%2F", "&#47;");
+		
+		// 2단계: 일반 문자 변환 (순서 중요: &를 먼저 변환)
+		return step1
+			.replace("&", "&amp;")
+			.replace("<", "&lt;")
+			.replace(">", "&gt;");
 	}
-	
+
 	public static String filePathBlackList(String value) {
-		String returnValue = value;
-		if (returnValue == null || returnValue.trim().equals("")) {
+		if (isEmpty(value)) {
 			return "";
 		}
 
-		returnValue = returnValue.replaceAll("\\.\\.", "");
-
-		return returnValue;
+		return value
+			.replace("../", "")
+			.replace("..\\", "")
+			.replace("..", "");
 	}
 	
 	/**
