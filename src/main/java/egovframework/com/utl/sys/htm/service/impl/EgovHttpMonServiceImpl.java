@@ -17,20 +17,33 @@ import egovframework.com.utl.sys.htm.service.HttpMonLogVO;
 import egovframework.com.utl.sys.htm.service.HttpMonVO;
 
 /**
+ * <pre>
  * 개요 - HTTP서비스모니터링에 대한 ServiceImpl 클래스를 정의한다.
  *
  * 상세내용 - HTTP서비스모니터링에 대한 등록, 수정, 삭제, 조회 기능을 제공한다. - HTTP서비스모니터링의 조회기능은 목록조회,
  * 상세조회로 구분된다.
+ * </pre>
  * 
  * @author 박종선
+ * @since 2010.06.17
  * @version 1.0
- * @created 17-6-2010 오후 5:12:43
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.06.17  박종선          최초 생성
+ *   2025.09.13  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-FieldNamingConventions(변수명에 밑줄 사용)
+ *
+ *      </pre>
  */
 @Service("EgovHttpMonService")
 public class EgovHttpMonServiceImpl extends EgovAbstractServiceImpl implements EgovHttpMonService {
 
 	@Resource(name = "HttpMonDAO")
-	private HttpMonDAO HttpMonDAO;
+	private HttpMonDAO httpMonDAO;
 
 	/** ID Generation */
 	@Resource(name = "egovHttpManageIdGnrService")
@@ -50,7 +63,7 @@ public class EgovHttpMonServiceImpl extends EgovAbstractServiceImpl implements E
 	 */
 	@Override
 	public List<HttpMonVO> selectHttpMonList(HttpMonVO searchVO) throws Exception {
-		return HttpMonDAO.selectHttpMonList(searchVO);
+		return httpMonDAO.selectHttpMonList(searchVO);
 	}
 
 	/**
@@ -63,7 +76,7 @@ public class EgovHttpMonServiceImpl extends EgovAbstractServiceImpl implements E
 	 */
 	@Override
 	public int selectHttpMonTotCnt(HttpMonVO searchVO) throws Exception {
-		return HttpMonDAO.selectHttpMonTotCnt(searchVO);
+		return httpMonDAO.selectHttpMonTotCnt(searchVO);
 	}
 
 	/**
@@ -76,7 +89,7 @@ public class EgovHttpMonServiceImpl extends EgovAbstractServiceImpl implements E
 	 */
 	@Override
 	public HttpMon selectHttpMonDetail(HttpMon httpMon) throws Exception {
-		HttpMon ret = HttpMonDAO.selectHttpMonDetail(httpMon);
+		HttpMon ret = httpMonDAO.selectHttpMonDetail(httpMon);
 		return ret;
 	}
 
@@ -90,7 +103,7 @@ public class EgovHttpMonServiceImpl extends EgovAbstractServiceImpl implements E
 	@Override
 	public void insertHttpMon(HttpMon httpMon) throws Exception {
 		httpMon.setSysId(idgenService.getNextStringId());
-		HttpMonDAO.insertHttpMon(httpMon);
+		httpMonDAO.insertHttpMon(httpMon);
 	}
 
 	/**
@@ -102,7 +115,7 @@ public class EgovHttpMonServiceImpl extends EgovAbstractServiceImpl implements E
 	 */
 	@Override
 	public void updateHttpMon(HttpMon httpMon) throws Exception {
-		HttpMonDAO.updateHttpMon(httpMon);
+		httpMonDAO.updateHttpMon(httpMon);
 	}
 
 	/**
@@ -114,7 +127,7 @@ public class EgovHttpMonServiceImpl extends EgovAbstractServiceImpl implements E
 	 */
 	@Override
 	public void deleteHttpMon(HttpMon httpMon) throws Exception {
-		HttpMonDAO.deleteHttpMon(httpMon);
+		httpMonDAO.deleteHttpMon(httpMon);
 	}
 
 	/**
@@ -128,8 +141,8 @@ public class EgovHttpMonServiceImpl extends EgovAbstractServiceImpl implements E
 	@Override
 	public Map<String, Object> selectHttpMonLogList(HttpMonLogVO httpMonLogVO) throws Exception {
 
-		List<HttpMonLogVO> result = HttpMonDAO.selectHttpMonLogList(httpMonLogVO);
-		int cnt = HttpMonDAO.selectHttpMonLogTotCnt(httpMonLogVO);
+		List<HttpMonLogVO> result = httpMonDAO.selectHttpMonLogList(httpMonLogVO);
+		int cnt = httpMonDAO.selectHttpMonLogTotCnt(httpMonLogVO);
 
 		Map<String, Object> map = new HashMap<String, Object>();
 
@@ -150,7 +163,7 @@ public class EgovHttpMonServiceImpl extends EgovAbstractServiceImpl implements E
 	 */
 	@Override
 	public HttpMonLog selectHttpMonDetailLog(HttpMonLog httpMonLog) throws Exception {
-		return HttpMonDAO.selectHttpMonDetailLog(httpMonLog);
+		return httpMonDAO.selectHttpMonDetailLog(httpMonLog);
 	}
 
 	/**
@@ -162,7 +175,7 @@ public class EgovHttpMonServiceImpl extends EgovAbstractServiceImpl implements E
 	 */
 	@Override
 	public void insertHttpMonLog(HttpMonLog httpMonLog) throws Exception {
-		HttpMonDAO.insertHttpMonLog(httpMonLog);
+		httpMonDAO.insertHttpMonLog(httpMonLog);
 	}
 
 	/**
@@ -174,7 +187,7 @@ public class EgovHttpMonServiceImpl extends EgovAbstractServiceImpl implements E
 	 */
 	@Override
 	public void updateHttpMonSttus(HttpMon httpMon) throws Exception {
-		HttpMonDAO.updateHttpMonSttus(httpMon);
+		httpMonDAO.updateHttpMonSttus(httpMon);
 
 		HttpMonLog httpMonLog = new HttpMonLog();
 		httpMonLog.setSysId(httpMon.getSysId());
