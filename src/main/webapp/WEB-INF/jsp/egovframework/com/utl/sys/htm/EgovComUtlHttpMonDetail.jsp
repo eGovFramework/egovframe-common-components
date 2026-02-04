@@ -13,7 +13,7 @@
   *  @version 1.0
   *  @see
   *  
-  *  Copyright (C) 2009 by MOPAS  All right reserved.
+  *  Copyright (C) 2009 by MOPAS  All rights reserved.
   */
 %>
 
@@ -44,7 +44,7 @@
 		 ******************************************************** */
 		function fnModify(){
 			var varForm				 = document.all["Form"];
-			varForm.action           = "<c:url value='/utl/sys/htm/EgovComUtlHttpMonModify.do'/>";
+			varForm.action           = "<c:url value='/utl/sys/htm/EgovComUtlHttpMonModifyView.do'/>";
 			varForm.sysId.value     = "${result.sysId}";
 			varForm.submit();
 		}
@@ -90,16 +90,20 @@
 					  	</tr>
 					  	<tr>
 					    	<th scope="row" width="20%" height="23" class="required_text"><spring:message code="comUtlSysHtm.comUtlHttpMon.systemURL" /><img src="<c:url value='/images/egovframework/com/cmm/icon/required.gif'/>" alt="필수입력표시"  width="15" height="15"></th><!-- 시스템URL -->          
-					    	<td class="left">${result.siteUrl}</td>    
-					  	</tr> 					  	
+					    	<td class="left">${result.siteUrl}</td>
+					  	</tr>
+					  	<tr>
+					    	<th scope="row" width="20%" height="23" class="required_text"><spring:message code="comUtlSysHtm.comUtlHttpMon.systemURLHealth" /></th><!-- 시스템URL 상태-->          
+					    	<td class="left">${siteUrlHealth}</td>
+					  	</tr>
 					  	<tr>
 					    	<th scope="row" width="20%" height="23" class="required_text"><spring:message code="comUtlSysHtm.comUtlHttpMon.managerName" /><img src="<c:url value='/images/egovframework/com/cmm/icon/required.gif'/>" alt="필수입력표시"  width="15" height="15"></th><!-- 관리자명 -->          
-					    	<td class="left">${result.mngrNm}</td>    
-					  	</tr> 
+					    	<td class="left">${result.mngrNm}</td>
+					  	</tr>
 					  	<tr>
 					    	<th scope="row" width="20%" height="23" class="required_text"><spring:message code="comUtlSysHtm.comUtlHttpMon.managerEmail" /><img src="<c:url value='/images/egovframework/com/cmm/icon/required.gif'/>" alt="필수입력표시"  width="15" height="15"></th><!-- 관리자이메일 -->          
-					    	<td class="left">${result.mngrEmailAddr}</td>    
-					  	</tr>     
+					    	<td class="left">${result.mngrEmailAddr}</td>
+					  	</tr>
 					</table>
 					
 				    <!-- 목록/저장버튼  -->

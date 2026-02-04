@@ -22,9 +22,11 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  * @Description : HTTP서비스모니터링을 위한 스케쥴링 클래스
  * @Modification Information
  *
- *               수정일 수정자 수정내용 ---------- ------- ------------------- 2010.09.01
- *               박종선 최초생성 2019.12.06 신용호 KISA 보안약점 조치 (부적절한 예외처리) 2022.11.11 김혜준
- *               시큐어코딩 처리
+ *    수정일         수정자      수정내용 
+ *    ----------   -------   -------------------
+ *    2010.09.01   박종선      최초생성
+ *    2019.12.06   신용호      KISA 보안약점 조치 (부적절한 예외처리)
+ *    2022.11.11   김혜준      시큐어코딩 처리
  *
  * @author 박종선
  * @since 2010.05.01
@@ -131,7 +133,7 @@ public class HttpMntrngScheduling extends EgovAbstractServiceImpl {
 
 	/**
 	 * 이메일을 전송한다.
-	 * 
+	 *
 	 * @return
 	 *
 	 * @param target

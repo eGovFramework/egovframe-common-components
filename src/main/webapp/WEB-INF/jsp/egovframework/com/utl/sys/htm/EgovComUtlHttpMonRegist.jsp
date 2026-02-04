@@ -13,7 +13,7 @@
   *  @version 1.0
   *  @see
   *  
-  *  Copyright (C) 2009 by MOPAS  All right reserved.
+  *  Copyright (C) 2009 by MOPAS  All rights reserved.
   */
 %>
 
@@ -23,7 +23,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comUtlSysHtm.comUtlHttpMonRegist.title"/></c:set>
 <!DOCTYPE html>
 <html lang="ko">
@@ -32,9 +31,7 @@
 		<title>${pageTitle}</title>
 		<link href="<c:url value='/css/egovframework/com/com.css' />" rel="stylesheet" type="text/css">
 		<link href="<c:url value='/css/egovframework/com/button.css' />" rel="stylesheet" type="text/css">
-		<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-		<validator:javascript formName="httpMon" staticJavascript="false" xhtml="true" cdata="false"/>
-		
+		<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 		<script type="text/javaScript" language="javascript">
 		<!--
 		/* ********************************************************
@@ -84,17 +81,18 @@
 					<th><spring:message code="comUtlSysHtm.comUtlHttpMon.webService" /> <span class="pilsu">*</span></th><!-- 웹서비스종류 -->
 					<td class="left">
 					    <select name="webKind" title="<spring:message code="comUtlSysHtm.comUtlHttpMon.webService" />">
-							<option value="TOMCAT">TOMCAT</option>
-							<option value="WEBLOGIC">WEBLOGIC</option>
-							<option value="JEUS">JEUS</option>
-							<option value="JBOSS">JBOSS</option>								   							   	
+							<option value="TOMCAT" <c:if test="${httpMon.webKind == 'TOMCAT'}">selected</c:if>>TOMCAT</option>
+							<option value="WEBLOGIC" <c:if test="${httpMon.webKind == 'WEBLOGIC'}">selected</c:if>>WEBLOGIC</option>
+							<option value="JEUS" <c:if test="${httpMon.webKind == 'JEUS'}">selected</c:if>>JEUS</option>
+							<option value="JBOSS" <c:if test="${httpMon.webKind == 'JBOSS'}">selected</c:if>>JBOSS</option>
 						</select>
+						<form:errors path="webKind"/>
 					</td>
 				</tr>
 				<tr>
 					<th><spring:message code="comUtlSysHtm.comUtlHttpMon.systemURL" /> <span class="pilsu">*</span></th><!-- 시스템URL -->
 					<td class="left">
-					    <form:input  path="siteUrl" size="30" maxlength="30"/>
+					    <form:input  path="siteUrl" size="100" maxlength="100"/>
 	      				<form:errors path="siteUrl"/>
 					</td>
 				</tr>
