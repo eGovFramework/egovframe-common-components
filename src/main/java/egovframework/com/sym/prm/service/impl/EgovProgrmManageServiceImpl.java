@@ -5,6 +5,7 @@ import java.util.List;
 import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.cmm.ComDefaultVO;
@@ -75,7 +76,11 @@ public class EgovProgrmManageServiceImpl extends EgovAbstractServiceImpl impleme
 	 */
 	@Override
 	public void insertProgrm(ProgrmManageVO vo) throws Exception {
-    	progrmManageDAO.insertProgrm(vo);
+    	try {
+			progrmManageDAO.insertProgrm(vo);
+		} catch (DuplicateKeyException e) {
+			throw new DuplicateKeyException("이미 등록된 프로그램파일명입니다.", e);
+		}
 	}
 
 	/**

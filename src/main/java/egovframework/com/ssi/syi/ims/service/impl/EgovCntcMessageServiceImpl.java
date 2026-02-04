@@ -29,7 +29,7 @@ import egovframework.com.ssi.syi.ims.service.EgovCntcMessageService;
  *  -------    --------    ---------------------------
  *   2009.04.01  이중호          최초 생성
  *
- * Copyright (C) 2009 by MOPAS  All right reserved.
+ * Copyright (C) 2009 by MOPAS  All rights reserved.
  * </pre>
  */
 @Service("CntcMessageService")

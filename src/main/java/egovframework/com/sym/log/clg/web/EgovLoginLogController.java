@@ -1,6 +1,6 @@
 package egovframework.com.sym.log.clg.web;
 
-import java.util.HashMap;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -17,30 +17,32 @@ import egovframework.com.sym.log.clg.service.EgovLoginLogService;
 import egovframework.com.sym.log.clg.service.LoginLog;
 
 /**
- * @Class Name : EgovLoginLogController.java
- * @Description : 접속로그정보를 관리하기 위한 컨트롤러 클래스
- * @Modification Information
- *
- *    수정일       수정자         수정내용
- *    -------      -------     -------------------
- *    2009. 3. 11. 이삼섭        최초생성
- *    2011. 7. 01. 이기하        패키지 분리(sym.log -> sym.log.clg)
- *    2011.8.26	정진오			IncludedInfo annotation 추가
- *
+ * 접속로그정보를 관리하기 위한 컨트롤러 클래스
+ * 
  * @author 공통 서비스 개발팀 이삼섭
- * @since 2009. 3. 11.
- * @version
+ * @since 2009.03.11
+ * @version 1.0
  * @see
  *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.03.11. 이삼섭          최초 생성
+ *   2011.07.01  이기하          패키지 분리(sym.log -> sym.log.clg)
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2025.07.10  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *
+ *      </pre>
  */
-
 @Controller
 public class EgovLoginLogController {
 
-	@Resource(name="EgovLoginLogService")
+	@Resource(name = "EgovLoginLogService")
 	private EgovLoginLogService loginLogService;
 
-	@Resource(name="propertiesService")
+	@Resource(name = "propertiesService")
 	protected EgovPropertyService propertyService;
 
 	/**
@@ -50,10 +52,9 @@ public class EgovLoginLogController {
 	 * @return sym/log/clg/EgovLoginLogList
 	 * @throws Exception
 	 */
-	@IncludedInfo(name="접속로그관리", order = 1080 ,gid = 60)
-	@RequestMapping(value="/sym/log/clg/SelectLoginLogList.do")
-	public String selectLoginLogInf(@ModelAttribute("searchVO") LoginLog loginLog,
-			ModelMap model) throws Exception{
+	@IncludedInfo(name = "접속로그관리", order = 1080, gid = 60)
+	@RequestMapping(value = "/sym/log/clg/SelectLoginLogList.do")
+	public String selectLoginLogInf(@ModelAttribute("searchVO") LoginLog loginLog, ModelMap model) throws Exception {
 
 		loginLog.setPageUnit(propertyService.getInt("pageUnit"));
 		loginLog.setPageSize(propertyService.getInt("pageSize"));
@@ -67,11 +68,11 @@ public class EgovLoginLogController {
 		loginLog.setLastIndex(paginationInfo.getLastRecordIndex());
 		loginLog.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		HashMap<?, ?> _map = (HashMap<?, ?>)loginLogService.selectLoginLogInf(loginLog);
-		int totCnt = Integer.parseInt((String)_map.get("resultCnt"));
+		Map<String, Object> map = loginLogService.selectLoginLogInf(loginLog);
+		int totCnt = (Integer) map.get("resultCnt");
 
-		model.addAttribute("resultList", _map.get("resultList"));
-		model.addAttribute("resultCnt", _map.get("resultCnt"));
+		model.addAttribute("resultList", map.get("resultList"));
+		model.addAttribute("resultCnt", totCnt);
 
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
@@ -87,11 +88,9 @@ public class EgovLoginLogController {
 	 * @return sym/log/clg/EgovLoginLogInqire
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/sym/log/clg/SelectLoginLogDetail.do")
-	public String selectLoginLog(@ModelAttribute("searchVO") LoginLog loginLog,
-			@RequestParam("logId") String logId,
-			ModelMap model) throws Exception{
-		
+	@RequestMapping(value = "/sym/log/clg/SelectLoginLogDetail.do")
+	public String selectLoginLog(@ModelAttribute("searchVO") LoginLog loginLog, @RequestParam("logId") String logId,
+			ModelMap model) throws Exception {
 
 		loginLog.setLogId(logId.trim());
 

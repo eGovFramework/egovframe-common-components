@@ -8,6 +8,7 @@ import javax.annotation.Resource;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -23,54 +24,58 @@ import egovframework.com.dam.map.tea.service.MapTeam;
 import egovframework.com.dam.map.tea.service.MapTeamVO;
 
 /**
+ * <pre>
  * 개요
  * - 지식맵(조직별)에 대한 controller 클래스를 정의한다.
  *
  * 상세내용
  * - 지식맵(조직별)에 대한 등록, 수정, 삭제, 조회 기능을 제공한다.
  * - 지식맵(조직별)의 조회기능은 목록조회, 상세조회로 구분된다.
- * @author 박종선
- * @version 1.0
- * @created 22-7-2010 오전 10:57:37
- *  <pre>
- * << 개정이력(Modification Information) >>
- *
- *   수정일		 수정자		수정내용
- *  -------     --------    ---------------------------
- *   2010.7.22	박종선		최초 생성
- *   2011.8.26	정진오		IncludedInfo annotation 추가
- *   2018.8.03	신용호		updateMapTeam method 수정 않되는 문제 처리
- *
  * </pre>
+ * 
+ * @author 박종선
+ * @since 2010.07.22
+ * @version 1.0
+ * @see
+ * 
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.07.22  박종선          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2018.08.03  신용호          updateMapTeam method 수정 않되는 문제 처리
+ *   2025.06.16  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(지역 변수 명명 규칙)
+ *
+ *      </pre>
  */
 
 @Controller
 public class EgovMapTeamController {
 
 	@Resource(name = "MapTeamService")
-    private EgovMapTeamService mapTeamService;
+	private EgovMapTeamService mapTeamService;
 
-    /** EgovPropertyService */
-    @Resource(name = "propertiesService")
-    protected EgovPropertyService propertiesService;
+	/** EgovPropertyService */
+	@Resource(name = "propertiesService")
+	protected EgovPropertyService propertiesService;
 
 	@Autowired
 	private DefaultBeanValidator beanValidator;
 
-
 	/**
 	 * 등록된 지식맵(조직별) 정보를 조회 한다.
+	 * 
 	 * @param mapTeamVO- 지식맵(조직별) VO
 	 * @return String - 리턴 Url
 	 *
 	 * @param MapTeamVO
 	 */
-	@IncludedInfo(name="지식맵관리(조직)", listUrl="/dam/map/tea/EgovComDamMapTeamList.do", order = 1261 ,gid = 80)
-	@RequestMapping(value="/dam/map/tea/EgovComDamMapTeamList.do")
-	public String selectMapTeamList(@ModelAttribute("loginVO") LoginVO loginVO
-			, @ModelAttribute("searchVO") MapTeamVO searchVO
-			, ModelMap model
-			) throws Exception{
+	@IncludedInfo(name = "지식맵관리(조직)", listUrl = "/dam/map/tea/EgovComDamMapTeamList.do", order = 1261, gid = 80)
+	@RequestMapping(value = "/dam/map/tea/EgovComDamMapTeamList.do")
+	public String selectMapTeamList(@ModelAttribute("loginVO") LoginVO loginVO,
+			@ModelAttribute("searchVO") MapTeamVO searchVO, ModelMap model) throws Exception {
 		/** EgovPropertyService.mapTeam */
 		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
 		searchVO.setPageSize(propertiesService.getInt("pageSize"));
@@ -85,8 +90,8 @@ public class EgovMapTeamController {
 		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<MapTeamVO> MapTeamList = mapTeamService.selectMapTeamList(searchVO);
-		model.addAttribute("resultList", MapTeamList);
+		List<MapTeamVO> resultList = mapTeamService.selectMapTeamList(searchVO);
+		model.addAttribute("resultList", resultList);
 
 		int totCnt = mapTeamService.selectMapTeamTotCnt(searchVO);
 		paginationInfo.setTotalRecordCount(totCnt);
@@ -96,16 +101,15 @@ public class EgovMapTeamController {
 
 	/**
 	 * 지식맵(조직별)상세 정보를 조회 한다.
+	 * 
 	 * @param MapTeamVO - 지식맵(조직별) VO
 	 * @return String - 리턴 Url
 	 *
 	 * @param MapTeamVO
 	 */
-	@RequestMapping(value="/dam/map/tea/EgovComDamMapTeamDetail.do")
-	public String selectMapTeamDetail(@ModelAttribute("loginVO") LoginVO loginVO
-			, MapTeam mapTeam
-			, ModelMap model
-			) throws Exception {
+	@RequestMapping(value = "/dam/map/tea/EgovComDamMapTeamDetail.do")
+	public String selectMapTeamDetail(@ModelAttribute("loginVO") LoginVO loginVO, MapTeam mapTeam, ModelMap model)
+			throws Exception {
 		MapTeam vo = mapTeamService.selectMapTeamDetail(mapTeam);
 		model.addAttribute("result", vo);
 		return "egovframework/com/dam/map/tea/EgovComDamMapTeamDetail";
@@ -113,53 +117,53 @@ public class EgovMapTeamController {
 
 	/**
 	 * 지식맵(조직별) 정보를 신규로 등록한다.
+	 * 
 	 * @param orgnztNm - 지식맵(조직별) model
 	 * @return String - 리턴 Url
 	 *
 	 * @param mapTeam
 	 */
-	@RequestMapping(value="/dam/map/tea/EgovComDamMapTeamRegist.do")
-	public String insertMapTeam(@ModelAttribute("loginVO") LoginVO loginVO
-			, @ModelAttribute("mapTeam") MapTeam mapTeam
-			, BindingResult bindingResult
-			) throws Exception {
-		if (mapTeam.getOrgnztNm() == null
-				||mapTeam.getOrgnztNm().equals("")) {
+	@RequestMapping(value = "/dam/map/tea/EgovComDamMapTeamRegist.do")
+	public String insertMapTeam(@ModelAttribute("loginVO") LoginVO loginVO, @ModelAttribute("mapTeam") MapTeam mapTeam,
+			BindingResult bindingResult) throws Exception {
+		if (mapTeam.getOrgnztNm() == null || mapTeam.getOrgnztNm().equals("")) {
 			return "egovframework/com/dam/map/tea/EgovComDamMapTeamRegist";
 		}
 
 		beanValidator.validate(mapTeam, bindingResult);
-		if (bindingResult.hasErrors()){
+		if (bindingResult.hasErrors()) {
 			return "egovframework/com/dam/map/tea/EgovComDamMapTeamRegist";
 		}
 
 		mapTeam.setFrstRegisterId(loginVO.getUniqId());
-		mapTeamService.insertMapTeam(mapTeam);
-		return "forward:/dam/map/tea/EgovComDamMapTeamList.do";
+		try {
+			mapTeamService.insertMapTeam(mapTeam);
+			return "forward:/dam/map/tea/EgovComDamMapTeamList.do";
+		} catch (DuplicateKeyException e) {
+			bindingResult.rejectValue("orgnztId", "error.orgnztId", "이미 등록된 조직ID입니다.");
+			return "egovframework/com/dam/map/tea/EgovComDamMapTeamRegist";
+		}
 	}
 
 	/**
 	 * 기 등록 된 지식맵(조직별)링 정보를 수정 한다.
+	 * 
 	 * @param orgnztNm - 지식맵(조직별) model
 	 * @return String - 리턴 Url
 	 *
 	 * @param mapTeam
 	 */
-	@RequestMapping(value="/dam/map/tea/EgovComDamMapTeamModify.do")
-	public String updateMapTeam(@ModelAttribute("loginVO") LoginVO loginVO
-			, @ModelAttribute("mapTeam") MapTeam mapTeam
-			, BindingResult bindingResult
-			, @RequestParam Map<?, ?> commandMap
-			, ModelMap model
-			) throws Exception {
-		String sCmd = commandMap.get("cmd") == null ? "": (String)commandMap.get("cmd");
+	@RequestMapping(value = "/dam/map/tea/EgovComDamMapTeamModify.do")
+	public String updateMapTeam(@ModelAttribute("loginVO") LoginVO loginVO, @ModelAttribute("mapTeam") MapTeam mapTeam,
+			BindingResult bindingResult, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 		if (sCmd.equals("")) {
 			MapTeam vo = mapTeamService.selectMapTeamDetail(mapTeam);
 			model.addAttribute("mapTeam", vo);
 			return "egovframework/com/dam/map/tea/EgovComDamMapTeamModify";
 		} else if (sCmd.equals("Modify")) {
 			beanValidator.validate(mapTeam, bindingResult);
-			if (bindingResult.hasErrors()){
+			if (bindingResult.hasErrors()) {
 				return "egovframework/com/dam/map/tea/EgovComDamMapTeamModify";
 			}
 			mapTeam.setFrstRegisterId(loginVO.getUniqId());
@@ -172,16 +176,15 @@ public class EgovMapTeamController {
 
 	/**
 	 * 기 등록된 지식맵(조직별) 정보를 삭제한다.
+	 * 
 	 * @param orgnztNm - 지식맵(조직별) model
 	 * @return String - 리턴 Url
 	 *
 	 * @param orgnztNm
 	 */
-	@RequestMapping(value="/dam/map/tea/EgovComDamMapTeamRemove.do")
-	public String deleteMapTeam(@ModelAttribute("loginVO") LoginVO loginVO
-			, MapTeam mapTeam
-			, ModelMap model
-			) throws Exception {
+	@RequestMapping(value = "/dam/map/tea/EgovComDamMapTeamRemove.do")
+	public String deleteMapTeam(@ModelAttribute("loginVO") LoginVO loginVO, MapTeam mapTeam, ModelMap model)
+			throws Exception {
 		mapTeamService.deleteMapTeam(mapTeam);
 		return "forward:/dam/map/tea/EgovComDamMapTeamList.do";
 	}

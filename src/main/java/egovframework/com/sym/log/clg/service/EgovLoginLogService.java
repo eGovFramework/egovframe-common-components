@@ -42,6 +42,6 @@ public interface EgovLoginLogService {
 	 *
 	 * @param LoginLog
 	 */
-	public Map<?, ?> selectLoginLogInf(LoginLog loinLog) throws Exception;
+	public Map<String, Object> selectLoginLogInf(LoginLog loinLog) throws Exception;
 
 }

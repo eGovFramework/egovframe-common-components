@@ -41,28 +41,56 @@ import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovFileUploadUtil;
 
 /**
+ * <pre>
  * 개요
  * - 당직관리에 대한 controller 클래스를 정의한다.
  *
  * 상세내용
  * - 당직관리에 대한 등록, 수정, 삭제, 조회 기능을 제공한다.
  * - 당직관리의 조회기능은 목록조회, 상세조회로 구분된다.
+ * </pre>
+ * 
  * @author 이용
  * @version 1.0
- * @created 06-15-2010 오후 2:08:56
- *  * <pre>
+ * @created 06-15-2010 오후 2:08:56 *
+ * 
+ *          <pre>
  * << 개정이력(Modification Information) >>
  *
  *  수정일              수정자             수정내용
  *  ----------  --------    ---------------------------
- *  2009.06.25   이용              최초 생성
- *  2011.08.26   정진오            IncludedInfo annotation 추가
- *  2018.08.29   신용호            xlsx 업로드 할수 있도록 수정
- *  2020.11.02   신용호            KISA 보안약점 조치 - 자원해제
- *
- *  </pre>
- */
 
+ *
+ *          </pre>
+ */
+/**
+ * <pre>
+ * 개요
+ * - 당직관리에 대한 controller 클래스를 정의한다.
+ *
+ * 상세내용
+ * - 당직관리에 대한 등록, 수정, 삭제, 조회 기능을 제공한다.
+ * - 당직관리의 조회기능은 목록조회, 상세조회로 구분된다.
+ * </pre>
+ * 
+ * @author 이용
+ * @since 2010.06.15
+ * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.06.15 이용            최초 생성
+ *   2011.08.26 정진오           IncludedInfo annotation 추가
+ *   2018.08.29 신용호           xlsx 업로드 할수 있도록 수정
+ *   2020.11.02 신용호           KISA 보안약점 조치 - 자원해제
+ *   2025.08.05  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *
+ *      </pre>
+ */
 @Controller
 public class EgovBndtManageController {
 
@@ -80,42 +108,43 @@ public class EgovBndtManageController {
 
 	/**
 	 * 당직관리 목록화면 이동
+	 * 
 	 * @return String
 	 * @exception Exception
 	 */
 	@SuppressWarnings("unused")
 	@IncludedInfo(name = "당직관리", order = 910, gid = 50)
 	@RequestMapping("/uss/ion/bnt/EgovBndtManageList.do")
-	public String selectBndtManageListView(
-		@ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO,
-		@RequestParam Map<?, ?> commandMap,
-		ModelMap model) throws Exception {
+	public String selectBndtManageListView(@ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO,
+			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
-		//일정구분 검색 유지
-		//model.addAttribute("searchKeyword",   commandMap.get("searchKeyword")   == null ? "" : (String)commandMap.get("searchKeyword"));
-		//model.addAttribute("searchCondition", commandMap.get("searchCondition") == null ? "" : (String)commandMap.get("searchCondition"));
+		// 일정구분 검색 유지
+		// model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ?
+		// "" : (String)commandMap.get("searchKeyword"));
+		// model.addAttribute("searchCondition", commandMap.get("searchCondition") ==
+		// null ? "" : (String)commandMap.get("searchCondition"));
 
 		java.util.Calendar cal = java.util.Calendar.getInstance();
 
-		String sYear = (String)commandMap.get("year");
-		String sMonth = (String)commandMap.get("month");
+		String sYear = (String) commandMap.get("year");
+		String sMonth = (String) commandMap.get("month");
 
 		int iYear = cal.get(java.util.Calendar.YEAR);
 		int iMonth = cal.get(java.util.Calendar.MONTH);
 		int iDate = cal.get(java.util.Calendar.DATE);
 
-		//검색 설정
+		// 검색 설정
 		String sSearchDate = "";
 		if (sYear == null || sMonth == null) {
 			sSearchDate += Integer.toString(iYear);
 			sSearchDate += Integer.toString(iMonth + 1).length() == 1 ? "0" + Integer.toString(iMonth + 1)
-				: Integer.toString(iMonth + 1);
+					: Integer.toString(iMonth + 1);
 		} else {
 			iYear = Integer.parseInt(sYear);
 			iMonth = Integer.parseInt(sMonth);
 			sSearchDate += sYear;
 			sSearchDate += Integer.toString(iMonth + 1).length() == 1 ? "0" + Integer.toString(iMonth + 1)
-				: Integer.toString(iMonth + 1);
+					: Integer.toString(iMonth + 1);
 		}
 		bndtManageVO.setBndtDe(sSearchDate);
 
@@ -127,12 +156,13 @@ public class EgovBndtManageController {
 
 	/**
 	 * 당직관리정보를 관리하기 위해 등록된 당직관리 목록을 조회한다.
+	 * 
 	 * @param bndtManageVO - 당직관리 VO
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/uss/ion/bnt/selectBndtManageList.do")
-	public String selectBndtManageList(@ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO,
-		ModelMap model) throws Exception {
+	public String selectBndtManageList(@ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO, ModelMap model)
+			throws Exception {
 
 		/** paging */
 		PaginationInfo paginationInfo = new PaginationInfo();
@@ -157,44 +187,46 @@ public class EgovBndtManageController {
 
 	/**
 	 * 등록된 당직관리의 상세정보를 조회한다.
+	 * 
 	 * @param bndtManageVO - 당직관리 VO
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/uss/ion/bnt/EgovBndtManageDetail.do")
 	public String selectBndtManage(@ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO,
-		@ModelAttribute("bndtManage") BndtManage bndtManage,
-		@RequestParam Map<?, ?> commandMap,
-		ModelMap model) throws Exception {
-		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd"); // 상세정보 구분
-		BndtManageVO bndtManageVO_Temp = new BndtManageVO();
-		bndtManageVO_Temp = egovBndtManageService.selectBndtManage(bndtManageVO);
+			@ModelAttribute("bndtManage") BndtManage bndtManage, @RequestParam Map<?, ?> commandMap, ModelMap model)
+			throws Exception {
+		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd"); // 상세정보 구분
 
-		model.addAttribute("bndtManageVO", bndtManageVO_Temp);
+		BndtManageVO resultVO = egovBndtManageService.selectBndtManage(bndtManageVO);
+
+		model.addAttribute("bndtManageVO", resultVO);
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
 		if (sCmd.equals("updt")) {
-			bndtManage.setBndtDe(bndtManageVO_Temp.getBndtDe());
-			bndtManage.setBndtId(bndtManageVO_Temp.getBndtId());
-			bndtManage.setRemark(bndtManageVO_Temp.getRemark());
+			bndtManage.setBndtDe(resultVO.getBndtDe());
+			bndtManage.setBndtId(resultVO.getBndtId());
+			bndtManage.setRemark(resultVO.getRemark());
 			model.addAttribute("bndtManage", bndtManage);
 
 			return "egovframework/com/uss/ion/bnt/EgovBndtManageUpdt";
 		} else {
 			return "egovframework/com/uss/ion/bnt/EgovBndtManageDetail";
 		}
-		//model.addAttribute("bndtManage", egovBndtManageService.selectBndtManage(bndtManageVO));
-		//model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
-		//return "egovframework/com/uss/ion/ans/EgovBndtManageUpdt";
+		// model.addAttribute("bndtManage",
+		// egovBndtManageService.selectBndtManage(bndtManageVO));
+		// model.addAttribute("message",
+		// egovMessageSource.getMessage("success.common.select"));
+		// return "egovframework/com/uss/ion/ans/EgovBndtManageUpdt";
 	}
 
 	/**
 	 * 당직관리 등록 화면으로 이동한다.
+	 * 
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/uss/ion/bnt/EgovBndtManageRegist.do")
 	public String insertViewBndtManage(@ModelAttribute("bndtManage") BndtManage bndtManage,
-		@ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO,
-		ModelMap model) throws Exception {
+			@ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO, ModelMap model) throws Exception {
 
 		bndtManage.setBndtDe(EgovDateUtil.formatDate(bndtManage.getBndtDe(), "-"));
 		model.addAttribute("bndtManage", bndtManage);
@@ -205,28 +237,28 @@ public class EgovBndtManageController {
 
 	/**
 	 * 당직관리정보를 신규로 등록한다.
+	 * 
 	 * @param bndtManage - 당직관리 model
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/uss/ion/bnt/insertBndtManage.do")
 	public String insertBndtManage(@ModelAttribute("bndtManage") BndtManage bndtManage,
-		@ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO,
-		BindingResult bindingResult,
-		SessionStatus status,
-		ModelMap model) throws Exception {
+			@ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO, BindingResult bindingResult,
+			SessionStatus status, ModelMap model) throws Exception {
 
-		beanValidator.validate(bndtManage, bindingResult); //validation 수행
+		beanValidator.validate(bndtManage, bindingResult); // validation 수행
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("bndtManageVO", bndtManageVO);
 			return "egovframework/com/uss/ion/bnt/EgovBndtManageRegist";
 		} else {
-			LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 			status.setComplete();
 			model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
 			bndtManage.setFrstRegisterId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 			egovBndtManageService.insertBndtManage(bndtManage);
-			//model.addAttribute("bndtManage", egovBndtManageService.insertBndtManage(bndtManage));
+			// model.addAttribute("bndtManage",
+			// egovBndtManageService.insertBndtManage(bndtManage));
 
 			return "forward:/uss/ion/bnt/EgovBndtManageList.do";
 
@@ -235,23 +267,22 @@ public class EgovBndtManageController {
 
 	/**
 	 * 기 등록된 당직관리정보를 수정한다.
+	 * 
 	 * @param bndtManage - 당직관리 model
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/uss/ion/bnt/updtBndtManage.do")
 	public String updtBndtManage(@ModelAttribute("bndtManage") BndtManage bndtManage,
-		@ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO,
-		BindingResult bindingResult,
-		SessionStatus status,
-		ModelMap model) throws Exception {
+			@ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO, BindingResult bindingResult,
+			SessionStatus status, ModelMap model) throws Exception {
 
-		beanValidator.validate(bndtManage, bindingResult); //validation 수행
+		beanValidator.validate(bndtManage, bindingResult); // validation 수행
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("bndtManageVO", bndtManageVO);
 			return "egovframework/com/uss/ion/bnt/EgovBndtManageUpdt";
 		} else {
-			LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 			bndtManage.setLastUpdusrId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 			egovBndtManageService.updtBndtManage(bndtManage);
 			return "forward:/uss/ion/bnt/EgovBndtManageList.do";
@@ -261,13 +292,13 @@ public class EgovBndtManageController {
 
 	/**
 	 * 기 등록된 당직관리정보를 삭제한다.
+	 * 
 	 * @param bndtManage - 당직관리 model
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/uss/ion/bnt/deleteBndtManage.do")
-	public String deleteBndtManage(@ModelAttribute("bndtManage") BndtManage bndtManage,
-		SessionStatus status,
-		ModelMap model) throws Exception {
+	public String deleteBndtManage(@ModelAttribute("bndtManage") BndtManage bndtManage, SessionStatus status,
+			ModelMap model) throws Exception {
 
 		int iDiaryTotCnt = egovBndtManageService.selectBndtDiaryTotCnt(bndtManage);
 		if (iDiaryTotCnt == 0) {
@@ -298,13 +329,14 @@ public class EgovBndtManageController {
 	/****** 당직체크 관리 ******/
 	/**
 	 * 당직체크정보를 관리하기 위해 등록된 당직체크 목록을 조회한다.
+	 * 
 	 * @param bndtCeckManageVO - 당직체크 VO
 	 * @return String - 리턴 Url
 	 */
 	@IncludedInfo(name = "당직체크관리", order = 911, gid = 50)
 	@RequestMapping(value = "/uss/ion/bnt/EgovBndtCeckManageList.do")
 	public String selectBndtCeckManageList(@ModelAttribute("bndtCeckManageVO") BndtCeckManageVO bndtCeckManageVO,
-		ModelMap model) throws Exception {
+			ModelMap model) throws Exception {
 
 		/** paging */
 		PaginationInfo paginationInfo = new PaginationInfo();
@@ -336,28 +368,28 @@ public class EgovBndtManageController {
 
 	/**
 	 * 등록된 당직체크의 상세정보를 조회한다.
+	 * 
 	 * @param bndtCeckManageVO - 당직체크 VO
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/uss/ion/bnt/EgovBndtCeckManage.do")
 	public String selectBndtCeckManage(@ModelAttribute("bndtCeckManageVO") BndtCeckManageVO bndtCeckManageVO,
-		@ModelAttribute("bndtCeckManage") BndtCeckManage bndtCeckManage,
-		@RequestParam Map<?, ?> commandMap,
-		ModelMap model) throws Exception {
-		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd"); // 상세정보 구분
-		BndtCeckManageVO bndtCeckManageVO_Temp = new BndtCeckManageVO();
-		bndtCeckManageVO_Temp = egovBndtManageService.selectBndtCeckManage(bndtCeckManageVO);
+			@ModelAttribute("bndtCeckManage") BndtCeckManage bndtCeckManage, @RequestParam Map<?, ?> commandMap,
+			ModelMap model) throws Exception {
+		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd"); // 상세정보 구분
 
-		model.addAttribute("bndtCeckManageVO", bndtCeckManageVO_Temp);
+		BndtCeckManageVO resultBndtCeckManageVO = egovBndtManageService.selectBndtCeckManage(bndtCeckManageVO);
+
+		model.addAttribute("bndtCeckManageVO", resultBndtCeckManageVO);
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
 		if (sCmd.equals("updt")) {
-			BndtCeckManage bndtCeckManage_Temp = new BndtCeckManage();
-			bndtCeckManage_Temp.setBndtCeckSe(bndtCeckManageVO_Temp.getBndtCeckSe());
-			bndtCeckManage_Temp.setBndtCeckCd(bndtCeckManageVO_Temp.getBndtCeckSe());
-			bndtCeckManage_Temp.setBndtCeckCdNm(bndtCeckManageVO_Temp.getBndtCeckCdNm());
-			bndtCeckManage_Temp.setUseAt(bndtCeckManageVO_Temp.getUseAt());
-			model.addAttribute("bndtCeckManage", bndtCeckManage_Temp);
+			BndtCeckManage resultBndtCeckManage = new BndtCeckManage();
+			resultBndtCeckManage.setBndtCeckSe(resultBndtCeckManageVO.getBndtCeckSe());
+			resultBndtCeckManage.setBndtCeckCd(resultBndtCeckManageVO.getBndtCeckSe());
+			resultBndtCeckManage.setBndtCeckCdNm(resultBndtCeckManageVO.getBndtCeckCdNm());
+			resultBndtCeckManage.setUseAt(resultBndtCeckManageVO.getUseAt());
+			model.addAttribute("bndtCeckManage", resultBndtCeckManage);
 			return "egovframework/com/uss/ion/bnt/EgovBndtCeckManageUpdt";
 		} else {
 			return "egovframework/com/uss/ion/bnt/EgovBndtCeckManageDetail";
@@ -366,14 +398,15 @@ public class EgovBndtManageController {
 
 	/**
 	 * 당직체크 등록 화면으로 이동한다.
+	 * 
 	 * @return String - 리턴 Url
 	 */
 	@SuppressWarnings("unused")
 	@RequestMapping(value = "/uss/ion/bnt/EgovBndtCeckManageRegist.do")
 	public String insertViewBndtCeckManage(@ModelAttribute("bndtCeckManage") BndtCeckManage bndtCeckManage,
-		ModelMap model) throws Exception {
-		//로그인 객체 선언
-		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+			ModelMap model) throws Exception {
+		// 로그인 객체 선언
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM071");
@@ -388,17 +421,16 @@ public class EgovBndtManageController {
 
 	/**
 	 * 당직체크정보를 신규로 등록한다.
+	 * 
 	 * @param bndtCeckManage - 당직체크 model
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/uss/ion/bnt/insertBndtCeckManage.do")
 	public String insertBndtCeckManage(@ModelAttribute("bndtCeckManage") BndtCeckManage bndtCeckManage,
-		@ModelAttribute("bndtCeckManageVO") BndtCeckManageVO bndtCeckManageVO,
-		BindingResult bindingResult,
-		SessionStatus status,
-		ModelMap model) throws Exception {
+			@ModelAttribute("bndtCeckManageVO") BndtCeckManageVO bndtCeckManageVO, BindingResult bindingResult,
+			SessionStatus status, ModelMap model) throws Exception {
 
-		beanValidator.validate(bndtCeckManage, bindingResult); //validation 수행
+		beanValidator.validate(bndtCeckManage, bindingResult); // validation 수행
 
 		if (bindingResult.hasErrors()) {
 			ComDefaultCodeVO vo = new ComDefaultCodeVO();
@@ -408,7 +440,7 @@ public class EgovBndtManageController {
 			model.addAttribute("bndtCeckManageVO", bndtCeckManageVO);
 			return "egovframework/com/uss/ion/bnt/EgovBndtCeckManageRegist";
 		} else {
-			LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 			bndtCeckManage.setFrstRegisterId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 			status.setComplete();
 
@@ -430,24 +462,23 @@ public class EgovBndtManageController {
 
 	/**
 	 * 기 등록된 당직체크정보를 수정한다.
+	 * 
 	 * @param bndtCeckManage - 당직체크 model
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/uss/ion/bnt/updtBndtCeckManage.do")
 	public String updtBndtCeckManage(@ModelAttribute("bndtCeckManage") BndtCeckManage bndtCeckManage,
-		@ModelAttribute("bndtCeckManageVO") BndtCeckManageVO bndtCeckManageVO,
-		BindingResult bindingResult,
-		SessionStatus status,
-		ModelMap model) throws Exception {
+			@ModelAttribute("bndtCeckManageVO") BndtCeckManageVO bndtCeckManageVO, BindingResult bindingResult,
+			SessionStatus status, ModelMap model) throws Exception {
 
-		beanValidator.validate(bndtCeckManage, bindingResult); //validation 수행
+		beanValidator.validate(bndtCeckManage, bindingResult); // validation 수행
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("bndtCeckManageVO", bndtCeckManageVO);
 			return "egovframework/com/uss/ion/bnt/EgovBndtCeckManageUpdt";
 		} else {
 
-			LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 			bndtCeckManage.setLastUpdusrId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 			egovBndtManageService.updtBndtCeckManage(bndtCeckManage);
 			return "forward:/uss/ion/bnt/EgovBndtCeckManageList.do";
@@ -457,13 +488,13 @@ public class EgovBndtManageController {
 
 	/**
 	 * 기 등록된 당직체크정보를 삭제한다.
+	 * 
 	 * @param bndtCeckManage - 당직체크 model
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/uss/ion/bnt/deleteBndtCeckManage.do")
 	public String deleteBndtCeckManage(@ModelAttribute("bndtCeckManage") BndtCeckManage bndtCeckManage,
-		SessionStatus status,
-		ModelMap model) throws Exception {
+			SessionStatus status, ModelMap model) throws Exception {
 
 		egovBndtManageService.deleteBndtCeckManage(bndtCeckManage);
 		status.setComplete();
@@ -475,16 +506,16 @@ public class EgovBndtManageController {
 
 	/**
 	 * 등록된 당직일지의 정보를 조회한다.
+	 * 
 	 * @param bndtDiaryVO - 당직일지 VO
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/uss/ion/bnt/selectBndtDiary.do")
 	public String selectBndtDiary(@ModelAttribute("bndtDiaryVO") BndtDiaryVO bndtDiaryVO,
-		@RequestParam Map<?, ?> commandMap,
-		ModelMap model) throws Exception {
-		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd"); // 상세정보 구분
+			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd"); // 상세정보 구분
 
-		bndtDiaryVO.setBndtDiaryList((List<BndtDiaryVO>)egovBndtManageService.selectBndtDiary(bndtDiaryVO));
+		bndtDiaryVO.setBndtDiaryList(egovBndtManageService.selectBndtDiary(bndtDiaryVO));
 		model.addAttribute("bndtDiaryList", bndtDiaryVO.getBndtDiaryList());
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
@@ -502,21 +533,19 @@ public class EgovBndtManageController {
 
 	/**
 	 * 당직일지정보를 신규로 등록한다.
+	 * 
 	 * @param bndtDiary - 당직일지 model
 	 * @return String - 리턴 Url
 	 */
 	@SuppressWarnings("unused")
 	@RequestMapping(value = "/uss/ion/bnt/insertBndtDiary.do")
 	public String insertBndtDiary(@RequestParam("diaryForInsert") String diaryForInsert,
-		@ModelAttribute("bndtDiary") BndtDiary bndtDiary,
-		@ModelAttribute("bndtDiaryVO") BndtDiaryVO bndtDiaryVO,
-		BindingResult bindingResult,
-		SessionStatus status,
-		@RequestParam Map<?, ?> commandMap,
-		ModelMap model) throws Exception {
-		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd"); // 상세정보 구분
+			@ModelAttribute("bndtDiary") BndtDiary bndtDiary, @ModelAttribute("bndtDiaryVO") BndtDiaryVO bndtDiaryVO,
+			BindingResult bindingResult, SessionStatus status, @RequestParam Map<?, ?> commandMap, ModelMap model)
+			throws Exception {
+		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd"); // 상세정보 구분
 
-		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		status.setComplete();
 
 		bndtDiary.setFrstRegisterId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
@@ -527,16 +556,15 @@ public class EgovBndtManageController {
 
 	/**
 	 * 기 등록된 당직일지정보를 수정한다.
+	 * 
 	 * @param bndtDiary - 당직일지 model
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/uss/ion/bnt/updtBndtDiary.do")
 	public String updtBndtDiary(@RequestParam("diaryForUpdt") String diaryForUpdt,
-		@ModelAttribute("bndtDiary") BndtDiary bndtDiary,
-		BindingResult bindingResult,
-		SessionStatus status,
-		ModelMap model) throws Exception {
-		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+			@ModelAttribute("bndtDiary") BndtDiary bndtDiary, BindingResult bindingResult, SessionStatus status,
+			ModelMap model) throws Exception {
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		bndtDiary.setLastUpdusrId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 		egovBndtManageService.updtBndtDiary(bndtDiary, diaryForUpdt);
 		return "forward:/uss/ion/bnt/EgovBndtManageList.do";
@@ -544,13 +572,13 @@ public class EgovBndtManageController {
 
 	/**
 	 * 기 등록된 당직일지정보를 삭제한다.
+	 * 
 	 * @param bndtDiary - 당직일지 model
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/uss/ion/bnt/deleteBndtDiary.do")
-	public String deleteBndtDiary(@ModelAttribute("bndtDiary") BndtDiary bndtDiary,
-		SessionStatus status,
-		ModelMap model) throws Exception {
+	public String deleteBndtDiary(@ModelAttribute("bndtDiary") BndtDiary bndtDiary, SessionStatus status,
+			ModelMap model) throws Exception {
 
 		egovBndtManageService.deleteBndtDiary(bndtDiary);
 		status.setComplete();
@@ -559,17 +587,17 @@ public class EgovBndtManageController {
 	}
 
 	/**
-	 * 당직일괄등록화면 호출 및  당직일괄등록처리 프로세스
-	 * @param bndtManageVO  BndtManageVO
-	 * @param request       HttpServletRequest
+	 * 당직일괄등록화면 호출 및 당직일괄등록처리 프로세스
+	 * 
+	 * @param bndtManageVO BndtManageVO
+	 * @param request      HttpServletRequest
 	 * @return 출력페이지정보 "ion/bnt/EgovBndtManageListPop"
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/uss/ion/bnt/EgovBndtManageListPop.do")
 	public String selectBndtManageBnde(final HttpServletRequest request,
-		@ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO,
-		@RequestParam Map<?, ?> commandMap,
-		ModelMap model) throws Exception {
+			@ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO, @RequestParam Map<?, ?> commandMap,
+			ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -583,11 +611,10 @@ public class EgovBndtManageController {
 
 	@RequestMapping(value = "/uss/ion/bnt/EgovBndtManageListPopAction.do")
 	public String selectBndtManageBndeAction(final MultipartHttpServletRequest multiRequest,
-		@ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO,
-		@RequestParam Map<?, ?> commandMap,
-		ModelMap model) throws Exception {
+			@ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO, @RequestParam Map<?, ?> commandMap,
+			ModelMap model) throws Exception {
 		String resultMsg = "";
-		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd"); // 상세정보 구분
+		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd"); // 상세정보 구분
 
 		// 0. Spring Security 사용자권한 처리
 
@@ -598,7 +625,8 @@ public class EgovBndtManageController {
 		}
 
 		if (sCmd.equals("bnde")) {
-			//final MultipartHttpServletRequest multiRequest = (MultipartHttpServletRequest) request;
+			// final MultipartHttpServletRequest multiRequest =
+			// (MultipartHttpServletRequest) request;
 			final Map<String, MultipartFile> files = multiRequest.getFileMap();
 			Iterator<Entry<String, MultipartFile>> itr = files.entrySet().iterator();
 			MultipartFile file;
@@ -615,7 +643,7 @@ public class EgovBndtManageController {
 						} catch (IOException e) {
 							throw new IOException(e);
 						} finally {
-							if (is != null) {//2022.01.Possible null pointer dereference in method on exception path 처리
+							if (is != null) {// 2022.01.Possible null pointer dereference in method on exception path 처리
 								is.close();
 							}
 						}
@@ -627,7 +655,7 @@ public class EgovBndtManageController {
 						} catch (IOException e) {
 							throw new IOException(e);
 						} finally {
-							if (is != null) {//2022.01.Possible null pointer dereference in method on exception path 처리
+							if (is != null) {// 2022.01.Possible null pointer dereference in method on exception path 처리
 								is.close();
 							}
 						}
@@ -645,19 +673,19 @@ public class EgovBndtManageController {
 
 	/**
 	 * 당직정보를 일괄등록처리한다.
-	 * @param bndtManageVO     - 당직관리 VO
-	 * @param String           - 당직자정보
+	 * 
+	 * @param bndtManageVO - 당직관리 VO
+	 * @param String       - 당직자정보
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/uss/ion/bnt/insertBndtManageBnde.do")
 	public String insertBndtManageBnde(@RequestParam("checkedBndtManageForInsert") String checkedBndtManageForInsert,
-		@ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO,
-		SessionStatus status,
-		ModelMap model) throws Exception {
+			@ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO, SessionStatus status, ModelMap model)
+			throws Exception {
 		int iTemp = egovBndtManageService.selectBndtManageMonthCnt(bndtManageVO);
 		if (iTemp == 0) {
 
-			LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
 			bndtManageVO.setFrstRegisterId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 			egovBndtManageService.insertBndtManageBnde(bndtManageVO, checkedBndtManageForInsert);
@@ -666,7 +694,7 @@ public class EgovBndtManageController {
 			return "egovframework/com/uss/ion/bnt/EgovBndtManageList";
 		} else {
 			String sTempMessage = bndtManageVO.getBndtDe().substring(0, 4) + "년"
-				+ bndtManageVO.getBndtDe().substring(4, 6) + "월 데이타가 존재합니다.";
+					+ bndtManageVO.getBndtDe().substring(4, 6) + "월 데이타가 존재합니다.";
 			model.addAttribute("message", sTempMessage);
 			return "egovframework/com/uss/ion/bnt/EgovBndtManageBndeListPop";
 		}

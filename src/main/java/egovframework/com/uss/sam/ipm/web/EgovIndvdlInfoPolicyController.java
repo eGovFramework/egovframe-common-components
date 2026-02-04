@@ -33,19 +33,19 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  * @since 2009.07.03
  * @version 1.0
  * @see
- * 
- *      <pre>
- * &lt;&lt; 개정이력(Modification Information) &gt;&gt;
  *
- *   수정일          수정자       수정내용
- *  -----------    --------    ---------------------------
- *   2009.07.03     장동한		최초 생성
- *   2011.08.26     정진오		IncludedInfo annotation 추가
- *   2024.10.29     권태성		등록 /수정 화면과 처리 로직 분리
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.07.03  장동한          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2024.10.29  권태성          등록 /수정 화면과 처리 로직 분리
+ *   2025.08.27  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UselessParentheses(불필요한 괄호사용)
  *
  *      </pre>
  */
-
 @Controller
 public class EgovIndvdlInfoPolicyController {
 
@@ -159,12 +159,13 @@ public class EgovIndvdlInfoPolicyController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		IndvdlInfoPolicy indvdlInfoPolicyVO = egovIndvdlInfoPolicyService.selectIndvdlInfoPolicyDetail(indvdlInfoPolicy);
+		IndvdlInfoPolicy indvdlInfoPolicyVO = egovIndvdlInfoPolicyService
+				.selectIndvdlInfoPolicyDetail(indvdlInfoPolicy);
 		model.addAttribute("indvdlInfoPolicy", indvdlInfoPolicyVO);
 
 		return "egovframework/com/uss/sam/ipm/EgovIndvdlInfoPolicyUpdt";
 	}
-	
+
 	/**
 	 * 개인정보보호정책를 수정한다.
 	 * 
@@ -195,7 +196,7 @@ public class EgovIndvdlInfoPolicyController {
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		String uniqId = (loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 
 		// 아이디 설정
 		indvdlInfoPolicy.setFrstRegisterId(uniqId);
@@ -205,7 +206,7 @@ public class EgovIndvdlInfoPolicyController {
 
 		return "redirect:/uss/sam/ipm/listIndvdlInfoPolicy.do";
 	}
-	
+
 	/**
 	 * 개인정보보호정책 등록화면
 	 * 
@@ -217,8 +218,7 @@ public class EgovIndvdlInfoPolicyController {
 	 */
 	@RequestMapping(value = "/uss/sam/ipm/registIndvdlInfoPolicyView.do")
 	public String egovIndvdlInfoPolicyRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@ModelAttribute("indvdlInfoPolicy") IndvdlInfoPolicy indvdlInfoPolicy,
-			ModelMap model) throws Exception {
+			@ModelAttribute("indvdlInfoPolicy") IndvdlInfoPolicy indvdlInfoPolicy, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
@@ -228,8 +228,7 @@ public class EgovIndvdlInfoPolicyController {
 
 		return "egovframework/com/uss/sam/ipm/EgovIndvdlInfoPolicyRegist";
 	}
-	
-	
+
 	/**
 	 * 개인정보보호정책를 등록한다.
 	 * 
@@ -260,7 +259,7 @@ public class EgovIndvdlInfoPolicyController {
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-		String uniqId = (loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+		String uniqId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
 
 		// 아이디 설정
 		indvdlInfoPolicy.setFrstRegisterId(uniqId);
@@ -271,6 +270,5 @@ public class EgovIndvdlInfoPolicyController {
 
 		return "forward:/uss/sam/ipm/listIndvdlInfoPolicy.do";
 	}
-	
 
 }

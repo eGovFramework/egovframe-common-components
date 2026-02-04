@@ -10,6 +10,7 @@ import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.ss.usermodel.CellType;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.cmmn.exception.BaseException;
 import org.egovframe.rte.fdl.excel.EgovExcelService;
@@ -26,25 +27,25 @@ import egovframework.com.sym.prm.service.impl.ProgrmManageDAO;
 
 /**
  * 메뉴목록관리, 생성, 사이트맵을 처리하는 비즈니스 구현 클래스를 정의한다.
+ * 
  * @author 개발환경 개발팀 이용
- * @since 2009.06.01
+ * @since 2009.03.20
  * @version 1.0
  * @see
  *
- * <pre>
- * << 개정이력(Modification Information) >>
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
  *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
- *   2009.03.20  이  용          최초 생성
- *   2011.07.01  서준식			자기 메뉴 정보를 상위메뉴 정보로 참조하는 메뉴정보가 있는지 조회하는
- *   										selectUpperMenuNoByPk() 메서드 추가
+ *   2009.03.20  이용           최초 생성
+ *   2011.07.01  서준식          자기 메뉴 정보를 상위메뉴 정보로 참조하는 메뉴정보가 있는지 조회하는 selectUpperMenuNoByPk() 메서드 추가
  *   2017-02-13  이정은          시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
  *   2019-12-06  신용호          KISA 보안약점 조치 (부적절한 예외처리)
+ *   2025.07.18  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UnnecessaryBoxing(불필요한 WrapperObject 생성)
  *
- * </pre>
+ *      </pre>
  */
-
 @Service("meunManageService")
 public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implements EgovMenuManageService {
 
@@ -59,87 +60,104 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 
 	/**
 	 * 메뉴 상세정보를 조회
+	 * 
 	 * @param vo ComDefaultVO
 	 * @return MenuManageVO
 	 * @exception Exception
 	 */
+	@Override
 	public MenuManageVO selectMenuManage(ComDefaultVO vo) throws Exception {
 		return menuManageDAO.selectMenuManage(vo);
 	}
 
 	/**
-     * 메뉴 목록을 조회
-     * 
-     * @param vo ComDefaultVO
-     * @return List
-     * @exception Exception
-     */
-    public List<EgovMap> selectMenuManageList(ComDefaultVO vo) throws Exception {
-        return menuManageDAO.selectMenuManageList(vo);
-    }
+	 * 메뉴 목록을 조회
+	 * 
+	 * @param vo ComDefaultVO
+	 * @return List
+	 * @exception Exception
+	 */
+	@Override
+	public List<EgovMap> selectMenuManageList(ComDefaultVO vo) throws Exception {
+		return menuManageDAO.selectMenuManageList(vo);
+	}
 
 	/**
 	 * 메뉴목록 총건수를 조회한다.
+	 * 
 	 * @param vo ComDefaultVO
 	 * @return int
 	 * @exception Exception
 	 */
+	@Override
 	public int selectMenuManageListTotCnt(ComDefaultVO vo) throws Exception {
 		return menuManageDAO.selectMenuManageListTotCnt(vo);
 	}
 
 	/**
 	 * 메뉴번호를 상위메뉴로 참조하고 있는 메뉴 존재여부를 조회
+	 * 
 	 * @param vo ComDefaultVO
 	 * @return int
 	 * @exception Exception
 	 */
+	@Override
 	public int selectUpperMenuNoByPk(MenuManageVO vo) throws Exception {
 		return menuManageDAO.selectUpperMenuNoByPk(vo);
 	}
 
 	/**
 	 * 메뉴번호 존재 여부를 조회한다.
+	 * 
 	 * @param vo ComDefaultVO
 	 * @return int
 	 * @exception Exception
 	 */
+	@Override
 	public int selectMenuNoByPk(MenuManageVO vo) throws Exception {
 		return menuManageDAO.selectMenuNoByPk(vo);
 	}
 
 	/**
 	 * 메뉴 정보를 등록
+	 * 
 	 * @param vo MenuManageVO
 	 * @exception Exception
 	 */
+	@Override
 	public void insertMenuManage(MenuManageVO vo) throws Exception {
 		menuManageDAO.insertMenuManage(vo);
 	}
 
 	/**
 	 * 메뉴 정보를 수정
+	 * 
 	 * @param vo MenuManageVO
 	 * @exception Exception
 	 */
+	@Override
 	public void updateMenuManage(MenuManageVO vo) throws Exception {
 		menuManageDAO.updateMenuManage(vo);
 	}
 
 	/**
 	 * 메뉴 정보를 삭제
+	 * 
 	 * @param vo MenuManageVO
 	 * @exception Exception
 	 */
+	@Override
 	public void deleteMenuManage(MenuManageVO vo) throws Exception {
 		menuManageDAO.deleteMenuManage(vo);
 	}
 
 	/**
 	 * 화면에 조회된 메뉴 목록 정보를 데이터베이스에서 삭제
+	 * 
 	 * @param checkedMenuNoForDel String
 	 * @exception Exception
 	 */
+	@Override
 	public void deleteMenuManageList(String checkedMenuNoForDel) throws Exception {
 		MenuManageVO vo = null;
 
@@ -155,45 +173,53 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 		}
 	}
 
-	/*  메뉴 생성 관리  */
+	/* 메뉴 생성 관리 */
 
 	/**
 	 * 메뉴 목록을 조회
+	 * 
 	 * @return List
 	 * @exception Exception
 	 */
+	@Override
 	public List<EgovMap> selectMenuList() throws Exception {
 		return menuManageDAO.selectMenuList();
 	}
 
-	/*### 메뉴관련 프로세스 ###*/
+	/* ### 메뉴관련 프로세스 ### */
 	/**
 	 * MainMenu Head Menu 조회
+	 * 
 	 * @param vo MenuManageVO
 	 * @return List
 	 * @exception Exception
 	 */
+	@Override
 	public List<?> selectMainMenuHead(MenuManageVO vo) throws Exception {
 		return menuManageDAO.selectMainMenuHead(vo);
 	}
 
 	/**
 	 * MainMenu Head Left 조회
+	 * 
 	 * @param vo MenuManageVO
 	 * @return List
 	 * @exception Exception
 	 */
+	@Override
 	public List<?> selectMainMenuLeft(MenuManageVO vo) throws Exception {
 		return menuManageDAO.selectMainMenuLeft(vo);
 	}
 
 	/**
 	 * MainMenu Head MenuURL 조회
-	 * @param  iMenuNo  int
-	 * @param  sUniqId  String
+	 * 
+	 * @param iMenuNo int
+	 * @param sUniqId String
 	 * @return String
 	 * @exception Exception
 	 */
+	@Override
 	public String selectLastMenuURL(int iMenuNo, String sUniqId) throws Exception {
 		MenuManageVO vo = new MenuManageVO();
 		vo.setMenuNo(selectLastMenuNo(iMenuNo, sUniqId));
@@ -202,8 +228,9 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 
 	/**
 	 * MainMenu Head Menu MenuNo 조회
-	 * @param  iMenuNo  int
-	 * @param  sUniqId  String
+	 * 
+	 * @param iMenuNo int
+	 * @param sUniqId String
 	 * @return String
 	 * @exception Exception
 	 */
@@ -221,8 +248,9 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 
 	/**
 	 * MainMenu Head Menu Last MenuNo 조회
-	 * @param  iMenuNo  int
-	 * @param  sUniqId  String
+	 * 
+	 * @param iMenuNo int
+	 * @param sUniqId String
 	 * @return String
 	 * @exception Exception
 	 */
@@ -241,12 +269,14 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 		return chkMenuNo;
 	}
 
-	/*### 일괄처리 프로세스 ###*/
+	/* ### 일괄처리 프로세스 ### */
 	/**
 	 * 메뉴일괄초기화 프로세스 메뉴목록테이블, 프로그램 목록테이블 전체 삭제
+	 * 
 	 * @return boolean
 	 * @exception Exception
 	 */
+	@Override
 	public boolean menuBndeAllDelete() throws Exception {
 		if (!deleteAllProgrmDtls()) {
 			return false;
@@ -262,48 +292,50 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 
 	/**
 	 * 메뉴일괄등록 프로세스
-	 * @param  vo MenuManageVO
-	 * @param  inputStream InputStream
+	 * 
+	 * @param vo          MenuManageVO
+	 * @param inputStream InputStream
 	 * @exception Exception
 	 */
+	@Override
 	public String menuBndeRegist(MenuManageVO vo, InputStream inputStream) throws Exception {
 
 		String message = bndeRegist(inputStream);
 		String sMessage = null;
 
 		switch (Integer.parseInt(message)) {
-			case 99:
-				LOGGER.debug("프로그램목록/메뉴정보테이블 데이타 존재오류 - 초기화 하신 후 다시 처리하세요.");
-				sMessage = "프로그램목록/메뉴정보테이블 데이타 존재오류 - 초기화 하신 후 다시 처리하세요.";
-				break;
-			case 90:
-				LOGGER.debug("파일존재하지 않음.");
-				sMessage = "파일존재하지 않음.";
-				break;
-			case 91:
-				LOGGER.debug("프로그램시트의 cell 개수 오류.");
-				sMessage = "프로그램시트의 cell 개수 오류.";
-				break;
-			case 92:
-				LOGGER.debug("메뉴정보시트의 cell 개수 오류.");
-				sMessage = "메뉴정보시트의 cell 개수 오류.";
-				break;
-			case 93:
-				LOGGER.debug("엑셀 시트개수 오류.");
-				sMessage = "엑셀 시트개수 오류.";
-				break;
-			case 95:
-				LOGGER.debug("메뉴정보 입력시 에러.");
-				sMessage = "메뉴정보 입력시 에러.";
-				break;
-			case 96:
-				LOGGER.debug("프로그램목록입력시 에러.");
-				sMessage = "프로그램목록입력시 에러.";
-				break;
-			default:
-				LOGGER.debug("일괄배치처리 완료.");
-				sMessage = "일괄배치처리 완료.";
-				break;
+		case 99:
+			LOGGER.debug("프로그램목록/메뉴정보테이블 데이타 존재오류 - 초기화 하신 후 다시 처리하세요.");
+			sMessage = "프로그램목록/메뉴정보테이블 데이타 존재오류 - 초기화 하신 후 다시 처리하세요.";
+			break;
+		case 90:
+			LOGGER.debug("파일존재하지 않음.");
+			sMessage = "파일존재하지 않음.";
+			break;
+		case 91:
+			LOGGER.debug("프로그램시트의 cell 개수 오류.");
+			sMessage = "프로그램시트의 cell 개수 오류.";
+			break;
+		case 92:
+			LOGGER.debug("메뉴정보시트의 cell 개수 오류.");
+			sMessage = "메뉴정보시트의 cell 개수 오류.";
+			break;
+		case 93:
+			LOGGER.debug("엑셀 시트개수 오류.");
+			sMessage = "엑셀 시트개수 오류.";
+			break;
+		case 95:
+			LOGGER.debug("메뉴정보 입력시 에러.");
+			sMessage = "메뉴정보 입력시 에러.";
+			break;
+		case 96:
+			LOGGER.debug("프로그램목록입력시 에러.");
+			sMessage = "프로그램목록입력시 에러.";
+			break;
+		default:
+			LOGGER.debug("일괄배치처리 완료.");
+			sMessage = "일괄배치처리 완료.";
+			break;
 		}
 		LOGGER.debug(message);
 		return sMessage;
@@ -311,8 +343,9 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 
 	/**
 	 * 메뉴목록_프로그램목록 일괄생성
-	 * @param  inputStream InputStream
-	 * @return  String
+	 * 
+	 * @param inputStream InputStream
+	 * @return String
 	 * @exception Exception
 	 */
 	private String bndeRegist(InputStream inputStream) throws Exception {
@@ -320,49 +353,43 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 		String requestValue = null;
 		int progrmSheetRowCnt = 0;
 		int menuSheetRowCnt = 0;
-		//String xlsFile = null;
+		// String xlsFile = null;
 		try {
 			/*
-			오류 메세지 정보
-			message = "99";	//프로그램목록테이블 데이타 존재오류.
-			message = "99";	//메뉴정보테이블 데이타 존재오류.
-			message = "90";	//파일존재하지 않음.
-			message = "91";	//프로그램시트의 cell 개수 오류
-			message = "92";	//메뉴정보시트의 cell 개수 오류
-			message = "93";	//엑셀 시트개수 오류
-			message = "95";	//메뉴정보 입력시 에러
-			message = "96";	//프로그램목록입력시 에러
-			message = "0";	//일괄배치처리 완료
-			*/
+			 * 오류 메세지 정보 message = "99"; //프로그램목록테이블 데이타 존재오류. message = "99"; //메뉴정보테이블 데이타
+			 * 존재오류. message = "90"; //파일존재하지 않음. message = "91"; //프로그램시트의 cell 개수 오류
+			 * message = "92"; //메뉴정보시트의 cell 개수 오류 message = "93"; //엑셀 시트개수 오류 message =
+			 * "95"; //메뉴정보 입력시 에러 message = "96"; //프로그램목록입력시 에러 message = "0"; //일괄배치처리 완료
+			 */
 
 			if (progrmManageDAO.selectProgrmListTotCnt() > 0) {
 				return requestValue = "99";
-			} //프로그램목록테이블 데이타 존재오류.
+			} // 프로그램목록테이블 데이타 존재오류.
 			if (menuManageDAO.selectMenuListTotCnt() > 0) {
 				return requestValue = "99";
-			} //메뉴정보테이블 데이타 존재오류.
+			} // 메뉴정보테이블 데이타 존재오류.
 
 			HSSFWorkbook hssfWB = (HSSFWorkbook) excelZipService.loadWorkbook(inputStream);
-			// 엑셀 파일 시트 개수 확인 sheet = 2  첫번째시트 = 프로그램목록  두번째시트 = 메뉴목록
+			// 엑셀 파일 시트 개수 확인 sheet = 2 첫번째시트 = 프로그램목록 두번째시트 = 메뉴목록
 			if (hssfWB.getNumberOfSheets() == 2) {
-				HSSFSheet progrmSheet = hssfWB.getSheetAt(0); //프로그램목록 시트 가져오기
-				HSSFSheet menuSheet = hssfWB.getSheetAt(1); //메뉴정보 시트 가져오기
-				HSSFRow progrmRow = progrmSheet.getRow(1); //프로그램 row 가져오기
-				HSSFRow menuRow = menuSheet.getRow(1); //메뉴정보 row 가져오기
-				progrmSheetRowCnt = progrmRow.getPhysicalNumberOfCells(); //프로그램 cell Cnt
-				menuSheetRowCnt = menuRow.getPhysicalNumberOfCells(); //메뉴정보 cell Cnt
+				HSSFSheet progrmSheet = hssfWB.getSheetAt(0); // 프로그램목록 시트 가져오기
+				HSSFSheet menuSheet = hssfWB.getSheetAt(1); // 메뉴정보 시트 가져오기
+				HSSFRow progrmRow = progrmSheet.getRow(1); // 프로그램 row 가져오기
+				HSSFRow menuRow = menuSheet.getRow(1); // 메뉴정보 row 가져오기
+				progrmSheetRowCnt = progrmRow.getPhysicalNumberOfCells(); // 프로그램 cell Cnt
+				menuSheetRowCnt = menuRow.getPhysicalNumberOfCells(); // 메뉴정보 cell Cnt
 
 				// 프로그램 시트 파일 데이타 검증 cell = 5개
 				if (progrmSheetRowCnt != 5) {
-					return requestValue = "91"; //프로그램시트의 cell 개수 오류
+					return requestValue = "91"; // 프로그램시트의 cell 개수 오류
 				}
 
-				// 메뉴목록 시트 파일 데이타 검증  cell = 8개
+				// 메뉴목록 시트 파일 데이타 검증 cell = 8개
 				if (menuSheetRowCnt != 8) {
-					return requestValue = "92"; //메뉴정보시트의 cell 개수 오류
+					return requestValue = "92"; // 메뉴정보시트의 cell 개수 오류
 				}
 
-				/* sheet1번 = 프로그램목록 ,  sheet2번 = 메뉴정보 */
+				/* sheet1번 = 프로그램목록 , sheet2번 = 메뉴정보 */
 				success = progrmRegist(progrmSheet);
 				if (success) {
 					success = menuRegist(menuSheet);
@@ -383,12 +410,12 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 				return requestValue = "93"; // 엑셀 시트개수 오류
 			}
 		} catch (BaseException e) {
-			LOGGER.error("["+ e.getClass() +"] : ", e.getMessage());
+			LOGGER.error("[" + e.getClass() + "] : ", e.getMessage());
 			requestValue = "99";
-			
+
 		} catch (Exception e) {
-			//2017.02.13 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-			LOGGER.error("["+ e.getClass() +"] : ", e.getMessage());
+			// 2017.02.13 이정은 시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+			LOGGER.error("[" + e.getClass() + "] : ", e.getMessage());
 			requestValue = "99";
 		}
 		return requestValue;
@@ -396,39 +423,40 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 
 	/**
 	 * 프로그램목록 일괄등록
-	 * @param  progrmSheet HSSFSheet
-	 * @return  boolean
+	 * 
+	 * @param progrmSheet HSSFSheet
+	 * @return boolean
 	 * @exception Exception
 	 */
 	private boolean progrmRegist(HSSFSheet progrmSheet) {
 		int count = 0;
 		boolean success = false;
 		try {
-			int rows = progrmSheet.getPhysicalNumberOfRows(); //행 개수 가져오기
-			for (int j = 1; j < rows; j++) { //row 루프
+			int rows = progrmSheet.getPhysicalNumberOfRows(); // 행 개수 가져오기
+			for (int j = 1; j < rows; j++) { // row 루프
 				ProgrmManageVO vo = new ProgrmManageVO();
-				HSSFRow row = progrmSheet.getRow(j); //row 가져오기
+				HSSFRow row = progrmSheet.getRow(j); // row 가져오기
 				if (row != null) {
-					//int cells = row.getPhysicalNumberOfCells(); //cell 개수 가져오기
+					// int cells = row.getPhysicalNumberOfCells(); //cell 개수 가져오기
 
 					HSSFCell cell = null;
-					cell = row.getCell(0); //프로그램명
+					cell = row.getCell(0); // 프로그램명
 					if (cell != null) {
 						vo.setProgrmFileNm("" + cell.getStringCellValue());
 					}
-					cell = row.getCell(1); //프로그램한글명
+					cell = row.getCell(1); // 프로그램한글명
 					if (cell != null) {
 						vo.setProgrmKoreanNm("" + cell.getStringCellValue());
 					}
-					cell = row.getCell(2); //프로그램저장경로
+					cell = row.getCell(2); // 프로그램저장경로
 					if (cell != null) {
 						vo.setProgrmStrePath("" + cell.getStringCellValue());
 					}
-					cell = row.getCell(3); //프로그램 URL
+					cell = row.getCell(3); // 프로그램 URL
 					if (cell != null) {
 						vo.setURL("" + cell.getStringCellValue());
 					}
-					cell = row.getCell(4); //프로그램설명
+					cell = row.getCell(4); // 프로그램설명
 					if (cell != null) {
 						vo.setProgrmDc("" + cell.getStringCellValue());
 					}
@@ -443,12 +471,12 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 				success = false;
 			}
 		} catch (SQLException e) {
-			LOGGER.error("["+ e.getClass() +"] : ", e.getMessage());
+			LOGGER.error("[" + e.getClass() + "] : ", e.getMessage());
 			success = false;
-			
+
 		} catch (Exception e) {
-			//2017.02.13 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-			LOGGER.error("["+ e.getClass() +"] : ", e.getMessage());
+			// 2017.02.13 이정은 시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+			LOGGER.error("[" + e.getClass() + "] : ", e.getMessage());
 			success = false;
 		}
 		return success;
@@ -456,6 +484,7 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 
 	/**
 	 * 메뉴정보 일괄등록
+	 * 
 	 * @param menuSheet HSSFSheet
 	 * @return boolean
 	 * @exception Exception
@@ -464,45 +493,42 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 		boolean success = false;
 		int count = 0;
 		try {
-			int rows = menuSheet.getPhysicalNumberOfRows(); //행 개수 가져오기
-			for (int j = 1; j < rows; j++) { //row 루프
+			int rows = menuSheet.getPhysicalNumberOfRows(); // 행 개수 가져오기
+			for (int j = 1; j < rows; j++) { // row 루프
 				MenuManageVO vo = new MenuManageVO();
-				HSSFRow row = menuSheet.getRow(j); //row 가져오기
+				HSSFRow row = menuSheet.getRow(j); // row 가져오기
 				if (row != null) {
-					//int cells = row.getPhysicalNumberOfCells(); //cell 개수 가져오기
+					// int cells = row.getPhysicalNumberOfCells(); //cell 개수 가져오기
 					HSSFCell cell = null;
-					cell = row.getCell(0); //메뉴번호
-					if (cell != null) {
-						Double doubleCell = new Double(cell.getNumericCellValue());
-						vo.setMenuNo(Integer.parseInt("" + doubleCell.longValue()));
+					cell = row.getCell(0); // 메뉴번호
+					if (cell != null && cell.getCellType() == CellType.NUMERIC) {
+						vo.setMenuNo((int) cell.getNumericCellValue());
 					}
-					cell = row.getCell(1); //메뉴순서
-					if (cell != null) {
-						Double doubleCell = new Double(cell.getNumericCellValue());
-						vo.setMenuOrdr(Integer.parseInt("" + doubleCell.longValue()));
+					cell = row.getCell(1); // 메뉴순서
+					if (cell != null && cell.getCellType() == CellType.NUMERIC) {
+						vo.setMenuOrdr((int) cell.getNumericCellValue());
 					}
-					cell = row.getCell(2); //메뉴명
+					cell = row.getCell(2); // 메뉴명
 					if (cell != null) {
 						vo.setMenuNm("" + cell.getStringCellValue());
 					}
-					cell = row.getCell(3); //상위메뉴번호
-					if (cell != null) {
-						Double doubleCell = new Double(cell.getNumericCellValue());
-						vo.setUpperMenuId(Integer.parseInt("" + doubleCell.longValue()));
+					cell = row.getCell(3); // 상위메뉴번호
+					if (cell != null && cell.getCellType() == CellType.NUMERIC) {
+						vo.setUpperMenuId((int) cell.getNumericCellValue());
 					}
-					cell = row.getCell(4); //메뉴설명
+					cell = row.getCell(4); // 메뉴설명
 					if (cell != null) {
 						vo.setMenuDc("" + cell.getStringCellValue());
 					}
-					cell = row.getCell(5); //관련이미지경로
+					cell = row.getCell(5); // 관련이미지경로
 					if (cell != null) {
 						vo.setRelateImagePath("" + cell.getStringCellValue());
 					}
-					cell = row.getCell(6); //관련이미지명
+					cell = row.getCell(6); // 관련이미지명
 					if (cell != null) {
 						vo.setRelateImageNm("" + cell.getStringCellValue());
 					}
-					cell = row.getCell(7); //프로그램파일명
+					cell = row.getCell(7); // 프로그램파일명
 					if (cell != null) {
 						vo.setProgrmFileNm("" + cell.getStringCellValue());
 					}
@@ -517,20 +543,21 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 				success = false;
 			}
 		} catch (SQLException e) {
-			LOGGER.error("["+ e.getClass() +"] : ", e.getMessage());
+			LOGGER.error("[" + e.getClass() + "] : ", e.getMessage());
 			success = false;
-			
+
 		} catch (Exception e) {
-			//2017.02.13 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-			LOGGER.error("["+ e.getClass() +"] : ", e.getMessage());
+			// 2017.02.13 이정은 시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+			LOGGER.error("[" + e.getClass() + "] : ", e.getMessage());
 			success = false;
 		}
-		
+
 		return success;
 	}
 
 	/**
 	 * 메뉴정보 전체데이타 초기화
+	 * 
 	 * @return boolean
 	 * @exception Exception
 	 */
@@ -540,7 +567,8 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 
 	/**
 	 * 프로그램 정보를 등록
-	 * @param  vo ProgrmManageVO
+	 * 
+	 * @param vo ProgrmManageVO
 	 * @return boolean
 	 * @exception Exception
 	 */
@@ -551,7 +579,8 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 
 	/**
 	 * 메뉴정보를 일괄 등록
-	 * @param  vo MenuManageVO
+	 * 
+	 * @param vo MenuManageVO
 	 * @return boolean
 	 * @exception Exception
 	 */
@@ -562,6 +591,7 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 
 	/**
 	 * 프로그램 정보 전체데이타 초기화
+	 * 
 	 * @return boolean
 	 * @exception Exception
 	 */
@@ -571,6 +601,7 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 
 	/**
 	 * 프로그램변경내역 정보 전체데이타 초기화
+	 * 
 	 * @return boolean
 	 * @exception Exception
 	 */
