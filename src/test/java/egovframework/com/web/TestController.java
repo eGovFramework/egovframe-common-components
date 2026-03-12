@@ -2,14 +2,14 @@ package egovframework.com.web;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
-import javax.inject.Inject;
+import jakarta.inject.Inject;
 
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
@@ -24,9 +24,10 @@ import org.springframework.web.context.WebApplicationContext;
  * @see
  * <pre>
  *
- *  수정일              수정자          수정내용
+ *  수정일        수정자      수정내용
  *  ----------  --------  ---------------------------
- *  2019.04.23  신용호          최초 생성
+ *  2019.04.23  신용호      최초 생성
+ *  2026.01.26  신용호      JUnit 4 => JUnit 5 마이그레이션
  *
  * @ 특징
    - Spring MVC 기반 Controller및 Dispatcher Servlet 테스트
@@ -36,7 +37,7 @@ import org.springframework.web.context.WebApplicationContext;
    
  * </pre>
  */
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { 
 		//"file:src/main/resources/egovframework/spring/com/**/context-*.xml",
 		"file:src/main/resources/egovframework/spring/com/context-*.xml",
@@ -56,13 +57,13 @@ public class TestController {
 	
 	private MockMvc mockMvc;
 	
-	@Before
-	public void setup() {
+	@BeforeEach
+	void setup() {
 		this.mockMvc = MockMvcBuilders.webAppContextSetup(this.wac).build();
 	}
 	
-	@Test 
-	public void test() throws Exception {
+	@Test
+	void test() throws Exception {
 		//fail("Not yet implemented");
 		//mockMvc.perform(MockMvcRequestBuilders.get("/cmm/main/mainPage.do"));
 		System.out.println("===> start test");

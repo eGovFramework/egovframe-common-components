@@ -24,7 +24,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comSymCcmAdc.ccmAdministCode.title"/> <spring:message code="title.create" /></c:set>
 <html lang="ko">
 <head>
@@ -32,8 +31,7 @@
 <title>${pageTitle}</title>
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="administCode" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/sym/cal/EgovCalPopup.js' />" ></script>
 <script type="text/javaScript" language="javascript">
 	/* ********************************************************
@@ -47,10 +45,12 @@
 	 * 저장처리화면
 	 ******************************************************** */
 	 function fn_egov_regist_AdministCode(form){
-		var creatDe = document.administCode.creatDe.value;
-		var ablDe   = document.administCode.ablDe.value.replace(" ", "").replace("-","");
-	
-		if (creatDe > ablDe && (ablDe != "" && ablDe != "                    ")) {
+// 		var creatDe = document.administCode.creatDe.value;
+		var creatDe = document.getElementById('creatDe');
+		var ablDe = document.getElementById('ablDe');
+// 		var ablDe   = document.administCode.ablDe.value.replace(" ", "").replace("-","");
+		
+		if (creatDe.value > ablDe.value && (ablDe != "" && ablDe != "                    ")) {
 			alert("생성일, 폐기일 전후가 잘못되었습니다.\n확인 후 처리하시오.");
 			//abort;
 			document.administCode.ablDe.value = "";
@@ -75,7 +75,7 @@
 		var administZoneSe = document.getElementById("administCode").administZoneSe.value;
 	
 		if (administZoneSe == "") {
-			alert("행정구역코드를 선택하시오.");
+			alert("행정구역코드를 선택하세요.");
 		}
 	
 		var retVal;
@@ -152,24 +152,24 @@
 			<th><spring:message code="comSymCcmAdc.ccmAdministCode.administCode" /> <span class="pilsu">*</span></th> <!-- 행정구역코드 -->
 			<td class="left">
 			    <form:input  path="administZoneCode" maxlength="10" title="행정구역코드" cssStyle="width:68px"/>
-				<form:errors path="administZoneCode"/>
+				<div><form:errors path="administZoneCode" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="comSymCcmAdc.ccmAdministCode.administName" /> <span class="pilsu">*</span></th> <!-- 행정구역명 -->
+			<th><spring:message code="comSymCcmAdc.ccmAdministCode.administName" /></th> <!-- 행정구역명 -->
 			<td class="left">
 			    <form:input  path="administZoneNm" maxlength="60" title="행정구역명" cssStyle="width:50%"/>
-				<form:errors path="administZoneNm"/>
+			    <div><form:errors path="administZoneNm" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="comSymCcmAdc.ccmAdministCode.createDate" /> <span class="pilsu">*</span></th> <!-- 생성일자 -->
+			<th><spring:message code="comSymCcmAdc.ccmAdministCode.createDate" /></th> <!-- 생성일자 -->
 			<td class="left">
 			    <input type="hidden" name="cal_url" id="cal_url" value="<c:url value='/sym/cal/EgovNormalCalPopup.do'/>" >
 				<input name="vcreatDe" maxlength="10" readonly="readonly" onclick="fn_egov_NormalCalendar(document.administCode, document.administCode.creatDe, document.administCode.vcreatDe);" title="생성일자(새창)" style="width:68px" />
 				<a href="#noscript" onclick="fn_egov_NormalCalendar(document.administCode, document.administCode.creatDe, document.administCode.vcreatDe); return false;" style="selector-dummy:expression(this.hideFocus=false);"><img src="<c:url value='/images/egovframework/com/cmm/icon/bu_icon_carlendar.gif' />" alt="달력창팝업버튼이미지"></a>
 				<form:hidden path="creatDe"/>
-				<form:errors path="creatDe"/>
+				<div><form:errors path="creatDe" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>
@@ -178,7 +178,7 @@
 			    <input name="vablDe" maxlength="10" readonly="readonly" onclick="fn_egov_NormalCalendar(document.administCode, document.administCode.ablDe, document.administCode.vablDe);" title="폐기일자(새창)" style="width:68px"/>
 				<a href="#noscript" onclick="fn_egov_NormalCalendar(document.administCode, document.administCode.ablDe, document.administCode.vablDe); return false;" style="selector-dummy:expression(this.hideFocus=false);"><img src="<c:url value='/images/egovframework/com/cmm/icon/bu_icon_carlendar.gif' />" alt="달력창팝업버튼이미지"></a>
 				<form:hidden path="ablDe"/>
-				<form:errors path="ablDe"/>
+				<div><form:errors path="ablDe" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>
@@ -187,7 +187,7 @@
 			    <input  name="upperAdministZoneNm" maxlength="60" readonly="readonly" onclick="fn_egov_AdministCodePopup(administCode.upperAdministZoneCode,administCode.upperAdministZoneNm);" title="상위행정구역코드"/>
 				<a href="#noscript" onclick="fn_egov_AdministCodePopup(administCode.upperAdministZoneCode,administCode.upperAdministZoneNm); return false;" style="selector-dummy:expression(this.hideFocus=false);"><img src="<c:url value='/images/egovframework/com/cmm/icon/search2.gif' />" alt="행정코드찾기"></a>
 				<form:hidden  path="upperAdministZoneCode"/>
-				<form:errors path="upperAdministZoneCode"/>
+				<div><form:errors path="upperAdministZoneCode" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>

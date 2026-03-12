@@ -37,28 +37,28 @@ public class BoardVO extends Board implements Serializable {
     private String searchWrd = "";
     
     /** 정렬순서(DESC,ASC) */
-    private long sortOrdr = 0L;
+    private Long sortOrdr = 0L;
 
     /** 검색사용여부 */
     private String searchUseYn = "";
 
     /** 현재페이지 */
-    private int pageIndex = 1;
+    private Integer pageIndex = 1;
 
     /** 페이지개수 */
-    private int pageUnit = 10;
+    private Integer pageUnit = 10;
 
     /** 페이지사이즈 */
-    private int pageSize = 10;
+    private Integer pageSize = 10;
 
     /** 첫페이지 인덱스 */
-    private int firstIndex = 1;
+    private Integer firstIndex = 1;
 
     /** 마지막페이지 인덱스 */
-    private int lastIndex = 1;
+    private Integer lastIndex = 1;
 
     /** 페이지당 레코드 개수 */
-    private int recordCountPerPage = 10;
+    private Integer recordCountPerPage = 10;
 
     /** 레코드 번호 */
     private int rowNo = 0;
@@ -198,18 +198,18 @@ public class BoardVO extends Board implements Serializable {
      * 
      * @return the sortOrdr
      */
-    public long getSortOrdr() {
-	return sortOrdr;
+    public Long getSortOrdr() {
+	return sortOrdr == null ? 0L : sortOrdr;
     }
 
     /**
      * sortOrdr attribute 값을 설정한다.
-     * 
+     *
      * @param sortOrdr
      *            the sortOrdr to set
      */
-    public void setSortOrdr(long sortOrdr) {
-	this.sortOrdr = sortOrdr;
+    public void setSortOrdr(Long sortOrdr) {
+	this.sortOrdr = sortOrdr == null ? 0L : sortOrdr;
     }
 
     /**
@@ -236,7 +236,7 @@ public class BoardVO extends Board implements Serializable {
      * 
      * @return the pageIndex
      */
-    public int getPageIndex() {
+    public Integer getPageIndex() {
 	return pageIndex;
     }
 
@@ -246,7 +246,7 @@ public class BoardVO extends Board implements Serializable {
      * @param pageIndex
      *            the pageIndex to set
      */
-    public void setPageIndex(int pageIndex) {
+    public void setPageIndex(Integer pageIndex) {
 	this.pageIndex = pageIndex;
     }
 
@@ -255,7 +255,7 @@ public class BoardVO extends Board implements Serializable {
      * 
      * @return the pageUnit
      */
-    public int getPageUnit() {
+    public Integer getPageUnit() {
 	return pageUnit;
     }
 
@@ -265,7 +265,7 @@ public class BoardVO extends Board implements Serializable {
      * @param pageUnit
      *            the pageUnit to set
      */
-    public void setPageUnit(int pageUnit) {
+    public void setPageUnit(Integer pageUnit) {
 	this.pageUnit = pageUnit;
     }
 
@@ -274,7 +274,7 @@ public class BoardVO extends Board implements Serializable {
      * 
      * @return the pageSize
      */
-    public int getPageSize() {
+    public Integer getPageSize() {
 	return pageSize;
     }
 
@@ -284,7 +284,7 @@ public class BoardVO extends Board implements Serializable {
      * @param pageSize
      *            the pageSize to set
      */
-    public void setPageSize(int pageSize) {
+    public void setPageSize(Integer pageSize) {
 	this.pageSize = pageSize;
     }
 
@@ -293,8 +293,8 @@ public class BoardVO extends Board implements Serializable {
      * 
      * @return the firstIndex
      */
-    public int getFirstIndex() {
-	return firstIndex;
+    public Integer getFirstIndex() {
+    	return firstIndex == null ? 1 : firstIndex;
     }
 
     /**
@@ -303,8 +303,8 @@ public class BoardVO extends Board implements Serializable {
      * @param firstIndex
      *            the firstIndex to set
      */
-    public void setFirstIndex(int firstIndex) {
-	this.firstIndex = firstIndex;
+    public void setFirstIndex(Integer firstIndex) {
+    	this.firstIndex = firstIndex == null ? 1 : firstIndex;
     }
 
     /**
@@ -312,8 +312,8 @@ public class BoardVO extends Board implements Serializable {
      * 
      * @return the lastIndex
      */
-    public int getLastIndex() {
-	return lastIndex;
+    public Integer getLastIndex() {
+    	return lastIndex == null ? 1 : lastIndex;
     }
 
     /**
@@ -322,8 +322,8 @@ public class BoardVO extends Board implements Serializable {
      * @param lastIndex
      *            the lastIndex to set
      */
-    public void setLastIndex(int lastIndex) {
-	this.lastIndex = lastIndex;
+    public void setLastIndex(Integer lastIndex) {
+    	this.lastIndex = lastIndex == null ? 1 : lastIndex;
     }
 
     /**
@@ -331,8 +331,8 @@ public class BoardVO extends Board implements Serializable {
      * 
      * @return the recordCountPerPage
      */
-    public int getRecordCountPerPage() {
-	return recordCountPerPage;
+    public Integer getRecordCountPerPage() {
+    	return recordCountPerPage == null ? 10 : recordCountPerPage;
     }
 
     /**
@@ -341,8 +341,8 @@ public class BoardVO extends Board implements Serializable {
      * @param recordCountPerPage
      *            the recordCountPerPage to set
      */
-    public void setRecordCountPerPage(int recordCountPerPage) {
-	this.recordCountPerPage = recordCountPerPage;
+    public void setRecordCountPerPage(Integer recordCountPerPage) {
+    	this.recordCountPerPage = recordCountPerPage == null ? 10 : recordCountPerPage;
     }
 
     /**

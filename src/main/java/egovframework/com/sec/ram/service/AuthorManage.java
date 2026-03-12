@@ -2,6 +2,9 @@ package egovframework.com.sec.ram.service;
 
 import egovframework.com.cmm.ComDefaultVO;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 권한관리에 대한 model 클래스를 정의한다.
  * @author 공통서비스 개발팀 이문준
@@ -32,6 +35,8 @@ public class AuthorManage extends ComDefaultVO {
 	/**
 	 * 권한코드
 	 */
+	@EgovNullCheck
+	@Size(max=30)
 	private String authorCode;
 	/**
 	 * 권한코드 암호화
@@ -44,10 +49,13 @@ public class AuthorManage extends ComDefaultVO {
 	/**
 	 * 권한코드설명
 	 */
+	@Size(max=200)
 	private String authorDc;
 	/**
 	 * 권한 명
 	 */
+	@EgovNullCheck
+	@Size(max=60)
 	private String authorNm;
 	
 	/**

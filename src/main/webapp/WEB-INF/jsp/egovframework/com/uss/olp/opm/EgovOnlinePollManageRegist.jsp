@@ -24,7 +24,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comUssOlpOpm.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -35,8 +34,7 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="onlinePollManage" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 /* ********************************************************
  * 초기화
@@ -185,6 +183,7 @@ function fn_egov_save_OnlinePollManage(){
 		            <form:option value="" label="${selectTxt}"/>
 		            <form:options items="${pollKindCodeList}" itemValue="code" itemLabel="codeNm"/>
 		        </form:select>
+		        <form:errors path="pollKindCode" cssClass="error"/>
 			</td>
 		</tr>
 		<!-- POLL페기유무 -->

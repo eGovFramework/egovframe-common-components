@@ -1,8 +1,6 @@
 package egovframework.com.uss.ion.ism.web;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
@@ -15,6 +13,7 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.ism.service.EgovInfrmlSanctnService;
 import egovframework.com.uss.ion.ism.service.InfrmlSanctn;
 import egovframework.com.uss.ion.ism.service.SanctnerVO;
+import jakarta.annotation.Resource;
 
 /**
  * 개요
@@ -87,7 +86,7 @@ public class EgovInfrmlSanctnController {
 
 		return "egovframework/com/uss/ion/ism/EgovSanctnerList";
 	}
-	
+
 	/**
 	 * 결재자 정보에 대한 목록을 조회한다. Old 삭제 후 반영
 	 * @param SanctnerVO
@@ -175,7 +174,7 @@ public class EgovInfrmlSanctnController {
 	public String selectConfmPopup() throws Exception{
 		return "egovframework/com/uss/ion/ism/EgovConfmPopup";
 	}
-	
+
 	/**
 	 * 약식결재 반려처리 화면을 호출한다. Old 삭제 후 반영
 	 * @param
@@ -187,8 +186,7 @@ public class EgovInfrmlSanctnController {
 	public String selectReturnPopupNew() throws Exception{
 		return "egovframework/com/uss/ion/ism/EgovReturnPopupNew";
 	}
-	
-	
+
 	/**
 	 * 약식결재 승인처리 화면을 호출한다. Old 삭제 후 반영
 	 * @param

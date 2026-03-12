@@ -3,8 +3,6 @@ package egovframework.com.sym.ccm.acr.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -22,6 +20,7 @@ import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.sym.ccm.acr.service.AdministCodeRecptn;
 import egovframework.com.sym.ccm.acr.service.AdministCodeRecptnVO;
 import egovframework.com.sym.ccm.acr.service.EgovAdministCodeRecptnService;
+import jakarta.annotation.Resource;
 
 /**
  *

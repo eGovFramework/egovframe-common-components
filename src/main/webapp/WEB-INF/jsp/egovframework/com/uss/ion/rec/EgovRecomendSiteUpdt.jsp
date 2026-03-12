@@ -20,7 +20,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comUssIonRec.recomendSiteVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -29,10 +28,9 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
-<validator:javascript formName="recomendSiteVO" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javascript">
 
 $(function() {
@@ -53,35 +51,27 @@ $(function() {
 });
 
 /* ********************************************************
- * 초기화
- ******************************************************** */
-function fn_egov_init(){
-	// 첫 입력란에 포커스..
-	document.getElementById("recomendSiteVO").recomendSiteNm.focus();
-}
-/* ********************************************************
  * 저장처리화면
  ******************************************************** */
 function fn_egov_updt_site(form){
 	if (!validateRecomendSiteVO(form)) {		 			
 		return false;		
-	} else {
-		
-		if(confirm("<spring:message code="common.update.msg" />")){	
-			form.submit();	
-		}					
-	}	
+	}
+
+	if(confirm("<spring:message code="common.update.msg" />")){	
+		form.submit();	
+	}					
 }
 /* ********************************************************
  * 목록 으로 가기
  ******************************************************** */
 function fn_egov_inqire_list() {
-	recomendSiteVO.action = "<c:url value='/uss/ion/rec/selectRecomendSiteList.do'/>";
-	recomendSiteVO.submit();	
+	document.forms[0].action = "<c:url value='/uss/ion/rec/selectRecomendSiteList.do'/>";
+	document.forms[0].submit();	
 }
 </script>
 </head>
-<body onLoad="fn_egov_init();">
+<body>
 
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
@@ -160,7 +150,7 @@ function fn_egov_inqire_list() {
 		<tr>
 			<th><label for="confmDe">${title} </label></th>
 			<td class="left" colspan="3">
-				<form:input path="confmDe" title="${title} ${inputTxt}" size="70" maxlength="70" style="width:70px;"/>
+				<form:input path="confmDe" title="${title} ${inputTxt}" size="70" maxlength="70" readonly="true" style="width:70px;"/>
 				<div><form:errors path="confmDe" cssClass="error" /></div>       
 			</td>
 		</tr>

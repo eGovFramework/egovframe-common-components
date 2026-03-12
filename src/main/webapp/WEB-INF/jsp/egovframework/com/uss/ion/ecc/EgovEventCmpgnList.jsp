@@ -30,14 +30,6 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <script type="text/javascript">
 /*********************************************************
- * 초기화
- ******************************************************** */
-function fn_egov_init(){
-	// 첫 입력란에 포커스..
-	document.eventCmpgnForm.searchCondition.focus();
-}
-
-/*********************************************************
  * 페이징 처리 함수
  ******************************************************** */
 function fn_egov_select_linkPage(pageNo){
@@ -63,7 +55,7 @@ function fn_egov_inquire_eventdetail(eventId) {
 }
 </script>
 </head>
-<body onload="fn_egov_init()">
+<body>
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
@@ -75,13 +67,13 @@ function fn_egov_inquire_eventdetail(eventId) {
 		<ul>
 			<li>
 				<select name="searchCondition" title="<spring:message code="title.searchCondition" /> <spring:message code="input.cSelect" />">
-					<option value="0"  <c:if test="${searchVO.searchCondition == '0'}">selected="selected"</c:if> ><spring:message code="comUssIonEcc.eventCmpgnVO.eventCn" /></option><!-- 행사내용 -->
-					<option value="1"  <c:if test="${searchVO.searchCondition == '1'}">selected="selected"</c:if> ><spring:message code="table.reger" /></option><!-- 등록자 -->
+					<option value="0"  <c:if test="${eventCmpgnVO.searchCondition == '0'}">selected="selected"</c:if> ><spring:message code="comUssIonEcc.eventCmpgnVO.eventTyCode" /></option><!-- 행사유형 -->
+					<option value="1"  <c:if test="${eventCmpgnVO.searchCondition == '1'}">selected="selected"</c:if> ><spring:message code="comUssIonEcc.eventCmpgnVO.eventCn" /></option><!-- 행사내용 -->
 				</select>
 			</li>
 			<!-- 검색키워드 및 조회버튼 -->
 			<li>
-				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${searchVO.searchKeyword}"/>'  maxlength="155" >
+				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${eventCmpgnVO.searchKeyword}"/>'  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
 				<span class="btn_b"><a href="<c:url value='/uss/ion/ecc/insertEventCmpgnView.do' />"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
 			</li>
@@ -117,7 +109,7 @@ function fn_egov_inquire_eventdetail(eventId) {
 	</c:if>
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr>
-		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
+		<td><c:out value="${(eventCmpgnVO.pageIndex-1) * eventCmpgnVO.pageSize + status.count}"/></td>
 		<td><c:out value='${resultInfo.eventTyCodeNm}'/></td>
 		<td class="left"><a href="<c:url value='/uss/ion/ecc/selectEventCmpgnDetail.do?eventId=${resultInfo.eventId}'/>" onClick="fn_egov_inquire_eventdetail('<c:out value="${resultInfo.eventId}"/>');return false;"><c:out value='${fn:substring(resultInfo.eventCn, 0, 40)}'/></a></td>
 		<td><c:out value='${resultInfo.eventSvcBeginDe}'/></td>
@@ -138,8 +130,8 @@ function fn_egov_inquire_eventdetail(eventId) {
 	
 </div>
 
-<input name="eventId" type="hidden" value="<c:out value='${searchVO.eventId}'/>">
-<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
+<input name="eventId" type="hidden" value="<c:out value='${eventCmpgnVO.eventId}'/>">
+<input name="pageIndex" type="hidden" value="<c:out value='${eventCmpgnVO.pageIndex}'/>">
 </form>
 
 </body>

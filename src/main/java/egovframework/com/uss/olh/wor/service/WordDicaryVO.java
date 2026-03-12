@@ -2,6 +2,10 @@ package egovframework.com.uss.olh.wor.service;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 /**
  *
  * 용어사전정보 VO 클래스
@@ -27,15 +31,23 @@ public class WordDicaryVO extends WordDicaryDefaultVO {
 	private String wordId;
 
 	/** 용어명 */
+	@EgovNullCheck
+	@Size(max=250)
 	private String wordNm;
 
 	/** 영문명 */
+	@EgovNullCheck
+	@Size(max=60)
+	@Pattern(regexp="^[a-zA-Z0-9_]*$", message="{validation.pattern.english}")
 	private String engNm;
 
 	/** 용어설명 */
+	@EgovNullCheck
+	@Size(max=2500)
 	private String wordDc;
 
 	/** 동의어 */
+	@Size(max=100)
 	private String synonm;
 
 	/** 등록자명 */
@@ -212,7 +224,7 @@ public class WordDicaryVO extends WordDicaryDefaultVO {
 	public void setLastUpdusrId(String lastUpdusrId) {
 		this.lastUpdusrId = lastUpdusrId;
 	}
-	
+
 	/**
 	 * toString 메소드를 대치한다.
 	 */

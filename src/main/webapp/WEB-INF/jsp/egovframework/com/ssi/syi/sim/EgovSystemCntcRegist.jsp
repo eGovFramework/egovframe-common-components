@@ -26,7 +26,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <html lang="ko">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -36,8 +35,7 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="systemCntc" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 <!--
 
@@ -109,7 +107,11 @@ function fn_egov_regist_SystemCntc(form){
 * CodeList 가져오기
 ******************************************************** */
 function fn_egov_get_CodeList(form,choose){
-	form.cmd.value = "";
+	// cmd 파라미터 제거 (params="!cmd" 매핑을 위해)
+	var cmdInput = form.querySelector('input[name="cmd"]');
+	if (cmdInput) {
+		cmdInput.parentNode.removeChild(cmdInput);
+	}
 
 	if(choose == 'provdInsttId') {
 		form.provdSysId.value = "";

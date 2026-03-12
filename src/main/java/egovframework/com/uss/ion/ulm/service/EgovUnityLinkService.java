@@ -2,8 +2,6 @@ package egovframework.com.uss.ion.ulm.service;
 
 import java.util.List;
 
-import egovframework.com.cmm.ComDefaultVO;
-
 /**
  * 통합링크관리를 처리하는 Service Class 구현
  * @author 공통서비스 장동한
@@ -32,19 +30,19 @@ public interface EgovUnityLinkService {
 
 	/**
 	* 통합링크관리 목록을 조회한다.
-	* @param searchVO  조회할 정보가 담긴 VO
+	* @param unityLink  조회할 정보가 담긴 VO
 	* @return List
 	* @throws Exception
 	*/
-	public List<?> selectUnityLinkList(ComDefaultVO searchVO) throws Exception;
+	public List<?> selectUnityLinkList(UnityLink unityLink) throws Exception;
 
 	/**
 	* 통합링크관리를(을) 목록 전체 건수를(을) 조회한다.
-	* @param searchVO  조회할 정보가 담긴 VO
+	* @param unityLink  조회할 정보가 담긴 VO
 	* @return int
 	* @throws Exception
 	*/
-	public int selectUnityLinkListCnt(ComDefaultVO searchVO) throws Exception;
+	public int selectUnityLinkListCnt(UnityLink unityLink) throws Exception;
 
 	/**
 	 * 통합링크관리를(을) 상세조회 한다.

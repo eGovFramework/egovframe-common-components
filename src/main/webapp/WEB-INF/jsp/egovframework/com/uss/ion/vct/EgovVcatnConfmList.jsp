@@ -102,11 +102,11 @@ function fncVcatnManageDetail(applcntId,vcatnSe,bgnde,endde,infrmlSanctnId) {
 	<input type="hidden" name="pageIndex" value="<c:if test="${empty vcatnManageVO.pageIndex }">1</c:if><c:if test="${!empty vcatnManageVO.pageIndex }"><c:out value='${vcatnManageVO.pageIndex}'/></c:if>">
 	
 
-	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
+	<div class="search_box" title='<spring:message code="common.searchCondition.msg" />'><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
 			<li>
 				<label for=""><spring:message code="comUssIonVct.vcatnConfmList.searchConfmAt"/> : </label><!-- 진행구분 -->
-				<select name="searchConfmAt" title="<spring:message code="comUssIonVct.vcatnConfmList.searchConfmAt"/>"><!-- 진행구분 -->
+				<select name="searchConfmAt" title='<spring:message code="comUssIonVct.vcatnConfmList.searchConfmAt"/>'><!-- 진행구분 -->
 			       	<option value="" <c:if test="${vcatnManageVO.searchConfmAt eq '' }">selected</c:if>><spring:message code="comUssIonVct.vcatnConfmList.selectedAll"/></option><!-- 전체 -->
 			       	<option value="A" <c:if test="${vcatnManageVO.searchConfmAt eq 'A' }">selected</c:if>><spring:message code="comUssIonVct.vcatnConfmList.searchConfmAt.A"/></option><!-- 신청 -->
 			       	<option value="C" <c:if test="${vcatnManageVO.searchConfmAt eq 'C' }">selected</c:if>><spring:message code="comUssIonVct.vcatnManageList.confmAt.C"/></option><!-- 승인 -->
@@ -114,7 +114,7 @@ function fncVcatnManageDetail(applcntId,vcatnSe,bgnde,endde,infrmlSanctnId) {
 		      	</select>
 		      	
 		      	<label for="" style="margin-left:15px"><spring:message code="comUssIonVct.vcatnConfmList.searchConfmAt.vcatnDay"/> : </label><!-- 휴가일자 -->
-		      	<select name="searchYear" title="<spring:message code="comUssIonVct.vcatnConfmList.searchYear"/>"><!-- 연도 -->
+		      	<select name="searchYear" title='<spring:message code="comUssIonVct.vcatnConfmList.searchYear"/>'><!-- 연도 -->
 		    		<option value="" <c:if test="${vcatnManageVO.searchYear eq '' }">selected</c:if>><spring:message code="comUssIonVct.vcatnConfmList.selectedAll"/></option><!-- 전체 -->
 		            <c:forEach items="${yearList}" var="result" varStatus="status">
 			       	   <option value="<c:out value="${result }"/>"  <c:if test="${vcatnManageVO.searchYear eq result}">selected</c:if>><c:out value="${result }"/></option>
@@ -137,7 +137,7 @@ function fncVcatnManageDetail(applcntId,vcatnSe,bgnde,endde,infrmlSanctnId) {
 		      	</select> <spring:message code="comUssIonVct.vcatnConfmList.month"/><!-- 월 -->
 		      	
 		      	<label for="" style="margin-left:15px"><spring:message code="comUssIonVct.common.applcntNm"/> : </label><!-- 신청자 -->
-		      	<input name="searchNm" type="text" size="20" value="${vcatnManageVO.searchNm}"  maxlength="100" title="<spring:message code="comUssIonVct.common.applcntNm"/>" /><!-- 신청자 -->
+		      	<input name="searchNm" type="text" size="20" value="${vcatnManageVO.searchNm}"  maxlength="100" title='<spring:message code="comUssIonVct.common.applcntNm"/>' /><!-- 신청자 -->
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fncSelectVcatnConfmList('1'); return false;" />
 			</li>
 		</ul>

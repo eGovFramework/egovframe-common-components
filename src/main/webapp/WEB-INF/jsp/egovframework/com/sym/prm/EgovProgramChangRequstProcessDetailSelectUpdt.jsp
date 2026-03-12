@@ -26,7 +26,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="ImgUrl" value="/images/egovframework/com/sym/prm/"/>
 <c:set var="CssUrl" value="/css/egovframework/com/sym/prm/"/>
 <html lang="ko">
@@ -38,8 +37,7 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
-<validator:javascript formName="progrmManageDtlVO" staticJavascript="false" xhtml="true" cdata="false"/>
-<script type="text/javascript" src="<c:url value="/validator.do" />"></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script language="javascript1.2" type="text/javaScript">
 <!--
 /* ********************************************************
@@ -47,12 +45,12 @@
  ******************************************************** */
 function updateChangRequstProcess(form) {
 	if(confirm("<spring:message code="common.save.msg"/>")){
-		if(!validateProgrmManageDtlVO(form)){
-			return;
-		}else{
+// 		if(!validProgramChangRequstProcess(form)){
+// 			return;
+// 		}else{
             form.action ="<c:url value='/sym/prm/EgovProgramChangRequstProcessDetailSelectUpdt.do' />";
 			form.submit();
-		}
+// 		}
 	}
 }
 
@@ -126,14 +124,14 @@ function initCalendar(){
 			<td class="left">
 			    <input type="hidden" name="cal_url" value="<c:url value='/sym/cal/EgovNormalCalPopup.do'/>" />
 				<form:input path="processDe" cssClass="txaIpt" title="${vprocessDe}" readonly="true" cssStyle="width:70px"/>
-				<form:errors path="processDe"/>
+				<div><form:errors path="processDe" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymPrm.programChangRequstProcessDetailSelectUpdt.opetrId"/> <span class="pilsu">*</span></th><!-- 변경처리자 -->
 			<td class="left">
 			    <form:input path="opetrId" cssClass="txaIpt" maxlength="30" title="${vopetrId}" readonly="true"/>
-				<form:errors path="opetrId" />
+			    <div><form:errors path="opetrId" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
@@ -146,14 +144,14 @@ function initCalendar(){
 		            <form:option value="R" label="${vprocessSttusR}"/><!-- 반려 -->
 		            <form:option value="C" label="${vprocessSttusC}"/><!-- 처리완료 -->
 		        </form:select>
-		        <div><form:errors path="processSttus" /></div>
+		        <div><form:errors path="processSttus" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymPrm.programChangRequstProcessDetailSelectUpdt.rqesterProcessCn"/></th><!-- 변경처리내용 -->
 			<td class="left">
 			    <form:textarea path="rqesterProcessCn" rows="5" cols="75" cssClass="txaClass" title="${vrqesterProcessCn}"/>
-      			<form:errors path="rqesterProcessCn"/>
+			    <div><form:errors path="rqesterProcessCn" cssClass="error" /></div>
 			</td>
 		</tr>
 	</table>
@@ -169,7 +167,7 @@ function initCalendar(){
 			<td class="left">
 			    <c:out value="${progrmManageDtlVO.rqesterNo}"/>
 				<form:hidden path="rqesterNo" />
-				<form:errors path="rqesterNo" />
+				<div><form:errors path="rqesterNo" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
@@ -177,7 +175,7 @@ function initCalendar(){
 			<td class="left">
 			    <c:out value="${progrmManageDtlVO.progrmFileNm}"/>
 				<form:hidden path="progrmFileNm" />
-				<form:errors path="progrmFileNm" />
+				<div><form:errors path="progrmFileNm" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
@@ -185,7 +183,7 @@ function initCalendar(){
 			<td class="left">
 			    <c:out value="${progrmManageDtlVO.rqesterPersonId}"/>
 				<form:hidden path="rqesterPersonId" />
-				<form:errors path="rqesterPersonId" />
+				<div><form:errors path="rqesterPersonId" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
@@ -193,7 +191,7 @@ function initCalendar(){
 			<td class="left">
 			    <c:out value="${progrmManageDtlVO.rqesterDe}"/>
 				<form:hidden path="rqesterDe" />
-				<form:errors path="rqesterDe" />
+				<div><form:errors path="rqesterDe" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
@@ -201,14 +199,14 @@ function initCalendar(){
 			<td class="left">
 			    <c:out value="${progrmManageDtlVO.rqesterSj}" />
 				<form:hidden path="rqesterSj" />
-				<form:errors path="rqesterSj" />
+				<div><form:errors path="rqesterSj" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="comSymPrm.programChangRequstProcessDetailSelectUpdt.changerqesterCn"/> <span class="pilsu">*</span></th><!-- 변경요청내용 -->
+			<th><spring:message code="comSymPrm.programChangRequstProcessDetailSelectUpdt.changerqesterCn"/></th><!-- 변경요청내용 -->
 			<td class="left">
 			    <form:textarea path="changerqesterCn" rows="5" cols="75" readonly="true" cssClass="txaClass" title="변경요청내용"/>
-      			<form:errors path="changerqesterCn"/>
+			    <div><form:errors path="changerqesterCn" cssClass="error" /></div>
 			</td>
 		</tr>
 	</table>

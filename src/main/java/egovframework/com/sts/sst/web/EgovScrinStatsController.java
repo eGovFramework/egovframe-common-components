@@ -2,8 +2,6 @@ package egovframework.com.sts.sst.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -14,6 +12,7 @@ import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.sts.com.StatsVO;
 import egovframework.com.sts.sst.service.EgovScrinStatsService;
 import egovframework.com.sym.mnu.mpm.service.EgovMenuManageService;
+import jakarta.annotation.Resource;
 
 /**
  * 화면 통계 검색 컨트롤러 클래스
@@ -66,8 +65,8 @@ public class EgovScrinStatsController {
 			List<StatsVO> scrinStats = scrinStatsService.selectScrinStats(statsVO);
 			// 그래프에 표시될 이미지 길이를 결정한다.
 			float iMaxUnit = 50.0f;
-			for (int i = 0; i < scrinStats.size(); i++) {
-				StatsVO sVo = scrinStats.get(i);
+			for (StatsVO scrinStat : scrinStats) {
+				StatsVO sVo = scrinStat;
 				int iCnt = sVo.getStatsCo();
 				if (iCnt > 10 && iCnt <= 100) {
 					if (iMaxUnit > 5.0f) {

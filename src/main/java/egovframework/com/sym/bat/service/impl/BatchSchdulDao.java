@@ -54,10 +54,10 @@ public class BatchSchdulDao extends EgovComAbstractDAO {
 		if (batchSchdul.getExecutSchdulDfkSes() != null && batchSchdul.getExecutSchdulDfkSes().length != 0) {
 			String batchSchdulId = batchSchdul.getBatchSchdulId();
 			String [] dfkSes = batchSchdul.getExecutSchdulDfkSes();
-			for (int i = 0; i < dfkSes.length; i++) {
+			for (String element : dfkSes) {
 				BatchSchdulDfk batchSchdulDfk = new BatchSchdulDfk();
 				batchSchdulDfk.setBatchSchdulId(batchSchdulId);
-				batchSchdulDfk.setExecutSchdulDfkSe(dfkSes[i]);
+				batchSchdulDfk.setExecutSchdulDfkSe(element);
 				insert("BatchSchdulDao.insertBatchSchdulDfk", batchSchdulDfk);
 			}
 		}
@@ -97,8 +97,7 @@ public class BatchSchdulDao extends EgovComAbstractDAO {
 	  throws Exception{
 		List<BatchSchdul> resultList = selectList("BatchSchdulDao.selectBatchSchdulList", searchVO);
 
-		for (int i = 0; i < resultList.size(); i++) {
-			BatchSchdul result = resultList.get(i);
+		for (BatchSchdul result : resultList) {
 			// 스케줄요일정보를 가져온다.
 			List<BatchSchdulDfk> dfkSeList = selectList("BatchSchdulDao.selectBatchSchdulDfkList", result.getBatchSchdulId());
 			String [] dfkSes = new String [dfkSeList.size()];
@@ -139,10 +138,10 @@ public class BatchSchdulDao extends EgovComAbstractDAO {
 		if (batchSchdul.getExecutSchdulDfkSes() != null && batchSchdul.getExecutSchdulDfkSes().length != 0) {
 			String batchSchdulId = batchSchdul.getBatchSchdulId();
 			String [] dfkSes = batchSchdul.getExecutSchdulDfkSes();
-			for (int i = 0; i < dfkSes.length; i++) {
+			for (String element : dfkSes) {
 				BatchSchdulDfk batchSchdulDfk = new BatchSchdulDfk();
 				batchSchdulDfk.setBatchSchdulId(batchSchdulId);
-				batchSchdulDfk.setExecutSchdulDfkSe(dfkSes[i]);
+				batchSchdulDfk.setExecutSchdulDfkSe(element);
 				insert("BatchSchdulDao.insertBatchSchdulDfk", batchSchdulDfk);
 			}
 		}

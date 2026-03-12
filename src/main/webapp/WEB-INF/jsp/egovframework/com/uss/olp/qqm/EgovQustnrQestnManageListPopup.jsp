@@ -26,7 +26,11 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/popup_com.css'/>">
-<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialogCallee.js'/>" ></script>
+<%--<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialogCallee.js'/>" ></script>--%>
+<%-- <script src="<c:url value='/js/egovframework/com/cmm/egovCommonModal.js'/>"></script> --%>
+<script src="<c:url value='/js/egovframework/com/cmm/jquery-1.12.4.min.js'/>"></script>  <!-- jQuery core -->
+<script src="<c:url value='/js/egovframework/com/cmm/jquery-ui_1.12.1.js'/>"></script>  <!-- jQuery UI -->
+<link rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jquery-ui_1.12.1.css'/>">
 
 <script type="text/javaScript" language="javascript">
 /* ********************************************************
@@ -88,31 +92,27 @@ function fn_egov_search_QustnrQestnManage(){
 /* ********************************************************
  * 선택 처리 함수
  ******************************************************** */
-function fn_egov_open_QustnrQestnManage(qestnrQesitmId,  cnt, qestnTyCode){
-	getDialogArguments();
-
-	/* var opener = window.dialogArguments; */
-	var opener;
- 
-	if (window.dialogArguments) {
-	    opener = window.dialogArguments; // Support IE
-	} else {
-	    opener = window.opener;    // Support Chrome, Firefox, Safari, Opera
+function selectQustnrQestn(data) {
+	console.log("[자식] 클릭됨 - 전달 데이터:", data); // 객체 전체 출력
+	var parentWin = window.parent;
+	var $p = parentWin.jQuery || parentWin.$;
+	if (!$p) {
+		console.error("[자식] 부모 jQuery 못 찾음");
+		return;
 	}
-
-	opener.document.getElementById("qestnrQesitmId").value = qestnrQesitmId;
-	opener.document.getElementById("qestnrQesitmCn").value = document.getElementById("iptText_"+ cnt).value;
-
-	if( opener.document.getElementById("divQestnTyCode") != null ){
-
-		if(qestnTyCode == '1')
-			opener.document.getElementById("divQestnTyCode").innerText = '<spring:message code="comUssOlpQqm.regist.objectiveQuest"/>'; //객관식
-		else if(qestnTyCode == '2')
-			opener.document.getElementById("divQestnTyCode").innerText = '<spring:message code="comUssOlpQqm.regist.subjectiveQuest"/>'; //주관식
-	}
-	window.returnValue=true;
-	window.close();
-
+	console.log("[자식] 부모 jQuery 찾음");
+	// 값 설정 전 현재 부모 input 값들 로그
+	console.log("[자식] 설정 전 부모 #qestnrQesitmId 값:", $p("#qestnrQesitmId").val());
+	console.log("[자식] 설정 전 부모 #qestnrQesitmCn 값:", $p("#qestnrQesitmCn").val());
+	console.log("[자식] 설정 전 부모 #qestnTyCode 값:", $p("#qestnTyCode").val());
+	$p("#qestnrQesitmId").val(data.qestnrQesitmId);
+	$p("#qestnrQesitmCn").val(data.qestnrQesitmCn); //제목-인풋창에표시되는 값
+	$p("#qestnTyCode").val(data.qestnTyCode);
+	// 값 설정 후 로그
+	console.log("[자식] 설정 후 부모 #qestnrQesitmId 값:", $p("#qestnrQesitmId").val());
+	console.log("[자식] 설정 전 부모 #qestnrQesitmCn 값:", $p("#qestnrQesitmCn").val());
+	console.log("[자식] 설정 전 부모 #qestnTyCode 값:", $p("#qestnTyCode").val());
+	$p("#qestnrModal").dialog("close");
 }
 </script>
 </head>
@@ -151,7 +151,7 @@ function fn_egov_open_QustnrQestnManage(qestnrQesitmId,  cnt, qestnTyCode){
 
 
 </form>
-
+<table class="popwTable" ...>
 	<!-- 목록영역 -->
 	<table class="popwTable" summary="<spring:message code='common.summary.list' arguments='${pageTitle}' />">
 	<caption>${pageTitle} <spring:message code="title.list" /></caption>
@@ -192,7 +192,12 @@ function fn_egov_open_QustnrQestnManage(qestnrQesitmId,  cnt, qestnTyCode){
 		<!-- 질문내용  -->
 		<td class="lt_text3L">
 			<div class="divDotText" style="width:320px; border:solid 0px;">
-    			<a href="#LINK" onClick="fn_egov_open_QustnrQestnManage('${resultInfo.qestnrQesitmId}', '${status.count}', '${resultInfo.qestnTyCode}')">${resultInfo.qestnCn}</a>
+    			<a href="#LINK" 
+			onClick="selectQustnrQestn({
+					qestnrQesitmId: '${resultInfo.qestnrQesitmId}', 
+					qestnTyCode: '${resultInfo.qestnTyCode}',
+					qestnrQesitmCn: '${fn:escapeXml(resultInfo.qestnCn)}'}); return false">
+    			${resultInfo.qestnCn}</a>
     		</div>
 		</td>
 		<!-- 질문유형 -->
@@ -206,7 +211,11 @@ function fn_egov_open_QustnrQestnManage(qestnrQesitmId,  cnt, qestnTyCode){
 	  	<td class="lt_text3">${fn:substring(resultInfo.frstRegisterPnttm, 0, 10)}</td>
 	  	<!-- 선택 -->
 	  	<td class="lt_text3">
-			<a href="#LINK" onClick="fn_egov_open_QustnrQestnManage('${resultInfo.qestnrQesitmId}', '${status.count}', '${resultInfo.qestnTyCode}')"><spring:message code="input.cSelect" /></a><!-- 선택 -->
+			<a href="#LINK" 
+			onClick="selectQustnrQestn({
+					qestnrQesitmId: '${resultInfo.qestnrQesitmId}', 
+					qestnTyCode: '${resultInfo.qestnTyCode}',
+					qestnrQesitmCn: '${fn:escapeXml(resultInfo.qestnCn)}'}); return false"><spring:message code="input.cSelect" /></a><!-- 선택 -->
     		<input name="iptText_${status.count}" id="iptText_${status.count}" type="hidden" value="${resultInfo.qestnCn}">
 		</td>
 	  </tr>	  

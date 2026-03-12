@@ -2,10 +2,14 @@ package egovframework.com.utl.sys.ssy.service;
 
 import egovframework.com.cmm.ComDefaultVO;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 /**
  * 개요
  * - 동기화대상 서버에 대한 model 클래스를 정의한다.
- * 
+ *
  * 상세내용
  * - 동기화대상 서버의 ID, 서버 명, 서버 IP, FTP ID, FTP 비밀번호, 동기화위치 등의 항목을 관리한다.
  * @author lee.m.j
@@ -22,26 +26,39 @@ public class SynchrnServer extends ComDefaultVO {
 	/**
 	 * 서버 명
 	 */
+	@EgovNullCheck
+	@Size(max=30)
 	private String serverNm;
 	/**
 	 * 서버 IP
 	 */
+	@EgovNullCheck
+	@Size(max=23)
 	private String serverIp;
 	/**
 	 * 서버 Port
 	 */
-	private String serverPort;	
+	@EgovNullCheck
+	@Size(max=10)
+	@Pattern(regexp="^[0-9]*$", message="{validation.pattern.integer}")
+	private String serverPort;
 	/**
 	 * FTP ID
 	 */
+	@EgovNullCheck
+	@Size(max=20)
 	private String ftpId;
 	/**
 	 * FTP 비밀번호
 	 */
+	@EgovNullCheck
+	@Size(max=20)
 	private String ftpPassword;
 	/**
 	 * 동기화 위치
 	 */
+	@EgovNullCheck
+	@Size(max=255)
 	private String synchrnLc;
 	/**
 	 * 반영 여부
@@ -49,12 +66,12 @@ public class SynchrnServer extends ComDefaultVO {
 	private String reflctAt;
     /**
 	 * 최초등록시점
-	 */   
+	 */
     private String frstRegisterPnttm;
     /**
 	 * 최초등록자ID
-	 */        
-    private String frstRegisterId;		
+	 */
+    private String frstRegisterId;
 	/**
 	 * 최종수정시점
 	 */

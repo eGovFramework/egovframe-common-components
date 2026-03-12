@@ -2,6 +2,9 @@ package egovframework.com.uss.olh.faq.service;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  *
  * FAQ를 처리하는 VO 클래스
@@ -27,12 +30,18 @@ public class FaqVO extends FaqDefaultVO {
 	private String faqId;
 
 	/** 질문제목 */
+	@EgovNullCheck
+	@Size(max=100)
 	private String qestnSj;
 
 	/** 질문내용 */
+	@EgovNullCheck
+	@Size(max=2500)
 	private String qestnCn;
 
 	/** 답변내용 */
+	@EgovNullCheck
+	@Size(max=2500)
 	private String answerCn;
 
 	/** 조회횟수 */

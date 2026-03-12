@@ -21,7 +21,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="JsUrl" value="/js/egovframework/com/dam/spe/req/"/>
 <!DOCTYPE html>
 <html lang="ko">
@@ -30,10 +29,9 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
-<validator:javascript formName="requestOfferVO" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javaScript" language="javascript">
 /* ********************************************************
 * 초기화
@@ -66,19 +64,12 @@ function fn_egov_save_RequestOffer(){
 
 		vFrom.action = "<c:url value='/dam/spe/req/registRequestOfferActor.do' />";
 
-		if(!validateRequestOfferVO(vFrom)){
+		if(!validateRequestOffer(vFrom)){
 			return;
 		}else{
 			vFrom.submit();
 		}
 	}
-}
-/* ********************************************************
- * 지식유형 가져오기
- ******************************************************** */
-function fn_egov_get_CodeId(form){
- 	form.cmd.value = "";
- 	form.submit();
 }
 </script>
 </head>
@@ -104,29 +95,31 @@ function fn_egov_get_CodeId(form){
 		<tr>
 			<th><spring:message code="comDamSpeReq.comDamRequestOfferRegist.orgnztNm"/> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <select name="orgnztId" class="select" >
+			    <select name="orgnztId" class="select" title="<spring:message code='comDamSpeReq.comDamRequestOfferRegist.orgnztNm'/>">
 				<option value=""><spring:message code="input.cSelect"/></option><!-- 선택 -->
 				<c:forEach var="knoPersonal" items="${mapTeamList}" varStatus="status">
 				<option value='<c:out value="${knoPersonal.orgnztId}"/>' <c:if test="${knoPersonal.orgnztId == requestOfferVO.orgnztId}">selected="selected"</c:if> ><c:out value="${knoPersonal.orgnztNm}"/></option>
 				</c:forEach>
 				</select>
+				<div><form:errors path="orgnztId" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comDamSpeReq.comDamRequestOfferRegist.knoTypeNm"/> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <select name="knoTypeCd" class="select">
+			    <select name="knoTypeCd" class="select" title="<spring:message code='comDamSpeReq.comDamRequestOfferRegist.knoTypeNm'/>">
 				<option value=""><spring:message code="input.cSelect"/></option><!-- 선택 -->
 				<c:forEach var="knoPersonal" items="${mapMaterialList}" varStatus="status">
 				<option value='<c:out value="${knoPersonal.knoTypeCd}"/>' <c:if test="${knoPersonal.knoTypeCd == requestOfferVO.knoTypeCd}">selected="selected"</c:if> ><c:out value="${knoPersonal.knoTypeNm}"/></option>
 				</c:forEach>
 				</select>
+				<div><form:errors path="knoTypeCd" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comDamSpeReq.comDamRequestOfferRegist.knoNm"/> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <form:input path="knoNm" size="73" title="지식명" cssClass="txaIpt" maxlength="255"/>
+			    <form:input path="knoNm" size="73" title="지식명" cssClass="txaIpt" maxlength="100"/>
 				<div><form:errors path="knoNm" cssClass="error"/></div>
 			</td>
 		</tr>

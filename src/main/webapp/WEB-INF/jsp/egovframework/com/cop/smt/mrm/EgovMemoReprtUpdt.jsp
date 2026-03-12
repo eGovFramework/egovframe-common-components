@@ -22,7 +22,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -37,8 +36,7 @@
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialog.js'/>" ></script>
 <%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="memoReprtVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript">
 
 	function initCalendar(){
@@ -114,7 +112,7 @@
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
-<form:form modelAttribute="memoReprtVO" name="memoReprtVO" method="post" action="${pageContext.request.contextPath}/cop/smt/mrm/updateMemoReprt.do' />" enctype="multipart/form-data">
+<form:form modelAttribute="memoReprtVO" name="memoReprtVO" method="post" action="${pageContext.request.contextPath}/cop/smt/mrm/updateMemoReprt.do" enctype="multipart/form-data">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -181,7 +179,7 @@
 		</tr>
 		</c:if>
 		<tr>
-			<th><spring:message code="comCopSmtMrm.memoReprtRegist.attachFile"/><span class="pilsu">*</span></th><!--  파일첨부-->
+			<th><spring:message code="comCopSmtMrm.memoReprtRegist.attachFile"/></th><!--  파일첨부-->
 			<td class="left">
 				<input name="file_1" id="egovComFileUploader" type="file" title="<spring:message code="comCopSmtMrm.memoReprtRegist.attachFile"/>" multiple/><!-- 첨부파일 -->
 			    <div id="egovComFileList"></div>

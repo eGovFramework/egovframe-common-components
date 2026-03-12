@@ -4,8 +4,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.apache.commons.lang.StringUtils;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.slf4j.Logger;
@@ -16,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
 
 /**
  * <pre>
@@ -111,8 +110,7 @@ public class EgovNtwrkSvcMntrngScheduling extends EgovAbstractServiceImpl {
 			target = iter.next();
 			LOGGER.debug("Data : {}", target);
 			// 서비스 체크 수행.
-			java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyyMMddHHmmss",
-					java.util.Locale.KOREA);
+			java.text.SimpleDateFormat formatter = new java.text.SimpleDateFormat("yyyyMMddHHmmss", java.util.Locale.KOREA);
 			target.setCreatDt(formatter.format(new java.util.Date()));
 			result = NtwrkSvcMntrngChecker.check(target.getSysIp(), Integer.parseInt(target.getSysPort()));
 

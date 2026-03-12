@@ -3,22 +3,16 @@ package egovframework.com.uss.ion.ntr.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-//import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -29,6 +23,9 @@ import egovframework.com.uss.ion.ntr.service.EgovNoteRecptnService;
 import egovframework.com.uss.ion.ntr.service.NoteRecptn;
 import egovframework.com.uss.ion.nts.service.EgovNoteTrnsmitService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 받은쪽지함관리를 처리하는 Controller Class 구현
@@ -50,9 +47,6 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
 public class EgovNoteRecptnController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovNoteRecptnController.class);
-
-//    @Autowired
-//    private DefaultBeanValidator beanValidator;
 
     /** EgovMessageSource */
     @Resource(name = "egovMessageSource")
@@ -110,31 +104,31 @@ public class EgovNoteRecptnController {
         	LOGGER.debug("noteId > {}", commandMap.get("noteIdAll"));
         	LOGGER.debug("noteTrnsmitId > {}", commandMap.get("noteTrnsmitIdAll"));
         	LOGGER.debug("noteRecptnId > {}", commandMap.get("noteRecptnIdAll"));
-        	
+
         	String[] aNoteId = ((String) commandMap.get("noteIdAll")).split(",");
             String[] aNoteTrnsmitId = ((String)commandMap.get("noteTrnsmitIdAll")).split(",");
             String[] aNoteRecptnId = ((String)commandMap.get("noteRecptnIdAll")).split(",");
-        	
+
             for(int i=0; i < aNoteId.length; i++) {
             	String sNoteId = aNoteId[i];
             	String sNoteTrnsmitId = aNoteTrnsmitId[i];
             	String sNoteRecptnId = aNoteRecptnId[i];
-            	
+
             	securitymap.put("noteId", sNoteId);
 	            securitymap.put("noteTrnsmitId", sNoteTrnsmitId);
 	            securitymap.put("noteRecptnId", sNoteRecptnId);
-            	
+
 	            LOGGER.debug("sArrCheckListValue[0] > {}", securitymap.get("noteId"));
 	            LOGGER.debug("sArrCheckListValue[1] > {}", securitymap.get("noteTrnsmitId"));
 	            LOGGER.debug("sArrCheckListValue[2] > {}", securitymap.get("noteRecptnId"));
-	            
+
 	            noteRecptn.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 	            noteRecptn.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 	            noteRecptn.setNoteId(securitymap.get("noteId"));
 	            noteRecptn.setNoteTrnsmitId(securitymap.get("noteTrnsmitId"));
 	            noteRecptn.setNoteRecptnId(securitymap.get("noteRecptnId"));
 	            noteRecptn.setRcverId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-	            
+
 	            egovNoteRecptnService.deleteNoteRecptn(noteRecptn);
 	        }
 	        //삭제후 페이지 인덱스 설정
@@ -194,9 +188,9 @@ public class EgovNoteRecptnController {
 
         if(sCmd.equals("del")){
         	LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-            searchVO.setRcverId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));      
+            searchVO.setRcverId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
         	egovNoteRecptnService.deleteNoteRecptn(searchVO);
-      
+
         	return "redirect:/uss/ion/ntr/listNoteRecptn.do";
         }else{
             //로그인 객체 선언/아이디설정

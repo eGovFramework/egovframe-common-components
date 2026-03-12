@@ -2,18 +2,15 @@ package egovframework.com.sym.mnu.mcm.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-//import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -24,6 +21,8 @@ import egovframework.com.sym.mnu.mcm.service.EgovMenuCreateManageService;
 import egovframework.com.sym.mnu.mcm.service.MenuCreatVO;
 import egovframework.com.sym.mnu.mcm.service.MenuSiteMapVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * 메뉴목록 관리및 메뉴생성, 사이트맵 생성을 처리하는 비즈니스 구현 클래스
@@ -156,7 +155,7 @@ public class EgovMenuCreateManageController {
 	@RequestMapping("/sym/mnu/mcm/EgovMenuCreatInsert.do")
 	public String insertMenuCreatList(@RequestParam("checkedAuthorForInsert") String checkedAuthorForInsert,
 			@RequestParam("checkedMenuNoForInsert") String checkedMenuNoForInsert,
-			@ModelAttribute("menuCreatVO") MenuCreatVO menuCreatVO, ModelMap model) throws Exception {
+			@Valid @ModelAttribute("menuCreatVO") MenuCreatVO menuCreatVO, BindingResult bindingResult, ModelMap model) throws Exception {
 		String resultMsg = "";
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();

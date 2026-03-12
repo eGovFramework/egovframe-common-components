@@ -25,7 +25,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -34,42 +33,35 @@
 <title><spring:message code="comUssIonMtg.mtgPlaceResveDetail.title" /></title>
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="mtgPlaceManage" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialog.js'/>" ></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 
 	function fncSelectMtgPlaceResveManageList() {
-	    var varFrom = document.getElementById("mtgPlaceResve");
-	    varFrom.action = "<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageList.do'/>";
-	    varFrom.submit();       
+	    var varFrom = document.getElementById("mtgPlaceResveVO") || document.forms["mtgPlaceResveVO"];
+	    if (varFrom) { varFrom.action = "<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageList.do'/>"; varFrom.submit(); }
 	}
 
 	<c:if test="${mtgPlaceManageVO.resveManId eq mtgPlaceManageVO.usidTemp}">
 		/*설명 : 회의실 예약 수정조회 */
 		function fncSelectMtgPlaceResveManage() {
-			var varFrom = document.getElementById("mtgPlaceResve");
-			varFrom.cmd.value  = "updt";
-			varFrom.action = "<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageDetail.do'/>";
-			varFrom.submit();   
+			var varFrom = document.getElementById("mtgPlaceResveVO") || document.forms["mtgPlaceResveVO"];
+			if (varFrom) { varFrom.cmd.value = "updt"; varFrom.action = "<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageDetail.do'/>"; varFrom.submit(); }
 		}
 		
 		/*설명 : 회의실 예약 삭제 */
 		function fncDeleteMtgPlaceResve() {
-		    var varFrom = document.getElementById("mtgPlaceResve");
-		    varFrom.action = "<c:url value='/uss/ion/mtg/deleteMtgPlaceResve.do'/>";
-		    if(confirm("<spring:message code="common.delete.msg" />")){
+		    var varFrom = document.getElementById("mtgPlaceResveVO") || document.forms["mtgPlaceResveVO"];
+		    if (varFrom && confirm("<spring:message code="common.delete.msg" />")){
+		        varFrom.action = "<c:url value='/uss/ion/mtg/deleteMtgPlaceResve.do'/>";
 		        varFrom.submit();
 		    }
 		}
 	</c:if>
 
-	/* ********************************************************
-	* 회의실 이미지  팝업창열기
-	* fn_egov_dplact_ceck
-	* ******************************************************** */
 	function fn_mtgPlace_image(){
-		var varFrom = document.getElementById("mtgPlaceResve");
+		var varFrom = document.getElementById("mtgPlaceResveVO") || document.forms["mtgPlaceResveVO"];
+		if (!varFrom) return;
 		var arrParam = new Array(1);
 		arrParam[0] = window;
 	    sTempValue = "sTmMtgPlaceId="+varFrom.mtgPlaceId.value;
@@ -80,7 +72,7 @@
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form modelAttribute="mtgPlaceResve" name="mtgPlaceResve" method="post" >
+<form:form modelAttribute="mtgPlaceResveVO" name="mtgPlaceResveVO" id="mtgPlaceResveVO" method="post" >
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -88,9 +80,9 @@
 
 <div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="<spring:message code="comUssIonMtg.mtgPlaceResveDetail.submit" />" title="<spring:message code="comUssIonMtg.mtgPlaceResveDetail.submit" />"></div>
 <input type="hidden" name="cmd" value="updt" >
-<input type="hidden" name="mtgPlaceId" value ="<c:out value='${mtgPlaceManageVO.mtgPlaceId}'/>">
-<input type="hidden" name="resveDe"    value ="<c:out value='${mtgPlaceManageVO.resveDe   }'/>"/>
-<input type="hidden" name="resveId"    value ="<c:out value='${mtgPlaceManageVO.resveId   }'/>"/>
+<input type="hidden" name="mtgPlaceId" value ="<c:out value='${mtgPlaceResveVO.mtgPlaceId}'/>">
+<input type="hidden" name="resveId"    value ="<c:out value='${mtgPlaceResveVO.resveId}'/>"/>
+<input type="hidden" name="resveManId" value ="<c:out value='${mtgPlaceResveVO.resveManId}'/>"/>
 
 	<!-- 등록폼 -->
 	<table class="wTable">
@@ -116,8 +108,8 @@
 			<th><spring:message code="comUssIonMtg.mtgPlaceResveRegist.location" /> <span class="pilsu">*</span></th><!-- 회의실 위치 -->
 			<td class="left" colspan="3">
 			    <c:out value='${mtgPlaceManageVO.mtgPlaceTemp3}'/> <c:out value='${mtgPlaceManageVO.lcDetail}'/>
-			    <c:if test="${!empty mtgPlaceManageVO.atchFileId}"> 
-			    	<span class="button"><a href="#LINK" onclick="fn_mtgPlace_image(); return false;" title="<spring:message code="comUssIonMtg.mtgPlaceResveRegist.newWindow" />"><spring:message code="comUssIonMtg.mtgPlaceResveRegist.image" /></a></span><!-- 회의실 이미지 -->
+			    <c:if test="${!empty mtgPlaceManageVO.atchFileId}">
+			    	<input class="btn01" type="button" value="<spring:message code="comUssIonMtg.mtgPlaceResveRegist.image" />" onclick="fn_mtgPlace_image(); return false;" title="<spring:message code="comUssIonMtg.mtgPlaceResveRegist.newWindow" />" style="margin-left:5px; vertical-align:0 !important" /><!-- 회의실 이미지 --><!-- 새창으로 -->
 			    </c:if>
 			</td>
 		</tr>

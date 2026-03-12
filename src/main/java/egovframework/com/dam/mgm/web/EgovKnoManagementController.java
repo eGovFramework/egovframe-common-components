@@ -4,15 +4,12 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.apache.commons.validator.GenericValidator;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -20,7 +17,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -29,6 +25,8 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.dam.mgm.service.EgovKnoManagementService;
 import egovframework.com.dam.mgm.service.KnoManagement;
 import egovframework.com.dam.mgm.service.KnoManagementVO;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * 개요
@@ -62,9 +60,6 @@ public class EgovKnoManagementController {
     /** EgovPropertyService */
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertiesService;
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/** EgovMessageSource */
     @Resource(name="egovMessageSource")
@@ -180,7 +175,7 @@ public class EgovKnoManagementController {
     * @throws Exception 대상이 존재하지 않거나 권한 없음, 검증 실패 처리 또는 데이터 접근 오류가 발생한 경우
     */
     @PostMapping(value = "/dam/mgm/EgovComDamManagementModify.do")
-    public String updateKnoManagement(KnoManagement knoManagement, BindingResult bindingResult, ModelMap model) throws Exception {
+    public String updateKnoManagement(@Valid KnoManagement knoManagement, BindingResult bindingResult, ModelMap model) throws Exception {
 
         // Spring Security 사용자권한 처리
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -196,7 +191,6 @@ public class EgovKnoManagementController {
             knoManagement.setLastUpdusrId(loginVO.getUniqId());
         }
 
-        beanValidator.validate(knoManagement, bindingResult);
         if (bindingResult.hasErrors()) {
             if (GenericValidator.isDate(knoManagement.getJunkYmd(), "yyyyMMdd", true)) {
                 knoManagement.setJunkYmd(LocalDate.parse(knoManagement.getJunkYmd(), DateTimeFormatter.BASIC_ISO_DATE).format(DateTimeFormatter.ISO_LOCAL_DATE));

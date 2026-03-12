@@ -2,8 +2,6 @@ package egovframework.com.uss.ion.rmm.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
@@ -12,6 +10,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.uss.ion.rmm.service.EgovRoughMapService;
 import egovframework.com.uss.ion.rmm.service.RoughMapDefaultVO;
 import egovframework.com.uss.ion.rmm.service.RoughMapVO;
+import jakarta.annotation.Resource;
 
 /**
  * 개요

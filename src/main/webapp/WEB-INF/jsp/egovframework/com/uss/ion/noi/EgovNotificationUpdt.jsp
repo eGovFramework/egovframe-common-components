@@ -5,7 +5,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%@ taglib prefix="double-submit" uri="http://www.egovframe.go.kr/tags/double-submit/jsp" %>
 <%
 /**
@@ -34,133 +33,67 @@
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/cmm/jqueryui.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
-<validator:javascript formName="notification" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javascript">
-	function onloading() {
-		if ("<c:out value='${msg}'/>" != "") {
-			alert("<c:out value='${msg}'/>");
-		}
-	}
-/* ********************************************************
-* SELECT BOX VALUE FUNCTION
-******************************************************** */
 	function fn_egov_SelectBoxValue(sbName) {
-		var fValue = "";
-
-		for (var i=0; i < document.getElementById(sbName).length; i++) {
-			if (document.getElementById(sbName).options[i].selected == true) {
-				fValue = document.getElementById(sbName).options[i].value;
-			}
+		var el = document.getElementById(sbName);
+		if (!el || !el.options) return "";
+		for (var i = 0; i < el.length; i++) {
+			if (el.options[i].selected) return el.options[i].value;
 		}
-
-		return  fValue;
+		return "";
 	}
-/* ********************************************************
- * 수정
- ******************************************************** */
 	function fn_egov_update_notification(){
-		if (!validateNotification(document.notification)){
+		var form = document.getElementById('notificationVO') || document.notificationVO;
+		if (!validateNotification(form)){
 			return;
 		}
-
-		var checked = false;
-		for (var i = 0; i < document.notification.bhNtfcIntrvl.length; i++) {
-			if (document.notification.bhNtfcIntrvl[i].checked) {
-				checked = true;
-				break;
-			}
-		}
-
-		if (!checked) {
-			alert('<spring:message code="ussIonNoi.notificationUpdt.validate.bhNtfcIntrvlmsg" />');/* 사전알림간격 지정이 필요합니다. */
-			return;
-		}
-
 		if (confirm('<spring:message code="common.update.msg" />')) {
-			form = document.notification;
 			form.action = "<c:url value='/uss/ion/noi/updateNotification.do'/>";
-
 			form.ntfcTime.value = fn_egov_SelectBoxValue('ntfcHH') + ":" + fn_egov_SelectBoxValue('ntfcMM');
-
 			form.submit();
 		}
 	}
-/* ********************************************************
- * 목록
- ******************************************************** */
 	function fn_egov_select_notification(){
-		var form = document.notification;
+		var form = document.getElementById('notificationVO') || document.notificationVO;
 		form.action = "<c:url value='/uss/ion/noi/selectNotificationList.do'/>";
 		form.submit();
 	}
-/* ********************************************************
- * 초기화
- ******************************************************** */
-	function init() {
-		onloading();
-
-		var form = document.notification;
-
-		var hh = form.ntfcTime.value.substr(0, 2);
-		var mm = form.ntfcTime.value.substr(3, 2);
-
-		if (hh.charAt(0) == '0') {
-			hh = hh.charAt(1);
-		}
-
-		if (mm.charAt(0) == '0') {
-			mm = mm.charAt(1);
-		}
-
-		for (var i = 0; i < form.ntfcHH.length; i++) {
-			if (form.ntfcHH[i].value == hh) {
-				form.ntfcHH[i].selected = true;
-			}
-		}
-
-		for (var i = 0; i < form.ntfcMM.length; i++) {
-			if (form.ntfcMM[i].value == mm) {
-				form.ntfcMM[i].selected = true;
-			}
-		}
-	}
-/* ********************************************************
- * 달력
- ******************************************************** */
-	function fn_egov_init_date(){
-		
-		$("#ntfcDate").datepicker(  
-		        {dateFormat:'yy-mm-dd'
-		         , showOn: 'button'
-		         , buttonImage: '<c:url value='/images/egovframework/com/cmm/icon/bu_icon_carlendar.gif'/>'
-		         , buttonImageOnly: true
-		         
-		         , showMonthAfterYear: true
-		         , showOtherMonths: true
-			     , selectOtherMonths: true
-					
-		         , changeMonth: true // 월선택 select box 표시 (기본은 false)
-		         , changeYear: true  // 년선택 selectbox 표시 (기본은 false)
-		         , showButtonPanel: true // 하단 today, done  버튼기능 추가 표시 (기본은 false)
+	$(function() {
+		if ("<c:out value='${msg}'/>" != "") alert("<c:out value='${msg}'/>");
+		$("#ntfcDate").datepicker({
+			dateFormat:'yy-mm-dd', showOn: 'button',
+			buttonImage: '<c:url value='/images/egovframework/com/cmm/icon/bu_icon_carlendar.gif'/>',
+			buttonImageOnly: true, showMonthAfterYear: true, showOtherMonths: true, selectOtherMonths: true,
+			changeMonth: true, changeYear: true, showButtonPanel: true
 		});
-}
+		var timeVal = document.getElementById('ntfcTime').value;
+		if (timeVal && timeVal.indexOf(':') >= 0) {
+			var parts = timeVal.split(':');
+			var hh = parts[0] ? String(parseInt(parts[0], 10)) : '';
+			var mm = parts[1] !== undefined && parts[1] !== '' ? String(parseInt(parts[1], 10)) : '';
+			var selHH = document.getElementById('ntfcHH'), selMM = document.getElementById('ntfcMM');
+			if (selHH && hh !== '') { for (var i = 0; i < selHH.length; i++) { if (selHH.options[i].value == hh) { selHH.selectedIndex = i; break; } } }
+			if (selMM && mm !== '') { for (var i = 0; i < selMM.length; i++) { if (selMM.options[i].value == mm) { selMM.selectedIndex = i; break; } } }
+		}
+	});
 </script>
 </head>
-<body onload="init(); fn_egov_init_date();">
+<body>
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg"/></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
-<form:form modelAttribute="notification" name="notification" method="post" action="${pageContext.request.contextPath}/uss/ion/noi/updateNotification.do">
+<form:form id="notificationVO" modelAttribute="notificationVO" name="notificationVO" method="post" action="${pageContext.request.contextPath}/uss/ion/noi/updateNotification.do">
 
 <double-submit:preventer tokenKey="EgovNotification"/>
 
-<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-<input name="ntfcNo" type="hidden" value="<c:out value='${result.ntfcNo}'/>" >
-
-<input name="ntfcTime" id="ntfcTime" type="hidden" value='<c:out value="${fn:substring(result.ntfcTime,11,16)}"/>'>
+<input name="pageIndex" type="hidden" value="<c:out value='${notificationVO.pageIndex}'/>">
+<form:hidden path="ntfcNo" />
+<c:set var="ntfcTimeDisplay" value="${notificationVO.ntfcTime}" />
+<c:if test="${fn:length(notificationVO.ntfcTime) >= 16}"><c:set var="ntfcTimeDisplay" value="${fn:substring(notificationVO.ntfcTime,11,16)}" /></c:if>
+<input name="ntfcTime" id="ntfcTime" type="hidden" value="<c:out value='${ntfcTimeDisplay}'/>">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -177,52 +110,51 @@
 		<tr>
 			<th><spring:message code="ussIonNoi.notificationUpdt.ntfcSj" /> <span class="pilsu">*</span></th><!-- 제목 -->
 			<td class="left" colspan="3">
-			    <input id="ntfcSj" name="ntfcSj" size="25" value='<c:out value="${result.ntfcSj}"/>' style="width:100%" >
-	    		<br><form:errors path="ntfcSj" />
+			    <form:input path="ntfcSj" size="25" cssStyle="width:100%" />
+			    <div><form:errors path="ntfcSj" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussIonNoi.notificationUpdt.ntfcCn" /> <span class="pilsu">*</span></th><!-- 내용 -->
 			<td class="left" colspan="3">
-			    <textarea id="ntfcCn" name="ntfcCn" class="textarea" cols="75" rows="2" style="width:100%"><c:out value="${result.ntfcCn}" escapeXml="true" /></textarea>
-	       		<br><form:errors path="ntfcCn" />
+			    <form:textarea path="ntfcCn" cols="75" rows="2" cssStyle="width:100%" />
+			    <div><form:errors path="ntfcCn" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussIonNoi.notificationUpdt.ntfcDate" /> <span class="pilsu">*</span></th><!-- 알림일자 -->
 			<td class="left">
-			    <input name="ntfcDate" id="ntfcDate" type="text" size="73" value="<c:out value='${fn:substring(result.ntfcTime, 0, 10)}'/>" maxlength="10" style="width:80px;" readonly="readonly" class="readOnlyClass">
-	  	   		<br><form:errors path="ntfcDate" />
+			    <form:input path="ntfcDate" id="ntfcDate" size="73" maxlength="10" style="width:80px;" readonly="true" />
+			    <div><form:errors path="ntfcDate" cssClass="error" /></div>
 			</td>
 			<th><spring:message code="ussIonNoi.notificationUpdt.ntfcTime" /> <span class="pilsu">*</span></th><!-- 알림시간 -->
 			<td class="left">
 			    <select name="ntfcHH" id="ntfcHH">
 					<option value=""><spring:message code="input.cSelect"/></option>
-					<c:forEach var="h" begin="1" end="24" step="1">
-					<option value="${h}">${h}시</option>
+					<c:forEach var="h" begin="0" end="23" step="1">
+					<option value="${h}" <c:if test="${notificationVO.ntfcHH != null && notificationVO.ntfcHH != '' && h == (0 + notificationVO.ntfcHH)}">selected="selected"</c:if>>${h}시</option>
 					</c:forEach>
 				</select>
-	
 				<select name="ntfcMM" id="ntfcMM">
 					<option value=""><spring:message code="input.cSelect"/></option>
-					<option value="0">0분</option>
-					<c:forEach var="m" begin="1" end="60" step="1">
-					<option value="${m}">${m}분</option>
+					<option value="0" <c:if test="${notificationVO.ntfcMM != null && notificationVO.ntfcMM != '' && 0 == (0 + notificationVO.ntfcMM)}">selected="selected"</c:if>>0분</option>
+					<c:forEach var="m" begin="1" end="59" step="1">
+					<option value="${m}" <c:if test="${notificationVO.ntfcMM != null && notificationVO.ntfcMM != '' && m == (0 + notificationVO.ntfcMM)}">selected="selected"</c:if>>${m}분</option>
 					</c:forEach>
 				</select>
-		  	    <br><form:errors path="ntfcHH" /><form:errors path="ntfcMM" />
+			    <div><form:errors path="ntfcHH" cssClass="error" /><form:errors path="ntfcMM" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussIonNoi.notificationUpdt.bhNtfcIntrvlString" /> <span class="pilsu">*</span></th><!-- 사전알림간격 -->
 			<td class="left" colspan="3">
-			    <c:set var="data">,<c:out value="${result.bhNtfcIntrvlString}" /></c:set>
-				1분:<input id="bhNtfcIntrvl" name="bhNtfcIntrvl" type="checkbox" value="1" <c:if test="${fn:contains(data, ',1분')}">checked="checked"</c:if> title="시간간격체크(1분)">&nbsp;&nbsp;
-				3분:<input name="bhNtfcIntrvl" type="checkbox" value="3" <c:if test="${fn:contains(data, ',3분')}">checked="checked"</c:if> title="시간간격체크(3분)">&nbsp;&nbsp;
-				5분:<input name="bhNtfcIntrvl" type="checkbox" value="5" <c:if test="${fn:contains(data, ',5분')}">checked="checked"</c:if> title="시간간격체크(5분)">&nbsp;&nbsp;
-				10분:<input name="bhNtfcIntrvl" type="checkbox" value="10" <c:if test="${fn:contains(data, ',10분')}">checked="checked"</c:if> title="시간간격체크(10분)">&nbsp;&nbsp;
-				30분:<input name="bhNtfcIntrvl" type="checkbox" value="30" <c:if test="${fn:contains(data, ',30분')}">checked="checked"</c:if> title="시간간격체크(30분)">&nbsp;&nbsp;
-		  	   <br><form:errors path="bhNtfcIntrvl" />
+			    <c:set var="data">,<c:out value="${notificationVO.bhNtfcIntrvlString}" /></c:set>
+				1분:<form:checkbox path="bhNtfcIntrvl" value="1" />&nbsp;&nbsp;
+				3분:<form:checkbox path="bhNtfcIntrvl" value="3" />&nbsp;&nbsp;
+				5분:<form:checkbox path="bhNtfcIntrvl" value="5" />&nbsp;&nbsp;
+				10분:<form:checkbox path="bhNtfcIntrvl" value="10" />&nbsp;&nbsp;
+				30분:<form:checkbox path="bhNtfcIntrvl" value="30" />&nbsp;&nbsp;
+			    <div><form:errors path="bhNtfcIntrvl" cssClass="error" /></div>
 			</td>
 		</tr>
 	</table>

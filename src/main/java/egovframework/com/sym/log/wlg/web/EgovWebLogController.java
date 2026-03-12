@@ -2,8 +2,6 @@ package egovframework.com.sym.log.wlg.web;
 
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.apache.commons.collections4.MapUtils;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -16,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.sym.log.wlg.service.EgovWebLogService;
 import egovframework.com.sym.log.wlg.service.WebLog;
+import jakarta.annotation.Resource;
 
 /**
  * @Class Name : EgovWebLogController.java

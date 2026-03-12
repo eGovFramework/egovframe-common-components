@@ -6,14 +6,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang.StringUtils;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.util.WebUtils;
 
 import egovframework.com.cmm.EgovWebUtil;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * @Class Name  : EgovFileUploadUtil.java
@@ -45,7 +44,7 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 	 * @throws Exception
 	 */
 	public static List<EgovFormBasedFileVo> uploadFiles(HttpServletRequest request, String where, long maxFileSize) throws Exception {
-		List<EgovFormBasedFileVo> list = new ArrayList<EgovFormBasedFileVo>();
+		List<EgovFormBasedFileVo> list = new ArrayList<>();
 		MultipartHttpServletRequest mptRequest = WebUtils.getNativeRequest(request, MultipartHttpServletRequest.class);
 
 		if (mptRequest != null) {//2022.01 Possible null pointer dereference due to return value of called method 조치
@@ -111,7 +110,7 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 	 * @throws Exception
 	 */
 	public static List<EgovFormBasedFileVo> uploadFilesExt(MultipartHttpServletRequest mptRequest, String where, long maxFileSize, String extensionWhiteList) throws Exception {
-		List<EgovFormBasedFileVo> list = new ArrayList<EgovFormBasedFileVo>();
+		List<EgovFormBasedFileVo> list = new ArrayList<>();
 
 		if (mptRequest != null) {
 			Iterator<?> fileIter = mptRequest.getFileNames();
@@ -159,7 +158,7 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 
 						try {
 							is = mFile.getInputStream();
-							String fullPath = where + SEPERATOR + vo.getServerSubPath() + SEPERATOR + vo.getPhysicalName() + "_upfile"; 
+							String fullPath = where + SEPERATOR + vo.getServerSubPath() + SEPERATOR + vo.getPhysicalName() + "_upfile";
 							saveFile(is, new File(EgovWebUtil.filePathBlackList( fullPath )));
 						} finally {
 							if (is != null) {
@@ -202,14 +201,7 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 	public static boolean checkFileExtension(String fileNamePath, String whiteListExtensions) {
 		String extension = getFileExtension(fileNamePath);
 
-		if ("".equals(extension)) {
-			return false;
-		}
-
-		if (whiteListExtensions == null) {
-			return false;
-		}
-		if ("".equals(whiteListExtensions)) {
+		if ("".equals(extension) || (whiteListExtensions == null) || "".equals(whiteListExtensions)) {
 			return false;
 		}
 

@@ -2,14 +2,10 @@ package egovframework.com.uss.olh.omm.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -17,7 +13,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -30,6 +25,9 @@ import egovframework.com.cmm.util.EgovXssChecker;
 import egovframework.com.uss.olh.omm.service.EgovOnlineManualService;
 import egovframework.com.uss.olh.omm.service.OnlineManualVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 /**
  * 온라인메뉴얼를 처리하는 Controller Class 구현
@@ -54,9 +52,6 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
 @Controller
 public class EgovOnlineManualController {
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovOnlineManualController.class);
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
@@ -224,11 +219,16 @@ public class EgovOnlineManualController {
 	 */
 	@RequestMapping("/uss/olh/omm/insertOnlineManual.do")
 	public String insertOnlineManual(@ModelAttribute("searchVO") OnlineManualVO searchVO,
-			@ModelAttribute("onlineManualVO") OnlineManualVO onlineManualVO, BindingResult bindingResult)
+			@Valid @ModelAttribute("onlineManualVO") OnlineManualVO onlineManualVO, BindingResult bindingResult,
+			Model model)
 			throws Exception {
 
-		beanValidator.validate(onlineManualVO, bindingResult);
 		if (bindingResult.hasErrors()) {
+			ComDefaultCodeVO vo = new ComDefaultCodeVO();
+			vo.setCodeId("COM041");
+
+			List<CmmnDetailCode> onlineMnlSeCode = cmmUseService.selectCmmCodeDetail(vo);
+			model.addAttribute("onlineMnlSeCode", onlineMnlSeCode);
 			return "egovframework/com/uss/olh/omm/EgovOnlineManualRegist";
 		}
 
@@ -284,12 +284,16 @@ public class EgovOnlineManualController {
 	 */
 	@RequestMapping("/uss/olh/omm/updateOnlineManual.do")
 	public String updateOnlineManual(HttpServletRequest request, @ModelAttribute("searchVO") OnlineManualVO searchVO,
-			@ModelAttribute("onlineManualVO") OnlineManualVO onlineManualVO, BindingResult bindingResult)
+			@Valid @ModelAttribute("onlineManualVO") OnlineManualVO onlineManualVO, BindingResult bindingResult,
+			Model model)
 			throws Exception {
 
-		// Validation
-		beanValidator.validate(onlineManualVO, bindingResult);
 		if (bindingResult.hasErrors()) {
+			ComDefaultCodeVO vo = new ComDefaultCodeVO();
+			vo.setCodeId("COM041");
+
+			List<CmmnDetailCode> onlineMnlSeCode = cmmUseService.selectCmmCodeDetail(vo);
+			model.addAttribute("onlineMnlSeCode", onlineMnlSeCode);
 			return "egovframework/com/uss/olh/omm/EgovOnlineManualUpdt";
 		}
 

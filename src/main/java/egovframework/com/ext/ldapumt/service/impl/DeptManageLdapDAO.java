@@ -23,7 +23,6 @@ import static org.springframework.ldap.query.LdapQueryBuilder.query;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
 import javax.naming.NamingEnumeration;
 import javax.naming.NamingException;
 import javax.naming.directory.BasicAttribute;
@@ -40,6 +39,7 @@ import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.ext.ldapumt.service.UcorgVO;
+import jakarta.annotation.Resource;
 
 /**
 *
@@ -78,7 +78,7 @@ public class DeptManageLdapDAO extends OrgManageLdapDAO {
 
 		try {
 			ucorgList = ldapTemplate.search(EgovWebUtil.removeLDAPInjectionRisk(dn), filter,
-				SearchControls.ONELEVEL_SCOPE, new ObjectMapper<UcorgVO>(
+				SearchControls.ONELEVEL_SCOPE, new ObjectMapper<>(
 					UcorgVO.class));
 		} catch (NameNotFoundException e) {
 			logger.error("[NameNotFoundException] : search fail");//KISA 보안약점 조치 (2018-10-29, 윤창원)
@@ -96,7 +96,7 @@ public class DeptManageLdapDAO extends OrgManageLdapDAO {
 	public List<Object> selectDeptManageSubListByOuCode(String ouCode) throws Exception {
 		ContainerCriteria criteria = query().where("objectclass").is("ucorg2").and("parentoucode").is(ouCode);
 
-		List<Object> list = ldapTemplate.search(criteria, new ObjectMapper<UcorgVO>(UcorgVO.class));
+		List<Object> list = ldapTemplate.search(criteria, new ObjectMapper<>(UcorgVO.class));
 
 		return list;
 	}
@@ -123,7 +123,7 @@ public class DeptManageLdapDAO extends OrgManageLdapDAO {
 		}
 
 		List<Object> list = null;
-		list = ldapTemplate.search(criteria, new ObjectMapper<UcorgVO>(UcorgVO.class));
+		list = ldapTemplate.search(criteria, new ObjectMapper<>(UcorgVO.class));
 
 		return list == null ? null : (UcorgVO)list.get(0);
 	}

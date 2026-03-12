@@ -1,16 +1,15 @@
 package egovframework.com.utl.sim.service;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.service.Globals;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 클라이언트(Client)의 IP주소, OS정보, 웹브라우저정보를 조회하는 Business Interface class
- * 
+ *
  * @author 공통 서비스 개발팀 박지욱
  * @since 2009.01.19
  * @version 1.0
@@ -30,7 +29,7 @@ public class EgovClntInfo {
 
 	/**
 	 * 클라이언트(Client)의 IP주소를 조회하는 기능
-	 * 
+	 *
 	 * @param HttpServletRequest request Request객체
 	 * @return String ipAddr IP주소
 	 * @exception Exception
@@ -74,7 +73,7 @@ public class EgovClntInfo {
 
 	/**
 	 * 클라이언트(Client)의 OS 정보를 조회하는 기능
-	 * 
+	 *
 	 * @param HttpServletRequest request Request객체
 	 * @return String osInfo OS 정보
 	 * @exception Exception
@@ -82,7 +81,19 @@ public class EgovClntInfo {
 	public static String getClntOsInfo(HttpServletRequest request) throws Exception {
 
 		String userAgent = request.getHeader("user-agent");
-		String osinfo2 = userAgent.toUpperCase().split(";")[2].split("\\)")[0];
+		//2026.02.28 KISA 취약점 조취
+		if (userAgent == null) {
+			return "";
+		}
+
+		String[] uaParts = userAgent.toUpperCase().split(";");
+		if (uaParts.length < 3) {
+			return "";
+		}
+
+		String part = uaParts[2];
+		int idx = part.indexOf(")");
+		String osinfo2 = (idx > -1) ? part.substring(0, idx) : part;
 		String osConf = EgovProperties.getProperty(Globals.CLIENT_CONF_PATH, osinfo2.replaceAll(" ", ""));
 		String osInfo = "";
 		if (osConf != null && !"".equals(osConf)) {
@@ -90,12 +101,12 @@ public class EgovClntInfo {
 		} else {
 			osInfo = osinfo2;
 		}
-		return osInfo;
+			return osInfo;
 	}
 
 	/**
 	 * 클라이언트(Client)의 웹브라우저 종류를 조회하는 기능
-	 * 
+	 *
 	 * @param HttpServletRequest request Request객체
 	 * @return String webKind 웹브라우저 종류
 	 * @exception Exception
@@ -103,25 +114,30 @@ public class EgovClntInfo {
 	public static String getClntWebKind(HttpServletRequest request) throws Exception {
 
 		String userAgent = request.getHeader("user-agent");
+		//2026.02.28 KISA 취약점 조치
+		if (userAgent == null || userAgent.isEmpty()) {
+			return "Other Web Browsers";
+		}
 
+		String ua = userAgent.toUpperCase();
 		// 웹브라우저 종류 조회
 		String webKind = "";
-		if (userAgent.toUpperCase().indexOf("GECKO") != -1) {
-			if (userAgent.toUpperCase().indexOf("NESCAPE") != -1) {
+		if (ua.indexOf("GECKO") != -1) {
+			if (ua.indexOf("NESCAPE") != -1) {
 				webKind = "Netscape (Gecko/Netscape)";
-			} else if (userAgent.toUpperCase().indexOf("FIREFOX") != -1) {
+			} else if (ua.indexOf("FIREFOX") != -1) {
 				webKind = "Mozilla Firefox (Gecko/Firefox)";
 			} else {
 				webKind = "Mozilla (Gecko/Mozilla)";
 			}
-		} else if (userAgent.toUpperCase().indexOf("MSIE") != -1) {
-			if (userAgent.toUpperCase().indexOf("OPERA") != -1) {
+		} else if (ua.indexOf("MSIE") != -1) {
+			if (ua.indexOf("OPERA") != -1) {
 				webKind = "Opera (MSIE/Opera/Compatible)";
 			} else {
 				webKind = "Internet Explorer (MSIE/Compatible)";
 			}
-		} else if (userAgent.toUpperCase().indexOf("SAFARI") != -1) {
-			if (userAgent.toUpperCase().indexOf("CHROME") != -1) {
+		} else if (ua.indexOf("SAFARI") != -1) {
+			if (ua.indexOf("CHROME") != -1) {
 				webKind = "Google Chrome";
 			} else {
 				webKind = "Safari";
@@ -136,7 +152,7 @@ public class EgovClntInfo {
 
 	/**
 	 * 클라이언트(Client)의 웹브라우저 버전을 조회하는 기능
-	 * 
+	 *
 	 * @param HttpServletRequest request Request객체
 	 * @return String webVer 웹브라우저 버전
 	 * @exception Exception
@@ -144,17 +160,27 @@ public class EgovClntInfo {
 	public static String getClntWebVer(HttpServletRequest request) throws Exception {
 
 		String userAgent = request.getHeader("user-agent");
-
+		//2026.02.28 KISA 취약점 조치
+		if (userAgent == null || userAgent.isEmpty()) {
+			return "";
+		}
 		// 웹브라우저 버전 조회
 		String webVer = "";
 		String[] arr = { "MSIE", "OPERA", "NETSCAPE", "FIREFOX", "SAFARI" };
+		String ua = userAgent.toUpperCase();
+
 		for (int i = 0; i < arr.length; i++) {
-			int sLoc = userAgent.toUpperCase().indexOf(arr[i]);
+			int sLoc = ua.indexOf(arr[i]);
 			if (sLoc != -1) {
 				int fLoc = sLoc + arr[i].length();
-				webVer = userAgent.toUpperCase().substring(fLoc, fLoc + 5);
-				webVer = webVer.replaceAll("/", "").replaceAll(";", "").replaceAll("^", "").replaceAll(",", "")
-						.replaceAll("//.", "");
+				// ★ 핵심 수정: 문자열 길이를 초과하지 않도록 endLoc 계산
+				int endLoc = Math.min(fLoc + 5, ua.length());
+				if (fLoc < ua.length()) { // 키워드 바로 뒤에 내용이 있을 때만 추출
+					webVer = ua.substring(fLoc, endLoc);
+					webVer = webVer.replaceAll("/", "").replaceAll(";", "")
+								   .replaceAll("\\^", "").replaceAll(",", "")
+								   .replaceAll("//.", "");
+				}
 			}
 		}
 		return webVer;

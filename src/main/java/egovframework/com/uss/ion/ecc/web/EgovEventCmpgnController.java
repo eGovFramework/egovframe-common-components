@@ -2,19 +2,14 @@ package egovframework.com.uss.ion.ecc.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -27,7 +22,8 @@ import egovframework.com.uss.ion.ecc.service.EgovEventCmpgnService;
 import egovframework.com.uss.ion.ecc.service.EventCmpgnVO;
 import egovframework.com.uss.ion.ecc.service.TnextrlHrVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 /**
  * 행사/이벤트/캠페인을 처리하는 Controller Class 구현
  * 
@@ -64,13 +60,24 @@ public class EgovEventCmpgnController {
 	@Resource(name = "EgovCmmUseService")
 	private EgovCmmUseService cmmUseService;
 
-	@Autowired
-	private DefaultBeanValidator beanValidator;
+	/**
+	 * 공통코드를 조회하여 Model에 추가한다.
+	 *
+	 * @param model ModelMap
+	 * @param codeId 공통코드 ID
+	 * @param attributeName Model에 추가할 속성명
+	 * @throws Exception
+	 */
+	private void addCmmCodeToModel(ModelMap model, String codeId, String attributeName) throws Exception {
+		ComDefaultCodeVO vo = new ComDefaultCodeVO();
+		vo.setCodeId(codeId);
+		List<CmmnDetailCode> codeList = cmmUseService.selectCmmCodeDetail(vo);
+		model.addAttribute(attributeName, codeList);
+	}
 
 	/**
 	 * 행사/이벤트/캠페인 목록을 조회한다.
-	 * 
-	 * @param searchVO
+	 *
 	 * @param eventCmpgnVO
 	 * @param model
 	 * @return "egovframework/com/uss/ion/ecc/EgovEventCmpgnList
@@ -78,27 +85,27 @@ public class EgovEventCmpgnController {
 	 */
 	@IncludedInfo(name = "행사/이벤트/캠페인", order = 710, gid = 50)
 	@RequestMapping(value = "/uss/ion/ecc/selectEventCmpgnList.do")
-	public String selectEventCmpgnList(@ModelAttribute("searchVO") EventCmpgnVO searchVO, ModelMap model)
+	public String selectEventCmpgnList(@ModelAttribute("eventCmpgnVO") EventCmpgnVO eventCmpgnVO, ModelMap model)
 			throws Exception {
 
 		/** EgovPropertyService.sample */
-		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-		searchVO.setPageSize(propertiesService.getInt("pageSize"));
+		eventCmpgnVO.setPageUnit(propertiesService.getInt("pageUnit"));
+		eventCmpgnVO.setPageSize(propertiesService.getInt("pageSize"));
 
 		/** pageing */
 		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
+		paginationInfo.setCurrentPageNo(eventCmpgnVO.getPageIndex());
+		paginationInfo.setRecordCountPerPage(eventCmpgnVO.getPageUnit());
+		paginationInfo.setPageSize(eventCmpgnVO.getPageSize());
 
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		eventCmpgnVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		eventCmpgnVO.setLastIndex(paginationInfo.getLastRecordIndex());
+		eventCmpgnVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<EventCmpgnVO> sampleList = egovEventCmpgnService.selectEventCmpgnList(searchVO);
+		List<EventCmpgnVO> sampleList = egovEventCmpgnService.selectEventCmpgnList(eventCmpgnVO);
 		model.addAttribute("resultList", sampleList);
 
-		int totCnt = egovEventCmpgnService.selectEventCmpgnListCnt(searchVO);
+		int totCnt = egovEventCmpgnService.selectEventCmpgnListCnt(eventCmpgnVO);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 
@@ -108,35 +115,34 @@ public class EgovEventCmpgnController {
 
 	/**
 	 * 행사/이벤트/캠페인 목록을 조회한다.(Popup)
-	 * 
-	 * @param searchVO
+	 *
 	 * @param eventCmpgnVO
 	 * @param model
 	 * @return "egovframework/com/uss/ion/ecc/EgovEventCmpgnList
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/ion/ecc/selectEventCmpgnListPopup.do")
-	public String selectEventCmpgnListPopup(@ModelAttribute("searchVO") EventCmpgnVO searchVO, ModelMap model)
+	public String selectEventCmpgnListPopup(@ModelAttribute("eventCmpgnVO") EventCmpgnVO eventCmpgnVO, ModelMap model)
 			throws Exception {
 
 		/** EgovPropertyService.sample */
-		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-		searchVO.setPageSize(propertiesService.getInt("pageSize"));
+		eventCmpgnVO.setPageUnit(propertiesService.getInt("pageUnit"));
+		eventCmpgnVO.setPageSize(propertiesService.getInt("pageSize"));
 
 		/** pageing */
 		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
+		paginationInfo.setCurrentPageNo(eventCmpgnVO.getPageIndex());
+		paginationInfo.setRecordCountPerPage(eventCmpgnVO.getPageUnit());
+		paginationInfo.setPageSize(eventCmpgnVO.getPageSize());
 
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		eventCmpgnVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		eventCmpgnVO.setLastIndex(paginationInfo.getLastRecordIndex());
+		eventCmpgnVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<EventCmpgnVO> sampleList = egovEventCmpgnService.selectEventCmpgnList(searchVO);
+		List<EventCmpgnVO> sampleList = egovEventCmpgnService.selectEventCmpgnList(eventCmpgnVO);
 		model.addAttribute("resultList", sampleList);
 
-		int totCnt = egovEventCmpgnService.selectEventCmpgnListCnt(searchVO);
+		int totCnt = egovEventCmpgnService.selectEventCmpgnListCnt(eventCmpgnVO);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 
@@ -154,7 +160,7 @@ public class EgovEventCmpgnController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/uss/ion/ecc/selectEventCmpgnDetail.do")
-	public String selectEventCmpgnDetail(EventCmpgnVO eventCmpgnVO, @ModelAttribute("searchVO") EventCmpgnVO searchVO,
+	public String selectEventCmpgnDetail(EventCmpgnVO eventCmpgnVO, @ModelAttribute("eventCmpgnVO") EventCmpgnVO eventCmpgnVOSearch,
 			ModelMap model) throws Exception {
 
 		EventCmpgnVO vo = egovEventCmpgnService.selectEventCmpgnDetail(eventCmpgnVO);
@@ -173,15 +179,10 @@ public class EgovEventCmpgnController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/uss/ion/ecc/insertEventCmpgnView.do")
-	public String insertEventCmpgnView(@ModelAttribute("searchVO") EventCmpgnVO searchVO, Model model)
+	public String insertEventCmpgnView(@ModelAttribute("eventCmpgnVO") EventCmpgnVO eventCmpgnVO, ModelMap model)
 			throws Exception {
 
-		// 공통코드를 가져오기 위한 Vo
-		ComDefaultCodeVO vo = new ComDefaultCodeVO();
-		vo.setCodeId("COM035");
-
-		List<CmmnDetailCode> eventTyCode = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("eventTyCode", eventTyCode);
+		addCmmCodeToModel(model, "COM035", "eventTyCode");
 
 		model.addAttribute("eventCmpgnVO", new EventCmpgnVO());
 
@@ -199,12 +200,12 @@ public class EgovEventCmpgnController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/uss/ion/ecc/insertEventCmpgn.do")
-	public String insertEventCmpgn(@ModelAttribute("searchVO") EventCmpgnVO searchVO,
-			@ModelAttribute("eventCmpgnVO") EventCmpgnVO eventCmpgnVO, BindingResult bindingResult) throws Exception {
+	public String insertEventCmpgn(@Valid @ModelAttribute("eventCmpgnVO") EventCmpgnVO eventCmpgnVO,
+			BindingResult bindingResult, ModelMap model) throws Exception {
 
-		beanValidator.validate(eventCmpgnVO, bindingResult);
 		if (bindingResult.hasErrors()) {
-			return "egovframework/com/uss/olh/ecc/EgovEventCmpgnRegist";
+			addCmmCodeToModel(model, "COM035", "eventTyCode");
+			return "egovframework/com/uss/ion/ecc/EgovEventCmpgnRegist";
 		}
 
 		// 로그인VO에서 사용자 정보 가져오기
@@ -231,16 +232,9 @@ public class EgovEventCmpgnController {
 	 */
 	@RequestMapping("/uss/ion/ecc/updateEventCmpgnView.do")
 	public String updateEventCmpgnView(@RequestParam("eventId") String eventId,
-			@ModelAttribute("searchVO") EventCmpgnVO searchVO, ModelMap model) throws Exception {
+			@ModelAttribute("eventCmpgnVO") EventCmpgnVO eventCmpgnVO, ModelMap model) throws Exception {
 
-		// 공통코드를 가져오기 위한 Vo
-		ComDefaultCodeVO vo = new ComDefaultCodeVO();
-		vo.setCodeId("COM035");
-
-		List<CmmnDetailCode> eventTyCode = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("eventTyCode", eventTyCode);
-
-		EventCmpgnVO eventCmpgnVO = new EventCmpgnVO();
+		addCmmCodeToModel(model, "COM035", "eventTyCode");
 
 		// Primary Key 값 세팅
 		eventCmpgnVO.setEventId(eventId);
@@ -259,13 +253,12 @@ public class EgovEventCmpgnController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/uss/ion/ecc/updateEventCmpgn.do")
-	public String updateEventCmpgn(@ModelAttribute("searchVO") EventCmpgnVO searchVO,
-			@ModelAttribute("eventCmpgnVO") EventCmpgnVO eventCmpgnVO, BindingResult bindingResult) throws Exception {
+	public String updateEventCmpgn(@Valid @ModelAttribute("eventCmpgnVO") EventCmpgnVO eventCmpgnVO,
+			BindingResult bindingResult, ModelMap model) throws Exception {
 
-		// Validation
-		beanValidator.validate(eventCmpgnVO, bindingResult);
 		if (bindingResult.hasErrors()) {
-			return "egovframework/com/uss/olh/ecc/EgovEventCmpgnUpdt";
+			addCmmCodeToModel(model, "COM035", "eventTyCode");
+			return "egovframework/com/uss/ion/ecc/EgovEventCmpgnUpdt";
 		}
 
 		// 로그인VO에서 사용자 정보 가져오기
@@ -288,7 +281,7 @@ public class EgovEventCmpgnController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/uss/ion/ecc/deleteEventCmpgn.do")
-	public String deleteEventCmpgn(EventCmpgnVO eventCmpgnVO, @ModelAttribute("searchVO") EventCmpgnVO searchVO)
+	public String deleteEventCmpgn(EventCmpgnVO eventCmpgnVO, @ModelAttribute("eventCmpgnVO") EventCmpgnVO eventCmpgnVOSearch)
 			throws Exception {
 
 		egovEventCmpgnService.deleteEventCmpgn(eventCmpgnVO);
@@ -307,27 +300,27 @@ public class EgovEventCmpgnController {
 	 */
 	@IncludedInfo(name = "외부인사정보", order = 711, gid = 50)
 	@RequestMapping(value = "/uss/ion/ecc/selectTnextrlHrList.do")
-	public String selectTnextrlHrList(@ModelAttribute("searchVO") TnextrlHrVO searchVO, ModelMap model)
+	public String selectTnextrlHrList(@ModelAttribute("tnextrlHrVO") TnextrlHrVO tnextrlHrVO, ModelMap model)
 			throws Exception {
 
 		/** EgovPropertyService.sample */
-		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-		searchVO.setPageSize(propertiesService.getInt("pageSize"));
+		tnextrlHrVO.setPageUnit(propertiesService.getInt("pageUnit"));
+		tnextrlHrVO.setPageSize(propertiesService.getInt("pageSize"));
 
 		/** pageing */
 		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
+		paginationInfo.setCurrentPageNo(tnextrlHrVO.getPageIndex());
+		paginationInfo.setRecordCountPerPage(tnextrlHrVO.getPageUnit());
+		paginationInfo.setPageSize(tnextrlHrVO.getPageSize());
 
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		tnextrlHrVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		tnextrlHrVO.setLastIndex(paginationInfo.getLastRecordIndex());
+		tnextrlHrVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<TnextrlHrVO> sampleList = egovEventCmpgnService.selectTnextrlHrList(searchVO);
+		List<TnextrlHrVO> sampleList = egovEventCmpgnService.selectTnextrlHrList(tnextrlHrVO);
 		model.addAttribute("resultList", sampleList);
 
-		int totCnt = egovEventCmpgnService.selectTnextrlHrListCnt(searchVO);
+		int totCnt = egovEventCmpgnService.selectTnextrlHrListCnt(tnextrlHrVO);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 
@@ -345,7 +338,7 @@ public class EgovEventCmpgnController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/uss/ion/ecc/selectTnextrlHrDetail.do")
-	public String selectTnextrlHrDetail(TnextrlHrVO tnextrlHrVO, @ModelAttribute("searchVO") TnextrlHrVO searchVO,
+	public String selectTnextrlHrDetail(TnextrlHrVO tnextrlHrVO, @ModelAttribute("tnextrlHrVO") TnextrlHrVO tnextrlHrVOSearch,
 			ModelMap model) throws Exception {
 
 		TnextrlHrVO vo = egovEventCmpgnService.selectTnextrlHrDetail(tnextrlHrVO);
@@ -357,24 +350,17 @@ public class EgovEventCmpgnController {
 
 	/**
 	 * 외부인사정보 등록전 단계
-	 * 
+	 *
 	 * @param searchVO
 	 * @param model
 	 * @return "/uss/ion/ecc/EgovTnextrlHrRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/ecc/insertTnextrlHrView.do")
-	public String insertTnextrlHrView(@ModelAttribute("searchVO") TnextrlHrVO searchVO, Model model) throws Exception {
+	@RequestMapping(value = "/uss/ion/ecc/insertTnextrlHrView.do")
+	public String insertTnextrlHrView(@ModelAttribute("tnextrlHrVO") TnextrlHrVO tnextrlHrVO, ModelMap model) throws Exception {
 
-		// 공통코드를 가져오기 위한 Vo
-		ComDefaultCodeVO vo = new ComDefaultCodeVO();
-		vo.setCodeId("COM014"); // 성별
-		List<CmmnDetailCode> sexdstnCode = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("sexdstnCode", sexdstnCode);
-
-		vo.setCodeId("COM034"); // 직업코드
-		List<CmmnDetailCode> occpTyCode = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("occpTyCode", occpTyCode);
+		addCmmCodeToModel(model, "COM014", "sexdstnCode"); // 성별
+		addCmmCodeToModel(model, "COM034", "occpTyCode"); // 직업코드
 
 		model.addAttribute("tnextrlHrVO", new TnextrlHrVO());
 
@@ -392,12 +378,13 @@ public class EgovEventCmpgnController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/uss/ion/ecc/insertTnextrlHr.do")
-	public String insertTnextrlHr(@ModelAttribute("searchVO") TnextrlHrVO searchVO,
-			@ModelAttribute("tnextrlHrVO") TnextrlHrVO tnextrlHrVO, BindingResult bindingResult) throws Exception {
+	public String insertTnextrlHr(@Valid @ModelAttribute("tnextrlHrVO") TnextrlHrVO tnextrlHrVO,
+			BindingResult bindingResult, ModelMap model) throws Exception {
 
-		beanValidator.validate(tnextrlHrVO, bindingResult);
 		if (bindingResult.hasErrors()) {
-			return "egovframework/com/uss/olh/ecc/EgovTnextrlHrRegist";
+			addCmmCodeToModel(model, "COM014", "sexdstnCode");
+			addCmmCodeToModel(model, "COM034", "occpTyCode");
+			return "egovframework/com/uss/ion/ecc/EgovTnextrlHrRegist";
 		}
 
 		// 로그인VO에서 사용자 정보 가져오기
@@ -414,29 +401,20 @@ public class EgovEventCmpgnController {
 	}
 
 	/**
-	 * 외부인사정보를 수정하기 전 처리
-	 * 
+	 * 외부인사정보 수정전 단계
+	 *
 	 * @param extrlHrId
 	 * @param searchVO
 	 * @param model
 	 * @return "/uss/ion/ecc/EgovTnextrlHrUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/ecc/updateTnextrlHrView.do")
+	@RequestMapping(value = "/uss/ion/ecc/updateTnextrlHrView.do")
 	public String updateTnextrlHrView(@RequestParam("extrlHrId") String extrlHrId,
-			@ModelAttribute("searchVO") TnextrlHrVO searchVO, ModelMap model) throws Exception {
+			@ModelAttribute("tnextrlHrVO") TnextrlHrVO tnextrlHrVO, ModelMap model) throws Exception {
 
-		// 공통코드를 가져오기 위한 Vo
-		ComDefaultCodeVO vo = new ComDefaultCodeVO();
-		vo.setCodeId("COM014"); // 성별
-		List<CmmnDetailCode> sexdstnCode = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("sexdstnCode", sexdstnCode);
-
-		vo.setCodeId("COM034"); // 직업코드
-		List<CmmnDetailCode> occpTyCode = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("occpTyCode", occpTyCode);
-
-		TnextrlHrVO tnextrlHrVO = new TnextrlHrVO();
+		addCmmCodeToModel(model, "COM014", "sexdstnCode"); // 성별
+		addCmmCodeToModel(model, "COM034", "occpTyCode"); // 직업코드
 
 		// Primary Key 값 세팅
 		tnextrlHrVO.setExtrlHrId(extrlHrId);
@@ -451,17 +429,17 @@ public class EgovEventCmpgnController {
 	 * @param searchVO
 	 * @param tnextrlHrVO
 	 * @param bindingResult
-	 * @return "forward:/uss/ion/ecc/selectTnextrlHrList.do"
+	 * @return "redirect:/uss/ion/ecc/selectTnextrlHrList.do"
 	 * @throws Exception
 	 */
 	@RequestMapping("/uss/ion/ecc/updateTnextrlHr.do")
-	public String updateTnextrlHr(@ModelAttribute("searchVO") TnextrlHrVO searchVO,
-			@ModelAttribute("tnextrlHrVO") TnextrlHrVO tnextrlHrVO, BindingResult bindingResult) throws Exception {
+	public String updateTnextrlHr(@Valid @ModelAttribute("tnextrlHrVO") TnextrlHrVO tnextrlHrVO,
+			BindingResult bindingResult, ModelMap model) throws Exception {
 
-		// Validation
-		beanValidator.validate(tnextrlHrVO, bindingResult);
 		if (bindingResult.hasErrors()) {
-			return "egovframework/com/uss/olh/ecc/EgovTnextrlHrUpdt";
+			addCmmCodeToModel(model, "COM014", "sexdstnCode");
+			addCmmCodeToModel(model, "COM034", "occpTyCode");
+			return "egovframework/com/uss/ion/ecc/EgovTnextrlHrUpdt";
 		}
 
 		// 로그인VO에서 사용자 정보 가져오기
@@ -471,7 +449,8 @@ public class EgovEventCmpgnController {
 
 		egovEventCmpgnService.updateTnextrlHr(tnextrlHrVO);
 
-		return "forward:/uss/ion/ecc/selectTnextrlHrList.do";
+		// redirect로 목록 요청하여 수정 폼의 eventId 등이 전달되지 않도록 함(전체 목록 표시)
+		return "redirect:/uss/ion/ecc/selectTnextrlHrList.do";
 
 	}
 
@@ -484,7 +463,7 @@ public class EgovEventCmpgnController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/uss/ion/ecc/deleteTnextrlHr.do")
-	public String deleteTnextrlHr(TnextrlHrVO tnextrlHrVO, @ModelAttribute("searchVO") TnextrlHrVO searchVO)
+	public String deleteTnextrlHr(TnextrlHrVO tnextrlHrVO, @ModelAttribute("tnextrlHrVO") TnextrlHrVO tnextrlHrVOSearch)
 			throws Exception {
 
 		egovEventCmpgnService.deleteTnextrlHr(tnextrlHrVO);

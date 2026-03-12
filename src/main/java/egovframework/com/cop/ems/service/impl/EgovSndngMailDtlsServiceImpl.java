@@ -2,8 +2,6 @@ package egovframework.com.cop.ems.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +10,7 @@ import egovframework.com.cop.ems.service.EgovSndngMailDetailService;
 import egovframework.com.cop.ems.service.EgovSndngMailDtlsService;
 import egovframework.com.cop.ems.service.SndngMailVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
 
 /**
  * 발송메일 내역을 조회하는 비즈니스 구현 클래스
@@ -70,18 +69,18 @@ public class EgovSndngMailDtlsServiceImpl extends EgovAbstractServiceImpl implem
 
 		// 1. 발송메일을 삭제한다.
 		String[] sbuf = EgovStringUtil.split(vo.getMssageId(), ",");
-		for (int i = 0; i < sbuf.length; i++) {
+		for (String element : sbuf) {
 			SndngMailVO sndngMailVO = new SndngMailVO();
-			sndngMailVO.setMssageId(sbuf[i]);
+			sndngMailVO.setMssageId(element);
 			sndngMailDetailService.deleteSndngMail(sndngMailVO);
 		}
 
 		// 2. 첨부파일을 삭제한다.
 		if (vo.getAtchFileIdList() != null) {//KISA 보안약점 조치 (2018-10-29, 윤창원)
 			String[] fbuf = EgovStringUtil.split(vo.getAtchFileIdList(), ",");
-			for (int i = 0; i < fbuf.length; i++) {
+			for (String element : fbuf) {
 				SndngMailVO sndngMailVO = new SndngMailVO();
-				sndngMailVO.setAtchFileId(fbuf[i]);
+				sndngMailVO.setAtchFileId(element);
 				sndngMailDetailService.deleteAtchmnFile(sndngMailVO);
 			}
 		}

@@ -1,14 +1,11 @@
 package egovframework.com.auth.pattern;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.egovframe.rte.fdl.access.interceptor.EgovAccessUtil;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
 /**
  * @TestSessionURLPattern Test Class 구현 (AntPattern 검증 및 RegexPattern URL 검증)
@@ -18,20 +15,15 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @see
  * <pre>
  *
- *  수정일              수정자          수정내용
+ *  수정일        수정자      수정내용
  *  ----------  --------  ---------------------------
- *  2019.12.23  신용호          최초 생성
+ *  2019.12.23  신용호      최초 생성
+ *  2026.01.26  신용호      JUnit 4 => JUnit 5 마이그레이션 및 Spring 컨텍스트 제거
+ *                             (EgovAccessUtil의 정적 메서드만 사용하므로 Spring 컨텍스트 불필요)
  *
-   
+ *   
  * </pre>
  */
-
-@RunWith(SpringJUnit4ClassRunner.class)
-/*@ContextConfiguration(locations = { 
-		"file:src/main/resources/egovframework/spring/com/context-*.xml",
-		"file:src/main/resources/egovframework/spring/com/idgn/context-*.xml"
-})*/
-@ContextConfiguration(locations={"classpath*:egovframework/spring/session/*.xml"})
 public class TestSessionURLPattern {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(TestSessionURLPattern.class);
@@ -52,7 +44,7 @@ public class TestSessionURLPattern {
 			,"\\A/.*\\.inc.*\\Z"};
 
     @Test
-    public void testAntMatcher() {
+    void testAntMatcher() {
     	int totalUrlCount = testAntPatternURL.length;
     	int checkOkCount = 0;
     	LOGGER.debug("===>>> totalUrlCount(AntMatcher) = "+totalUrlCount);
@@ -73,7 +65,7 @@ public class TestSessionURLPattern {
     }
     
     @Test
-    public void testRegexMatcher() {
+    void testRegexMatcher() {
     	int totalUrlCount = testRegexPatternURL.length;
     	int checkOkCount = 0;
     	LOGGER.debug("===>>> totalUrlCount(RegexMatcher) = "+totalUrlCount);

@@ -2,7 +2,10 @@ package egovframework.com.uss.ion.ntm.service;
 
 import java.util.Arrays;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+
 import egovframework.com.cmm.ComDefaultVO;
+import jakarta.validation.constraints.Size;
 
 /**
  * 쪽지 관리(보내기) Model and VO Class 구현
@@ -48,15 +51,20 @@ public class NoteManageVO extends ComDefaultVO {
 	private String recptnSe;
 
 	/** 쪽지 내용 */
+	@EgovNullCheck
+	@Size(max=4000)
 	private String noteCn;
 
 	/** 쪽지 제목 */
+	@EgovNullCheck
+	@Size(max=255)
 	private String noteSj;
 
 	/** 쪽지 발신자 */
 	private String trnsmiterId;
 
 	/** 쪽지 수신자 목록 */
+	@EgovNullCheck
 	private String recptnEmpList;
 
 	/** 쪽지 첨부파일 아이디 */

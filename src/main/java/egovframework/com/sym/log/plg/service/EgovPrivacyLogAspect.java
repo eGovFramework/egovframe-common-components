@@ -6,8 +6,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.aspectj.lang.JoinPoint;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovHttpRequestHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import jakarta.annotation.Resource;
 
 /**
  * 개인정보 조회 이력 관리를 위한 Advice

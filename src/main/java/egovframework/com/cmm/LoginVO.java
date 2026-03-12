@@ -2,6 +2,9 @@ package egovframework.com.cmm;
 
 import java.io.Serializable;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import org.egovframe.rte.ptl.reactive.validation.EgovEmailCheck;
+
 /**
  * @Class Name : LoginVO.java
  * @Description : Login VO class
@@ -30,18 +33,24 @@ public class LoginVO implements Serializable{
 	private static final long serialVersionUID = -8274004534207618049L;
 	
 	/** 아이디 */
+	@EgovNullCheck
 	private String id;
 	/** 이름 */
+	@EgovNullCheck
 	private String name;
 	/** 주민등록번호 */
 	private String ihidNum;
 	/** 이메일주소 */
+	@EgovNullCheck
+	@EgovEmailCheck
 	private String email;
 	/** 비밀번호 */
 	private String password;
 	/** 비밀번호 힌트 */
+	@EgovNullCheck
 	private String passwordHint;
 	/** 비밀번호 정답 */
+	@EgovNullCheck
 	private String passwordCnsr;
 	/** 사용자구분 */
 	private String userSe;

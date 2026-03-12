@@ -23,7 +23,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comUtlSysPrm.comUtlProcessMonRegist.title"/></c:set>
 <!DOCTYPE html>
 <html lang="ko">
@@ -32,9 +31,7 @@
 		<title>${pageTitle}</title>
 		<link href="<c:url value='/css/egovframework/com/com.css' />" rel="stylesheet" type="text/css">
 		<link href="<c:url value='/css/egovframework/com/button.css' />" rel="stylesheet" type="text/css">
-		<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-		<validator:javascript formName="processMonVO" staticJavascript="false" xhtml="true" cdata="false"/>
-		
+		<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 		<script type="text/javaScript" language="javascript">
 		<!--
 		/* ********************************************************
@@ -55,9 +52,10 @@
 		 ******************************************************** */
 		function fn_egov_regist_ProcessMon(form){
 			if(confirm("<spring:message code="common.save.msg" />")){
-				if(!validateProcessMonVO(form)){ 			
+				if(!validateProcessMonVO(form)){
 					return;
 				}else{
+					form.action = "<c:url value='/utl/sys/prm/EgovComUtlProcessMonRegist.do'/>";
 					form.submit();
 				}
 			}
@@ -87,7 +85,11 @@
 	<body onLoad="fn_egov_initl_ProcessMon();">
 	
 	<form:form modelAttribute="processMonVO" name="processMonVO" method="post">
-	
+	<!-- 검색조건 유지 -->
+	<input type="hidden" name="searchCondition" value="<c:out value='${searchVO.searchCondition}'/>"/>
+	<input type="hidden" name="searchKeyword" value="<c:out value='${searchVO.searchKeyword}'/>"/>
+	<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}' default='1'/>"/>
+
 	<div class="wTableFrm">
 		<!-- 타이틀 -->
 		<h2>${pageTitle}</h2>

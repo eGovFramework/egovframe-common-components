@@ -1,5 +1,10 @@
 package egovframework.com.sym.prm.service;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 /**
  * 프로그램변경관리 처리를 위한 VO 클래스르를 정의한다
  * 
@@ -21,24 +26,36 @@ package egovframework.com.sym.prm.service;
 public class ProgrmManageDtlVO {
 
 	/** 프로그램파일명 */
+	@EgovNullCheck
+	@Size(max=50)
 	private String progrmFileNm;
 	/** 요청번호 */
+	@NotNull
 	private int rqesterNo;
 	/** 요청제목 */
+	@EgovNullCheck
+	@Size(max=50)
 	private String rqesterSj;
 	/** 요청자ID */
+	@EgovNullCheck
+	@Size(max=20)
 	private String rqesterPersonId;
 	/** 요청일자 */
+	@EgovNullCheck
 	private String rqesterDe;
 	/** 변경요청내용 */
+	@Size(max=1000)
 	private String changerqesterCn;
 	/** 처리자ID */
+	@Size(max=20)
 	private String opetrId;
 	/** 처리상태코드 */
 	private String processSttus;
 	/** 처리일자 */
+	@EgovNullCheck
 	private String processDe;
 	/** 요청처리내용 */
+	@Size(max=1000)
 	private String rqesterProcessCn;
 
 	/** 요청시작일자 */

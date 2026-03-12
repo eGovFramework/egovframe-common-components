@@ -2,10 +2,14 @@ package egovframework.com.utl.sys.prm.service;
 
 import java.io.Serializable;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import org.egovframe.rte.ptl.reactive.validation.EgovEmailCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 개요
  * - PROCESS모니터링에 대한 model 클래스를 정의한다.
- * 
+ *
  * 상세내용
  * - 프로세스명, 프로세스상태, 관리자명, 관리자이메일주소, 최종수정자ID, 최종수정시점 항목을 관리한다.
  * @author 박종선
@@ -19,6 +23,8 @@ public class ProcessMon implements Serializable  {
 	/**
 	 * 프로세스 명
 	 */
+	@EgovNullCheck
+	@Size(max=30)
 	private String processNm;
 	/**
 	 * 프로세스아이디
@@ -31,7 +37,7 @@ public class ProcessMon implements Serializable  {
 	/**
 	 * 로그정보
 	 */
-	private String logInfo;	
+	private String logInfo;
 	/**
 	 * 프로세스 상태
 	 */
@@ -43,10 +49,15 @@ public class ProcessMon implements Serializable  {
 	/**
 	 * 관리자 명
 	 */
+	@EgovNullCheck
+	@Size(max=60)
 	private String mngrNm;
 	/**
 	 * 관리자 이메일 주소
 	 */
+	@EgovNullCheck
+	@Size(max=60)
+	@EgovEmailCheck
 	private String mngrEmailAddr;
 	/**
 	 * 최초등록자ID

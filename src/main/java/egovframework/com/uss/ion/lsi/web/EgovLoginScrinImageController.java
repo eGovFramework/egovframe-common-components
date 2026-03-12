@@ -25,11 +25,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -39,7 +36,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -49,10 +45,10 @@ import egovframework.com.cmm.service.EgovFileMngUtil;
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.lsi.service.EgovLoginScrinImageService;
-import egovframework.com.uss.ion.lsi.service.LoginScrinImage;
 import egovframework.com.uss.ion.lsi.service.LoginScrinImageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 @Controller
 public class EgovLoginScrinImageController {
@@ -72,9 +68,6 @@ public class EgovLoginScrinImageController {
 
     @Resource(name = "egovLoginScrinImageService")
     private EgovLoginScrinImageService egovLoginScrinImageService;
-
-    @Autowired
-	private DefaultBeanValidator beanValidator;
 
     /**
 	 * 로그인화면이미지 목록화면 이동
@@ -132,7 +125,11 @@ public class EgovLoginScrinImageController {
 			                            ModelMap model) throws Exception {
     	loginScrinImageVO.setImageId(imageId);
 
-    	model.addAttribute("loginScrinImage", egovLoginScrinImageService.selectLoginScrinImage(loginScrinImageVO));
+    	LoginScrinImageVO resultVO = egovLoginScrinImageService.selectLoginScrinImage(loginScrinImageVO);
+    	resultVO.setPageIndex(loginScrinImageVO.getPageIndex());
+    	resultVO.setSearchCondition(loginScrinImageVO.getSearchCondition());
+    	resultVO.setSearchKeyword(loginScrinImageVO.getSearchKeyword());
+    	model.addAttribute("loginScrinImageVO", resultVO);
     	model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
     	return "egovframework/com/uss/ion/lsi/EgovLoginScrinImageUpdt";
 	}
@@ -148,22 +145,18 @@ public class EgovLoginScrinImageController {
 
 	/**
 	 * 로그인화면이미지정보를 신규로 등록한다.
-	 * @param loginScrinImage - 로그인화면이미지 model
+	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 * @return String - 리턴 Url
 	 */
     @SuppressWarnings("unused")
 	@RequestMapping(value="/uss/ion/lsi/addLoginScrinImage.do")
 	public String insertLoginScrinImage(final MultipartHttpServletRequest multiRequest,
-			                            @ModelAttribute("loginScrinImage") LoginScrinImage loginScrinImage,
-			                            @ModelAttribute("loginScrinImageVO") LoginScrinImageVO loginScrinImageVO,
+			                            @Valid @ModelAttribute("loginScrinImageVO") LoginScrinImageVO loginScrinImageVO,
 			                            BindingResult bindingResult,
 			                            SessionStatus status,
 						                ModelMap model) throws Exception {
 
-    	beanValidator.validate(loginScrinImage, bindingResult); //validation 수행
-
     	if (bindingResult.hasErrors()) {
-    		model.addAttribute("loginScrinImageVO", loginScrinImageVO);
 			return "egovframework/com/uss/ion/lsi/EgovLoginScrinImageRegist";
 		} else {
 
@@ -177,32 +170,58 @@ public class EgovLoginScrinImageController {
 	    	final Map<String, MultipartFile> files = multiRequest.getFileMap();
 
 	    	if(!files.isEmpty()){
-	    	    result = fileUtil.parseFileInf(files, "LSI_", 0, "", uploadFolder);
-	    	    atchFileId = fileMngService.insertFileInfs(result);
+	    		// 파일이 실제로 업로드되었는지 확인 (파일명이 있는지 체크)
+	    		boolean hasFile = false;
+	    		for (MultipartFile file : files.values()) {
+	    			if (file != null && !file.isEmpty()) {
+	    				String originalFilename = file.getOriginalFilename();
+	    				if (originalFilename != null && !originalFilename.trim().isEmpty()) {
+	    					hasFile = true;
+	    					break;
+	    				}
+	    			}
+	    		}
+	    		
+	    		if (hasFile) {
+		    	    result = fileUtil.parseFileInf(files, "LSI_", 0, "", uploadFolder);
+		    	    atchFileId = fileMngService.insertFileInfs(result);
 
-	        	FileVO vo = result.get(0);
-	        	Iterator<FileVO> iter = result.iterator();
+		        	FileVO vo = null;
+		        	Iterator<FileVO> iter = result.iterator();
 
-	        	while (iter.hasNext()) {
-	        	    vo = iter.next();
-	        	    image = vo.getOrignlFileNm();
-	        	    imageFile = vo.getStreFileNm();
-	        	}
+		        	while (iter.hasNext()) {
+		        	    vo = iter.next();
+		        	    image = vo.getOrignlFileNm();
+		        	    imageFile = vo.getStreFileNm();
+		        	}
+		        	
+		        	if (vo == null) {
+		        		// 파일 처리 실패
+		        		image = "";
+		        		atchFileId = "";
+		        	}
+	    		} else {
+	    			// 파일이 선택되지 않음
+	    			image = "";
+	    			atchFileId = "";
+	    		}
+	    	} else {
+	    		// 파일이 선택되지 않음
+	    		image = "";
+	    		atchFileId = "";
 	    	}
 
 	    	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
-	    	loginScrinImage.setImageId(egovLoginScrinImageIdGnrService.getNextStringId());
-	    	loginScrinImage.setImage(image);
-	    	loginScrinImage.setImageFile(atchFileId);
-	    	loginScrinImage.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
-	    	loginScrinImageVO.setImageId(loginScrinImage.getImageId());
+	    	loginScrinImageVO.setImageId(egovLoginScrinImageIdGnrService.getNextStringId());
+	    	loginScrinImageVO.setImage(image);
+	    	loginScrinImageVO.setImageFile(atchFileId);
+	    	loginScrinImageVO.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
 
 	    	status.setComplete();
 	    	model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
-	    	model.addAttribute("loginScrinImage", egovLoginScrinImageService.insertLoginScrinImage(loginScrinImage, loginScrinImageVO));
+	    	model.addAttribute("loginScrinImageVO", egovLoginScrinImageService.insertLoginScrinImage(loginScrinImageVO));
 
-//	    	return "egovframework/com/uss/ion/lsi/EgovLoginScrinImageUpdt";
 	    	return "forward:/uss/ion/lsi/selectLoginScrinImageList.do";
 
 		}
@@ -210,21 +229,18 @@ public class EgovLoginScrinImageController {
 
 	/**
 	 * 기 등록된 로그인화면이미지정보를 수정한다.
-	 * @param loginScrinImage - 로그인화면이미지 model
+	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 * @return String - 리턴 Url
 	 */
 	@SuppressWarnings("unused")
 	@RequestMapping(value="/uss/ion/lsi/updtLoginScrinImage.do")
 	public String updateLoginScrinImage(final MultipartHttpServletRequest multiRequest,
-			                            @ModelAttribute("loginScrinImage") LoginScrinImage loginScrinImage,
+			                            @Valid @ModelAttribute("loginScrinImageVO") LoginScrinImageVO loginScrinImageVO,
 			                            BindingResult bindingResult,
 			                            SessionStatus status,
 		                                ModelMap model) throws Exception {
 
-		beanValidator.validate(loginScrinImage, bindingResult); //validation 수행
-
     	if (bindingResult.hasErrors()) {
-    		model.addAttribute("loginScrinImageVO", loginScrinImage);
 			return "egovframework/com/uss/ion/lsi/EgovLoginScrinImageUpdt";
 		} else {
 
@@ -238,34 +254,51 @@ public class EgovLoginScrinImageController {
 	    	final Map<String, MultipartFile> files = multiRequest.getFileMap();
 
 	    	if(!files.isEmpty()){
-	    	    result = fileUtil.parseFileInf(files, "LSI_", 0, "", uploadFolder);
-	    	    atchFileId = fileMngService.insertFileInfs(result);
+	    		// 파일이 실제로 업로드되었는지 확인 (파일명이 있는지 체크)
+	    		boolean hasFile = false;
+	    		for (MultipartFile file : files.values()) {
+	    			if (file != null && !file.isEmpty()) {
+	    				String originalFilename = file.getOriginalFilename();
+	    				if (originalFilename != null && !originalFilename.trim().isEmpty()) {
+	    					hasFile = true;
+	    					break;
+	    				}
+	    			}
+	    		}
+	    		
+	    		if (hasFile) {
+		    	    result = fileUtil.parseFileInf(files, "LSI_", 0, "", uploadFolder);
+		    	    atchFileId = fileMngService.insertFileInfs(result);
 
-	        	FileVO vo = null;
-	        	Iterator<FileVO> iter = result.iterator();
+		        	FileVO vo = null;
+		        	Iterator<FileVO> iter = result.iterator();
 
-	        	while (iter.hasNext()) {
-	        	    vo = iter.next();
-	        	    image = vo.getOrignlFileNm();
-	        	    imageFile = vo.getStreFileNm();
-	        	}
+		        	while (iter.hasNext()) {
+		        	    vo = iter.next();
+		        	    image = vo.getOrignlFileNm();
+		        	    imageFile = vo.getStreFileNm();
+		        	}
 
-	        	if (vo == null) {
-	        		loginScrinImage.setAtchFile(false);
-	        	} else {
-	        		loginScrinImage.setImage(image);
-	        		loginScrinImage.setImageFile(atchFileId);
-	        		loginScrinImage.setAtchFile(true);
-	        	}
+		        	if (vo == null) {
+		        		loginScrinImageVO.setAtchFile(false);
+		        	} else {
+		        		loginScrinImageVO.setImage(image);
+		        		loginScrinImageVO.setImageFile(atchFileId);
+		        		loginScrinImageVO.setAtchFile(true);
+		        	}
+	    		} else {
+
+	    			loginScrinImageVO.setAtchFile(false);
+	    		}
 	    	} else {
-	    		loginScrinImage.setAtchFile(false);
+	    		loginScrinImageVO.setAtchFile(false);
 	    	}
 
 	    	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-	    	loginScrinImage.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
+	    	loginScrinImageVO.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
 
-	    	egovLoginScrinImageService.updateLoginScrinImage(loginScrinImage);
-//	    	return "forward:/uss/ion/lsi/getLoginScrinImage.do";
+	    	egovLoginScrinImageService.updateLoginScrinImage(loginScrinImageVO);
+
 	    	return "forward:/uss/ion/lsi/selectLoginScrinImageList.do";
 
 		}
@@ -273,17 +306,17 @@ public class EgovLoginScrinImageController {
 
 	/**
 	 * 기 등록된 로그인화면이미지정보를 삭제한다.
-	 * @param loginScrinImage - 로그인화면이미지 model
+	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 * @return String - 리턴 Url
 	 */
     @RequestMapping(value="/uss/ion/lsi/removeLoginScrinImage.do")
 	public String deleteLoginScrinImage(@RequestParam("imageId") String imageId,
-			                            @ModelAttribute("loginScrinImage") LoginScrinImage loginScrinImage,
+			                            @ModelAttribute("loginScrinImageVO") LoginScrinImageVO loginScrinImageVO,
 			                             SessionStatus status,
 			                             ModelMap model) throws Exception {
 
-    	loginScrinImage.setImageId(imageId);
-    	egovLoginScrinImageService.deleteLoginScrinImage(loginScrinImage);
+    	loginScrinImageVO.setImageId(imageId);
+    	egovLoginScrinImageService.deleteLoginScrinImage(loginScrinImageVO);
     	status.setComplete();
     	model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
     	return "forward:/uss/ion/lsi/selectLoginScrinImageList.do";
@@ -292,22 +325,22 @@ public class EgovLoginScrinImageController {
 
 	/**
 	 * 기 등록된 로그인화면이미지정보 목록을 일괄 삭제한다.
-	 * @param loginScrinImageIds String
-	 * @param loginScrinImage LoginScrinImage
+	 * @param imageIds String
+	 * @param loginScrinImageVO LoginScrinImageVO
 	 * @return String
 	 * @exception Exception
 	 */
     @RequestMapping(value="/uss/ion/lsi/removeLoginScrinImageList.do")
 	public String deleteLoginScrinImageList(@RequestParam("imageIds") String imageIds,
-			                                @ModelAttribute("loginScrinImage") LoginScrinImage loginScrinImage,
+			                                @ModelAttribute("loginScrinImageVO") LoginScrinImageVO loginScrinImageVO,
 			                                 SessionStatus status,
 			                                 ModelMap model) throws Exception {
 
     	String [] strImageIds = imageIds.split(";");
 
-    	for(int i=0; i<strImageIds.length;i++) {
-    		loginScrinImage.setImageId(strImageIds[i]);
-    		egovLoginScrinImageService.deleteLoginScrinImage(loginScrinImage);
+    	for (String strImageId : strImageIds) {
+    		loginScrinImageVO.setImageId(strImageId);
+    		egovLoginScrinImageService.deleteLoginScrinImage(loginScrinImageVO);
     	}
 
     	status.setComplete();
@@ -317,25 +350,11 @@ public class EgovLoginScrinImageController {
 
 	/**
 	 * 기 등록된 로그인화면이미지정보의 이미지파일을 삭제한다.
-	 * @param loginScrinImage - 로그인화면이미지 model
-	 * @return String - 리턴 Url
-	 */
-	public String deleteLoginScrinImageFile(LoginScrinImage loginScrinImage){
-		return "";
-	}
-
-	/**
-	 * 로그인화면이미지가 특정화면에 반영된 결과를 조회한다.
 	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value="/uss/ion/lsi/getLoginScrinImageResult.do")
-	public String selectLoginScrinImageResult(@ModelAttribute("loginScrinImageVO") LoginScrinImageVO loginScrinImageVO,
-			                                   ModelMap model) throws Exception {
-
-		List<LoginScrinImageVO> fileList = egovLoginScrinImageService.selectLoginScrinImageResult(loginScrinImageVO);
-		model.addAttribute("fileList", fileList);
-
-		return "egovframework/com/uss/ion/lsi/EgovLoginScrinImageView";
+	public String deleteLoginScrinImageFile(LoginScrinImageVO loginScrinImageVO){
+		return "";
 	}
+
 }

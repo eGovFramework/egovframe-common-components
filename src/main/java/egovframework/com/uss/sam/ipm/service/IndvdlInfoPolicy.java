@@ -2,6 +2,9 @@ package egovframework.com.uss.sam.ipm.service;
 
 import java.io.Serializable;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 개인정보보호정책 VO Class 구현
  * 
@@ -27,12 +30,17 @@ public class IndvdlInfoPolicy implements Serializable {
 	private String indvdlInfoId;
 
 	/** 개인정보보호정책 명 */
+	@EgovNullCheck
+	@Size(max=255)
 	private String indvdlInfoNm;
 
 	/** 개인정보보호정책 내용 */
+	@EgovNullCheck
+	@Size(max=2500)
 	private String indvdlInfoDc;
 
 	/** 개인정보보호정책 동의여부 */
+	@EgovNullCheck
 	private String indvdlInfoYn;
 
 	/** 최초등록시점 */

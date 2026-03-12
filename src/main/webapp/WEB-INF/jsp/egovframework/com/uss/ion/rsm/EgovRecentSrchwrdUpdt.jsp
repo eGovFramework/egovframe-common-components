@@ -21,7 +21,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -30,15 +29,8 @@
 <title><spring:message code="ussIonRsm.recentSrchwrdUpdt.recentSrchwrdUpdt"/></title><!-- 최근검색어관리 수정 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="recentSrchwrd" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
-/* ********************************************************
- * 초기화
- ******************************************************** */
-function fn_egov_init_RecentSrchwrd(){
-
-}
 /* ********************************************************
  * 목록 으로 가기
  ******************************************************** */
@@ -51,21 +43,20 @@ function fn_egov_list_RecentSrchwrd(){
 function fn_egov_save_RecentSrchwrd(){
 	var varFrom = document.recentSrchwrd;
 	varFrom.action =  "<c:url value='/uss/ion/rsm/updtRecentSrchwrd.do' />";
-	if(confirm("<spring:message code="common.save.msg" />")){
 
-		if(!validateRecentSrchwrd(varFrom)){
-			return;
-		}else{
-			varFrom.submit();
-		}
+	if(!validateRecentSrchwrd(varFrom)){
+		return;
+	}
+
+	if(confirm("<spring:message code="common.save.msg" />")){
+		varFrom.submit();
 	}
 }
-
-
 </script>
 </head>
-<body onLoad="fn_egov_init_RecentSrchwrd();">
-<DIV id="content" style="width:712px">
+
+<body>
+
 <%-- noscript 테그 --%>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg"/></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
@@ -91,23 +82,24 @@ function fn_egov_save_RecentSrchwrd(){
 			<th><spring:message code="ussIonRsm.recentSrchwrdUpdt.srchwrdManageNm"/> <span class="pilsu">*</span></th><!-- 최근검색어관리명 -->
 			<td class="left">
 			    <form:input path="srchwrdManageNm" maxlength="255"/>
-      			<form:errors path="srchwrdManageNm" cssClass="error"/>
+      			<div><form:errors path="srchwrdManageNm" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussIonRsm.recentSrchwrdUpdt.srchwrdManageUrl"/> <span class="pilsu">*</span></th><!-- 최근검색어관리URL -->
 			<td class="left">
 			    <form:input path="srchwrdManageUrl" maxlength="255"/>
-      			<form:errors path="srchwrdManageUrl" cssClass="error"/>
+      			<div><form:errors path="srchwrdManageUrl" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussIonRsm.recentSrchwrdUpdt.srchwrdManageUseYn"/> <span class="pilsu">*</span></th><!-- 사용자검색여부 -->
 			<td class="left">
-			    <select name="srchwrdManageUseYn" title="<spring:message code="ussIonRsm.recentSrchwrdUpdt.srchwrdManageUseYn"/>">
-					<option value="N" <c:if test="${recentSrchwrd.srchwrdManageUseYn == 'N'}">selected</c:if>>N</option>
-					<option value="Y" <c:if test="${recentSrchwrd.srchwrdManageUseYn == 'Y'}">selected</c:if>>Y</option>
-				</select>
+			    <form:select path="srchwrdManageUseYn">
+					<form:option value="N">N</form:option>
+					<form:option value="Y">Y</form:option>
+				</form:select>
+				<div><form:errors path="srchwrdManageUseYn" cssClass="error" /></div>
 			</td>
 		</tr>
 	</table>
@@ -115,7 +107,7 @@ function fn_egov_save_RecentSrchwrd(){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fn_egov_save_RecentSrchwrd(); return false;" />
-		<span class="btn_s"><a href="<c:url value='/uss/ion/rsm/listRecentSrchwrd.do' />" onclick=""><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="<c:url value='/uss/ion/rsm/listRecentSrchwrd.do' />"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>
@@ -123,6 +115,5 @@ function fn_egov_save_RecentSrchwrd(){
 <input name="srchwrdManageId" type="hidden" value="${recentSrchwrd.srchwrdManageId}">
 <input name="cmd" type="hidden" value="<c:out value='save'/>"/>
 </form:form>
-</DIV>
 </body>
 </html>

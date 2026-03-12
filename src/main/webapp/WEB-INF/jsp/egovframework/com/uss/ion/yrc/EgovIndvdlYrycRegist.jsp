@@ -24,7 +24,6 @@
 <%@ taglib prefix="fn"        uri="http://java.sun.com/jsp/jstl/functions"  %>
 <%@ taglib prefix="form"      uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="spring"    uri="http://www.springframework.org/tags" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -33,9 +32,10 @@
 <title><spring:message code="comUssIonYrc.indvdlYrycRegist.title" /></title><!-- 개인연차등록 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-    <script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-    <validator:javascript formName="indvdlYrycManage" staticJavascript="false" xhtml="true" cdata="false"/>
+    <script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
     <script type="text/javaScript" language="javascript">
+        var diffValueMessage = "<spring:message code='comUssIonYrc.indvdlYrycRegist.diffValue' />";
+        
         function fnIndvdYrycMangeList() {
         	location.href = "<c:url value='/uss/ion/yrc/EgovIndvdlYrycManageList.do'/>";
         }
@@ -43,20 +43,12 @@
         function fnRegistIndvdYrycMange() {
         	var varForm = document.getElementById("indvdlYrycManage");
 
-        	var occrncYrycCo = varForm.occrncYrycCo.value;
-            var useYrycCo = varForm.useYrycCo.value;
-            var diffValue = occrncYrycCo - useYrycCo;
-        	if(diffValue < 0) {
-        		alert("<spring:message code="comUssIonYrc.indvdlYrycRegist.diffValue" />"); //잔여연차가 음수일 수 없습니다.
-        		return;
-        	}
+        	if(!validateIndvdlYrycManage(varForm, diffValueMessage)){       
+                	return;
+            	}
 
-        	if(!validateIndvdlYrycManage(varForm)){       
-                return;
-            }else{
-            	varForm.action = "<c:url value='/uss/ion/yrc/EgovIndvdlYrycRegist.do'/>";
-            	varForm.submit();
-            }
+        	varForm.action = "<c:url value='/uss/ion/yrc/EgovIndvdlYrycRegist.do'/>";
+           	varForm.submit();
         }
         
         function fnDeleteIndvdYrycMange() {

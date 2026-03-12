@@ -1,5 +1,9 @@
 package egovframework.com.sym.sym.srv.service;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import org.egovframe.rte.ptl.reactive.validation.EgovEmailCheck;
+import jakarta.validation.constraints.Size;
+
 import egovframework.com.cmm.ComDefaultVO;
 
 /**
@@ -23,34 +27,51 @@ public class ServerEqpmn extends ComDefaultVO {
 	/**
 	 * 서버 장비 명
 	 */
+	@EgovNullCheck
+	@Size(max=30)
 	private String serverEqpmnNm;
 	/**
 	 * 서버 장비 IP
 	 */
+	@EgovNullCheck
+	@Size(max=23)
 	private String serverEqpmnIp;
 	/**
 	 * 서버 장비 관리자 명
 	 */
+	@EgovNullCheck
+	@Size(max=30)
 	private String serverEqpmnMngrNm;
 	/**
 	 * 관리자 이메일 주소
 	 */
+	@EgovNullCheck
+	@Size(max=50)
+	@EgovEmailCheck
 	private String mngrEmailAddr;
 	/**
 	 * 운영체제 정보
 	 */
+	@EgovNullCheck
+	@Size(max=1000)
 	private String opersysmInfo;
 	/**
 	 * CPU 정보
 	 */
+	@EgovNullCheck
+	@Size(max=1000)
 	private String cpuInfo;
 	/**
 	 * 메모리 정보
 	 */
+	@EgovNullCheck
+	@Size(max=1000)
 	private String moryInfo;
 	/**
 	 * 하드디스크 정보
 	 */
+	@EgovNullCheck
+	@Size(max=1000)
 	private String hdDisk;
 	/**
 	 * 기타 정보
@@ -58,7 +79,8 @@ public class ServerEqpmn extends ComDefaultVO {
 	private String etcInfo;
     /**
 	 * 등록일자
-	 */    
+	 */
+	@EgovNullCheck
     private String regstYmd;    
     /**
 	 * 최초등록시점

@@ -11,7 +11,7 @@ import egovframework.com.utl.sys.ssy.service.SynchrnServerVO;
 /**
  * 개요
  * - 동기화대상 서버에 대한 DAO 클래스를 정의한다.
- * 
+ *
  * 상세내용
  * - 동기화대상 서버에 대한 등록, 수정, 삭제, 조회 기능을 제공한다.
  * - 동기화대상 서버의 조회기능은 목록조회, 상세조회로 구분된다.
@@ -81,7 +81,7 @@ public class SynchrnServerDAO extends EgovComAbstractDAO {
 	public void processSynchrn(SynchrnServer synchrnServer) throws Exception {
 		update("synchrnServerDAO.processSynchrn", synchrnServer);
 	}
-	
+
 	/**
 	 * 동기화 처리를 하기 위해 동기화대상 서버목록을 조회한다.
 	 * @param synchrnServerVO - 동기화대상 서버 Vo

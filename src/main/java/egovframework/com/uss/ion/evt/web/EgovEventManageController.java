@@ -3,10 +3,7 @@ package egovframework.com.uss.ion.evt.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -14,7 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -28,6 +24,8 @@ import egovframework.com.uss.ion.evt.service.EventAtdrn;
 import egovframework.com.uss.ion.evt.service.EventManage;
 import egovframework.com.uss.ion.evt.service.EventManageVO;
 import egovframework.com.utl.fcc.service.EgovDateUtil;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * <pre>
@@ -63,9 +61,6 @@ public class EgovEventManageController {
 
 	@Resource(name = "egovEventManageService")
 	private EgovEventManageService egovEventManageService;
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	@Resource(name = "EgovCmmUseService")
 	private EgovCmmUseService cmmUseService;
@@ -200,13 +195,15 @@ public class EgovEventManageController {
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/uss/ion/evt/insertEventManage.do")
-	public String insertEventManage(@ModelAttribute("eventManage") EventManage eventManage,
-			@ModelAttribute("eventManageVO") EventManageVO eventManageVO, BindingResult bindingResult,
-			SessionStatus status, ModelMap model) throws Exception {
-
-		beanValidator.validate(eventManage, bindingResult); // validation 수행
+	public String insertEventManage(@Valid @ModelAttribute("eventManage") EventManage eventManage, BindingResult bindingResult,
+			@ModelAttribute("eventManageVO") EventManageVO eventManageVO, SessionStatus status, ModelMap model) throws Exception {
 
 		if (bindingResult.hasErrors()) {
+			ComDefaultCodeVO vo = new ComDefaultCodeVO();
+			vo.setCodeId("COM053");
+			List<CmmnDetailCode> eventSeCodeList = cmmUseService.selectCmmCodeDetail(vo);
+			model.addAttribute("eventSeCode", eventSeCodeList);
+			
 			model.addAttribute("eventManageVO", eventManageVO);
 			return "egovframework/com/uss/ion/evt/EgovEventReqstRegist";
 		} else {
@@ -226,13 +223,16 @@ public class EgovEventManageController {
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/uss/ion/evt/EgovEventReqstSave.do")
-	public String updtEventManage(@ModelAttribute("eventManage") EventManage eventManage,
-			@ModelAttribute("eventManageVO") EventManageVO eventManageVO, BindingResult bindingResult,
-			SessionStatus status, ModelMap model) throws Exception {
+	public String updtEventManage(@Valid @ModelAttribute("eventManage") EventManage eventManage, BindingResult bindingResult,
+			@ModelAttribute("eventManageVO") EventManageVO eventManageVO, SessionStatus status, ModelMap model) throws Exception {
 
-		beanValidator.validate(eventManage, bindingResult); // validation 수행
 
 		if (bindingResult.hasErrors()) {
+			ComDefaultCodeVO vo = new ComDefaultCodeVO();
+			vo.setCodeId("COM053");
+			List<CmmnDetailCode> eventSeCodeList = cmmUseService.selectCmmCodeDetail(vo);
+			model.addAttribute("eventSeCode", eventSeCodeList);
+			
 			model.addAttribute("eventManageVO", eventManage);
 			return "egovframework/com/uss/ion/evt/EgovEventReqstUpdt";
 		} else {
@@ -373,15 +373,18 @@ public class EgovEventManageController {
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/uss/ion/evt/insertEventAtdrn.do")
-	public String insertEventAtdrn(@ModelAttribute("eventAtdrn") EventAtdrn eventAtdrn,
-			@ModelAttribute("eventManageVO") EventManageVO eventManageVO, BindingResult bindingResult,
-			SessionStatus status, ModelMap model) throws Exception {
-
-		beanValidator.validate(eventAtdrn, bindingResult); // validation 수행
+	public String insertEventAtdrn(@Valid @ModelAttribute("eventAtdrn") EventAtdrn eventAtdrn, BindingResult bindingResult,
+			@ModelAttribute("eventManageVO") EventManageVO eventManageVO, SessionStatus status, ModelMap model) throws Exception {
 
 		if (bindingResult.hasErrors()) {
+			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+			eventManageVO = egovEventManageService.selectEventManage(eventManageVO);
+			eventManageVO.setEventTemp6((user == null || user.getName() == null) ? "" : user.getName());
+			eventManageVO.setEventTemp7((user == null || user.getOrgnztNm() == null) ? "" : user.getOrgnztNm());
+			
 			model.addAttribute("eventManageVO", eventManageVO);
-			return "forward:/uss/ion/evt/EgovEventRceptRegist.do";
+			model.addAttribute("eventManage", eventAtdrn);
+			return "egovframework/com/uss/ion/evt/EgovEventRceptRegist";
 		} else {
 			EventManageVO resultVO = egovEventManageService.selectEventManage(eventManageVO);
 			if (resultVO.getPsncpa() > egovEventManageService.selectEventReqstAtdrnListTotCnt(eventManageVO)) {
@@ -506,13 +509,20 @@ public class EgovEventManageController {
 	 */
 	@RequestMapping(value = "/uss/ion/evt/updtEventAtdrn.do")
 	public String updtEventAtdrn(@RequestParam("checkedEventRceptForConfm") String checkedEventRceptForConfm,
-			@ModelAttribute("eventAtdrn") EventAtdrn eventAtdrn, @RequestParam Map<?, ?> commandMap,
+			@ModelAttribute("eventAtdrn") EventAtdrn eventAtdrn,BindingResult bindingResult, @RequestParam Map<?, ?> commandMap,
 			SessionStatus status, ModelMap model) throws Exception {
+		
+//		if (bindingResult.hasErrors()) {
+//			model.addAttribute("EventAtdrn", eventAtdrn);
+//			return "forward:/uss/ion/evt/selectEventRceptConfmList.do";
+//		}
+		
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd"); // 상세정보 구분
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		eventAtdrn.setConfmAt(sCmd);
 		eventAtdrn.setSanctnerId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 		eventAtdrn.setFrstRegisterId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
+		
 		egovEventManageService.updtEventAtdrn(eventAtdrn, checkedEventRceptForConfm);
 		return "forward:/uss/ion/evt/selectEventRceptConfmList.do";
 	}

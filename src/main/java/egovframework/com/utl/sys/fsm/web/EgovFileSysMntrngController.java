@@ -5,17 +5,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springmodules.validation.commons.DefaultBeanValidator;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -29,6 +26,8 @@ import egovframework.com.utl.sys.fsm.service.FileSysMntrng;
 import egovframework.com.utl.sys.fsm.service.FileSysMntrngLogVO;
 import egovframework.com.utl.sys.fsm.service.FileSysMntrngVO;
 import egovframework.com.utl.sys.fsm.service.FileSystemChecker;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * 개요
@@ -51,7 +50,6 @@ import egovframework.com.utl.sys.fsm.service.FileSystemChecker;
  *  2024.05.02  김수용        NSR 보안조치 (파일시스템명에서 악의적인 문자열 제거)
  * </pre>
  */
-
 @Controller
 public class EgovFileSysMntrngController {
 
@@ -63,9 +61,6 @@ public class EgovFileSysMntrngController {
 
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/**
 	 * 파일시스템 모니터링대상 정보에 대한 목록을 조회한다.
@@ -111,13 +106,13 @@ public class EgovFileSysMntrngController {
 	 * @param fileSysMntrngVO
 	 */
 	@RequestMapping("/utl/sys/fsm/addFileSysMntrng.do")
-	public String addFileSysMntrng(@ModelAttribute("fileSysMntrngVO") FileSysMntrngVO fileSysMntrngVO, BindingResult bindingResult, ModelMap model) throws Exception {
+	public String addFileSysMntrng(@ModelAttribute("fileSysMntrngVO") FileSysMntrngVO fileSysMntrngVO, RedirectAttributes redirectAttributes) throws Exception {
 		String sLocationUrl = "egovframework/com/utl/sys/fsm/EgovFileSysMntrngRegist";
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
@@ -132,11 +127,11 @@ public class EgovFileSysMntrngController {
 	 * @param fileSysMntrngVO
 	 */
 	@RequestMapping("/utl/sys/fsm/modifyFileSysMntrng.do")
-	public String modifyFileSysMntrng(@ModelAttribute("fileSysMntrngVO") FileSysMntrngVO fileSysMntrngVO, BindingResult bindingResult, ModelMap model) throws Exception {
+	public String modifyFileSysMntrng(@ModelAttribute("fileSysMntrngVO") FileSysMntrngVO fileSysMntrngVO, ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
@@ -186,24 +181,25 @@ public class EgovFileSysMntrngController {
 	 * @param fileSysMntrng
 	 */
 	@RequestMapping("/utl/sys/fsm/updateFileSysMntrng.do")
-	public String updateFileSysMntrng(@ModelAttribute("fileSysMntrngVO") FileSysMntrngVO fileSysMntrngVO, BindingResult bindingResult, ModelMap model) throws Exception {
+	public String updateFileSysMntrng(
+		@Valid @ModelAttribute("fileSysMntrngVO") FileSysMntrngVO fileSysMntrngVO, BindingResult bindingResult,
+		ModelMap model) throws Exception {
+
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-		beanValidator.validate(fileSysMntrngVO, bindingResult);
 		if (bindingResult.hasErrors()) {
-			FileSysMntrng fileSysMntrng = fileSysMntrngService.selectFileSysMntrng(fileSysMntrngVO);
-			model.addAttribute("fileSysMntrng", fileSysMntrng);
 			return "egovframework/com/utl/sys/fsm/EgovFileSysMntrngUpdt";
 		}
 
 		if (isAuthenticated) {
 			fileSysMntrngVO.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-			
-			String fileSysNm = fileSysMntrngVO.getFileSysNm();
+
+			// 2026.02.28 KISA 취약점 조치
+			String fileSysNm = EgovStringUtil.isNullToString(fileSysMntrngVO.getFileSysNm());
 			String safeFileSysNm = EgovWebUtil.removeCRLF(fileSysNm).replaceAll("\\|", "").replaceAll("&", "");
 			fileSysMntrngVO.setFileSysNm(safeFileSysNm);
-			
+
 			fileSysMntrngService.updateFileSysMntrng(fileSysMntrngVO);
 		}
 
@@ -218,11 +214,14 @@ public class EgovFileSysMntrngController {
 	 * @param fileSysMntrng
 	 */
 	@RequestMapping("/utl/sys/fsm/insertFileSysMntrng.do")
-	public String insertFileSysMntrng(@ModelAttribute("fileSysMntrngVO") FileSysMntrngVO fileSysMntrngVO, BindingResult bindingResult, ModelMap model) throws Exception {
+	public String insertFileSysMntrng(
+		@Valid @ModelAttribute("fileSysMntrngVO") FileSysMntrngVO fileSysMntrngVO, BindingResult bindingResult,
+		ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
+
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
@@ -231,17 +230,16 @@ public class EgovFileSysMntrngController {
 
 		String sLocationUrl = "egovframework/com/utl/sys/fsm/EgovFileSysMntrngRegist";
 
-		//서버  validate 체크
-		beanValidator.validate(fileSysMntrngVO, bindingResult);
 		if (bindingResult.hasErrors()) {
 			return sLocationUrl;
 		}
 
 		//아이디 설정
-		fileSysMntrngVO.setFrstRegisterId((String) (loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId())));
-		fileSysMntrngVO.setLastUpdusrId((String) (loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId())));
-		
-		String fileSysNm = fileSysMntrngVO.getFileSysNm();
+		fileSysMntrngVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+		fileSysMntrngVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+
+		// 2026.02.28 KISA 취약점 조치
+		String fileSysNm = EgovStringUtil.isNullToString(fileSysMntrngVO.getFileSysNm());
 		String safeFileSysNm = EgovWebUtil.removeCRLF(fileSysNm).replaceAll("\\|", "").replaceAll("&", "");
 		fileSysMntrngVO.setFileSysNm(safeFileSysNm);
 
@@ -259,11 +257,11 @@ public class EgovFileSysMntrngController {
 	 * @param fileSysMntrng
 	 */
 	@RequestMapping("/utl/sys/fsm/deleteFileSysMntrng.do")
-	public String deleteFileSysMntrng(@ModelAttribute("fileSysMntrngVO") FileSysMntrngVO fileSysMntrngVO, ModelMap model) throws Exception {
+	public String deleteFileSysMntrng(@ModelAttribute("fileSysMntrngVO") FileSysMntrngVO fileSysMntrngVO, ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 		fileSysMntrngService.deleteFileSysMntrng(fileSysMntrngVO);
@@ -282,8 +280,10 @@ public class EgovFileSysMntrngController {
 		//System.out.println("FileSysNm" + fileSysMntrngVO.getFileSysNm());
 
 		int totalSpaceFileSys = 0;
+		// 2026.02.28 KISA 취약점 조치
+		String safeFileSysNm = EgovWebUtil.removeCRLF(EgovStringUtil.isNullToString(fileSysMntrngVO.getFileSysNm()));
 		try {
-			totalSpaceFileSys = FileSystemChecker.totalSpaceGb(EgovWebUtil.removeCRLF(fileSysMntrngVO.getFileSysNm()));
+			totalSpaceFileSys = FileSystemChecker.totalSpaceGb(safeFileSysNm);
 		} catch (IOException e) {
 			model.addAttribute("notApplicableFileSys", "true");
 		}
@@ -345,9 +345,9 @@ public class EgovFileSysMntrngController {
 		}
 
 		// 조회시작시
-		model.addAttribute("searchBgnHour", (List<ComDefaultCodeVO>) getTimeHH());
+		model.addAttribute("searchBgnHour", getTimeHH());
 		// 조회종료시
-		model.addAttribute("searchEndHour", (List<ComDefaultCodeVO>) getTimeHH());
+		model.addAttribute("searchEndHour", getTimeHH());
 
 		model.addAttribute("resultList", list);
 		model.addAttribute("resultCnt", map.get("resultCnt"));
@@ -383,7 +383,7 @@ public class EgovFileSysMntrngController {
 	 * @throws
 	 */
 	private List<ComDefaultCodeVO> getTimeHH() {
-		List<ComDefaultCodeVO> listHH = new ArrayList<ComDefaultCodeVO>();
+		List<ComDefaultCodeVO> listHH = new ArrayList<>();
 		//HashMap hmHHMM;
 		for (int i = 0; i < 24; i++) {
 			String sHH = "";

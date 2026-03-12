@@ -151,7 +151,6 @@ function fn_egov_search_RequestOffer(){
 		</ul>
 	</div>
 
-	<input name="cmd" type="hidden" value="">
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 	</form>
 

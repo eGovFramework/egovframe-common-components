@@ -5,7 +5,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <%
  /**
@@ -36,8 +35,13 @@
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
 <script type="text/javascript">
 	function fn_egov_update_sysHist(){
-		document.history.action = "<c:url value='/sym/log/slg/UpdateSysHistory.do'/>";
-		document.history.submit();
+		var varForm = document.getElementById("history");
+	    if(!validateHistory(varForm)){
+	        return;
+	    }else{
+    		document.history.action = "<c:url value='/sym/log/slg/UpdateSysHistory.do'/>";
+			document.history.submit();
+	    }
 	}
 
 	function fn_egov_select_sysHist(){
@@ -74,27 +78,28 @@
 				<c:out value="${result.codeNm}"/></option>
 				</c:forEach>
 				</select>
-				<form:errors path="histSeCode" />
+				<div><form:errors path="histSeCode" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymLogSlg.sysHistUpdt.sysNm"/> <span class="pilsu">*</span></th><!-- 시스템명 -->
 			<td class="left">
 			    <input name="sysNm" type="text" size="60" value="<c:out value='${history.sysNm}'/>"  maxlength="60" id="sysNm" >
-      			<form:errors path="sysNm" />
+      			<div><form:errors path="sysNm" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymLogSlg.sysHistUpdt.histCn"/> <span class="pilsu">*</span></th><!-- 이력내용  -->
 			<td class="left">
 			    <textarea name="histCn" class="textarea"  cols="50" rows="8"  style="height:100px;" id="histCn"><c:out value='${history.histCn}'/></textarea>
-      			<form:errors path="histCn" />
+      			<div><form:errors path="histCn" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymLogSlg.sysHistUpdt.frstRegisterPnttm"/></th><!-- 등록일자 -->
 			<td class="left">
 			    <c:out value="${history.frstRegisterPnttm}"/>
+			    <input type="hidden" name="frstRegisterPnttm" value="${history.frstRegisterPnttm}">
 			</td>
 		</tr>
 		<c:if test="${history.atchFileId != ''}">

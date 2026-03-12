@@ -2,14 +2,13 @@ package egovframework.com.sym.ccm.cde.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.sym.ccm.cde.service.CmmnDetailCodeVO;
 import egovframework.com.sym.ccm.cde.service.EgovCcmCmmnDetailCodeManageService;
+import jakarta.annotation.Resource;
 
 /**
 *
@@ -30,10 +29,10 @@ import egovframework.com.sym.ccm.cde.service.EgovCcmCmmnDetailCodeManageService;
 */
 @Service("CmmnDetailCodeManageService")
 public class EgovCcmCmmnDetailCodeManageServiceImpl extends EgovAbstractServiceImpl implements EgovCcmCmmnDetailCodeManageService{
-	
+
     @Resource(name="CmmnDetailCodeManageDAO")
     private CmmnDetailCodeManageDAO cmmnDetailCodeManageDAO;
-    
+
 	/**
 	 * 공통상세코드 총 개수를 조회한다.
 	 */
@@ -41,7 +40,7 @@ public class EgovCcmCmmnDetailCodeManageServiceImpl extends EgovAbstractServiceI
 	public int selectCmmnDetailCodeListTotCnt(CmmnDetailCodeVO searchVO) throws Exception {
         return cmmnDetailCodeManageDAO.selectCmmnDetailCodeListTotCnt(searchVO);
 	}
-	
+
 	/**
 	 * 공통상세코드 목록을 조회한다.
 	 */
@@ -52,7 +51,7 @@ public class EgovCcmCmmnDetailCodeManageServiceImpl extends EgovAbstractServiceI
 
 	/**
 	 * 공통상세코드 상세항목을 조회한다.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Override
 	public CmmnDetailCode selectCmmnDetailCodeDetail(CmmnDetailCodeVO cmmnDetailCodeVO) throws Exception {
@@ -62,12 +61,12 @@ public class EgovCcmCmmnDetailCodeManageServiceImpl extends EgovAbstractServiceI
 
 	/**
 	 * 공통상세코드를 삭제한다.
-	 * @throws Exception 
+	 * @throws Exception
 	 */
 	@Override
 	public void deleteCmmnDetailCode(CmmnDetailCodeVO cmmnDetailCodeVO) throws Exception {
 		cmmnDetailCodeManageDAO.deleteCmmnDetailCode(cmmnDetailCodeVO);
-		
+
 	}
 
 	/**
@@ -76,7 +75,7 @@ public class EgovCcmCmmnDetailCodeManageServiceImpl extends EgovAbstractServiceI
 	@Override
 	public void insertCmmnDetailCode(CmmnDetailCodeVO cmmnDetailCodeVO) throws Exception {
 		cmmnDetailCodeManageDAO.insertCmmnDetailCode(cmmnDetailCodeVO);
-		
+
 	}
 
 	/**
@@ -85,7 +84,7 @@ public class EgovCcmCmmnDetailCodeManageServiceImpl extends EgovAbstractServiceI
 	@Override
 	public void updateCmmnDetailCode(CmmnDetailCodeVO cmmnDetailCodeVO) throws Exception {
 		cmmnDetailCodeManageDAO.updateCmmnDetailCode(cmmnDetailCodeVO);
-		
+
 	}
-	
+
 }

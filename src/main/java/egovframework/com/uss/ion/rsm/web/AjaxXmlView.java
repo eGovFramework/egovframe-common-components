@@ -3,12 +3,11 @@ package egovframework.com.uss.ion.rsm.web;
 import java.io.PrintWriter;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.web.servlet.view.AbstractView;
 
 import egovframework.com.cmm.EgovWebUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
 *

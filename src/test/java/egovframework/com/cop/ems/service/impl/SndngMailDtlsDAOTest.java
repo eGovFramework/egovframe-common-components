@@ -1,8 +1,8 @@
 package egovframework.com.cop.ems.service.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -15,7 +15,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
@@ -246,11 +246,11 @@ public class SndngMailDtlsDAOTest extends EgovTestAbstractDAO {
     }
 
     private void assert1(final SndngMailVO sndngMailVO, final List<SndngMailVO> resultList) {
-        assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 0 < resultList.size());
+        assertTrue(0 < resultList.size(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
 
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), sndngMailVO.getMssageId(), resultList.get(0).getMssageId());
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), "C", sndngMailVO.getSndngResultCode());
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), "완료", resultList.get(0).getSndngResultCode());
+        assertEquals(sndngMailVO.getMssageId(), resultList.get(0).getMssageId(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
+        assertEquals("C", sndngMailVO.getSndngResultCode(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
+        assertEquals("완료", resultList.get(0).getSndngResultCode(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
 
@@ -259,7 +259,7 @@ public class SndngMailDtlsDAOTest extends EgovTestAbstractDAO {
      */
 
     @Test
-    public void testSelectSndngMailListTotCnt() {
+    void testSelectSndngMailListTotCnt() {
         // given
         final SndngMailVO sndngMailVO = new SndngMailVO();
         sndngMailVO.setSndngResultCode("C"); // 발송결과코드를 '요청'으로 설정
@@ -281,7 +281,7 @@ public class SndngMailDtlsDAOTest extends EgovTestAbstractDAO {
         }
 
         // then
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
 }

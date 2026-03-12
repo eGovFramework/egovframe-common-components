@@ -5,7 +5,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%
  /**
   * @Class Name : EgovBkmkMenuManageRegist.jsp
@@ -33,8 +32,7 @@
 		<link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 		<script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 		<script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="bkmk" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript">
 	function fn_egov_regist_bkmkInf(){
 
@@ -116,7 +114,7 @@
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form  name="bkmk" method="post" action = "<c:url value='/sym/mnu/bmm/registBkmkInf.do'/>">
+<form:form modelAttribute="bkmkMenuManage" name="bkmk" method="post" action = "<c:url value='/sym/mnu/bmm/registBkmkInf.do'/>">
 <input type = "hidden" name = "menuId" value = '<c:out value="${bkmkMenuManage.menuId}" />'>
 
 <div class="wTableFrm">
@@ -132,17 +130,19 @@
 		<tr>
 			<th><spring:message code="comSymMnuBmm.bkmkMenuManageRegist.menuName" /> <span class="pilsu">*</span></th><!-- 메뉴명 -->
 			<td class="left">
-			    <input name="menuNm" type="text" size="30"  value="<c:out value="${bkmkMenuManage.menuNm}" escapeXml="false" />" maxlength="60" style="width: 237px" readonly="readonly" class="readOnlyClass" title="메뉴명입력"/>
+			    <form:input path="menuNm" maxlength="60" style="width: 237px" readonly="true" class="readOnlyClass" title="메뉴명입력"/>
 	      		<!-- <a href="javascript:fn_egov_inqire_menu();" style="selector-dummy: expression(this.hideFocus=false);"><img src="<c:url value='/images/egovframework/com/cmm/icon/search2.gif' />"
 	     			style="vertical-align: middle" alt="<spring:message code="comSymMnuBmm.bkmkMenuManageRegist.selectMenu" />" title="<spring:message code="comSymMnuBmm.bkmkMenuManageRegist.selectMenu" />"></a> --><!-- 메뉴선택 -->
 	     		<a id="popupInqireMenu" title="메뉴선택" style="selector-dummy: expression(this.hideFocus=false);"><img src="<c:url value='/images/egovframework/com/cmm/icon/search2.gif' />"
 	     			style="vertical-align: middle" alt="<spring:message code="comSymMnuBmm.bkmkMenuManageRegist.selectMenu" />" title="<spring:message code="comSymMnuBmm.bkmkMenuManageRegist.selectMenu" />"></a>
+	     		<div><form:errors path="menuNm" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymMnuBmm.bkmkMenuManageRegist.menuURL" /> <span class="pilsu">*</span></th><!-- 메뉴 URL -->
 			<td class="left">
-			    <input name="progrmStrePath" type="text" size="30" value="<c:out value="${bkmkMenuManage.progrmStrePath}"/>"  maxlength="90" style="width: 235px" readonly="readonly" class="readOnlyClass" title="<spring:message code="comSymMnuBmm.bkmkMenuManageRegist.enterMenuURL" />"/><!-- 메뉴URL입력 -->
+			    <form:input path="progrmStrePath" maxlength="90" style="width: 235px" readonly="true" class="readOnlyClass" title="메뉴URL입력"/><!-- 메뉴URL입력 -->
+			    <div><form:errors path="progrmStrePath" cssClass="error" /></div>
 			</td>
 		</tr>
 	</table>
@@ -155,7 +155,7 @@
 	<div style="clear:both;"></div>
 </div>
 	
-</form>
+</form:form>
 
 </body>
 </html>

@@ -3,12 +3,9 @@ package egovframework.com.uss.ion.ntm.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.ComDefaultVO;
@@ -33,6 +29,8 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.ntm.service.EgovNoteManageService;
 import egovframework.com.uss.ion.ntm.service.NoteManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * 쪽지 관리(보내기)를 처리하는 Controller Class 구현
@@ -55,9 +53,6 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  */
 @Controller
 public class EgovNoteManageController {
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
@@ -118,7 +113,8 @@ public class EgovNoteManageController {
 
 			Map<?, ?> mapNoteManage = egovNoteManageService.selectNoteManage(noteManage);
 
-			noteManage.setNoteSj("RE : " + (String) mapNoteManage.get("noteSj"));
+			String noteSj = (String) mapNoteManage.get("noteSj");
+			noteManage.setNoteSj("RE : " + noteSj);
 
 			model.addAttribute("noteManage", noteManage);
 			model.addAttribute("noteManageMap", mapNoteManage);
@@ -143,16 +139,13 @@ public class EgovNoteManageController {
 	 */
 	@RequestMapping(value = "/uss/ion/ntm/registEgovNoteManageActor.do")
 	public String EgovNoteRecptnRegist(final MultipartHttpServletRequest multiRequest,
-			@RequestParam Map<?, ?> commandMap, NoteManageVO noteManage, BindingResult bindingResult, ModelMap model)
+			@RequestParam Map<?, ?> commandMap, @Valid @ModelAttribute("noteManage") NoteManageVO noteManage, BindingResult bindingResult, ModelMap model)
 			throws Exception {
 
 		String sLocationUrl = "egovframework/com/uss/ion/ntm/EgovNoteManage";
 
 		// 변수 설정
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
-		if (sCmd.equals("reply")) {
-			sLocationUrl = "redirect:/uss/ion/ntr/listNoteRecptn.do";
-		}
 
 		// Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -161,12 +154,6 @@ public class EgovNoteManageController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		// 서버 validate 체크
-		beanValidator.validate(noteManage, bindingResult);
-		if (bindingResult.hasErrors()) {
-			model.addAttribute("noteManage", noteManage);
-			return sLocationUrl;
-		}
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
@@ -186,21 +173,49 @@ public class EgovNoteManageController {
 		}
 		noteManage.setAtchFileId(atchFileId);
 
+		String recptnEmpList = (String) commandMap.get("recptnEmpList");
+		if (recptnEmpList != null && recptnEmpList.trim().isEmpty()) {
+			noteManage.setRecptnEmpList(null);
+		} else if (recptnEmpList != null) {
+			noteManage.setRecptnEmpList(recptnEmpList);
+		}
+
+		if (bindingResult.hasErrors()) {
+			ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
+			voComCode.setCodeId("COM050");
+			List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+			model.addAttribute("recptnSe", listComCode);
+	
+			// 답변 모드일 경우 필요한 데이터 재설정
+			if (sCmd.equals("reply")) {
+				model.addAttribute("cmd", sCmd);
+				// noteId가 noteManage에 없으면 commandMap에서 가져오기
+				if (noteManage.getNoteId() == null || noteManage.getNoteId().trim().isEmpty()) {
+					String noteIdFromMap = (String) commandMap.get("noteId");
+					if (noteIdFromMap != null && !noteIdFromMap.trim().isEmpty()) {
+						noteManage.setNoteId(noteIdFromMap);
+					}
+				}
+				// noteId가 있으면 noteManageMap 조회
+				if (noteManage.getNoteId() != null && !noteManage.getNoteId().trim().isEmpty()) {
+					Map<?, ?> mapNoteManage = egovNoteManageService.selectNoteManage(noteManage);
+					model.addAttribute("noteManageMap", mapNoteManage);
+				}
+			}
+			
+			model.addAttribute("noteManage", noteManage);
+			return sLocationUrl;
+		}
+
 		// 쪽지등록
 		egovNoteManageService.insertNoteManage(noteManage, commandMap);
-		// NoteManage 빈 객체 생성
-		model.addAttribute("noteManage", new NoteManageVO());
-
-		// 등록메세지 설정
-		String reusltScript = "";
-
-		reusltScript += "<script type='text/javaScript' language='javascript'>";
-		reusltScript += "alert(' 작성된 쪽지를 전송하였습니다!  ');";
-		reusltScript += "</script>";
-
-		model.addAttribute("reusltScript", reusltScript);
-
-		return sLocationUrl;
+		
+		// 답변 모드가 아닌 경우 리스트로 리다이렉트
+		if (!sCmd.equals("reply")) {
+			return "redirect:/uss/ion/nts/listNoteTrnsmit.do";
+		}
+		
+		return "redirect:/uss/ion/ntr/listNoteRecptn.do";
 	}
 
 	/**

@@ -1,11 +1,7 @@
 package egovframework.com.sym.tbm.tbp.web;
-
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -13,7 +9,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -26,6 +21,8 @@ import egovframework.com.sym.tbm.tbp.service.EgovTroblProcessService;
 import egovframework.com.sym.tbm.tbp.service.TroblProcess;
 import egovframework.com.sym.tbm.tbp.service.TroblProcessVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * <pre>
@@ -61,9 +58,6 @@ public class EgovTroblProcessController {
 
 	@Resource(name = "egovTroblProcessService")
 	private EgovTroblProcessService egovTroblProcessService;
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	@Resource(name = "EgovCmmUseService")
 	private EgovCmmUseService egovCmmUseService;
@@ -139,19 +133,18 @@ public class EgovTroblProcessController {
 
 	/**
 	 * 장애처리정보를 신규로 등록한다.
-	 * 
+	 *
 	 * @param troblManage - 장애관리 model
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/sym/tbm/tbp/addTroblProcess.do")
-	public String insertTroblProcess(@ModelAttribute("troblProcess") TroblProcess troblProcess,
+	public String insertTroblProcess(@ModelAttribute("troblProcessVO") TroblProcessVO troblProcessVO,
+			@Valid @ModelAttribute("troblProcess") TroblProcess troblProcess,
 			BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
 
-		beanValidator.validate(troblProcess, bindingResult); // validation 수행
-
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("troblProcessVO", troblProcess);
-			return "egovframework/com/sym/tbm/tbp/EgovTroblProcess";
+			model.addAttribute("troblProcess", egovTroblProcessService.selectTroblProcess(troblProcessVO));
+			return "egovframework/com/sym/tbm/tbp/EgovTroblProcessRegist";
 		} else {
 			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 			troblProcess.setTroblProcessTime(EgovStringUtil.removeMinusChar(troblProcess.getTroblProcessTime()));

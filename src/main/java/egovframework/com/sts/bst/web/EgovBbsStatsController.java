@@ -4,8 +4,6 @@ import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.apache.commons.validator.GenericValidator;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -18,6 +16,7 @@ import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.sts.bst.service.EgovBbsStatsService;
 import egovframework.com.sts.com.StatsVO;
+import jakarta.annotation.Resource;
 
 /**
  * 게시물 통계 검색 컨트롤러 클래스
@@ -87,8 +86,8 @@ public class EgovBbsStatsController {
 				bbsStatsList = bbsStatsService.selectBbsCretCntStats(statsVO);
 				// 그래프 길이 설정
 				float iMaxUnit = 50.0f;
-				for (int i = 0; i < bbsStatsList.size(); i++) {
-					StatsVO sVO = bbsStatsList.get(i);
+				for (StatsVO element : bbsStatsList) {
+					StatsVO sVO = element;
 					int iCnt = sVO.getStatsCo();
 					if (iCnt > 10 && iCnt <= 100) {
 						if (iMaxUnit > 5.0f) {
@@ -115,8 +114,8 @@ public class EgovBbsStatsController {
 				bbsStatsList = bbsStatsService.selectBbsTotCntStats(statsVO);
 				// 그래프 길이 설정
 				float iMaxUnit = 50.0f;
-				for (int i = 0; i < bbsStatsList.size(); i++) {
-					StatsVO sVO = bbsStatsList.get(i);
+				for (StatsVO element : bbsStatsList) {
+					StatsVO sVO = element;
 					int iCnt = sVO.getStatsCo();
 					if (iCnt > 10 && iCnt <= 100) {
 						if (iMaxUnit > 5.0f) {
@@ -143,8 +142,8 @@ public class EgovBbsStatsController {
 				bbsStatsList = bbsStatsService.selectBbsAvgCntStats(statsVO);
 				// 그래프 길이 설정
 				float iMaxUnit = 50.0f;
-				for (int i = 0; i < bbsStatsList.size(); i++) {
-					StatsVO sVO = bbsStatsList.get(i);
+				for (StatsVO element : bbsStatsList) {
+					StatsVO sVO = element;
 					int iCnt = (int) sVO.getAvrgInqireCo();
 					sVO.setStatsCo(iCnt);
 					if (iCnt > 10 && iCnt <= 100) {

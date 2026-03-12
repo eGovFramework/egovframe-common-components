@@ -19,33 +19,10 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <%
-
 String sCmd = request.getParameter("cmd") == null ? "": (String)request.getParameter("cmd");
-String sVerify = request.getParameter("verify") == null ? "": (String)request.getParameter("verify");
-
-String sConsumerKey = request.getAttribute("consumerKey") == null ? "": (String)request.getAttribute("consumerKey");
-String sConsumerSecret = request.getAttribute("consumerSecret") == null ? "": (String)request.getAttribute("consumerSecret");
-
-String sAt = request.getParameter("at") == null ? "": (String)request.getParameter("at");
-
-//웹보안을 위한 변수 설정
-String sCmds = "";
-if(sCmd.equals("RECPTN") || sCmd.equals("TRNSMIT")){
-	sCmds = sCmd;
-}
-
-if(!sConsumerKey.equals("") && !sConsumerSecret.equals("") && !sAt.equals("1")){
-	
-	// 2011.10.25 보안점검 후속조치
-    sCmds = sCmds.replaceAll("\r", "").replaceAll("\n", "");
-    sConsumerKey = sConsumerKey.replaceAll("\r", "").replaceAll("\n", "");
-	sConsumerSecret = sConsumerSecret.replaceAll("\r", "").replaceAll("\n", "");
-	
-	response.sendRedirect("<c:url value='/uss/ion/tir/selectTwitterPopupActor.do'/>?chkKey=1&at=1&cmd="+sCmds+"&ConsumerKey="+sConsumerKey+"&ConsumerSecret="+sConsumerSecret);
-}
+String sErrorMessage = request.getAttribute("errorMessage") == null ? "": String.valueOf(request.getAttribute("errorMessage"));
 %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -55,75 +32,84 @@ if(!sConsumerKey.equals("") && !sConsumerSecret.equals("") && !sAt.equals("1")){
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <script type="text/javaScript" language="javascript">
-//초기화
+// 초기화
 function fn_init_TwitterPopup(){
-
 }
+
 /* ********************************************************
-* 전송 체크
-******************************************************** */
+ * 인증 시작 전 입력값을 검사한다.
+ ******************************************************** */
 function fn_egov_search_TwitterRecptn(){
-	var vFrom = document.twitterInfo;
+    var vFrom = document.twitterInfo;
+    var key = vFrom.ConsumerKey.value;
+    var secret = vFrom.ConsumerSecret.value;
 
-	if(vFrom.ConsumerKey.value == ""){
-		alert("<spring:message code="ussIonTir.twitterPopup.consumerKey"/>");/* Consumer key 를 입력해주세요! */
-		vFrom.ConsumerKey.focus();
-		return;
-	}
+    if(key === ""){
+        alert("<spring:message code="ussIonTir.twitterPopup.consumerKey"/>");
+        vFrom.ConsumerKey.focus();
+        return false;
+    }
 
-	if(vFrom.ConsumerSecret.value == ""){
-		alert("<spring:message code="ussIonTir.twitterPopup.consumerSecret"/>");/* Consumer secret 를 입력해주세요! */
-		vFrom.ConsumerSecret.focus();
-		return;
-	}
-	
-	vFrom.submit();
+    if(secret === ""){
+        alert("<spring:message code="ussIonTir.twitterPopup.consumerSecret"/>");
+        vFrom.ConsumerSecret.focus();
+        return false;
+    }
+
+    return true;
 }
 </script>
 </head>
 <body onLoad="fn_init_TwitterPopup()">
 <DIV id="content" style="width:712px">
-<!-- noscript 테그 -->
-<noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
-<form id="twitterInfo" name="twitterInfo" action="<c:url value='/uss/ion/tir/selectTwitterPopupActor.do'/>" method="post" enctype="multipart/form-data">
+<noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
+<form id="twitterInfo" name="twitterInfo" action="<c:url value='/twitter/login.do'/>" method="post" enctype="multipart/form-data" onsubmit="return fn_egov_search_TwitterRecptn();">
 
 <div class="wTableFrm">
-	<!-- 타이틀 -->
-	<h2><spring:message code="ussIonTir.twitterPopup.twitterPopupKey"/></h2><!-- 트위터(Twitter) 인증요청 - 인증키 입력 -->
+    <h2><spring:message code="ussIonTir.twitterPopup.twitterPopupKey"/></h2><!-- 트위터(Twitter) 인증요청 - 인증키 입력 -->
 
-	<!-- 등록폼 -->
-	<table class="wTable">
-		<colgroup>
-			<col style="width:25%" />
-			<col style="" />
-		</colgroup>
-		<tr>
-			<th>Consumer key <span class="pilsu">*</span></th>
-			<td class="left">
-			    <input type="text" id="ConsumerKey" name="ConsumerKey" title="ConsumerKey" value="" maxlength="255" style="width:100%">
-			</td>
-		</tr>
-		<tr>
-			<th>Consumer secret <span class="pilsu">*</span></th>
-			<td class="left">
-			    <input type="password" id="ConsumerSecret" name="ConsumerSecret" title="ConsumerSecret" value="" maxlength="255" style="width:100%; height:24px;">
-			</td>
-		</tr>
-		<tr>
-			<td class="left" colspan="2">
-			    <input type="checkbox" name="chkKey" id="chkKey" value="1" title="인증키 저장 여부 체크박스" onclick="fn_chkKey_TwitterPopup(this)" <%if(!sConsumerKey.equals("") && !sConsumerSecret.equals("")){ %>checked<%}%>><label for="chkKey"><spring:message code="ussIonTir.twitterPopup.saveKey"/></label><!-- Consumer key/Consumer secret 키 값 저장 -->
-			</td>
-		</tr>
-	</table>
+    <div style="margin:8px 0; color:#b06a00; font-weight:600; line-height:1.5;">
+        저장 기능은 임시 비활성화 상태입니다. 활성화를 위해서는 컨트롤러를 확인해주세요. <br/>
+        인증에 사용할 Client ID / Client Secret을 입력해 주세요.
+    </div>
 
-	<!-- 하단 버튼 -->
-	<div class="btn">
-		<input class="s_submit" type="submit" value="<spring:message code="ussIonTir.twitterPopup.send"/>" onclick="fn_egov_search_TwitterRecptn()" />
-	</div>
-	<div style="clear:both;"></div>
+    <% if(!"".equals(sErrorMessage)){ %>
+    <div style="margin:8px 0; color:#b00020; font-weight:600;"><%= sErrorMessage %></div>
+    <% } %>
+
+    <table class="wTable">
+        <colgroup>
+            <col style="width:25%" />
+            <col style="" />
+        </colgroup>
+        <tr>
+            <th>Client ID <span class="pilsu">*</span></th>
+            <td class="left">
+                <input type="text" id="ConsumerKey" name="ConsumerKey" title="ConsumerKey" value="" maxlength="255" style="width:100%" placeholder="Client ID 입력">
+            </td>
+        </tr>
+        <tr>
+            <th>Client Secret <span class="pilsu">*</span></th>
+            <td class="left">
+                <input type="password" id="ConsumerSecret" name="ConsumerSecret" title="ConsumerSecret" value="" maxlength="255" style="width:100%; height:24px;" placeholder="Client Secret 입력">
+            </td>
+        </tr>
+        <tr>
+            <td class="left" colspan="2">
+                <input type="checkbox" id="chkKeyDisabled" title="인증키 저장 기능 비활성화" disabled="disabled">
+                <label for="chkKeyDisabled">인증키 저장 기능 (비활성화 상태)</label>
+            </td>
+        </tr>
+    </table>
+
+    <div class="btn">
+        <input class="s_submit" type="submit" value="<spring:message code="ussIonTir.twitterPopup.send"/>" />
+    </div>
+    <div style="clear:both;"></div>
 </div>
 
 <input type="hidden" name="cmd" value="<c:out value="${sCmd}"/>">
+<input type="hidden" name="chkKey" value="0">
 </form>
 
 </DIV>

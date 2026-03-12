@@ -1,5 +1,10 @@
 package egovframework.com.uss.ion.sit.service;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+
+import egovframework.com.cmm.ComDefaultVO;
+import jakarta.validation.constraints.Size;
+
 /**
  * 
  * 사이트정보를 처리하는 VO 클래스
@@ -17,7 +22,7 @@ package egovframework.com.uss.ion.sit.service;
  *
  * </pre>
  */
-public class SiteVO extends SiteDefaultVO {
+public class SiteVO extends ComDefaultVO {
 	
     private static final long serialVersionUID = 1L;
     
@@ -25,15 +30,22 @@ public class SiteVO extends SiteDefaultVO {
     private String siteId;
     
     /** 사이트 URL */
+    @EgovNullCheck
+    @Size(max=100)
     private String siteUrl;
     
     /** 사이트명 */
+    @EgovNullCheck
+    @Size(max=100)
     private String siteNm;
     
     /** 사이트설명 */
+    @EgovNullCheck
+    @Size(max=1000)
     private String siteDc;
     
     /** 사이트주제분류코드 */
+    @EgovNullCheck
     private String siteThemaClCode;
 
     /** 사이트주제분류명 */

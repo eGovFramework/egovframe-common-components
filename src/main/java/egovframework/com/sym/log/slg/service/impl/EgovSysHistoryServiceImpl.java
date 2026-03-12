@@ -3,8 +3,6 @@ package egovframework.com.sym.log.slg.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.ModelMap;
@@ -13,6 +11,7 @@ import egovframework.com.sym.log.slg.service.EgovSysHistoryService;
 import egovframework.com.sym.log.slg.service.SysHistory;
 import egovframework.com.sym.log.slg.service.SysHistoryVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
 
 /**
  * @Class Name : EgovSysHistoryServiceImpl.java
@@ -80,7 +79,7 @@ public class EgovSysHistoryServiceImpl extends EgovAbstractServiceImpl implement
 
 	/**
      * 시스템 이력정보 목록을 조회한다.
-     * 
+     *
      * @param history - 시스템 이력정보가 담긴 모델 객체
      * @return
      * @throws Exception

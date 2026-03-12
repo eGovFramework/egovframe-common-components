@@ -17,7 +17,6 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
-import egovframework.com.uss.ion.uas.service.UserAbsnce;
 import egovframework.com.uss.ion.uas.service.UserAbsnceVO;
 
 @Repository("userAbsnceDAO")
@@ -53,26 +52,26 @@ public class UserAbsnceDAO extends EgovComAbstractDAO {
 
 	/**
 	 * 사용자부재정보를 신규로 등록한다.
-	 * @param userAbsnce - 사용자부재 model
+	 * @param userAbsnceVO - 사용자부재 VO
 	 */
-	public void insertUserAbsnce(UserAbsnce userAbsnce) throws Exception {
-		insert("userAbsnceDAO.insertUserAbsnce", userAbsnce);
+	public void insertUserAbsnce(UserAbsnceVO userAbsnceVO) throws Exception {
+		insert("userAbsnceDAO.insertUserAbsnce", userAbsnceVO);
 	}
 
 	/**
 	 * 기 등록된 사용자부재정보를 수정한다.
-	 * @param userAbsnce - 사용자부재 model
+	 * @param userAbsnceVO - 사용자부재 VO
 	 */
-	public void updateUserAbsnce(UserAbsnce userAbsnce) throws Exception {
-		update("userAbsnceDAO.updateUserAbsnce", userAbsnce);
+	public void updateUserAbsnce(UserAbsnceVO userAbsnceVO) throws Exception {
+		update("userAbsnceDAO.updateUserAbsnce", userAbsnceVO);
 	}
 
 	/**
 	 * 기 등록된 사용자부재정보를 삭제한다.
-	 * @param userAbsnce - 사용자부재 model
+	 * @param userAbsnceVO - 사용자부재 VO
 	 */
-	public void deleteUserAbsnce(UserAbsnce userAbsnce) throws Exception {
-		delete("userAbsnceDAO.deleteUserAbsnce", userAbsnce);
+	public void deleteUserAbsnce(UserAbsnceVO userAbsnceVO) throws Exception {
+		delete("userAbsnceDAO.deleteUserAbsnce", userAbsnceVO);
 	}
 
 	/**

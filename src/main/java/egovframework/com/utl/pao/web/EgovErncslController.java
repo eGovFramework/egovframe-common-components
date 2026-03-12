@@ -3,13 +3,6 @@ package egovframework.com.utl.pao.web;
 import java.io.IOException;
 import java.sql.SQLException;
 
-import javax.annotation.Resource;
-import javax.servlet.ServletConfig;
-import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -18,6 +11,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.utl.pao.service.EgovPrntngOutpt;
 import egovframework.com.utl.pao.service.PrntngOutptVO;
+import jakarta.annotation.Resource;
+import jakarta.servlet.ServletConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.http.HttpServlet;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  *
@@ -51,6 +50,7 @@ public class EgovErncslController extends HttpServlet {
 	/**
 	 * 서블릿 초기화
 	 */
+	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
 	}

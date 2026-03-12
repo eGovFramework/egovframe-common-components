@@ -131,10 +131,10 @@ function fncViewIntnetSvcGuidance() {
 	<table class="board_list">
 		<caption></caption>
 		<colgroup>
-			<col style="width:25%" />
-			<col style="width:40%" />
-			<col style="width:10%" />
-			<col style="width:25%" />
+			<col style="width:35%" />
+			<col style="width:35%" />
+			<col style="width:15%" />
+			<col style="width:15%" />
 		</colgroup>
 		<thead>
 			<tr>
@@ -153,7 +153,6 @@ function fncViewIntnetSvcGuidance() {
 			 </td>
 			 </tr>
 			 </c:if>
-			 <tbody>
 			 <c:forEach var="intnetSvcGuidance" items="${intnetSvcGuidanceList}" varStatus="status">
 			  <tr>
 			    <td>
@@ -167,7 +166,7 @@ function fncViewIntnetSvcGuidance() {
 			    </td>
 			    <td><c:out value="${intnetSvcGuidance.intnetSvcNm}"/></td>
 			    <td><c:out value="${intnetSvcGuidance.reflctAt}"/></td>
-			    <td><c:out value="${fn:substring(intnetSvcGuidance.regDate,0,19)}"/></td>
+			    <td><c:out value="${intnetSvcGuidance.frstRegisterPnttm}"/></td>
 			  </tr>
 			 </c:forEach>
 		</tbody>

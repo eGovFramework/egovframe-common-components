@@ -153,7 +153,7 @@
 						});
 				})
 				.on('rename_node.jstree', function (e, data) {
-					if(data.node.icon == "dept") {
+					if(data.node.icon == "DEPT") {
 						url="<c:url value='/ext/ldapumt/dpt/renameNode.do' />";
 					} else {
 						url="<c:url value='/ext/ldapumt/dpt/renameUserNode.do' />";
@@ -194,14 +194,17 @@
 						
 						var url;
 						var htmlfile;
-						
+						console.log("데이터노드"+data.node);
+						console.log("데이터아이콘"+data.node.icon);
+						console.log("데이터타입"+data.node.type);
 						// 선택이 부서일 경우
-						if(data.node.icon == "dept") {
+						// DEPT, USER (LdapTreeObject.java 기준)
+						if(data.node.icon == "DEPT") {
 							url = "<c:url value='/ext/ldapumt/dpt/getDeptManage.do' />";
 							htmlfile = "<c:url value='/html/egovframework/com/ext/ldapumt/dept_html.jsp' />";
 						}
 							
-						if(data.node.icon == "user") {
+						if(data.node.icon == "USER") {
 							url = "<c:url value='/ext/ldapumt/dpt/getUserManage.do' />";
 							htmlfile = "<c:url value='/html/egovframework/com/ext/ldapumt/user_html.jsp' />";
 						}

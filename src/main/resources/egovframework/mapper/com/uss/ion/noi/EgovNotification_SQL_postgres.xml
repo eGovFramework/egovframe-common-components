@@ -68,7 +68,7 @@
 			</if>	
 	</select>
 
-	<insert id="insertNotificationInf" parameterType="egovframework.com.uss.ion.noi.service.Notification">
+	<insert id="insertNotificationInf" parameterType="egovframework.com.uss.ion.noi.service.NotificationVO">
 		<selectKey keyProperty="ntfcNo" resultType="java.lang.String" order="BEFORE">
 			SELECT COALESCE(MAX(NTCN_NO),0)+1 AS NTCN_NO FROM COMTNNTFCINFO
 		</selectKey>
@@ -100,7 +100,7 @@
 						
 	</select> 
  
- 	<update id="updateNotificationInf" parameterType="egovframework.com.uss.ion.noi.service.Notification">
+ 	<update id="updateNotificationInf" parameterType="egovframework.com.uss.ion.noi.service.NotificationVO">
  		
 			UPDATE COMTNNTFCINFO SET 
 				NTCN_SJ = #{ntfcSj},
@@ -113,7 +113,7 @@
  		
  	</update>
 
- 	<update id="deleteNotificationInf" parameterType="egovframework.com.uss.ion.noi.service.Notification">
+ 	<update id="deleteNotificationInf" parameterType="egovframework.com.uss.ion.noi.service.NotificationVO">
  		
 			DELETE FROM COMTNNTFCINFO
 			WHERE NTCN_NO::VARCHAR = #{ntfcNo}

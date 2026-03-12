@@ -19,6 +19,8 @@
  */
 package egovframework.com.uss.ion.fbk.web;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.service.EgovProperties;
+import egovframework.com.uss.olp.qim.web.EgovQustnrItemManageController;
 
 /**
  * Facebook을 처리하는 Controller Class 구현
@@ -46,14 +50,30 @@ import egovframework.com.cmm.annotation.IncludedInfo;
 @Controller
 public class EgovFacebookController {
 	
+	private static final Logger LOGGER = LoggerFactory.getLogger(EgovQustnrItemManageController.class);	
 	/**
 	 * facebook 로그인 버튼을 보여준 후, 로그인이 완료되면 연동을 위한 목록을 보여준다.
 	 * @return String - 리턴 Url
 	 */
 	@IncludedInfo(name="Facebook 연동",order = 831 ,gid = 50)
 	@RequestMapping(value = "/uss/ion/fbk/EgovFacebookSignin.do", method = RequestMethod.GET)
-	public String home() {
+	public String home(Model model) {
+		String appId = EgovProperties.getProperty("facebook.appId");
+		model.addAttribute("facebookAppId",appId);
+		LOGGER.info("####페이스북 앱 아이디 불러옴 : {}",appId);
 		return "egovframework/com/uss/ion/fbk/EgovFacebookSignin";
+	}
+	/**
+	 * facebook 담벼락 화면 조회
+	 * @param model
+	 * @return
+	 */
+	@RequestMapping(value="/uss/ion/fbk/feed.do", method=RequestMethod.GET)
+	public String showFeed(Model model) {
+		String appId = EgovProperties.getProperty("facebook.appId");
+		model.addAttribute("facebookAppId",appId);
+		LOGGER.info("####페이스북 앱 아이디 불러옴 feed : {}",appId);
+		return "egovframework/com/uss/ion/fbk/EgovFacebookFeed";
 	}
 
 	/**
@@ -71,6 +91,9 @@ public class EgovFacebookController {
 	 */
 	@RequestMapping(value="/uss/ion/fbk/albums.do", method=RequestMethod.GET)
 	public String showAlbums(Model model) {
+		String appId = EgovProperties.getProperty("facebook.appId");
+		model.addAttribute("facebookAppId",appId);
+		LOGGER.info("####페이스북 앱 아이디 불러옴 album 목록: {}",appId);
 		return "egovframework/com/uss/ion/fbk/EgovFacebookAlbums";
 	}
 
@@ -81,6 +104,9 @@ public class EgovFacebookController {
 	@RequestMapping(value="/uss/ion/fbk/album/{albumId}", method=RequestMethod.GET)
 	public String showAlbum(@PathVariable("albumId") String albumId, Model model) {
 		model.addAttribute("albumId", albumId);
+		String appId = EgovProperties.getProperty("facebook.appId");
+		model.addAttribute("facebookAppId",appId);
+		LOGGER.info("####페이스북 앱 아이디 불러옴 albums 내용 : {}",appId);
 		return "egovframework/com/uss/ion/fbk/EgovFacebookAlbum";
 	}
 
@@ -90,6 +116,9 @@ public class EgovFacebookController {
 	 */
 	@RequestMapping(value="/uss/ion/fbk/profile.do", method=RequestMethod.GET)
 	public String profile(Model model) {
+		String appId = EgovProperties.getProperty("facebook.appId");
+		model.addAttribute("facebookAppId",appId);
+		LOGGER.info("####페이스북 앱 아이디 불러옴 profile : {}",appId);
 		return "egovframework/com/uss/ion/fbk/EgovFacebookProfile";
 	}
 

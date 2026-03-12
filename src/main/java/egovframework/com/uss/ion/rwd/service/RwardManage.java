@@ -2,6 +2,10 @@ package egovframework.com.uss.ion.rwd.service;
 
 import egovframework.com.cmm.ComDefaultVO;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 /**
  * 개요
  * - 포상관리에 대한 model 클래스를 정의한다.
@@ -42,6 +46,7 @@ public class RwardManage extends ComDefaultVO {
 	/**
 	*  포상자명	      
 	*/ 
+	@EgovNullCheck
 	private String rwardManNm;
 
 	/**
@@ -60,26 +65,35 @@ public class RwardManage extends ComDefaultVO {
 	/**
 	*  포상코드	      
 	*/ 
+	@EgovNullCheck
 	private String rwardCd;
 
 	/**
 	*  포상일자	      
 	*/ 
+	@EgovNullCheck
+	@Size(max=10)
+	@Pattern(regexp="^\\d{4}-\\d{2}-\\d{2}$", message="{validation.pattern.date}")
 	private String rwardDe;
 
 	/**
 	*  포상명
 	*/ 
+	@EgovNullCheck
+	@Size(max=255)
 	private String rwardNm;
 	
 	/**
 	*  공적내용	      
 	*/ 
+	@EgovNullCheck
+	@Size(max=1000)
 	private String pblenCn;
 
 	/**
 	*  결재자ID	      
 	*/ 
+	@EgovNullCheck
 	private String sanctnerId;
 
 	/**

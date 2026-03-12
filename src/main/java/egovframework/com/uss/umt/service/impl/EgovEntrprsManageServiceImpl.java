@@ -2,18 +2,18 @@ package egovframework.com.uss.umt.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.uss.umt.service.EgovEntrprsManageService;
 import egovframework.com.uss.umt.service.EntrprsManageVO;
+import egovframework.com.uss.umt.service.EntrprsPasswordManageVO;
 import egovframework.com.uss.umt.service.StplatVO;
 import egovframework.com.uss.umt.service.UserDefaultVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovFileScrty;
+import jakarta.annotation.Resource;
 
 /**
  * 기업회원관리에 관한 비지니스클래스를 정의한다.
@@ -36,9 +36,9 @@ import egovframework.com.utl.sim.service.EgovFileScrty;
 @Service("entrprsManageService")
 public class EgovEntrprsManageServiceImpl extends EgovAbstractServiceImpl implements EgovEntrprsManageService {
 
-	/** userManageDAO */
-    @Resource(name="userManageDAO")
-    private UserManageDAO userManageDAO;
+	/** emplyrManageDAO */
+    @Resource(name="emplyrManageDAO")
+    private EmplyrManageDAO emplyrManageDAO;
 
     /** mberManageDAO */
     @Resource(name="mberManageDAO")
@@ -105,12 +105,12 @@ public class EgovEntrprsManageServiceImpl extends EgovAbstractServiceImpl implem
 	public void deleteEntrprsmber(String checkedIdForDel)  {
         //log.debug("jjyser_delete-->"+checkedIdForDel);
         String [] delId = checkedIdForDel.split(",");
-        for (int i=0; i<delId.length ; i++){
-            String [] id = delId[i].split(":");
+        for (String element : delId) {
+            String [] id = element.split(":");
             //log.debug("id[0]:"+id[0]);
             if (id[0].equals("USR03")){
                 //업무사용자(직원)삭제
-                userManageDAO.deleteUser(id[1]);
+            	emplyrManageDAO.deleteEmplyr(id[1]);
             }else if(id[0].equals("USR01")){
                 //일반회원삭제
                 mberManageDAO.deleteMber(id[1]);
@@ -139,7 +139,7 @@ public class EgovEntrprsManageServiceImpl extends EgovAbstractServiceImpl implem
 	 * @throws Exception
 	 */
 	@Override
-	public void updatePassword(EntrprsManageVO passVO) {
+	public void updatePassword(EntrprsPasswordManageVO passVO) {
 		entrprsManageDAO.updatePassword(passVO);
 	}
 
@@ -150,9 +150,9 @@ public class EgovEntrprsManageServiceImpl extends EgovAbstractServiceImpl implem
 	 * @throws Exception
 	 */
 	@Override
-	public EntrprsManageVO selectPassword(EntrprsManageVO passVO) {
-		EntrprsManageVO entrprsManageVO = entrprsManageDAO.selectPassword(passVO);
-		return entrprsManageVO;
+	public EntrprsPasswordManageVO selectPassword(EntrprsPasswordManageVO passVO) {
+		EntrprsPasswordManageVO entrprsPasswordManageVO = entrprsManageDAO.selectPassword(passVO);
+		return entrprsPasswordManageVO;
 	}
 
 	/**
@@ -176,9 +176,9 @@ public class EgovEntrprsManageServiceImpl extends EgovAbstractServiceImpl implem
 	public int selectEntrprsMberListTotCnt(UserDefaultVO userSearchVO) {
     	return entrprsManageDAO.selectEntrprsMberListTotCnt(userSearchVO);
     }
-    
+
     /**
-     * 로그인인증제한 해제 
+     * 로그인인증제한 해제
      * @param entrprsManageVO 기업회원정보
      * @return void
      * @throws Exception

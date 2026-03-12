@@ -1,14 +1,15 @@
 package egovframework.com.cop.smt.djm.service.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
@@ -178,7 +179,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
         final int result = deptJobDAO.insertDeptJobBx(deptJobBx);
 
         // then
-        assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage("fail.common.insert"));
 
         if (log.isDebugEnabled()) {
             log.debug("result={}", result);
@@ -217,7 +218,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
         final int result = deptJobDAO.insertDeptJob(deptJob);
 
         // then
-        assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage("fail.common.insert"));
 
         if (log.isDebugEnabled()) {
             log.debug("result={}", result);
@@ -248,8 +249,8 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
         final List<ChargerVO> resultList = deptJobDAO.selectChargerList(chargerVO);
 
         // then
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), chargerVO.getSearchWrd(),
-                resultList.get(0).getOrgnztNm());
+        assertEquals(chargerVO.getSearchWrd(), resultList.get(0).getOrgnztNm(),
+                egovMessageSource.getMessage(FAIL_COMMON_SELECT));
 
         if (log.isDebugEnabled()) {
             for (final ChargerVO result : resultList) {
@@ -285,7 +286,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
             log.debug("totCnt={}", totCnt);
         }
 
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), true, totCnt > -1);
+        assertTrue(totCnt > -1, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     /**
@@ -328,13 +329,13 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
             }
         }
 
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), orgnztId, resultList.get(0).getOrgnztId());
+        assertEquals(orgnztId, resultList.get(0).getOrgnztId(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
         if ("0".equals(deptVO.getSearchCnd())) {
-            assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), deptVO.getSearchWrd(),
-                    resultList.get(0).getOrgnztNm());
+            assertEquals(deptVO.getSearchWrd(), resultList.get(0).getOrgnztNm(),
+                    egovMessageSource.getMessage(FAIL_COMMON_SELECT));
         } else if ("1".equals(deptVO.getSearchCnd())) {
-            assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), deptVO.getSearchWrd(),
-                    resultList.get(0).getOrgnztDc());
+            assertEquals(deptVO.getSearchWrd(), resultList.get(0).getOrgnztDc(),
+                    egovMessageSource.getMessage(FAIL_COMMON_SELECT));
         }
     }
 
@@ -360,7 +361,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
             log.debug("totCnt={}", totCnt);
         }
 
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), true, totCnt > -1);
+        assertTrue(totCnt > -1, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     /**
@@ -384,7 +385,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
             log.debug("result={}", result);
         }
 
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), "기본조직", result);
+        assertEquals("기본조직", result, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     /**
@@ -430,11 +431,11 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
         }
 
         if ("0".equals(deptJobBxVO.getSearchCnd())) {
-            assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), deptJobBxVO.getSearchWrd(),
-                    resultList.get(0).getDeptNm());
+            assertEquals(deptJobBxVO.getSearchWrd(), resultList.get(0).getDeptNm(),
+                    egovMessageSource.getMessage(FAIL_COMMON_SELECT));
         } else if ("1".equals(deptJobBxVO.getSearchCnd())) {
-            assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), deptJobBxVO.getSearchWrd(),
-                    resultList.get(0).getDeptJobBxNm());
+            assertEquals(deptJobBxVO.getSearchWrd(), resultList.get(0).getDeptJobBxNm(),
+                    egovMessageSource.getMessage(FAIL_COMMON_SELECT));
         }
     }
 
@@ -463,7 +464,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
             }
         }
 
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), true, resultList != null);
+        assertTrue(resultList != null, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     /**
@@ -497,14 +498,14 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
             log.debug("result={}", result);
         }
 
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), true, result > -1);
+        assertTrue(result > -1, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     /**
      * 주어진 조건에 맞는 부서업무함을 불러온다.
      */
     @Test
-    public void selectDeptJobBx() {
+    void selectDeptJobBx() {
         // given
         final DeptJobBx testDataDeptJobBx = new DeptJobBx();
         testDataDeptJobBx(testDataDeptJobBx);
@@ -523,12 +524,12 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
             log.debug("getDeptJobBxNm={}, {}", testDataDeptJobBx.getDeptJobBxNm(), result.getDeptJobBxNm());
         }
 
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testDataDeptJobBx.getDeptJobBxId(),
-                result.getDeptJobBxId());
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testDataDeptJobBx.getDeptId(),
-                result.getDeptId());
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testDataDeptJobBx.getDeptJobBxNm(),
-                result.getDeptJobBxNm());
+        assertEquals(testDataDeptJobBx.getDeptJobBxId(), result.getDeptJobBxId(),
+                egovMessageSource.getMessage(FAIL_COMMON_SELECT));
+        assertEquals(testDataDeptJobBx.getDeptId(), result.getDeptId(),
+                egovMessageSource.getMessage(FAIL_COMMON_SELECT));
+        assertEquals(testDataDeptJobBx.getDeptJobBxNm(), result.getDeptJobBxNm(),
+                egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     /**
@@ -560,7 +561,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
             log.debug("result={}", result);
         }
 
-        assertEquals(egovMessageSource.getMessage("fail.common.update"), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage("fail.common.update"));
     }
 
     /**
@@ -587,14 +588,14 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
             log.debug("result={}", result);
         }
 
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), true, result > -1);
+        assertTrue(result > -1, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     /**
      * 부서업무함 정보의 표시순서를 수정한다. (표시순서 증가)
      */
     @Test
-    public void updateDeptJobBxOrdrUp() {
+    void updateDeptJobBxOrdrUp() {
         // given
         final DeptJobBx testDataDeptJobBx = new DeptJobBx();
         testDataDeptJobBx(testDataDeptJobBx);
@@ -611,7 +612,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
             log.debug("result={}", result);
         }
 
-        assertEquals(egovMessageSource.getMessage("fail.common.update"), true, result > -1);
+        assertTrue(result > -1, egovMessageSource.getMessage("fail.common.update"));
     }
 
     /**
@@ -635,7 +636,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
             log.debug("result={}", result);
         }
 
-        assertEquals(egovMessageSource.getMessage("fail.common.update"), true, result > -1);
+        assertTrue(result > -1, egovMessageSource.getMessage("fail.common.update"));
     }
 
     /**
@@ -659,7 +660,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
             log.debug("result={}", result);
         }
 
-        assertEquals(egovMessageSource.getMessage("fail.common.update"), true, result > 0);
+        assertTrue(result > 0, egovMessageSource.getMessage("fail.common.update"));
     }
 
     /**
@@ -683,7 +684,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
             log.debug("result={}", result);
         }
 
-        assertEquals(egovMessageSource.getMessage("fail.common.update"), true, result > 0);
+        assertTrue(result > 0, egovMessageSource.getMessage("fail.common.update"));
     }
 
     /**
@@ -705,14 +706,14 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
             log.debug("result={}", result);
         }
 
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), true, result > -1);
+        assertTrue(result > -1, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     /**
      * 부서내 부서업무함명의 건수를 조회한다.
      */
     @Test
-    public void selectDeptJobBxCheck() {
+    void selectDeptJobBxCheck() {
         // given
         final DeptJobBx testDataDeptJobBx = new DeptJobBx();
         testDataDeptJobBx(testDataDeptJobBx);
@@ -729,14 +730,14 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
             log.debug("result={}", result);
         }
 
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), true, result > -1);
+        assertTrue(result > -1, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     /**
      * 부서업무함 정보를 삭제한다.
      */
     @Test
-    public void deleteDeptJobBx() {
+    void deleteDeptJobBx() {
         // given
         final DeptJobBx testDataDeptJobBx = new DeptJobBx();
         testDataDeptJobBx(testDataDeptJobBx);
@@ -752,7 +753,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
             log.debug("result={}", result);
         }
 
-        assertEquals(egovMessageSource.getMessage("fail.common.update"), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage("fail.common.update"));
     }
 
     /**
@@ -784,8 +785,8 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
             }
         }
 
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testDataDeptJobBx.getDeptId(),
-                resultList.get(0).getDeptId());
+        assertEquals(testDataDeptJobBx.getDeptId(), resultList.get(0).getDeptId(),
+                egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     /**
@@ -809,7 +810,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
         // then
         log.debug("totCnt={}", totCnt);
 
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), true, totCnt > -1);
+        assertTrue(totCnt > -1, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     /**
@@ -833,8 +834,8 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
         log.debug("result={}", result);
         log.debug("getDeptId={}, {}", testDataDeptJobBx.getDeptJobBxId(), result.getDeptJobId());
 
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testDataDeptJob.getDeptJobId(),
-                result.getDeptJobId());
+        assertEquals(testDataDeptJob.getDeptJobId(), result.getDeptJobId(),
+                egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     /**
@@ -863,7 +864,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
         // then
         log.debug("result={}", result);
 
-        assertEquals(egovMessageSource.getMessage("fail.common.update"), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage("fail.common.update"));
     }
 
     /**
@@ -886,7 +887,7 @@ public class DeptJobDAOTest extends EgovTestAbstractDAO {
         // then
         log.debug("result={}", result);
 
-        assertEquals(egovMessageSource.getMessage("fail.common.delete"), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage("fail.common.delete"));
     }
 
 }

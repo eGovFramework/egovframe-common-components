@@ -29,12 +29,6 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <script type="text/javascript">
 /* ********************************************************
- * 초기화
- ******************************************************** */
-function fn_egov_init_NoteRecptn(){
-
-}
-/* ********************************************************
  * 목록 으로 가기
  ******************************************************** */
 function fn_egov_list_NoteRecptn(){
@@ -65,7 +59,7 @@ function fn_egov_delete_NoteRecptn(){
 }
 </script>
 </head>
-<body onLoad="fn_egov_init_NoteRecptn();">
+<body>
 
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
@@ -80,10 +74,10 @@ function fn_egov_delete_NoteRecptn(){
 	<table class="wTable" summary="<spring:message code="common.summary.inqire" arguments="${pageTitle}" />">
 	<caption>${pageTitle} <spring:message code="title.detail" /></caption>
 	<colgroup>
-		<col style="width:16%;">
-		<col style="width: ;">
-		<col style="width:16%;">
-		<col style="width:18%;">
+		<col style="width:20%;">
+		<col style="width:30%;">
+		<col style="width:20%;">
+		<col style="width:30%;">
 	</colgroup>
 	<tbody>
 		<!-- 쪽지제목 -->

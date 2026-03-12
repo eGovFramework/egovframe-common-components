@@ -1,7 +1,7 @@
-package egovframework.com.cop.ems.service.impl;
+﻿package egovframework.com.cop.ems.service.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -14,7 +14,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
@@ -243,9 +243,9 @@ public class SndngMailDetailDAOTest extends EgovTestAbstractDAO {
     }
 
     private void assert1(final SndngMailVO sndngMailVO, final SndngMailVO resultSndngMailVO) {
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), sndngMailVO.getMssageId(), resultSndngMailVO.getMssageId());
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), "R", sndngMailVO.getSndngResultCode());
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), "요청", resultSndngMailVO.getSndngResultCode());
+        assertEquals(sndngMailVO.getMssageId(), resultSndngMailVO.getMssageId(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
+        assertEquals("R", sndngMailVO.getSndngResultCode(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
+        assertEquals("요청", resultSndngMailVO.getSndngResultCode(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     /**
@@ -271,6 +271,6 @@ public class SndngMailDetailDAOTest extends EgovTestAbstractDAO {
         }
 
         // then
-        assertEquals(egovMessageSource.getMessage("fail.common.delete"), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage("fail.common.delete"));
     }
 }

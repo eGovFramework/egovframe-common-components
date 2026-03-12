@@ -3,12 +3,9 @@ package egovframework.com.cop.bbs.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -16,7 +13,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovComponentChecker;
@@ -32,7 +28,8 @@ import egovframework.com.cop.bbs.service.BoardMaster;
 import egovframework.com.cop.bbs.service.BoardMasterVO;
 import egovframework.com.cop.bbs.service.EgovBBSMasterService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * 게시판 속성관리를 위한 컨트롤러  클래스
@@ -43,7 +40,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *
  * <pre>
  * << 개정이력(Modification Information) >>
- *   
+ *
  *   수정일      수정자           수정내용
  *  -------       --------    ---------------------------
  *   2009.3.12   이삼섭      최초 생성
@@ -68,27 +65,22 @@ public class EgovBBSMasterController {
 
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertyService;
-    
+
     @Resource(name = "egovBBSMstrIdGnrService")
     private EgovIdGnrService idgenServiceBbs;
-    
+
     @Resource(name = "egovBlogIdGnrService")
     private EgovIdGnrService idgenServiceBlog;
-    
+
     /** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
-    
-
-
-    @Autowired
-    private DefaultBeanValidator beanValidator;
 
     //Logger log = Logger.getLogger(this.getClass());
-    
+
     /**
      * 신규 게시판 마스터 등록을 위한 등록페이지로 이동한다.
-     * 
+     *
      * @param boardMasterVO
      * @param model
      * @return
@@ -103,26 +95,26 @@ public class EgovBBSMasterController {
 		List<CmmnDetailCode> codeResult = cmmUseService.selectCmmCodeDetail(vo);
 		model.addAttribute("bbsTyCode", codeResult);
 		model.addAttribute("boardMasterVO", boardMaster);
-	
-	
+
+
 		//---------------------------------
 		// 2011.09.15 : 2단계 기능 추가 반영 방법 변경
 		//---------------------------------
 
-		
+
 		if(EgovComponentChecker.hasComponent("EgovArticleCommentService")){
 			model.addAttribute("useComment", "true");
 		}
 		if(EgovComponentChecker.hasComponent("EgovBBSSatisfactionService")){
 			model.addAttribute("useSatisfaction", "true");
 		}
-		
+
 		return "egovframework/com/cop/bbs/EgovBBSMasterRegist";
     }
 
     /**
      * 신규 게시판 마스터 정보를 등록한다.
-     * 
+     *
      * @param boardMasterVO
      * @param boardMaster
      * @param status
@@ -130,24 +122,23 @@ public class EgovBBSMasterController {
      * @throws Exception
      */
     @RequestMapping("/cop/bbs/insertBBSMaster.do")
-    public String insertBBSMaster(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, @ModelAttribute("boardMaster") BoardMaster boardMaster,
+    public String insertBBSMaster(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, @Valid @ModelAttribute("boardMasterVO") BoardMaster boardMaster,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
-    	
+
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-		
-		beanValidator.validate(boardMaster, bindingResult);
+
 		if (bindingResult.hasErrors()) {
 		    ComDefaultCodeVO vo = new ComDefaultCodeVO();
-		    
+
 		    //게시판유형코드
 		    vo.setCodeId("COM101");
 		    List<CmmnDetailCode> codeResult = cmmUseService.selectCmmCodeDetail(vo);
 		    model.addAttribute("bbsTyCode", codeResult);
-	
+
 		    return "egovframework/com/cop/bbs/EgovBBSMasterRegist";
 		}
-		
+
 		if (isAuthenticated) {
 		    boardMaster.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 		    if((boardMasterVO == null ? "" : EgovStringUtil.isNullToString(boardMasterVO.getBlogAt())).equals("Y")){
@@ -162,12 +153,12 @@ public class EgovBBSMasterController {
 		}else{
 			return "forward:/cop/bbs/selectBBSMasterInfs.do";
 		}
-		
+
     }
 
     /**
      * 게시판 마스터 목록을 조회한다.
-     * 
+     *
      * @param boardMasterVO
      * @param model
      * @return
@@ -178,32 +169,32 @@ public class EgovBBSMasterController {
     public String selectBBSMasterInfs(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, ModelMap model) throws Exception {
 		boardMasterVO.setPageUnit(propertyService.getInt("pageUnit"));
 		boardMasterVO.setPageSize(propertyService.getInt("pageSize"));
-	
+
 		PaginationInfo paginationInfo = new PaginationInfo();
-		
+
 		paginationInfo.setCurrentPageNo(boardMasterVO.getPageIndex());
 		paginationInfo.setRecordCountPerPage(boardMasterVO.getPageUnit());
 		paginationInfo.setPageSize(boardMasterVO.getPageSize());
-	
+
 		boardMasterVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
 		boardMasterVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		boardMasterVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-	
+
 		Map<String, Object> map = egovBBSMasterService.selectBBSMasterInfs(boardMasterVO);
 		int totCnt = Integer.parseInt((String)map.get("resultCnt"));
-		
+
 		paginationInfo.setTotalRecordCount(totCnt);
-	
+
 		model.addAttribute("resultList", map.get("resultList"));
-		model.addAttribute("resultCnt", map.get("resultCnt"));	
+		model.addAttribute("resultCnt", map.get("resultCnt"));
 		model.addAttribute("paginationInfo", paginationInfo);
 
 		return "egovframework/com/cop/bbs/EgovBBSMasterList";
     }
-    
+
     /**
      * 블로그에 대한 목록을 조회한다.
-     * 
+     *
      * @param blogVO
      * @param model
      * @return
@@ -212,7 +203,7 @@ public class EgovBBSMasterController {
     @IncludedInfo(name="블로그관리", order = 170 ,gid = 40)
     @RequestMapping("/cop/bbs/selectBlogList.do")
     public String selectBlogMasterList(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, ModelMap model) throws Exception {
-    	
+
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
     	 //KISA 보안취약점 조치 (2018-12-10, 신용호)
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -220,36 +211,36 @@ public class EgovBBSMasterController {
         if(!isAuthenticated) {
             return "redirect:/uat/uia/egovLoginUsr.do";
         }
-    	
+
 		boardMasterVO.setPageUnit(propertyService.getInt("pageUnit"));
 		boardMasterVO.setPageSize(propertyService.getInt("pageSize"));
-	
+
 		PaginationInfo paginationInfo = new PaginationInfo();
-		
+
 		paginationInfo.setCurrentPageNo(boardMasterVO.getPageIndex());
 		paginationInfo.setRecordCountPerPage(boardMasterVO.getPageUnit());
 		paginationInfo.setPageSize(boardMasterVO.getPageSize());
-	
+
 		boardMasterVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
 		boardMasterVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		boardMasterVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 		boardMasterVO.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-		
+
 		Map<String, Object> map = egovBBSMasterService.selectBlogMasterInfs(boardMasterVO);
 		int totCnt = Integer.parseInt((String)map.get("resultCnt"));
-		
+
 		paginationInfo.setTotalRecordCount(totCnt);
-	
+
 		model.addAttribute("resultList", map.get("resultList"));
-		model.addAttribute("resultCnt", map.get("resultCnt"));	
+		model.addAttribute("resultCnt", map.get("resultCnt"));
 		model.addAttribute("paginationInfo", paginationInfo);
 
 		return "egovframework/com/cop/bbs/EgovBlogList";
     }
-    
+
     /**
      * 블로그 등록을 위한 등록페이지로 이동한다.
-     * 
+     *
      * @param blogVO
      * @param model
      * @return
@@ -260,10 +251,10 @@ public class EgovBBSMasterController {
     	model.addAttribute("blogMasterVO", new BlogVO());
 	return "egovframework/com/cop/bbs/EgovBlogRegist";
     }
-    
+
     /**
      * 블로그 생성 유무를 판단한다.
-     * 
+     *
      * @param blogVO
      * @param model
      * @return
@@ -278,13 +269,13 @@ public class EgovBBSMasterController {
         if(!isAuthenticated) {
         	throw new IllegalAccessException("Login Required!");
         }
-    	
+
     	model.addAttribute("blogMasterVO", new BlogVO());
-    	
+
     	String userVal="";
     	blogVO.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
     	userVal = egovBBSMasterService.checkBlogUser(blogVO);
-    	
+
     	ModelAndView mav = new ModelAndView("jsonView");
     	mav.addObject("userChk", userVal);
     	return mav;
@@ -292,7 +283,7 @@ public class EgovBBSMasterController {
 
     /**
      * 블로그 정보를 등록한다.
-     * 
+     *
      * @param blogVO
      * @param blog
      * @param status
@@ -301,31 +292,29 @@ public class EgovBBSMasterController {
      * @throws Exception
      */
     @RequestMapping("/cop/bbs/insertBlogMaster.do")
-    public String insertBlogMaster(@ModelAttribute("searchVO") BlogVO blogVO, @ModelAttribute("blogMaster") Blog blog,
+    public String insertBlogMaster(@ModelAttribute("searchVO") BlogVO blogVO, @Valid @ModelAttribute("blogMasterVO") Blog blog,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-		
+
         if(!isAuthenticated) { //KISA 보안약점 조치 (2018-12-10, 신용호)
             return "redirect:/uat/uia/egovLoginUsr.do";
         }
-		
+
 		blogVO.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 		BlogVO vo = egovBBSMasterService.checkBlogUser2(blogVO);
-		
+
 		if(vo != null) {
 			model.addAttribute("blogMasterVO", new BlogVO());
 			model.addAttribute("message", egovMessageSource.getMessage("comCopBlog.validate.blogUserCheck"));
 			return "egovframework/com/cop/bbs/EgovBlogRegist";
 		}
-		
-		beanValidator.validate(blog, bindingResult);
-		
+
 		if (bindingResult.hasErrors()) {
 		    return "egovframework/com/cop/bbs/EgovBlogRegist";
 		}
-		
+
     // 블로그 정보와 개설자 정보 등록한다
     // Controller는 Transaction처리를 하지 않아 Controller에서 오류 발생 시 데이터 정합성 오류 문제 발생
     egovBBSMasterService.insertBlogMasterAndBoardBlogUserRqst(blog, user);
@@ -335,7 +324,7 @@ public class EgovBBSMasterController {
 
     /**
      * 게시판 마스터 상세내용을 조회한다.
-     * 
+     *
      * @param boardMasterVO
      * @param model
      * @return
@@ -345,21 +334,21 @@ public class EgovBBSMasterController {
     public String selectBBSMasterDetail(@ModelAttribute("searchVO") BoardMasterVO searchVO, ModelMap model) throws Exception {
 		BoardMasterVO vo = egovBBSMasterService.selectBBSMasterInf(searchVO);
 		model.addAttribute("result", vo);
-	
+
 		//---------------------------------
 		// 2011.09.15 : 2단계 기능 추가 반영 방법 변경
 		//---------------------------------
-		
+
 		if(EgovComponentChecker.hasComponent("EgovArticleCommentService")){
 			model.addAttribute("useComment", "true");
 		}
 		if(EgovComponentChecker.hasComponent("EgovBBSSatisfactionService")){
 			model.addAttribute("useSatisfaction", "true");
 		}
-		
+
 		return "egovframework/com/cop/bbs/EgovBBSMasterDetail";
     }
-    
+
     /**
      * 게시판 마스터정보를 수정하기 위한 전 처리
      * @param bbsId
@@ -375,13 +364,13 @@ public class EgovBBSMasterController {
 
         BoardMasterVO boardMasterVO = new BoardMasterVO();
 
-        
+
         //게시판유형코드
         ComDefaultCodeVO vo = new ComDefaultCodeVO();
         vo.setCodeId("COM101");
         List<CmmnDetailCode> codeResult = cmmUseService.selectCmmCodeDetail(vo);
         model.addAttribute("bbsTyCode", codeResult);
-        
+
         // Primary Key 값 세팅
         boardMasterVO.setBbsId(bbsId);
 
@@ -390,21 +379,21 @@ public class EgovBBSMasterController {
 		//---------------------------------
 		// 2011.09.15 : 2단계 기능 추가 반영 방법 변경
 		//---------------------------------
-		
+
 		if(EgovComponentChecker.hasComponent("EgovArticleCommentService")){
 			model.addAttribute("useComment", "true");
 		}
 		if(EgovComponentChecker.hasComponent("EgovBBSSatisfactionService")){
 			model.addAttribute("useSatisfaction", "true");
 		}
-        
+
         return "egovframework/com/cop/bbs/EgovBBSMasterUpdt";
     }
-    
+
 
     /**
      * 게시판 마스터 정보를 수정한다.
-     * 
+     *
      * @param boardMasterVO
      * @param boardMaster
      * @param model
@@ -412,37 +401,36 @@ public class EgovBBSMasterController {
      * @throws Exception
      */
     @RequestMapping("/cop/bbs/updateBBSMaster.do")
-    public String updateBBSMaster(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, @ModelAttribute("boardMaster") BoardMaster boardMaster,
+    public String updateBBSMaster(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, @Valid @ModelAttribute("boardMasterVO") BoardMaster boardMaster,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-	
-		beanValidator.validate(boardMaster, bindingResult);
+
 		if (bindingResult.hasErrors()) {
 		    BoardMasterVO vo = egovBBSMasterService.selectBBSMasterInf(boardMasterVO);
-	
+
 		    model.addAttribute("result", vo);
-	
+
 		    ComDefaultCodeVO comVo = new ComDefaultCodeVO();
 	        comVo.setCodeId("COM101");
 	        List<CmmnDetailCode> codeResult = cmmUseService.selectCmmCodeDetail(comVo);
 	        model.addAttribute("bbsTyCode", codeResult);
-		    
+
 		    return "egovframework/com/cop/bbs/EgovBBSMasterUpdt";
 		}
-	
+
 		if (isAuthenticated) {
 		    boardMaster.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 		    egovBBSMasterService.updateBBSMasterInf(boardMaster);
 		}
-	
+
 		return "forward:/cop/bbs/selectBBSMasterInfs.do";
     }
 
     /**
      * 게시판 마스터 정보를 삭제한다.
-     * 
+     *
      * @param boardMasterVO
      * @param boardMaster
      * @param status
@@ -463,10 +451,10 @@ public class EgovBBSMasterController {
 	// status.setComplete();
 	return "forward:/cop/bbs/selectBBSMasterInfs.do";
     }
-    
+
     /**
      * 포트릿을 위한 블로그 목록 정보를 조회한다.
-     * 
+     *
      * @param blogVO
      * @param model
      * @return
@@ -475,15 +463,15 @@ public class EgovBBSMasterController {
     @RequestMapping("/cop/bbs/selectBlogListPortlet.do")
     public String selectBlogListPortlet(@ModelAttribute("searchVO") BlogVO blogVO, ModelMap model) throws Exception {
 	List<BlogVO> result = egovBBSMasterService.selectBlogListPortlet(blogVO);
-	
+
 	model.addAttribute("resultList", result);
 
 	return "egovframework/com/cop/bbs/EgovBlogListPortlet";
     }
-    
+
     /**
      * 포트릿을 위한 게시판 목록 정보를 조회한다.
-     * 
+     *
      * @param blogVO
      * @param model
      * @return
@@ -492,11 +480,11 @@ public class EgovBBSMasterController {
     @RequestMapping("/cop/bbs/selectBBSListPortlet.do")
     public String selectBBSListPortlet(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, ModelMap model) throws Exception {
     	List<BoardMasterVO> result = egovBBSMasterService.selectBBSListPortlet(boardMasterVO);
-    	
+
     	model.addAttribute("resultList", result);
-    	
+
     	return "egovframework/com/cop/bbs/EgovBBSListPortlet";
     }
 
-    
+
 }

@@ -213,18 +213,6 @@ function fnShowLogin(stat) {
 		$(".login_input").eq(1).show();
 	}
 }
-
-// 2021.05.30, 정진오, 디지털원패스 로그인 추가
-function fnOnepassLogin() {
-	if ('${authType}' == 'session') {
-		document.onepassForm.serviceType.value = 'LOGIN';
-		document.onepassForm.target = '_top';
-		document.onepassForm.action = '<c:url value="/uat/uia/onepass/onepassLogin.do"/>';
-		document.onepassForm.submit();
-	} else {
-		alert('디지털원패스는 Session 권한인증일때만 사용하실 수 있습니다.');
-	}
-}
 </script>
 </head>
 <body onLoad="fnInit();">
@@ -255,12 +243,25 @@ function fnOnepassLogin() {
 				<li>
 					<label for="id">${title}</label>
 					<input type="text" name="id" id="id" maxlength="20" title="${title} ${inputTxt}" placeholder="${title} ${inputTxt}">
+					<!-- 아이디 validation 에러 메시지 -->
+					<c:set var="errors" value="${requestScope['org.springframework.validation.BindingResult.loginRequestVO']}"/>
+					<c:if test="${not empty errors && errors.hasFieldErrors('id')}">
+						<div style="font-size: 12px; margin-top: 5px;">
+							${errors.getFieldError('id').defaultMessage}
+						</div>
+					</c:if>
 				</li>
 				<!-- 비밀번호 -->
 				<c:set var="title"><spring:message code="comUatUia.loginForm.pw"/></c:set>
 				<li>
 					<label for="password">${title}</label>
 					<input type="password" name="password" id="password" maxlength="20" title="${title} ${inputTxt}" placeholder="${title} ${inputTxt}">
+					<!-- 비밀번호 validation 에러 메시지 -->
+					<c:if test="${not empty errors && errors.hasFieldErrors('password')}">
+						<div style="font-size: 12px; margin-top: 5px;">
+							${errors.getFieldError('password').defaultMessage}
+						</div>
+					</c:if>
 				</li>
 				<!-- 아이디 저장 -->
 				<c:set var="title"><spring:message code="comUatUia.loginForm.idSave"/></c:set>
@@ -311,19 +312,6 @@ function fnOnepassLogin() {
 	<input name="userSe" type="hidden" value="GNR"/>
 	<input name="j_username" type="hidden"/>
 	</form>
-
-	<!-- 2021.05.30, 정진오, 디지털원패스 로그인 추가 -->
-	<div style="border:2px solid #e6e6e6; margin-top:20px;">
-		<form id="onepassForm" name="onepassForm" method="post">
-		<input type="hidden" id="serviceType" name="serviceType"/>
-		</form>
-		<ul style="margin:10px 0px 10px;">
-			<li style="text-align:center;">
-				하나의 아이디로 간편하게
-				<a href="#" onclick="javascript:fnOnepassLogin();"><img src="<c:url value='/images/egovframework/com/uat/uia/onepass.png'/>" alt="디지털원패스 로그인" title="디지털원패스 로그인"></a>
-			</li>
-		</ul>
-	</div>
 
 </div>
 

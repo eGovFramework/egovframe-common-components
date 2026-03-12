@@ -3,14 +3,14 @@ package egovframework.com.utl.sys.dbm.service;
 
 /**
  * DB서비스모니터링 에 대한 결과 클래스
- * 
+ *
  * @author 김진만
  * @since 2010.07.15
  * @version 1.0
  * @see
  * <pre>
  * == 개정이력(Modification Information) ==
- * 
+ *
  *   수정일       수정자           수정내용
  *  -------     --------    ---------------------------
  *  2010.07.15   김진만     최초 생성
@@ -26,7 +26,7 @@ public class DbMntrngResult {
 	 * 원인 Exception
 	 */
 	private Throwable cause;
-	
+
 	/**
 	 * @return the nrmltAt
 	 */
@@ -56,5 +56,5 @@ public class DbMntrngResult {
 		this.nrmltAt = nrmltAt;
 		this.cause = cause;
 	}
-	
+
 }

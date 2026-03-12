@@ -73,6 +73,11 @@ function fn_egov_modify_SystemCntc(){
 	var varForm				    = document.all["Form"];
 	varForm.action              = "<c:url value='/ssi/syi/sim/updateSystemCntc.do'/>";
 	varForm.cntcId.value		= "<c:out value='${result.cntcId}'/>";
+	// cmd 파라미터 제거 (params="!cmd" 매핑을 위해)
+	var cmdInput = varForm.querySelector('input[name="cmd"]');
+	if (cmdInput) {
+		cmdInput.parentNode.removeChild(cmdInput);
+	}
 	varForm.submit();
 }
 /* ********************************************************
@@ -83,6 +88,11 @@ function fn_egov_delete_SystemCntc(){
 		var varForm				    = document.all["Form"];
 		varForm.action			    = "<c:url value='/ssi/syi/sim/removeSystemCntc.do'/>";
 		varForm.cntcId.value		= "<c:out value='${result.cntcId}'/>";
+		// cmd 파라미터 제거
+		var cmdInput = varForm.querySelector('input[name="cmd"]');
+		if (cmdInput) {
+			cmdInput.parentNode.removeChild(cmdInput);
+		}
 		varForm.submit();
 	}
 }

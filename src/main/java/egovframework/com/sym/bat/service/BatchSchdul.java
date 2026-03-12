@@ -3,6 +3,8 @@ package egovframework.com.sym.bat.service;
 import java.io.Serializable;
 import java.util.List;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+
 import egovframework.com.cmm.ComDefaultVO;
 
 /**
@@ -32,11 +34,13 @@ public class BatchSchdul extends ComDefaultVO implements Serializable {
 	/**
 	 * 배치작업ID
 	 */
+	@EgovNullCheck
 	private String batchOpertId;
 
 	/**
 	 * 실행주기
 	 */
+	@EgovNullCheck
 	private String executCycle;
 	/**
 	 * 실행스케줄일자
@@ -45,14 +49,17 @@ public class BatchSchdul extends ComDefaultVO implements Serializable {
 	/**
 	 * 실행스케줄시
 	 */
+	@EgovNullCheck
 	private String executSchdulHour;
 	/**
 	 * 실행스케줄분
 	 */
+	@EgovNullCheck
 	private String executSchdulMnt;
 	/**
 	 * 실행스케줄초
 	 */
+	@EgovNullCheck
 	private String executSchdulSecnd;
 	/**
 	 * 실행스케줄요일

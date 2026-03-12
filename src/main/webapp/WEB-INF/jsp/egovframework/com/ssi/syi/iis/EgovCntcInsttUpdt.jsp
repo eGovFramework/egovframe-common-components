@@ -25,22 +25,23 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <html lang="ko">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title><spring:message code="comSsiSyiIis.cntcInsttUpdt.title"/></title><!-- 연계기관 수정 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="cntcInstt" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 <!--
 /* ********************************************************
  * 목록 으로 가기
  ******************************************************** */
 function fn_egov_list_CntcInstt(){
-	location.href = "<c:url value='/ssi/syi/iis/getCntcInsttList.do'/>";
+	var varForm = document.cntcInstt;
+	varForm.cmd.value = "";
+	varForm.action = "<c:url value='/ssi/syi/iis/getCntcInsttList.do'/>";
+	varForm.submit();
 }
 /* ********************************************************
  * 저장처리화면
@@ -66,6 +67,10 @@ function fn_egov_modify_CntcInstt(form){
 <form:form modelAttribute="cntcInstt" name="cntcInstt" method="post">
 <input name="cmd" type="hidden" value="Modify">
 <form:hidden path="insttId"/>
+<!-- 검색조건 유지 -->
+<input type="hidden" name="searchCondition" value="<c:out value='${searchVO.searchCondition}'/>"/>
+<input type="hidden" name="searchKeyword" value="<c:out value='${searchVO.searchKeyword}'/>"/>
+<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}' default='1'/>"/>
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -94,8 +99,8 @@ function fn_egov_modify_CntcInstt(form){
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<input class="s_submit" type="submit" value="<spring:message code="button.save" />" onclick="fn_egov_modify_CntcInstt(document.cntcInstt)" /><!-- 저장 -->
-		<span class="btn_s"><a href="<c:url value='/ssi/syi/iis/getCntcInsttList.do'/>" onclick=""><spring:message code="button.list"/></a></span><!-- 목록 -->
+		<input class="s_submit" type="submit" value="<spring:message code="button.save" />" onclick="fn_egov_modify_CntcInstt(document.cntcInstt); return false;" /><!-- 저장 -->
+		<span class="btn_s"><a href="#" onclick="fn_egov_list_CntcInstt(); return false;"><spring:message code="button.list"/></a></span><!-- 목록 -->
 	</div>
 	<div style="clear:both;"></div>
 </div>

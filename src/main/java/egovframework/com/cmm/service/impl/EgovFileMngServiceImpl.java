@@ -4,13 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.FileVO;
+import jakarta.annotation.Resource;
 
 /**
  * @Class Name : EgovFileMngServiceImpl.java
@@ -147,7 +146,7 @@ public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements E
 		List<FileVO> result = fileMngDAO.selectFileListByFileNm(fvo);
 		int cnt = fileMngDAO.selectFileListCntByFileNm(fvo);
 
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 
 		map.put("resultList", result);
 		map.put("resultCnt", Integer.toString(cnt));

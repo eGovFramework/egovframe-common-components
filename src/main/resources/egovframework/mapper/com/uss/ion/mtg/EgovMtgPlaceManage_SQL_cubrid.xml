@@ -108,7 +108,7 @@
         
     </select>
 
-    <insert id="insertMtgPlaceManage" parameterType="egovframework.com.uss.ion.mtg.service.MtgPlaceManage">
+    <insert id="insertMtgPlaceManage" parameterType="egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO">
         
 
             INSERT INTO COMTNMTGPLACEMANAGE
@@ -135,7 +135,7 @@
         
     </insert>     
 
-    <update id="updtMtgPlaceManage" parameterType="egovframework.com.uss.ion.mtg.service.MtgPlaceManage">
+    <update id="updtMtgPlaceManage" parameterType="egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO">
         
 
             UPDATE  COMTNMTGPLACEMANAGE
@@ -152,7 +152,7 @@
         
     </update>    
     
-    <delete id="deleteMtgPlaceManage" parameterType="egovframework.com.uss.ion.mtg.service.MtgPlaceManage">
+    <delete id="deleteMtgPlaceManage" parameterType="egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO">
         
 
             DELETE FROM COMTNMTGPLACEMANAGE
@@ -175,7 +175,7 @@
 
     <select id="selectMtgPlaceResveManageList" parameterType="egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO" resultType="egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO">
         
-			SELECT  mtg.MTGRUM_NM as mtgPlaceNm, mtg.MTGRUM_ID as mtgPlaceId, 
+			SELECT  mtg.MTGRUM_NM as mtgPlaceNm, mtg.MTGRUM_ID as mtgPlaceId, mtg.OPN_BEGIN_TM as opnBeginTm, mtg.OPN_END_TM as opnEndTm,
 			        NVL((SELECT RESVE_ID||MTG_SJ FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."0800" ),'0') as resveTemp0800,
 			        NVL((SELECT RESVE_ID||MTG_SJ FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."0830" ),'0') as resveTemp0830,
 			        NVL((SELECT RESVE_ID||MTG_SJ FROM COMTNMTGPLACERESVE WHERE RESVE_ID = res."0900" ),'0') as resveTemp0900,
@@ -296,7 +296,7 @@
         
     </select>
 
-    <insert id="insertMtgPlaceResve" parameterType="egovframework.com.uss.ion.mtg.service.MtgPlaceResve">
+    <insert id="insertMtgPlaceResve" parameterType="egovframework.com.uss.ion.mtg.service.MtgPlaceResveVO">
         
             INSERT INTO COMTNMTGPLACERESVE
                    ( RESVE_ID             ,
@@ -324,7 +324,7 @@
         
     </insert>     
 
-    <update id="updtMtgPlaceResve" parameterType="egovframework.com.uss.ion.mtg.service.MtgPlaceResve">
+    <update id="updtMtgPlaceResve" parameterType="egovframework.com.uss.ion.mtg.service.MtgPlaceResveVO">
         
 
             UPDATE  COMTNMTGPLACERESVE
@@ -343,7 +343,7 @@
         
     </update>    
     
-    <delete id="deleteMtgPlaceResve" parameterType="egovframework.com.uss.ion.mtg.service.MtgPlaceResve">
+    <delete id="deleteMtgPlaceResve" parameterType="egovframework.com.uss.ion.mtg.service.MtgPlaceResveVO">
         
 
             DELETE FROM COMTNMTGPLACERESVE

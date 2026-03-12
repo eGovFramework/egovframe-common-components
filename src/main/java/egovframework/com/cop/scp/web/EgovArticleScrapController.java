@@ -2,17 +2,13 @@ package egovframework.com.cop.scp.web;
 
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -24,6 +20,8 @@ import egovframework.com.cop.scp.service.EgovArticleScrapService;
 import egovframework.com.cop.scp.service.Scrap;
 import egovframework.com.cop.scp.service.ScrapVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * 스크랩관리 서비스 컨트롤러 클래스
@@ -46,7 +44,6 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
 @Controller
 public class EgovArticleScrapController {
 
-
     @Resource(name="EgovArticleScrapService")
     protected EgovArticleScrapService egovArticleScrapService;
 
@@ -58,9 +55,6 @@ public class EgovArticleScrapController {
 
     @Resource(name="egovMessageSource")
     EgovMessageSource egovMessageSource;
-
-    @Autowired
-    private DefaultBeanValidator beanValidator;
 
     //Logger log = Logger.getLogger(this.getClass());
 
@@ -82,30 +76,30 @@ public class EgovArticleScrapController {
         if(!isAuthenticated) {
             return "redirect:/uat/uia/egovLoginUsr.do";
         }
-	
+
 		scrapVO.setUniqId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-	
+
 		scrapVO.setPageUnit(propertyService.getInt("pageUnit"));
 		scrapVO.setPageSize(propertyService.getInt("pageSize"));
-	
+
 		PaginationInfo paginationInfo = new PaginationInfo();
 		paginationInfo.setCurrentPageNo(scrapVO.getPageIndex());
 		paginationInfo.setRecordCountPerPage(scrapVO.getPageUnit());
 		paginationInfo.setPageSize(scrapVO.getPageSize());
-	
+
 		scrapVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
 		scrapVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		scrapVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-	
+
 		Map<String, Object> map = egovArticleScrapService.selectArticleScrapList(scrapVO);
 		int totCnt = Integer.parseInt((String)map.get("resultCnt"));
-	
+
 		paginationInfo.setTotalRecordCount(totCnt);
-	
+
 		model.addAttribute("resultList", map.get("resultList"));
 		model.addAttribute("resultCnt", map.get("resultCnt"));
 		model.addAttribute("paginationInfo", paginationInfo);
-	
+
 		return "egovframework/com/cop/scp/EgovArticleScrapList";
     }
 
@@ -126,21 +120,21 @@ public class EgovArticleScrapController {
         if(!isAuthenticated) {
             return "redirect:/uat/uia/egovLoginUsr.do";
         }
-	
+
 		ScrapVO scrap = egovArticleScrapService.selectArticleScrapDetail(scrapVO);
-	
+
 		model.addAttribute("sessionUniqId", user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 		model.addAttribute("result", scrap);
-	
+
 		//게시판 내용 취득
 		BoardVO vo = new BoardVO();
 		vo.setNttId(scrap.getNttId());
 		vo.setBbsId(scrap.getBbsId());
 		vo = egovArticleService.selectArticleDetail(vo);
-	
+
 		model.addAttribute("articleVO", vo);
 		////-----------------------------------
-	
+
 		return "egovframework/com/cop/scp/EgovArticleScrapDetail";
     }
 
@@ -156,19 +150,19 @@ public class EgovArticleScrapController {
     public String insertArticleScrapView(@ModelAttribute("searchVO") ScrapVO scrapVO, ModelMap model) throws Exception {
 
 		ScrapVO scrap = new ScrapVO();
-	
+
 		model.addAttribute("articleScrapVO", scrap);
-	
+
 		BoardVO vo = new BoardVO();
 		vo.setNttId(scrapVO.getNttId());
 		vo.setBbsId(scrapVO.getBbsId());
-		
+
 		//게시판 내용 취득
 		vo = egovArticleService.selectArticleDetail(vo);
-	
+
 		model.addAttribute("articleVO", vo);
 		////-----------------------------------
-	
+
 		return "egovframework/com/cop/scp/EgovArticleScrapRegist";
     }
 
@@ -184,32 +178,31 @@ public class EgovArticleScrapController {
      * @throws Exception
      */
     @RequestMapping("/cop/scp/insertArticleScrap.do")
-    public String insertArticleScrap(@ModelAttribute("searchVO") ScrapVO scrapVO, @ModelAttribute("scrap") Scrap scrap,
+    public String insertArticleScrap(@ModelAttribute("searchVO") ScrapVO scrapVO, @Valid @ModelAttribute("scrap") Scrap scrap,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-	
-		beanValidator.validate(scrap, bindingResult);
+
 		if (bindingResult.hasErrors()) {
 
 			//게시판 내용 취득
 		    BoardVO vo = new BoardVO();
 			vo.setNttId(scrapVO.getNttId());
 			vo.setBbsId(scrapVO.getBbsId());
-			
+
 			model.addAttribute("articleScrapVO", scrap);
 		    model.addAttribute("articleVO", vo);
-	
+
 		    return "egovframework/com/cop/scp/EgovArticleScrapRegist";
 		}
-	
+
 		if (isAuthenticated) {
 		    scrap.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-	
+
 		    egovArticleScrapService.insertArticleScrap(scrap);
 		}
-	
+
 		return "forward:/cop/scp/selectArticleScrapList.do";
     }
 
@@ -227,11 +220,11 @@ public class EgovArticleScrapController {
 	@SuppressWarnings("unused")
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-	
+
 		if (isAuthenticated) {
 		    egovArticleScrapService.deleteArticleScrap(scrapVO);
 		}
-	
+
 		return "forward:/cop/scp/selectArticleScrapList.do";
     }
 
@@ -246,19 +239,19 @@ public class EgovArticleScrapController {
     @RequestMapping("/cop/scp/updateArticleScrapView.do")
     public String updateArticleScrapView(@ModelAttribute("searchVO") ScrapVO scrapVO, @ModelAttribute("scrap") Scrap scrap, ModelMap model) throws Exception {
 		Scrap vo = egovArticleScrapService.selectArticleScrapDetail(scrapVO);
-	
+
 		model.addAttribute("articleScrapVO", vo);
-	
+
 		//게시판 내용 취득
 		BoardVO boardVO = new BoardVO();
 		boardVO.setNttId(vo.getNttId());
 		boardVO.setBbsId(vo.getBbsId());
 		boardVO = egovArticleService.selectArticleDetail(boardVO);
-		
-		
+
+
 	    model.addAttribute("articleVO", boardVO);
-	
-	
+
+
 		return "egovframework/com/cop/scp/EgovArticleScrapUpdt";
     }
 
@@ -273,57 +266,28 @@ public class EgovArticleScrapController {
      * @throws Exception
      */
     @RequestMapping("/cop/scp/updateArticleScrap.do")
-    public String updateArticleScrap(@ModelAttribute("searchVO") ScrapVO scrapVO, @ModelAttribute("Scrap") Scrap scrap,
+    public String updateArticleScrap(@ModelAttribute("searchVO") ScrapVO scrapVO, @Valid @ModelAttribute("Scrap") Scrap scrap,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
 
-	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-		beanValidator.validate(scrap, bindingResult);
 		if (bindingResult.hasErrors()) {
-	
+
 		    Scrap vo = egovArticleScrapService.selectArticleScrapDetail(scrapVO);
-	
+
 		    model.addAttribute("result", vo);
-	
+
 		    return "egovframework/com/cop/scp/EgovArticleScrapUpdt";
 		}
-	
+
 		if (isAuthenticated) {
 		    scrap.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-	
+
 		    egovArticleScrapService.updateArticleScrap(scrap);
 		}
 
-	return "forward:/cop/scp/selectArticleScrapList.do";
+		return "forward:/cop/scp/selectArticleScrapList.do";
     }
-//
-//    /**
-//     * 마이페이지용 스크랩관리 목록 조회를 제공한다.
-//     *
-//     * @param scrapVO
-//     * @param model
-//     * @return
-//     * @throws Exception
-//     */
-//    @RequestMapping("/cop/scp/selectScrapMainList.do")
-//    public String selectScrapMainList(@ModelAttribute("searchVO") ScrapVO scrapVO, ModelMap model) throws Exception {
-//	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-//
-//	scrapVO.setUniqId(user.getUniqId());
-//
-//	scrapVO.setPageUnit(propertyService.getInt("pageUnit"));
-//	scrapVO.setPageSize(propertyService.getInt("pageSize"));
-//
-//	scrapVO.setFirstIndex(0);
-//	scrapVO.setRecordCountPerPage(5);
-//
-//	Map<String, Object> map = bbsScrapService.selectScrapList(scrapVO);
-//
-//	model.addAttribute("resultList", map.get("resultList"));
-//	model.addAttribute("resultCnt", map.get("resultCnt"));
-//
-//	return "egovframework/com/cop/scp/EgovScrapMainList";
-//    }
-	
+
 }

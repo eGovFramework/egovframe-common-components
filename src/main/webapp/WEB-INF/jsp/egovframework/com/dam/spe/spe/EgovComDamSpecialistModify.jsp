@@ -25,7 +25,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 	<head>
@@ -36,9 +35,7 @@
 		<link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 		<script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 		<script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
-		<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-		<validator:javascript formName="knoSpecialist" staticJavascript="false" xhtml="true" cdata="false"/>
-
+		<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 		<script type="text/javaScript" language="javascript">
 		<!--
 		function initCalendar(){
@@ -88,6 +85,7 @@
 						ls_speConfmDe = ls_speConfmDe.replace(/-/gi,"");
 						knoSpecialist.speConfmDe.value = ls_speConfmDe;
 					}
+					form.action = "<c:url value='/dam/spe/spe/EgovComDamSpecialistModify.do'/>";
 					form.submit();
 				}
 			}
@@ -125,10 +123,11 @@
 	
 	<form:form modelAttribute="knoSpecialist" name="knoSpecialist" method="post">
 			<form:hidden path="orgnztId"/>
+			<form:hidden path="orgnztNm"/>
+			<form:hidden path="knoTypeNm"/>
+			<form:hidden path="userNm"/>
 			<form:hidden path="knoTypeCd"/>
 			<form:hidden path="speId"/>
-			<form:hidden path="appTypeCd"/>
-			<input name="cmd" type="hidden" value="Modify">
 			
 			<div class="wTableFrm">
 				<!-- 타이틀 -->
@@ -161,17 +160,23 @@
 					<tr>
 						<th><spring:message code="comDamSpeSpe.comDamSpecialistModify.rank"/> <span class="pilsu">*</span></th><!-- 등급 -->
 						<td class="left">
-						    <select name="appTypeNm" title="<spring:message code="comDamSpeSpe.comDamSpecialistModify.rank"/>">
+						    <select name="appTypeCd" title="<spring:message code="comDamSpeSpe.comDamSpecialistModify.rank"/>">
 							<option value="1" <c:if test="${knoSpecialist.appTypeCd == '1'}">selected</c:if> ><spring:message code="comDamSpeSpe.comDamSpecialistModify.rankType1"/></option><!-- 수석 -->
 							<option value="2" <c:if test="${knoSpecialist.appTypeCd == '2'}">selected</c:if> ><spring:message code="comDamSpeSpe.comDamSpecialistModify.rankType2"/></option><!-- 책임 -->
 							<option value="3" <c:if test="${knoSpecialist.appTypeCd == '3'}">selected</c:if> ><spring:message code="comDamSpeSpe.comDamSpecialistModify.rankType3"/></option><!-- 선임 -->
 							</select>
+							<div><form:errors path="appTypeCd"/></div>
 						</td>
 					</tr>
 					<tr>
 						<th><spring:message code="comDamSpeSpe.comDamSpecialistModify.speExpCn"/> <span class="pilsu">*</span></th><!-- 전문가설명 -->
 						<td class="left">
-						    <textarea name="speExpCn" class="textarea" title="<spring:message code="comDamSpeSpe.comDamSpecialistModify.speExpCn"/>" cols="300" rows="10" style="height:140px">${knoSpecialist.speExpCn}</textarea><!-- 전문가설명 -->
+							<!--
+						    <textarea name="speExpCn" class="textarea" title="<spring:message code="comDamSpeSpe.comDamSpecialistModify.speExpCn"/>" cols="300" rows="10" style="height:140px"><c:out value="${knoSpecialist.speExpCn}"/></textarea>
+							<div><form:errors path="speExpCn"/></div>
+							-->
+							<form:textarea path="speExpCn" title="<spring:message code='comDamSpeSpe.comDamSpecialistModify.speExpCn'/>" cols="300" rows="10" cssClass="textarea" cssStyle="height:140px"/><!-- 전문가설명 -->
+							<form:errors path="speExpCn"/>
 						</td>
 					</tr>
 					<tr>

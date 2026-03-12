@@ -18,8 +18,6 @@
  */
 package egovframework.com.ext.easybatch.item;
 
-import java.util.List;
-
 import javax.sql.DataSource;
 
 import org.egovframe.rte.bat.core.item.database.EgovJdbcBatchItemWriter;
@@ -31,6 +29,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.batch.core.JobParameters;
 import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.annotation.BeforeStep;
+import org.springframework.batch.item.Chunk;
 import org.springframework.batch.item.ExecutionContext;
 import org.springframework.batch.item.ItemStream;
 import org.springframework.batch.item.ItemStreamException;
@@ -42,6 +41,7 @@ import org.springframework.batch.item.file.transform.FieldExtractor;
 import org.springframework.batch.item.file.transform.LineAggregator;
 import org.springframework.core.io.FileSystemResource;
 import org.springframework.core.io.Resource;
+import org.springframework.core.io.WritableResource;
 
 /**
  * @author 서경석
@@ -60,7 +60,7 @@ import org.springframework.core.io.Resource;
  * </pre>
  */
 public class DefaultItemWriter<T> implements ItemStreamWriter<T> {
-	
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(DefaultItemWriter.class);
 
 	// Output Resource Type - key
@@ -152,9 +152,9 @@ public class DefaultItemWriter<T> implements ItemStreamWriter<T> {
 	}
 
 	@Override
-	public void write(List<? extends T> items) throws Exception {
-		this.writer.write(items);
-	}
+    public void write(Chunk<? extends T> chunk) throws Exception {
+        this.writer.write(chunk);
+    }
 
 	private void makeWriterConfigValue() {
 		if (jobParameters.getString(stepName + WRITER_RESOURCE_TYPE_KEY) != null) {
@@ -214,21 +214,21 @@ public class DefaultItemWriter<T> implements ItemStreamWriter<T> {
 	}
 
 	private DelimitedLineAggregator<T> makeDelimitedLineAggregator(FieldExtractor<T> fieldExtractor) {
-		DelimitedLineAggregator<T> lineAggregator = new DelimitedLineAggregator<T>();
+		DelimitedLineAggregator<T> lineAggregator = new DelimitedLineAggregator<>();
 		lineAggregator.setDelimiter(this.delimiter);
 		lineAggregator.setFieldExtractor(fieldExtractor);
 		return lineAggregator;
 	}
 
 	private EgovFixedLengthLineAggregator<T> makeEgovFixedLengthLineAggregator(FieldExtractor<T> fieldExtractor) {
-		EgovFixedLengthLineAggregator<T> lineAggregator = new EgovFixedLengthLineAggregator<T>();
+		EgovFixedLengthLineAggregator<T> lineAggregator = new EgovFixedLengthLineAggregator<>();
 		lineAggregator.setFieldExtractor(fieldExtractor);
 		lineAggregator.setFieldRanges(fieldRanges);
 		return lineAggregator;
 	}
 
 	private FieldExtractor<T> makeFieldExtractor() {
-		EgovFieldExtractor<T> fieldExtractor = new EgovFieldExtractor<T>();
+		EgovFieldExtractor<T> fieldExtractor = new EgovFieldExtractor<>();
 		fieldExtractor.setNames(this.fieldNames);
 		fieldExtractor.afterPropertiesSet();
 		return fieldExtractor;
@@ -248,27 +248,37 @@ public class DefaultItemWriter<T> implements ItemStreamWriter<T> {
 				lineAggregator = makeEgovFixedLengthLineAggregator(fieldExtractor);
 			}
 
-			this.writer = new FlatFileItemWriter<T>();
-			((FlatFileItemWriter<T>)this.writer).setResource(this.resource);
+			this.writer = new FlatFileItemWriter<>();
+			((FlatFileItemWriter<T>)this.writer).setResource((WritableResource) this.resource);
 			((FlatFileItemWriter<T>)this.writer).setLineAggregator(lineAggregator);
 
 			try {
 				((FlatFileItemWriter<T>)this.writer).afterPropertiesSet();
+				// 2026.02.28 KISA 취약점 조치
 			} catch (Exception e) {
-				throw new RuntimeException(
-					this.writerResourceType + " 타입의 File을 write 하기 위한 FlatFileItemWriter 생성에 실패 하였습니다.");
+				LOGGER.error("{} 타입의 FlatFileItemWriter 초기화 실패", this.writerResourceType, e);
+				throw new ItemStreamException(
+					this.writerResourceType + " 타입의 File을 write 하기 위한 FlatFileItemWriter 생성에 실패 하였습니다.",e);
 			}
 		} else if (JDBC_DB_TYPE.equalsIgnoreCase(this.writerResourceType)) {
 
-			EgovMethodMapItemPreparedStatementSetter<T> preparedStatementSetter = new EgovMethodMapItemPreparedStatementSetter<T>();
+			EgovMethodMapItemPreparedStatementSetter<T> preparedStatementSetter = new EgovMethodMapItemPreparedStatementSetter<>();
 
-			this.writer = new EgovJdbcBatchItemWriter<T>();
-			((EgovJdbcBatchItemWriter<T>)this.writer).setDataSource(this.dataSource);
-			((EgovJdbcBatchItemWriter<T>)this.writer).setParams(this.params);
-			((EgovJdbcBatchItemWriter<T>)this.writer).setSql(this.sql);
-			((EgovJdbcBatchItemWriter<T>)this.writer).setItemPreparedStatementSetter(preparedStatementSetter);
-			((EgovJdbcBatchItemWriter<T>)this.writer).setAssertUpdates(true);
-			((EgovJdbcBatchItemWriter<T>)this.writer).afterPropertiesSet();
+			this.writer = new EgovJdbcBatchItemWriter<>();
+			// 2026.02.28 KISA 취약점 조치 일관성을 위해 try-catch 추가
+			try {
+				((EgovJdbcBatchItemWriter<T>)this.writer).setDataSource(this.dataSource);
+				((EgovJdbcBatchItemWriter<T>)this.writer).setParams(this.params);
+				((EgovJdbcBatchItemWriter<T>)this.writer).setSql(this.sql);
+				((EgovJdbcBatchItemWriter<T>)this.writer).setItemPreparedStatementSetter(preparedStatementSetter);
+				((EgovJdbcBatchItemWriter<T>)this.writer).setAssertUpdates(true);
+				((EgovJdbcBatchItemWriter<T>)this.writer).afterPropertiesSet();
+			} catch (IllegalArgumentException e) {
+				throw new ItemStreamException("Data source 또는 SQL properties가 설정되지 않았습니다.", e);
+			} catch (Exception e) {
+				throw new ItemStreamException(
+					this.writerResourceType + " 타입의 DB을 write 하기 위한 JdbcBatchItemWriter 생성에 실패 하였습니다.", e);
+			}
 		}
 
 		printXmlConfig();

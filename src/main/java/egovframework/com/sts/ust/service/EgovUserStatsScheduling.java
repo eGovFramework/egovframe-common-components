@@ -1,9 +1,9 @@
 package egovframework.com.sts.ust.service;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
+
+import jakarta.annotation.Resource;
 
 /**
  * 사용자 통계 집계를 위한 스케줄링 클래스

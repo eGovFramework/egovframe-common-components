@@ -4,14 +4,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.sym.log.tlg.service.EgovTrsmrcvLogService;
 import egovframework.com.sym.log.tlg.service.TrsmrcvLog;
+import jakarta.annotation.Resource;
 
 /**
  * @Class Name : EgovTrsmrcvLogServiceImpl.java

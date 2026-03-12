@@ -5,6 +5,9 @@ import java.io.Serializable;
 import lombok.Getter;
 import lombok.Setter;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 설문템플릿 VO Class 구현
  * 
@@ -31,6 +34,8 @@ public class QustnrTmplatManageVO implements Serializable {
 	private String qestnrTmplatId = "";
 
 	/** 설문템플릿 유형 */
+	@EgovNullCheck
+	@Size(max=100)
 	private String qestnrTmplatTy = "";
 
 	/** 설문템플 이미지내용 */
@@ -39,9 +44,13 @@ public class QustnrTmplatManageVO implements Serializable {
 	private byte[] qestnrTmplatImagepathnm;
 
 	/** 설문템플릿 설명 */
+	@EgovNullCheck
+	@Size(max=1000)
 	private String qestnrTmplatCn = "";
 
 	/** 설문템플릿경로명 */
+	@EgovNullCheck
+	@Size(max=100)
 	private String qestnrTmplatCours;
 
 	/** 최초등록시점 */

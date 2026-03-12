@@ -25,7 +25,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -36,24 +35,20 @@
 <title><spring:message code="uss.ion.isg.intnetSvcGuidanceView.intnetSvcGuidanceView" /></title><!-- 인터넷서비스안내 -->
 </head>
 
-  <body>
-  <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
-  
-  <table class="table-list" style="width:100%">
-    <c:forEach var="intnetSvcGuidance" items="${intnetSvcGuidanceList}" varStatus="status">
+<body>
+
+<noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
+
+<table class="table-list" style="width:100%">
+  <c:forEach var="intnetSvcGuidance" items="${intnetSvcGuidanceList}" varStatus="status">
     <tr>
-        <th style="padding:10px 0; font-size:14px; font-weight:bold;"><c:out value="${intnetSvcGuidance.intnetSvcNm}"/></th>
+      <th style="padding:10px 0; font-size:14px; font-weight:bold;"><c:out value="${intnetSvcGuidance.intnetSvcNm}"/></th>
     </tr>
     <tr>
-        <td style="padding:10px 10px 20px 10px; background:#fff">${intnetSvcGuidance.intnetSvcDc}</td>
+      <td style="padding:10px 10px 20px 10px; background:#fff">${intnetSvcGuidance.intnetSvcDc}</td>
     </tr> 
-    </c:forEach>
-  </table>
+  </c:forEach>
+</table>
+
 </body>
 </html>
- <!-- 
-    <c:forEach var="intnetSvcGuidance" items="${intnetSvcGuidanceList}" varStatus="status">
-        <p><c:out value="${intnetSvcGuidance.intnetSvcNm}"/></p>
-        <p><c:out value="${intnetSvcGuidance.intnetSvcDc}"/></p>
-    </c:forEach>
- -->    

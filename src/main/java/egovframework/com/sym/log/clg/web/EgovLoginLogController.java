@@ -1,8 +1,7 @@
 package egovframework.com.sym.log.clg.web;
 
+import java.util.HashMap;
 import java.util.Map;
-
-import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -15,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.sym.log.clg.service.EgovLoginLogService;
 import egovframework.com.sym.log.clg.service.LoginLog;
+import jakarta.annotation.Resource;
 
 /**
  * 접속로그정보를 관리하기 위한 컨트롤러 클래스

@@ -3,6 +3,10 @@ package egovframework.com.cop.ncm.service;
 import java.io.Serializable;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import org.egovframe.rte.ptl.reactive.validation.EgovEmailCheck;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 
 /**
@@ -25,27 +29,40 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 public class NameCard implements Serializable {
 
     /** 주소 */
+    @Size(max=100)
     private String adres = "";
     
     /** 지역번호 */
+    @Size(max=4)
+    @Pattern(regexp="^\\d*$", message="{validation.pattern.integer}")
     private String areaNo = "";
     
     /** 직급명 */
+    @Size(max=60)
     private String clsfNm = "";
     
     /** 회사명 */
+    @Size(max=60)
     private String cmpnyNm = "";
     
     /** 부서명 */
+    @Size(max=60)
     private String deptNm = "";
     
     /** 이메일주소 */
+    @EgovNullCheck
+    @Size(max=50)
+    @EgovEmailCheck
     private String emailAdres = "";
     
     /** 끝휴대폰번호 */
+    @Size(max=4)
+    @Pattern(regexp="^\\d*$", message="{validation.pattern.integer}")
     private String endMbtlNum = "";
     
     /** 끝전화번호 */
+    @Size(max=4)
+    @Pattern(regexp="^\\d*$", message="{validation.pattern.integer}")
     private String endTelNo = "";
     
     /** 외부사용자여부 */
@@ -70,9 +87,13 @@ public class NameCard implements Serializable {
     private String mbtlNum = "";
     
     /** 중간휴대폰번호 */
+    @Size(max=4)
+    @Pattern(regexp="^\\d*$", message="{validation.pattern.integer}")
     private String middleMbtlNum = "";
     
     /** 중간전화번호 */
+    @Size(max=4)
+    @Pattern(regexp="^\\d*$", message="{validation.pattern.integer}")
     private String middleTelNo = "";
     
     /** 국가번호 */
@@ -85,21 +106,27 @@ public class NameCard implements Serializable {
     private String ncrdTrgterId = "";
     
     /** 이름 */
+    @EgovNullCheck
+    @Size(max=50)
     private String ncrdNm = "";
     
     /** 직위명 */
+    @Size(max=60)
     private String ofcpsNm = "";
     
     /** 공개여부 */
+    @EgovNullCheck
     private String othbcAt = "";
     
     /** 비고 */
+    @Size(max=2500)
     private String remark = "";
     
     /** 전화번호 */
     private String telNo = "";
 
     /** 상세주소 */
+    @Size(max=100)
     private String detailAdres = "";
     
     /** 우편번호 */

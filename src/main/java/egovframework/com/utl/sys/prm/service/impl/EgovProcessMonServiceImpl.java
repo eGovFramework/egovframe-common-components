@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
@@ -15,6 +13,7 @@ import egovframework.com.utl.sys.prm.service.ProcessMon;
 import egovframework.com.utl.sys.prm.service.ProcessMonLog;
 import egovframework.com.utl.sys.prm.service.ProcessMonLogVO;
 import egovframework.com.utl.sys.prm.service.ProcessMonVO;
+import jakarta.annotation.Resource;
 
 /**
  * 개요
@@ -123,7 +122,7 @@ public class EgovProcessMonServiceImpl extends EgovAbstractServiceImpl implement
 		List<ProcessMonLogVO> result = processMonDAO.selectProcessMonLogList(processMonLogVO);
 		int cnt = processMonDAO.selectProcessMonLogTotCnt(processMonLogVO);
 
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 
 		map.put("resultList", result);
 		map.put("resultCnt", Integer.toString(cnt));

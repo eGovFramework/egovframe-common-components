@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
@@ -16,6 +14,7 @@ import egovframework.com.cop.bbs.service.EgovBBSSatisfactionService;
 import egovframework.com.cop.bbs.service.Satisfaction;
 import egovframework.com.cop.bbs.service.SatisfactionVO;
 import egovframework.com.cop.bbs.service.impl.BBSAddedOptionsDAO;
+import jakarta.annotation.Resource;
 
 /**
  * 만족도조사를 위한 서비스 구현 클래스
@@ -26,7 +25,7 @@ import egovframework.com.cop.bbs.service.impl.BBSAddedOptionsDAO;
  *
  * <pre>
  * << 개정이력(Modification Information) >>
- *   
+ *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.06.29  한성곤          최초 생성
@@ -39,88 +38,95 @@ public class EgovBBSSatisfactionServiceImpl extends EgovAbstractServiceImpl impl
 
     @Resource(name = "BBSAddedOptionsDAO")
     private BBSAddedOptionsDAO addedOptionsDAO;
-    
+
     @Resource(name = "BBSSatisfactionDAO")
     private BBSSatisfactionDAO bbsSatisfactionDAO;
-    
+
     @Resource(name = "egovStsfdgNoGnrService")
     private EgovIdGnrService egovStsfdgNoGnrService;
 
     /**
      * 만족도조사 사용 가능 여부를 확인한다.
      */
-    public boolean canUseSatisfaction(String bbsId) throws Exception {
+    @Override
+	public boolean canUseSatisfaction(String bbsId) throws Exception {
 	//String flag = EgovProperties.getProperty("Globals.addedOptions");
 	//if (flag != null && flag.trim().equalsIgnoreCase("true")) {//2011.09.15
 	    BoardMaster vo = new BoardMaster();
-	    
+
 	    vo.setBbsId(bbsId);
-	    
+
 	    BoardMasterVO options = addedOptionsDAO.selectAddedOptionsInf(vo);
-	    
+
 	    if (options == null) {
 		return false;
 	    }
-	    
+
 	    if (options.getStsfdgAt().equals("Y")) {
 		return true;
 	    }
 	//}
-	
+
 	return false;
     }
 
     /**
      * 만족도조사에 대한 목록을 조회 한다.
      */
-    public Map<String, Object> selectSatisfactionList(SatisfactionVO satisfactionVO) throws Exception {
+    @Override
+	public Map<String, Object> selectSatisfactionList(SatisfactionVO satisfactionVO) throws Exception {
 	List<SatisfactionVO> result = bbsSatisfactionDAO.selectSatisfactionList(satisfactionVO);
 	int cnt = bbsSatisfactionDAO.selectSatisfactionListCnt(satisfactionVO);
 	float summary = bbsSatisfactionDAO.getSummary(satisfactionVO);
-	
-	Map<String, Object> map = new HashMap<String, Object>();
-	
+
+	Map<String, Object> map = new HashMap<>();
+
 	map.put("resultList", result);
 	map.put("resultCnt", Integer.toString(cnt));
 	map.put("summary", Float.toString(summary));
 
 	return map;
     }
-    
+
     /**
      * 만족도조사를 등록한다.
      */
-    public void insertSatisfaction(Satisfaction satisfaction) throws Exception {
-    
-    satisfaction.setStsfdgNo(egovStsfdgNoGnrService.getNextLongId() + "");//2011.10.18	
+    @Override
+	public void insertSatisfaction(Satisfaction satisfaction) throws Exception {
+
+    satisfaction.setStsfdgNo(egovStsfdgNoGnrService.getNextLongId() + "");//2011.10.18
 	bbsSatisfactionDAO.insertSatisfaction(satisfaction);
     }
-    
+
     /**
      * 만족도조사를 삭제한다.
      */
-    public void deleteSatisfaction(SatisfactionVO satisfactionVO) throws Exception {
+    @Override
+	public void deleteSatisfaction(SatisfactionVO satisfactionVO) throws Exception {
 	bbsSatisfactionDAO.deleteSatisfaction(satisfactionVO);
     }
-    
+
     /**
      * 만족도조사에 대한 내용을 조회한다.
      */
-    public Satisfaction selectSatisfaction(SatisfactionVO satisfactionVO) throws Exception {
+    @Override
+	public Satisfaction selectSatisfaction(SatisfactionVO satisfactionVO) throws Exception {
 	return bbsSatisfactionDAO.selectSatisfaction(satisfactionVO);
     }
-    
+
     /**
      * 만족도조사에 대한 내용을 수정한다.
      */
-    public void updateSatisfaction(Satisfaction satisfaction) throws Exception {
+    @Override
+	public void updateSatisfaction(Satisfaction satisfaction) throws Exception {
 	bbsSatisfactionDAO.updateSatisfaction(satisfaction);
     }
-    
+
     /**
      * 만족도조사 패스워드를 가져온다.
      */
-    public String getSatisfactionPassword(Satisfaction satisfaction) throws Exception {
+    @Override
+	public String getSatisfactionPassword(Satisfaction satisfaction) throws Exception {
 	return bbsSatisfactionDAO.getSatisfactionPassword(satisfaction);
     }
 }

@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ page session="false" %>
-<spring:eval expression="@customProperties.getProperty('facebook.appId')" var="appId"/>
 <%
 
 /**
@@ -36,7 +35,7 @@
 	<script>
 		window.fbAsyncInit = function() {
 			
-			var appId = "<c:out value='${appId}' />";
+			var appId = "<c:out value='${facebookAppId}' />";
 			// https 페이지에서 호출하지 않을 시, accessToken과 userID 값은 임의로 설정이 필요하다.
 			// https://developers.facebook.com/에서 그래프 API 탐색기를 통해 값을 확인한 후 설정
 			var accessToken = "";

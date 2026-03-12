@@ -36,7 +36,7 @@ import com.artofsolving.jodconverter.openoffice.converter.OpenOfficeDocumentConv
 public class TestPdfConverter {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
+
 		String sourcePath = "C:/egovframework/";
 		//String sourceFileName = "test1.xls";
 		//String sourceFileName = "test2.png";
@@ -54,7 +54,6 @@ public class TestPdfConverter {
 			try {
 				connection.connect();
 			} catch (ConnectException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 			//원본 디렉토리에 targetPdf 명칭지정

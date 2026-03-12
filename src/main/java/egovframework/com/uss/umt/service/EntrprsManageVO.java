@@ -1,5 +1,10 @@
 package egovframework.com.uss.umt.service;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import org.egovframe.rte.ptl.reactive.validation.EgovEmailCheck;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 /**
  * 기업회원VO클래스로서 기업회원관리 비지니스로직 처리용 항목을 구성한다.
  * @author 공통서비스 개발팀 조재영
@@ -21,9 +26,6 @@ public class EntrprsManageVO  extends UserDefaultVO{
 
 	private static final long serialVersionUID = -6532736688851136256L;
 
-	/** 이전비밀번호 - 비밀번호 변경시 사용*/
-    private String oldPassword = "";
-
     /**
 	 * 사용자고유아이디
 	 */
@@ -35,6 +37,8 @@ public class EntrprsManageVO  extends UserDefaultVO{
 	/**
 	 * 주소
 	 */
+	@EgovNullCheck
+	@Size(max=100)
 	private String adres;
 	/**
 	 * 상세주소
@@ -47,14 +51,18 @@ public class EntrprsManageVO  extends UserDefaultVO{
 	/**
 	 * 신청자 명
 	 */
+	@EgovNullCheck
 	private String applcntNm;
 	/**
 	 * 사업자번호
 	 */
+	@EgovNullCheck
 	private String bizrno;
 	/**
 	 * 회사명
 	 */
+	@EgovNullCheck
+	@Size(max=50)
 	private String cmpnyNm;
 	/**
 	 * 대표이사
@@ -63,22 +71,29 @@ public class EntrprsManageVO  extends UserDefaultVO{
 	/**
 	 * 기업 회원 ID
 	 */
+	@EgovNullCheck
+	@Size(max=20)
 	private String entrprsmberId;
 	/**
 	 * 기업 회원 비밀번호
 	 */
+	@EgovNullCheck
 	private String entrprsMberPassword;
 	/**
 	 * 기업 회원 비밀번호 정답
 	 */
+	@EgovNullCheck
+	@Size(max=100)
 	private String entrprsMberPasswordCnsr;
 	/**
 	 * 기업 회원 비밀번호 힌트
 	 */
+	@EgovNullCheck
 	private String entrprsMberPasswordHint;
 	/**
 	 * 기업 회원 상태
 	 */
+	@EgovNullCheck
 	private String entrprsMberSttus;
 	/**
 	 * 기업구분코드
@@ -103,14 +118,23 @@ public class EntrprsManageVO  extends UserDefaultVO{
 	/**
 	 * 지역번호
 	 */
+	@EgovNullCheck
+	@Size(max=4)
+	@Pattern(regexp="^[0-9]*$", message="{validation.pattern.integer}")
 	private String areaNo;
 	/**
 	 * 회사끝전화번호
 	 */
+	@EgovNullCheck
+	@Size(max=4)
+	@Pattern(regexp="^[0-9]*$", message="{validation.pattern.integer}")
 	private String entrprsEndTelno;
 	/**
 	 * 회사중간전화번호
 	 */
+	@EgovNullCheck
+	@Size(max=4)
+	@Pattern(regexp="^[0-9]*$", message="{validation.pattern.integer}")
 	private String entrprsMiddleTelno;
 	/**
 	 * 가입 일자
@@ -119,30 +143,20 @@ public class EntrprsManageVO  extends UserDefaultVO{
 	/**
 	 * 우편번호
 	 */
+	@EgovNullCheck
 	private String zip;
 	/**
 	 * 신청자 이메일주소
 	 */
+	@EgovNullCheck
+	@Size(max=50)
+	@EgovEmailCheck
 	private String applcntEmailAdres;
 	
 	private String lockAt;
 	public String getLockAt() {return lockAt;}
 	public void setLockAt(String lockAt) {this.lockAt = lockAt;}
 	
-	/**
-	 * oldPassword attribute 값을  리턴한다.
-	 * @return String
-	 */
-	public String getOldPassword() {
-		return oldPassword;
-	}
-	/**
-	 * oldPassword attribute 값을 설정한다.
-	 * @param oldPassword String
-	 */
-	public void setOldPassword(String oldPassword) {
-		this.oldPassword = oldPassword;
-	}
 	/**
 	 * uniqId attribute 값을  리턴한다.
 	 * @return String

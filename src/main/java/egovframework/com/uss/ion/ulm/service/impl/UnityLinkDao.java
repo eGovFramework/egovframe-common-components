@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.ulm.service.UnityLink;
 
@@ -27,10 +26,8 @@ public class UnityLinkDao extends EgovComAbstractDAO {
 
     /**
      * 통합링크관리 메인 셈플 목록을 조회한다.
-     * @param popupManageVO - 팝업창 Vo
-     * @return List - 팝업창 목록
-     *
-     * @param popupManageVO
+     * @param unityLink - 통합링크관리 VO
+     * @return List - 통합링크관리 목록
      */
     public List<?> selectUnityLinkSample(UnityLink unityLink) throws Exception {
         return selectList("UnityLink.selectUnityLinkSample", unityLink);
@@ -38,22 +35,22 @@ public class UnityLinkDao extends EgovComAbstractDAO {
 
     /**
      * 통합링크관리를(을) 목록을 한다.
-     * @param searchVO 조회할 정보가 담긴 VO
+     * @param unityLink 조회할 정보가 담긴 VO
      * @return List
      * @throws Exception
      */
-    public List<?> selectUnityLinkList(ComDefaultVO searchVO) throws Exception {
-        return selectList("UnityLink.selectUnityLink", searchVO);
+    public List<?> selectUnityLinkList(UnityLink unityLink) throws Exception {
+        return selectList("UnityLink.selectUnityLink", unityLink);
     }
 
     /**
      * 통합링크관리를(을) 목록 전체 건수를(을) 조회한다.
-     * @param searchVO  조회할 정보가 담긴 VO
+     * @param unityLink  조회할 정보가 담긴 VO
      * @return int
      * @throws Exception
      */
-    public int selectUnityLinkListCnt(ComDefaultVO searchVO) throws Exception {
-        return (Integer)selectOne("UnityLink.selectUnityLinkCnt", searchVO);
+    public int selectUnityLinkListCnt(UnityLink unityLink) throws Exception {
+        return (Integer)selectOne("UnityLink.selectUnityLinkCnt", unityLink);
     }
 
     /**

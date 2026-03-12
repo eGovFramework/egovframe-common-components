@@ -113,40 +113,46 @@ public class BbsStatsDAO extends EgovComAbstractDAO {
     	if (resultVO == null || resultVO.getStatsKind() == null || "".equals(resultVO.getStatsKind())) {
     		// 1-1. 생성글수
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsCreatCo", parVO);
-            if (resultVO != null)
-        		sumVO.setCreatCo(resultVO.getCreatCo());
-        	else
-        		sumVO.setCreatCo(0);
+            if (resultVO != null) {
+				sumVO.setCreatCo(resultVO.getCreatCo());
+			} else {
+				sumVO.setCreatCo(0);
+			}
             // 1-2. 총조회수
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsTotInqireCo", parVO);
-        	if (resultVO != null)
-        		sumVO.setTotInqireCo(resultVO.getTotInqireCo());
-        	else
-        		sumVO.setTotInqireCo(0);
+        	if (resultVO != null) {
+				sumVO.setTotInqireCo(resultVO.getTotInqireCo());
+			} else {
+				sumVO.setTotInqireCo(0);
+			}
             // 1-3. 평균조회수
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsAvrgInqireCo", parVO);
-        	if (resultVO != null)
-        		sumVO.setAvrgInqireCo(resultVO.getAvrgInqireCo());
-        	else
-        		sumVO.setAvrgInqireCo(0);
+        	if (resultVO != null) {
+				sumVO.setAvrgInqireCo(resultVO.getAvrgInqireCo());
+			} else {
+				sumVO.setAvrgInqireCo(0);
+			}
             // 1-4. 최고조회게시물ID
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsMxmmInqireBbsId", parVO);
-        	if (resultVO != null && resultVO.getMxmmInqireBbsId() != null)
-        		sumVO.setMxmmInqireBbsId(resultVO.getMxmmInqireBbsId());
-        	else
-        		sumVO.setMxmmInqireBbsId("");
+        	if (resultVO != null && resultVO.getMxmmInqireBbsId() != null) {
+				sumVO.setMxmmInqireBbsId(resultVO.getMxmmInqireBbsId());
+			} else {
+				sumVO.setMxmmInqireBbsId("");
+			}
             // 1-5. 최소조회게시물ID
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsMummInqireBbsId", parVO);
-        	if (resultVO != null && resultVO.getMummInqireBbsId() != null)
-        		sumVO.setMummInqireBbsId(resultVO.getMummInqireBbsId());
-        	else
-        		sumVO.setMummInqireBbsId("");
+        	if (resultVO != null && resultVO.getMummInqireBbsId() != null) {
+				sumVO.setMummInqireBbsId(resultVO.getMummInqireBbsId());
+			} else {
+				sumVO.setMummInqireBbsId("");
+			}
             // 1-6. 최고게시자ID
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsTopNtcepersonId", parVO);
-        	if (resultVO != null && resultVO.getTopNtcepersonId() != null)
-        		sumVO.setTopNtcepersonId(resultVO.getTopNtcepersonId());
-        	else
-        		sumVO.setTopNtcepersonId("");
+        	if (resultVO != null && resultVO.getTopNtcepersonId() != null) {
+				sumVO.setTopNtcepersonId(resultVO.getTopNtcepersonId());
+			} else {
+				sumVO.setTopNtcepersonId("");
+			}
 
         	// 1-7. 집계 등록
         	insert("BbsStatsDAO.summaryBbsStats", sumVO);
@@ -163,40 +169,46 @@ public class BbsStatsDAO extends EgovComAbstractDAO {
     	if (resultVO == null || resultVO.getStatsKind() == null || "".equals(resultVO.getStatsKind())) {
     		// 2-1. 생성글수
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsCreatCo", parVO);
-            if (resultVO != null)
-        		sumVO.setCreatCo(resultVO.getCreatCo());
-        	else
-        		sumVO.setCreatCo(0);
+            if (resultVO != null) {
+				sumVO.setCreatCo(resultVO.getCreatCo());
+			} else {
+				sumVO.setCreatCo(0);
+			}
             // 2-2. 총조회수
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsTotInqireCo", parVO);
-        	if (resultVO != null)
-        		sumVO.setTotInqireCo(resultVO.getTotInqireCo());
-        	else
-        		sumVO.setTotInqireCo(0);
+        	if (resultVO != null) {
+				sumVO.setTotInqireCo(resultVO.getTotInqireCo());
+			} else {
+				sumVO.setTotInqireCo(0);
+			}
             // 2-3. 평균조회수
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsAvrgInqireCo", parVO);
-        	if (resultVO != null)
-        		sumVO.setAvrgInqireCo(resultVO.getAvrgInqireCo());
-        	else
-        		sumVO.setAvrgInqireCo(0);
+        	if (resultVO != null) {
+				sumVO.setAvrgInqireCo(resultVO.getAvrgInqireCo());
+			} else {
+				sumVO.setAvrgInqireCo(0);
+			}
             // 2-4. 최고조회게시물ID
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsMxmmInqireBbsId", parVO);
-        	if (resultVO != null && resultVO.getMxmmInqireBbsId() != null)
-        		sumVO.setMxmmInqireBbsId(resultVO.getMxmmInqireBbsId());
-        	else
-        		sumVO.setMxmmInqireBbsId("");
+        	if (resultVO != null && resultVO.getMxmmInqireBbsId() != null) {
+				sumVO.setMxmmInqireBbsId(resultVO.getMxmmInqireBbsId());
+			} else {
+				sumVO.setMxmmInqireBbsId("");
+			}
             // 2-5. 최소조회게시물ID
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsMummInqireBbsId", parVO);
-        	if (resultVO != null && resultVO.getMummInqireBbsId() != null)
-        		sumVO.setMummInqireBbsId(resultVO.getMummInqireBbsId());
-        	else
-        		sumVO.setMummInqireBbsId("");
+        	if (resultVO != null && resultVO.getMummInqireBbsId() != null) {
+				sumVO.setMummInqireBbsId(resultVO.getMummInqireBbsId());
+			} else {
+				sumVO.setMummInqireBbsId("");
+			}
             // 2-6. 최고게시자ID
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsTopNtcepersonId", parVO);
-        	if (resultVO != null && resultVO.getTopNtcepersonId() != null)
-        		sumVO.setTopNtcepersonId(resultVO.getTopNtcepersonId());
-        	else
-        		sumVO.setTopNtcepersonId("");
+        	if (resultVO != null && resultVO.getTopNtcepersonId() != null) {
+				sumVO.setTopNtcepersonId(resultVO.getTopNtcepersonId());
+			} else {
+				sumVO.setTopNtcepersonId("");
+			}
 
         	// 2-7. 집계 등록
         	insert("BbsStatsDAO.summaryBbsStats", sumVO);
@@ -213,40 +225,46 @@ public class BbsStatsDAO extends EgovComAbstractDAO {
     	if (resultVO == null || resultVO.getStatsKind() == null || "".equals(resultVO.getStatsKind())) {
     		// 3-1. 생성글수
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsCreatCo", parVO);
-            if (resultVO != null)
-        		sumVO.setCreatCo(resultVO.getCreatCo());
-        	else
-        		sumVO.setCreatCo(0);
+            if (resultVO != null) {
+				sumVO.setCreatCo(resultVO.getCreatCo());
+			} else {
+				sumVO.setCreatCo(0);
+			}
             // 3-2. 총조회수
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsTotInqireCo", parVO);
-        	if (resultVO != null)
-        		sumVO.setTotInqireCo(resultVO.getTotInqireCo());
-        	else
-        		sumVO.setTotInqireCo(0);
+        	if (resultVO != null) {
+				sumVO.setTotInqireCo(resultVO.getTotInqireCo());
+			} else {
+				sumVO.setTotInqireCo(0);
+			}
             // 3-3. 평균조회수
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsAvrgInqireCo", parVO);
-        	if (resultVO != null)
-        		sumVO.setAvrgInqireCo(resultVO.getAvrgInqireCo());
-        	else
-        		sumVO.setAvrgInqireCo(0);
+        	if (resultVO != null) {
+				sumVO.setAvrgInqireCo(resultVO.getAvrgInqireCo());
+			} else {
+				sumVO.setAvrgInqireCo(0);
+			}
             // 3-4. 최고조회게시물ID
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsMxmmInqireBbsId", parVO);
-        	if (resultVO != null && resultVO.getMxmmInqireBbsId() != null)
-        		sumVO.setMxmmInqireBbsId(resultVO.getMxmmInqireBbsId());
-        	else
-        		sumVO.setMxmmInqireBbsId("");
+        	if (resultVO != null && resultVO.getMxmmInqireBbsId() != null) {
+				sumVO.setMxmmInqireBbsId(resultVO.getMxmmInqireBbsId());
+			} else {
+				sumVO.setMxmmInqireBbsId("");
+			}
             // 3-5. 최소조회게시물ID
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsMummInqireBbsId", parVO);
-        	if (resultVO != null && resultVO.getMummInqireBbsId() != null)
-        		sumVO.setMummInqireBbsId(resultVO.getMummInqireBbsId());
-        	else
-        		sumVO.setMummInqireBbsId("");
+        	if (resultVO != null && resultVO.getMummInqireBbsId() != null) {
+				sumVO.setMummInqireBbsId(resultVO.getMummInqireBbsId());
+			} else {
+				sumVO.setMummInqireBbsId("");
+			}
             // 3-6. 최고게시자ID
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsTopNtcepersonId", parVO);
-        	if (resultVO != null && resultVO.getTopNtcepersonId() != null)
-        		sumVO.setTopNtcepersonId(resultVO.getTopNtcepersonId());
-        	else
-        		sumVO.setTopNtcepersonId("");
+        	if (resultVO != null && resultVO.getTopNtcepersonId() != null) {
+				sumVO.setTopNtcepersonId(resultVO.getTopNtcepersonId());
+			} else {
+				sumVO.setTopNtcepersonId("");
+			}
 
         	// 3-7. 집계 등록
         	insert("BbsStatsDAO.summaryBbsStats", sumVO);
@@ -265,40 +283,46 @@ public class BbsStatsDAO extends EgovComAbstractDAO {
     	if (resultVO == null || resultVO.getStatsKind() == null || "".equals(resultVO.getStatsKind())) {
     		// 1-1. 생성글수
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsCreatCo", parVO);
-            if (resultVO != null)
-        		sumVO.setCreatCo(resultVO.getCreatCo());
-        	else
-        		sumVO.setCreatCo(0);
+            if (resultVO != null) {
+				sumVO.setCreatCo(resultVO.getCreatCo());
+			} else {
+				sumVO.setCreatCo(0);
+			}
             // 1-2. 총조회수
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsTotInqireCo", parVO);
-        	if (resultVO != null)
-        		sumVO.setTotInqireCo(resultVO.getTotInqireCo());
-        	else
-        		sumVO.setTotInqireCo(0);
+        	if (resultVO != null) {
+				sumVO.setTotInqireCo(resultVO.getTotInqireCo());
+			} else {
+				sumVO.setTotInqireCo(0);
+			}
             // 1-3. 평균조회수
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsAvrgInqireCo", parVO);
-        	if (resultVO != null)
-        		sumVO.setAvrgInqireCo(resultVO.getAvrgInqireCo());
-        	else
-        		sumVO.setAvrgInqireCo(0);
+        	if (resultVO != null) {
+				sumVO.setAvrgInqireCo(resultVO.getAvrgInqireCo());
+			} else {
+				sumVO.setAvrgInqireCo(0);
+			}
             // 1-4. 최고조회게시물ID
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsMxmmInqireBbsId", parVO);
-        	if (resultVO != null && resultVO.getMxmmInqireBbsId() != null)
-        		sumVO.setMxmmInqireBbsId(resultVO.getMxmmInqireBbsId());
-        	else
-        		sumVO.setMxmmInqireBbsId("");
+        	if (resultVO != null && resultVO.getMxmmInqireBbsId() != null) {
+				sumVO.setMxmmInqireBbsId(resultVO.getMxmmInqireBbsId());
+			} else {
+				sumVO.setMxmmInqireBbsId("");
+			}
             // 1-5. 최소조회게시물ID
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsMummInqireBbsId", parVO);
-        	if (resultVO != null && resultVO.getMummInqireBbsId() != null)
-        		sumVO.setMummInqireBbsId(resultVO.getMummInqireBbsId());
-        	else
-        		sumVO.setMummInqireBbsId("");
+        	if (resultVO != null && resultVO.getMummInqireBbsId() != null) {
+				sumVO.setMummInqireBbsId(resultVO.getMummInqireBbsId());
+			} else {
+				sumVO.setMummInqireBbsId("");
+			}
             // 1-6. 최고게시자ID
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsTopNtcepersonId", parVO);
-        	if (resultVO != null && resultVO.getTopNtcepersonId() != null)
-        		sumVO.setTopNtcepersonId(resultVO.getTopNtcepersonId());
-        	else
-        		sumVO.setTopNtcepersonId("");
+        	if (resultVO != null && resultVO.getTopNtcepersonId() != null) {
+				sumVO.setTopNtcepersonId(resultVO.getTopNtcepersonId());
+			} else {
+				sumVO.setTopNtcepersonId("");
+			}
 
         	// 1-7. 집계 등록
         	insert("BbsStatsDAO.summaryBbsStats", sumVO);
@@ -315,40 +339,46 @@ public class BbsStatsDAO extends EgovComAbstractDAO {
     	if (resultVO == null || resultVO.getStatsKind() == null || "".equals(resultVO.getStatsKind())) {
     		// 2-1. 생성글수
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsCreatCo", parVO);
-            if (resultVO != null)
-        		sumVO.setCreatCo(resultVO.getCreatCo());
-        	else
-        		sumVO.setCreatCo(0);
+            if (resultVO != null) {
+				sumVO.setCreatCo(resultVO.getCreatCo());
+			} else {
+				sumVO.setCreatCo(0);
+			}
             // 2-2. 총조회수
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsTotInqireCo", parVO);
-        	if (resultVO != null)
-        		sumVO.setTotInqireCo(resultVO.getTotInqireCo());
-        	else
-        		sumVO.setTotInqireCo(0);
+        	if (resultVO != null) {
+				sumVO.setTotInqireCo(resultVO.getTotInqireCo());
+			} else {
+				sumVO.setTotInqireCo(0);
+			}
             // 2-3. 평균조회수
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsAvrgInqireCo", parVO);
-        	if (resultVO != null)
-        		sumVO.setAvrgInqireCo(resultVO.getAvrgInqireCo());
-        	else
-        		sumVO.setAvrgInqireCo(0);
+        	if (resultVO != null) {
+				sumVO.setAvrgInqireCo(resultVO.getAvrgInqireCo());
+			} else {
+				sumVO.setAvrgInqireCo(0);
+			}
             // 2-4. 최고조회게시물ID
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsMxmmInqireBbsId", parVO);
-        	if (resultVO != null && resultVO.getMxmmInqireBbsId() != null)
-        		sumVO.setMxmmInqireBbsId(resultVO.getMxmmInqireBbsId());
-        	else
-        		sumVO.setMxmmInqireBbsId("");
+        	if (resultVO != null && resultVO.getMxmmInqireBbsId() != null) {
+				sumVO.setMxmmInqireBbsId(resultVO.getMxmmInqireBbsId());
+			} else {
+				sumVO.setMxmmInqireBbsId("");
+			}
             // 2-5. 최소조회게시물ID
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsMummInqireBbsId", parVO);
-        	if (resultVO != null && resultVO.getMummInqireBbsId() != null)
-        		sumVO.setMummInqireBbsId(resultVO.getMummInqireBbsId());
-        	else
-        		sumVO.setMummInqireBbsId("");
+        	if (resultVO != null && resultVO.getMummInqireBbsId() != null) {
+				sumVO.setMummInqireBbsId(resultVO.getMummInqireBbsId());
+			} else {
+				sumVO.setMummInqireBbsId("");
+			}
             // 2-6. 최고게시자ID
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsTopNtcepersonId", parVO);
-        	if (resultVO != null && resultVO.getTopNtcepersonId() != null)
-        		sumVO.setTopNtcepersonId(resultVO.getTopNtcepersonId());
-        	else
-        		sumVO.setTopNtcepersonId("");
+        	if (resultVO != null && resultVO.getTopNtcepersonId() != null) {
+				sumVO.setTopNtcepersonId(resultVO.getTopNtcepersonId());
+			} else {
+				sumVO.setTopNtcepersonId("");
+			}
 
         	// 2-7. 집계 등록
         	insert("BbsStatsDAO.summaryBbsStats", sumVO);
@@ -365,40 +395,46 @@ public class BbsStatsDAO extends EgovComAbstractDAO {
     	if (resultVO == null || resultVO.getStatsKind() == null || "".equals(resultVO.getStatsKind())) {
     		// 3-1. 생성글수
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsCreatCo", parVO);
-            if (resultVO != null)
-        		sumVO.setCreatCo(resultVO.getCreatCo());
-        	else
-        		sumVO.setCreatCo(0);
+            if (resultVO != null) {
+				sumVO.setCreatCo(resultVO.getCreatCo());
+			} else {
+				sumVO.setCreatCo(0);
+			}
             // 3-2. 총조회수
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsTotInqireCo", parVO);
-        	if (resultVO != null)
-        		sumVO.setTotInqireCo(resultVO.getTotInqireCo());
-        	else
-        		sumVO.setTotInqireCo(0);
+        	if (resultVO != null) {
+				sumVO.setTotInqireCo(resultVO.getTotInqireCo());
+			} else {
+				sumVO.setTotInqireCo(0);
+			}
             // 3-3. 평균조회수
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsAvrgInqireCo", parVO);
-        	if (resultVO != null)
-        		sumVO.setAvrgInqireCo(resultVO.getAvrgInqireCo());
-        	else
-        		sumVO.setAvrgInqireCo(0);
+        	if (resultVO != null) {
+				sumVO.setAvrgInqireCo(resultVO.getAvrgInqireCo());
+			} else {
+				sumVO.setAvrgInqireCo(0);
+			}
             // 3-4. 최고조회게시물ID
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsMxmmInqireBbsId", parVO);
-        	if (resultVO != null && resultVO.getMxmmInqireBbsId() != null)
-        		sumVO.setMxmmInqireBbsId(resultVO.getMxmmInqireBbsId());
-        	else
-        		sumVO.setMxmmInqireBbsId("");
+        	if (resultVO != null && resultVO.getMxmmInqireBbsId() != null) {
+				sumVO.setMxmmInqireBbsId(resultVO.getMxmmInqireBbsId());
+			} else {
+				sumVO.setMxmmInqireBbsId("");
+			}
             // 3-5. 최소조회게시물ID
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsMummInqireBbsId", parVO);
-        	if (resultVO != null && resultVO.getMummInqireBbsId() != null)
-        		sumVO.setMummInqireBbsId(resultVO.getMummInqireBbsId());
-        	else
-        		sumVO.setMummInqireBbsId("");
+        	if (resultVO != null && resultVO.getMummInqireBbsId() != null) {
+				sumVO.setMummInqireBbsId(resultVO.getMummInqireBbsId());
+			} else {
+				sumVO.setMummInqireBbsId("");
+			}
             // 3-6. 최고게시자ID
         	resultVO = (StatsVO)selectOne("BbsStatsDAO.selectBbsTopNtcepersonId", parVO);
-        	if (resultVO != null && resultVO.getTopNtcepersonId() != null)
-        		sumVO.setTopNtcepersonId(resultVO.getTopNtcepersonId());
-        	else
-        		sumVO.setTopNtcepersonId("");
+        	if (resultVO != null && resultVO.getTopNtcepersonId() != null) {
+				sumVO.setTopNtcepersonId(resultVO.getTopNtcepersonId());
+			} else {
+				sumVO.setTopNtcepersonId("");
+			}
 
         	// 3-7. 집계 등록
         	insert("BbsStatsDAO.summaryBbsStats", sumVO);

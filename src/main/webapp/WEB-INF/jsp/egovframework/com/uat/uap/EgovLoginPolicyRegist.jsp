@@ -25,7 +25,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -36,8 +35,7 @@
 <title><spring:message code="comUatUap.loginPolicyRegist.title"/></title><!-- 로그인정책 등록 -->
 <%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="loginPolicy" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 
 function fncSelectLoginPolicyList() {
@@ -126,14 +124,14 @@ function ipValidate() {
 			<col style="" />
 		</colgroup>
 		<tr>
-			<th><spring:message code="comUatUap.loginPolicyRegist.emplyrId"/> <span class="pilsu">*</span></th><!-- 사용자ID -->
+			<th><spring:message code="comUatUap.loginPolicyRegist.emplyrId"/> </th><!-- 사용자ID -->
 			<td class="left">
 			    <input id="emplyrId" name="emplyrId" type="text" value="<c:out value='${loginPolicy.emplyrId}'/>" title="<spring:message code="comUatUap.loginPolicyRegist.emplyrId"/>" size="30" maxlength="30" readonly="readonly" /><!-- 사용자ID -->
 			    <input name="emplyrIdEncrypt" id="emplyrIdEncrypt" value="${egovc:encrypt(loginPolicy.emplyrId)}" type="hidden">
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="comUatUap.loginPolicyRegist.emplyrNm"/> <span class="pilsu">*</span></th><!-- 사용자명 -->
+			<th><spring:message code="comUatUap.loginPolicyRegist.emplyrNm"/> </th><!-- 사용자명 -->
 			<td class="left">
 			    <input id="emplyrNm" type="text" name="emplyrNm" value="<c:out value='${loginPolicy.emplyrNm}'/>" title="<spring:message code="comUatUap.loginPolicyRegist.emplyrNm"/>" size="30" maxlength="50" readonly="readonly" /><!-- 사용자명 -->
 			</td>

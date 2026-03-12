@@ -37,7 +37,8 @@
  * 목록 으로 가기
  ******************************************************** */
 function fn_egov_list_CntcInstt(){
-	location.href = "<c:url value='/ssi/syi/iis/getCntcInsttList.do'/>";
+	var varForm = document.all["formList"];
+	varForm.submit();
 }
 /* ********************************************************
  * 수정화면으로  바로가기
@@ -141,6 +142,10 @@ function fn_egov_delete_CntcService(sysId, svcId){
 	<input name="insttId" type="hidden">
 	<input name="sysId"   type="hidden">
 	<input name="svcId"   type="hidden">
+	<!-- 검색조건 유지 -->
+	<input name="searchCondition" type="hidden" value="<c:out value='${searchVO.searchCondition}'/>">
+	<input name="searchKeyword" type="hidden" value="<c:out value='${searchVO.searchKeyword}'/>">
+	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}' default='1'/>">
 </form>
 <form name="listForm" action="<c:url value='/ssi/syi/iis/getCntcInsttDetail.do'/>" method="post">
 </form>
@@ -177,6 +182,10 @@ function fn_egov_delete_CntcService(sysId, svcId){
 		<input name="insttId" type="hidden" value="<c:out value='${result.insttId}'/>">
 		<input name="sysId" type="hidden" value="">
 		<input name="svcId" type="hidden" value="">
+		<!-- 검색조건 유지 -->
+		<input name="searchCondition" type="hidden" value="<c:out value='${searchVO.searchCondition}'/>">
+		<input name="searchKeyword" type="hidden" value="<c:out value='${searchVO.searchKeyword}'/>">
+		<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}' default='1'/>">
 		</form>
 			
 		<form name="formDelete" action="<c:url value='/ssi/syi/iis/removeCntcInstt.do'/>" method="post" style="display:inline-block; vertical-align:top">
@@ -187,7 +196,11 @@ function fn_egov_delete_CntcService(sysId, svcId){
 		</form>
 
 		<form name="formList" action="<c:url value='/ssi/syi/iis/getCntcInsttList.do'/>" method="post" style="display:inline-block; vertical-align:top">
-		<input class="s_submit" type="submit" value='<spring:message code="button.list" />' onclick="fn_egov_list_CntcInstt(); return false;" /><!-- 목록 -->
+		<input class="s_submit" type="submit" value='<spring:message code="button.list" />' /><!-- 목록 -->
+		<!-- 검색조건 유지 -->
+		<input name="searchCondition" type="hidden" value="<c:out value='${searchVO.searchCondition}'/>">
+		<input name="searchKeyword" type="hidden" value="<c:out value='${searchVO.searchKeyword}'/>">
+		<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}' default='1'/>">
 		</form>
 	</div>
 	<div style="clear:both;"></div>
@@ -202,6 +215,10 @@ function fn_egov_delete_CntcService(sysId, svcId){
 				<form name="formCntcSystemRegist" action="<c:url value='/ssi/syi/iis/addCntcSystem.do'/>" method="post">
 					<input class="s_btn" type="submit" value="<spring:message code="comSsiSyiIis.cntcInsttDetail.button.regContactSystem"/>" title="<spring:message code="comSsiSyiIis.cntcInsttDetail.insttId"/>" onclick="" /><!-- 연계시스템등록 -->
 					<input name="insttId" type="hidden" value="<c:out value='${result.insttId}'/>">
+					<!-- 검색조건 유지 -->
+					<input name="searchCondition" type="hidden" value="<c:out value='${searchVO.searchCondition}'/>">
+					<input name="searchKeyword" type="hidden" value="<c:out value='${searchVO.searchKeyword}'/>">
+					<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}' default='1'/>">
 				</form>
 			</li>
 		</ul>
@@ -243,22 +260,30 @@ function fn_egov_delete_CntcService(sysId, svcId){
 						<tr>
 							<td colspan="2">
 								<form name="formCntcInsttUpdt" action="<c:url value='/ssi/syi/iis/updateCntcSystem.do'/>" method="post" style="display:inline-block; vertical-align:top">
-								<span class="button"><input type="submit" value="<spring:message code="button.update" />" onclick="fn_egov_modify_CntcSystem('<c:out value="${resultInfo.sysId}"/>'); return false;"></span><!-- 수정 -->
-								<input name="insttId" type="hidden" value="<c:out value='${result.insttId}'/>">
-								<input name="sysId"   type="hidden" value="<c:out value='${resultInfo.sysId}'/>">
-								<input name="svcId"   type="hidden" value="">
+									<span class="button"><input type="submit" value="<spring:message code="button.update" />" onclick="fn_egov_modify_CntcSystem('<c:out value="${resultInfo.sysId}"/>'); return false;"></span><!-- 수정 -->
+									<input name="insttId" type="hidden" value="<c:out value='${result.insttId}'/>">
+									<input name="sysId"   type="hidden" value="<c:out value='${resultInfo.sysId}'/>">
+									<input name="svcId"   type="hidden" value="">
+									<!-- 검색조건 유지 -->
+									<input name="searchCondition" type="hidden" value="<c:out value='${searchVO.searchCondition}'/>">
+									<input name="searchKeyword" type="hidden" value="<c:out value='${searchVO.searchKeyword}'/>">
+									<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}' default='1'/>">
 								</form>
 								
 								<form name="formCntcInsttDelete" action="<c:url value='/ssi/syi/iis/removeCntcSystem.do'/>" method="post" style="display:inline-block; vertical-align:top">
-								<span class="button"><input type="submit" value="<spring:message code="button.delete" />" onclick="fn_egov_delete_CntcSystem('<c:out value="${resultInfo.sysId}"/>'); return false;"></span><!-- 삭제 -->
-								<input name="insttId" type="hidden" value="<c:out value='${result.insttId}'/>">
-								<input name="sysId"   type="hidden" value="<c:out value='${resultInfo.sysId}'/>">
+									<span class="button"><input type="submit" value="<spring:message code="button.delete" />" onclick="fn_egov_delete_CntcSystem('<c:out value="${resultInfo.sysId}"/>'); return false;"></span><!-- 삭제 -->
+									<input name="insttId" type="hidden" value="<c:out value='${result.insttId}'/>">
+									<input name="sysId"   type="hidden" value="<c:out value='${resultInfo.sysId}'/>">
 								</form>
 								
 								<form name="formCntcInsttList" action="<c:url value='/ssi/syi/iis/addCntcService.do'/>" method="post" style="display:inline-block; vertical-align:top">
-								<span class="button"><input type="submit" value="<spring:message code="comSsiSyiIis.cntcInsttDetail.button.regContactService"/>" onclick="fn_egov_regist_CntcService('${resultInfo.sysId}'); return false;"></span><!-- 연계서비스등록 -->
-								<input name="insttId" type="hidden" value="<c:out value='${result.insttId}'/>">
-								<input name="sysId"   type="hidden" value="<c:out value='${resultInfo.sysId}'/>">
+									<span class="button"><input type="submit" value="<spring:message code="comSsiSyiIis.cntcInsttDetail.button.regContactService"/>" onclick="fn_egov_regist_CntcService('${resultInfo.sysId}'); return false;"></span><!-- 연계서비스등록 -->
+									<input name="insttId" type="hidden" value="<c:out value='${result.insttId}'/>">
+									<input name="sysId"   type="hidden" value="<c:out value='${resultInfo.sysId}'/>">
+									<!-- 검색조건 유지 -->
+									<input name="searchCondition" type="hidden" value="<c:out value='${searchVO.searchCondition}'/>">
+									<input name="searchKeyword" type="hidden" value="<c:out value='${searchVO.searchKeyword}'/>">
+									<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}' default='1'/>">
 								</form>
 							</td>
 						</tr>
@@ -298,17 +323,25 @@ function fn_egov_delete_CntcService(sysId, svcId){
 								</td>
 								<td>
 									<form name="formCntcUpdt" action="<c:url value='/ssi/syi/iis/updateCntcService.do'/>" method="post" style="display:inline-block; vertical-align:top">
-									<span class="button"><input type="submit" value="<spring:message code="button.update" />" onclick="fn_egov_modify_CntcService('<c:out value="${resultInfo.sysId}"/>','<c:out value="${resultServiceInfo.svcId}"/>'); return false;"></span><!-- 수정 -->
-									<input name="insttId" type="hidden" value="<c:out value='${result.insttId}'/>">
-									<input name="sysId"   type="hidden" value="<c:out value='${resultInfo.sysId}'/>">
-									<input name="svcId"   type="hidden" value="<c:out value='${resultServiceInfo.svcId}'/>">
+										<span class="button"><input type="submit" value="<spring:message code="button.update" />" onclick="fn_egov_modify_CntcService('<c:out value="${resultInfo.sysId}"/>','<c:out value="${resultServiceInfo.svcId}"/>'); return false;"></span><!-- 수정 -->
+										<input name="insttId" type="hidden" value="<c:out value='${result.insttId}'/>">
+										<input name="sysId"   type="hidden" value="<c:out value='${resultInfo.sysId}'/>">
+										<input name="svcId"   type="hidden" value="<c:out value='${resultServiceInfo.svcId}'/>">
+										<!-- 검색조건 유지 -->
+										<input name="searchCondition" type="hidden" value="<c:out value='${searchVO.searchCondition}'/>">
+										<input name="searchKeyword" type="hidden" value="<c:out value='${searchVO.searchKeyword}'/>">
+										<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}' default='1'/>">
 									</form>
 									
 									<form name="formCntcDelete" action="<c:url value='/ssi/syi/iis/removeCntcService.do'/>" method="post" style="display:inline-block; vertical-align:top">
-									<span class="button"><input type="submit" value="<spring:message code="button.delete" />" onclick="fn_egov_delete_CntcService('<c:out value="${resultInfo.sysId}"/>','<c:out value="${resultServiceInfo.svcId}"/>'); return false;"></span><!-- 삭제 -->
-									<input name="insttId" type="hidden" value="<c:out value='${result.insttId}'/>">
-									<input name="sysId"   type="hidden" value="<c:out value='${resultInfo.sysId}'/>">
-									<input name="svcId"   type="hidden" value="<c:out value='${resultServiceInfo.svcId}'/>">
+										<span class="button"><input type="submit" value="<spring:message code="button.delete" />" onclick="fn_egov_delete_CntcService('<c:out value="${resultInfo.sysId}"/>','<c:out value="${resultServiceInfo.svcId}"/>'); return false;"></span><!-- 삭제 -->
+										<input name="insttId" type="hidden" value="<c:out value='${result.insttId}'/>">
+										<input name="sysId"   type="hidden" value="<c:out value='${resultInfo.sysId}'/>">
+										<input name="svcId"   type="hidden" value="<c:out value='${resultServiceInfo.svcId}'/>">
+										<!-- 검색조건 유지 -->
+										<input name="searchCondition" type="hidden" value="<c:out value='${searchVO.searchCondition}'/>">
+										<input name="searchKeyword" type="hidden" value="<c:out value='${searchVO.searchKeyword}'/>">
+										<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}' default='1'/>">
 									</form>
 								</td>
 							</tr>

@@ -32,22 +32,22 @@ public class ComDefaultVO implements Serializable {
     private String searchUseYn = "";
     
     /** 현재페이지 */
-    private int pageIndex = 1;
+    private Integer pageIndex = 1;
     
     /** 페이지개수 */
-    private int pageUnit = 10;
+    private Integer pageUnit = 10;
     
     /** 페이지사이즈 */
-    private int pageSize = 10;
+    private Integer pageSize = 10;
 
     /** firstIndex */
-    private int firstIndex = 1;
+    private Integer firstIndex = 1;
 
     /** lastIndex */
-    private int lastIndex = 1;
+    private Integer lastIndex = 1;
 
     /** recordCountPerPage */
-    private int recordCountPerPage = 10;
+    private Integer recordCountPerPage = 10;
     
     /** 검색KeywordFrom */
     private String searchKeywordFrom = "";    
@@ -55,28 +55,28 @@ public class ComDefaultVO implements Serializable {
 	/** 검색KeywordTo */
     private String searchKeywordTo = "";  
     
-	public int getFirstIndex() {
-		return firstIndex;
+	public Integer getFirstIndex() {
+		return firstIndex == null ? 1 : firstIndex;
 	}
 
-	public void setFirstIndex(int firstIndex) {
-		this.firstIndex = firstIndex;
+	public void setFirstIndex(Integer firstIndex) {
+		this.firstIndex = firstIndex == null ? 1 : firstIndex;
 	}
 
-	public int getLastIndex() {
-		return lastIndex;
+	public Integer getLastIndex() {
+		return lastIndex == null ? 1 : lastIndex;
 	}
 
-	public void setLastIndex(int lastIndex) {
-		this.lastIndex = lastIndex;
+	public void setLastIndex(Integer lastIndex) {
+		this.lastIndex = lastIndex == null ? 1 : lastIndex;
 	}
 
-	public int getRecordCountPerPage() {
-		return recordCountPerPage;
+	public Integer getRecordCountPerPage() {
+		return recordCountPerPage == null ? 10 : recordCountPerPage;
 	}
 
-	public void setRecordCountPerPage(int recordCountPerPage) {
-		this.recordCountPerPage = recordCountPerPage;
+	public void setRecordCountPerPage(Integer recordCountPerPage) {
+		this.recordCountPerPage = recordCountPerPage == null ? 10 : recordCountPerPage;
 	}
 
 	public String getSearchCondition() {
@@ -103,28 +103,28 @@ public class ComDefaultVO implements Serializable {
         this.searchUseYn = searchUseYn;
     }
 
-    public int getPageIndex() {
-        return pageIndex;
+    public Integer getPageIndex() {
+        return pageIndex == null ? 1 : pageIndex;
     }
 
-    public void setPageIndex(int pageIndex) {
-        this.pageIndex = pageIndex;
+    public void setPageIndex(Integer pageIndex) {
+        this.pageIndex = pageIndex == null ? 1 : pageIndex;
     }
 
-    public int getPageUnit() {
-        return pageUnit;
+    public Integer getPageUnit() {
+        return pageUnit == null ? 10 : pageUnit;
     }
 
-    public void setPageUnit(int pageUnit) {
-        this.pageUnit = pageUnit;
+    public void setPageUnit(Integer pageUnit) {
+        this.pageUnit = pageUnit == null ? 10 : pageUnit;
     }
 
-    public int getPageSize() {
-        return pageSize;
+    public Integer getPageSize() {
+        return pageSize == null ? 10 : pageSize;
     }
 
-    public void setPageSize(int pageSize) {
-        this.pageSize = pageSize;
+    public void setPageSize(Integer pageSize) {
+        this.pageSize = pageSize == null ? 10 : pageSize;
     }
 
     public String toString() {

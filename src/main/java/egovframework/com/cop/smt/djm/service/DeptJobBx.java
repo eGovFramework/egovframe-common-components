@@ -2,6 +2,12 @@ package egovframework.com.cop.smt.djm.service;
 
 import java.io.Serializable;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
+
 /**
  * 개요
  * - 부서업무함에 대한 model 클래스를 정의한다.
@@ -26,13 +32,18 @@ public class DeptJobBx implements Serializable{
 	/** 부서업무함 ID */
 	private String deptJobBxId;
 	/** 부서업무함명 */
+	@EgovNullCheck
+	@Size(max=255)
 	private String deptJobBxNm;
 	/** 부서 ID */
 	private String deptId;
 	/** 부서명 */
+	@EgovNullCheck
 	private String deptNm;
 	/** 표시순서 */
-	private int indictOrdr;
+	@NotNull
+	@Min(1)
+	private Integer indictOrdr;
 	/** 최초등록자 ID */
 	private String frstRegisterId = "";
 	/** 최초등록시점 */
@@ -68,10 +79,10 @@ public class DeptJobBx implements Serializable{
 	public void setDeptNm(String deptNm) {
 		this.deptNm = deptNm;
 	}
-	public int getIndictOrdr() {
+	public Integer getIndictOrdr() {
 		return indictOrdr;
 	}
-	public void setIndictOrdr(int indictOrdr) {
+	public void setIndictOrdr(Integer indictOrdr) {
 		this.indictOrdr = indictOrdr;
 	}
 	public String getFrstRegisterId() {

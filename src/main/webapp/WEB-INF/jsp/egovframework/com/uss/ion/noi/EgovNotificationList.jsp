@@ -42,14 +42,6 @@ var noi_url = "<c:url value='/uss/ion/noi/getNotifications.do'/>";
 <script type="text/javascript" language="javaScript" src="<c:url value='/js/egovframework/com/uss/ion/noi/EgovNotification.js'/>" ></script>
 
 <script type="text/javascript">
-	function init() {
-		if (document.frm.searchCnd.value == '0' && document.frm.searchWrd.value != '') {
-			var str = document.frm.searchWrd.value;
-
-			document.frm.searchWrd.value = str.substr(0,4) + '-' + str.substr(4,2) + '-' + str.substr(6,2);
-		}
-	}
-
 	function isValidDate(str) {
 	   	// var test = /^\d{4}-\d{2}-\d{2}$/;
 	    var test = /^\d{4}\d{2}\d{2}$/;
@@ -110,16 +102,6 @@ var noi_url = "<c:url value='/uss/ion/noi/getNotifications.do'/>";
 	}
 
 	function fn_egov_select_notification(pageNo) {
-		if (document.frm.searchCnd.value == '0' && document.frm.searchWrd.value != '') {
-			if (rawDateString(document.frm.searchWrd)) {
-				// no-op
-			} else {
-				alert('<spring:message code="errors.date" arguments="알림일자" />');
-				document.frm.searchWrd.focus();
-				return;
-			}
-		}
-
 		document.frm.pageIndex.value = pageNo;
 		document.frm.action = "<c:url value='/uss/ion/noi/selectNotificationList.do'/>";
 		document.frm.submit();
@@ -132,7 +114,7 @@ var noi_url = "<c:url value='/uss/ion/noi/getNotifications.do'/>";
 	}
 </script>
 </head>
-<body onload="init()">
+<body>
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg"/></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
@@ -142,21 +124,20 @@ var noi_url = "<c:url value='/uss/ion/noi/getNotifications.do'/>";
 		
 	<form name="frm" method="post" action="<c:url value='/uss/ion/noi/selectNotificationList.do'/>">
 	<input type="hidden" name="ntfcNo">
-	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
+	<input name="pageIndex" type="hidden" value="<c:out value='${notificationVO.pageIndex}'/>">
 		
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg"/>"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
 			<li>
 				<select name="searchCnd" class="select" title="<spring:message code="select.searchCondition"/>"><!-- 검색조건선택 -->
 					<option value=''>--<spring:message code="input.select"/>--</option><!-- --선택하세요-- -->
-					<option value="0" <c:if test="${searchVO.searchCnd == '0'}">selected="selected"</c:if> ><spring:message code="ussIonNoi.notificationList.ntfcTime"/></option><!-- 알림일자 -->
-					<option value="1" <c:if test="${searchVO.searchCnd == '1'}">selected="selected"</c:if> ><spring:message code="ussIonNoi.notificationList.ntfcSj"/></option><!-- 제목 -->
-					<option value="2" <c:if test="${searchVO.searchCnd == '2'}">selected="selected"</c:if> ><spring:message code="ussIonNoi.notificationList.ntfcCn"/></option><!-- 내용 -->
+					<option value="1" <c:if test="${notificationVO.searchCnd == '1'}">selected="selected"</c:if> ><spring:message code="ussIonNoi.notificationList.ntfcSj"/></option><!-- 제목 -->
+					<option value="2" <c:if test="${notificationVO.searchCnd == '2'}">selected="selected"</c:if> ><spring:message code="ussIonNoi.notificationList.ntfcCn"/></option><!-- 내용 -->
 				</select>
-				<input class="s_input2 vat" name="searchWrd" type="text" value="<c:out value="${searchVO.searchWrd}"/>" size="25" onkeypress="press(event);" title="<spring:message code="input.input"/>" /><!-- 검색단어입력 -->
+				<input class="s_input2 vat" name="searchWrd" type="text" value="<c:out value="${notificationVO.searchWrd}"/>" size="25" onkeypress="press(event);" title="<spring:message code="input.input"/>" /><!-- 검색단어입력 -->
 				
 				<input class="s_btn" type="submit" value="<spring:message code="button.inquire"/>" title="<spring:message code="button.inquire"/>" onclick="fn_egov_select_notification('1'); return false;" />
-				<span class="btn_b"><a href="<c:url value='/uss/ion/noi/addNotification.do'/>?pageIndex=<c:out value='${searchVO.pageIndex}'/>" onclick="fn_egov_insert_notification(); return false;" title="<spring:message code="button.create"/>"><spring:message code="button.create"/></a></span><!-- 등록 -->
+				<span class="btn_b"><a href="<c:url value='/uss/ion/noi/addNotification.do'/>?pageIndex=<c:out value='${notificationVO.pageIndex}'/>" onclick="fn_egov_insert_notification(); return false;" title="<spring:message code="button.create"/>"><spring:message code="button.create"/></a></span><!-- 등록 -->
 			</li>
 		</ul>
 	</div>
@@ -182,10 +163,10 @@ var noi_url = "<c:url value='/uss/ion/noi/getNotifications.do'/>";
 		<tbody>
 			<c:forEach var="result" items="${resultList}" varStatus="status">
 				<tr>
-					<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
+					<td><c:out value="${(notificationVO.pageIndex-1) * notificationVO.pageSize + status.count}"/></td>
 					<td class="left">
 						<form name="item" method="post" action="<c:url value='/uss/ion/noi/selectNotification.do'/>">
-							<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
+							<input name="pageIndex" type="hidden" value="<c:out value='${notificationVO.pageIndex}'/>">
 							<input type="hidden" name="ntfcNo" value="<c:out value="${result.ntfcNo}"/>">
 							<input class="link" type="submit" value="<c:out value="${result.ntfcSj}"/>" onclick="fn_egov_inqire_notification('<c:out value="${result.ntfcNo}"/>'); return false;">
 						</form>

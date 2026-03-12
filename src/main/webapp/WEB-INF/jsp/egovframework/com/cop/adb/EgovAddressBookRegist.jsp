@@ -25,7 +25,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
+
 <c:set var="pageTitle"><spring:message code="comCopAdb.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -35,8 +35,7 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/popup.js'/>" ></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialog.js'/>" ></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="adbk" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/EgovValidation.js' />"></script>
 
 <script type="text/javascript">
 
@@ -122,7 +121,7 @@
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="adbk" action="${pageContext.request.contextPath}/cop/adb/RegistAdbkInf.do"  method="post" onSubmit="fn_egov_regist_adbkInf(document.forms[0]); return false;"> 
+<form:form name="adbk" modelAttribute="searchVO" action="${pageContext.request.contextPath}/cop/adb/RegistAdbkInf.do"  method="post" onSubmit="fn_egov_regist_adbkInf(document.forms[0]); return false;"> 
 
 <input type="hidden" name="checkWord" value="">
 <input type="hidden" name="checkCnd" value="">
@@ -146,9 +145,10 @@
 		<!-- 주소록명 -->
 		<c:set var="title"><spring:message code="comCopAdb.regist.adbkNm"/></c:set>
 		<tr>
-			<th><label for="diaryNm">${title}</label> <span class="pilsu">*</span></th>
+			<th><label for="adbkNm">${title}</label> <span class="pilsu">*</span></th>
 			<td class="nopd">
-				<form:input path="searchVO.adbkNm" size="73"  maxlength="255" />
+				<form:input path="adbkNm" size="73"  maxlength="255" />
+				<form:errors path="adbkNm" cssClass="error" />
 			</td>
 		</tr>
 		<!--공개범위 -->
@@ -158,11 +158,12 @@
 		<c:set var="othbcScopePart"><spring:message code="comCopAdb.regist.part"/></c:set>
 		<c:set var="othbcScopeCompany"><spring:message code="comCopAdb.regist.company"/></c:set>
 		<tr>
-			<th><label for="drctMatter">${title}</label> <span class="pilsu">*</span></th>
+			<th><label for="othbcScope">${title}</label> <span class="pilsu">*</span></th>
 			<td class="nopd">
 				<div style="float:left;"><input type="radio" name="othbcScope" value="<spring:message code="comCopAdb.regist.man"/>" <c:if test="${searchVO.othbcScope == othbcScopeMan ||  searchVO.othbcScope ==  '' }"> checked="checked"</c:if>/><spring:message code="comCopAdb.regist.man"/></div><!-- 개인 -->
 				<div style="float:left; margin:0 0 0 10px"><input type="radio" name="othbcScope" value="<spring:message code="comCopAdb.regist.part"/>" <c:if test="${searchVO.othbcScope == othbcScopePart}"> checked="checked"</c:if>/><spring:message code="comCopAdb.regist.part"/> </div><!-- 부서 --> 
 				<div style="float:left; margin:0 0 0 10px"><input type="radio" name="othbcScope" value="<spring:message code="comCopAdb.regist.company"/>" <c:if test="${searchVO.othbcScope == othbcScopeCompany}"> checked="checked"</c:if>/><spring:message code="comCopAdb.regist.company"/> </div><!-- 회사 -->
+				<form:errors path="othbcScope" cssClass="error" />
 			</td>
 		</tr>
 		<!-- 구성원 -->
@@ -272,8 +273,8 @@
 		<span class="btn_s"><a href="<c:url value='/cop/adb/selectAdbkList.do' />?pageIndex=<c:out value='${searchVO.pageIndex}'/>"  title="<spring:message code="button.list" />  <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
 	</div><div style="clear:both;"></div>
 	
-	
+
 </div><!-- div end(wTableFrm)  -->
-</form>
+</form:form>
 </body>
 </html>

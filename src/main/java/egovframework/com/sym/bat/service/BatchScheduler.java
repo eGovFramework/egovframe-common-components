@@ -181,8 +181,8 @@ public class BatchScheduler {
 
 		// 스케줄러에 Job, Trigger 등록하기
 		BatchSchdul target = null;
-		for (int i = 0; i < targetList.size(); i++) {
-			target = targetList.get(i);
+		for (BatchSchdul element : targetList) {
+			target = element;
 			LOGGER.debug("Data : {}", target);
 
 			insertBatchSchdul(target);

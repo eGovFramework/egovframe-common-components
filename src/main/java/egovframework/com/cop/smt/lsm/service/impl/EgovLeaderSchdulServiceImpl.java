@@ -6,8 +6,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.slf4j.Logger;
@@ -20,6 +18,7 @@ import egovframework.com.cop.smt.lsm.service.LeaderSchdul;
 import egovframework.com.cop.smt.lsm.service.LeaderSchdulVO;
 import egovframework.com.cop.smt.lsm.service.LeaderSttus;
 import egovframework.com.cop.smt.lsm.service.LeaderSttusVO;
+import jakarta.annotation.Resource;
 
 /**
  * <pre>
@@ -70,7 +69,7 @@ public class EgovLeaderSchdulServiceImpl extends EgovAbstractServiceImpl impleme
 		List<EmplyrVO> result = leaderSchdulDAO.selectEmplyrList(emplyrVO);
 		int cnt = leaderSchdulDAO.selectEmplyrListCnt(emplyrVO);
 
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 
 		map.put("resultList", result);
 		map.put("resultCnt", Integer.toString(cnt));

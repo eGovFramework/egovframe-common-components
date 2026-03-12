@@ -1,4 +1,4 @@
-package egovframework.com.cop.bbs.service.impl;
+﻿package egovframework.com.cop.bbs.service.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -6,7 +6,7 @@ import java.io.InputStream;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.Configuration;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import lombok.extern.slf4j.Slf4j;

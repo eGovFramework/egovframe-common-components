@@ -27,13 +27,13 @@ import egovframework.com.cmm.util.EgovResourceCloseHelper;
  * @author 장철호
  * @version 1.0
  * @created 28-6-2010 오전 11:33:43
- * 
+ *
  *     수정일         수정자                   수정내용
  *   -------    --------    ---------------------------
  *   2017-02-08    이정은        시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
  */
 public class FileSystemChecker {
-	
+
 	// LOGGER
 	private static final Logger LOGGER = LoggerFactory.getLogger(FileSystemChecker.class);
 
@@ -96,13 +96,18 @@ public class FileSystemChecker {
 		if (path.length() > 2 && path.charAt(1) == ':') {
 			windowsPath = path.substring(0, 2); // seems to make it work
 		}
+		// 2026.02.28 KISA 보안약점 조치
+		// 드라이브 문자(예: C:)만 허용 - ../../ 등 경로 탐색도 여기서 차단됨
+		 if (!windowsPath.matches("^[A-Za-z]:$")) {
+			throw new IOException("Invalid Windows drive path: " + windowsPath);
+		}
 
 		File folder = new File("C:\\temp\\");
 		if (!folder.isDirectory()) {
 			//2017.02.08 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
 			if(folder.mkdirs()){
 				LOGGER.debug("[file.mkdirs] folder : Directory Creation Success");
-			}else{				
+			}else{
 				LOGGER.error("[file.mkdirs] folder : Directory Creation Fail");
 			}
 		}
@@ -127,7 +132,7 @@ public class FileSystemChecker {
 			break;
 		}
 		*/
-		line = (String) lines.get(lines.size() - 1);
+		line = lines.get(lines.size() - 1);
 
 		long totalSpace = 0;
 		String size = "";
@@ -141,7 +146,7 @@ public class FileSystemChecker {
 			size = size.replace(",", "");
 			totalSpace = Long.valueOf(size) * 1024;
 		}
-		
+
 		// 불필요
 		/*
 		if (line == null) {
@@ -163,6 +168,12 @@ public class FileSystemChecker {
 		if (path.length() == 0) {
 			throw new IllegalArgumentException("Path must not be empty");
 		}
+		// 2026.02.28 KISA 보안약점 조치
+		// normalize 대신 순수 Java로 경로 탐색 및 위험 문자 차단
+		if (path.contains("..") || path.matches(".*[\\r\\n;|&`'\"<>].*")) {
+			throw new IOException("Invalid path: " + path);
+		}
+
 
 		String osName = System.getProperty("os.name");
 		// build and run the 'dir' command
@@ -190,14 +201,14 @@ public class FileSystemChecker {
 			// unknown problem, throw exception
 			throw new IOException("Command line 'df' did not return info as expected " + "for path '" + path + "'- response was " + lines);
 		}
-		String line2 = (String) lines.get(1); // the line we're interested in
+		String line2 = lines.get(1); // the line we're interested in
 
 		// Now, we tokenize the string. The fourth element is what we want.
 		StringTokenizer tok = new StringTokenizer(line2, " ");
 		if (tok.countTokens() < 4) {
 			// could be long Filesystem, thus data on third line
 			if (tok.countTokens() == 1 && lines.size() >= 3) {
-				String line3 = (String) lines.get(2); // the line may be interested in
+				String line3 = lines.get(2); // the line may be interested in
 				tok = new StringTokenizer(line3, " ");
 			} else {
 				throw new IOException("Command line 'df' did not return data as expected " + "for path '" + path + "'- check path is valid");
@@ -228,7 +239,20 @@ public class FileSystemChecker {
 	 * @param max
 	 */
 	private static List<String> performCommand(String[] cmdAttribs, int max) throws IOException {
-		List<String> lines = new ArrayList<String>(20);
+		// 2026.02.28 KISA 보안약점 조치
+		// [검증 1] 명령어 화이트리스트 - 첫 번째 요소(실행 명령)만 대상
+		String commandName = new File(cmdAttribs[0]).getName().toLowerCase();
+		if (!ALLOWED_COMMANDS.contains(commandName)) {
+			throw new IOException("Command not allowed: " + cmdAttribs[0]);
+		}
+		// [검증 2] 특수문자 필터 - 나머지 인자 대상, 드라이브 문자(C:) 등은 허용
+		for (int i = 1; i < cmdAttribs.length; i++) {
+			if (cmdAttribs[i] != null && cmdAttribs[i].matches(".*[\\r\\n;|&`'\"<>].*")) {
+				throw new IOException("Invalid characters in command argument: " + cmdAttribs[i]);
+			}
+		}
+
+		List<String> lines = new ArrayList<>(20);
 		Process p = null;
 		BufferedReader b_out = null;
 		try {
@@ -257,11 +281,15 @@ public class FileSystemChecker {
 			throw new IOException("Command line threw an InterruptedException '" + ex.getMessage() + "' for command " + Arrays.asList(cmdAttribs));
 		} finally {
 			EgovResourceCloseHelper.close(b_out);
-			
+
 			if (p != null) {
 				p.destroy();
 			}
 		}
 	}
+	// 2026.02.28 KISA 보안약점 조치
+	// 허용된 명령어 화이트리스트
+	private static final List<String> ALLOWED_COMMANDS =
+	Arrays.asList("cmd.exe", "df", "bdf");
 
 }

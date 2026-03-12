@@ -36,26 +36,19 @@ function fn_egov_init_RequestOffer(){
 
 }
 /* ********************************************************
- * 저장처리화면
+ * 수정화면 이동
  ******************************************************** */
 function fn_egov_modify_RequestOffer(){
 	var vFrom = document.RequestOfferForm;
-	vFrom.cmd.value = '';
-	vFrom.action = "<c:url value='/dam/spe/req/updtRequestOffer.do'/>";;
+	vFrom.action = "<c:url value='/dam/spe/req/updtRequestOffer.do'/>";
 	vFrom.submit();
-
 }
 /* ********************************************************
  * 삭제처리
  ******************************************************** */
 function fn_egov_delete_RequestOffer(){
-	var vFrom = document.RequestOfferForm;
 	if(confirm("삭제 하시겠습니까?")){
-		vFrom.cmd.value = 'del';
-		vFrom.action = "<c:url value='/dam/spe/req/detailRequestOffer.do'/>";
-		vFrom.submit();
-	}else{
-		vFrom.cmd.value = '';
+		document.formDelete.submit();
 	}
 }
 </script>
@@ -115,7 +108,6 @@ function fn_egov_delete_RequestOffer(){
 		</tr>
 	</table>
 	<input name="knoId" type="hidden" value="${requestOfferVO.knoId}">
-	<input name="cmd" type="hidden" value="<c:out value=''/>">
 	<div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="전송" title="전송"></div>
 	</form>
 

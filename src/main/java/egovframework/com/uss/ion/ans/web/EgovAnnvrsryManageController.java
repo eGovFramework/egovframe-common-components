@@ -8,11 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -22,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -36,6 +31,9 @@ import egovframework.com.uss.ion.ans.service.AnnvrsryManageVO;
 import egovframework.com.uss.ion.ans.service.EgovAnnvrsryManageService;
 import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 /**
  * <pre>
@@ -72,9 +70,6 @@ public class EgovAnnvrsryManageController {
 
 	@Resource(name = "egovAnnvrsryManageService")
 	private EgovAnnvrsryManageService egovAnnvrsryManageService;
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	@Resource(name = "EgovCmmUseService")
 	private EgovCmmUseService cmmUseService;
@@ -232,18 +227,15 @@ public class EgovAnnvrsryManageController {
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/uss/ion/ans/insertAnnvrsry.do")
-	public String insertAnnvrsryManage(@ModelAttribute("annvrsryManage") AnnvrsryManage annvrsryManage,
-			@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO, BindingResult bindingResult,
-			SessionStatus status, ModelMap model) throws Exception {
-
-		beanValidator.validate(annvrsryManage, bindingResult); // validation 수행
-
+	public String insertAnnvrsryManage(@Valid @ModelAttribute("annvrsryManage") AnnvrsryManage annvrsryManage, BindingResult bindingResult,
+			@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO, SessionStatus status, ModelMap model) throws Exception {
+		
 		if (bindingResult.hasErrors()) {
 			ComDefaultCodeVO vo = new ComDefaultCodeVO();
 			vo.setCodeId("COM069");
 			List<CmmnDetailCode> annvrsrySeCodeList = cmmUseService.selectCmmCodeDetail(vo);
 			model.addAttribute("annvrsrySeCode", annvrsrySeCodeList);
-
+			
 			model.addAttribute("annvrsryManageVO", annvrsryManageVO);
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.insert"));
 			return "egovframework/com/uss/ion/ans/EgovAnnvrsryRegist";
@@ -267,13 +259,8 @@ public class EgovAnnvrsryManageController {
 						.setAnnvrsryTemp2(user == null ? "" : EgovStringUtil.isNullToString(user.getOrgnztNm()));
 				model.addAttribute("annvrsrySeCode", annvrsrySeCodeList);
 				model.addAttribute("annvrsryManageVO", annvrsryManageVO);
-				model.addAttribute("dplctMessage", egovMessageSource.getMessage("comUssIonAns.common.duplicate"));// 이미
-																													// 등록된
-																													// 데이타입니다.
-																													// 해당
-																													// 데이타를
-																													// 확인해
-																													// 주세요");
+				model.addAttribute("dplctMessage", egovMessageSource.getMessage("comUssIonAns.common.duplicate"));
+				// 이미 등록된 데이타입니다. 해당 데이타를 확인해 주세요"
 				return "egovframework/com/uss/ion/ans/EgovAnnvrsryRegist";
 			}
 		}
@@ -286,15 +273,18 @@ public class EgovAnnvrsryManageController {
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/uss/ion/ans/updateAnnvrsryManage.do")
-	public String updateAnnvrsryManage(@ModelAttribute("annvrsryManage") AnnvrsryManage annvrsryManage,
-			@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO, BindingResult bindingResult,
-			SessionStatus status, ModelMap model) throws Exception {
-
-		beanValidator.validate(annvrsryManage, bindingResult); // validation 수행
+	public String updateAnnvrsryManage(@Valid @ModelAttribute("annvrsryManage") AnnvrsryManage annvrsryManage, BindingResult bindingResult,
+			@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO, SessionStatus status, ModelMap model) throws Exception {
 
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("annvrsryManageVO", annvrsryManage);
-			return "egovframework/com/uss/ion/ans/EgovAnnvrsryManageUpdt";
+			ComDefaultCodeVO vo = new ComDefaultCodeVO();
+			vo.setCodeId("COM069");
+			List<CmmnDetailCode> annvrsrySeCodeList = cmmUseService.selectCmmCodeDetail(vo);
+			model.addAttribute("annvrsrySeCode", annvrsrySeCodeList);
+			
+			model.addAttribute("annvrsryManageVO", annvrsryManageVO);
+			
+			return "egovframework/com/uss/ion/ans/EgovAnnvrsryUpdt";
 		} else {
 
 			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -314,13 +304,8 @@ public class EgovAnnvrsryManageController {
 						.setAnnvrsryTemp2(user == null ? "" : EgovStringUtil.isNullToString(user.getOrgnztNm()));
 				model.addAttribute("annvrsrySeCode", annvrsrySeCodeList);
 				model.addAttribute("annvrsryManageVO", annvrsryManageVO);
-				model.addAttribute("dplctMessage", egovMessageSource.getMessage("comUssIonAns.common.duplicate"));// 이미
-																													// 등록된
-																													// 데이타입니다.
-																													// 해당
-																													// 데이타를
-																													// 확인해
-																													// 주세요");
+				model.addAttribute("dplctMessage", egovMessageSource.getMessage("comUssIonAns.common.duplicate"));
+				// 이미 등록된 데이타입니다. 해당 데이타를 확인해 주세요"
 				return "egovframework/com/uss/ion/ans/EgovAnnvrsryUpdt";
 			}
 		}
@@ -376,7 +361,7 @@ public class EgovAnnvrsryManageController {
 		int totCnt = egovAnnvrsryManageService.selectAnnvrsryManageListTotCnt(annvrsryManageVO);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
-
+		
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 		return "egovframework/com/uss/ion/ans/EgovAnnvrsryMainList";
 	}

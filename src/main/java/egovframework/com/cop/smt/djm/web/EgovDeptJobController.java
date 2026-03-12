@@ -3,12 +3,8 @@ package egovframework.com.cop.smt.djm.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -17,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springmodules.validation.commons.DefaultBeanValidator;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -38,6 +34,9 @@ import egovframework.com.cop.smt.djm.service.DeptJobVO;
 import egovframework.com.cop.smt.djm.service.DeptVO;
 import egovframework.com.cop.smt.djm.service.EgovDeptJobService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 /**
  * <pre>
@@ -83,11 +82,8 @@ public class EgovDeptJobController {
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
 
-	@Autowired
-	private DefaultBeanValidator beanValidator;
-
-	// 첨부파일 관련
-	@Resource(name = "EgovFileMngService")
+    // 첨부파일 관련
+	@Resource(name="EgovFileMngService")
 	private EgovFileMngService fileMngService;
 
 	@Resource(name = "EgovFileMngUtil")
@@ -312,8 +308,9 @@ public class EgovDeptJobController {
 			@ModelAttribute("deptJobBxVO") DeptJobBxVO deptJobBxVO, ModelMap model) throws Exception {
 
 		String sLocationUrl = "egovframework/com/cop/smt/djm/EgovDeptJobBxRegist";
+		String referer = request.getHeader("Referer");
 
-		if (request.getHeader("Referer").indexOf("addDeptJobBx.do") < 0) {
+		if (referer == null || referer.indexOf("addDeptJobBx.do") < 0) {
 			sLocationUrl = "egovframework/com/cop/smt/djm/EgovDeptJobBxUpdt";
 		}
 
@@ -366,12 +363,11 @@ public class EgovDeptJobController {
 	 * @param deptJobBxVO
 	 */
 	@RequestMapping("/cop/smt/djm/updateDeptJobBx.do")
-	public String updateDeptJobBx(@ModelAttribute("deptJobBxVO") DeptJobBxVO deptJobBxVO, BindingResult bindingResult,
+	public String updateDeptJobBx(@Valid @ModelAttribute("deptJobBxVO") DeptJobBxVO deptJobBxVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-		beanValidator.validate(deptJobBxVO, bindingResult);
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/cop/smt/djm/EgovDeptJobBxUpdt";
 		}
@@ -420,12 +416,12 @@ public class EgovDeptJobController {
 	 * @param deptJobBxVO
 	 */
 	@RequestMapping("/cop/smt/djm/insertDeptJobBx.do")
-	public String insertDeptJobBx(@ModelAttribute("deptJobBxVO") DeptJobBxVO deptJobBxVO, BindingResult bindingResult,
-			ModelMap model) throws Exception {
+	public String insertDeptJobBx(@Valid @ModelAttribute("deptJobBxVO") DeptJobBxVO deptJobBxVO, BindingResult bindingResult,
+			RedirectAttributes redirectAttributes, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
@@ -434,9 +430,7 @@ public class EgovDeptJobController {
 
 		String sLocationUrl = "egovframework/com/cop/smt/djm/EgovDeptJobBxRegist";
 
-		// 서버 validate 체크
-		beanValidator.validate(deptJobBxVO, bindingResult);
-		if (bindingResult.hasErrors()) {
+		if(bindingResult.hasErrors()){
 			return sLocationUrl;
 		}
 
@@ -618,7 +612,7 @@ public class EgovDeptJobController {
 	 */
 	@RequestMapping("/cop/smt/djm/updateDeptJob.do")
 	public String updateDeptJob(final MultipartHttpServletRequest multiRequest,
-			@RequestParam Map<String, Object> commandMap, @ModelAttribute("deptJobVO") DeptJobVO deptJobVO,
+			@RequestParam Map<String, Object> commandMap, @Valid @ModelAttribute("deptJobVO") DeptJobVO deptJobVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -628,7 +622,6 @@ public class EgovDeptJobController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		beanValidator.validate(deptJobVO, bindingResult);
 		if (bindingResult.hasErrors()) {
 			DeptJob deptJob = deptJobService.selectDeptJob(deptJobVO);
 			model.addAttribute("deptJob", deptJob);
@@ -678,7 +671,7 @@ public class EgovDeptJobController {
 	 */
 	@RequestMapping("/cop/smt/djm/insertDeptJob.do")
 	public String insertDeptJob(final MultipartHttpServletRequest multiRequest,
-			@ModelAttribute("deptJobVO") DeptJobVO deptJobVO, BindingResult bindingResult, ModelMap model)
+			@Valid @ModelAttribute("deptJobVO") DeptJobVO deptJobVO, BindingResult bindingResult, ModelMap model)
 			throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -692,8 +685,6 @@ public class EgovDeptJobController {
 
 		String sLocationUrl = "egovframework/com/cop/smt/djm/EgovDeptJobRegist";
 
-		// 서버 validate 체크
-		beanValidator.validate(deptJobVO, bindingResult);
 		if (bindingResult.hasErrors()) {
 
 			// 파일업로드 제한

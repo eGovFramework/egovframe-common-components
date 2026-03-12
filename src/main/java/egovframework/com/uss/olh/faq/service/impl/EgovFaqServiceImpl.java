@@ -2,8 +2,6 @@ package egovframework.com.uss.olh.faq.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
@@ -11,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import egovframework.com.uss.olh.faq.service.EgovFaqService;
 import egovframework.com.uss.olh.faq.service.FaqVO;
+import jakarta.annotation.Resource;
 
 @Service("EgovFaqService")
 public class EgovFaqServiceImpl extends EgovAbstractServiceImpl implements EgovFaqService {
@@ -21,7 +20,7 @@ public class EgovFaqServiceImpl extends EgovAbstractServiceImpl implements EgovF
 	/** ID Generation */
 	@Resource(name = "egovFaqManageIdGnrService")
 	private EgovIdGnrService idgenService;
-	
+
 	@Override
 	public List<FaqVO> selectFaqList(FaqVO searchVO) {
 		return egovFaqDao.selectFaqList(searchVO);
@@ -34,13 +33,14 @@ public class EgovFaqServiceImpl extends EgovAbstractServiceImpl implements EgovF
 
 	@Override
 	public FaqVO selectFaqDetail(FaqVO searchVO) throws Exception {
-		
+
 		//조회수 증가
 		egovFaqDao.updateFaqInqireCo(searchVO);
-		
+
 		FaqVO resultVO = egovFaqDao.selectFaqDetail(searchVO);
-		if (resultVO == null)
+		if (resultVO == null) {
 			throw processException("info.nodata.msg");
+		}
 		return resultVO;
 	}
 

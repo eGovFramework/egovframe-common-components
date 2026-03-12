@@ -48,9 +48,9 @@ import egovframework.com.cmm.service.EgovProperties;
  * </pre>
  */
 public class DirectoryPathManager {
-	
+
 	private static String fileStorePath = EgovProperties.getProperty("Globals.fileStorePath");
-	
+
 	public enum DIR_DATE_TYPE {
 		DATE_POLICY_YYYY_MM_DD, DATE_POLICY_YYYY_MM, DATE_POLICY_YYYY
 	}
@@ -86,9 +86,9 @@ public class DirectoryPathManager {
 	 * @return 고유한 파일 경로를 가리키는 File 객체. 주어진 이름의 파일이 이미 존재하면, 기본 이름에 숫자를 추가하여 고유한 파일 이름이 생성됩니다.
 	 */
 	public static File getUniqueFile(String imageBaseDir, String subDir, String fileName) {
-		
+
 		File file = new File(fileStorePath + EgovWebUtil.filePathBlackList(imageBaseDir + subDir) + FilenameUtils.getName(fileName));
-		
+
 		if (!file.exists())
 			return file;
 

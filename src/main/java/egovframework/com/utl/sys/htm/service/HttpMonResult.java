@@ -10,7 +10,7 @@ public class HttpMonResult {
 	 * 원인 Exception
 	 */
 	private Throwable cause;
-	
+
 	/**
 	 * @return the nrmltAt
 	 */
@@ -40,5 +40,5 @@ public class HttpMonResult {
 		this.nrmltAt = nrmltAt;
 		this.cause = cause;
 	}
-	
+
 }

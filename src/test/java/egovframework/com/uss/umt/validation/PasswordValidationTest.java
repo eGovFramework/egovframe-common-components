@@ -1,11 +1,11 @@
-package egovframework.com.uss.umt.validation;
+﻿package egovframework.com.uss.umt.validation;
 
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import org.egovframe.rte.ptl.mvc.validation.RteGenericValidator;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 /**
  * 비밀번호 생성 Test Class 구현

@@ -1,10 +1,10 @@
-package egovframework.com.cop.bbs.service.impl;
+﻿package egovframework.com.cop.bbs.service.impl;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.Optional;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;

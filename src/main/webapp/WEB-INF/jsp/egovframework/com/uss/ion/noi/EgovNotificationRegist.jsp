@@ -4,7 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%@ taglib prefix="double-submit" uri="http://www.egovframe.go.kr/tags/double-submit/jsp" %>
 <%
 /**
@@ -33,17 +32,10 @@
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/cmm/jqueryui.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
-<validator:javascript formName="notification" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javascript">
-	function onloading() {
-		if ("<c:out value='${msg}'/>" != "") {
-			alert("<c:out value='${msg}'/>");
-		}
-	}
-
 	function fn_egov_SelectBoxValue(sbName) {
 		var fValue = "";
 
@@ -60,29 +52,13 @@
  * 저장처리
  ******************************************************** */	
 	function fn_egov_regist_notification(){
-		if (!validateNotification(document.notification)){
+		var form = document.getElementById('notificationVO') || document.notificationVO;
+		if (!validateNotification(form)){
 			return;
 		}
-
-		var checked = false;
-		for (var i = 0; i < document.notification.bhNtfcIntrvl.length; i++) {
-			if (document.notification.bhNtfcIntrvl[i].checked) {
-				checked = true;
-				break;
-			}
-		}
-
-		if (!checked) {
-			alert('<spring:message code="ussIonNoi.notificationRegist.validate.bhNtfcIntrvlmsg" />');/* 사전알림간격 지정이 필요합니다. */
-			return;
-		}
-
 		if (confirm('<spring:message code="common.regist.msg" />')) {/* 등록 하시겠습니까? */
-			form = document.notification;
 			form.action = "<c:url value='/uss/ion/noi/insertNotification.do'/>";
-
 			form.ntfcTime.value = fn_egov_SelectBoxValue('ntfcHH') + ":" + fn_egov_SelectBoxValue('ntfcMM');
-
 			form.submit();
 		}
 	}
@@ -90,42 +66,42 @@
  * 목록
  ******************************************************** */	
 	function fn_egov_select_notification(){
-		form = document.notification;
+		var form = document.getElementById('notificationVO') || document.notificationVO;
 		form.action = "<c:url value='/uss/ion/noi/selectNotificationList.do'/>";
 		form.submit();
 	}
 /* ********************************************************
  * 달력
  ******************************************************** */
-	function fn_egov_init_date(){
-		
-		$("#ntfcDate").datepicker(  
-		        {dateFormat:'yy-mm-dd'
-		         , showOn: 'button'
-		         , buttonImage: '<c:url value='/images/egovframework/com/cmm/icon/bu_icon_carlendar.gif'/>'
-		         , buttonImageOnly: true
-		         
-		         , showMonthAfterYear: true
-		         , showOtherMonths: true
-			     , selectOtherMonths: true
-					
-		         , changeMonth: true // 월선택 select box 표시 (기본은 false)
-		         , changeYear: true  // 년선택 selectbox 표시 (기본은 false)
-		         , showButtonPanel: true // 하단 today, done  버튼기능 추가 표시 (기본은 false)
-		});
-	}
+	$(function() {
+		if ("<c:out value='${msg}'/>" != "") {
+			alert("<c:out value='${msg}'/>");
+		}
+		$("#ntfcDate").datepicker(
+			{dateFormat:'yy-mm-dd'
+			 , showOn: 'button'
+			 , buttonImage: '<c:url value='/images/egovframework/com/cmm/icon/bu_icon_carlendar.gif'/>'
+			 , buttonImageOnly: true
+			 , showMonthAfterYear: true
+			 , showOtherMonths: true
+			 , selectOtherMonths: true
+			 , changeMonth: true
+			 , changeYear: true
+			 , showButtonPanel: true
+			});
+	});
 </script>
 </head>
-<body onload="onloading(); fn_egov_init_date();">
+<body>
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg"/></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
-<form:form modelAttribute="notification" name="notification" method="post" action="${pageContext.request.contextPath}/uss/ion/noi/insertNotification.do">
+<form:form id="notificationVO" modelAttribute="notificationVO" name="notificationVO" method="post" action="${pageContext.request.contextPath}/uss/ion/noi/insertNotification.do">
 
 	<double-submit:preventer/>
-	
-	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-	<input name="ntfcTime" id="ntfcTime" type="hidden" value="">
+
+	<input name="pageIndex" type="hidden" value="<c:out value='${notificationVO.pageIndex}'/>">
+	<input name="ntfcTime" id="ntfcTime" type="hidden" value="<c:out value='${notificationVO.ntfcTime}'/>">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -143,39 +119,38 @@
 			<th><spring:message code="ussIonNoi.notificationRegist.ntfcSj" /> <span class="pilsu">*</span></th><!-- 제목 -->
 			<td class="left" colspan="3">
 			    <form:input path="ntfcSj" size="25" cssStyle="width:100%" />
-	    		<br /><form:errors path="ntfcSj" />
+			    <div><form:errors path="ntfcSj" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussIonNoi.notificationRegist.ntfcCn" /> <span class="pilsu">*</span></th><!-- 내용 -->
 			<td class="left" colspan="3">
 			    <form:textarea path="ntfcCn" cols="75" rows="2" cssStyle="width:100%" />
-	       		<br /><form:errors path="ntfcCn" />
+			    <div><form:errors path="ntfcCn" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussIonNoi.notificationRegist.ntfcDate" /> <span class="pilsu">*</span></th><!-- 알림일자 -->
 			<td class="left">
-			    <input name="ntfcDate" id="ntfcDate" type="text" size="73" value="" maxlength="10" style="width:80px;" readonly="readonly" class="readOnlyClass">
-	  	   		<br /><form:errors path="ntfcDate" />
+			    <form:input path="ntfcDate" id="ntfcDate" size="73" maxlength="10" style="width:80px;" readonly="true" cssClass="readOnlyClass" />
+			    <div><form:errors path="ntfcDate" cssClass="error" /></div>
 			</td>
 			<th><spring:message code="ussIonNoi.notificationRegist.ntfcTime" /> <span class="pilsu">*</span></th><!-- 알림시간 -->
 			<td class="left">
 			    <select name="ntfcHH" id="ntfcHH" title="시간선택">
 					<option value=""><spring:message code="input.cSelect"/></option>
-					<c:forEach var="h" begin="1" end="24" step="1">
-					<option value="${h}">${h}시</option>
+					<c:forEach var="h" begin="0" end="23" step="1">
+					<option value="${h}" <c:if test="${notificationVO.ntfcHH != null && notificationVO.ntfcHH != '' && notificationVO.ntfcHH == h}">selected="selected"</c:if>>${h}시</option>
 					</c:forEach>
 				</select>
-	
 				<select name="ntfcMM" id="ntfcMM" title="분선택">
 					<option value=""><spring:message code="input.cSelect"/></option>
-					<option value="0">0분</option>
-					<c:forEach var="m" begin="1" end="60" step="1">
-					<option value="${m}">${m}분</option>
+					<option value="0" <c:if test="${notificationVO.ntfcMM != null && notificationVO.ntfcMM == '0'}">selected="selected"</c:if>>0분</option>
+					<c:forEach var="m" begin="1" end="59" step="1">
+					<option value="${m}" <c:if test="${notificationVO.ntfcMM != null && notificationVO.ntfcMM != '' && notificationVO.ntfcMM == m}">selected="selected"</c:if>>${m}분</option>
 					</c:forEach>
 				</select>
-		  	    <br /><form:errors path="ntfcHH" /><form:errors path="ntfcMM" />
+			    <div><form:errors path="ntfcHH" cssClass="error" /><form:errors path="ntfcMM" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
@@ -186,7 +161,7 @@
 				5분:<form:checkbox path="bhNtfcIntrvl" class="check2" value="5"/>&nbsp;&nbsp;
 				10분:<form:checkbox path="bhNtfcIntrvl" class="check2" value="10"/>&nbsp;&nbsp;
 				30분:<form:checkbox path="bhNtfcIntrvl" class="check2" value="30"/>&nbsp;&nbsp;
-		  	   <br /><form:errors path="bhNtfcIntrvl" />
+			    <div><form:errors path="bhNtfcIntrvl" cssClass="error" /></div>
 			</td>
 		</tr>
 	</table>
@@ -194,7 +169,7 @@
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fn_egov_regist_notification(); return false;" />
-		<span class="btn_s"><a href="<c:url value='/uss/ion/noi/selectNotificationList.do'/>?pageIndex=<c:out value='${searchVO.pageIndex}'/>" onclick="fn_egov_select_notification(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="<c:url value='/uss/ion/noi/selectNotificationList.do'/>?pageIndex=<c:out value='${notificationVO.pageIndex}'/>" onclick="fn_egov_select_notification(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

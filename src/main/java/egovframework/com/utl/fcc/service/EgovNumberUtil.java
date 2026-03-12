@@ -26,7 +26,7 @@ public class EgovNumberUtil {
 
 	// 221116	김혜준	2022 시큐어코딩 조치
 	private static SecureRandom rnd = new SecureRandom();
-	
+
 	/**
 	 * 특정숫자 집합에서 랜덤 숫자를 구하는 기능 시작숫자와 종료숫자 사이에서 구한 랜덤 숫자를 반환한다
 	 *

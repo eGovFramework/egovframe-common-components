@@ -32,8 +32,7 @@
 /* ********************************************************
  * 초기화
  ******************************************************** */
-function fn_egov_init(){
-
+$(document).ready(function(){
 	$("#searchFromDate").datepicker(  
 	        {dateFormat:'yy-mm-dd'
 	         , showOn: 'button'
@@ -64,7 +63,7 @@ function fn_egov_init(){
 	         , changeYear: true  // 년선택 selectbox 표시 (기본은 false)
 	         , showButtonPanel: true // 하단 today, done  버튼기능 추가 표시 (기본은 false)
 	});
-}
+});
 
 /* ********************************************************
  * 페이징 처리 함수
@@ -210,7 +209,7 @@ function fn_egov_search_NoteRecptn(){
 </script>
 
 </head>
-<body onload="fn_egov_init();">
+<body>
 
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
@@ -247,12 +246,12 @@ function fn_egov_search_NoteRecptn(){
 	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
 	<caption>${pageTitle} <spring:message code="title.list" /></caption>
 	<colgroup>
-		<col style="width: 3%;">
 		<col style="width: 5%;">
-		<col style="width: ;">
-		<col style="width: 13%;">
-		<col style="width: 13%;">
-		<col style="width: 18%;">
+		<col style="width: 5%;">
+		<col style="width: 50%;">
+		<col style="width: 10%;">
+		<col style="width: 10%;">
+		<col style="width: 20%;">
 	</colgroup>
 	<thead>
 	<tr>

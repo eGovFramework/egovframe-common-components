@@ -1,8 +1,6 @@
 package egovframework.com.sym.sym.bak.web;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
@@ -11,12 +9,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.sym.bak.service.BackupResult;
 import egovframework.com.sym.sym.bak.service.EgovBackupResultService;
+import jakarta.annotation.Resource;
 
 /**
  * 백업결과관리에 대한 controller 클래스
@@ -62,14 +62,15 @@ public class EgovBackupResultController {
 	 *
 	 * @param backupResult 삭제대상 백업결과model
 	 * @param model		ModelMap
+	 * @param redirectAttributes RedirectAttributes
 	 * @exception Exception Exception
 	 */
     @RequestMapping("/sym/sym/bak/deleteBackupResult.do")
-	public String deleteBackupResult(BackupResult backupResult, ModelMap model)
+	public String deleteBackupResult(BackupResult backupResult, ModelMap model, RedirectAttributes redirectAttributes)
 	  throws Exception{
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+    		redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 

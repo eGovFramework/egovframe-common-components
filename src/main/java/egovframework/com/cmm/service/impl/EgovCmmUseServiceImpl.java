@@ -10,7 +10,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
-import lombok.RequiredArgsConstructor;
+import jakarta.annotation.Resource;
 
 /**
  * 공통코드등 전체 업무에서 공용해서 사용해야 하는 서비스를 정의하기위한 서비스 구현 클래스
@@ -32,10 +32,10 @@ import lombok.RequiredArgsConstructor;
  *      </pre>
  */
 @Service("EgovCmmUseService")
-@RequiredArgsConstructor
 public class EgovCmmUseServiceImpl extends EgovAbstractServiceImpl implements EgovCmmUseService {
 
-	private final CmmUseDAO cmmUseDAO;
+    @Resource(name = "cmmUseDAO")
+    private CmmUseDAO cmmUseDAO;
 
 	/**
 	 * 공통코드를 조회한다.

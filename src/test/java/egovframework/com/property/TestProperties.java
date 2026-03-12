@@ -1,15 +1,15 @@
 package egovframework.com.property;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 
 import lombok.extern.slf4j.Slf4j;
@@ -25,6 +25,7 @@ import lombok.extern.slf4j.Slf4j;
  *  수정일        수정자      수정내용
  *  ----------  --------  ---------------------------
  *  2024.10.16  신용호      최초 생성
+ *  2026.01.26  신용호      JUnit 4 => JUnit 5 마이그레이션
  *
  * @ 특징
    - Property 테스트
@@ -32,7 +33,7 @@ import lombok.extern.slf4j.Slf4j;
  * </pre>
  */
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = {
 		//"file:src/test/resources/egovframework/spring/com/context-*.xml",
 		"file:src/test/resources/egovframework/spring/com/property/context-*.xml"
@@ -49,7 +50,7 @@ public class TestProperties {
 	private EgovPropertyService propertiesService;
 	
 	@Test
-	public void test() throws Exception {
+	void test() throws Exception {
 		
 		int pageUnit = propertiesService.getInt("pageUnit");
 		int pageSize = propertiesService.getInt("pageSize");

@@ -27,20 +27,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <html lang="ko">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title><spring:message code="comUssIonRwd.rwardRegist.title"/></title><!-- 포상등록 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
 <%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
-<validator:javascript formName="rwardManage" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javaScript" language="javascript">
 
 	function initCalendar(){
@@ -151,10 +149,11 @@
 			<td class="left">
 			    <form:input path="rwardManNm"  readonly="true" maxlength="10" size="20" title="${searchNm}" cssStyle="width:128px" /> <!-- 포상자 -->
 				<form:hidden path="rwardManId"/>
-				<span class="link">
+				<span class="link" >
 				<a id="RwardRegist" title="<spring:message code="comUssIonRwd.common.searchNm"/>" style="selector-dummy: expression(this.hideFocus=false);"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif' />"
 					style="vertical-align: middle" alt="<spring:message code="comUssIonRwd.common.searchNm"/>" title="<spring:message code="comUssIonRwd.common.searchNm"/>"></a><!-- 포상자 -->
 					</span>
+				<div><form:errors path="rwardManNm" cssClass="error"/></div>
 			</td>
 			<th>${orgnztNm}</th><!-- 소속 -->
 			<td class="left">
@@ -168,6 +167,7 @@
 				<form:select path="rwardCd" title="${rwardCd}"><!-- 포상구분 -->
 				<form:options items="${rwardCodeList}" itemValue="code" itemLabel="codeNm"/>
 				</form:select>
+				<div><form:errors path="rwardCd" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>
@@ -175,11 +175,13 @@
 			<td class="left">
 				<c:set var="rwardNm"><spring:message code="comUssIonRwd.common.rwardNm"/></c:set><!-- 포상명 -->
 				<form:input  path="rwardNm" title="${rwardNm}"/>
+				<div><form:errors path="rwardNm" cssClass="error"/></div>
 			</td>
 			<th><spring:message code="comUssIonRwd.common.rwardDe"/> <span class="pilsu">*</span></th><!-- 포상일자 -->
 			<td class="left">
 				<c:set var="rwardDe"><spring:message code="comUssIonRwd.common.rwardDe"/></c:set>
 				<form:input path="rwardDe" maxlength="10" readonly="true"  title="${rwardDe}" style="width:68px" /><!-- 포상일자 -->
+				<div><form:errors path="rwardDe" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>
@@ -187,7 +189,7 @@
 			<td class="left" colspan="3">
 				<c:set var="pblenCn"><spring:message code="comUssIonRwd.common.pblenCn"/></c:set>
 				<form:textarea path="pblenCn" rows="4" cols="70" cssClass="txaClass" title="${pblenCn}"/><!-- 공적사항 -->
-				<form:errors path="pblenCn"/>
+				<div><form:errors path="pblenCn" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>

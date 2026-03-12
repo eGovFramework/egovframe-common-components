@@ -22,7 +22,7 @@ public class TestDecompress {
 	    //strDirPath = relativePath.toAbsolutePath().toString();
 	    //System.out.println("Working Directory = " + strDirPath);
 
-	    String source = strDirPath + File.separator + "target" + File.separator + "sample.zip";
+	    String source = strDirPath + File.separator + "src" + File.separator + "test" + File.separator + "resources" + File.separator + "egovframework" + File.separator + "file" + File.separator + "sample.zip";
 	    String target = strDirPath + File.separator + "target" + File.separator + "result";
 	    String moved = target + File.separator + "sample.zip.bak";
 	    System.out.println("source = " + source);
@@ -31,7 +31,6 @@ public class TestDecompress {
 	    try {
 	    	result = EgovFileCmprs.decmprsFile(source, target);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	    
@@ -39,6 +38,7 @@ public class TestDecompress {
 
 	    // source => target 파일 이동
 	    // sample.zip => sample.zip.bak
+	    /*
 	    try {
 	        Path filePath = Paths.get(source);
 	        Path filePathToMove = Paths.get(moved);
@@ -46,6 +46,7 @@ public class TestDecompress {
 	    } catch (IOException e) {
 	        e.printStackTrace();
 	    }
+	    */
 		
 	}
 

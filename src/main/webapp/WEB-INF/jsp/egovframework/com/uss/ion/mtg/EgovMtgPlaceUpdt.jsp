@@ -25,7 +25,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 
 <!DOCTYPE html>
@@ -35,43 +34,26 @@
 <title><spring:message code="comUssIonMtg.mtgPlaceUpdt.title" /></title><!-- 회의실 수정 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
-<validator:javascript formName="mtgPlaceManage" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javaScript" language="javascript">
 
 <!--
 function fncSelectMtgPlaceManageList() {
-    var varFrom = document.getElementById("mtgPlaceManage");
-    varFrom.action = "<c:url value='/uss/ion/mtg/selectMtgPlaceManageList.do'/>";
-    varFrom.submit();       
+    var varFrom = document.getElementById("mtgPlaceManageVO") || document.forms["mtgPlaceManageVO"];
+    if (varFrom) { varFrom.action = "<c:url value='/uss/ion/mtg/selectMtgPlaceManageList.do'/>"; varFrom.submit(); }
 }
 
 function fncUpdtMtgPlace() {
-     var varFrom = document.getElementById("mtgPlaceManage");
-
-     if(varFrom.opnBeginTm.value == ""){
-		  alert("<spring:message code="comUssIonMtg.mtgPlaceRegist.selectStartTime" />");
-		  return;
-	  }
-	  if(varFrom.opnEndTm.value == ""){
-		  alert("<spring:message code="comUssIonMtg.mtgPlaceRegist.selectCloseTime" />");
-		  return;
-	  }
-     if(parseInt(varFrom.opnBeginTm.value.substring(0,2)) >= parseInt(varFrom.opnEndTm.value.substring(0,2))){
-          alert("<spring:message code="comUssIonMtg.mtgPlaceRegist.checkOpenTime" />");
-          return;
-	  }
-     
-     varFrom.action = "<c:url value='/uss/ion/mtg/updtMtgPlace.do'/>";
-
+     var varFrom = document.getElementById("mtgPlaceManageVO") || document.forms["mtgPlaceManageVO"];
+     if (!varFrom) return;
+     if(!validateMtgPlaceManage(varFrom)){
+         return;
+     }
      if(confirm("<spring:message code="common.save.msg" />")){
-	     if(!validateMtgPlaceManage(varFrom)){           
-	         return;
-	     }else{
-	         varFrom.submit();
-	     } 
+    	 varFrom.action = "<c:url value='/uss/ion/mtg/updtMtgPlace.do'/>";
+	     varFrom.submit();
      }
 }
 
@@ -82,23 +64,23 @@ function fncUpdtMtgPlace() {
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form modelAttribute="mtgPlaceManage" name="mtgPlaceManage" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/updtMtgPlace.do"  enctype="multipart/form-data"> 
+<form:form modelAttribute="mtgPlaceManageVO" name="mtgPlaceManageVO" id="mtgPlaceManageVO" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/updtMtgPlace.do"  enctype="multipart/form-data"> 
 <input type="hidden" name="returnUrl"           value="/uss/ion/mtg/selectMtgPlaceManage.do" />
 <input type="hidden" name="posblAtchFileNumber" id="posblAtchFileNumber" value="3" />  
 <input type="hidden" name="cmd" value="update">
-<input type="hidden" name="mtgPlaceId" value ="<c:out value='${mtgPlaceManage.mtgPlaceId}'/>">
+<input type="hidden" name="mtgPlaceId" value ="<c:out value='${mtgPlaceManageVO.mtgPlaceId}'/>">
 <!-- 검색조건 유지 -->
 <input type="hidden" name="searchCondition" value="<c:out value='${mtgPlaceManageVO.searchCondition}'/>" >
 <input type="hidden" name="searchKeyword" value="<c:out value='${mtgPlaceManageVO.searchKeyword}'/>" >
 <input type="hidden" name="pageIndex" value="<c:out value='${mtgPlaceManageVO.pageIndex}'/>" >
 
 <!--  첨부파일 테이블 레이아웃 End. /cmm/fms/selectImageFileInfs.do -->
-	<c:if test="${mtgPlaceManage.atchFileId eq null || mtgPlaceManage.atchFileId eq ''}">
+	<c:if test="${mtgPlaceManageVO.atchFileId eq null || mtgPlaceManageVO.atchFileId eq ''}">
 	 	<input type="hidden" name="fileListCnt" value="0" />
 	 	<input type="hidden" name="atchFileAt" value="N">
 	</c:if> 
 	
-	<c:if test="${mtgPlaceManage.atchFileId ne null && mtgPlaceManage.atchFileId ne ''}">
+	<c:if test="${mtgPlaceManageVO.atchFileId ne null && mtgPlaceManageVO.atchFileId ne ''}">
 	 	<input type="hidden" name="atchFileAt" value="Y"> 
 	</c:if>
 
@@ -119,58 +101,61 @@ function fncUpdtMtgPlace() {
 			<td class="left" colspan="3">
 				<c:set var="mtgPlaceNm"><spring:message code="comUssIonMtg.mtgPlaceManageList.mtgPlaceNm" /></c:set>
 			    <form:input  path="mtgPlaceNm" title="${mtgPlaceNm}" />
+			    <div><form:errors path="mtgPlaceNm" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUssIonMtg.mtgPlaceRegist.occupancy" /><span class="pilsu">*</span></th><!-- 수용가능인원 -->
 			<td class="left">
 				<select name="aceptncPosblNmpr" title="수용가능인원">
-			       	<option value="5"   <c:if test="${mtgPlaceManage.aceptncPosblNmpr == '5'}" > selected </c:if>>5<spring:message code="comUssIonMtg.mtgPlaceManageList.persons" /></option>
-			       	<option value="10"  <c:if test="${mtgPlaceManage.aceptncPosblNmpr == '10'}"> selected </c:if>>10<spring:message code="comUssIonMtg.mtgPlaceManageList.persons" /></option>
-			       	<option value="15"  <c:if test="${mtgPlaceManage.aceptncPosblNmpr == '15'}"> selected </c:if>>15<spring:message code="comUssIonMtg.mtgPlaceManageList.persons" /></option>
-			       	<option value="20"  <c:if test="${mtgPlaceManage.aceptncPosblNmpr == '20'}"> selected </c:if>>20<spring:message code="comUssIonMtg.mtgPlaceManageList.persons" /></option>
-			       	<option value="25"  <c:if test="${mtgPlaceManage.aceptncPosblNmpr == '25'}"> selected </c:if>>25<spring:message code="comUssIonMtg.mtgPlaceManageList.persons" /></option>
-			       	<option value="30"  <c:if test="${mtgPlaceManage.aceptncPosblNmpr == '30'}"> selected </c:if>>30<spring:message code="comUssIonMtg.mtgPlaceManageList.persons" /></option>
-			       	<option value="50"  <c:if test="${mtgPlaceManage.aceptncPosblNmpr == '50'}"> selected </c:if>>50<spring:message code="comUssIonMtg.mtgPlaceManageList.persons" /></option>
-			       	<option value="70"  <c:if test="${mtgPlaceManage.aceptncPosblNmpr == '70'}"> selected </c:if>>70<spring:message code="comUssIonMtg.mtgPlaceManageList.persons" /></option>
-			       	<option value="100" <c:if test="${mtgPlaceManage.aceptncPosblNmpr == '100'}"> selected </c:if>>100<spring:message code="comUssIonMtg.mtgPlaceManageList.persons" /></option>
+			       	<option value="5"   <c:if test="${mtgPlaceManageVO.aceptncPosblNmpr == '5'}" > selected </c:if>>5<spring:message code="comUssIonMtg.mtgPlaceManageList.persons" /></option>
+			       	<option value="10"  <c:if test="${mtgPlaceManageVO.aceptncPosblNmpr == '10'}"> selected </c:if>>10<spring:message code="comUssIonMtg.mtgPlaceManageList.persons" /></option>
+			       	<option value="15"  <c:if test="${mtgPlaceManageVO.aceptncPosblNmpr == '15'}"> selected </c:if>>15<spring:message code="comUssIonMtg.mtgPlaceManageList.persons" /></option>
+			       	<option value="20"  <c:if test="${mtgPlaceManageVO.aceptncPosblNmpr == '20'}"> selected </c:if>>20<spring:message code="comUssIonMtg.mtgPlaceManageList.persons" /></option>
+			       	<option value="25"  <c:if test="${mtgPlaceManageVO.aceptncPosblNmpr == '25'}"> selected </c:if>>25<spring:message code="comUssIonMtg.mtgPlaceManageList.persons" /></option>
+			       	<option value="30"  <c:if test="${mtgPlaceManageVO.aceptncPosblNmpr == '30'}"> selected </c:if>>30<spring:message code="comUssIonMtg.mtgPlaceManageList.persons" /></option>
+			       	<option value="50"  <c:if test="${mtgPlaceManageVO.aceptncPosblNmpr == '50'}"> selected </c:if>>50<spring:message code="comUssIonMtg.mtgPlaceManageList.persons" /></option>
+			       	<option value="70"  <c:if test="${mtgPlaceManageVO.aceptncPosblNmpr == '70'}"> selected </c:if>>70<spring:message code="comUssIonMtg.mtgPlaceManageList.persons" /></option>
+			       	<option value="100" <c:if test="${mtgPlaceManageVO.aceptncPosblNmpr == '100'}"> selected </c:if>>100<spring:message code="comUssIonMtg.mtgPlaceManageList.persons" /></option>
 		      	</select>
+		        <div><form:errors path="aceptncPosblNmpr" cssClass="error" /></div>
 			</td>
 			<th><spring:message code="comUssIonMtg.mtgPlaceRegist.openTime" /> <span class="pilsu">*</span></th> <!-- 개방시간 -->
 			<td class="left">
 				<select name="opnBeginTm" title="<spring:message code="comUssIonMtg.mtgPlaceRegist.openTimeFrom" />"><!-- 개방시작시간 -->
-			       	<option value="08:00" <c:if test="${mtgPlaceManage.opnBeginTm == '08:00'}"> selected </c:if>>08:00</option>
-			       	<option value="09:00" <c:if test="${mtgPlaceManage.opnBeginTm == '09:00'}"> selected </c:if>>09:00</option>
-			       	<option value="10:00" <c:if test="${mtgPlaceManage.opnBeginTm == '10:00'}"> selected </c:if>>10:00</option>
-			       	<option value="11:00" <c:if test="${mtgPlaceManage.opnBeginTm == '11:00'}"> selected </c:if>>11:00</option>
-			       	<option value="12:00" <c:if test="${mtgPlaceManage.opnBeginTm == '12:00'}"> selected </c:if>>12:00</option>
-			       	<option value="13:00" <c:if test="${mtgPlaceManage.opnBeginTm == '13:00'}"> selected </c:if>>13:00</option>
-			       	<option value="14:00" <c:if test="${mtgPlaceManage.opnBeginTm == '14:00'}"> selected </c:if>>14:00</option>
-			       	<option value="15:00" <c:if test="${mtgPlaceManage.opnBeginTm == '15:00'}"> selected </c:if>>15:00</option>
-			       	<option value="16:00" <c:if test="${mtgPlaceManage.opnBeginTm == '16:00'}"> selected </c:if>>16:00</option>
-			       	<option value="17:00" <c:if test="${mtgPlaceManage.opnBeginTm == '17:00'}"> selected </c:if>>17:00</option>
-			       	<option value="18:00" <c:if test="${mtgPlaceManage.opnBeginTm == '18:00'}"> selected </c:if>>18:00</option>
-			       	<option value="19:00" <c:if test="${mtgPlaceManage.opnBeginTm == '19:00'}"> selected </c:if>>19:00</option>
-			       	<option value="20:00" <c:if test="${mtgPlaceManage.opnBeginTm == '20:00'}"> selected </c:if>>20:00</option>
-			       	<option value="21:00" <c:if test="${mtgPlaceManage.opnBeginTm == '21:00'}"> selected </c:if>>21:00</option>
+			       	<option value="08:00" <c:if test="${mtgPlaceManageVO.opnBeginTm == '08:00'}"> selected </c:if>>08:00</option>
+			       	<option value="09:00" <c:if test="${mtgPlaceManageVO.opnBeginTm == '09:00'}"> selected </c:if>>09:00</option>
+			       	<option value="10:00" <c:if test="${mtgPlaceManageVO.opnBeginTm == '10:00'}"> selected </c:if>>10:00</option>
+			       	<option value="11:00" <c:if test="${mtgPlaceManageVO.opnBeginTm == '11:00'}"> selected </c:if>>11:00</option>
+			       	<option value="12:00" <c:if test="${mtgPlaceManageVO.opnBeginTm == '12:00'}"> selected </c:if>>12:00</option>
+			       	<option value="13:00" <c:if test="${mtgPlaceManageVO.opnBeginTm == '13:00'}"> selected </c:if>>13:00</option>
+			       	<option value="14:00" <c:if test="${mtgPlaceManageVO.opnBeginTm == '14:00'}"> selected </c:if>>14:00</option>
+			       	<option value="15:00" <c:if test="${mtgPlaceManageVO.opnBeginTm == '15:00'}"> selected </c:if>>15:00</option>
+			       	<option value="16:00" <c:if test="${mtgPlaceManageVO.opnBeginTm == '16:00'}"> selected </c:if>>16:00</option>
+			       	<option value="17:00" <c:if test="${mtgPlaceManageVO.opnBeginTm == '17:00'}"> selected </c:if>>17:00</option>
+			       	<option value="18:00" <c:if test="${mtgPlaceManageVO.opnBeginTm == '18:00'}"> selected </c:if>>18:00</option>
+			       	<option value="19:00" <c:if test="${mtgPlaceManageVO.opnBeginTm == '19:00'}"> selected </c:if>>19:00</option>
+			       	<option value="20:00" <c:if test="${mtgPlaceManageVO.opnBeginTm == '20:00'}"> selected </c:if>>20:00</option>
+			       	<option value="21:00" <c:if test="${mtgPlaceManageVO.opnBeginTm == '21:00'}"> selected </c:if>>21:00</option>
 		      	</select>
 		      	~  
 				<select name="opnEndTm" title="<spring:message code="comUssIonMtg.mtgPlaceRegist.openTimeTo" />"><!-- 개방종료시간 -->
-			       	<option value="08:00" <c:if test="${mtgPlaceManage.opnEndTm == '08:00'}"> selected </c:if>>08:00</option>
-			       	<option value="09:00" <c:if test="${mtgPlaceManage.opnEndTm == '09:00'}"> selected </c:if>>09:00</option>
-			       	<option value="10:00" <c:if test="${mtgPlaceManage.opnEndTm == '10:00'}"> selected </c:if>>10:00</option>
-			       	<option value="11:00" <c:if test="${mtgPlaceManage.opnEndTm == '11:00'}"> selected </c:if>>11:00</option>
-			       	<option value="12:00" <c:if test="${mtgPlaceManage.opnEndTm == '12:00'}"> selected </c:if>>12:00</option>
-			       	<option value="13:00" <c:if test="${mtgPlaceManage.opnEndTm == '13:00'}"> selected </c:if>>13:00</option>
-			       	<option value="14:00" <c:if test="${mtgPlaceManage.opnEndTm == '14:00'}"> selected </c:if>>14:00</option>
-			       	<option value="15:00" <c:if test="${mtgPlaceManage.opnEndTm == '15:00'}"> selected </c:if>>15:00</option>
-			       	<option value="16:00" <c:if test="${mtgPlaceManage.opnEndTm == '16:00'}"> selected </c:if>>16:00</option>
-			       	<option value="17:00" <c:if test="${mtgPlaceManage.opnEndTm == '17:00'}"> selected </c:if>>17:00</option>
-			       	<option value="18:00" <c:if test="${mtgPlaceManage.opnEndTm == '18:00'}"> selected </c:if>>18:00</option>
-			       	<option value="19:00" <c:if test="${mtgPlaceManage.opnEndTm == '19:00'}"> selected </c:if>>19:00</option>
-			       	<option value="20:00" <c:if test="${mtgPlaceManage.opnEndTm == '20:00'}"> selected </c:if>>20:00</option>
-			       	<option value="21:00" <c:if test="${mtgPlaceManage.opnEndTm == '21:00'}"> selected </c:if>>21:00</option>
+			       	<option value="08:00" <c:if test="${mtgPlaceManageVO.opnEndTm == '08:00'}"> selected </c:if>>08:00</option>
+			       	<option value="09:00" <c:if test="${mtgPlaceManageVO.opnEndTm == '09:00'}"> selected </c:if>>09:00</option>
+			       	<option value="10:00" <c:if test="${mtgPlaceManageVO.opnEndTm == '10:00'}"> selected </c:if>>10:00</option>
+			       	<option value="11:00" <c:if test="${mtgPlaceManageVO.opnEndTm == '11:00'}"> selected </c:if>>11:00</option>
+			       	<option value="12:00" <c:if test="${mtgPlaceManageVO.opnEndTm == '12:00'}"> selected </c:if>>12:00</option>
+			       	<option value="13:00" <c:if test="${mtgPlaceManageVO.opnEndTm == '13:00'}"> selected </c:if>>13:00</option>
+			       	<option value="14:00" <c:if test="${mtgPlaceManageVO.opnEndTm == '14:00'}"> selected </c:if>>14:00</option>
+			       	<option value="15:00" <c:if test="${mtgPlaceManageVO.opnEndTm == '15:00'}"> selected </c:if>>15:00</option>
+			       	<option value="16:00" <c:if test="${mtgPlaceManageVO.opnEndTm == '16:00'}"> selected </c:if>>16:00</option>
+			       	<option value="17:00" <c:if test="${mtgPlaceManageVO.opnEndTm == '17:00'}"> selected </c:if>>17:00</option>
+			       	<option value="18:00" <c:if test="${mtgPlaceManageVO.opnEndTm == '18:00'}"> selected </c:if>>18:00</option>
+			       	<option value="19:00" <c:if test="${mtgPlaceManageVO.opnEndTm == '19:00'}"> selected </c:if>>19:00</option>
+			       	<option value="20:00" <c:if test="${mtgPlaceManageVO.opnEndTm == '20:00'}"> selected </c:if>>20:00</option>
+			       	<option value="21:00" <c:if test="${mtgPlaceManageVO.opnEndTm == '21:00'}"> selected </c:if>>21:00</option>
 		      	</select>
+		        <div><form:errors path="opnBeginTm" cssClass="error" /><form:errors path="opnEndTm" cssClass="error" /><form:errors path="opnTimeRangeValid" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
@@ -182,16 +167,17 @@ function fncUpdtMtgPlace() {
 					<form:options items="${lcSeCode}" itemValue="code" itemLabel="codeNm"/>
 		        </form:select>
 		        <form:input  path="lcDetail" title="${locationDetail}" cssStyle="width:509px" />
+		        <div><form:errors path="lcDetail" cssClass="error" /></div>
 			</td>
 		</tr>
 		<!--  첨부파일 테이블 레이아웃 설정 Start.. -->
-		<c:if test="${mtgPlaceManage.atchFileId ne null && mtgPlaceManage.atchFileId ne ''}">
+		<c:if test="${mtgPlaceManageVO.atchFileId ne null && mtgPlaceManageVO.atchFileId ne ''}">
 		<tr> 
 			<th><spring:message code="comUssIonMtg.mtgPlaceDetail.imgFileList" /></th>
 			<td colspan="3">
 				<!-- c:import charEncoding="utf-8" url="/cmm/fms/selectFileInfs.do" -->
 				<c:import url="/cmm/fms/selectFileInfsForUpdate.do" charEncoding="utf-8">
-				<c:param name="param_atchFileId" value="${egovc:encrypt(mtgPlaceManage.atchFileId)}" />
+				<c:param name="param_atchFileId" value="${egovc:encrypt(mtgPlaceManageVO.atchFileId)}" />
 				</c:import>								
 			</td>
 		</tr>

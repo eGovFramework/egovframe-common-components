@@ -18,7 +18,6 @@ import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
-import egovframework.com.uss.ion.msi.service.MainImage;
 import egovframework.com.uss.ion.msi.service.MainImageVO;
 
 @Repository("mainImageDAO")
@@ -56,32 +55,29 @@ public class MainImageDAO extends EgovComAbstractDAO {
 	 * 메인화면이미지정보를 신규로 등록한다.
 	 * @param mainImage - 메인이미지 model
 	 */
-	public void insertMainImage(MainImage mainImage) throws Exception {
-		insert("mainImageDAO.insertMainImage", mainImage);
+	public void insertMainImage(MainImageVO mainImageVO) throws Exception {
+		insert("mainImageDAO.insertMainImage", mainImageVO);
 	}
 
 	/**
 	 * 기 등록된 메인화면이미지정보를 수정한다.
-	 * @param mainImage - 메인이미지 model
 	 */
-	public void updateMainImage(MainImage mainImage) throws Exception {
-		update("mainImageDAO.updateMainImage", mainImage);
+	public void updateMainImage(MainImageVO mainImageVO) throws Exception {
+		update("mainImageDAO.updateMainImage", mainImageVO);
 	}
 
 	/**
 	 * 기 등록된 메인화면이미지정보를 삭제한다.
-	 * @param mainImage - 메인이미지 model
 	 */
-	public void deleteMainImage(MainImage mainImage) throws Exception {
-		delete("mainImageDAO.deleteMainImage", mainImage);
+	public void deleteMainImage(MainImageVO mainImageVO) throws Exception {
+		delete("mainImageDAO.deleteMainImage", mainImageVO);
 	}
 
 	/**
 	 * 기 등록된 메인화면이미지정보의 이미지파일을 삭제하기 위해 파일정보를 조회한다.
-	 * @param mainImage - 메인이미지 model
 	 */
-	public FileVO selectMainImageFile(MainImage mainImage) throws Exception {
-		return (FileVO) selectOne("mainImageDAO.selectMainImageFile", mainImage);
+	public FileVO selectMainImageFile(MainImageVO mainImageVO) throws Exception {
+		return (FileVO) selectOne("mainImageDAO.selectMainImageFile", mainImageVO);
 	}
 
 	/**

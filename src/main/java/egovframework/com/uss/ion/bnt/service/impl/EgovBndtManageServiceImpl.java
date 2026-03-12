@@ -2,13 +2,13 @@ package egovframework.com.uss.ion.bnt.service.impl;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.UncheckedIOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.List;
-
-import javax.annotation.Resource;
+import java.util.Locale;
 
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
@@ -16,24 +16,26 @@ import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
+import org.apache.poi.ss.usermodel.DateUtil;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.excel.EgovExcelService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
-import egovframework.com.uss.ion.bnt.service.BndtCeckManage;
 import egovframework.com.uss.ion.bnt.service.BndtCeckManageVO;
-import egovframework.com.uss.ion.bnt.service.BndtDiary;
 import egovframework.com.uss.ion.bnt.service.BndtDiaryVO;
-import egovframework.com.uss.ion.bnt.service.BndtManage;
 import egovframework.com.uss.ion.bnt.service.BndtManageVO;
 import egovframework.com.uss.ion.bnt.service.EgovBndtManageService;
 import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
 
 /**
  * <pre>
@@ -44,7 +46,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  * - 당직관리에 대한 등록, 수정, 삭제, 조회, 반영확인 기능을 제공한다.
  * - 당직관리의 조회기능은 목록조회, 상세조회로 구분된다.
  * </pre>
- * 
+ *
  * @author 이용
  * @since 2010.06.15
  * @version 1.0
@@ -73,9 +75,10 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 	@Resource(name = "bndtManageDAO")
 	private BndtManageDAO bndtManageDAO;
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(EgovBndtManageServiceImpl.class);
 	/**
 	 * 당직관리정보를 관리하기 위해 등록된 당직관리 목록을 조회한다.
-	 * 
+	 *
 	 * @param bndtManageVO - 당직관리 VO
 	 * @return List - 당직관리 목록
 	 */
@@ -86,7 +89,7 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 
 	/**
 	 * 당직관리목록 총 개수를 조회한다.
-	 * 
+	 *
 	 * @param bndtManageVO - 당직관리 VO
 	 * @return int - 당직관리 카운트 수
 	 */
@@ -97,7 +100,7 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 
 	/**
 	 * 등록된 당직관리의 상세정보를 조회한다.
-	 * 
+	 *
 	 * @param bndtManageVO - 당직관리 VO
 	 * @return BndtManageVO - 당직관리 VO
 	 */
@@ -113,55 +116,55 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 
 	/**
 	 * 당직관리정보를 신규로 등록한다.
-	 * 
-	 * @param bndtManage - 당직관리 model
+	 *
+	 * @param bndtManageVO - 당직관리 VO
 	 */
 	@Override
-	public void insertBndtManage(BndtManage bndtManage) throws Exception {
-		bndtManage.setBndtDe(EgovStringUtil.removeMinusChar(bndtManage.getBndtDe()));
-		bndtManageDAO.insertBndtManage(bndtManage);
+	public void insertBndtManage(BndtManageVO bndtManageVO) throws Exception {
+		bndtManageVO.setBndtDe(EgovStringUtil.removeMinusChar(bndtManageVO.getBndtDe()));
+		bndtManageDAO.insertBndtManage(bndtManageVO);
 	}
 
 	/**
 	 * 기 등록된 당직관리정보를 수정한다.
-	 * 
-	 * @param bndtManage - 당직관리 model
+	 *
+	 * @param bndtManageVO - 당직관리 VO
 	 */
 	@Override
-	public void updtBndtManage(BndtManage bndtManage) throws Exception {
-		bndtManage.setBndtDe(EgovStringUtil.removeMinusChar(bndtManage.getBndtDe()));
-		bndtManageDAO.updtBndtManage(bndtManage);
+	public void updtBndtManage(BndtManageVO bndtManageVO) throws Exception {
+		bndtManageVO.setBndtDe(EgovStringUtil.removeMinusChar(bndtManageVO.getBndtDe()));
+		bndtManageDAO.updtBndtManage(bndtManageVO);
 	}
 
 	/**
 	 * 기 등록된 당직관리정보를 삭제한다.
-	 * 
-	 * @param bndtManage - 당직관리 model
+	 *
+	 * @param bndtManageVO - 당직관리 VO
 	 */
 	@Override
-	public void deleteBndtManage(BndtManage bndtManage) throws Exception {
-		bndtManage.setBndtDe(EgovStringUtil.removeMinusChar(bndtManage.getBndtDe()));
-		bndtManageDAO.deleteBndtManage(bndtManage);
+	public void deleteBndtManage(BndtManageVO bndtManageVO) throws Exception {
+		bndtManageVO.setBndtDe(EgovStringUtil.removeMinusChar(bndtManageVO.getBndtDe()));
+		bndtManageDAO.deleteBndtManage(bndtManageVO);
 	}
 
 	/**
 	 * 당직일지 개수를 조회한다.
-	 * 
-	 * @param bndtManage - 당직관리
+	 *
+	 * @param bndtManageVO - 당직관리 VO
 	 * @return int
 	 * @exception Exception
 	 */
 	@Override
-	public int selectBndtDiaryTotCnt(BndtManage bndtManage) throws Exception {
-		bndtManage.setBndtDe(EgovStringUtil.removeMinusChar(bndtManage.getBndtDe()));
-		return bndtManageDAO.selectBndtDiaryTotCnt(bndtManage);
+	public int selectBndtDiaryTotCnt(BndtManageVO bndtManageVO) throws Exception {
+		bndtManageVO.setBndtDe(EgovStringUtil.removeMinusChar(bndtManageVO.getBndtDe()));
+		return bndtManageDAO.selectBndtDiaryTotCnt(bndtManageVO);
 	}
 
 	/***** 당직 체크관리 *****/
 
 	/**
 	 * 당직체크관리정보를 관리하기 위해 등록된 당직체크관리 목록을 조회한다.
-	 * 
+	 *
 	 * @param bndtCeckManageVO - 당직체크관리 VO
 	 * @return List - 당직체크관리 목록
 	 */
@@ -172,7 +175,7 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 
 	/**
 	 * 당직체크관리목록 총 개수를 조회한다.
-	 * 
+	 *
 	 * @param bndtCeckManageVO - 당직체크관리 VO
 	 * @return int - 당직체크관리 카운트 수
 	 */
@@ -183,7 +186,7 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 
 	/**
 	 * 등록된 당직체크관리의 상세정보를 조회한다.
-	 * 
+	 *
 	 * @param bndtCeckManageVO - 당직체크관리 VO
 	 * @return BndtCeckManageVO - 당직체크관리 VO
 	 */
@@ -194,82 +197,81 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 
 	/**
 	 * 당직체크관리정보를 신규로 등록한다.
-	 * 
-	 * @param bndtCeckManage - 당직체크관리 model
+	 *
+	 * @param bndtCeckManageVO - 당직체크관리 VO
 	 */
 	@Override
-	public void insertBndtCeckManage(BndtCeckManage bndtCeckManage) throws Exception {
-		bndtManageDAO.insertBndtCeckManage(bndtCeckManage);
+	public void insertBndtCeckManage(BndtCeckManageVO bndtCeckManageVO) throws Exception {
+		bndtManageDAO.insertBndtCeckManage(bndtCeckManageVO);
 	}
 
 	/**
 	 * 기 등록된 당직체크관리정보를 수정한다.
-	 * 
-	 * @param bndtCeckManage - 당직체크관리 model
+	 *
+	 * @param bndtCeckManageVO - 당직체크관리 VO
 	 */
 	@Override
-	public void updtBndtCeckManage(BndtCeckManage bndtCeckManage) throws Exception {
-		bndtManageDAO.updtBndtCeckManage(bndtCeckManage);
+	public void updtBndtCeckManage(BndtCeckManageVO bndtCeckManageVO) throws Exception {
+		bndtManageDAO.updtBndtCeckManage(bndtCeckManageVO);
 	}
 
 	/**
 	 * 기 등록된 당직체크관리정보를 삭제한다.
-	 * 
-	 * @param bndtCeckManage - 당직체크관리 model
+	 *
+	 * @param bndtCeckManageVO - 당직체크관리 VO
 	 */
 	@Override
-	public void deleteBndtCeckManage(BndtCeckManage bndtCeckManage) throws Exception {
-		bndtManageDAO.deleteBndtCeckManage(bndtCeckManage);
+	public void deleteBndtCeckManage(BndtCeckManageVO bndtCeckManageVO) throws Exception {
+		bndtManageDAO.deleteBndtCeckManage(bndtCeckManageVO);
 	}
 
 	/**
 	 * 당직체크 중복여부 조회한다.
-	 * 
+	 *
 	 * @param bndtCeckManageVO - 당직체크관리 VO
 	 * @return int
 	 * @exception Exception
 	 */
 	@Override
-	public int selectBndtCeckManageDplctAt(BndtCeckManage bndtCeckManage) throws Exception {
-		return bndtManageDAO.selectBndtCeckManageDplctAt(bndtCeckManage);
+	public int selectBndtCeckManageDplctAt(BndtCeckManageVO bndtCeckManageVO) throws Exception {
+		return bndtManageDAO.selectBndtCeckManageDplctAt(bndtCeckManageVO);
 	}
 
 	/***** 당직 일지 *****/
 
 	/**
 	 * 등록된 당직일지관리의 상세정보를 조회한다.
-	 * 
+	 *
 	 * @param bndtDiaryVO - 당직일지관리 VO
 	 * @return BndtDiaryVO - 당직일지관리 VO
 	 */
 	@Override
 	public List<BndtDiaryVO> selectBndtDiary(BndtDiaryVO bndtDiaryVO) throws Exception {
+		bndtDiaryVO.setBndtDe(EgovStringUtil.removeMinusChar(bndtDiaryVO.getBndtDe()));
 		return bndtManageDAO.selectBndtDiary(bndtDiaryVO);
 	}
 
 	/**
 	 * 당직일지관리정보를 신규로 등록한다.
-	 * 
-	 * @param bndtDiary    - 당직일지관리 model
-	 * @param diaryForUpdt - String
+	 *
+	 * @param bndtDiaryVO    - 당직일지관리 VO
+	 * @param diaryForInsert - String
 	 */
 	@Override
-	public void insertBndtDiary(BndtDiary bndtDiary, String diaryForInsert) throws Exception {
+	public void insertBndtDiary(BndtDiaryVO bndtDiaryVO, String diaryForInsert) throws Exception {
 
-		BndtDiary bndtDiaryTemp;
+		BndtDiaryVO bndtDiaryTemp;
 		String[] bndtDiaryValues = diaryForInsert.split("[@]");
 		String[] sTempBndtDiary;
-		String sTemp = null;
-		for (int i = 0; i < bndtDiaryValues.length; i++) {
-			bndtDiaryTemp = new BndtDiary();
-			sTemp = bndtDiaryValues[i];
+		for (String sTemp : bndtDiaryValues) {
+			bndtDiaryTemp = new BndtDiaryVO();
 			sTempBndtDiary = sTemp.split("[$]");
-			bndtDiaryTemp.setBndtDe(bndtDiary.getBndtDe());
-			bndtDiaryTemp.setBndtId(bndtDiary.getBndtId());
+			bndtDiaryTemp.setBndtDe(bndtDiaryVO.getBndtDe());
+			bndtDiaryTemp.setBndtId(bndtDiaryVO.getBndtId());
 			bndtDiaryTemp.setBndtCeckSe(sTempBndtDiary[0]);
 			bndtDiaryTemp.setBndtCeckCd(sTempBndtDiary[1]);
 			bndtDiaryTemp.setChckSttus(sTempBndtDiary[2]);
-			bndtDiaryTemp.setFrstRegisterId(bndtDiary.getFrstRegisterId());
+			bndtDiaryTemp.setFrstRegisterId(bndtDiaryVO.getFrstRegisterId());
 
 			bndtManageDAO.insertBndtDiary(bndtDiaryTemp);
 		}
@@ -277,27 +279,25 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 
 	/**
 	 * 기 등록된 당직일지관리정보를 수정한다.
-	 * 
-	 * @param bndtDiary    - 당직일지관리 model
+	 *
+	 * @param bndtDiaryVO    - 당직일지관리 VO
 	 * @param diaryForUpdt - String
 	 */
 	@Override
-	public void updtBndtDiary(BndtDiary bndtDiary, String diaryForUpdt) throws Exception {
+	public void updtBndtDiary(BndtDiaryVO bndtDiaryVO, String diaryForUpdt) throws Exception {
 
-		BndtDiary bndtDiaryTemp;
+		BndtDiaryVO bndtDiaryTemp;
 		String[] bndtDiaryValues = diaryForUpdt.split("[@]");
 		String[] sTempBndtDiary;
-		String sTemp = null;
-		for (int i = 0; i < bndtDiaryValues.length; i++) {
-			bndtDiaryTemp = new BndtDiary();
-			sTemp = bndtDiaryValues[i];
+		for (String sTemp : bndtDiaryValues) {
+			bndtDiaryTemp = new BndtDiaryVO();
 			sTempBndtDiary = sTemp.split("[$]");
-			bndtDiaryTemp.setBndtDe(bndtDiary.getBndtDe());
-			bndtDiaryTemp.setBndtId(bndtDiary.getBndtId());
+			bndtDiaryTemp.setBndtDe(bndtDiaryVO.getBndtDe());
+			bndtDiaryTemp.setBndtId(bndtDiaryVO.getBndtId());
 			bndtDiaryTemp.setBndtCeckSe(sTempBndtDiary[0]);
 			bndtDiaryTemp.setBndtCeckCd(sTempBndtDiary[1]);
 			bndtDiaryTemp.setChckSttus(sTempBndtDiary[2]);
-			bndtDiaryTemp.setLastUpdusrId(bndtDiary.getLastUpdusrId());
+			bndtDiaryTemp.setLastUpdusrId(bndtDiaryVO.getLastUpdusrId());
 
 			bndtManageDAO.updtBndtDiary(bndtDiaryTemp);
 		}
@@ -305,62 +305,154 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 
 	/**
 	 * 기 등록된 당직일지관리정보를 삭제한다.
-	 * 
-	 * @param bndtDiary - 당직일지관리 model
+	 *
+	 * @param bndtDiaryVO - 당직일지관리 VO
 	 */
 	@Override
-	public void deleteBndtDiary(BndtDiary bndtDiary) throws Exception {
-		bndtManageDAO.deleteBndtDiary(bndtDiary);
+	public void deleteBndtDiary(BndtDiaryVO bndtDiaryVO) throws Exception {
+		bndtManageDAO.deleteBndtDiary(bndtDiaryVO);
 	}
 
 	/* ### 엑셀 일괄처리 프로세스 ### */
 
 	/**
+	 * 엑셀 셀 값을 문자열로 가져오기 (HSSFCell용)
+	 *
+	 * @param cell HSSFCell
+	 * @return String
+	 */
+	private String getCellValueAsString(HSSFCell cell) {
+		if (cell == null) {
+			return "";
+		}
+
+		switch (cell.getCellType()) {
+			case STRING:
+				return cell.getStringCellValue();
+			case NUMERIC:
+				// 숫자 셀의 경우 정수로 표시되면 소수점 제거
+				double numericValue = cell.getNumericCellValue();
+				if (numericValue == Math.floor(numericValue)) {
+					return String.valueOf((long) numericValue);
+				} else {
+					return String.valueOf(numericValue);
+				}
+			case BOOLEAN:
+				return String.valueOf(cell.getBooleanCellValue());
+			case FORMULA:
+				// 수식 셀의 경우 계산된 값을 가져옴
+				try {
+					return cell.getStringCellValue();
+					// 2026.03.09 KISA 취약점 조치
+				} catch (IllegalStateException e) {
+					LOGGER.debug("FORMULA 셀 문자열 값 읽기 실패, 숫자 값으로 재시도: {}", e.getMessage());
+					try {
+						double numValue = cell.getNumericCellValue();
+						if (numValue == Math.floor(numValue)) {
+							return String.valueOf((long) numValue);
+						} else {
+							return String.valueOf(numValue);
+						}
+						// 2026.03.09 KISA 취약점 조치
+					} catch (IllegalStateException ex) {
+						LOGGER.debug("FORMULA 셀 숫자 값 읽기 실패: {}", ex.getMessage());
+						return "";
+					}
+				}
+			case BLANK:
+				return "";
+			default:
+				return "";
+		}
+	}
+
+	/**
+	 * 엑셀 셀 값을 문자열로 가져오기 (Cell용 - xlsx)
+	 * 당직일자 등 getDateWeekInt/getDateWeekString에서 YYYYMMDD 형식을 기대하므로,
+	 * 날짜 셀은 yyyyMMdd로 변환한다.
+	 *
+	 * @param cell Cell
+	 * @return String
+	 */
+	private String getCellValueAsString(Cell cell) {
+		if (cell == null) {
+			return "";
+		}
+		CellType cellType;
+		try {
+			cellType = cell.getCellType();
+			if (cellType == CellType.FORMULA) {
+				cellType = cell.getCachedFormulaResultType();
+			}
+			// 2026.03.09 KISA 취약점 조치
+		} catch (IllegalStateException e) {
+			LOGGER.debug("셀 타입 조회 실패: {}", e.getMessage());
+			return "";
+		}
+		switch (cellType) {
+			case STRING:
+				return cell.getStringCellValue();
+			case NUMERIC:
+				// xlsx에서 날짜 셀은 NUMERIC으로 저장됨. YYYYMMDD 형식으로 변환해야 getDateWeekInt 등에서 파싱 가능
+				if (DateUtil.isCellDateFormatted(cell)) {
+					try {
+						Date date = cell.getDateCellValue();
+						return date == null ? "" : new SimpleDateFormat("yyyyMMdd", Locale.ROOT).format(date);
+						// 2026.03.09 KISA 취약점 조치
+					} catch (IllegalStateException e) {
+						double n = cell.getNumericCellValue();
+						return (n == Math.floor(n)) ? String.valueOf((long) n) : String.valueOf(n);
+					}
+				}
+				double numericValue = cell.getNumericCellValue();
+				if (numericValue == Math.floor(numericValue)) {
+					return String.valueOf((long) numericValue);
+				}
+				return String.valueOf(numericValue);
+			case BOOLEAN:
+				return String.valueOf(cell.getBooleanCellValue());
+			case BLANK:
+				return "";
+			default:
+				return "";
+		}
+	}
+
+	/**
 	 * 당직자 excel생성
-	 * 
+	 *
 	 * @param inputStream InputStream
 	 * @return String
 	 * @exception Exception
 	 */
 	@Override
 	public List<BndtManageVO> selectBndtManageBnde(InputStream inputStream) throws Exception {
-//	    int bndtSheetRowCnt = 0;
-//	    String xlsFile = null;
 		String sTempNm = null;
 		String sTempId = null;
 
-		List<BndtManageVO> list = new ArrayList<BndtManageVO>();
+	    List<BndtManageVO> list = new ArrayList<>();
 
 		String sBndtDe = null;
-		HSSFWorkbook hssfWB = (HSSFWorkbook) excelZipService.loadWorkbook(inputStream);
-		// 엑셀 파일 시트 개수 확인 sheet = 1
-		if (hssfWB.getNumberOfSheets() == 1) {
-			HSSFSheet bndtSheet = hssfWB.getSheetAt(0); // 당직자 시트 가져오기
-//            HSSFRow   bndtRow    = bndtSheet.getRow(1); //당직자 row 가져오기
-//            bndtSheetRowCnt      = bndtRow.getPhysicalNumberOfCells(); //당직자 cell Cnt
-			int rowsCnt = bndtSheet.getPhysicalNumberOfRows(); // 행 개수 가져오기
+		HSSFWorkbook workbook = (HSSFWorkbook) excelZipService.loadWorkbook(inputStream);
+
+		if (workbook.getNumberOfSheets() == 1) {
+			HSSFSheet sheet = workbook.getSheetAt(0); // 당직자 시트 가져오기
+			int rowsCnt = sheet.getPhysicalNumberOfRows(); // 행 개수 가져오기
 
 			BndtManageVO checkBndtManageVO = new BndtManageVO();
 			for (int j = 1; j < rowsCnt; j++) { // row 루프
 				BndtManageVO bndtManageVO = new BndtManageVO();
-				HSSFRow row = bndtSheet.getRow(j); // row 가져오기
+				HSSFRow row = sheet.getRow(j); // row 가져오기
 				if (row != null) {
-//                    int cells = row.getPhysicalNumberOfCells(); //cell 개수 가져오기
 					HSSFCell cell = null;
 					cell = row.getCell(0); // 당직일자
-					if (cell != null) {
-						sBndtDe = cell.getStringCellValue();
-					}
+					sBndtDe = getCellValueAsString(cell);
 					cell = row.getCell(1); // 당직자ID
-					if (cell != null) {
-						sTempId = cell.getStringCellValue();
-					}
+					sTempId = getCellValueAsString(cell);
 					cell = row.getCell(2); // 당직자명
-					if (cell != null) {
-						sTempNm = cell.getStringCellValue();
-					}
-					checkBndtManageVO.setTempBndtNm(sTempNm); // 당직자ID
-					checkBndtManageVO.setTempBndtId(sTempId); // 당직자명
+					sTempNm = getCellValueAsString(cell);
+					checkBndtManageVO.setTempBndtNm(sTempId); // 당직자ID
+					checkBndtManageVO.setTempBndtId(sTempNm); // 당직자명
 
 					// 최두영 로직변경
 					bndtManageVO = bndtManageDAO.selectBndtManageBnde(checkBndtManageVO);
@@ -370,6 +462,8 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 					}
 
 					bndtManageVO.setBndtDe(sBndtDe);
+					bndtManageVO.setBndtId(sTempId);
+					bndtManageVO.setTempBndtNm(sTempNm);
 					bndtManageVO.setDateWeek(getDateWeekInt(sBndtDe));
 					bndtManageVO.setTempBndtWeek(getDateWeekString(sBndtDe));
 
@@ -385,103 +479,109 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 
 	/**
 	 * 당직자 excel생성 (Xlsx 처리)
-	 * 
+	 *
 	 * @param inputStream InputStream
 	 * @return String
 	 * @exception Exception
 	 */
 	@Override
 	public List<BndtManageVO> selectBndtManageBndeX(InputStream inputStream) throws Exception {
-//	    int bndtSheetRowCnt = 0;
-//	    String xlsFile = null;
 		String sTempNm = null;
 		String sTempId = null;
 
-		List<BndtManageVO> list = new ArrayList<BndtManageVO>();
+	    List<BndtManageVO> list = new ArrayList<>();
 
 		String sBndtDe = null;
-		try (Workbook workbook = new XSSFWorkbook(inputStream);) {
-			// 엑셀 파일 시트 개수 확인 sheet = 1
-			if (workbook != null && workbook.getNumberOfSheets() == 1) {
-				Sheet bndtSheet = workbook.getSheetAt(0); // 당직자 시트 가져오기
-//	            XSSFRow   bndtRow    = bndtSheet.getRow(1); //당직자 row 가져오기
-//	            bndtSheetRowCnt      = bndtRow.getPhysicalNumberOfCells(); //당직자 cell Cnt
-				int rowsCnt = bndtSheet.getPhysicalNumberOfRows(); // 행 개수 가져오기
+		Workbook workbook = null;
+		try {
+			workbook = excelZipService.loadWorkbook(inputStream, new XSSFWorkbook());
 
-				BndtManageVO checkBndtManageVO = new BndtManageVO();
-				for (int j = 1; j < rowsCnt; j++) { // row 루프
-					BndtManageVO bndtManageVO = new BndtManageVO();
-					Row row = bndtSheet.getRow(j); // row 가져오기
-					if (row != null) {
-//	                    int cells = row.getPhysicalNumberOfCells(); //cell 개수 가져오기
-						Cell cell = null;
-						cell = row.getCell(0); // 당직일자
-						if (cell != null) {
-							sBndtDe = cell.getStringCellValue();
-						}
-						cell = row.getCell(1); // 당직자ID
-						if (cell != null) {
-							sTempId = cell.getStringCellValue();
-						}
-						cell = row.getCell(2); // 당직자명
-						if (cell != null) {
-							sTempNm = cell.getStringCellValue();
-						}
-						checkBndtManageVO.setTempBndtNm(sTempNm); // 당직자ID
-						checkBndtManageVO.setTempBndtId(sTempId); // 당직자명
+			if (workbook.getNumberOfSheets() >= 1) {
+				Sheet sheet = workbook.getSheetAt(0); // 당직자 시트 가져오기
+				if (sheet != null) {
+					// xlsx에서는 getPhysicalNumberOfRows()가 0을 반환할 수 있으므로 getLastRowNum() 사용 (0-based)
+					int lastRowNum = sheet.getLastRowNum();
 
-						// 최두영 로직변경
-						bndtManageVO = bndtManageDAO.selectBndtManageBnde(checkBndtManageVO);
-						if (bndtManageVO == null) {
-							bndtManageVO = new BndtManageVO();
-							BeanUtils.copyProperties(checkBndtManageVO, bndtManageVO);
+					BndtManageVO checkBndtManageVO = new BndtManageVO();
+					for (int j = 1; j <= lastRowNum; j++) { // row 루프 (1=헤더 다음 첫 데이터행)
+						BndtManageVO bndtManageVO = new BndtManageVO();
+						Row row = sheet.getRow(j); // row 가져오기
+						if (row != null) {
+							Cell cell = null;
+							cell = row.getCell(0); // 당직일자
+							sBndtDe = getCellValueAsString(cell);
+							// 당직일자가 비어 있으면 해당 행 스킵 (getDateWeekInt 등 파싱 예외 방지)
+							if (sBndtDe == null || sBndtDe.trim().isEmpty() || sBndtDe.trim().length() < 8) {
+								continue;
+							}
+							cell = row.getCell(1); // 당직자ID
+							sTempId = getCellValueAsString(cell);
+							cell = row.getCell(2); // 당직자명
+							sTempNm = getCellValueAsString(cell);
+							checkBndtManageVO.setTempBndtNm(sTempId); // 당직자ID
+							checkBndtManageVO.setTempBndtId(sTempNm); // 당직자명
+
+							// 최두영 로직변경
+							bndtManageVO = bndtManageDAO.selectBndtManageBnde(checkBndtManageVO);
+							if (bndtManageVO == null) {
+								bndtManageVO = new BndtManageVO();
+								BeanUtils.copyProperties(checkBndtManageVO, bndtManageVO);
+							}
+
+							bndtManageVO.setBndtDe(sBndtDe);
+							bndtManageVO.setBndtId(sTempId);
+							bndtManageVO.setTempBndtNm(sTempNm);
+							bndtManageVO.setDateWeek(getDateWeekInt(sBndtDe));
+							bndtManageVO.setTempBndtWeek(getDateWeekString(sBndtDe));
+
+							list.add(bndtManageVO);
 						}
-
-						bndtManageVO.setBndtDe(sBndtDe);
-						bndtManageVO.setDateWeek(getDateWeekInt(sBndtDe));
-						bndtManageVO.setTempBndtWeek(getDateWeekString(sBndtDe));
-
-						list.add(bndtManageVO);
 					}
 				}
 			}
-		} catch (IOException e) { // KISA 보안약점 조치 (2018-10-29, 윤창원)
-			throw new UncheckedIOException(e);
-		}
 
-		return list;
+			return list;
+		} finally {
+			if (workbook != null) {
+				try {
+					workbook.close();
+				} catch (IOException e) {
+					// 2026.02.28 KISA 취약점 조치: 로거 추가
+					LOGGER.warn("리소스 정리 중 예외 발생",e);
+				}
+			}
+		}
 	}
 
 	/**
 	 * 당직정보를 일괄등록처리한다.
-	 * 
+	 *
 	 * @param bndtManageVO - 당직관리 VO
 	 * @param String       - 당직자정보
 	 */
 	@Override
 	public void insertBndtManageBnde(BndtManageVO bndtManageVO, String checkedBndtManageForInsert) throws Exception {
-		BndtManage bndtManage;
+		BndtManageVO bndtManageTemp;
 
 		// 2022.11.11 시큐어코딩 처리
 		if (StringUtils.isNotEmpty(checkedBndtManageForInsert)) {
 			String[] bndtManageValues = checkedBndtManageForInsert.split("[$]");
-			for (int i = 0; i < bndtManageValues.length; i++) {
-				bndtManage = new BndtManage();
-				String sTemp = bndtManageValues[i];
+			for (String sTemp : bndtManageValues) {
+				bndtManageTemp = new BndtManageVO();
 				String[] sTempBndtManage = sTemp.split(",");
-				bndtManage.setBndtDe(sTempBndtManage[0]);
-				bndtManage.setBndtId(sTempBndtManage[1]);
-				bndtManage.setRemark("당직일괄등록");
-				bndtManage.setFrstRegisterId(bndtManageVO.getFrstRegisterId());
+				bndtManageTemp.setBndtDe(sTempBndtManage[0]);
+				bndtManageTemp.setBndtId(sTempBndtManage[1]);
+				bndtManageTemp.setRemark("당직일괄등록");
+				bndtManageTemp.setFrstRegisterId(bndtManageVO.getFrstRegisterId());
 
-				bndtManageDAO.insertBndtManage(bndtManage);
+				bndtManageDAO.insertBndtManage(bndtManageTemp);
 			}
 		}
 	}
 
 	/**
 	 * 당직관리 건수를 조회한다.
-	 * 
+	 *
 	 * @param bndtManage - 당직관리
 	 * @return int
 	 * @exception Exception
@@ -493,7 +593,7 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 
 	/**
 	 * 해당일자와 현재일자의 일수 계산 (요일을 구함)
-	 * 
+	 *
 	 * @param annvrsryManageVO
 	 * @return long (1~7로 요일을 리턴)
 	 */
@@ -515,7 +615,7 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 
 	/**
 	 * 해당일자와 현재일자의 일수 계산
-	 * 
+	 *
 	 * @param annvrsryManageVO
 	 * @return long
 	 */
@@ -535,6 +635,6 @@ public class EgovBndtManageServiceImpl extends EgovAbstractServiceImpl implement
 		}
 
 		return sDayOfWeekReturnValue;
-
 	}
+
 }

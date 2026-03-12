@@ -24,7 +24,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -32,8 +31,7 @@
 <title><spring:message code="comSymTbmTbr.troblReqstUpdt.title"/></title><!-- 장애신청 수정 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="troblReqst" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
@@ -154,34 +152,6 @@ function fncCheckValiDay() {
 
 }
 
-function validateTroblReqst(varFrom) {
-    if (varFrom.troblNm.value.trim() === "") {
-        alert("장애명을 입력해주세요.");
-        varFrom.troblNm.focus();
-        return false;
-    }
-    if (varFrom.troblDc.value.trim() === "") {
-        alert("장애 설명을 입력해주세요.");
-        varFrom.troblDc.focus();
-        return false;
-    }
-    if (varFrom.troblOccrrncD.value.trim() === "") {
-        alert("장애 발생 일자를 입력해주세요.");
-        varFrom.troblOccrrncD.focus();
-        return false;
-    }
-    if (varFrom.troblRqesterNm.value.trim() === "") {
-        alert("장애 등록자를 입력해주세요.");
-        varFrom.troblRqesterNm.focus();
-        return false;
-    }
-    if (varFrom.troblKnd.value === "") {
-        alert("장애 종류를 선택해주세요.");
-        varFrom.troblKnd.focus();
-        return false;
-    }
-    return true;
-}
 -->
 </script>
 </head>
@@ -213,7 +183,7 @@ function validateTroblReqst(varFrom) {
 	<!-- 타이틀 -->
 	<h2><spring:message code="comSymTbmTbr.troblReqstUpdt.pageTop.title"/></h2><!-- 장애신청 수정 -->
 
-    <form name="troblReqst" id="troblReqst" method="post" action="${pageContext.request.contextPath}/sym/tbm/tbr/updtTroblReqst.do">
+    <form:form modelAttribute="troblReqst" name="troblReqst" id="troblReqst" method="post" action="${pageContext.request.contextPath}/sym/tbm/tbr/updtTroblReqst.do">
 
 	<!-- 등록폼 -->
 	<table class="wTable">
@@ -238,7 +208,9 @@ function validateTroblReqst(varFrom) {
 			<td class="left">
 			    <select name="troblKnd" title="<spring:message code="comSymTbmTbr.troblReqstUpdt.troblKnd"/>">
 				<c:forEach var="cmmCodeDetail" items="${cmmCodeDetailList}" varStatus="status">
-				<option value="<c:out value="${cmmCodeDetail.code}"/>" <c:if test="${cmmCodeDetail.code == troblReqst.troblKnd}">selected</c:if>><c:out value="${cmmCodeDetail.codeNm}"/></option>
+					<option value="<c:out value="${cmmCodeDetail.code}"/>" <c:if test="${cmmCodeDetail.code == troblReqst.troblKnd}">selected</c:if>>
+						<c:out value="${cmmCodeDetail.codeNm}"/>
+					</option>
 				</c:forEach>
 				</select>
 			</td>
@@ -270,7 +242,8 @@ function validateTroblReqst(varFrom) {
 				<option value="<c:if test="${i < 10}">0</c:if><c:out value="${i}"/>" <c:if test="${i == troblOccrrncStmp}">selected</c:if>><c:if test="${i < 10}">0</c:if><c:out value="${i}"/></option>
 			      </c:forEach>
 			    </select><spring:message code="comSymTbmTbr.troblReqstUpdt.second"/><!-- 초 -->
-			    <input type="hidden" name="troblOccrrncTime" />&nbsp;<form:errors path="troblOccrrncTime" />
+			    <input type="hidden" name="troblOccrrncTime" />
+			    <form:errors path="troblOccrrncTime" />
 			</td>
 		</tr>
 		<tr>
@@ -293,7 +266,7 @@ function validateTroblReqst(varFrom) {
     <input type="hidden" name="strTroblNm" value="<c:out value='${troblReqstVO.strTroblNm}'/>" />
     <input type="hidden" name="pageIndex" value="<c:out value='${troblReqstVO.pageIndex}'/>" >
     <input type="hidden" name="valiDay" />
-	</form>
+	</form:form>
 
 </div>
 

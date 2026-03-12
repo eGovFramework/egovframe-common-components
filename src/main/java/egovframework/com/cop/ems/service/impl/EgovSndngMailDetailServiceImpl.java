@@ -2,8 +2,6 @@ package egovframework.com.cop.ems.service.impl;
 
 import java.io.File;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +11,7 @@ import egovframework.com.cmm.service.Globals;
 import egovframework.com.cop.ems.service.EgovSndngMailDetailService;
 import egovframework.com.cop.ems.service.SndngMailVO;
 import egovframework.com.utl.sim.service.EgovFileTool;
+import jakarta.annotation.Resource;
 
 /**
  * 발송메일을 상세 조회하는 비즈니스 구현 클래스

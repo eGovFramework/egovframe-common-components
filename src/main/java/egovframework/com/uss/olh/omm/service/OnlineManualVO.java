@@ -6,6 +6,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import egovframework.com.cmm.ComDefaultVO;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 온라인메뉴얼 VO Class 구현
  * @author 공통서비스 장동한
@@ -28,18 +31,23 @@ public class OnlineManualVO extends ComDefaultVO implements Serializable {
     private String onlineMnlId;
 
     /** 온라인메뉴얼 명 */
+    @EgovNullCheck
+    @Size(max=255)
     private String onlineMnlNm;
 
     /** 온라인메뉴얼 구분코드 */
+    @EgovNullCheck
     private String onlineMnlSeCode;
 
     /** 온라인메뉴얼 구분코드 */
     private String onlineMnlSeCodeNm;
     
     /** 온라인메뉴얼 정의 */
+    @EgovNullCheck
     private String onlineMnlDf;
 
     /** 온라인메뉴얼 설명 */
+    @EgovNullCheck
     private String onlineMnlDc;
 
     /** 최초등록시점 */

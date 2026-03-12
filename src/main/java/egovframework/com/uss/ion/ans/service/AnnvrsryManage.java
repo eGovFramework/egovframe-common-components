@@ -2,6 +2,10 @@ package egovframework.com.uss.ion.ans.service;
 
 import egovframework.com.cmm.ComDefaultVO;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 /**
  * 개요
  * - 기념일관리에 대한 model 클래스를 정의한다.
@@ -29,27 +33,36 @@ public class AnnvrsryManage extends ComDefaultVO {
 	/**
 	*  사용자ID	      
 	*/ 
+	@EgovNullCheck
 	private String usid;
 
 	/**
 	*  기념일구분	      
 	*/ 
+	@EgovNullCheck
+	@Size(max=2)
 	private String annvrsrySe;
 
 	
 	/**
 	*  기념일명	      
 	*/ 
+	@EgovNullCheck
+	@Size(max=255)
 	private String annvrsryNm;
 
 	/**
 	*  기념일자	      
 	*/ 
+	@EgovNullCheck
+	@Size(max=10)
+	@Pattern(regexp="^\\d{4}-\\d{2}-\\d{2}$", message="{validation.pattern.date}")
 	private String annvrsryDe;
 
 	/**
 	*  달력구분	      
 	*/ 
+	@EgovNullCheck
 	private String cldrSe;
 
 	/**
@@ -70,6 +83,8 @@ public class AnnvrsryManage extends ComDefaultVO {
 	/**
 	*  메모	         
 	*/ 
+	@EgovNullCheck
+	@Size(max=2500)
 	private String memo;
 
 	/**

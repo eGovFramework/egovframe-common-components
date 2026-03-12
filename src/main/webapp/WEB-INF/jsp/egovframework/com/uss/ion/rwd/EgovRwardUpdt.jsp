@@ -24,7 +24,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -33,15 +32,14 @@
 <title><spring:message code="comUssIonRwd.rwardUpdt.title"/></title><!-- 포상수정 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
 <%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
-<validator:javascript formName="rwardManage" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javaScript" language="javascript">
-<!--
+
 
 function initCalendar(){
 	$("#rwardDe").datepicker(
@@ -82,7 +80,7 @@ function fncUpdtRwardManage() {
         } 
     }
 }
--->
+
 </script>
 </head>
 
@@ -156,7 +154,7 @@ function fncUpdtRwardManage() {
 			<td class="left" colspan="3">
 				 <c:set var="pblenCn"><spring:message code="comUssIonRwd.common.pblenCn"/></c:set>
 			    <form:textarea path="pblenCn" rows="4" cols="70" cssClass="txaClass" title="${pblenCn}"/><!-- 공적사항 -->
-      			<form:errors   path="pblenCn"/>
+			    <div><form:errors path="pblenCn" cssClass="error"/></div>
 			</td>
 		</tr>
 		<!-- 첨부파일 테이블 레이아웃 설정 Start..-->

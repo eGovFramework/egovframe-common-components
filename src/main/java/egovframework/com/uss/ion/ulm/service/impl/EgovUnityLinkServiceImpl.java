@@ -2,15 +2,13 @@ package egovframework.com.uss.ion.ulm.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
 
-import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.uss.ion.ulm.service.EgovUnityLinkService;
 import egovframework.com.uss.ion.ulm.service.UnityLink;
+import jakarta.annotation.Resource;
 
 /**
  * 통합링크관리를 처리하는 ServiceImpl Class 구현
@@ -49,24 +47,24 @@ public class EgovUnityLinkServiceImpl extends EgovAbstractServiceImpl
 
     /**
      * 통합링크관리를(을) 목록을 조회 한다.
-     * @param searchVO 조회할 정보가 담김 VO
+     * @param unityLink 조회할 정보가 담김 VO
      * @return List
      * @throws Exception
      */
     @Override
-	public List<?> selectUnityLinkList(ComDefaultVO searchVO) throws Exception {
-        return dao.selectUnityLinkList(searchVO);
+	public List<?> selectUnityLinkList(UnityLink unityLink) throws Exception {
+        return dao.selectUnityLinkList(unityLink);
     }
 
     /**
      * 통합링크관리를(을) 목록 전체 건수를(을) 조회한다.
-     * @param searchVO  조회할 정보가 담긴 VO
+     * @param unityLink  조회할 정보가 담긴 VO
      * @return int
      * @throws Exception
      */
     @Override
-	public int selectUnityLinkListCnt(ComDefaultVO searchVO) throws Exception {
-        return dao.selectUnityLinkListCnt(searchVO);
+	public int selectUnityLinkListCnt(UnityLink unityLink) throws Exception {
+        return dao.selectUnityLinkListCnt(unityLink);
     }
 
     /**
@@ -94,7 +92,7 @@ public class EgovUnityLinkServiceImpl extends EgovAbstractServiceImpl
 
     /**
      * 통합링크관리를(을) 수정한다.
-     * @param searchVO 조회할 정보가 담긴 VO
+     * @param unityLink 조회할 정보가 담긴 VO
      * @throws Exception
      */
     @Override
@@ -104,7 +102,7 @@ public class EgovUnityLinkServiceImpl extends EgovAbstractServiceImpl
 
     /**
      * 통합링크관리를(을) 삭제한다.
-     * @param searchVO 조회할 정보가 담긴 VO
+     * @param unityLink 조회할 정보가 담긴 VO
      * @throws Exception
      */
     @Override

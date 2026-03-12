@@ -138,9 +138,14 @@
 						if (obj[i + 1] instanceof File) {
 							File file = (File) obj[i + 1];
 							// File이 존재하는 지 검사한다.
+
+							// 2026.02.28 KISA 취약점 조치 경로조작 방지 필터 적용
+							String safePath = EgovWebUtil.filePathBlackList(file.getPath());
+							File safeFile = new File(safePath);
+
 							out.write(fileNameBytes);
 							out.write(quotationBytes);
-							out.write(file.getAbsolutePath().getBytes("utf-8"));
+							out.write(safeFile.getAbsolutePath().getBytes("utf-8"));
 							out.write(quotationBytes);
 						} else {
 							// NullFile 인 경우
@@ -156,9 +161,18 @@
 						if (obj[i + 1] instanceof File) {
 							File file = (File) obj[i + 1];
 							// file에 있는 내용을 전송한다.
+
+							// 2026.02.28 KISA 취약점 조치 경로조작 방지 필터 적용
+							String safePath = EgovWebUtil.filePathBlackList(file.getPath());
+							File safeFile = new File(safePath);
+							// 파일 자원 검증
+							if (!safeFile.exists() || !safeFile.isFile() || !safeFile.canRead()) {
+								throw new IOException("Invalid file resource: " + safeFile.getPath());
+							}
+
 							BufferedInputStream is = null;
 							try {
-								is = new BufferedInputStream(new FileInputStream(file));
+								is = new BufferedInputStream(new FileInputStream(safeFile));
 								byte[] fileBuffer = new byte[1024 * 8]; // 8k
 								int len = -1;
 								while ((len = is.read(fileBuffer)) != -1) {
@@ -196,11 +210,20 @@
 	response.setContentType("text/html;charset=utf-8");
 	request.setCharacterEncoding("utf-8");
 
-	String sUri = request.getParameter("uri") == null ? "" : (String) request.getParameter("uri");
-	String sNum = request.getParameter("num") == null ? "" : (String) request.getParameter("num");
+	// [SSRF 수정] rawUri: URL 연산 전용 / sUri: 화면 출력(XSS 방어) 전용으로 분리
+	// clearXSSMinimum()은 '.'을 &#46;으로 변환하여 URL을 파괴하므로 URL 처리에 사용 불가.
+	// clearXSS()는 <, >, & 만 이스케이프하므로 URL 표시에 적합.
+	String rawUri = EgovWebUtil.removeCRLF(
+		request.getParameter("uri") == null ? "" : (String) request.getParameter("uri")
+	);
+	String sNum = EgovWebUtil.clearXSSMinimum(
+		request.getParameter("num") == null ? "" : (String) request.getParameter("num")
+	);
+	String sUri = EgovWebUtil.clearXSS(rawUri);
 
-	sUri = EgovWebUtil.clearXSSMinimum(sUri);
-	sNum = EgovWebUtil.clearXSSMinimum(sNum);
+	// [Private 화이트리스트] 접속을 허용할 내부 호스트명 또는 IP 목록.
+	// 운영 환경에 맞게 수정 필요. 예: "intranet.example.com", "192.168.1.10"
+	final String[] ALLOWED_HOSTS = { "허용할내부호스트명" };
 
 	String sMatcherFind = "";
 	int nLine = 0;
@@ -214,23 +237,51 @@
 
 	BufferedReader buffResInput = null;
 	BufferedReader buffResOld = null;
+	// checkStream: openStream() 제거로 인해 항상 null. finally에서 null-safe 처리됨.
+	InputStream checkStream = null;
+	InputStream urlInputStream = null;
+	InputStreamReader urlInputStreamReader = null;
+
 	try {
-
-		//URL 체크
-		sUri = EgovWebUtil.filePathBlackList(sUri);
-		URL urlCheck = new URL(sUri);
-		urlCheck.openStream();
-
+		// [SSRF 검증: Private - 화이트리스트 방식]
+		// 1. URL 파싱: 형식 오류 시 MalformedURLException → 하단 catch에서 처리
+		URL parsedUrl = new URL(rawUri);
+		// 2. 스키마 검증: http/https 외 file://, ftp:// 등 차단
+		String scheme = parsedUrl.getProtocol();
+		if (!"http".equals(scheme) && !"https".equals(scheme)) {
+			throw new MalformedURLException("허용되지 않는 URL 스키마입니다.");
+		}
+		// 3. 화이트리스트 검증: ALLOWED_HOSTS에 등록된 내부 호스트만 허용.
+		//    등록되지 않은 내부 URL과 외부 공인 URL 모두 차단.
+		String host = parsedUrl.getHost();
+		boolean allowed = false;
+		for (String h : ALLOWED_HOSTS) {
+			if (h.equalsIgnoreCase(host)) { allowed = true; break; }
+		}
+		if (!allowed) {
+			throw new UnknownHostException("허용되지 않는 호스트입니다: " + host);
+		}
+		// 4. DNS Rebinding 방어: 화이트리스트를 통과해도 DNS 조작으로 외부 IP를 가리킬 수 있으므로
+		//    InetAddress.getByName()으로 실제 해석된 IP가 내부 주소인지 재확인.
+		InetAddress addr = InetAddress.getByName(host);
+		if (!addr.isSiteLocalAddress() && !addr.isLoopbackAddress() && !addr.isLinkLocalAddress()) {
+			throw new UnknownHostException("화이트리스트 호스트가 내부 주소로 해석되지 않습니다.");
+		}
+		// 5. 검증 완료: openStream()을 제거하고 URLConnection으로만 내부 HTML 수집.
+		//    openStream()은 접근 가능 여부 확인 목적이었으나 SSRF 원인이므로 제거.
+		URL urlCheck = new URL(rawUri);
 		URLConnection urlConn = urlCheck.openConnection();
 		urlConn.setRequestProperty("Cookie", "JSESSIONID=" + session.getId());
 
-		buffResOld = new BufferedReader(new InputStreamReader(urlConn.getInputStream(), "utf-8"));
+		urlInputStream = urlConn.getInputStream();
+		urlInputStreamReader = new InputStreamReader(urlInputStream, "utf-8");
+		buffResOld = new BufferedReader(urlInputStreamReader);
 		while ((str = buffResOld.readLine()) != null) {
 			strBufInputHtml.append(str + "\r\n");
-			//out.println(str);
 		}
 
-		HttpRequestor requestor = new HttpRequestor(new URL("http://validator.w3.org/check"));
+		// validator 호출: http → https로 통일
+		HttpRequestor requestor = new HttpRequestor(new URL("https://validator.w3.org/check"));
 		requestor.addParameterBuf("fragment", (StringBuffer) strBufInputHtml);
 		requestor.addParameter("direct_prefill_no", "0");
 		requestor.addParameter("direct-doctype", "Inline");
@@ -331,7 +382,7 @@
 	} catch (Exception ex) {
 		throw new RuntimeException(ex);
 	} finally {
-		EgovResourceCloseHelper.close(buffResInput, buffResOld);
+		EgovResourceCloseHelper.close(checkStream, urlInputStream, urlInputStreamReader,buffResOld); // ← checkStream, urlInputStream, urlInputStreamReader 추가
 	}
 %>
 

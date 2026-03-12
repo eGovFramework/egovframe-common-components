@@ -3,7 +3,7 @@ package egovframework.com.utl.sys.nsm.service;
 /**
  * 개요
  * - 네트워크서비스 모니터링에 대한 결과 클래스를 정의한다.
- * 
+ *
  * 상세내용
  * - 모니터링 정상여부, 원인 Exception 항목을 관리한다.
  * @author 장철호
@@ -21,7 +21,7 @@ public class NtwrkSvcMntrngResult {
 	 * 원인 Exception
 	 */
 	private Throwable cause;
-	
+
 	public boolean isNrmltAt() {
 		return nrmltAt;
 	}
@@ -39,5 +39,5 @@ public class NtwrkSvcMntrngResult {
 		this.nrmltAt = nrmltAt;
 		this.cause = cause;
 	}
-	
+
 }

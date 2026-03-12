@@ -19,7 +19,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comUssOlpQqm.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -29,10 +28,21 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
-<script type="text/javascript" src="<c:url value='/validator.do'/>"></script>
-<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialog.js'/>" ></script>
-<validator:javascript formName="qustnrQestnManageVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/EgovValidation.js'/>" ></script>
+<script src="<c:url value='/js/egovframework/com/cmm/jquery-1.12.4.min.js'/>"></script>  <!-- jQuery core -->
+<script src="<c:url value='/js/egovframework/com/cmm/jquery-ui_1.12.1.js'/>"></script>  <!-- jQuery UI -->
+<link rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jquery-ui_1.12.1.css'/>">
+<c:url var="resistUrl" value='/uss/olp/qqm/EgovQustnrQestnManageRegist.do' />
 <script type="text/javaScript" language="javascript">
+/* ********************************************************
+ * 모달창 설정
+ ******************************************************** */
+const QUSTNR_POPUP_CONFIG = {
+	    manage: {
+	        title: "설문 관리 목록",
+	        baseUrl: "<c:url value='/uss/olp/qmc/EgovQustnrManageListPopup.do' />"
+	    }
+	};
 /* ********************************************************
  * 초기화
  ******************************************************** */
@@ -71,6 +81,9 @@ function fn_egov_save_QustnrQestnManage(form){
 				document.getElementById("qestnrId").value == ""
 						){
 					alert("<spring:message code='comUssOlpQqm.regist.qestnrCn'/><spring:message code='comUssOlpQqm.alert.input'/>"); //설문지정보(제목)를  입력해주세요!
+					console.log("qestnrCn: "+ $("#qestnrCn").val());
+					console.log("qestnrTmplatId: "+ $("#qestnrTmplatId").val());
+					console.log("qestnrId: "+ $("#qestnrId").val());
 					//form.getElementById("qestnrCn").focus();
 					return;
 		} 		
@@ -85,13 +98,6 @@ function fn_egov_save_QustnrQestnManage(form){
 		}
 	}
 }
-/* ********************************************************
- * 설문지정보 팝업창열기
- ******************************************************** */
- function fn_egov_QustnrManageListPopup_QustnrQestnManage(){
-
- 	window.showModalDialog("<c:url value='/uss/olp/qmc/EgovQustnrManageListPopup.do' />", self,"dialogWidth:800px;dialogHeight:500px;resizable:yes;center:yes"); 
- }
 </script>
 
 </head>
@@ -100,7 +106,7 @@ function fn_egov_save_QustnrQestnManage(form){
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form modelAttribute="qustnrQestnManageVO" id="qustnrQestnManageVO" action="<c:url value='/uss/olp/qqm/EgovQustnrQestnManageRegist.do' />" method="post" enctype="multipart/form-data" onSubmit="fn_egov_save_QustnrQestnManage(document.forms[0]); return false;">
+<form:form modelAttribute="qustnrQestnManageVO" id="qustnrQestnManageVO" action="${pageContext.request.contextPath}/uss/olp/qqm/EgovQustnrQestnManageRegist.do" method="post" enctype="multipart/form-data" onSubmit="fn_egov_save_QustnrQestnManage(document.forms[0]); return false;">
  
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -121,13 +127,15 @@ function fn_egov_save_QustnrQestnManage(form){
 		<tr>
 			<th><label for="qestnrCn">${title}<span class="pilsu">*</span></label></th>
 			<td class="left">
-  				<input name="qestnrCn" id="qestnrCn" title="<spring:message code='comUssOlpQqm.regist.qestnrCn'/><spring:message code='input.input'/>" type="text" size="73" value="${qestnrInfo.qestnrSj}" maxlength="2000" style="width:300px;" disabled="disabled"><!-- title="설문지정보(제목) 입력" -->
-      			<a href="#LINK" onClick="fn_egov_QustnrManageListPopup_QustnrQestnManage()">
+  				<input name="qestnrCn" id="qestnrCn" title="<spring:message code='comUssOlpQqm.regist.qestnrCn'/><spring:message code='input.input'/>" type="text" size="73" value="${qestnrInfo.qestnrSj}" maxlength="2000" style="width:300px;" readonly="readonly"><!-- title="설문지정보(제목) 입력" -->
+      			<a href="#" onclick="openQustnrModal('manage');">
       			<img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>" align="middle" style="border:0px" alt="<spring:message code='comUssOlpQqm.regist.qestnrCn'/>" title="<spring:message code='comUssOlpQqm.regist.qestnrCn'/>"><!-- alt="설문지정보(제목)" title="설문지정보(제목)" -->
       			</a>
+      			<div><form:errors path="qestnrTmplatId"/></div>
      			<input name="qestnrTmplatId" id="qestnrTmplatId" type="hidden" value="${qustnrQestnManageVO.qestnrTmplatId}">
       			<input name="qestnrId" id="qestnrId" type="hidden" value="${qustnrQestnManageVO.qestnrId}">
       			<input name="searchMode" id="searchMode" type="hidden" value="${qustnrQestnManageVO.searchMode}">
+      			
 			</td>
 		</tr>
 		<!-- 질문순번 -->
@@ -150,6 +158,7 @@ function fn_egov_save_QustnrQestnManage(form){
 				<option value="${comCodeList.code}">${comCodeList.codeNm}</option>
 				</c:forEach>
 				</select>
+				<div><form:errors path="qestnTyCode"/></div>
 			</td>
 		</tr>
 		<!-- 질문내용 -->
@@ -178,6 +187,7 @@ function fn_egov_save_QustnrQestnManage(form){
 		       	<option value="9">9</option>
 		       	<option value="10">10</option>
 		      	</select>
+		      	<div><form:errors path="mxmmChoiseCo"/></div>
 			</td>
 		</tr>
 		
@@ -198,9 +208,59 @@ function fn_egov_save_QustnrQestnManage(form){
 <input name="cmd" type="hidden" value="<c:out value='save'/>">
 <!-- 추가한 input hidden -->
 <%-- <input type="hidden" id="qestnTyCode" value="${cmmCode018.code}"> --%>
-</form>
+</form:form>
 
+<!-- 모달 컨테이너  -->
+<div id="qestnrModal" title="설문 항목 선택" style="display:none;">
+    <iframe id="qestnrModalFrame"
+            src=""
+            style="width:100%; height:100%; border:0;">
+    </iframe>
+</div>
+<script>
+/*jquery + iframe 모달*/
+$(document).ready(function() {
+    $("#qestnrModal").dialog({
+        autoOpen: false,
+        modal: true,
+        width: 800,
+        height: 600,
+        resizable: false,
+        close: function() {
+            $("#qestnrModalFrame").attr("src", "about:blank"); // 메모리 정리
+        }
+    });
+});
 
+//모달 열기 함수 레거시 url 사용
+function openQustnrModal(type) {
+  const config = QUSTNR_POPUP_CONFIG[type];
+  if (!config) {
+      console.error("알 수 없는 팝업 타입:", type);
+      return;
+  }
+
+  let url = config.baseUrl;
+
+  if (config.searchCondition && config.getKeyword) {
+      const keyword = config.getKeyword();
+
+      if (!keyword) {
+          console.log("url 필수 값이 없습니다.");
+          return;
+      }
+
+      url +=
+          "?searchCondition=" + encodeURIComponent(config.searchCondition) +
+          "&searchKeyword=" + encodeURIComponent(keyword);
+  }
+
+  $("#qestnrModal").dialog("option", "title", config.title);
+  $("#qestnrModalFrame").attr("src", url);
+  $("#qestnrModal").dialog("open");
+}
+
+</script>
 
 </body>
 </html>

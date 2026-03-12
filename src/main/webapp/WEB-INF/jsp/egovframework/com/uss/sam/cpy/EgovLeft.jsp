@@ -14,7 +14,6 @@
 --%>
 
 <%@ page contentType="text/html; charset=utf-8"%>
-<%@ page import="javax.servlet.http.HttpSession" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>

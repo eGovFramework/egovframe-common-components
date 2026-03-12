@@ -25,7 +25,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comCopSymEms.regist.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -35,8 +34,7 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="sndngMailVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 /* ********************************************************
  * 등록 처리 함수
@@ -74,7 +72,7 @@ function fnInit(){
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.create" /></h2>
-	<form:form name="sndngMailVO" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/cop/ems/insertSndngMail.do" onSubmit="fn_egov_regist_sndngMail(document.forms[0]); return false;"> 
+	<form:form modelAttribute="sndngMailVO" name="sndngMailVO" method="post" enctype="multipart/form-data" action="${pageContext.request.contextPath}/cop/ems/insertSndngMail.do" onSubmit="fn_egov_regist_sndngMail(document.forms[0]); return false;"> 
 	<input type="hidden" name="posblAtchFileNumber" value="1" />	<!-- 파일첨부 개수 -->
 	<input type="hidden" name="link" value="<c:out value='${resultInfo.link}'/>" />
 	<input type="hidden" name="closeYn" value="${closeYn}" />
@@ -94,7 +92,7 @@ function fnInit(){
 		<tr>
 			<th>${title} <span class="pilsu">*</span></th>
 			<td class="left">
-			     <input name="recptnPerson" id="recptnPerson" type="text" size="74" value="<c:out value='${resultInfo.recptnPerson}'/>"  maxlength="60" style="ime-mode: disabled;" tabindex="1" title="<c:out value='${title}'/> <c:out value='${inputTxt}'/>" />
+	     <form:input path="recptnPerson" id="recptnPerson" type="text" size="74" maxlength="60" style="ime-mode: disabled;" tabindex="1" title="${title} ${inputTxt}" />
 			     <div><form:errors path="recptnPerson" cssClass="error" /></div>
 			</td>
 		</tr>
@@ -103,7 +101,7 @@ function fnInit(){
 		<tr>
 			<th>${title} <span class="pilsu">*</span></th>
 			<td class="nopd">
-				<input name="sj" id="sj" type="text" size="74" value="<c:out value='${resultInfo.sj}'/>"  maxlength="250" tabindex="2" title="<c:out value='${title}'/> <c:out value='${inputTxt}'/>" />
+				<form:input path="sj" id="sj" type="text" size="74" maxlength="250" tabindex="2" title="${title} ${inputTxt}" />
 				<div><form:errors path="sj" cssClass="error" /></div>
 			</td>
 		</tr>
@@ -129,7 +127,8 @@ function fnInit(){
 		<tr>
 			<th>${title} </th>
 			<td class="nopd">
-				<textarea id="emailCn" name="emailCn" cols="75" rows="25" tabindex="4" title="${title} ${inputTxt}" /></textarea>
+				<form:textarea path="emailCn" id="emailCn" cols="75" rows="25" tabindex="4" title="${title} ${inputTxt}" />
+				<div><form:errors path="emailCn" cssClass="error" /></div>
 			</td>
 		</tr>
 	</tbody>

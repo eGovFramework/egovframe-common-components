@@ -2,8 +2,6 @@ package egovframework.com.uss.olh.hpc.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
@@ -12,6 +10,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.uss.olh.hpc.service.EgovHpcmService;
 import egovframework.com.uss.olh.hpc.service.HpcmDefaultVO;
 import egovframework.com.uss.olh.hpc.service.HpcmVO;
+import jakarta.annotation.Resource;
 
 @Service("EgovHpcmService")
 public class EgovHpcmServiceImpl extends EgovAbstractServiceImpl implements EgovHpcmService {
@@ -22,7 +21,7 @@ public class EgovHpcmServiceImpl extends EgovAbstractServiceImpl implements Egov
     /** ID Generation */
 	@Resource(name="egovHpcmManageIdGnrService")
 	private EgovIdGnrService idgenService;
-	
+
 	@Override
 	public List<HpcmVO> selectHpcmList(HpcmDefaultVO searchVO) {
 		return egovHpcmDao.selectHpcmList(searchVO);
@@ -36,8 +35,9 @@ public class EgovHpcmServiceImpl extends EgovAbstractServiceImpl implements Egov
 	@Override
 	public HpcmVO selectHpcmDetail(HpcmVO hpcmManageVO) throws Exception {
 		HpcmVO resultVO = egovHpcmDao.selectHpcmDetail(hpcmManageVO);
-        if (resultVO == null)
-            throw processException("info.nodata.msg");
+        if (resultVO == null) {
+			throw processException("info.nodata.msg");
+		}
         return resultVO;
 	}
 

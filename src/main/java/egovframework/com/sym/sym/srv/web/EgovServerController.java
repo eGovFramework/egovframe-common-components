@@ -1,12 +1,8 @@
 package egovframework.com.sym.sym.srv.web;
-
 import java.util.List;
-
-import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -14,8 +10,8 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -31,6 +27,8 @@ import egovframework.com.sym.sym.srv.service.ServerEqpmnRelateVO;
 import egovframework.com.sym.sym.srv.service.ServerEqpmnVO;
 import egovframework.com.sym.sym.srv.service.ServerVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * <pre>
@@ -74,9 +72,6 @@ public class EgovServerController {
 	/** ID Generation */
 	@Resource(name = "egovServerIdGnrService")
 	private EgovIdGnrService egovServerIdGnrService;
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	@Resource(name = "EgovCmmUseService")
 	private EgovCmmUseService egovCmmUseService;
@@ -168,10 +163,8 @@ public class EgovServerController {
 	 */
 	@RequestMapping(value = "/sym/sym/srv/addServerEqpmn.do")
 	public String insertServerEqpmn(@ModelAttribute("serverEqpmnVO") ServerEqpmnVO serverEqpmnVO,
-			@ModelAttribute("serverEqpmn") ServerEqpmn serverEqpmn, BindingResult bindingResult, ModelMap model)
+			@Valid @ModelAttribute("serverEqpmn") ServerEqpmn serverEqpmn, BindingResult bindingResult, ModelMap model)
 			throws Exception {
-
-		beanValidator.validate(serverEqpmn, bindingResult); // validation 수행
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("serverEqpmnVO", serverEqpmnVO);
@@ -212,18 +205,16 @@ public class EgovServerController {
 	 * @param serverEqpmn
 	 */
 	@RequestMapping(value = "/sym/sym/srv/updtServerEqpmn.do")
-	public String updateServerEqpmn(@ModelAttribute("serverEqpmn") ServerEqpmn serverEqpmn, BindingResult bindingResult,
+	public String updateServerEqpmn(@ModelAttribute("serverEqpmnVO") ServerEqpmnVO serverEqpmnVO,
+			@Valid @ModelAttribute("serverEqpmn") ServerEqpmn serverEqpmn, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {
 
-		beanValidator.validate(serverEqpmn, bindingResult); // validation 수행
-
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("serverEqpmnVO", serverEqpmn);
 			return "egovframework/com/sym/sym/srv/EgovServerEqpmnUpdt";
 		} else {
 			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-			serverEqpmn.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
-			egovServerService.updateServerEqpmn(serverEqpmn);
+			serverEqpmnVO.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
+			egovServerService.updateServerEqpmn(serverEqpmnVO);
 			status.setComplete();
 			model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
 			return "forward:/sym/sym/srv/getServerEqpmn.do";
@@ -232,7 +223,7 @@ public class EgovServerController {
 
 	/**
 	 * 기 등록된 서버장비정보를 삭제한다.
-	 * 
+	 *
 	 * @param serverEqpmn - 서버장비 model
 	 * @return String - 리턴 Url
 	 *
@@ -245,6 +236,19 @@ public class EgovServerController {
 		egovServerService.deleteServerEqpmn(serverEqpmn);
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		return "forward:/sym/sym/srv/selectServerEqpmnList.do";
+	}
+
+	/**
+	 * 서버장비를 참조하는 서버S/W 목록을 조회한다. (Ajax 용)
+	 *
+	 * @param serverEqpmnId - 서버장비 ID
+	 * @return List - 서버 목록
+	 */
+	@RequestMapping(value = "/sym/sym/srv/checkServerEqpmnRelations.do")
+	@ResponseBody
+	public List<ServerVO> checkServerEqpmnRelations(@RequestParam("serverEqpmnId") String serverEqpmnId)
+			throws Exception {
+		return egovServerService.selectRelatedServersByEqpmnId(serverEqpmnId);
 	}
 
 	/**
@@ -336,13 +340,12 @@ public class EgovServerController {
 	 * @param server
 	 */
 	@RequestMapping(value = "/sym/sym/srv/addServer.do")
-	public String insertServer(@ModelAttribute("serverVO") ServerVO serverVO, @ModelAttribute("server") Server server,
-			BindingResult bindingResult, ModelMap model) throws Exception {
-
-		beanValidator.validate(server, bindingResult); // validation 수행
+	public String insertServer(@ModelAttribute("serverVO") ServerVO serverVO,
+			@Valid @ModelAttribute("server") Server server, BindingResult bindingResult,
+			ModelMap model) throws Exception {
 
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("serverVO", serverVO);
+			model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(), "COM064"));
 			return "egovframework/com/sym/sym/srv/EgovServerRegist";
 		} else {
 			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -381,13 +384,12 @@ public class EgovServerController {
 	 * @param server
 	 */
 	@RequestMapping(value = "/sym/sym/srv/updtServer.do")
-	public String updateServer(@ModelAttribute("server") Server server, BindingResult bindingResult,
+	public String updateServer(@ModelAttribute("serverVO") ServerVO serverVO,
+			@Valid @ModelAttribute("server") Server server, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {
 
-		beanValidator.validate(server, bindingResult); // validation 수행
-
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("serverVO", server);
+			model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(), "COM064"));
 			return "egovframework/com/sym/sym/srv/EgovServerUpdt";
 		} else {
 			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();

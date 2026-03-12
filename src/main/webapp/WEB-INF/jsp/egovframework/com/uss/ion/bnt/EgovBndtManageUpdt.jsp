@@ -25,7 +25,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -33,41 +32,34 @@
 <title><spring:message code="comUssIonBnt.bndtManageUpdt.title"/></title><!-- 당직  수정 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="bndtManage" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
-	
-	/* ********************************************************
-	 * 목록 으로 가기
-	 ******************************************************** */
-	function fncBndtManageList(){
-		location.href = "<c:url value='/uss/ion/bnt/EgovBndtManageList.do'/>";
-	}
-
-	/* ********************************************************
-	* 저장처리화면
-	******************************************************** */
-	function fncUpdtBndtManage() {
-	    var varFrom = document.getElementById("bndtManage");
-	    varFrom.action = "<c:url value='/uss/ion/bnt/updtBndtManage.do'/>";
-	
-	    if(confirm("<spring:message code="common.save.msg" />")){/* 저장 하시겠습니까? */
-		    if(!validateBndtManage(varFrom)){           
-		        return;
-		    }else{
-		        varFrom.submit();
-		    } 
-	    }
-	}
-
-	<c:if test="${!empty errorMessage}">alert("${errorMessage}");</c:if>
+/* ********************************************************
+ * 목록 으로 가기
+ ******************************************************** */
+function fncBndtManageList(){
+	location.href = "<c:url value='/uss/ion/bnt/EgovBndtManageList.do'/>";
+}
+/* ********************************************************
+* 저장처리화면
+******************************************************** */
+function fncUpdtBndtManage() {
+    var varFrom = document.getElementById("bndtManageVO");
+    if(!validateBndtManage(varFrom)){           
+        return;
+    }
+    if(confirm("<spring:message code="common.save.msg" />")){/* 저장 하시겠습니까? */
+        varFrom.submit();
+    }
+}
+<c:if test="${!empty errorMessage}">alert("${errorMessage}");</c:if>
 </script>
 </head>
 
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
-<form:form modelAttribute="bndtManage" name="bndtManage" method="post" >
+<form:form modelAttribute="bndtManageVO" name="bndtManageVO" method="post" action="${pageContext.request.contextPath}/uss/ion/bnt/updtBndtManage.do">
 <form:hidden  path="bndtId" />
 <form:hidden  path="bndtDe" />
 
@@ -78,8 +70,8 @@
 	<!-- 등록폼 -->
 	<table class="wTable">
 		<colgroup>
-			<col style="width:16%" />
-			<col style="" />
+			<col style="width:20%" />
+			<col style="width:80%" />
 		</colgroup>
 		<tr>
 			<th><spring:message code="comUssIonBnt.common.bndtIdName"/> <span class="pilsu">*</span></th><!-- 당직자명 -->
@@ -100,10 +92,10 @@
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="comUssIonBnt.common.remark"/></th><!-- 비고 -->
+			<th><label for="remark"><spring:message code="comUssIonBnt.common.remark"/></label></th><!-- 비고 -->
 			<td class="left">
 			    <form:textarea path="remark" rows="4" cols="70" cssClass="txaClass" title="<spring:message code='comUssIonBnt.common.remark'/>" /><!-- 비고 -->
-      			<form:errors path="remark"/>
+      			<div><form:errors path="remark" cssClass="error"/></div>
 			</td>
 		</tr>
 	</table>

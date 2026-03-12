@@ -1,12 +1,8 @@
 package egovframework.com.sym.sym.nwk.web;
-
 import java.util.List;
-
-import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -15,7 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -28,6 +23,8 @@ import egovframework.com.sym.sym.nwk.service.EgovNtwrkService;
 import egovframework.com.sym.sym.nwk.service.Ntwrk;
 import egovframework.com.sym.sym.nwk.service.NtwrkVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * <pre>
@@ -67,9 +64,6 @@ public class EgovNtwrkController {
 	/** Message ID Generation */
 	@Resource(name = "egovNtwrkIdGnrService")
 	private EgovIdGnrService egovNtwrkIdGnrService;
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	@Resource(name = "EgovCmmUseService")
 	private EgovCmmUseService egovCmmUseService;
@@ -166,13 +160,12 @@ public class EgovNtwrkController {
 	 * @param ntwrk
 	 */
 	@RequestMapping(value = "/sym/sym/nwk/addNtwrk.do")
-	public String insertNtwrk(@ModelAttribute("ntwrkVO") NtwrkVO ntwrkVO, @ModelAttribute("ntwrk") Ntwrk ntwrk,
+	public String insertNtwrk(@ModelAttribute("ntwrkVO") NtwrkVO ntwrkVO, @Valid @ModelAttribute("ntwrk") Ntwrk ntwrk,
 			BindingResult bindingResult, ModelMap model) throws Exception {
-
-		beanValidator.validate(ntwrk, bindingResult); // validation 수행
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("ntwrkVO", ntwrkVO);
+			model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(), "COM067"));
 			return "egovframework/com/sym/sym/nwk/EgovNtwrkRegist";
 		} else {
 			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -205,20 +198,18 @@ public class EgovNtwrkController {
 
 	/**
 	 * 기 등록된 네트워크정보를 수정한다.
-	 * 
+	 *
 	 * @param ntwrk - 네트워크 model
 	 * @return String - 리턴 Url
 	 *
 	 * @param ntwrk
 	 */
 	@RequestMapping(value = "/sym/sym/nwk/updtNtwrk.do")
-	public String updateNtwrk(@ModelAttribute("ntwrk") Ntwrk ntwrk, BindingResult bindingResult, SessionStatus status,
+	public String updateNtwrk(@ModelAttribute("ntwrkVO") NtwrkVO ntwrkVO, @Valid @ModelAttribute("ntwrk") Ntwrk ntwrk, BindingResult bindingResult, SessionStatus status,
 			ModelMap model) throws Exception {
 
-		beanValidator.validate(ntwrk, bindingResult); // validation 수행
-
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("ntwrkVO", ntwrk);
+			model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(), "COM067"));
 			return "egovframework/com/sym/sym/nwk/EgovNtwrkUpdt";
 		} else {
 			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();

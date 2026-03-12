@@ -24,7 +24,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 	<head>
@@ -35,9 +34,7 @@
 		<link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 		<script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 		<script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
-		<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-		<validator:javascript formName="mapMaterial" staticJavascript="false" xhtml="true" cdata="false"/>
-		
+		<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 		<script type="text/javaScript" language="javascript">
 		<!--
 		function initCalendar(){
@@ -77,20 +74,16 @@
 		function fn_egov_modify_MapMaterial(form){
 		
 			var ls_clYmd = mapMaterial.clYmd.value;
-		
-			/*if (mapMaterial.clYmd.value !="")	{
-				ls_clYmd = ls_clYmd.replace(/-/gi,"");
-				mapMaterial.clYmd.value = ls_clYmd;
-			}*/
 			
 			if(confirm("<spring:message code="common.save.msg" />")){
 				if(!validateMapMaterial(form)){ 			
 					return;
 				}else{
 					if (mapMaterial.clYmd.value !="")	{
-					ls_clYmd = ls_clYmd.replace(/-/gi,"");;
-					mapMaterial.clYmd.value = ls_clYmd;
-					}					
+						ls_clYmd = ls_clYmd.replace(/-/gi,"");;
+						mapMaterial.clYmd.value = ls_clYmd;
+					}
+					form.action = "<c:url value='/dam/map/mat/EgovComDamMapMaterialModify.do'/>",
 					form.submit();
 				}
 			}
@@ -103,9 +96,13 @@
 	<body onLoad="fn_egov_initl_MapMaterial();">
 	
 	<form:form modelAttribute="mapMaterial" name="mapMaterial" method="post">
-			<input name="cmd" type="hidden" value="Modify">
 			<form:hidden path="orgnztId"/>
+			<form:hidden path="orgnztNm"/>
 			<form:hidden path="knoTypeCd"/>
+			<!-- 검색조건 유지 -->
+			<input type="hidden" name="searchCondition" value="<c:out value='${searchVO.searchCondition}'/>"/>
+			<input type="hidden" name="searchKeyword" value="<c:out value='${searchVO.searchKeyword}'/>"/>
+			<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}' default='1'/>"/>
 	
 	
 		<div class="wTableFrm">
@@ -139,14 +136,14 @@
 				<tr>
 					<th><spring:message code="comDamMapMat.comDamMapMaterialModify.knoTypeNm"/> <span class="pilsu">*</span></th><!-- 지식유형명 -->
 					<td class="left">
-					    <form:input  path="knoTypeNm" title="<spring:message code='comDamMapMat.comDamMapMaterialModify.knoTypeNm'/>" size="60" maxlength="20"/>
+					    <form:input  path="knoTypeNm" title="<spring:message code='comDamMapMat.comDamMapMaterialModify.knoTypeNm'/>" size="60" maxlength="60"/>
 						<form:errors path="knoTypeNm"/>
 					</td>
 				</tr>
 				<tr>
 					<th><spring:message code="comDamMapMat.comDamMapMaterialModify.knoUrl"/> <span class="pilsu">*</span></th><!-- 지식URL -->
 					<td class="left">
-					    <form:input  path="knoUrl" title="<spring:message code='comDamMapMat.comDamMapMaterialModify.knoUrl'/>" size="60" maxlength="100"/>
+					    <form:input  path="knoUrl" title="<spring:message code='comDamMapMat.comDamMapMaterialModify.knoUrl'/>" size="60" maxlength="255"/>
 						<form:errors path="knoUrl"/>
 					</td>
 				</tr>

@@ -1,8 +1,12 @@
 package egovframework.com.uss.ion.rss.service;
 
-import java.io.Serializable;
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
 
 import egovframework.com.cmm.ComDefaultVO;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 /**
  * RSS태그관리 Model and VO Class 구현
@@ -18,49 +22,74 @@ import egovframework.com.cmm.ComDefaultVO;
  * 
  * </pre>
  */
-@SuppressWarnings("serial")
-public class RssManage extends ComDefaultVO implements Serializable{
-    	
+public class RssManage extends ComDefaultVO {
+
+	private static final long serialVersionUID = 1L;
+
 	/** RSS태그관리 아이디 */
 	private String rssId;
 	
 	/** 대상서비스명 */
+	@EgovNullCheck
+	@Size(max=255)
 	private String trgetSvcNm;
 	
 	/** 대상테이블명 */
+	@EgovNullCheck
+	@Size(max=255)
+	@Pattern(regexp="^[a-zA-Z0-9_]*$", message="{validation.pattern.english}")
 	private String trgetSvcTable;
 	
 	/** 대상서비스목록개수 */
+	@EgovNullCheck
+	@Min(1)
+	@Max(99999) // maxlength=5 (5자리 숫자 최대값)
 	private int trgetSvcListCo;
 	
 	/** 헤더 TITLE */
+	@EgovNullCheck
+	@Size(max=255)
 	private String hderTitle;
 	
 	/** 헤더	LINK */
+	@EgovNullCheck
+	@Size(max=255)
 	private String hderLink;
 	
 	/** 헤더 DESCRIPTION */
+	@EgovNullCheck
+	@Size(max=4000)
 	private String hderDescription;
 	
 	/** 헤더 TAG */
+	@Size(max=255)
 	private String hderTag;
 	
 	/** 헤더 ETC */
+	@Size(max=255)
 	private String hderEtc;
 	
 	/** 본문 TITLE */
+	@EgovNullCheck
+	@Size(max=255)
 	private String bdtTitle;
 	
 	/** 본문 LINK */
+	@EgovNullCheck
+	@Size(max=255)
 	private String bdtLink;
 	
 	/** 본문 DESCRIPTION */
+	@EgovNullCheck
+	@Size(max=4000)
 	private String bdtDescription;
 	
 	/** 본문 TAG */
+	@Size(max=255)
 	private String bdtTag;
 	
 	/** 본문 ETC */
+	@Size(max=255)
 	private String bdtEtc;
 	
     /** 최초등록시점 */

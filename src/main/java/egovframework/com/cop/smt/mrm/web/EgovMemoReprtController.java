@@ -3,11 +3,8 @@ package egovframework.com.cop.smt.mrm.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -16,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -31,6 +27,8 @@ import egovframework.com.cop.smt.mrm.service.MemoReprt;
 import egovframework.com.cop.smt.mrm.service.MemoReprtVO;
 import egovframework.com.cop.smt.mrm.service.ReportrVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * <pre>
@@ -72,11 +70,8 @@ public class EgovMemoReprtController {
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
 
-	@Autowired
-	private DefaultBeanValidator beanValidator;
-
-	// 첨부파일 관련
-	@Resource(name = "EgovFileMngService")
+    // 첨부파일 관련
+	@Resource(name="EgovFileMngService")
 	private EgovFileMngService fileMngService;
 
 	@Resource(name = "EgovFileMngUtil")
@@ -228,7 +223,7 @@ public class EgovMemoReprtController {
 	 * @param model
 	 */
 	@RequestMapping("/cop/smt/mrm/addMemoReprt.do")
-	public String addMemoReprt(@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, BindingResult bindingResult,
+	public String addMemoReprt(@Valid @ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 		String sLocationUrl = "egovframework/com/cop/smt/mrm/EgovMemoReprtRegist";
 
@@ -269,7 +264,7 @@ public class EgovMemoReprtController {
 	 * @param model
 	 */
 	@RequestMapping("/cop/smt/mrm/modifyMemoReprt.do")
-	public String modifyMemoReprt(@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, BindingResult bindingResult,
+	public String modifyMemoReprt(@Valid @ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -307,12 +302,11 @@ public class EgovMemoReprtController {
 	 */
 	@RequestMapping("/cop/smt/mrm/updateMemoReprt.do")
 	public String updateMemoReprt(final MultipartHttpServletRequest multiRequest, @RequestParam Map<?, ?> commandMap,
-			@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, BindingResult bindingResult, ModelMap model)
+			@Valid @ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, BindingResult bindingResult, ModelMap model)
 			throws Exception {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-		beanValidator.validate(memoReprtVO, bindingResult);
 		if (bindingResult.hasErrors()) {
 			MemoReprt memoReprt = memoReprtService.selectMemoReprt(memoReprtVO);
 			model.addAttribute("memoReprt", memoReprt);
@@ -388,7 +382,7 @@ public class EgovMemoReprtController {
 	 */
 	@RequestMapping("/cop/smt/mrm/insertMemoReprt.do")
 	public String insertMemoReprt(final MultipartHttpServletRequest multiRequest,
-			@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, BindingResult bindingResult, ModelMap model)
+			@Valid @ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, BindingResult bindingResult, ModelMap model)
 			throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -402,8 +396,6 @@ public class EgovMemoReprtController {
 
 		String sLocationUrl = "egovframework/com/cop/smt/mrm/EgovMemoReprtRegist";
 
-		// 서버 validate 체크
-		beanValidator.validate(memoReprtVO, bindingResult);
 		if (bindingResult.hasErrors()) {
 
 			// 파일업로드 제한

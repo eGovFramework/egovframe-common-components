@@ -1,12 +1,12 @@
 package egovframework.com.cop.bbs.service.impl;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Date;
 
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.fdl.string.EgovDateUtil;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
@@ -53,7 +53,7 @@ public class EgovArticleDAOTest_deleteArticle extends EgovTestV1 {
 		// insertArticle
 		Board board = new Board();
 
-		board.setNttId(egovNttIdGnrService.getNextIntegerId());
+		board.setNttId((long) egovNttIdGnrService.getNextIntegerId());
 		board.setBbsId(boardMaster.getBbsId());
 
 		String today = " " + EgovDateUtil.toString(new Date(), null, null);

@@ -2,7 +2,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ page session="false" %>
-<spring:eval expression="@customProperties.getProperty('facebook.appId')" var="appId"/>
 <%
 
 /**
@@ -37,7 +36,7 @@
 	
 		window.fbAsyncInit = function() {
 			
-			var appId = "<c:out value='${appId}' />";
+			var appId = "<c:out value='${facebookAppId}' />";
 			// https 페이지에서 호출하지 않을 시, accessToken과 userID 값은 임의로 설정이 필요하다.
 			// https://developers.facebook.com/에서 그래프 API 탐색기를 통해 값을 확인한 후 설정
 			var accessToken = "";
@@ -50,48 +49,50 @@
 				version : 'v17.0' // 버전은 그래프 API GET 옆에 나타나는 버전과 일치시켜야 한다.
 			});
 			
-			var callback = function(response) {
-				console.log(response);
-				accessToken = response.authResponse.accessToken;
-				userID = response.authResponse.userID;
-			}
-			
-			// 페이스북 로그인 여부 확인
-			FB.getLoginStatus(callback);
-			
-			FB.api(
-				  '/me/albums',
-				  'GET',
-				  {"fields":"id,name"},
-				  function(response) {
-					  
-					 var data = response.data;
-					 var html = "";
-					 
-						html += '<table class="wTable">';
-						html += '<colgroup><col style="width:25%"><col style="width:auto"></colgroup>';
-						html += '<tbody>';
-					 
-					 for (var i = 0; i < data.length; i++) { 
-						 html += '<tr>';
-						 html += '<td class="left" >';
-						 html += '<a href="<c:url value="/uss/ion/fbk/album/' + data[i].id + '"/>' + '">'; 
-						 html += '<button class="btn_01">';
-						 html += data[i].name;
-						 html += '</button>';
-						 html += '</a>';
-						 html += '</td>';
-						 html += '</tr>';
-					 }
-					 
-					 	html += '</tbody>';
-						html += '</table>';
+			// 페이스북 로그인 여부 확인 후 api진행
+			FB.getLoginStatus(function(response){
+				if(!response.authResponse || !response.authResponse.userID){
+					console.log(" 사용자의 로그인 또는 HTTPS 환경에서 접속해야 합니다.");
+					return;
+				}
 		
-						document.querySelector('#dv').innerHTML  = html;
-				  }, {access_token: accessToken}
+			var accessToken = response.authResponse.accessToken;
+			var userID = response.authResponse.userID;
+			
+				FB.api(
+					  '/me/albums',
+					  'GET',
+					  {"fields":"id,name"},
+					  function(response) {
+						  
+						 var data = response.data;
+						 var html = "";
+						 
+							html += '<table class="wTable">';
+							html += '<colgroup><col style="width:25%"><col style="width:auto"></colgroup>';
+							html += '<tbody>';
+						 
+						 for (var i = 0; i < data.length; i++) { 
+							 html += '<tr>';
+							 html += '<td class="left" >';
+							 html += '<a href="<c:url value="/uss/ion/fbk/album/' + data[i].id + '"/>' + '">'; 
+							 html += '<button class="btn_01">';
+							 html += data[i].name;
+							 html += '</button>';
+							 html += '</a>';
+							 html += '</td>';
+							 html += '</tr>';
+						 }
+						 
+						 	html += '</tbody>';
+							html += '</table>';
+			
+							document.querySelector('#dv').innerHTML  = html;
+					  }, {access_token: accessToken}
 				);
-			};
-		
+			});
+		};
+			
 		(function(d, s, id) {
 			var js, fjs = d.getElementsByTagName(s)[0];
 			if (d.getElementById(id)) {

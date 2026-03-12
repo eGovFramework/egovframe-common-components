@@ -1,12 +1,12 @@
 package egovframework.com.cop.com.service.impl;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.List;
 
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
@@ -170,8 +170,8 @@ public class EgovUserInfManageDAOTest extends EgovTestAbstractDAO {
     /**
      * 테스트 데이터 생성
      */
-    @Before
-    public void testData() {
+    @BeforeEach
+    void testData() {
         /*
          * 테스트 커뮤니티 생성
          */
@@ -247,7 +247,7 @@ public class EgovUserInfManageDAOTest extends EgovTestAbstractDAO {
      * 사용자 정보 assert
      */
     private void assertSelectUserList(final UserInfVO userInfVO, final UserInfVO result) {
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), userInfVO.getSearchWrd(), result.getUserNm());
+        assertEquals(userInfVO.getSearchWrd(), result.getUserNm(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     /**
@@ -275,7 +275,7 @@ public class EgovUserInfManageDAOTest extends EgovTestAbstractDAO {
         final int result = egovUserInfManageDAO.selectUserListCnt(userInfVO);
 
         // then
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     /**
@@ -341,7 +341,7 @@ public class EgovUserInfManageDAOTest extends EgovTestAbstractDAO {
         final int result = egovUserInfManageDAO.selectCmmntyUserListCnt(userInfVO);
 
         // then
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     /**
@@ -408,7 +408,7 @@ public class EgovUserInfManageDAOTest extends EgovTestAbstractDAO {
         final int result = egovUserInfManageDAO.selectCmmntyMngrListCnt(userInfVO);
 
         // then
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     /**

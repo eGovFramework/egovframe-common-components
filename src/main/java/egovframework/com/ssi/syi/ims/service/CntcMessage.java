@@ -2,6 +2,9 @@ package egovframework.com.ssi.syi.ims.service;
 
 import java.io.Serializable;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 연계메시지 모델 클래스
  * @author 공통서비스 개발팀 이중호
@@ -31,6 +34,8 @@ public class CntcMessage implements Serializable {
 	/*
 	 * 연계메시지명
 	 */
+	@EgovNullCheck
+	@Size(max=60)
 	private String cntcMessageNm      = "";
 
 	/*

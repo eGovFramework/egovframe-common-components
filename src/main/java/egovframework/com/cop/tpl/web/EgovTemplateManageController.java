@@ -3,11 +3,8 @@ package egovframework.com.cop.tpl.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -15,7 +12,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.LoginVO;
@@ -26,6 +22,8 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.tpl.service.EgovTemplateManageService;
 import egovframework.com.cop.tpl.service.TemplateInf;
 import egovframework.com.cop.tpl.service.TemplateInfVO;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * 템플릿 관리를 위한 컨트롤러 클래스
@@ -39,12 +37,11 @@ import egovframework.com.cop.tpl.service.TemplateInfVO;
  *
  *   수정일      수정자           수정내용
  *  -------        --------    ---------------------------
- *   2009. 3.18  이삼섭          최초 생성
- *   2011.8.26	정진오			IncludedInfo annotation 추가
+ *   2009.03.18  이삼섭          최초 생성
+ *   2011.08.26	 정진오			IncludedInfo annotation 추가
  *
  * </pre>
  */
-
 @Controller
 public class EgovTemplateManageController {
 
@@ -56,9 +53,6 @@ public class EgovTemplateManageController {
 
 	@Resource(name = "propertiesService")
 	protected EgovPropertyService propertyService;
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	//Logger log = Logger.getLogger(this.getClass());
 
@@ -132,13 +126,12 @@ public class EgovTemplateManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/cop/tpl/insertTemplateInf.do")
-	public String insertTemplateInf(@ModelAttribute("searchVO") TemplateInfVO searchVO, @ModelAttribute("templateInf") TemplateInf templateInf, BindingResult bindingResult,
+	public String insertTemplateInf(@ModelAttribute("searchVO") TemplateInfVO searchVO,
+			@Valid @ModelAttribute("templateInf") TemplateInf templateInf, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-
-		beanValidator.validate(templateInf, bindingResult);
 
 		if (bindingResult.hasErrors()) {
 			ComDefaultCodeVO vo = new ComDefaultCodeVO();
@@ -191,13 +184,12 @@ public class EgovTemplateManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/cop/tpl/updateTemplateInf.do")
-	public String updateTemplateInf(@ModelAttribute("searchVO") TemplateInfVO tmplatInfVO, @ModelAttribute("templateInf") TemplateInf templateInf, BindingResult bindingResult,
+	public String updateTemplateInf(@ModelAttribute("searchVO") TemplateInfVO tmplatInfVO,
+			@Valid @ModelAttribute("templateInf") TemplateInf templateInf, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-
-		beanValidator.validate(templateInf, bindingResult);
 
 		if (bindingResult.hasErrors()) {
 			ComDefaultCodeVO codeVO = new ComDefaultCodeVO();

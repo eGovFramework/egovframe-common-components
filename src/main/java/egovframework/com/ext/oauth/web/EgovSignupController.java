@@ -60,17 +60,17 @@ public class EgovSignupController {
 
 	@Autowired
 	private OAuthVO naverAuthVO;
-	
+
 	@Autowired
 	private OAuthVO googleAuthVO;
 
 	@Autowired
 	private OAuthVO kakaoAuthVO;
-	
+
 	@RequestMapping(value = "/uat/uia/oauthLoginUsr", method = RequestMethod.GET)
 	public String login(Model model) throws Exception {
 		LOGGER.debug("===>>> OAuth Login .....");
-		
+
 		OAuthLogin naverLogin = new OAuthLogin(naverAuthVO);
 		LOGGER.debug("naverLogin.getOAuthURL() = "+naverLogin.getOAuthURL());
 		model.addAttribute("naver_url", naverLogin.getOAuthURL());
@@ -88,17 +88,18 @@ public class EgovSignupController {
 
 	@RequestMapping(value = "/auth/{oauthService}/callback", method = { RequestMethod.GET, RequestMethod.POST })
 	public String oauthLoginCallback(@PathVariable String oauthService, Model model, @RequestParam String code) throws Exception {
-		
+
 		LOGGER.debug("oauthLoginCallback: service={}", oauthService);
 		LOGGER.debug("===>>> code = "+ code);
-		
+
 		OAuthVO oauthVO = null;
-		if (StringUtils.equals(OAuthConfig.GOOGLE_SERVICE_NAME, oauthService))
+		if (StringUtils.equals(OAuthConfig.GOOGLE_SERVICE_NAME, oauthService)) {
 			oauthVO = googleAuthVO;
-		else if (StringUtils.equals(OAuthConfig.NAVER_SERVICE_NAME, oauthService))
+		} else if (StringUtils.equals(OAuthConfig.NAVER_SERVICE_NAME, oauthService)) {
 			oauthVO = naverAuthVO;
-		else
+		} else {
 			oauthVO = kakaoAuthVO;
+		}
 
 		// 1. code를 이용해서 Access Token 받기
 		// 2. Access Token을 이용해서 사용자 제공정보 가져오기

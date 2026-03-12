@@ -4,7 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%
 /**
  * @Class Name : EgovSmsInfoRegist.jsp
@@ -31,9 +30,7 @@
 <title><spring:message code="cop.sms.textMassageRegist"/></title><!-- 문자메시지 등록 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="sms" staticJavascript="false" xhtml="true" cdata="false"/>
-
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <c:choose>
 <c:when test="${not empty msg}">
 <script type="text/javascript">
@@ -51,15 +48,16 @@ function loading() {
 </c:otherwise>
 </c:choose>
 
-<script type="text/javascript">	
+<script type="text/javascript">
 	function fn_egov_regist_sms() {
 		if (!validateSms(document.sms)){
 			return;
 		}
 
 		var checked = false;
-		for (var i = 0; i < document.sms.recptnTelno.length; i++) {
-			if (document.sms.recptnTelno[i].value != '') {
+		for (var i = 0; i < 5; i++) {
+			var telno = document.getElementById('recptnTelno' + i).value;
+			if (telno != null && telno.trim() != '') {
 				checked = true;
 				break;
 			}
@@ -67,15 +65,15 @@ function loading() {
 
 		if (!checked) {
 			alert('<spring:message code="cop.sms.recptnTelno.msg" />');
-			document.sms.recptnTelno[0].focus();
+			document.getElementById('recptnTelno0').focus();
 			return;
 		}
-		
+
 		if (confirm('<spring:message code="common.regist.msg" />')) {
 			form = document.sms;
 			form.action = "<c:url value='/cop/sms/insertSms.do'/>";
-			
-			form.submit();					
+
+			form.submit();
 		}
 	}
 	
@@ -91,7 +89,7 @@ function loading() {
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
-<form:form modelAttribute="sms" name="sms" method="post" action="${pageContext.request.contextPath}/cop/sms/insertSms.do' />">
+<form:form modelAttribute="sms" name="sms" method="post" action="${pageContext.request.contextPath}/cop/sms/insertSms.do">
 
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 
@@ -122,10 +120,11 @@ function loading() {
 		<tr>
 			<th><spring:message code="cop.sms.recptnTelno" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    1 : <form:input id="recptnTelno" path="recptnTelno" maxlength="14" cssStyle="width:100px; margin-bottom:2px"/><br>
-	   	  		<c:forEach begin="2" end="5" step="1" var="index">
-	   	  		<c:out value='${index}'/> : <form:input id="recptnTelno${index-1}" path="recptnTelno" maxlength="14" cssStyle="width:100px; margin-bottom:2px" /><br>
-	   	  		</c:forEach>
+			    1 : <form:input id="recptnTelno0" path="recptnTelno[0]" maxlength="14" cssStyle="width:100px; margin-bottom:2px"/><br>
+			    2 : <form:input id="recptnTelno1" path="recptnTelno[1]" maxlength="14" cssStyle="width:100px; margin-bottom:2px"/><br>
+			    3 : <form:input id="recptnTelno2" path="recptnTelno[2]" maxlength="14" cssStyle="width:100px; margin-bottom:2px"/><br>
+			    4 : <form:input id="recptnTelno3" path="recptnTelno[3]" maxlength="14" cssStyle="width:100px; margin-bottom:2px"/><br>
+			    5 : <form:input id="recptnTelno4" path="recptnTelno[4]" maxlength="14" cssStyle="width:100px; margin-bottom:2px"/><br>
 	   	  		<br /><form:errors path="recptnTelno" />
 			</td>
 		</tr>

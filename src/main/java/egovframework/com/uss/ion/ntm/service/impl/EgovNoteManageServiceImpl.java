@@ -3,8 +3,6 @@ package egovframework.com.uss.ion.ntm.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
@@ -14,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.uss.ion.ntm.service.EgovNoteManageService;
 import egovframework.com.uss.ion.ntm.service.NoteManageVO;
+import jakarta.annotation.Resource;
 /**
  * 쪽지 관리(보내기)를 처리하는 ServiceImpl Class 구현
  * @author 공통서비스 장동한

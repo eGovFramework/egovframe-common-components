@@ -10,12 +10,8 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.lang.StringUtils;
-import org.egovframe.rte.fdl.cryptography.EgovEnvCryptoService;
+import org.egovframe.rte.fdl.crypto.EgovEnvCryptoService;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,7 +22,11 @@ import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.util.EgovBasicLogger;
+import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 파일 다운로드를 위한 컨트롤러 클래스
@@ -84,6 +84,10 @@ public class EgovFileDownloadController {
 			String decodedSessionId = StringUtils.substringBefore(decodedString, "|");
 			String decodedFileId = StringUtils.substringAfter(decodedString, "|");
 			String fileSn = (String) commandMap.get("fileSn");
+
+			// 자료이용통계를 위해 복호화된 값을 request attribute에 저장
+			request.setAttribute("decrypted_atchFileId", decodedFileId);
+			request.setAttribute("decrypted_fileSn", fileSn);
 
 			String sessionId = request.getSession().getId();
 

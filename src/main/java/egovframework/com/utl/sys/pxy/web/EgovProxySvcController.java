@@ -2,11 +2,8 @@ package egovframework.com.utl.sys.pxy.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -14,7 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -30,6 +26,8 @@ import egovframework.com.utl.sys.pxy.service.EgovProxySvcService;
 import egovframework.com.utl.sys.pxy.service.ProxyLogVO;
 import egovframework.com.utl.sys.pxy.service.ProxySvc;
 import egovframework.com.utl.sys.pxy.service.ProxySvcVO;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * <pre>
@@ -67,9 +65,6 @@ public class EgovProxySvcController {
 
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/** ID Generation */
 	@Resource(name = "egovProxySvcIdGnrService")
@@ -162,13 +157,11 @@ public class EgovProxySvcController {
 	 */
 	@RequestMapping(value = "/utl/sys/pxy/addProxySvc.do")
 	public String insertProxySvc(@ModelAttribute("proxySvcVO") ProxySvcVO proxySvcVO,
-			@ModelAttribute("proxySvc") ProxySvc proxySvc, BindingResult bindingResult, ModelMap model)
+			@Valid @ModelAttribute("proxySvc") ProxySvc proxySvc, BindingResult bindingResult, ModelMap model)
 			throws Exception {
 
-		beanValidator.validate(proxySvc, bindingResult); // validation 수행
-
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("proxySvcVO", proxySvcVO);
+			model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(), "COM072"));
 			return "egovframework/com/utl/sys/pxy/EgovProxySvcRegist";
 		} else {
 			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -214,14 +207,12 @@ public class EgovProxySvcController {
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/utl/sys/pxy/updtProxySvc.do")
-	public String updateProxySvc(@ModelAttribute("proxySvc") ProxySvc proxySvc,
-			@ModelAttribute("proxySvcVO") ProxySvcVO proxySvcVO, BindingResult bindingResult, SessionStatus status,
-			ModelMap model) throws Exception {
-
-		beanValidator.validate(proxySvc, bindingResult); // validation 수행
+	public String updateProxySvc(@ModelAttribute("proxySvcVO") ProxySvcVO proxySvcVO,
+			@Valid @ModelAttribute("proxySvc") ProxySvc proxySvc, BindingResult bindingResult,
+			SessionStatus status, ModelMap model) throws Exception {
 
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("proxySvcVO", proxySvc);
+			model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(), "COM072"));
 			return "egovframework/com/utl/sys/pxy/EgovProxySvcUpdt";
 		} else {
 			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();

@@ -3,6 +3,9 @@ package egovframework.com.sym.sym.bak.service;
 import java.io.Serializable;
 import java.util.List;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 import egovframework.com.cmm.ComDefaultVO;
 
 /**
@@ -31,22 +34,30 @@ public class BackupOpert extends ComDefaultVO implements Serializable {
 	/**
 	 * 백업작업명
 	 */
+	@EgovNullCheck
+	@Size(max=60)
 	private String backupOpertNm;
 	/**
 	 * 백업원본디렉토리
 	 */
+	@EgovNullCheck
+	@Size(max=255)
 	private String backupOrginlDrctry;
 	/**
 	 * 백업저장디렉토리
 	 */
+	@EgovNullCheck
+	@Size(max=255)
 	private String backupStreDrctry;
 	/**
 	 * 압축구분
 	 */
+	@EgovNullCheck
 	private String cmprsSe;
 	/**
 	 * 실행주기
 	 */
+	@EgovNullCheck
 	private String executCycle;
 	/**
 	 * 실행스케줄일자
@@ -55,14 +66,17 @@ public class BackupOpert extends ComDefaultVO implements Serializable {
 	/**
 	 * 실행스케줄시
 	 */
+	@EgovNullCheck
 	private String executSchdulHour;
 	/**
 	 * 실행스케줄분
 	 */
+	@EgovNullCheck
 	private String executSchdulMnt;
 	/**
 	 * 실행스케줄초
 	 */
+	@EgovNullCheck
 	private String executSchdulSecnd;
 	/**
 	 * 실행스케줄요일

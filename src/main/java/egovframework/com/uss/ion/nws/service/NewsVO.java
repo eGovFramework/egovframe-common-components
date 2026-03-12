@@ -1,5 +1,10 @@
 package egovframework.com.uss.ion.nws.service;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+
+import egovframework.com.cmm.ComDefaultVO;
+import jakarta.validation.constraints.Size;
+
 /**
  *  
  * 뉴스정보를 처리하는 VO 클래스
@@ -17,7 +22,7 @@ package egovframework.com.uss.ion.nws.service;
  *
  * </pre>
  */
-public class NewsVO extends NewsDefaultVO {
+public class NewsVO extends ComDefaultVO {
 	
     private static final long serialVersionUID = 1L;
     
@@ -25,9 +30,13 @@ public class NewsVO extends NewsDefaultVO {
     private String newsId;
     
     /** 뉴스제목 */
+    @EgovNullCheck
+    @Size(max=100)
     private String newsSj;
     
     /** 뉴스내용 */
+    @EgovNullCheck
+    @Size(max=1000)
     private String newsCn;
     
     /** 뉴스출처 */

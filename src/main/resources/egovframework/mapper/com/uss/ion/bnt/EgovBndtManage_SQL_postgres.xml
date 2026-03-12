@@ -55,7 +55,7 @@
         
     </select>
 
-    <insert id="insertBndtManage" parameterType="egovframework.com.uss.ion.bnt.service.BndtManage">
+    <insert id="insertBndtManage" parameterType="egovframework.com.uss.ion.bnt.service.BndtManageVO">
         
             INSERT INTO COMTNBNDTMANAGE
                    (BNDT_ID               ,
@@ -72,7 +72,7 @@
         
     </insert>     
 
-    <update id="updtBndtManage" parameterType="egovframework.com.uss.ion.bnt.service.BndtManage">
+    <update id="updtBndtManage" parameterType="egovframework.com.uss.ion.bnt.service.BndtManageVO">
         
              UPDATE COMTNBNDTMANAGE
                SET  RM             = #{remark}          ,   
@@ -84,7 +84,7 @@
         
     </update>    
     
-    <delete id="deleteBndtManage" parameterType="egovframework.com.uss.ion.bnt.service.BndtManage">
+    <delete id="deleteBndtManage" parameterType="egovframework.com.uss.ion.bnt.service.BndtManageVO">
         
              DELETE FROM COMTNBNDTMANAGE
              WHERE  BNDT_DE            = #{bndtDe}
@@ -92,7 +92,7 @@
         
     </delete>  
 
-    <select id="selectBndtDiaryTotCnt" parameterType="egovframework.com.uss.ion.bnt.service.BndtManage" resultType="int">
+    <select id="selectBndtDiaryTotCnt" parameterType="egovframework.com.uss.ion.bnt.service.BndtManageVO" resultType="int">
         
              SELECT count(*) FROM COMTNBNDTDIARY
              WHERE  BNDT_DE = #{bndtDe}
@@ -169,7 +169,7 @@
         
     </select>
 
-    <insert id="insertBndtCeckManage" parameterType="egovframework.com.uss.ion.bnt.service.BndtCeckManage">
+    <insert id="insertBndtCeckManage" parameterType="egovframework.com.uss.ion.bnt.service.BndtCeckManageVO">
         
             INSERT INTO COMTNBNDTCECKMANAGE
                    (BNDT_CECK_SE       ,
@@ -187,7 +187,7 @@
         
     </insert>     
 
-    <update id="updtBndtCeckManage" parameterType="egovframework.com.uss.ion.bnt.service.BndtCeckManage">
+    <update id="updtBndtCeckManage" parameterType="egovframework.com.uss.ion.bnt.service.BndtCeckManageVO">
         
              UPDATE COMTNBNDTCECKMANAGE
                SET  BNDT_CECK_CODE_NM    = #{bndtCeckCdNm} ,
@@ -200,7 +200,7 @@
         
     </update>    
     
-    <delete id="deleteBndtCeckManage" parameterType="egovframework.com.uss.ion.bnt.service.BndtCeckManage">
+    <delete id="deleteBndtCeckManage" parameterType="egovframework.com.uss.ion.bnt.service.BndtCeckManageVO">
         
              DELETE FROM COMTNBNDTCECKMANAGE
              WHERE  BNDT_CECK_SE       = #{bndtCeckSe}
@@ -209,7 +209,7 @@
         
     </delete> 
 
-    <select id="selectBndtCeckManageDplctAt" parameterType="egovframework.com.uss.ion.bnt.service.BndtCeckManage" resultType="int">
+    <select id="selectBndtCeckManageDplctAt" parameterType="egovframework.com.uss.ion.bnt.service.BndtCeckManageVO" resultType="int">
         
             SELECT COUNT(*) totcnt
             FROM   COMTNBNDTCECKMANAGE
@@ -240,7 +240,7 @@
         
     </select>
 
-    <insert id="insertBndtDiary" parameterType="egovframework.com.uss.ion.bnt.service.BndtDiary">
+    <insert id="insertBndtDiary" parameterType="egovframework.com.uss.ion.bnt.service.BndtDiaryVO">
         
             INSERT INTO COMTNBNDTDIARY
                    (BNDT_ID            ,
@@ -260,7 +260,7 @@
         
     </insert>     
 
-    <update id="updtBndtDiary" parameterType="egovframework.com.uss.ion.bnt.service.BndtDiary">
+    <update id="updtBndtDiary" parameterType="egovframework.com.uss.ion.bnt.service.BndtDiaryVO">
         
              UPDATE COMTNBNDTDIARY
                SET  CHCK_STTUS         = #{chckSttus}      ,  
@@ -274,7 +274,7 @@
         
     </update>    
     
-    <delete id="deleteBndtDiary" parameterType="egovframework.com.uss.ion.bnt.service.BndtDiary">
+    <delete id="deleteBndtDiary" parameterType="egovframework.com.uss.ion.bnt.service.BndtDiaryVO">
         
              DELETE FROM COMTNBNDTDIARY
              WHERE  BNDT_DE            = #{bndtDe}

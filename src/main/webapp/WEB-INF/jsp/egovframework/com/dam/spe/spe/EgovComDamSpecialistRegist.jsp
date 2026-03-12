@@ -25,7 +25,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 	<head>
@@ -37,9 +36,7 @@
 		<link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 		<script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 		<script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
-		<script type="text/javascript" src="<c:url value='/validator.do'/>"></script>
-		<validator:javascript formName="knoSpecialist" staticJavascript="false" xhtml="true" cdata="false"/>
-		
+		<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 		<script type="text/javaScript" language="javascript">
 		<!--
 		function initCalendar(){
@@ -82,11 +79,10 @@
 		 ******************************************************** */
 		 function fn_egov_regist_KnoSpecialist(form){
 			if(confirm("<spring:message code="common.save.msg" />")){
-				if(!validateKnoSpecialist(form)){ 			
+				if(!validateKnoSpecialist(form)){
 					return;
 				}else{
-					form.cmd.value = "Regist";
-					form.action = "<c:url value='/dam/spe/spe/EgovComDamSpecialistRegist.do'/>";								
+					form.action = "<c:url value='/dam/spe/spe/EgovComDamSpecialistRegist.do'/>";
 					form.submit();
 				}
 			}
@@ -119,7 +115,7 @@
 		 * 지식유형 가져오기
 		 ******************************************************** */
 		function fn_egov_get_CodeId(form){
-		 	form.cmd.value = "";
+		 	form.action = "<c:url value='/dam/spe/spe/EgovComDamSpecialistRegistView.do'/>";
 		 	form.submit();
 		}			
 		-->
@@ -143,43 +139,46 @@
 			<tr>
 				<th><spring:message code="comDamSpeSpe.comDamSpecialistRegist.orgnztNm"/> <span class="pilsu">*</span></th><!-- 조직명 -->
 				<td class="left">
-				    <select name="orgnztId" class="select" onchange="fn_egov_get_CodeId(document.knoSpecialist)">
+				    <select name="orgnztId" class="select" onchange="fn_egov_get_CodeId(document.knoSpecialist)" title="<spring:message code="comDamSpeSpe.comDamSpecialistRegist.orgnztNm"/>">
 					<option value=""><spring:message code="input.cSelect"/></option><!-- 선택 -->
-					<c:forEach var="knoSpecialist" items="${mapTeamList}" varStatus="status">							
-					<option value='<c:out value="${knoSpecialist.orgnztId}"/>' <c:if test="${knoSpecialist.orgnztId == mapMaterial.orgnztId}">selected="selected"</c:if> ><c:out value="${knoSpecialist.orgnztNm}"/></option>
-					</c:forEach>			  		   
+					<c:forEach var="mapTeam" items="${mapTeamList}" varStatus="status">
+					<option value='<c:out value="${mapTeam.orgnztId}"/>' <c:if test="${mapTeam.orgnztId == mapMaterial.orgnztId}">selected</c:if> ><c:out value="${mapTeam.orgnztNm}"/></option>
+					</c:forEach>
 					</select>
+					<div><form:errors path="orgnztId"/></div>
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comDamSpeSpe.comDamSpecialistRegist.knoTypeNm"/> <span class="pilsu">*</span></th><!-- 지식유형명 -->
 				<td class="left">
-				    <select name="knoTypeCd" class="select">						
+				    <select name="knoTypeCd" class="select" title="<spring:message code="comDamSpeSpe.comDamSpecialistRegist.knoTypeNm"/>">
 					<option value=""><spring:message code="input.cSelect"/></option><!-- 선택 -->
-					<c:forEach var="knoSpecialist" items="${mapMaterialList}" varStatus="status">
-					<option value='<c:out value="${knoSpecialist.knoTypeCd}"/>'><c:out value="${knoSpecialist.knoTypeNm}"/></option>
-					</c:forEach>			  		   
+					<c:forEach var="mapMaterial" items="${mapMaterialList}" varStatus="status">
+					<option value='<c:out value="${mapMaterial.knoTypeCd}"/>' <c:if test="${mapMaterial.knoTypeCd == knoSpecialist.knoTypeCd}">selected</c:if> ><c:out value="${mapMaterial.knoTypeNm}"/></option>
+					</c:forEach>
 					</select>
+					<div><form:errors path="knoTypeCd"/></div>
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comDamSpeSpe.comDamSpecialistRegist.expertNm"/> <span class="pilsu">*</span></th><!-- 전문가명 -->
 				<td class="left">
-				    <input name="userNm" type="text" value='<c:out value="${knoSpecialist.userNm}" />' readonly="readonly" maxlength="60" style="width:150px"/>
-					<input name="speId" type="hidden" value='<c:out value="${knoSpecialist.speId}" />'>
+				    <input name="userNm" type="text" value='<c:out value="${knoSpecialist.userNm}" />' readonly="readonly" maxlength="60" style="width:150px" title="<spring:message code="comDamSpeSpe.comDamSpecialistRegist.expertNm"/>"/>
+					<input name="speId" type="hidden" value='<c:out value="${knoSpecialist.speId}" />'/>
 					<a href="javascript:fn_egov_inqire_user()">
 					<img src="<c:url value='/images/egovframework/com/cmm/icon/search.gif' />" alt="search"/></a>
-					<br/><form:errors path="userNm" />
+					<div><form:errors path="speId"/></div>
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comDamSpeSpe.comDamSpecialistRegist.rank"/> <span class="pilsu">*</span></th><!-- 등급 -->
 				<td class="left">
 				    <select name="appTypeCd" title="<spring:message code="comDamSpeSpe.comDamSpecialistRegist.rank"/>"><!-- 등급 선택 -->
-					<option value="1"><spring:message code="comDamSpeSpe.comDamSpecialistRegist.rankType1"/></option><!-- 수석 -->
-					<option value="2"><spring:message code="comDamSpeSpe.comDamSpecialistRegist.rankType2"/></option><!-- 책임 -->
-					<option value="3"><spring:message code="comDamSpeSpe.comDamSpecialistRegist.rankType3"/></option><!-- 선임 -->
+					<option value="1" <c:if test="${knoSpecialist.appTypeCd == '1'}">selected</c:if> ><spring:message code="comDamSpeSpe.comDamSpecialistRegist.rankType1"/></option><!-- 수석 -->
+					<option value="2" <c:if test="${knoSpecialist.appTypeCd == '2'}">selected</c:if> ><spring:message code="comDamSpeSpe.comDamSpecialistRegist.rankType2"/></option><!-- 책임 -->
+					<option value="3" <c:if test="${knoSpecialist.appTypeCd == '3'}">selected</c:if> ><spring:message code="comDamSpeSpe.comDamSpecialistRegist.rankType3"/></option><!-- 선임 -->
 					</select>
+					<div><form:errors path="appTypeCd"/></div>
 				</td>
 			</tr>
 			<tr>
@@ -193,8 +192,9 @@
 				<th><spring:message code="comDamSpeSpe.comDamSpecialistRegist.speConfmDe"/> <span class="pilsu">*</span></th><!-- 승인일자 -->
 				<td class="left">
 				    <input type="hidden" name="cal_url" value="<c:url value='/sym/cal/EgovNormalCalPopup.do'/>" />
-					<input id="speConfmDe" name="speConfmDe" type="hidden" value=""/>
-					<input id="vspeConfmDe" name="vspeConfmDe" type="text" title="<spring:message code="comDamSpeSpe.comDamSpecialistRegist.speConfmDe"/>" value=""  maxlength="10" readonly="readonly" style="width:70px"/><!-- 승인일자 -->
+					<input id="speConfmDe" name="speConfmDe" type="hidden" value="<c:out value='${knoSpecialist.speConfmDe}'/>"/>
+					<input id="vspeConfmDe" name="vspeConfmDe" type="text" title="<spring:message code="comDamSpeSpe.comDamSpecialistRegist.speConfmDe"/>" value="<c:out value='${knoSpecialist.speConfmDe}'/>" maxlength="10" readonly="readonly" style="width:70px"/><!-- 승인일자 -->
+					<div><form:errors path="speConfmDe"/></div>
 				</td>
 			</tr>
 		</table>
@@ -207,8 +207,6 @@
 		<div style="clear:both;"></div>
 	</div>
 	
-	<!-- <input name="cmd" type="hidden" value="<c:out value='save'/>"> -->
-	<input name="cmd" type="hidden" value="<c:out value='Regist'/>">		
 	</form:form>
 		
 	</body>

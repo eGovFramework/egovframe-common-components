@@ -5,6 +5,10 @@ import java.io.Serializable;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import egovframework.com.cmm.ComDefaultVO;
+
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 /**
  * 행정전문용어사전관리 VO Class 구현
  * @author 공통서비스 장동한
@@ -27,18 +31,27 @@ public class AdministrationWordVO extends ComDefaultVO implements Serializable {
     private String administWordId;
 
     /** 행정용어사전 명 */
+    @EgovNullCheck
+    @Size(max=255)
     private String administWordNm;
 
     /** 행정용어사전 영문명 */
+    @EgovNullCheck
+    @Size(max=255)
+    @Pattern(regexp="^[a-zA-Z0-9_]*$", message="{validation.pattern.english}")
     private String administWordEngNm;
 
     /** 행정용어사전 약어  */
+    @EgovNullCheck
+    @Size(max=255)
     private String administWordAbrv;
 
     /** 주제영역  */
+    @EgovNullCheck
     private String themaRelm;
 
     /** 용어구분  */
+    @EgovNullCheck
     private String wordDomn;
     
     /** 용어구분명  */
@@ -48,9 +61,11 @@ public class AdministrationWordVO extends ComDefaultVO implements Serializable {
     private String stdWord;
 
     /** 행정용어사전 정의 */
+    @Size(max=2500)
     private String administWordDf;
 
     /** 행정용어사전 설명 */
+    @Size(max=2500)
     private String administWordDc;
 
     /** 최초등록시점 */

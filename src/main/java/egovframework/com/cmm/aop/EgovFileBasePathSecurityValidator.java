@@ -20,10 +20,11 @@ import lombok.extern.slf4j.Slf4j;
  *      <pre>
  *  == 개정이력(Modification Information) ==
  *
- *   수정일      수정자           수정내용
- *  -------    --------    ---------------------------
- *   2025.04.01  신용호          최초 생성
- *   2025.05.22  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-InefficientEmptyStringCheck(비효율적인 빈 문자열 검사), SimplifyBooleanExpressions(부울 표현식 단순화)
+ *  수정일        수정자      수정내용
+ *  ----------  --------  ---------------------------
+ *  2025.04.01  신용호      최초 생성
+ *  2025.05.22  이백행      PMD로 소프트웨어 보안약점 진단하고 제거하기-InefficientEmptyStringCheck(비효율적인 빈 문자열 검사), SimplifyBooleanExpressions(부울 표현식 단순화)
+ *  2026.01.27  신용호      KISA 취약점 조치
  *
  *      </pre>
  * 
@@ -74,7 +75,7 @@ public class EgovFileBasePathSecurityValidator {
 			// 허용된 디렉토리 내인지 검증
 			for (String whiteBasePath : whiteList) {
 				File file = new File(whiteBasePath).getCanonicalFile();
-				if (file.getPath().startsWith(base.getPath())) {
+				if (base.getPath().startsWith(file.getPath())) {
 					validateResult = true;
 				}
 			}

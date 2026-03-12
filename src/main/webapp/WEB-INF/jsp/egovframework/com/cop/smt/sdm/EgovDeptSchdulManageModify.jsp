@@ -23,7 +23,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <c:set var="pageTitle"><spring:message code="comCopSmtSdm.title"/></c:set>
 <!DOCTYPE html>
@@ -38,8 +37,7 @@
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialog.js'/>" ></script>
 <%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="deptSchdulManageVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 /* ********************************************************
  * 초기화
@@ -251,7 +249,7 @@ String.prototype.replaceAll = function(src, repl){
 		<!-- 반복구분 -->
 		<c:set var="title"><spring:message code="comCopSmtSdm.regist.reptitSeCode"/></c:set>
 		<tr>
-			<th><label for="infoProvdAgreCn">${title}</label> <span class="pilsu">*</span></th>
+			<th><label for="infoProvdAgreCn">${title}</label> </th>
 			<td class="nopd">
 				<div style="float:left;"><form:radiobutton path="reptitSeCode" value="1"/><spring:message code="comCopSmtSdm.regist.schdulSe1"/> </div> <!-- 당일 -->
 				<div style="float:left; margin:0 0 0 10px"><form:radiobutton path="reptitSeCode" value="2"/><spring:message code="comCopSmtSdm.regist.schdulSe2"/> </div><!-- 반복 --> 
@@ -299,7 +297,7 @@ String.prototype.replaceAll = function(src, repl){
 		<!-- 첨부파일 -->
 		<c:set var="title"><spring:message code="comCopSmtSdm.regist.schdulAtch"/></c:set>
 		<tr>
-			<th><label for="infoProvdAgreCn">${title}</label> <span class="pilsu">*</span></th>
+			<th><label for="infoProvdAgreCn">${title}</label> </th>
 			<td class="nopd">
 			
 			 <!--첨부목록을 보여주기 위한 -->

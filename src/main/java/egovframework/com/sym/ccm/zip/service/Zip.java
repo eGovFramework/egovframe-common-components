@@ -2,7 +2,8 @@ package egovframework.com.sym.ccm.zip.service;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.NotEmpty;
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
 
 /**
  * 우편번호 모델 클래스
@@ -18,7 +19,7 @@ import javax.validation.constraints.NotEmpty;
  *  -------    --------    ---------------------------
  *   2009.04.01  이중호			최초 생성
  *   2011.11.21  이기하			도로명주소 추가(rdmn, bdnbrMnnm, bdnbrSlno, buldNm, detailBuldNm)
- *   2024.10.29	 권태성			필수값 BindingResult 검증을 위한 @NotEmpty 추가
+ *   2024.10.29	 권태성			필수값 BindingResult 검증을 위한 @EgovNullCheck 추가
  *
  * </pre>
  */
@@ -29,7 +30,8 @@ public class Zip implements Serializable {
 	/*
 	 * 우편번호
 	 */
-	@NotEmpty(message = "우편번호{common.required.msg}")
+	@EgovNullCheck
+	@Size(max=6)
     private String zip            = "";
 
     /*
@@ -40,59 +42,72 @@ public class Zip implements Serializable {
     /*
      * 시도명
      */
-    @NotEmpty(message = "시도명{common.required.msg}")
+	@EgovNullCheck
+	@Size(max=20)
 	private String ctprvnNm       = "";
 
 	/*
 	 * 시군구명
 	 */
-	@NotEmpty(message = "시군구명{common.required.msg}")
+	@EgovNullCheck
+	@Size(max=20)
     private String signguNm       = "";
 
     /*
      * 읍면동명
      */
-    @NotEmpty(message = "읍면동명{common.required.msg}")
+	@EgovNullCheck
+	@Size(max=30)
     private String emdNm          = "";
 
     /*
      * 리건물명
      */
+	@Size(max=60)
     private String liBuldNm      = "";
 
     /*
      * 도로명코드
      */
+	@EgovNullCheck
+	@Size(max=12)
     private String rdmnCode       = "";
 
 	/*
      * 도로명
      */
+	@EgovNullCheck
+	@Size(max=60)
     private String rdmn       = "";
 
     /*
      * 건물번호본번
      */
+	@Size(max=5)
     private String bdnbrMnnm          = "";
 
     /*
      * 건물번호부번
      */
+	@Size(max=5)
     private String bdnbrSlno      = "";
 
     /*
      * 건물명
      */
+	@Size(max=60)
     private String buldNm      = "";
 
     /*
      * 상세건물명
      */
+	@Size(max=60)
     private String detailBuldNm      = "";
 
     /*
      * 번지동호
      */
+	@Size(max=20)
     private String lnbrDongHo     = "";
 
 	/*

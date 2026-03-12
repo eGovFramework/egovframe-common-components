@@ -3,6 +3,8 @@ package egovframework.com.cop.bbs.service;
 import java.io.Serializable;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
 
 /**
  * @Class Name  : Board.java
@@ -65,18 +67,21 @@ public class Board implements Serializable {
 	/**
 	 * 게시물 내용
 	 */
+	@EgovNullCheck
 	private String nttCn = "";
 	/**
 	 * 게시물 아이디
 	 */
-	private long nttId = 0L;
+	private Long nttId = 0L;
 	/**
 	 * 게시물 번호
 	 */
-	private long nttNo = 0L;
+	private Long nttNo = 0L;
 	/**
 	 * 게시물 제목
 	 */
+	@EgovNullCheck
+	@Size(max=1200)
 	private String nttSj = "";
 	/**
 	 * 부모글번호
@@ -101,7 +106,7 @@ public class Board implements Serializable {
 	/**
 	 * 정렬순서
 	 */
-	private long sortOrdr = 0L;
+	private Long sortOrdr = 0L;
 	/**
 	 * 사용여부
 	 */
@@ -312,32 +317,32 @@ public class Board implements Serializable {
 	 * nttId attribute를 리턴한다.
 	 * @return the nttId
 	 */
-	public long getNttId() {
-		return nttId;
+	public Long getNttId() {
+		return nttId == null ? 0L : nttId;
 	}
 
 	/**
 	 * nttId attribute 값을 설정한다.
 	 * @param nttId the nttId to set
 	 */
-	public void setNttId(long nttId) {
-		this.nttId = nttId;
+	public void setNttId(Long nttId) {
+		this.nttId = nttId == null ? 0L : nttId;
 	}
 
 	/**
 	 * nttNo attribute를 리턴한다.
 	 * @return the nttNo
 	 */
-	public long getNttNo() {
-		return nttNo;
+	public Long getNttNo() {
+		return nttNo == null ? 0L : nttNo;
 	}
 
 	/**
 	 * nttNo attribute 값을 설정한다.
 	 * @param nttNo the nttNo to set
 	 */
-	public void setNttNo(long nttNo) {
-		this.nttNo = nttNo;
+	public void setNttNo(Long nttNo) {
+		this.nttNo = nttNo == null ? 0L : nttNo;
 	}
 
 	/**
@@ -440,16 +445,16 @@ public class Board implements Serializable {
 	 * sortOrdr attribute를 리턴한다.
 	 * @return the sortOrdr
 	 */
-	public long getSortOrdr() {
-		return sortOrdr;
+	public Long getSortOrdr() {
+		return sortOrdr == null ? 0L : sortOrdr;
 	}
 
 	/**
 	 * sortOrdr attribute 값을 설정한다.
 	 * @param sortOrdr the sortOrdr to set
 	 */
-	public void setSortOrdr(long sortOrdr) {
-		this.sortOrdr = sortOrdr;
+	public void setSortOrdr(Long sortOrdr) {
+		this.sortOrdr = sortOrdr == null ? 0L : sortOrdr;
 	}
 
 	/**

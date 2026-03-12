@@ -3,13 +3,10 @@ package egovframework.com.dam.per.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -19,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springmodules.validation.commons.DefaultBeanValidator;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -35,6 +32,8 @@ import egovframework.com.dam.map.tea.service.MapTeamVO;
 import egovframework.com.dam.per.service.EgovKnoPersonalService;
 import egovframework.com.dam.per.service.KnoPersonal;
 import egovframework.com.dam.per.service.KnoPersonalVO;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * <pre>
@@ -87,9 +86,6 @@ public class EgovKnoPersonalController {
 	/** EgovPropertyService */
 	@Resource(name = "propertiesService")
 	protected EgovPropertyService propertiesService;
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
@@ -205,12 +201,12 @@ public class EgovKnoPersonalController {
 	 * @param KnoNm
 	 */
 	@PostMapping(value = "/dam/per/EgovComDamPersonalRegist.do")
-	public String insertKnoPersonal(final MultipartHttpServletRequest multiRequest, KnoPersonalVO knoPersonal,
-			BindingResult bindingResult, ModelMap model) throws Exception {
+	public String insertKnoPersonal(final MultipartHttpServletRequest multiRequest, @Valid @ModelAttribute("knoPersonal") KnoPersonalVO knoPersonal,
+			BindingResult bindingResult, ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
 		// Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
@@ -219,7 +215,6 @@ public class EgovKnoPersonalController {
 
 		String sLocationUrl = "egovframework/com/dam/per/EgovComDamPersonalRegist";
 
-		beanValidator.validate(knoPersonal, bindingResult);
 		if (bindingResult.hasErrors()) {
 			setInsertKnoPersonalViewModel(knoPersonal, model);
 			return sLocationUrl;
@@ -285,13 +280,15 @@ public class EgovKnoPersonalController {
 	 */
 	@PostMapping(value = "/dam/per/EgovComDamPersonalModify.do")
 	public String updateKnoPersonal(final MultipartHttpServletRequest multiRequest,
-			@RequestParam Map<String, String> commandMap, @ModelAttribute("knoPersonal") KnoPersonal knoPersonal,
-			BindingResult bindingResult, ModelMap model) throws Exception {
+			@RequestParam Map<String, String> commandMap,
+			@ModelAttribute("searchVO") KnoPersonalVO searchVO,
+			@Valid @ModelAttribute("knoPersonal") KnoPersonal knoPersonal,
+			BindingResult bindingResult, ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
@@ -300,7 +297,6 @@ public class EgovKnoPersonalController {
 
 		String sLocationUrl = "egovframework/com/dam/per/EgovComDamPersonalModify";
 
-		beanValidator.validate(knoPersonal, bindingResult);
 		if (bindingResult.hasErrors()) {
 			updateKnoPersonalViewInit(knoPersonal, model);
 			return sLocationUrl;

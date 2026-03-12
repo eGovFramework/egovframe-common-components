@@ -1,5 +1,7 @@
 package egovframework.com.uss.ion.rmm.service;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+
 /**
  * 개요
  * - 약도에 대한 Model을 정의한다.
@@ -30,9 +32,11 @@ public class RoughMapVO extends RoughMapDefaultVO {
     private String roughMapId;
 
 	/** roughMap 제목 */
+    @EgovNullCheck
     private String roughMapSj;
 
 	/** roughMap 상세주소 */
+    @EgovNullCheck
     private String roughMapAddress;
 
     /** 지도 위도 */
@@ -48,6 +52,7 @@ public class RoughMapVO extends RoughMapDefaultVO {
     private String markerLo;
 
     /** 인포윈도우(말풍선) */
+    @EgovNullCheck
     private String infoWindow;
 
     /** 지도 확대수준 */

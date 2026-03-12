@@ -39,10 +39,10 @@ function linkPage(pageNo){
    	document.listForm.submit();
 }
 /* ********************************************************
- * 등록 처리 함수
+ * 등록 처리 함수 (등록 전 단계 화면으로 이동)
  ******************************************************** */
 function fn_egov_regist_PopupManage(){
-	location.href = "<c:url value='/uss/ion/pwm/registPopup.do' />";
+	location.href = "<c:url value='/uss/ion/pwm/insertPopupView.do' />";
 }
 /* ********************************************************
  * 상세화면 처리 함수
@@ -158,7 +158,6 @@ function fn_egov_popupOpen_PopupManage(popupId,fileUrl,width,height,top,left,sto
 	url = url + "&popupId=" + popupId;
 	var name = popupId;
 	var openWindows = window.open(url,name,"width="+width+",height="+height+",top="+top+",left="+left+",toolbar=no,status=no,location=no,scrollbars=yes,menubar=no,resizable=yes");
-
 	if (window.focus) {openWindows.focus()}
 }
 
@@ -172,7 +171,6 @@ function fnGetCookie(name) {
 	  if (cookieStartIndex == -1) return null;
 	  var cookieEndIndex = document.cookie.indexOf(";", cookieStartIndex + prefix.length);
 	  if (cookieEndIndex == -1) cookieEndIndex = document.cookie.length;
-
 
 	  return unescape(document.cookie.substring(cookieStartIndex + prefix.length, cookieEndIndex));
 }
@@ -191,15 +189,15 @@ function fnGetCookie(name) {
 			<li>
 				<select name="searchCondition" class="select" title="<spring:message code="select.searchCondition"/>"><!-- 검색조건선택 -->
 					<option value=''>--<spring:message code="input.select"/>--</option><!-- 선택하세요 -->
-					<option value='POPUP_SJ_NM' <c:if test="${searchCondition == 'POPUP_SJ_NM'}">selected</c:if>><spring:message code="ussIonPwm.popupList.popupTitleNm"/></option><!-- 팝업창명 -->
-					<option value='FILE_URL' <c:if test="${searchCondition == 'FILE_URL'}">selected</c:if>><spring:message code="ussIonPwm.popupList.fileUrl"/></option><!-- 팝업창URL -->
+					<option value='POPUP_SJ_NM' <c:if test="${popupManageVO.searchCondition == 'POPUP_SJ_NM'}">selected</c:if>><spring:message code="ussIonPwm.popupList.popupTitleNm"/></option><!-- 팝업창명 -->
+					<option value='FILE_URL' <c:if test="${popupManageVO.searchCondition == 'FILE_URL'}">selected</c:if>><spring:message code="ussIonPwm.popupList.fileUrl"/></option><!-- 팝업창URL -->
 				</select>
-				<input class="s_input2 vat" name="searchKeyword" type="text" value="" size="10" onkeypress="press();" title="<spring:message code="input.input"/>" /><!-- 검색단어입력 -->
+				<input class="s_input2 vat" name="searchKeyword" type="text" value="<c:out value='${popupManageVO.searchKeyword}'/>" size="10" onkeypress="press();" title="<spring:message code="input.input"/>" /><!-- 검색단어입력 -->
 				
 				
 				<span class="btn_b"><a href="" onclick="fn_egov_view_PopupManage(); return false;" title="새창 열림"><spring:message code="button.preview"/></a></span><!-- 미리보기 -->
 				<input class="s_btn" type="submit" value="<spring:message code="button.inquire" />" title="<spring:message code="button.inquire" />" onclick="fn_egov_search_PopupManage(); return false;" />
-				<span class="btn_b"><a href="<c:url value='/uss/ion/pwm/registPopup.do'/>" onclick="" title="<spring:message code="button.create" />"><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="<c:url value='/uss/ion/pwm/insertPopupView.do'/>" onclick="" title="<spring:message code="button.create" />"><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
@@ -210,12 +208,12 @@ function fnGetCookie(name) {
 	<table class="board_list">
 		<caption></caption>
 		<colgroup>
-			<col style="width:35px" />
-			<col style="width:30px" />
-			<col style="width:120px" />
-			<col style="width:180px" />
-			<col style="" />
-			<col style="width:70px" />
+			<col style="width:10%" />
+			<col style="width:10%" />
+			<col style="width:20%" />
+			<col style="width:25%" />
+			<col style="width:25%" />
+			<col style="width:10%" />
 		</colgroup>
 		<thead>
 			<tr>

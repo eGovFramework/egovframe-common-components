@@ -1,5 +1,9 @@
 package egovframework.com.cop.ems.service;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import org.egovframe.rte.ptl.reactive.validation.EgovEmailCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 발송메일 모델 클래스
  * @author 공통서비스 개발팀 박지욱
@@ -25,8 +29,13 @@ public class SndngMail {
 	/** 메시지ID */
 	public String mssageId;
 	/** 수신자 */
+	@EgovNullCheck
+	@Size(max=50)
+	@EgovEmailCheck
 	public String recptnPerson;
 	/** 제목 */
+	@EgovNullCheck
+	@Size(max=60)
 	public String sj;
 	/** 발송결과코드 */
 	public String sndngResultCode;

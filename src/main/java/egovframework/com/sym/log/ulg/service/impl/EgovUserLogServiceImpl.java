@@ -4,13 +4,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.sym.log.ulg.service.EgovUserLogService;
 import egovframework.com.sym.log.ulg.service.UserLog;
+import jakarta.annotation.Resource;
 
 /**
  * 사용로그 관리를 위한 서비스 구현 클래스

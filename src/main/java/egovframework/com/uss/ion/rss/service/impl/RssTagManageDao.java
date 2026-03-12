@@ -5,23 +5,25 @@ import java.sql.DatabaseMetaData;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.rss.service.RssManage;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
 
 /**
  * RSS태그관리를 처리하는 Dao Class 구현
- * 
+ *
  * @author 공통콤포넌트 장동한
  * @since 2010.06.16
  * @version 1.0
@@ -46,13 +48,15 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
 @Repository("rssManageDao")
 public class RssTagManageDao extends EgovComAbstractDAO {
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(RssTagManageDao.class);
+
 	// RSS에 허용할 테이블 목록 - context-whitelist.xml에서 관리
 	@Resource(name = "egovRSSWhitelist")
 	protected List<String> tableWhiteList;
 
 	/**
 	 * JDBC 테이블 목록을조회한다.
-	 * 
+	 *
 	 * @return List -조회한목록이담긴List
 	 * @throws Exception
 	 */
@@ -63,27 +67,39 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 		String[] types = { "TABLE", "VIEW" };
 		ArrayList<ComDefaultCodeVO> arrListResult = new ArrayList<ComDefaultCodeVO>();
 
+		Connection conn = null;
 		DatabaseMetaData dbmd = null;
+		ResultSet tables = null;
 
-		try (Connection conn = getSqlSession().getConnection();) {
-
+		try {
+			// Spring 트랜잭션 관리자가 관리하는 Connection을 사용
+			// Connection을 닫지 않음 (트랜잭션 관리자가 관리)
+			conn = getSqlSession().getConnection();
 			dbmd = conn.getMetaData();
+			tables = dbmd.getTables(null, null, null, types);
 
-			try (ResultSet tables = dbmd.getTables(null, null, null, types);) {
-				while (tables.next()) {
+			while (tables.next()) {
 
-					// KISA 보안약점 조치 (2018-12-05, 신용호)
-					String tableName = tables.getString(columnLabelTableName);
-					if (tableName == null) {
-						tableName = "";
-					}
-					// WhiteList 기능 보완 (2019-05-10, 신용호)
-					if (tableWhiteList.contains(tableName.toLowerCase())) {
-						ComDefaultCodeVO codeVO = new ComDefaultCodeVO();
-						codeVO.setCode(tables.getString(columnLabelTableName));
-						codeVO.setCodeNm(tables.getString(columnLabelTableSchema));
-						arrListResult.add(codeVO);
-					}
+				// KISA 보안약점 조치 (2018-12-05, 신용호)
+				String tableName = tables.getString(columnLabelTableName);
+				if (tableName == null) {
+					tableName = "";
+				}
+				// WhiteList 기능 보완 (2019-05-10, 신용호)
+				if (tableWhiteList.contains(tableName.toLowerCase())) {
+					ComDefaultCodeVO codeVO = new ComDefaultCodeVO();
+					codeVO.setCode(tables.getString(columnLabelTableName));
+					codeVO.setCodeNm(tables.getString(columnLabelTableSchema));
+					arrListResult.add(codeVO);
+				}
+			}
+		} finally {
+			if (tables != null) {
+				try {
+					tables.close();
+				} catch (SQLException e) {
+					// 2026.02.28 KISA 취약점 조치, 로거 추가
+					LOGGER.warn("ResultSet close 실패",e);
 				}
 			}
 		}
@@ -94,7 +110,7 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 
 	/**
 	 * JDBC 테이블 컬럼 목록을 조회한다.
-	 * 
+	 *
 	 * @param map - 컬럼조회정보
 	 * @return List -조회한목록이담긴List
 	 * @throws Exception
@@ -106,9 +122,14 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 		String sSQL = "";
 		ArrayList<Map<String, String>> arrListResult = new ArrayList<Map<String, String>>();
 
+		Connection conn = null;
 		PreparedStatement st = null;
+		ResultSet rs = null;
 
-		try (Connection conn = getSqlSession().getConnection();) {
+		try {
+			// Spring 트랜잭션 관리자가 관리하는 Connection을 사용
+			// Connection을 닫지 않음 (트랜잭션 관리자가 관리)
+			conn = getSqlSession().getConnection();
 
 			// KISA 보안약점 조치 (2018-12-05, 신용호)
 			// WhiteList 기능 보완 (2019-05-10, 신용호)
@@ -129,20 +150,36 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 					st = conn.prepareStatement(sSQL);
 				}
 
-				try (ResultSet rs = st.executeQuery();) {
+				rs = st.executeQuery();
 
-					ResultSetMetaData rsMetaData = rs.getMetaData();
-					int numberOfColumns = rsMetaData == null ? 0 : rsMetaData.getColumnCount();
+				ResultSetMetaData rsMetaData = rs.getMetaData();
+				int numberOfColumns = rsMetaData == null ? 0 : rsMetaData.getColumnCount();
 
-					for (int i = 1; i < numberOfColumns + 1; i++) {
-						Map<String, String> hmResult = new HashMap<String, String>();
-						hmResult.put("code",
-								rsMetaData == null ? "" : EgovStringUtil.isNullToString(rsMetaData.getTableName(i)));
-						hmResult.put("codeNm",
-								rsMetaData == null ? "" : EgovStringUtil.isNullToString(rsMetaData.getColumnName(i)));
+				for (int i = 1; i < numberOfColumns + 1; i++) {
+					Map<String, String> hmResult = new HashMap<String, String>();
+					hmResult.put("code",
+							rsMetaData == null ? "" : EgovStringUtil.isNullToString(rsMetaData.getTableName(i)));
+					hmResult.put("codeNm",
+							rsMetaData == null ? "" : EgovStringUtil.isNullToString(rsMetaData.getColumnName(i)));
 
-						arrListResult.add(hmResult);
-					}
+					arrListResult.add(hmResult);
+				}
+			}
+		} finally {
+			if (rs != null) {
+				try {
+					rs.close();
+				} catch (SQLException e) {
+					// 2026.02.28 KISA 취약점 조치 SQLException, 로거 추가
+					LOGGER.warn("ResultSet close 실패",e);
+				}
+			}
+			if (st != null) {
+				try {
+					st.close();
+				} catch (SQLException e) {
+					// 2026.02.28 KISA 취약점 조치 SQLException, 로거 추가
+					LOGGER.warn("ResultSet close 실패",e);
 				}
 			}
 		}
@@ -152,7 +189,7 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 
 	/**
 	 * RSS태그관리를(을) 목록을 한다.
-	 * 
+	 *
 	 * @param rssManage -조회할 정보가 담긴 객체
 	 * @return -조회한목록이담긴List
 	 * @throws Exception
@@ -164,7 +201,7 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 
 	/**
 	 * RSS태그관리를(을) 목록 전체 건수를(을) 조회한다.
-	 * 
+	 *
 	 * @param rssManage -조회할 정보가 담긴 객체
 	 * @return -조회한건수가담긴Integer
 	 * @throws Exception
@@ -175,7 +212,7 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 
 	/**
 	 * RSS태그관리를(을) 상세조회 한다.
-	 * 
+	 *
 	 * @param rssManage -RSS태그관리 정보가 담김 객체
 	 * @return RssManage -RSS태그관리 정보가 담김 객체
 	 * @throws Exception
@@ -186,7 +223,7 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 
 	/**
 	 * RSS태그관리를(을) 등록한다.
-	 * 
+	 *
 	 * @param rssManage -RSS태그관리 정보가 담김 객체
 	 * @throws Exception
 	 */
@@ -196,7 +233,7 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 
 	/**
 	 * RSS태그관리를(을) 수정한다.
-	 * 
+	 *
 	 * @param rssManage -RSS태그관리 정보가 담김 객체
 	 * @throws Exception
 	 */
@@ -206,7 +243,7 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 
 	/**
 	 * RSS태그관리를(을) 삭제한다.
-	 * 
+	 *
 	 * @param rssManage -RSS태그관리 정보가 담김 객체
 	 * @throws Exception
 	 */

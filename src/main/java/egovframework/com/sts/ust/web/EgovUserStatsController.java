@@ -2,8 +2,6 @@ package egovframework.com.sts.ust.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -17,6 +15,7 @@ import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.sts.com.StatsVO;
 import egovframework.com.sts.ust.service.EgovUserStatsService;
+import jakarta.annotation.Resource;
 
 /**
  * 사용자 통계 검색 컨트롤러 클래스
@@ -83,8 +82,8 @@ public class EgovUserStatsController {
 			LOGGER.debug("++++++++++++++++++++++ userStats.size() : {}", userStats.size());
 			// 그래프에 표시될 이미지 길이를 결정한다.
 			float iMaxUnit = 50.0f;
-			for (int i = 0; i < userStats.size(); i++) {
-				StatsVO sVo = (StatsVO)userStats.get(i);
+			for (StatsVO userStat : userStats) {
+				StatsVO sVo = userStat;
 				int iCnt = sVo.getStatsCo();
 				if (iCnt > 10 && iCnt <= 100) {
 					if (iMaxUnit > 5.0f) {

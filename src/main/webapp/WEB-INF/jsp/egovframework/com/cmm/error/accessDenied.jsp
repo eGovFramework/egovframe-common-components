@@ -9,6 +9,7 @@
 <meta charset="utf-8">
 <title><spring:message code="title.html"/></title>
 <link href="<c:url value='/css/egovframework/com/com.css' />" rel="stylesheet" type="text/css" />
+
 <script language="javascript">
 function fncGoAfterErrorPage(){
     history.back(-2);
@@ -20,7 +21,7 @@ function fncGoAfterErrorPage(){
 	<p style="font-size: 18px; color: #000; margin-bottom: 10px; "><img src="<c:url value='/images/egovframework/com/cmm/er_logo.jpg' />" width="379" height="57" /></p>
 	<div style="border: ppx solid #666; padding: 20px;">
 		
-		<p style="color:red; margin-bottom: 8px; ">${pageTitle}</p> 
+		<p style="color:red; margin-bottom: 8px; ">${pageTitle}<br /></p>
 
 		<div class="boxType1" style="width: 700px;">
 			<div class="box">

@@ -24,7 +24,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -32,8 +31,7 @@
 <title><spring:message code="comSymTbmTbp.troblProcessRegist.title"/></title><!-- 장애처리결과 등록 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="troblProcess" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <link type="text/css"" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
@@ -134,7 +132,7 @@ function fncSelectTroblProcessList() {
 	<!-- 타이틀 -->
 	<h2><spring:message code="comSymTbmTbp.troblProcessRegist.pageTop.title"/></h2><!-- 장애처리결과 등록 -->
 
-	<form name="troblProcess" id="troblProcess" method="post" action="${pageContext.request.contextPath}/sym/tbm/tbp/addTroblProcess.do">
+	<form:form modelAttribute="troblProcess" name="troblProcess" id="troblProcess" method="post" action="${pageContext.request.contextPath}/sym/tbm/tbp/addTroblProcess.do">
 	<!-- 등록폼 -->
 	<table class="wTable">
 		<colgroup>
@@ -192,7 +190,7 @@ function fncSelectTroblProcessList() {
 		<tr>
 			<th><spring:message code="comSymTbmTbp.troblProcessRegist.troblProcessResult"/> <span class="pilsu">*</span></th><!-- 처리결과 -->
 			<td class="left">
-			    <label for="troblProcessResult"><textarea name="troblProcessResult" rows="5" cols="80" title="처리결과"><c:out value='${troblProcess.troblProcessResult}'/></textarea></label><!-- 처리결과 -->
+			    <label for="troblProcessResult"><textarea name="troblProcessResult" rows="5" cols="80" title="처리결과"><c:out value='${troblProcess.troblProcessResult}'/></textarea>&nbsp;<form:errors path="troblProcessResult" /></label><!-- 처리결과 -->
 			</td>
 		</tr>
 		<tr>
@@ -223,7 +221,7 @@ function fncSelectTroblProcessList() {
 		<tr>
 			<th><spring:message code="comSymTbmTbp.troblProcessRegist.troblOpetrNm"/> <span class="pilsu">*</span></th><!-- 처리자 -->
 			<td class="left">
-			    <label for="troblOpetrNm"><input name="troblOpetrNm" id="troblOpetrNm" type="text" value="<c:out value='${troblProcess.troblOpetrNm}'/>" maxLength="30" size="30" /></label>
+			    <label for="troblOpetrNm"><input name="troblOpetrNm" id="troblOpetrNm" type="text" value="<c:out value='${troblProcess.troblOpetrNm}'/>" maxLength="30" size="30" />&nbsp;<form:errors path="troblOpetrNm" /></label>
 			</td>
 		</tr>
 	</table>
@@ -243,7 +241,7 @@ function fncSelectTroblProcessList() {
     <!-- 검색조건 유지 -->
     <input type="hidden" name="strTroblNm" value="<c:out value='${troblProcessVO.strTroblNm}'/>" />
     <input type="hidden" name="pageIndex" value="<c:out value='${troblProcessVO.pageIndex}'/>" />
-	</form>
+	</form:form>
 	
 </div>
 

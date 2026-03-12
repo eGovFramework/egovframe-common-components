@@ -1,6 +1,8 @@
 package egovframework.com.uss.ion.ulm.service;
 
-import java.io.Serializable;
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import egovframework.com.cmm.ComDefaultVO;
+import jakarta.validation.constraints.Size;
 
 /**
  * 통합링크관리 VO Class 구현
@@ -16,23 +18,30 @@ import java.io.Serializable;
  *
  * </pre>
  */
-public class UnityLink implements Serializable {
+public class UnityLink extends ComDefaultVO {
 
-	private static final long serialVersionUID = 1607776015478505197L;
+	private static final long serialVersionUID = 1L;
 
 	/** 통합링크 아이디 */
     private String unityLinkId;
 
     /** 통합링크 그룹 */
+    @EgovNullCheck
     private String unityLinkSeCode;
 
     /** 통합링크 명 */
+    @EgovNullCheck
+    @Size(max=255)
     private String unityLinkNm;
 
     /** 통합링크 URL */
+    @EgovNullCheck
+    @Size(max=255)
     private String unityLinkUrl;
 
     /** 통합링크 설명 */
+    @EgovNullCheck
+    @Size(max=2500)
     private String unityLinkDc;
 
     /** 최초등록시점 */

@@ -23,28 +23,26 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comUssIonNws.newsVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
 <head>
 <title>${pageTitle} <spring:message code="title.create" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
-<link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
-<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
-<script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
-<validator:javascript formName="newsVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
+<link type="text/css" rel="stylesheet" href="<c:url value="/css/egovframework/com/cmm/jqueryui.css" />">
+<%-- <script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/fms/EgovMultiFile.js"/>" ></script> --%>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/fms/EgovMultiFiles.js"/>" ></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/jquery.js" />"></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/jqueryui.js" />"></script>
 <script type="text/javascript">
 
 $(function() {
 	$("#ntceDe").datepicker(   
 	        {dateFormat:'yy-mm-dd' 
 	         , showOn: 'button' 
-	         , buttonImage: '<c:url value='/images/egovframework/com/cmm/icon/bu_icon_carlendar.gif'/>'   
+	         , buttonImage: '<c:url value="/images/egovframework/com/cmm/icon/bu_icon_carlendar.gif"/>'   
 	         , buttonImageOnly: true 
 	         
 	         , showMonthAfterYear: true
@@ -58,41 +56,24 @@ $(function() {
 });
 
 /* ********************************************************
- * 초기화
- ******************************************************** */
-function fn_egov_init(){
-
-	//------------------------------------------
-	//------------------------- 첨부파일 등록 Start
-	//-------------------------------------------
-	//var maxFileNum = 3;
-	//var multi_selector = new MultiSelector( document.getElementById( 'egovComFileList' ), maxFileNum, 'file_label' );
-	//multi_selector.addElement( document.getElementById( 'egovfile_1' ) );
-	//------------------------- 첨부파일 등록 End
-	
-	// 첫 입력란에 포커스
-	document.getElementById("newsVO").newsSj.focus();
-
-}
-/* ********************************************************
  * 저장처리화면
  ******************************************************** */
 function fn_egov_regist_news(form){
 	
 	//input item Client-Side validate
 	if (!validateNewsVO(form)) {	
-		return false;
-	} else {
-		if(confirm("<spring:message code="common.regist.msg" />")){	
-			form.submit();	
-		}
-	} 
+		return;
+	}
+
+	if(confirm("<spring:message code="common.regist.msg" />")){	
+		form.submit();
+	}
 }
 
 </script>
 
 </head>
-<body onLoad="fn_egov_init();">
+<body>
 
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
@@ -174,7 +155,7 @@ function fn_egov_regist_news(form){
 	
 </div>
 
-<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
+<input name="pageIndex" type="hidden" value="<c:out value='${newsVO.pageIndex}'/>"/>
 <input name="cmd" type="hidden" value="<c:out value='save'/>">
 </form:form>
 

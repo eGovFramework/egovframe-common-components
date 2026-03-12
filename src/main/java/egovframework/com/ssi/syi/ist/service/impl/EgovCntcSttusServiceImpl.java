@@ -2,8 +2,6 @@ package egovframework.com.ssi.syi.ist.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Service;
@@ -11,6 +9,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.ssi.syi.ist.service.CntcSttus;
 import egovframework.com.ssi.syi.ist.service.CntcSttusVO;
 import egovframework.com.ssi.syi.ist.service.EgovCntcSttusService;
+import jakarta.annotation.Resource;
 
 /**
  * 연계현황에 대한 서비스 구현클래스를 정의한다.

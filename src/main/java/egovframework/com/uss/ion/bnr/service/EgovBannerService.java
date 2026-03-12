@@ -45,35 +45,27 @@ public interface EgovBannerService {
 
 	/**
 	 * 배너정보를 신규로 등록한다.
-	 * @param banner - 배너 model
-	 * 
-	 * @param banner
+	 * @param bannerVO - 배너 VO
 	 */
-	public BannerVO insertBanner(Banner banner, BannerVO bannerVO) throws Exception;
+	public BannerVO insertBanner(BannerVO bannerVO) throws Exception;
 
 	/**
 	 * 기 등록된 배너정보를 수정한다.
-	 * @param banner - 배너 model
-	 * 
-	 * @param banner
+	 * @param bannerVO - 배너 VO
 	 */
-	public void updateBanner(Banner banner) throws Exception;
+	public void updateBanner(BannerVO bannerVO) throws Exception;
 
 	/**
 	 * 기 등록된 배너정보를 삭제한다.
-	 * @param banner - 배너 model
-	 * 
-	 * @param banner
+	 * @param bannerVO - 배너 VO
 	 */
-	public void deleteBanner(Banner banner) throws Exception;
+	public void deleteBanner(BannerVO bannerVO) throws Exception;
 
 	/**
 	 * 기 등록된 배너정보의 이미지파일을 삭제한다.
-	 * @param banner - 배너 model
-	 * 
-	 * @param banner
+	 * @param bannerVO - 배너 VO
 	 */
-	public void deleteBannerFile(Banner banner) throws Exception;
+	public void deleteBannerFile(BannerVO bannerVO) throws Exception;
 
 	/**
 	 * 배너가 특정화면에 반영된 결과를 조회한다.

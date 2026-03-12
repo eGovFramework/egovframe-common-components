@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +11,7 @@ import egovframework.com.sym.mnu.bmm.service.BkmkMenuManage;
 import egovframework.com.sym.mnu.bmm.service.BkmkMenuManageVO;
 import egovframework.com.sym.mnu.bmm.service.EgovBkmkMenuManageService;
 import egovframework.com.sym.mnu.mpm.service.MenuManageVO;
+import jakarta.annotation.Resource;
 
 /**
  * 바로가기메뉴를 관리하는 서비스 구현 클래스

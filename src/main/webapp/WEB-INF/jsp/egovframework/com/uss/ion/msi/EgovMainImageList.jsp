@@ -171,6 +171,7 @@ function press() {
 		</ul>
 	</div>
 <input type="hidden" name="imageId">
+<input type="hidden" name="imageIds" value="">
 <input type="hidden" name="pageIndex" value="<c:if test="${empty mainImageVO.pageIndex }">1</c:if><c:if test="${!empty mainImageVO.pageIndex }"><c:out value='${mainImageVO.pageIndex}'/></c:if>" >
 <input type="hidden" name="searchCondition" value="1" >
 </form>

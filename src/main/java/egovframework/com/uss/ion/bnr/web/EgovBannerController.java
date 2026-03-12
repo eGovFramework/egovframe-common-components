@@ -25,11 +25,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -39,7 +36,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -48,10 +44,11 @@ import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
-import egovframework.com.uss.ion.bnr.service.Banner;
 import egovframework.com.uss.ion.bnr.service.BannerVO;
 import egovframework.com.uss.ion.bnr.service.EgovBannerService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 @Controller
 public class EgovBannerController {
@@ -71,9 +68,6 @@ public class EgovBannerController {
     /** Message ID Generation */
     @Resource(name="egovBannerIdGnrService")
     private EgovIdGnrService egovBannerIdGnrService;
-
-    @Autowired
-	private DefaultBeanValidator beanValidator;
 
     /**
 	 * 배너 목록화면 이동
@@ -132,7 +126,7 @@ public class EgovBannerController {
 
     	bannerVO.setBannerId(bannerId);
 
-    	model.addAttribute("banner", egovBannerService.selectBanner(bannerVO));
+    	model.addAttribute("bannerVO", egovBannerService.selectBanner(bannerVO));
     	model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
     	return "egovframework/com/uss/ion/bnr/EgovBannerUpdt";
 	}
@@ -146,7 +140,7 @@ public class EgovBannerController {
 	public String insertViewBanner(@ModelAttribute("bannerVO") BannerVO bannerVO,
 			                        ModelMap model) throws Exception {
 
-    	model.addAttribute("banner", bannerVO);
+    	model.addAttribute("bannerVO", bannerVO);
     	return "egovframework/com/uss/ion/bnr/EgovBannerRegist";
 	}
 
@@ -158,13 +152,10 @@ public class EgovBannerController {
     @SuppressWarnings("unused")
 	@RequestMapping(value="/uss/ion/bnr/addBanner.do")
 	public String insertBanner(final MultipartHttpServletRequest multiRequest,
-			                   @ModelAttribute("banner") Banner banner,
-			                   @ModelAttribute("bannerVO") BannerVO bannerVO,
+			                   @Valid @ModelAttribute("bannerVO") BannerVO bannerVO,
 			                    BindingResult bindingResult,
 			                    SessionStatus status,
 			                    ModelMap model) throws Exception {
-
-    	beanValidator.validate(banner, bindingResult); //validation 수행
 
     	if (bindingResult.hasErrors()) {
     		model.addAttribute("bannerVO", bannerVO);
@@ -195,16 +186,14 @@ public class EgovBannerController {
 
 	    	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
-	    	banner.setBannerId(egovBannerIdGnrService.getNextStringId());
-	    	banner.setBannerImage(bannerImage);
-	    	banner.setBannerImageFile(atchFileId);
-	    	banner.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
-	    	bannerVO.setBannerId(banner.getBannerId());
+	    	bannerVO.setBannerId(egovBannerIdGnrService.getNextStringId());
+	    	bannerVO.setBannerImage(bannerImage);
+	    	bannerVO.setBannerImageFile(atchFileId);
+	    	bannerVO.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
 	    	status.setComplete();
 	    	model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
-	    	model.addAttribute("banner", egovBannerService.insertBanner(banner, bannerVO));
+	    	model.addAttribute("bannerVO", egovBannerService.insertBanner(bannerVO));
 
-//	    	return "egovframework/com/uss/ion/bnr/EgovBannerUpdt";
 			return "forward:/uss/ion/bnr/selectBannerList.do";
 
 		}
@@ -218,14 +207,13 @@ public class EgovBannerController {
     @SuppressWarnings("unused")
 	@RequestMapping(value="/uss/ion/bnr/updtBanner.do")
 	public String updateBanner(final MultipartHttpServletRequest multiRequest,
-			                   @ModelAttribute("banner") Banner banner,
+			                   @Valid @ModelAttribute("bannerVO") BannerVO bannerVO,
 			                    BindingResult bindingResult,
                                 SessionStatus status,
                                 ModelMap model) throws Exception {
-    	beanValidator.validate(banner, bindingResult); //validation 수행
 
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("bannerVO", banner);
+			model.addAttribute("bannerVO", bannerVO);
 			return "egovframework/com/uss/ion/bnr/EgovBannerUpdt";
 		} else {
 
@@ -252,23 +240,21 @@ public class EgovBannerController {
 				}
 
 				if (vo == null) {
-					banner.setAtchFile(false);
+					bannerVO.setAtchFile(false);
 				} else {
-					banner.setBannerImage(bannerImage);
-					banner.setBannerImageFile(atchFileId);
-					banner.setAtchFile(true);
-					
+					bannerVO.setBannerImage(bannerImage);
+					bannerVO.setBannerImageFile(atchFileId);
+					bannerVO.setAtchFile(true);
+
 				}
-			} else { 
-				banner.setAtchFile(false);
+			} else {
+				bannerVO.setAtchFile(false);
 			}
 
 			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-			banner.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
+			bannerVO.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
 
-
-			egovBannerService.updateBanner(banner);
-			//	    	return "forward:/uss/ion/bnr/getBanner.do";
+			egovBannerService.updateBanner(bannerVO);
 			return "forward:/uss/ion/bnr/selectBannerList.do";
 
 		}
@@ -282,12 +268,12 @@ public class EgovBannerController {
 	 */
     @RequestMapping(value="/uss/ion/bnr/removeBanner.do")
 	public String deleteBanner(@RequestParam("bannerId") String bannerId,
-			                   @ModelAttribute("banner") Banner banner,
+			                   @ModelAttribute("bannerVO") BannerVO bannerVO,
 			                    SessionStatus status,
 			                    ModelMap model) throws Exception {
 
-    	banner.setBannerId(bannerId);
-    	egovBannerService.deleteBanner(banner);
+    	bannerVO.setBannerId(bannerId);
+    	egovBannerService.deleteBanner(bannerVO);
     	status.setComplete();
     	model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		return "forward:/uss/ion/bnr/selectBannerList.do";
@@ -302,15 +288,15 @@ public class EgovBannerController {
 	 */
     @RequestMapping(value="/uss/ion/bnr/removeBannerList.do")
 	public String deleteBannerList(@RequestParam("bannerIds") String bannerIds,
-			                       @ModelAttribute("banner") Banner banner,
+			                       @ModelAttribute("bannerVO") BannerVO bannerVO,
 			                        SessionStatus status,
 			                        ModelMap model) throws Exception {
 
     	String [] strBannerIds = bannerIds.split(";");
 
-    	for(int i=0; i<strBannerIds.length;i++) {
-    		banner.setBannerId(strBannerIds[i]);
-    		egovBannerService.deleteBanner(banner);
+    	for (String strBannerId : strBannerIds) {
+    		bannerVO.setBannerId(strBannerId);
+    		egovBannerService.deleteBanner(bannerVO);
     	}
 
     	status.setComplete();
@@ -344,6 +330,12 @@ public class EgovBannerController {
     @RequestMapping(value="/uss/ion/bnr/selectBannerMainList.do")
 	public String selectBannerMainList(@ModelAttribute("bannerVO") BannerVO bannerVO,
                              		ModelMap model) throws Exception{
+
+    	/** 로그인 사용자와 동일한 ID로 등록된 배너만 조회 */
+    	LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+    	if (loginVO != null) {
+    		bannerVO.setUserId(EgovStringUtil.isNullToString(loginVO.getId()));
+    	}
 
     	/** paging */
     	PaginationInfo paginationInfo = new PaginationInfo();

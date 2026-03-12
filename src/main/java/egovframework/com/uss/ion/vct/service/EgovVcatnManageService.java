@@ -39,21 +39,21 @@ public interface EgovVcatnManageService {
 
 	/**
 	 * 휴가관리 정보를 신규로 등록한다.
-	 * @param vcatnManage - 휴가관리 model
+	 * @param vcatnManageVO - 휴가관리 VO
 	 */
-	public String insertVcatnManage(VcatnManage vcatnManage, VcatnManageVO vcatnManageVO) throws Exception;
+	public String insertVcatnManage(VcatnManageVO vcatnManageVO) throws Exception;
 
 	/**
 	 * 기 등록된 휴가관리 정보를 수정한다.
-	 * @param vcatnManage - 휴가관리 model
+	 * @param vcatnManageVO - 휴가관리 VO
 	 */
-	public String updtVcatnManage(VcatnManage vcatnManage, VcatnManageVO vcatnManageVO) throws Exception;
+	public String updtVcatnManage(VcatnManageVO vcatnManageVO) throws Exception;
 
 	/**
 	 * 기 등록된 휴가관리 정보를 삭제한다.
-	 * @param vcatnManage - 휴가관리 model
+	 * @param vcatnManageVO - 휴가관리 VO
 	 */
-	public void deleteVcatnManage(VcatnManage vcatnManage) throws Exception;
+	public void deleteVcatnManage(VcatnManageVO vcatnManageVO) throws Exception;
 
     /**
 	 * 휴가일자 중복여부 체크
@@ -81,9 +81,9 @@ public interface EgovVcatnManageService {
 
 	/**
 	 * 신청된 휴가를 승인처리한다.
-	 * @param vcatnManage - 휴가관리 model
+	 * @param vcatnManageVO - 휴가관리 VO
 	 */
-	public void updtVcatnManageConfm(VcatnManage vcatnManage) throws Exception;
+	public void updtVcatnManageConfm(VcatnManageVO vcatnManageVO) throws Exception;
 	
 	
     /*** 연차관련 ***/	
@@ -95,9 +95,9 @@ public interface EgovVcatnManageService {
 	public VcatnManageVO selectIndvdlYrycManage(String sUsid) throws Exception;
 
 	/**
-	 * 신청된 휴가를 승인처리한다.
-	 * @param vcatnManage - 휴가관리 model
+	 * 개인별 연차정보를 수정한다.
+	 * @param vcatnManageVO - 휴가관리 VO
 	 */
-	public void updtIndvdlYrycManage(IndvdlYrycManage indvdlYrycManage) throws Exception;
+	public void updtIndvdlYrycManage(VcatnManageVO vcatnManageVO) throws Exception;
 
 }

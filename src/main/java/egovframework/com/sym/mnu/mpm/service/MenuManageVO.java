@@ -1,5 +1,8 @@
 package egovframework.com.sym.mnu.mpm.service;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 메뉴목록관리 처리를 위한 VO 클래스르를 정의한다
  * 
@@ -22,20 +25,30 @@ public class MenuManageVO {
 
 	/** 메뉴정보 */
 	/** 메뉴번호 */
+	@EgovNullCheck
 	private int menuNo;
 	/** 메뉴순서 */
+	@EgovNullCheck
 	private int menuOrdr;
 	/** 메뉴명 */
+	@EgovNullCheck
+	@Size(max=50)
 	private String menuNm;
 	/** 상위메뉴번호 */
+	@EgovNullCheck
 	private int upperMenuId;
 	/** 메뉴설명 */
+	@Size(max=100)
 	private String menuDc;
 	/** 관련이미지경로 */
+	@Size(max=100)
 	private String relateImagePath;
 	/** 관련이미지명 */
+	@Size(max=50)
 	private String relateImageNm;
 	/** 프로그램파일명 */
+	@EgovNullCheck
+	@Size(max=50)
 	private String progrmFileNm;
 
 	/** 사이트맵 */

@@ -2,15 +2,11 @@ package egovframework.com.uss.olp.cns.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -20,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -38,6 +33,9 @@ import egovframework.com.uss.olp.cns.service.CnsltManageVO;
 import egovframework.com.uss.olp.cns.service.EgovCnsltManageService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovFileScrty;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 /**
  * 상담내용을 처리하는 컨트롤러 클래스
@@ -84,10 +82,6 @@ public class EgovCnsltManageController {
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
-
-	// Validation 관련
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/**
 	 * 개별 배포시 메인메뉴를 조회한다.
@@ -287,10 +281,8 @@ public class EgovCnsltManageController {
 	@RequestMapping("/uss/olp/cns/CnsltDtlsRegist.do")
 	public String insertCnsltDtls(final MultipartHttpServletRequest multiRequest, // 첨부파일을 위한...
 			@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO,
-			@ModelAttribute("cnsltManageVO") CnsltManageVO cnsltManageVO, BindingResult bindingResult, ModelMap model)
+			@Valid @ModelAttribute("cnsltManageVO") CnsltManageVO cnsltManageVO, BindingResult bindingResult, ModelMap model)
 			throws Exception {
-
-		beanValidator.validate(cnsltManageVO, bindingResult);
 
 		if (bindingResult.hasErrors()) {
 
@@ -440,11 +432,8 @@ public class EgovCnsltManageController {
 	@RequestMapping("/uss/olp/cns/CnsltDtlsUpdt.do")
 	public String updateCnsltDtls(@RequestParam("atchFileAt") String atchFileAt,
 			final MultipartHttpServletRequest multiRequest, @ModelAttribute("searchVO") CnsltManageDefaultVO searchVO,
-			@ModelAttribute("cnsltManageVO") CnsltManageVO cnsltManageVO, BindingResult bindingResult, ModelMap model)
+			@Valid @ModelAttribute("cnsltManageVO") CnsltManageVO cnsltManageVO, BindingResult bindingResult, ModelMap model)
 			throws Exception {
-
-		// Validation
-		beanValidator.validate(cnsltManageVO, bindingResult);
 
 		if (bindingResult.hasErrors()) {
 
@@ -587,7 +576,7 @@ public class EgovCnsltManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/uss/olp/cnm/CnsltAnswerDetailInqire.do")
-	public String selectCnsltAnswerListDetail(CnsltManageVO cnsltManageVO,
+	public String selectCnsltAnswerListDetail(CnsltManageVO cnsltManageVO, 
 			@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO, ModelMap model) throws Exception {
 
 		CnsltManageVO vo = cnsltManageService.selectCnsltListDetail(cnsltManageVO);
@@ -632,9 +621,19 @@ public class EgovCnsltManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/uss/olp/cnm/CnsltDtlsAnswerUpdt.do")
-	public String updateCnsltDtlsAnswer(CnsltManageVO cnsltManageVO,
-			@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO) throws Exception {
+	public String updateCnsltDtlsAnswer(@Valid CnsltManageVO cnsltManageVO, BindingResult bindingResult,
+			@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO, Model model) throws Exception {
 
+		if (bindingResult.hasErrors()) {
+
+			ComDefaultCodeVO vo = new ComDefaultCodeVO();
+			vo.setCodeId("COM028");
+
+			List<CmmnDetailCode> resultList = cmmUseService.selectCmmCodeDetail(vo);
+			model.addAttribute("resultList", resultList);
+			return "egovframework/com/uss/olp/cns/EgovCnsltDtlsAnswerUpdt";
+
+		}
 		// 로그인VO에서 사용자 정보 가져오기
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 

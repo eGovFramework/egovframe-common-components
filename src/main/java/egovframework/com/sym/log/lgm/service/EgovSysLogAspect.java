@@ -1,16 +1,17 @@
 package egovframework.com.sym.log.lgm.service;
 
-import javax.annotation.Resource;
-
 import org.aspectj.lang.ProceedingJoinPoint;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.util.StopWatch;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import jakarta.annotation.Resource;
 
 /**
  * 시스템 로그 생성을 위한 ASPECT 클래스
- * 
+ *
  * @author 공통 서비스 개발팀 이삼섭
  * @since 2009. 3. 11.
  * @version 1.0
@@ -32,6 +33,8 @@ public class EgovSysLogAspect {
 	@Resource(name = "EgovSysLogService")
 	private EgovSysLogService sysLogService;
 
+	private static final Logger LOGGER = LoggerFactory.getLogger(EgovSysLogAspect.class);
+
 	/**
 	 * 시스템 로그정보를 생성한다. sevice Class의 insert로 시작되는 Method
 	 *
@@ -48,30 +51,9 @@ public class EgovSysLogAspect {
 
 			Object retValue = joinPoint.proceed();
 			return retValue;
-		} catch (Throwable e) {
-			throw e;
 		} finally {
 			stopWatch.stop();
-
-			SysLog sysLog = new SysLog();
-			String className = joinPoint.getTarget().getClass().getName();
-			String methodName = joinPoint.getSignature().getName();
-			String processSeCode = "C";
-			String processTime = Long.toString(stopWatch.getTotalTimeMillis());
-
-			LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-			if (loginVO != null) {
-				sysLog.setRqesterId(loginVO.getUniqId());
-				sysLog.setRqesterIp(loginVO.getIp());
-			}
-
-			sysLog.setSrvcNm(className);
-			sysLog.setMethodNm(methodName);
-			sysLog.setProcessSeCode(processSeCode);
-			sysLog.setProcessTime(processTime);
-
-			sysLogService.logInsertSysLog(sysLog);
-
+			saveSysLogSafely(joinPoint, stopWatch, "C");
 		}
 
 	}
@@ -92,30 +74,10 @@ public class EgovSysLogAspect {
 
 			Object retValue = joinPoint.proceed();
 			return retValue;
-		} catch (Throwable e) {
-			throw e;
+
 		} finally {
 			stopWatch.stop();
-
-			SysLog sysLog = new SysLog();
-			String className = joinPoint.getTarget().getClass().getName();
-			String methodName = joinPoint.getSignature().getName();
-			String processSeCode = "U";
-			String processTime = Long.toString(stopWatch.getTotalTimeMillis());
-
-			LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-			if (loginVO != null) {
-				sysLog.setRqesterId(loginVO.getUniqId());
-				sysLog.setRqesterIp(loginVO.getIp());
-			}
-
-			sysLog.setSrvcNm(className);
-			sysLog.setMethodNm(methodName);
-			sysLog.setProcessSeCode(processSeCode);
-			sysLog.setProcessTime(processTime);
-
-			sysLogService.logInsertSysLog(sysLog);
-
+			saveSysLogSafely(joinPoint, stopWatch, "U");
 		}
 
 	}
@@ -136,30 +98,10 @@ public class EgovSysLogAspect {
 
 			Object retValue = joinPoint.proceed();
 			return retValue;
-		} catch (Throwable e) {
-			throw e;
+
 		} finally {
 			stopWatch.stop();
-
-			SysLog sysLog = new SysLog();
-			String className = joinPoint.getTarget().getClass().getName();
-			String methodName = joinPoint.getSignature().getName();
-			String processSeCode = "D";
-			String processTime = Long.toString(stopWatch.getTotalTimeMillis());
-
-			LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-			if (loginVO != null) {
-				sysLog.setRqesterId(loginVO.getUniqId());
-				sysLog.setRqesterIp(loginVO.getIp());
-			}
-
-			sysLog.setSrvcNm(className);
-			sysLog.setMethodNm(methodName);
-			sysLog.setProcessSeCode(processSeCode);
-			sysLog.setProcessTime(processTime);
-
-			sysLogService.logInsertSysLog(sysLog);
-
+			saveSysLogSafely(joinPoint, stopWatch, "D");
 		}
 
 	}
@@ -180,21 +122,33 @@ public class EgovSysLogAspect {
 
 			Object retValue = joinPoint.proceed();
 			return retValue;
-		} catch (Throwable e) {
-			throw e;
+
 		} finally {
 			stopWatch.stop();
+			saveSysLogSafely(joinPoint, stopWatch, "R");
+		}
 
+	}
+	// 2026.03.09 KISA 취약점 조치
+	private void saveSysLogSafely(ProceedingJoinPoint joinPoint, StopWatch stopWatch, String processSeCode) {
+		String className =  "unknown";
+		String methodName = "unknown";
+		try {
+			Object target = joinPoint.getTarget();
+			if (target != null) {
+				className = target.getClass().getName();
+			}
+
+			if (joinPoint.getSignature() != null) {
+				methodName = joinPoint.getSignature().getName();
+			}
 			SysLog sysLog = new SysLog();
-			String className = joinPoint.getTarget().getClass().getName();
-			String methodName = joinPoint.getSignature().getName();
-			String processSeCode = "R";
 			String processTime = Long.toString(stopWatch.getTotalTimeMillis());
 
 			LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 			if (loginVO != null) {
-				sysLog.setRqesterId(loginVO.getUniqId());
-				sysLog.setRqesterIp(loginVO.getIp());
+					sysLog.setRqesterId(loginVO.getUniqId());
+					sysLog.setRqesterIp(loginVO.getIp());
 			}
 
 			sysLog.setSrvcNm(className);
@@ -203,9 +157,11 @@ public class EgovSysLogAspect {
 			sysLog.setProcessTime(processTime);
 
 			sysLogService.logInsertSysLog(sysLog);
-
+		// PMD suppression: 호출 인터페이스(EgovSysLogService)가 throws Exception으로
+		// 선언되어 있어 구체적인 예외 타입 지정 불가
+		} catch (Exception logEx) { // NOPMD - EgovSysLogService 인터페이스가 throws Exception으로 선언되어 불가피
+				// 로그 저장 실패가 원본 업무 예외를 덮지 않도록 별도 처리
+				LOGGER.error("시스템 로그 저장 실패: {}.{}",  className, methodName, logEx);
 		}
-
 	}
-
 }

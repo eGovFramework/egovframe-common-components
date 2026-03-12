@@ -2,12 +2,9 @@ package egovframework.com.dam.app.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -15,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -24,6 +20,8 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.dam.app.service.EgovKnoAppraisalService;
 import egovframework.com.dam.app.service.KnoAppraisal;
 import egovframework.com.dam.app.service.KnoAppraisalVO;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * <pre>
@@ -60,9 +58,6 @@ public class EgovKnoAppraisalController {
 	/** EgovPropertyService */
 	@Resource(name = "propertiesService")
 	protected EgovPropertyService propertiesService;
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
@@ -158,10 +153,9 @@ public class EgovKnoAppraisalController {
 	 * @param knoAps
 	 */
 	@PostMapping(value = "/dam/app/EgovComDamAppraisalModify.do")
-	public String updateKnoAppraisal(@ModelAttribute("knoId") KnoAppraisal knoAppraisal, BindingResult bindingResult,
+	public String updateKnoAppraisal(@Valid @ModelAttribute("knoId") KnoAppraisal knoAppraisal, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 
-		beanValidator.validate(knoAppraisal, bindingResult);
 		if (bindingResult.hasErrors()) {
 			KnoAppraisal vo = knoAppraisalService.selectKnoAppraisal(knoAppraisal);
 			model.addAttribute("knoAppraisal", vo);

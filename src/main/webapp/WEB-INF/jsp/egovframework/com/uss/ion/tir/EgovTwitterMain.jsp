@@ -1,5 +1,5 @@
 <%--
-  Class Name : EgovTwitterRecptn.jsp
+   Class Name : EgovTwitterRecptn.jsp
   Description : 트위터 수신(목록) 페이지
   Modification Information
 
@@ -10,7 +10,7 @@
 
     author   : 공통서비스 개발팀 장동한
     since    : 2010.07.07
-
+    
 --%>
 <%@ page contentType="text/html; charset=utf-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
@@ -19,7 +19,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <%
 String sCmd = request.getParameter("cmd") == null ? "": (String)request.getParameter("cmd");
@@ -68,19 +67,25 @@ if( !rtoken.equals("") && !rtoken.equals("") &&
 	if(sCmd.equals("RECPTN")){
 		%>location.href = '<c:url value='/uss/ion/tir/listTwitterRecptn.do'/>';<%
 	}else{
-		%>location.href = '<c:url value='/uss/ion/tir/registTwitterTrnsmit.do'/>';<%
+		%>location.href = '<c:url value='/uss/ion/tir/selectTwitterV2Demo.do'/>';<%
 	}
 
 }
 %>
+
 </script>
 </head>
 <body>
 <DIV id="content" style="width:712px">
-<!-- noscript 테그 -->
-<noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
+<!-- noscript 테그  -->
+<noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
 <div class="wTableFrm">
+	<c:if test="${not empty twitterErrorMessage}">
+		<div style="margin-bottom:10px; color:#b00020; font-weight:bold;">
+			<c:out value="${twitterErrorMessage}"/>
+		</div>
+	</c:if>
 	<!-- 타이틀 -->
 	<h2><spring:message code="ussIonTir.twitterMain.twitterMain"/></h2><!-- 트위터(Twitter) 앱등록 안내 -->
 	<sup><spring:message code="ussIonTir.twitterMain.version"/></sup>
@@ -89,15 +94,19 @@ if( !rtoken.equals("") && !rtoken.equals("") &&
 		<li>1) <a style="text-decoration: underline; color:blue;" href="https://developer.twitter.com" target="_blank"  title="새 창으로 이동" >https://developer.twitter.com</a> <spring:message code="ussIonTir.twitterMain.app"/></li><!-- 트위터 사이트에 로그인한다. -->
 				<img src="<c:url value='/images/egovframework/com/uss/ion/tir/twitter_developer.png'/>" alt="트위터 어플 등록 사이트 이미지" title="트위터 어플 등록 사이트">
 		<li>2) Developer Portal  <spring:message code="ussIonTir.twitterMain.buttonClick"/><br><!-- 버튼을 클릭하고 등록 페이지에 아래와 같이 트위터 어플리케이션 서비스를 등록한다. -->
-			<ul style = "margin: 20px 0;">
-				<h3 style="margin: 10px 0;">※<spring:message code="ussIonTir.twitterMain.notice" />※</h3>
-				<li>- App Permissions : Read and Write</li>
-				<li>- Type of App : Navtive App</li>
-				<li>- CallBack URI : http://common.egovframe.go.kr/uss/ion/tir/selectTwitterPopupProcess.do<spring:message code="ussIonTir.twitterMain.returnUrl"/></li><!-- (키 발급 후 리턴되는 URL) -->
-			</ul>
 		<li>3) <spring:message code="ussIonTir.twitterMain.key"/><br><!-- Consumer key, Consumer secret 등이 아래와 같이 발급된다. -->
+			<ul style = "margin: 20px 0;">
+				<h3 style="margin: 10px 0;"><spring:message code="ussIonTir.twitterMain.notice" /></h3>
+				<li>- App Permissions : scope로 범위 설정 가능합니다.</li>
+				<li>- Type of App : Web App</li>
+				<li>- CallBack URI : http://common.egovframe.go.kr/twitter/callback.do<spring:message code="ussIonTir.twitterMain.returnUrl"/></li><!-- (키 발급 후 리턴되는 URL)-->
+				<li>- OAuth2.0은 HTTPS 환경을 권장하고 있으며, X의 경우 HTTP요청을 거절하는 경우가 많습니다.</li>
+			</ul>
+		
 	</ol>
-		<span class="btn_s"><a onclick = "fn_egov_popupOpen_Init()"><spring:message code="ussIonTir.twitterMain.auth"/></a></span>
+		<%-- <span class="btn_s"><a onclick = "fn_egov_popupOpen_Init()"><spring:message code="ussIonTir.twitterMain.auth"/></a></span>
+		 --%>
+        <button type="button" onclick="location.href='<c:url value='/uss/ion/tir/selectTwitterV2Demo.do'/>'">V2 DEMO</button>
 </div>
 
 </DIV>

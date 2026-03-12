@@ -4,14 +4,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.apache.commons.collections.map.ListOrderedMap;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -19,7 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.LoginVO;
@@ -28,11 +24,12 @@ import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.sym.cal.service.EgovCalRestdeManageService;
 import egovframework.com.sym.cal.service.Restde;
 import egovframework.com.sym.cal.service.RestdeVO;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
- * 공휴일에 관한 요청을 받아 서비스 클래스로 요청을 전달하고 서비스클래스에서 처리한 결과를 웹 화면으로 전달을 위한 Controller를
- * 정의한다
- * 
+ *
+ * 공휴일에 관한 요청을 받아 서비스 클래스로 요청을 전달하고 서비스클래스에서 처리한 결과를 웹 화면으로 전달을 위한 Controller를 정의한다
  * @author 공통서비스 개발팀 이중호
  * @since 2009.04.01
  * @version 1.0
@@ -69,19 +66,6 @@ public class EgovCalRestdeManageController {
 	@Resource(name = "EgovCmmUseService")
 	private EgovCmmUseService cmmUseService;
 
-	@Autowired
-	private DefaultBeanValidator beanValidator;
-
-	private void checkRestdeWithValidator(Restde restde, BindingResult bindingResult) {
-
-		restde.setRestdeDe("dummy");
-		restde.setRestdeNm("dummy");
-		restde.setRestdeDc("dummy");
-		restde.setRestdeSeCode("dummy");
-
-		beanValidator.validate(restde, bindingResult);
-	}
-
 	/**
 	 * 달력 메인창을 호출한다.
 	 * 
@@ -103,10 +87,7 @@ public class EgovCalRestdeManageController {
 	 */
 	@SuppressWarnings("unused")
 	@RequestMapping(value = "/sym/cal/callCal.do")
-	public String callCal(Restde restde, BindingResult bindingResult, ModelMap model) throws Exception {
-
-		// 2011.10.18 달력 출력을 위해 필요한 숫자 이외의 값을 사용하는 경우 체크
-		checkRestdeWithValidator(restde, bindingResult);
+	public String callCal(@Valid Restde restde, BindingResult bindingResult, ModelMap model) throws Exception {
 
 		if (bindingResult.hasErrors()) {
 
@@ -218,16 +199,13 @@ public class EgovCalRestdeManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/cal/EgovselectNormalCalendar.do")
-	public String selectNormalRestdePopup(Restde restde, BindingResult bindingResult, ModelMap model) throws Exception {
+	public String selectNormalRestdePopup(Restde restde, ModelMap model) throws Exception {
 
-		// 2011.10.18 달력 출력을 위해 필요한 숫자 이외의 값을 사용하는 경우 체크
-		checkRestdeWithValidator(restde, bindingResult);
-
-		if (bindingResult.hasErrors()) {
-
-			return "egovframework/com/cmm/error/dataAccessFailure";
-
-		}
+//		if (bindingResult.hasErrors()) {
+//
+//			return "egovframework/com/cmm/error/dataAccessFailure";
+//
+//		}
 
 		Calendar cal = Calendar.getInstance();
 
@@ -292,11 +270,8 @@ public class EgovCalRestdeManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/cal/EgovselectAdministCalendar.do")
-	public String selectAdministRestdePopup(Restde restde, BindingResult bindingResult, ModelMap model)
+	public String selectAdministRestdePopup(@Valid Restde restde, BindingResult bindingResult, ModelMap model)
 			throws Exception {
-
-		// 2011.10.18 달력 출력을 위해 필요한 숫자 이외의 값을 사용하는 경우 체크
-		checkRestdeWithValidator(restde, bindingResult);
 
 		if (bindingResult.hasErrors()) {
 
@@ -355,10 +330,7 @@ public class EgovCalRestdeManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/cal/EgovNormalDayCalendar.do")
-	public String selectNormalDayCalendar(Restde restde, BindingResult bindingResult, ModelMap model) throws Exception {
-
-		// 2011.10.18 달력 출력을 위해 필요한 숫자 이외의 값을 사용하는 경우 체크
-		checkRestdeWithValidator(restde, bindingResult);
+	public String selectNormalDayCalendar(@Valid Restde restde, BindingResult bindingResult, ModelMap model) throws Exception {
 
 		if (bindingResult.hasErrors()) {
 
@@ -431,11 +403,8 @@ public class EgovCalRestdeManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/cal/EgovNormalWeekCalendar.do")
-	public String selectNormalWeekCalendar(Restde restde, BindingResult bindingResult, ModelMap model)
+	public String selectNormalWeekCalendar(@Valid Restde restde, BindingResult bindingResult, ModelMap model)
 			throws Exception {
-
-		// 2011.10.18 달력 출력을 위해 필요한 숫자 이외의 값을 사용하는 경우 체크
-		checkRestdeWithValidator(restde, bindingResult);
 
 		if (bindingResult.hasErrors()) {
 
@@ -603,11 +572,8 @@ public class EgovCalRestdeManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/cal/EgovNormalMonthCalendar.do")
-	public String selectNormalMonthCalendar(Restde restde, BindingResult bindingResult, ModelMap model)
+	public String selectNormalMonthCalendar(@Valid Restde restde, BindingResult bindingResult, ModelMap model)
 			throws Exception {
-
-		// 2011.10.18 달력 출력을 위해 필요한 숫자 이외의 값을 사용하는 경우 체크
-		checkRestdeWithValidator(restde, bindingResult);
 
 		if (bindingResult.hasErrors()) {
 
@@ -669,11 +635,8 @@ public class EgovCalRestdeManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/cal/EgovNormalYearCalendar.do")
-	public String selectNormalYearCalendar(Restde restde, BindingResult bindingResult, ModelMap model)
+	public String selectNormalYearCalendar(@Valid Restde restde, BindingResult bindingResult, ModelMap model)
 			throws Exception {
-
-		// 2011.10.18 달력 출력을 위해 필요한 숫자 이외의 값을 사용하는 경우 체크
-		checkRestdeWithValidator(restde, bindingResult);
 
 		if (bindingResult.hasErrors()) {
 
@@ -858,11 +821,8 @@ public class EgovCalRestdeManageController {
 	 */
 	@SuppressWarnings("static-access")
 	@RequestMapping(value = "/sym/cal/EgovAdministDayCalendar.do")
-	public String selectAdministDayCalendar(Restde restde, BindingResult bindingResult, ModelMap model)
+	public String selectAdministDayCalendar(@Valid Restde restde, BindingResult bindingResult, ModelMap model)
 			throws Exception {
-
-		// 2011.10.18 달력 출력을 위해 필요한 숫자 이외의 값을 사용하는 경우 체크
-		checkRestdeWithValidator(restde, bindingResult);
 
 		if (bindingResult.hasErrors()) {
 
@@ -936,11 +896,8 @@ public class EgovCalRestdeManageController {
 	 */
 	@SuppressWarnings("static-access")
 	@RequestMapping(value = "/sym/cal/EgovAdministWeekCalendar.do")
-	public String selectAdministWeekCalendar(Restde restde, BindingResult bindingResult, ModelMap model)
+	public String selectAdministWeekCalendar(@Valid Restde restde, BindingResult bindingResult, ModelMap model)
 			throws Exception {
-
-		// 2011.10.18 달력 출력을 위해 필요한 숫자 이외의 값을 사용하는 경우 체크
-		checkRestdeWithValidator(restde, bindingResult);
 
 		if (bindingResult.hasErrors()) {
 
@@ -1108,11 +1065,8 @@ public class EgovCalRestdeManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/cal/EgovAdministMonthCalendar.do")
-	public String selectAdministMonthCalendar(Restde restde, BindingResult bindingResult, ModelMap model)
+	public String selectAdministMonthCalendar(@Valid Restde restde, BindingResult bindingResult, ModelMap model)
 			throws Exception {
-
-		// 2011.10.18 달력 출력을 위해 필요한 숫자 이외의 값을 사용하는 경우 체크
-		checkRestdeWithValidator(restde, bindingResult);
 
 		if (bindingResult.hasErrors()) {
 
@@ -1174,11 +1128,8 @@ public class EgovCalRestdeManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/cal/EgovAdministYearCalendar.do")
-	public String selectAdministYearCalendar(Restde restde, BindingResult bindingResult, ModelMap model)
+	public String selectAdministYearCalendar(@Valid Restde restde, BindingResult bindingResult, ModelMap model)
 			throws Exception {
-
-		// 2011.10.18 달력 출력을 위해 필요한 숫자 이외의 값을 사용하는 경우 체크
-		checkRestdeWithValidator(restde, bindingResult);
 
 		if (bindingResult.hasErrors()) {
 
@@ -1398,9 +1349,9 @@ public class EgovCalRestdeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping(value = "/sym/cal/EgovRestdeRegist.do")
-	public String insertRestde(@ModelAttribute("loginVO") LoginVO loginVO, @ModelAttribute("restde") Restde restde,
+	public String insertRestde(@ModelAttribute("loginVO") LoginVO loginVO, @Valid @ModelAttribute("restde") Restde restde,
 			BindingResult bindingResult, ModelMap model) throws Exception {
-		beanValidator.validate(restde, bindingResult);
+
 		if (bindingResult.hasErrors()) {
 			ComDefaultCodeVO vo = new ComDefaultCodeVO();
 			vo.setCodeId("COM017");
@@ -1506,9 +1457,9 @@ public class EgovCalRestdeManageController {
 	 * @throws Exception
 	 */
 	@PostMapping("/sym/cal/EgovRestdeModify.do")
-	public String updateRestde(@ModelAttribute("loginVO") LoginVO loginVO, @ModelAttribute("restde") Restde restde,
+	public String updateRestde(@ModelAttribute("loginVO") LoginVO loginVO, @Valid @ModelAttribute("restde") Restde restde,
 			BindingResult bindingResult, ModelMap model) throws Exception {
-		beanValidator.validate(restde, bindingResult);
+
 		if (bindingResult.hasErrors()) {
 			ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
 			comDefaultCodeVO.setCodeId("COM017");

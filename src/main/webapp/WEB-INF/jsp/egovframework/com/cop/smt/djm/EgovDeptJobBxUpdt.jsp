@@ -24,7 +24,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -33,8 +32,7 @@
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialog.js'/>" ></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="deptJobBxVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript">
 	function fn_egov_modify_deptjobbx() {
 		if (!validateDeptJobBxVO(document.deptJobBxVO)){
@@ -144,7 +142,7 @@
 			<tr>
 				<th><spring:message code="comCopSmtDjm.deptJobRegist.indictOrdr" /> <span class="pilsu">*</span></th><!-- 표시순서 -->
 				<td class="left">
-					<input id="indictOrdr" type="text" name="indictOrdr" value="<c:out value='${deptJobBxVO.indictOrdr}'/>" title="표시순서" size="3" maxlength="6" onchange="fn_egov_indictOrdr_DeptJobBx()" style="width:26px" />
+					<form:input path="indictOrdr" name="indictOrdr" title="표시순서" size="3" maxlength="6" onchange="fn_egov_indictOrdr_DeptJobBx()" style="width:26px" />
 					<div><form:errors path="indictOrdr" cssClass="error"/></div>
 				</td>
 			</tr>

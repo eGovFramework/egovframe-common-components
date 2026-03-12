@@ -6,8 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.apache.commons.lang.StringUtils;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.slf4j.Logger;
@@ -19,6 +17,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
 
 /**
  * 개요
@@ -30,7 +29,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  * @author 장철호
  * @version 1.0
  * @created 28-6-2010 오전 11:33:43
- * 
+ *
  * <pre>
  * << 개정이력(Modification Information) >>
  *
@@ -39,7 +38,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *  2017.03.03 	 조성원 	시큐어코딩(ES)-Null Pointer 역참조[CWE-476]
  *  2022.11.11   김혜준   시큐어코딩 처리
  *  2024.05.02   김수용   NSR 보안조치 (파일시스템명에서 악의적인 문자열 제거)
- * 
+ *
  */
 
 @Service("egovFileSysMntrngScheduling")
@@ -71,7 +70,7 @@ public class EgovFileSystemMntrngScheduling extends EgovAbstractServiceImpl {
 		// 모니터링 대상 정보 읽어들이기
 		Map<String, Object> map = null;
 		//2017.03.03 	조성원 	시큐어코딩(ES)-Null Pointer 역참조[CWE-476]
-		List<FileSysMntrng> targetList = new ArrayList<FileSysMntrng>();
+		List<FileSysMntrng> targetList = new ArrayList<>();
 		FileSysMntrngVO searchVO = new FileSysMntrngVO();
 		// 모니터링 대상 검색 조건 초기화
 		searchVO.setPageIndex(1);
@@ -82,14 +81,14 @@ public class EgovFileSystemMntrngScheduling extends EgovAbstractServiceImpl {
 		if(map != null){
 			targetList = (List<FileSysMntrng>)map.get("resultList");
 		}
-		
+
 		LOGGER.debug("조회조건 {}", searchVO);
 		LOGGER.debug("Result 건수 : {}", targetList.size());
 		// 서비스체크 함수 호출.
 		Iterator<FileSysMntrng> iter = targetList.iterator();
 		FileSysMntrng target = null;
 
-		String safeFileSysNm = "";		
+		String safeFileSysNm = "";
 		int fileSysMg = 0;
 		int fileSysThrhld = 0;
 		int fileSysUsgQty = 0;
@@ -160,9 +159,10 @@ public class EgovFileSystemMntrngScheduling extends EgovAbstractServiceImpl {
 	        msg.setSubject(subject);
 		}
         // 메일내용
-        text = msg.getText();
+		// 2026.02.28 KISA 취약점 조치
+        text = EgovStringUtil.isNullToString(msg.getText());
         // 2022.11.11 시큐어코딩 처리
-     	if (StringUtils.isNotEmpty(subject)) {
+     	if (StringUtils.isNotEmpty(text)) {
 	        text = EgovStringUtil.replace(text, "{모니터링종류}", "파일시스템모니터링");
 	        errorContents = "파일시스템명 : ";
 	        errorContents += target.getFileSysNm();

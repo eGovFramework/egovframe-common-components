@@ -1,10 +1,10 @@
 package egovframework.com.secure.path;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import egovframework.com.cmm.EgovWebUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -17,9 +17,10 @@ import lombok.extern.slf4j.Slf4j;
  * @see
  * <pre>
  *
- *  수정일         수정자       수정내용
- *  ----------   --------   ---------------------------
- *  2024.12.04   신용호       시큐어코딩 테스트 ()
+ *  수정일        수정자       수정내용
+ *  ----------  --------   ---------------------------
+ *  2024.12.04  신용호       시큐어코딩 테스트 ()
+ *  2026.01.26  신용호       JUnit 4 => JUnit 5 마이그레이션
  *
  * </pre>
  */
@@ -28,7 +29,7 @@ import lombok.extern.slf4j.Slf4j;
 public class SecurePathTest {
 
 	@Test
-	public void testSecurePath() {
+	void testSecurePath() {
 
 		String filePath = "../etc/hosts";
 		String basePath = "/egovframe/upload";
@@ -40,36 +41,39 @@ public class SecurePathTest {
 	}
 
 	
-	@Test(expected = SecurityException.class)
-	public void testSecurePath_withRoot() {
+	@Test
+	void testSecurePath_withRoot() {
 
 		String filePath = "../etc/hosts";
 		String basePath = "/";
 		
-		String resultPath = EgovWebUtil.filePathBlackList(filePath, basePath);
-		System.out.println("===>"+resultPath);
+		assertThrows(SecurityException.class, () -> {
+			EgovWebUtil.filePathBlackList(filePath, basePath);
+		});
 
 	}
 	
-	@Test(expected = SecurityException.class)
-	public void testSecurePath_withEmpty() {
+	@Test
+	void testSecurePath_withEmpty() {
 
 		String filePath = "../etc/hosts";
 		String basePath = "";
 		
-		String resultPath = EgovWebUtil.filePathBlackList(filePath, basePath);
-		System.out.println("===>"+resultPath);
+		assertThrows(SecurityException.class, () -> {
+			EgovWebUtil.filePathBlackList(filePath, basePath);
+		});
 
 	}
 
-	@Test(expected = SecurityException.class)
-	public void testSecurePath_withNull() {
+	@Test
+	void testSecurePath_withNull() {
 
 		String filePath = "../etc/hosts";
 		String basePath = null;
 		
-		String resultPath = EgovWebUtil.filePathBlackList(filePath, basePath);
-		System.out.println("===>"+resultPath);
+		assertThrows(SecurityException.class, () -> {
+			EgovWebUtil.filePathBlackList(filePath, basePath);
+		});
 
 	}
 

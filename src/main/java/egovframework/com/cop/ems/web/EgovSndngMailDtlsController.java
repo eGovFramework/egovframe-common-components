@@ -2,8 +2,6 @@ package egovframework.com.cop.ems.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
@@ -16,6 +14,7 @@ import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cop.ems.service.EgovSndngMailDtlsService;
 import egovframework.com.cop.ems.service.SndngMailVO;
+import jakarta.annotation.Resource;
 
 /**
  * 발송메일 내역을 조회하는 컨트롤러 클래스

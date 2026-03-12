@@ -21,12 +21,11 @@ import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.Enumeration;
 
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-
 import egovframework.com.cmm.EgovWebUtil;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 public class EgovSessionCookieUtil {
 
@@ -196,13 +195,13 @@ public class EgovSessionCookieUtil {
 		String cookieValue = null;
 
 		// 입력받은 쿠키명으로 비교해서 쿠키값을 얻어낸다.
-		for (int i = 0; i < cookies.length; i++) {
+		for (Cookie element : cookies) {
 
-			if (cookieNm.equals(cookies[i].getName())) {
+			if (cookieNm.equals(element.getName())) {
 
 				// 특별한 encode 방식을 사용해 application/x-www-form-urlencoded 캐릭터 라인을 디코드
 				// URLEncoder로 인코딩된 결과를 디코딩하는 클래스
-				cookieValue = URLDecoder.decode(cookies[i].getValue(), "utf-8");
+				cookieValue = URLDecoder.decode(element.getValue(), "utf-8");
 
 				break;
 			}

@@ -51,7 +51,8 @@ function fn_egov_search_CntcMessage(){
  * 등록 처리 함수
  ******************************************************** */
 function fn_egov_regist_CntcMessage(){
-	location.href = "<c:url value='/ssi/syi/ims/addCntcMessage.do'/>";
+	document.listForm.action = "<c:url value='/ssi/syi/ims/addCntcMessage.do'/>";
+	document.listForm.submit();
 }
 /* ********************************************************
  * 수정 처리 함수
@@ -63,7 +64,7 @@ function fn_egov_modify_CntcMessage(){
  * 상세회면 처리 함수
  ******************************************************** */
 function fn_egov_detail_CntcMessage(cntcMessageId){
-	var varForm				    = document.all["Form"];
+	var varForm				    = document.all["listForm"];
 	varForm.action              = "<c:url value='/ssi/syi/ims/getCntcMessageDetail.do'/>";
 	varForm.cntcMessageId.value = cntcMessageId;
 	varForm.submit();
@@ -76,10 +77,6 @@ function fn_egov_detail_CntcMessage(cntcMessageId){
 
 <%-- noscript 테그 --%>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
-
-<form name="Form" action="" method="post">
-	<input type="hidden" name="cntcMessageId">
-</form>
 
 <div class="board">
 	<h1><spring:message code="comSsiSyiIms.cntcMessageList.pageTop.title"/></h1>
@@ -95,7 +92,7 @@ function fn_egov_detail_CntcMessage(cntcMessageId){
 				<input class="s_input2 vat" name="searchKeyword" type="text" value='<c:out value='${searchVO.searchKeyword}'/>' size="35" maxlength="35" title="<spring:message code="title.searchCondition"/>" /><!-- 검색조건 -->
 				
 				<input class="s_btn" type="submit" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire"/>" onclick="fn_egov_search_CntcMessage(); return false;" /><!-- 조회 -->
-				<span class="btn_b"><a href="<c:url value='/ssi/syi/ims/addCntcMessage.do'/>" onclick="" title="<spring:message code="title.create"/>"><spring:message code="button.create" /></a></span><!-- 등록 -->
+				<span class="btn_b"><a href="<c:url value='/ssi/syi/ims/addCntcMessage.do'/>" onclick="fn_egov_regist_CntcMessage(); return false;" title="<spring:message code="title.create"/>"><spring:message code="button.create" /></a></span><!-- 등록 -->
 			</li>
 		</ul>
 	</div>

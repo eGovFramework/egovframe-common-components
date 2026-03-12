@@ -2,8 +2,6 @@ package egovframework.com.uss.ion.rec.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
@@ -11,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import egovframework.com.uss.ion.rec.service.EgovRecomendSiteService;
 import egovframework.com.uss.ion.rec.service.RecomendSiteVO;
+import jakarta.annotation.Resource;
 
 @Service("EgovRecomendSiteService")
 public class EgovRecomendSiteServiceImpl extends EgovAbstractServiceImpl implements EgovRecomendSiteService {
@@ -21,15 +20,15 @@ public class EgovRecomendSiteServiceImpl extends EgovAbstractServiceImpl impleme
     /** ID Generation */
 	@Resource(name="egovRecomendSiteManageIdGnrService")
 	private EgovIdGnrService idgenService;
-	
+
 	@Override
-	public List<RecomendSiteVO> selectRecomendSiteList(RecomendSiteVO searchVO) {
-		return egovRecomendSiteDao.selectRecomendSiteList(searchVO);
+	public List<RecomendSiteVO> selectRecomendSiteList(RecomendSiteVO recomendSiteVO) {
+		return egovRecomendSiteDao.selectRecomendSiteList(recomendSiteVO);
 	}
 
 	@Override
-	public int selectRecomendSiteListCnt(RecomendSiteVO searchVO) {
-		return egovRecomendSiteDao.selectRecomendSiteListCnt(searchVO);
+	public int selectRecomendSiteListCnt(RecomendSiteVO recomendSiteVO) {
+		return egovRecomendSiteDao.selectRecomendSiteListCnt(recomendSiteVO);
 	}
 
 	@Override
@@ -43,8 +42,9 @@ public class EgovRecomendSiteServiceImpl extends EgovAbstractServiceImpl impleme
 	@Override
 	public RecomendSiteVO selectRecomendSiteDetail(RecomendSiteVO recomendSiteVO) throws Exception {
 		RecomendSiteVO resultVO = egovRecomendSiteDao.selectRecomendSiteDetail(recomendSiteVO);
-        if (resultVO == null)
-            throw processException("info.nodata.msg");
+        if (resultVO == null) {
+			throw processException("info.nodata.msg");
+		}
         return resultVO;
 	}
 

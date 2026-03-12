@@ -1,19 +1,19 @@
-package egovframework.com.cmm.service.impl;
+﻿package egovframework.com.cmm.service.impl;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
-import egovframework.com.test.EgovAbstractTestJUnit4;
+import egovframework.com.test.EgovAbstractTestJUnit;
 import lombok.extern.slf4j.Slf4j;
 
 /**
@@ -34,7 +34,7 @@ import lombok.extern.slf4j.Slf4j;
  *      </pre>
  */
 @Slf4j
-public class EgovCmmUseServiceImplTest extends EgovAbstractTestJUnit4 {
+public class EgovCmmUseServiceImplTest extends EgovAbstractTestJUnit {
 
 	@Autowired
 	private EgovCmmUseService egovCmmUseService;

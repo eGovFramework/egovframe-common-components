@@ -1,12 +1,11 @@
 package egovframework.com.cmm.util;
 
-import javax.servlet.http.HttpServletRequest;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.exception.EgovXssException;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * EgovXssChecker 클래스

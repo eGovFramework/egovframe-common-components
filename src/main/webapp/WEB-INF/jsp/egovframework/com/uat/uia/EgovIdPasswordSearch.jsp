@@ -125,10 +125,23 @@ function fnSearchPassword() {
 				<li>
 					<label for="name"><spring:message code="comUatUia.idPw.name" /></label>
 					<input type="text" name="name" maxlength="20" title="<spring:message code="comUatUia.idPw.name" />" placeholder="<spring:message code="comUatUia.idPw.name" />" />
+					<!-- 이름 validation 에러 메시지 -->
+					<c:set var="idErrors" value="${requestScope['org.springframework.validation.BindingResult.searchIdRequestVO']}"/>
+					<c:if test="${not empty idErrors && idErrors.hasFieldErrors('name')}">
+						<div style="font-size: 12px; margin-top: 5px;">
+							${idErrors.getFieldError('name').defaultMessage}
+						</div>
+					</c:if>
 				</li>
 				<li>
 					<label for="email"><spring:message code="comUatUia.idPw.email" /></label>
 					<input type="text" name="email" maxlength="30" title="<spring:message code="comUatUia.idPw.email" />" placeholder="<spring:message code="comUatUia.idPw.email" />" />
+					<!-- 이메일 validation 에러 메시지 -->
+					<c:if test="${not empty idErrors && idErrors.hasFieldErrors('email')}">
+						<div style="font-size: 12px; margin-top: 5px;">
+							${idErrors.getFieldError('email').defaultMessage}
+						</div>
+					</c:if>
 				</li>
 				<li>
 					<input type="button" class="btn_login" onClick="fnSearchId();" value="<spring:message code="comUatUia.idPw.searchId" />" />
@@ -157,14 +170,33 @@ function fnSearchPassword() {
 				<li>
 					<label for="id"><spring:message code="comUatUia.idPw.id" /></label>
 					<input type="text" name="id" maxlength="15" title="<spring:message code="comUatUia.idPw.id" />" placeholder="<spring:message code="comUatUia.idPw.id" />" />
+					<!-- 아이디 validation 에러 메시지 -->
+					<c:set var="pwErrors" value="${requestScope['org.springframework.validation.BindingResult.searchPasswordRequestVO']}"/>
+					<c:if test="${not empty pwErrors && pwErrors.hasFieldErrors('id')}">
+						<div style="font-size: 12px; margin-top: 5px;">
+							${pwErrors.getFieldError('id').defaultMessage}
+						</div>
+					</c:if>
 				</li>
 				<li>
 					<label for="name"><spring:message code="comUatUia.idPw.name" /></label>
 					<input type="text" name="name" maxlength="20" title="<spring:message code="comUatUia.idPw.name" />" placeholder="<spring:message code="comUatUia.idPw.name" />" />
+					<!-- 이름 validation 에러 메시지 -->
+					<c:if test="${not empty pwErrors && pwErrors.hasFieldErrors('name')}">
+						<div style="font-size: 12px; margin-top: 5px;">
+							${pwErrors.getFieldError('name').defaultMessage}
+						</div>
+					</c:if>
 				</li>
 				<li>
 					<label for="email"><spring:message code="comUatUia.idPw.email" /></label>
 					<input type="text" name="email" maxlength="30" title="<spring:message code="comUatUia.idPw.email" />" placeholder="<spring:message code="comUatUia.idPw.email" />" />
+					<!-- 이메일 validation 에러 메시지 -->
+					<c:if test="${not empty pwErrors && pwErrors.hasFieldErrors('email')}">
+						<div style="font-size: 12px; margin-top: 5px;">
+							${pwErrors.getFieldError('email').defaultMessage}
+						</div>
+					</c:if>
 				</li>
 				<li>
 					<select name="passwordHint" title="<spring:message code="comUatUia.idPw.passwordHint" />">
@@ -173,10 +205,22 @@ function fnSearchPassword() {
 						<option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
 						</c:forEach>
 					</select>
+					<!-- 비밀번호 힌트 validation 에러 메시지 -->
+					<c:if test="${not empty pwErrors && pwErrors.hasFieldErrors('passwordHint')}">
+						<div style="font-size: 12px; margin-top: 5px;">
+							${pwErrors.getFieldError('passwordHint').defaultMessage}
+						</div>
+					</c:if>
 				</li>
 				<li>
 					<label for="passwordCnsr"><spring:message code="comUatUia.idPw.passwordCnsr" /></label>
 					<input type="text" name="passwordCnsr" maxlength="50" title="<spring:message code="comUatUia.idPw.passwordCnsr" />" placeholder="<spring:message code="comUatUia.idPw.passwordCnsr" />">
+					<!-- 비밀번호 정답 validation 에러 메시지 -->
+					<c:if test="${not empty pwErrors && pwErrors.hasFieldErrors('passwordCnsr')}">
+						<div style="font-size: 12px; margin-top: 5px;">
+							${pwErrors.getFieldError('passwordCnsr').defaultMessage}
+						</div>
+					</c:if>
 				</li>
 				<li>
 					<input type="button" class="btn_login" onClick="fnSearchPassword();" value="<spring:message code="comUatUia.idPw.searchPassword" />">

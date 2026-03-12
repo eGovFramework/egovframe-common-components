@@ -64,6 +64,14 @@ function fn_egov_detail_CntcInstt(insttId){
 	varForm.insttId.value    = insttId;
 	varForm.submit();
 }
+/* ********************************************************
+ * 등록화면 처리 함수
+ ******************************************************** */
+function fn_egov_regist_CntcInstt(){
+	var varForm				 = document.all["listForm"];
+	varForm.action           = "<c:url value='/ssi/syi/iis/addCntcInstt.do'/>";
+	varForm.submit();
+}
 
 function press(event) {
 	if (event.keyCode == 13) {
@@ -87,13 +95,13 @@ function press(event) {
 		<ul>
 			<li>
 				<select name="searchCondition" class="select" title="<spring:message code="title.searchCondition"/>">
-				<option selected value=''>--<spring:message code="input.select" />--</option><!-- 선택하세요 -->
-				<option value='1' <c:if test="${searchVO.searchCondition == '1'}">selected="selected"</c:if>><spring:message code="comSsiSyiIis.cntcInsttList.insttNm"/></option><!-- 기관명 -->
+					<option selected value=''>--<spring:message code="input.select" />--</option><!-- 선택하세요 -->
+					<option value='1' <c:if test="${searchVO.searchCondition == '1'}">selected="selected"</c:if>><spring:message code="comSsiSyiIis.cntcInsttList.insttNm"/></option><!-- 기관명 -->
 				</select>
 				<input class="s_input2 vat" name="searchKeyword" type="text" value='<c:out value='${searchVO.searchKeyword}'/>' size="35" maxlength="35" onkeypress="press(event);" title="<spring:message code="title.searchCondition"/>" /><!-- 검색조건 -->
 				
 				<input class="s_btn" type="submit" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire"/>" onclick="fn_egov_search_CntcInstt(); return false;" /><!-- 조회 -->
-				<span class="btn_b"><a href="<c:url value='/ssi/syi/iis/addCntcInstt.do'/>?pageIndex=<c:out value='${searchVO.pageIndex}'/>" onclick="" title="<spring:message code="title.create"/>"><spring:message code="button.create" /></a></span><!-- 등록 -->
+				<span class="btn_b"><a href="#" onclick="fn_egov_regist_CntcInstt(); return false;" title="<spring:message code="title.create"/>"><spring:message code="button.create" /></a></span><!-- 등록 -->
 			</li>
 		</ul>
 	</div>

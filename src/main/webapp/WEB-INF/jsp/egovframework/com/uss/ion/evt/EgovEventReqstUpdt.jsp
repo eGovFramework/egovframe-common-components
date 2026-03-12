@@ -25,7 +25,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -37,8 +36,7 @@
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
 
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="eventManage" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 <!--
 	
@@ -107,64 +105,16 @@ function fncEventReqstManageList(){
 	location.href = "<c:url value='/uss/ion/evt/EgovEventReqstManageList.do'/>";
 }
 /* ********************************************************
-* 저장처리화면
-******************************************************** */
+ * 저장처리화면 (EgovValidation.js validateEventManage 방식)
+ ******************************************************** */
 function fncUpdtEventReqstManage() {
     var varFrom = document.getElementById("eventManage");
     varFrom.action = "<c:url value='/uss/ion/evt/EgovEventReqstSave.do'/>";
-    vEventBeginDe = varFrom.eventBeginDe.value.split("-").join("");
-    vEventEndDe   = varFrom.eventEndDe.value.split("-").join("");
-    vRceptBeginDe = varFrom.rceptBeginDe.value.split("-").join("");
-    vRceptEndDe   = varFrom.rceptEndDe.value.split("-").join("");
-    vRefrnUrl     = varFrom.refrnUrl.value.split("-").join("");
-    vPsncpa       = varFrom.psncpa.value;
-    vPartcptCt    = varFrom.partcptCt.value;
-
-    if(vEventBeginDe > vEventEndDe){
-	    alert("<spring:message code="comUssIonEvt.common.validate.vEventBeginDefastervEventEndDe"/>");/* 행사시작일이  행사종료일보다 늦습니다. 행사기간을 확인해 주세요. */
-	    return;
-    }
-    if(vRceptBeginDe > vRceptEndDe){
-	    alert("<spring:message code="comUssIonEvt.common.validate.vRceptBeginDeFastervRceptEndDe"/>");/* 행사접수시작일이  행사접수종료일보다 늦습니다. 행사접수기간을  확인해 주세요 */
-	    return;
-    }
-    
-    if(vRceptEndDe > vEventBeginDe){
-	    alert("<spring:message code="comUssIonEvt.common.validate.vRceptEndDeFastervEventBeginDe"/>");/* 행사접수는 행사시작일 이전에  접수종료되어어 합니다.  행사기간/행사접수기간을  확인해 주세요 */
-	    return;
-    }
-
-	if(!urlCheck(vRefrnUrl) && vRefrnUrl!=""){
-		alert("<spring:message code="comUssIonEvt.common.validate.urlCheckvRefrnUrl"/>");/* 참조URL의 형식이 URL 형식과 틀립니다. 확인해 주세요. */
-		return;
-	}
-
-    if(isNaN(vPartcptCt)){
-	        alert("<spring:message code="comUssIonEvt.common.validate.isNaNvPartcptCt"/>");/* 참가비용은 숫자만 입력가능합니다. */
-    	return;
-	}
-
-    if(varFrom.ctOccrrncAt[1].checked){
-		if(vPartcptCt <= 0){
-			alert("<spring:message code="comUssIonEvt.common.validate.vPartcptCtZero"/>");/* 참가비용이 유료인 경우  0원 이상 입력하셔야 합니다. 확안해 주세요. */
-			return;
-		}
-	}
-    if(isNaN(vPsncpa)){
-	         alert("<spring:message code="comUssIonEvt.common.validate.isNaNvPsncpa"/>");/* 정원은 숫자만 입력가능합니다. */
+    if (!validateEventManage(varFrom)) {
         return;
-   }
-	if(vPsncpa <= 0){
-		alert("<spring:message code="comUssIonEvt.common.validate.vPsncpaZero"/>");/* 정원은  0명을 이상 입력하셔야 합니다. 확인해 주세요 */
-		return;
-	}
-	
-    if(confirm("<spring:message code="common.save.msg" />")){/* 저장 하시겠습니까?" */
-       if(!validateEventManage(varFrom)){           
-          return;
-       }else{
-          varFrom.submit();
-       } 
+    }
+    if (confirm("<spring:message code="common.save.msg" />")) {
+        varFrom.submit();
     }
 }
 
@@ -181,28 +131,6 @@ function fncUpdtEventReqstManage() {
 	      varFrom.partcptCt.readOnly = false;
 	  }
  }
-/* ********************************************************
- * URL 여부 체크
- ******************************************************** */
-function urlCheck(vValue){
- return vValue.search(/^\s*['http://']+[\w\~\-\.]+\.[\w\~\-]+(\.[\w\~\-]+)+\s*$/g)>=0;
-}
-
-/* ********************************************************
- * 숫자 여부 체크
- ******************************************************** */
-function checkNum(inputValue) 
-{
-	alert(isNaN(inputValue));
-   var checkCode = inputValue.charCodeAt(inputValue.length-1); 
-   var str; 
-   alert(checkCode)
-   if(checkCode >= 33 && checkCode <= 47 || checkCode >= 58 && checkCode <= 125) 
-   {
-	      return false;
-   }
-   return true;
-}
 -->
 </script>
 </head>
@@ -229,7 +157,7 @@ function checkNum(inputValue)
 		<tr>
 			<th><spring:message code="comUssIonEvt.common.searchSe"/><!-- 행사구분 --> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <c:out value='${eventManageVO.eventTemp3}'/>
+			    <c:out value='${eventManageVO.eventSe}'/>
 			</td>
 		</tr>
 		<tr>
@@ -243,7 +171,7 @@ function checkNum(inputValue)
 			<td class="left">
 			    <c:set var="eventPurps"><spring:message code="comUssIonEvt.common.eventPurps"/></c:set>
 				<form:input  path="eventPurps" maxlength="200" title="${eventPurps}"/>
-				<form:errors path="eventPurps"/>
+				<div><form:errors path="eventPurps" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>
@@ -262,7 +190,7 @@ function checkNum(inputValue)
 			<td class="left">
 			    <c:set var="eventAuspcInsttNm"><spring:message code="comUssIonEvt.common.eventAuspcInsttNm"/></c:set>
 				<form:input  path="eventAuspcInsttNm" size="60" maxlength="60" title="${eventAuspcInsttNm }"/>
-				<form:errors path="eventAuspcInsttNm"/>
+				<div><form:errors path="eventAuspcInsttNm" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>
@@ -270,7 +198,7 @@ function checkNum(inputValue)
 			<td class="left">
 			    <c:set var="eventMngtInsttNm"><spring:message code="comUssIonEvt.common.eventMngtInsttNm"/></c:set>
 				<form:input  path="eventMngtInsttNm" maxlength="60" title="${eventMngtInsttNm}"/>
-				<form:errors path="eventMngtInsttNm"/>
+				<div><form:errors path="eventMngtInsttNm" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>
@@ -278,22 +206,21 @@ function checkNum(inputValue)
 			<td class="left">
 			    <c:set var="eventPlace"><spring:message code="comUssIonEvt.common.eventPlace"/></c:set>
 				<form:input  path="eventPlace" maxlength="200" title="${eventPlace}"/>
-				<form:errors path="eventPlace"/>
+				<div><form:errors path="eventPlace" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="comUssIonEvt.common.refrnUrl"/><!-- 참조URL --> <span class="pilsu">*</span></th>
+			<th><spring:message code="comUssIonEvt.common.refrnUrl"/><!-- 참조URL --></th>
 			<td class="left">
 			    <c:set var="refrnUrl"><spring:message code="comUssIonEvt.common.refrnUrl"/></c:set>
 				<form:input  path="refrnUrl" maxlength="1024" title="${refrnUrl}"/>
-				<form:errors path="refrnUrl"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUssIonEvt.common.eventCn"/><!-- 행사내용 --> <span class="pilsu">*</span></th>
 			<td class="left">
 			    <form:textarea path="eventCn" rows="4" cols="70" cssClass="txaClass" title="${eventCn}"/>
-      			<form:errors path="eventCn"/>
+			    <div><form:errors path="eventCn" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>
@@ -303,7 +230,8 @@ function checkNum(inputValue)
 				<input name="ctOccrrncAt" type="radio" value="2" onclick="fncOccrrncAt(this.value)" <c:if test="${eventManageVO.ctOccrrncAt == '2'}">checked</c:if> title="<spring:message code="comUssIonEvt.common.fee"/>"><spring:message code="comUssIonEvt.common.fee"/><!-- 유료 -->
 				<c:set var="feePrice"><spring:message code="comUssIonEvt.common.feePrice"/></c:set>
 				<form:input  path="partcptCt" maxlength="9" title="${feePrice} " cssStyle="width:50px"/><!-- 유료금액 -->
-				<form:errors path="partcptCt"/><spring:message code="comUssIonEvt.common.feeUnit"/><!-- 만원 -->
+				<div><form:errors path="partcptCt" cssClass="error"/></div>
+				<spring:message code="comUssIonEvt.common.feeUnit"/><!-- 만원 -->
 			</td>
 		</tr>
 		<tr>
@@ -311,7 +239,7 @@ function checkNum(inputValue)
 			<td class="left">
 			    <c:set var="psncpa"><spring:message code="comUssIonEvt.common.psncpa"/></c:set>	
 				<form:input  path="psncpa" size="10" maxlength="9" title="${psncpa} "/>
-				<form:errors path="psncpa"/>
+				<div><form:errors path="psncpa" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>

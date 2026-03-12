@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
@@ -15,6 +13,7 @@ import egovframework.com.utl.sys.htm.service.HttpMon;
 import egovframework.com.utl.sys.htm.service.HttpMonLog;
 import egovframework.com.utl.sys.htm.service.HttpMonLogVO;
 import egovframework.com.utl.sys.htm.service.HttpMonVO;
+import jakarta.annotation.Resource;
 
 /**
  * <pre>

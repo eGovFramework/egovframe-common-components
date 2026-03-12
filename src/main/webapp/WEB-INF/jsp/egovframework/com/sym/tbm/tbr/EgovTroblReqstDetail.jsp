@@ -153,7 +153,7 @@ function fncTroblReqstRequstCancl(troblId) {
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="comSymTbmTbr.troblReqstDetail.troblRequstTime"/> <span class="pilsu">*</span></th><!-- 장애요청시간 -->
+			<th><spring:message code="comSymTbmTbr.troblReqstDetail.troblRequstTime"/></th><!-- 장애요청시간 -->
 			<td class="left">
 			    <c:out value='${troblReqst.troblRequstTime}'/>
 			</td>

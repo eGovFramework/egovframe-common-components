@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.umt.service.EntrprsManageVO;
+import egovframework.com.uss.umt.service.EntrprsPasswordManageVO;
 import egovframework.com.uss.umt.service.StplatVO;
 import egovframework.com.uss.umt.service.UserDefaultVO;
 
@@ -43,7 +44,7 @@ public class EntrprsManageDAO extends EgovComAbstractDAO{
      * @return String 등록결과
      */
     public String insertEntrprsmber(EntrprsManageVO entrprsManageVO){
-        return String.valueOf((int)insert("entrprsManageDAO.insertEntrprs_S", entrprsManageVO));
+        return String.valueOf(insert("entrprsManageDAO.insertEntrprs_S", entrprsManageVO));
     }
 
     /**
@@ -76,7 +77,7 @@ public class EntrprsManageDAO extends EgovComAbstractDAO{
      * 기업회원 암호수정
      * @param passVO 기업회원수정정보(비밀번호)
      */
-    public void updatePassword(EntrprsManageVO passVO) {
+    public void updatePassword(EntrprsPasswordManageVO passVO) {
     	update("entrprsManageDAO.updatePassword_S", passVO);
     }
 
@@ -85,8 +86,8 @@ public class EntrprsManageDAO extends EgovComAbstractDAO{
      * @param entrprsManageVO 기업회원암호 조회조건정보
      * @return EntrprsManageVO 기업회원암호정보
      */
-    public EntrprsManageVO selectPassword(EntrprsManageVO entrprsManageVO){
-    	return (EntrprsManageVO) selectOne("entrprsManageDAO.selectPassword_S", entrprsManageVO);
+    public EntrprsPasswordManageVO selectPassword(EntrprsPasswordManageVO passVO){
+    	return (EntrprsPasswordManageVO) selectOne("entrprsManageDAO.selectPassword_S", passVO);
     }
 
     /**
@@ -105,8 +106,8 @@ public class EntrprsManageDAO extends EgovComAbstractDAO{
     public int selectEntrprsMberListTotCnt(UserDefaultVO userSearchVO) {
         return (Integer)selectOne("entrprsManageDAO.selectEntrprsMberListTotCnt", userSearchVO);
     }
-    
-    
+
+
     /**
      * 로그인인증제한 해제
      * @param entrprsManageVO 기업회원정보

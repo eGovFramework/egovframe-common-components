@@ -27,12 +27,6 @@
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <script type="text/javaScript" language="javascript">
 /* ********************************************************
- * 초기화
- ******************************************************** */
-function fn_egov_init_RssTagManage(){
-
-}
-/* ********************************************************
  * 수정처리화면
  ******************************************************** */
 function fn_egov_modify_RssTagManage(){
@@ -56,7 +50,7 @@ function fn_egov_delete_RssTagManage(){
 }
 </script>
 </head>
-<body onLoad="fn_egov_init_RssTagManage();">
+<body>
 
 <%-- noscript 테그 --%>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->

@@ -1,12 +1,8 @@
 package egovframework.com.sym.tbm.tbr.web;
-
 import java.util.List;
-
-import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -15,7 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -28,6 +23,8 @@ import egovframework.com.sym.tbm.tbr.service.EgovTroblReqstService;
 import egovframework.com.sym.tbm.tbr.service.TroblReqst;
 import egovframework.com.sym.tbm.tbr.service.TroblReqstVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * <pre>
@@ -67,9 +64,6 @@ public class EgovTroblReqstController {
 	/** ID Generation */
 	@Resource(name = "egovTroblIdGnrService")
 	private EgovIdGnrService egovTroblIdGnrService;
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	@Resource(name = "EgovCmmUseService")
 	private EgovCmmUseService egovCmmUseService;
@@ -160,19 +154,17 @@ public class EgovTroblReqstController {
 
 	/**
 	 * 장애요청정보를 신규로 등록한다.
-	 * 
+	 *
 	 * @param troblReqst - 장애신청관리 model
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/sym/tbm/tbr/addTroblReqst.do")
 	public String insertTroblReqst(@ModelAttribute("troblReqstVO") TroblReqstVO troblReqstVO,
-			@ModelAttribute("troblReqst") TroblReqst troblReqst, BindingResult bindingResult, ModelMap model)
+			@Valid @ModelAttribute("troblReqst") TroblReqst troblReqst, BindingResult bindingResult, ModelMap model)
 			throws Exception {
 
-		beanValidator.validate(troblReqst, bindingResult); // validation 수행
-
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("troblReqstVO", troblReqstVO);
+			model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(), "COM065"));
 			return "egovframework/com/sym/tbm/tbr/EgovTroblReqstRegist";
 		} else {
 			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -185,6 +177,7 @@ public class EgovTroblReqstController {
 
 			model.addAttribute("troblReqst", egovTroblReqstService.insertTroblReqst(troblReqst, troblReqstVO));
 			model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
+			
 			return "egovframework/com/sym/tbm/tbr/EgovTroblReqstDetail";
 		}
 	}
@@ -208,19 +201,18 @@ public class EgovTroblReqstController {
 
 	/**
 	 * 기 등록된 장애요청정보를 수정한다.
-	 * 
+	 *
 	 * @param troblReqst - 장애신청관리 model
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/sym/tbm/tbr/updtTroblReqst.do")
-	public String updateTroblReqst(@ModelAttribute("troblReqst") TroblReqst troblReqst, BindingResult bindingResult,
+	public String updateTroblReqst(@ModelAttribute("troblReqstVO") TroblReqstVO troblReqstVO,
+			@Valid @ModelAttribute("troblReqst") TroblReqst troblReqst, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {
 
-		beanValidator.validate(troblReqst, bindingResult); // validation 수행
-
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("troblReqstVO", troblReqst);
-			return "egovframework/com/sym/tbm/EgovTroblReqstUpdt";
+			model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(), "COM065"));
+			return "egovframework/com/sym/tbm/tbr/EgovTroblReqstUpdt";
 		} else {
 			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 			troblReqst.setTroblOccrrncTime(EgovStringUtil.removeMinusChar(troblReqst.getTroblOccrrncTime()));
@@ -229,6 +221,7 @@ public class EgovTroblReqstController {
 			egovTroblReqstService.updateTroblReqst(troblReqst);
 			status.setComplete();
 			model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
+			
 			return "forward:/sym/tbm/tbr/getTroblReqst.do";
 		}
 	}

@@ -1,20 +1,15 @@
 package egovframework.com.dam.spe.spe.web;
 
 import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -29,6 +24,8 @@ import egovframework.com.dam.spe.spe.service.EgovKnoSpecialistService;
 import egovframework.com.dam.spe.spe.service.KnoSpecialist;
 import egovframework.com.dam.spe.spe.service.KnoSpecialistVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * <pre>
@@ -71,9 +68,6 @@ public class EgovKnoSpecialistController {
 	/** EgovPropertyService */
 	@Resource(name = "propertiesService")
 	protected EgovPropertyService propertiesService;
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
@@ -118,147 +112,161 @@ public class EgovKnoSpecialistController {
 
 	/**
 	 * 지식전문가 상세 정보를 조회 한다.
-	 * 
-	 * @param KonSpecialistVO - 지식전문가 VO
-	 * @return String - 리턴 Url
 	 *
-	 * @param KonSpecialistVO
+	 * @param knoSpecialist - 지식전문가 model
+	 * @param model
+	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/dam/spe/spe/EgovComDamSpecialist.do")
-	public String selectKnoSpecialist(@ModelAttribute("loginVO") LoginVO loginVO, KnoSpecialist knoSpecialist,
-			ModelMap model, @RequestParam Map<?, ?> commandMap) throws Exception {
+	public String selectKnoSpecialist(KnoSpecialist knoSpecialist, ModelMap model) throws Exception {
 		KnoSpecialist vo = knoSpecialistService.selectKnoSpecialist(knoSpecialist);
 		model.addAttribute("result", vo);
 		return "egovframework/com/dam/spe/spe/EgovComDamSpecialistDetail";
 	}
 
 	/**
-	 * 지식전문가 정보를 신규로 등록한다.
-	 * 
-	 * @param speNm - 지식전문가 model
-	 * @return String - 리턴 Url
+	 * 지식전문가 등록 화면으로 이동한다.
 	 *
-	 * @param speNm
+	 * @param mapMaterial - 지식맵(유형) model
+	 * @param model
+	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/dam/spe/spe/EgovComDamSpecialistRegist.do")
-	public String insertKnoSpecialist(@ModelAttribute("knoSpecialist") KnoSpecialist knoSpecialist,
-			@ModelAttribute("mapMaterial") MapMaterial mapMaterial, BindingResult bindingResult,
-			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+	@RequestMapping(value = "/dam/spe/spe/EgovComDamSpecialistRegistView.do")
+	public String selectKnoSpecialistRegistView(@ModelAttribute("knoSpecialist") KnoSpecialist knoSpecialist,
+			@ModelAttribute("mapMaterial") MapMaterial mapMaterial, ModelMap model,
+			RedirectAttributes redirectAttributes) throws Exception {
 
 		// Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+
+		MapTeamVO searchVO = new MapTeamVO();
+		searchVO.setRecordCountPerPage(999999);
+		searchVO.setFirstIndex(0);
+		searchVO.setSearchCondition("MaterialList");
+		List<MapTeamVO> mapTeamList = mapTeamService.selectMapTeamList(searchVO);
+		model.addAttribute("mapTeamList", mapTeamList);
+
+		MapMaterialVO searchMatVO = new MapMaterialVO();
+		searchMatVO.setRecordCountPerPage(999999);
+		searchMatVO.setFirstIndex(0);
+		searchMatVO.setSearchCondition("orgnztId");
+		searchMatVO.setSearchKeyword(mapMaterial.getOrgnztId());
+
+		List<MapMaterialVO> mapMaterialList = mapMaterialService.selectMapMaterialList(searchMatVO);
+		model.addAttribute("mapMaterialList", mapMaterialList);
+
+		return "egovframework/com/dam/spe/spe/EgovComDamSpecialistRegist";
+	}
+
+	/**
+	 * 지식전문가 정보를 신규로 등록한다.
+	 *
+	 * @param knoSpecialist - 지식전문가 model
+	 * @param bindingResult
+	 * @param mapMaterial - 지식맵(유형) model
+	 * @param model
+	 * @return String - 리턴 Url
+	 */
+	@RequestMapping(value = "/dam/spe/spe/EgovComDamSpecialistRegist.do")
+	public String insertKnoSpecialist(@ModelAttribute("mapMaterial") MapMaterial mapMaterial,
+			@Valid @ModelAttribute("knoSpecialist") KnoSpecialist knoSpecialist, BindingResult bindingResult,
+			ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
+
+		// Spring Security 사용자권한 처리
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
-
-		if (knoSpecialist.getSpeId() == null || knoSpecialist.getSpeId().equals("") || sCmd.equals("")) {
-
-			MapTeamVO searchVO;
-			searchVO = new MapTeamVO();
+		if (bindingResult.hasErrors()) {
+			MapTeamVO searchVO = new MapTeamVO();
 			searchVO.setRecordCountPerPage(999999);
 			searchVO.setFirstIndex(0);
 			searchVO.setSearchCondition("MaterialList");
 			List<MapTeamVO> mapTeamList = mapTeamService.selectMapTeamList(searchVO);
 			model.addAttribute("mapTeamList", mapTeamList);
 
-			MapMaterialVO searchMatVO;
-			searchMatVO = new MapMaterialVO();
+			MapMaterialVO searchMatVO = new MapMaterialVO();
 			searchMatVO.setRecordCountPerPage(999999);
 			searchMatVO.setFirstIndex(0);
 			searchMatVO.setSearchCondition("orgnztId");
+
+			/*
+			if (mapMaterial.getOrgnztId() == null || mapMaterial.getOrgnztId().equals("")) {
+				if (!mapTeamList.isEmpty()) {
+					MapTeamVO emp = mapTeamList.get(0);
+					mapMaterial.setOrgnztId(emp.getOrgnztId());
+				}
+			}
+			*/
+			
 			searchMatVO.setSearchKeyword(mapMaterial.getOrgnztId());
 
 			List<MapMaterialVO> mapMaterialList = mapMaterialService.selectMapMaterialList(searchMatVO);
 			model.addAttribute("mapMaterialList", mapMaterialList);
 
 			return "egovframework/com/dam/spe/spe/EgovComDamSpecialistRegist";
-
-		} else if (sCmd.equals("Regist")) {
-
-			beanValidator.validate(knoSpecialist, bindingResult);
-			if (bindingResult.hasErrors()) {
-
-				MapTeamVO searchVO;
-				searchVO = new MapTeamVO();
-				searchVO.setRecordCountPerPage(999999);
-				searchVO.setFirstIndex(0);
-				List<MapTeamVO> mapTeamList = mapTeamService.selectMapTeamList(searchVO);
-				model.addAttribute("mapTeamList", mapTeamList);
-
-				MapMaterialVO searchMatVO;
-				searchMatVO = new MapMaterialVO();
-				searchMatVO.setRecordCountPerPage(999999);
-				searchMatVO.setFirstIndex(0);
-				searchMatVO.setSearchCondition("orgnztId");
-
-				if (mapMaterial.getOrgnztId().equals("")) {
-					MapTeamVO emp = mapTeamList.get(0);
-					mapMaterial.setOrgnztId(emp.getOrgnztId());
-				}
-				searchMatVO.setSearchKeyword(mapMaterial.getOrgnztId());
-
-				List<MapMaterialVO> mapMaterialList = mapMaterialService.selectMapMaterialList(searchMatVO);
-				model.addAttribute("mapMaterialList", mapMaterialList);
-
-				return "egovframework/com/dam/spe/spe/EgovComDamSpecialistRegist";
-			}
-
-			// 아이디 설정
-			knoSpecialist.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-			knoSpecialist.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-
-			knoSpecialistService.insertKnoSpecialist(knoSpecialist);
-			return "forward:/dam/spe/spe/EgovComDamSpecialistList.do";
-
-		} else {
-			return "forward:/dam/spe/spe/EgovComDamSpecialistList.do";
 		}
 
+		// 아이디 설정
+		knoSpecialist.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+		knoSpecialist.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+
+		knoSpecialistService.insertKnoSpecialist(knoSpecialist);
+		return "forward:/dam/spe/spe/EgovComDamSpecialistList.do";
+	}
+
+	/**
+	 * 지식전문가 수정 화면으로 이동한다.
+	 *
+	 * @param knoSpecialist - 지식전문가 model
+	 * @param model
+	 * @return String - 리턴 Url
+	 */
+	@RequestMapping(value = "/dam/spe/spe/EgovComDamSpecialistModifyView.do")
+	public String selectKnoSpecialistModifyView(@ModelAttribute("knoSpecialist") KnoSpecialist knoSpecialist,
+			ModelMap model) throws Exception {
+
+		KnoSpecialist vo = knoSpecialistService.selectKnoSpecialist(knoSpecialist);
+		model.addAttribute("knoSpecialist", vo);
+		return "egovframework/com/dam/spe/spe/EgovComDamSpecialistModify";
 	}
 
 	/**
 	 * 기 등록 된 지식전문가 정보를 수정 한다.
-	 * 
-	 * @param speNm - 지식전문가 model
-	 * @return String - 리턴 Url
 	 *
-	 * @param speNm
+	 * @param knoSpecialist - 지식전문가 model
+	 * @param bindingResult
+	 * @param model
+	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/dam/spe/spe/EgovComDamSpecialistModify.do")
-	public String updateKnoSpecialist(@ModelAttribute("speId") KnoSpecialist knoSpecialist, BindingResult bindingResult,
-			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+	public String updateKnoSpecialist(@Valid @ModelAttribute("knoSpecialist") KnoSpecialist knoSpecialist,
+			BindingResult bindingResult, ModelMap model) throws Exception {
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
-		if (sCmd.equals("")) {
-			KnoSpecialist vo = knoSpecialistService.selectKnoSpecialist(knoSpecialist);
-			model.addAttribute("knoSpecialist", vo);
+		if (bindingResult.hasErrors()) {
+			//KnoSpecialist vo = knoSpecialistService.selectKnoSpecialist(knoSpecialist);
+			//model.addAttribute("knoSpecialist", vo);
 			return "egovframework/com/dam/spe/spe/EgovComDamSpecialistModify";
-		} else if (sCmd.equals("Modify")) {
-			beanValidator.validate(knoSpecialist, bindingResult);
-			if (bindingResult.hasErrors()) {
-				KnoSpecialist vo = knoSpecialistService.selectKnoSpecialist(knoSpecialist);
-				model.addAttribute("knoSpecialist", vo);
-				return "egovframework/com/dam/spe/spe/EgovComDamSpecialistModify";
-			}
-
-			// 아이디 설정
-			knoSpecialist.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-			knoSpecialist.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-
-			knoSpecialistService.updateKnoSpecialist(knoSpecialist);
-			return "forward:/dam/spe/spe/EgovComDamSpecialistList.do";
-		} else {
-			return "forward:/dam/spe/spe/EgovComDamSpecialistList.do";
 		}
+
+		// 아이디 설정
+		knoSpecialist.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+		knoSpecialist.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
+
+		knoSpecialistService.updateKnoSpecialist(knoSpecialist);
+		return "forward:/dam/spe/spe/EgovComDamSpecialistList.do";
 	}
 
 	/**

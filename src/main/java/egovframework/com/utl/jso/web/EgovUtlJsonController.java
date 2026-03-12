@@ -5,8 +5,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,6 +16,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.service.EgovCmmUseService;
+import jakarta.annotation.Resource;
 
 /**
  * 요소기술 json 관한 controller 클래스를 정의한다.
@@ -51,7 +50,7 @@ public class EgovUtlJsonController {
     protected EgovPropertyService propertiesService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EgovUtlJsonController.class);
-    
+
     /**
 	 * json 단건조회
 	 * @return String
@@ -61,23 +60,23 @@ public class EgovUtlJsonController {
     public String selectUtlJsonInquire()  throws Exception {
         return "egovframework/com/utl/jso/EgovUtlJsonInquire";
     }
-    
+
     @RequestMapping(value="/utl/jso/EgovUtlJsonInquire.do",method = RequestMethod.POST)
     public ModelAndView selectUtlJsonInquirePost(@RequestParam Map<?, ?> commandMap)  throws Exception {
     	ModelAndView modelAndView = new ModelAndView();
     	modelAndView.setViewName("jsonView");
     	LOGGER.debug("EgovUtlJsonController EgovUtlJsonInquire START=========");
-    	
+
     	LOGGER.debug("commandMap>"+commandMap);
-    	
+
     	modelAndView.addObject("fruits1", "apple");
     	modelAndView.addObject("fruits2", "orange");
     	modelAndView.addObject("fruits3", "lemon");
     	modelAndView.addObject("fruits4", "lime");
     	modelAndView.addObject("fruits5", "mango");
-    	
-    	LOGGER.debug("EgovUtlJsonController EgovUtlJsonInquire END=========");	
-    	
+
+    	LOGGER.debug("EgovUtlJsonController EgovUtlJsonInquire END=========");
+
     	return modelAndView;
     }
     /**
@@ -86,7 +85,7 @@ public class EgovUtlJsonController {
 	 * @exception Exception
 	 */
     @RequestMapping(value="/utl/jso/EgovUtlJsonMultiInquire.do",method = RequestMethod.GET)
-    public String selectUtlJsonMultiInquire(@RequestParam Map<?, ?> commandMap)  throws Exception {    	
+    public String selectUtlJsonMultiInquire(@RequestParam Map<?, ?> commandMap)  throws Exception {
         return "egovframework/com/utl/jso/EgovUtlJsonMultiInquire";
     }
     @RequestMapping(value="/utl/jso/EgovUtlJsonMultiInquire.do",method = RequestMethod.POST)
@@ -94,32 +93,32 @@ public class EgovUtlJsonController {
     	ModelAndView modelAndView = new ModelAndView();
     	modelAndView.setViewName("jsonView");
     	LOGGER.debug("EgovUtlJsonController selectUtlJsonMultiInquire START=========");
-    	
+
     	LOGGER.debug("commandMap>"+commandMap);
-    	
+
     	modelAndView.addObject("fruits1", "apple");
     	modelAndView.addObject("fruits2", "orange");
     	modelAndView.addObject("fruits3", "lemon");
     	modelAndView.addObject("fruits4", "lime");
     	modelAndView.addObject("fruits5", "mango");
-    	
+
     	Map<String, String> mp = new HashMap<>();
     	mp.put("fruits1", "apple");
     	mp.put("fruits2", "orange");
     	mp.put("fruits3", "lemon");
     	mp.put("fruits4", "lime");
     	mp.put("fruits5", "mango");
-    	
+
     	List<Map<String, String>> list = new ArrayList<>();
     	list.add(mp);
     	list.add(mp);
     	list.add(mp);
     	list.add(mp);
     	list.add(mp);
-    	
+
     	modelAndView.addObject("list", list);
-    	LOGGER.debug("EgovUtlJsonController selectUtlJsonMultiInquire END=========");	
-    	
+    	LOGGER.debug("EgovUtlJsonController selectUtlJsonMultiInquire END=========");
+
     	return modelAndView;
     }
 

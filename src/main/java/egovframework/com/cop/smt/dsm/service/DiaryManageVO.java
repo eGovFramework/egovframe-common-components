@@ -2,6 +2,9 @@ package egovframework.com.cop.smt.dsm.service;
 
 import java.io.Serializable;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 import egovframework.com.cmm.ComDefaultVO;
 /**
  * 일지관리 VO Class 구현
@@ -29,18 +32,26 @@ public class DiaryManageVO extends ComDefaultVO implements Serializable {
 	private String schdulCn;
 	
 	/** 일정ID */
+	@EgovNullCheck
 	private String schdulId;
 	
 	/** 진척률 */
+	@EgovNullCheck
 	private String diaryProcsPte;
 	
 	/** 일정명 */
+	@EgovNullCheck
+	@Size(max=255)
 	private String diaryNm;
 	
 	/** 지지사항 */
+	@EgovNullCheck
+	@Size(max=2500)
 	private String drctMatter;
 	
 	/** 특이사항 */
+	@EgovNullCheck
+	@Size(max=2500)
 	private String partclrMatter;
 	
 	/** 첨부파일 */

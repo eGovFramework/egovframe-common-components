@@ -3,19 +3,17 @@ package egovframework.com.uss.olp.qmc.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.ComDefaultVO;
@@ -28,7 +26,8 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olp.qmc.service.EgovQustnrManageService;
 import egovframework.com.uss.olp.qmc.service.QustnrManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-import lombok.extern.slf4j.Slf4j;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * 설문관리를 처리하는 Controller Class 구현
@@ -51,11 +50,9 @@ import lombok.extern.slf4j.Slf4j;
  *      </pre>
  */
 @Controller
-@Slf4j
 public class EgovQustnrManageController {
 
-	@Autowired
-	private DefaultBeanValidator beanValidator;
+	private static final Logger LOGGER = LoggerFactory.getLogger(EgovQustnrManageController.class);
 
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
@@ -84,8 +81,8 @@ public class EgovQustnrManageController {
 	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageListPopup.do")
 	public String egovQustnrManageListPopup(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, QustnrManageVO qustnrManageVO, ModelMap model) throws Exception {
-		if (log.isDebugEnabled()) {
-			log.debug("searchVO={}", searchVO);
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("searchVO={}", searchVO);
 		}
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
@@ -273,7 +270,6 @@ public class EgovQustnrManageController {
 		List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
 		model.addAttribute("comCode034", listComCode);
 
-		beanValidator.validate(qustnrManageVO, bindingResult);
 		if (bindingResult.hasErrors()) {
 
 			List<EgovMap> sampleList = egovQustnrManageService.selectQustnrManageDetail(qustnrManageVO);
@@ -343,7 +339,7 @@ public class EgovQustnrManageController {
 	 */
 	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageRegist.do")
 	public String qustnrManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@ModelAttribute("qustnrManageVO") QustnrManageVO qustnrManageVO, BindingResult bindingResult,
+			@Valid @ModelAttribute("qustnrManageVO") QustnrManageVO qustnrManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -358,7 +354,6 @@ public class EgovQustnrManageController {
 		List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
 		model.addAttribute("comCode034", listComCode);
 
-		beanValidator.validate(qustnrManageVO, bindingResult);
 		if (bindingResult.hasErrors()) {
 			// 설문템플릿 정보 불러오기
 			List<EgovMap> listQustnrTmplat = egovQustnrManageService.selectQustnrTmplatManageList(qustnrManageVO);

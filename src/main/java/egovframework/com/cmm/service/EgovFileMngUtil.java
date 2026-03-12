@@ -19,9 +19,9 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.Map.Entry;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
@@ -263,8 +263,7 @@ public class EgovFileMngUtil {
 		orgFileName = orgFileName.replaceAll("\r", "").replaceAll("\n", "");
 
 		File file = new File(EgovWebUtil.filePathBlackList(FILE_STORE_PATH + downFileName));
-		// File file = new
-		// File(EgovWebUtil.filePathBlackList(downFileName,FILE_STORE_PATH));
+		// File file = new File(EgovWebUtil.filePathBlackList(downFileName,FILE_STORE_PATH));
 
 		if (!file.exists()) {
 			throw new FileNotFoundException(downFileName);

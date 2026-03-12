@@ -25,7 +25,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -33,8 +32,7 @@
 <title><spring:message code="comSymSymNwk.ntwrkRegist.title"/></title><!-- 네트워크 등록 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="ntwrk" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
@@ -149,93 +147,95 @@ function ipValidate(ipValue, ipName) {
 	<!-- 타이틀 -->
 	<h2><spring:message code="comSymSymNwk.ntwrkRegist.pageTop.title"/></h2><!-- 네트워크 등록 -->
 
-    <form name="ntwrk" id="ntwrk" method="post" action="${pageContext.request.contextPath}/sym/sym/nwk/addNtwrk.do">
+    <form:form modelAttribute="ntwrk" name="ntwrk" id="ntwrk" method="post" action="${pageContext.request.contextPath}/sym/sym/nwk/addNtwrk.do">
 
-	<!-- 등록폼 -->
-	<table class="wTable">
-		<colgroup>
-			<col style="width:16%" />
-			<col style="" />
-		</colgroup>
-		<tr>
-			<th><spring:message code="comSymSymNwk.ntwrkRegist.ntwrkIp"/> <span class="pilsu">*</span></th><!-- IP -->
-			<td class="left">
-			    <label for="ntwrkIp"><input name="ntwrkIp" id="ntwrkIp" type="text" maxLength="23" style="width:200px" />&nbsp;<form:errors path="ntwrkIp" /></label>
-			</td>
-		</tr>
-		<tr>
-			<th><spring:message code="comSymSymNwk.ntwrkRegist.gtwy"/> <span class="pilsu">*</span></th><!-- 게이트웨이 -->
-			<td class="left">
-			    <label for="gtwy"><input name="gtwy" id="gtwy" type="text" maxLength="23" style="width:200px" />&nbsp;<form:errors path="gtwy" /></label>
-			</td>
-		</tr>
-		<tr>
-			<th><spring:message code="comSymSymNwk.ntwrkRegist.subnet"/> <span class="pilsu">*</span></th><!-- 서브넷 -->
-			<td class="left">
-			    <label for="subnet"><input name="subnet" id="subnet" type="text" maxLength="23" style="width:200px" />&nbsp;<form:errors path="subnet" /></label>
-			</td>
-		</tr>
-		<tr>
-			<th><spring:message code="comSymSymNwk.ntwrkRegist.domnServer"/> <span class="pilsu">*</span></th><!-- DNS -->
-			<td class="left">
-			    <label for="domnServer"><input name="domnServer" id="domnServer" type="text" maxLength="23" style="width:200px" />&nbsp;<form:errors path="domnServer" /></label>
-			</td>
-		</tr>
-		<tr>
-			<th><spring:message code="comSymSymNwk.ntwrkRegist.manageIem"/> <span class="pilsu">*</span></th><!-- 관리항목 -->
-			<td class="left">
-			    <label for="manageIem">
-			      <select name="manageIem">
-			        <c:forEach var="cmmCodeDetail" items="${cmmCodeDetailList}" varStatus="status">
-			          <option value="<c:out value="${cmmCodeDetail.code}"/>" <c:if test="${cmmCodeDetail.code == ntwrk.manageIem}">selected</c:if> ><c:out value="${cmmCodeDetail.codeNm}"/></option>
-			        </c:forEach>
-			      </select>
-		        </label>
-			</td>
-		</tr>
-		<tr>
-			<th><spring:message code="comSymSymNwk.ntwrkRegist.userNm"/> <span class="pilsu">*</span></th><!-- 사용자명 -->
-			<td class="left">
-			    <label for="userNm"><input name="userNm" id="userNm" type="text" maxLength="30" style="width:128px" />&nbsp;<form:errors path="userNm" /></label>
-			</td>
-		</tr>
-		<tr>
-			<th><spring:message code="comSymSymNwk.ntwrkRegist.useAt"/> <span class="pilsu">*</span></th><!-- 사용여부 -->
-			<td class="left">
-			    <label for="useAt">
-		          <select name="useAt">
-		              <option value="Y" <c:if test="${ntwrk.useAt == 'Y'}">selected</c:if> >Y</option>
-		              <option value="N" <c:if test="${ntwrk.useAt == 'N'}">selected</c:if> >N</option>
-		          </select>
-		       </label>
-			</td>
-		</tr>
-		<tr>
-			<th><spring:message code="comSymSymNwk.ntwrkRegist.regstYmd"/> <span class="pilsu">*</span></th><!-- 등록일자 -->
-			<td class="left">
-			    <label for="regstYmd">
-		        	<input type="hidden" name="cal_url" id="cal_url" value="<c:url value='/sym/cal/EgovNormalCalPopup.do'/>" >
-		            <!--  <input type="text" name="regstYmd" id="regstYmd" size="10" maxlength="10" title="등록일자" class="readOnlyClass" readonly onClick="javascript:fn_egov_NormalCalendar(document.ntwrk, document.ntwrk.registerDate, document.ntwrk.regstYmd);" onKeyDown="javascript:if (event.keyCode == 13) { fn_egov_NormalCalendar(document.ntwrk, document.ntwrk.registerDate, document.ntwrk.regstYmd); }" > -->
-		            <input type="text" name="regstYmd" id="regstYmd" maxlength="10" title="<spring:message code="comSymSymNwk.ntwrkRegist.regstYmd"/>" style="width:70px"/><!-- 등록일자 -->
-		            <input type="hidden" name="registerDate" value=""/>
-		            &nbsp;<form:errors path="regstYmd" />
-		        </label>
-			</td>
-		</tr>
-	</table>
-
-	<!-- 하단 버튼 -->
-	<div class="btn">
-		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fncNtwrkInsert(); return false;" /><!-- 저장 -->
-		<span class="btn_s"><a href="<c:url value='/sym/sym/nwk/selectNtwrkList.do'/>?pageIndex=<c:out value='${ntwrkVO.pageIndex}'/>&amp;strManageIem=<c:out value="${ntwrkVO.strManageIem}"/>&amp;strUserNm=<c:out value="${ntwrkVO.strUserNm}"/>" onclick="fncSelectNtwrkList(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
-	</div>
-	<div style="clear:both;"></div>
-
-    <!-- 검색조건 유지 -->
-    <input type="hidden" name="strManageIem" value="<c:out value='${ntwrkVO.strManageIem}'/>" />
-    <input type="hidden" name="strUserNm" value="<c:out value='${ntwrkVO.strUserNm}'/>" />
-    <input type="hidden" name="pageIndex" value="<c:out value='${ntwrkVO.pageIndex}'/>" >
-</form>
+		<!-- 등록폼 -->
+		<table class="wTable">
+			<colgroup>
+				<col style="width:16%" />
+				<col style="" />
+			</colgroup>
+			<tr>
+				<th><spring:message code="comSymSymNwk.ntwrkRegist.ntwrkIp"/> <span class="pilsu">*</span></th><!-- IP -->
+				<td class="left">
+				    <label for="ntwrkIp"><form:input path="ntwrkIp" id="ntwrkIp" maxlength="23" cssStyle="width:200px" />&nbsp;<form:errors path="ntwrkIp" /></label>
+				</td>
+			</tr>
+			<tr>
+				<th><spring:message code="comSymSymNwk.ntwrkRegist.gtwy"/> <span class="pilsu">*</span></th><!-- 게이트웨이 -->
+				<td class="left">
+				    <label for="gtwy"><form:input path="gtwy" id="gtwy" maxlength="23" cssStyle="width:200px" />&nbsp;<form:errors path="gtwy" /></label>
+				</td>
+			</tr>
+			<tr>
+				<th><spring:message code="comSymSymNwk.ntwrkRegist.subnet"/> <span class="pilsu">*</span></th><!-- 서브넷 -->
+				<td class="left">
+				    <label for="subnet"><form:input path="subnet" id="subnet" maxlength="23" cssStyle="width:200px" />&nbsp;<form:errors path="subnet" /></label>
+				</td>
+			</tr>
+			<tr>
+				<th><spring:message code="comSymSymNwk.ntwrkRegist.domnServer"/> <span class="pilsu">*</span></th><!-- DNS -->
+				<td class="left">
+				    <label for="domnServer"><form:input path="domnServer" id="domnServer" maxlength="23" cssStyle="width:200px" />&nbsp;<form:errors path="domnServer" /></label>
+				</td>
+			</tr>
+			<tr>
+				<th><spring:message code="comSymSymNwk.ntwrkRegist.manageIem"/> <span class="pilsu">*</span></th><!-- 관리항목 -->
+				<td class="left">
+				    <label for="manageIem">
+				      <select name="manageIem">
+				        <c:forEach var="cmmCodeDetail" items="${cmmCodeDetailList}" varStatus="status">
+				          <option value="<c:out value="${cmmCodeDetail.code}"/>" <c:if test="${cmmCodeDetail.code == ntwrk.manageIem}">selected</c:if> ><c:out value="${cmmCodeDetail.codeNm}"/></option>
+				        </c:forEach>
+				      </select>
+				      &nbsp;<form:errors path="manageIem" />
+			        </label>
+				</td>
+			</tr>
+			<tr>
+				<th><spring:message code="comSymSymNwk.ntwrkRegist.userNm"/> <span class="pilsu">*</span></th><!-- 사용자명 -->
+				<td class="left">
+				    <label for="userNm"><form:input path="userNm" id="userNm" maxlength="30" cssStyle="width:128px" />&nbsp;<form:errors path="userNm" /></label>
+				</td>
+			</tr>
+			<tr>
+				<th><spring:message code="comSymSymNwk.ntwrkRegist.useAt"/> <span class="pilsu">*</span></th><!-- 사용여부 -->
+				<td class="left">
+				    <label for="useAt">
+			          <select name="useAt">
+			              <option value="Y" <c:if test="${ntwrk.useAt == 'Y'}">selected</c:if> >Y</option>
+			              <option value="N" <c:if test="${ntwrk.useAt == 'N'}">selected</c:if> >N</option>
+			          </select>
+			          &nbsp;<form:errors path="useAt" />
+			       </label>
+				</td>
+			</tr>
+			<tr>
+				<th><spring:message code="comSymSymNwk.ntwrkRegist.regstYmd"/> <span class="pilsu">*</span></th><!-- 등록일자 -->
+				<td class="left">
+				    <label for="regstYmd">
+			        	<input type="hidden" name="cal_url" id="cal_url" value="<c:url value='/sym/cal/EgovNormalCalPopup.do'/>" >
+			            <!--  <form:input path="regstYmd" id="regstYmd" size="10" maxlength="10" title="등록일자" cssClass="readOnlyClass" readonly="true" onClick="javascript:fn_egov_NormalCalendar(document.ntwrk, document.ntwrk.registerDate, document.ntwrk.regstYmd);" onKeyDown="javascript:if (event.keyCode == 13) { fn_egov_NormalCalendar(document.ntwrk, document.ntwrk.registerDate, document.ntwrk.regstYmd); }" /> -->
+			            <form:input path="regstYmd" id="regstYmd" maxlength="10" cssStyle="width:70px"/><!-- 등록일자 -->
+			            <input type="hidden" name="registerDate" value=""/>
+			            &nbsp;<form:errors path="regstYmd" />
+			        </label>
+				</td>
+			</tr>
+		</table>
+	
+		<!-- 하단 버튼 -->
+		<div class="btn">
+			<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fncNtwrkInsert(); return false;" /><!-- 저장 -->
+			<span class="btn_s"><a href="<c:url value='/sym/sym/nwk/selectNtwrkList.do'/>?pageIndex=<c:out value='${ntwrkVO.pageIndex}'/>&amp;strManageIem=<c:out value="${ntwrkVO.strManageIem}"/>&amp;strUserNm=<c:out value="${ntwrkVO.strUserNm}"/>" onclick="fncSelectNtwrkList(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
+		</div>
+		<div style="clear:both;"></div>
+	
+	    <!-- 검색조건 유지 -->
+	    <input type="hidden" name="strManageIem" value="<c:out value='${ntwrkVO.strManageIem}'/>" />
+	    <input type="hidden" name="strUserNm" value="<c:out value='${ntwrkVO.strUserNm}'/>" />
+	    <input type="hidden" name="pageIndex" value="<c:out value='${ntwrkVO.pageIndex}'/>" >
+	</form:form>
 
 </div>
 

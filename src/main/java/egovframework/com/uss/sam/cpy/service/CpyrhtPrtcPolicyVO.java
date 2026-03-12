@@ -1,5 +1,8 @@
 package egovframework.com.uss.sam.cpy.service;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 
  * 저작권보호정책내용을 처리하는 VO 클래스
@@ -26,6 +29,8 @@ public class CpyrhtPrtcPolicyVO extends CpyrhtPrtcPolicyDefaultVO {
 	private String cpyrhtId;
 
 	/** 저작권보호정책내용 */
+	@EgovNullCheck
+	@Size(max=2500)
 	private String cpyrhtPrtcPolicyCn;
 
 	/** 최초등록시점 */

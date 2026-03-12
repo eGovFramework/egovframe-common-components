@@ -4,13 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.uss.ion.rsn.service.EgovRssService;
 import egovframework.com.uss.ion.rsn.service.RssInfo;
+import jakarta.annotation.Resource;
 
 /**
  * RSS서비스를 처리하는 ServiceImpl Class 구현

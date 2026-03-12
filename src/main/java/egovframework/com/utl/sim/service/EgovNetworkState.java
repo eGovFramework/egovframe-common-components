@@ -12,7 +12,7 @@
  *  @version 1.0
  *  @see
  * The type com.sun.star.lang.XeventListener cannot be resolved. It is indirectly referenced from required .class files
- *  Copyright (C) 2009 by EGOV  All rights reserved.
+ *  Copyright (C) 2009 by EGOV  All right reserved.
  */
 
 package egovframework.com.utl.sim.service;
@@ -45,7 +45,7 @@ import egovframework.com.cmm.util.EgovResourceCloseHelper;
  *  2020.12.07	신용호		KISA 보안약점 조치
  *  2022.11.11	김혜준		시큐어코딩 처리
  *  2023.06.09	김신해		NSR 보안조치 (SCAN 기능 구현 추가)
- *  
+ *
  * </pre>
  */
 
@@ -74,8 +74,9 @@ public class EgovNetworkState {
 		try {
 			if ("WINDOWS".equals(Globals.OS_TYPE)) {
 				// 2020-12-07 KISA 보안코드 검증 조치
-				if (!EgovWebUtil.isIPAddress(localIP))
+				if (!EgovWebUtil.isIPAddress(localIP)) {
 					throw new SecurityException("IP Address is Not Valid~~~!");
+				}
 
 				String execStr = "nbtstat -A " + localIP;
 				// 2022.11.11 시큐어코딩 처리
@@ -114,9 +115,9 @@ public class EgovNetworkState {
 	 */
 	public static List<String> getMyPortScan() {
 
-		List<String> processes = new ArrayList<String>();
+		List<String> processes = new ArrayList<>();
 		BufferedReader input = null;
-		
+
 		try {
 
 			if ("WINDOWS".equals(Globals.OS_TYPE)) {
@@ -128,8 +129,9 @@ public class EgovNetworkState {
 
 				while (true) {
 					String str = input.readLine();
-					if (str == null)
+					if (str == null) {
 						break;
+					}
 					if (str.length() >= MAX_STR_LEN) {
 						throw new RuntimeException("input too long");
 					}
@@ -146,8 +148,9 @@ public class EgovNetworkState {
 				input = new BufferedReader(new InputStreamReader(p.getInputStream()));
 				while (true) {
 					String str = input.readLine();
-					if (str == null)
+					if (str == null) {
 						break;
+					}
 					if (str.length() >= MAX_STR_LEN) {
 						throw new RuntimeException("input too long");
 					}
@@ -161,7 +164,7 @@ public class EgovNetworkState {
 		} finally {
 			EgovResourceCloseHelper.close(input);
 		}
-		
+
 		return processes;
 	}
 
@@ -186,7 +189,7 @@ public class EgovNetworkState {
 		} catch (IOException ex) {
 			throw new RuntimeException(ex);
 		}
-		
+
 		return addrIP;
 	}
 
@@ -224,7 +227,7 @@ public class EgovNetworkState {
 	public static String getNetWorkInfo(String stringOne) throws IOException {
 		// 실행할 명령을 프로퍼티 파일에서 확인한다.
 		Process p = null;
-		
+
 		BufferedReader b_out = null;
 
 		String tmp = "";
@@ -238,8 +241,9 @@ public class EgovNetworkState {
 			b_out = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			while (true) {
 				tmp = b_out.readLine();
-				if (tmp == null)
+				if (tmp == null) {
 					break;
+				}
 				if (tmp.length() >= MAX_STR_LEN) {
 					throw new IllegalArgumentException("input too long");
 				}
@@ -266,7 +270,7 @@ public class EgovNetworkState {
 			}
 		} finally {
 			EgovResourceCloseHelper.close(b_out);
-			
+
 			if (p != null) {
 				p.destroy();
 			}
@@ -290,8 +294,8 @@ public class EgovNetworkState {
 			char c = str.charAt(i);
 
 			if (c > 45 && c < 59) {
-				Character cr = new Character(c);
-				outValue += cr.toString();
+				char cr = c;
+				outValue += Character.toString(cr);
 			}
 		}
 		return outValue;

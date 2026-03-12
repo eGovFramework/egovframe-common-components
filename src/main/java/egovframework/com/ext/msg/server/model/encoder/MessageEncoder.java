@@ -20,15 +20,14 @@ package egovframework.com.ext.msg.server.model.encoder;
 
 import java.util.Set;
 
-import javax.json.Json;
-import javax.json.JsonArrayBuilder;
-import javax.websocket.EncodeException;
-import javax.websocket.Encoder;
-import javax.websocket.EndpointConfig;
-
 import egovframework.com.ext.msg.server.model.ChatMessage;
 import egovframework.com.ext.msg.server.model.Message;
 import egovframework.com.ext.msg.server.model.UsersMessage;
+import jakarta.json.Json;
+import jakarta.json.JsonArrayBuilder;
+import jakarta.websocket.EncodeException;
+import jakarta.websocket.Encoder;
+import jakarta.websocket.EndpointConfig;
 
 /**
  * 서버에서 클라이언트로 전달되는 메시지를 encoding하는 클래스

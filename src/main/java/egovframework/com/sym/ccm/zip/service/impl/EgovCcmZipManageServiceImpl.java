@@ -3,8 +3,6 @@ package egovframework.com.sym.ccm.zip.service.impl;
 import java.io.InputStream;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.excel.EgovExcelService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
@@ -13,7 +11,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.sym.ccm.zip.service.EgovCcmZipManageService;
 import egovframework.com.sym.ccm.zip.service.Zip;
 import egovframework.com.sym.ccm.zip.service.ZipVO;
-
+import jakarta.annotation.Resource;
 
 /**
  *

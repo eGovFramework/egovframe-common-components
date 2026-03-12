@@ -25,7 +25,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -36,70 +35,63 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="bndtManage" staticJavascript="false" xhtml="true" cdata="false"/>
-<script type="text/javaScript" language="javascript" defer="defer">
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
+<script type="text/javaScript" language="javascript">
 
-	/* ********************************************************
-	 * 목록 으로 가기
-	 ******************************************************** */
-	function fncBndtManageList(){
-		location.href = "<c:url value='/uss/ion/bnt/EgovBndtManageList.do'/>";
-	}
-	
-	/* ********************************************************
-	 * 저장처리화면
-	 ******************************************************** */
-	 function fncInsertBndtManage() {
-		    var varForm = document.getElementById("bndtManage");
-		    varForm.action = "<c:url value='/uss/ion/bnt/insertBndtManage.do'/>";
-	
-		    if(confirm("<spring:message code="common.save.msg" />")){/* 저장 하시겠습니까? */
-		        if(!validateBndtManage(varForm)){           
-		            return;
-		        }else{
-		        	varForm.submit();
-		        } 
-		    }
-		}
-	
-	function modalDialogCallback(retVal) {
-		if(retVal != null){
+/* ********************************************************
+ * 목록 으로 가기
+ ******************************************************** */
+function fncBndtManageList(){
+	location.href = "<c:url value='/uss/ion/bnt/EgovBndtManageList.do'/>";
+}
 
-			var tmp = retVal.split(",");
-			document.bndtManage.bndtId.value = tmp[0];
-			document.getElementById("bndtIdName").value=tmp[2];
-			document.getElementById("orgnztNm").value=tmp[3];
-			
-			document.bndtManage.action = "<c:url value='/uss/ion/bnt/EgovBndtManageRegist.do'/>";
-			$('.ui-dialog-content').dialog('close');
-		}
+/* ********************************************************
+ * 저장처리화면
+ ******************************************************** */
+function fn_egov_regist_bndtManage(form){
+	//input item Client-Side validate
+	if (!validateBndtManage(form)) {	
+		return;
 	}
-	 $(document).ready(function () {
-	        $('#BndtRegist').click(function (e) {
-	        	e.preventDefault();
-	            
-	            var pagetitle = $(this).attr("title");
-	            var page = "<c:url value='/uss/ion/ism/selectSanctnerListNew.do'/>";
-	        	
-	            var $dialog = $('<div></div>')
-		            .html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="100%"></iframe>')
-		            .dialog({
-		            	autoOpen: false,
-		                modal: true,
-		                height: 750,
-		                width: 770,
-		                title: pagetitle
-		        	});
-	        	$dialog.dialog('open');
-	    	});
-		});	
+	if(confirm("<spring:message code="common.save.msg" />")){/* 저장 하시겠습니까? */
+		form.submit();
+	}
+}
+
+function modalDialogCallback(retVal) {
+	if(retVal != null){
+		var tmp = retVal.split(",");
+		document.getElementById("bndtId").value = tmp[0];
+		document.getElementById("bndtIdName").value=tmp[2];
+		$('.ui-dialog-content').dialog('close');
+	}
+}
+
+$(document).ready(function () {
+	$('#BndtRegist').click(function (e) {
+		e.preventDefault();
+		
+		var pagetitle = $(this).attr("title");
+		var page = "<c:url value='/uss/ion/ism/selectSanctnerListNew.do'/>";
+		
+		var $dialog = $('<div></div>')
+			.html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="100%"></iframe>')
+			.dialog({
+				autoOpen: false,
+				modal: true,
+				height: 750,
+				width: 770,
+				title: pagetitle
+			});
+		$dialog.dialog('open');
+	});
+});
 </script>
 </head>
 
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
-<form:form modelAttribute="bndtManage" name="bndtManage" method="post" >
+<form:form modelAttribute="bndtManageVO" method="post" action="${pageContext.request.contextPath}/uss/ion/bnt/insertBndtManage.do" onSubmit="fn_egov_regist_bndtManage(document.forms[0]); return false;">
 <input name="cmd" type="hidden" value="insert"/>
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -108,17 +100,17 @@
 	<!-- 등록폼 -->
 	<table class="wTable">
 		<colgroup>
-			<col style="width:16%" />
-			<col style="" />
+			<col style="width:20%" />
+			<col style="width:80%" />
 		</colgroup>
 		<tr>
-			<th><spring:message code="comUssIonBnt.common.bndtIdName"/> <span class="pilsu">*</span></th><!-- 당직자명 -->
+			<th><label for="bndtId"><spring:message code="comUssIonBnt.common.bndtIdName"/> <span class="pilsu">*</span></label></th><!-- 당직자명 -->
 			<td class="left">
 			  <input name="bndtIdName" id="bndtIdName" type="text"  title="<spring:message code="comUssIonBnt.common.bndtIdName"/>" readonly="readonly" style="width:128px"/><!-- 당직자명 -->
+		      <a id="BndtRegist" href="#" title="<spring:message code="comUssIonBnt.common.bndtIdName"/>" style="selector-dummy: expression(this.hideFocus=false);">
+		      <img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif' />" style="vertical-align: middle" alt="<spring:message code="comUssIonBnt.common.bndt"/>" title="<spring:message code="comUssIonBnt.common.bndt"/>"></a>
 		      <form:hidden  path="bndtId"/>
-		      <form:errors path="bndtId"/>		      
-			  <a id="BndtRegist" title="<spring:message code="comUssIonBnt.common.bndtIdName"/>" style="selector-dummy: expression(this.hideFocus=false);"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif' />"
-	     			style="vertical-align: middle" alt="<spring:message code="comUssIonBnt.common.bndt"/>" title="<spring:message code="comUssIonBnt.common.bndt"/>"></a>
+		      <div><form:errors path="bndtId" cssClass="error"/></div>		      
 			</td>
 		</tr>
 		<tr>
@@ -128,25 +120,25 @@
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="comUssIonBnt.common.bndtDe"/> <span class="pilsu">*</span></th><!-- 당직일자 -->
+			<th><label for="bndtDe"><spring:message code="comUssIonBnt.common.bndtDe"/> <span class="pilsu">*</span></label></th><!-- 당직일자 -->
 			<td class="left">
 			    <form:input  path="bndtDe" size="10" maxlength="10" title="<spring:message code='comUssIonBnt.common.bndtDe'/>" readonly="true" style="width:70px" /><!-- 당직일자 -->
-      			<form:errors path="bndtDe"/>
+      			<div><form:errors path="bndtDe" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="comUssIonBnt.common.remark"/></th><!-- 비고 -->
+			<th><label for="remark"><spring:message code="comUssIonBnt.common.remark"/></label></th><!-- 비고 -->
 			<td class="left">
 			    <form:textarea path="remark" rows="4" cols="70" cssClass="txaClass" title="<spring:message code='comUssIonBnt.common.remark'/>" /><!-- 비고 -->
-      			<form:errors path="remark"/>
+      			<div><form:errors path="remark" cssClass="error"/></div>
 			</td>
 		</tr>
 	</table>
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fncInsertBndtManage(); return false;" />
-		<span class="btn_s"><a href="<c:url value='/uss/ion/bnt/EgovBndtManageList.do'/>?searchCondition=1" onclick="fncBndtManageList(); return false;"><spring:message code="button.list" /></a></span>
+		<input type="submit" class="s_submit" value="<spring:message code="button.save" />" title="<spring:message code="button.save" /> <spring:message code="input.button" />" />
+		<span class="btn_s"><a href="<c:url value='/uss/ion/bnt/EgovBndtManageList.do'/>" onclick="fncBndtManageList(); return false;" title="<spring:message code="button.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

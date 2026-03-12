@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.json.simple.parser.ParseException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import lombok.extern.slf4j.Slf4j;
 

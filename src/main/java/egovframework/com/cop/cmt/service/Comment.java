@@ -3,6 +3,8 @@ package egovframework.com.cop.cmt.service;
 import java.io.Serializable;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
 
 /**
  * 댓글관리 서비스 데이터 처리 모델
@@ -41,6 +43,8 @@ public class Comment implements Serializable {
     private String commentPassword = "";
     
     /** 댓글 내용 */
+    @EgovNullCheck
+    @Size(max=200)
     private String commentCn = "";
     
     /** 사용 여부 */

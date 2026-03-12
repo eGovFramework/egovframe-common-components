@@ -3,8 +3,8 @@ package egovframework.com.crypto.err;
 import java.util.Random;
 
 import org.apache.commons.codec.binary.Base64;
-import org.egovframe.rte.fdl.cryptography.EgovARIACryptoService;
-import org.egovframe.rte.fdl.cryptography.EgovPasswordEncoder;
+import org.egovframe.rte.fdl.crypto.EgovARIACryptoService;
+import org.egovframe.rte.fdl.crypto.EgovPasswordEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;

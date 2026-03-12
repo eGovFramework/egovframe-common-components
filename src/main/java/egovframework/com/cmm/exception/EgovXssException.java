@@ -20,12 +20,12 @@ import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
  */
 
 public class EgovXssException extends BaseRuntimeException {
-    
+
 	private static final long serialVersionUID = 1L;
-	 
+
 	/**
 	 * EgovXssException 생성자.
-	 * 
+	 *
 	 * @param defaultMessage 메세지 지정
 	 * @param wrappedException 원인 Exception
 	 */

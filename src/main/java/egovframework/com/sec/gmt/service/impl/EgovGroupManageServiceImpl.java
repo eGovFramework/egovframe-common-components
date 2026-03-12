@@ -2,14 +2,13 @@ package egovframework.com.sec.gmt.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.sec.gmt.service.EgovGroupManageService;
 import egovframework.com.sec.gmt.service.GroupManage;
 import egovframework.com.sec.gmt.service.GroupManageVO;
+import jakarta.annotation.Resource;
 
 /**
  * 그룹관리에 관한 ServiceImpl 클래스를 정의한다.
@@ -20,7 +19,7 @@ import egovframework.com.sec.gmt.service.GroupManageVO;
  *
  * <pre>
  * << 개정이력(Modification Information) >>
- *   
+ *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.03.11  이문준          최초 생성
@@ -33,23 +32,25 @@ public class EgovGroupManageServiceImpl extends EgovAbstractServiceImpl implemen
 
 	@Resource(name="groupManageDAO")
     private GroupManageDAO groupManageDAO;
-	
+
 	/**
 	 * 시스템사용 목적별 그룹 목록 조회
 	 * @param groupManageVO GroupManageVO
 	 * @return List<GroupManageVO>
 	 * @exception Exception
 	 */
+	@Override
 	public List<GroupManageVO> selectGroupList(GroupManageVO groupManageVO) throws Exception {
 		return groupManageDAO.selectGroupList(groupManageVO);
 	}
-	
+
 	/**
 	 * 검색조건에 따른 그룹정보를 조회
 	 * @param groupManageVO GroupManageVO
 	 * @return GroupManageVO
 	 * @exception Exception
 	 */
+	@Override
 	public GroupManageVO selectGroup(GroupManageVO groupManageVO) throws Exception {
 		return groupManageDAO.selectGroup(groupManageVO);
 	}
@@ -61,6 +62,7 @@ public class EgovGroupManageServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @return GroupManageVO
 	 * @exception Exception
 	 */
+	@Override
 	public GroupManageVO insertGroup(GroupManage groupManage, GroupManageVO groupManageVO) throws Exception {
 		groupManageDAO.insertGroup(groupManage);
 		groupManageVO.setGroupId(groupManage.getGroupId());
@@ -72,25 +74,28 @@ public class EgovGroupManageServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @param groupManage GroupManage
 	 * @exception Exception
 	 */
+	@Override
 	public void updateGroup(GroupManage groupManage) throws Exception {
 		groupManageDAO.updateGroup(groupManage);
 	}
-	
+
 	/**
 	 * 불필요한 그룹정보를 화면에 조회하여 데이터베이스에서 삭제
 	 * @param groupManage GroupManage
 	 * @exception Exception
 	 */
+	@Override
 	public void deleteGroup(GroupManage groupManage) throws Exception {
 		groupManageDAO.deleteGroup(groupManage);
 	}
-	
+
     /**
 	 * 목록조회 카운트를 반환한다
 	 * @param groupManageVO GroupManageVO
 	 * @return int
 	 * @exception Exception
 	 */
+	@Override
 	public int selectGroupListTotCnt(GroupManageVO groupManageVO) throws Exception {
 		return groupManageDAO.selectGroupListTotCnt(groupManageVO);
 	}

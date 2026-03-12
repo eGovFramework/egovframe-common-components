@@ -60,7 +60,7 @@ public class UserManageLdapDAO extends OrgManageLdapDAO {
 
 		try {
 			ucorgList = ldapTemplate.search(EgovWebUtil.removeLDAPInjectionRisk(dn), filter,
-				SearchControls.ONELEVEL_SCOPE, new ObjectMapper<UserVO>(
+				SearchControls.ONELEVEL_SCOPE, new ObjectMapper<>(
 					UserVO.class));
 		} catch (NameNotFoundException e) {
 			logger.error("[NameNotFoundException] : search fail");//KISA 보안약점 조치 (2018-10-29, 윤창원)

@@ -6,9 +6,9 @@ import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 
 public interface EgovNewsService {
 
-	List<NewsVO> selectNewsList(NewsVO searchVO);
+	List<NewsVO> selectNewsList(NewsVO newsVO);
 
-	int selectNewsListCnt(NewsVO searchVO);
+	int selectNewsListCnt(NewsVO newsVO);
 
 	void insertNews(NewsVO newsVO) throws FdlException;
 

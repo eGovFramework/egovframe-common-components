@@ -27,6 +27,9 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/popup_com.css'/>">
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialogCallee.js'/>" ></script>
+<script src="<c:url value='/js/egovframework/com/cmm/jquery-1.12.4.min.js'/>"></script>  <!-- jQuery core -->
+<script src="<c:url value='/js/egovframework/com/cmm/jquery-ui_1.12.1.js'/>"></script>  <!-- jQuery UI -->
+<link rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jquery-ui_1.12.1.css'/>">
 <script type="text/javaScript" language="javascript">
 /* ********************************************************
  * 페이징 처리 함수
@@ -108,11 +111,11 @@ function fn_egov_list_QustnrQestnManag(qestnrId, qestnrTmplatId){
 	vFrom.submit();
 
 }
-
-function fn_egov_open_QustnrItemManage(qestnrId, qestnrTmplatId, qustnrIemId, cnt){
-	getDialogArguments();
+/**TODO : 테스트후 삭제**/
+/* function fn_egov_open_QustnrItemManage(qestnrId, qestnrTmplatId, qustnrIemId, cnt){
+	getDialogArguments(); */
 	/* var opener = window.dialogArguments; */
-	var opener;
+/* 	var opener;
  
 	if (window.dialogArguments) {
 	    opener = window.dialogArguments; // Support IE
@@ -126,7 +129,40 @@ function fn_egov_open_QustnrItemManage(qestnrId, qestnrTmplatId, qustnrIemId, cn
 	opener.document.getElementById("qustnrIemCn").value = document.getElementById("iptText_"+ cnt).value;
 	window.returnValue=true;
 	window.close();
+} */
+
+/* ********************************************************
+ * 모달창 데이터 전달 함수
+ ******************************************************** */
+function selectQustnrItem(data) {
+	console.log("[자식] 클릭됨 - 전달 데이터:", data); // 객체 전체 출력
+	var parentWin = window.parent;
+	var $p = parentWin.jQuery || parentWin.$;
+	if (!$p) {
+		console.error("[자식] 부모 jQuery 못 찾음");
+		return;
+	}
+	console.log("[자식] 부모 jQuery 찾음");
+	// 값 설정 전 현재 부모 input 값들 로그
+	console.log("[자식] 설정 전 부모 #qestnrId 값:", $p("#qestnrId").val());
+	console.log("[자식] 설정 전 부모 #qestnrTmplatId 값:", $p("#qestnrTmplatId").val());
+	console.log("[자식] 설정 전 부모 #qustnrIemId 값:", $p("#qustnrIemId").val());
+	console.log("[자식] 설정 전 부모 #qustnrOrder 값:", $p("#qustnrOrder").val());
+	console.log("[자식] 설정 전 부모 #qustnrIemCn 값:", $p("#qustnrIemCn").val());
+	$p("#qestnrId").val(data.qestnrId);
+	$p("#qestnrTmplatId").val(data.qestnrTmplatId);
+	$p("#qustnrIemId").val(data.qustnrIemId);
+	$p("#qustnrOrder").val(data.qustnrOrder);
+	$p("#qustnrIemCn").val(data.qustnrIemCn);
+	// 값 설정 후 로그
+	console.log("[자식] 설정 후 부모 #qestnrId 값:", $p("#qestnrId").val());
+	console.log("[자식] 설정 후 부모 #qestnrTmplatId 값:", $p("#qestnrTmplatId").val());
+	console.log("[자식] 설정 후 부모 #qustnrIemId 값:", $p("#qustnrIemId").val());
+	console.log("[자식] 설정 전 부모 #qustnrOrder 값:", $p("#qustnrOrder").val());
+	console.log("[자식] 설정 전 부모 #qustnrIemCn 값:", $p("#qustnrIemCn").val());
+	$p("#qestnrModal").dialog("close");
 }
+
 </script>
 </head>
 <body>
@@ -205,7 +241,14 @@ function fn_egov_open_QustnrItemManage(qestnrId, qestnrTmplatId, qustnrIemId, cn
 		<!-- 항목내용  -->
 		<td class="lt_text3L">
 			<div class="divDotText" style="width:320px; border:solid 0px;">
-    			<a href="#LINK" onClick="fn_egov_open_QustnrItemManage('${resultInfo.qestnrId}', '${resultInfo.qestnrTmplatId}', '${resultInfo.qustnrIemId}', '${status.count}')">${resultInfo.iemCn}</a>
+    			<a href="#LINK" onClick="selectQustnrItem({
+				qestnrId: '${resultInfo.qestnrId}', 
+				qestnrTmplatId: '${resultInfo.qestnrTmplatId}', 
+				qustnrIemId: '${resultInfo.qustnrIemId}', 
+				qustnrOrder: '${status.count}',
+				qustnrIemCn: '${fn:escapeXml(resultInfo.iemCn)}'
+			}); return false;">
+    			${resultInfo.iemCn}</a>
     		</div>
 		</td>
 		<!-- 기타답변여부 -->
@@ -218,7 +261,13 @@ function fn_egov_open_QustnrItemManage(qestnrId, qestnrTmplatId, qustnrIemId, cn
 	  	<td class="lt_text3">${fn:substring(resultInfo.frstRegisterPnttm, 0, 10)}</td>
 	  	<!-- 선택 -->
 	  	<td class="lt_text3">
-			<a href="#LINK" onClick="fn_egov_open_QustnrItemManage('${resultInfo.qestnrId}', '${resultInfo.qestnrTmplatId}', '${resultInfo.qustnrIemId}', '${status.count}')"><spring:message code="input.cSelect" /></a><!-- 선택 -->
+			<a href="#LINK" onClick="selectQustnrItem({
+				qestnrId: '${resultInfo.qestnrId}', 
+				qestnrTmplatId: '${resultInfo.qestnrTmplatId}', 
+				qustnrIemId: '${resultInfo.qustnrIemId}', 
+				qustnrOrder: '${status.count}',
+				qustnrIemCn: '${fn:escapeXml(resultInfo.iemCn)}'
+			}); return false;"><spring:message code="input.cSelect" /></a><!-- 선택 -->
 			<input name="iptText_${status.count}" id="iptText_${status.count}" type="hidden" value="${resultInfo.iemCn}">
 		</td>
 	  </tr>	  

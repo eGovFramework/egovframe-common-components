@@ -3,10 +3,7 @@ package egovframework.com.uss.ion.rwd.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -16,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -31,6 +27,8 @@ import egovframework.com.uss.ion.rwd.service.EgovRwardManageService;
 import egovframework.com.uss.ion.rwd.service.RwardManage;
 import egovframework.com.uss.ion.rwd.service.RwardManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * <pre>
@@ -77,9 +75,6 @@ public class EgovRwardManageController {
 
 	@Resource(name = "EgovFileMngUtil")
 	private EgovFileMngUtil fileUtil;
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/**
 	 * 포상관리 목록화면 이동
@@ -208,11 +203,8 @@ public class EgovRwardManageController {
 	 */
 	@RequestMapping(value = "/uss/ion/rwd/insertRwardManage.do")
 	public String insertRwardManage(final MultipartHttpServletRequest multiRequest,
-			@ModelAttribute("rwardManage") RwardManage rwardManage,
-			@ModelAttribute("rwardManageVO") RwardManageVO rwardManageVO, BindingResult bindingResult,
-			SessionStatus status, ModelMap model) throws Exception {
-
-		beanValidator.validate(rwardManage, bindingResult); // validation 수행
+			@Valid @ModelAttribute("rwardManage") RwardManage rwardManage, BindingResult bindingResult,
+			@ModelAttribute("rwardManageVO") RwardManageVO rwardManageVO, SessionStatus status, ModelMap model) throws Exception {
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("rwardManageVO", rwardManageVO);
@@ -252,10 +244,9 @@ public class EgovRwardManageController {
 	@SuppressWarnings("unused")
 	@RequestMapping(value = "/uss/ion/rwd/updtRwardManage.do")
 	public String updtRwardManage(@RequestParam("atchFileAt") String atchFileAt,
-			final MultipartHttpServletRequest multiRequest, @ModelAttribute("rwardManage") RwardManage rwardManage,
-			@ModelAttribute("rwardManageVO") RwardManageVO rwardManageVO, BindingResult bindingResult,
-			SessionStatus status, ModelMap model) throws Exception {
-		beanValidator.validate(rwardManage, bindingResult); // validation 수행
+			final MultipartHttpServletRequest multiRequest, @Valid @ModelAttribute("rwardManage") RwardManage rwardManage, BindingResult bindingResult,
+			@ModelAttribute("rwardManageVO") RwardManageVO rwardManageVO, SessionStatus status, ModelMap model) throws Exception {
+
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("rwardManageVO", rwardManageVO);
 			model.addAttribute("rwardManage", rwardManage);
@@ -412,7 +403,6 @@ public class EgovRwardManageController {
 	@RequestMapping(value = "/uss/ion/rwd/updtRwardConfm.do")
 	public String updtRwardManageConfm(@ModelAttribute("rwardManage") RwardManage rwardManage,
 			BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
-		beanValidator.validate(rwardManage, bindingResult); // validation 수행
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		// KISA 보안취약점 조치 (2018-12-10, 신용호)

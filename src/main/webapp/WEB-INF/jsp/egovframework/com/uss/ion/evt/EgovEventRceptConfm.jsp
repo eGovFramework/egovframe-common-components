@@ -306,7 +306,7 @@
 		</thead>
 		<tbody>
 			<c:forEach items="${eventRceptConfmList}" var="resultInfo" varStatus="status">
-				<input type="hidden" name="eventId"         value="${resultInfo.eventId}"/>
+				<input type="hidden" name="eventId"         value=" ${resultInfo.eventId}"/>
 				<input type="hidden" name="applcntId"       value="${resultInfo.applcntId}"/>
 				<input type="hidden" name="infrmlSanctnId"  value="${resultInfo.infrmlSanctnId}"/>
 				<input type="hidden" name="reqstDe"         value="${resultInfo.reqstDe}"/>

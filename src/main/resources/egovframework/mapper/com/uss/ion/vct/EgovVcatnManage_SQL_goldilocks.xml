@@ -68,6 +68,7 @@
 			       mst.user_nm         AS applcntNm        ,
 			       org.orgnzt_nm       AS orgnztNm         ,
 	               NOON_SE             AS noonSe           ,
+			       (select org.ORGNZT_NM from COMTNORGNZTINFO org where  org.ORGNZT_ID = mst.ORGNZT_ID) AS orgnztNm,
 			       (select code_nm from COMTCCMMNDETAILCODE where code_id ='COM056' and code = vct.VCATN_SE) as vcatnSeNm,
 			       (select mst_a.USER_NM from COMVNUSERMASTER mst_a where  mst_a.ESNTL_ID = vct.SANCTNER_ID)  AS sanctnerNm,
                    (select info.ORGNZT_NM from COMVNUSERMASTER mst_b, COMTNORGNZTINFO info 
@@ -84,7 +85,7 @@
         
     </select>
 
-    <insert id="insertVcatnManage" parameterType="egovframework.com.uss.ion.vct.service.VcatnManage">
+    <insert id="insertVcatnManage" parameterType="egovframework.com.uss.ion.vct.service.VcatnManageVO">
         
 
             INSERT INTO COMTNVCATNMANAGE
@@ -118,7 +119,7 @@
         
     </insert>     
 
-    <update id="updateVcatnManage" parameterType="egovframework.com.uss.ion.vct.service.VcatnManage">
+    <update id="updateVcatnManage" parameterType="egovframework.com.uss.ion.vct.service.VcatnManageVO">
         
 
             UPDATE COMTNVCATNMANAGE
@@ -133,7 +134,7 @@
         
     </update>    
     
-    <delete id="deleteVcatnManage" parameterType="egovframework.com.uss.ion.vct.service.VcatnManage">
+    <delete id="deleteVcatnManage" parameterType="egovframework.com.uss.ion.vct.service.VcatnManageVO">
         
 
              DELETE FROM COMTNVCATNMANAGE
@@ -231,7 +232,7 @@
 			 </if>
     </select>
 
-    <update id="updateVcatnManageConfm" parameterType="egovframework.com.uss.ion.vct.service.VcatnManage">
+    <update id="updateVcatnManageConfm" parameterType="egovframework.com.uss.ion.vct.service.VcatnManageVO">
         
             UPDATE COMTNVCATNMANAGE
                SET  CONFM_AT           = #{confmAt},   
@@ -263,7 +264,7 @@
         
     </select>
 
-    <update id="updateIndvdlYrycManage" parameterType="egovframework.com.uss.ion.vct.service.IndvdlYrycManage">
+    <update id="updateIndvdlYrycManage" parameterType="egovframework.com.uss.ion.vct.service.VcatnManageVO">
         
             UPDATE COMTNINDVDLYRYCMANAGE
                SET  USE_YRYC_CO        = #{useYrycCo},  

@@ -25,7 +25,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -39,9 +38,7 @@
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
 <%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="knoPersonal" staticJavascript="false" xhtml="true" cdata="false"/>
-
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 <!--
 function initCalendar(){
@@ -119,7 +116,6 @@ function fn_egov_modify_KnoPersonal(){
 <!-- 파일첨부를 위한 폼명 및 Enctype 설정 -->
 <form:form modelAttribute="knoPersonal" name="knoPersonal" action="${pageContext.request.contextPath}/dam/per/EgovComDamPersonalModifyView.do" method="post" enctype="multipart/form-data">
 
-<input name="cmd" type="hidden" value="Modify">
 <input name="knoId" type="hidden" value="<c:out value='${knoPersonal.knoId}'/>">
 <form:hidden path="orgnztId"/>
 <form:hidden path="knoTypeCd"/>
@@ -161,7 +157,8 @@ function fn_egov_modify_KnoPersonal(){
 		<tr>
 			<th><spring:message code="comDamPer.comDamPersonalModify.knoCn"/> <span class="pilsu">*</span></th><!-- 지식내용 -->
 			<td class="left">
-			    <textarea name="knoCn" class="textarea" title="<spring:message code="comDamPer.comDamPersonalModify.knoCn"/>" cols="300" rows="10">${knoPersonal.knoCn}</textarea><!-- 지식내용 -->
+			    <form:textarea path="knoCn" cssClass="textarea" title="지식내용" cols="300" rows="10"/><!-- 지식내용 -->
+			    <div><form:errors path="knoCn"/></div>
 			</td>
 		</tr>
 		<tr>

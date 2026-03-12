@@ -46,7 +46,14 @@ public class DbMntrngChecker {
 	 *
 	 */
 	public static DbMntrngResult check(ApplicationContext context, String dataSourcNm, String ceckSql) {
+		//2026.02.28 KISA 취약점 조치
+		if (context == null || dataSourcNm == null) {
+			return new DbMntrngResult(false, null); 
+		}
 		DataSource datasource = (DataSource) context.getBean(dataSourcNm);
+		if (datasource == null) {
+			return new DbMntrngResult(false, null);  
+		}
 
 		try (Connection conn = datasource.getConnection();
 				PreparedStatement stmt = conn.prepareStatement(ceckSql);

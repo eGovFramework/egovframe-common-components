@@ -3,8 +3,6 @@ package egovframework.com.sym.log.tlg.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.apache.commons.collections4.MapUtils;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -23,6 +21,7 @@ import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.log.tlg.service.EgovTrsmrcvLogService;
 import egovframework.com.sym.log.tlg.service.TrsmrcvLog;
+import jakarta.annotation.Resource;
 
 /**
  * @Class Name : EgovTrsmrcvLogController.java

@@ -26,15 +26,18 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comSymCcmZip.zipVO.title"/></c:set>
 <html lang="ko">
 <head>
 <title>${pageTitle} <spring:message code="title.create" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cop/bbs/style.css' />">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="zip" staticJavascript="false" xhtml="true" cdata="false"/>
+<style>
+	table.tbl_note tbody tr td div .error{
+		color: #ff0000;
+	}
+</style>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 /* ********************************************************
  * 목록 으로 가기
@@ -67,6 +70,10 @@ function goAddSearch() {
 
 function jusoCallBack(zipNo,rnMgtSn,siNm,sggNm,roadFullAddr,buldMnnm,buldSlno,bdNm,detBdNmList){
 	// 팝업페이지에서 주소입력한 정보를 받아서, 현 페이지에 정보를 등록합니다.
+	
+	roadFullAddr = roadFullAddr.replaceAll("&amp;#40;", "(");
+	roadFullAddr = roadFullAddr.replaceAll("&amp;#41;", ")");
+
 	document.zip.zip.value = zipNo; 										/* 우편번호 */
 	document.zip.rdmnCode.value = rnMgtSn; 						/* 도로명코드 */
 	document.zip.ctprvnNm.value = siNm; 								/* 시도명 */
@@ -109,8 +116,8 @@ function jusoCallBack(zipNo,rnMgtSn,siNm,sggNm,roadFullAddr,buldMnnm,buldSlno,bd
 	  <tr>
 	    <th class="ic_none"><label for="zip">${title} <span class="pilsu">*</span></label></th>
 	    <td class="left">
-	      <form:input path="zip" size="5" maxlength="5" id="zip"/>
-	      <form:errors path="zip"/> &nbsp;* ${titleMessage } <!-- 우편번호의 '-'를 제외하고 입력하시오. -->
+	      <form:input path="zip" size="5" maxlength="5" id="zip"/>&nbsp;* ${titleMessage } <!-- 우편번호의 '-'를 제외하고 입력하시오. -->
+	      <div><form:errors path="zip" cssClass="error" /></div> 
 	    </td>
 	  </tr>
 	  <!-- 시도명  -->
@@ -119,7 +126,7 @@ function jusoCallBack(zipNo,rnMgtSn,siNm,sggNm,roadFullAddr,buldMnnm,buldSlno,bd
 	    <th class="ic_none"><label for="ctprvnNm">${title} <span class="pilsu">*</label></th>
 	    <td>
 	      <form:input  path="ctprvnNm" size="20" maxlength="20" id="ctprvnNm"/>
-	      <form:errors path="ctprvnNm"/>
+	      <div><form:errors path="ctprvnNm" cssClass="error" /></div>
 	    </td>
 	  </tr>
 	  <!-- 시군구명 -->
@@ -128,7 +135,7 @@ function jusoCallBack(zipNo,rnMgtSn,siNm,sggNm,roadFullAddr,buldMnnm,buldSlno,bd
 	    <th class="ic_none"><label for="signguNm">${title} <span class="pilsu">*</label></th>
 	    <td>
 	      <form:input  path="signguNm" size="20" maxlength="20" id="signguNm"/>
-	      <form:errors path="signguNm"/>
+	      <div><form:errors path="signguNm" cssClass="error" /></div>
 	    </td>
 	  </tr>
 	  <!-- 읍면동명 -->
@@ -137,7 +144,7 @@ function jusoCallBack(zipNo,rnMgtSn,siNm,sggNm,roadFullAddr,buldMnnm,buldSlno,bd
 	    <th class="ic_none"><label for="emdNm">${title} <span class="pilsu">*</label></th>
 	    <td>
 	      <form:input  path="emdNm" size="30" maxlength="30" id="emdNm"/>
-	      <form:errors path="emdNm"/>
+	      <div><form:errors path="emdNm" cssClass="error" /></div>
 	    </td>
 	  </tr>
 	  <!-- 리건물명 -->
@@ -146,7 +153,6 @@ function jusoCallBack(zipNo,rnMgtSn,siNm,sggNm,roadFullAddr,buldMnnm,buldSlno,bd
 	    <th class="ic_none"><label for="liBuldNm">${title}</label></th>
 	    <td>
 	      <form:input  path="liBuldNm" size="60" maxlength="60" id="liBuldNm"/>
-	      <form:errors path="liBuldNm"/>
 	    </td>
 	  </tr>
 	  <!-- 번지동호 -->
@@ -155,7 +161,6 @@ function jusoCallBack(zipNo,rnMgtSn,siNm,sggNm,roadFullAddr,buldMnnm,buldSlno,bd
 	    <th class="ic_none"><label for="lnbrDongHo">${title}</label></th>
 	    <td>
 	      <form:input  path="lnbrDongHo" size="20" maxlength="20" id="lnbrDongHo"/>
-	      <form:errors path="lnbrDongHo"/>
 	    </td>
 	  </tr>
 	  <input type=hidden name="rdmnCode" id="rdmnCode" value="0"/>
@@ -169,7 +174,8 @@ function jusoCallBack(zipNo,rnMgtSn,siNm,sggNm,roadFullAddr,buldMnnm,buldSlno,bd
 	    <th class="ic_none"><label for="zip">${title} <span class="pilsu">*</label></th>
 	    <td>
 	      <form:input  path="zip" size="5" maxlength="5" id="zip" name="zip"/>
-	      <form:errors path="zip"/> <input type="button" class="btn_s" onClick="goAddSearch();" value="${address }"/>
+	      <input type="button" class="btn_s" onClick="goAddSearch();" value="${address }"/>
+	      <div><form:errors path="zip" cssClass="error" /></div>
 	    </td>
 	  </tr>
 	  <!-- 도로명코드  -->
@@ -178,7 +184,7 @@ function jusoCallBack(zipNo,rnMgtSn,siNm,sggNm,roadFullAddr,buldMnnm,buldSlno,bd
 	    <th class="ic_none"><label for="rdmnCode">${title} <span class="pilsu">*</label></th>
 	    <td>
 	      <form:input  path="rdmnCode" size="12" maxlength="12" id="rdmnCode"/>
-	      <form:errors path="rdmnCode"/>
+	      <div><form:errors path="rdmnCode" cssClass="error" /></div>
 	    </td>
 	  </tr>
 	  <!-- 시도명  -->
@@ -187,7 +193,7 @@ function jusoCallBack(zipNo,rnMgtSn,siNm,sggNm,roadFullAddr,buldMnnm,buldSlno,bd
 	    <th class="ic_none"><label for="ctprvnNm">${title} <span class="pilsu">*</label></th>
 	    <td>
 	      <form:input  path="ctprvnNm" size="20" maxlength="20" id="ctprvnNm"/>
-	      <form:errors path="ctprvnNm"/>
+	      <div><form:errors path="ctprvnNm" cssClass="error" /></div>
 	    </td>
 	  </tr>
 	  <!-- 시군구명 -->
@@ -196,7 +202,7 @@ function jusoCallBack(zipNo,rnMgtSn,siNm,sggNm,roadFullAddr,buldMnnm,buldSlno,bd
 	    <th class="ic_none"><label for="signguNm">${title} <span class="pilsu">*</label></th>
 	    <td>
 	      <form:input  path="signguNm" size="20" maxlength="20" id="signguNm"/>
-	      <form:errors path="signguNm"/>
+	      <div><form:errors path="signguNm" cssClass="error" /></div>
 	    </td>
 	  </tr>
 	  <!-- 도로명 -->
@@ -205,7 +211,7 @@ function jusoCallBack(zipNo,rnMgtSn,siNm,sggNm,roadFullAddr,buldMnnm,buldSlno,bd
 	    <th class="ic_none"><label for="rdmn">${title} <span class="pilsu">*</label></th>
 	    <td>
 	      <form:input  path="rdmn" size="60" maxlength="60" id="rdmn"/>
-	      <form:errors path="rdmn"/>
+	      <div><form:errors path="rdmn" cssClass="error" /></div>
 	    </td>
 	  </tr>
 	  <!-- 건물번호본번 -->
@@ -214,7 +220,6 @@ function jusoCallBack(zipNo,rnMgtSn,siNm,sggNm,roadFullAddr,buldMnnm,buldSlno,bd
 	    <th class="ic_none"><label for="bdnbrMnnm">${title}</label></th>
 	    <td>
 	      <form:input  path="bdnbrMnnm" size="5" maxlength="5" id="bdnbrMnnm"/>
-	      <form:errors path="bdnbrMnnm"/>
 	    </td>
 	  </tr>
 	  <!-- 건물번호부번 -->
@@ -223,7 +228,6 @@ function jusoCallBack(zipNo,rnMgtSn,siNm,sggNm,roadFullAddr,buldMnnm,buldSlno,bd
 	    <th class="ic_none"><label for="bdnbrSlno">${title}</label></th>
 	    <td>
 	      <form:input  path="bdnbrSlno" size="5" maxlength="5" id="bdnbrSlno"/>
-	      <form:errors path="bdnbrSlno"/>
 	    </td>
 	  </tr>
 	  <!-- 건물명 -->
@@ -232,7 +236,6 @@ function jusoCallBack(zipNo,rnMgtSn,siNm,sggNm,roadFullAddr,buldMnnm,buldSlno,bd
 	    <th class="ic_none"><label for="buldNm">${title}</label></th>
 	    <td>
 	      <form:input  path="buldNm" size="60" maxlength="60" id="buldNm"/>
-	      <form:errors path="buldNm"/>
 	    </td>
 	  </tr>
 	  <!-- 상세건물명 -->
@@ -241,7 +244,6 @@ function jusoCallBack(zipNo,rnMgtSn,siNm,sggNm,roadFullAddr,buldMnnm,buldSlno,bd
 	    <th class="ic_none"><label for="detailBuldNm">${title}</label></th>
 	    <td>
 	      <form:input  path="detailBuldNm" size="60" maxlength="60" id="detailBuldNm"/>
-	      <form:errors path="detailBuldNm"/>
 	    </td>
 	  </tr>
 	  <input type=hidden name="emdNm" id="emdNm" value="0"/>

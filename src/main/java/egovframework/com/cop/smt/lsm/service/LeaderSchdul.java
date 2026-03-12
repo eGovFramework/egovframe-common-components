@@ -2,6 +2,9 @@ package egovframework.com.cop.smt.lsm.service;
 
 import java.io.Serializable;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 개요
  * - 간부일정에 대한 model 클래스를 정의한다.
@@ -26,16 +29,22 @@ public class LeaderSchdul  implements Serializable{
 	/** 일정ID */
 	private String schdulId;
 	/** 일정구분 */
+	@EgovNullCheck
 	private String schdulSe;
 	/** 일정명 */
+	@EgovNullCheck
+	@Size(max=255)
 	private String schdulNm;
 	/** 일정내용 */
+	@EgovNullCheck
+	@Size(max=2500)
 	private String schdulCn;
 	/** 일정장소 */
 	private String schdulPlace;
 	/** 간부ID */
 	private String leaderId;
 	/** 간부명 */
+	@EgovNullCheck
 	private String leaderName;
 	/** 반복구분코드 */
 	private String reptitSeCode;
@@ -48,6 +57,7 @@ public class LeaderSchdul  implements Serializable{
 	/** 일정담당자ID */
 	private String schdulChargerId;
 	/** 일정담당자명 */
+	@EgovNullCheck
 	private String schdulChargerName;
 	/** 최초등록자ID */
 	private String frstRegisterId = "";
@@ -59,21 +69,27 @@ public class LeaderSchdul  implements Serializable{
 	private String lastUpdusrPnttm = "";
 	
 	/** 일정시작일자(시간) */
+	@EgovNullCheck
 	private String schdulBgndeHH = "";
 	
 	/** 일정시작일자(분) */
+	@EgovNullCheck
 	private String schdulBgndeMM = "";
 	
 	/** 일정종료일자(시간) */
+	@EgovNullCheck
 	private String schdulEnddeHH = "";
 	
 	/** 일정종료일자(분) */
+	@EgovNullCheck
 	private String schdulEnddeMM = "";
 	
 	/** 일정시작일자(Year/Month/Day) */
+	@EgovNullCheck
 	private String schdulBgndeYYYMMDD = "";
 	
 	/** 일정종료일자(Year/Month/Day) */
+	@EgovNullCheck
 	private String schdulEnddeYYYMMDD = "";
 
 	public String getSchdulId() {

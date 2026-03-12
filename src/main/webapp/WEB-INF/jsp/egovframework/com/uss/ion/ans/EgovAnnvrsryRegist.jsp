@@ -25,7 +25,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -36,8 +35,7 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="annvrsryManage" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 	function initCalendar(){
 		$("#annvrsryDe").datepicker(
@@ -118,11 +116,11 @@ function fncInsertAnnvrsry() {
 		<tr>
 			<th><spring:message code="comUssIonAns.common.annvrsryTemp1"/> <span class="pilsu">*</span></th><!-- 신청자 -->
 			<td class="left">
-			    <input name="userName" id="annvrsryTemp1" type="text" value="<c:out value='${annvrsryManageVO.annvrsryTemp1}'/>" size="30" class="readOnlyClass" title="<spring:message code="comUssIonAns.common.userName"/>" readonly="readonly" style="width:128px" /><!-- 신청자명 -->
+			    <input name="annvrsryTemp1" id="annvrsryTemp1" type="text" value="<c:out value='${annvrsryManageVO.annvrsryTemp1}'/>" size="30" class="readOnlyClass" title="<spring:message code="comUssIonAns.common.userName"/>" readonly="readonly" style="width:128px" /><!-- 신청자명 -->
 			</td>
 			<th><spring:message code="comUssIonAns.common.annvrsryTemp2"/> <span class="pilsu">*</span></th><!-- 소속 -->
 			<td class="left">
-			    <input name="userPsitn" id="annvrsryTemp2" type="text" value="<c:out value='${annvrsryManageVO.annvrsryTemp2}'/>" size="30" class="readOnlyClass" title="<spring:message code="comUssIonAns.common.annvrsryTemp2"/>" readonly="readonly" style="width:128px" /><!-- 소속 -->
+			    <input name="annvrsryTemp2" id="annvrsryTemp2" type="text" value="<c:out value='${annvrsryManageVO.annvrsryTemp2}'/>" size="30" class="readOnlyClass" title="<spring:message code="comUssIonAns.common.annvrsryTemp2"/>" readonly="readonly" style="width:128px" /><!-- 소속 -->
 			</td>
 		</tr>
 		<tr>
@@ -142,8 +140,10 @@ function fncInsertAnnvrsry() {
 				<form:input  path="annvrsryDe" maxlength="10" readonly="true"  title="기념일" cssStyle="width:70px" />
 				<spring:message code="comUssIonAns.common.cldrSe1"/> : <form:radiobutton path="cldrSe"  value="1" title="${cldrSe1}"/>&nbsp;<!-- 양력 -->
 				<spring:message code="comUssIonAns.common.cldrSe2"/> : <form:radiobutton path="cldrSe"  value="2" title="${cldrSe2}"/><!-- 음력 -->
-				<br/><form:errors path="cldrSe" />
+				<br/>
+				<div><form:errors path="cldrSe" cssClass="error" /></div>
 				&nbsp;&nbsp;<spring:message code="comUssIonAns.common.reptitSeEvery"/> : <input type="checkbox" name="reptitSe" id="reptitSe" title="<spring:message code="comUssIonAns.common.reptitSe"/>" value="1" style="vertical-align:-2px" /><!-- 매년반복 : --> <!-- 반복여부 -->
+				<div><form:errors path="annvrsryDe" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>
@@ -152,7 +152,8 @@ function fncInsertAnnvrsry() {
 			    <label for="annvrsryNm">
 			    <c:set var="annvrsryNm"><spring:message code="comUssIonAns.common.annvrsryNm"/></c:set>
 				<form:input  path="annvrsryNm" size="80" maxlength="255" title="${annvrsryNm}"/>
-				<form:errors path="annvrsryNm"/></label>
+				</label>
+				<div><form:errors path="annvrsryNm" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
@@ -161,7 +162,8 @@ function fncInsertAnnvrsry() {
 			    <label for="memo">
 			    <c:set var="memo"><spring:message code="comUssIonAns.common.memo"/></c:set>
 				<form:textarea path="memo" rows="4" cols="70" cssClass="txaClass" title="${memo}"/>
-				<form:errors path="memo"/></label>
+				</label>
+				<div><form:errors path="memo" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
@@ -181,7 +183,8 @@ function fncInsertAnnvrsry() {
 			    <c:set var="alarm"><spring:message code="comUssIonAns.common.alarm"/></c:set><!-- 알림 -->
 		     	ON :  <form:radiobutton path="annvrsrySetup"  value="Y" title="${alarm}ON"/>&nbsp;&nbsp;
 		     	OFF : <form:radiobutton path="annvrsrySetup"  value="N" title="${alarm}OFF"/>
-		     	<br/><form:errors path="annvrsrySetup" /></label>
+		     	<br/></label>
+		     	<div><form:errors path="annvrsrySetup" cssClass="error" /></div>
 			</td>
 		</tr>
 	</table>

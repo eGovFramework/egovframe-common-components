@@ -6,9 +6,9 @@ import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 
 public interface EgovRecomendSiteService {
 
-	List<RecomendSiteVO> selectRecomendSiteList(RecomendSiteVO searchVO);
+	List<RecomendSiteVO> selectRecomendSiteList(RecomendSiteVO recomendSiteVO);
 
-	int selectRecomendSiteListCnt(RecomendSiteVO searchVO);
+	int selectRecomendSiteListCnt(RecomendSiteVO recomendSiteVO);
 
 	void insertRecomendSite(RecomendSiteVO recomendSiteVO) throws FdlException;
 

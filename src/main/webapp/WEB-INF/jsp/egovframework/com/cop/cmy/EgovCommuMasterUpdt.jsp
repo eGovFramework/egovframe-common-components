@@ -20,7 +20,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comCopCmy.commuMasterVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -28,8 +27,7 @@
 <title>${pageTitle } <spring:message code="title.update" /></title><!-- 커뮤니티 마스터 수정 -->
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="commuMasterVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <c:set var="updtYes"><spring:message code="comCopCmy.commuMasterVO.updt.yes" /></c:set>
 <script type="text/javascript">
 /* ********************************************************
@@ -101,7 +99,7 @@ function fn_egov_inqire_commulist() {
 		<!-- 사용여부 -->
 		<c:set var="title"><spring:message code="comCopCmy.commuMasterVO.updt.useAt"/> </c:set>
 		<tr>
-			<th><label for="useAt">${title } <span class="pilsu">*</span></label></th>
+			<th><label for="useAt">${title } </label></th>
 			<td class="left">
 				<form:select path="useAt" title="${title} ${inputTxt }" cssClass="txt">
 					<form:option value="Y" label="${updtYes}" />

@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
@@ -14,23 +12,24 @@ import org.springframework.stereotype.Service;
 import egovframework.com.cop.scp.service.EgovArticleScrapService;
 import egovframework.com.cop.scp.service.Scrap;
 import egovframework.com.cop.scp.service.ScrapVO;
+import jakarta.annotation.Resource;
 
 @Service("EgovArticleScrapService")
 public class EgovArticleScrapServiceImpl extends EgovAbstractServiceImpl implements EgovArticleScrapService{
 
 	@Resource(name = "EgovArticleScrapDAO")
     private EgovArticleScrapDAO egovArticleScrapDao;
-    
+
     @Resource(name="egovScrapIdGnrService")
     private EgovIdGnrService idgenService;
-	
+
 	@Override
 	public Map<String, Object> selectArticleScrapList(ScrapVO scrapVO) {
 		List<ScrapVO> result = egovArticleScrapDao.selectArticleScrapList(scrapVO);
 		int cnt = egovArticleScrapDao.selectArticleScrapListCnt(scrapVO);
-		
-		Map<String, Object> map = new HashMap<String, Object>();
-		
+
+		Map<String, Object> map = new HashMap<>();
+
 		map.put("resultList", result);
 		map.put("resultCnt", Integer.toString(cnt));
 
@@ -39,10 +38,10 @@ public class EgovArticleScrapServiceImpl extends EgovAbstractServiceImpl impleme
 
 	@Override
 	public void insertArticleScrap(Scrap scrap) throws FdlException {
-		
+
 		String scrapId = idgenService.getNextStringId();
 		scrap.setScrapId(scrapId);
-		
+
 		egovArticleScrapDao.insertArticleScrap(scrap);
 	}
 

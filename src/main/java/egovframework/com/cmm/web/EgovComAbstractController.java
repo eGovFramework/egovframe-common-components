@@ -3,12 +3,11 @@
  */
 package egovframework.com.cmm.web;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 
 import egovframework.com.cmm.ComDefaultVO;
+import jakarta.annotation.Resource;
 
 /**
  * EgovComAbstractController.java 클래스

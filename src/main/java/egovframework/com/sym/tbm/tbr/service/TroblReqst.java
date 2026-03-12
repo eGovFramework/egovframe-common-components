@@ -1,6 +1,9 @@
 package egovframework.com.sym.tbm.tbr.service;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+
 import egovframework.com.cmm.ComDefaultVO;
+import jakarta.validation.constraints.Size;
 
 /**
  * 개요
@@ -23,10 +26,13 @@ public class TroblReqst extends ComDefaultVO {
 	/**
 	 * 장애 명
 	 */
+	@EgovNullCheck
+	@Size(max = 30)
 	private String troblNm;
 	/**
 	 * 장애 종류
 	 */
+	@EgovNullCheck
 	private String troblKnd;
 	/**
 	 * 장애 종류 명
@@ -35,14 +41,19 @@ public class TroblReqst extends ComDefaultVO {
 	/**
 	 * 장애 설명
 	 */
+	@EgovNullCheck
 	private String troblDc;
 	/**
 	 * 장애 발생 시간
 	 */
+	@EgovNullCheck
+	@Size(min = 14)
 	private String troblOccrrncTime;
 	/**
 	 * 장애 요청자 명
 	 */
+	@EgovNullCheck
+	@Size(max = 30)
 	private String troblRqesterNm;
 	/**
 	 * 장애 요청 시간

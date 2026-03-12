@@ -2,10 +2,14 @@ package egovframework.com.utl.sys.htm.service;
 
 import java.io.Serializable;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import org.egovframe.rte.ptl.reactive.validation.EgovEmailCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 개요
  * - HTTP서비스모니터링에 대한 model 클래스를 정의한다.
- * 
+ *
  * 상세내용
  * - 사이트URL, 시스템ID, 웹서비스종류, 웹서비스상태, 관리자명, 관리자이메일주소, 최종수정자ID, 최종수정시점 항목을 관리한다.
  * @author 박종선
@@ -23,10 +27,12 @@ public class HttpMon implements Serializable {
 	/**
 	 * 로그정보
 	 */
-	private String logInfo;	
+	private String logInfo;
 	/**
 	 * 사이트URL
 	 */
+	@EgovNullCheck
+	@Size(max=100)
 	private String siteUrl;
 	/**
 	 * 시스템ID
@@ -35,11 +41,13 @@ public class HttpMon implements Serializable {
 	/**
 	 * 웹서비스종류
 	 */
+	@EgovNullCheck
+	@Size(max=30)
 	private String webKind;
 	/**
 	 * 웹서비스종류
 	 */
-	private String webKindNm;	
+	private String webKindNm;
 	/**
 	 * 웹서비스상태
 	 */
@@ -47,14 +55,19 @@ public class HttpMon implements Serializable {
 	/**
 	 * 생성일시
 	 */
-	private String creatDt;	
+	private String creatDt;
 	/**
 	 * 관리자명
 	 */
+	@EgovNullCheck
+	@Size(max=60)
 	private String mngrNm;
 	/**
 	 * 관리자이메일주소
 	 */
+	@EgovNullCheck
+	@Size(max=60)
+	@EgovEmailCheck
 	private String mngrEmailAddr;
 	/**
 	 * 모니터링상태
@@ -76,7 +89,7 @@ public class HttpMon implements Serializable {
 	 * 최종수정시점
 	 */
 	private String lastUpdusrPnttm;
-		
+
 	/**
 	 * @return the siteUrl
 	 */
@@ -190,7 +203,7 @@ public class HttpMon implements Serializable {
 	 */
 	public void setFrstRegisterId(String frstRegisterId) {
 		this.frstRegisterId = frstRegisterId;
-	}	
+	}
 	/**
 	 * @param lastUpdusrId the lastUpdusrId to set
 	 */
@@ -256,6 +269,6 @@ public class HttpMon implements Serializable {
 	 */
 	public void setMntrngSttus(String mntrngSttus) {
 		this.mntrngSttus = mntrngSttus;
-	}	
+	}
 
 }

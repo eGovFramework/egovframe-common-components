@@ -22,7 +22,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
 
 /**
  * EgovProperties 클래스
- * 
+ *
  * <p>
  *  Description : properties값들을 파일로부터 읽어와   Globals클래스의 정적변수로 로드시켜주는 클래스로
  *   문자열 정보 기준으로 사용할 전역변수를 시스템 재시작으로 반영할 수 있도록 한다.
@@ -116,23 +116,23 @@ public class EgovProperties {
 	public static ArrayList<Map<String, String>> loadPropertyFile(String propertyPath) {
 
 		// key - value 형태로 된 배열 결과
-		ArrayList<Map<String, String>> keyList = new ArrayList<Map<String, String>>();
+		ArrayList<Map<String, String>> keyList = new ArrayList<>();
 
 		String src = (RELATIVE_PATH_PREFIX + propertyPath).replace("\\", FILE_SEPARATOR).replace("/", FILE_SEPARATOR);
 
 		// Windows OS : 맨 앞에 있는 \ 제거
 		// Linux, Mac : 해당 없음
         String normalizedPath = src.replaceFirst("^[\\\\]+", "");
-		
+
 		Path path = Paths.get(EgovWebUtil.filePathBlackList(normalizedPath));
-		
+
 		if (Files.exists(path)) { //2022.01 Potential Path Traversal
 			Properties props = loadPropertiesFromFile(src);
 
 			Enumeration<?> plist = props.propertyNames();
 			if (plist != null) {
 				while (plist.hasMoreElements()) {
-					Map<String, String> map = new HashMap<String, String>();
+					Map<String, String> map = new HashMap<>();
 					String key = (String)plist.nextElement();
 					map.put(key, props.getProperty(key));
 					keyList.add(map);

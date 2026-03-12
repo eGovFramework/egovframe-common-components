@@ -2,11 +2,8 @@ package egovframework.com.uss.sam.stp.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -14,7 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -24,6 +20,8 @@ import egovframework.com.uss.sam.stp.service.EgovStplatManageService;
 import egovframework.com.uss.sam.stp.service.StplatManageDefaultVO;
 import egovframework.com.uss.sam.stp.service.StplatManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * 약관내용을 처리하는 비즈니스 구현 클래스
@@ -58,10 +56,6 @@ public class EgovStplatManageController {
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
-
-	/** beanValidator Member Variable */
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/**
 	 * 개별 배포시 메인메뉴를 조회한다.
@@ -155,11 +149,8 @@ public class EgovStplatManageController {
 	@RequestMapping("/uss/sam/stp/StplatCnRegistView.do")
 	public String insertStplatCnView(@ModelAttribute("searchVO") StplatManageDefaultVO searchVO, Model model)
 			throws Exception {
-
 		model.addAttribute("stplatManageVO", new StplatManageVO());
-
 		return "egovframework/com/uss/sam/stp/EgovStplatCnRegist";
-
 	}
 
 	/**
@@ -173,15 +164,11 @@ public class EgovStplatManageController {
 	 */
 	@RequestMapping("/uss/sam/stp/StplatCnRegist.do")
 	public String insertStplatCn(@ModelAttribute("searchVO") StplatManageDefaultVO searchVO,
-			@ModelAttribute("stplatManageVO") StplatManageVO stplatManageVO, BindingResult bindingResult,
+			@Valid @ModelAttribute("stplatManageVO") StplatManageVO stplatManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 
-		beanValidator.validate(stplatManageVO, bindingResult);
-
 		if (bindingResult.hasErrors()) {
-
 			return "egovframework/com/uss/sam/stp/EgovStplatCnRegist";
-
 		}
 
 		// 로그인VO에서 사용자 정보 가져오기
@@ -241,16 +228,11 @@ public class EgovStplatManageController {
 	 */
 	@RequestMapping("/uss/sam/stp/StplatCnUpdt.do")
 	public String updateStplatCn(@ModelAttribute("searchVO") StplatManageDefaultVO searchVO,
-			@ModelAttribute("stplatManageVO") StplatManageVO stplatManageVO, BindingResult bindingResult)
+			@Valid @ModelAttribute("stplatManageVO") StplatManageVO stplatManageVO, BindingResult bindingResult)
 			throws Exception {
 
-		// Validation
-		beanValidator.validate(stplatManageVO, bindingResult);
-
 		if (bindingResult.hasErrors()) {
-
 			return "egovframework/com/uss/sam/stp/EgovStplatCnUpdt";
-
 		}
 
 		// 로그인VO에서 사용자 정보 가져오기
@@ -263,9 +245,7 @@ public class EgovStplatManageController {
 		}
 
 		String lastUpdusrId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
-
 		stplatManageVO.setLastUpdusrId(lastUpdusrId); // 최종수정자ID
-
 		stplatManageService.updateStplatCn(stplatManageVO);
 
 		return "forward:/uss/sam/stp/StplatListInqire.do";

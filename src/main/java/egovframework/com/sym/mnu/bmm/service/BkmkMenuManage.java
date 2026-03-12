@@ -2,6 +2,9 @@ package egovframework.com.sym.mnu.bmm.service;
 
 import java.io.Serializable;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 바로가기메뉴관리를 위한 모델 클래스
  * @author 공통컴포넌트개발팀 윤성록
@@ -25,9 +28,12 @@ public class BkmkMenuManage implements Serializable{
     String menuId = "";
     
     /** 메뉴명 */
+    @EgovNullCheck
+    @Size(max=60)
     String menuNm = "";
     
     /** 메뉴 URL */
+    @EgovNullCheck
     String progrmStrePath = "";
     
     /** 등록자 아이디 */

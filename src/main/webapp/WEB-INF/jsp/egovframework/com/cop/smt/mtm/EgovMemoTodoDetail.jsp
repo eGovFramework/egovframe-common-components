@@ -22,7 +22,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -31,8 +30,7 @@
 <title><spring:message code="comCopSmtMtm.memoTodoDetail.title"/></title><!-- 메모할일 상세보기 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="memoTodoVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript">
 
 	function fn_egov_update_memotodo() {
@@ -109,7 +107,9 @@
 		<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="fn_egov_update_memotodo(); return false;" />
 		<span class="btn_s"><a href="<c:url value='/cop/smt/mtm/deleteMemoTodo.do'/>?todoId=<c:out value='${memoTodoVO.todoId}'/>" onclick="fn_egov_delete_memotodo(); return false;"><spring:message code="button.delete" /></a></span>
       <% 
-      	if(request.getHeader("REFERER").indexOf("Today") < 0){
+	  // 2026.02.28 KISA 취약점 조치
+	    String referer = request.getHeader("REFERER");
+      	if(referer == null || !referer.contains("Today")){
       %>
 		<span class="btn_s"><a href="<c:url value='/cop/smt/mtm/selectMemoTodoList.do'/>?searchWrd=<c:out value='${memoTodoVO.searchWrd}'/>&amp;searchCnd=<c:out value='${memoTodoVO.searchCnd}'/>&amp;pageIndex=<c:out value='${memoTodoVO.pageIndex}'/>&amp;searchDe=<c:out value='${memoTodoVO.searchDe}'/>&amp;searchBgnDe=<c:out value='${memoTodoVO.searchBgnDe}'/>&amp;searchEndDe=<c:out value='${memoTodoVO.searchEndDe}'/>" onclick="fn_egov_list_memotodo(); return false;"><spring:message code="button.list" /></a></span>
 	  <%

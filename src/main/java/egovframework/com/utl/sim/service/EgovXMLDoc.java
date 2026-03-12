@@ -14,7 +14,7 @@
  *  @version 1.0
  *  @see
  *
- *  Copyright (C) 2009 by MOPAS  All rights reserved.
+ *  Copyright (C) 2009 by MOPAS  All right reserved.
  */
 package egovframework.com.utl.sim.service;
 
@@ -48,9 +48,9 @@ public class EgovXMLDoc {
 
 	// 파일구분자
 	static final char FILE_SEPARATOR = File.separatorChar;
-	
-	static final String ACCESS_EXTERNAL_DTD = "http://javax.xml.XMLConstants/property/accessExternalDTD";
-	static final String ACCESS_EXTERNAL_STYLESHEET = "http://javax.xml.XMLConstants/property/accessExternalStylesheet";
+
+	static final String ACCESS_EXTERNAL_DTD = "http://jakarta.xml.XMLConstants/property/accessExternalDTD";
+	static final String ACCESS_EXTERNAL_STYLESHEET = "http://jakarta.xml.XMLConstants/property/accessExternalStylesheet";
 	static final String EXTERNAL_GENERAL_ENTITIES = "http://xml.org/sax/features/external-general-entities";
 	static final String EXTERNAL_PARAMETER_ENTITIES = "http://xml.org/sax/features/external-parameter-entities";
 
@@ -68,7 +68,7 @@ public class EgovXMLDoc {
 			File xmlFile = new File(storePathString,FilenameUtils.getName(file));
 			if (xmlFile.exists() && xmlFile.isFile()) {
 				fis = new FileInputStream(xmlFile);
-				mailDoc = SndngMailDocument.Factory.parse(xmlFile);
+				mailDoc = (SndngMailDocument) SndngMailDocument.Factory.parse(xmlFile);
 
 			}
 		} finally {

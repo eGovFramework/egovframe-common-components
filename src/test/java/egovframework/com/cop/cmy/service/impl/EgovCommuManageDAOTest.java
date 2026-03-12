@@ -1,16 +1,17 @@
 package egovframework.com.cop.cmy.service.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.List;
 
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
@@ -186,7 +187,7 @@ public class EgovCommuManageDAOTest extends EgovTestAbstractDAO {
     }
 
     @Test
-    public void testSelectSingleCommuUserDetail() {
+    void testSelectSingleCommuUserDetail() {
         // given
         CommunityUser communityUser = new CommunityUser();
         testData(communityUser);
@@ -211,7 +212,7 @@ public class EgovCommuManageDAOTest extends EgovTestAbstractDAO {
     }
 
     @Test
-    public void testSelectCommuManagerList() {
+    void testSelectCommuManagerList() {
         // given
         CommunityUser communityUser = new CommunityUser();
         communityUser.setMngrAt("Y"); // 관리자권한을 가진 사용자 생성
@@ -230,8 +231,8 @@ public class EgovCommuManageDAOTest extends EgovTestAbstractDAO {
         }
 
         // then
-        assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 0 < resultList.size());
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), communityUser.getEmplyrId(), resultList.get(0).getEmplyrId());
+        assertTrue(0 < resultList.size(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
+        assertEquals(communityUser.getEmplyrId(), resultList.get(0).getEmplyrId(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
 
         // given
         CommunityVO noCommunityVO = new CommunityVO();
@@ -241,11 +242,11 @@ public class EgovCommuManageDAOTest extends EgovTestAbstractDAO {
         resultList = egovCommuManageDAO.selectCommuManagerList(noCommunityVO);
 
         // then
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 0, resultList.size());
+        assertEquals(0, resultList.size(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     @Test
-    public void testCheckExistUser() {
+    void testCheckExistUser() {
         // given
         CommunityUser communityUser = new CommunityUser();
         testData(communityUser);
@@ -254,7 +255,7 @@ public class EgovCommuManageDAOTest extends EgovTestAbstractDAO {
         int result = egovCommuManageDAO.checkExistUser(communityUser);
 
         // then
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
 
         // given
         CommunityUser communityNoUser = new CommunityUser();
@@ -265,21 +266,20 @@ public class EgovCommuManageDAOTest extends EgovTestAbstractDAO {
         result = egovCommuManageDAO.checkExistUser(communityNoUser);
 
         // then
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 0, result);
+        assertEquals(0, result, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
-    @Test(expected = DuplicateKeyException.class)
-    public void testInsertCommuUserRqst() {
+    @Test
+    void testInsertCommuUserRqst() {
         // given
         CommunityUser communityUser = new CommunityUser();
         testData(communityUser);
 
-        // when
+        // when & then
         // testData()에서 사용자가 생성되었으므로 생성이 되지 않는다.
-        egovCommuManageDAO.insertCommuUserRqst(communityUser);
-
-        // then
-        // DuplicateKeyException 발생
+        assertThrows(DuplicateKeyException.class, () -> {
+            egovCommuManageDAO.insertCommuUserRqst(communityUser);
+        });
     }
 
     @Test
@@ -302,8 +302,8 @@ public class EgovCommuManageDAOTest extends EgovTestAbstractDAO {
         }
 
         // then
-        assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 0 < resultList.size());
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), communityUser.getEmplyrId(), resultList.get(0).getEmplyrId());
+        assertTrue(0 < resultList.size(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
+        assertEquals(communityUser.getEmplyrId(), resultList.get(0).getEmplyrId(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
 
         // given
         CommunityUserVO noCommunityUserVO = new CommunityUserVO();
@@ -314,11 +314,11 @@ public class EgovCommuManageDAOTest extends EgovTestAbstractDAO {
         resultList = egovCommuManageDAO.selectCommuUserList(noCommunityUserVO);
 
         // then
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 0, resultList.size());
+        assertEquals(0, resultList.size(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     @Test
-    public void testSelectCommuUserListCnt() {
+    void testSelectCommuUserListCnt() {
         // given
         CommunityUser communityUser = new CommunityUser();
         testData(communityUser);
@@ -331,7 +331,7 @@ public class EgovCommuManageDAOTest extends EgovTestAbstractDAO {
         int result = egovCommuManageDAO.selectCommuUserListCnt(communityUserVO);
 
         // then
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
 
         // given
         CommunityUserVO noCommunityUserVO = new CommunityUserVO();
@@ -342,11 +342,11 @@ public class EgovCommuManageDAOTest extends EgovTestAbstractDAO {
         result = egovCommuManageDAO.selectCommuUserListCnt(noCommunityUserVO);
 
         // then
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 0, result);
+        assertEquals(0, result, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     @Test
-    public void testInsertCommuUser() {
+    void testInsertCommuUser() {
         // given
         CommunityUser communityUser = new CommunityUser();
         testData(communityUser);
@@ -364,9 +364,9 @@ public class EgovCommuManageDAOTest extends EgovTestAbstractDAO {
         List<CommunityUser> resultList = egovCommuManageDAO.selectCommuUserList(communityUserVO);
         // log.debug("resultList = {}", resultList);
 
-        assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 0 < resultList.size());
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), "A", communityUserVO.getMberSttus());
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), "P", resultList.get(0).getMberSttus());
+        assertTrue(0 < resultList.size(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
+        assertEquals("A", communityUserVO.getMberSttus(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
+        assertEquals("P", resultList.get(0).getMberSttus(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     @Test
@@ -375,8 +375,8 @@ public class EgovCommuManageDAOTest extends EgovTestAbstractDAO {
         CommunityUser communityUser = new CommunityUser();
         testData(communityUser);
 
-        assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT),
-                0 < egovCommuManageDAO.checkExistUser(communityUser));
+        assertTrue(0 < egovCommuManageDAO.checkExistUser(communityUser),
+                egovMessageSource.getMessage(FAIL_COMMON_SELECT));
 
         CommunityUserVO communityUserVO = new CommunityUserVO();
         communityUserVO.setCmmntyId(communityUser.getCmmntyId());
@@ -388,11 +388,11 @@ public class EgovCommuManageDAOTest extends EgovTestAbstractDAO {
         egovCommuManageDAO.deleteCommuUser(communityUserVO);
 
         // then
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 0, egovCommuManageDAO.checkExistUser(communityUser));
+        assertEquals(0, egovCommuManageDAO.checkExistUser(communityUser), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     @Test
-    public void testInsertCommuUserAdmin() {
+    void testInsertCommuUserAdmin() {
         // given
         CommunityUser communityUser = new CommunityUser();
         communityUser.setMberSttus("P"); // 가입 승인 상태
@@ -411,13 +411,13 @@ public class EgovCommuManageDAOTest extends EgovTestAbstractDAO {
         List<CommunityUser> resultList = egovCommuManageDAO.selectCommuUserList(communityUserVO);
         // log.debug("resultList = {}", resultList);
 
-        assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 0 < resultList.size());
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), "N", communityUserVO.getMngrAt());
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), "Y", resultList.get(0).getMngrAt());
+        assertTrue(0 < resultList.size(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
+        assertEquals("N", communityUserVO.getMngrAt(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
+        assertEquals("Y", resultList.get(0).getMngrAt(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     @Test
-    public void testDeleteCommuUserAdmin() {
+    void testDeleteCommuUserAdmin() {
         // given
         CommunityUser communityUser = new CommunityUser();
         communityUser.setMngrAt("Y");    // 관리자
@@ -437,8 +437,8 @@ public class EgovCommuManageDAOTest extends EgovTestAbstractDAO {
         List<CommunityUser> resultList = egovCommuManageDAO.selectCommuUserList(communityUserVO);
         // log.debug("resultList = {}", resultList);
 
-        assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 0 < resultList.size());
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), "Y", communityUserVO.getMngrAt());
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), "N", resultList.get(0).getMngrAt());
+        assertTrue(0 < resultList.size(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
+        assertEquals("Y", communityUserVO.getMngrAt(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
+        assertEquals("N", resultList.get(0).getMngrAt(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 }

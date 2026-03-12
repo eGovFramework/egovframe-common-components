@@ -2,6 +2,13 @@ package egovframework.com.uss.ion.evt.service;
 
 import egovframework.com.cmm.ComDefaultVO;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 /**
  * 개요
  * - 행사관리에 대한 model 클래스를 정의한다.
@@ -28,61 +35,85 @@ public class EventManage extends ComDefaultVO {
 	/**
 	*  행사구분	      
 	*/ 
+	@EgovNullCheck
 	private String eventSe;
 
 	/**
 	*  행사명	      
 	*/ 
+	@EgovNullCheck
+	@Size(max=60)
 	private String eventNm;
 
 	/**
 	*  행사목적	      
 	*/ 
+	@EgovNullCheck
+	@Size(max=200)
 	private String eventPurps;
 
 	/**
 	*  행사시작일자	
 	*/ 
+	@EgovNullCheck
+	@Size(max=10)
+	@Pattern(regexp="^$|^\\d{4}-\\d{2}-\\d{2}$", message="{validation.pattern.date}")
 	private String eventBeginDe;
 
 	/**
 	*  행사종료일자	
 	*/ 
+	@EgovNullCheck
+	@Size(max=10)
+	@Pattern(regexp="^$|^\\d{4}-\\d{2}-\\d{2}$", message="{validation.pattern.date}")
 	private String eventEndDe;
 
 	/**
 	*  행사주최기관명	
 	*/ 
+	@EgovNullCheck
+	@Size(max=60)
 	private String eventAuspcInsttNm;
 
 	/**
 	*  행사주관기관명	
 	*/ 
+	@EgovNullCheck
+	@Size(max=60)
 	private String eventMngtInsttNm;
 
 	/**
 	*  행사장소	      
 	*/ 
+	@EgovNullCheck
+	@Size(max=200)
 	private String eventPlace;
 
 	/**
 	*  행사내용	      
 	*/ 
+	@EgovNullCheck
+	@Size(max=1000)
 	private String eventCn;
 
 	/**
 	*  비용발생여부	
 	*/ 
+	@EgovNullCheck
 	private String ctOccrrncAt;
 
 	/**
 	*  참가비용	      
 	*/ 
+	@NotNull
+	@Min(0)
 	private int partcptCt;
 
 	/**
 	*  정원	         
 	*/ 
+	@NotNull
+	@Min(0)
 	private int psncpa;
 
 	/**
@@ -93,11 +124,17 @@ public class EventManage extends ComDefaultVO {
 	/**
 	*  접수시작일자	
 	*/ 
+	@EgovNullCheck
+	@Size(max=10)
+	@Pattern(regexp="^$|^\\d{4}-\\d{2}-\\d{2}$", message="{validation.pattern.date}")
 	private String rceptBeginDe;
 
 	/**
 	*  접수종료일자	
 	*/ 
+	@EgovNullCheck
+	@Size(max=10)
+	@Pattern(regexp="^$|^\\d{4}-\\d{2}-\\d{2}$", message="{validation.pattern.date}")
 	private String rceptEndDe;
 
 	/**

@@ -25,7 +25,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 	<head>
@@ -36,8 +35,7 @@
 		<link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 		<script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 		<script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
-		<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-		<validator:javascript formName="mapMaterial" staticJavascript="false" xhtml="true" cdata="false"/>
+		<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 		<script type="text/javaScript" language="javascript">
 		<!--
 		var knoTypeCdCheckState = 0;
@@ -100,13 +98,14 @@
 				return;
 			}
 
-			if(confirm("<spring:message code="common.save.msg" />")){
-				if(!validateMapMaterial(form)){ 			
-					return;
-				}else{
+			//if(confirm("<spring:message code="common.save.msg" />")){
+			//	if(!validateMapMaterial(form)){ 			
+			//		return;
+			//	}else{
+					form.action = "<c:url value='/dam/map/mat/EgovComDamMapMaterialRegist.do'/>";
 					form.submit();
-				}
-			}
+			//	}
+			//}
 		}
 		
 		function fn_egov_knoTypeCd_check(){	
@@ -141,6 +140,10 @@
 	<body onLoad="fn_egov_initl_MapMaterial();">
 	
 	<form:form modelAttribute="mapMaterial" name="mapMaterial" method="post">
+		
+		<input type="hidden" name="searchCondition" value="<c:out value='${searchVO.searchCondition}'/>"/>
+		<input type="hidden" name="searchKeyword" value="<c:out value='${searchVO.searchKeyword}'/>"/>
+		<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}' default='1'/>"/>
 	
 		<div class="wTableFrm">
 			<!-- 타이틀 -->
@@ -156,8 +159,13 @@
 					<th><label for="orgnztId"><spring:message code="comDamMapMat.comDamMapMaterialRegist.orgnztNm"/></label> <span class="pilsu">*</span></th><!-- 조직명 -->
 					<td class="left">
 					    <select id="orgnztId" name="orgnztId" class="select" title="<spring:message code="comDamMapMat.comDamMapMaterialRegist.orgnztNm"/>"><!-- 조직명 -->
-						<c:forEach var="mapMaterial" items="${mapTeam}" varStatus="status">
-						<option value='<c:out value="${mapMaterial.orgnztId}"/>'><c:out value="${mapMaterial.orgnztNm}"/></option>
+						<c:forEach var="mapTeam" items="${mapTeamList}" varStatus="status">
+						<option
+							value='<c:out value="${mapTeam.orgnztId}"/>'
+							<c:if test="${mapTeam.orgnztId == mapMaterial.orgnztId}">selected="selected"</c:if>
+						 >
+							<c:out value="${mapTeam.orgnztNm}"/>
+						</option>
 						</c:forEach>			  		   
 						</select>
 					</td>
@@ -173,14 +181,14 @@
 				<tr>
 					<th><label for="knoTypeNm"><spring:message code="comDamMapMat.comDamMapMaterialRegist.knoTypeNm"/></label> <span class="pilsu">*</span></th><!-- 지식유형명 -->
 					<td class="left">
-					    <form:input  path="knoTypeNm" title="<spring:message code='comDamMapMat.comDamMapMaterialRegist.knoTypeNm'/>" size="60" maxlength="20"/><!-- 지식유형명 -->
+					    <form:input  path="knoTypeNm" title="<spring:message code='comDamMapMat.comDamMapMaterialRegist.knoTypeNm'/>" size="60" maxlength="60"/><!-- 지식유형명 -->
 						<form:errors path="knoTypeNm"/>
 					</td>
 				</tr>
 				<tr>
 					<th><label for="knoUrl"><spring:message code="comDamMapMat.comDamMapMaterialRegist.knoUrl"/></label> <span class="pilsu">*</span></th><!-- 지식URL -->
 					<td class="left">
-					    <form:input  path="knoUrl" title="<spring:message code='comDamMapMat.comDamMapMaterialRegist.knoUrl'/>" size="60" maxlength="100"/><!-- 지식URL -->
+					    <form:input  path="knoUrl" title="<spring:message code='comDamMapMat.comDamMapMaterialRegist.knoUrl'/>" size="60" maxlength="255"/><!-- 지식URL -->
 						<form:errors path="knoUrl"/>
 					</td>
 				</tr>
@@ -190,6 +198,7 @@
 					    <input type="hidden" name="cal_url" value="<c:url value='/sym/cal/EgovNormalCalPopup.do'/>" />
 						<input id="clYmd" name="clYmd" type="hidden" value=""/>
 						<input id="vclYmd" name="vclYmd" type="text" title="<spring:message code="comDamMapMat.comDamMapMaterialRegist.clYmd"/>" value=""  maxlength="10" readonly="readonly" style="width:70px"/><!-- 분류일자 -->
+						<form:errors path="clYmd"/>
 					</td>
 				</tr>
 			</table>
@@ -202,7 +211,6 @@
 			<div style="clear:both;"></div>
 		</div>
 		
-		<input name="cmd" type="hidden" value="<c:out value='save'/>">
 		</form:form>
 		
 	</body>

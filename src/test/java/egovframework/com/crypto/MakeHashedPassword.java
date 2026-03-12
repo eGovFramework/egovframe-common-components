@@ -1,6 +1,6 @@
 package egovframework.com.crypto;
 
-import org.egovframe.rte.fdl.cryptography.EgovPasswordEncoder;
+import org.egovframe.rte.fdl.crypto.EgovPasswordEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 

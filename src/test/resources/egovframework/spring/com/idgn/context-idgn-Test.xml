@@ -3,7 +3,7 @@
     xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd">
 
     <!-- TEST (Sequence) -->
-    <bean name="testSeqIdGnrService" class="org.egovframe.rte.fdl.idgnr.impl.EgovSequenceIdGnrService" destroy-method="destroy">
+    <bean name="testSeqIdGnrService" class="org.egovframe.rte.fdl.idgnr.impl.EgovSequenceIdGnrServiceImpl" destroy-method="destroy">
         <property name="dataSource" ref="egov.dataSource" />
         <property name="strategy"   ref="prefixSeqBoard" />
         <property name="query" value="SELECT 1 FROM DUAL" />

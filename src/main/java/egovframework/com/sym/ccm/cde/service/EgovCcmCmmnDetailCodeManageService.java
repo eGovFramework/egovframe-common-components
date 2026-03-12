@@ -66,7 +66,5 @@ public interface EgovCcmCmmnDetailCodeManageService {
 	 * @throws Exception
 	 */
 	void updateCmmnDetailCode(CmmnDetailCodeVO cmmnDetailCodeVO) throws Exception;
-	    
-	    
 
 }

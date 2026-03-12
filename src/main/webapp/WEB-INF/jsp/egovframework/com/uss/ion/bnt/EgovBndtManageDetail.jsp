@@ -31,7 +31,6 @@
 <title><spring:message code="comUssIonBnt.bndtManageDetail.title"/></title><!-- 당직  상세 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<validator:javascript formName="bndtManage" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javaScript" language="javascript">
 <!--
 /* ********************************************************
@@ -80,8 +79,8 @@ function fncDeleteBndtManage() {
 	<!-- 등록폼 -->
 	<table class="wTable">
 		<colgroup>
-			<col style="width:16%" />
-			<col style="" />
+			<col style="width:20%" />
+			<col style="width:80%" />
 		</colgroup>
 		<tr>
 			<th><spring:message code="comUssIonBnt.common.bndtIdName"/> <span class="pilsu">*</span></th><!-- 당직자명 -->

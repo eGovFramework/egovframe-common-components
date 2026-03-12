@@ -2,6 +2,9 @@ package egovframework.com.cop.smt.wmr.service;
 
 import java.io.Serializable;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 개요
  * - 주간월간보고에 대한 model 클래스를 정의한다.
@@ -27,32 +30,43 @@ public class WikMnthngReprt implements Serializable{
 	/** 보고서ID */
 	private String reprtId;
 	/** 보고서구분 */
+	@EgovNullCheck
 	private String reprtSe;
 	/** 보고서제목 */
+	@EgovNullCheck
+	@Size(max=255)
 	private String reprtSj;
 	/** 보고일자 */
+	@EgovNullCheck
 	private String reprtDe;
 	/** 작성자ID */
 	private String wrterId;
 	/** 작성자명 */
+	@EgovNullCheck
 	private String wrterNm;
 	/** 작성자직급명 */
 	private String wrterClsfNm;
 	/** 보고자ID */
 	private String reportrId;
 	/** 보고자명 */
+	@EgovNullCheck
 	private String reportrNm;
 	/** 보고자직급명 */
 	private String reportrClsfNm;
 	/** 보고시작일자 */
+	@EgovNullCheck
 	private String reprtBgnDe;
 	/** 보고종료일자 */
+	@EgovNullCheck
 	private String reprtEndDe;
 	/** 금주보고내용 */
+	@EgovNullCheck
 	private String reprtThswikCn;
 	/** 차주보고내용 */
+	@EgovNullCheck
 	private String reprtLesseeCn;
 	/** 특이사항 */
+	@Size(max=2500)
 	private String partclrMatter;
 	/** 첨부파일ID */
 	private String atchFileId;

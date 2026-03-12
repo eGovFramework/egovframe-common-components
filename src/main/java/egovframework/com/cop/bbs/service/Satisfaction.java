@@ -3,6 +3,8 @@ package egovframework.com.cop.bbs.service;
 import java.io.Serializable;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
 
 /**
  * 만족도조사 서비스 데이터 처리 모델
@@ -35,15 +37,20 @@ public class Satisfaction implements Serializable {
     private String wrterId = "";
     
     /** 작성자명 */
+    @EgovNullCheck
+    @Size(max=20)
     private String wrterNm = "";
     
     /** 패스워드 */
+    @EgovNullCheck
     private String stsfdgPassword = "";
     
     /** 만족도 내용 */
+    @Size(max=200)
     private String stsfdgCn = "";
     
     /** 만족도 */
+    @EgovNullCheck
     private int stsfdg = 0;
     
     /** 사용 여부 */

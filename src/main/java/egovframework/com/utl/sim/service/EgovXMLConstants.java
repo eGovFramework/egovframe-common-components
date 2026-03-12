@@ -120,9 +120,9 @@ public final class EgovXMLConstants {
 
     /**
      * <p>W3C XML Schema Namespace URI.</p>
-     * 
+     *
      * <p>Defined to be "<code>http://www.w3.org/2001/XMLSchema</code>".
-     * 
+     *
      * @see <a href=
      *  "http://www.w3.org/TR/xmlschema-1/#Instance_Document_Constructions">
      *  XML Schema Part 1:
@@ -133,9 +133,9 @@ public final class EgovXMLConstants {
 
     /**
      * <p>W3C XML Schema Instance Namespace URI.</p>
-     * 
+     *
      * <p>Defined to be "<code>http://www.w3.org/2001/XMLSchema-instance</code>".</p>
-     * 
+     *
      * @see <a href=
      *  "http://www.w3.org/TR/xmlschema-1/#Instance_Document_Constructions">
      *  XML Schema Part 1:
@@ -146,32 +146,32 @@ public final class EgovXMLConstants {
 
     /**
      * <p>W3C XPath Datatype Namespace URI.</p>
-     * 
+     *
      * <p>Defined to be "<code>http://www.w3.org/2003/11/xpath-datatypes</code>".</p>
-     * 
+     *
      * @see <a href="http://www.w3.org/TR/xpath-datamodel">XQuery 1.0 and XPath 2.0 Data Model</a>
      */
     public static final String W3C_XPATH_DATATYPE_NS_URI = "http://www.w3.org/2003/11/xpath-datatypes";
 
     /**
      * <p>XML Document Type Declaration Namespace URI as an arbitrary value.</p>
-     * 
+     *
      * <p>Since not formally defined by any existing standard, arbitrarily define to be "<code>http://www.w3.org/TR/REC-xml</code>".
      */
     public static final String XML_DTD_NS_URI = "http://www.w3.org/TR/REC-xml";
 
     /**
      * <p>RELAX NG Namespace URI.</p>
-     * 
+     *
      * <p>Defined to be "<code>http://relaxng.org/ns/structure/1.0</code>".</p>
-     * 
+     *
      * @see <a href="http://relaxng.org/spec-20011203.html">RELAX NG Specification</a>
      */
     public static final String RELAXNG_NS_URI = "http://relaxng.org/ns/structure/1.0";
 
     /**
      * <p>Feature for secure processing.</p>
-     * 
+     *
      * <ul>
      *   <li>
      *     <code>true</code> instructs the implementation to process XML securely.
@@ -182,6 +182,6 @@ public final class EgovXMLConstants {
      *     ignoring security issues such as limits on XML constructs to avoid conditions such as denial of service attacks.
      *   </li>
      * </ul>
-     */    
-    public static final String FEATURE_SECURE_PROCESSING = "http://javax.xml.XMLConstants/feature/secure-processing";
+     */
+    public static final String FEATURE_SECURE_PROCESSING = "http://jakarta.xml.XMLConstants/feature/secure-processing";
 }

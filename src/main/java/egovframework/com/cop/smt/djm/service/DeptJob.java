@@ -2,6 +2,9 @@ package egovframework.com.cop.smt.djm.service;
 
 import java.io.Serializable;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 개요
  * - 부서업무에 대한 model 클래스를 정의한다.
@@ -26,22 +29,30 @@ public class DeptJob implements Serializable{
 	/** 부서업무함 ID */
 	private String deptJobBxId;
 	/** 부서업무함명 */
+	@EgovNullCheck
 	private String deptJobBxNm;
 	/** 부서 ID */
 	private String deptId;
 	/** 부서명 */
+	@EgovNullCheck
 	private String deptNm;
 	/** 부서업무 ID */
 	private String deptJobId;
 	/** 부서업무명 */
+	@EgovNullCheck
+	@Size(max=255)
 	private String deptJobNm;
 	/** 부서업무내용 */
+	@EgovNullCheck
+	@Size(max=2500)
 	private String deptJobCn;
 	/** 업무담당자 ID */
 	private String chargerId;
 	/** 업무담당자명 */
+	@EgovNullCheck
 	private String chargerNm;
 	/** 우선순위 */
+	@EgovNullCheck
 	private String priort;
 	/** 첨부파일 ID */
 	private String atchFileId;

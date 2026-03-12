@@ -8,10 +8,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetAddress;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
-
-import javax.annotation.Resource;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.net.ftp.FTP;
@@ -31,6 +28,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sys.ssy.service.EgovSynchrnServerService;
 import egovframework.com.utl.sys.ssy.service.SynchrnServer;
 import egovframework.com.utl.sys.ssy.service.SynchrnServerVO;
+import jakarta.annotation.Resource;
 
 /**
  * 개요
@@ -39,20 +37,20 @@ import egovframework.com.utl.sys.ssy.service.SynchrnServerVO;
  * 상세내용
  * - 동기화대상 서버에 대한 등록, 수정, 삭제, 조회 기능을 제공한다.
  * - 동기화대상 서버의 조회기능은 목록조회, 상세조회로 구분된다.
- * - 2015.03.31	 업로드 파일의 목록을 조회시 업로드 디렉토리가 없을 경우 생성하도록 수정 
+ * - 2015.03.31	 업로드 파일의 목록을 조회시 업로드 디렉토리가 없을 경우 생성하도록 수정
  * @author lee.m.j
  * @version 1.0
  * @created 28-6-2010 오전 10:44:34
- * 
+ *
  *      수정일         수정자                   수정내용
  *   -------    --------    ---------------------------
  *   2017-02-08    이정은        시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
  *   2018-11-12    이정은        processFtp() FILE_TYPE 설정 수정
- * 
+ *
  */
 @Service("egovSynchrnServerService")
 public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implements EgovSynchrnServerService {
-	
+
 	// LOGGER
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovSynchrnServerServiceImpl.class);
 	private static final String SYNCH_SERVER_PATH = EgovProperties.getProperty("Globals.SynchrnServerPath");
@@ -65,6 +63,7 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 	 * @param synchrnServerVO - 동기화대상 서버 Vo
 	 * @return List - 동기화대상 서버 목록
 	 */
+	@Override
 	public List<SynchrnServerVO> selectSynchrnServerList(SynchrnServerVO synchrnServerVO) throws Exception {
 		return synchrnServerDAO.selectSynchrnServerList(synchrnServerVO);
 	}
@@ -74,6 +73,7 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 	 * @param synchrnServerVO - 동기화대상 서버 Vo
 	 * @return int - 동기화대상 서버 카운트 수
 	 */
+	@Override
 	public int selectSynchrnServerListTotCnt(SynchrnServerVO synchrnServerVO) throws Exception {
 		return synchrnServerDAO.selectSynchrnServerListTotCnt(synchrnServerVO);
 	}
@@ -83,6 +83,7 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 	 * @param synchrnServerVO - 동기화대상 서버 Vo
 	 * @return synchrnServerVO - 동기화대상 서버 Vo
 	 */
+	@Override
 	public SynchrnServerVO selectSynchrnServer(SynchrnServerVO synchrnServerVO) throws Exception {
 		return synchrnServerDAO.selectSynchrnServer(synchrnServerVO);
 	}
@@ -92,9 +93,10 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 	 * @param synchrnServerVO - 동기화대상 서버 Vo
 	 * @return List<String> - String Type List
 	 */
+	@Override
 	public List<String> selectSynchrnServerFiles(SynchrnServerVO synchrnServerVO) throws Exception {
 
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 
 		try {
 			FTPClient ftpClient = new FTPClient();
@@ -108,8 +110,9 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 
 			ftpClient.connect(host, Integer.parseInt(synchrnServerVO.getServerPort()));
 			boolean isLogin = ftpClient.login(synchrnServerVO.getFtpId(), synchrnServerVO.getFtpPassword());
-			if (!isLogin)
+			if (!isLogin) {
 				throw new Exception("FTP Client Login Error : \n");
+			}
 
 			FTPFile[] fTPFile = null;
 
@@ -117,9 +120,10 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 				ftpClient.changeWorkingDirectory(synchrnServerVO.getSynchrnLc());
 				fTPFile = ftpClient.listFiles(synchrnServerVO.getSynchrnLc());
 
-				for (int i = 0; i < fTPFile.length; i++) {
-					if (fTPFile[i].isFile())
-						list.add(fTPFile[i].getName());
+				for (FTPFile element : fTPFile) {
+					if (element.isFile()) {
+						list.add(element.getName());
+					}
 				}
 			} finally {
 				ftpClient.logout();
@@ -136,6 +140,7 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 	 * 등록된 동기화대상 서버의 파일을 삭제한다.
 	 * @param synchrnServerVO - 동기화대상 서버 Vo
 	 */
+	@Override
 	public void deleteSynchrnServerFile(SynchrnServerVO synchrnServerVO) throws Exception {
 
 		FTPClient ftpClient = new FTPClient();
@@ -156,10 +161,11 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 			ftpClient.changeWorkingDirectory(synchrnServerVO.getSynchrnLc());
 			fTPFile = ftpClient.listFiles(synchrnServerVO.getSynchrnLc());
 
-			for (int i = 0; i < fTPFile.length; i++) {
+			for (FTPFile element : fTPFile) {
 				//KISA 보안약점 조치 (2018-10-29, 윤창원)
-				if (EgovStringUtil.isNullToString(synchrnServerVO.getDeleteFileNm()).equals(fTPFile[i].getName()))
-					ftpClient.deleteFile(fTPFile[i].getName());
+				if (EgovStringUtil.isNullToString(synchrnServerVO.getDeleteFileNm()).equals(element.getName())) {
+					ftpClient.deleteFile(element.getName());
+				}
 			}
 
 			SynchrnServer synchrnServer = new SynchrnServer();
@@ -177,6 +183,7 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 	 * @param synchrnServerVO - 동기화대상 서버 Vo
 	 * @param fileNm - 다운로드 대상 파일
 	 */
+	@Override
 	public void downloadFtpFile(SynchrnServerVO synchrnServerVO, String fileNm) throws Exception {
 
 		FTPClient ftpClient = new FTPClient();
@@ -199,8 +206,9 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 			outputStream = new FileOutputStream(downFile);
 			ftpClient.retrieveFile(fileNm, outputStream);
 		} finally {
-			if (outputStream != null)
+			if (outputStream != null) {
 				outputStream.close();
+			}
 		}
 
 		ftpClient.logout();
@@ -211,6 +219,7 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 	 * @param synchrnServer - 동기화대상 서버 model
 	 * @param synchrnServerVO    - 동기화대상 서버 VO
 	 */
+	@Override
 	public SynchrnServerVO insertSynchrnServer(SynchrnServer synchrnServer, SynchrnServerVO synchrnServerVO) throws Exception {
 		synchrnServerDAO.insertSynchrnServer(synchrnServer);
 		synchrnServerVO.setServerId(synchrnServer.getServerId());
@@ -221,6 +230,7 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 	 * 기 등록된 동기화대상 서버정보를 수정한다.
 	 * @param synchrnServer - 동기화대상 서버 model
 	 */
+	@Override
 	public void updateSynchrnServer(SynchrnServer synchrnServer) throws Exception {
 		synchrnServerDAO.updateSynchrnServer(synchrnServer);
 	}
@@ -229,6 +239,7 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 	 * 기 등록된 동기화대상 서버정보를 삭제한다.
 	 * @param synchrnServer - 동기화대상 서버 model
 	 */
+	@Override
 	public void deleteSynchrnServer(SynchrnServer synchrnServer) throws Exception {
 		synchrnServerDAO.deleteSynchrnServer(synchrnServer);
 	}
@@ -238,16 +249,14 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 	 * @param synchrnServerVO - 동기화대상 서버 Vo
 	 * @return boolean - 성공여부
 	 */
+	@Override
 	public boolean processSynchrn(SynchrnServerVO synchrnServerVO, File[] uploadFile) throws Exception {
 
 		List<SynchrnServerVO> synchrnServerList = synchrnServerDAO.processSynchrnServerList(synchrnServerVO);
-		Iterator<SynchrnServerVO> iterator = synchrnServerList.iterator();
 		SynchrnServer synchrnServer = new SynchrnServer();
 		boolean reflctAt = false;
 
-		while (iterator.hasNext()) {
-			SynchrnServerVO SynchrnServerVo = iterator.next();
-
+		for (SynchrnServerVO SynchrnServerVo : synchrnServerList) {
 			reflctAt = processFtp(SynchrnServerVo.getServerIp(), Integer.parseInt(SynchrnServerVo.getServerPort()), SynchrnServerVo.getFtpId(), SynchrnServerVo.getFtpPassword(),
 					SynchrnServerVo.getSynchrnLc(), synchrnServerVO.getFilePath(), uploadFile);
 
@@ -275,7 +284,7 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 	 */
 	public List<String> getFtpFileList(String serverIp, int port, String user, String password, String synchrnPath) throws Exception {
 
-		List<String> list = new ArrayList<String>();
+		List<String> list = new ArrayList<>();
 		FTPClient ftpClient = new FTPClient();
 		ftpClient.setControlEncoding("euc-kr");
 
@@ -290,8 +299,8 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 
 		ftpClient.changeWorkingDirectory(synchrnPath);
 		FTPFile[] fTPFile = ftpClient.listFiles(synchrnPath);
-		for (int i = 0; i < fTPFile.length; i++) {
-			list.add(fTPFile[i].getName());
+		for (FTPFile element : fTPFile) {
+			list.add(element.getName());
 		}
 		return list;
 	}
@@ -316,23 +325,25 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 			InetAddress host = InetAddress.getByName(serverIp);
 
 			ftpClient.connect(host, port);
-			if (!ftpClient.login(user, password))
+			if (!ftpClient.login(user, password)) {
 				throw new Exception("FTP Client Login Error : \n");
+			}
 
-			if (synchrnPath.length() != 0)
+			if (synchrnPath.length() != 0) {
 				ftpClient.changeWorkingDirectory(synchrnPath);
+			}
 
 			FTPFile[] fTPFile = ftpClient.listFiles(synchrnPath);
 
 			FileInputStream fis = null;
 			try {
-				for (int i = 0; i < uploadFile.length; i++) {
-					if (uploadFile[i].isFile()) {
-						if (!isExist(fTPFile, uploadFile[i])) {
-							fis = new FileInputStream(uploadFile[i]);
+				for (File element : uploadFile) {
+					if (element.isFile()) {
+						if (!isExist(fTPFile, element)) {
+							fis = new FileInputStream(element);
 							//ftpClient.setFileType(FTP.ASCII_FILE_TYPE); // TEXT FILE 전송
 							ftpClient.setFileType(FTP.BINARY_FILE_TYPE); // 바이너리 파일 전송
-							ftpClient.storeFile(synchrnPath + uploadFile[i].getName(), fis);
+							ftpClient.storeFile(synchrnPath + element.getName(), fis);
 						}
 						if (fis != null) {
 							fis.close();
@@ -374,10 +385,11 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 
 		boolean isExist = false;
 
-		for (int i = 0; i < fTPFiles.length; i++) {
-			if (fTPFiles[i].isFile()) {
-				if (fTPFiles[i].getName().equals(targetFile.getName()))
+		for (FTPFile fTPFile : fTPFiles) {
+			if (fTPFile.isFile()) {
+				if (fTPFile.getName().equals(targetFile.getName())) {
 					isExist = true;
+				}
 			}
 		}
 
@@ -394,19 +406,19 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 
 		boolean isExist = false;
 
-		for (int i = 0; i < fTPFiles.length; i++) {
+		for (FTPFile fTPFile : fTPFiles) {
 			isExist = false;
-			for (int j = 0; j < uploadFile.length; j++) {
-				if (fTPFiles[i].isFile()) {
-					if (fTPFiles[i].getName().equals(uploadFile[j].getName())) {
+			for (File element : uploadFile) {
+				if (fTPFile.isFile()) {
+					if (fTPFile.getName().equals(element.getName())) {
 						isExist = true;
 					}
 				}
 			}
 
 			if (!isExist) {
-				if (fTPFiles[i].isFile()) {
-					ftpClient.deleteFile(fTPFiles[i].getName());
+				if (fTPFile.isFile()) {
+					ftpClient.deleteFile(fTPFile.getName());
 				}
 			}
 		}
@@ -417,10 +429,11 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 	 * @param filePath - 업로드 경로
 	 * @return List - 업로드 파일 리스트
 	 */
+	@Override
 	public List<String> getFileName() throws Exception {
 
 		File uploadFile = new File(EgovWebUtil.filePathBlackList(SYNCH_SERVER_PATH));
-		
+
 		if(!uploadFile.exists()){
 			//2017.02.08 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
 			if(uploadFile.mkdirs()){
@@ -429,19 +442,19 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 				LOGGER.error("[file.mkdirs] uploadFile : Directory Creation Fail");
 			}
 		}
-				
+
 		File[] fileList = uploadFile.listFiles();
-		List<String> fileArray = new ArrayList<String>();
+		List<String> fileArray = new ArrayList<>();
 
 		//KISA 보안약점 조치 (2018-10-29, 윤창원)
 		if (fileList != null) {
-			for (int i = 0; i < fileList.length; i++) {
-				if (fileList[i].isFile()) {
-					fileArray.add(fileList[i].getName());
+			for (File element : fileList) {
+				if (element.isFile()) {
+					fileArray.add(element.getName());
 				}
 			}
 		}
-		
+
 		return fileArray;
 	}
 
@@ -451,10 +464,15 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 	 * @param newName - 업로드 대상 파일명
 	 * @param stordFilePath - 업로드 경로
 	 */
+	@Override
 	public void writeFile(MultipartFile multipartFile, String newName, SynchrnServerVO synchrnServerVO) throws Exception {
 
+		//2026.02.28 KISA 취약점 조치
+		if (multipartFile == null || multipartFile.isEmpty()) {
+			throw new IOException("업로드 파일이 없습니다.");
+		}
+
 		List<SynchrnServerVO> synchrnServerList = synchrnServerDAO.processSynchrnServerList(synchrnServerVO);
-		Iterator<SynchrnServerVO> iterator = synchrnServerList.iterator();
 		SynchrnServer synchrnServer = new SynchrnServer();
 
 		InputStream stream = null;
@@ -462,15 +480,21 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 
 		try {
 			stream = multipartFile.getInputStream();
+			//2026.02.28 KISA 취약점 조치
+			if (stream == null) {
+				throw new IOException("업로드 파일 스트림을 열 수 없습니다.");
+			}
+	
 			File cFile = new File(EgovWebUtil.filePathBlackList(SYNCH_SERVER_PATH));
 
-			if (!cFile.isDirectory())
+			if (!cFile.isDirectory()) {
 				//2017.02.08 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
 				if(cFile.mkdir()){
 					LOGGER.debug("[file.mkdirs] cFile : Directory Creation Success");
 				}else{
 					LOGGER.error("[file.mkdirs] cFile : Directory Creation Fail");
 				}
+			}
 
 			bos = new FileOutputStream(EgovWebUtil.filePathBlackList(SYNCH_SERVER_PATH + File.separator + FilenameUtils.getName(newName)));
 
@@ -481,8 +505,7 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 				bos.write(buffer, 0, bytesRead);
 			}
 
-			while (iterator.hasNext()) {
-				SynchrnServerVO SynchrnServerVo = iterator.next();
+			for (SynchrnServerVO SynchrnServerVo : synchrnServerList) {
 				synchrnServer.setServerId(SynchrnServerVo.getServerId());
 				synchrnServer.setReflctAt("N");
 				synchrnServerDAO.processSynchrn(synchrnServer);
@@ -497,26 +520,25 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 	 * 업로드 파일을 삭제한다.
 	 * @param synchrnServerVO - 동기화대상 서버 Vo
 	 */
+	@Override
 	public void deleteFile(String deleteFiles, SynchrnServerVO synchrnServerVO) throws Exception {
 
 		List<SynchrnServerVO> synchrnServerList = synchrnServerDAO.processSynchrnServerList(synchrnServerVO);
-		Iterator<SynchrnServerVO> iterator = synchrnServerList.iterator();
 		SynchrnServer synchrnServer = new SynchrnServer();
 
 		String[] strDeleteFiles = deleteFiles.split(";");
 
-		for (int i = 0; i < strDeleteFiles.length; i++) {
-			File uploadFile = new File(EgovWebUtil.filePathBlackList(SYNCH_SERVER_PATH + FilenameUtils.getName(strDeleteFiles[i])));
+		for (String strDeleteFile : strDeleteFiles) {
+			File uploadFile = new File(EgovWebUtil.filePathBlackList(SYNCH_SERVER_PATH + FilenameUtils.getName(strDeleteFile)));
 			//2017.02.08 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
 			if(uploadFile.delete()){
 				LOGGER.debug("[file.delete] uploadFile : File Deletion Success");
 			}else{
 				LOGGER.error("[file.delete] uploadFile : File Deletion Fail");
-			}			
+			}
 		}
 
-		while (iterator.hasNext()) {
-			SynchrnServerVO SynchrnServerVo = iterator.next();
+		for (SynchrnServerVO SynchrnServerVo : synchrnServerList) {
 			synchrnServer.setServerId(SynchrnServerVo.getServerId());
 			synchrnServer.setReflctAt("N");
 			synchrnServerDAO.processSynchrn(synchrnServer);

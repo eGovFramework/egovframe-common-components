@@ -18,7 +18,6 @@ import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
-import egovframework.com.uss.ion.bnr.service.Banner;
 import egovframework.com.uss.ion.bnr.service.BannerVO;
 
 @Repository("bannerDAO")
@@ -57,37 +56,35 @@ public class BannerDAO extends EgovComAbstractDAO {
 
 	/**
 	 * 배너정보를 신규로 등록한다.
-	 * @param banner - 배너 model
+	 * @param bannerVO - 배너 VO
 	 */
-	public void insertBanner(Banner banner) throws Exception {
-		insert("bannerDAO.insertBanner", banner);
+	public void insertBanner(BannerVO bannerVO) throws Exception {
+		insert("bannerDAO.insertBanner", bannerVO);
 	}
 
 	/**
 	 * 기 등록된 배너정보를 수정한다.
-	 * @param banner - 배너 model
+	 * @param bannerVO - 배너 VO
 	 */
-	public void updateBanner(Banner banner) throws Exception {
-        update("bannerDAO.updateBanner", banner);
+	public void updateBanner(BannerVO bannerVO) throws Exception {
+        update("bannerDAO.updateBanner", bannerVO);
 	}
 
 	/**
 	 * 기 등록된 배너정보를 삭제한다.
-	 * @param banner - 배너 model
-	 * 
-	 * @param banner
+	 * @param bannerVO - 배너 VO
 	 */
-	public void deleteBanner(Banner banner) throws Exception {
-		delete("bannerDAO.deleteBanner", banner);
+	public void deleteBanner(BannerVO bannerVO) throws Exception {
+		delete("bannerDAO.deleteBanner", bannerVO);
 	}
 
 	/**
 	 * 기 등록된 배너정보의 이미지파일을 삭제하기 위해 파일정보를 조회한다.
-	 * @param banner - 배너 model
+	 * @param bannerVO - 배너 VO
 	 * @return FileVO - 파일 VO
 	 */
-	public FileVO selectBannerFile(Banner banner) throws Exception {
-		return (FileVO) selectOne("bannerDAO.selectBannerFile", banner);
+	public FileVO selectBannerFile(BannerVO bannerVO) throws Exception {
+		return (FileVO) selectOne("bannerDAO.selectBannerFile", bannerVO);
 	}
 
 	/**

@@ -2,6 +2,11 @@ package egovframework.com.uss.olh.qna.service;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import org.egovframe.rte.ptl.reactive.validation.EgovEmailCheck;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 /**
  *
  * Q&A를 처리하는 VO 클래스
@@ -27,30 +32,47 @@ public class QnaVO extends QnaDefaultVO {
 	private String qaId;
 
 	/** 질문제목 */
+	@EgovNullCheck
+	@Size(max=250)
 	private String qestnSj;
 
 	/** 질문내용 */
+	@EgovNullCheck
+	@Size(max=2500)
 	private String qestnCn;
 
 	/** 작성비밀번호 */
 	private String writngPassword;
 
 	/** 지역번호 */
+	@EgovNullCheck
+	@Size(max=4)
+	@Pattern(regexp="^[0-9]*$", message="{validation.pattern.integer}")
 	private String areaNo;
 
 	/** 중간전화번호 */
+	@EgovNullCheck
+	@Size(max=4)
+	@Pattern(regexp="^[0-9]*$", message="{validation.pattern.integer}")
 	private String middleTelno;
 
 	/** 끝전화번호 */
+	@EgovNullCheck
+	@Size(max=4)
+	@Pattern(regexp="^[0-9]*$", message="{validation.pattern.integer}")
 	private String endTelno;
 
 	/** 이메일 주소 */
+	@EgovEmailCheck
+	@Size(max=50)
 	private String emailAdres;
 
 	/** 이메일 답변여부 */
 	private String emailAnswerAt;
 
 	/** 작성자 명 */
+	@EgovNullCheck
+	@Size(max=20)
 	private String wrterNm;
 
 	/** 작성일자 */
@@ -66,6 +88,8 @@ public class QnaVO extends QnaDefaultVO {
 	private String qnaProcessSttusCodeNm;
 
 	/** 답변내용 */
+	@EgovNullCheck
+	@Size(max=2500)
 	private String answerCn;
 
 	/** 답변일자 */

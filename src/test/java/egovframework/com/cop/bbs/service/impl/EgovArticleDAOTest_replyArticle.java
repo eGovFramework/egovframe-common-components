@@ -1,12 +1,12 @@
 package egovframework.com.cop.bbs.service.impl;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.util.Date;
 
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.fdl.string.EgovDateUtil;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.test.context.ContextConfiguration;
@@ -45,7 +45,7 @@ public class EgovArticleDAOTest_replyArticle extends EgovTestV1 {
 		boardMaster.setBbsId(egovBBSMstrIdGnrService.getNextStringId());
 
 		Board board = new Board();
-		board.setNttId(egovNttIdGnrService.getNextIntegerId());
+		board.setNttId((long) egovNttIdGnrService.getNextIntegerId());
 		board.setBbsId(boardMaster.getBbsId());
 		String today = " " + EgovDateUtil.toString(new Date(), null, null);
 		board.setNttSj("test 게시물제목" + today);
@@ -59,7 +59,7 @@ public class EgovArticleDAOTest_replyArticle extends EgovTestV1 {
 		log.debug("getBbsId={}", boardVO.getBbsId());
 
 		Board boardReplyArticle = new Board();
-		boardReplyArticle.setNttId(egovNttIdGnrService.getNextIntegerId());
+		boardReplyArticle.setNttId((long) egovNttIdGnrService.getNextIntegerId());
 		boardReplyArticle.setBbsId(boardMaster.getBbsId());
 
 		// when
@@ -105,7 +105,7 @@ public class EgovArticleDAOTest_replyArticle extends EgovTestV1 {
 		// selectArticleDetail
 
 		BoardVO boardVO = new BoardVO();
-		boardVO.setNttId(91);
+		boardVO.setNttId((long) 91);
 		boardVO.setBbsId("BBSMSTR_000000000171");
 		log.debug("getNttId={}", boardVO.getNttId());
 		log.debug("getBbsId={}", boardVO.getBbsId());
@@ -121,7 +121,7 @@ public class EgovArticleDAOTest_replyArticle extends EgovTestV1 {
 		// replyArticle
 
 		Board boardReplyArticle = new Board();
-		boardReplyArticle.setNttId(egovNttIdGnrService.getNextIntegerId());
+		boardReplyArticle.setNttId((long) egovNttIdGnrService.getNextIntegerId());
 		boardReplyArticle.setBbsId(boardVO.getBbsId());
 
 		boardReplyArticle.setReplyAt("Y");

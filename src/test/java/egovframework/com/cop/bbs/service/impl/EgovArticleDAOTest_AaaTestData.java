@@ -2,7 +2,7 @@ package egovframework.com.cop.bbs.service.impl;
 
 import java.util.Date;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
@@ -91,7 +91,7 @@ public class EgovArticleDAOTest_AaaTestData {
 		Board board = new Board();
 
 		try {
-			board.setNttId(egovNttIdGnrService.getNextIntegerId());
+			board.setNttId((long) egovNttIdGnrService.getNextIntegerId());
 		} catch (FdlException e) {
 			log.error("FdlException egovNttIdGnrService");
 		}

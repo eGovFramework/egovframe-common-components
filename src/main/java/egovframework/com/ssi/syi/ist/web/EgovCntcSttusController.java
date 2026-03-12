@@ -3,8 +3,6 @@ package egovframework.com.ssi.syi.ist.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -18,6 +16,7 @@ import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.ssi.syi.ist.service.CntcSttus;
 import egovframework.com.ssi.syi.ist.service.CntcSttusVO;
 import egovframework.com.ssi.syi.ist.service.EgovCntcSttusService;
+import jakarta.annotation.Resource;
 
 /**
  * 연계현황 관리에 관한 요청을 받아 서비스 클래스로 요청을 전달하고 서비스클래스에서 처리한 결과를 웹 화면으로 전달을 위한

@@ -67,23 +67,14 @@
 	<bean id="egov.defaultTraceHandler" class="org.egovframe.rte.fdl.cmmn.trace.handler.DefaultTraceHandler" />
 
 
-    <!-- MULTIPART RESOLVERS -->
-    <!-- regular spring resolver -->
-    <bean id="spring.RegularCommonsMultipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <property name="maxUploadSize" value="50000000" />
-        <property name="maxInMemorySize" value="100000000" />
-    </bean>
-
-    <!-- custom multi file resolver -->
+    <!-- MULTIPART RESOLVERS : Spring Framework 6.2.8 기반 파일 업로드 설정 -->
+    <!-- Spring 6에서는 CommonsMultipartResolver가 제거되었으므로 EgovMultipartResolver만 사용 -->
     <!-- 확장자 제한 : globals.properties > Globals.fileUpload.Extensions로 설정 -->
-    <bean id="local.MultiCommonsMultipartResolver" class="egovframework.com.cmm.web.EgovMultipartResolver">
-        <property name="maxUploadSize" value="50000000" />
-        <property name="maxInMemorySize" value="100000000" />
-    </bean>
+    <!-- 파일 크기 제한 : globals.properties > Globals.fileUpload.maxFileSize로 설정 -->
+    <bean id="local.MultiCommonsMultipartResolver" class="egovframework.com.cmm.web.EgovMultipartResolver" />
 
     <!-- choose one from above and alias it to the name Spring expects -->
     <alias name="local.MultiCommonsMultipartResolver" alias="multipartResolver" />
-    <!-- <alias name="spring.RegularCommonsMultipartResolver" alias="multipartResolver" /> -->
     
     <!-- custom customProperties -->
     <bean id="customProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">

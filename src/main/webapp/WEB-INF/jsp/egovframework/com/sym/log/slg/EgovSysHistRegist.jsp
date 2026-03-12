@@ -5,7 +5,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%
  /**
   * @Class Name : EgovSysHistRegist.jsp
@@ -31,10 +30,9 @@
 <title><spring:message code="comSymLogSlg.sysHistRegist.title"/></title><!-- 시스템 이력 등록 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
-<validator:javascript formName="history" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javascript">
 	function fn_egov_regist_sysHist(){
 		var varForm = document.getElementById("history");
@@ -43,8 +41,6 @@
 	    }else{
 	        varForm.submit();
 	    }
-
-		
 		document.history.action = "<c:url value='/sym/log/slg/InsertSysHistory.do'/>";
 		document.history.submit();
 	}
@@ -80,21 +76,21 @@
 					<option value='<c:out value="${result.code}"/>'><c:out value="${result.codeNm}"/></option>
 					</c:forEach>
 				</select>
-				<form:errors path="histSeCode" />
+				<div><form:errors path="histSeCode" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymLogSlg.sysHistRegist.sysNm"/> <span class="pilsu">*</span></th><!-- 시스템명  -->
 			<td class="left">
 			    <input name="sysNm" type="text" size="60" value="<c:out value='${history.sysNm}'/>" maxlength="60" id="sysNm">
-      			<form:errors path="sysNm" />
+			    <div><form:errors path="sysNm" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymLogSlg.sysHistRegist.histCn"/> <span class="pilsu">*</span></th><!-- 이력내용 -->
 			<td class="left">
 			    <textarea name="histCn" class="textarea"  cols="50" rows="8"  style="width:450px;" id="histCn"><c:out value='${history.histCn}'/></textarea>
-      			<form:errors path="histCn" />
+			    <div><form:errors path="histCn" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>

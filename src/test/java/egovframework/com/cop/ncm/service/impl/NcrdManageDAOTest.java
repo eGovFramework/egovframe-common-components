@@ -1,13 +1,13 @@
 package egovframework.com.cop.ncm.service.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 
 import java.util.List;
 
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
@@ -133,8 +133,8 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
     /**
      * 테스트 데이터 생성
      */
-    @Before
-    public void testData() {
+    @BeforeEach
+    void testData() {
         /*
          * 테스트 명함 정보 생성
          */
@@ -200,7 +200,7 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
         final int result = ncrdManageDAO.insertNcrdItem(nameCard);
 
         // then
-        assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage("fail.common.insert"));
     }
 
     /**
@@ -208,9 +208,9 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
      */
     private void assertSelectNcrdItem(final Object expected, final Object actual) {
         if (expected instanceof NameCardVO) {
-            assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), ((NameCardVO) expected).getNcrdId(), ((NameCardVO) actual).getNcrdId());
+            assertEquals(((NameCardVO) expected).getNcrdId(), ((NameCardVO) actual).getNcrdId(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
         } else {
-            assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), expected, actual);
+            assertEquals(expected, actual, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
         }
     }
 
@@ -242,7 +242,7 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
         final NameCardVO result = ncrdManageDAO.selectNcrdItem(nameCardVO);
 
         // then
-        assertNull(egovMessageSource.getMessage(FAIL_COMMON_SELECT), result);
+        assertNull(result, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     /**
@@ -286,14 +286,14 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
         final int result = ncrdManageDAO.selectNcrdItemListCnt(nameCardVO);
 
         // then
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     /**
      * 내 명함 정보 목록 조회 테스트
      */
     @Test
-    public void testSelectMyNcrdItemList() {
+    void testSelectMyNcrdItemList() {
         // given
         final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
         final NameCardVO nameCardVO = new NameCardVO();
@@ -325,7 +325,7 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
      * 내 명함 정보 목록 개수 조회 테스트
      */
     @Test
-    public void testSelectMyNcrdItemListCnt() {
+    void testSelectMyNcrdItemListCnt() {
         // given
         final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
         final NameCardVO nameCardVO = new NameCardVO();
@@ -342,14 +342,14 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
         final int result = ncrdManageDAO.selectMyNcrdItemListCnt(nameCardVO);
 
         // then
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     /**
      * 명함 정보 수정 테스트
      */
     @Test
-    public void testUpdateNcrdItem() {
+    void testUpdateNcrdItem() {
         // given
         testNameCard.setNcrdNm("QA");
 
@@ -357,7 +357,7 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
         final int result = ncrdManageDAO.updateNcrdItem(testNameCard);
 
         // then
-        assertEquals(egovMessageSource.getMessage("fail.common.update"), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage("fail.common.update"));
     }
 
     /**
@@ -365,7 +365,7 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
      * 명함사용자를 먼저 삭제해야 한다.
      */
     @Test
-    public void testDeleteNcrdItem() {
+    void testDeleteNcrdItem() {
         // given
         final NameCardVO nameCardVO = new NameCardVO();
         nameCardVO.setNcrdId(testNameCard.getNcrdId());
@@ -377,7 +377,7 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
         final int result = ncrdManageDAO.deleteNcrdItem(nameCardVO); // 2. NameCardItem delete
 
         // then
-        assertEquals(egovMessageSource.getMessage("fail.common.delete"), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage("fail.common.delete"));
     }
 
     /**
@@ -411,7 +411,7 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
         final int result = ncrdManageDAO.insertNcrdUseInf(nameCardUser);
 
         // then
-        assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage("fail.common.insert"));
     }
 
     /**
@@ -419,9 +419,9 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
      */
     private void assertSelectNcrdUser(final Object expected, final Object actual) {
         if (expected instanceof NameCardUser) {
-            assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), ((NameCardUser) expected).getEmplyrId(), ((NameCardVO) actual).getEmplyrId());
+            assertEquals(((NameCardUser) expected).getEmplyrId(), ((NameCardVO) actual).getEmplyrId(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
         } else {
-            assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), expected, actual);
+            assertEquals(expected, actual, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
         }
     }
 
@@ -468,7 +468,7 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
         final int result = ncrdManageDAO.selectNcrdUseInfsCnt(nameCardUser);
 
         // then
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     /**
@@ -483,14 +483,14 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
         final int result = ncrdManageDAO.updateNcrdUseInf(testNameCardUser);
 
         // then
-        assertEquals(egovMessageSource.getMessage("fail.common.update"), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage("fail.common.update"));
     }
 
     /**
      * 명함사용자 정보 삭제 테스트
      */
     @Test
-    public void testDeleteNcrdItemUser() {
+    void testDeleteNcrdItemUser() {
         // given
         final NameCardVO nameCardVO = new NameCardVO();
         nameCardVO.setNcrdId(testNameCard.getNcrdId());
@@ -500,6 +500,6 @@ public class NcrdManageDAOTest extends EgovTestAbstractDAO {
         final int result = ncrdManageDAO.deleteNcrdItemUser(nameCardVO);
 
         // then
-        assertEquals(egovMessageSource.getMessage("fail.common.delete"), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage("fail.common.delete"));
     }
 }

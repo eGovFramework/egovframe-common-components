@@ -3,8 +3,6 @@ package egovframework.com.uss.ion.ntr.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.slf4j.Logger;
@@ -13,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import egovframework.com.uss.ion.ntr.service.EgovNoteRecptnService;
 import egovframework.com.uss.ion.ntr.service.NoteRecptn;
+import jakarta.annotation.Resource;
 /**
  * 받은쪽지함관리를 처리하는 ServiceImpl Class 구현
  * @author 공통서비스 장동한
@@ -33,7 +32,7 @@ public class EgovNoteRecptnServiceImpl extends EgovAbstractServiceImpl
 
     @Resource(name = "noteRecptnDao")
     private NoteRecptnDao dao;
-    
+
     private static final Logger LOGGER = LoggerFactory.getLogger(EgovNoteRecptnServiceImpl.class);
 
     /**

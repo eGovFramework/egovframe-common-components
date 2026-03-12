@@ -1,5 +1,8 @@
 package egovframework.com.sym.mnu.mpm.service;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 메뉴관리, 메뉴 생성을 위한 모델 클래스를 정의한다.
  * @author 공통서비스 개발팀 이 용
@@ -22,6 +25,7 @@ public class MenuManage {
 	/**
 	 * 메뉴설명
 	 */
+	@Size(max=100)
 	private String menuDc;
 	public String getMenuDc() {
 		return menuDc;
@@ -74,29 +78,38 @@ public class MenuManage {
 	/**
 	 * 메뉴명
 	 */
+	@EgovNullCheck
+	@Size(max=50)
 	private String menuNm;
 	/**
 	 * 메뉴번호
 	 */
+	@EgovNullCheck
 	private int menuNo;
 	/**
 	 * 메뉴순서
 	 */
+	@EgovNullCheck
 	private int menuOrdr;
 	/**
 	 * 프로그램파일명
 	 */
+	@EgovNullCheck
+	@Size(max=50)
 	private String progrmFileNm;
 	/**
 	 * 관련이미지명
 	 */
+	@Size(max=50)
 	private String relateImageNm;
 	/**
 	 * 관련이미지경로
 	 */
+	@Size(max=100)
 	private String relateImagePath;
 	/**
 	 * 상위메뉴번호
 	 */
+	@EgovNullCheck
 	private int upperMenuId;
 }

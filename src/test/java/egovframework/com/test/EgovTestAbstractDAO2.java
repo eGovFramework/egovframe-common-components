@@ -2,20 +2,20 @@ package egovframework.com.test;
 
 import java.sql.SQLException;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.runner.OrderWith;
-import org.junit.runner.RunWith;
-import org.junit.runner.manipulation.Alphanumeric;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.ApplicationContext;
 import org.springframework.dao.DataAccessException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.StopWatch;
 
@@ -29,8 +29,8 @@ import lombok.extern.slf4j.Slf4j;
  * @author 이백행
  */
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@OrderWith(Alphanumeric.class)
+@ExtendWith(SpringExtension.class)
+@TestMethodOrder(MethodOrderer.MethodName.class)
 
 @ActiveProfiles({ "mysql", "dummy" })
 //@ActiveProfiles({ "oracle", "dummy" })
@@ -97,8 +97,8 @@ public class EgovTestAbstractDAO2 {
     /**
      * setUpBeforeClass
      */
-    @BeforeClass
-    public static void setUpBeforeClass() {
+    @BeforeAll
+    static void setUpBeforeClass() {
         STOP_WATCH.start();
 
         log.debug("setUpBeforeClass start");
@@ -107,8 +107,8 @@ public class EgovTestAbstractDAO2 {
     /**
      * tearDownAfterClass
      */
-    @AfterClass
-    public static void tearDownAfterClass() {
+    @AfterAll
+    static void tearDownAfterClass() {
         STOP_WATCH.stop();
 
         if (log.isDebugEnabled()) {
@@ -122,8 +122,8 @@ public class EgovTestAbstractDAO2 {
     /**
      * setUp
      */
-    @Before
-    public void setUp() {
+    @BeforeEach
+    void setUp() {
         stopWatch.start();
 
         log.debug("setUp start");
@@ -140,8 +140,8 @@ public class EgovTestAbstractDAO2 {
     /**
      * tearDown
      */
-    @After
-    public void tearDown() {
+    @AfterEach
+    void tearDown() {
         stopWatch.stop();
 
         if (log.isDebugEnabled()) {

@@ -2,6 +2,9 @@ package egovframework.com.sec.gmt.service;
 
 import egovframework.com.cmm.ComDefaultVO;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 그룹관리에 대한 model 클래스를 정의한다.
  * @author 공통서비스 개발팀 이문준
@@ -35,6 +38,8 @@ public class GroupManage extends ComDefaultVO {
 	/**
 	 * 그룹명
 	 */
+	@EgovNullCheck
+	@Size(max=60)
 	private String groupNm;
 	/**
 	 * 그룹등록일시
@@ -43,6 +48,7 @@ public class GroupManage extends ComDefaultVO {
 	/**
 	 * 그룹설명
 	 */
+	@Size(max=100)
 	private String groupDc;
 	
 	/**

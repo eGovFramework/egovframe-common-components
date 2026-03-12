@@ -23,7 +23,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comUssOlpOpm.pollItem.title"/></c:set>
 <c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<c:set var="resultListCont" value="${resultListCont+1}"/>
@@ -70,7 +69,7 @@
 		}
 
 		if(confirm("<spring:message code="common.save.msg" />")){
-
+			/*
 			 if( vFrom.pollIemNm.value == ""){
 					alert("온라인POLL 항목명을  입력해주세요!");
 					vFrom.pollIemNm.focus();
@@ -83,7 +82,7 @@
 				vFrom.pollIemNm.value = "";
 				return;
 			}
-
+			*/
 			 vFrom.submit();
 		}
 	}
@@ -225,7 +224,7 @@
 	</tr>
 	</table>
 	
-	<form name="registForm" action="<c:url value='' />" method="post">
+	<form:form modelAttribute="onlinePollItem" name="registForm" action="<c:url value='' />" method="post">
 		<input name="pollId" type="hidden" value="${onlinePollItem.pollId}">
 		<input name="pollIemId" type="hidden" value="">
 		<input name="registFormCmd" type="hidden" value="">
@@ -234,7 +233,8 @@
 		<table width="100%" cellspacing="0" cellpadding="0" border="0">
 			<tr>
 			    <td width="2px" nowrap></td>
-			    <td nowrap><input name="pollIemNm" id="pollIemNm" type="text" size="100" value="" maxlength="255" style="width:100%;" title="POLL 세부항목 입력"></td>
+			    <td nowrap><input name="pollIemNm" id="pollIemNm" type="text" size="100" value="" maxlength="255" style="width:100%;" title="POLL 세부항목 입력">
+			    <div><form:errors path="pollIemNm" cssClass="error"/></div></td>
 			    <td width="10px" nowrap></td>
 			    <td width="40px" align="center" nowrap style=" background: #4688d2; cursor:pointer;cursor:hand;" onClick="JavaScript:fn_egov_regist_OnlinePollItem();">
 				<DIV id="divPollIem" style="font-size: 11px;color: #fff;"><spring:message code="button.create" /></DIV>
@@ -244,7 +244,7 @@
 
 
 <!-- /DIV -->
-</form>
+</form:form>
 
 </BODY>
 </HTML>

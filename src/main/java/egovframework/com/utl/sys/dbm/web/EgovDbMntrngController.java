@@ -2,20 +2,16 @@ package egovframework.com.utl.sys.dbm.web;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -28,6 +24,9 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sys.dbm.service.DbMntrng;
 import egovframework.com.utl.sys.dbm.service.DbMntrngLog;
 import egovframework.com.utl.sys.dbm.service.EgovDbMntrngService;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * DB서비스모니터링관리에 대한 controller 클래스를 정의한다.
@@ -47,10 +46,9 @@ import egovframework.com.utl.sys.dbm.service.EgovDbMntrngService;
  *  2010.06.21   김진만            최초 생성
  *  2011.08.26	 정진오             IncludedInfo annotation 추가
  *  2019-12-06   신용호            KISA 보안약점 조치 (부적절한 예외처리)
- *  
+ *
  * </pre>
  */
-
 @Controller
 public class EgovDbMntrngController {
 
@@ -63,9 +61,6 @@ public class EgovDbMntrngController {
 
     @Resource(name="egovMessageSource")
     private EgovMessageSource egovMessageSource;
-
-    @Autowired
-    private DefaultBeanValidator beanValidator;
 
     /** cmmUseService */
     @Resource(name="EgovCmmUseService")
@@ -83,11 +78,12 @@ public class EgovDbMntrngController {
 	 * @exception Exception Exception
 	 */
     @RequestMapping("/utl/sys/dbm/deleteDbMntrng.do")
-	public String deleteDbMntrng(DbMntrng dbMntrng, ModelMap model)
+	public String deleteDbMntrng(DbMntrng dbMntrng, ModelMap model,
+			RedirectAttributes redirectAttributes)
 	  throws Exception{
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+    		redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
@@ -106,19 +102,18 @@ public class EgovDbMntrngController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/utl/sys/dbm/addDbMntrng.do")
-	public String insertDbMntrng(DbMntrng dbMntrng, BindingResult bindingResult, ModelMap model)
+	public String insertDbMntrng(@Valid @ModelAttribute("dbMntrng") DbMntrng dbMntrng, BindingResult bindingResult, ModelMap model,
+			RedirectAttributes redirectAttributes)
 	  throws Exception{
     	// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+    		redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-
-        beanValidator.validate(dbMntrng, bindingResult);
         checkDuplication(dbMntrng, bindingResult);
     	if (bindingResult.hasErrors()){
     		referenceData(model);
@@ -321,19 +316,19 @@ public class EgovDbMntrngController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/utl/sys/dbm/updateDbMntrng.do")
-	public String updateDbMntrng(DbMntrng dbMntrng, BindingResult bindingResult, ModelMap model)
+	public String updateDbMntrng(@ModelAttribute("searchVO") DbMntrng searchVO,
+			@Valid @ModelAttribute("dbMntrng") DbMntrng dbMntrng, BindingResult bindingResult, ModelMap model,
+			RedirectAttributes redirectAttributes)
 	  throws Exception{
 
     	// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+    		redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-
-		beanValidator.validate(dbMntrng, bindingResult);
 		if (bindingResult.hasErrors()) {
 			referenceData(model);
 			model.addAttribute("dbMntrng", dbMntrng);

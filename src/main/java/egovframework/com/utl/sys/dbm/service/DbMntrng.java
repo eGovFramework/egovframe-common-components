@@ -3,6 +3,9 @@ package egovframework.com.utl.sys.dbm.service;
 import java.io.Serializable;
 
 import egovframework.com.cmm.ComDefaultVO;
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import org.egovframe.rte.ptl.reactive.validation.EgovEmailCheck;
+import jakarta.validation.constraints.Size;
 
 /**
  * DB서비스모니터링에 대한 model 클래스
@@ -26,26 +29,38 @@ public class DbMntrng extends ComDefaultVO implements Serializable {
 	/**
 	 * 데이터소스명
 	 */
+	@EgovNullCheck
+	@Size(max=60)
 	private String dataSourcNm;
 	/**
 	 * 서버명
 	 */
+	@EgovNullCheck
+	@Size(max=60)
 	private String serverNm;
 	/**
 	 * DBMS종류
 	 */
+	@EgovNullCheck
 	private String dbmsKind;
 	/**
 	 * 체크SQL
 	 */
+	@EgovNullCheck
+	@Size(max=250)
 	private String ceckSql;
 	/**
 	 * 관리자명
 	 */
+	@EgovNullCheck
+	@Size(max=60)
 	private String mngrNm;
 	/**
 	 * 관리자이메일주소
 	 */
+	@EgovNullCheck
+	@Size(max=50)
+	@EgovEmailCheck
 	private String mngrEmailAddr;
 	/**
 	 * 모니터링상태

@@ -4,10 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -17,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -30,11 +26,12 @@ import egovframework.com.cmm.service.EgovFileMngUtil;
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.mtg.service.EgovMtgPlaceManageService;
-import egovframework.com.uss.ion.mtg.service.MtgPlaceManage;
 import egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO;
-import egovframework.com.uss.ion.mtg.service.MtgPlaceResve;
+import egovframework.com.uss.ion.mtg.service.MtgPlaceResveVO;
 import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * <pre>
@@ -71,9 +68,6 @@ public class EgovMtgPlaceManageController {
 	@Resource(name = "egovMtgPlaceManageService")
 	private EgovMtgPlaceManageService egovMtgPlaceManageService;
 
-	@Autowired
-	private DefaultBeanValidator beanValidator;
-
 	@Resource(name = "EgovCmmUseService")
 	private EgovCmmUseService cmmUseService;
 
@@ -105,8 +99,7 @@ public class EgovMtgPlaceManageController {
 	@IncludedInfo(name = "회의실관리", order = 870, gid = 50)
 	@RequestMapping(value = "/uss/ion/mtg/selectMtgPlaceManageList.do")
 	public String selectMtgPlaceManageList(@ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO,
-			@ModelAttribute("mtgPlaceManage") MtgPlaceManage mtgPlaceManage, BindingResult bindingResult,
-			ModelMap model) throws Exception {
+			BindingResult bindingResult, ModelMap model) throws Exception {
 
 		/** paging */
 		PaginationInfo paginationInfo = new PaginationInfo();
@@ -139,16 +132,15 @@ public class EgovMtgPlaceManageController {
 	 */
 	@RequestMapping(value = "/uss/ion/mtg/selectMtgPlaceManage.do")
 	public String selectMtgPlaceManage(@ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO,
-			@ModelAttribute("mtgPlaceManage") MtgPlaceManage mtgPlaceManage, @RequestParam Map<?, ?> commandMap,
-			ModelMap model) throws Exception {
+			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
-		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd"); // 상세정보 구분
+		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM070");
 		List<CmmnDetailCode> lcSeCodeList = cmmUseService.selectCmmCodeDetail(vo);
 
 		model.addAttribute("lcSeCode", lcSeCodeList);
-		model.addAttribute("mtgPlaceManage", egovMtgPlaceManageService.selectMtgPlaceManage(mtgPlaceManageVO));
+		model.addAttribute("mtgPlaceManageVO", egovMtgPlaceManageService.selectMtgPlaceManage(mtgPlaceManageVO));
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
 		if (sCmd.equals("update")) {
@@ -164,8 +156,8 @@ public class EgovMtgPlaceManageController {
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/uss/ion/mtg/insertViewMtgPlace.do")
-	public String insertViewMtgPlaceManage(@ModelAttribute("mtgPlaceManage") MtgPlaceManage mtgPlaceManage,
-			@ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO, ModelMap model) throws Exception {
+	public String insertViewMtgPlaceManage(@ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO,
+			ModelMap model) throws Exception {
 
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM070");
@@ -185,37 +177,32 @@ public class EgovMtgPlaceManageController {
 	@SuppressWarnings("unused")
 	@RequestMapping(value = "/uss/ion/mtg/insertMtgPlace.do")
 	public String insertMtgPlaceManage(final MultipartHttpServletRequest multiRequest,
-			@ModelAttribute("mtgPlaceManage") MtgPlaceManage mtgPlaceManage,
-			@ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO, BindingResult bindingResult,
+			@Valid @ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {
-
-		beanValidator.validate(mtgPlaceManage, bindingResult); // validation 수행
 
 		if (bindingResult.hasErrors()) {
 			model.addAttribute("mtgPlaceManageVO", mtgPlaceManageVO);
+			ComDefaultCodeVO vo = new ComDefaultCodeVO();
+			vo.setCodeId("COM070");
+			model.addAttribute("lcSeCode", cmmUseService.selectCmmCodeDetail(vo));
 			return "egovframework/com/uss/ion/mtg/EgovMtgPlaceRegist";
-		} else {
-			// 첨부파일 관련 첨부파일ID 생성
-			List<FileVO> fvoList = null;
-			String atchFileId = "";
-
-			// final Map<String, MultipartFile> files = multiRequest.getFileMap();
-			final List<MultipartFile> files = multiRequest.getFiles("file_1");
-			if (!files.isEmpty()) {
-				fvoList = fileUtil.parseFileInf(files, "MTG_", 0, "", "");
-				atchFileId = fileMngService.insertFileInfs(fvoList); // 파일이 생성되고나면 생성된 첨부파일 ID를 리턴한다.
-			}
-			// 리턴받은 첨부파일ID를 셋팅한다..
-			mtgPlaceManage.setAtchFileId(atchFileId); // 첨부파일 ID
-
-			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-
-			status.setComplete();
-			egovMtgPlaceManageService.insertMtgPlaceManage(mtgPlaceManage, mtgPlaceManageVO);
-			model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
-
-			return "redirect:/uss/ion/mtg/selectMtgPlaceManageList.do";
 		}
+		List<FileVO> fvoList = null;
+		String atchFileId = "";
+		final List<MultipartFile> files = multiRequest.getFiles("file_1");
+		if (!files.isEmpty()) {
+			fvoList = fileUtil.parseFileInf(files, "MTG_", 0, "", "");
+			atchFileId = fileMngService.insertFileInfs(fvoList);
+		}
+		mtgPlaceManageVO.setAtchFileId(atchFileId);
+
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+		status.setComplete();
+		egovMtgPlaceManageService.insertMtgPlaceManage(mtgPlaceManageVO);
+		model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
+
+		return "redirect:/uss/ion/mtg/selectMtgPlaceManageList.do";
 	}
 
 	/**
@@ -228,50 +215,40 @@ public class EgovMtgPlaceManageController {
 	@RequestMapping(value = "/uss/ion/mtg/updtMtgPlace.do")
 	public String updateMtgPlaceManage(final MultipartHttpServletRequest multiRequest,
 			@RequestParam("atchFileAt") String atchFileAt,
-			@ModelAttribute("mtgPlaceManage") MtgPlaceManage mtgPlaceManage,
-			@ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO, BindingResult bindingResult,
+			@Valid @ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {
 
-		beanValidator.validate(mtgPlaceManage, bindingResult); // validation 수행
-
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("mtgPlaceManageVO", mtgPlaceManage);
+			model.addAttribute("mtgPlaceManageVO", mtgPlaceManageVO);
+			ComDefaultCodeVO vo = new ComDefaultCodeVO();
+			vo.setCodeId("COM070");
+			model.addAttribute("lcSeCode", cmmUseService.selectCmmCodeDetail(vo));
 			return "egovframework/com/uss/ion/mtg/EgovMtgPlaceUpdt";
-		} else {
-
-			// 첨부파일 관련 ID 생성 start....
-			String atchFileId = mtgPlaceManage.getAtchFileId();
-
-			// final Map<String, MultipartFile> files = multiRequest.getFileMap();
-			final List<MultipartFile> files = multiRequest.getFiles("file_1");
-
-			if (!files.isEmpty()) {
-
-				if ("N".equals(atchFileAt)) {
-					List<FileVO> fvoList = fileUtil.parseFileInf(files, "MTG_", 0, atchFileId, "");
-					atchFileId = fileMngService.insertFileInfs(fvoList);
-
-					// 첨부파일 ID 셋팅
-					mtgPlaceManage.setAtchFileId(atchFileId); // 첨부파일 ID
-
-				} else {
-					FileVO fvo = new FileVO();
-					fvo.setAtchFileId(atchFileId);
-					int fileKeyParam = fileMngService.getMaxFileSN(fvo);
-					List<FileVO> fvoList = fileUtil.parseFileInf(files, "MTG_", fileKeyParam, atchFileId, "");
-					fileMngService.updateFileInfs(fvoList);
-				}
-			}
-			// 첨부파일 관련 ID 생성 end...
-
-			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-
-			status.setComplete();
-			egovMtgPlaceManageService.updtMtgPlaceManage(mtgPlaceManage, mtgPlaceManageVO);
-			model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
-
-			return "redirect:/uss/ion/mtg/selectMtgPlaceManageList.do";
 		}
+		String atchFileId = mtgPlaceManageVO.getAtchFileId();
+		final List<MultipartFile> files = multiRequest.getFiles("file_1");
+
+		if (!files.isEmpty()) {
+			if ("N".equals(atchFileAt)) {
+				List<FileVO> fvoList = fileUtil.parseFileInf(files, "MTG_", 0, atchFileId, "");
+				atchFileId = fileMngService.insertFileInfs(fvoList);
+				mtgPlaceManageVO.setAtchFileId(atchFileId);
+			} else {
+				FileVO fvo = new FileVO();
+				fvo.setAtchFileId(atchFileId);
+				int fileKeyParam = fileMngService.getMaxFileSN(fvo);
+				List<FileVO> fvoList = fileUtil.parseFileInf(files, "MTG_", fileKeyParam, atchFileId, "");
+				fileMngService.updateFileInfs(fvoList);
+			}
+		}
+
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+		status.setComplete();
+		egovMtgPlaceManageService.updtMtgPlaceManage(mtgPlaceManageVO);
+		model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
+
+		return "redirect:/uss/ion/mtg/selectMtgPlaceManageList.do";
 	}
 
 	/**
@@ -281,19 +258,15 @@ public class EgovMtgPlaceManageController {
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/uss/ion/mtg/deleteMtgPlaceManage.do")
-	public String deleteMtgPlaceManage(@ModelAttribute("mtgPlaceManage") MtgPlaceManage mtgPlaceManage,
+	public String deleteMtgPlaceManage(@ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO,
 			SessionStatus status, ModelMap model) throws Exception {
-		// 첨부파일 삭제를 위한 ID 생성 start....
-		String atchFileId = mtgPlaceManage.getAtchFileId();
+		String atchFileId = mtgPlaceManageVO.getAtchFileId();
 
-		egovMtgPlaceManageService.deleteMtgPlaceManage(mtgPlaceManage);
+		egovMtgPlaceManageService.deleteMtgPlaceManage(mtgPlaceManageVO);
 
-		// 첨부파일을 삭제하기 위한 Vo
 		FileVO fvo = new FileVO();
 		fvo.setAtchFileId(atchFileId);
-
 		fileMngService.deleteAllFileInf(fvo);
-		// 첨부파일 삭제 End.............
 
 		status.setComplete();
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
@@ -312,14 +285,14 @@ public class EgovMtgPlaceManageController {
 			throws Exception {
 		mtgPlaceManageVO.setMtgPlaceId(sTmMtgPlaceId);
 
-		MtgPlaceManage resultVO = egovMtgPlaceManageService.selectMtgPlaceManage(mtgPlaceManageVO);
+		MtgPlaceManageVO resultVO = egovMtgPlaceManageService.selectMtgPlaceManage(mtgPlaceManageVO);
 
 		FileVO fileVO = new FileVO();
 		fileVO.setAtchFileId(resultVO.getAtchFileId());
 		List<FileVO> result = fileMngService.selectImageFileList(fileVO);
 
 		model.addAttribute("fileList", result);
-		model.addAttribute("mtgPlaceManage", egovMtgPlaceManageService.selectMtgPlaceManage(mtgPlaceManageVO));
+		model.addAttribute("mtgPlaceManageVO", egovMtgPlaceManageService.selectMtgPlaceManage(mtgPlaceManageVO));
 
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 		return "egovframework/com/uss/ion/mtg/EgovMtgPlaceImageDetail";
@@ -385,10 +358,8 @@ public class EgovMtgPlaceManageController {
 	@SuppressWarnings("unused")
 	@RequestMapping(value = "/uss/ion/mtg/selectMtgPlaceResveManage.do")
 	public String selectMtgPlaceResveManage(@ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO,
-			@ModelAttribute("mtgPlaceResve") MtgPlaceResve mtgPlaceResve, BindingResult bindingResult,
-			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+			BindingResult bindingResult, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
-		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd"); // 상세정보 구분
 		String sTempResveDe = mtgPlaceManageVO.getResveDe();
 		String sTempResveBeginTm = mtgPlaceManageVO.getResveBeginTm();
 		String sTempResveEndTm = mtgPlaceManageVO.getResveEndTm();
@@ -399,13 +370,17 @@ public class EgovMtgPlaceManageController {
 		resultVO.setResveEndTm(sTempResveEndTm);
 		resultVO.setResveDe(EgovDateUtil.formatDate(resultVO.getResveDe(), "-"));
 
-		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		resultVO.setMtgPlaceTemp4(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getName()));
 		resultVO.setMtgPlaceTemp5(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getOrgnztNm()));
+		MtgPlaceResveVO mtgPlaceResveVO = new MtgPlaceResveVO();
+		mtgPlaceResveVO.setMtgPlaceId(resultVO.getMtgPlaceId());
+		mtgPlaceResveVO.setResveDe(resultVO.getResveDe());
+		mtgPlaceResveVO.setResveBeginTm(resultVO.getResveBeginTm());
+		mtgPlaceResveVO.setResveEndTm(resultVO.getResveEndTm());
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
-
 		model.addAttribute("mtgPlaceManageVO", resultVO);
+		model.addAttribute("mtgPlaceResveVO", mtgPlaceResveVO);
 		return "egovframework/com/uss/ion/mtg/EgovMtgPlaceResveRegist";
 	}
 
@@ -417,9 +392,8 @@ public class EgovMtgPlaceManageController {
 	 */
 	@RequestMapping(value = "/uss/ion/mtg/selectMtgPlaceResveManageDetail.do")
 	public String selectMtgPlaceResveManageDetail(@ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO,
-			@ModelAttribute("mtgPlaceResve") MtgPlaceResve mtgPlaceResve, BindingResult bindingResult,
-			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
-		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd"); // 상세정보 구분
+			BindingResult bindingResult, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
 		MtgPlaceManageVO resultVO = egovMtgPlaceManageService.selectMtgPlaceResveDetail(mtgPlaceManageVO);
 		resultVO.setResveDe(EgovDateUtil.formatDate(resultVO.getResveDe(), "-"));
@@ -430,23 +404,39 @@ public class EgovMtgPlaceManageController {
 			resultVO.setUsidTemp(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 			String resveBeginTm = resultVO.getResveBeginTm();
 			String resveEndTm = resultVO.getResveEndTm();
-			if (resveBeginTm.length() == 3) {
+			if (resveBeginTm != null && resveBeginTm.length() == 3) {
 				resveBeginTm = "0" + resveBeginTm.substring(0, 1) + ":" + resveBeginTm.substring(1, 3);
-			} else if (resveBeginTm.length() == 4) {
+			} else if (resveBeginTm != null && resveBeginTm.length() == 4) {
 				resveBeginTm = resveBeginTm.substring(0, 2) + ":" + resveBeginTm.substring(2, 4);
 			}
-			if (resveEndTm.length() == 3) {
+			if (resveEndTm != null && resveEndTm.length() == 3) {
 				resveEndTm = "0" + resveEndTm.substring(0, 1) + ":" + resveEndTm.substring(1, 3);
-			} else if (resveEndTm.length() == 4) {
+			} else if (resveEndTm != null && resveEndTm.length() == 4) {
 				resveEndTm = resveEndTm.substring(0, 2) + ":" + resveEndTm.substring(2, 4);
 			}
 
 			resultVO.setResveBeginTm(resveBeginTm);
 			resultVO.setResveEndTm(resveEndTm);
+			MtgPlaceResveVO mtgPlaceResveVO = new MtgPlaceResveVO();
+			mtgPlaceResveVO.setResveId(resultVO.getResveId());
+			mtgPlaceResveVO.setMtgPlaceId(resultVO.getMtgPlaceId());
+			mtgPlaceResveVO.setResveManId(resultVO.getResveManId());
 			model.addAttribute("mtgPlaceManageVO", resultVO);
+			model.addAttribute("mtgPlaceResveVO", mtgPlaceResveVO);
 			return "egovframework/com/uss/ion/mtg/EgovMtgPlaceResveDetail";
 		} else {
+			MtgPlaceResveVO mtgPlaceResveVO = new MtgPlaceResveVO();
+			mtgPlaceResveVO.setResveId(resultVO.getResveId());
+			mtgPlaceResveVO.setMtgPlaceId(resultVO.getMtgPlaceId());
+			mtgPlaceResveVO.setMtgSj(resultVO.getMtgSj());
+			mtgPlaceResveVO.setResveManId(resultVO.getResveManId());
+			mtgPlaceResveVO.setResveDe(resultVO.getResveDe());
+			mtgPlaceResveVO.setResveBeginTm(resultVO.getResveBeginTm());
+			mtgPlaceResveVO.setResveEndTm(resultVO.getResveEndTm());
+			mtgPlaceResveVO.setAtndncNmpr(resultVO.getAtndncNmpr());
+			mtgPlaceResveVO.setMtgCn(resultVO.getMtgCn());
 			model.addAttribute("mtgPlaceManageVO", resultVO);
+			model.addAttribute("mtgPlaceResveVO", mtgPlaceResveVO);
 			return "egovframework/com/uss/ion/mtg/EgovMtgPlaceResveUpdt";
 		}
 	}
@@ -459,27 +449,59 @@ public class EgovMtgPlaceManageController {
 	 */
 	@RequestMapping(value = "/uss/ion/mtg/insertMtgPlaceResve.do")
 	public String insertMtgPlaceResveManage(@ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO,
-			@ModelAttribute("mtgPlaceResve") MtgPlaceResve mtgPlaceResve, BindingResult bindingResult,
+			@Valid @ModelAttribute("mtgPlaceResveVO") MtgPlaceResveVO mtgPlaceResveVO, BindingResult bindingResult,
+			@RequestParam(value = "dplactCeck", required = false) String dplactCeck,
 			SessionStatus status, ModelMap model) throws Exception {
 
-		beanValidator.validate(mtgPlaceResve, bindingResult); // validation 수행
-
-		if (bindingResult.hasErrors()) {
-			model.addAttribute("mtgPlaceManageVO", mtgPlaceManageVO);
-			return "forward:/uss/ion/mtg/selectMtgPlaceResveManage.do";
-		} else {
-
-			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-			status.setComplete();
-			model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
-			mtgPlaceResve.setResveManId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-			mtgPlaceResve.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-
-			egovMtgPlaceManageService.insertMtgPlaceResve(mtgPlaceResve);
-			model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
-
-			return "forward:/uss/ion/mtg/selectMtgPlaceResveManageList.do";
+		if (!"Y".equals(dplactCeck)) {
+			bindingResult.rejectValue("resveBeginTm", "comUssIonMtg.mtgPlaceResveRegist.dplactCeck",
+					egovMessageSource.getMessage("comUssIonMtg.mtgPlaceResveRegist.dplactCeck"));
 		}
+		if (!bindingResult.hasErrors()) {
+			MtgPlaceManageVO reqPlaceVO = new MtgPlaceManageVO();
+			reqPlaceVO.setMtgPlaceId(mtgPlaceResveVO.getMtgPlaceId() != null ? mtgPlaceResveVO.getMtgPlaceId() : mtgPlaceManageVO.getMtgPlaceId());
+			MtgPlaceManageVO placeVO = egovMtgPlaceManageService.selectMtgPlaceResve(reqPlaceVO);
+			if (placeVO != null && placeVO.getOpnBeginTm() != null && placeVO.getOpnEndTm() != null
+					&& mtgPlaceResveVO.getResveBeginTm() != null && mtgPlaceResveVO.getResveEndTm() != null) {
+				int opnBegin = timeToMinutes(placeVO.getOpnBeginTm());
+				int opnEnd = timeToMinutes(placeVO.getOpnEndTm());
+				int resveBegin = timeToMinutes(mtgPlaceResveVO.getResveBeginTm());
+				int resveEnd = timeToMinutes(mtgPlaceResveVO.getResveEndTm());
+				if (resveBegin < opnBegin || resveEnd > opnEnd) {
+					bindingResult.rejectValue("resveBeginTm", "comUssIonMtg.mtgPlaceResveTimeWithinOpen",
+							egovMessageSource.getMessage("comUssIonMtg.mtgPlaceResveTimeWithinOpen"));
+				}
+			}
+		}
+		if (bindingResult.hasErrors()) {
+			MtgPlaceManageVO reqPlaceVO = new MtgPlaceManageVO();
+			reqPlaceVO.setMtgPlaceId(mtgPlaceResveVO.getMtgPlaceId() != null ? mtgPlaceResveVO.getMtgPlaceId() : mtgPlaceManageVO.getMtgPlaceId());
+			MtgPlaceManageVO placeVO = egovMtgPlaceManageService.selectMtgPlaceResve(reqPlaceVO);
+			if (placeVO != null) {
+				placeVO.setResveDe(mtgPlaceResveVO.getResveDe() != null ? EgovDateUtil.formatDate(mtgPlaceResveVO.getResveDe(), "-") : null);
+				placeVO.setResveBeginTm(mtgPlaceResveVO.getResveBeginTm());
+				placeVO.setResveEndTm(mtgPlaceResveVO.getResveEndTm());
+				LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+				placeVO.setMtgPlaceTemp4(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getName()));
+				placeVO.setMtgPlaceTemp5(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getOrgnztNm()));
+				model.addAttribute("mtgPlaceManageVO", placeVO);
+			} else {
+				model.addAttribute("mtgPlaceManageVO", mtgPlaceManageVO);
+			}
+			model.addAttribute("mtgPlaceResveVO", mtgPlaceResveVO);
+			return "egovframework/com/uss/ion/mtg/EgovMtgPlaceResveRegist";
+		}
+
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		mtgPlaceResveVO.setResveManId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+		mtgPlaceResveVO.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+		mtgPlaceResveVO.setMtgPlaceId(mtgPlaceManageVO.getMtgPlaceId());
+
+		status.setComplete();
+		egovMtgPlaceManageService.insertMtgPlaceResve(mtgPlaceResveVO);
+		model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
+
+		return "forward:/uss/ion/mtg/selectMtgPlaceResveManageList.do";
 	}
 
 	/**
@@ -491,23 +513,51 @@ public class EgovMtgPlaceManageController {
 	@SuppressWarnings("unused")
 	@RequestMapping(value = "/uss/ion/mtg/updtMtgPlaceResve.do")
 	public String updtMtgPlaceResveManage(@ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO,
-			@ModelAttribute("mtgPlaceResve") MtgPlaceResve mtgPlaceResve, BindingResult bindingResult,
+			@Valid @ModelAttribute("mtgPlaceResveVO") MtgPlaceResveVO mtgPlaceResveVO, BindingResult bindingResult,
+			@RequestParam(value = "dplactCeck", required = false) String dplactCeck,
 			SessionStatus status, ModelMap model) throws Exception {
 
-		beanValidator.validate(mtgPlaceResve, bindingResult); // validation 수행
-
-		if (bindingResult.hasErrors()) {
-			model.addAttribute("mtgPlaceManageVO", mtgPlaceResve);
-			return "egovframework/com/uss/ion/mtg/EgovMtgPlaceResveUpdt";
-		} else {
-			LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-
-			status.setComplete();
-			egovMtgPlaceManageService.updtMtgPlaceResve(mtgPlaceResve);
-			model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
-
-			return "forward:/uss/ion/mtg/selectMtgPlaceResveManageList.do";
+		if (!"Y".equals(dplactCeck)) {
+			bindingResult.rejectValue("resveBeginTm", "comUssIonMtg.mtgPlaceResveRegist.dplactCeck",
+					egovMessageSource.getMessage("comUssIonMtg.mtgPlaceResveRegist.dplactCeck"));
 		}
+		if (!bindingResult.hasErrors()) {
+			MtgPlaceManageVO reqPlaceVO = new MtgPlaceManageVO();
+			reqPlaceVO.setMtgPlaceId(mtgPlaceResveVO.getMtgPlaceId());
+			MtgPlaceManageVO placeVO = egovMtgPlaceManageService.selectMtgPlaceResve(reqPlaceVO);
+			if (placeVO != null && placeVO.getOpnBeginTm() != null && placeVO.getOpnEndTm() != null
+					&& mtgPlaceResveVO.getResveBeginTm() != null && mtgPlaceResveVO.getResveEndTm() != null) {
+				int opnBegin = timeToMinutes(placeVO.getOpnBeginTm());
+				int opnEnd = timeToMinutes(placeVO.getOpnEndTm());
+				int resveBegin = timeToMinutes(mtgPlaceResveVO.getResveBeginTm());
+				int resveEnd = timeToMinutes(mtgPlaceResveVO.getResveEndTm());
+				if (resveBegin < opnBegin || resveEnd > opnEnd) {
+					bindingResult.rejectValue("resveBeginTm", "comUssIonMtg.mtgPlaceResveTimeWithinOpen",
+							egovMessageSource.getMessage("comUssIonMtg.mtgPlaceResveTimeWithinOpen"));
+				}
+			}
+		}
+		if (bindingResult.hasErrors()) {
+			mtgPlaceManageVO.setMtgPlaceId(mtgPlaceResveVO.getMtgPlaceId());
+			mtgPlaceManageVO.setResveId(mtgPlaceResveVO.getResveId());
+			MtgPlaceManageVO detailVO = egovMtgPlaceManageService.selectMtgPlaceResveDetail(mtgPlaceManageVO);
+			if (detailVO != null) {
+				detailVO.setResveDe(EgovDateUtil.formatDate(detailVO.getResveDe(), "-"));
+				model.addAttribute("mtgPlaceManageVO", detailVO);
+			} else {
+				model.addAttribute("mtgPlaceManageVO", mtgPlaceManageVO);
+			}
+			model.addAttribute("mtgPlaceResveVO", mtgPlaceResveVO);
+			return "egovframework/com/uss/ion/mtg/EgovMtgPlaceResveUpdt";
+		}
+
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+
+		status.setComplete();
+		egovMtgPlaceManageService.updtMtgPlaceResve(mtgPlaceResveVO);
+		model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
+
+		return "forward:/uss/ion/mtg/selectMtgPlaceResveManageList.do";
 	}
 
 	/**
@@ -517,10 +567,10 @@ public class EgovMtgPlaceManageController {
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/uss/ion/mtg/deleteMtgPlaceResve.do")
-	public String deleteMtgPlaceResveManage(@ModelAttribute("mtgPlaceResve") MtgPlaceResve mtgPlaceResve,
+	public String deleteMtgPlaceResveManage(@ModelAttribute("mtgPlaceResveVO") MtgPlaceResveVO mtgPlaceResveVO,
 			SessionStatus status, ModelMap model) throws Exception {
 
-		egovMtgPlaceManageService.deleteMtgPlaceResve(mtgPlaceResve);
+		egovMtgPlaceManageService.deleteMtgPlaceResve(mtgPlaceResveVO);
 		status.setComplete();
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		return "forward:/uss/ion/mtg/selectMtgPlaceResveManageList.do";
@@ -562,5 +612,28 @@ public class EgovMtgPlaceManageController {
 			sOutput = Integer.toString(iInput);
 		}
 		return sOutput;
+	}
+
+	/** 시간 문자열(HH:MM 또는 HHMM)을 분 단위로 변환 */
+	private static int timeToMinutes(String s) {
+		if (s == null) return 0;
+		s = s.trim();
+		if (s.contains(":")) {
+			String[] p = s.split(":");
+			int h = p.length > 0 ? Integer.parseInt(p[0].trim(), 10) : 0;
+			int m = p.length > 1 ? Integer.parseInt(p[1].trim(), 10) : 0;
+			return h * 60 + m;
+		}
+		if (s.length() >= 4) {
+			int h = Integer.parseInt(s.substring(0, 2), 10);
+			int m = Integer.parseInt(s.substring(2, 4), 10);
+			return h * 60 + m;
+		}
+		if (s.length() == 3) {
+			int h = Integer.parseInt(s.substring(0, 1), 10);
+			int m = Integer.parseInt(s.substring(1, 3), 10);
+			return h * 60 + m;
+		}
+		return 0;
 	}
 }

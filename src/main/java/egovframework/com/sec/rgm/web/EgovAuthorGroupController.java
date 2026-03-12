@@ -1,7 +1,5 @@
 package egovframework.com.sec.rgm.web;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
@@ -19,6 +17,7 @@ import egovframework.com.sec.ram.service.EgovAuthorManageService;
 import egovframework.com.sec.rgm.service.AuthorGroup;
 import egovframework.com.sec.rgm.service.AuthorGroupVO;
 import egovframework.com.sec.rgm.service.EgovAuthorGroupService;
+import jakarta.annotation.Resource;
 /**
  * 권한그룹에 관한 controller 클래스를 정의한다.
  * @author 공통서비스 개발팀 이문준
@@ -28,7 +27,7 @@ import egovframework.com.sec.rgm.service.EgovAuthorGroupService;
  *
  * <pre>
  * << 개정이력(Modification Information) >>
- *   
+ *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.03.11  이문준          최초 생성
@@ -44,13 +43,13 @@ public class EgovAuthorGroupController {
 
     @Resource(name="egovMessageSource")
     EgovMessageSource egovMessageSource;
-    
+
     @Resource(name = "egovAuthorGroupService")
     private EgovAuthorGroupService egovAuthorGroupService;
-    
+
     @Resource(name = "egovAuthorManageService")
     private EgovAuthorManageService egovAuthorManageService;
-    
+
     /** EgovPropertyService */
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertiesService;
@@ -64,7 +63,7 @@ public class EgovAuthorGroupController {
     public String selectAuthorGroupListView() throws Exception {
 
         return "egovframework/com/sec/rgm/EgovAuthorGroupManage";
-    }    
+    }
 
 	/**
 	 * 그룹별 할당된 권한 목록 조회
@@ -84,14 +83,14 @@ public class EgovAuthorGroupController {
 		paginationInfo.setCurrentPageNo(authorGroupVO.getPageIndex());
 		paginationInfo.setRecordCountPerPage(authorGroupVO.getPageUnit());
 		paginationInfo.setPageSize(authorGroupVO.getPageSize());
-		
+
 		authorGroupVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
 		authorGroupVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		authorGroupVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-		
+
 		authorGroupVO.setAuthorGroupList(egovAuthorGroupService.selectAuthorGroupList(authorGroupVO));
         model.addAttribute("authorGroupList", authorGroupVO.getAuthorGroupList());
-        
+
         int totCnt = egovAuthorGroupService.selectAuthorGroupListTotCnt(authorGroupVO);
 		paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);
@@ -100,7 +99,7 @@ public class EgovAuthorGroupController {
         model.addAttribute("authorManageList", authorManageVO.getAuthorManageList());
 
         model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
-        
+
         return "egovframework/com/sec/rgm/EgovAuthorGroupManage";
 	}
 
@@ -120,23 +119,24 @@ public class EgovAuthorGroupController {
 			                        @RequestParam("mberTyCodes") String mberTyCodes,// 2011.08.04 수정 부분
 			                        @ModelAttribute("authorGroup") AuthorGroup authorGroup,
 			                         ModelMap model) throws Exception {
-		
+
     	String [] strUserIds = userIds.split(";");
     	String [] strAuthorCodes = authorCodes.split(";");
     	String [] strRegYns = regYns.split(";");
     	String [] strMberTyCodes = mberTyCodes.split(";");// 2011.08.04 수정 부분
-    	
+
     	for(int i=0; i<strUserIds.length;i++) {
     		authorGroup.setUniqId(strUserIds[i]);
     		authorGroup.setAuthorCode(strAuthorCodes[i]);
     		authorGroup.setMberTyCode(strMberTyCodes[i]);// 2011.08.04 수정 부분
-    		if(strRegYns[i].equals("N"))
-    		    egovAuthorGroupService.insertAuthorGroup(authorGroup);
-    		else 
-    		    egovAuthorGroupService.updateAuthorGroup(authorGroup);
+    		if(strRegYns[i].equals("N")) {
+				egovAuthorGroupService.insertAuthorGroup(authorGroup);
+			} else {
+				egovAuthorGroupService.updateAuthorGroup(authorGroup);
+			}
     	}
 
-        model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));		
+        model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
 		return "forward:/sec/rgm/EgovAuthorGroupList.do";
 	}
 
@@ -146,18 +146,18 @@ public class EgovAuthorGroupController {
 	 * @param authorGroup AuthorGroup
 	 * @return String
 	 * @exception Exception
-	 */ 
+	 */
 	@RequestMapping(value="/sec/rgm/EgovAuthorGroupDelete.do")
 	public String deleteAuthorGroup(@RequestParam("userIds") String userIds,
                                     @ModelAttribute("authorGroup") AuthorGroup authorGroup,
                                      ModelMap model) throws Exception {
-		
+
     	String [] strUserIds = userIds.split(";");
-    	for(int i=0; i<strUserIds.length;i++) {
-    		authorGroup.setUniqId(strUserIds[i]);
+    	for (String strUserId : strUserIds) {
+    		authorGroup.setUniqId(strUserId);
     		egovAuthorGroupService.deleteAuthorGroup(authorGroup);
     	}
-    	
+
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		return "forward:/sec/rgm/EgovAuthorGroupList.do";
 	}

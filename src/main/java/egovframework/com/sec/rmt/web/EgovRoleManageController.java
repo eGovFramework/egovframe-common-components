@@ -2,12 +2,9 @@ package egovframework.com.sec.rmt.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -16,7 +13,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -29,6 +25,8 @@ import egovframework.com.sec.ram.service.EgovAuthorManageService;
 import egovframework.com.sec.rmt.service.EgovRoleManageService;
 import egovframework.com.sec.rmt.service.RoleManage;
 import egovframework.com.sec.rmt.service.RoleManageVO;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * 롤관리에 관한 controller 클래스를 정의한다.
@@ -47,8 +45,6 @@ import egovframework.com.sec.rmt.service.RoleManageVO;
  *
  * </pre>
  */
-
-
 @Controller
 @SessionAttributes(types=SessionVO.class)
 public class EgovRoleManageController {
@@ -72,9 +68,6 @@ public class EgovRoleManageController {
     /** Message ID Generation */
     @Resource(name="egovRoleIdGnrService")
     private EgovIdGnrService egovRoleIdGnrService;
-
-    @Autowired
-	private DefaultBeanValidator beanValidator;
 
     /**
 	 * 롤 목록화면 이동
@@ -182,22 +175,22 @@ public class EgovRoleManageController {
 	 * @exception Exception
 	 */
     @RequestMapping(value="/sec/rmt/EgovRoleInsert.do")
-	public String insertRole(@ModelAttribute("roleManage") RoleManage roleManage,
-			                 @ModelAttribute("roleManageVO") RoleManageVO roleManageVO,
-			                  BindingResult bindingResult,
+	public String insertRole(@Valid @ModelAttribute("roleManage") RoleManage roleManage,
+							  BindingResult bindingResult,
+			                  @ModelAttribute("roleManageVO") RoleManageVO roleManageVO,
                               ModelMap model) throws Exception {
-
-    	beanValidator.validate(roleManage, bindingResult); //validation 수행
 
     	if (bindingResult.hasErrors()) {
 			return "egovframework/com/sec/rmt/EgovRoleInsert";
 		} else {
     	    String roleTyp = roleManage.getRoleTyp();
-	    	if("method".equals(roleTyp))//KISA 보안약점 조치 (2018-10-29, 윤창원)
-	    		roleTyp = "mtd";
-	    	else if("pointcut".equals(roleTyp))//KISA 보안약점 조치 (2018-10-29, 윤창원)
-	    		roleTyp = "pct";
-	    	else roleTyp = "web";
+	    	if("method".equals(roleTyp)) { //KISA 보안약점 조치 (2018-10-29, 윤창원)
+				roleTyp = "mtd";
+			} else if("pointcut".equals(roleTyp)) { //KISA 보안약점 조치 (2018-10-29, 윤창원)
+				roleTyp = "pct";
+			} else { //KISA 보안약점 조치 (2018-10-29, 윤창원)
+				roleTyp = "web";
+			}
 
 	    	roleManage.setRoleCode(roleTyp.concat("-").concat(egovRoleIdGnrService.getNextStringId()));
 	    	roleManageVO.setRoleCode(roleManage.getRoleCode());
@@ -219,11 +212,10 @@ public class EgovRoleManageController {
 	 * @exception Exception
 	 */
     @RequestMapping(value="/sec/rmt/EgovRoleUpdate.do")
-	public String updateRole(@ModelAttribute("roleManage") RoleManage roleManage,
+	public String updateRole(@Valid @ModelAttribute("roleManage") RoleManage roleManage,
 			BindingResult bindingResult,
             ModelMap model) throws Exception {
 
-    	beanValidator.validate(roleManage, bindingResult); //validation 수행
     	if (bindingResult.hasErrors()) {
 			return "egovframework/com/sec/rmt/EgovRoleUpdate";
 		} else {
@@ -261,8 +253,8 @@ public class EgovRoleManageController {
 			                     @ModelAttribute("roleManage") RoleManage roleManage,
 	                              Model model) throws Exception {
     	String [] strRoleCodes = roleCodes.split(";");
-    	for(int i=0; i<strRoleCodes.length;i++) {
-    		roleManage.setRoleCode(strRoleCodes[i]);
+    	for (String strRoleCode : strRoleCodes) {
+    		roleManage.setRoleCode(strRoleCode);
     		egovRoleManageService.deleteRole(roleManage);
     	}
 

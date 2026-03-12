@@ -2,12 +2,9 @@ package egovframework.com.uss.sam.cpy.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -15,7 +12,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -25,11 +21,13 @@ import egovframework.com.uss.sam.cpy.service.CpyrhtPrtcPolicyDefaultVO;
 import egovframework.com.uss.sam.cpy.service.CpyrhtPrtcPolicyVO;
 import egovframework.com.uss.sam.cpy.service.EgovCpyrhtPrtcPolicyService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  *
  * 저작권보호정책내용을 처리하는 컨트롤러 클래스
- * 
+ *
  * @author 공통서비스 개발팀 박정규
  * @since 2009.04.01
  * @version 1.0
@@ -45,7 +43,6 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *
  *      </pre>
  */
-
 @Controller
 public class EgovCpyrhtPrtcPolicyController {
 
@@ -60,13 +57,9 @@ public class EgovCpyrhtPrtcPolicyController {
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
 
-	// Validation 관련
-	@Autowired
-	private DefaultBeanValidator beanValidator;
-
 	/**
 	 * 개별 배포시 메인메뉴를 조회한다.
-	 * 
+	 *
 	 * @param model
 	 * @return "/uss/sam/cpy/"
 	 * @throws Exception
@@ -78,7 +71,7 @@ public class EgovCpyrhtPrtcPolicyController {
 
 	/**
 	 * 메뉴를 조회한다.
-	 * 
+	 *
 	 * @param model
 	 * @return "/uss/sam/cpy/EgovLeft"
 	 * @throws Exception
@@ -90,7 +83,7 @@ public class EgovCpyrhtPrtcPolicyController {
 
 	/**
 	 * 저작권보호정책 목록을 조회한다. (pageing)
-	 * 
+	 *
 	 * @param searchVO
 	 * @param model
 	 * @return "/uss/sam/cpy/EgovCpyrhtPrtcPolicyListInqire"
@@ -127,7 +120,7 @@ public class EgovCpyrhtPrtcPolicyController {
 
 	/**
 	 * 저작권보호정책 목록에 대한 상세정보를 조회한다.
-	 * 
+	 *
 	 * @param cpyrhtPrtcPolicyVO
 	 * @param searchVO
 	 * @param model
@@ -147,7 +140,7 @@ public class EgovCpyrhtPrtcPolicyController {
 
 	/**
 	 * 저작권보호정책를 등록하기 위한 전 처리
-	 * 
+	 *
 	 * @param searchVO
 	 * @param model
 	 * @return "/uss/sam/cpy/EgovCpyrhtPrtcPolicyCnRegist"
@@ -165,7 +158,7 @@ public class EgovCpyrhtPrtcPolicyController {
 
 	/**
 	 * 저작권보호정책를 등록한다.
-	 * 
+	 *
 	 * @param searchVO
 	 * @param cpyrhtPrtcPolicyVO
 	 * @param bindingResult
@@ -173,11 +166,10 @@ public class EgovCpyrhtPrtcPolicyController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/uss/sam/cpy/CpyrhtPrtcPolicyCnRegist.do")
-	public String insertCpyrhtPrtcPolicyCn(@ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO,
-			@ModelAttribute("cpyrhtPrtcPolicyVO") CpyrhtPrtcPolicyVO cpyrhtPrtcPolicyVO, BindingResult bindingResult)
-			throws Exception {
-
-		beanValidator.validate(cpyrhtPrtcPolicyVO, bindingResult);
+	public String insertCpyrhtPrtcPolicyCn(
+		@ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO,
+			@Valid @ModelAttribute("cpyrhtPrtcPolicyVO") CpyrhtPrtcPolicyVO cpyrhtPrtcPolicyVO,
+			BindingResult bindingResult) throws Exception {
 
 		if (bindingResult.hasErrors()) {
 
@@ -200,7 +192,7 @@ public class EgovCpyrhtPrtcPolicyController {
 
 	/**
 	 * 저작권보호정책를 수정하기 위한 전 처리
-	 * 
+	 *
 	 * @param cpyrhtId
 	 * @param searchVO
 	 * @param model
@@ -228,7 +220,7 @@ public class EgovCpyrhtPrtcPolicyController {
 
 	/**
 	 * 저작권보호정책를 수정처리한다.
-	 * 
+	 *
 	 * @param searchVO
 	 * @param cpyrhtPrtcPolicyVO
 	 * @param bindingResult
@@ -236,12 +228,10 @@ public class EgovCpyrhtPrtcPolicyController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/uss/sam/cpy/CpyrhtPrtcPolicyCnUpdt.do")
-	public String updateCpyrhtPrtcPolicyCn(@ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO,
-			@ModelAttribute("cpyrhtPrtcPolicyVO") CpyrhtPrtcPolicyVO cpyrhtPrtcPolicyVO, BindingResult bindingResult)
-			throws Exception {
-
-		// Validation
-		beanValidator.validate(cpyrhtPrtcPolicyVO, bindingResult);
+	public String updateCpyrhtPrtcPolicyCn(
+		@ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO,
+			@Valid @ModelAttribute("cpyrhtPrtcPolicyVO") CpyrhtPrtcPolicyVO cpyrhtPrtcPolicyVO,
+			BindingResult bindingResult) throws Exception {
 
 		if (bindingResult.hasErrors()) {
 
@@ -264,7 +254,7 @@ public class EgovCpyrhtPrtcPolicyController {
 
 	/**
 	 * 저작권보호정책를 삭제처리한다.
-	 * 
+	 *
 	 * @param cpyrhtPrtcPolicyVO
 	 * @param searchVO
 	 * @return "forward:/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do"

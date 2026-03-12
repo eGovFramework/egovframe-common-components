@@ -156,10 +156,10 @@
         
     </update>
     
-    <select id="selectPassword_S" resultType="egovframework.com.uss.umt.service.EntrprsManageVO">
+    <select id="selectPassword_S" resultType="egovframework.com.uss.umt.service.EntrprsPasswordManageVO">
         
             SELECT
-                    ENTRPRS_MBER_PASSWORD          entrprsMberPassword 
+                    ENTRPRS_MBER_PASSWORD          entrprsMberPassword
             FROM    COMTNENTRPRSMBER
             WHERE   ESNTL_ID=#{uniqId}
         

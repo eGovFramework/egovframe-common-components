@@ -3,9 +3,6 @@ package egovframework.com.cmm.interceptor;
 import java.util.Collections;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
@@ -14,6 +11,8 @@ import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.ModelAndViewDefiningException;
 
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 인증여부 체크 인터셉터
@@ -29,7 +28,7 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
  *  -------    --------    ---------------------------
  *  2011.07.01  서준식          최초 생성
  *  2011.09.07  서준식          인증이 필요없는 URL을 패스하는 로직 추가
- *  2017.08.31  장동한          인증된 사용자 체크로직 변경 및 관리자 권한 체크 로직 추가 
+ *  2017.08.31  장동한          인증된 사용자 체크로직 변경 및 관리자 권한 체크 로직 추가
  *  2021.08.27  신용호          dummy모드 사용시 "60. 권한관리" 접근오류 수정
  *  </pre>
  */
@@ -40,10 +39,10 @@ public class AuthenticInterceptor implements HandlerInterceptor {
 	@SuppressWarnings("unused")
 	@Autowired
 	private Environment environment;
-	
+
 	/** 관리자 접근 권한 패턴 목록 */
 	private List<String> adminAuthPatternList;
-	
+
 	public List<String> getAdminAuthPatternList() {
 		return adminAuthPatternList;
 	}
@@ -59,14 +58,14 @@ public class AuthenticInterceptor implements HandlerInterceptor {
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 		//인증된사용자 여부
-		boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();	
+		boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		//미민증사용자 체크
 		if(!isAuthenticated) {
 			ModelAndView modelAndView = new ModelAndView("redirect:/uat/uia/egovLoginUsr.do");
 			throw new ModelAndViewDefiningException(modelAndView);
 		}
 		//인증된 권한 목록
-		List<String> authList = (List<String>)EgovUserDetailsHelper.getAuthorities();
+		List<String> authList = EgovUserDetailsHelper.getAuthorities();
 		//관리자인증여부
 		boolean adminAuthUrlPatternMatcher = false;
 		//AntPathRequestMatcher

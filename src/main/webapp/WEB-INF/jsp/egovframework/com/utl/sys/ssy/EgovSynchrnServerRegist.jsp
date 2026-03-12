@@ -24,7 +24,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -32,8 +31,7 @@
 <title><spring:message code="comUtlSysSsy.synchrnServer.title" />  <spring:message code="title.create" /></title>
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/button.css' />">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="synchrnServer" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript" defer="defer">
 <!--
 function fncSelectSynchrnServerList() {
@@ -123,37 +121,37 @@ function ipValidate(ipValue) {
 		<tr>
 			<th><spring:message code="comUtlSysSsy.synchrnServer.serverNm.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <label for="serverNm"><input name="serverNm" id="serverNm" type="text" maxLength="60" size="60" >&nbsp;<form:errors path="serverNm" /></label>
+			    <label for="serverNm"><input name="serverNm" id="serverNm" type="text" maxLength="30" size="30" value="<c:out value='${synchrnServer.serverNm}'/>">&nbsp;<form:errors path="serverNm" /></label>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysSsy.synchrnServer.serverIp.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <label for="serverIp"><input name="serverIp" id="serverIp" type="text" maxLength="23" style="width:128px" />&nbsp;<form:errors path="serverIp" /></label>
+			    <label for="serverIp"><input name="serverIp" id="serverIp" type="text" maxLength="23" style="width:128px" value="<c:out value='${synchrnServer.serverIp}'/>">&nbsp;<form:errors path="serverIp" /></label>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysSsy.synchrnServer.serverPort.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <label for="serverPort"><input name="serverPort" id="serverPort" type="text" maxLength="10" style="width:50px" >&nbsp;<form:errors path="serverPort" /></label>
+			    <label for="serverPort"><input name="serverPort" id="serverPort" type="text" maxLength="10" style="width:50px" value="<c:out value='${synchrnServer.serverPort}'/>">&nbsp;<form:errors path="serverPort" /></label>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysSsy.synchrnServer.ftpId.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <label for="ftpId"><input name="ftpId" id="ftpId" type="text" maxLength="20" style="width:128px" />&nbsp;<form:errors path="ftpId" /></label>
+			    <label for="ftpId"><input name="ftpId" id="ftpId" type="text" maxLength="20" style="width:128px" value="<c:out value='${synchrnServer.ftpId}'/>">&nbsp;<form:errors path="ftpId" /></label>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysSsy.synchrnServer.ftpPassword.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <label for="ftpPassword"><input name="ftpPassword" id="ftpPassword" type="text" maxLength="20" style="width:128px" />&nbsp;<form:errors path="ftpPassword" /></label>
+			    <label for="ftpPassword"><input name="ftpPassword" id="ftpPassword" type="password" maxLength="20" style="width:128px" value="<c:out value='${synchrnServer.ftpPassword}'/>">&nbsp;<form:errors path="ftpPassword" /></label>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysSsy.synchrnServer.synchrnLc.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <label for="synchrnLc"><input name="synchrnLc" id="synchrnLc" type="text" maxLength="255" size="60" >&nbsp;<form:errors path="synchrnLc" /></label>
+			    <label for="synchrnLc"><input name="synchrnLc" id="synchrnLc" type="text" maxLength="255" size="60" value="<c:out value='${synchrnServer.synchrnLc}'/>">&nbsp;<form:errors path="synchrnLc" /></label>
 			</td>
 		</tr>
 	</table>

@@ -139,7 +139,7 @@ var EgovMultiFilesChecker = {
 	    	console.log(this.getFileExtension(__fileObj.name));
 
 	    	var __fileExt = this.getFileExtension(__fileObj.name);
-	    	if ( __fileExt == "" || (allowTypes+".").indexOf(__fileExt+".") < 0 ) {
+	    	if ( __fileExt == "" || ("," + allowTypes + ",").indexOf("," + __fileExt + ",") < 0 ) {
 	    		alert("허용되지 않는 확장자 입니다.["+__fileExt+"]");
 	    		return false;
 	    	}
@@ -153,7 +153,7 @@ var EgovMultiFilesChecker = {
 	    console.log(this.getFileExtension(__filelPath));
 
 	    var __fileExt = this.getFileExtension(__filelPath);
-    	if ( __fileExt == "" || (allowTypes+".").indexOf(__fileExt+".") < 0 ) {
+    	if ( __fileExt == "" || ("," + allowTypes + ",").indexOf("," + __fileExt + ",") < 0 ) {
     		alert("2.허용되지 않는 확장자 입니다.["+__fileExt+"]");
     		return false;
     	}

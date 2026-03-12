@@ -1,6 +1,11 @@
 package egovframework.com.uss.ion.yrc.service;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+
 import egovframework.com.cmm.ComDefaultVO;
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Positive;
 
 /**
  * 개요
@@ -35,17 +40,34 @@ public class IndvdlYrycManage extends ComDefaultVO {
 	/**
 	*  발생연차개수
 	*/
-	private double occrncYrycCo;
+	@EgovNullCheck
+	@Positive
+	@Min(1)
+	private Double occrncYrycCo;
 
 	/**
 	*  사용연차개수
 	*/
-	private double useYrycCo;
+	@EgovNullCheck
+	@Min(0)
+	private Double useYrycCo;
 
 	/**
 	*  잔여연차개수
 	*/
-	private double remndrYrycCo;
+	private Double remndrYrycCo;
+
+	/**
+	 * 잔여연차 검증: 발생연차가 사용연차보다 크거나 같아야 함
+	 * @return 검증 결과
+	 */
+	@AssertTrue(message = "{comUssIonYrc.indvdlYrycRegist.diffValue}")
+	public boolean isValidRemndrYrycCo() {
+		if (occrncYrycCo == null || useYrycCo == null) {
+			return true;
+		}
+		return occrncYrycCo >= useYrycCo;
+	}
 
 	/**
 	*  최초등록자ID
@@ -169,42 +191,42 @@ public class IndvdlYrycManage extends ComDefaultVO {
 	/**
 	 * @return the occrncYrycCo
 	 */
-	public double getOccrncYrycCo() {
+	public Double getOccrncYrycCo() {
 		return occrncYrycCo;
 	}
 
 	/**
 	 * @param occrncYrycCo the occrncYrycCo to set
 	 */
-	public void setOccrncYrycCo(double occrncYrycCo) {
+	public void setOccrncYrycCo(Double occrncYrycCo) {
 		this.occrncYrycCo = occrncYrycCo;
 	}
 
 	/**
 	 * @return the useYrycCo
 	 */
-	public double getUseYrycCo() {
+	public Double getUseYrycCo() {
 		return useYrycCo;
 	}
 
 	/**
 	 * @param useYrycCo the useYrycCo to set
 	 */
-	public void setUseYrycCo(double useYrycCo) {
+	public void setUseYrycCo(Double useYrycCo) {
 		this.useYrycCo = useYrycCo;
 	}
 
 	/**
 	 * @return the remndrYrycCo
 	 */
-	public double getRemndrYrycCo() {
+	public Double getRemndrYrycCo() {
 		return remndrYrycCo;
 	}
 
 	/**
 	 * @param remndrYrycCo the remndrYrycCo to set
 	 */
-	public void setRemndrYrycCo(double remndrYrycCo) {
+	public void setRemndrYrycCo(Double remndrYrycCo) {
 		this.remndrYrycCo = remndrYrycCo;
 	}
 

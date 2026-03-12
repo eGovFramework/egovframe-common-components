@@ -7,7 +7,7 @@ import java.util.List;
  *
  * 상세내용 - 프록시서비스정보에 대한 등록, 수정, 삭제, 조회 기능을 제공한다. - 프록시서비스정보의 조회기능은 목록조회, 상세조회로
  * 구분된다.
- * 
+ *
  * @author lee.m.j
  * @version 1.0
  * @created 28-6-2010 오전 10:44:27
@@ -90,5 +90,5 @@ public interface EgovProxySvcService {
      * @param proxySvc - 프록시서비스 model
      */
     public void runProxyServer(ProxySvcVO proxySvcVO, ProxySvc proxySvc) throws Exception;
-    
+
 }

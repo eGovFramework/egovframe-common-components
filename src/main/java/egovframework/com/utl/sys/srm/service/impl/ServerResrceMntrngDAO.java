@@ -11,7 +11,7 @@ import egovframework.com.utl.sys.srm.service.ServerResrceMntrngVO;
 /**
  * 개요
  * - 서버자원모니터링에 대한 DAO 클래스를 정의한다.
- * 
+ *
  * 상세내용
  * - 서버자원모니터링에 대한 등록, 조회 기능을 제공한다.
  * @author lee.m.j
@@ -64,7 +64,7 @@ public class ServerResrceMntrngDAO extends EgovComAbstractDAO {
 	public List<ServerResrceMntrngVO> selectMntrngServerList(ServerResrceMntrngVO serverResrceMntrngVO) throws Exception {
 		return selectList("serverResrceMntrngDAO.selectMntrngServerList", serverResrceMntrngVO);
 	}
-	
+
 	/**
 	 * 서버자원모티너링 대상서버 목록 총 개수를 조회한다.
 	 * @param serverResrceMntrngVO - 서버자원모니터링 Vo
@@ -72,5 +72,5 @@ public class ServerResrceMntrngDAO extends EgovComAbstractDAO {
 	 */
 	public int selectMntrngServerListTotCnt(ServerResrceMntrngVO serverResrceMntrngVO) throws Exception {
 		return (Integer)selectOne("serverResrceMntrngDAO.selectMntrngServerListTotCnt", serverResrceMntrngVO);
-	}	
+	}
 }

@@ -2,18 +2,17 @@ package egovframework.com.cmm.util;
 
 import java.io.IOException;
 
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.util.AntPathMatcher;
 
 import egovframework.com.cmm.EgovWebUtil;
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * URL 재작성 필터
@@ -52,6 +51,9 @@ public class EgovUrlRewriteFilter implements Filter {
 		this.config = config;
 
 		this.targetURI = config.getInitParameter("targetURI");
+		if (this.targetURI == null || this.targetURI.trim().isEmpty()) {
+             throw new ServletException("targetURI 파라미터가 설정되지 않았습니다: " + this.targetURI);
+        }
 		this.httpsPort = config.getInitParameter("httpsPort");
 		this.httpPort = config.getInitParameter("httpPort");
 

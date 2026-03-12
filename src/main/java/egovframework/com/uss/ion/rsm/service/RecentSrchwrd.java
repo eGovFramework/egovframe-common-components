@@ -1,8 +1,9 @@
 package egovframework.com.uss.ion.rsm.service;
 
-import java.io.Serializable;
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
 
 import egovframework.com.cmm.ComDefaultVO;
+import jakarta.validation.constraints.Size;
 
 /**
  * 최근검색어 VO Class 구현
@@ -18,20 +19,25 @@ import egovframework.com.cmm.ComDefaultVO;
  *
  * </pre>
  */
-public class RecentSrchwrd extends ComDefaultVO implements Serializable {
+public class RecentSrchwrd extends ComDefaultVO {
 
-	private static final long serialVersionUID = 4031295690314547576L;
+	private static final long serialVersionUID = 1L;
 
 	/** 최근검색어관리ID */
     private String srchwrdManageId;
 
     /** 최근검색어관리명 */
+    @EgovNullCheck
+    @Size(max=255)
     private String srchwrdManageNm;
 
     /** 최근검색어관리URL */
+    @EgovNullCheck
+    @Size(max=255)
     private String srchwrdManageUrl;
 
     /** 최근검색어사용자검색여부 */
+    @EgovNullCheck
     private String srchwrdManageUseYn;
 
     /** 최근검색어ID */

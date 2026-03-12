@@ -1,9 +1,9 @@
 package egovframework.com.cop.ems.service.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -16,7 +16,7 @@ import java.util.Map;
 import org.apache.commons.lang3.StringUtils;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
@@ -233,7 +233,7 @@ public class SndngMailRegistDAOTest extends EgovTestAbstractDAO {
             log.error("Exception Select Mail Infomation");
             fail("Exception Select Mail Infomation");
         }
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), sndngMailVO.getMssageId(), result.getMssageId());
+        assertEquals(sndngMailVO.getMssageId(), result.getMssageId(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     /**
@@ -261,8 +261,8 @@ public class SndngMailRegistDAOTest extends EgovTestAbstractDAO {
         }
 
         // then
-        assertTrue(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 0 < resultList.size());
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), sndngMailVO.getAtchFileId(), resultList.get(0).getAtchFileId());
+        assertTrue(0 < resultList.size(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
+        assertEquals(sndngMailVO.getAtchFileId(), resultList.get(0).getAtchFileId(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     /**
@@ -297,10 +297,10 @@ public class SndngMailRegistDAOTest extends EgovTestAbstractDAO {
             fail("Exception Select Mail Infomation");
         }
 
-        assertNotNull(egovMessageSource.getMessage(FAIL_COMMON_SELECT), result);
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), "R", sndngMailVO.getSndngResultCode());
+        assertNotNull(result, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
+        assertEquals("R", sndngMailVO.getSndngResultCode(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
         // R: 요청, F: 실패, C: 완료
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), "완료", result.getSndngResultCode());
+        assertEquals("완료", result.getSndngResultCode(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
 }

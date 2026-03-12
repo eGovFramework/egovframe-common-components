@@ -3,12 +3,8 @@ package egovframework.com.utl.wed.web;
 import java.io.FileNotFoundException;
 import java.util.List;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.egovframe.rte.fdl.cryptography.EgovEnvCryptoService;
-import org.egovframe.rte.fdl.cryptography.EgovPasswordEncoder;
+import org.egovframe.rte.fdl.crypto.EgovEnvCryptoService;
+import org.egovframe.rte.fdl.crypto.EgovPasswordEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
@@ -24,6 +20,9 @@ import egovframework.com.utl.fcc.service.EgovFileUploadUtil;
 import egovframework.com.utl.fcc.service.EgovFormBasedFileUtil;
 import egovframework.com.utl.fcc.service.EgovFormBasedFileVo;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 웹에디터 이미지 upload 처리 Controller
@@ -167,18 +166,23 @@ public class EgovWebEditorImageController {
 		String physical = this.decrypt(EgovStringUtil.isNullToString(request.getParameter("physical")));
 		String mimeType = this.decrypt(EgovStringUtil.isNullToString(request.getParameter("contentType")));
 
-		if (subPath.indexOf("..") >= 0 ) throw new Exception("Security Exception - illegal url called.");
-		if (physical.indexOf("..") >= 0 ) throw new Exception("Security Exception - illegal url called.");
+		if ((subPath.indexOf("..") >= 0) || (physical.indexOf("..") >= 0) ) {
+			throw new Exception("Security Exception - illegal url called.");
+		}
 
 		String ext = "";
-		if ( physical.lastIndexOf(".") > 0 )
+		if ( physical.lastIndexOf(".") > 0 ) {
 			ext = physical.substring(physical.lastIndexOf(".") + 1,physical.length()).toLowerCase();
-		if ( ext == null ) throw new FileNotFoundException();
-
-		if ( extWhiteList.indexOf(ext) >= 0 )
-			EgovFormBasedFileUtil.viewFile(response, uploadDir, subPath, physical, mimeType);
-		else
+		}
+		if ( ext == null ) {
 			throw new FileNotFoundException();
+		}
+
+		if ( extWhiteList.indexOf(ext) >= 0 ) {
+			EgovFormBasedFileUtil.viewFile(response, uploadDir, subPath, physical, mimeType);
+		} else {
+			throw new FileNotFoundException();
+		}
 	}
 
 	/**

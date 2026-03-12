@@ -2,8 +2,7 @@ package egovframework.com.sym.log.clg.service;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
-
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
 /**
  * 시스템 로그 생성을 위한 ASPECT 클래스

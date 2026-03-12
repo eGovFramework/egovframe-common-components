@@ -2,19 +2,18 @@ package egovframework.com.sym.tbm.tbr.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.sym.tbm.tbr.service.EgovTroblReqstService;
 import egovframework.com.sym.tbm.tbr.service.TroblReqst;
 import egovframework.com.sym.tbm.tbr.service.TroblReqstVO;
+import jakarta.annotation.Resource;
 
 /**
  * 개요
  * - 장애신청 정보에 대한 ServiceImpl 클래스를 정의한다.
- * 
+ *
  * 상세내용
  * - 장애신청 정보에 대한 등록, 수정, 삭제, 조회 등의 기능을 제공한다.
  * - 장애신청 정보의 조회기능은 목록조회, 상세조회로 구분된다.
@@ -27,12 +26,13 @@ public class EgovTroblReqstServiceImpl extends EgovAbstractServiceImpl implement
 
 	@Resource(name="troblReqstDAO")
 	private TroblReqstDAO troblReqstDAO;
-	
+
 	/**
 	 * 장애요청을 관리하기 위해 등록된 장애요청목록을 조회한다.
 	 * @param troblReqstVO - 장애관리 Vo
 	 * @return List - 장애요청 목록
 	 */
+	@Override
 	public List<TroblReqstVO> selectTroblReqstList(TroblReqstVO troblReqstVO) throws Exception {
 		return troblReqstDAO.selectTroblReqstList(troblReqstVO);
 	}
@@ -42,15 +42,17 @@ public class EgovTroblReqstServiceImpl extends EgovAbstractServiceImpl implement
 	 * @param troblReqstVO - 장애신청관리 Vo
 	 * @return int - 장애요청 카운트 수
 	 */
+	@Override
 	public int selectTroblReqstListTotCnt(TroblReqstVO troblReqstVO) throws Exception {
 		return troblReqstDAO.selectTroblReqstListTotCnt(troblReqstVO);
 	}
-	
+
 	/**
 	 * 등록된 장애요청의 상세정보를 조회한다.
 	 * @param troblReqstVO - 장애신청관리 Vo
 	 * @return troblReqstVO - 장애신청관리 Vo
 	 */
+	@Override
 	public TroblReqstVO selectTroblReqst(TroblReqstVO troblReqstVO) throws Exception {
 		return troblReqstDAO.selectTroblReqst(troblReqstVO);
 	}
@@ -60,6 +62,7 @@ public class EgovTroblReqstServiceImpl extends EgovAbstractServiceImpl implement
 	 * @param troblReqst - 장애신청 model
 	 * @param troblReqstVO - 장애신청관리 Vo
 	 */
+	@Override
 	public TroblReqstVO insertTroblReqst(TroblReqst troblReqst, TroblReqstVO troblReqstVO) throws Exception {
 		troblReqstDAO.insertTroblReqst(troblReqst);
 		troblReqstVO.setTroblId(troblReqst.getTroblId());
@@ -70,6 +73,7 @@ public class EgovTroblReqstServiceImpl extends EgovAbstractServiceImpl implement
 	 * 기 등록된 장애요청정보를 수정한다.
 	 * @param troblReqst - 장애신청 model
 	 */
+	@Override
 	public void updateTroblReqst(TroblReqst troblReqst) throws Exception {
 		troblReqstDAO.updateTroblReqst(troblReqst);
 	}
@@ -78,6 +82,7 @@ public class EgovTroblReqstServiceImpl extends EgovAbstractServiceImpl implement
 	 * 기 등록된 장애요청정보를 삭제한다.
 	 * @param troblReqst - 장애신청 model
 	 */
+	@Override
 	public void deleteTroblReqst(TroblReqst troblReqst) throws Exception {
 		troblReqstDAO.deleteTroblReqst(troblReqst);
 	}
@@ -86,6 +91,7 @@ public class EgovTroblReqstServiceImpl extends EgovAbstractServiceImpl implement
 	 * 장애처리를 요청한다.
 	 * @param troblReqst - 장애신청 model
 	 */
+	@Override
 	public void requstTroblReqst(TroblReqst troblReqst) throws Exception {
 		troblReqstDAO.requstTroblReqst(troblReqst);
 	}

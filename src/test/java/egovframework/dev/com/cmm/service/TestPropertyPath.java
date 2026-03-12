@@ -1,11 +1,11 @@
 package egovframework.dev.com.cmm.service;
 
-import static org.junit.Assert.assertNotEquals;
+import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.util.ArrayList;
 import java.util.Map;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import egovframework.com.cmm.service.EgovProperties;
 import lombok.extern.slf4j.Slf4j;

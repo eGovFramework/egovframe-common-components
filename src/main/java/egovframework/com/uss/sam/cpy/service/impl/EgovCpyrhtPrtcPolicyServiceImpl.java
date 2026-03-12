@@ -2,8 +2,6 @@ package egovframework.com.uss.sam.cpy.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
@@ -12,11 +10,12 @@ import org.springframework.stereotype.Service;
 import egovframework.com.uss.sam.cpy.service.CpyrhtPrtcPolicyDefaultVO;
 import egovframework.com.uss.sam.cpy.service.CpyrhtPrtcPolicyVO;
 import egovframework.com.uss.sam.cpy.service.EgovCpyrhtPrtcPolicyService;
+import jakarta.annotation.Resource;
 
 /**
  *
  * 저작권보호정책내용을 처리하는 비즈니스 구현 클래스
- * 
+ *
  * @author 공통서비스 개발팀 박정규
  * @since 2009.04.01
  * @version 1.0
@@ -43,7 +42,7 @@ public class EgovCpyrhtPrtcPolicyServiceImpl extends EgovAbstractServiceImpl imp
 
 	/**
 	 * 저작권보호정책 글을 조회한다.
-	 * 
+	 *
 	 * @param vo
 	 * @return 조회한 글
 	 * @exception Exception
@@ -51,14 +50,15 @@ public class EgovCpyrhtPrtcPolicyServiceImpl extends EgovAbstractServiceImpl imp
 	@Override
 	public CpyrhtPrtcPolicyVO selectCpyrhtPrtcPolicyDetail(CpyrhtPrtcPolicyVO vo) throws Exception {
 		CpyrhtPrtcPolicyVO resultVO = cpyrhtPrtcPolicyDAO.selectCpyrhtPrtcPolicyDetail(vo);
-		if (resultVO == null)
+		if (resultVO == null) {
 			throw processException("info.nodata.msg");
+		}
 		return resultVO;
 	}
 
 	/**
 	 * 저작권보호정책 글 목록을 조회한다.
-	 * 
+	 *
 	 * @param searchVO
 	 * @return 글 목록
 	 * @exception Exception
@@ -70,7 +70,7 @@ public class EgovCpyrhtPrtcPolicyServiceImpl extends EgovAbstractServiceImpl imp
 
 	/**
 	 * 저작권보호정책 글 총 개수를 조회한다.
-	 * 
+	 *
 	 * @param searchVO
 	 * @return 글 총 개수
 	 */
@@ -81,7 +81,7 @@ public class EgovCpyrhtPrtcPolicyServiceImpl extends EgovAbstractServiceImpl imp
 
 	/**
 	 * 저작권보호정책 글을 등록한다.
-	 * 
+	 *
 	 * @param vo
 	 * @exception Exception
 	 */
@@ -98,7 +98,7 @@ public class EgovCpyrhtPrtcPolicyServiceImpl extends EgovAbstractServiceImpl imp
 
 	/**
 	 * 저작권보호정책 글을 수정한다.
-	 * 
+	 *
 	 * @param vo
 	 * @exception Exception
 	 */
@@ -111,7 +111,7 @@ public class EgovCpyrhtPrtcPolicyServiceImpl extends EgovAbstractServiceImpl imp
 
 	/**
 	 * 저작권보호정책 글을 삭제한다.
-	 * 
+	 *
 	 * @param vo
 	 * @exception Exception
 	 */

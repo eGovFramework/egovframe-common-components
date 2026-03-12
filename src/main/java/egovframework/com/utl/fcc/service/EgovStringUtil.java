@@ -45,7 +45,7 @@ public class EgovStringUtil {
 	 * 빈 문자열 <code>""</code>.
 	 */
 	public static final String EMPTY = "";
-	
+
 	// 221116	김혜준	2022 시큐어코딩 조치
 	private static SecureRandom rnd = new SecureRandom();
 

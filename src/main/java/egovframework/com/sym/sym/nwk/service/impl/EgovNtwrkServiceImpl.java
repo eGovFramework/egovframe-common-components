@@ -14,8 +14,6 @@ package egovframework.com.sym.sym.nwk.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
@@ -23,6 +21,7 @@ import egovframework.com.sym.sym.nwk.service.EgovNtwrkService;
 import egovframework.com.sym.sym.nwk.service.Ntwrk;
 import egovframework.com.sym.sym.nwk.service.NtwrkVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
 
 @Service("egovNtwrkService")
 public class EgovNtwrkServiceImpl extends EgovAbstractServiceImpl implements EgovNtwrkService  {

@@ -23,7 +23,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comUtlSysPrm.comUtlProcessMonModify.title"/></c:set>
 <!DOCTYPE html>
 <html lang="ko">
@@ -32,9 +31,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<link href="<c:url value='/css/egovframework/com/com.css' />" rel="stylesheet" type="text/css">
 		<link href="<c:url value='/css/egovframework/com/button.css' />" rel="stylesheet" type="text/css">
-		<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-		<validator:javascript formName="processMonVO" staticJavascript="false" xhtml="true" cdata="false"/>
-		
+		<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 		<script type="text/javaScript" language="javascript">
 		<!--
 		/* ********************************************************
@@ -66,9 +63,10 @@
 		 ******************************************************** */
 		function fn_egov_modify_ProcessMon(form){
 			if(confirm("<spring:message code="common.save.msg" />")){
-				if(!validateProcessMonVO(form)){ 			
+				if(!validateProcessMonVO(form)){
 					return;
 				}else{
+					form.action = "<c:url value='/utl/sys/prm/EgovComUtlProcessMonModify.do'/>";
 					form.submit();
 				}
 			}
@@ -80,8 +78,11 @@
 	<body>
 		<div class="wTableFrm">					
 			<form:form modelAttribute="processMonVO" name="processMonVO" method="post">
-			<input name="cmd" type="hidden" value="Modify">
-			<form:hidden path="processId"/>	
+			<form:hidden path="processId"/>
+			<!-- 검색조건 유지 -->
+			<input type="hidden" name="searchCondition" value="<c:out value='${searchVO.searchCondition}'/>"/>
+			<input type="hidden" name="searchKeyword" value="<c:out value='${searchVO.searchKeyword}'/>"/>
+			<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}' default='1'/>"/>
 				<!-- 상단 타이틀  영역 -->
 				<h2>&nbsp;${pageTitle}</h2>
 
@@ -91,7 +92,7 @@
   					<tr>
     					<th scope="row" width="20%" height="23" class="required_text"><spring:message code="comUtlSysPrm.comUtlProcessMon.processName" /><img src="<c:url value='/images/egovframework/com/cmm/icon/required.gif'/>" alt="필수입력표시"  width="15" height="15"></th><!-- 프로세스명 -->
 				    	<td width="80%">
-				      	<form:input  onkeyup="cleanQueryTerm()" path="processNm" size="60" maxlength="60"/>
+				      	<form:input  onkeyup="cleanQueryTerm()" path="processNm" size="30" maxlength="30"/>
 				      	<form:errors path="processNm"/>
 				    	</td>  				    	
   					</tr>

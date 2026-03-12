@@ -1,6 +1,9 @@
 package egovframework.com.sym.tbm.tbp.service;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+
 import egovframework.com.cmm.ComDefaultVO;
+import jakarta.validation.constraints.Size;
 
 /**
  * 개요
@@ -51,14 +54,19 @@ public class TroblProcess extends ComDefaultVO {
 	/**
 	 * 장애 처리 결과
 	 */
+	@EgovNullCheck
 	private String troblProcessResult;
 	/**
 	 * 장애 처리자 명
 	 */
+	@EgovNullCheck
+	@Size(max = 30)
 	private String troblOpetrNm;
 	/**
 	 * 장애 처리 시간
 	 */
+	@EgovNullCheck
+	@Size(min = 14)
 	private String troblProcessTime;
 	/**
 	 * 처리 상태

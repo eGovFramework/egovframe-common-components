@@ -1,13 +1,13 @@
-package egovframework.com.cop.cmy.service.impl;
+﻿package egovframework.com.cop.cmy.service.impl;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
@@ -154,9 +154,9 @@ public class EgovCommuBBSMasterDAOTest extends EgovTestAbstractDAO {
     }
 
     private void assertAll(final BoardMaster testData, final BoardMasterVO result) {
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getBbsId(), result.getBbsId());
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getBbsTyCode(), result.getBbsTyCode());
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), testData.getBbsNm(), result.getBbsNm());
+        assertEquals(testData.getBbsId(), result.getBbsId(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
+        assertEquals(testData.getBbsTyCode(), result.getBbsTyCode(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
+        assertEquals(testData.getBbsNm(), result.getBbsNm(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     private void debug(final BoardMasterVO result) {

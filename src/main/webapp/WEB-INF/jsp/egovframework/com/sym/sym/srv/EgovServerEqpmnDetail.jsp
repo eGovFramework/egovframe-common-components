@@ -32,6 +32,7 @@
 <title><spring:message code="comSymSymSrv.serverEqpmnDetail.title"/></title><!-- 서버장비 상세조회 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
+<script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script type="text/javaScript" language="javascript" defer="defer">
 <!--
 function fncSelectServerEqpmnList() {
@@ -48,6 +49,39 @@ function fncServerEqpmnUpdateView(serverEqpmnId) {
 }
 
 function fncServerEqpmnDelete(serverEqpmnId) {
+    // Ajax로 관련 서버S/W 체크
+    var hasRelatedServers = false;
+
+    $.ajax({
+        url: "<c:url value='/sym/sym/srv/checkServerEqpmnRelations.do'/>",
+        type: "GET",
+        data: { serverEqpmnId: serverEqpmnId },
+        dataType: "json",
+        async: false,  // 동기 방식으로 처리
+        success: function(relatedServers) {
+            if (relatedServers && relatedServers.length > 0) {
+                // 관련 서버S/W가 있는 경우
+                var serverNames = relatedServers.map(function(server) {
+                    return server.serverNm;
+                }).join(", ");
+
+                alert("다음 서버S/W에서 이 서버H/W를 사용하고 있어 삭제할 수 없습니다:\n\n" + serverNames +
+                      "\n\n먼저 해당 서버S/W와의 관계를 삭제해 주세요.");
+                hasRelatedServers = true;
+            }
+        },
+        error: function() {
+            alert("관계 확인 중 오류가 발생했습니다.");
+            hasRelatedServers = true;
+        }
+    });
+
+    // 관련 서버가 있으면 여기서 종료
+    if (hasRelatedServers) {
+        return;
+    }
+
+    // 관련 서버S/W가 없는 경우 삭제 진행
     var varFrom = document.getElementById("serverEqpmn");
     varFrom.serverEqpmnId.value = serverEqpmnId;
     varFrom.action = "<c:url value='/sym/sym/srv/removeServerEqpmn.do'/>";

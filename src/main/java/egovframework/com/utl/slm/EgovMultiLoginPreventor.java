@@ -3,7 +3,7 @@ package egovframework.com.utl.slm;
 import java.util.Enumeration;
 import java.util.concurrent.ConcurrentHashMap;
 
-import javax.servlet.http.HttpSession;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * @Class Name : EgovMultiLoginPreventor.java
@@ -18,8 +18,8 @@ import javax.servlet.http.HttpSession;
  * @version 3.5
  */
 public class EgovMultiLoginPreventor {
-	
-	public static ConcurrentHashMap<String, HttpSession> loginUsers = new ConcurrentHashMap<String, HttpSession>();
+
+	public static ConcurrentHashMap<String, HttpSession> loginUsers = new ConcurrentHashMap<>();
 
 	/**
 	 * 사용자의 로그인 아이디로 생성된 세션이 있는지를 확인한다
@@ -34,7 +34,7 @@ public class EgovMultiLoginPreventor {
 	public static void invalidateByLoginId(String loginId) {
 		Enumeration<String> e = loginUsers.keys();
 		while (e.hasMoreElements()) {
-			String key = (String) e.nextElement();
+			String key = e.nextElement();
 			if (key.equals(loginId)) {
 				loginUsers.get(key).invalidate();
 			}

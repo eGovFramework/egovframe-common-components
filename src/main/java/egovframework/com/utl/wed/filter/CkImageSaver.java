@@ -22,24 +22,22 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileItemFactory;
-import org.apache.commons.fileupload.FileUploadException;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.fileupload2.core.DiskFileItemFactory;
+import org.apache.commons.fileupload2.core.FileItem;
+import org.apache.commons.fileupload2.core.FileUploadException;
+import org.apache.commons.fileupload2.jakarta.servlet6.JakartaServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.egovframe.rte.fdl.cryptography.EgovEnvCryptoService;
+import org.egovframe.rte.fdl.crypto.EgovEnvCryptoService;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Created by guava on 1/20/14.
@@ -61,7 +59,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *  2020.08.28	신용호			보안약점 조치 (Private 배열에 Public 데이터 할당[CWE-496])
  *  2023.06.09	이택진			NSR 보안조치 (크로스사이트 스크립트 방지를 위한 데이터 변환 코드 수정)
  *  2023.06.27	김혜준			크로스사이트 스크립트 방지 코드 미사용 변수 개선
- *  
+ *
  * </pre>
  */
 public class CkImageSaver {
@@ -83,7 +81,7 @@ public class CkImageSaver {
 	 */
 	public CkImageSaver(String imageBaseDir, String imageDomain, String[] allowFileTypeArr, String saveManagerClass) {
 		this.imageBaseDir = EgovWebUtil.filePathBlackList(imageBaseDir);
-		
+
 		if ((EgovStringUtil.isNullToString(imageBaseDir)).endsWith("/")) {
 			StringUtils.removeEnd(imageBaseDir, "/");
 		}
@@ -126,10 +124,10 @@ public class CkImageSaver {
 	public void saveAndReturnUrlToClient(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		// Parse the request
 		try {
-			FileItemFactory factory = new DiskFileItemFactory();
+			DiskFileItemFactory factory = new DiskFileItemFactory.Builder().get();
 
 			// Create a new file upload handler
-			ServletFileUpload upload = new ServletFileUpload(factory);
+			JakartaServletFileUpload upload = new JakartaServletFileUpload(factory);
 
 			List<FileItem> /* FileItem */items = upload.parseRequest(request);
 			// We upload just one file at the same time
@@ -141,16 +139,16 @@ public class CkImageSaver {
 			if (isAllowFileType(FilenameUtils.getName(uplFile.getName()))) {
 				String uploadFilePath = fileSaveManager.saveFile(uplFile, imageBaseDir);
 				//System.out.println("===>>> uploadFilePath = "+uploadFilePath);
-				
+
 				String fileName = uploadFilePath.substring(uploadFilePath.lastIndexOf('/') + 1);
 				String filePath = imageBaseDir+uploadFilePath.substring(0,uploadFilePath.lastIndexOf('/'));
-				
+
 				relUrl = request.getContextPath()
 					    + "/utl/web/imageSrc.do?"
 					    + "path=" + this.encrypt(filePath,request)
 					    + "&physical=" + this.encrypt(fileName,request)
 					    + "&contentType=" + this.encrypt(uplFile.getContentType(),request);
-				
+
 				//System.out.println("===>>> relUrl = "+relUrl);
 			} else {
 				errorMessage = "Restricted Image Format";
@@ -213,7 +211,7 @@ public class CkImageSaver {
 
 		return isAllow;
 	}
-	
+
     /**
      * 암호화
      *
@@ -222,10 +220,10 @@ public class CkImageSaver {
 	 * @return
      */
     private String encrypt(String encrypt,HttpServletRequest request) {
-    	
+
     	WebApplicationContext wac = WebApplicationContextUtils.getRequiredWebApplicationContext(request.getServletContext());
     	EgovEnvCryptoService cryptoService = (EgovEnvCryptoService)wac.getBean("egovEnvCryptoService");
-    	
+
     	try {
     		return cryptoService.encrypt(encrypt);
         } catch(IllegalArgumentException e) {

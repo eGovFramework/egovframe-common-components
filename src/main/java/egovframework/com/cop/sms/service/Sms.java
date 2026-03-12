@@ -5,6 +5,8 @@ import java.util.Collections;
 import java.util.List;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
 
 /**
  * 문자메시지 서비스 데이터 처리 모델
@@ -29,9 +31,12 @@ public class Sms implements Serializable {
     private String smsId = "";
 
     /** 전송 전화번호 */
+    @EgovNullCheck
     private String trnsmitTelno = "";
 
     /** 전송 내용 */
+    @EgovNullCheck
+    @Size(max=80)
     private String trnsmitCn = "";
 
     /** 수신 전화번호 개수 */
@@ -230,8 +235,9 @@ public class Sms implements Serializable {
     // 2011.10.07 private 배열-유형 필드에 공용 데이터 할당되지 않도록 함
 	public void setRecptnTelno(String[] recptnTelno) {
 		this.recptnTelno = new String[recptnTelno.length];
-		for (int i = 0; i < recptnTelno.length; ++i)
+		for (int i = 0; i < recptnTelno.length; ++i) {
 			this.recptnTelno[i] = recptnTelno[i];
+		}
 	}
 
     /**

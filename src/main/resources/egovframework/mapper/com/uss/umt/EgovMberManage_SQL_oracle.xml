@@ -193,10 +193,10 @@ SELECT * FROM ( SELECT rownum rn, TB.* FROM (
         
     </update>
     
-    <select id="selectPassword_S" resultType="egovframework.com.uss.umt.service.MberManageVO">
+    <select id="selectPassword_S" resultType="egovframework.com.uss.umt.service.MberPasswordManageVO">
         
             SELECT
-                    PASSWORD          password 
+                    PASSWORD          mberPassword 
             FROM    COMTNGNRLMBER
             WHERE   ESNTL_ID=#{uniqId}
         

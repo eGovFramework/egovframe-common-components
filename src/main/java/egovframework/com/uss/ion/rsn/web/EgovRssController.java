@@ -3,11 +3,8 @@ package egovframework.com.uss.ion.rsn.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-//import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -19,7 +16,8 @@ import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.uss.ion.rsn.service.EgovRssService;
 import egovframework.com.uss.ion.rsn.service.RssInfo;
-//import org.springmodules.validation.commons.DefaultBeanValidator;
+import jakarta.annotation.Resource;
+
 /**
  * RSS서비스를 처리하는 Controller Class 구현
  * @author 공통서비스 장동한
@@ -37,9 +35,6 @@ import egovframework.com.uss.ion.rsn.service.RssInfo;
 @Controller
 public class EgovRssController {
 
-//    @Autowired
-//    private DefaultBeanValidator beanValidator;
-
     /** EgovMessageSource */
     @Resource(name = "egovMessageSource")
     EgovMessageSource egovMessageSource;
@@ -54,9 +49,8 @@ public class EgovRssController {
 
     /**
      * RSS서비스 목록을 조회한다.
-     * @param searchVO -검색정보가 담긴 객체
      * @param commandMap -Request Variable
-     * @param -RSS서비스 객체
+     * @param rssInfo -RSS서비스 객체
      * @param model -Spring 제공하는 ModelMap
      * @return String -리턴 URL
      * @throws Exception
@@ -64,32 +58,37 @@ public class EgovRssController {
     @IncludedInfo(name="RSS태그서비스", order = 822 ,gid = 50)
     @RequestMapping(value = "/uss/ion/rsn/listRssTagService.do")
     public String EgovRssTagServiceList(
-            @ModelAttribute("searchVO") RssInfo searchVO,
             @RequestParam Map<?, ?> commandMap,
-            RssInfo rssInfo, ModelMap model)
+            @ModelAttribute("rssInfo") RssInfo rssInfo, ModelMap model)
             throws Exception {
 
+        // 검색 조건 설정
+        String searchKeyword = commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword");
+        String searchCondition = commandMap.get("searchCondition") == null ? "" : (String) commandMap.get("searchCondition");
+        rssInfo.setSearchKeyword(searchKeyword);
+        rssInfo.setSearchCondition(searchCondition);
+
         /** EgovPropertyService.sample */
-        searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-        searchVO.setPageSize(propertiesService.getInt("pageSize"));
+        rssInfo.setPageUnit(propertiesService.getInt("pageUnit"));
+        rssInfo.setPageSize(propertiesService.getInt("pageSize"));
 
         /** pageing */
         PaginationInfo paginationInfo = new PaginationInfo();
-        paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-        paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-        paginationInfo.setPageSize(searchVO.getPageSize());
+        paginationInfo.setCurrentPageNo(rssInfo.getPageIndex());
+        paginationInfo.setRecordCountPerPage(rssInfo.getPageUnit());
+        paginationInfo.setPageSize(rssInfo.getPageSize());
 
-        searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-        searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-        searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+        rssInfo.setFirstIndex(paginationInfo.getFirstRecordIndex());
+        rssInfo.setLastIndex(paginationInfo.getLastRecordIndex());
+        rssInfo.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-        List<?> reusltList = egovRssService.selectRssTagServiceList(searchVO);
+        List<?> reusltList = egovRssService.selectRssTagServiceList(rssInfo);
         model.addAttribute("resultList", reusltList);
 
-        model.addAttribute("searchKeyword", commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword"));
-        model.addAttribute("searchCondition", commandMap.get("searchCondition") == null ? "" : (String) commandMap.get("searchCondition"));
+        model.addAttribute("searchKeyword", searchKeyword);
+        model.addAttribute("searchCondition", searchCondition);
 
-        int totCnt = egovRssService.selectRssTagServiceListCnt(searchVO);
+        int totCnt = egovRssService.selectRssTagServiceListCnt(rssInfo);
         paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);
 

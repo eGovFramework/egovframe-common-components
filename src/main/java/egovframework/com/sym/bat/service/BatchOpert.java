@@ -2,6 +2,9 @@ package egovframework.com.sym.bat.service;
 
 import java.io.Serializable;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 import egovframework.com.cmm.ComDefaultVO;
 
 /**
@@ -30,10 +33,14 @@ public class BatchOpert extends ComDefaultVO implements Serializable {
 	/**
 	 * 배치작업명
 	 */
+	@EgovNullCheck
+	@Size(max=60)
 	private String batchOpertNm;
 	/**
 	 * 배치프로그램
 	 */
+	@EgovNullCheck
+	@Size(max=255)
 	private String batchProgrm;
 	/**
 	 * 최종수정자 아이디
@@ -46,6 +53,7 @@ public class BatchOpert extends ComDefaultVO implements Serializable {
 	/**
 	 * 파라미터
 	 */
+	@Size(max=250)
 	private String paramtr;
 	/**
 	 * 사용여부

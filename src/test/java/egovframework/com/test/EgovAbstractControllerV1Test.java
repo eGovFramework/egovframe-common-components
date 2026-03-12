@@ -1,26 +1,26 @@
 package egovframework.com.test;
 
-import org.junit.After;
-import org.junit.AfterClass;
-import org.junit.Before;
-import org.junit.BeforeClass;
-import org.junit.runner.OrderWith;
-import org.junit.runner.RunWith;
-import org.junit.runner.manipulation.Alphanumeric;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.TestMethodOrder;
+import org.junit.jupiter.api.MethodOrderer;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.util.StopWatch;
 import org.springframework.web.context.WebApplicationContext;
 
-@RunWith(SpringJUnit4ClassRunner.class)
-@OrderWith(Alphanumeric.class)
+@ExtendWith(SpringExtension.class)
+@TestMethodOrder(MethodOrderer.MethodName.class)
 
 @ActiveProfiles({ "mysql", "dummy" })
 //@ActiveProfiles({ "oracle", "dummy" })
@@ -62,15 +62,15 @@ public abstract class EgovAbstractControllerV1Test {
 
 	protected static MockMvc mockMvc;
 
-	@BeforeClass
-	public static void setUpBeforeClass() {
+	@BeforeAll
+	static void setUpBeforeClass() {
 		STOP_WATCH.start();
 
 		EGOV_LOGGER.debug("setUpBeforeClass start");
 	}
 
-	@AfterClass
-	public static void tearDownAfterClass() {
+	@AfterAll
+	static void tearDownAfterClass() {
 		STOP_WATCH.stop();
 
 		EGOV_LOGGER.debug("tearDownAfterClass stop");
@@ -79,8 +79,8 @@ public abstract class EgovAbstractControllerV1Test {
 		EGOV_LOGGER.debug("totalTimeSeconds={}", STOP_WATCH.getTotalTimeSeconds());
 	}
 
-	@Before
-	public void setUp() {
+	@BeforeEach
+	void setUp() {
 		stopWatch.start();
 
 		egovLogger.debug("setUp start");
@@ -96,8 +96,8 @@ public abstract class EgovAbstractControllerV1Test {
 		}
 	}
 
-	@After
-	public void tearDown() {
+	@AfterEach
+	void tearDown() {
 		stopWatch.stop();
 
 		egovLogger.debug("tearDown stop");

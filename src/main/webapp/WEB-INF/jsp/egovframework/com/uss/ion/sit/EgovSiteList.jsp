@@ -29,13 +29,6 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <script type="text/javascript">
-/*********************************************************
- * 초기화
- ******************************************************** */
-function fn_egov_init(){
-	// 첫 입력란에 포커스..
-	document.siteForm.searchCondition.focus();
-}
 
 /*********************************************************
  * 페이징 처리 함수
@@ -63,7 +56,7 @@ function fn_egov_inquire_sitedetail(siteId) {
 }
 </script>
 </head>
-<body onload="fn_egov_init()">
+<body>
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
@@ -75,13 +68,13 @@ function fn_egov_inquire_sitedetail(siteId) {
 		<ul>
 			<li>
 				<select name="searchCondition" title="<spring:message code="title.searchCondition" /> <spring:message code="input.cSelect" />">
-					<option value="0"  <c:if test="${searchVO.searchCondition == '0'}">selected="selected"</c:if> ><spring:message code="comUssIonSit.siteVO.siteNm" /></option><!-- 사이트명 -->
-					<option value="1"  <c:if test="${searchVO.searchCondition == '1'}">selected="selected"</c:if> ><spring:message code="comUssIonSit.siteVO.siteUrl" /></option><!-- 사이트URL -->
+					<option value="0"  <c:if test="${siteVO.searchCondition == '0'}">selected="selected"</c:if> ><spring:message code="comUssIonSit.siteVO.siteNm" /></option><!-- 사이트명 -->
+					<option value="1"  <c:if test="${siteVO.searchCondition == '1'}">selected="selected"</c:if> ><spring:message code="comUssIonSit.siteVO.siteUrl" /></option><!-- 사이트URL -->
 				</select>
 			</li>
 			<!-- 검색키워드 및 조회버튼 -->
 			<li>
-				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${searchVO.searchKeyword}"/>'  maxlength="155" >
+				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${siteVO.searchKeyword}"/>'  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
 				<span class="btn_b"><a href="<c:url value='/uss/ion/sit/insertSiteView.do' />"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
 			</li>
@@ -117,7 +110,7 @@ function fn_egov_inquire_sitedetail(siteId) {
 	</c:if>
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr>
-		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
+		<td><c:out value="${(siteVO.pageIndex-1) * siteVO.pageSize + status.count}"/></td>
 		<td><c:out value='${resultInfo.siteThemaClNm}'/></td>
 		<td><a href="<c:url value='/uss/ion/sit/selectSiteDetail.do?siteId=${resultInfo.siteId}'/>" onClick="fn_egov_inquire_sitedetail('<c:out value="${resultInfo.siteId}"/>');return false;"><c:out value='${fn:substring(resultInfo.siteNm, 0, 40)}'/></a></td>
 		<td><c:out value='${fn:substring(resultInfo.siteUrl, 0, 40)}'/></td>
@@ -138,8 +131,8 @@ function fn_egov_inquire_sitedetail(siteId) {
 	
 </div>
 
-<input name="siteId" type="hidden" value="<c:out value='${searchVO.siteId}'/>">
-<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
+<input name="siteId" type="hidden" value="<c:out value='${siteVO.siteId}'/>">
+<input name="pageIndex" type="hidden" value="<c:out value='${siteVO.pageIndex}'/>">
 </form>
 
 </body>

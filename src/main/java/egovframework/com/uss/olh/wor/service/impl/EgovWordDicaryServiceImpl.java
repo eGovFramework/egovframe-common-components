@@ -2,8 +2,6 @@ package egovframework.com.uss.olh.wor.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
@@ -11,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import egovframework.com.uss.olh.wor.service.EgovWordDicaryService;
 import egovframework.com.uss.olh.wor.service.WordDicaryVO;
+import jakarta.annotation.Resource;
 
 @Service("EgovWordDicaryService")
 public class EgovWordDicaryServiceImpl extends EgovAbstractServiceImpl implements EgovWordDicaryService {
@@ -21,7 +20,7 @@ public class EgovWordDicaryServiceImpl extends EgovAbstractServiceImpl implement
 	/** ID Generation */
 	@Resource(name = "egovWordDicaryIdGnrService")
 	private EgovIdGnrService idgenService;
-	
+
 	@Override
 	public List<WordDicaryVO> selectWordDicaryList(WordDicaryVO searchVO) {
 		return egovWordDicaryDao.selectWordDicaryList(searchVO);
@@ -35,14 +34,15 @@ public class EgovWordDicaryServiceImpl extends EgovAbstractServiceImpl implement
 	@Override
 	public WordDicaryVO selectWordDicaryDetail(WordDicaryVO wordDicaryVO) throws Exception {
 		WordDicaryVO resultVO = egovWordDicaryDao.selectWordDicaryDetail(wordDicaryVO);
-		if (resultVO == null)
+		if (resultVO == null) {
 			throw processException("info.nodata.msg");
+		}
 		return resultVO;
 	}
 
 	@Override
 	public void insertWordDicary(WordDicaryVO wordDicaryVO) throws FdlException {
-		
+
 		String wordId = idgenService.getNextStringId();
 		wordDicaryVO.setWordId(wordId);
 

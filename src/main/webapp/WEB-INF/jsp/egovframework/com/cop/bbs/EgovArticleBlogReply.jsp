@@ -24,8 +24,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
-<%@ taglib prefix="ckeditor" uri="http://ckeditor.com" %>
 <c:set var="pageTitle"><spring:message code="comCopBbs.articleVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -37,10 +35,10 @@
 <%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/utl/EgovCmmUtl.js'/>" ></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
+<script type="text/javascript" src="<c:url value='/html/egovframework/com/cmm/utl/ckeditor/ckeditor.js?t=B37D54V'/>" ></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
-<validator:javascript formName="articleVO" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javascript">
 
 $(function() {
@@ -78,7 +76,12 @@ $(function() {
  * 초기화
  ******************************************************** */
 function fn_egov_init(){
-	
+
+	var ckeditor_config = {
+		filebrowserImageUploadUrl: '${pageContext.request.contextPath}/ckUploadImage',
+	};
+	CKEDITOR.replace('nttCn',ckeditor_config);
+
 	// 첫 입력란에 포커스
 	document.getElementById("articleVO").nttSj.focus();
 
@@ -182,8 +185,7 @@ function fn_egov_reply_article(form){
 		<tr>
 			<th><label for="nttCn">${title } <span class="pilsu">*</span></label></th>
 			<td class="nopd" colspan="3">
-				<form:textarea path="nttCn" title="${title} ${inputTxt}" cols="300" rows="20" />   
-				<ckeditor:replace replace="nttCn" basePath="${pageContext.request.contextPath}/html/egovframework/com/cmm/utl/ckeditor/" />
+				<form:textarea path="nttCn" title="${title} ${inputTxt}" cols="300" rows="20" />
 				<div><form:errors path="nttCn" cssClass="error" /></div>  
 			</td>
 		</tr>

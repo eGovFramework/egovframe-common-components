@@ -1,8 +1,12 @@
 package egovframework.com.uss.ion.ecc.service;
 
-import java.io.Serializable;
-
 import egovframework.com.cmm.ComDefaultVO;
+
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.AssertTrue;
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 /**
  * 행사/이벤트/캠페인 VO Class 구현
  * @author 공통서비스 장동한
@@ -19,9 +23,9 @@ import egovframework.com.cmm.ComDefaultVO;
  *
  * </pre>
  */
-public class EventCmpgnVO extends ComDefaultVO implements Serializable {
+public class EventCmpgnVO extends ComDefaultVO {
 
-	private static final long serialVersionUID = -5817021412630105195L;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 행사/이벤트/캠페인ID
@@ -41,11 +45,14 @@ public class EventCmpgnVO extends ComDefaultVO implements Serializable {
 	/**
 	 * 행사시작일자
 	 */
+	@EgovNullCheck
+	@Pattern(regexp="^\\d{4}-\\d{2}-\\d{2}$", message="{validation.pattern.date}")
 	private String eventSvcBeginDe = "";
 
 	/**
 	 * 서비스이용 인원수
 	 */
+	@Min(0)
 	private int svcUseNmprCo = 0;
 
 	/**
@@ -56,16 +63,21 @@ public class EventCmpgnVO extends ComDefaultVO implements Serializable {
 	/**
 	 * 행사내용
 	 */
+	@EgovNullCheck
+	@Size(max=1000)
 	private String eventCn = "";
 
 	/**
 	 * 행사종료일자
 	 */
+	@EgovNullCheck
+	@Pattern(regexp="^\\d{4}-\\d{2}-\\d{2}$", message="{validation.pattern.date}")
 	private String eventSvcEndDe = "";
 
 	/**
 	 * 행사유형코드
 	 */
+	@EgovNullCheck
 	private String eventTyCode = "";
 	
 	/**
@@ -76,6 +88,7 @@ public class EventCmpgnVO extends ComDefaultVO implements Serializable {
 	/**
 	 * 준비물내용
 	 */
+	@Size(max=1000)
 	private String prparetgCn = "";
 
 	/**
@@ -107,13 +120,33 @@ public class EventCmpgnVO extends ComDefaultVO implements Serializable {
 	/**
 	 * 행사/이벤트 승인여부
 	 */
+	@EgovNullCheck
 	private String eventConfmAt = "";
 
 	/**
 	 * 행사/이벤트 승인일
 	 */
+	@EgovNullCheck
+	@Pattern(regexp="^\\d{4}-\\d{2}-\\d{2}$", message="{validation.pattern.date}")
 	private String eventConfmDe = "";
 
+	/**
+	 * 행사시작일이 행사종료일보다 이전인지 검증 (시작일 &lt;= 종료일)
+	 *
+	 * @return true: 유효 (시작일 &lt;= 종료일 또는 둘 중 하나 미입력), false: 무효
+	 */
+	@AssertTrue(message = "{comUssIonEcc.eventCmpgnVO.eventSvcDateRange}")
+	public boolean isEventSvcDateRangeValid() {
+		if (eventSvcBeginDe == null || eventSvcEndDe == null) {
+			return true;
+		}
+		String begin = eventSvcBeginDe.trim();
+		String end = eventSvcEndDe.trim();
+		if (begin.isEmpty() || end.isEmpty()) {
+			return true;
+		}
+		return begin.compareTo(end) <= 0;
+	}
 
 	/**
 	 * eventConfmDe attribute 를 리턴한다.

@@ -41,19 +41,19 @@ public interface EgovCtsnnManageService {
 	 * 경조관리 정보를 신규로 등록한다.
 	 * @param ctsnnManage - 경조관리 model
 	 */
-	public void insertCtsnnManage(CtsnnManage ctsnnManage) throws Exception;
+	public void insertCtsnnManage(CtsnnManageVO ctsnnManageVO) throws Exception;
 
 	/**
 	 * 기 등록된 경조관리 정보를 수정한다.
 	 * @param ctsnnManage - 경조관리 model
 	 */
-	public void updtCtsnnManage(CtsnnManage ctsnnManage) throws Exception;
+	public void updtCtsnnManage(CtsnnManageVO ctsnnManageVO) throws Exception;
 
 	/**
 	 * 기 등록된 경조관리 정보를 삭제한다.
 	 * @param ctsnnManage - 경조관리 model
 	 */
-	public void deleteCtsnnManage(CtsnnManage ctsnnManage) throws Exception;
+	public void deleteCtsnnManage(CtsnnManageVO ctsnnManageVO) throws Exception;
 
     /*** 승인처리관련 ***/
 	/**
@@ -74,5 +74,5 @@ public interface EgovCtsnnManageService {
 	 * 경조정보를 승인처리 한다.
 	 * @param ctsnnManage - 경조관리 model
 	 */
-	public void updtCtsnnManageConfm(CtsnnManage ctsnnManage) throws Exception;
+	public void updtCtsnnManageConfm(CtsnnManageVO ctsnnManageVO) throws Exception;
 }

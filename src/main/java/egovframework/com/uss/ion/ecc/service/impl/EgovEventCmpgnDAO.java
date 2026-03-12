@@ -11,12 +11,12 @@ import egovframework.com.uss.ion.ecc.service.TnextrlHrVO;
 @Repository("EgovEventCmpgnDAO")
 public class EgovEventCmpgnDAO extends EgovComAbstractDAO {
 
-	public List<EventCmpgnVO> selectEventCmpgnList(EventCmpgnVO searchVO) {
-		return selectList("EventCmpgn.selectEventCmpgnList", searchVO);
+	public List<EventCmpgnVO> selectEventCmpgnList(EventCmpgnVO eventCmpgnVO) {
+		return selectList("EventCmpgn.selectEventCmpgnList", eventCmpgnVO);
 	}
 
-	public int selectEventCmpgnListCnt(EventCmpgnVO searchVO) {
-		return (Integer) selectOne("EventCmpgn.selectEventCmpgnListCnt", searchVO);
+	public int selectEventCmpgnListCnt(EventCmpgnVO eventCmpgnVO) {
+		return (Integer) selectOne("EventCmpgn.selectEventCmpgnListCnt", eventCmpgnVO);
 	}
 
 	public void insertEventCmpgn(EventCmpgnVO eventCmpgnVO) {
@@ -35,12 +35,12 @@ public class EgovEventCmpgnDAO extends EgovComAbstractDAO {
 		delete("EventCmpgn.deleteEventCmpgn", eventCmpgnVO);
 	}
 
-	public List<TnextrlHrVO> selectTnextrlHrList(TnextrlHrVO searchVO) {
-		return selectList("EventCmpgn.selectTnextrlHrList", searchVO);
+	public List<TnextrlHrVO> selectTnextrlHrList(TnextrlHrVO tnextrlHrVO) {
+		return selectList("EventCmpgn.selectTnextrlHrList", tnextrlHrVO);
 	}
 
-	public int selectTnextrlHrListCnt(TnextrlHrVO searchVO) {
-		return (Integer) selectOne("EventCmpgn.selectTnextrlHrListCnt", searchVO);
+	public int selectTnextrlHrListCnt(TnextrlHrVO tnextrlHrVO) {
+		return (Integer) selectOne("EventCmpgn.selectTnextrlHrListCnt", tnextrlHrVO);
 	}
 
 	public void insertTnextrlHr(TnextrlHrVO tnextrlHrVO) {

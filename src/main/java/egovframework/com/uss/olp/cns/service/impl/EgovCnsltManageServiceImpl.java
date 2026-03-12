@@ -2,8 +2,6 @@ package egovframework.com.uss.olp.cns.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
@@ -12,6 +10,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.uss.olp.cns.service.CnsltManageDefaultVO;
 import egovframework.com.uss.olp.cns.service.CnsltManageVO;
 import egovframework.com.uss.olp.cns.service.EgovCnsltManageService;
+import jakarta.annotation.Resource;
 
 
 /**
@@ -52,8 +51,9 @@ public class EgovCnsltManageServiceImpl extends EgovAbstractServiceImpl implemen
     @Override
 	public CnsltManageVO selectCnsltListDetail(CnsltManageVO vo) throws Exception {
         CnsltManageVO resultVO = cnsltManageDAO.selectCnsltListDetail(vo);
-        if (resultVO == null)
-            throw processException("info.nodata.msg");
+        if (resultVO == null) {
+			throw processException("info.nodata.msg");
+		}
         return resultVO;
     }
 
@@ -142,8 +142,9 @@ public class EgovCnsltManageServiceImpl extends EgovAbstractServiceImpl implemen
     @Override
 	public CnsltManageVO selectCnsltAnswerListDetail(CnsltManageVO vo) throws Exception {
         CnsltManageVO resultVO = cnsltManageDAO.selectCnsltAnswerListDetail(vo);
-        if (resultVO == null)
-            throw processException("info.nodata.msg");
+        if (resultVO == null) {
+			throw processException("info.nodata.msg");
+		}
         return resultVO;
     }
 

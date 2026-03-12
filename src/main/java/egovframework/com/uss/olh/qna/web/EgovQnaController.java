@@ -2,14 +2,10 @@ package egovframework.com.uss.olh.qna.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -17,7 +13,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -31,6 +26,9 @@ import egovframework.com.uss.olh.qna.service.EgovQnaService;
 import egovframework.com.uss.olh.qna.service.QnaDefaultVO;
 import egovframework.com.uss.olh.qna.service.QnaVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 /**
  *
@@ -94,10 +92,6 @@ public class EgovQnaController {
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
-
-	// Validation 관련
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/**
 	 * Q&A정보 목록을 조회한다. (pageing)
@@ -221,10 +215,8 @@ public class EgovQnaController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/uss/olh/qna/insertQna.do")
-	public String insertQna(@ModelAttribute("searchVO") QnaVO searchVO, @ModelAttribute("qnaVO") QnaVO qnaVO,
+	public String insertQna(@ModelAttribute("searchVO") QnaVO searchVO, @Valid @ModelAttribute("qnaVO") QnaVO qnaVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
-
-		beanValidator.validate(qnaVO, bindingResult);
 
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/uss/olh/qna/EgovQnaRegist";
@@ -286,10 +278,8 @@ public class EgovQnaController {
 	 */
 	@RequestMapping("/uss/olh/qna/updateQna.do")
 	public String updateQna(HttpServletRequest request, @ModelAttribute("searchVO") QnaVO searchVO,
-			@ModelAttribute("qnaVO") QnaVO qnaVO, BindingResult bindingResult) throws Exception {
+			@Valid @ModelAttribute("qnaVO") QnaVO qnaVO, BindingResult bindingResult) throws Exception {
 
-		// Validation
-		beanValidator.validate(qnaVO, bindingResult);
 
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/uss/olh/qna/EgovQnaUpdt";
@@ -452,8 +442,21 @@ public class EgovQnaController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/uss/olh/qna/updateQnaAnswer.do")
-	public String updateQnaAnswer(QnaVO qnaVO, @ModelAttribute("searchVO") QnaVO searchVO) throws Exception {
+	public String updateQnaAnswer(@Valid QnaVO qnaVO, BindingResult bindingResult,
+			 @ModelAttribute("searchVO") QnaVO searchVO,
+			 Model model
+			) throws Exception {
 
+		if (bindingResult.hasErrors()) {
+			ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
+			comDefaultCodeVO.setCodeId("COM028");
+			
+			List<CmmnDetailCode> qnaProcessSttusCode = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+			model.addAttribute("qnaProcessSttusCode",qnaProcessSttusCode);
+			
+			return "egovframework/com/uss/olh/qna/EgovQnaAnswerUpdt";
+		}
+		
 		// 로그인VO에서 사용자 정보 가져오기
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		String lastUpdusrId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());

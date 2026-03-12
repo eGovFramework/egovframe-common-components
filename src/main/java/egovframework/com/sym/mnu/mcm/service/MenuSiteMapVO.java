@@ -1,5 +1,8 @@
 package egovframework.com.sym.mnu.mcm.service;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 사이트맵/메인메뉴 처리를 위한 VO 클래스르를 정의한다
  * 
@@ -21,7 +24,31 @@ package egovframework.com.sym.mnu.mcm.service;
 public class MenuSiteMapVO {
 
 	/** 메뉴번호 */
+	@EgovNullCheck
 	private int menuNo;
+	/** 메뉴순서 */
+	@EgovNullCheck
+	private int menuOrdr;
+	/** 메뉴명 */
+	@EgovNullCheck
+	@Size(max=50)
+	private String menuNm;
+	/** 상위메뉴번호 */
+	@EgovNullCheck
+	private int upperMenuId;
+	/** 프로그램파일명 */
+	@EgovNullCheck
+	@Size(max=50)
+	private String progrmFileNm;
+	/** 메뉴설명 */
+	@Size(max=100)
+	private String menuDc;
+	/** 관련이미지경로 */
+	@Size(max=100)
+	private String relateImagePath;
+	/** 관련이미지명 */
+	@Size(max=50)
+	private String relateImageNm;
 
 	/* 사이트맵 */
 	/** 생성자ID **/
@@ -387,6 +414,62 @@ public class MenuSiteMapVO {
 	 */
 	public void setTmpRootPath(String tmprootPath) {
 		this.tmpRootPath = tmprootPath;
+	}
+
+	public int getMenuOrdr() {
+		return menuOrdr;
+	}
+
+	public void setMenuOrdr(int menuOrdr) {
+		this.menuOrdr = menuOrdr;
+	}
+
+	public String getMenuNm() {
+		return menuNm;
+	}
+
+	public void setMenuNm(String menuNm) {
+		this.menuNm = menuNm;
+	}
+
+	public int getUpperMenuId() {
+		return upperMenuId;
+	}
+
+	public void setUpperMenuId(int upperMenuId) {
+		this.upperMenuId = upperMenuId;
+	}
+
+	public String getProgrmFileNm() {
+		return progrmFileNm;
+	}
+
+	public void setProgrmFileNm(String progrmFileNm) {
+		this.progrmFileNm = progrmFileNm;
+	}
+
+	public String getMenuDc() {
+		return menuDc;
+	}
+
+	public void setMenuDc(String menuDc) {
+		this.menuDc = menuDc;
+	}
+
+	public String getRelateImagePath() {
+		return relateImagePath;
+	}
+
+	public void setRelateImagePath(String relateImagePath) {
+		this.relateImagePath = relateImagePath;
+	}
+
+	public String getRelateImageNm() {
+		return relateImageNm;
+	}
+
+	public void setRelateImageNm(String relateImageNm) {
+		this.relateImageNm = relateImageNm;
 	}
 
 }

@@ -2,6 +2,8 @@ package egovframework.com.uss.ion.evt.service;
 
 import egovframework.com.cmm.ComDefaultVO;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+
 /**
  * 개요
  * - 행사참석자에 대한 model 클래스를 정의한다.
@@ -28,6 +30,7 @@ public class EventAtdrn extends ComDefaultVO {
 	/**
 	*  행사ID	      
 	*/ 
+	@EgovNullCheck
 	private String eventId;
 
 	/**
@@ -38,6 +41,7 @@ public class EventAtdrn extends ComDefaultVO {
 	/**
 	*  결재자ID	      
 	*/ 
+	@EgovNullCheck
 	private String sanctnerId;
 
 	/**

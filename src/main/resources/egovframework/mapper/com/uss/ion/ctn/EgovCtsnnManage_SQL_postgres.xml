@@ -106,7 +106,7 @@
         
     </select>
 
-    <insert id="insertCtsnnManage" parameterType="egovframework.com.uss.ion.ctn.service.CtsnnManage">
+    <insert id="insertCtsnnManage" parameterType="egovframework.com.uss.ion.ctn.service.CtsnnManageVO">
         
 
             INSERT INTO COMTNCTSNNMANAGE
@@ -143,7 +143,7 @@
         
     </insert>     
 
-    <update id="updateCtsnnManage" parameterType="egovframework.com.uss.ion.ctn.service.CtsnnManage">
+    <update id="updateCtsnnManage" parameterType="egovframework.com.uss.ion.ctn.service.CtsnnManageVO">
         
 
             UPDATE  COMTNCTSNNMANAGE
@@ -162,7 +162,7 @@
         
     </update>    
     
-    <delete id="deleteCtsnnManage" parameterType="egovframework.com.uss.ion.ctn.service.CtsnnManage">
+    <delete id="deleteCtsnnManage" parameterType="egovframework.com.uss.ion.ctn.service.CtsnnManageVO">
         
 
             DELETE  FROM COMTNCTSNNMANAGE
@@ -237,7 +237,7 @@
                </if> 
     </select>
 
-    <update id="updtCtsnnManageConfm" parameterType="egovframework.com.uss.ion.ctn.service.CtsnnManage">
+    <update id="updtCtsnnManageConfm" parameterType="egovframework.com.uss.ion.ctn.service.CtsnnManageVO">
         
             UPDATE COMTNCTSNNMANAGE
                SET CONFM_AT           = #{confmAt}     ,   

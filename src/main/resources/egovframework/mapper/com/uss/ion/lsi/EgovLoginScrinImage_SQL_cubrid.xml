@@ -77,7 +77,7 @@
         
     </select>
 
-    <insert id="insertLoginScrinImage" parameterType="egovframework.com.uss.ion.lsi.service.LoginScrinImage">
+    <insert id="insertLoginScrinImage" parameterType="egovframework.com.uss.ion.lsi.service.LoginScrinImageVO">
         
             INSERT INTO COMTNLOGINSCRINIMAGE
                        (IMAGE_ID,
@@ -99,7 +99,7 @@
         
     </insert>
 
-    <update id="updateLoginScrinImage" parameterType="egovframework.com.uss.ion.lsi.service.LoginScrinImage">
+    <update id="updateLoginScrinImage" parameterType="egovframework.com.uss.ion.lsi.service.LoginScrinImageVO">
             UPDATE COMTNLOGINSCRINIMAGE
                SET IMAGE_NM = #{imageNm},
                    <if test="isAtchFile == true">
@@ -113,7 +113,7 @@
              WHERE IMAGE_ID = #{imageId}
     </update>
 
-    <delete id="deleteLoginScrinImage" parameterType="egovframework.com.uss.ion.lsi.service.LoginScrinImage">
+    <delete id="deleteLoginScrinImage" parameterType="egovframework.com.uss.ion.lsi.service.LoginScrinImageVO">
         
             DELETE FROM COMTNLOGINSCRINIMAGE
              WHERE IMAGE_ID = #{imageId}
@@ -128,7 +128,7 @@
         
     </select>
 
-    <select id="selectLoginScrinImageFile" parameterType="egovframework.com.uss.ion.lsi.service.LoginScrinImage" resultMap="loginScrinImageFile">
+    <select id="selectLoginScrinImageFile" parameterType="egovframework.com.uss.ion.lsi.service.LoginScrinImageVO" resultMap="loginScrinImageFile">
         
             SELECT B.FILE_STRE_COURS AS FILE_STRE_COURS,
                    B.STRE_FILE_NM AS STRE_FILE_NM

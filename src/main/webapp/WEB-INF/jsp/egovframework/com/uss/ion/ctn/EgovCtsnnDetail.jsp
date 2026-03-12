@@ -25,7 +25,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -33,7 +32,6 @@
 <title><spring:message code="comUssIonCtn.ctsnnManageDetail.title"/></title><!-- 경조사 상세조회 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<validator:javascript formName="ctsnnManage" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javaScript" language="javascript">
 <!--
 	/* ********************************************************
@@ -47,7 +45,7 @@
 	* 수정화면으로  바로가기
 	******************************************************** */
 	function fncEgovCtsnnManage() {
-			var varFrom = document.getElementById("ctsnnManage");
+			var varFrom = document.getElementById("ctsnnManageVO") || document.forms["ctsnnManageVO"];
 			varFrom.action = "<c:url value='/uss/ion/ctn/EgovCtsnnManageDetail.do'/>";
 			varFrom.submit();   
 	}
@@ -56,7 +54,7 @@
 	* 삭제처리화면
 	******************************************************** */
 	function fncDeleteCtsnnManage() {
-		    var varFrom = document.getElementById("ctsnnManage");
+		    var varFrom = document.getElementById("ctsnnManageVO") || document.forms["ctsnnManageVO"];
 		    varFrom.action = "<c:url value='/uss/ion/ctn/deleteCtsnnManage.do'/>";
 		    if(confirm("삭제 하시겠습니까?")){
 	           varFrom.submit();
@@ -76,8 +74,8 @@
 	
 	<h3 class="tit02" style="margin:0 0 5px 0"><spring:message code="comUssIonCtn.ctsnnManageDetail.ctsnnAplyr"/></h3><!-- 경조 신청자 -->
 	
-<form name="ctsnnManage" id="ctsnnManage" method="post" >
-<div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="<spring:message code="comUssIonCtn.ctsnnManageDetail.submit"/>" title="<spring:message code="comUssIonCtn.ctsnnManageDetail.submit"/>"></div><!-- 전송 -->
+<form name="ctsnnManageVO" id="ctsnnManageVO" method="post" >
+<div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value='<spring:message code="comUssIonCtn.ctsnnManageDetail.submit"/>' title='<spring:message code="comUssIonCtn.ctsnnManageDetail.submit"/>'></div><!-- 전송 -->
 <input type="hidden" name="ctsnnId"       value="<c:out value='${ctsnnManageVO.ctsnnId}'/>"/>
 <input type="hidden" name="cmd"        value="updt" />
 	
@@ -143,18 +141,27 @@
 		<tr>
 			<th><spring:message code="comUssIonCtn.ctsnnManageDetail.remark"/></th><!-- 비고 -->
 			<td class="left" colspan="3">
-			    <textarea id="remark" name="remark" class="txaClass" rows="4" cols="70" readonly title="<spring:message code="comUssIonCtn.ctsnnManageDetail.remark"/>"><c:out value='${ctsnnManageVO.remark}'/></textarea>
+				<c:out value='${ctsnnManageVO.remark}'/>
 			</td>
 		</tr>
 	</table>
 	
 	<h3 class="tit02" style="margin:0 0 5px 0"><spring:message code="comUssIonCtn.ctsnnManageDetail.infrmlSanctnId"/></h3><!-- 결재권자 -->
 	
-	<!-- 결재권자 정보 Include -->
-	<c:import url="/uss/ion/ism/selectInfrmlSanctn.do" charEncoding="utf-8">
-		<c:param name="infrmlSanctnId" value="${ctsnnManageVO.infrmlSanctnId}"/>
-	</c:import>
-	<!-- //결재권자 정보 Include -->
+	<table class="wTable mb10">
+		<colgroup>
+			<col style="width:16%" />
+			<col style="width:34%" />
+			<col style="width:16%" />
+			<col style="width:34%" />
+		</colgroup>
+		<tr>
+			<th><spring:message code="comUssIonVct.common.sanctnDtNm"/> <span class="pilsu">*</span></th><!-- 결재권자명 -->
+			<td class="left"><c:out value='${empty infSanctnDtNm ? ctsnnManageVO.sanctnerNm : infSanctnDtNm}'/><input type="hidden" name="sanctnerId" id="sanctnerId" value="<c:out value='${ctsnnManageVO.sanctnerId}'/>"/></td>
+			<th><spring:message code="comUssIonVct.common.orgnztNm"/></th><!-- 소속 -->
+			<td class="left"><c:out value='${empty infOrgnztNm ? ctsnnManageVO.sanctnerOrgnztNm : infOrgnztNm}'/></td>
+		</tr>
+	</table>
 
 	<!-- 하단 버튼 -->
 	<div class="btn">

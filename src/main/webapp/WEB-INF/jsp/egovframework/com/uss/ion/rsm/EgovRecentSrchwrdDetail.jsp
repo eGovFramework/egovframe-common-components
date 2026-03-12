@@ -30,12 +30,6 @@
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <script type="text/javaScript" language="javascript">
 /* ********************************************************
- * 초기화
- ******************************************************** */
-function fn_egov_init_RecentSrchwrd(){
-
-}
-/* ********************************************************
  * 목록 으로 가기
  ******************************************************** */
 function fn_egov_list_RecentSrchwrd(){
@@ -47,7 +41,7 @@ function fn_egov_list_RecentSrchwrd(){
 function fn_egov_modify_RecentSrchwrd(){
 	var vFrom = document.RecentSrchwrdForm;
 	vFrom.cmd.value = '';
-	vFrom.action = "<c:url value='/uss/ion/rsm/updtRecentSrchwrdView.do' />";;
+	vFrom.action = "<c:url value='/uss/ion/rsm/updtRecentSrchwrdView.do' />";
 	vFrom.submit();
 
 }
@@ -66,8 +60,8 @@ function fn_egov_delete_RecentSrchwrd(){
 }
 </script>
 </head>
-<body onLoad="fn_egov_init_RecentSrchwrd();">
-<DIV id="content" style="width:712px">
+<body>
+
 <%-- noscript 테그 --%>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg"/></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
@@ -115,7 +109,7 @@ function fn_egov_delete_RecentSrchwrd(){
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<form name="formUpdt" action="<c:url value='/uss/ion/rsm/updtRecentSrchwrd.do'/>" method="post" style="display:inline-block">
+		<form name="formUpdt" action="<c:url value='/uss/ion/rsm/updtRecentSrchwrdView.do'/>" method="post" style="display:inline-block">
 		<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="fn_egov_modify_RecentSrchwrd(); return false;" />
 		<input name="srchwrdManageId" type="hidden" value="${recentSrchwrd.srchwrdManageId}">
 		</form>
@@ -132,6 +126,5 @@ function fn_egov_delete_RecentSrchwrd(){
 	</div>
 	<div style="clear:both;"></div>
 </div>
-</DIV>
 </body>
 </html>

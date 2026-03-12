@@ -53,7 +53,7 @@
 		 ******************************************************** */
 		function fnModify(){
 			var varForm				 = document.all["Form"];
-			varForm.action           = "<c:url value='/dam/map/tea/EgovComDamMapTeamModify.do'/>";
+			varForm.action           = "<c:url value='/dam/map/tea/EgovComDamMapTeamModifyView.do'/>";
 			varForm.orgnztId.value   = "${result.orgnztId}";
 			varForm.submit();
 		}
@@ -77,7 +77,7 @@
 	<!-- 자바스크립트 경고 태그  -->
 	<noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 	
-	<form name="Form" action="<c:url value='/dam/map/tea/EgovComDamMapTeamModify.do'/>" method="post">
+	<form name="Form" action="<c:url value='/dam/map/tea/EgovComDamMapTeamModifyView.do'/>" method="post">
 	<input name="orgnztId" type="hidden">
 	
 	<div class="wTableFrm">

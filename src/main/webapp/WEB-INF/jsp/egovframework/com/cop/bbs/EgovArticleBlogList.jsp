@@ -3,7 +3,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%-- <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%> --%>
 <c:set var="pageTitle"><spring:message code="comCopBbs.articleVO.title"/></c:set>
 <!DOCTYPE html>
@@ -16,8 +15,7 @@
 <script src="<c:url value='/js/egovframework/com/cmm/jquery-1.12.4.min.js' />"></script>
 
 <!-- 댓글 작성 스크립트  -->
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="formComment" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 
 <script>
 

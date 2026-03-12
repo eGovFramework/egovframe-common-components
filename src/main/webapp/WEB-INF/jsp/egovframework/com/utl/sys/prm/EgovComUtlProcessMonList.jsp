@@ -89,7 +89,7 @@
 					<input class="s_input2 vat" name="searchKeyword" type="text" value='${searchVO.searchKeyword}' size="35" title="검색어 입력" />
 					
 					<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fnSearch(); return false;" />
-					<span class="btn_b"><a href="<c:url value='/utl/sys/prm/EgovComUtlProcessMonRegist.do'/>" onclick="" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+					<span class="btn_b"><a href="<c:url value='/utl/sys/prm/EgovComUtlProcessMonRegistView.do'/>" onclick="" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
 					<input class="s_btn" type="submit" value='<spring:message code="button.log" />' title="<spring:message code="button.log" />" onclick="fnSearchLog(); return false;" />
 				</li>
 			</ul>

@@ -9,11 +9,11 @@ import com.github.scribejava.core.model.ParameterList;
 public class NaverAPI20 extends DefaultApi20 implements OAuthConfig {
 	private NaverAPI20() {
 	}
-	
+
 	private static class InstanceHolder {
 		private static final NaverAPI20 INSTANCE = new NaverAPI20();
 	}
-	
+
 	public static NaverAPI20 instance() {
 		return InstanceHolder.INSTANCE;
 	}
@@ -27,8 +27,9 @@ public class NaverAPI20 extends DefaultApi20 implements OAuthConfig {
 	protected String getAuthorizationBaseUrl() {
 		return NAVER_AUTH;
 	}
-	
-    public String getAuthorizationUrl(String responseType, String apiKey, String callback, String scope, String state,
+
+    @Override
+	public String getAuthorizationUrl(String responseType, String apiKey, String callback, String scope, String state,
             Map<String, String> additionalParams) {
         final ParameterList parameters = new ParameterList(additionalParams);
         parameters.add(OAuthConstants.RESPONSE_TYPE, responseType);

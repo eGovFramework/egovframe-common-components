@@ -17,7 +17,6 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
-import egovframework.com.uss.ion.isg.service.IntnetSvcGuidance;
 import egovframework.com.uss.ion.isg.service.IntnetSvcGuidanceVO;
 
 @Repository("intnetSvcGuidanceDAO")
@@ -52,26 +51,26 @@ public class IntnetSvcGuidanceDAO extends EgovComAbstractDAO {
 
 	/**
 	 * 인터넷서비스안내정보를 신규로 등록한다.
-	 * @param intnetSvcGuidance - 인터넷서비스안내 model
+	 * @param intnetSvcGuidanceVO - 인터넷서비스안내 VO
 	 */
-	public void insertIntnetSvcGuidance(IntnetSvcGuidance intnetSvcGuidance) throws Exception {
-		insert("intnetSvcGuidanceDAO.insertIntnetSvcGuidance", intnetSvcGuidance);
+	public void insertIntnetSvcGuidance(IntnetSvcGuidanceVO intnetSvcGuidanceVO) throws Exception {
+		insert("intnetSvcGuidanceDAO.insertIntnetSvcGuidance", intnetSvcGuidanceVO);
 	}
 
 	/**
 	 * 기 등록된 인터넷서비스안내정보를 수정한다.
-	 * @param intnetSvcGuidance - 인터넷서비스안내 model
+	 * @param intnetSvcGuidanceVO - 인터넷서비스안내 VO
 	 */
-	public void updateIntnetSvcGuidance(IntnetSvcGuidance intnetSvcGuidance) throws Exception {
-		update("intnetSvcGuidanceDAO.updateIntnetSvcGuidance", intnetSvcGuidance);
+	public void updateIntnetSvcGuidance(IntnetSvcGuidanceVO intnetSvcGuidanceVO) throws Exception {
+		update("intnetSvcGuidanceDAO.updateIntnetSvcGuidance", intnetSvcGuidanceVO);
 	}
 
 	/**
 	 * 기 등록된 인터넷서비스안내정보를 삭제한다.
-	 * @param intnetSvcGuidance - 인터넷서비스안내 model
+	 * @param intnetSvcGuidanceVO - 인터넷서비스안내 VO
 	 */
-	public void deleteIntnetSvcGuidance(IntnetSvcGuidance intnetSvcGuidance) throws Exception {
-		delete("intnetSvcGuidanceDAO.deleteIntnetSvcGuidance", intnetSvcGuidance);
+	public void deleteIntnetSvcGuidance(IntnetSvcGuidanceVO intnetSvcGuidanceVO) throws Exception {
+		delete("intnetSvcGuidanceDAO.deleteIntnetSvcGuidance", intnetSvcGuidanceVO);
 	}
 	
 	/**

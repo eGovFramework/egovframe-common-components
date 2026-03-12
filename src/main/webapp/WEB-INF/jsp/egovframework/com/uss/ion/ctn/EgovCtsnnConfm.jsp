@@ -25,7 +25,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -36,8 +35,7 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="ctsnnManage" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 
 	/* ********************************************************
@@ -56,7 +54,7 @@
 			
 			var tmp = retVal.split(",");		
 			
-			var varForm	= document.all["ctsnnManage"];
+			var varForm	= document.getElementById("ctsnnManageVO") || document.forms["ctsnnManageVO"];
 			
 			varForm.returnResn.value = tmp[0];						
  			varForm.confmAt.value = tmp[1]; 
@@ -115,8 +113,8 @@
 	<!-- 타이틀 -->
 	<h2><spring:message code="comUssIonCtn.ctsnnConfm.title"/></h2><!-- 경조사 승인 -->
 
-	<form:form modelAttribute="ctsnnManage" name="ctsnnManage" method="post" action="#LINK">
-	<div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="<spring:message code="comUssIonCtn.ctsnnConfm.submit"/>" title="<spring:message code="comUssIonCtn.ctsnnConfm.submit"/>"></div><!-- 전송 -->
+	<form:form modelAttribute="ctsnnManageVO" name="ctsnnManageVO" id="ctsnnManageVO" method="post" action="#LINK">
+	<div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value='<spring:message code="comUssIonCtn.ctsnnConfm.submit"/>' title='<spring:message code="comUssIonCtn.ctsnnConfm.submit"/>'></div><!-- 전송 -->
 	<form:hidden  path="ctsnnId"/>
 	<form:hidden  path="usid"/>
 	<form:hidden  path="ctsnnCd"/>
@@ -195,7 +193,7 @@
 		<tr>
 			<th><spring:message code="comUssIonCtn.ctsnnConfm.remark"/></th><!-- 비고 -->
 			<td class="left" colspan="3">
-			    <textarea id="remark" name="remark" class="txaClass" rows="4" cols="70" readonly title="<spring:message code="comUssIonCtn.ctsnnConfm.remark"/>"><c:out value='${ctsnnManageVO.remark}'/></textarea><!-- 비고 -->
+			    <textarea id="remark" name="remark" class="txaClass" rows="4" cols="70" readonly title='<spring:message code="comUssIonCtn.ctsnnConfm.remark"/>'><c:out value='${ctsnnManageVO.remark}'/></textarea><!-- 비고 -->
 			</td>
 		</tr>
 	</table>
@@ -211,8 +209,8 @@
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<c:if test="${ctsnnManageVO.confmAt eq 'A' }">
-			<input  id="confirmAgree" class="s_submit" type="submit" value="<spring:message code="comUssIonCtn.ctsnnConfm.agree"/>" onclick="fncConfmCtsnnManage(); return false;" /><!-- 승인 -->
-			<span class="btn_s"><a id="confirmDisAgree" title="<spring:message code="comUssIonCtn.ctsnnConfm.disagree"/>"><spring:message code="comUssIonCtn.ctsnnConfm.disagree"/></a></span><!-- 반려 -->
+			<input  id="confirmAgree" class="s_submit" type="submit" value='<spring:message code="comUssIonCtn.ctsnnConfm.agree"/>' onclick="fncConfmCtsnnManage(); return false;" /><!-- 승인 -->
+			<span class="btn_s"><a id="confirmDisAgree" title='<spring:message code="comUssIonCtn.ctsnnConfm.disagree"/>'><spring:message code="comUssIonCtn.ctsnnConfm.disagree"/></a></span><!-- 반려 -->
 	    </c:if>
 	    <span class="btn_s"><a href="<c:url value='/uss/ion/ctn/EgovCtsnnConfmList.do'/>?searchCondition=1" onclick="fncEgovCtsnnConfmList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>

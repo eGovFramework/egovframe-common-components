@@ -20,7 +20,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -31,8 +30,7 @@
 <link href="<c:url value="/css/egovframework/com/cmm/jqueryui.css"/>" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialog.js'/>"></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/uss/olp/mgt/EgovUtilMeetingManage.js' />"></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="meetingManageVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
 <script type="text/javaScript" language="javascript">
@@ -381,7 +379,7 @@ function fn_egov_SelectBoxValue(sbName)
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value="<spring:message code="button.create"/>" onclick="fn_egov_save_MeetingManage(); return false;" />
-		<span class="btn_s"><a href="<c:url value='/uss/olp/mgt/EgovMeetingManageList.do' />"><spring:message code="button.list"/></a></span>
+		<span class="btn_s"><a href="<c:url value='/uss/olp/mgt/EgovMeetingManageList.do' />" onclick=""><spring:message code="button.list"/></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

@@ -24,7 +24,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -32,13 +31,12 @@
 <title><spring:message code="comUssIonCtn.ctsnnRegist.title"/></title><!-- 경조사 등록 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
-<validator:javascript formName="ctsnnManage" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javaScript" language="javascript">
 
 	function initCalendar(){
@@ -84,54 +82,53 @@
 	 * 저장처리화면
 	 ******************************************************** */
 	function fncInsertEgovCtsnnManage() {
-	    var varFrom = document.getElementById("ctsnnManage");
-	    varFrom.action = "<c:url value='/uss/ion/ctn/insertCtsnnManage.do'/>";
+	    var varForm = document.getElementById("ctsnnManageVO") || document.forms["ctsnnManageVO"];
+	    if(!validateCtsnnManage(varForm)){           
+		return;
+	    }
 	    if(confirm("<spring:message code="common.save.msg" />")){/* 저장 하시겠습니까? */
-	        if(!validateCtsnnManage(varFrom)){           
-	            return;
-	        }else{
-	           varFrom.submit();
-	        } 
+	    	varForm.action = "<c:url value='/uss/ion/ctn/insertCtsnnManage.do'/>";
+	    	varForm.submit(); 
 	    }
 	}
 	
 	function modalDialogCallback(retVal) {
 		if(retVal != null){
-
 			var tmp = retVal.split(",");
-			document.ctsnnManage.usid.value = tmp[0];
-			document.getElementById("usNm").value=tmp[2];
-			document.getElementById("usOrgnztNm").value=tmp[3];
-			
-			document.ctsnnManage.action = "<c:url value='/uss/ion/ctn/EgovCtsnnRegist.do'/>";
+			var f = document.getElementById("ctsnnManageVO") || document.forms["ctsnnManageVO"];
+			if(!f) return;
+			f.sanctnerId.value = tmp[0];
+			document.getElementById("sanctnDtNm").value = tmp[2];
+			document.getElementById("orgnztNm").value = tmp[3];
 			$('.ui-dialog-content').dialog('close');
 		}
 	}
-	 $(document).ready(function () {
-	        $('#CtsnnRegist').click(function (e) {
-	        	e.preventDefault();
-	            
-	            var pagetitle = $(this).attr("title");
-	            var page = "<c:url value='/uss/ion/ism/selectSanctnerListNew.do'/>";
-	        	
-	            var $dialog = $('<div></div>')
-		            .html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="100%"></iframe>')
-		            .dialog({
-		            	autoOpen: false,
-		                modal: true,
-		                height: 750,
-		                width: 770,
-		                title: pagetitle
-		        	});
-	        	$dialog.dialog('open');
-	    	});
-		});	
+	function openCtsnnSanctnerDialog(title) {
+		var page = "<c:url value='/uss/ion/ism/selectSanctnerListNew.do'/>";
+		var $dialog = $('<div></div>')
+			.html('<iframe style="border: 0px; " src="' + page + '" width="100%" height="100%"></iframe>')
+			.dialog({
+				autoOpen: false,
+				modal: true,
+				height: 750,
+				width: 770,
+				title: title
+			});
+		$dialog.dialog('open');
+	}
+	$(document).ready(function () {
+		initCalendar();
+		$('#CtsnnSanctner').click(function (e) {
+			e.preventDefault();
+			openCtsnnSanctnerDialog($(this).attr("data-dialog-title"));
+		});
+	});	
 </script>
 </head>
-<body onLoad="initCalendar();">
+<body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
-<form:form modelAttribute="ctsnnManage" name="ctsnnManage" method="post" >
+<form:form modelAttribute="ctsnnManageVO" name="ctsnnManageVO" id="ctsnnManageVO" method="post" >
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -147,21 +144,17 @@
 			<col style="" />
 		</colgroup>
 		<tr>
-			<th><spring:message code="comUssIonCtn.ctsnnRegist.usNm"/> <span class="pilsu">*</span></th><!-- 신청자 -->
+			<th><spring:message code="comUssIonCtn.ctsnnRegist.usNm"/></th><!-- 신청자 -->
 			<td class="left">
-			    <input name="usNm" id="usNm" type="text" title="<spring:message code="comUssIonCtn.ctsnnRegist.ctsnnApply"/>" readonly="readonly" style="width:128px" /><!-- 경조신청자 -->
-		        <form:hidden path="usid"/>
-			    <span class="link">
-			    <a id="CtsnnRegist" title="<spring:message code="comUssIonRwd.common.searchNm"/>" style="selector-dummy: expression(this.hideFocus=false);"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif' />"
-	     			style="vertical-align: middle" alt="<spring:message code="comUssIonCtn.ctsnnRegist.ctsnnApply"/>" title="<spring:message code="comUssIonCtn.ctsnnRegist.ctsnnApply"/>"></a><!-- 경조신청자 -->
-	     		</span>
+			    <c:out value='${ctsnnManageVO.usNm != null ? ctsnnManageVO.usNm : ""}'/>
 			</td>
 			<th><spring:message code="comUssIonCtn.ctsnnRegist.usOrgnztNm"/></th><!-- 소속 -->
 			<td class="left">
-			    <input name="usOrgnztNm" id="usOrgnztNm" type="text" value="" title="<spring:message code="comUssIonCtn.ctsnnRegist.usOrgnztNm"/>" readonly="readonly"/>
+			    <c:out value='${ctsnnManageVO.orgnztNm != null ? ctsnnManageVO.orgnztNm : ""}'/>
 			</td>
 		</tr>
 	</table>
+	<form:hidden path="usid"/>
 
 	<!-- 등록폼 -->
 	<table class="wTable mb20">
@@ -174,7 +167,8 @@
 		<tr>
 			<th><spring:message code="comUssIonCtn.ctsnnRegist.ctsnnNm"/> <span class="pilsu">*</span></th><!-- 경조명 -->
 			<td class="left" colspan="3">
-			    <form:input  path="ctsnnNm" title="경조명" maxlength="100" />
+			    <form:input path="ctsnnNm" title="경조명" maxlength="100" />
+			    <div><form:errors path="ctsnnNm" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
@@ -183,16 +177,19 @@
 			    <form:select path="ctsnnCd" title="경조구분">
 			      <form:options items="${ctsnnCodeList}" itemValue="code" itemLabel="codeNm"/>
 		      </form:select>
+			    <div><form:errors path="ctsnnCd" cssClass="error" /></div>
 			</td>
 			<th><spring:message code="comUssIonCtn.ctsnnRegist.occrrDe"/> <span class="pilsu">*</span></th><!-- 발생일 -->
 			<td class="left">
-			    <form:input path="occrrDe" title="경조 발생일" maxlength="10" readonly="true"  cssStyle="width:70px"/>
+			    <form:input path="occrrDe" title="경조 발생일" maxlength="10" readonly="true" cssStyle="width:70px"/>
+			    <div><form:errors path="occrrDe" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUssIonCtn.ctsnnRegist.trgterNm"/> <span class="pilsu">*</span></th><!-- 대상자명 -->
 			<td class="left" colspan="3">
-			    <form:input  path="trgterNm" title="대상자명" maxlength="20" />
+			    <form:input path="trgterNm" title="대상자명" maxlength="20" />
+			    <div><form:errors path="trgterNm" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
@@ -201,29 +198,53 @@
 			    <form:select path="relate" title="관계">
 			      <form:options items="${relateCodeList}" itemValue="code" itemLabel="codeNm"/>
 		      </form:select>
+			    <div><form:errors path="relate" cssClass="error" /></div>
 			</td>
 			<th><spring:message code="comUssIonCtn.ctsnnRegist.brth"/> <span class="pilsu">*</span></th><!-- 생년월일 -->
 			<td class="left">
-			    <form:input path="brth" title="생년월일" maxlength="10" readonly="true"  cssStyle="width:70px"/>
+			    <form:input path="brth" title="생년월일" maxlength="10" readonly="true" cssStyle="width:70px"/>
+			    <div><form:errors path="brth" cssClass="error" /></div>
+			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUssIonCtn.ctsnnRegist.remark"/> </th><!-- 비고 -->
 			<td class="left" colspan="3">
 			    <form:textarea path="remark" rows="4" cols="70" cssClass="txaClass" title="비고"/>
-      			<form:errors   path="remark"/>
+			    <div><form:errors path="remark" cssClass="error" /></div>
 			</td>
 		</tr>
 	</table>
 	
 	<h3 class="tit02" style="margin:0 0 5px 0"><spring:message code="comUssIonCtn.ctsnnRegist.infrmlSanctnId"/></h3><!-- 결재권자 -->
 	
-	<!-- 결재권자 지정 Include -->
-	<c:import url="/WEB-INF/jsp/egovframework/com/uss/ion/ism/EgovInfrmlSanctnRegist.jsp" charEncoding="utf-8"/>
-	<!-- //결재권자 지정 Include -->
+	<table class="wTable mb10">
+		<colgroup>
+			<col style="width:16%" />
+			<col style="width:34%" />
+			<col style="width:16%" />
+			<col style="" />
+		</colgroup>
+		<tr>
+			<th><spring:message code="comUssIonCtn.ctsnnRegist.infrmlSanctnNm"/> <span class="pilsu">*</span></th><!-- 결재권자명 -->
+			<td class="left">
+			    <input name="sanctnDtNm" id="sanctnDtNm" type="text" value="<c:out value='${ctsnnManageVO.sanctnerNm}'/>" title='<spring:message code="comUssIonCtn.ctsnnRegist.infrmlSanctnNm"/>' readonly="readonly" style="width:128px" /><!-- 결재권자명 -->
+		        <form:hidden path="sanctnerId" id="sanctnerId"/>
+			    <span class="link">
+			    <a id="CtsnnSanctner" href="#LINK" title='<spring:message code="comUssIonRwd.common.searchNm"/>' data-dialog-title="<spring:message code="comUssIonCtn.ctsnnRegist.infrmlSanctnId"/>" style="selector-dummy: expression(this.hideFocus=false);">
+			    <img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif' />" style="vertical-align: middle" alt='<spring:message code="comUssIonCtn.ctsnnRegist.infrmlSanctnNm"/>' title='<spring:message code="comUssIonCtn.ctsnnRegist.infrmlSanctnNm"/>'></a><!-- 결재권자 지정 -->
+			    </span>
+			    <div><form:errors path="sanctnerId" cssClass="error" /></div>
+			</td>
+			<th><spring:message code="comUssIonCtn.ctsnnRegist.usOrgnztNm"/></th><!-- 소속 -->
+			<td class="left">
+			    <input name="orgnztNm" id="orgnztNm" type="text" value="<c:out value='${ctsnnManageVO.sanctnerOrgnztNm}'/>" title='<spring:message code="comUssIonCtn.ctsnnRegist.usOrgnztNm"/>' readonly="readonly"/>
+			</td>
+		</tr>
+	</table>
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<input class="s_submit" type="submit" value="<spring:message code="button.save" />" onclick="fncInsertEgovCtsnnManage(); return false;" /><!-- 저장 -->
+		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fncInsertEgovCtsnnManage(); return false;" /><!-- 저장 -->
 		<span class="btn_s"><a href="<c:url value='/uss/ion/ctn/selectCtsnnManageList.do'/>?searchCondition=1" onclick="fncEgovCtsnnManageList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>

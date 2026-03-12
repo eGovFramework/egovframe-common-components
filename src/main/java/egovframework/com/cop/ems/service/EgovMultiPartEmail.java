@@ -1,11 +1,11 @@
 package egovframework.com.cop.ems.service;
 
 import java.io.Serializable;
+import java.time.Duration;
 
-import org.apache.commons.mail.DefaultAuthenticator;
-import org.apache.commons.mail.EmailAttachment;
-import org.apache.commons.mail.EmailException;
-import org.apache.commons.mail.MultiPartEmail;
+import org.apache.commons.mail2.core.EmailException;
+import org.apache.commons.mail2.jakarta.EmailAttachment;
+import org.apache.commons.mail2.jakarta.MultiPartEmail;
 
 /**
  * 발송메일에 첨부파일용으로 사용되는 VO 클래스
@@ -94,9 +94,10 @@ public class EgovMultiPartEmail implements Serializable {
 		email.setStartTLSEnabled(true);
 		// 2022.11.11 시큐어코딩 처리
 		email.setSSLCheckServerIdentity(true);
-		email.setAuthenticator(new DefaultAuthenticator(this.id, this.password));
-		email.setSocketConnectionTimeout(60000);
-		email.setSocketTimeout(60000);
+		//email.setAuthenticator(new DefaultAuthenticator(this.id, this.password));
+		email.setAuthentication(this.id, this.password);
+		email.setSocketConnectionTimeout(Duration.ofMillis(60000));
+		email.setSocketTimeout(Duration.ofMillis(60000));
 		email.setFrom(this.emailAddress, this.senderName);
 
 		return email.send();
@@ -115,9 +116,10 @@ public class EgovMultiPartEmail implements Serializable {
 		email.setStartTLSEnabled(true);
 		// 2022.11.11 시큐어코딩 처리
 		email.setSSLCheckServerIdentity(true);
-		email.setAuthenticator(new DefaultAuthenticator(this.id, this.password));
-		email.setSocketConnectionTimeout(60000);
-		email.setSocketTimeout(60000);
+		//email.setAuthenticator(new DefaultAuthenticator(this.id, this.password));
+		email.setAuthentication(this.id, this.password);
+		email.setSocketConnectionTimeout(Duration.ofMillis(60000));
+		email.setSocketTimeout(Duration.ofMillis(60000));
 		email.setFrom(this.emailAddress, this.senderName);
 		email.addTo(addTo);
 		email.setSubject(subject);

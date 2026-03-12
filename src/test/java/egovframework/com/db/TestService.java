@@ -1,14 +1,17 @@
 package egovframework.com.db;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
+
 import java.util.List;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,9 +26,10 @@ import egovframework.com.uss.olh.hpc.service.HpcmVO;
  * @see
  * <pre>
  *
- *  수정일              수정자          수정내용
+ *  수정일        수정자      수정내용
  *  ----------  --------  ---------------------------
- *  2019.04.23  신용호          최초 생성
+ *  2019.04.23  신용호      최초 생성
+ *  2026.01.26  신용호      JUnit 4 => JUnit 5 마이그레이션
  *
  * @ 특징
    - 사용자 지원 도움말 DB Insert 테스트
@@ -33,7 +37,7 @@ import egovframework.com.uss.olh.hpc.service.HpcmVO;
  * </pre>
  */
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = { 
 		"file:src/main/resources/egovframework/spring/com/context-*.xml",
 		"file:src/main/resources/egovframework/spring/com/idgn/context-*.xml"
@@ -47,7 +51,7 @@ public class TestService {
     private EgovHpcmService egovHpcmService;
 	
 	@Test
-	public void test() throws Exception {
+	void test() throws Exception {
 		//fail("Not yet implemented");
 		//mockMvc.perform(MockMvcRequestBuilders.get("/cmm/main/mainPage.do"));
 		//mockMvc.perform(MockMvcRequestBuilders.get("/cmm/main/mainPage.do"));
@@ -62,7 +66,7 @@ public class TestService {
 	// 도움말 Insert 테스트
 	@Test
 	@Transactional
-	public void insertHpcmCn() throws Exception {
+	void insertHpcmCn() throws Exception {
 
 		HpcmVO hpcmVO = new HpcmVO();
 		hpcmVO.setHpcmDf("테스트 title -5");
@@ -71,10 +75,14 @@ public class TestService {
     	hpcmVO.setFrstRegisterId("USRCNFRM_00000000000");		// 최초등록자ID
     	hpcmVO.setLastUpdusrId("USRCNFRM_00000000000");    	// 최종수정자ID
 		
+		// 정상적인 1자리 코드로 Insert 성공
 		egovHpcmService.insertHpcm(hpcmVO);
-		// induce length error
+		
+		// induce length error: HPCM_SE_CODE는 char(1)이므로 2자리 문자열은 오류 발생해야 함
 		hpcmVO.setHpcmSeCode("11");
-		egovHpcmService.insertHpcm(hpcmVO);
+		assertThrows(DataIntegrityViolationException.class, () -> {
+			egovHpcmService.insertHpcm(hpcmVO);
+		}, "HPCM_SE_CODE 컬럼은 char(1)이므로 2자리 이상의 값은 DataIntegrityViolationException이 발생해야 합니다.");
 	}
 	
 }

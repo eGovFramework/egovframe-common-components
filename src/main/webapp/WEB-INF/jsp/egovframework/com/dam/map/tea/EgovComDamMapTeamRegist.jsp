@@ -24,7 +24,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 	<head>
@@ -35,9 +34,7 @@
 		<link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 		<script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 		<script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
-		<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-		<validator:javascript formName="mapTeam" staticJavascript="false" xhtml="true" cdata="false"/>
-		
+		<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 		<script type="text/javaScript" language="javascript">
 		<!--
 		function initCalendar(){
@@ -81,9 +78,10 @@
 		 ******************************************************** */
 		 function fn_egov_regist_MapTeam(form){
 			if(confirm("<spring:message code="common.save.msg" />")){
-				if(!validateMapTeam(form)){ 			
+				if(!validateMapTeam(form)){
 					return;
 				}else{
+					form.action = "<c:url value='/dam/map/tea/EgovComDamMapTeamRegist.do'/>";
 					form.submit();
 				}
 			}
@@ -132,6 +130,7 @@
 			<td class="left">
 				<input id="clYmd" name="clYmd" type="hidden" value=""/>
 				<input id="vclYmd" name="vclYmd" type="text" title="<spring:message code='comDamMapTea.comDamMapTeamRegist.clYmd'/>" value="" maxlength="10" readonly="readonly" style="width:70px"/><!-- 분류일자 -->
+				<form:errors path="clYmd"/>
 			</td>
 		</tr>
 	</table>
@@ -144,7 +143,6 @@
 	<div style="clear:both;"></div>
 	</div>
 
-	<input name="cmd" type="hidden" value="<c:out value='save'/>">
 	</form:form>
 		
 	</body>

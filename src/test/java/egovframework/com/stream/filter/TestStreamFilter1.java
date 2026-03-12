@@ -24,7 +24,6 @@ import java.util.stream.Collectors;
 public class TestStreamFilter1 {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		ArrayList<String> list = new ArrayList<>(Arrays.asList("Apple","Banana","Melon","Grape","Strawberry"));
 		List<String> newList = list.stream().filter(t->t.length()>5).collect(Collectors.toList());
 		System.out.println("list size = "+newList.size());

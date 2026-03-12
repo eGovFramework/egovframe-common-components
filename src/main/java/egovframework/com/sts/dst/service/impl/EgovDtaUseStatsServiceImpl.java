@@ -25,15 +25,13 @@
 package egovframework.com.sts.dst.service.impl;
 
 import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
 
 import org.aspectj.lang.JoinPoint;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
@@ -41,6 +39,8 @@ import egovframework.com.sts.dst.service.DtaUseStats;
 import egovframework.com.sts.dst.service.DtaUseStatsVO;
 import egovframework.com.sts.dst.service.EgovDtaUseStatsService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 
 @Service("egovDtaUseStatsService")
 public class EgovDtaUseStatsServiceImpl extends EgovAbstractServiceImpl implements EgovDtaUseStatsService {
@@ -59,6 +59,7 @@ public class EgovDtaUseStatsServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @param dtaUseStatsVO - 자료이용현황 VO
 	 * @return List - 자료이용현황 목록
 	 */
+	@Override
 	public List<DtaUseStatsVO> selectDtaUseStatsList(DtaUseStatsVO dtaUseStatsVO) throws Exception {
 		return dtaUseStatsDAO.selectDtaUseStatsList(dtaUseStatsVO);
 	}
@@ -68,6 +69,7 @@ public class EgovDtaUseStatsServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @param dtaUseStatsVO - 자료이용현황 VO
 	 * @return int
 	 */
+	@Override
 	public int selectDtaUseStatsListTotCnt(DtaUseStatsVO dtaUseStatsVO) throws Exception {
 		return dtaUseStatsDAO.selectDtaUseStatsListTotCnt(dtaUseStatsVO);
 	}
@@ -77,6 +79,7 @@ public class EgovDtaUseStatsServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @param dtaUseStatsVO - 자료이용현황 VO
 	 * @return int
 	 */
+	@Override
 	public int selectDtaUseStatsListBarTotCnt(DtaUseStatsVO dtaUseStatsVO) throws Exception {
 		return dtaUseStatsDAO.selectDtaUseStatsListBarTotCnt(dtaUseStatsVO);
 	}
@@ -86,6 +89,7 @@ public class EgovDtaUseStatsServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @param dtaUseStatsVO - 자료이용현황 VO
 	 * @return reprtStatsVO - 자료이용현황 VO
 	 */
+	@Override
 	public List<DtaUseStatsVO> selectDtaUseStats(DtaUseStatsVO dtaUseStatsVO) throws Exception {
 		return dtaUseStatsDAO.selectDtaUseStats(dtaUseStatsVO);
 	}
@@ -95,19 +99,30 @@ public class EgovDtaUseStatsServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @param dtaUseStatsVO - 자료이용현황 VO
 	 * @return int
 	 */
+	@Override
 	public int selectDtaUseStatsTotCnt(DtaUseStatsVO dtaUseStatsVO) throws Exception {
 		return dtaUseStatsDAO.selectDtaUseStatsTotCnt(dtaUseStatsVO);
 	}
 
 	/**
-	 * 자료이용현황 정보를 생성한다.
+	 * 자료이용현황 정보를 생성한다. (파일 다운로드 AOP용)
 	 * @param jp - AOP의 pointcut을 위한 JoinPoint
-	 * @param dtaUseStats - 자료이용현황 model
 	 */
-    public void insertDtaUseStats(JoinPoint jp, @RequestParam Map<String, Object> commandMap) throws Exception {
+	@Override
+	public void insertDtaUseStats(JoinPoint jp) throws Exception {
 
-    	String atchFileId = (String)commandMap.get("atchFileId");
-    	String fileSn = (String)commandMap.get("fileSn");
+		// Request attribute에서 복호화된 값 가져오기
+		ServletRequestAttributes servletRequestAttributes =
+			(ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		HttpServletRequest request = servletRequestAttributes.getRequest();
+
+		String atchFileId = (String) request.getAttribute("decrypted_atchFileId");
+		String fileSn = (String) request.getAttribute("decrypted_fileSn");
+
+		// 복호화된 값이 없으면 통계 기록하지 않음 (게시판 외 다운로드)
+		if (atchFileId == null || fileSn == null) {
+			return;
+		}
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
@@ -124,8 +139,8 @@ public class EgovDtaUseStatsServiceImpl extends EgovAbstractServiceImpl implemen
 			vo.setDtaUseStatsId(egovDtaUseStatsIdGnrService.getNextStringId());
 			vo.setBbsId(dtaUseStats.getBbsId());
 			vo.setNttId(dtaUseStats.getNttId());
-	        vo.setAtchFileId(atchFileId);
-	        vo.setFileSn(fileSn);
+			vo.setAtchFileId(atchFileId);
+			vo.setFileSn(fileSn);
 			vo.setUserId(id);
 
 			dtaUseStatsDAO.insertDtaUseStats(vo);
@@ -137,6 +152,7 @@ public class EgovDtaUseStatsServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @param dtaUseStatsVO - 자료이용현황 VO
 	 * @return List - 등록일자별 자료이용현황 목록
 	 */
+	@Override
 	public List<DtaUseStatsVO> selectDtaUseStatsBarList(DtaUseStatsVO dtaUseStatsVO) throws Exception {
 		return dtaUseStatsDAO.selectDtaUseStatsBarList(dtaUseStatsVO);
 	}

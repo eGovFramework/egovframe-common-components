@@ -1,5 +1,8 @@
 package egovframework.com.dam.app.service;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 개요
  * - 지식정보평가에 대한 model 클래스를 정의한다.
@@ -19,6 +22,8 @@ public class KnoAppraisal {
 	/**
 	 * 소속조직ID
 	 */
+	@EgovNullCheck
+	@Size(max=20)
 	private String orgnztId;
 	/**
 	 * 소속조직명
@@ -39,6 +44,8 @@ public class KnoAppraisal {
 	/**
 	 * 지식유형코드
 	 */
+	@EgovNullCheck
+	@Size(max=3)
 	private String knoTypeCd;
 	/**
 	 * 지식유형명
@@ -47,18 +54,26 @@ public class KnoAppraisal {
 	/**
 	 * 지식명
 	 */
+	@EgovNullCheck
+	@Size(max=60)
 	private String knoNm;
 	/**
 	 * 지식내용
 	 */
+	@EgovNullCheck
+	@Size(max=2500)
 	private String knoCn;
 	/**
 	 * 지식평가
 	 */
+	@EgovNullCheck
+	@Size(max=1)
 	private String knoAps;
 	/**
 	 * 평가일자
 	 */
+	@EgovNullCheck
+	@Size(max=10)
 	private String appYmd;	
 	/**
 	 * 개인지식공개여부

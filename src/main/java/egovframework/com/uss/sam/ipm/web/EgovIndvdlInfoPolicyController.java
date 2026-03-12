@@ -3,19 +3,16 @@ package egovframework.com.uss.sam.ipm.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -25,6 +22,8 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.sam.ipm.service.EgovIndvdlInfoPolicyService;
 import egovframework.com.uss.sam.ipm.service.IndvdlInfoPolicy;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * 개인정보보호정책를 처리하는 Controller Class 구현
@@ -48,9 +47,6 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  */
 @Controller
 public class EgovIndvdlInfoPolicyController {
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
@@ -151,11 +147,13 @@ public class EgovIndvdlInfoPolicyController {
 	 */
 	@RequestMapping(value = "/uss/sam/ipm/updtIndvdlInfoPolicyView.do")
 	public String egovIndvdlInfoPolicyModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@ModelAttribute("indvdlInfoPolicy") IndvdlInfoPolicy indvdlInfoPolicy, ModelMap model) throws Exception {
+			@ModelAttribute("indvdlInfoPolicy") IndvdlInfoPolicy indvdlInfoPolicy, 
+			RedirectAttributes redirectAttributes,
+			ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
@@ -179,17 +177,17 @@ public class EgovIndvdlInfoPolicyController {
 	 */
 	@RequestMapping(value = "/uss/sam/ipm/updtIndvdlInfoPolicy.do")
 	public String egovIndvdlInfoPolicyModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<?, ?> commandMap, @ModelAttribute("indvdlInfoPolicy") IndvdlInfoPolicy indvdlInfoPolicy,
-			BindingResult bindingResult, ModelMap model) throws Exception {
+			@RequestParam Map<?, ?> commandMap, @Valid @ModelAttribute("indvdlInfoPolicy") IndvdlInfoPolicy indvdlInfoPolicy,
+			BindingResult bindingResult,
+			RedirectAttributes redirectAttributes,
+			ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		// 서버 validate 체크
-		beanValidator.validate(indvdlInfoPolicy, bindingResult);
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/uss/sam/ipm/EgovIndvdlInfoPolicyUpdt";
 		}
@@ -218,11 +216,13 @@ public class EgovIndvdlInfoPolicyController {
 	 */
 	@RequestMapping(value = "/uss/sam/ipm/registIndvdlInfoPolicyView.do")
 	public String egovIndvdlInfoPolicyRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@ModelAttribute("indvdlInfoPolicy") IndvdlInfoPolicy indvdlInfoPolicy, ModelMap model) throws Exception {
+			@ModelAttribute("indvdlInfoPolicy") IndvdlInfoPolicy indvdlInfoPolicy,
+			RedirectAttributes redirectAttributes,
+			ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
@@ -242,17 +242,17 @@ public class EgovIndvdlInfoPolicyController {
 	 */
 	@RequestMapping(value = "/uss/sam/ipm/registIndvdlInfoPolicy.do")
 	public String egovIndvdlInfoPolicyRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<?, ?> commandMap, @ModelAttribute("indvdlInfoPolicy") IndvdlInfoPolicy indvdlInfoPolicy,
-			BindingResult bindingResult, ModelMap model) throws Exception {
+			@RequestParam Map<?, ?> commandMap, @Valid @ModelAttribute("indvdlInfoPolicy") IndvdlInfoPolicy indvdlInfoPolicy,
+			BindingResult bindingResult,
+			RedirectAttributes redirectAttributes,
+			ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		// 서버 validate 체크
-		beanValidator.validate(indvdlInfoPolicy, bindingResult);
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/uss/sam/ipm/EgovIndvdlInfoPolicyRegist";
 		}

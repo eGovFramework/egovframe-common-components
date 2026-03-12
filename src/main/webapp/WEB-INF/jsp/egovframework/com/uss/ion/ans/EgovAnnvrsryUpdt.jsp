@@ -5,7 +5,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%
 
 /**
@@ -38,8 +37,7 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="annvrsryManage" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 <!--
 
@@ -69,7 +67,7 @@ function fncSelectAnnvrsryManageList() {
 /*설명 : 기념일 수정처리*/
 function fncUpdateAnnvrsry() {
     var varFrom = document.getElementById("annvrsryManage");
-    varFrom.action = "<c:url value='/uss/ion/ans/updateAnnvrsryManage.do'/>";
+    varFrom.action = "<c:url value='/uss/ion/ans/updateAnnvrsryManage.do' />";
 
     if(confirm("<spring:message code="common.save.msg" />")){/* 저장 하시겠습니까? */
         if(!validateAnnvrsryManage(varFrom)){           
@@ -107,11 +105,11 @@ function fncUpdateAnnvrsry() {
 		<tr>
 			<th><spring:message code="comUssIonAns.common.annvrsryTemp1"/> <span class="pilsu">*</span></th><!-- 신청자 -->
 			<td class="left">
-			    <c:out value="${annvrsryManageVO.annvrsryTemp1      }"/>
+			    <input name="annvrsryTemp1" id="annvrsryTemp1" type="text" value="<c:out value='${annvrsryManageVO.annvrsryTemp1}'/>" size="30" class="readOnlyClass" title="<spring:message code="comUssIonAns.common.userName"/>" readonly="readonly" style="width:128px" /><!-- 신청자명 -->
 			</td>
 			<th><spring:message code="comUssIonAns.common.annvrsryTemp2"/> <span class="pilsu">*</span></th><!-- 소속 -->
 			<td class="left">
-			    <c:out value="${annvrsryManageVO.annvrsryTemp2      }"/>
+			    <input name="annvrsryTemp2" id="annvrsryTemp2" type="text" value="<c:out value='${annvrsryManageVO.annvrsryTemp2}'/>" size="30" class="readOnlyClass" title="<spring:message code="comUssIonAns.common.annvrsryTemp2"/>" readonly="readonly" style="width:128px" /><!-- 소속 -->
 			</td>
 		</tr>
 		<tr>
@@ -127,7 +125,8 @@ function fncUpdateAnnvrsry() {
 				<form:input  path="annvrsryDe" maxlength="10" readonly="true"  title="기념일" cssStyle="width:70px" />
 				<spring:message code="comUssIonAns.common.cldrSe1"/> : <form:radiobutton path="cldrSe"  value="1" title="${cldrSe1}"/>&nbsp;<!-- 양력 -->
 				<spring:message code="comUssIonAns.common.cldrSe2"/> : <form:radiobutton path="cldrSe"  value="2" title="${cldrSe2}"/><!-- 음력 -->
-				<br/><form:errors path="cldrSe" />
+				<br/>
+				<div><form:errors path="cldrSe" cssClass="error" /></div>
 				&nbsp;&nbsp;<spring:message code="comUssIonAns.common.reptitSeEvery"/> : <input type="checkbox" name="reptitSe" id="reptitSe" title="<spring:message code="comUssIonAns.common.reptitSe"/>" value="1" <c:if test="${'1' eq annvrsryManageVO.reptitSe}">checked</c:if> style="vertical-align:-2px" /><!-- 매년반복 : --> <!-- 반복여부 -->
 			</td>
 		</tr>
@@ -136,14 +135,15 @@ function fncUpdateAnnvrsry() {
 			<td class="left" colspan="3">
 			    <c:set var="annvrsryNm"><spring:message code="comUssIonAns.common.annvrsryNm"/></c:set>
 				<form:input  path="annvrsryNm" size="80" maxlength="255" title="${annvrsryNm}"/>
-      			<form:errors path="annvrsryNm"/>
+				<div><form:errors path="annvrsryNm" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUssIonAns.common.memo"/> <span class="pilsu">*</span></th><!-- 메모 -->
 			<td class="left" colspan="3">
 			    <c:set var="memo"><spring:message code="comUssIonAns.common.memo"/></c:set>
-			    <textarea name="memo" id="memo" style="width:95%;height:100px;" title="${memo}"><c:out value="${annvrsryManageVO.memo      }"   escapeXml="false"/></textarea>
+			    <textarea name="memo" id="memo" style="width:95%;height:100px;" title="${memo}"><c:out value="${annvrsryManageVO.memo}"   escapeXml="false"/></textarea>
+			    <div><form:errors path="memo" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>

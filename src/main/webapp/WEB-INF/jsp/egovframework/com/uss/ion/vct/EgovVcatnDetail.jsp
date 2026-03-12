@@ -25,7 +25,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -33,7 +32,6 @@
 <title><spring:message code="comUssIonVct.vcatnManageDetail.title"/></title><!-- 휴가상세조회 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<validator:javascript formName="vcatnManage" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javaScript" language="javascript">
 <!--
 /* ********************************************************
@@ -70,9 +68,6 @@ function fncEgovVcatnManageList(){
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
 <div class="wTableFrm">
-	<!-- 타이틀 -->
-	<h2 class=""><spring:message code="comUssIonVct.vcatnManageDetail.title"/></h2><!-- 휴가상세조회 -->
-
 	<form name="vcatnManage" id="vcatnManage" method="post" >
 	<div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="전송" title="전송"></div>
 		<input type="hidden" name="applcntId" value="<c:out value='${vcatnManageVO.applcntId}'/>"/>
@@ -82,13 +77,17 @@ function fncEgovVcatnManageList(){
 		<input type="hidden" name="occrrncYear" value="<c:out value='${vcatnManageVO.occrrncYear}'/>"/>
 		<input type="hidden" name="cmd"       value="updt"/>
 	</form>
+	<!-- 타이틀 -->
+	<h2 class=""><spring:message code="comUssIonVct.vcatnManageDetail.title"/></h2><!-- 휴가상세조회 -->
 
-	<h3 class="tit02" style="margin:0 0 5px 0"><spring:message code="comUssIonVct.vcatnManageDetail.vcatnApply"/></h3><!-- 휴가신청 -->
-	<!-- 등록폼 -->
-	<table class="wTable mb20">
+
+
+	<h3 class="tit02" style="margin:0 0 5px 0"><spring:message code="comUssIonVct.vcatnManageDetail.vcatnApply"/></h3><!-- 휴가 신청자 -->
+	
+	<table class="wTable mb10">
 		<colgroup>
 			<col style="width:16%" />
-			<col style="" />
+			<col style="width:34%" />
 			<col style="width:16%" />
 			<col style="" />
 		</colgroup>
@@ -102,6 +101,16 @@ function fncEgovVcatnManageList(){
 			    <c:out value='${vcatnManageVO.orgnztNm}'/>
 			</td>
 		</tr>
+	</table>
+
+	<!-- 등록폼 -->
+	<table class="wTable mb20">
+		<colgroup>
+			<col style="width:16%" />
+			<col style="" />
+			<col style="width:16%" />
+			<col style="" />
+		</colgroup>
 		<tr>
 		<th><spring:message code="comUssIonVct.common.vcatnTotalInfo"/></th><!-- 신청자 연차정보 -->
 			<td class="left" colspan="4">
@@ -137,19 +146,27 @@ function fncEgovVcatnManageList(){
 		</tr>
 		<tr>
 			<th><spring:message code="comUssIonVct.common.vcatnResn"/> <span class="pilsu">*</span></th><!-- 휴가사유 -->
-			<td class="left" colspan="3">
-			    <textarea id="remark" name="vcatnResn" class="txta01" rows="4" cols="70" title="<spring:message code="comUssIonVct.common.vcatnResn"/>" readonly="readonly"><c:out value='${vcatnManageVO.vcatnResn}' escapeXml="false" /></textarea><!-- 휴가사유 -->
+			<td class="left" colspan="3"><c:out value='${vcatnManageVO.vcatnResn}'/><!-- 휴가사유 -->
 			</td>
 		</tr>
 	</table>	
 	
 	<h3 class="tit02" style="margin:0 0 5px 0"><spring:message code="comUssIonVct.common.infrmlSanctnRegist"/></h3><!-- 결재권자 -->
 	
-	<!-- 결재권자 정보 Include -->
-	<c:import url="/uss/ion/ism/selectInfrmlSanctn.do" charEncoding="utf-8"> 
-		<c:param name="infrmlSanctnId" value="${vcatnManageVO.infrmlSanctnId}"/>
-	</c:import>
-	<!-- //결재권자 정보 Include -->
+	<table class="wTable mb10">
+		<colgroup>
+			<col style="width:16%" />
+			<col style="width:34%" />
+			<col style="width:16%" />
+			<col style="width:34%" />
+		</colgroup>
+		<tr>
+			<th><spring:message code="comUssIonVct.common.sanctnDtNm"/> <span class="pilsu">*</span></th><!-- 결재권자명 -->
+			<td class="left"><c:out value='${vcatnManageVO.sanctnerNm}'/><input type="hidden" name="sanctnerId" id="sanctnerId" value="<c:out value='${vcatnManageVO.sanctnerId}'/>"/></td>
+			<th><spring:message code="comUssIonVct.common.orgnztNm"/></th><!-- 소속 -->
+			<td class="left"><c:out value='${vcatnManageVO.sanctnerOrgnztNm}'/></td>
+		</tr>
+	</table>
 
 	<!-- 하단 버튼 -->
 	<div class="btn">

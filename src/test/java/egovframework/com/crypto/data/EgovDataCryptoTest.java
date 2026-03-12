@@ -1,6 +1,8 @@
 package egovframework.com.crypto.data;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.io.BufferedInputStream;
 import java.io.ByteArrayOutputStream;
@@ -11,15 +13,14 @@ import java.math.BigDecimal;
 import java.security.DigestOutputStream;
 import java.security.MessageDigest;
 
-import javax.annotation.Resource;
+import jakarta.annotation.Resource;
 
-import org.egovframe.rte.fdl.cryptography.EgovCryptoService;
-import org.egovframe.rte.fdl.cryptography.EgovDigestService;
-import org.junit.Assert;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.egovframe.rte.fdl.crypto.EgovCryptoService;
+import org.egovframe.rte.fdl.crypto.EgovDigestService;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 /**
  * ID Generation Test Class 구현
@@ -29,9 +30,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * @see
  * <pre>
  *
- *  수정일              수정자          수정내용
+ *  수정일        수정자      수정내용
  *  ----------  --------  ---------------------------
- *  2019.11.28  신용호          최초 생성
+ *  2019.11.28  신용호      최초 생성
+ *  2026.01.26  신용호      JUnit 4 => JUnit 5 마이그레이션
  *
  * # WIKI 가이드
  * https://www.egovframe.go.kr/wiki/doku.php?id=egovframework:rte2:fdl:encryption_decryption
@@ -39,7 +41,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
  * </pre>
  */
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations = {
 	"classpath*:egovframework/spring/com/test-context-common.xml"
     ,"classpath*:egovframework/spring/com/test-context-crypto-data.xml"
@@ -59,7 +61,7 @@ public class EgovDataCryptoTest {
     
     //Encryption texts Guide Program
     @Test
-    public void testString() {
+    void testString() {
     	
 		String[] testString = {
 			"This is a testing...\nHello!",
@@ -80,13 +82,13 @@ public class EgovDataCryptoTest {
 		    }
 		} catch (UnsupportedEncodingException uee) {
 		    uee.printStackTrace();
-		    Assert.fail();
+		    fail();
 		}
     }
     
     //Encryption File Guide Program
     @Test
-    public void testFile() {
+    void testFile() {
 
     	String filePath = "/egovframework/data/sample.png";
         File srcFile = new File(this.getClass().getResource(filePath).getFile());
@@ -104,17 +106,16 @@ public class EgovDataCryptoTest {
      
             cryptoService.decrypt(trgtFile, password, decryptedFile);
      
-            Assert.assertTrue("Decrypted file not same!!", 
-              checkFileWithHashFunction(srcFile, decryptedFile));
+            assertTrue(checkFileWithHashFunction(srcFile, decryptedFile), "Decrypted file not same!!");
         } catch (Exception ex) {
             ex.printStackTrace();
-            Assert.fail(ex.getMessage());
+            fail(ex.getMessage());
         }
     }
 
     // 한글파일 예외상황 발생 
     @Test
-    public void testFileException() {
+    void testFileException() {
 
     	String filePath = "/egovframework/data/sample.hwp";
         File srcFile = new File(this.getClass().getResource(filePath).getFile());
@@ -132,16 +133,15 @@ public class EgovDataCryptoTest {
      
             cryptoService.decrypt(trgtFile, password, decryptedFile);
      
-            Assert.assertTrue("Decrypted file not same!!", 
-              checkFileWithHashFunction(srcFile, decryptedFile));
+            assertTrue(checkFileWithHashFunction(srcFile, decryptedFile), "Decrypted file not same!!");
         } catch (Exception ex) {
             ex.printStackTrace();
-            Assert.fail(ex.getMessage());
+            fail(ex.getMessage());
         }
     }
 
     @Test
-    public void testFileOk_Atom() {
+    void testFileOk_Atom() {
 
     	String filePath = "/egovframework/data/sample_test_ok(atom).hwp";
         File srcFile = new File(this.getClass().getResource(filePath).getFile());
@@ -159,16 +159,15 @@ public class EgovDataCryptoTest {
      
             cryptoService.decrypt(trgtFile, password, decryptedFile);
      
-            Assert.assertTrue("Decrypted file not same!!", 
-              checkFileWithHashFunction(srcFile, decryptedFile));
+            assertTrue(checkFileWithHashFunction(srcFile, decryptedFile), "Decrypted file not same!!");
         } catch (Exception ex) {
             ex.printStackTrace();
-            Assert.fail(ex.getMessage());
+            fail(ex.getMessage());
         }
     }
 
     @Test
-    public void testFileFail_Atom() {
+    void testFileFail_Atom() {
 
     	String filePath = "/egovframework/data/sample_test_fail(atom).hwp";
         File srcFile = new File(this.getClass().getResource(filePath).getFile());
@@ -186,27 +185,26 @@ public class EgovDataCryptoTest {
      
             cryptoService.decrypt(trgtFile, password, decryptedFile);
      
-            Assert.assertTrue("Decrypted file not same!!", 
-              checkFileWithHashFunction(srcFile, decryptedFile));
+            assertTrue(checkFileWithHashFunction(srcFile, decryptedFile), "Decrypted file not same!!");
         } catch (Exception ex) {
             ex.printStackTrace();
-            Assert.fail(ex.getMessage());
+            fail(ex.getMessage());
         }
     }
 
     //Encryption Digest Guide Program
     @Test
-    public void testDigest() {
+    void testDigest() {
 		String data = "egovframe";
 	 
 		byte[] digested = digestService.digest(data.getBytes());
 	 
-		Assert.assertTrue(digestService.matches(data.getBytes(), digested));
+		assertTrue(digestService.matches(data.getBytes(), digested));
     }
     
     //Encryption texts Guide Program
     @Test
-    public void testStringGeneralCryptoService() {
+    void testStringGeneralCryptoService() {
 		String[] testString = {
 			"This is a testing...\nHello!",
 			"한글 테스트입니다...",
@@ -223,13 +221,13 @@ public class EgovDataCryptoTest {
 		    }
 		} catch (UnsupportedEncodingException uee) {
 		    uee.printStackTrace();
-		    Assert.fail();
+		    fail();
 		}
     }
 
     //Encryption BigDecimal Guide Program
     @Test
-    public void testBigDecimal() {
+    void testBigDecimal() {
 		BigDecimal big = new BigDecimal(123456);
 	 
 		BigDecimal encrypted = generalCryptoService.encrypt(big, password);

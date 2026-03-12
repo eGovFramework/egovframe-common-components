@@ -1,18 +1,17 @@
 package egovframework.com.utl.sys.dbm.service.impl;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.utl.sys.dbm.service.DbMntrng;
 import egovframework.com.utl.sys.dbm.service.DbMntrngLog;
 import egovframework.com.utl.sys.dbm.service.EgovDbMntrngService;
+import jakarta.annotation.Resource;
 
 /**
  * DB서비스모니터링관리에 대한 ServiceImpl 클래스를 정의한다.
- * 
+ *
  * @author 김진만
  * @since 2010.06.21
  * @version 1.0
@@ -20,7 +19,7 @@ import egovframework.com.utl.sys.dbm.service.EgovDbMntrngService;
  * @see
  * <pre>
  * == 개정이력(Modification Information) ==
- * 
+ *
  *   수정일       수정자           수정내용
  *  -------     --------    ---------------------------
  *  2010.06.21   김진만     최초 생성
@@ -40,6 +39,7 @@ public class EgovDbMntrngServiceImpl extends EgovAbstractServiceImpl implements 
 	 * @param dbMntrng    삭제대상 DB서비스모니터링model
 	 * @exception Exception Exception
 	 */
+	@Override
 	public void deleteDbMntrng(DbMntrng dbMntrng)
 	  throws Exception{
 		dao.deleteDbMntrng(dbMntrng);
@@ -50,9 +50,10 @@ public class EgovDbMntrngServiceImpl extends EgovAbstractServiceImpl implements 
 	 * @param dbMntrng    등록대상 DB서비스모니터링model
 	 * @exception Exception Exception
 	 */
+	@Override
 	public void insertDbMntrng(DbMntrng dbMntrng)
 	  throws Exception{
-		// 상태값을 초기치로 설정한다. 
+		// 상태값을 초기치로 설정한다.
 		dbMntrng.setMntrngSttus("01");
 		dao.insertDbMntrng(dbMntrng);
 	}
@@ -62,6 +63,7 @@ public class EgovDbMntrngServiceImpl extends EgovAbstractServiceImpl implements 
 	 * @param dbMntrngLog    등록대상 DB서비스모니터링로그model
 	 * @exception Exception Exception
 	 */
+	@Override
 	public void insertDbMntrngLog(DbMntrngLog dbMntrngLog)
 	  throws Exception{
 		dao.insertDbMntrngLog(dbMntrngLog);
@@ -70,22 +72,24 @@ public class EgovDbMntrngServiceImpl extends EgovAbstractServiceImpl implements 
 	/**
 	 * DB서비스모니터링을 상세조회 한다.
 	 * @return DB서비스모니터링정보
-	 * 
+	 *
 	 * @param dbMntrng 조회대상 DB서비스모니터링model
 	 * @exception Exception Exception
 	 */
+	@Override
 	public DbMntrng selectDbMntrng(DbMntrng dbMntrng)
 	  throws Exception{
 		return dao.selectDbMntrng(dbMntrng);
 	}
-	
+
 	/**
 	 * DB서비스모니터링로그을 상세조회 한다.
 	 * @return DB서비스모니터링로그정보
-	 * 
+	 *
 	 * @param dbMntrng 조회대상 DB서비스모니터링로그model
 	 * @exception Exception Exception
 	 */
+	@Override
 	public DbMntrngLog selectDbMntrngLog(DbMntrngLog dbMntrngLog)
 	  throws Exception{
 		return dao.selectDbMntrngLog(dbMntrngLog);
@@ -94,11 +98,12 @@ public class EgovDbMntrngServiceImpl extends EgovAbstractServiceImpl implements 
 	/**
 	 * DB서비스모니터링의 목록을 조회 한다.
 	 * @return DB서비스모니터링목록
-	 * 
+	 *
 	 * @param searchVO 	조회정보가 담긴 VO
 	 * @exception Exception Exception
 	 */
-	public List<DbMntrng> selectDbMntrngList(DbMntrng searchVO) 
+	@Override
+	public List<DbMntrng> selectDbMntrngList(DbMntrng searchVO)
 	  throws Exception{
 		List<DbMntrng> result = dao.selectDbMntrngList(searchVO);
 		return result;
@@ -107,10 +112,11 @@ public class EgovDbMntrngServiceImpl extends EgovAbstractServiceImpl implements 
 	/**
 	 * DB서비스모니터링 목록 전체 건수를(을) 조회한다.
 	 * @return 목록건수
-	 * 
+	 *
 	 * @param searchVO    조회할 정보가 담긴 VO
 	 * @exception Exception Exception
 	 */
+	@Override
 	public int selectDbMntrngListCnt(DbMntrng searchVO)
 	  throws Exception{
 		int cnt = dao.selectDbMntrngListCnt(searchVO);
@@ -120,11 +126,12 @@ public class EgovDbMntrngServiceImpl extends EgovAbstractServiceImpl implements 
 	/**
 	 * DB서비스모니터링로그의 목록을 조회 한다.
 	 * @return DB서비스모니터링로그목록
-	 * 
+	 *
 	 * @param searchVO 	조회정보가 담긴 VO
 	 * @exception Exception Exception
 	 */
-	public List<DbMntrngLog> selectDbMntrngLogList(DbMntrngLog searchVO) 
+	@Override
+	public List<DbMntrngLog> selectDbMntrngLogList(DbMntrngLog searchVO)
 	  throws Exception{
 		List<DbMntrngLog> result = dao.selectDbMntrngLogList(searchVO);
 		return result;
@@ -133,10 +140,11 @@ public class EgovDbMntrngServiceImpl extends EgovAbstractServiceImpl implements 
 	/**
 	 * DB서비스모니터링로그 목록 전체 건수를(을) 조회한다.
 	 * @return 목록건수
-	 * 
+	 *
 	 * @param searchVO    조회할 정보가 담긴 VO
 	 * @exception Exception Exception
 	 */
+	@Override
 	public int selectDbMntrngLogListCnt(DbMntrngLog searchVO)
 	  throws Exception{
 		int cnt = dao.selectDbMntrngLogListCnt(searchVO);
@@ -145,10 +153,11 @@ public class EgovDbMntrngServiceImpl extends EgovAbstractServiceImpl implements 
 
 	/**
 	 * DB서비스모니터링정보를 수정한다.
-	 * 
+	 *
 	 * @param dbMntrng    수정대상 DB서비스모니터링model
 	 * @exception Exception Exception
 	 */
+	@Override
 	public void updateDbMntrng(DbMntrng dbMntrng)
 	  throws Exception{
 		dao.updateDbMntrng(dbMntrng);

@@ -14,18 +14,18 @@
 	<select id="selectNoteManage" resultType="egovMap">
 	 
 	 SELECT
-		A.NOTE_ID,
-		(SELECT TRNSMITER_ID FROM COMTNNOTETRNSMIT WHERE NOTE_ID = A.NOTE_ID LIMIT 1) TRNSMITER_ORG_ID,
-		(SELECT USER_NM FROM COMVNUSERMASTER WHERE ESNTL_ID = (SELECT TRNSMITER_ID FROM COMTNNOTETRNSMIT WHERE NOTE_ID = A.NOTE_ID LIMIT 1)) TRNSMITER_NM,
-        (SELECT USER_ID FROM COMVNUSERMASTER WHERE ESNTL_ID = (SELECT TRNSMITER_ID FROM COMTNNOTETRNSMIT WHERE NOTE_ID = A.NOTE_ID LIMIT 1)) TRNSMITER_ID,
-        DATE_FORMAT((SELECT FRST_REGIST_PNTTM FROM COMTNNOTETRNSMIT WHERE NOTE_ID = A.NOTE_ID LIMIT 1),'%Y-%m-%d %H:%i:%s') TRNSMITER_PNTTM,
-		A.NOTE_SJ,
-		A.NOTE_CN,
-		A.ATCH_FILE_ID,
-		A.FRST_REGISTER_ID,
-		DATE_FORMAT(A.FRST_REGIST_PNTTM,'%Y-%m-%d') AS FRST_REGIST_PNTTM,
-		A.LAST_UPDUSR_ID,
-		DATE_FORMAT(A.LAST_UPDT_PNTTM,'%Y-%m-%d') AS LAST_UPDT_PNTTM
+		A.NOTE_ID noteId,
+		(SELECT TRNSMITER_ID FROM COMTNNOTETRNSMIT WHERE NOTE_ID = A.NOTE_ID LIMIT 1) trnsmiterOrgId,
+		(SELECT USER_NM FROM COMVNUSERMASTER WHERE ESNTL_ID = (SELECT TRNSMITER_ID FROM COMTNNOTETRNSMIT WHERE NOTE_ID = A.NOTE_ID LIMIT 1)) trnsmiterNm,
+        (SELECT USER_ID FROM COMVNUSERMASTER WHERE ESNTL_ID = (SELECT TRNSMITER_ID FROM COMTNNOTETRNSMIT WHERE NOTE_ID = A.NOTE_ID LIMIT 1)) trnsmiterId,
+        DATE_FORMAT((SELECT FRST_REGIST_PNTTM FROM COMTNNOTETRNSMIT WHERE NOTE_ID = A.NOTE_ID LIMIT 1),'%Y-%m-%d %H:%i:%s') trnsmiterPnttm,
+		A.NOTE_SJ noteSj,
+		A.NOTE_CN noteCn,
+		A.ATCH_FILE_ID atchFileId,
+		A.FRST_REGISTER_ID frstRegisterId,
+		DATE_FORMAT(A.FRST_REGIST_PNTTM,'%Y-%m-%d') AS frstRegisterPnttm,
+		A.LAST_UPDUSR_ID lastUpdusrId,
+		DATE_FORMAT(A.LAST_UPDT_PNTTM,'%Y-%m-%d') AS lastUpdtPnttm
 	 FROM COMTNNOTE A
 	 WHERE 1=1 
 	 AND A.NOTE_ID=#{noteId} 
@@ -50,9 +50,9 @@
 			#{noteCn},
 			#{atchFileId},
 			#{frstRegisterId},
-			sysdate(),
+			NOW(),
 			#{frstRegisterId},
-			sysdate()
+			NOW()
 		)
 	 
 	</insert>
@@ -75,9 +75,9 @@
 			#{trnsmiterId},
 			'N',
 			#{frstRegisterId},
-			sysdate(),
+			NOW(),
 			#{frstRegisterId},
-			sysdate()
+			NOW()
 		)
 	
 	</insert>
@@ -92,9 +92,7 @@
 		OPEN_YN,
 		RECPTN_SE,
 		FRST_REGISTER_ID,
-		FRST_REGIST_PNTTM,
-		LAST_UPDUSR_ID,
-		LAST_UPDT_PNTTM
+		FRST_REGIST_PNTTM
 	)VALUES(
 		#{noteId},
 		#{noteTrnsmitId},
@@ -103,9 +101,7 @@
 		#{openYn},
 		#{recptnSe},
 		#{frstRegisterId},
-		sysdate(),
-		#{frstRegisterId},
-		sysdate()
+		NOW()
 	)
 	
 	</insert>

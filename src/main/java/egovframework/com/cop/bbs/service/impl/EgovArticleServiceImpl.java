@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
@@ -19,6 +17,7 @@ import egovframework.com.cop.bbs.service.Board;
 import egovframework.com.cop.bbs.service.BoardMasterVO;
 import egovframework.com.cop.bbs.service.BoardVO;
 import egovframework.com.cop.bbs.service.EgovArticleService;
+import jakarta.annotation.Resource;
 
 /**
  * 게시물 관리를 위한 ServiceImpl 클래스
@@ -59,7 +58,7 @@ public class EgovArticleServiceImpl extends EgovAbstractServiceImpl implements E
 
 		int cnt = egovArticleDao.selectArticleListCnt(boardVO);
 
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 
 		map.put("resultList", list);
 		map.put("resultCnt", Integer.toString(cnt));
@@ -113,7 +112,7 @@ public class EgovArticleServiceImpl extends EgovAbstractServiceImpl implements E
 			// 게시판의 순서대로
 			// replyLc는 부모글의 ReplyLc + 1
 
-			board.setNttId(nttIdgenService.getNextIntegerId()); // 답글에 대한 nttId 생성
+			board.setNttId((long) nttIdgenService.getNextIntegerId()); // 답글에 대한 nttId 생성
 			egovArticleDao.replyArticle(board);
 
 		} else {
@@ -121,7 +120,7 @@ public class EgovArticleServiceImpl extends EgovAbstractServiceImpl implements E
 			board.setParnts("0");
 			board.setReplyLc("0");
 			board.setReplyAt("N");
-			board.setNttId(nttIdgenService.getNextIntegerId());// 2011.09.22
+			board.setNttId((long) nttIdgenService.getNextIntegerId());// 2011.09.22
 
 			egovArticleDao.insertArticle(board);
 		}
@@ -134,9 +133,9 @@ public class EgovArticleServiceImpl extends EgovAbstractServiceImpl implements E
 
 	@Override
 	public void updateArticleAndFiles(Board board, List<MultipartFile> files, String atchFileId) throws Exception {
-		if (!files.isEmpty()) {
+		if (files != null && !files.isEmpty()) {
 			if (atchFileId == null || "".equals(atchFileId)) {
-				List<FileVO> result = fileUtil.parseFileInf(files, "BBS_", 0, atchFileId, "");
+				List<FileVO> result = fileUtil.parseFileInf(files, "BBS_", 0, "", "");
 				board.setAtchFileId(fileMngService.insertFileInfs(result));
 			} else {
 				FileVO fvo = new FileVO();
@@ -182,7 +181,7 @@ public class EgovArticleServiceImpl extends EgovAbstractServiceImpl implements E
 
 		int cnt = egovArticleDao.selectGuestArticleListCnt(vo);
 
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 
 		map.put("resultList", list);
 		map.put("resultCnt", Integer.toString(cnt));
@@ -200,7 +199,7 @@ public class EgovArticleServiceImpl extends EgovAbstractServiceImpl implements E
 		List<BoardMasterVO> result = egovArticleDao.selectBlogListManager(vo);
 		int cnt = egovArticleDao.selectBlogListManagerCnt(vo);
 
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 
 		map.put("resultList", result);
 		map.put("resultCnt", Integer.toString(cnt));

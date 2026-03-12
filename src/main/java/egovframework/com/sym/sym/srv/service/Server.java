@@ -1,5 +1,8 @@
 package egovframework.com.sym.sym.srv.service;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 import egovframework.com.cmm.ComDefaultVO;
 
 /**
@@ -22,6 +25,8 @@ public class Server extends ComDefaultVO {
 	/**
 	 * 서버 명
 	 */
+	@EgovNullCheck
+	@Size(max=30)
 	private String serverNm;
 	/**
 	 * 서버 종류
@@ -33,7 +38,8 @@ public class Server extends ComDefaultVO {
 	private String serverKndNm;
     /**
 	 * 등록일자
-	 */    
+	 */
+	@EgovNullCheck
     private String regstYmd;    
     /**
 	 * 최초등록시점

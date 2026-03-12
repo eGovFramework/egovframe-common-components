@@ -27,7 +27,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="ImgUrl" value="/images/egovframework/com/sym/prm/"/>
 <c:set var="CssUrl" value="/css/egovframework/com/sym/prm/"/>
 <html lang="ko">
@@ -36,8 +35,7 @@
 <title><spring:message code="comSymPrm.programChangRequstDetailSelectUpdt.title"/></title><!-- 프로그램변경요청 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do" />"></script>
-<validator:javascript formName="progrmManageDtlVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script language="javascript1.2" type="text/javaScript">
 <!--
 /* ********************************************************
@@ -53,12 +51,12 @@ function searchFileNm() {
  ******************************************************** */
 function updateProgrmChangeRequst(form) {
 	if(confirm("<spring:message code="common.save.msg"/>")){
-		if(!validateProgrmManageDtlVO(form)){
-			return;
-		}else{
+// 		if(!validateProgrmChangeRequst(form)){
+// 			return;
+// 		}else{
             form.action ="<c:url value='/sym/prm/EgovProgramChangRequstDetailSelectUpdt.do'/>";
 			form.submit();
-		}
+// 		}
 	}
 }
 
@@ -107,7 +105,7 @@ function selectList(){
 			<td class="left">
 			    <c:out value="${progrmManageDtlVO.rqesterNo}"/>
 				<form:hidden path="rqesterNo" />
-				<form:errors path="rqesterNo" />
+				<div><form:errors path="rqesterNo" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
@@ -115,7 +113,7 @@ function selectList(){
 			<td class="left">
 			    <c:out value="${progrmManageDtlVO.progrmFileNm}"/>
 				<form:hidden path="progrmFileNm" />
-				<form:errors path="progrmFileNm" />
+				<div><form:errors path="progrmFileNm" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
@@ -123,7 +121,7 @@ function selectList(){
 			<td class="left">
 			    <c:out value="${progrmManageDtlVO.rqesterPersonId}"/>
 				<form:hidden path="rqesterPersonId" />
-				<form:errors path="rqesterPersonId" />
+				<div><form:errors path="rqesterPersonId" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
@@ -131,21 +129,21 @@ function selectList(){
 			<td class="left">
 			    <c:out value="${progrmManageDtlVO.rqesterDe}"/>
 				<form:hidden path="rqesterDe" />
-				<form:errors path="rqesterDe" />
+				<div><form:errors path="rqesterDe" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymPrm.programChangRequstDetailSelectUpdt.rqesterSj"/> <span class="pilsu">*</span></th><!-- 요청제목 -->
 			<td class="left">
 			    <form:input path="rqesterSj" size="60"  maxlength="60"  title="${vrqesterSj}"/>
-				<form:errors path="rqesterSj" />
+			    <div><form:errors path="rqesterSj" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymPrm.programChangRequstDetailSelectUpdt.changerqesterCn"/> </th><!-- 변경요청내용 -->
 			<td class="left">
 			    <form:textarea path="changerqesterCn" rows="4" cols="75"  title="${vchangerqesterCn}"/><!-- 변경요청내용 -->
-      			<form:errors path="changerqesterCn"/>
+			    <div><form:errors path="changerqesterCn" cssClass="error" /></div>
 			</td>
 		</tr>
 	</table>
@@ -161,7 +159,7 @@ function selectList(){
 			<td class="left">
 			    <c:out value="${progrmManageDtlVO.processDe}"/>
 		      	<form:hidden path="processDe" />
-				<form:errors path="processDe" />
+		      	<div><form:errors path="processDe" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
@@ -169,7 +167,7 @@ function selectList(){
 			<td class="left">
 			    <c:out value="${progrmManageDtlVO.opetrId}"/>
 		      	<form:hidden path="opetrId" />
-				<form:errors path="opetrId" />
+		      	<div><form:errors path="opetrId" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
@@ -181,14 +179,14 @@ function selectList(){
 		      <c:if test="${progrmManageDtlVO.processSttus == 'R'}"><spring:message code="comSymPrm.programChangeRequst.processSttusR"/></c:if><!-- 반려 -->
 		      <c:if test="${progrmManageDtlVO.processSttus == 'C'}"><spring:message code="comSymPrm.programChangeRequst.processSttusC"/></c:if><!-- 처리완료 -->
 		      	<form:hidden path="processSttus" />
-				<form:errors path="processSttus" />
+		      	<div><form:errors path="processSttus" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymPrm.programChangRequstDetailSelectUpdt.rqesterProcessCn"/></th><!-- 변경처리내용 -->
 			<td class="left">
 			    <textarea id="rqesterProcessCn" name="rqesterProcessCn" rows="4" readonly cols="75" title="${vrqesterProcessCn}">${progrmManageDtlVO.rqesterProcessCn }</textarea><!-- 변경처리내용 -->
-      			<form:errors path="rqesterProcessCn"/>
+			    <div><form:errors path="rqesterProcessCn" cssClass="error" /></div>
 			</td>
 		</tr>
 	</table>

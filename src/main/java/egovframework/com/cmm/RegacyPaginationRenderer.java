@@ -1,9 +1,9 @@
 package egovframework.com.cmm;
 
-import javax.servlet.ServletContext;
-
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.AbstractPaginationRenderer;
 import org.springframework.web.context.ServletContextAware;
+
+import jakarta.servlet.ServletContext;
 /**
  * ImagePaginationRenderer.java 클래스
  *
@@ -39,6 +39,7 @@ public class RegacyPaginationRenderer extends AbstractPaginationRenderer impleme
         lastPageLabel     = "<a href=\"?pageIndex={1}\" onclick=\"{0}({1});return false; \"><img src=\"" + servletContext.getContextPath() +  "/images/egovframework/com/cmm/icon/icon_nextend.gif\" alt=\"마지막\" border=\"0\"/></a>&#160;";
 	}
 
+	@Override
 	public void setServletContext(ServletContext servletContext) {
 		this.servletContext = servletContext;
 		initVariables();

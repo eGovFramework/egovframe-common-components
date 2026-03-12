@@ -1,5 +1,9 @@
 package egovframework.com.cop.ems.service;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+
+import jakarta.validation.constraints.Email;
+
 /**
  * 발송메일 VO 클래스
  * @author 공통서비스 개발팀 박지욱
@@ -24,12 +28,16 @@ public class SndngMailVO {
 	/** 발신자 */
 	private String dsptchPerson;
 	/** 수신자 */
+	@EgovNullCheck
+	@Email
 	private String recptnPerson;
 	/** 제목 */
+	@EgovNullCheck
 	private String sj;
 	/** 발송결과코드 */
 	private String sndngResultCode;
 	/** 메일내용 */
+	@EgovNullCheck
 	private String emailCn;
 	/** 첨부파일ID */
 	private String atchFileId;

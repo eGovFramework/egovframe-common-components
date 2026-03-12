@@ -79,7 +79,8 @@ function fn_egov_search_RecentSrchwrd(){
 </script>
 </head>
 
-<sic id="content" style="width:712px">
+<body>
+
 <%-- noscript 테그 --%>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg"/></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
@@ -135,7 +136,7 @@ function fn_egov_search_RecentSrchwrd(){
 			 <%-- 데이터를 화면에 출력해준다 --%>
 			<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 			<tr>
-				<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
+				<td><c:out value="${(recentSrchwrd.pageIndex-1) * recentSrchwrd.pageSize + status.count}"/></td>
 				<td>
 					<c:out value="${resultInfo.srchwrdNm}"/>
 				</td>
@@ -161,6 +162,7 @@ function fn_egov_search_RecentSrchwrd(){
 <input name="srchwrdId" type="hidden" value="">
 <input name="searchMode" type="hidden" value="">
 <input name="cmd" type="hidden" value="">
-<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-
+<input name="pageIndex" type="hidden" value="<c:out value='${recentSrchwrd.pageIndex}'/>"/>
 </form>
+</body>
+</html>

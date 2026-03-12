@@ -44,7 +44,8 @@ function fn_egov_pageview(pageNo){
  * 목록 으로 가기
  ******************************************************** */
 function fn_egov_list_CntcMessage(){
-	location.href = "<c:url value='/ssi/syi/ims/getCntcMessageList.do'/>";
+	document.listForm.action = "<c:url value='/ssi/syi/ims/getCntcMessageList.do'/>";
+	document.listForm.submit();
 }
 /* ********************************************************
  * 수정화면으로  바로가기
@@ -109,6 +110,17 @@ function fn_egov_delete_CntcMessageItem(itemId){
 <form name="Form" action="" method="post">
 	<input name="cntcMessageId" type="hidden">
 	<input name="itemId"        type="hidden">
+	<!-- 검색조건 유지 -->
+	<input name="searchCondition" type="hidden" value="<c:out value='${searchVO.searchCondition}'/>">
+	<input name="searchKeyword" type="hidden" value="<c:out value='${searchVO.searchKeyword}'/>">
+	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}' default='1'/>">
+</form>
+
+<form name="listForm" action="" method="post">
+	<!-- 검색조건 유지 -->
+	<input name="searchCondition" type="hidden" value="<c:out value='${searchVO.searchCondition}'/>">
+	<input name="searchKeyword" type="hidden" value="<c:out value='${searchVO.searchKeyword}'/>">
+	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}' default='1'/>">
 </form>
 
 <div class="wTableFrm">

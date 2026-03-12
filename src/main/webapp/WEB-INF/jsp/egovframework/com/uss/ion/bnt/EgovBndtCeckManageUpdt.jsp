@@ -25,7 +25,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -33,40 +32,35 @@
 <title><spring:message code="comUssIonBnt.bndtCeckManageUpdt.title"/></title><!-- 당직체크 수정 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="bndtCeckManage" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
-<!--
+
 /* ********************************************************
 * 목록 으로 가기
 ******************************************************** */
-	function fncBndtCeckManageList() {
-	    var varFrom = document.getElementById("bndtCeckManage");
-	    varFrom.action = "<c:url value='/uss/ion/bnt/EgovBndtCeckManageList.do'/>";
-	    varFrom.submit();       
-	}
+function fncBndtCeckManageList() {
+    var varFrom = document.getElementById("bndtCeckManageVO");
+    varFrom.action = "<c:url value='/uss/ion/bnt/EgovBndtCeckManageList.do'/>";
+    varFrom.submit();       
+}
 /* ********************************************************
  * 저장처리화면
  ******************************************************** */
-	 function fncUpdtBndtCeckManage() {
-	     var varFrom = document.getElementById("bndtCeckManage");
-	     varFrom.action = "<c:url value='/uss/ion/bnt/updtBndtCeckManage.do'/>";
-	
-	     if(confirm("<spring:message code="common.save.msg" />")){/* 저장 하시겠습니까? */
-		     if(!validateBndtCeckManage(varFrom)){           
-		         return;
-		     }else{
-		         varFrom.submit();
-		     } 
-	     }
-	}
--->
+function fncUpdtBndtCeckManage() {
+    var varFrom = document.getElementById("bndtCeckManageVO");
+    /*if(!validateBndtCeckManage(varFrom)){           
+        return;
+    }*/
+    if(confirm("<spring:message code="common.save.msg" />")){/* 저장 하시겠습니까? */
+       	varFrom.submit();
+    }
+}
 </script>
 </head>
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
-<form:form modelAttribute="bndtCeckManage" name="bndtCeckManage" method="post" > 
+<form:form modelAttribute="bndtCeckManageVO" name="bndtCeckManageVO" method="post" action="${pageContext.request.contextPath}/uss/ion/bnt/updtBndtCeckManage.do"> 
 <input type="hidden" name="cmd" value="updt" >
 <input type="hidden" name="bndtCeckSe" value ="<c:out value='${bndtCeckManageVO.bndtCeckSe}'/>">
 <input type="hidden" name="bndtCeckCd" value ="<c:out value='${bndtCeckManageVO.bndtCeckCd  }'/>"/>
@@ -79,7 +73,7 @@
 	<table class="wTable">
 		<colgroup>
 			<col style="width:20%" />
-			<col style="" />
+			<col style="width:80%" />
 		</colgroup>
 		<tr>
 			<th><spring:message code="comUssIonBnt.common.bndtCeckTemp1"/> <span class="pilsu">*</span></th><!-- 당직체크구분 -->
@@ -94,10 +88,10 @@
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="comUssIonBnt.common.bndtCeckCdName"/> <span class="pilsu">*</span></th><!-- 당직체크코드명 -->
+			<th><label for="bndtCeckCdNm"><spring:message code="comUssIonBnt.common.bndtCeckCdName"/> <span class="pilsu">*</span></label></th><!-- 당직체크코드명 -->
 			<td class="left">
 			    <form:input  path="bndtCeckCdNm" size="80" maxlength="100" title="<spring:message code='comUssIonBnt.common.bndtCeckCdName'/>" cssStyle="width:250px"/>
-      			<form:errors path="bndtCeckCdNm"/>
+			    <div><form:errors path="bndtCeckCdNm" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>

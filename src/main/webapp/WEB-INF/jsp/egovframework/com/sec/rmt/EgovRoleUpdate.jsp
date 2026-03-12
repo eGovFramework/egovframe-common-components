@@ -23,7 +23,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comCopSecRmt.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -32,8 +31,7 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="roleManage" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 
 function fncSelectRoleList() {
@@ -110,7 +108,7 @@ function fncRoleDelete() {
 		<!-- 롤 설명 -->
 		<c:set var="title"><spring:message code="comCopSecRam.regist.rollDc" /></c:set>
 		<tr>
-			<th>${title} <span class="pilsu">*</span></th>
+			<th>${title} </th>
 			<td class="left">
 			    <form:textarea path="roleDc" title="${title} ${inputTxt}" cols="300" rows="10" />   
 				<div><form:errors path="roleDc" cssClass="error" /></div> 
@@ -119,7 +117,7 @@ function fncRoleDelete() {
 		<!-- 롤 타입 -->
 		<c:set var="title"><spring:message code="comCopSecRam.regist.rollType" /></c:set>
 		<tr>
-			<th>${title} <span class="pilsu">*</span></th>
+			<th>${title} </th>
 			<td class="left">
 				<form:select path="roleTyp">
 					<form:options items="${cmmCodeDetailList}" itemValue="code" itemLabel="codeNm"/>

@@ -66,7 +66,7 @@ function fn_egov_search_RssTagManage(){
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
 <div class="board">
-<form name="listForm" action="<c:url value='/uss/ion/rss/listRssTagManage.do'/>" method="post">
+<form name="listForm" action="<c:url value='/uss/ion/rsn/listRssTagService.do'/>" method="post">
 	<h1><spring:message code="ussIonRsn.rssTagServiceList.rssTagServiceList"/></h1><!-- RSS태그서비스 목록 -->
 
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다 -->
@@ -87,11 +87,11 @@ function fn_egov_search_RssTagManage(){
 	<table class="board_list">
 		<caption></caption>
 		<colgroup>
-			<col style="width:35px" />
-			<col style="" />
-			<col style="width:200px" />
-			<col style="width:70px" />
-			<col style="width:70px" />
+			<col style="width:10%" />
+			<col style="width:30%" />
+			<col style="width:30%" />
+			<col style="width:15%" />
+			<col style="width:15%" />
 		</colgroup>
 		<thead>
 			<tr>
@@ -114,7 +114,7 @@ function fn_egov_search_RssTagManage(){
 			<%-- 데이터를 화면에 출력해준다 --%>
 			<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 			<tr>
-				<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
+				<td><c:out value="${(rssInfo.pageIndex-1) * rssInfo.pageSize + status.count}"/></td>
 				<td>
 				<div style="visibility:hidden;display:none;"><a href="#LINK_PAGE${status.count}"></a></div>
 				<a href="<c:url value='/uss/ion/rsn/detailRssTagService.do'/>?rssId=${resultInfo.rssId}" target="_blank" title="새 창으로 이동"><c:out value="${resultInfo.trgetSvcNm}"/></a>
@@ -135,9 +135,9 @@ function fn_egov_search_RssTagManage(){
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/>
 		</ul>
 	</div>
-</div>
 <input name="cmd" type="hidden" value="">
-<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
+<input name="pageIndex" type="hidden" value="<c:out value='${rssInfo.pageIndex}'/>">
 </form>
+</div>
 </body>
 </html>

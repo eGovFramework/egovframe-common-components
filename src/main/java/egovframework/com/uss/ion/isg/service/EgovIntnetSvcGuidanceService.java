@@ -39,21 +39,21 @@ public interface EgovIntnetSvcGuidanceService {
 
 	/**
 	 * 인터넷서비스안내정보를 신규로 등록한다.
-	 * @param intnetSvcGuidance - 인터넷서비스안내 model
+	 * @param intnetSvcGuidanceVO - 인터넷서비스안내 VO
 	 */
-	public IntnetSvcGuidanceVO insertIntnetSvcGuidance(IntnetSvcGuidance intnetSvcGuidance, IntnetSvcGuidanceVO intnetSvcGuidanceVO) throws Exception;
+	public IntnetSvcGuidanceVO insertIntnetSvcGuidance(IntnetSvcGuidanceVO intnetSvcGuidanceVO) throws Exception;
 
 	/**
 	 * 기 등록된 인터넷서비스안내정보를 수정한다.
-	 * @param intnetSvcGuidance - 인터넷서비스안내 model
+	 * @param intnetSvcGuidanceVO - 인터넷서비스안내 VO
 	 */
-	public void updateIntnetSvcGuidance(IntnetSvcGuidance intnetSvcGuidance) throws Exception;
+	public void updateIntnetSvcGuidance(IntnetSvcGuidanceVO intnetSvcGuidanceVO) throws Exception;
 
 	/**
 	 * 기 등록된 인터넷서비스안내정보를 삭제한다.
-	 * @param intnetSvcGuidance - 인터넷서비스안내 model
+	 * @param intnetSvcGuidanceVO - 인터넷서비스안내 VO
 	 */
-	public void deleteIntnetSvcGuidance(IntnetSvcGuidance intnetSvcGuidance) throws Exception;
+	public void deleteIntnetSvcGuidance(IntnetSvcGuidanceVO intnetSvcGuidanceVO) throws Exception;
 	
 	/**
 	 * 인터넷서비스안내정보 적용결과를 조회한다.

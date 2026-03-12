@@ -1,7 +1,5 @@
 package egovframework.com.utl.sys.srm.web;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -15,6 +13,7 @@ import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sys.srm.service.EgovServerResrceMntrngService;
 import egovframework.com.utl.sys.srm.service.ServerResrceMntrngVO;
+import jakarta.annotation.Resource;
 
 /**
  * <pre>

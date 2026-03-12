@@ -3,8 +3,6 @@ package egovframework.com.cop.ems.service.impl;
 import java.io.File;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
@@ -18,6 +16,7 @@ import egovframework.com.cop.ems.service.EgovSndngMailService;
 import egovframework.com.cop.ems.service.SndngMailVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovXMLDoc;
+import jakarta.annotation.Resource;
 import noNamespace.SndngMailDocument;
 
 /**
@@ -146,7 +145,7 @@ public class EgovSndngMailRegistServiceImpl extends EgovAbstractServiceImpl impl
 		// 2. XML데이터를 만든다.
 		SndngMailDocument mailDoc;
 		SndngMailDocument.SndngMail mailElement;
-		mailDoc = SndngMailDocument.Factory.newInstance();
+		mailDoc = (SndngMailDocument) SndngMailDocument.Factory.newInstance();
 		mailElement = mailDoc.addNewSndngMail();
 		mailElement.setMssageId(vo.getMssageId());
 		mailElement.setDsptchPerson(vo.getDsptchPerson());
@@ -178,6 +177,11 @@ public class EgovSndngMailRegistServiceImpl extends EgovAbstractServiceImpl impl
 
 		// 1. XML파일에서 발송결과코드를 가져온다.
 		SndngMailDocument mailDoc = EgovXMLDoc.getXMLToClass(xmlFile);
+		if (mailDoc == null || mailDoc.getSndngMail() == null) {
+			// 파일을 찾지 못했거나 XML 파싱에 실패한 경우 더 이상 진행하지 않는다.
+			return false;
+		}
+
 		SndngMailDocument.SndngMail mailElement = mailDoc.getSndngMail();
 		SndngMailVO sndngMailVO = new SndngMailVO();
 		sndngMailVO.setMssageId(mailElement.getMssageId());

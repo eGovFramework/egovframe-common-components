@@ -87,31 +87,9 @@
 	<select id="selectQustnrRespondInfoManageEmplyrinfo" parameterType="java.util.Map" resultType="egovMap">
 		<![CDATA[
 		SELECT
-			EMPLYR_ID,
-			USER_NM,
-			PASSWORD,
-			EMPL_NO,
-			IHIDNUM,
-			SEXDSTN_CODE,
-			BRTHDY,
-			FXNUM,
-			HOUSE_ADRES,
-			PASSWORD_HINT,
-			PASSWORD_CNSR,
-			HOUSE_END_TELNO,
-			AREA_NO,
-			DETAIL_ADRES,
-			ZIP,
-			OFFM_TELNO,
-			MBTLNUM,
-			EMAIL_ADRES,
-			OFCPS_NM,
-			HOUSE_MIDDLE_TELNO,
-			GROUP_ID,
-			ORGNZT_ID,
-			PSTINST_CODE,
-			EMPLYR_STTUS_CODE,
-			ESNTL_ID
+			ESNTL_ID,
+			USER_ID,
+			USER_NM
 		FROM COMVNUSERMASTER
 		WHERE 1=1
 		AND ESNTL_ID = #{uniqId}

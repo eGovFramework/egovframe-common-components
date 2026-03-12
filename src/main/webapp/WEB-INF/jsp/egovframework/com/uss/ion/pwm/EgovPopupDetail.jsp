@@ -29,12 +29,6 @@
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <script type="text/javaScript" language="javascript">
 /* ********************************************************
- * 초기화
- ******************************************************** */
-function fn_egov_init_PopupManage(){
-
-}
-/* ********************************************************
  * 목록 으로 가기
  ******************************************************** */
 function fn_egov_list_PopupManage(){
@@ -45,10 +39,8 @@ function fn_egov_list_PopupManage(){
  ******************************************************** */
 function fn_egov_modify_PopupManage(){
 	var vFrom = document.formUpdt;
-	vFrom.cmd.value = '';
-	vFrom.action = "<c:url value='/uss/ion/pwm/updtPopup.do' />";;
+	vFrom.action = "<c:url value='/uss/ion/pwm/updatePopupView.do' />";
 	vFrom.submit();
-
 }
 /* ********************************************************
  * 삭제처리
@@ -65,7 +57,7 @@ function fn_egov_delete_PopupManage(){
 }
 </script>
 </head>
-<body onLoad="fn_egov_init_PopupManage();">
+<body>
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -129,10 +121,9 @@ function fn_egov_delete_PopupManage(){
 
 	<!-- 하단 버튼 -->
 	<div class="btn">		
-		<form name="formUpdt" action="<c:url value='/uss/ion/pwm/updtPopup.do'/>" method="post" style="display:inline">
+		<form name="formUpdt" action="<c:url value='/uss/ion/pwm/updatePopupView.do'/>" method="post" style="display:inline">
 			<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="fn_egov_modify_PopupManage(); return false;" />
 			<input name="popupId" type="hidden" value="${popupManageVO.popupId}">
-			<input name="cmd" type="hidden" value="<c:out value=''/>">
 			</form>
 		
 		<form name="formDelete" action="<c:url value='/uss/ion/pwm/detailPopup.do'/>" method="post" style="display:inline">

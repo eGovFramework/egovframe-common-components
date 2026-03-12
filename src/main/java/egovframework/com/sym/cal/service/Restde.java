@@ -2,7 +2,8 @@ package egovframework.com.sym.cal.service;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.NotEmpty;
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
 
 /**
  * 휴일 모델 클래스
@@ -17,7 +18,7 @@ import javax.validation.constraints.NotEmpty;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.04.01  이중호			최초 생성
- *   2024.10.20  권태성		필수값 BindingResult 검증을 위한 @NotEmpty 추가
+ *   2024.10.20  권태성		필수값 BindingResult 검증을 위한 @EgovNullCheck 추가
  *
  * </pre>
  */
@@ -33,30 +34,33 @@ public class Restde implements Serializable {
     /*
      * 휴일일자
      */
-	@NotEmpty(message = "휴일일자{common.required.msg}")
+	@EgovNullCheck
+	@Size(max=8)
     private String restdeDe       = "";
 
     /*
      * 휴일명
      */
-	@NotEmpty(message = "휴일명{common.required.msg}")
+	@EgovNullCheck
+	@Size(max=50)
     private String restdeNm       = "";
 
     /*
      * 휴일설명
      */
-	@NotEmpty(message = "휴일설명{common.required.msg}")
+	@EgovNullCheck
+	@Size(max=200)
     private String restdeDc       = "";
 
     /*
      * 휴일구분
      */
-	@NotEmpty(message = "휴일구분{common.required.msg}")
     private String restdeSe       = "";
 
     /*
      * 휴일구분코드
      */
+	@EgovNullCheck
     private String restdeSeCode   = "";
 
     /*

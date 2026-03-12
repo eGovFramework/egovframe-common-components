@@ -134,4 +134,11 @@ public interface EgovServerService {
 	 */
 	public void deleteServerEqpmnRelate(ServerEqpmnRelate serverEqpmnRelate) throws Exception;
 
+	/**
+	 * 특정 서버장비를 참조하는 서버S/W 목록을 조회한다.
+	 * @param serverEqpmnId - 서버장비 ID
+	 * @return List - 해당 서버장비를 사용하는 서버S/W 목록
+	 */
+	public List<ServerVO> selectRelatedServersByEqpmnId(String serverEqpmnId) throws Exception;
+
 }

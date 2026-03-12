@@ -11,13 +11,13 @@
  * @created 03-8-2009 오후 2:08:02
  * <pre>
  * << 개정이력(Modification Information) >>
- * 
+ *
  *   수정일      수정자          수정내용
  *  -------    --------    ---------------------------
- *  2010.08.03	lee.m.j		최초 생성 
+ *  2010.08.03	lee.m.j		최초 생성
  *  2011.08.26	정진오		IncludedInfo annotation 추가
  *  2023.06.09	김수용		NSR 보안조치 (특수문자 복원 기능 제거)
- *  
+ *
  *  </pre>
  */
 
@@ -25,34 +25,27 @@ package egovframework.com.uss.ion.isg.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.isg.service.EgovIntnetSvcGuidanceService;
-import egovframework.com.uss.ion.isg.service.IntnetSvcGuidance;
 import egovframework.com.uss.ion.isg.service.IntnetSvcGuidanceVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
-
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 @Controller
 public class EgovIntnetSvcGuidanceController {
-
-
-
 
 	@Resource(name="egovMessageSource")
     EgovMessageSource egovMessageSource;
@@ -63,9 +56,6 @@ public class EgovIntnetSvcGuidanceController {
     /** Message ID Generation */
     @Resource(name="egovIntnetSvcGuidanceIdGnrService")
     private EgovIdGnrService egovIntnetSvcGuidanceIdGnrService;
-
-    @Autowired
-	private DefaultBeanValidator beanValidator;
 
     /**
 	 * 인터넷서비스안내 목록화면 이동
@@ -122,7 +112,7 @@ public class EgovIntnetSvcGuidanceController {
 			                              ModelMap model) throws Exception {
 
 		intnetSvcGuidanceVO.setIntnetSvcId(intnetSvcId);
-		model.addAttribute("intnetSvcGuidance", egovIntnetSvcGuidanceService.selectIntnetSvcGuidance(intnetSvcGuidanceVO));
+		model.addAttribute("intnetSvcGuidanceVO", egovIntnetSvcGuidanceService.selectIntnetSvcGuidance(intnetSvcGuidanceVO));
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
 		return "egovframework/com/uss/ion/isg/EgovIntnetSvcGuidanceUpdt";
@@ -140,28 +130,23 @@ public class EgovIntnetSvcGuidanceController {
 
 	/**
 	 * 인터넷서비스안내정보를 신규로 등록한다.
-	 * @param intnetSvcGuidance - 인터넷서비스안내 model
+	 * @param intnetSvcGuidanceVO - 인터넷서비스안내 VO
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping("/uss/ion/isg/addIntnetSvcGuidance.do")
-	public String insertIntnetSvcGuidance(@ModelAttribute("intnetSvcGuidance") IntnetSvcGuidance intnetSvcGuidance,
-			                              @ModelAttribute("intnetSvcGuidanceVO") IntnetSvcGuidanceVO intnetSvcGuidanceVO,
+	public String insertIntnetSvcGuidance(@Valid @ModelAttribute("intnetSvcGuidanceVO") IntnetSvcGuidanceVO intnetSvcGuidanceVO,
 			                               BindingResult bindingResult,
 			                               ModelMap model) throws Exception {
 
-		beanValidator.validate(intnetSvcGuidance, bindingResult); //validation 수행
-
     	if (bindingResult.hasErrors()) {
-    		model.addAttribute("intnetSvcGuidanceVO", intnetSvcGuidanceVO);
 			return "egovframework/com/uss/ion/isg/EgovIntnetSvcGuidanceRegist";
 		} else {
 	    	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
-	    	intnetSvcGuidance.setIntnetSvcId(egovIntnetSvcGuidanceIdGnrService.getNextStringId());
-	    	intnetSvcGuidance.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
-	    	intnetSvcGuidanceVO.setIntnetSvcId(intnetSvcGuidance.getIntnetSvcId());
+	    	intnetSvcGuidanceVO.setIntnetSvcId(egovIntnetSvcGuidanceIdGnrService.getNextStringId());
+	    	intnetSvcGuidanceVO.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
 
-	    	model.addAttribute("intnetSvcGuidance", egovIntnetSvcGuidanceService.insertIntnetSvcGuidance(intnetSvcGuidance, intnetSvcGuidanceVO));
+	    	model.addAttribute("intnetSvcGuidanceVO", egovIntnetSvcGuidanceService.insertIntnetSvcGuidance(intnetSvcGuidanceVO));
 	    	model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
 
 //			return "egovframework/com/uss/ion/isg/EgovIntnetSvcGuidanceUpdt";
@@ -171,24 +156,21 @@ public class EgovIntnetSvcGuidanceController {
 
 	/**
 	 * 기 등록된 인터넷서비스안내정보를 수정한다.
-	 * @param intnetSvcGuidance - 인터넷서비스안내 model
+	 * @param intnetSvcGuidanceVO - 인터넷서비스안내 VO
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping("/uss/ion/isg/updtIntnetSvcGuidance.do")
-	public String updateIntnetSvcGuidance(@ModelAttribute("intnetSvcGuidance") IntnetSvcGuidance intnetSvcGuidance,
-			                                                                   BindingResult bindingResult,
-			                        			                               ModelMap model) throws Exception {
-
-		beanValidator.validate(intnetSvcGuidance, bindingResult); //validation 수행
+	public String updateIntnetSvcGuidance(@Valid @ModelAttribute("intnetSvcGuidanceVO") IntnetSvcGuidanceVO intnetSvcGuidanceVO,
+			                              BindingResult bindingResult,
+			                              ModelMap model) throws Exception {
 
     	if (bindingResult.hasErrors()) {
-    		model.addAttribute("intnetSvcGuidanceVO", intnetSvcGuidance);
 			return "egovframework/com/uss/ion/isg/EgovIntnetSvcGuidanceUpdt";
 		} else {
 	    	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-	    	intnetSvcGuidance.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
+	    	intnetSvcGuidanceVO.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
 
-			egovIntnetSvcGuidanceService.updateIntnetSvcGuidance(intnetSvcGuidance);
+			egovIntnetSvcGuidanceService.updateIntnetSvcGuidance(intnetSvcGuidanceVO);
 //			return "forward:/uss/ion/isg/getIntnetSvcGuidance.do";
 			return "forward:/uss/ion/isg/selectIntnetSvcGuidanceList.do";
 		}
@@ -196,14 +178,14 @@ public class EgovIntnetSvcGuidanceController {
 
 	/**
 	 * 기 등록된 인터넷서비스안내정보를 삭제한다.
-	 * @param intnetSvcGuidance - 인터넷서비스안내 model
+	 * @param intnetSvcGuidanceVO - 인터넷서비스안내 VO
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping("/uss/ion/isg/removeIntnetSvcGuidance.do")
-	public String deleteIntnetSvcGuidance(@ModelAttribute("intnetSvcGuidance") IntnetSvcGuidance intnetSvcGuidance,
+	public String deleteIntnetSvcGuidance(@ModelAttribute("intnetSvcGuidanceVO") IntnetSvcGuidanceVO intnetSvcGuidanceVO,
 			                               ModelMap model) throws Exception {
 
-    	egovIntnetSvcGuidanceService.deleteIntnetSvcGuidance(intnetSvcGuidance);
+    	egovIntnetSvcGuidanceService.deleteIntnetSvcGuidance(intnetSvcGuidanceVO);
 
     	model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
     	return "forward:/uss/ion/isg/selectIntnetSvcGuidanceList.do";
@@ -221,8 +203,8 @@ public class EgovIntnetSvcGuidanceController {
 
 		List<IntnetSvcGuidanceVO> intnetSvcGuidanceList = egovIntnetSvcGuidanceService.selectIntnetSvcGuidanceResult(intnetSvcGuidanceVO);
 
-		for(int i=0; i<intnetSvcGuidanceList.size(); i++) {
-			intnetSvcGuidanceList.get(i).setIntnetSvcDc(intnetSvcGuidanceList.get(i).getIntnetSvcDc());
+		for (IntnetSvcGuidanceVO element : intnetSvcGuidanceList) {
+			element.setIntnetSvcDc(element.getIntnetSvcDc());
 		}
 
 		model.addAttribute("intnetSvcGuidanceList", intnetSvcGuidanceList);

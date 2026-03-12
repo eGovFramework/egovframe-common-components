@@ -193,7 +193,7 @@ public class WordDicaryDefaultVO implements Serializable {
 	public void setRecordCountPerPage(int recordCountPerPage) {
 		this.recordCountPerPage = recordCountPerPage;
 	}
-	
+
 	/**
 	 * toString 메소드를 대치한다.
 	 */

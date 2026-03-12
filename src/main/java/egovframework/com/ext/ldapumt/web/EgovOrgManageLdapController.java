@@ -20,8 +20,6 @@ package egovframework.com.ext.ldapumt.web;
 
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -35,6 +33,7 @@ import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.ext.ldapumt.service.EgovOrgManageLdapService;
 import egovframework.com.ext.ldapumt.service.UcorgVO;
 import egovframework.com.ext.ldapumt.service.UserVO;
+import jakarta.annotation.Resource;
 
 @Controller
 public class EgovOrgManageLdapController {

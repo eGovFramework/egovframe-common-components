@@ -26,22 +26,22 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <html lang="ko">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title><spring:message code="comSsiSyiIis.cntcSystemRegist.title"/></title><!-- 연계시스템 등록 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="cntcSystem" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 <!--
 /* ********************************************************
  * 목록 으로 가기
  ******************************************************** */
 function fn_egov_list_CntcSystem(){
-	location.href = "<c:url value='/ssi/syi/iis/getCntcInsttList.do'/>";
+	var form = document.cntcSystem;
+	form.action = "<c:url value='/ssi/syi/iis/getCntcInsttList.do'/>";
+	form.submit();
 }
 /* ********************************************************
  * 등록처리
@@ -67,6 +67,10 @@ function fn_egov_regist_CntcSystem(form){
 <form:form modelAttribute="cntcSystem" name="cntcSystem" method="post">
 <input name="cmd" type="hidden" value="<c:out value='Regist'/>"/>
 <form:hidden path="insttId"/>
+<!-- 검색조건 유지 -->
+<input type="hidden" name="searchCondition" value="<c:out value='${searchVO.searchCondition}'/>"/>
+<input type="hidden" name="searchKeyword" value="<c:out value='${searchVO.searchKeyword}'/>"/>
+<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}' default='1'/>"/>
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -81,18 +85,12 @@ function fn_egov_regist_CntcSystem(form){
 		<tr>
 			<th><spring:message code="comSsiSyiIis.cntcSystemRegist.insttId"/> <span class="pilsu">*</span></th><!-- 기관 -->
 			<td class="left">
-			    <select name="insttId" class="select" disabled="disabled" title="<spring:message code="comSsiSyiIis.cntcSystemRegist.insttId"/>"><!-- 기관선택 -->
-				<c:forEach var="result" items="${cntcInsttList}" varStatus="status">
-				<option value='<c:out value="${result.insttId}"/>' <c:if test="${result.insttId == cntcSystem.insttId}">selected="selected"</c:if> ><c:out value="${result.insttNm}"/></option>
-				</c:forEach>
+			    <select class="select" disabled="disabled" title="<spring:message code="comSsiSyiIis.cntcSystemRegist.insttId"/>"><!-- 기관선택 (name 제거 - hidden field로 값 전송) -->
+					<c:forEach var="result" items="${cntcInsttList}" varStatus="status">
+						<option value='<c:out value="${result.insttId}"/>' <c:if test="${result.insttId == cntcSystem.insttId}">selected="selected"</c:if> ><c:out value="${result.insttNm}"/></option>
+					</c:forEach>
 				</select>
-			</td>
-		</tr>
-		<tr>
-			<th><spring:message code="comSsiSyiIis.cntcSystemRegist.sysId"/> <span class="pilsu">*</span></th><!-- 시스템ID -->
-			<td class="left">
-			    <form:input  path="sysId" maxlength="20" readonly="true" title="<spring:message code='comSsiSyiIis.cntcSystemRegist.sysId'/>" cssClass="readOnlyClass" style="width:128px"/>
-      			<form:errors path="sysId"/>
+				<form:errors path="insttId"/>
 			</td>
 		</tr>
 		<tr>
@@ -114,7 +112,7 @@ function fn_egov_regist_CntcSystem(form){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value="<spring:message code="button.save" />" title="<spring:message code="title.save" />" onclick="fn_egov_regist_CntcSystem(document.cntcSystem); return false;" /><!-- 저장 -->
-		<span class="btn_s"><a href="<c:url value='/ssi/syi/iis/getCntcInsttList.do'/>" onclick=""><spring:message code="button.list"/></a></span><!-- 목록 -->
+		<span class="btn_s"><a href="#" onclick="fn_egov_list_CntcSystem(); return false;"><spring:message code="button.list"/></a></span><!-- 목록 -->
 	</div>
 	<div style="clear:both;"></div>
 </div>

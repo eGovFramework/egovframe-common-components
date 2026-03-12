@@ -8,7 +8,7 @@ import org.springframework.web.multipart.MultipartFile;
 /**
  * 개요
  * - 동기화대상 서버에 대한 Service Interface를 정의한다.
- * 
+ *
  * 상세내용
  * - 동기화대상 서버에 대한 등록, 수정, 삭제, 조회 기능을 제공한다.
  * - 동기화대상 서버의 조회기능은 목록조회, 상세조회로 구분된다.
@@ -45,20 +45,20 @@ public interface EgovSynchrnServerService {
 	 * @return List<String> - String Type List
 	 */
 	public List<String> selectSynchrnServerFiles(SynchrnServerVO synchrnServerVO) throws Exception;
-	
+
 	/**
 	 * 등록된 동기화대상 서버의 파일을 삭제한다.
 	 * @param synchrnServerVO - 동기화대상 서버 Vo
 	 */
 	public void deleteSynchrnServerFile(SynchrnServerVO synchrnServerVO) throws Exception;
-	
+
 	/**
 	 * 등록된 동기화대상 서버의 파일을 다운로드 한다.
 	 * @param synchrnServerVO - 동기화대상 서버 Vo
 	 * @param fileNm - 다운로드 대상 파일
 	 */
 	public void downloadFtpFile(SynchrnServerVO synchrnServerVO, String fileNm) throws Exception;
-	
+
 	/**
 	 * 동기화대상 서버정보를 신규로 등록한다.
 	 * @param synchrnServer - 동기화대상 서버 model
@@ -91,7 +91,7 @@ public interface EgovSynchrnServerService {
 	 * @return List - 업로드 파일 리스트
 	 */
 	public List<String> getFileName() throws Exception;
-	
+
 	/**
 	 * 동기화 대상 파일을 업로드 한다.
 	 * @param file - 업로드 대상 파일
@@ -100,7 +100,7 @@ public interface EgovSynchrnServerService {
 	 * @param synchrnServerVO - 동기화대상 서버 Vo
 	 */
 	public void writeFile(MultipartFile multipartFile, String newName, SynchrnServerVO synchrnServerVO) throws Exception;
-	
+
 	/**
 	 * 업로드 파일을 삭제한다.
 	 * @param synchrnServerVO - 동기화대상 서버 Vo

@@ -12,17 +12,16 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletResponse;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.FileCopyUtils;
 
 import egovframework.com.cmm.EgovWebUtil;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * Form-based File Upload 유틸리티
- * 
+ *
  * @author 공통컴포넌트 개발팀 한성곤
  * @since 2009.08.26
  * @version 1.0
@@ -53,7 +52,7 @@ public class EgovFormBasedFileUtil {
 
 	/**
 	 * 오늘 날짜 문자열 취득. ex) 20090101
-	 * 
+	 *
 	 * @return
 	 */
 	public static String getTodayString() {
@@ -64,7 +63,7 @@ public class EgovFormBasedFileUtil {
 
 	/**
 	 * 물리적 파일명 생성.
-	 * 
+	 *
 	 * @return
 	 */
 	public static String getPhysicalFileName() {
@@ -73,7 +72,7 @@ public class EgovFormBasedFileUtil {
 
 	/**
 	 * 파일명 변환.
-	 * 
+	 *
 	 * @param filename String
 	 * @return
 	 * @throws Exception
@@ -85,7 +84,7 @@ public class EgovFormBasedFileUtil {
 
 	/**
 	 * Stream으로부터 파일을 저장함.
-	 * 
+	 *
 	 * @param is   InputStream
 	 * @param file File
 	 * @throws IOException
@@ -123,14 +122,14 @@ public class EgovFormBasedFileUtil {
 	 * public static List<EgovFormBasedFileVo> uploadFiles(HttpServletRequest
 	 * request, String where, long maxFileSize) throws Exception {
 	 * List<EgovFormBasedFileVo> list = new ArrayList<EgovFormBasedFileVo>();
-	 * 
+	 *
 	 * // Check that we have a file upload request boolean isMultipart =
 	 * ServletFileUpload.isMultipartContent(request);
-	 * 
+	 *
 	 * if (isMultipart) { // Create a new file upload handler ServletFileUpload
 	 * upload = new ServletFileUpload(); upload.setFileSizeMax(maxFileSize); //
 	 * SizeLimitExceededException
-	 * 
+	 *
 	 * // Parse the request FileItemIterator iter = upload.getItemIterator(request);
 	 * while (iter.hasNext()) { FileItemStream item = iter.next(); String name =
 	 * item.getFieldName(); InputStream stream = item.openStream(); if
@@ -139,32 +138,32 @@ public class EgovFormBasedFileUtil {
 	 * Streams.asString(stream)); } else {
 	 * LOGGER.info("File field '{}' with file name '{}' detected.", name,
 	 * item.getName());
-	 * 
+	 *
 	 * if ("".equals(item.getName())) { continue; }
-	 * 
+	 *
 	 * // Process the input stream EgovFormBasedFileVo vo = new
 	 * EgovFormBasedFileVo();
-	 * 
+	 *
 	 * String tmp = item.getName();
-	 * 
+	 *
 	 * if (tmp.lastIndexOf("\\") >= 0) { tmp = tmp.substring(tmp.lastIndexOf("\\") +
 	 * 1); }
-	 * 
+	 *
 	 * vo.setFileName(tmp); vo.setContentType(item.getContentType());
 	 * vo.setServerSubPath(getTodayString());
 	 * vo.setPhysicalName(getPhysicalFileName());
-	 * 
+	 *
 	 * if (tmp.lastIndexOf(".") >= 0) { vo.setPhysicalName(vo.getPhysicalName() +
 	 * tmp.substring(tmp.lastIndexOf("."))); }
-	 * 
+	 *
 	 * long size = saveFile(stream, new File(EgovWebUtil.filePathBlackList(where) +
 	 * SEPERATOR + vo.getServerSubPath() + SEPERATOR + vo.getPhysicalName()));
-	 * 
+	 *
 	 * vo.setSize(size);
-	 * 
+	 *
 	 * list.add(vo); } } } else { throw new
 	 * IOException("form's 'enctype' attribute have to be 'multipart/form-data'"); }
-	 * 
+	 *
 	 * return list; }
 	 */
 
@@ -198,8 +197,10 @@ public class EgovFormBasedFileUtil {
 		response.setHeader("Content-Transfer-Encoding", "binary");
 		response.setHeader("Pragma", "no-cache");
 		response.setHeader("Expires", "0");
-
-		FileCopyUtils.copy(new FileInputStream(file), response.getOutputStream());
+		// 2026.02.28 KISA 취약점 조취
+		try (FileInputStream fis = new FileInputStream(file)) {
+			FileCopyUtils.copy(fis, response.getOutputStream());
+		}
 	}
 
 	/**
@@ -255,8 +256,10 @@ public class EgovFormBasedFileUtil {
 		}
 
 		response.setHeader("Content-Disposition", "filename=image;");
-
-		FileCopyUtils.copy(new FileInputStream(file), response.getOutputStream());
+		// 2026.02.28 KISA 취약점 조취
+		try (FileInputStream fis = new FileInputStream(file)) {
+			FileCopyUtils.copy(fis, response.getOutputStream());
+		}
 	}
 
 	public static Map<String, String> getContentTypeWL() {

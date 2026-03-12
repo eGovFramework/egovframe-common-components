@@ -58,7 +58,7 @@
 		<result property="psitnInsttNm" column="PSITN_INSTT_NM"/>
 		<result property="brth" column="BRTHDY"/>
 		<result property="areaNo" column="AREA_NO"/>
-		<result property="middleTelno" column="MIDDEL_TELNO"/>
+		<result property="middleTelno" column="MIDDLE_TELNO"/>
 		<result property="endTelno" column="END_TELNO"/>
 		<result property="emailAdres" column="EMAIL_ADRES"/>
 		<result property="frstRegisterPnttm" column="FRST_REGIST_PNTTM"/>
@@ -155,11 +155,11 @@
 		WHERE 1=1
 	 
 		 		<if test="searchCondition == 0">
-				AND EVENT_CN LIKE '%' || #{searchKeyword} || '%'
+				AND B.CODE_NM LIKE '%' || #{searchKeyword} || '%'
 		 		</if>
 		 	
 		 	<if test="searchCondition == 1">
-		 		AND  FRST_REGISTER_ID IN (SELECT ESNTL_ID FROM COMTNEMPLYRINFO WHERE USER_NM LIKE '%' || #{searchKeyword} || '%' )
+		 		AND A.EVENT_CN LIKE '%' || #{searchKeyword} || '%'
 		 	</if>
 	 	
 
@@ -176,15 +176,15 @@
 	<select id="selectEventCmpgnListCnt" parameterType="egovframework.com.uss.ion.ecc.service.EventCmpgnVO" resultType="int">
 		SELECT
 		COUNT(*) totcnt
-		FROM COMTNEVENTINFO
+		FROM COMTNEVENTINFO A
 		WHERE 1=1
 		 	
 		 		<if test="searchCondition == 0">
-				AND EVENT_CN LIKE '%' || #{searchKeyword} || '%'
+				AND A.EVENT_TY_CODE IN (SELECT CODE FROM COMTCCMMNDETAILCODE WHERE CODE_ID = 'COM035' AND USE_AT = 'Y' AND CODE_NM LIKE '%' || #{searchKeyword} || '%')
 		 		</if>
 		 	
 		 	<if test="searchCondition == 1">
-		 		AND  FRST_REGISTER_ID IN (SELECT ESNTL_ID FROM COMTNEMPLYRINFO WHERE USER_NM LIKE '%' || #{searchKeyword} || '%' )
+		 		AND A.EVENT_CN LIKE '%' || #{searchKeyword} || '%'
 		 	</if>
 	 	
 

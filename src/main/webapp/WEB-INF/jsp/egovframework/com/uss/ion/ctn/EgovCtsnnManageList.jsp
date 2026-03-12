@@ -138,10 +138,10 @@
 	<input type="hidden" name="ctsnnId">
 	<input type="hidden" name="pageIndex" value="<c:if test="${empty ctsnnManageVO.pageIndex }">1</c:if><c:if test="${!empty ctsnnManageVO.pageIndex }"><c:out value='${ctsnnManageVO.pageIndex}'/></c:if>">
 
-	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
+	<div class="search_box" title='<spring:message code="common.searchCondition.msg" />'><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<div class="con">
 			<label for=""><spring:message code="comUssIonCtn.ctsnnManageList.searchKeyword"/> : </label><!-- 경조구분 -->
-			<select name="searchKeyword" title="<spring:message code="comUssIonCtn.ctsnnManageList.searchKeyword"/>">
+			<select name="searchKeyword" title='<spring:message code="comUssIonCtn.ctsnnManageList.searchKeyword"/>'>
 	        	<option value="" <c:if test="${ctsnnManageVO.searchKeyword eq '' }">selected</c:if>><spring:message code="comUssIonCtn.ctsnnManageList.selectedAll"/></option><!-- 전체 -->
 	            <c:forEach items="${ctsnnCodeList}" var="result" varStatus="status">
 		       	   <option value="<c:out value="${result.code }"/>" <c:if test="${ctsnnManageVO.searchKeyword eq result.code }">selected</c:if>><c:out value="${result.codeNm }"/></option>
@@ -156,16 +156,16 @@
 			 <c:if test="${!empty ctsnnManageVO.searchToDate}">
 			 	<c:set var="toNow" value="${fn:substring(ctsnnManageVO.searchToDate,0,4)}-${fn:substring(ctsnnManageVO.searchToDate,4,6)}-${fn:substring(ctsnnManageVO.searchToDate,6,8)}" />
 	         </c:if>
-		      <input type="text" name="searchFromDate"  id="searchFromDate" maxlength="10" value="${fromNow}" readonly="readonly"  title="<spring:message code="comUssIonCtn.ctsnnManageList.searchFromDate"/>" style="width:68px" /><!-- 경조신청 시작일자 -->
-			  ~ <input type="text" name="searchToDate" id="searchToDate" maxlength="10" value="${toNow}" readonly="readonly"  title="<spring:message code="comUssIonCtn.ctsnnManageList.searchToDate"/>" style="width:68px" /><!-- 경조신청 종료일자 -->
+		      <input type="text" name="searchFromDate"  id="searchFromDate" maxlength="10" value="${fromNow}" readonly="readonly"  title='<spring:message code="comUssIonCtn.ctsnnManageList.searchFromDate"/>' style="width:68px" /><!-- 경조신청 시작일자 -->
+			  ~ <input type="text" name="searchToDate" id="searchToDate" maxlength="10" value="${toNow}" readonly="readonly"  title='<spring:message code="comUssIonCtn.ctsnnManageList.searchToDate"/>' style="width:68px" /><!-- 경조신청 종료일자 -->
 		</div>
 		<div class="con">
 			<label for=""><spring:message code="comUssIonCtn.ctsnnManageList.searchNm"/> : </label><!-- 신청자 -->
-			<input name="searchNm" type="text" value="${ctsnnManageVO.searchNm}"  maxlength="100" title="<spring:message code="comUssIonCtn.ctsnnManageList.searchNm"/>" /><!-- 신청자 -->
+			<input name="searchNm" type="text" value="${ctsnnManageVO.searchNm}"  maxlength="100" title='<spring:message code="comUssIonCtn.ctsnnManageList.searchNm"/>' /><!-- 신청자 -->
 		</div>
 		<div class="con">
 			<label for=""><spring:message code="comUssIonCtn.ctsnnManageList.searchConfmAt"/> : </label><!-- 진행구분 -->
-			<select name="searchConfmAt" title="<spring:message code="comUssIonCtn.ctsnnManageList.searchConfmAt"/>"><!-- 진행구분 -->
+			<select name="searchConfmAt" title='<spring:message code="comUssIonCtn.ctsnnManageList.searchConfmAt"/>'><!-- 진행구분 -->
 		       	<option value=""  <c:if test="${ctsnnManageVO.searchConfmAt eq '' }">selected</c:if>><spring:message code="comUssIonCtn.ctsnnManageList.selectedAll"/></option><!-- 전체 -->
 		       	<option value="A" <c:if test="${ctsnnManageVO.searchConfmAt eq 'A' }">selected</c:if>><spring:message code="comUssIonCtn.ctsnnManageList.searchConfmAt.A"/></option><!-- 신청중 -->
 		       	<option value="C" <c:if test="${ctsnnManageVO.searchConfmAt eq 'C' }">selected</c:if>><spring:message code="comUssIonCtn.ctsnnManageList.searchConfmAt.C"/></option><!-- 승인 -->
@@ -174,7 +174,7 @@
 		</div>
 		
 		<div class="bt_a">
-			<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title="<spring:message code="title.inquire"/>" onclick="fncSelectCtsnnManageList('1'); return false;" /><!-- 조회 -->
+			<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="title.inquire"/>' onclick="fncSelectCtsnnManageList('1'); return false;" /><!-- 조회 -->
 			<span class="btn_b"><a href="<c:url value='/uss/ion/ctn/EgovCtsnnRegist.do'/>" onclick="fncCtsnnRegist(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
 		</div>
 	</div>

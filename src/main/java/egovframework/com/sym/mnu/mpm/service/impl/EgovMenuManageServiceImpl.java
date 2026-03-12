@@ -4,8 +4,6 @@ import java.io.InputStream;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
@@ -24,6 +22,7 @@ import egovframework.com.sym.mnu.mpm.service.EgovMenuManageService;
 import egovframework.com.sym.mnu.mpm.service.MenuManageVO;
 import egovframework.com.sym.prm.service.ProgrmManageVO;
 import egovframework.com.sym.prm.service.impl.ProgrmManageDAO;
+import jakarta.annotation.Resource;
 
 /**
  * 메뉴목록관리, 생성, 사이트맵을 처리하는 비즈니스 구현 클래스를 정의한다.
@@ -166,9 +165,9 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 		if (delMenuNo == null || (delMenuNo.length == 0)) {
 			throw new java.lang.Exception("String Split Error!");
 		}
-		for (int i = 0; i < delMenuNo.length; i++) {
+		for (String element : delMenuNo) {
 			vo = new MenuManageVO();
-			vo.setMenuNo(Integer.parseInt(delMenuNo[i]));
+			vo.setMenuNo(Integer.parseInt(element));
 			menuManageDAO.deleteMenuManage(vo);
 		}
 	}

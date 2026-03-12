@@ -23,15 +23,6 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.websocket.EncodeException;
-import javax.websocket.OnClose;
-import javax.websocket.OnError;
-import javax.websocket.OnMessage;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
-import javax.websocket.server.PathParam;
-import javax.websocket.server.ServerEndpoint;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -42,6 +33,14 @@ import egovframework.com.ext.msg.server.model.Message;
 import egovframework.com.ext.msg.server.model.UsersMessage;
 import egovframework.com.ext.msg.server.model.decoder.MessageDecoder;
 import egovframework.com.ext.msg.server.model.encoder.MessageEncoder;
+import jakarta.websocket.EncodeException;
+import jakarta.websocket.OnClose;
+import jakarta.websocket.OnError;
+import jakarta.websocket.OnMessage;
+import jakarta.websocket.OnOpen;
+import jakarta.websocket.Session;
+import jakarta.websocket.server.PathParam;
+import jakarta.websocket.server.ServerEndpoint;
 
 /**
  * 두 명의 사용자가 대화할 때 접속 처리및 메시지처리 기능을 하는 WebSocket 서버클래스

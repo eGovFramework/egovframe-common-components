@@ -30,18 +30,19 @@ public class EgovComExcepHndlr implements ExceptionHandler {
     /**
      * 발생된 Exception을 처리한다.
      */
-    public void occur(Exception ex, String packageName) {
+    @Override
+	public void occur(Exception ex, String packageName) {
     	//log.debug(" EgovServiceExceptionHandler run...............");
-    	
+
     	/*
 		try {
 			mailSender. send(ex, packageName);
-			log.debug(" sending a alert mail  is completed ");		
+			log.debug(" sending a alert mail  is completed ");
 		} catch (Exception e) {
 			LOGGER.error(packageName, ex);
 		}
 		*/
-		
+
     	LOGGER.error(packageName, ex);
 	}
 }

@@ -8,6 +8,7 @@ import egovframework.code.security.exception.TestException;
 
 /**
  * TestFileName Test Class 구현
+ * Null Byte (\u0000) 공격 차단
  * 파일명 추출 테스트
  * 
  * @author 표준프레임워크 신용호
@@ -40,7 +41,6 @@ public class TestFileName {
 		try {
 			fn3 = FilenameUtils.getName(file3);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		LOGGER.debug("safe filename1 = "+fn1);

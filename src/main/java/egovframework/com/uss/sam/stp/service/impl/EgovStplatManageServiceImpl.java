@@ -2,8 +2,6 @@ package egovframework.com.uss.sam.stp.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
@@ -11,6 +9,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.uss.sam.stp.service.EgovStplatManageService;
 import egovframework.com.uss.sam.stp.service.StplatManageDefaultVO;
 import egovframework.com.uss.sam.stp.service.StplatManageVO;
+import jakarta.annotation.Resource;
 
 /**
  *
@@ -51,8 +50,9 @@ public class EgovStplatManageServiceImpl extends EgovAbstractServiceImpl impleme
     @Override
 	public StplatManageVO selectStplatDetail(StplatManageVO vo) throws Exception {
         StplatManageVO resultVO = stplatManageDAO.selectStplatDetail(vo);
-        if (resultVO == null)
-            throw processException("info.nodata.msg");
+        if (resultVO == null) {
+			throw processException("info.nodata.msg");
+		}
         return resultVO;
     }
 

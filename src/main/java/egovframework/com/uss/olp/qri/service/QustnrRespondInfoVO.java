@@ -1,6 +1,9 @@
 package egovframework.com.uss.olp.qri.service;
 
 import java.io.Serializable;
+
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
 /**
  * 설문조사 VO Class 구현
  * @author 공통서비스 장동한
@@ -37,12 +40,16 @@ public class QustnrRespondInfoVO implements Serializable {
 	private String qustnrIemId = "";
 
 	/** 응답자답변내용 */
+	@Size(max=1000)
 	private String respondAnswerCn = "";
 
 	/** 응답자명 */
+	@EgovNullCheck
+	@Size(max=50)
 	private String respondNm = "";
 
 	/** 기타답변내용 */
+	@Size(max=1000)
 	private String etcAnswerCn = "";
 
 	/** 최초등록시점 */

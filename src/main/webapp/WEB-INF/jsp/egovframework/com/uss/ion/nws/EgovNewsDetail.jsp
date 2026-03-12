@@ -20,7 +20,6 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 <c:set var="pageTitle"><spring:message code="comUssIonNws.newsVO.title"/></c:set>
@@ -29,7 +28,7 @@
 <head>
 <title>${pageTitle} <spring:message code="title.detail" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
+<link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <script type="text/javascript">
 /* ********************************************************
  * 삭제처리
@@ -65,40 +64,40 @@
 		<!-- 뉴스제목 -->
 		<tr>
 			<th><spring:message code="comUssIonNws.newsVO.newsSj" /></th>
-			<td class="left"><c:out value="${result.newsSj}"/></td>
+			<td class="left"><c:out value="${newsVO.newsSj}"/></td>
 		</tr>
 		
 		<!-- 뉴스 내용 -->
 		<tr>
 			<th><spring:message code="comUssIonNws.newsVO.newsCn" /></th>
 			<td class="cnt">
-				<c:out value="${fn:replace(result.newsCn , crlf , '<br/>')}" escapeXml="false" />
+				<c:out value="${fn:replace(newsVO.newsCn , crlf , '<br/>')}" escapeXml="false" />
 			</td>
 		</tr>
 		
 		<!-- 뉴스출처 -->
 		<tr>
 			<th><spring:message code="comUssIonNws.newsVO.newsOrigin" /></th>
-			<td class="left"><c:out value="${result.newsOrigin}"/></td>
+			<td class="left"><c:out value="${newsVO.newsOrigin}"/></td>
 		</tr>
 		
 		<!-- 게시일자 -->
 		<tr>
 			<th><spring:message code="comUssIonNws.newsVO.ntceDe" /></th>
-			<td class="left"><c:out value="${result.ntceDe}"/></td>
+			<td class="left"><c:out value="${newsVO.ntceDe}"/></td>
 		</tr>
 		<!-- 등록일자 -->
 		<tr>
 			<th><spring:message code="table.regdate" /></th>
-			<td class="left"><c:out value="${result.frstRegisterPnttm}"/></td>
+			<td class="left"><c:out value="${newsVO.frstRegisterPnttm}"/></td>
 		</tr>
 		<!-- 첨부파일  -->
-		<c:if test="${not empty result.atchFileId}">
+		<c:if test="${not empty newsVO.atchFileId}">
 		<tr>
 			<th><spring:message code="comUssIonNws.newsVO.atchFile" /></th>
 			<td>
 				<c:import url="/cmm/fms/selectFileInfs.do" charEncoding="utf-8">
-				<c:param name="param_atchFileId" value="${egovc:encrypt(result.atchFileId)}" />
+				<c:param name="param_atchFileId" value="${egovc:encrypt(newsVO.atchFileId)}" />
 			</c:import>
 			</td>
 		</tr>
@@ -109,12 +108,12 @@
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input type="submit" class="s_submit" value="<spring:message code="button.update" />" title="<spring:message code="title.update" /> <spring:message code="input.button" />" />
-		<span class="btn_s"><a href="<c:url value='/uss/ion/nws/deleteNews.do' />" onClick="fn_egov_delete_news('<c:out value="${result.newsId}"/>'); return false;"  title="<spring:message code="button.delete" /> <spring:message code="input.button" />"><spring:message code="button.delete" /></a></span>
+		<span class="btn_s"><a href="<c:url value='/uss/ion/nws/deleteNews.do' />" onClick="fn_egov_delete_news('<c:out value="${newsVO.newsId}"/>'); return false;"  title="<spring:message code="button.delete" /> <spring:message code="input.button" />"><spring:message code="button.delete" /></a></span>
 		<span class="btn_s"><a href="<c:url value='/uss/ion/nws/selectNewsList.do' />"  title="<spring:message code="title.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
 	</div><div style="clear:both;"></div>
 	
 </div>
-<input name="newsId" type="hidden" value="<c:out value="${result.newsId}" />">
+<input name="newsId" type="hidden" value="<c:out value="${newsVO.newsId}" />">
 <input name="cmd" type="hidden" value="">
 </form>
 </body>

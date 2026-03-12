@@ -6,14 +6,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -22,7 +19,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springmodules.validation.commons.DefaultBeanValidator;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.ComDefaultVO;
@@ -38,6 +35,8 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.smt.sdm.service.DeptSchdulManageVO;
 import egovframework.com.cop.smt.sdm.service.EgovDeptSchdulManageService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * 부서일정관리를 처리하는 Controller Class 구현
@@ -63,9 +62,6 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
 public class EgovDeptSchdulManageController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovDeptSchdulManageController.class);
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
@@ -250,10 +246,9 @@ public class EgovDeptSchdulManageController {
 		List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
 		model.addAttribute("schdulSe", listComCode);
 
-		/*
-		 * ***************************************************************** // 캘런더 설정
-		 * 로직
-		 */
+		/* *****************************************************************
+    	// 캘런더 설정 로직
+		****************************************************************** */
 		Calendar calNow = Calendar.getInstance();
 
 		String strYear = commandMap.get("year");
@@ -315,10 +310,9 @@ public class EgovDeptSchdulManageController {
 		List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
 		model.addAttribute("schdulSe", listComCode);
 
-		/*
-		 * ***************************************************************** // 캘런더 설정
-		 * 로직
-		 */
+		/* *****************************************************************
+    	// 캘런더 설정 로직
+		****************************************************************** */
 		Calendar calNow = Calendar.getInstance();
 		Calendar calBefore = Calendar.getInstance();
 		Calendar calNext = Calendar.getInstance();
@@ -580,7 +574,7 @@ public class EgovDeptSchdulManageController {
 		model.addAttribute("schdulBgndeMM", getTimeMM());
 		// 일정종료일자(시)
 		model.addAttribute("schdulEnddeHH", getTimeHH());
-		// 일정정료일자(분)
+		// 일정종료일자(분)
 		model.addAttribute("schdulEnddeMM", getTimeMM());
 
 		DeptSchdulManageVO resultDeptSchdulManageVOReuslt = egovDeptSchdulManageService
@@ -618,13 +612,13 @@ public class EgovDeptSchdulManageController {
 	@RequestMapping(value = "/cop/smt/sdm/EgovDeptSchdulManageModifyActor.do")
 	public String deptSchdulManageModifyActor(final MultipartHttpServletRequest multiRequest,
 			@RequestParam Map<String, String> commandMap,
-			@ModelAttribute("deptSchdulManageVO") DeptSchdulManageVO deptSchdulManageVO, BindingResult bindingResult,
-			ModelMap model) throws Exception {
+			@Valid @ModelAttribute("deptSchdulManageVO") DeptSchdulManageVO deptSchdulManageVO, BindingResult bindingResult,
+			ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
@@ -636,8 +630,6 @@ public class EgovDeptSchdulManageController {
 		String sCmd = commandMap.get("cmd");
 
 		if ("save".equals(sCmd)) {
-			// 서버 validate 체크
-			beanValidator.validate(deptSchdulManageVO, bindingResult);
 			if (bindingResult.hasErrors()) {
 
 				// 공통코드 중요도 조회
@@ -662,7 +654,7 @@ public class EgovDeptSchdulManageController {
 				model.addAttribute("schdulBgndeMM", getTimeMM());
 				// 일정종료일자(시)
 				model.addAttribute("schdulEnddeHH", getTimeHH());
-				// 일정정료일자(분)
+				// 일정종료일자(분)
 				model.addAttribute("schdulEnddeMM", getTimeMM());
 
 				return sLocationUrl;
@@ -720,7 +712,8 @@ public class EgovDeptSchdulManageController {
 	 */
 	@RequestMapping(value = "/cop/smt/sdm/EgovDeptSchdulManageRegist.do")
 	public String deptSchdulManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@ModelAttribute("deptSchdulManageVO") DeptSchdulManageVO deptSchdulManageVO, ModelMap model)
+			@ModelAttribute("deptSchdulManageVO") DeptSchdulManageVO deptSchdulManageVO, ModelMap model,
+			RedirectAttributes redirectAttributes)
 			throws Exception {
 
 		String sLocationUrl = "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageRegist";
@@ -728,7 +721,7 @@ public class EgovDeptSchdulManageController {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addFlashAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
@@ -754,7 +747,7 @@ public class EgovDeptSchdulManageController {
 		model.addAttribute("schdulBgndeMM", getTimeMM());
 		// 일정종료일자(시)
 		model.addAttribute("schdulEnddeHH", getTimeHH());
-		// 일정정료일자(분)
+		// 일정종료일자(분)
 		model.addAttribute("schdulEnddeMM", getTimeMM());
 
 		return sLocationUrl;
@@ -776,7 +769,7 @@ public class EgovDeptSchdulManageController {
 	@RequestMapping(value = "/cop/smt/sdm/EgovDeptSchdulManageRegistActor.do")
 	public String deptSchdulManageRegistActor(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap,
-			@ModelAttribute("deptSchdulManageVO") DeptSchdulManageVO deptSchdulManageVO, BindingResult bindingResult,
+			@Valid @ModelAttribute("deptSchdulManageVO") DeptSchdulManageVO deptSchdulManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -794,9 +787,31 @@ public class EgovDeptSchdulManageController {
 		LOGGER.info("cmd => {}", sCmd);
 
 		if (sCmd.equals("save")) {
-			// 서버 validate 체크
-			beanValidator.validate(deptSchdulManageVO, bindingResult);
 			if (bindingResult.hasErrors()) {
+				// 공통코드 중요도 조회
+				ComDefaultCodeVO voComCode = new ComDefaultCodeVO();
+				voComCode.setCodeId("COM019");
+				List<CmmnDetailCode> listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+				model.addAttribute("schdulIpcrCode", listComCode);
+				// 공통코드 일정구분 조회
+				voComCode = new ComDefaultCodeVO();
+				voComCode.setCodeId("COM030");
+				listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+				model.addAttribute("schdulSe", listComCode);
+				// 공통코드 반복구분 조회
+				voComCode = new ComDefaultCodeVO();
+				voComCode.setCodeId("COM031");
+				listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
+				model.addAttribute("reptitSeCode", listComCode);
+
+				// 일정시작일자(시)
+				model.addAttribute("schdulBgndeHH", getTimeHH());
+				// 일정시작일자(분)
+				model.addAttribute("schdulBgndeMM", getTimeMM());
+				// 일정종료일자(시)
+				model.addAttribute("schdulEnddeHH", getTimeHH());
+				// 일정종료일자(분)
+				model.addAttribute("schdulEnddeMM", getTimeMM());
 
 				return sLocationUrl;
 			}
@@ -838,7 +853,7 @@ public class EgovDeptSchdulManageController {
 	 */
 	@SuppressWarnings("unused")
 	private List<ComDefaultCodeVO> getTimeHH() {
-		ArrayList<ComDefaultCodeVO> listHH = new ArrayList<ComDefaultCodeVO>();
+    	ArrayList<ComDefaultCodeVO> listHH = new ArrayList<>();
 		HashMap<?, ?> hmHHMM;
 		for (int i = 0; i <= 24; i++) {
 			String sHH = "";

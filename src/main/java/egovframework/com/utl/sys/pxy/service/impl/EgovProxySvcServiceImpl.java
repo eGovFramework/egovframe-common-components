@@ -3,8 +3,6 @@ package egovframework.com.utl.sys.pxy.service.impl;
 import java.io.File;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
@@ -16,6 +14,7 @@ import egovframework.com.utl.sys.pxy.service.ProxyLogVO;
 import egovframework.com.utl.sys.pxy.service.ProxyServer;
 import egovframework.com.utl.sys.pxy.service.ProxySvc;
 import egovframework.com.utl.sys.pxy.service.ProxySvcVO;
+import jakarta.annotation.Resource;
 
 /**
  * 개요

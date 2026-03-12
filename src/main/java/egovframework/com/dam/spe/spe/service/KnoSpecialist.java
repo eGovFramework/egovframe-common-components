@@ -1,5 +1,8 @@
 package egovframework.com.dam.spe.spe.service;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 개요
  * - 지식전문가에 대한 model 클래스를 정의한다.
@@ -15,6 +18,8 @@ public class KnoSpecialist {
 	/**
 	 * 전문가ID
 	 */
+	@EgovNullCheck
+	@Size(max=20)
 	private String speId;
 	/**
 	 * 전문가명
@@ -23,6 +28,8 @@ public class KnoSpecialist {
 	/**
 	 * 소속조직ID
 	 */
+	@EgovNullCheck
+	@Size(max=20)
 	private String orgnztId;
 	/**
 	 * 소속조직명
@@ -31,10 +38,14 @@ public class KnoSpecialist {
 	/**
 	 * 지식유형코드
 	 */
+	@EgovNullCheck
+	@Size(max=20)
 	private String knoTypeCd;
 	/**
 	 * 승인유형코드
 	 */
+	@EgovNullCheck
+	@Size(max=1)
 	private String appTypeCd;
 	/**
 	 * 승인유형명
@@ -47,10 +58,14 @@ public class KnoSpecialist {
 	/**
 	 * 전문가설명
 	 */
+	@EgovNullCheck
+	@Size(max=100)
 	private String speExpCn;	
 	/**
 	 * 전문가승인일
 	 */
+	@EgovNullCheck
+	@Size(max=10)
 	private String speConfmDe;
 	/** 
 	 * 최초등록아이디

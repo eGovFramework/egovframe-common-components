@@ -2,8 +2,6 @@ package egovframework.com.uss.ion.nws.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
@@ -11,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import egovframework.com.uss.ion.nws.service.EgovNewsService;
 import egovframework.com.uss.ion.nws.service.NewsVO;
+import jakarta.annotation.Resource;
 
 @Service("EgovNewsService")
 public class EgovNewsServiceImpl extends EgovAbstractServiceImpl implements EgovNewsService {
@@ -21,15 +20,15 @@ public class EgovNewsServiceImpl extends EgovAbstractServiceImpl implements Egov
     /** ID Generation */
 	@Resource(name="egovNewsManageIdGnrService")
 	private EgovIdGnrService idgenService;
-	
+
 	@Override
-	public List<NewsVO> selectNewsList(NewsVO searchVO) {
-		return egovNewsDao.selectNewsList(searchVO);
+	public List<NewsVO> selectNewsList(NewsVO newsVO) {
+		return egovNewsDao.selectNewsList(newsVO);
 	}
 
 	@Override
-	public int selectNewsListCnt(NewsVO searchVO) {
-		return egovNewsDao.selectNewsListCnt(searchVO);
+	public int selectNewsListCnt(NewsVO newsVO) {
+		return egovNewsDao.selectNewsListCnt(newsVO);
 	}
 
 	@Override
@@ -43,8 +42,9 @@ public class EgovNewsServiceImpl extends EgovAbstractServiceImpl implements Egov
 	@Override
 	public NewsVO selectNewsDetail(NewsVO newsVO) throws Exception {
 		NewsVO resultVO = egovNewsDao.selectNewsDetail(newsVO);
-        if (resultVO == null)
-            throw processException("info.nodata.msg");
+        if (resultVO == null) {
+			throw processException("info.nodata.msg");
+		}
         return resultVO;
 	}
 

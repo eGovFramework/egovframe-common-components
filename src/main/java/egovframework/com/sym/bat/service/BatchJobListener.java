@@ -73,9 +73,15 @@ public class BatchJobListener implements JobListener {
 	 */
 	@Override
 	public void jobToBeExecuted(JobExecutionContext jobContext) {
+		JobDataMap dataMap = jobContext.getJobDetail().getJobDataMap();
+
+		// 배치 작업이 아니면 처리하지 않음
+		if (!dataMap.containsKey("batchOpertId")) {
+			return;
+		}
+
 		LOGGER.debug("job[{}] jobToBeExecuted ", jobContext.getJobDetail().getKey().getName());
 		BatchResult batchResult = new BatchResult();
-		JobDataMap dataMap = jobContext.getJobDetail().getJobDataMap();
 		try {
 			// 결과 값 세팅.
 			batchResult.setBatchResultId(idgenService.getNextStringId());
@@ -116,12 +122,18 @@ public class BatchJobListener implements JobListener {
 	 */
 	@Override
 	public void jobWasExecuted(JobExecutionContext jobContext, JobExecutionException jee) {
+		JobDataMap dataMap = jobContext.getJobDetail().getJobDataMap();
+
+		// 배치 작업이 아니면 처리하지 않음
+		if (!dataMap.containsKey("batchOpertId")) {
+			return;
+		}
+
 		LOGGER.debug("job[{}] jobWasExecuted", jobContext.getJobDetail().getKey().getName());
 		LOGGER.debug("job[{}] 수행시간 : {}, {}", jobContext.getJobDetail().getKey().getName(), jobContext.getFireTime(), jobContext.getJobRunTime());
 
 		int jobResult = 99;
 		BatchResult batchResult = new BatchResult();
-		JobDataMap dataMap = jobContext.getJobDetail().getJobDataMap();
 		try {
 			// 결과 값 세팅.
 			batchResult.setBatchResultId(dataMap.getString("batchResultId"));
@@ -183,10 +195,16 @@ public class BatchJobListener implements JobListener {
 	 */
 	@Override
 	public void jobExecutionVetoed(JobExecutionContext jobContext) {
+		JobDataMap dataMap = jobContext.getJobDetail().getJobDataMap();
+
+		// 배치 작업이 아니면 처리하지 않음
+		if (!dataMap.containsKey("batchOpertId")) {
+			return;
+		}
+
 		LOGGER.debug("job[{}] jobExecutionVetoed", jobContext.getJobDetail().getKey().getName());
 
 		BatchResult batchResult = new BatchResult();
-		JobDataMap dataMap = jobContext.getJobDetail().getJobDataMap();
 		try {
 			// 결과 값 세팅.
 			batchResult.setBatchResultId(dataMap.getString("batchResultId"));

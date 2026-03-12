@@ -4,7 +4,6 @@
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="sf" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ page session="false" %>
-<spring:eval expression="@customProperties.getProperty('facebook.appId')" var="appId"/>
 <%
 
 /**
@@ -38,7 +37,8 @@
 	<script>
 		window.fbAsyncInit = function() {
 			
-			var appId = "<c:out value='${appId}' />";
+			var appId = "<c:out value='${facebookAppId}' />";
+			console.log("facebookAppId =", appId);
 			// https 페이지에서 호출하지 않을 시, accessToken과 userID 값은 임의로 설정이 필요하다.
 			// https://developers.facebook.com/에서 그래프 API 탐색기를 통해 값을 확인한 후 설정
 			var accessToken = "";
@@ -51,49 +51,53 @@
 				version : 'v17.0' // 버전은 그래프 API GET 옆에 나타나는 버전과 일치시켜야 한다.
 			});
 			
-			var callback = function(response) {
-				accessToken = response.authResponse.accessToken;
-				userID = response.authResponse.userID;
-			}
-			
 			// 페이스북 로그인 여부 확인
-		    FB.getLoginStatus(callback);
+		    FB.getLoginStatus(function(response){
+					if (!response.authResponse || !response.authResponse.userID){
+							console.log("사용자 로그인 필요");
+							return;
+						}
+					
+					var accessToken = response.authResponse.accessToken;
+					var userID = response.authResponse.userID;
+					console.log("userID:",userID,"accessToken:",accessToken);
+					
+					FB.api(
+							  '/' + userID + '/feed?fields=message,name,picture',
+							  'GET',
+							  {"fields":"message,name,picture"},
+							  function(response) {
+									var data = response.data
+									var html = ""
 
-			FB.api(
-					  '/' + userID + '/feed?fields=message,name,picture',
-					  'GET',
-					  {"fields":"message,name,picture"},
-					  function(response) {
-							var data = response.data
-							var html = ""
+										html += '<h2>Your Facebook Feed</h2>';
+										html += '<table class="wTable">';
+										html += '<colgroup><col style="width:25%"><col style="width:auto"></colgroup>';
+										html += '<tbody>';
 
-								html += '<h2>Your Facebook Feed</h2>';
-								html += '<table class="wTable">';
-								html += '<colgroup><col style="width:25%"><col style="width:auto"></colgroup>';
-								html += '<tbody>';
+									for (var i = 0; i < data.length; i++) {
+										
+										if(typeof data[i].message == 'undefined') { data[i].message = ''};
+										if(typeof data[i].name == 'undefined') {data[i].name = ''};
+										
+										html += '<tr>';
+										html += '<th>';
+										html += data[i].message + ' ' + data[i].name
+										html += '</th>';
+										html += '<td class="left" style="padding:20px 8px">';
+										html += '<img id="image' + i + '" src="' + data[i].picture + '" alt="' + data[i].name + '" align="top">'
+										html += '</td>';
+										html += '</tr>'
+										
+									}
+								  
+									html += '</tbody>';
+									html += '</table>';
 
-							for (var i = 0; i < data.length; i++) {
-								
-								if(typeof data[i].message == 'undefined') { data[i].message = ''};
-								if(typeof data[i].name == 'undefined') {data[i].name = ''};
-								
-								html += '<tr>';
-								html += '<th>';
-								html += data[i].message + ' ' + data[i].name
-								html += '</th>';
-								html += '<td class="left" style="padding:20px 8px">';
-								html += '<img id="image' + i + '" src="' + data[i].picture + '" alt="' + data[i].name + '" align="top">'
-								html += '</td>';
-								html += '</tr>'
-								
-							}
-						  
-							html += '</tbody>';
-							html += '</table>';
-
-							document.querySelector('#dv').innerHTML  = html;
-					  }, {access_token: accessToken}
+									document.querySelector('#dv').innerHTML  = html;
+							  }, {access_token: accessToken}
 					);
+		   	});
 		};
 		
 		(function(d, s, id) {

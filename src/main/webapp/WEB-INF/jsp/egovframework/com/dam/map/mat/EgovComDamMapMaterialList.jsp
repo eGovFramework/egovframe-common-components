@@ -60,7 +60,7 @@
 		 * 등록 처리 함수 
 		 ******************************************************** */
 		function fnRegist(){
-			location.href = "<c:url value='/dam/map/mat/EgovComDamMapMaterialRegist.do'/>";
+			location.href = "<c:url value='/dam/map/mat/EgovComDamMapMaterialRegistView.do'/>";
 		}
 		
 		function press(event) {
@@ -95,7 +95,7 @@
 					<input class="s_input2 vat" name="searchKeyword" type="text" value='${searchVO.searchKeyword}' size="35" maxlength="35" onkeypress="press(event);" title="<spring:message code="title.search"/>" /><!-- 검색어 입력 -->
 					
 					<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fnSearch(); return false;" /><!-- 조회 -->
-					<span class="btn_b"><a href="<c:url value='/dam/map/mat/EgovComDamMapMaterialRegist.do'/>" onclick="" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span><!-- 등록 -->
+					<span class="btn_b"><a href="<c:url value='/dam/map/mat/EgovComDamMapMaterialRegistView.do'/>" onclick="" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span><!-- 등록 -->
 				</li>
 			</ul>
 		</div>

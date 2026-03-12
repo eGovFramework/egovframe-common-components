@@ -17,9 +17,8 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
-import egovframework.com.uss.ion.mtg.service.MtgPlaceManage;
 import egovframework.com.uss.ion.mtg.service.MtgPlaceManageVO;
-import egovframework.com.uss.ion.mtg.service.MtgPlaceResve;
+import egovframework.com.uss.ion.mtg.service.MtgPlaceResveVO;
 
 @Repository("mtgPlaceManageDAO")
 public class MtgPlaceManageDAO extends EgovComAbstractDAO {
@@ -48,32 +47,29 @@ public class MtgPlaceManageDAO extends EgovComAbstractDAO {
 	 * @param mtgPlaceManageVO - 회의실관리 VO
 	 * @return MtgPlaceManageVO - 회의실관리 VO
 	 */
-	public MtgPlaceManage selectMtgPlaceManage(MtgPlaceManageVO mtgPlaceManageVO)  throws Exception {
-		return (MtgPlaceManage) selectOne("mtgPlaceManageDAO.selectMtgPlaceManage", mtgPlaceManageVO);
+	public MtgPlaceManageVO selectMtgPlaceManage(MtgPlaceManageVO mtgPlaceManageVO)  throws Exception {
+		return (MtgPlaceManageVO) selectOne("mtgPlaceManageDAO.selectMtgPlaceManage", mtgPlaceManageVO);
 	}
 
 	/**
 	 * 회의실관리정보를 신규로 등록한다.
-	 * @param mtgPlaceManage - 회의실관리 model
 	 */
-	public void insertMtgPlaceManage(MtgPlaceManage mtgPlaceManage) throws Exception {
-		insert("mtgPlaceManageDAO.insertMtgPlaceManage", mtgPlaceManage);
+	public void insertMtgPlaceManage(MtgPlaceManageVO mtgPlaceManageVO) throws Exception {
+		insert("mtgPlaceManageDAO.insertMtgPlaceManage", mtgPlaceManageVO);
 	}
-	
+
 	/**
 	 * 기 등록된 회의실관리정보를 수정한다.
-	 * @param mtgPlaceManage - 회의실관리 model
 	 */
-	public void updtMtgPlaceManage(MtgPlaceManage mtgPlaceManage) throws Exception {
-		update("mtgPlaceManageDAO.updtMtgPlaceManage", mtgPlaceManage);
+	public void updtMtgPlaceManage(MtgPlaceManageVO mtgPlaceManageVO) throws Exception {
+		update("mtgPlaceManageDAO.updtMtgPlaceManage", mtgPlaceManageVO);
 	}
 
 	/**
 	 * 기 등록된 회의실관리정보를 삭제한다.
-	 * @param mtgPlaceManage - 회의실관리 model
 	 */
-	public void deleteMtgPlaceManage(MtgPlaceManage mtgPlaceManage) throws Exception {
-        delete("mtgPlaceManageDAO.deleteMtgPlaceManage",mtgPlaceManage);
+	public void deleteMtgPlaceManage(MtgPlaceManageVO mtgPlaceManageVO) throws Exception {
+		delete("mtgPlaceManageDAO.deleteMtgPlaceManage", mtgPlaceManageVO);
 	}
 
 	/******** 회의실 예약 관리 *************/
@@ -116,26 +112,23 @@ public class MtgPlaceManageDAO extends EgovComAbstractDAO {
 	
 	/**
 	 * 회의실예약 정보를 신규로 등록한다.
-	 * @param mtgPlaceResve - 회의실예약 model
 	 */
-	public void insertMtgPlaceResve(MtgPlaceResve mtgPlaceResve) throws Exception {
-		insert("mtgPlaceManageDAO.insertMtgPlaceResve", mtgPlaceResve);
+	public void insertMtgPlaceResve(MtgPlaceResveVO mtgPlaceResveVO) throws Exception {
+		insert("mtgPlaceManageDAO.insertMtgPlaceResve", mtgPlaceResveVO);
 	}
-	
+
 	/**
 	 * 기 등록된 회의실예약 정보를 수정한다.
-	 * @param mtgPlaceResve - 회의실예약 model
 	 */
-	public void updtMtgPlaceResve(MtgPlaceResve mtgPlaceResve) throws Exception {
-		update("mtgPlaceManageDAO.updtMtgPlaceResve", mtgPlaceResve);
+	public void updtMtgPlaceResve(MtgPlaceResveVO mtgPlaceResveVO) throws Exception {
+		update("mtgPlaceManageDAO.updtMtgPlaceResve", mtgPlaceResveVO);
 	}
 
 	/**
 	 * 기 등록된 회의실예약 정보를 삭제한다.
-	 * @param mtgPlaceResve - 회의실예약 model
 	 */
-	public void deleteMtgPlaceResve(MtgPlaceResve mtgPlaceResve) throws Exception {
-        delete("mtgPlaceManageDAO.deleteMtgPlaceResve",mtgPlaceResve);
+	public void deleteMtgPlaceResve(MtgPlaceResveVO mtgPlaceResveVO) throws Exception {
+		delete("mtgPlaceManageDAO.deleteMtgPlaceResve", mtgPlaceResveVO);
 	}	
 	
 	

@@ -3,6 +3,8 @@ package egovframework.com.cop.bbs.service;
 import java.io.Serializable;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
 
 /**
  *  게시판 속성정보를 담기위한 엔티티 클래스
@@ -28,15 +30,21 @@ public class BoardMaster implements Serializable {
     private String bbsId = "";
     
     /** 게시판 소개 */
+    @EgovNullCheck
+    @Size(max=2000)
     private String bbsIntrcn = "";
     
     /** 게시판 명 */
+    @EgovNullCheck
+    @Size(max=120)
     private String bbsNm = "";
     
     /** 게시판 유형코드 */
+    @EgovNullCheck
     private String bbsTyCode = "";
     
     /** 파일첨부가능여부 */
+    @EgovNullCheck
     private String fileAtchPosblAt = "";
     
     /** 최초등록자 아이디 */
@@ -58,12 +66,14 @@ public class BoardMaster implements Serializable {
     private String atchPosblFileSize = "";
     
     /** 답장가능여부 */
+    @EgovNullCheck
     private String replyPosblAt = "";
     
     /** 템플릿 아이디 */
     private String tmplatId = "";
     
     /** 사용여부 */
+    @EgovNullCheck
     private String useAt = "";
     
     /** 사용플래그 */

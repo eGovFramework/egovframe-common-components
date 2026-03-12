@@ -13,7 +13,7 @@
  *  @version 1.0
  *  @see
  * The type com.sun.star.lang.XeventListener cannot be resolved. It is indirectly referenced from required .class files
- *  Copyright (C) 2009 by EGOV  All rights reserved.
+ *  Copyright (C) 2009 by EGOV  All right reserved.
  */
 
 package egovframework.com.utl.sim.service;
@@ -24,9 +24,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.util.Iterator;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.FilenameUtils;
 import org.slf4j.Logger;
@@ -44,6 +41,8 @@ import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.util.EgovBasicLogger;
 import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 public class EgovPdfCnvr {
 	public static String addrIP = "";
@@ -84,15 +83,15 @@ public class EgovPdfCnvr {
 					}
 
 					String newName = "";
-	
+
 					//newName 은 Naming Convention에 의해서 생성
 					newName = EgovStringUtil.getTimeStamp();
 					writeFile(mFile, newName);
-	
+
 					File inputFile = new File(EgovWebUtil.filePathBlackList(STORE_FILE_PATH + FilenameUtils.getName(newName)));
-	
+
 					if (inputFile.exists()) {
-	
+
 						// connect to an OpenOffice.org instance running on port 8100
 						SocketOpenOfficeConnection connection = new SocketOpenOfficeConnection(8100);
 						connection.connect();
@@ -106,14 +105,14 @@ public class EgovPdfCnvr {
 						converter.convert(inputFile, outputFile);
 						// close the connection
 						connection.disconnect();
-	
+
 						if (inputFile.exists()) {
 							//3. 삭제해줍니다.
 							status = inputFile.delete();
 						}
-	
+
 						status = true;
-	
+
 					} else {
 						status = false;
 					}
@@ -138,12 +137,21 @@ public class EgovPdfCnvr {
 	 * @throws Exception
 	 */
 	protected static void writeFile(MultipartFile file, String newName) throws IOException {
+		//2026.02.28 KISA 취약점 조치
+		if (file == null || file.isEmpty()) {
+			throw new IOException("업로드 파일이 없습니다.");
+		}
 		InputStream stream = null;
 		OutputStream bos = null;
 
 		try {
 
 			stream = file.getInputStream();
+			//2026.02.28 KISA 취약점 조치
+			if (stream == null) {
+				throw new IOException("업로드 파일 스트림을 열 수 없습니다.");
+			}
+	
 			File cFile = new File(EgovWebUtil.filePathBlackList(STORE_FILE_PATH));
 
 			if (!cFile.isDirectory()) {

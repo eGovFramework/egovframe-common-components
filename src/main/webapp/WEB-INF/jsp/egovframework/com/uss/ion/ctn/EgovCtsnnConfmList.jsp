@@ -127,10 +127,10 @@
 	<input type="hidden" name="pageIndex" value="<c:if test="${empty ctsnnManageVO.pageIndex }">1</c:if><c:if test="${!empty ctsnnManageVO.pageIndex }"><c:out value='${ctsnnManageVO.pageIndex}'/></c:if>">
 
 
-	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
+	<div class="search_box" title='<spring:message code="common.searchCondition.msg" />'><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<div class="con">
 			<label for=""><spring:message code="comUssIonCtn.ctsnnConfmList.searchKeyword"/> : </label><!-- 경조구분 -->
-			<select name="searchKeyword" title="<spring:message code="comUssIonCtn.ctsnnConfmList.searchKeyword"/>"><!-- 경조구분 -->
+			<select name="searchKeyword" title='<spring:message code="comUssIonCtn.ctsnnConfmList.searchKeyword"/>'><!-- 경조구분 -->
 	        	<option value="" <c:if test="${ctsnnManageVO.searchKeyword eq '' }">selected</c:if>><spring:message code="comUssIonCtn.ctsnnConfmList.selectedAll"/></option><!-- 전체 -->
 	            <c:forEach items="${ctsnnCodeList}" var="result" varStatus="status">
 		       	   <option value="<c:out value="${result.code }"/>" <c:if test="${ctsnnManageVO.searchKeyword eq result.code }">selected</c:if>><c:out value="${result.codeNm }"/></option>
@@ -152,11 +152,11 @@
 		</div>
 		<div class="con">
 			<label for=""><spring:message code="comUssIonCtn.ctsnnConfmList.searchNm"/> : </label><!-- 신청자 -->
-			<input name="searchNm" type="text" value="${ctsnnManageVO.searchNm}"  maxlength="100" title="<spring:message code="comUssIonCtn.ctsnnConfmList.searchNm"/>" /><!-- 신청자 -->
+			<input name="searchNm" type="text" value="${ctsnnManageVO.searchNm}"  maxlength="100" title='<spring:message code="comUssIonCtn.ctsnnConfmList.searchNm"/>' /><!-- 신청자 -->
 		</div>
 		<div class="con">
 			<label for=""><spring:message code="comUssIonCtn.ctsnnConfmList.searchConfmAt"/> : </label><!-- 진행구분 -->
-			<select name="searchConfmAt" title="<spring:message code="comUssIonCtn.ctsnnConfmList.searchConfmAt"/>"><!-- 진행구분 -->
+			<select name="searchConfmAt" title='<spring:message code="comUssIonCtn.ctsnnConfmList.searchConfmAt"/>'><!-- 진행구분 -->
 		       	<option value=""  <c:if test="${ctsnnManageVO.searchConfmAt eq '' }">selected</c:if>><spring:message code="comUssIonCtn.ctsnnConfmList.selectedAll"/></option><!-- 전체 -->
 		       	<option value="A" <c:if test="${ctsnnManageVO.searchConfmAt eq 'A' }">selected</c:if>><spring:message code="comUssIonCtn.ctsnnConfmList.searchConfmAt.A"/></option><!-- 신청중 -->
 		       	<option value="C" <c:if test="${ctsnnManageVO.searchConfmAt eq 'C' }">selected</c:if>><spring:message code="comUssIonCtn.ctsnnConfmList.searchConfmAt.C"/></option><!-- 승인 -->

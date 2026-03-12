@@ -1,5 +1,6 @@
 package egovframework.com.ext.captcha;
 
+import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
@@ -8,9 +9,6 @@ import java.io.IOException;
 import java.util.Random;
 
 import javax.imageio.ImageIO;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -22,6 +20,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.annotation.IncludedInfo;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.HttpSession;
 
 /**
  * Captcha 처리를 위한 컨트롤러
@@ -104,15 +105,28 @@ public class EgovCaptchaController {
 
 			BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
 			Graphics2D g2d = bufferedImage.createGraphics();
-
+			
+			//배경채우기
 			g2d.setColor(Color.white);
 			g2d.fillRect(0, 0, width, height);
-
+			//글씨쓰기
 			g2d.setFont(new Font("Arial", Font.BOLD, 40));
 			g2d.setColor(Color.BLACK);
+			g2d.drawString(captchaTxt, 10, 35);//텍스트,위치
+			//랜덤줄긋기
+			g2d.setColor(Color.white);
+			for(int i =0; i <8; i++) {//i= 선 갯수 x1,y1 시작점, x2,y2 끝점
+				float thickness = 1.0f + (float)(Math.random() * 3.0f); // 두께 조절
+			    g2d.setStroke(new BasicStroke(thickness));
 
-			g2d.drawString(captchaTxt, 10, 35);
-			g2d.dispose();
+				int x1 = (int)(Math.random()*width);
+				int y1 = (int)(Math.random()*height);
+				int x2 = (int)(Math.random()*width);
+				int y2 = (int)(Math.random()*height);
+				g2d.drawLine(x1,y1,x2,y2);
+			}
+			g2d.setStroke(new BasicStroke(1.0f));
+			g2d.dispose();// 닫아주기
 			response.setContentType("image/png");
 			ImageIO.write(bufferedImage, "png", response.getOutputStream());
 		} catch (IOException e) {

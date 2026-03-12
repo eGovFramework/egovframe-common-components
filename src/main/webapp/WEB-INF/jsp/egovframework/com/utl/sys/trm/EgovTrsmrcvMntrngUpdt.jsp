@@ -18,7 +18,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 <c:set var="pageTitle"><spring:message code="comUtlSysTrm.trsmrcvMntrngUpdt.title"/></c:set>
 <!DOCTYPE html>
@@ -28,8 +27,7 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8" >
 <link href="<c:url value='/css/egovframework/com/com.css' />" rel="stylesheet" type="text/css">
 <link href="<c:url value='/css/egovframework/com/button.css' />" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="trsmrcvMntrng" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 
 
@@ -73,6 +71,13 @@ function fn_egov_save(){
     <input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}' default='1' />"/>
     
     <input type="hidden" name="cntcId" value="<c:out value='${trsmrcvMntrng.cntcId}'/>"/>
+    <input type="hidden" name="cntcNm" value="<c:out value='${trsmrcvMntrng.cntcNm}'/>"/>
+    <input type="hidden" name="provdInsttNm" value="<c:out value='${trsmrcvMntrng.provdInsttNm}'/>"/>
+    <input type="hidden" name="provdSysNm" value="<c:out value='${trsmrcvMntrng.provdSysNm}'/>"/>
+    <input type="hidden" name="provdSvcNm" value="<c:out value='${trsmrcvMntrng.provdSvcNm}'/>"/>
+    <input type="hidden" name="requstInsttNm" value="<c:out value='${trsmrcvMntrng.requstInsttNm}'/>"/>
+    <input type="hidden" name="requstSysNm" value="<c:out value='${trsmrcvMntrng.requstSysNm}'/>"/>
+    
     <input type="hidden" name="mntrngSttus" value="<c:out value='${trsmrcvMntrng.mntrngSttus}'/>"/>
     <!-- 상단 타이틀  영역 -->
 	<h2>&nbsp;${pageTitle}</h2>

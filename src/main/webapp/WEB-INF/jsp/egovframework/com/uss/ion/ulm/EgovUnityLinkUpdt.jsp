@@ -22,7 +22,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -31,34 +30,26 @@
 <title><spring:message code="uss.ion.ulm.unityLinkUpdt.unityLinkUpdate"/></title><!-- 통합링크관리 관리 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="unityLink" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
-
-/* ********************************************************
- * 초기화
- ******************************************************** */
-function fn_egov_init_UnityLink(){
-
-}
 /* ********************************************************
  * 저장처리화면
  ******************************************************** */
 function fn_egov_save_UnityLink(){
 	var varFrom = document.unityLink;
+	varFrom.action =  "<c:url value='/uss/ion/ulm/updtUnityLink.do' />";
+
+	if(!validateUnityLink(varFrom)){
+		return;
+	}
+
 	if(confirm("<spring:message code="common.save.msg" />")){
-		varFrom.action =  "<c:url value='/uss/ion/ulm/updtUnityLink.do' />";
-		if(!validateUnityLink(varFrom)){
-			return;
-		}else{
-			varFrom.submit();
-		}
+		varFrom.submit();
 	}
 }
-
 </script>
 </head>
-<body onLoad="fn_egov_init_UnityLink();">
+<body>
 
 <%-- noscript 테그 --%>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg"/></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
@@ -79,7 +70,7 @@ function fn_egov_save_UnityLink(){
 			<th><spring:message code="uss.ion.ulm.unityLinkUpdt.unityLinkNm"/> <span class="pilsu">*</span></th><!-- 통합링크명 -->
 			<td class="left">
 			    <form:input path="unityLinkNm" size="73" cssClass="txaIpt" maxlength="255"/>
-      			<form:errors path="unityLinkNm" cssClass="error"/>
+      			<div><form:errors path="unityLinkNm" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
@@ -90,20 +81,21 @@ function fn_egov_save_UnityLink(){
 					<form:option value="" label="${cSelect}"/><!-- 선택 -->
 					<form:options items="${unityLinkSeCodeList}" itemValue="code" itemLabel="codeNm"/>
 				</form:select>
+				<div><form:errors path="unityLinkSeCode" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="uss.ion.ulm.unityLinkUpdt.unityLinkUrl"/> <span class="pilsu">*</span></th><!-- 통합링크URL -->
 			<td class="left">
 			    <form:input path="unityLinkUrl" size="73" cssClass="txaIpt" maxlength="255"/>
-      			<form:errors path="unityLinkUrl" cssClass="error"/>
+      			<div><form:errors path="unityLinkUrl" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="uss.ion.ulm.unityLinkUpdt.unityLinkDc"/> <span class="pilsu">*</span></th><!-- 통합링크설명 -->
 			<td class="left">
 			    <form:textarea path="unityLinkDc" rows="75" cols="14" cssClass="txaClass2" cssStyle="height:356px"/>
-				<form:errors path="unityLinkDc" cssClass="error"/>
+				<div><form:errors path="unityLinkDc" cssClass="error" /></div>
 			</td>
 		</tr>
 	</table>

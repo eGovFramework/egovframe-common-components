@@ -2,6 +2,10 @@ package egovframework.com.uss.olp.opm.service;
 
 import java.io.Serializable;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 /**
  * 온라인POLL관리 VO Class 구현
  * @author 공통서비스 장동한
@@ -24,21 +28,30 @@ public class OnlinePollManage implements Serializable {
     private String pollId;
 
     /** 온라인POLL 이름 */
+    @EgovNullCheck
+    @Size(max=255)
     private String pollNm;
 
     /** 온라인POLL 시작일자 */
+    @EgovNullCheck
+    @Pattern(regexp="^\\d{4}-\\d{2}-\\d{2}$", message="{validation.pattern.date}")
     private String pollBeginDe;
 
     /** 온라인POLL 종료일자 */
+    @EgovNullCheck
+    @Pattern(regexp="^\\d{4}-\\d{2}-\\d{2}$", message="{validation.pattern.date}")
     private String pollEndDe;
 
     /** 온라인POLL 종류 */
+    @EgovNullCheck
     private String pollKindCode;
 
     /** 온라인POLL 페기유무 */
+    @EgovNullCheck
     private String pollDsuseYn;
 
     /** 온라인POLL 자동페기 */
+    @EgovNullCheck
     private String pollAutoDsuseYn;
 
     /** 최초등록시점 */

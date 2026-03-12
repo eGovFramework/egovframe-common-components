@@ -3,18 +3,13 @@ package egovframework.com.cop.cmy.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
@@ -25,6 +20,9 @@ import egovframework.com.cop.cmy.service.CommunityVO;
 import egovframework.com.cop.cmy.service.EgovCommuManageService;
 import egovframework.com.cop.cmy.service.EgovCommuMasterService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 /**
  * 커뮤니티 정보를 관리하기 위한 컨트롤러 클래스
@@ -35,7 +33,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *
  * <pre>
  * << 개정이력(Modification Information) >>
- *   
+ *
  *   수정일      수정자           수정내용
  *   -------       --------    ---------------------------
  *   2009.4.2	이삼섭          최초 생성
@@ -50,24 +48,21 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
 
 @Controller
 public class EgovCommuMasterController {
-	
+
     @Resource(name = "EgovCommuMasterService")
     private EgovCommuMasterService egovCommuMasterService;
-    
+
     @Resource(name = "EgovCommuManageService")
     private EgovCommuManageService egovCommuManageService;
 
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertyService;
 
-    @Autowired
-    private DefaultBeanValidator beanValidator;
-
     //Logger log = Logger.getLogger(this.getClass());
-	
+
 	/**
      * 커뮤니티에 대한 목록을 조회한다.
-     * 
+     *
      * @param cmmntyVO
      * @param model
      * @return
@@ -80,7 +75,7 @@ public class EgovCommuMasterController {
 	cmmntyVO.setPageSize(propertyService.getInt("pageSize"));
 
 	PaginationInfo paginationInfo = new PaginationInfo();
-	
+
 	paginationInfo.setCurrentPageNo(cmmntyVO.getPageIndex());
 	paginationInfo.setRecordCountPerPage(cmmntyVO.getPageUnit());
 	paginationInfo.setPageSize(cmmntyVO.getPageSize());
@@ -91,7 +86,7 @@ public class EgovCommuMasterController {
 
 	Map<String, Object> map = egovCommuMasterService.selectCommuMasterList(cmmntyVO);
 	int totCnt = Integer.parseInt((String)map.get("resultCnt"));
-	
+
 	paginationInfo.setTotalRecordCount(totCnt);
 
 	model.addAttribute("resultList", map.get("resultList"));
@@ -103,7 +98,7 @@ public class EgovCommuMasterController {
 
     /**
      * 커뮤니티 등록을 위한 등록페이지로 이동한다.
-     * 
+     *
      * @param cmmntyVO
      * @param model
      * @return
@@ -112,13 +107,13 @@ public class EgovCommuMasterController {
     @RequestMapping("/cop/cmy/insertCommuMasterView.do")
     public String insertCommuMasterView(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) throws Exception {
     	model.addAttribute("commuMasterVO", new CommunityVO());
-    	
+
 	return "egovframework/com/cop/cmy/EgovCommuMasterRegist";
     }
 
     /**
      * 커뮤니티 정보를 등록한다.
-     * 
+     *
      * @param cmmntyVO
      * @param cmmnty
      * @param status
@@ -127,7 +122,7 @@ public class EgovCommuMasterController {
      * @throws Exception
      */
     @RequestMapping("/cop/cmy/insertCommuMaster.do")
-    public String insertCommuMaster(@ModelAttribute("searchVO") CommunityVO cmmntyVO, @ModelAttribute("commuMaster") Community community,
+    public String insertCommuMaster(@ModelAttribute("searchVO") CommunityVO cmmntyVO, @Valid @ModelAttribute("commuMasterVO") Community community,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -136,13 +131,11 @@ public class EgovCommuMasterController {
         if(!isAuthenticated) {
             return "redirect:/uat/uia/egovLoginUsr.do";
         }
-        
-		beanValidator.validate(community, bindingResult);
-	
+
 		if (bindingResult.hasErrors()) {
 		    return "egovframework/com/cop/cmy/EgovCommuMasterRegist";
 		}
-	
+
 		community.setRegistSeCode("REGC02");
 		community.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 
@@ -157,7 +150,7 @@ public class EgovCommuMasterController {
 	    cmmntyUserVO.setMberSttus("P");
 	    cmmntyUserVO.setUseAt("Y");
 	    cmmntyUserVO.setFrstRegisterId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-	    
+
 	    egovCommuManageService.insertCommuUserRqst(cmmntyUserVO);
 
 		return "forward:/cop/cmy/selectCommuMasterList.do";
@@ -165,7 +158,7 @@ public class EgovCommuMasterController {
 
     /**
      * 커뮤니티에 대한 상세정보를 조회한다.
-     * 
+     *
      * @param cmmntyVO
      * @param model
      * @return
@@ -176,19 +169,19 @@ public class EgovCommuMasterController {
 		CommunityVO result = egovCommuMasterService.selectCommuMaster(cmmntyVO);
 
 		//-----------------------
-		// 제공 URL 
+		// 제공 URL
 		//-----------------------
 		result.setProvdUrl(request.getContextPath()+ "/cop/cmy/CommuMainPage.do?cmmntyId=" + result.getCmmntyId());
 		////---------------------
-	
+
 		model.addAttribute("result", result);
-	
+
 		return "egovframework/com/cop/cmy/EgovCommuMasterDetail";
     }
 
     /**
      * 커뮤니티 정보 수정을 위한 수정페이지로 이동한다.
-     * 
+     *
      * @param cmmntyVO
      * @param model
      * @return
@@ -197,17 +190,17 @@ public class EgovCommuMasterController {
     @RequestMapping("/cop/cmy/updateCommuMasterView.do")
     public String updateCommuMasterView(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model)
 	    throws Exception {
-		
+
 		CommunityVO result = egovCommuMasterService.selectCommuMaster(cmmntyVO);
-		
+
 		model.addAttribute("commuMasterVO", result);
-	
+
 		return "egovframework/com/cop/cmy/EgovCommuMasterUpdt";
     }
 
     /**
      * 커뮤니티 정보를 수정한다.
-     * 
+     *
      * @param cmmntyVO
      * @param status
      * @param model
@@ -215,7 +208,7 @@ public class EgovCommuMasterController {
      * @throws Exception
      */
     @RequestMapping("/cop/cmy/updateCommuMaster.do")
-    public String updateCommuMaster(@ModelAttribute("searchVO") CommunityVO cmmntyVO, @ModelAttribute("commuMaster") Community community,
+    public String updateCommuMaster(@ModelAttribute("searchVO") CommunityVO cmmntyVO, @Valid @ModelAttribute("commuMasterVO") Community community,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -224,26 +217,25 @@ public class EgovCommuMasterController {
         if(!isAuthenticated) {
             return "redirect:/uat/uia/egovLoginUsr.do";
         }
-	
-		beanValidator.validate(community, bindingResult);
+
 		if (bindingResult.hasErrors()) {
-	
+
 		    CommunityVO result = egovCommuMasterService.selectCommuMaster(cmmntyVO);
 		    model.addAttribute("result", result);
-	
+
 		    return "egovframework/com/cop/cmy/EgovCommuMasterUpdt";
 		}
-	
+
 		community.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-		
+
 		egovCommuMasterService.updateCommuMaster(community);
-	
+
 		return "forward:/cop/cmy/selectCommuMasterList.do";
     }
-    
+
     /**
      * 커뮤니티 정보를 삭제한다.
-     * 
+     *
      * @param cmmntyVO
      * @param status
      * @param model
@@ -263,10 +255,10 @@ public class EgovCommuMasterController {
     	}
     	return "forward:/cop/cmy/selectCommuMasterList.do";
         }
-    
+
     /**
      * 포트릿을 위한 커뮤니티 정보 목록 정보를 조회한다.
-     * 
+     *
      * @param cmmntyVO
      * @param sessionVO
      * @param model
@@ -276,7 +268,7 @@ public class EgovCommuMasterController {
     @RequestMapping("/cop/cmy/selectCommuMasterListPortlet.do")
     public String selectCmmntyListPortlet(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model) throws Exception {
 	List<CommunityVO> result = egovCommuMasterService.selectCommuMasterListPortlet(cmmntyVO);
-	
+
 	model.addAttribute("resultList", result);
 
 	return "egovframework/com/cop/cmy/EgovCommuMasterListPortlet";

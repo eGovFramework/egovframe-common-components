@@ -1,5 +1,8 @@
 package egovframework.com.dam.map.tea.service;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 개요
  * - 지식맵(조직별)에 대한 model 클래스를 정의한다.
@@ -15,18 +18,26 @@ public class MapTeam {
 	/**
 	 * 조직ID
 	 */
+	@EgovNullCheck
+	@Size(max=20)
 	private String orgnztId;
 	/**
-	 * 조직분류
+	 * 조직명
 	 */
+	@EgovNullCheck
+	@Size(max=20)
 	private String orgnztNm;
 	/**
 	 * 분류일자
 	 */
+	@EgovNullCheck
+	@Size(max=10)
 	private String clYmd;
 	/**
 	 * 지식URL
 	 */
+	@EgovNullCheck
+	@Size(max=100)
 	private String knoUrl;
     /**
      * 최초등록자ID

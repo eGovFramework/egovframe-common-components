@@ -34,7 +34,7 @@ public class DeptManageDAO extends EgovComAbstractDAO {
 	 * 등록된 부서의 상세정보를 조회한다.
 	 * @param deptManageVO - 부서 Vo
 	 * @return deptManageVO - 부서 Vo
-	 * 
+	 *
 	 * @param bannerVO
 	 */
 	public DeptManageVO selectDeptManage(DeptManageVO deptManageVO) throws Exception {
@@ -60,7 +60,7 @@ public class DeptManageDAO extends EgovComAbstractDAO {
 	/**
 	 * 기 등록된 부서정보를 삭제한다.
 	 * @param deptManageVO - 부서 model
-	 * 
+	 *
 	 * @param banner
 	 */
 	public void deleteDeptManage(DeptManageVO deptManageVO) throws Exception {

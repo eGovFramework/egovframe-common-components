@@ -2,8 +2,6 @@ package egovframework.com.uss.cmt.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.springframework.stereotype.Controller;
@@ -21,6 +19,7 @@ import egovframework.com.uss.cmt.service.CmtDefaultVO;
 import egovframework.com.uss.cmt.service.CmtManageVO;
 import egovframework.com.uss.cmt.service.EgovCmtManageService;
 import egovframework.com.utl.fcc.service.EgovDateUtil;
+import jakarta.annotation.Resource;
 
 /**
  * 업무사용자관련 요청을  비지니스 클래스로 전달하고 처리된 결과를  해당
@@ -40,7 +39,6 @@ import egovframework.com.utl.fcc.service.EgovDateUtil;
  *
  * </pre>
  */
-
 @Controller
 public class EgovCmtManageController {
 
@@ -51,10 +49,6 @@ public class EgovCmtManageController {
     /** EgovPropertyService */
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertiesService;
-
-    /** DefaultBeanValidator beanValidator */
-    //	@Autowired
-    //	private DefaultBeanValidator beanValidator;
 
     /** egovCmtManageIdGnrService */
     @Resource(name = "egovCmtManageIdGnrService")

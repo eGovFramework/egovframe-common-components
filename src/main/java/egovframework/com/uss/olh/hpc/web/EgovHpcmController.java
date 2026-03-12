@@ -2,11 +2,8 @@ package egovframework.com.uss.olh.hpc.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -14,7 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -26,6 +22,8 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olh.hpc.service.EgovHpcmService;
 import egovframework.com.uss.olh.hpc.service.HpcmVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * 도움말을 처리하는 비즈니스 구현 클래스
@@ -64,10 +62,6 @@ public class EgovHpcmController {
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
-
-	// Validation 관련
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/**
 	 * 도움말내용 목록을 조회한다. (pageing)
@@ -159,10 +153,9 @@ public class EgovHpcmController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/uss/olh/hpc/insertHpcm.do")
-	public String insertHpcmCn(@ModelAttribute("searchVO") HpcmVO searchVO, @ModelAttribute("hpcmVO") HpcmVO hpcmVO,
+	public String insertHpcmCn(@ModelAttribute("searchVO") HpcmVO searchVO, @Valid @ModelAttribute("hpcmVO") HpcmVO hpcmVO,
 			BindingResult bindingResult) throws Exception {
 
-		beanValidator.validate(hpcmVO, bindingResult);
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/uss/olh/hpc/EgovHpcmRegist";
 		}
@@ -218,11 +211,9 @@ public class EgovHpcmController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/uss/olh/hpc/updateHpcm.do")
-	public String updateHpcm(@ModelAttribute("searchVO") HpcmVO searchVO, @ModelAttribute("hpcmManageVO") HpcmVO hpcmVO,
+	public String updateHpcm(@ModelAttribute("searchVO") HpcmVO searchVO, @Valid @ModelAttribute("hpcmManageVO") HpcmVO hpcmVO,
 			BindingResult bindingResult) throws Exception {
 
-		// Validation
-		beanValidator.validate(hpcmVO, bindingResult);
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/uss/olh/hpc/EgovHpcmUpdt";
 		}

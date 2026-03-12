@@ -2,7 +2,9 @@ package egovframework.com.uss.olp.qim.service;
 
 import java.io.Serializable;
 
-import javax.validation.constraints.NotEmpty;
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 /**
  * 설문항목관리 VO Class 구현
  * @author 공통서비스 장동한
@@ -16,8 +18,8 @@ import javax.validation.constraints.NotEmpty;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.03.20  장동한			최초 생성
- *   2024.10.29  권태성			필수값 BindingResult 검증을 위한 @NotEmpty 추가
- *
+ *   2024.10.29  권태성			필수값 BindingResult 검증을 위한 @EgovNullCheck 추가
+ *   2026.02.02                 주석내용 변경 및 시스템 자동 생성값 @EgovNullCheck 제거
  * </pre>
  */
 public class QustnrItemManageVO implements Serializable {
@@ -28,26 +30,29 @@ public class QustnrItemManageVO implements Serializable {
 	private String qestnrQesitmId = "";
 
 	/** 설문지 아이디 */
-	@NotEmpty(message = "설문정보{common.required.msg}")
+	@EgovNullCheck
 	private String qestnrId = "";
 
 	/** 항목순번 */
-	@NotEmpty(message = "항목순번{common.required.msg}")
+	@EgovNullCheck
+	@Size(max=5)
+	@Pattern(regexp="^[0-9]*$", message="{validation.pattern.integer}")
 	private String iemSn = "";
 
-	/** 항목내용 */
-	@NotEmpty(message = "항목내용{common.required.msg}")
+	/** 설문항목아이디 */
 	private String qustnrIemId = "";
 
-	/** 설문항목아이디 */
+	/** 항목내용 */
+	@EgovNullCheck
+	@Size(max=1000)
 	private String iemCn = "";
 
 	/** 기타답변여부 */
-	@NotEmpty(message = "기타답변여부{common.required.msg}")
+	@EgovNullCheck
 	private String etcAnswerAt = "";
 
 	/** 설문항목(을)를 아이디 */
-	@NotEmpty(message = "설문문항정보{common.required.msg}")
+	@EgovNullCheck
 	private String qestnrTmplatId = "";
 
 	/** 최초등록시점  */

@@ -3,13 +3,9 @@ package egovframework.com.sym.mnu.mpm.web;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
@@ -18,7 +14,6 @@ import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -28,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.util.WebUtils;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -37,6 +31,9 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.mnu.mpm.service.EgovMenuManageService;
 import egovframework.com.sym.mnu.mpm.service.MenuManageVO;
 import egovframework.com.sym.prm.service.EgovProgrmManageService;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 /**
  * 메뉴목록 관리및 메뉴생성, 사이트맵 생성을 처리하는 비즈니스 구현 클래스
@@ -71,9 +68,6 @@ public class EgovMenuManageController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovMenuManageController.class);
 
-	/* Validator */
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 	/** EgovPropertyService */
 	@Resource(name = "propertiesService")
 	protected EgovPropertyService propertiesService;
@@ -198,16 +192,15 @@ public class EgovMenuManageController {
 
 	/**
 	 * 메뉴정보를 등록화면으로 이동 및 등록 한다.
-	 * 
-	 * @param menuManageVO MenuManageVO
-	 * @param commandMap   Map
-	 * @return 출력페이지정보 등록화면 호출시 "sym/mnu/mpm/EgovMenuRegist", 출력페이지정보 등록처리시
-	 *         "forward:/sym/mnu/mpm/EgovMenuManageSelect.do"
+	 * @param menuManageVO    MenuManageVO
+	 * @param commandMap      Map
+	 * @return 출력페이지정보 등록화면 호출시 "sym/mnu/mpm/EgovMenuRegist",
+	 *         출력페이지정보 등록처리시 "forward:/sym/mnu/mpm/EgovMenuManageSelect.do"
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/mnu/mpm/EgovMenuRegistInsert.do")
 	public String insertMenuManage(@RequestParam Map<?, ?> commandMap,
-			@ModelAttribute("menuManageVO") MenuManageVO menuManageVO, BindingResult bindingResult, ModelMap model)
+			@Valid @ModelAttribute("menuManageVO") MenuManageVO menuManageVO, BindingResult bindingResult, ModelMap model)
 			throws Exception {
 		String sLocationUrl = null;
 		String resultMsg = "";
@@ -217,9 +210,8 @@ public class EgovMenuManageController {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
-		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
+		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
 		if (sCmd.equals("insert")) {
-			beanValidator.validate(menuManageVO, bindingResult);
 			if (bindingResult.hasErrors()) {
 				sLocationUrl = "egovframework/com/sym/mnu/mpm/EgovMenuRegist";
 				return sLocationUrl;
@@ -254,7 +246,7 @@ public class EgovMenuManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/mnu/mpm/EgovMenuDetailSelectUpdt.do")
-	public String updateMenuManage(@ModelAttribute("menuManageVO") MenuManageVO menuManageVO,
+	public String updateMenuManage(@Valid @ModelAttribute("menuManageVO") MenuManageVO menuManageVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 		String sLocationUrl = null;
 		String resultMsg = "";
@@ -264,7 +256,7 @@ public class EgovMenuManageController {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
-		beanValidator.validate(menuManageVO, bindingResult);
+
 		if (bindingResult.hasErrors()) {
 			sLocationUrl = "forward:/sym/mnu/mpm/EgovMenuManageListDetailSelect.do";
 			return sLocationUrl;
@@ -345,7 +337,7 @@ public class EgovMenuManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/mnu/mpm/EgovMenuListInsert.do")
-	public String insertMenuList(@ModelAttribute("menuManageVO") MenuManageVO menuManageVO, BindingResult bindingResult,
+	public String insertMenuList(@Valid @ModelAttribute("menuManageVO") MenuManageVO menuManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 		String sLocationUrl = null;
 		String resultMsg = "";
@@ -356,7 +348,6 @@ public class EgovMenuManageController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		beanValidator.validate(menuManageVO, bindingResult);
 		if (bindingResult.hasErrors()) {
 			sLocationUrl = "egovframework/com/sym/mnu/mpm/EgovMenuList";
 			return sLocationUrl;
@@ -389,7 +380,7 @@ public class EgovMenuManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/mnu/mpm/EgovMenuListUpdt.do")
-	public String updateMenuList(@ModelAttribute("menuManageVO") MenuManageVO menuManageVO, BindingResult bindingResult,
+	public String updateMenuList(@Valid @ModelAttribute("menuManageVO") MenuManageVO menuManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 		String sLocationUrl = null;
 		String resultMsg = "";
@@ -400,7 +391,6 @@ public class EgovMenuManageController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		beanValidator.validate(menuManageVO, bindingResult);
 		if (bindingResult.hasErrors()) {
 			sLocationUrl = "forward:/sym/mnu/mpm/EgovMenuListSelect.do";
 			return sLocationUrl;
@@ -438,11 +428,6 @@ public class EgovMenuManageController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		beanValidator.validate(menuManageVO, bindingResult);
-		if (bindingResult.hasErrors()) {
-			sLocationUrl = "egovframework/com/sym/mnu/mpm/EgovMenuList";
-			return sLocationUrl;
-		}
 		menuManageService.deleteMenuManage(menuManageVO);
 		resultMsg = egovMessageSource.getMessage("success.common.delete");
 		sLocationUrl = "forward:/sym/mnu/mpm/EgovMenuListSelect.do";
@@ -534,7 +519,7 @@ public class EgovMenuManageController {
 		String sLocationUrl = null;
 		String resultMsg = "";
 		String sMessage = "";
-		String[] fileExtension = { "XLS", "XLSX" };
+		String[] fileExtension = {"XLS", "XLSX"};
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -543,22 +528,17 @@ public class EgovMenuManageController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
+		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
 
 		if (sCmd.equals("bndeInsert")) {
 
-			final MultipartHttpServletRequest multiRequest = WebUtils.getNativeRequest(request,
-					MultipartHttpServletRequest.class);
+			final MultipartHttpServletRequest multiRequest = WebUtils.getNativeRequest(request, MultipartHttpServletRequest.class);
 
-			// 2022.01 Possible null pointer dereference due to return value of called
-			// method
+			//2022.01 Possible null pointer dereference due to return value of called method
 			if (multiRequest != null) {
 
 				final Map<String, MultipartFile> files = multiRequest.getFileMap();
-				Iterator<Entry<String, MultipartFile>> itr = files.entrySet().iterator();
-
-				while (itr.hasNext()) {
-					Entry<String, MultipartFile> entry = itr.next();
+				for (Entry<String, MultipartFile> entry : files.entrySet()) {
 					MultipartFile file = entry.getValue();
 					String originalFilename = file.getOriginalFilename();
 					if (StringUtils.isEmpty(originalFilename)) {

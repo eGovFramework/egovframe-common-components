@@ -18,7 +18,6 @@ import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.service.FileVO;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
-import egovframework.com.uss.ion.lsi.service.LoginScrinImage;
 import egovframework.com.uss.ion.lsi.service.LoginScrinImageVO;
 
 @Repository("loginScrinImageDAO")
@@ -54,34 +53,34 @@ public class LoginScrinImageDAO extends EgovComAbstractDAO {
 
 	/**
 	 * 로그인화면이미지정보를 신규로 등록한다.
-	 * @param loginScrinImage - 로그인화면이미지 model
+	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 */
-	public void insertLoginScrinImage(LoginScrinImage loginScrinImage) throws Exception {
-		insert("loginScrinImageDAO.insertLoginScrinImage", loginScrinImage);
+	public void insertLoginScrinImage(LoginScrinImageVO loginScrinImageVO) throws Exception {
+		insert("loginScrinImageDAO.insertLoginScrinImage", loginScrinImageVO);
 	}
 
 	/**
 	 * 기 등록된 로그인화면이미지정보를 수정한다.
-	 * @param loginScrinImage - 로그인화면이미지 model
+	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 */
-	public void updateLoginScrinImage(LoginScrinImage loginScrinImage) throws Exception {
-		update("loginScrinImageDAO.updateLoginScrinImage", loginScrinImage);
+	public void updateLoginScrinImage(LoginScrinImageVO loginScrinImageVO) throws Exception {
+		update("loginScrinImageDAO.updateLoginScrinImage", loginScrinImageVO);
 	}
 
 	/**
 	 * 기 등록된 로그인화면이미지정보를 삭제한다.
-	 * @param loginScrinImage - 로그인화면이미지 model
+	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 */
-	public void deleteLoginScrinImage(LoginScrinImage loginScrinImage) throws Exception {
-        delete("loginScrinImageDAO.deleteLoginScrinImage",loginScrinImage);
+	public void deleteLoginScrinImage(LoginScrinImageVO loginScrinImageVO) throws Exception {
+        delete("loginScrinImageDAO.deleteLoginScrinImage",loginScrinImageVO);
 	}
 
 	/**
 	 * 기 등록된 로그인화면이미지정보의 이미지파일을 삭제하기 위해 파일정보를 조회한다.
-	 * @param loginScrinImage - 로그인화면이미지 model
+	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 */
-	public FileVO selectLoginScrinImageFile(LoginScrinImage loginScrinImage) throws Exception {
-		return (FileVO) selectOne("loginScrinImageDAO.selectLoginScrinImageFile", loginScrinImage);
+	public FileVO selectLoginScrinImageFile(LoginScrinImageVO loginScrinImageVO) throws Exception {
+		return (FileVO) selectOne("loginScrinImageDAO.selectLoginScrinImageFile", loginScrinImageVO);
 	}
 
 	/**

@@ -1,16 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<beans xmlns="http://www.springframework.org/schema/beans"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:context="http://www.springframework.org/schema/context"
-	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd">
-	
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+
 	<context:component-scan base-package="egovframework">
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
 	</context:component-scan>
-	
+
 	<context:annotation-config/>
 	
 	<!-- 국제화 Message 설정 -->
@@ -64,28 +63,7 @@
 
 	<bean id="egov.defaultTraceHandler" class="org.egovframe.rte.fdl.cmmn.trace.handler.DefaultTraceHandler" />
 
-
-    <!-- MULTIPART RESOLVERS -->
-    <!-- regular spring resolver -->
-    <bean id="spring.RegularCommonsMultipartResolver" class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
-        <property name="maxUploadSize" value="50000000" />
-        <property name="maxInMemorySize" value="100000000" />
-    </bean>
-
-    <!-- custom multi file resolver -->
-    <!-- 확장자 제한 : globals.properties > Globals.fileUpload.Extensions로 설정 -->
-    <bean id="local.MultiCommonsMultipartResolver" class="egovframework.com.cmm.web.EgovMultipartResolver">
-        <property name="maxUploadSize" value="50000000" />
-        <property name="maxInMemorySize" value="100000000" />
-    </bean>
-
-    <!-- choose one from above and alias it to the name Spring expects -->
-    <alias name="local.MultiCommonsMultipartResolver" alias="multipartResolver" />
-    <!-- <alias name="spring.RegularCommonsMultipartResolver" alias="multipartResolver" /> -->
-    
-    <!-- custom customProperties -->
-    <bean id="customProperties" class="org.springframework.beans.factory.config.PropertiesFactoryBean">
-        <property name="location" value="classpath:/egovframework/egovProps/globals.properties"/>
-    </bean>
+	<!-- MULTIPART RESOLVERS : Spring Framework 6.2.8 기반 파일 업로드 설정 -->
+	<bean id="local.MultiCommonsMultipartResolver" class="egovframework.com.cmm.web.EgovMultipartResolver" />
 
 </beans>

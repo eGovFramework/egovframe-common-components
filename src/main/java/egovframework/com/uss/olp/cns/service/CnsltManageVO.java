@@ -1,5 +1,9 @@
 package egovframework.com.uss.olp.cns.service;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import org.egovframe.rte.ptl.reactive.validation.EgovEmailCheck;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 /**
  * 
@@ -26,36 +30,59 @@ public class CnsltManageVO extends CnsltManageDefaultVO {
     private String cnsltId;
     
     /** 상담제목 */
+    @EgovNullCheck
+    @Size(max=250)
     private String cnsltSj;    
     
     /** 상담내용 */
+    @EgovNullCheck
+    @Size(max=2500)
     private String cnsltCn;
     
     /** 공개여부 */
     private String othbcAt;
 
     /** 작성비밀번호 */
+    @EgovNullCheck
+    @Size(max=20)
     private String writngPassword;
     
     /** 지역번호 */
+    @EgovNullCheck
+    @Size(max=4)
+    @Pattern(regexp="^[0-9]*$", message="{validation.pattern.integer}")
     private String areaNo;
     
     /** 중간전화번호 */     
+    @EgovNullCheck
+    @Size(max=4)
+    @Pattern(regexp="^[0-9]*$", message="{validation.pattern.integer}")
     private String middleTelno;
     
     /** 끝전화번호 */
+    @EgovNullCheck
+    @Size(max=4)
+    @Pattern(regexp="^[0-9]*$", message="{validation.pattern.integer}")
     private String endTelno;
     
     /** 처음휴대폰번호 */
+    @Size(max=4)
+    @Pattern(regexp="^[0-9]*$", message="{validation.pattern.integer}")
     private String firstMoblphonNo;
     
     /** 중간휴대폰번호 */     
+    @Size(max=4)
+    @Pattern(regexp="^[0-9]*$", message="{validation.pattern.integer}")
     private String middleMbtlnum;
     
     /** 끝휴대폰번호 */
+    @Size(max=4)
+    @Pattern(regexp="^[0-9]*$", message="{validation.pattern.integer}")
     private String endMbtlnum;    
-        
+    
     /** 이메일 주소 */
+    @EgovEmailCheck
+    @Size(max=50)
     private String emailAdres;
         
     /** 이메일 답변여부 */
@@ -65,6 +92,8 @@ public class CnsltManageVO extends CnsltManageDefaultVO {
     private String atchFileId;
     
     /** 작성자 명 */
+    @EgovNullCheck
+    @Size(max=20)
     private String wrterNm;
     
     /** 작성일자 */
@@ -80,6 +109,8 @@ public class CnsltManageVO extends CnsltManageDefaultVO {
     private String qnaProcessSttusCodeNm;
     
     /** 조치내용 */
+    @EgovNullCheck
+    @Size(max=2500)
     private String managtCn;
     
     /** 조치일자 */

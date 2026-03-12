@@ -3,11 +3,9 @@ package egovframework.com.utl.sys.srm.service;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.net.InetAddress;
-import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
 
-import javax.annotation.Resource;
 import javax.management.MBeanAttributeInfo;
 import javax.management.MBeanInfo;
 import javax.management.MBeanServerConnection;
@@ -29,9 +27,10 @@ import egovframework.com.cop.sms.service.EgovSmsInfoService;
 import egovframework.com.cop.sms.service.Sms;
 import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
 
 /**
- * 개요 
+ * 개요
  * - 서버자원모니터링 Service Interface를 invoke 할 수 있는 클래스를 정의한다.
  *
  * 상세내용
@@ -39,7 +38,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  * @author lee.m.j
  * @version 1.0
  * @created 06-9-2010 오전 11:23:59
- * 
+ *
  * <pre>
  * << 개정이력(Modification Information) >>
  *
@@ -70,7 +69,7 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 	private MailSender mntrngMailSender;
 
 	private ServerResrceMntrngVO serverResrceMntrngVO = null;
-	
+
 	/**
 	 * 서버자원 모니터링를 수행한다.
 	 * @param
@@ -86,7 +85,7 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 		MBeanInfo mBeanInfo = null;
 		MBeanAttributeInfo[] attrInfos = null;
 		ServerResrceMntrng serverResrceMntrng = null;
-		
+
 		String serverId = serverResrceMntrngVO.getServerId();
 		String serverEqpmnId = serverResrceMntrngVO.getServerEqpmnId();
 		String serverNm = serverResrceMntrngVO.getServerNm();
@@ -112,10 +111,11 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 			attrInfos = mBeanInfo.getAttributes();
 
 			for (MBeanAttributeInfo attrInfo : attrInfos) {
-				if (attrInfo.getName().equals("CpuUsage"))
+				if (attrInfo.getName().equals("CpuUsage")) {
 					serverResrceMntrng.setCpuUseRt(mbs.getAttribute(name, attrInfo.getName()).toString());
-				else if (attrInfo.getName().equals("MemoryUsage"))
+				} else if (attrInfo.getName().equals("MemoryUsage")) {
 					serverResrceMntrng.setMoryUseRt(mbs.getAttribute(name, attrInfo.getName()).toString());
+				}
 				LOGGER.info(attrInfo.getName() + " = " + mbs.getAttribute(name, attrInfo.getName()));
 			}
 			serverResrceMntrng.setSvcSttus("01");
@@ -140,15 +140,16 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 			String logInfo = out.toString();
 			byte[] btLogInfo = logInfo.getBytes();
 
-			if (btLogInfo.length > 2000)
+			if (btLogInfo.length > 2000) {
 				logInfo = new String(btLogInfo, 0, 2000);
+			}
 
 			serverResrceMntrng.setLogInfo(logInfo);
 			serverResrceMntrng.setFrstRegisterId(InetAddress.getLocalHost().getHostAddress());
 			serverResrceMntrng.setLastUpdusrId("SYSTEM");
 
 			egovServerResrceMntrngService.insertServerResrceMntrng(serverResrceMntrng);
-			
+
 		} catch (Exception e) {
 
 			serverResrceMntrng.setSvcSttus("02");
@@ -160,8 +161,9 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 			String logInfo = out.toString();
 			byte[] btLogInfo = logInfo.getBytes();
 
-			if (btLogInfo.length > 2000)
+			if (btLogInfo.length > 2000) {
 				logInfo = new String(btLogInfo, 0, 2000);
+			}
 
 			serverResrceMntrng.setLogInfo(logInfo);
 			serverResrceMntrng.setFrstRegisterId(InetAddress.getLocalHost().getHostAddress());
@@ -183,10 +185,7 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 
 		try {
 			List<ServerResrceMntrngVO> result = egovServerResrceMntrngService.selectMntrngServerList(serverResrceMntrngVO);
-			Iterator<ServerResrceMntrngVO> iter = result.iterator();
-
-			while (iter.hasNext()) {
-				ServerResrceMntrngVO serverResrceMntrngVO = (ServerResrceMntrngVO) iter.next();
+			for (ServerResrceMntrngVO serverResrceMntrngVO : result) {
 				init(serverResrceMntrngVO);
 			}
 		} catch (NoSuchElementException e) { //KISA 보안약점 조치 (2018-10-29, 윤창원)

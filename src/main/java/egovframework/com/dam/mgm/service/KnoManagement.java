@@ -1,5 +1,8 @@
 package egovframework.com.dam.mgm.service;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 개요
  * - 지식정보에 대한 Model 클래스를 정의한다.
@@ -63,6 +66,8 @@ public class KnoManagement {
 	/**
 	 * 지식평가
 	 */
+	@EgovNullCheck
+	@Size(max=1)
 	private String knoAps;	
 	/**
 	 * 평가일자

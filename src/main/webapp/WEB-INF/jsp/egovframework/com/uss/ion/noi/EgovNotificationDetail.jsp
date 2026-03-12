@@ -30,12 +30,6 @@
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <script type="text/javascript">
-	function onloading() {
-		if ("<c:out value='${msg}'/>" != "") {
-			alert("<c:out value='${msg}'/>");
-		}
-	}
-	
 	function fn_egov_select_notificationList(pageNo) {
 		document.frm.pageIndex.value = pageNo; 
 		document.frm.action = "<c:url value='/uss/ion/noi/selectNotificationList.do'/>";
@@ -56,13 +50,14 @@
 </script>
 
 </head>
-<body onload="onloading();">
+<body>
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg"/></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
+<c:if test="${not empty msg}"><script type="text/javascript">alert('<c:out value="${msg}" escapeXml="true"/>');</script></c:if>
 
 <form name="frm" method="post" action="">
-	<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>">
-	<input type="hidden" name="ntfcNo" value="<c:out value='${result.ntfcNo}'/>">
+<input type="hidden" name="pageIndex" value="<c:out value='${notificationVO.pageIndex}'/>">
+<input type="hidden" name="ntfcNo" value="<c:out value='${result.ntfcNo}'/>">
 </form>
 
 <div class="wTableFrm">
@@ -102,13 +97,13 @@
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<form name="modifyFrm" method="post" action="<c:url value='/uss/ion/noi/forUpdateNotification.do'/>" style="display:inline-block; vertical-align:top;">
-			<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
+			<input name="pageIndex" type="hidden" value="<c:out value='${notificationVO.pageIndex}'/>">
 			<input type="hidden" name="ntfcNo" value="<c:out value='${result.ntfcNo}'/>" >
 			<input class="s_submit" type="submit" value="<spring:message code="button.update"/>" onclick="fn_egov_moveUpdt_notification(); return false;" />
 		</form>
 		
 		<form name="deleteFrm" method="post" action="<c:url value='/uss/ion/noi/deleteNotification.do'/>" style="display:inline-block; vertical-align:top;">
-			<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
+			<input name="pageIndex" type="hidden" value="<c:out value='${notificationVO.pageIndex}'/>">
 			<input type="hidden" name="ntfcNo" value="<c:out value='${result.ntfcNo}'/>" >
 			<input class="s_submit" type="submit" value="<spring:message code="button.delete"/>" onclick="fn_egov_delete_notification(); return false;" />
 		</form>

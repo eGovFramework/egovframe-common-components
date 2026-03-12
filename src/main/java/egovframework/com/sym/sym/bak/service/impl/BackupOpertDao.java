@@ -55,10 +55,10 @@ public class BackupOpertDao extends EgovComAbstractDAO {
 		if (backupOpert.getExecutSchdulDfkSes() != null && backupOpert.getExecutSchdulDfkSes().length != 0) {
 			String backupOpertId = backupOpert.getBackupOpertId();
 			String [] dfkSes = backupOpert.getExecutSchdulDfkSes();
-			for (int i = 0; i < dfkSes.length; i++) {
+			for (String element : dfkSes) {
 				BackupSchdulDfk backupSchdulDfk = new BackupSchdulDfk();
 				backupSchdulDfk.setBackupOpertId(backupOpertId);
-				backupSchdulDfk.setExecutSchdulDfkSe(dfkSes[i]);
+				backupSchdulDfk.setExecutSchdulDfkSe(element);
 				insert("BackupOpertDao.insertBackupSchdulDfk", backupSchdulDfk);
 			}
 		}
@@ -90,7 +90,7 @@ public class BackupOpertDao extends EgovComAbstractDAO {
 
 	/**
      * 백업작업정보목록을 조회한다.
-     * 
+     *
      * @return 백업작업목록
      *
      * @param searchVO 조회조건이 저장된 VO
@@ -138,10 +138,10 @@ public class BackupOpertDao extends EgovComAbstractDAO {
 		if (backupOpert.getExecutSchdulDfkSes() != null && backupOpert.getExecutSchdulDfkSes().length != 0) {
 			String backupOpertId = backupOpert.getBackupOpertId();
 			String [] dfkSes = backupOpert.getExecutSchdulDfkSes();
-			for (int i = 0; i < dfkSes.length; i++) {
+			for (String element : dfkSes) {
 				BackupSchdulDfk backupSchdulDfk = new BackupSchdulDfk();
 				backupSchdulDfk.setBackupOpertId(backupOpertId);
-				backupSchdulDfk.setExecutSchdulDfkSe(dfkSes[i]);
+				backupSchdulDfk.setExecutSchdulDfkSe(element);
 				insert("BackupOpertDao.insertBackupSchdulDfk", backupSchdulDfk);
 			}
 		}

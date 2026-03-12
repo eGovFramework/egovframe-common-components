@@ -3,14 +3,11 @@ package egovframework.com.cop.smt.dsm.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -19,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springmodules.validation.commons.DefaultBeanValidator;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -33,6 +30,8 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.smt.dsm.service.DiaryManageVO;
 import egovframework.com.cop.smt.dsm.service.EgovDiaryManageService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * 일지관리를 처리하는 Controller Class 구현
@@ -59,9 +58,6 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
 public class EgovDiaryManageController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovDiaryManageController.class);
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
@@ -175,12 +171,12 @@ public class EgovDiaryManageController {
 	@RequestMapping(value = "/cop/smt/dsm/EgovDiaryManageModify.do")
 	public String diaryManageModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, DiaryManageVO diaryManageVO, BindingResult bindingResult,
-			ModelMap model) throws Exception {
+			RedirectAttributes redirectAttributes, ModelMap model) throws Exception {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
@@ -218,13 +214,14 @@ public class EgovDiaryManageController {
 	@RequestMapping(value = "/cop/smt/dsm/EgovDiaryManageModifyActor.do")
 	public String diaryManageModifyActor(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap,
-			@ModelAttribute("diaryManageVO") DiaryManageVO diaryManageVO, BindingResult bindingResult, ModelMap model)
+			@Valid @ModelAttribute("diaryManageVO") DiaryManageVO diaryManageVO, BindingResult bindingResult, 
+			RedirectAttributes redirectAttributes)
 			throws Exception {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
@@ -235,16 +232,14 @@ public class EgovDiaryManageController {
 		String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
 		String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
 
-		model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
-		model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
+		redirectAttributes.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
+		redirectAttributes.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
 
 		String sLocationUrl = "egovframework/com/cop/smt/dsm/EgovDiaryManageModify";
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
 		if (sCmd.equals("save")) {
-			// 서버 validate 체크
-			beanValidator.validate(diaryManageVO, bindingResult);
 			if (bindingResult.hasErrors()) {
 
 				return sLocationUrl;
@@ -307,12 +302,12 @@ public class EgovDiaryManageController {
 	@RequestMapping(value = "/cop/smt/dsm/EgovDiaryManageRegist.do")
 	public String diaryManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, @ModelAttribute("diaryManageVO") DiaryManageVO diaryManageVO,
-			BindingResult bindingResult, ModelMap model) throws Exception {
+			BindingResult bindingResult, RedirectAttributes redirectAttributes, ModelMap model) throws Exception {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
@@ -346,13 +341,14 @@ public class EgovDiaryManageController {
 	@RequestMapping(value = "/cop/smt/dsm/EgovDiaryManageRegistActor.do")
 	public String diaryManageRegistActor(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap,
-			@ModelAttribute("diaryManageVO") DiaryManageVO diaryManageVO, BindingResult bindingResult, ModelMap model)
+			@Valid @ModelAttribute("diaryManageVO") DiaryManageVO diaryManageVO, BindingResult bindingResult, 
+			RedirectAttributes redirectAttributes)
 			throws Exception {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
@@ -363,8 +359,8 @@ public class EgovDiaryManageController {
 		String whiteListFileUploadExtensions = EgovProperties.getProperty("Globals.fileUpload.Extensions");
 		String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
 
-		model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
-		model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
+		redirectAttributes.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
+		redirectAttributes.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
 
 		String sLocationUrl = "egovframework/com/cop/smt/dsm/EgovDiaryManageRegist";
 
@@ -372,8 +368,6 @@ public class EgovDiaryManageController {
 		LOGGER.info("cmd => {}", sCmd);
 
 		if (sCmd.equals("save")) {
-			// 서버 validate 체크
-			beanValidator.validate(diaryManageVO, bindingResult);
 			if (bindingResult.hasErrors()) {
 
 				return sLocationUrl;

@@ -2,14 +2,13 @@ package egovframework.com.sec.rmt.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.sec.rmt.service.EgovRoleManageService;
 import egovframework.com.sec.rmt.service.RoleManage;
 import egovframework.com.sec.rmt.service.RoleManageVO;
+import jakarta.annotation.Resource;
 
 /**
  * 롤관리에 관한 ServiceImpl 클래스를 정의한다.
@@ -20,7 +19,7 @@ import egovframework.com.sec.rmt.service.RoleManageVO;
  *
  * <pre>
  * << 개정이력(Modification Information) >>
- *   
+ *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.03.11  이문준          최초 생성
@@ -40,6 +39,7 @@ public class EgovRoleManageServiceImpl extends EgovAbstractServiceImpl implement
 	 * @return RoleManageVO
 	 * @exception Exception
 	 */
+	@Override
 	public RoleManageVO selectRole(RoleManageVO roleManageVO) throws Exception {
 		return roleManageDAO.selectRole(roleManageVO);
 	}
@@ -50,6 +50,7 @@ public class EgovRoleManageServiceImpl extends EgovAbstractServiceImpl implement
 	 * @return List<RoleManageVO>
 	 * @exception Exception
 	 */
+	@Override
 	public List<RoleManageVO> selectRoleList(RoleManageVO roleManageVO) throws Exception {
 		return roleManageDAO.selectRoleList(roleManageVO);
 	}
@@ -59,19 +60,21 @@ public class EgovRoleManageServiceImpl extends EgovAbstractServiceImpl implement
 	 * @param roleManage RoleManage
 	 * @exception Exception
 	 */
+	@Override
 	public void deleteRole(RoleManage roleManage) throws Exception {
 		roleManageDAO.deleteRole(roleManage);
 	}
-	
+
 	/**
 	 * 시스템 메뉴에 따른 접근권한, 데이터 입력, 수정, 삭제의 권한 롤을 수정
 	 * @param roleManage RoleManage
 	 * @exception Exception
 	 */
+	@Override
 	public void updateRole(RoleManage roleManage) throws Exception {
 		roleManageDAO.updateRole(roleManage);
 	}
-	
+
 	/**
 	 * 시스템 메뉴에 따른 접근권한, 데이터 입력, 수정, 삭제의 권한 롤을 등록
 	 * @param roleManage RoleManage
@@ -79,30 +82,33 @@ public class EgovRoleManageServiceImpl extends EgovAbstractServiceImpl implement
 	 * @return RoleManageVO
 	 * @exception Exception
 	 */
+	@Override
 	public RoleManageVO insertRole(RoleManage roleManage, RoleManageVO roleManageVO) throws Exception {
-		roleManageDAO.insertRole(roleManage);	
+		roleManageDAO.insertRole(roleManage);
 		roleManageVO.setRoleCode(roleManage.getRoleCode());
 		return roleManageDAO.selectRole(roleManageVO);
 	}
-	
+
     /**
 	 * 목록조회 카운트를 반환한다
 	 * @param roleManageVO RoleManageVO
 	 * @return int
 	 * @exception Exception
 	 */
+	@Override
 	public int selectRoleListTotCnt(RoleManageVO roleManageVO) throws Exception {
 		return roleManageDAO.selectRoleListTotCnt(roleManageVO);
 	}
-	
+
 	/**
 	 * 등록된 모든 롤 정보 목록 조회
 	 * @param roleManageVO - 등록할 정보가 담긴 RoleManageVO
 	 * @return List
 	 * @exception Exception
 	 */
+	@Override
 	public List<RoleManageVO> selectRoleAllList(RoleManageVO roleManageVO) throws Exception {
 		return roleManageDAO.selectRoleAllList(roleManageVO);
-	} 
+	}
 
 }

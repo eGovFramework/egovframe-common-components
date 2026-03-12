@@ -2,6 +2,9 @@ package egovframework.com.uss.olh.hpc.service;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 public class HpcmVO extends HpcmDefaultVO{
 	
 	 private static final long serialVersionUID = 1L;
@@ -10,15 +13,20 @@ public class HpcmVO extends HpcmDefaultVO{
 	    private String hpcmId;
 	    
 	    /** 도움말구분코드 */
+	    @EgovNullCheck
 	    private String hpcmSeCode;
 
 	    /** 도움말구분코드명 */
 	    private String hpcmSeCodeNm;
 	    
 	    /** 도움말정의 */
+	    @EgovNullCheck
+	    @Size(max=1000)
 	    private String hpcmDf;
 	    
 	    /** 도움말 설명 */
+	    @EgovNullCheck
+	    @Size(max=2500)
 	    private String hpcmDc;
 	    
 	    /** 최초등록시점 */

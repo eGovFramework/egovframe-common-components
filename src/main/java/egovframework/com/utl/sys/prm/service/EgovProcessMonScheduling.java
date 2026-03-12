@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.Iterator;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.apache.commons.lang.StringUtils;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.slf4j.Logger;
@@ -16,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
 
 /**
  * 개요
@@ -23,7 +22,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  * @author 박종선
  * @version 1.0
  * @created 08-9-2010 오후 3:54:45
- * 
+ *
  * <pre>
  * << 개정이력(Modification Information) >>
  *
@@ -83,7 +82,7 @@ public class EgovProcessMonScheduling extends EgovAbstractServiceImpl {
 		while (iter.hasNext()) {
 
 			nrmltAt = true;
-			target = (ProcessMon) iter.next();
+			target = iter.next();
 			LOGGER.debug("Data : {}", target);
 
 			// 서비스 체크 수행.

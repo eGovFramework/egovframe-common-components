@@ -2,8 +2,6 @@ package egovframework.com.cop.com.web;
 
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
@@ -14,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cop.com.service.EgovUserInfManageService;
 import egovframework.com.cop.com.service.UserInfVO;
+import jakarta.annotation.Resource;
 
 /**
  * 협업기능에서 활용하는 사용자 정보 조회용 컨트롤러 클래스
@@ -54,11 +53,11 @@ public class EgovCopUserInfController {
 	public String selectUserList(@ModelAttribute("searchVO") UserInfVO userVO, @RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
 		String popFlag = (String) commandMap.get("PopFlag");
 		String returnUrl = "egovframework/com/cop/com/EgovUserList";
-		
+
 		if ("Y".equals(popFlag)) {
 			returnUrl = "egovframework/com/cop/com/EgovUserListPop";
 		}
-		
+
 		userVO.setPageUnit(propertyService.getInt("pageUnit"));
 		userVO.setPageSize(propertyService.getInt("pageSize"));
 

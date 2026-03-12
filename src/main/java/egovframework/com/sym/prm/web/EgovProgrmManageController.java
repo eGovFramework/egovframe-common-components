@@ -3,18 +3,16 @@ package egovframework.com.sym.prm.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -27,6 +25,8 @@ import egovframework.com.sym.prm.service.EgovProgrmManageService;
 import egovframework.com.sym.prm.service.ProgrmManageDtlVO;
 import egovframework.com.sym.prm.service.ProgrmManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * 프로그램목록 관리및 변경을 처리하는 비즈니스 구현 클래스
@@ -53,10 +53,6 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
 @Controller
 public class EgovProgrmManageController {
 
-	/** Validator */
-	@Autowired
-	private DefaultBeanValidator beanValidator;
-
 	/** EgovPropertyService */
 	@Resource(name = "propertiesService")
 	protected EgovPropertyService propertiesService;
@@ -81,7 +77,7 @@ public class EgovProgrmManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/prm/EgovProgramListDetailSelect.do")
-	public String selectProgrm(@RequestParam("tmp_progrmNm") String progrmFileNm,
+	public String selectProgrm(@RequestParam("progrmFileNm") String progrmFileNm,
 			@ModelAttribute("searchVO") ComDefaultVO searchVO, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -200,7 +196,7 @@ public class EgovProgrmManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/prm/EgovProgramListRegist.do")
-	public String insertProgrmList(@ModelAttribute("progrmManageVO") ProgrmManageVO progrmManageVO,
+	public String insertProgrmList(@Valid @ModelAttribute("progrmManageVO") ProgrmManageVO progrmManageVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 		String resultMsg = "";
 		// 0. Spring Security 사용자권한 처리
@@ -210,8 +206,8 @@ public class EgovProgrmManageController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		beanValidator.validate(progrmManageVO, bindingResult);
 		if (bindingResult.hasErrors()) {
+			model.addAttribute("programManageVO",progrmManageVO);
 			return "egovframework/com/sym/prm/EgovProgramListRegist";
 		}
 		if (progrmManageVO.getProgrmDc() == null || progrmManageVO.getProgrmDc().equals("")) {
@@ -232,8 +228,8 @@ public class EgovProgrmManageController {
 	 */
 	/* 프로그램목록수정 */
 	@RequestMapping(value = "/sym/prm/EgovProgramListDetailSelectUpdt.do")
-	public String updateProgrmList(@ModelAttribute("progrmManageVO") ProgrmManageVO progrmManageVO,
-			BindingResult bindingResult, ModelMap model) throws Exception {
+	public String updateProgrmList(@Valid @ModelAttribute("progrmManageVO") ProgrmManageVO progrmManageVO,
+			BindingResult bindingResult,@ModelAttribute("searchVO") ComDefaultVO searchVO, Model model) throws Exception {
 		String resultMsg = "";
 		String sLocationUrl = null;
 		// 0. Spring Security 사용자권한 처리
@@ -243,10 +239,11 @@ public class EgovProgrmManageController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		beanValidator.validate(progrmManageVO, bindingResult);
 		if (bindingResult.hasErrors()) {
-			sLocationUrl = "forward:/sym/prm/EgovProgramListDetailSelect.do";
-			return sLocationUrl;
+		    model.addAttribute("progrmManageVO", progrmManageVO);
+		    model.addAttribute("searchVO", searchVO);
+		    return "egovframework/com/sym/prm/EgovProgramListDetailSelectUpdt";
+			
 		}
 		if (progrmManageVO.getProgrmDc() == null || progrmManageVO.getProgrmDc().equals("")) {
 			progrmManageVO.setProgrmDc(" ");
@@ -257,6 +254,7 @@ public class EgovProgrmManageController {
 		model.addAttribute("resultMsg", resultMsg);
 		return sLocationUrl;
 	}
+	
 
 	/**
 	 * 프로그램목록을 삭제 한다.
@@ -361,7 +359,7 @@ public class EgovProgrmManageController {
 	/* 프로그램변경요청등록 */
 	@RequestMapping(value = "/sym/prm/EgovProgramChangRequstStre.do")
 	public String insertProgrmChangeRequst(@RequestParam Map<?, ?> commandMap,
-			@ModelAttribute("progrmManageDtlVO") ProgrmManageDtlVO progrmManageDtlVO, BindingResult bindingResult,
+			@Valid @ModelAttribute("progrmManageDtlVO") ProgrmManageDtlVO progrmManageDtlVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 		String resultMsg = "";
 		// 0. Spring Security 사용자권한 처리
@@ -376,8 +374,8 @@ public class EgovProgrmManageController {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 		if (sCmd.equals("insert")) {
 			// beanValidator 처리
-			beanValidator.validate(progrmManageDtlVO, bindingResult);
 			if (bindingResult.hasErrors()) {
+				model.addAttribute("progrmManageDtlVO",progrmManageDtlVO);
 				sLocationUrl = "egovframework/com/sym/prm/EgovProgramChangRequstStre";
 				return sLocationUrl;
 			}
@@ -409,7 +407,7 @@ public class EgovProgrmManageController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/sym/prm/EgovProgramChangRequstDetailSelectUpdt.do")
-	public String updateProgrmChangeRequst(@ModelAttribute("progrmManageDtlVO") ProgrmManageDtlVO progrmManageDtlVO,
+	public String updateProgrmChangeRequst(@Valid @ModelAttribute("progrmManageDtlVO") ProgrmManageDtlVO progrmManageDtlVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 		String sLocationUrl = null;
 		String resultMsg = "";
@@ -422,9 +420,9 @@ public class EgovProgrmManageController {
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		// beanValidator 처리
-		beanValidator.validate(progrmManageDtlVO, bindingResult);
 		if (bindingResult.hasErrors()) {
-			sLocationUrl = "forward:/sym/prm/EgovProgramChangRequstDetailSelect.do";
+			model.addAttribute("progrmManageDtlVO",progrmManageDtlVO);
+			sLocationUrl = "egovframework/com/sym/prm/EgovProgramChangRequstDetailSelectUpdt";
 			return sLocationUrl;
 		}
 
@@ -573,7 +571,7 @@ public class EgovProgrmManageController {
 	@SuppressWarnings("unused")
 	@RequestMapping(value = "/sym/prm/EgovProgramChangRequstProcessDetailSelectUpdt.do")
 	public String updateProgrmChangRequstProcess(
-			@ModelAttribute("progrmManageDtlVO") ProgrmManageDtlVO progrmManageDtlVO, BindingResult bindingResult,
+			@Valid @ModelAttribute("progrmManageDtlVO") ProgrmManageDtlVO progrmManageDtlVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 		String sLocationUrl = null;
 		boolean result = true;
@@ -584,10 +582,11 @@ public class EgovProgrmManageController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		beanValidator.validate(progrmManageDtlVO, bindingResult);
 		if (bindingResult.hasErrors()) {
-			sLocationUrl = "forward:/sym/prm/EgovProgramChangRequstProcessDetailSelect.do";
-			return sLocationUrl;
+//			sLocationUrl = "forward:/sym/prm/EgovProgramChangRequstProcessDetailSelect.do";
+			model.addAttribute("progrmManageDtlVO",progrmManageDtlVO);
+			return "egovframework/com/sym/prm/EgovProgramChangRequstProcessDetailSelectUpdt";
+//			return sLocationUrl;
 		}
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();

@@ -1,13 +1,13 @@
 package egovframework.com.cop.cmt.service.impl;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.dao.DataAccessException;
@@ -136,7 +136,7 @@ public class EgovArticleCommentDAO2Test extends EgovTestAbstractDAO2 {
      */
     @Test
 //    @Commit
-    public void test_a10_insert() {
+    void test_a10_insert() {
         // given
         final Comment comment = new Comment();
         final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -170,14 +170,14 @@ public class EgovArticleCommentDAO2Test extends EgovTestAbstractDAO2 {
         }
 
         // then
-        assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage("fail.common.insert"));
     }
 
     /**
      * 댓글 DAO 단위 테스트: 조회(멀티건)
      */
     @Test
-    public void test_a20_selectList() {
+    void test_a20_selectList() {
         // given
         final CommentVO commentVO = new CommentVO();
         final Comment comment = new Comment();
@@ -196,8 +196,8 @@ public class EgovArticleCommentDAO2Test extends EgovTestAbstractDAO2 {
 //            debug2(result);
 
             // then
-            assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), comment.getCommentNo(),
-                    result.getCommentNo());
+            assertEquals(comment.getCommentNo(), result.getCommentNo(),
+                    egovMessageSource.getMessage(FAIL_COMMON_SELECT));
         }
     }
 
@@ -250,7 +250,7 @@ public class EgovArticleCommentDAO2Test extends EgovTestAbstractDAO2 {
      * 댓글 DAO 단위 테스트: 조회(멀티건) 총 수
      */
     @Test
-    public void test_a30_selectListTotCnt() {
+    void test_a30_selectListTotCnt() {
         // given
         final CommentVO commentVO = new CommentVO();
         final Comment comment = new Comment();
@@ -266,14 +266,14 @@ public class EgovArticleCommentDAO2Test extends EgovTestAbstractDAO2 {
         log.debug("totCnt={}", totCnt);
 
         // then
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, totCnt);
+        assertEquals(1, totCnt, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     /**
      * 댓글 DAO 단위 테스트: 조회(단건)
      */
     @Test
-    public void test_a40_select() {
+    void test_a40_select() {
         // given
         final CommentVO commentVO = new CommentVO();
         final Comment comment = new Comment();
@@ -289,8 +289,8 @@ public class EgovArticleCommentDAO2Test extends EgovTestAbstractDAO2 {
 
         // then
         if (result != null) {
-            assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), commentVO.getCommentNo(),
-                    result.getCommentNo());
+            assertEquals(commentVO.getCommentNo(), result.getCommentNo(),
+                    egovMessageSource.getMessage(FAIL_COMMON_SELECT));
         }
     }
 
@@ -299,7 +299,7 @@ public class EgovArticleCommentDAO2Test extends EgovTestAbstractDAO2 {
      */
     @Test
 //    @Commit
-    public void test_a50_update() {
+    void test_a50_update() {
         // given
         final Comment comment = new Comment();
         final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -322,7 +322,7 @@ public class EgovArticleCommentDAO2Test extends EgovTestAbstractDAO2 {
         }
 
         // then
-        assertEquals(egovMessageSource.getMessage("fail.common.update"), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage("fail.common.update"));
     }
 
     /**
@@ -330,7 +330,7 @@ public class EgovArticleCommentDAO2Test extends EgovTestAbstractDAO2 {
      */
     @Test
 //    @Commit
-    public void test_a60_delete() {
+    void test_a60_delete() {
         // given
         final CommentVO commentVO = new CommentVO();
         final Comment comment = new Comment();
@@ -349,6 +349,6 @@ public class EgovArticleCommentDAO2Test extends EgovTestAbstractDAO2 {
         }
 
         // then
-        assertEquals(egovMessageSource.getMessage("fail.common.delete"), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage("fail.common.delete"));
     }
 }

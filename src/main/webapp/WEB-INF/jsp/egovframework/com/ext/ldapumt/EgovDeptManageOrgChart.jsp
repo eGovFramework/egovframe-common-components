@@ -31,7 +31,8 @@
 		data.addColumn('string', 'ToolTip');
 
 		var dn="<c:out value='${param.baseDn}'/>";
-		
+		console.log("BASE DN:", dn);
+
 		drawChart(dn);
 	  }
 	  
@@ -41,7 +42,7 @@
   		
   		$.get(url, { 'dn' : dn}).done(function (d) {
   			d = d.deptManage;
-  			if(obj==null) {
+  			if(!obj) {
   				obj = [[ {v:d.id, f:d.text+'<div style="color:red; font-style:italic"></div>'},'', 'parent']];
   			}
   			
@@ -115,9 +116,13 @@
 			}
 			
 			$.get(url+"?dn="+dn, function (d) {
+					d = getDataBody(d);
 				 $("#detail_div").load(htmlfile, function() {
+					 console.log("inputs :",  $("#detail_div input"));
 						$.each($("input"), function(i,v) {
 						    $(v).val(d[v.name]);
+						    console.log("d :", d);
+						    console.log("v.name :", v.name);
 						});
 				 });
 
@@ -126,6 +131,17 @@
 		}
 		)
 
+	}
+	
+	function getDataBody(data) {
+		var body;
+		if ( typeof data.deptManage != "undefined" ) {
+			body = data.deptManage
+		}
+		if ( typeof data.userManage != "undefined" ) {
+			body = data.userManage
+		}
+		return body;
 	}
 	
 	function modifyOrgManage(str){

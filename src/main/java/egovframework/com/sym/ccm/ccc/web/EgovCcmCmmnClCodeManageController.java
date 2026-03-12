@@ -2,17 +2,13 @@ package egovframework.com.sym.ccm.ccc.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -21,6 +17,8 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.ccm.ccc.service.CmmnClCode;
 import egovframework.com.sym.ccm.ccc.service.CmmnClCodeVO;
 import egovframework.com.sym.ccm.ccc.service.EgovCcmCmmnClCodeManageService;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * 공통분류코드에 관한 요청을 받아 서비스 클래스로 요청을 전달하고 서비스클래스에서 처리한 결과를 웹 화면으로 전달을 위한
@@ -55,9 +53,6 @@ public class EgovCcmCmmnClCodeManageController {
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/**
 	 * 공통분류코드 목록을 조회한다.
@@ -144,13 +139,11 @@ public class EgovCcmCmmnClCodeManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/sym/ccm/ccc/RegistCcmCmmnClCode.do")
-	public String insertCmmnClCode(@ModelAttribute("cmmnClCodeVO") CmmnClCodeVO cmmnClCodeVO,
+	public String insertCmmnClCode(@Valid @ModelAttribute("cmmnClCodeVO") CmmnClCodeVO cmmnClCodeVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 
 		// 로그인VO에서 사용자 정보 가져오기
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-
-		beanValidator.validate(cmmnClCodeVO, bindingResult);
 
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/sym/ccm/ccc/EgovCcmCmmnClCodeRegist";
@@ -222,22 +215,22 @@ public class EgovCcmCmmnClCodeManageController {
 	 */
 	@RequestMapping("/sym/ccm/ccc/UpdateCcmCmmnClCode.do")
 	public String updateCmmnClCode(@ModelAttribute("searchVO") CmmnClCodeVO cmmnClCode,
-			@ModelAttribute("cmmnClCodeVO") CmmnClCodeVO cmmnClCodeVO, BindingResult bindingResult, ModelMap model)
+			@Valid @ModelAttribute("cmmnClCodeVO") CmmnClCodeVO cmmnClCodeVO, BindingResult bindingResult, ModelMap model)
 			throws Exception {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-		beanValidator.validate(cmmnClCodeVO, bindingResult);
 		if (bindingResult.hasErrors()) {
-
-			CmmnClCode result = cmmnClCodeManageService.selectCmmnClCodeDetail(cmmnClCode);
-			model.addAttribute("cmmnClCodeVO", result);
+			CmmnClCode result = cmmnClCodeManageService.selectCmmnClCodeDetail(cmmnClCodeVO);
+			cmmnClCodeVO.setClCodeNm(result.getClCodeNm());
+			cmmnClCodeVO.setClCodeDc(result.getClCodeDc());
+			model.addAttribute("cmmnClCodeVO", cmmnClCodeVO);
 
 			return "egovframework/com/sym/ccm/ccc/EgovCcmCmmnClCodeUpdt";
+		}else {
+			cmmnClCodeVO.setLastUpdusrId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
+			cmmnClCodeManageService.updateCmmnClCode(cmmnClCodeVO);
 		}
-
-		cmmnClCodeVO.setLastUpdusrId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
-		cmmnClCodeManageService.updateCmmnClCode(cmmnClCodeVO);
 
 		return "forward:/sym/ccm/ccc/SelectCcmCmmnClCodeList.do";
 	}

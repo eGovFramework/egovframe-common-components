@@ -1,7 +1,11 @@
 package egovframework.com.uss.ion.bnt.service;
 
-import java.io.Serializable;
 import java.util.List;
+
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+
+import egovframework.com.cmm.ComDefaultVO;
+import jakarta.validation.constraints.Size;
 
 /**
  * 개요
@@ -14,9 +18,56 @@ import java.util.List;
  * @created 06-15-2010 오후 2:08:56
  */
 
-public class BndtCeckManageVO extends BndtCeckManage implements Serializable {
+public class BndtCeckManageVO extends ComDefaultVO {
 
-	private static final long serialVersionUID = -9114350207789216858L;
+	private static final long serialVersionUID = 1L;
+
+	/**
+	*  당직체크구분
+	*/
+	@EgovNullCheck
+	@Size(max=10)
+	private String bndtCeckSe;
+
+	/**
+	*  당직체크코드
+	*/
+	@EgovNullCheck
+	@Size(max=10)
+	private String bndtCeckCd;
+
+	/**
+	*  당직체크코드명
+	*/
+	@EgovNullCheck
+	@Size(max=100)
+	private String bndtCeckCdNm;
+
+	/**
+	*  사용여부
+	*/
+	@EgovNullCheck
+	private String useAt;
+
+	/**
+	*  최초등록자ID
+	*/
+	private String frstRegisterId;
+
+	/**
+	*  최초등록시점
+	*/
+	private String frstRegisterPnttm;
+
+	/**
+	*  최종수정자ID
+	*/
+	private String lastUpdusrId;
+
+	/**
+	*  최종수정시점
+	*/
+	private String lastUpdusrPnttm;
 
 	/**
 	 * 당직체크리스트관리 목록
@@ -105,6 +156,116 @@ public class BndtCeckManageVO extends BndtCeckManage implements Serializable {
 		this.searchBndtCeckCd = searchBndtCeckCd;
 	}
 
+	/**
+	 * @return the bndtCeckSe
+	 */
+	public String getBndtCeckSe() {
+		return bndtCeckSe;
+	}
 
+	/**
+	 * @param bndtCeckSe the bndtCeckSe to set
+	 */
+	public void setBndtCeckSe(String bndtCeckSe) {
+		this.bndtCeckSe = bndtCeckSe;
+	}
+
+	/**
+	 * @return the bndtCeckCd
+	 */
+	public String getBndtCeckCd() {
+		return bndtCeckCd;
+	}
+
+	/**
+	 * @param bndtCeckCd the bndtCeckCd to set
+	 */
+	public void setBndtCeckCd(String bndtCeckCd) {
+		this.bndtCeckCd = bndtCeckCd;
+	}
+
+	/**
+	 * @return the bndtCeckCdNm
+	 */
+	public String getBndtCeckCdNm() {
+		return bndtCeckCdNm;
+	}
+
+	/**
+	 * @param bndtCeckCdNm the bndtCeckCdNm to set
+	 */
+	public void setBndtCeckCdNm(String bndtCeckCdNm) {
+		this.bndtCeckCdNm = bndtCeckCdNm;
+	}
+
+	/**
+	 * @return the useAt
+	 */
+	public String getUseAt() {
+		return useAt;
+	}
+
+	/**
+	 * @param useAt the useAt to set
+	 */
+	public void setUseAt(String useAt) {
+		this.useAt = useAt;
+	}
+
+	/**
+	 * @return the frstRegisterId
+	 */
+	public String getFrstRegisterId() {
+		return frstRegisterId;
+	}
+
+	/**
+	 * @param frstRegisterId the frstRegisterId to set
+	 */
+	public void setFrstRegisterId(String frstRegisterId) {
+		this.frstRegisterId = frstRegisterId;
+	}
+
+	/**
+	 * @return the frstRegisterPnttm
+	 */
+	public String getFrstRegisterPnttm() {
+		return frstRegisterPnttm;
+	}
+
+	/**
+	 * @param frstRegisterPnttm the frstRegisterPnttm to set
+	 */
+	public void setFrstRegisterPnttm(String frstRegisterPnttm) {
+		this.frstRegisterPnttm = frstRegisterPnttm;
+	}
+
+	/**
+	 * @return the lastUpdusrId
+	 */
+	public String getLastUpdusrId() {
+		return lastUpdusrId;
+	}
+
+	/**
+	 * @param lastUpdusrId the lastUpdusrId to set
+	 */
+	public void setLastUpdusrId(String lastUpdusrId) {
+		this.lastUpdusrId = lastUpdusrId;
+	}
+
+	/**
+	 * @return the lastUpdusrPnttm
+	 */
+	public String getLastUpdusrPnttm() {
+		return lastUpdusrPnttm;
+	}
+
+	/**
+	 * @param lastUpdusrPnttm the lastUpdusrPnttm to set
+	 */
+	public void setLastUpdusrPnttm(String lastUpdusrPnttm) {
+		this.lastUpdusrPnttm = lastUpdusrPnttm;
+	}
 
 }

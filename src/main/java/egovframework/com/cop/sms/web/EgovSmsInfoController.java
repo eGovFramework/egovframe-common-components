@@ -2,18 +2,14 @@ package egovframework.com.cop.sms.web;
 
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -23,6 +19,8 @@ import egovframework.com.cop.sms.service.EgovSmsInfoService;
 import egovframework.com.cop.sms.service.Sms;
 import egovframework.com.cop.sms.service.SmsVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * 문자메시지 서비스 컨트롤러 클래스
@@ -53,9 +51,6 @@ public class EgovSmsInfoController {
 
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	//private static final Logger LOGGER = LoggerFactory.getLogger(EgovSmsInfoController.class);
 
@@ -135,14 +130,30 @@ public class EgovSmsInfoController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/cop/sms/insertSms.do")
-	public String insertSms(@ModelAttribute("searchVO") SmsVO smsVO, @ModelAttribute("sms") Sms sms, BindingResult bindingResult, SessionStatus status, ModelMap model)
+	public String insertSms(@ModelAttribute("searchVO") SmsVO smsVO, @Valid @ModelAttribute("sms") Sms sms, BindingResult bindingResult, SessionStatus status, ModelMap model)
 			throws Exception {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-		beanValidator.validate(sms, bindingResult);
 		if (bindingResult.hasErrors()) {
+			return "egovframework/com/cop/sms/EgovSmsInfoRegist";
+		}
+
+		// 수신 전화번호 검증: 최소 1개 이상 입력되어야 함
+		boolean hasRecipient = false;
+		String[] recptnTelno = sms.getRecptnTelno();
+		if (recptnTelno != null) {
+			for (String telno : recptnTelno) {
+				if (telno != null && !telno.trim().isEmpty()) {
+					hasRecipient = true;
+					break;
+				}
+			}
+		}
+
+		if (!hasRecipient) {
+			model.addAttribute("msg", "수신 전화번호를 최소 1개 이상 입력해 주세요.");
 			return "egovframework/com/cop/sms/EgovSmsInfoRegist";
 		}
 

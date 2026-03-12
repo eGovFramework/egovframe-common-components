@@ -214,7 +214,7 @@ function fncRwardManageConfm(rwardId,infrmlSanctnId){
 				<form name="item" method="post" action="<c:url value='/uss/ion/rwd/EgovRwardConfm.do'/>">
 		        	<input type="hidden" name="rwardId" value="<c:out value="${resultInfo.rwardId }"/>">
 		            <input class="btn01" type="submit"
-		                  value="<c:if test="${resultInfo.confmAt eq 'A'}"><spring:message code="comUssIonRwd.rwardConfmList.rwardProgress"/></c:if><c:if test="${resultInfo.confmAt ne 'A'}"><spring:message code="comUssIonRwd.rwardConfmList.detailView"/> </c:if>"
+		                  value="<c:if test="${resultInfo.confmAt eq 'A'}"><spring:message code="comUssIonRwd.rwardConfmList.rwardProgress"/></c:if><c:if test="${resultInfo.confmAt ne 'A'}"><spring:message code="comUssIonRwd.rwardConfmList.detailView"/></c:if>"
 		                  onclick="fncRwardManageConfm('<c:out value="${resultInfo.rwardId}"/>','<c:out value="${resultInfo.infrmlSanctnId}"/>'); return false;" style="padding:6px 10px 6px 10px; background-color:#4688d2; color:#fff; font-size:11px; border-radius:1px;"><!-- 승인처리  --><!-- 상세보기 -->
 		        </form>
 		        </td>

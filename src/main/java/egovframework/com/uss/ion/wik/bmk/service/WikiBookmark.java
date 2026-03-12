@@ -1,7 +1,5 @@
 package egovframework.com.uss.ion.wik.bmk.service;
 
-import java.io.Serializable;
-
 import egovframework.com.cmm.ComDefaultVO;
 
 /**
@@ -18,9 +16,10 @@ import egovframework.com.cmm.ComDefaultVO;
  * 
  * </pre>
  */
-@SuppressWarnings("serial")
-public class WikiBookmark extends ComDefaultVO implements Serializable{
-    	
+public class WikiBookmark extends ComDefaultVO {
+
+	private static final long serialVersionUID = 1L;
+
 	/** 위키 북마크 아이디 */
 	private String wikiBkmkId;	
 	

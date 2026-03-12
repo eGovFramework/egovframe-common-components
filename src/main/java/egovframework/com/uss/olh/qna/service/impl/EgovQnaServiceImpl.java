@@ -2,8 +2,6 @@ package egovframework.com.uss.olh.qna.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
@@ -11,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import egovframework.com.uss.olh.qna.service.EgovQnaService;
 import egovframework.com.uss.olh.qna.service.QnaVO;
+import jakarta.annotation.Resource;
 
 @Service("EgovQnaService")
 public class EgovQnaServiceImpl extends EgovAbstractServiceImpl implements EgovQnaService {
@@ -21,7 +20,7 @@ public class EgovQnaServiceImpl extends EgovAbstractServiceImpl implements EgovQ
 	/** ID Generation */
 	@Resource(name = "egovQnaManageIdGnrService")
 	private EgovIdGnrService idgenService;
-	
+
 	@Override
 	public List<QnaVO> selectQnaList(QnaVO searchVO) {
 		return egovQnaDao.selectQnaList(searchVO);
@@ -35,8 +34,9 @@ public class EgovQnaServiceImpl extends EgovAbstractServiceImpl implements EgovQ
 	@Override
 	public QnaVO selectQnaDetail(QnaVO qnaVO) throws Exception {
 		QnaVO resultVO = egovQnaDao.selectQnaDetail(qnaVO);
-		if (resultVO == null)
+		if (resultVO == null) {
 			throw processException("info.nodata.msg");
+		}
 		return resultVO;
 	}
 
@@ -49,7 +49,7 @@ public class EgovQnaServiceImpl extends EgovAbstractServiceImpl implements EgovQ
 	public void insertQna(QnaVO qnaVO) throws FdlException {
 		String qaId = idgenService.getNextStringId();
 		qnaVO.setQaId(qaId);
-		
+
 		egovQnaDao.insertQna(qnaVO);
 	}
 

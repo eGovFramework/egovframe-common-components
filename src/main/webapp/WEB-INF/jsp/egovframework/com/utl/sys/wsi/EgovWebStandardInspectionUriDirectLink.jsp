@@ -199,8 +199,18 @@
 	response.setContentType("text/html;charset=utf-8");
 	request.setCharacterEncoding("utf-8");
 
-	String sUri = request.getParameter("uri") == null ? "" : (String) request.getParameter("uri");
+	// [SSRF 수정] rawUri: URL 연산 전용 / sUri: 화면 출력(XSS 방어) 전용으로 분리
+	// clearXSSMinimum()은 '.'을 &#46;으로 변환하여 URL을 파괴하므로 URL 처리에 사용 불가.
+	// clearXSS()는 <, >, & 만 이스케이프하므로 URL 표시에 적합.
+	String rawUri = EgovWebUtil.removeCRLF(
+		request.getParameter("uri") == null ? "" : (String) request.getParameter("uri")
+	);
 	String sNum = request.getParameter("num") == null ? "" : (String) request.getParameter("num");
+	String sUri = EgovWebUtil.clearXSS(rawUri);
+
+	// [Private 화이트리스트] 접속을 허용할 내부 호스트명 또는 IP 목록.
+	// 운영 환경에 맞게 수정 필요. UriDirect.jsp의 ALLOWED_HOSTS와 동일하게 유지.
+	final String[] ALLOWED_HOSTS = { "허용할내부호스트명" };
 
 	String sMatcherFind = "";
 	int nLine = 0;
@@ -215,25 +225,42 @@
 	BufferedReader buffResInput = null;
 	BufferedReader buffResOld = null;
 	try {
-
-		sUri = EgovWebUtil.removeCRLF(sUri);
-		sUri = EgovWebUtil.filePathBlackList(sUri);
-		sUri = EgovWebUtil.clearXSSMinimum(sUri);
-	
-		//URL 체크
-		URL urlCheck = new URL(sUri);
-		urlCheck.openStream();
-
+		// [SSRF 검증: Private - 화이트리스트 방식 (UriDirect.jsp와 동일 정책)]
+		// 1. URL 파싱: 형식 오류 시 MalformedURLException → 하단 catch에서 처리
+		URL parsedUrl = new URL(rawUri);
+		// 2. 스키마 검증: http/https 외 file://, ftp:// 등 차단
+		String scheme = parsedUrl.getProtocol();
+		if (!"http".equals(scheme) && !"https".equals(scheme)) {
+			throw new MalformedURLException("허용되지 않는 URL 스키마입니다.");
+		}
+		// 3. 화이트리스트 검증: ALLOWED_HOSTS에 등록된 내부 호스트만 허용.
+		//    등록되지 않은 내부 URL과 외부 공인 URL 모두 차단.
+		String host = parsedUrl.getHost();
+		boolean allowed = false;
+		for (String h : ALLOWED_HOSTS) {
+			if (h.equalsIgnoreCase(host)) { allowed = true; break; }
+		}
+		if (!allowed) {
+			throw new UnknownHostException("허용되지 않는 호스트입니다: " + host);
+		}
+		// 4. DNS Rebinding 방어: 화이트리스트를 통과해도 DNS 조작으로 외부 IP를 가리킬 수 있으므로
+		//    InetAddress.getByName()으로 실제 해석된 IP가 내부 주소인지 재확인.
+		InetAddress addr = InetAddress.getByName(host);
+		if (!addr.isSiteLocalAddress() && !addr.isLoopbackAddress() && !addr.isLinkLocalAddress()) {
+			throw new UnknownHostException("화이트리스트 호스트가 내부 주소로 해석되지 않습니다.");
+		}
+		// 5. 검증 완료: openStream()을 제거하고 URLConnection으로 내부 HTML 수집.
+		URL urlCheck = new URL(rawUri);
 		URLConnection urlConn = urlCheck.openConnection();
 		urlConn.setRequestProperty("Cookie", "JSESSIONID=" + session.getId());
 
 		buffResOld = new BufferedReader(new InputStreamReader(urlConn.getInputStream(), "utf-8"));
 		while ((str = buffResOld.readLine()) != null) {
 			strBufInputHtml.append(str + "\r\n");
-			//out.println(str);
 		}
 
-		HttpRequestor requestor = new HttpRequestor(new URL("http://validator.w3.org/check"));
+		// validator 호출: http → https로 통일
+		HttpRequestor requestor = new HttpRequestor(new URL("https://validator.w3.org/check"));
 		requestor.addParameterBuf("fragment", (StringBuffer) strBufInputHtml);
 		requestor.addParameter("direct_prefill_no", "0");
 		requestor.addParameter("direct-doctype", "Inline");
@@ -252,12 +279,12 @@
 			Matcher matcher;
 
 			if (1 == 1) { // 연결이 성공적일때
-				//out.println("<xmp>");  BufferedReader br = new BufferedReader(new InputStreamReader(is));
-				//buffResInput = new BufferedReader(new InputStreamReader(uc.getInputStream(), "utf-8"));
 				while ((str = br.readLine()) != null) {
-					str = str.replaceAll("\\./", "http://validator.w3.org/");
-					str = str.replaceAll("\\<form", "<form action=\"http://validator.w3.org/check\"");
-					str = str.replaceAll("\"images/", "\"http://validator.w3.org/images/");
+					// validator 응답의 상대경로를 https://validator.w3.org 기준으로 치환.
+					// http → https로 통일하여 Mixed Content 경고 방지.
+					str = str.replaceAll("\\./", "https://validator.w3.org/");
+					str = str.replaceAll("\\<form", "<form action=\"https://validator.w3.org/check\"");
+					str = str.replaceAll("\"images/", "\"https://validator.w3.org/images/");
 
 					out.println(str);
 				}

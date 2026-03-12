@@ -3,8 +3,6 @@ package egovframework.com.uss.olp.qqm.service.impl;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
@@ -13,6 +11,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.uss.olp.qqm.service.EgovQustnrQestnManageService;
 import egovframework.com.uss.olp.qqm.service.QustnrQestnManageVO;
+import jakarta.annotation.Resource;
 
 /**
  * 설문문항을 처리하는 ServiceImpl Class 구현

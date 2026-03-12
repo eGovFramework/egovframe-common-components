@@ -3,7 +3,7 @@ package egovframework.com.utl.sys.fsm.service;
 /**
  * 개요
  * - 파일시스템 모니터링대상에 대한 Vo 클래스를 정의한다.
- * 
+ *
  * 상세내용
  * - 파일시스템 모니터링대상의 목록 항목, 조회조건 등을 관리한다.
  * @author 장철호
@@ -15,10 +15,10 @@ public class FileSysMntrngVO extends FileSysMntrng {
 
 	/** 검색조건 */
     private String searchCnd = "";
-    
+
     /** 검색단어 */
     private String searchWrd = "";
-    
+
     /** 현재페이지 */
     private int pageIndex = 1;
 
@@ -148,5 +148,5 @@ public class FileSysMntrngVO extends FileSysMntrng {
 		this.recordCountPerPage = recordCountPerPage;
 	}
 
-	
+
 }

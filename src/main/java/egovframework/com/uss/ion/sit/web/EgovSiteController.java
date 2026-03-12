@@ -2,19 +2,13 @@ package egovframework.com.uss.ion.sit.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -25,6 +19,8 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.sit.service.EgovSiteService;
 import egovframework.com.uss.ion.sit.service.SiteVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * 사이트정보를 처리하는 Controller 클래스
@@ -60,42 +56,48 @@ public class EgovSiteController {
 
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
-	EgovMessageSource egovMessageSource;
+	private EgovMessageSource egovMessageSource;
 
-	// Validation 관련
-	@Autowired
-	private DefaultBeanValidator beanValidator;
+	/**
+	 * 공통코드를 조회한다.
+	 * @return List<?>
+	 */
+	private List<?> siteThemaClCode() {
+		ComDefaultCodeVO vo = new ComDefaultCodeVO();
+		vo.setCodeId("COM023");
+		return cmmUseService.selectCmmCodeDetail(vo);
+	}
 
 	/**
 	 * 사이트목록을 조회한다.
 	 * 
-	 * @param searchVO
+	 * @param siteVO
 	 * @param model
 	 * @return "/uss/ion/sit/EgovSiteList"
 	 * @throws Exception
 	 */
 	@IncludedInfo(name = "사이트관리", order = 680, gid = 50)
 	@RequestMapping(value = "/uss/ion/sit/selectSiteList.do")
-	public String selectSiteList(@ModelAttribute("searchVO") SiteVO searchVO, ModelMap model) throws Exception {
+	public String selectSiteList(@ModelAttribute("siteVO") SiteVO siteVO, ModelMap model) throws Exception {
 
 		/** EgovPropertyService.SiteList */
-		searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
-		searchVO.setPageSize(propertiesService.getInt("pageSize"));
+		siteVO.setPageUnit(propertiesService.getInt("pageUnit"));
+		siteVO.setPageSize(propertiesService.getInt("pageSize"));
 
 		/** pageing */
 		PaginationInfo paginationInfo = new PaginationInfo();
-		paginationInfo.setCurrentPageNo(searchVO.getPageIndex());
-		paginationInfo.setRecordCountPerPage(searchVO.getPageUnit());
-		paginationInfo.setPageSize(searchVO.getPageSize());
+		paginationInfo.setCurrentPageNo(siteVO.getPageIndex());
+		paginationInfo.setRecordCountPerPage(siteVO.getPageUnit());
+		paginationInfo.setPageSize(siteVO.getPageSize());
 
-		searchVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
-		searchVO.setLastIndex(paginationInfo.getLastRecordIndex());
-		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
+		siteVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
+		siteVO.setLastIndex(paginationInfo.getLastRecordIndex());
+		siteVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
-		List<SiteVO> resultList = egovSiteService.selectSiteList(searchVO);
+		List<SiteVO> resultList = egovSiteService.selectSiteList(siteVO);
 		model.addAttribute("resultList", resultList);
 
-		int totCnt = egovSiteService.selectSiteListCnt(searchVO);
+		int totCnt = egovSiteService.selectSiteListCnt(siteVO);
 		paginationInfo.setTotalRecordCount(totCnt);
 		model.addAttribute("paginationInfo", paginationInfo);
 
@@ -106,18 +108,14 @@ public class EgovSiteController {
 	 * 사이트정보 목록에 대한 상세정보를 조회한다.
 	 * 
 	 * @param siteVO
-	 * @param searchVO
 	 * @param model
 	 * @return "/uss/ion/sit/EgovSiteDetail"
 	 * @throws Exception
 	 */
 	@RequestMapping("/uss/ion/sit/selectSiteDetail.do")
-	public String selectSiteDetail(SiteVO siteVO, @ModelAttribute("searchVO") SiteVO searchVO, ModelMap model)
-			throws Exception {
-
+	public String selectSiteDetail(@ModelAttribute("siteVO") SiteVO siteVO, ModelMap model) throws Exception {
 		SiteVO vo = egovSiteService.selectSiteDetail(siteVO);
-
-		model.addAttribute("result", vo);
+		model.addAttribute("siteVO", vo);
 
 		return "egovframework/com/uss/ion/sit/EgovSiteDetail";
 	}
@@ -125,22 +123,15 @@ public class EgovSiteController {
 	/**
 	 * 사이트정보 등록전 단계
 	 * 
-	 * @param searchVO
+	 * @param siteVO
 	 * @param model
 	 * @return "/uss/ion/sit/EgovSiteRegist"
 	 * @throws Exception
 	 */
 	@RequestMapping("/uss/ion/sit/insertSiteView.do")
-	public String insertSiteView(@ModelAttribute("searchVO") SiteVO searchVO, Model model) throws Exception {
-
-		// 공통코드를 가져오기 위한 Vo
-		ComDefaultCodeVO vo = new ComDefaultCodeVO();
-		vo.setCodeId("COM023");
-
-		List<?> siteThemaClCode = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("siteThemaClCode", siteThemaClCode);
-
-		model.addAttribute("siteVO", new SiteVO());
+	public String insertSiteView(@ModelAttribute("siteVO") SiteVO siteVO, ModelMap model) throws Exception {
+		model.addAttribute("siteThemaClCode", siteThemaClCode());
+		model.addAttribute("siteVO", siteVO);
 
 		return "egovframework/com/uss/ion/sit/EgovSiteRegist";
 
@@ -149,26 +140,23 @@ public class EgovSiteController {
 	/**
 	 * 사이트정보를 등록한다.
 	 * 
-	 * @param searchVO
 	 * @param siteVO
 	 * @param bindingResult
 	 * @return "forward:/uss/ion/sit/selectSiteList.do"
 	 * @throws Exception
 	 */
 	@RequestMapping("/uss/ion/sit/insertSite.do")
-	public String insertSite(@ModelAttribute("searchVO") SiteVO searchVO, @ModelAttribute("siteVO") SiteVO siteVO,
-			BindingResult bindingResult) throws Exception {
+	public String insertSite(@Valid @ModelAttribute("siteVO") SiteVO siteVO, BindingResult bindingResult, ModelMap model) throws Exception {
 
-		beanValidator.validate(siteVO, bindingResult);
 		if (bindingResult.hasErrors()) {
-			return "egovframework/com/uss/olh/sit/EgovSiteRegist";
+			model.addAttribute("siteThemaClCode", siteThemaClCode());
+			model.addAttribute("siteVO", siteVO);
+			return "egovframework/com/uss/ion/sit/EgovSiteRegist";
 		}
 
 		// 로그인VO에서 사용자 정보 가져오기
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-
 		String frstRegisterId = loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId());
-
 		siteVO.setFrstRegisterId(frstRegisterId); // 최초등록자ID
 		siteVO.setLastUpdusrId(frstRegisterId); // 최종수정자ID
 
@@ -181,27 +169,14 @@ public class EgovSiteController {
 	 * 사이트정보 수정 전 처리
 	 * 
 	 * @param siteId
-	 * @param searchVO
+	 * @param siteVO
 	 * @param model
 	 * @return "/uss/ion/sit/EgovSiteUpdt"
 	 * @throws Exception
 	 */
 	@RequestMapping("/uss/ion/sit/updateSiteView.do")
-	public String updateSiteView(@RequestParam("siteId") String siteId, @ModelAttribute("searchVO") SiteVO searchVO,
-			ModelMap model) throws Exception {
-
-		// 공통코드를 가져오기 위한 Vo
-		ComDefaultCodeVO vo = new ComDefaultCodeVO();
-		vo.setCodeId("COM023");
-
-		List<?> siteThemaClCode = cmmUseService.selectCmmCodeDetail(vo);
-		model.addAttribute("siteThemaClCode", siteThemaClCode);
-
-		SiteVO siteVO = new SiteVO();
-
-		// Primary Key 값 세팅
-		siteVO.setSiteId(siteId);
-
+	public String updateSiteView(@ModelAttribute("siteVO") SiteVO siteVO, ModelMap model) throws Exception {
+		model.addAttribute("siteThemaClCode", siteThemaClCode());
 		model.addAttribute("siteVO", egovSiteService.selectSiteDetail(siteVO));
 
 		return "egovframework/com/uss/ion/sit/EgovSiteUpdt";
@@ -210,19 +185,17 @@ public class EgovSiteController {
 	/**
 	 * 사이트정보를 수정한다.
 	 * 
-	 * @param searchVO
 	 * @param siteVO
 	 * @param bindingResult
 	 * @return "forward:/uss/ion/sit/selectSiteList.do"
 	 * @throws Exception
 	 */
 	@RequestMapping("/uss/ion/sit/updateSite.do")
-	public String updateSite(@ModelAttribute("searchVO") SiteVO searchVO, @ModelAttribute("siteVO") SiteVO siteVO,
-			BindingResult bindingResult) throws Exception {
+	public String updateSite(@Valid @ModelAttribute("siteVO") SiteVO siteVO, BindingResult bindingResult, ModelMap model) throws Exception {
 
-		// Validation
-		beanValidator.validate(siteVO, bindingResult);
 		if (bindingResult.hasErrors()) {
+			model.addAttribute("siteThemaClCode", siteThemaClCode());
+			model.addAttribute("siteVO", siteVO);
 			return "egovframework/com/uss/ion/sit/EgovSiteUpdt";
 		}
 
@@ -241,15 +214,14 @@ public class EgovSiteController {
 	 * 사이트정보를 삭제처리한다.
 	 * 
 	 * @param siteVO
-	 * @param searchVO
 	 * @return "forward:/uss/ion/sit/selectSiteList.do"
 	 * @throws Exception
 	 */
 	@RequestMapping("/uss/ion/sit/deleteSite.do")
-	public String deleteSite(SiteVO siteVO, @ModelAttribute("searchVO") SiteVO searchVO) throws Exception {
-
+	public String deleteSite(@ModelAttribute("siteVO") SiteVO siteVO) throws Exception {
 		egovSiteService.deleteSite(siteVO);
 
 		return "forward:/uss/ion/sit/selectSiteList.do";
 	}
+
 }

@@ -24,7 +24,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <html lang="ko">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8" />
@@ -72,7 +71,7 @@
 			<col style="" />
 		</colgroup>
 		<tr>
-			<th><spring:message code="comUssIonIsm.infrmlSanctnDetail.opinion" /> <span class="pilsu">*</span></th><!-- 의견 -->
+			<th><spring:message code="comUssIonIsm.infrmlSanctnDetail.opinion" /></th><!-- 의견 -->
 			<td class="left">
 			    <textarea id="returnResn" name="returnResn" class="txaClass" rows="4" cols="70" title="<spring:message code="comUssIonIsm.infrmlSanctnDetail.opinion" />"><c:out value='${rwardManageVO.returnResn}'/></textarea>
 			</td>

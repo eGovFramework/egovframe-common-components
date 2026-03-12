@@ -22,18 +22,18 @@ import egovframework.com.cmm.service.EgovUserDetailsService;
  *  -------    --------    ---------------------------
  *  2011. 8. 12.    서준식        최초생성
  *  2017. 9. 04.    장동한        클래스 이름 변경(EgovTestUserDetailsServiceImpl > EgovUserDetailsService)
- * 
+ *
  *
  *  </pre>
  */
 
 public class EgoDummyUserDetailsServiceImpl extends EgovAbstractServiceImpl implements
 		EgovUserDetailsService {
-	
+
 	//로그인 객체
 	LoginVO loginVO = new LoginVO();
 	//권한목록 객체
-	List<String> listAuth = new ArrayList<String>();
+	List<String> listAuth = new ArrayList<>();
 
 	@Override
 	public Object getAuthenticatedUser() {

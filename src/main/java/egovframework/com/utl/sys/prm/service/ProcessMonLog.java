@@ -5,7 +5,7 @@ import java.io.Serializable;
 /**
  * 개요
  * - PROCESS모니터링 로그에 대한 model 클래스를 정의한다.
- * 
+ *
  * 상세내용
  * - 프로세스명, 프로세스상태, 관리자명, 관리자이메일주소, 최종수정자ID, 최종수정시점 항목을 관리한다.
  * @author 박종선
@@ -31,7 +31,7 @@ public class ProcessMonLog implements Serializable  {
 	/**
 	 * 로그정보
 	 */
-	private String logInfo;	
+	private String logInfo;
 	/**
 	 * 프로세스 상태
 	 */
@@ -208,5 +208,5 @@ public class ProcessMonLog implements Serializable  {
 	public void setLastUpdusrPnttm(String lastUpdusrPnttm) {
 		this.lastUpdusrPnttm = lastUpdusrPnttm;
 	}
-	
+
 }

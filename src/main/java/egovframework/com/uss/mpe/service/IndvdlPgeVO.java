@@ -2,6 +2,9 @@ package egovframework.com.uss.mpe.service;
 
 import egovframework.com.cmm.ComDefaultVO;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 개요 - 마이페이지에 대한 model 클래스를 정의한다.
  * 
@@ -24,22 +27,31 @@ public class IndvdlPgeVO extends ComDefaultVO {
 	/**
 	 * 컨텐츠 명
 	 */
+	@EgovNullCheck
+	@Size(max=100)
 	private String cntntsNm;
 	/**
 	 * 컨텐츠 미리보기 URL
 	 */
+	@EgovNullCheck
+	@Size(max=1000)
 	private String cntntsLinkUrl;
 	/**
 	 * 컨텐츠 URL
 	 */
+	@EgovNullCheck
+	@Size(max=255)
 	private String cntcUrl;
 	/**
 	 * 컨텐츠 설명
 	 */
+	@EgovNullCheck
+	@Size(max=250)
 	private String cntntsDc;
 	/**
 	 * 컨텐츠 사용 여부
 	 */
+	@EgovNullCheck
 	private String cntntsUseAt;
 
 	public String getCntntsId() {

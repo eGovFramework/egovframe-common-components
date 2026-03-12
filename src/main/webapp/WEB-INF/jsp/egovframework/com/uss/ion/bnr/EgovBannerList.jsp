@@ -171,6 +171,7 @@ function press() {
 	</div>
 	
 	<input type="hidden" name="bannerId">
+	<input type="hidden" name="bannerIds" value="">
 	<input type="hidden" name="pageIndex" value="<c:if test="${empty bannerVO.pageIndex }">1</c:if><c:if test="${!empty bannerVO.pageIndex }"><c:out value='${bannerVO.pageIndex}'/></c:if>">
 	<input type="hidden" name="searchCondition" value="1">
 	</form>

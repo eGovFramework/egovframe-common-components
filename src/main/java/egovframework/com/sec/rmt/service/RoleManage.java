@@ -2,6 +2,10 @@ package egovframework.com.sec.rmt.service;
 
 import egovframework.com.cmm.ComDefaultVO;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 /**
  * 롤관리에 대한 model 클래스를 정의한다.
  * @author 공통서비스 개발팀 이문준
@@ -35,14 +39,19 @@ public class RoleManage extends ComDefaultVO {
 	/**
 	 * 롤명
 	 */
+	@EgovNullCheck
+	@Size(max=60)
 	private String roleNm;	
 	/**
 	 * 롤패턴
 	 */
+	@EgovNullCheck
+	@Size(max=300)
 	private String rolePtn;	
 	/**
 	 * 롤 설명
 	 */
+	@Size(max=200)
 	private String roleDc;		
 	/**
 	 * 롤 타입
@@ -51,6 +60,9 @@ public class RoleManage extends ComDefaultVO {
 	/**
 	 * 롤 Sort
 	 */
+	@EgovNullCheck
+	@Size(max=10)
+	@Pattern(regexp="^[0-9]*$", message="{validation.pattern.integer}")
 	private String roleSort;
 	/**
 	 * 롤 등록일시

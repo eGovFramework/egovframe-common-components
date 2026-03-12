@@ -2,14 +2,13 @@ package egovframework.com.sym.ccm.cca.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.sym.ccm.cca.service.CmmnCode;
 import egovframework.com.sym.ccm.cca.service.CmmnCodeVO;
 import egovframework.com.sym.ccm.cca.service.EgovCcmCmmnCodeManageService;
+import jakarta.annotation.Resource;
 
 /**
 *
@@ -34,7 +33,7 @@ public class EgovCcmCmmnCodeManageServiceImpl extends EgovAbstractServiceImpl im
 
     @Resource(name="CmmnCodeManageDAO")
     private CmmnCodeManageDAO cmmnCodeManageDAO;
-    
+
 	/**
 	 * 공통코드 총 개수를 조회한다.
 	 */
@@ -74,7 +73,6 @@ public class EgovCcmCmmnCodeManageServiceImpl extends EgovAbstractServiceImpl im
 	@Override
 	public void insertCmmnCode(CmmnCode cmmnCode) throws Exception {
 		cmmnCodeManageDAO.insertCmmnCode(cmmnCode);
-		
 	}
 
 	/**

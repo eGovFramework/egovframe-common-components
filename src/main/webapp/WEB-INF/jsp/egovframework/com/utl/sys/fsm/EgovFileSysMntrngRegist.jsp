@@ -21,7 +21,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comUtlSysFsm.fileSysMntrng.title"/></c:set>
 <!DOCTYPE html>
 <html lang="ko">
@@ -31,8 +30,7 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/button.css' />">
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/sym/cal/EgovCalPopup.js' />"></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="fileSysMntrngVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript">
 	function fn_egov_init_FileSysMntrng(){
 		document.fileSysMntrngVO.fileSysMg.value = "<c:out value='${fileSysMgValue}'/>";
@@ -72,6 +70,10 @@
 	}
 
 	function fn_egov_select_filesysmg() {
+		if (document.fileSysMntrngVO.fileSysNm.value == "") {
+			return;
+		}
+		
 		document.fileSysMntrngVO.action = "<c:url value='/utl/sys/fsm/selectFileSysMg.do'/>";
 		document.fileSysMntrngVO.submit();					
 	}
@@ -105,42 +107,49 @@
 		<tr>
 			<th><spring:message code="comUtlSysFsm.fileSysMntrng.fileSysNm.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <form:input path="fileSysNm" maxlength="60" title="<spring:message code='comUtlSysFsm.fileSysMntrng.fileSysNm.label' />" cssStyle="width:250px"/>
+				<spring:message code="comUtlSysFsm.fileSysMntrng.fileSysNm.label" var="fileSysNmTitle" />
+			    <form:input path="fileSysNm" maxlength="60" title="${fileSysNmTitle}" cssStyle="width:250px"/>
 				<a class="btn02" href="<c:url value='/utl/sys/fsm/selectFileSysMg.do'/>?searchWrd=<c:out value='${fileSysMntrngVO.searchWrd}'/>&amp;searchCnd=<c:out value='${fileSysMntrngVO.searchCnd}'/>&amp;pageIndex=<c:out value='${fileSysMntrngVO.pageIndex}'/>" onclick="fn_egov_select_filesysmg(); return false;"><spring:message code="comUtlSysFsm.fileSysMntrngRegist.selectFileSysMg"/></a><!-- 파일시스템확인 -->
+				<div><form:errors path="fileSysNm" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysFsm.fileSysMntrng.fileSysManageNm.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <form:input path="fileSysManageNm" size="65" maxlength="255" title="<spring:message code='comUtlSysFsm.fileSysMntrng.fileSysManageNm.label' />"/>
+				<spring:message code="comUtlSysFsm.fileSysMntrng.fileSysManageNm.label" var="fileSysManageNmTitle" />
+			    <form:input path="fileSysManageNm" size="65" maxlength="255" title="${fileSysManageNmTitle}"/>
       			<div><form:errors path="fileSysManageNm" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysFsm.fileSysMntrng.fileSysMg.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <form:input path="fileSysMg" maxlength="8" title="<spring:message code='comUtlSysFsm.fileSysMntrng.fileSysMg.label' />" readonly="true" cssStyle="width:50px"/>G
+				<spring:message code="comUtlSysFsm.fileSysMntrng.fileSysMg.label" var="fileSysMgTitle" />
+			    <form:input path="fileSysMg" maxlength="8" title="${fileSysMgTitle}" readonly="true" cssStyle="width:50px"/>G
       			<div><form:errors path="fileSysMg" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysFsm.fileSysMntrng.fileSysThrhld.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <form:input path="fileSysThrhld" maxlength="8" title="<spring:message code='comUtlSysFsm.fileSysMntrng.fileSysThrhld.label' />" cssStyle="width:50px"/>G
+				<spring:message code="comUtlSysFsm.fileSysMntrng.fileSysThrhld.label" var="fileSysThrhldTitle" />
+			    <form:input path="fileSysThrhld" maxlength="8" title="${fileSysThrhldTitle}" cssStyle="width:50px"/>G
       			<div><form:errors path="fileSysThrhld" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysFsm.fileSysMntrng.mngrNm.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <form:input path="mngrNm" size="5" maxlength="60" title="<spring:message code='comUtlSysFsm.fileSysMntrng.mngrNm.label' />" cssStyle="width:100px"/>
+				<spring:message code="comUtlSysFsm.fileSysMntrng.mngrNm.label" var="mngrNmTitle" />
+			    <form:input path="mngrNm" size="5" maxlength="60" title="${mngrNmTitle}" cssStyle="width:100px"/>
       			<div><form:errors path="mngrNm" cssClass="error"/></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysFsm.fileSysMntrng.mngrEmailAddr.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <form:input path="mngrEmailAddr" size="25" maxlength="50" title="<spring:message code='comUtlSysFsm.fileSysMntrng.mngrEmailAddr.label' />"/>
+				<spring:message code="comUtlSysFsm.fileSysMntrng.mngrEmailAddr.label" var="mngrEmailAddrTitle" />
+			    <form:input path="mngrEmailAddr" size="25" maxlength="50" title="${mngrEmailAddrTitle}"/>
   				<div><form:errors path="mngrEmailAddr" cssClass="error"/></div>
 			</td>
 		</tr>

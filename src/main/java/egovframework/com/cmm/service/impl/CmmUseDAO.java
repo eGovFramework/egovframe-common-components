@@ -25,7 +25,7 @@ import egovframework.com.cmm.service.CmmnDetailCode;
  *
  *      </pre>
  */
-@Repository
+@Repository("cmmUseDAO")
 public class CmmUseDAO extends EgovComAbstractDAO {
 
 	/**

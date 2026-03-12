@@ -4,8 +4,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.slf4j.Logger;
@@ -16,24 +14,25 @@ import egovframework.com.cop.cmy.service.CommunityUser;
 import egovframework.com.cop.cmy.service.CommunityUserVO;
 import egovframework.com.cop.cmy.service.CommunityVO;
 import egovframework.com.cop.cmy.service.EgovCommuManageService;
+import jakarta.annotation.Resource;
 
 @Service("EgovCommuManageService")
 public class EgovCommuManageServiceImpl extends EgovAbstractServiceImpl implements EgovCommuManageService {
 
 	@Resource(name = "EgovCommuMasterDAO")
 	EgovCommuMasterDAO egovCommuMasterDao;
-	
+
 	@Resource(name = "EgovCommuManageDAO")
 	EgovCommuManageDAO egovCommuManageDao;
-	
+
 	@Resource(name = "egovCmmntyIdGnrService")
     private EgovIdGnrService idgenService;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(EgovCommuManageServiceImpl.class);
-	
+
 	@Override
 	public Map<String, Object> selectCommuInf(CommunityVO cmmntyVO) {
-		
+
 		//커뮤니티 기본정보 확인
 		CommunityVO vo = egovCommuMasterDao.selectCommuMasterDetail(cmmntyVO);
 
@@ -54,7 +53,7 @@ public class EgovCommuManageServiceImpl extends EgovAbstractServiceImpl implemen
 		    cmmntyUser = new CommunityUser();
 		}
 		if (managers.size() == 1) {
-			
+
 		    cmmntyUser.setEmplyrId(managers.get(0).getEmplyrId());
 		    cmmntyUser.setEmplyrNm(managers.get(0).getEmplyrNm());
 		} else if (managers.size() > 1) {
@@ -65,7 +64,7 @@ public class EgovCommuManageServiceImpl extends EgovAbstractServiceImpl implemen
 		}
 		////---------------------------------------------------------------
 
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 
 		map.put("cmmntyVO", vo);
 		map.put("cmmntyUser", cmmntyUser);
@@ -79,9 +78,9 @@ public class EgovCommuManageServiceImpl extends EgovAbstractServiceImpl implemen
 		//cmmntyId
 		CommunityVO vo = new CommunityVO();
 		vo.setCmmntyId(cmmntyUser.getCmmntyId());
-		
+
 		int userCnt = egovCommuManageDao.checkExistUser(cmmntyUser);
-		
+
 		if (userCnt == 0) {
 		    return "";
 		} else {
@@ -99,7 +98,7 @@ public class EgovCommuManageServiceImpl extends EgovAbstractServiceImpl implemen
 		List<CommunityUser> result = egovCommuManageDao.selectCommuUserList(cmmntyUserVO);
 		int cnt = egovCommuManageDao.selectCommuUserListCnt(cmmntyUserVO);
 
-		Map<String, Object> map = new HashMap<String, Object>();
+		Map<String, Object> map = new HashMap<>();
 
 		map.put("resultList", result);
 		map.put("resultCnt", Integer.toString(cnt));
@@ -109,9 +108,9 @@ public class EgovCommuManageServiceImpl extends EgovAbstractServiceImpl implemen
 
 	@Override
 	public Boolean selectIsCommuAdmin(CommunityUserVO userVO) {
-		
+
 		CommunityUser cmmntyUser = egovCommuManageDao.selectSingleCommuUserDetail(userVO);
-		
+
 		if(cmmntyUser==null) {
 			return false;
 		} else if(cmmntyUser.getMngrAt().equals("Y")) {

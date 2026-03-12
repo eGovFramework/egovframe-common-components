@@ -1,7 +1,7 @@
 /**
  * 개요
  * - 로그인정책에 대한 ServiceImpl 클래스를 정의한다.
- * 
+ *
  * 상세내용
  * - 로그인정책에 대한 등록, 수정, 삭제, 조회, 반영확인 기능을 제공한다.
  * - 로그인정책의 조회기능은 목록조회, 상세조회로 구분된다.
@@ -10,7 +10,7 @@
  * @created 03-8-2009 오후 2:08:54
  *   <pre>
  * == 개정이력(Modification Information) ==
- * 
+ *
  *  수정일               수정자            수정내용
  *  ----------   --------   ---------------------------
  *  2009.08.03   이문준            최초 생성
@@ -23,21 +23,20 @@ package egovframework.com.uat.uap.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.uat.uap.service.EgovLoginPolicyService;
 import egovframework.com.uat.uap.service.LoginPolicy;
 import egovframework.com.uat.uap.service.LoginPolicyVO;
+import jakarta.annotation.Resource;
 
 @Service("egovLoginPolicyService")
 public class EgovLoginPolicyServiceImpl extends EgovAbstractServiceImpl implements EgovLoginPolicyService {
-	
+
 	@Resource(name="loginPolicyDAO")
 	LoginPolicyDAO loginPolicyDAO;
-	
+
 	/**
 	 * 로그인정책 목록을 조회한다.
 	 * @param loginPolicyVO - 로그인정책 VO

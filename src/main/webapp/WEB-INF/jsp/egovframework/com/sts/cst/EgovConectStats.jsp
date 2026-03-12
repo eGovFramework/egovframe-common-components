@@ -123,7 +123,7 @@ function fnSearch(){
    	document.listForm.submit();
 }
 /* ********************************************************
- * 초기화
+ * 페이지 로드 시 초기화 (서버 값 유지)
  ******************************************************** */
 function fnInitAll(){
 
@@ -162,8 +162,30 @@ function fnInitAll(){
 			fnChangeStsKind();
 		}
 	}
-	
+
 	fn_egov_init_date();
+}
+/* ********************************************************
+ * 초기화 버튼 클릭 시 (강제 초기화)
+ ******************************************************** */
+function fnReset(){
+	// 시작일자, 종료일자 - 오늘 날짜로 강제 초기화
+	var now = new Date();
+	var year= now.getFullYear();
+	var mon = (now.getMonth()+1)>9 ? ''+(now.getMonth()+1) : '0'+(now.getMonth()+1);
+	var day = now.getDate()>9 ? ''+now.getDate() : '0'+now.getDate();
+	var toDay = year + "-" + mon + "-" + day;
+	document.listForm.fDate.value = toDay;
+	document.listForm.tDate.value = toDay;
+
+	// 기간구분 - 첫 번째 옵션(미선택)으로 초기화
+	var v_pdKind = document.getElementById("PD");
+	v_pdKind.selectedIndex = 0;
+
+	// 통계구분 - 첫 번째 옵션(미선택)으로 초기화
+	var v_statsKind = document.getElementById("STKIND");
+	v_statsKind.selectedIndex = 0;
+	fnChangeStsKind();
 }
 
 function getNextWeek(v,t){
@@ -218,7 +240,7 @@ function getNextWeek(v,t){
 			      <input name="person" type="text" size="10" value="" onchange="fnChangePerson();" title="" id="person"/>
 				
 				<input class="s_btn" type="submit" value="<spring:message code="button.search" />" title="<spring:message code="button.search" />" onclick="fnSearch(); return false;" /> <!-- 검색 -->
-				<span class="btn_b"><a href="#noscript" onclick="fnInitAll(); return false;" title="<spring:message code="button.init" />"><spring:message code="button.init" /></a></span> <!-- 초기화 -->
+				<span class="btn_b"><a href="#noscript" onclick="fnReset(); return false;" title="<spring:message code="button.init" />"><spring:message code="button.init" /></a></span> <!-- 초기화 -->
 			</li>
 		</ul>
 	</div>

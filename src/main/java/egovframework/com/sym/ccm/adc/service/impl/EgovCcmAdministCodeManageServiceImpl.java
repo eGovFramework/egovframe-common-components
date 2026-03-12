@@ -2,8 +2,6 @@ package egovframework.com.sym.ccm.adc.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Service;
@@ -11,6 +9,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.sym.ccm.adc.service.AdministCode;
 import egovframework.com.sym.ccm.adc.service.AdministCodeVO;
 import egovframework.com.sym.ccm.adc.service.EgovCcmAdministCodeManageService;
+import jakarta.annotation.Resource;
 
 
 

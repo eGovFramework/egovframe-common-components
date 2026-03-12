@@ -1,6 +1,5 @@
 package egovframework.com.sym.log.plg.service;
 
-import javax.annotation.Resource;
 import javax.sql.DataSource;
 
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
@@ -8,6 +7,8 @@ import org.egovframe.rte.fdl.idgnr.impl.EgovTableIdGnrServiceImpl;
 import org.egovframe.rte.fdl.idgnr.impl.strategy.EgovIdGnrStrategyImpl;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+
+import jakarta.annotation.Resource;
 
 /**
  * @Class Name : EgovPrivacyConfig.java

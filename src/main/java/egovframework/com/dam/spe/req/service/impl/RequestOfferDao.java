@@ -105,7 +105,7 @@ public class RequestOfferDao extends EgovComAbstractDAO {
 
 	    		//단말노드 검사
 	    		while(true){
-	    			HashMap<String, String> hmParam = new HashMap<String, String>();
+	    			HashMap<String, String> hmParam = new HashMap<>();
 	    			hmParam.put("ansParents", sAnsParents);
 	    			mapAnsParents = (Map<?, ?>)selectOne("RequestOffer.selectRequestOfferReplyaAnsParentsSearch", hmParam);
 	    			LOGGER.info("mapAnsParentsSearch>" + mapAnsParents);

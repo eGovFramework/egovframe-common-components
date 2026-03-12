@@ -1,14 +1,12 @@
 package egovframework.com.sym.ccm.zip.web;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
 
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang.StringUtils;
@@ -17,7 +15,6 @@ import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -28,14 +25,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.util.WebUtils;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import egovframework.com.sym.ccm.zip.service.EgovCcmRdnmadZipManageService;
 import egovframework.com.sym.ccm.zip.service.EgovCcmZipManageService;
 import egovframework.com.sym.ccm.zip.service.Zip;
 import egovframework.com.sym.ccm.zip.service.ZipVO;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 /**
  * 우편번호에 관한 요청을 받아 서비스 클래스로 요청을 전달하고 서비스클래스에서 처리한 결과를 웹 화면으로 전달을 위한 Controller를
@@ -79,9 +79,6 @@ public class EgovCcmZipManageController {
 	/** EgovPropertyService */
 	@Resource(name = "propertiesService")
 	protected EgovPropertyService propertiesService;
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/**
 	 * 우편번호 찾기 팝업 메인창을 호출한다.
@@ -158,7 +155,7 @@ public class EgovCcmZipManageController {
 	public String deleteZip(@ModelAttribute("loginVO") LoginVO loginVO, Zip zip, ZipVO searchVO, ModelMap model)
 			throws Exception {
 		model.addAttribute("searchList", searchVO.getSearchList());
-		if (searchVO.getSearchList().equals("1")) {
+		if ("1".equals(searchVO.getSearchList())) {
 			zipManageService.deleteZip(zip);
 		} else {
 			rdnmadZipService.deleteZip(zip);
@@ -194,18 +191,25 @@ public class EgovCcmZipManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/ccm/zip/EgovCcmZipRegist.do")
-	public String insertZip(@ModelAttribute("loginVO") LoginVO loginVO, @ModelAttribute("zip") Zip zip,
+	public String insertZip(@ModelAttribute("loginVO") LoginVO loginVO, @Valid @ModelAttribute("zip") Zip zip,
 			BindingResult bindingResult, ZipVO searchVO, ModelMap model) {
 		model.addAttribute("searchList", searchVO.getSearchList());
-
+		
 		boolean isRoadAddr = "2".equals(searchVO.getSearchList());
-
-		beanValidator.validate(zip, bindingResult);
-		if (!isRoadAddr && bindingResult.hasErrors()) {
+		
+//		if (!isRoadAddr && bindingResult.hasErrors()) {
+//			model.addAttribute("errorMessage", bindingResult.getAllErrors());
+//			model.addAttribute("zip", zip);
+//			return "egovframework/com/sym/ccm/zip/EgovCcmZipRegist";
+//		}
+		
+		if (bindingResult.hasErrors()) {
 			model.addAttribute("errorMessage", bindingResult.getAllErrors());
 			model.addAttribute("zip", zip);
+			model.addAttribute("isRoadAddr", isRoadAddr);
 			return "egovframework/com/sym/ccm/zip/EgovCcmZipRegist";
 		}
+		
 		/*
 		 * 2024-08-31 권태성 - 기존 코드에서 도로명주소 일 때 validate를 주석 처리해두어 주석을 유지함 else {
 		 * beanValidator.validate(zip, bindingResult); if (bindingResult.hasErrors()){
@@ -266,7 +270,7 @@ public class EgovCcmZipManageController {
 				// 2022.11.11 시큐어코딩 처리
 				if (isExist) {
 					try (InputStream fis = file.getInputStream();) {
-						if (searchVO.getSearchList().equals("1")) {
+						if ("1".equals(searchVO.getSearchList())) {
 							zipManageService.insertExcelZip(fis);
 						} else {
 							rdnmadZipService.insertExcelZip(fis);
@@ -295,7 +299,7 @@ public class EgovCcmZipManageController {
 	@RequestMapping(value = "/sym/ccm/zip/EgovCcmZipDetail.do")
 	public String selectZipDetail(@ModelAttribute("loginVO") LoginVO loginVO, Zip zip, ZipVO searchVO, ModelMap model)
 			throws Exception {
-		if (searchVO.getSearchList().equals("1")) {
+		if ("1".equals(searchVO.getSearchList())) {
 			Zip vo = zipManageService.selectZipDetail(zip);
 			model.addAttribute("result", vo);
 			model.addAttribute("searchList", searchVO.getSearchList());
@@ -392,13 +396,12 @@ public class EgovCcmZipManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/sym/ccm/zip/EgovCcmZipModify.do")
-	public String updateZip(@ModelAttribute("loginVO") LoginVO loginVO, @ModelAttribute("zip") Zip zip,
+	public String updateZip(@ModelAttribute("loginVO") LoginVO loginVO, @Valid @ModelAttribute("zip") Zip zip,
 			BindingResult bindingResult, ZipVO searchVO, ModelMap model) throws Exception {
 		if (zip.getSn() == 0) {
 			return "redirect:/sym/ccm/zip/EgovCcmZipList.do";
 		}
 		boolean isRoadAddr = "2".equals(searchVO.getSearchList());
-		beanValidator.validate(zip, bindingResult);
 		if (!isRoadAddr && bindingResult.hasErrors()) {
 			model.addAttribute("searchList", searchVO.getSearchList());
 			return "egovframework/com/sym/ccm/zip/EgovCcmZipModify";

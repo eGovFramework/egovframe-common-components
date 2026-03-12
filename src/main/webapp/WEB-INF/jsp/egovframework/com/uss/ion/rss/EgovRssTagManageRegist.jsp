@@ -19,7 +19,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -27,16 +26,15 @@
 <title><spring:message code="ussIonRss.rssTagManageRegist.rssTagManageRegist"/></title><!-- RSS태그관리 등록 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/jquery.js'/>"></script>
-<validator:javascript formName="rssManage" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javaScript" language="javascript">
 /* ********************************************************
  * 페이징 처리 함수
  ******************************************************** */
 function linkPage(pageNo){
 	document.twitterInfo.pageIndex.value = pageNo;
-	document.twitterInfo.action = "<c:url value='/uss/rss/rss/listRssTagManage.do'/>";
+	document.twitterInfo.action = "<c:url value='/uss/ion/rss/listRssTagManage.do'/>";
    	document.twitterInfo.submit();
 }
 
@@ -66,7 +64,7 @@ function fn_egov_ColumnSetting_RssTagManage(column){
 /* ********************************************************
 * 선택한 테이블 컬럼 가져오기
 ******************************************************** */
-function fn_egov_tableColumn_RssTagManage(){
+function fn_egov_tableColumn_RssTagManage(sType){
 
 	if( document.getElementById("trgetSvcTable").selectedIndex == 0){
 		 $("#tableColumn").html("");
@@ -92,17 +90,18 @@ function fn_egov_tableColumn_RssTagManage(){
 		   }, error: function(data, status) { alert( status); }
 		  });
 
-
-	//본문 데이터 삭제
-	document.getElementById('bdtTitle').value='';
-	document.getElementById('bdtLink').value='';
-	document.getElementById('bdtDescription').value='';
-	document.getElementById('bdtTag').value='';
+	if(sType != "Init"){
+		//본문 데이터 삭제
+		document.getElementById('bdtTitle').value='';
+		document.getElementById('bdtLink').value='';
+		document.getElementById('bdtDescription').value='';
+		document.getElementById('bdtTag').value='';
+	}
 
 }
 function fn_egov_tableColumn_RssTagManageIFrame(){
 	var tableName = $("#trgetSvcTable option:selected").val();
-	document.getElementById("iframeTableColumnView").src = "<c:url value='/uss/ion/rss/listRssTagManageTableColumnView.do?tableName='/>" + tableName;	
+	document.getElementById("iframeTableColumnView").src = "<c:url value='/uss/ion/rss/listRssTagManageTableColumnList.do?tableName='/>" + tableName;	
 }
 
 /* ********************************************************
@@ -116,33 +115,38 @@ function fn_egov_init_RssTagManage(){
 	}
 	
 }
+
+// 페이지 로드 시 자동 실행
+document.addEventListener('DOMContentLoaded', function() {
+	fn_egov_init_RssTagManage();
+	// 선택된 테이블이 있으면 컬럼 정보 로드
+	if(document.getElementById("trgetSvcTable") && document.getElementById("trgetSvcTable").selectedIndex > 0){
+		fn_egov_tableColumn_RssTagManage('Init');
+	}
+});
 /* ********************************************************
 * 저장
 ******************************************************** */
-function fn_egov_save_RssTagManage(){
-	var vFrom = document.rssManage;
-	
-	if(confirm("<spring:message code="common.save.msg" />")){
+function fn_egov_save_RssTagManage(form){
+	//input item Client-Side validate
+	if (!validateRssManage(form)) {	
+		return;
+	}
 
-		vFrom.action = "<c:url value='/uss/ion/rss/registRssTagManage.do'/>";
-		
-		if(!validateRssManage(vFrom)){ 			
-			return;
-		}else{
-			vFrom.submit();
-		} 
+	if(confirm("<spring:message code="common.save.msg" />")){	
+		form.submit();
 	}
 }
 </script>
 
 </head>
-<body onLoad="fn_egov_init_RssTagManage();">
+<body>
 <DIV id="content" style="width:712px">
 <!-- noscript 태그  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
 <!-- 등록폼 시작  -->
-<form:form modelAttribute="rssManage" name="rssManage" action="" method="post" enctype="multipart/form-data">
+<form:form modelAttribute="rssManage" name="rssManage" action="${pageContext.request.contextPath}/uss/ion/rss/insertRssTagManage.do" method="post" onSubmit="fn_egov_save_RssTagManage(document.forms[0]); return false;" enctype="multipart/form-data">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -289,16 +293,13 @@ function fn_egov_save_RssTagManage(){
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fn_egov_save_RssTagManage(); return false;" />
-		<span class="btn_s"><a href="<c:url value='/uss/ion/rss/listRssTagManage.do'/>" onclick=""><spring:message code="button.list" /></a></span>
+		<input type="submit" class="s_submit" value="<spring:message code="button.save" />" title="<spring:message code="button.save" /> <spring:message code="input.button" />" />
+		<span class="btn_s"><a href="<c:url value='/uss/ion/rss/listRssTagManage.do'/>" title="<spring:message code="button.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>
 
-<input name="cmd" type="hidden" value="<c:out value='save'/>"/>
-
+<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 </form:form>
-</DIV>
-
 </body>
 </html>

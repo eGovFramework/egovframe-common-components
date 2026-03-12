@@ -1,14 +1,14 @@
 package egovframework.com.cop.cmy.service.impl;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.fail;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.fail;
 
 import java.util.List;
 
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
-import org.junit.Before;
-import org.junit.Test;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.ComponentScan;
@@ -135,8 +135,8 @@ public class EgovCommuMasterDAOTest extends EgovTestAbstractDAO {
     /**
      * 테스트 데이터 생성
      */
-    @Before
-    public void testData() {
+    @BeforeEach
+    void testData() {
         testCommunity = new Community();
         final LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
@@ -163,7 +163,7 @@ public class EgovCommuMasterDAOTest extends EgovTestAbstractDAO {
      * 커뮤니티 등록 테스트
      */
     @Test
-    public void testInsertCommuMaster() {
+    void testInsertCommuMaster() {
         // given
         final Community cmmntyUser = new Community();
         // 'TEST_CMMNTY_99999001' 커뮤니티 등록
@@ -174,14 +174,14 @@ public class EgovCommuMasterDAOTest extends EgovTestAbstractDAO {
         final int result = egovCommuMasterDAO.insertCommuMaster(cmmntyUser);
 
         // then
-        assertEquals(egovMessageSource.getMessage("fail.common.insert"), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage("fail.common.insert"));
     }
 
     /**
      * 커뮤니티 목록 개수 조회 테스트
      */
     @Test
-    public void testSelectCommuMasterListCnt() {
+    void testSelectCommuMasterListCnt() {
         // given
         final CommunityVO cmmntyVO = new CommunityVO();
         cmmntyVO.setSearchCnd("0");
@@ -191,14 +191,14 @@ public class EgovCommuMasterDAOTest extends EgovTestAbstractDAO {
         final int result = egovCommuMasterDAO.selectCommuMasterListCnt(cmmntyVO);
 
         // then
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
     /**
      * 커뮤니티 목록 조회 테스트
      */
     @Test
-    public void testSelectCommuMasterList() {
+    void testSelectCommuMasterList() {
         // given
         final CommunityVO cmmntyVO = new CommunityVO();
         cmmntyVO.setCmmntyId(testCommunity.getCmmntyId());
@@ -227,7 +227,7 @@ public class EgovCommuMasterDAOTest extends EgovTestAbstractDAO {
      * 커뮤니티 정보 assert
      */
     private void assertSelectCommuMaster(final CommunityVO cmmntyUser, final CommunityVO result) {
-        assertEquals(egovMessageSource.getMessage(FAIL_COMMON_SELECT), cmmntyUser.getCmmntyId(), result.getCmmntyId());
+        assertEquals(cmmntyUser.getCmmntyId(), result.getCmmntyId(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
     }
 
 
@@ -235,7 +235,7 @@ public class EgovCommuMasterDAOTest extends EgovTestAbstractDAO {
      * 커뮤니티 상세 정보 조회 테스트
      */
     @Test
-    public void testSelectCommuMasterDetail() {
+    void testSelectCommuMasterDetail() {
         // given
         final CommunityVO cmmntyVO = new CommunityVO();
         cmmntyVO.setCmmntyId(testCommunity.getCmmntyId());
@@ -252,7 +252,7 @@ public class EgovCommuMasterDAOTest extends EgovTestAbstractDAO {
      * 커뮤니터 정보 업데이트 테스트
      */
     @Test
-    public void testUpdateCommuMaster() {
+    void testUpdateCommuMaster() {
         // given
         final CommunityVO cmmntyVO = new CommunityVO();
         cmmntyVO.setCmmntyId(testCommunity.getCmmntyId());
@@ -265,14 +265,14 @@ public class EgovCommuMasterDAOTest extends EgovTestAbstractDAO {
         // when
         final int result = egovCommuMasterDAO.updateCommuMaster(cmmntyVO);
 
-        assertEquals(egovMessageSource.getMessage("fail.common.update"), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage("fail.common.update"));
     }
 
     /**
      * 커뮤니티 정보 삭제 테스트
      */
     @Test
-    public void testDeleteCommuMaster() {
+    void testDeleteCommuMaster() {
         // given
         final CommunityVO cmmntyVO = new CommunityVO();
         cmmntyVO.setCmmntyId(testCommunity.getCmmntyId());
@@ -281,7 +281,7 @@ public class EgovCommuMasterDAOTest extends EgovTestAbstractDAO {
         // when
         final int result = egovCommuMasterDAO.updateCommuMaster(cmmntyVO);
 
-        assertEquals(egovMessageSource.getMessage("fail.common.delete"), 1, result);
+        assertEquals(1, result, egovMessageSource.getMessage("fail.common.delete"));
     }
 
     /**
@@ -317,7 +317,7 @@ public class EgovCommuMasterDAOTest extends EgovTestAbstractDAO {
 
     private void assertSelectCommuMasterListPortlet(final List<CommunityVO> resultList) {
         if (resultList != null) {
-            assertFalse(egovMessageSource.getMessage(FAIL_COMMON_SELECT), resultList.isEmpty());
+            assertFalse(resultList.isEmpty(), egovMessageSource.getMessage(FAIL_COMMON_SELECT));
         }
     }
 }

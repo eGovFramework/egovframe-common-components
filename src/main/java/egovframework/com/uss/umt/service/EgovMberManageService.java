@@ -77,18 +77,18 @@ public interface EgovMberManageService {
 
 	/**
 	 * 일반회원암호수정
-	 * @param mberManageVO 일반회원수정정보(비밀번호)
+	 * @param mberPasswordManageVO 일반회원 비밀번호 수정정보
 	 * @throws Exception
 	 */
-	public void updatePassword(MberManageVO mberManageVO) throws Exception;
+	public void updatePassword(MberPasswordManageVO mberPasswordManageVO) throws Exception;
 
 	/**
 	 * 일반회원이 비밀번호를 기억하지 못할 때 비밀번호를 찾을 수 있도록 함
-	 * @param passVO 일반회원암호 조회조건정보
-	 * @return mberManageVO 일반회원암호정보
+	 * @param mberPasswordManageVO 일반회원 암호 조회조건정보
+	 * @return mberPasswordManageVO 일반회원 암호정보
 	 * @throws Exception
 	 */
-	public MberManageVO selectPassword(MberManageVO passVO) throws Exception;
+	public MberPasswordManageVO selectPassword(MberPasswordManageVO mberPasswordManageVO) throws Exception;
 
 	/**
 	 * 로그인인증제한 해제 

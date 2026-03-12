@@ -2,6 +2,9 @@ package egovframework.com.cop.smt.mtm.service;
 
 import java.io.Serializable;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 개요
  * - 메모할일에 대한 model 클래스를 정의한다.
@@ -26,26 +29,36 @@ public class MemoTodo implements Serializable {
 	/** 할일ID */
 	private String todoId;
 	/** 할일제목 */
+	@EgovNullCheck
+	@Size(max=255)
 	private String todoNm;
 	/** 할일시작시간 */
 	private String todoBeginTime;
 	/** 할일종료시간 */
 	private String todoEndTime;
 	/** 할일일자 */
+	@EgovNullCheck
 	private String todoDe;
 	/** 할일시작시 */
+	@EgovNullCheck
 	private String todoBeginHour;
 	/** 할일시작분 */
+	@EgovNullCheck
 	private String todoBeginMin;
 	/** 할일종료시 */
+	@EgovNullCheck
 	private String todoEndHour;
 	/** 할일종료분 */
+	@EgovNullCheck
 	private String todoEndMin;
 	/** 작성자ID */
 	private String wrterId;
 	/** 작성자명 */
+	@EgovNullCheck
 	private String wrterNm;
 	/** 할일내용 */
+	@EgovNullCheck
+	@Size(max=2500)
 	private String todoCn;
 	/** 최초등록자ID */
 	private String frstRegisterId = "";

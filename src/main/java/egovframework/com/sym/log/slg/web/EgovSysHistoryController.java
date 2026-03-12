@@ -2,11 +2,8 @@ package egovframework.com.sym.log.slg.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -16,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.LoginVO;
@@ -30,6 +26,8 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.log.slg.service.EgovSysHistoryService;
 import egovframework.com.sym.log.slg.service.SysHistory;
 import egovframework.com.sym.log.slg.service.SysHistoryVO;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * 시스템 이력관리를 위한 웹 컨트롤러 클래스
@@ -69,9 +67,6 @@ public class EgovSysHistoryController {
 	@Resource(name = "EgovFileMngUtil")
 	private EgovFileMngUtil fileUtil;
 
-	@Autowired
-	private DefaultBeanValidator beanValidator;
-
 	/**
 	 * 시스템이력 등록
 	 *
@@ -82,10 +77,9 @@ public class EgovSysHistoryController {
 	 */
 	@RequestMapping(value = "/sym/log/slg/InsertSysHistory.do")
 	public String insertSysHistory(final MultipartHttpServletRequest multiRequest,
-			@ModelAttribute("history") SysHistory history, BindingResult bindingResult, SessionStatus status,
+			@Valid @ModelAttribute("history") SysHistory history, BindingResult bindingResult, SessionStatus status,
 			ModelMap model) throws Exception {
 
-		beanValidator.validate(history, bindingResult);
 		if (bindingResult.hasErrors()) {
 			ComDefaultCodeVO vo = new ComDefaultCodeVO();
 			vo.setCodeId("COM002");
@@ -140,10 +134,9 @@ public class EgovSysHistoryController {
 	 */
 	@RequestMapping(value = "/sym/log/slg/UpdateSysHistory.do")
 	public String updateSysHistory(final MultipartHttpServletRequest multiRequest,
-			@ModelAttribute("searchVO") SysHistoryVO historyVO, @ModelAttribute("history") SysHistory history,
+			@ModelAttribute("searchVO") SysHistoryVO historyVO, @Valid @ModelAttribute("history") SysHistory history,
 			BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
-
-		beanValidator.validate(history, bindingResult);
+		
 		if (bindingResult.hasErrors()) {
 
 			model.addAttribute("history", history);

@@ -21,7 +21,6 @@ package egovframework.com.ext.ldapumt.service.impl;
 import java.util.ArrayList;
 import java.util.Map;
 
-import javax.annotation.Resource;
 import javax.naming.directory.Attribute;
 import javax.naming.directory.Attributes;
 import javax.naming.directory.BasicAttribute;
@@ -35,6 +34,7 @@ import org.springframework.ldap.core.LdapTemplate;
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.ext.ldapumt.service.LdapObject;
+import jakarta.annotation.Resource;
 
 /**
 *
@@ -66,7 +66,7 @@ public class OrgManageLdapDAO extends EgovComAbstractDAO {
 	protected void updateOrg(LdapObject vo) {
 		String dn = vo.getDn();
 
-		final ArrayList<ModificationItem> itemList = new ArrayList<ModificationItem>();
+		final ArrayList<ModificationItem> itemList = new ArrayList<>();
 
 		introspect(vo, new Executable(){
 			@Override

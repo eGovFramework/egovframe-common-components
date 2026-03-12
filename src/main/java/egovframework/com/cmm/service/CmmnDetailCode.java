@@ -2,6 +2,9 @@ package egovframework.com.cmm.service;
 
 import java.io.Serializable;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 공통상세코드 모델 클래스
  * @author 공통서비스 개발팀 이중호
@@ -31,6 +34,8 @@ public class CmmnDetailCode implements Serializable {
 	/*
 	 * 코드ID
 	 */
+	@EgovNullCheck
+	@Size(max=6)
     private String codeId = "";
 
     /*
@@ -41,21 +46,28 @@ public class CmmnDetailCode implements Serializable {
     /*
      * 상세코드
      */
+	@EgovNullCheck
+	@Size(max=15)
 	private String code = "";
 
 	/*
 	 * 상세코드명
 	 */
+	@EgovNullCheck
+	@Size(max=60)
     private String codeNm = "";
 
     /*
      * 상세코드설명
      */
+	@EgovNullCheck
+	@Size(max=200)
     private String codeDc = "";
 
     /*
      * 사용여부
      */
+	@EgovNullCheck
     private String useAt = "";
 
     /*

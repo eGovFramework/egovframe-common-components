@@ -1,8 +1,8 @@
 package egovframework.com.utl.message;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
 
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import egovframework.com.utl.cas.service.EgovMessageUtil;
 
@@ -25,7 +25,7 @@ import egovframework.com.utl.cas.service.EgovMessageUtil;
 public class TestMessage {
 	
 	@Test
-	public void testInfoMessage() {
+	void testInfoMessage() {
 		String message1 = null;
 		String message2 = null;
 		
@@ -44,7 +44,7 @@ public class TestMessage {
 	}
 
 	@Test
-	public void testWarnMessage() {
+	void testWarnMessage() {
 		String message1 = null;
 		String message2 = null;
 		
@@ -63,7 +63,7 @@ public class TestMessage {
 	}
 
 	@Test
-	public void testErrorMessage() {
+	void testErrorMessage() {
 		String message1 = null;
 		String message2 = null;
 		
@@ -82,7 +82,7 @@ public class TestMessage {
 	}
 
 	@Test
-	public void testConfirmMessage() {
+	void testConfirmMessage() {
 		String message1 = null;
 		String message2 = null;
 		

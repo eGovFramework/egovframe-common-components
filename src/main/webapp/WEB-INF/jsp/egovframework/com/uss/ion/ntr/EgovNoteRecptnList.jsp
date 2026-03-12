@@ -32,8 +32,7 @@
 /* ********************************************************
  * 초기화
  ******************************************************** */
-function fn_egov_init(){
-
+$(document).ready(function(){
 	$("#searchFromDate").datepicker(  
 	        {dateFormat:'yy-mm-dd'
 	         , showOn: 'button'
@@ -64,7 +63,7 @@ function fn_egov_init(){
 	         , changeYear: true  // 년선택 selectbox 표시 (기본은 false)
 	         , showButtonPanel: true // 하단 today, done  버튼기능 추가 표시 (기본은 false)
 	});
-}
+});
 
 /* ********************************************************
  * 페이징 처리 함수
@@ -185,7 +184,7 @@ function fn_egov_delete_NoteRecptn(){
 }
 </script>
 </head>
-<body onload="fn_egov_init();">
+<body>
 
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
@@ -222,17 +221,17 @@ function fn_egov_delete_NoteRecptn(){
 	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
 	<caption>${pageTitle} <spring:message code="title.list" /></caption>
 	<colgroup>
-		<col style="width: 3%;">
 		<col style="width: 5%;">
-		<col style="width: ;">
-		<col style="width: 13%;">
-		<col style="width: 18%;">
+		<col style="width: 5%;">
+		<col style="width: 60%;">
+		<col style="width: 15%;">
+		<col style="width: 20%;">
 	</colgroup>
 	<thead>
 	<tr>
 		<th><input type="checkbox" name="checkAll" id="checkAll" title="<spring:message code="input.selectAll.title" />" value="1" onClick="fn_egov_checkAll_NoteRecptn();"></th><!-- 전체선택 -->
 		<th><spring:message code="comUssIonNtr.list.seq" /></th><!-- 순번 -->
-		<th class="board_th_link"><spring:message code="comUssIonNtr.list.noteSj" />asdf</th><!-- 제목 -->
+		<th class="board_th_link"><spring:message code="comUssIonNtr.list.noteSj" /></th><!-- 제목 -->
 		<th><spring:message code="comUssIonNtr.list.rcverNm" /></th><!-- 보낸사람 -->
 		<th><spring:message code="comUssIonNtr.list.rcverDateTime" /></th><!-- 보낸시각 -->
 	</tr>

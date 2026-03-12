@@ -47,7 +47,7 @@ function fn_egov_list_QustnrQestnManage(){
  ******************************************************** */
 function fn_egov_modify_QustnrQestnManage(){
 	var vFrom = document.QustnrQestnManageForm;
-	vFrom.cmd.value = '';
+	//vFrom.cmd.value = ''; 컨트롤러분리
 	vFrom.action = "<c:url value='/uss/olp/qqm/EgovQustnrQestnManageModify.do' />";;
 	vFrom.submit();
 
@@ -152,7 +152,9 @@ function fn_egov_delete_QustnrQestnManage(){
 	<div class="btn">
 		<!-- 수정 버튼 -->
 		<form name="formUpdt" action="<c:url value='/uss/olp/qqm/EgovQustnrQestnManageModify.do'/>" method="post" onsubmit="fn_egov_modify_QustnrQestnManage(); return false;" style="float:left;">
-			<input type="submit" class="s_submit" value="<spring:message code='button.update' />" title="<spring:message code='title.update' /> <spring:message code='input.button' />" />
+			<input type="button" class="s_submit" value="<spring:message code='button.update' />" title="<spring:message code='title.update' /> <spring:message code='input.button' />" 
+			onclick="location.href='<c:url value='/uss/olp/qqm/EgovQustnrQestnManageModify.do'>
+           <c:param name='qestnrQesitmId' value='${resultList[0].qestnrQesitmId}'/> </c:url>';" />
 			<c:if test="${qustnrQestnManageVO.searchMode == 'Y'}">
 			<input name="qestnrTmplatId" id="qestnrTmplatId" type="hidden" value="${qustnrQestnManageVO.qestnrTmplatId}">
 			<input name="qestnrId" id="qestnrId" type="hidden" value="${qustnrQestnManageVO.qestnrId}">

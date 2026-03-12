@@ -1,23 +1,21 @@
 package egovframework.com.uss.olp.qrm.web;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-
-import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.ComDefaultVO;
@@ -30,6 +28,8 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olp.qrm.service.EgovQustnrRespondManageService;
 import egovframework.com.uss.olp.qrm.service.QustnrRespondManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * 설문응답자관리 Controller Class 구현
@@ -55,9 +55,6 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
 public class EgovQustnrRespondManageController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovQustnrRespondManageController.class);
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
@@ -178,7 +175,10 @@ public class EgovQustnrRespondManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/olp/qrm/EgovQustnrRespondManageModifyView.do")
-	public String qustnrRespondManageModify(@ModelAttribute QustnrRespondManageVO qustnrRespondManageVO, ModelMap model)
+	public String qustnrRespondManageModify(
+			@ModelAttribute QustnrRespondManageVO qustnrRespondManageVO, 
+			RedirectAttributes redirectAttributes,
+			ModelMap model)
 			throws Exception {
 
 		// ###
@@ -187,7 +187,7 @@ public class EgovQustnrRespondManageController {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
@@ -222,13 +222,16 @@ public class EgovQustnrRespondManageController {
 	 */
 	@RequestMapping(value = "/uss/olp/qrm/EgovQustnrRespondManageModify.do")
 	public String qustnrRespondManageModify(
-			@ModelAttribute("qustnrRespondManageVO") QustnrRespondManageVO qustnrRespondManageVO,
-			BindingResult bindingResult, ModelMap model) throws Exception {
+			@Valid @ModelAttribute("qustnrRespondManageVO") QustnrRespondManageVO qustnrRespondManageVO,
+			BindingResult bindingResult, 
+			RedirectAttributes redirectAttributes,
+			ModelMap model) 
+					throws Exception {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
@@ -243,10 +246,16 @@ public class EgovQustnrRespondManageController {
 		listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
 		model.addAttribute("comCode034", listComCode);
 
-		// 서버 validate 체크
-		beanValidator.validate(qustnrRespondManageVO, bindingResult);
 		if (bindingResult.hasErrors()) {
+			
+		    List<EgovMap> resultList =
+		            egovQustnrRespondManageService
+		                .selectQustnrRespondManageDetail(qustnrRespondManageVO);
+
+		        model.addAttribute("resultList", resultList);
+
 			return "egovframework/com/uss/olp/qrm/EgovQustnrRespondManageModify";
+			
 		}
 
 		// 로그인 객체 선언
@@ -271,14 +280,17 @@ public class EgovQustnrRespondManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/olp/qrm/EgovQustnrRespondManageRegistView.do")
-	public String qustnrRespondManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@ModelAttribute("qustnrRespondManageVO") QustnrRespondManageVO qustnrRespondManageVO, ModelMap model)
+	public String qustnrRespondManageRegist(
+			@ModelAttribute("searchVO") ComDefaultVO searchVO,
+			@ModelAttribute("qustnrRespondManageVO") QustnrRespondManageVO qustnrRespondManageVO, 
+			RedirectAttributes redirectAttributes, 
+			ModelMap model)
 			throws Exception {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
@@ -310,13 +322,16 @@ public class EgovQustnrRespondManageController {
 	@RequestMapping(value = "/uss/olp/qrm/EgovQustnrRespondManageRegist.do")
 	public String qustnrRespondManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap,
-			@ModelAttribute("qustnrRespondManageVO") QustnrRespondManageVO qustnrRespondManageVO,
-			BindingResult bindingResult, ModelMap model) throws Exception {
+			@Valid @ModelAttribute("qustnrRespondManageVO") QustnrRespondManageVO qustnrRespondManageVO,
+			BindingResult bindingResult, 
+			RedirectAttributes redirectAttributes, 
+			ModelMap model) 
+					throws Exception {
 
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
@@ -331,8 +346,6 @@ public class EgovQustnrRespondManageController {
 		listComCode = cmmUseService.selectCmmCodeDetail(voComCode);
 		model.addAttribute("comCode034", listComCode);
 
-		// 서버 validate 체크
-		beanValidator.validate(qustnrRespondManageVO, bindingResult);
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/uss/olp/qrm/EgovQustnrRespondManageRegist";
 		}

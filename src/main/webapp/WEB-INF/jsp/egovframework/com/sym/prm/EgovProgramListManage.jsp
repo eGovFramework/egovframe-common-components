@@ -127,7 +127,7 @@ function insertProgramListManage() {
  * 상세조회처리 함수
  ******************************************************** */
 function selectUpdtProgramListDetail(progrmFileNm) {
-	document.progrmManageForm.tmp_progrmNm.value = progrmFileNm;
+	document.progrmManageForm.progrmFileNm.value = progrmFileNm;
    	document.progrmManageForm.action = "<c:url value='/sym/prm/EgovProgramListDetailSelect.do'/>";
    	document.progrmManageForm.submit();
 }
@@ -199,7 +199,7 @@ function selectUpdtProgramListDetail(progrmFileNm) {
 			       <input name="checkProgrmFileNm" type="hidden" value="<c:out value='${result.progrmFileNm}'/>"/>
 			    </td>
 			    <td>
-		            <span class="link"><a href="<c:url value='/sym/prm/EgovProgramListDetailSelect.do'/>?tmp_progrmNm=<c:out value="${result.progrmFileNm}"/>"  onclick="selectUpdtProgramListDetail('<c:out value="${result.progrmFileNm}"/>'); return false;">
+		            <span class="link"><a href="<c:url value='/sym/prm/EgovProgramListDetailSelect.do'/>?progrmFileNm=<c:out value="${result.progrmFileNm}"/>"  onclick="selectUpdtProgramListDetail('<c:out value="${result.progrmFileNm}"/>'); return false;">
 		
 		            <c:if test="${fn:length(result.progrmFileNm)> 22}">
 				    	<c:out value="${fn:substring(result.progrmFileNm,0, 22)}"/>...
@@ -241,7 +241,7 @@ function selectUpdtProgramListDetail(progrmFileNm) {
 	</div>
 	
 	<input type="hidden" name="cmd">
-	<input type="hidden" name="tmp_progrmNm">
+	<input type="hidden" name="progrmFileNm">
 	</form>
 
 </div>

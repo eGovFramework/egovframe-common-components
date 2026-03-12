@@ -25,7 +25,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <html lang="ko">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -35,8 +34,7 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="systemCntc" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 <!--
 
@@ -68,7 +66,11 @@ function fn_egov_modify_SystemCntc(form){
 * CodeList 가져오기
 ******************************************************** */
 function fn_egov_get_CodeList(form,choose){
-	form.cmd.value = "";
+	// cmd 파라미터 제거 (params="!cmd" 매핑을 위해)
+	var cmdInput = form.querySelector('input[name="cmd"]');
+	if (cmdInput) {
+		cmdInput.parentNode.removeChild(cmdInput);
+	}
 
 	if(choose == 'provdInsttId') {
 		form.provdSysId.value = "";
@@ -93,7 +95,7 @@ function fn_egov_get_CodeList(form,choose){
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
 <form:form modelAttribute="systemCntc" name="systemCntc" method="post">
-<input     name="cmd" type="hidden" value="Modify">
+<input     name="cmd" type="hidden" value="<c:out value='Modify'/>"/>
 <form:hidden path="cntcId"/>
 <form:hidden path="provdInsttId"/>
 <form:hidden path="provdSysId"/>
@@ -135,7 +137,7 @@ function fn_egov_get_CodeList(form,choose){
 		<tr>
 			<th><spring:message code="comSsiSyiSim.systemCntcUpdt.provdInsttId"/> <span class="pilsu">*</span></th><!-- 제공기관 -->
 			<td class="left">
-			    <select name="provdInsttId" class="select" onchange="fn_egov_get_CodeList(document.systemCntc,'provdInsttId');" disabled="disabled" title="<spring:message code="comSsiSyiSim.systemCntcUpdt.selectProvdInsttId"/>"><!-- 제공기관선택 -->
+			    <select class="select" disabled="disabled" title="<spring:message code="comSsiSyiSim.systemCntcUpdt.selectProvdInsttId"/>"><!-- 제공기관선택 - hidden으로 값 전송 -->
 				<option value=""></option>
 				<c:forEach var="result" items="${cntcInsttList}" varStatus="status">
 				<option value='<c:out value="${result.insttId}"/>' <c:if test="${result.insttId == systemCntc.provdInsttId}">selected="selected"</c:if> ><c:out value="${result.insttNm}"/></option>
@@ -146,7 +148,7 @@ function fn_egov_get_CodeList(form,choose){
 		<tr>
 			<th><spring:message code="comSsiSyiSim.systemCntcUpdt.provdSysId"/> <span class="pilsu">*</span></th><!-- 제공시스템 -->
 			<td class="left">
-			    <select name="provdSysId" class="select" onchange="fn_egov_get_CodeList(document.systemCntc,'provdSysId');" disabled="disabled" title="<spring:message code="comSsiSyiSim.systemCntcUpdt.selectProvdSysId"/>"><!-- 제공시스템선택 -->
+			    <select class="select" disabled="disabled" title="<spring:message code="comSsiSyiSim.systemCntcUpdt.selectProvdSysId"/>"><!-- 제공시스템선택 - hidden으로 값 전송 -->
 				<option value=""></option>
 				<c:forEach var="result" items="${cntcProvdSystemList}" varStatus="status">
 				<option value='<c:out value="${result.sysId}"/>' <c:if test="${result.sysId == systemCntc.provdSysId}">selected="selected"</c:if> ><c:out value="${result.sysNm}"/></option>
@@ -157,7 +159,7 @@ function fn_egov_get_CodeList(form,choose){
 		<tr>
 			<th><spring:message code="comSsiSyiSim.systemCntcUpdt.provdSvcId"/> <span class="pilsu">*</span></th><!-- 제공서비스 -->
 			<td class="left">
-			    <select name="provdSvcId" class="select" disabled="disabled" title="<spring:message code="comSsiSyiSim.systemCntcUpdt.selectProvdSvcId"/>"><!-- 제공서비스선택 -->
+			    <select class="select" disabled="disabled" title="<spring:message code="comSsiSyiSim.systemCntcUpdt.selectProvdSvcId"/>"><!-- 제공서비스선택 - hidden으로 값 전송 -->
 				<option value=""></option>
 				<c:forEach var="result" items="${cntcProvdServiceList}" varStatus="status">
 				<option value='<c:out value="${result.svcId}"/>' <c:if test="${result.svcId == systemCntc.provdSvcId}">selected="selected"</c:if> ><c:out value="${result.svcNm}"/></option>
@@ -168,7 +170,7 @@ function fn_egov_get_CodeList(form,choose){
 		<tr>
 			<th><spring:message code="comSsiSyiSim.systemCntcUpdt.requstInsttId"/> <span class="pilsu">*</span></th><!-- 요청기관 -->
 			<td class="left">
-			    <select name="requstInsttId" class="select" onchange="fn_egov_get_CodeList(document.systemCntc,'requstInsttId');" disabled="disabled" title="<spring:message code="comSsiSyiSim.systemCntcUpdt.selectRequstInsttId"/>"><!-- 요청기관선택 -->
+			    <select class="select" disabled="disabled" title="<spring:message code="comSsiSyiSim.systemCntcUpdt.selectRequstInsttId"/>"><!-- 요청기관선택 - hidden으로 값 전송 -->
 				<option value=""></option>
 				<c:forEach var="result" items="${cntcInsttList}" varStatus="status">
 				<option value='<c:out value="${result.insttId}"/>' <c:if test="${result.insttId == systemCntc.requstInsttId}">selected="selected"</c:if> ><c:out value="${result.insttNm}"/></option>
@@ -179,7 +181,7 @@ function fn_egov_get_CodeList(form,choose){
 		<tr>
 			<th><spring:message code="comSsiSyiSim.systemCntcUpdt.requstSysId"/> <span class="pilsu">*</span></th><!-- 요청시스템 -->
 			<td class="left">
-			    <select name="requstSysId" class="select" disabled="disabled" title="<spring:message code="comSsiSyiSim.systemCntcUpdt.selectRequstSysId"/>"><!-- 요청시스템선택 -->
+			    <select class="select" disabled="disabled" title="<spring:message code="comSsiSyiSim.systemCntcUpdt.selectRequstSysId"/>"><!-- 요청시스템선택 - hidden으로 값 전송 -->
 				<option value=""></option>
 				<c:forEach var="result" items="${cntcRequstSystemList}" varStatus="status">
 				<option value='<c:out value="${result.sysId}"/>' <c:if test="${result.sysId == systemCntc.requstSysId}">selected="selected"</c:if> ><c:out value="${result.sysNm}"/></option>

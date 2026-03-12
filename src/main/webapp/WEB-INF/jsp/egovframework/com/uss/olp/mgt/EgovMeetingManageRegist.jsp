@@ -20,7 +20,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -30,8 +29,7 @@
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/cmm/jqueryui.css"/>" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialog.js'/>"></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="meetingManageVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
 <script type="text/javaScript" language="javascript">
@@ -85,6 +83,47 @@ function fn_egov_save_MeetingManage(){
 		}
 	}
 }
+function updateMeetingTime() {
+
+    var bHH = document.getElementById("mtgBeginHH").value;
+    var bMM = document.getElementById("mtgBeginMM").value;
+    var eHH = document.getElementById("mtgEndHH").value;
+    var eMM = document.getElementById("mtgEndMM").value;
+
+    // 하나라도 비어 있으면 hidden 초기화 후 종료
+    if (!bHH || !bMM || !eHH || !eMM) {
+        document.getElementById("mtgBeginTime").value = "";
+        document.getElementById("mtgEndTime").value = "";
+        return;
+    }
+
+    // 숫자 비교용
+    var beginMinutes = parseInt(bHH, 10) * 60 + parseInt(bMM, 10);
+    var endMinutes   = parseInt(eHH, 10) * 60 + parseInt(eMM, 10);
+
+    if (beginMinutes > endMinutes) {
+        alert("회의 시작시간이 종료시간보다 늦습니다.");
+
+        // 선택값 유지 + hidden만 초기화
+        document.getElementById("mtgBeginTime").value = "";
+        document.getElementById("mtgEndTime").value   = "";
+        return;
+    }
+
+    // 문자열 보정
+    bHH = bHH.toString().padStart(2, '0');
+    bMM = bMM.toString().padStart(2, '0');
+    eHH = eHH.toString().padStart(2, '0');
+    eMM = eMM.toString().padStart(2, '0');
+
+    // hidden 세팅
+    document.getElementById("mtgBeginTime").value = bHH + ":" + bMM;
+    document.getElementById("mtgEndTime").value   = eHH + ":" + eMM;
+    console.log("시작시간저장완료 : ", mtgBeginTime );
+    console.log("종료시간저장완료 : ", mtgEndTime );
+    
+}
+
 /* ********************************************************
  * 달력
  ******************************************************** */
@@ -235,14 +274,14 @@ function fn_egov_SelectBoxValue(sbName)
 		<tr>
 			<th><spring:message code="ussOlpMgt.meetingManageRegist.mtgBeginTime"/> <span class="pilsu">*</span></th><!-- 회의시작시간 -->
 			<td class="left">
-				<select name="mtgBeginHH" id="mtgBeginHH" title="시 선택">
+				<select name="mtgBeginHH" id="mtgBeginHH" title="시 선택" onchange="updateMeetingTime()">
 					<option value=""><spring:message code="input.cSelect"/></option>
 					<c:forEach var="h" begin="1" end="24" step="1">
 					<option value="${h}">${h}시</option>
 					</c:forEach>
 				</select>
 				
-				<select name="mtgBeginMM" id="mtgBeginMM" title="분 선택">
+				<select name="mtgBeginMM" id="mtgBeginMM" title="분 선택" onchange="updateMeetingTime()">
 					<option value=""><spring:message code="input.cSelect"/></option>
 					<option value="0">0분</option>
 					<c:forEach var="m" begin="1" end="60" step="1">
@@ -258,14 +297,14 @@ function fn_egov_SelectBoxValue(sbName)
 		<tr>
 			<th><spring:message code="ussOlpMgt.meetingManageRegist.mtgEndTime"/> <span class="pilsu">*</span></th><!-- 회의종료시간 -->
 			<td class="left">
-			    <select name="mtgEndHH" id="mtgEndHH" title="시 선택">
+			    <select name="mtgEndHH" id="mtgEndHH" title="시 선택" onchange="updateMeetingTime()">
 					<option value=""><spring:message code="input.cSelect"/></option>
 					<c:forEach var="h" begin="1" end="24" step="1">
 					<option value="${h}">${h}시</option>
 					</c:forEach>
 				</select>
 				
-				<select name="mtgEndMM" id="mtgEndMM" title="분 선택">
+				<select name="mtgEndMM" id="mtgEndMM" title="분 선택" onchange="updateMeetingTime()">
 					<option value=""><spring:message code="input.cSelect"/></option>
 					<option value="0">0분</option>
 					<c:forEach var="m" begin="1" end="60" step="1">
@@ -376,11 +415,12 @@ function fn_egov_SelectBoxValue(sbName)
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value="<spring:message code="button.create"/>" onclick="fn_egov_save_MeetingManage(); return false;" />
-		<span class="btn_s"><a href="<c:url value='/uss/olp/mgt/EgovMeetingManageList.do' />"><spring:message code="button.list"/></a></span>
+		<span class="btn_s"><a href="<c:url value='/uss/olp/mgt/EgovMeetingManageList.do' />" onclick=""><spring:message code="button.list"/></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>
 
+<!-- legacy cmd param: deprecated, controller uses HTTP method instead -->
 <input name="cmd" type="hidden" value="<c:out value='save'/>">
 </form:form>
 </DIV>

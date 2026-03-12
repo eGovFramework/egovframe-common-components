@@ -30,14 +30,6 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <script type="text/javascript">
 /*********************************************************
- * 초기화
- ******************************************************** */
-function fn_egov_init(){
-	// 첫 입력란에 포커스..
-	document.eventCmpgnForm.searchCondition.focus();
-}
-
-/*********************************************************
  * 페이징 처리 함수
  ******************************************************** */
 function fn_egov_select_linkPage(pageNo){
@@ -57,17 +49,17 @@ function fn_egov_search_hr(){
  ******************************************************** */
 function fn_egov_inquire_hrdetail(extrlHrId) {
 	// 사이트 키값(siteId) 셋팅.
-	document.eventCmpgnForm.extrlHrId.value = extrlHrId;
-  	document.eventCmpgnForm.action = "<c:url value='/uss/ion/ecc/selectTnextrlHrDetail.do'/>";
-  	document.eventCmpgnForm.submit();
+	document.tnextrlHrForm.extrlHrId.value = extrlHrId;
+  	document.tnextrlHrForm.action = "<c:url value='/uss/ion/ecc/selectTnextrlHrDetail.do'/>";
+  	document.tnextrlHrForm.submit();
 }
 </script>
 </head>
-<body onload="fn_egov_init()">
+<body>
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="eventCmpgnForm" action="<c:url value='/uss/ion/ecc/selectTnextrlHrList.do'/>" method="post" onSubmit="fn_egov_search_hr(); return false;"> 
+<form name="tnextrlHrForm" action="<c:url value='/uss/ion/ecc/selectTnextrlHrList.do'/>" method="post" onSubmit="fn_egov_search_hr(); return false;"> 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<!-- 하단 버튼 -->
@@ -75,13 +67,13 @@ function fn_egov_inquire_hrdetail(extrlHrId) {
 		<ul>
 			<li>
 				<select name="searchCondition" title="<spring:message code="title.searchCondition" /> <spring:message code="input.cSelect" />">
-					<option value="0"  <c:if test="${searchVO.searchCondition == '0'}">selected="selected"</c:if> ><spring:message code="comUssIonEcc.tnextrlHrVO.extrlHrNm" /></option><!-- 외부인사명 -->
-					<option value="1"  <c:if test="${searchVO.searchCondition == '1'}">selected="selected"</c:if> ><spring:message code="comUssIonEcc.tnextrlHrVO.psitnInsttNm" /></option><!-- 소속기관명 -->
+					<option value="0"  <c:if test="${tnextrlHrVO.searchCondition == '0'}">selected="selected"</c:if> ><spring:message code="comUssIonEcc.tnextrlHrVO.extrlHrNm" /></option><!-- 외부인사명 -->
+					<option value="1"  <c:if test="${tnextrlHrVO.searchCondition == '1'}">selected="selected"</c:if> ><spring:message code="comUssIonEcc.tnextrlHrVO.psitnInsttNm" /></option><!-- 소속기관명 -->
 				</select>
 			</li>
 			<!-- 검색키워드 및 조회버튼 -->
 			<li>
-				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${searchVO.searchKeyword}"/>'  maxlength="155" >
+				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${tnextrlHrVO.searchKeyword}"/>'  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
 				<span class="btn_b"><a href="<c:url value='/uss/ion/ecc/insertTnextrlHrView.do' />"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
 			</li>
@@ -92,12 +84,11 @@ function fn_egov_inquire_hrdetail(extrlHrId) {
 	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
 	<caption>${pageTitle}<spring:message code="title.list" /></caption>
 	<colgroup>
-		<col style="width: 9%;">
-		<col style="width: 13%;">
+		<col style="width: 10%;">
+		<col style="width: 10%;">
+		<col style="width: 25%;">
 		<col style="width: 40%;">
-		<col style="width: 12%;">
-		<col style="width: 12%;">
-		<col style="width: 12%;">
+		<col style="width: 15%;">
 	</colgroup>
 	<thead>
 	<tr>
@@ -105,23 +96,21 @@ function fn_egov_inquire_hrdetail(extrlHrId) {
 		<th><spring:message code="comUssIonEcc.tnextrlHrVO.sexdstnCode" /></th><!-- 성별 -->
 		<th class="board_th_link"><spring:message code="comUssIonEcc.tnextrlHrVO.extrlHrNm" /></th><!-- 외부인사명 -->
 		<th><spring:message code="comUssIonEcc.tnextrlHrVO.psitnInsttNm" /></th><!-- 소속기관 -->
-		<th><spring:message code="table.reger" /></th><!-- 작성자명 -->
 		<th><spring:message code="table.regdate" /></th><!-- 등록일자 -->
 	</tr>
 	</thead>
 	<tbody class="ov">
 	<c:if test="${fn:length(resultList) == 0}">
 	<tr>
-		<td colspan="6"><spring:message code="common.nodata.msg" /></td>
+		<td colspan="5"><spring:message code="common.nodata.msg" /></td>
 	</tr>
 	</c:if>
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr>
-		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
+		<td><c:out value="${(tnextrlHrVO.pageIndex-1) * tnextrlHrVO.pageSize + status.count}"/></td>
 		<td><c:out value='${resultInfo.sexdstnCodeNm}'/></td>
 		<td><a href="<c:url value='/uss/ion/ecc/selectTnextrlHrDetail.do?extrlHrId=${resultInfo.extrlHrId}'/>" onClick="fn_egov_inquire_hrdetail('<c:out value="${resultInfo.extrlHrId}"/>');return false;"><c:out value='${fn:substring(resultInfo.extrlHrNm, 0, 40)}'/></a></td>
 		<td><c:out value='${resultInfo.psitnInsttNm}'/></td>
-		<td><c:out value='${resultInfo.frstRegisterNm}'/></td>
 		<td><c:out value='${resultInfo.frstRegisterPnttm}'/></td>
 	</tr>
 	</c:forEach>
@@ -137,9 +126,9 @@ function fn_egov_inquire_hrdetail(extrlHrId) {
 	
 	
 </div>
-<input name="eventId" type="hidden" value="<c:out value='${searchVO.eventId}'/>">
-<input name="extrlHrId" type="hidden" value="<c:out value='${searchVO.extrlHrId}'/>">
-<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
+<input name="eventId" type="hidden" value="<c:out value='${tnextrlHrVO.eventId}'/>">
+<input name="extrlHrId" type="hidden" value="<c:out value='${tnextrlHrVO.extrlHrId}'/>">
+<input name="pageIndex" type="hidden" value="<c:out value='${tnextrlHrVO.pageIndex}'/>">
 </form>
 
 </body>

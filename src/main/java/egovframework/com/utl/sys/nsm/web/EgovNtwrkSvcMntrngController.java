@@ -3,17 +3,14 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springmodules.validation.commons.DefaultBeanValidator;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -25,6 +22,8 @@ import egovframework.com.utl.sys.nsm.service.EgovNtwrkSvcMntrngService;
 import egovframework.com.utl.sys.nsm.service.NtwrkSvcMntrng;
 import egovframework.com.utl.sys.nsm.service.NtwrkSvcMntrngLogVO;
 import egovframework.com.utl.sys.nsm.service.NtwrkSvcMntrngVO;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * 개요
@@ -45,7 +44,6 @@ import egovframework.com.utl.sys.nsm.service.NtwrkSvcMntrngVO;
  *  2011.8.26	정진오			IncludedInfo annotation 추가
  * </pre>
  */
-
 @Controller
 public class EgovNtwrkSvcMntrngController {
 
@@ -57,9 +55,6 @@ public class EgovNtwrkSvcMntrngController {
 
     @Resource(name="egovMessageSource")
     EgovMessageSource egovMessageSource;
-
-    @Autowired
-    private DefaultBeanValidator beanValidator;
 
 	/**
 	 * 네트워크서비스 모니터링대상 정보에 대한 목록을 조회한다.
@@ -106,17 +101,19 @@ public class EgovNtwrkSvcMntrngController {
 	 * @param ntwrkSvcMntrngVO
 	 */
     @RequestMapping("/utl/sys/nsm/addNtwrkSvcMntrng.do")
-	public String addNtwrkSvcMntrng(@ModelAttribute("ntwrkSvcMntrngVO") NtwrkSvcMntrngVO ntwrkSvcMntrngVO, BindingResult bindingResult, ModelMap model) throws Exception{
-    	String sLocationUrl = "egovframework/com/utl/sys/nsm/EgovNtwrkSvcMntrngRegist";
+	public String addNtwrkSvcMntrng(
+		@ModelAttribute("searchVO") NtwrkSvcMntrngVO searchVO,
+		@ModelAttribute("ntwrkSvcMntrngVO") NtwrkSvcMntrngVO ntwrkSvcMntrngVO,
+		ModelMap model, RedirectAttributes redirectAttributes) throws Exception{
 
     	// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+    		redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
-    	return sLocationUrl;
+    	return "egovframework/com/utl/sys/nsm/EgovNtwrkSvcMntrngRegist";
 	}
 
     /**
@@ -127,11 +124,14 @@ public class EgovNtwrkSvcMntrngController {
 	 * @param ntwrkSvcMntrngVO
 	 */
     @RequestMapping("/utl/sys/nsm/modifyNtwrkSvcMntrng.do")
-	public String modifyNtwrkSvcMntrng(@ModelAttribute("ntwrkSvcMntrngVO") NtwrkSvcMntrngVO ntwrkSvcMntrngVO, BindingResult bindingResult, ModelMap model) throws Exception{
+	public String modifyNtwrkSvcMntrng(
+		@ModelAttribute("searchVO") NtwrkSvcMntrngVO searchVO,
+		@ModelAttribute("ntwrkSvcMntrngVO") NtwrkSvcMntrngVO ntwrkSvcMntrngVO,
+		ModelMap model, RedirectAttributes redirectAttributes) throws Exception{
     	// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+    		redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
@@ -196,14 +196,16 @@ public class EgovNtwrkSvcMntrngController {
 	 * @param ntwrkSvcMntrng
 	 */
     @RequestMapping("/utl/sys/nsm/updateNtwrkSvcMntrng.do")
-	public String updateNtwrkSvcMntrng(@ModelAttribute("ntwrkSvcMntrngVO") NtwrkSvcMntrngVO ntwrkSvcMntrngVO, BindingResult bindingResult, ModelMap model) throws Exception{
+	public String updateNtwrkSvcMntrng(
+		@ModelAttribute("searchVO") NtwrkSvcMntrngVO searchVO,
+		@Valid @ModelAttribute("ntwrkSvcMntrngVO") NtwrkSvcMntrngVO ntwrkSvcMntrngVO,
+		BindingResult bindingResult, ModelMap model) throws Exception{
+
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-		beanValidator.validate(ntwrkSvcMntrngVO, bindingResult);
 		if (bindingResult.hasErrors()) {
-			NtwrkSvcMntrng ntwrkSvcMntrng = ntwrkSvcMntrngService.selectNtwrkSvcMntrng(ntwrkSvcMntrngVO);
-		    model.addAttribute("ntwrkSvcMntrng", ntwrkSvcMntrng);
+			model.addAttribute("ntwrkSvcMntrngVO", ntwrkSvcMntrngVO);
 		    return "egovframework/com/utl/sys/nsm/EgovNtwrkSvcMntrngUpdt";
 		}
 
@@ -234,11 +236,16 @@ public class EgovNtwrkSvcMntrngController {
 	 * @param ntwrkSvcMntrng
 	 */
     @RequestMapping("/utl/sys/nsm/insertNtwrkSvcMntrng.do")
-	public String insertNtwrkSvcMntrng(@ModelAttribute("ntwrkSvcMntrngVO") NtwrkSvcMntrngVO ntwrkSvcMntrngVO, BindingResult bindingResult, ModelMap model) throws Exception{
+	public String insertNtwrkSvcMntrng(
+		@ModelAttribute("searchVO") NtwrkSvcMntrngVO searchVO,
+		@Valid @ModelAttribute("ntwrkSvcMntrngVO") NtwrkSvcMntrngVO ntwrkSvcMntrngVO,
+		BindingResult bindingResult, ModelMap model,
+		RedirectAttributes redirectAttributes) throws Exception{
+
 		// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+    		redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
@@ -247,8 +254,6 @@ public class EgovNtwrkSvcMntrngController {
 
 		String sLocationUrl = "egovframework/com/utl/sys/nsm/EgovNtwrkSvcMntrngRegist";
 
-		//서버  validate 체크
-        beanValidator.validate(ntwrkSvcMntrngVO, bindingResult);
 		if(bindingResult.hasErrors()){
 			return sLocationUrl;
 		}
@@ -287,11 +292,12 @@ public class EgovNtwrkSvcMntrngController {
 	 * @param ntwrkSvcMntrng
 	 */
     @RequestMapping("/utl/sys/nsm/deleteNtwrkSvcMntrng.do")
-	public String deleteNtwrkSvcMntrng(@ModelAttribute("ntwrkSvcMntrngVO") NtwrkSvcMntrngVO ntwrkSvcMntrngVO, ModelMap model) throws Exception{
+	public String deleteNtwrkSvcMntrng(@ModelAttribute("ntwrkSvcMntrngVO") NtwrkSvcMntrngVO ntwrkSvcMntrngVO,
+		ModelMap model, RedirectAttributes redirectAttributes) throws Exception{
 		// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+    		redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
     	ntwrkSvcMntrngService.deleteNtwrkSvcMntrng(ntwrkSvcMntrngVO);
@@ -388,7 +394,7 @@ public class EgovNtwrkSvcMntrngController {
 	 * @throws
 	 */
 	private List<ComDefaultCodeVO> getTimeHH (){
-    	ArrayList<ComDefaultCodeVO> listHH = new ArrayList<ComDefaultCodeVO>();
+    	ArrayList<ComDefaultCodeVO> listHH = new ArrayList<>();
     	//HashMap hmHHMM;
     	for(int i=0;i < 24; i++){
     		String sHH = "";

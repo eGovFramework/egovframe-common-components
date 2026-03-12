@@ -32,7 +32,7 @@ public class SysHistoryDAO extends EgovComAbstractDAO {
 	 * @param history - 시스템 이력정보가 담긴 모델 객체
 	 */
 	public int insertSysHistory(SysHistory history) throws Exception{
-		return (Integer)insert("SysHistoryDAO.insertSysHistory", history);
+		return insert("SysHistoryDAO.insertSysHistory", history);
 	}
 
 

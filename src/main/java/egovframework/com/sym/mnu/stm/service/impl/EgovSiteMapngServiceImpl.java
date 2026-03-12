@@ -1,13 +1,12 @@
 package egovframework.com.sym.mnu.stm.service.impl;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.sym.mnu.stm.service.EgovSiteMapngService;
 import egovframework.com.sym.mnu.stm.service.SiteMapngVO;
+import jakarta.annotation.Resource;
 
 /**
  * 사이트맵 조회를 처리하는 비즈니스 구현 클래스를 정의한다.

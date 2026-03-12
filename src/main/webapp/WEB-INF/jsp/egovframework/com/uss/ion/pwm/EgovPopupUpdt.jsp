@@ -20,7 +20,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -30,49 +29,36 @@
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/cmm/jqueryui.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="popupManageVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
 <script type="text/javaScript" language="javascript">
 /* ********************************************************
- * 초기화
- ******************************************************** */
-function fn_egov_init_PopupManage(){
-
-}
-/* ********************************************************
  * 저장처리화면
  ******************************************************** */
-function fn_egov_save_PopupManage(){
+ function fn_egov_save_PopupManage(){
+	 var varForm = document.getElementById("popupManageVO") || document.forms["popupManageVO"] || document.popupManageVO;
+	 if(!validatePopupManageVO(varForm)){
+	 	return;
+	 }
+	 if(confirm("<spring:message code="common.save.msg" />")){
+	 	varForm.action =  "<c:url value='/uss/ion/pwm/updtPopup.do' />";
 
-	var varFrom = document.popupManageVO;
-
-	if(confirm("<spring:message code="common.save.msg" />")){
-		varFrom.action =  "<c:url value='/uss/ion/pwm/updtPopup.do' />";
-		if(!validatePopupManageVO(varFrom)){
-			debugger;
-			return;
-		}else{
-
-			var ntceBgndeYYYMMDD = document.getElementById('ntceBgndeYYYMMDD').value;
-			var ntceEnddeYYYMMDD = document.getElementById('ntceEnddeYYYMMDD').value;
-
-			var iChkBeginDe = Number( ntceBgndeYYYMMDD.replaceAll("-","") );
-			var iChkEndDe = Number( ntceEnddeYYYMMDD.replaceAll("-","") );
-
-			if(iChkBeginDe > iChkEndDe || iChkEndDe < iChkBeginDe ){
-				alert("<spring:message code="ussIonPwm.popupUpdt.validate.iChkDate"/>");/* 게시시작일자는 게시종료일자 보다 클수 없고, 게시종료일자는 게시시작일자 보다 작을수 없습니다. */
-				return;
-			}
-
-			varFrom.ntceBgnde.value = ntceBgndeYYYMMDD.replaceAll('-','') + fn_egov_SelectBoxValue('ntceBgndeHH') +  fn_egov_SelectBoxValue('ntceBgndeMM');
-			varFrom.ntceEndde.value = ntceEnddeYYYMMDD.replaceAll('-','') + fn_egov_SelectBoxValue('ntceEnddeHH') +  fn_egov_SelectBoxValue('ntceEnddeMM');
-
-			varFrom.submit();
+	 	var ntceBgndeYYYMMDD = document.getElementById('ntceBgndeYYYMMDD').value;
+	 	var ntceEnddeYYYMMDD = document.getElementById('ntceEnddeYYYMMDD').value;
+	 	var iChkBeginDe = Number( ntceBgndeYYYMMDD.replaceAll("-","") );
+	 	var iChkEndDe = Number( ntceEnddeYYYMMDD.replaceAll("-","") );
+	 	if(iChkBeginDe > iChkEndDe || iChkEndDe < iChkBeginDe ){
+	 		alert("<spring:message code="ussIonPwm.popupUpdt.validate.iChkDate"/>");/* 게시시작일자는 게시종료일자 보다 클수 없고, 게시종료일자는 게시시작일자 보다 작을수 없습니다. */
+	 		return;
 		}
+		varForm.ntceBgnde.value = ntceBgndeYYYMMDD.replaceAll('-','') + fn_egov_SelectBoxValue('ntceBgndeHH') +  fn_egov_SelectBoxValue('ntceBgndeMM');
+		varForm.ntceEndde.value = ntceEnddeYYYMMDD.replaceAll('-','') + fn_egov_SelectBoxValue('ntceEnddeHH') +  fn_egov_SelectBoxValue('ntceEnddeMM');
+
+		varForm.submit();
 	}
 }
+
 /* ********************************************************
 * RADIO BOX VALUE FUNCTION
 ******************************************************** */
@@ -127,7 +113,7 @@ function fn_egov_init_date(){
 	$("#ntceBgndeYYYMMDD").datepicker(  
 	        {dateFormat:'yy-mm-dd'
 	         , showOn: 'button'
-	         , buttonImage: '<c:url value='/images/egovframework/com/cmm/icon/bu_icon_carlendar.gif'/>'
+	         , buttonImage: '<c:url value="/images/egovframework/com/cmm/icon/bu_icon_carlendar.gif"/>'
 	         , buttonImageOnly: true
 	         
 	         , showMonthAfterYear: true
@@ -143,7 +129,7 @@ function fn_egov_init_date(){
 	$("#ntceEnddeYYYMMDD").datepicker( 
 	        {dateFormat:'yy-mm-dd'
 	         , showOn: 'button'
-	         , buttonImage: '<c:url value='/images/egovframework/com/cmm/icon/bu_icon_carlendar.gif'/>'  
+	         , buttonImage: '<c:url value="/images/egovframework/com/cmm/icon/bu_icon_carlendar.gif"/>'
 	         , buttonImageOnly: true
 	         
 	         , showMonthAfterYear: true
@@ -155,12 +141,40 @@ function fn_egov_init_date(){
 	         , showButtonPanel: true // 하단 today, done  버튼기능 추가 표시 (기본은 false)
 	});
 }
+
+/* ********************************************************
+ * 팝업창 위치·크기 입력란 숫자만 허용
+ ******************************************************** */
+function fn_egov_numeric_only_popup(){
+	var $numericInputs = $("#popupWlc, #popupHlc, #popupWSize, #popupHSize");
+	// 키 입력: 숫자(0-9)와 제어키만 허용
+	$numericInputs.on("keypress", function(e){
+		var key = e.which || e.keyCode;
+		if (key >= 48 && key <= 57) return true; // 0-9
+		if (key === 8 || key === 9 || key === 46) return true; // backspace, tab, delete
+		if (key >= 37 && key <= 40) return true; // 화살표
+		e.preventDefault();
+		return false;
+	});
+	// 입력/붙여넣기 시 숫자만 남기기
+	$numericInputs.on("input paste", function(){
+		var el = this;
+		setTimeout(function(){
+			el.value = (el.value || "").replace(/\D/g, "");
+		}, 0);
+	});
+}
+
+$(document).ready(function(){
+	fn_egov_init_date();
+	fn_egov_numeric_only_popup();
+});
 </script>
 
 </head>
-<body onLoad="fn_egov_init_PopupManage(); fn_egov_init_date();">
+<body>
 
-<form:form modelAttribute="popupManageVO" name="popupManageVO" action="${pageContext.request.contextPath}/uss/ion/pwm/updtPopup.do" method="post" >
+<form:form id="popupManageVO" modelAttribute="popupManageVO" method="post" >
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -176,30 +190,30 @@ function fn_egov_init_date(){
 			<th><spring:message code="ussIonPwm.popupUpdt.popupTitleNm"/> <span class="pilsu">*</span></th><!-- 팝업창명 -->
 			<td class="left">
 			    <form:input path="popupTitleNm" size="73" cssClass="txaIpt" maxlength="255"/>
-      			<form:errors path="popupTitleNm" cssClass="error"/>
+      			<div><form:errors path="popupTitleNm" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussIonPwm.popupUpdt.fileUrl"/> <span class="pilsu">*</span></th><!-- 팝업창URL -->
 			<td class="left">
 			    <form:input path="fileUrl" size="73" cssClass="txaIpt" maxlength="255"/>
-      			<form:errors path="fileUrl" cssClass="error"/>
+      			<div><form:errors path="fileUrl" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussIonPwm.popupUpdt.popupLoca"/> <span class="pilsu">*</span></th><!-- 팝업창위치 -->
 			<td class="left">
 			    <spring:message code="ussIonPwm.popupUpdt.popupWlce"/> <form:input path="popupWlc" maxlength="10" cssStyle="width:38px"/>  <spring:message code="ussIonPwm.popupUpdt.popupHlc"/><form:input path="popupHlc" maxlength="10" cssStyle="width:38px"/>
-			  <form:errors path="popupWlc" cssClass="error"/>
-			  <form:errors path="popupHlc" cssClass="error"/>
+			  <div><form:errors path="popupWlc" cssClass="error" /></div>
+			  <div><form:errors path="popupHlc" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussIonPwm.popupUpdt.popupSize"/> <span class="pilsu">*</span></th><!-- 팝업창사이즈 -->
 			<td class="left">
 			    <spring:message code="ussIonPwm.popupUpdt.popupWSize"/> <form:input path="popupWSize" maxlength="10" cssStyle="width:38px"/>  <spring:message code="ussIonPwm.popupUpdt.popupHSize"/><form:input path="popupHSize" maxlength="10" cssStyle="width:38px"/>
-				<form:errors path="popupWSize" cssClass="error"/>
-				<form:errors path="popupHSize" cssClass="error"/>
+				<div><form:errors path="popupWSize" cssClass="error" /></div>
+				<div><form:errors path="popupHSize" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
@@ -213,7 +227,7 @@ function fn_egov_init_date(){
 			    <form:select path="ntceBgndeMM">
 			        <form:options items="${ntceBgndeMM}" itemValue="code" itemLabel="codeNm"/>
 			    </form:select>M
-			    &nbsp&nbsp~&nbsp&nbsp
+			    &nbsp;&nbsp;~&nbsp;&nbsp;
 			    <input type="text" name="ntceEnddeYYYMMDD" id="ntceEnddeYYYMMDD" size="10" maxlength="10" class="readOnlyClass" value="<c:out value="${fn:substring(popupManageVO.ntceEndde, 0, 4)}"/>-<c:out value="${fn:substring(popupManageVO.ntceEndde, 4, 6)}"/>-<c:out value="${fn:substring(popupManageVO.ntceEndde, 6, 8)}"/>" readonly="readonly" style="width:78px" />
 			    <form:select path="ntceEnddeHH">
 			        <form:options items="${ntceEnddeHH}" itemValue="code" itemLabel="codeNm"/>
@@ -228,6 +242,7 @@ function fn_egov_init_date(){
 			<td class="left">
 			    <input id= "stopVewAt" type="radio" name="stopVewAt" value="Y" <c:if test="${popupManageVO.stopVewAt eq 'Y'}">checked</c:if>>Y
 				<input type="radio" name="stopVewAt" value="N" <c:if test="${popupManageVO.stopVewAt eq 'N'}">checked</c:if>>N
+				<div><form:errors path="stopVewAt" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
@@ -235,6 +250,7 @@ function fn_egov_init_date(){
 			<td class="left">
 			    <input id="ntceAt" type="radio" name="ntceAt" value="Y" <c:if test="${popupManageVO.ntceAt eq 'Y'}">checked</c:if>>Y
 				<input type="radio" name="ntceAt" value="N" <c:if test="${popupManageVO.ntceAt eq 'N'}">checked</c:if>>N
+				<div><form:errors path="ntceAt" cssClass="error" /></div>
 			</td>
 		</tr>
 	</table>

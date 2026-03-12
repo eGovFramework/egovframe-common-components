@@ -163,6 +163,7 @@
 					</form>
 				</td>
 				<td><c:out value="${annvrsryManage.annvrsryDe}"/>
+					<br />
 					<c:if test="${!empty annvrsryManage.cldrSe }">(<c:if test='${annvrsryManage.cldrSe == "1"}'><spring:message code="comUssIonAns.common.cldrSe1"/>
 					</c:if><!-- 양 --><c:if test='${annvrsryManage.cldrSe == "2"}'><spring:message code="comUssIonAns.common.cldrSe2"/>
 					</c:if>)</c:if><!-- 음 -->

@@ -5,11 +5,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
@@ -24,6 +22,9 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.ems.service.EgovSndngMailRegistService;
 import egovframework.com.cop.ems.service.SndngMailVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 /**
  * 발송메일등록, 발송요청XML파일 생성하는 컨트롤러 클래스
@@ -89,8 +90,14 @@ public class EgovSndngMailRegistController {
 	 */
 	@RequestMapping(value = "/cop/ems/insertSndngMail.do")
 	public String insertSndngMail(final MultipartHttpServletRequest multiRequest,
-			@ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, ModelMap model, HttpServletRequest request)
+			@Valid @ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, BindingResult bindingResult, ModelMap model,
+			HttpServletRequest request)
 			throws Exception {
+
+		if (bindingResult.hasErrors()) {
+			model.addAttribute("resultInfo", sndngMailVO);
+			return "egovframework/com/cop/ems/EgovMailRegist";
+		}
 
 		String link = "N";
 		if (sndngMailVO != null && sndngMailVO.getLink() != null && !sndngMailVO.getLink().equals("")) {

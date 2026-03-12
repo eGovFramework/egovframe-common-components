@@ -2,10 +2,14 @@ package egovframework.com.utl.sys.nsm.service;
 
 import java.io.Serializable;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovEmailCheck;
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 개요
  * - 네트워크서비스 모니터링대상에 대한 model 클래스를 정의한다.
- * 
+ *
  * 상세내용
  * - 시스템IP, 시스템IP 1, 시스템IP 2, 시스템IP 3, 시스템IP 4, 구 시스템IP, 시스템포트, 구 시스템포트, 시스템명, 관리자명, 관리자이메일주소, 모니터링상태, 생성일시, 로그정보 항목을 관리한다.
  * @author 장철호
@@ -22,18 +26,26 @@ public class NtwrkSvcMntrng implements Serializable {
 	/**
 	 * 시스템IP 1
 	 */
+	@EgovNullCheck
+	@Size(max=3)
 	private String sysIp1;
 	/**
 	 * 시스템IP 2
 	 */
+	@EgovNullCheck
+	@Size(max=3)
 	private String sysIp2;
 	/**
 	 * 시스템IP 3
 	 */
+	@EgovNullCheck
+	@Size(max=3)
 	private String sysIp3;
 	/**
 	 * 시스템IP 4
 	 */
+	@EgovNullCheck
+	@Size(max=3)
 	private String sysIp4;
 	/**
 	 * 구시스템IP
@@ -42,6 +54,8 @@ public class NtwrkSvcMntrng implements Serializable {
 	/**
 	 * 시스템포트
 	 */
+	@EgovNullCheck
+	@Size(max=5)
 	private String sysPort;
 	/**
 	 * 구시스템포트
@@ -50,14 +64,21 @@ public class NtwrkSvcMntrng implements Serializable {
 	/**
 	 * 시스템명
 	 */
+	@EgovNullCheck
+	@Size(max=255)
 	private String sysNm;
 	/**
 	 * 관리자명
 	 */
+	@EgovNullCheck
+	@Size(max=60)
 	private String mngrNm;
 	/**
 	 * 관리자이메일주소
 	 */
+	@EgovNullCheck
+	@Size(max=50)
+	@EgovEmailCheck
 	private String mngrEmailAddr;
 	/**
 	 * 모니터링상태

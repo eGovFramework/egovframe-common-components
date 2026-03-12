@@ -122,8 +122,8 @@ function fncBndtCeckManageDetail(bndtCeckSe, bndtCeckCd){
 		<colgroup>
 			<col style="width:10%" />
 			<col style="width:20%" />
-			<col style="width:30%" />
-			<col style="width:30%" />
+			<col style="width:20%" />
+			<col style="width:40%" />
 			<col style="width:10%" />
 		</colgroup>
 		<thead>
@@ -145,7 +145,7 @@ function fncBndtCeckManageDetail(bndtCeckSe, bndtCeckCd){
 		        <form name="item" method="post" action="<c:url value='/uss/ion/bnt/EgovBndtCeckManage.do'/>">
 		        	<input type="hidden" name="bndtCeckSe" value="<c:out value="${resultInfo.bndtCeckSe      }"/>">
 			        <input type="hidden" name="bndtCeckCd" value="<c:out value="${resultInfo.bndtCeckCd      }"/>">
-		            <span class="link"><input type="submit" value="<c:out value="${resultInfo.bndtCeckCdNm}"/>" onclick="fncBndtCeckManageDetail('<c:out value="${resultInfo.bndtCeckSe}"/>','<c:out value="${resultInfo.bndtCeckCd}"/>'); return false;" style="text-align : left;"></span>
+		            <span class="link"><input type="submit" style="text-align:center" value="<c:out value="${resultInfo.bndtCeckCdNm}"/>" onclick="fncBndtCeckManageDetail('<c:out value="${resultInfo.bndtCeckSe}"/>','<c:out value="${resultInfo.bndtCeckCd}"/>'); return false;" style="text-align : left;"></span>
 		        </form></td>
 				<td><c:if test="${resultInfo.useAt == 'Y'}"><spring:message code="comUssIonBnt.common.useAt.y"/></c:if><c:if test="${resultInfo.useAt == 'N'}"><spring:message code="comUssIonBnt.common.useAt.n"/></c:if></td><!-- 사용  /미사용 -->
 			</tr>   

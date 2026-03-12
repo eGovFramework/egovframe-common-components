@@ -1,9 +1,9 @@
 package egovframework.com.sts.bst.service;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
+
+import jakarta.annotation.Resource;
 
 
 /**

@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.apache.commons.lang3.ObjectUtils;
 import org.quartz.Job;
 import org.quartz.JobDataMap;
@@ -17,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.service.FileSystemUtils;
 import egovframework.com.cmm.service.Globals;
+import jakarta.annotation.Resource;
 
 /**
  * 배치쉘스크립트를 실행하는 Quartz Job 클래스를 정의한다.
@@ -35,6 +34,7 @@ import egovframework.com.cmm.service.Globals;
  *   2020.11.05  신용호          KISA 보안약점 조치 - WhiteList처리
  *   2022.11.11  김혜준          시큐어코딩 처리
  *   2025.07.03  이백행          컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UnusedFormalParameter(메소드 선언 내에사용되지 않는 파라미터를 탐지)
+ *   2025.12.11  박성완          배치 실행파일 경로를 전체경로로 수정(properties의 SHELL.batchShellFolder 값을 추가한 경로로 변경)
  *
  *      </pre>
  */
@@ -100,6 +100,9 @@ public class BatchShellScriptJob implements Job {
 			List<String> cmdShell = Arrays.asList(propertyValue.split(","));
 			LOGGER.debug("SHELL.UNIX/WINDOWS.batchShellFiles size() = " + cmdShell.size());
 
+			// Get batch folder path
+			String batchFolder = EgovProperties.getProperty("SHELL.batchShellFolder");
+
 			for (String item : cmdShell) {
 				boolean whiteListStatus = batchProgrm.contains(item);
 				LOGGER.debug("SHELL.UNIX/WINDOWS.batchShellFiles WhiteList item = " + item + ", status = "
@@ -108,7 +111,13 @@ public class BatchShellScriptJob implements Job {
 					try {
 						// 2022.11.11 시큐어코딩 처리
 						FileSystemUtils util = new FileSystemUtils();
-						Process process = util.processOperate("BatchShellScriptJob", item);
+						// Process process = util.processOperate("BatchShellScriptJob", item);
+						
+						// Construct full path: batch folder + filename
+						String fullPath = batchFolder + item;
+						LOGGER.debug("배치실행화일 전체경로 : {}", fullPath);
+						Process process = util.processOperate("BatchShellScriptJob", fullPath);
+						
 						process.waitFor();
 						result = process.exitValue();
 						LOGGER.debug("배치실행화일 - {} 실행완료, 결과값: {}", item, result);

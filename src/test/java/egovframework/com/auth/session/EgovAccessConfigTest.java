@@ -7,11 +7,11 @@ import java.util.Map;
 import org.egovframe.rte.fdl.access.bean.AuthorityResourceMetadata;
 import org.egovframe.rte.fdl.access.interceptor.EgovAccessUtil;
 import org.egovframe.rte.fdl.access.service.EgovUserDetailsHelper;
-import org.junit.After;
-import org.junit.Assert;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;
@@ -19,7 +19,7 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.mock.web.MockHttpServletRequest;
 import org.springframework.mock.web.MockHttpSession;
 import org.springframework.test.context.ContextConfiguration;
-import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
@@ -31,15 +31,16 @@ import org.springframework.web.context.request.ServletRequestAttributes;
  * @see
  * <pre>
  *
- *  수정일              수정자          수정내용
+ *  수정일        수정자      수정내용
  *  ----------  --------  ---------------------------
- *  2019.11.20  정진오          최초 생성
+ *  2019.11.20  정진오      최초 생성
+ *  2026.01.26  신용호      JUnit 4 => JUnit 5 마이그레이션
  *
    
  * </pre>
  */
 
-@RunWith(SpringJUnit4ClassRunner.class)
+@ExtendWith(SpringExtension.class)
 @ContextConfiguration(locations={"classpath*:egovframework/spring/session/*.xml"})
 public class EgovAccessConfigTest {
 
@@ -50,8 +51,8 @@ public class EgovAccessConfigTest {
 
     private ApplicationContext context;
 
-    @Before
-    public void setUp() throws Exception{
+    @BeforeEach
+    void setUp() throws Exception{
         session = new MockHttpSession();
         session.setAttribute("accessUser","GNRUSER"); // 일반회원
 
@@ -60,14 +61,14 @@ public class EgovAccessConfigTest {
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
     }
 
-    @After
-    public void clear(){
+    @AfterEach
+    void clear(){
         session.clearAttributes();
         session = null;
     }
 
     @Test
-    public void test() throws Exception {
+    void test() throws Exception {
 
         context = new ClassPathXmlApplicationContext(new String[] {"classpath*:egovframework/spring/session/*.xml"});
 
@@ -110,7 +111,7 @@ public class EgovAccessConfigTest {
             }
         }
         
-        Assert.assertTrue(matchStatus);
+        Assertions.assertTrue(matchStatus);
 
     }
 

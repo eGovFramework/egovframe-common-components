@@ -1,5 +1,8 @@
 package egovframework.com.dam.map.mat.service;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 개요
  * - 지식맵(지식유형)에 대한 model 클래스를 정의한다.
@@ -15,10 +18,14 @@ public class MapMaterial {
 	/**
 	 * 지식유형코드
 	 */
+	@EgovNullCheck
+	@Size(max=3)
 	private String knoTypeCd = "";
 	/**
 	 * 조직ID
 	 */
+	@EgovNullCheck
+	@Size(max=20)
 	private String orgnztId = "";
 	/**
 	 * 조직명
@@ -31,14 +38,19 @@ public class MapMaterial {
 	/**
 	 * 지식유형명
 	 */
+	@EgovNullCheck
+	@Size(max=60)
 	private String knoTypeNm = "";
 	/**
 	 * 분류일자
 	 */
+	@EgovNullCheck
 	private String clYmd = "";
 	/**
 	 * 지식URL
 	 */
+	@EgovNullCheck
+	@Size(max=255)
 	private String knoUrl = "";
 	/** 
 	 * 최초등록아이디

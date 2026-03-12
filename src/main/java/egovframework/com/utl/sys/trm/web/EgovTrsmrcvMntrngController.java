@@ -2,20 +2,16 @@ package egovframework.com.utl.sys.trm.web;
 import java.sql.SQLException;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -26,6 +22,9 @@ import egovframework.com.utl.sys.trm.service.CntcVO;
 import egovframework.com.utl.sys.trm.service.EgovTrsmrcvMntrngService;
 import egovframework.com.utl.sys.trm.service.TrsmrcvMntrng;
 import egovframework.com.utl.sys.trm.service.TrsmrcvMntrngLog;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 /**
  * 송수신모니터링에 대한 controller 클래스를 정의한다.
@@ -46,10 +45,9 @@ import egovframework.com.utl.sys.trm.service.TrsmrcvMntrngLog;
  *  2011.08.26   정진오            IncludedInfo annotation 추가
  *  2017-02-14   이정은            시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
  *  2019.12.06   신용호            KISA 보안약점 조치 (부적절한 예외처리)
- *  
+ *
  * </pre>
  */
-
 @Controller
 public class EgovTrsmrcvMntrngController {
 
@@ -62,9 +60,6 @@ public class EgovTrsmrcvMntrngController {
     @Resource(name="egovMessageSource")
     private EgovMessageSource egovMessageSource;
 
-    @Autowired
-    private DefaultBeanValidator beanValidator;
-
     private static final Logger LOGGER = LoggerFactory.getLogger(EgovTrsmrcvMntrngController.class);
 
 	/**
@@ -76,11 +71,12 @@ public class EgovTrsmrcvMntrngController {
 	 * @exception Exception Exception
 	 */
     @RequestMapping("/utl/sys/trm/deleteTrsmrcvMntrng.do")
-	public String deleteTrsmrcvMntrng(@ModelAttribute("searchVO") TrsmrcvMntrng trsmrcvMntrng, ModelMap model)
+	public String deleteTrsmrcvMntrng(@ModelAttribute("searchVO") TrsmrcvMntrng trsmrcvMntrng, ModelMap model,
+			RedirectAttributes redirectAttributes)
 	  throws Exception{
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+    		redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
@@ -99,19 +95,19 @@ public class EgovTrsmrcvMntrngController {
 	 * @exception Exception Exception
 	 */
     @RequestMapping("/utl/sys/trm/addTrsmrcvMntrng.do")
-	public String insertTrsmrcvMntrng(TrsmrcvMntrng trsmrcvMntrng, BindingResult bindingResult, ModelMap model)
+	public String insertTrsmrcvMntrng(@Valid @ModelAttribute TrsmrcvMntrng trsmrcvMntrng, BindingResult bindingResult, ModelMap model,
+			RedirectAttributes redirectAttributes)
 	  throws Exception{
     	// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+    		redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
-        beanValidator.validate(trsmrcvMntrng, bindingResult);
         checkDuplication(trsmrcvMntrng, bindingResult);
     	if (bindingResult.hasErrors()){
     		model.addAttribute("trsmrcvMntrng", trsmrcvMntrng);
@@ -294,20 +290,20 @@ public class EgovTrsmrcvMntrngController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/utl/sys/trm/updateTrsmrcvMntrng.do")
-	public String updateTrsmrcvMntrng(@ModelAttribute("searchVO") TrsmrcvMntrng trsmrcvMntrng, BindingResult bindingResult, ModelMap model)
+	public String updateTrsmrcvMntrng(@ModelAttribute("searchVO") TrsmrcvMntrng searchVO,
+			@Valid @ModelAttribute("trsmrcvMntrng") TrsmrcvMntrng trsmrcvMntrng, BindingResult bindingResult, ModelMap model,
+			RedirectAttributes redirectAttributes)
 	  throws Exception{
     	// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
     	if(!isAuthenticated) {
-    		model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+    		redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
         	return "redirect:/uat/uia/egovLoginUsr.do";
     	}
 		//로그인 객체 선언
 		LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
-
-		beanValidator.validate(trsmrcvMntrng, bindingResult);
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("trsmrcvMntrng", trsmrcvMntrng);
+			//model.addAttribute("trsmrcvMntrng", trsmrcvMntrng);
 		    return "egovframework/com/utl/sys/trm/EgovTrsmrcvMntrngUpdt";
 		}
 

@@ -181,4 +181,13 @@ public class ServerDAO extends EgovComAbstractDAO {
 		delete("serverDAO.deleteServerEqpmnRelate", serverEqpmnRelate);
 	}
 
+	/**
+	 * 특정 서버장비를 참조하는 서버S/W 목록을 조회한다.
+	 * @param serverEqpmnId - 서버장비 ID
+	 * @return List - 해당 서버장비를 사용하는 서버S/W 목록
+	 */
+	public List<ServerVO> selectRelatedServersByEqpmnId(String serverEqpmnId) throws Exception {
+		return selectList("serverDAO.selectRelatedServersByEqpmnId", serverEqpmnId);
+	}
+
 }

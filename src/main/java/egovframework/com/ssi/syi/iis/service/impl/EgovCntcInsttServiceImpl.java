@@ -2,8 +2,6 @@ package egovframework.com.ssi.syi.iis.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Service;
@@ -15,6 +13,7 @@ import egovframework.com.ssi.syi.iis.service.CntcServiceVO;
 import egovframework.com.ssi.syi.iis.service.CntcSystem;
 import egovframework.com.ssi.syi.iis.service.CntcSystemVO;
 import egovframework.com.ssi.syi.iis.service.EgovCntcInsttService;
+import jakarta.annotation.Resource;
 
 
 /**

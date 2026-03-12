@@ -2,14 +2,13 @@ package egovframework.com.sec.drm.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.sec.drm.service.DeptAuthor;
 import egovframework.com.sec.drm.service.DeptAuthorVO;
 import egovframework.com.sec.drm.service.EgovDeptAuthorService;
+import jakarta.annotation.Resource;
 
 /**
  * 부서권한에 관한 ServiceImpl 클래스를 정의한다.
@@ -20,7 +19,7 @@ import egovframework.com.sec.drm.service.EgovDeptAuthorService;
  *
  * <pre>
  * << 개정이력(Modification Information) >>
- *   
+ *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.03.11  이문준          최초 생성
@@ -30,16 +29,17 @@ import egovframework.com.sec.drm.service.EgovDeptAuthorService;
 
 @Service("egovDeptAuthorService")
 public class EgovDeptAuthorServiceImpl extends EgovAbstractServiceImpl implements EgovDeptAuthorService {
-	
+
 	@Resource(name="deptAuthorDAO")
     private DeptAuthorDAO deptAuthorDAO;
-	
+
 	/**
 	 * 부서별 할당된 권한목록 조회
 	 * @param deptAuthorVO DeptAuthorVO
 	 * @return List<DeptAuthorVO>
 	 * @exception Exception
 	 */
+	@Override
 	public List<DeptAuthorVO> selectDeptAuthorList(DeptAuthorVO deptAuthorVO) throws Exception {
 		return deptAuthorDAO.selectDeptAuthorList(deptAuthorVO);
 	}
@@ -49,6 +49,7 @@ public class EgovDeptAuthorServiceImpl extends EgovAbstractServiceImpl implement
 	 * @param deptAuthor DeptAuthor
 	 * @exception Exception
 	 */
+	@Override
 	public void insertDeptAuthor(DeptAuthor deptAuthor) throws Exception {
 		deptAuthorDAO.insertDeptAuthor(deptAuthor);
 	}
@@ -58,6 +59,7 @@ public class EgovDeptAuthorServiceImpl extends EgovAbstractServiceImpl implement
 	 * @param deptAuthor DeptAuthor
 	 * @exception Exception
 	 */
+	@Override
 	public void updateDeptAuthor(DeptAuthor deptAuthor) throws Exception {
 		deptAuthorDAO.updateDeptAuthor(deptAuthor);
 	}
@@ -67,6 +69,7 @@ public class EgovDeptAuthorServiceImpl extends EgovAbstractServiceImpl implement
 	 * @param deptAuthor DeptAuthor
 	 * @exception Exception
 	 */
+	@Override
 	public void deleteDeptAuthor(DeptAuthor deptAuthor) throws Exception {
 		deptAuthorDAO.deleteDeptAuthor(deptAuthor);
 	}
@@ -77,6 +80,7 @@ public class EgovDeptAuthorServiceImpl extends EgovAbstractServiceImpl implement
 	 * @return int
 	 * @exception Exception
 	 */
+	@Override
 	public int selectDeptAuthorListTotCnt(DeptAuthorVO deptAuthorVO) throws Exception {
 		return deptAuthorDAO.selectDeptAuthorListTotCnt(deptAuthorVO);
 	}
@@ -87,17 +91,19 @@ public class EgovDeptAuthorServiceImpl extends EgovAbstractServiceImpl implement
 	 * @return List<DeptAuthorVO>
 	 * @exception Exception
 	 */
+	@Override
 	public List<DeptAuthorVO> selectDeptList(DeptAuthorVO deptAuthorVO) throws Exception {
 		return deptAuthorDAO.selectDeptList(deptAuthorVO);
 	}
-	
+
     /**
 	 * 부서 목록조회 카운트를 반환한다
 	 * @param deptAuthorVO DeptAuthorVO
 	 * @return int
 	 * @exception Exception
 	 */
+	@Override
 	public int selectDeptListTotCnt(DeptAuthorVO deptAuthorVO) throws Exception {
 		return deptAuthorDAO.selectDeptListTotCnt(deptAuthorVO);
-	}	
+	}
 }

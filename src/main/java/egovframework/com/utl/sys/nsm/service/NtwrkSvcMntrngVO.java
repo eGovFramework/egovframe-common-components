@@ -4,7 +4,7 @@ package egovframework.com.utl.sys.nsm.service;
 /**
  * 개요
  * - 네트워크서비스 모니터링대상에 대한 Vo 클래스를 정의한다.
- * 
+ *
  * 상세내용
  * - 네트워크서비스 모니터링대상의 목록 항목, 조회조건 등을 관리한다.
  * @author 장철호
@@ -16,10 +16,10 @@ public class NtwrkSvcMntrngVO extends NtwrkSvcMntrng {
 
 	/** 검색조건 */
     private String searchCnd = "";
-    
+
     /** 검색단어 */
     private String searchWrd = "";
-    
+
     /** 현재페이지 */
     private int pageIndex = 1;
 

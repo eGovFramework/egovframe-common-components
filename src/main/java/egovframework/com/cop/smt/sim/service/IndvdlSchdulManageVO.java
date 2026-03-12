@@ -1,6 +1,10 @@
 package egovframework.com.cop.smt.sim.service;
 
 import java.io.Serializable;
+
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 일정관리 VO Class 구현
  * @author 공통서비스 장동한
@@ -25,6 +29,7 @@ public class IndvdlSchdulManageVO implements Serializable {
 	private String schdulId;
 
 	/** 일정구분(회의/교육/세미나/강의 기타) */
+	@EgovNullCheck
 	private String schdulSe;
 
 	/** 일정부서ID */
@@ -40,15 +45,20 @@ public class IndvdlSchdulManageVO implements Serializable {
 	private String schdulEndde;
 
 	/** 일정명 */
+	@EgovNullCheck
+	@Size(max=255)
 	private String schdulNm;
 
 	/** 일정내용 */
+	@EgovNullCheck
+	@Size(max=2500)
 	private String schdulCn;
 
 	/** 일정장소 */
 	private String schdulPlace;
 
 	/** 일정중요도코드 */
+	@EgovNullCheck
 	private String schdulIpcrCode;
 
 	/** 일정담담자ID */
@@ -73,21 +83,27 @@ public class IndvdlSchdulManageVO implements Serializable {
 	private String lastUpdusrId = "";
 
 	/** 일정시작일자(시간) */
+	@EgovNullCheck
 	private String schdulBgndeHH = "";
 
 	/** 일정시작일자(분) */
+	@EgovNullCheck
 	private String schdulBgndeMM = "";
 
 	/** 일정종료일자(시간) */
+	@EgovNullCheck
 	private String schdulEnddeHH = "";
 
 	/** 일정종료일자(분) */
+	@EgovNullCheck
 	private String schdulEnddeMM = "";
 
 	/** 일정시작일자(Year/Month/Day) */
+	@EgovNullCheck
 	private String schdulBgndeYYYMMDD = "";
 
 	/** 일정종료일자(Year/Month/Day) */
+	@EgovNullCheck
 	private String schdulEnddeYYYMMDD = "";
 
 	/** 담당부서 */

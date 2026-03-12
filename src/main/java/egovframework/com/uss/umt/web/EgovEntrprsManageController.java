@@ -3,13 +3,9 @@ package egovframework.com.uss.umt.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
 import org.apache.commons.lang3.StringUtils;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -17,7 +13,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.LoginVO;
@@ -27,9 +22,15 @@ import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.umt.service.EgovEntrprsManageService;
 import egovframework.com.uss.umt.service.EntrprsManageVO;
+import egovframework.com.uss.umt.service.EntrprsManageInsertVO;
+import egovframework.com.uss.umt.service.EntrprsPasswordManageVO;
 import egovframework.com.uss.umt.service.StplatVO;
 import egovframework.com.uss.umt.service.UserDefaultVO;
+import egovframework.com.uss.umt.validation.PasswordManageMapValidator;
 import egovframework.com.utl.sim.service.EgovFileScrty;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 /**
  * 기업회원관련 요청을 비지니스 클래스로 전달하고 처리된결과를 해당 웹 화면으로 전달하는 Controller를 정의한다
@@ -72,9 +73,9 @@ public class EgovEntrprsManageController {
 	@Resource(name = "propertiesService")
 	protected EgovPropertyService propertiesService;
 
-	/** DefaultBeanValidator beanValidator */
-	@Autowired
-	private DefaultBeanValidator beanValidator;
+	/** PasswordManageMapValidator */
+	@Resource(name = "passwordManageMapValidator")
+	private PasswordManageMapValidator passwordManageMapValidator;
 
 	/** 비밀번호 힌트 조회 목록 */
 	@ModelAttribute("passwordHint_result")
@@ -121,15 +122,15 @@ public class EgovEntrprsManageController {
 	/**
 	 * 기업회원 등록화면으로 이동한다.
 	 *
-	 * @param userSearchVO    검색조건정보
-	 * @param entrprsManageVO 기업회원 초기화정보
-	 * @param model           화면모델
-	 * @return uss/umt/EgovEntrprsMberInsert
+	 * @param userSearchVO          검색조건정보
+	 * @param entrprsManageInsertVO 기업회원 초기화정보
+	 * @param model                 화면모델
+	 * @return uss/umt/EgovEntrprsInsert
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/umt/EgovEntrprsMberInsertView.do")
+	@RequestMapping("/uss/umt/EgovEntrprsInsertView.do")
 	public String insertEntrprsMberView(@ModelAttribute("userSearchVO") UserDefaultVO userSearchVO,
-			@ModelAttribute("entrprsManageVO") EntrprsManageVO entrprsManageVO, Model model) throws Exception {
+			@ModelAttribute("entrprsManageVO") EntrprsManageInsertVO entrprsManageInsertVO, Model model) throws Exception {
 
 		// 미인증 사용자에 대한 보안처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -173,21 +174,23 @@ public class EgovEntrprsManageController {
 		// 목록
 		// model.addAttribute("indutyCode_result", indutyCode_result); // 업종코드목록
 
-		return "egovframework/com/uss/umt/EgovEntrprsMberInsert";
+		return "egovframework/com/uss/umt/EgovEntrprsInsert";
 	}
 
 	/**
 	 * 기업회원등록처리후 목록화면으로 이동한다.
 	 *
-	 * @param entrprsManageVO 신규기업회원정보
-	 * @param bindingResult   입력값검증용 bindingResult
-	 * @param model           화면모델
-	 * @return forward:/uss/umt/EgovEntrprsMberManage.do
+	 * @param entrprsManageInsertVO 신규기업회원정보 (비밀번호 검증 포함)
+	 * @param bindingResult         입력값검증용 bindingResult
+	 * @param model                 화면모델
+	 * @return forward:/uss/umt/EgovEntrprsManage.do
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/umt/EgovEntrprsMberInsert.do")
-	public String insertEntrprsMber(@ModelAttribute("entrprsManageVO") EntrprsManageVO entrprsManageVO,
-			BindingResult bindingResult, Model model) throws Exception {
+	@RequestMapping("/uss/umt/EgovEntrprsInsert.do")
+	public String insertEntrprsMber(
+			@Valid @ModelAttribute("entrprsManageVO") EntrprsManageInsertVO entrprsManageInsertVO,
+			BindingResult bindingResult,
+			Model model) throws Exception {
 
 		// 미인증 사용자에 대한 보안처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -195,19 +198,18 @@ public class EgovEntrprsManageController {
 			return "index";
 		}
 
-		beanValidator.validate(entrprsManageVO, bindingResult);
 		if (bindingResult.hasErrors()) {
-			return "egovframework/com/uss/umt/EgovEntrprsMberInsert";
+			return "egovframework/com/uss/umt/EgovEntrprsInsert";
 		} else {
-			if (entrprsManageVO != null && entrprsManageVO.getGroupId() != null
-					&& entrprsManageVO.getGroupId().equals("")) {// 2022.01 Null pointers should not be dereferenced
-				entrprsManageVO.setGroupId(null);
+			if (entrprsManageInsertVO != null && entrprsManageInsertVO.getGroupId() != null
+					&& entrprsManageInsertVO.getGroupId().equals("")) {// 2022.01 Null pointers should not be dereferenced
+				entrprsManageInsertVO.setGroupId(null);
 			}
-			entrprsManageService.insertEntrprsmber(entrprsManageVO);
+			entrprsManageService.insertEntrprsmber(entrprsManageInsertVO);
 			// Exception 없이 진행시 등록성공메시지
 			model.addAttribute("resultMsg", "success.common.insert");
 		}
-		return "forward:/uss/umt/EgovEntrprsMberManage.do";
+		return "forward:/uss/umt/EgovEntrprsManage.do";
 
 	}
 
@@ -217,10 +219,10 @@ public class EgovEntrprsManageController {
 	 * @param entrprsmberId 상세조회 대상 기업회원아이디
 	 * @param userSearchVO  조회조건정보
 	 * @param model         화면모델
-	 * @return uss/umt/EgovEntrprsMberSelectUpdt
+	 * @return uss/umt/EgovEntrprsSelectUpdt
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/umt/EgovEntrprsMberSelectUpdtView.do")
+	@RequestMapping("/uss/umt/EgovEntrprsSelectUpdtView.do")
 	public String updateEntrprsMberView(@RequestParam("selectedId") String entrprsmberId,
 			@ModelAttribute("searchVO") UserDefaultVO userSearchVO, HttpServletRequest request, Model model)
 			throws Exception {
@@ -284,7 +286,7 @@ public class EgovEntrprsManageController {
 			model.addAttribute("onepassIntfToken", "");
 		}
 
-		return "egovframework/com/uss/umt/EgovEntrprsMberSelectUpdt";
+		return "egovframework/com/uss/umt/EgovEntrprsSelectUpdt";
 	}
 
 	/**
@@ -292,10 +294,10 @@ public class EgovEntrprsManageController {
 	 *
 	 * @param entrprsManageVO 기업회원정보
 	 * @param model           화면모델
-	 * @return uss/umt/EgovEntrprsMberSelectUpdtView.do
+	 * @return uss/umt/EgovEntrprsSelectUpdtView.do
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/umt/EgovEntrprsMberLockIncorrect.do")
+	@RequestMapping("/uss/umt/EgovEntrprsLockIncorrect.do")
 	public String updateLockIncorrect(EntrprsManageVO entrprsManageVO, Model model) throws Exception {
 
 		// 미인증 사용자에 대한 보안처리
@@ -306,7 +308,7 @@ public class EgovEntrprsManageController {
 
 		entrprsManageService.updateLockIncorrect(entrprsManageVO);
 
-		return "forward:/uss/umt/EgovEntrprsMberSelectUpdtView.do";
+		return "forward:/uss/umt/EgovEntrprsSelectUpdtView.do";
 	}
 
 	/**
@@ -315,12 +317,13 @@ public class EgovEntrprsManageController {
 	 * @param entrprsManageVO 수정할 기업회원정보
 	 * @param bindingResult   입력값 검증용 bindingResult
 	 * @param model           화면모델
-	 * @return forward:/uss/umt/EgovEntrprsMberManage.do
+	 * @return forward:/uss/umt/EgovEntrprsManage.do
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/umt/EgovEntrprsMberSelectUpdt.do")
-	public String updateEntrprsMber(@ModelAttribute("entrprsManageVO") EntrprsManageVO entrprsManageVO,
-			BindingResult bindingResult, Model model) throws Exception {
+	@RequestMapping("/uss/umt/EgovEntrprsSelectUpdt.do")
+	public String updateEntrprsMber(@Valid @ModelAttribute("entrprsManageVO") EntrprsManageVO entrprsManageVO,
+			BindingResult bindingResult,
+			Model model) throws Exception {
 
 		// 미인증 사용자에 대한 보안처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -328,10 +331,10 @@ public class EgovEntrprsManageController {
 			return "index";
 		}
 
-		beanValidator.validate(entrprsManageVO, bindingResult);
 		if (bindingResult.hasErrors()) {
-			model.addAttribute("resultMsg", bindingResult.getAllErrors().get(0).getDefaultMessage());
-			return "forward:/uss/umt/EgovEntrprsMberSelectUpdtView.do";
+			String resultMsgDesc = bindingResult.getAllErrors().get(0).getDefaultMessage();
+			model.addAttribute("resultMsgDesc", resultMsgDesc);
+			return "forward:/uss/umt/EgovEntrprsSelectUpdtView.do";
 		} else {
 			if ("".equals(entrprsManageVO.getGroupId())) {
 				entrprsManageVO.setGroupId(null);
@@ -339,7 +342,7 @@ public class EgovEntrprsManageController {
 			entrprsManageService.updateEntrprsmber(entrprsManageVO);
 			// Exception 없이 진행시 수정성공메시지
 			model.addAttribute("resultMsg", "success.common.update");
-			return "forward:/uss/umt/EgovEntrprsMberManage.do";
+			return "forward:/uss/umt/EgovEntrprsManage.do";
 		}
 	}
 
@@ -349,10 +352,10 @@ public class EgovEntrprsManageController {
 	 * @param checkedIdForDel 삭제대상아이디 정보
 	 * @param userSearchVO    조회조건정보
 	 * @param model           화면모델
-	 * @return "forward:/uss/umt/EgovUserManage.do"
+	 * @return "forward:/uss/umt/EgovEmplyrManage.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/umt/EgovEntrprsMberDelete.do")
+	@RequestMapping("/uss/umt/EgovEntrprsDelete.do")
 	public String deleteEntrprsMber(@RequestParam("checkedIdForDel") String checkedIdForDel,
 			@ModelAttribute("searchVO") UserDefaultVO userSearchVO, HttpServletRequest request, Model model)
 			throws Exception {
@@ -375,7 +378,7 @@ public class EgovEntrprsManageController {
 			model.addAttribute("resultMsg", "success.common.delete");
 		}
 
-		return "forward:/uss/umt/EgovEntrprsMberManage.do";
+		return "forward:/uss/umt/EgovEntrprsManage.do";
 	}
 
 	/**
@@ -383,11 +386,11 @@ public class EgovEntrprsManageController {
 	 *
 	 * @param userSearchVO 검색조건정보
 	 * @param model        화면모델
-	 * @return uss/umt/EgovEntrprsMberManage
+	 * @return uss/umt/EgovEntrprsManage
 	 * @throws Exception
 	 */
 	@IncludedInfo(name = "기업회원관리", order = 450, gid = 50)
-	@RequestMapping(value = "/uss/umt/EgovEntrprsMberManage.do")
+	@RequestMapping(value = "/uss/umt/EgovEntrprsManage.do")
 	public String selectEntrprsMberList(@ModelAttribute("userSearchVO") UserDefaultVO userSearchVO, ModelMap model)
 			throws Exception {
 
@@ -426,22 +429,22 @@ public class EgovEntrprsManageController {
 		// model.addAttribute("entrprsMberSttus_result", entrprsMberSttus_result);//
 		// 기업회원상태코드목록
 
-		return "egovframework/com/uss/umt/EgovEntrprsMberManage";
+		return "egovframework/com/uss/umt/EgovEntrprsManage";
 	}
 
 	/**
 	 * 기업회원가입신청 등록화면으로 이동한다.
 	 *
-	 * @param userSearchVO    검색조건정보
-	 * @param entrprsManageVO 기업회원초기화정보
-	 * @param commandMap      파라메터전송 commandMap
-	 * @param model           화면모델
-	 * @return uss/umt/EgovEntrprsMberSbscrb
+	 * @param userSearchVO          검색조건정보
+	 * @param entrprsManageInsertVO 기업회원초기화정보
+	 * @param commandMap            파라메터전송 commandMap
+	 * @param model                 화면모델
+	 * @return uss/umt/EgovEntrprsSbscrb
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/umt/EgovEntrprsMberSbscrbView.do")
+	@RequestMapping("/uss/umt/EgovEntrprsSbscrbView.do")
 	public String sbscrbEntrprsMberView(@ModelAttribute("userSearchVO") UserDefaultVO userSearchVO,
-			@ModelAttribute("entrprsManageVO") EntrprsManageVO entrprsManageVO,
+			@ModelAttribute("entrprsManageVO") EntrprsManageInsertVO entrprsManageInsertVO,
 			@RequestParam Map<String, Object> commandMap, Model model) throws Exception {
 
 		// ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
@@ -475,28 +478,34 @@ public class EgovEntrprsManageController {
 		if (!"".equals(commandMap.get("realName"))) {
 			model.addAttribute("applcntNm", commandMap.get("realName")); // 실명인증된 이름 - ipin인증
 		}
-		entrprsManageVO.setEntrprsMberSttus("DEFAULT");
+		entrprsManageInsertVO.setEntrprsMberSttus("DEFAULT");
 
-		return "egovframework/com/uss/umt/EgovEntrprsMberSbscrb";
+		return "egovframework/com/uss/umt/EgovEntrprsSbscrb";
 	}
 
 	/**
 	 * 기업회원가입신청 등록처리후 로그인화면으로 이동한다.
 	 * 
-	 * @param entrprsManageVO 기업회원가입신청정보
+	 * @param entrprsManageInsertVO 기업회원가입신청정보 (비밀번호 검증 포함)
 	 * @return forward:/uat/uia/egovLoginUsr.do
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/umt/EgovEntrprsMberSbscrb.do")
-	public String sbscrbEntrprsMber(@ModelAttribute("entrprsManageVO") EntrprsManageVO entrprsManageVO)
+	@RequestMapping("/uss/umt/EgovEntrprsSbscrb.do")
+	public String sbscrbEntrprsMber(@Valid @ModelAttribute("entrprsManageVO") EntrprsManageInsertVO entrprsManageInsertVO,
+			BindingResult bindingResult)
 			throws Exception {
 
+		// 검증 오류 처리
+		if (bindingResult.hasErrors()) {
+			return "egovframework/com/uss/umt/EgovEntrprsSbscrb";
+		}
+
 		// 가입상태 초기화
-		entrprsManageVO.setEntrprsMberSttus("A");
+		entrprsManageInsertVO.setEntrprsMberSttus("A");
 		// 그룹정보 초기화
-		// entrprsManageVO.setGroupId("1");
+		// entrprsManageInsertVO.setGroupId("1");
 		// 기업회원가입신청 등록시 기업회원등록기능을 사용하여 등록한다.
-		entrprsManageService.insertEntrprsmber(entrprsManageVO);
+		entrprsManageService.insertEntrprsmber(entrprsManageInsertVO);
 		return "forward:/uat/uia/egovLoginUsr.do";
 	}
 
@@ -535,8 +544,9 @@ public class EgovEntrprsManageController {
 	 */
 	@RequestMapping(value = "/uss/umt/EgovEntrprsPasswordUpdt.do")
 	public String updatePassword(ModelMap model, @RequestParam Map<String, Object> commandMap,
-			@ModelAttribute("searchVO") UserDefaultVO userSearchVO,
-			@ModelAttribute("entrprsManageVO") EntrprsManageVO entrprsManageVO) throws Exception {
+			@ModelAttribute("userSearchVO") UserDefaultVO userSearchVO,
+			@Valid @ModelAttribute("entrprsPasswordManageVO") EntrprsPasswordManageVO entrprsPasswordManageVO,
+			BindingResult bindingResult) throws Exception {
 
 		// 미인증 사용자에 대한 보안처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -544,23 +554,20 @@ public class EgovEntrprsManageController {
 			return "index";
 		}
 
-		String oldPassword = (String) commandMap.get("oldPassword");
-		String newPassword = (String) commandMap.get("newPassword");
-		String newPassword2 = (String) commandMap.get("newPassword2");
-		String uniqId = (String) commandMap.get("uniqId");
+		if (bindingResult.hasErrors()) {
+			// Validation 오류 시에도 사용자 정보 유지
+			return "egovframework/com/uss/umt/EgovEntrprsPasswordUpdt";
+		}
 
 		boolean isCorrectPassword = false;
-		EntrprsManageVO resultVO = new EntrprsManageVO();
-		entrprsManageVO.setEntrprsMberPassword(newPassword);
-		entrprsManageVO.setOldPassword(oldPassword);
-		entrprsManageVO.setUniqId(uniqId);
+		EntrprsPasswordManageVO resultVO = new EntrprsPasswordManageVO();
 
 		String resultMsg = "";
-		resultVO = entrprsManageService.selectPassword(entrprsManageVO);
+		resultVO = entrprsManageService.selectPassword(entrprsPasswordManageVO);
 		// 패스워드 암호화
-		String encryptPass = EgovFileScrty.encryptPassword(oldPassword, entrprsManageVO.getEntrprsmberId());
+		String encryptPass = EgovFileScrty.encryptPassword(entrprsPasswordManageVO.getOldPassword(), entrprsPasswordManageVO.getEntrprsmberId());
 		if (encryptPass.equals(resultVO.getEntrprsMberPassword())) {
-			if (newPassword.equals(newPassword2)) {
+			if ( entrprsPasswordManageVO.getPassword().equals(entrprsPasswordManageVO.getPassword2()) ) {
 				isCorrectPassword = true;
 			} else {
 				isCorrectPassword = false;
@@ -572,15 +579,12 @@ public class EgovEntrprsManageController {
 		}
 
 		if (isCorrectPassword) {
-			entrprsManageVO.setEntrprsMberPassword(
-					EgovFileScrty.encryptPassword(newPassword, entrprsManageVO.getEntrprsmberId()));
-			entrprsManageService.updatePassword(entrprsManageVO);
-			model.addAttribute("entrprsManageVO", entrprsManageVO);
+			entrprsPasswordManageVO.setEntrprsMberPassword(
+					EgovFileScrty.encryptPassword(entrprsPasswordManageVO.getPassword(), entrprsPasswordManageVO.getEntrprsmberId()));
+			entrprsManageService.updatePassword(entrprsPasswordManageVO);
 			resultMsg = "success.common.update";
-		} else {
-			model.addAttribute("entrprsManageVO", entrprsManageVO);
 		}
-		model.addAttribute("userSearchVO", userSearchVO);
+
 		model.addAttribute("resultMsg", resultMsg);
 
 		return "egovframework/com/uss/umt/EgovEntrprsPasswordUpdt";
@@ -599,7 +603,7 @@ public class EgovEntrprsManageController {
 	@RequestMapping(value = "/uss/umt/EgovEntrprsPasswordUpdtView.do")
 	public String updatePasswordView(ModelMap model, @RequestParam Map<String, Object> commandMap,
 			@ModelAttribute("searchVO") UserDefaultVO userSearchVO,
-			@ModelAttribute("entrprsManageVO") EntrprsManageVO entrprsManageVO) throws Exception {
+			@ModelAttribute("entrprsPasswordManageVO") EntrprsPasswordManageVO entrprsPasswordManageVO) throws Exception {
 
 		// 미인증 사용자에 대한 보안처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -608,10 +612,11 @@ public class EgovEntrprsManageController {
 		}
 
 		String userTyForPassword = (String) commandMap.get("userTyForPassword");
-		entrprsManageVO.setUserTy(userTyForPassword);
+		entrprsPasswordManageVO.setUserTy(userTyForPassword);
 
+		// 명시적으로 model에 추가 (JSP에서 접근 가능하도록)
+		model.addAttribute("entrprsPasswordManageVO", entrprsPasswordManageVO);
 		model.addAttribute("userSearchVO", userSearchVO);
-		model.addAttribute("entrprsManageVO", entrprsManageVO);
 		return "egovframework/com/uss/umt/EgovEntrprsPasswordUpdt";
 	}
 

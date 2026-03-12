@@ -28,7 +28,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="ImgUrl" value="/images/egovframework/com/sym/prm/"/>
 <c:set var="CssUrl" value="/css/egovframework/com/sym/prm/"/>
 <html lang="ko">
@@ -37,8 +36,7 @@
 <title><spring:message code="comSymPrm.programListDetailSelectUpdt.title"/></title><!-- 프로그램목록 상세조회 /수정 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="progrmManageVO" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script language="javascript1.2" type="text/javaScript">
 <!--
 /* ********************************************************
@@ -107,34 +105,35 @@ function selectList(){
 			<th><spring:message code="comSymPrm.programListDetailSelectUpdt.progrmFileNm"/> <span class="pilsu">*</span></th><!-- 프로그램파일명 -->
 			<td class="left">
 			    <form:input  path="progrmFileNm" size="50"  maxlength="50" title="${vprogrmFileNm}" readonly="true"/><!-- 프로그램파일명 -->
+			    <div><form:errors path="progrmFileNm" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymPrm.programListDetailSelectUpdt.progrmStrePath"/> <span class="pilsu">*</span></th><!-- 저장경로 -->
 			<td class="left">
 			    <form:input  path="progrmStrePath" size="50"  maxlength="50" title="${vprogrmStrePath}"/><!-- 저장경로 -->
-      			<form:errors path="progrmStrePath"/>
+			    <div><form:errors path="progrmStrePath" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymPrm.programListDetailSelectUpdt.progrmKoreanNm"/> <span class="pilsu">*</span></th><!-- 한글명 -->
 			<td class="left">
 			    <form:input path="progrmKoreanNm" size="60"  maxlength="60"  title="${vprogrmKoreanNm}"/><!-- 한글명 -->
-      			<form:errors path="progrmKoreanNm" />
+      			<div><form:errors path="progrmKoreanNm" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymPrm.programListDetailSelectUpdt.url"/> <span class="pilsu">*</span></th>
 			<td class="left">
 			    <form:input path="URL" size="60"  maxlength="60" title="${vurl}" />
-      			<form:errors path="URL" />
+      			<div><form:errors path="URL" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymPrm.programListDetailSelectUpdt.progrmDc"/> <span class="pilsu">*</span></th><!-- 프로그램설명 -->
 			<td class="left">
 			    <form:textarea path="progrmDc" rows="14" cols="75" title="${vprogrmDc}"/><!-- 프로그램설명 -->
-      			<form:errors path="progrmDc"/>
+      			<div><form:errors path="progrmDc" cssClass="error" /></div>
 			</td>
 		</tr>
 	</table>

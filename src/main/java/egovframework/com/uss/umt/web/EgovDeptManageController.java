@@ -1,10 +1,7 @@
 package egovframework.com.uss.umt.web;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -12,13 +9,14 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.umt.service.DeptManageVO;
 import egovframework.com.uss.umt.service.EgovDeptManageService;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * 부서관련 처리를  비지니스 클래스로 전달하고 처리된결과를  해당   웹 화면으로 전달하는  Controller를 정의한다
@@ -37,7 +35,6 @@ import egovframework.com.uss.umt.service.EgovDeptManageService;
  *   2021.05.30  정진오      로그인인증제한
  * </pre>
  */
-
 @Controller
 public class EgovDeptManageController {
 
@@ -50,9 +47,6 @@ public class EgovDeptManageController {
 	/** Message ID Generation */
 	@Resource(name = "egovDeptManageIdGnrService")
 	private EgovIdGnrService egovDeptManageIdGnrService;
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/**
 	 * 부서 목록화면 이동
@@ -135,9 +129,9 @@ public class EgovDeptManageController {
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/uss/umt/dpt/addDeptManage.do")
-	public String insertDeptManage(@ModelAttribute("deptManageVO") DeptManageVO deptManageVO, BindingResult bindingResult,  ModelMap model) throws Exception {
-
-		beanValidator.validate(deptManageVO, bindingResult); //validation 수행
+	public String insertDeptManage(
+		@Valid @ModelAttribute("deptManageVO") DeptManageVO deptManageVO,
+		BindingResult bindingResult,  ModelMap model) throws Exception {
 
 		deptManageVO.setOrgnztId(egovDeptManageIdGnrService.getNextStringId());
 
@@ -156,8 +150,9 @@ public class EgovDeptManageController {
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/uss/umt/dpt/updtDeptManage.do")
-	public String updateDeptManage(@ModelAttribute("deptManageVO") DeptManageVO deptManageVO, BindingResult bindingResult, ModelMap model) throws Exception {
-		beanValidator.validate(deptManageVO, bindingResult); //validation 수행
+	public String updateDeptManage(
+		@Valid @ModelAttribute("deptManageVO") DeptManageVO deptManageVO,
+		BindingResult bindingResult, ModelMap model) throws Exception {
 
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/uss/umt/EgovDeptManageUpdt";
@@ -193,11 +188,11 @@ public class EgovDeptManageController {
 	public String deleteDeptManageList(@RequestParam("deptManages") String deptManages, @ModelAttribute("deptManageVO") DeptManageVO deptManageVO, ModelMap model) throws Exception {
 
 		String[] strDeptManages = deptManages.split(";");
-		for (int i = 0; i < strDeptManages.length; i++) {
-			deptManageVO.setOrgnztId(strDeptManages[i]);
+		for (String strDeptManage : strDeptManages) {
+			deptManageVO.setOrgnztId(strDeptManage);
 			egovDeptManageService.deleteDeptManage(deptManageVO);
 		}
-		
+
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		return "forward:/uss/umt/dpt/selectDeptManageList.do";
 	}

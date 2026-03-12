@@ -96,6 +96,12 @@
 		FROM COMTNQUSTNRIEM A
 		WHERE 1=1
 	 	]]>
+	 		  <if test="searchCondition == 'QUSTNR_QESITM_ID'
+     		 and searchKeyword != null
+      		 and searchKeyword != ''">
+    		 AND A.QUSTNR_QESITM_ID LIKE  '%' || #{searchKeyword} || '%'
+	 </if>
+	 	
 	 <if test="searchKeyword != null and searchKeyword != ''">
 	 	
 		 	

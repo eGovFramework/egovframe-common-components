@@ -1,5 +1,11 @@
 package egovframework.com.uss.ion.rec.service;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+
+import egovframework.com.cmm.ComDefaultVO;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
+
 
 /**
  * 
@@ -18,7 +24,7 @@ package egovframework.com.uss.ion.rec.service;
  *
  * </pre>
  */
-public class RecomendSiteVO extends RecomendSiteDefaultVO {
+public class RecomendSiteVO extends ComDefaultVO {
 	
     private static final long serialVersionUID = 1L;
     
@@ -26,21 +32,30 @@ public class RecomendSiteVO extends RecomendSiteDefaultVO {
     private String recomendSiteId;
     
     /** 추천사이트 URL */
+    @EgovNullCheck
+    @Size(max=250)
     private String recomendSiteUrl;
     
     /** 추천사이트명 */
+    @EgovNullCheck
+    @Size(max=100)
     private String recomendSiteNm;
     
     /** 추천사이트설명 */
+    @EgovNullCheck
+    @Size(max=1000)
     private String recomendSiteDc;
     
     /** 추천사유내용 */
+    @EgovNullCheck
+    @Size(max=1000)
     private String recomendResnCn;
 
     /** 추천승인여부 */
     private String recomendConfmAt;
     
     /** 승인일자 */
+    @Pattern(regexp="^\\d{4}-\\d{2}-\\d{2}$", message="{validation.pattern.date}")
     private String confmDe;
 
     /** 최초등록시점 */

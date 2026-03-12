@@ -37,7 +37,7 @@ margin :0px 0px 0px 0px;
 </style>
 </head>
 <body topmargin="0" leftmargin="0" style="margin :0px;">
-
+<input type="hidden" name="init" value="">
 <iframe name="ifcal" src="<c:url value='/sym/cal/EgovselectNormalCalendar.do'/>" style="width:275px; height:192px;" frameborder="0" scrolling="no" title="달력팝업창호출"></iframe>
 
 </body>

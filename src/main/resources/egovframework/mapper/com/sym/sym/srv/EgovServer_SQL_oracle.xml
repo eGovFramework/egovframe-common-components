@@ -358,11 +358,26 @@
     </insert>     
 
     <delete id="deleteServerEqpmnRelate" parameterType="egovframework.com.sym.sym.srv.service.ServerEqpmnRelate">
-        
+
             DELETE FROM COMTNSERVEREQPMNRELATE
              WHERE SERVER_ID = #{serverId}
                AND SERVER_EQPMN_ID = #{serverEqpmnId}
-        
-    </delete>     
+
+    </delete>
+
+    <select id="selectRelatedServersByEqpmnId" parameterType="string" resultMap="server">
+        SELECT S.SERVER_ID,
+               S.SERVER_NM,
+               S.SERVER_KND,
+               S.RGSDE,
+               S.FRST_REGIST_PNTTM,
+               S.FRST_REGISTER_ID,
+               S.LAST_UPDT_PNTTM,
+               S.LAST_UPDUSR_ID
+          FROM COMTNSERVERINFO S
+         INNER JOIN COMTNSERVEREQPMNRELATE R ON S.SERVER_ID = R.SERVER_ID
+         WHERE R.SERVER_EQPMN_ID = #{serverEqpmnId}
+         ORDER BY S.SERVER_NM
+    </select>
 
 </mapper>

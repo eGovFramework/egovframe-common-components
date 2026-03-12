@@ -1,27 +1,23 @@
 package egovframework.com.dam.map.tea.web;
 
 import java.util.List;
-import java.util.Map;
-
-import javax.annotation.Resource;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DuplicateKeyException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.dam.map.tea.service.EgovMapTeamService;
 import egovframework.com.dam.map.tea.service.MapTeam;
 import egovframework.com.dam.map.tea.service.MapTeamVO;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * <pre>
@@ -60,9 +56,6 @@ public class EgovMapTeamController {
 	/** EgovPropertyService */
 	@Resource(name = "propertiesService")
 	protected EgovPropertyService propertiesService;
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/**
 	 * 등록된 지식맵(조직별) 정보를 조회 한다.
@@ -116,21 +109,27 @@ public class EgovMapTeamController {
 	}
 
 	/**
+	 * 지식맵(조직별) 등록 화면으로 이동한다.
+	 *
+	 * @return String - 리턴 Url
+	 */
+	@RequestMapping(value = "/dam/map/tea/EgovComDamMapTeamRegistView.do")
+	public String insertMapTeamView(@ModelAttribute("mapTeam") MapTeam mapTeam) throws Exception {
+		return "egovframework/com/dam/map/tea/EgovComDamMapTeamRegist";
+	}
+
+	/**
 	 * 지식맵(조직별) 정보를 신규로 등록한다.
-	 * 
+	 *
 	 * @param orgnztNm - 지식맵(조직별) model
 	 * @return String - 리턴 Url
 	 *
 	 * @param mapTeam
 	 */
 	@RequestMapping(value = "/dam/map/tea/EgovComDamMapTeamRegist.do")
-	public String insertMapTeam(@ModelAttribute("loginVO") LoginVO loginVO, @ModelAttribute("mapTeam") MapTeam mapTeam,
+	public String insertMapTeam(@ModelAttribute("loginVO") LoginVO loginVO, @Valid @ModelAttribute("mapTeam") MapTeam mapTeam,
 			BindingResult bindingResult) throws Exception {
-		if (mapTeam.getOrgnztNm() == null || mapTeam.getOrgnztNm().equals("")) {
-			return "egovframework/com/dam/map/tea/EgovComDamMapTeamRegist";
-		}
 
-		beanValidator.validate(mapTeam, bindingResult);
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/dam/map/tea/EgovComDamMapTeamRegist";
 		}
@@ -146,32 +145,37 @@ public class EgovMapTeamController {
 	}
 
 	/**
-	 * 기 등록 된 지식맵(조직별)링 정보를 수정 한다.
-	 * 
+	 * 지식맵(조직별) 수정 화면으로 이동한다.
+	 *
+	 * @param mapTeam - 지식맵(조직별) model
+	 * @return String - 리턴 Url
+	 */
+	@RequestMapping(value = "/dam/map/tea/EgovComDamMapTeamModifyView.do")
+	public String updateMapTeamView(@ModelAttribute("mapTeam") MapTeam mapTeam, ModelMap model) throws Exception {
+		MapTeam vo = mapTeamService.selectMapTeamDetail(mapTeam);
+		model.addAttribute("mapTeam", vo);
+		return "egovframework/com/dam/map/tea/EgovComDamMapTeamModify";
+	}
+
+	/**
+	 * 기 등록 된 지식맵(조직별) 정보를 수정 한다.
+	 *
 	 * @param orgnztNm - 지식맵(조직별) model
 	 * @return String - 리턴 Url
 	 *
 	 * @param mapTeam
 	 */
 	@RequestMapping(value = "/dam/map/tea/EgovComDamMapTeamModify.do")
-	public String updateMapTeam(@ModelAttribute("loginVO") LoginVO loginVO, @ModelAttribute("mapTeam") MapTeam mapTeam,
-			BindingResult bindingResult, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
-		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
-		if (sCmd.equals("")) {
-			MapTeam vo = mapTeamService.selectMapTeamDetail(mapTeam);
-			model.addAttribute("mapTeam", vo);
+	public String updateMapTeam(@ModelAttribute("loginVO") LoginVO loginVO, @Valid @ModelAttribute("mapTeam") MapTeam mapTeam,
+			BindingResult bindingResult, ModelMap model) throws Exception {
+
+		if (bindingResult.hasErrors()) {
 			return "egovframework/com/dam/map/tea/EgovComDamMapTeamModify";
-		} else if (sCmd.equals("Modify")) {
-			beanValidator.validate(mapTeam, bindingResult);
-			if (bindingResult.hasErrors()) {
-				return "egovframework/com/dam/map/tea/EgovComDamMapTeamModify";
-			}
-			mapTeam.setFrstRegisterId(loginVO.getUniqId());
-			mapTeamService.updateMapTeam(mapTeam);
-			return "forward:/dam/map/tea/EgovComDamMapTeamList.do";
-		} else {
-			return "forward:/dam/map/tea/EgovComDamMapTeamList.do";
 		}
+
+		mapTeam.setFrstRegisterId(loginVO.getUniqId());
+		mapTeamService.updateMapTeam(mapTeam);
+		return "forward:/dam/map/tea/EgovComDamMapTeamList.do";
 	}
 
 	/**

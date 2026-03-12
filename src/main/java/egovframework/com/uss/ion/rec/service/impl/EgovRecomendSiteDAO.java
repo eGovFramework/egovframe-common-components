@@ -10,12 +10,12 @@ import egovframework.com.uss.ion.rec.service.RecomendSiteVO;
 @Repository("EgovRecomendSiteDAO")
 public class EgovRecomendSiteDAO extends EgovComAbstractDAO{
 
-	public List<RecomendSiteVO> selectRecomendSiteList(RecomendSiteVO searchVO) {
-		return selectList("RecomendSite.selectRecomendSiteList", searchVO);
+	public List<RecomendSiteVO> selectRecomendSiteList(RecomendSiteVO recomendSiteVO) {
+		return selectList("RecomendSite.selectRecomendSiteList", recomendSiteVO);
 	}
 
-	public int selectRecomendSiteListCnt(RecomendSiteVO searchVO) {
-		return (Integer) selectOne("RecomendSite.selectRecomendSiteListCnt", searchVO);
+	public int selectRecomendSiteListCnt(RecomendSiteVO recomendSiteVO) {
+		return (Integer) selectOne("RecomendSite.selectRecomendSiteListCnt", recomendSiteVO);
 	}
 
 	public void insertRecomendSite(RecomendSiteVO recomendSiteVO) {

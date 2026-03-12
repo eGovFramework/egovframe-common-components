@@ -2,11 +2,8 @@ package egovframework.com.uss.olh.faq.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -16,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -29,6 +25,8 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olh.faq.service.EgovFaqService;
 import egovframework.com.uss.olh.faq.service.FaqVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * FAQ내용을 처리하는 비즈니스 구현 클래스
@@ -72,10 +70,6 @@ public class EgovFaqController {
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
 	EgovMessageSource egovMessageSource;
-
-	// Validation 관련
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/**
 	 * FAQ 목록을 조회한다.
@@ -169,10 +163,8 @@ public class EgovFaqController {
 	 */
 	@RequestMapping("/uss/olh/faq/insertFaq.do")
 	public String insertFaqCn(final MultipartHttpServletRequest multiRequest, // 첨부파일을 위한...
-			@ModelAttribute("searchVO") FaqVO searchVO, @ModelAttribute("faqManageVO") FaqVO faqVO,
+			@ModelAttribute("searchVO") FaqVO searchVO, @Valid @ModelAttribute("faqVO") FaqVO faqVO,
 			BindingResult bindingResult) throws Exception {
-
-		beanValidator.validate(faqVO, bindingResult);
 
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/uss/olh/faq/EgovFaqRegist";
@@ -251,11 +243,9 @@ public class EgovFaqController {
 	 */
 	@RequestMapping("/uss/olh/faq/updateFaq.do")
 	public String updateFaqCn(final MultipartHttpServletRequest multiRequest,
-			@ModelAttribute("searchVO") FaqVO searchVO, @ModelAttribute("faqVO") FaqVO faqVO,
+			@ModelAttribute("searchVO") FaqVO searchVO, @Valid @ModelAttribute("faqVO") FaqVO faqVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 
-		// Validation
-		beanValidator.validate(faqVO, bindingResult);
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/uss/olh/faq/EgovFaqUpdt";
 		}
@@ -267,7 +257,7 @@ public class EgovFaqController {
 		final List<MultipartFile> files = multiRequest.getFiles("file_1");
 		if (!files.isEmpty()) {
 			if (atchFileId == null || "".equals(atchFileId)) {
-				List<FileVO> result = fileUtil.parseFileInf(files, "FAQ_", 0, atchFileId, "");
+				List<FileVO> result = fileUtil.parseFileInf(files, "FAQ_", 0, "", "");
 				atchFileId = fileMngService.insertFileInfs(result);
 				faqVO.setAtchFileId(atchFileId);
 			} else {

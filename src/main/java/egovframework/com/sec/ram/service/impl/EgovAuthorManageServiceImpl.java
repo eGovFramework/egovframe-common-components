@@ -2,14 +2,13 @@ package egovframework.com.sec.ram.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.sec.ram.service.AuthorManage;
 import egovframework.com.sec.ram.service.AuthorManageVO;
 import egovframework.com.sec.ram.service.EgovAuthorManageService;
+import jakarta.annotation.Resource;
 
 /**
  * 권한관리에 관한 ServiceImpl 클래스를 정의한다.
@@ -20,7 +19,7 @@ import egovframework.com.sec.ram.service.EgovAuthorManageService;
  *
  * <pre>
  * << 개정이력(Modification Information) >>
- *   
+ *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.03.11  이문준          최초 생성
@@ -31,7 +30,7 @@ import egovframework.com.sec.ram.service.EgovAuthorManageService;
 
 @Service("egovAuthorManageService")
 public class EgovAuthorManageServiceImpl extends EgovAbstractServiceImpl implements EgovAuthorManageService {
-    
+
 	@Resource(name="authorManageDAO")
     private AuthorManageDAO authorManageDAO;
 
@@ -45,7 +44,7 @@ public class EgovAuthorManageServiceImpl extends EgovAbstractServiceImpl impleme
     public List<AuthorManageVO> selectAuthorList(AuthorManageVO authorManageVO) throws Exception {
         return authorManageDAO.selectAuthorList(authorManageVO);
     }
-    
+
 	/**
 	 * 권한을 등록한다.
 	 * @param authorManage AuthorManage
@@ -85,8 +84,9 @@ public class EgovAuthorManageServiceImpl extends EgovAbstractServiceImpl impleme
 	@Override
     public AuthorManageVO selectAuthor(AuthorManageVO authorManageVO) throws Exception {
     	AuthorManageVO resultVO = authorManageDAO.selectAuthor(authorManageVO);
-        if (resultVO == null)
-            throw processException("info.nodata.msg");
+        if (resultVO == null) {
+			throw processException("info.nodata.msg");
+		}
         return resultVO;
     }
 
@@ -99,8 +99,8 @@ public class EgovAuthorManageServiceImpl extends EgovAbstractServiceImpl impleme
 	@Override
     public int selectAuthorListTotCnt(AuthorManageVO authorManageVO) throws Exception {
         return authorManageDAO.selectAuthorListTotCnt(authorManageVO);
-    }    
-    
+    }
+
     /**
 	 * 모든 권한목록을 조회한다.
 	 * @param authorManageVO AuthorManageVO
@@ -110,5 +110,5 @@ public class EgovAuthorManageServiceImpl extends EgovAbstractServiceImpl impleme
 	@Override
 	public List<AuthorManageVO> selectAuthorAllList(AuthorManageVO authorManageVO) throws Exception {
     	return authorManageDAO.selectAuthorAllList(authorManageVO);
-    }      
+    }
 }

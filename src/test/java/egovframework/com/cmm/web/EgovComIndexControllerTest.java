@@ -1,4 +1,4 @@
-package egovframework.com.cmm.web;
+﻿package egovframework.com.cmm.web;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
@@ -7,10 +7,10 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.view;
 
 import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
-import org.junit.Test;
+import org.junit.jupiter.api.Test;
 
 import egovframework.com.cmm.service.EgovProperties;
-import egovframework.com.test.EgovAbstractTestJUnit4;
+import egovframework.com.test.EgovAbstractTestJUnit;
 
 /**
  * EgovComIndexController Test
@@ -30,7 +30,7 @@ import egovframework.com.test.EgovAbstractTestJUnit4;
  *
  *      </pre>
  */
-public class EgovComIndexControllerTest extends EgovAbstractTestJUnit4 {
+public class EgovComIndexControllerTest extends EgovAbstractTestJUnit {
 
 	@Test
 	public void test1index() throws BaseRuntimeException, Exception {

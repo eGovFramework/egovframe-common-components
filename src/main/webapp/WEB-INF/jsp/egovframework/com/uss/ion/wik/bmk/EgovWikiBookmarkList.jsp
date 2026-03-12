@@ -24,7 +24,7 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javaScript" language="javascript">
+<script type="text/javascript">
 /* ********************************************************
  * 페이징 처리 함수
  ******************************************************** */
@@ -707,7 +707,7 @@ width : 99%;
 width : 60px;
 }
 .btnBackground {
-background-image : url('<c:url value='/images/egovframework/com/cmm/uss/umt/button/bu2_bg.gif'/>');
+background-image : url('<c:url value="/images/egovframework/com/cmm/uss/umt/button/bu2_bg.gif"/>');
 }
 
 
@@ -725,7 +725,7 @@ background-image : url('<c:url value='/images/egovframework/com/cmm/uss/umt/butt
 		<ul>
 			<li>
 				<label for=""><spring:message code="ussIonWikBmk.wikiBookmarkList.bookmarkNm"/> : </label><!-- 북마크명 -->
-				<input class="s_input2 vat" name="searchKeyword" type="text" value="<c:out value='${searchKeyword}'/>" size="10" maxlength="35" onkeypress="press();" onkeyup="if(window.event.keyCode==13){fn_egov_search_WikiBookmark(); return false;}" title="검색어" />
+				<input class="s_input2 vat" name="searchKeyword" type="text" value="<c:out value='${searchKeyword}'/>" size="10" maxlength="35" onkeyup="if(window.event.keyCode==13){fn_egov_search_WikiBookmark(); return false;}" title="검색어" />
 				
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fn_egov_search_WikiBookmark(); return false;" />
 				<input class="s_btn" type="submit" value="<spring:message code="button.delete"/>" title="<spring:message code="button.delete"/>" onclick="fn_egov_delete_WikiBookmark(); return false;" /><!-- 삭제 -->
@@ -736,9 +736,9 @@ background-image : url('<c:url value='/images/egovframework/com/cmm/uss/umt/butt
 	<table class="board_list">
 		<caption></caption>
 		<colgroup>
-			<col style="width:50px" />
-			<col style="width:50px" />
-			<col style="" />
+			<col style="width:10%" />
+			<col style="width:20%" />
+			<col style="width:70%" />
 		</colgroup>
 		<thead>
 			<tr>
@@ -763,9 +763,9 @@ background-image : url('<c:url value='/images/egovframework/com/cmm/uss/umt/butt
 					<input type="checkbox" name="checkList" title="선택" value="${resultInfo.wikiBkmkId}" />
 				</td>
 				<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-				<td style="word-break;break-all">
+				<td style="word-break:break-all;">
 					<div style="visibility:hidden;display:none;"><a href="#LINK_PAGE${status.count}"></a></div>
-					<a href="<c:url value="../../../../../JSPWiki/Wiki.jsp"><c:param name="page" value="${resultInfo.wikiBkmkNm}"/></c:url>" target="_blank"><c:out value="${resultInfo.wikiBkmkNm}"/></a>
+					<a href="<c:url value="/JSPWiki/Wiki.jsp"><c:param name="page" value="${resultInfo.wikiBkmkNm}"/></c:url>" target="_blank"><c:out value="${resultInfo.wikiBkmkNm}"/></a>
 				</td>
 			</tr>
 			</c:forEach>
@@ -778,14 +778,13 @@ background-image : url('<c:url value='/images/egovframework/com/cmm/uss/umt/butt
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/>
 		</ul>
 	</div>
-</div>
 
 <input name="cmd" type="hidden" value="">
 <input name="searchCondition" type="hidden" value="A.WIKI_BKMK_NM">
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 </form>
 
-</DIV>
+</div>
 
 </body>
 </html>

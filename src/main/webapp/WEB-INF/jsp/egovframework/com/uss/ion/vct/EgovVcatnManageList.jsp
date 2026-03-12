@@ -39,7 +39,7 @@
  ******************************************************** */
  /*설명 : 휴가 목록 페이지 조회 */
  function linkPage(pageNo){
-	var varForm				 = document.all["listForm"];
+	var varForm	= document.getElementById("listForm") || document.forms["listForm"];
 	varForm.searchCondition.value = "1";
 	varForm.pageIndex.value = pageNo;
 	varForm.action = "<c:url value='/uss/ion/vct/EgovVcatnManageList.do'/>";
@@ -51,7 +51,7 @@
  ******************************************************** */
  /*설명 : 목록 조회 */
  function fncSelectVcatnManageList(pageNo){
-	 var varForm				 = document.all["listForm"];
+	 var varForm = document.getElementById("listForm") || document.forms["listForm"];
 	 //varForm.searchCondition.value = "1";
 	 varForm.pageIndex.value = pageNo;
 	 varForm.action = "<c:url value='/uss/ion/vct/EgovVcatnManageList.do'/>";
@@ -63,7 +63,6 @@
  ******************************************************** */
 function fncVcatnRegist(){
 	var occrncYrycCo = document.getElementById("occrncYrycCo").value;
-	
 	if(!occrncYrycCo){
 		alert("<spring:message code="comUssIonVct.vcatnManageList.validate.guide"/>"); /* 902.개인연차관리의 발생연차가 등록이 되어 있어야 사용가능 */
 		return true;
@@ -86,7 +85,7 @@ function fncVcatnManageDetail(applcntId,vcatnSe,bgnde,endde){
 		alert("<spring:message code="comUssIonVct.vcatnManageList.validate.access"/>")/* 상세화면 접근을 위해서는 사용자 권한과 조직 아이디가 필요합니다. */
 		return true;
 	}else{	
-	var varForm				 = document.all["listForm"];
+	var varForm				 = document.getElementById("listForm") || document.forms["listForm"];
 	varForm.applcntId.value  = applcntId;
 	varForm.vcatnSe.value    = vcatnSe;
 	varForm.bgnde.value      = bgnde.replace("-","");
@@ -106,7 +105,7 @@ function fncVcatnManageDetail(applcntId,vcatnSe,bgnde,endde){
 
 	<span><spring:message code="comUssIonVct.vcatnManageList.validate.guide"/></span>
 
-	<form name="listForm" action="<c:url value='/uss/ion/vct/EgovVcatnManageList.do'/>" method="post">
+	<form name="listForm" id="listForm" action="<c:url value='/uss/ion/vct/EgovVcatnManageList.do'/>" method="post">
 		<input type="hidden" id="access" value="${access}">
 		<input type="hidden" name="searchCondition">
 		<input type="hidden" name="applcntId">
@@ -116,11 +115,11 @@ function fncVcatnManageDetail(applcntId,vcatnSe,bgnde,endde){
 		<input type="hidden" id="occrncYrycCo" value="${vcatnManageVO.occrncYrycCo}">
 		<input type="hidden" name="pageIndex" value="<c:if test="${empty vcatnManageVO.pageIndex }">1</c:if><c:if test="${!empty vcatnManageVO.pageIndex }"><c:out value='${vcatnManageVO.pageIndex}'/></c:if>">
 
-	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
+	<div class="search_box" title='<spring:message code="common.searchCondition.msg" />'><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
 			<li>
 				<label for=""><spring:message code="comUssIonVct.vcatnManageList.vctYr"/> : </label><!-- 휴가연도 -->
-				<select name="searchKeyword" title="<spring:message code="comUssIonVct.vcatnManageList.vctYr"/>"><!-- 휴가연도 -->
+				<select name="searchKeyword" title='<spring:message code="comUssIonVct.vcatnManageList.vctYr"/>'><!-- 휴가연도 -->
 					<option value="" selected ><spring:message code="comUssIonVct.vcatnManageList.selectedAll"/></option><!-- 전체 -->
 					<c:forEach items="${yearList}" var="result" varStatus="status">
 					<option value="<c:out value="${result }"/>"  <c:if test="${vcatnManageVO.searchKeyword eq result}">selected</c:if>><c:out value="${result }"/></option>
@@ -128,7 +127,7 @@ function fncVcatnManageDetail(applcntId,vcatnSe,bgnde,endde){
 				</select><spring:message code="comUssIonVct.vcatnManageList.year"/><!-- 년 -->				
 				
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fncSelectVcatnManageList('1'); return false;"  style="margin-left:10px" />
-				<span class="btn_b"><a href="<c:url value='/uss/ion/vct/EgovVcatnRegist.do'/>" onclick="fncVcatnRegist();" title="<spring:message code="button.create" />"><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="<c:url value='/uss/ion/vct/EgovVcatnRegist.do'/>" onclick="fncVcatnRegist();" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
@@ -136,13 +135,13 @@ function fncVcatnManageDetail(applcntId,vcatnSe,bgnde,endde){
 	<table class="board_list">
 		<caption></caption>
 		<colgroup>
-			<col style="width:5%" />
 			<col style="width:10%" />
 			<col style="width:15%" />
 			<col style="width:15%" />
-			<col style="" />
 			<col style="width:15%" />
+			<col style="width:20%" />
 			<col style="width:10%" />
+			<col style="width:15%" />
 		</colgroup>
 		<thead>
 			<tr>

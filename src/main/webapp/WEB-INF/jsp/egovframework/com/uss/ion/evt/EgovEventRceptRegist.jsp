@@ -25,7 +25,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -33,8 +32,7 @@
 <title><spring:message code="comUssIonEvt.eventRceptRegist.title"/></title><!-- 행사접수신청 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="eventAtdrn" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 <!--
 /* ********************************************************
@@ -54,12 +52,10 @@ function fncInsertEventRceptManage() {
 	        if(!validateEventAtdrn(varFrom)){           
 	            return;
 	        }else{
-	             varFrom.submit();
+				varFrom.submit();
 	        }; 
 	  };
 }
-
-<c:if test="${!empty errMessage}">alert("${errMessage}");</c:if>
 -->
 </script>
 </head>
@@ -174,7 +170,6 @@ function fncInsertEventRceptManage() {
 	
 	<!-- 결재권자 지정 Include -->
 	<c:import url="/WEB-INF/jsp/egovframework/com/uss/ion/ism/EgovInfrmlSanctnRegist.jsp" charEncoding="utf-8"/>
-	<!-- //결재권자 지정 Include -->
 
 	<!-- 하단 버튼 -->
 	<div class="btn">

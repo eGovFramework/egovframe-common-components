@@ -2,6 +2,9 @@ package egovframework.com.cop.smt.mrm.service;
 
 import java.io.Serializable;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 개요
  * - 메모보고에 대한 model 클래스를 정의한다.
@@ -27,22 +30,29 @@ public class MemoReprt implements Serializable{
 	/** 보고서ID */
 	private String reprtId;
 	/** 보고서제목 */
+	@EgovNullCheck
+	@Size(max=255)
 	private String reprtSj;
 	/** 보고일자 */
+	@EgovNullCheck
 	private String reprtDe;
 	/** 작성자ID */
 	private String wrterId;
 	/** 작성자명 */
+	@EgovNullCheck
 	private String wrterNm;
 	/** 작성자직급명 */
 	private String wrterClsfNm;
 	/** 보고자ID */
 	private String reportrId;
 	/** 보고자명 */
+	@EgovNullCheck
 	private String reportrNm;
 	/** 보고자직급명 */
 	private String reportrClsfNm;
 	/** 보고내용 */
+	@EgovNullCheck
+	@Size(max=2500)
 	private String reprtCn;
 	/** 첨부파일ID */
 	private String atchFileId;

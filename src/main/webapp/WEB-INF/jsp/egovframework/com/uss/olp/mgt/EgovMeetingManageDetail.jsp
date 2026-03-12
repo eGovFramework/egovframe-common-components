@@ -45,7 +45,7 @@ function fn_egov_list_MeetingManage(){
 function fn_egov_modify_MeetingManage(){
 	var varFrom = document.getElementById("MeetingManageForm");
 
-	varFrom.action = "<c:url value='/uss/olp/mgt/EgovMeetingManageModify.do' />";;
+	varFrom.action = "<c:url value='/uss/olp/mgt/EgovMeetingManageModifyView.do' />";;
 	varFrom.submit();
 }
 /* ********************************************************
@@ -189,7 +189,7 @@ function fn_egov_modify_MeetingManage(){
 	
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<form name="formUpdt" action="<c:url value='/uss/olp/mgt/EgovMeetingManageModify.do'/>" method="post" style="display:inline">
+		<form name="formUpdt" action="<c:url value='/uss/olp/mgt/EgovMeetingManageModifyView.do'/>" method="post" style="display:inline">
 		<input class="s_submit" type="submit" value="<spring:message code="button.update" />" onclick="fn_egov_modify_MeetingManage(); return false;" />
 		<input name="mtgId" type="hidden" value="${resultList[0].mtgId}">
 		</form>

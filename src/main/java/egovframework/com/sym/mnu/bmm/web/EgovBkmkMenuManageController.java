@@ -2,11 +2,8 @@ package egovframework.com.sym.mnu.bmm.web;
 
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -14,7 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
@@ -23,6 +19,8 @@ import egovframework.com.sym.mnu.bmm.service.BkmkMenuManage;
 import egovframework.com.sym.mnu.bmm.service.BkmkMenuManageVO;
 import egovframework.com.sym.mnu.bmm.service.EgovBkmkMenuManageService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * 바로가기메뉴관리 정보를 관리하기 위한 컨트롤러 클래스
@@ -51,9 +49,6 @@ public class EgovBkmkMenuManageController {
 
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertyService;
-
-    @Autowired
-    private DefaultBeanValidator beanValidator;
 
     /**
      * 바로가기메뉴관리 정보에 대한 목록을 조회한다.
@@ -136,9 +131,9 @@ public class EgovBkmkMenuManageController {
 
         String [] temp = checkMenuIds.split(",");
 
-        for(int i =0; i < temp.length; i++){
+        for (String element : temp) {
             BkmkMenuManage bkmk = new BkmkMenuManage();
-            bkmk.setMenuId(temp[i]);
+            bkmk.setMenuId(element);
             bkmk.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
             bkmkMenuManageService.deleteBkmkMenuManage(bkmk);
         }
@@ -242,7 +237,7 @@ public class EgovBkmkMenuManageController {
      * @throws Exception
      */
     @RequestMapping("/sym/mnu/bmm/registBkmkInf.do")
-    public String registBkmkInf(@ModelAttribute("bkmkMenuManage") BkmkMenuManage bkmkMenuManage,
+    public String registBkmkInf(@Valid @ModelAttribute("bkmkMenuManage") BkmkMenuManage bkmkMenuManage,
             BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
 
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -251,18 +246,19 @@ public class EgovBkmkMenuManageController {
         if(!isAuthenticated) {
             return "redirect:/uat/uia/egovLoginUsr.do";
         }
-
-        beanValidator.validate(bkmkMenuManage, bindingResult);
+        
         if (bindingResult.hasErrors()) {
+        	model.addAttribute("bkmkMenuManage", bkmkMenuManage);
             return "egovframework/com/sym/mnu/bmm/EgovBkmkMenuManageRegist";
+        }else {
+            bkmkMenuManage.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
+
+            // 2022.11.11 시큐어코딩 처리
+            bkmkMenuManageService.insertBkmkMenuManage(bkmkMenuManage);
+
+            return "forward:/sym/mnu/bmm/selectBkmkMenuManageList.do";
+//              return "/sym/mnu/bmm/selectBkmkMenuManageList";
         }
-
-        bkmkMenuManage.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
-
-        // 2022.11.11 시큐어코딩 처리
-        bkmkMenuManageService.insertBkmkMenuManage(bkmkMenuManage);
-
-        return "forward:/sym/mnu/bmm/selectBkmkMenuManageList.do";
     }
 
     /**

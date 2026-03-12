@@ -1,5 +1,8 @@
 package egovframework.com.dam.spe.req.service;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 
 /**
  * 지식정보제공/지식정보요청 Model and VO Class 구현
@@ -21,21 +24,27 @@ public class RequestOffer {
 	private String knoId;
 
 	/** 조식ID */
+	@EgovNullCheck
 	private String orgnztId;
 
 	/** 전문가ID */
 	private String speId;
 
 	/** 지식유형코드 */
+	@EgovNullCheck
 	private String knoTypeCd;
 
 	/** 사용자ID */
 	private String emplyrId;
 
 	/** 지식명 */
+	@EgovNullCheck
+	@Size(max=60)
 	private String knoNm;
 
 	/** 지식내용 */
+	@EgovNullCheck
+	@Size(max=2500)
 	private String knoCn;
 
 	/** 첨부파일ID */

@@ -23,7 +23,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comUtlSysHtm.comUtlHttpMonModify.title"/></c:set>
 <!DOCTYPE html>
 <html lang="ko">
@@ -32,9 +31,7 @@
 		<meta http-equiv="content-type" content="text/html; charset=utf-8" />
 		<link href="<c:url value='/css/egovframework/com/com.css' />" rel="stylesheet" type="text/css">
 		<link href="<c:url value='/css/egovframework/com/button.css' />" rel="stylesheet" type="text/css">
-		<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-		<validator:javascript formName="httpMon" staticJavascript="false" xhtml="true" cdata="false"/>
-		
+		<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 		<script type="text/javaScript" language="javascript">
 		<!--
 		/* ********************************************************
@@ -48,7 +45,7 @@
 		 ******************************************************** */
 		function fn_egov_modify_HttpMon(form){
 			if(confirm("<spring:message code="common.save.msg" />")){
-				if(!validateHttpMon(form)){ 			
+				if(!validateHttpMon(form)){
 					return;
 				}else{
 					form.submit();
@@ -61,8 +58,7 @@
 
 	<body>
 		<DIV class="wTableFrm">
-			<form:form modelAttribute="httpMon" name="httpMon" method="post">
-			<input name="cmd" type="hidden" value="Modify">
+			<form:form modelAttribute="httpMon" name="httpMon" action="${pageContext.request.contextPath}/utl/sys/htm/EgovComUtlHttpMonModify.do" method="post">
 			<form:hidden path="sysId"/>	
 
 				<!-- 상단 타이틀  영역 -->
@@ -78,9 +74,10 @@
 							    <option value="TOMCAT" <c:if test="${httpMon.webKind == 'TOMCAT'}">selected</c:if> >TOMCAT</option>
 							    <option value="WEBLOGIC" <c:if test="${httpMon.webKind == 'WEBLOGIC'}">selected</c:if> >WEBLOGIC</option>
 							    <option value="JEUS" <c:if test="${httpMon.webKind == 'JEUS'}">selected</c:if> >JEUS</option>
-							    <option value="JBOSS" <c:if test="${httpMon.webKind == 'JBOSS'}">selected</c:if> >JBOSS</option>								    						    
-							</select>						  	    				
-	    				</td>			    	   					
+							    <option value="JBOSS" <c:if test="${httpMon.webKind == 'JBOSS'}">selected</c:if> >JBOSS</option>
+							</select>
+							<form:errors path="webKind"/>
+	    				</td>
   					</tr>
 				  	<tr>
 				    	<th scope="row" width="20%" height="23" class="required_text" nowrap><spring:message code="comUtlSysHtm.comUtlHttpMon.systemURL" /><img src="<c:url value='/images/egovframework/com/cmm/icon/required.gif'/>" alt="필수입력표시"  width="15" height="15"></th><!-- 시스템URL -->
@@ -107,7 +104,7 @@
 				
 				<!-- 목록/저장버튼  -->
 				<div class="btn">
-					<input class="s_submit" type="submit" value="<spring:message code="button.save" />" onclick="fn_egov_modify_HttpMon(); return false;" />
+					<input class="s_submit" type="submit" value="<spring:message code="button.save" />" onclick="fn_egov_modify_HttpMon(document.httpMon); return false;" />
 					<input class="s_submit" type="submit" value="<spring:message code="button.list" />" onclick="fn_egov_list_HttpMon(); return false;" />
 				</div>
 			</form:form>

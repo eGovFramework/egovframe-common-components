@@ -26,15 +26,13 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <html lang="ko">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title><spring:message code="comSsiSyiIms.cntcMessageUpdt.title"/></title><!-- 연계메시지 수정 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="cntcMessage" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 <!--
 /* ********************************************************
@@ -49,6 +47,13 @@ function fn_egov_modify_CntcMessage(form){
 		}
 	}
 }
+/* ********************************************************
+ * 목록 으로 가기
+ ******************************************************** */
+function fn_egov_list_CntcMessage(){
+	document.listForm.action = "<c:url value='/ssi/syi/ims/getCntcMessageList.do'/>";
+	document.listForm.submit();
+}
 -->
 </script>
 </head>
@@ -57,6 +62,13 @@ function fn_egov_modify_CntcMessage(form){
 
 <%-- noscript 테그 --%>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
+
+<form name="listForm" action="" method="post">
+	<!-- 검색조건 유지 -->
+	<input name="searchCondition" type="hidden" value="<c:out value='${searchVO.searchCondition}'/>">
+	<input name="searchKeyword" type="hidden" value="<c:out value='${searchVO.searchKeyword}'/>">
+	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}' default='1'/>">
+</form>
 
 <form:form modelAttribute="cntcMessage" name="cntcMessage" method="post">
 <input name="cmd" type="hidden" value="Modify">
@@ -101,7 +113,7 @@ function fn_egov_modify_CntcMessage(form){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value="<spring:message code="button.save" />" title="<spring:message code="title.save" />" onclick="fn_egov_modify_CntcMessage(document.cntcMessage); return false;" /><!-- 저장 -->
-		<span class="btn_s"><a href="<c:url value='/ssi/syi/ims/getCntcMessageList.do'/>" onclick=""><spring:message code="button.list"/></a></span><!-- 목록 -->
+		<span class="btn_s"><a href="<c:url value='/ssi/syi/ims/getCntcMessageList.do'/>" onclick="fn_egov_list_CntcMessage(); return false;"><spring:message code="button.list"/></a></span><!-- 목록 -->
 	</div>
 	<div style="clear:both;"></div>
 </div>

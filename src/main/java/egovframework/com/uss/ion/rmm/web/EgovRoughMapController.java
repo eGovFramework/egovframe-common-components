@@ -2,19 +2,14 @@ package egovframework.com.uss.ion.rmm.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
@@ -23,6 +18,8 @@ import egovframework.com.uss.ion.rmm.service.EgovRoughMapService;
 import egovframework.com.uss.ion.rmm.service.RoughMapDefaultVO;
 import egovframework.com.uss.ion.rmm.service.RoughMapVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * <pre>
@@ -60,10 +57,6 @@ public class EgovRoughMapController {
 	/** EgovPropertyService */
 	@Resource(name = "propertiesService")
 	protected EgovPropertyService propertyService;
-
-	/** DefaultBeanValidator */
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/**
 	 * 약도 목록 조회 Service interface 호출 및 결과를 반환한다.
@@ -141,7 +134,7 @@ public class EgovRoughMapController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/com/uss/ion/rmm/registRoughMap.do")
-	public String goRoughMapRegist(@ModelAttribute("roughMap") RoughMapVO roughMap, Model model) throws Exception {
+	public String goRoughMapRegist(@ModelAttribute("roughMap") RoughMapVO roughMap, ModelMap model) throws Exception {
 		// 권한 체크
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
@@ -169,8 +162,6 @@ public class EgovRoughMapController {
 		if (!isAuthenticated) {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
-
-		beanValidator.validate(roughMap, bindingResult);
 
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/uss/ion/rmm/EgovRoughMapRegist";
@@ -220,7 +211,7 @@ public class EgovRoughMapController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/com/uss/ion/rmm/updateRoughMap.do")
-	public String updateRoughMap(@ModelAttribute("roughMap") RoughMapVO roughMap, BindingResult bindingResult)
+	public String updateRoughMap(@Valid @ModelAttribute("roughMap") RoughMapVO roughMap, BindingResult bindingResult)
 			throws Exception {
 
 		// 권한 체크
@@ -229,8 +220,6 @@ public class EgovRoughMapController {
 		if (!isAuthenticated) {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
-
-		beanValidator.validate(roughMap, bindingResult);
 
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/uss/ion/rmm/EgovRoughMapUpdt";

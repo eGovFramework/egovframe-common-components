@@ -45,7 +45,7 @@
 		 ******************************************************** */
 		function fnModify(){
 			var varForm				 = document.all["Form"];
-			varForm.action           = "<c:url value='/utl/sys/prm/EgovComUtlProcessMonModify.do'/>";
+			varForm.action           = "<c:url value='/utl/sys/prm/EgovComUtlProcessMonModifyView.do'/>";
 			varForm.processNm.value  = "${result.processNm}";
 			varForm.submit();
 		}

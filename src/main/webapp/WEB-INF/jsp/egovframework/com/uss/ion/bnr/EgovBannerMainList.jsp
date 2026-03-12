@@ -55,8 +55,8 @@ function fncSelectBanner(bannerId) {
 	<table class="board_list">
 		<caption></caption>
 		<colgroup>
-			<col style="" />
-			<col style="width:10%" />
+			<col style="width:80%" />
+			<col style="width:20%" />
 		</colgroup>
 		<thead>
 			<tr>
@@ -75,6 +75,14 @@ function fncSelectBanner(bannerId) {
 				</td>
 			</tr>
 			</c:forEach>
+			<%-- 데이터를 없을때 화면에 메세지를 출력해준다 --%>
+			<c:if test="${fn:length(bannerList) == 0}">
+			<tr>
+				<td class="lt_text3" colspan="2">
+					<spring:message code="common.nodata.msg" />
+				</td>
+			</tr>
+			</c:if>
 		</tbody>
 	</table>
 

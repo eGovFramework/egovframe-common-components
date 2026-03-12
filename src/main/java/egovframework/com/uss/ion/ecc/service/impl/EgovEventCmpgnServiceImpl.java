@@ -2,8 +2,6 @@ package egovframework.com.uss.ion.ecc.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
@@ -12,6 +10,7 @@ import org.springframework.stereotype.Service;
 import egovframework.com.uss.ion.ecc.service.EgovEventCmpgnService;
 import egovframework.com.uss.ion.ecc.service.EventCmpgnVO;
 import egovframework.com.uss.ion.ecc.service.TnextrlHrVO;
+import jakarta.annotation.Resource;
 
 @Service("EgovEventCmpgnService")
 public class EgovEventCmpgnServiceImpl extends EgovAbstractServiceImpl implements EgovEventCmpgnService {
@@ -24,30 +23,31 @@ public class EgovEventCmpgnServiceImpl extends EgovAbstractServiceImpl implement
 
 	@Resource(name="egovExtrlhrInfoIdGnrService")
 	private EgovIdGnrService idgenService2;
-	
+
 	@Override
-	public List<EventCmpgnVO> selectEventCmpgnList(EventCmpgnVO searchVO) {
-		return egovEventCmpgnDao.selectEventCmpgnList(searchVO);
+	public List<EventCmpgnVO> selectEventCmpgnList(EventCmpgnVO eventCmpgnVO) {
+		return egovEventCmpgnDao.selectEventCmpgnList(eventCmpgnVO);
 	}
 
 	@Override
-	public int selectEventCmpgnListCnt(EventCmpgnVO searchVO) {
-		return egovEventCmpgnDao.selectEventCmpgnListCnt(searchVO);
+	public int selectEventCmpgnListCnt(EventCmpgnVO eventCmpgnVO) {
+		return egovEventCmpgnDao.selectEventCmpgnListCnt(eventCmpgnVO);
 	}
 
 	@Override
 	public void insertEventCmpgn(EventCmpgnVO eventCmpgnVO) throws FdlException {
 		String eventId = idgenService1.getNextStringId();
 		eventCmpgnVO.setEventId(eventId);
-		
+
 		egovEventCmpgnDao.insertEventCmpgn(eventCmpgnVO);
 	}
 
 	@Override
 	public EventCmpgnVO selectEventCmpgnDetail(EventCmpgnVO eventCmpgnVO) throws Exception {
 		EventCmpgnVO resultVO = egovEventCmpgnDao.selectEventCmpgnDetail(eventCmpgnVO);
-        if (resultVO == null)
-            throw processException("info.nodata.msg");
+        if (resultVO == null) {
+			throw processException("info.nodata.msg");
+		}
         return resultVO;
 	}
 
@@ -63,32 +63,33 @@ public class EgovEventCmpgnServiceImpl extends EgovAbstractServiceImpl implement
 
 		//행사/이벤트/캠페인을 삭제한다.
 		egovEventCmpgnDao.deleteEventCmpgn(eventCmpgnVO);
-		
+
 	}
 
 	@Override
-	public List<TnextrlHrVO> selectTnextrlHrList(TnextrlHrVO searchVO) {
-		return egovEventCmpgnDao.selectTnextrlHrList(searchVO);
+	public List<TnextrlHrVO> selectTnextrlHrList(TnextrlHrVO tnextrlHrVO) {
+		return egovEventCmpgnDao.selectTnextrlHrList(tnextrlHrVO);
 	}
 
 	@Override
-	public int selectTnextrlHrListCnt(TnextrlHrVO searchVO) {
-		return egovEventCmpgnDao.selectTnextrlHrListCnt(searchVO);
+	public int selectTnextrlHrListCnt(TnextrlHrVO tnextrlHrVO) {
+		return egovEventCmpgnDao.selectTnextrlHrListCnt(tnextrlHrVO);
 	}
 
 	@Override
 	public void insertTnextrlHr(TnextrlHrVO tnextrlHrVO) throws FdlException {
 		String extrlHrId = idgenService2.getNextStringId();
 		tnextrlHrVO.setExtrlHrId(extrlHrId);
-		
+
 		egovEventCmpgnDao.insertTnextrlHr(tnextrlHrVO);
 	}
 
 	@Override
 	public TnextrlHrVO selectTnextrlHrDetail(TnextrlHrVO tnextrlHrVO) throws Exception {
 		TnextrlHrVO resultVO = egovEventCmpgnDao.selectTnextrlHrDetail(tnextrlHrVO);
-        if (resultVO == null)
-            throw processException("info.nodata.msg");
+        if (resultVO == null) {
+			throw processException("info.nodata.msg");
+		}
         return resultVO;
 	}
 

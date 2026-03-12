@@ -2,11 +2,8 @@ package egovframework.com.uss.olh.awm.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -14,7 +11,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -25,6 +21,8 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olh.awm.service.AdministrationWordVO;
 import egovframework.com.uss.olh.awm.service.EgovAdministrationWordService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * 행정전문용어사전관리를 처리하는 Controller Class 구현
@@ -49,9 +47,6 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  */
 @Controller
 public class EgovAdministrationWordController {
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
@@ -218,11 +213,16 @@ public class EgovAdministrationWordController {
 	 */
 	@RequestMapping("/uss/olh/awm/insertAdministrationWord.do")
 	public String insertAdministrationWord(@ModelAttribute("searchVO") AdministrationWordVO searchVO,
-			@ModelAttribute("administrationWordVO") AdministrationWordVO administrationWordVO,
-			BindingResult bindingResult) throws Exception {
+			@Valid @ModelAttribute("administrationWordVO") AdministrationWordVO administrationWordVO,
+			BindingResult bindingResult,
+			Model model) throws Exception {
 
-		beanValidator.validate(administrationWordVO, bindingResult);
 		if (bindingResult.hasErrors()) {
+			ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
+			comDefaultCodeVO.setCodeId("COM102");
+			
+			List<?> wordSeCode = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+			model.addAttribute("wordSeCode", wordSeCode);
 			return "egovframework/com/uss/olh/awm/EgovAdministrationWordRegist";
 		}
 
@@ -279,12 +279,17 @@ public class EgovAdministrationWordController {
 	 */
 	@RequestMapping("/uss/olh/awm/updateAdministrationWord.do")
 	public String updateAdministrationWord(@ModelAttribute("searchVO") AdministrationWordVO searchVO,
-			@ModelAttribute("administrationWordVO") AdministrationWordVO administrationWordVO,
-			BindingResult bindingResult) throws Exception {
+			@Valid @ModelAttribute("administrationWordVO") AdministrationWordVO administrationWordVO,
+			BindingResult bindingResult,
+			Model model) throws Exception {
 
-		// Validation
-		beanValidator.validate(administrationWordVO, bindingResult);
 		if (bindingResult.hasErrors()) {
+			ComDefaultCodeVO comDefaultCodeVO = new ComDefaultCodeVO();
+			comDefaultCodeVO.setCodeId("COM102");
+			
+			List<?> wordSeCode = cmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
+			model.addAttribute("wordSeCode", wordSeCode);
+			
 			return "egovframework/com/uss/olh/awm/EgovAdministrationWordUpdt";
 		}
 

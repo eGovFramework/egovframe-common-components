@@ -2,8 +2,6 @@ package egovframework.com.uss.ion.rwd.service.impl;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
@@ -15,11 +13,12 @@ import egovframework.com.uss.ion.rwd.service.RwardManage;
 import egovframework.com.uss.ion.rwd.service.RwardManageVO;
 import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
 
 /**
  * 개요
  * - 포상관리에 대한 ServiceImpl 클래스를 정의한다.
- * 
+ *
  * 상세내용
  * - 포상관리에 대한 등록, 수정, 삭제, 조회, 승인처리 기능을 제공한다.
  * - 포상관리의 조회기능은 목록조회, 상세조회로 구분된다.
@@ -34,31 +33,32 @@ public class EgovRwardManageServiceImpl extends EgovAbstractServiceImpl implemen
 	@Resource(name="rwardManageDAO")
     private RwardManageDAO rwardManageDAO;
 
-    /** ID Generation */  
+    /** ID Generation */
 	@Resource(name="egovRwardManageIdGnrService")
 	private EgovIdGnrService idgenRwardManageService;
-	
+
 	@Resource(name="EgovInfrmlSanctnService")
     protected EgovInfrmlSanctnService infrmlSanctnService;
-	
+
 	/**
 	 * 포상관리정보를 관리하기 위해 등록된 포상관리 목록을 조회한다.
 	 * @param rwardManageVO - 포상관리 VO
 	 * @return List - 포상관리 목록
 	 */
+	@Override
 	public List<RwardManageVO> selectRwardManageList(RwardManageVO rwardManageVO) throws Exception{
 		rwardManageVO.setSearchFromDate(EgovStringUtil.removeMinusChar(rwardManageVO.getSearchFromDate()));
 		rwardManageVO.setSearchToDate(EgovStringUtil.removeMinusChar(rwardManageVO.getSearchToDate()));
 		List<RwardManageVO> result = rwardManageDAO.selectRwardManageList(rwardManageVO);
 
-		
+
 		int num = result.size();
 
 	    for (int i = 0 ; i < num ; i ++ ){
 	    	RwardManageVO rwardManageVO1 = result.get(i);
 	    	rwardManageVO1.setRwardDe(EgovDateUtil.formatDate(rwardManageVO1.getRwardDe(), "-"));
 	    	result.set(i, rwardManageVO1);
-	    }	
+	    }
 		return result;
 	}
 
@@ -67,20 +67,22 @@ public class EgovRwardManageServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @param rwardManageVO - 포상관리 VO
 	 * @return int - 포상관리 카운트 수
 	 */
+	@Override
 	public int selectRwardManageListTotCnt(RwardManageVO rwardManageVO) throws Exception {
 		return rwardManageDAO.selectRwardManageListTotCnt(rwardManageVO);
 	}
-	
+
 	/**
 	 * 등록된 포상관리의 상세정보를 조회한다.
 	 * @param rwardManageVO - 포상관리 VO
 	 * @return RwardManageVO - 포상관리 VO
 	 */
+	@Override
 	public RwardManageVO selectRwardManage(RwardManageVO rwardManageVO) throws Exception {
 
 		RwardManageVO rwardManageVOTemp = rwardManageDAO.selectRwardManage(rwardManageVO);
-		rwardManageVOTemp.setRwardDe(EgovDateUtil.formatDate(rwardManageVOTemp.getRwardDe(), "-"));		
-		
+		rwardManageVOTemp.setRwardDe(EgovDateUtil.formatDate(rwardManageVOTemp.getRwardDe(), "-"));
+
 		return rwardManageVOTemp;
 	}
 
@@ -88,6 +90,7 @@ public class EgovRwardManageServiceImpl extends EgovAbstractServiceImpl implemen
 	 * 포상관리정보를 신규로 등록한다.
 	 * @param rwardManage - 포상관리 model
 	 */
+	@Override
 	public void insertRwardManage(RwardManage rwardManage) throws Exception {
 
 		/*
@@ -100,7 +103,7 @@ public class EgovRwardManageServiceImpl extends EgovAbstractServiceImpl implemen
 
 		String	sRwardId = idgenRwardManageService.getNextStringId();
 		rwardManage.setRwardId(sRwardId);
-		
+
 		rwardManageDAO.insertRwardManage(rwardManage);
 	}
 
@@ -108,6 +111,7 @@ public class EgovRwardManageServiceImpl extends EgovAbstractServiceImpl implemen
 	 * 기 등록된 포상관리정보를 수정한다.
 	 * @param rwardManage - 포상관리 model
 	 */
+	@Override
 	public void updtRwardManage(RwardManage rwardManage) throws Exception {
 		rwardManage.setRwardDe(EgovStringUtil.removeMinusChar(rwardManage.getRwardDe()));
 		rwardManageDAO.updtRwardManage(rwardManage);
@@ -117,6 +121,7 @@ public class EgovRwardManageServiceImpl extends EgovAbstractServiceImpl implemen
 	 * 기 등록된 포상관리정보를 삭제한다.
 	 * @param rwardManage - 포상관리 model
 	 */
+	@Override
 	public void deleteRwardManage(RwardManage rwardManage) throws Exception {
 		/*
 		 * 포상 승인처리  삭제 infrmlSanctnService.deleteInfrmlSanctn("000", vcatnManage);
@@ -127,12 +132,13 @@ public class EgovRwardManageServiceImpl extends EgovAbstractServiceImpl implemen
 	}
 
 
-	
+
 	/**
 	 * 포상관리정보 승인 처리를 위해 신청된 포상관리 목록을 조회한다.
 	 * @param rwardManageVO - 포상관리 VO
 	 * @return List - 포상관리 목록
 	 */
+	@Override
 	public List<RwardManageVO> selectRwardManageConfmList(RwardManageVO rwardManageVO) throws Exception{
 		rwardManageVO.setSearchFromDate(EgovStringUtil.removeMinusChar(rwardManageVO.getSearchFromDate()));
 		rwardManageVO.setSearchToDate(EgovStringUtil.removeMinusChar(rwardManageVO.getSearchToDate()));
@@ -144,7 +150,7 @@ public class EgovRwardManageServiceImpl extends EgovAbstractServiceImpl implemen
 	    	RwardManageVO rwardManageVO1 = result.get(i);
 	    	rwardManageVO1.setRwardDe(EgovDateUtil.formatDate(rwardManageVO1.getRwardDe(), "-"));
 	    	result.set(i, rwardManageVO1);
-	    }	
+	    }
 		return result;
 	}
 
@@ -153,14 +159,16 @@ public class EgovRwardManageServiceImpl extends EgovAbstractServiceImpl implemen
 	 * @param rwardManageVO - 포상관리 VO
 	 * @return int - 포상관리 카운트 수
 	 */
+	@Override
 	public int selectRwardManageConfmListTotCnt(RwardManageVO rwardManageVO) throws Exception {
 		return rwardManageDAO.selectRwardManageConfmListTotCnt(rwardManageVO);
 	}
-	
+
 	/**
 	 * 포상정보를 승인/반려처리 한다.
 	 * @param rwardManage - 포상관리 model
 	 */
+	@Override
 	public void updtRwardManageConfm(RwardManage rwardManage) throws Exception {
 		InfrmlSanctn infrmlSanctn = new InfrmlSanctn();
 		rwardManage.setRwardDe(EgovStringUtil.removeMinusChar(rwardManage.getRwardDe()));
@@ -206,5 +214,5 @@ public class EgovRwardManageServiceImpl extends EgovAbstractServiceImpl implemen
     	infrmlSanctn.setInfrmlSanctnId(rwardManage.getInfrmlSanctnId());// 약식결재ID
     	return infrmlSanctn;
 	}
-	
+
 }

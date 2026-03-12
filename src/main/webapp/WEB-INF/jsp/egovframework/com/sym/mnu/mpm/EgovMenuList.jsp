@@ -28,7 +28,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <%
 //String imagePath_icon   = "/images/egovframework/com/sym/mnu/mpm/icon/";
 //String imagePath_button = "/images/egovframework/com/sym/mnu/mpm/button/";

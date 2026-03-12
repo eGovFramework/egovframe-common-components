@@ -27,7 +27,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="ImgUrl" value="/images/egovframework/com/sym/prm/"/>
 <c:set var="CssUrl" value="/css/egovframework/com/sym/prm/"/>
 <html lang="ko">
@@ -37,11 +36,10 @@
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
-<script type="text/javascript" src="<c:url value="/validator.do" />"></script>
-<validator:javascript formName="progrmManageDtlVO" staticJavascript="false" xhtml="true" cdata="false"/>
+
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
-
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script language="javascript1.2" type="text/javaScript">
 <!--
 /* ********************************************************
@@ -58,14 +56,14 @@ function searchFileNm() {
 function insertProgrmChangeRequst(form) {
 	if(confirm("<spring:message code="common.save.msg" />")){
 
-		if(!validateProgrmManageDtlVO(form)){
+		if(!validateProgrmChangeRequst(form)){
 			return;
 		}else{
             form.action = "<c:url value='/sym/prm/EgovProgramChangRequstStre.do'/>";
 			form.submit();
 		}
 	}
-//	progrmListRegistForm.submit();
+	progrmListRegistForm.submit();
 }
 
 function initCalendar(){
@@ -121,24 +119,24 @@ function selectList(){
 			<th><spring:message code="comSymPrm.programChangRequstStre.rqesterNo"/> <span class="pilsu">*</span></th><!-- 요청번호 -->
 			<td class="left">
 			    <form:input path="rqesterNo" size="50"  maxlength="50"  title="${vrqesterNo}" readonly="true"/><!-- 요청번호 -->
-				<form:errors path="rqesterNo" />
+				<div><form:errors path="rqesterNo" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymPrm.programChangRequstStre.progrmFileNm"/> <span class="pilsu">*</span></th><!-- 프로그램파일명 -->
 			<td class="left">
 			    <input id="progrmFileNm" name="progrmFileNm" maxlength="50"  title="<spring:message code="comSymPrm.programChangRequstStre.progrmFileNm"/>" readonly="readonly"/><!-- 프로그램파일명 -->
-				<form:errors path="progrmFileNm" />
 				<a href="<c:url value='/sym/prm/EgovProgramListSearch.do'/>?tmp_SearchElementName=progrmFileNm" target="_blank" onclick="searchFileNm(); return false;" style="selector-dummy:expression(this.hideFocus=false);"  title="새 창으로 이동"><!-- 새 창으로 이동 -->
 				<img src="<c:url value='/images/egovframework/com/cmm/icon/search2.gif' />" alt='(<spring:message code="comSymPrm.programChangRequstStre.searchProgrmFileNm"/>)' width="15" height="15" /></a><!-- 프로그램파일명 검색 -->
 				(<spring:message code="comSymPrm.programChangRequstStre.searchProgrmFileNm"/>)<!-- 프로그램파일명 검색 -->
+				<div><form:errors path="progrmFileNm" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymPrm.programChangRequstStre.rqesterPersonId"/> <span class="pilsu">*</span></th><!-- 요청자 -->
 			<td class="left">
 			    <form:input path="rqesterPersonId" size="20"  maxlength="20"  title="${vrqesterPersonId}" readonly="true"/><!-- 요청자 -->
-				<form:errors path="rqesterPersonId" />
+				<div><form:errors path="rqesterPersonId" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
@@ -146,21 +144,21 @@ function selectList(){
 			<td class="left">
 			    <input type="hidden" name="cal_url" value="<c:url value='/sym/cal/EgovNormalCalPopup.do'/>" />
 				<input id="rqesterDe" name="rqesterDe" maxlength="50"  title="<spring:message code="comSymPrm.programChangRequstStre.rqesterDe"/>" readonly="readonly" style="width:70px"/><!-- 요청일자 -->
-				<form:errors path="rqesterDe"/>
+				<div><form:errors path="rqesterDe" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymPrm.programChangRequstStre.rqesterSj"/> <span class="pilsu">*</span></th><!-- 요청제목 -->
 			<td class="left">
 			    <form:input path="rqesterSj" size="50"  maxlength="50"  title="${vrqesterSj}"/><!-- 요청제목 -->
-				<form:errors path="rqesterSj" />
+			    <div><form:errors path="rqesterSj" cssClass="error" /></div>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymPrm.programChangRequstStre.changerqesterCn"/></th><!-- 변경요청내용 -->
 			<td class="left">
 			    <form:textarea path="changerqesterCn" rows="14" cols="75" title="${changerqesterCn}"/><!-- 변경요청내용 -->
-     			<form:errors path="changerqesterCn"/>
+			    <div><form:errors path="changerqesterCn" cssClass="error" /></div>
 			</td>
 		</tr>
 	</table>

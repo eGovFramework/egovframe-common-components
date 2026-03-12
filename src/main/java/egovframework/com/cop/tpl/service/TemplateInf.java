@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 템플릿 정보를 관리하기 위한 모델 클래스
  * @author 공통서비스개발팀 이삼섭
@@ -36,15 +39,20 @@ public class TemplateInf implements Serializable {
     private String lastUpdusrPnttm = "";
     
     /** 템플릿 경로 */
+    @EgovNullCheck
+    @Size(max=2000)
     private String tmplatCours = "";
     
     /** 템플릿 아이디 */
     private String tmplatId = "";
     
     /** 템플릿 명 */
+    @EgovNullCheck
+    @Size(max=120)
     private String tmplatNm = "";
     
     /** 탬플릿 구분코드 */
+    @EgovNullCheck
     private String tmplatSeCode = "";
     
     /** 사용여부 */

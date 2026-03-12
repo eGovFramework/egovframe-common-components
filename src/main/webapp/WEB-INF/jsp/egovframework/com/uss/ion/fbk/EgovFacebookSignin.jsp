@@ -2,9 +2,6 @@
 <%@ page session="false"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
-<spring:eval
-	expression="@customProperties.getProperty('facebook.appId')"
-	var="appId" />
 <%
 /**
  * @Class Name : EgovFacebookSignin.jsp
@@ -43,7 +40,8 @@
 	<script>
 		window.fbAsyncInit = function() {
 
-			var appId = "<c:out value='${appId}' />";
+			var appId = "<c:out value='${facebookAppId}' />";
+			console.log("facebookAppId =", appId);
 			var accessToken = "";
 			var userID = "";
 
@@ -64,15 +62,12 @@
 			//로그인 상태에 따라 로그인 / 로그아웃 구분
 			function statusChangeCallback(res) {
 
-				var appId = "<c:out value='${appId}' />";
+				var appId = "<c:out value='${facebookAppId}' />";
 
 				if (res.status === 'connected') {
 					document.querySelector('#logBtn').value = "logout";
 					document.querySelector('#facebookLink').style.display = "block";
-
-					document.querySelector('#accessToken').value = res.authResponse.accessToken;
-					document.querySelector('#userID').value = res.authResponse.userID;
-
+					
 				} else {
 					document.querySelector('#logBtn').value = "Sign in with Facebook";
 				}
@@ -155,7 +150,7 @@
 						<td class="left">
 							<form name=feedBtnForm
 								action="<c:url value='/uss/ion/fbk/feed.do' />" 
-								method="post"
+								method="GET"
 								target="_self">
 								<button class="btn_01" type="submit">
 									<spring:message code="comUssIonFbk.facebookHome.viewFeed" />
@@ -185,6 +180,7 @@
 							</a>
 						</td>
 					</tr>
+					
 					<!-- 프로필 정보보기 -->
 					</tbody>
 				</table>

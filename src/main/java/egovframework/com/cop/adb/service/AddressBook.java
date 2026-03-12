@@ -1,6 +1,9 @@
 package egovframework.com.cop.adb.service;
 
 import java.io.Serializable;
+
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
 /**
  * 주소록 관리를 위한 모델 클래스
  * @author 공통컴포넌트개발팀 윤성록
@@ -25,9 +28,12 @@ public class AddressBook implements Serializable{
     private String adbkId = "";
     
     /** 주소록 명 */
+    @EgovNullCheck
+    @Size(max=50)
     private String adbkNm = "";
     
     /** 주소록 공개범위 */
+    @EgovNullCheck
     private String othbcScope = "";
     
     /** 최초등록자 부서 */

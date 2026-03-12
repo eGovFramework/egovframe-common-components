@@ -3,25 +3,23 @@ package egovframework.com.sym.ccm.adc.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.sym.ccm.adc.service.AdministCode;
 import egovframework.com.sym.ccm.adc.service.AdministCodeVO;
 import egovframework.com.sym.ccm.adc.service.EgovCcmAdministCodeManageService;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * 행정코드에 관한 요청을 받아 서비스 클래스로 요청을 전달하고 서비스클래스에서 처리한 결과를 웹 화면으로 전달을 위한 Controller를
@@ -53,9 +51,6 @@ public class EgovCcmAdministCodeManageController {
 	/** EgovPropertyService */
 	@Resource(name = "propertiesService")
 	protected EgovPropertyService propertiesService;
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/**
 	 * 행정코드를 삭제한다.
@@ -102,9 +97,8 @@ public class EgovCcmAdministCodeManageController {
 	 */
 	@RequestMapping(value = "/sym/ccm/adc/EgovCcmAdministCodeRegist.do")
 	public String insertAdministCode(@ModelAttribute("loginVO") LoginVO loginVO,
-			@ModelAttribute("administCode") AdministCode administCode, BindingResult bindingResult, ModelMap model)
+			@Valid @ModelAttribute("administCode") AdministCode administCode, BindingResult bindingResult, ModelMap model)
 			throws Exception {
-		beanValidator.validate(administCode, bindingResult);
 
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/sym/ccm/adc/EgovCcmAdministCodeRegist";
@@ -261,16 +255,16 @@ public class EgovCcmAdministCodeManageController {
 	 */
 	@RequestMapping(value = "/sym/ccm/adc/EgovCcmAdministCodeModify.do")
 	public String updateAdministCode(@ModelAttribute("loginVO") LoginVO loginVO,
-			@ModelAttribute("administCode") AdministCode administCode, BindingResult bindingResult,
+			@Valid @ModelAttribute("administCode") AdministCode administCode, BindingResult bindingResult,
 			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
-		beanValidator.validate(administCode, bindingResult);
+
+		if (bindingResult.hasErrors()) {
+			return "egovframework/com/sym/ccm/adc/EgovCcmAdministCodeModify";
+		}
 
 		AdministCode vo = administCodeManageService.selectAdministCodeDetail(administCode);
 		if (vo != null) {
-			if (bindingResult.hasErrors()) {
-				model.addAttribute("administCode", vo);
-				return "egovframework/com/sym/ccm/adc/EgovCcmAdministCodeModify";
-			}
+			model.addAttribute("administCode", vo);
 
 			administCode.setLastUpdusrId(loginVO.getUniqId());
 			administCodeManageService.updateAdministCode(administCode);

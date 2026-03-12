@@ -1,5 +1,8 @@
 package egovframework.com.dam.per.service;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 개요
  * - 개인지식에 대한 model 클래스를 정의한다.
@@ -23,6 +26,8 @@ public class KnoPersonal {
 	/**
 	 * 소속조직ID
 	 */
+	@EgovNullCheck
+	@Size(max=20)
 	private String orgnztId;
 	/**
 	 * 소속조직명
@@ -39,6 +44,8 @@ public class KnoPersonal {
 	/**
 	 * 지식유형코드
 	 */
+	@EgovNullCheck
+	@Size(max=3)
 	private String knoTypeCd;
 	/**
 	 * 지식유형명
@@ -47,10 +54,14 @@ public class KnoPersonal {
 	/**
 	 * 지식명
 	 */
+	@EgovNullCheck
+	@Size(max=60)
 	private String knoNm;
 	/**
 	 * 지식내용
 	 */
+	@EgovNullCheck
+	@Size(max=2500)
 	private String knoCn;
 	/**
 	 * 개인지식공개여부
@@ -63,6 +74,8 @@ public class KnoPersonal {
 	/**
 	 * 수집일자
 	 */
+	@EgovNullCheck
+	@Size(max=10)
 	private String colYmd;
 	/**
 	 * 첨부파일ID

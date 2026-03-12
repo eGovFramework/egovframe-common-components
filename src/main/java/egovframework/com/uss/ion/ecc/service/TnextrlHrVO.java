@@ -1,8 +1,11 @@
 package egovframework.com.uss.ion.ecc.service;
 
-import java.io.Serializable;
-
 import egovframework.com.cmm.ComDefaultVO;
+
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import org.egovframe.rte.ptl.reactive.validation.EgovEmailCheck;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 /**
  * 외부인사관리 VO Class 구현
  * @author 공통서비스 장동한
@@ -19,13 +22,14 @@ import egovframework.com.cmm.ComDefaultVO;
  *
  * </pre>
  */
-public class TnextrlHrVO extends ComDefaultVO implements Serializable {
+public class TnextrlHrVO extends ComDefaultVO {
 
-	private static final long serialVersionUID = 1739374172177710041L;
+	private static final long serialVersionUID = 1L;
 
 	/**
 	 * 성별코드
 	 */
+	@EgovNullCheck
 	private String sexdstnCode = "";
 	
 	/**
@@ -36,16 +40,20 @@ public class TnextrlHrVO extends ComDefaultVO implements Serializable {
 	/**
 	 * 외부인사명
 	 */
+	@EgovNullCheck
 	private String extrlHrNm = "";
 
 	/**
 	 * 이메일주소
 	 */
+	@EgovNullCheck
+	@EgovEmailCheck
 	private String emailAdres = "";
 
 	/**
 	 * 직업유형코드
 	 */
+	@EgovNullCheck
 	private String occpTyCode = "";
 	
 	/**
@@ -66,6 +74,7 @@ public class TnextrlHrVO extends ComDefaultVO implements Serializable {
 	/**
 	 * 행사/이벤트/캠페인 아이디
 	 */
+	@EgovNullCheck
 	private String eventId = "";
 	
 	/**
@@ -81,16 +90,25 @@ public class TnextrlHrVO extends ComDefaultVO implements Serializable {
 	/**
 	 * 지역번호
 	 */
+	@EgovNullCheck
+	@Size(max=4)
+	@Pattern(regexp="^[0-9]*$", message="{validation.pattern.integer}")
 	private String areaNo = "";
 
 	/**
 	 * 중간전화번호
 	 */
+	@EgovNullCheck
+	@Size(max=4)
+	@Pattern(regexp="^[0-9]*$", message="{validation.pattern.integer}")
 	private String middleTelno = "";
 
 	/**
 	 * 끝전화번호
 	 */
+	@EgovNullCheck
+	@Size(max=4)
+	@Pattern(regexp="^[0-9]*$", message="{validation.pattern.integer}")
 	private String endTelno = "";
 
 	/**

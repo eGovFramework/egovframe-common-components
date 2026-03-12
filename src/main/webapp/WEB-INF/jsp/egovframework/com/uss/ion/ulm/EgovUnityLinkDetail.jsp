@@ -29,12 +29,6 @@
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <script type="text/javaScript" language="javascript">
 /* ********************************************************
- * 초기화
- ******************************************************** */
-function fn_egov_init_UnityLink(){
-
-}
-/* ********************************************************
  * 목록 으로 가기
  ******************************************************** */
 function fn_egov_list_UnityLink(){
@@ -46,7 +40,7 @@ function fn_egov_list_UnityLink(){
 function fn_egov_modify_UnityLink(){
 	var vFrom = document.UnityLinkForm;
 	vFrom.cmd.value = '';
-	vFrom.action = "<c:url value='/uss/ion/ulm/updtUnityLinkView.do' />";;
+	vFrom.action = "<c:url value='/uss/ion/ulm/updtUnityLinkView.do' />";
 	vFrom.submit();
 
 }
@@ -65,7 +59,7 @@ function fn_egov_delete_UnityLink(){
 }
 </script>
 </head>
-<body onLoad="fn_egov_init_UnityLink();">
+<body>
 
 <%-- noscript 태그 --%>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->

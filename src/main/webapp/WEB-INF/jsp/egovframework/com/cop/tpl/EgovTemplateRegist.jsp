@@ -4,7 +4,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <c:set var="pageTitle"><spring:message code="comCopTpl.template.title"/> <spring:message code="title.create" /></c:set>
 <%
  /**
@@ -29,8 +28,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="<c:url value='/css/egovframework/com/com.css' />" rel="stylesheet" type="text/css">
 <link href="<c:url value='/css/egovframework/com/button.css' />" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="templateInf" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript">
 	function fn_egov_regist_tmplatInfo(){
 		if (!validateTemplateInf(document.templateInf)){
@@ -134,7 +132,7 @@
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="comCopTpl.template.useYN" /> <span class="pilsu">*</span></th>
+			<th><spring:message code="comCopTpl.template.useYN" /> </th>
 			<td class="left">
 				Y : <input type="radio" name="useAt" class="radio2" value="Y"  checked>&nbsp;
 		     	N : <input type="radio" name="useAt" class="radio2" value="N">

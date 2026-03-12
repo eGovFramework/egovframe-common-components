@@ -3,21 +3,19 @@ package egovframework.com.uss.olp.qim.web;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springmodules.validation.commons.DefaultBeanValidator;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -26,7 +24,11 @@ import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.olp.qim.service.EgovQustnrItemManageService;
 import egovframework.com.uss.olp.qim.service.QustnrItemManageVO;
+import egovframework.com.uss.olp.qmc.service.EgovQustnrManageService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
+
 /**
  * 설문항목관리를 처리하는 Controller Class 구현
  * @author 공통서비스 장동한
@@ -44,14 +46,10 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *   2024.10.29  권태성         등록 & 수정의 화면과 데이터를 처리하는 method 분리, validation 적용
  * </pre>
  */
-
 @Controller
 public class EgovQustnrItemManageController {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovQustnrItemManageController.class);
-
-	@Autowired
-	private DefaultBeanValidator beanValidator;
 
 	/** EgovMessageSource */
     @Resource(name="egovMessageSource")
@@ -86,6 +84,17 @@ public class EgovQustnrItemManageController {
 			egovQustnrItemManageService.deleteQustnrItemManage(qustnrItemManageVO);
 		}
 
+		//팝업창 url 검색 강제주입
+        String searchCondition = commandMap.get("searchCondition") == null ? "" : (String) commandMap.get("searchCondition");
+        String searchKeyword = commandMap.get("searchKeyword") == null ? "" : (String) commandMap.get("searchKeyword");
+
+        searchVO.setSearchCondition(searchCondition);
+        searchVO.setSearchKeyword(searchKeyword);
+
+        LOGGER.info("### popup searchCondition={}, searchKeyword={}",
+                searchVO.getSearchCondition(),
+                searchVO.getSearchKeyword());
+	
     	/** EgovPropertyService.sample */
     	searchVO.setPageUnit(propertiesService.getInt("pageUnit"));
     	searchVO.setPageSize(propertiesService.getInt("pageSize"));
@@ -227,7 +236,7 @@ public class EgovQustnrItemManageController {
 		return "egovframework/com/uss/olp/qim/EgovQustnrItemManageModify";
 	}
 
-	
+
 	/**
 	 * 설문항목을 수정한다.
 	 * @param searchVO
@@ -240,9 +249,9 @@ public class EgovQustnrItemManageController {
 	 */
 	@RequestMapping(value = "/uss/olp/qim/EgovQustnrItemManageModify.do")
 	public String qustnrItemManageModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<?, ?> commandMap,
-			@ModelAttribute("qustnrItemManageVO") QustnrItemManageVO qustnrItemManageVO, BindingResult bindingResult,
-			ModelMap model) throws Exception {
+			@Valid @ModelAttribute("qustnrItemManageVO") QustnrItemManageVO qustnrItemManageVO,
+			BindingResult bindingResult, ModelMap model) throws Exception {
+
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
@@ -253,8 +262,6 @@ public class EgovQustnrItemManageController {
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-		// 서버 validate 체크
-		beanValidator.validate(qustnrItemManageVO, bindingResult);
 		if (bindingResult.hasErrors()) {
 			// 설문항목(을)를 정보 불러오기
 			List<EgovMap> listQustnrTmplat = egovQustnrItemManageService
@@ -286,12 +293,13 @@ public class EgovQustnrItemManageController {
 	 */
 	@RequestMapping(value = "/uss/olp/qim/EgovQustnrItemManageRegistView.do")
 	public String qustnrItemManageRegistView(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@ModelAttribute("qustnrItemManageVO") QustnrItemManageVO qustnrItemManageVO, ModelMap model)
+			@ModelAttribute("qustnrItemManageVO") QustnrItemManageVO qustnrItemManageVO, ModelMap model,
+			RedirectAttributes redirectAttributes)
 			throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
@@ -312,35 +320,38 @@ public class EgovQustnrItemManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/olp/qim/EgovQustnrItemManageRegist.do")
-	public String qustnrItemManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@ModelAttribute("qustnrItemManageVO") QustnrItemManageVO qustnrItemManageVO, BindingResult bindingResult,
-			ModelMap model) throws Exception {
+	public String qustnrItemManageRegist(
+			@ModelAttribute("searchVO") ComDefaultVO searchVO,
+			@Valid @ModelAttribute("qustnrItemManageVO") QustnrItemManageVO qustnrItemManageVO,
+			BindingResult bindingResult, ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
+		LOGGER.info("####설문항목 등록 컨트롤러 진입");
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
-			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
-
-		// 로그인 객체 선언
-		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
-
-		// 서버 validate 체크
-		beanValidator.validate(qustnrItemManageVO, bindingResult);
+		// validate 체크
 		if (bindingResult.hasErrors()) {
+			LOGGER.error("####설문항목 등록 컨트롤러 유효성에러 - 에러수 : {}, 에러목록: {}",bindingResult.getErrorCount(),bindingResult.getAllErrors() );
 			// 설문항목(을)를 정보 불러오기
-			List<EgovMap> listQustnrTmplat = egovQustnrItemManageService
-					.selectQustnrTmplatManageList(qustnrItemManageVO);
+			List<EgovMap> listQustnrTmplat = egovQustnrItemManageService.selectQustnrTmplatManageList(qustnrItemManageVO);
 			model.addAttribute("listQustnrTmplat", listQustnrTmplat);
 			return "egovframework/com/uss/olp/qim/EgovQustnrItemManageRegist";
 		}
+		// 로그인 객체 선언
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
+		LOGGER.info("####설문항목 등록 컨트롤러: {}", qustnrItemManageVO.toString());
 		// 아이디 설정
 		qustnrItemManageVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
 		qustnrItemManageVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
-
+		
+		LOGGER.info("####설문항목 등록 컨트롤러 랜덤아이디 생성");
+		
 		egovQustnrItemManageService.insertQustnrItemManage(qustnrItemManageVO);
-
+		LOGGER.info("####설문항목 등록 컨트롤러 리턴전");
+		
 		return "redirect:/uss/olp/qim/EgovQustnrItemManageList.do";
 	}
 

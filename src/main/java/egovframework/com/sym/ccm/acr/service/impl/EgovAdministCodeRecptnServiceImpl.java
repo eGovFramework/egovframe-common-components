@@ -1,6 +1,8 @@
 package egovframework.com.sym.ccm.acr.service.impl;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -8,8 +10,6 @@ import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
-import javax.annotation.Resource;
 
 import org.apache.commons.io.IOUtils;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
@@ -28,6 +28,7 @@ import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.sym.ccm.acr.service.AdministCodeRecptn;
 import egovframework.com.sym.ccm.acr.service.AdministCodeRecptnVO;
 import egovframework.com.sym.ccm.acr.service.EgovAdministCodeRecptnService;
+import jakarta.annotation.Resource;
 
 /**
  * 법정동코드에 대한 서비스 구현클래스를 정의한다.
@@ -74,8 +75,7 @@ public class EgovAdministCodeRecptnServiceImpl extends EgovAbstractServiceImpl
 	@Override
 	public void insertAdministCodeRecptn() throws Exception {
 		List<HashMap<String, String>> list = apiLink();
-		for (int i = 0; i < list.size(); i++) {
-			HashMap<String, String> row = list.get(i);
+		for (HashMap<String, String> row : list) {
 			AdministCodeRecptn administCodeRecptn = new AdministCodeRecptn();
 
 			// 날짜 >> adpt_de 생성일 x 20000101
@@ -228,8 +228,8 @@ public class EgovAdministCodeRecptnServiceImpl extends EgovAbstractServiceImpl
 				JSONObject bodyObject = (JSONObject) jsonArray.get(1);
 				JSONArray row = (JSONArray) bodyObject.get("row");
 
-				for (int r = 0; r < row.size(); r++) {
-					JSONObject object = (JSONObject) row.get(r);
+	            for (Object element : row) {
+	            	JSONObject object = (JSONObject) element;
 					HashMap<String, String> administCode = new HashMap<>();
 					administCode.put("regionCd", stringValueOf(object.get("region_cd")));
 					administCode.put("sidoCd", stringValueOf(object.get("sido_cd")));

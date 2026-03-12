@@ -71,18 +71,18 @@ function fn_egov_search_UnityLink(){
 			<li>
 				<select name="searchCondition" class="select" title="<spring:message code="title.searchCondition" />">
 				   <option value=''><spring:message code="input.select" /></option>
-				   <option value='UNITY_LINK_NM' <c:if test="${searchCondition == 'UNITY_LINK_NM'}">selected</c:if>><spring:message code="uss.ion.ulm.unityLinkList.unityLinkNm" /></option><!-- 통합링크명 -->
-				   <option value='UNITY_LINK_DC' <c:if test="${searchCondition == 'UNITY_LINK_DC'}">selected</c:if>><spring:message code="uss.ion.ulm.unityLinkList.unityLinkDc" /></option><!-- 통합링크설명 -->
+				   <option value='UNITY_LINK_NM' <c:if test="${unityLink.searchCondition == 'UNITY_LINK_NM'}">selected</c:if>><spring:message code="uss.ion.ulm.unityLinkList.unityLinkNm" /></option><!-- 통합링크명 -->
+				   <option value='UNITY_LINK_DC' <c:if test="${unityLink.searchCondition == 'UNITY_LINK_DC'}">selected</c:if>><spring:message code="uss.ion.ulm.unityLinkList.unityLinkDc" /></option><!-- 통합링크설명 -->
 			   </select>
-				<input class="s_input2 vat" name="searchKeyword" type="text" value="<c:out value="${searchVO.searchKeyword}"/>" size="10" maxlength="35" onkeypress="press();" title="<spring:message code="title.search" />" /><!-- 검색어 -->
+				<input class="s_input2 vat" name="searchKeyword" type="text" value="<c:out value="${unityLink.searchKeyword}"/>" size="10" maxlength="35" onkeypress="press();" title="<spring:message code="title.search" />" /><!-- 검색어 -->
 				
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fn_egov_search_UnityLink(); return false;" />
-				<span class="btn_b"><a href="<c:url value='/uss/ion/ulm/registUnityLinkView.do' />?pageIndex=<c:out value='${searchVO.pageIndex}' />" onclick="" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="<c:url value='/uss/ion/ulm/registUnityLinkView.do' />?pageIndex=<c:out value='${unityLink.pageIndex}' />" onclick="" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
 <input name="unityLinkId" type="hidden" value="">
-<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
+<input name="pageIndex" type="hidden" value="<c:out value='${unityLink.pageIndex}'/>"/>
 </form>
 
 	<table class="board_list">
@@ -118,17 +118,18 @@ function fn_egov_search_UnityLink(){
 			 <%-- 데이터를 화면에 출력해준다 --%>
 			<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 			<tr>
-			    <td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
+			    <td><c:out value="${(unityLink.pageIndex-1) * unityLink.pageSize + status.count}"/></td>
 			    <td>
 			 	<c:forEach items="${unityLinkSeCodeList}" var="resultInfo1" varStatus="pollKindStatus">
 					<c:if test="${resultInfo1.code eq resultInfo.unityLinkSeCode}">
 					<c:out value="${resultInfo1.codeNm}" escapeXml="false" />
 					</c:if>
 				</c:forEach>
+			    </td>
 			    <td>
 			    	<form name="subForm" method="post" action="<c:url value='/uss/ion/ulm/detailUnityLink.do'/>">
 					<input name="unityLinkId" type="hidden" value="${resultInfo.unityLinkId}">
-					<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
+					<input name="pageIndex" type="hidden" value="<c:out value='${unityLink.pageIndex}'/>"/>
 					<span class="link"><input type="submit" style="text-align:center;" value="<c:out value="${resultInfo.unityLinkNm}"/>" onclick="fn_egov_detail_UnityLink('<c:out value="${resultInfo.unityLinkId}"/>'); return false;"></span>
 			    	</form>
 			    </td>
@@ -147,4 +148,5 @@ function fn_egov_search_UnityLink(){
 		</ul>
 	</div>
 </div>
+</body>
 </html>

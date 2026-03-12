@@ -1,7 +1,7 @@
 package egovframework.com.crypto.xmlconfig;
 
-import org.egovframe.rte.fdl.cryptography.EgovEnvCryptoService;
-import org.egovframe.rte.fdl.cryptography.impl.EgovEnvCryptoServiceImpl;
+import org.egovframe.rte.fdl.crypto.EgovEnvCryptoService;
+import org.egovframe.rte.fdl.crypto.impl.EgovEnvCryptoServiceImpl;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ApplicationContext;

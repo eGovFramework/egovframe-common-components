@@ -4,8 +4,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.springframework.stereotype.Service;
@@ -16,6 +14,7 @@ import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.uss.cmt.service.CmtDefaultVO;
 import egovframework.com.uss.cmt.service.CmtManageVO;
 import egovframework.com.uss.cmt.service.EgovCmtManageService;
+import jakarta.annotation.Resource;
 
 /**
  * 출퇴근관리에 관한 비지니스 클래스를 정의한다.

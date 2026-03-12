@@ -20,8 +20,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
-<%@ taglib prefix="ckeditor" uri="http://ckeditor.com" %>
 <c:set var="ImgUrl" value="/images/egovframework/com/uss/sam/ipm/"/>
 <c:set var="CssUrl" value="/css/egovframework/com/uss/sam/ipm/"/>
 <!DOCTYPE html>
@@ -32,14 +30,19 @@
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
+<script type="text/javascript" src="<c:url value='/html/egovframework/com/cmm/utl/ckeditor/ckeditor.js?t=B37D54V'/>" ></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/sym/cal/EgovCalPopup.js' />"></script>
-<validator:javascript formName="indvdlInfoPolicy" staticJavascript="false" xhtml="true" cdata="false"/>
 <script type="text/javaScript" language="javascript">
 /* ********************************************************
  * 초기화
  ******************************************************** */
 function fn_egov_init_IndvdlInfoPolicy(){
+
+	var ckeditor_config = {
+		filebrowserImageUploadUrl: '${pageContext.request.contextPath}/ckUploadImage',
+	};
+	CKEDITOR.replace('indvdlInfoDc',ckeditor_config);
 
 }
 /* ********************************************************
@@ -95,6 +98,7 @@ function fn_egov_save_IndvdlInfoPolicy(){
 					<option value="Y"><spring:message code="input.yes"/></option><!-- 예 -->
 					<option value="N"><spring:message code="input.no"/></option><!-- 아니오 -->
 				</select>
+				<div><form:errors path="indvdlInfoYn" cssClass="error" /></div>  
 			</td>
 		</tr>
 		<tr>

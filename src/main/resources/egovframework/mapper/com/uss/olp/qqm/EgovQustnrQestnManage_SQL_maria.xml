@@ -46,7 +46,7 @@
 	</select>
 
 	<!-- 설문문항:: 설문지 제목 검색  -->
-	<select id="selectQustnrManageQESTNR_SJ" parameterType="java.util.Map" resultType="egovMap">
+	<select id="selectQustnrManageQestnrSj" parameterType="java.util.Map" resultType="egovMap">
 		<![CDATA[
 		SELECT QUSTNR_SJ
 		FROM COMTNQESTNRINFO
@@ -134,6 +134,12 @@
 		FROM COMTNQUSTNRQESITM A
 		WHERE 1=1
 	 	]]>
+	 	
+	 	 <if test="searchCondition == 'QESTNR_ID'
+     		 and searchKeyword != null
+      		 and searchKeyword != ''">
+    		 AND A.QESTNR_ID LIKE CONCAT('%',#{searchKeyword},'%')
+	 </if>
 	 <if test="searchKeyword != null and searchKeyword != ''">
 	 	
 	 		

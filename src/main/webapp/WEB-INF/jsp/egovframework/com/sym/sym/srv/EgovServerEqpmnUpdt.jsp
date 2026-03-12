@@ -24,7 +24,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -32,8 +31,7 @@
 <title><spring:message code="comSymSymSrv.serverEqpmnUpdt.title"/></title><!-- 서버장비 수정 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="serverEqpmn" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
@@ -140,7 +138,7 @@ function ipValidate(ipValue) {
 	<!-- 타이틀 -->
 	<h2><spring:message code="comSymSymSrv.serverEqpmnUpdt.pageTop.title"/></h2><!-- 서버H/W 수정 -->
 
-    <form name="serverEqpmn" id="serverEqpmn" method="post" action="${pageContext.request.contextPath}/sym/sym/srv/updtServerEqpmn.do">
+    <form:form modelAttribute="serverEqpmn" name="serverEqpmn" id="serverEqpmn" method="post">
 
 	<!-- 등록폼 -->
 	<table class="wTable">
@@ -214,7 +212,7 @@ function ipValidate(ipValue) {
 			    <label for="regstYmd">
 		        	<input type="hidden" name="cal_url" id="cal_url" value="<c:url value='/sym/cal/EgovNormalCalPopup.do'/>" >
 		            <!--  <input type="text" name="regstYmd" id="regstYmd" value="<c:out value="${serverEqpmn.regstYmd}"/>" size="10" maxlength="10" title="등록일자" class="readOnlyClass" readonly onClick="javascript:fn_egov_NormalCalendar(document.serverEqpmn, document.serverEqpmn.registerDate, document.serverEqpmn.regstYmd);" onKeyDown="javascript:if (event.keyCode == 13) { fn_egov_NormalCalendar(document.serverEqpmn, document.serverEqpmn.registerDate, document.serverEqpmn.regstYmd); }" >-->
-		            <input type="text" name="regstYmd" id="regstYmd" value="<c:out value="${serverEqpmn.regstYmd}"/>" maxlength="10" readonly="readonly" title="<spring:message code="comSymSymSrv.serverEqpmnUpdt.regstYmd"/>" style="width:70px" /><!-- 등록일자 -->
+		            <input type="text" name="regstYmd" id="regstYmd" value="<c:out value="${serverEqpmn.regstYmd}"/>" maxlength="10" title="<spring:message code="comSymSymSrv.serverEqpmnUpdt.regstYmd"/>" style="width:70px" /><!-- 등록일자 -->
 		            <input type="hidden" name="registerDate" value=""/>
 		            &nbsp;<form:errors path="regstYmd" />
 		        </label>
@@ -225,7 +223,7 @@ function ipValidate(ipValue) {
     <!-- 검색조건 유지 -->
     <input type="hidden" name="strServerEqpmnNm" value="<c:out value='${serverEqpmnVO.strServerEqpmnNm}'/>" />
     <input type="hidden" name="pageIndex" value="<c:out value='${serverEqpmnVO.pageIndex}'/>" >
-	</form>
+	</form:form>
 
 	<!-- 하단 버튼 -->
 	<div class="btn">

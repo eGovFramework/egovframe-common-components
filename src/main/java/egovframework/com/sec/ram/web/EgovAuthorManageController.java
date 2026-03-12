@@ -1,10 +1,7 @@
 package egovframework.com.sec.ram.web;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
@@ -13,7 +10,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
-import org.springmodules.validation.commons.DefaultBeanValidator;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.SessionVO;
@@ -21,6 +17,8 @@ import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.sec.ram.service.AuthorManage;
 import egovframework.com.sec.ram.service.AuthorManageVO;
 import egovframework.com.sec.ram.service.EgovAuthorManageService;
+import jakarta.annotation.Resource;
+import jakarta.validation.Valid;
 
 /**
  * 권한관리에 관한 controller 클래스를 정의한다.
@@ -31,7 +29,7 @@ import egovframework.com.sec.ram.service.EgovAuthorManageService;
  *
  * <pre>
  * << 개정이력(Modification Information) >>
- *   
+ *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.03.11  이문준          최초 생성
@@ -40,24 +38,21 @@ import egovframework.com.sec.ram.service.EgovAuthorManageService;
  *
  * </pre>
  */
- 
-
-@Controller
+ @Controller
 @SessionAttributes(types=SessionVO.class)
 public class EgovAuthorManageController {
 
     @Resource(name="egovMessageSource")
     EgovMessageSource egovMessageSource;
-    
+
     @Resource(name = "egovAuthorManageService")
     private EgovAuthorManageService egovAuthorManageService;
-    
+
     /** EgovPropertyService */
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertiesService;
-    
-    @Autowired
-	private DefaultBeanValidator beanValidator;
+
+
 
 	/**
 	 * 권한 목록을 조회한다
@@ -67,80 +62,78 @@ public class EgovAuthorManageController {
 	 */
     @IncludedInfo(name="권한관리", listUrl="/sec/ram/EgovAuthorList.do", order = 60,gid = 20)
     @RequestMapping(value="/sec/ram/EgovAuthorList.do")
-    public String selectAuthorList(@ModelAttribute("authorManageVO") AuthorManageVO authorManageVO, 
+    public String selectAuthorList(@ModelAttribute("authorManageVO") AuthorManageVO authorManageVO,
     		                        ModelMap model)
             throws Exception {
-    	
+
     	/** EgovPropertyService.sample */
     	//authorManageVO.setPageUnit(propertiesService.getInt("pageUnit"));
     	//authorManageVO.setPageSize(propertiesService.getInt("pageSize"));
-    	
+
     	/** paging */
     	PaginationInfo paginationInfo = new PaginationInfo();
 		paginationInfo.setCurrentPageNo(authorManageVO.getPageIndex());
 		paginationInfo.setRecordCountPerPage(authorManageVO.getPageUnit());
 		paginationInfo.setPageSize(authorManageVO.getPageSize());
-		
+
 		authorManageVO.setFirstIndex(paginationInfo.getFirstRecordIndex());
 		authorManageVO.setLastIndex(paginationInfo.getLastRecordIndex());
 		authorManageVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
-		
+
 		authorManageVO.setAuthorManageList(egovAuthorManageService.selectAuthorList(authorManageVO));
         model.addAttribute("authorList", authorManageVO.getAuthorManageList());
-        
+
         int totCnt = egovAuthorManageService.selectAuthorListTotCnt(authorManageVO);
 		paginationInfo.setTotalRecordCount(totCnt);
         model.addAttribute("paginationInfo", paginationInfo);
         model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
 
         return "egovframework/com/sec/ram/EgovAuthorManage";
-    } 
-    
+    }
+
     /**
 	 * 권한 세부정보를 조회한다.
 	 * @param authorCode String
 	 * @param authorManageVO AuthorManageVO
 	 * @return String
 	 * @exception Exception
-	 */   
+	 */
     @RequestMapping(value="/sec/ram/EgovAuthor.do")
     public String selectAuthor(@RequestParam("authorCode") String authorCode,
-    	                       @ModelAttribute("authorManageVO") AuthorManageVO authorManageVO, 
+    	                       @ModelAttribute("authorManageVO") AuthorManageVO authorManageVO,
     		                    ModelMap model) throws Exception {
-    	
+
 		authorManageVO.setAuthorCode(authorCode);
 
     	model.addAttribute("authorManage", egovAuthorManageService.selectAuthor(authorManageVO));
     	model.addAttribute("message", egovMessageSource.getMessage("success.common.select"));
     	return "egovframework/com/sec/ram/EgovAuthorUpdate";
-    }     
+    }
 
     /**
 	 * 권한 등록화면 이동
 	 * @return String
 	 * @exception Exception
-	 */     
+	 */
     @RequestMapping("/sec/ram/EgovAuthorInsertView.do")
     public String insertAuthorView(@ModelAttribute("authorManage") AuthorManage authorManage)
             throws Exception {
         return "egovframework/com/sec/ram/EgovAuthorInsert";
     }
-    
+
     /**
 	 * 권한 세부정보를 등록한다.
 	 * @param authorManage AuthorManage
 	 * @param bindingResult BindingResult
 	 * @return String
 	 * @exception Exception
-	 */ 
+	 */
     @RequestMapping(value="/sec/ram/EgovAuthorInsert.do")
-    public String insertAuthor(@ModelAttribute("authorManage") AuthorManage authorManage, 
+    public String insertAuthor(@Valid @ModelAttribute("authorManage") AuthorManage authorManage,
     		                    BindingResult bindingResult,
     		                    ModelMap model) throws Exception {
-    	
-    	beanValidator.validate(authorManage, bindingResult); //validation 수행
-    	
-		if (bindingResult.hasErrors()) { 
+
+		if (bindingResult.hasErrors()) {
 			return "egovframework/com/sec/ram/EgovAuthorInsert";
 		} else {
 			egovAuthorManageService.insertAuthor(authorManage);
@@ -153,21 +146,19 @@ public class EgovAuthorManageController {
 			return "redirect:/sec/ram/EgovAuthorList.do";
 		}
     }
-    
+
     /**
 	 * 권한 세부정보를 수정한다.
 	 * @param authorManage AuthorManage
 	 * @param bindingResult BindingResult
 	 * @return String
 	 * @exception Exception
-	 */   
+	 */
     @RequestMapping(value="/sec/ram/EgovAuthorUpdate.do")
-    public String updateAuthor(@ModelAttribute("authorManage") AuthorManage authorManage, 
+    public String updateAuthor(@Valid @ModelAttribute("authorManage") AuthorManage authorManage,
     		                    BindingResult bindingResult,
     		                    Model model) throws Exception {
 
-    	beanValidator.validate(authorManage, bindingResult); //validation 수행
-    	
 		if (bindingResult.hasErrors()) {
 			return "egovframework/com/sec/ram/EgovAuthorUpdate";
 		} else {
@@ -180,16 +171,16 @@ public class EgovAuthorManageController {
 
 			return "redirect:/sec/ram/EgovAuthorList.do";
 		}
-    }    
+    }
 
     /**
 	 * 권한 세부정보를 삭제한다.
 	 * @param authorManage AuthorManage
 	 * @return String
 	 * @exception Exception
-	 */  
+	 */
     @RequestMapping(value="/sec/ram/EgovAuthorDelete.do")
-    public String deleteAuthor(@ModelAttribute("authorManage") AuthorManage authorManage, 
+    public String deleteAuthor(@ModelAttribute("authorManage") AuthorManage authorManage,
     		                    Model model) throws Exception {
 
     	egovAuthorManageService.deleteAuthor(authorManage);
@@ -207,15 +198,15 @@ public class EgovAuthorManageController {
 	 * @param authorManage AuthorManage
 	 * @return String
 	 * @exception Exception
-	 */  
+	 */
     @RequestMapping(value="/sec/ram/EgovAuthorListDelete.do")
     public String deleteAuthorList(@RequestParam("authorCodes") String authorCodes,
-    		                       @ModelAttribute("authorManage") AuthorManage authorManage, 
+    		                       @ModelAttribute("authorManage") AuthorManage authorManage,
     		                        Model model) throws Exception {
 
     	String [] strAuthorCodes = authorCodes.split(";");
-    	for(int i=0; i<strAuthorCodes.length;i++) {
-			authorManage.setAuthorCode(strAuthorCodes[i]);
+    	for (String strAuthorCode : strAuthorCodes) {
+			authorManage.setAuthorCode(strAuthorCode);
 			egovAuthorManageService.deleteAuthor(authorManage);
 		}
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
@@ -233,8 +224,8 @@ public class EgovAuthorManageController {
 	 * @exception Exception
 	 */
     @RequestMapping("/sec/ram/accessDenied.do")
-    public String accessDenied()
-            throws Exception {
-        return "egovframework/com/sec/accessDenied";
-    } 
+    public String accessDenied() throws Exception {
+        return "egovframework/com/cmm/error/accessDenied";
+    }
+
 }

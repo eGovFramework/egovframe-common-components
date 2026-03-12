@@ -3,7 +3,7 @@ package egovframework.com.utl.sys.fsm.service;
 /**
  * 개요
  * - 파일시스템 모니터링 로그에 대한 Vo 클래스를 정의한다.
- * 
+ *
  * 상세내용
  * - 파일시스템 모니터링 로그의 목록 항목, 조회조건 등을 관리한다.
  * @author 장철호
@@ -15,28 +15,28 @@ public class FileSysMntrngLogVO extends FileSysMntrngLog {
 
 	/** 검색조건 */
     private String searchCnd = "";
-    
+
     /** 검색단어 */
     private String searchWrd = "";
-    
+
     /** 시작일자 조회조건 */
     private String searchBgnDe = "";
-    
+
     /** 시작시간 조회조건 */
     private String searchBgnHour = "";
-    
+
     /** 시작일시 조회조건 */
     private String searchBgnDt = "";
-    
+
     /** 종료일자 조회조건 */
     private String searchEndDe = "";
-    
+
     /** 종료시간 조회조건 */
     private String searchEndHour = "";
-    
+
     /** 종료일시 조회조건 */
     private String searchEndDt = "";
-    
+
     /** 현재페이지 */
     private int pageIndex = 1;
 

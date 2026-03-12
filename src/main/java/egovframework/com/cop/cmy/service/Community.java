@@ -2,6 +2,9 @@ package egovframework.com.cop.cmy.service;
 
 import java.io.Serializable;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 /**
@@ -27,9 +30,13 @@ public class Community implements Serializable {
     private String cmmntyId = "";
     
     /** 커뮤니티 소개 */
+   @EgovNullCheck
+	@Size(max=1200)
     private String cmmntyIntrcn = "";
     
     /** 커뮤니티 명 */
+	@EgovNullCheck
+	@Size(max=120)
     private String cmmntyNm = "";
     
     /** 최초등록자 아이디 */

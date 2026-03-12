@@ -12,6 +12,9 @@
 
 package egovframework.com.sym.sym.nwk.service;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 import egovframework.com.cmm.ComDefaultVO;
 
 public class Ntwrk extends ComDefaultVO {
@@ -24,34 +27,47 @@ public class Ntwrk extends ComDefaultVO {
 	/**
 	 * 네트워크IP
 	 */
+	@EgovNullCheck
+	@Size(max=23)
     private String ntwrkIp;
     /**
 	 * 게이트웨이
-	 */    
+	 */
+	@EgovNullCheck
+	@Size(max=23)
     private String gtwy;
     /**
 	 * SUBNET
-	 */    
+	 */
+	@EgovNullCheck
+	@Size(max=23)
     private String subnet;
     /**
 	 * 도메인이름서버
-	 */    
+	 */
+	@EgovNullCheck
+	@Size(max=23)
     private String domnServer;
     /**
 	 * 관리항목
-	 */    
+	 */
+	@EgovNullCheck
     private String manageIem;
     /**
 	 * 사용자명
-	 */        
+	 */
+	@EgovNullCheck
+	@Size(max=30)
     private String userNm;
     /**
 	 * 사용여부
-	 */    
+	 */
+	@EgovNullCheck
     private String useAt;
     /**
 	 * 등록일자
-	 */    
+	 */
+	@EgovNullCheck
     private String regstYmd;    
     /**
 	 * 최초등록시점

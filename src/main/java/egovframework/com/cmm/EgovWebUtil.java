@@ -75,7 +75,7 @@ public class EgovWebUtil {
 
 		return returnValue;
 	}
-	
+
 	public static String filePathBlackList(String value) {
 		String returnValue = value;
 		if (returnValue == null || returnValue.trim().equals("")) {
@@ -86,7 +86,7 @@ public class EgovWebUtil {
 
 		return returnValue;
 	}
-	
+
 	/**
 	 * 파일경로 보안취약점 조치
 	 * # 주의사항
@@ -99,10 +99,12 @@ public class EgovWebUtil {
 	 * @return
 	 */
 	public static String filePathBlackList(String value, String basePath) {
-		if ( basePath == null || "".equals(basePath) )
+		if ( basePath == null || "".equals(basePath) ) {
 			throw new SecurityException("base path is empty.");
-		if ( File.separator.equals(basePath) || "/".equals(basePath) )
+		}
+		if ( File.separator.equals(basePath) || "/".equals(basePath) ) {
 			throw new SecurityException("base path does not allow Root.");
+		}
 		return filePathBlackList(basePath + value);
 	}
 

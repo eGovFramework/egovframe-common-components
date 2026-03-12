@@ -49,10 +49,10 @@
 		 ******************************************************** */
 		function fnModify(){
 			var varForm			= document.all["Form"];
-			varForm.action      = "<c:url value='/dam/spe/spe/EgovComDamSpecialistModify.do'/>";
+			varForm.action      = "<c:url value='/dam/spe/spe/EgovComDamSpecialistModifyView.do'/>";
 			varForm.speId.value = "${result.speId}";
 			varForm.knoTypeCd.value = "${result.knoTypeCd}";
-			varForm.appTypeCd.value = "${result.appTypeCd}";						
+			varForm.appTypeCd.value = "${result.appTypeCd}";
 			varForm.submit();
 		}
 		/* ********************************************************
@@ -81,7 +81,7 @@
 		<!-- 타이틀 -->
 		<h2><spring:message code="comDamSpeSpe.comDamSpecialistDetail.pageTop.title"/></h2><!-- 지식전문가 상세조회 -->
 	
-		<form name="Form" action="<c:url value='/dam/spe/spe/EgovComDamSpecialistModify.do'/>" method="post">
+		<form name="Form" action="<c:url value='/dam/spe/spe/EgovComDamSpecialistModifyView.do'/>" method="post">
 		<input name="speId" type="hidden">
 		<input name="knoTypeCd" type="hidden">
 		<input name="appTypeCd" type="hidden">			

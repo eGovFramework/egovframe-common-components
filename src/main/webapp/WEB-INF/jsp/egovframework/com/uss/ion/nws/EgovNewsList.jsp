@@ -27,16 +27,8 @@
 <head>
 <title>${pageTitle} <spring:message code="title.list" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
-<link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
+<link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <script type="text/javascript">
-/*********************************************************
- * 초기화
- ******************************************************** */
-function fn_egov_init(){
-	// 첫 입력란에 포커스..
-	document.newsForm.searchCondition.focus();
-}
-
 /*********************************************************
  * 페이징 처리 함수
  ******************************************************** */
@@ -53,17 +45,17 @@ function fn_egov_search_news(){
 	document.newsForm.submit();
 }
 /* ********************************************************
- * 상세회면 처리 함수
+ * 상세화면 처리 함수
  ******************************************************** */
 function fn_egov_inquire_newsdetail(newsId) {
-	// 사이트 키값(siteId) 셋팅.
+	// 뉴스 키값(newsId) 셋팅.
 	document.newsForm.newsId.value = newsId;
   	document.newsForm.action = "<c:url value='/uss/ion/nws/selectNewsDetail.do'/>";
   	document.newsForm.submit();
 }
 </script>
 </head>
-<body onload="fn_egov_init()">
+<body>
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
@@ -75,13 +67,13 @@ function fn_egov_inquire_newsdetail(newsId) {
 		<ul>
 			<li>
 				<select name="searchCondition" title="<spring:message code="title.searchCondition" /> <spring:message code="input.cSelect" />">
-					<option value="0"  <c:if test="${searchVO.searchCondition == '0'}">selected="selected"</c:if> ><spring:message code="comUssIonNws.newsVO.newsSj" /></option><!-- 뉴스제목 -->
-					<option value="1"  <c:if test="${searchVO.searchCondition == '1'}">selected="selected"</c:if> ><spring:message code="comUssIonNws.newsVO.newsOrigin" /></option><!-- 뉴스출처 -->
+					<option value="0"  <c:if test="${newsVO.searchCondition == '0'}">selected="selected"</c:if> ><spring:message code="comUssIonNws.newsVO.newsSj" /></option><!-- 뉴스제목 -->
+					<option value="1"  <c:if test="${newsVO.searchCondition == '1'}">selected="selected"</c:if> ><spring:message code="comUssIonNws.newsVO.newsOrigin" /></option><!-- 뉴스출처 -->
 				</select>
 			</li>
 			<!-- 검색키워드 및 조회버튼 -->
 			<li>
-				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${searchVO.searchKeyword}"/>'  maxlength="155" >
+				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${newsVO.searchKeyword}"/>'  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
 				<span class="btn_b"><a href="<c:url value='/uss/ion/nws/insertNewsView.do' />"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
 			</li>
@@ -115,7 +107,7 @@ function fn_egov_inquire_newsdetail(newsId) {
 	</c:if>
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr>
-		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
+		<td><c:out value="${(newsVO.pageIndex-1) * newsVO.pageSize + status.count}"/></td>
 		<td class="left"><a href="<c:url value='/uss/ion/nws/selectNewsDetail.do?newsId=${resultInfo.newsId}'/>" onClick="fn_egov_inquire_newsdetail('<c:out value="${resultInfo.newsId}"/>');return false;"><c:out value='${fn:substring(resultInfo.newsSj, 0, 40)}'/></a></td>
 		<td><c:out value='${resultInfo.newsOrigin}'/></td>
 		<td><c:out value='${resultInfo.ntceDe}'/></td>
@@ -135,8 +127,8 @@ function fn_egov_inquire_newsdetail(newsId) {
 	
 </div>
 
-<input name="newsId" type="hidden" value="<c:out value='${searchVO.newsId}'/>">
-<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
+<input name="newsId" type="hidden" value="<c:out value='${newsVO.newsId}'/>">
+<input name="pageIndex" type="hidden" value="<c:out value='${newsVO.pageIndex}'/>">
 </form>
 
 </body>

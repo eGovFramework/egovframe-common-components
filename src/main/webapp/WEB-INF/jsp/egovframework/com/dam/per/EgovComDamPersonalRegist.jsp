@@ -29,7 +29,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -42,9 +41,7 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="knoPersonal" staticJavascript="false" xhtml="true" cdata="false"/>
-
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
 <!--
 function initCalendar(){
@@ -106,7 +103,6 @@ function fn_egov_regist_KnoPersonal(form){
 		if(!validateKnoPersonal(form)){
 			return;
 		}else{
-			form.cmd.value = "Regist";
 			form.action = "<c:url value='/dam/per/EgovComDamPersonalRegist.do'/>";
 			form.submit();
 		}
@@ -116,8 +112,8 @@ function fn_egov_regist_KnoPersonal(form){
  * 지식유형 가져오기
  ******************************************************** */
 function fn_egov_get_CodeId(form){
- 	form.cmd.value = "";
- 	form.submit();
+	form.action = "<c:url value='/dam/per/EgovComDamPersonalRegistView.do'/>";
+	form.submit();
 }
 -->
 </script>
@@ -150,6 +146,7 @@ function fn_egov_get_CodeId(form){
 			<option value="<c:out value="${item.orgnztId}"/>"<c:if test="${item.orgnztId == knoPersonal.orgnztId}"> selected="selected"</c:if>><c:out value="${item.orgnztNm}"/></option>
 			</c:forEach>
 			</select>
+			<div><form:errors path="orgnztId"/></div>
 		</td>
 	</tr>
 	<tr>
@@ -161,6 +158,7 @@ function fn_egov_get_CodeId(form){
 			<option value="<c:out value="${item.knoTypeCd}"/>"<c:if test="${item.knoTypeCd == knoPersonal.knoTypeCd}"> selected="selected"</c:if>><c:out value="${item.knoTypeNm}"/></option>
 			</c:forEach>
 			</select>
+			<div><form:errors path="knoTypeCd"/></div>
 		</td>
 	</tr>
 	<tr>
@@ -183,6 +181,7 @@ function fn_egov_get_CodeId(form){
 		    <input type="hidden" name="cal_url" value="<c:url value='/sym/cal/EgovNormalCalPopup.do'/>" />
    			<input id="colYmd" name="colYmd" type="hidden" value=""/>
 			<input id="vcolYmd" name="vcolYmd" type="text" title="<spring:message code="comDamPer.comDamPersonalRegist.colYmd"/>" value="" maxlength="10" readonly="readonly" style="width:70px"/><!-- 수집일자 -->
+			<div><form:errors path="colYmd"/></div>
 		</td>
 	</tr>
 	<tr>
@@ -211,8 +210,6 @@ function fn_egov_get_CodeId(form){
 </div>
 
 <input type="hidden" name="posblAtchFileNumber" id="posblAtchFileNumber" value="3" />
-<!-- <input name="cmd" type="hidden" value="<c:out value='save'/>"> -->
-<input name="cmd" type="hidden" value="<c:out value='Regist'/>">
 
 </form:form>
 

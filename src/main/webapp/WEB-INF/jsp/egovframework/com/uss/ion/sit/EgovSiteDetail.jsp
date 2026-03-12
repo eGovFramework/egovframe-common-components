@@ -62,45 +62,44 @@
 		<!-- 사이트명 -->
 		<tr>
 			<th><spring:message code="comUssIonSit.siteVO.siteNm" /></th>
-			<td class="left"><c:out value="${result.siteNm}"/></td>
+			<td class="left"><c:out value="${siteVO.siteNm}"/></td>
 		</tr>
 		<!-- 사이트URL -->
 		<tr>
 			<th><spring:message code="comUssIonSit.siteVO.siteUrl" /></th>
-			<td class="left"><c:out value="${result.siteUrl}"/></td>
+			<td class="left"><c:out value="${siteVO.siteUrl}"/></td>
 		</tr>
 		<!-- 사이트설명 -->
 		<tr>
 			<th class="vtop"><spring:message code="comUssIonSit.siteVO.siteDc" /></th>
 			<td class="cnt">
-				<c:out value="${fn:replace(result.siteDc , crlf , '<br/>')}" escapeXml="false" />
+				<c:out value="${fn:replace(siteVO.siteDc , crlf , '<br/>')}" escapeXml="false" />
 			</td>
 		</tr>
 		<!-- 사이트주제분류 -->
 		<tr>
 			<th><spring:message code="comUssIonSit.siteVO.siteThemaClCode" /></th>
-			<td class="left"><c:out value="${result.siteThemaClNm}"/></td>
+			<td class="left"><c:out value="${siteVO.siteThemaClNm}"/></td>
 		</tr>
 		<!-- 활성여부 -->
 		<tr>
 			<th><spring:message code="comUssIonSit.siteVO.actvtyAt" /></th>
-			<td class="left"><c:out value="${result.actvtyAt}"/></td>
+			<td class="left"><c:out value="${siteVO.actvtyAt}"/></td>
 		</tr>
 		<!-- 사용여부 -->
 		<tr>
 			<th><spring:message code="comUssIonSit.siteVO.useAt" /></th>
-			<td class="left"><c:out value="${result.useAt}"/></td>
+			<td class="left"><c:out value="${siteVO.useAt}"/></td>
 		</tr>
 		<!-- 등록일자 -->
 		<tr>
 			<th class="vtop"><spring:message code="table.regdate" /></th>
-			<td class="left"><c:out value="${result.frstRegisterPnttm}"/></td>
-			</td>
+			<td class="left"><c:out value="${siteVO.frstRegisterPnttm}"/></td>
 		</tr>
 		<!-- 등록자 -->
 		<tr>
 			<th><spring:message code="table.reger" /></th>
-			<td class="left"><c:out value="${result.emplyrNm}"/></td>
+			<td class="left"><c:out value="${siteVO.emplyrNm}"/></td>
 		</tr>
 		
 		
@@ -109,13 +108,13 @@
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input type="submit" class="s_submit" value="<spring:message code="button.update" />" title="<spring:message code="title.update" /> <spring:message code="input.button" />" />
-		<span class="btn_s"><a href="<c:url value='/uss/ion/sit/deleteSite.do' />" onClick="fn_egov_delete_site('<c:out value="${result.siteId}"/>'); return false;"  title="<spring:message code="button.delete" /> <spring:message code="input.button" />"><spring:message code="button.delete" /></a></span>
+		<span class="btn_s"><a href="<c:url value='/uss/ion/sit/deleteSite.do' />" onClick="fn_egov_delete_site('<c:out value="${siteVO.siteId}"/>'); return false;"  title="<spring:message code="button.delete" /> <spring:message code="input.button" />"><spring:message code="button.delete" /></a></span>
 		<span class="btn_s"><a href="<c:url value='/uss/ion/sit/selectSiteList.do' />"  title="<spring:message code="title.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
 	</div><div style="clear:both;"></div>
 	
 </div>
 
-<input name="siteId" type="hidden" value="<c:out value="${result.siteId}" />">
+<input name="siteId" type="hidden" value="<c:out value="${siteVO.siteId}" />">
 <input name="cmd" type="hidden" value="">
 </form>
 

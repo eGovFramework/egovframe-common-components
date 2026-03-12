@@ -4,14 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Resource;
-import javax.servlet.http.HttpServletRequest;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -20,7 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
-import org.springmodules.validation.commons.DefaultBeanValidator;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.EgovWebUtil;
@@ -42,6 +38,9 @@ import egovframework.com.cop.cmt.service.EgovArticleCommentService;
 import egovframework.com.cop.tpl.service.EgovTemplateManageService;
 import egovframework.com.cop.tpl.service.TemplateInfVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 
 /**
  * 게시물 관리를 위한 컨트롤러 클래스
@@ -104,10 +103,7 @@ public class EgovArticleController {
 	@Resource(name = "EgovTemplateManageService")
 	private EgovTemplateManageService egovTemplateManageService;
 
-	@Autowired
-	private DefaultBeanValidator beanValidator;
-
-	// protected Logger log = Logger.getLogger(this.getClass());
+    //protected Logger log = Logger.getLogger(this.getClass());
 
 	/**
 	 * XSS 방지 처리.
@@ -331,7 +327,8 @@ public class EgovArticleController {
 	@RequestMapping("/cop/bbs/insertArticle.do")
 	public String insertArticle(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") BoardVO boardVO, @ModelAttribute("bdMstr") BoardMaster bdMstr,
-			@ModelAttribute("board") BoardVO board, BindingResult bindingResult, ModelMap model) throws Exception {
+			@Valid @ModelAttribute("articleVO") BoardVO board, BindingResult bindingResult, ModelMap model,
+			RedirectAttributes redirectAttributes) throws Exception {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -340,7 +337,6 @@ public class EgovArticleController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		beanValidator.validate(board, bindingResult);
 		if (bindingResult.hasErrors()) {
 
 			BoardMasterVO master = new BoardMasterVO();
@@ -389,13 +385,13 @@ public class EgovArticleController {
 		board.setNttCn(unscript(board.getNttCn())); // XSS 방지
 		egovArticleService.insertArticleAndFiles(board, files);
 
-		if (boardVO.getBlogAt().equals("Y")) {
+		if ("Y".equals(boardVO.getBlogAt())) {
 			return "forward:/cop/bbs/selectArticleBlogList.do";
 		} else {
-			model.addAttribute("bbsId", boardVO.getBbsId());
-			model.addAttribute("searchCnd", boardVO.getSearchCnd());
-			model.addAttribute("searchWrd", boardVO.getSearchWrd());
-			model.addAttribute("pageIndex", boardVO.getPageIndex());
+			redirectAttributes.addAttribute("bbsId", boardVO.getBbsId());
+			redirectAttributes.addAttribute("searchCnd", boardVO.getSearchCnd());
+			redirectAttributes.addAttribute("searchWrd", boardVO.getSearchWrd());
+			redirectAttributes.addAttribute("pageIndex", boardVO.getPageIndex());
 			return "redirect:/cop/bbs/selectArticleList.do";
 		}
 
@@ -426,6 +422,9 @@ public class EgovArticleController {
 
 		master = egovBBSMasterService.selectBBSMasterInf(master);
 		BoardVO result = egovArticleService.selectArticleDetail(boardVO);
+
+		// Set initial reply title with RE: prefix
+		articleVO.setNttSj("RE: " + (result.getNttSj() != null ? result.getNttSj() : ""));
 
 		// ----------------------------
 		// 기본 BBS template 지정
@@ -458,7 +457,7 @@ public class EgovArticleController {
 	@RequestMapping("/cop/bbs/replyArticle.do")
 	public String replyBoardArticle(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") BoardVO boardVO, @ModelAttribute("bdMstr") BoardMaster bdMstr,
-			@ModelAttribute("board") BoardVO board, BindingResult bindingResult, ModelMap model) throws Exception {
+			@Valid @ModelAttribute("articleVO") BoardVO board, BindingResult bindingResult, ModelMap model) throws Exception {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -481,10 +480,7 @@ public class EgovArticleController {
 			master.setTmplatCours("/css/egovframework/com/cop/tpl/egovBaseTemplate.css");
 		}
 
-		beanValidator.validate(board, bindingResult);
 		if (bindingResult.hasErrors()) {
-
-			model.addAttribute("articleVO", boardVO);
 			model.addAttribute("boardMasterVO", master);
 			//// -----------------------------
 
@@ -584,7 +580,7 @@ public class EgovArticleController {
 		model.addAttribute("articleVO", bdvo);
 		model.addAttribute("boardMasterVO", bmvo);
 
-		if (boardVO.getBlogAt().equals("chkBlog")) {
+		if ("chkBlog".equals(boardVO.getBlogAt())) {
 			return "egovframework/com/cop/bbs/EgovArticleBlogUpdt";
 		} else {
 			return "egovframework/com/cop/bbs/EgovArticleUpdt";
@@ -604,7 +600,7 @@ public class EgovArticleController {
 	@RequestMapping("/cop/bbs/updateArticle.do")
 	public String updateBoardArticle(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") BoardVO boardVO, @ModelAttribute("bdMstr") BoardMaster bdMstr,
-			@ModelAttribute("board") Board board, BindingResult bindingResult, ModelMap model) throws Exception {
+			@Valid @ModelAttribute("articleVO") Board board, BindingResult bindingResult, ModelMap model) throws Exception {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -630,21 +626,17 @@ public class EgovArticleController {
 
 		String atchFileId = boardVO.getAtchFileId();
 
-		beanValidator.validate(board, bindingResult);
 		if (bindingResult.hasErrors()) {
 
 			boardVO.setFrstRegisterId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 
 			BoardMasterVO bmvo = new BoardMasterVO();
-			BoardVO bdvo = new BoardVO();
 
 			bmvo.setBbsId(boardVO.getBbsId());
 			bmvo.setUniqId((user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 
 			bmvo = egovBBSMasterService.selectBBSMasterInf(bmvo);
-			bdvo = egovArticleService.selectArticleDetail(boardVO);
 
-			model.addAttribute("articleVO", bdvo);
 			model.addAttribute("boardMasterVO", bmvo);
 
 			return "egovframework/com/cop/bbs/EgovArticleUpdt";
@@ -802,7 +794,7 @@ public class EgovArticleController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/cop/bbs/insertGuestArticle.do")
-	public String insertGuestList(@ModelAttribute("searchVO") BoardVO boardVO, @ModelAttribute("Board") Board board,
+	public String insertGuestList(@ModelAttribute("searchVO") BoardVO boardVO, @Valid @ModelAttribute("Board") Board board,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -812,7 +804,6 @@ public class EgovArticleController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		beanValidator.validate(board, bindingResult);
 		if (bindingResult.hasErrors()) {
 
 			BoardVO vo = new BoardVO();
@@ -864,7 +855,7 @@ public class EgovArticleController {
 		boardVO.setNttCn("");
 		boardVO.setPassword("");
 		boardVO.setNtcrId("");
-		boardVO.setNttId(0);
+		boardVO.setNttId((long) 0);
 
 		return "forward:/cop/bbs/selectGuestArticleList.do";
 	}
@@ -879,7 +870,7 @@ public class EgovArticleController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/cop/bbs/deleteGuestArticle.do")
-	public String deleteGuestList(@ModelAttribute("searchVO") BoardVO boardVO, @ModelAttribute("articleVO") Board board,
+	public String deleteGuestList(@ModelAttribute("searchVO") BoardVO boardVO, @Valid @ModelAttribute("articleVO") Board board,
 			ModelMap model) throws Exception {
 		@SuppressWarnings("unused")
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -956,7 +947,7 @@ public class EgovArticleController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/cop/bbs/updateGuestArticle.do")
-	public String updateGuestArticle(@ModelAttribute("searchVO") BoardVO boardVO, @ModelAttribute Board board,
+	public String updateGuestArticle(@ModelAttribute("searchVO") BoardVO boardVO, @Valid @ModelAttribute Board board,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 
 		// BBST02, BBST04
@@ -967,7 +958,6 @@ public class EgovArticleController {
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 
-		beanValidator.validate(board, bindingResult);
 		if (bindingResult.hasErrors()) {
 
 			BoardVO vo = new BoardVO();
@@ -1015,7 +1005,7 @@ public class EgovArticleController {
 		boardVO.setNttCn("");
 		boardVO.setPassword("");
 		boardVO.setNtcrId("");
-		boardVO.setNttId(0);
+		boardVO.setNttId((long) 0);
 
 		return "forward:/cop/bbs/selectGuestArticleList.do";
 	}
@@ -1186,7 +1176,7 @@ public class EgovArticleController {
 		}
 
 		// 수정을 위한 처리
-		if (!commentVO.getCommentNo().equals("")) {
+		if (commentVO.getCommentNo() != null && !"".equals(commentVO.getCommentNo())) {
 			mav.setViewName("forward:/cop/cmt/updateArticleCommentView.do");
 		}
 
@@ -1282,7 +1272,7 @@ public class EgovArticleController {
 		boardVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
 		BoardVO target = null;
-		List<BoardVO> list = new ArrayList<BoardVO>();
+		List<BoardVO> list = new ArrayList<>();
 
 		target = new BoardVO();
 		target.setNttSj("게시판 기능 설명");
@@ -1366,7 +1356,7 @@ public class EgovArticleController {
 		int loginUserCnt = egovArticleService.selectLoginUser(boardVO);
 
 		// 블로그 게시판 제목 추출
-		List<BoardVO> blogNameList = new ArrayList<BoardVO>();
+		List<BoardVO> blogNameList = new ArrayList<>();
 
 		BoardVO target = null;
 		target = new BoardVO();

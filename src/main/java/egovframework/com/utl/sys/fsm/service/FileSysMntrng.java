@@ -2,10 +2,14 @@ package egovframework.com.utl.sys.fsm.service;
 
 import java.io.Serializable;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovEmailCheck;
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 개요
  * - 파일시스템 모니터링대상에 대한 model 클래스를 정의한다.
- * 
+ *
  * 상세내용
  * - 파일시스템ID, 파일시스템명, 파일시스템관리명, 파일시스템크기, 파일시스템임계치, 파일시스템임계율, 파일시스템사용량, 파일시스템사용률, 관리자명, 관리자이메일주소, 서비스상태, 생성일시 항목을 관리한다.
  * @author 장철호
@@ -22,38 +26,49 @@ public class FileSysMntrng implements Serializable  {
 	/**
 	 * 파일시스템명
 	 */
+	@EgovNullCheck
+	@Size(max=60)
 	private String fileSysNm;
 	/**
 	 * 파일시스템관리명
 	 */
+	@EgovNullCheck
+	@Size(max=255)
 	private String fileSysManageNm;
 	/**
 	 * 파일시스템크기
 	 */
-	private int fileSysMg;
+	@EgovNullCheck
+	private Integer fileSysMg;
 	/**
 	 * 파일시스템임계치
 	 */
-	private int fileSysThrhld;
+	@EgovNullCheck
+	private Integer fileSysThrhld;
 	/**
 	 * 파일시스템임계치율
 	 */
-	private int fileSysThrhldRt;
+	private Integer fileSysThrhldRt;
 	/**
 	 * 파일시스템사용량
 	 */
-	private int fileSysUsgQty;
+	private Integer fileSysUsgQty;
 	/**
 	 * 파일시스템사용률
 	 */
-	private double fileSysUsgRt;
+	private Double fileSysUsgRt;
 	/**
 	 * 관리자명
 	 */
+	@EgovNullCheck
+	@Size(max=60)
 	private String mngrNm;
 	/**
 	 * 관리자이메일주소
 	 */
+	@EgovNullCheck
+	@EgovEmailCheck
+	@Size(max=50)
 	private String mngrEmailAddr;
 	/**
 	 * 로그정보
@@ -83,7 +98,7 @@ public class FileSysMntrng implements Serializable  {
 	 * 최종수정시점
 	 */
 	private String lastUpdusrPnttm = "";
-	
+
 	public String getFileSysId() {
 		return fileSysId;
 	}
@@ -102,31 +117,31 @@ public class FileSysMntrng implements Serializable  {
 	public void setFileSysManageNm(String fileSysManageNm) {
 		this.fileSysManageNm = fileSysManageNm;
 	}
-	public int getFileSysMg() {
+	public Integer getFileSysMg() {
 		return fileSysMg;
 	}
-	public void setFileSysMg(int fileSysMg) {
+	public void setFileSysMg(Integer fileSysMg) {
 		this.fileSysMg = fileSysMg;
 	}
-	public int getFileSysThrhld() {
+	public Integer getFileSysThrhld() {
 		return fileSysThrhld;
 	}
-	public void setFileSysThrhld(int fileSysThrhld) {
+	public void setFileSysThrhld(Integer fileSysThrhld) {
 		this.fileSysThrhld = fileSysThrhld;
 	}
-	public int getFileSysThrhldRt() {
+	public Integer getFileSysThrhldRt() {
 		return fileSysThrhldRt;
 	}
-	public void setFileSysThrhldRt(int fileSysThrhldRt) {
+	public void setFileSysThrhldRt(Integer fileSysThrhldRt) {
 		this.fileSysThrhldRt = fileSysThrhldRt;
 	}
-	public int getFileSysUsgQty() {
+	public Integer getFileSysUsgQty() {
 		return fileSysUsgQty;
 	}
-	public void setFileSysUsgQty(int fileSysUsgQty) {
+	public void setFileSysUsgQty(Integer fileSysUsgQty) {
 		this.fileSysUsgQty = fileSysUsgQty;
 	}
-	public double getFileSysUsgRt() {
+	public Double getFileSysUsgRt() {
 		return fileSysUsgRt;
 	}
 	public void setFileSysUsgRt(double fileSysUsgRt) {
@@ -186,6 +201,6 @@ public class FileSysMntrng implements Serializable  {
 	public void setLastUpdusrPnttm(String lastUpdusrPnttm) {
 		this.lastUpdusrPnttm = lastUpdusrPnttm;
 	}
-	
-	
+
+
 }

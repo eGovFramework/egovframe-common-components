@@ -18,7 +18,7 @@
  *  @version 1.0
  *  @see
  *
- *  Copyright (C) 2009 by MOPAS  All rights reserved.
+ *  Copyright (C) 2009 by MOPAS  All right reserved.
  */
 package egovframework.com.utl.sim.service;
 
@@ -60,7 +60,25 @@ public class EgovFileCmprs {
 
 		if (srcFile.exists() && srcFile.isFile()) {
 
-			String target2 = EgovFileTool.createNewDirectory(target1);
+			// 절대 경로인 경우 직접 디렉토리 생성, 상대 경로인 경우 EgovFileTool 사용
+			String target2;
+			File targetFile = new File(target1);
+			if (targetFile.isAbsolute()) {
+				// 절대 경로인 경우 직접 생성
+				targetFile = new File(EgovWebUtil.filePathBlackList(target1));
+				if (!targetFile.exists()) {
+					targetFile.mkdirs();
+				}
+				target2 = targetFile.getAbsolutePath();
+			} else {
+				// 상대 경로인 경우 EgovFileTool 사용
+				target2 = EgovFileTool.createNewDirectory(target1);
+			}
+			
+			if (target2 == null || target2.isEmpty()) {
+				throw new Exception("Failed to create target directory: " + target1);
+			}
+			
 			File tarFile = new File(target2);
 			finput = new FileInputStream(srcFile);
 			zinput = new ZipInputStream(finput);
@@ -79,12 +97,26 @@ public class EgovFileCmprs {
 					if (entry.isDirectory()) {
 						EgovFileTool.createDirectories(efile.getAbsolutePath());
 					} else {
+						// 상위 디렉토리가 없으면 생성
+						File parentDir = efile.getParentFile();
+						if (parentDir != null && !parentDir.exists()) {
+							parentDir.mkdirs();
+						}
+						
 						foutput = new FileOutputStream(efile);
-						// 2022.11.11 시큐어코딩 처리
-						while ((cnt = zinput.read(buffer)) != -1) {
-							foutput.write(buffer, 0, cnt);
+						try {
+							// 2022.11.11 시큐어코딩 처리
+							while ((cnt = zinput.read(buffer)) != -1) {
+								foutput.write(buffer, 0, cnt);
+							}
+							foutput.flush();
+						} finally {
+							// 각 entry의 FileOutputStream을 닫음
+							EgovResourceCloseHelper.close(foutput);
+							foutput = null;
 						}
 					}
+					zinput.closeEntry();
 				}
 
 				result = true;

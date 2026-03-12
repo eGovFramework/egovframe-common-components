@@ -189,22 +189,25 @@ public class EgovSmsInfoSender {
      */
     public void close() {
 	try {
-	    if (sender != null)
-		sender.close();
+	    if (sender != null) {
+			sender.close();
+		}
 	} catch (SMEException ignore) {
 		LOGGER.debug(ignore.getMessage());
 	}
 
 	try {
-	    if (sessSender != null)
-		sessSender.close();
+	    if (sessSender != null) {
+			sessSender.close();
+		}
 	} catch (SMEException ignore) {
 		LOGGER.debug(ignore.getMessage());
 	}
 
 	try {
-	    if (connSender != null)
-		connSender.close();
+	    if (connSender != null) {
+			connSender.close();
+		}
 	} catch (SMEException ignore) {
 		LOGGER.debug(ignore.getMessage());
 	}

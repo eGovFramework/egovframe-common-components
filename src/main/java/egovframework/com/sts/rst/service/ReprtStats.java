@@ -2,6 +2,9 @@ package egovframework.com.sts.rst.service;
 
 import egovframework.com.cmm.ComDefaultVO;
 
+import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
+import jakarta.validation.constraints.Size;
+
 /**
  * 개요
  * - 보고서통계에 대한 model 클래스를 정의한다.
@@ -29,6 +32,8 @@ public class ReprtStats extends ComDefaultVO {
 	/** 보고서ID */
     private String reprtId;
 	/** 보고서명 */
+	@EgovNullCheck
+	@Size(max=10)
     private String reprtNm;
 	/** 보고서유형 */
     private String reprtTy;

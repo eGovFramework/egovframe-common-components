@@ -24,7 +24,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -32,8 +31,7 @@
 <title><spring:message code="comSymSymSrv.serverEqpmnRegist.title"/></title><!-- 서버장비 등록 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
-<validator:javascript formName="serverEqpmn" staticJavascript="false" xhtml="true" cdata="false"/>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
@@ -157,7 +155,7 @@ function isEmail(str) {
 	<!-- 타이틀 -->
 	<h2><spring:message code="comSymSymSrv.serverEqpmnRegist.pageTop.title"/></h2><!-- 서버H/W 등록 -->
 
-    <form name="serverEqpmn" id="serverEqpmn" method="post" action="${pageContext.request.contextPath}/sym/sym/srv/addServerEqpmn.do">
+    <form:form modelAttribute="serverEqpmn" name="serverEqpmn" id="serverEqpmn" method="post">
 
 	<!-- 등록폼 -->
 	<table class="wTable">
@@ -243,7 +241,7 @@ function isEmail(str) {
     <!-- 검색조건 유지 -->
     <input type="hidden" name="strServerEqpmnNm" value="<c:out value='${serverEqpmnVO.strServerEqpmnNm}'/>" />
     <input type="hidden" name="pageIndex" value="<c:out value='${serverEqpmnVO.pageIndex}'/>" >
-	</form>
+	</form:form>
 
 </div>
 

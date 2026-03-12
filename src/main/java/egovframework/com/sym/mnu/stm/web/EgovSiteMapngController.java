@@ -2,8 +2,6 @@ package egovframework.com.sym.mnu.stm.web;
 
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.slf4j.Logger;
@@ -22,6 +20,7 @@ import egovframework.com.sym.mnu.mcm.service.EgovMenuCreateManageService;
 import egovframework.com.sym.mnu.mcm.service.MenuCreatVO;
 import egovframework.com.sym.mnu.mcm.service.MenuSiteMapVO;
 import egovframework.com.sym.mnu.stm.service.EgovSiteMapngService;
+import jakarta.annotation.Resource;
 
 /**
  * 사이트맵 조회 처리를 하는 비즈니스 구현 클래스
@@ -53,11 +52,11 @@ public class EgovSiteMapngController {
     /** EgovSiteMapngService */
 	@Resource(name = "siteMapngService")
     private EgovSiteMapngService siteMapngService;
-	
+
 	/** EgovMenuManageService */
 	@Resource(name = "meunCreateManageService")
 	private EgovMenuCreateManageService menuCreateManageService;
-	
+
 	/** EgovMessageSource */
 	@Resource(name="egovMessageSource")
 	EgovMessageSource egovMessageSource;

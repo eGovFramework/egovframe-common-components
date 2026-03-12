@@ -5,8 +5,6 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-import javax.annotation.Resource;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.poi.hssf.usermodel.HSSFCell;
 import org.apache.poi.hssf.usermodel.HSSFRow;
@@ -22,6 +20,7 @@ import egovframework.com.uss.ion.ans.service.AnnvrsryManageVO;
 import egovframework.com.uss.ion.ans.service.EgovAnnvrsryManageService;
 import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import jakarta.annotation.Resource;
 
 /**
  * <pre>
@@ -154,17 +153,19 @@ public class EgovAnnvrsryManageServiceImpl extends EgovAbstractServiceImpl imple
 	public List<AnnvrsryManageVO> selectAnnvrsryGdcc(AnnvrsryManageVO annvrsryManageVO) throws Exception {
 
 		List<AnnvrsryManageVO> resultList = annvrsryManageDAO.selectAnnvrsryGdcc(annvrsryManageVO);
-		List<AnnvrsryManageVO> result = new ArrayList<AnnvrsryManageVO>();
+		
+		List<AnnvrsryManageVO> result = new ArrayList<>();
 		long lTemp = 0;
 		int num = resultList.size();
 
 		for (int i = 0; i < num; i++) {
 			AnnvrsryManageVO annvrsryManageVO1 = resultList.get(i);
 			lTemp = getDateCount(annvrsryManageVO1);
-
+			
 			if (lTemp >= 0
 					&& lTemp < Long.parseLong(annvrsryManageVO1.getAnnvrsryBeginDe().replaceAll("\\p{Space}", ""))) {
 				annvrsryManageVO1.setAnnvrsryDe(EgovDateUtil.formatDate(annvrsryManageVO1.getAnnvrsryDe(), "-"));
+				
 				resultList.set(i, annvrsryManageVO1);
 				result.add(resultList.get(i));
 			}
@@ -222,7 +223,7 @@ public class EgovAnnvrsryManageServiceImpl extends EgovAbstractServiceImpl imple
 		}
 
 		long resultTime = targetDate.getTime().getTime() - today.getTime().getTime(); // 차이 구하기
-		if (resultTime > 0) {
+		if (resultTime >= 0) {
 			resultDay = resultTime / (1000 * 60 * 60 * 24);// 일로 바꾸기
 		} else {
 			resultDay = -1;
@@ -254,7 +255,7 @@ public class EgovAnnvrsryManageServiceImpl extends EgovAbstractServiceImpl imple
 		String sTempAnnvrsryNm = null; // 기념일명
 		String sTempReptitSe = null; // 반복여부
 
-		List<AnnvrsryManageVO> list = new ArrayList<AnnvrsryManageVO>();
+		List<AnnvrsryManageVO> list = new ArrayList<>();
 
 		// String sBndtDe = null;
 		HSSFWorkbook hssfWB = (HSSFWorkbook) excelZipService.loadWorkbook(inputStream);
@@ -339,9 +340,8 @@ public class EgovAnnvrsryManageServiceImpl extends EgovAbstractServiceImpl imple
 		// 2022.11.11 시큐어코딩 처리
 		if (StringUtils.isNotEmpty(checkedAnnvrsryManageForInsert)) {
 			String[] annvrsryManageValues = checkedAnnvrsryManageForInsert.split("[$]");
-			for (int i = 0; i < annvrsryManageValues.length; i++) {
+			for (String sTemp : annvrsryManageValues) {
 				annvrsryManage = new AnnvrsryManage();
-				String sTemp = annvrsryManageValues[i];
 				String[] sTempAnnvrsryManage = sTemp.split(",");
 				annvrsryManage.setUsid(sTempAnnvrsryManage[0]);
 

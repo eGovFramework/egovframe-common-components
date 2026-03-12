@@ -19,7 +19,6 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
-<%@ taglib prefix="validator" uri="http://www.springmodules.org/tags/commons-validator" %>
 <!-- 쪽지관리 -->
 <c:set var="pageTitle"><spring:message code="comUssIonNtm.NoteManage.title"/></c:set>
 <!DOCTYPE html>
@@ -28,20 +27,17 @@
 <title>${pageTitle} <spring:message code="title.list" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
-<script type="text/javascript" src="<c:url value="/validator.do"/>"></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
-<validator:javascript formName="noteManage" staticJavascript="false" xhtml="true" cdata="false" />
 <script type="text/javaScript">
 /* ********************************************************
 * 저장
 ******************************************************** */
-function fn_egov_save_NoteManage(){
-	var vFrom = document.noteManage;
+function fn_egov_save_NoteManage(form){
 	<c:if test="${cmd eq 'reply'}">
-		vFrom.cmd.value = "${cmd}";
+		form.cmd.value = "${cmd}";
 		var recptnEmp = document.getElementById("recptnEmpId").value;
-		console.log(document.getElementById("recptnEmpId"));
 		document.getElementById("recptnEmpList").value = recptnEmp;
 		document.getElementById("recptnSeList").value = 1;
 	</c:if>
@@ -49,16 +45,33 @@ function fn_egov_save_NoteManage(){
 	<c:if test="${cmd == null}">
 		fn_egov_empList_NoteManage();
 	</c:if>
+
+	if(!validateNoteManage(form)) {
+		return;
+	}
+
 	if(confirm("<spring:message code="common.save.msg"/>")){
-		vFrom.action = "<c:url value='/uss/ion/ntm/registEgovNoteManageActor.do'/>";
-		if(!validateNoteManage(vFrom)){
-			return;
-		}else{
-			vFrom.submit();
-			alert("<spring:message code="comUssIonNtm.NoteMange.success"/>")
-		}
+		form.submit();
 	}
 }
+
+/* ********************************************************
+* 페이지 로드 시 답장 모드일 때 받는 사람 정보 복원
+******************************************************** */
+window.onload = function() {
+	<c:if test="${cmd eq 'reply'}">
+		// 답장 모드일 때 받는 사람 정보 복원
+		var recptnEmpIdElement = document.getElementById("recptnEmpId");
+		if (recptnEmpIdElement) {
+			<c:if test="${noteManageMap != null}">
+				var trnsmiterOrgId = "<c:out value='${noteManageMap.trnsmiterOrgId}'/>";
+				if (trnsmiterOrgId && trnsmiterOrgId != "" && recptnEmpIdElement.value == "") {
+					recptnEmpIdElement.value = trnsmiterOrgId;
+				}
+			</c:if>
+		}
+	</c:if>
+};
 
 /* ********************************************************
 * 초기화
@@ -71,15 +84,6 @@ function fn_egov_init_NoteManage(){
    	document.getElementById("recptnEmp").options[0].selected = true;
 	fn_egov_delete_NoteManage(0);
 	</c:if>
-
-// 	<c:if test="${cmd eq 'reply'}">
-		//답변 수신자 처리
-// 		var option = document.createElement("option");
-// 		option.appendChild(document.createTextNode("수신:${noteManageMap.trnsmiterNm}(${noteManageMap.trnsmiterId})"));
-// 		option.setAttribute("value", "${noteManageMap.trnsmiterOrgId}");
-// 		option.recptnSe = "1";
-// 		document.getElementById("recptnEmp").appendChild(option);
-// 	</c:if>
 }
 
 /* ********************************************************
@@ -188,11 +192,11 @@ function  fn_egov_recptnEmpSearchPupup(){
 .btnNote input.s_submit:hover { background: #7dabdf; }
 </style>
 </head>
-<body onLoad="fn_egov_init_NoteManage();">
+<body>
 <!-- noscript 태그  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form:form modelAttribute="noteManage"  name="noteManage"  action="${pageContext.request.contextPath}/uss/ion/ntm/registEgovNoteManage.do" method="post" enctype="multipart/form-data" >
+<form:form modelAttribute="noteManage"  name="noteManage"  action="${pageContext.request.contextPath}/uss/ion/ntm/registEgovNoteManageActor.do" method="post" onSubmit="fn_egov_save_NoteManage(document.forms[0]); return false;" enctype="multipart/form-data" >
 
 <div class="wTableFrm">
 	<h2>${pageTitle}</h2>
@@ -200,21 +204,23 @@ function  fn_egov_recptnEmpSearchPupup(){
 		<table class="wTable" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
 		<caption>${pageTitle}</caption>
 			<colgroup>
-				<col style="width: 22%;">
-				<col style="width: ;">
+				<col style="width: 20%;">
+				<col style="width: 80%;">
 			</colgroup>
 		<tbody>
 				<tr>
 					<th><img src="<c:url value='/images/egovframework/com/uss/ion/ntm/check.png'/>" alt="check"/> <spring:message code="comUssIonNtm.NoteMange.subject"/></th><!-- 제목 -->
 					<!-- 제목 -->
 					<c:set var="subject"><spring:message code="comUssIonNtm.NoteManage.title"/></c:set>
-					<td><form:input path="noteSj" title="${subject}" size="87" maxlength="255"/><!-- 제목 : 쪽지내용 입력 -->
+					<td class="left">
+						<form:input path="noteSj" title="${subject}" size="87" maxlength="255"/><!-- 제목 : 쪽지내용 입력 -->
+						<div><form:errors path="noteSj" cssClass="error" /></div>
 					</td>
 				</tr>
 				<tr>
 					<th><img src="<c:url value='/images/egovframework/com/uss/ion/ntm/check.png'/>" alt="check"/> <spring:message code="comUssIonNtm.NoteMange.receiver"/></th>
 					<c:if test="${cmd == null}">
-					<td>
+					<td class="left">
 						<div style="clear:both;"></div>
 				   		<div style="text-align: left;">		
 							<!-- 수신 -->
@@ -234,24 +240,30 @@ function  fn_egov_recptnEmpSearchPupup(){
 							<!-- 수신/참조자 선택 목록 팝업창 열기 -->
 							<a href="<c:url value='/uss/ion/ntm/listEgovNoteEmpListPopup.do'/>" onClick="fn_egov_recptnEmpSearchPupup();return false;"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>" align="middle" style="border:0px;margin-right:10px;" alt="${recptnEmnpList}" title="${recptnEmnpList}"></a>
 							<!-- 수신자 목록 리스트 제외 -->
-							<span class="btn_s"><a href="#LINK" onClick="fn_egov_delete_NoteManage(1);"  title="<spring:message code="comUssIonNtm.NoteMange.delete" /> <spring:message code="input.button" />"><spring:message code="comUssIonNtm.NoteMange.delete" /> </a></span>    
+							<span class="btn_s"><a href="#LINK" onClick="fn_egov_delete_NoteManage(1);"  title="<spring:message code="comUssIonNtm.NoteMange.delete" /> <spring:message code="input.button" />"><spring:message code="comUssIonNtm.NoteMange.delete" /> </a></span>
 						</div>
+						<div><form:errors path="recptnEmpList" cssClass="error" /></div>
 						</div>
 					</td>
 					</c:if>
 
 					<c:if test="${cmd eq 'reply'}">
-						<td class="left"><c:out value="${noteManageMap.trnsmiterNm}" /></td>
-						<input type="hidden" id="recptnEmpId" value="${noteManageMap.trnsmiterOrgId }">
+						<td class="left">
+							<c:if test="${noteManageMap != null}">
+								<c:out value="${noteManageMap.trnsmiterNm}"/>
+							</c:if>
+						</td>
+						<input type="hidden" id="recptnEmpId" name="recptnEmpId" value="<c:if test='${noteManageMap != null}'><c:out value='${noteManageMap.trnsmiterOrgId}'/></c:if>">
 					</c:if>
 				</tr>
 				<tr>
 					<!-- 쪽지 내용 입력 -->
 					<th><img src="<c:url value='/images/egovframework/com/uss/ion/ntm/check.png'/>" alt="check"/> <spring:message code="comUssIonNtm.NoteMange.content"/></th>
-					<td>
+					<td class="nopd">
 						<!-- 쪽지내용 -->
 						<c:set var="contents"><spring:message code="comUssIonNtm.NoteMange.content"/></c:set>	
 						<form:textarea path="noteCn" name="noteCn" id="noteCn" title="${contents}" cols="85" rows="20" style="height:200px;"/>
+						<div><form:errors path="noteCn" cssClass="error" /></div>
 					</td>
 				</tr>
 		</tbody>
@@ -262,13 +274,24 @@ function  fn_egov_recptnEmpSearchPupup(){
 <!-- 수신자구분리스트 -->
 <input type="hidden" name="recptnSeList" id="recptnSeList" value="">
 
+<!-- 답장 모드일 때 noteId 유지 -->
+<c:if test="${cmd eq 'reply'}">
+	<c:choose>
+		<c:when test="${noteManageMap != null && not empty noteManageMap.noteId}">
+			<input type="hidden" name="noteId" id="noteId" value="<c:out value='${noteManageMap.noteId}'/>">
+		</c:when>
+		<c:when test="${noteManage.noteId != null}">
+			<input type="hidden" name="noteId" id="noteId" value="<c:out value='${noteManage.noteId}'/>">
+		</c:when>
+	</c:choose>
+</c:if>
 
 <div class="btnNote">
-	<input type="submit" class="s_submit" onClick="fn_egov_save_NoteManage(); return false;" value="<spring:message code="comUssIonNtm.NoteMange.send" />" title="<spring:message code="comUssIonNtm.NoteMange.send" /> <spring:message code="input.button" />" />
+	<input type="submit" class="s_submit" value="<spring:message code="comUssIonNtm.NoteMange.send" />" title="<spring:message code="comUssIonNtm.NoteMange.send" /> <spring:message code="input.button" />" />
 </div><div style="clear:both;"></div>
 
 </div>
-<input name="cmd" type="hidden" value="<c:out value=''/>">
+<input name="cmd" type="hidden" value="<c:out value='${cmd}'/>">
 </form:form>
 </body>
 </html>

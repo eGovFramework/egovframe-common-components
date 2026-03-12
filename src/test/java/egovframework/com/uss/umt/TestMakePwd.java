@@ -28,7 +28,6 @@ import egovframework.com.utl.sim.service.EgovFileScrty;
 public class TestMakePwd {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
 		
 		/*Scanner input = new Scanner(System.in);  // Create a Scanner object
 		System.out.println("Enter memberID");
@@ -69,7 +68,6 @@ public class TestMakePwd {
 			System.out.println("==>> BCryptPasswordEncoder > encryptPassword = "+bcEncryptPassword);
 
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
