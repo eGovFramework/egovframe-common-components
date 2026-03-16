@@ -1,4 +1,4 @@
-# 표준프레임워크 공통컴포넌트 4.3.0
+# 표준프레임워크 공통컴포넌트 5.0.0
 
 ![java](https://img.shields.io/badge/java-007396?style=for-the-badge&logo=JAVA&logoColor=white)
 ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
@@ -64,12 +64,14 @@ egovframe-common-components
 4. 공통컴포넌트를 설치한 프로젝트 내에 위치한 `globals.properties`(src/main/resources/egovframework/egovProps/globals.properties) 파일의 데이터베이스 정보를 설정함<img width="912" alt="데이터베이스 설정 화면 - globals.properties 파일" src="https://user-images.githubusercontent.com/51683963/230331068-72ac3ab3-df28-4ac2-a3b5-d1d2e58c6b6b.png">
 5. `globals.properties` 파일의 인증/권한방식 정보를 설정함<img width="600" alt="인증 및 권한방식 설정 화면 - globals.properties 파일" src="https://user-images.githubusercontent.com/51683963/230331630-dd9dc884-0b83-4019-bb81-b162b729d008.png">
 6. 프로젝트명을 마우스 우클릭하여 run as > run on server을 실행함
-7. 브라우저를 통해 공통컴포넌트 서비스를 확인함<img width="600" alt="공통컴포넌트 서비스 실행 화면" src="https://user-images.githubusercontent.com/51683963/230332233-d753370b-e824-4e27-8509-a50b773b56e0.jpg">
+7. 브라우저를 통해 공통컴포넌트 서비스를 확인함
+
+<img width="600" alt="공통컴포넌트 서비스 실행 화면" src="https://user-images.githubusercontent.com/51683963/230332233-d753370b-e824-4e27-8509-a50b773b56e0.jpg">
 
 
 ## 참조
 
-1. [공통컴포넌트 위키가이드](https://www.egovframe.go.kr/wiki/doku.php?id=egovframework:com:v4.3:init)
+1. [공통컴포넌트 위키가이드](https://www.egovframe.go.kr/wiki/doku.php?id=egovframework:com:v5.0:init)
 2. [개발환경 다운로드](https://www.egovframe.go.kr/home/sub.do?menuNo=94)
 3. [공통컴포넌트 다운로드](https://www.egovframe.go.kr/home/sub.do?menuNo=49)
-4. [공통컴포넌트 로그인정보](https://www.egovframe.go.kr/wiki/doku.php?id=egovframework:com:v4.3:init_table)
+4. [공통컴포넌트 로그인정보](https://www.egovframe.go.kr/wiki/doku.php?id=egovframework:com:v5.0:init_table)
