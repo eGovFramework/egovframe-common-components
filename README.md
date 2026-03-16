@@ -66,8 +66,7 @@ egovframe-common-components
 6. 프로젝트명을 마우스 우클릭하여 run as > run on server을 실행함
 7. 브라우저를 통해 공통컴포넌트 서비스를 확인함
 
-<img width="600" alt="공통컴포넌트 서비스 실행 화면" src="https://user-images.githubusercontent.com/51683963/230332233-d753370b-e824-4e27-8509-a50b773b56e0.jpg">
-
+<img width="600" alt="공통컴포넌트 서비스 실행 화면" src="https://github.com/user-attachments/assets/aad11f93-b9d2-4bcf-bf45-c06365899a5d">
 
 ## 참조
 
