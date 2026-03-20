@@ -4734,4 +4734,48 @@ function validateIndvdlYrycManage(form, diffValueMessage) {
     return true;
 }
 
-
+// 공통코드 Validation
+function validateCmmnDetailCodeVO(form) {
+    const rules = {
+        clCode: {
+            label: '분류코드',
+            rules: {
+                required: true
+            }
+        },
+        codeId: {
+            label: '코드ID',
+            rules: {
+                required: true
+            }
+        },
+        code: {
+            label: '상세코드',
+            rules: {
+                required: true,
+                maxlength: 15
+            }
+        },
+        codeNm: {
+            label: '상세코드명',
+            rules: {
+                required: true,
+                maxlength: 60
+            }
+        },
+        codeDc: {
+            label: '상세코드설명',
+            rules: {
+                required: true,
+                maxlength: 200
+            }
+        },
+        useAt: {
+            label: '사용여부',
+            rules: {
+                required: true
+            }
+        }
+    };
+    return EgovValidation.validateForm(form, rules);
+}
