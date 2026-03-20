@@ -35,7 +35,7 @@
         LIMIT #{recordCountPerPage} OFFSET #{firstIndex}
     </select>
     
-    <select id="selectUserListTotCnt_S" resultType="int">
+    <select id="selectEmplyrListTotCnt_S" resultType="int">
             SELECT COUNT(1) totcnt
             FROM(
             SELECT
