@@ -43,8 +43,9 @@
 
 		// 첫 입력란에 포커스
 		document.getElementById("cmmnDetailCodeVO").clCode.focus();
-
+		fncShowMessg();
 	}
+	document.addEventListener("DOMContentLoaded", fn_egov_init);
 	/* ********************************************************
 	 * 목록 으로 가기
 	 ******************************************************** */
@@ -86,7 +87,7 @@
 </script>
 
 </head>
-<body onLoad="fn_egov_init(); fncShowMessg();">
+<body>
 
 	<form:form modelAttribute="cmmnDetailCodeVO" method="post"
 		onSubmit="fn_egov_regist_code(document.forms[0]); return false;">
