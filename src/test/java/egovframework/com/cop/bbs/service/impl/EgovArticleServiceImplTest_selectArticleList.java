@@ -1,4 +1,4 @@
-﻿package egovframework.com.cop.bbs.service.impl;
+package egovframework.com.cop.bbs.service.impl;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 

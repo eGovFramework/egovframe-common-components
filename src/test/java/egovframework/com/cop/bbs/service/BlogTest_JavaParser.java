@@ -1,4 +1,4 @@
-﻿package egovframework.com.cop.bbs.service;
+package egovframework.com.cop.bbs.service;
 
 import java.nio.file.Paths;
 
