@@ -36,7 +36,7 @@ function fn_egov_init(){
 	// 첫 입력란에 포커스..
 	document.CcmDeCodeForm.searchCondition.focus();
 }
-
+document.addEventListener("DOMContentLoaded", fn_egov_init);
 /*********************************************************
  * 페이징 처리 함수
  ******************************************************** */
@@ -64,7 +64,7 @@ function fn_egov_inquire_codedetail(codeId, code) {
 }
 </script>
 </head>
-<body onload="fn_egov_init()">
+<body>
 
 <form name="CcmDeCodeForm" action="<c:url value='/sym/ccm/cde/SelectCcmCmmnDetailCodeList.do'/>" method="get" onsubmit="fn_egov_search_code(); return false;"> 
 <div class="board">

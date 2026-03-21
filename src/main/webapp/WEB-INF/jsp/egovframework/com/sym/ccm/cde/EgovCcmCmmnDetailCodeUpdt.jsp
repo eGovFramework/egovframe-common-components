@@ -37,6 +37,7 @@ function fn_egov_init(){
 	// 첫 입력란에 포커스..
 	document.getElementById("cmmnDetailCodeVO").codeNm.focus();
 }
+document.addEventListener("DOMContentLoaded", fn_egov_init);
 /* ********************************************************
  * 저장처리화면
  ******************************************************** */
@@ -59,7 +60,7 @@ function fn_egov_inqire_code() {
 }
 </script>
 </head>
-<body onLoad="fn_egov_init();">
+<body>
 
 
 <!-- 상단타이틀 -->
