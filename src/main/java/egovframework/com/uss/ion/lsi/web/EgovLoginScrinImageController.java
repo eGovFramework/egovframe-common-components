@@ -335,14 +335,15 @@ public class EgovLoginScrinImageController {
 			                                @ModelAttribute("loginScrinImageVO") LoginScrinImageVO loginScrinImageVO,
 			                                 SessionStatus status,
 			                                 ModelMap model) throws Exception {
-
-    	String [] strImageIds = imageIds.split(";");
-
-    	for (String strImageId : strImageIds) {
-    		loginScrinImageVO.setImageId(strImageId);
-    		egovLoginScrinImageService.deleteLoginScrinImage(loginScrinImageVO);
+    	// 2026.03.23 kisa 보안점검 대응 조치
+    	if (imageIds != null) {
+	    	String [] strImageIds = imageIds.split(";");
+	
+	    	for (String strImageId : strImageIds) {
+	    		loginScrinImageVO.setImageId(strImageId);
+	    		egovLoginScrinImageService.deleteLoginScrinImage(loginScrinImageVO);
+	    	}
     	}
-
     	status.setComplete();
     	model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
     	return "forward:/uss/ion/lsi/selectLoginScrinImageList.do";

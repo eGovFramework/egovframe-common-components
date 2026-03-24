@@ -152,7 +152,11 @@ public class EgovProgrmManageController {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
-		String[] delProgrmFileNm = checkedProgrmFileNmForDel.split(",");
+		// 2026.03.23 kisa 보안점검 대응 조치
+		String[] delProgrmFileNm = null;
+		  if (checkedProgrmFileNmForDel != null) {
+			  delProgrmFileNm = checkedProgrmFileNmForDel.split(",");
+		  }
 		if (delProgrmFileNm == null || (delProgrmFileNm.length == 0)) {
 			resultMsg = egovMessageSource.getMessage("fail.common.delete");
 			sLocationUrl = "forward:/sym/prm/EgovProgramListManageSelect.do";

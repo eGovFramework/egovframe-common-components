@@ -163,7 +163,11 @@ public class EgovMenuCreateManageController {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
-		String[] insertMenuNo = checkedMenuNoForInsert.split(",");
+		// 2026.03.23 kisa 보안점검 대응 조치
+		 String[] insertMenuNo = null;
+		 if (checkedMenuNoForInsert != null) {
+			 insertMenuNo = checkedMenuNoForInsert.split(",");
+		 }
 		if (insertMenuNo == null || (insertMenuNo.length == 0)) {
 			resultMsg = egovMessageSource.getMessage("fail.common.insert");
 		} else {

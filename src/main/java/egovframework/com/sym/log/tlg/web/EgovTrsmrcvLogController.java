@@ -100,8 +100,10 @@ public class EgovTrsmrcvLogController {
 	@RequestMapping(value = "/sym/log/tlg/InqireTrsmrcvLog.do")
 	public String selectTrsmrcvLog(@ModelAttribute("searchVO") TrsmrcvLog trsmrcvLog, @RequestParam("requstId") String requstId, ModelMap model) throws Exception {
 
-		trsmrcvLog.setRequstId(requstId.trim());
-
+		// 2026.03.23 kisa 보안점검 대응 조치
+		if (requstId != null) {
+			trsmrcvLog.setRequstId(requstId.trim());
+		}
 		TrsmrcvLog vo = trsmrcvLogService.selectTrsmrcvLog(trsmrcvLog);
 		model.addAttribute("result", vo);
 		return "egovframework/com/sym/log/tlg/EgovTrsmrcvLogInqire";

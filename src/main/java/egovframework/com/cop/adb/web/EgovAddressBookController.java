@@ -217,8 +217,9 @@ public class EgovAddressBookController {
                 adbkVO.getAdbkMan().add(adbkUser);
             }
         }
-
-        if(checkCnd.equals("regist")) {
+        
+        // 2026.03.23 kisa 보안점검 대응 조치
+        if("regist".equals(checkCnd)) {
 			return "egovframework/com/cop/adb/EgovAddressBookRegist";
 		} else{
             model.addAttribute("writer" , true);
@@ -271,8 +272,8 @@ public class EgovAddressBookController {
         adbkUserVO.setUserId(id);
 
 
-
-        if(checkCnd.equals("regist")) {
+        // 2026.03.23 kisa 보안점검 대응 조치
+        if("regist".equals(checkCnd)) {
 			return "egovframework/com/cop/adb/EgovAddressBookRegist";
 		} else{
             model.addAttribute("writer" , true);

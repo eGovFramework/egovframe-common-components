@@ -203,7 +203,11 @@ public class EgovUserAbsnceController {
 	public String deleteUserAbsnceList(@RequestParam("userIds") String userIds ,
 			                           @ModelAttribute("userAbsnceVO") UserAbsnceVO userAbsnceVO,
 			                           ModelMap model) throws Exception {
-
+    	//2026.03.23 kisa 보안점검 대응 조치
+	    if (userIds == null) {
+	        model.addAttribute("message", "삭제할 사용자 정보가 없습니다.");
+	        return "forward:/uss/ion/uas/selectUserAbsnceList.do";
+	    }
     	String [] strUserIds = userIds.split(";");
 
     	for (String strUserId : strUserIds) {

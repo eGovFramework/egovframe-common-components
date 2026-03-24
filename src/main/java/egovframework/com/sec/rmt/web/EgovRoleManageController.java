@@ -252,12 +252,14 @@ public class EgovRoleManageController {
 	public String deleteRoleList(@RequestParam("roleCodes") String roleCodes,
 			                     @ModelAttribute("roleManage") RoleManage roleManage,
 	                              Model model) throws Exception {
-    	String [] strRoleCodes = roleCodes.split(";");
-    	for (String strRoleCode : strRoleCodes) {
-    		roleManage.setRoleCode(strRoleCode);
-    		egovRoleManageService.deleteRole(roleManage);
-    	}
-
+		// 2026.03.23 kisa 보안점검 대응 조치
+		if (roleCodes != null) {
+	    	String [] strRoleCodes = roleCodes.split(";");
+	    	for (String strRoleCode : strRoleCodes) {
+	    		roleManage.setRoleCode(strRoleCode);
+	    		egovRoleManageService.deleteRole(roleManage);
+	    	}
+		}
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		return "forward:/sec/rmt/EgovRoleList.do";
 	}

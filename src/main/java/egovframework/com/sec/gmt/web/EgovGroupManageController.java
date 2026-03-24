@@ -194,12 +194,14 @@ public class EgovGroupManageController {
 	public String deleteGroupList(@RequestParam("groupIds") String groupIds,
 			                      @ModelAttribute("groupManage") GroupManage groupManage,
 	                               Model model) throws Exception {
-    	String [] strGroupIds = groupIds.split(";");
-    	for (String strGroupId : strGroupIds) {
-    		groupManage.setGroupId(strGroupId);
-    		egovGroupManageService.deleteGroup(groupManage);
-    	}
-
+		// 2026.03.23 kisa 보안점검 대응 조치
+		if (groupIds != null) {
+	    	String [] strGroupIds = groupIds.split(";");
+	    	for (String strGroupId : strGroupIds) {
+	    		groupManage.setGroupId(strGroupId);
+	    		egovGroupManageService.deleteGroup(groupManage);
+	    	}
+		}
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		return "forward:/sec/gmt/EgovGroupList.do";
 	}

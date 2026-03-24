@@ -121,23 +121,25 @@ public class EgovAuthorRoleController {
 			                       @RequestParam Map<?, ?> commandMap,
 			                       @ModelAttribute("authorRoleManage") AuthorRoleManage authorRoleManage,
 			                         ModelMap model) throws Exception {
-
-    	String [] strRoleCodes = roleCodes.split(";");
-    	String [] strRegYns = regYns.split(";");
-
-    	authorRoleManage.setRoleCode(authorCode);
-
-    	for(int i=0; i<strRoleCodes.length;i++) {
-
-    		authorRoleManage.setRoleCode(strRoleCodes[i]);
-    		authorRoleManage.setRegYn(strRegYns[i]);
-    		if(strRegYns[i].equals("Y")){
-    			egovAuthorRoleManageService.deleteAuthorRole(authorRoleManage);//2011.09.07
-    			egovAuthorRoleManageService.insertAuthorRole(authorRoleManage);
-    		}else {
-    			egovAuthorRoleManageService.deleteAuthorRole(authorRoleManage);
-    		}
-    	}
+		// 2026.03.23 kisa 보안점검 대응 조치
+		if (roleCodes != null && regYns != null) {
+	    	String [] strRoleCodes = roleCodes.split(";");
+	    	String [] strRegYns = regYns.split(";");
+	
+	    	authorRoleManage.setRoleCode(authorCode);
+	
+	    	for(int i=0; i<strRoleCodes.length;i++) {
+	
+	    		authorRoleManage.setRoleCode(strRoleCodes[i]);
+	    		authorRoleManage.setRegYn(strRegYns[i]);
+	    		if(strRegYns[i].equals("Y")){
+	    			egovAuthorRoleManageService.deleteAuthorRole(authorRoleManage);//2011.09.07
+	    			egovAuthorRoleManageService.insertAuthorRole(authorRoleManage);
+	    		}else {
+	    			egovAuthorRoleManageService.deleteAuthorRole(authorRoleManage);
+	    		}
+	    	}
+		}
 
     	if ("security".equals(EgovProperties.getProperty("Globals.Auth").trim())) {
     		if (egovReloadableFilterInvocationSecurityMetadataSource != null) {

@@ -187,6 +187,12 @@ public class EgovDeptManageController {
 	@RequestMapping(value = "/uss/umt/dpt/removeDeptManageList.do")
 	public String deleteDeptManageList(@RequestParam("deptManages") String deptManages, @ModelAttribute("deptManageVO") DeptManageVO deptManageVO, ModelMap model) throws Exception {
 
+		// 2026.03.23 kisa 보안점검 대응 조치
+		if (deptManages == null) {
+		      model.addAttribute("message", "삭제할 부서 정보가 없습니다.");
+		      return "forward:/uss/umt/dpt/selectDeptManageList.do";
+		  }
+		
 		String[] strDeptManages = deptManages.split(";");
 		for (String strDeptManage : strDeptManages) {
 			deptManageVO.setOrgnztId(strDeptManage);
