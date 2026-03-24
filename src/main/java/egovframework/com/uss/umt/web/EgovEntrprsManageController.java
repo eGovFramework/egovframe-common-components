@@ -278,7 +278,8 @@ public class EgovEntrprsManageController {
 		String onepassUserId = loginVO.getUniqId();
 		String onepassUserkey = loginVO.getOnepassUserkey();
 		String onepassIntfToken = loginVO.getOnepassIntfToken();
-		if (entrprsmberId.equals(onepassUserId)) {
+		// 2026.03.23 kisa 보안점검 대응 조치
+		if (entrprsmberId != null && entrprsmberId.equals(onepassUserId)) {
 			model.addAttribute("onepassUserkey", onepassUserkey); // 디지털원패스 사용자키
 			model.addAttribute("onepassIntfToken", onepassIntfToken); // 디지털원패스 사용자세션값
 		} else {

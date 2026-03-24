@@ -210,6 +210,12 @@ public class EgovMainImageController {
 	@RequestMapping(value = "/uss/ion/msi/removeMainImageList.do")
 	public String deleteMainImageList(@RequestParam("imageIds") String imageIds,
 			@ModelAttribute("mainImageVO") MainImageVO mainImageVO, SessionStatus status, ModelMap model) throws Exception {
+		//2026.03.23 kisa 보안점검 대응 조치
+		 if (imageIds == null) {
+		      model.addAttribute("message", "삭제할 메인이미지 정보가 없습니다.");
+		      return "forward:/uss/ion/msi/selectMainImageList.do";
+		  }
+
 		String[] strImageIds = imageIds.split(";");
 		for (String strImageId : strImageIds) {
 			mainImageVO.setImageId(strImageId);

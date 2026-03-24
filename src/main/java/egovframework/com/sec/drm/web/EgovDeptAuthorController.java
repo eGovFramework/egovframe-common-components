@@ -122,21 +122,22 @@ public class EgovDeptAuthorController extends EgovComAbstractController {
 			                       @RequestParam("regYns") String regYns,
 			                       @ModelAttribute("deptAuthor") DeptAuthor deptAuthor,
 			                         ModelMap model) throws Exception {
-
-    	String [] strUserIds = userIds.split(";");
-    	String [] strAuthorCodes = authorCodes.split(";");
-    	String [] strRegYns = regYns.split(";");
-
-    	for(int i=0; i<strUserIds.length;i++) {
-    		deptAuthor.setUniqId(strUserIds[i]);
-    		deptAuthor.setAuthorCode(strAuthorCodes[i]);
-    		if(strRegYns[i].equals("N")) {
-				egovDeptAuthorService.insertDeptAuthor(deptAuthor);
-			} else {
-				egovDeptAuthorService.updateDeptAuthor(deptAuthor);
-			}
-    	}
-
+		// 2026.03.23 kisa 보안점검 대응 조치
+		 if (userIds != null && authorCodes != null && regYns != null) {
+	    	String [] strUserIds = userIds.split(";");
+	    	String [] strAuthorCodes = authorCodes.split(";");
+	    	String [] strRegYns = regYns.split(";");
+	
+	    	for(int i=0; i<strUserIds.length;i++) {
+	    		deptAuthor.setUniqId(strUserIds[i]);
+	    		deptAuthor.setAuthorCode(strAuthorCodes[i]);
+	    		if(strRegYns[i].equals("N")) {
+					egovDeptAuthorService.insertDeptAuthor(deptAuthor);
+				} else {
+					egovDeptAuthorService.updateDeptAuthor(deptAuthor);
+				}
+	    	}
+		 }
         model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
 		return "forward:/sec/drm/EgovDeptAuthorList.do";
 	}
@@ -152,13 +153,14 @@ public class EgovDeptAuthorController extends EgovComAbstractController {
 	public String deleteDeptAuthor (@RequestParam("userIds") String userIds,
 			                        @ModelAttribute("deptAuthor") DeptAuthor deptAuthor,
                                      ModelMap model) throws Exception {
-
-    	String [] strUserIds = userIds.split(";");
-    	for (String strUserId : strUserIds) {
-    		deptAuthor.setUniqId(strUserId);
-    		egovDeptAuthorService.deleteDeptAuthor(deptAuthor);
-    	}
-
+		// 2026.03.23 kisa 보안점검 대응 조치
+		if (userIds != null) {
+	    	String [] strUserIds = userIds.split(";");
+	    	for (String strUserId : strUserIds) {
+	    		deptAuthor.setUniqId(strUserId);
+	    		egovDeptAuthorService.deleteDeptAuthor(deptAuthor);
+	    	}
+		}
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		return "forward:/sec/drm/EgovDeptAuthorList.do";
 	}

@@ -98,11 +98,20 @@ public class EgovUserLogController {
 			@RequestParam("srvcNm") String srvcNm, @RequestParam("methodNm") String methodNm, ModelMap model)
 			throws Exception {
 
+		// 2026.03.23 kisa 보안점검 대응 조치
+		if (occrrncDe != null) {
 		userLog.setOccrrncDe(occrrncDe.trim());
+		}
+		if (rqesterId != null) {
 		userLog.setRqesterId(rqesterId.trim());
+		}
+		if (srvcNm != null) {
 		userLog.setSrvcNm(srvcNm.trim());
+		}
+		if (methodNm != null) {
 		userLog.setMethodNm(methodNm.trim());
-
+		}
+		
 		UserLog vo = userLogService.selectUserLog(userLog);
 		model.addAttribute("result", vo);
 		return "egovframework/com/sym/log/ulg/EgovUserLogDetail";

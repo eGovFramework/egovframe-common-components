@@ -89,9 +89,10 @@ public class EgovWebLogController {
 	public String selectWebLog(@ModelAttribute("searchVO") WebLog webLog,
 			@RequestParam("requstId") String requstId,
 			ModelMap model) throws Exception{
-
-		webLog.setRequstId(requstId.trim());
-
+		// 2026.03.23 kisa 보안점검 대응 조치
+		 if (requstId != null) {
+			 webLog.setRequstId(requstId.trim());
+		 }
 		WebLog vo = webLogService.selectWebLog(webLog);
 		model.addAttribute("result", vo);
 		return "egovframework/com/sym/log/wlg/EgovWebLogDetail";

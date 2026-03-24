@@ -128,16 +128,17 @@ public class EgovBkmkMenuManageController {
             //    model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
             return "redirect:/uat/uia/egovLoginUsr.do";
         }
-
-        String [] temp = checkMenuIds.split(",");
-
-        for (String element : temp) {
-            BkmkMenuManage bkmk = new BkmkMenuManage();
-            bkmk.setMenuId(element);
-            bkmk.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
-            bkmkMenuManageService.deleteBkmkMenuManage(bkmk);
+        // 2026.03.23 kisa 보안점검 대응 조치
+        if(checkMenuIds != null) {
+	        String [] temp = checkMenuIds.split(",");
+	
+	        for (String element : temp) {
+	            BkmkMenuManage bkmk = new BkmkMenuManage();
+	            bkmk.setMenuId(element);
+	            bkmk.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
+	            bkmkMenuManageService.deleteBkmkMenuManage(bkmk);
+	        }
         }
-
         return "forward:/sym/mnu/bmm/selectBkmkMenuManageList.do";
     }
 

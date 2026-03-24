@@ -203,12 +203,14 @@ public class EgovAuthorManageController {
     public String deleteAuthorList(@RequestParam("authorCodes") String authorCodes,
     		                       @ModelAttribute("authorManage") AuthorManage authorManage,
     		                        Model model) throws Exception {
-
-    	String [] strAuthorCodes = authorCodes.split(";");
-    	for (String strAuthorCode : strAuthorCodes) {
-			authorManage.setAuthorCode(strAuthorCode);
-			egovAuthorManageService.deleteAuthor(authorManage);
-		}
+    	// 2026.03.23 kisa 보안점검 대응 조치
+    	if (authorCodes != null) {
+	    	String [] strAuthorCodes = authorCodes.split(";");
+	    	for (String strAuthorCode : strAuthorCodes) {
+				authorManage.setAuthorCode(strAuthorCode);
+				egovAuthorManageService.deleteAuthor(authorManage);
+			}
+    	}
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 
 		model.addAttribute("searchCondition", authorManage.getSearchCondition());

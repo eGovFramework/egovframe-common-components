@@ -473,22 +473,24 @@ public class EgovServerController {
 			@RequestParam("serverEqpmnIds") String serverEqpmnIds, @RequestParam("regYns") String regYns,
 			@ModelAttribute("serverEqpmnRelate") ServerEqpmnRelate serverEqpmnRelate, SessionStatus status,
 			ModelMap model) throws Exception {
-
-		String[] strServerEqpmnIds = serverEqpmnIds.split(";");
-		String[] strRegYns = regYns.split(";");
-
-		serverEqpmnRelate.setServerId(serverId);
-
-		for (int i = 0; i < strServerEqpmnIds.length; i++) {
+		
+		// 2026.03.23 kisa 보안점검 대응 조치
+		 if (serverEqpmnIds != null && regYns != null) {
+			String[] strServerEqpmnIds = serverEqpmnIds.split(";");
+			String[] strRegYns = regYns.split(";");
+	
 			serverEqpmnRelate.setServerId(serverId);
-			serverEqpmnRelate.setServerEqpmnId(strServerEqpmnIds[i]);
-			if (strRegYns[i].equals("Y")) {
-				egovServerService.insertServerEqpmnRelate(serverEqpmnRelate);
-			} else {
-				egovServerService.deleteServerEqpmnRelate(serverEqpmnRelate);
+	
+			for (int i = 0; i < strServerEqpmnIds.length; i++) {
+				serverEqpmnRelate.setServerId(serverId);
+				serverEqpmnRelate.setServerEqpmnId(strServerEqpmnIds[i]);
+				if (strRegYns[i].equals("Y")) {
+					egovServerService.insertServerEqpmnRelate(serverEqpmnRelate);
+				} else {
+					egovServerService.deleteServerEqpmnRelate(serverEqpmnRelate);
+				}
 			}
-		}
-
+		 }
 		status.setComplete();
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
 		return "forward:/sym/sym/srv/selectServerEqpmnRelateList.do";

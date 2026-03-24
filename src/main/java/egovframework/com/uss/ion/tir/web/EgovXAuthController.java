@@ -120,8 +120,11 @@ public class EgovXAuthController {
             String accessToken = twitterOAuthService.requestAccessToken(session, code, state);
             session.setAttribute("twitter_access_token", accessToken);
             return "ok-token-saved";
-        } catch (Exception e) {
-            return "callback-debug-error: " + e.getClass().getName() + " / " + e.getMessage();
+         // 2026.03.23 kisa 보안점검 대응 조치
+        } catch (IllegalArgumentException e) {
+            return "callback-debug-error: invalid request";
+        } catch (IllegalStateException e) {
+            return "callback-debug-error: oauth processing failed";
         }
     }
 
@@ -163,10 +166,16 @@ public class EgovXAuthController {
             model.addAttribute("authSuccess", true);
             model.addAttribute("redirectUrl", "/uss/ion/tir/selectTwitterV2Demo.do");
             return "egovframework/com/uss/ion/tir/EgovXAuthCallback";
-        } catch (Exception e) {
-            LOGGER.error("Twitter callback failed: {}", e.getMessage(), e);
+         // 2026.03.23 kisa 보안점검 대응 조치
+        } catch (IllegalArgumentException e) {
+            LOGGER.warn("Twitter callback invalid request: {}", e.getMessage(), e);
             model.addAttribute("authSuccess", false);
-            model.addAttribute("errorMessage", e.getMessage());
+            model.addAttribute("errorMessage", "잘못된 요청입니다.");
+            return "egovframework/com/uss/ion/tir/EgovXAuthCallback";
+        } catch (IllegalStateException e) {
+            LOGGER.warn("Twitter callback state/token processing failed: {}", e.getMessage(), e);
+            model.addAttribute("authSuccess", false);
+            model.addAttribute("errorMessage", "OAuth 인증 처리에 실패했습니다.");
             return "egovframework/com/uss/ion/tir/EgovXAuthCallback";
         }
     }

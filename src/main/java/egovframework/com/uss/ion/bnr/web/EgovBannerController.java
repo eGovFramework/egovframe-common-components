@@ -291,14 +291,15 @@ public class EgovBannerController {
 			                       @ModelAttribute("bannerVO") BannerVO bannerVO,
 			                        SessionStatus status,
 			                        ModelMap model) throws Exception {
-
-    	String [] strBannerIds = bannerIds.split(";");
-
-    	for (String strBannerId : strBannerIds) {
-    		bannerVO.setBannerId(strBannerId);
-    		egovBannerService.deleteBanner(bannerVO);
-    	}
-
+    	// 2026.03.23 kisa 보안점검 대응 조치
+    	  if (bannerIds != null) {
+	    	String [] strBannerIds = bannerIds.split(";");
+	
+	    	for (String strBannerId : strBannerIds) {
+	    		bannerVO.setBannerId(strBannerId);
+	    		egovBannerService.deleteBanner(bannerVO);
+	    	}
+    	  }
     	status.setComplete();
     	model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		return "forward:/uss/ion/bnr/selectBannerList.do";

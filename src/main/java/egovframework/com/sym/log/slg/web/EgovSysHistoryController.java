@@ -263,9 +263,10 @@ public class EgovSysHistoryController {
 	@RequestMapping(value = "/sym/log/slg/InqireSysHistory.do")
 	public String selectSysHistory(@ModelAttribute("searchVO") SysHistoryVO historyVO,
 			@RequestParam("histId") String histId, ModelMap model) throws Exception {
-
-		historyVO.setHistId(histId.trim());
-
+		// 2026.03.23 kisa 보안점검 대응 조치
+		if (histId != null) {
+			historyVO.setHistId(histId.trim());
+		}
 		SysHistoryVO vo = sysHistoryService.selectSysHistory(historyVO);
 		model.addAttribute("result", vo);
 		return "egovframework/com/sym/log/slg/EgovSysHistInqire";
