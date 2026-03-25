@@ -12,6 +12,7 @@
 
 # Package Files #
 *.jar
+!src/main/webapp/WEB-INF/lib/**/*.jar
 *.war
 *.nar
 *.ear
@@ -32,6 +33,7 @@
 # Build #
 target/
 bin/
+src/main/webapp/META-INF/
 
 # OS
 .DS_Store

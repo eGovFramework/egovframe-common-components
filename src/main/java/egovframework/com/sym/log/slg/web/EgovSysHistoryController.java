@@ -6,6 +6,7 @@ import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
@@ -66,6 +68,9 @@ public class EgovSysHistoryController {
 
 	@Resource(name = "EgovFileMngUtil")
 	private EgovFileMngUtil fileUtil;
+
+	@Resource(name = "egovMessageSource")
+	protected EgovMessageSource egovMessageSource;
 
 	/**
 	 * 시스템이력 등록
@@ -264,9 +269,12 @@ public class EgovSysHistoryController {
 	public String selectSysHistory(@ModelAttribute("searchVO") SysHistoryVO historyVO,
 			@RequestParam("histId") String histId, ModelMap model) throws Exception {
 		// 2026.03.23 kisa 보안점검 대응 조치
-		if (histId != null) {
-			historyVO.setHistId(histId.trim());
+		if (ObjectUtils.isEmpty(histId)) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.request.msg"));
+			return "forward:/sym/log/slg/SelectSysHistoryList.do";
 		}
+			historyVO.setHistId(histId.trim());
+		
 		SysHistoryVO vo = sysHistoryService.selectSysHistory(historyVO);
 		model.addAttribute("result", vo);
 		return "egovframework/com/sym/log/slg/EgovSysHistInqire";

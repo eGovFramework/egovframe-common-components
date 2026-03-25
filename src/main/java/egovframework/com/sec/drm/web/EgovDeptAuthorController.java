@@ -4,6 +4,7 @@ import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -122,22 +123,27 @@ public class EgovDeptAuthorController extends EgovComAbstractController {
 			                       @RequestParam("regYns") String regYns,
 			                       @ModelAttribute("deptAuthor") DeptAuthor deptAuthor,
 			                         ModelMap model) throws Exception {
+		
 		// 2026.03.23 kisa 보안점검 대응 조치
-		 if (userIds != null && authorCodes != null && regYns != null) {
-	    	String [] strUserIds = userIds.split(";");
-	    	String [] strAuthorCodes = authorCodes.split(";");
-	    	String [] strRegYns = regYns.split(";");
-	
-	    	for(int i=0; i<strUserIds.length;i++) {
-	    		deptAuthor.setUniqId(strUserIds[i]);
-	    		deptAuthor.setAuthorCode(strAuthorCodes[i]);
-	    		if(strRegYns[i].equals("N")) {
-					egovDeptAuthorService.insertDeptAuthor(deptAuthor);
-				} else {
-					egovDeptAuthorService.updateDeptAuthor(deptAuthor);
-				}
-	    	}
+		 if (ObjectUtils.isEmpty(userIds)|| ObjectUtils.isEmpty(authorCodes) || ObjectUtils.isEmpty(regYns)) {
+			 model.addAttribute("message", egovMessageSource.getMessage("fail.common.insert"));
+			 return "forward:/sec/drm/EgovDeptAuthorList.do";
 		 }
+		 
+    	String [] strUserIds = userIds.split(";");
+    	String [] strAuthorCodes = authorCodes.split(";");
+    	String [] strRegYns = regYns.split(";");
+
+    	for(int i=0; i<strUserIds.length;i++) {
+    		deptAuthor.setUniqId(strUserIds[i]);
+    		deptAuthor.setAuthorCode(strAuthorCodes[i]);
+    		if(strRegYns[i].equals("N")) {
+				egovDeptAuthorService.insertDeptAuthor(deptAuthor);
+			} else {
+				egovDeptAuthorService.updateDeptAuthor(deptAuthor);
+			}
+    	}
+		 
         model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
 		return "forward:/sec/drm/EgovDeptAuthorList.do";
 	}
@@ -153,14 +159,19 @@ public class EgovDeptAuthorController extends EgovComAbstractController {
 	public String deleteDeptAuthor (@RequestParam("userIds") String userIds,
 			                        @ModelAttribute("deptAuthor") DeptAuthor deptAuthor,
                                      ModelMap model) throws Exception {
+		
 		// 2026.03.23 kisa 보안점검 대응 조치
-		if (userIds != null) {
-	    	String [] strUserIds = userIds.split(";");
-	    	for (String strUserId : strUserIds) {
-	    		deptAuthor.setUniqId(strUserId);
-	    		egovDeptAuthorService.deleteDeptAuthor(deptAuthor);
-	    	}
+		if (ObjectUtils.isEmpty(userIds)) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.delete"));
+			return "forward:/sec/drm/EgovDeptAuthorList.do";
 		}
+		
+    	String [] strUserIds = userIds.split(";");
+    	for (String strUserId : strUserIds) {
+    		deptAuthor.setUniqId(strUserId);
+    		egovDeptAuthorService.deleteDeptAuthor(deptAuthor);
+    	}
+		
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		return "forward:/sec/drm/EgovDeptAuthorList.do";
 	}

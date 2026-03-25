@@ -7,6 +7,7 @@ import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -90,9 +91,13 @@ public class EgovWebLogController {
 			@RequestParam("requstId") String requstId,
 			ModelMap model) throws Exception{
 		// 2026.03.23 kisa 보안점검 대응 조치
-		 if (requstId != null) {
-			 webLog.setRequstId(requstId.trim());
+		 if (ObjectUtils.isEmpty(requstId)) {
+			model.addAttribute("message", "잘못된 접근입니다.");
+			return "forward:/sym/log/wlg/SelectWebLogList.do";
 		 }
+
+		webLog.setRequstId(requstId.trim());
+		 
 		WebLog vo = webLogService.selectWebLog(webLog);
 		model.addAttribute("result", vo);
 		return "egovframework/com/sym/log/wlg/EgovWebLogDetail";

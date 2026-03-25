@@ -6,6 +6,7 @@ import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,6 +20,7 @@ import egovframework.com.sym.mnu.bmm.service.BkmkMenuManage;
 import egovframework.com.sym.mnu.bmm.service.BkmkMenuManageVO;
 import egovframework.com.sym.mnu.bmm.service.EgovBkmkMenuManageService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
+import egovframework.com.cmm.EgovMessageSource;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
 
@@ -49,6 +51,9 @@ public class EgovBkmkMenuManageController {
 
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertyService;
+
+    @Resource(name = "egovMessageSource")
+    protected EgovMessageSource egovMessageSource;
 
     /**
      * 바로가기메뉴관리 정보에 대한 목록을 조회한다.
@@ -129,7 +134,10 @@ public class EgovBkmkMenuManageController {
             return "redirect:/uat/uia/egovLoginUsr.do";
         }
         // 2026.03.23 kisa 보안점검 대응 조치
-        if(checkMenuIds != null) {
+        if(ObjectUtils.isEmpty(checkMenuIds)) {
+            model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+            return "forward:/sym/mnu/bmm/selectBkmkMenuManageList.do";
+        }
 	        String [] temp = checkMenuIds.split(",");
 	
 	        for (String element : temp) {
@@ -138,7 +146,7 @@ public class EgovBkmkMenuManageController {
 	            bkmk.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
 	            bkmkMenuManageService.deleteBkmkMenuManage(bkmk);
 	        }
-        }
+        
         return "forward:/sym/mnu/bmm/selectBkmkMenuManageList.do";
     }
 

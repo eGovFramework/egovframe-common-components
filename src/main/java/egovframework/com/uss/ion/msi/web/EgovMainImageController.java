@@ -8,6 +8,7 @@ import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -211,8 +212,8 @@ public class EgovMainImageController {
 	public String deleteMainImageList(@RequestParam("imageIds") String imageIds,
 			@ModelAttribute("mainImageVO") MainImageVO mainImageVO, SessionStatus status, ModelMap model) throws Exception {
 		//2026.03.23 kisa 보안점검 대응 조치
-		 if (imageIds == null) {
-		      model.addAttribute("message", "삭제할 메인이미지 정보가 없습니다.");
+		 if (ObjectUtils.isEmpty(imageIds)) {
+		      model.addAttribute("message", egovMessageSource.getMessage("fail.common.delete"));
 		      return "forward:/uss/ion/msi/selectMainImageList.do";
 		  }
 

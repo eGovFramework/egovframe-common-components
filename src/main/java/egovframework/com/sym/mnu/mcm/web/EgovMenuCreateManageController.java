@@ -7,6 +7,7 @@ import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -165,7 +166,7 @@ public class EgovMenuCreateManageController {
 		}
 		// 2026.03.23 kisa 보안점검 대응 조치
 		 String[] insertMenuNo = null;
-		 if (checkedMenuNoForInsert != null) {
+		 if (!ObjectUtils.isEmpty(checkedMenuNoForInsert)) {
 			 insertMenuNo = checkedMenuNoForInsert.split(",");
 		 }
 		if (insertMenuNo == null || (insertMenuNo.length == 0)) {

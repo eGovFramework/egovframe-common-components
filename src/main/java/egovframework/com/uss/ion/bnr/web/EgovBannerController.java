@@ -29,6 +29,7 @@ import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -292,14 +293,17 @@ public class EgovBannerController {
 			                        SessionStatus status,
 			                        ModelMap model) throws Exception {
     	// 2026.03.23 kisa 보안점검 대응 조치
-    	  if (bannerIds != null) {
-	    	String [] strBannerIds = bannerIds.split(";");
-	
-	    	for (String strBannerId : strBannerIds) {
-	    		bannerVO.setBannerId(strBannerId);
-	    		egovBannerService.deleteBanner(bannerVO);
-	    	}
-    	  }
+    	  if (ObjectUtils.isEmpty(bannerIds)) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.delete"));
+			return "forward:/uss/ion/bnr/selectBannerList.do";
+		  }
+		String [] strBannerIds = bannerIds.split(";");
+
+		for (String strBannerId : strBannerIds) {
+			bannerVO.setBannerId(strBannerId);
+			egovBannerService.deleteBanner(bannerVO);
+		}
+    	  
     	status.setComplete();
     	model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		return "forward:/uss/ion/bnr/selectBannerList.do";

@@ -5,6 +5,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -188,11 +189,11 @@ public class EgovDeptManageController {
 	public String deleteDeptManageList(@RequestParam("deptManages") String deptManages, @ModelAttribute("deptManageVO") DeptManageVO deptManageVO, ModelMap model) throws Exception {
 
 		// 2026.03.23 kisa 보안점검 대응 조치
-		if (deptManages == null) {
-		      model.addAttribute("message", "삭제할 부서 정보가 없습니다.");
-		      return "forward:/uss/umt/dpt/selectDeptManageList.do";
-		  }
-		
+		if (ObjectUtils.isEmpty(deptManages)) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.insert"));
+			return "forward:/uss/umt/dpt/selectDeptManageList.do";
+		}
+
 		String[] strDeptManages = deptManages.split(";");
 		for (String strDeptManage : strDeptManages) {
 			deptManageVO.setOrgnztId(strDeptManage);
