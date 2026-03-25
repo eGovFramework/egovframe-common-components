@@ -8,6 +8,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -154,7 +155,7 @@ public class EgovProgrmManageController {
 		}
 		// 2026.03.23 kisa 보안점검 대응 조치
 		String[] delProgrmFileNm = null;
-		  if (checkedProgrmFileNmForDel != null) {
+		  if (!ObjectUtils.isEmpty(checkedProgrmFileNmForDel)) {
 			  delProgrmFileNm = checkedProgrmFileNmForDel.split(",");
 		  }
 		if (delProgrmFileNm == null || (delProgrmFileNm.length == 0)) {

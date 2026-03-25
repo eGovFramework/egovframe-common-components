@@ -273,19 +273,6 @@ public class EgovEntrprsManageController {
 		// 목록
 		// model.addAttribute("indutyCode_result", indutyCode_result); // 업종코드목록
 
-		// 2021.05.30, 정진오, 디지털원패스 정보 조회
-		LoginVO loginVO = (LoginVO) request.getSession().getAttribute("loginVO");
-		String onepassUserId = loginVO.getUniqId();
-		String onepassUserkey = loginVO.getOnepassUserkey();
-		String onepassIntfToken = loginVO.getOnepassIntfToken();
-		// 2026.03.23 kisa 보안점검 대응 조치
-		if (entrprsmberId != null && entrprsmberId.equals(onepassUserId)) {
-			model.addAttribute("onepassUserkey", onepassUserkey); // 디지털원패스 사용자키
-			model.addAttribute("onepassIntfToken", onepassIntfToken); // 디지털원패스 사용자세션값
-		} else {
-			model.addAttribute("onepassUserkey", "");
-			model.addAttribute("onepassIntfToken", "");
-		}
 
 		return "egovframework/com/uss/umt/EgovEntrprsSelectUpdt";
 	}

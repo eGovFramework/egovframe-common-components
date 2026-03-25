@@ -5,6 +5,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -204,13 +205,16 @@ public class EgovAuthorManageController {
     		                       @ModelAttribute("authorManage") AuthorManage authorManage,
     		                        Model model) throws Exception {
     	// 2026.03.23 kisa 보안점검 대응 조치
-    	if (authorCodes != null) {
-	    	String [] strAuthorCodes = authorCodes.split(";");
-	    	for (String strAuthorCode : strAuthorCodes) {
-				authorManage.setAuthorCode(strAuthorCode);
-				egovAuthorManageService.deleteAuthor(authorManage);
-			}
-    	}
+    	if (ObjectUtils.isEmpty(authorCodes)) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.delete"));
+			return "redirect:/sec/ram/EgovAuthorList.do";
+		}
+		String [] strAuthorCodes = authorCodes.split(";");
+		for (String strAuthorCode : strAuthorCodes) {
+			authorManage.setAuthorCode(strAuthorCode);
+			egovAuthorManageService.deleteAuthor(authorManage);
+		}
+    	
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 
 		model.addAttribute("searchCondition", authorManage.getSearchCondition());

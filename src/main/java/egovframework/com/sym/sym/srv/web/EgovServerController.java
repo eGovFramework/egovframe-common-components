@@ -6,6 +6,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -475,7 +476,10 @@ public class EgovServerController {
 			ModelMap model) throws Exception {
 		
 		// 2026.03.23 kisa 보안점검 대응 조치
-		 if (serverEqpmnIds != null && regYns != null) {
+		 if (ObjectUtils.isEmpty(serverEqpmnIds) || ObjectUtils.isEmpty(regYns)) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.insert"));
+			return "forward:/sym/sym/srv/selectServerEqpmnRelateList.do";
+		 }
 			String[] strServerEqpmnIds = serverEqpmnIds.split(";");
 			String[] strRegYns = regYns.split(";");
 	
@@ -490,7 +494,7 @@ public class EgovServerController {
 					egovServerService.deleteServerEqpmnRelate(serverEqpmnRelate);
 				}
 			}
-		 }
+		 
 		status.setComplete();
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.insert"));
 		return "forward:/sym/sym/srv/selectServerEqpmnRelateList.do";

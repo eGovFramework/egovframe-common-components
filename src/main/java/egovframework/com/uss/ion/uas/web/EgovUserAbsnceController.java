@@ -27,6 +27,7 @@ import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -204,10 +205,11 @@ public class EgovUserAbsnceController {
 			                           @ModelAttribute("userAbsnceVO") UserAbsnceVO userAbsnceVO,
 			                           ModelMap model) throws Exception {
     	//2026.03.23 kisa 보안점검 대응 조치
-	    if (userIds == null) {
-	        model.addAttribute("message", "삭제할 사용자 정보가 없습니다.");
+	    if (ObjectUtils.isEmpty(userIds)) {
+	        model.addAttribute("message", egovMessageSource.getMessage("fail.common.delete"));
 	        return "forward:/uss/ion/uas/selectUserAbsnceList.do";
 	    }
+
     	String [] strUserIds = userIds.split(";");
 
     	for (String strUserId : strUserIds) {

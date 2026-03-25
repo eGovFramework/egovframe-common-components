@@ -7,11 +7,13 @@ import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.sym.log.ulg.service.EgovUserLogService;
 import egovframework.com.sym.log.ulg.service.UserLog;
 import jakarta.annotation.Resource;
@@ -45,6 +47,9 @@ public class EgovUserLogController {
 
 	@Resource(name = "propertiesService")
 	protected EgovPropertyService propertyService;
+
+	@Resource(name = "egovMessageSource")
+	protected EgovMessageSource egovMessageSource;
 
 	/**
 	 * 사용자 로그 목록 조회
@@ -99,19 +104,15 @@ public class EgovUserLogController {
 			throws Exception {
 
 		// 2026.03.23 kisa 보안점검 대응 조치
-		if (occrrncDe != null) {
+		if (ObjectUtils.isEmpty(occrrncDe) || ObjectUtils.isEmpty(rqesterId) || ObjectUtils.isEmpty(srvcNm) || ObjectUtils.isEmpty(methodNm)) {
+			model.addAttribute("message",  egovMessageSource.getMessage("fail.request.msg"));
+			return "forward:/sym/log/ulg/SelectUserLogList.do";
+		}
 		userLog.setOccrrncDe(occrrncDe.trim());
-		}
-		if (rqesterId != null) {
 		userLog.setRqesterId(rqesterId.trim());
-		}
-		if (srvcNm != null) {
 		userLog.setSrvcNm(srvcNm.trim());
-		}
-		if (methodNm != null) {
 		userLog.setMethodNm(methodNm.trim());
-		}
-		
+
 		UserLog vo = userLogService.selectUserLog(userLog);
 		model.addAttribute("result", vo);
 		return "egovframework/com/sym/log/ulg/EgovUserLogDetail";

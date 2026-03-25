@@ -1,4 +1,4 @@
-﻿package egovframework.com.uss.umt.validation;
+package egovframework.com.uss.umt.validation;
 
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;

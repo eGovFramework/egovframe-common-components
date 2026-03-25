@@ -8,6 +8,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -253,13 +254,16 @@ public class EgovRoleManageController {
 			                     @ModelAttribute("roleManage") RoleManage roleManage,
 	                              Model model) throws Exception {
 		// 2026.03.23 kisa 보안점검 대응 조치
-		if (roleCodes != null) {
-	    	String [] strRoleCodes = roleCodes.split(";");
-	    	for (String strRoleCode : strRoleCodes) {
-	    		roleManage.setRoleCode(strRoleCode);
-	    		egovRoleManageService.deleteRole(roleManage);
-	    	}
+		if (ObjectUtils.isEmpty(roleCodes)) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.delete"));
+			return "forward:/sec/rmt/EgovRoleList.do";
 		}
+		String [] strRoleCodes = roleCodes.split(";");
+		for (String strRoleCode : strRoleCodes) {
+			roleManage.setRoleCode(strRoleCode);
+			egovRoleManageService.deleteRole(roleManage);
+		}
+		
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		return "forward:/sec/rmt/EgovRoleList.do";
 	}

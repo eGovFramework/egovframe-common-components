@@ -8,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -122,7 +123,10 @@ public class EgovAuthorRoleController {
 			                       @ModelAttribute("authorRoleManage") AuthorRoleManage authorRoleManage,
 			                         ModelMap model) throws Exception {
 		// 2026.03.23 kisa 보안점검 대응 조치
-		if (roleCodes != null && regYns != null) {
+		if (ObjectUtils.isEmpty(roleCodes) || ObjectUtils.isEmpty(regYns)) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.insert"));
+			return "redirect:/sec/ram/EgovAuthorRoleList.do";
+		}
 	    	String [] strRoleCodes = roleCodes.split(";");
 	    	String [] strRegYns = regYns.split(";");
 	
@@ -139,7 +143,7 @@ public class EgovAuthorRoleController {
 	    			egovAuthorRoleManageService.deleteAuthorRole(authorRoleManage);
 	    		}
 	    	}
-		}
+		
 
     	if ("security".equals(EgovProperties.getProperty("Globals.Auth").trim())) {
     		if (egovReloadableFilterInvocationSecurityMetadataSource != null) {
