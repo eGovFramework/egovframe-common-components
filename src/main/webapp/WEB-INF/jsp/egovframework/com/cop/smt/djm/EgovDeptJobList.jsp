@@ -144,7 +144,7 @@
 		</colgroup>
 		<tr>
 			<!-- left -->
-			<td style="vertical-align:top">
+			
 				<div id="scale" style="width:160px">
 					<c:forEach var="resultBx" items="${resultBxList}" varStatus="st">
 						<c:if test="${tmpDeptNm != resultBx.deptNm}">
@@ -173,7 +173,7 @@
 						</c:if>
 					</c:forEach>	  
 				</div>
-			</td>
+			
 			
 			<!-- right -->
 			<td style="vertical-align:top">

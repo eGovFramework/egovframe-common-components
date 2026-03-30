@@ -55,7 +55,8 @@ public class EgovSecurityTestConfig {
             cl = applicationContext.getClassLoader();
         }
         ResourceLoader resourceLoader = new DefaultResourceLoader(cl);
-        return EgovSecurityConfigReader.loadConfig(securityConfigPath, resourceLoader);
+        EgovSecurityConfigReader reader = new EgovSecurityConfigReader(securityConfigPath, resourceLoader);
+        return reader.readConfig();
     }
 
     @Bean
