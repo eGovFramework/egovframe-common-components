@@ -1,4 +1,4 @@
-# 표준프레임워크 공통컴포넌트 5.0.0
+# 표준프레임워크 공통컴포넌트 5.0.1
 
 ![java](https://img.shields.io/badge/java-007396?style=for-the-badge&logo=JAVA&logoColor=white)
 ![Spring](https://img.shields.io/badge/spring-%236DB33F.svg?style=for-the-badge&logo=spring&logoColor=white)
@@ -67,6 +67,10 @@ egovframe-common-components
 7. 브라우저를 통해 공통컴포넌트 서비스를 확인함
 
 <img width="600" alt="공통컴포넌트 서비스 실행 화면" src="https://github.com/user-attachments/assets/aad11f93-b9d2-4bcf-bf45-c06365899a5d">
+
+## 5.0.1 패치 내용
+
+- 인증인가 처리 경로 공개로 검증 절차 우회 오류 수정
 
 ## 참조
 
