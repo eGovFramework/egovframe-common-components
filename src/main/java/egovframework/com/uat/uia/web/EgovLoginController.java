@@ -5,13 +5,6 @@ import java.util.Map;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.context.ApplicationContext;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.web.context.SecurityContextRepository;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -34,6 +27,7 @@ import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.service.Globals;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.uat.uia.security.EgovLoginSecurityContextService;
 import egovframework.com.uat.uia.service.EgovLoginService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovClntInfo;
@@ -98,15 +92,11 @@ public class EgovLoginController {
 	@Resource(name = "egovLoginConfig")
 	EgovLoginConfig egovLoginConfig;
 
-	private final ApplicationContext act;
-	private final AuthenticationManager authenticationManager;
-    private final SecurityContextRepository securityContextRepository;
-	
-    public EgovLoginController(ApplicationContext act, AuthenticationManager authenticationManager, SecurityContextRepository securityContextRepository) {
-    	this.act = act;
-    	this.authenticationManager = authenticationManager;
-    	this.securityContextRepository = securityContextRepository;
-    }
+	private final EgovLoginSecurityContextService egovLoginSecurityContextService;
+
+	public EgovLoginController(EgovLoginSecurityContextService egovLoginSecurityContextService) {
+		this.egovLoginSecurityContextService = egovLoginSecurityContextService;
+	}
 
     /** log */
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovLoginController.class);
@@ -219,7 +209,7 @@ public class EgovLoginController {
 			request.getSession().setAttribute("loginVO", resultVO);
 
 			if("security".equals(EgovProperties.getProperty("Globals.Auth").trim())) {
-				actionSecurityProcess(resultVO, request, response);
+				egovLoginSecurityContextService.saveAuthenticatedSecurityContext(resultVO, request, response);
 				Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 				if (isAuthenticated ) {
 					return "forward:/EgovContent.do";	// 성공 시 페이지.. (redirect 불가)
@@ -237,26 +227,6 @@ public class EgovLoginController {
 			model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
-	}
-
-	@RequestMapping(value="/uat/uia/actionSecurityProcess.do")
-	public void actionSecurityProcess(LoginVO resultVO, HttpServletRequest request, HttpServletResponse response) {
-		// 1. 인증 토큰 구성
-		UsernamePasswordAuthenticationToken token = UsernamePasswordAuthenticationToken
-				.unauthenticated(resultVO.getUserSe().concat(resultVO.getId()), resultVO.getUniqId());
-
-		// 2. 인증 수행
-		Authentication authResult = authenticationManager.authenticate(token);
-
-		// 3. IP 정보가 포함된 resultVO를 principal로 하는 새로운 Authentication 생성
-		UsernamePasswordAuthenticationToken authenticatedToken = new UsernamePasswordAuthenticationToken(resultVO,
-				authResult.getCredentials(), authResult.getAuthorities());
-
-		// 4. SecurityContext 저장
-		SecurityContext context = SecurityContextHolder.createEmptyContext();
-		context.setAuthentication(authenticatedToken);
-		SecurityContextHolder.setContext(context);
-		securityContextRepository.saveContext(context, request, response);
 	}
 
 	/**

@@ -4,7 +4,8 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
 
-	<context:component-scan base-package="egovframework">
+	<context:component-scan base-package="egovframework, org.egovframe.rte.fdl.security, org.egovframe.rte.fdl.crypto">
+		<context:include-filter type="annotation" expression="org.springframework.context.annotation.Configuration"/>
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
@@ -64,6 +65,7 @@
 	<bean id="egov.defaultTraceHandler" class="org.egovframe.rte.fdl.cmmn.trace.handler.DefaultTraceHandler" />
 
 	<!-- MULTIPART RESOLVERS : Spring Framework 6.2.8 기반 파일 업로드 설정 -->
-	<bean id="local.MultiCommonsMultipartResolver" class="egovframework.com.cmm.web.EgovMultipartResolver" />
+	<bean id="multipartResolver" class="egovframework.com.cmm.web.EgovMultipartResolver" />
+	<alias name="multipartResolver" alias="local.MultiCommonsMultipartResolver" />
 
 </beans>

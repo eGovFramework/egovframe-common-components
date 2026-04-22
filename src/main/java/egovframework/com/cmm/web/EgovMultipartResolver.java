@@ -221,7 +221,7 @@ public class EgovMultipartResolver extends StandardServletMultipartResolver {
 	 * @return 최대 파일 크기 (바이트)
 	 */
 	private long getMaxFileSize() {
-		String maxFileSizeStr = EgovProperties.getProperty("Globals.fileUpload.maxFileSize");
+		String maxFileSizeStr = EgovProperties.getProperty("Globals.fileUpload.maxSize");
 		if (StringUtils.hasText(maxFileSizeStr)) {
 			try {
 				return Long.parseLong(maxFileSizeStr);

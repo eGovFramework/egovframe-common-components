@@ -237,6 +237,8 @@ padding-bottom :12px;
 .board_list tbody th span.pilsu { color:#d0270b; font-weight:500; margin-left:3px; }
 .board_list tbody td { text-align:center; padding:11px 5px; border-bottom:1px solid #d9d9d9; 
 							word-break:break-all; white-space:-moz-pre-wrap; overflow:hidden; text-overflow:ellipsis;}
+/* 2026.04.22 추가 */
+.board_list tbody td:has(input[type="checkbox"]) {text-overflow:unset;}
 .board_list tbody td.left { text-align:left; padding:6px 8px; }
 .board_list tbody td.leftElli { text-align:left; padding:6px 8px; 
 overflow:hidden;

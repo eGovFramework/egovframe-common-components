@@ -2,8 +2,10 @@ package egovframework.com.cmm.config;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.util.ObjectUtils;
 import org.springframework.web.WebApplicationInitializer;
 import org.springframework.web.context.ContextLoaderListener;
+import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.XmlWebApplicationContext;
 import org.springframework.web.filter.DelegatingFilterProxy;
 import org.springframework.web.multipart.support.MultipartFilter;
@@ -44,6 +46,8 @@ import jakarta.servlet.ServletRegistration;
  *   2018.10.26  신용호          EgovLoginPolicyFilter 추가 (IP접근처리)
  *   2018.12.03  신용호          springMultipartFilter,HTMLTagFilter 추가 (XSS방지처리)
  *   2025.05.23  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(리소스 닫기)
+ *   2026.04.01  유지보수        MultipartConfigElement를 globals.properties 값으로 생성
+ *   2026.04.01  유지보수        Security Fiter 추가
  *
  *      </pre>
  */
@@ -51,10 +55,10 @@ public class EgovWebApplicationInitializer implements WebApplicationInitializer 
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovWebApplicationInitializer.class);
 
-    private static final String TMP_LOCATION = "";				// 업로드 임시 디렉터리, 빈 문자열이면 컨테이너 기본 tmp 사용
-	private static final long MAX_FILE_SIZE = 104857600L;		// 개별파일 최대크기 (100MB)
-    private static final long MAX_REQUEST_SIZE = 104857600L;	// 전체요청 쵀대크기 (100MB)
-    private static final int  FILE_SIZE_THRESHOLD = 104876;		// 메모리 임계값 (1MB)
+    private static final String TMP_LOCATION = "";						// 업로드 임시 디렉터리, 빈 문자열이면 컨테이너 기본 tmp 사용
+    private static final long DEFAULT_MAX_SIZE = 104857600L;			// 개별파일 최대크기 (100MB)
+    private static final long DEFAULT_MAX_REQUEST_SIZE = 104857600L;	// 전체요청 쵀대크기 (100MB)
+    private static final int DEFAULT_FILE_SIZE_THRESHOLD = 1048576;		// 메모리 임계값 (1MB)
 
 	@Override
 	public void onStartup(ServletContext servletContext) throws ServletException {
@@ -97,10 +101,18 @@ public class EgovWebApplicationInitializer implements WebApplicationInitializer 
 		dispatcher.setLoadOnStartup(1);
 
 		// StandardServletMultipartResolver를 위한 Multipart 설정 추가
-		MultipartConfigElement multipartConfig = new MultipartConfigElement(TMP_LOCATION, MAX_FILE_SIZE, MAX_REQUEST_SIZE, FILE_SIZE_THRESHOLD);
-		dispatcher.setMultipartConfig(multipartConfig);
+		dispatcher.setMultipartConfig(createMultipartConfigFromGlobals());
 
 		if("security".equals(EgovProperties.getProperty("Globals.Auth").trim())) {
+
+			//-------------------------------------------------------------
+			// 로그인 폼(id/password) → Spring Security 폼 파라미터(username/uniqId) 브리지
+			// (springSecurityFilterChain 보다 먼저 등록)
+			//-------------------------------------------------------------
+			DelegatingFilterProxy LoginFilter = new DelegatingFilterProxy("egovSpringSecurityLoginFilter");
+			LoginFilter.setContextAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
+			FilterRegistration.Dynamic loginFormBridgeReg = servletContext.addFilter("egovSpringSecurityLoginFilter", LoginFilter);
+			loginFormBridgeReg.addMappingForUrlPatterns(null, false, "/*");
 
 			//-------------------------------------------------------------
 			// springSecurityFilterChain 설정
@@ -170,6 +182,52 @@ public class EgovWebApplicationInitializer implements WebApplicationInitializer 
 
 		LOGGER.debug("EgovWebApplicationInitializer END-============================================");
 
+	}
+
+	/**
+	 * globals.properties의 파일 업로드 한도로 서블릿 multipart-config를 구성한다.
+	 * @return MultipartConfigElement
+	 */
+	private static MultipartConfigElement createMultipartConfigFromGlobals() {
+		long maxFileSize = parseLongProperty("Globals.fileUpload.maxSize", DEFAULT_MAX_SIZE);
+		long maxRequestSize = parseLongProperty("Globals.fileUpload.maxRequestSize", DEFAULT_MAX_REQUEST_SIZE);
+		int fileSizeThreshold = parseIntProperty("Globals.fileUpload.fileSizeThreshold", DEFAULT_FILE_SIZE_THRESHOLD);
+
+		LOGGER.debug( "MultipartConfigElement: maxFileSize={}, maxRequestSize={}, fileSizeThreshold={}", maxFileSize, maxRequestSize, fileSizeThreshold);
+
+		return new MultipartConfigElement(TMP_LOCATION, maxFileSize, maxRequestSize, fileSizeThreshold);
+	}
+
+	private static long parseLongProperty(String key, long defaultValue) {
+		String raw = EgovProperties.getProperty(key);
+
+		if (ObjectUtils.isEmpty(raw)) {
+			return defaultValue;
+		}
+
+		try {
+			return Long.parseLong(raw.trim());
+		} catch (NumberFormatException e) {
+			return defaultValue;
+		}
+	}
+
+	private static int parseIntProperty(String key, int defaultValue) {
+		String raw = EgovProperties.getProperty(key);
+
+		if (ObjectUtils.isEmpty(raw)) {
+			return defaultValue;
+		}
+
+		try {
+			long thresholdSize = Long.parseLong(raw.trim());
+			if (thresholdSize < 0 || thresholdSize > Integer.MAX_VALUE) {
+				return defaultValue;
+			}
+			return (int) thresholdSize;
+		} catch (NumberFormatException e) {
+			return defaultValue;
+		}
 	}
 
 }

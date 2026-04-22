@@ -15,6 +15,23 @@ function fncGoAfterErrorPage(){
     history.back(-2);
 }
 </script>
+<script>
+// 2026.04.22 추가
+(function () {
+  try {
+    var topFrame = parent && parent.frames ? parent.frames["_top"] : null;
+    if (!topFrame || !topFrame.document) return;
+    // leftTimeInfo가 없으면(로그인 직후 미갱신 상태) 그때만 갱신
+    var hasTimer = topFrame.document.getElementById("leftTimeInfo") !== null;
+    if (!hasTimer) {
+      topFrame.location.reload();
+    }
+  } catch (e) {
+    // cross-frame 예외 무시
+  }
+})();
+</script>
+
 </head>
 <body>
 <div style="width: 1000px; margin: 50px auto 50px;">
