@@ -600,7 +600,8 @@ public class EgovArticleController {
 	@RequestMapping("/cop/bbs/updateArticle.do")
 	public String updateBoardArticle(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") BoardVO boardVO, @ModelAttribute("bdMstr") BoardMaster bdMstr,
-			@Valid @ModelAttribute("articleVO") Board board, BindingResult bindingResult, ModelMap model) throws Exception {
+			@Valid @ModelAttribute("articleVO") Board board, BindingResult bindingResult, ModelMap model,
+            RedirectAttributes redirectAttributes) throws Exception {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -654,10 +655,10 @@ public class EgovArticleController {
 
 		egovArticleService.updateArticleAndFiles(board, files, atchFileId);
 
-		model.addAttribute("bbsId", boardVO.getBbsId());
-		model.addAttribute("searchCnd", boardVO.getSearchCnd());
-		model.addAttribute("searchWrd", boardVO.getSearchWrd());
-		model.addAttribute("pageIndex", boardVO.getPageIndex());
+		redirectAttributes.addAttribute("bbsId", boardVO.getBbsId());
+		redirectAttributes.addAttribute("searchCnd", boardVO.getSearchCnd());
+		redirectAttributes.addAttribute("searchWrd", boardVO.getSearchWrd());
+		redirectAttributes.addAttribute("pageIndex", boardVO.getPageIndex());
 
 		return "redirect:/cop/bbs/selectArticleList.do";
 	}
@@ -673,8 +674,8 @@ public class EgovArticleController {
 	 */
 	@RequestMapping("/cop/bbs/deleteArticle.do")
 	public String deleteBoardArticle(HttpServletRequest request, @ModelAttribute("searchVO") BoardVO boardVO,
-			@ModelAttribute("board") Board board, @ModelAttribute("bdMstr") BoardMaster bdMstr, ModelMap model)
-			throws Exception {
+			@ModelAttribute("board") Board board, @ModelAttribute("bdMstr") BoardMaster bdMstr, ModelMap model,
+            RedirectAttributes redirectAttributes) throws Exception {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -711,10 +712,10 @@ public class EgovArticleController {
 		if (boardVO.getBlogAt().equals("chkBlog")) {
 			return "forward:/cop/bbs/selectArticleBlogList.do";
 		} else {
-			model.addAttribute("bbsId", boardVO.getBbsId());
-			model.addAttribute("searchCnd", boardVO.getSearchCnd());
-			model.addAttribute("searchWrd", boardVO.getSearchWrd());
-			model.addAttribute("pageIndex", boardVO.getPageIndex());
+			redirectAttributes.addAttribute("bbsId", boardVO.getBbsId());
+			redirectAttributes.addAttribute("searchCnd", boardVO.getSearchCnd());
+			redirectAttributes.addAttribute("searchWrd", boardVO.getSearchWrd());
+			redirectAttributes.addAttribute("pageIndex", boardVO.getPageIndex());
 			return "redirect:/cop/bbs/selectArticleList.do";
 		}
 	}
