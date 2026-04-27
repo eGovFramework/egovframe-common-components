@@ -79,7 +79,7 @@ public class EgovWebEditorImageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/utl/wed/insertImage.do", method=RequestMethod.GET)
+	@RequestMapping(value = "/utl/wed/insertImage.do", method = RequestMethod.GET)
 	public String goInsertImage(Model model) throws Exception {
 
 		return "egovframework/com/utl/wed/EgovInsertImage";
@@ -94,7 +94,7 @@ public class EgovWebEditorImageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/utl/wed/insertImage.do", method=RequestMethod.POST)
+	@RequestMapping(value = "/utl/wed/insertImage.do", method = RequestMethod.POST)
 	public String imageUpload(MultipartHttpServletRequest request, Model model) throws Exception {
 
 		uploadImageFiles(request, model);
@@ -111,8 +111,8 @@ public class EgovWebEditorImageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/utl/wed/insertImageCk.do", method=RequestMethod.POST)
-	public String imageUploadCk(@RequestParam(value="CKEditorFuncNum", required=false) String ckEditorFuncNum, MultipartHttpServletRequest mRequest, HttpServletResponse response, Model model) throws Exception {
+	@RequestMapping(value = "/utl/wed/insertImageCk.do", method = RequestMethod.POST)
+	public String imageUploadCk(@RequestParam(value = "CKEditorFuncNum", required=false) String ckEditorFuncNum, MultipartHttpServletRequest mRequest, HttpServletResponse response, Model model) throws Exception {
 		// Spring multipartResolver 미사용 시 (commons-fileupload 활용)
 		//List<EgovFormBasedFileVo> list = EgovFormBasedFileUtil.uploadFiles(request, uploadDir, maxFileSize);
 		model.addAttribute("ckEditorFuncNum", ckEditorFuncNum);
@@ -158,7 +158,7 @@ public class EgovWebEditorImageController {
 	 * @param response
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/utl/web/imageSrc.do",method=RequestMethod.GET)
+	@RequestMapping(value = "/utl/web/imageSrc.do",method = RequestMethod.GET)
 	public void download(HttpServletRequest request, HttpServletResponse response) throws Exception {
 		//2017.12.12 - 출력 모듈 경로 변경 취약점 조치
 		//KISA 보안약점 조치 (2018-10-29, 윤창원)

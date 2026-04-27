@@ -73,7 +73,7 @@ public class EgovAuthorGroupController {
 	 * @exception Exception
 	 */
     @IncludedInfo(name="권한그룹관리", listUrl="/sec/rgm/EgovAuthorGroupList.do", order = 70,gid = 20)
-    @RequestMapping(value="/sec/rgm/EgovAuthorGroupList.do")
+    @RequestMapping(value = "/sec/rgm/EgovAuthorGroupList.do")
 	public String selectAuthorGroupList(@ModelAttribute("authorGroupVO") AuthorGroupVO authorGroupVO,
 			                            @ModelAttribute("authorManageVO") AuthorManageVO authorManageVO,
 			                             ModelMap model) throws Exception {
@@ -112,7 +112,7 @@ public class EgovAuthorGroupController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value="/sec/rgm/EgovAuthorGroupInsert.do")
+	@RequestMapping(value = "/sec/rgm/EgovAuthorGroupInsert.do")
 	public String insertAuthorGroup(@RequestParam("userIds") String userIds,
 			                        @RequestParam("authorCodes") String authorCodes,
 			                        @RequestParam("regYns") String regYns,
@@ -147,7 +147,7 @@ public class EgovAuthorGroupController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value="/sec/rgm/EgovAuthorGroupDelete.do")
+	@RequestMapping(value = "/sec/rgm/EgovAuthorGroupDelete.do")
 	public String deleteAuthorGroup(@RequestParam("userIds") String userIds,
                                     @ModelAttribute("authorGroup") AuthorGroup authorGroup,
                                      ModelMap model) throws Exception {

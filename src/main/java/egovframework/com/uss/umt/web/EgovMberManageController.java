@@ -12,6 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
@@ -20,9 +21,11 @@ import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.cmm.web.EgovComUtlController;
 import egovframework.com.uss.umt.service.EgovMberManageService;
 import egovframework.com.uss.umt.service.MberManageVO;
 import egovframework.com.uss.umt.service.MberManageInsertVO;
+import egovframework.com.uss.umt.service.PasswordManageVO;
 import egovframework.com.uss.umt.service.MberPasswordManageVO;
 import egovframework.com.uss.umt.service.StplatVO;
 import egovframework.com.uss.umt.service.UserDefaultVO;
@@ -131,7 +134,7 @@ public class EgovMberManageController {
 	 * @return uss/umt/EgovMberInsert
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/umt/EgovMberInsertView.do")
+	@RequestMapping(value = "/uss/umt/EgovMberInsertView.do", method = RequestMethod.POST)
 	public String insertMberView(@ModelAttribute("userSearchVO") UserDefaultVO userSearchVO,
 			@ModelAttribute("mberManageVO") MberManageInsertVO mberManageInsertVO, Model model) throws Exception {
 
@@ -173,7 +176,7 @@ public class EgovMberManageController {
 	 * @return forward:/uss/umt/EgovMberManage.do
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/umt/EgovMberInsert.do")
+	@RequestMapping(value = "/uss/umt/EgovMberInsert.do", method = RequestMethod.POST)
 	public String insertMber(@Valid @ModelAttribute("mberManageVO") MberManageInsertVO mberManageInsertVO, 
 			BindingResult bindingResult,
 			Model model) throws Exception {
@@ -227,10 +230,15 @@ public class EgovMberManageController {
 	 * @return uss/umt/EgovMberSelectUpdt
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/umt/EgovMberSelectUpdtView.do")
+	@RequestMapping(value = "/uss/umt/EgovMberSelectUpdtView.do", method = RequestMethod.POST)
 	public String updateMberView(@RequestParam("selectedId") String mberId,
 			@ModelAttribute("searchVO") UserDefaultVO userSearchVO, HttpServletRequest request, Model model)
 			throws Exception {
+		mberId = decryptSelectedId(mberId);
+		if (mberId == null) {
+			model.addAttribute("resultMsg", "fail.common.select");
+			return "forward:/uss/umt/EgovMberManage.do";
+		}
 
 		// 미인증 사용자에 대한 보안처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -289,7 +297,7 @@ public class EgovMberManageController {
 	 * @return uss/umt/EgovMberSelectUpdtView.do
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/umt/EgovMberLockIncorrect.do")
+	@RequestMapping(value = "/uss/umt/EgovMberLockIncorrect.do", method = RequestMethod.POST)
 	public String updateLockIncorrect(MberManageVO mberManageVO, Model model) throws Exception {
 
 		// 미인증 사용자에 대한 보안처리
@@ -312,7 +320,7 @@ public class EgovMberManageController {
 	 * @return forward:/uss/umt/EgovMberManage.do
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/umt/EgovMberSelectUpdt.do")
+	@RequestMapping(value = "/uss/umt/EgovMberSelectUpdt.do", method = RequestMethod.POST)
 	public String updateMber(@Valid @ModelAttribute("mberManageVO") MberManageVO mberManageVO, BindingResult bindingResult,
 			Model model) throws Exception {
 
@@ -346,7 +354,7 @@ public class EgovMberManageController {
 	 * @return forward:/uss/umt/EgovMberManage.do
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/umt/EgovMberDelete.do")
+	@RequestMapping(value = "/uss/umt/EgovMberDelete.do", method = RequestMethod.POST)
 	public String deleteMber(@RequestParam("checkedIdForDel") String checkedIdForDel,
 			@ModelAttribute("searchVO") UserDefaultVO userSearchVO, HttpServletRequest request, Model model)
 			throws Exception {
@@ -374,7 +382,7 @@ public class EgovMberManageController {
 
 	// 탈퇴 처리 기능에 대한 예시
 	// 221114 김혜준 2022 시큐어코딩 조치
-	@RequestMapping("/uss/umt/EgovMberWithdraw.do")
+	@RequestMapping(value = "/uss/umt/EgovMberWithdraw.do", method = RequestMethod.POST)
 	public String withdrawMber(Model model) throws Exception {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -403,7 +411,7 @@ public class EgovMberManageController {
 	 * @return uss/umt/EgovMberSbscrb
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/umt/EgovMberSbscrbView.do")
+	@RequestMapping(value = "/uss/umt/EgovMberSbscrbView.do", method = RequestMethod.POST)
 	public String sbscrbMberView(@ModelAttribute("userSearchVO") UserDefaultVO userSearchVO,
 			@ModelAttribute("mberManageVO") MberManageInsertVO mberManageInsertVO, @RequestParam Map<String, Object> commandMap,
 			Model model) throws Exception {
@@ -440,7 +448,7 @@ public class EgovMberManageController {
 	 * @return forward:/uat/uia/egovLoginUsr.do
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/umt/EgovMberSbscrb.do")
+	@RequestMapping(value = "/uss/umt/EgovMberSbscrb.do", method = RequestMethod.POST)
 	public String sbscrbMber(@Valid @ModelAttribute("mberManageVO") MberManageInsertVO mberManageInsertVO,
 			BindingResult bindingResult) throws Exception {
 
@@ -465,7 +473,7 @@ public class EgovMberManageController {
 	 * @return uss/umt/EgovStplatCnfirm
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/umt/EgovStplatCnfirmMber.do")
+	@RequestMapping(value = "/uss/umt/EgovStplatCnfirmMber.do", method = RequestMethod.POST)
 	public String sbscrbEntrprsMber(Model model) throws Exception {
 
 		// 미인증 사용자에 대한 보안처리
@@ -497,7 +505,7 @@ public class EgovMberManageController {
 	 * @return uss/umt/EgovMberPasswordUpdt
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/umt/EgovMberPasswordUpdt.do")
+	@RequestMapping(value = "/uss/umt/EgovMberPasswordUpdt.do", method = RequestMethod.POST)
 	public String updatePassword(ModelMap model, @RequestParam Map<String, Object> commandMap,
 			@ModelAttribute("userSearchVO") UserDefaultVO userSearchVO,
 			@Valid @ModelAttribute("mberPasswordManageVO") MberPasswordManageVO mberPasswordManageVO,
@@ -538,6 +546,7 @@ public class EgovMberManageController {
 					EgovFileScrty.encryptPassword(mberPasswordManageVO.getPassword(), mberPasswordManageVO.getMberId()));
 			mberManageService.updatePassword(mberPasswordManageVO);
 			resultMsg = "success.common.update";
+			clearUmtPasswordFields(mberPasswordManageVO);
 		}
 
 		model.addAttribute("resultMsg", resultMsg);
@@ -555,7 +564,7 @@ public class EgovMberManageController {
 	 * @return uss/umt/EgovMberPasswordUpdt
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/umt/EgovMberPasswordUpdtView.do")
+	@RequestMapping(value = "/uss/umt/EgovMberPasswordUpdtView.do", method = RequestMethod.POST)
 	public String updatePasswordView(ModelMap model, @RequestParam Map<String, Object> commandMap,
 			@ModelAttribute("searchVO") UserDefaultVO userSearchVO,
 			@ModelAttribute("mberPasswordManageVO") MberPasswordManageVO mberPasswordManageVO) throws Exception {
@@ -568,11 +577,27 @@ public class EgovMberManageController {
 
 		String userTyForPassword = (String) commandMap.get("userTyForPassword");
 		mberPasswordManageVO.setUserTy(userTyForPassword);
+		clearUmtPasswordFields(mberPasswordManageVO);
 
 		// 명시적으로 model에 추가 (JSP에서 접근 가능하도록)
 		model.addAttribute("mberPasswordManageVO", mberPasswordManageVO);
 		model.addAttribute("userSearchVO", userSearchVO);
 
 		return "egovframework/com/uss/umt/EgovMberPasswordUpdt";
+	}
+
+	private String decryptSelectedId(String selectedId) {
+		String decryptId = EgovComUtlController.decryptId(selectedId);
+		if (decryptId != null && !decryptId.startsWith("CIPHER_ID_DECRIPT_EXCEPTION")) {
+			return decryptId;
+		}
+		return null;
+	}
+
+	/** 상세/전환 시 바인딩된 더미·노출 방지: 비밀번호 입력 3필드 초기화 */
+	private static void clearUmtPasswordFields(PasswordManageVO vo) {
+		vo.setOldPassword("");
+		vo.setPassword("");
+		vo.setPassword2("");
 	}
 }

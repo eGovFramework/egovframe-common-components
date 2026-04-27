@@ -26,6 +26,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <c:set var="pageTitle"><spring:message code="comUssUmt.entrprsUserManage.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -100,7 +101,7 @@ function onepassCancel() {
 	<input type="hidden" name="userTyForPassword" value="<c:out value='${entrprsManageVO.userTy}'/>" />
 	<!-- for validation -->
 	<input type="hidden" name="entrprsMberPassword" value="ex~Test#$12">
-	<input type="hidden" name="selectedId"  value="<c:out value='${entrprsManageVO.entrprsmberId}'/>"/>
+	<input type="hidden" name="selectedId"  value="<c:out value='${egovc:encryptId(entrprsManageVO.uniqId)}'/>"/>
 	
 <!-- 우편번호검색 -->
 <input type="hidden" name="zip_url" value="<c:url value='/sym/ccm/zip/EgovCcmZipSearchPopup.do'/>" />

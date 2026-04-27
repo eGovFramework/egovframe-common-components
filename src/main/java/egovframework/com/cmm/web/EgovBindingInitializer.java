@@ -43,6 +43,8 @@ public class EgovBindingInitializer implements WebBindingInitializer {
 		binder.registerCustomEditor(String.class, "noteId", new EgovCipherIdPropertyEditor()); // 쪽지관리
 		binder.registerCustomEditor(String.class, "noteTrnsmitId", new EgovCipherIdPropertyEditor()); // 쪽지관리
 		binder.registerCustomEditor(String.class, "noteRecptnId", new EgovCipherIdPropertyEditor()); // 쪽지관리
+		binder.registerCustomEditor(String.class, "serverId", new EgovCipherIdPropertyEditor()); //파일동기화
+		binder.registerCustomEditor(String.class, "proxyId", new EgovCipherIdPropertyEditor()); //프록시서비스
 	}
 
 }

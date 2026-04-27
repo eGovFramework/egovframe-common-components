@@ -13,6 +13,22 @@
 	<script src="<c:url value='/html/egovframework/com/ext/ldapumt/libs/jquery.js' />"></script>
 	<script src="<c:url value='/html/egovframework/com/ext/ldapumt/jstree.js' />"></script>
 	<script type="text/javascript">
+	  //var csrfHeaderName = "${_csrf.headerName}";
+	  //var csrfToken = "${_csrf.token}";
+
+	  function ldapPost(url, data) {
+		return $.ajax({
+			type: "POST",
+			url: url,
+			data: data,
+			/*beforeSend: function(xhr) {
+				if (csrfHeaderName && csrfToken) {
+					xhr.setRequestHeader(csrfHeaderName, csrfToken);
+				}
+			}*/
+		});
+	  }
+
 	  google.load("visualization", "1", {packages:["orgchart"]});
 	  google.setOnLoadCallback(init);
 	  
@@ -40,7 +56,7 @@
 		  
 		var url = "<c:url value='/ext/ldapumt/dpt/getDeptManageSublist.do' />";							
   		
-  		$.get(url, { 'dn' : dn}).done(function (d) {
+  		ldapPost(url, { 'dn' : dn}).done(function (d) {
   			d = d.deptManage;
   			if(!obj) {
   				obj = [[ {v:d.id, f:d.text+'<div style="color:red; font-style:italic"></div>'},'', 'parent']];
@@ -115,7 +131,7 @@
 				htmlfile = "<c:url value='/html/egovframework/com/ext/ldapumt/user_html.jsp' />";
 			}
 			
-			$.get(url+"?dn="+dn, function (d) {
+			ldapPost(url, { dn: dn }).done(function (d) {
 					d = getDataBody(d);
 				 $("#detail_div").load(htmlfile, function() {
 					 console.log("inputs :",  $("#detail_div input"));
@@ -152,14 +168,7 @@
 			url = '<c:url value="/ext/ldapumt/dpt/modifyUserManage.do" />';					
 		}
 		
-		$.ajax({
-	           type: "POST",
-	           url: url,
-	           data: $("#form1").serialize(), // serializes the form's elements.
-	           success: function(data)
-	           {
-	           }
-	         });
+		ldapPost(url, $("#form1").serialize()); // serializes the form's elements.
 		return;
 	}
 

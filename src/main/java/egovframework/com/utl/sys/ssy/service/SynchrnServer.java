@@ -1,5 +1,8 @@
 package egovframework.com.utl.sys.ssy.service;
 
+import java.io.File;
+import java.util.List;
+
 import egovframework.com.cmm.ComDefaultVO;
 
 import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
@@ -80,6 +83,24 @@ public class SynchrnServer extends ComDefaultVO {
 	 * 최종수정자ID
 	 */
 	private String lastUpdusrId;
+
+	/** 동기화대상 서버명 조회조건 */
+	private String strSynchrnServerNm;
+
+	/** 동기화대상 서버 목록 */
+	private List<SynchrnServer> synchrnServerList;
+
+	/** 동기화 대상 파일 */
+	private File synchrnFile;
+
+	/** 삭제 대상 파일 */
+	private String deleteFileNm;
+
+	/** 업로드 위치 */
+	private String filePath;
+
+	/** 반영여부(조회조건) */
+	private String strReflctAt;
 
 	/**
 	 * @return the serverId
@@ -224,5 +245,53 @@ public class SynchrnServer extends ComDefaultVO {
 	 */
 	public void setLastUpdusrId(String lastUpdusrId) {
 		this.lastUpdusrId = lastUpdusrId;
+	}
+
+	public String getStrSynchrnServerNm() {
+		return strSynchrnServerNm;
+	}
+
+	public void setStrSynchrnServerNm(String strSynchrnServerNm) {
+		this.strSynchrnServerNm = strSynchrnServerNm;
+	}
+
+	public List<SynchrnServer> getSynchrnServerList() {
+		return synchrnServerList;
+	}
+
+	public void setSynchrnServerList(List<SynchrnServer> synchrnServerList) {
+		this.synchrnServerList = synchrnServerList;
+	}
+
+	public File getSynchrnFile() {
+		return synchrnFile;
+	}
+
+	public void setSynchrnFile(File synchrnFile) {
+		this.synchrnFile = synchrnFile;
+	}
+
+	public String getDeleteFileNm() {
+		return deleteFileNm;
+	}
+
+	public void setDeleteFileNm(String deleteFileNm) {
+		this.deleteFileNm = deleteFileNm;
+	}
+
+	public String getFilePath() {
+		return filePath;
+	}
+
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+
+	public String getStrReflctAt() {
+		return strReflctAt;
+	}
+
+	public void setStrReflctAt(String strReflctAt) {
+		this.strReflctAt = strReflctAt;
 	}
 }

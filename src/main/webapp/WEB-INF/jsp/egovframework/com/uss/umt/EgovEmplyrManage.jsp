@@ -24,6 +24,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <c:set var="pageTitle"><spring:message code="comUssUmt.deptUserManage.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -87,13 +88,6 @@ function fnDeleteUser() {
 }
 function fnSelectUser(id) {
     document.listForm.selectedId.value = id;
-    array = id.split(":");
-    if(array[0] == "") {
-    } else {
-        userTy = array[0];
-        userId = array[1];
-    }
-   	document.listForm.selectedId.value = userId;
     document.listForm.action = "<c:url value='/uss/umt/EgovEmplyrSelectUpdtView.do'/>";
     document.listForm.submit();
 
@@ -200,7 +194,7 @@ function fnViewCheck(){
 	        <input type="checkbox" name="checkField" class="check2" title="선택"/>
 	        <input name="checkId" type="hidden" value="<c:out value='${result.userTy}'/>:<c:out value='${result.uniqId}'/>"/>
 	    </td>
-	    <td><a href="<c:url value='/uss/umt/EgovMberSelectUpdtView.do'/>?selectedId=<c:out value="${result.uniqId}"/>"  onclick="javascript:fnSelectUser('<c:out value="${result.userTy}"/>:<c:out value="${result.uniqId}"/>'); return false;"><c:out value="${result.userId}"/></a></td>
+	    <td><a href="<c:url value='/uss/umt/EgovEmplyrSelectUpdtView.do'/>?selectedId=<c:out value="${egovc:encryptId(result.uniqId)}"/>"  onclick="javascript:fnSelectUser('<c:out value="${egovc:encryptId(result.uniqId)}"/>'); return false;"><c:out value="${result.userId}"/></a></td>
 	    <td><c:out value="${result.userNm}"/></td>
 	    <td><c:out value="${result.emailAdres}"/></td>
 	    <td><c:out value="${result.areaNo}"/>)<c:out value="${result.middleTelno}"/>-<c:out value="${result.endTelno}"/></td>

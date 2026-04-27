@@ -39,6 +39,21 @@
 		<script language="javascript" src="<c:url value='/html/egovframework/com/ext/ldapumt/jstree.js' />"></script>
 
 		<script>
+		//var csrfHeaderName = "${_csrf.headerName}";
+		//var csrfToken = "${_csrf.token}";
+
+		function ldapPost(url, data) {
+			return $.ajax({
+				type: "POST",
+				url: url,
+				data: data,
+				/*beforeSend: function(xhr) {
+					if (csrfHeaderName && csrfToken) {
+						xhr.setRequestHeader(csrfHeaderName, csrfToken);
+					}
+				}*/
+			});
+		}
 		
 		$(function () {
 			$(window).resize(function () {
@@ -50,11 +65,12 @@
 				.jstree({
 					'core' : {
 						'data' : {
+							'type' : 'POST',
 							'url' : '<c:url value="/ext/ldapumt/dpt/getDeptManageSublist.do"/>',		
 							'data' : function (node) {
 								
 								if(node.id == '#')
-									node.dn="<c:out value='${param.baseDn}'/>";
+									node.dn="<c:out value='${empty param.baseDn ? baseDn : param.baseDn}'/>";
 								else 
 									node.dn= node.id;
 								
@@ -131,7 +147,7 @@
 					'plugins' : ['state','dnd','sort','types','contextmenu','unique']
 				})
 				.on('delete_node.jstree', function (e, data) {
-					$.get('<c:url value="/ext/ldapumt/dpt/deleteNode.do" />', { 'dn' : data.node.id })
+					ldapPost('<c:url value="/ext/ldapumt/dpt/deleteNode.do" />', { 'dn' : data.node.id })
 						.fail(function () {
 							data.instance.refresh();
 						});
@@ -143,7 +159,7 @@
 					} else {
 						url="<c:url value='/ext/ldapumt/dpt/createUserNode.do' />";
 					}
-					$.get(url, { 'dn' : data.node.parent, 'text' : data.node.text })
+					ldapPost(url, { 'dn' : data.node.parent, 'text' : data.node.text })
 						.done(function (d) {
 							d = getDataBody(d);
 							data.instance.set_id(data.node, d.id);
@@ -159,19 +175,11 @@
 						url="<c:url value='/ext/ldapumt/dpt/renameUserNode.do' />";
 					}
 
-					$.ajax({
-				           type: "GET",
-				           url: url+"?id="+data.node.id+"&text="+data.text,
-				           data: $("#form1").serialize(),
-				           success: function(result)
-				           {
-				        	   
-				           }
-				         });
+					ldapPost(url, { id: data.node.id, text: data.text });
 					data.instance.refresh();
 				})
 				.on('move_node.jstree', function (e, data) {
-					$.get('<c:url value="/ext/ldapumt/dpt/moveOrgNode.do" />', { 'id' : data.node.id, 'parent' : data.parent })
+					ldapPost('<c:url value="/ext/ldapumt/dpt/moveOrgNode.do" />', { 'id' : data.node.id, 'parent' : data.parent })
 						.done(function (d) {
 							data.instance.refresh();
 						})
@@ -194,9 +202,6 @@
 						
 						var url;
 						var htmlfile;
-						console.log("데이터노드"+data.node);
-						console.log("데이터아이콘"+data.node.icon);
-						console.log("데이터타입"+data.node.type);
 						// 선택이 부서일 경우
 						// DEPT, USER (LdapTreeObject.java 기준)
 						if(data.node.icon == "DEPT") {
@@ -209,7 +214,7 @@
 							htmlfile = "<c:url value='/html/egovframework/com/ext/ldapumt/user_html.jsp' />";
 						}
 						if ( dn == "j1_1" ) return;
-						$.get(url+"?dn="+dn, function (d) {
+						ldapPost(url, { dn: dn }).done(function (d) {
 							d = getDataBody(d);
 							 $("#data .default").load(htmlfile, function() {
 									$.each($("input"), function(i,v) {
@@ -245,15 +250,7 @@
 				url = '<c:url value="/ext/ldapumt/dpt/modifyUserManage.do" />';					
 			}
 
-			$.ajax({
-		           type: "POST",
-		           url: url,
-		           data: $("#form1").serialize(),
-		           success: function(data)
-		           {
-		        	   
-		           }
-		         });
+			ldapPost(url, $("#form1").serialize());
 			return;
 		}
 		

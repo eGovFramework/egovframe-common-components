@@ -105,6 +105,16 @@ public class ProxySvc extends ComDefaultVO {
     private String lastUpdusrId;
 
     /**
+     * 프록시 명 조회조건
+     */
+    private String strProxyNm;
+
+    /**
+     * 이전 서비스 상태
+     */
+    private String strPreSvcSttus;
+
+    /**
      * @return the proxyId
      */
     public String getProxyId() {
@@ -298,6 +308,34 @@ public class ProxySvc extends ComDefaultVO {
      */
     public void setLastUpdusrId(String lastUpdusrId) {
         this.lastUpdusrId = lastUpdusrId;
+    }
+
+    /**
+     * @return the strProxyNm
+     */
+    public String getStrProxyNm() {
+        return strProxyNm;
+    }
+
+    /**
+     * @param strProxyNm the strProxyNm to set
+     */
+    public void setStrProxyNm(String strProxyNm) {
+        this.strProxyNm = strProxyNm;
+    }
+
+    /**
+     * @return the strPreSvcSttus
+     */
+    public String getStrPreSvcSttus() {
+        return strPreSvcSttus;
+    }
+
+    /**
+     * @param strPreSvcSttus the strPreSvcSttus to set
+     */
+    public void setStrPreSvcSttus(String strPreSvcSttus) {
+        this.strPreSvcSttus = strPreSvcSttus;
     }
 
 }

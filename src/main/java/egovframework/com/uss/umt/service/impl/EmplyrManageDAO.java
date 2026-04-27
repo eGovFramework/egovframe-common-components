@@ -44,6 +44,7 @@ public class EmplyrManageDAO extends EgovComAbstractDAO{
      * @param delId 삭제대상 업무사용자 아이디
      */
     public void deleteEmplyr(String delId){
+        delete("emplyrManageDAO.deleteEmplyrInfoChangeDtls_S", delId);
         delete("emplyrManageDAO.deleteEmplyr_S", delId);
     }
 

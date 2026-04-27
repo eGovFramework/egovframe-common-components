@@ -26,6 +26,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <c:set var="pageTitle"><spring:message code="comUssUmt.userManage.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -54,7 +55,6 @@ function fnPasswordMove(){
 function fnLockIncorrect(){
 	if(confirm("<spring:message code="comUssUmt.common.lockAtConfirm" />")){
 	    document.mberManageVO.action = "<c:url value='/uss/umt/EgovMberLockIncorrect.do'/>";
-	    document.mberManageVO.selectedId.value=document.mberManageVO.uniqId.value;
 	    document.mberManageVO.submit();
 	}
 }
@@ -100,7 +100,7 @@ function onepassCancel() {
 <input type="hidden" name="userTyForPassword" value="<c:out value='${mberManageVO.userTy}'/>" />
 <!-- for validation -->
 <input type="hidden" name="password" id="password" value="ex~Test#$12"/>
-<input type="hidden" name="selectedId" id="selectedId" value=""/>
+<input type="hidden" name="selectedId" id="selectedId" value="<c:out value='${egovc:encryptId(mberManageVO.uniqId)}'/>"/>
 
 <div class="wTableFrm">
 	<h2>${pageTitle} <spring:message code="title.update" /></h2>

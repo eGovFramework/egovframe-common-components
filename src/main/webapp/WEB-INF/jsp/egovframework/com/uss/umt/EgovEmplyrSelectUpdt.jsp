@@ -26,6 +26,7 @@
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <c:set var="pageTitle"><spring:message code="comUssUmt.deptUserManage.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -56,7 +57,6 @@ function fnPasswordMove(){
 function fnLockIncorrect(){
 	if(confirm("<spring:message code="comUssUmt.common.lockAtConfirm" />")){
 	    document.emplyrManageVO.action = "<c:url value='/uss/umt/EgovEmplyrLockIncorrect.do'/>";
-	    document.emplyrManageVO.selectedId.value=document.userManageVO.uniqId.value;
 	    document.emplyrManageVO.submit();
 	}
 }
@@ -111,7 +111,7 @@ function fn_egov_dn_info_setting(dn) {
 	<input type="hidden" name="userTyForPassword" value="<c:out value='${emplyrManageVO.userTy}'/>" />
 	<!-- for validation -->
 	<input type="hidden" name="password" id="password" value="ex~Test#$12"/>
-	<input type="hidden" name="selectedId" id="selectedId" value=""/>  
+	<input type="hidden" name="selectedId" id="selectedId" value="<c:out value='${egovc:encryptId(emplyrManageVO.uniqId)}'/>"/>  
 	
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.update" /></h2>

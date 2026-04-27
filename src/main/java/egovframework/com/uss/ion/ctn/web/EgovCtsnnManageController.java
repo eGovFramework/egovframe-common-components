@@ -81,7 +81,7 @@ public class EgovCtsnnManageController {
 	 * @return String - 리턴 Url
 	 */
     @IncludedInfo(name="직원경조사관리",order = 890 ,gid = 50)
-    @RequestMapping(value="/uss/ion/ctn/selectCtsnnManageList.do")
+    @RequestMapping(value = "/uss/ion/ctn/selectCtsnnManageList.do")
 	 public String selectCtsnnManageList(@ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 			                                 ModelMap model) throws Exception {
 
@@ -118,7 +118,7 @@ public class EgovCtsnnManageController {
 	 * @param ctsnnManageVO - 경조관리 VO
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value="/uss/ion/ctn/EgovCtsnnManageDetail.do")
+    @RequestMapping(value = "/uss/ion/ctn/EgovCtsnnManageDetail.do")
 	 public String selectCtsnnManage(@ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 			                         @RequestParam Map<?, ?> commandMap,
 			                         ModelMap model) throws Exception {
@@ -155,7 +155,7 @@ public class EgovCtsnnManageController {
 	 * 경조관리 등록 화면으로 이동한다.
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value="/uss/ion/ctn/EgovCtsnnRegist.do")
+    @RequestMapping(value = "/uss/ion/ctn/EgovCtsnnRegist.do")
 	 public String insertViewCtsnnManage(@ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 			                             ModelMap model) throws Exception {
 
@@ -184,7 +184,7 @@ public class EgovCtsnnManageController {
 	 * @param ctsnnManage - 경조관리 model
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value="/uss/ion/ctn/insertCtsnnManage.do")
+    @RequestMapping(value = "/uss/ion/ctn/insertCtsnnManage.do")
 	 public String insertCtsnnManage(@Valid @ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 			                            BindingResult bindingResult,
 			                            SessionStatus status,
@@ -223,7 +223,7 @@ public class EgovCtsnnManageController {
 	 * @param ctsnnManage - 경조관리 model
 	 * @return String - 리턴 Url
 	 */
-	 @RequestMapping(value="/uss/ion/ctn/updtCtsnnManage.do")
+	 @RequestMapping(value = "/uss/ion/ctn/updtCtsnnManage.do")
 	 public String updtCtsnnManage(@Valid @ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 			                        BindingResult bindingResult,
 			                        SessionStatus status,
@@ -262,7 +262,7 @@ public class EgovCtsnnManageController {
 	 * @param ctsnnManage - 경조관리 model
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value="/uss/ion/ctn/deleteCtsnnManage.do")
+    @RequestMapping(value = "/uss/ion/ctn/deleteCtsnnManage.do")
 	 public String deleteCtsnnManage(@ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 			                         SessionStatus status,
 			                         ModelMap model) throws Exception {
@@ -281,7 +281,7 @@ public class EgovCtsnnManageController {
 	 * @return String - 리턴 Url
 	 */
     @IncludedInfo(name="직원경조사승인관리",order = 891 ,gid = 50)
-    @RequestMapping(value="/uss/ion/ctn/EgovCtsnnConfmList.do")
+    @RequestMapping(value = "/uss/ion/ctn/EgovCtsnnConfmList.do")
 	 public String selectCtsnnManageConfmList(@ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 			                                  ModelMap model) throws Exception {
 		/** paging */
@@ -319,7 +319,7 @@ public class EgovCtsnnManageController {
 	 * @param ctsnnManageVO - 경조관리 VO
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value="/uss/ion/ctn/EgovCtsnnConfm.do")
+    @RequestMapping(value = "/uss/ion/ctn/EgovCtsnnConfm.do")
 	 public String selectCtsnnConfm(@ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 							         ModelMap model) throws Exception {
     	ctsnnManageVO.setReqstDe(EgovStringUtil.removeMinusChar(ctsnnManageVO.getReqstDe()));
@@ -338,7 +338,7 @@ public class EgovCtsnnManageController {
 	 * @param ctsnnManage - 경조관리 model
 	 * @return String - 리턴 Url
 	 */
-	 @RequestMapping(value="/uss/ion/ctn/updtCtsnnConfm.do")
+	 @RequestMapping(value = "/uss/ion/ctn/updtCtsnnConfm.do")
 	 public String updateCtsnnManageConfm(@ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 			                               BindingResult bindingResult,
 			                               SessionStatus status,

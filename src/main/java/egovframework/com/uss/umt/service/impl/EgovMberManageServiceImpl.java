@@ -156,7 +156,9 @@ public class EgovMberManageServiceImpl extends EgovAbstractServiceImpl implement
 	 * @throws Exception
 	 */
 	@Override
-	public void updatePassword(MberPasswordManageVO mberPasswordManageVO) {
+	public void updatePassword(MberPasswordManageVO mberPasswordManageVO) throws Exception {
+		String newPassword = EgovFileScrty.encryptPassword(mberPasswordManageVO.getPassword(), mberPasswordManageVO.getMberId());
+		mberPasswordManageVO.setPassword(newPassword);
 		mberManageDAO.updatePassword(mberPasswordManageVO);
 	}
 

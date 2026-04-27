@@ -161,22 +161,6 @@ public class EgovFileMngController {
 
 		return "blank";
 
-		// --------------------------------------------
-		// contextRoot가 있는 경우 제외 시켜야 함
-		// --------------------------------------------
-		//// return "forward:/cmm/fms/selectFileInfs.do";
-		// return "forward:" + returnUrl;
-		/*
-		 * ******************************************************* modify by jdh
-		 *******************************************************
-		 * if ("".equals(request.getContextPath()) ||
-		 * "/".equals(request.getContextPath())) { return "forward:" + returnUrl; }
-		 *
-		 * if (returnUrl.startsWith(request.getContextPath())) { return "forward:" +
-		 * returnUrl.substring(returnUrl.indexOf("/", 1)); } else { return "forward:" +
-		 * returnUrl; }
-		 */
-		//// ------------------------------------------
 	}
 
 	/**

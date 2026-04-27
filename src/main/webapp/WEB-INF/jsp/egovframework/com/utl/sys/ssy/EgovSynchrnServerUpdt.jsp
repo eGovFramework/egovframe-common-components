@@ -24,6 +24,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -113,7 +114,8 @@ function ipValidate(ipValue) {
 
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
-<form:form modelAttribute="synchrnServer" method="post" action="${pageContext.request.contextPath}/utl/sys/ssy/updtSynchrnServer.do">
+<form:form id="synchrnServer" modelAttribute="synchrnServer" method="post" action="${pageContext.request.contextPath}/utl/sys/ssy/updtSynchrnServer.do">
+<input type="hidden" name="serverId" value="<c:out value="${egovc:encryptId(synchrnServer.serverId)}"/>">
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -126,45 +128,39 @@ function ipValidate(ipValue) {
 			<col style="" />
 		</colgroup>
 		<tr>
-			<th><spring:message code="comUtlSysSsy.synchrnServer.serverId.label" /> <span class="pilsu">*</span></th>
-			<td class="left">
-			    <input name="serverId" id="serverId" type="text" value="<c:out value='${synchrnServer.serverId}'/>" style="width:50%" readonly>
-			</td>
-		</tr>
-		<tr>
 			<th><spring:message code="comUtlSysSsy.synchrnServer.serverNm.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <input name="serverNm" id="serverNm" type="text" value="<c:out value='${synchrnServer.serverNm}'/>" maxLength="30" style="width:50%">&nbsp;<form:errors path="serverNm" />
+			    <form:input path="serverNm" maxlength="30" cssStyle="width:50%"/>&nbsp;<form:errors path="serverNm" />
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysSsy.synchrnServer.serverIp.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <input name="serverIp" id="serverIp" type="text" value="<c:out value='${synchrnServer.serverIp}'/>" maxLength="23" style="width:50%">&nbsp;<form:errors path="serverIp" />
+			    <form:input path="serverIp" maxlength="23" cssStyle="width:50%"/>&nbsp;<form:errors path="serverIp" />
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysSsy.synchrnServer.serverPort.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <input name="serverPort" id="serverPort" type="text" value="<c:out value='${synchrnServer.serverPort}'/>" maxLength="10" style="width:70px">&nbsp;<form:errors path="serverPort" />
+			    <form:input path="serverPort" maxlength="10" cssStyle="width:70px"/>&nbsp;<form:errors path="serverPort" />
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysSsy.synchrnServer.ftpId.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <input name="ftpId" id="ftpId" type="text" value="<c:out value='${synchrnServer.ftpId}'/>" maxLength="20" style="width:50%">&nbsp;<form:errors path="ftpId" />
+			    <form:input path="ftpId" maxlength="20" cssStyle="width:50%"/>&nbsp;<form:errors path="ftpId" />
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysSsy.synchrnServer.ftpPassword.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <input name="ftpPassword" id="ftpPassword" type="password" value="<c:out value='${synchrnServer.ftpPassword}'/>" maxLength="20" style="width:50%">&nbsp;<form:errors path="ftpPassword" />
+			    <form:password path="ftpPassword" maxlength="20" cssStyle="width:50%"/>&nbsp;<form:errors path="ftpPassword" />
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysSsy.synchrnServer.synchrnLc.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <input name="synchrnLc" id="synchrnLc" type="text" value="<c:out value='${synchrnServer.synchrnLc}'/>" maxLength="255" style="width:50%">&nbsp;<form:errors path="synchrnLc" />
+			    <form:input path="synchrnLc" maxlength="255" cssStyle="width:50%"/>&nbsp;<form:errors path="synchrnLc" />
 			</td>
 		</tr>
 	</table>
@@ -172,13 +168,13 @@ function ipValidate(ipValue) {
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fncSynchrnServerUpdate(); return false;" />
-		<span class="btn_s"><a href="<c:url value='/utl/sys/ssy/selectSynchrnServerList.do'/>?pageIndex=<c:out value='${synchrnServerVO.pageIndex}'/>&amp;strSynchrnServerNm=<c:out value="${synchrnServerVO.strSynchrnServerNm}"/>" onclick="fncSelectSynchrnServerList(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="<c:url value='/utl/sys/ssy/selectSynchrnServerList.do'/>?pageIndex=<c:out value='${synchrnServer.pageIndex}'/>&amp;strSynchrnServerNm=<c:out value="${synchrnServer.strSynchrnServerNm}"/>" onclick="fncSelectSynchrnServerList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>
     <!-- 검색조건 유지 -->
-    <input type="hidden" name="strServerNm" value="<c:out value='${synchrnServerVO.strSynchrnServerNm}'/>" />
-    <input type="hidden" name="pageIndex" value="<c:out value='${synchrnServerVO.pageIndex}'/>" >
+    <input type="hidden" name="strServerNm" value="<c:out value='${synchrnServer.strSynchrnServerNm}'/>" />
+    <input type="hidden" name="pageIndex" value="<c:out value='${synchrnServer.pageIndex}'/>" >
 </form:form>
 
 </body>

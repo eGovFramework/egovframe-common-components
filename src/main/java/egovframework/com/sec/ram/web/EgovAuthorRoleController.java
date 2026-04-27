@@ -79,7 +79,7 @@ public class EgovAuthorRoleController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value="/sec/ram/EgovAuthorRoleList.do")
+    @RequestMapping(value = "/sec/ram/EgovAuthorRoleList.do")
 	public String selectAuthorRoleList(@ModelAttribute("authorRoleManageVO") AuthorRoleManageVO authorRoleManageVO,
 			                            ModelMap model) throws Exception {
 
@@ -115,7 +115,7 @@ public class EgovAuthorRoleController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value="/sec/ram/EgovAuthorRoleInsert.do")
+	@RequestMapping(value = "/sec/ram/EgovAuthorRoleInsert.do")
 	public String insertAuthorRole(@RequestParam("authorCode") String authorCode,
 			                       @RequestParam("roleCodes") String roleCodes,
 			                       @RequestParam("regYns") String regYns,

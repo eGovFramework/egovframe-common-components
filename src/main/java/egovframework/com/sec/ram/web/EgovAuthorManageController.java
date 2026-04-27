@@ -62,7 +62,7 @@ public class EgovAuthorManageController {
 	 * @exception Exception
 	 */
     @IncludedInfo(name="권한관리", listUrl="/sec/ram/EgovAuthorList.do", order = 60,gid = 20)
-    @RequestMapping(value="/sec/ram/EgovAuthorList.do")
+    @RequestMapping(value = "/sec/ram/EgovAuthorList.do")
     public String selectAuthorList(@ModelAttribute("authorManageVO") AuthorManageVO authorManageVO,
     		                        ModelMap model)
             throws Exception {
@@ -99,7 +99,7 @@ public class EgovAuthorManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value="/sec/ram/EgovAuthor.do")
+    @RequestMapping(value = "/sec/ram/EgovAuthor.do")
     public String selectAuthor(@RequestParam("authorCode") String authorCode,
     	                       @ModelAttribute("authorManageVO") AuthorManageVO authorManageVO,
     		                    ModelMap model) throws Exception {
@@ -129,7 +129,7 @@ public class EgovAuthorManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value="/sec/ram/EgovAuthorInsert.do")
+    @RequestMapping(value = "/sec/ram/EgovAuthorInsert.do")
     public String insertAuthor(@Valid @ModelAttribute("authorManage") AuthorManage authorManage,
     		                    BindingResult bindingResult,
     		                    ModelMap model) throws Exception {
@@ -155,7 +155,7 @@ public class EgovAuthorManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value="/sec/ram/EgovAuthorUpdate.do")
+    @RequestMapping(value = "/sec/ram/EgovAuthorUpdate.do")
     public String updateAuthor(@Valid @ModelAttribute("authorManage") AuthorManage authorManage,
     		                    BindingResult bindingResult,
     		                    Model model) throws Exception {
@@ -180,7 +180,7 @@ public class EgovAuthorManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value="/sec/ram/EgovAuthorDelete.do")
+    @RequestMapping(value = "/sec/ram/EgovAuthorDelete.do")
     public String deleteAuthor(@ModelAttribute("authorManage") AuthorManage authorManage,
     		                    Model model) throws Exception {
 
@@ -200,7 +200,7 @@ public class EgovAuthorManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value="/sec/ram/EgovAuthorListDelete.do")
+    @RequestMapping(value = "/sec/ram/EgovAuthorListDelete.do")
     public String deleteAuthorList(@RequestParam("authorCodes") String authorCodes,
     		                       @ModelAttribute("authorManage") AuthorManage authorManage,
     		                        Model model) throws Exception {

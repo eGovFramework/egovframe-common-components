@@ -6,9 +6,14 @@
 
 	<aop:config>
 		<aop:pointcut id="egov.serviceMethod" expression="execution(* egovframework.com..impl.*Impl.*(..))" />
+		<aop:pointcut id="egov.requireAdminMethod" expression="@annotation(egovframework.com.cmm.annotation.RequireAdmin)" />
 
 		<aop:aspect ref="egov.exceptionTransfer">
 			<aop:after-throwing throwing="exception" pointcut-ref="egov.serviceMethod" method="transfer" />
+		</aop:aspect>
+
+		<aop:aspect ref="egov.adminAuthorizationAspect">
+			<aop:before pointcut-ref="egov.requireAdminMethod" method="assertAdmin" />
 		</aop:aspect>
 	</aop:config>
 	
@@ -55,5 +60,6 @@
 
 	<bean id="egovHandler" class="egovframework.com.cmm.EgovComExcepHndlr" />
 	<bean id="otherHandler" class="egovframework.com.cmm.EgovComOthersExcepHndlr" />
+	<bean id="egov.adminAuthorizationAspect" class="egovframework.com.cmm.util.EgovAdminAuthorizationAspect" />
 
 </beans>

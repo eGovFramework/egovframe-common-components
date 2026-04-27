@@ -66,7 +66,7 @@ public class EgovAdministCodeRecptnController {
 	 * @return "egovframework/com/sym/ccm/adc/EgovCcmAdministCodeRegist"
 	 * @throws Exception
 	 */
-    @RequestMapping(value="/sym/ccm/acr/addAdministCode.do")
+    @RequestMapping(value = "/sym/ccm/acr/addAdministCode.do")
 	public String insertAdministCodeRecptn (AdministCodeRecptn administCodeRecptn
 			, BindingResult bindingResult
 			, @RequestParam Map<?, ?> commandMap
@@ -91,7 +91,7 @@ public class EgovAdministCodeRecptnController {
 	 * @return "egovframework/com/sym/ccm/adc/EgovCcmAdministCodeDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/sym/ccm/acr/getAdministCodeDetail.do")
+	@RequestMapping(value = "/sym/ccm/acr/getAdministCodeDetail.do")
  	public String selectAdministCodeDetail (@ModelAttribute("administCode") AdministCodeRecptn administCode
 			, @ModelAttribute("administCodeRecptnVO") AdministCodeRecptnVO administCodeRecptnVO
 			, ModelMap model
@@ -134,7 +134,7 @@ public class EgovAdministCodeRecptnController {
      * @throws Exception
      */
 	@IncludedInfo(name="행정코드관리", listUrl="/sym/ccm/acr/getAdministCodeRecptnList.do", order = 1010 ,gid = 60)
-    @RequestMapping(value="/sym/ccm/acr/getAdministCodeRecptnList.do")
+    @RequestMapping(value = "/sym/ccm/acr/getAdministCodeRecptnList.do")
 	public String selectAdministCodeRecptnList (@ModelAttribute("searchVO") AdministCodeRecptnVO searchVO
 			, ModelMap model
 			) throws Exception {
@@ -170,7 +170,7 @@ public class EgovAdministCodeRecptnController {
      * @return "egovframework/com/sym/ccm/adc/EgovCcmAdministCodeList"
      * @throws Exception
      */
-    @RequestMapping(value="/sym/ccm/acr/getAdministCodeRecptnMainList.do")
+    @RequestMapping(value = "/sym/ccm/acr/getAdministCodeRecptnMainList.do")
 	public String selectAdministCodeRecptnMainList (@ModelAttribute("searchVO") AdministCodeRecptnVO searchVO
 			, ModelMap model
 			) throws Exception {

@@ -64,6 +64,16 @@ public class ProxyLog extends ComDefaultVO {
      */
     private String lastUpdusrId;
 
+    /**
+     * 프록시서비스접속 시작일자 조회조건
+     */
+    private String strStartDate;
+
+    /**
+     * 프록시서비스접속 종료일자 조회조건
+     */
+    private String strEndDate;
+
 
     /**
      * @return the proxyId
@@ -203,5 +213,33 @@ public class ProxyLog extends ComDefaultVO {
      */
     public void setLastUpdusrId(String lastUpdusrId) {
         this.lastUpdusrId = lastUpdusrId;
+    }
+
+    /**
+     * @return the strStartDate
+     */
+    public String getStrStartDate() {
+        return strStartDate;
+    }
+
+    /**
+     * @param strStartDate the strStartDate to set
+     */
+    public void setStrStartDate(String strStartDate) {
+        this.strStartDate = strStartDate;
+    }
+
+    /**
+     * @return the strEndDate
+     */
+    public String getStrEndDate() {
+        return strEndDate;
+    }
+
+    /**
+     * @param strEndDate the strEndDate to set
+     */
+    public void setStrEndDate(String strEndDate) {
+        this.strEndDate = strEndDate;
     }
 }

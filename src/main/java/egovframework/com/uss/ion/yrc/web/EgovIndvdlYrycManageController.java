@@ -147,7 +147,7 @@ public class EgovIndvdlYrycManageController {
 	 * @param indvdlYrycManage - 연차관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/yrc/deleteIndvdlYryc.do", method=RequestMethod.POST)
+	@RequestMapping(value = "/uss/ion/yrc/deleteIndvdlYryc.do", method = RequestMethod.POST)
 	public String deleteIndvdlYrycManage(IndvdlYrycManage indvdlYrycManage) throws Exception {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();

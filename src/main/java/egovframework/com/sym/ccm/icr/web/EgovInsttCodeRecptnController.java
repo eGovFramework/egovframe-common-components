@@ -68,7 +68,7 @@ public class EgovInsttCodeRecptnController {
 	 * @return "forward:/sym/ccm/icr/getInsttCodeRecptnList.do"
 	 * @throws Exception
 	 */
-    @RequestMapping(value="/sym/ccm/icr/addInsttCode.do")
+    @RequestMapping(value = "/sym/ccm/icr/addInsttCode.do")
 	public String insertInsttCodeRecptn (InsttCodeRecptn insttCodeRecptn
 			, BindingResult bindingResult
 			, @RequestParam Map<?, ?> commandMap
@@ -92,7 +92,7 @@ public class EgovInsttCodeRecptnController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/sym/ccm/icr/getInsttCodeDetail.do")
+	@RequestMapping(value = "/sym/ccm/icr/getInsttCodeDetail.do")
  	public String selectInsttCodeDetail (@ModelAttribute("insttCode") InsttCodeRecptn insttCode
 			, @ModelAttribute("insttCodeRecptnVO") InsttCodeRecptnVO insttCodeRecptnVO
 			, ModelMap model
@@ -134,7 +134,7 @@ public class EgovInsttCodeRecptnController {
      * @throws Exception
      */
 	@IncludedInfo(name="기관코드수신", listUrl="/sym/ccm/icr/getInsttCodeRecptnList.do", order = 1020 ,gid = 60)
-    @RequestMapping(value="/sym/ccm/icr/getInsttCodeRecptnList.do")
+    @RequestMapping(value = "/sym/ccm/icr/getInsttCodeRecptnList.do")
 	public String selectInsttCodeRecptnList (@ModelAttribute("searchVO") InsttCodeRecptnVO searchVO
 			, ModelMap model
 			) throws Exception {
@@ -170,7 +170,7 @@ public class EgovInsttCodeRecptnController {
      * @return "egovframework/com/cmm/sym/ccm/EgovCcmInsttCodeList"
      * @throws Exception
      */
-    @RequestMapping(value="/sym/ccm/icr/getInsttCodeRecptnMainList.do")
+    @RequestMapping(value = "/sym/ccm/icr/getInsttCodeRecptnMainList.do")
 	public String selectInsttCodeRecptnMainList (@ModelAttribute("searchVO") InsttCodeRecptnVO searchVO
 			, ModelMap model
 			) throws Exception {

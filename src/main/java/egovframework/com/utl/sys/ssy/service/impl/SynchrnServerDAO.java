@@ -6,7 +6,6 @@ import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.utl.sys.ssy.service.SynchrnServer;
-import egovframework.com.utl.sys.ssy.service.SynchrnServerVO;
 
 /**
  * 개요
@@ -24,29 +23,29 @@ public class SynchrnServerDAO extends EgovComAbstractDAO {
 
 	/**
 	 * 동기화대상 서버를 관리하기 위해 등록된 동기화대상 서버목록을 조회한다.
-	 * @param synchrnServerVO - 동기화대상 서버 Vo
+	 * @param synchrnServer - 동기화대상 서버
 	 * @return List - 동기화대상 서버 목록
 	 */
-	public List<SynchrnServerVO> selectSynchrnServerList(SynchrnServerVO synchrnServerVO) throws Exception {
-		return selectList("synchrnServerDAO.selectSynchrnServerList", synchrnServerVO);
+	public List<SynchrnServer> selectSynchrnServerList(SynchrnServer synchrnServer) throws Exception {
+		return selectList("synchrnServerDAO.selectSynchrnServerList", synchrnServer);
 	}
 
 	/**
 	 * 동기화대상 서버목록 총 개수를 조회한다.
-	 * @param synchrnServerVO - 동기화대상 서버 Vo
+	 * @param synchrnServer - 동기화대상 서버
 	 * @return int - 동기화대상 서버 카운트 수
 	 */
-	public int selectSynchrnServerListTotCnt(SynchrnServerVO synchrnServerVO) throws Exception {
-		return (Integer)selectOne("synchrnServerDAO.selectSynchrnServerListTotCnt", synchrnServerVO);
+	public int selectSynchrnServerListTotCnt(SynchrnServer synchrnServer) throws Exception {
+		return (Integer)selectOne("synchrnServerDAO.selectSynchrnServerListTotCnt", synchrnServer);
 	}
 
 	/**
 	 * 등록된 동기화대상 서버의 상세정보를 조회한다.
-	 * @param synchrnServerVO - 동기화대상 서버 Vo
-	 * @return synchrnServerVO - 동기화대상 서버 Vo
+	 * @param synchrnServer - 동기화대상 서버
+	 * @return SynchrnServer - 동기화대상 서버
 	 */
-	public SynchrnServerVO selectSynchrnServer(SynchrnServerVO synchrnServerVO) throws Exception {
-		return (SynchrnServerVO) selectOne("synchrnServerDAO.selectSynchrnServer", synchrnServerVO);
+	public SynchrnServer selectSynchrnServer(SynchrnServer synchrnServer) throws Exception {
+		return (SynchrnServer) selectOne("synchrnServerDAO.selectSynchrnServer", synchrnServer);
 	}
 
 	/**
@@ -75,8 +74,7 @@ public class SynchrnServerDAO extends EgovComAbstractDAO {
 
 	/**
 	 * 업로드 파일을 동기화대상 서버들을 대상으로 동기화 처리를 한다.
-	 * @param synchrnServerVO - 동기화대상 서버 Vo
-	 * @return boolean - 성공여부
+	 * @param synchrnServer - 동기화대상 서버
 	 */
 	public void processSynchrn(SynchrnServer synchrnServer) throws Exception {
 		update("synchrnServerDAO.processSynchrn", synchrnServer);
@@ -84,10 +82,10 @@ public class SynchrnServerDAO extends EgovComAbstractDAO {
 
 	/**
 	 * 동기화 처리를 하기 위해 동기화대상 서버목록을 조회한다.
-	 * @param synchrnServerVO - 동기화대상 서버 Vo
+	 * @param synchrnServer - 동기화대상 서버
 	 * @return List - 동기화대상 서버 목록
 	 */
-	public List<SynchrnServerVO> processSynchrnServerList(SynchrnServerVO synchrnServerVO) throws Exception {
-		return selectList("synchrnServerDAO.processSynchrnServerList", synchrnServerVO);
+	public List<SynchrnServer> processSynchrnServerList(SynchrnServer synchrnServer) throws Exception {
+		return selectList("synchrnServerDAO.processSynchrnServerList", synchrnServer);
 	}
 }

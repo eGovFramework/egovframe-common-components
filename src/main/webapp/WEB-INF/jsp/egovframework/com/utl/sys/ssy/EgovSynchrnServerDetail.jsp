@@ -24,6 +24,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -58,8 +59,8 @@ function fncSynchrnServerDelete(serverId) {
 }
 
 function fncRemoveSynchrnServerFile(fileNm) {
-    var varFrom = document.getElementById("fileList");
-    varFrom.fileNm.value = fileNm;
+    var varFrom = document.getElementById("synchrnServerFileListForm");
+    varFrom.deleteFileNm.value = fileNm;
     varFrom.action = "<c:url value='/utl/sys/ssy/removeSynchrnServerFile.do'/>";
     if(confirm("<spring:message code='common.delete.msg' />")){
         varFrom.submit();
@@ -67,7 +68,7 @@ function fncRemoveSynchrnServerFile(fileNm) {
 }
 
 function fncDownSynchrnServerFile(fileNm) {
-    var varFrom = document.getElementById("fileList");
+    var varFrom = document.getElementById("synchrnServerFileListForm");
     varFrom.fileNm.value = fileNm;
     varFrom.action = "<c:url value='/utl/sys/ssy/getSynchrnServerFile.do'/>";
     if(confirm("<spring:message code='comUtlSysSsy.download.msg' />")){
@@ -83,6 +84,7 @@ function fncDownSynchrnServerFile(fileNm) {
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
 <div class="wTableFrm">
+<form:form id="synchrnServer" modelAttribute="synchrnServer" method="post" action="">
 	<!-- 타이틀 -->
 	<h2><spring:message code="comUtlSysSsy.synchrnServer.title" />  <spring:message code="title.detail" /></h2><!-- 동기화대상 서버정보 상세조회 -->
 
@@ -92,12 +94,6 @@ function fncDownSynchrnServerFile(fileNm) {
 			<col style="width:16%" />
 			<col style="" />
 		</colgroup>
-		<tr>
-			<th><spring:message code="comUtlSysSsy.synchrnServer.serverId.label" /> <span class="pilsu">*</span></th>
-			<td class="left">
-			    <c:out value='${synchrnServer.serverId}'/>
-			</td>
-		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysSsy.synchrnServer.serverNm.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
@@ -123,30 +119,28 @@ function fncDownSynchrnServerFile(fileNm) {
 			</td>
 		</tr>
 		<tr>
-			<th><spring:message code="comUtlSysSsy.synchrnServer.ftpPassword.label" /> <span class="pilsu">*</span></th>
-			<td class="left">
-			    <c:out value='${synchrnServer.ftpPassword}'/>
-			</td>
-		</tr>
-		<tr>
 			<th><spring:message code="comUtlSysSsy.synchrnServer.synchrnLc.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
 			    <c:out value='${synchrnServer.synchrnLc}'/>
 			</td>
 		</tr>
 	</table>
+	<form:hidden path="serverId" />
+	<form:hidden path="pageIndex" />
+	<form:hidden path="strSynchrnServerNm" />
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<span class="btn_s"><a href="<c:url value='/utl/sys/ssy/updtViewSynchrnServer.do'/>?serverId=<c:out value='${synchrnServer.serverId}'/>" onclick="fncSynchrnServerUpdateView('${synchrnServer.serverId}'); return false;"><spring:message code="button.update" /></a></span>
-		<span class="btn_s"><a href="<c:url value='/utl/sys/ssy/removeSynchrnServer.do'/>?serverId=<c:out value='${synchrnServer.serverId}'/>" onclick="fncSynchrnServerDelete('${synchrnServer.serverId}'); return false;"><spring:message code="button.delete" /></a></span>
-		<span class="btn_s"><a href="<c:url value='/utl/sys/ssy/selectSynchrnServerList.do'/>?pageIndex=<c:out value='${synchrnServerVO.pageIndex}'/>&amp;strSynchrnServerNm=<c:out value="${synchrnServerVO.strSynchrnServerNm}"/>" onclick="fncSelectSynchrnServerList(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="<c:url value='/utl/sys/ssy/updtViewSynchrnServer.do'><c:param name="serverId" value='${egovc:encryptId(synchrnServer.serverId)}'/></c:url>" onclick="fncSynchrnServerUpdateView('<c:out value="${egovc:encryptId(synchrnServer.serverId)}"/>'); return false;"><spring:message code="button.update" /></a></span>
+		<span class="btn_s"><a href="#" onclick="fncSynchrnServerDelete('<c:out value="${egovc:encryptId(synchrnServer.serverId)}"/>'); return false;"><spring:message code="button.delete" /></a></span>
+		<span class="btn_s"><a href="<c:url value='/utl/sys/ssy/selectSynchrnServerList.do'/>?pageIndex=<c:out value='${synchrnServer.pageIndex}'/>&amp;strSynchrnServerNm=<c:out value="${synchrnServer.strSynchrnServerNm}"/>" onclick="fncSelectSynchrnServerList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
+</form:form>
 </div>
 
 <div class="board">
-<form:form modelAttribute="fileList" method="post" action="${pageContext.request.contextPath}/utl/sys/ssy/removeSynchrnServerFile.do">
+<form:form id="synchrnServerFileListForm" modelAttribute="synchrnServer" method="post" action="${pageContext.request.contextPath}/utl/sys/ssy/removeSynchrnServerFile.do">
 	<h1><spring:message code="comUtlSysSsy.synchrn.title" />  <spring:message code="title.list" /></h1><!-- 동기화 파일 목록 -->
 
 	<table class="board_list">
@@ -166,27 +160,25 @@ function fncDownSynchrnServerFile(fileNm) {
 			</tr>
 		</thead>
 		<tbody>
+			<c:if test="${fn:length(fileList) == 0}">
+				<td colspan="4"><spring:message code="comUtlSysSsy.synchrnServer.nofile.label" /></td>
+			</c:if>
 			<c:forEach var="file" items="${fileList}" varStatus="status">
-	        <tr>
-	            <c:if test="${file != 'noList'}">
-	                <td><c:out value="${status.count}"/></td>
-	                <td><c:out value="${file}"/>&nbsp;</td>
-	                <td><span class="button"><a href="<c:url value='/utl/sys/ssy/getSynchrnServerFile.do'/>?pageIndex=<c:out value='${synchrnServerVO.pageIndex}'/>&amp;strSynchrnServerNm=<c:out value="${synchrnServerVO.strSynchrnServerNm}"/>" onclick="fncDownSynchrnServerFile('<c:out value="${file}"/>'); return false;"><spring:message code="comUtlSysSsy.synchrnServer.fileDownload.label" /></a></span>&nbsp;</td><!-- 다운로드 -->
-	                <!-- 동기화대상서버 파일 삭제 기능 -->
-	                <td><span class="button"><input type="submit" value="<spring:message code="button.delete" />" onclick="fncRemoveSynchrnServerFile('<c:out value="${file}"/>'); return false;"></span></td>
-	            </c:if>
-	            <c:if test="${file == 'noList'}">
-	                <td colspan="4"><spring:message code="comUtlSysSsy.synchrnServer.nofile.label" /></td>
-	            </c:if>
-	        </tr>
+		        <tr>
+					<td><c:out value="${status.count}"/></td>
+					<td><c:out value="${file}"/>&nbsp;</td>
+					<td><span class="button"><a href="<c:url value='/utl/sys/ssy/getSynchrnServerFile.do'/>?pageIndex=<c:out value='${synchrnServer.pageIndex}'/>&amp;strSynchrnServerNm=<c:out value="${synchrnServer.strSynchrnServerNm}"/>" onclick="fncDownSynchrnServerFile('<c:out value="${file}"/>'); return false;"><spring:message code="comUtlSysSsy.synchrnServer.fileDownload.label" /></a></span>&nbsp;</td><!-- 다운로드 -->
+					<!-- 동기화대상서버 파일 삭제 기능 -->
+					<td><span class="button"><input type="button" value="<spring:message code="button.delete" />" onclick="fncRemoveSynchrnServerFile('<c:out value="${file}"/>');"></span></td>
+		        </tr>
 			</c:forEach>
 		</tbody>
 	</table>
-	<input type="hidden" name="serverId" value="<c:out value='${synchrnServer.serverId}'/>" />
-    <input type="hidden" name="fileNm" />    
+	<form:hidden path="serverId" />
+	<input type="hidden" name="fileNm" id="synchrnServerFileListFileNm" />
+	<form:hidden path="deleteFileNm" />
 </form:form>
 </div>
 
 </body>
 </html>
-

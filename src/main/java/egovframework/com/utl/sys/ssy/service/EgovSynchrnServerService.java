@@ -20,51 +20,51 @@ public interface EgovSynchrnServerService {
 
 	/**
 	 * 동기화대상 서버를 관리하기 위해 등록된 서버목록을 조회한다.
-	 * @param synchrnServerVO - 동기화대상 서버 Vo
+	 * @param synchrnServer - 동기화대상 서버(검색·페이징 조건 포함)
 	 * @return List - 동기화대상 서버 목록
 	 */
-	public List<SynchrnServerVO> selectSynchrnServerList(SynchrnServerVO synchrnServerVO) throws Exception;
+	public List<SynchrnServer> selectSynchrnServerList(SynchrnServer synchrnServer) throws Exception;
 
 	/**
 	 * 동기화대상 서버 목록 총 개수를 조회한다.
-	 * @param synchrnServerVO - 동기화대상 서버 Vo
+	 * @param synchrnServer - 동기화대상 서버(검색·페이징 조건 포함)
 	 * @return int - 동기화대상 서버 카운트 수
 	 */
-	public int selectSynchrnServerListTotCnt(SynchrnServerVO synchrnServerVO) throws Exception;
+	public int selectSynchrnServerListTotCnt(SynchrnServer synchrnServer) throws Exception;
 
 	/**
 	 * 등록된 동기화대상 서버의 상세정보를 조회한다.
-	 * @param synchrnServerVO - 동기화대상 서버 Vo
-	 * @return SynchrnServerVO - 동기화대상 서버 Vo
+	 * @param synchrnServer - 동기화대상 서버(식별·조건)
+	 * @return SynchrnServer - 동기화대상 서버
 	 */
-	public SynchrnServerVO selectSynchrnServer(SynchrnServerVO synchrnServerVO) throws Exception;
+	public SynchrnServer selectSynchrnServer(SynchrnServer synchrnServer) throws Exception;
 
 	/**
 	 * 등록된 동기화대상 서버의 파일 목록을 조회한다.
-	 * @param synchrnServerVO - 동기화대상 서버 Vo
+	 * @param synchrnServer - 동기화대상 서버
 	 * @return List<String> - String Type List
 	 */
-	public List<String> selectSynchrnServerFiles(SynchrnServerVO synchrnServerVO) throws Exception;
+	public List<String> selectSynchrnServerFiles(SynchrnServer synchrnServer) throws Exception;
 
 	/**
 	 * 등록된 동기화대상 서버의 파일을 삭제한다.
-	 * @param synchrnServerVO - 동기화대상 서버 Vo
+	 * @param synchrnServer - 동기화대상 서버
 	 */
-	public void deleteSynchrnServerFile(SynchrnServerVO synchrnServerVO) throws Exception;
+	public void deleteSynchrnServerFile(SynchrnServer synchrnServer) throws Exception;
 
 	/**
 	 * 등록된 동기화대상 서버의 파일을 다운로드 한다.
-	 * @param synchrnServerVO - 동기화대상 서버 Vo
+	 * @param synchrnServer - 동기화대상 서버
 	 * @param fileNm - 다운로드 대상 파일
 	 */
-	public void downloadFtpFile(SynchrnServerVO synchrnServerVO, String fileNm) throws Exception;
+	public void downloadFtpFile(SynchrnServer synchrnServer, String fileNm) throws Exception;
 
 	/**
 	 * 동기화대상 서버정보를 신규로 등록한다.
-	 * @param synchrnServer - 동기화대상 서버 model
-	 * @return SynchrnServerVO - 동기화대상 서버 Vo
+	 * @param synchrnServer - 동기화대상 서버 model(등록 필드 및 목록 복귀용 페이징·검색값)
+	 * @return SynchrnServer - 동기화대상 서버
 	 */
-	public SynchrnServerVO insertSynchrnServer(SynchrnServer synchrnServer, SynchrnServerVO synchrnServerVO) throws Exception;
+	public SynchrnServer insertSynchrnServer(SynchrnServer synchrnServer) throws Exception;
 
 	/**
 	 * 기 등록된 동기화대상 서버정보를 수정한다.
@@ -80,10 +80,10 @@ public interface EgovSynchrnServerService {
 
 	/**
 	 * 업로드 파일을 동기화대상 서버들을 대상으로 동기화 처리를 한다.
-	 * @param synchrnServerVO - 동기화대상 서버 Vo
+	 * @param synchrnServer - 동기화대상 서버
 	 * @return boolean - 성공여부
 	 */
-	public boolean processSynchrn(SynchrnServerVO synchrnServerVO, File[] uploadFile) throws Exception;
+	public boolean processSynchrn(SynchrnServer synchrnServer, File[] uploadFile) throws Exception;
 
 	/**
 	 * 업로드 파일의 목록을 조회한다.
@@ -93,17 +93,23 @@ public interface EgovSynchrnServerService {
 	public List<String> getFileName() throws Exception;
 
 	/**
+	 * {@link #getFileName()}과 동일하게 Globals.SynchrnServerPath 밑의 일반 파일만 담은 배열.
+	 * (목록 fileList·FTP 동기화 대상이 일치하도록 쓴다.)
+	 */
+	public File[] getSyncLocalFiles() throws Exception;
+
+	/**
 	 * 동기화 대상 파일을 업로드 한다.
 	 * @param file - 업로드 대상 파일
 	 * @param newName - 업로드 대상 파일명
 	 * @param stordFilePath - 업로드 경로
-	 * @param synchrnServerVO - 동기화대상 서버 Vo
+	 * @param synchrnServer - 동기화대상 서버
 	 */
-	public void writeFile(MultipartFile multipartFile, String newName, SynchrnServerVO synchrnServerVO) throws Exception;
+	public void writeFile(MultipartFile multipartFile, String newName, SynchrnServer synchrnServer) throws Exception;
 
 	/**
 	 * 업로드 파일을 삭제한다.
-	 * @param synchrnServerVO - 동기화대상 서버 Vo
+	 * @param synchrnServer - 동기화대상 서버
 	 */
-	public void deleteFile(String deleteFiles, SynchrnServerVO synchrnServerVO) throws Exception;
+	public void deleteFile(String deleteFiles, SynchrnServer synchrnServer) throws Exception;
 }

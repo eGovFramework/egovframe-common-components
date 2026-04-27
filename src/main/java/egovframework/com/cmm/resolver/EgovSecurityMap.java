@@ -21,16 +21,8 @@ import lombok.extern.slf4j.Slf4j;
  *  -------    --------    ---------------------------
  *   2024.07.09  신용호          Map 타입에서 noteId 복호화 적용을 위한 EgovSecurityMap 추가
  *   2025.05.24  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-SwitchStmtsShouldHaveDefault(스위치 명령문에는 기본값이 있어야 합니다.), AvoidReassigningParameters(매개변수 재할당 방지)
+ *   2026.04.20  유지보수        국가사이버안보센터(NCSC)의 보안 점검 결과 반영을 통한 보안패치
  *
- *      </pre>
- * 
- *      <pre>
- * << 개정이력(Modification Information) >>
- *
- *   수정일          수정자        수정내용
- *  ----------     --------    ---------------------------
- *
- * 
  *      </pre>
  */
 @Slf4j
@@ -47,14 +39,13 @@ public class EgovSecurityMap {
 
 		// 특정 암호화된 파라미터 복호화 처리
 		switch (key) {
+		case "proxyId":
+		case "serverId":
 		case "noteId":
-
 		case "noteTrnsmitId":
-
 		case "noteRecptnId":
-
 		case "reprtId":
-			log.debug("===> {} : {}", key, value);
+			log.debug("### EgovSecurityMap {} : {}", key, value);
 			value2 = EgovComUtlController.decryptId(value);
 			break;
 

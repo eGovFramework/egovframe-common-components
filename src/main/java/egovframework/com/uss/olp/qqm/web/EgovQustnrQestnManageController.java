@@ -120,7 +120,7 @@ public class EgovQustnrQestnManageController {
 	 * @return "egovframework/com/uss/olp/qqm/EgovQustnrQestnManageListPopup"
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/uss/olp/qqm/EgovQustnrQestnManageListPopup.do")
+	@RequestMapping(value = "/uss/olp/qqm/EgovQustnrQestnManageListPopup.do")
 	public String egovQustnrQestnManageListPopup(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@ModelAttribute("qustnrQestnManageVO") QustnrQestnManageVO qustnrQestnManageVO,
@@ -175,7 +175,7 @@ public class EgovQustnrQestnManageController {
 	 */
 	@SuppressWarnings("unused")
 	@IncludedInfo(name="질문관리", order = 630 ,gid = 50)
-	@RequestMapping(value="/uss/olp/qqm/EgovQustnrQestnManageList.do")
+	@RequestMapping(value = "/uss/olp/qqm/EgovQustnrQestnManageList.do")
 	public String egovQustnrQestnManageList(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@ModelAttribute("qustnrQestnManageVO") QustnrQestnManageVO qustnrQestnManageVO,
@@ -243,7 +243,7 @@ public class EgovQustnrQestnManageController {
 	 * @return "egovframework/com/uss/olp/qqm/EgovQustnrQestnManageDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/uss/olp/qqm/EgovQustnrQestnManageDetail.do")
+	@RequestMapping(value = "/uss/olp/qqm/EgovQustnrQestnManageDetail.do")
 	public String egovQustnrQestnManageDetail(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@ModelAttribute("qustnrQestnManageVO") QustnrQestnManageVO qustnrQestnManageVO,

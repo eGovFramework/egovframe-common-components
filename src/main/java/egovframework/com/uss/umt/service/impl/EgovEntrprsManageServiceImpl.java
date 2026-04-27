@@ -139,7 +139,9 @@ public class EgovEntrprsManageServiceImpl extends EgovAbstractServiceImpl implem
 	 * @throws Exception
 	 */
 	@Override
-	public void updatePassword(EntrprsPasswordManageVO passVO) {
+	public void updatePassword(EntrprsPasswordManageVO passVO) throws Exception {
+		String newPassword = EgovFileScrty.encryptPassword(passVO.getPassword(), passVO.getEntrprsmberId());
+		passVO.setPassword(newPassword);
 		entrprsManageDAO.updatePassword(passVO);
 	}
 

@@ -92,7 +92,7 @@ public class EgovRssTagManageController {
     @RequestMapping(value = "/uss/ion/rss/listRssTagManage.do")
     public String EgovRssTagManageList(
             @RequestParam Map<?, ?> commandMap,
-            @RequestParam(value="checkList", required=false) List<String> checkList,
+            @RequestParam(value = "checkList", required=false) List<String> checkList,
             @ModelAttribute("rssManage") RssManage rssManage, ModelMap model)
             throws Exception {
 

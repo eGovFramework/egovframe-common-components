@@ -55,7 +55,7 @@ public class EgovCryptoController {
      * @return
      */
 	@IncludedInfo(name="암호화/복호화", listUrl="/sec/pki/EgovCryptoInfo.do", order = 2200 ,gid = 90)
-    @RequestMapping(value="/sec/pki/EgovCryptoInfo.do")
+    @RequestMapping(value = "/sec/pki/EgovCryptoInfo.do")
     public String displayCryptoInfo( @RequestParam Map<?, ?> commandMap,
 							    		ModelMap model) throws Exception {
         // 0. Spring Security 사용자권한 처리

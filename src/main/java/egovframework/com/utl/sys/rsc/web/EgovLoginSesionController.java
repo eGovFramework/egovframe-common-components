@@ -43,7 +43,7 @@ public class EgovLoginSesionController {
 	 * @return String
 	 */
 	@IncludedInfo(name="로그인세션정보체크", order = 2160 ,gid = 90)
-	@RequestMapping(value="/utl/sys/rsc/loginSessionView.do")
+	@RequestMapping(value = "/utl/sys/rsc/loginSessionView.do")
 	public String checkLoginSessionView() throws Exception {
 		return "egovframework/com/utl/sys/rsc/EgovLoginSesionCheck";
 	}
@@ -53,7 +53,7 @@ public class EgovLoginSesionController {
 	 * @param url - String
 	 * @return String
 	 */
-	@RequestMapping(value="/utl/sys/rsc/setLoginSession.do")
+	@RequestMapping(value = "/utl/sys/rsc/setLoginSession.do")
 	public String setLoginSession(@RequestParam("url") String url) throws Exception {
 		egovLoginSesionCeckUtil.setLoginSession(url);
 		return "forward:/utl/sys/rsc/loginSessionView.do";
@@ -63,7 +63,7 @@ public class EgovLoginSesionController {
 	 * 로그인 세션정보체크
 	 * @return String
 	 */
-	@RequestMapping(value="/utl/sys/rsc/checkLloginSession.do")
+	@RequestMapping(value = "/utl/sys/rsc/checkLloginSession.do")
 	public String checkLoginSession() throws Exception {
 		egovLoginSesionCeckUtil.checkLoginSessionView();
 		return "egovframework/com/utl/sys/rsc/EgovLoginSesionCheck";

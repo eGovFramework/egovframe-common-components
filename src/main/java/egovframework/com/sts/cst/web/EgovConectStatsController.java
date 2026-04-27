@@ -53,7 +53,7 @@ public class EgovConectStatsController {
 	 * @exception Exception
 	 */
     @IncludedInfo(name="접속통계", listUrl="/sts/cst/selectConectStats.do", order = 140 ,gid = 30)
-    @RequestMapping(value="/sts/cst/selectConectStats.do")
+    @RequestMapping(value = "/sts/cst/selectConectStats.do")
 	public String selectUserStats(@ModelAttribute("statsVO") StatsVO statsVO,
 			ModelMap model) throws Exception {
 
