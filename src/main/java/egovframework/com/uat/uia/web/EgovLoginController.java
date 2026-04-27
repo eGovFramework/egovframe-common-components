@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovComponentChecker;
@@ -157,7 +158,8 @@ public class EgovLoginController {
 	 * @exception Exception
 	 */
 	@RequestMapping(value = "/uat/uia/actionLogin.do")
-	public String actionLogin(@Valid @ModelAttribute("loginRequestVO") LoginRequestVO loginRequestVO, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
+	public String actionLogin(@Valid @ModelAttribute("loginRequestVO") LoginRequestVO loginRequestVO, BindingResult bindingResult, HttpServletRequest request, HttpServletResponse response, ModelMap model,  RedirectAttributes
+			  redirectAttributes) throws Exception {
 
 		// Validation 에러 체크
 		if (bindingResult.hasErrors()) {
@@ -184,14 +186,17 @@ public class EgovLoginController {
 				String sLoginIncorrectCode = loginService.processLoginIncorrect(loginVO, mapLockUserInfo);
 				if(!sLoginIncorrectCode.equals("E")){
 					if(sLoginIncorrectCode.equals("L")){
-						model.addAttribute("loginMessage", egovMessageSource.getMessageArgs("fail.common.loginIncorrect", new Object[] {egovLoginConfig.getLockCount(),request.getLocale()}));
+						redirectAttributes.addFlashAttribute("loginMessage",
+ 						egovMessageSource.getMessageArgs("fail.common.loginIncorrect", new Object[]{egovLoginConfig.getLockCount(),request.getLocale()}));
 					}else if(sLoginIncorrectCode.equals("C")){
-						model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
+						redirectAttributes.addFlashAttribute("loginMessage",
+						egovMessageSource.getMessage("fail.common.login",request.getLocale()));
 					}
-					return "redirect:/uat/uia/egovLoginUsr.do";
+						return "redirect:/uat/uia/egovLoginUsr.do";		
 				}
 		    }else{
-		    	model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
+		    	redirectAttributes.addFlashAttribute("loginMessage",
+		    	egovMessageSource.getMessage("fail.common.login",request.getLocale()));
 		    	return "redirect:/uat/uia/egovLoginUsr.do";
 		    }
 		}
@@ -214,8 +219,10 @@ public class EgovLoginController {
 				if (isAuthenticated ) {
 					return "forward:/EgovContent.do";	// 성공 시 페이지.. (redirect 불가)
 				} else {
-					model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login"));
+					redirectAttributes.addFlashAttribute("loginMessage",
+					egovMessageSource.getMessage("fail.common.login", request.getLocale()));
 					return "redirect:/uat/uia/egovLoginUsr.do";
+
 				}
 			} else {
 				// 2019.10.01 로그인 인증세션 추가
@@ -224,7 +231,8 @@ public class EgovLoginController {
 			}
 
 		} else {
-			model.addAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login",request.getLocale()));
+			redirectAttributes.addFlashAttribute("loginMessage",
+	   		egovMessageSource.getMessage("fail.common.login",request.getLocale()));
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
 	}
@@ -598,7 +606,7 @@ public class EgovLoginController {
 	 * @return result - String
 	 * @exception Exception
 	 */
-	@RequestMapping(value="/uat/uia/refreshSessionTimeout.do")
+	@RequestMapping(value = "/uat/uia/refreshSessionTimeout.do")
 	public ModelAndView refreshSessionTimeout(@RequestParam Map<String, Object> commandMap) throws Exception {
 		ModelAndView modelAndView = new ModelAndView();
 		modelAndView.setViewName("jsonView");
@@ -614,7 +622,7 @@ public class EgovLoginController {
 	 * @return result - String
 	 * @exception Exception
 	 */
-	@RequestMapping(value="/uat/uia/noticeExpirePwd.do")
+	@RequestMapping(value = "/uat/uia/noticeExpirePwd.do")
 	public String noticeExpirePwd(@RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
 
 		// 설정된 비밀번호 유효기간을 가져온다. ex) 180이면 비밀번호 변경후 만료일이 앞으로 180일

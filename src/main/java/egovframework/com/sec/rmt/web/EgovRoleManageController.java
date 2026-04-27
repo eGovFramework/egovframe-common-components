@@ -88,7 +88,7 @@ public class EgovRoleManageController {
 	 * @exception Exception
 	 */
     @IncludedInfo(name="롤관리", listUrl="/sec/rmt/EgovRoleList.do", order = 90,gid = 20)
-    @RequestMapping(value="/sec/rmt/EgovRoleList.do")
+    @RequestMapping(value = "/sec/rmt/EgovRoleList.do")
 	public String selectRoleList(@ModelAttribute("roleManageVO") RoleManageVO roleManageVO,
 			                      ModelMap model) throws Exception {
 
@@ -121,7 +121,7 @@ public class EgovRoleManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value="/sec/rmt/EgovRole.do")
+    @RequestMapping(value = "/sec/rmt/EgovRole.do")
 	public String selectRole(@RequestParam("roleCode") String roleCode,
 	                         @ModelAttribute("roleManageVO") RoleManageVO roleManageVO,
 	                         @ModelAttribute("authorManageVO") AuthorManageVO authorManageVO,
@@ -175,7 +175,7 @@ public class EgovRoleManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value="/sec/rmt/EgovRoleInsert.do")
+    @RequestMapping(value = "/sec/rmt/EgovRoleInsert.do")
 	public String insertRole(@Valid @ModelAttribute("roleManage") RoleManage roleManage,
 							  BindingResult bindingResult,
 			                  @ModelAttribute("roleManageVO") RoleManageVO roleManageVO,
@@ -212,7 +212,7 @@ public class EgovRoleManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value="/sec/rmt/EgovRoleUpdate.do")
+    @RequestMapping(value = "/sec/rmt/EgovRoleUpdate.do")
 	public String updateRole(@Valid @ModelAttribute("roleManage") RoleManage roleManage,
 			BindingResult bindingResult,
             ModelMap model) throws Exception {
@@ -233,7 +233,7 @@ public class EgovRoleManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value="/sec/rmt/EgovRoleDelete.do")
+    @RequestMapping(value = "/sec/rmt/EgovRoleDelete.do")
 	public String deleteRole(@ModelAttribute("roleManage") RoleManage roleManage,
             ModelMap model) throws Exception {
     	egovRoleManageService.deleteRole(roleManage);
@@ -249,7 +249,7 @@ public class EgovRoleManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value="/sec/rmt/EgovRoleListDelete.do")
+	@RequestMapping(value = "/sec/rmt/EgovRoleListDelete.do")
 	public String deleteRoleList(@RequestParam("roleCodes") String roleCodes,
 			                     @ModelAttribute("roleManage") RoleManage roleManage,
 	                              Model model) throws Exception {

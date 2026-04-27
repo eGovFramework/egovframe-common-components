@@ -59,7 +59,7 @@ public class EgovAllSchdulManageController {
 	 */
     @SuppressWarnings("unused")
 	@IncludedInfo(name="전체일정관리", order = 350 ,gid = 40)
-	@RequestMapping(value="/cop/smt/sam/EgovAllSchdulManageList.do")
+	@RequestMapping(value = "/cop/smt/sam/EgovAllSchdulManageList.do")
 	public String egovAllSchdulManageList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, ModelMap model)
     throws Exception {

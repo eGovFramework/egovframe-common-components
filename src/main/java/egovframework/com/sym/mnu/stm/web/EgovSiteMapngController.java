@@ -69,7 +69,7 @@ public class EgovSiteMapngController {
      * @exception Exception
      */
 	@IncludedInfo(name="사이트맵", order = 1101 ,gid = 60)
-    @RequestMapping(value="/sym/mnu/stm/EgovSiteMapng.do")
+    @RequestMapping(value = "/sym/mnu/stm/EgovSiteMapng.do")
     public String selectSiteMapng(
     		@ModelAttribute("searchVO") ComDefaultVO searchVO,
     		ModelMap model)

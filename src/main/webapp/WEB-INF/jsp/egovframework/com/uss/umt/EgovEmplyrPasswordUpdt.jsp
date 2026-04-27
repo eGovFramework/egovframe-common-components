@@ -46,12 +46,25 @@ function fnUpdate(form){
     	form.submit();
     }
 }
+function fnUmtPasswordCancel(formId) {
+    var f = document.getElementById(formId);
+    if (!f) {
+        return;
+    }
+    var names = ['oldPassword', 'password', 'password2'];
+    for (var i = 0; i < names.length; i++) {
+        var el = f.elements[names[i]];
+        if (el) {
+            el.value = '';
+        }
+    }
+}
 <c:if test="${!empty resultMsg}">alert("<spring:message code="${resultMsg}" />");</c:if>
 </script>
 </head>
 <body>
         <!-- content start -->
-        <form:form modelAttribute="emplyrPasswordManageVO" method="post"  action="${pageContext.request.contextPath}/uss/umt/EgovEmplyrPasswordUpdt.do" onsubmit="fnUpdate(document.forms[0]); return false;">
+        <form:form id="umtEmplyrPasswordForm" modelAttribute="emplyrPasswordManageVO" method="post" autocomplete="off" action="${pageContext.request.contextPath}/uss/umt/EgovEmplyrPasswordUpdt.do" onsubmit="fnUpdate(document.forms[0]); return false;">
               <!-- onsubmit="javascript:return FormValidation(document.emplyrManageVO);" >  -->
         <!-- 상세정보 사용자 삭제시 prameter 전달용 input -->
         <input name="checkedIdForDel" type="hidden" />
@@ -92,7 +105,7 @@ function fnUpdate(form){
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-				<form:input path="oldPassword" id="oldPassword" type="password" size="20" maxlength="100" style="width:70%"/>
+				<form:input path="oldPassword" id="oldPassword" type="password" autocomplete="off" size="20" maxlength="100" style="width:70%"/>
 				<div><form:errors path="oldPassword" cssClass="error" /></div>
 			</td>
 		</tr>
@@ -102,7 +115,7 @@ function fnUpdate(form){
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
 				<div>
-					<form:input path="password" id="password" type="password" size="20" maxlength="100" style="width:70%"/>
+					<form:input path="password" id="password" type="password" autocomplete="new-password" size="20" maxlength="100" style="width:70%"/>
 				    <div><form:errors path="password" cssClass="error" /></div>
 				</div>
 				<div>
@@ -117,7 +130,7 @@ function fnUpdate(form){
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-				<form:input path="password2" id="password2" type="password" size="20" maxlength="100" style="width:70%"/>
+				<form:input path="password2" id="password2" type="password" autocomplete="new-password" size="20" maxlength="100" style="width:70%"/>
 			    <div><form:errors path="password2" cssClass="error" /></div>
 			</td>
 		</tr>
@@ -130,7 +143,7 @@ function fnUpdate(form){
 	<input type="submit" class="s_submit" value="<spring:message code="button.update" />" title="<spring:message code="button.update" /> <spring:message code="input.button" />" />
 
 	<span class="btn_s"><a href="<c:url value='/uss/umt/EgovEmplyrManage.do' />"  title="<spring:message code="button.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
-	<button class="btn_s2" onClick="document.emplyrManageVO.reset();return false;" title="<spring:message code="button.reset" /> <spring:message code="input.button" />"><spring:message code="button.reset" /></button>
+	<button type="button" class="btn_s2" onClick="fnUmtPasswordCancel('umtEmplyrPasswordForm'); return false;" title="<spring:message code="button.reset" /> <spring:message code="input.button" />"><spring:message code="button.reset" /></button>
 	</div><div style="clear:both;"></div>
 	
 </div>

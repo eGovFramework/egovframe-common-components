@@ -60,12 +60,12 @@ public class EgovMeetingManageController {
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertiesService;
 
-    @RequestMapping(value="/uss/olp/mgt/EgovMeetingManageMain.do")
+    @RequestMapping(value = "/uss/olp/mgt/EgovMeetingManageMain.do")
     public String egovMeetingManageMain(ModelMap model) throws Exception {
     	return "egovframework/com/uss/olp/mgt/EgovMeetingManageMain";
     }
 
-    @RequestMapping(value="/uss/olp/mgt/EgovMeetingManageLeft.do")
+    @RequestMapping(value = "/uss/olp/mgt/EgovMeetingManageLeft.do")
     public String egovMeetingManageLeft(ModelMap model) throws Exception {
     	return "egovframework/com/uss/olp/mgt/EgovMeetingManageLeft";
     }
@@ -81,7 +81,7 @@ public class EgovMeetingManageController {
      * @return	"/uss/sam/cpy/"
      * @throws Exception
      */
-    @RequestMapping(value="/uss/olp/mgt/EgovMain.do")
+    @RequestMapping(value = "/uss/olp/mgt/EgovMain.do")
     public String egovMain(ModelMap model) throws Exception {
     	return "egovframework/com/uss/olp/mgt/EgovMain";
     }
@@ -92,7 +92,7 @@ public class EgovMeetingManageController {
      * @return	"/uss/sam/cpy/EgovLeft"
      * @throws Exception
      */
-    @RequestMapping(value="/uss/olp/mgt/EgovLeft.do")
+    @RequestMapping(value = "/uss/olp/mgt/EgovLeft.do")
     public String egovLeft(ModelMap model) throws Exception {
     	return "egovframework/com/uss/olp/mgt/EgovLeft";
     }
@@ -105,7 +105,7 @@ public class EgovMeetingManageController {
      * @return "egovframework/com/uss/olp/mgt/EgovMeetingManageLisEmpLyrPopup"
      * @throws Exception
      */
-    @RequestMapping(value="/uss/olp/mgt/EgovMeetingManageLisAuthorGroupPopup.do")
+    @RequestMapping(value = "/uss/olp/mgt/EgovMeetingManageLisAuthorGroupPopup.do")
 	public String egovMeetingManageLisAuthorGroupPopupPost (
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap,
@@ -126,7 +126,7 @@ public class EgovMeetingManageController {
      * @return  "/uss/olp/mgt/EgovMeetingManageLisEmpLyrPopup"
      * @throws Exception
      */
-    @RequestMapping(value="/uss/olp/mgt/EgovMeetingManageLisEmpLyrPopup.do")
+    @RequestMapping(value = "/uss/olp/mgt/EgovMeetingManageLisEmpLyrPopup.do")
 	public String egovMeetingManageLisEmpLyrPopupPost (
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap,
@@ -149,7 +149,7 @@ public class EgovMeetingManageController {
 	 * @throws Exception
 	 */
     @IncludedInfo(name="회의관리", order = 650 ,gid = 50)
-	@RequestMapping(value="/uss/olp/mgt/EgovMeetingManageList.do")
+	@RequestMapping(value = "/uss/olp/mgt/EgovMeetingManageList.do")
 	public String egovMeetingManageList(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap,
@@ -194,7 +194,7 @@ public class EgovMeetingManageController {
 	 * @return "egovframework/com/uss/olp/mgt/EgovMeetingManageDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/uss/olp/mgt/EgovMeetingManageDetail.do")
+	@RequestMapping(value = "/uss/olp/mgt/EgovMeetingManageDetail.do")
 	public String egovMeetingManageDetail(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			MeetingManageVO meetingManageVO,
@@ -223,7 +223,7 @@ public class EgovMeetingManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/uss/olp/mgt/EgovMeetingManageModifyView.do")
+	@RequestMapping(value = "/uss/olp/mgt/EgovMeetingManageModifyView.do")
 	public String meetingManageModifyView(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			MeetingManageVO meetingManageVO,
@@ -255,7 +255,7 @@ public class EgovMeetingManageController {
 	 * @throws Exception
 	 */
 	
-	@RequestMapping(value="/uss/olp/mgt/EgovMeetingManageModify.do")
+	@RequestMapping(value = "/uss/olp/mgt/EgovMeetingManageModify.do")
 	public String meetingManageModify(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@Valid @ModelAttribute("meetingManageVO") MeetingManageVO meetingManageVO,BindingResult bindingResult,
@@ -296,7 +296,7 @@ public class EgovMeetingManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/uss/olp/mgt/EgovMeetingManageRegist.do", method=RequestMethod.GET)
+	@RequestMapping(value = "/uss/olp/mgt/EgovMeetingManageRegist.do", method = RequestMethod.GET)
 	public String meetingManageRegistView(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
     		RedirectAttributes redirectAttributes)
@@ -321,7 +321,7 @@ public class EgovMeetingManageController {
 	 * @return "egovframework/com/uss/olp/mgt/EgovMeetingManageRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/uss/olp/mgt/EgovMeetingManageRegist.do", method=RequestMethod.POST)
+	@RequestMapping(value = "/uss/olp/mgt/EgovMeetingManageRegist.do", method = RequestMethod.POST)
 	public String meetingManageRegist(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@Valid @ModelAttribute("meetingManageVO") MeetingManageVO meetingManageVO,

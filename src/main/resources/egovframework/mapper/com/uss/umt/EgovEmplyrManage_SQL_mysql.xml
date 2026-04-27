@@ -134,6 +134,13 @@ FROM(
         
     </insert>
     
+    <delete id="deleteEmplyrInfoChangeDtls_S">
+        
+            DELETE FROM COMTHEMPLYRINFOCHANGEDTLS
+            WHERE ESNTL_ID = #{delId}
+        
+    </delete>
+    
     <delete id="deleteEmplyr_S">
         
             DELETE FROM COMTNEMPLYRINFO 

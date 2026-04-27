@@ -86,7 +86,7 @@ public class EgovWebLogController {
 	 * @return sym/log/wlg/EgovWebLogInqire
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/sym/log/wlg/SelectWebLogDetail.do")
+	@RequestMapping(value = "/sym/log/wlg/SelectWebLogDetail.do")
 	public String selectWebLog(@ModelAttribute("searchVO") WebLog webLog,
 			@RequestParam("requstId") String requstId,
 			ModelMap model) throws Exception{

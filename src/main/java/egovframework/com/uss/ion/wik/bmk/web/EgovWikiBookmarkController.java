@@ -69,7 +69,7 @@ public class EgovWikiBookmarkController {
     		@ModelAttribute("searchVO") WikiBookmark searchVO,
     		WikiBookmark wikiBookmark,
     		@RequestParam Map<?, ?> commandMap,
-    		@RequestParam(value="checkList", required=false) List<String> checkList,
+    		@RequestParam(value = "checkList", required=false) List<String> checkList,
             ModelMap model) throws Exception {
 
     	//변수 설정

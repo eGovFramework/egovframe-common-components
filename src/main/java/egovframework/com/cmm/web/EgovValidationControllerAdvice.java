@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.InitBinder;
 import egovframework.com.cmm.EgovMessageSource;
 import jakarta.validation.ConstraintViolation;
 import jakarta.validation.Validation;
-import jakarta.validation.ValidatorFactory;
 import jakarta.validation.ValidationException;
 import org.springframework.context.NoSuchMessageException;
 
@@ -37,16 +36,13 @@ public class EgovValidationControllerAdvice {
 	@Autowired
 	private EgovMessageSource egovMessageSource;
 
+	private final jakarta.validation.Validator jakartaValidator = Validation.buildDefaultValidatorFactory().getValidator();
+	private final Validator jakartaBeanValidator = new JakartaBeanValidator();
+
 	/**
 	 * Jakarta Bean Validation을 수행하는 커스텀 Validator
 	 */
 	private class JakartaBeanValidator implements Validator {
-		private final jakarta.validation.Validator jakartaValidator;
-
-		public JakartaBeanValidator() {
-			ValidatorFactory factory = Validation.buildDefaultValidatorFactory();
-			this.jakartaValidator = factory.getValidator();
-		}
 
 		@Override
 		public boolean supports(Class<?> clazz) {
@@ -411,6 +407,6 @@ public class EgovValidationControllerAdvice {
 	@InitBinder
 	public void initBinder(WebDataBinder binder) {
 		// Jakarta Bean Validation을 수행하는 커스텀 Validator 추가
-		binder.addValidators(new JakartaBeanValidator());
+		binder.addValidators(jakartaBeanValidator);
 	}
 }

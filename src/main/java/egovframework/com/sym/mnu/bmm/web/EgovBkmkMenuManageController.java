@@ -278,7 +278,7 @@ public class EgovBkmkMenuManageController {
      * @return
      * @throws Exception
      */
-    @RequestMapping(value="/sym/mnu/bmm/previewBkmkInf.do")
+    @RequestMapping(value = "/sym/mnu/bmm/previewBkmkInf.do")
     public String previewBkmkInf(@ModelAttribute("searchVO") BkmkMenuManageVO bkmkMenuManageVO,ModelMap model)
             throws Exception {
         String resultMsg    = "";

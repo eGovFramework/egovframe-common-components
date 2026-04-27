@@ -23,6 +23,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <c:set var="pageTitle"><spring:message code="comUtlSysPxy.proxySvc.title"/></c:set>
 <!DOCTYPE html>
 <html lang="ko">
@@ -75,12 +76,6 @@ function fncProxySvcDelete(proxyId) {
 			<col style="" />
 		</colgroup>
 		<tr>
-			<th><spring:message code="comUtlSysPxy.proxySvc.proxyId.label" /> <span class="pilsu">*</span></th>
-			<td class="left">
-			    <c:out value='${proxySvc.proxyId}'/>
-			</td>
-		</tr>
-		<tr>
 			<th><spring:message code="comUtlSysPxy.proxySvc.proxyNm.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
 			    <c:out value='${proxySvc.proxyNm}'/>
@@ -132,18 +127,18 @@ function fncProxySvcDelete(proxyId) {
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<span class="btn_s"><a href="<c:url value='/utl/sys/pxy/updtViewProxySvc.do'/>?proxyId=<c:out value='${proxySvc.proxyId}'/>" onclick="fncProxySvcUpdateView('${proxySvc.proxyId}'); return false;"><spring:message code="button.update" /></a></span>
-		<input class="s_submit" type="submit" value='<spring:message code="button.delete" />' onclick="fncProxySvcDelete('${proxySvc.proxyId}')" />
-		<span class="btn_s"><a href="<c:url value='/utl/sys/pxy/selectProxySvcList.do'/>?pageIndex=<c:out value='${proxySvcVO.pageIndex}'/>&amp;strProxyNm=<c:out value="${proxySvcVO.strProxyNm}"/>" onclick="fncSelectProxySvcList(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="<c:url value='/utl/sys/pxy/updtViewProxySvc.do'><c:param name="proxyId" value='${egovc:encryptId(proxySvc.proxyId)}'/></c:url>" onclick="fncProxySvcUpdateView('<c:out value="${egovc:encryptId(proxySvc.proxyId)}"/>'); return false;"><spring:message code="button.update" /></a></span>
+		<span class="btn_s"><a href="#" onclick="fncProxySvcDelete('<c:out value="${egovc:encryptId(proxySvc.proxyId)}"/>'); return false;"><spring:message code="button.delete" /></a></span>
+		<span class="btn_s"><a href="<c:url value='/utl/sys/pxy/selectProxySvcList.do'/>?pageIndex=<c:out value='${proxySvc.pageIndex}'/>&amp;strProxyNm=<c:out value="${proxySvc.strProxyNm}"/>" onclick="fncSelectProxySvcList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 	
-	<input type="hidden" name="proxyId" value="<c:out value='${proxySvc.proxyId}'/>" />
-    <!-- 검색조건 유지 -->
-    <input type="hidden" name="strProxyNm" value="<c:out value='${proxySvcVO.strProxyNm}'/>" />
-    <input type="hidden" name="pageIndex" value="<c:out value='${proxySvcVO.pageIndex}'/>" />
-  </form:form>
-  
+	<!-- 검색조건 유지 -->
+	<input type="hidden" name="proxyId" />
+	<input type="hidden" name="pageIndex" />
+	<input type="hidden" name="strProxyNm" />
+	</form:form>
+
 </div>
 </body>
 </html>

@@ -73,7 +73,7 @@ public class EgovKnoManagementController {
 	 * @throws Exception 조회 조건이 유효하지 않거나 데이터 접근 중 오류가 발생한 경우
 	 */
 	@IncludedInfo(name = "지식정보관리", listUrl = "/dam/mgm/EgovComDamManagementList.do", order = 1280, gid = 80)
-	@RequestMapping(value="/dam/mgm/EgovComDamManagementList.do")
+	@RequestMapping(value = "/dam/mgm/EgovComDamManagementList.do")
     public String selectKnoManagementList(@ModelAttribute("searchVO") KnoManagementVO searchVO, ModelMap model) throws Exception {
 
 		/** EgovPropertyService.mapMaterial */
@@ -107,7 +107,7 @@ public class EgovKnoManagementController {
 	 * @return 상세 화면 경로
 	 * @throws Exception 식별자가 없거나 해당 지식정보가 존재하지 않거나 데이터 접근 오류가 발생한 경우
 	 */
-	@RequestMapping(value="/dam/mgm/EgovComDamManagement.do")
+	@RequestMapping(value = "/dam/mgm/EgovComDamManagement.do")
 	public String selectKnoManagement(KnoManagement knoManagement, ModelMap model) throws Exception {
 
 		//Spring Security 사용자권한 처리
@@ -133,7 +133,7 @@ public class EgovKnoManagementController {
 	 * @return 수정 화면 경로
 	 * @throws Exception 조회 중 오류가 발생한 경우
 	 */
-	@GetMapping(value="/dam/mgm/EgovComDamManagementModify.do")
+	@GetMapping(value = "/dam/mgm/EgovComDamManagementModify.do")
 	public String updateKnoManagementView(KnoManagement knoManagement, ModelMap model) throws Exception {
 
 		//Spring Security 사용자권한 처리

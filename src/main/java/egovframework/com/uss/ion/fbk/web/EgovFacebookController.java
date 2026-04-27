@@ -68,7 +68,7 @@ public class EgovFacebookController {
 	 * @param model
 	 * @return
 	 */
-	@RequestMapping(value="/uss/ion/fbk/feed.do", method=RequestMethod.GET)
+	@RequestMapping(value = "/uss/ion/fbk/feed.do", method = RequestMethod.GET)
 	public String showFeed(Model model) {
 		String appId = EgovProperties.getProperty("facebook.appId");
 		model.addAttribute("facebookAppId",appId);
@@ -80,7 +80,7 @@ public class EgovFacebookController {
 	 * facebook 담벼락 목록을 보여준다.
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value="/uss/ion/fbk/feed.do", method=RequestMethod.POST)
+	@RequestMapping(value = "/uss/ion/fbk/feed.do", method = RequestMethod.POST)
 	public String showFeed() {
 		return "egovframework/com/uss/ion/fbk/EgovFacebookFeed";
 	}
@@ -89,7 +89,7 @@ public class EgovFacebookController {
 	 * facebook 앨범 목록을 보여준다.
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value="/uss/ion/fbk/albums.do", method=RequestMethod.GET)
+	@RequestMapping(value = "/uss/ion/fbk/albums.do", method = RequestMethod.GET)
 	public String showAlbums(Model model) {
 		String appId = EgovProperties.getProperty("facebook.appId");
 		model.addAttribute("facebookAppId",appId);
@@ -101,7 +101,7 @@ public class EgovFacebookController {
 	 * facebook 앨범 내용을 보여준다.
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value="/uss/ion/fbk/album/{albumId}", method=RequestMethod.GET)
+	@RequestMapping(value = "/uss/ion/fbk/album/{albumId}", method = RequestMethod.GET)
 	public String showAlbum(@PathVariable("albumId") String albumId, Model model) {
 		model.addAttribute("albumId", albumId);
 		String appId = EgovProperties.getProperty("facebook.appId");
@@ -114,7 +114,7 @@ public class EgovFacebookController {
 	 * facebook profile을 보여준다.
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value="/uss/ion/fbk/profile.do", method=RequestMethod.GET)
+	@RequestMapping(value = "/uss/ion/fbk/profile.do", method = RequestMethod.GET)
 	public String profile(Model model) {
 		String appId = EgovProperties.getProperty("facebook.appId");
 		model.addAttribute("facebookAppId",appId);

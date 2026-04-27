@@ -3,7 +3,7 @@
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="proxySvcDAO">
 
-    <resultMap id="proxySvc" type="egovframework.com.utl.sys.pxy.service.ProxySvcVO">
+    <resultMap id="proxySvc" type="egovframework.com.utl.sys.pxy.service.ProxySvc">
         <result property="proxyId" column="PROXY_ID"/>
         <result property="proxyNm" column="PROXY_NM"/>
         <result property="proxyIp" column="PROXY_IP"/>
@@ -20,7 +20,7 @@
         <result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
     </resultMap>
 
-    <resultMap id="proxyLog" type="egovframework.com.utl.sys.pxy.service.ProxyLogVO">
+    <resultMap id="proxyLog" type="egovframework.com.utl.sys.pxy.service.ProxyLog">
         <result property="proxyId" column="PROXY_ID"/>
         <result property="logId" column="LOG_ID"/>
         <result property="proxyNm" column="PROXY_NM"/>
@@ -33,7 +33,7 @@
         <result property="lastUpdusrId" column="LAST_UPDUSR_ID"/>
     </resultMap>
 
-    <select id="selectProxySvcList" parameterType="egovframework.com.utl.sys.pxy.service.ProxySvcVO" resultMap="proxySvc">
+    <select id="selectProxySvcList" parameterType="egovframework.com.utl.sys.pxy.service.ProxySvc" resultMap="proxySvc">
             
             SELECT  * 
               FROM  (
@@ -71,7 +71,7 @@
              ]]>
     </select>
 
-    <select id="selectProxySvcListTotCnt" parameterType="egovframework.com.utl.sys.pxy.service.ProxySvcVO" resultType="int">
+    <select id="selectProxySvcListTotCnt" parameterType="egovframework.com.utl.sys.pxy.service.ProxySvc" resultType="int">
 
              SELECT COUNT(*) totcnt
                FROM COMTNPROXYINFO
@@ -160,7 +160,7 @@
         
     </delete>
 
-    <select id="selectProxyLogList" parameterType="egovframework.com.utl.sys.pxy.service.ProxyLogVO" resultMap="proxyLog">
+    <select id="selectProxyLogList" parameterType="egovframework.com.utl.sys.pxy.service.ProxyLog" resultMap="proxyLog">
             
             SELECT  * 
               FROM  (
@@ -194,7 +194,7 @@
                ]]>           
     </select>
     
-    <select id="selectProxyLogListTotCnt" parameterType="egovframework.com.utl.sys.pxy.service.ProxyLogVO" resultType="int">
+    <select id="selectProxyLogListTotCnt" parameterType="egovframework.com.utl.sys.pxy.service.ProxyLog" resultType="int">
              SELECT COUNT(*) totcnt
                FROM COMTNPROXYLOGINFO A,
                     COMTNPROXYINFO B

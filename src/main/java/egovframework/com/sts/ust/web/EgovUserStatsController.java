@@ -58,7 +58,7 @@ public class EgovUserStatsController {
 	 * @exception Exception
 	 */
     @IncludedInfo(name="사용자통계", listUrl="/sts/ust/selectUserStats.do", order = 130 ,gid = 30)
-    @RequestMapping(value="/sts/ust/selectUserStats.do")
+    @RequestMapping(value = "/sts/ust/selectUserStats.do")
 	public String selectUserStats(@ModelAttribute("statsVO") StatsVO statsVO,
 			ModelMap model) throws Exception {
 

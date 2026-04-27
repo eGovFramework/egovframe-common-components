@@ -24,6 +24,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+<%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <c:set var="pageTitle"><spring:message code="comUtlSysPxy.proxySvc.title"/></c:set>
 <!DOCTYPE html>
 <html lang="ko">
@@ -77,14 +78,15 @@ function press() {
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<form name="listForm" action="<c:url value='/utl/sys/pxy/selectProxySvcList.do'/>" method="post">
-	<input type="hidden" name="pageIndex" value="<c:out value='${proxySvcVO.pageIndex}'/>">
+	<input type="hidden" name="proxyId" value="">
+	<input type="hidden" name="pageIndex" value="<c:out value='${proxySvc.pageIndex}'/>">
 	<div class="search_box" title="<spring:message code='common.searchCondition.msg' />">
 		<ul>
 			<li>
 				<label for=""><spring:message code="comUtlSysPxy.proxySvcList.proxyNm.label" /> : </label>
-				<input class="s_input2 vat" name="strProxyNm" type="text" value='<c:out value="${proxySvcVO.strProxyNm}"/>' size="30" onkeypress="press();" title="검색" />				
+				<input class="s_input2 vat" name="strProxyNm" type="text" value='<c:out value="${proxySvc.strProxyNm}"/>' size="30" onkeypress="press();" title="검색" />				
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fncSelectProxySvcList('1'); return false;" />
-				<span class="btn_b"><a href="<c:url value='/utl/sys/pxy/addViewProxySvc.do'/>?pageIndex=<c:out value='${proxySvcVO.pageIndex}'/>&amp;strProxyNm=<c:out value="${proxySvcVO.strProxyNm}"/>" onclick="fncAddProxySvcInsert(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="<c:url value='/utl/sys/pxy/addViewProxySvc.do'/>?pageIndex=<c:out value='${proxySvc.pageIndex}'/>&amp;strProxyNm=<c:out value="${proxySvc.strProxyNm}"/>" onclick="fncAddProxySvcInsert(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
 				<span class="btn_b"><a href="<c:url value='/utl/sys/pxy/selectProxyLogList.do'/>" onclick="" title="<spring:message code="comUtlSysPxy.proxyLog.log"/>"><spring:message code="comUtlSysPxy.proxyLog.log"/></a></span><!-- 로그 -->
 			</li>
 		</ul>
@@ -93,16 +95,14 @@ function press() {
 	<table class="board_list">
 		<caption></caption>
 		<colgroup>
-			<col style="width:25%" />
-			<col style="width:17%" />
-			<col style="width:11%" />
-			<col style="width:19%" />
 			<col style="width:20%" />
-			<col style="width:8%" />
+			<col style="width:20%" />
+			<col style="width:20%" />
+			<col style="width:20%" />
+			<col style="width:20%" />
 		</colgroup>
 		<thead>
 			<tr>
-			   <th scope="col"><spring:message code="comUtlSysPxy.proxySvcList.proxyId.label" /></th>
 			   <th scope="col"><spring:message code="comUtlSysPxy.proxySvcList.proxyNm.label" /></th>
 			   <th scope="col"><spring:message code="comUtlSysPxy.proxySvcList.proxyPort.label" /></th>
 			   <th scope="col"><spring:message code="comUtlSysPxy.proxySvcList.trgetSvcNm.label" /></th>
@@ -112,16 +112,7 @@ function press() {
 		</thead>
 		<tbody>
 			<c:forEach var="proxySvc" items="${proxySvcList}" varStatus="status">
-			<tr>
-			  <td>
-			      <form name="item" method="post" action="<c:url value='/utl/sys/pxy/getProxySvc.do'/>">
-			          <input type="hidden" name="proxyId" value="<c:out value="${proxySvc.proxyId}"/>">
-			          <input type="hidden" name="pageIndex" value="<c:out value='${proxySvcVO.pageIndex}'/>">
-			          <input type="hidden" name="strProxyNm" value="<c:out value="${proxySvcVO.strProxyNm}"/>">
-			          <span class="link"><input type="submit" value="<c:out value="${proxySvc.proxyId}"/>"></span>
-			      </form>
-			  </td>
-			  <td><c:out value="${proxySvc.proxyNm}"/></td>
+			  <td><a href="#" class="link" onclick="fncSelectProxySvc('<c:out value="${egovc:encryptId(proxySvc.proxyId)}"/>'); return false;"><c:out value="${proxySvc.proxyNm}"/></a></td>
 			  <td><c:out value="${proxySvc.proxyPort}"/></td>
 			  <td><c:out value="${proxySvc.trgetSvcNm}"/></td>
 			  <td><c:out value="${proxySvc.svcIp}"/>:<c:out value="${proxySvc.svcPort}"/></td>

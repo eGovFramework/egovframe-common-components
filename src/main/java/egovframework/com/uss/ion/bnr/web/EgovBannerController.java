@@ -88,7 +88,7 @@ public class EgovBannerController {
 	 * @throws Exception
 	 */
     @IncludedInfo(name="배너관리", order = 740 ,gid = 50)
-    @RequestMapping(value="/uss/ion/bnr/selectBannerList.do")
+    @RequestMapping(value = "/uss/ion/bnr/selectBannerList.do")
 	public String selectBannerList(@ModelAttribute("bannerVO") BannerVO bannerVO,
                              		ModelMap model) throws Exception{
 
@@ -120,7 +120,7 @@ public class EgovBannerController {
 	 * @param bannerVO - 배너 Vo
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value="/uss/ion/bnr/getBanner.do")
+    @RequestMapping(value = "/uss/ion/bnr/getBanner.do")
 	public String selectBanner(@RequestParam("bannerId") String bannerId,
 			                   @ModelAttribute("bannerVO") BannerVO bannerVO,
 			                   ModelMap model) throws Exception {
@@ -137,7 +137,7 @@ public class EgovBannerController {
 	 * @param banner - 배너 model
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value="/uss/ion/bnr/addViewBanner.do")
+    @RequestMapping(value = "/uss/ion/bnr/addViewBanner.do")
 	public String insertViewBanner(@ModelAttribute("bannerVO") BannerVO bannerVO,
 			                        ModelMap model) throws Exception {
 
@@ -151,7 +151,7 @@ public class EgovBannerController {
 	 * @return String - 리턴 Url
 	 */
     @SuppressWarnings("unused")
-	@RequestMapping(value="/uss/ion/bnr/addBanner.do")
+	@RequestMapping(value = "/uss/ion/bnr/addBanner.do")
 	public String insertBanner(final MultipartHttpServletRequest multiRequest,
 			                   @Valid @ModelAttribute("bannerVO") BannerVO bannerVO,
 			                    BindingResult bindingResult,
@@ -206,7 +206,7 @@ public class EgovBannerController {
 	 * @return String - 리턴 Url
 	 */
     @SuppressWarnings("unused")
-	@RequestMapping(value="/uss/ion/bnr/updtBanner.do")
+	@RequestMapping(value = "/uss/ion/bnr/updtBanner.do")
 	public String updateBanner(final MultipartHttpServletRequest multiRequest,
 			                   @Valid @ModelAttribute("bannerVO") BannerVO bannerVO,
 			                    BindingResult bindingResult,
@@ -267,7 +267,7 @@ public class EgovBannerController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value="/uss/ion/bnr/removeBanner.do")
+    @RequestMapping(value = "/uss/ion/bnr/removeBanner.do")
 	public String deleteBanner(@RequestParam("bannerId") String bannerId,
 			                   @ModelAttribute("bannerVO") BannerVO bannerVO,
 			                    SessionStatus status,
@@ -287,7 +287,7 @@ public class EgovBannerController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value="/uss/ion/bnr/removeBannerList.do")
+    @RequestMapping(value = "/uss/ion/bnr/removeBannerList.do")
 	public String deleteBannerList(@RequestParam("bannerIds") String bannerIds,
 			                       @ModelAttribute("bannerVO") BannerVO bannerVO,
 			                        SessionStatus status,
@@ -314,7 +314,7 @@ public class EgovBannerController {
 	 * @param bannerVO - 배너 VO
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value="/uss/ion/bnr/getBannerImage.do")
+	@RequestMapping(value = "/uss/ion/bnr/getBannerImage.do")
 	public String selectBannerResult(@ModelAttribute("bannerVO") BannerVO bannerVO,
                                       ModelMap model) throws Exception {
 
@@ -332,7 +332,7 @@ public class EgovBannerController {
 	 * @throws Exception
 	 */
 	@IncludedInfo(name="MYPAGE배너관리", order = 741 ,gid = 50)
-    @RequestMapping(value="/uss/ion/bnr/selectBannerMainList.do")
+    @RequestMapping(value = "/uss/ion/bnr/selectBannerMainList.do")
 	public String selectBannerMainList(@ModelAttribute("bannerVO") BannerVO bannerVO,
                              		ModelMap model) throws Exception{
 

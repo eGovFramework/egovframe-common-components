@@ -43,7 +43,7 @@ public class EgovPrivacyLogController {
 	 * @throws Exception
 	 */
 	@IncludedInfo(name="개인정보조회로그관리", listUrl="/sym/log/plg/SelectPrivacyLogList.do", order = 1085 ,gid = 60)
-	@RequestMapping(value="/sym/log/plg/SelectPrivacyLogList.do")
+	@RequestMapping(value = "/sym/log/plg/SelectPrivacyLogList.do")
 	public String selectPrivacyLogList(@ModelAttribute("searchVO") PrivacyLog privacyLog,
 			ModelMap model) throws Exception{
 
@@ -79,7 +79,7 @@ public class EgovPrivacyLogController {
 	 * @return sym/log/plg/EgovPrivacyLogInqire
 	 * @throws Exception
 	 */
-	@RequestMapping(value="/sym/log/plg/SelectPrivacyLogDetail.do")
+	@RequestMapping(value = "/sym/log/plg/SelectPrivacyLogDetail.do")
 	public String selectWebLog(@ModelAttribute("searchVO") PrivacyLog privacyLog,
 			ModelMap model) throws Exception{
 

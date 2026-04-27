@@ -75,7 +75,7 @@ public class EgovGroupManageController {
 	 * @exception Exception
 	 */
     @IncludedInfo(name="그룹관리", listUrl="/sec/gmt/EgovGroupList.do", order = 80,gid = 20)
-    @RequestMapping(value="/sec/gmt/EgovGroupList.do")
+    @RequestMapping(value = "/sec/gmt/EgovGroupList.do")
 	public String selectGroupList(@ModelAttribute("groupManageVO") GroupManageVO groupManageVO,
                                    ModelMap model) throws Exception {
     	/** paging */
@@ -105,7 +105,7 @@ public class EgovGroupManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value="/sec/gmt/EgovGroup.do")
+    @RequestMapping(value = "/sec/gmt/EgovGroup.do")
 	public String selectGroup(@ModelAttribute("groupManageVO") GroupManageVO groupManageVO,
 								@ModelAttribute("groupManage") GroupManage groupManage,
 	    		               ModelMap model) throws Exception {
@@ -119,7 +119,7 @@ public class EgovGroupManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value="/sec/gmt/EgovGroupInsertView.do")
+    @RequestMapping(value = "/sec/gmt/EgovGroupInsertView.do")
     public String insertGroupView(@ModelAttribute("groupManage") GroupManage groupManage)
             throws Exception {
         return "egovframework/com/sec/gmt/EgovGroupInsert";
@@ -132,7 +132,7 @@ public class EgovGroupManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value="/sec/gmt/EgovGroupInsert.do")
+    @RequestMapping(value = "/sec/gmt/EgovGroupInsert.do")
 	public String insertGroup(@Valid @ModelAttribute("groupManage") GroupManage groupManage,
 							   BindingResult bindingResult,
 			                   @ModelAttribute("groupManageVO") GroupManageVO groupManageVO,
@@ -156,7 +156,7 @@ public class EgovGroupManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value="/sec/gmt/EgovGroupUpdate.do")
+    @RequestMapping(value = "/sec/gmt/EgovGroupUpdate.do")
 	public String updateGroup(@Valid @ModelAttribute("groupManage") GroupManage groupManage,
 			                   BindingResult bindingResult,
                                Model model) throws Exception {
@@ -176,7 +176,7 @@ public class EgovGroupManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value="/sec/gmt/EgovGroupDelete.do")
+	@RequestMapping(value = "/sec/gmt/EgovGroupDelete.do")
 	public String deleteGroup(@ModelAttribute("groupManage") GroupManage groupManage,
                              Model model) throws Exception {
 		egovGroupManageService.deleteGroup(groupManage);
@@ -191,7 +191,7 @@ public class EgovGroupManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value="/sec/gmt/EgovGroupListDelete.do")
+	@RequestMapping(value = "/sec/gmt/EgovGroupListDelete.do")
 	public String deleteGroupList(@RequestParam("groupIds") String groupIds,
 			                      @ModelAttribute("groupManage") GroupManage groupManage,
 	                               Model model) throws Exception {
@@ -228,7 +228,7 @@ public class EgovGroupManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value="/sec/gmt/EgovGroupSearchList.do")
+    @RequestMapping(value = "/sec/gmt/EgovGroupSearchList.do")
 	public String selectGroupSearchList(@ModelAttribute("groupManageVO") GroupManageVO groupManageVO,
                                    ModelMap model) throws Exception {
     	/** paging */

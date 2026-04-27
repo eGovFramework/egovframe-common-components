@@ -29,13 +29,14 @@ import jakarta.annotation.Resource;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.03.20  홍길동          최초 생성
- *   2014.09.11  표준프레임워크     최초 생성
+ *   2014.09.11  표준프레임워크  최초 생성
  *   2025.07.12  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AssignmentInOperand(피연산자내에 할당문이 사용됨. 해당 코드를 복잡하고 가독성이 떨어지게 만듬)
  *   2025.07.12  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UnnecessaryBoxing(불필요한 WrapperObject 생성)
  *
  *      </pre>
  */
 public class EgovPrivacyLogAspect {
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovPrivacyLogAspect.class);
 
 	/** List 기록 시 최대 기록 수 */
@@ -57,6 +58,10 @@ public class EgovPrivacyLogAspect {
 
 	public void insertLog(JoinPoint joinPoint, Object returnVal) throws Throwable {
 
+		if (returnVal == null) {
+			return;
+		}
+
 		String className = joinPoint.getTarget().getClass().getCanonicalName();
 		String methodName = joinPoint.getSignature().getName();
 
@@ -71,7 +76,12 @@ public class EgovPrivacyLogAspect {
 			int count = 0;
 
 			for (Object item : (List<?>) returnVal) {
+				if (item == null) {
+					continue;
+				}
+
 				List<String> list = null;
+
 				if (item instanceof Map) {
 					list = getItemValues((Map<?, ?>) item, serviceName);
 				} else { // general VO
@@ -84,38 +94,35 @@ public class EgovPrivacyLogAspect {
 					++count;
 
 					if (count >= maxListCount) { // 최대 기록 수 처리
-						LOGGER.info("Max List count reached (skip next list) : maxListCount = {}, target = {}",
-								maxListCount, serviceName);
+						LOGGER.info("Max List count reached (skip next list) : maxListCount = {}, target = {}", maxListCount, serviceName);
 						break;
 					}
 				}
 			}
 		} else if (returnVal instanceof Map) {
 			List<String> list = getItemValues((Map<?, ?>) returnVal, serviceName);
-
 			if (list.size() > 0) {
 				privacyLogService.innerInsertPrivacyLog(getPrivacyLogFromItemList(list, serviceName));
 			}
 		} else { // general VO
 			List<String> list = getItemValues(returnVal, serviceName);
-
 			if (list.size() > 0) {
 				privacyLogService.innerInsertPrivacyLog(getPrivacyLogFromItemList(list, serviceName));
 			}
 		}
-
 	}
 
 	protected List<String> getItemValues(Map<?, ?> data, String serviceName) {
 		List<String> list = new ArrayList<String>();
 
-		for (String key : target.keySet()) {
-			if (data.containsKey(key) && data.get(key) != null && !data.get(key).toString().trim().equals("")) { // 조회된
-																													// 데이터가
-																													// 없으면
-																													// 생략
-				list.add(target.get(key));
+		if (data == null) {
+			return list;
+		}
 
+		for (String key : target.keySet()) {
+			// 조회된 데이터가 없으면 생략
+			if (data.containsKey(key) && data.get(key) != null && !data.get(key).toString().trim().equals("")) {
+				list.add(target.get(key));
 				LOGGER.debug("Service ('{}') : inquired data = {}", serviceName, key);
 			}
 		}
@@ -126,13 +133,14 @@ public class EgovPrivacyLogAspect {
 	protected List<String> getItemValues(Object data, String serviceName) {
 		List<String> list = new ArrayList<String>();
 
-		for (String key : target.keySet()) {
+		if (data == null) {
+			return list;
+		}
 
+		for (String key : target.keySet()) {
 			try {
 				Method method = data.getClass().getMethod("get" + key.substring(0, 1).toUpperCase() + key.substring(1));
-
 				Object returned = method.invoke(data);
-
 				if (returned != null && !returned.toString().trim().equals("")) {
 					list.add(target.get(key));
 				}
@@ -161,7 +169,6 @@ public class EgovPrivacyLogAspect {
 
 	private PrivacyLog getPrivacyLogFromItemList(List<String> list, String serviceName) {
 		PrivacyLog log = new PrivacyLog();
-
 		log.setServiceName(serviceName);
 		log.setInquiryInfo(getStringFromItemList(list));
 
@@ -169,7 +176,6 @@ public class EgovPrivacyLogAspect {
 		if (loginVO != null) {
 			log.setRequesterId(loginVO.getUniqId());
 		}
-
 		log.setRequesterIp(EgovHttpRequestHelper.getRequestIp());
 
 		return log;
@@ -177,7 +183,6 @@ public class EgovPrivacyLogAspect {
 
 	private String getStringFromItemList(List<String> list) {
 		StringBuffer buffer = new StringBuffer();
-
 		for (String item : list) {
 			if (buffer.length() != 0) {
 				buffer.append(",").append(item);

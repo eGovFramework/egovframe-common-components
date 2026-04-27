@@ -141,14 +141,15 @@ function checknum(number) {
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 
     <form name="listForm" action="<c:url value='/utl/sys/pxy/selectProxyLogList.do'/>" method="post">
+    <input type="hidden" name="pageIndex" />
 
 	<div class="search_box" title="<spring:message code='common.searchCondition.msg' />">
 		<ul>
 			<li>
 				<label for=""><spring:message code="comUtlSysPxy.proxyLog.period.label" /> : </label>
-				<input type="text" name="strStartDate" id="strStartDate" value="<c:out value='${pmProxyLogVO.strStartDate}'/>" size="10" maxlength="10" title="<spring:message code="comUtlSysPxy.proxySvcList.pmProxyLogVO.strStartDate"/>" ><!-- 프록시로그 시작일자 -->
+				<input type="text" name="strStartDate" id="strStartDate" value="<c:out value='${proxyLog.strStartDate}'/>" size="10" maxlength="10" title="<spring:message code="comUtlSysPxy.proxySvcList.proxyLog.strStartDate"/>" ><!-- 프록시로그 시작일자 -->
 				~ 
-				<input type="text" name="strEndDate" id="strEndDate" value="<c:out value='${pmProxyLogVO.strEndDate}'/>" size="10" maxlength="10" title="<spring:message code="comUtlSysPxy.proxySvcList.pmProxyLogVO.strEndDate"/>" ><!-- 프록시로그 종료일자 -->
+				<input type="text" name="strEndDate" id="strEndDate" value="<c:out value='${proxyLog.strEndDate}'/>" size="10" maxlength="10" title="<spring:message code="comUtlSysPxy.proxySvcList.proxyLog.strEndDate"/>" ><!-- 프록시로그 종료일자 -->
 				<input type="hidden" name="strProxyDate" value=""/>      
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fncSelectProxyLogList('1'); return false;" />
 				<span class="btn_b"><a href="<c:url value='/utl/sys/pxy/selectProxySvcList.do'/>" onclick="" title="<spring:message code="title.list"/>"><spring:message code="title.list"/></a></span><!-- 목록 -->
@@ -161,15 +162,13 @@ function checknum(number) {
 	<table class="board_list">
 		<caption></caption>
 		<colgroup>
-			<col style="width:20%" />
 			<col style="width:25%" />
-			<col style="width:15%" />
-			<col style="width:20%" />
-			<col style="width:20%" />
+			<col style="width:25%" />
+			<col style="width:25%" />
+			<col style="width:25%" />
 		</colgroup>
 		<thead>
 			<tr>
-			   <th scope="col"><spring:message code="comUtlSysPxy.proxyLog.proxyId.label" /></th>
 			   <th scope="col"><spring:message code="comUtlSysPxy.proxyLog.proxyNm.label" /></th>
 			   <th scope="col"><spring:message code="comUtlSysPxy.proxyLog.clntPort.label" /></th>
 			   <th scope="col"><spring:message code="comUtlSysPxy.proxyLog.clntIp.label" /></th>
@@ -179,13 +178,17 @@ function checknum(number) {
 		<tbody>
 			<c:forEach var="proxyLog" items="${proxyLogList}" varStatus="status">
 		      <tr>
-		        <td><c:out value="${proxyLog.proxyId}"/></td>
 		        <td><c:out value="${proxyLog.proxyNm}"/></td>
 		        <td><c:out value="${proxyLog.clntPort}"/></td>
 		        <td><c:out value="${proxyLog.clntIp}"/></td>
 		        <td><c:out value="${proxyLog.conectTime}"/></td>
 		      </tr>
 		     </c:forEach>
+		     <c:if test="${fn:length(proxyLogList) == 0}">
+			   <tr>
+			     <td colspan="4"><spring:message code="common.nodata.msg" /></td>
+			   </tr>
+			</c:if>
 		</tbody>
 	</table>
 

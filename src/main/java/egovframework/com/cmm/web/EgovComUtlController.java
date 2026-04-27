@@ -64,8 +64,8 @@ public class EgovComUtlController {
     /**
 	 * JSP 호출작업만 처리하는 공통 함수
 	 */
-	@RequestMapping(value="/EgovPageLink.do")
-	public String moveToPage(@RequestParam(value="linkIndex",required=true,defaultValue="0") Integer linkIndex){
+	@RequestMapping(value = "/EgovPageLink.do")
+	public String moveToPage(@RequestParam(value = "linkIndex",required=true,defaultValue="0") Integer linkIndex){
 
 		String link = "";
 		// 화이트 리스트가 비었는지 확인
@@ -91,7 +91,7 @@ public class EgovComUtlController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value="/EgovModal.do")
+    @RequestMapping(value = "/EgovModal.do")
     public String selectUtlJsonInquire()  throws Exception {
         return "egovframework/com/cmm/EgovModal";
     }

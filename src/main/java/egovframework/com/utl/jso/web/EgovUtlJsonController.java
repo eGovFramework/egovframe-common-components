@@ -56,12 +56,12 @@ public class EgovUtlJsonController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value="/utl/jso/EgovUtlJsonInquire.do",method = RequestMethod.GET)
+    @RequestMapping(value = "/utl/jso/EgovUtlJsonInquire.do",method = RequestMethod.GET)
     public String selectUtlJsonInquire()  throws Exception {
         return "egovframework/com/utl/jso/EgovUtlJsonInquire";
     }
 
-    @RequestMapping(value="/utl/jso/EgovUtlJsonInquire.do",method = RequestMethod.POST)
+    @RequestMapping(value = "/utl/jso/EgovUtlJsonInquire.do",method = RequestMethod.POST)
     public ModelAndView selectUtlJsonInquirePost(@RequestParam Map<?, ?> commandMap)  throws Exception {
     	ModelAndView modelAndView = new ModelAndView();
     	modelAndView.setViewName("jsonView");
@@ -84,11 +84,11 @@ public class EgovUtlJsonController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value="/utl/jso/EgovUtlJsonMultiInquire.do",method = RequestMethod.GET)
+    @RequestMapping(value = "/utl/jso/EgovUtlJsonMultiInquire.do",method = RequestMethod.GET)
     public String selectUtlJsonMultiInquire(@RequestParam Map<?, ?> commandMap)  throws Exception {
         return "egovframework/com/utl/jso/EgovUtlJsonMultiInquire";
     }
-    @RequestMapping(value="/utl/jso/EgovUtlJsonMultiInquire.do",method = RequestMethod.POST)
+    @RequestMapping(value = "/utl/jso/EgovUtlJsonMultiInquire.do",method = RequestMethod.POST)
     public ModelAndView selectUtlJsonMultiInquirePost(@RequestParam Map<?, ?> commandMap)  throws Exception {
     	ModelAndView modelAndView = new ModelAndView();
     	modelAndView.setViewName("jsonView");

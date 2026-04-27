@@ -10,10 +10,8 @@ import org.springframework.stereotype.Service;
 import egovframework.com.utl.sys.pxy.service.EgovProxySvcService;
 import egovframework.com.utl.sys.pxy.service.ProxyCommand;
 import egovframework.com.utl.sys.pxy.service.ProxyLog;
-import egovframework.com.utl.sys.pxy.service.ProxyLogVO;
 import egovframework.com.utl.sys.pxy.service.ProxyServer;
 import egovframework.com.utl.sys.pxy.service.ProxySvc;
-import egovframework.com.utl.sys.pxy.service.ProxySvcVO;
 import jakarta.annotation.Resource;
 
 /**
@@ -44,54 +42,53 @@ public class EgovProxySvcServiceImpl extends EgovAbstractServiceImpl implements 
     /**
      * 프록시서비스를 관리하기 위해 등록된 프록시정보 목록을 조회한다.
      *
-     * @param proxySvcVO - 프록시서비스 Vo
+     * @param proxySvc - 프록시서비스 Vo
      * @return List - 프록시서비스 목록
      */
     @Override
-    public List<ProxySvcVO> selectProxySvcList(ProxySvcVO proxySvcVO) throws Exception {
-        return proxySvcDAO.selectProxySvcList(proxySvcVO);
+    public List<ProxySvc> selectProxySvcList(ProxySvc proxySvc) throws Exception {
+        return proxySvcDAO.selectProxySvcList(proxySvc);
     }
 
     /**
      * 프록시서비스 목록 총 개수를 조회한다.
      *
-     * @param proxySvcVO - 프록시서비스 Vo
+     * @param proxySvc - 프록시서비스 Vo
      * @return int - 프록시서비스 카운트 수
      */
     @Override
-    public int selectProxySvcListTotCnt(ProxySvcVO proxySvcVO) throws Exception {
-        return proxySvcDAO.selectProxySvcListTotCnt(proxySvcVO);
+    public int selectProxySvcListTotCnt(ProxySvc proxySvc) throws Exception {
+        return proxySvcDAO.selectProxySvcListTotCnt(proxySvc);
     }
 
     /**
      * 등록된 프록시서비스의 상세정보를 조회한다.
      *
-     * @param proxySvcVO - 프록시서비스 Vo
-     * @return proxySvcVO - 프록시서비스 Vo
+     * @param proxySvc - 프록시서비스 Vo
+     * @return proxySvc - 프록시서비스 Vo
      */
     @Override
-    public ProxySvcVO selectProxySvc(ProxySvcVO proxySvcVO) throws Exception {
-        return proxySvcDAO.selectProxySvc(proxySvcVO);
+    public ProxySvc selectProxySvc(ProxySvc proxySvc) throws Exception {
+        return proxySvcDAO.selectProxySvc(proxySvc);
     }
 
     /**
      * 프록시서비스를 신규로 등록한다.
      *
-     * @param ProxySvcVO - 프록시서비스 VO
+     * @param ProxySvc - 프록시서비스 VO
      * @param proxySvc   - 프록시서비스 model
-     * @return proxySvcVO - 프록시서비스 Vo
+     * @return proxySvc - 프록시서비스 Vo
      */
     @Override
-    public ProxySvcVO insertProxySvc(ProxySvcVO proxySvcVO, ProxySvc proxySvc) throws Exception {
+    public ProxySvc insertProxySvc(ProxySvc proxySvc) throws Exception {
         proxySvcDAO.insertProxySvc(proxySvc);
-        proxySvcVO.setProxyId(proxySvc.getProxyId());
 
         if ("01".equals(proxySvc.getSvcSttus())) {// KISA 보안약점 조치 (2018-10-29, 윤창원)
-            proxySvcVO.setStrPreSvcSttus("02");
-            runProxyServer(proxySvcVO, proxySvc);
+            proxySvc.setStrPreSvcSttus("02");
+            runProxyServer(proxySvc);
         }
 
-        return proxySvcDAO.selectProxySvc(proxySvcVO);
+        return proxySvcDAO.selectProxySvc(proxySvc);
     }
 
     /**
@@ -100,9 +97,9 @@ public class EgovProxySvcServiceImpl extends EgovAbstractServiceImpl implements 
      * @param proxySvc - 프록시서비스 model
      */
     @Override
-    public void updateProxySvc(ProxySvcVO proxySvcVO, ProxySvc proxySvc) throws Exception {
+    public void updateProxySvc(ProxySvc proxySvc) throws Exception {
         proxySvcDAO.updateProxySvc(proxySvc);
-        runProxyServer(proxySvcVO, proxySvc);
+        runProxyServer(proxySvc);
     }
 
     /**
@@ -118,23 +115,23 @@ public class EgovProxySvcServiceImpl extends EgovAbstractServiceImpl implements 
     /**
      * 프록시서비스를 모니터링하기 위해 등록된 프록시로그 목록을 조회한다.
      *
-     * @param proxyLogVO - 프록시로그 Vo
+     * @param proxyLog - 프록시로그 Vo
      * @return List - 프록시로그 목록
      */
     @Override
-    public List<ProxyLogVO> selectProxyLogList(ProxyLogVO proxyLogVO) throws Exception {
-        return proxySvcDAO.selectProxyLogList(proxyLogVO);
+    public List<ProxyLog> selectProxyLogList(ProxyLog proxyLog) throws Exception {
+        return proxySvcDAO.selectProxyLogList(proxyLog);
     }
 
     /**
      * 프록시로그 목록 총 개수를 조회한다.
      *
-     * @param proxyLogVO - 프록시로그 Vo
+     * @param proxyLog - 프록시로그 Vo
      * @return int - 프록시로그 카운트 수
      */
     @Override
-    public int selectProxyLogListTotCnt(ProxyLogVO proxyLogVO) throws Exception {
-        return proxySvcDAO.selectProxyLogListTotCnt(proxyLogVO);
+    public int selectProxyLogListTotCnt(ProxyLog proxyLog) throws Exception {
+        return proxySvcDAO.selectProxyLogListTotCnt(proxyLog);
     }
 
     /**
@@ -153,12 +150,12 @@ public class EgovProxySvcServiceImpl extends EgovAbstractServiceImpl implements 
      * @param proxySvc - 프록시서비스 model
      */
     @Override
-    public void runProxyServer(ProxySvcVO proxySvcVO, ProxySvc proxySvc) throws Exception {
+    public void runProxyServer(ProxySvc proxySvc) throws Exception {
         // KISA 보안약점 조치 (2018-10-29, 윤창원)
-        if (!"01".equals(proxySvcVO.getStrPreSvcSttus()) && "01".equals(proxySvc.getSvcSttus())) {
+        if (!"01".equals(proxySvc.getStrPreSvcSttus()) && "01".equals(proxySvc.getSvcSttus())) {
             ProxyServer proxyServer = new ProxyServer(proxySvc.getSvcIp(), proxySvc.getProxyIp(), Integer.parseInt(proxySvc.getProxyPort()), Integer.parseInt(proxySvc.getSvcPort()), proxySvc.getProxyId(), proxySvcDAO, egovProxyLogIdGnrService);
             proxyServer.start();
-        } else if ("01".equals(proxySvcVO.getStrPreSvcSttus()) && !"01".equals(proxySvc.getSvcSttus())) {
+        } else if ("01".equals(proxySvc.getStrPreSvcSttus()) && !"01".equals(proxySvc.getSvcSttus())) {
             ProxyCommand proxyCommand = new ProxyCommand(proxySvc.getProxyIp(), Integer.parseInt(proxySvc.getProxyPort()));
             proxyCommand.runCommand("stop");
         }

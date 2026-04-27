@@ -65,7 +65,7 @@ public class EgovIndvdlPgeController {
 	 * @param indvdlPgeVO
 	 */
 	@IncludedInfo(name="마이페이지관리", order = 480 ,gid = 50)
-	@RequestMapping(value="/uss/mpe/selectIndvdlPgeList.do")
+	@RequestMapping(value = "/uss/mpe/selectIndvdlPgeList.do")
 	public String selectIndvdlPgeList(@ModelAttribute("searchVO") IndvdlPgeVO searchVO, ModelMap model) throws Exception {
 
 		/** EgovPropertyService.IndvdlPgeList */
