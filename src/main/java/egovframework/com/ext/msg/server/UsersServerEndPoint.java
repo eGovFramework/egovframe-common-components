@@ -29,6 +29,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import egovframework.com.cmm.EgovWebUtil;
+import egovframework.com.ext.msg.server.config.UsersServerEndpointConfigurator;
 import jakarta.json.Json;
 import jakarta.json.JsonArrayBuilder;
 import jakarta.json.JsonObject;
@@ -57,20 +58,18 @@ import jakarta.websocket.server.ServerEndpoint;
  *   2020.11.02  신용호          KISA 보안약점 조치 (Random Seed값 추가)
  *   2023.06.09  김장하          NSR 보안조치 (사용자이름 크로스사이트 스크립트 방지)
  *   2025.06.23  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(리소스 닫기), EmptyControlStatement(빈 제어문), UnnecessarySemicolon(불필요한 세미콜론)
+ *   2026.05.11  유지보수        WebSocket 핸드셰이크 시 HttpSession의 LoginVO 검증(UsersServerEndpointConfigurator)
  *
  *      </pre>
  */
-@ServerEndpoint(value = "/usersServerEndpoint"/* ,configurator=ServerAppConfig.class */)
+@ServerEndpoint(value = "/usersServerEndpoint", configurator = UsersServerEndpointConfigurator.class)
 public class UsersServerEndPoint {
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(UsersServerEndPoint.class);
 	private static Set<Session> connectedAllUsers = Collections.synchronizedSet(new HashSet<Session>());
 
-	// Spring bean과 연동하기 위해서는 ServerAppConfig를 configurator로 등록해주면 된다.
-	/*
-	 * @Resource(name="TestService") TestService testService;
-	 */
-
 	/**
+	 * 
 	 * Handshaking 함수
 	 * 
 	 * @param userSession 사용자 session
@@ -92,8 +91,7 @@ public class UsersServerEndPoint {
 	public void handleMessage(String message, Session userSession) throws EncodeException {
 		String username = (String) userSession.getUserProperties().get("username");
 
-		try (JsonReader jsonReader = Json.createReader(new StringReader(message));) {// 2022.01 Resources should be
-																						// closed
+		try (JsonReader jsonReader = Json.createReader(new StringReader(message));) {// 2022.01 Resources should be closed
 
 			JsonObject jsonObject = jsonReader.readObject();
 

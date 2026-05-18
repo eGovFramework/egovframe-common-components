@@ -9,6 +9,7 @@
    2011.9.19        이기하         filter 정리
    2013.5.31        이기하         미사용 filter 정리(.mdo, .action)
    2016.6.34        장동한         WebApplicationInitializer 방식으로 변경
+   2026.5.11        유지보수        HttpOnly/Secure 명시, tracking-mode 적용
 -->
 
     <welcome-file-list>
@@ -22,7 +23,11 @@
 
     <session-config>
         <session-timeout>60</session-timeout>
-    	<!-- <tracking-mode>COOKIE</tracking-mode> -->
+        <cookie-config>
+		<http-only>true</http-only>
+		<secure>true</secure><!-- Local & Safari 브라우저 사용 시 false 로 변경해야 함(HTTPS 엄격한 적용) -->
+	</cookie-config>
+    	<tracking-mode>COOKIE</tracking-mode>
     </session-config>
 
     <error-page>

@@ -28,7 +28,6 @@ import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cmm.service.Globals;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
-import egovframework.com.uat.uia.security.EgovLoginSecurityContextService;
 import egovframework.com.uat.uia.service.EgovLoginService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovClntInfo;
@@ -36,12 +35,6 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
-
-/*
-import com.gpki.gpkiapi.cert.X509Certificate;
-import com.gpki.servlet.GPKIHttpServletRequest;
-import com.gpki.servlet.GPKIHttpServletResponse;
-*/
 
 /**
  * 일반 로그인, 인증서 로그인을 처리하는 컨트롤러 클래스
@@ -92,12 +85,6 @@ public class EgovLoginController {
 
 	@Resource(name = "egovLoginConfig")
 	EgovLoginConfig egovLoginConfig;
-
-	private final EgovLoginSecurityContextService egovLoginSecurityContextService;
-
-	public EgovLoginController(EgovLoginSecurityContextService egovLoginSecurityContextService) {
-		this.egovLoginSecurityContextService = egovLoginSecurityContextService;
-	}
 
     /** log */
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovLoginController.class);
@@ -213,22 +200,9 @@ public class EgovLoginController {
 			// 3-1. 로그인 정보를 세션에 저장
 			request.getSession().setAttribute("loginVO", resultVO);
 
-			if("security".equals(EgovProperties.getProperty("Globals.Auth").trim())) {
-				egovLoginSecurityContextService.saveAuthenticatedSecurityContext(resultVO, request, response);
-				Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-				if (isAuthenticated ) {
-					return "forward:/EgovContent.do";	// 성공 시 페이지.. (redirect 불가)
-				} else {
-					redirectAttributes.addFlashAttribute("loginMessage",
-					egovMessageSource.getMessage("fail.common.login", request.getLocale()));
-					return "redirect:/uat/uia/egovLoginUsr.do";
-
-				}
-			} else {
-				// 2019.10.01 로그인 인증세션 추가
-				request.getSession().setAttribute("accessUser", resultVO.getUserSe().concat(resultVO.getId()));
-				return "redirect:/uat/uia/actionMain.do";
-			}
+			// 2019.10.01 로그인 인증세션 추가
+			request.getSession().setAttribute("accessUser", resultVO.getUserSe().concat(resultVO.getId()));
+			return "redirect:/uat/uia/actionMain.do";
 
 		} else {
 			redirectAttributes.addFlashAttribute("loginMessage",

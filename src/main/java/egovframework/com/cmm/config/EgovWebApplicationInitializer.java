@@ -115,6 +115,15 @@ public class EgovWebApplicationInitializer implements WebApplicationInitializer 
 			loginFormBridgeReg.addMappingForUrlPatterns(null, false, "/*");
 
 			//-------------------------------------------------------------
+			// 로그아웃(/uat/uia/actionLogout.do) → Spring Security logoutUrl 경로 브리지
+			// (springSecurityFilterChain 보다 먼저 등록)
+			//-------------------------------------------------------------
+			DelegatingFilterProxy logoutFormBridge = new DelegatingFilterProxy("egovSpringSecurityLogoutFilter");
+			logoutFormBridge.setContextAttribute(WebApplicationContext.ROOT_WEB_APPLICATION_CONTEXT_ATTRIBUTE);
+			FilterRegistration.Dynamic logoutFormBridgeReg = servletContext.addFilter("egovSpringSecurityLogoutFilter", logoutFormBridge);
+			logoutFormBridgeReg.addMappingForUrlPatterns(null, false, "/*");
+
+			//-------------------------------------------------------------
 			// springSecurityFilterChain 설정
 			//-------------------------------------------------------------
 			DelegatingFilterProxy securityFilter = new DelegatingFilterProxy("springSecurityFilterChain");
