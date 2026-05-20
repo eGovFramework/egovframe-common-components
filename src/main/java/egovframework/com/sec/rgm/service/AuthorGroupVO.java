@@ -14,7 +14,7 @@ import lombok.Setter;
  *
  * <pre>
  * << 개정이력(Modification Information) >>
- *   
+ *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.03.20  이문준          최초 생성
@@ -27,9 +27,6 @@ public class AuthorGroupVO extends AuthorGroup {
 
 	private static final long serialVersionUID = 1L;
 
-	List <AuthorGroupVO> authorGroupList;
-
-
-	
+	List<AuthorGroupVO> authorGroupList;
 
 }

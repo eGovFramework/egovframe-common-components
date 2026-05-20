@@ -2,7 +2,6 @@ package egovframework.com.sec.drm.service;
 
 import java.util.List;
 
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -15,7 +14,7 @@ import lombok.Setter;
  *
  * <pre>
  * << 개정이력(Modification Information) >>
- *   
+ *
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.03.20  이문준          최초 생성
@@ -32,11 +31,11 @@ public class DeptAuthorVO extends DeptAuthor {
 	/**
 	 * 부서권한목록
 	 */
-	List <DeptAuthorVO> deptAuthorList;
+	List<DeptAuthorVO> deptAuthorList;
 	/**
 	 * 부서목록
 	 */
-	List <DeptAuthorVO> deptList;	
+	List<DeptAuthorVO> deptList;
 	/**
 	 * 부서코드
 	 */
@@ -45,7 +44,5 @@ public class DeptAuthorVO extends DeptAuthor {
 	 * 부서 명
 	 */
 	private String deptNm;
-	
 
-	
 }
