@@ -1,0 +1,8 @@
+services:
+  app:
+    build: .
+    image: egovframe-common-components:${APP_VERSION:-5.0.0}
+    container_name: egov-common-components
+    ports:
+      - "8080:8080"
+    restart: unless-stopped
