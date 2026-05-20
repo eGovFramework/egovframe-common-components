@@ -2,6 +2,9 @@ package egovframework.com.sec.ram.service;
 
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 권한별 롤 관리에 대한 Vo 클래스를 정의한다.
  * @author 공통서비스 개발팀 이문준
@@ -18,28 +21,15 @@ import java.util.List;
  *
  * </pre>
  */
-
+@Getter
+@Setter
 public class AuthorRoleManageVO extends AuthorRoleManage {
 
 	private static final long serialVersionUID = 1L;
 
 	List <AuthorRoleManageVO> authorRoleList;
 	
-	/**
-	 * authorRoleList attribute 를 리턴한다.
-	 * @return List<AuthorRoleManageVO>
-	 */
-	public List<AuthorRoleManageVO> getAuthorRoleList() {
-		return authorRoleList;
-	}
 
-	/**
-	 * authorRoleList attribute 값을 설정한다.
-	 * @param authorRoleList List<AuthorRoleManageVO> 
-	 */
-	public void setAuthorRoleList(List<AuthorRoleManageVO> authorRoleList) {
-		this.authorRoleList = authorRoleList;
-	}
 
 
 
