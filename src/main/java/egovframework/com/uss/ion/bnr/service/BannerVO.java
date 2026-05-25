@@ -35,6 +35,8 @@ import jakarta.validation.constraints.Size;
  *
  *      </pre>
  */
+@Getter
+@Setter
 public class BannerVO extends ComDefaultVO {
 
 	/**
@@ -102,8 +104,6 @@ public class BannerVO extends ComDefaultVO {
 	/**
 	 * 삭제대상 목록
 	 */
-	@Getter
-	@Setter
 	private String[] delYn;
 
 	/**
@@ -111,107 +111,4 @@ public class BannerVO extends ComDefaultVO {
 	 */
 	private String resultType = "horizontal";
 
-	public String getBannerId() {
-		return bannerId;
-	}
-
-	public void setBannerId(String bannerId) {
-		this.bannerId = bannerId;
-	}
-
-	public String getBannerNm() {
-		return bannerNm;
-	}
-
-	public void setBannerNm(String bannerNm) {
-		this.bannerNm = bannerNm;
-	}
-
-	public String getLinkUrl() {
-		return linkUrl;
-	}
-
-	public void setLinkUrl(String linkUrl) {
-		this.linkUrl = linkUrl;
-	}
-
-	public String getBannerImage() {
-		return bannerImage;
-	}
-
-	public void setBannerImage(String bannerImage) {
-		this.bannerImage = bannerImage;
-	}
-
-	public String getBannerImageFile() {
-		return bannerImageFile;
-	}
-
-	public void setBannerImageFile(String bannerImageFile) {
-		this.bannerImageFile = bannerImageFile;
-	}
-
-	public String getBannerDc() {
-		return bannerDc;
-	}
-
-	public void setBannerDc(String bannerDc) {
-		this.bannerDc = bannerDc;
-	}
-
-	public String getSortOrdr() {
-		return sortOrdr;
-	}
-
-	public void setSortOrdr(String sortOrdr) {
-		this.sortOrdr = sortOrdr;
-	}
-
-	public String getReflctAt() {
-		return reflctAt;
-	}
-
-	public void setReflctAt(String reflctAt) {
-		this.reflctAt = reflctAt;
-	}
-
-	public String getUserId() {
-		return userId;
-	}
-
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
-
-	public String getRegDate() {
-		return regDate;
-	}
-
-	public void setRegDate(String regDate) {
-		this.regDate = regDate;
-	}
-
-	public boolean isAtchFile() {
-		return isAtchFile;
-	}
-
-	public void setAtchFile(boolean isAtchFile) {
-		this.isAtchFile = isAtchFile;
-	}
-
-	public List<BannerVO> getBannerList() {
-		return bannerList;
-	}
-
-	public void setBannerList(List<BannerVO> bannerList) {
-		this.bannerList = bannerList;
-	}
-
-	public String getResultType() {
-		return resultType;
-	}
-
-	public void setResultType(String resultType) {
-		this.resultType = resultType;
-	}
 }
