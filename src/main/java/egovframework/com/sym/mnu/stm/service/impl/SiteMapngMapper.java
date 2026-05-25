@@ -1,13 +1,13 @@
 package egovframework.com.sym.mnu.stm.service.impl;
 
-import org.springframework.stereotype.Repository;
+import org.egovframe.rte.psl.dataaccess.mapper.EgovMapper;
 
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.sym.mnu.stm.service.SiteMapngVO;
-import jakarta.annotation.Resource;
 
 /**
- * 사이트맵 조회에 대한 DAO 클래스를 정의한다.
+ * 사이트맵 조회를 위한 MyBatis Mapper 인터페이스
+ *
  * @author 개발환경 개발팀 이용
  * @since 2009.06.01
  * @version 1.0
@@ -23,30 +23,23 @@ import jakarta.annotation.Resource;
  *
  * </pre>
  */
-@Repository("siteMapngDAO")
-public class SiteMapngDAO {
-
-	@Resource(name = "siteMapngDAO")
-	private SiteMapngMapper siteMapngMapper;
+@EgovMapper("siteMapngDAO")
+public interface SiteMapngMapper {
 
 	/**
-	 * 사이트맵 조회
+	 * 사이트맵을 조회한다.
+	 *
 	 * @param vo ComDefaultVO
 	 * @return SiteMapngVO
-	 * @exception Exception
 	 */
-	public SiteMapngVO selectSiteMapng(ComDefaultVO vo) throws Exception {
-		return siteMapngMapper.selectSiteMapng_D(vo);
-	}
+	SiteMapngVO selectSiteMapng_D(ComDefaultVO vo);
 
 	/**
-	 * MapCreatId 조회
+	 * MapCreatId를 조회한다.
+	 *
 	 * @param vo ComDefaultVO
 	 * @return String
-	 * @exception Exception
 	 */
-	public String selectSiteMapngByMapCreatID(ComDefaultVO vo) throws Exception {
-		return siteMapngMapper.selectSiteMapngByMapCreatID(vo);
-	}
+	String selectSiteMapngByMapCreatID(ComDefaultVO vo);
 
 }
