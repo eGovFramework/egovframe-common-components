@@ -2,193 +2,71 @@ package egovframework.com.uss.olh.hpc.service;
 
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
 import jakarta.validation.constraints.Size;
 
-public class HpcmVO extends HpcmDefaultVO{
-	
-	 private static final long serialVersionUID = 1L;
-	    
-	    /** 도움말 ID */
-	    private String hpcmId;
-	    
-	    /** 도움말구분코드 */
-	    @EgovNullCheck
-	    private String hpcmSeCode;
+/**
+ * 도움말을 처리하는 VO 클래스
+ * @author 공통서비스 개발팀 박정규
+ * @since 2009.04.01
+ * @version 1.0
+ * @see
+ *
+ * <pre>
+ * << 개정이력(Modification Information) >>
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.04.01  박정규          최초 생성
+ *   2025.05.25  장동한          Lombok @Getter/@Setter 적용
+ *
+ * </pre>
+ */
+@Getter
+@Setter
+public class HpcmVO extends HpcmDefaultVO {
 
-	    /** 도움말구분코드명 */
-	    private String hpcmSeCodeNm;
-	    
-	    /** 도움말정의 */
-	    @EgovNullCheck
-	    @Size(max=1000)
-	    private String hpcmDf;
-	    
-	    /** 도움말 설명 */
-	    @EgovNullCheck
-	    @Size(max=2500)
-	    private String hpcmDc;
-	    
-	    /** 최초등록시점 */
-	    private String frstRegisterPnttm;
+	private static final long serialVersionUID = 1L;
 
-	    /** 최초등록자ID */
-	    private String frstRegisterId;
+	/** 도움말 ID */
+	private String hpcmId;
 
-	    /** 최종수정시점 */
-	    private String lastUpdusrPnttm;
+	/** 도움말구분코드 */
+	@EgovNullCheck
+	private String hpcmSeCode;
 
-	    /** 최종수정자ID */
-	    private String lastUpdusrId;
+	/** 도움말구분코드명 */
+	private String hpcmSeCodeNm;
 
-		/**
-		 * hpcmId attribute 를 리턴한다.
-		 * @return the String
-		 */
-		public String getHpcmId() {
-			return hpcmId;
-		}
+	/** 도움말정의 */
+	@EgovNullCheck
+	@Size(max=1000)
+	private String hpcmDf;
 
-		/**
-		 * hpcmId attribute 값을 설정한다.
-		 * @return hpcmId String
-		 */
-		public void setHpcmId(String hpcmId) {
-			this.hpcmId = hpcmId;
-		}
+	/** 도움말 설명 */
+	@EgovNullCheck
+	@Size(max=2500)
+	private String hpcmDc;
 
-		/**
-		 * hpcmSeCode attribute 를 리턴한다.
-		 * @return the String
-		 */
-		public String getHpcmSeCode() {
-			return hpcmSeCode;
-		}
+	/** 최초등록시점 */
+	private String frstRegisterPnttm;
 
-		/**
-		 * hpcmSeCode attribute 값을 설정한다.
-		 * @return hpcmSeCode String
-		 */
-		public void setHpcmSeCode(String hpcmSeCode) {
-			this.hpcmSeCode = hpcmSeCode;
-		}
+	/** 최초등록자ID */
+	private String frstRegisterId;
 
-		/**
-		 * hpcmSeCodeNm attribute 를 리턴한다.
-		 * @return the String
-		 */
-		public String getHpcmSeCodeNm() {
-			return hpcmSeCodeNm;
-		}
+	/** 최종수정시점 */
+	private String lastUpdusrPnttm;
 
-		/**
-		 * hpcmSeCodeNm attribute 값을 설정한다.
-		 * @return hpcmSeCodeNm String
-		 */
-		public void setHpcmSeCodeNm(String hpcmSeCodeNm) {
-			this.hpcmSeCodeNm = hpcmSeCodeNm;
-		}
+	/** 최종수정자ID */
+	private String lastUpdusrId;
 
-		/**
-		 * hpcmDf attribute 를 리턴한다.
-		 * @return the String
-		 */
-		public String getHpcmDf() {
-			return hpcmDf;
-		}
-
-		/**
-		 * hpcmDf attribute 값을 설정한다.
-		 * @return hpcmDf String
-		 */
-		public void setHpcmDf(String hpcmDf) {
-			this.hpcmDf = hpcmDf;
-		}
-
-		/**
-		 * hpcmDc attribute 를 리턴한다.
-		 * @return the String
-		 */
-		public String getHpcmDc() {
-			return hpcmDc;
-		}
-
-		/**
-		 * hpcmDc attribute 값을 설정한다.
-		 * @return hpcmDc String
-		 */
-		public void setHpcmDc(String hpcmDc) {
-			this.hpcmDc = hpcmDc;
-		}
-
-		/**
-		 * frstRegisterPnttm attribute 를 리턴한다.
-		 * @return the String
-		 */
-		public String getFrstRegisterPnttm() {
-			return frstRegisterPnttm;
-		}
-
-		/**
-		 * frstRegisterPnttm attribute 값을 설정한다.
-		 * @return frstRegisterPnttm String
-		 */
-		public void setFrstRegisterPnttm(String frstRegisterPnttm) {
-			this.frstRegisterPnttm = frstRegisterPnttm;
-		}
-
-		/**
-		 * frstRegisterId attribute 를 리턴한다.
-		 * @return the String
-		 */
-		public String getFrstRegisterId() {
-			return frstRegisterId;
-		}
-
-		/**
-		 * frstRegisterId attribute 값을 설정한다.
-		 * @return frstRegisterId String
-		 */
-		public void setFrstRegisterId(String frstRegisterId) {
-			this.frstRegisterId = frstRegisterId;
-		}
-
-		/**
-		 * lastUpdusrPnttm attribute 를 리턴한다.
-		 * @return the String
-		 */
-		public String getLastUpdusrPnttm() {
-			return lastUpdusrPnttm;
-		}
-
-		/**
-		 * lastUpdusrPnttm attribute 값을 설정한다.
-		 * @return lastUpdusrPnttm String
-		 */
-		public void setLastUpdusrPnttm(String lastUpdusrPnttm) {
-			this.lastUpdusrPnttm = lastUpdusrPnttm;
-		}
-
-		/**
-		 * lastUpdusrId attribute 를 리턴한다.
-		 * @return the String
-		 */
-		public String getLastUpdusrId() {
-			return lastUpdusrId;
-		}
-
-		/**
-		 * lastUpdusrId attribute 값을 설정한다.
-		 * @return lastUpdusrId String
-		 */
-		public void setLastUpdusrId(String lastUpdusrId) {
-			this.lastUpdusrId = lastUpdusrId;
-		}
-		
-		/**
-		 * toString 메소드를 대치한다.
-		 */
-		public String toString(){
-			return ToStringBuilder.reflectionToString(this);
-		}
+	/**
+	 * toString 메소드를 대치한다.
+	 */
+	public String toString(){
+		return ToStringBuilder.reflectionToString(this);
+	}
 }
