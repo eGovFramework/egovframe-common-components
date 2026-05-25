@@ -3,6 +3,8 @@ package egovframework.com.uss.ion.mtg.service;
 import java.util.List;
 
 import egovframework.com.cmm.ComDefaultVO;
+import lombok.Getter;
+import lombok.Setter;
 import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
 import jakarta.validation.constraints.AssertTrue;
 import jakarta.validation.constraints.Pattern;
@@ -18,6 +20,8 @@ import jakarta.validation.constraints.Size;
  * @version 1.0
  * @created 06-15-2010 오후 2:08:56
  */
+@Getter
+@Setter
 public class MtgPlaceResveVO extends ComDefaultVO {
 
 	private static final long serialVersionUID = 1L;
@@ -99,33 +103,4 @@ public class MtgPlaceResveVO extends ComDefaultVO {
 
 	/** 예약 목록 */
 	private List<MtgPlaceResveVO> mtgPlaceResveList;
-
-	public String getResveId() { return resveId; }
-	public void setResveId(String resveId) { this.resveId = resveId; }
-	public String getMtgPlaceId() { return mtgPlaceId; }
-	public void setMtgPlaceId(String mtgPlaceId) { this.mtgPlaceId = mtgPlaceId; }
-	public String getMtgSj() { return mtgSj; }
-	public void setMtgSj(String mtgSj) { this.mtgSj = mtgSj; }
-	public String getResveManId() { return resveManId; }
-	public void setResveManId(String resveManId) { this.resveManId = resveManId; }
-	public String getResveDe() { return resveDe; }
-	public void setResveDe(String resveDe) { this.resveDe = resveDe; }
-	public String getResveBeginTm() { return resveBeginTm; }
-	public void setResveBeginTm(String resveBeginTm) { this.resveBeginTm = resveBeginTm; }
-	public String getResveEndTm() { return resveEndTm; }
-	public void setResveEndTm(String resveEndTm) { this.resveEndTm = resveEndTm; }
-	public int getAtndncNmpr() { return atndncNmpr; }
-	public void setAtndncNmpr(int atndncNmpr) { this.atndncNmpr = atndncNmpr; }
-	public String getMtgCn() { return mtgCn; }
-	public void setMtgCn(String mtgCn) { this.mtgCn = mtgCn; }
-	public String getFrstRegisterId() { return frstRegisterId; }
-	public void setFrstRegisterId(String frstRegisterId) { this.frstRegisterId = frstRegisterId; }
-	public String getFrstRegisterPnttm() { return frstRegisterPnttm; }
-	public void setFrstRegisterPnttm(String frstRegisterPnttm) { this.frstRegisterPnttm = frstRegisterPnttm; }
-	public String getLastUpdusrId() { return lastUpdusrId; }
-	public void setLastUpdusrId(String lastUpdusrId) { this.lastUpdusrId = lastUpdusrId; }
-	public String getLastUpdusrPnttm() { return lastUpdusrPnttm; }
-	public void setLastUpdusrPnttm(String lastUpdusrPnttm) { this.lastUpdusrPnttm = lastUpdusrPnttm; }
-	public List<MtgPlaceResveVO> getMtgPlaceResveList() { return mtgPlaceResveList; }
-	public void setMtgPlaceResveList(List<MtgPlaceResveVO> mtgPlaceResveList) { this.mtgPlaceResveList = mtgPlaceResveList; }
 }
