@@ -2,14 +2,14 @@ package egovframework.com.cmm.service.impl;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
+import org.egovframe.rte.psl.dataaccess.mapper.EgovMapper;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.service.CmmnDetailCode;
 
 /**
- * 공통코드등 전체 업무에서 공용해서 사용해야 하는 서비스를 정의하기위한 데이터 접근 클래스
- * 
+ * 공통코드등 전체 업무에서 공용해서 사용해야 하는 서비스를 정의하기위한 데이터 접근 인터페이스
+ *
  * @author 공통 서비스 개발팀 이삼섭
  * @since 2009.03.11
  * @version 1.0
@@ -22,39 +22,34 @@ import egovframework.com.cmm.service.CmmnDetailCode;
  *  -------    --------    ---------------------------
  *   2009.03.11  이삼섭          최초 생성
  *   2025.07.16  이백행          2025년 컨트리뷰션 `throws Exception` 제거
+ *   2026.05.25  dasomel        @EgovMapper 인터페이스 방식으로 전환
  *
  *      </pre>
  */
-@Repository("cmmUseDAO")
-public class CmmUseDAO extends EgovComAbstractDAO {
+@EgovMapper("cmmUseDAO")
+public interface CmmUseDAO {
 
 	/**
 	 * 주어진 조건에 따른 공통코드를 불러온다.
-	 * 
+	 *
 	 * @param comDefaultCodeVO
 	 * @return
 	 */
-	public List<CmmnDetailCode> selectCmmCodeDetail(ComDefaultCodeVO comDefaultCodeVO) {
-		return selectList("CmmUseDAO.selectCmmCodeDetail", comDefaultCodeVO);
-	}
+	List<CmmnDetailCode> selectCmmCodeDetail(ComDefaultCodeVO comDefaultCodeVO);
 
 	/**
 	 * 공통코드로 사용할 조직정보를 를 불러온다.
-	 * 
+	 *
 	 * @param comDefaultCodeVO
 	 * @return
 	 */
-	public List<CmmnDetailCode> selectOgrnztIdDetail(ComDefaultCodeVO comDefaultCodeVO) {
-		return selectList("CmmUseDAO.selectOgrnztIdDetail", comDefaultCodeVO);
-	}
+	List<CmmnDetailCode> selectOgrnztIdDetail(ComDefaultCodeVO comDefaultCodeVO);
 
 	/**
 	 * 공통코드로 사용할그룹정보를 를 불러온다.
-	 * 
+	 *
 	 * @param comDefaultCodeVO
 	 * @return
 	 */
-	public List<CmmnDetailCode> selectGroupIdDetail(ComDefaultCodeVO comDefaultCodeVO) {
-		return selectList("CmmUseDAO.selectGroupIdDetail", comDefaultCodeVO);
-	}
+	List<CmmnDetailCode> selectGroupIdDetail(ComDefaultCodeVO comDefaultCodeVO);
 }
