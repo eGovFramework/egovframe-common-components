@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sts.com.StatsVO;
+import jakarta.annotation.Resource;
 
 /**
  * 사용자 통계 검색 DAO 클래스
@@ -21,11 +21,15 @@ import egovframework.com.sts.com.StatsVO;
  *  -------    --------    ---------------------------
  *  2009.03.19  박지욱          최초 생성
  *  2011.06.30  이기하          패키지 분리(sts -> sts.sst)
+ *  2026.05.27  dasomel         @EgovMapper 인터페이스 방식으로 전환
  *
  *  </pre>
  */
 @Repository("userStatsDAO")
-public class UserStatsDAO extends EgovComAbstractDAO {
+public class UserStatsDAO {
+
+	@Resource(name = "userStatsDAO")
+	private UserStatsMapper userStatsMapper;
 
 	/**
 	 * 사용자 통계를 조회한다
@@ -34,7 +38,7 @@ public class UserStatsDAO extends EgovComAbstractDAO {
 	 * @exception Exception
 	 */
     public List<StatsVO> selectUserStats(StatsVO vo) throws Exception {
-        return selectList("UserStatsDAO.selectUserStats", vo);
+        return userStatsMapper.selectUserStats(vo);
     }
 
     /**
@@ -42,6 +46,6 @@ public class UserStatsDAO extends EgovComAbstractDAO {
 	 * @exception Exception
 	 */
     public void summaryUserStats() throws Exception {
-        insert("UserStatsDAO.summaryUserStats", null);
+        userStatsMapper.summaryUserStats();
     }
 }

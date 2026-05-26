@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="ScrinStatsDAO">
+<mapper namespace="egovframework.com.sts.sst.service.impl.ScrinStatsMapper">
 	
 	<!-- 화면통계 조회 -->
 	<select id="selectScrinStats" parameterType="egovframework.com.sts.com.StatsVO" resultType="egovframework.com.sts.com.StatsVO">

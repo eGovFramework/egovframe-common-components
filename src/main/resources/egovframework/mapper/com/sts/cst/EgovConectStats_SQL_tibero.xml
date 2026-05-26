@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="ConectStatsDAO">
+<mapper namespace="egovframework.com.sts.cst.service.impl.ConectStatsMapper">
 
 	<!-- 접속통계 조회 -->
 	<select id="selectConectStats" parameterType="egovframework.com.sts.com.StatsVO" resultType="egovframework.com.sts.com.StatsVO">
