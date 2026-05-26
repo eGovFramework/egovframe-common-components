@@ -597,6 +597,7 @@
 					<artifactId>maven-compiler-plugin</artifactId>
 					<configuration>
 						<release>${java.version}</release>
+						<proc>full</proc>
 					</configuration>
 				</plugin>
 				<plugin>
