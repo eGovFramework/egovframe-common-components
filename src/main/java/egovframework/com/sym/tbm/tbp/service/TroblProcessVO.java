@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * <pre>
  * 개요
@@ -12,11 +15,10 @@ import java.util.List;
  * 상세내용
  * - 장애정보의 목록 항목, 조회조건, 삭제대상을 관리한다.
  * </pre>
- * 
+ *
  * @author 이문준
  * @version 1.0
  * @since 2010.06.28
- * @version 1.0
  * @see
  *
  *      <pre>
@@ -26,6 +28,7 @@ import java.util.List;
  *  -------    --------    ---------------------------
  *   2010.06.28  이문준          최초 생성
  *   2025.07.26  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AvoidArrayLoops(배열의 값을 루프문을 이용하여 복사하는 것 보다, System.arraycopy() 메소드를 이용하여 복사하는 것이 효율적이며 수행 속도가 빠름)
+ *   2026.05.27  기여자          Lombok @Getter/@Setter 적용으로 보일러플레이트 코드 제거
  *
  *      </pre>
  */
@@ -39,14 +42,20 @@ public class TroblProcessVO extends TroblProcess {
 	/**
 	 * 장애명 조회조건
 	 */
+	@Getter
+	@Setter
 	private String strTroblNm;
 	/**
 	 * 장애종류 조회조건
 	 */
+	@Getter
+	@Setter
 	private String strTroblKnd;
 	/**
 	 * 처리상태 조회조건
 	 */
+	@Getter
+	@Setter
 	private String strProcessSttus;
 
 	/**

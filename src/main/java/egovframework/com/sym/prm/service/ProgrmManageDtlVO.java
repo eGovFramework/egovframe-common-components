@@ -4,10 +4,12 @@ import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
 
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 프로그램변경관리 처리를 위한 VO 클래스르를 정의한다
- * 
+ *
  * @author 개발환경 개발팀 이용
  * @since 2009.03.20
  * @version 1.0
@@ -20,59 +22,90 @@ import jakarta.validation.constraints.Size;
  *  -------    --------    ---------------------------
  *   2009.03.20  이용           최초 생성
  *   2025.07.19  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-FormalParameterNamingConventions(변수명에 밑줄 사용)
+ *   2026.05.27  기여자          Lombok @Getter/@Setter 적용으로 보일러플레이트 코드 제거
  *
  *      </pre>
  */
 public class ProgrmManageDtlVO {
 
 	/** 프로그램파일명 */
+	@Getter
+	@Setter
 	@EgovNullCheck
 	@Size(max=50)
 	private String progrmFileNm;
 	/** 요청번호 */
+	@Getter
+	@Setter
 	@NotNull
 	private int rqesterNo;
 	/** 요청제목 */
+	@Getter
+	@Setter
 	@EgovNullCheck
 	@Size(max=50)
 	private String rqesterSj;
 	/** 요청자ID */
+	@Getter
+	@Setter
 	@EgovNullCheck
 	@Size(max=20)
 	private String rqesterPersonId;
 	/** 요청일자 */
+	@Getter
+	@Setter
 	@EgovNullCheck
 	private String rqesterDe;
 	/** 변경요청내용 */
+	@Getter
+	@Setter
 	@Size(max=1000)
 	private String changerqesterCn;
 	/** 처리자ID */
+	@Getter
+	@Setter
 	@Size(max=20)
 	private String opetrId;
 	/** 처리상태코드 */
+	@Getter
+	@Setter
 	private String processSttus;
 	/** 처리일자 */
+	@Getter
+	@Setter
 	@EgovNullCheck
 	private String processDe;
 	/** 요청처리내용 */
+	@Getter
+	@Setter
 	@Size(max=1000)
 	private String rqesterProcessCn;
 
 	/** 요청시작일자 */
+	@Getter
+	@Setter
 	private String rqesterDeBegin;
 	/** 요청종료일자 */
+	@Getter
+	@Setter
 	private String rqesterDeEnd;
 
 	/** 프로그램파일명 */
+	@Getter
+	@Setter
 	private String tmpProgrmNm;
 	/** 요청번호 */
+	@Getter
+	@Setter
 	private int tmpRqesterNo;
 	/** tmp_Email */
+	@Getter
+	@Setter
 	private String tmpEmail;
 
 	/**
 	 * progrmFileNm attribute를 리턴한다.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getProgrmFileNm() {
@@ -81,7 +114,7 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * progrmFileNm attribute 값을 설정한다.
-	 * 
+	 *
 	 * @param progrmFileNm String
 	 */
 	public void setProgrmFileNm(String progrmFileNm) {
@@ -90,7 +123,7 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * rqesterNo attribute를 리턴한다.
-	 * 
+	 *
 	 * @return int
 	 */
 	public int getRqesterNo() {
@@ -99,7 +132,7 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * rqesterNo attribute 값을 설정한다.
-	 * 
+	 *
 	 * @param rqesterNo int
 	 */
 	public void setRqesterNo(int rqesterNo) {
@@ -108,7 +141,7 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * rqesterSj attribute를 리턴한다.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getRqesterSj() {
@@ -117,7 +150,7 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * rqesterSj attribute 값을 설정한다.
-	 * 
+	 *
 	 * @param rqesterSj String
 	 */
 	public void setRqesterSj(String rqesterSj) {
@@ -126,7 +159,7 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * rqesterPersonId attribute를 리턴한다.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getRqesterPersonId() {
@@ -135,7 +168,7 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * rqesterPersonId attribute 값을 설정한다.
-	 * 
+	 *
 	 * @param rqesterPersonId String
 	 */
 	public void setRqesterPersonId(String rqesterPersonId) {
@@ -144,7 +177,7 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * rqesterDe attribute를 리턴한다.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getRqesterDe() {
@@ -153,7 +186,7 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * rqesterDe attribute 값을 설정한다.
-	 * 
+	 *
 	 * @param rqesterDe String
 	 */
 	public void setRqesterDe(String rqesterDe) {
@@ -162,7 +195,7 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * changerqesterCn attribute를 리턴한다.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getChangerqesterCn() {
@@ -171,7 +204,7 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * changerqesterCn attribute 값을 설정한다.
-	 * 
+	 *
 	 * @param changerqesterCn String
 	 */
 	public void setChangerqesterCn(String changerqesterCn) {
@@ -180,7 +213,7 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * opetrId attribute를 리턴한다.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getOpetrId() {
@@ -189,7 +222,7 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * opetrId attribute 값을 설정한다.
-	 * 
+	 *
 	 * @param opetrId String
 	 */
 	public void setOpetrId(String opetrId) {
@@ -198,7 +231,7 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * processSttus attribute를 리턴한다.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getProcessSttus() {
@@ -207,7 +240,7 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * processSttus attribute 값을 설정한다.
-	 * 
+	 *
 	 * @param processSttus String
 	 */
 	public void setProcessSttus(String processSttus) {
@@ -216,7 +249,7 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * processDe attribute를 리턴한다.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getProcessDe() {
@@ -225,7 +258,7 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * processDe attribute 값을 설정한다.
-	 * 
+	 *
 	 * @param processDe String
 	 */
 	public void setProcessDe(String processDe) {
@@ -234,7 +267,7 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * rqesterProcessCn attribute를 리턴한다.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getRqesterProcessCn() {
@@ -243,7 +276,7 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * rqesterProcessCn attribute 값을 설정한다.
-	 * 
+	 *
 	 * @param rqesterProcessCn String
 	 */
 	public void setRqesterProcessCn(String rqesterProcessCn) {
@@ -252,7 +285,7 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * rqesterDeBegin attribute를 리턴한다.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getRqesterDeBegin() {
@@ -261,7 +294,7 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * rqesterDeBegin attribute 값을 설정한다.
-	 * 
+	 *
 	 * @param rqesterDeBegin String
 	 */
 	public void setRqesterDeBegin(String rqesterDeBegin) {
@@ -270,7 +303,7 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * rqesterDeEnd attribute를 리턴한다.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getRqesterDeEnd() {
@@ -279,7 +312,7 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * rqesterDeEnd attribute 값을 설정한다.
-	 * 
+	 *
 	 * @param rqesterDeEnd String
 	 */
 	public void setRqesterDeEnd(String rqesterDeEnd) {
@@ -288,7 +321,7 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * tmp_progrmNm attribute를 리턴한다.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getTmpProgrmNm() {
@@ -297,7 +330,7 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * tmpProgrmNm attribute 값을 설정한다.
-	 * 
+	 *
 	 * @param tmpProgrmNm String
 	 */
 	public void setTmpProgrmNm(String tmpProgrmNm) {
@@ -306,7 +339,7 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * tmp_rqesterNo attribute를 리턴한다.
-	 * 
+	 *
 	 * @return int
 	 */
 	public int getTmpRqesterNo() {
@@ -315,7 +348,7 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * tmpRqesterNo attribute 값을 설정한다.
-	 * 
+	 *
 	 * @param tmpRqesterNo int
 	 */
 	public void setTmpRqesterNo(int tmpRqesterNo) {
@@ -324,7 +357,7 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * tmp_Email attribute를 리턴한다.
-	 * 
+	 *
 	 * @return String
 	 */
 	public String getTmpEmail() {
@@ -333,10 +366,11 @@ public class ProgrmManageDtlVO {
 
 	/**
 	 * tmpEmail attribute 값을 설정한다.
-	 * 
+	 *
 	 * @param tmpEmail String
 	 */
 	public void setTmpEmail(String tmpEmail) {
 		this.tmpEmail = tmpEmail;
 	}
+
 }
