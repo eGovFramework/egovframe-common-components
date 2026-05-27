@@ -5,7 +5,7 @@
 --><!--Converted at: Wed May 11 15:50:36 KST 2016-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="CmmnClCodeManage">
+<mapper namespace="egovframework.com.sym.ccm.ccc.service.impl.CmmnClCodeManageMapper">
 
 	<select id="selectCmmnClCodeList" parameterType="egovframework.com.sym.ccm.ccc.service.CmmnClCodeVO" resultType="egovframework.com.sym.ccm.ccc.service.CmmnClCode">
 		
