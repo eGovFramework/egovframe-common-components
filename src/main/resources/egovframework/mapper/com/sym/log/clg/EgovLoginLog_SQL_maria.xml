@@ -5,7 +5,7 @@
   -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="LoginLog">
+<mapper namespace="egovframework.com.sym.log.clg.service.impl.LoginLogDAO">
 
 	<!-- 로그인로그 맵 -->
 	<resultMap id="LoginLogVO" type="egovframework.com.sym.log.clg.service.LoginLog">
