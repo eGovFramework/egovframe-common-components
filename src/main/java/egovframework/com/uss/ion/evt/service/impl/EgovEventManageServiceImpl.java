@@ -41,7 +41,7 @@ import jakarta.annotation.Resource;
 public class EgovEventManageServiceImpl extends EgovAbstractServiceImpl implements EgovEventManageService {
 
 	@Resource(name="eventManageDAO")
-    private EventManageDAO eventManageDAO;
+	private EventManageDAO eventManageDAO;
 
     /** ID Generation */
 	@Resource(name="egovEventManageIdGnrService")
