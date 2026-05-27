@@ -33,7 +33,7 @@ public class BatchOpertDao extends EgovComAbstractDAO {
 	 * @exception Exception Exception
 	 */
 	public void deleteBatchOpert(BatchOpert batchOpert) throws Exception {
-		delete("BatchOpertDao.deleteBatchOpert", batchOpert);
+		delete("egovframework.com.sym.bat.service.impl.mapper.BatchOpertMapper.deleteBatchOpert", batchOpert);
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class BatchOpertDao extends EgovComAbstractDAO {
 	 * @exception Exception Exception
 	 */
 	public void insertBatchOpert(BatchOpert batchOpert) throws Exception {
-		insert("BatchOpertDao.insertBatchOpert", batchOpert);
+		insert("egovframework.com.sym.bat.service.impl.mapper.BatchOpertMapper.insertBatchOpert", batchOpert);
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class BatchOpertDao extends EgovComAbstractDAO {
 	 * @exception Exception Exception
 	 */
 	public BatchOpert selectBatchOpert(BatchOpert batchOpert) throws Exception {
-		return selectOne("BatchOpertDao.selectBatchOpert", batchOpert);
+		return selectOne("egovframework.com.sym.bat.service.impl.mapper.BatchOpertMapper.selectBatchOpert", batchOpert);
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class BatchOpertDao extends EgovComAbstractDAO {
 	 * @exception Exception Exception
 	 */
 	public List<BatchOpert> selectBatchOpertList(BatchOpert searchVO) throws Exception {
-		return selectList("BatchOpertDao.selectBatchOpertList", searchVO);
+		return selectList("egovframework.com.sym.bat.service.impl.mapper.BatchOpertMapper.selectBatchOpertList", searchVO);
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class BatchOpertDao extends EgovComAbstractDAO {
 	 * @exception Exception Exception
 	 */
 	public int selectBatchOpertListCnt(BatchOpert searchVO) throws Exception {
-		return (Integer) selectOne("BatchOpertDao.selectBatchOpertListCnt", searchVO);
+		return (Integer) selectOne("egovframework.com.sym.bat.service.impl.mapper.BatchOpertMapper.selectBatchOpertListCnt", searchVO);
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class BatchOpertDao extends EgovComAbstractDAO {
 	 * @exception Exception Exception
 	 */
 	public void updateBatchOpert(BatchOpert batchOpert) throws Exception {
-		update("BatchOpertDao.updateBatchOpert", batchOpert);
+		update("egovframework.com.sym.bat.service.impl.mapper.BatchOpertMapper.updateBatchOpert", batchOpert);
 	}
 
 }

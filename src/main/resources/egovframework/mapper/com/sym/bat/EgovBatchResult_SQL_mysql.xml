@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="BatchResultDao">
+<mapper namespace="egovframework.com.sym.bat.service.impl.mapper.BatchResultMapper">
     <resultMap id="batchResultResult" type="egovframework.com.sym.bat.service.BatchResult">
         <result property="batchResultId" column="BATCH_RESULT_ID"/>
         <result property="batchSchdulId" column="BATCH_SCHDUL_ID"/>

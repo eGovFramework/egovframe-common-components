@@ -33,7 +33,7 @@ public class BatchResultDao extends EgovComAbstractDAO {
 	 * @exception Exception Exception
 	 */
 	public void deleteBatchResult(BatchResult batchResult) throws Exception {
-		delete("BatchResultDao.deleteBatchResult", batchResult);
+		delete("egovframework.com.sym.bat.service.impl.mapper.BatchResultMapper.deleteBatchResult", batchResult);
 	}
 
 	/**
@@ -43,7 +43,7 @@ public class BatchResultDao extends EgovComAbstractDAO {
 	 * @exception Exception Exception
 	 */
 	public void insertBatchResult(BatchResult batchResult) throws Exception {
-		insert("BatchResultDao.insertBatchResult", batchResult);
+		insert("egovframework.com.sym.bat.service.impl.mapper.BatchResultMapper.insertBatchResult", batchResult);
 	}
 
 	/**
@@ -54,7 +54,7 @@ public class BatchResultDao extends EgovComAbstractDAO {
 	 * @exception Exception Exception
 	 */
 	public BatchResult selectBatchResult(BatchResult batchResult) throws Exception {
-		return (BatchResult) selectOne("BatchResultDao.selectBatchResult", batchResult);
+		return (BatchResult) selectOne("egovframework.com.sym.bat.service.impl.mapper.BatchResultMapper.selectBatchResult", batchResult);
 	}
 
 	/**
@@ -65,7 +65,7 @@ public class BatchResultDao extends EgovComAbstractDAO {
 	 * @exception Exception Exception
 	 */
 	public List<BatchResult> selectBatchResultList(BatchResult searchVO) throws Exception {
-		return selectList("BatchResultDao.selectBatchResultList", searchVO);
+		return selectList("egovframework.com.sym.bat.service.impl.mapper.BatchResultMapper.selectBatchResultList", searchVO);
 	}
 
 	/**
@@ -76,7 +76,7 @@ public class BatchResultDao extends EgovComAbstractDAO {
 	 * @exception Exception Exception
 	 */
 	public int selectBatchResultListCnt(BatchResult searchVO) throws Exception {
-		return (Integer) selectOne("BatchResultDao.selectBatchResultListCnt", searchVO);
+		return (Integer) selectOne("egovframework.com.sym.bat.service.impl.mapper.BatchResultMapper.selectBatchResultListCnt", searchVO);
 	}
 
 	/**
@@ -86,7 +86,7 @@ public class BatchResultDao extends EgovComAbstractDAO {
 	 * @exception Exception Exception
 	 */
 	public void updateBatchResult(BatchResult batchResult) throws Exception {
-		update("BatchResultDao.updateBatchResult", batchResult);
+		update("egovframework.com.sym.bat.service.impl.mapper.BatchResultMapper.updateBatchResult", batchResult);
 	}
 
 }
