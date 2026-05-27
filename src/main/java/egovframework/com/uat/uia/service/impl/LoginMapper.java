@@ -2,13 +2,12 @@ package egovframework.com.uat.uia.service.impl;
 
 import java.util.Map;
 
-import org.springframework.stereotype.Repository;
+import org.egovframe.rte.psl.dataaccess.mapper.EgovMapper;
 
 import egovframework.com.cmm.LoginVO;
-import jakarta.annotation.Resource;
 
 /**
- * 일반 로그인, 인증서 로그인을 처리하는 DAO 클래스
+ * 일반 로그인, 인증서 로그인을 처리하는 Mapper 인터페이스
  * @author 공통서비스 개발팀 박지욱
  * @since 2009.03.06
  * @version 1.0
@@ -26,22 +25,16 @@ import jakarta.annotation.Resource;
  *  2021.05.30   정진오            디지털원패스 인증 회원 조회
  *  </pre>
  */
-@Repository("loginDAO")
-public class LoginDAO {
-
-    @Resource(name = "loginMapper")
-    private LoginMapper loginMapper;
+@EgovMapper
+public interface LoginMapper {
 
     /**
-     * 2011.08.26
      * EsntlId를 이용한 로그인을 처리한다
      * @param vo LoginVO
      * @return LoginVO
      * @exception Exception
      */
-    public LoginVO actionLoginByEsntlId(LoginVO vo) throws Exception {
-        return loginMapper.actionLoginByEsntlId(vo);
-    }
+    LoginVO actionLoginByEsntlId(LoginVO vo) throws Exception;
 
     /**
      * 일반 로그인을 처리한다
@@ -49,9 +42,7 @@ public class LoginDAO {
      * @return LoginVO
      * @exception Exception
      */
-    public LoginVO actionLogin(LoginVO vo) throws Exception {
-        return loginMapper.actionLogin(vo);
-    }
+    LoginVO actionLogin(LoginVO vo) throws Exception;
 
     /**
      * 인증서 로그인을 처리한다
@@ -59,9 +50,7 @@ public class LoginDAO {
      * @return LoginVO
      * @exception Exception
      */
-    public LoginVO actionCrtfctLogin(LoginVO vo) throws Exception {
-        return loginMapper.actionCrtfctLogin(vo);
-    }
+    LoginVO actionCrtfctLogin(LoginVO vo) throws Exception;
 
     /**
      * 아이디를 찾는다.
@@ -69,9 +58,7 @@ public class LoginDAO {
      * @return LoginVO
      * @exception Exception
      */
-    public LoginVO searchId(LoginVO vo) throws Exception {
-        return loginMapper.searchId(vo);
-    }
+    LoginVO searchId(LoginVO vo) throws Exception;
 
     /**
      * 비밀번호를 찾는다.
@@ -79,18 +66,14 @@ public class LoginDAO {
      * @return LoginVO
      * @exception Exception
      */
-    public LoginVO searchPassword(LoginVO vo) throws Exception {
-        return loginMapper.searchPassword(vo);
-    }
+    LoginVO searchPassword(LoginVO vo) throws Exception;
 
     /**
      * 변경된 비밀번호를 저장한다.
      * @param vo LoginVO
      * @exception Exception
      */
-    public void updatePassword(LoginVO vo) throws Exception {
-        loginMapper.updatePassword(vo);
-    }
+    void updatePassword(LoginVO vo) throws Exception;
 
     /**
      * 로그인인증제한 내역을 조회한다.
@@ -98,25 +81,28 @@ public class LoginDAO {
      * @return Map
      * @exception Exception
      */
-    public Map<?, ?> selectLoginIncorrect(LoginVO vo) throws Exception {
-        return loginMapper.selectLoginIncorrect(vo);
-    }
+    Map<?, ?> selectLoginIncorrect(LoginVO vo) throws Exception;
 
     /**
-     * 로그인인증제한 내역을 업데이트 한다.
+     * 로그인인증제한 내역을 업데이트 한다. (일반회원)
      * @param map 파라미터 Map
      * @exception Exception
      */
-    public void updateLoginIncorrect(Map<?, ?> map) throws Exception {
-        String userSe = (String) map.get("USER_SE");
-        if ("GNR".equals(userSe)) {
-            loginMapper.updateLoginIncorrectGNR(map);
-        } else if ("ENT".equals(userSe)) {
-            loginMapper.updateLoginIncorrectENT(map);
-        } else {
-            loginMapper.updateLoginIncorrectUSR(map);
-        }
-    }
+    void updateLoginIncorrectGNR(Map<?, ?> map) throws Exception;
+
+    /**
+     * 로그인인증제한 내역을 업데이트 한다. (기업회원)
+     * @param map 파라미터 Map
+     * @exception Exception
+     */
+    void updateLoginIncorrectENT(Map<?, ?> map) throws Exception;
+
+    /**
+     * 로그인인증제한 내역을 업데이트 한다. (업무사용자)
+     * @param map 파라미터 Map
+     * @exception Exception
+     */
+    void updateLoginIncorrectUSR(Map<?, ?> map) throws Exception;
 
     /**
      * 비밀번호를 수정한후 경과한 날짜를 조회한다.
@@ -124,9 +110,7 @@ public class LoginDAO {
      * @return int
      * @exception Exception
      */
-    public int selectPassedDayChangePWD(LoginVO vo) throws Exception {
-        return loginMapper.selectPassedDayChangePWD(vo);
-    }
+    int selectPassedDayChangePWD(LoginVO vo) throws Exception;
 
     /**
      * 디지털원패스 인증 회원 조회한다.
@@ -134,8 +118,6 @@ public class LoginDAO {
      * @return LoginVO
      * @exception Exception
      */
-    public LoginVO onepassLogin(String id) throws Exception {
-        return loginMapper.onepassLogin(id);
-    }
+    LoginVO onepassLogin(String id) throws Exception;
 
 }
