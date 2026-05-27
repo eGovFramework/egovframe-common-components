@@ -2,16 +2,14 @@ package egovframework.com.sym.tbm.tbr.service.impl;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
+import org.egovframe.rte.psl.dataaccess.mapper.EgovMapper;
 
 import egovframework.com.sym.tbm.tbr.service.TroblReqst;
 import egovframework.com.sym.tbm.tbr.service.TroblReqstVO;
 
-import jakarta.annotation.Resource;
-
 /**
  * 개요
- * - 장애신청정보에 대한 DAO 클래스를 정의한다.
+ * - 장애신청정보에 대한 Mapper 인터페이스를 정의한다.
  *
  * 상세내용
  * - 장애신청정보에 대한 등록, 수정, 삭제, 조회 등의 기능을 제공한다.
@@ -20,69 +18,52 @@ import jakarta.annotation.Resource;
  * @version 1.0
  * @created 28-6-2010 오전 10:44:58
  */
-@Repository("troblReqstDAO")
-public class TroblReqstDAO {
-
-    @Resource(name = "troblReqstMapper")
-    private TroblReqstMapper troblReqstMapper;
+@EgovMapper("troblReqstMapper")
+public interface TroblReqstMapper {
 
     /**
      * 장애요청을 관리하기 위해 등록된 장애요청목록을 조회한다.
      * @param troblReqstVO - 장애신청 Vo
      * @return List - 장애요청 목록
      */
-    public List<TroblReqstVO> selectTroblReqstList(TroblReqstVO troblReqstVO) throws Exception {
-        return troblReqstMapper.selectTroblReqstList(troblReqstVO);
-    }
+    List<TroblReqstVO> selectTroblReqstList(TroblReqstVO troblReqstVO);
 
     /**
      * 장애요청목록 총 개수를 조회한다.
      * @param troblReqstVO - 장애신청 Vo
      * @return int - 장애요청 카운트 수
      */
-    public int selectTroblReqstListTotCnt(TroblReqstVO troblReqstVO) throws Exception {
-        return troblReqstMapper.selectTroblReqstListTotCnt(troblReqstVO);
-    }
+    int selectTroblReqstListTotCnt(TroblReqstVO troblReqstVO);
 
     /**
      * 등록된 장애요청의 상세정보를 조회한다.
      * @param troblReqstVO - 장애신청 Vo
      * @return TroblReqstVO - 장애신청 Vo
      */
-    public TroblReqstVO selectTroblReqst(TroblReqstVO troblReqstVO) throws Exception {
-        return troblReqstMapper.selectTroblReqst(troblReqstVO);
-    }
+    TroblReqstVO selectTroblReqst(TroblReqstVO troblReqstVO);
 
     /**
      * 장애요청정보를 신규로 등록한다.
      * @param troblReqst - 장애신청 model
      */
-    public void insertTroblReqst(TroblReqst troblReqst) throws Exception {
-        troblReqstMapper.insertTroblReqst(troblReqst);
-    }
+    void insertTroblReqst(TroblReqst troblReqst);
 
     /**
      * 기 등록된 장애요청정보를 수정한다.
      * @param troblReqst - 장애신청 model
      */
-    public void updateTroblReqst(TroblReqst troblReqst) throws Exception {
-        troblReqstMapper.updateTroblReqst(troblReqst);
-    }
+    void updateTroblReqst(TroblReqst troblReqst);
 
     /**
      * 기 등록된 장애요청정보를 삭제한다.
      * @param troblReqst - 장애신청 model
      */
-    public void deleteTroblReqst(TroblReqst troblReqst) throws Exception {
-        troblReqstMapper.deleteTroblReqst(troblReqst);
-    }
+    void deleteTroblReqst(TroblReqst troblReqst);
 
     /**
      * 장애처리를 요청한다.
      * @param troblReqst - 장애신청 model
      */
-    public void requstTroblReqst(TroblReqst troblReqst) throws Exception {
-        troblReqstMapper.requstTroblReqst(troblReqst);
-    }
+    void requstTroblReqst(TroblReqst troblReqst);
 
 }
