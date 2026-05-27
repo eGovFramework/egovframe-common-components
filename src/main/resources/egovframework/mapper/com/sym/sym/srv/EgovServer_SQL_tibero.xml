@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="serverDAO">
+<mapper namespace="egovframework.com.sym.sym.srv.service.impl.ServerMapper">
 
     <resultMap id="serverEqpmn" type="egovframework.com.sym.sym.srv.service.ServerEqpmnVO">
         <result property="serverEqpmnId" column="SERVER_EQPMN_ID"/>

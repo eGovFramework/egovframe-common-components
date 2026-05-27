@@ -2,7 +2,7 @@ package egovframework.com.sym.sym.srv.service.impl;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
+import org.egovframe.rte.psl.dataaccess.mapper.EgovMapper;
 
 import egovframework.com.sym.sym.srv.service.Server;
 import egovframework.com.sym.sym.srv.service.ServerEqpmn;
@@ -10,11 +10,10 @@ import egovframework.com.sym.sym.srv.service.ServerEqpmnRelate;
 import egovframework.com.sym.sym.srv.service.ServerEqpmnRelateVO;
 import egovframework.com.sym.sym.srv.service.ServerEqpmnVO;
 import egovframework.com.sym.sym.srv.service.ServerVO;
-import jakarta.annotation.Resource;
 
 /**
  * 개요
- * - 서버정보에 대한 DAO 클래스를 정의한다.
+ * - 서버정보에 대한 Mapper 인터페이스를 정의한다.
  *
  * 상세내용
  * - 서버정보에 대한 등록, 수정, 삭제, 조회 등의 기능을 제공한다.
@@ -23,173 +22,132 @@ import jakarta.annotation.Resource;
  * @version 1.0
  * @created 28-6-2010 오전 10:44:54
  */
-@Repository("serverDAO")
-public class ServerDAO {
-
-	@Resource(name = "serverMapper")
-	private ServerMapper serverMapper;
+@EgovMapper
+public interface ServerMapper {
 
 	/**
 	 * 서버장비를 관리하기 위해 등록된 서버장비목록을 조회한다.
 	 * @param serverEqpmnVO - 서버장비 Vo
 	 * @return List - 서버장비 목록
 	 */
-	public List<ServerEqpmnVO> selectServerEqpmnList(ServerEqpmnVO serverEqpmnVO) {
-		return serverMapper.selectServerEqpmnList(serverEqpmnVO);
-	}
+	List<ServerEqpmnVO> selectServerEqpmnList(ServerEqpmnVO serverEqpmnVO);
 
 	/**
 	 * 서버장비목록 총 개수를 조회한다.
 	 * @param serverEqpmnVO - 서버장비 Vo
 	 * @return int - 서버장비 카운트 수
 	 */
-	public int selectServerEqpmnListTotCnt(ServerEqpmnVO serverEqpmnVO) throws Exception {
-		return serverMapper.selectServerEqpmnListTotCnt(serverEqpmnVO);
-	}
+	int selectServerEqpmnListTotCnt(ServerEqpmnVO serverEqpmnVO) throws Exception;
 
 	/**
 	 * 등록된 서버장비의 상세정보를 조회한다.
 	 * @param serverEqpmnVO - 서버장비 Vo
 	 * @return serverEqpmnVO - 서버장비 Vo
 	 */
-	public ServerEqpmnVO selectServerEqpmn(ServerEqpmnVO serverEqpmnVO) throws Exception {
-		return serverMapper.selectServerEqpmn(serverEqpmnVO);
-	}
+	ServerEqpmnVO selectServerEqpmn(ServerEqpmnVO serverEqpmnVO) throws Exception;
 
 	/**
 	 * 서버장비정보를 신규로 등록한다.
 	 * @param serverEqpmn - 서버장비 model
 	 */
-	public void insertServerEqpmn(ServerEqpmn serverEqpmn) throws Exception {
-		serverMapper.insertServerEqpmn(serverEqpmn);
-	}
+	void insertServerEqpmn(ServerEqpmn serverEqpmn) throws Exception;
 
 	/**
 	 * 기 등록된 서버장비정보를 수정한다.
 	 * @param serverEqpmn - 서버장비 model
 	 */
-	public void updateServerEqpmn(ServerEqpmn serverEqpmn) throws Exception {
-		serverMapper.updateServerEqpmn(serverEqpmn);
-	}
+	void updateServerEqpmn(ServerEqpmn serverEqpmn) throws Exception;
 
 	/**
 	 * 기 등록된 서버장비정보를 삭제한다.
 	 * @param serverEqpmn - 서버장비 model
 	 */
-	public void deleteServerEqpmn(ServerEqpmn serverEqpmn) throws Exception {
-		serverMapper.deleteServerEqpmn(serverEqpmn);
-	}
+	void deleteServerEqpmn(ServerEqpmn serverEqpmn) throws Exception;
 
 	/**
 	 * 서버정보를 관리하기 위해 등록된 서버목록을 조회한다.
 	 * @param serverVO - 서버 Vo
 	 * @return List - 서버 목록
 	 */
-	public List<ServerVO> selectServerList(ServerVO serverVO) throws Exception {
-		return serverMapper.selectServerList(serverVO);
-	}
+	List<ServerVO> selectServerList(ServerVO serverVO) throws Exception;
 
 	/**
 	 * 서버목록 총 개수를 조회한다.
 	 * @param serverVO - 서버 Vo
 	 * @return int - 서버 카운트 수
 	 */
-	public int selectServerListTotCnt(ServerVO serverVO) throws Exception {
-		return serverMapper.selectServerListTotCnt(serverVO);
-	}
+	int selectServerListTotCnt(ServerVO serverVO) throws Exception;
 
 	/**
 	 * 등록된 서버의 상세정보를 조회한다.
 	 * @param serverVO - 서버 Vo
 	 * @return serverVO - 서버 Vo
 	 */
-	public ServerVO selectServer(ServerVO serverVO) throws Exception {
-		return serverMapper.selectServer(serverVO);
-	}
+	ServerVO selectServer(ServerVO serverVO) throws Exception;
 
 	/**
 	 * 서버에 등록된 서버장비목록을 조회한다.
 	 * @param serverVO - 서버 Vo
 	 * @return List - 서버장비 목록
 	 */
-	public List<ServerEqpmnVO> selectServerEqpmnRelateDetail(ServerVO serverVO) throws Exception {
-		return serverMapper.selectServerEqpmnRelateDetail(serverVO);
-	}
+	List<ServerEqpmnVO> selectServerEqpmnRelateDetail(ServerVO serverVO) throws Exception;
 
 	/**
 	 * 서버에 등록된 서버장비목록의 카운트를 조회한다.
 	 * @param serverVO - 서버 Vo
 	 * @return int - 서버에 등록된 서버장비 카운트 수
 	 */
-	public int selectServerEqpmnRelateDetailTotCnt(ServerVO serverVO) throws Exception {
-		return serverMapper.selectServerEqpmnRelateDetailTotCnt(serverVO);
-	}
+	int selectServerEqpmnRelateDetailTotCnt(ServerVO serverVO) throws Exception;
 
 	/**
 	 * 서버정보를 신규로 등록한다.
 	 * @param server - 서버 model
 	 */
-	public void insertServer(Server server) throws Exception {
-		serverMapper.insertServer(server);
-	}
+	void insertServer(Server server) throws Exception;
 
 	/**
 	 * 기 등록된 서버정보를 수정한다.
 	 * @param server - 서버 model
 	 */
-	public void updateServer(Server server) throws Exception {
-		serverMapper.updateServer(server);
-	}
+	void updateServer(Server server) throws Exception;
 
 	/**
 	 * 기 등록된 서버정보를 삭제한다.
 	 * @param server - 서버 model
 	 */
-	public void deleteServer(Server server) throws Exception {
-		serverMapper.deleteServer(server);
-	}
+	void deleteServer(Server server) throws Exception;
 
 	/**
 	 * 서버장비관계정보를 관리하기 위해 대상 서버장비목록을 조회한다.
 	 * @param serverEqpmnRelateVO - 서버장비관계 Vo
 	 * @return List - 서버장비 목록
 	 */
-	public List<ServerEqpmnRelateVO> selectServerEqpmnRelateList(ServerEqpmnRelateVO serverEqpmnRelateVO) throws Exception {
-		return serverMapper.selectServerEqpmnRelateList(serverEqpmnRelateVO);
-	}
+	List<ServerEqpmnRelateVO> selectServerEqpmnRelateList(ServerEqpmnRelateVO serverEqpmnRelateVO) throws Exception;
 
 	/**
 	 * 서버장비관계 대상 목록 총 개수를 조회한다.
 	 * @param serverEqpmnRelateVO - 서버장비관계 Vo
 	 * @return int - 서버장비관계 카운트 수
 	 */
-	public int selectServerEqpmnRelateListTotCnt(ServerEqpmnRelateVO serverEqpmnRelateVO) throws Exception {
-		return serverMapper.selectServerEqpmnRelateListTotCnt(serverEqpmnRelateVO);
-	}
+	int selectServerEqpmnRelateListTotCnt(ServerEqpmnRelateVO serverEqpmnRelateVO) throws Exception;
 
 	/**
 	 * 서버장비관계정보를 신규로 등록한다.
 	 * @param serverEqpmnRelate - 서버장비관계 model
 	 */
-	public void insertServerEqpmnRelate(ServerEqpmnRelate serverEqpmnRelate) throws Exception {
-		serverMapper.insertServerEqpmnRelate(serverEqpmnRelate);
-	}
+	void insertServerEqpmnRelate(ServerEqpmnRelate serverEqpmnRelate) throws Exception;
 
 	/**
 	 * 기 등록된 서버장비관계정보를 삭제한다.
 	 * @param serverEqpmnRelate - 서버장비관계 model
 	 */
-	public void deleteServerEqpmnRelate(ServerEqpmnRelate serverEqpmnRelate) throws Exception {
-		serverMapper.deleteServerEqpmnRelate(serverEqpmnRelate);
-	}
+	void deleteServerEqpmnRelate(ServerEqpmnRelate serverEqpmnRelate) throws Exception;
 
 	/**
 	 * 특정 서버장비를 참조하는 서버S/W 목록을 조회한다.
 	 * @param serverEqpmnId - 서버장비 ID
 	 * @return List - 해당 서버장비를 사용하는 서버S/W 목록
 	 */
-	public List<ServerVO> selectRelatedServersByEqpmnId(String serverEqpmnId) throws Exception {
-		return serverMapper.selectRelatedServersByEqpmnId(serverEqpmnId);
-	}
+	List<ServerVO> selectRelatedServersByEqpmnId(String serverEqpmnId) throws Exception;
 
 }
