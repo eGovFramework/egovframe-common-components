@@ -6,7 +6,7 @@
 -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="StplatManage">
+<mapper namespace="egovframework.com.uss.sam.stp.service.impl.StplatManageDAO">
 
 	<resultMap id="StplatManage" type="egovframework.com.uss.sam.stp.service.StplatManageVO">
 		<result property="useStplatId" column="USE_STPLAT_ID"/>
