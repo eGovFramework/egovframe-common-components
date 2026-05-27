@@ -2,38 +2,41 @@ package egovframework.com.cop.cmy.service.impl;
 
 import java.util.List;
 
-import org.springframework.dao.DataAccessException;
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.cop.cmy.service.Community;
 import egovframework.com.cop.cmy.service.CommunityVO;
 
 @Repository("EgovCommuMasterDAO")
-public class EgovCommuMasterDAO extends EgovComAbstractDAO {
+public class EgovCommuMasterDAO {
+
+	@Resource(name = "egovCommuMasterMapper")
+	private EgovCommuMasterMapper egovCommuMasterMapper;
 
 	public List<CommunityVO> selectCommuMasterList(CommunityVO cmmntyVO) {
-		return selectList("CommuMaster.selectCommuMasterList", cmmntyVO);
+		return egovCommuMasterMapper.selectCommuMasterList(cmmntyVO);
 	}
 
 	public int selectCommuMasterListCnt(CommunityVO cmmntyVO) {
-		return selectOne("CommuMaster.selectCommuMasterListCnt", cmmntyVO);
+		return egovCommuMasterMapper.selectCommuMasterListCnt(cmmntyVO);
 	}
 
 	public int insertCommuMaster(Community community) {
-		return insert("CommuMaster.insertCommuMaster", community);
+		return egovCommuMasterMapper.insertCommuMaster(community);
 	}
 
 	public CommunityVO selectCommuMasterDetail(CommunityVO cmmntyVO) {
-		return selectOne("CommuMaster.selectCommuMasterDetail", cmmntyVO);
+		return egovCommuMasterMapper.selectCommuMasterDetail(cmmntyVO);
 	}
 
 	public int updateCommuMaster(Community community) {
-		return update("CommuMaster.updateCommuMaster", community);
+		return egovCommuMasterMapper.updateCommuMaster(community);
 	}
 
 	public int deleteCommuMaster(Community community) {
-		return update("CommuMaster.deleteCommuMaster", community);
+		return egovCommuMasterMapper.deleteCommuMaster(community);
 	}
 
 	/**
@@ -41,10 +44,9 @@ public class EgovCommuMasterDAO extends EgovComAbstractDAO {
 	 *
 	 * @param cmmntyVO
 	 * @return
-	 * @throws Exception
 	 */
-	public List<CommunityVO> selectCommuMasterListPortlet(CommunityVO cmmntyVO) throws DataAccessException {
-		return selectList("CommuMaster.selectCommuMasterListPortlet", cmmntyVO);
+	public List<CommunityVO> selectCommuMasterListPortlet(CommunityVO cmmntyVO) {
+		return egovCommuMasterMapper.selectCommuMasterListPortlet(cmmntyVO);
 	}
 
 }

@@ -7,7 +7,7 @@
 -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="CommuMaster">
+<mapper namespace="egovframework.com.cop.cmy.service.impl.EgovCommuMasterMapper">
 
 	<resultMap id="CmmntyList" type="egovframework.com.cop.cmy.service.CommunityVO">
 		<result property="cmmntyId" column="CMMNTY_ID"/>

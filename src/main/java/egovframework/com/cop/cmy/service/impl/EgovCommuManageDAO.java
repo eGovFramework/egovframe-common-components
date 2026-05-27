@@ -2,54 +2,58 @@ package egovframework.com.cop.cmy.service.impl;
 
 import java.util.List;
 
+import javax.annotation.Resource;
+
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.cop.cmy.service.CommunityUser;
 import egovframework.com.cop.cmy.service.CommunityUserVO;
 import egovframework.com.cop.cmy.service.CommunityVO;
 
 @Repository("EgovCommuManageDAO")
-public class EgovCommuManageDAO extends EgovComAbstractDAO{
+public class EgovCommuManageDAO {
+
+	@Resource(name = "egovCommuManageMapper")
+	private EgovCommuManageMapper egovCommuManageMapper;
 
 	public CommunityUser selectSingleCommuUserDetail(CommunityUser cmmntyUser) {
-		return (CommunityUser) selectOne("CommuManage.selectSingleCommuUserDetail", cmmntyUser);
+		return egovCommuManageMapper.selectSingleCommuUserDetail(cmmntyUser);
 	}
 
 	public List<CommunityUser> selectCommuManagerList(CommunityVO cmmntyVO) {
-		return selectList("CommuManage.selectCommuManagerList", cmmntyVO);
+		return egovCommuManageMapper.selectCommuManagerList(cmmntyVO);
 	}
 
 	public int checkExistUser(CommunityUser cmmntyUser) {
-		return (Integer)selectOne("CommuManage.checkExistUser", cmmntyUser);
+		return egovCommuManageMapper.checkExistUser(cmmntyUser);
 	}
 
 	public void insertCommuUserRqst(CommunityUser cmmntyUser) {
-		insert("CommuManage.insertCommuUserRqst", cmmntyUser);
+		egovCommuManageMapper.insertCommuUserRqst(cmmntyUser);
 	}
 
 	public List<CommunityUser> selectCommuUserList(CommunityUserVO cmmntyUserVO) {
-		return selectList("CommuManage.selectCommuUserList", cmmntyUserVO);
+		return egovCommuManageMapper.selectCommuUserList(cmmntyUserVO);
 	}
 
 	public int selectCommuUserListCnt(CommunityUserVO cmmntyUserVO) {
-		return (Integer)selectOne("CommuManage.selectCommuUserListCnt", cmmntyUserVO);
+		return egovCommuManageMapper.selectCommuUserListCnt(cmmntyUserVO);
 	}
 
 	public void insertCommuUser(CommunityUserVO cmmntyUserVO) {
-		update("CommuManage.insertCommuUser", cmmntyUserVO);
+		egovCommuManageMapper.insertCommuUser(cmmntyUserVO);
 	}
 
 	public void deleteCommuUser(CommunityUserVO cmmntyUserVO) {
-		delete("CommuManage.deleteCommuUser", cmmntyUserVO);
+		egovCommuManageMapper.deleteCommuUser(cmmntyUserVO);
 	}
 
 	public void insertCommuUserAdmin(CommunityUserVO cmmntyUserVO) {
-		update("CommuManage.insertCommuUserAdmin", cmmntyUserVO);
+		egovCommuManageMapper.insertCommuUserAdmin(cmmntyUserVO);
 	}
 
 	public void deleteCommuUserAdmin(CommunityUserVO cmmntyUserVO) {
-		update("CommuManage.deleteCommuUserAdmin", cmmntyUserVO);
+		egovCommuManageMapper.deleteCommuUserAdmin(cmmntyUserVO);
 	}
 
 }
