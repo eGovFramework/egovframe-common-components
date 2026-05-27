@@ -6,7 +6,7 @@
 -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="NoteTrnsmit">
+<mapper namespace="egovframework.com.uss.ion.nts.service.impl.NoteTrnsmitDao">
 	
 	<!-- ::ResultMap 선언 -->
 	<resultMap id="NoteTrnsmitVO" type="egovframework.com.uss.ion.nts.service.NoteTrnsmit">

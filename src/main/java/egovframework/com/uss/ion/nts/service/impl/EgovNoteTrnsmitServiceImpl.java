@@ -40,7 +40,7 @@ public class EgovNoteTrnsmitServiceImpl extends EgovAbstractServiceImpl
      */
     @Override
 	public List<EgovMap> selectNoteTrnsmitList(NoteTrnsmit noteTrnsmit) throws Exception {
-    	return dao.selectNoteTrnsmitList(noteTrnsmit);
+    	return dao.selectNoteTrnsmit(noteTrnsmit);
     }
 
     /**
@@ -51,7 +51,7 @@ public class EgovNoteTrnsmitServiceImpl extends EgovAbstractServiceImpl
      */
     @Override
 	public int selectNoteTrnsmitListCnt(NoteTrnsmit noteTrnsmit) throws Exception {
-        return dao.selectNoteTrnsmitListCnt(noteTrnsmit);
+        return dao.selectNoteTrnsmitCnt(noteTrnsmit);
     }
 
     /**
