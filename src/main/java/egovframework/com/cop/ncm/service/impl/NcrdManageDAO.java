@@ -4,10 +4,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.cop.ncm.service.NameCard;
 import egovframework.com.cop.ncm.service.NameCardUser;
 import egovframework.com.cop.ncm.service.NameCardVO;
+import jakarta.annotation.Resource;
 
 /**
  * 명함정보를 관리하기 위한 데이터 접근 클래스
@@ -26,137 +26,132 @@ import egovframework.com.cop.ncm.service.NameCardVO;
  * </pre>
  */
 @Repository("NcrdManageDAO")
-public class NcrdManageDAO extends EgovComAbstractDAO {
+public class NcrdManageDAO {
 
-    // Logger log = Logger.getLogger(this.getClass());
+    @Resource(name = "NcrdManageMapper")
+    private NcrdManageMapper ncrdManageMapper;
+
+    /**
+     * 명함사용자 정보를 삭제한다.
+     *
+     * @param nameCardVO
+     */
+    public int deleteNcrdItemUser(NameCardVO nameCardVO) {
+        return ncrdManageMapper.deleteNcrdItemUser(nameCardVO);
+    }
 
     /**
      * 명함 정보를 삭제한다.
      *
-     * @param nameCard
-     * @throws Exception
+     * @param nameCardVO
      */
-    public int deleteNcrdItemUser(NameCardVO nameCardVO){
-        return delete("NcrdManageDAO.deleteNcrdItemUser", nameCardVO);
-    }
-
     public int deleteNcrdItem(NameCardVO nameCardVO) {
-        return delete("NcrdManageDAO.deleteNcrdItem", nameCardVO);
+        return ncrdManageMapper.deleteNcrdItem(nameCardVO);
     }
 
     /**
      * 명함 정보를 등록한다.
      *
      * @param nameCard
-     * @throws Exception
      */
     public int insertNcrdItem(NameCard nameCard) {
-        return insert("NcrdManageDAO.insertNcrdItem", nameCard);
+        return ncrdManageMapper.insertNcrdItem(nameCard);
     }
 
     /**
      * 명함사용자 정보를 등록한다.
      *
      * @param ncrdUser
-     * @throws Exception
      */
     public int insertNcrdUseInf(NameCardUser ncrdUser) {
-        return insert("NcrdManageDAO.insertNcrdUseInf", ncrdUser);
+        return ncrdManageMapper.insertNcrdUseInf(ncrdUser);
     }
 
     /**
      * 명함 정보에 대한 상세정보를 조회한다.
      *
      * @param nameCard
-     * @return
-     * @throws Exception
+     * @return 명함 상세정보 VO
      */
     public NameCardVO selectNcrdItem(NameCard nameCard) {
-        return selectOne("NcrdManageDAO.selectNcrdItem", nameCard);
+        return ncrdManageMapper.selectNcrdItem(nameCard);
     }
 
     /**
      * 명함 정보에 대한 목록을 조회한다.
      *
-     * @param nameCard
-     * @return
-     * @throws Exception
+     * @param nameCardVO
+     * @return 명함 목록
      */
     public List<NameCardVO> selectNcrdItemList(NameCardVO nameCardVO) {
-        return selectList("NcrdManageDAO.selectNcrdItemList", nameCardVO);
+        return ncrdManageMapper.selectNcrdItemList(nameCardVO);
     }
 
     /**
+     * 명함 목록 전체 건수를 조회한다.
      *
-     * @param nameCard
-     * @return
-     * @throws Exception
+     * @param nameCardVO
+     * @return 전체 건수
      */
     public int selectNcrdItemListCnt(NameCardVO nameCardVO) {
-        return selectOne("NcrdManageDAO.selectNcrdItemListCnt", nameCardVO);
+        return ncrdManageMapper.selectNcrdItemListCnt(nameCardVO);
     }
 
     /**
-     * 명함 정보에 대한 목록 전체 건수를 조회한다.
+     * 명함사용자 목록을 조회한다.
      *
      * @param nameCardUser
-     * @return
-     * @throws Exception
+     * @return 명함사용자 목록
      */
     public List<NameCardUser> selectNcrdUseInfs(NameCardUser nameCardUser) {
-        return selectList("NcrdManageDAO.selectNcrdUseInfs", nameCardUser);
+        return ncrdManageMapper.selectNcrdUseInfs(nameCardUser);
     }
 
     /**
-     * 명함사용자 정보에 대한 목록 전체 건수를 조회한다.
+     * 명함사용자 목록 전체 건수를 조회한다.
      *
-     * @param ncrdUser
-     * @return
-     * @throws Exception
+     * @param nameCardUser
+     * @return 전체 건수
      */
     public int selectNcrdUseInfsCnt(NameCardUser nameCardUser) {
-        return selectOne("NcrdManageDAO.selectNcrdUseInfsCnt", nameCardUser);
+        return ncrdManageMapper.selectNcrdUseInfsCnt(nameCardUser);
     }
 
     /**
      * 명함 정보를 수정한다.
      *
      * @param nameCard
-     * @throws Exception
      */
     public int updateNcrdItem(NameCard nameCard) {
-        return update("NcrdManageDAO.updateNcrdItem", nameCard);
+        return ncrdManageMapper.updateNcrdItem(nameCard);
     }
 
     /**
      * 명함사용자 정보를 수정한다.
      *
      * @param nameCardUser
-     * @throws Exception
      */
     public int updateNcrdUseInf(NameCardUser nameCardUser) {
-        return update("NcrdManageDAO.updateNcrdUseInf", nameCardUser);
+        return ncrdManageMapper.updateNcrdUseInf(nameCardUser);
     }
 
     /**
      * 내 명함 정보에 대한 목록을 조회한다.
      *
      * @param nameCardVO
-     * @return
-     * @throws Exception
+     * @return 내 명함 목록
      */
     public List<NameCardVO> selectMyNcrdItemList(NameCardVO nameCardVO) {
-        return selectList("NcrdManageDAO.selectMyNcrdItemList", nameCardVO);
+        return ncrdManageMapper.selectMyNcrdItemList(nameCardVO);
     }
 
     /**
-     * 내 명함 정보에 대한 목록 전체 건수를 조회한다.
+     * 내 명함 목록 전체 건수를 조회한다.
      *
      * @param nameCardVO
-     * @return
-     * @throws Exception
+     * @return 전체 건수
      */
     public int selectMyNcrdItemListCnt(NameCardVO nameCardVO) {
-        return selectOne("NcrdManageDAO.selectMyNcrdItemListCnt", nameCardVO);
+        return ncrdManageMapper.selectMyNcrdItemListCnt(nameCardVO);
     }
 }
