@@ -6,15 +6,17 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.service.FileVO;
+import jakarta.annotation.Resource;
 
 /**
- * @Class Name : EgovFileMngDAO.java
+ * @Class Name : FileManageDAO.java
  * @Description : 파일정보 관리를 위한 데이터 처리 클래스
  * @Modification Information
  *
  *    수정일       수정자         수정내용
  *    -------        -------     -------------------
  *    2009. 3. 25.     이삼섭    최초생성
+ *    2025.05.28.      이백행    @EgovMapper 인터페이스 방식으로 전환
  *
  * @author 공통 서비스 개발팀 이삼섭
  * @since 2009. 3. 25.
@@ -23,7 +25,10 @@ import egovframework.com.cmm.service.FileVO;
  *
  */
 @Repository("FileManageDAO")
-public class FileManageDAO extends EgovComAbstractDAO {
+public class FileManageDAO {
+
+	@Resource(name = "fileMngMapper")
+	private FileMngMapper fileMngMapper;
 
 	/**
 	 * 여러 개의 파일에 대한 정보(속성 및 상세)를 등록한다.
@@ -36,13 +41,12 @@ public class FileManageDAO extends EgovComAbstractDAO {
 		FileVO vo = fileList.get(0);
 		String atchFileId = vo.getAtchFileId();
 
-		insert("FileManageDAO.insertFileMaster", vo);
+		fileMngMapper.insertFileMaster(vo);
 
 		Iterator<FileVO> iter = fileList.iterator();
 		while (iter.hasNext()) {
 			vo = iter.next();
-
-			insert("FileManageDAO.insertFileDetail", vo);
+			fileMngMapper.insertFileDetail(vo);
 		}
 
 		return atchFileId;
@@ -55,8 +59,8 @@ public class FileManageDAO extends EgovComAbstractDAO {
 	 * @throws Exception
 	 */
 	public void insertFileInf(FileVO vo) throws Exception {
-		insert("FileManageDAO.insertFileMaster", vo);
-		insert("FileManageDAO.insertFileDetail", vo);
+		fileMngMapper.insertFileMaster(vo);
+		fileMngMapper.insertFileDetail(vo);
 	}
 
 	/**
@@ -66,11 +70,9 @@ public class FileManageDAO extends EgovComAbstractDAO {
 	 * @throws Exception
 	 */
 	public void updateFileInfs(List<FileVO> fileList) throws Exception {
-		FileVO vo;
 		Iterator<FileVO> iter = fileList.iterator();
 		while (iter.hasNext()) {
-			vo = iter.next();
-			insert("FileManageDAO.insertFileDetail", vo);
+			fileMngMapper.insertFileDetail(iter.next());
 		}
 	}
 
@@ -82,11 +84,8 @@ public class FileManageDAO extends EgovComAbstractDAO {
 	 */
 	public void deleteFileInfs(List<FileVO> fileList) throws Exception {
 		Iterator<FileVO> iter = fileList.iterator();
-		FileVO vo;
 		while (iter.hasNext()) {
-			vo = iter.next();
-
-			delete("FileManageDAO.deleteFileDetail", vo);
+			fileMngMapper.deleteFileDetail(iter.next());
 		}
 	}
 
@@ -97,7 +96,7 @@ public class FileManageDAO extends EgovComAbstractDAO {
 	 * @throws Exception
 	 */
 	public void deleteFileInf(FileVO fvo) throws Exception {
-		delete("FileManageDAO.deleteFileDetail", fvo);
+		fileMngMapper.deleteFileDetail(fvo);
 	}
 
 	/**
@@ -108,7 +107,7 @@ public class FileManageDAO extends EgovComAbstractDAO {
 	 * @throws Exception
 	 */
 	public List<FileVO> selectFileInfs(FileVO vo) throws Exception {
-		return selectList("FileManageDAO.selectFileList", vo);
+		return fileMngMapper.selectFileList(vo);
 	}
 
 	/**
@@ -119,7 +118,7 @@ public class FileManageDAO extends EgovComAbstractDAO {
 	 * @throws Exception
 	 */
 	public int getMaxFileSN(FileVO fvo) throws Exception {
-		return (Integer) selectOne("FileManageDAO.getMaxFileSN", fvo);
+		return fileMngMapper.getMaxFileSN(fvo);
 	}
 
 	/**
@@ -130,7 +129,7 @@ public class FileManageDAO extends EgovComAbstractDAO {
 	 * @throws Exception
 	 */
 	public FileVO selectFileInf(FileVO fvo) throws Exception {
-		return (FileVO) selectOne("FileManageDAO.selectFileInf", fvo);
+		return fileMngMapper.selectFileInf(fvo);
 	}
 
 	/**
@@ -140,18 +139,18 @@ public class FileManageDAO extends EgovComAbstractDAO {
 	 * @throws Exception
 	 */
 	public void deleteAllFileInf(FileVO fvo) throws Exception {
-		update("FileManageDAO.deleteCOMTNFILE", fvo);
+		fileMngMapper.deleteCOMTNFILE(fvo);
 	}
 
 	/**
 	 * 파일명 검색에 대한 목록을 조회한다.
 	 *
-	 * @param vo
+	 * @param fvo
 	 * @return
 	 * @throws Exception
 	 */
 	public List<FileVO> selectFileListByFileNm(FileVO fvo) throws Exception {
-		return selectList("FileManageDAO.selectFileListByFileNm", fvo);
+		return fileMngMapper.selectFileListByFileNm(fvo);
 	}
 
 	/**
@@ -162,7 +161,7 @@ public class FileManageDAO extends EgovComAbstractDAO {
 	 * @throws Exception
 	 */
 	public int selectFileListCntByFileNm(FileVO fvo) throws Exception {
-		return (Integer) selectOne("FileManageDAO.selectFileListCntByFileNm", fvo);
+		return fileMngMapper.selectFileListCntByFileNm(fvo);
 	}
 
 	/**
@@ -173,6 +172,6 @@ public class FileManageDAO extends EgovComAbstractDAO {
 	 * @throws Exception
 	 */
 	public List<FileVO> selectImageFileList(FileVO vo) throws Exception {
-		return selectList("FileManageDAO.selectImageFileList", vo);
+		return fileMngMapper.selectImageFileList(vo);
 	}
 }
