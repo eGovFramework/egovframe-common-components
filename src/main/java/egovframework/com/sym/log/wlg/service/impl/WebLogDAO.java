@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sym.log.wlg.service.WebLog;
+import jakarta.annotation.Resource;
 
 /**
  * @Class Name : WebLogDAO.java
@@ -16,6 +16,7 @@ import egovframework.com.sym.log.wlg.service.WebLog;
  *    -------        -------     -------------------
  *    2009. 3. 11.   이삼섭         최초생성
  *    2011. 7. 01.   이기하         패키지 분리(sym.log -> sym.log.wlg)
+ *    2026. 5. 28.   dasomel        @EgovMapper 인터페이스 위임 방식으로 전환
  *
  * @author 공통 서비스 개발팀 이삼섭
  * @since 2009. 3. 11.
@@ -24,63 +25,29 @@ import egovframework.com.sym.log.wlg.service.WebLog;
  *
  */
 @Repository("webLogDAO")
-public class WebLogDAO extends EgovComAbstractDAO {
+public class WebLogDAO {
 
-	/**
-	 * 웹 로그를 기록한다.
-	 *
-	 * @param WebLog
-	 * @return
-	 * @throws Exception
-	 */
-	public void logInsertWebLog(WebLog webLog) throws Exception{
-		insert("WebLog.logInsertWebLog", webLog);
+	@Resource(name = "webLogMapper")
+	private WebLogMapper webLogMapper;
+
+	public void logInsertWebLog(WebLog webLog) {
+		webLogMapper.logInsertWebLog(webLog);
 	}
 
-	/**
-	 * 웹 로그정보를 요약한다.
-	 *
-	 * @param
-	 * @return
-	 * @throws Exception
-	 */
-	public void logInsertWebLogSummary() throws Exception{
-		insert("WebLog.logInsertWebLogSummary", null);
-		delete("WebLog.logDeleteWebLogSummary", null);
+	public void logInsertWebLogSummary() {
+		webLogMapper.logInsertWebLogSummary();
+		webLogMapper.logDeleteWebLogSummary();
 	}
 
-	/**
-	 * 웹 로그정보 상세정보를 조회한다.
-	 *
-	 * @param webLog
-	 * @return webLog
-	 * @throws Exception
-	 */
-	public WebLog selectWebLog(WebLog webLog) throws Exception{
-
-		return (WebLog) selectOne("WebLog.selectWebLog", webLog);
+	public WebLog selectWebLog(WebLog webLog) {
+		return webLogMapper.selectWebLog(webLog);
 	}
 
-	/**
-	 * 웹 로그정보 목록을 조회한다.
-	 *
-	 * @param webLog
-	 * @return
-	 * @throws Exception
-	 */
-	public List<WebLog> selectWebLogInf(WebLog webLog) throws Exception{
-		return selectList("WebLog.selectWebLogInf", webLog);
+	public List<WebLog> selectWebLogInf(WebLog webLog) {
+		return webLogMapper.selectWebLogInf(webLog);
 	}
 
-	/**
-	 * 웹 로그정보 목록의 숫자를 조회한다.
-	 * @param webLog
-	 * @return
-	 * @throws Exception
-	 */
-	public int selectWebLogInfCnt(WebLog webLog) throws Exception{
-
-		return (Integer)selectOne("WebLog.selectWebLogInfCnt", webLog);
+	public int selectWebLogInfCnt(WebLog webLog) {
+		return webLogMapper.selectWebLogInfCnt(webLog);
 	}
-
 }
