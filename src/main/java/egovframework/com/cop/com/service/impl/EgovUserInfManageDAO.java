@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.cop.com.service.UserInfVO;
+import jakarta.annotation.Resource;
 
 /**
  * 협업 활용 사용자 정보 조회를 위한 데이터 접근 클래스
@@ -20,20 +20,24 @@ import egovframework.com.cop.com.service.UserInfVO;
  *   수정일          수정자       수정내용
  *  -----------    --------    ---------------------------
  *   2009.04.06     이삼섭       최초 생성
+ *   2026.05.28     dasomel      EgovUserInfManageMapper 위임 구조로 전환
  *
  * </pre>
  */
 @Repository("EgovUserInfManageDAO")
-public class EgovUserInfManageDAO extends EgovComAbstractDAO {
+public class EgovUserInfManageDAO {
+
+    @Resource(name = "EgovUserInfManageDAO")
+    private EgovUserInfManageMapper mapper;
+
     /**
      * 사용자 정보에 대한 목록을 조회한다.
      *
      * @param userVO
      * @return
-     * @throws Exception
      */
     public List<UserInfVO> selectUserList(UserInfVO userVO) {
-        return selectList("EgovUserInfManageDAO.selectUserList", userVO);
+        return mapper.selectUserList(userVO);
     }
 
     /**
@@ -41,10 +45,9 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      *
      * @param userVO
      * @return
-     * @throws Exception
      */
     public int selectUserListCnt(UserInfVO userVO) {
-        return selectOne("EgovUserInfManageDAO.selectUserListCnt", userVO);
+        return mapper.selectUserListCnt(userVO);
     }
 
     /**
@@ -52,10 +55,9 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      *
      * @param userVO
      * @return
-     * @throws Exception
      */
     public List<UserInfVO> selectCmmntyUserList(UserInfVO userVO) {
-        return selectList("EgovUserInfManageDAO.selectCmmntyUserList", userVO);
+        return mapper.selectCmmntyUserList(userVO);
     }
 
     /**
@@ -63,10 +65,9 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      *
      * @param userVO
      * @return
-     * @throws Exception
      */
     public int selectCmmntyUserListCnt(UserInfVO userVO) {
-        return selectOne("EgovUserInfManageDAO.selectCmmntyUserListCnt", userVO);
+        return mapper.selectCmmntyUserListCnt(userVO);
     }
 
     /**
@@ -74,10 +75,9 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      *
      * @param userVO
      * @return
-     * @throws Exception
      */
     public List<UserInfVO> selectCmmntyMngrList(UserInfVO userVO) {
-        return selectList("EgovUserInfManageDAO.selectCmmntyMngrList", userVO);
+        return mapper.selectCmmntyMngrList(userVO);
     }
 
     /**
@@ -85,10 +85,9 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      *
      * @param userVO
      * @return
-     * @throws Exception
      */
     public int selectCmmntyMngrListCnt(UserInfVO userVO) {
-        return selectOne("EgovUserInfManageDAO.selectCmmntyMngrListCnt", userVO);
+        return mapper.selectCmmntyMngrListCnt(userVO);
     }
 
     /**
@@ -99,7 +98,7 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      * @throws Exception
      */
     public List<UserInfVO> selectClubUserList(UserInfVO userVO) throws Exception {
-        return selectList("EgovUserInfManageDAO.selectClubUserList", userVO);
+        return mapper.selectClubUserList(userVO);
     }
 
     /**
@@ -110,7 +109,7 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      * @throws Exception
      */
     public int selectClubUserListCnt(UserInfVO userVO) throws Exception {
-        return selectOne("EgovUserInfManageDAO.selectClubUserListCnt", userVO);
+        return mapper.selectClubUserListCnt(userVO);
     }
 
     /**
@@ -121,7 +120,7 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      * @throws Exception
      */
     public List<UserInfVO> selectClubOprtrList(UserInfVO userVO) throws Exception {
-        return selectList("EgovUserInfManageDAO.selectClubOprtrList", userVO);
+        return mapper.selectClubOprtrList(userVO);
     }
 
     /**
@@ -132,7 +131,7 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      * @throws Exception
      */
     public int selectClubOprtrListCnt(UserInfVO userVO) throws Exception {
-        return selectOne("EgovUserInfManageDAO.selectClubOprtrListCnt", userVO);
+        return mapper.selectClubOprtrListCnt(userVO);
     }
 
     /**
@@ -143,7 +142,7 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      * @throws Exception
      */
     public List<UserInfVO> selectAllClubUser(UserInfVO userVO) throws Exception {
-        return selectList("EgovUserInfManageDAO.selectAllClubUser", userVO);
+        return mapper.selectAllClubUser(userVO);
     }
 
     /**
@@ -151,9 +150,8 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      *
      * @param userVO
      * @return
-     * @throws Exception
      */
     public List<UserInfVO> selectAllCmmntyUser(UserInfVO userVO) {
-        return selectList("EgovUserInfManageDAO.selectAllCmmntyUser", userVO);
+        return mapper.selectAllCmmntyUser(userVO);
     }
 }
