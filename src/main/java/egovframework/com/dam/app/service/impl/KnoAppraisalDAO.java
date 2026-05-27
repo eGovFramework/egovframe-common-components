@@ -5,9 +5,10 @@ import java.util.List;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.dam.app.service.KnoAppraisal;
 import egovframework.com.dam.app.service.KnoAppraisalVO;
+
+import jakarta.annotation.Resource;
 
 /**
  * 개요
@@ -20,71 +21,61 @@ import egovframework.com.dam.app.service.KnoAppraisalVO;
  * @version 1.0
  * @created 12-8-2010 오후 3:44:47
  */
-
 @Repository("KnoAppraisalDAO")
-public class KnoAppraisalDAO extends EgovComAbstractDAO {
+public class KnoAppraisalDAO {
+
+	@Resource(name = "knoAppraisalMapper")
+	private KnoAppraisalMapper knoAppraisalMapper;
 
 	/**
-	 * 등록된 지식정보평가 정보를 조회 한다.
-	 * @param KnoAppraisalVO - 지식정보평가 VO
-	 * @return String - 지식정보평가 VO
-	 *
-	 * @param KnoAppraisalVO
+	 * 등록된 지식정보평가 목록을 조회한다.
+	 * @param searchVO 지식정보평가 조회 조건 VO
+	 * @return 지식정보평가 목록
 	 */
-	public List<EgovMap> selectKnoAppraisalList(KnoAppraisalVO searchVO) throws Exception {
-		return  selectList("KnoAppraisalDAO.selectKnoAppraisalList", searchVO);
+	public List<EgovMap> selectKnoAppraisalList(KnoAppraisalVO searchVO) {
+		return knoAppraisalMapper.selectKnoAppraisalList(searchVO);
 	}
 
 	/**
 	 * 지식정보평가 목록 총 개수를 조회한다.
-	 * @param MapTeamVO - 지식정보평가 Vo
-	 * @return int - 지식정보평가 토탈 카운트 수
-	 *
-	 * @param KnoAppraisalVO
+	 * @param searchVO 지식정보평가 조회 조건 VO
+	 * @return 총 개수
 	 */
-	public int selectKnoAppraisalTotCnt(KnoAppraisalVO searchVO) throws Exception {
-		return  (Integer)selectOne("KnoAppraisalDAO.selectKnoAppraisalTotCnt", searchVO);
+	public int selectKnoAppraisalTotCnt(KnoAppraisalVO searchVO) {
+		return knoAppraisalMapper.selectKnoAppraisalTotCnt(searchVO);
 	}
 
 	/**
-	 * 지식정보평가 상세 정보를 조회 한다.
-	 * @param KnoAppraisalVO - 지식정보평가 VO
-	 * @return String - 지식정보평가 VO
-	 *
-	 * @param KnoAppraisalVO
+	 * 지식정보평가 상세 정보를 조회한다.
+	 * @param knoAppraisal 조회할 지식정보평가 식별 정보가 담긴 모델
+	 * @return 지식정보평가 상세 모델
 	 */
-	public KnoAppraisal selectKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception {
-		return (KnoAppraisal)selectOne("KnoAppraisalDAO.selectKnoAppraisal", knoAppraisal);
+	public KnoAppraisal selectKnoAppraisal(KnoAppraisal knoAppraisal) {
+		return knoAppraisalMapper.selectKnoAppraisal(knoAppraisal);
 	}
 
 	/**
 	 * 지식정보평가 정보를 신규로 등록한다.
-	 * @param knoAps - 지식정보평가 model
-	 *
-	 * @param knoAps
+	 * @param knoAppraisal 등록할 지식정보평가 모델
 	 */
-	public void insertKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception {
-		insert("KnoAppraisalDAO.insertKnoAppraisal", knoAppraisal);
+	public void insertKnoAppraisal(KnoAppraisal knoAppraisal) {
+		knoAppraisalMapper.insertKnoAppraisal(knoAppraisal);
 	}
 
 	/**
-	 * 기 등록 된 지식정보평가 정보를 수정 한다.
-	 * @param AppraisalknoAps - 지식정보평가 model
-	 *
-	 * @param knoAps
+	 * 기 등록된 지식정보평가 정보를 수정한다.
+	 * @param knoAppraisal 수정할 지식정보평가 모델
 	 */
-	public void updateKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception {
-		update("KnoAppraisalDAO.updateKnoAppraisal", knoAppraisal);
+	public void updateKnoAppraisal(KnoAppraisal knoAppraisal) {
+		knoAppraisalMapper.updateKnoAppraisal(knoAppraisal);
 	}
 
 	/**
 	 * 기 등록된 지식정보평가 정보를 삭제한다.
-	 * @param AppraisalknoAps - 지식정보평가 model
-	 *
-	 * @param knoAps
+	 * @param knoAppraisal 삭제할 지식정보평가 모델
 	 */
-	public void deleteKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception {
-		delete("KnoAppraisalDAO.deleteKnoAppraisal", knoAppraisal);
+	public void deleteKnoAppraisal(KnoAppraisal knoAppraisal) {
+		knoAppraisalMapper.deleteKnoAppraisal(knoAppraisal);
 	}
 
 }

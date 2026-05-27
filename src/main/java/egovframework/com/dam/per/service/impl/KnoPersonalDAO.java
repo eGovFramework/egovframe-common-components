@@ -4,9 +4,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.dam.per.service.KnoPersonal;
 import egovframework.com.dam.per.service.KnoPersonalVO;
+
+import jakarta.annotation.Resource;
 
 /**
  * 개요
@@ -19,71 +20,61 @@ import egovframework.com.dam.per.service.KnoPersonalVO;
  * @version 1.0
  * @created 12-8-2010 오후 3:44:50
  */
-
 @Repository("KnoPersonalDAO")
-public class KnoPersonalDAO extends EgovComAbstractDAO {
+public class KnoPersonalDAO {
+
+	@Resource(name = "knoPersonalMapper")
+	private KnoPersonalMapper knoPersonalMapper;
 
 	/**
-	 * 등록된 개인지식 정보를 조회 한다.
-	 * @param KnoPersonalVO - 개인지식 VO
-	 * @return String - 개인지식정보 목록
-	 *
-	 * @param KnoPersonalVO
+	 * 등록된 개인지식정보 목록을 조회한다.
+	 * @param searchVO 개인지식 조회 조건 VO
+	 * @return 개인지식정보 목록
 	 */
-	public List<KnoPersonalVO> selectKnoPersonalList(KnoPersonalVO searchVO) throws Exception {
-		return selectList("KnoPersonalDAO.selectKnoPersonalList", searchVO);
+	public List<KnoPersonalVO> selectKnoPersonalList(KnoPersonalVO searchVO) {
+		return knoPersonalMapper.selectKnoPersonalList(searchVO);
 	}
 
 	/**
 	 * 개인지식 목록 총 개수를 조회한다.
-	 * @param KnoPersonalVO - 개인지식 Vo
-	 * @return int - 개인지식 토탈 카운트 수
-	 *
-	 * @param KnoPersonalVO
+	 * @param searchVO 개인지식 조회 조건 VO
+	 * @return 총 개수
 	 */
-	public int selectKnoPersonalTotCnt(KnoPersonalVO searchVO) throws Exception {
-		return selectOne("KnoPersonalDAO.selectKnoPersonalTotCnt", searchVO);
+	public int selectKnoPersonalTotCnt(KnoPersonalVO searchVO) {
+		return knoPersonalMapper.selectKnoPersonalTotCnt(searchVO);
 	}
 
 	/**
-	 * 개인지식정보 상세 정보를 조회 한다.
-	 * @param KnoPersonalVO - 개인지식정보 VO
-	 * @return String - 개인지식 VO
-	 *
-	 * @param KnoPersonalVO
+	 * 개인지식정보 상세 정보를 조회한다.
+	 * @param knoPersonal 조회할 개인지식정보 식별 정보가 담긴 모델
+	 * @return 개인지식 상세 모델
 	 */
-	public KnoPersonal selectKnoPersonal(KnoPersonal knoPersonal) throws Exception {
-		return selectOne("KnoPersonalDAO.selectKnoPersonal", knoPersonal);
+	public KnoPersonal selectKnoPersonal(KnoPersonal knoPersonal) {
+		return knoPersonalMapper.selectKnoPersonal(knoPersonal);
 	}
 
 	/**
 	 * 개인지식 정보를 신규로 등록한다.
-	 * @param KnoNm - 개인지식정보 model
-	 *
-	 * @param KnoNm
+	 * @param knoPersonal 등록할 개인지식정보 모델
 	 */
-	public void insertKnoPersonal(KnoPersonal knoPersonal) throws Exception {
-		insert("KnoPersonalDAO.insertKnoPersonal", knoPersonal);
+	public void insertKnoPersonal(KnoPersonal knoPersonal) {
+		knoPersonalMapper.insertKnoPersonal(knoPersonal);
 	}
 
 	/**
-	 * 기 등록 된 개인지식 정보를 수정 한다.
-	 * @param KnoNm - 개인지식정보 model
-	 *
-	 * @param KnoNm
+	 * 기 등록된 개인지식 정보를 수정한다.
+	 * @param knoPersonal 수정할 개인지식정보 모델
 	 */
-	public void updateKnoPersonal(KnoPersonal knoPersonal) throws Exception {
-		update("KnoPersonalDAO.updateKnoPersonal", knoPersonal);
+	public void updateKnoPersonal(KnoPersonal knoPersonal) {
+		knoPersonalMapper.updateKnoPersonal(knoPersonal);
 	}
 
 	/**
 	 * 기 등록된 개인지식 정보를 삭제한다.
-	 * @param KnoNm - 개인지식정보 model
-	 *
-	 * @param KnoNm
+	 * @param knoPersonal 삭제할 개인지식정보 모델
 	 */
-	public void deleteKnoPersonal(KnoPersonal knoPersonal) throws Exception {
-		delete("KnoPersonalDAO.deleteKnoPersonal", knoPersonal);
+	public void deleteKnoPersonal(KnoPersonal knoPersonal) {
+		knoPersonalMapper.deleteKnoPersonal(knoPersonal);
 	}
 
 }
