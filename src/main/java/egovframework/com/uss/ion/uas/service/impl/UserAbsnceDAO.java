@@ -1,7 +1,7 @@
 /**
  * 개요
  * - 사용자부재에 대한 DAO 클래스를 정의한다.
- * 
+ *
  * 상세내용
  * - 사용자부재에 대한 등록, 수정, 삭제, 조회, 반영확인 기능을 제공한다.
  * - 사용자부재의 조회기능은 목록조회, 상세조회로 구분된다.
@@ -16,38 +16,41 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.uas.service.UserAbsnceVO;
+import jakarta.annotation.Resource;
 
 @Repository("userAbsnceDAO")
-public class UserAbsnceDAO extends EgovComAbstractDAO {
-	
+public class UserAbsnceDAO {
+
+	@Resource(name = "userAbsnceMapper")
+	private UserAbsnceMapper userAbsnceMapper;
+
 	/**
 	 * 사용자부재정보를 관리하기 위해 등록된 사용자부재 목록을 조회한다.
 	 * @param userAbsnceVO - 사용자부재 VO
 	 * @return List - 사용자부재 목록
-	 */	
+	 */
 	public List<UserAbsnceVO> selectUserAbsnceList(UserAbsnceVO userAbsnceVO) throws Exception {
-		return selectList("userAbsnceDAO.selectUserAbsnceList", userAbsnceVO);
+		return userAbsnceMapper.selectUserAbsnceList(userAbsnceVO);
 	}
 
-    /**
+	/**
 	 * 사용자부재목록 총 개수를 조회한다.
-	 * @param mainImageVO - 사용자부재 VO
+	 * @param userAbsnceVO - 사용자부재 VO
 	 * @return int
 	 * @exception Exception
 	 */
-    public int selectUserAbsnceListTotCnt(UserAbsnceVO userAbsnceVO) throws Exception {
-        return (Integer)selectOne("userAbsnceDAO.selectUserAbsnceListTotCnt", userAbsnceVO);
-    }
-    
+	public int selectUserAbsnceListTotCnt(UserAbsnceVO userAbsnceVO) throws Exception {
+		return userAbsnceMapper.selectUserAbsnceListTotCnt(userAbsnceVO);
+	}
+
 	/**
 	 * 등록된 사용자부재 상세정보를 조회한다.
 	 * @param userAbsnceVO - 사용자부재 VO
 	 * @return UserAbsnceVO - 사용자부재 VO
 	 */
 	public UserAbsnceVO selectUserAbsnce(UserAbsnceVO userAbsnceVO) throws Exception {
-		return (UserAbsnceVO) selectOne("userAbsnceDAO.selectUserAbsnce", userAbsnceVO);
+		return userAbsnceMapper.selectUserAbsnce(userAbsnceVO);
 	}
 
 	/**
@@ -55,7 +58,7 @@ public class UserAbsnceDAO extends EgovComAbstractDAO {
 	 * @param userAbsnceVO - 사용자부재 VO
 	 */
 	public void insertUserAbsnce(UserAbsnceVO userAbsnceVO) throws Exception {
-		insert("userAbsnceDAO.insertUserAbsnce", userAbsnceVO);
+		userAbsnceMapper.insertUserAbsnce(userAbsnceVO);
 	}
 
 	/**
@@ -63,7 +66,7 @@ public class UserAbsnceDAO extends EgovComAbstractDAO {
 	 * @param userAbsnceVO - 사용자부재 VO
 	 */
 	public void updateUserAbsnce(UserAbsnceVO userAbsnceVO) throws Exception {
-		update("userAbsnceDAO.updateUserAbsnce", userAbsnceVO);
+		userAbsnceMapper.updateUserAbsnce(userAbsnceVO);
 	}
 
 	/**
@@ -71,7 +74,7 @@ public class UserAbsnceDAO extends EgovComAbstractDAO {
 	 * @param userAbsnceVO - 사용자부재 VO
 	 */
 	public void deleteUserAbsnce(UserAbsnceVO userAbsnceVO) throws Exception {
-		delete("userAbsnceDAO.deleteUserAbsnce", userAbsnceVO);
+		userAbsnceMapper.deleteUserAbsnce(userAbsnceVO);
 	}
 
 	/**
