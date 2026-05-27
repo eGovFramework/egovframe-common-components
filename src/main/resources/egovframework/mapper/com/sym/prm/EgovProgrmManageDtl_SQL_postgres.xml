@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="progrmManageDAO">
+<mapper namespace="egovframework.com.sym.prm.service.impl.ProgrmManageMapper">
 
     <!-- 프로그램 변경요청  --> 
 	<resultMap id="progrmManageDtl" type="egovframework.com.sym.prm.service.ProgrmManageDtlVO">
