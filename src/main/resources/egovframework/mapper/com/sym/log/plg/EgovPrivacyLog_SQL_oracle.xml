@@ -5,7 +5,7 @@
   -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="PrivacyLog">
+<mapper namespace="egovframework.com.sym.log.plg.service.impl.PrivacyLogMapper">
 	
 	<!-- 개인정보조회 로그 result mapping -->	
 	<resultMap id="privacyLogMapping" type="egovframework.com.sym.log.plg.service.PrivacyLog">
