@@ -4,84 +4,49 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sym.log.slg.service.SysHistory;
 import egovframework.com.sym.log.slg.service.SysHistoryVO;
+import jakarta.annotation.Resource;
 
 /**
- * @Class Name : SysHistoryDAO.java
- * @Description : 시스템 이력정보를 관리하기 위한 데이터 처리 클래스
- * @Modification Information
+ * 시스템 이력정보를 관리하기 위한 데이터 처리 클래스
+ *
+ * <pre>
+ * << 개정이력(Modification Information) >>
  *
  *    수정일       수정자         수정내용
  *    -------        -------     -------------------
- *    2009. 3. 9.   이삼섭
- *
- * @author 공통 서비스 개발팀 이삼섭
- * @since 2009. 3. 9.
- * @version
- * @see
- *
+ *    2009. 3. 9.   이삼섭         최초생성
+ *    2026. 5. 28.  dasomel       @EgovMapper 인터페이스 위임 방식으로 전환
+ * </pre>
  */
 @Repository("sysHistoryDAO")
-public class SysHistoryDAO extends EgovComAbstractDAO {
+public class SysHistoryDAO {
 
+	@Resource(name = "sysHistoryMapper")
+	private SysHistoryMapper sysHistoryMapper;
 
-	/**
-	 * 시스템 이력정보를 생성한다.
-	 * @param history - 시스템 이력정보가 담긴 모델 객체
-	 */
-	public int insertSysHistory(SysHistory history) throws Exception{
-		return insert("SysHistoryDAO.insertSysHistory", history);
+	public int insertSysHistory(SysHistory history) {
+		return sysHistoryMapper.insertSysHistory(history);
 	}
 
-
-	/**
-	 * 시스템 이력정보를 수정한다.
-	 * @param history - 시스템 이력정보가 담긴 모델 객체
-	 */
-	public void updateSysHistory(SysHistory history) throws Exception{
-		update("SysHistoryDAO.updateSysHistory", history);
+	public void updateSysHistory(SysHistory history) {
+		sysHistoryMapper.updateSysHistory(history);
 	}
 
-	/**
-	 * 시스템 이력정보를 삭제한다.
-	 * @param history - 시스템 이력정보가 담긴 모델 객체
-	 */
-	public void deleteSysHistory(SysHistory history) throws Exception{
-		delete("SysHistoryDAO.deleteSysHistory", history);
+	public void deleteSysHistory(SysHistory history) {
+		sysHistoryMapper.deleteSysHistory(history);
 	}
 
-
-	/**
-	 * 시스템 이력정보 목록을 조회한다.
-	 *
-	 * @param history - 시스템 이력정보가 담긴 모델 객체
-	 */
-	public List<SysHistoryVO> selectSysHistorList(SysHistoryVO historyVO) throws Exception{
-		return selectList("SysHistoryDAO.selectSysHistoryList", historyVO);
+	public List<SysHistoryVO> selectSysHistorList(SysHistoryVO historyVO) {
+		return sysHistoryMapper.selectSysHistoryList(historyVO);
 	}
 
-	/**
-	 * 시스템 이력정보 목록의 글 개수를 조회한다.
-	 * @param history
-	 * @return
-	 * @throws Exception
-	 */
-	public int selectSysHistortListCnt(SysHistoryVO historyVO) throws Exception{
-		return (Integer)selectOne("SysHistoryDAO.selectSysHistoryListCnt", historyVO);
+	public int selectSysHistortListCnt(SysHistoryVO historyVO) {
+		return sysHistoryMapper.selectSysHistoryListCnt(historyVO);
 	}
 
-	/**
-	 * 시스템 이력정보를 조회한다.
-	 *
-	 * @param history - 시스템 이력정보가 담긴 모델 객체
-	 */
-	public SysHistoryVO selectSysHistory(SysHistoryVO historyVO) throws Exception{
-
-		return (SysHistoryVO) selectOne("SysHistoryDAO.selectSysHistory", historyVO);
+	public SysHistoryVO selectSysHistory(SysHistoryVO historyVO) {
+		return sysHistoryMapper.selectSysHistory(historyVO);
 	}
-
-
-
 }

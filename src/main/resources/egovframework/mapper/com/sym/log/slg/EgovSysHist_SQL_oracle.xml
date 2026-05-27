@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="SysHistoryDAO">
+<mapper namespace="egovframework.com.sym.log.slg.service.impl.SysHistoryMapper">
 	
 	<resultMap id="historyVO" type="egovframework.com.sym.log.slg.service.SysHistoryVO">
 		<result property="histId" column="HIST_ID"/>
