@@ -2,8 +2,8 @@ package egovframework.com.utl.pao.service.impl;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.utl.pao.service.PrntngOutptVO;
+import jakarta.annotation.Resource;
 
 /**
  *
@@ -23,7 +23,10 @@ import egovframework.com.utl.pao.service.PrntngOutptVO;
  * </pre>
  */
 @Repository("PrntngOutptDAO")
-public class PrntngOutptDAO extends EgovComAbstractDAO {
+public class PrntngOutptDAO {
+
+    @Resource(name = "prntngOutptMapper")
+    private PrntngOutptMapper prntngOutptMapper;
 
     /**
 	 * 주어진 조건에 따른 공통코드를 불러온다.
@@ -31,9 +34,8 @@ public class PrntngOutptDAO extends EgovComAbstractDAO {
 	 * @return
 	 * @throws Exception
 	 */
-	public PrntngOutptVO selectErncsl(PrntngOutptVO vo) throws Exception{
-		String queryId = "PrntngOutptDAO.selectErncsl";
-		return (PrntngOutptVO) selectOne(queryId, vo);
+	public PrntngOutptVO selectErncsl(PrntngOutptVO vo) throws Exception {
+		return prntngOutptMapper.selectErncsl(vo);
 	}
 
 }
