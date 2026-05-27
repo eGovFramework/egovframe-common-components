@@ -7,7 +7,7 @@
 -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="BBSArticle">
+<mapper namespace="egovframework.com.cop.bbs.service.impl.EgovArticleMapper">
 
 	<resultMap id="boardList" type="egovframework.com.cop.bbs.service.BoardVO">
 		<result property="bbsId" column="BBS_ID"/>

@@ -4,97 +4,98 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.cop.bbs.service.Board;
 import egovframework.com.cop.bbs.service.BoardMasterVO;
 import egovframework.com.cop.bbs.service.BoardVO;
+import jakarta.annotation.Resource;
 
 @Repository("EgovArticleDAO")
-public class EgovArticleDAO extends EgovComAbstractDAO {
+public class EgovArticleDAO {
+
+	@Resource(name = "egovArticleMapper")
+	private EgovArticleMapper egovArticleMapper;
 
 	public List<BoardVO> selectArticleList(BoardVO boardVO) {
-		return selectList("BBSArticle.selectArticleList", boardVO);
+		return egovArticleMapper.selectArticleList(boardVO);
 	}
 
 	public int selectArticleListCnt(BoardVO boardVO) {
-		return (Integer)selectOne("BBSArticle.selectArticleListCnt", boardVO);
+		return egovArticleMapper.selectArticleListCnt(boardVO);
 	}
 
 	public int selectMaxInqireCo(BoardVO boardVO) {
-		return (Integer)selectOne("BBSArticle.selectMaxInqireCo", boardVO);
+		return egovArticleMapper.selectMaxInqireCo(boardVO);
 	}
 
 	public void updateInqireCo(BoardVO boardVO) {
-		update("BBSArticle.updateInqireCo", boardVO);
+		egovArticleMapper.updateInqireCo(boardVO);
 	}
 
 	public BoardVO selectArticleDetail(BoardVO boardVO) {
-		return (BoardVO) selectOne("BBSArticle.selectArticleDetail", boardVO);
+		return egovArticleMapper.selectArticleDetail(boardVO);
 	}
-	
+
 	public void replyArticle(Board board) {
-		insert("BBSArticle.replyArticle", board);
+		egovArticleMapper.replyArticle(board);
 	}
 
 	public void insertArticle(Board board) {
-		insert("BBSArticle.insertArticle", board);
+		egovArticleMapper.insertArticle(board);
 	}
 
 	public void updateArticle(Board board) {
-		update("BBSArticle.updateArticle", board);
+		egovArticleMapper.updateArticle(board);
 	}
 
 	public void deleteArticle(Board board) {
-		update("BBSArticle.deleteArticle", board);
-		
+		egovArticleMapper.deleteArticle(board);
 	}
 
 	public List<BoardVO> selectNoticeArticleList(BoardVO boardVO) {
-		return selectList("BBSArticle.selectNoticeArticleList", boardVO);
+		return egovArticleMapper.selectNoticeArticleList(boardVO);
 	}
-	
+
 	public List<BoardVO> selectGuestArticleList(BoardVO vo) {
-		return selectList("BBSArticle.selectGuestArticleList", vo);
+		return egovArticleMapper.selectGuestArticleList(vo);
 	}
 
 	public int selectGuestArticleListCnt(BoardVO vo) {
-		return (Integer)selectOne("BBSArticle.selectGuestArticleListCnt", vo);
+		return egovArticleMapper.selectGuestArticleListCnt(vo);
 	}
-	
+
 	/*
 	 * 블로그 관련
 	 */
 	public BoardVO selectArticleCnOne(BoardVO boardVO) {
-		return (BoardVO) selectOne("BBSArticle.selectArticleCnOne", boardVO);
+		return egovArticleMapper.selectArticleCnOne(boardVO);
 	}
-	
+
 	public List<BoardVO> selectBlogNmList(BoardVO boardVO) {
-		return selectList("BBSArticle.selectBlogNmList", boardVO);
+		return egovArticleMapper.selectBlogNmList(boardVO);
 	}
-	
+
 	public List<BoardMasterVO> selectBlogListManager(BoardVO vo) {
-		return selectList("BBSArticle.selectBlogListManager", vo);
+		return egovArticleMapper.selectBlogListManager(vo);
 	}
-	
+
 	public int selectBlogListManagerCnt(BoardVO vo) {
-		return (Integer)selectOne("BBSArticle.selectBlogListManagerCnt", vo);
+		return egovArticleMapper.selectBlogListManagerCnt(vo);
 	}
-	
+
 	public List<BoardVO> selectArticleDetailDefault(BoardVO boardVO) {
-		return selectList("BBSArticle.selectArticleDetailDefault", boardVO);
+		return egovArticleMapper.selectArticleDetailDefault(boardVO);
 	}
-	
+
 	public int selectArticleDetailDefaultCnt(BoardVO boardVO) {
-		return (Integer)selectOne("BBSArticle.selectArticleDetailDefaultCnt", boardVO);
+		return egovArticleMapper.selectArticleDetailDefaultCnt(boardVO);
 	}
-	
+
 	public List<BoardVO> selectArticleDetailCn(BoardVO boardVO) {
-		return selectList("BBSArticle.selectArticleDetailCn", boardVO);
+		return egovArticleMapper.selectArticleDetailCn(boardVO);
 	}
-	
+
 	public int selectLoginUser(BoardVO boardVO) {
-		return (Integer)selectOne("BBSArticle.selectLoginUser", boardVO);
+		return egovArticleMapper.selectLoginUser(boardVO);
 	}
-	
 
 }
