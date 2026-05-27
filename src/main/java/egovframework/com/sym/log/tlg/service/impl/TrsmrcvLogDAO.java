@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sym.log.tlg.service.TrsmrcvLog;
+import jakarta.annotation.Resource;
 
 /**
  * @Class Name : TrsmrcvLogDAO.java
@@ -16,71 +16,35 @@ import egovframework.com.sym.log.tlg.service.TrsmrcvLog;
  *    -------        -------     -------------------
  *    2009. 3. 11.   이삼섭         최초생성
  *    2011. 7. 01.   이기하         패키지 분리(sym.log -> sym.log.tlg)
+ *    2026. 5. 28.   dasomel        @EgovMapper 인터페이스 위임 방식으로 전환
  *
  * @author 공통 서비스 개발팀 이삼섭
  * @since 2009. 3. 11.
- * @version
- * @see
- *
  */
 @Repository("trsmrcvLogDAO")
-public class TrsmrcvLogDAO extends EgovComAbstractDAO {
+public class TrsmrcvLogDAO {
 
-	/**
-	 * 송수신로그를 기록한다.
-	 *
-	 * @param TrsmrcvLog
-	 * @return
-	 * @throws Exception
-	 */
-	public void logInsertTrsmrcvLog(TrsmrcvLog trsmrcvLog) throws Exception{
-		insert("TrsmrcvLogDAO.logInsertTrsmrcvLog", trsmrcvLog);
+	@Resource(name = "trsmrcvLogMapper")
+	private TrsmrcvLogMapper trsmrcvLogMapper;
+
+	public void logInsertTrsmrcvLog(TrsmrcvLog trsmrcvLog) {
+		trsmrcvLogMapper.logInsertTrsmrcvLog(trsmrcvLog);
 	}
 
-	/**
-	 * 송수신 로그정보를 요약한다.
-	 *
-	 * @param
-	 * @return
-	 * @throws Exception
-	 */
-	public void logInsertTrsmrcvLogSummary() throws Exception{
-		insert("TrsmrcvLogDAO.logInsertTrsmrcvLogSummary", null);
-		delete("TrsmrcvLogDAO.logDeleteTrsmrcvLogSummary", null);
+	public void logInsertTrsmrcvLogSummary() {
+		trsmrcvLogMapper.logInsertTrsmrcvLogSummary();
+		trsmrcvLogMapper.logDeleteTrsmrcvLogSummary();
 	}
 
-	/**
-	 * 송수신 로그정보를 조회한다.
-	 *
-	 * @param trsmrcvLog
-	 * @return trsmrcvLog
-	 * @throws Exception
-	 */
-	public TrsmrcvLog selectTrsmrcvLog(TrsmrcvLog trsmrcvLog) throws Exception{
-
-		return (TrsmrcvLog) selectOne("TrsmrcvLogDAO.selectTrsmrcvLog", trsmrcvLog);
+	public TrsmrcvLog selectTrsmrcvLog(TrsmrcvLog trsmrcvLog) {
+		return trsmrcvLogMapper.selectTrsmrcvLog(trsmrcvLog);
 	}
 
-	/**
-     * 송수신 로그정보 목록을 조회한다.
-     *
-     * @param TrsmrcvLog
-     * @return
-     * @throws Exception
-     */
-    public List<TrsmrcvLog> selectTrsmrcvLogInf(TrsmrcvLog trsmrcvLog) throws Exception {
-        return selectList("TrsmrcvLogDAO.selectTrsmrcvLogInf", trsmrcvLog);
-    }
-
-	/**
-	 * 송수신 로그정보 목록의 숫자를 조회한다.
-	 * @param TrsmrcvLog
-	 * @return
-	 * @throws Exception
-	 */
-	public int selectTrsmrcvLogInfCnt(TrsmrcvLog trsmrcvLog) throws Exception{
-
-		return (Integer)selectOne("TrsmrcvLogDAO.selectTrsmrcvLogInfCnt", trsmrcvLog);
+	public List<TrsmrcvLog> selectTrsmrcvLogInf(TrsmrcvLog trsmrcvLog) {
+		return trsmrcvLogMapper.selectTrsmrcvLogInf(trsmrcvLog);
 	}
 
+	public int selectTrsmrcvLogInfCnt(TrsmrcvLog trsmrcvLog) {
+		return trsmrcvLogMapper.selectTrsmrcvLogInfCnt(trsmrcvLog);
+	}
 }
