@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sym.log.ulg.service.UserLog;
+import jakarta.annotation.Resource;
 
 /**
  * @Class Name : UserLogDAO.java
@@ -16,6 +16,7 @@ import egovframework.com.sym.log.ulg.service.UserLog;
  *    -------        -------     -------------------
  *    2009. 3. 11.   이삼섭         최초생성
  *    2011. 7. 01.   이기하         패키지 분리(sym.log -> sym.log.ulg)
+ *    2026. 5. 28.   dasomel        @EgovMapper 인터페이스 위임 방식으로 전환
  *
  * @author 공통 서비스 개발팀 이삼섭
  * @since 2009. 3. 11.
@@ -24,51 +25,36 @@ import egovframework.com.sym.log.ulg.service.UserLog;
  *
  */
 @Repository("userLogDAO")
-public class UserLogDAO extends EgovComAbstractDAO {
+public class UserLogDAO {
+
+	@Resource(name = "userLogMapper")
+	private UserLogMapper userLogMapper;
 
 	/**
 	 * 사용자 로그정보를 생성한다.
-	 *
-	 * @param
-	 * @return
-	 * @throws Exception
 	 */
-	public void logInsertUserLog() throws Exception{
-		insert("UserLog.logInsertUserLog", null);
+	public void logInsertUserLog() {
+		userLogMapper.logInsertUserLog();
 	}
 
 	/**
 	 * 사용자 로그정보 상세정보를 조회한다.
-	 *
-	 * @param userLog
-	 * @return userLog
-	 * @throws Exception
 	 */
-	public UserLog selectUserLog(UserLog userLog) throws Exception{
-
-		return (UserLog) selectOne("UserLog.selectUserLog", userLog);
+	public UserLog selectUserLog(UserLog userLog) {
+		return userLogMapper.selectUserLog(userLog);
 	}
 
 	/**
 	 * 사용자 로그정보 목록을 조회한다.
-	 *
-	 * @param UserLog
-	 * @return
-	 * @throws Exception
 	 */
-	public List<UserLog> selectUserLogInf(UserLog userLog) throws Exception{
-		return selectList("UserLog.selectUserLogInf", userLog);
+	public List<UserLog> selectUserLogInf(UserLog userLog) {
+		return userLogMapper.selectUserLogInf(userLog);
 	}
 
 	/**
 	 * 사용자 로그정보 목록의 숫자를 조회한다.
-	 * @param UserLog
-	 * @return
-	 * @throws Exception
 	 */
-	public int selectUserLogInfCnt(UserLog userLog) throws Exception{
-
-		return (Integer)selectOne("UserLog.selectUserLogInfCnt", userLog);
+	public int selectUserLogInfCnt(UserLog userLog) {
+		return userLogMapper.selectUserLogInfCnt(userLog);
 	}
-
 }
