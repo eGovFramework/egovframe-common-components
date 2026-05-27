@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.sym.log.lgm.service.SysLog;
+import jakarta.annotation.Resource;
 
 /**
 * @Class Name : SysLogDAO.java
@@ -16,6 +16,7 @@ import egovframework.com.sym.log.lgm.service.SysLog;
 *    -------        -------     -------------------
 *    2009. 3. 11.   이삼섭         최초생성
 *    2011. 7. 01.   이기하         패키지 분리(sym.log -> sym.log.lgm)
+*    2026. 5. 28.   dasomel        SysLogMapper 위임으로 전환
 *
 * @author 공통 서비스 개발팀 이삼섭
 * @since 2009. 3. 11.
@@ -24,52 +25,46 @@ import egovframework.com.sym.log.lgm.service.SysLog;
 *
 */
 @Repository("SysLogDAO")
-public class SysLogDAO extends EgovComAbstractDAO{
+public class SysLogDAO {
+
+	@Resource(name = "sysLogMapper")
+	private SysLogMapper sysLogMapper;
 
 	/**
 	 * 시스템 로그정보를 생성한다.
 	 *
-	 * @param SysLog
-	 * @return
-	 * @throws Exception
+	 * @param sysLog
 	 */
 	public void logInsertSysLog(SysLog sysLog) {
-		insert("SysLog.logInsertSysLog", sysLog);
-		
+		sysLogMapper.logInsertSysLog(sysLog);
 	}
 
 	/**
 	 * 시스템 로그정보를 요약한다.
-	 *
-	 * @param
-	 * @return
-	 * @throws Exception
 	 */
 	public void logInsertSysLogSummary() {
-		insert("SysLog.logInsertSysLogSummary", null);
-		delete("SysLog.logDeleteSysLogSummary", null);
-		
+		sysLogMapper.logInsertSysLogSummary();
+		sysLogMapper.logDeleteSysLogSummary();
 	}
 
 	/**
 	 * 시스템 로그목록을 조회한다.
 	 *
 	 * @param sysLog
-	 * @return sysLog
-	 * @throws Exception
+	 * @return sysLog 목록
 	 */
 	public List<SysLog> selectSysLogInf(SysLog sysLog) {
-		return selectList("SysLog.selectSysLogInf", sysLog);
+		return sysLogMapper.selectSysLogInf(sysLog);
 	}
 
 	/**
 	 * 시스템 로그정보 목록의 숫자를 조회한다.
+	 *
 	 * @param sysLog
-	 * @return
-	 * @throws Exception
+	 * @return 건수
 	 */
 	public int selectSysLogInfCnt(SysLog sysLog) {
-		return (Integer)selectOne("SysLog.selectSysLogInfCnt", sysLog);
+		return sysLogMapper.selectSysLogInfCnt(sysLog);
 	}
 
 	/**
@@ -77,9 +72,8 @@ public class SysLogDAO extends EgovComAbstractDAO{
 	 *
 	 * @param sysLog
 	 * @return sysLog
-	 * @throws Exception
 	 */
 	public SysLog selectSysLog(SysLog sysLog) {
-		return (SysLog) selectOne("SysLog.selectSysLog", sysLog);
+		return sysLogMapper.selectSysLog(sysLog);
 	}
 }

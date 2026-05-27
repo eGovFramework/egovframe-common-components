@@ -5,7 +5,7 @@
   -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="SysLog">
+<mapper namespace="egovframework.com.sym.log.lgm.service.impl.SysLogMapper">
 
 	<!-- 시스템로그 맵 -->
 	<resultMap id="SysLogVO" type="egovframework.com.sym.log.lgm.service.SysLog">
@@ -162,7 +162,7 @@
 	
 
 <!--  	시스템 로그 6개월전 로그 삭제 -->
-	<delete id="SysLog.logDeleteSysLogSummary">
+	<delete id="logDeleteSysLogSummary">
 	<![CDATA[ 
 		
 			DELETE FROM COMTNSYSLOG
