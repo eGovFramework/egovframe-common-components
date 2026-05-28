@@ -6,7 +6,7 @@
 -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="SiteManage">
+<mapper namespace="egovframework.com.uss.ion.sit.service.impl.EgovSiteMapper">
 
 	<resultMap id="SiteManage" type="egovframework.com.uss.ion.sit.service.SiteVO">
 		<result property="siteId" column="SITE_ID"/>

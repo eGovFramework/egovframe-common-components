@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.ctn.service.CtsnnManageVO;
+import jakarta.annotation.Resource;
 
 /**
  * 개요
@@ -20,85 +20,71 @@ import egovframework.com.uss.ion.ctn.service.CtsnnManageVO;
  */
 
 @Repository("ctsnnManageDAO")
-public class CtsnnManageDAO extends EgovComAbstractDAO {
+public class CtsnnManageDAO {
+
+	@Resource(name = "ctsnnManageMapper")
+	private CtsnnManageMapper ctsnnManageMapper;
 
 	/**
-	 * 경조관리정보를 관리하기 위해 등록된 경조관리 목록을 조회한다.
-	 * @param ctsnnManageVO - 경조관리 VO
-	 * @return List - 경조관리 목록
+	 * 경조관리 목록을 조회한다.
 	 */
 	public List<CtsnnManageVO> selectCtsnnManageList(CtsnnManageVO ctsnnManageVO) throws Exception {
-		return selectList("ctsnnManageDAO.selectCtsnnManageList", ctsnnManageVO);
+		return ctsnnManageMapper.selectCtsnnManageList(ctsnnManageVO);
 	}
 
-    /**
+	/**
 	 * 경조관리목록 총 개수를 조회한다.
-	 * @param ctsnnManageVO - 경조관리 VO
-	 * @return int
-	 * @exception Exception
 	 */
-    public int selectCtsnnManageListTotCnt(CtsnnManageVO ctsnnManageVO) throws Exception {
-        return (Integer)selectOne("ctsnnManageDAO.selectCtsnnManageListTotCnt", ctsnnManageVO);
-    }
+	public int selectCtsnnManageListTotCnt(CtsnnManageVO ctsnnManageVO) throws Exception {
+		return ctsnnManageMapper.selectCtsnnManageListTotCnt(ctsnnManageVO);
+	}
 
 	/**
-	 * 등록된 경조관리의 상세정보를 조회한다.
-	 * @param ctsnnManageVO - 경조관리 VO
-	 * @return CtsnnManageVO - 경조관리 VO
+	 * 경조관리 상세정보를 조회한다.
 	 */
-	public CtsnnManageVO selectCtsnnManage(CtsnnManageVO ctsnnManageVO)  throws Exception {
-		return (CtsnnManageVO) selectOne("ctsnnManageDAO.selectCtsnnManage", ctsnnManageVO);
+	public CtsnnManageVO selectCtsnnManage(CtsnnManageVO ctsnnManageVO) throws Exception {
+		return ctsnnManageMapper.selectCtsnnManage(ctsnnManageVO);
 	}
 
 	/**
 	 * 경조관리정보를 신규로 등록한다.
-	 * @param ctsnnManage - 경조관리 model
 	 */
 	public void insertCtsnnManage(CtsnnManageVO ctsnnManageVO) throws Exception {
-		insert("ctsnnManageDAO.insertCtsnnManage", ctsnnManageVO);
+		ctsnnManageMapper.insertCtsnnManage(ctsnnManageVO);
 	}
 
 	/**
 	 * 기 등록된 경조관리정보를 수정한다.
-	 * @param ctsnnManage - 경조관리 model
 	 */
 	public void updtCtsnnManage(CtsnnManageVO ctsnnManageVO) throws Exception {
-		update("ctsnnManageDAO.updateCtsnnManage", ctsnnManageVO);
+		ctsnnManageMapper.updateCtsnnManage(ctsnnManageVO);
 	}
 
 	/**
 	 * 기 등록된 경조관리정보를 삭제한다.
-	 * @param ctsnnManage - 경조관리 model
 	 */
 	public void deleteCtsnnManage(CtsnnManageVO ctsnnManageVO) throws Exception {
-        delete("ctsnnManageDAO.deleteCtsnnManage", ctsnnManageVO);
+		ctsnnManageMapper.deleteCtsnnManage(ctsnnManageVO);
 	}
 
-    /*** 승인처리관련 ***/
 	/**
 	 * 경조관리정보 승인 처리를 위해 신청된 경조관리 목록을 조회한다.
-	 * @param ctsnnManageVO - 경조관리 VO
-	 * @return List - 경조관리 목록
 	 */
 	public List<CtsnnManageVO> selectCtsnnManageConfmList(CtsnnManageVO ctsnnManageVO) throws Exception {
-		return selectList("ctsnnManageDAO.selectCtsnnManageConfmList", ctsnnManageVO);
+		return ctsnnManageMapper.selectCtsnnManageConfmList(ctsnnManageVO);
 	}
 
-    /**
+	/**
 	 * 경조관리정보 승인 처리를 위해 신청된 경조관리 목록 총 개수를 조회한다.
-	 * @param ctsnnManageVO - 경조관리 VO
-	 * @return int
-	 * @exception Exception
 	 */
-    public int selectCtsnnManageConfmListTotCnt(CtsnnManageVO ctsnnManageVO) throws Exception {
-        return (Integer)selectOne("ctsnnManageDAO.selectCtsnnManageConfmListTotCnt", ctsnnManageVO);
-    }
+	public int selectCtsnnManageConfmListTotCnt(CtsnnManageVO ctsnnManageVO) throws Exception {
+		return ctsnnManageMapper.selectCtsnnManageConfmListTotCnt(ctsnnManageVO);
+	}
 
 	/**
-	 *경조정보를 승인처리 한다.
-	 * @param ctsnnManage - 경조관리 model
+	 * 경조정보를 승인처리 한다.
 	 */
 	public void updtCtsnnManageConfm(CtsnnManageVO ctsnnManageVO) throws Exception {
-		update("ctsnnManageDAO.updtCtsnnManageConfm", ctsnnManageVO);
+		ctsnnManageMapper.updtCtsnnManageConfm(ctsnnManageVO);
 	}
 }

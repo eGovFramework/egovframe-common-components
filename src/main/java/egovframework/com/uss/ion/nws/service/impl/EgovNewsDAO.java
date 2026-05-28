@@ -4,34 +4,36 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.nws.service.NewsVO;
+import jakarta.annotation.Resource;
 
 @Repository("EgovNewsDAO")
-public class EgovNewsDAO extends EgovComAbstractDAO {
+public class EgovNewsDAO {
+
+	@Resource(name = "EgovNewsMapper")
+	private EgovNewsMapper egovNewsMapper;
 
 	public List<NewsVO> selectNewsList(NewsVO newsVO) {
-		return selectList("NewsManage.selectNewsList", newsVO);
+		return egovNewsMapper.selectNewsList(newsVO);
 	}
 
 	public int selectNewsListCnt(NewsVO newsVO) {
-		return (Integer) selectOne("NewsManage.selectNewsListCnt", newsVO);
+		return egovNewsMapper.selectNewsListCnt(newsVO);
 	}
 
 	public void insertNews(NewsVO newsVO) {
-		insert("NewsManage.insertNews", newsVO);
+		egovNewsMapper.insertNews(newsVO);
 	}
 
 	public NewsVO selectNewsDetail(NewsVO newsVO) {
-		return (NewsVO) selectOne("NewsManage.selectNewsDetail", newsVO);
+		return egovNewsMapper.selectNewsDetail(newsVO);
 	}
 
 	public void updateNews(NewsVO newsVO) {
-		update("NewsManage.updateNews", newsVO);
+		egovNewsMapper.updateNews(newsVO);
 	}
 
 	public void deleteNews(NewsVO newsVO) {
-		delete("NewsManage.deleteNews", newsVO);
+		egovNewsMapper.deleteNews(newsVO);
 	}
-
 }

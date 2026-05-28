@@ -1,7 +1,7 @@
 /**
  * 개요
  * - 로그인화면이미지에 대한 DAO 클래스를 정의한다.
- * 
+ *
  * 상세내용
  * - 로그인화면이미지에 대한 등록, 수정, 삭제, 조회, 반영확인 기능을 제공한다.
  * - 로그인화면이미지의 조회기능은 목록조회, 상세조회로 구분된다.
@@ -17,19 +17,22 @@ import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.service.FileVO;
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.lsi.service.LoginScrinImageVO;
+import jakarta.annotation.Resource;
 
 @Repository("loginScrinImageDAO")
-public class LoginScrinImageDAO extends EgovComAbstractDAO {
+public class LoginScrinImageDAO {
+
+	@Resource(name = "loginScrinImageMapper")
+	private LoginScrinImageMapper loginScrinImageMapper;
 
 	/**
 	 * 로그인화면이미지정보를 관리하기 위해 등록된 로그인화면이미지 목록을 조회한다.
 	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 * @return List - 로그인화면이미지 목록
-	 */	
+	 */
 	public List<LoginScrinImageVO> selectLoginScrinImageList(LoginScrinImageVO loginScrinImageVO) throws Exception {
-		return selectList("loginScrinImageDAO.selectLoginScrinImageList", loginScrinImageVO);
+		return loginScrinImageMapper.selectLoginScrinImageList(loginScrinImageVO);
 	}
 
     /**
@@ -39,7 +42,7 @@ public class LoginScrinImageDAO extends EgovComAbstractDAO {
 	 * @exception Exception
 	 */
     public int selectLoginScrinImageListTotCnt(LoginScrinImageVO loginScrinImageVO) throws Exception {
-        return (Integer)selectOne("loginScrinImageDAO.selectLoginScrinImageListTotCnt", loginScrinImageVO);
+        return loginScrinImageMapper.selectLoginScrinImageListTotCnt(loginScrinImageVO);
     }
 
 	/**
@@ -47,8 +50,8 @@ public class LoginScrinImageDAO extends EgovComAbstractDAO {
 	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 * @return LoginScrinImageVO - 로그인화면이미지 VO
 	 */
-	public LoginScrinImageVO selectLoginScrinImage(LoginScrinImageVO loginScrinImageVO)  throws Exception {
-		return (LoginScrinImageVO) selectOne("loginScrinImageDAO.selectLoginScrinImage", loginScrinImageVO);
+	public LoginScrinImageVO selectLoginScrinImage(LoginScrinImageVO loginScrinImageVO) throws Exception {
+		return loginScrinImageMapper.selectLoginScrinImage(loginScrinImageVO);
 	}
 
 	/**
@@ -56,7 +59,7 @@ public class LoginScrinImageDAO extends EgovComAbstractDAO {
 	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 */
 	public void insertLoginScrinImage(LoginScrinImageVO loginScrinImageVO) throws Exception {
-		insert("loginScrinImageDAO.insertLoginScrinImage", loginScrinImageVO);
+		loginScrinImageMapper.insertLoginScrinImage(loginScrinImageVO);
 	}
 
 	/**
@@ -64,7 +67,7 @@ public class LoginScrinImageDAO extends EgovComAbstractDAO {
 	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 */
 	public void updateLoginScrinImage(LoginScrinImageVO loginScrinImageVO) throws Exception {
-		update("loginScrinImageDAO.updateLoginScrinImage", loginScrinImageVO);
+		loginScrinImageMapper.updateLoginScrinImage(loginScrinImageVO);
 	}
 
 	/**
@@ -72,7 +75,7 @@ public class LoginScrinImageDAO extends EgovComAbstractDAO {
 	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 */
 	public void deleteLoginScrinImage(LoginScrinImageVO loginScrinImageVO) throws Exception {
-        delete("loginScrinImageDAO.deleteLoginScrinImage",loginScrinImageVO);
+		loginScrinImageMapper.deleteLoginScrinImage(loginScrinImageVO);
 	}
 
 	/**
@@ -80,7 +83,7 @@ public class LoginScrinImageDAO extends EgovComAbstractDAO {
 	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 */
 	public FileVO selectLoginScrinImageFile(LoginScrinImageVO loginScrinImageVO) throws Exception {
-		return (FileVO) selectOne("loginScrinImageDAO.selectLoginScrinImageFile", loginScrinImageVO);
+		return loginScrinImageMapper.selectLoginScrinImageFile(loginScrinImageVO);
 	}
 
 	/**
@@ -89,6 +92,6 @@ public class LoginScrinImageDAO extends EgovComAbstractDAO {
 	 * @return LoginScrinImageVO - 로그인화면이미지 VO
 	 */
 	public List<LoginScrinImageVO> selectLoginScrinImageResult(LoginScrinImageVO loginScrinImageVO) throws Exception {
-		return selectList("loginScrinImageDAO.selectLoginScrinImageResult", loginScrinImageVO);
+		return loginScrinImageMapper.selectLoginScrinImageResult(loginScrinImageVO);
 	}
 }
