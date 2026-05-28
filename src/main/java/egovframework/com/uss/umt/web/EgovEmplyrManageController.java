@@ -33,7 +33,6 @@ import egovframework.com.uss.umt.service.EmplyrManageInsertVO;
 import egovframework.com.uss.umt.service.EmplyrPasswordManageVO;
 import egovframework.com.utl.sim.service.EgovFileScrty;
 import jakarta.annotation.Resource;
-import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 업무사용자관련 요청을 비지니스 클래스로 전달하고 처리된결과를 해당 웹 화면으로 전달하는 Controller를 정의한다
@@ -553,8 +552,7 @@ public class EgovEmplyrManageController {
 	 */
 	@RequestMapping(value = "/uss/umt/EgovRlnmCnfirm.do", method = RequestMethod.POST)
 	public String rlnmCnfirm(Model model, @RequestParam Map<String, Object> commandMap,
-			@RequestParam(value = "nextUrl", required = true) Integer linkIndex,
-			HttpServletResponse response) throws Exception {
+			@RequestParam(value = "nextUrl", required = true) Integer linkIndex) throws Exception {
 
 		model.addAttribute("ihidnum", commandMap.get("ihidnum")); // 주민번호
 		model.addAttribute("realname", commandMap.get("realname")); // 사용자이름
@@ -567,7 +565,6 @@ public class EgovEmplyrManageController {
 		}
 
 		if (linkIndex == null || linkIndex < 0 || nextUrlWhitelist.size() <= linkIndex) {
-			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
 			link = ERROR_VIEW;
 			return link;
 		}
