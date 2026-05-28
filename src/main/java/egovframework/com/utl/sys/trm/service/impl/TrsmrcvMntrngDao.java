@@ -4,10 +4,11 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.utl.sys.trm.service.CntcVO;
 import egovframework.com.utl.sys.trm.service.TrsmrcvMntrng;
 import egovframework.com.utl.sys.trm.service.TrsmrcvMntrngLog;
+
+import jakarta.annotation.Resource;
 
 /**
  * 송수신모니터링관리에 대한 DAO 클래스를 정의한다.
@@ -23,10 +24,14 @@ import egovframework.com.utl.sys.trm.service.TrsmrcvMntrngLog;
  *   수정일       수정자           수정내용
  *  -------     --------    ---------------------------
  *  2010.06.21   김진만     최초 생성
+ *  2026.05.28   dasomel    @EgovMapper 인터페이스 방식으로 전환
  * </pre>
  */
 @Repository("trsmrcvMntrngDao")
-public class TrsmrcvMntrngDao extends EgovComAbstractDAO {
+public class TrsmrcvMntrngDao {
+
+	@Resource(name = "trsmrcvMntrngMapper")
+	private TrsmrcvMntrngMapper trsmrcvMntrngMapper;
 
 	/**
 	 * 송수신모니터링을 삭제한다.
@@ -35,7 +40,7 @@ public class TrsmrcvMntrngDao extends EgovComAbstractDAO {
 	 * @exception Exception Exception
 	 */
 	public void deleteTrsmrcvMntrng(TrsmrcvMntrng trsmrcvMntrng) throws Exception {
-		delete("TrsmrcvMntrngDao.deleteTrsmrcvMntrng", trsmrcvMntrng);
+		trsmrcvMntrngMapper.deleteTrsmrcvMntrng(trsmrcvMntrng);
 	}
 
 	/**
@@ -45,7 +50,7 @@ public class TrsmrcvMntrngDao extends EgovComAbstractDAO {
 	 * @exception Exception Exception
 	 */
 	public void insertTrsmrcvMntrng(TrsmrcvMntrng trsmrcvMntrng) throws Exception {
-		insert("TrsmrcvMntrngDao.insertTrsmrcvMntrng", trsmrcvMntrng);
+		trsmrcvMntrngMapper.insertTrsmrcvMntrng(trsmrcvMntrng);
 	}
 
 	/**
@@ -55,7 +60,7 @@ public class TrsmrcvMntrngDao extends EgovComAbstractDAO {
 	 * @exception Exception Exception
 	 */
 	public void insertTrsmrcvMntrngLog(TrsmrcvMntrngLog trsmrcvMntrngLog) throws Exception {
-		insert("TrsmrcvMntrngDao.insertTrsmrcvMntrngLog", trsmrcvMntrngLog);
+		trsmrcvMntrngMapper.insertTrsmrcvMntrngLog(trsmrcvMntrngLog);
 	}
 
 	/**
@@ -66,7 +71,7 @@ public class TrsmrcvMntrngDao extends EgovComAbstractDAO {
 	 * @exception Exception Exception
 	 */
 	public TrsmrcvMntrng selectTrsmrcvMntrng(TrsmrcvMntrng trsmrcvMntrng) throws Exception {
-		return (TrsmrcvMntrng) selectOne("TrsmrcvMntrngDao.selectTrsmrcvMntrng", trsmrcvMntrng);
+		return trsmrcvMntrngMapper.selectTrsmrcvMntrng(trsmrcvMntrng);
 	}
 
 	/**
@@ -77,7 +82,7 @@ public class TrsmrcvMntrngDao extends EgovComAbstractDAO {
 	 * @exception Exception Exception
 	 */
 	public TrsmrcvMntrngLog selectTrsmrcvMntrngLog(TrsmrcvMntrngLog trsmrcvMntrngLog) throws Exception {
-		return (TrsmrcvMntrngLog) selectOne("TrsmrcvMntrngDao.selectTrsmrcvMntrngLog", trsmrcvMntrngLog);
+		return trsmrcvMntrngMapper.selectTrsmrcvMntrngLog(trsmrcvMntrngLog);
 	}
 
 	/**
@@ -88,7 +93,7 @@ public class TrsmrcvMntrngDao extends EgovComAbstractDAO {
 	 * @exception Exception Exception
 	 */
 	public List<TrsmrcvMntrng> selectTrsmrcvMntrngList(TrsmrcvMntrng searchVO) throws Exception {
-		return selectList("TrsmrcvMntrngDao.selectTrsmrcvMntrngList", searchVO);
+		return trsmrcvMntrngMapper.selectTrsmrcvMntrngList(searchVO);
 	}
 
 	/**
@@ -99,7 +104,7 @@ public class TrsmrcvMntrngDao extends EgovComAbstractDAO {
 	 * @exception Exception Exception
 	 */
 	public int selectTrsmrcvMntrngListCnt(TrsmrcvMntrng searchVO) throws Exception {
-		return (Integer) selectOne("TrsmrcvMntrngDao.selectTrsmrcvMntrngListCnt", searchVO);
+		return trsmrcvMntrngMapper.selectTrsmrcvMntrngListCnt(searchVO);
 	}
 
 	/**
@@ -110,7 +115,7 @@ public class TrsmrcvMntrngDao extends EgovComAbstractDAO {
 	 * @exception Exception Exception
 	 */
 	public List<TrsmrcvMntrngLog> selectTrsmrcvMntrngLogList(TrsmrcvMntrngLog searchVO) throws Exception {
-		return selectList("TrsmrcvMntrngDao.selectTrsmrcvMntrngLogList", searchVO);
+		return trsmrcvMntrngMapper.selectTrsmrcvMntrngLogList(searchVO);
 	}
 
 	/**
@@ -121,7 +126,7 @@ public class TrsmrcvMntrngDao extends EgovComAbstractDAO {
 	 * @exception Exception Exception
 	 */
 	public int selectTrsmrcvMntrngLogListCnt(TrsmrcvMntrngLog searchVO) throws Exception {
-		return (Integer) selectOne("TrsmrcvMntrngDao.selectTrsmrcvMntrngLogListCnt", searchVO);
+		return trsmrcvMntrngMapper.selectTrsmrcvMntrngLogListCnt(searchVO);
 	}
 
 	/**
@@ -131,7 +136,7 @@ public class TrsmrcvMntrngDao extends EgovComAbstractDAO {
 	 * @exception Exception Exception
 	 */
 	public void updateTrsmrcvMntrng(TrsmrcvMntrng trsmrcvMntrng) throws Exception {
-		update("TrsmrcvMntrngDao.updateTrsmrcvMntrng", trsmrcvMntrng);
+		trsmrcvMntrngMapper.updateTrsmrcvMntrng(trsmrcvMntrng);
 	}
 
 	/**
@@ -142,7 +147,7 @@ public class TrsmrcvMntrngDao extends EgovComAbstractDAO {
 	 * @exception Exception Exception
 	 */
 	public List<CntcVO> selectCntcList(CntcVO searchVO) throws Exception {
-		return selectList("TrsmrcvMntrngDao.selectCntcList", searchVO);
+		return trsmrcvMntrngMapper.selectCntcList(searchVO);
 	}
 
 	/**
@@ -153,7 +158,7 @@ public class TrsmrcvMntrngDao extends EgovComAbstractDAO {
 	 * @exception Exception Exception
 	 */
 	public int selectCntcListCnt(CntcVO searchVO) throws Exception {
-		return (Integer) selectOne("TrsmrcvMntrngDao.selectCntcListCnt", searchVO);
+		return trsmrcvMntrngMapper.selectCntcListCnt(searchVO);
 	}
 
 }

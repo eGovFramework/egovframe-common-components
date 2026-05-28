@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="TrsmrcvMntrngDao">
+<mapper namespace="egovframework.com.utl.sys.trm.service.impl.TrsmrcvMntrngMapper">
 
 	<resultMap id="trsmrcvMntrngResult" type="egovframework.com.utl.sys.trm.service.TrsmrcvMntrng">
 		<result property="cntcId" column="CNTC_ID"/>
