@@ -4,9 +4,10 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.cop.ems.service.AtchmnFileVO;
 import egovframework.com.cop.ems.service.SndngMailVO;
+
+import jakarta.annotation.Resource;
 
 /**
  * 발송메일을 등록하는 DAO 클래스
@@ -25,7 +26,10 @@ import egovframework.com.cop.ems.service.SndngMailVO;
  *  </pre>
  */
 @Repository("sndngMailRegistDAO")
-public class SndngMailRegistDAO extends EgovComAbstractDAO {
+public class SndngMailRegistDAO {
+
+	@Resource(name = "sndngMailRegistMapper")
+	private SndngMailRegistMapper sndngMailRegistMapper;
 
 	/**
 	 * 발송할 메일을 등록한다
@@ -34,8 +38,8 @@ public class SndngMailRegistDAO extends EgovComAbstractDAO {
 	 * @exception Exception
 	 */
 	public SndngMailVO insertSndngMail(SndngMailVO vo) throws Exception {
-		insert("sndngMailRegistDAO.insertSndngMail", vo);
-		return new SndngMailVO() ;
+		sndngMailRegistMapper.insertSndngMail(vo);
+		return new SndngMailVO();
 	}
 
 	/**
@@ -45,7 +49,7 @@ public class SndngMailRegistDAO extends EgovComAbstractDAO {
 	 * @exception Exception
 	 */
 	public List<AtchmnFileVO> selectAtchmnFileList(SndngMailVO vo) throws Exception {
-		return selectList("sndngMailRegistDAO.selectAtchmnFileList", vo);
+		return sndngMailRegistMapper.selectAtchmnFileList(vo);
 	}
 
 	/**
@@ -55,7 +59,7 @@ public class SndngMailRegistDAO extends EgovComAbstractDAO {
 	 * @exception Exception
 	 */
 	public SndngMailVO updateSndngMail(SndngMailVO vo) throws Exception {
-		update("sndngMailRegistDAO.updateSndngMail", vo);
+		sndngMailRegistMapper.updateSndngMail(vo);
 		return new SndngMailVO();
 	}
 }

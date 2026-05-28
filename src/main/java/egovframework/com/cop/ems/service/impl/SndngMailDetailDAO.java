@@ -2,12 +2,13 @@ package egovframework.com.cop.ems.service.impl;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.cop.ems.service.SndngMailVO;
+
+import jakarta.annotation.Resource;
 
 /**
  * 발송메일을 상세 조회하는 DAO 클래스
- * 
+ *
  * @author 공통서비스 개발팀 박지욱
  * @since 2009.03.12
  * @version 1.0
@@ -23,27 +24,30 @@ import egovframework.com.cop.ems.service.SndngMailVO;
  *      </pre>
  */
 @Repository("sndngMailDetailDAO")
-public class SndngMailDetailDAO extends EgovComAbstractDAO {
+public class SndngMailDetailDAO {
+
+	@Resource(name = "sndngMailDetailMapper")
+	private SndngMailDetailMapper sndngMailDetailMapper;
 
 	/**
 	 * 발송메일을 상세 조회한다.
-	 * 
+	 *
 	 * @param vo SndngMailVO
 	 * @return SndngMailVO
 	 * @exception Exception
 	 */
 	public SndngMailVO selectSndngMail(SndngMailVO vo) throws Exception {
-		return (SndngMailVO) selectOne("sndngMailDetailDAO.selectSndngMail", vo);
+		return sndngMailDetailMapper.selectSndngMail(vo);
 	}
 
 	/**
 	 * 발송메일을 삭제한다.
-	 * 
+	 *
 	 * @param vo SndngMailVO
 	 * @exception
 	 */
 	public int deleteSndngMail(SndngMailVO vo) throws Exception {
-        return delete("sndngMailDetailDAO.deleteSndngMail", vo);
-    }
+		return sndngMailDetailMapper.deleteSndngMail(vo);
+	}
 
 }
