@@ -4,34 +4,47 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.rec.service.RecomendSiteVO;
+import jakarta.annotation.Resource;
 
+/**
+ * 추천사이트에 대한 DAO 클래스
+ *
+ * <pre>
+ * << 개정이력(Modification Information) >>
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2026.05.28  dasomel         @EgovMapper 인터페이스 위임 방식으로 전환
+ * </pre>
+ */
 @Repository("EgovRecomendSiteDAO")
-public class EgovRecomendSiteDAO extends EgovComAbstractDAO{
+public class EgovRecomendSiteDAO {
+
+	@Resource(name = "egovRecomendSiteMapper")
+	private EgovRecomendSiteMapper mapper;
 
 	public List<RecomendSiteVO> selectRecomendSiteList(RecomendSiteVO recomendSiteVO) {
-		return selectList("RecomendSite.selectRecomendSiteList", recomendSiteVO);
+		return mapper.selectRecomendSiteList(recomendSiteVO);
 	}
 
 	public int selectRecomendSiteListCnt(RecomendSiteVO recomendSiteVO) {
-		return (Integer) selectOne("RecomendSite.selectRecomendSiteListCnt", recomendSiteVO);
+		return mapper.selectRecomendSiteListCnt(recomendSiteVO);
 	}
 
 	public void insertRecomendSite(RecomendSiteVO recomendSiteVO) {
-		insert("RecomendSite.insertRecomendSite", recomendSiteVO);
+		mapper.insertRecomendSite(recomendSiteVO);
 	}
 
 	public RecomendSiteVO selectRecomendSiteDetail(RecomendSiteVO recomendSiteVO) {
-		return (RecomendSiteVO) selectOne("RecomendSite.selectRecomendSiteDetail", recomendSiteVO);
+		return mapper.selectRecomendSiteDetail(recomendSiteVO);
 	}
 
 	public void updateRecomendSite(RecomendSiteVO recomendSiteVO) {
-		update("RecomendSite.updateRecomendSite", recomendSiteVO);
+		mapper.updateRecomendSite(recomendSiteVO);
 	}
 
 	public void deleteRecomendSite(RecomendSiteVO recomendSiteVO) {
-		delete("RecomendSite.deleteRecomendSite", recomendSiteVO);
+		mapper.deleteRecomendSite(recomendSiteVO);
 	}
-
 }

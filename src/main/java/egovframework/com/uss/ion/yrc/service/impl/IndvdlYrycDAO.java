@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.yrc.service.IndvdlYrycManage;
+import jakarta.annotation.Resource;
 
 /**
  * 개요
@@ -13,20 +13,31 @@ import egovframework.com.uss.ion.yrc.service.IndvdlYrycManage;
  *
  * 상세내용
  * - 연차관리에 대한 등록, 수정, 삭제, 조회 기능을 제공한다.
+ *
+ * <pre>
+ * << 개정이력(Modification Information) >>
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2014.11.14  이기하          최초 생성
+ *   2026.05.28  dasomel         @EgovMapper 인터페이스 위임 방식으로 전환
+ * </pre>
+ *
  * @author 이기하
  * @version 1.0
- * @created 2014.11.14
  */
-
 @Repository("indvdlYrycDAO")
-public class IndvdlYrycDAO extends EgovComAbstractDAO {
+public class IndvdlYrycDAO {
+
+	@Resource(name = "indvdlYrycMapper")
+	private IndvdlYrycMapper mapper;
 
 	/**
 	 * 연차를 조회처리한다.
 	 * @param indvdlYrycManage - 연차관리 model
 	 */
 	public List<IndvdlYrycManage> selectIndvdlYrycManageList(IndvdlYrycManage indvdlYrycManage) throws Exception {
-		return selectList("indvdlYrycDAO.selectIndvdlYrycManageList", indvdlYrycManage);
+		return mapper.selectIndvdlYrycManageList(indvdlYrycManage);
 	}
 
 	/**
@@ -34,7 +45,7 @@ public class IndvdlYrycDAO extends EgovComAbstractDAO {
 	 * @param indvdlYrycManage - 연차관리 model
 	 */
 	public int selectIndvdlYrycManageListTotCnt(IndvdlYrycManage indvdlYrycManage) throws Exception {
-		return (Integer)selectOne("indvdlYrycDAO.selectIndvdlYrycManageListTotCnt", indvdlYrycManage);
+		return mapper.selectIndvdlYrycManageListTotCnt(indvdlYrycManage);
 	}
 
 	/**
@@ -42,7 +53,7 @@ public class IndvdlYrycDAO extends EgovComAbstractDAO {
 	 * @param indvdlYrycManage - 연차관리 model
 	 */
 	public void insertIndvdlYrycManage(IndvdlYrycManage indvdlYrycManage) throws Exception {
-		insert("indvdlYrycDAO.insertIndvdlYrycManage", indvdlYrycManage);
+		mapper.insertIndvdlYrycManage(indvdlYrycManage);
 	}
 
 	/**
@@ -50,7 +61,7 @@ public class IndvdlYrycDAO extends EgovComAbstractDAO {
 	 * @param indvdlYrycManage - 연차관리 model
 	 */
 	public void updtIndvdlYrycManage(IndvdlYrycManage indvdlYrycManage) throws Exception {
-		update("indvdlYrycDAO.updateIndvdlYrycManage", indvdlYrycManage);
+		mapper.updateIndvdlYrycManage(indvdlYrycManage);
 	}
 
 	/**
@@ -58,7 +69,6 @@ public class IndvdlYrycDAO extends EgovComAbstractDAO {
 	 * @param indvdlYrycManage - 연차관리 model
 	 */
 	public void deleteIndvdlYrycManage(IndvdlYrycManage indvdlYrycManage) throws Exception {
-		delete("indvdlYrycDAO.deleteIndvdlYrycManage", indvdlYrycManage);
+		mapper.deleteIndvdlYrycManage(indvdlYrycManage);
 	}
-
 }

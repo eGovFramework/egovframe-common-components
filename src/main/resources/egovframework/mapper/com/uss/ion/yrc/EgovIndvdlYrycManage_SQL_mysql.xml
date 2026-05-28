@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed May 11 15:51:27 KST 2016-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="indvdlYrycDAO">
+<mapper namespace="egovframework.com.uss.ion.yrc.service.impl.IndvdlYrycMapper">
 
     <select id="selectIndvdlYrycManageList" parameterType="egovframework.com.uss.ion.yrc.service.IndvdlYrycManage" resultType="egovframework.com.uss.ion.yrc.service.IndvdlYrycManage">
         

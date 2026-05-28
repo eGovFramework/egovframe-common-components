@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed May 11 15:51:11 KST 2016-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="NotificationDAO">
+<mapper namespace="egovframework.com.uss.ion.noi.service.impl.NotificationMapper">
 
 	<resultMap id="notificationList" type="egovframework.com.uss.ion.noi.service.NotificationVO">
 		<result property="ntfcNo" column="NTCN_NO"/>

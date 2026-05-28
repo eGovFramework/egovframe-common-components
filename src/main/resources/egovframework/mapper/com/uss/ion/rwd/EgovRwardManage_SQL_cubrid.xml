@@ -7,7 +7,7 @@
  --><!--Converted at: Wed May 11 15:51:20 KST 2016-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="rwardManageDAO">
+<mapper namespace="egovframework.com.uss.ion.rwd.service.impl.RwardManageMapper">
 
     <resultMap id="rwardManage" type="egovframework.com.uss.ion.rwd.service.RwardManageVO">
         <result property="rwardManId" column="RWARDWNR_ID"/> 
