@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="synchrnServerDAO">
+<mapper namespace="egovframework.com.utl.sys.ssy.service.impl.SynchrnServerDAO">
 
     <resultMap id="synchrnServer" type="egovframework.com.utl.sys.ssy.service.SynchrnServer">
         <result property="serverId" column="SERVER_ID"/>
