@@ -2,65 +2,52 @@ package egovframework.com.uss.ion.ecc.service.impl;
 
 import java.util.List;
 
-import org.springframework.stereotype.Repository;
+import org.egovframe.rte.psl.dataaccess.mapper.EgovMapper;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.ecc.service.EventCmpgnVO;
 import egovframework.com.uss.ion.ecc.service.TnextrlHrVO;
 
-@Repository("EgovEventCmpgnDAO")
-public class EgovEventCmpgnDAO extends EgovComAbstractDAO {
+/**
+ * 개요
+ * - 행사캠페인에 대한 DAO 인터페이스를 정의한다.
+ *
+ * <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.xx.xx  최초 생성
+ *   2026.05.28  dasomel        @EgovMapper 인터페이스 방식으로 전환
+ *
+ * </pre>
+ */
+@EgovMapper("EgovEventCmpgnDAO")
+public interface EgovEventCmpgnDAO {
 
-	public List<EventCmpgnVO> selectEventCmpgnList(EventCmpgnVO eventCmpgnVO) {
-		return selectList("EventCmpgn.selectEventCmpgnList", eventCmpgnVO);
-	}
+	List<EventCmpgnVO> selectEventCmpgnList(EventCmpgnVO eventCmpgnVO);
 
-	public int selectEventCmpgnListCnt(EventCmpgnVO eventCmpgnVO) {
-		return (Integer) selectOne("EventCmpgn.selectEventCmpgnListCnt", eventCmpgnVO);
-	}
+	int selectEventCmpgnListCnt(EventCmpgnVO eventCmpgnVO);
 
-	public void insertEventCmpgn(EventCmpgnVO eventCmpgnVO) {
-		insert("EventCmpgn.insertEventCmpgn", eventCmpgnVO);
-	}
+	void insertEventCmpgn(EventCmpgnVO eventCmpgnVO);
 
-	public EventCmpgnVO selectEventCmpgnDetail(EventCmpgnVO eventCmpgnVO) {
-		return (EventCmpgnVO) selectOne("EventCmpgn.selectEventCmpgnDetail", eventCmpgnVO);
-	}
+	EventCmpgnVO selectEventCmpgnDetail(EventCmpgnVO eventCmpgnVO);
 
-	public void updateEventCmpgn(EventCmpgnVO eventCmpgnVO) {
-		update("EventCmpgn.updateEventCmpgn", eventCmpgnVO);
-	}
+	void updateEventCmpgn(EventCmpgnVO eventCmpgnVO);
 
-	public void deleteEventCmpgn(EventCmpgnVO eventCmpgnVO) {
-		delete("EventCmpgn.deleteEventCmpgn", eventCmpgnVO);
-	}
+	void deleteEventCmpgn(EventCmpgnVO eventCmpgnVO);
 
-	public List<TnextrlHrVO> selectTnextrlHrList(TnextrlHrVO tnextrlHrVO) {
-		return selectList("EventCmpgn.selectTnextrlHrList", tnextrlHrVO);
-	}
+	List<TnextrlHrVO> selectTnextrlHrList(TnextrlHrVO tnextrlHrVO);
 
-	public int selectTnextrlHrListCnt(TnextrlHrVO tnextrlHrVO) {
-		return (Integer) selectOne("EventCmpgn.selectTnextrlHrListCnt", tnextrlHrVO);
-	}
+	int selectTnextrlHrListCnt(TnextrlHrVO tnextrlHrVO);
 
-	public void insertTnextrlHr(TnextrlHrVO tnextrlHrVO) {
-		insert("EventCmpgn.insertTnextrlHr", tnextrlHrVO);
-	}
+	void insertTnextrlHr(TnextrlHrVO tnextrlHrVO);
 
-	public TnextrlHrVO selectTnextrlHrDetail(TnextrlHrVO tnextrlHrVO) {
-		return (TnextrlHrVO) selectOne("EventCmpgn.selectTnextrlHrDetail", tnextrlHrVO);
-	}
+	TnextrlHrVO selectTnextrlHrDetail(TnextrlHrVO tnextrlHrVO);
 
-	public void updateTnextrlHr(TnextrlHrVO tnextrlHrVO) {
-		update("EventCmpgn.updateTnextrlHr", tnextrlHrVO);
-	}
+	void updateTnextrlHr(TnextrlHrVO tnextrlHrVO);
 
-	public void deleteTnextrlHr(TnextrlHrVO tnextrlHrVO) {
-		delete("EventCmpgn.deleteTnextrlHr", tnextrlHrVO);
-	}
+	void deleteTnextrlHr(TnextrlHrVO tnextrlHrVO);
 
-	public void deleteEventCmpgnTnextrlHr(EventCmpgnVO eventCmpgnVO) {
-		delete("EventCmpgn.deleteEventCmpgnTnextrlHr", eventCmpgnVO);
-	}
+	void deleteEventCmpgnTnextrlHr(EventCmpgnVO eventCmpgnVO);
 
 }

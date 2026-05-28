@@ -9,7 +9,7 @@
 -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="EventCmpgn">
+<mapper namespace="egovframework.com.uss.ion.ecc.service.impl.EgovEventCmpgnDAO">
 
 	<resultMap id="EventCmpgnListMap" type="egovframework.com.uss.ion.ecc.service.EventCmpgnVO">
 		<result property="eventId" column="EVENT_ID"/>
