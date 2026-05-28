@@ -5,7 +5,7 @@
 -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="DiaryManage">
+<mapper namespace="egovframework.com.cop.smt.dsm.service.impl.DiaryManageMapper">
 
 	<resultMap id="DiaryManage" type="egovframework.com.cop.smt.dsm.service.DiaryManageVO">
 		<result property="diaryId" column="DIARY_ID"/>
