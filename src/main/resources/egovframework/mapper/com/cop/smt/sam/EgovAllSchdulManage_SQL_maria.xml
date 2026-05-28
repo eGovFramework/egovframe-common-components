@@ -7,7 +7,7 @@
 -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="AllSchdulManage">
+<mapper namespace="egovframework.com.cop.smt.sam.service.impl.AllSchdulManageMapper">
 
 	<!-- 전제일정::목록조회_게시물정보 -->
 	<select id="selectIndvdlSchdulManage" parameterType="comDefaultVO" resultType="egovMap">
