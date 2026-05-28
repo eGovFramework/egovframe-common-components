@@ -14,7 +14,7 @@
 --><!--Converted at: Wed May 11 15:51:39 KST 2016-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="QustnrManage">
+<mapper namespace="egovframework.com.uss.olp.qmc.service.impl.QustnrManageMapper">
 
 	<resultMap id="QustnrManage" type="egovframework.com.uss.olp.qmc.service.QustnrManageVO">
 		<result property="qestnrId" column="QESTNR_ID"/>

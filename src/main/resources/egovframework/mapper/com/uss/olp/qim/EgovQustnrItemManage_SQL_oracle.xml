@@ -13,7 +13,7 @@
 --><!--Converted at: Wed May 11 15:51:38 KST 2016-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="QustnrItemManage">
+<mapper namespace="egovframework.com.uss.olp.qim.service.impl.QustnrItemManageMapper">
 	<!-- 설문정보::설문템플릿정보 -->
 	<select id="selectQustnrTmplatManage" parameterType="egovframework.com.uss.olp.qim.service.QustnrItemManageVO" resultType="egovMap">
 		<![CDATA[

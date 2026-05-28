@@ -14,7 +14,7 @@
 --><!--Converted at: Wed May 11 15:51:40 KST 2016-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="QustnrQestnManage">
+<mapper namespace="egovframework.com.uss.olp.qqm.service.impl.QustnrQestnManageMapper">
 
 	<!-- 설문문항:: 객관식 통계  -->
 	<select id="selectQustnrManageStatistics" parameterType="java.util.Map" resultType="egovMap">

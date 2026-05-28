@@ -3,11 +3,11 @@ package egovframework.com.uss.olp.qtm.service.impl;
 import java.util.List;
 import java.util.Map;
 
+import jakarta.annotation.Resource;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.ComDefaultVO;
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.olp.qtm.service.QustnrTmplatManageVO;
 
 /**
@@ -28,85 +28,79 @@ import egovframework.com.uss.olp.qtm.service.QustnrTmplatManageVO;
  * </pre>
  */
 @Repository("qustnrTmplatManageDao")
-public class QustnrTmplatManageDao extends EgovComAbstractDAO {
+public class QustnrTmplatManageDao {
 
-    /**
+	@Resource(name = "qustnrTmplatManageMapper")
+	private QustnrTmplatManageMapper qustnrTmplatManageMapper;
+
+	/**
 	 * 템플릿파일명을 조회한다.
 	 * @param qustnrTmplatManageVO - 조회할 정보가 담긴 VO
-	 * @return List
-	 * @throws Exception
+	 * @return Map
 	 */
-	public Map<?,?> selectQustnrTmplatManageTmplatImagepathnm(QustnrTmplatManageVO qustnrTmplatManageVO){
-		return (Map<?,?>)selectOne("QustnrTmplatManage.selectQustnrTmplatManageTmplatImagepathnm", qustnrTmplatManageVO);
+	public Map<?, ?> selectQustnrTmplatManageTmplatImagepathnm(QustnrTmplatManageVO qustnrTmplatManageVO) {
+		return qustnrTmplatManageMapper.selectQustnrTmplatManageTmplatImagepathnm(qustnrTmplatManageVO);
 	}
-
 
 	/**
 	 * 설문템플릿 목록을 조회한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return List
-	 * @throws Exception
 	 */
-	public List<EgovMap> selectQustnrTmplatManageList(ComDefaultVO searchVO){
-		return selectList("QustnrTmplatManage.selectQustnrTmplatManage", searchVO);
+	public List<EgovMap> selectQustnrTmplatManageList(ComDefaultVO searchVO) {
+		return qustnrTmplatManageMapper.selectQustnrTmplatManage(searchVO);
 	}
 
-    /**
+	/**
 	 * 설문템플릿를(을) 상세조회 한다.
-	 * @param QustnrTmplatManage - 회정정보가 담김 VO
+	 * @param qustnrTmplatManageVO - 설문템플릿 정보 담김 VO
 	 * @return List
-	 * @throws Exception
 	 */
-	public List<EgovMap> selectQustnrTmplatManageDetail(QustnrTmplatManageVO qustnrTmplatManageVO){
-		return selectList("QustnrTmplatManage.selectQustnrTmplatManageDetail", qustnrTmplatManageVO);
+	public List<EgovMap> selectQustnrTmplatManageDetail(QustnrTmplatManageVO qustnrTmplatManageVO) {
+		return qustnrTmplatManageMapper.selectQustnrTmplatManageDetail(qustnrTmplatManageVO);
 	}
 
-    /**
+	/**
 	 * 설문템플릿를(을) 목록 전체 건수를(을) 조회한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return int
-	 * @throws Exception
 	 */
-	public int selectQustnrTmplatManageListCnt(ComDefaultVO searchVO){
-		return (Integer)selectOne("QustnrTmplatManage.selectQustnrTmplatManageCnt", searchVO);
+	public int selectQustnrTmplatManageListCnt(ComDefaultVO searchVO) {
+		return qustnrTmplatManageMapper.selectQustnrTmplatManageCnt(searchVO);
 	}
 
-    /**
+	/**
 	 * 설문템플릿를(을) 등록한다.
-	 * @param searchVO - 조회할 정보가 담긴 VO
-	 * @throws Exception
+	 * @param qustnrTmplatManageVO - 설문템플릿 정보 담김 VO
 	 */
-	public void insertQustnrTmplatManage(QustnrTmplatManageVO qustnrTmplatManageVO){
-		insert("QustnrTmplatManage.insertQustnrTmplatManage", qustnrTmplatManageVO);
+	public void insertQustnrTmplatManage(QustnrTmplatManageVO qustnrTmplatManageVO) {
+		qustnrTmplatManageMapper.insertQustnrTmplatManage(qustnrTmplatManageVO);
 	}
 
-    /**
+	/**
 	 * 설문템플릿를(을) 수정한다.
-	 * @param searchVO - 조회할 정보가 담긴 VO
-	 * @throws Exception
+	 * @param qustnrTmplatManageVO - 설문템플릿 정보 담김 VO
 	 */
-	public void updateQustnrTmplatManage(QustnrTmplatManageVO qustnrTmplatManageVO){
-		update("QustnrTmplatManage.updateQustnrTmplatManage", qustnrTmplatManageVO);
+	public void updateQustnrTmplatManage(QustnrTmplatManageVO qustnrTmplatManageVO) {
+		qustnrTmplatManageMapper.updateQustnrTmplatManage(qustnrTmplatManageVO);
 	}
 
-    /**
+	/**
 	 * 설문템플릿를(을) 삭제한다.
-	 * @param searchVO - 조회할 정보가 담긴 VO
-	 * @throws Exception
+	 * @param qustnrTmplatManageVO - 설문템플릿 정보 담김 VO
 	 */
-	public void deleteQustnrTmplatManage(QustnrTmplatManageVO qustnrTmplatManageVO){
+	public void deleteQustnrTmplatManage(QustnrTmplatManageVO qustnrTmplatManageVO) {
 		//설문응답자 삭제
-		delete("QustnrTmplatManage.deleteQustnrRespondManage", qustnrTmplatManageVO);
+		qustnrTmplatManageMapper.deleteQustnrRespondManage(qustnrTmplatManageVO);
 		//설문조사(설문결과) 삭제
-		delete("QustnrTmplatManage.deleteQustnrRespondInfo", qustnrTmplatManageVO);
+		qustnrTmplatManageMapper.deleteQustnrRespondInfo(qustnrTmplatManageVO);
 		//설문항목 삭제
-		delete("QustnrTmplatManage.deleteQustnrItemManage", qustnrTmplatManageVO);
+		qustnrTmplatManageMapper.deleteQustnrItemManage(qustnrTmplatManageVO);
 		//설문문항 삭제
-		delete("QustnrTmplatManage.deleteQustnrQestnManage", qustnrTmplatManageVO);
+		qustnrTmplatManageMapper.deleteQustnrQestnManage(qustnrTmplatManageVO);
 		//설문관리 삭제
-		delete("QustnrTmplatManage.deleteQustnrManage", qustnrTmplatManageVO);
-
+		qustnrTmplatManageMapper.deleteQustnrManage(qustnrTmplatManageVO);
 		//설문템플릿삭제
-		delete("QustnrTmplatManage.deleteQustnrTmplatManage", qustnrTmplatManageVO);
+		qustnrTmplatManageMapper.deleteQustnrTmplatManage(qustnrTmplatManageVO);
 	}
 }

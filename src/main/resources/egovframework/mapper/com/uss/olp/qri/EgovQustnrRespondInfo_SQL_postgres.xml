@@ -13,7 +13,7 @@
 --><!--Converted at: Wed May 11 15:51:41 KST 2016-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="QustnrRespondInfo">
+<mapper namespace="egovframework.com.uss.olp.qri.service.impl.QustnrRespondInfoMapper">
 
 	<!-- 설문등록:: 설문템플릿조회 -->
 	<select id="selectQustnrTmplatManages" parameterType="java.util.Map" resultType="egovMap">
