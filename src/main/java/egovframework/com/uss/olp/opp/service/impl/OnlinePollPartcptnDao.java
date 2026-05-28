@@ -6,8 +6,8 @@ import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.ComDefaultVO;
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.olp.opp.service.OnlinePollPartcptn;
+import jakarta.annotation.Resource;
 
 /**
  * 온라인POLL참여를 처리하는 Dao Class 구현
@@ -21,11 +21,15 @@ import egovframework.com.uss.olp.opp.service.OnlinePollPartcptn;
  *  -------    --------    ---------------------------
  *   2009.07.03  장동한          최초 생성
  *   2011.10.27  서준식          온라인 POLL 중복 투표 방지 기능 추가
+ *   2026.05.28  dasomel         @EgovMapper 인터페이스 방식으로 전환
  *
  * </pre>
  */
 @Repository("onlinePollPartcptnDao")
-public class OnlinePollPartcptnDao extends EgovComAbstractDAO {
+public class OnlinePollPartcptnDao {
+
+    @Resource(name = "onlinePollPartcptnMapper")
+    private OnlinePollPartcptnMapper onlinePollPartcptnMapper;
 
     /**
      * 온라인POLL관리를(을) 목록을 한다.
@@ -34,7 +38,7 @@ public class OnlinePollPartcptnDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public List<EgovMap> selectOnlinePollManageList(ComDefaultVO searchVO) throws Exception {
-        return selectList("OnlinePollPartcptn.selectOnlinePollManageList", searchVO);
+        return onlinePollPartcptnMapper.selectOnlinePollManageList(searchVO);
     }
 
     /**
@@ -44,7 +48,7 @@ public class OnlinePollPartcptnDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public int selectOnlinePollManageListCnt(ComDefaultVO searchVO) throws Exception {
-        return (Integer)selectOne("OnlinePollPartcptn.selectOnlinePollManageListCnt", searchVO);
+        return onlinePollPartcptnMapper.selectOnlinePollManageListCnt(searchVO);
     }
 
     /**
@@ -54,7 +58,7 @@ public class OnlinePollPartcptnDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public List<EgovMap> selectOnlinePollManageDetail(OnlinePollPartcptn onlinePollPartcptn) throws Exception {
-        return selectList("OnlinePollPartcptn.selectOnlinePollManageDetail", onlinePollPartcptn);
+        return onlinePollPartcptnMapper.selectOnlinePollManageDetail(onlinePollPartcptn);
     }
 
     /**
@@ -64,26 +68,26 @@ public class OnlinePollPartcptnDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public List<EgovMap> selectOnlinePollItemDetail(OnlinePollPartcptn onlinePollPartcptn) throws Exception {
-        return selectList("OnlinePollPartcptn.selectOnlinePollItem", onlinePollPartcptn);
+        return onlinePollPartcptnMapper.selectOnlinePollItem(onlinePollPartcptn);
     }
-
 
     /**
      * 온라인POLL참여를(을) 등록한다.
-     * @param qonlinePollPartcptn  온라인POLL 정보가 담김 VO
+     * @param onlinePollPartcptn  온라인POLL 정보가 담김 VO
      * @throws Exception
      */
     public void insertOnlinePollResult(OnlinePollPartcptn onlinePollPartcptn) throws Exception {
-        insert("OnlinePollPartcptn.insertOnlinePollResult", onlinePollPartcptn);
+        onlinePollPartcptnMapper.insertOnlinePollResult(onlinePollPartcptn);
     }
 
     /**
-     * 온라인POLL통계를(을) 등록한다.
-     * @param qonlinePollPartcptn  온라인POLL 정보가 담김 VO
+     * 온라인POLL통계를(을) 조회한다.
+     * @param onlinePollPartcptn  온라인POLL 정보가 담김 VO
+     * @return List
      * @throws Exception
      */
     public List<EgovMap> selectOnlinePollManageStatistics(OnlinePollPartcptn onlinePollPartcptn) throws Exception {
-        return selectList("OnlinePollPartcptn.selectOnlinePollPartcptnStatistics", onlinePollPartcptn);
+        return onlinePollPartcptnMapper.selectOnlinePollPartcptnStatistics(onlinePollPartcptn);
     }
 
     /**
@@ -92,10 +96,8 @@ public class OnlinePollPartcptnDao extends EgovComAbstractDAO {
      * @return int
      * @throws Exception
      */
-    public int selectOnlinePollResult( OnlinePollPartcptn onlinePollPartcptn) throws Exception{
-    	return (Integer)selectOne("OnlinePollPartcptn.selectOnlinePollResult", onlinePollPartcptn);
+    public int selectOnlinePollResult(OnlinePollPartcptn onlinePollPartcptn) throws Exception {
+        return onlinePollPartcptnMapper.selectOnlinePollResult(onlinePollPartcptn);
     }
-
-
 
 }

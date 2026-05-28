@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.olp.opr.service.OnlinePollResult;
+import jakarta.annotation.Resource;
 
 /**
  * 온라인POLL결과를 처리하는 Dao Class 구현
@@ -18,11 +18,15 @@ import egovframework.com.uss.olp.opr.service.OnlinePollResult;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.07.03  장동한          최초 생성
+ *   2026.05.28  dasomel         @EgovMapper 인터페이스 방식으로 전환
  *
  * </pre>
  */
 @Repository("onlinePollResultDao")
-public class OnlinePollResultDao extends EgovComAbstractDAO {
+public class OnlinePollResultDao {
+
+    @Resource(name = "onlinePollResultMapper")
+    private OnlinePollResultMapper onlinePollResultMapper;
 
     /**
      * 온라인POLL결과를(을) 목록을 한다.
@@ -31,18 +35,16 @@ public class OnlinePollResultDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public List<?> selectOnlinePollResultList(OnlinePollResult onlinePollResult) throws Exception {
-        return selectList("OnlinePollResult.selectOnlinePollResult", onlinePollResult);
+        return onlinePollResultMapper.selectOnlinePollResult(onlinePollResult);
     }
 
     /**
      * 온라인POLL결과를(을) 삭제 한다.
      * @param onlinePollResult  온라인POLL결과 정보가 담김 VO
-     * @return void
      * @throws Exception
      */
     public void deleteOnlinePollResult(OnlinePollResult onlinePollResult) throws Exception {
-        delete("OnlinePollResult.deleteOnlinePollResult", onlinePollResult);
+        onlinePollResultMapper.deleteOnlinePollResult(onlinePollResult);
     }
-
 
 }

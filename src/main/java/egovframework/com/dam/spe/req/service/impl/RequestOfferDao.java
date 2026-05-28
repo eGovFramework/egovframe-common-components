@@ -9,8 +9,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.dam.spe.req.service.RequestOfferVO;
+import jakarta.annotation.Resource;
+
 /**
  * 지식정보제공/지식정보요청를 처리하는 Dao Class 구현
  * @author 공통콤포넌트 장동한
@@ -22,33 +23,36 @@ import egovframework.com.dam.spe.req.service.RequestOfferVO;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2010.08.30  장동한          최초 생성
+ *   2026.05.28  dasomel         @EgovMapper 인터페이스 방식으로 전환
  *
  * </pre>
  */
 @Repository("RequestOfferDao")
-public class RequestOfferDao extends EgovComAbstractDAO {
-	
+public class RequestOfferDao {
+
 	private static final Logger LOGGER = LoggerFactory.getLogger(RequestOfferDao.class);
+
+	@Resource(name = "requestOfferMapper")
+	private RequestOfferMapper requestOfferMapper;
 
     /**
      * 삭제시 하위 답변 건수를 조회한다.
-     * @param RequestOfferVO  조회할 정보가 담긴 객체
+     * @param map  조회할 정보가 담긴 객체
      * @return int
      * @throws Exception
      */
     public int selectRequestOfferDelCnt(Map<?, ?> map) throws Exception {
-    	return (Integer)selectOne("RequestOffer.selectRequestOfferDelCnt", map);
+    	return requestOfferMapper.selectRequestOfferDelCnt(map);
     }
-
 
     /**
      * 등록된 지식전문가 건수를 조회한다.
-     * @param RequestOfferVO  조회할 정보가 담긴 객체
+     * @param map  조회할 정보가 담긴 객체
      * @return int
      * @throws Exception
      */
     public int selectRequestOfferSpeCnt(Map<?, ?> map) throws Exception {
-    	return (Integer)selectOne("RequestOffer.selectRequestOfferSpeCnt", map);
+    	return requestOfferMapper.selectRequestOfferSpeCnt(map);
     }
 
     /**
@@ -58,8 +62,7 @@ public class RequestOfferDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public List<EgovMap> selectRequestOfferList(RequestOfferVO requestOfferVO) throws Exception {
-    	return selectList("RequestOffer.selectRequestOffer",requestOfferVO);
-
+    	return requestOfferMapper.selectRequestOffer(requestOfferVO);
     }
 
     /**
@@ -69,7 +72,7 @@ public class RequestOfferDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public int selectRequestOfferListCnt(RequestOfferVO requestOfferVO) throws Exception {
-    	return (Integer)selectOne("RequestOffer.selectRequestOfferCnt", requestOfferVO);
+    	return requestOfferMapper.selectRequestOfferCnt(requestOfferVO);
     }
 
     /**
@@ -79,59 +82,54 @@ public class RequestOfferDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public RequestOfferVO selectRequestOfferDetail(RequestOfferVO requestOfferVO) throws Exception {
-    	return (RequestOfferVO)selectOne("RequestOffer.selectRequestOfferDetail", requestOfferVO);
+    	return requestOfferMapper.selectRequestOfferDetail(requestOfferVO);
     }
 
     /**
      * 지식정보제공/지식정보요청를(을) 등록한다.
-     * @param qindvdlInfoPolicy  지식정보제공/지식정보요청 정보가 담김 객체
+     * @param requestOfferVO  지식정보제공/지식정보요청 정보가 담김 객체
      * @throws Exception
      */
     @SuppressWarnings("unused")
 	public void insertRequestOffer(RequestOfferVO requestOfferVO) throws Exception {
-    	if(requestOfferVO.getCmd().equals("save")){
-    		insert("RequestOffer.insertRequestOfferSave", requestOfferVO);
-    	}else if(requestOfferVO.getCmd().equals("reply")){
-    		int nSeq = (Integer)selectOne("RequestOffer.selectRequestOfferReplySeq", requestOfferVO);
+    	if (requestOfferVO.getCmd().equals("save")) {
+    		requestOfferMapper.insertRequestOfferSave(requestOfferVO);
+    	} else if (requestOfferVO.getCmd().equals("reply")) {
+    		int nSeq = requestOfferMapper.selectRequestOfferReplySeq(requestOfferVO);
 
-    		Map<?, ?> mapAnsParents = (Map<?, ?>)selectOne("RequestOffer.selectRequestOfferReplyaAnsParents", requestOfferVO);
+    		Map<?, ?> mapAnsParents = requestOfferMapper.selectRequestOfferReplyaAnsParents(requestOfferVO);
 
     		//단말노드가 아닐때 탐색
-    		if(mapAnsParents != null){
-	    		Map<?, ?> mapAnsParentsSearch = null;
-	    		String sAnsParents = (String)mapAnsParents.get("knoId");
+    		if (mapAnsParents != null) {
+	    		String sAnsParents = (String) mapAnsParents.get("knoId");
 
 	    		LOGGER.info("sAnsParents>" + sAnsParents);
 
 	    		//단말노드 검사
-	    		while(true){
+	    		while (true) {
 	    			HashMap<String, String> hmParam = new HashMap<>();
 	    			hmParam.put("ansParents", sAnsParents);
-	    			mapAnsParents = (Map<?, ?>)selectOne("RequestOffer.selectRequestOfferReplyaAnsParentsSearch", hmParam);
+	    			mapAnsParents = requestOfferMapper.selectRequestOfferReplyaAnsParentsSearch(hmParam);
 	    			LOGGER.info("mapAnsParentsSearch>" + mapAnsParents);
 
-	    			if(mapAnsParents == null){
+	    			if (mapAnsParents == null) {
 	    				break;
-	    			//1레벨 일때 처리
-	    			//}else if(mapAnsParents == null){
-	    			}else{
-	    				sAnsParents = (String)mapAnsParents.get("knoId");
-	    				nSeq=(Integer)mapAnsParents.get("ansSeq") + 1;
+	    			} else {
+	    				sAnsParents = (String) mapAnsParents.get("knoId");
+	    				nSeq = (Integer) mapAnsParents.get("ansSeq") + 1;
 	    			}
 	    		}
     		}
 
     		//단말노드가 없으면
-    		if( nSeq != 1){
+    		if (nSeq != 1) {
     			requestOfferVO.setAnsSeq(nSeq);
     		}
     		LOGGER.info("LastSeq>" + nSeq);
 
-    		update("RequestOffer.updateRequestOfferReply", requestOfferVO);
-    		insert("RequestOffer.insertRequestOfferReply", requestOfferVO);
-
+    		requestOfferMapper.updateRequestOfferReply(requestOfferVO);
+    		requestOfferMapper.insertRequestOfferReply(requestOfferVO);
     	}
-
     }
 
     /**
@@ -140,7 +138,7 @@ public class RequestOfferDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public void updateRequestOffer(RequestOfferVO requestOfferVO) throws Exception {
-    	 update("RequestOffer.updateRequestOffer", requestOfferVO);
+    	requestOfferMapper.updateRequestOffer(requestOfferVO);
     }
 
     /**
@@ -149,7 +147,7 @@ public class RequestOfferDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public void deleteRequestOffer(RequestOfferVO requestOfferVO) throws Exception {
-    	delete("RequestOffer.deleteRequestOffer", requestOfferVO);
+    	requestOfferMapper.deleteRequestOffer(requestOfferVO);
     }
 
 }

@@ -21,5 +21,11 @@
 	<bean id="egov.sqlSessionTemplate" class="org.mybatis.spring.SqlSessionTemplate">
 		<constructor-arg ref="egov.sqlSession"/>
 	</bean>
-	
+
+	<!-- @EgovMapper 어노테이션 기반 MapperScannerConfigurer -->
+	<bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
+		<property name="basePackage" value="egovframework.com" />
+		<property name="annotationClass" value="org.egovframe.rte.psl.dataaccess.mapper.EgovMapper" />
+	</bean>
+
 </beans>

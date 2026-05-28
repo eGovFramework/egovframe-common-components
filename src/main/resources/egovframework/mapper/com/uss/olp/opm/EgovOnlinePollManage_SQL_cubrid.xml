@@ -5,7 +5,7 @@
 -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="OnlinePollManage">
+<mapper namespace="egovframework.com.uss.olp.opm.service.impl.OnlinePollManageMapper">
 
 	<!-- 온라인POLL관리::ResultMap 선언 -->
 	<resultMap id="OnlinePollManageVO" type="egovframework.com.uss.olp.opm.service.OnlinePollManage">
@@ -237,4 +237,13 @@
 			WHERE POLL_IEM_ID=#{pollIemId}
 		
 	</delete>
+	<!-- 온라인POLL관리::통계조회 (상세보기 SQL 재사용) -->
+	<select id="selectOnlinePollManageStatistics" resultMap="OnlinePollManageVO">
+	SELECT 
+		A.POLL_ID, A.POLL_NM, A.POLL_BGNDE, A.POLL_ENDDE, A.POLL_KND,
+		A.POLL_DSUSE_ENNC, A.POLL_ATMC_DSUSE_ENNC, A.FRST_REGISTER_ID,
+		A.FRST_REGIST_PNTTM, A.LAST_UPDT_PNTTM, A.LAST_UPDUSR_ID
+	FROM COMTNONLINEPOLLMANAGE A
+	WHERE A.POLL_ID = #{pollId}
+	</select>
 </mapper>
