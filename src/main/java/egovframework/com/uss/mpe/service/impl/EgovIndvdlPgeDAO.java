@@ -4,30 +4,33 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.mpe.service.IndvdlPgeVO;
+import jakarta.annotation.Resource;
 
 @Repository("EgovIndvdlPgeDAO")
-public class EgovIndvdlPgeDAO extends EgovComAbstractDAO {
+public class EgovIndvdlPgeDAO {
+
+	@Resource(name = "egovIndvdlPgeMapper")
+	private EgovIndvdlPgeMapper egovIndvdlPgeMapper;
 
 	public List<IndvdlPgeVO> selectIndvdlPgeList(IndvdlPgeVO searchVO) {
-		return selectList("IndvdlPge.selectIndvdlPgeList", searchVO);
+		return egovIndvdlPgeMapper.selectIndvdlPgeList(searchVO);
 	}
 
 	public int selectIndvdlPgeListCnt(IndvdlPgeVO searchVO) {
-		return (Integer) selectOne("IndvdlPge.selectIndvdlPgeListCnt", searchVO);
+		return egovIndvdlPgeMapper.selectIndvdlPgeListCnt(searchVO);
 	}
 
 	public IndvdlPgeVO selectIndvdlPgeDetail(IndvdlPgeVO indvdlPgeVO) {
-		return (IndvdlPgeVO) selectOne("IndvdlPge.selectIndvdlPgeDetail", indvdlPgeVO);
+		return egovIndvdlPgeMapper.selectIndvdlPgeDetail(indvdlPgeVO);
 	}
 
 	public void insertIndvdlPge(IndvdlPgeVO indvdlPgeVO) {
-		insert("IndvdlPge.insertIndvdlPge", indvdlPgeVO);
+		egovIndvdlPgeMapper.insertIndvdlPge(indvdlPgeVO);
 	}
 
 	public void updateIndvdlPge(IndvdlPgeVO indvdlPgeVO) {
-		update("IndvdlPge.updateIndvdlPge", indvdlPgeVO);
+		egovIndvdlPgeMapper.updateIndvdlPge(indvdlPgeVO);
 	}
 
 }

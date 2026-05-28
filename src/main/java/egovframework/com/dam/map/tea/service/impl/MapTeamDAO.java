@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.dam.map.tea.service.MapTeam;
 import egovframework.com.dam.map.tea.service.MapTeamVO;
+import jakarta.annotation.Resource;
 
 /**
  * 개요
@@ -20,69 +20,60 @@ import egovframework.com.dam.map.tea.service.MapTeamVO;
  * @created 22-7-2010 오전 10:57:44
  */
 @Repository("MapTeamDAO")
-public class MapTeamDAO extends EgovComAbstractDAO{
+public class MapTeamDAO {
+
+	@Resource(name = "mapTeamMapper")
+	private MapTeamMapper mapTeamMapper;
 
 	/**
 	 * 등록된 지식맵(조직별) 목록을 조회 한다.
-	 * @param mapTeamVO- 지식맵(조직별) VO
-	 * @return String - 지식맵(조직별) 목록
-	 *
-	 * @param MapTeamVO
+	 * @param searchVO - 지식맵(조직별) VO
+	 * @return List - 지식맵(조직별) 목록
 	 */
 	public List<MapTeamVO> selectMapTeamList(MapTeamVO searchVO) throws Exception {
-		return selectList("MapTeamDAO.selectMapTeamList", searchVO);
+		return mapTeamMapper.selectMapTeamList(searchVO);
 	}
 
 	/**
 	 * 지식맵(조직별) 목록 총 개수를 조회한다.
-	 * @param MapTeamVO - 지식맵(조직별) Vo
+	 * @param searchVO - 지식맵(조직별) Vo
 	 * @return int - 지식맵(조직별) 토탈 카운트 수
-	 *
-	 * @param MapTeamVO
 	 */
 	public int selectMapTeamTotCnt(MapTeamVO searchVO) throws Exception {
-		return (Integer)selectOne("MapTeamDAO.selectMapTeamTotCnt", searchVO);
+		return mapTeamMapper.selectMapTeamTotCnt(searchVO);
 	}
 
 	/**
-	 * 지식맵(조직별)상세 정보를 조회 한다.
-	 * @param MapTeamVO - 지식맵(조직별) VO
-	 * @return String - 지식맵(조직별) VO
-	 *
-	 * @param MapTeamVO
+	 * 지식맵(조직별) 상세 정보를 조회 한다.
+	 * @param mapTeam - 지식맵(조직별) VO
+	 * @return MapTeam - 지식맵(조직별) VO
 	 */
 	public MapTeam selectMapTeamDetail(MapTeam mapTeam) throws Exception {
-		return (MapTeam)selectOne("MapTeamDAO.selectMapTeamDetail", mapTeam);
+		return mapTeamMapper.selectMapTeamDetail(mapTeam);
 	}
 
 	/**
 	 * 지식맵(조직별) 정보를 신규로 등록한다.
-	 * @param siteUrl - 지식맵(조직별) model
-	 *
-	 * @param orgnztNm
+	 * @param mapTeam - 지식맵(조직별) model
 	 */
 	public void insertMapTeam(MapTeam mapTeam) throws Exception {
-		insert("MapTeamDAO.insertMapTeam", mapTeam);
+		mapTeamMapper.insertMapTeam(mapTeam);
 	}
 
 	/**
 	 * 기 등록 된 지식맵(조직별) 정보를 수정 한다.
-	 * @param siteUrl - 지식맵(조직별) model
-	 *
-	 * @param orgnztNm
+	 * @param mapTeam - 지식맵(조직별) model
 	 */
 	public void updateMapTeam(MapTeam mapTeam) throws Exception {
-		update("MapTeamDAO.updateMapTeam", mapTeam);
+		mapTeamMapper.updateMapTeam(mapTeam);
 	}
 
 	/**
 	 * 기 등록된 지식맵(조직별) 정보를 삭제한다.
-	 * @param siteUrl - 지식맵(조직별) model
-	 *
-	 * @param orgnztNm
+	 * @param mapTeam - 지식맵(조직별) model
 	 */
 	public void deleteMapTeam(MapTeam mapTeam) throws Exception {
-		delete("MapTeamDAO.deleteMapTeam", mapTeam);
+		mapTeamMapper.deleteMapTeam(mapTeam);
 	}
 
 }

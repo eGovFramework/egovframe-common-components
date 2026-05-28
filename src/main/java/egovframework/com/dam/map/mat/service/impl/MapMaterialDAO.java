@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.dam.map.mat.service.MapMaterial;
 import egovframework.com.dam.map.mat.service.MapMaterialVO;
+import jakarta.annotation.Resource;
 
 /**
  * 개요
@@ -19,80 +19,70 @@ import egovframework.com.dam.map.mat.service.MapMaterialVO;
  * @version 1.0
  * @created 12-8-2010 오후 3:44:52
  */
-
 @Repository("MapMaterialDAO")
-public class MapMaterialDAO extends EgovComAbstractDAO {
+public class MapMaterialDAO {
+
+	@Resource(name = "mapMaterialMapper")
+	private MapMaterialMapper mapMaterialMapper;
 
 	/**
-	 * 등록된 지식맵(지식유형) 정보를 조회 한다.
-	 * @param mapMaterialVO- 지식맵(지식유형) VO
-	 * @return String - 지식맵(지식유형)목록
-	 *
-	 * @param MapMaterialVO
+	 * 등록된 지식맵(지식유형) 목록을 조회한다.
+	 * @param searchVO - 지식맵(지식유형) VO
+	 * @return List - 지식맵(지식유형) 목록
 	 */
 	public List<MapMaterialVO> selectMapMaterialList(MapMaterialVO searchVO) throws Exception {
-		return  selectList("MapMaterialDAO.selectMapMaterialList", searchVO);
+		return mapMaterialMapper.selectMapMaterialList(searchVO);
 	}
 
 	/**
 	 * 지식맵(지식유형) 목록 총 개수를 조회한다.
-	 * @param MapMaterialVO - 지식맵(지식유형) Vo
+	 * @param searchVO - 지식맵(지식유형) Vo
 	 * @return int - 지식맵(지식유형) 토탈 카운트 수
-	 *
-	 * @param MapMaterialVO
 	 */
 	public int selectMapMaterialTotCnt(MapMaterialVO searchVO) throws Exception {
-		return  (Integer)selectOne("MapMaterialDAO.selectMapMaterialTotCnt", searchVO);
+		return mapMaterialMapper.selectMapMaterialTotCnt(searchVO);
 	}
 
 	/**
-	 * 지식맵(지식유형)상세 정보를 조회 한다.
-	 * @param MapMaterialVO - 지식맵(지식유형) VO
-	 * @return String - 지식맵(지식유형)VO
-	 *
-	 * @param MapMaterialVO
+	 * 지식맵(지식유형) 상세 정보를 조회한다.
+	 * @param mapMaterial - 지식맵(지식유형) VO
+	 * @return MapMaterial - 지식맵(지식유형) VO
 	 */
 	public MapMaterial selectMapMaterial(MapMaterial mapMaterial) throws Exception {
-		return (MapMaterial)selectOne("MapMaterialDAO.selectMapMaterial", mapMaterial);
+		return mapMaterialMapper.selectMapMaterial(mapMaterial);
 	}
 
 	/**
 	 * 지식맵(지식유형) 정보를 신규로 등록한다.
-	 * @param konTypeNm - 지식맵(지식유형) model
-	 *
-	 * @param MapMaterialVO
+	 * @param mapMaterial - 지식맵(지식유형) model
 	 */
 	public void insertMapMaterial(MapMaterial mapMaterial) throws Exception {
-		insert("MapMaterialDAO.insertMapMaterial", mapMaterial);
+		mapMaterialMapper.insertMapMaterial(mapMaterial);
 	}
 
 	/**
-	 * 기 등록 된 지식맵(지식유형)링 정보를 수정 한다.
-	 * @param konTypeNm - 지식맵(지식유형) model
-	 *
-	 * @param MapMaterialVO
+	 * 기 등록 된 지식맵(지식유형) 정보를 수정한다.
+	 * @param mapMaterial - 지식맵(지식유형) model
 	 */
 	public void updateMapMaterial(MapMaterial mapMaterial) throws Exception {
-		update("MapMaterialDAO.updateMapMaterial", mapMaterial);
+		mapMaterialMapper.updateMapMaterial(mapMaterial);
 	}
 
 	/**
 	 * 기 등록된 지식맵(지식유형) 정보를 삭제한다.
-	 * @param konTypeNm - 지식맵(지식유형) model
-	 *
-	 * @param MapMaterialVO
+	 * @param mapMaterial - 지식맵(지식유형) model
 	 */
 	public void deleteMapMaterial(MapMaterial mapMaterial) throws Exception {
-		delete("MapMaterialDAO.deleteMapMaterial", mapMaterial);
+		mapMaterialMapper.deleteMapMaterial(mapMaterial);
 	}
 
 	/**
-	 * 지식유형코드 중복 여부 체크(위치 : 1260.지식맵관리(유형) > 등록)
+	 * 지식유형코드 중복 여부 체크
 	 * @param knoTypeCd
 	 * @return 중복 여부
-	 * @throws Exception
 	 */
 	public int knoTypeCdCheck(String knoTypeCd) throws Exception {
-		return (Integer)selectOne("MapMaterialDAO.selectKnoTypeCdCheck", knoTypeCd);
+		return mapMaterialMapper.selectKnoTypeCdCheck(knoTypeCd);
 	}
+
 }

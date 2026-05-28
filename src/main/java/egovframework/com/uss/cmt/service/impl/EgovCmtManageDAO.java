@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.cmt.service.CmtDefaultVO;
 import egovframework.com.uss.cmt.service.CmtManageVO;
+import jakarta.annotation.Resource;
 
 /**
  * 출퇴근관리에 관한 데이터 접근 클래스를 정의한다.
@@ -25,10 +25,13 @@ import egovframework.com.uss.cmt.service.CmtManageVO;
  * </pre>
  */
 @Repository("cmtManageDAO")
-public class EgovCmtManageDAO extends EgovComAbstractDAO {
+public class EgovCmtManageDAO {
+
+	@Resource(name = "cmtManageMapper")
+	private EgovCmtManageMapper cmtManageMapper;
 
 	public List<CmtManageVO> selectCmtInfoList(CmtDefaultVO cmtSearchVO) {
-		return selectList("cmtManageDAO.selectCmtList_S", cmtSearchVO);
+		return cmtManageMapper.selectCmtList_S(cmtSearchVO);
 	}
 
 	/**
@@ -37,16 +40,16 @@ public class EgovCmtManageDAO extends EgovComAbstractDAO {
 	* @return String result 등록결과
 	*/
 	public String insertWrkStartCmtInfo(CmtManageVO cmtManageVO) {
-		return Integer.toString(insert("cmtManageDAO.insertWrkStartCmtInfo_S", cmtManageVO));
+		return Integer.toString(cmtManageMapper.insertWrkStartCmtInfo_S(cmtManageVO));
 	}
 
 	/**
 	* 퇴근 기본정보를 화면에서 입력하여 항목의 정합성을 체크하고 데이터베이스에 저장
 	* @param cmtManageVO 업무사용자 등록정보
-	* @return String result 등록결과
+	* @return int result 등록결과
 	*/
 	public int insertWrkEndCmtInfo(CmtManageVO cmtManageVO) {
-		return update("cmtManageDAO.insertWrkEndCmtInfo_S", cmtManageVO);
+		return cmtManageMapper.insertWrkEndCmtInfo_S(cmtManageVO);
 	}
 
 	/**
@@ -54,9 +57,8 @@ public class EgovCmtManageDAO extends EgovComAbstractDAO {
 	 * @param cmtManageVO
 	 * @return String wrktmId
 	 */
-
 	public String selectWrktmId(CmtManageVO cmtManageVO) {
-		return (String) selectOne("cmtManageDAO.selectWrktmId_S", cmtManageVO);
+		return cmtManageMapper.selectWrktmId_S(cmtManageVO);
 	}
 
 	/**
@@ -64,11 +66,8 @@ public class EgovCmtManageDAO extends EgovComAbstractDAO {
 	 * @param cmtManageVO
 	 * @return cmtManageVO
 	 */
-
 	public CmtManageVO selectWrkStartInfo(CmtManageVO cmtManageVO) {
-		CmtManageVO cmtVO = (CmtManageVO) selectOne("cmtManageDAO.selectWrkStartInfo_S", cmtManageVO);
-
-		return cmtVO;
+		return cmtManageMapper.selectWrkStartInfo_S(cmtManageVO);
 	}
 
 }

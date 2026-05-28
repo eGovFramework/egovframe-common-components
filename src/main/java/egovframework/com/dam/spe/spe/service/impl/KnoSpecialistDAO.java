@@ -4,9 +4,9 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.dam.spe.spe.service.KnoSpecialist;
 import egovframework.com.dam.spe.spe.service.KnoSpecialistVO;
+import jakarta.annotation.Resource;
 
 /**
  * 개요
@@ -19,71 +19,61 @@ import egovframework.com.dam.spe.spe.service.KnoSpecialistVO;
  * @version 1.0
  * @created 12-8-2010 오후 3:44:52
  */
-
 @Repository("KnoSpecialistDAO")
-public class KnoSpecialistDAO extends EgovComAbstractDAO {
+public class KnoSpecialistDAO {
+
+	@Resource(name = "knoSpecialistMapper")
+	private KnoSpecialistMapper knoSpecialistMapper;
 
 	/**
-	 * 등록된 지식전문가 정보를 조회 한다.
-	 * @param KnoSpecialistVO- 지식전문가 VO
-	 * @return String - 지식전문가 목록
-	 *
-	 * @param KnoSpecialistVO
+	 * 등록된 지식전문가 목록을 조회한다.
+	 * @param searchVO - 지식전문가 VO
+	 * @return List - 지식전문가 목록
 	 */
 	public List<KnoSpecialistVO> selectKnoSpecialistList(KnoSpecialistVO searchVO) throws Exception {
-		return  selectList("KnoSpecialistDAO.selectKnoSpecialistList", searchVO);
+		return knoSpecialistMapper.selectKnoSpecialistList(searchVO);
 	}
 
 	/**
 	 * 지식전문가 목록 총 개수를 조회한다.
-	 * @param KnoSpecialistVO - 지식전문가 Vo
+	 * @param searchVO - 지식전문가 Vo
 	 * @return int - 지식전문가 토탈 카운트 수
-	 *
-	 * @param KnoSpecialistVO
 	 */
 	public int selectKnoSpecialistTotCnt(KnoSpecialistVO searchVO) throws Exception {
-		return  (Integer)selectOne("KnoSpecialistDAO.selectKnoSpecialistTotCnt", searchVO);
+		return knoSpecialistMapper.selectKnoSpecialistTotCnt(searchVO);
 	}
 
 	/**
-	 * 지식전문가 상세 정보를 조회 한다.
-	 * @param KonSpecialistVO - 지식전문가 VO
-	 * @return String - 지식전문가 VO
-	 *
-	 * @param KonSpecialistVO
+	 * 지식전문가 상세 정보를 조회한다.
+	 * @param knoSpecialist - 지식전문가 VO
+	 * @return KnoSpecialist - 지식전문가 VO
 	 */
 	public KnoSpecialist selectKnoSpecialist(KnoSpecialist knoSpecialist) throws Exception {
-		return (KnoSpecialist)selectOne("KnoSpecialistDAO.selectKnoSpecialist", knoSpecialist);
+		return knoSpecialistMapper.selectKnoSpecialist(knoSpecialist);
 	}
 
 	/**
 	 * 지식전문가 정보를 신규로 등록한다.
-	 * @param speNm - 지식전문가 model
-	 *
-	 * @param speNm
+	 * @param knoSpecialist - 지식전문가 model
 	 */
 	public void insertKnoSpecialist(KnoSpecialist knoSpecialist) throws Exception {
-		insert("KnoSpecialistDAO.insertKnoSpecialist", knoSpecialist);
+		knoSpecialistMapper.insertKnoSpecialist(knoSpecialist);
 	}
 
 	/**
-	 * 기 등록 된 지식전문가 정보를 수정 한다.
-	 * @param speNm - 지식전문가 model
-	 *
-	 * @param speNm
+	 * 기 등록 된 지식전문가 정보를 수정한다.
+	 * @param knoSpecialist - 지식전문가 model
 	 */
 	public void updateKnoSpecialist(KnoSpecialist knoSpecialist) throws Exception {
-		update("KnoSpecialistDAO.updateKnoSpecialist", knoSpecialist);
+		knoSpecialistMapper.updateKnoSpecialist(knoSpecialist);
 	}
 
 	/**
 	 * 기 등록된 지식전문가 정보를 삭제한다.
-	 * @param siteUrl - 지식전문가 model
-	 *
-	 * @param speNm
+	 * @param knoSpecialist - 지식전문가 model
 	 */
 	public void deleteKnoSpecialist(KnoSpecialist knoSpecialist) throws Exception {
-		delete("KnoSpecialistDAO.deleteKnoSpecialist", knoSpecialist);
+		knoSpecialistMapper.deleteKnoSpecialist(knoSpecialist);
 	}
 
 }

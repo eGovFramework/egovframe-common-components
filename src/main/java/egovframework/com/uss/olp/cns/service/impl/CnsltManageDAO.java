@@ -5,11 +5,9 @@ import java.util.List;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.olp.cns.service.CnsltManageDefaultVO;
 import egovframework.com.uss.olp.cns.service.CnsltManageVO;
-
-
+import jakarta.annotation.Resource;
 
 /**
  *
@@ -29,146 +27,121 @@ import egovframework.com.uss.olp.cns.service.CnsltManageVO;
  * </pre>
  */
 @Repository("CnsltManageDAO")
-public class CnsltManageDAO extends EgovComAbstractDAO {
+public class CnsltManageDAO {
 
+	@Resource(name = "cnsltManageMapper")
+	private CnsltManageMapper cnsltManageMapper;
 
-    /**
+	/**
 	 * 상담내용 글 목록에 대한 상세내용을 조회한다.
 	 * @param vo
 	 * @return 조회한 글
 	 * @exception Exception
 	 */
-    public CnsltManageVO selectCnsltListDetail(CnsltManageVO vo) throws Exception {
-
-        return (CnsltManageVO) selectOne("CnsltManageDAO.selectCnsltListDetail", vo);
-
-    }
+	public CnsltManageVO selectCnsltListDetail(CnsltManageVO vo) throws Exception {
+		return cnsltManageMapper.selectCnsltListDetail(vo);
+	}
 
 	/**
 	 * 상담내용 글을 수정한다.(조회수를 수정)
 	 * @param vo
 	 * @exception Exception
 	 */
-    public void updateCnsltInqireCo(CnsltManageVO vo) throws Exception {
+	public void updateCnsltInqireCo(CnsltManageVO vo) throws Exception {
+		cnsltManageMapper.updateCnsltInqireCo(vo);
+	}
 
-        update("CnsltManageDAO.updateCnsltInqireCo", vo);
-
-    }
-
-    /**
+	/**
 	 * 상담내용 글 목록을 조회한다.
 	 * @param searchVO
 	 * @return 글 목록
 	 * @exception Exception
 	 */
-    public List<EgovMap> selectCnsltList(CnsltManageDefaultVO searchVO) throws Exception {
+	public List<EgovMap> selectCnsltList(CnsltManageDefaultVO searchVO) throws Exception {
+		return cnsltManageMapper.selectCnsltList(searchVO);
+	}
 
-    	return selectList("CnsltManageDAO.selectCnsltList", searchVO);
-
-    }
-
-    /**
+	/**
 	 * 상담내용 글 총 개수를 조회한다.
 	 * @param searchVO
 	 * @return 글 총 개수
 	 */
-    public int selectCnsltListTotCnt(CnsltManageDefaultVO searchVO) {
-
-        return (Integer)selectOne("CnsltManageDAO.selectCnsltListTotCnt", searchVO);
-
-    }
+	public int selectCnsltListTotCnt(CnsltManageDefaultVO searchVO) {
+		return cnsltManageMapper.selectCnsltListTotCnt(searchVO);
+	}
 
 	/**
 	 * 상담내용 글을 등록한다.
 	 * @param vo
 	 * @exception Exception
 	 */
-    public void insertCnsltDtls(CnsltManageVO vo) throws Exception {
+	public void insertCnsltDtls(CnsltManageVO vo) throws Exception {
+		cnsltManageMapper.insertCnsltDtls(vo);
+	}
 
-        insert("CnsltManageDAO.insertCnsltDtls", vo);
-
-    }
-
-    /**
+	/**
 	 * 작성비밀번호를 확인한다.
 	 * @param vo
 	 * @return 글 총 개수
 	 */
-    public int selectCnsltPasswordConfirmCnt(CnsltManageVO vo) {
-
-        return (Integer)selectOne("CnsltManageDAO.selectCnsltPasswordConfirmCnt", vo);
-
-    }
+	public int selectCnsltPasswordConfirmCnt(CnsltManageVO vo) {
+		return cnsltManageMapper.selectCnsltPasswordConfirmCnt(vo);
+	}
 
 	/**
 	 * 상담내용 글을 수정한다.
 	 * @param vo
 	 * @exception Exception
 	 */
-    public void updateCnsltDtls(CnsltManageVO vo) throws Exception {
-
-        update("CnsltManageDAO.updateCnsltDtls", vo);
-
-    }
+	public void updateCnsltDtls(CnsltManageVO vo) throws Exception {
+		cnsltManageMapper.updateCnsltDtls(vo);
+	}
 
 	/**
 	 * 상담내용 글을 삭제한다.
 	 * @param vo
 	 * @exception Exception
 	 */
-    public void deleteCnsltDtls(CnsltManageVO vo) throws Exception {
+	public void deleteCnsltDtls(CnsltManageVO vo) throws Exception {
+		cnsltManageMapper.deleteCnsltDtls(vo);
+	}
 
-        delete("CnsltManageDAO.deleteCnsltDtls", vo);
-
-    }
-
-
-    /**
+	/**
 	 * 상담답변 글 목록에 대한 상세내용을 조회한다.
 	 * @param vo
 	 * @return 조회한 글
 	 * @exception Exception
 	 */
-    public CnsltManageVO selectCnsltAnswerListDetail(CnsltManageVO vo) throws Exception {
+	public CnsltManageVO selectCnsltAnswerListDetail(CnsltManageVO vo) throws Exception {
+		return cnsltManageMapper.selectCnsltAnswerDetail(vo);
+	}
 
-        return (CnsltManageVO) selectOne("CnsltManageDAO.selectCnsltAnswerListDetail", vo);
-
-    }
-
-
-    /**
+	/**
 	 * 상담답변 글 목록을 조회한다.
 	 * @param searchVO
 	 * @return 글 목록
 	 * @exception Exception
 	 */
-    public List<EgovMap> selectCnsltAnswerList(CnsltManageDefaultVO searchVO) throws Exception {
+	public List<EgovMap> selectCnsltAnswerList(CnsltManageDefaultVO searchVO) throws Exception {
+		return cnsltManageMapper.selectCnsltAnswerList(searchVO);
+	}
 
-    	return selectList("CnsltManageDAO.selectCnsltAnswerList", searchVO);
-
-    }
-
-    /**
+	/**
 	 * 상담답변 글 총 개수를 조회한다.
 	 * @param searchVO
 	 * @return 글 총 개수
 	 */
-    public int selectCnsltAnswerListTotCnt(CnsltManageDefaultVO searchVO) {
-
-        return (Integer)selectOne("CnsltManageDAO.selectCnsltAnswerListTotCnt", searchVO);
-
-    }
+	public int selectCnsltAnswerListTotCnt(CnsltManageDefaultVO searchVO) {
+		return cnsltManageMapper.selectCnsltAnswerListTotCnt(searchVO);
+	}
 
 	/**
 	 * 상담답변 글을 수정한다.
 	 * @param vo
 	 * @exception Exception
 	 */
-    public void updateCnsltDtlsAnswer(CnsltManageVO vo) throws Exception {
-
-        update("CnsltManageDAO.updateCnsltDtlsAnswer", vo);
-
-    }
-
+	public void updateCnsltDtlsAnswer(CnsltManageVO vo) throws Exception {
+		cnsltManageMapper.updateCnsltDtlsAnswer(vo);
+	}
 
 }

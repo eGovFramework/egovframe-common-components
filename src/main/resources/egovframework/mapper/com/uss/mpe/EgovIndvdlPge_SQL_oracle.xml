@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="IndvdlPge">
+<mapper namespace="egovframework.com.uss.mpe.service.impl.EgovIndvdlPgeMapper">
 
     <resultMap id="indvdlPgeMap" type="egovframework.com.uss.mpe.service.IndvdlPgeVO">
         <result property="cntntsId" column="CNTNTS_ID"/>
