@@ -459,12 +459,12 @@
 			<version>5.3.0</version>
 		</dependency>
 
-		<!-- CVE-2024-7254: mysql-connector-j에서 주입되는 protobuf-java 3.25.1 취약점
+		<!-- CVE-2024-7254, CVE-2024-7553: mysql-connector-j에서 주입되는 protobuf-java 취약점
 		보완용 직접 주입 -->
 		<dependency>
 			<groupId>com.google.protobuf</groupId>
 			<artifactId>protobuf-java</artifactId>
-			<version>3.25.5</version>
+			<version>3.25.8</version>
 		</dependency>
 
 		<!-- 3rd party 라이브러리로 별도의 설치 필요 끝 -->
