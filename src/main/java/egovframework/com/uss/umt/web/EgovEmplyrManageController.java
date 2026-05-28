@@ -33,6 +33,7 @@ import egovframework.com.uss.umt.service.EmplyrManageInsertVO;
 import egovframework.com.uss.umt.service.EmplyrPasswordManageVO;
 import egovframework.com.utl.sim.service.EgovFileScrty;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletResponse;
 
 /**
  * 업무사용자관련 요청을 비지니스 클래스로 전달하고 처리된결과를 해당 웹 화면으로 전달하는 Controller를 정의한다
@@ -60,6 +61,8 @@ import jakarta.annotation.Resource;
  */
 @Controller
 public class EgovEmplyrManageController {
+
+	private static final String ERROR_VIEW = "egovframework/com/cmm/error/egovError";
 
 	/** emplyrManageService */
 	@Resource(name = "emplyrManageService")
@@ -549,22 +552,26 @@ public class EgovEmplyrManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/umt/EgovRlnmCnfirm.do", method = RequestMethod.POST)
-	public String rlnmCnfirm(Model model, @RequestParam Map<String, Object> commandMap) throws Exception {
+	public String rlnmCnfirm(Model model, @RequestParam Map<String, Object> commandMap,
+			@RequestParam(value = "nextUrl", required = true) Integer linkIndex,
+			HttpServletResponse response) throws Exception {
 
 		model.addAttribute("ihidnum", commandMap.get("ihidnum")); // 주민번호
 		model.addAttribute("realname", commandMap.get("realname")); // 사용자이름
 		model.addAttribute("sbscrbTy", commandMap.get("sbscrbTy")); // 사용자유형
 		model.addAttribute("nextUrlName", commandMap.get("nextUrlName")); // 다음단계버튼명(이동할 URL에 따른)
-		Integer linkIndex = Integer.parseInt((String) commandMap.get("nextUrl"));
-		model.addAttribute("nextUrl", linkIndex); // 다음단계로 이동할 URL
-
-		// 화이트 리스트 처리
 		String link = "";
-		// 화이트 리스트가 비었는지 확인
-		if (nextUrlWhitelist == null || nextUrlWhitelist.isEmpty() || nextUrlWhitelist.size() <= linkIndex) {
-			link = "egovframework/com/cmm/egovError";
+		if (nextUrlWhitelist == null || nextUrlWhitelist.isEmpty()) {
+			link = ERROR_VIEW;
 			return link;
 		}
+
+		if (linkIndex == null || linkIndex < 0 || nextUrlWhitelist.size() <= linkIndex) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			link = ERROR_VIEW;
+			return link;
+		}
+		model.addAttribute("nextUrl", linkIndex); // 다음단계로 이동할 URL
 
 		link = nextUrlWhitelist.get(linkIndex);
 
