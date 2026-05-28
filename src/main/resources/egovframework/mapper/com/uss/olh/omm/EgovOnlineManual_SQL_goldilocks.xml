@@ -7,7 +7,7 @@
 -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="OnlineManual">
+<mapper namespace="egovframework.com.uss.olh.omm.service.impl.EgovOnlineManualMapper">
 
 	<!-- 온라인메뉴얼::ResultMap 선언 -->
 	<resultMap id="OnlineManualVO" type="egovframework.com.uss.olh.omm.service.OnlineManualVO">

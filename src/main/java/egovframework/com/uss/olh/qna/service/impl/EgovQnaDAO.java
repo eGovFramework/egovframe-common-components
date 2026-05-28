@@ -4,50 +4,54 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.olh.qna.service.QnaVO;
 
+import jakarta.annotation.Resource;
+
 @Repository("EgovQnaDAO")
-public class EgovQnaDAO extends EgovComAbstractDAO {
+public class EgovQnaDAO {
+
+	@Resource(name = "EgovQnaMapper")
+	private EgovQnaMapper egovQnaMapper;
 
 	public List<QnaVO> selectQnaList(QnaVO searchVO) {
-		return selectList("QnaManage.selectQnaList", searchVO);
+		return egovQnaMapper.selectQnaList(searchVO);
 	}
 
 	public int selectQnaListCnt(QnaVO searchVO) {
-		return (Integer) selectOne("QnaManage.selectQnaListCnt", searchVO);
+		return egovQnaMapper.selectQnaListCnt(searchVO);
 	}
 
 	public QnaVO selectQnaDetail(QnaVO qnaVO) {
-		return (QnaVO) selectOne("QnaManage.selectQnaDetail", qnaVO);
+		return egovQnaMapper.selectQnaDetail(qnaVO);
 	}
 
 	public void updateQnaInqireCo(QnaVO qnaVO) {
-		update("QnaManage.updateQnaInqireCo", qnaVO);
+		egovQnaMapper.updateQnaInqireCo(qnaVO);
 	}
 
 	public void insertQna(QnaVO qnaVO) {
-		insert("QnaManage.insertQna", qnaVO);
+		egovQnaMapper.insertQna(qnaVO);
 	}
 
 	public void updateQna(QnaVO qnaVO) {
-		update("QnaManage.updateQna", qnaVO);
+		egovQnaMapper.updateQna(qnaVO);
 	}
 
 	public void deleteQna(QnaVO qnaVO) {
-		delete("QnaManage.deleteQna", qnaVO);
+		egovQnaMapper.deleteQna(qnaVO);
 	}
 
 	public List<QnaVO> selectQnaAnswerList(QnaVO searchVO) {
-		return selectList("QnaManage.selectQnaAnswerList", searchVO);
+		return egovQnaMapper.selectQnaAnswerList(searchVO);
 	}
 
 	public int selectQnaAnswerListCnt(QnaVO searchVO) {
-		return (Integer) selectOne("QnaManage.selectQnaAnswerListCnt", searchVO);
+		return egovQnaMapper.selectQnaAnswerListCnt(searchVO);
 	}
 
 	public void updateQnaAnswer(QnaVO qnaVO) {
-		update("QnaManage.updateQnaAnswer", qnaVO);
+		egovQnaMapper.updateQnaAnswer(qnaVO);
 	}
 
 }

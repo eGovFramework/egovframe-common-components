@@ -4,34 +4,38 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.olh.omm.service.OnlineManualVO;
 
+import jakarta.annotation.Resource;
+
 @Repository("EgovOnlineManualDAO")
-public class EgovOnlineManualDAO extends EgovComAbstractDAO {
+public class EgovOnlineManualDAO {
+
+	@Resource(name = "EgovOnlineManualMapper")
+	private EgovOnlineManualMapper egovOnlineManualMapper;
 
 	public List<OnlineManualVO> selectOnlineManualList(OnlineManualVO searchVO) {
-		return selectList("OnlineManual.selectOnlineManualList", searchVO);
+		return egovOnlineManualMapper.selectOnlineManualList(searchVO);
 	}
 
 	public int selectOnlineManualListCnt(OnlineManualVO searchVO) {
-		return (Integer) selectOne("OnlineManual.selectOnlineManualListCnt", searchVO);
+		return egovOnlineManualMapper.selectOnlineManualListCnt(searchVO);
 	}
 
 	public OnlineManualVO selectOnlineManualDetail(OnlineManualVO onlineManualVO) {
-		return (OnlineManualVO) selectOne("OnlineManual.selectOnlineManualDetail", onlineManualVO);
+		return egovOnlineManualMapper.selectOnlineManualDetail(onlineManualVO);
 	}
 
 	public void insertOnlineManual(OnlineManualVO onlineManualVO) {
-		insert("OnlineManual.insertOnlineManual", onlineManualVO);
+		egovOnlineManualMapper.insertOnlineManual(onlineManualVO);
 	}
 
 	public void updateOnlineManual(OnlineManualVO onlineManualVO) {
-		update("OnlineManual.updateOnlineManual", onlineManualVO);
+		egovOnlineManualMapper.updateOnlineManual(onlineManualVO);
 	}
 
 	public void deleteOnlineManual(OnlineManualVO onlineManualVO) {
-		delete("OnlineManual.deleteOnlineManual", onlineManualVO);
+		egovOnlineManualMapper.deleteOnlineManual(onlineManualVO);
 	}
 
 }

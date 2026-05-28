@@ -4,35 +4,39 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.olh.hpc.service.HpcmDefaultVO;
 import egovframework.com.uss.olh.hpc.service.HpcmVO;
 
+import jakarta.annotation.Resource;
+
 @Repository("EgovHpcmDAO")
-public class EgovHpcmDAO extends EgovComAbstractDAO {
+public class EgovHpcmDAO {
+
+	@Resource(name = "EgovHpcmMapper")
+	private EgovHpcmMapper egovHpcmMapper;
 
 	public List<HpcmVO> selectHpcmList(HpcmDefaultVO searchVO) {
-		return selectList("Hpcm.selectHpcmList", searchVO);
+		return egovHpcmMapper.selectHpcmList(searchVO);
 	}
 
 	public int selectHpcmListCnt(HpcmDefaultVO searchVO) {
-		return (Integer)selectOne("Hpcm.selectHpcmListCnt", searchVO);
+		return egovHpcmMapper.selectHpcmListCnt(searchVO);
 	}
 
 	public HpcmVO selectHpcmDetail(HpcmVO hpcmManageVO) {
-		return (HpcmVO) selectOne("Hpcm.selectHpcmDetail", hpcmManageVO);
+		return egovHpcmMapper.selectHpcmDetail(hpcmManageVO);
 	}
 
 	public void insertHpcm(HpcmVO hpcmVO) {
-		insert ("Hpcm.insertHpcm", hpcmVO);
+		egovHpcmMapper.insertHpcm(hpcmVO);
 	}
 
 	public void updateHpcm(HpcmVO hpcmVO) {
-		update("Hpcm.updateHpcm", hpcmVO);
+		egovHpcmMapper.updateHpcm(hpcmVO);
 	}
 
 	public void deleteHpcm(HpcmVO hpcmVO) {
-		delete("Hpcm.deleteHpcm", hpcmVO);
+		egovHpcmMapper.deleteHpcm(hpcmVO);
 	}
 
 }

@@ -4,38 +4,42 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.olh.faq.service.FaqVO;
 
+import jakarta.annotation.Resource;
+
 @Repository("EgovFaqDAO")
-public class EgovFaqDAO extends EgovComAbstractDAO {
+public class EgovFaqDAO {
+
+	@Resource(name = "EgovFaqMapper")
+	private EgovFaqMapper egovFaqMapper;
 
 	public List<FaqVO> selectFaqList(FaqVO searchVO) {
-		return selectList("FaqManage.selectFaqList", searchVO);
+		return egovFaqMapper.selectFaqList(searchVO);
 	}
 
 	public int selectFaqListCnt(FaqVO searchVO) {
-		return (Integer) selectOne("FaqManage.selectFaqListCnt", searchVO);
+		return egovFaqMapper.selectFaqListCnt(searchVO);
 	}
 
 	public void updateFaqInqireCo(FaqVO searchVO) {
-		update("FaqManage.updateFaqInqireCo", searchVO);
+		egovFaqMapper.updateFaqInqireCo(searchVO);
 	}
 
 	public FaqVO selectFaqDetail(FaqVO searchVO) {
-		return (FaqVO) selectOne("FaqManage.selectFaqDetail", searchVO);
+		return egovFaqMapper.selectFaqDetail(searchVO);
 	}
 
 	public void insertFaq(FaqVO faqVO) {
-		insert("FaqManage.insertFaq", faqVO);
+		egovFaqMapper.insertFaq(faqVO);
 	}
 
 	public void updateFaq(FaqVO faqVO) {
-		update("FaqManage.updateFaq", faqVO);
+		egovFaqMapper.updateFaq(faqVO);
 	}
 
 	public void deleteFaq(FaqVO faqVO) {
-		delete("FaqManage.deleteFaq", faqVO);
+		egovFaqMapper.deleteFaq(faqVO);
 	}
 
 }

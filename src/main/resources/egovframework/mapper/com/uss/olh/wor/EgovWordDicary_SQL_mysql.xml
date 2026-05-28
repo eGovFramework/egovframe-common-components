@@ -11,7 +11,7 @@
 -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="WordDicary">
+<mapper namespace="egovframework.com.uss.olh.wor.service.impl.EgovWordDicaryMapper">
 
 	<resultMap id="WordDicary" type="egovframework.com.uss.olh.wor.service.WordDicaryVO">
 		<result property="wordId" column="WORD_ID"/>

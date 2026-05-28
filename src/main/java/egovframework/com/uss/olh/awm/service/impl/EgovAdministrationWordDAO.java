@@ -4,34 +4,38 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.olh.awm.service.AdministrationWordVO;
 
+import jakarta.annotation.Resource;
+
 @Repository("EgovAdministrationWordDAO")
-public class EgovAdministrationWordDAO extends EgovComAbstractDAO {
+public class EgovAdministrationWordDAO {
+
+	@Resource(name = "EgovAdministrationWordMapper")
+	private EgovAdministrationWordMapper egovAdministrationWordMapper;
 
 	public List<AdministrationWordVO> selectAdministrationWordList(AdministrationWordVO searchVO) {
-		return selectList("AdministrationWord.selectAdministrationWordList", searchVO);
+		return egovAdministrationWordMapper.selectAdministrationWordList(searchVO);
 	}
 
 	public int selectAdministrationWordListCnt(AdministrationWordVO searchVO) {
-		return (Integer) selectOne("AdministrationWord.selectAdministrationWordListCnt", searchVO);
+		return egovAdministrationWordMapper.selectAdministrationWordListCnt(searchVO);
 	}
 
 	public AdministrationWordVO selectAdministrationWordDetail(AdministrationWordVO administrationWord) {
-		return (AdministrationWordVO) selectOne("AdministrationWord.selectAdministrationWordDetail", administrationWord);
+		return egovAdministrationWordMapper.selectAdministrationWordDetail(administrationWord);
 	}
 
 	public void insertAdministrationWord(AdministrationWordVO administrationWordVO) {
-		insert("AdministrationWord.insertAdministrationWord", administrationWordVO);
+		egovAdministrationWordMapper.insertAdministrationWord(administrationWordVO);
 	}
 
 	public void updateAdministrationWord(AdministrationWordVO administrationWordVO) {
-		update("AdministrationWord.updateAdministrationWord", administrationWordVO);
+		egovAdministrationWordMapper.updateAdministrationWord(administrationWordVO);
 	}
 
 	public void deleteAdministrationWord(AdministrationWordVO administrationWordVO) {
-		delete("AdministrationWord.deleteAdministrationWord", administrationWordVO);
+		egovAdministrationWordMapper.deleteAdministrationWord(administrationWordVO);
 	}
 
 }

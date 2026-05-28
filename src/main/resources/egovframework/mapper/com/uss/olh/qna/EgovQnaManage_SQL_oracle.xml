@@ -9,7 +9,7 @@
 -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="QnaManage">
+<mapper namespace="egovframework.com.uss.olh.qna.service.impl.EgovQnaMapper">
 
 	<resultMap id="QnaManage" type="egovframework.com.uss.olh.qna.service.QnaVO">
 		<result property="qaId" column="QA_ID"/>

@@ -6,7 +6,7 @@
 -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="Hpcm">
+<mapper namespace="egovframework.com.uss.olh.hpc.service.impl.EgovHpcmMapper">
 
 	<resultMap id="HpcmManage" type="egovframework.com.uss.olh.hpc.service.HpcmVO">
 		<result property="hpcmId" column="HPCM_ID"/>

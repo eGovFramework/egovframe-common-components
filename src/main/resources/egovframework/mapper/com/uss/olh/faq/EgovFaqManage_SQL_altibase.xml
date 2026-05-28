@@ -9,7 +9,7 @@
 -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="FaqManage">
+<mapper namespace="egovframework.com.uss.olh.faq.service.impl.EgovFaqMapper">
 
 	<resultMap id="FaqManage" type="egovframework.com.uss.olh.faq.service.FaqVO">
 		<result property="faqId" column="FAQ_ID"/>
