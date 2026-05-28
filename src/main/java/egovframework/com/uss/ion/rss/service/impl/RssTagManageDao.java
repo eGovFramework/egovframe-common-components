@@ -11,12 +11,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.session.SqlSession;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.rss.service.RssManage;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
@@ -42,11 +42,18 @@ import jakarta.annotation.Resource;
  *   2025.08.14  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
  *   2025.08.14  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(부적절한 자원 해제)
  *   2025.08.14  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-SimplifyBooleanExpressions(boolean 사용 시 불필요한 비교 연산을 피하도록 함)
+ *   2026.05.28  dasomel         @EgovMapper 인터페이스 위임 방식으로 전환
  *
  *      </pre>
  */
 @Repository("rssManageDao")
-public class RssTagManageDao extends EgovComAbstractDAO {
+public class RssTagManageDao {
+
+	@Resource(name = "rssTagManageMapper")
+	private RssTagManageMapper mapper;
+
+	@Resource(name = "egov.sqlSessionTemplate")
+	private SqlSession sqlSession;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(RssTagManageDao.class);
 
@@ -74,7 +81,7 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 		try {
 			// Spring 트랜잭션 관리자가 관리하는 Connection을 사용
 			// Connection을 닫지 않음 (트랜잭션 관리자가 관리)
-			conn = getSqlSession().getConnection();
+			conn = sqlSession.getConnection();
 			dbmd = conn.getMetaData();
 			tables = dbmd.getTables(null, null, null, types);
 
@@ -129,7 +136,7 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 		try {
 			// Spring 트랜잭션 관리자가 관리하는 Connection을 사용
 			// Connection을 닫지 않음 (트랜잭션 관리자가 관리)
-			conn = getSqlSession().getConnection();
+			conn = sqlSession.getConnection();
 
 			// KISA 보안약점 조치 (2018-12-05, 신용호)
 			// WhiteList 기능 보완 (2019-05-10, 신용호)
@@ -195,7 +202,7 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 	 * @throws Exception
 	 */
 	public List<?> selectRssTagManageList(RssManage rssManage) throws Exception {
-		return selectList("RssTagManage.selectRssTagManage", rssManage);
+		return mapper.selectRssTagManage(rssManage);
 
 	}
 
@@ -207,7 +214,7 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 	 * @throws Exception
 	 */
 	public int selectRssTagManageListCnt(RssManage rssManage) throws Exception {
-		return (Integer) selectOne("RssTagManage.selectRssTagManageCnt", rssManage);
+		return mapper.selectRssTagManageCnt(rssManage);
 	}
 
 	/**
@@ -218,7 +225,7 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 	 * @throws Exception
 	 */
 	public RssManage selectRssTagManageDetail(RssManage rssManage) throws Exception {
-		return (RssManage) selectOne("RssTagManage.selectRssTagManageDetail", rssManage);
+		return mapper.selectRssTagManageDetail(rssManage);
 	}
 
 	/**
@@ -228,7 +235,7 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 	 * @throws Exception
 	 */
 	public void insertRssTagManage(RssManage rssManage) throws Exception {
-		insert("RssTagManage.insertRssTagManage", rssManage);
+		mapper.insertRssTagManage(rssManage);
 	}
 
 	/**
@@ -238,7 +245,7 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 	 * @throws Exception
 	 */
 	public void updateRssTagManage(RssManage rssManage) throws Exception {
-		update("RssTagManage.updateRssTagManage", rssManage);
+		mapper.updateRssTagManage(rssManage);
 	}
 
 	/**
@@ -248,7 +255,7 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 	 * @throws Exception
 	 */
 	public void deleteRssTagManage(RssManage rssManage) throws Exception {
-		delete("RssTagManage.deleteRssTagManage", rssManage);
+		mapper.deleteRssTagManage(rssManage);
 	}
 
 }

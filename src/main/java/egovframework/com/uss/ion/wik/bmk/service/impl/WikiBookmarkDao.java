@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.wik.bmk.service.WikiBookmark;
+import jakarta.annotation.Resource;
 
 /**
  * 위키북마크를 처리하는 Dao Class 구현
@@ -18,11 +18,15 @@ import egovframework.com.uss.ion.wik.bmk.service.WikiBookmark;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2010.10.20  장동한          최초 생성
+ *   2026.05.28  dasomel         @EgovMapper 인터페이스 위임 방식으로 전환
  *
  * </pre>
  */
 @Repository("wikiBookmarkDao")
-public class WikiBookmarkDao extends EgovComAbstractDAO {
+public class WikiBookmarkDao {
+
+    @Resource(name = "wikiBookmarkMapper")
+    private WikiBookmarkMapper mapper;
     /**
 	 * 위키북마크 목록을 조회한다.
 	 * @param wikiBookmark -조회할 정보가 담긴 객체
@@ -30,7 +34,7 @@ public class WikiBookmarkDao extends EgovComAbstractDAO {
 	 * @throws Exception
 	 */
 	public List<?> selectWikiBookmarkList(WikiBookmark wikiBookmark) throws Exception{
-		return selectList("WikiBookmark.selectWikiBookmarkList", wikiBookmark);
+		return mapper.selectWikiBookmarkList(wikiBookmark);
 	}
 
     /**
@@ -40,7 +44,7 @@ public class WikiBookmarkDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public int selectWikiBookmarkDuplicationCnt(WikiBookmark wikiBookmark) throws Exception{
-    	return (Integer)selectOne("WikiBookmark.selectWikiBookmarkDuplicationCnt", wikiBookmark);
+    	return mapper.selectWikiBookmarkDuplicationCnt(wikiBookmark);
     }
 
     /**
@@ -50,7 +54,7 @@ public class WikiBookmarkDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public int selectWikiBookmarkListCnt(WikiBookmark wikiBookmark) throws Exception{
-    	return (Integer)selectOne("WikiBookmark.selectWikiBookmarkListCnt", wikiBookmark);
+    	return mapper.selectWikiBookmarkListCnt(wikiBookmark);
     }
 
     /**
@@ -60,7 +64,7 @@ public class WikiBookmarkDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public String selectWikiBookmarkEmpUniqId(WikiBookmark wikiBookmark) throws Exception{
-    	return (String)selectOne("WikiBookmark.selectWikiBookmarkEmpUniqId", wikiBookmark);
+    	return mapper.selectWikiBookmarkEmpUniqId(wikiBookmark);
     }
 
 
@@ -69,8 +73,8 @@ public class WikiBookmarkDao extends EgovComAbstractDAO {
 	 * @param wikiBookmark -위키북마크 정보 담김 객체
 	 * @throws Exception
 	 */
-	void insertWikiBookmark(WikiBookmark wikiBookmark) throws Exception{
-		insert("WikiBookmark.insertWikiBookmark",wikiBookmark);
+	public void insertWikiBookmark(WikiBookmark wikiBookmark) throws Exception{
+		mapper.insertWikiBookmark(wikiBookmark);
 	}
 
      /**
@@ -78,7 +82,7 @@ public class WikiBookmarkDao extends EgovComAbstractDAO {
 	 * @param wikiBookmark -위키북마크 정보 담김 객체
 	 * @throws Exception
 	 */
-	void deleteWikiBookmark(WikiBookmark wikiBookmark) throws Exception{
-		delete("WikiBookmark.deleteWikiBookmark", wikiBookmark);
+	public void deleteWikiBookmark(WikiBookmark wikiBookmark) throws Exception{
+		mapper.deleteWikiBookmark(wikiBookmark);
 	}
 }

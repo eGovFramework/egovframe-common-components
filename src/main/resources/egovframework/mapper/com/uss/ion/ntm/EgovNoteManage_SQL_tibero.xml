@@ -6,7 +6,7 @@
   2011.8.12   	안민정     	 	테이블 표준화에 따른 수정사항 반영
 							DELETE_YN	->	DELETE_AT
 -->
-<mapper namespace="NoteManage">
+<mapper namespace="egovframework.com.uss.ion.ntm.service.impl.NoteManageMapper">
 	
 	<!-- 쪽지관리::쪽지관리 조회(답변처리시) -->
 	<select id="selectNoteManage" resultType="egovMap">

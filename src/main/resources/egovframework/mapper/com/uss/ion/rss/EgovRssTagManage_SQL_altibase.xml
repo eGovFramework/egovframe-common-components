@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?><!--Converted at: Wed May 11 15:51:19 KST 2016-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="RssTagManage">
+<mapper namespace="egovframework.com.uss.ion.rss.service.impl.RssTagManageMapper">
 
 	<!-- ::ResultMap 선언 -->
 	<resultMap id="RssManageVO" type="egovframework.com.uss.ion.rss.service.RssManage">

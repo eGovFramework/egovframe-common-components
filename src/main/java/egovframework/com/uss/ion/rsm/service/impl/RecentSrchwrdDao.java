@@ -5,8 +5,8 @@ import java.util.List;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.rsm.service.RecentSrchwrd;
+import jakarta.annotation.Resource;
 
 /**
  * 최근검색어를 처리하는 Dao Class 구현
@@ -19,11 +19,15 @@ import egovframework.com.uss.ion.rsm.service.RecentSrchwrd;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.07.03  장동한          최초 생성
+ *   2026.05.28  dasomel         @EgovMapper 인터페이스 위임 방식으로 전환
  *
  * </pre>
  */
 @Repository("onlineRecentSrchwrdDao")
-public class RecentSrchwrdDao extends EgovComAbstractDAO {
+public class RecentSrchwrdDao {
+
+    @Resource(name = "onlineRecentSrchwrdMapper")
+    private RecentSrchwrdMapper mapper;
 
     /**
      * 최근검색어관리를(을) 목록을 한다.
@@ -32,7 +36,7 @@ public class RecentSrchwrdDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public List<EgovMap> selectRecentSrchwrdList(RecentSrchwrd searchVO) throws Exception {
-        return selectList("RecentSrchwrd.selectRecentSrchwrd", searchVO);
+        return mapper.selectRecentSrchwrd(searchVO);
     }
 
     /**
@@ -42,7 +46,7 @@ public class RecentSrchwrdDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public int selectRecentSrchwrdListCnt(RecentSrchwrd searchVO) throws Exception {
-        return (Integer)selectOne("RecentSrchwrd.selectRecentSrchwrdCnt", searchVO);
+        return mapper.selectRecentSrchwrdCnt(searchVO);
     }
 
     /**
@@ -52,7 +56,7 @@ public class RecentSrchwrdDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public RecentSrchwrd selectRecentSrchwrdDetail(RecentSrchwrd recentSrchwrd) throws Exception {
-        return (RecentSrchwrd)selectOne("RecentSrchwrd.selectRecentSrchwrdDetail", recentSrchwrd);
+        return mapper.selectRecentSrchwrdDetail(recentSrchwrd);
     }
 
     /**
@@ -61,7 +65,7 @@ public class RecentSrchwrdDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public void insertRecentSrchwrd(RecentSrchwrd recentSrchwrd) throws Exception {
-        insert("RecentSrchwrd.insertRecentSrchwrd", recentSrchwrd);
+        mapper.insertRecentSrchwrd(recentSrchwrd);
     }
 
     /**
@@ -70,7 +74,7 @@ public class RecentSrchwrdDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public void updateRecentSrchwrd(RecentSrchwrd recentSrchwrd) throws Exception {
-        update("RecentSrchwrd.updateRecentSrchwrd", recentSrchwrd);
+        mapper.updateRecentSrchwrd(recentSrchwrd);
     }
 
     /**
@@ -79,7 +83,7 @@ public class RecentSrchwrdDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public void deleteRecentSrchwrd(RecentSrchwrd recentSrchwrd) throws Exception {
-        delete("RecentSrchwrd.deleteRecentSrchwrd", recentSrchwrd);
+        mapper.deleteRecentSrchwrd(recentSrchwrd);
     }
 
     /**
@@ -89,7 +93,7 @@ public class RecentSrchwrdDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public List<EgovMap> selectRecentSrchwrdResultInquire(RecentSrchwrd recentSrchwrd) throws Exception {
-        return selectList("RecentSrchwrd.selectRecentSrchwrdResultInquire", recentSrchwrd);
+        return mapper.selectRecentSrchwrdResultInquire(recentSrchwrd);
     }
 
     /**
@@ -99,7 +103,7 @@ public class RecentSrchwrdDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public List<?> selectRecentSrchwrdResultList(RecentSrchwrd searchVO) throws Exception {
-        return selectList("RecentSrchwrd.selectRecentSrchwrdResult", searchVO);
+        return mapper.selectRecentSrchwrdResult(searchVO);
     }
 
     /**
@@ -109,7 +113,7 @@ public class RecentSrchwrdDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public int selectRecentSrchwrdResultListCnt(RecentSrchwrd searchVO) throws Exception {
-        return (Integer)selectOne("RecentSrchwrd.selectRecentSrchwrdCntResult", searchVO);
+        return mapper.selectRecentSrchwrdCntResult(searchVO);
     }
 
     /**
@@ -118,7 +122,7 @@ public class RecentSrchwrdDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public void insertRecentSrchwrdResult(RecentSrchwrd recentSrchwrd) throws Exception {
-        insert("RecentSrchwrd.insertRecentSrchwrdResult", recentSrchwrd);
+        mapper.insertRecentSrchwrdResult(recentSrchwrd);
     }
 
     /**
@@ -127,7 +131,7 @@ public class RecentSrchwrdDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public void deleteRecentSrchwrdResult(RecentSrchwrd recentSrchwrd) throws Exception {
-        delete("RecentSrchwrd.deleteRecentSrchwrdResult", recentSrchwrd);
+        mapper.deleteRecentSrchwrdResult(recentSrchwrd);
     }
 
     /**
@@ -136,7 +140,7 @@ public class RecentSrchwrdDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public void deleteRecentSrchwrdResultAll(RecentSrchwrd recentSrchwrd) throws Exception {
-        delete("RecentSrchwrd.deleteRecentSrchwrdResultAll", recentSrchwrd);
+        mapper.deleteRecentSrchwrdResultAll(recentSrchwrd);
     }
 
 }

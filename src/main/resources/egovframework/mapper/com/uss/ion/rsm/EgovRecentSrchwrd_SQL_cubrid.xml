@@ -5,7 +5,7 @@
 --><!--Converted at: Wed May 11 15:51:18 KST 2016-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="RecentSrchwrd">
+<mapper namespace="egovframework.com.uss.ion.rsm.service.impl.RecentSrchwrdMapper">
 
 	<!-- 최근검색어조회::ResultMap 선언 -->
 	<resultMap id="RecentSrchwrdVO" type="egovframework.com.uss.ion.rsm.service.RecentSrchwrd">

@@ -9,7 +9,7 @@
 --><!--Converted at: Wed May 11 15:51:25 KST 2016-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="WikiBookmark">
+<mapper namespace="egovframework.com.uss.ion.wik.bmk.service.impl.WikiBookmarkMapper">
 
 	<!-- 위키북마크::목록조회 게시물정보 -->
 	<select id="selectWikiBookmarkList" parameterType="comDefaultVO" resultType="egovMap">

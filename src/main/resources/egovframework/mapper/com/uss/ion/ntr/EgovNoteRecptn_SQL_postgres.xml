@@ -6,7 +6,7 @@
 -->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="NoteRecptn">
+<mapper namespace="egovframework.com.uss.ion.ntr.service.impl.NoteRecptnMapper">
 
 	<!-- 받은편지함관리::개봉으로 업데이트 -->
 	<update id="updateNoteRecptnRelationOpenYn">

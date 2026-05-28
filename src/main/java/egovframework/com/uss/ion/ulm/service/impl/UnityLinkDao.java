@@ -4,8 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.ulm.service.UnityLink;
+import jakarta.annotation.Resource;
 
 /**
  * 통합링크관리를 처리하는 Dao Class 구현
@@ -18,11 +18,15 @@ import egovframework.com.uss.ion.ulm.service.UnityLink;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.07.03  장동한          최초 생성
+ *   2026.05.28  dasomel         @EgovMapper 인터페이스 위임 방식으로 전환
  *
  * </pre>
  */
 @Repository("onlineUnityLinkDao")
-public class UnityLinkDao extends EgovComAbstractDAO {
+public class UnityLinkDao {
+
+    @Resource(name = "onlineUnityLinkMapper")
+    private UnityLinkMapper mapper;
 
     /**
      * 통합링크관리 메인 셈플 목록을 조회한다.
@@ -30,7 +34,7 @@ public class UnityLinkDao extends EgovComAbstractDAO {
      * @return List - 통합링크관리 목록
      */
     public List<?> selectUnityLinkSample(UnityLink unityLink) throws Exception {
-        return selectList("UnityLink.selectUnityLinkSample", unityLink);
+        return mapper.selectUnityLinkSample(unityLink);
     }
 
     /**
@@ -40,7 +44,7 @@ public class UnityLinkDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public List<?> selectUnityLinkList(UnityLink unityLink) throws Exception {
-        return selectList("UnityLink.selectUnityLink", unityLink);
+        return mapper.selectUnityLink(unityLink);
     }
 
     /**
@@ -50,7 +54,7 @@ public class UnityLinkDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public int selectUnityLinkListCnt(UnityLink unityLink) throws Exception {
-        return (Integer)selectOne("UnityLink.selectUnityLinkCnt", unityLink);
+        return mapper.selectUnityLinkCnt(unityLink);
     }
 
     /**
@@ -60,7 +64,7 @@ public class UnityLinkDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public UnityLink selectUnityLinkDetail(UnityLink unityLink) throws Exception {
-        return (UnityLink)selectOne("UnityLink.selectUnityLinkDetail", unityLink);
+        return mapper.selectUnityLinkDetail(unityLink);
     }
 
     /**
@@ -69,7 +73,7 @@ public class UnityLinkDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public void insertUnityLink(UnityLink unityLink) throws Exception {
-        insert("UnityLink.insertUnityLink", unityLink);
+        mapper.insertUnityLink(unityLink);
     }
 
     /**
@@ -78,7 +82,7 @@ public class UnityLinkDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public void updateUnityLink(UnityLink unityLink) throws Exception {
-        update("UnityLink.updateUnityLink", unityLink);
+        mapper.updateUnityLink(unityLink);
     }
 
     /**
@@ -87,7 +91,7 @@ public class UnityLinkDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public void deleteUnityLink(UnityLink unityLink) throws Exception {
-        delete("UnityLink.deleteUnityLink", unityLink);
+        mapper.deleteUnityLink(unityLink);
     }
 
 }

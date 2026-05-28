@@ -4,7 +4,7 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
+import jakarta.annotation.Resource;
 /**
  * RSS태그관리를 처리하는 Dao Class 구현
  * @author 공통콤포넌트 장동한
@@ -16,11 +16,15 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2010.10.04  장동한          최초 생성
+ *   2026.05.28  dasomel         @EgovMapper 인터페이스 위임 방식으로 전환
  *
  * </pre>
  */
 @Repository("twitterDao")
-public class EgovTwitterDao extends EgovComAbstractDAO {
+public class EgovTwitterDao {
+
+    @Resource(name = "twitterMapper")
+    private EgovTwitterMapper mapper;
 
     /**
      * 트위터 계정을 조회 한다.
@@ -29,7 +33,7 @@ public class EgovTwitterDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public Map<?, ?> selectTwitterAccount(Map<?, ?> param) throws Exception {
-    	return (Map<?, ?>)selectOne("Twitter.selectTwitterAccount",param);
+    	return mapper.selectTwitterAccount(param);
     }
 
 
@@ -40,7 +44,7 @@ public class EgovTwitterDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public int selectTwitterAccountCheck(Map<?, ?> param) throws Exception {
-    	return (Integer)selectOne("Twitter.selectTwitterAccountCheck",param);
+    	return mapper.selectTwitterAccountCheck(param);
     }
 
 	/**
@@ -48,7 +52,7 @@ public class EgovTwitterDao extends EgovComAbstractDAO {
 	 * @param param - 조회할 정보가 담긴 Map
 	 */
 	public void insertTwitterAccount(Map<?, ?> param) throws Exception {
-		insert("Twitter.insertTwitterAccount", param);
+		mapper.insertTwitterAccount(param);
 	}
 
 	/**
@@ -56,7 +60,7 @@ public class EgovTwitterDao extends EgovComAbstractDAO {
 	 * @param param - 조회할 정보가 담긴 Map
 	 */
 	public void updtTwitterAccount(Map<?, ?> param) throws Exception {
-		update("Twitter.updateTwitterAccount", param);
+		mapper.updateTwitterAccount(param);
 	}
 
 	/**
@@ -64,6 +68,6 @@ public class EgovTwitterDao extends EgovComAbstractDAO {
 	 * @param param - 조회할 정보가 담긴 Map
 	 */
 	public void deleteTwitterAccount(Map<?, ?> param) throws Exception {
-        delete("Twitter.deleteTwitterAccount",param);
+        mapper.deleteTwitterAccount(param);
 	}
 }

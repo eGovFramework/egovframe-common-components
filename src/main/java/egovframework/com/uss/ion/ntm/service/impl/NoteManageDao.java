@@ -7,8 +7,9 @@ import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
 import egovframework.com.cmm.ComDefaultVO;
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.ntm.service.NoteManageVO;
+import jakarta.annotation.Resource;
+
 /**
  * 쪽지 관리(보내기)를 처리하는 Dao Class 구현
  * @author 공통콤포넌트 장동한
@@ -21,11 +22,15 @@ import egovframework.com.uss.ion.ntm.service.NoteManageVO;
  *  -------    --------    ---------------------------
  *   2009.07.03  장동한           최초 생성
  *   2017.06.05   최두영          공통컴포넌트 3.7 개발
+ *   2026.05.28  dasomel         @EgovMapper 인터페이스 위임 방식으로 전환
  *
  * </pre>
  */
 @Repository("noteManageDao")
-public class NoteManageDao extends EgovComAbstractDAO {
+public class NoteManageDao {
+
+    @Resource(name = "noteManageMapper")
+    private NoteManageMapper mapper;
 
     /**
      * 쪽지관리 정보를 조회한다.
@@ -33,7 +38,7 @@ public class NoteManageDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public Map<?, ?> selectNoteManage(NoteManageVO noteManage) throws Exception {
-    	return (Map<?, ?>)selectOne("NoteManage.selectNoteManage", noteManage);
+        return mapper.selectNoteManage(noteManage);
     }
 
     /**
@@ -42,9 +47,8 @@ public class NoteManageDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public void insertNoteManage(NoteManageVO noteManage) throws Exception {
-    	insert("NoteManage.insertNoteManage", noteManage);
+        mapper.insertNoteManage(noteManage);
     }
-
 
     /**
      * 보낸쪽지를 등록한다.
@@ -52,9 +56,8 @@ public class NoteManageDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public void insertNoteTrnsmit(NoteManageVO noteManage) throws Exception {
-    	insert("NoteManage.insertNoteTrnsmit", noteManage);
+        mapper.insertNoteTrnsmit(noteManage);
     }
-
 
     /**
      * 받은쪽지를 등록한다.
@@ -62,26 +65,26 @@ public class NoteManageDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public void insertNoteRecptn(NoteManageVO noteManage) throws Exception {
-    	insert("NoteManage.insertNoteRecptn", noteManage);
+        mapper.insertNoteRecptn(noteManage);
     }
 
     /**
-	 * 수신자/참조자선택팝업 목록을 조회한다.
-	 * @param searchVO -조회할 정보가 담긴 VO
-	 * @return List -회원정보 리스트
-	 * @throws Exception
-	 */
-	public List<EgovMap> selectNoteEmpListPopup(ComDefaultVO searchVO) throws Exception {
-		return selectList("NoteManage.EovNoteEmpListPopup", searchVO);
-	}
+     * 수신자/참조자선택팝업 목록을 조회한다.
+     * @param searchVO -조회할 정보가 담긴 VO
+     * @return List -회원정보 리스트
+     * @throws Exception
+     */
+    public List<EgovMap> selectNoteEmpListPopup(ComDefaultVO searchVO) throws Exception {
+        return mapper.EovNoteEmpListPopup(searchVO);
+    }
 
     /**
-	 * 수신자/참조자선택팝업 건수를 조회한다.
-	 * @param searchVO -조회할 정보가 담긴 VO
-	 * @return int -조회된 데이터 개수
-	 * @throws Exception
-	 */
-	public int selectNoteEmpListPopupCnt(ComDefaultVO searchVO) throws Exception{
-		 return (Integer)selectOne("NoteManage.EovNoteEmpListPopupCnt", searchVO);
-	}
+     * 수신자/참조자선택팝업 건수를 조회한다.
+     * @param searchVO -조회할 정보가 담긴 VO
+     * @return int -조회된 데이터 개수
+     * @throws Exception
+     */
+    public int selectNoteEmpListPopupCnt(ComDefaultVO searchVO) throws Exception {
+        return mapper.EovNoteEmpListPopupCnt(searchVO);
+    }
 }

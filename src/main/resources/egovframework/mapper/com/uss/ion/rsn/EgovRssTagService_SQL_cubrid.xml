@@ -5,7 +5,7 @@
 --><!--Converted at: Wed May 11 15:51:19 KST 2016-->
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" 
 "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="RssTagService">
+<mapper namespace="egovframework.com.uss.ion.rsn.service.impl.RssMapper">
 
 	<!-- RSS서비스::해당RSS서비스 조회 --> 
 	<select id="selectRssTagServiceTable" parameterType="java.util.Map" resultType="java.util.HashMap">

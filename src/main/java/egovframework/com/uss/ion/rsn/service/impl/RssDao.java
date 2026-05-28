@@ -5,8 +5,8 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.rsn.service.RssInfo;
+import jakarta.annotation.Resource;
 /**
  * RSS서비스를 처리하는 Dao Class 구현
  * @author 공통콤포넌트 장동한
@@ -18,11 +18,15 @@ import egovframework.com.uss.ion.rsn.service.RssInfo;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.07.03  장동한          최초 생성
+ *   2026.05.28  dasomel         @EgovMapper 인터페이스 위임 방식으로 전환
  *
  * </pre>
  */
 @Repository("rssInfoDao")
-public class RssDao extends EgovComAbstractDAO {
+public class RssDao {
+
+    @Resource(name = "rssInfoMapper")
+    private RssMapper mapper;
 
     /**
      * RSS서비스 테이블을 조회 한다.
@@ -31,7 +35,7 @@ public class RssDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public List<?> selectRssTagServiceTable(Map<?, ?> param) throws Exception {
-    	return selectList("RssTagService.selectRssTagServiceTable",param);
+    	return mapper.selectRssTagServiceTable(param);
     }
 
     /**
@@ -41,7 +45,7 @@ public class RssDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public List<?> selectRssTagServiceList(RssInfo rssInfo) throws Exception {
-    	return selectList("RssTagService.selectRssTagService",rssInfo);
+    	return mapper.selectRssTagService(rssInfo);
     }
 
     /**
@@ -51,7 +55,7 @@ public class RssDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public int selectRssTagServiceListCnt(RssInfo rssInfo) throws Exception {
-    	return (Integer)selectOne("RssTagService.selectRssTagServiceCnt", rssInfo);
+    	return mapper.selectRssTagServiceCnt(rssInfo);
     }
 
     /**
@@ -61,7 +65,7 @@ public class RssDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public Map<?, ?> selectRssTagServiceDetail(RssInfo rssInfo) throws Exception {
-    	return (Map<?, ?>)selectOne("RssTagService.selectRssTagServiceDetail", rssInfo);
+    	return mapper.selectRssTagServiceDetail(rssInfo);
     }
 
 

@@ -6,8 +6,9 @@ import java.util.Map;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.springframework.stereotype.Repository;
 
-import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
 import egovframework.com.uss.ion.ntr.service.NoteRecptn;
+import jakarta.annotation.Resource;
+
 /**
  * 받은쪽지함관리를 처리하는 Dao Class 구현
  * @author 공통콤포넌트 장동한
@@ -20,11 +21,15 @@ import egovframework.com.uss.ion.ntr.service.NoteRecptn;
  *  -------    --------    ---------------------------
  *   2009.07.03  장동한          최초 생성
  *   2017.09.14	 장동한		   표준프레임워크 3.7 개선
+ *   2026.05.28  dasomel         @EgovMapper 인터페이스 위임 방식으로 전환
  *
  * </pre>
  */
 @Repository("noteRecptnDao")
-public class NoteRecptnDao extends EgovComAbstractDAO {
+public class NoteRecptnDao {
+
+    @Resource(name = "noteRecptnMapper")
+    private NoteRecptnMapper mapper;
 
     /**
      * 받은쪽지함관리를(을) 목록을 한다.
@@ -33,7 +38,7 @@ public class NoteRecptnDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public List<EgovMap> selectNoteRecptnList(NoteRecptn noteRecptn) throws Exception {
-    	return selectList("NoteRecptn.selectNoteRecptn", noteRecptn);
+        return mapper.selectNoteRecptn(noteRecptn);
     }
 
     /**
@@ -43,7 +48,7 @@ public class NoteRecptnDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public int selectNoteRecptnListCnt(NoteRecptn noteRecptn) throws Exception {
-    	return (Integer)selectOne("NoteRecptn.selectNoteRecptnCnt", noteRecptn);
+        return mapper.selectNoteRecptnCnt(noteRecptn);
     }
 
     /**
@@ -52,7 +57,7 @@ public class NoteRecptnDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public void updateNoteRecptnRelationOpenYn(NoteRecptn noteRecptn) throws Exception {
-    	update("NoteRecptn.updateNoteRecptnRelationOpenYn" , noteRecptn);
+    	mapper.updateNoteRecptnRelationOpenYn(noteRecptn);
     }
 
     /**
@@ -62,7 +67,7 @@ public class NoteRecptnDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public Map<?, ?> selectNoteRecptnDetail(NoteRecptn noteRecptn) throws Exception {
-    	return (Map<?, ?>)selectOne("NoteRecptn.selectNoteRecptnDetail", noteRecptn);
+    	return mapper.selectNoteRecptnDetail(noteRecptn);
     }
 
     /**
@@ -71,7 +76,7 @@ public class NoteRecptnDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public void deleteNoteRecptnRelation(NoteRecptn noteRecptn) throws Exception {
-        delete("NoteRecptn.deleteNoteRecptnRelation" , noteRecptn);
+        mapper.deleteNoteRecptnRelation(noteRecptn);
     }
 
     /**
@@ -80,7 +85,7 @@ public class NoteRecptnDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public void deleteNoteRecptn(NoteRecptn noteRecptn) throws Exception {
-    	delete("NoteRecptn.deleteNoteRecptn" , noteRecptn);
+    	mapper.deleteNoteRecptn(noteRecptn);
     }
 
     /**
@@ -89,7 +94,7 @@ public class NoteRecptnDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public void deleteNoteTrnsmit(NoteRecptn noteRecptn) throws Exception {
-        delete("NoteRecptn.deleteNoteTrnsmit" , noteRecptn);
+        mapper.deleteNoteTrnsmit(noteRecptn);
     }
 
     /**
@@ -98,7 +103,7 @@ public class NoteRecptnDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public void deleteNoteManage(NoteRecptn noteRecptn) throws Exception {
-        delete("NoteRecptn.deleteNoteManage" , noteRecptn);
+        mapper.deleteNoteManage(noteRecptn);
     }
 
     /**
@@ -108,7 +113,7 @@ public class NoteRecptnDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public int selectNoteTrnsmitRelationCnt(NoteRecptn noteRecptn) throws Exception {
-    	return (Integer)selectOne("NoteRecptn.selectNoteTrnsmitRelationCnt", noteRecptn);
+    	return mapper.selectNoteTrnsmitRelationCnt(noteRecptn);
     }
 
     /**
@@ -118,6 +123,6 @@ public class NoteRecptnDao extends EgovComAbstractDAO {
      * @throws Exception
      */
     public int selectNoteRecptnRelationCnt(NoteRecptn noteRecptn) throws Exception {
-    	return (Integer)selectOne("NoteRecptn.selectNoteRecptnRelationCnt", noteRecptn);
+    	return mapper.selectNoteRecptnRelationCnt(noteRecptn);
     }
 }
