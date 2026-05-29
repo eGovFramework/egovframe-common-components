@@ -6,6 +6,7 @@ import static org.junit.jupiter.api.Assertions.assertSame;
 import java.util.Collections;
 import java.util.List;
 
+import org.egovframe.rte.fdl.cmmn.exception.EgovBizException;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.ui.ModelMap;
@@ -75,11 +76,38 @@ class EgovLoginPolicyControllerTest {
 		loginPolicy.setLmttAt("Y");
 
 		String viewName = controller.updateLoginPolicy(loginPolicy,
-				new BeanPropertyBindingResult(loginPolicy, "loginPolicy"), new ModelMap());
+				new BeanPropertyBindingResult(loginPolicy, "loginPolicy"), new ModelMap(),
+				new RedirectAttributesModelMap());
 
 		assertEquals("redirect:/uat/uap/selectLoginPolicyList.do", viewName);
 		assertSame(loginPolicy, loginPolicyService.updatedLoginPolicy);
 		assertEquals("TEST1", loginPolicyService.updatedLoginPolicy.getEmplyrId());
+	}
+
+	@Test
+	void updateLoginPolicyReturnsUpdateViewWhenServiceReportsFailure() throws Exception {
+		EgovLoginPolicyController controller = new EgovLoginPolicyController();
+		StubLoginPolicyService loginPolicyService = new StubLoginPolicyService();
+		controller.egovLoginPolicyService = loginPolicyService;
+		controller.egovMessageSource = new StubMessageSource();
+		EgovUserDetailsHelper userDetailsHelper = new EgovUserDetailsHelper();
+		previousUserDetailsService = userDetailsHelper.getEgovUserDetailsService();
+		userDetailsHelper.setEgovUserDetailsService(new StubUserDetailsService());
+
+		LoginPolicy loginPolicy = new LoginPolicy();
+		loginPolicy.setEmplyrId("TEST1");
+		loginPolicy.setIpInfo("192.168.0.10");
+		loginPolicy.setLmttAt("Y");
+		loginPolicyService.updateException = new EgovBizException("Login policy update was not persisted.");
+
+		ModelMap model = new ModelMap();
+		String viewName = controller.updateLoginPolicy(loginPolicy,
+				new BeanPropertyBindingResult(loginPolicy, "loginPolicy"), model,
+				new RedirectAttributesModelMap());
+
+		assertEquals("egovframework/com/uat/uap/EgovLoginPolicyUpdt", viewName);
+		assertSame(loginPolicy, loginPolicyService.updatedLoginPolicy);
+		assertEquals("fail.common.update", model.get("message"));
 	}
 
 	private static class StubMessageSource extends EgovMessageSource {
@@ -93,6 +121,7 @@ class EgovLoginPolicyControllerTest {
 
 		private LoginPolicy insertedLoginPolicy;
 		private LoginPolicy updatedLoginPolicy;
+		private Exception updateException;
 
 		@Override
 		public List<LoginPolicyVO> selectLoginPolicyList(LoginPolicyVO loginPolicyVO) {
@@ -115,8 +144,11 @@ class EgovLoginPolicyControllerTest {
 		}
 
 		@Override
-		public void updateLoginPolicy(LoginPolicy loginPolicy) {
+		public void updateLoginPolicy(LoginPolicy loginPolicy) throws Exception {
 			updatedLoginPolicy = loginPolicy;
+			if (updateException != null) {
+				throw updateException;
+			}
 		}
 
 		@Override

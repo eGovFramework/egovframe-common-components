@@ -121,7 +121,7 @@ function ipValidate() {
 <body>
 
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
-<form:form modelAttribute="loginPolicy" method="post" action="${pageContext.request.contextPath}/uat/uap/updtLoginPolicy.do' />">
+<form:form modelAttribute="loginPolicy" method="post" action="${pageContext.request.contextPath}/uat/uap/updtLoginPolicy.do">
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2><spring:message code="comUatUap.loginPolicyUpdt.pageTop.title"/></h2><!-- 로그인정책 수정 -->
@@ -135,7 +135,8 @@ function ipValidate() {
 		<tr>
 			<th><spring:message code="comUatUap.loginPolicyUpdt.emplyrId"/> </th><!-- 사용자ID -->
 			<td class="left">
-			    <input name="emplyrId" id="emplyrId" title="<spring:message code="comUatUap.loginPolicyUpdt.emplyrId"/>" type="text" value="<c:out value='${loginPolicy.emplyrId}'/>" readonly="readonly" style="width:180px" />
+			    <input id="emplyrId" title="<spring:message code="comUatUap.loginPolicyUpdt.emplyrId"/>" type="text" value="<c:out value='${loginPolicy.emplyrId}'/>" readonly="readonly" style="width:180px" />
+			    <input name="emplyrId" value="<c:out value='${loginPolicy.emplyrId}'/>" type="hidden">
 			    <input name="emplyrIdEncrypt" id="emplyrIdEncrypt" value="${egovc:encrypt(loginPolicy.emplyrId)}" type="hidden">
 			</td>
 		</tr>
