@@ -21,6 +21,7 @@
 
 package egovframework.com.uat.uap.web;
 
+import org.egovframe.rte.fdl.crypto.EgovEnvCryptoService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -28,6 +29,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -48,6 +50,9 @@ public class EgovLoginPolicyController {
 
 	@Resource(name="egovLoginPolicyService")
 	EgovLoginPolicyService egovLoginPolicyService;
+
+	@Resource(name = "egovEnvCryptoService")
+	EgovEnvCryptoService cryptoService;
 
 	/**
 	 * 로그인정책 목록 조회화면으로 이동한다.
@@ -139,12 +144,20 @@ public class EgovLoginPolicyController {
 	@RequestMapping("/uat/uap/addLoginPolicy.do")
 	public String insertLoginPolicy(@Valid @ModelAttribute("loginPolicy") LoginPolicy loginPolicy,
 			                         BindingResult bindingResult,
-                                     ModelMap model) throws Exception {
+                                     ModelMap model,
+                                     RedirectAttributes redirectAttributes) throws Exception {
 
     	if (bindingResult.hasErrors()) {
     		model.addAttribute("loginPolicyVO", loginPolicy);
 			return "egovframework/com/uat/uap/EgovLoginPolicyRegist";
 		} else {
+			if (!hasMatchingEncryptedEmplyrId(loginPolicy)) {
+				redirectAttributes.addFlashAttribute("message", egovMessageSource.getMessage("fail.common.insert"));
+				redirectAttributes.addAttribute("searchCondition", loginPolicy.getSearchCondition());
+				redirectAttributes.addAttribute("searchKeyword", loginPolicy.getSearchKeyword());
+				redirectAttributes.addAttribute("pageIndex", loginPolicy.getPageIndex());
+				return "redirect:/uat/uap/selectLoginPolicyList.do";
+			}
 
 			LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 			loginPolicy.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
@@ -169,12 +182,21 @@ public class EgovLoginPolicyController {
 	@RequestMapping("/uat/uap/updtLoginPolicy.do")
 	public String updateLoginPolicy(@Valid @ModelAttribute("loginPolicy") LoginPolicy loginPolicy,
 			                         BindingResult bindingResult,
-                                     ModelMap model) throws Exception {
+                                     ModelMap model,
+                                     RedirectAttributes redirectAttributes) throws Exception {
 
     	if (bindingResult.hasErrors()) {
     		model.addAttribute("loginPolicyVO", loginPolicy);
 			return "egovframework/com/uat/uap/EgovLoginPolicyUpdt";
 		} else {
+			if (!hasMatchingEncryptedEmplyrId(loginPolicy)) {
+				redirectAttributes.addFlashAttribute("message", egovMessageSource.getMessage("fail.common.update"));
+				redirectAttributes.addAttribute("searchCondition", loginPolicy.getSearchCondition());
+				redirectAttributes.addAttribute("searchKeyword", loginPolicy.getSearchKeyword());
+				redirectAttributes.addAttribute("pageIndex", loginPolicy.getPageIndex());
+				return "redirect:/uat/uap/selectLoginPolicyList.do";
+			}
+
 			LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 			loginPolicy.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
 
@@ -196,7 +218,16 @@ public class EgovLoginPolicyController {
 	 */
 	@RequestMapping("/uat/uap/removeLoginPolicy.do")
 	public String deleteLoginPolicy(@ModelAttribute("loginPolicy") LoginPolicy loginPolicy,
-                                     ModelMap model) throws Exception {
+                                     ModelMap model,
+                                     RedirectAttributes redirectAttributes) throws Exception {
+
+		if (!hasMatchingEncryptedEmplyrId(loginPolicy)) {
+			redirectAttributes.addFlashAttribute("message", egovMessageSource.getMessage("fail.common.delete"));
+			redirectAttributes.addAttribute("searchCondition", loginPolicy.getSearchCondition());
+			redirectAttributes.addAttribute("searchKeyword", loginPolicy.getSearchKeyword());
+			redirectAttributes.addAttribute("pageIndex", loginPolicy.getPageIndex());
+			return "redirect:/uat/uap/selectLoginPolicyList.do";
+		}
 
 		egovLoginPolicyService.deleteLoginPolicy(loginPolicy);
 
@@ -209,4 +240,19 @@ public class EgovLoginPolicyController {
 		return "redirect:/uat/uap/selectLoginPolicyList.do";
 	}
 
+	private boolean hasMatchingEncryptedEmplyrId(LoginPolicy loginPolicy) {
+		String emplyrId = EgovStringUtil.isNullToString(loginPolicy.getEmplyrId());
+		String emplyrIdEncrypt = EgovStringUtil.isNullToString(loginPolicy.getEmplyrIdEncrypt());
+
+		if ("".equals(emplyrId) || "".equals(emplyrIdEncrypt) || cryptoService == null) {
+			return false;
+		}
+
+		try {
+			String decryptedEmplyrId = cryptoService.decrypt(emplyrIdEncrypt);
+			return emplyrId.equals(EgovStringUtil.isNullToString(decryptedEmplyrId));
+		} catch (RuntimeException e) {
+			return false;
+		}
+	}
 }
