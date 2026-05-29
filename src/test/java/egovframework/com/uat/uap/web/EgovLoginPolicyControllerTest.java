@@ -59,6 +59,29 @@ class EgovLoginPolicyControllerTest {
 		assertEquals("2", String.valueOf(redirectAttributes.get("pageIndex")));
 	}
 
+	@Test
+	void updateLoginPolicyKeepsSubmittedEmplyrId() throws Exception {
+		EgovLoginPolicyController controller = new EgovLoginPolicyController();
+		StubLoginPolicyService loginPolicyService = new StubLoginPolicyService();
+		controller.egovLoginPolicyService = loginPolicyService;
+		controller.egovMessageSource = new StubMessageSource();
+		EgovUserDetailsHelper userDetailsHelper = new EgovUserDetailsHelper();
+		previousUserDetailsService = userDetailsHelper.getEgovUserDetailsService();
+		userDetailsHelper.setEgovUserDetailsService(new StubUserDetailsService());
+
+		LoginPolicy loginPolicy = new LoginPolicy();
+		loginPolicy.setEmplyrId("TEST1");
+		loginPolicy.setIpInfo("192.168.0.10");
+		loginPolicy.setLmttAt("Y");
+
+		String viewName = controller.updateLoginPolicy(loginPolicy,
+				new BeanPropertyBindingResult(loginPolicy, "loginPolicy"), new ModelMap());
+
+		assertEquals("redirect:/uat/uap/selectLoginPolicyList.do", viewName);
+		assertSame(loginPolicy, loginPolicyService.updatedLoginPolicy);
+		assertEquals("TEST1", loginPolicyService.updatedLoginPolicy.getEmplyrId());
+	}
+
 	private static class StubMessageSource extends EgovMessageSource {
 		@Override
 		public String getMessage(String code) {
@@ -69,6 +92,7 @@ class EgovLoginPolicyControllerTest {
 	private static class StubLoginPolicyService implements EgovLoginPolicyService {
 
 		private LoginPolicy insertedLoginPolicy;
+		private LoginPolicy updatedLoginPolicy;
 
 		@Override
 		public List<LoginPolicyVO> selectLoginPolicyList(LoginPolicyVO loginPolicyVO) {
@@ -92,7 +116,7 @@ class EgovLoginPolicyControllerTest {
 
 		@Override
 		public void updateLoginPolicy(LoginPolicy loginPolicy) {
-			// Not used by this test.
+			updatedLoginPolicy = loginPolicy;
 		}
 
 		@Override

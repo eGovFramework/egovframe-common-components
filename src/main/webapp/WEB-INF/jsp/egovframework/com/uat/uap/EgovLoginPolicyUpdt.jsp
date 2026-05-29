@@ -135,7 +135,7 @@ function ipValidate() {
 		<tr>
 			<th><spring:message code="comUatUap.loginPolicyUpdt.emplyrId"/> </th><!-- 사용자ID -->
 			<td class="left">
-			    <input name="emplyrId" id="emplyrId" title="<spring:message code="comUatUap.loginPolicyUpdt.emplyrId"/>" type="text" <c:if test="${registerFlag == 'UPDATE'}">disabled</c:if> value="<c:out value='${loginPolicy.emplyrId}'/>" disabled="disabled" style="width:180px" />
+			    <input name="emplyrId" id="emplyrId" title="<spring:message code="comUatUap.loginPolicyUpdt.emplyrId"/>" type="text" value="<c:out value='${loginPolicy.emplyrId}'/>" readonly="readonly" style="width:180px" />
 			    <input name="emplyrIdEncrypt" id="emplyrIdEncrypt" value="${egovc:encrypt(loginPolicy.emplyrId)}" type="hidden">
 			</td>
 		</tr>
