@@ -43,6 +43,7 @@ public class EgovComUtlController {
     //@Resource(name = "egovUserManageService")
     //private EgovUserManageService egovUserManageService;
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovComUtlController.class);
+	private static final String ERROR_VIEW = "egovframework/com/cmm/error/egovError";
 
 	/** 암호화서비스 */
 	private static EgovEnvCryptoService cryptoService;
@@ -69,8 +70,13 @@ public class EgovComUtlController {
 
 		String link = "";
 		// 화이트 리스트가 비었는지 확인
-		if (egovWhitelist == null || egovWhitelist.isEmpty() || egovWhitelist.size() <= linkIndex) {
-			link="egovframework/com/cmm/egovError";
+		if (egovWhitelist == null || egovWhitelist.isEmpty()) {
+			link=ERROR_VIEW;
+			return link;
+		}
+
+		if (linkIndex == null || linkIndex < 0 || egovWhitelist.size() <= linkIndex) {
+			link=ERROR_VIEW;
 			return link;
 		}
 

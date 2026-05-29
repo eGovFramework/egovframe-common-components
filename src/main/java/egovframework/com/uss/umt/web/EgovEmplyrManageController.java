@@ -61,6 +61,8 @@ import jakarta.annotation.Resource;
 @Controller
 public class EgovEmplyrManageController {
 
+	private static final String ERROR_VIEW = "egovframework/com/cmm/error/egovError";
+
 	/** emplyrManageService */
 	@Resource(name = "emplyrManageService")
 	private EgovEmplyrManageService emplyrManageService;
@@ -549,20 +551,21 @@ public class EgovEmplyrManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/umt/EgovRlnmCnfirm.do", method = RequestMethod.POST)
-	public String rlnmCnfirm(Model model, @RequestParam Map<String, Object> commandMap) throws Exception {
+	public String rlnmCnfirm(Model model, @RequestParam Map<String, Object> commandMap,
+			@RequestParam(value = "nextUrl", required = true) Integer linkIndex) throws Exception {
 
 		model.addAttribute("ihidnum", commandMap.get("ihidnum")); // 주민번호
 		model.addAttribute("realname", commandMap.get("realname")); // 사용자이름
 		model.addAttribute("sbscrbTy", commandMap.get("sbscrbTy")); // 사용자유형
 		model.addAttribute("nextUrlName", commandMap.get("nextUrlName")); // 다음단계버튼명(이동할 URL에 따른)
-		Integer linkIndex = Integer.parseInt((String) commandMap.get("nextUrl"));
-		model.addAttribute("nextUrl", linkIndex); // 다음단계로 이동할 URL
-
-		// 화이트 리스트 처리
 		String link = "";
-		// 화이트 리스트가 비었는지 확인
-		if (nextUrlWhitelist == null || nextUrlWhitelist.isEmpty() || nextUrlWhitelist.size() <= linkIndex) {
-			link = "egovframework/com/cmm/egovError";
+		if (nextUrlWhitelist == null || nextUrlWhitelist.isEmpty()) {
+			link = ERROR_VIEW;
+			return link;
+		}
+
+		if (linkIndex == null || linkIndex < 0 || nextUrlWhitelist.size() <= linkIndex) {
+			link = ERROR_VIEW;
 			return link;
 		}
 

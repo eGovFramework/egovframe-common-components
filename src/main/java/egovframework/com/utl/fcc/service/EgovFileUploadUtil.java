@@ -143,17 +143,22 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 						throw new SecurityException("Unacceptable file extension."); // 허용되지 않는 확장자 처리
 					}
 
+					long fileSize = mFile.getSize();
+					if (!checkFileMaxSize(mFile, maxFileSize)) {
+						throw new SecurityException("File size exceeds maximum allowed size.");
+					}
+
 					vo.setFileName(tmp);
 					vo.setContentType(mFile.getContentType());
 					vo.setServerSubPath(getTodayString());
 					vo.setPhysicalName(getPhysicalFileName() + "." + ext);
-					vo.setSize(mFile.getSize());
+					vo.setSize(fileSize);
 
 					if (tmp.lastIndexOf(".") >= 0) {
 						vo.setPhysicalName(vo.getPhysicalName()); // 2012.11 KISA 보안조치
 					}
 
-					if (mFile.getSize() > 0) {
+					if (fileSize > 0) {
 						InputStream is = null;
 
 						try {
