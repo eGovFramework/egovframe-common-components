@@ -2,6 +2,9 @@ package egovframework.com.cmm;
 
 import java.io.Serializable;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @Class Name : BaseRequestVO.java
  * @Description : 로그인/검색 요청 기본 VO
@@ -13,6 +16,7 @@ import java.io.Serializable;
  *   수정일              수정자          수정내용
  *   ----------  --------  ---------------------------
  *   2025.12.09            기본 요청 VO 생성
+ *   2026.05.27            Lombok @Getter/@Setter 적용
  *</pre>
  *
  *  @since 2025.12.09
@@ -20,6 +24,8 @@ import java.io.Serializable;
  *  @see
  *
  */
+@Getter
+@Setter
 public class BaseRequestVO implements Serializable{
 
 	/**
@@ -30,19 +36,4 @@ public class BaseRequestVO implements Serializable{
 	/** 사용자구분 */
 	private String userSe;
 
-	/**
-	 * userSe attribute 를 리턴한다.
-	 * @return String
-	 */
-	public String getUserSe() {
-		return userSe;
-	}
-
-	/**
-	 * userSe attribute 값을 설정한다.
-	 * @param userSe String
-	 */
-	public void setUserSe(String userSe) {
-		this.userSe = userSe;
-	}
 }
