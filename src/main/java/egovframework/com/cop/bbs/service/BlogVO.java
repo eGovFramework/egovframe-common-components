@@ -88,6 +88,6 @@ public class BlogVO extends Blog implements Serializable {
      * toString 메소드를 대치한다.
      */
     public String toString() {
-	return ToStringBuilder.reflectionToString(this);
+        return ToStringBuilder.reflectionToString(this);
     }
 }
