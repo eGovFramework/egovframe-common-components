@@ -1,5 +1,8 @@
 package egovframework.com.uss.ion.sit.service;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
 
 import egovframework.com.cmm.ComDefaultVO;
