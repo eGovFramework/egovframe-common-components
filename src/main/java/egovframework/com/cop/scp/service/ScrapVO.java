@@ -1,7 +1,5 @@
 package egovframework.com.cop.scp.service;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -63,11 +61,4 @@ public class ScrapVO extends Scrap {
 
     /** 최종 수정자명 */
     private String lastUpdusrNm = "";
-
-    /**
-     * toString 메소드를 대치한다.
-     */
-    public String toString() {
-	return ToStringBuilder.reflectionToString(this);
-    }
 }

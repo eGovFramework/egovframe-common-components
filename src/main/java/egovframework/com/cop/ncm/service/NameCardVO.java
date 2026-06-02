@@ -2,8 +2,6 @@ package egovframework.com.cop.ncm.service;
 
 import java.io.Serializable;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -78,11 +76,4 @@ public class NameCardVO extends NameCard implements Serializable {
 
     /** 사용자 아이디 */
     private String emplyrId = "";
-
-    /**
-     * toString 메소드를 대치한다.
-     */
-    public String toString() {
-	return ToStringBuilder.reflectionToString(this);
-    }
 }
