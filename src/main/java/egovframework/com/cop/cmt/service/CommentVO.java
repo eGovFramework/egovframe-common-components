@@ -1,7 +1,5 @@
 package egovframework.com.cop.cmt.service;
 
-import org.apache.commons.lang3.builder.ToStringBuilder;
-
 import lombok.Getter;
 import lombok.Setter;
 
@@ -49,16 +47,9 @@ public class CommentVO extends Comment {
     /** 레코드 번호 */
     private int subRowNo = 0;
 
-    /** 호출 TYPE (head or body)*/
+    /** 호출 TYPE (head or body) */
     private String type = "";
 
     /** 수정 처리 여부 */
     private boolean isModified = false;
-
-    /**
-     * toString 메소드를 대치한다.
-     */
-    public String toString() {
-	return ToStringBuilder.reflectionToString(this);
-    }
 }
