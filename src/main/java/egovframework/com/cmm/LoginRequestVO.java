@@ -2,6 +2,9 @@ package egovframework.com.cmm;
 
 import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * @Class Name : LoginRequestVO.java
  * @Description : 로그인 요청 전용 VO
@@ -13,6 +16,7 @@ import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
  *   수정일              수정자          수정내용
  *   ----------  --------  ---------------------------
  *   2025.12.09            로그인 전용 VO 생성
+ *   2026.05.27            Lombok @Getter/@Setter 적용
  *</pre>
  *
  *  @since 2025.12.09
@@ -20,6 +24,8 @@ import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
  *  @see
  *
  */
+@Getter
+@Setter
 public class LoginRequestVO extends BaseRequestVO{
 
 	/**
@@ -35,35 +41,4 @@ public class LoginRequestVO extends BaseRequestVO{
 	@EgovNullCheck
 	private String password;
 
-	/**
-	 * id attribute 를 리턴한다.
-	 * @return String
-	 */
-	public String getId() {
-		return id;
-	}
-
-	/**
-	 * id attribute 값을 설정한다.
-	 * @param id String
-	 */
-	public void setId(String id) {
-		this.id = id;
-	}
-
-	/**
-	 * password attribute 를 리턴한다.
-	 * @return String
-	 */
-	public String getPassword() {
-		return password;
-	}
-
-	/**
-	 * password attribute 값을 설정한다.
-	 * @param password String
-	 */
-	public void setPassword(String password) {
-		this.password = password;
-	}
 }
