@@ -42,4 +42,5 @@ public class ProcessMonVO extends ProcessMon {
 
 	/** recordCountPerPage */
     private int recordCountPerPage = 10;
+
 }

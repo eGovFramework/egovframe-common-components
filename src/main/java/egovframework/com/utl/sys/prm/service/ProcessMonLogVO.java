@@ -13,7 +13,6 @@ import lombok.Setter;
  * @version 1.0
  * @created 08-9-2010 오후 3:54:47
  */
-
 @Getter
 @Setter
 public class ProcessMonLogVO extends ProcessMonLog {

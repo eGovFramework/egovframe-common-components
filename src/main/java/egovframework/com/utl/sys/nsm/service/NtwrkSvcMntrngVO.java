@@ -13,9 +13,9 @@ import lombok.Setter;
  * @version 1.0
  * @created 28-6-2010 오전 11:33:43
  */
-@SuppressWarnings("serial")
 @Getter
 @Setter
+@SuppressWarnings("serial")
 public class NtwrkSvcMntrngVO extends NtwrkSvcMntrng {
 
 	/** 검색조건 */
