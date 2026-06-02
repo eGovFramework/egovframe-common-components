@@ -1,5 +1,7 @@
 package egovframework.com.cop.sms.service;
 
+import lombok.Getter;
+import lombok.Setter;
 import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import lombok.Getter;
@@ -18,6 +20,7 @@ import lombok.Setter;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.06.18  한성곤          최초 생성
+ *   2025.05.26  기여자          Lombok @Getter/@Setter 적용으로 보일러플레이트 제거
  *
  * </pre>
  */
@@ -58,7 +61,8 @@ public class SmsVO extends Sms {
     /**
      * toString 메소드를 대치한다.
      */
+    @Override
     public String toString() {
-	return ToStringBuilder.reflectionToString(this);
+        return ToStringBuilder.reflectionToString(this);
     }
 }
