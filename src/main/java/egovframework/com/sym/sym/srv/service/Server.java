@@ -3,6 +3,9 @@ package egovframework.com.sym.sym.srv.service;
 import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
 import jakarta.validation.constraints.Size;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import egovframework.com.cmm.ComDefaultVO;
 
 /**
@@ -14,7 +17,18 @@ import egovframework.com.cmm.ComDefaultVO;
  * @author 이문준
  * @version 1.0
  * @created 28-6-2010 오전 10:44:54
+ *
+ * <pre>
+ * == 개정이력(Modification Information) ==
+ *
+ *   수정일       수정자           수정내용
+ *  -------     --------    ---------------------------
+ *  2010.06.28   이문준     최초 생성
+ *  2025.05.21   dasomel    Lombok @Getter/@Setter 적용
+ * </pre>
  */
+@Getter
+@Setter
 public class Server extends ComDefaultVO {
 
 	private static final long serialVersionUID = 1L;
@@ -57,113 +71,4 @@ public class Server extends ComDefaultVO {
 	 * 최종수정자ID
 	 */
 	private String lastUpdusrId;
-
-	/**
-	 * @return the serverId
-	 */
-	public String getServerId() {
-		return serverId;
-	}
-	/**
-	 * @param serverId the serverId to set
-	 */
-	public void setServerId(String serverId) {
-		this.serverId = serverId;
-	}
-	/**
-	 * @return the serverNm
-	 */
-	public String getServerNm() {
-		return serverNm;
-	}
-	/**
-	 * @param serverNm the serverNm to set
-	 */
-	public void setServerNm(String serverNm) {
-		this.serverNm = serverNm;
-	}
-	/**
-	 * @return the serverKnd
-	 */
-	public String getServerKnd() {
-		return serverKnd;
-	}
-	/**
-	 * @param serverKnd the serverKnd to set
-	 */
-	public void setServerKnd(String serverKnd) {
-		this.serverKnd = serverKnd;
-	}
-	/**
-	 * @return the serverKndNm
-	 */
-	public String getServerKndNm() {
-		return serverKndNm;
-	}
-	/**
-	 * @param serverKndNm the serverKndNm to set
-	 */
-	public void setServerKndNm(String serverKndNm) {
-		this.serverKndNm = serverKndNm;
-	}
-	/**
-	 * @return the regstYmd
-	 */
-	public String getRegstYmd() {
-		return regstYmd;
-	}
-	/**
-	 * @param regstYmd the regstYmd to set
-	 */
-	public void setRegstYmd(String regstYmd) {
-		this.regstYmd = regstYmd;
-	}
-	/**
-	 * @return the frstRegisterPnttm
-	 */
-	public String getFrstRegisterPnttm() {
-		return frstRegisterPnttm;
-	}
-	/**
-	 * @param frstRegisterPnttm the frstRegisterPnttm to set
-	 */
-	public void setFrstRegisterPnttm(String frstRegisterPnttm) {
-		this.frstRegisterPnttm = frstRegisterPnttm;
-	}
-	/**
-	 * @return the frstRegisterId
-	 */
-	public String getFrstRegisterId() {
-		return frstRegisterId;
-	}
-	/**
-	 * @param frstRegisterId the frstRegisterId to set
-	 */
-	public void setFrstRegisterId(String frstRegisterId) {
-		this.frstRegisterId = frstRegisterId;
-	}
-	/**
-	 * @return the lastUpdusrPnttm
-	 */
-	public String getLastUpdusrPnttm() {
-		return lastUpdusrPnttm;
-	}
-	/**
-	 * @param lastUpdusrPnttm the lastUpdusrPnttm to set
-	 */
-	public void setLastUpdusrPnttm(String lastUpdusrPnttm) {
-		this.lastUpdusrPnttm = lastUpdusrPnttm;
-	}
-	/**
-	 * @return the lastUpdusrId
-	 */
-	public String getLastUpdusrId() {
-		return lastUpdusrId;
-	}
-	/**
-	 * @param lastUpdusrId the lastUpdusrId to set
-	 */
-	public void setLastUpdusrId(String lastUpdusrId) {
-		this.lastUpdusrId = lastUpdusrId;
-	}
 }

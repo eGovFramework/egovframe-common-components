@@ -23,6 +23,8 @@ import lombok.Setter;
  *
  *      </pre>
  */
+@Getter
+@Setter
 public class GroupManageVO extends GroupManage {
 
 	/**
@@ -36,26 +38,8 @@ public class GroupManageVO extends GroupManage {
 	/**
 	 * 삭제대상 목록
 	 */
-	@Getter
-	@Setter
 	String[] delYn;
 
-	/**
-	 * groupManageList attribute 를 리턴한다.
-	 * 
-	 * @return List<GroupManageVO>
-	 */
-	public List<GroupManageVO> getGroupManageList() {
-		return groupManageList;
-	}
 
-	/**
-	 * groupManageList attribute 값을 설정한다.
-	 * 
-	 * @param groupManageList List<GroupManageVO>
-	 */
-	public void setGroupManageList(List<GroupManageVO> groupManageList) {
-		this.groupManageList = groupManageList;
-	}
 
 }
