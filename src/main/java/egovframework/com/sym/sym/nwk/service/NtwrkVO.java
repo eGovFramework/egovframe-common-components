@@ -58,34 +58,6 @@ public class NtwrkVO extends Ntwrk {
 	private String delYn[];
 
 	/**
-	 * @return the strManageIem
-	 */
-	public String getStrManageIem() {
-		return strManageIem;
-	}
-
-	/**
-	 * @param strManageIem the strManageIem to set
-	 */
-	public void setStrManageIem(String strManageIem) {
-		this.strManageIem = strManageIem;
-	}
-
-	/**
-	 * @return the strUserNm
-	 */
-	public String getStrUserNm() {
-		return strUserNm;
-	}
-
-	/**
-	 * @param strUserNm the strUserNm to set
-	 */
-	public void setStrUserNm(String strUserNm) {
-		this.strUserNm = strUserNm;
-	}
-
-	/**
 	 * @return the ntwrkList
 	 */
 	public List<NtwrkVO> getNtwrkList() {

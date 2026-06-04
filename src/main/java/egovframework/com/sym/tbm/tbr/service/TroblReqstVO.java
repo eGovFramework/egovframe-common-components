@@ -78,48 +78,6 @@ public class TroblReqstVO extends TroblReqst {
 	}
 
 	/**
-	 * @return the strTroblNm
-	 */
-	public String getStrTroblNm() {
-		return strTroblNm;
-	}
-
-	/**
-	 * @param strTroblNm the strTroblNm to set
-	 */
-	public void setStrTroblNm(String strTroblNm) {
-		this.strTroblNm = strTroblNm;
-	}
-
-	/**
-	 * @return the strTroblKnd
-	 */
-	public String getStrTroblKnd() {
-		return strTroblKnd;
-	}
-
-	/**
-	 * @param strTroblKnd the strTroblKnd to set
-	 */
-	public void setStrTroblKnd(String strTroblKnd) {
-		this.strTroblKnd = strTroblKnd;
-	}
-
-	/**
-	 * @return the strProcessSttus
-	 */
-	public String getStrProcessSttus() {
-		return strProcessSttus;
-	}
-
-	/**
-	 * @param strProcessSttus the strProcessSttus to set
-	 */
-	public void setStrProcessSttus(String strProcessSttus) {
-		this.strProcessSttus = strProcessSttus;
-	}
-
-	/**
 	 * @return the delYn
 	 */
 	public String[] getDelYn() {

@@ -86,18 +86,4 @@ public class ServerVO extends Server {
 		}
 	}
 
-	/**
-	 * @return the strServerNm
-	 */
-	public String getStrServerNm() {
-		return strServerNm;
-	}
-
-	/**
-	 * @param strServerNm the strServerNm to set
-	 */
-	public void setStrServerNm(String strServerNm) {
-		this.strServerNm = strServerNm;
-	}
-
 }
