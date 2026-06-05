@@ -96,14 +96,14 @@
 		<tr>
 			<th><spring:message code="comUssOlhAwm.administrationWordVO.administWordDf" /></th>
 			<td class="cnt">
-				<c:out value="${fn:replace(result.administWordDf , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.administWordDf}"/></span>
 			</td>
 		</tr>
 		<!-- 행정용어 설명 -->
 		<tr>
 			<th><spring:message code="comUssOlhAwm.administrationWordVO.administWordDc" /></th>
 			<td class="cnt">
-				<c:out value="${fn:replace(result.administWordDc , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.administWordDc}"/></span>
 			</td>
 		</tr>
 		

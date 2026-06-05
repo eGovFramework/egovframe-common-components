@@ -121,7 +121,7 @@ function fn_egov_init_OnlinePollPartcptnStatistics() {
 	<dl class="poll_chart">
 	<c:forEach items="${PollItemList}" var="resultInfo" varStatus="status2">
 			<table>
-			<th><c:out value="${resultInfo.pollIemNm}" escapeXml="false" /></td>
+			<th><span style="white-space:pre-line"><c:out value="${resultInfo.pollIemNm}"/></span></td>
 			<td>
 				<ul>
 					<c:forEach items="${statisticsList}" var="statisticsInfo" varStatus="status3">

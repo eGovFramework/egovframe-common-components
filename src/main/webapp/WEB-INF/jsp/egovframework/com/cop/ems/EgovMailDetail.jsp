@@ -103,7 +103,7 @@ function fnSelectXml(){
 	<!-- 발신내용 -->
 	<tr>
 		<th><spring:message code="comCopSymEms.inqire.sendCn" /></th>
-		<td class="left"><c:out value="${fn:replace(resultInfo.emailCn , crlf , '<br/>')}" escapeXml="false" /></td>
+		<td class="left"><span style="white-space:pre-line"><c:out value="${resultInfo.emailCn}"/></span></td>
 	</tr>
 	<!-- 발신결과 -->
 	<tr>

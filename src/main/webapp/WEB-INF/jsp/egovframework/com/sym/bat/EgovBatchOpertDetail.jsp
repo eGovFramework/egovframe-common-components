@@ -83,25 +83,25 @@ function fn_egov_update_view(){
 		<tr>
 			<th><spring:message code="comSymBat.batchOpertDetail.batchOpertId"/></th><!-- 배치작업ID -->
 			<td class="left">
-				<c:out value="${resultInfo.batchOpertId}" escapeXml="false" />
+				<c:out value="${resultInfo.batchOpertId}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymBat.batchOpertDetail.batchOpertNm"/></th><!-- 배치작업명 -->
 			<td class="left">
-				<c:out value="${resultInfo.batchOpertNm}" escapeXml="false" />
+				<c:out value="${resultInfo.batchOpertNm}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymBat.batchOpertDetail.batchProgrm"/></th><!-- 배치프로그램 -->
 			<td class="left">
-			    <c:out value="${resultInfo.batchProgrm}" escapeXml="false" />
+			    <c:out value="${resultInfo.batchProgrm}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymBat.batchOpertDetail.paramtr"/></th><!-- 파라미터 -->
 			<td class="left">
-			    <c:out value="${resultInfo.paramtr}" escapeXml="false" />
+			    <c:out value="${resultInfo.paramtr}"/>
 			</td>
 		</tr>
 	</table>

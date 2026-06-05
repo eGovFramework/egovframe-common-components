@@ -180,7 +180,7 @@ function fn_egov_deleteBkmkInf(){
 			    	<input name="checkMenuId" type="hidden" value="<c:out value='${result.menuId}'/>">
 			   		<input name="checkUserId" type="hidden" value="<c:out value='${result.userId}'/>"></td>
 			    <td>
-			    	<span><c:out value="${result.menuNm}" escapeXml="false"/></span>
+			    	<span><c:out value="${result.menuNm}"/></span>
 			    </td>
 			    <td><c:out value="${result.progrmStrePath}"/></td>
 			  </tr>

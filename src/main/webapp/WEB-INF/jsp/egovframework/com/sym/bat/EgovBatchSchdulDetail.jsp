@@ -82,25 +82,25 @@ function fn_egov_update_view(){
 		<tr>
 			<th><spring:message code="comSymBat.batchSchdulDetail.batchSchdulId"/></th><!-- 배치스케줄ID -->
 			<td class="left">
-			    <c:out value="${resultInfo.batchSchdulId}" escapeXml="false" />
+			    <c:out value="${resultInfo.batchSchdulId}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymBat.batchSchdulDetail.batchOpertId"/></th><!-- 배치작업ID -->
 			<td class="left">
-			    <c:out value="${resultInfo.batchOpertId}" escapeXml="false" />
+			    <c:out value="${resultInfo.batchOpertId}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymBat.batchSchdulDetail.batchOpertNm"/></th><!-- 배치작업명 -->
 			<td class="left">
-			    <c:out value="${resultInfo.batchOpertNm}" escapeXml="false" />
+			    <c:out value="${resultInfo.batchOpertNm}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymBat.batchSchdulDetail.executCycleNm"/></th><!-- 실행주기 -->
 			<td class="left">
-			    <c:out value="${resultInfo.executCycleNm}" escapeXml="false" />&nbsp;<c:out value="${resultInfo.executSchdul}" escapeXml="false" />
+			    <c:out value="${resultInfo.executCycleNm}"/>&nbsp;<c:out value="${resultInfo.executSchdul}"/>
 			</td>
 		</tr>
 	</table>

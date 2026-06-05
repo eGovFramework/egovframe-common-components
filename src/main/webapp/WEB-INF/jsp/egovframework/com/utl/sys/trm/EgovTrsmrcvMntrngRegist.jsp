@@ -114,31 +114,31 @@ function showModalDialogCallback(retVal) {
 		<tr>
 			<th><spring:message code="comUtlSysTrm.trsmrcvMntrng.provider" /></th><!-- 제공기관 -->
 			<td class="left">
-			    <label id="provdInsttNm"><c:out value="${resultInfo.provdInsttNm}" escapeXml="false" /></label>
+			    <label id="provdInsttNm"><c:out value="${resultInfo.provdInsttNm}"/></label>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysTrm.trsmrcvMntrng.provideSystem" /></th><!-- 제공시스템 -->
 			<td class="left">
-			    <label id="provdSysNm"><c:out value="${resultInfo.provdSysNm}" escapeXml="false" /></label>
+			    <label id="provdSysNm"><c:out value="${resultInfo.provdSysNm}"/></label>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysTrm.trsmrcvMntrng.service" /></th><!-- 제공서비스 -->
 			<td class="left">
-			    <label id="provdSvcNm"><c:out value="${resultInfo.provdSvcNm}" escapeXml="false" /></label>
+			    <label id="provdSvcNm"><span style="white-space:pre-line"><c:out value="${resultInfo.provdSvcNm}"/></span></label>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysTrm.trsmrcvMntrng.requester" /></th><!-- 요청기관 -->
 			<td class="left">
-			    <label id="requstInsttNm"><c:out value="${resultInfo.requstInsttNm}" escapeXml="false" /></label>
+			    <label id="requstInsttNm"><c:out value="${resultInfo.requstInsttNm}"/></label>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysTrm.trsmrcvMntrng.requestSystem" /></th><!-- 요청시스템 -->
 			<td class="left">
-			    <label id="requstSysNm"><c:out value="${resultInfo.requstSysNm}" escapeXml="false" /></label>
+			    <label id="requstSysNm"><c:out value="${resultInfo.requstSysNm}"/></label>
 			</td>
 		</tr>
 		<tr>

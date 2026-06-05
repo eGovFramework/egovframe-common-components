@@ -117,7 +117,7 @@ function fn_egov_delete_QustnrQestnManage(){
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-  				<c:out value="${fn:replace(resultList[0].qestnCn , crlf , '<br/>')}" escapeXml="false" />
+  				<span style="white-space:pre-line"><c:out value="${resultList[0].qestnCn}"/></span>
 			</td>
 		</tr>
 		<!-- 최대선택건수 -->
@@ -150,7 +150,7 @@ function fn_egov_delete_QustnrQestnManage(){
 				<ul>
 				<li>
 					<table>						
-						<th ><c:out value="${statisticsList.iemCn}" escapeXml="false" /></th>
+						<th ><span style="white-space:pre-line"><c:out value="${statisticsList.iemCn}"/></span></th>
 						<td>
 							<span class="g_bar2">
 								<span class="g_org" style="width:${statisticsList.qustnrPercent}px;"></span>
@@ -184,7 +184,7 @@ function fn_egov_delete_QustnrQestnManage(){
 			    <c:if test="${statisticsList2.respondAnswerCn ne ''}">
 					<tr>
 					<td style="border-bottom:1px solid white;">
-					<c:out value="${fn:replace(statisticsList2.respondAnswerCn , crlf , '<br/>')}" escapeXml="false" />
+					<span style="white-space:pre-line"><c:out value="${statisticsList2.respondAnswerCn}"/></span>
 					</td>
 					</tr>
 				</c:if>
@@ -204,7 +204,7 @@ function fn_egov_delete_QustnrQestnManage(){
      			<c:if test="${statisticsList2.etcAnswerCn ne ''}">
 	    			<tr>
 		    		<td style="border-bottom:1px solid white;">
-		    	 	<c:out value="${fn:replace(statisticsList2.etcAnswerCn , crlf , '<br/>')}" escapeXml="false" />
+		    	 	<span style="white-space:pre-line"><c:out value="${statisticsList2.etcAnswerCn}"/></span>
 		    		</td>
 	    			</tr>
 	  			</c:if>

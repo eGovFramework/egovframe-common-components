@@ -64,7 +64,7 @@
 		<tr>
 			<th><spring:message code="comUssIonEcc.eventCmpgnVO.title" /></th>
 			<td class="cnt">
-				<c:out value="${fn:replace(result.eventCn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.eventCn}"/></span>
 			</td>
 		</tr>
 		

@@ -90,7 +90,7 @@
 		<tr>
 			<th class="vtop"><spring:message code="comCopScp.articleScrapVO.detail.nttCn" /></th>
 			<td colspan="5" class="cnt">
-				<c:out value="${fn:replace(articleVO.nttCn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${articleVO.nttCn}"/></span>
 			</td>
 		</tr>
 		

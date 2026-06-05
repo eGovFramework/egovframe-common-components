@@ -279,7 +279,7 @@ function fn_egov_search_NoteRecptn(){
 			<a href="<c:url value='/uss/ion/nts/detailNoteTrnsmit.do'/>?pageIndex=${searchVO.pageIndex}&amp;noteId=${egovc:encryptId(resultInfo.noteId)}&amp;noteTrnsmitId=${egovc:encryptId(resultInfo.noteTrnsmitId)}">
  				<c:set var="noteTrnsmitNoteSj" value="${fn:escapeXml(resultInfo.noteSj)}"/>
 				<c:set var="noteTrnsmitNoteSj" value="${fn:replace(resultInfo.noteSj , crlf , '<br>')}"/>
-				<c:out value="${resultInfo.noteSj}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${resultInfo.noteSj}"/></span>
 			</a>
 		</td>
 		<td>

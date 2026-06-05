@@ -71,7 +71,7 @@
 		<tr>
 			<th><spring:message code="comUssIonNws.newsVO.newsCn" /></th>
 			<td class="cnt">
-				<c:out value="${fn:replace(newsVO.newsCn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${newsVO.newsCn}"/></span>
 			</td>
 		</tr>
 		

@@ -63,66 +63,66 @@ function fn_egov_list(){
       <tr> 
         <th width="20%" height="23" class="required_text" nowrap="nowrap" ><spring:message code="comUtlSysDbm.dbMntrng.logID" /></th><!-- 로그ID -->
         <td width="80%" class="left">
-            <c:out value="${resultInfo.logId}" escapeXml="false" /> 
+            <c:out value="${resultInfo.logId}"/> 
         </td>
       </tr>
     
       <tr> 
         <th width="20%" height="23" class="required_text" nowrap="nowrap" ><spring:message code="comUtlSysDbm.dbMntrng.dataSourceName" /></th><!-- 데이타소스명 -->
         <td width="80%" class="left">
-            <c:out value="${resultInfo.dataSourcNm}" escapeXml="false" /> 
+            <span style="white-space:pre-line"><c:out value="${resultInfo.dataSourcNm}"/></span> 
         </td>
       </tr>
     
       <tr> 
         <th height="23" class="required_text" ><spring:message code="comUtlSysDbm.dbMntrng.serverName" /></th><!-- 서버명 -->
         <td class="left">
-            <c:out value="${resultInfo.serverNm}" escapeXml="false" /> 
+            <c:out value="${resultInfo.serverNm}"/> 
         </td>
       </tr> 
       
       <tr> 
         <th height="23" class="required_text" ><spring:message code="comUtlSysDbm.dbMntrng.dbms" /></th><!-- DBMS종류 -->
         <td class="left">
-            <c:out value="${resultInfo.dbmsKindNm}" escapeXml="false" /> 
+            <c:out value="${resultInfo.dbmsKindNm}"/> 
         </td>
       </tr> 
       
       <tr> 
         <th height="23" class="required_text" ><spring:message code="comUtlSysDbm.dbMntrng.checkSQL" /></th><!-- 체크SQL -->
         <td class="left">
-            <c:out value="${resultInfo.ceckSql}" escapeXml="false" /> 
+            <c:out value="${resultInfo.ceckSql}"/> 
         </td>
       </tr> 
       
       <tr> 
         <th height="23" class="required_text" ><spring:message code="comUtlSysDbm.dbMntrng.managerName" /></th><!-- 관리자명 -->
         <td class="left">
-            <c:out value="${resultInfo.mngrNm}" escapeXml="false" /> 
+            <c:out value="${resultInfo.mngrNm}"/> 
         </td>
       </tr> 
       <tr> 
         <th height="23" class="required_text" ><spring:message code="comUtlSysDbm.dbMntrng.managerEmail" /></th><!-- 관리자이메일주소 -->
         <td class="left">
-            <c:out value="${resultInfo.mngrEmailAddr}" escapeXml="false" /> 
+            <c:out value="${resultInfo.mngrEmailAddr}"/> 
         </td>
       </tr> 
       <tr> 
         <th height="23" class="required_text" ><spring:message code="comUtlSysDbm.dbMntrng.status" /></th><!-- 모니터링상태 -->
         <td class="left">
-            <c:out value="${resultInfo.mntrngSttusNm}" escapeXml="false" /> 
+            <c:out value="${resultInfo.mntrngSttusNm}"/> 
         </td>
       </tr> 
       <tr> 
         <th height="23" class="required_text" ><spring:message code="comUtlSysDbm.dbMntrng.logInfo" /></th><!-- 로그정보 -->
         <td class="left">
-            <c:out value="${resultInfo.logInfo}" escapeXml="false" /> 
+            <span style="white-space:pre-line"><c:out value="${resultInfo.logInfo}"/></span> 
         </td>
       </tr> 
       <tr> 
         <th height="23" class="required_text" ><spring:message code="comUtlSysDbm.dbMntrng.monitoringDatetime" /></th><!-- 모니터링시각 -->
         <td class="left">
-            <c:out value="${resultInfo.creatDt}" escapeXml="false" /> 
+            <c:out value="${resultInfo.creatDt}"/> 
         </td>
       </tr> 
     </table>

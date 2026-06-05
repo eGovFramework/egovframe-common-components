@@ -142,7 +142,7 @@ function fncUpdateAnnvrsry() {
 			<th><spring:message code="comUssIonAns.common.memo"/> <span class="pilsu">*</span></th><!-- 메모 -->
 			<td class="left" colspan="3">
 			    <c:set var="memo"><spring:message code="comUssIonAns.common.memo"/></c:set>
-			    <textarea name="memo" id="memo" style="width:95%;height:100px;" title="${memo}"><c:out value="${annvrsryManageVO.memo}"   escapeXml="false"/></textarea>
+			    <textarea name="memo" id="memo" style="width:95%;height:100px;" title="${memo}"><c:out value="${annvrsryManageVO.memo}"/></textarea>
 			    <div><form:errors path="memo" cssClass="error" /></div>
 			</td>
 		</tr>

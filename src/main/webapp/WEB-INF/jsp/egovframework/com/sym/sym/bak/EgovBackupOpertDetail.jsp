@@ -82,37 +82,37 @@ function fn_egov_update_view(){
 			<tr>
 				<th><spring:message code="comSymSymBak.backupOpertDetail.backupOpertId"/></th><!-- 백업작업ID -->
 				<td class="left">
-					<c:out value="${resultInfo.backupOpertId}" escapeXml="false" />
+					<c:out value="${resultInfo.backupOpertId}"/>
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comSymSymBak.backupOpertDetail.backupOpertNm"/></th><!-- 백업작업명 -->
 				<td class="left">
-					<c:out value="${resultInfo.backupOpertNm}" escapeXml="false" />
+					<c:out value="${resultInfo.backupOpertNm}"/>
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comSymSymBak.backupOpertDetail.backupOrginlDrctry"/></th><!-- 백업원본디렉토리 -->
 				<td class="left">
-					<c:out value="${resultInfo.backupOrginlDrctry}" escapeXml="false" />
+					<c:out value="${resultInfo.backupOrginlDrctry}"/>
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comSymSymBak.backupOpertDetail.backupStreDrctry"/></th><!-- 백업저장디렉토리 -->
 				<td class="left">
-					<c:out value="${resultInfo.backupStreDrctry}" escapeXml="false" />
+					<c:out value="${resultInfo.backupStreDrctry}"/>
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comSymSymBak.backupOpertDetail.executCycleNm"/></th><!-- 실행주기 -->
 				<td class="left">
-					<c:out value="${resultInfo.executCycleNm}" escapeXml="false" />&nbsp;<c:out value="${resultInfo.executSchdul}" escapeXml="false" />
+					<c:out value="${resultInfo.executCycleNm}"/>&nbsp;<c:out value="${resultInfo.executSchdul}"/>
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comSymSymBak.backupOpertDetail.cmprsSeNm"/></th><!-- 압축구분 -->
 				<td class="left">
-					<c:out value="${resultInfo.cmprsSeNm}" escapeXml="false" />
+					<c:out value="${resultInfo.cmprsSeNm}"/>
 				</td>
 			</tr>
 		</table>

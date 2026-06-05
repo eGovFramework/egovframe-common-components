@@ -92,7 +92,7 @@ function fncDeleteAnnvrsry() {
 		</tr>
 		<tr>
 			<th><spring:message code="comUssIonAns.common.memo"/></th><!-- 메모 -->
-			<td class="left" colspan="3"><textarea id="textArae" style="width:95%;height:100px;" title="<spring:message code="comUssIonAns.common.memo"/>" readOnly><c:out value="${annvrsryManageVO.memo      }"  escapeXml="false"/></textarea></td><!-- 메모 -->
+			<td class="left" colspan="3"><textarea id="textArae" style="width:95%;height:100px;" title="<spring:message code="comUssIonAns.common.memo"/>" readOnly><c:out value="${annvrsryManageVO.memo      }"/></textarea></td><!-- 메모 -->
 		</tr>
 		<tr>
 			<th><spring:message code="comUssIonAns.common.annvrsryBeginDe"/></th><!-- 알림시작일 -->

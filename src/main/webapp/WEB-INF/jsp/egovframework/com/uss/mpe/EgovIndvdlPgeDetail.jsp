@@ -65,7 +65,7 @@
 		<tr>
 			<th class="vtop"><spring:message code="comUssMpe.indvdlPgeVO.cntntsDc" /></th>
 			<td class="cnt">
-				<c:out value="${fn:replace(result.cntntsDc , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.cntntsDc}"/></span>
 			</td>
 		</tr>
 		<!-- 사용여부 -->

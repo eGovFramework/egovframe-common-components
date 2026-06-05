@@ -119,7 +119,7 @@ function fn_egov_QustnrItemManageListPopup_QustnrItemManage(){
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-  				<c:out value="${fn:replace(resultList[0].qestnrSj , crlf , '<br/>')}" escapeXml="false" />
+  				<span style="white-space:pre-line"><c:out value="${resultList[0].qestnrSj}"/></span>
 				<input name="qestnrId" id="qestnrId" type="hidden" value="${resultList[0].qestnrId}">
 				<input name="qestnrTmplatId" id="qestnrTmplatId" type="hidden" value="${resultList[0].qestnrTmplatId}">
 			</td>
@@ -129,7 +129,7 @@ function fn_egov_QustnrItemManageListPopup_QustnrItemManage(){
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-				<c:out value="${fn:replace(resultList[0].qestnCn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${resultList[0].qestnCn}"/></span>
 				<input name="qestnrQesitmId" id="qestnrQesitmId" type="hidden" value="${resultList[0].qestnrQesitmId}">
 			</td>
 		</tr>

@@ -167,7 +167,7 @@ function fncVcatnManageDetail(applcntId,vcatnSe,bgnde,endde){
 						<input type="hidden" name="vcatnSe"   value="<c:out value="${resultInfo.vcatnSe}"/>">
 						<input type="hidden" name="bgnde"     value="<c:out value="${resultInfo.bgnde}"/>">
 						<input type="hidden" name="endde"     value="<c:out value="${resultInfo.endde}"/>">
-						<input class="link" type="submit" value="<c:out value="${resultInfo.vcatnResn}"  escapeXml="false"/>" onclick="fncVcatnManageDetail('<c:out value="${resultInfo.applcntId}"/>','<c:out value="${resultInfo.vcatnSe}"/>','<c:out value="${resultInfo.bgnde}"/>','<c:out value="${resultInfo.endde}"/>'); return false;" style="text-align : left;" />
+						<input class="link" type="submit" value="<c:out value="${resultInfo.vcatnResn}"/>" onclick="fncVcatnManageDetail('<c:out value="${resultInfo.applcntId}"/>','<c:out value="${resultInfo.vcatnSe}"/>','<c:out value="${resultInfo.bgnde}"/>','<c:out value="${resultInfo.endde}"/>'); return false;" style="text-align : left;" />
 					</form>
 				</td>
 				<td>

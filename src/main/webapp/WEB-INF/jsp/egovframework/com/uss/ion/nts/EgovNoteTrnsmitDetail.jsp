@@ -82,7 +82,7 @@ function fn_egov_delete_NoteTrnsmit(){
 			<td colspan="3" class="left">
 				<c:set var="noteTrnsmitNoteSj" value="${fn:escapeXml(noteTrnsmit.noteSj)}"/>
 				<c:set var="noteTrnsmitNoteSj" value="${fn:replace(noteTrnsmit.noteSj , crlf , '<br>')}"/>
-				<c:out value="${noteTrnsmitNoteSj}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${noteTrnsmitNoteSj}"/></span>
 			</td>
 		</tr>
 		<!-- 발신자, 발신시각 -->
@@ -115,7 +115,7 @@ function fn_egov_delete_NoteTrnsmit(){
 			<td colspan="3" class="cnt">
 				<c:set var="noteTrnsmitNoteCn" value="${fn:escapeXml(noteTrnsmit.noteCn)}"/>
 				<c:set var="noteTrnsmitNoteCn" value="${fn:replace(noteTrnsmit.noteCn , crlf , '<br>')}"/>
-				<c:out value="${noteTrnsmit.noteCn}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${noteTrnsmit.noteCn}"/></span>
 			</td>
 		</tr>
 	</tbody>

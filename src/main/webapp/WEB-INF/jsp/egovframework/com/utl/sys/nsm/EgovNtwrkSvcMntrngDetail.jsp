@@ -78,7 +78,7 @@
 		<tr>
 			<th><spring:message code="comUtlSysNsm.ntwrkSvcMntrng.sysIp.label" /> <span class="pilsu">*</span></th><!-- 시스템IP -->
 			<td class="left">
-			    <c:out value="${ntwrkSvcMntrngVO.sysIp1}" escapeXml="false" />.<c:out value="${ntwrkSvcMntrngVO.sysIp2}" escapeXml="false" />.<c:out value="${ntwrkSvcMntrngVO.sysIp3}" escapeXml="false" />.<c:out value="${ntwrkSvcMntrngVO.sysIp4}" escapeXml="false" />
+			    <c:out value="${ntwrkSvcMntrngVO.sysIp1}"/>.<c:out value="${ntwrkSvcMntrngVO.sysIp2}"/>.<c:out value="${ntwrkSvcMntrngVO.sysIp3}"/>.<c:out value="${ntwrkSvcMntrngVO.sysIp4}"/>
 				<div><form:errors path="sysIp1" cssClass="error"/></div>
 				<div><form:errors path="sysIp2" cssClass="error"/></div>
 				<div><form:errors path="sysIp3" cssClass="error"/></div>
@@ -88,37 +88,37 @@
 		<tr>
 			<th><spring:message code="comUtlSysNsm.ntwrkSvcMntrng.sysPort.label" /> <span class="pilsu">*</span></th><!-- 시스템포트 -->
 			<td class="left">
-			    <c:out value="${ntwrkSvcMntrngVO.sysPort}" escapeXml="false" />
+			    <c:out value="${ntwrkSvcMntrngVO.sysPort}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysNsm.ntwrkSvcMntrng.sysNm.label" /> <span class="pilsu">*</span></th><!-- 시스템명 -->
 			<td class="left">
-			    <c:out value="${ntwrkSvcMntrngVO.sysNm}" escapeXml="false" />
+			    <c:out value="${ntwrkSvcMntrngVO.sysNm}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysNsm.ntwrkSvcMntrng.mngrNm.label" /> <span class="pilsu">*</span></th><!-- 관리자명 -->
 			<td class="left">
-			    <c:out value="${ntwrkSvcMntrngVO.mngrNm}" escapeXml="false" />
+			    <c:out value="${ntwrkSvcMntrngVO.mngrNm}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysNsm.ntwrkSvcMntrng.mngrEmailAddr.label" /> <span class="pilsu">*</span></th><!-- 관리자이메일주소 -->
 			<td class="left">
-			    <c:out value="${ntwrkSvcMntrngVO.mngrEmailAddr}" escapeXml="false" />
+			    <c:out value="${ntwrkSvcMntrngVO.mngrEmailAddr}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysNsm.ntwrkSvcMntrng.mntrngSttus.label" /> <span class="pilsu">*</span></th><!-- 모니터링상태 -->
 			<td class="left">
-			    <c:out value="${ntwrkSvcMntrngVO.mntrngSttus}" escapeXml="false" />&nbsp;
+			    <c:out value="${ntwrkSvcMntrngVO.mntrngSttus}"/>&nbsp;
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comUtlSysNsm.ntwrkSvcMntrng.creatDt.label" /> <span class="pilsu">*</span></th><!-- 마지막 생성일시  -->
 			<td class="left">
-			    <c:out value="${ntwrkSvcMntrngVO.creatDt}" escapeXml="false" />&nbsp;
+			    <c:out value="${ntwrkSvcMntrngVO.creatDt}"/>&nbsp;
 			</td>
 		</tr>
 	</table>

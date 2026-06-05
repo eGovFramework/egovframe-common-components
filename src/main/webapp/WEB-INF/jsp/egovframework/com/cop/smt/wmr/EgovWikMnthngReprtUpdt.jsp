@@ -196,7 +196,7 @@
 		<tr>
 			<th><spring:message code="copSmtWmr.wikMnthngReprtUpdt.wrterNm"/> <span class="pilsu">*</span></th><!-- 작성자 -->
 			<td class="left">
-				<c:out value="${wikMnthngReprtVO.wrterNm}" escapeXml="false" />
+				<c:out value="${wikMnthngReprtVO.wrterNm}"/>
 				<input type="hidden" name="wrterId" id="wrterId" value="${wikMnthngReprtVO.wrterId}"/>
 				<input type="hidden" name="wrterNm" id="wrterNm" value="${wikMnthngReprtVO.wrterNm}"/>
 				<input type="hidden" name="wrterClsfNm" id="wrterClsfNm" value="${wikMnthngReprtVO.wrterClsfNm}"/>
@@ -274,7 +274,7 @@
 		<tr>
 			<th><spring:message code="copSmtWmr.wikMnthngReprtUpdt.reprtSttus"/></th><!-- 보고서 상태 -->
 			<td class="left">
-			    <c:out value="${wikMnthngReprtVO.reprtSttus}" escapeXml="false" />&nbsp;
+			    <c:out value="${wikMnthngReprtVO.reprtSttus}"/>&nbsp;
 			</td>
 		</tr>
 	</table>

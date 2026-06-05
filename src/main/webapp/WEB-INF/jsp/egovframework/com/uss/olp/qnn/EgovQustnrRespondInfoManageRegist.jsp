@@ -308,7 +308,7 @@ function fn_egov_RadioBoxValue(sbName)
 		<tr>
 			<th>${title}<span class="pilsu"></span></th>
 			<td class="left">
-  				<c:out value="${fn:replace(Comtnqestnrinfo[0].qestnrSj , crlf , '<br/>')}" escapeXml="false" />
+  				<span style="white-space:pre-line"><c:out value="${Comtnqestnrinfo[0].qestnrSj}"/></span>
 			</td>
 		</tr>
 		<!-- 설문목적 -->
@@ -316,7 +316,7 @@ function fn_egov_RadioBoxValue(sbName)
 		<tr>
 			<th>${title}<span class="pilsu"></span></th>
 			<td class="left">
-  				<c:out value="${fn:replace(Comtnqestnrinfo[0].qestnrPurps , crlf , '<br/>')}" escapeXml="false" />
+  				<span style="white-space:pre-line"><c:out value="${Comtnqestnrinfo[0].qestnrPurps}"/></span>
 			</td>
 		</tr>
 		<!-- 설문작성 안내내용 -->
@@ -324,7 +324,7 @@ function fn_egov_RadioBoxValue(sbName)
 		<tr>
 			<th>${title}<span class="pilsu"></span></th>
 			<td class="left">
-  				<c:out value="${fn:replace(Comtnqestnrinfo[0].qestnrWritngGuidanceCn , crlf , '<br/>')}" escapeXml="false" />
+  				<span style="white-space:pre-line"><c:out value="${Comtnqestnrinfo[0].qestnrWritngGuidanceCn}"/></span>
 			</td>
 		</tr>
 		<!-- 설문대상, 설문기간 -->

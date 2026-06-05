@@ -88,7 +88,7 @@ function fn_egov_save_DiaryManage(form){
 			<th><label for="schdulCn">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
 			
-				<c:out value="${fn:replace(diaryManageVO.schdulCn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${diaryManageVO.schdulCn}"/></span>
 				<div style="display:none"><form:input path="schdulCn" /></div>
 				<div style="display:none"><form:input path="schdulId" /></div>
 				<div><form:errors path="schdulId" cssClass="error"/></div>

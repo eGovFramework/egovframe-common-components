@@ -122,7 +122,7 @@
 		<tr>
 			<th><spring:message code="comCopSmtMtm.memoToDo.validate.wrterNm"/> <span class="pilsu">*</span></th><!-- 작성자명 -->
 			<td class="left">
-			    <c:out value="${memoTodoVO.wrterNm}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${memoTodoVO.wrterNm}"/></span>
 				<input type="hidden" name="wrterId" id="wrterId" value="${memoTodoVO.wrterId}"/>
 				<input type="hidden" name="wrterNm" id="wrterNm" value="${memoTodoVO.wrterNm}"/>
 			</td>

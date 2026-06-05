@@ -106,7 +106,7 @@
 			<td class="left">
 			    <c:forEach items="${reprtSe}" var="reprtSeInfo" varStatus="status">
 				<c:if test="${reprtSeInfo.code eq wikMnthngReprt.reprtSe}">	
-				<c:out value="${reprtSeInfo.codeNm}" escapeXml="false" />
+				<c:out value="${reprtSeInfo.codeNm}"/>
 				</c:if>
 				</c:forEach>&nbsp;
 			</td>
@@ -114,53 +114,53 @@
 		<tr>
 			<th><spring:message code="copSmtWmr.wikMnthngReprtDetail.reprtDe"/> <span class="pilsu">*</span></th><!-- 보고일자 -->
 			<td class="left">
-			    <c:out value="${wikMnthngReprt.reprtDe}" escapeXml="false" />&nbsp;
+			    <c:out value="${wikMnthngReprt.reprtDe}"/>&nbsp;
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="copSmtWmr.wikMnthngReprtDetail.reprtBgnEndDe"/> <span class="pilsu">*</span></th><!-- 해당일자 -->
 			<td class="left">
-			    <c:out value="${wikMnthngReprt.reprtBgnDe}" escapeXml="false" />
+			    <c:out value="${wikMnthngReprt.reprtBgnDe}"/>
 				~
-				<c:out value="${wikMnthngReprt.reprtEndDe}" escapeXml="false" />&nbsp;
+				<c:out value="${wikMnthngReprt.reprtEndDe}"/>&nbsp;
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="copSmtWmr.wikMnthngReprtDetail.wrterNm"/> <span class="pilsu">*</span></th><!-- 작성자 -->
 			<td class="left">
-				<c:out value="${wikMnthngReprt.wrterClsfNm}" escapeXml="false" />
-				<c:out value="${wikMnthngReprt.wrterNm}" escapeXml="false" />&nbsp;
+				<c:out value="${wikMnthngReprt.wrterClsfNm}"/>
+				<c:out value="${wikMnthngReprt.wrterNm}"/>&nbsp;
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="copSmtWmr.wikMnthngReprtDetail.reportrNm"/> <span class="pilsu">*</span></th><!-- 보고대상자 -->
 			<td class="left">
-			    <c:out value="${wikMnthngReprt.reportrClsfNm}" escapeXml="false" />
-				<c:out value="${wikMnthngReprt.reportrNm}" escapeXml="false" />&nbsp;
+			    <c:out value="${wikMnthngReprt.reportrClsfNm}"/>
+				<c:out value="${wikMnthngReprt.reportrNm}"/>&nbsp;
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="copSmtWmr.wikMnthngReprtDetail.reprtSuj"/> <span class="pilsu">*</span></th><!-- 보고서제목 -->
 			<td class="left">
-			    <c:out value="${wikMnthngReprt.reprtSj}" escapeXml="false" />&nbsp;
+			    <c:out value="${wikMnthngReprt.reprtSj}"/>&nbsp;
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="copSmtWmr.wikMnthngReprtDetail.reprtThswikCn"/> <span class="pilsu">*</span></th><!-- 금주보고내용 -->
 			<td class="left">
-			    <c:out value="${fn:replace(wikMnthngReprt.reprtThswikCn , crlf , '<br>')}" escapeXml="false" />&nbsp;
+			    <span style="white-space:pre-line"><c:out value="${fn:replace(wikMnthngReprt.reprtThswikCn , crlf , '<br>')}"/></span>&nbsp;
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="copSmtWmr.wikMnthngReprtDetail.reprtLesseeCn"/> <span class="pilsu">*</span></th><!-- 차주보고내용 -->
 			<td class="left">
-			    <c:out value="${fn:replace(wikMnthngReprt.reprtLesseeCn , crlf , '<br>')}" escapeXml="false" />&nbsp;
+			    <span style="white-space:pre-line"><c:out value="${fn:replace(wikMnthngReprt.reprtLesseeCn , crlf , '<br>')}"/></span>&nbsp;
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="copSmtWmr.wikMnthngReprtDetail.partclrMatter"/></th><!-- 특이사항 -->
 			<td class="left">
-			    <c:out value="${fn:replace(wikMnthngReprt.partclrMatter , crlf , '<br>')}" escapeXml="false" />&nbsp;
+			    <c:out value="${fn:replace(wikMnthngReprt.partclrMatter , crlf , '<br>')}"/>&nbsp;
 			</td>
 		</tr>
 		<tr>
@@ -174,7 +174,7 @@
 		<tr>
 			<th><spring:message code="copSmtWmr.wikMnthngReprtDetail.reprtSttus"/></th><!-- 보고서 상태 -->
 			<td class="left">
-			    <c:out value="${wikMnthngReprt.reprtSttus}" escapeXml="false" />&nbsp;
+			    <c:out value="${wikMnthngReprt.reprtSttus}"/>&nbsp;
 			</td>
 		</tr>
 	</table>

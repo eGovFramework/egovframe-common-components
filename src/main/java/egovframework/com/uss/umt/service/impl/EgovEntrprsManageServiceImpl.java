@@ -142,6 +142,7 @@ public class EgovEntrprsManageServiceImpl extends EgovAbstractServiceImpl implem
 	public void updatePassword(EntrprsPasswordManageVO passVO) throws Exception {
 		String newPassword = EgovFileScrty.encryptPassword(passVO.getPassword(), passVO.getEntrprsmberId());
 		passVO.setPassword(newPassword);
+		passVO.setEntrprsMberPassword(newPassword);
 		entrprsManageDAO.updatePassword(passVO);
 	}
 

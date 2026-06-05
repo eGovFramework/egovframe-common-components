@@ -89,7 +89,7 @@ function fn_egov_delete_QustnrRespondManage(){
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-  				<c:out value="${fn:replace(resultList[0].qestnrSj , crlf , '<br/>')}" escapeXml="false" />
+  				<span style="white-space:pre-line"><c:out value="${resultList[0].qestnrSj}"/></span>
 			</td>
 		</tr>
 		<!-- 성별 -->
@@ -99,7 +99,7 @@ function fn_egov_delete_QustnrRespondManage(){
 			<td class="left">
 				<c:forEach items="${comCode014}" var="comCodeList" varStatus="status">
 				<c:if test="${comCodeList.code eq resultList[0].sexdstnCode}">
-				<c:out value="${fn:replace(comCodeList.codeNm , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${comCodeList.codeNm}"/></span>
 				</c:if>
 				</c:forEach>
 			</td>
@@ -111,7 +111,7 @@ function fn_egov_delete_QustnrRespondManage(){
 			<td class="left">
   				<c:forEach items="${comCode034}" var="comCodeList" varStatus="status">
 				<c:if test="${comCodeList.code eq resultList[0].occpTyCode}">
-				<c:out value="${fn:replace(comCodeList.codeNm , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${comCodeList.codeNm}"/></span>
 				</c:if>
 				</c:forEach>
 			</td>
@@ -121,7 +121,7 @@ function fn_egov_delete_QustnrRespondManage(){
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-  				<c:out value="${fn:replace(resultList[0].respondNm , crlf , '<br/>')}" escapeXml="false" />
+  				<span style="white-space:pre-line"><c:out value="${resultList[0].respondNm}"/></span>
 			</td>
 		</tr>
 		
