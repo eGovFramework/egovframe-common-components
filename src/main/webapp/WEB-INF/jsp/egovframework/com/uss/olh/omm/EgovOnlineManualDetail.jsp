@@ -76,14 +76,14 @@
 		<tr>
 			<th><spring:message code="comUssOlhOmm.onlineManualVO.onlineMnlDf" /></th>
 			<td class="cnt">
-				<c:out value="${fn:replace(result.onlineMnlDf , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.onlineMnlDf}"/></span>
 			</td>
 		</tr>
 		<!-- 온라인메뉴얼 설명 -->
 		<tr>
 			<th><spring:message code="comUssOlhOmm.onlineManualVO.onlineMnlDc" /></th>
 			<td class="cnt">
-				<c:out value="${fn:replace(result.onlineMnlDc , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.onlineMnlDc}"/></span>
 			</td>
 		</tr>
 		

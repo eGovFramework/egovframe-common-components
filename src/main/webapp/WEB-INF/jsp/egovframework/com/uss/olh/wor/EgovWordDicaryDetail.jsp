@@ -73,7 +73,7 @@
 		<tr>
 			<th class="vtop"><spring:message code="comUssOlhWor.wordDicaryVO.wordDc" /></th>
 			<td class="cnt">
-				<c:out value="${fn:replace(result.wordDc , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.wordDc}"/></span>
 			</td>
 		</tr>
 		<!-- 동의어 -->

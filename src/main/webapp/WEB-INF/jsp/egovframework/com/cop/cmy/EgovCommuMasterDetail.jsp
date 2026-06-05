@@ -81,7 +81,7 @@
 		<tr>
 			<th class="vtop"><spring:message code="comCopCmy.commuMasterVO.detail.cmmntyIntrcn" /></th>
 			<td colspan="5" class="cnt">
-				<c:out value="${fn:replace(result.cmmntyIntrcn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.cmmntyIntrcn}"/></span>
 			</td>
 		</tr>
 		

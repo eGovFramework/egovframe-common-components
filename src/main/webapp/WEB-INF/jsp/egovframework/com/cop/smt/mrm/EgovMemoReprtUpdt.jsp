@@ -134,9 +134,9 @@
 		<tr>
 			<th><spring:message code="comCopSmtMrm.memoReprtVO.validate.wrterNm"/> <span class="pilsu">*</span></th><!-- 작성자 -->
 			<td class="left">
-			    <c:out value="${memoReprtVO.wrterClsfNm}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${memoReprtVO.wrterClsfNm}"/></span>
 				&nbsp;
-				<c:out value="${memoReprtVO.wrterNm}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${memoReprtVO.wrterNm}"/></span>
 				<input type="hidden" name="wrterId" id="wrterId" value="${memoReprtVO.wrterId}"/>
 				<input type="hidden" name="wrterNm" id="wrterNm" value="${memoReprtVO.wrterNm}"/>
 				<input type="hidden" name="wrterClsfNm" id="wrterClsfNm" value="${memoReprtVO.wrterClsfNm}"/>

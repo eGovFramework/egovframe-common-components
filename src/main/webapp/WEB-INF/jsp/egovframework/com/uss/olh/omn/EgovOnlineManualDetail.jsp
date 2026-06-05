@@ -89,7 +89,7 @@ function fn_egov_list_OnlineManual(){
   <tr>
     <th width="20%" height="23" class="required_text" nowrap >온라인메뉴얼정의<img src="${ImgUrl}icon/required.gif" alt="필수입력" title="필수입력" width="15" height="15"></th>
     <td width="80%">
-		 <c:out value="${onlineManual.onlineMnlDf}" escapeXml="false" />
+		 <span style="white-space:pre-line"><c:out value="${onlineManual.onlineMnlDf}"/></span>
     </td>
   </tr>
 
@@ -100,7 +100,7 @@ function fn_egov_list_OnlineManual(){
 		<table width="500px" border="0" cellpadding="0" cellspacing="0" style="table-layout:fixed">
 		<tr>
 			<td>
-				<c:out value="${onlineManual.onlineMnlDc}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${onlineManual.onlineMnlDc}"/></span>
 		    </td>
 		  </tr>
 		</table>

@@ -97,7 +97,7 @@ function fn_egov_delete_IndvdlInfoPolicy(){
 		<tr>
 			<th><spring:message code="ussSamIpm.indvdlInfoPolicyDetail.indvdlInfoDc"/> <span class="pilsu">*</span></th><!-- 개인정보보호정책 내용 -->
 			<td class="left">
-			    <c:out value="${indvdlInfoPolicy.indvdlInfoDc}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${indvdlInfoPolicy.indvdlInfoDc}"/></span>
 			</td>
 		</tr>
 	</table>

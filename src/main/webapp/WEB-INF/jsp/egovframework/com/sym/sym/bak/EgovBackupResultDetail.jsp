@@ -81,49 +81,49 @@ function fn_egov_list(){
 			<tr>
 				<th><spring:message code="comSymSymBak.backupResultDetail.backupResultId"/>	</th><!-- 백업결과ID -->
 				<td class="left">
-				    <c:out value="${resultInfo.backupResultId}" escapeXml="false" />
+				    <c:out value="${resultInfo.backupResultId}"/>
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comSymSymBak.backupResultDetail.backupOpertId"/></th><!-- 백업작업ID -->
 				<td class="left">
-				    <c:out value="${resultInfo.backupOpertId}" escapeXml="false" />
+				    <c:out value="${resultInfo.backupOpertId}"/>
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comSymSymBak.backupResultDetail.backupOpertNm"/></th><!-- 백업작업명 -->
 				<td class="left">
-				    <c:out value="${resultInfo.backupOpertNm}" escapeXml="false" />
+				    <c:out value="${resultInfo.backupOpertNm}"/>
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comSymSymBak.backupResultDetail.backupOrginlDrctry"/></th><!-- 백업원본디렉토리 -->
 				<td class="left">
-				    <c:out value="${resultInfo.backupOrginlDrctry}" escapeXml="false" />
+				    <c:out value="${resultInfo.backupOrginlDrctry}"/>
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comSymSymBak.backupResultDetail.backupStreDrctry"/></th><!-- 백업저장디렉토리 -->
 				<td class="left">
-				    <c:out value="${resultInfo.backupStreDrctry}" escapeXml="false" />
+				    <c:out value="${resultInfo.backupStreDrctry}"/>
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comSymSymBak.backupResultDetail.backupFile"/></th><!-- 백업파일 -->
 				<td class="left">
-				    <c:out value="${resultInfo.backupFile}" escapeXml="false" />
+				    <c:out value="${resultInfo.backupFile}"/>
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comSymSymBak.backupResultDetail.sttusNm"/></th><!-- 상태 -->
 				<td class="left">
-				    <c:out value="${resultInfo.sttusNm}" escapeXml="false" />
+				    <c:out value="${resultInfo.sttusNm}"/>
 				</td>
 			</tr>
 			<tr>
 				<th><spring:message code="comSymSymBak.backupResultDetail.errorInfo"/></th><!-- 에러정보 -->
 				<td class="left">
-				    <c:out value="${resultInfo.errorInfo}" escapeXml="false" />
+				    <span style="white-space:pre-line"><c:out value="${resultInfo.errorInfo}"/></span>
 				</td>
 			</tr>
 			<tr>

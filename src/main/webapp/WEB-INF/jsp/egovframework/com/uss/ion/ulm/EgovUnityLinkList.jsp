@@ -122,7 +122,7 @@ function fn_egov_search_UnityLink(){
 			    <td>
 			 	<c:forEach items="${unityLinkSeCodeList}" var="resultInfo1" varStatus="pollKindStatus">
 					<c:if test="${resultInfo1.code eq resultInfo.unityLinkSeCode}">
-					<c:out value="${resultInfo1.codeNm}" escapeXml="false" />
+					<c:out value="${resultInfo1.codeNm}"/>
 					</c:if>
 				</c:forEach>
 			    </td>

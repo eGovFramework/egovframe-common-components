@@ -100,7 +100,7 @@ function onepassCancel() {
 	<!-- 사용자유형정보 : password 수정화면으로 이동시 타겟 유형정보 확인용, 만약검색조건으로 유형이 포함될경우 혼란을 피하기위해 userTy명칭을 쓰지 않음-->
 	<input type="hidden" name="userTyForPassword" value="<c:out value='${entrprsManageVO.userTy}'/>" />
 	<!-- for validation -->
-	<input type="hidden" name="entrprsMberPassword" value="ex~Test#$12">
+	<input type="hidden" name="password" value="ex~Test#$12">
 	<input type="hidden" name="selectedId"  value="<c:out value='${egovc:encryptId(entrprsManageVO.uniqId)}'/>"/>
 	
 <!-- 우편번호검색 -->
@@ -154,11 +154,11 @@ function onepassCancel() {
 		<tr>
 			<th>${title} <span class="pilsu">*</span></th>
 			<td class="left">
-				<form:select path="entrprsMberPasswordHint" id="entrprsMberPasswordHint" title="${title} ${inputSelect}">
+				<form:select path="passwordHint" id="passwordHint" title="${title} ${inputSelect}">
 					<form:option value="" label="--선택하세요--"/>
 					<form:options items="${passwordHint_result}" itemValue="code" itemLabel="codeNm"/>
 				</form:select>
-				<div><form:errors path="entrprsMberPasswordHint" cssClass="error"/></div>
+				<div><form:errors path="passwordHint" cssClass="error"/></div>
 			</td>
 		</tr>
 		<!-- 비밀번호정답 -->
@@ -166,8 +166,8 @@ function onepassCancel() {
 		<tr>
 			<th>${title} <span class="pilsu">*</span></th>
 			<td class="left">
-				<form:input path="entrprsMberPasswordCnsr" id="entrprsMberPasswordCnsr" title="${title} ${inputTxt}" cssClass="txaIpUmt" size="50" maxlength="100" />
-				<div><form:errors path="entrprsMberPasswordCnsr" cssClass="error"/></div>
+				<form:input path="passwordCnsr" id="passwordCnsr" title="${title} ${inputTxt}" cssClass="txaIpUmt" size="50" maxlength="100" />
+				<div><form:errors path="passwordCnsr" cssClass="error"/></div>
 			</td>
 		</tr>
 		<!-- 업종코드 -->

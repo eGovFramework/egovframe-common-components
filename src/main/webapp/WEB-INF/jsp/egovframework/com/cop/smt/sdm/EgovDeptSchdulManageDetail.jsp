@@ -119,7 +119,7 @@ function fn_egov_delete_DeptSchdulManage(frm){
 			<td class="left">
 			    <c:forEach items="${schdulSe}" var="schdulSeInfo" varStatus="status">
 			    <c:if test="${schdulSeInfo.code eq resultList[0].schdulSe}">
-			     <c:out value="${fn:replace(schdulSeInfo.codeNm , crlf , '<br/>')}" escapeXml="false" />
+			     <span style="white-space:pre-line"><c:out value="${schdulSeInfo.codeNm}"/></span>
 			    </c:if>
 			    </c:forEach>
 			</td>
@@ -131,7 +131,7 @@ function fn_egov_delete_DeptSchdulManage(frm){
 			<td class="nopd">
 			    <c:forEach items="${schdulIpcrCode}" var="schdulSeInfo" varStatus="status">
 			    <c:if test="${schdulSeInfo.code eq resultList[0].schdulIpcrCode}">
-			     <c:out value="${fn:replace(schdulSeInfo.codeNm , crlf , '<br/>')}" escapeXml="false" />
+			     <span style="white-space:pre-line"><c:out value="${schdulSeInfo.codeNm}"/></span>
 			    </c:if>
 			    </c:forEach>
 			</td>
@@ -141,7 +141,7 @@ function fn_egov_delete_DeptSchdulManage(frm){
 		<tr>
 			<th><label for="infoProvdAgreCn">${title}</label> <span class="pilsu">*</span></th>
 			<td class="nopd">
-				<c:out value="${fn:replace(resultList[0].schdulDeptName , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${resultList[0].schdulDeptName}"/></span>
 			</td>
 		</tr>
 		<!-- 일정명 -->
@@ -149,7 +149,7 @@ function fn_egov_delete_DeptSchdulManage(frm){
 		<tr>
 			<th><label for="infoProvdAgreCn">${title}</label> <span class="pilsu">*</span></th>
 			<td class="nopd">
-				<c:out value="${fn:replace(resultList[0].schdulNm , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${resultList[0].schdulNm}"/></span>
 			</td>
 		</tr>
 		<!-- 일정내용 -->
@@ -157,7 +157,7 @@ function fn_egov_delete_DeptSchdulManage(frm){
 		<tr>
 			<th><label for="infoProvdAgreCn">${title}</label> <span class="pilsu">*</span></th>
 			<td class="nopd">
-				<c:out value="${fn:replace(resultList[0].schdulCn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${resultList[0].schdulCn}"/></span>
 			</td>
 		</tr>
 		<!-- 반복구분 -->
@@ -167,7 +167,7 @@ function fn_egov_delete_DeptSchdulManage(frm){
 			<td class="nopd">
 			    <c:forEach items="${reptitSeCode}" var="schdulSeInfo" varStatus="status">
 			    <c:if test="${schdulSeInfo.code eq resultList[0].reptitSeCode}">
-			     <c:out value="${fn:replace(schdulSeInfo.codeNm , crlf , '<br/>')}" escapeXml="false" />
+			     <span style="white-space:pre-line"><c:out value="${schdulSeInfo.codeNm}"/></span>
 			    </c:if>
 			    </c:forEach>
 			</td>
@@ -186,7 +186,7 @@ function fn_egov_delete_DeptSchdulManage(frm){
 		<tr>
 			<th><label for="infoProvdAgreCn">${title}</label> <span class="pilsu">*</span></th>
 			<td class="nopd">
-				<c:out value="${fn:replace(resultList[0].schdulChargerName , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${resultList[0].schdulChargerName}"/></span>
 			</td>
 		</tr>
 		<!-- 첨부파일 -->

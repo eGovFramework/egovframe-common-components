@@ -1917,7 +1917,7 @@ function validateEntrprsManageVO(form) {
                 maxlength: 50
             }
         },
-        entrprsMberPassword: {
+        password: {
             label: '비밀번호',
             rules: {
                 required: true,
@@ -1927,13 +1927,13 @@ function validateEntrprsManageVO(form) {
                 pwdCheckComb3: true
             }
         },
-        entrprsMberPasswordHint: {
+        passwordHint: {
             label: '비밀번호힌트',
             rules: {
                 required: true
             }
         },
-        entrprsMberPasswordCnsr: {
+        passwordCnsr: {
             label: '비밀번호정답',
             rules: {
                 required: true,

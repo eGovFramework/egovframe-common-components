@@ -76,7 +76,7 @@ function fn_egov_move(progrmStrePath){
 			<td>
 			    <img src="<c:url value='/images/egovframework/com/cmm/utl/menu_page.gif' />" alt="menu_page icon" />
 			   	<a href="" onclick="fn_egov_move('<c:url value="${result.progrmStrePath}"/>'); return false;">
-				<c:out value="${result.menuNm}" escapeXml="false"/></a>
+				<c:out value="${result.menuNm}"/></a>
 			</td>
 		</tr>
 		</c:forEach>

@@ -163,7 +163,7 @@ function fnListPage(){
 function fnInsert(form){
 	if(confirm("<spring:message code="common.regist.msg" />")){	
 		if(validateEntrprsManageVO(form)){
-			if(form.entrprsMberPassword.value != form.entrprsMberPassword2.value){
+			if(form.password.value != form.password2.value){
 	            alert("<spring:message code="fail.user.passwordUpdate2" />");
 	            return false;
 	        }
@@ -220,11 +220,11 @@ function fnInsert(form){
 		<!-- 비밀번호 -->
 		<c:set var="title"><spring:message code="comUssUmt.entrprsUserManageRegist.pass"/></c:set>
 		<tr>
-			<th><label for="entrprsMberPassword">${title}</label> <span class="pilsu">*</span></th>
+			<th><label for="password">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
 				<div>
-					<form:password path="entrprsMberPassword" title="${title} ${inputTxt}" size="50" maxlength="20" />
-					<div><form:errors path="entrprsMberPassword" cssClass="error" /></div> 
+					<form:password path="password" title="${title} ${inputTxt}" size="50" maxlength="20" />
+					<div><form:errors path="password" cssClass="error" /></div> 
 				</div>
 				<div>
 					<div><spring:message code="info.password.rule.password1" /></div> 
@@ -236,30 +236,31 @@ function fnInsert(form){
 		<!-- 비밀번호확인 -->
 		<c:set var="title"><spring:message code="comUssUmt.entrprsUserManageRegist.passConfirm"/></c:set>
 		<tr>
-			<th><label for="entrprsMberPassword2">${title}</label> <span class="pilsu">*</span></th>
+			<th><label for="password2">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
-			<input name="entrprsMberPassword2" id="entrprsMberPassword2" title="${title} ${inputTxt}" type="password" size="50" maxlength="20" />
+			<input name="password2" id="password2" title="${title} ${inputTxt}" type="password" size="50" maxlength="20" />
+			<div><form:errors path="password2" cssClass="error" /></div>
 			</td>
 		</tr>
 		<!-- 비밀번호힌트 -->
 		<c:set var="title"><spring:message code="comUssUmt.entrprsUserManageRegist.passHit"/></c:set>
 		<tr>
-			<th><label for="entrprsMberPasswordHint">${title}</label> <span class="pilsu">*</span></th>
+			<th><label for="passwordHint">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
-				<form:select path="entrprsMberPasswordHint" id="entrprsMberPasswordHint" title="${title} ${inputSelect}">
+				<form:select path="passwordHint" id="passwordHint" title="${title} ${inputSelect}">
 					<form:option value="" label="--선택하세요--"/>
 					<form:options items="${passwordHint_result}" itemValue="code" itemLabel="codeNm"/>
 				</form:select>
-				<div><form:errors path="entrprsMberPasswordHint" cssClass="error"/></div>
+				<div><form:errors path="passwordHint" cssClass="error"/></div>
 			</td>
 		</tr>
 		<!-- 비밀번호정답 -->
 		<c:set var="title"><spring:message code="comUssUmt.entrprsUserManageRegist.passOk"/></c:set>
 		<tr>
-			<th><label for="entrprsMberPasswordCnsr">${title}</label> <span class="pilsu">*</span></th>
+			<th><label for="passwordCnsr">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
-				<form:input path="entrprsMberPasswordCnsr" id="entrprsMberPasswordCnsr" title="${title} ${inputTxt}" cssClass="txaIpUmt" size="50" maxlength="100" />
-				<div><form:errors path="entrprsMberPasswordCnsr" cssClass="error"/></div>
+				<form:input path="passwordCnsr" id="passwordCnsr" title="${title} ${inputTxt}" cssClass="txaIpUmt" size="50" maxlength="100" />
+				<div><form:errors path="passwordCnsr" cssClass="error"/></div>
 			</td>
 		</tr>
 		<!-- 업종코드 -->

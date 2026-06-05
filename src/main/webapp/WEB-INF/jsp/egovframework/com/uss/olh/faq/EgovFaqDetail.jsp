@@ -75,14 +75,14 @@
 		<tr>
 			<th><spring:message code="comUssOlhFaq.faqVO.qestnCn" /></th>
 			<td class="cnt">
-				<c:out value="${fn:replace(result.qestnCn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.qestnCn}"/></span>
 			</td>
 		</tr>
 		<!-- 답변 내용 -->
 		<tr>
 			<th><spring:message code="comUssOlhFaq.faqVO.answerCn" /></th>
 			<td class="cnt">
-				<c:out value="${fn:replace(result.answerCn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.answerCn}"/></span>
 			</td>
 		</tr>
 		<!-- 등록일자 -->

@@ -117,31 +117,31 @@
 		<tr>
 			<th><spring:message code="comCopSmtDjm.deptJobVO.validate.deptNm"/> <span class="pilsu">*</span></th><!-- 부서 -->
 			<td class="left">
-			    <c:out value="${deptJob.deptNm}" escapeXml="false" />
+			    <c:out value="${deptJob.deptNm}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comCopSmtDjm.deptJobVO.validate.deptJobBxNm" /> <span class="pilsu">*</span></th><!-- 부서업무함명 -->
 			<td class="left">
-			    <c:out value="${deptJob.deptJobBxNm}" escapeXml="false" />
+			    <c:out value="${deptJob.deptJobBxNm}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comCopSmtDjm.deptJobVO.validate.deptJobNm" /> <span class="pilsu">*</span></th><!-- 부서업무명 -->
 			<td class="left">
-			    <c:out value="${deptJob.deptJobNm}" escapeXml="false" />
+			    <c:out value="${deptJob.deptJobNm}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comCopSmtDjm.deptJobVO.validate.deptJobCn" /> <span class="pilsu">*</span></th><!-- 부서업무내용 -->
 			<td class="left">
-			    <c:out value="${fn:replace(deptJob.deptJobCn , crlf , '<br>')}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${fn:replace(deptJob.deptJobCn , crlf , '<br>')}"/></span>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comCopSmtDjm.deptJobVO.validate.chargerNm" /> <span class="pilsu">*</span></th><!-- 업무담당자 -->
 			<td class="left">
-			    <c:out value="${deptJob.chargerNm}" escapeXml="false" />
+			    <c:out value="${deptJob.chargerNm}"/>
 			</td>
 		</tr>
 		<tr>
@@ -149,7 +149,7 @@
 			<td class="left">
 				<c:forEach items="${priort}" var="priortInfo" varStatus="status">
 					<c:if test="${priortInfo.code eq deptJob.priort}">
-						<c:out value="${priortInfo.codeNm}" escapeXml="false" />
+						<c:out value="${priortInfo.codeNm}"/>
 					</c:if>
 				</c:forEach>
 			</td>

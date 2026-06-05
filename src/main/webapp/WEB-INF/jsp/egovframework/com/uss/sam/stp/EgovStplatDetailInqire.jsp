@@ -74,14 +74,14 @@
 		<tr>
 			<th class="vtop"><spring:message code="comUssSamStp.list.useStplatCn" /></th>
 			<td colspan="3" class="cnt">
-				<c:out value="${fn:replace(result.useStplatCn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.useStplatCn}"/></span>
 			</td>
 		</tr>
 		<!-- 정보제공동의내용 -->
 		<tr>
 			<th class="vtop"><spring:message code="comUssSamStp.list.infoProvdAgreCn" /></th>
 			<td colspan="3" class="cnt">
-				<c:out value="${fn:replace(result.infoProvdAgreCn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.infoProvdAgreCn}"/></span>
 			</td>
 		</tr>
 	</tbody>

@@ -65,7 +65,7 @@
 		<tr>
 			<th><spring:message code="comUtlSysFsm.fileSysMntrngLog.logId.label" /> <span class="pilsu">*</span></th>
 			<td class="left">
-			    <c:out value="${fileSysMntrngLog.logId}" escapeXml="false" />
+			    <c:out value="${fileSysMntrngLog.logId}"/>
 			</td>
 		</tr>
 		<tr>
@@ -101,21 +101,21 @@
 		<tr>
 			<th><spring:message code="comUtlSysFsm.fileSysMntrngLog.mntrngSttus.label" /></th>
 			<td class="left">
-			    <c:out value="${fileSysMntrngLog.mntrngSttus}" escapeXml="false" />
+			    <c:out value="${fileSysMntrngLog.mntrngSttus}"/>
 			</td>
 		</tr>
 		<c:if test="${fileSysMntrngLog.mntrngSttus} ne '정상'">
 		<tr>
 			<th><spring:message code="comUtlSysFsm.fileSysMntrngLog.logInfo.label" /></th>
 			<td class="left">
-			    <textarea id="logInfo" name="logInfo" rows="10" cols="75" title="<spring:message code='comUtlSysFsm.fileSysMntrngLog.logInfo.label' />" readonly><c:out value="${fileSysMntrngLog.logInfo}" escapeXml="false" /></textarea>
+			    <textarea id="logInfo" name="logInfo" rows="10" cols="75" title="<spring:message code='comUtlSysFsm.fileSysMntrngLog.logInfo.label' />" readonly><c:out value="${fileSysMntrngLog.logInfo}"/></textarea>
 			</td>
 		</tr>
 		</c:if>
 		<tr>
 			<th><spring:message code="comUtlSysFsm.fileSysMntrngLog.creatDt.label" /></th>
 			<td class="left">
-			    <c:out value="${fileSysMntrngLog.creatDt}" escapeXml="false" />
+			    <c:out value="${fileSysMntrngLog.creatDt}"/>
 			</td>
 		</tr>
 	</table>

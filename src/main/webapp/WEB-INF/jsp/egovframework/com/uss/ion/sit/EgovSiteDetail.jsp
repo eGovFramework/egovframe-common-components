@@ -73,7 +73,7 @@
 		<tr>
 			<th class="vtop"><spring:message code="comUssIonSit.siteVO.siteDc" /></th>
 			<td class="cnt">
-				<c:out value="${fn:replace(siteVO.siteDc , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${siteVO.siteDc}"/></span>
 			</td>
 		</tr>
 		<!-- 사이트주제분류 -->

@@ -73,14 +73,14 @@
 		<tr>
 			<th class="vtop"><spring:message code="comUssIonRec.recomendSiteVO.recomendSiteDc" /></th>
 			<td class="cnt">
-				<c:out value="${fn:replace(recomendSiteVO.recomendSiteDc , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${recomendSiteVO.recomendSiteDc}"/></span>
 			</td>
 		</tr>
 		<!-- 추천사유내용 -->
 		<tr>
 			<th class="vtop"><spring:message code="comUssIonRec.recomendSiteVO.recomendResnCn" /></th>
 			<td class="cnt">
-				<c:out value="${fn:replace(recomendSiteVO.recomendResnCn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${recomendSiteVO.recomendResnCn}"/></span>
 			</td>
 		</tr>
 		<!-- 추천승인여부 -->

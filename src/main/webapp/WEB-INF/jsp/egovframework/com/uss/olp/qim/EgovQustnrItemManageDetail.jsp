@@ -90,7 +90,7 @@ function fn_egov_delete_QustnrItemManage(){
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-  				<c:out value="${fn:replace(resultList[0].qestnrCn , crlf , '<br/>')}" escapeXml="false" />
+  				<span style="white-space:pre-line"><c:out value="${resultList[0].qestnrCn}"/></span>
   				<input name="qestnrId" type="hidden" value="<c:out value='${resultList[0].qestnrId}' />">
   				<input name="qestnrTmplatId" type="hidden" value="<c:out value='${resultList[0].qestnrTmplatId}' />">
 			</td>
@@ -100,7 +100,7 @@ function fn_egov_delete_QustnrItemManage(){
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-				<c:out value="${fn:replace(resultList[0].qestnrQesitmCn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${resultList[0].qestnrQesitmCn}"/></span>
   				<input name="qestnrQesitmId" type="hidden" value="<c:out value='${resultList[0].qestnrQesitmId}' />"> 
 			</td>
 		</tr>
@@ -117,7 +117,7 @@ function fn_egov_delete_QustnrItemManage(){
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-  				<c:out value="${fn:replace(resultList[0].iemCn , crlf , '<br/>')}" escapeXml="false" />
+  				<span style="white-space:pre-line"><c:out value="${resultList[0].iemCn}"/></span>
 			</td>
 		</tr>
 		<!-- 기타답변여부 -->

@@ -87,45 +87,45 @@ function fn_egov_save(){
   <tr> 
     <th width="20%" height="23" class="required_text" nowrap ><spring:message code="comUtlSysTrm.trsmrcvMntrng.interOperationID" /></th><!-- 연계ID -->
     <td width="80%" nowrap class="left">
-        <c:out value="${trsmrcvMntrng.cntcId}" escapeXml="false" /> 
+        <span style="white-space:pre-line"><c:out value="${trsmrcvMntrng.cntcId}"/></span> 
     </td>
   </tr>
   
   <tr> 
     <th height="23" class="required_text" ><spring:message code="comUtlSysTrm.trsmrcvMntrng.interOperationName" /></th><!-- 연계명 -->
     <td class="left">
-        <c:out value="${trsmrcvMntrng.cntcNm}" escapeXml="false" /> 
+        <span style="white-space:pre-line"><c:out value="${trsmrcvMntrng.cntcNm}"/></span> 
     </td>
   </tr> 
   
   <tr> 
     <th height="23" class="required_text" ><spring:message code="comUtlSysTrm.trsmrcvMntrng.provider" /></th><!-- 제공기관 -->
     <td class="left">
-        <c:out value="${trsmrcvMntrng.provdInsttNm}" escapeXml="false" /> 
+        <c:out value="${trsmrcvMntrng.provdInsttNm}"/> 
     </td>
   </tr> 
   <tr> 
     <th height="23" class="required_text" ><spring:message code="comUtlSysTrm.trsmrcvMntrng.provideSystem" /></th><!-- 제공시스템 -->
     <td class="left">
-        <c:out value="${trsmrcvMntrng.provdSysNm}" escapeXml="false" /> 
+        <c:out value="${trsmrcvMntrng.provdSysNm}"/> 
     </td>
   </tr> 
   <tr> 
     <th height="23" class="required_text" ><spring:message code="comUtlSysTrm.trsmrcvMntrng.service" /></th><!-- 제공서비스 -->
     <td class="left">
-        <c:out value="${trsmrcvMntrng.provdSvcNm}" escapeXml="false" /> 
+        <span style="white-space:pre-line"><c:out value="${trsmrcvMntrng.provdSvcNm}"/></span> 
     </td>
   </tr> 
   <tr> 
     <th height="23" class="required_text" ><spring:message code="comUtlSysTrm.trsmrcvMntrng.requester" /></th><!-- 요청기관 -->
     <td class="left">
-        <c:out value="${trsmrcvMntrng.requstInsttNm}" escapeXml="false" /> 
+        <c:out value="${trsmrcvMntrng.requstInsttNm}"/> 
     </td>
   </tr> 
   <tr> 
     <th height="23" class="required_text" ><spring:message code="comUtlSysTrm.trsmrcvMntrng.requestSystem" /></th><!-- 요청시스템 -->
     <td class="left">
-        <c:out value="${trsmrcvMntrng.requstSysNm}" escapeXml="false" /> 
+        <c:out value="${trsmrcvMntrng.requstSysNm}"/> 
     </td>
   </tr> 
   

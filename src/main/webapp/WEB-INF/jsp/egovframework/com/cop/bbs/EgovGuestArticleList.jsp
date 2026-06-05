@@ -107,7 +107,7 @@ function fn_egov_select_guestList(pageNo) {
 				<span class="date"><c:out value="${result.frstRegisterPnttm}" /></span>
 			</div>
 			<p class="txt">
-				<c:out value="${fn:replace(result.nttCn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.nttCn}"/></span>
 			</p>
 			<div class="bottom">
 				<c:if test="${result.frstRegisterId == sessionUniqId}">

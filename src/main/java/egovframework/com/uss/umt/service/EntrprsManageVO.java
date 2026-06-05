@@ -2,6 +2,7 @@ package egovframework.com.uss.umt.service;
 
 import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
 import org.egovframe.rte.ptl.reactive.validation.EgovEmailCheck;
+import org.egovframe.rte.ptl.reactive.validation.EgovPwdCheck;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
@@ -78,6 +79,7 @@ public class EntrprsManageVO  extends UserDefaultVO{
 	 * 기업 회원 비밀번호
 	 */
 	@EgovNullCheck
+	@EgovPwdCheck
 	private String entrprsMberPassword;
 	/**
 	 * 기업 회원 비밀번호 정답
@@ -339,6 +341,34 @@ public class EntrprsManageVO  extends UserDefaultVO{
 	public void setEntrprsMberPasswordHint(String entrprsMberPasswordHint) {
 		this.entrprsMberPasswordHint = entrprsMberPasswordHint;
 	}
+
+	/**
+	 * 일반회원관리(JSP/MyBatis)와 동일한 password 속성명 호환
+	 */
+	public String getPassword() {
+		return entrprsMberPassword;
+	}
+
+	public void setPassword(String password) {
+		this.entrprsMberPassword = password;
+	}
+
+	public String getPasswordHint() {
+		return entrprsMberPasswordHint;
+	}
+
+	public void setPasswordHint(String passwordHint) {
+		this.entrprsMberPasswordHint = passwordHint;
+	}
+
+	public String getPasswordCnsr() {
+		return entrprsMberPasswordCnsr;
+	}
+
+	public void setPasswordCnsr(String passwordCnsr) {
+		this.entrprsMberPasswordCnsr = passwordCnsr;
+	}
+
 	/**
 	 * entrprsMberSttus attribute 값을  리턴한다.
 	 * @return String

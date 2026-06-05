@@ -90,7 +90,7 @@ function fn_egov_save_OnlinePollPartcptn(){
 	<tr>
 		<th>${title} <span class="pilsu">*</span></th>
 		<td class="nopd">
-		<c:out value="${PollManage[0].pollNm}" escapeXml="false" />	
+		<span style="white-space:pre-line"><c:out value="${PollManage[0].pollNm}"/></span>	
 		</td>
 	</tr>
 	<!-- POLL시작일자 -->
@@ -98,7 +98,7 @@ function fn_egov_save_OnlinePollPartcptn(){
 	<tr>
 		<th>${title} <span class="pilsu">*</span></th>
 		<td class="nopd">
-			<c:out value="${PollManage[0].pollBeginDe}" escapeXml="false" />
+			<span style="white-space:pre-line"><c:out value="${PollManage[0].pollBeginDe}"/></span>
 		</td>
 	</tr>
 	<!-- POLL종료일자 -->
@@ -106,7 +106,7 @@ function fn_egov_save_OnlinePollPartcptn(){
 	<tr>
 		<th>${title} <span class="pilsu">*</span></th>
 		<td class="nopd">
-			<c:out value="${PollManage[0].pollEndDe}" escapeXml="false" />
+			<span style="white-space:pre-line"><c:out value="${PollManage[0].pollEndDe}"/></span>
 		</td>
 	</tr>
 	<!-- POLL종류 -->
@@ -116,7 +116,7 @@ function fn_egov_save_OnlinePollPartcptn(){
 		<td class="nopd">
 			<c:forEach items="${pollKindCodeList}" var="resultInfo" varStatus="pollKindStatus">
 				<c:if test="${resultInfo.code eq PollManage[0].pollKindCode}">
-					<c:out value="${resultInfo.codeNm}" escapeXml="false" />
+					<c:out value="${resultInfo.codeNm}"/>
 				</c:if>
 			</c:forEach>
 		</td>
@@ -130,7 +130,7 @@ function fn_egov_save_OnlinePollPartcptn(){
 		<div class="boxType2 mt20">
 			<ul class="poll_partcptn">
 				<c:forEach items="${PollItem}" var="resultInfo" varStatus="status">
-	   			<li><div style="float: left;"><input type="radio" name="pollIemId" value="${resultInfo.pollIemId}" style="border:0px;" <c:if test="${status.count == '1'}">checked</c:if> ></div><div style="float: left;margin-left:13px;"><c:out value="${resultInfo.pollIemNm}" escapeXml="false" /></div></li>
+	   			<li><div style="float: left;"><input type="radio" name="pollIemId" value="${resultInfo.pollIemId}" style="border:0px;" <c:if test="${status.count == '1'}">checked</c:if> ></div><div style="float: left;margin-left:13px;"><span style="white-space:pre-line"><c:out value="${resultInfo.pollIemNm}"/></span></div></li>
 				</c:forEach>
 			</ul>
 		</div>

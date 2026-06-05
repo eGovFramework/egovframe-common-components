@@ -35,7 +35,7 @@
     	<table width="100%" border="0" cellpadding="2" cellspacing="0">
     	<tr>
     		<td style="background-color:#E3E3E3;">
-    		<img src="<c:url value='/images/egovframework/com/cmm/icon/required.gif'/>" width="15" height="15" alt="<spring:message code='comUssOlpQri.alt.compulsoryInput'/>">${status1.count}. <c:out value="${fn:replace(QestmInfo.qestnCn , crlf , '<br/>')}" escapeXml="false" /><!-- alt="필수입력표시" -->
+    		<img src="<c:url value='/images/egovframework/com/cmm/icon/required.gif'/>" width="15" height="15" alt="<spring:message code='comUssOlpQri.alt.compulsoryInput'/>">${status1.count}. <span style="white-space:pre-line"><c:out value="${QestmInfo.qestnCn}"/></span><!-- alt="필수입력표시" -->
     		<c:if test="${QestmInfo.mxmmChoiseCo >  1}"><font color="red"><b>(<spring:message code='comUssOlpQri.regist.mxmmChoiseCo'/> ${QestmInfo.mxmmChoiseCo})</b></font></c:if><!-- (최대선택건수 ${QestmInfo.mxmmChoiseCo}) -->
     		</td>
     	</tr>
@@ -51,11 +51,11 @@
 
 		    		<%-- 다중체크구현 로직 --%>
 		    		<c:if test="${QestmInfo.mxmmChoiseCo ==  '1'}">
-		    		<input type="radio" name="${QestmItem.qestnrQesitmId}" value="${QestmItem.qustnrIemId}" style="border:0px;"> <c:out value="${fn:replace(QestmItem.iemCn , crlf , '<br/>')}" escapeXml="false" />
+		    		<input type="radio" name="${QestmItem.qestnrQesitmId}" value="${QestmItem.qustnrIemId}" style="border:0px;"> <span style="white-space:pre-line"><c:out value="${QestmItem.iemCn}"/></span>
 		    		</c:if>
 
 		    		<c:if test="${QestmInfo.mxmmChoiseCo >  1}">
-		    		<input type="checkbox" name="${QestmItem.qestnrQesitmId}" value="${QestmItem.qustnrIemId}" id="${QestmItem.qestnrQesitmId}" onClick="fn_egov_checkbox_amout('${QestmItem.qestnrQesitmId}', ${QestmInfo.mxmmChoiseCo}, this)"  title="<spring:message code='comUssOlpQri.title.checkBox'/>"><c:out value="${fn:replace(QestmItem.iemCn , crlf , '<br/>')}" escapeXml="false"/><!-- title="체크박스" -->
+		    		<input type="checkbox" name="${QestmItem.qestnrQesitmId}" value="${QestmItem.qustnrIemId}" id="${QestmItem.qestnrQesitmId}" onClick="fn_egov_checkbox_amout('${QestmItem.qestnrQesitmId}', ${QestmInfo.mxmmChoiseCo}, this)"  title="<spring:message code='comUssOlpQri.title.checkBox'/>"><span style="white-space:pre-line"><c:out value="${QestmItem.iemCn}"/></span><!-- title="체크박스" -->
 		    		</c:if>
 		    		<%-- 기타답변여부 --%>
 		    		<c:if test="${QestmItem.etcAnswerAt eq  'Y'}">

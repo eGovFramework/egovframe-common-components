@@ -103,7 +103,7 @@
 		<tr>
 			<th class="vtop"><spring:message code="comUssOlhQna.qnaVO.qestnCn" /></th>
 			<td class="cnt" colspan="3">
-				<c:out value="${fn:replace(result.qestnCn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.qestnCn}"/></span>
 			</td>
 		</tr>
 
@@ -112,7 +112,7 @@
 		<tr>
 			<th class="vtop"><spring:message code="comUssOlhQna.qnaVO.answerCn" /></th>
 			<td class="cnt" colspan="3">
-				<c:out value="${fn:replace(result.answerCn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.answerCn}"/></span>
 			</td>
 		</tr>
 		</c:if>

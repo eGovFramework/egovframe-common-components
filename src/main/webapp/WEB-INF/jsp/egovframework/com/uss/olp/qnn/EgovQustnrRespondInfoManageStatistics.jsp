@@ -106,7 +106,7 @@ return  FValue;
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-  				<c:out value="${fn:replace(Comtnqestnrinfo[0].qestnrSj , crlf , '<br/>')}" escapeXml="false" />
+  				<span style="white-space:pre-line"><c:out value="${Comtnqestnrinfo[0].qestnrSj}"/></span>
 			</td>
 		</tr>
 		<!-- 설문목적 -->
@@ -114,7 +114,7 @@ return  FValue;
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-  				<c:out value="${fn:replace(Comtnqestnrinfo[0].qestnrPurps , crlf , '<br/>')}" escapeXml="false" />
+  				<span style="white-space:pre-line"><c:out value="${Comtnqestnrinfo[0].qestnrPurps}"/></span>
 			</td>
 		</tr>
 		<!-- 설문작성 안내내용 -->
@@ -122,7 +122,7 @@ return  FValue;
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-  				<c:out value="${fn:replace(Comtnqestnrinfo[0].qestnrWritngGuidanceCn , crlf , '<br/>')}" escapeXml="false" />
+  				<span style="white-space:pre-line"><c:out value="${Comtnqestnrinfo[0].qestnrWritngGuidanceCn}"/></span>
 			</td>
 		</tr>
 		<!-- 설문대상, 설문기간 -->
@@ -151,7 +151,7 @@ return  FValue;
 		<th class="left" colspan="2" style="text-align:center;">
 		
 			
-			<span class="pilsu">*</span>${status1.count}. <c:out value="${fn:replace(QestmInfo.qestnCn , crlf , '<br/>')}" escapeXml="false"/>
+			<span class="pilsu">*</span>${status1.count}. <span style="white-space:pre-line"><c:out value="${QestmInfo.qestnCn}"/></span>
     	</th>
     	</tr>
     	<tr >
@@ -220,7 +220,7 @@ return  FValue;
 	    				<td style="background-color:#E3E3E3;" width="10px" align="right" valign="top"></td>
 	    				<td style="background-color:#E3E3E3;" >
 	    				<br>
-	    				<c:out value="${fn:replace(QestmStatistic2.respondNm , crlf , '<br/>')}" escapeXml="false" /> : <c:out value="${fn:replace(QestmStatistic2.respondAnswerCn , crlf , '<br/>')}" escapeXml="false" />
+	    				<span style="white-space:pre-line"><c:out value="${QestmStatistic2.respondNm}"/></span> : <span style="white-space:pre-line"><c:out value="${QestmStatistic2.respondAnswerCn}"/></span>
 	    				<br>
 	    				</td>
 	    			</tr>

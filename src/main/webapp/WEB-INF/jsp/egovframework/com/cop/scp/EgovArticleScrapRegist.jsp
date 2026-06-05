@@ -98,7 +98,7 @@ function fn_egov_regist_articleScrap(form){
 		<tr>
 			<th>${title } </th>
 			<td class="left" colspan="5">
-			<c:out value="${articleVO.nttSj}" escapeXml="false" />
+			<c:out value="${articleVO.nttSj}"/>
 			</td>
 		</tr>
 		
@@ -107,17 +107,17 @@ function fn_egov_regist_articleScrap(form){
 		<tr>
 			<th>${title}</th>
 			<td>
-			<c:out value="${articleVO.frstRegisterNm}" escapeXml="false" />
+			<c:out value="${articleVO.frstRegisterNm}"/>
 			</td>
 			<c:set var="title"><spring:message code="table.regdate"/> </c:set>
 			<th>${title}</th>
 			<td>
-			<c:out value="${articleVO.frstRegisterPnttm}" escapeXml="false" />
+			<c:out value="${articleVO.frstRegisterPnttm}"/>
 			</td>
 			<c:set var="title"><spring:message code="comCopScp.articleScrapVO.regist.inqireCo"/> </c:set>
 			<th>${title}</th>
 			<td>
-			<c:out value="${articleVO.inqireCo}" escapeXml="false" />
+			<c:out value="${articleVO.inqireCo}"/>
 			</td>
 		</tr>
 		
@@ -126,7 +126,7 @@ function fn_egov_regist_articleScrap(form){
 		<tr>
 			<th>${title } </th>
 			<td class="nopd" colspan="5">
-			<c:out value="${fn:replace(articleVO.nttCn , crlf , '<br/>')}" escapeXml="false" />
+			<span style="white-space:pre-line"><c:out value="${articleVO.nttCn}"/></span>
 			</td>
 		</tr>
 
