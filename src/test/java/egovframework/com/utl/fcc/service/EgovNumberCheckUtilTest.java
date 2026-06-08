@@ -19,4 +19,13 @@ public class EgovNumberCheckUtilTest {
         assertFalse(EgovNumberCheckUtil.checkForeignNumber("031015", "9223456"), "잘못된 성별 코드");
         assertFalse(EgovNumberCheckUtil.checkForeignNumber("881212", "5134560"), "체크섬 검증 실패");
     }
+
+	@Test
+	void testNullReturnsFalseWithoutException() {
+        // 단일 인자 검증 메서드는 null 입력 시 NPE가 아니라 false(무효)를 반환해야 한다.
+        assertFalse(EgovNumberCheckUtil.checkJuminNumber(null), "주민번호 null");
+        assertFalse(EgovNumberCheckUtil.checkBubinNumber(null), "법인번호 null");
+        assertFalse(EgovNumberCheckUtil.checkCompNumber(null), "사업자번호 null");
+        assertFalse(EgovNumberCheckUtil.checkForeignNumber((String) null), "외국인등록번호 null");
+    }
 }
