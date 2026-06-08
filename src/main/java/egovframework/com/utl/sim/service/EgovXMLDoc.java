@@ -255,6 +255,7 @@ public class EgovXMLDoc {
 			transformer.setOutputProperty(OutputKeys.METHOD, "xml");
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.transform(source, result);
+			retVal = true;
 		}
 
 		return retVal;
