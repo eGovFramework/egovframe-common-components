@@ -95,7 +95,7 @@ function fn_egov_delete_RequestOffer(){
 		<tr>
 			<th><spring:message code="comDamSpeReq.comDamRequestOfferDetail.knoCn"/></th><!-- 지식내용 -->
 			<td class="left">
-			    <c:out value="${fn:replace(requestOfferVO.knoCn , crlf , '<br/>')}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${requestOfferVO.knoCn}"/></span>
 			</td>
 		</tr>
 		<tr>

@@ -19,6 +19,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovWebUtil;
+import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.CmmnDetailCode;
@@ -31,6 +32,7 @@ import egovframework.com.uss.umt.service.UserDefaultVO;
 import egovframework.com.uss.umt.service.EmplyrManageVO;
 import egovframework.com.uss.umt.service.EmplyrManageInsertVO;
 import egovframework.com.uss.umt.service.EmplyrPasswordManageVO;
+import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sim.service.EgovFileScrty;
 import jakarta.annotation.Resource;
 
@@ -135,6 +137,7 @@ public class EgovEmplyrManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/umt/EgovEmplyrInsertView.do", method = RequestMethod.POST)
+	@RequireAdmin
 	public String insertUserView(@ModelAttribute("userSearchVO") UserDefaultVO userSearchVO,
 			@ModelAttribute("emplyrManageVO") EmplyrManageInsertVO emplyrManageInsertVO, Model model) throws Exception {
 
@@ -185,6 +188,7 @@ public class EgovEmplyrManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/umt/EgovEmplyrInsert.do", method = RequestMethod.POST)
+	@RequireAdmin
 	public String insertUser(@Valid @ModelAttribute("userManageVO") EmplyrManageInsertVO emplyrManageInsertVO, 
 			BindingResult bindingResult,
 			Model model) throws Exception {
@@ -228,6 +232,10 @@ public class EgovEmplyrManageController {
 		if (uniqId == null) {
 			model.addAttribute("resultMsg", "fail.common.select");
 			return "forward:/uss/umt/EgovEmplyrManage.do";
+		}
+
+		if (!isSelfTarget(uniqId)) {
+			return "egovframework/com/cmm/error/accessDenied";
 		}
 
 		// 미인증 사용자에 대한 보안처리
@@ -320,6 +328,10 @@ public class EgovEmplyrManageController {
 			return "forward:/uss/umt/EgovEmplyrManage.do";
 		}
 
+		if (!isSelfTarget(currentEmplyr.getUniqId())) {
+			return "egovframework/com/cmm/error/accessDenied";
+		}
+
 		// 과다바인딩 방지: 신원/인증 관련 주요 필드는 기존 저장값으로 고정한다.
 		emplyrManageVO.setEmplyrId(currentEmplyr.getEmplyrId());
 		emplyrManageVO.setPasswordHint(currentEmplyr.getPasswordHint());
@@ -366,6 +378,10 @@ public class EgovEmplyrManageController {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
 			return "index";
+		}
+
+		if (!isSelfOnlyDeleteTargets(checkedIdForDel)) {
+			return "egovframework/com/cmm/error/accessDenied";
 		}
 
 		emplyrManageService.deleteEmplyr(checkedIdForDel);
@@ -584,6 +600,36 @@ public class EgovEmplyrManageController {
 			return decryptId;
 		}
 		return null;
+	}
+
+	private String getLoginUniqId() {
+		LoginVO loginUser = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		return loginUser == null ? "" : EgovStringUtil.isNullToString(loginUser.getUniqId());
+	}
+
+	private boolean isSelfTarget(String targetUniqId) {
+		String loginUniqId = getLoginUniqId();
+		return !loginUniqId.isEmpty()
+				&& targetUniqId != null
+				&& loginUniqId.equals(targetUniqId);
+	}
+
+	private boolean isSelfOnlyDeleteTargets(String checkedIdForDel) {
+		String loginUniqId = getLoginUniqId();
+		if (loginUniqId.isEmpty()) {
+			return false;
+		}
+		String[] delIds = EgovStringUtil.isNullToString(checkedIdForDel).split(",");
+		if (delIds.length == 0 || (delIds.length == 1 && delIds[0].isEmpty())) {
+			return false;
+		}
+		for (String element : delIds) {
+			String[] id = element.split(":");
+			if (id.length < 2 || !loginUniqId.equals(id[1])) {
+				return false;
+			}
+		}
+		return true;
 	}
 
 	private static void clearUmtPasswordFields(PasswordManageVO vo) {

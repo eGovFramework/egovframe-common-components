@@ -153,8 +153,8 @@ function fnReturnConfirm(day, rest){
 					</c:choose>
 			 		<c:choose>
 			 		<c:when test='${result.week == 7}'>
-					    <c:out value="</tr>" escapeXml="false"/>
-					    <c:out value="<tr>" escapeXml="false"/>
+					    </tr>
+					    <tr>
 					</c:when>
 					</c:choose>
 				</c:otherwise>

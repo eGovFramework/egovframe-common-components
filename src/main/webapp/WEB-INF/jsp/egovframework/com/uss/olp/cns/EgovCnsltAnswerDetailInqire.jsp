@@ -153,7 +153,7 @@ function fn_egov_updt_cnsltdtlsanswer(cnsltId){
 			<th>${title} <span class="pilsu">*</span></th>
 			<td class="nopd">
 				<textarea name="cnsltCn" cols="300" rows="15" style="height:100px;" readonly title="${title}"><c:out value="${result.cnsltCn}"/></textarea>
- 				<%--c:out value="${fn:replace(result.cnsltCn , crlf , '<br/>')}" escapeXml="false" --%>
+ 				<%--c:out value="${fn:replace(result.cnsltCn , crlf , '<br/>')}" --%>
 			</td>
 		</tr>
 		<!-- 파일첨부 -->

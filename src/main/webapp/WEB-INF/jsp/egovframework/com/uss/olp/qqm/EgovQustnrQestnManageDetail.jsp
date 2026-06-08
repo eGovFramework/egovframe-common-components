@@ -110,7 +110,7 @@ function fn_egov_delete_QustnrQestnManage(){
 			<td class="left">
   				<c:forEach items="${cmmCode018}" var="comCodeList" varStatus="status">
 				<c:if test="${comCodeList.code eq resultList[0].qestnTyCode}">
-				<c:out value="${fn:replace(comCodeList.codeNm , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${comCodeList.codeNm}"/></span>
 				</c:if>
 				</c:forEach>
 			</td>
@@ -120,7 +120,7 @@ function fn_egov_delete_QustnrQestnManage(){
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-  				<c:out value="${fn:replace(resultList[0].qestnCn , crlf , '<br/>')}" escapeXml="false" />
+  				<span style="white-space:pre-line"><c:out value="${resultList[0].qestnCn}"/></span>
 			</td>
 		</tr>
 		<!-- 최대선택건수 -->

@@ -90,7 +90,7 @@ function fn_egov_delete_LeaderSchdul(){
 			<td class="left">
 				<c:forEach items="${schdulSe}" var="schdulSeInfo" varStatus="status">
 				<c:if test="${schdulSeInfo.code eq leaderSchdulVO.schdulSe}">	
-				<c:out value="${fn:replace(schdulSeInfo.codeNm , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${schdulSeInfo.codeNm}"/></span>
 				</c:if>
 				</c:forEach>
 			</td>
@@ -98,27 +98,27 @@ function fn_egov_delete_LeaderSchdul(){
 		<tr>
 			<th><spring:message code="comCopSmtLsm.leaderSchdul.validate.leaderName" /> <span class="pilsu">*</span></th><!-- 간부명 -->
 			<td class="left">
-			    <c:out value="${fn:replace(leaderSchdulVO.leaderName , crlf , '<br/>')}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${leaderSchdulVO.leaderName}"/></span>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comCopSmtLsm.leaderSchdul.validate.schdulNm" /> <span class="pilsu">*</span></th><!-- 일정명 -->
 			<td class="left">
-			    <c:out value="${fn:replace(leaderSchdulVO.schdulNm , crlf , '<br/>')}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${leaderSchdulVO.schdulNm}"/></span>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comCopSmtLsm.leaderSchdul.validate.schdulCn" /> <span class="pilsu">*</span></th><!-- 일정내용 -->
 			<td class="left">
 			    <br/>
-		    	<c:out value="${fn:replace(leaderSchdulVO.schdulCn , crlf , '<br/>')}" escapeXml="false" />
+		    	<span style="white-space:pre-line"><c:out value="${leaderSchdulVO.schdulCn}"/></span>
 		    	<br/><br/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comCopSmtLsm.leaderSchdulDetail.schdulPlace" /></th> <!-- 일정장소 -->
 			<td class="left">
-			    <c:out value="${fn:replace(leaderSchdulVO.schdulPlace , crlf , '<br/>')}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${leaderSchdulVO.schdulPlace}"/></span>
 			</td>
 		</tr>
 		<tr>
@@ -126,7 +126,7 @@ function fn_egov_delete_LeaderSchdul(){
 			<td class="left">
 			    <c:forEach items="${reptitSeCode}" var="schdulSeInfo" varStatus="status">
 				<c:if test="${schdulSeInfo.code eq leaderSchdulVO.reptitSeCode}">	
-				<c:out value="${fn:replace(schdulSeInfo.codeNm , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${schdulSeInfo.codeNm}"/></span>
 				</c:if>
 				</c:forEach>
 			</td>
@@ -152,7 +152,7 @@ function fn_egov_delete_LeaderSchdul(){
 		<tr>
 			<th><spring:message code="comCopSmtLsm.leaderSchdul.validate.schdulChargerName" /> <span class="pilsu">*</span></th><!-- 담당자 -->
 			<td class="left">
-			    <c:out value="${fn:replace(leaderSchdulVO.schdulChargerName , crlf , '<br/>')}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${leaderSchdulVO.schdulChargerName}"/></span>
 			</td>
 		</tr>
 	</table>

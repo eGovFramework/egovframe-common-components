@@ -92,7 +92,7 @@
 		<tr>
 			<th><spring:message code="comCopBbs.boardMasterVO.detail.bbsIntrcn" /></th>
 			<td colspan="5" class="cnt">
-				<c:out value="${fn:replace(result.bbsIntrcn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.bbsIntrcn}"/></span>
 			</td>
 		</tr>
 		

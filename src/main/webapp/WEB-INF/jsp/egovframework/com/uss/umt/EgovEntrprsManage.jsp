@@ -119,7 +119,6 @@ function fnSearch(){
 	<!-- 검색영역 -->
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
 		<ul>
-			<li style="margin:3px 0 0 0;"><div>사용자수 <strong><c:out value="${paginationInfo.totalRecordCount}"/></strong></div></li>
 			<li><!-- 상태-->
                 <select name="sbscrbSttus" id="sbscrbSttus" title="<spring:message code="comUssUmt.userManageSsearch.sbscrbSttusTitle" />">
                     <option value="0" <c:if test="${empty userSearchVO.sbscrbSttus || userSearchVO.sbscrbSttus == '0'}">selected="selected"</c:if> ><spring:message code="comUssUmt.userManageSsearch.sbscrbSttusAll" /></option><!-- 상태(전체) -->
@@ -184,7 +183,7 @@ function fnSearch(){
 	<tr>
 	    <td><c:out value="${status.count}"/></td>
 	    <td>
-	        <input type="checkbox" name="checkField" class="check2" title="선택"/>
+	        <input name="checkField" title="checkField <c:out value="${status.count}"/>" type="checkbox"/>
 	        <input name="checkId" type="hidden" value="<c:out value='${result.userTy}'/>:<c:out value='${result.uniqId}'/>"/>
 	    </td>
 	    <td><a href="<c:url value='/uss/umt/EgovEntrprsSelectUpdtView.do'/>?selectedId=<c:out value="${egovc:encryptId(result.uniqId)}"/>"  onclick="javascript:fnSelectUser('<c:out value="${egovc:encryptId(result.uniqId)}"/>'); return false;"><c:out value="${result.userId}"/></a></td>

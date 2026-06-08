@@ -88,7 +88,7 @@ function fn_egov_delete_QustnrRespondInfo(qestnrQesrspnsId){
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-  				<c:out value="${fn:replace(resultList[0].qestnrSj , crlf , '<br/>')}" escapeXml="false" />
+  				<span style="white-space:pre-line"><c:out value="${resultList[0].qestnrSj}"/></span>
 				<input name="qestnrId" type="hidden" value="${resultList[0].qestnrId}">
 				<input name="qestnrTmplatId" type="hidden" value="${resultList[0].qestnrTmplatId}">
 			</td>
@@ -98,7 +98,7 @@ function fn_egov_delete_QustnrRespondInfo(qestnrQesrspnsId){
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-				<c:out value="${fn:replace(resultList[0].qestnCn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${resultList[0].qestnCn}"/></span>
 				<input name="qestnrQesitmId" type="hidden" value="${resultList[0].qestnrQesitmId}"> 
 			</td>
 		</tr>
@@ -116,7 +116,7 @@ function fn_egov_delete_QustnrRespondInfo(qestnrQesrspnsId){
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-  				<c:out value="${fn:replace(resultList[0].iemCn , crlf , '<br/>')}" escapeXml="false" />
+  				<span style="white-space:pre-line"><c:out value="${resultList[0].iemCn}"/></span>
 				<input name="qustnrIemId" type="hidden" value="${resultList[0].qustnrIemId}">
 			</td>
 		</tr>
@@ -125,7 +125,7 @@ function fn_egov_delete_QustnrRespondInfo(qestnrQesrspnsId){
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-  				<c:out value="${fn:replace(resultList[0].respondAnswerCn , crlf , '<br/>')}" escapeXml="false" />
+  				<span style="white-space:pre-line"><c:out value="${resultList[0].respondAnswerCn}"/></span>
 			</td>
 		</tr>
 		<!-- 기타답변내용 -->
@@ -133,7 +133,7 @@ function fn_egov_delete_QustnrRespondInfo(qestnrQesrspnsId){
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-  				<c:out value="${fn:replace(resultList[0].etcAnswerCn , crlf , '<br/>')}" escapeXml="false" />
+  				<span style="white-space:pre-line"><c:out value="${resultList[0].etcAnswerCn}"/></span>
 			</td>
 		</tr>
 		<!-- 응답자명 -->
@@ -141,7 +141,7 @@ function fn_egov_delete_QustnrRespondInfo(qestnrQesrspnsId){
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-  				<c:out value="${fn:replace(resultList[0].respondNm , crlf , '<br/>')}" escapeXml="false" />
+  				<span style="white-space:pre-line"><c:out value="${resultList[0].respondNm}"/></span>
 			</td>
 		</tr>
 

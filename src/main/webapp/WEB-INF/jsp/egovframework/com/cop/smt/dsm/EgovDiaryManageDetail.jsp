@@ -94,7 +94,7 @@ function fn_egov_delete_DiaryManage(frm){
 		<tr>
 			<th><label for="schdulCn">${title}</label> <span class="pilsu">*</span></th>
 			<td class="left">
-			   <c:out value="${fn:replace(diaryManageVO.schdulCn , crlf , '<br/>')}" escapeXml="false" />
+			   <span style="white-space:pre-line"><c:out value="${diaryManageVO.schdulCn}"/></span>
 			</td>
 		</tr>
 		<!-- 일지명 -->
@@ -102,7 +102,7 @@ function fn_egov_delete_DiaryManage(frm){
 		<tr>
 			<th><label for="diaryNm">${title}</label> <span class="pilsu">*</span></th>
 			<td class="nopd">
-				<c:out value="${fn:replace(diaryManageVO.diaryNm , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${diaryManageVO.diaryNm}"/></span>
 			</td>
 		</tr>
 		<!-- 지시사항 -->
@@ -110,7 +110,7 @@ function fn_egov_delete_DiaryManage(frm){
 		<tr>
 			<th><label for="drctMatter">${title}</label> <span class="pilsu">*</span></th>
 			<td class="nopd">
-				<c:out value="${fn:replace(diaryManageVO.drctMatter , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${diaryManageVO.drctMatter}"/></span>
 			</td>
 		</tr>
 		<!-- 특이사항 -->
@@ -118,7 +118,7 @@ function fn_egov_delete_DiaryManage(frm){
 		<tr>
 			<th><label for="partclrMatter">${title}</label> <span class="pilsu">*</span></th>
 			<td class="nopd">
-				<c:out value="${fn:replace(diaryManageVO.partclrMatter , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${diaryManageVO.partclrMatter}"/></span>
 			</td>
 		</tr>
 		<!-- 진척률 -->
@@ -126,7 +126,7 @@ function fn_egov_delete_DiaryManage(frm){
 		<tr>
 			<th><label for="diaryProcsPte">${title}</label> <span class="pilsu">*</span></th>
 			<td class="nopd">
-  				<c:out value="${fn:replace(diaryManageVO.diaryProcsPte , crlf , '<br/>')}" escapeXml="false" />%
+  				<span style="white-space:pre-line"><c:out value="${diaryManageVO.diaryProcsPte}"/></span>%
 			</td>
 		</tr>
 		<!-- 첨부파일 -->

@@ -86,13 +86,13 @@ function fn_egov_delete_PopupManage(){
 		<tr>
 			<th><spring:message code="ussIonPwm.popupDetail.popupLoca"/> <span class="pilsu">*</span></th><!-- 팝업창위치 -->
 			<td class="left">
-			    <spring:message code="ussIonPwm.popupDetail.popupWlce"/><c:out value="${popupManageVO.popupWlc}" />  <spring:message code="ussIonPwm.popupDetail.popupHlc"/><c:out value="${popupManageVO.popupHlc}" escapeXml="false" />
+			    <spring:message code="ussIonPwm.popupDetail.popupWlce"/><c:out value="${popupManageVO.popupWlc}" />  <spring:message code="ussIonPwm.popupDetail.popupHlc"/><c:out value="${popupManageVO.popupHlc}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="ussIonPwm.popupDetail.popupSize"/> <span class="pilsu">*</span></th><!-- 팝업창사이즈 -->
 			<td class="left">
-			    <spring:message code="ussIonPwm.popupDetail.popupWSize"/> : <c:out value="${popupManageVO.popupWSize}" />  <spring:message code="ussIonPwm.popupDetail.popupHSize"/> : <c:out value="${popupManageVO.popupHSize}" escapeXml="false" />
+			    <spring:message code="ussIonPwm.popupDetail.popupWSize"/> : <c:out value="${popupManageVO.popupWSize}" />  <spring:message code="ussIonPwm.popupDetail.popupHSize"/> : <c:out value="${popupManageVO.popupHSize}"/>
 			</td>
 		</tr>
 		<tr>

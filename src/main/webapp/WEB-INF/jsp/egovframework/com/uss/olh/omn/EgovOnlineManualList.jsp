@@ -127,7 +127,7 @@ function fn_egov_search_OnlineManual(){
     <td class="lt_text3">
  	<c:forEach items="${onlineMnlSeCodeList}" var="resultInfo1" varStatus="pollKindStatus">
 		<c:if test="${resultInfo1.code eq resultInfo.onlineMnlSeCode}">
-		<c:out value="${resultInfo1.codeNm}" escapeXml="false" />
+		<c:out value="${resultInfo1.codeNm}"/>
 		</c:if>
 	</c:forEach>
     </td>

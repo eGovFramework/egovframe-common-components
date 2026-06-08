@@ -81,7 +81,7 @@ function fn_egov_delete_UnityLink(){
 		<tr>
 			<th><spring:message code="uss.ion.ulm.unityLinkDetail.unityLinkNm" /><span class="pilsu">*</span></th><!-- 통합링크명 -->
 			<td class="left">
-			    <c:out value="${unityLink.unityLinkNm}" escapeXml="false" />
+			    <c:out value="${unityLink.unityLinkNm}"/>
 			</td>
 		</tr>
 		<tr>
@@ -89,7 +89,7 @@ function fn_egov_delete_UnityLink(){
 			<td class="left">
 			    <c:forEach items="${unityLinkSeCodeList}" var="resultInfo1" varStatus="pollKindStatus">
 					<c:if test="${resultInfo1.code eq unityLink.unityLinkSeCode}">
-					<c:out value="${resultInfo1.codeNm}" escapeXml="false" />
+					<c:out value="${resultInfo1.codeNm}"/>
 					</c:if>
 				</c:forEach>
 			</td>
@@ -97,13 +97,13 @@ function fn_egov_delete_UnityLink(){
 		<tr>
 			<th><spring:message code="uss.ion.ulm.unityLinkDetail.unityLinkUrl" /> <span class="pilsu">*</span></th><!-- 통합링크URL -->
 			<td class="left">
-			    <c:out value="${unityLink.unityLinkUrl}" escapeXml="false" />
+			    <c:out value="${unityLink.unityLinkUrl}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="uss.ion.ulm.unityLinkDetail.unityLinkDc" /><span class="pilsu">*</span></th><!-- 통합링크설명  -->
 			<td class="left">
-			    <c:out value="${unityLink.unityLinkDc}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${unityLink.unityLinkDc}"/></span>
 			</td>
 		</tr>
 	</table>

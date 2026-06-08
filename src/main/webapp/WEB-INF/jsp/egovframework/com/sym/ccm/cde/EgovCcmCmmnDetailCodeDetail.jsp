@@ -80,7 +80,7 @@
 		<tr>
 			<th class="vtop"><spring:message code="comSymCcmCde.cmmnDetailCodeVO.codeDc" /></th>
 			<td class="cnt">
-				<c:out value="${fn:replace(result.codeDc , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.codeDc}"/></span>
 			</td>
 		</tr>
 		<!-- 사용여부 -->

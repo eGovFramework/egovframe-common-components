@@ -71,7 +71,7 @@
 		<tr>
 			<th class="vtop"><spring:message code="comSymCcmCcc.cmmnClCodeVO.clCodeDc" /></th>
 			<td class="cnt">
-				<c:out value="${fn:replace(result.clCodeDc , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.clCodeDc}"/></span>
 			</td>
 		</tr>
 		<!-- 사용여부 -->

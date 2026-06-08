@@ -94,7 +94,7 @@ function fnDisAgree(){
             
             <tr>
                 <td><label for="useStplatCn">
-                <textarea id="useStplatCn" cols="120" rows="15"><c:out value="${result.useStplatCn}" escapeXml="false" /></textarea>
+                <textarea id="useStplatCn" cols="120" rows="15"><c:out value="${result.useStplatCn}"/></textarea>
                 </label>
                 </td>
             </tr>
@@ -111,9 +111,8 @@ function fnDisAgree(){
             <tr><th><spring:message code="comUssUmt.stplatCnfirmt.infoProvdAgreCn" /></th></tr>
             <tr>
                 <td><label for="infoProvdAgeCn">
-                <textarea id="infoProvdAgeCn" cols="120" rows="15"><c:out value="${result.infoProvdAgeCn}" escapeXml="false" /></textarea>
+                <textarea id="infoProvdAgeCn" cols="120" rows="15"><c:out value="${result.infoProvdAgeCn}"/></textarea>
                 </label>
-                <!-- <c:out value="${fn:replace(result.infoProvdAgeCn , crlf , '<br/>')}" escapeXml="false" /> -->
                 </td>
             </tr>
             <tr>

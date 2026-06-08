@@ -39,7 +39,7 @@
 					<span class="date"><c:out value="${result.frstRegisterPnttm}" /></span>
 				</div>
 				<p class="txt">
-					<c:out value="${fn:replace(result.commentCn , crlf , '<br/>')}" escapeXml="false" />
+					<span style="white-space:pre-line"><c:out value="${result.commentCn}"/></span>
 				</p>
 				<div class="bottom">
 					<c:if test="${result.wrterId == sessionUniqId}">

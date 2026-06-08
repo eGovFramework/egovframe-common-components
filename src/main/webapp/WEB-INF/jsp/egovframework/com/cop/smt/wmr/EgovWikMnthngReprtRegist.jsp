@@ -217,9 +217,9 @@ function fn_egov_init_WikMnthngReprt(){
 		<tr>
 			<th><spring:message code="copSmtWmr.wikMnthngReprtRegist.wrterNm"/> <span class="pilsu">*</span></th><!-- 작성자 -->
 			<td class="left">
-			    <c:out value="${wikMnthngReprtVO.wrterClsfNm}" escapeXml="false" />
+			    <c:out value="${wikMnthngReprtVO.wrterClsfNm}"/>
 				&nbsp;
-				<c:out value="${wikMnthngReprtVO.wrterNm}" escapeXml="false" />
+				<c:out value="${wikMnthngReprtVO.wrterNm}"/>
 				<input type="hidden" name="wrterId" id="wrterId" value="${wikMnthngReprtVO.wrterId}"/>
 				<input type="hidden" name="wrterNm" id="wrterNm" value="${wikMnthngReprtVO.wrterNm}"/>
 				<input type="hidden" name="wrterClsfNm" id="wrterClsfNm" value="${wikMnthngReprtVO.wrterClsfNm}"/>

@@ -18,9 +18,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.cmm.util.EgovUmtAuthorizationHelper;
 import egovframework.com.cmm.web.EgovComUtlController;
 import egovframework.com.uss.umt.service.EgovMberManageService;
 import egovframework.com.uss.umt.service.MberManageVO;
@@ -135,6 +137,7 @@ public class EgovMberManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/umt/EgovMberInsertView.do", method = RequestMethod.POST)
+	@RequireAdmin
 	public String insertMberView(@ModelAttribute("userSearchVO") UserDefaultVO userSearchVO,
 			@ModelAttribute("mberManageVO") MberManageInsertVO mberManageInsertVO, Model model) throws Exception {
 
@@ -177,6 +180,7 @@ public class EgovMberManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/umt/EgovMberInsert.do", method = RequestMethod.POST)
+	@RequireAdmin
 	public String insertMber(@Valid @ModelAttribute("mberManageVO") MberManageInsertVO mberManageInsertVO, 
 			BindingResult bindingResult,
 			Model model) throws Exception {
@@ -238,6 +242,10 @@ public class EgovMberManageController {
 		if (mberId == null) {
 			model.addAttribute("resultMsg", "fail.common.select");
 			return "forward:/uss/umt/EgovMberManage.do";
+		}
+
+		if (!EgovUmtAuthorizationHelper.canModifyUser(mberId)) {
+			return "egovframework/com/cmm/error/accessDenied";
 		}
 
 		// 미인증 사용자에 대한 보안처리
@@ -330,6 +338,16 @@ public class EgovMberManageController {
 			return "index";
 		}
 
+		MberManageVO currentMber = mberManageService.selectMber(mberManageVO.getUniqId());
+		if (currentMber == null) {
+			model.addAttribute("resultMsg", "fail.common.select");
+			return "forward:/uss/umt/EgovMberManage.do";
+		}
+
+		if (!EgovUmtAuthorizationHelper.canModifyUser(currentMber.getUniqId())) {
+			return "egovframework/com/cmm/error/accessDenied";
+		}
+
 		if (bindingResult.hasErrors()) {
 			String resultMsgCode = bindingResult.getAllErrors().get(0).getCode();
 			model.addAttribute("resultMsg", resultMsgCode);
@@ -355,6 +373,7 @@ public class EgovMberManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/umt/EgovMberDelete.do", method = RequestMethod.POST)
+	@RequireAdmin
 	public String deleteMber(@RequestParam("checkedIdForDel") String checkedIdForDel,
 			@ModelAttribute("searchVO") UserDefaultVO userSearchVO, HttpServletRequest request, Model model)
 			throws Exception {

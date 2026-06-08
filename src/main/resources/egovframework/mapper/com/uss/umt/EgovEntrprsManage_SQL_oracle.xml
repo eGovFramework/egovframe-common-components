@@ -53,9 +53,9 @@
 	                #{applcntNm},
 	                sysdate,
 	                #{entrprsMberSttus},
-	                #{entrprsMberPassword},
-	                #{entrprsMberPasswordHint},
-	                #{entrprsMberPasswordCnsr},
+	                #{password},
+	                #{passwordHint},
+	                #{passwordCnsr},
 	                #{groupId},
 	                #{detailAdres},
 	                #{entrprsEndTelno},
@@ -92,9 +92,9 @@
                 APPLCNT_NM                   applcntNm,
                 SBSCRB_DE                    sbscrbDe,
                 ENTRPRS_MBER_STTUS           entrprsMberSttus,
-                ENTRPRS_MBER_PASSWORD        entrprsMberPassword,
-                ENTRPRS_MBER_PASSWORD_HINT   entrprsMberPasswordHint,
-                ENTRPRS_MBER_PASSWORD_CNSR   entrprsMberPasswordCnsr,
+                ENTRPRS_MBER_PASSWORD        password,
+                ENTRPRS_MBER_PASSWORD_HINT   passwordHint,
+                ENTRPRS_MBER_PASSWORD_CNSR   passwordCnsr,
                 GROUP_ID                     groupId,
                 DETAIL_ADRES                 detailAdres,
                 ENTRPRS_END_TELNO            entrprsEndTelno,
@@ -124,8 +124,8 @@
                 INDUTY_CODE                  = #{indutyCode},
                 APPLCNT_NM                   = #{applcntNm},
                 ENTRPRS_MBER_STTUS           = #{entrprsMberSttus},
-                ENTRPRS_MBER_PASSWORD_HINT   = #{entrprsMberPasswordHint},
-                ENTRPRS_MBER_PASSWORD_CNSR   = #{entrprsMberPasswordCnsr},
+                ENTRPRS_MBER_PASSWORD_HINT   = #{passwordHint},
+                ENTRPRS_MBER_PASSWORD_CNSR   = #{passwordCnsr},
                 GROUP_ID                     = #{groupId},
                 DETAIL_ADRES                 = #{detailAdres},
                 ENTRPRS_END_TELNO            = #{entrprsEndTelno},
@@ -150,7 +150,7 @@
         
             UPDATE COMTNENTRPRSMBER
             SET 
-                   ENTRPRS_MBER_PASSWORD   =  #{entrprsMberPassword}
+                   ENTRPRS_MBER_PASSWORD   =  #{password}
                  , CHG_PWD_LAST_PNTTM = sysdate
             WHERE  ESNTL_ID  = #{uniqId}
         

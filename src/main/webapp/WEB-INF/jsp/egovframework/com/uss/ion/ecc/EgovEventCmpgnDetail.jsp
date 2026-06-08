@@ -70,7 +70,7 @@
 		<tr>
 			<th class="vtop"><spring:message code="comUssIonEcc.eventCmpgnVO.eventCn" /></th>
 			<td class="cnt">
-				<c:out value="${fn:replace(result.eventCn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.eventCn}"/></span>
 			</td>
 		</tr>
 		
@@ -102,7 +102,7 @@
 		<tr>
 			<th><spring:message code="comUssIonEcc.eventCmpgnVO.prparetgCn" /></th>
 			<td class="cnt">
-				<c:out value="${fn:replace(result.prparetgCn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.prparetgCn}"/></span>
 			</td>
 		</tr>
 

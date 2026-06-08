@@ -74,16 +74,16 @@
 		<tr>
 			<th><spring:message code="comCopSmtMtm.memoToDo.validate.todoDe"/> <span class="pilsu">*</span></th><!-- 할일일자 -->
 			<td class="left">
-			    <c:out value="${memoTodo.todoDe}" escapeXml="false" />
-				<c:out value="${memoTodo.todoBeginHour}" escapeXml="false" />:<c:out value="${memoTodo.todoBeginMin}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${memoTodo.todoDe}"/></span>
+				<span style="white-space:pre-line"><c:out value="${memoTodo.todoBeginHour}"/></span>:<span style="white-space:pre-line"><c:out value="${memoTodo.todoBeginMin}"/></span>
 				~ 
-				<c:out value="${memoTodo.todoEndHour}" escapeXml="false" />:<c:out value="${memoTodo.todoEndMin}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${memoTodo.todoEndHour}"/></span>:<span style="white-space:pre-line"><c:out value="${memoTodo.todoEndMin}"/></span>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comCopSmtMtm.memoToDo.validate.wrterNm"/> <span class="pilsu">*</span></th><!-- 작성자명 -->
 			<td class="left">
-			    <c:out value="${memoTodo.wrterNm}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${memoTodo.wrterNm}"/></span>
 				<input type="hidden" name="wrterId" id="wrterId" value="${memoTodo.wrterId}"/>
 				<input type="hidden" name="wrterNm" id="wrterNm" value="${memoTodo.wrterNm}"/>
 			</td>
@@ -91,13 +91,13 @@
 		<tr>
 			<th><spring:message code="comCopSmtMtm.memoToDo.validate.todoNm"/> <span class="pilsu">*</span></th><!-- 할일제목 -->
 			<td class="left">
-			    <c:out value="${memoTodo.todoNm}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${memoTodo.todoNm}"/></span>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comCopSmtMtm.memoToDo.validate.todoCn"/> <span class="pilsu">*</span></th><!-- 할일내용 -->
 			<td class="left">
-			    <c:out value="${fn:replace(memoTodo.todoCn , crlf , '<br>')}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${fn:replace(memoTodo.todoCn , crlf , '<br>')}"/></span>
 			</td>
 		</tr>
 	</table>

@@ -104,33 +104,33 @@
 		<tr>
 			<th><spring:message code="comCopSmtMrm.memoReprtVO.validate.reprtDe"/> <span class="pilsu">*</span></th><!-- 보고일자 -->
 			<td class="left">
-			    <c:out value="${memoReprt.reprtDe}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${memoReprt.reprtDe}"/></span>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comCopSmtMrm.memoReprtVO.validate.wrterNm"/> <span class="pilsu">*</span></th><!-- 작성자 -->
 			<td class="left">
-			    <c:out value="${memoReprt.wrterClsfNm}" escapeXml="false" />
-	      		<c:out value="${memoReprt.wrterNm}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${memoReprt.wrterClsfNm}"/></span>
+	      		<span style="white-space:pre-line"><c:out value="${memoReprt.wrterNm}"/></span>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comCopSmtMrm.memoReprtVO.validate.reportrNm"/> <span class="pilsu">*</span></th><!-- 보고 대상자 -->
 			<td class="left">
-			    <c:out value="${memoReprt.reportrClsfNm}" escapeXml="false" />
-				<c:out value="${memoReprt.reportrNm}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${memoReprt.reportrClsfNm}"/></span>
+				<span style="white-space:pre-line"><c:out value="${memoReprt.reportrNm}"/></span>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comCopSmtMrm.memoReprtVO.validate.reprtSj"/> <span class="pilsu">*</span></th><!-- 보고제목 -->
 			<td class="left">
-			    <c:out value="${memoReprt.reprtSj}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${memoReprt.reprtSj}"/></span>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comCopSmtMrm.memoReprtRegist.reprtCn"/><span class="pilsu">*</span></th><!-- 보고내용 -->
 			<td class="left">
-			    <c:out value="${fn:replace(memoReprt.reprtCn , crlf , '<br>')}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${fn:replace(memoReprt.reprtCn , crlf , '<br>')}"/></span>
 			</td>
 		</tr>
 		<tr>
@@ -144,7 +144,7 @@
 		<tr>
 			<th><spring:message code="comCopSmtMrm.memoReprtList.searchSttus"/> <span class="pilsu">*</span></th><!-- 보고서 상태 -->
 			<td class="left">
-				<c:out value="${memoReprt.reprtSttus}" escapeXml="false" />			    
+				<span style="white-space:pre-line"><c:out value="${memoReprt.reprtSttus}"/></span>			    
 			</td>
 		</tr>
 		
@@ -152,7 +152,7 @@
 		<tr>
 	        <th><spring:message code="comCopSmtMrm.memoReprtDetail.drctMatter"/> <span class="pilsu">*</span></th><!-- 의견/지시사항 -->
 	        <td class="left">
-	            <textarea id="drctMatter" name="drctMatter" rows="5" cols="75" title="<spring:message code='comCopSmtMrm.memoReprtDetail.drctMatter'/>"><c:out value="${memoReprt.drctMatter}" escapeXml="false" /></textarea><!-- 의견/지시사항 -->
+	            <textarea id="drctMatter" name="drctMatter" rows="5" cols="75" title="<spring:message code='comCopSmtMrm.memoReprtDetail.drctMatter'/>"><c:out value="${memoReprt.drctMatter}"/></textarea><!-- 의견/지시사항 -->
 	            <div><form:errors path="drctMatter" cssClass="error"/></div>
 	        </td>
 	    </tr>
@@ -161,7 +161,7 @@
 	    <tr>
 	        <th><spring:message code="comCopSmtMrm.memoReprtDetail.drctMatter"/> <span class="pilsu">*</span></th><!-- 의견/지시사항 -->
 	        <td class="left">
-        	    <c:out value="${memoReprt.drctMatter}" escapeXml="false" />
+        	    <span style="white-space:pre-line"><c:out value="${memoReprt.drctMatter}"/></span>
 	        </td>
 	    </tr>
 		</c:if>

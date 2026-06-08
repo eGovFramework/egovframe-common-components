@@ -86,7 +86,7 @@ function fn_egov_delete_NoteRecptn(){
 			<td colspan="3" class="left">
 				<c:set var="noteRecptnNoteSj" value="${fn:escapeXml(noteRecptn.noteSj)}"/>
 				<c:set var="noteRecptnNoteSj" value="${fn:replace(noteRecptn.noteSj , crlf , '<br>')}"/>
-				<c:out value="${noteRecptn.noteSj}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${noteRecptn.noteSj}"/></span>
 			</td>
 		</tr>
 		<!-- 발신자, 발신시각 -->
@@ -120,7 +120,7 @@ function fn_egov_delete_NoteRecptn(){
 			<td colspan="3" class="cnt">
 				<c:set var="noteRecptnNoteCn" value="${fn:escapeXml(noteRecptn.noteCn)}"/>
 				<c:set var="noteRecptnNoteCn" value="${fn:replace(noteRecptn.noteCn , crlf , '<br>')}"/>
-				<c:out value="${noteRecptn.noteCn}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${noteRecptn.noteCn}"/></span>
 			</td>
 		</tr>
 	</tbody>

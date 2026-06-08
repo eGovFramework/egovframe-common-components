@@ -114,7 +114,7 @@ function fn_egov_delete_RssTagManage(){
 			<td class="left">
 			    <c:set var="hderEtc" value="${fn:escapeXml(rssManage.hderEtc)}"/>
 				<c:set var="hderEtc" value="${fn:replace(hderEtc , crlf , '<br>')}"/>
-				<c:out value="${hderEtc}" escapeXml="false" />&nbsp;
+				<span style="white-space:pre-line"><c:out value="${hderEtc}"/></span>&nbsp;
 			</td>
 		</tr>
 		<tr>
@@ -146,7 +146,7 @@ function fn_egov_delete_RssTagManage(){
 			<td class="left">
 			    <c:set var="bdtEtc" value="${fn:escapeXml(rssManage.bdtEtc)}"/>
 				<c:set var="bdtEtc" value="${fn:replace(bdtEtc , crlf , '<br>')}"/>
-				<c:out value="${bdtEtc}" escapeXml="false" />&nbsp;
+				<span style="white-space:pre-line"><c:out value="${bdtEtc}"/></span>&nbsp;
 			</td>
 		</tr>
 	</table>

@@ -160,14 +160,14 @@ function fn_egov_select_commentList(pageNo) {
 		<tr>
 			<th class="vtop"><spring:message code="comCopBbs.articleVO.detail.nttCn" /></th>
 			<td colspan="5" class="cnt">
-				<c:out value="${fn:replace(result.nttCn , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.nttCn}"/></span>
 			</td>
 		</tr>
 		<!-- 게시일자 -->
 		<tr>
 			<th class="vtop"><spring:message code="comCopBbs.articleVO.detail.ntceDe" /></th>
 			<td colspan="5" class="left">
-				<c:out value="${result.ntceBgnde} ~ ${result.ntceEndde}" escapeXml="false" />
+				<c:out value="${result.ntceBgnde} ~ ${result.ntceEndde}"/>
 			</td>
 		</tr>
 		<!-- 첨부파일  -->

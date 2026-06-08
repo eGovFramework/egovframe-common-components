@@ -207,7 +207,7 @@ $(document).ready(function () {
 		<tr>
 			<th><spring:message code="comUssIonVct.common.vcatnResn"/> <span class="pilsu">*</span></th><!-- 휴가사유 -->
 			<td class="left" colspan="3">
-			    <textarea id="vcatnResnView" name="vcatnResnView" class="txta01" rows="4" cols="70" title='<spring:message code="comUssIonVct.common.vcatnResn"/>' readonly="readonly"><c:out value='${vcatnManageVO.vcatnResn}' escapeXml="false"/></textarea>
+			    <textarea id="vcatnResnView" name="vcatnResnView" class="txta01" rows="4" cols="70" title='<spring:message code="comUssIonVct.common.vcatnResn"/>' readonly="readonly"><c:out value='${vcatnManageVO.vcatnResn}'/></textarea>
 			</td>
 		</tr>
 	</table>

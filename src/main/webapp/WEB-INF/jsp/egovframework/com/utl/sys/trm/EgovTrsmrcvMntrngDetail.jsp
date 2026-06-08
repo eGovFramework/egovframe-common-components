@@ -81,77 +81,77 @@ function fn_egov_update_view(){
       <tr> 
         <th height="23" class="required_text" nowrap="nowrap" ><spring:message code="comUtlSysTrm.trsmrcvMntrng.interOperationID" /></th><!-- 연계ID -->
         <td class="left">
-            <c:out value="${resultInfo.cntcId}" escapeXml="false" /> 
+            <span style="white-space:pre-line"><c:out value="${resultInfo.cntcId}"/></span> 
         </td>
       </tr>
     
       <tr> 
         <th height="23" class="required_text" ><spring:message code="comUtlSysTrm.trsmrcvMntrng.interOperationName" /></th><!-- 연계명 -->
         <td class="left">
-            <c:out value="${resultInfo.cntcNm}" escapeXml="false" /> 
+            <span style="white-space:pre-line"><c:out value="${resultInfo.cntcNm}"/></span> 
         </td>
       </tr> 
       
       <tr> 
         <th height="23" class="required_text" ><spring:message code="comUtlSysTrm.trsmrcvMntrng.provider" /></th><!-- 제공기관 -->
         <td class="left">
-            <c:out value="${resultInfo.provdInsttNm}" escapeXml="false" /> 
+            <c:out value="${resultInfo.provdInsttNm}"/> 
         </td>
       </tr> 
       <tr> 
         <th height="23" class="required_text" ><spring:message code="comUtlSysTrm.trsmrcvMntrng.provideSystem" /></th><!-- 제공시스템 -->
         <td class="left">
-            <c:out value="${resultInfo.provdSysNm}" escapeXml="false" /> 
+            <c:out value="${resultInfo.provdSysNm}"/> 
         </td>
       </tr> 
       <tr> 
         <th height="23" class="required_text" ><spring:message code="comUtlSysTrm.trsmrcvMntrng.service" /></th><!-- 제공서비스 -->
         <td class="left">
-            <c:out value="${resultInfo.provdSvcNm}" escapeXml="false" /> 
+            <span style="white-space:pre-line"><c:out value="${resultInfo.provdSvcNm}"/></span> 
         </td>
       </tr> 
       <tr> 
         <th height="23" class="required_text" ><spring:message code="comUtlSysTrm.trsmrcvMntrng.requester" /></th><!-- 요청기관 -->
         <td class="left">
-            <c:out value="${resultInfo.requstInsttNm}" escapeXml="false" /> 
+            <c:out value="${resultInfo.requstInsttNm}"/> 
         </td>
       </tr> 
       <tr> 
         <th height="23" class="required_text" ><spring:message code="comUtlSysTrm.trsmrcvMntrng.requestSystem" /></th><!-- 요청시스템 -->
         <td class="left">
-            <c:out value="${resultInfo.requstSysNm}" escapeXml="false" /> 
+            <c:out value="${resultInfo.requstSysNm}"/> 
         </td>
       </tr> 
       
       <tr> 
         <th height="23" class="required_text" ><spring:message code="comUtlSysTrm.trsmrcvMntrng.testClassName" /></th><!-- 테스트클래스명 -->
         <td class="left">
-            <c:out value="${resultInfo.testClassNm}" escapeXml="false" /> 
+            <c:out value="${resultInfo.testClassNm}"/> 
         </td>
       </tr> 
       
       <tr> 
         <th height="23" class="required_text" ><spring:message code="comUtlSysTrm.trsmrcvMntrng.managerName" /></th><!-- 관리자명 -->
         <td class="left">
-            <c:out value="${resultInfo.mngrNm}" escapeXml="false" /> 
+            <c:out value="${resultInfo.mngrNm}"/> 
         </td>
       </tr> 
       <tr> 
         <th height="23" class="required_text" ><spring:message code="comUtlSysTrm.trsmrcvMntrng.managerEmail" /></th><!-- 관리자이메일주소 -->
         <td class="left">
-            <c:out value="${resultInfo.mngrEmailAddr}" escapeXml="false" /> 
+            <c:out value="${resultInfo.mngrEmailAddr}"/> 
         </td>
       </tr> 
       <tr> 
         <th height="23" class="required_text" ><spring:message code="comUtlSysTrm.trsmrcvMntrng.status" /></th><!-- 모니터링상태 -->
         <td class="left">
-            <c:out value="${resultInfo.mntrngSttusNm}" escapeXml="false" /> 
+            <c:out value="${resultInfo.mntrngSttusNm}"/> 
         </td>
       </tr> 
       <tr> 
         <th height="23" class="required_text" ><spring:message code="comUtlSysTrm.trsmrcvMntrng.monitoringDateTime" /></th><!-- 모니터링시각 -->
         <td class="left">
-            <c:out value="${resultInfo.creatDt}" escapeXml="false" /> 
+            <c:out value="${resultInfo.creatDt}"/> 
         </td>
       </tr> 
     </table>

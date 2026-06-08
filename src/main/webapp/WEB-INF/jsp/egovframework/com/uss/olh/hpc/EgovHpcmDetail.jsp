@@ -73,7 +73,7 @@
 		<tr>
 			<th class="vtop"><spring:message code="comUssOlhHpc.hpcmVO.hpcmDc" /></th>
 			<td class="cnt">
-				<c:out value="${fn:replace(result.hpcmDc , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${result.hpcmDc}"/></span>
 			</td>
 		</tr>
 		

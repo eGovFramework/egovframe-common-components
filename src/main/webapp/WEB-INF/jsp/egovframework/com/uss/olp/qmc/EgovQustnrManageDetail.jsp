@@ -99,7 +99,7 @@ function fn_egov_delete_QustnrManage(){
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-				<c:out value="${fn:replace(resultList[0].qestnrPurps , crlf , '<br/>')}" escapeXml="false" /> 
+				<span style="white-space:pre-line"><c:out value="${resultList[0].qestnrPurps}"/></span> 
 			</td>
 		</tr>
 		<!-- 설문작성안내 내용  -->
@@ -107,7 +107,7 @@ function fn_egov_delete_QustnrManage(){
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-  				<c:out value="${fn:replace(resultList[0].qestnrWritngGuidanceCn , crlf , '<br/>')}" escapeXml="false" />
+  				<span style="white-space:pre-line"><c:out value="${resultList[0].qestnrWritngGuidanceCn}"/></span>
 			</td>
 		</tr>
 		<!-- 설문대상 -->
@@ -117,7 +117,7 @@ function fn_egov_delete_QustnrManage(){
 			<td class="left">
   				<c:forEach items="${comCode034}" var="comCodeList" varStatus="status">
 				<c:if test="${comCodeList.code eq resultList[0].qestnrTrget}">
-				<c:out value="${fn:replace(comCodeList.codeNm , crlf , '<br/>')}" escapeXml="false" />
+				<span style="white-space:pre-line"><c:out value="${comCodeList.codeNm}"/></span>
 				</c:if>
 				</c:forEach>
 			</td>

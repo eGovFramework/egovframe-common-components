@@ -80,49 +80,49 @@ function fn_egov_list(){
 		<tr>
 			<th><spring:message code="comSymBat.batchResultDetail.batchResultId"/></th><!-- 배치결과ID -->
 			<td class="left">
-			    <c:out value="${resultInfo.batchResultId}" escapeXml="false" />
+			    <c:out value="${resultInfo.batchResultId}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymBat.batchResultDetail.batchSchdulId"/></th><!-- 배치스케줄ID -->
 			<td class="left">
-			    <c:out value="${resultInfo.batchSchdulId}" escapeXml="false" />
+			    <c:out value="${resultInfo.batchSchdulId}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymBat.batchResultDetail.batchOpertId"/></th><!-- 배치작업ID -->
 			<td class="left">
-			    <c:out value="${resultInfo.batchOpertId}" escapeXml="false" />
+			    <c:out value="${resultInfo.batchOpertId}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymBat.batchResultDetail.batchOpertNm"/></th><!-- 배치작업명 -->
 			<td class="left">
-			    <c:out value="${resultInfo.batchOpertNm}" escapeXml="false" />
+			    <c:out value="${resultInfo.batchOpertNm}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymBat.batchResultDetail.batchProgrm"/></th><!-- 배치프로그램 -->
 			<td class="left">
-			    <c:out value="${resultInfo.batchProgrm}" escapeXml="false" />
+			    <c:out value="${resultInfo.batchProgrm}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymBat.batchResultDetail.paramtr"/></th><!-- 파라미터 -->
 			<td class="left">
-			    <c:out value="${resultInfo.paramtr}" escapeXml="false" />
+			    <c:out value="${resultInfo.paramtr}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymBat.batchResultDetail.sttusNm"/></th><!-- 상태 -->
 			<td class="left">
-			    <c:out value="${resultInfo.sttusNm}" escapeXml="false" />
+			    <c:out value="${resultInfo.sttusNm}"/>
 			</td>
 		</tr>
 		<tr>
 			<th><spring:message code="comSymBat.batchResultDetail.errorInfo"/></th><!-- 에러정보 -->
 			<td class="left">
-			    <c:out value="${resultInfo.errorInfo}" escapeXml="false" />
+			    <span style="white-space:pre-line"><c:out value="${resultInfo.errorInfo}"/></span>
 			</td>
 		</tr>
 		<tr>

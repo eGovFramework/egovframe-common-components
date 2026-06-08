@@ -111,7 +111,7 @@ function fn_egov_delete_QustnrTmplatManage(){
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-  				<c:out value="${fn:replace(resultList[0].qestnrTmplatCn , crlf , '<br/>')}" escapeXml="false"/>
+  				<span style="white-space:pre-line"><c:out value="${resultList[0].qestnrTmplatCn}"/></span>
 			</td>
 		</tr>
 		<!-- 템플릿 파일(경로) -->

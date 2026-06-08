@@ -4,6 +4,8 @@ import egovframework.com.cmm.ComDefaultVO;
 import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 개요
@@ -16,7 +18,19 @@ import jakarta.validation.constraints.Size;
  * @author 이창원
  * @version 1.0
  * @created 05-8-2009 오후 2:21:04
+ *
+ * <pre>
+ * == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2009.08.05  이창원          최초 생성
+ *   2025.05.20  기여자          Lombok @Getter/@Setter 적용으로 보일러플레이트 제거
+ *
+ * </pre>
  */
+@Getter
+@Setter
 public class PopupManageVO extends ComDefaultVO {
 
 	private static final long serialVersionUID = -4822974866080666897L;
@@ -115,158 +129,4 @@ public class PopupManageVO extends ComDefaultVO {
 	/** 최종수정자 아이디 */
 	private String lastUpdusrId;
 
-	public PopupManageVO() {
-	}
-
-	public String getPopupId() {
-		return popupId;
-	}
-
-	public void setPopupId(String popupId) {
-		this.popupId = popupId;
-	}
-
-	public String getPopupTitleNm() {
-		return popupTitleNm;
-	}
-
-	public void setPopupTitleNm(String popupTitleNm) {
-		this.popupTitleNm = popupTitleNm;
-	}
-
-	public String getFileUrl() {
-		return fileUrl;
-	}
-
-	public void setFileUrl(String fileUrl) {
-		this.fileUrl = fileUrl;
-	}
-
-	public String getPopupWlc() {
-		return popupWlc;
-	}
-
-	public void setPopupWlc(String popupWlc) {
-		this.popupWlc = popupWlc;
-	}
-
-	public String getPopupHlc() {
-		return popupHlc;
-	}
-
-	public void setPopupHlc(String popupHlc) {
-		this.popupHlc = popupHlc;
-	}
-
-	public String getPopupHSize() {
-		return popupHSize;
-	}
-
-	public void setPopupHSize(String popupHSize) {
-		this.popupHSize = popupHSize;
-	}
-
-	public String getPopupWSize() {
-		return popupWSize;
-	}
-
-	public void setPopupWSize(String popupWSize) {
-		this.popupWSize = popupWSize;
-	}
-
-	public String getNtceBgnde() {
-		return ntceBgnde;
-	}
-
-	public void setNtceBgnde(String ntceBgnde) {
-		this.ntceBgnde = ntceBgnde;
-	}
-
-	public String getNtceEndde() {
-		return ntceEndde;
-	}
-
-	public void setNtceEndde(String ntceEndde) {
-		this.ntceEndde = ntceEndde;
-	}
-
-	public String getNtceBgndeHH() {
-		return ntceBgndeHH;
-	}
-
-	public void setNtceBgndeHH(String ntceBgndeHH) {
-		this.ntceBgndeHH = ntceBgndeHH;
-	}
-
-	public String getNtceBgndeMM() {
-		return ntceBgndeMM;
-	}
-
-	public void setNtceBgndeMM(String ntceBgndeMM) {
-		this.ntceBgndeMM = ntceBgndeMM;
-	}
-
-	public String getNtceEnddeHH() {
-		return ntceEnddeHH;
-	}
-
-	public void setNtceEnddeHH(String ntceEnddeHH) {
-		this.ntceEnddeHH = ntceEnddeHH;
-	}
-
-	public String getNtceEnddeMM() {
-		return ntceEnddeMM;
-	}
-
-	public void setNtceEnddeMM(String ntceEnddeMM) {
-		this.ntceEnddeMM = ntceEnddeMM;
-	}
-
-	public String getStopVewAt() {
-		return stopVewAt;
-	}
-
-	public void setStopVewAt(String stopVewAt) {
-		this.stopVewAt = stopVewAt;
-	}
-
-	public String getNtceAt() {
-		return ntceAt;
-	}
-
-	public void setNtceAt(String ntceAt) {
-		this.ntceAt = ntceAt;
-	}
-
-	public String getFrstRegisterPnttm() {
-		return frstRegisterPnttm;
-	}
-
-	public void setFrstRegisterPnttm(String frstRegisterPnttm) {
-		this.frstRegisterPnttm = frstRegisterPnttm;
-	}
-
-	public String getFrstRegisterId() {
-		return frstRegisterId;
-	}
-
-	public void setFrstRegisterId(String frstRegisterId) {
-		this.frstRegisterId = frstRegisterId;
-	}
-
-	public String getLastUpdusrPnttm() {
-		return lastUpdusrPnttm;
-	}
-
-	public void setLastUpdusrPnttm(String lastUpdusrPnttm) {
-		this.lastUpdusrPnttm = lastUpdusrPnttm;
-	}
-
-	public String getLastUpdusrId() {
-		return lastUpdusrId;
-	}
-
-	public void setLastUpdusrId(String lastUpdusrId) {
-		this.lastUpdusrId = lastUpdusrId;
-	}
 }
