@@ -91,7 +91,7 @@ public class EgovNumberCheckUtil {
 	 */
 	public static boolean checkJuminNumber(String jumin) {
 
-		if (jumin.length() != 13) {
+		if (jumin == null || jumin.length() != 13) {
 			return false;
 		}
 
@@ -152,7 +152,7 @@ public class EgovNumberCheckUtil {
 	 */
 	public static boolean checkBubinNumber(String bubin) {
 
-		if (bubin.length() != 13) {
+		if (bubin == null || bubin.length() != 13) {
 			return false;
 		}
 
@@ -209,7 +209,7 @@ public class EgovNumberCheckUtil {
 	 */
 	public static boolean checkCompNumber(String comp) {
 
-		if (comp.length() != 10) {
+		if (comp == null || comp.length() != 10) {
 			return false;
 		}
 		return checkCompNumber(comp.substring(0, 3), comp.substring(3, 5), comp.substring(5, 10));
@@ -297,7 +297,7 @@ public class EgovNumberCheckUtil {
 	 */
 	public static boolean checkForeignNumber(String foreign) {
 
-		if (foreign.length() != 13) {
+		if (foreign == null || foreign.length() != 13) {
 			return false;
 		}
 		return checkForeignNumber(foreign.substring(0, 6), foreign.substring(6, 13));
