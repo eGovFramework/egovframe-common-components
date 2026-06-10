@@ -43,5 +43,24 @@ public class EgovStringUtilTest {
         Assertions.assertEquals( expect , "나이를" );
     }
 
+    @Test
+    void 목적격_빈문자열_예외없음(){
+        // 수정 전엔 StringIndexOutOfBoundsException, 수정 후 종성 없음(false) 처리로 "를" 부착
+        String expect = EgovStringUtil.getObjectParticle("");
+        Assertions.assertEquals( expect , "를" );
+    }
+
+    @Test
+    void 보조사_비한글_영문(){
+        String expect = EgovStringUtil.getAuxiliaryParticle("PC");
+        Assertions.assertEquals( expect , "PC는" );
+    }
+
+    @Test
+    void 목적격_비한글_숫자(){
+        String expect = EgovStringUtil.getObjectParticle("3");
+        Assertions.assertEquals( expect , "3를" );
+    }
+
 
 }

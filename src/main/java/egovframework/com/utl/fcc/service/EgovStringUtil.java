@@ -958,12 +958,20 @@ public class EgovStringUtil {
 
 	/**
 	 * 주어진 명사가 종성을 가지는지 여부를 확인한다.
+	 * 한글 음절(가~힣) 기준으로 판단하며, 빈 입력이나 한글 음절 밖의 문자는 종성이 없는 것으로 간주한다.
 	 *
 	 * @param noun 명사
 	 * @return 종성이 있으면 true, 없으면 false
 	 */
 	private static boolean hasFinalConsonant(String noun) {
+		if (noun == null || noun.isEmpty()) {
+			return false;
+		}
 		char lastChar = noun.charAt(noun.length() - 1);
+		// 한글 음절 영역(가~힣) 밖의 문자는 종성 계산 대상이 아니므로 false 처리
+		if (lastChar < 0xAC00 || lastChar > 0xD7A3) {
+			return false;
+		}
 		return (lastChar - 0xAC00) % 28 != 0;
 	}
 }
