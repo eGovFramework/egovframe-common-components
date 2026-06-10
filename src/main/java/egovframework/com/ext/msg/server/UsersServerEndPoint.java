@@ -107,8 +107,10 @@ public class UsersServerEndPoint {
 				if (username != null && !isExisted(username)) {
 					userSession.getUserProperties().put("username", username);
 
-					for (Session session : connectedAllUsers) { // NOPMD - CloseResource
-						session.getBasicRemote().sendText(buildJsonUserData(getUsers()));
+					synchronized (connectedAllUsers) {
+						for (Session session : connectedAllUsers) { // NOPMD - CloseResource
+							session.getBasicRemote().sendText(buildJsonUserData(getUsers()));
+						}
 					}
 				} else {
 					if (LOGGER.isDebugEnabled()) {
@@ -131,10 +133,12 @@ public class UsersServerEndPoint {
 
 				if (connectingUser != null && !username.equals(connectingUser)) {
 					// 사용자들 중 선택한 유저와 연결
-					for (Session session : connectedAllUsers) {// NOPMD - CloseResource
-						if (connectingUser.equals(session.getUserProperties().get("username"))) {
-							// 선택한 사용자면 chatroomMember로 추가.
-							chatroomMembers.add(session);
+					synchronized (connectedAllUsers) {
+						for (Session session : connectedAllUsers) {// NOPMD - CloseResource
+							if (connectingUser.equals(session.getUserProperties().get("username"))) {
+								// 선택한 사용자면 chatroomMember로 추가.
+								chatroomMembers.add(session);
+							}
 						}
 					}
 
@@ -174,9 +178,11 @@ public class UsersServerEndPoint {
 		if (disconnectedUser != null) {
 			Json.createObjectBuilder().add("disconnectedUser", disconnectedUser).build().toString();
 
-			for (Session session : connectedAllUsers) {// NOPMD - CloseResource
-				session.getBasicRemote().sendText(
-						Json.createObjectBuilder().add("disconnectedUser", disconnectedUser).build().toString());
+			synchronized (connectedAllUsers) {
+				for (Session session : connectedAllUsers) {// NOPMD - CloseResource
+					session.getBasicRemote().sendText(
+							Json.createObjectBuilder().add("disconnectedUser", disconnectedUser).build().toString());
+				}
 			}
 		}
 	}
@@ -189,9 +195,11 @@ public class UsersServerEndPoint {
 	private Set<String> getUsers() {
 		HashSet<String> returnSet = new HashSet<String>();
 
-		for (Session session : connectedAllUsers) { // NOPMD - CloseResource
-			if (session.getUserProperties().get("username") != null) {
-				returnSet.add(session.getUserProperties().get("username").toString());
+		synchronized (connectedAllUsers) {
+			for (Session session : connectedAllUsers) { // NOPMD - CloseResource
+				if (session.getUserProperties().get("username") != null) {
+					returnSet.add(session.getUserProperties().get("username").toString());
+				}
 			}
 		}
 		return returnSet;
@@ -221,9 +229,11 @@ public class UsersServerEndPoint {
 	 */
 	private boolean isExisted(String username) {
 		// 이미 username을 가진 session이 있는지 검사.
-		for (Session existedUser : connectedAllUsers) {// NOPMD - CloseResource
-			if (username.equals(existedUser.getUserProperties().get("username"))) {
-				return true;
+		synchronized (connectedAllUsers) {
+			for (Session existedUser : connectedAllUsers) {// NOPMD - CloseResource
+				if (username.equals(existedUser.getUserProperties().get("username"))) {
+					return true;
+				}
 			}
 		}
 		return false;
