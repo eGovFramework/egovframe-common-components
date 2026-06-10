@@ -108,17 +108,23 @@ public class EgovPiiMaskUtil {
         }
         Matcher mp = PHONE_PLAIN_PATTERN.matcher(phoneNo);
         if (mp.find()) {
-            String num = mp.group(1);
-            // 11자리: 3-4-4, 10자리: 3-3-4
-            String masked;
-            if (num.length() == 11) {
-                masked = num.substring(0, 3) + "****" + num.substring(7);
-            } else {
-                masked = num.substring(0, 3) + "***" + num.substring(6);
-            }
+            String masked = maskPlainPhoneDigits(mp.group(1));
             return phoneNo.substring(0, mp.start()) + masked + phoneNo.substring(mp.end());
         }
         return phoneNo;
+    }
+
+    /**
+     * 하이픈 없는 10~11자리 휴대폰 번호 숫자열을 마스킹한다.
+     * <p>단일 마스킹({@link #maskPhoneNo})과 일괄 마스킹({@code maskAllPhoneNo})이
+     * 동일한 규칙을 사용하도록 공통 로직으로 분리한다. 11자리는 {@code 3-****-뒤4자리},
+     * 10자리는 {@code 3-***-뒤4자리} 형태로 가린다.</p>
+     */
+    private static String maskPlainPhoneDigits(String num) {
+        if (num.length() == 11) {
+            return num.substring(0, 3) + "****" + num.substring(7);
+        }
+        return num.substring(0, 3) + "***" + num.substring(6);
     }
 
     /**
@@ -242,6 +248,7 @@ public class EgovPiiMaskUtil {
     }
 
     private static String maskAllPhoneNo(String text) {
+        // 1) 하이픈 포함 번호 치환
         Matcher m = PHONE_HYPHEN_PATTERN.matcher(text);
         StringBuffer sb = new StringBuffer();
         while (m.find()) {
@@ -249,7 +256,16 @@ public class EgovPiiMaskUtil {
             m.appendReplacement(sb, Matcher.quoteReplacement(replacement));
         }
         m.appendTail(sb);
-        return sb.toString();
+
+        // 2) 하이픈 없는 번호 치환 — 단일 마스킹(maskPhoneNo)과 동일 규칙 적용.
+        //    1)에서 가려진 결과는 하이픈/별표를 포함하므로 연속 10~11자리 패턴에 매칭되지 않는다.
+        Matcher mp = PHONE_PLAIN_PATTERN.matcher(sb.toString());
+        StringBuffer sb2 = new StringBuffer();
+        while (mp.find()) {
+            mp.appendReplacement(sb2, Matcher.quoteReplacement(maskPlainPhoneDigits(mp.group(1))));
+        }
+        mp.appendTail(sb2);
+        return sb2.toString();
     }
 
     private static String maskAllEmail(String text) {
