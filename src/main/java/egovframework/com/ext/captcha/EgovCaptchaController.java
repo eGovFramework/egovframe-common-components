@@ -6,7 +6,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Random;
+import java.security.SecureRandom;
 
 import javax.imageio.ImageIO;
 
@@ -44,6 +44,17 @@ import jakarta.servlet.http.HttpSession;
  */
 @Controller
 public class EgovCaptchaController {
+
+	private static final int DEFAULT_CAPTCHA_LENGTH = 5;
+	private static final int MIN_CAPTCHA_LENGTH = 4;
+	private static final int MAX_CAPTCHA_LENGTH = 10;
+	private static final int MIN_IMAGE_WIDTH = 50;
+	private static final int MAX_IMAGE_WIDTH = 500;
+	private static final int MIN_IMAGE_HEIGHT = 30;
+	private static final int MAX_IMAGE_HEIGHT = 200;
+	private static final int MAX_PAGE_NAME_LENGTH = 50;
+	private static final String CAPTCHA_CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+	private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
 	protected final Log logger = LogFactory.getLog(getClass());
 
@@ -97,10 +108,17 @@ public class EgovCaptchaController {
 	public void generate(HttpServletRequest request, HttpServletResponse response,
 			@RequestParam(value = "width", defaultValue = "150") int width,
 			@RequestParam(value = "height", defaultValue = "50") int height,
-			@RequestParam(value = "lenght", defaultValue = "5") int length,
+			@RequestParam(value = "length", required = false) Integer length,
+			@RequestParam(value = "lenght", required = false) Integer legacyLength,
 			@RequestParam(value = "pgNm", defaultValue = "capt") String pgNm) {
+		int captchaLength = resolveCaptchaLength(length, legacyLength);
+		if (!isValidRequest(width, height, captchaLength, pgNm)) {
+			response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			return;
+		}
+
 		try {
-			String captchaTxt = generateRandomText(length);
+			String captchaTxt = generateRandomText(captchaLength);
 			request.getSession().setAttribute("captcha" + pgNm, captchaTxt);
 
 			BufferedImage bufferedImage = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
@@ -116,13 +134,13 @@ public class EgovCaptchaController {
 			//랜덤줄긋기
 			g2d.setColor(Color.white);
 			for(int i =0; i <8; i++) {//i= 선 갯수 x1,y1 시작점, x2,y2 끝점
-				float thickness = 1.0f + (float)(Math.random() * 3.0f); // 두께 조절
+				float thickness = 1.0f + SECURE_RANDOM.nextFloat() * 3.0f; // 두께 조절
 			    g2d.setStroke(new BasicStroke(thickness));
 
-				int x1 = (int)(Math.random()*width);
-				int y1 = (int)(Math.random()*height);
-				int x2 = (int)(Math.random()*width);
-				int y2 = (int)(Math.random()*height);
+				int x1 = SECURE_RANDOM.nextInt(width);
+				int y1 = SECURE_RANDOM.nextInt(height);
+				int x2 = SECURE_RANDOM.nextInt(width);
+				int y2 = SECURE_RANDOM.nextInt(height);
 				g2d.drawLine(x1,y1,x2,y2);
 			}
 			g2d.setStroke(new BasicStroke(1.0f));
@@ -135,6 +153,23 @@ public class EgovCaptchaController {
 		}
 	}
 
+	private int resolveCaptchaLength(Integer length, Integer legacyLength) {
+		if (length != null) {
+			return length;
+		}
+		if (legacyLength != null) {
+			return legacyLength;
+		}
+		return DEFAULT_CAPTCHA_LENGTH;
+	}
+
+	private boolean isValidRequest(int width, int height, int length, String pgNm) {
+		return width >= MIN_IMAGE_WIDTH && width <= MAX_IMAGE_WIDTH
+				&& height >= MIN_IMAGE_HEIGHT && height <= MAX_IMAGE_HEIGHT
+				&& length >= MIN_CAPTCHA_LENGTH && length <= MAX_CAPTCHA_LENGTH
+				&& pgNm != null && !pgNm.isBlank() && pgNm.length() <= MAX_PAGE_NAME_LENGTH;
+	}
+
 	/**
 	 * 임의의 문자열을 인자로 받은 길이 만큼 생성
 	 * 
@@ -142,11 +177,9 @@ public class EgovCaptchaController {
 	 * @return length 인자의 길이만큼 생성된 임의의 문자열
 	 */
 	private String generateRandomText(int length) {
-		String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 		StringBuilder sb = new StringBuilder();
-		Random random = new Random();
 		for (int i = 0; i < length; i++) {
-			sb.append(chars.charAt(random.nextInt(chars.length())));
+			sb.append(CAPTCHA_CHARS.charAt(SECURE_RANDOM.nextInt(CAPTCHA_CHARS.length())));
 		}
 		return sb.toString();
 	}
