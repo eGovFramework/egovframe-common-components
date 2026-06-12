@@ -19,6 +19,7 @@ import egovframework.com.cop.bbs.service.BoardMasterVO;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.06.26  한성곤          최초 생성
+ *   2026.06.12  홍다은          2026년 컨트리뷰션 불필요한 예외(throws Exception) 제거
  *
  * </pre>
  */
@@ -30,7 +31,7 @@ public class BBSAddedOptionsDAO extends EgovComAbstractDAO {
      * 
      * @param BoardMaster
      */
-    public String insertAddedOptionsInf(BoardMaster boardMaster) throws Exception {
+    public String insertAddedOptionsInf(BoardMaster boardMaster) {
 	return Integer.toString(insert("BBSAddedOptions.insertAddedOptionsInf", boardMaster));
     }
     
@@ -39,7 +40,7 @@ public class BBSAddedOptionsDAO extends EgovComAbstractDAO {
      * 
      * @param BoardMasterVO
      */
-    public BoardMasterVO selectAddedOptionsInf(BoardMaster vo) throws Exception {
+    public BoardMasterVO selectAddedOptionsInf(BoardMaster vo) {
 	return (BoardMasterVO)selectOne("BBSAddedOptions.selectAddedOptionsInf", vo);
     }
     
@@ -48,7 +49,7 @@ public class BBSAddedOptionsDAO extends EgovComAbstractDAO {
      * 
      * @param BoardMaster
      */
-    public void updateAddedOptionsInf(BoardMaster boardMaster) throws Exception {
+    public void updateAddedOptionsInf(BoardMaster boardMaster) {
 	update("BBSAddedOptions.updateAddedOptionsInf", boardMaster);
     }
 }
