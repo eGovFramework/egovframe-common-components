@@ -36,14 +36,17 @@ public class EgovNumberUtil {
 	 * @see
 	 */
 	public static int getRandomNum(int startNum, int endNum) {
-		int randomNum = 0;
+		if (startNum > endNum) {
+			throw new IllegalArgumentException("startNum(" + startNum + ")은 endNum(" + endNum + ")보다 클 수 없습니다.");
+		}
 
-		do {
-			// 종료숫자내에서 랜덤 숫자를 발생시킨다.
-			randomNum = rnd.nextInt(endNum + 1);
-		} while (randomNum < startNum); // 랜덤 숫자가 시작숫자보다 작을경우 다시 랜덤숫자를 발생시킨다.
+		// (endNum - startNum + 1)이 int 범위를 넘을 수 있으므로 long으로 구간 크기를 계산한다.
+		// endNum이 Integer.MAX_VALUE일 때 endNum + 1 오버플로와, endNum < startNum일 때
+		// 발생하던 무한 루프를 함께 방지한다.
+		long range = (long) endNum - (long) startNum + 1L;
 
-		return randomNum;
+		// [startNum, endNum] 구간에서 균등하게 난수를 뽑는다.
+		return (int) (startNum + rnd.nextLong(range));
 	}
 
 	/**
