@@ -200,7 +200,7 @@ public class EgovFormatCheckUtil {
 			continue;
 		} else if(mail1.charAt(i) <= '9' && mail1.charAt(i) >= '0') {
 			continue;
-		} else if(mail1.charAt(i) == '-' && mail1.charAt(i) == '_') {
+		} else if(mail1.charAt(i) == '-' || mail1.charAt(i) == '_') {
 			continue;
 		} else {
 			return false;
