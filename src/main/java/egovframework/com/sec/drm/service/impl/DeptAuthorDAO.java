@@ -21,6 +21,7 @@ import egovframework.com.sec.drm.service.DeptAuthorVO;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.03.11  이문준          최초 생성
+ *   2026.06.15  이백행          [2026년 컨트리뷰션] 불필요한 예외(throws Exception) 제거
  *
  * </pre>
  */
@@ -34,7 +35,7 @@ public class DeptAuthorDAO extends EgovComAbstractDAO {
 	 * @return List<DeptAuthorVO>
 	 * @exception Exception
 	 */
-	public List<DeptAuthorVO> selectDeptAuthorList(DeptAuthorVO deptAuthorVO) throws Exception {
+	public List<DeptAuthorVO> selectDeptAuthorList(DeptAuthorVO deptAuthorVO) {
 		return selectList("deptAuthorDAO.selectDeptAuthorList", deptAuthorVO);
 	}
 
@@ -43,7 +44,7 @@ public class DeptAuthorDAO extends EgovComAbstractDAO {
 	 * @param deptAuthor DeptAuthor
 	 * @exception Exception
 	 */
-	public void insertDeptAuthor(DeptAuthor deptAuthor) throws Exception {
+	public void insertDeptAuthor(DeptAuthor deptAuthor) {
 		insert("deptAuthorDAO.insertDeptAuthor", deptAuthor);
 	}
 
@@ -52,7 +53,7 @@ public class DeptAuthorDAO extends EgovComAbstractDAO {
 	 * @param deptAuthor DeptAuthor
 	 * @exception Exception
 	 */
-	public void updateDeptAuthor(DeptAuthor deptAuthor) throws Exception {
+	public void updateDeptAuthor(DeptAuthor deptAuthor) {
 		update("deptAuthorDAO.updateDeptAuthor", deptAuthor);
 	}
 
@@ -61,7 +62,7 @@ public class DeptAuthorDAO extends EgovComAbstractDAO {
 	 * @param deptAuthor DeptAuthor
 	 * @exception Exception
 	 */
-	public void deleteDeptAuthor(DeptAuthor deptAuthor) throws Exception {
+	public void deleteDeptAuthor(DeptAuthor deptAuthor) {
 		delete("deptAuthorDAO.deleteDeptAuthor", deptAuthor);
 	}
 
@@ -71,7 +72,7 @@ public class DeptAuthorDAO extends EgovComAbstractDAO {
 	 * @return int
 	 * @exception Exception
 	 */
-	public int selectDeptAuthorListTotCnt(DeptAuthorVO deptAuthorVO) throws Exception {
+	public int selectDeptAuthorListTotCnt(DeptAuthorVO deptAuthorVO) {
 		return (Integer)selectOne("deptAuthorDAO.selectDeptAuthorListTotCnt", deptAuthorVO);
 	}
 
@@ -81,7 +82,7 @@ public class DeptAuthorDAO extends EgovComAbstractDAO {
 	 * @return List<DeptAuthorVO>
 	 * @exception Exception
 	 */
-	public List<DeptAuthorVO> selectDeptList(DeptAuthorVO deptAuthorVO) throws Exception {
+	public List<DeptAuthorVO> selectDeptList(DeptAuthorVO deptAuthorVO) {
 		return selectList("deptAuthorDAO.selectDeptList", deptAuthorVO);
 	}
 	
@@ -91,7 +92,7 @@ public class DeptAuthorDAO extends EgovComAbstractDAO {
 	 * @return int
 	 * @exception Exception
 	 */
-	public int selectDeptListTotCnt(DeptAuthorVO deptAuthorVO) throws Exception {
+	public int selectDeptListTotCnt(DeptAuthorVO deptAuthorVO) {
 		return (Integer)selectOne("deptAuthorDAO.selectDeptListTotCnt", deptAuthorVO);
 	}	
 }
