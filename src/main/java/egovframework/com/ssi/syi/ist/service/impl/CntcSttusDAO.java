@@ -25,6 +25,7 @@ import egovframework.com.ssi.syi.ist.service.CntcSttusVO;
  *   2009.04.01  이중호          최초 생성
  *   2025.06.28  이백행          컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-FormalParameterNamingConventions(변수명에 밑줄 사용)
  *   2025.06.28  이백행          컨트리뷰션 형 변환 제거-(CntcSttus), (Integer)
+ *   2026.06.16  이백행          [2026년 컨트리뷰션] 불필요한 예외(throws Exception) 제거
  *
  *      </pre>
  */
@@ -37,7 +38,7 @@ public class CntcSttusDAO extends EgovComAbstractDAO {
 	 * @param cntcSttus
 	 * @return CntcSttus(연계현황)
 	 */
-	public CntcSttus selectCntcSttusDetail(CntcSttus cntcSttus) throws Exception {
+	public CntcSttus selectCntcSttusDetail(CntcSttus cntcSttus) {
 		return selectOne("CntcSttusDAO.selectCntcSttusDetail", cntcSttus);
 	}
 
@@ -46,9 +47,8 @@ public class CntcSttusDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param searchVO
 	 * @return List(연계현황 목록)
-	 * @throws Exception
 	 */
-	public List<EgovMap> selectCntcSttusList(CntcSttusVO searchVO) throws Exception {
+	public List<EgovMap> selectCntcSttusList(CntcSttusVO searchVO) {
 		return selectList("CntcSttusDAO.selectCntcSttusList", searchVO);
 	}
 
@@ -58,7 +58,7 @@ public class CntcSttusDAO extends EgovComAbstractDAO {
 	 * @param searchVO
 	 * @return int(연계현황 총 개수)
 	 */
-	public int selectCntcSttusListTotCnt(CntcSttusVO searchVO) throws Exception {
+	public int selectCntcSttusListTotCnt(CntcSttusVO searchVO) {
 		return selectOne("CntcSttusDAO.selectCntcSttusListTotCnt", searchVO);
 	}
 
