@@ -6,7 +6,7 @@ import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
 import java.io.IOException;
-import java.util.Random;
+import java.security.SecureRandom;
 
 import javax.imageio.ImageIO;
 
@@ -144,7 +144,8 @@ public class EgovCaptchaController {
 	private String generateRandomText(int length) {
 		String chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
 		StringBuilder sb = new StringBuilder();
-		Random random = new Random();
+		// CAPTCHA 토큰은 예측 불가능해야 하므로 SecureRandom 사용 (CWE-330)
+		SecureRandom random = new SecureRandom();
 		for (int i = 0; i < length; i++) {
 			sb.append(chars.charAt(random.nextInt(chars.length())));
 		}
