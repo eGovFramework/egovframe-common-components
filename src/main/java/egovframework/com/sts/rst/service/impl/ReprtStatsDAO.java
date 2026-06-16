@@ -15,6 +15,7 @@
  *  -------    --------    ---------------------------
  *  2009.8.3   lee.m.j          최초 생성 *  
  *  2011.8.26	정진오			IncludedInfo annotation 추가
+ *  2026.6.16	이백행			[2026년 컨트리뷰션] 불필요한 예외(throws Exception) 제거
  *
  *  </pre>
  */
@@ -37,7 +38,7 @@ public class ReprtStatsDAO extends EgovComAbstractDAO {
 	 * @param reprtStatsVO - 보고서통계 VO
 	 * @return List - 보고서통계 목록
 	 */
-	public List<ReprtStatsVO> selectReprtStatsList(ReprtStatsVO reprtStatsVO) throws Exception {
+	public List<ReprtStatsVO> selectReprtStatsList(ReprtStatsVO reprtStatsVO) {
 		return selectList("reprtStatsDAO.selectReprtStatsList", reprtStatsVO);
 	}
 
@@ -46,7 +47,7 @@ public class ReprtStatsDAO extends EgovComAbstractDAO {
 	 * @param reprtStatsVO - 보고서통계 VO
 	 * @return int
 	 */
-    public int selectReprtStatsListTotCnt(ReprtStatsVO reprtStatsVO) throws Exception {
+    public int selectReprtStatsListTotCnt(ReprtStatsVO reprtStatsVO) {
         return (Integer)selectOne("reprtStatsDAO.selectReprtStatsListTotCnt", reprtStatsVO);
     }
     
@@ -55,7 +56,7 @@ public class ReprtStatsDAO extends EgovComAbstractDAO {
 	 * @param reprtStatsVO - 보고서통계 VO
 	 * @return int
 	 */
-    public int selectReprtStatsListBarTotCnt(ReprtStatsVO reprtStatsVO) throws Exception {
+    public int selectReprtStatsListBarTotCnt(ReprtStatsVO reprtStatsVO) {
         return (Integer)selectOne("reprtStatsDAO.selectReprtStatsListBarTotCnt", reprtStatsVO);
     }    
     
@@ -64,7 +65,7 @@ public class ReprtStatsDAO extends EgovComAbstractDAO {
 	 * @param reprtStatsVO - 보고서통계 VO
 	 * @return ReprtStatsVO - 보고서통계 VO
 	 */
-	public List<ReprtStatsVO> selectReprtStats(ReprtStatsVO reprtStatsVO) throws Exception {
+	public List<ReprtStatsVO> selectReprtStats(ReprtStatsVO reprtStatsVO) {
 		return selectList("reprtStatsDAO.selectReprtStats", reprtStatsVO);
 	}
 
@@ -72,7 +73,7 @@ public class ReprtStatsDAO extends EgovComAbstractDAO {
 	 * 보고서 통계정보를 생성한 뒤 저장한다.
 	 * @param reprtStats - 보고서통계 model
 	 */
-	public void insertReprtStats(ReprtStats reprtStats) throws Exception {
+	public void insertReprtStats(ReprtStats reprtStats) {
 		insert("reprtStatsDAO.insertReprtStats", reprtStats);
 	}
 
@@ -81,7 +82,7 @@ public class ReprtStatsDAO extends EgovComAbstractDAO {
 	 * @param reprtStatsVO - 보고서통계 VO
 	 * @return List - 보고서통계 목록
 	 */
-	public List<ReprtStatsVO> selectReprtStatsBarList(ReprtStatsVO reprtStatsVO) throws Exception {
+	public List<ReprtStatsVO> selectReprtStatsBarList(ReprtStatsVO reprtStatsVO) {
 		return selectList("reprtStatsDAO.selectReprtStatsBarList", reprtStatsVO);
 	}	
 
@@ -90,7 +91,7 @@ public class ReprtStatsDAO extends EgovComAbstractDAO {
 	 * @param reprtStatsVO - 보고서통계 VO
 	 * @return List - 보고서통계 목록
 	 */
-	public List<ReprtStatsVO> selectReprtStatsByReprtTyList(ReprtStatsVO reprtStatsVO) throws Exception {
+	public List<ReprtStatsVO> selectReprtStatsByReprtTyList(ReprtStatsVO reprtStatsVO) {
 		return selectList("reprtStatsDAO.selectReprtStatsByReprtTyList", reprtStatsVO);
 	}	
 	
@@ -99,7 +100,7 @@ public class ReprtStatsDAO extends EgovComAbstractDAO {
 	 * @param reprtStatsVO - 보고서통계 VO
 	 * @return List - 보고서통계 목록
 	 */
-	public List<ReprtStatsVO> selectReprtStatsByReprtSttusList(ReprtStatsVO reprtStatsVO) throws Exception {
+	public List<ReprtStatsVO> selectReprtStatsByReprtSttusList(ReprtStatsVO reprtStatsVO) {
 		return selectList("reprtStatsDAO.selectReprtStatsByReprtSttusList", reprtStatsVO);
 	}		
 }
