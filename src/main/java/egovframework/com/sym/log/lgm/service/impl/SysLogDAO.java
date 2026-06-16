@@ -16,6 +16,7 @@ import egovframework.com.sym.log.lgm.service.SysLog;
 *    -------        -------     -------------------
 *    2009. 3. 11.   이삼섭         최초생성
 *    2011. 7. 01.   이기하         패키지 분리(sym.log -> sym.log.lgm)
+*    2026. 6. 16.   이백행         [2026년 컨트리뷰션] 불필요한 예외(throws Exception) 제거
 *
 * @author 공통 서비스 개발팀 이삼섭
 * @since 2009. 3. 11.
@@ -31,7 +32,6 @@ public class SysLogDAO extends EgovComAbstractDAO{
 	 *
 	 * @param SysLog
 	 * @return
-	 * @throws Exception
 	 */
 	public void logInsertSysLog(SysLog sysLog) {
 		insert("SysLog.logInsertSysLog", sysLog);
@@ -43,7 +43,6 @@ public class SysLogDAO extends EgovComAbstractDAO{
 	 *
 	 * @param
 	 * @return
-	 * @throws Exception
 	 */
 	public void logInsertSysLogSummary() {
 		insert("SysLog.logInsertSysLogSummary", null);
@@ -56,7 +55,6 @@ public class SysLogDAO extends EgovComAbstractDAO{
 	 *
 	 * @param sysLog
 	 * @return sysLog
-	 * @throws Exception
 	 */
 	public List<SysLog> selectSysLogInf(SysLog sysLog) {
 		return selectList("SysLog.selectSysLogInf", sysLog);
@@ -66,7 +64,6 @@ public class SysLogDAO extends EgovComAbstractDAO{
 	 * 시스템 로그정보 목록의 숫자를 조회한다.
 	 * @param sysLog
 	 * @return
-	 * @throws Exception
 	 */
 	public int selectSysLogInfCnt(SysLog sysLog) {
 		return (Integer)selectOne("SysLog.selectSysLogInfCnt", sysLog);
@@ -77,7 +74,6 @@ public class SysLogDAO extends EgovComAbstractDAO{
 	 *
 	 * @param sysLog
 	 * @return sysLog
-	 * @throws Exception
 	 */
 	public SysLog selectSysLog(SysLog sysLog) {
 		return (SysLog) selectOne("SysLog.selectSysLog", sysLog);
