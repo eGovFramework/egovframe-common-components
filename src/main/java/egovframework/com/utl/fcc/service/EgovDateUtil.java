@@ -407,19 +407,18 @@ public class EgovDateUtil {
 	 * </p>
 	 *
 	 * <pre>
-	 * DateUtil.isLeapYear(2004) = false
-	 * DateUtil.isLeapYear(2005) = true
-	 * DateUtil.isLeapYear(2006) = true
+	 * DateUtil.isLeapYear(2004) = true
+	 * DateUtil.isLeapYear(2005) = false
+	 * DateUtil.isLeapYear(2006) = false
+	 * DateUtil.isLeapYear(1900) = false
+	 * DateUtil.isLeapYear(2000) = true
 	 * </pre>
 	 *
 	 * @param year 연도
 	 * @return 윤년 여부
 	 */
 	public static boolean isLeapYear(int year) {
-		if (year % 4 == 0 && year % 100 != 0 || year % 400 == 0) {
-			return false;
-		}
-		return true;
+		return year % 4 == 0 && year % 100 != 0 || year % 400 == 0;
 	}
 
 	/**
