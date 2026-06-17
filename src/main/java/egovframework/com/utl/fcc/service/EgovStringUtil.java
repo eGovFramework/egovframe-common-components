@@ -923,23 +923,35 @@ public class EgovStringUtil {
 	 * 주어진 명사에 맞는 보조사를 반환한다.
 	 * 예: "이름" -> "이름은", "나이" -> "나이는"
 	 *
+	 * <p>입력이 {@code null}이면 {@code null}을 반환한다. 빈 문자열·비한글 입력은
+	 * 종성이 없는 것으로 간주하여 받침 없는 조사를 붙인다(세 조사 메서드 공통 계약).</p>
+	 *
 	 * @param noun 명사
-	 * @return 보조사 조사 ("은" 또는 "는")
+	 * @return 보조사 조사 ("은" 또는 "는"), 입력이 null이면 null
 	 */
 	public static String getAuxiliaryParticle(String noun){
-		return noun+( hasFinalConsonant(noun) ? "은" : "는") ;
+		if (noun == null) {
+			return null;
+		}
+		return noun + (hasFinalConsonant(noun) ? "은" : "는");
 	}
 
 
 	/**
 	 * 주어진 명사에 맞는 주격 조사를 반환한다.
-	 * 예: "책상" -> "책상이", "청소기" -> "청소기"
+	 * 예: "책상" -> "책상이", "청소기" -> "청소기가"
+	 *
+	 * <p>입력이 {@code null}이면 {@code null}을 반환한다. 빈 문자열·비한글 입력은
+	 * 종성이 없는 것으로 간주하여 받침 없는 조사를 붙인다(세 조사 메서드 공통 계약).</p>
 	 *
 	 * @param noun 명사
-	 * @return 주격 조사 ("이" 또는 "")
+	 * @return 주격 조사 ("이" 또는 "가"), 입력이 null이면 null
 	 */
 	public static String getSubjectParticle(String noun) {
-		return hasFinalConsonant(noun) ? noun+"이" : noun;
+		if (noun == null) {
+			return null;
+		}
+		return noun + (hasFinalConsonant(noun) ? "이" : "가");
 	}
 
 
@@ -948,10 +960,16 @@ public class EgovStringUtil {
 	 * 주어진 명사에 맞는 목적격 조사를 반환한다.
 	 * 예: "책상" -> "책상을", "청소기" -> "청소기를"
 	 *
+	 * <p>입력이 {@code null}이면 {@code null}을 반환한다. 빈 문자열·비한글 입력은
+	 * 종성이 없는 것으로 간주하여 받침 없는 조사를 붙인다(세 조사 메서드 공통 계약).</p>
+	 *
 	 * @param noun 명사
-	 * @return 목적격 조사 ("을" 또는 "를")
+	 * @return 목적격 조사 ("을" 또는 "를"), 입력이 null이면 null
 	 */
 	public static String getObjectParticle(String noun) {
+		if (noun == null) {
+			return null;
+		}
 		return noun + (hasFinalConsonant(noun) ? "을" : "를");
 	}
 
