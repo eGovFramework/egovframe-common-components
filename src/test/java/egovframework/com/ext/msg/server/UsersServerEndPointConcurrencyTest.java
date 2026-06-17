@@ -15,13 +15,19 @@
  */
 package egovframework.com.ext.msg.server;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.io.IOException;
+import java.io.OutputStream;
+import java.io.Writer;
 import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.net.URI;
+import java.nio.ByteBuffer;
 import java.security.Principal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,6 +39,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
 import jakarta.websocket.CloseReason;
+import jakarta.websocket.EncodeException;
 import jakarta.websocket.Extension;
 import jakarta.websocket.MessageHandler;
 import jakarta.websocket.RemoteEndpoint;
@@ -127,6 +134,27 @@ class UsersServerEndPointConcurrencyTest {
 		assertNull(failure.get(), "순회 중 구조 변경으로 예외가 발생하면 안 된다: " + failure.get());
 	}
 
+	@Test
+	void broadcast_모든세션에전달하고_실패세션이있어도나머지는전달된다() throws Exception {
+		final Set<Session> users = connectedAllUsers();
+		FakeSession s1 = new FakeSession("u1");
+		FakeSession bad = new FakeSession("bad", true); // sendText에서 IOException
+		FakeSession s2 = new FakeSession("u2");
+		users.add(s1);
+		users.add(bad);
+		users.add(s2);
+
+		Method broadcast = UsersServerEndPoint.class.getDeclaredMethod("broadcast", String.class);
+		broadcast.setAccessible(true);
+		broadcast.invoke(new UsersServerEndPoint(), "hello");
+
+		// 실패 세션이 있어도 정상 세션은 모두 수신한다(전송 실패가 나머지를 막지 않음)
+		assertEquals(List.of("hello"), ((RecordingBasicRemote) s1.getBasicRemote()).sentText());
+		assertEquals(List.of("hello"), ((RecordingBasicRemote) s2.getBasicRemote()).sentText());
+		assertTrue(((RecordingBasicRemote) bad.getBasicRemote()).sendAttempted(),
+			"실패 세션도 전송이 시도되어야 한다");
+	}
+
 	/**
 	 * {@link Session} 인터페이스의 인라인 fake 구현.
 	 *
@@ -138,14 +166,25 @@ class UsersServerEndPointConcurrencyTest {
 	private static final class FakeSession implements Session {
 
 		private final Map<String, Object> userProperties = new HashMap<>();
+		private final RecordingBasicRemote basicRemote;
 
 		FakeSession(String username) {
+			this(username, false);
+		}
+
+		FakeSession(String username, boolean failOnSend) {
 			userProperties.put("username", username);
+			this.basicRemote = new RecordingBasicRemote(failOnSend);
 		}
 
 		@Override
 		public Map<String, Object> getUserProperties() {
 			return userProperties;
+		}
+
+		@Override
+		public RemoteEndpoint.Basic getBasicRemote() {
+			return basicRemote;
 		}
 
 		@Override
@@ -239,11 +278,6 @@ class UsersServerEndPointConcurrencyTest {
 		}
 
 		@Override
-		public RemoteEndpoint.Basic getBasicRemote() {
-			return null;
-		}
-
-		@Override
 		public String getId() {
 			return null;
 		}
@@ -286,6 +320,93 @@ class UsersServerEndPointConcurrencyTest {
 		@Override
 		public Set<Session> getOpenSessions() {
 			return null;
+		}
+	}
+
+	/**
+	 * {@link RemoteEndpoint.Basic}의 인라인 fake. sendText(String) 호출만 기록하며,
+	 * failOnSend가 true면 IOException을 던져 전송 실패 세션을 시뮬레이션한다.
+	 */
+	private static final class RecordingBasicRemote implements RemoteEndpoint.Basic {
+
+		private final boolean failOnSend;
+		private final List<String> sent = new ArrayList<>();
+		private boolean sendAttempted;
+
+		RecordingBasicRemote(boolean failOnSend) {
+			this.failOnSend = failOnSend;
+		}
+
+		List<String> sentText() {
+			return sent;
+		}
+
+		boolean sendAttempted() {
+			return sendAttempted;
+		}
+
+		@Override
+		public void sendText(String text) throws IOException {
+			sendAttempted = true;
+			if (failOnSend) {
+				throw new IOException("simulated send failure");
+			}
+			sent.add(text);
+		}
+
+		@Override
+		public void sendText(String partialMessage, boolean isLast) throws IOException {
+			sendText(partialMessage);
+		}
+
+		@Override
+		public void sendBinary(ByteBuffer data) throws IOException {
+			// no-op
+		}
+
+		@Override
+		public void sendBinary(ByteBuffer partialByte, boolean isLast) throws IOException {
+			// no-op
+		}
+
+		@Override
+		public void sendObject(Object data) throws IOException, EncodeException {
+			// no-op
+		}
+
+		@Override
+		public OutputStream getSendStream() throws IOException {
+			return null;
+		}
+
+		@Override
+		public Writer getSendWriter() throws IOException {
+			return null;
+		}
+
+		@Override
+		public void setBatchingAllowed(boolean allowed) throws IOException {
+			// no-op
+		}
+
+		@Override
+		public boolean getBatchingAllowed() {
+			return false;
+		}
+
+		@Override
+		public void flushBatch() throws IOException {
+			// no-op
+		}
+
+		@Override
+		public void sendPing(ByteBuffer applicationData) throws IOException {
+			// no-op
+		}
+
+		@Override
+		public void sendPong(ByteBuffer applicationData) throws IOException {
+			// no-op
 		}
 	}
 }
