@@ -29,7 +29,7 @@ public class InfrmlSanctnDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param sanctnerVO
 	 */	
-	public List<SanctnerVO> selectSanctnerList(SanctnerVO sanctnerVO) throws Exception{
+	public List<SanctnerVO> selectSanctnerList(SanctnerVO sanctnerVO) {
 		return selectList("InfrmlSanctnDAO.selectSanctnerList", sanctnerVO);
 	}
 	
@@ -40,7 +40,7 @@ public class InfrmlSanctnDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param sanctnerVO
 	 */
-	public int selectSanctnerListCnt(SanctnerVO sanctnerVO) throws Exception{
+	public int selectSanctnerListCnt(SanctnerVO sanctnerVO) {
 		return (Integer)selectOne("InfrmlSanctnDAO.selectSanctnerListCnt", sanctnerVO);
 	}
 	
@@ -51,7 +51,7 @@ public class InfrmlSanctnDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param infrmlSanctn
 	 */
-	public InfrmlSanctn selectInfrmlSanctn(InfrmlSanctn infrmlSanctn) throws Exception{
+	public InfrmlSanctn selectInfrmlSanctn(InfrmlSanctn infrmlSanctn) {
 		return (InfrmlSanctn)selectOne("InfrmlSanctnDAO.selectInfrmlSanctn", infrmlSanctn);
 	}
 	
@@ -62,7 +62,7 @@ public class InfrmlSanctnDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param infrmlSanctn
 	 */
-	public void updateInfrmlSanctn(InfrmlSanctn infrmlSanctn) throws Exception{
+	public void updateInfrmlSanctn(InfrmlSanctn infrmlSanctn) {
 		update("InfrmlSanctnDAO.updateInfrmlSanctn", infrmlSanctn);
 	}
 	
@@ -72,7 +72,7 @@ public class InfrmlSanctnDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param infrmlSanctn
 	 */
-	public void updateInfrmlSanctnConfm(InfrmlSanctn infrmlSanctn) throws Exception{
+	public void updateInfrmlSanctnConfm(InfrmlSanctn infrmlSanctn) {
 		update("InfrmlSanctnDAO.updateInfrmlSanctnConfm", infrmlSanctn);
 	}
 
@@ -82,7 +82,7 @@ public class InfrmlSanctnDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param infrmlSanctn
 	 */
-	public void insertInfrmlSanctn(InfrmlSanctn infrmlSanctn) throws Exception{
+	public void insertInfrmlSanctn(InfrmlSanctn infrmlSanctn) {
 		insert("InfrmlSanctnDAO.insertInfrmlSanctn", infrmlSanctn);
 	}
 
@@ -92,7 +92,7 @@ public class InfrmlSanctnDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param infrmlSanctn
 	 */
-	public void deleteInfrmlSanctn(InfrmlSanctn infrmlSanctn) throws Exception{
+	public void deleteInfrmlSanctn(InfrmlSanctn infrmlSanctn) {
 		delete("InfrmlSanctnDAO.deleteInfrmlSanctn", infrmlSanctn);
 	}
 
