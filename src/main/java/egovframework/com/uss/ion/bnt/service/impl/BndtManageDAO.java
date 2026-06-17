@@ -30,7 +30,7 @@ public class BndtManageDAO extends EgovComAbstractDAO {
 	 * @return List - 당직관리 목록
 	 */
 	
-	public List<BndtManageVO> selectBndtManageList(BndtManageVO bndtManageVO) throws Exception {
+	public List<BndtManageVO> selectBndtManageList(BndtManageVO bndtManageVO) {
 		return  selectList("bndtManageDAO.selectBndtManageList", bndtManageVO);
 	}
 
@@ -38,9 +38,8 @@ public class BndtManageDAO extends EgovComAbstractDAO {
 	 * 당직관리목록 총 개수를 조회한다.
 	 * @param bndtManageVO - 당직관리 VO
 	 * @return int
-	 * @exception Exception
 	 */
-    public int selectBndtManageListTotCnt(BndtManageVO bndtManageVO) throws Exception {
+    public int selectBndtManageListTotCnt(BndtManageVO bndtManageVO) {
         return (Integer)selectOne("bndtManageDAO.selectBndtManageListTotCnt", bndtManageVO);
     }
 
@@ -49,7 +48,7 @@ public class BndtManageDAO extends EgovComAbstractDAO {
 	 * @param bndtManageVO - 당직관리 VO
 	 * @return BndtManageVO - 당직관리 VO
 	 */
-	public BndtManageVO selectBndtManage(BndtManageVO bndtManageVO)  throws Exception {
+	public BndtManageVO selectBndtManage(BndtManageVO bndtManageVO) {
 		return (BndtManageVO) selectOne("bndtManageDAO.selectBndtManage", bndtManageVO);
 	}
 
@@ -57,7 +56,7 @@ public class BndtManageDAO extends EgovComAbstractDAO {
 	 * 당직관리정보를 신규로 등록한다.
 	 * @param bndtManageVO - 당직관리 VO
 	 */
-	public void insertBndtManage(BndtManageVO bndtManageVO) throws Exception {
+	public void insertBndtManage(BndtManageVO bndtManageVO) {
 		insert("bndtManageDAO.insertBndtManage", bndtManageVO);
 	}
 
@@ -65,7 +64,7 @@ public class BndtManageDAO extends EgovComAbstractDAO {
 	 * 기 등록된 당직관리정보를 수정한다.
 	 * @param bndtManageVO - 당직관리 VO
 	 */
-	public void updtBndtManage(BndtManageVO bndtManageVO) throws Exception {
+	public void updtBndtManage(BndtManageVO bndtManageVO) {
 		update("bndtManageDAO.updtBndtManage", bndtManageVO);
 	}
 
@@ -73,7 +72,7 @@ public class BndtManageDAO extends EgovComAbstractDAO {
 	 * 기 등록된 당직관리정보를 삭제한다.
 	 * @param bndtManageVO - 당직관리 VO
 	 */
-	public void deleteBndtManage(BndtManageVO bndtManageVO) throws Exception {
+	public void deleteBndtManage(BndtManageVO bndtManageVO) {
         delete("bndtManageDAO.deleteBndtManage",bndtManageVO);
 	}
 
@@ -81,9 +80,8 @@ public class BndtManageDAO extends EgovComAbstractDAO {
 	 * 당직일지 개수를 조회한다.
 	 * @param bndtManageVO - 당직관리 VO
 	 * @return int
-	 * @exception Exception
 	 */
-    public int selectBndtDiaryTotCnt(BndtManageVO bndtManageVO) throws Exception {
+    public int selectBndtDiaryTotCnt(BndtManageVO bndtManageVO) {
         return (Integer)selectOne("bndtManageDAO.selectBndtDiaryTotCnt", bndtManageVO);
     }
 	
@@ -94,7 +92,7 @@ public class BndtManageDAO extends EgovComAbstractDAO {
 	 * @param bndtCeckManageVO - 당직체크관리 VO
 	 * @return List - 당직체크관리 목록
 	 */
-	public List<BndtCeckManageVO> selectBndtCeckManageList(BndtCeckManageVO bndtCeckManageVO) throws Exception {
+	public List<BndtCeckManageVO> selectBndtCeckManageList(BndtCeckManageVO bndtCeckManageVO) {
 		return selectList("bndtManageDAO.selectBndtCeckManageList", bndtCeckManageVO);
 	}
 
@@ -102,9 +100,8 @@ public class BndtManageDAO extends EgovComAbstractDAO {
 	 * 당직체크관리목록 총 개수를 조회한다.
 	 * @param bndtCeckManageVO - 당직체크관리 VO
 	 * @return int
-	 * @exception Exception
 	 */
-    public int selectBndtCeckManageListTotCnt(BndtCeckManageVO bndtCeckManageVO) throws Exception {
+    public int selectBndtCeckManageListTotCnt(BndtCeckManageVO bndtCeckManageVO) {
         return (Integer)selectOne("bndtManageDAO.selectBndtCeckManageListTotCnt", bndtCeckManageVO);
     }
 
@@ -113,7 +110,7 @@ public class BndtManageDAO extends EgovComAbstractDAO {
 	 * @param bndtCeckManageVO - 당직체크관리 VO
 	 * @return BndtCeckManageVO - 당직체크관리 VO
 	 */
-	public BndtCeckManageVO selectBndtCeckManage(BndtCeckManageVO bndtCeckManageVO)  throws Exception {
+	public BndtCeckManageVO selectBndtCeckManage(BndtCeckManageVO bndtCeckManageVO) {
 		return (BndtCeckManageVO) selectOne("bndtManageDAO.selectBndtCeckManage", bndtCeckManageVO);
 	}
 
@@ -121,7 +118,7 @@ public class BndtManageDAO extends EgovComAbstractDAO {
 	 * 당직체크관리정보를 신규로 등록한다.
 	 * @param bndtCeckManageVO - 당직체크관리 VO
 	 */
-	public void insertBndtCeckManage(BndtCeckManageVO bndtCeckManageVO) throws Exception {
+	public void insertBndtCeckManage(BndtCeckManageVO bndtCeckManageVO) {
 		insert("bndtManageDAO.insertBndtCeckManage", bndtCeckManageVO);
 	}
 
@@ -129,7 +126,7 @@ public class BndtManageDAO extends EgovComAbstractDAO {
 	 * 기 등록된 당직체크관리정보를 수정한다.
 	 * @param bndtCeckManageVO - 당직체크관리 VO
 	 */
-	public void updtBndtCeckManage(BndtCeckManageVO bndtCeckManageVO) throws Exception {
+	public void updtBndtCeckManage(BndtCeckManageVO bndtCeckManageVO) {
 		update("bndtManageDAO.updtBndtCeckManage", bndtCeckManageVO);
 	}
 
@@ -137,7 +134,7 @@ public class BndtManageDAO extends EgovComAbstractDAO {
 	 * 기 등록된 당직체크관리정보를 삭제한다.
 	 * @param bndtCeckManageVO - 당직체크관리 VO
 	 */
-	public void deleteBndtCeckManage(BndtCeckManageVO bndtCeckManageVO) throws Exception {
+	public void deleteBndtCeckManage(BndtCeckManageVO bndtCeckManageVO) {
         delete("bndtManageDAO.deleteBndtCeckManage",bndtCeckManageVO);
 	}
 
@@ -145,9 +142,8 @@ public class BndtManageDAO extends EgovComAbstractDAO {
 	 * 당직체크 중복여부 조회한다.
 	 * @param bndtCeckManageVO - 당직체크관리 VO
 	 * @return int
-	 * @exception Exception
 	 */
-    public int selectBndtCeckManageDplctAt(BndtCeckManageVO bndtCeckManageVO) throws Exception {
+    public int selectBndtCeckManageDplctAt(BndtCeckManageVO bndtCeckManageVO) {
         return (Integer)selectOne("bndtManageDAO.selectBndtCeckManageDplctAt", bndtCeckManageVO);
     }
 	
@@ -158,7 +154,7 @@ public class BndtManageDAO extends EgovComAbstractDAO {
 	 * @param bndtDiaryVO - 당직일지관리 VO
 	 * @return List - 당직일지관리 VO
 	 */
-	public List<BndtDiaryVO> selectBndtDiary(BndtDiaryVO bndtDiaryVO) throws Exception {
+	public List<BndtDiaryVO> selectBndtDiary(BndtDiaryVO bndtDiaryVO) {
 		return selectList("bndtManageDAO.selectBndtDiary", bndtDiaryVO);
 	}
 	
@@ -166,7 +162,7 @@ public class BndtManageDAO extends EgovComAbstractDAO {
 	 * 당직일지관리정보를 신규로 등록한다.
 	 * @param bndtDiaryVO - 당직일지관리 VO
 	 */
-	public void insertBndtDiary(BndtDiaryVO bndtDiaryVO) throws Exception {
+	public void insertBndtDiary(BndtDiaryVO bndtDiaryVO) {
 
 		insert("bndtManageDAO.insertBndtDiary", bndtDiaryVO);
 	}
@@ -175,7 +171,7 @@ public class BndtManageDAO extends EgovComAbstractDAO {
 	 * 기 등록된 당직일지관리정보를 수정한다.
 	 * @param bndtDiaryVO - 당직일지관리 VO
 	 */
-	public void updtBndtDiary(BndtDiaryVO bndtDiaryVO) throws Exception {
+	public void updtBndtDiary(BndtDiaryVO bndtDiaryVO) {
 		update("bndtManageDAO.updtBndtDiary", bndtDiaryVO);
 	}
 
@@ -183,7 +179,7 @@ public class BndtManageDAO extends EgovComAbstractDAO {
 	 * 기 등록된 당직일지관리정보를 삭제한다.
 	 * @param bndtDiaryVO - 당직일지관리 VO
 	 */
-	public void deleteBndtDiary(BndtDiaryVO bndtDiaryVO) throws Exception {
+	public void deleteBndtDiary(BndtDiaryVO bndtDiaryVO) {
         delete("bndtManageDAO.deleteBndtDiary",bndtDiaryVO);
 	}
 
@@ -193,7 +189,7 @@ public class BndtManageDAO extends EgovComAbstractDAO {
 	 * @param bndtManageVO - 당직관리 VO
 	 * @return BndtManageVO - 당직관리 VO
 	 */
-	public BndtManageVO selectBndtManageBnde(BndtManageVO bndtManageVO)  throws Exception {
+	public BndtManageVO selectBndtManageBnde(BndtManageVO bndtManageVO) {
 		return (BndtManageVO) selectOne("bndtManageDAO.selectBndtManageBnde", bndtManageVO);
 	}
 	
@@ -201,9 +197,8 @@ public class BndtManageDAO extends EgovComAbstractDAO {
 	 * 당직관리 등록건수 조회한다.
 	 * @param bndtManageVO - 당직관리 VO
 	 * @return int
-	 * @exception Exception
 	 */
-    public int selectBndtManageMonthCnt(BndtManageVO bndtManageVO) throws Exception {
+    public int selectBndtManageMonthCnt(BndtManageVO bndtManageVO) {
         return (Integer)selectOne("bndtManageDAO.selectBndtManageMonthCnt", bndtManageVO);
     }
 }
