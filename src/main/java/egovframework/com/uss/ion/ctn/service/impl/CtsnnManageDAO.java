@@ -27,7 +27,7 @@ public class CtsnnManageDAO extends EgovComAbstractDAO {
 	 * @param ctsnnManageVO - 경조관리 VO
 	 * @return List - 경조관리 목록
 	 */
-	public List<CtsnnManageVO> selectCtsnnManageList(CtsnnManageVO ctsnnManageVO) throws Exception {
+	public List<CtsnnManageVO> selectCtsnnManageList(CtsnnManageVO ctsnnManageVO) {
 		return selectList("ctsnnManageDAO.selectCtsnnManageList", ctsnnManageVO);
 	}
 
@@ -35,9 +35,8 @@ public class CtsnnManageDAO extends EgovComAbstractDAO {
 	 * 경조관리목록 총 개수를 조회한다.
 	 * @param ctsnnManageVO - 경조관리 VO
 	 * @return int
-	 * @exception Exception
 	 */
-    public int selectCtsnnManageListTotCnt(CtsnnManageVO ctsnnManageVO) throws Exception {
+    public int selectCtsnnManageListTotCnt(CtsnnManageVO ctsnnManageVO) {
         return (Integer)selectOne("ctsnnManageDAO.selectCtsnnManageListTotCnt", ctsnnManageVO);
     }
 
@@ -46,7 +45,7 @@ public class CtsnnManageDAO extends EgovComAbstractDAO {
 	 * @param ctsnnManageVO - 경조관리 VO
 	 * @return CtsnnManageVO - 경조관리 VO
 	 */
-	public CtsnnManageVO selectCtsnnManage(CtsnnManageVO ctsnnManageVO)  throws Exception {
+	public CtsnnManageVO selectCtsnnManage(CtsnnManageVO ctsnnManageVO) {
 		return (CtsnnManageVO) selectOne("ctsnnManageDAO.selectCtsnnManage", ctsnnManageVO);
 	}
 
@@ -54,7 +53,7 @@ public class CtsnnManageDAO extends EgovComAbstractDAO {
 	 * 경조관리정보를 신규로 등록한다.
 	 * @param ctsnnManage - 경조관리 model
 	 */
-	public void insertCtsnnManage(CtsnnManageVO ctsnnManageVO) throws Exception {
+	public void insertCtsnnManage(CtsnnManageVO ctsnnManageVO) {
 		insert("ctsnnManageDAO.insertCtsnnManage", ctsnnManageVO);
 	}
 
@@ -62,7 +61,7 @@ public class CtsnnManageDAO extends EgovComAbstractDAO {
 	 * 기 등록된 경조관리정보를 수정한다.
 	 * @param ctsnnManage - 경조관리 model
 	 */
-	public void updtCtsnnManage(CtsnnManageVO ctsnnManageVO) throws Exception {
+	public void updtCtsnnManage(CtsnnManageVO ctsnnManageVO) {
 		update("ctsnnManageDAO.updateCtsnnManage", ctsnnManageVO);
 	}
 
@@ -70,7 +69,7 @@ public class CtsnnManageDAO extends EgovComAbstractDAO {
 	 * 기 등록된 경조관리정보를 삭제한다.
 	 * @param ctsnnManage - 경조관리 model
 	 */
-	public void deleteCtsnnManage(CtsnnManageVO ctsnnManageVO) throws Exception {
+	public void deleteCtsnnManage(CtsnnManageVO ctsnnManageVO) {
         delete("ctsnnManageDAO.deleteCtsnnManage", ctsnnManageVO);
 	}
 
@@ -80,7 +79,7 @@ public class CtsnnManageDAO extends EgovComAbstractDAO {
 	 * @param ctsnnManageVO - 경조관리 VO
 	 * @return List - 경조관리 목록
 	 */
-	public List<CtsnnManageVO> selectCtsnnManageConfmList(CtsnnManageVO ctsnnManageVO) throws Exception {
+	public List<CtsnnManageVO> selectCtsnnManageConfmList(CtsnnManageVO ctsnnManageVO) {
 		return selectList("ctsnnManageDAO.selectCtsnnManageConfmList", ctsnnManageVO);
 	}
 
@@ -88,9 +87,8 @@ public class CtsnnManageDAO extends EgovComAbstractDAO {
 	 * 경조관리정보 승인 처리를 위해 신청된 경조관리 목록 총 개수를 조회한다.
 	 * @param ctsnnManageVO - 경조관리 VO
 	 * @return int
-	 * @exception Exception
 	 */
-    public int selectCtsnnManageConfmListTotCnt(CtsnnManageVO ctsnnManageVO) throws Exception {
+    public int selectCtsnnManageConfmListTotCnt(CtsnnManageVO ctsnnManageVO) {
         return (Integer)selectOne("ctsnnManageDAO.selectCtsnnManageConfmListTotCnt", ctsnnManageVO);
     }
 
@@ -98,7 +96,7 @@ public class CtsnnManageDAO extends EgovComAbstractDAO {
 	 *경조정보를 승인처리 한다.
 	 * @param ctsnnManage - 경조관리 model
 	 */
-	public void updtCtsnnManageConfm(CtsnnManageVO ctsnnManageVO) throws Exception {
+	public void updtCtsnnManageConfm(CtsnnManageVO ctsnnManageVO) {
 		update("ctsnnManageDAO.updtCtsnnManageConfm", ctsnnManageVO);
 	}
 }
