@@ -2,6 +2,9 @@ package egovframework.com.cmm;
 
 import java.io.Serializable;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 세션 VO 클래스
  * @author 공통서비스 개발팀 박지욱
@@ -19,6 +22,8 @@ import java.io.Serializable;
  *  </pre>
  */
 @SuppressWarnings("serial")
+@Getter
+@Setter
 public class SessionVO implements Serializable {
 	
 	/** 아이디 */
