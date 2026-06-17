@@ -6,6 +6,11 @@ import java.util.regex.Matcher;
 /**
  * @Class Name  : EgovPiiMaskUtil.java
  * @Description : 개인정보 마스킹 처리 관련 유틸리티
+ * 
+ * 제공되는 마스킹 규칙은 일반적인 활용 사례를 기준으로 하며,  
+ * 실제 서비스 적용 시에는 관련 법령, 기관 가이드라인 및 업무 요건에 따라  
+ * 마스킹 범위를 검토·조정해야 할 수 있다.
+ * 
  * @Modification Information
  *
  *     수정일         수정자                   수정내용
