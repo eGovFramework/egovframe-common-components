@@ -20,6 +20,7 @@ import egovframework.com.uss.ion.noi.service.NotificationVO;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.06.08  한성곤          최초 생성
+ *   2026.06.18  이백행          [2026년 컨트리뷰션] 불필요한 예외(throws Exception) 제거
  *
  * </pre>
  */
@@ -29,21 +30,21 @@ public class NotificationDAO extends EgovComAbstractDAO {
     /**
      * 정보알림이 목록을 조회한다.
      */
-    public List<NotificationVO> selectNotificationInfs(NotificationVO notificationVO) throws Exception {
+    public List<NotificationVO> selectNotificationInfs(NotificationVO notificationVO) {
         return selectList("NotificationDAO.selectNotificationInfs", notificationVO);
     }
 
     /**
      * 정보알림이 목록 숫자를 조회한다
      */
-    public int selectNotificationInfsCnt(NotificationVO notificationVO) throws Exception {
+    public int selectNotificationInfsCnt(NotificationVO notificationVO) {
         return (Integer) selectOne("NotificationDAO.selectNotificationInfsCnt", notificationVO);
     }
 
     /**
      * 정보알림이 정보를 등록한다.
      */
-    public String insertNotificationInf(NotificationVO notificationVO) throws Exception {
+    public String insertNotificationInf(NotificationVO notificationVO) {
         return Integer.toString(insert("NotificationDAO.insertNotificationInf", notificationVO));
     }
 
@@ -57,21 +58,21 @@ public class NotificationDAO extends EgovComAbstractDAO {
     /**
      * 정보알림이 정보를 수정한다.
      */
-    public void updateNotificationInf(NotificationVO notificationVO) throws Exception {
+    public void updateNotificationInf(NotificationVO notificationVO) {
         update("NotificationDAO.updateNotificationInf", notificationVO);
     }
 
     /**
      * 정보알림이 정보를 삭제한다.
      */
-    public void deleteNotificationInf(NotificationVO notificationVO) throws Exception {
+    public void deleteNotificationInf(NotificationVO notificationVO) {
         update("NotificationDAO.deleteNotificationInf", notificationVO);
     }
 
     /**
      * 정보알림이 표시를 위한 대상 알림 정보를 얻는다.
      */
-    public List<NotificationVO> getNotificationData(NotificationVO notificationVO) throws Exception {
+    public List<NotificationVO> getNotificationData(NotificationVO notificationVO) {
         return selectList("NotificationDAO.getNotificationData", notificationVO);
     }
 }
