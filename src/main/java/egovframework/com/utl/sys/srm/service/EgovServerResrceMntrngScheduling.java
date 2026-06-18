@@ -198,10 +198,8 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 
 	/**
 	 * 이메일을 전송한다.
-	 * @param serverResrceMntrngVO - 서버자원모니터링 Vo
+	 * @param serverResrceMntrng - 서버자원모니터링 정보
 	 * @return
-	 *
-	 * @param serverResrceMntrngVO
 	 */
 	public void sendEmail(ServerResrceMntrng serverResrceMntrng) {
 		String subject = "";
@@ -224,26 +222,26 @@ public class EgovServerResrceMntrngScheduling extends EgovAbstractServiceImpl {
 		if (StringUtils.isNotEmpty(text)) {
 			text = EgovStringUtil.replace(text, "{모니터링종류}", "서버자원서비스모니터링");
 			errorContents = "서버명 : ";
-			errorContents += serverResrceMntrngVO.getServerNm();
+			errorContents += serverResrceMntrng.getServerNm();
 			errorContents += "\n";
 			errorContents += "서버IP : ";
-			errorContents += serverResrceMntrngVO.getServerEqpmnIp();
+			errorContents += serverResrceMntrng.getServerEqpmnIp();
 			errorContents += "\n";
 			errorContents += "CPU사용률 : ";
-			errorContents += serverResrceMntrngVO.getCpuUseRt();
+			errorContents += serverResrceMntrng.getCpuUseRt();
 			errorContents += "\n";
 			errorContents += "메모리사용률 : ";
-			errorContents += serverResrceMntrngVO.getMoryUseRt();
+			errorContents += serverResrceMntrng.getMoryUseRt();
 			errorContents += "\n";
 			errorContents += "서비스상태 : 비정상";
 			errorContents += "\n";
 			errorContents += "내용 : ";
-			errorContents += serverResrceMntrngVO.getLogInfo();
+			errorContents += serverResrceMntrng.getLogInfo();
 			errorContents += "\n";
 			errorContents += "생성일시 : ";
-			errorContents += EgovDateUtil.convertDate(serverResrceMntrngVO.getCreatDt(), "", "", "");
+			errorContents += EgovDateUtil.convertDate(serverResrceMntrng.getCreatDt(), "", "", "");
 			errorContents += "\n";
-			errorContents += serverResrceMntrngVO.getServerNm() + " 의 서버자원 서비스 상태가 비정상입니다. \n로그를 확인해주세요.";
+			errorContents += serverResrceMntrng.getServerNm() + " 의 서버자원 서비스 상태가 비정상입니다. \n로그를 확인해주세요.";
 			text = EgovStringUtil.replace(text, "{에러내용}", errorContents);
 			msg.setText(text);
 		}
