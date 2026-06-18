@@ -31,7 +31,7 @@ public class HttpMonDAO extends EgovComAbstractDAO {
 	 *
 	 * @param httpMonVO
 	 */
-	public List<HttpMonVO> selectHttpMonList(HttpMonVO searchVO) throws Exception {
+	public List<HttpMonVO> selectHttpMonList(HttpMonVO searchVO) {
 		return selectList("HttpMonDAO.selectHttpMonList", searchVO);
 	}
 
@@ -43,7 +43,7 @@ public class HttpMonDAO extends EgovComAbstractDAO {
 	 *
 	 * @param httpMonVO
 	 */
-	public int selectHttpMonTotCnt(HttpMonVO searchVO) throws Exception {
+	public int selectHttpMonTotCnt(HttpMonVO searchVO) {
 		return (Integer) selectOne("HttpMonDAO.selectHttpMonTotCnt", searchVO);
 	}
 
@@ -55,7 +55,7 @@ public class HttpMonDAO extends EgovComAbstractDAO {
 	 *
 	 * @param httpMonVO
 	 */
-	public HttpMon selectHttpMonDetail(HttpMon httpMon) throws Exception {
+	public HttpMon selectHttpMonDetail(HttpMon httpMon) {
 		return (HttpMon) selectOne("HttpMonDAO.selectHttpMonDetail", httpMon);
 	}
 
@@ -66,7 +66,7 @@ public class HttpMonDAO extends EgovComAbstractDAO {
 	 *
 	 * @param siteUrl
 	 */
-	public void insertHttpMon(HttpMon httpMon) throws Exception {
+	public void insertHttpMon(HttpMon httpMon) {
 		insert("HttpMonDAO.insertHttpMon", httpMon);
 	}
 
@@ -77,7 +77,7 @@ public class HttpMonDAO extends EgovComAbstractDAO {
 	 *
 	 * @param siteUrl
 	 */
-	public void updateHttpMon(HttpMon httpMon) throws Exception {
+	public void updateHttpMon(HttpMon httpMon) {
 		update("HttpMonDAO.updateHttpMon", httpMon);
 	}
 
@@ -88,7 +88,7 @@ public class HttpMonDAO extends EgovComAbstractDAO {
 	 *
 	 * @param siteUrl
 	 */
-	public void deleteHttpMon(HttpMon httpMon) throws Exception {
+	public void deleteHttpMon(HttpMon httpMon) {
 		update("HttpMonDAO.deleteHttpMon", httpMon);
 	}
 
@@ -100,7 +100,7 @@ public class HttpMonDAO extends EgovComAbstractDAO {
 	 *
 	 * @param httpMonVO
 	 */
-	public List<HttpMonLogVO> selectHttpMonLogList(HttpMonLogVO httpMonLogVO) throws Exception {
+	public List<HttpMonLogVO> selectHttpMonLogList(HttpMonLogVO httpMonLogVO) {
 		return selectList("HttpMonDAO.selectHttpMonLogList", httpMonLogVO);
 	}
 
@@ -112,7 +112,7 @@ public class HttpMonDAO extends EgovComAbstractDAO {
 	 *
 	 * @param httpMonVO
 	 */
-	public int selectHttpMonLogTotCnt(HttpMonLogVO httpMonLogVO) throws Exception {
+	public int selectHttpMonLogTotCnt(HttpMonLogVO httpMonLogVO) {
 		return (Integer) selectOne("HttpMonDAO.selectHttpMonLogTotCnt", httpMonLogVO);
 	}
 
@@ -124,7 +124,7 @@ public class HttpMonDAO extends EgovComAbstractDAO {
 	 *
 	 * @param httpMonVO
 	 */
-	public HttpMonLog selectHttpMonDetailLog(HttpMonLog httpMonLog) throws Exception {
+	public HttpMonLog selectHttpMonDetailLog(HttpMonLog httpMonLog) {
 		return (HttpMonLog) selectOne("HttpMonDAO.selectHttpMonDetailLog", httpMonLog);
 	}
 
@@ -135,7 +135,7 @@ public class HttpMonDAO extends EgovComAbstractDAO {
 	 *
 	 * @param siteUrl
 	 */
-	public void insertHttpMonLog(HttpMonLog httpMonLog) throws Exception {
+	public void insertHttpMonLog(HttpMonLog httpMonLog) {
 		insert("HttpMonDAO.insertHttpMonLog", httpMonLog);
 	}
 
@@ -146,7 +146,7 @@ public class HttpMonDAO extends EgovComAbstractDAO {
 	 *
 	 * @param siteUrl
 	 */
-	public void updateHttpMonSttus(HttpMon httpMon) throws Exception {
+	public void updateHttpMonSttus(HttpMon httpMon) {
 		update("HttpMonDAO.updateHttpMonSttus", httpMon);
 	}
 
