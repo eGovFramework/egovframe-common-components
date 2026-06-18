@@ -27,7 +27,7 @@ public class ProxySvcDAO extends EgovComAbstractDAO {
      * @param proxySvc - 프록시서비스 Vo
      * @return List - 프록시서비스 목록
      */
-    public List<ProxySvc> selectProxySvcList(ProxySvc proxySvc) throws Exception {
+    public List<ProxySvc> selectProxySvcList(ProxySvc proxySvc) {
         return selectList("proxySvcDAO.selectProxySvcList", proxySvc);
     }
 
@@ -37,7 +37,7 @@ public class ProxySvcDAO extends EgovComAbstractDAO {
      * @param proxySvc - 프록시서비스 Vo
      * @return int - 프록시서비스 카운트 수
      */
-    public int selectProxySvcListTotCnt(ProxySvc proxySvc) throws Exception {
+    public int selectProxySvcListTotCnt(ProxySvc proxySvc) {
         return selectOne("proxySvcDAO.selectProxySvcListTotCnt", proxySvc);
     }
 
@@ -47,7 +47,7 @@ public class ProxySvcDAO extends EgovComAbstractDAO {
      * @param proxySvc - 프록시서비스 Vo
      * @return proxySvc - 프록시서비스 Vo
      */
-    public ProxySvc selectProxySvc(ProxySvc proxySvc) throws Exception {
+    public ProxySvc selectProxySvc(ProxySvc proxySvc) {
         return selectOne("proxySvcDAO.selectProxySvc", proxySvc);
     }
 
@@ -56,7 +56,7 @@ public class ProxySvcDAO extends EgovComAbstractDAO {
      *
      * @param proxySvc - 프록시서비스 model
      */
-    public int insertProxySvc(ProxySvc proxySvc) throws Exception {
+    public int insertProxySvc(ProxySvc proxySvc) {
         return insert("proxySvcDAO.insertProxySvc", proxySvc);
     }
 
@@ -65,7 +65,7 @@ public class ProxySvcDAO extends EgovComAbstractDAO {
      *
      * @param proxySvc - 프록시서비스 model
      */
-    public int updateProxySvc(ProxySvc proxySvc) throws Exception {
+    public int updateProxySvc(ProxySvc proxySvc) {
         return update("proxySvcDAO.updateProxySvc", proxySvc);
     }
 
@@ -74,7 +74,7 @@ public class ProxySvcDAO extends EgovComAbstractDAO {
      *
      * @param proxySvc - 프록시서비스 model
      */
-    public int deleteProxySvc(ProxySvc proxySvc) throws Exception {
+    public int deleteProxySvc(ProxySvc proxySvc) {
         return delete("proxySvcDAO.deleteProxySvc", proxySvc);
     }
 
@@ -84,7 +84,7 @@ public class ProxySvcDAO extends EgovComAbstractDAO {
      * @param proxyLog - 프록시로그 Vo
      * @return List - 프록시로그 목록
      */
-    public List<ProxyLog> selectProxyLogList(ProxyLog proxyLog) throws Exception {
+    public List<ProxyLog> selectProxyLogList(ProxyLog proxyLog) {
         return selectList("proxySvcDAO.selectProxyLogList", proxyLog);
     }
 
@@ -94,7 +94,7 @@ public class ProxySvcDAO extends EgovComAbstractDAO {
      * @param proxyLog - 프록시로그 Vo
      * @return int - 프록시로그 카운트 수
      */
-    public int selectProxyLogListTotCnt(ProxyLog proxyLog) throws Exception {
+    public int selectProxyLogListTotCnt(ProxyLog proxyLog) {
         return selectOne("proxySvcDAO.selectProxyLogListTotCnt", proxyLog);
     }
 
@@ -103,7 +103,7 @@ public class ProxySvcDAO extends EgovComAbstractDAO {
      *
      * @param proxyLog - 프록시로그 model
      */
-    public int insertProxyLog(ProxyLog proxyLog) throws Exception {
+    public int insertProxyLog(ProxyLog proxyLog) {
         return insert("proxySvcDAO.insertProxyLog", proxyLog);
     }
 
