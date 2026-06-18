@@ -30,7 +30,7 @@ public class FileSysMntrngDAO extends EgovComAbstractDAO {
 	 *
 	 * @param fileSysMntrngVO
 	 */
-	public List<FileSysMntrngVO> selectFileSysMntrngList(FileSysMntrngVO fileSysMntrngVO) throws Exception{
+	public List<FileSysMntrngVO> selectFileSysMntrngList(FileSysMntrngVO fileSysMntrngVO) {
 		return selectList("FileSysMntrngDAO.selectFileSysMntrngList", fileSysMntrngVO);
 	}
 
@@ -41,7 +41,7 @@ public class FileSysMntrngDAO extends EgovComAbstractDAO {
 	 *
 	 * @param fileSysMntrngVO
 	 */
-	public FileSysMntrngVO selectFileSysMntrng(FileSysMntrngVO fileSysMntrngVO) throws Exception{
+	public FileSysMntrngVO selectFileSysMntrng(FileSysMntrngVO fileSysMntrngVO) {
 		return (FileSysMntrngVO)selectOne("FileSysMntrngDAO.selectFileSysMntrng", fileSysMntrngVO);
 	}
 
@@ -51,7 +51,7 @@ public class FileSysMntrngDAO extends EgovComAbstractDAO {
 	 *
 	 * @param fileSysMntrng
 	 */
-	public void updateFileSysMntrng(FileSysMntrng fileSysMntrng) throws Exception{
+	public void updateFileSysMntrng(FileSysMntrng fileSysMntrng) {
 		update("FileSysMntrngDAO.updateFileSysMntrng", fileSysMntrng);
 	}
 
@@ -61,7 +61,7 @@ public class FileSysMntrngDAO extends EgovComAbstractDAO {
 	 *
 	 * @param fileSysMntrng
 	 */
-	public void insertFileSysMntrng(FileSysMntrng fileSysMntrng) throws Exception{
+	public void insertFileSysMntrng(FileSysMntrng fileSysMntrng) {
 		insert("FileSysMntrngDAO.insertFileSysMntrng", fileSysMntrng);
 	}
 
@@ -71,7 +71,7 @@ public class FileSysMntrngDAO extends EgovComAbstractDAO {
 	 *
 	 * @param fileSysMntrng
 	 */
-	public void deleteFileSysMntrng(FileSysMntrng fileSysMntrng) throws Exception{
+	public void deleteFileSysMntrng(FileSysMntrng fileSysMntrng) {
 		delete("FileSysMntrngDAO.deleteFileSysMntrng", fileSysMntrng);
 	}
 
@@ -82,7 +82,7 @@ public class FileSysMntrngDAO extends EgovComAbstractDAO {
 	 *
 	 * @param fileSysMntrngVO
 	 */
-	public int selectFileSysMntrngListCnt(FileSysMntrngVO fileSysMntrngVO) throws Exception{
+	public int selectFileSysMntrngListCnt(FileSysMntrngVO fileSysMntrngVO) {
 		return (Integer)selectOne("FileSysMntrngDAO.selectFileSysMntrngListCnt", fileSysMntrngVO);
 	}
 
@@ -92,7 +92,7 @@ public class FileSysMntrngDAO extends EgovComAbstractDAO {
 	 *
 	 * @param fileSysMntrng
 	 */
-	public void updateFileSysMntrngSttus(FileSysMntrng fileSysMntrng) throws Exception{
+	public void updateFileSysMntrngSttus(FileSysMntrng fileSysMntrng) {
 		update("FileSysMntrngDAO.updateFileSysMntrngSttus", fileSysMntrng);
 	}
 
@@ -103,7 +103,7 @@ public class FileSysMntrngDAO extends EgovComAbstractDAO {
 	 *
 	 * @param fileSysMntrngVO
 	 */
-	public List<FileSysMntrngLogVO> selectFileSysMntrngLogList(FileSysMntrngLogVO fileSysMntrngLogVO) throws Exception{
+	public List<FileSysMntrngLogVO> selectFileSysMntrngLogList(FileSysMntrngLogVO fileSysMntrngLogVO) {
 		return selectList("FileSysMntrngDAO.selectFileSysMntrngLogList", fileSysMntrngLogVO);
 	}
 
@@ -114,7 +114,7 @@ public class FileSysMntrngDAO extends EgovComAbstractDAO {
 	 *
 	 * @param fileSysMntrngLogVO
 	 */
-	public int selectFileSysMntrngLogListCnt(FileSysMntrngLogVO fileSysMntrngLogVO) throws Exception{
+	public int selectFileSysMntrngLogListCnt(FileSysMntrngLogVO fileSysMntrngLogVO) {
 		return (Integer)selectOne("FileSysMntrngDAO.selectFileSysMntrngLogListCnt", fileSysMntrngLogVO);
 	}
 
@@ -125,7 +125,7 @@ public class FileSysMntrngDAO extends EgovComAbstractDAO {
 	 *
 	 * @param fileSysMntrngLogVO
 	 */
-	public FileSysMntrngLogVO selectFileSysMntrngLog(FileSysMntrngLogVO fileSysMntrngLogVO) throws Exception{
+	public FileSysMntrngLogVO selectFileSysMntrngLog(FileSysMntrngLogVO fileSysMntrngLogVO) {
 		return (FileSysMntrngLogVO)selectOne("FileSysMntrngDAO.selectFileSysMntrngLog", fileSysMntrngLogVO);
 	}
 
@@ -135,7 +135,7 @@ public class FileSysMntrngDAO extends EgovComAbstractDAO {
 	 *
 	 * @param fileSysMntrngLog
 	 */
-	public void insertFileSysMntrngLog(FileSysMntrngLog fileSysMntrngLog) throws Exception{
+	public void insertFileSysMntrngLog(FileSysMntrngLog fileSysMntrngLog) {
 		insert("FileSysMntrngDAO.insertFileSysMntrngLog", fileSysMntrngLog);
 	}
 
