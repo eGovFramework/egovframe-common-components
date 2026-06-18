@@ -30,7 +30,7 @@ public class NtwrkSvcMntrngDAO extends EgovComAbstractDAO {
 	 *
 	 * @param ntwrkSvcMntrngVO
 	 */
-	public List<NtwrkSvcMntrngVO> selectNtwrkSvcMntrngList(NtwrkSvcMntrngVO ntwrkSvcMntrngVO) throws Exception{
+	public List<NtwrkSvcMntrngVO> selectNtwrkSvcMntrngList(NtwrkSvcMntrngVO ntwrkSvcMntrngVO) {
 		return selectList("NtwrkSvcMntrngDAO.selectNtwrkSvcMntrngList", ntwrkSvcMntrngVO);
 	}
 
@@ -41,7 +41,7 @@ public class NtwrkSvcMntrngDAO extends EgovComAbstractDAO {
 	 *
 	 * @param ntwrkSvcMntrngVO
 	 */
-	public NtwrkSvcMntrngVO selectNtwrkSvcMntrng(NtwrkSvcMntrngVO ntwrkSvcMntrngVO) throws Exception{
+	public NtwrkSvcMntrngVO selectNtwrkSvcMntrng(NtwrkSvcMntrngVO ntwrkSvcMntrngVO) {
 		return (NtwrkSvcMntrngVO)selectOne("NtwrkSvcMntrngDAO.selectNtwrkSvcMntrng", ntwrkSvcMntrngVO);
 	}
 
@@ -51,7 +51,7 @@ public class NtwrkSvcMntrngDAO extends EgovComAbstractDAO {
 	 *
 	 * @param ntwrkSvcMntrng
 	 */
-	public void updateNtwrkSvcMntrng(NtwrkSvcMntrng ntwrkSvcMntrng) throws Exception{
+	public void updateNtwrkSvcMntrng(NtwrkSvcMntrng ntwrkSvcMntrng) {
 		update("NtwrkSvcMntrngDAO.updateNtwrkSvcMntrng", ntwrkSvcMntrng);
 	}
 
@@ -61,7 +61,7 @@ public class NtwrkSvcMntrngDAO extends EgovComAbstractDAO {
 	 *
 	 * @param ntwrkSvcMntrng
 	 */
-	public void insertNtwrkSvcMntrng(NtwrkSvcMntrng ntwrkSvcMntrng) throws Exception{
+	public void insertNtwrkSvcMntrng(NtwrkSvcMntrng ntwrkSvcMntrng) {
 		insert("NtwrkSvcMntrngDAO.insertNtwrkSvcMntrng", ntwrkSvcMntrng);
 	}
 
@@ -72,7 +72,7 @@ public class NtwrkSvcMntrngDAO extends EgovComAbstractDAO {
 	 *
 	 * @param ntwrkSvcMntrngVO
 	 */
-	public int selectNtwrkSvcMntrngCheck(NtwrkSvcMntrngVO ntwrkSvcMntrngVO) throws Exception{
+	public int selectNtwrkSvcMntrngCheck(NtwrkSvcMntrngVO ntwrkSvcMntrngVO) {
 		return (Integer)selectOne("NtwrkSvcMntrngDAO.selectNtwrkSvcMntrngCheck", ntwrkSvcMntrngVO);
 	}
 
@@ -82,7 +82,7 @@ public class NtwrkSvcMntrngDAO extends EgovComAbstractDAO {
 	 *
 	 * @param ntwrkSvcMntrng
 	 */
-	public void deleteNtwrkSvcMntrng(NtwrkSvcMntrng ntwrkSvcMntrng) throws Exception{
+	public void deleteNtwrkSvcMntrng(NtwrkSvcMntrng ntwrkSvcMntrng) {
 		delete("NtwrkSvcMntrngDAO.deleteNtwrkSvcMntrng", ntwrkSvcMntrng);
 	}
 
@@ -93,7 +93,7 @@ public class NtwrkSvcMntrngDAO extends EgovComAbstractDAO {
 	 *
 	 * @param ntwrkSvcMntrngVO
 	 */
-	public int selectNtwrkSvcMntrngListCnt(NtwrkSvcMntrngVO ntwrkSvcMntrngVO) throws Exception{
+	public int selectNtwrkSvcMntrngListCnt(NtwrkSvcMntrngVO ntwrkSvcMntrngVO) {
 		return (Integer)selectOne("NtwrkSvcMntrngDAO.selectNtwrkSvcMntrngListCnt", ntwrkSvcMntrngVO);
 	}
 
@@ -103,7 +103,7 @@ public class NtwrkSvcMntrngDAO extends EgovComAbstractDAO {
 	 *
 	 * @param ntwrkSvcMntrng
 	 */
-	public void updateNtwrkSvcMntrngSttus(NtwrkSvcMntrng ntwrkSvcMntrng) throws Exception{
+	public void updateNtwrkSvcMntrngSttus(NtwrkSvcMntrng ntwrkSvcMntrng) {
 		update("NtwrkSvcMntrngDAO.updateNtwrkSvcMntrngSttus", ntwrkSvcMntrng);
 	}
 
@@ -114,7 +114,7 @@ public class NtwrkSvcMntrngDAO extends EgovComAbstractDAO {
 	 *
 	 * @param ntwrkSvcMntrngLogVO
 	 */
-	public List<NtwrkSvcMntrngLogVO> selectNtwrkSvcMntrngLogList(NtwrkSvcMntrngLogVO ntwrkSvcMntrngLogVO) throws Exception{
+	public List<NtwrkSvcMntrngLogVO> selectNtwrkSvcMntrngLogList(NtwrkSvcMntrngLogVO ntwrkSvcMntrngLogVO) {
 		return selectList("NtwrkSvcMntrngDAO.selectNtwrkSvcMntrngLogList", ntwrkSvcMntrngLogVO);
 	}
 
@@ -125,7 +125,7 @@ public class NtwrkSvcMntrngDAO extends EgovComAbstractDAO {
 	 *
 	 * @param ntwrkSvcMntrngLogVO
 	 */
-	public int selectNtwrkSvcMntrngLogListCnt(NtwrkSvcMntrngLogVO ntwrkSvcMntrngLogVO) throws Exception{
+	public int selectNtwrkSvcMntrngLogListCnt(NtwrkSvcMntrngLogVO ntwrkSvcMntrngLogVO) {
 		return (Integer)selectOne("NtwrkSvcMntrngDAO.selectNtwrkSvcMntrngLogListCnt", ntwrkSvcMntrngLogVO);
 	}
 
@@ -136,7 +136,7 @@ public class NtwrkSvcMntrngDAO extends EgovComAbstractDAO {
 	 *
 	 * @param ntwrkSvcMntrngLogVO
 	 */
-	public NtwrkSvcMntrngLogVO selectNtwrkSvcMntrngLog(NtwrkSvcMntrngLogVO ntwrkSvcMntrngLogVO) throws Exception{
+	public NtwrkSvcMntrngLogVO selectNtwrkSvcMntrngLog(NtwrkSvcMntrngLogVO ntwrkSvcMntrngLogVO) {
 		return (NtwrkSvcMntrngLogVO)selectOne("NtwrkSvcMntrngDAO.selectNtwrkSvcMntrngLog", ntwrkSvcMntrngLogVO);
 	}
 
@@ -146,7 +146,7 @@ public class NtwrkSvcMntrngDAO extends EgovComAbstractDAO {
 	 *
 	 * @param ntwrkSvcMntrngLog
 	 */
-	public void insertNtwrkSvcMntrngLog(NtwrkSvcMntrngLog ntwrkSvcMntrngLog) throws Exception{
+	public void insertNtwrkSvcMntrngLog(NtwrkSvcMntrngLog ntwrkSvcMntrngLog) {
 		insert("NtwrkSvcMntrngDAO.insertNtwrkSvcMntrngLog", ntwrkSvcMntrngLog);
 	}
 
