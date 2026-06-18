@@ -24,11 +24,13 @@ package egovframework.com.uat.uap.service.impl;
 import java.util.List;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.EgovBizException;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.uat.uap.service.EgovLoginPolicyService;
 import egovframework.com.uat.uap.service.LoginPolicy;
 import egovframework.com.uat.uap.service.LoginPolicyVO;
+import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
 
 @Service("egovLoginPolicyService")
@@ -83,6 +85,21 @@ public class EgovLoginPolicyServiceImpl extends EgovAbstractServiceImpl implemen
 	@Override
 	public void updateLoginPolicy(LoginPolicy loginPolicy) throws Exception {
 		loginPolicyDAO.updateLoginPolicy(loginPolicy);
+
+		LoginPolicyVO loginPolicyVO = new LoginPolicyVO();
+		loginPolicyVO.setEmplyrId(loginPolicy.getEmplyrId());
+
+		LoginPolicyVO updatedLoginPolicy = loginPolicyDAO.selectLoginPolicy(loginPolicyVO);
+		boolean ipInfoUpdated = updatedLoginPolicy != null
+				&& EgovStringUtil.isNullToString(loginPolicy.getIpInfo())
+						.equals(EgovStringUtil.isNullToString(updatedLoginPolicy.getIpInfo()));
+		boolean lmttAtUpdated = updatedLoginPolicy != null
+				&& EgovStringUtil.isNullToString(loginPolicy.getLmttAt())
+						.equals(EgovStringUtil.isNullToString(updatedLoginPolicy.getLmttAt()));
+
+		if (!ipInfoUpdated || !lmttAtUpdated) {
+			throw new EgovBizException("Login policy update was not persisted.");
+		}
 	}
 
 	/**

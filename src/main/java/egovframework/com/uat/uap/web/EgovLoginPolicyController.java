@@ -21,6 +21,7 @@
 
 package egovframework.com.uat.uap.web;
 
+import org.egovframe.rte.fdl.cmmn.exception.EgovBizException;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -28,6 +29,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -139,7 +141,8 @@ public class EgovLoginPolicyController {
 	@RequestMapping("/uat/uap/addLoginPolicy.do")
 	public String insertLoginPolicy(@Valid @ModelAttribute("loginPolicy") LoginPolicy loginPolicy,
 			                         BindingResult bindingResult,
-                                     ModelMap model) throws Exception {
+                                     ModelMap model,
+                                     RedirectAttributes redirectAttributes) throws Exception {
 
     	if (bindingResult.hasErrors()) {
     		model.addAttribute("loginPolicyVO", loginPolicy);
@@ -152,10 +155,10 @@ public class EgovLoginPolicyController {
 			egovLoginPolicyService.insertLoginPolicy(loginPolicy);
 			model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
 
-			model.addAttribute("emplyrId", loginPolicy.getEmplyrId());
-			model.addAttribute("searchCondition", loginPolicy.getSearchCondition());
-			model.addAttribute("searchKeyword", loginPolicy.getSearchKeyword());
-			model.addAttribute("pageIndex", loginPolicy.getPageIndex());
+			redirectAttributes.addAttribute("emplyrId", loginPolicy.getEmplyrId());
+			redirectAttributes.addAttribute("searchCondition", loginPolicy.getSearchCondition());
+			redirectAttributes.addAttribute("searchKeyword", loginPolicy.getSearchKeyword());
+			redirectAttributes.addAttribute("pageIndex", loginPolicy.getPageIndex());
 
 			return "redirect:/uat/uap/getLoginPolicy.do";
 		}
@@ -169,7 +172,8 @@ public class EgovLoginPolicyController {
 	@RequestMapping("/uat/uap/updtLoginPolicy.do")
 	public String updateLoginPolicy(@Valid @ModelAttribute("loginPolicy") LoginPolicy loginPolicy,
 			                         BindingResult bindingResult,
-                                     ModelMap model) throws Exception {
+                                     ModelMap model,
+                                     RedirectAttributes redirectAttributes) throws Exception {
 
     	if (bindingResult.hasErrors()) {
     		model.addAttribute("loginPolicyVO", loginPolicy);
@@ -178,12 +182,18 @@ public class EgovLoginPolicyController {
 			LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 			loginPolicy.setUserId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
 
-			egovLoginPolicyService.updateLoginPolicy(loginPolicy);
-			model.addAttribute("message", egovMessageSource.getMessage("success.common.update"));
+			try {
+				egovLoginPolicyService.updateLoginPolicy(loginPolicy);
+			} catch (EgovBizException e) {
+				model.addAttribute("loginPolicyVO", loginPolicy);
+				model.addAttribute("loginPolicy", loginPolicy);
+				model.addAttribute("message", egovMessageSource.getMessage("fail.common.update"));
+				return "egovframework/com/uat/uap/EgovLoginPolicyUpdt";
+			}
 
-			model.addAttribute("searchCondition", loginPolicy.getSearchCondition());
-			model.addAttribute("searchKeyword", loginPolicy.getSearchKeyword());
-			model.addAttribute("pageIndex", loginPolicy.getPageIndex());
+			redirectAttributes.addAttribute("searchCondition", loginPolicy.getSearchCondition());
+			redirectAttributes.addAttribute("searchKeyword", loginPolicy.getSearchKeyword());
+			redirectAttributes.addAttribute("pageIndex", loginPolicy.getPageIndex());
 
 			return "redirect:/uat/uap/selectLoginPolicyList.do";
 		}
