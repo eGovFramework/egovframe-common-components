@@ -16,6 +16,7 @@ import egovframework.com.sym.log.wlg.service.WebLog;
  *    -------        -------     -------------------
  *    2009. 3. 11.   이삼섭         최초생성
  *    2011. 7. 01.   이기하         패키지 분리(sym.log -> sym.log.wlg)
+ *    2026. 6. 16.   이백행         [2026년 컨트리뷰션] 불필요한 예외(throws Exception) 제거
  *
  * @author 공통 서비스 개발팀 이삼섭
  * @since 2009. 3. 11.
@@ -31,9 +32,8 @@ public class WebLogDAO extends EgovComAbstractDAO {
 	 *
 	 * @param WebLog
 	 * @return
-	 * @throws Exception
 	 */
-	public void logInsertWebLog(WebLog webLog) throws Exception{
+	public void logInsertWebLog(WebLog webLog) {
 		insert("WebLog.logInsertWebLog", webLog);
 	}
 
@@ -42,9 +42,8 @@ public class WebLogDAO extends EgovComAbstractDAO {
 	 *
 	 * @param
 	 * @return
-	 * @throws Exception
 	 */
-	public void logInsertWebLogSummary() throws Exception{
+	public void logInsertWebLogSummary() {
 		insert("WebLog.logInsertWebLogSummary", null);
 		delete("WebLog.logDeleteWebLogSummary", null);
 	}
@@ -54,9 +53,8 @@ public class WebLogDAO extends EgovComAbstractDAO {
 	 *
 	 * @param webLog
 	 * @return webLog
-	 * @throws Exception
 	 */
-	public WebLog selectWebLog(WebLog webLog) throws Exception{
+	public WebLog selectWebLog(WebLog webLog) {
 
 		return (WebLog) selectOne("WebLog.selectWebLog", webLog);
 	}
@@ -66,9 +64,8 @@ public class WebLogDAO extends EgovComAbstractDAO {
 	 *
 	 * @param webLog
 	 * @return
-	 * @throws Exception
 	 */
-	public List<WebLog> selectWebLogInf(WebLog webLog) throws Exception{
+	public List<WebLog> selectWebLogInf(WebLog webLog) {
 		return selectList("WebLog.selectWebLogInf", webLog);
 	}
 
@@ -76,9 +73,8 @@ public class WebLogDAO extends EgovComAbstractDAO {
 	 * 웹 로그정보 목록의 숫자를 조회한다.
 	 * @param webLog
 	 * @return
-	 * @throws Exception
 	 */
-	public int selectWebLogInfCnt(WebLog webLog) throws Exception{
+	public int selectWebLogInfCnt(WebLog webLog) {
 
 		return (Integer)selectOne("WebLog.selectWebLogInfCnt", webLog);
 	}
