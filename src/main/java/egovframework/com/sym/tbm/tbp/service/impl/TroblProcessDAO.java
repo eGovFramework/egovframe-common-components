@@ -26,7 +26,7 @@ public class TroblProcessDAO extends EgovComAbstractDAO {
 	 * @param troblProcessVO - 장애처리결과 Vo
 	 * @return List - 장애처리결과 목록
 	 */
-	public List<TroblProcessVO> selectTroblProcessList(TroblProcessVO troblProcessVO) throws Exception {
+	public List<TroblProcessVO> selectTroblProcessList(TroblProcessVO troblProcessVO) {
 		return selectList("troblProcessDAO.selectTroblProcessList", troblProcessVO);
 	}
 
@@ -35,7 +35,7 @@ public class TroblProcessDAO extends EgovComAbstractDAO {
 	 * @param troblProcessVO - 장애처리결과 Vo
 	 * @return int - 장애처리결과 카운트 수
 	 */
-	public int selectTroblProcessListTotCnt(TroblProcessVO troblProcessVO) throws Exception {
+	public int selectTroblProcessListTotCnt(TroblProcessVO troblProcessVO) {
 		return (Integer)selectOne("troblProcessDAO.selectTroblProcessListTotCnt", troblProcessVO);
 	}
 	
@@ -44,7 +44,7 @@ public class TroblProcessDAO extends EgovComAbstractDAO {
 	 * @param troblProcessVO - 장애처리결과 Vo
 	 * @return troblProcessVO - 장애처리결과 Vo
 	 */
-	public TroblProcessVO selectTroblProcess(TroblProcessVO troblProcessVO) throws Exception {
+	public TroblProcessVO selectTroblProcess(TroblProcessVO troblProcessVO) {
 		return (TroblProcessVO) selectOne("troblProcessDAO.selectTroblProcess", troblProcessVO);
 	}
 
@@ -52,7 +52,7 @@ public class TroblProcessDAO extends EgovComAbstractDAO {
 	 * 장애처리정보를 신규로 등록한다.
 	 * @param troblProcessVO - 장애처리결과 model
 	 */
-	public void insertTroblProcess(TroblProcess troblProcess) throws Exception {
+	public void insertTroblProcess(TroblProcess troblProcess) {
 		insert("troblProcessDAO.insertTroblProcess", troblProcess);
 	}
 
@@ -60,7 +60,7 @@ public class TroblProcessDAO extends EgovComAbstractDAO {
 	 * 기 등록된 장애처리정보를 삭제한다.
 	 * @param troblProcessVO - 장애처리결과 model
 	 */
-	public void deleteTroblProcess(TroblProcess troblProcess) throws Exception {
+	public void deleteTroblProcess(TroblProcess troblProcess) {
 		delete("troblProcessDAO.deleteTroblProcess", troblProcess);
 	}
 
