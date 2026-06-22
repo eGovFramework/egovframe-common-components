@@ -48,7 +48,8 @@ public class EgovAdressCntcController {
 		String confmKey = req.getParameter("confmKey");
 		String keyword = req.getParameter("keyword");
 		String apiUrl = "http://www.juso.go.kr/addrlink/addrLinkApi.do?currentPage=" + currentPage + "&countPerPage="
-			+ countPerPage + "&keyword=" + URLEncoder.encode(keyword, "UTF-8") + "&confmKey=" + confmKey;
+			+ countPerPage + "&keyword=" + URLEncoder.encode(keyword, "UTF-8") + "&confmKey="
+			+ URLEncoder.encode(confmKey, "UTF-8");
 		URL url = new URL(EgovWebUtil.filePathBlackList(apiUrl));
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));) {//2022.01 Resources should be closed
 			StringBuffer sb = new StringBuffer();
