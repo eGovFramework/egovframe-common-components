@@ -27,7 +27,7 @@ public class UserAbsnceDAO extends EgovComAbstractDAO {
 	 * @param userAbsnceVO - 사용자부재 VO
 	 * @return List - 사용자부재 목록
 	 */	
-	public List<UserAbsnceVO> selectUserAbsnceList(UserAbsnceVO userAbsnceVO) throws Exception {
+	public List<UserAbsnceVO> selectUserAbsnceList(UserAbsnceVO userAbsnceVO) {
 		return selectList("userAbsnceDAO.selectUserAbsnceList", userAbsnceVO);
 	}
 
@@ -35,9 +35,8 @@ public class UserAbsnceDAO extends EgovComAbstractDAO {
 	 * 사용자부재목록 총 개수를 조회한다.
 	 * @param mainImageVO - 사용자부재 VO
 	 * @return int
-	 * @exception Exception
 	 */
-    public int selectUserAbsnceListTotCnt(UserAbsnceVO userAbsnceVO) throws Exception {
+    public int selectUserAbsnceListTotCnt(UserAbsnceVO userAbsnceVO) {
         return (Integer)selectOne("userAbsnceDAO.selectUserAbsnceListTotCnt", userAbsnceVO);
     }
     
@@ -46,7 +45,7 @@ public class UserAbsnceDAO extends EgovComAbstractDAO {
 	 * @param userAbsnceVO - 사용자부재 VO
 	 * @return UserAbsnceVO - 사용자부재 VO
 	 */
-	public UserAbsnceVO selectUserAbsnce(UserAbsnceVO userAbsnceVO) throws Exception {
+	public UserAbsnceVO selectUserAbsnce(UserAbsnceVO userAbsnceVO) {
 		return (UserAbsnceVO) selectOne("userAbsnceDAO.selectUserAbsnce", userAbsnceVO);
 	}
 
@@ -54,7 +53,7 @@ public class UserAbsnceDAO extends EgovComAbstractDAO {
 	 * 사용자부재정보를 신규로 등록한다.
 	 * @param userAbsnceVO - 사용자부재 VO
 	 */
-	public void insertUserAbsnce(UserAbsnceVO userAbsnceVO) throws Exception {
+	public void insertUserAbsnce(UserAbsnceVO userAbsnceVO) {
 		insert("userAbsnceDAO.insertUserAbsnce", userAbsnceVO);
 	}
 
@@ -62,7 +61,7 @@ public class UserAbsnceDAO extends EgovComAbstractDAO {
 	 * 기 등록된 사용자부재정보를 수정한다.
 	 * @param userAbsnceVO - 사용자부재 VO
 	 */
-	public void updateUserAbsnce(UserAbsnceVO userAbsnceVO) throws Exception {
+	public void updateUserAbsnce(UserAbsnceVO userAbsnceVO) {
 		update("userAbsnceDAO.updateUserAbsnce", userAbsnceVO);
 	}
 
@@ -70,7 +69,7 @@ public class UserAbsnceDAO extends EgovComAbstractDAO {
 	 * 기 등록된 사용자부재정보를 삭제한다.
 	 * @param userAbsnceVO - 사용자부재 VO
 	 */
-	public void deleteUserAbsnce(UserAbsnceVO userAbsnceVO) throws Exception {
+	public void deleteUserAbsnce(UserAbsnceVO userAbsnceVO) {
 		delete("userAbsnceDAO.deleteUserAbsnce", userAbsnceVO);
 	}
 
@@ -79,7 +78,7 @@ public class UserAbsnceDAO extends EgovComAbstractDAO {
 	 * @param userAbsnceVO - 사용자부재 VO
 	 * @return UserAbsnceVO - 사용자부재 VO
 	 */
-	public UserAbsnceVO selectUserAbsnceResult(UserAbsnceVO userAbsnceVO) throws Exception {
+	public UserAbsnceVO selectUserAbsnceResult(UserAbsnceVO userAbsnceVO) {
 		return null;
 	}
 }
