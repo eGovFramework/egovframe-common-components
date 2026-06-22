@@ -19,6 +19,7 @@ import egovframework.com.utl.pao.service.PrntngOutptVO;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.02.01  이중호          최초 생성
+ *   2026.06.18  이백행          [2026년 컨트리뷰션] 불필요한 예외(throws Exception) 제거
  *
  * </pre>
  */
@@ -29,9 +30,8 @@ public class PrntngOutptDAO extends EgovComAbstractDAO {
 	 * 주어진 조건에 따른 공통코드를 불러온다.
 	 * @param vo
 	 * @return
-	 * @throws Exception
 	 */
-	public PrntngOutptVO selectErncsl(PrntngOutptVO vo) throws Exception{
+	public PrntngOutptVO selectErncsl(PrntngOutptVO vo) {
 		String queryId = "PrntngOutptDAO.selectErncsl";
 		return (PrntngOutptVO) selectOne(queryId, vo);
 	}
