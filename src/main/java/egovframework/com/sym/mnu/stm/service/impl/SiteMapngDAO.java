@@ -18,6 +18,7 @@ import egovframework.com.sym.mnu.stm.service.SiteMapngVO;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.03.20  이  용          최초 생성
+ *   2026.06.17  이백행           [2026년 컨트리뷰션] 불필요한 예외(throws Exception) 제거
  *
  * </pre>
  */
@@ -28,9 +29,8 @@ public class SiteMapngDAO extends EgovComAbstractDAO{
 	 * 사이트맵 조회
 	 * @param vo ComDefaultVO 
 	 * @return SiteMapngVO
-	 * @exception Exception 
 	 */
-	public SiteMapngVO selectSiteMapng(ComDefaultVO vo)throws Exception{
+	public SiteMapngVO selectSiteMapng(ComDefaultVO vo) {
 		return (SiteMapngVO)selectOne("siteMapngDAO.selectSiteMapng_D", vo); 
 	}
 
@@ -38,9 +38,8 @@ public class SiteMapngDAO extends EgovComAbstractDAO{
 	 * MapCreatId 조회
 	 * @param vo ComDefaultVO
 	 * @return String
-	 * @exception Exception 
 	 */
-	public String selectSiteMapngByMapCreatID(ComDefaultVO vo)throws Exception{
+	public String selectSiteMapngByMapCreatID(ComDefaultVO vo) {
 		return (String)selectOne("siteMapngDAO.selectSiteMapngByMapCreatID", vo); 
 	}	
 	
