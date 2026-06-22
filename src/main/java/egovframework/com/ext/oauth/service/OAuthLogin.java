@@ -46,12 +46,10 @@ public class OAuthLogin {
 	}
 
 	// 230825 카카오톡 scope 변경으로 인한 scope 처리 추가
-	public String getOAuthURL() {
-		if (oauthVO.getOrigin().equals("naver")) { // naver의 경우 state가 필수 조건에 포함
-			return this.oauthService.getAuthorizationUrl() + "&state=test&scope=" + oauthVO.getScope();
-		} else { // 필수, 추가 동의 항목 포함
-			return this.oauthService.getAuthorizationUrl() + "&scope=" + oauthVO.getScope();
-		}
+	// CSRF(로그인 CSRF) 방어를 위해 호출자가 생성·세션에 보관한 state를 모든 제공자 인가 URL에 부착한다.
+	public String getOAuthURL(String state) {
+		// scribejava가 state를 표준 방식으로 부착한다(naver는 state 필수, google·kakao도 동일 적용).
+		return this.oauthService.getAuthorizationUrl(state) + "&scope=" + oauthVO.getScope();
 	}
 
 	public OAuthUniversalUser getUserProfile(String code) throws Exception {
