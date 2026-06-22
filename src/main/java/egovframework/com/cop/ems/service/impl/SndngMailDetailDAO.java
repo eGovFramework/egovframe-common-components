@@ -19,6 +19,7 @@ import egovframework.com.cop.ems.service.SndngMailVO;
  *   수정일         수정자       수정내용
  *  ----------    --------    ---------------------------
  *  2009.03.12     박지욱       최초 생성
+ *  2026.06.12     장은솔       불필요한 예외(throws Exception) 제거
  *
  *      </pre>
  */
@@ -32,7 +33,7 @@ public class SndngMailDetailDAO extends EgovComAbstractDAO {
 	 * @return SndngMailVO
 	 * @exception Exception
 	 */
-	public SndngMailVO selectSndngMail(SndngMailVO vo) throws Exception {
+	public SndngMailVO selectSndngMail(SndngMailVO vo) {
 		return (SndngMailVO) selectOne("sndngMailDetailDAO.selectSndngMail", vo);
 	}
 
@@ -42,7 +43,7 @@ public class SndngMailDetailDAO extends EgovComAbstractDAO {
 	 * @param vo SndngMailVO
 	 * @exception
 	 */
-	public int deleteSndngMail(SndngMailVO vo) throws Exception {
+	public int deleteSndngMail(SndngMailVO vo) {
         return delete("sndngMailDetailDAO.deleteSndngMail", vo);
     }
 
