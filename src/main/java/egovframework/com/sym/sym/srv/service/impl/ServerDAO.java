@@ -41,7 +41,7 @@ public class ServerDAO extends EgovComAbstractDAO {
 	 * @param serverEqpmnVO - 서버장비 Vo
 	 * @return int - 서버장비 카운트 수
 	 */
-	public int selectServerEqpmnListTotCnt(ServerEqpmnVO serverEqpmnVO) throws Exception{
+	public int selectServerEqpmnListTotCnt(ServerEqpmnVO serverEqpmnVO) {
 		return (Integer)selectOne("serverDAO.selectServerEqpmnListTotCnt", serverEqpmnVO);
 	}
 
@@ -50,7 +50,7 @@ public class ServerDAO extends EgovComAbstractDAO {
 	 * @param serverEqpmnVO - 서버장비 Vo
 	 * @return serverEqpmnVO - 서버장비 Vo
 	 */
-	public ServerEqpmnVO selectServerEqpmn(ServerEqpmnVO serverEqpmnVO) throws Exception{
+	public ServerEqpmnVO selectServerEqpmn(ServerEqpmnVO serverEqpmnVO) {
 		return (ServerEqpmnVO) selectOne("serverDAO.selectServerEqpmn", serverEqpmnVO);
 	}
 
@@ -58,7 +58,7 @@ public class ServerDAO extends EgovComAbstractDAO {
 	 * 서버장비정보를 신규로 등록한다.
 	 * @param serverEqpmn - 서버장비 model
 	 */
-	public void insertServerEqpmn(ServerEqpmn serverEqpmn) throws Exception {
+	public void insertServerEqpmn(ServerEqpmn serverEqpmn) {
 		insert("serverDAO.insertServerEqpmn", serverEqpmn);
 	}
 
@@ -66,7 +66,7 @@ public class ServerDAO extends EgovComAbstractDAO {
 	 * 기 등록된 서버장비정보를 수정한다.
 	 * @param serverEqpmn - 서버장비 model
 	 */
-	public void updateServerEqpmn(ServerEqpmn serverEqpmn) throws Exception {
+	public void updateServerEqpmn(ServerEqpmn serverEqpmn) {
 		update("serverDAO.updateServerEqpmn", serverEqpmn);
 	}
 
@@ -74,7 +74,7 @@ public class ServerDAO extends EgovComAbstractDAO {
 	 * 기 등록된 서버장비정보를 삭제한다.
 	 * @param serverEqpmn - 서버장비 model
 	 */
-	public void deleteServerEqpmn(ServerEqpmn serverEqpmn) throws Exception {
+	public void deleteServerEqpmn(ServerEqpmn serverEqpmn) {
 		delete("serverDAO.deleteServerEqpmn", serverEqpmn);
 	}
 
@@ -83,16 +83,15 @@ public class ServerDAO extends EgovComAbstractDAO {
 	 * @param serverVO - 서버 Vo
 	 * @return List - 서버 목록
 	 */
-	public List<ServerVO> selectServerList(ServerVO serverVO) throws Exception {
+	public List<ServerVO> selectServerList(ServerVO serverVO) {
 		return selectList("serverDAO.selectServerList", serverVO);
 	}
 
 	/**
 	 * @param serverVO - 서버 Vo
 	 * @return int - 서버 카운트 수
-	 * @exception Exception
 	 */
-	public int selectServerListTotCnt(ServerVO serverVO) throws Exception {
+	public int selectServerListTotCnt(ServerVO serverVO) {
 		return (Integer)selectOne("serverDAO.selectServerListTotCnt", serverVO);
 	}
 
@@ -101,7 +100,7 @@ public class ServerDAO extends EgovComAbstractDAO {
 	 * @param serverVO - 서버 Vo
 	 * @return serverVO - 서버 Vo
 	 */
-	public ServerVO selectServer(ServerVO serverVO) throws Exception {
+	public ServerVO selectServer(ServerVO serverVO) {
 		return (ServerVO) selectOne("serverDAO.selectServer", serverVO);
 	}
 
@@ -110,7 +109,7 @@ public class ServerDAO extends EgovComAbstractDAO {
 	 * @param serverVO - 서버 Vo
 	 * @return List - 서버장비 목록
 	 */
-	public List<ServerEqpmnVO> selectServerEqpmnRelateDetail(ServerVO serverVO) throws Exception {
+	public List<ServerEqpmnVO> selectServerEqpmnRelateDetail(ServerVO serverVO) {
 		return selectList("serverDAO.selectServerEqpmnRelateDetail", serverVO);
 	}
 	
@@ -119,7 +118,7 @@ public class ServerDAO extends EgovComAbstractDAO {
 	 * @param serverVO - 서버 Vo
 	 * @return int - 서버에 등록된 서버장비 카운트 수
 	 */
-	public int selectServerEqpmnRelateDetailTotCnt(ServerVO serverVO) throws Exception {
+	public int selectServerEqpmnRelateDetailTotCnt(ServerVO serverVO) {
 		return (Integer)selectOne("serverDAO.selectServerEqpmnRelateDetailTotCnt", serverVO);
 	}	
 	
@@ -127,7 +126,7 @@ public class ServerDAO extends EgovComAbstractDAO {
 	 * 서버정보를 신규로 등록한다.
 	 * @param server - 서버 model
 	 */
-	public void insertServer(Server server) throws Exception {
+	public void insertServer(Server server) {
 		insert("serverDAO.insertServer", server);
 	}
 
@@ -135,7 +134,7 @@ public class ServerDAO extends EgovComAbstractDAO {
 	 * 기 등록된 서버정보를 수정한다.
 	 * @param server - 서버 model
 	 */
-	public void updateServer(Server server) throws Exception {
+	public void updateServer(Server server) {
 		update("serverDAO.updateServer", server);
 	}
 
@@ -143,7 +142,7 @@ public class ServerDAO extends EgovComAbstractDAO {
 	 * 기 등록된 서버정보를 삭제한다.
 	 * @param server - 서버 model
 	 */
-	public void deleteServer(Server server) throws Exception {
+	public void deleteServer(Server server) {
 		delete("serverDAO.deleteServer", server);
 	}
 
@@ -152,7 +151,7 @@ public class ServerDAO extends EgovComAbstractDAO {
 	 * @param serverEqpmnRelateVO - 서버장비관계 Vo
 	 * @return List - 서버장비 목록
 	 */
-	public List<ServerEqpmnRelateVO> selectServerEqpmnRelateList(ServerEqpmnRelateVO serverEqpmnRelateVO) throws Exception {
+	public List<ServerEqpmnRelateVO> selectServerEqpmnRelateList(ServerEqpmnRelateVO serverEqpmnRelateVO) {
 		return selectList("serverDAO.selectServerEqpmnRelateList", serverEqpmnRelateVO);
 	}
 
@@ -161,7 +160,7 @@ public class ServerDAO extends EgovComAbstractDAO {
 	 * @param serverEqpmnRelateVO - 서버장비관계 Vo
 	 * @return int - 서버장비관계 카운트 수
 	 */
-	public int selectServerEqpmnRelateListTotCnt(ServerEqpmnRelateVO serverEqpmnRelateVO) throws Exception {
+	public int selectServerEqpmnRelateListTotCnt(ServerEqpmnRelateVO serverEqpmnRelateVO) {
 		return (Integer)selectOne("serverDAO.selectServerEqpmnRelateListTotCnt", serverEqpmnRelateVO);
 	}
 
@@ -169,7 +168,7 @@ public class ServerDAO extends EgovComAbstractDAO {
 	 * 서버장비관계정보를 신규로 등록한다.
 	 * @param serverEqpmnRelate - 서버장비관계 model
 	 */
-	public void insertServerEqpmnRelate(ServerEqpmnRelate serverEqpmnRelate) throws Exception {
+	public void insertServerEqpmnRelate(ServerEqpmnRelate serverEqpmnRelate) {
 		insert("serverDAO.insertServerEqpmnRelate", serverEqpmnRelate);
 	}
 
@@ -177,7 +176,7 @@ public class ServerDAO extends EgovComAbstractDAO {
 	 * 기 등록된 서버장비관계정보를 삭제한다.
 	 * @param serverEqpmnRelate - 서버장비관계 model
 	 */
-	public void deleteServerEqpmnRelate(ServerEqpmnRelate serverEqpmnRelate) throws Exception {
+	public void deleteServerEqpmnRelate(ServerEqpmnRelate serverEqpmnRelate) {
 		delete("serverDAO.deleteServerEqpmnRelate", serverEqpmnRelate);
 	}
 
@@ -186,7 +185,7 @@ public class ServerDAO extends EgovComAbstractDAO {
 	 * @param serverEqpmnId - 서버장비 ID
 	 * @return List - 해당 서버장비를 사용하는 서버S/W 목록
 	 */
-	public List<ServerVO> selectRelatedServersByEqpmnId(String serverEqpmnId) throws Exception {
+	public List<ServerVO> selectRelatedServersByEqpmnId(String serverEqpmnId) {
 		return selectList("serverDAO.selectRelatedServersByEqpmnId", serverEqpmnId);
 	}
 
