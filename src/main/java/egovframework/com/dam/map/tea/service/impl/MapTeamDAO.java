@@ -29,7 +29,7 @@ public class MapTeamDAO extends EgovComAbstractDAO{
 	 *
 	 * @param MapTeamVO
 	 */
-	public List<MapTeamVO> selectMapTeamList(MapTeamVO searchVO) throws Exception {
+	public List<MapTeamVO> selectMapTeamList(MapTeamVO searchVO) {
 		return selectList("MapTeamDAO.selectMapTeamList", searchVO);
 	}
 
@@ -40,7 +40,7 @@ public class MapTeamDAO extends EgovComAbstractDAO{
 	 *
 	 * @param MapTeamVO
 	 */
-	public int selectMapTeamTotCnt(MapTeamVO searchVO) throws Exception {
+	public int selectMapTeamTotCnt(MapTeamVO searchVO) {
 		return (Integer)selectOne("MapTeamDAO.selectMapTeamTotCnt", searchVO);
 	}
 
@@ -51,7 +51,7 @@ public class MapTeamDAO extends EgovComAbstractDAO{
 	 *
 	 * @param MapTeamVO
 	 */
-	public MapTeam selectMapTeamDetail(MapTeam mapTeam) throws Exception {
+	public MapTeam selectMapTeamDetail(MapTeam mapTeam) {
 		return (MapTeam)selectOne("MapTeamDAO.selectMapTeamDetail", mapTeam);
 	}
 
@@ -61,7 +61,7 @@ public class MapTeamDAO extends EgovComAbstractDAO{
 	 *
 	 * @param orgnztNm
 	 */
-	public void insertMapTeam(MapTeam mapTeam) throws Exception {
+	public void insertMapTeam(MapTeam mapTeam) {
 		insert("MapTeamDAO.insertMapTeam", mapTeam);
 	}
 
@@ -71,7 +71,7 @@ public class MapTeamDAO extends EgovComAbstractDAO{
 	 *
 	 * @param orgnztNm
 	 */
-	public void updateMapTeam(MapTeam mapTeam) throws Exception {
+	public void updateMapTeam(MapTeam mapTeam) {
 		update("MapTeamDAO.updateMapTeam", mapTeam);
 	}
 
@@ -81,7 +81,7 @@ public class MapTeamDAO extends EgovComAbstractDAO{
 	 *
 	 * @param orgnztNm
 	 */
-	public void deleteMapTeam(MapTeam mapTeam) throws Exception {
+	public void deleteMapTeam(MapTeam mapTeam) {
 		delete("MapTeamDAO.deleteMapTeam", mapTeam);
 	}
 
