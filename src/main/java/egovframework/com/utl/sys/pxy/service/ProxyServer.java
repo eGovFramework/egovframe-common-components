@@ -7,11 +7,12 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.sql.SQLException;
 
 import javax.net.ssl.SSLServerSocketFactory;
 import javax.net.ssl.SSLSocketFactory;
 
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
+import org.egovframe.rte.fdl.cmmn.exception.FdlException;
 import org.egovframe.rte.fdl.idgnr.EgovIdGnrService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -151,38 +152,40 @@ public class ProxyServer extends Thread {
 
 	public void insertProxyLog() {
 
+		proxyLog = new ProxyLog();
+
+		proxyLog.setProxyId(getThreadName());
+
 		try {
-
-			proxyLog = new ProxyLog();
-
-			proxyLog.setProxyId(getThreadName());
-
 			proxyLog.setLogId(egovProxyLogIdGnrService.getNextStringId());
+		} catch (FdlException e) {
+			throw new BaseRuntimeException(e);
+		}
 
-			//KISA 보안약점 조치 (2018-10-29, 윤창원)
-			if (client.getInetAddress() != null) {
-				if (!EgovWebUtil.isIPAddress((client.getInetAddress().getHostAddress()))) {
-					throw new RuntimeException("IP is needed. (" + client.getInetAddress().getHostAddress() + ")");
-				}
-				proxyLog.setClntIp(client.getInetAddress().getHostAddress());
+		//KISA 보안약점 조치 (2018-10-29, 윤창원)
+		if (client.getInetAddress() != null) {
+			if (!EgovWebUtil.isIPAddress((client.getInetAddress().getHostAddress()))) {
+				throw new RuntimeException("IP is needed. (" + client.getInetAddress().getHostAddress() + ")");
 			}
-			proxyLog.setClntPort(String.valueOf(getLocalPort()));
-			proxyLog.setFrstRegisterId("SYSTEM");
-			proxyLog.setLastUpdusrId("SYSTEM");
+			proxyLog.setClntIp(client.getInetAddress().getHostAddress());
+		}
+		proxyLog.setClntPort(String.valueOf(getLocalPort()));
+		proxyLog.setFrstRegisterId("SYSTEM");
+		proxyLog.setLastUpdusrId("SYSTEM");
 
+		if (LOGGER.isInfoEnabled()) {
 			LOGGER.info(proxyLog.getProxyId());
 			LOGGER.info(proxyLog.getLogId());
 			LOGGER.info(proxyLog.getClntIp());
 			LOGGER.info(proxyLog.getClntPort());
 			LOGGER.info(proxyLog.getFrstRegisterId());
 			LOGGER.info(proxyLog.getLastUpdusrId());
+		}
 
-			proxySvcDAO.insertProxyLog(proxyLog);
+		int result = proxySvcDAO.insertProxyLog(proxyLog);
 
-		} catch (SQLException e) {
-			LOGGER.debug("proxyLog Insert Error", e);
-		} catch (Exception e) {
-			LOGGER.debug("proxyLog Insert Error", e);
+		if (result == 0) {
+			throw new BaseRuntimeException("proxyLog Insert Error");
 		}
 	}
 
