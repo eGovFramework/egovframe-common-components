@@ -34,6 +34,7 @@ import egovframework.com.utl.sys.pxy.service.impl.ProxySvcDAO;
  *  수정일                수정자             수정내용
  *  ----------   --------    ---------------------------
  *  2019.12.05   신용호              KISA 보안약점 조치 (경로조작및 자원 삽입, 부적절한 예외처리)
+ *  2026.06.22   이백행              [2026년 컨트리뷰션] 불필요한 예외(throws Exception) 제거
  * </pre>
  */
 public class ProxyServer extends Thread {
