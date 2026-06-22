@@ -24,6 +24,7 @@ import egovframework.com.sts.com.StatsVO;
  *  2018.05.02  신용호          summaryBbsStats() 수정
  *                        게시판유형별 코드분류 변경 (COM004 => COM101)
  *                        게시판속성별(COM009) 코드분류 사용하지 않음
+ *  2026.06.17  이백행          [2026년 컨트리뷰션] 불필요한 예외(throws Exception) 제거
  *
  *  </pre>
  */
@@ -34,9 +35,8 @@ public class BbsStatsDAO extends EgovComAbstractDAO {
 	 * 게시물 생성글수 통계를 조회한다
 	 * @param vo StatsVO
 	 * @return List
-	 * @exception Exception
 	 */
-    public List<StatsVO> selectBbsCretCntStats(StatsVO vo) throws Exception {
+    public List<StatsVO> selectBbsCretCntStats(StatsVO vo) {
         return selectList("BbsStatsDAO.selectBbsCretCntStats", vo);
     }
 
@@ -44,9 +44,8 @@ public class BbsStatsDAO extends EgovComAbstractDAO {
 	 * 게시물 총조회수 통계를 조회한다
 	 * @param vo StatsVO
 	 * @return List
-	 * @exception Exception
 	 */
-    public List<StatsVO> selectBbsTotCntStats(StatsVO vo) throws Exception {
+    public List<StatsVO> selectBbsTotCntStats(StatsVO vo) {
         return selectList("BbsStatsDAO.selectBbsTotCntStats", vo);
     }
 
@@ -54,9 +53,8 @@ public class BbsStatsDAO extends EgovComAbstractDAO {
 	 * 게시물 평균조회수 통계를 조회한다
 	 * @param vo StatsVO
 	 * @return List
-	 * @exception Exception
 	 */
-    public List<StatsVO> selectBbsAvgCntStats(StatsVO vo) throws Exception {
+    public List<StatsVO> selectBbsAvgCntStats(StatsVO vo) {
         return selectList("BbsStatsDAO.selectBbsAvgCntStats", vo);
     }
 
@@ -64,9 +62,8 @@ public class BbsStatsDAO extends EgovComAbstractDAO {
 	 * 최고조회 게시물 통계정보를 조회한다
 	 * @param vo StatsVO
 	 * @return List
-	 * @exception Exception
 	 */
-    public List<StatsVO> selectBbsMaxCntStats(StatsVO vo) throws Exception {
+    public List<StatsVO> selectBbsMaxCntStats(StatsVO vo) {
         return selectList("BbsStatsDAO.selectBbsMaxCntStats", vo);
     }
 
@@ -74,9 +71,8 @@ public class BbsStatsDAO extends EgovComAbstractDAO {
 	 * 최소조회 게시물 통계정보를 조회한다
 	 * @param vo StatsVO
 	 * @return List
-	 * @exception Exception
 	 */
-    public List<StatsVO> selectBbsMinCntStats(StatsVO vo) throws Exception {
+    public List<StatsVO> selectBbsMinCntStats(StatsVO vo) {
         return selectList("BbsStatsDAO.selectBbsMinCntStats", vo);
     }
 
@@ -84,17 +80,15 @@ public class BbsStatsDAO extends EgovComAbstractDAO {
 	 * 게시물 최고게시자 통계를 조회한다
 	 * @param vo StatsVO
 	 * @return List
-	 * @exception Exception
 	 */
-    public List<StatsVO> selectBbsMaxUserStats(StatsVO vo) throws Exception {
+    public List<StatsVO> selectBbsMaxUserStats(StatsVO vo) {
         return selectList("BbsStatsDAO.selectBbsMaxUserStats", vo);
     }
 
     /**
 	 * 게시물 통계를 위한 집계를 하루단위로 작업하는 배치 프로그램
-	 * @exception Exception
 	 */
-    public void summaryBbsStats() throws Exception {
+    public void summaryBbsStats() {
 
     	StatsVO parVO = new StatsVO();
 
