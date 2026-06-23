@@ -45,4 +45,24 @@ public class EgovFormatCheckUtilTest {
 		assertTrue(EgovFormatCheckUtil.checkFormatMail("hong-gil@example.com"), "하이픈 포함 전체 이메일");
 		assertFalse(EgovFormatCheckUtil.checkFormatMail("hong-gil@@example.com"), "'@' 2개");
 	}
+
+	@Test
+	void testMailMustNotContainEmptyPart() {
+		assertFalse(EgovFormatCheckUtil.checkFormatMail("", "example.com"), "빈 로컬파트");
+		assertFalse(EgovFormatCheckUtil.checkFormatMail("honggil", ""), "빈 도메인파트");
+		assertFalse(EgovFormatCheckUtil.checkFormatMail("@example.com"), "빈 로컬파트 전체 이메일");
+		assertFalse(EgovFormatCheckUtil.checkFormatMail("honggil@"), "빈 도메인파트 전체 이메일");
+	}
+
+	@Test
+	void testSingleArgRejectsTrailingAtSign() {
+		assertFalse(EgovFormatCheckUtil.checkFormatMail("honggil@example.com@"), "끝에 붙은 '@'");
+	}
+
+	@Test
+	void testNullMailIsInvalid() {
+		assertFalse(EgovFormatCheckUtil.checkFormatMail(null), "null 전체 이메일");
+		assertFalse(EgovFormatCheckUtil.checkFormatMail(null, "example.com"), "null 로컬파트");
+		assertFalse(EgovFormatCheckUtil.checkFormatMail("honggil", null), "null 도메인파트");
+	}
 }
