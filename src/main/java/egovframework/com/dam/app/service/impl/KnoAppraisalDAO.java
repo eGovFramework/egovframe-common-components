@@ -31,7 +31,7 @@ public class KnoAppraisalDAO extends EgovComAbstractDAO {
 	 *
 	 * @param KnoAppraisalVO
 	 */
-	public List<EgovMap> selectKnoAppraisalList(KnoAppraisalVO searchVO) throws Exception {
+	public List<EgovMap> selectKnoAppraisalList(KnoAppraisalVO searchVO) {
 		return  selectList("KnoAppraisalDAO.selectKnoAppraisalList", searchVO);
 	}
 
@@ -42,7 +42,7 @@ public class KnoAppraisalDAO extends EgovComAbstractDAO {
 	 *
 	 * @param KnoAppraisalVO
 	 */
-	public int selectKnoAppraisalTotCnt(KnoAppraisalVO searchVO) throws Exception {
+	public int selectKnoAppraisalTotCnt(KnoAppraisalVO searchVO) {
 		return  (Integer)selectOne("KnoAppraisalDAO.selectKnoAppraisalTotCnt", searchVO);
 	}
 
@@ -53,7 +53,7 @@ public class KnoAppraisalDAO extends EgovComAbstractDAO {
 	 *
 	 * @param KnoAppraisalVO
 	 */
-	public KnoAppraisal selectKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception {
+	public KnoAppraisal selectKnoAppraisal(KnoAppraisal knoAppraisal) {
 		return (KnoAppraisal)selectOne("KnoAppraisalDAO.selectKnoAppraisal", knoAppraisal);
 	}
 
@@ -63,7 +63,7 @@ public class KnoAppraisalDAO extends EgovComAbstractDAO {
 	 *
 	 * @param knoAps
 	 */
-	public void insertKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception {
+	public void insertKnoAppraisal(KnoAppraisal knoAppraisal) {
 		insert("KnoAppraisalDAO.insertKnoAppraisal", knoAppraisal);
 	}
 
@@ -73,7 +73,7 @@ public class KnoAppraisalDAO extends EgovComAbstractDAO {
 	 *
 	 * @param knoAps
 	 */
-	public void updateKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception {
+	public void updateKnoAppraisal(KnoAppraisal knoAppraisal) {
 		update("KnoAppraisalDAO.updateKnoAppraisal", knoAppraisal);
 	}
 
@@ -83,7 +83,7 @@ public class KnoAppraisalDAO extends EgovComAbstractDAO {
 	 *
 	 * @param knoAps
 	 */
-	public void deleteKnoAppraisal(KnoAppraisal knoAppraisal) throws Exception {
+	public void deleteKnoAppraisal(KnoAppraisal knoAppraisal) {
 		delete("KnoAppraisalDAO.deleteKnoAppraisal", knoAppraisal);
 	}
 

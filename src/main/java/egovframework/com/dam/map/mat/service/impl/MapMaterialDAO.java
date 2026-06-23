@@ -30,7 +30,7 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 *
 	 * @param MapMaterialVO
 	 */
-	public List<MapMaterialVO> selectMapMaterialList(MapMaterialVO searchVO) throws Exception {
+	public List<MapMaterialVO> selectMapMaterialList(MapMaterialVO searchVO) {
 		return  selectList("MapMaterialDAO.selectMapMaterialList", searchVO);
 	}
 
@@ -41,7 +41,7 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 *
 	 * @param MapMaterialVO
 	 */
-	public int selectMapMaterialTotCnt(MapMaterialVO searchVO) throws Exception {
+	public int selectMapMaterialTotCnt(MapMaterialVO searchVO) {
 		return  (Integer)selectOne("MapMaterialDAO.selectMapMaterialTotCnt", searchVO);
 	}
 
@@ -52,7 +52,7 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 *
 	 * @param MapMaterialVO
 	 */
-	public MapMaterial selectMapMaterial(MapMaterial mapMaterial) throws Exception {
+	public MapMaterial selectMapMaterial(MapMaterial mapMaterial) {
 		return (MapMaterial)selectOne("MapMaterialDAO.selectMapMaterial", mapMaterial);
 	}
 
@@ -62,7 +62,7 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 *
 	 * @param MapMaterialVO
 	 */
-	public void insertMapMaterial(MapMaterial mapMaterial) throws Exception {
+	public void insertMapMaterial(MapMaterial mapMaterial) {
 		insert("MapMaterialDAO.insertMapMaterial", mapMaterial);
 	}
 
@@ -72,7 +72,7 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 *
 	 * @param MapMaterialVO
 	 */
-	public void updateMapMaterial(MapMaterial mapMaterial) throws Exception {
+	public void updateMapMaterial(MapMaterial mapMaterial) {
 		update("MapMaterialDAO.updateMapMaterial", mapMaterial);
 	}
 
@@ -82,7 +82,7 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 *
 	 * @param MapMaterialVO
 	 */
-	public void deleteMapMaterial(MapMaterial mapMaterial) throws Exception {
+	public void deleteMapMaterial(MapMaterial mapMaterial) {
 		delete("MapMaterialDAO.deleteMapMaterial", mapMaterial);
 	}
 
@@ -90,9 +90,8 @@ public class MapMaterialDAO extends EgovComAbstractDAO {
 	 * 지식유형코드 중복 여부 체크(위치 : 1260.지식맵관리(유형) > 등록)
 	 * @param knoTypeCd
 	 * @return 중복 여부
-	 * @throws Exception
 	 */
-	public int knoTypeCdCheck(String knoTypeCd) throws Exception {
+	public int knoTypeCdCheck(String knoTypeCd) {
 		return (Integer)selectOne("MapMaterialDAO.selectKnoTypeCdCheck", knoTypeCd);
 	}
 }

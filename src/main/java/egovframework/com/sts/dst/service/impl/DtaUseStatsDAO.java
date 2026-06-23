@@ -28,7 +28,7 @@ public class DtaUseStatsDAO extends EgovComAbstractDAO {
 	 * @param dtaUseStatsVO - 자료이용현황 VO
 	 * @return List - 자료이용현황 목록
 	 */
-	public List<DtaUseStatsVO> selectDtaUseStatsList(DtaUseStatsVO dtaUseStatsVO) throws Exception {
+	public List<DtaUseStatsVO> selectDtaUseStatsList(DtaUseStatsVO dtaUseStatsVO) {
 		return selectList("dtaUseStatsDAO.selectDtaUseStatsList", dtaUseStatsVO);
 	}
 
@@ -37,7 +37,7 @@ public class DtaUseStatsDAO extends EgovComAbstractDAO {
 	 * @param dtaUseStatsVO - 자료이용현황 VO
 	 * @return int
 	 */
-	public int selectDtaUseStatsListTotCnt(DtaUseStatsVO dtaUseStatsVO) throws Exception {
+	public int selectDtaUseStatsListTotCnt(DtaUseStatsVO dtaUseStatsVO) {
 		return (Integer)selectOne("dtaUseStatsDAO.selectDtaUseStatsListTotCnt", dtaUseStatsVO);
 	}	
 		
@@ -46,7 +46,7 @@ public class DtaUseStatsDAO extends EgovComAbstractDAO {
 	 * @param dtaUseStatsVO - 자료이용현황 VO
 	 * @return int
 	 */
-	public int selectDtaUseStatsListBarTotCnt(DtaUseStatsVO dtaUseStatsVO) throws Exception {
+	public int selectDtaUseStatsListBarTotCnt(DtaUseStatsVO dtaUseStatsVO) {
 		return (Integer)selectOne("dtaUseStatsDAO.selectDtaUseStatsListBarTotCnt", dtaUseStatsVO);
 	}		
 	
@@ -55,7 +55,7 @@ public class DtaUseStatsDAO extends EgovComAbstractDAO {
 	 * @param dtaUseStatsVO - 자료이용현황 VO
 	 * @return reprtStatsVO - 자료이용현황 VO
 	 */
-	public List<DtaUseStatsVO> selectDtaUseStats(DtaUseStatsVO dtaUseStatsVO) throws Exception {
+	public List<DtaUseStatsVO> selectDtaUseStats(DtaUseStatsVO dtaUseStatsVO) {
 		return selectList("dtaUseStatsDAO.selectDtaUseStats", dtaUseStatsVO);
 	}
 
@@ -64,7 +64,7 @@ public class DtaUseStatsDAO extends EgovComAbstractDAO {
 	 * @param dtaUseStatsVO - 자료이용현황 VO
 	 * @return int
 	 */
-	public int selectDtaUseStatsTotCnt(DtaUseStatsVO dtaUseStatsVO) throws Exception {
+	public int selectDtaUseStatsTotCnt(DtaUseStatsVO dtaUseStatsVO) {
 		return (Integer)selectOne("dtaUseStatsDAO.selectDtaUseStatsTotCnt", dtaUseStatsVO);
 	}	
 	
@@ -72,9 +72,8 @@ public class DtaUseStatsDAO extends EgovComAbstractDAO {
 	 * 자료이용현황 정보를 등록을 위한 다운로드 첨부화일 정보를 조회한다.
 	 * @param dtaUseStats DtaUseStats
 	 * @return DtaUseStats
-	 * @exception Exception
 	 */
-    public DtaUseStats selectInsertDtaUseStats(DtaUseStats dtaUseStats) throws Exception {
+    public DtaUseStats selectInsertDtaUseStats(DtaUseStats dtaUseStats) {
         return (DtaUseStats) selectOne("dtaUseStatsDAO.selectInsertDtaUseStats", dtaUseStats);
     }	
 	
@@ -82,7 +81,7 @@ public class DtaUseStatsDAO extends EgovComAbstractDAO {
 	 * 자료이용현황 정보를 등록한다.
 	 * @param dtaUseStats - 자료이용현황 model
 	 */
-	public void insertDtaUseStats(DtaUseStats dtaUseStats) throws Exception {
+	public void insertDtaUseStats(DtaUseStats dtaUseStats) {
 
 		insert("dtaUseStatsDAO.insertDtaUseStats", dtaUseStats);
 	}
@@ -92,7 +91,7 @@ public class DtaUseStatsDAO extends EgovComAbstractDAO {
 	 * @param dtaUseStatsVO - 자료이용현황 VO
 	 * @return List - 등록일자별 자료이용현황 목록
 	 */
-	public List<DtaUseStatsVO> selectDtaUseStatsBarList(DtaUseStatsVO dtaUseStatsVO) throws Exception {
+	public List<DtaUseStatsVO> selectDtaUseStatsBarList(DtaUseStatsVO dtaUseStatsVO) {
 		return selectList("dtaUseStatsDAO.selectDtaUseStatsBarList", dtaUseStatsVO);
 	}
 }

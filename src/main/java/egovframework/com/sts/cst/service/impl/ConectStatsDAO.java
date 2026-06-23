@@ -21,6 +21,7 @@ import egovframework.com.sts.com.StatsVO;
  *  -------    --------    ---------------------------
  *  2009.03.19  박지욱          최초 생성
  *  2011.06.30  이기하          패키지 분리(sts -> sts.cst)
+ *  2026.06.16  이백행          [2026년 컨트리뷰션] 불필요한 예외(throws Exception) 제거
  *
  *  </pre>
  */
@@ -31,9 +32,8 @@ public class ConectStatsDAO extends EgovComAbstractDAO {
 	 * 접속 통계를 조회한다
 	 * @param vo StatsVO
 	 * @return List
-	 * @exception Exception
 	 */
-    public List<StatsVO> selectConectStats(StatsVO vo) throws Exception {
+    public List<StatsVO> selectConectStats(StatsVO vo) {
         return selectList("ConectStatsDAO.selectConectStats", vo);
     }
 }

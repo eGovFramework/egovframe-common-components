@@ -24,6 +24,7 @@ import egovframework.com.sym.ccm.acr.service.AdministCodeRecptnVO;
  *  -------    --------    ---------------------------
  *   2009.04.01  이중호         최초 생성
  *   2024.10.29	 권태성			법정동코드 저장 시 NullPointerException 수정(insertAdministCode())
+ *   2026.06.16  이백행         [2026년 컨트리뷰션] 불필요한 예외(throws Exception) 제거
  *
  * Copyright (C) 2009 by MOPAS  All rights reserved.
  * </pre>
@@ -34,18 +35,16 @@ public class AdministCodeRecptnDAO extends EgovComAbstractDAO {
 	/**
 	 * 법정동코드수신을 처리한다.
 	 * @param administCode
-	 * @throws Exception
 	 */
-	public void insertAdministCodeRecptn(AdministCodeRecptn administCodeRecptn) throws Exception {
+	public void insertAdministCodeRecptn(AdministCodeRecptn administCodeRecptn) {
         insert("AdministCodeRecptnDAO.insertAdministCodeRecptn", administCodeRecptn);
 	}
 
 	/**
 	 * 법정동코드를 등록한다.
 	 * @param administCode
-	 * @throws Exception
 	 */
-	public void insertAdministCode(AdministCodeRecptn administCodeRecptn) throws Exception {
+	public void insertAdministCode(AdministCodeRecptn administCodeRecptn) {
 		AdministCodeRecptn beforeData = (AdministCodeRecptn) selectOne("AdministCodeRecptnDAO.selectAdministCodeDetail", administCodeRecptn);
 
 		if (beforeData != null
@@ -67,9 +66,8 @@ public class AdministCodeRecptnDAO extends EgovComAbstractDAO {
 	/**
 	 * 법정동코드를 수정한다.
 	 * @param administCode
-	 * @throws Exception
 	 */
-	public void updateAdministCode(AdministCodeRecptn administCodeRecptn) throws Exception {
+	public void updateAdministCode(AdministCodeRecptn administCodeRecptn) {
 		int rtnValue = update("AdministCodeRecptnDAO.updateAdministCode", administCodeRecptn);
         if (rtnValue != 1) {
         	// 변경 오류
@@ -81,9 +79,8 @@ public class AdministCodeRecptnDAO extends EgovComAbstractDAO {
 	/**
 	 * 법정동코드를 삭제한다.
 	 * @param administCode
-	 * @throws Exception
 	 */
-	public void deleteAdministCode(AdministCodeRecptn administCodeRecptn) throws Exception {
+	public void deleteAdministCode(AdministCodeRecptn administCodeRecptn) {
 		int rtnValue = update("AdministCodeRecptnDAO.deleteAdministCode", administCodeRecptn);
         if (rtnValue != 1) {
         	// 삭제 오류
@@ -97,7 +94,7 @@ public class AdministCodeRecptnDAO extends EgovComAbstractDAO {
 	 * @param administCode
 	 * @return AdministCode(법정동코드)
 	 */
-	public AdministCodeRecptn selectAdministCodeDetail(AdministCodeRecptn administCodeRecptn) throws Exception {
+	public AdministCodeRecptn selectAdministCodeDetail(AdministCodeRecptn administCodeRecptn) {
 		return (AdministCodeRecptn) selectOne("AdministCodeRecptnDAO.selectAdministCodeDetail", administCodeRecptn);
 	}
 
@@ -106,9 +103,8 @@ public class AdministCodeRecptnDAO extends EgovComAbstractDAO {
 	 * 법정동코드수신 목록을 조회한다.
      * @param searchVO
      * @return List(법정동코드 목록)
-     * @throws Exception
      */
-    public List<EgovMap> selectAdministCodeRecptnList(AdministCodeRecptnVO searchVO) throws Exception {
+    public List<EgovMap> selectAdministCodeRecptnList(AdministCodeRecptnVO searchVO) {
         return selectList("AdministCodeRecptnDAO.selectAdministCodeRecptnList", searchVO);
     }
 
@@ -117,7 +113,7 @@ public class AdministCodeRecptnDAO extends EgovComAbstractDAO {
      * @param searchVO
      * @return int(법정동코드 총 개수)
      */
-    public int selectAdministCodeRecptnListTotCnt(AdministCodeRecptnVO searchVO) throws Exception {
+    public int selectAdministCodeRecptnListTotCnt(AdministCodeRecptnVO searchVO) {
         return (Integer)selectOne("AdministCodeRecptnDAO.selectAdministCodeRecptnListTotCnt", searchVO);
     }
 
@@ -125,9 +121,8 @@ public class AdministCodeRecptnDAO extends EgovComAbstractDAO {
 	 * 법정동코드 목록을 조회한다.
      * @param searchVO
      * @return List(법정동코드 목록)
-     * @throws Exception
      */
-    public List<EgovMap> selectAdministCodeList(AdministCodeRecptnVO searchVO) throws Exception {
+    public List<EgovMap> selectAdministCodeList(AdministCodeRecptnVO searchVO) {
         return selectList("AdministCodeRecptnDAO.selectAdministCodeList", searchVO);
     }
 
@@ -136,7 +131,7 @@ public class AdministCodeRecptnDAO extends EgovComAbstractDAO {
      * @param searchVO
      * @return int(법정동코드 총 개수)
      */
-    public int selectAdministCodeListTotCnt(AdministCodeRecptnVO searchVO) throws Exception {
+    public int selectAdministCodeListTotCnt(AdministCodeRecptnVO searchVO) {
         return (Integer)selectOne("AdministCodeRecptnDAO.selectAdministCodeListTotCnt", searchVO);
     }
 }

@@ -27,9 +27,8 @@ public class BannerDAO extends EgovComAbstractDAO {
 	 * 배너를 관리하기 위해 등록된 배너목록을 조회한다.
 	 * @param bannerVO - 배너 Vo
 	 * @return List - 배너 목록
-	 * @exception Exception
 	 */	
-	public List<BannerVO> selectBannerList(BannerVO bannerVO) throws Exception {
+	public List<BannerVO> selectBannerList(BannerVO bannerVO) {
 		return selectList("bannerDAO.selectBannerList", bannerVO);
 	}
 
@@ -37,9 +36,8 @@ public class BannerDAO extends EgovComAbstractDAO {
 	 * 배너목록 총 개수를 조회한다.
 	 * @param bannerVO BannerVO
 	 * @return int
-	 * @exception Exception
 	 */
-    public int selectBannerListTotCnt(BannerVO bannerVO) throws Exception {
+    public int selectBannerListTotCnt(BannerVO bannerVO) {
         return (Integer)selectOne("bannerDAO.selectBannerListTotCnt", bannerVO);
     }
 
@@ -50,7 +48,7 @@ public class BannerDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param bannerVO
 	 */
-	public BannerVO selectBanner(BannerVO bannerVO) throws Exception {
+	public BannerVO selectBanner(BannerVO bannerVO) {
 		return (BannerVO) selectOne("bannerDAO.selectBanner", bannerVO);
 	}
 
@@ -58,7 +56,7 @@ public class BannerDAO extends EgovComAbstractDAO {
 	 * 배너정보를 신규로 등록한다.
 	 * @param bannerVO - 배너 VO
 	 */
-	public void insertBanner(BannerVO bannerVO) throws Exception {
+	public void insertBanner(BannerVO bannerVO) {
 		insert("bannerDAO.insertBanner", bannerVO);
 	}
 
@@ -66,7 +64,7 @@ public class BannerDAO extends EgovComAbstractDAO {
 	 * 기 등록된 배너정보를 수정한다.
 	 * @param bannerVO - 배너 VO
 	 */
-	public void updateBanner(BannerVO bannerVO) throws Exception {
+	public void updateBanner(BannerVO bannerVO) {
         update("bannerDAO.updateBanner", bannerVO);
 	}
 
@@ -74,7 +72,7 @@ public class BannerDAO extends EgovComAbstractDAO {
 	 * 기 등록된 배너정보를 삭제한다.
 	 * @param bannerVO - 배너 VO
 	 */
-	public void deleteBanner(BannerVO bannerVO) throws Exception {
+	public void deleteBanner(BannerVO bannerVO) {
 		delete("bannerDAO.deleteBanner", bannerVO);
 	}
 
@@ -83,7 +81,7 @@ public class BannerDAO extends EgovComAbstractDAO {
 	 * @param bannerVO - 배너 VO
 	 * @return FileVO - 파일 VO
 	 */
-	public FileVO selectBannerFile(BannerVO bannerVO) throws Exception {
+	public FileVO selectBannerFile(BannerVO bannerVO) {
 		return (FileVO) selectOne("bannerDAO.selectBannerFile", bannerVO);
 	}
 
@@ -91,10 +89,9 @@ public class BannerDAO extends EgovComAbstractDAO {
 	 * 배너가 특정화면에 반영된 결과를 조회한다.
 	 * @param bannerVO - 배너 VO
 	 * @return BannerVO - 배너 VO
-	 * @exception Exception
 	 */
 	
-	public List<BannerVO> selectBannerResult(BannerVO bannerVO) throws Exception {
+	public List<BannerVO> selectBannerResult(BannerVO bannerVO) {
 		return selectList("bannerDAO.selectBannerResult", bannerVO);
 	}
 

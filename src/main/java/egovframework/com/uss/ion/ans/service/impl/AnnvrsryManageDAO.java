@@ -28,7 +28,7 @@ public class AnnvrsryManageDAO extends EgovComAbstractDAO {
 	 * @param annvrsryManageVO - 기념일관리 VO
 	 * @return List - 기념일관리 목록
 	 */	
-	public List<AnnvrsryManageVO> selectAnnvrsryManageList(AnnvrsryManageVO annvrsryManageVO) throws Exception {
+	public List<AnnvrsryManageVO> selectAnnvrsryManageList(AnnvrsryManageVO annvrsryManageVO) {
 		return selectList("annvrsryManageDAO.selectAnnvrsryManageList", annvrsryManageVO);
 	}
 
@@ -36,9 +36,8 @@ public class AnnvrsryManageDAO extends EgovComAbstractDAO {
 	 * 기념일관리목록 총 개수를 조회한다.
 	 * @param annvrsryManageVO - 기념일관리 VO
 	 * @return int
-	 * @exception Exception
 	 */
-    public int selectAnnvrsryManageListTotCnt(AnnvrsryManageVO annvrsryManageVO) throws Exception {
+    public int selectAnnvrsryManageListTotCnt(AnnvrsryManageVO annvrsryManageVO) {
         return (Integer)selectOne("annvrsryManageDAO.selectAnnvrsryManageListTotCnt", annvrsryManageVO);
     }
 
@@ -47,7 +46,7 @@ public class AnnvrsryManageDAO extends EgovComAbstractDAO {
 	 * @param annvrsryManageVO - 기념일관리 VO
 	 * @return AnnvrsryManageVO - 기념일관리 VO
 	 */
-	public AnnvrsryManageVO selectAnnvrsryManage(AnnvrsryManageVO annvrsryManageVO)  throws Exception {
+	public AnnvrsryManageVO selectAnnvrsryManage(AnnvrsryManageVO annvrsryManageVO) {
 		return (AnnvrsryManageVO) selectOne("annvrsryManageDAO.selectAnnvrsryManage", annvrsryManageVO);
 	}
 
@@ -55,7 +54,7 @@ public class AnnvrsryManageDAO extends EgovComAbstractDAO {
 	 * 기념일관리정보를 신규로 등록한다.
 	 * @param annvrsryManage - 기념일관리 model
 	 */
-	public void insertAnnvrsryManage(AnnvrsryManage annvrsryManage) throws Exception {
+	public void insertAnnvrsryManage(AnnvrsryManage annvrsryManage) {
 		insert("annvrsryManageDAO.insertAnnvrsryManage", annvrsryManage);
 	}
 
@@ -63,7 +62,7 @@ public class AnnvrsryManageDAO extends EgovComAbstractDAO {
 	 * 기 등록된 기념일관리정보를 수정한다.
 	 * @param annvrsryManage - 기념일관리 model
 	 */
-	public void updateAnnvrsryManage(AnnvrsryManage annvrsryManage) throws Exception {
+	public void updateAnnvrsryManage(AnnvrsryManage annvrsryManage) {
 		update("annvrsryManageDAO.updateAnnvrsryManage", annvrsryManage);
 	}
 
@@ -71,7 +70,7 @@ public class AnnvrsryManageDAO extends EgovComAbstractDAO {
 	 * 기 등록된 기념일관리정보를 삭제한다.
 	 * @param annvrsryManage - 기념일관리 model
 	 */
-	public void deleteAnnvrsryManage(AnnvrsryManage annvrsryManage) throws Exception {
+	public void deleteAnnvrsryManage(AnnvrsryManage annvrsryManage) {
         delete("annvrsryManageDAO.deleteAnnvrsryManage",annvrsryManage);
 	}
 
@@ -80,7 +79,7 @@ public class AnnvrsryManageDAO extends EgovComAbstractDAO {
 	 * @param annvrsryManageVO - 기념일관리 VO
 	 * @return AnnvrsryManageVO - 기념일관리 VO
 	 */	
-	public List<AnnvrsryManageVO> selectAnnvrsryGdcc(AnnvrsryManageVO annvrsryManageVO)  throws Exception {
+	public List<AnnvrsryManageVO> selectAnnvrsryGdcc(AnnvrsryManageVO annvrsryManageVO) {
 		return selectList("annvrsryManageDAO.selectAnnvrsryGdcc", annvrsryManageVO);
 	}
 
@@ -88,9 +87,8 @@ public class AnnvrsryManageDAO extends EgovComAbstractDAO {
 	 * 기념일관리 등록시 중복여부를 조회한다.
 	 * @param annvrsryManage - 기념일관리 VO
 	 * @return int
-	 * @exception Exception
 	 */
-    public int selectAnnvrsryManageDplctAt(AnnvrsryManage annvrsryManage) throws Exception {
+    public int selectAnnvrsryManageDplctAt(AnnvrsryManage annvrsryManage) {
         return (Integer)selectOne("annvrsryManageDAO.selectAnnvrsryManageDplctAt", annvrsryManage);
     }
 
@@ -99,7 +97,7 @@ public class AnnvrsryManageDAO extends EgovComAbstractDAO {
 	 * @param annvrsryManageVO - 기념일관리 VO
 	 * @return AnnvrsryManageVO - 기념일관리 VO
 	 */
-	public AnnvrsryManageVO selectAnnvrsryManageBnde(AnnvrsryManageVO annvrsryManageVO)  throws Exception {
+	public AnnvrsryManageVO selectAnnvrsryManageBnde(AnnvrsryManageVO annvrsryManageVO) {
 		return (AnnvrsryManageVO) selectOne("annvrsryManageDAO.selectAnnvrsryManageBnde", annvrsryManageVO);
 	}
 

@@ -25,6 +25,7 @@ import egovframework.com.ssi.syi.ims.service.CntcMessageVO;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.04.01  이중호          최초 생성
+ *   2026.06.16  이백행          [2026년 컨트리뷰션] 불필요한 예외(throws Exception) 제거
  *
  * Copyright (C) 2009 by MOPAS  All rights reserved.
  * </pre>
@@ -35,36 +36,32 @@ public class CntcMessageDAO extends EgovComAbstractDAO {
 	/**
 	 * 연계메시지를 삭제한다.
 	 * @param cntcMessage
-	 * @throws Exception
 	 */
-	public void deleteCntcMessage(CntcMessage cntcMessage) throws Exception {
+	public void deleteCntcMessage(CntcMessage cntcMessage) {
 		delete("CntcMessageDAO.deleteCntcMessage", cntcMessage);
 	}
 
 	/**
 	 * 연계메시지 항목을 삭제한다.
 	 * @param cntcMessage
-	 * @throws Exception
 	 */
-	public void deleteCntcMessageItem(CntcMessageItem cntcMessageItem) throws Exception {
+	public void deleteCntcMessageItem(CntcMessageItem cntcMessageItem) {
 		delete("CntcMessageDAO.deleteCntcMessageItem", cntcMessageItem);
 	}
 
 	/**
 	 * 연계메시지를 등록한다.
 	 * @param cntcMessage
-	 * @throws Exception
 	 */
-	public void insertCntcMessage(CntcMessage cntcMessage) throws Exception {
+	public void insertCntcMessage(CntcMessage cntcMessage) {
 		insert("CntcMessageDAO.insertCntcMessage", cntcMessage);
 	}
 
 	/**
 	 * 연계메시지 항목을 등록한다.
 	 * @param cntcMessage
-	 * @throws Exception
 	 */
-	public void insertCntcMessageItem(CntcMessageItem cntcMessageItem) throws Exception {
+	public void insertCntcMessageItem(CntcMessageItem cntcMessageItem) {
 		insert("CntcMessageDAO.insertCntcMessageItem", cntcMessageItem);
 	}
 
@@ -73,7 +70,7 @@ public class CntcMessageDAO extends EgovComAbstractDAO {
 	 * @param cntcMessage
 	 * @return CntcMessage(연계메시지)
 	 */
-	public CntcMessage selectCntcMessageDetail(CntcMessage cntcMessage) throws Exception {
+	public CntcMessage selectCntcMessageDetail(CntcMessage cntcMessage) {
 		return (CntcMessage) selectOne("CntcMessageDAO.selectCntcMessageDetail", cntcMessage);
 	}
 
@@ -82,7 +79,7 @@ public class CntcMessageDAO extends EgovComAbstractDAO {
 	 * @param cntcMessage
 	 * @return CntcMessage(연계메시지)
 	 */
-	public CntcMessageItem selectCntcMessageItemDetail(CntcMessageItem cntcMessageItem) throws Exception {
+	public CntcMessageItem selectCntcMessageItemDetail(CntcMessageItem cntcMessageItem) {
 		return (CntcMessageItem) selectOne("CntcMessageDAO.selectCntcMessageItemDetail", cntcMessageItem);
 	}
 
@@ -90,9 +87,8 @@ public class CntcMessageDAO extends EgovComAbstractDAO {
 	 * 연계메시지 목록을 조회한다.
 	 * @param searchVO
 	 * @return List(연계메시지 목록)
-	 * @throws Exception
 	 */
-	public List<EgovMap> selectCntcMessageList(CntcMessageVO searchVO) throws Exception {
+	public List<EgovMap> selectCntcMessageList(CntcMessageVO searchVO) {
 		return selectList("CntcMessageDAO.selectCntcMessageList", searchVO);
 	}
 
@@ -101,7 +97,7 @@ public class CntcMessageDAO extends EgovComAbstractDAO {
 	 * @param searchVO
 	 * @return int(연계메시지 총 개수)
 	 */
-	public int selectCntcMessageListTotCnt(CntcMessageVO searchVO) throws Exception {
+	public int selectCntcMessageListTotCnt(CntcMessageVO searchVO) {
 		return (Integer) selectOne("CntcMessageDAO.selectCntcMessageListTotCnt", searchVO);
 	}
 
@@ -109,9 +105,8 @@ public class CntcMessageDAO extends EgovComAbstractDAO {
 	 * 연계메시지항목 목록을 조회한다.
 	 * @param searchVO
 	 * @return List(연계메시지 목록)
-	 * @throws Exception
 	 */
-	public List<EgovMap> selectCntcMessageItemList(CntcMessageItemVO searchVO) throws Exception {
+	public List<EgovMap> selectCntcMessageItemList(CntcMessageItemVO searchVO) {
 		return selectList("CntcMessageDAO.selectCntcMessageItemList", searchVO);
 	}
 
@@ -120,25 +115,23 @@ public class CntcMessageDAO extends EgovComAbstractDAO {
 	 * @param searchVO
 	 * @return int(연계메시지 총 개수)
 	 */
-	public int selectCntcMessageItemListTotCnt(CntcMessageItemVO searchVO) throws Exception {
+	public int selectCntcMessageItemListTotCnt(CntcMessageItemVO searchVO) {
 		return (Integer) selectOne("CntcMessageDAO.selectCntcMessageItemListTotCnt", searchVO);
 	}
 
 	/**
 	 * 연계메시지를 수정한다.
 	 * @param cntcMessage
-	 * @throws Exception
 	 */
-	public void updateCntcMessage(CntcMessage cntcMessage) throws Exception {
+	public void updateCntcMessage(CntcMessage cntcMessage) {
 		update("CntcMessageDAO.updateCntcMessage", cntcMessage);
 	}
 
 	/**
 	 * 연계메시지 항목을 수정한다.
 	 * @param cntcMessage
-	 * @throws Exception
 	 */
-	public void updateCntcMessageItem(CntcMessageItem cntcMessageItem) throws Exception {
+	public void updateCntcMessageItem(CntcMessageItem cntcMessageItem) {
 		update("CntcMessageDAO.updateCntcMessageItem", cntcMessageItem);
 	}
 

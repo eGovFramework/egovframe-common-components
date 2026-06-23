@@ -24,6 +24,7 @@ import egovframework.com.uss.sam.cpy.service.CpyrhtPrtcPolicyVO;
  *   수정일          수정자       수정내용
  *  -----------    --------    ---------------------------
  *   2009.04.01     박정규       최초 생성
+ *   2026.06.18     이백행       [2026년 컨트리뷰션] 불필요한 예외(throws Exception) 제거
  *
  *      </pre>
  */
@@ -35,9 +36,8 @@ public class CpyrhtPrtcPolicyDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param vo
 	 * @return 조회한 글
-	 * @exception Exception
 	 */
-	public CpyrhtPrtcPolicyVO selectCpyrhtPrtcPolicyDetail(CpyrhtPrtcPolicyVO vo) throws Exception {
+	public CpyrhtPrtcPolicyVO selectCpyrhtPrtcPolicyDetail(CpyrhtPrtcPolicyVO vo) {
 
 		return (CpyrhtPrtcPolicyVO) selectOne("CpyrhtPrtcPolicyDAO.selectCpyrhtPrtcPolicyDetail", vo);
 
@@ -48,9 +48,8 @@ public class CpyrhtPrtcPolicyDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param searchVO
 	 * @return 글 목록
-	 * @exception Exception
 	 */
-	public List<EgovMap> selectCpyrhtPrtcPolicyList(CpyrhtPrtcPolicyDefaultVO searchVO) throws Exception {
+	public List<EgovMap> selectCpyrhtPrtcPolicyList(CpyrhtPrtcPolicyDefaultVO searchVO) {
 
 		return selectList("CpyrhtPrtcPolicyDAO.selectCpyrhtPrtcPolicyList", searchVO);
 
@@ -72,9 +71,8 @@ public class CpyrhtPrtcPolicyDAO extends EgovComAbstractDAO {
 	 * 저작권보호정책 글을 등록한다.
 	 * 
 	 * @param vo
-	 * @exception Exception
 	 */
-	public void insertCpyrhtPrtcPolicyCn(CpyrhtPrtcPolicyVO vo) throws Exception {
+	public void insertCpyrhtPrtcPolicyCn(CpyrhtPrtcPolicyVO vo) {
 
 		insert("CpyrhtPrtcPolicyDAO.insertCpyrhtPrtcPolicyCn", vo);
 
@@ -84,9 +82,8 @@ public class CpyrhtPrtcPolicyDAO extends EgovComAbstractDAO {
 	 * 저작권보호정책 글을 수정한다.
 	 * 
 	 * @param vo
-	 * @exception Exception
 	 */
-	public void updateCpyrhtPrtcPolicyCn(CpyrhtPrtcPolicyVO vo) throws Exception {
+	public void updateCpyrhtPrtcPolicyCn(CpyrhtPrtcPolicyVO vo) {
 
 		update("CpyrhtPrtcPolicyDAO.updateCpyrhtPrtcPolicyCn", vo);
 
@@ -96,9 +93,8 @@ public class CpyrhtPrtcPolicyDAO extends EgovComAbstractDAO {
 	 * 저작권보호정책 글을 삭제한다.
 	 * 
 	 * @param vo
-	 * @exception Exception
 	 */
-	public void deleteCpyrhtPrtcPolicyCn(CpyrhtPrtcPolicyVO vo) throws Exception {
+	public void deleteCpyrhtPrtcPolicyCn(CpyrhtPrtcPolicyVO vo) {
 
 		delete("CpyrhtPrtcPolicyDAO.deleteCpyrhtPrtcPolicyCn", vo);
 
