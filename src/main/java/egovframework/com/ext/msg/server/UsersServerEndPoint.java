@@ -21,8 +21,10 @@ package egovframework.com.ext.msg.server;
 import java.io.IOException;
 import java.io.StringReader;
 import java.security.SecureRandom;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.slf4j.Logger;
@@ -107,9 +109,10 @@ public class UsersServerEndPoint {
 				if (username != null && !isExisted(username)) {
 					userSession.getUserProperties().put("username", username);
 
-					for (Session session : connectedAllUsers) { // NOPMD - CloseResource
-						session.getBasicRemote().sendText(buildJsonUserData(getUsers()));
-					}
+					// 사용자 목록 payload는 한 번만 생성하고, 공유 락은 세션 스냅샷에만 보유한다.
+					// 실제 sendText(네트워크 I/O)는 락 밖에서 수행해 전송 지연이 다른 작업을 막지 않도록 한다.
+					String userListPayload = buildJsonUserData(getUsers());
+					broadcast(userListPayload);
 				} else {
 					if (LOGGER.isDebugEnabled()) {
 						LOGGER.debug("username을 다시 입력하게하는 로직 넣기.");
@@ -131,10 +134,12 @@ public class UsersServerEndPoint {
 
 				if (connectingUser != null && !username.equals(connectingUser)) {
 					// 사용자들 중 선택한 유저와 연결
-					for (Session session : connectedAllUsers) {// NOPMD - CloseResource
-						if (connectingUser.equals(session.getUserProperties().get("username"))) {
-							// 선택한 사용자면 chatroomMember로 추가.
-							chatroomMembers.add(session);
+					synchronized (connectedAllUsers) {
+						for (Session session : connectedAllUsers) {// NOPMD - CloseResource
+							if (connectingUser.equals(session.getUserProperties().get("username"))) {
+								// 선택한 사용자면 chatroomMember로 추가.
+								chatroomMembers.add(session);
+							}
 						}
 					}
 
@@ -172,11 +177,29 @@ public class UsersServerEndPoint {
 		connectedAllUsers.remove(userSession);
 
 		if (disconnectedUser != null) {
-			Json.createObjectBuilder().add("disconnectedUser", disconnectedUser).build().toString();
+			// payload는 한 번만 생성하고, 공유 락은 세션 스냅샷에만 보유한다(전송은 락 밖).
+			String payload = Json.createObjectBuilder().add("disconnectedUser", disconnectedUser).build().toString();
+			broadcast(payload);
+		}
+	}
 
-			for (Session session : connectedAllUsers) {// NOPMD - CloseResource
-				session.getBasicRemote().sendText(
-						Json.createObjectBuilder().add("disconnectedUser", disconnectedUser).build().toString());
+	/**
+	 * 접속 중인 모든 사용자에게 동일한 메시지를 전송한다.
+	 * 공유 컬렉션 락은 세션 목록 스냅샷에만 보유하고, 네트워크 I/O(sendText)는 락 밖에서 수행한다.
+	 * 특정 세션 전송 실패가 나머지 전송을 막지 않도록 세션별로 예외를 처리한다.
+	 *
+	 * @param payload 전송할 메시지(JSON 문자열)
+	 */
+	private void broadcast(String payload) {
+		List<Session> snapshot;
+		synchronized (connectedAllUsers) {
+			snapshot = new ArrayList<>(connectedAllUsers);
+		}
+		for (Session session : snapshot) {
+			try {
+				session.getBasicRemote().sendText(payload);
+			} catch (IOException e) {
+				LOGGER.warn("UsersServerEndPoint broadcast 전송 실패: {}", e.getMessage());
 			}
 		}
 	}
@@ -189,9 +212,11 @@ public class UsersServerEndPoint {
 	private Set<String> getUsers() {
 		HashSet<String> returnSet = new HashSet<String>();
 
-		for (Session session : connectedAllUsers) { // NOPMD - CloseResource
-			if (session.getUserProperties().get("username") != null) {
-				returnSet.add(session.getUserProperties().get("username").toString());
+		synchronized (connectedAllUsers) {
+			for (Session session : connectedAllUsers) { // NOPMD - CloseResource
+				if (session.getUserProperties().get("username") != null) {
+					returnSet.add(session.getUserProperties().get("username").toString());
+				}
 			}
 		}
 		return returnSet;
@@ -221,9 +246,11 @@ public class UsersServerEndPoint {
 	 */
 	private boolean isExisted(String username) {
 		// 이미 username을 가진 session이 있는지 검사.
-		for (Session existedUser : connectedAllUsers) {// NOPMD - CloseResource
-			if (username.equals(existedUser.getUserProperties().get("username"))) {
-				return true;
+		synchronized (connectedAllUsers) {
+			for (Session existedUser : connectedAllUsers) {// NOPMD - CloseResource
+				if (username.equals(existedUser.getUserProperties().get("username"))) {
+					return true;
+				}
 			}
 		}
 		return false;
