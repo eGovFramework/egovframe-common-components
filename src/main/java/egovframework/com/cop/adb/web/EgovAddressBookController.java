@@ -445,9 +445,6 @@ public class EgovAddressBookController {
             return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
-        AddressBookVO savedAdbk = adbkService.selectAdressBook(adbkVO);
-        checkAddressBookWriter(savedAdbk, user);
-
         // 구성원 정보 로드
         String[] tempId = EgovStringUtil.isNullToString(adbkUserVO.getUserId()).split(",");
 
@@ -495,6 +492,9 @@ public class EgovAddressBookController {
         if(!isAuthenticated) {
             return "redirect:/uat/uia/egovLoginUsr.do";
         }
+
+        AddressBookVO savedAdbk = adbkService.selectAdressBook(adbkVO);
+        checkAddressBookWriter(savedAdbk, user);
 
         // 구성원 정보 로드
         String[] tempId = EgovStringUtil.isNullToString(adbkUserVO.getUserId()).split(",");
