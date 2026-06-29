@@ -31,7 +31,7 @@ public class SysHistoryDAO extends EgovComAbstractDAO {
 	 * 시스템 이력정보를 생성한다.
 	 * @param history - 시스템 이력정보가 담긴 모델 객체
 	 */
-	public int insertSysHistory(SysHistory history) throws Exception{
+	public int insertSysHistory(SysHistory history) {
 		return insert("SysHistoryDAO.insertSysHistory", history);
 	}
 
@@ -40,7 +40,7 @@ public class SysHistoryDAO extends EgovComAbstractDAO {
 	 * 시스템 이력정보를 수정한다.
 	 * @param history - 시스템 이력정보가 담긴 모델 객체
 	 */
-	public void updateSysHistory(SysHistory history) throws Exception{
+	public void updateSysHistory(SysHistory history) {
 		update("SysHistoryDAO.updateSysHistory", history);
 	}
 
@@ -48,7 +48,7 @@ public class SysHistoryDAO extends EgovComAbstractDAO {
 	 * 시스템 이력정보를 삭제한다.
 	 * @param history - 시스템 이력정보가 담긴 모델 객체
 	 */
-	public void deleteSysHistory(SysHistory history) throws Exception{
+	public void deleteSysHistory(SysHistory history) {
 		delete("SysHistoryDAO.deleteSysHistory", history);
 	}
 
@@ -58,7 +58,7 @@ public class SysHistoryDAO extends EgovComAbstractDAO {
 	 *
 	 * @param history - 시스템 이력정보가 담긴 모델 객체
 	 */
-	public List<SysHistoryVO> selectSysHistorList(SysHistoryVO historyVO) throws Exception{
+	public List<SysHistoryVO> selectSysHistorList(SysHistoryVO historyVO) {
 		return selectList("SysHistoryDAO.selectSysHistoryList", historyVO);
 	}
 
@@ -66,9 +66,8 @@ public class SysHistoryDAO extends EgovComAbstractDAO {
 	 * 시스템 이력정보 목록의 글 개수를 조회한다.
 	 * @param history
 	 * @return
-	 * @throws Exception
 	 */
-	public int selectSysHistortListCnt(SysHistoryVO historyVO) throws Exception{
+	public int selectSysHistortListCnt(SysHistoryVO historyVO) {
 		return (Integer)selectOne("SysHistoryDAO.selectSysHistoryListCnt", historyVO);
 	}
 
@@ -77,7 +76,7 @@ public class SysHistoryDAO extends EgovComAbstractDAO {
 	 *
 	 * @param history - 시스템 이력정보가 담긴 모델 객체
 	 */
-	public SysHistoryVO selectSysHistory(SysHistoryVO historyVO) throws Exception{
+	public SysHistoryVO selectSysHistory(SysHistoryVO historyVO) {
 
 		return (SysHistoryVO) selectOne("SysHistoryDAO.selectSysHistory", historyVO);
 	}

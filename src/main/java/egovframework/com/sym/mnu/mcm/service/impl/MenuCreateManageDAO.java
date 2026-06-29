@@ -24,7 +24,7 @@ import egovframework.com.sym.mnu.mcm.service.MenuSiteMapVO;
  *  -------    --------    ---------------------------
  *   2011.06.30  서 준 식   최초 생성(MenuManageDAO 클래스로 부터 분리
  *   					   메소드들을 MenuManageDAO 클래스에서 분리해옮)
- *   2026.06.16  이백행     [2026년 컨트리뷰션] 불필요한 예외(throws Exception) 제거
+ *   2026.06.16  이백행     [2026년 컨트리뷰션] 불필요한 예외 제거
  *
  * </pre>
  */

@@ -30,10 +30,9 @@ public class BatchSchdulDao extends EgovComAbstractDAO {
 	 * 배치스케줄을 삭제한다.
 	 *
 	 * @param batchSchdul    삭제할 배치스케줄 VO
-	 * @exception Exception Exception
+	 * @exception Exception Exceptdion
 	 */
-	public void deleteBatchSchdul(BatchSchdul batchSchdul)
-	  throws Exception{
+	public void deleteBatchSchdul(BatchSchdul batchSchdul) {
 		// slave 테이블 삭제
 		delete("BatchSchdulDao.deleteBatchSchdulDfk", batchSchdul.getBatchSchdulId());
 		// master 테이블 삭제
@@ -44,10 +43,8 @@ public class BatchSchdulDao extends EgovComAbstractDAO {
 	 * 배치스케줄을 등록한다.
 	 *
 	 * @param batchSchdul 저장할 배치스케줄 VO
-	 * @exception Exception Exception
 	 */
-	public void insertBatchSchdul(BatchSchdul batchSchdul)
-	  throws Exception{
+	public void insertBatchSchdul(BatchSchdul batchSchdul) {
 		// master 테이블 인서트
 		insert("BatchSchdulDao.insertBatchSchdul", batchSchdul);
 		// slave 테이블 인서트
@@ -68,10 +65,8 @@ public class BatchSchdulDao extends EgovComAbstractDAO {
 	 * @return 배치스케줄정보
 	 *
 	 * @param batchSchdul    조회할 KEY가 있는 배치스케줄 VO
-	 * @exception Exception Exception
 	 */
-	public BatchSchdul selectBatchSchdul(BatchSchdul batchSchdul)
-	  throws Exception{
+	public BatchSchdul selectBatchSchdul(BatchSchdul batchSchdul) {
 		BatchSchdul result = (BatchSchdul)selectOne("BatchSchdulDao.selectBatchSchdul", batchSchdul);
 		// 스케줄요일정보를 가져온다.
 		List<BatchSchdulDfk> dfkSeList = selectList("BatchSchdulDao.selectBatchSchdulDfkList", result.getBatchSchdulId());
@@ -91,10 +86,8 @@ public class BatchSchdulDao extends EgovComAbstractDAO {
 	 * @return 배치스케줄목록
 	 *
 	 * @param searchVO    조회조건이 저장된 VO
-	 * @exception Exception Exception
 	 */
-	public List<BatchSchdul> selectBatchSchdulList(BatchSchdul searchVO)
-	  throws Exception{
+	public List<BatchSchdul> selectBatchSchdulList(BatchSchdul searchVO) {
 		List<BatchSchdul> resultList = selectList("BatchSchdulDao.selectBatchSchdulList", searchVO);
 
 		for (BatchSchdul result : resultList) {
@@ -116,10 +109,8 @@ public class BatchSchdulDao extends EgovComAbstractDAO {
 	 * @return 목록건수
 	 *
 	 * @param searchVO    조회할 정보가 담긴 VO
-	 * @exception Exception Exception
 	 */
-	public int selectBatchSchdulListCnt(BatchSchdul searchVO)
-	  throws Exception{
+	public int selectBatchSchdulListCnt(BatchSchdul searchVO) {
 		return (Integer)selectOne("BatchSchdulDao.selectBatchSchdulListCnt", searchVO);
 	}
 
@@ -127,10 +118,8 @@ public class BatchSchdulDao extends EgovComAbstractDAO {
 	 * 배치스케줄정보를 수정한다.
 	 *
 	 * @param batchSchdul    수정대상 배치스케줄 VO
-	 * @exception Exception Exception
 	 */
-	public void updateBatchSchdul(BatchSchdul batchSchdul)
-	  throws Exception{
+	public void updateBatchSchdul(BatchSchdul batchSchdul) {
 		update("BatchSchdulDao.updateBatchSchdul", batchSchdul);
 		// slave 테이블 삭제
 		delete("BatchSchdulDao.deleteBatchSchdulDfk", batchSchdul.getBatchSchdulId());
