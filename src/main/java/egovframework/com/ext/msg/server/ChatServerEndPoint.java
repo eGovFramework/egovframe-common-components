@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ConcurrentMap;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -58,6 +60,7 @@ import jakarta.websocket.server.ServerEndpoint;
  *   2014.11.27  이영지          최초 생성
  *   2023.06.09  김장하          NSR 보안조치 (사용자목록 크로스사이트 스크립트 방지)
  *   2025.06.21  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-ImmutableField(불변필드), CloseResource(리소스 닫기)
+ *   2026.06.30  z3rotig4r      JSR-356 Configurator 무상태화 및 방-세션 그룹핑 static 레지스트리 이전(동시 핸드셰이크 교차오염 제거)
  *
  *      </pre>
  */
@@ -65,7 +68,11 @@ import jakarta.websocket.server.ServerEndpoint;
 		MessageDecoder.class }, configurator = ChatServerAppConfig.class)
 public class ChatServerEndPoint {
 	private static final Logger LOGGER = LoggerFactory.getLogger(ChatServerEndPoint.class);
-	private final Set<Session> chatroomUsers = Collections.synchronizedSet(new HashSet<Session>());
+	private static final ConcurrentMap<String, Set<Session>> CHATROOMS = new ConcurrentHashMap<>();
+
+	private static Set<Session> roomUsers(String room) {
+		return CHATROOMS.computeIfAbsent(room, k -> Collections.synchronizedSet(new HashSet<Session>()));
+	}
 
 	/**
 	 * Handshaking 함수
@@ -76,7 +83,7 @@ public class ChatServerEndPoint {
 	public void handleOpen(Session userSession, @PathParam("room") final String room)
 			throws IOException, EncodeException {
 		userSession.getUserProperties().put("room", room);
-		chatroomUsers.add(userSession);
+		roomUsers(room).add(userSession);
 	}
 
 	/**
@@ -105,16 +112,17 @@ public class ChatServerEndPoint {
 				userSession.getUserProperties().put("username", username);
 			}
 
-			synchronized (chatroomUsers) {
-				for (Session session : chatroomUsers) { // NOPMD-CloseResource
-					session.getBasicRemote().sendObject(new UsersMessage(getUsers()));
+			Set<Session> roomSessions = roomUsers(room);
+			synchronized (roomSessions) {
+				for (Session session : roomSessions) { // NOPMD-CloseResource
+					session.getBasicRemote().sendObject(new UsersMessage(getUsers(room)));
 				}
 			}
 		} else {
 			outgoingChatMessage.setName(username);
 			outgoingChatMessage.setMessage(filteredIncommingMessage);
 
-			for (Session session : chatroomUsers) { // NOPMD-CloseResource
+			for (Session session : roomUsers(room)) { // NOPMD-CloseResource
 				session.getBasicRemote().sendObject(outgoingChatMessage);
 			}
 		}
@@ -124,10 +132,10 @@ public class ChatServerEndPoint {
 	@OnClose
 	public void handleClose(Session userSession, @PathParam("room") final String room)
 			throws IOException, EncodeException {
-		chatroomUsers.remove(userSession);
+		roomUsers(room).remove(userSession);
 
-		for (Session session : chatroomUsers) { // NOPMD-CloseResource
-			session.getBasicRemote().sendObject(new UsersMessage(getUsers()));
+		for (Session session : roomUsers(room)) { // NOPMD-CloseResource
+			session.getBasicRemote().sendObject(new UsersMessage(getUsers(room)));
 		}
 	}
 
@@ -150,10 +158,10 @@ public class ChatServerEndPoint {
 	 * 
 	 * @return
 	 */
-	private Set<String> getUsers() {
+	private Set<String> getUsers(String room) {
 		HashSet<String> returnSet = new HashSet<String>();
 
-		for (Session session : chatroomUsers) { // NOPMD-CloseResource
+		for (Session session : roomUsers(room)) { // NOPMD-CloseResource
 			if (session.getUserProperties().get("username") != null) {
 				returnSet.add(session.getUserProperties().get("username").toString());
 			}

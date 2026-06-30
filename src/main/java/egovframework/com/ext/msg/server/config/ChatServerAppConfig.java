@@ -18,13 +18,7 @@
  */
 package egovframework.com.ext.msg.server.config;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import egovframework.com.ext.msg.server.ChatServerEndPoint;
-import jakarta.websocket.HandshakeResponse;
-import jakarta.websocket.server.HandshakeRequest;
-import jakarta.websocket.server.ServerEndpointConfig;
 import jakarta.websocket.server.ServerEndpointConfig.Configurator;
 
 /**
@@ -42,32 +36,16 @@ import jakarta.websocket.server.ServerEndpointConfig.Configurator;
  *  -------    --------    ---------------------------
  *   2014.11.27  이영지          최초 생성
  *   2025.06.23  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-FieldNamingConventions(필드 명명 규칙)
+ *   2026.06.30  z3rotig4r      getEndpointInstance 무상태화(currentUri/ENDPOINT_MAP 공유상태 제거로 동시 핸드셰이크 race 해소)
  *
  *      </pre>
  */
 public class ChatServerAppConfig extends Configurator {
 
-	// 대화창 서버객체(ChatServerEndPoint) 저장하는 Map
-	private final static Map<String, ChatServerEndPoint> ENDPOINT_MAP = new HashMap<String, ChatServerEndPoint>();
-	private String currentUri;
-
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getEndpointInstance(Class<T> endpointClass) throws InstantiationException {
-
-		ChatServerEndPoint endpoint = ENDPOINT_MAP.get(currentUri);
-
-		if (endpoint == null) {
-			endpoint = new ChatServerEndPoint();
-			ENDPOINT_MAP.put(currentUri, endpoint);
-		}
-
-		return (T) endpoint;
-	}
-
-	@Override
-	public void modifyHandshake(ServerEndpointConfig sec, HandshakeRequest request, HandshakeResponse response) {
-		currentUri = request.getRequestURI().toString();
-		super.modifyHandshake(sec, request, response);
+		// 연결마다 새 인스턴스를 반환하며, 방 그룹핑은 @PathParam을 통해 ChatServerEndPoint에서 처리한다.
+		return (T) new ChatServerEndPoint();
 	}
 }
