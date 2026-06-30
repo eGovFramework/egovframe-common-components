@@ -143,7 +143,7 @@ public class BatchScheduler {
 		} catch (SchedulerException e) {
 			// SchedulerException 이 발생하면 로그를 출력하고 다음 배치작업으로 넘어간다.
 			// 트리거의 실행시각이 현재 시각보다 이전이면 SchedulerException이 발생한다.
-			LOGGER.error("스케줄러에 배치작업을 삭제할때 에러가 발생했습니다. 배치스케줄ID : {}, 배치작업ID : ", batchSchdul.getBatchSchdulId(), batchSchdul.getBatchOpertId());
+			LOGGER.error("스케줄러에 배치작업을 삭제할때 에러가 발생했습니다. 배치스케줄ID : {}, 배치작업ID : {}", batchSchdul.getBatchSchdulId(), batchSchdul.getBatchOpertId());
 			LOGGER.error("에러내용 : {}", e.getMessage());
 			//LOGGER.debug(e.getMessage(), e);
 		}

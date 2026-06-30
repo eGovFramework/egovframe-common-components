@@ -457,7 +457,7 @@ public class EgovQustnrRespondInfoController {
 		}
 
 		LOGGER.info("#### EgovQustnrRespondInfoManageRegist컨트롤러 cmd 실제 값:[{}]", commandMap.get("cmd"));
-		LOGGER.info("#### EgovQustnrRespondInfoManageRegist컨트롤러 리턴직전 returnview", sLocationUrl);
+		LOGGER.info("#### EgovQustnrRespondInfoManageRegist컨트롤러 리턴직전 returnview : {}", sLocationUrl);
 
 		if (sLocationUrl == null || sLocationUrl.trim().isEmpty()) {
 		    LOGGER.error("#####view name is empty! fallback applied");

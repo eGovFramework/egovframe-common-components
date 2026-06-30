@@ -127,7 +127,7 @@ public class EgovComIndexController {
 
 		/* @Controller Annotation 처리된 클래스를 모두 찾는다. */
 		Map<String, Object> myZoos = applicationContext.getBeansWithAnnotation(Controller.class);
-		LOGGER.debug("How many Controllers : ", myZoos.size());
+		LOGGER.debug("How many Controllers : {}", myZoos.size());
 		for (final Object myZoo : myZoos.values()) {
 
 			Class<?> zooClass = ClassUtils.getUserClass(myZoo);
