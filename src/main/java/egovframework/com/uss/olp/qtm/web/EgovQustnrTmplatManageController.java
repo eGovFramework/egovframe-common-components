@@ -307,7 +307,7 @@ public class EgovQustnrTmplatManageController {
 				LOGGER.info("getOriginalFilename => {}", file.getOriginalFilename());
 
 				// 파일 수정여부 확인
-				if (file.getOriginalFilename() != "") {
+				if (file.getOriginalFilename() != null && !file.getOriginalFilename().isEmpty()) {
 					if (file.getName().equals("qestnrTmplatImage")) {
 						qustnrTmplatManageVO.setQestnrTmplatImagepathnm(file.getBytes());
 					}

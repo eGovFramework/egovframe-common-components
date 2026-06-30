@@ -287,9 +287,13 @@ public class EgovDateUtil {
 		}
 		if (EgovStringUtil.isNullToString(fromDateFormat).isEmpty()) {
 			fromFormat = "yyyyMMddHHmmss"; // default값
+		} else {
+			fromFormat = fromDateFormat;
 		}
 		if (EgovStringUtil.isNullToString(toDateFormat).isEmpty()) {
 			toFormat = "yyyy-MM-dd HH:mm:ss"; // default값
+		} else {
+			toFormat = toDateFormat;
 		}
 
 		try {

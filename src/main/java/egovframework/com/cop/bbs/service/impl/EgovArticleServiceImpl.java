@@ -159,7 +159,7 @@ public class EgovArticleServiceImpl extends EgovAbstractServiceImpl implements E
 
 		egovArticleDao.deleteArticle(board);
 
-		if (!"".equals(fvo.getAtchFileId()) || fvo.getAtchFileId() != null) {
+		if (fvo.getAtchFileId() != null && !"".equals(fvo.getAtchFileId())) {
 			fileService.deleteAllFileInf(fvo);
 		}
 
