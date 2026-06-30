@@ -28,11 +28,19 @@ public class EgovNumberUtil {
 	private static SecureRandom rnd = new SecureRandom();
 
 	/**
-	 * 특정숫자 집합에서 랜덤 숫자를 구하는 기능 시작숫자와 종료숫자 사이에서 구한 랜덤 숫자를 반환한다
+	 * 특정숫자 집합에서 랜덤 숫자를 구하는 기능. 시작숫자(startNum)와 종료숫자(endNum) 사이에서
+	 * 균등하게 추출한 랜덤 숫자를 반환한다.
 	 *
-	 * @param startNum - 시작숫자
-	 * @param endNum - 종료숫자
-	 * @return 랜덤숫자
+	 * <p>반환값의 범위는 [startNum, endNum]으로 시작숫자와 종료숫자를 모두 포함한다(양 끝 포함).
+	 * startNum과 endNum이 같으면 항상 해당 값을 반환한다.</p>
+	 *
+	 * <p>음수 구간도 지원한다. 예를 들어 startNum이 -10, endNum이 -1이면 -10 이상 -1 이하의
+	 * 값을 반환하며, Integer.MIN_VALUE ~ Integer.MAX_VALUE 전 구간을 지원한다.</p>
+	 *
+	 * @param startNum - 시작숫자(반환 범위의 하한, 포함)
+	 * @param endNum - 종료숫자(반환 범위의 상한, 포함)
+	 * @return startNum 이상 endNum 이하의 랜덤숫자
+	 * @throws IllegalArgumentException startNum이 endNum보다 큰 경우
 	 * @see
 	 */
 	public static int getRandomNum(int startNum, int endNum) {
