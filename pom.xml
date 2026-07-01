@@ -6,7 +6,6 @@
 	<groupId>egovframework</groupId>
 	<artifactId>egovframe-template-common-components</artifactId>
 	<packaging>war</packaging>
-	<version>5.0.0</version>
 	<name>egovframe-template-common-components</name>
 	<url>http://www.egovframe.go.kr</url>
 
@@ -349,7 +348,6 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-websocket</artifactId>
-			<version>6.2.13</version>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
@@ -570,12 +568,12 @@
 							<type>embedded</type>
 						</container>
 						<configuration>
-							<properties>
+							<!--<properties>
 								<property>
 									<name>cargo.servlet.port</name>
 									<value>8080</value>
 								</property>
-							</properties>
+							</properties>-->
 						</configuration>
 					</configuration>
 				</plugin>
