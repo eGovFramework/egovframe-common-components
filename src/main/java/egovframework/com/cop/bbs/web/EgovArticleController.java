@@ -870,13 +870,16 @@ public class EgovArticleController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/cop/bbs/deleteGuestArticle.do")
-	public String deleteGuestList(@ModelAttribute("searchVO") BoardVO boardVO, @Valid @ModelAttribute("articleVO") Board board,
-			ModelMap model) throws Exception {
+	public String deleteGuestList(HttpServletRequest request, @ModelAttribute("searchVO") BoardVO boardVO,
+			@Valid @ModelAttribute("articleVO") Board board, ModelMap model) throws Exception {
 		@SuppressWarnings("unused")
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (isAuthenticated) {
+			BoardVO vo = egovArticleService.selectArticleDetail(boardVO);
+			EgovXssChecker.checkerUserXss(request, vo.getFrstRegisterId());
+
 			egovArticleService.deleteArticle(boardVO);
 		}
 
@@ -893,7 +896,7 @@ public class EgovArticleController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/cop/bbs/updateGuestArticleView.do")
-	public String updateGuestArticleView(@ModelAttribute("searchVO") BoardVO boardVO,
+	public String updateGuestArticleView(HttpServletRequest request, @ModelAttribute("searchVO") BoardVO boardVO,
 			@ModelAttribute("boardMasterVO") BoardMasterVO brdMstrVO, ModelMap model) throws Exception {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -907,6 +910,7 @@ public class EgovArticleController {
 		model.addAttribute("sessionUniqId", (user == null || user.getUniqId() == null) ? "" : user.getUniqId());
 
 		BoardVO vo = egovArticleService.selectArticleDetail(boardVO);
+		EgovXssChecker.checkerUserXss(request, vo.getFrstRegisterId());
 
 		boardVO.setBbsId(boardVO.getBbsId());
 		boardVO.setBbsNm(boardVO.getBbsNm());
@@ -947,8 +951,8 @@ public class EgovArticleController {
 	 * @throws Exception
 	 */
 	@RequestMapping("/cop/bbs/updateGuestArticle.do")
-	public String updateGuestArticle(@ModelAttribute("searchVO") BoardVO boardVO, @Valid @ModelAttribute Board board,
-			BindingResult bindingResult, ModelMap model) throws Exception {
+	public String updateGuestArticle(HttpServletRequest request, @ModelAttribute("searchVO") BoardVO boardVO,
+			@Valid @ModelAttribute Board board, BindingResult bindingResult, ModelMap model) throws Exception {
 
 		// BBST02, BBST04
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -957,6 +961,9 @@ public class EgovArticleController {
 		if (!isAuthenticated) { // KISA 보안취약점 조치 (2018-12-10, 이정은)
 			return "redirect:/uat/uia/egovLoginUsr.do";
 		}
+
+		BoardVO article = egovArticleService.selectArticleDetail(boardVO);
+		EgovXssChecker.checkerUserXss(request, article.getFrstRegisterId());
 
 		if (bindingResult.hasErrors()) {
 
