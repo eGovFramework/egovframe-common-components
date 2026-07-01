@@ -26,7 +26,7 @@ public class ServerResrceMntrngDAO extends EgovComAbstractDAO {
 	 * @param serverResrceMntrngVO - 서버자원모니터링 Vo
 	 * @return List - 서버자원모니터링의 로그 목록
 	 */
-	public List<ServerResrceMntrngVO> selectServerResrceMntrngList(ServerResrceMntrngVO serverResrceMntrngVO)throws Exception {
+	public List<ServerResrceMntrngVO> selectServerResrceMntrngList(ServerResrceMntrngVO serverResrceMntrngVO) {
 		return selectList("serverResrceMntrngDAO.selectServerResrceMntrngList", serverResrceMntrngVO);
 	}
 
@@ -35,7 +35,7 @@ public class ServerResrceMntrngDAO extends EgovComAbstractDAO {
 	 * @param serverResrceMntrngVO - 서버자원모니터링 Vo
 	 * @return int - 서버자원모니터링의 로그 카운트 수
 	 */
-	public int selectServerResrceMntrngListTotCnt(ServerResrceMntrngVO serverResrceMntrngVO) throws Exception {
+	public int selectServerResrceMntrngListTotCnt(ServerResrceMntrngVO serverResrceMntrngVO) {
 		return (Integer)selectOne("serverResrceMntrngDAO.selectServerResrceMntrngListTotCnt", serverResrceMntrngVO);
 	}
 
@@ -44,7 +44,7 @@ public class ServerResrceMntrngDAO extends EgovComAbstractDAO {
 	 * @param serverResrceMntrngVO - 서버자원모니터링 Vo
 	 * @return ServerResrceMntrngVO - 서버자원모니터링 Vo
 	 */
-	public ServerResrceMntrngVO selectServerResrceMntrng(ServerResrceMntrngVO serverResrceMntrngVO) throws Exception {
+	public ServerResrceMntrngVO selectServerResrceMntrng(ServerResrceMntrngVO serverResrceMntrngVO) {
 		return (ServerResrceMntrngVO) selectOne("serverResrceMntrngDAO.selectServerResrceMntrng", serverResrceMntrngVO);
 	}
 
@@ -52,7 +52,7 @@ public class ServerResrceMntrngDAO extends EgovComAbstractDAO {
 	 * 서버자원모니터링 로그정보를 신규로 등록한다.
 	 * @param serverResrceMntrng - 서버자원모니터링 model
 	 */
-	public void insertServerResrceMntrng(ServerResrceMntrng serverResrceMntrng) throws Exception {
+	public void insertServerResrceMntrng(ServerResrceMntrng serverResrceMntrng) {
 		insert("serverResrceMntrngDAO.insertServerResrceMntrng", serverResrceMntrng);
 	}
 
@@ -61,7 +61,7 @@ public class ServerResrceMntrngDAO extends EgovComAbstractDAO {
 	 * @param serverResrceMntrngVO - 서버자원모니터링 Vo
 	 * @return ServerResrceMntrngVO - 서버자원모니터링 Vo
 	 */
-	public List<ServerResrceMntrngVO> selectMntrngServerList(ServerResrceMntrngVO serverResrceMntrngVO) throws Exception {
+	public List<ServerResrceMntrngVO> selectMntrngServerList(ServerResrceMntrngVO serverResrceMntrngVO) {
 		return selectList("serverResrceMntrngDAO.selectMntrngServerList", serverResrceMntrngVO);
 	}
 
@@ -70,7 +70,7 @@ public class ServerResrceMntrngDAO extends EgovComAbstractDAO {
 	 * @param serverResrceMntrngVO - 서버자원모니터링 Vo
 	 * @return int - 서버자원모니터링의 로그 카운트 수
 	 */
-	public int selectMntrngServerListTotCnt(ServerResrceMntrngVO serverResrceMntrngVO) throws Exception {
+	public int selectMntrngServerListTotCnt(ServerResrceMntrngVO serverResrceMntrngVO) {
 		return (Integer)selectOne("serverResrceMntrngDAO.selectMntrngServerListTotCnt", serverResrceMntrngVO);
 	}
 }
