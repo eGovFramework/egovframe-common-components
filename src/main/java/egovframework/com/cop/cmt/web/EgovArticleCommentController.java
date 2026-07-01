@@ -15,11 +15,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.cmm.util.EgovXssChecker;
 import egovframework.com.cop.cmt.service.Comment;
 import egovframework.com.cop.cmt.service.CommentVO;
 import egovframework.com.cop.cmt.service.EgovArticleCommentService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -175,13 +177,14 @@ public class EgovArticleCommentController {
      * @throws Exception
      */
     @RequestMapping("/cop/cmt/deleteArticleComment.do")
-    public String deleteArticleComment(@ModelAttribute("searchVO") CommentVO commentVO, @ModelAttribute("comment") Comment comment,
+    public String deleteArticleComment(HttpServletRequest request, @ModelAttribute("searchVO") CommentVO commentVO, @ModelAttribute("comment") Comment comment,
     		ModelMap model, @RequestParam HashMap<String, String> map) throws Exception {
 		@SuppressWarnings("unused")
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (isAuthenticated) {
+		    checkCommentOwner(request, commentVO.getCommentNo());
 		    egovArticleCommentService.deleteArticleComment(commentVO);
 		}
 
@@ -263,7 +266,7 @@ public class EgovArticleCommentController {
      * @throws Exception
      */
     @RequestMapping("/cop/cmt/updateArticleComment.do")
-    public String updateArticleComment(@ModelAttribute("searchVO") CommentVO commentVO, @Valid @ModelAttribute("comment") Comment comment,
+    public String updateArticleComment(HttpServletRequest request, @ModelAttribute("searchVO") CommentVO commentVO, @Valid @ModelAttribute("comment") Comment comment,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -276,6 +279,7 @@ public class EgovArticleCommentController {
 		}
 
 		if (isAuthenticated) {
+		    checkCommentOwner(request, comment.getCommentNo());
 		    comment.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 
 		    egovArticleCommentService.updateArticleComment(comment);
@@ -285,6 +289,14 @@ public class EgovArticleCommentController {
 		}
 
 		return "forward:/cop/bbs/selectArticleDetail.do";
+    }
+
+    private void checkCommentOwner(HttpServletRequest request, String commentNo) throws Exception {
+		CommentVO ownerVO = new CommentVO();
+		ownerVO.setCommentNo(commentNo);
+
+		CommentVO data = egovArticleCommentService.selectArticleCommentDetail(ownerVO);
+		EgovXssChecker.checkerUserXss(request, data == null ? null : data.getWrterId());
     }
 
 
