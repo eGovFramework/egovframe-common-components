@@ -133,7 +133,7 @@ public class EgovCaptchaController {
 			g2d.drawString(captchaTxt, 10, 35);//텍스트,위치
 			//랜덤줄긋기
 			g2d.setColor(Color.white);
-			for(int i =0; i <8; i++) {//i= 선 갯수 x1,y1 시작점, x2,y2 끝점
+			for(int i =0; i <8; i++) {//i= 선 개수 x1,y1 시작점, x2,y2 끝점
 				float thickness = 1.0f + SECURE_RANDOM.nextFloat() * 3.0f; // 두께 조절
 			    g2d.setStroke(new BasicStroke(thickness));
 
