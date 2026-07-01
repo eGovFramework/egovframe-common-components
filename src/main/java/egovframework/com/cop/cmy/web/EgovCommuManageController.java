@@ -600,7 +600,7 @@ public class EgovCommuManageController {
 		    target.add(null);
 		}
 
-		model.addAttribute("boardList", target);
+		model.addAttribute("articleList", target);
 
 		model.addAttribute("preview", "true");
 
