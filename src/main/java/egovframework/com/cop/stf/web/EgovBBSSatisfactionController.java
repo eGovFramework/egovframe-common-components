@@ -1,6 +1,7 @@
 package egovframework.com.cop.stf.web;
 
 import java.util.Map;
+import java.util.Objects;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
@@ -298,10 +299,7 @@ public class EgovBBSSatisfactionController {
 	//-------------------------------
 	// 패스워드 비교
 	//-------------------------------
-	String dbpassword = bbsSatisfactionService.getSatisfactionPassword(satisfactionVO);
-	String enpassword = EgovFileScrty.encryptPassword(satisfactionVO.getConfirmPassword(), satisfaction.getStsfdgNo());
-
-	if (!dbpassword.equals(enpassword)) {
+	if (!matchesSatisfactionPassword(satisfactionVO, satisfactionVO.getConfirmPassword())) {
 
 	    model.addAttribute("subMsg", egovMessageSource.getMessage("cop.password.not.same.msg"));
 
@@ -431,10 +429,7 @@ public class EgovBBSSatisfactionController {
 	//-------------------------------
 	// 패스워드 비교
 	//-------------------------------
-	String dbpassword = bbsSatisfactionService.getSatisfactionPassword(satisfactionVO);
-	String enpassword = EgovFileScrty.encryptPassword(satisfactionVO.getConfirmPassword(), satisfactionVO.getStsfdgNo());
-
-	if (!dbpassword.equals(enpassword)) {
+	if (!matchesSatisfactionPassword(satisfactionVO, satisfactionVO.getConfirmPassword())) {
 
 	    model.addAttribute("subMsg", egovMessageSource.getMessage("cop.password.not.same.msg"));
 
@@ -522,6 +517,11 @@ public class EgovBBSSatisfactionController {
 		    return "forward:/cop/bbs/anonymous/selectBoardArticle.do";
 		}
 
+		if (!matchesSatisfactionPassword(satisfaction, satisfaction.getStsfdgPassword())) {
+		    model.addAttribute("subMsg", egovMessageSource.getMessage("cop.password.not.same.msg"));
+		    return "forward:/cop/bbs/anonymous/selectBoardArticle.do";
+		}
+
 		satisfaction.setLastUpdusrId("ANONYMOUS");
 		satisfaction.setStsfdgPassword(EgovFileScrty.encryptPassword(satisfaction.getStsfdgPassword(), satisfaction.getStsfdgNo()));
 
@@ -534,4 +534,11 @@ public class EgovBBSSatisfactionController {
 
 		return "forward:/cop/bbs/anonymous/selectBoardArticle.do";
     }
+
+	private boolean matchesSatisfactionPassword(Satisfaction satisfaction, String rawPassword) throws Exception {
+		String dbpassword = bbsSatisfactionService.getSatisfactionPassword(satisfaction);
+		String enpassword = EgovFileScrty.encryptPassword(rawPassword, satisfaction.getStsfdgNo());
+
+		return Objects.equals(dbpassword, enpassword);
+	}
 }
