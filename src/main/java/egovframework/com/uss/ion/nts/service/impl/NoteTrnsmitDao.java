@@ -30,9 +30,8 @@ public class NoteTrnsmitDao extends EgovComAbstractDAO {
      * 보낸쪽지함관리를(을) 목록을 한다.
      * @param noteTrnsmit -조회할 정보가 담긴 객체
      * @return List -조회한목록이담긴List
-     * @throws Exception
      */
-    public List<EgovMap> selectNoteTrnsmitList(NoteTrnsmit noteTrnsmit) throws Exception {
+    public List<EgovMap> selectNoteTrnsmitList(NoteTrnsmit noteTrnsmit) {
     	return selectList("NoteTrnsmit.selectNoteTrnsmit", noteTrnsmit);
     }
 
@@ -40,9 +39,8 @@ public class NoteTrnsmitDao extends EgovComAbstractDAO {
      * 보낸쪽지함관리를(을) 목록 전체 건수를(을) 조회한다.
      * @param noteTrnsmit -조회할 정보가 담긴 객체
      * @return int -조회한건수가담긴Integer
-     * @throws Exception
      */
-    public int selectNoteTrnsmitListCnt(NoteTrnsmit noteTrnsmit) throws Exception {
+    public int selectNoteTrnsmitListCnt(NoteTrnsmit noteTrnsmit) {
     	return (Integer)selectOne("NoteTrnsmit.selectNoteTrnsmitCnt", noteTrnsmit);
     }
 
@@ -50,45 +48,40 @@ public class NoteTrnsmitDao extends EgovComAbstractDAO {
      * 보낸쪽지함관리를(을) 상세조회 한다.
      * @param noteTrnsmit -보낸쪽지함관리 정보가 담김 객체
      * @return Map -조회한정보가담긴Map
-     * @throws Exception
      */
-    public Map<?, ?> selectNoteTrnsmitDetail(NoteTrnsmit noteTrnsmit) throws Exception {
+    public Map<?, ?> selectNoteTrnsmitDetail(NoteTrnsmit noteTrnsmit) {
     	return (Map<?, ?>)selectOne("NoteTrnsmit.selectNoteTrnsmitDetail", noteTrnsmit);
     }
 
     /**
      * 보낸쪽지함관리를(을) 삭제한다.
      * @param noteTrnsmit -보낸쪽지함관리 정보가 담김 객체
-     * @throws Exception
      */
-    public void deleteNoteTrnsmit(NoteTrnsmit noteTrnsmit) throws Exception {
+    public void deleteNoteTrnsmit(NoteTrnsmit noteTrnsmit) {
         delete("NoteTrnsmit.deleteNoteTrnsmit" , noteTrnsmit);
     }
 
     /**
      * 받은쪽지함를(을) 삭제한다.
      * @param noteTrnsmit -보낸쪽지함관리 정보가 담김 객체
-     * @throws Exception
      */
-    public void deleteNoteRecptn(NoteTrnsmit noteTrnsmit) throws Exception {
+    public void deleteNoteRecptn(NoteTrnsmit noteTrnsmit) {
         delete("NoteTrnsmit.deleteNoteRecptn" , noteTrnsmit);
     }
 
     /**
      * 쪽지를(을) 삭제한다.
      * @param noteTrnsmit -보낸쪽지함관리 정보가 담김 객체
-     * @throws Exception
      */
-    public void deleteNoteManage(NoteTrnsmit noteTrnsmit) throws Exception {
+    public void deleteNoteManage(NoteTrnsmit noteTrnsmit) {
         delete("NoteTrnsmit.deleteNoteManage" , noteTrnsmit);
     }
 
     /**
      * 쪽지관리/보낸족지함삭제
      * @param noteTrnsmit -보낸쪽지함관리 정보가 담김 객체
-     * @throws Exception
      */
-    public void deleteNoteTrnsmitRelation(NoteTrnsmit noteTrnsmit) throws Exception {
+    public void deleteNoteTrnsmitRelation(NoteTrnsmit noteTrnsmit) {
         delete("NoteTrnsmit.deleteNoteTrnsmitRelation" , noteTrnsmit);
     }
 
@@ -96,9 +89,8 @@ public class NoteTrnsmitDao extends EgovComAbstractDAO {
      * 받은편지함 건수를 조회한다.
      * @param noteTrnsmit -보낸쪽지함관리 정보가 담김 객체
      * @return int -조회한건수가담긴Integer
-     * @throws Exception
      */
-    public int selectTrnsmitRelationCnt(NoteTrnsmit noteTrnsmit) throws Exception {
+    public int selectTrnsmitRelationCnt(NoteTrnsmit noteTrnsmit) {
     	return (Integer)selectOne("NoteTrnsmit.selectTrnsmitRelationCnt", noteTrnsmit);
     }
 
@@ -107,9 +99,8 @@ public class NoteTrnsmitDao extends EgovComAbstractDAO {
      * 수신자목록을 조회한다.
      * @param noteTrnsmit -보낸쪽지함관리 정보가 담김 객체
      * @return List -조회한목록이담긴List
-     * @throws Exception
      */
-    public List<EgovMap> selectNoteTrnsmitCnfirm(NoteTrnsmit noteTrnsmit) throws Exception {
+    public List<EgovMap> selectNoteTrnsmitCnfirm(NoteTrnsmit noteTrnsmit) {
     	return selectList("NoteTrnsmit.selectNoteTrnsmitCnfirm", noteTrnsmit);
     }
 }

@@ -30,7 +30,6 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      *
      * @param userVO
      * @return
-     * @throws Exception
      */
     public List<UserInfVO> selectUserList(UserInfVO userVO) {
         return selectList("EgovUserInfManageDAO.selectUserList", userVO);
@@ -41,7 +40,6 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      *
      * @param userVO
      * @return
-     * @throws Exception
      */
     public int selectUserListCnt(UserInfVO userVO) {
         return selectOne("EgovUserInfManageDAO.selectUserListCnt", userVO);
@@ -52,7 +50,6 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      *
      * @param userVO
      * @return
-     * @throws Exception
      */
     public List<UserInfVO> selectCmmntyUserList(UserInfVO userVO) {
         return selectList("EgovUserInfManageDAO.selectCmmntyUserList", userVO);
@@ -63,7 +60,6 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      *
      * @param userVO
      * @return
-     * @throws Exception
      */
     public int selectCmmntyUserListCnt(UserInfVO userVO) {
         return selectOne("EgovUserInfManageDAO.selectCmmntyUserListCnt", userVO);
@@ -74,7 +70,6 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      *
      * @param userVO
      * @return
-     * @throws Exception
      */
     public List<UserInfVO> selectCmmntyMngrList(UserInfVO userVO) {
         return selectList("EgovUserInfManageDAO.selectCmmntyMngrList", userVO);
@@ -85,7 +80,6 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      *
      * @param userVO
      * @return
-     * @throws Exception
      */
     public int selectCmmntyMngrListCnt(UserInfVO userVO) {
         return selectOne("EgovUserInfManageDAO.selectCmmntyMngrListCnt", userVO);
@@ -96,9 +90,8 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      *
      * @param userVO
      * @return
-     * @throws Exception
      */
-    public List<UserInfVO> selectClubUserList(UserInfVO userVO) throws Exception {
+    public List<UserInfVO> selectClubUserList(UserInfVO userVO) {
         return selectList("EgovUserInfManageDAO.selectClubUserList", userVO);
     }
 
@@ -107,9 +100,8 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      *
      * @param userVO
      * @return
-     * @throws Exception
      */
-    public int selectClubUserListCnt(UserInfVO userVO) throws Exception {
+    public int selectClubUserListCnt(UserInfVO userVO) {
         return selectOne("EgovUserInfManageDAO.selectClubUserListCnt", userVO);
     }
 
@@ -118,9 +110,8 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      *
      * @param userVO
      * @return
-     * @throws Exception
      */
-    public List<UserInfVO> selectClubOprtrList(UserInfVO userVO) throws Exception {
+    public List<UserInfVO> selectClubOprtrList(UserInfVO userVO) {
         return selectList("EgovUserInfManageDAO.selectClubOprtrList", userVO);
     }
 
@@ -129,9 +120,8 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      *
      * @param userVO
      * @return
-     * @throws Exception
      */
-    public int selectClubOprtrListCnt(UserInfVO userVO) throws Exception {
+    public int selectClubOprtrListCnt(UserInfVO userVO) {
         return selectOne("EgovUserInfManageDAO.selectClubOprtrListCnt", userVO);
     }
 
@@ -140,9 +130,8 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      *
      * @param userVO
      * @return
-     * @throws Exception
      */
-    public List<UserInfVO> selectAllClubUser(UserInfVO userVO) throws Exception {
+    public List<UserInfVO> selectAllClubUser(UserInfVO userVO) {
         return selectList("EgovUserInfManageDAO.selectAllClubUser", userVO);
     }
 
@@ -151,7 +140,6 @@ public class EgovUserInfManageDAO extends EgovComAbstractDAO {
      *
      * @param userVO
      * @return
-     * @throws Exception
      */
     public List<UserInfVO> selectAllCmmntyUser(UserInfVO userVO) {
         return selectList("EgovUserInfManageDAO.selectAllCmmntyUser", userVO);

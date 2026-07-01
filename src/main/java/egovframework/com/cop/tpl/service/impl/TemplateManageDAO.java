@@ -22,7 +22,7 @@ import egovframework.com.cop.tpl.service.TemplateInfVO;
  *  ----------   --------   ---------------------------
  *  2009.03.17   이삼섭           최초 생성
  *  2019.05.17   신용호           selectTemplateWhiteList() 추가
- *  2026.06.15   이백행           [2026년 컨트리뷰션] 불필요한 예외(throws Exception) 제거
+ *  2026.06.15   이백행           [2026년 컨트리뷰션] 불필요한 예외 제거
  *
  * </pre>
  */
