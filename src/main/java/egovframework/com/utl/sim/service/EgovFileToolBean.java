@@ -101,9 +101,9 @@ public class EgovFileToolBean {
 			// 파일이며, 존재하면 파싱 시작
 			if (file.exists() && file.isFile()) {
 
-				// 1. 파일 텍스트 내용을 읽어서 StringBuffer에 쌓는다.
+				// 1. 파일 텍스트 내용을 읽어서 StringBuilder에 쌓는다.
 				br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
-				StringBuffer strBuff = new StringBuffer();
+				StringBuilder strBuff = new StringBuilder();
 				String line = "";
 				while ((line = br.readLine()) != null) {
 					if (line.length() < MAX_STR_LEN) {
