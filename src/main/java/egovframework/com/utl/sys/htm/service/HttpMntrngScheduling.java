@@ -109,7 +109,7 @@ public class HttpMntrngScheduling extends EgovAbstractServiceImpl {
 				nrmltAt = false;
 			}
 
-			if (httpSttusCd == "02") {
+			if ("02".equals(httpSttusCd)) {
 				nrmltAt = false;
 			}
 
@@ -121,7 +121,7 @@ public class HttpMntrngScheduling extends EgovAbstractServiceImpl {
 
 			// DB에 결과값 저장
 			target.setHttpSttusCd(httpSttusCd);
-			if (httpSttusCd == "02") {
+			if ("02".equals(httpSttusCd)) {
 				target.setLogInfo("Connection timed out: connect");
 			}
 
