@@ -109,13 +109,14 @@ public class EgovCntcSttusController {
 	 * @return
 	 */
 	public String printParameterMap(@RequestParam Map<?, ?> commandMap) {
-		String ret = "";
-		for (Object key : commandMap.keySet()) {
-			Object value = commandMap.get(key);
+		StringBuilder ret = new StringBuilder();
+		for (Map.Entry<?, ?> entry : commandMap.entrySet()) {
+			Object key = entry.getKey();
+			Object value = entry.getValue();
 
-			ret += "key:" + key.toString() + " value:" + value.toString();
+			ret.append("key:").append(key.toString()).append(" value:").append(value.toString());
 		}
-		return ret;
+		return ret.toString();
 	}
 
 }
