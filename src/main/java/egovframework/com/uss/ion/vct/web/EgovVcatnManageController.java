@@ -452,9 +452,7 @@ public class EgovVcatnManageController {
 		}
 
 		if (bindingResult.hasErrors()) {
-			System.out.println("#########################");
-			System.out.println("#########################");
-			System.out.println("#########################");
+			LOGGER.debug("휴가관리 수정 입력값 검증 오류: {}", bindingResult.getAllErrors());
 
 			vcatnManageVO.setBgnde(EgovStringUtil.removeMinusChar(vcatnManageVO.getBgnde()));
 			vcatnManageVO.setEndde(EgovStringUtil.removeMinusChar(vcatnManageVO.getEndde()));
