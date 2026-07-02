@@ -378,7 +378,7 @@ public class BatchSchdul extends ComDefaultVO implements Serializable {
 		// 요일출력
 		if (this.executCycle.equals("02")) {
 			// 실행주기가 매주인 경우에만 출력한다.
-			if (dfkSeList.size() != 0) {
+			if (!dfkSeList.isEmpty()) {
 				for (int i = 0; i < dfkSeList.size(); i++) {
 					if (i != 0) {
 						executSchdul = executSchdul + ",";
