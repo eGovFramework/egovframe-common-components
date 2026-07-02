@@ -51,7 +51,7 @@ public class EgovAdressCntcController {
 			+ countPerPage + "&keyword=" + URLEncoder.encode(keyword, "UTF-8") + "&confmKey=" + confmKey;
 		URL url = new URL(EgovWebUtil.filePathBlackList(apiUrl));
 		try (BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));) {//2022.01 Resources should be closed
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
 			String tempStr = null;
 			while (true) {
 				tempStr = br.readLine();
@@ -86,7 +86,7 @@ public class EgovAdressCntcController {
 			+ URLEncoder.encode(confmKey, "UTF-8");
 		URL url = new URL(EgovWebUtil.filePathBlackList(apiUrl));
 		try(BufferedReader br = new BufferedReader(new InputStreamReader(url.openStream(), "UTF-8"));){//2022.01 Resources should be closed
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
 			String tempStr = null;
 			while (true) {
 				tempStr = br.readLine();
