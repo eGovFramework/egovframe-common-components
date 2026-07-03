@@ -195,13 +195,11 @@ public class EgovInsttCodeRecptnController {
      * @return
      */
 	public String printParameterMap(@RequestParam Map<?, ?> commandMap){
-		String ret = "";
-       	for(Object key:commandMap.keySet()){
-    		Object value = commandMap.get(key);
-
-    		ret += "key:" + key.toString() + " value:" + value.toString();
+		StringBuilder ret = new StringBuilder();
+       	for(Map.Entry<?, ?> entry : commandMap.entrySet()){
+    		ret.append("key:").append(entry.getKey()).append(" value:").append(entry.getValue());
     	}
-       	return ret;
+       	return ret.toString();
 	}
 
 }
