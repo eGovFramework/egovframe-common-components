@@ -5,6 +5,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -174,7 +175,8 @@ public class BackupJob implements Job {
 			if (log.isDebugEnabled()) {
 				log.debug("charter set : {}", Charset.defaultCharset().name());
 			}
-			aosOutput = new ArchiveStreamFactory().createArchiveOutputStream(archiveFormat, fosOutput);
+			// 엔트리 이름(한글 파일명 포함)을 UTF-8로 기록하도록 인코딩을 지정한다.
+			aosOutput = new ArchiveStreamFactory(StandardCharsets.UTF_8.name()).createArchiveOutputStream(archiveFormat, fosOutput);
 
 			// Zip에서는 처리안해도 한글안깨져서 주석처리함.
 			// if (ArchiveStreamFactory.ZIP.equals(archiveFormat)) {
@@ -199,9 +201,8 @@ public class BackupJob implements Job {
 				try (FileInputStream finput = new FileInputStream(sfile);) {
 
 					if (ArchiveStreamFactory.TAR.equals(archiveFormat)) {
-						// 파일이름 한글처리 ~~~
-						entry = new TarArchiveEntry(sfile,
-								new String(sfile.getAbsolutePath().getBytes(Charset.defaultCharset().name()), "UTF-8"));
+						// 파일이름 한글처리 ~~~ (엔트리 이름 인코딩은 ArchiveStreamFactory에서 UTF-8로 지정)
+						entry = new TarArchiveEntry(sfile, sfile.getAbsolutePath());
 						((TarArchiveEntry) entry).setSize(sfile.length());
 					} else {
 						entry = new ZipArchiveEntry(sfile.getAbsolutePath());
