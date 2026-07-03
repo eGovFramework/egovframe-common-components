@@ -210,11 +210,7 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 			return false;
 		}
 
-		if (whiteListExtensions.indexOf("." + extension) >= 0) {
-			return true;
-		} else {
-			return false;
-		}
+		return whiteListExtensions.contains("." + extension);
 	}
 
 	/**
@@ -231,11 +227,7 @@ public class EgovFileUploadUtil extends EgovFormBasedFileUtil {
 			return false;
 		}
 
-		if (multipartFile.getSize() <= maxFileSize) {
-			return true;
-		} else {
-			return false;
-		}
+		return multipartFile.getSize() <= maxFileSize;
 	}
 
 }

@@ -51,11 +51,7 @@ public class EgovComponentChecker extends EgovAbstractServiceImpl implements App
 			Object component = context.getBean(componentName);
 
 			// 221116	김혜준	2022 시큐어코딩 조치
-			if(ObjectUtils.isEmpty(component)){
-				return false;
-			}else{
-				return true;
-			}
+			return !ObjectUtils.isEmpty(component);
 
 		}catch(NoSuchBeanDefinitionException ex){// 해당 컴포넌트를 찾을 수없을 경우 false반환
 			return false;

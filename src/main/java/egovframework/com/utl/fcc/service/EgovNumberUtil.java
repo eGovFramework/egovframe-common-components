@@ -70,11 +70,7 @@ public class EgovNumberUtil {
 		String searchStr = String.valueOf(searchInt);
 
 		// 특정숫자가 존재하는지 하여 위치값을 리턴한다. 없을 시 -1
-		if (sourceStr.indexOf(searchStr) == -1) {
-			return false;
-		} else {
-			return true;
-		}
+		return sourceStr.contains(searchStr);
 	}
 
 	/**
