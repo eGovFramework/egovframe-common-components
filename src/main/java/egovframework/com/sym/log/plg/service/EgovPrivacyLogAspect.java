@@ -119,10 +119,12 @@ public class EgovPrivacyLogAspect {
 			return list;
 		}
 
-		for (String key : target.keySet()) {
+		for (Map.Entry<String, String> entry : target.entrySet()) {
+			String key = entry.getKey();
+			Object value = data.get(key);
 			// 조회된 데이터가 없으면 생략
-			if (data.containsKey(key) && data.get(key) != null && !data.get(key).toString().trim().equals("")) {
-				list.add(target.get(key));
+			if (value != null && !value.toString().trim().equals("")) {
+				list.add(entry.getValue());
 				LOGGER.debug("Service ('{}') : inquired data = {}", serviceName, key);
 			}
 		}
@@ -137,12 +139,13 @@ public class EgovPrivacyLogAspect {
 			return list;
 		}
 
-		for (String key : target.keySet()) {
+		for (Map.Entry<String, String> entry : target.entrySet()) {
+			String key = entry.getKey();
 			try {
 				Method method = data.getClass().getMethod("get" + key.substring(0, 1).toUpperCase() + key.substring(1));
 				Object returned = method.invoke(data);
 				if (returned != null && !returned.toString().trim().equals("")) {
-					list.add(target.get(key));
+					list.add(entry.getValue());
 				}
 			} catch (NoSuchMethodException ignore) {
 				LOGGER.error("[" + ignore.getClass() + "] Try/Catch... : " + ignore.getMessage());
