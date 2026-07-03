@@ -118,7 +118,7 @@ public class EgovCcmZipManageController {
 
 		String sList = "";
 
-		if (searchVO.getSearchList() != null && searchVO.getSearchList() != "") {
+		if (searchVO.getSearchList() != null && !searchVO.getSearchList().isEmpty()) {
 			sList = searchVO.getSearchList().substring(0, 1);
 		}
 		model.addAttribute("searchList", sList);

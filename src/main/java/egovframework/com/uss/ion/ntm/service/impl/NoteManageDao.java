@@ -30,18 +30,16 @@ public class NoteManageDao extends EgovComAbstractDAO {
     /**
      * 쪽지관리 정보를 조회한다.
      * @param noteManage -쪽지 관리(보내기) 정보가 담김 객체
-     * @throws Exception
      */
-    public Map<?, ?> selectNoteManage(NoteManageVO noteManage) throws Exception {
+    public Map<?, ?> selectNoteManage(NoteManageVO noteManage) {
     	return (Map<?, ?>)selectOne("NoteManage.selectNoteManage", noteManage);
     }
 
     /**
      * 쪽지 관리(보내기)를(을) 등록한다.
      * @param noteManage -쪽지 관리(보내기) 정보가 담김 객체
-     * @throws Exception
      */
-    public void insertNoteManage(NoteManageVO noteManage) throws Exception {
+    public void insertNoteManage(NoteManageVO noteManage) {
     	insert("NoteManage.insertNoteManage", noteManage);
     }
 
@@ -49,9 +47,8 @@ public class NoteManageDao extends EgovComAbstractDAO {
     /**
      * 보낸쪽지를 등록한다.
      * @param noteManage -쪽지 관리(보내기) 정보가 담김 객체
-     * @throws Exception
      */
-    public void insertNoteTrnsmit(NoteManageVO noteManage) throws Exception {
+    public void insertNoteTrnsmit(NoteManageVO noteManage) {
     	insert("NoteManage.insertNoteTrnsmit", noteManage);
     }
 
@@ -59,9 +56,8 @@ public class NoteManageDao extends EgovComAbstractDAO {
     /**
      * 받은쪽지를 등록한다.
      * @param noteManage -쪽지 관리(보내기) 정보가 담김 객체
-     * @throws Exception
      */
-    public void insertNoteRecptn(NoteManageVO noteManage) throws Exception {
+    public void insertNoteRecptn(NoteManageVO noteManage) {
     	insert("NoteManage.insertNoteRecptn", noteManage);
     }
 
@@ -69,9 +65,8 @@ public class NoteManageDao extends EgovComAbstractDAO {
 	 * 수신자/참조자선택팝업 목록을 조회한다.
 	 * @param searchVO -조회할 정보가 담긴 VO
 	 * @return List -회원정보 리스트
-	 * @throws Exception
 	 */
-	public List<EgovMap> selectNoteEmpListPopup(ComDefaultVO searchVO) throws Exception {
+	public List<EgovMap> selectNoteEmpListPopup(ComDefaultVO searchVO) {
 		return selectList("NoteManage.EovNoteEmpListPopup", searchVO);
 	}
 
@@ -79,9 +74,8 @@ public class NoteManageDao extends EgovComAbstractDAO {
 	 * 수신자/참조자선택팝업 건수를 조회한다.
 	 * @param searchVO -조회할 정보가 담긴 VO
 	 * @return int -조회된 데이터 개수
-	 * @throws Exception
 	 */
-	public int selectNoteEmpListPopupCnt(ComDefaultVO searchVO) throws Exception{
+	public int selectNoteEmpListPopupCnt(ComDefaultVO searchVO) {
 		 return (Integer)selectOne("NoteManage.EovNoteEmpListPopupCnt", searchVO);
 	}
 }

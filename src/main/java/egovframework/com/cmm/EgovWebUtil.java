@@ -48,7 +48,7 @@ public class EgovWebUtil {
 		String returnValue = value;
 		returnValue = clearXSSMinimum(returnValue);
 
-		returnValue = returnValue.replaceAll("%00", null);
+		returnValue = returnValue.replace("%00", "");
 
 		returnValue = returnValue.replaceAll("%", "&#37;");
 
@@ -186,7 +186,7 @@ public class EgovWebUtil {
 		/*특수문자 선택적 제거*/
 		returnValue = returnValue.replaceAll("\\*", "");
 		returnValue = returnValue.replaceAll("&", "");
-		returnValue = returnValue.replaceAll("|", "");
+		returnValue = returnValue.replace("|", "");
 		returnValue = returnValue.replaceAll("//", "");
 		//...
 		//개별로 필요한 항목들 추가 필요

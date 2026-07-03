@@ -34,9 +34,8 @@ public class RequestOfferDao extends EgovComAbstractDAO {
      * 삭제시 하위 답변 건수를 조회한다.
      * @param RequestOfferVO  조회할 정보가 담긴 객체
      * @return int
-     * @throws Exception
      */
-    public int selectRequestOfferDelCnt(Map<?, ?> map) throws Exception {
+    public int selectRequestOfferDelCnt(Map<?, ?> map) {
     	return (Integer)selectOne("RequestOffer.selectRequestOfferDelCnt", map);
     }
 
@@ -45,9 +44,8 @@ public class RequestOfferDao extends EgovComAbstractDAO {
      * 등록된 지식전문가 건수를 조회한다.
      * @param RequestOfferVO  조회할 정보가 담긴 객체
      * @return int
-     * @throws Exception
      */
-    public int selectRequestOfferSpeCnt(Map<?, ?> map) throws Exception {
+    public int selectRequestOfferSpeCnt(Map<?, ?> map) {
     	return (Integer)selectOne("RequestOffer.selectRequestOfferSpeCnt", map);
     }
 
@@ -55,9 +53,8 @@ public class RequestOfferDao extends EgovComAbstractDAO {
      * 지식정보제공/지식정보요청를(을) 목록을 한다.
      * @param requestOfferVO  조회할 정보가 담긴 객체
      * @return List
-     * @throws Exception
      */
-    public List<EgovMap> selectRequestOfferList(RequestOfferVO requestOfferVO) throws Exception {
+    public List<EgovMap> selectRequestOfferList(RequestOfferVO requestOfferVO) {
     	return selectList("RequestOffer.selectRequestOffer",requestOfferVO);
 
     }
@@ -66,9 +63,8 @@ public class RequestOfferDao extends EgovComAbstractDAO {
      * 지식정보제공/지식정보요청를(을) 목록 전체 건수를(을) 조회한다.
      * @param requestOfferVO  조회할 정보가 담긴 객체
      * @return int
-     * @throws Exception
      */
-    public int selectRequestOfferListCnt(RequestOfferVO requestOfferVO) throws Exception {
+    public int selectRequestOfferListCnt(RequestOfferVO requestOfferVO) {
     	return (Integer)selectOne("RequestOffer.selectRequestOfferCnt", requestOfferVO);
     }
 
@@ -76,19 +72,17 @@ public class RequestOfferDao extends EgovComAbstractDAO {
      * 지식정보제공/지식정보요청를(을) 상세조회 한다.
      * @param requestOfferVO  지식정보제공/지식정보요청 정보가 담김 객체
      * @return RequestOfferVO
-     * @throws Exception
      */
-    public RequestOfferVO selectRequestOfferDetail(RequestOfferVO requestOfferVO) throws Exception {
+    public RequestOfferVO selectRequestOfferDetail(RequestOfferVO requestOfferVO) {
     	return (RequestOfferVO)selectOne("RequestOffer.selectRequestOfferDetail", requestOfferVO);
     }
 
     /**
      * 지식정보제공/지식정보요청를(을) 등록한다.
      * @param qindvdlInfoPolicy  지식정보제공/지식정보요청 정보가 담김 객체
-     * @throws Exception
      */
     @SuppressWarnings("unused")
-	public void insertRequestOffer(RequestOfferVO requestOfferVO) throws Exception {
+	public void insertRequestOffer(RequestOfferVO requestOfferVO) {
     	if(requestOfferVO.getCmd().equals("save")){
     		insert("RequestOffer.insertRequestOfferSave", requestOfferVO);
     	}else if(requestOfferVO.getCmd().equals("reply")){
@@ -137,18 +131,16 @@ public class RequestOfferDao extends EgovComAbstractDAO {
     /**
      * 지식정보제공/지식정보요청를(을) 수정한다.
      * @param requestOfferVO  지식정보제공/지식정보요청 정보가 담김 객체
-     * @throws Exception
      */
-    public void updateRequestOffer(RequestOfferVO requestOfferVO) throws Exception {
+    public void updateRequestOffer(RequestOfferVO requestOfferVO) {
     	 update("RequestOffer.updateRequestOffer", requestOfferVO);
     }
 
     /**
      * 지식정보제공/지식정보요청를(을) 삭제한다.
      * @param requestOfferVO  지식정보제공/지식정보요청 정보가 담김 객체
-     * @throws Exception
      */
-    public void deleteRequestOffer(RequestOfferVO requestOfferVO) throws Exception {
+    public void deleteRequestOffer(RequestOfferVO requestOfferVO) {
     	delete("RequestOffer.deleteRequestOffer", requestOfferVO);
     }
 

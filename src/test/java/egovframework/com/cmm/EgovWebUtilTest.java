@@ -57,4 +57,50 @@ public class EgovWebUtilTest {
 			assertEquals("hello world", EgovWebUtil.clearXSSMinimum("hello world"));
 		}
 	}
+
+	@Nested
+	@DisplayName("clearXSSMaximum() — null 바이트 시퀀스를 제거한다")
+	class ClearXSSMaximum {
+
+		@Test
+		@DisplayName("%00 시퀀스가 NPE 없이 제거된다")
+		void removesNullByteSequence_withoutNpe() {
+			// 변경 전: replaceAll("%00", null)이 "%00" 매칭 시 NullPointerException
+			String result = EgovWebUtil.clearXSSMaximum("abc%00def");
+			assertEquals("abcdef", result, "%00 시퀀스는 제거되어야 한다");
+		}
+
+		@Test
+		@DisplayName("%00이 없는 일반 텍스트는 그대로 반환된다")
+		void noNullByte_unchangedForPlainText() {
+			assertEquals("abcdef", EgovWebUtil.clearXSSMaximum("abcdef"));
+		}
+	}
+
+	@Nested
+	@DisplayName("removeLDAPInjectionRisk() — LDAP 인젝션 위험 문자를 제거한다")
+	class RemoveLDAPInjectionRisk {
+
+		@Test
+		@DisplayName("LDAP OR 연산자 '|'가 제거된다")
+		void removesPipe() {
+			// 변경 전: replaceAll("|", "")은 빈 교대 정규식이라 리터럴 '|'를 제거하지 못함
+			String result = EgovWebUtil.removeLDAPInjectionRisk("admin|x");
+			assertEquals("adminx", result, "LDAP OR 연산자 '|'는 제거되어야 한다");
+			assertFalse(result.contains("|"), "결과에 '|'가 남아 있으면 안 된다");
+		}
+
+		@Test
+		@DisplayName("일반 문자는 그대로 반환된다")
+		void keepsNormalCharacters() {
+			assertEquals("hong gildong", EgovWebUtil.removeLDAPInjectionRisk("hong gildong"));
+		}
+
+		@Test
+		@DisplayName("null 또는 공백 입력은 빈 문자열을 반환한다")
+		void nullOrBlankReturnsEmpty() {
+			assertEquals("", EgovWebUtil.removeLDAPInjectionRisk(null));
+			assertEquals("", EgovWebUtil.removeLDAPInjectionRisk("   "));
+		}
+	}
 }

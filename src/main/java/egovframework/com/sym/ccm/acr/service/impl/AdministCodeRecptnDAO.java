@@ -24,7 +24,7 @@ import egovframework.com.sym.ccm.acr.service.AdministCodeRecptnVO;
  *  -------    --------    ---------------------------
  *   2009.04.01  이중호         최초 생성
  *   2024.10.29	 권태성			법정동코드 저장 시 NullPointerException 수정(insertAdministCode())
- *   2026.06.16  이백행         [2026년 컨트리뷰션] 불필요한 예외(throws Exception) 제거
+ *   2026.06.16  이백행         [2026년 컨트리뷰션] 불필요한 예외 제거
  *
  * Copyright (C) 2009 by MOPAS  All rights reserved.
  * </pre>
