@@ -112,7 +112,7 @@ public class EgovArticleController {
 	 * @return
 	 */
 	protected String unscript(String data) {
-		if (data == null || data.trim().equals("")) {
+		if (data == null || data.trim().isEmpty()) {
 			return "";
 		}
 

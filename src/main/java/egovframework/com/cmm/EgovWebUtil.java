@@ -24,7 +24,7 @@ import java.util.regex.Pattern;
 
 public class EgovWebUtil {
 	public static String clearXSSMinimum(String value) {
-		if (value == null || value.trim().equals("")) {
+		if (value == null || value.trim().isEmpty()) {
 			return "";
 		}
 
@@ -60,7 +60,7 @@ public class EgovWebUtil {
 	}
 
 	public static String clearXSS(String value) {
-		if (value == null || value.trim().equals("")) {
+		if (value == null || value.trim().isEmpty()) {
 			return "";
 		}
 
@@ -78,7 +78,7 @@ public class EgovWebUtil {
 
 	public static String filePathBlackList(String value) {
 		String returnValue = value;
-		if (returnValue == null || returnValue.trim().equals("")) {
+		if (returnValue == null || returnValue.trim().isEmpty()) {
 			return "";
 		}
 
@@ -116,7 +116,7 @@ public class EgovWebUtil {
 	 */
 	public static String filePathReplaceAll(String value) {
 		String returnValue = value;
-		if (returnValue == null || returnValue.trim().equals("")) {
+		if (returnValue == null || returnValue.trim().isEmpty()) {
 			return "";
 		}
 
@@ -130,7 +130,7 @@ public class EgovWebUtil {
 
 	public static String fileInjectPathReplaceAll(String value) {
 		String returnValue = value;
-		if (returnValue == null || returnValue.trim().equals("")) {
+		if (returnValue == null || returnValue.trim().isEmpty()) {
 			return "";
 		}
 
@@ -172,7 +172,7 @@ public class EgovWebUtil {
 	public static String removeLDAPInjectionRisk(String value) {
 
 		String returnValue = value;
-		if (returnValue == null || returnValue.trim().equals("")) {
+		if (returnValue == null || returnValue.trim().isEmpty()) {
 			return "";
 		}
 
