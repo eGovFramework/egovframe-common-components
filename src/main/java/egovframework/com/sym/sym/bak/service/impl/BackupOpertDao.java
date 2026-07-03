@@ -30,10 +30,8 @@ public class BackupOpertDao extends EgovComAbstractDAO {
 	 * 백업작업을 삭제한다.
 	 *
 	 * @param backupOpert    삭제할 백업작업 VO
-	 * @exception Exception Exception
 	 */
-	public void deleteBackupOpert(BackupOpert backupOpert)
-	  throws Exception{
+	public void deleteBackupOpert(BackupOpert backupOpert) {
 		// slave 테이블 삭제
 		delete("BackupOpertDao.deleteBackupSchdulDfk", backupOpert.getBackupOpertId());
 		// master 테이블 삭제
@@ -45,10 +43,8 @@ public class BackupOpertDao extends EgovComAbstractDAO {
 	 * 백업작업을 등록한다.
 	 *
 	 * @param backupOpert 저장할 백업작업 VO
-	 * @exception Exception Exception
 	 */
-	public void insertBackupOpert(BackupOpert backupOpert)
-	  throws Exception{
+	public void insertBackupOpert(BackupOpert backupOpert) {
 		// master 테이블 인서트
 		insert("BackupOpertDao.insertBackupOpert", backupOpert);
 		// slave 테이블 인서트
@@ -70,10 +66,8 @@ public class BackupOpertDao extends EgovComAbstractDAO {
 	 * @return 백업작업정보
 	 *
 	 * @param backupOpert    조회할 KEY가 있는 백업작업 VO
-	 * @exception Exception Exception
 	 */
-	public BackupOpert selectBackupOpert(BackupOpert backupOpert)
-	  throws Exception{
+	public BackupOpert selectBackupOpert(BackupOpert backupOpert) {
 		BackupOpert result = (BackupOpert)selectOne("BackupOpertDao.selectBackupOpert", backupOpert);
 		// 스케줄요일정보를 가져온다.
 		List<BackupSchdulDfk> dfkSeList = selectList("BackupOpertDao.selectBackupSchdulDfkList", result.getBackupOpertId());
@@ -94,9 +88,8 @@ public class BackupOpertDao extends EgovComAbstractDAO {
      * @return 백업작업목록
      *
      * @param searchVO 조회조건이 저장된 VO
-     * @exception Exception Exception
      */
-    public List<BackupOpert> selectBackupOpertList(BackupOpert searchVO) throws Exception {
+    public List<BackupOpert> selectBackupOpertList(BackupOpert searchVO) {
         List<BackupOpert> resultList = selectList("BackupOpertDao.selectBackupOpertList", searchVO);
 
         for (BackupOpert result : resultList) {
@@ -116,10 +109,8 @@ public class BackupOpertDao extends EgovComAbstractDAO {
 	 * @return 목록건수
 	 *
 	 * @param searchVO    조회할 정보가 담긴 VO
-	 * @exception Exception Exception
 	 */
-	public int selectBackupOpertListCnt(BackupOpert searchVO)
-	  throws Exception{
+	public int selectBackupOpertListCnt(BackupOpert searchVO) {
 		return (Integer)selectOne("BackupOpertDao.selectBackupOpertListCnt", searchVO);
 	}
 
@@ -127,10 +118,8 @@ public class BackupOpertDao extends EgovComAbstractDAO {
 	 * 백업작업정보를 수정한다.
 	 *
 	 * @param backupOpert    수정대상 백업작업 VO
-	 * @exception Exception Exception
 	 */
-	public void updateBackupOpert(BackupOpert backupOpert)
-	  throws Exception{
+	public void updateBackupOpert(BackupOpert backupOpert) {
 		update("BackupOpertDao.updateBackupOpert", backupOpert);
 		// slave 테이블 삭제
 		delete("BackupOpertDao.deleteBackupSchdulDfk", backupOpert.getBackupOpertId());

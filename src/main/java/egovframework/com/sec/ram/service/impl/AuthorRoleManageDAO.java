@@ -22,7 +22,7 @@ import egovframework.com.sec.ram.service.AuthorRoleManageVO;
  *  ----------   ---------   ---------------------------
  *  2009.03.11   이문준              최초 생성
  *  2021.02.09   신용호              updateAuthorRole 삭제
- *  2026.06.15   이백행              [2026년 컨트리뷰션] 불필요한 예외(throws Exception) 제거
+ *  2026.06.15   이백행              [2026년 컨트리뷰션] 불필요한 예외 제거
  *
  * </pre>
  */

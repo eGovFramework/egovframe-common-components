@@ -28,9 +28,8 @@ public class OnlinePollResultDao extends EgovComAbstractDAO {
      * 온라인POLL결과를(을) 목록을 한다.
      * @param onlinePollResult  온라인POLL결과 정보 담김 VO
      * @return List
-     * @throws Exception
      */
-    public List<?> selectOnlinePollResultList(OnlinePollResult onlinePollResult) throws Exception {
+    public List<?> selectOnlinePollResultList(OnlinePollResult onlinePollResult) {
         return selectList("OnlinePollResult.selectOnlinePollResult", onlinePollResult);
     }
 
@@ -38,9 +37,8 @@ public class OnlinePollResultDao extends EgovComAbstractDAO {
      * 온라인POLL결과를(을) 삭제 한다.
      * @param onlinePollResult  온라인POLL결과 정보가 담김 VO
      * @return void
-     * @throws Exception
      */
-    public void deleteOnlinePollResult(OnlinePollResult onlinePollResult) throws Exception {
+    public void deleteOnlinePollResult(OnlinePollResult onlinePollResult) {
         delete("OnlinePollResult.deleteOnlinePollResult", onlinePollResult);
     }
 

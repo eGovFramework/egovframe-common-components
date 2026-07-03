@@ -30,7 +30,7 @@ import egovframework.com.sym.sym.nwk.service.NtwrkVO;
  *  -------    --------    ---------------------------
  *   2009.03.20  lee.m.j       최초 생성
  *   2025.07.23  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UnnecessaryBoxing(불필요한 WrapperObject 생성)
- *   2026.06.17  이백행          [2026년 컨트리뷰션] 불필요한 예외(throws Exception) 제거
+ *   2026.06.17  이백행          [2026년 컨트리뷰션] 불필요한 예외 제거
  *
  *      </pre>
  */
