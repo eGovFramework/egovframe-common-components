@@ -204,6 +204,30 @@ class EgovClntInfoTest {
             }
 
             @Test
+            @DisplayName("HTTP_X_FORWARDED_FOR 콤마 구분 다중 IP인 경우 첫 번째 IP만 반환한다")
+            void httpXForwardedFor_다중IP_첫번째IP_반환() throws Exception {
+                // given
+                request = stubRequest("127.0.0.1", "HTTP_X_FORWARDED_FOR", "172.16.0.200, 10.0.0.1, 10.0.0.2");
+                RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+                // when
+                String result = EgovClntInfo.getClntIP(request);
+                // then
+                assertEquals("172.16.0.200", result);
+            }
+
+            @Test
+            @DisplayName("HTTP_X_FORWARDED_FOR 콤마 구분 다중 IP (공백 없음) 인 경우 첫 번째 IP만 반환한다")
+            void httpXForwardedFor_다중IP_공백없음_첫번째IP_반환() throws Exception {
+                // given
+                request = stubRequest("127.0.0.1", "HTTP_X_FORWARDED_FOR", "172.16.0.200,10.0.0.1");
+                RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(request));
+                // when
+                String result = EgovClntInfo.getClntIP(request);
+                // then
+                assertEquals("172.16.0.200", result);
+            }
+
+            @Test
             @DisplayName("X-Real-IP 헤더로 폴백한다")
             void xRealIP_폴백() throws Exception {
                 // given

@@ -57,6 +57,9 @@ public class EgovClntInfo {
 		}
 		if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) {
 			ipAddr = req.getHeader("HTTP_X_FORWARDED_FOR");
+			if (ipAddr != null && ipAddr.contains(",")) {
+				ipAddr = ipAddr.split(",")[0].trim();
+			}
 		}
 		if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) {
 			ipAddr = req.getHeader("X-Real-IP");
