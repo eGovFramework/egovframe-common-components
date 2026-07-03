@@ -101,7 +101,7 @@ public class ProxyThread implements Runnable {
 					strReceive = new String(request, 0, bytesRead);
 
 					// 'stop' 문자열을 받으면 스레드를 중지합니다.
-					if (strReceive.indexOf("stop") > -1) {
+					if (strReceive.contains("stop")) {
 						setIsStop(true);
 						break;
 					}
