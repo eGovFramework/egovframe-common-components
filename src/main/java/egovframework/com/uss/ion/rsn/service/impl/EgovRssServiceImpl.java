@@ -67,18 +67,17 @@ public class EgovRssServiceImpl extends EgovAbstractServiceImpl implements EgovR
 			String smBdtTag = sBdtTag == null ? "" : sBdtTag;
 			String smBdtEtc = sBdtEtc == null ? "" : sBdtEtc;
 
-			Object[] keys = mapRow.keySet().toArray();
-
-			for (Object key : keys) {
-				if (mapRow.get(key) instanceof String) {
-					// null 처리
-					if (mapRow.get(key) != null && key != null) {
-						smBdtTitle = smBdtTitle.replaceAll("#" + key + "#", mapRow.get(key));
-						smBdtLink = smBdtLink.replaceAll("#" + key + "#", mapRow.get(key));
-						smBdtDescription = smBdtDescription.replaceAll("#" + key + "#", mapRow.get(key));
-						smBdtTag = smBdtTag.replaceAll("#" + key + "#", mapRow.get(key));
-						smBdtEtc = smBdtEtc.replaceAll("#" + key + "#", mapRow.get(key));
-					}
+			for (Map.Entry<String, String> entry : mapRow.entrySet()) {
+				Object value = entry.getValue();
+				// null 처리
+				if (value instanceof String && entry.getKey() != null) {
+					String sKey = "#" + entry.getKey() + "#";
+					String sValue = (String) value;
+					smBdtTitle = smBdtTitle.replaceAll(sKey, sValue);
+					smBdtLink = smBdtLink.replaceAll(sKey, sValue);
+					smBdtDescription = smBdtDescription.replaceAll(sKey, sValue);
+					smBdtTag = smBdtTag.replaceAll(sKey, sValue);
+					smBdtEtc = smBdtEtc.replaceAll(sKey, sValue);
 				}
 			}
 
