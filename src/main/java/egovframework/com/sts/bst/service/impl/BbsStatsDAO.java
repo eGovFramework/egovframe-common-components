@@ -24,7 +24,7 @@ import egovframework.com.sts.com.StatsVO;
  *  2018.05.02  신용호          summaryBbsStats() 수정
  *                        게시판유형별 코드분류 변경 (COM004 => COM101)
  *                        게시판속성별(COM009) 코드분류 사용하지 않음
- *  2026.06.17  이백행          [2026년 컨트리뷰션] 불필요한 예외(throws Exception) 제거
+ *  2026.06.17  이백행          [2026년 컨트리뷰션] 불필요한 예외 제거
  *
  *  </pre>
  */

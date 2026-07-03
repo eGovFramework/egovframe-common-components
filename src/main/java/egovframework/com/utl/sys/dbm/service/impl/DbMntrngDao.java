@@ -30,10 +30,8 @@ public class DbMntrngDao extends EgovComAbstractDAO {
 	 * DB서비스모니터링을 삭제한다.
 	 *
 	 * @param dbMntrng    삭제할 DB서비스모니터링 VO
-	 * @exception Exception Exception
 	 */
-	public void deleteDbMntrng(DbMntrng dbMntrng)
-	  throws Exception{
+	public void deleteDbMntrng(DbMntrng dbMntrng) {
 		delete("DbMntrngDao.deleteDbMntrng", dbMntrng);
 	}
 
@@ -41,10 +39,8 @@ public class DbMntrngDao extends EgovComAbstractDAO {
 	 * DB서비스모니터링을 등록한다.
 	 *
 	 * @param dbMntrng 저장할 DB서비스모니터링 VO
-	 * @exception Exception Exception
 	 */
-	public void insertDbMntrng(DbMntrng dbMntrng)
-	  throws Exception{
+	public void insertDbMntrng(DbMntrng dbMntrng) {
 		insert("DbMntrngDao.insertDbMntrng", dbMntrng);
 	}
 
@@ -52,10 +48,8 @@ public class DbMntrngDao extends EgovComAbstractDAO {
 	 * DB서비스모니터링로그를 등록한다.
 	 *
 	 * @param dbMntrngLog 저장할 DB서비스모니터링로그 VO
-	 * @exception Exception Exception
 	 */
-	public void insertDbMntrngLog(DbMntrngLog dbMntrngLog)
-	  throws Exception{
+	public void insertDbMntrngLog(DbMntrngLog dbMntrngLog) {
 		insert("DbMntrngDao.insertDbMntrngLog", dbMntrngLog);
 	}
 
@@ -64,10 +58,8 @@ public class DbMntrngDao extends EgovComAbstractDAO {
 	 * @return DB서비스모니터링정보
 	 *
 	 * @param dbMntrng    조회할 KEY가 있는 DB서비스모니터링 VO
-	 * @exception Exception Exception
 	 */
-	public DbMntrng selectDbMntrng(DbMntrng dbMntrng)
-	  throws Exception{
+	public DbMntrng selectDbMntrng(DbMntrng dbMntrng) {
 		return (DbMntrng)selectOne("DbMntrngDao.selectDbMntrng", dbMntrng);
 	}
 
@@ -76,10 +68,8 @@ public class DbMntrngDao extends EgovComAbstractDAO {
 	 * @return DB서비스모니터링로그정보
 	 *
 	 * @param dbMntrng    조회할 KEY가 있는 DB서비스모니터링로그 VO
-	 * @exception Exception Exception
 	 */
-	public DbMntrngLog selectDbMntrngLog(DbMntrngLog dbMntrngLog)
-	  throws Exception{
+	public DbMntrngLog selectDbMntrngLog(DbMntrngLog dbMntrngLog) {
 		return (DbMntrngLog)selectOne("DbMntrngDao.selectDbMntrngLog", dbMntrngLog);
 	}
 
@@ -88,9 +78,8 @@ public class DbMntrngDao extends EgovComAbstractDAO {
 	 * @return DB서비스모니터링목록
 	 *
 	 * @param searchVO    조회조건이 저장된 VO
-	 * @exception Exception Exception
 	 */
-	public List<DbMntrng> selectDbMntrngList(DbMntrng searchVO) throws Exception{
+	public List<DbMntrng> selectDbMntrngList(DbMntrng searchVO) {
 		return selectList("DbMntrngDao.selectDbMntrngList", searchVO);
 	}
 
@@ -99,10 +88,8 @@ public class DbMntrngDao extends EgovComAbstractDAO {
 	 * @return 목록건수
 	 *
 	 * @param searchVO    조회할 정보가 담긴 VO
-	 * @exception Exception Exception
 	 */
-	public int selectDbMntrngListCnt(DbMntrng searchVO)
-	  throws Exception{
+	public int selectDbMntrngListCnt(DbMntrng searchVO) {
 		return (Integer)selectOne("DbMntrngDao.selectDbMntrngListCnt", searchVO);
 	}
 
@@ -111,10 +98,8 @@ public class DbMntrngDao extends EgovComAbstractDAO {
 	 * @return DB서비스모니터링목록
 	 *
 	 * @param searchVO    조회조건이 저장된 VO
-	 * @exception Exception Exception
 	 */
-	public List<DbMntrngLog> selectDbMntrngLogList(DbMntrngLog searchVO)
-	  throws Exception{
+	public List<DbMntrngLog> selectDbMntrngLogList(DbMntrngLog searchVO) {
 		return selectList("DbMntrngDao.selectDbMntrngLogList", searchVO);
 	}
 
@@ -123,10 +108,8 @@ public class DbMntrngDao extends EgovComAbstractDAO {
 	 * @return 목록건수
 	 *
 	 * @param searchVO    조회할 정보가 담긴 VO
-	 * @exception Exception Exception
 	 */
-	public int selectDbMntrngLogListCnt(DbMntrngLog searchVO)
-	  throws Exception{
+	public int selectDbMntrngLogListCnt(DbMntrngLog searchVO) {
 		return (Integer)selectOne("DbMntrngDao.selectDbMntrngLogListCnt", searchVO);
 	}
 
@@ -134,10 +117,8 @@ public class DbMntrngDao extends EgovComAbstractDAO {
 	 * DB서비스모니터링정보를 수정한다.
 	 *
 	 * @param dbMntrng    수정대상 DB서비스모니터링 VO
-	 * @exception Exception Exception
 	 */
-	public void updateDbMntrng(DbMntrng dbMntrng)
-	  throws Exception{
+	public void updateDbMntrng(DbMntrng dbMntrng) {
 		update("DbMntrngDao.updateDbMntrng", dbMntrng);
 	}
 

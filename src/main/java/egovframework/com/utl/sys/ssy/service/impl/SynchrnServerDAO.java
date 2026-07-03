@@ -26,7 +26,7 @@ public class SynchrnServerDAO extends EgovComAbstractDAO {
 	 * @param synchrnServer - 동기화대상 서버
 	 * @return List - 동기화대상 서버 목록
 	 */
-	public List<SynchrnServer> selectSynchrnServerList(SynchrnServer synchrnServer) throws Exception {
+	public List<SynchrnServer> selectSynchrnServerList(SynchrnServer synchrnServer) {
 		return selectList("synchrnServerDAO.selectSynchrnServerList", synchrnServer);
 	}
 
@@ -35,7 +35,7 @@ public class SynchrnServerDAO extends EgovComAbstractDAO {
 	 * @param synchrnServer - 동기화대상 서버
 	 * @return int - 동기화대상 서버 카운트 수
 	 */
-	public int selectSynchrnServerListTotCnt(SynchrnServer synchrnServer) throws Exception {
+	public int selectSynchrnServerListTotCnt(SynchrnServer synchrnServer) {
 		return (Integer)selectOne("synchrnServerDAO.selectSynchrnServerListTotCnt", synchrnServer);
 	}
 
@@ -44,7 +44,7 @@ public class SynchrnServerDAO extends EgovComAbstractDAO {
 	 * @param synchrnServer - 동기화대상 서버
 	 * @return SynchrnServer - 동기화대상 서버
 	 */
-	public SynchrnServer selectSynchrnServer(SynchrnServer synchrnServer) throws Exception {
+	public SynchrnServer selectSynchrnServer(SynchrnServer synchrnServer) {
 		return (SynchrnServer) selectOne("synchrnServerDAO.selectSynchrnServer", synchrnServer);
 	}
 
@@ -52,7 +52,7 @@ public class SynchrnServerDAO extends EgovComAbstractDAO {
 	 * 동기화대상 서버정보를 신규로 등록한다.
 	 * @param synchrnServer - 동기화대상 서버 model
 	 */
-	public void insertSynchrnServer(SynchrnServer synchrnServer) throws Exception {
+	public void insertSynchrnServer(SynchrnServer synchrnServer) {
 		insert("synchrnServerDAO.insertSynchrnServer", synchrnServer);
 	}
 
@@ -60,7 +60,7 @@ public class SynchrnServerDAO extends EgovComAbstractDAO {
 	 * 기 등록된 동기화대상 서버정보를 수정한다.
 	 * @param synchrnServer - 동기화대상 서버 model
 	 */
-	public void updateSynchrnServer(SynchrnServer synchrnServer) throws Exception {
+	public void updateSynchrnServer(SynchrnServer synchrnServer) {
 		update("synchrnServerDAO.updateSynchrnServer", synchrnServer);
 	}
 
@@ -68,7 +68,7 @@ public class SynchrnServerDAO extends EgovComAbstractDAO {
 	 * 기 등록된 동기화대상 서버정보를 삭제한다.
 	 * @param synchrnServer - 동기화대상 서버 model
 	 */
-	public void deleteSynchrnServer(SynchrnServer synchrnServer) throws Exception {
+	public void deleteSynchrnServer(SynchrnServer synchrnServer) {
 		delete("synchrnServerDAO.deleteSynchrnServer", synchrnServer);
 	}
 
@@ -76,7 +76,7 @@ public class SynchrnServerDAO extends EgovComAbstractDAO {
 	 * 업로드 파일을 동기화대상 서버들을 대상으로 동기화 처리를 한다.
 	 * @param synchrnServer - 동기화대상 서버
 	 */
-	public void processSynchrn(SynchrnServer synchrnServer) throws Exception {
+	public void processSynchrn(SynchrnServer synchrnServer) {
 		update("synchrnServerDAO.processSynchrn", synchrnServer);
 	}
 
@@ -85,7 +85,7 @@ public class SynchrnServerDAO extends EgovComAbstractDAO {
 	 * @param synchrnServer - 동기화대상 서버
 	 * @return List - 동기화대상 서버 목록
 	 */
-	public List<SynchrnServer> processSynchrnServerList(SynchrnServer synchrnServer) throws Exception {
+	public List<SynchrnServer> processSynchrnServerList(SynchrnServer synchrnServer) {
 		return selectList("synchrnServerDAO.processSynchrnServerList", synchrnServer);
 	}
 }

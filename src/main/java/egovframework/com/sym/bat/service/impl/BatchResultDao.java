@@ -32,7 +32,7 @@ public class BatchResultDao extends EgovComAbstractDAO {
 	 * @param batchResult    삭제할 배치결과 VO
 	 * @exception Exception Exception
 	 */
-	public void deleteBatchResult(BatchResult batchResult) throws Exception {
+	public void deleteBatchResult(BatchResult batchResult) {
 		delete("BatchResultDao.deleteBatchResult", batchResult);
 	}
 
@@ -42,7 +42,7 @@ public class BatchResultDao extends EgovComAbstractDAO {
 	 * @param batchResult 저장할 배치결과 VO
 	 * @exception Exception Exception
 	 */
-	public void insertBatchResult(BatchResult batchResult) throws Exception {
+	public void insertBatchResult(BatchResult batchResult) {
 		insert("BatchResultDao.insertBatchResult", batchResult);
 	}
 
@@ -53,7 +53,7 @@ public class BatchResultDao extends EgovComAbstractDAO {
 	 * @param batchResult    조회할 KEY가 있는 배치결과 VO
 	 * @exception Exception Exception
 	 */
-	public BatchResult selectBatchResult(BatchResult batchResult) throws Exception {
+	public BatchResult selectBatchResult(BatchResult batchResult) {
 		return (BatchResult) selectOne("BatchResultDao.selectBatchResult", batchResult);
 	}
 
@@ -64,7 +64,7 @@ public class BatchResultDao extends EgovComAbstractDAO {
 	 * @param searchVO    조회조건이 저장된 VO
 	 * @exception Exception Exception
 	 */
-	public List<BatchResult> selectBatchResultList(BatchResult searchVO) throws Exception {
+	public List<BatchResult> selectBatchResultList(BatchResult searchVO) {
 		return selectList("BatchResultDao.selectBatchResultList", searchVO);
 	}
 
@@ -75,7 +75,7 @@ public class BatchResultDao extends EgovComAbstractDAO {
 	 * @param searchVO    조회할 정보가 담긴 VO
 	 * @exception Exception Exception
 	 */
-	public int selectBatchResultListCnt(BatchResult searchVO) throws Exception {
+	public int selectBatchResultListCnt(BatchResult searchVO) {
 		return (Integer) selectOne("BatchResultDao.selectBatchResultListCnt", searchVO);
 	}
 
@@ -85,7 +85,7 @@ public class BatchResultDao extends EgovComAbstractDAO {
 	 * @param batchResult    수정대상 배치결과 VO
 	 * @exception Exception Exception
 	 */
-	public void updateBatchResult(BatchResult batchResult) throws Exception {
+	public void updateBatchResult(BatchResult batchResult) {
 		update("BatchResultDao.updateBatchResult", batchResult);
 	}
 

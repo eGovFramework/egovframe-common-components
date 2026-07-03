@@ -29,7 +29,7 @@ public class UnityLinkDao extends EgovComAbstractDAO {
      * @param unityLink - 통합링크관리 VO
      * @return List - 통합링크관리 목록
      */
-    public List<?> selectUnityLinkSample(UnityLink unityLink) throws Exception {
+    public List<?> selectUnityLinkSample(UnityLink unityLink) {
         return selectList("UnityLink.selectUnityLinkSample", unityLink);
     }
 
@@ -37,9 +37,8 @@ public class UnityLinkDao extends EgovComAbstractDAO {
      * 통합링크관리를(을) 목록을 한다.
      * @param unityLink 조회할 정보가 담긴 VO
      * @return List
-     * @throws Exception
      */
-    public List<?> selectUnityLinkList(UnityLink unityLink) throws Exception {
+    public List<?> selectUnityLinkList(UnityLink unityLink) {
         return selectList("UnityLink.selectUnityLink", unityLink);
     }
 
@@ -47,9 +46,8 @@ public class UnityLinkDao extends EgovComAbstractDAO {
      * 통합링크관리를(을) 목록 전체 건수를(을) 조회한다.
      * @param unityLink  조회할 정보가 담긴 VO
      * @return int
-     * @throws Exception
      */
-    public int selectUnityLinkListCnt(UnityLink unityLink) throws Exception {
+    public int selectUnityLinkListCnt(UnityLink unityLink) {
         return (Integer)selectOne("UnityLink.selectUnityLinkCnt", unityLink);
     }
 
@@ -57,36 +55,32 @@ public class UnityLinkDao extends EgovComAbstractDAO {
      * 통합링크관리를(을) 상세조회 한다.
      * @param unityLink  통합링크관리 정보가 담김 VO
      * @return List
-     * @throws Exception
      */
-    public UnityLink selectUnityLinkDetail(UnityLink unityLink) throws Exception {
+    public UnityLink selectUnityLinkDetail(UnityLink unityLink) {
         return (UnityLink)selectOne("UnityLink.selectUnityLinkDetail", unityLink);
     }
 
     /**
      * 통합링크관리를(을) 등록한다.
      * @param unityLink  통합링크관리 정보가 담김 VO
-     * @throws Exception
      */
-    public void insertUnityLink(UnityLink unityLink) throws Exception {
+    public void insertUnityLink(UnityLink unityLink) {
         insert("UnityLink.insertUnityLink", unityLink);
     }
 
     /**
      * 통합링크관리를(을) 수정한다.
      * @param unityLink  통합링크관리 정보가 담김 VO
-     * @throws Exception
      */
-    public void updateUnityLink(UnityLink unityLink) throws Exception {
+    public void updateUnityLink(UnityLink unityLink) {
         update("UnityLink.updateUnityLink", unityLink);
     }
 
     /**
      * 통합링크관리를(을) 삭제한다.
      * @param unityLink  통합링크관리 정보가 담김 VO
-     * @throws Exception
      */
-    public void deleteUnityLink(UnityLink unityLink) throws Exception {
+    public void deleteUnityLink(UnityLink unityLink) {
         delete("UnityLink.deleteUnityLink", unityLink);
     }
 

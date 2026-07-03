@@ -23,7 +23,7 @@ import egovframework.com.sym.mnu.mpm.service.MenuManageVO;
  *   2009.03.20  이  용          최초 생성
  *   2011.07.01  서준식			자기 메뉴 정보를 상위메뉴 정보로 참조하는 메뉴정보가 있는지 조회하는
  *   							selectUpperMenuNoByPk() 메서드 추가
- *   2026.06.17  이백행			[2026년 컨트리뷰션] 불필요한 예외(throws Exception) 제거
+ *   2026.06.17  이백행			[2026년 컨트리뷰션] 불필요한 예외 제거
  *
  * </pre>
  */

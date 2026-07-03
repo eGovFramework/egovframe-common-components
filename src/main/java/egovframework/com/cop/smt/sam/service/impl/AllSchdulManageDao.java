@@ -31,9 +31,8 @@ public class AllSchdulManageDao extends EgovComAbstractDAO {
 	 * 전체일정 목록을 조회한다. 
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return List
-	 * @throws Exception
 	 */
-	public List<EgovMap> selectAllSchdulManageeList(ComDefaultVO searchVO) throws Exception{
+	public List<EgovMap> selectAllSchdulManageeList(ComDefaultVO searchVO) {
 		return selectList("AllSchdulManage.selectIndvdlSchdulManage", searchVO);
 	}
 	
@@ -42,9 +41,8 @@ public class AllSchdulManageDao extends EgovComAbstractDAO {
 	 * 전체일정를(을) 목록 전체 건수를(을) 조회한다.
 	 * @param searchVO - 조회할 정보가 담긴 VO
 	 * @return int
-	 * @throws Exception
 	 */
-	public int selectAllSchdulManageListCnt(ComDefaultVO searchVO) throws Exception{
+	public int selectAllSchdulManageListCnt(ComDefaultVO searchVO) {
 		return (Integer)selectOne("AllSchdulManage.selectIndvdlSchdulManageCnt", searchVO);
 	}
 }
