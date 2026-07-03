@@ -40,7 +40,7 @@ public class EgovMybatisUtil {
 		}
 
 		if (o instanceof String) {
-			if (((String) o).length() == 0) {
+			if (((String) o).isEmpty()) {
 				return true;
 			}
 		} else if (o instanceof Collection) {

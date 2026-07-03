@@ -386,7 +386,7 @@ public class EgovSystemCntcController {
 		searchCntcSystemVO.setSearchCondition("CodeList");
 
 		if (systemCntc.getProvdInsttId() == null || systemCntc.getProvdInsttId().equals("")) {
-			if (cntcInsttList.size() > 0) {
+			if (!cntcInsttList.isEmpty()) {
 				EgovMap emp = cntcInsttList.get(0);
 				systemCntc.setProvdInsttId(emp.get("insttId").toString());
 			}
@@ -396,7 +396,7 @@ public class EgovSystemCntcController {
 		model.addAttribute("cntcProvdSystemList", cntcProvdSystemList);
 
 		if (systemCntc.getRequstInsttId() == null || systemCntc.getRequstInsttId().equals("")) {
-			if (cntcInsttList.size() > 0) {
+			if (!cntcInsttList.isEmpty()) {
 				EgovMap emp = cntcInsttList.get(0);
 				systemCntc.setRequstInsttId(emp.get("insttId").toString());
 			}
@@ -413,7 +413,7 @@ public class EgovSystemCntcController {
 		searchCntcServiceVO.setInsttId(systemCntc.getProvdInsttId());
 
 		if (systemCntc.getProvdSysId() == null || systemCntc.getProvdSysId().equals("")) {
-			if (cntcProvdSystemList.size() > 0) {
+			if (!cntcProvdSystemList.isEmpty()) {
 				EgovMap emp = cntcProvdSystemList.get(0);
 				systemCntc.setProvdSysId(emp.get("sysId").toString());
 			}

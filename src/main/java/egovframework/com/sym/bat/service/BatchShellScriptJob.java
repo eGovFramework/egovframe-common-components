@@ -88,7 +88,7 @@ public class BatchShellScriptJob implements Job {
 
 		String propertyValue = EgovProperties.getProperty("SHELL." + Globals.OS_TYPE + ".batchShellFiles");
 
-		if (ObjectUtils.isEmpty(propertyValue) || propertyValue.length() == 0) {
+		if (ObjectUtils.isEmpty(propertyValue) || propertyValue.isEmpty()) {
 
 			LOGGER.debug("SHELL.Globals.OSTYPE.batchShellFiles OK");
 			LOGGER.debug("SHELL.UNIX/WINDOWS.batchShellFiles properties not defined");

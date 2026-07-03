@@ -129,7 +129,7 @@ public class EgovWebEditorImageController {
 
 		try {
 			List<EgovFormBasedFileVo> list = EgovFileUploadUtil.uploadFilesExt(mRequest, uploadDir, maxFileSize, extWhiteList);
-			if (list.size() > 0) {
+			if (!list.isEmpty()) {
 				EgovFormBasedFileVo vo = list.get(0);	// 첫번째 이미지
 
 				String url = mRequest.getContextPath()
