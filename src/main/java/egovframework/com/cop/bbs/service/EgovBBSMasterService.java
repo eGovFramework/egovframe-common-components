@@ -23,13 +23,13 @@ public interface EgovBBSMasterService {
 
 	void deleteBBSMasterInf(BoardMaster boardMaster);
 
-	void updateBBSMasterInf(BoardMaster boardMaster) throws Exception;
+	void updateBBSMasterInf(BoardMaster boardMaster);
 
 	BoardMasterVO selectBBSMasterInf(BoardMasterVO boardMasterVO) throws Exception;
 
 	Map<String, Object> selectBBSMasterInfs(BoardMasterVO boardMasterVO);
 	
-	void insertBBSMasterInf(BoardMaster boardMaster) throws Exception;
+	void insertBBSMasterInf(BoardMaster boardMaster);
 
 	/*
 	 * 블로그 관련
@@ -42,14 +42,14 @@ public interface EgovBBSMasterService {
 
 	void insertBoardBlogUserRqst(BlogUser blogUser);
 	
-	void insertBlogMaster(Blog blog) throws FdlException;
+	void insertBlogMaster(Blog blog);
 
-  void insertBlogMasterAndBoardBlogUserRqst(Blog blog, LoginVO user) throws Exception;
+  void insertBlogMasterAndBoardBlogUserRqst(Blog blog, LoginVO user);
 
 	BlogVO selectBlogDetail(BlogVO blogVO) throws Exception;
 
-	List<BlogVO> selectBlogListPortlet(BlogVO blogVO) throws Exception;
+	List<BlogVO> selectBlogListPortlet(BlogVO blogVO);
 
-	List<BoardMasterVO> selectBBSListPortlet(BoardMasterVO boardMasterVO) throws Exception;
+	List<BoardMasterVO> selectBBSListPortlet(BoardMasterVO boardMasterVO);
 
 }
