@@ -329,4 +329,4 @@ public class EgovEhgtCalcUtil {
 		return rtnStr;
 	}
 
-	}
+}
