@@ -51,7 +51,7 @@ public class EgovEhgtCalcUtil {
 
 	static final char EGHT_KWR = 'K'; // 대한민국
 
-	static StringBuffer sb = new StringBuffer();
+	private final StringBuilder sb = new StringBuilder();
 
 	/**
 	 * 대한민국(KRW), 미국(USD), 유럽연합(EUR), 일본(JPY), 중국원화(CNY) 사이의 환율을 계산하는 기능이다 환율표 -
@@ -123,7 +123,6 @@ public class EgovEhgtCalcUtil {
 	 */
 	public static String getEhgtCalc(String srcType, long srcAmount, String cnvrType) throws Exception {
 
-		sb.setLength(0); // 일자 변경 후 재호출 시 오류 방지를 위한 초기화
 		String rtnStr = null;
 
 		JSONArray eghtStdrRt = null; // Html에서 파싱한 환율매매기준율을 저장하기 위한 문자열배열
@@ -149,18 +148,14 @@ public class EgovEhgtCalcUtil {
 		for (int i = 0; i < 10; i++) { // 비영업일/비영업시간 조회 시 전날 데이터 조회하도록 일자 변경 후 요청 반복
 			searchDate = currentDate.format(formatter);
 			parser.readHtmlParsing("?authkey=" + AUTH_KEY + "&data=AP01&searchdate=" + searchDate);
-			eghtStdrRt = new JSONArray(sb.toString());
+			eghtStdrRt = new JSONArray(parser.sb.toString());
 
 			if (eghtStdrRt.length() != 0) {
 				break;
 			}
 
-			sb.setLength(0);
+			parser.sb.setLength(0);
 			currentDate = currentDate.minusDays(1);
-		}
-
-		if (sb == null) {
-			throw new RuntimeException("StringBuffer is null!!");
 		}
 
 		if (eghtStdrRt == null || (eghtStdrRt.length() == 0)) {
@@ -334,4 +329,4 @@ public class EgovEhgtCalcUtil {
 		return rtnStr;
 	}
 
-}
+	}
