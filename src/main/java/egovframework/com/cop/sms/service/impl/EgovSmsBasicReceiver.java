@@ -35,6 +35,7 @@ import x3.client.smeapi.impl.SMELogger;
  *   2011.10.10  이기하          보안점검 후속초치(디버거코드 주석처리)
  *   2017.03.07  조성원          시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
  *   2025.06.05  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-ImmutableField(불변필드)
+ *   2026.07.07  이백행          [2026년 컨트리뷰션] 불필요한 예외 제거
  *
  *      </pre>
  */
@@ -271,16 +272,7 @@ public class EgovSmsBasicReceiver implements SMEListener {
 					recptn.setResultCode(Integer.toString(nRes));
 					recptn.setResultMssage(resultMsg);
 
-					try {
-						smsDao.updateSmsRecptnInf(recptn);
-						// 2017.02.08 이정은 시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
-					} catch (IOException ex) {
-//						LOGGER.error("Exception: {}", ex.getClass().getName());
-//						LOGGER.error("Exception  Message: {}", ex.getMessage());
-						LOGGER.error("[IOException] : Connection Close");
-					} catch (Exception ex) {
-						LOGGER.error("[" + ex.getClass() + "] Connection Close : ", ex.getMessage());
-					}
+					smsDao.updateSmsRecptnInf(recptn);
 				}
 			} else {
 				LOGGER.debug("SMEReceiver Disconnected!!");

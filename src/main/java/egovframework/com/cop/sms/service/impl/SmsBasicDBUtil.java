@@ -13,6 +13,7 @@ import org.apache.commons.dbcp2.PoolableConnection;
 import org.apache.commons.dbcp2.PoolableConnectionFactory;
 import org.apache.commons.pool2.impl.GenericObjectPool;
 import org.apache.commons.pool2.impl.GenericObjectPoolConfig;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -37,6 +38,7 @@ import egovframework.com.cmm.service.Globals;
  *   2017-02-13  이정은          시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
  *   2020-07-01  신용호          DBCP2 관련 변경사항 적용
  *   2025.06.09  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(리소스 닫기), AvoidSynchronizedAtMethodLevel(메서드 수준에서 동기화를 피하세요)
+ *   2026.07.07  이백행          [2026년 컨트리뷰션] 불필요한 예외 제거
  *
  *      </pre>
  */
@@ -79,7 +81,6 @@ public class SmsBasicDBUtil {
 	 *
 	 * @param alias
 	 * @param bds
-	 * @throws Exception
 	 */
 	protected static void createPools(String alias, BasicDataSource bds) {
 
@@ -132,12 +133,17 @@ public class SmsBasicDBUtil {
 		LOGGER.info("Initialized pool : {}", JDBC_ALIAS);
 	}
 
-	public static Connection getConnection() throws Exception {
+	public static Connection getConnection() {
 		if (!isDriverLoaded) {
 			loadDriver();
 		}
 
-		Connection connection = DriverManager.getConnection("jdbc:apache:commons:dbcp:" + JDBC_ALIAS);
+		Connection connection;
+		try {
+			connection = DriverManager.getConnection("jdbc:apache:commons:dbcp:" + JDBC_ALIAS);
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
+		}
 		return connection;
 	}
 

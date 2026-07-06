@@ -3,8 +3,11 @@ package egovframework.com.cop.sms.service.impl;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 
 import egovframework.com.cop.sms.service.Sms;
 import egovframework.com.cop.sms.service.SmsRecptn;
@@ -25,6 +28,7 @@ import egovframework.com.cop.sms.service.SmsVO;
  *  -------    --------    ---------------------------
  *   2009.11.24  한성곤          최초 생성
  *   2025.06.09  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(리소스 닫기)
+ *   2026.07.07  이백행          [2026년 컨트리뷰션] 불필요한 예외 제거
  *
  *      </pre>
  */
@@ -34,7 +38,7 @@ public class SmsBasicDAO {
 	 * 
 	 * @param SmsVO
 	 */
-	public List<SmsVO> selectSmsInfs(SmsVO vo) throws Exception {
+	public List<SmsVO> selectSmsInfs(SmsVO vo) {
 		List<SmsVO> list = new ArrayList<SmsVO>();
 
 		StringBuffer buffer = new StringBuffer();
@@ -118,6 +122,8 @@ public class SmsBasicDAO {
 			}
 
 			return list;
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
 		}
 	}
 
@@ -126,9 +132,8 @@ public class SmsBasicDAO {
 	 * 
 	 * @param SmsVO
 	 * @return
-	 * @throws Exception
 	 */
-	public int selectSmsInfsCnt(SmsVO vo) throws Exception {
+	public int selectSmsInfsCnt(SmsVO vo) {
 		StringBuffer buffer = new StringBuffer();
 
 		// for mySql
@@ -178,6 +183,8 @@ public class SmsBasicDAO {
 			}
 
 			return 0;
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
 		}
 	}
 
@@ -186,9 +193,8 @@ public class SmsBasicDAO {
 	 * 
 	 * @param notification
 	 * @return
-	 * @throws Exception
 	 */
-	public String insertSmsInf(Sms sms) throws Exception {
+	public String insertSmsInf(Sms sms) {
 		String smsId = null;
 
 		StringBuffer buffer = new StringBuffer();
@@ -227,6 +233,8 @@ public class SmsBasicDAO {
 			conn.commit();
 
 			return smsId;
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
 		}
 	}
 
@@ -234,9 +242,8 @@ public class SmsBasicDAO {
 	 * 문자메시지 수신정보 및 결과 정보를 등록한다.
 	 * 
 	 * @param smsRecptn
-	 * @throws Exception
 	 */
-	public void insertSmsRecptnInf(SmsRecptn smsRecptn) throws Exception {
+	public void insertSmsRecptnInf(SmsRecptn smsRecptn) {
 		StringBuffer buffer = new StringBuffer();
 
 		// for mySql & Oracle
@@ -255,6 +262,8 @@ public class SmsBasicDAO {
 			pstmt.setString(++index, smsRecptn.getResultMssage());
 
 			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
 		}
 	}
 
@@ -264,7 +273,7 @@ public class SmsBasicDAO {
 	 * @param searchVO
 	 * @return
 	 */
-	public SmsVO selectSmsInf(SmsVO searchVO) throws Exception {
+	public SmsVO selectSmsInf(SmsVO searchVO) {
 		SmsVO smsVO = new SmsVO();
 
 		StringBuffer buffer = new StringBuffer();
@@ -307,6 +316,8 @@ public class SmsBasicDAO {
 			}
 
 			return smsVO;
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
 		}
 	}
 
@@ -315,7 +326,7 @@ public class SmsBasicDAO {
 	 * 
 	 * @param SmsRecptn
 	 */
-	public List<SmsRecptn> selectSmsRecptnInfs(SmsRecptn vo) throws Exception {
+	public List<SmsRecptn> selectSmsRecptnInfs(SmsRecptn vo) {
 		List<SmsRecptn> list = new ArrayList<SmsRecptn>();
 
 		StringBuffer buffer = new StringBuffer();
@@ -348,6 +359,8 @@ public class SmsBasicDAO {
 			}
 
 			return list;
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
 		}
 	}
 
@@ -356,9 +369,8 @@ public class SmsBasicDAO {
 	 * 
 	 * @param smsRecptn
 	 * @return
-	 * @throws Exception
 	 */
-	public void updateSmsRecptnInf(SmsRecptn smsRecptn) throws Exception {
+	public void updateSmsRecptnInf(SmsRecptn smsRecptn) {
 		StringBuffer buffer = new StringBuffer();
 
 		// for mySql & Oracle
@@ -378,6 +390,8 @@ public class SmsBasicDAO {
 			pstmt.setString(++index, smsRecptn.getRecptnTelno());
 
 			pstmt.executeUpdate();
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
 		}
 	}
 
@@ -385,9 +399,8 @@ public class SmsBasicDAO {
 	 * ID 처리. transaction 처리를 위해 Connection을 파라미터로 넘겨받음
 	 * 
 	 * @return
-	 * @throws Exception
 	 */
-	protected String getNextId(Connection conn) throws Exception {
+	protected String getNextId(Connection conn) {
 		StringBuffer buffer = new StringBuffer();
 
 		// for mySql
@@ -410,6 +423,8 @@ public class SmsBasicDAO {
 			}
 
 			return null;
+		} catch (SQLException e) {
+			throw new BaseRuntimeException(e);
 		}
 	}
 }
