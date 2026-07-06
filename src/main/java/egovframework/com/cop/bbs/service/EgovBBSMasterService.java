@@ -14,6 +14,7 @@ import egovframework.com.cmm.LoginVO;
  *   수정일			수정자		수정내용
  *  -------			--------	---------------------------
  *   2024.10.29		inganyoyo	Controller는 Transaction 처리를 하지 않아 Controller에서 오류 발생 시 데이터 정합성 오류 문제 발생
+ *   2026.07.06		이백행		[2026년 컨트리뷰션] 불필요한 예외 제거
  * </pre>
  */
 
