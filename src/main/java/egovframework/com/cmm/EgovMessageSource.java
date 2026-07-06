@@ -45,8 +45,8 @@ public class EgovMessageSource extends ReloadableResourceBundleMessageSource imp
 	}
 	
 	/**
-	 * 정의된 메세지 조회
-	 * @param code - 메세지 코드
+	 * 정의된 메시지 조회
+	 * @param code - 메시지 코드
 	 * @return String
 	 */	
 	public String getMessage(String code) {
@@ -54,8 +54,8 @@ public class EgovMessageSource extends ReloadableResourceBundleMessageSource imp
 	}
 	
 	/**
-	 * 정의된 메세지 조회
-	 * @param code - 메세지 코드
+	 * 정의된 메시지 조회
+	 * @param code - 메시지 코드
 	 * @param locale - 로케일
 	 * @return String
 	 */	
@@ -64,8 +64,8 @@ public class EgovMessageSource extends ReloadableResourceBundleMessageSource imp
 	}
 	
 	/**
-	 * 정의된 메세지 조회
-	 * @param code - 메세지 코드
+	 * 정의된 메시지 조회
+	 * @param code - 메시지 코드
 	 * @param args - 매개변수
 	 * @return String
 	 */	
@@ -74,8 +74,8 @@ public class EgovMessageSource extends ReloadableResourceBundleMessageSource imp
 	}
 	
 	/**
-	 * 정의된 메세지 조회
-	 * @param code - 메세지 코드
+	 * 정의된 메시지 조회
+	 * @param code - 메시지 코드
 	 * @param args - 매개변수
 	 * @param locale - 로케일
 	 * @return String
