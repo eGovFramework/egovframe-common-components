@@ -40,8 +40,8 @@ public class DbMntrngChecker {
 	 * 
 	 * @return 모니터링결과
 	 *
-	 * @param context     데이타소스 빈을 얻기위한 ApplicationContext
-	 * @param dataSourcNm 데이타소스빈 이름
+	 * @param context     데이터소스 빈을 얻기위한 ApplicationContext
+	 * @param dataSourcNm 데이터소스빈 이름
 	 * @param ceckSql     수행할 체크SQL
 	 *
 	 */
