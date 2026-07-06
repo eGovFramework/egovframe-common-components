@@ -3,8 +3,6 @@ package egovframework.com.cop.bbs.service;
 import java.util.List;
 import java.util.Map;
 
-import org.egovframe.rte.fdl.cmmn.exception.FdlException;
-
 import egovframework.com.cmm.LoginVO;
 
 /**
