@@ -61,4 +61,17 @@ public class EgovDateUtilBusinessDayTest {
 		assertEquals(0, EgovDateUtil.getBusinessDaysBetween("20250818", "20250812", new HashSet<>()),
 				"시작일이 종료일보다 늦으면 0영업일이어야 한다");
 	}
+
+	@Test
+	void testInvalidCalendarDateRejected() {
+		assertThrows(IllegalArgumentException.class,
+				() -> EgovDateUtil.getBusinessDaysBetween("20260230", "20260305", new HashSet<>()),
+				"존재하지 않는 날짜(2월 30일)는 조용히 롤오버되지 않고 예외여야 한다");
+		assertThrows(IllegalArgumentException.class,
+				() -> EgovDateUtil.getBusinessDaysBetween("20260101", "20260229", new HashSet<>()),
+				"윤년이 아닌 해의 2월 29일은 예외여야 한다");
+		assertThrows(IllegalArgumentException.class,
+				() -> EgovDateUtil.getBusinessDaysBetween("20261301", "20261305", new HashSet<>()),
+				"13월 같은 존재하지 않는 월은 예외여야 한다");
+	}
 }

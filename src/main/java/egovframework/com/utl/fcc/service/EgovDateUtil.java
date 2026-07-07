@@ -31,6 +31,7 @@ import com.ibm.icu.util.ChineseCalendar;
  *   2025.08.30  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
  *   2025.08.30  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AvoidReassigningParameters(넘겨받는 메소드 parameter 값을 직접 변경하는 코드 탐지)
  *   2026.06.30  z3rotig4r      영업일(주말·공휴일 제외) 계산 getBusinessDaysBetween 추가
+ *   2026.07.07  z3rotig4r      getBusinessDaysBetween 실제 날짜 유효성 검증 추가(존재하지 않는 날짜 lenient 롤오버 방지)
  *
  *      </pre>
  */
@@ -909,6 +910,11 @@ public class EgovDateUtil {
 		String f = validChkDate(fromDate);
 		String t = validChkDate(toDate);
 
+		// validChkDate는 길이만 확인하므로 20260230 같은 존재하지 않는 날짜가 통과한다.
+		// Calendar가 lenient 롤오버로 조용히 다른 날짜로 계산하는 것을 막기 위해 실제 날짜 유효성을 확인한다.
+		assertRealDate(f);
+		assertRealDate(t);
+
 		Calendar startDay = Calendar.getInstance();
 		startDay.set(Integer.parseInt(f.substring(0, 4)), Integer.parseInt(f.substring(4, 6)) - 1,
 				Integer.parseInt(f.substring(6, 8)));
@@ -939,6 +945,23 @@ public class EgovDateUtil {
 		}
 
 		return count;
+	}
+
+	/**
+	 * yyyyMMdd 형식의 8자리 문자열이 실제로 존재하는 날짜인지 확인한다.
+	 * 존재하지 않는 날짜(예: 20260230, 윤년이 아닌 해의 0229)이면 예외를 던진다.
+	 *
+	 * @param yyyymmdd yyyyMMdd 형식의 8자리 날짜 문자열
+	 * @throws IllegalArgumentException 실제로 존재하지 않는 날짜인 경우
+	 */
+	private static void assertRealDate(String yyyymmdd) {
+		SimpleDateFormat strict = new SimpleDateFormat(SIMPLE_DATE_PATTERN, Locale.getDefault());
+		strict.setLenient(false);
+		try {
+			strict.parse(yyyymmdd);
+		} catch (ParseException e) {
+			throw new IllegalArgumentException("Invalid date: " + yyyymmdd);
+		}
 	}
 
 }
