@@ -17,7 +17,7 @@ import egovframework.com.uss.cmt.service.EgovCmtManageService;
 import jakarta.annotation.Resource;
 
 /**
- * 출퇴근관리에 관한 비지니스 클래스를 정의한다.
+ * 출퇴근관리에 관한 비즈니스 클래스를 정의한다.
  * 
  * @author 표준프레임워크 개발팀
  * @since 2009.04.10
