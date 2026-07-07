@@ -49,8 +49,8 @@ public class EgovComCrossSiteHndlr extends BodyTagSupport {
 	// *********************************************************************
 	// Construction and initialization
 
-	private final String sDiffChar = "()[]{}\"',:;= \t\r\n%!+-";
-	private final String sArrDiffChar[] = { "&#40;", "&#41;", "&#91;", "&#93;", "&#123;", "&#125;", "&#34;", "&#39;",
+	private static final String sDiffChar = "()[]{}\"',:;= \t\r\n%!+-";
+	private static final String sArrDiffChar[] = { "&#40;", "&#41;", "&#91;", "&#93;", "&#123;", "&#125;", "&#34;", "&#39;",
 			"&#44;", "&#58;", "&#59;", "&#61;", " ", "\t", // " ","\t",
 			"\r", "\n", // "\r","\n",
 			"&#37;", "&#33;", "&#43;", "&#45;" };
@@ -64,6 +64,21 @@ public class EgovComCrossSiteHndlr extends BodyTagSupport {
 		specialCharactersRepresentation['>'] = "&gt;".toCharArray();
 		specialCharactersRepresentation['"'] = "&#034;".toCharArray();
 		specialCharactersRepresentation['\''] = "&#039;".toCharArray();
+	}
+
+	private static final int LOOKUP_SIZE = 128;
+	private static final String[] ESCAPE_LOOKUP = new String[LOOKUP_SIZE];
+	static {
+		// cDiffChar mappings take priority
+		for (int k = 0; k < sDiffChar.length(); k++) {
+			ESCAPE_LOOKUP[sDiffChar.charAt(k)] = sArrDiffChar[k];
+		}
+		// specialCharactersRepresentation fills only chars not already mapped (&, <, >)
+		for (int c = 0; c <= HIGHEST_SPECIAL; c++) {
+			if (ESCAPE_LOOKUP[c] == null && specialCharactersRepresentation[c] != null) {
+				ESCAPE_LOOKUP[c] = new String(specialCharactersRepresentation[c]);
+			}
+		}
 	}
 
 	/**
@@ -214,96 +229,19 @@ public class EgovComCrossSiteHndlr extends BodyTagSupport {
 	 */
 	@SuppressWarnings("unused")
 	private String getWriteEscapedXml() throws IOException {
-		Object obj = this.value;
-		boolean booleanDiff = false;
-		String sRtn = "";
-		String text = obj.toString();
-		int start = 0;
+		String text = this.value.toString();
 		int length = text.length();
-		char[] buffer = text.toCharArray();
-		char[] cDiffChar = this.sDiffChar.toCharArray();
-
+		StringBuilder sb = new StringBuilder(length);
 		for (int i = 0; i < length; i++) {
-			char c = buffer[i];
-			booleanDiff = false;
-			for (int k = 0; k < cDiffChar.length; k++) {
-				if (c == cDiffChar[k]) {
-					sRtn = sRtn + sArrDiffChar[k];
-					booleanDiff = true;
-					continue;
-				}
-			}
-
-			if (booleanDiff) {
-				continue;
-			}
-
-			if (c <= HIGHEST_SPECIAL) {
-				char[] escaped = specialCharactersRepresentation[c];
-				if (escaped != null) {
-					for (int j = 0; j < escaped.length; j++) {
-						sRtn = sRtn + escaped[j];
-					}
-					start = i + 1;
-				} else {
-					sRtn = sRtn + c;
-				}
+			char c = text.charAt(i);
+			String rep = (c < LOOKUP_SIZE) ? ESCAPE_LOOKUP[c] : null;
+			if (rep != null) {
+				sb.append(rep);
 			} else {
-				sRtn = sRtn + c;
+				sb.append(c);
 			}
 		}
-
-		return sRtn;
-	}
-
-	/**
-	 *
-	 * Optimized to create no extra objects and write directly to the JspWriter
-	 * using blocks of escaped and unescaped characters
-	 *
-	 */
-	@SuppressWarnings("unused")
-	private String getWriteEscapedXml(String sWriteString) throws IOException {
-		Object obj = sWriteString;
-		boolean booleanDiff = false;
-		String text = obj.toString();
-		String sRtn = "";
-		int start = 0;
-		int length = text.length();
-		char[] buffer = text.toCharArray();
-		char[] cDiffChar = this.sDiffChar.toCharArray();
-
-		for (int i = 0; i < length; i++) {
-			char c = buffer[i];
-			booleanDiff = false;
-			for (int k = 0; k < cDiffChar.length; k++) {
-				if (c == cDiffChar[k]) {
-					sRtn = sRtn + sArrDiffChar[k];
-					booleanDiff = true;
-					continue;
-				}
-			}
-
-			if (booleanDiff) {
-				continue;
-			}
-
-			if (c <= HIGHEST_SPECIAL) {
-				char[] escaped = specialCharactersRepresentation[c];
-				if (escaped != null) {
-					for (int j = 0; j < escaped.length; j++) {
-						sRtn = sRtn + escaped[j];
-					}
-					start = i + 1;
-				} else {
-					sRtn = sRtn + c;
-				}
-			} else {
-				sRtn = sRtn + c;
-			}
-		}
-
-		return sRtn;
+		return sb.toString();
 	}
 
 	// for tag attribute

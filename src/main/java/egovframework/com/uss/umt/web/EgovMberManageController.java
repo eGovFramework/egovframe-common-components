@@ -38,7 +38,7 @@ import jakarta.validation.Valid;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
- * 일반회원관련 요청을 비지니스 클래스로 전달하고 처리된결과를 해당 웹 화면으로 전달하는 Controller를 정의한다
+ * 일반회원관련 요청을 비즈니스 클래스로 전달하고 처리된결과를 해당 웹 화면으로 전달하는 Controller를 정의한다
  * 
  * @author 공통서비스 개발팀 조재영
  * @since 2009.04.10

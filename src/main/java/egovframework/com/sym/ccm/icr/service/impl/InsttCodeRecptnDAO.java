@@ -113,6 +113,14 @@ public class InsttCodeRecptnDAO extends EgovComAbstractDAO {
         return (Integer)selectOne("InsttCodeRecptnDAO.selectInsttCodeRecptnListTotCnt", searchVO);
     }
 
+	/**
+	 * 등록된 기관코드 목록을 조회한다.
+	 * @return List(기관코드 목록)
+	 */
+	public List<String> selectExistingInsttCodes() {
+		return selectList("InsttCodeRecptnDAO.selectExistingInsttCodes");
+	}
+
     /**
 	 * 기관코드 목록을 조회한다.
      * @param searchVO

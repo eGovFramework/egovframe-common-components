@@ -117,6 +117,14 @@ public class AdministCodeRecptnDAO extends EgovComAbstractDAO {
         return (Integer)selectOne("AdministCodeRecptnDAO.selectAdministCodeRecptnListTotCnt", searchVO);
     }
 
+	/**
+	 * 등록된 법정동코드(행정구역코드) 목록을 조회한다.
+	 * @return List(행정구역코드 목록)
+	 */
+	public List<String> selectExistingAdministCodes() {
+		return selectList("AdministCodeRecptnDAO.selectExistingAdministCodes");
+	}
+
     /**
 	 * 법정동코드 목록을 조회한다.
      * @param searchVO
