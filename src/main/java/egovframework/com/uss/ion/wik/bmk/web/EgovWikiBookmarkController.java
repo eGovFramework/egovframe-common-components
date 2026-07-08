@@ -138,7 +138,7 @@ public class EgovWikiBookmarkController {
      * @return String -리턴 URL
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/ion/wik/bmk/registWikiBookmark.do")
+    @RequestMapping(value = "/uss/ion/wik/bmk/registWikiBookmark.do", method = RequestMethod.POST)
     public String EgovWikiBookmarkRegist(
     		WikiBookmark wikiBookmark,
             ModelMap model) throws Exception {

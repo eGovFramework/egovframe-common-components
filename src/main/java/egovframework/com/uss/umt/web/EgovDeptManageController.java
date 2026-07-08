@@ -186,7 +186,7 @@ public class EgovDeptManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/uss/umt/dpt/removeDeptManageList.do")
+	@RequestMapping(value = "/uss/umt/dpt/removeDeptManageList.do", method = RequestMethod.POST)
 	public String deleteDeptManageList(@RequestParam("deptManages") String deptManages, @ModelAttribute("deptManageVO") DeptManageVO deptManageVO, ModelMap model) throws Exception {
 
 		// 2026.03.23 kisa 보안점검 대응 조치

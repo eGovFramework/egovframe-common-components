@@ -224,7 +224,7 @@ public class EgovTemplateManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/bbs/deleteTemplateInf.do")
+	@RequestMapping(value = "/cop/bbs/deleteTemplateInf.do", method = RequestMethod.POST)
 	public String deleteTemplateInf(@ModelAttribute("searchVO") TemplateInfVO searchVO, @ModelAttribute("tmplatInf") TemplateInf tmplatInf, SessionStatus status, ModelMap model)
 			throws Exception {
 

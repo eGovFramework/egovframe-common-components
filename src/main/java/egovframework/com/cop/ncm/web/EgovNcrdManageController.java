@@ -338,7 +338,7 @@ public class EgovNcrdManageController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/ncm/updateNcrdUseInf.do")
+    @RequestMapping(value = "/cop/ncm/updateNcrdUseInf.do", method = RequestMethod.POST)
     public String updateNcrdUseInf(@ModelAttribute("ncrdUser") NameCardUser ncrdUser, @ModelAttribute("ncrdVO") NameCardVO ncrdVO,
 	    SessionStatus status, ModelMap model) throws Exception {
 		@SuppressWarnings("unused")
