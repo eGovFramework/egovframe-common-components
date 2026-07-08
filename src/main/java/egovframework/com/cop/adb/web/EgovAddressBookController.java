@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.exception.EgovXssException;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.adb.service.AddressBook;
 import egovframework.com.cop.adb.service.AddressBookUser;
@@ -182,7 +183,13 @@ public class EgovAddressBookController {
 
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
+        if(!isAuthenticated) {
+            return "redirect:/uat/uia/egovLoginUsr.do";
+        }
+
         AddressBook adbk = adbkService.selectAdressBook(adbkVO);
+        checkAddressBookWriter(adbk, user);
+
         adbk.setUseAt("N");
         adbk.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getId()));
         adbkService.deleteAdressBook(adbk);
@@ -486,6 +493,9 @@ public class EgovAddressBookController {
             return "redirect:/uat/uia/egovLoginUsr.do";
         }
 
+        AddressBookVO savedAdbk = adbkService.selectAdressBook(adbkVO);
+        checkAddressBookWriter(savedAdbk, user);
+
         // 구성원 정보 로드
         String[] tempId = EgovStringUtil.isNullToString(adbkUserVO.getUserId()).split(",");
 
@@ -506,6 +516,19 @@ public class EgovAddressBookController {
         adbkService.updateAdressBook(adbkVO);
 
         return "forward:/cop/adb/selectAdbkList.do";
+    }
+
+    private void checkAddressBookWriter(AddressBook adbk, LoginVO user) {
+        String wrterId = adbk == null ? null : adbk.getWrterId();
+        String userId = user == null ? null : EgovStringUtil.isNullToString(user.getId());
+
+        if (wrterId == null || userId == null || userId.equals("")) {
+            throw new EgovXssException("XSS00001", "errors.xss.checkerUser");
+        }
+
+        if (!wrterId.equals(userId)) {
+            throw new EgovXssException("XSS00002", "errors.xss.checkerUser");
+        }
     }
 
 }
