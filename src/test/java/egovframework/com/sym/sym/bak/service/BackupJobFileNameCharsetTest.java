@@ -43,7 +43,7 @@ class BackupJobFileNameCharsetTest {
         String name = "백업/한글-파일.txt";
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
-        try (ArchiveOutputStream aos = new ArchiveStreamFactory(StandardCharsets.UTF_8.name())
+        try (ArchiveOutputStream<TarArchiveEntry> aos = new ArchiveStreamFactory(StandardCharsets.UTF_8.name())
                 .createArchiveOutputStream(ArchiveStreamFactory.TAR, bos)) {
             TarArchiveEntry entry = new TarArchiveEntry(name);
             entry.setSize(0);
@@ -53,7 +53,7 @@ class BackupJobFileNameCharsetTest {
 
         try (TarArchiveInputStream tis = new TarArchiveInputStream(
                 new ByteArrayInputStream(bos.toByteArray()), StandardCharsets.UTF_8.name())) {
-            TarArchiveEntry read = tis.getNextTarEntry();
+            TarArchiveEntry read = tis.getNextEntry();
             assertEquals(name, read.getName(), "UTF-8로 기록한 한글 엔트리 이름이 그대로 복원되어야 한다");
         }
     }
