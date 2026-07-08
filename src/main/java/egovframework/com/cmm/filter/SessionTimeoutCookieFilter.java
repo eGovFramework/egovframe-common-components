@@ -16,16 +16,18 @@
 package egovframework.com.cmm.filter;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
-import jakarta.servlet.FilterConfig;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.ServletRequest;
 import jakarta.servlet.ServletResponse;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  *
@@ -43,10 +45,11 @@ import jakarta.servlet.http.HttpServletResponse;
  *  -------    --------    ---------------------------
  *   2020.06.17  신용호          최초 생성
  *   2025.05.24  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-UncommentedEmptyMethodBody(주석 처리되지 않은 빈 메서드 본문)
+ *   2026.07.09  이백행          [2026년 컨트리뷰션] 디버그 출력에 log.debug 적용
  *
  *      </pre>
  */
-
+@Slf4j
 public class SessionTimeoutCookieFilter implements Filter {
 
 	@Override
@@ -71,16 +74,18 @@ public class SessionTimeoutCookieFilter implements Filter {
 		cookie.setHttpOnly(true);
 		cookie.setPath("/");
 
-//        Date dateServer = new java.util.Date(serverTime);
-//        Date dateExpiry = new java.util.Date(sessionExpireTime);
-//        SimpleDateFormat format = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		if (log.isDebugEnabled()) {
+			Date dateServer = new java.util.Date(serverTime);
+			Date dateExpiry = new java.util.Date(sessionExpireTime);
+			SimpleDateFormat format = new java.text.SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
-//        String serverYMD = format.format(dateServer);
-//        String expiryYMD = format.format(dateExpiry);
-		// System.out.println("=====>>> serverYMD = "+serverYMD);
-		// System.out.println("=====>>> expiryYMD = "+expiryYMD);
-		// System.out.println("=====>>> server TimeStamp = "+serverTime);
-		// System.out.println("=====>>> expire TimeStamp = "+sessionExpireTime);
+			String serverYMD = format.format(dateServer);
+			String expiryYMD = format.format(dateExpiry);
+			log.debug("=====>>> serverYMD = {}", serverYMD);
+			log.debug("=====>>> expiryYMD = {}", expiryYMD);
+			log.debug("=====>>> server TimeStamp = {}", serverTime);
+			log.debug("=====>>> expire TimeStamp = {}", sessionExpireTime);
+		}
 
 		httpResponse.addCookie(cookie);
 
