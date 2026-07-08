@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -36,6 +37,7 @@ import twitter4j.JSONObject;
  *   2023.08.25  김혜준          외환은행 제공 환율 api에서 한국수출입은행 제공 환율 api로 변경
  *   2025.08.30  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(부적절한 자원 해제)
  *   2025.08.30  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UselessParentheses(불필요한 괄호사용)
+ *   2026.07.08  이백행          [2026년 컨트리뷰션] BigDecimal.divide() deprecated 메서드 대체
  *
  *      </pre>
  */
@@ -251,10 +253,10 @@ public class EgovEhgtCalcUtil {
 				sCnvrAmount = bSrcAmount.toString();
 			} else if (cnvrChr == 'J') {
 				// 변환금액 = (변환대상금액 / 변환매매비율) * 100;
-				sCnvrAmount = bSrcAmount.divide(bCnvrStdrRt, 4, 4).multiply(bStdr).setScale(2, 4).toString();
+				sCnvrAmount = bSrcAmount.divide(bCnvrStdrRt, 4, RoundingMode.HALF_UP).multiply(bStdr).setScale(2, RoundingMode.HALF_UP).toString();
 			} else {
 				// 변환금액 = (변환대상금액 / 변환매매비율);
-				sCnvrAmount = bSrcAmount.divide(bCnvrStdrRt, 2, 4).toString();
+				sCnvrAmount = bSrcAmount.divide(bCnvrStdrRt, 2, RoundingMode.HALF_UP).toString();
 			}
 			break;
 
@@ -264,14 +266,14 @@ public class EgovEhgtCalcUtil {
 				sCnvrAmount = bSrcAmount.toString();
 			} else if (cnvrChr == 'K') {
 				// 변환금액 = 변환대상금액 * 원래 매매 비율;
-				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(2, 4).toString();
+				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(2, RoundingMode.HALF_UP).toString();
 			} else if (cnvrChr == 'J') {
 				// cnvrAmount = ((변환대상금액 * 원래 매매 비율) / 변환 매매 비율) * 100;
-				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(4, 4).divide(bCnvrStdrRt, 2, 4).multiply(bStdr)
-						.setScale(2, 4).toString();
+				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(4, RoundingMode.HALF_UP).divide(bCnvrStdrRt, 2, RoundingMode.HALF_UP).multiply(bStdr)
+						.setScale(2, RoundingMode.HALF_UP).toString();
 			} else {
 				// cnvrAmount = (변환대상금액 * 원래 매매 비율) / 변환 매매 비율;
-				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(4, 4).divide(bCnvrStdrRt, 2, 4).toString();
+				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(4, RoundingMode.HALF_UP).divide(bCnvrStdrRt, 2, RoundingMode.HALF_UP).toString();
 			}
 			break;
 
@@ -281,14 +283,14 @@ public class EgovEhgtCalcUtil {
 				sCnvrAmount = bSrcAmount.toString();
 			} else if (cnvrChr == 'K') {
 				// cnvrAmount = 변환대상금액 * 원래 매매 비율;
-				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(2, 4).toString();
+				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(2, RoundingMode.HALF_UP).toString();
 			} else if (cnvrChr == 'J') {
 				// cnvrAmount = ((변환대상금액 * 원래 매매 비율) / 변환 매매 비율) * 100;
-				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(4, 4).divide(bCnvrStdrRt, 2, 4).multiply(bStdr)
-						.setScale(2, 4).toString();
+				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(4, RoundingMode.HALF_UP).divide(bCnvrStdrRt, 2, RoundingMode.HALF_UP).multiply(bStdr)
+						.setScale(2, RoundingMode.HALF_UP).toString();
 			} else {
 				// cnvrAmount = (변환대상금액 * 원래 매매 비율) / 변환 매매 비율;
-				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(4, 4).divide(bCnvrStdrRt, 2, 4).toString();
+				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(4, RoundingMode.HALF_UP).divide(bCnvrStdrRt, 2, RoundingMode.HALF_UP).toString();
 			}
 			break;
 
@@ -298,11 +300,11 @@ public class EgovEhgtCalcUtil {
 				sCnvrAmount = bSrcAmount.toString();
 			} else if (cnvrChr == 'K') {
 				// cnvrAmount = (변환대상금액 * 원래 매매 비율) / 100;
-				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(4, 4).divide(bStdr, 2, 4).toString();
+				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(4, RoundingMode.HALF_UP).divide(bStdr, 2, RoundingMode.HALF_UP).toString();
 			} else {
 				// cnvrAmount = ((변환대상금액 * 원래 매매 비율) / 100) / 변환 매매 비율;
-				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(4, 4).divide(bStdr, 2, 4)
-						.divide(bCnvrStdrRt, 2, 4).toString();
+				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(4, RoundingMode.HALF_UP).divide(bStdr, 2, RoundingMode.HALF_UP)
+						.divide(bCnvrStdrRt, 2, RoundingMode.HALF_UP).toString();
 			}
 			break;
 
@@ -312,20 +314,20 @@ public class EgovEhgtCalcUtil {
 				sCnvrAmount = bSrcAmount.toString();
 			} else if (cnvrChr == 'K') {
 				// cnvrAmount = 변환대상금액 * 원래 매매 비율;
-				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(2, 4).toString();
+				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(2, RoundingMode.HALF_UP).toString();
 			} else if (cnvrChr == 'J') {
 				// cnvrAmount = ((변환대상금액 * 원래 매매 비율) / 변환 매매 비율) * 100;
-				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(4, 4).divide(bCnvrStdrRt, 2, 4).multiply(bStdr)
-						.setScale(2, 4).toString();
+				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(4, RoundingMode.HALF_UP).divide(bCnvrStdrRt, 2, RoundingMode.HALF_UP).multiply(bStdr)
+						.setScale(2, RoundingMode.HALF_UP).toString();
 			} else {
 				// cnvrAmount = (변환대상금액 * 원래 매매 비율) / 변환 매매 비율;
-				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(4, 4).divide(bCnvrStdrRt, 2, 4).toString();
+				sCnvrAmount = bSrcAmount.multiply(bSrcStdrRt).setScale(4, RoundingMode.HALF_UP).divide(bCnvrStdrRt, 2, RoundingMode.HALF_UP).toString();
 			}
 			break;
 
 		default:
 			// 변환금액 = (변환대상금액 / 변환매매비율);
-			sCnvrAmount = bSrcAmount.divide(bCnvrStdrRt, 2, 4).toString();
+			sCnvrAmount = bSrcAmount.divide(bCnvrStdrRt, 2, RoundingMode.HALF_UP).toString();
 			break;
 		}
 
