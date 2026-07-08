@@ -196,7 +196,7 @@ public class EgovMainImageController {
 	/**
 	 * 기 등록된 메인이미지정보를 삭제한다.
 	 */
-	@RequestMapping(value = "/uss/ion/msi/removeMainImage.do")
+	@RequestMapping(value = "/uss/ion/msi/removeMainImage.do", method = RequestMethod.POST)
 	public String deleteMainImage(@RequestParam("imageId") String imageId,
 			@ModelAttribute("mainImageVO") MainImageVO mainImageVO, SessionStatus status, ModelMap model) throws Exception {
 		mainImageVO.setImageId(imageId);

@@ -201,7 +201,7 @@ public class EgovAuthorManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value = "/sec/ram/EgovAuthorListDelete.do")
+    @RequestMapping(value = "/sec/ram/EgovAuthorListDelete.do", method = RequestMethod.POST)
     public String deleteAuthorList(@RequestParam("authorCodes") String authorCodes,
     		                       @ModelAttribute("authorManage") AuthorManage authorManage,
     		                        Model model) throws Exception {

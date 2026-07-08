@@ -125,6 +125,7 @@ function fncAuthorDeleteList() {
 
     if(fncManageChecked()) {
     	if(confirm("<spring:message code="common.delete.msg" />")){	//삭제하시겠습니까?
+            document.listForm.method = "post";
             document.listForm.action = "<c:url value='/sec/ram/EgovAuthorListDelete.do'/>";
             document.listForm.submit();
         }

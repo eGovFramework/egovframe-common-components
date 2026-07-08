@@ -113,7 +113,7 @@ public class EgovSystemCntcController {
 	 * @return "forward:/ssi/syi/sim/getSystemCntcList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/sim/addSystemCntc.do", params = "cmd=Regist")
+	@RequestMapping(value = "/ssi/syi/sim/addSystemCntc.do", params = "cmd=Regist", method = RequestMethod.POST)
 	public String insertSystemCntc(@ModelAttribute("searchVO") SystemCntcVO searchVO,
 			@Valid @ModelAttribute("systemCntc") SystemCntc systemCntc,
 			BindingResult bindingResult, ModelMap model) throws Exception {

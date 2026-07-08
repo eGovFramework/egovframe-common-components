@@ -63,7 +63,8 @@ function fncMainImageDelete() {
         return false;
     }
     if(confirm("<spring:message code="uss.ion.msi.mainImageUpdt.deleteImage"/>")){/* 삭제 하시겠습니까? */
-        location.href = "<c:url value='/uss/ion/msi/removeMainImage.do'/>?imageId=" + encodeURIComponent(varFrom.imageId.value);
+        varFrom.action = "<c:url value='/uss/ion/msi/removeMainImage.do'/>";
+        varFrom.submit();
     }
     return false;
 }
