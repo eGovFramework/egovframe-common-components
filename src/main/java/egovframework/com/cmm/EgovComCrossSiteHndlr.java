@@ -27,6 +27,7 @@ import jakarta.servlet.jsp.tagext.BodyTagSupport;
  *   2010.11.09  장동한          최초 생성
  *   2022.11.11  김혜준          시큐어코딩 처리
  *   2025.05.22  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-FieldNamingConventions(필드 명명 규칙), CloseResource(리소스 닫기), AssignmentInOperand(피연산자의 할당)
+ *   2026.07.08  이백행          [2026년 컨트리뷰션] 불필요한 @SuppressWarnings("unused") 어노테이션 제거
  *
  *      </pre>
  */
@@ -227,7 +228,6 @@ public class EgovComCrossSiteHndlr extends BodyTagSupport {
 	 * using blocks of escaped and unescaped characters
 	 *
 	 */
-	@SuppressWarnings("unused")
 	private String getWriteEscapedXml() throws IOException {
 		String text = this.value.toString();
 		int length = text.length();

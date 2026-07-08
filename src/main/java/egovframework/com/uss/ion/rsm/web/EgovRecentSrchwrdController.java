@@ -48,6 +48,7 @@ import net.sourceforge.ajaxtags.xml.AjaxXmlBuilder;
  *   2020.10.29  권태성          등록 화면과 데이터를 처리하는 method 분리
  *   2025.08.13  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UselessParentheses(불필요한 괄호사용)
  *   2025.08.13  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(부적절한 자원 해제)
+ *   2026.07.08  이백행          [2026년 컨트리뷰션] 불필요한 @SuppressWarnings("unused") 어노테이션 제거
  *
  *      </pre>
  */
@@ -78,7 +79,6 @@ public class EgovRecentSrchwrdController {
 	 * @return "egovframework/com/uss/ion/rsm/EgovRecentSrchwrdList"
 	 * @throws Exception
 	 */
-	@SuppressWarnings("unused")
 	@IncludedInfo(name = "최근검색어 조회", order = 760, gid = 50)
 	@RequestMapping(value = "/uss/ion/rsm/listRecentSrchwrd.do")
 	public String egovRecentSrchwrdList(@ModelAttribute("recentSrchwrd") RecentSrchwrd recentSrchwrd, ModelMap model)
