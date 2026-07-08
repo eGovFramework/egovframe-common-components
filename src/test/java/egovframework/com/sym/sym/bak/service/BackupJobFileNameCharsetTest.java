@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNotEquals;
 
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
@@ -12,6 +13,7 @@ import org.apache.commons.compress.archivers.ArchiveOutputStream;
 import org.apache.commons.compress.archivers.ArchiveStreamFactory;
 import org.apache.commons.compress.archivers.tar.TarArchiveEntry;
 import org.apache.commons.compress.archivers.tar.TarArchiveInputStream;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
@@ -39,7 +41,7 @@ class BackupJobFileNameCharsetTest {
 
     @Test
     @DisplayName("UTF-8 인코딩과 원본 경로를 쓰면 한글 TAR 엔트리 이름이 보존된다")
-    void utf8TarPreservesKoreanEntryName() throws Exception {
+    void utf8TarPreservesKoreanEntryName() {
         String name = "백업/한글-파일.txt";
 
         ByteArrayOutputStream bos = new ByteArrayOutputStream();
@@ -49,12 +51,16 @@ class BackupJobFileNameCharsetTest {
             entry.setSize(0);
             aos.putArchiveEntry(entry);
             aos.closeArchiveEntry();
+        } catch (IOException e) {
+            throw new BaseRuntimeException(e);
         }
 
         try (TarArchiveInputStream tis = new TarArchiveInputStream(
                 new ByteArrayInputStream(bos.toByteArray()), StandardCharsets.UTF_8.name())) {
             TarArchiveEntry read = tis.getNextEntry();
             assertEquals(name, read.getName(), "UTF-8로 기록한 한글 엔트리 이름이 그대로 복원되어야 한다");
+        } catch (IOException e) {
+            throw new BaseRuntimeException(e);
         }
     }
 }
