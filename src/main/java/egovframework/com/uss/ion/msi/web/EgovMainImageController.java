@@ -101,7 +101,6 @@ public class EgovMainImageController {
 	/**
 	 * 메인이미지정보를 신규로 등록한다.
 	 */
-	@SuppressWarnings("unused")
 	@RequestMapping(value = "/uss/ion/msi/addMainImage.do")
 	public String insertMainImage(final MultipartHttpServletRequest multiRequest,
 			@Valid @ModelAttribute("mainImageVO") MainImageVO mainImageVO, BindingResult bindingResult,
@@ -146,7 +145,6 @@ public class EgovMainImageController {
 	/**
 	 * 기 등록된 메인이미지정보를 수정한다.
 	 */
-	@SuppressWarnings("unused")
 	@RequestMapping(value = "/uss/ion/msi/updtMainImage.do")
 	public String updateMainImage(final MultipartHttpServletRequest multiRequest,
 			@Valid @ModelAttribute("mainImageVO") MainImageVO mainImageVO, BindingResult bindingResult,
