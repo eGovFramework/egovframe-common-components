@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.exception.EgovXssException;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.bbs.service.BoardMasterVO;
 import egovframework.com.cop.bbs.service.BoardVO;
@@ -292,6 +293,15 @@ public class EgovCommuManageController {
      */
     @RequestMapping("/cop/cmy/selectCommuUserList.do")
     public String selectCommuUserList(@ModelAttribute("searchVO") CommunityUserVO cmmntyUserVO, ModelMap model) throws Exception {
+		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		// KISA 보안취약점 조치 (2018-12-10, 신용호)
+        if(!isAuthenticated) {
+            return "redirect:/uat/uia/egovLoginUsr.do";
+        }
+
+		checkCommuAdmin(cmmntyUserVO.getCmmntyId(), user);
+
 		cmmntyUserVO.setPageUnit(propertyService.getInt("pageUnit"));
 		cmmntyUserVO.setPageSize(propertyService.getInt("pageSize"));
 
@@ -456,6 +466,22 @@ public class EgovCommuManageController {
 
 		return "forward:/cop/cmy/selectCommuUserList.do";
     }
+
+	private void checkCommuAdmin(String cmmntyId, LoginVO user) throws Exception {
+		String uniqId = user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId());
+
+		if ("".equals(EgovStringUtil.isNullToString(cmmntyId)) || "".equals(uniqId)) {
+			throw new EgovXssException("XSS00001", "errors.xss.checkerUser");
+		}
+
+		CommunityUserVO userVO = new CommunityUserVO();
+		userVO.setCmmntyId(cmmntyId);
+		userVO.setEmplyrId(uniqId);
+
+		if (!Boolean.TRUE.equals(egovCommuManageService.selectIsCommuAdmin(userVO))) {
+			throw new EgovXssException("XSS00002", "errors.xss.checkerUser");
+		}
+	}
 
     /**
      * 미리보기 커뮤니티 메인페이지를 조회한다.
