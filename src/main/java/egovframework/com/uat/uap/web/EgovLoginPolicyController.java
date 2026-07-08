@@ -27,6 +27,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -136,7 +137,7 @@ public class EgovLoginPolicyController {
 	 * @param loginPolicy - 로그인정책 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping("/uat/uap/addLoginPolicy.do")
+	@RequestMapping(value = "/uat/uap/addLoginPolicy.do", method = RequestMethod.POST)
 	public String insertLoginPolicy(@Valid @ModelAttribute("loginPolicy") LoginPolicy loginPolicy,
 			                         BindingResult bindingResult,
                                      ModelMap model) throws Exception {
@@ -166,7 +167,7 @@ public class EgovLoginPolicyController {
 	 * @param loginPolicy - 로그인정책 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping("/uat/uap/updtLoginPolicy.do")
+	@RequestMapping(value = "/uat/uap/updtLoginPolicy.do", method = RequestMethod.POST)
 	public String updateLoginPolicy(@Valid @ModelAttribute("loginPolicy") LoginPolicy loginPolicy,
 			                         BindingResult bindingResult,
                                      ModelMap model) throws Exception {
@@ -194,7 +195,7 @@ public class EgovLoginPolicyController {
 	 * @param loginPolicy - 로그인정책 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping("/uat/uap/removeLoginPolicy.do")
+	@RequestMapping(value = "/uat/uap/removeLoginPolicy.do", method = RequestMethod.POST)
 	public String deleteLoginPolicy(@ModelAttribute("loginPolicy") LoginPolicy loginPolicy,
                                      ModelMap model) throws Exception {
 

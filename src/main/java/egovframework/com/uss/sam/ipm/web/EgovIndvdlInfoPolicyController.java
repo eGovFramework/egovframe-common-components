@@ -11,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -116,7 +117,7 @@ public class EgovIndvdlInfoPolicyController {
 	 * @return "/uss/sam/ipm/EgovOnlinePollDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/sam/ipm/detailIndvdlInfoPolicy.do")
+	@RequestMapping(value = "/uss/sam/ipm/detailIndvdlInfoPolicy.do", method = RequestMethod.POST)
 	public String egovIndvdlInfoPolicyDetail(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			IndvdlInfoPolicy indvdlInfoPolicy, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
@@ -175,7 +176,7 @@ public class EgovIndvdlInfoPolicyController {
 	 * @return "redirect:/uss/sam/ipm/listIndvdlInfoPolicy.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/sam/ipm/updtIndvdlInfoPolicy.do")
+	@RequestMapping(value = "/uss/sam/ipm/updtIndvdlInfoPolicy.do", method = RequestMethod.POST)
 	public String egovIndvdlInfoPolicyModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, @Valid @ModelAttribute("indvdlInfoPolicy") IndvdlInfoPolicy indvdlInfoPolicy,
 			BindingResult bindingResult,
@@ -240,7 +241,7 @@ public class EgovIndvdlInfoPolicyController {
 	 * @return "/uss/sam/ipm/EgovOnlinePollRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/sam/ipm/registIndvdlInfoPolicy.do")
+	@RequestMapping(value = "/uss/sam/ipm/registIndvdlInfoPolicy.do", method = RequestMethod.POST)
 	public String egovIndvdlInfoPolicyRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, @Valid @ModelAttribute("indvdlInfoPolicy") IndvdlInfoPolicy indvdlInfoPolicy,
 			BindingResult bindingResult,

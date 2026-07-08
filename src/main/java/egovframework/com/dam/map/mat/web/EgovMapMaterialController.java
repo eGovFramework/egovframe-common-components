@@ -10,6 +10,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -146,7 +147,7 @@ public class EgovMapMaterialController {
 	 *
 	 * @param MapMaterialVO
 	 */
-	@RequestMapping(value = "/dam/map/mat/EgovComDamMapMaterialRegist.do")
+	@RequestMapping(value = "/dam/map/mat/EgovComDamMapMaterialRegist.do", method = RequestMethod.POST)
 	public String insertMapMaterial(@ModelAttribute("loginVO") LoginVO loginVO,
 			@Valid @ModelAttribute("mapMaterial") MapMaterialVO mapMaterial, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -196,7 +197,7 @@ public class EgovMapMaterialController {
 	 *
 	 * @param MapMaterialVO
 	 */
-	@RequestMapping(value = "/dam/map/mat/EgovComDamMapMaterialModify.do")
+	@RequestMapping(value = "/dam/map/mat/EgovComDamMapMaterialModify.do", method = RequestMethod.POST)
 	public String updateMapMaterial(@ModelAttribute("loginVO") LoginVO loginVO,
 			@ModelAttribute("searchVO") MapMaterialVO searchVO,
 			@Valid @ModelAttribute("mapMaterial") MapMaterial mapMaterial, BindingResult bindingResult,
@@ -221,7 +222,7 @@ public class EgovMapMaterialController {
 	 *
 	 * @param MapMaterialVO
 	 */
-	@RequestMapping(value = "/dam/map/mat/EgovComDamMapMaterialRemove.do")
+	@RequestMapping(value = "/dam/map/mat/EgovComDamMapMaterialRemove.do", method = RequestMethod.POST)
 	public String deleteMapMaterial(@ModelAttribute("loginVO") LoginVO loginVO, MapMaterial mapMaterial, ModelMap model)
 			throws Exception {
 		mapMaterialService.deleteMapMaterial(mapMaterial);

@@ -12,6 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -80,7 +81,7 @@ public class EgovBatchOpertController {
 	 * @param redirectAttributes RedirectAttributes
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/sym/bat/deleteBatchOpert.do")
+	@RequestMapping(value = "/sym/bat/deleteBatchOpert.do", method = RequestMethod.POST)
 	public String deleteBatchOpert(BatchOpert batchOpert, RedirectAttributes redirectAttributes) throws Exception {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
@@ -238,7 +239,7 @@ public class EgovBatchOpertController {
 	 * @param redirectAttributes RedirectAttributes
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/sym/bat/updateBatchOpert.do")
+	@RequestMapping(value = "/sym/bat/updateBatchOpert.do", method = RequestMethod.POST)
 	public String updateBatchOpert(@ModelAttribute("searchVO") BatchOpert searchVO,
 			@Valid @ModelAttribute("batchOpert") BatchOpert batchOpert, BindingResult bindingResult,
 			ModelMap model, RedirectAttributes redirectAttributes) throws Exception {

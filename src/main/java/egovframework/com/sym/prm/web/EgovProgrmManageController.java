@@ -12,6 +12,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -142,7 +143,7 @@ public class EgovProgrmManageController {
 	 * @return 출력페이지정보 "forward:/sym/prm/EgovProgramListManageSelect.do"
 	 * @exception Exception
 	 */
-	@RequestMapping("/sym/prm/EgovProgrmManageListDelete.do")
+	@RequestMapping(value = "/sym/prm/EgovProgrmManageListDelete.do", method = RequestMethod.POST)
 	public String deleteProgrmManageList(@RequestParam("checkedProgrmFileNmForDel") String checkedProgrmFileNmForDel,
 			@ModelAttribute("progrmManageVO") ProgrmManageVO progrmManageVO, ModelMap model) throws Exception {
 		String sLocationUrl = null;
@@ -200,7 +201,7 @@ public class EgovProgrmManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/prm/EgovProgramListRegist.do")
+	@RequestMapping(value = "/sym/prm/EgovProgramListRegist.do", method = RequestMethod.POST)
 	public String insertProgrmList(@Valid @ModelAttribute("progrmManageVO") ProgrmManageVO progrmManageVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 		String resultMsg = "";
@@ -268,7 +269,7 @@ public class EgovProgrmManageController {
 	 * @return 출력페이지정보 "forward:/sym/prm/EgovProgramListManageSelect.do"
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sym/prm/EgovProgramListManageDelete.do")
+	@RequestMapping(value = "/sym/prm/EgovProgramListManageDelete.do", method = RequestMethod.POST)
 	public String deleteProgrmList(@ModelAttribute("progrmManageVO") ProgrmManageVO progrmManageVO, ModelMap model)
 			throws Exception {
 		String resultMsg = "";
@@ -362,7 +363,7 @@ public class EgovProgrmManageController {
 	 * @exception Exception
 	 */
 	/* 프로그램변경요청등록 */
-	@RequestMapping(value = "/sym/prm/EgovProgramChangRequstStre.do")
+	@RequestMapping(value = "/sym/prm/EgovProgramChangRequstStre.do", method = RequestMethod.POST)
 	public String insertProgrmChangeRequst(@RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("progrmManageDtlVO") ProgrmManageDtlVO progrmManageDtlVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
@@ -574,7 +575,7 @@ public class EgovProgrmManageController {
 	 * @exception Exception
 	 */
 	@SuppressWarnings("unused")
-	@RequestMapping(value = "/sym/prm/EgovProgramChangRequstProcessDetailSelectUpdt.do")
+	@RequestMapping(value = "/sym/prm/EgovProgramChangRequstProcessDetailSelectUpdt.do", method = RequestMethod.POST)
 	public String updateProgrmChangRequstProcess(
 			@Valid @ModelAttribute("progrmManageDtlVO") ProgrmManageDtlVO progrmManageDtlVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {

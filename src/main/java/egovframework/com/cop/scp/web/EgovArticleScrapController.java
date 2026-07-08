@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.RequestMethod;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
@@ -177,7 +178,7 @@ public class EgovArticleScrapController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/scp/insertArticleScrap.do")
+    @RequestMapping(value = "/cop/scp/insertArticleScrap.do", method = RequestMethod.POST)
     public String insertArticleScrap(@ModelAttribute("searchVO") ScrapVO scrapVO, @Valid @ModelAttribute("scrap") Scrap scrap,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -215,7 +216,7 @@ public class EgovArticleScrapController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/scp/deleteArticleScrap.do")
+    @RequestMapping(value = "/cop/scp/deleteArticleScrap.do", method = RequestMethod.POST)
     public String deleteArticleScrap(@ModelAttribute("searchVO") ScrapVO scrapVO, @ModelAttribute("Scrap") Scrap scrap, ModelMap model) throws Exception {
 	@SuppressWarnings("unused")
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -265,7 +266,7 @@ public class EgovArticleScrapController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/scp/updateArticleScrap.do")
+    @RequestMapping(value = "/cop/scp/updateArticleScrap.do", method = RequestMethod.POST)
     public String updateArticleScrap(@ModelAttribute("searchVO") ScrapVO scrapVO, @Valid @ModelAttribute("Scrap") Scrap scrap,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
 

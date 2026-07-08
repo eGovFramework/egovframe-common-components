@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.RequestMethod;
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -136,7 +137,7 @@ public class EgovHttpMonController {
 	 *
 	 * @param siteUrl
 	 */
-	@RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonRegist.do")
+	@RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonRegist.do", method = RequestMethod.POST)
 	public String insertHttpMon(
 		@Valid @ModelAttribute("httpMon") HttpMon httpMon,
 		BindingResult bindingResult,
@@ -187,7 +188,7 @@ public class EgovHttpMonController {
 	 * @param httpMon - Http서비스모니터링 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonModify.do")
+	@RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonModify.do", method = RequestMethod.POST)
 	public String updateHttpMon(
 		@ModelAttribute("loginVO") LoginVO loginVO,
 		@Valid @ModelAttribute("httpMon") HttpMon httpMon,
@@ -213,7 +214,7 @@ public class EgovHttpMonController {
 	 *
 	 * @param siteUrl
 	 */
-	@RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonRemove.do")
+	@RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonRemove.do", method = RequestMethod.POST)
 	public String deleteHttpMon(@ModelAttribute("loginVO") LoginVO loginVO, HttpMon cmmWebKind, ModelMap model)
 			throws Exception {
 		egovHttpMonService.deleteHttpMon(cmmWebKind);

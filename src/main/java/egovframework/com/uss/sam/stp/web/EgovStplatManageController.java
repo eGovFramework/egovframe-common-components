@@ -10,6 +10,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -162,7 +163,7 @@ public class EgovStplatManageController {
 	 * @return "forward:/uss/sam/stp/StplatListInqire.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/sam/stp/StplatCnRegist.do")
+	@RequestMapping(value = "/uss/sam/stp/StplatCnRegist.do", method = RequestMethod.POST)
 	public String insertStplatCn(@ModelAttribute("searchVO") StplatManageDefaultVO searchVO,
 			@Valid @ModelAttribute("stplatManageVO") StplatManageVO stplatManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
@@ -226,7 +227,7 @@ public class EgovStplatManageController {
 	 * @return "forward:/uss/sam/stp/StplatListInqire.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/sam/stp/StplatCnUpdt.do")
+	@RequestMapping(value = "/uss/sam/stp/StplatCnUpdt.do", method = RequestMethod.POST)
 	public String updateStplatCn(@ModelAttribute("searchVO") StplatManageDefaultVO searchVO,
 			@Valid @ModelAttribute("stplatManageVO") StplatManageVO stplatManageVO, BindingResult bindingResult)
 			throws Exception {
@@ -259,7 +260,7 @@ public class EgovStplatManageController {
 	 * @return "forward:/uss/sam/stp/StplatListInqire.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/sam/stp/StplatCnDelete.do")
+	@RequestMapping(value = "/uss/sam/stp/StplatCnDelete.do", method = RequestMethod.POST)
 	public String deleteStplatCn(StplatManageVO stplatManageVO,
 			@ModelAttribute("searchVO") StplatManageDefaultVO searchVO) throws Exception {
 

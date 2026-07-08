@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -158,7 +159,7 @@ public class EgovTroblReqstController {
 	 * @param troblReqst - 장애신청관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/sym/tbm/tbr/addTroblReqst.do")
+	@RequestMapping(value = "/sym/tbm/tbr/addTroblReqst.do", method = RequestMethod.POST)
 	public String insertTroblReqst(@ModelAttribute("troblReqstVO") TroblReqstVO troblReqstVO,
 			@Valid @ModelAttribute("troblReqst") TroblReqst troblReqst, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -205,7 +206,7 @@ public class EgovTroblReqstController {
 	 * @param troblReqst - 장애신청관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/sym/tbm/tbr/updtTroblReqst.do")
+	@RequestMapping(value = "/sym/tbm/tbr/updtTroblReqst.do", method = RequestMethod.POST)
 	public String updateTroblReqst(@ModelAttribute("troblReqstVO") TroblReqstVO troblReqstVO,
 			@Valid @ModelAttribute("troblReqst") TroblReqst troblReqst, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {
@@ -248,7 +249,7 @@ public class EgovTroblReqstController {
 	 * @param troblReqst - 장애신청관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/sym/tbm/tbr/requstTroblReqst.do")
+	@RequestMapping(value = "/sym/tbm/tbr/requstTroblReqst.do", method = RequestMethod.POST)
 	public String requstTroblReqst(@RequestParam("troblId") String troblId,
 			@ModelAttribute("troblReqst") TroblReqst troblReqst, SessionStatus status, ModelMap model)
 			throws Exception {
@@ -269,7 +270,7 @@ public class EgovTroblReqstController {
 	 * @param troblReqst - 장애신청관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/sym/tbm/tbr/requstTroblReqstCancl.do")
+	@RequestMapping(value = "/sym/tbm/tbr/requstTroblReqstCancl.do", method = RequestMethod.POST)
 	public String requstTroblReqstCancl(@RequestParam("troblId") String troblId,
 			@ModelAttribute("troblReqst") TroblReqst troblReqst, SessionStatus status, ModelMap model)
 			throws Exception {

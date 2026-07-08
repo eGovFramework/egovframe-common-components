@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -253,7 +254,7 @@ public class EgovQustnrRespondInfoController {
 	 */
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@RequestMapping(value = "/uss/olp/qnn/EgovQustnrRespondInfoManageRegist.do")
+	@RequestMapping(value = "/uss/olp/qnn/EgovQustnrRespondInfoManageRegist.do", method = RequestMethod.POST)
 	public String egovQustnrRespondInfoManageRegist(
 			@Valid @ModelAttribute("searchVO") ComDefaultVO searchVO,
 			BindingResult bindingResult,
@@ -544,7 +545,7 @@ public class EgovQustnrRespondInfoController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qri/EgovQustnrRespondInfoDetail.do")
+	@RequestMapping(value = "/uss/olp/qri/EgovQustnrRespondInfoDetail.do", method = RequestMethod.POST)
 	public String egovQustnrRespondInfoDetail(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			QustnrRespondInfoVO qustnrRespondInfoVO, @RequestParam Map<?, ?> commandMap, ModelMap model)
 			throws Exception {
@@ -576,7 +577,7 @@ public class EgovQustnrRespondInfoController {
 	 * @return "egovframework/com/uss/olp/qri/EgovQustnrRespondInfoModify"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qri/EgovQustnrRespondInfoModify.do")
+	@RequestMapping(value = "/uss/olp/qri/EgovQustnrRespondInfoModify.do", method = RequestMethod.POST)
 	public String qustnrRespondInfoModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, HttpServletRequest request,
 			@Valid @ModelAttribute("qustnrRespondInfoVO") QustnrRespondInfoVO qustnrRespondInfoVO,
@@ -632,7 +633,7 @@ public class EgovQustnrRespondInfoController {
 	 * @return "egovframework/com/uss/olp/qri/EgovQustnrRespondInfoRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qri/EgovQustnrRespondInfoRegist.do")
+	@RequestMapping(value = "/uss/olp/qri/EgovQustnrRespondInfoRegist.do", method = RequestMethod.POST)
 	public String qustnrRespondInfoRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, HttpServletRequest request,
 			@Valid @ModelAttribute("qustnrRespondInfoVO") QustnrRespondInfoVO qustnrRespondInfoVO,

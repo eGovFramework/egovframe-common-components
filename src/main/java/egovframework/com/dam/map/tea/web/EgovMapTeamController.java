@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.RequestMethod;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.dam.map.tea.service.EgovMapTeamService;
@@ -126,7 +127,7 @@ public class EgovMapTeamController {
 	 *
 	 * @param mapTeam
 	 */
-	@RequestMapping(value = "/dam/map/tea/EgovComDamMapTeamRegist.do")
+	@RequestMapping(value = "/dam/map/tea/EgovComDamMapTeamRegist.do", method = RequestMethod.POST)
 	public String insertMapTeam(@ModelAttribute("loginVO") LoginVO loginVO, @Valid @ModelAttribute("mapTeam") MapTeam mapTeam,
 			BindingResult bindingResult) throws Exception {
 
@@ -165,7 +166,7 @@ public class EgovMapTeamController {
 	 *
 	 * @param mapTeam
 	 */
-	@RequestMapping(value = "/dam/map/tea/EgovComDamMapTeamModify.do")
+	@RequestMapping(value = "/dam/map/tea/EgovComDamMapTeamModify.do", method = RequestMethod.POST)
 	public String updateMapTeam(@ModelAttribute("loginVO") LoginVO loginVO, @Valid @ModelAttribute("mapTeam") MapTeam mapTeam,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -186,7 +187,7 @@ public class EgovMapTeamController {
 	 *
 	 * @param orgnztNm
 	 */
-	@RequestMapping(value = "/dam/map/tea/EgovComDamMapTeamRemove.do")
+	@RequestMapping(value = "/dam/map/tea/EgovComDamMapTeamRemove.do", method = RequestMethod.POST)
 	public String deleteMapTeam(@ModelAttribute("loginVO") LoginVO loginVO, MapTeam mapTeam, ModelMap model)
 			throws Exception {
 		mapTeamService.deleteMapTeam(mapTeam);

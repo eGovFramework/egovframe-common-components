@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -201,7 +202,7 @@ public class EgovRwardManageController {
 	 * @param rwardManage - 포상관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/rwd/insertRwardManage.do")
+	@RequestMapping(value = "/uss/ion/rwd/insertRwardManage.do", method = RequestMethod.POST)
 	public String insertRwardManage(final MultipartHttpServletRequest multiRequest,
 			@Valid @ModelAttribute("rwardManage") RwardManage rwardManage, BindingResult bindingResult,
 			@ModelAttribute("rwardManageVO") RwardManageVO rwardManageVO, SessionStatus status, ModelMap model) throws Exception {
@@ -242,7 +243,7 @@ public class EgovRwardManageController {
 	 * @return String - 리턴 Url
 	 */
 	@SuppressWarnings("unused")
-	@RequestMapping(value = "/uss/ion/rwd/updtRwardManage.do")
+	@RequestMapping(value = "/uss/ion/rwd/updtRwardManage.do", method = RequestMethod.POST)
 	public String updtRwardManage(@RequestParam("atchFileAt") String atchFileAt,
 			final MultipartHttpServletRequest multiRequest, @Valid @ModelAttribute("rwardManage") RwardManage rwardManage, BindingResult bindingResult,
 			@ModelAttribute("rwardManageVO") RwardManageVO rwardManageVO, SessionStatus status, ModelMap model) throws Exception {
@@ -292,7 +293,7 @@ public class EgovRwardManageController {
 	 * @param rwardManage - 포상관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/rwd/deleteRwardManage.do")
+	@RequestMapping(value = "/uss/ion/rwd/deleteRwardManage.do", method = RequestMethod.POST)
 	public String deleteRwardManage(@ModelAttribute("rwardManage") RwardManage rwardManage, SessionStatus status,
 			ModelMap model) throws Exception {
 		rwardManage.setRwardDe(EgovStringUtil.removeMinusChar(rwardManage.getRwardDe()));
@@ -400,7 +401,7 @@ public class EgovRwardManageController {
 	 * @param rwardManage - 포상관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/rwd/updtRwardConfm.do")
+	@RequestMapping(value = "/uss/ion/rwd/updtRwardConfm.do", method = RequestMethod.POST)
 	public String updtRwardManageConfm(@ModelAttribute("rwardManage") RwardManage rwardManage,
 			BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
 

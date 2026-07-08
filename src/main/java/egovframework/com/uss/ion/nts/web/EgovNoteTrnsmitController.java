@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -163,7 +164,7 @@ public class EgovNoteTrnsmitController {
      * @return String -리턴 URL
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/ion/nts/detailNoteTrnsmit.do")
+    @RequestMapping(value = "/uss/ion/nts/detailNoteTrnsmit.do", method = RequestMethod.POST)
     public String EgovNoteTrnsmitDetail(
     		@ModelAttribute("searchVO") NoteTrnsmit searchVO,
     		EgovSecurityMap securityMap,

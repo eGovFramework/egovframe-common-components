@@ -10,6 +10,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -118,7 +119,7 @@ public class EgovBkmkMenuManageController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/sym/mnu/bmm/EgovBkmkMenuManageDelete.do")
+    @RequestMapping(value = "/sym/mnu/bmm/EgovBkmkMenuManageDelete.do", method = RequestMethod.POST)
     public String deleteMenuManageList(
             @RequestParam("checkMenuIds") String checkMenuIds ,
             @ModelAttribute("bkmkMenuManageVO") BkmkMenuManageVO bkmkMenuManageVO,
@@ -245,7 +246,7 @@ public class EgovBkmkMenuManageController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/sym/mnu/bmm/registBkmkInf.do")
+    @RequestMapping(value = "/sym/mnu/bmm/registBkmkInf.do", method = RequestMethod.POST)
     public String registBkmkInf(@Valid @ModelAttribute("bkmkMenuManage") BkmkMenuManage bkmkMenuManage,
             BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
 

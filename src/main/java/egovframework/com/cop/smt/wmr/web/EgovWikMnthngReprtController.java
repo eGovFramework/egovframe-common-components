@@ -10,6 +10,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -360,7 +361,7 @@ public class EgovWikMnthngReprtController {
 	 *
 	 * @param wikMnthngReprt
 	 */
-	@RequestMapping("/cop/smt/wmr/insertWikMnthngReprt.do")
+	@RequestMapping(value = "/cop/smt/wmr/insertWikMnthngReprt.do", method = RequestMethod.POST)
 	public String insertWikMnthngReprt(final MultipartHttpServletRequest multiRequest,
 			@Valid @ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO, BindingResult bindingResult, ModelMap model) throws Exception{
     	// 0. Spring Security 사용자권한 처리
@@ -419,7 +420,7 @@ public class EgovWikMnthngReprtController {
 	 *
 	 * @param wikMnthngReprt
 	 */
-	@RequestMapping("/cop/smt/wmr/deleteWikMnthngReprt.do")
+	@RequestMapping(value = "/cop/smt/wmr/deleteWikMnthngReprt.do", method = RequestMethod.POST)
 	public String deleteWikMnthngReprt(@ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO, ModelMap model) throws Exception{
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		// 0. Spring Security 사용자권한 처리
@@ -453,7 +454,7 @@ public class EgovWikMnthngReprtController {
 	 *
 	 * @param wikMnthngReprt
 	 */
-	@RequestMapping("/cop/smt/wmr/confirmWikMnthngReprt.do")
+	@RequestMapping(value = "/cop/smt/wmr/confirmWikMnthngReprt.do", method = RequestMethod.POST)
 	public String confirmWikMnthngReprt(@ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO, ModelMap model) throws Exception{
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();

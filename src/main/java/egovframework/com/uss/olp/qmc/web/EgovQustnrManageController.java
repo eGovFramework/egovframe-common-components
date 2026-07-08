@@ -13,6 +13,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
@@ -78,7 +79,7 @@ public class EgovQustnrManageController {
 	 * @return "egovframework/com/uss/olp/qmc/EgovQustnrManageListPopup"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageListPopup.do")
+	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageListPopup.do", method = RequestMethod.POST)
 	public String egovQustnrManageListPopup(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, QustnrManageVO qustnrManageVO, ModelMap model) throws Exception {
 		if (LOGGER.isDebugEnabled()) {
@@ -130,7 +131,7 @@ public class EgovQustnrManageController {
 	 * @throws Exception
 	 */
 	@IncludedInfo(name = "설문관리", order = 590, gid = 50)
-	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageList.do")
+	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageList.do", method = RequestMethod.POST)
 	public String egovQustnrManageList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, QustnrManageVO qustnrManageVO, ModelMap model) throws Exception {
 
@@ -178,7 +179,7 @@ public class EgovQustnrManageController {
 	 * @return "egovframework/com/uss/olp/qmc/EgovQustnrManageDetail";
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageDetail.do")
+	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageDetail.do", method = RequestMethod.POST)
 	public String egovQustnrManageDetail(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			QustnrManageVO qustnrManageVO, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
@@ -253,7 +254,7 @@ public class EgovQustnrManageController {
 	 * @return "redirect:/uss/olp/qmc/EgovQustnrManageList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageModify.do")
+	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageModify.do", method = RequestMethod.POST)
 	public String qustnrManageModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, QustnrManageVO qustnrManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
@@ -337,7 +338,7 @@ public class EgovQustnrManageController {
 	 * @return "redirect:/uss/olp/qmc/EgovQustnrManageList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageRegist.do")
+	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageRegist.do", method = RequestMethod.POST)
 	public String qustnrManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@Valid @ModelAttribute("qustnrManageVO") QustnrManageVO qustnrManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {

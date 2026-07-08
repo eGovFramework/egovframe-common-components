@@ -7,6 +7,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -117,7 +118,7 @@ public class EgovDeptAuthorController extends EgovComAbstractController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sec/drm/EgovDeptAuthorInsert.do")
+	@RequestMapping(value = "/sec/drm/EgovDeptAuthorInsert.do", method = RequestMethod.POST)
 	public String insertDeptAuthor(@RequestParam("userIds") String userIds,
 			                       @RequestParam("authorCodes") String authorCodes,
 			                       @RequestParam("regYns") String regYns,

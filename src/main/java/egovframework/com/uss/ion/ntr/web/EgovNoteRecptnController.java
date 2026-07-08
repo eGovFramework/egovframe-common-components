@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -75,7 +76,7 @@ public class EgovNoteRecptnController {
      * @throws Exception
      */
     @IncludedInfo(name="받은쪽지함관리", order = 850 ,gid = 50)
-    @RequestMapping(value = "/uss/ion/ntr/listNoteRecptn.do")
+    @RequestMapping(value = "/uss/ion/ntr/listNoteRecptn.do", method = RequestMethod.POST)
     public String EgovNoteRecptnList(
 			 HttpServletRequest request,
 			 HttpServletResponse response,
@@ -175,7 +176,7 @@ public class EgovNoteRecptnController {
      * @throws Exception
      */
     @SuppressWarnings("unused")
-	@RequestMapping(value = "/uss/ion/ntr/detailNoteRecptn.do")
+	@RequestMapping(value = "/uss/ion/ntr/detailNoteRecptn.do", method = RequestMethod.POST)
     public String EgovNoteRecptnDetail(
     		@ModelAttribute("searchVO") NoteRecptn searchVO,
             @ModelAttribute("noteRecptn") NoteRecptn noteRecptn,

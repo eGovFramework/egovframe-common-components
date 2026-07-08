@@ -11,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -137,7 +138,7 @@ public class EgovNoteManageController {
 	 * @return String -리턴 URL
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/ntm/registEgovNoteManageActor.do")
+	@RequestMapping(value = "/uss/ion/ntm/registEgovNoteManageActor.do", method = RequestMethod.POST)
 	public String EgovNoteRecptnRegist(final MultipartHttpServletRequest multiRequest,
 			@RequestParam Map<?, ?> commandMap, @Valid @ModelAttribute("noteManage") NoteManageVO noteManage, BindingResult bindingResult, ModelMap model)
 			throws Exception {

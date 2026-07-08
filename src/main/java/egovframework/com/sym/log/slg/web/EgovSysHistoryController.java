@@ -10,6 +10,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -137,7 +138,7 @@ public class EgovSysHistoryController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/log/slg/UpdateSysHistory.do")
+	@RequestMapping(value = "/sym/log/slg/UpdateSysHistory.do", method = RequestMethod.POST)
 	public String updateSysHistory(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") SysHistoryVO historyVO, @Valid @ModelAttribute("history") SysHistory history,
 			BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
@@ -209,7 +210,7 @@ public class EgovSysHistoryController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/log/slg/DeleteSysHistory.do")
+	@RequestMapping(value = "/sym/log/slg/DeleteSysHistory.do", method = RequestMethod.POST)
 	public String deleteSysHistory(@ModelAttribute("history") SysHistory history, SessionStatus status, ModelMap model)
 			throws Exception {
 

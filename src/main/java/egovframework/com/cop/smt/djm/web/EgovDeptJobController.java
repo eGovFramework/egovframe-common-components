@@ -10,6 +10,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -362,7 +363,7 @@ public class EgovDeptJobController {
 	 *
 	 * @param deptJobBxVO
 	 */
-	@RequestMapping("/cop/smt/djm/updateDeptJobBx.do")
+	@RequestMapping(value = "/cop/smt/djm/updateDeptJobBx.do", method = RequestMethod.POST)
 	public String updateDeptJobBx(@Valid @ModelAttribute("deptJobBxVO") DeptJobBxVO deptJobBxVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -388,7 +389,7 @@ public class EgovDeptJobController {
 	 *
 	 * @param deptJobBx
 	 */
-	@RequestMapping("/cop/smt/djm/updateDeptJobBxOrdr.do")
+	@RequestMapping(value = "/cop/smt/djm/updateDeptJobBxOrdr.do", method = RequestMethod.POST)
 	public String updateDeptJobBxOrdr(@ModelAttribute("searchVO") DeptJobBxVO deptJobBxVO, ModelMap model)
 			throws Exception {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -415,7 +416,7 @@ public class EgovDeptJobController {
 	 *
 	 * @param deptJobBxVO
 	 */
-	@RequestMapping("/cop/smt/djm/insertDeptJobBx.do")
+	@RequestMapping(value = "/cop/smt/djm/insertDeptJobBx.do", method = RequestMethod.POST)
 	public String insertDeptJobBx(@Valid @ModelAttribute("deptJobBxVO") DeptJobBxVO deptJobBxVO, BindingResult bindingResult,
 			RedirectAttributes redirectAttributes, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -457,7 +458,7 @@ public class EgovDeptJobController {
 	 *
 	 * @param DeptJobBx
 	 */
-	@RequestMapping("/cop/smt/djm/deleteDeptJobBx.do")
+	@RequestMapping(value = "/cop/smt/djm/deleteDeptJobBx.do", method = RequestMethod.POST)
 	public String deleteDeptJobBx(@ModelAttribute("deptJobBxVO") DeptJobBx deptJobBx, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -730,7 +731,7 @@ public class EgovDeptJobController {
 	 *
 	 * @param deptJob
 	 */
-	@RequestMapping("/cop/smt/djm/deleteDeptJob.do")
+	@RequestMapping(value = "/cop/smt/djm/deleteDeptJob.do", method = RequestMethod.POST)
 	public String deleteDeptJob(@ModelAttribute("deptJobVO") DeptJob deptJob, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();

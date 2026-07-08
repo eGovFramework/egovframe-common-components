@@ -10,6 +10,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -134,7 +135,7 @@ public class EgovIndvdlPgeController {
       * @return	"forward:/uss/mpe/selectIndvdlPgeList.do"
       * @throws Exception
       */
-      @RequestMapping("/uss/mpe/insertIndvdlPge.do")
+      @RequestMapping(value = "/uss/mpe/insertIndvdlPge.do", method = RequestMethod.POST)
       public String insertIndvdlPge(
 	  	@ModelAttribute("searchVO") IndvdlPgeVO searchVO,
 		@Valid @ModelAttribute("indvdlPgeVO") IndvdlPgeVO indvdlPgeVO,
@@ -180,7 +181,7 @@ public class EgovIndvdlPgeController {
        * @return	"forward:/uss/mpe/selectIndvdlPgeList.do"
        * @throws Exception
        */
-      @RequestMapping("/uss/mpe/updateIndvdlPge.do")
+      @RequestMapping(value = "/uss/mpe/updateIndvdlPge.do", method = RequestMethod.POST)
       public String updateIndvdlPge(
 	  	@ModelAttribute("searchVO") IndvdlPgeVO searchVO,
 		@Valid @ModelAttribute("indvdlPgeVO") IndvdlPgeVO indvdlPgeVO,

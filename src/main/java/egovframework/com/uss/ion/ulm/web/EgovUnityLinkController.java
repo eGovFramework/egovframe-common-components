@@ -12,6 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
@@ -146,7 +147,7 @@ public class EgovUnityLinkController {
 	 * @return "/uss/ion/ulm/EgovOnlinePollDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/ulm/detailUnityLink.do")
+	@RequestMapping(value = "/uss/ion/ulm/detailUnityLink.do", method = RequestMethod.POST)
 	public String egovUnityLinkDetail(@ModelAttribute("unityLink") UnityLink unityLink,
 			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
@@ -203,7 +204,7 @@ public class EgovUnityLinkController {
 	 * @return "/uss/ion/ulm/EgovOnlinePollUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/ulm/updtUnityLink.do")
+	@RequestMapping(value = "/uss/ion/ulm/updtUnityLink.do", method = RequestMethod.POST)
 	public String egovUnityLinkModify(
 			@Valid @ModelAttribute("unityLink") UnityLink unityLink, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -265,7 +266,7 @@ public class EgovUnityLinkController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/ulm/registUnityLink.do")
+	@RequestMapping(value = "/uss/ion/ulm/registUnityLink.do", method = RequestMethod.POST)
 	public String egovUnityLinkRegist(
 			@Valid @ModelAttribute("unityLink") UnityLink unityLink, BindingResult bindingResult, ModelMap model)
 			throws Exception {

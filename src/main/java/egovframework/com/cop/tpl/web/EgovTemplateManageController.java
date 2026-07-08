@@ -10,6 +10,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -125,7 +126,7 @@ public class EgovTemplateManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/tpl/insertTemplateInf.do")
+	@RequestMapping(value = "/cop/tpl/insertTemplateInf.do", method = RequestMethod.POST)
 	public String insertTemplateInf(@ModelAttribute("searchVO") TemplateInfVO searchVO,
 			@Valid @ModelAttribute("templateInf") TemplateInf templateInf, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {

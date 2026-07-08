@@ -10,6 +10,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.support.SessionStatus;
@@ -162,7 +163,7 @@ public class EgovServerController {
 	 *
 	 * @param serverEqpmn
 	 */
-	@RequestMapping(value = "/sym/sym/srv/addServerEqpmn.do")
+	@RequestMapping(value = "/sym/sym/srv/addServerEqpmn.do", method = RequestMethod.POST)
 	public String insertServerEqpmn(@ModelAttribute("serverEqpmnVO") ServerEqpmnVO serverEqpmnVO,
 			@Valid @ModelAttribute("serverEqpmn") ServerEqpmn serverEqpmn, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -205,7 +206,7 @@ public class EgovServerController {
 	 *
 	 * @param serverEqpmn
 	 */
-	@RequestMapping(value = "/sym/sym/srv/updtServerEqpmn.do")
+	@RequestMapping(value = "/sym/sym/srv/updtServerEqpmn.do", method = RequestMethod.POST)
 	public String updateServerEqpmn(@ModelAttribute("serverEqpmnVO") ServerEqpmnVO serverEqpmnVO,
 			@Valid @ModelAttribute("serverEqpmn") ServerEqpmn serverEqpmn, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {
@@ -230,7 +231,7 @@ public class EgovServerController {
 	 *
 	 * @param serverEqpmn
 	 */
-	@RequestMapping(value = "/sym/sym/srv/removeServerEqpmn.do")
+	@RequestMapping(value = "/sym/sym/srv/removeServerEqpmn.do", method = RequestMethod.POST)
 	public String deleteServerEqpmn(@RequestParam("serverEqpmnId") String serverEqpmnId,
 			@ModelAttribute("serverEqpmn") ServerEqpmn serverEqpmn, ModelMap model) throws Exception {
 		serverEqpmn.setServerEqpmnId(serverEqpmnId);
@@ -384,7 +385,7 @@ public class EgovServerController {
 	 *
 	 * @param server
 	 */
-	@RequestMapping(value = "/sym/sym/srv/updtServer.do")
+	@RequestMapping(value = "/sym/sym/srv/updtServer.do", method = RequestMethod.POST)
 	public String updateServer(@ModelAttribute("serverVO") ServerVO serverVO,
 			@Valid @ModelAttribute("server") Server server, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {
@@ -410,7 +411,7 @@ public class EgovServerController {
 	 *
 	 * @param server
 	 */
-	@RequestMapping(value = "/sym/sym/srv/removeServer.do")
+	@RequestMapping(value = "/sym/sym/srv/removeServer.do", method = RequestMethod.POST)
 	public String deleteServer(@RequestParam("serverId") String serverId, @ModelAttribute("server") Server server,
 			ModelMap model) throws Exception {
 
@@ -469,7 +470,7 @@ public class EgovServerController {
 	 *
 	 * @param serverEqpmnRelate
 	 */
-	@RequestMapping(value = "/sym/sym/srv/saveServerEqpmnRelate.do")
+	@RequestMapping(value = "/sym/sym/srv/saveServerEqpmnRelate.do", method = RequestMethod.POST)
 	public String saveServerEqpmnRelate(@RequestParam("serverId") String serverId,
 			@RequestParam("serverEqpmnIds") String serverEqpmnIds, @RequestParam("regYns") String regYns,
 			@ModelAttribute("serverEqpmnRelate") ServerEqpmnRelate serverEqpmnRelate, SessionStatus status,

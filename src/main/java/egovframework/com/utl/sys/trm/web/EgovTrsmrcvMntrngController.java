@@ -13,6 +13,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.RequestMethod;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
@@ -70,7 +71,7 @@ public class EgovTrsmrcvMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-    @RequestMapping("/utl/sys/trm/deleteTrsmrcvMntrng.do")
+    @RequestMapping(value = "/utl/sys/trm/deleteTrsmrcvMntrng.do", method = RequestMethod.POST)
 	public String deleteTrsmrcvMntrng(@ModelAttribute("searchVO") TrsmrcvMntrng trsmrcvMntrng, ModelMap model,
 			RedirectAttributes redirectAttributes)
 	  throws Exception{
@@ -94,7 +95,7 @@ public class EgovTrsmrcvMntrngController {
 	 * @param model			ModelMap
 	 * @exception Exception Exception
 	 */
-    @RequestMapping("/utl/sys/trm/addTrsmrcvMntrng.do")
+    @RequestMapping(value = "/utl/sys/trm/addTrsmrcvMntrng.do", method = RequestMethod.POST)
 	public String insertTrsmrcvMntrng(@Valid @ModelAttribute TrsmrcvMntrng trsmrcvMntrng, BindingResult bindingResult, ModelMap model,
 			RedirectAttributes redirectAttributes)
 	  throws Exception{
@@ -289,7 +290,7 @@ public class EgovTrsmrcvMntrngController {
 	 * @param model				ModelMap
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/utl/sys/trm/updateTrsmrcvMntrng.do")
+	@RequestMapping(value = "/utl/sys/trm/updateTrsmrcvMntrng.do", method = RequestMethod.POST)
 	public String updateTrsmrcvMntrng(@ModelAttribute("searchVO") TrsmrcvMntrng searchVO,
 			@Valid @ModelAttribute("trsmrcvMntrng") TrsmrcvMntrng trsmrcvMntrng, BindingResult bindingResult, ModelMap model,
 			RedirectAttributes redirectAttributes)

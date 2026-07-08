@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.RequestMethod;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
@@ -146,7 +147,7 @@ public class EgovCcmCmmnCodeManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/sym/ccm/cca/RegistCcmCmmnCode.do")
+	@RequestMapping(value = "/sym/ccm/cca/RegistCcmCmmnCode.do", method = RequestMethod.POST)
 	public String insertCmmnCode(@ModelAttribute("searchVO") CmmnCodeVO cmmnCode,
 			@Valid @ModelAttribute("cmmnCodeVO") CmmnCodeVO cmmnCodeVO, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -191,7 +192,7 @@ public class EgovCcmCmmnCodeManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/sym/ccm/cca/RemoveCcmCmmnCode.do")
+	@RequestMapping(value = "/sym/ccm/cca/RemoveCcmCmmnCode.do", method = RequestMethod.POST)
 	public String deleteCmmnCode(@ModelAttribute("cmmnCodeVO") CmmnCodeVO cmmnCodeVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 

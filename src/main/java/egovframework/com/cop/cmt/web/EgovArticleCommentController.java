@@ -10,6 +10,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -129,7 +130,7 @@ public class EgovArticleCommentController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/cmt/insertArticleComment.do")
+    @RequestMapping(value = "/cop/cmt/insertArticleComment.do", method = RequestMethod.POST)
     public String insertArticleComment(@ModelAttribute("searchVO") CommentVO commentVO, @Valid @ModelAttribute("comment") Comment comment,
 	    BindingResult bindingResult, ModelMap model, @RequestParam HashMap<String, String> map) throws Exception {
 
@@ -174,7 +175,7 @@ public class EgovArticleCommentController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/cmt/deleteArticleComment.do")
+    @RequestMapping(value = "/cop/cmt/deleteArticleComment.do", method = RequestMethod.POST)
     public String deleteArticleComment(@ModelAttribute("searchVO") CommentVO commentVO, @ModelAttribute("comment") Comment comment,
     		ModelMap model, @RequestParam HashMap<String, String> map) throws Exception {
 		@SuppressWarnings("unused")
@@ -262,7 +263,7 @@ public class EgovArticleCommentController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/cmt/updateArticleComment.do")
+    @RequestMapping(value = "/cop/cmt/updateArticleComment.do", method = RequestMethod.POST)
     public String updateArticleComment(@ModelAttribute("searchVO") CommentVO commentVO, @Valid @ModelAttribute("comment") Comment comment,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
 

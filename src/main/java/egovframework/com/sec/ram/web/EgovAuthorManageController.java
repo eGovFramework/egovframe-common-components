@@ -9,6 +9,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -129,7 +130,7 @@ public class EgovAuthorManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value = "/sec/ram/EgovAuthorInsert.do")
+    @RequestMapping(value = "/sec/ram/EgovAuthorInsert.do", method = RequestMethod.POST)
     public String insertAuthor(@Valid @ModelAttribute("authorManage") AuthorManage authorManage,
     		                    BindingResult bindingResult,
     		                    ModelMap model) throws Exception {
@@ -155,7 +156,7 @@ public class EgovAuthorManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value = "/sec/ram/EgovAuthorUpdate.do")
+    @RequestMapping(value = "/sec/ram/EgovAuthorUpdate.do", method = RequestMethod.POST)
     public String updateAuthor(@Valid @ModelAttribute("authorManage") AuthorManage authorManage,
     		                    BindingResult bindingResult,
     		                    Model model) throws Exception {

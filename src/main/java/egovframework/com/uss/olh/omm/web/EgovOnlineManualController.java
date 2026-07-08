@@ -12,6 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
@@ -217,7 +218,7 @@ public class EgovOnlineManualController {
 	 * @return "forward:/uss/olh/awm/selectAdministrationWordManageList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/omm/insertOnlineManual.do")
+	@RequestMapping(value = "/uss/olh/omm/insertOnlineManual.do", method = RequestMethod.POST)
 	public String insertOnlineManual(@ModelAttribute("searchVO") OnlineManualVO searchVO,
 			@Valid @ModelAttribute("onlineManualVO") OnlineManualVO onlineManualVO, BindingResult bindingResult,
 			Model model)
@@ -282,7 +283,7 @@ public class EgovOnlineManualController {
 	 * @return "forward:/uss/olh/omm/selectOnlineManualList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/omm/updateOnlineManual.do")
+	@RequestMapping(value = "/uss/olh/omm/updateOnlineManual.do", method = RequestMethod.POST)
 	public String updateOnlineManual(HttpServletRequest request, @ModelAttribute("searchVO") OnlineManualVO searchVO,
 			@Valid @ModelAttribute("onlineManualVO") OnlineManualVO onlineManualVO, BindingResult bindingResult,
 			Model model)
@@ -331,7 +332,7 @@ public class EgovOnlineManualController {
 	 * @return "forward:/uss/olh/omm/selectOnlineManualList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/omm/deleteOnlineManual.do")
+	@RequestMapping(value = "/uss/olh/omm/deleteOnlineManual.do", method = RequestMethod.POST)
 	public String deleteOnlineManual(HttpServletRequest request, OnlineManualVO onlineManualVO,
 			@ModelAttribute("searchVO") OnlineManualVO searchVO) throws Exception {
 

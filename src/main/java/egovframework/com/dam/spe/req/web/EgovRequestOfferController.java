@@ -12,6 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -164,7 +165,7 @@ public class EgovRequestOfferController {
 	 * @return "egovframework/com/dam/spe/req/EgovRequestOfferVODetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/dam/spe/req/detailRequestOffer.do")
+	@RequestMapping(value = "/dam/spe/req/detailRequestOffer.do", method = RequestMethod.POST)
 	public String EgovRequestOfferDetail(@ModelAttribute("searchVO") RequestOfferVO searchVO,
 			RequestOfferVO requestOfferVO, @RequestParam Map<?, ?> commandMap,
 			ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
@@ -311,7 +312,7 @@ public class EgovRequestOfferController {
 	 * @return "egovframework/com/dam/spe/req/EgovComDamRequestOfferUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/dam/spe/req/updtRequestOfferActor.do")
+	@RequestMapping(value = "/dam/spe/req/updtRequestOfferActor.do", method = RequestMethod.POST)
 	public String EgovRequestOfferModifyActor(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") RequestOfferVO searchVO,
 			@Valid @ModelAttribute("requestOfferVO") RequestOfferVO requestOfferVO, BindingResult bindingResult,
@@ -457,7 +458,7 @@ public class EgovRequestOfferController {
 	 * @return "egovframework/com/dam/spe/req/EgovComDamRequestOfferRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/dam/spe/req/registRequestOfferActor.do")
+	@RequestMapping(value = "/dam/spe/req/registRequestOfferActor.do", method = RequestMethod.POST)
 	public String EgovRequestOfferRegistActor(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") RequestOfferVO searchVO, @RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("requestOfferVO") RequestOfferVO requestOfferVO, BindingResult bindingResult,

@@ -11,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
@@ -141,7 +142,7 @@ public class EgovProcessMonController {
 	 * @param processMonVO - PROCESS모니터링 VO
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/utl/sys/prm/EgovComUtlProcessMonRegist.do")
+	@RequestMapping(value = "/utl/sys/prm/EgovComUtlProcessMonRegist.do", method = RequestMethod.POST)
 	public String insertProcessMon(
 		@ModelAttribute("searchVO") ProcessMonVO searchVO,
 		@Valid @ModelAttribute("processMonVO") ProcessMonVO processMonVO,
@@ -199,7 +200,7 @@ public class EgovProcessMonController {
 	 * @param processMonVO - PROCESS모니터링 VO
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/utl/sys/prm/EgovComUtlProcessMonModify.do")
+	@RequestMapping(value = "/utl/sys/prm/EgovComUtlProcessMonModify.do", method = RequestMethod.POST)
 	public String updateProcessMon(
 		@ModelAttribute("searchVO") ProcessMonVO searchVO,
 		@Valid @ModelAttribute("processMonVO") ProcessMonVO processMonVO,
@@ -235,7 +236,7 @@ public class EgovProcessMonController {
 	 *
 	 * @param processNm
 	 */
-	@RequestMapping(value = "/utl/sys/prm/EgovComUtlProcessMonRemove.do")
+	@RequestMapping(value = "/utl/sys/prm/EgovComUtlProcessMonRemove.do", method = RequestMethod.POST)
 	public String deleteProcessMon(@ModelAttribute("processMonVO") ProcessMonVO processMonVO, ModelMap model,
 			RedirectAttributes redirectAttributes) throws Exception {
 

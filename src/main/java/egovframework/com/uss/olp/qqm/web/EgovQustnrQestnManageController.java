@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -175,7 +176,7 @@ public class EgovQustnrQestnManageController {
 	 */
 	@SuppressWarnings("unused")
 	@IncludedInfo(name="질문관리", order = 630 ,gid = 50)
-	@RequestMapping(value = "/uss/olp/qqm/EgovQustnrQestnManageList.do")
+	@RequestMapping(value = "/uss/olp/qqm/EgovQustnrQestnManageList.do", method = RequestMethod.POST)
 	public String egovQustnrQestnManageList(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@ModelAttribute("qustnrQestnManageVO") QustnrQestnManageVO qustnrQestnManageVO,
@@ -243,7 +244,7 @@ public class EgovQustnrQestnManageController {
 	 * @return "egovframework/com/uss/olp/qqm/EgovQustnrQestnManageDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qqm/EgovQustnrQestnManageDetail.do")
+	@RequestMapping(value = "/uss/olp/qqm/EgovQustnrQestnManageDetail.do", method = RequestMethod.POST)
 	public String egovQustnrQestnManageDetail(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@ModelAttribute("qustnrQestnManageVO") QustnrQestnManageVO qustnrQestnManageVO,

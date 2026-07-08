@@ -11,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.LoginVO;
@@ -61,7 +62,7 @@ public class EgovCcmAdministCodeManageController {
 	 * @return "forward:/sym/ccm/adc/EgovCcmAdministCodeList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/ccm/adc/EgovCcmAdministCodeRemove.do")
+	@RequestMapping(value = "/sym/ccm/adc/EgovCcmAdministCodeRemove.do", method = RequestMethod.POST)
 	public String deleteAdministCode(@ModelAttribute("loginVO") LoginVO loginVO, AdministCode administCode,
 			ModelMap model) throws Exception {
 		administCodeManageService.deleteAdministCode(administCode);
@@ -95,7 +96,7 @@ public class EgovCcmAdministCodeManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/ccm/adc/EgovCcmAdministCodeRegist.do")
+	@RequestMapping(value = "/sym/ccm/adc/EgovCcmAdministCodeRegist.do", method = RequestMethod.POST)
 	public String insertAdministCode(@ModelAttribute("loginVO") LoginVO loginVO,
 			@Valid @ModelAttribute("administCode") AdministCode administCode, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -253,7 +254,7 @@ public class EgovCcmAdministCodeManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/ccm/adc/EgovCcmAdministCodeModify.do")
+	@RequestMapping(value = "/sym/ccm/adc/EgovCcmAdministCodeModify.do", method = RequestMethod.POST)
 	public String updateAdministCode(@ModelAttribute("loginVO") LoginVO loginVO,
 			@Valid @ModelAttribute("administCode") AdministCode administCode, BindingResult bindingResult,
 			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {

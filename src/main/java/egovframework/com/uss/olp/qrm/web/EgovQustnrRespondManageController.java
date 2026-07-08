@@ -14,6 +14,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -134,7 +135,7 @@ public class EgovQustnrRespondManageController {
 	 * @return "egovframework/com/uss/olp/qrm/EgovQustnrRespondManageDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qrm/EgovQustnrRespondManageDetail.do")
+	@RequestMapping(value = "/uss/olp/qrm/EgovQustnrRespondManageDetail.do", method = RequestMethod.POST)
 	public String egovQustnrRespondManageDetail(@ModelAttribute QustnrRespondManageVO qustnrRespondManageVO,
 			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
@@ -220,7 +221,7 @@ public class EgovQustnrRespondManageController {
 	 * @return "redirect:/uss/olp/qrm/EgovQustnrRespondManageList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qrm/EgovQustnrRespondManageModify.do")
+	@RequestMapping(value = "/uss/olp/qrm/EgovQustnrRespondManageModify.do", method = RequestMethod.POST)
 	public String qustnrRespondManageModify(
 			@Valid @ModelAttribute("qustnrRespondManageVO") QustnrRespondManageVO qustnrRespondManageVO,
 			BindingResult bindingResult, 
@@ -319,7 +320,7 @@ public class EgovQustnrRespondManageController {
 	 * @return "redirect:/uss/olp/qrm/EgovQustnrRespondManageList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qrm/EgovQustnrRespondManageRegist.do")
+	@RequestMapping(value = "/uss/olp/qrm/EgovQustnrRespondManageRegist.do", method = RequestMethod.POST)
 	public String qustnrRespondManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("qustnrRespondManageVO") QustnrRespondManageVO qustnrRespondManageVO,

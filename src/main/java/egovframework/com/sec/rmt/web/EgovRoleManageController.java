@@ -12,6 +12,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -235,7 +236,7 @@ public class EgovRoleManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value = "/sec/rmt/EgovRoleDelete.do")
+    @RequestMapping(value = "/sec/rmt/EgovRoleDelete.do", method = RequestMethod.POST)
 	public String deleteRole(@ModelAttribute("roleManage") RoleManage roleManage,
             ModelMap model) throws Exception {
     	egovRoleManageService.deleteRole(roleManage);
@@ -251,7 +252,7 @@ public class EgovRoleManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sec/rmt/EgovRoleListDelete.do")
+	@RequestMapping(value = "/sec/rmt/EgovRoleListDelete.do", method = RequestMethod.POST)
 	public String deleteRoleList(@RequestParam("roleCodes") String roleCodes,
 			                     @ModelAttribute("roleManage") RoleManage roleManage,
 	                              Model model) throws Exception {

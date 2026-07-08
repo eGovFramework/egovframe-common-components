@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.RequestMethod;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
@@ -130,7 +131,7 @@ public class EgovRecomendSiteController {
 	 * @return "forward:/uss/ion/rec/selectRecomendSiteList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/rec/insertRecomendSite.do")
+	@RequestMapping(value = "/uss/ion/rec/insertRecomendSite.do", method = RequestMethod.POST)
 	public String insertRecomendSite(@Valid @ModelAttribute("recomendSiteVO") RecomendSiteVO recomendSiteVO, BindingResult bindingResult, ModelMap model)throws Exception {
 
 		if (bindingResult.hasErrors()) {
@@ -172,7 +173,7 @@ public class EgovRecomendSiteController {
 	 * @return "forward:/uss/ion/rec/selectRecomendSiteList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/rec/updateRecomendSite.do")
+	@RequestMapping(value = "/uss/ion/rec/updateRecomendSite.do", method = RequestMethod.POST)
 	public String updateRecomendSite(@Valid @ModelAttribute("recomendSiteVO") RecomendSiteVO recomendSiteVO, BindingResult bindingResult, ModelMap model)throws Exception {
 
 		if (bindingResult.hasErrors()) {
@@ -198,7 +199,7 @@ public class EgovRecomendSiteController {
 	 * @return "forward:/uss/ion/rec/selectRecomendSiteList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/rec/deleteRecomendSite.do")
+	@RequestMapping(value = "/uss/ion/rec/deleteRecomendSite.do", method = RequestMethod.POST)
 	public String deleteRecomendSite(@ModelAttribute("recomendSiteVO") RecomendSiteVO recomendSiteVO) throws Exception {
 		egovRecomendSiteService.deleteRecomendSite(recomendSiteVO);
 

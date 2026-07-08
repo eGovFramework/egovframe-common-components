@@ -14,6 +14,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -226,7 +227,7 @@ public class EgovAnnvrsryManageController {
 	 * @param annvrsryManage - 기념일관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/ans/insertAnnvrsry.do")
+	@RequestMapping(value = "/uss/ion/ans/insertAnnvrsry.do", method = RequestMethod.POST)
 	public String insertAnnvrsryManage(@Valid @ModelAttribute("annvrsryManage") AnnvrsryManage annvrsryManage, BindingResult bindingResult,
 			@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO, SessionStatus status, ModelMap model) throws Exception {
 		
@@ -272,7 +273,7 @@ public class EgovAnnvrsryManageController {
 	 * @param annvrsryManage - 기념일관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/ans/updateAnnvrsryManage.do")
+	@RequestMapping(value = "/uss/ion/ans/updateAnnvrsryManage.do", method = RequestMethod.POST)
 	public String updateAnnvrsryManage(@Valid @ModelAttribute("annvrsryManage") AnnvrsryManage annvrsryManage, BindingResult bindingResult,
 			@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO, SessionStatus status, ModelMap model) throws Exception {
 
@@ -317,7 +318,7 @@ public class EgovAnnvrsryManageController {
 	 * @param annvrsryManage - 기념일관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/ans/deleteAnnvrsryManage.do")
+	@RequestMapping(value = "/uss/ion/ans/deleteAnnvrsryManage.do", method = RequestMethod.POST)
 	public String deleteAnnvrsryManage(@ModelAttribute("annvrsryManage") AnnvrsryManage annvrsryManage,
 			SessionStatus status, ModelMap model) throws Exception {
 
@@ -514,7 +515,7 @@ public class EgovAnnvrsryManageController {
 	 * @param String           - 기념일정보
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/ans/insertAnnvrsryManageBnde.do")
+	@RequestMapping(value = "/uss/ion/ans/insertAnnvrsryManageBnde.do", method = RequestMethod.POST)
 	public String insertAnnvrsryManageBnde(
 			@RequestParam("checkedAnnvrsryManageForInsert") String checkedAnnvrsryManageForInsert,
 			@ModelAttribute("annvrsryManageVO") AnnvrsryManageVO annvrsryManageVO, SessionStatus status, ModelMap model)

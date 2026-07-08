@@ -13,6 +13,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -211,7 +212,7 @@ public class EgovDiaryManageController {
 	 * @return "egovframework/com/cop/smt/dsm/EgovDiaryManageModifyActor"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/cop/smt/dsm/EgovDiaryManageModifyActor.do")
+	@RequestMapping(value = "/cop/smt/dsm/EgovDiaryManageModifyActor.do", method = RequestMethod.POST)
 	public String diaryManageModifyActor(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("diaryManageVO") DiaryManageVO diaryManageVO, BindingResult bindingResult, 

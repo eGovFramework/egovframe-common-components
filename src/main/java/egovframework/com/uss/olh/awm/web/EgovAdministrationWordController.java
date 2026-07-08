@@ -10,6 +10,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
@@ -211,7 +212,7 @@ public class EgovAdministrationWordController {
 	 * @return "forward:/uss/olh/awm/selectAdministrationWordManageList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/awm/insertAdministrationWord.do")
+	@RequestMapping(value = "/uss/olh/awm/insertAdministrationWord.do", method = RequestMethod.POST)
 	public String insertAdministrationWord(@ModelAttribute("searchVO") AdministrationWordVO searchVO,
 			@Valid @ModelAttribute("administrationWordVO") AdministrationWordVO administrationWordVO,
 			BindingResult bindingResult,
@@ -277,7 +278,7 @@ public class EgovAdministrationWordController {
 	 * @return "forward:/uss/olh/awm/selectAdministrationWordManageList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/awm/updateAdministrationWord.do")
+	@RequestMapping(value = "/uss/olh/awm/updateAdministrationWord.do", method = RequestMethod.POST)
 	public String updateAdministrationWord(@ModelAttribute("searchVO") AdministrationWordVO searchVO,
 			@Valid @ModelAttribute("administrationWordVO") AdministrationWordVO administrationWordVO,
 			BindingResult bindingResult,
@@ -311,7 +312,7 @@ public class EgovAdministrationWordController {
 	 * @return "forward:/uss/olh/awm/selectAdministrationWordManageList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/awm/deleteAdministrationWord.do")
+	@RequestMapping(value = "/uss/olh/awm/deleteAdministrationWord.do", method = RequestMethod.POST)
 	public String deleteAdministrationWord(AdministrationWordVO administrationWordVO,
 			@ModelAttribute("searchVO") AdministrationWordVO searchVO) throws Exception {
 

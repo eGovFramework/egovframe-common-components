@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -64,7 +65,7 @@ public class EgovWikiBookmarkController {
      * @throws Exception
      */
     @IncludedInfo(name="Wiki기능", order = 810 ,gid = 50)
-    @RequestMapping(value = "/uss/ion/wik/bmk/listWikiBookmark.do")
+    @RequestMapping(value = "/uss/ion/wik/bmk/listWikiBookmark.do", method = RequestMethod.POST)
     public String EgovWikiBookmarkList(
     		@ModelAttribute("searchVO") WikiBookmark searchVO,
     		WikiBookmark wikiBookmark,

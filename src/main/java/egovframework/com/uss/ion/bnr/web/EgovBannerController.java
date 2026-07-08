@@ -33,6 +33,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -151,7 +152,7 @@ public class EgovBannerController {
 	 * @return String - 리턴 Url
 	 */
     @SuppressWarnings("unused")
-	@RequestMapping(value = "/uss/ion/bnr/addBanner.do")
+	@RequestMapping(value = "/uss/ion/bnr/addBanner.do", method = RequestMethod.POST)
 	public String insertBanner(final MultipartHttpServletRequest multiRequest,
 			                   @Valid @ModelAttribute("bannerVO") BannerVO bannerVO,
 			                    BindingResult bindingResult,
@@ -206,7 +207,7 @@ public class EgovBannerController {
 	 * @return String - 리턴 Url
 	 */
     @SuppressWarnings("unused")
-	@RequestMapping(value = "/uss/ion/bnr/updtBanner.do")
+	@RequestMapping(value = "/uss/ion/bnr/updtBanner.do", method = RequestMethod.POST)
 	public String updateBanner(final MultipartHttpServletRequest multiRequest,
 			                   @Valid @ModelAttribute("bannerVO") BannerVO bannerVO,
 			                    BindingResult bindingResult,
@@ -267,7 +268,7 @@ public class EgovBannerController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value = "/uss/ion/bnr/removeBanner.do")
+    @RequestMapping(value = "/uss/ion/bnr/removeBanner.do", method = RequestMethod.POST)
 	public String deleteBanner(@RequestParam("bannerId") String bannerId,
 			                   @ModelAttribute("bannerVO") BannerVO bannerVO,
 			                    SessionStatus status,
@@ -287,7 +288,7 @@ public class EgovBannerController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value = "/uss/ion/bnr/removeBannerList.do")
+    @RequestMapping(value = "/uss/ion/bnr/removeBannerList.do", method = RequestMethod.POST)
 	public String deleteBannerList(@RequestParam("bannerIds") String bannerIds,
 			                       @ModelAttribute("bannerVO") BannerVO bannerVO,
 			                        SessionStatus status,

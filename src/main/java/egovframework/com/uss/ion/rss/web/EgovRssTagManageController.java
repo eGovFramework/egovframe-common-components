@@ -12,6 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -89,7 +90,7 @@ public class EgovRssTagManageController {
      * @throws Exception
      */
     @IncludedInfo(name="RSS태그관리", listUrl="/uss/ion/rss/listRssTagManage.do", order = 820 ,gid = 50)
-    @RequestMapping(value = "/uss/ion/rss/listRssTagManage.do")
+    @RequestMapping(value = "/uss/ion/rss/listRssTagManage.do", method = RequestMethod.POST)
     public String EgovRssTagManageList(
             @RequestParam Map<?, ?> commandMap,
             @RequestParam(value = "checkList", required=false) List<String> checkList,
@@ -167,7 +168,7 @@ public class EgovRssTagManageController {
      * @return String -리턴 URL
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/ion/rss/detailRssTagManage.do")
+    @RequestMapping(value = "/uss/ion/rss/detailRssTagManage.do", method = RequestMethod.POST)
     public String EgovRssTagManageDetail(
             RssManage rssManage, @RequestParam Map<?, ?> commandMap,
             ModelMap model) throws Exception {
@@ -198,7 +199,7 @@ public class EgovRssTagManageController {
      * @return String -리턴 URL
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/ion/rss/updtRssTagManage.do")
+    @RequestMapping(value = "/uss/ion/rss/updtRssTagManage.do", method = RequestMethod.POST)
     public String EgovRssTagManageModify(
             @RequestParam Map<?, ?> commandMap,
             @Valid @ModelAttribute("rssManage") RssManage rssManage,
@@ -279,7 +280,7 @@ public class EgovRssTagManageController {
      * @return String -리턴 URL
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/ion/rss/insertRssTagManage.do")
+    @RequestMapping(value = "/uss/ion/rss/insertRssTagManage.do", method = RequestMethod.POST)
     public String insertRssTagManage(
             @Valid @ModelAttribute("rssManage") RssManage rssManage,
             BindingResult bindingResult, ModelMap model) throws Exception {

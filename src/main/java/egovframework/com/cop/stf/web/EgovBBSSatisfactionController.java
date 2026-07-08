@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.RequestMethod;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
@@ -194,7 +195,7 @@ public class EgovBBSSatisfactionController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/stf/insertSatisfaction.do")
+    @RequestMapping(value = "/cop/stf/insertSatisfaction.do", method = RequestMethod.POST)
     public String insertSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, @Valid @ModelAttribute("satisfaction") Satisfaction satisfaction,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -266,7 +267,7 @@ public class EgovBBSSatisfactionController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/stf/deleteSatisfaction.do")
+    @RequestMapping(value = "/cop/stf/deleteSatisfaction.do", method = RequestMethod.POST)
     public String deleteSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, @ModelAttribute("satisfaction") Satisfaction satisfaction, ModelMap model) throws Exception {
 	@SuppressWarnings("unused")
 	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -474,7 +475,7 @@ public class EgovBBSSatisfactionController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/stf/updateSatisfaction.do")
+    @RequestMapping(value = "/cop/stf/updateSatisfaction.do", method = RequestMethod.POST)
     public String updateSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, @Valid @ModelAttribute("satisfaction") Satisfaction satisfaction,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -512,7 +513,7 @@ public class EgovBBSSatisfactionController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/stf/anonymous/updateSatisfaction.do")
+    @RequestMapping(value = "/cop/stf/anonymous/updateSatisfaction.do", method = RequestMethod.POST)
     public String updateAnonymousSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, @Valid @ModelAttribute("satisfaction") Satisfaction satisfaction,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
 

@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.LoginVO;
@@ -426,7 +427,7 @@ public class EgovAddressBookController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/adb/RegistAdbkInf.do")
+    @RequestMapping(value = "/cop/adb/RegistAdbkInf.do", method = RequestMethod.POST)
     public String registadbk(@Valid @ModelAttribute("searchVO") AddressBookVO adbkVO, BindingResult bindingResult, 
     		@ModelAttribute("adbkUserVO") AddressBookUserVO adbkUserVO,
     		ModelMap model) throws Exception {
@@ -474,7 +475,7 @@ public class EgovAddressBookController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/adb/UpdateAddressBook.do")
+    @RequestMapping(value = "/cop/adb/UpdateAddressBook.do", method = RequestMethod.POST)
     public String updateAdressBook(@Valid @ModelAttribute("searchVO") AddressBookVO adbkVO, BindingResult bindingResult,
     		@ModelAttribute("adbkUserVO") AddressBookUserVO adbkUserVO,
     		ModelMap model) throws Exception {

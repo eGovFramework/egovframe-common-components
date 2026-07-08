@@ -10,6 +10,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -133,7 +134,7 @@ public class EgovWordDicaryController {
 	 * @return	"forward:/uss/olh/wor/selectWordDicaryList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/wor/insertWordDicary.do")
+	@RequestMapping(value = "/uss/olh/wor/insertWordDicary.do", method = RequestMethod.POST)
 	public String insertWordDicary(
 		@ModelAttribute("searchVO") WordDicaryVO searchVO,
 		@Valid @ModelAttribute("wordDicaryVO") WordDicaryVO wordDicaryVO,
@@ -183,7 +184,7 @@ public class EgovWordDicaryController {
 	 * @return	"forward:/uss/olh/wor/selectWordDicaryList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/wor/updateWordDicary.do")
+	@RequestMapping(value = "/uss/olh/wor/updateWordDicary.do", method = RequestMethod.POST)
 	public String updateWordDicary(
 		@ModelAttribute("searchVO") WordDicaryVO searchVO,
 		@Valid @ModelAttribute("wordDicaryVO") WordDicaryVO wordDicaryVO,
@@ -210,7 +211,7 @@ public class EgovWordDicaryController {
 	 * @return	"forward:/uss/olh/wor/selectWordDicaryList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/wor/deleteWordDicary.do")
+	@RequestMapping(value = "/uss/olh/wor/deleteWordDicary.do", method = RequestMethod.POST)
 	public String deleteWordDicary(WordDicaryVO wordDicaryVO, @ModelAttribute("searchVO") WordDicaryVO searchVO) throws Exception {
 
 		egovWordDicaryService.deleteWordDicary(wordDicaryVO);

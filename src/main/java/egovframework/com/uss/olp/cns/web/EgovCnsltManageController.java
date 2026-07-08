@@ -13,6 +13,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -278,7 +279,7 @@ public class EgovCnsltManageController {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("deprecation")
-	@RequestMapping("/uss/olp/cns/CnsltDtlsRegist.do")
+	@RequestMapping(value = "/uss/olp/cns/CnsltDtlsRegist.do", method = RequestMethod.POST)
 	public String insertCnsltDtls(final MultipartHttpServletRequest multiRequest, // 첨부파일을 위한...
 			@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO,
 			@Valid @ModelAttribute("cnsltManageVO") CnsltManageVO cnsltManageVO, BindingResult bindingResult, ModelMap model)
@@ -429,7 +430,7 @@ public class EgovCnsltManageController {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("deprecation")
-	@RequestMapping("/uss/olp/cns/CnsltDtlsUpdt.do")
+	@RequestMapping(value = "/uss/olp/cns/CnsltDtlsUpdt.do", method = RequestMethod.POST)
 	public String updateCnsltDtls(@RequestParam("atchFileAt") String atchFileAt,
 			final MultipartHttpServletRequest multiRequest, @ModelAttribute("searchVO") CnsltManageDefaultVO searchVO,
 			@Valid @ModelAttribute("cnsltManageVO") CnsltManageVO cnsltManageVO, BindingResult bindingResult, ModelMap model)
@@ -494,7 +495,7 @@ public class EgovCnsltManageController {
 	 * @return "forward:/uss/olp/cns/CnsltListInqire.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olp/cns/CnsltDtlsDelete.do")
+	@RequestMapping(value = "/uss/olp/cns/CnsltDtlsDelete.do", method = RequestMethod.POST)
 	public String deleteCnsltDtls(HttpServletRequest request, CnsltManageVO cnsltManageVO,
 			@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO) throws Exception {
 
@@ -620,7 +621,7 @@ public class EgovCnsltManageController {
 	 * @return "forward:/uss/olp/cnm/CnsltAnswerListInqire.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olp/cnm/CnsltDtlsAnswerUpdt.do")
+	@RequestMapping(value = "/uss/olp/cnm/CnsltDtlsAnswerUpdt.do", method = RequestMethod.POST)
 	public String updateCnsltDtlsAnswer(@Valid CnsltManageVO cnsltManageVO, BindingResult bindingResult,
 			@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO, Model model) throws Exception {
 

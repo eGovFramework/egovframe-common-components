@@ -13,6 +13,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 import org.springframework.web.servlet.ModelAndView;
@@ -454,7 +455,7 @@ public class EgovArticleController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/bbs/replyArticle.do")
+	@RequestMapping(value = "/cop/bbs/replyArticle.do", method = RequestMethod.POST)
 	public String replyBoardArticle(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") BoardVO boardVO, @ModelAttribute("bdMstr") BoardMaster bdMstr,
 			@Valid @ModelAttribute("articleVO") BoardVO board, BindingResult bindingResult, ModelMap model) throws Exception {
@@ -597,7 +598,7 @@ public class EgovArticleController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/bbs/updateArticle.do")
+	@RequestMapping(value = "/cop/bbs/updateArticle.do", method = RequestMethod.POST)
 	public String updateBoardArticle(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") BoardVO boardVO, @ModelAttribute("bdMstr") BoardMaster bdMstr,
 			@Valid @ModelAttribute("articleVO") Board board, BindingResult bindingResult, ModelMap model) throws Exception {
@@ -671,7 +672,7 @@ public class EgovArticleController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/bbs/deleteArticle.do")
+	@RequestMapping(value = "/cop/bbs/deleteArticle.do", method = RequestMethod.POST)
 	public String deleteBoardArticle(HttpServletRequest request, @ModelAttribute("searchVO") BoardVO boardVO,
 			@ModelAttribute("board") Board board, @ModelAttribute("bdMstr") BoardMaster bdMstr, ModelMap model)
 			throws Exception {

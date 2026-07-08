@@ -10,6 +10,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -132,7 +133,7 @@ public class EgovGroupManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value = "/sec/gmt/EgovGroupInsert.do")
+    @RequestMapping(value = "/sec/gmt/EgovGroupInsert.do", method = RequestMethod.POST)
 	public String insertGroup(@Valid @ModelAttribute("groupManage") GroupManage groupManage,
 							   BindingResult bindingResult,
 			                   @ModelAttribute("groupManageVO") GroupManageVO groupManageVO,
@@ -176,7 +177,7 @@ public class EgovGroupManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sec/gmt/EgovGroupDelete.do")
+	@RequestMapping(value = "/sec/gmt/EgovGroupDelete.do", method = RequestMethod.POST)
 	public String deleteGroup(@ModelAttribute("groupManage") GroupManage groupManage,
                              Model model) throws Exception {
 		egovGroupManageService.deleteGroup(groupManage);
@@ -191,7 +192,7 @@ public class EgovGroupManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sec/gmt/EgovGroupListDelete.do")
+	@RequestMapping(value = "/sec/gmt/EgovGroupListDelete.do", method = RequestMethod.POST)
 	public String deleteGroupList(@RequestParam("groupIds") String groupIds,
 			                      @ModelAttribute("groupManage") GroupManage groupManage,
 	                               Model model) throws Exception {
