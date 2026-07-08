@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sys.trm.service.CntcVO;
@@ -71,6 +72,7 @@ public class EgovTrsmrcvMntrngController {
 	 * @exception Exception Exception
 	 */
     @RequestMapping("/utl/sys/trm/deleteTrsmrcvMntrng.do")
+	@RequireAdmin
 	public String deleteTrsmrcvMntrng(@ModelAttribute("searchVO") TrsmrcvMntrng trsmrcvMntrng, ModelMap model,
 			RedirectAttributes redirectAttributes)
 	  throws Exception{
@@ -95,6 +97,7 @@ public class EgovTrsmrcvMntrngController {
 	 * @exception Exception Exception
 	 */
     @RequestMapping("/utl/sys/trm/addTrsmrcvMntrng.do")
+	@RequireAdmin
 	public String insertTrsmrcvMntrng(@Valid @ModelAttribute TrsmrcvMntrng trsmrcvMntrng, BindingResult bindingResult, ModelMap model,
 			RedirectAttributes redirectAttributes)
 	  throws Exception{
@@ -172,6 +175,7 @@ public class EgovTrsmrcvMntrngController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/utl/sys/trm/getTrsmrcvMntrngForRegist.do")
+	@RequireAdmin
 	public String selectTrsmrcvMntrngForRegist(@ModelAttribute("searchVO")TrsmrcvMntrng trsmrcvMntrng, ModelMap model)
 	  throws Exception{
         model.addAttribute("trsmrcvMntrng", trsmrcvMntrng);
@@ -188,6 +192,7 @@ public class EgovTrsmrcvMntrngController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/utl/sys/trm/getTrsmrcvMntrngForUpdate.do")
+	@RequireAdmin
 	public String selectTrsmrcvMntrngForUpdate(@ModelAttribute("searchVO") TrsmrcvMntrng trsmrcvMntrng, ModelMap model)
 	  throws Exception{
 
@@ -290,6 +295,7 @@ public class EgovTrsmrcvMntrngController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/utl/sys/trm/updateTrsmrcvMntrng.do")
+	@RequireAdmin
 	public String updateTrsmrcvMntrng(@ModelAttribute("searchVO") TrsmrcvMntrng searchVO,
 			@Valid @ModelAttribute("trsmrcvMntrng") TrsmrcvMntrng trsmrcvMntrng, BindingResult bindingResult, ModelMap model,
 			RedirectAttributes redirectAttributes)

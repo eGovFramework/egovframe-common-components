@@ -110,15 +110,14 @@ function fncSelectAuthorList(pageNo){
 }
 
 function fncSelectAuthor(author) {
-	event.preventDefault();
     document.listForm.authorCode.value = author;
     document.listForm.action = '<c:url value="/sec/ram/EgovAuthor.do" />';
     document.listForm.submit();
 }
 
 function fncAddAuthorInsert() {
-	event.preventDefault();
-	location.href = '<c:url value="/sec/ram/EgovAuthorInsertView.do" />?searchCondition=<c:out value="${authorManageVO.searchCondition}" />&searchKeyword=<c:out value="${authorManageVO.searchKeyword}" />&pageIndex=<c:out value="${authorManageVO.pageIndex}" />';
+    document.listForm.action = '<c:url value="/sec/ram/EgovAuthorInsertView.do" />';
+    document.listForm.submit();
 }
 
 function fncAuthorDeleteList() {
@@ -168,7 +167,7 @@ function fn_egov_onload() {
 <body onload="fn_egov_onload();">
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
-<form:form name="listForm" action="${pageContext.request.contextPath}/sec/ram/EgovAuthorList.do" method="get">
+<form:form name="listForm" action="${pageContext.request.contextPath}/sec/ram/EgovAuthorList.do" method="post">
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1><!-- 권한관리 목록 -->
 	<!-- 검색영역 -->
@@ -181,7 +180,7 @@ function fn_egov_onload() {
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
 				<span class="btn_b"><a href="<c:url value="/sec/ram/EgovAuthorList.do" />" title="<spring:message code="button.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
 				<input type="button" class="s_btn" onClick="fncAuthorDeleteList()" value="<spring:message code="title.delete" />" title="<spring:message code="title.delete" /> <spring:message code="input.button" />" />
-				<span class="btn_b"><a href="<c:url value="/sec/ram/EgovAuthorInsertView.do" />?searchCondition=<c:out value="${authorManageVO.searchCondition}" />&searchKeyword=<c:out value="${authorManageVO.searchKeyword}" />&pageIndex=<c:out value="${authorManageVO.pageIndex}" />" onclick="fncAddAuthorInsert();" title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fncAddAuthorInsert(); return false;" title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
@@ -216,11 +215,11 @@ function fn_egov_onload() {
 	<c:forEach var="author" items="${authorList}" varStatus="status">
 	<tr>
 		<td><input type="checkbox" name="delYn" class="check2" title="선택"><input type="hidden" name="checkId" value="<c:out value="${author.authorCode}"/>" /></td>
-		<td><a href="<c:url value="/sec/ram/EgovAuthor.do" />?authorCode=<c:out value="${author.authorCode}" />" onclick="fncSelectAuthor('<c:out value="${author.authorCode}" />');"><c:out value="${author.authorCode}"/></a></td>
+		<td><a href="javascript:void(0);" onclick="fncSelectAuthor('<c:out value="${author.authorCode}" />'); return false;"><c:out value="${author.authorCode}"/></a></td>
 		<td><c:out value="${author.authorNm}"/></td>
 		<td><c:out value="${author.authorDc}"/></td>
 		<td><c:out value="${fn:substring(author.authorCreatDe,0,10)}"/></td>
-		<td><a href="<c:url value='/sec/ram/EgovAuthorRoleList.do'/>?searchKeyword=<c:out value="${author.authorCode}"/>" onclick="javascript:fncSelectAuthorRole('<c:out value="${author.authorCode}"/>')"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>" width="15" height="15" align="middle" alt="롤 정보"></a></td>
+		<td><a href="javascript:void(0);" onclick="javascript:fncSelectAuthorRole('<c:out value="${author.authorCode}"/>'); return false;"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>" width="15" height="15" align="middle" alt="롤 정보"></a></td>
 	</tr>
 	</c:forEach>
 	</tbody>

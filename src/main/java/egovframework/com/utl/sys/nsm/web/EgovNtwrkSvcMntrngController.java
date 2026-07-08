@@ -16,6 +16,7 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sys.nsm.service.EgovNtwrkSvcMntrngService;
@@ -101,6 +102,7 @@ public class EgovNtwrkSvcMntrngController {
 	 * @param ntwrkSvcMntrngVO
 	 */
     @RequestMapping("/utl/sys/nsm/addNtwrkSvcMntrng.do")
+	@RequireAdmin
 	public String addNtwrkSvcMntrng(
 		@ModelAttribute("searchVO") NtwrkSvcMntrngVO searchVO,
 		@ModelAttribute("ntwrkSvcMntrngVO") NtwrkSvcMntrngVO ntwrkSvcMntrngVO,
@@ -124,6 +126,7 @@ public class EgovNtwrkSvcMntrngController {
 	 * @param ntwrkSvcMntrngVO
 	 */
     @RequestMapping("/utl/sys/nsm/modifyNtwrkSvcMntrng.do")
+	@RequireAdmin
 	public String modifyNtwrkSvcMntrng(
 		@ModelAttribute("searchVO") NtwrkSvcMntrngVO searchVO,
 		@ModelAttribute("ntwrkSvcMntrngVO") NtwrkSvcMntrngVO ntwrkSvcMntrngVO,
@@ -196,6 +199,7 @@ public class EgovNtwrkSvcMntrngController {
 	 * @param ntwrkSvcMntrng
 	 */
     @RequestMapping("/utl/sys/nsm/updateNtwrkSvcMntrng.do")
+	@RequireAdmin
 	public String updateNtwrkSvcMntrng(
 		@ModelAttribute("searchVO") NtwrkSvcMntrngVO searchVO,
 		@Valid @ModelAttribute("ntwrkSvcMntrngVO") NtwrkSvcMntrngVO ntwrkSvcMntrngVO,
@@ -236,6 +240,7 @@ public class EgovNtwrkSvcMntrngController {
 	 * @param ntwrkSvcMntrng
 	 */
     @RequestMapping("/utl/sys/nsm/insertNtwrkSvcMntrng.do")
+	@RequireAdmin
 	public String insertNtwrkSvcMntrng(
 		@ModelAttribute("searchVO") NtwrkSvcMntrngVO searchVO,
 		@Valid @ModelAttribute("ntwrkSvcMntrngVO") NtwrkSvcMntrngVO ntwrkSvcMntrngVO,
@@ -292,6 +297,7 @@ public class EgovNtwrkSvcMntrngController {
 	 * @param ntwrkSvcMntrng
 	 */
     @RequestMapping("/utl/sys/nsm/deleteNtwrkSvcMntrng.do")
+	@RequireAdmin
 	public String deleteNtwrkSvcMntrng(@ModelAttribute("ntwrkSvcMntrngVO") NtwrkSvcMntrngVO ntwrkSvcMntrngVO,
 		ModelMap model, RedirectAttributes redirectAttributes) throws Exception{
 		// 0. Spring Security 사용자권한 처리

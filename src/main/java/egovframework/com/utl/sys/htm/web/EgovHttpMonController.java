@@ -18,6 +18,7 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sys.htm.service.EgovHttpMonService;
@@ -137,6 +138,7 @@ public class EgovHttpMonController {
 	 * @param siteUrl
 	 */
 	@RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonRegist.do")
+	@RequireAdmin
 	public String insertHttpMon(
 		@Valid @ModelAttribute("httpMon") HttpMon httpMon,
 		BindingResult bindingResult,
@@ -171,6 +173,7 @@ public class EgovHttpMonController {
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonModifyView.do")
+	@RequireAdmin
 	public String selectHttpMonForUpdate(
 		@ModelAttribute("httpMon") HttpMon httpMon,
 		ModelMap model) throws Exception {
@@ -188,6 +191,7 @@ public class EgovHttpMonController {
 	 * @return String - 리턴 Url
 	 */
 	@RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonModify.do")
+	@RequireAdmin
 	public String updateHttpMon(
 		@ModelAttribute("loginVO") LoginVO loginVO,
 		@Valid @ModelAttribute("httpMon") HttpMon httpMon,
@@ -214,6 +218,7 @@ public class EgovHttpMonController {
 	 * @param siteUrl
 	 */
 	@RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonRemove.do")
+	@RequireAdmin
 	public String deleteHttpMon(@ModelAttribute("loginVO") LoginVO loginVO, HttpMon cmmWebKind, ModelMap model)
 			throws Exception {
 		egovHttpMonService.deleteHttpMon(cmmWebKind);
@@ -230,6 +235,7 @@ public class EgovHttpMonController {
 	 * @param httpSttusCd
 	 */
 	@RequestMapping("/utl/sys/htm/selectHttpMonSttus.do")
+	@RequireAdmin
 	public String selectProcessSttus(@ModelAttribute("httpMonVO") HttpMonVO httpMonVO, ModelMap model)
 			throws Exception {
 

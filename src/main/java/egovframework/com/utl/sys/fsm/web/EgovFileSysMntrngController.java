@@ -19,6 +19,7 @@ import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sys.fsm.service.EgovFileSysMntrngService;
@@ -106,6 +107,7 @@ public class EgovFileSysMntrngController {
 	 * @param fileSysMntrngVO
 	 */
 	@RequestMapping("/utl/sys/fsm/addFileSysMntrng.do")
+	@RequireAdmin
 	public String addFileSysMntrng(@ModelAttribute("fileSysMntrngVO") FileSysMntrngVO fileSysMntrngVO, RedirectAttributes redirectAttributes) throws Exception {
 		String sLocationUrl = "egovframework/com/utl/sys/fsm/EgovFileSysMntrngRegist";
 
@@ -127,6 +129,7 @@ public class EgovFileSysMntrngController {
 	 * @param fileSysMntrngVO
 	 */
 	@RequestMapping("/utl/sys/fsm/modifyFileSysMntrng.do")
+	@RequireAdmin
 	public String modifyFileSysMntrng(@ModelAttribute("fileSysMntrngVO") FileSysMntrngVO fileSysMntrngVO, ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -181,6 +184,7 @@ public class EgovFileSysMntrngController {
 	 * @param fileSysMntrng
 	 */
 	@RequestMapping("/utl/sys/fsm/updateFileSysMntrng.do")
+	@RequireAdmin
 	public String updateFileSysMntrng(
 		@Valid @ModelAttribute("fileSysMntrngVO") FileSysMntrngVO fileSysMntrngVO, BindingResult bindingResult,
 		ModelMap model) throws Exception {
@@ -214,6 +218,7 @@ public class EgovFileSysMntrngController {
 	 * @param fileSysMntrng
 	 */
 	@RequestMapping("/utl/sys/fsm/insertFileSysMntrng.do")
+	@RequireAdmin
 	public String insertFileSysMntrng(
 		@Valid @ModelAttribute("fileSysMntrngVO") FileSysMntrngVO fileSysMntrngVO, BindingResult bindingResult,
 		ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
@@ -257,6 +262,7 @@ public class EgovFileSysMntrngController {
 	 * @param fileSysMntrng
 	 */
 	@RequestMapping("/utl/sys/fsm/deleteFileSysMntrng.do")
+	@RequireAdmin
 	public String deleteFileSysMntrng(@ModelAttribute("fileSysMntrngVO") FileSysMntrngVO fileSysMntrngVO, ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();

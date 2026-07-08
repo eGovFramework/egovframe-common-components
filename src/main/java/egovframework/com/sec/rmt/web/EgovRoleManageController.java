@@ -12,6 +12,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
@@ -19,6 +20,7 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.SessionVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.sec.ram.service.AuthorManageVO;
@@ -121,7 +123,8 @@ public class EgovRoleManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value = "/sec/rmt/EgovRole.do")
+    @RequestMapping(value = "/sec/rmt/EgovRole.do", method = RequestMethod.POST)
+    @RequireAdmin
 	public String selectRole(@RequestParam("roleCode") String roleCode,
 	                         @ModelAttribute("roleManageVO") RoleManageVO roleManageVO,
 	                         @ModelAttribute("authorManageVO") AuthorManageVO authorManageVO,
@@ -144,7 +147,8 @@ public class EgovRoleManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping("/sec/rmt/EgovRoleInsertView.do")
+    @RequestMapping(value = "/sec/rmt/EgovRoleInsertView.do", method = RequestMethod.POST)
+    @RequireAdmin
     public String insertRoleView(@ModelAttribute("authorManageVO") AuthorManageVO authorManageVO,
     								@ModelAttribute("roleManage") RoleManage roleManage,
     									ModelMap model) throws Exception {
@@ -175,7 +179,8 @@ public class EgovRoleManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value = "/sec/rmt/EgovRoleInsert.do")
+    @RequestMapping(value = "/sec/rmt/EgovRoleInsert.do", method = RequestMethod.POST)
+    @RequireAdmin
 	public String insertRole(@Valid @ModelAttribute("roleManage") RoleManage roleManage,
 							  BindingResult bindingResult,
 			                  @ModelAttribute("roleManageVO") RoleManageVO roleManageVO,
@@ -212,7 +217,8 @@ public class EgovRoleManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value = "/sec/rmt/EgovRoleUpdate.do")
+    @RequestMapping(value = "/sec/rmt/EgovRoleUpdate.do", method = RequestMethod.POST)
+    @RequireAdmin
 	public String updateRole(@Valid @ModelAttribute("roleManage") RoleManage roleManage,
 			BindingResult bindingResult,
             ModelMap model) throws Exception {
@@ -233,7 +239,8 @@ public class EgovRoleManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value = "/sec/rmt/EgovRoleDelete.do")
+    @RequestMapping(value = "/sec/rmt/EgovRoleDelete.do", method = RequestMethod.POST)
+    @RequireAdmin
 	public String deleteRole(@ModelAttribute("roleManage") RoleManage roleManage,
             ModelMap model) throws Exception {
     	egovRoleManageService.deleteRole(roleManage);
@@ -249,7 +256,8 @@ public class EgovRoleManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sec/rmt/EgovRoleListDelete.do")
+	@RequestMapping(value = "/sec/rmt/EgovRoleListDelete.do", method = RequestMethod.POST)
+	@RequireAdmin
 	public String deleteRoleList(@RequestParam("roleCodes") String roleCodes,
 			                     @ModelAttribute("roleManage") RoleManage roleManage,
 	                              Model model) throws Exception {

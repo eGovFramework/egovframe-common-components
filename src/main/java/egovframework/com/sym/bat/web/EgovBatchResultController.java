@@ -14,6 +14,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.bat.service.BatchResult;
 import egovframework.com.sym.bat.service.EgovBatchResultService;
@@ -65,6 +66,7 @@ public class EgovBatchResultController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/sym/bat/deleteBatchResult.do")
+	@RequireAdmin
 	public String deleteBatchResult(BatchResult batchResult, ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {

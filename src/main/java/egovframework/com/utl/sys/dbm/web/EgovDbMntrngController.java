@@ -17,6 +17,7 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.CmmnDetailCode;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
@@ -78,6 +79,7 @@ public class EgovDbMntrngController {
 	 * @exception Exception Exception
 	 */
     @RequestMapping("/utl/sys/dbm/deleteDbMntrng.do")
+	@RequireAdmin
 	public String deleteDbMntrng(DbMntrng dbMntrng, ModelMap model,
 			RedirectAttributes redirectAttributes)
 	  throws Exception{
@@ -102,6 +104,7 @@ public class EgovDbMntrngController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/utl/sys/dbm/addDbMntrng.do")
+	@RequireAdmin
 	public String insertDbMntrng(@Valid @ModelAttribute("dbMntrng") DbMntrng dbMntrng, BindingResult bindingResult, ModelMap model,
 			RedirectAttributes redirectAttributes)
 	  throws Exception{
@@ -179,6 +182,7 @@ public class EgovDbMntrngController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/utl/sys/dbm/getDbMntrngForRegist.do")
+	@RequireAdmin
 	public String selectDbMntrngForRegist(@ModelAttribute("searchVO")DbMntrng dbMntrng, ModelMap model)
 	  throws Exception{
         referenceData(model);
@@ -210,6 +214,7 @@ public class EgovDbMntrngController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/utl/sys/dbm/getDbMntrngForUpdate.do")
+	@RequireAdmin
 	public String selectDbMntrngForUpdate(@ModelAttribute("searchVO") DbMntrng dbMntrng, ModelMap model)
 	  throws Exception{
         referenceData(model);
@@ -316,6 +321,7 @@ public class EgovDbMntrngController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/utl/sys/dbm/updateDbMntrng.do")
+	@RequireAdmin
 	public String updateDbMntrng(@ModelAttribute("searchVO") DbMntrng searchVO,
 			@Valid @ModelAttribute("dbMntrng") DbMntrng dbMntrng, BindingResult bindingResult, ModelMap model,
 			RedirectAttributes redirectAttributes)

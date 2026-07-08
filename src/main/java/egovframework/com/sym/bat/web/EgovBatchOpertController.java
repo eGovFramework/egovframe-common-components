@@ -18,6 +18,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.bat.service.BatchOpert;
 import egovframework.com.sym.bat.service.EgovBatchOpertService;
@@ -81,6 +82,7 @@ public class EgovBatchOpertController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/sym/bat/deleteBatchOpert.do")
+	@RequireAdmin
 	public String deleteBatchOpert(BatchOpert batchOpert, RedirectAttributes redirectAttributes) throws Exception {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
@@ -104,6 +106,7 @@ public class EgovBatchOpertController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/sym/bat/addBatchOpert.do")
+	@RequireAdmin
 	public String insertBatchOpert(@ModelAttribute("searchVO") BatchOpert searchVO,
 			@Valid @ModelAttribute("batchOpert") BatchOpert batchOpert, BindingResult bindingResult,
 			ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
@@ -161,6 +164,7 @@ public class EgovBatchOpertController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/sym/bat/getBatchOpertForRegist.do")
+	@RequireAdmin
 	public String selectBatchOpertForRegist(@ModelAttribute("searchVO") BatchOpert batchOpert, ModelMap model) throws Exception {
 		model.addAttribute("batchOpert", batchOpert);
 
@@ -176,6 +180,7 @@ public class EgovBatchOpertController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/sym/bat/getBatchOpertForUpdate.do")
+	@RequireAdmin
 	public String selectBatchOpertForUpdate(@ModelAttribute("searchVO") BatchOpert batchOpert, ModelMap model) throws Exception {
 		LOGGER.debug(" 조회조건 : {}", batchOpert);
 		BatchOpert result = egovBatchOpertService.selectBatchOpert(batchOpert);
@@ -239,6 +244,7 @@ public class EgovBatchOpertController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/sym/bat/updateBatchOpert.do")
+	@RequireAdmin
 	public String updateBatchOpert(@ModelAttribute("searchVO") BatchOpert searchVO,
 			@Valid @ModelAttribute("batchOpert") BatchOpert batchOpert, BindingResult bindingResult,
 			ModelMap model, RedirectAttributes redirectAttributes) throws Exception {

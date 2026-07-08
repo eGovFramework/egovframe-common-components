@@ -9,12 +9,14 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.SessionVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.sec.ram.service.AuthorManage;
 import egovframework.com.sec.ram.service.AuthorManageVO;
 import egovframework.com.sec.ram.service.EgovAuthorManageService;
@@ -99,7 +101,8 @@ public class EgovAuthorManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value = "/sec/ram/EgovAuthor.do")
+    @RequestMapping(value = "/sec/ram/EgovAuthor.do", method = RequestMethod.POST)
+    @RequireAdmin
     public String selectAuthor(@RequestParam("authorCode") String authorCode,
     	                       @ModelAttribute("authorManageVO") AuthorManageVO authorManageVO,
     		                    ModelMap model) throws Exception {
@@ -116,7 +119,8 @@ public class EgovAuthorManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping("/sec/ram/EgovAuthorInsertView.do")
+    @RequestMapping(value = "/sec/ram/EgovAuthorInsertView.do", method = RequestMethod.POST)
+    @RequireAdmin
     public String insertAuthorView(@ModelAttribute("authorManage") AuthorManage authorManage)
             throws Exception {
         return "egovframework/com/sec/ram/EgovAuthorInsert";
@@ -129,7 +133,8 @@ public class EgovAuthorManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value = "/sec/ram/EgovAuthorInsert.do")
+    @RequestMapping(value = "/sec/ram/EgovAuthorInsert.do", method = RequestMethod.POST)
+    @RequireAdmin
     public String insertAuthor(@Valid @ModelAttribute("authorManage") AuthorManage authorManage,
     		                    BindingResult bindingResult,
     		                    ModelMap model) throws Exception {
@@ -155,7 +160,8 @@ public class EgovAuthorManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value = "/sec/ram/EgovAuthorUpdate.do")
+    @RequestMapping(value = "/sec/ram/EgovAuthorUpdate.do", method = RequestMethod.POST)
+    @RequireAdmin
     public String updateAuthor(@Valid @ModelAttribute("authorManage") AuthorManage authorManage,
     		                    BindingResult bindingResult,
     		                    Model model) throws Exception {
@@ -180,7 +186,8 @@ public class EgovAuthorManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value = "/sec/ram/EgovAuthorDelete.do")
+    @RequestMapping(value = "/sec/ram/EgovAuthorDelete.do", method = RequestMethod.POST)
+    @RequireAdmin
     public String deleteAuthor(@ModelAttribute("authorManage") AuthorManage authorManage,
     		                    Model model) throws Exception {
 
@@ -200,7 +207,8 @@ public class EgovAuthorManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value = "/sec/ram/EgovAuthorListDelete.do")
+    @RequestMapping(value = "/sec/ram/EgovAuthorListDelete.do", method = RequestMethod.POST)
+    @RequireAdmin
     public String deleteAuthorList(@RequestParam("authorCodes") String authorCodes,
     		                       @ModelAttribute("authorManage") AuthorManage authorManage,
     		                        Model model) throws Exception {

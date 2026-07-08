@@ -10,7 +10,6 @@ import java.util.Vector;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
-import org.springframework.util.ObjectUtils;
 import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
@@ -18,7 +17,6 @@ import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.config.EgovLoginConfig;
 import egovframework.com.cmm.service.EgovProperties;
-import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uat.uia.service.EgovLoginService;
 import egovframework.com.utl.sim.service.EgovClntInfo;
 import jakarta.annotation.Resource;
@@ -46,89 +44,75 @@ public class EgovSpringSecurityLoginFilter extends OncePerRequestFilter {
 	private EgovMessageSource egovMessageSource;
 
 	@Override
-	protected boolean shouldNotFilter(HttpServletRequest request) {
-		if (!"security".equals(EgovProperties.getProperty("Globals.Auth").trim())) {
-			return true;
-		}
-		if (!"POST".equalsIgnoreCase(request.getMethod())) {
-			return true;
-		}
-		if (!ObjectUtils.isEmpty(EgovUserDetailsHelper.getAuthenticatedUser())){
-			return true;
-		}
-		String uri = stripContextPath(request);
-		if (!uri.equals(ACTION_LOGIN_PATH)) {
-			return true;
-		}
-		String id = request.getParameter("id");
-		if (!StringUtils.hasText(id)) {
-			return true;
-		}
-		if (StringUtils.hasText(request.getParameter("username"))) {
-			return true;
-		}
-		return false;
-	}
-
-	@Override
 	protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
 			throws ServletException, IOException {
 
-		String password = request.getParameter("password");
-		if (!StringUtils.hasText(password)) {
+		if (!"security".equals(EgovProperties.getProperty("Globals.Auth").trim())) {
 			filterChain.doFilter(request, response);
 			return;
 		}
 
+		if (!isActionLoginUri(request)) {
+			filterChain.doFilter(request, response);
+			return;
+		}
+
+		String id = request.getParameter("id");
+		String password = request.getParameter("password");
 		String userSe = request.getParameter("userSe");
+
+		if (!StringUtils.hasText(id) || !StringUtils.hasText(password)) {
+			request.setAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login", request.getLocale()));
+			request.getRequestDispatcher(LOGIN_PATH).forward(request, response);
+			return;
+		}
+
 		if (!StringUtils.hasText(userSe)) {
 			userSe = "GNR";
 		}
 
 		LoginVO loginVO = new LoginVO();
-		loginVO.setId(request.getParameter("id").trim());
-		loginVO.setPassword(password);
+		loginVO.setId(id.trim());
+		loginVO.setPassword(password.trim());
 		loginVO.setUserSe(userSe);
 
 		if (egovLoginConfig.isLock()) {
 			try {
-				Map<?, ?> mapLockUserInfo = loginService.selectLoginIncorrect(loginVO);
+				Map<?, ?> mapLockUserInfo = invokeSelectLoginIncorrect(loginVO);
 				if (mapLockUserInfo != null) {
 					// 로그인인증제한 처리
-					String sLoginIncorrectCode = loginService.processLoginIncorrect(loginVO, mapLockUserInfo);
+					String sLoginIncorrectCode = invokeProcessLoginIncorrect(loginVO, mapLockUserInfo);
 					if (!sLoginIncorrectCode.equals("E")) {
 						if (sLoginIncorrectCode.equals("L")) {
 							request.setAttribute("loginMessage",
-									egovMessageSource.getMessageArgs("fail.common.loginIncorrect",
-											new Object[] { egovLoginConfig.getLockCount(), request.getLocale() }));
+									egovMessageSource.getMessageArgs("fail.common.loginIncorrect", new Object[] { egovLoginConfig.getLockCount(), request.getLocale() }));
 						} else if (sLoginIncorrectCode.equals("C")) {
-							request.setAttribute("loginMessage",
-									egovMessageSource.getMessage("fail.common.login", request.getLocale()));
+							request.setAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login", request.getLocale()));
 						}
 						request.getRequestDispatcher(LOGIN_PATH).forward(request, response);
 						return;
 					}
 				} else {
-					request.setAttribute("loginMessage",
-							egovMessageSource.getMessage("fail.common.login", request.getLocale()));
+					request.setAttribute("loginMessage", egovMessageSource.getMessage("fail.common.login", request.getLocale()));
 					request.getRequestDispatcher(LOGIN_PATH).forward(request, response);
 					return;
 				}
 			} catch (IllegalArgumentException e) {
-				LOGGER.error("[IllegalArgumentException] : " + e.getMessage());
-			} catch (Exception ex) {
-				LOGGER.error("Login Exception : {}", ex.getCause(), ex);
-				request.setAttribute("loginMessage",
-						egovMessageSource.getMessage("fail.common.login", request.getLocale()));
-				request.getRequestDispatcher(LOGIN_PATH).forward(request, response);
+				LOGGER.error("[{}] Login lock check failed : {}", e.getClass().getName(), e.getMessage());
+				forwardToLoginFailure(request, response);
+				return;
+			} catch (LoginServiceInvocationException e) {
+				logLoginBridgeFailure(e);
+				forwardToLoginFailure(request, response);
+				return;
 			}
 		}
 
 		try {
-			LoginVO resultVO = loginService.actionLogin(loginVO);
-			resultVO.setIp(EgovClntInfo.getClntIP(request));
+			LoginVO resultVO = invokeActionLogin(loginVO);
+			resultVO.setIp(resolveClientIp(request));
 
-			if (loginVO != null && loginVO.getId() != null && !loginVO.getId().equals("")) {
+			if (resultVO != null && StringUtils.hasText(resultVO.getId())) {
 
 				request.getSession().setAttribute("loginVO", resultVO);
 
@@ -136,31 +120,99 @@ public class EgovSpringSecurityLoginFilter extends OncePerRequestFilter {
 				String securityPass = resultVO.getUniqId();
 				if (!StringUtils.hasText(securityPass)) {
 					LOGGER.warn("Login succeeded but uniqId is empty for user {}", securityUser);
-					request.setAttribute("loginMessage",
-							egovMessageSource.getMessage("fail.common.login", request.getLocale()));
-					request.getRequestDispatcher(LOGIN_PATH).forward(request, response);
+					forwardToLoginFailure(request, response);
 					return;
 				}
 
-				HttpServletRequest wrapped = new LoginFormSpringSecurityParameterWrapper(request, securityUser,
-						securityPass);
+				HttpServletRequest wrapped = new LoginFormSpringSecurityParameterWrapper(request, securityUser, securityPass);
 				filterChain.doFilter(wrapped, response);
 			} else {
-				request.setAttribute("loginMessage",
-						egovMessageSource.getMessage("fail.common.login", request.getLocale()));
-				request.getRequestDispatcher(LOGIN_PATH).forward(request, response);
+				forwardToLoginFailure(request, response);
 			}
 		} catch (IllegalArgumentException e) {
-			LOGGER.error("Login bridge processing failed", e);
-			request.setAttribute("loginMessage",
-					egovMessageSource.getMessage("fail.common.login", request.getLocale()));
-			request.getRequestDispatcher(LOGIN_PATH).forward(request, response);
-		} catch (Exception e) {
-			LOGGER.error("Login bridge processing failed", e);
-			request.setAttribute("loginMessage",
-					egovMessageSource.getMessage("fail.common.login", request.getLocale()));
-			request.getRequestDispatcher(LOGIN_PATH).forward(request, response);
+			LOGGER.error("[{}] Login bridge processing failed : {}", e.getClass().getName(), e.getMessage());
+			forwardToLoginFailure(request, response);
+		} catch (LoginServiceInvocationException e) {
+			logLoginBridgeFailure(e);
+			forwardToLoginFailure(request, response);
 		}
+	}
+
+	private LoginVO invokeActionLogin(LoginVO loginVO) {
+		try {
+			return loginService.actionLogin(loginVO);
+		} catch (IllegalArgumentException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new LoginServiceInvocationException(e);
+		}
+	}
+
+	private Map<?, ?> invokeSelectLoginIncorrect(LoginVO loginVO) {
+		try {
+			return loginService.selectLoginIncorrect(loginVO);
+		} catch (IllegalArgumentException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new LoginServiceInvocationException(e);
+		}
+	}
+
+	private String invokeProcessLoginIncorrect(LoginVO loginVO, Map<?, ?> mapLockUserInfo) {
+		try {
+			return loginService.processLoginIncorrect(loginVO, mapLockUserInfo);
+		} catch (IllegalArgumentException e) {
+			throw e;
+		} catch (Exception e) {
+			throw new LoginServiceInvocationException(e);
+		}
+	}
+
+	private String resolveClientIp(HttpServletRequest request) {
+		try {
+			return EgovClntInfo.getClntIP(request);
+		} catch (IllegalArgumentException e) {
+			LOGGER.warn("[{}] Failed to resolve client IP : {}", e.getClass().getName(), e.getMessage());
+			return "";
+		} catch (Exception e) {
+			LOGGER.warn("[{}] Failed to resolve client IP : {}", e.getClass().getName(), e.getMessage());
+			return "";
+		}
+	}
+
+	private void forwardToLoginFailure(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		request.setAttribute("loginMessage",
+				egovMessageSource.getMessage("fail.common.login", request.getLocale()));
+		request.getRequestDispatcher(LOGIN_PATH).forward(request, response);
+	}
+
+	private static void logLoginBridgeFailure(Exception e) {
+		Throwable cause = e.getCause() != null ? e.getCause() : e;
+		LOGGER.error("[{}] Login bridge processing failed : {}", cause.getClass().getName(), cause.getMessage());
+	}
+
+	private static final class LoginServiceInvocationException extends RuntimeException {
+
+		private static final long serialVersionUID = 1L;
+
+		LoginServiceInvocationException(Throwable cause) {
+			super(cause);
+		}
+	}
+
+	private static boolean isActionLoginUri(HttpServletRequest request) {
+		return "POST".equalsIgnoreCase(request.getMethod())
+				&& ACTION_LOGIN_PATH.equals(normalizeRequestUri(request));
+	}
+
+	private static String normalizeRequestUri(HttpServletRequest request) {
+		String uri = stripContextPath(request);
+		int semicolonIndex = uri.indexOf(';');
+		if (semicolonIndex > -1) {
+			uri = uri.substring(0, semicolonIndex);
+		}
+		return uri;
 	}
 
 	private static String stripContextPath(HttpServletRequest request) {

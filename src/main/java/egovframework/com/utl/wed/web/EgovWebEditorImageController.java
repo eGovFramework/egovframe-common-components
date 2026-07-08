@@ -56,7 +56,7 @@ public class EgovWebEditorImageController {
 	private final String uploadDir = EgovProperties.getProperty("Globals.fileStorePath");
 
 	/** 허용할 확장자를 .확장자 형태로 연달아 기술한다. ex) .gif.jpg.jpeg.png => globals.properties */
-	private final String extWhiteList = EgovProperties.getProperty("Globals.fileDownload.Extensions");
+	private final String extWhiteList = EgovProperties.getProperty("Globals.fileUpload.Extensions");
 
 	/** 첨부 최대 파일 크기 지정 */
 	private final long maxFileSize = 1024L * 1024L * 100L;   //업로드 최대 사이즈 설정 (100M)
@@ -113,11 +113,24 @@ public class EgovWebEditorImageController {
 	 */
 	@RequestMapping(value = "/utl/wed/insertImageCk.do", method = RequestMethod.POST)
 	public String imageUploadCk(@RequestParam(value = "CKEditorFuncNum", required=false) String ckEditorFuncNum, MultipartHttpServletRequest mRequest, HttpServletResponse response, Model model) throws Exception {
-		// Spring multipartResolver 미사용 시 (commons-fileupload 활용)
-		//List<EgovFormBasedFileVo> list = EgovFormBasedFileUtil.uploadFiles(request, uploadDir, maxFileSize);
-		model.addAttribute("ckEditorFuncNum", ckEditorFuncNum);
+		model.addAttribute("ckEditorFuncNum", parseCkEditorFuncNum(ckEditorFuncNum));
 		uploadImageFiles(mRequest, model);
 		return "egovframework/com/utl/wed/EgovUploadImageComplete";
+	}
+
+	/**
+	 * CKEditor callback 함수 번호를 정수로 검증한다. (CkImageSaver와 동일 정책)
+	 */
+	private int parseCkEditorFuncNum(String ckEditorFuncNum) {
+		if (ckEditorFuncNum == null || ckEditorFuncNum.isEmpty()) {
+			return 1;
+		}
+		try {
+			return Integer.parseInt(ckEditorFuncNum);
+		} catch (NumberFormatException e) {
+			LOGGER.warn("Invalid CKEditorFuncNum: {}", ckEditorFuncNum);
+			return 1;
+		}
 	}
 
 	/**
@@ -178,7 +191,7 @@ public class EgovWebEditorImageController {
 			throw new FileNotFoundException();
 		}
 
-		if ( extWhiteList.indexOf(ext) >= 0 ) {
+		if ( EgovFileUploadUtil.isAllowedExtension(ext, extWhiteList) ) {
 			EgovFormBasedFileUtil.viewFile(response, uploadDir, subPath, physical, mimeType);
 		} else {
 			throw new FileNotFoundException();
