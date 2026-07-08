@@ -87,6 +87,10 @@ public class EgovQustnrManageController {
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 		if (sCmd.equals("del")) {
+			if (!EgovUserDetailsHelper.isAuthenticated()) {
+				model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+				return "redirect:/uat/uia/egovLoginUsr.do";
+			}
 			egovQustnrManageService.deleteQustnrManage(qustnrManageVO);
 		}
 
@@ -136,6 +140,10 @@ public class EgovQustnrManageController {
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 		if (sCmd.equals("del")) {
+			if (!EgovUserDetailsHelper.isAuthenticated()) {
+				model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+				return "redirect:/uat/uia/egovLoginUsr.do";
+			}
 			egovQustnrManageService.deleteQustnrManage(qustnrManageVO);
 		}
 
@@ -187,6 +195,10 @@ public class EgovQustnrManageController {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
 		if (sCmd.equals("del")) {
+			if (!EgovUserDetailsHelper.isAuthenticated()) {
+				model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+				return "redirect:/uat/uia/egovLoginUsr.do";
+			}
 			egovQustnrManageService.deleteQustnrManage(qustnrManageVO);
 			sLocationUrl = "redirect:/uss/olp/qmc/EgovQustnrManageList.do";
 		} else {
