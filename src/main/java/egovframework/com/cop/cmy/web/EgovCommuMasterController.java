@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.exception.EgovXssException;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.cop.cmy.service.Community;
 import egovframework.com.cop.cmy.service.CommunityUserVO;
@@ -191,6 +192,15 @@ public class EgovCommuMasterController {
     public String updateCommuMasterView(@ModelAttribute("searchVO") CommunityVO cmmntyVO, ModelMap model)
 	    throws Exception {
 
+		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		// KISA 보안취약점 조치 (2018-12-10, 신용호)
+        if(!isAuthenticated) {
+            return "redirect:/uat/uia/egovLoginUsr.do";
+        }
+
+		checkCommuAdmin(cmmntyVO.getCmmntyId(), user);
+
 		CommunityVO result = egovCommuMasterService.selectCommuMaster(cmmntyVO);
 
 		model.addAttribute("commuMasterVO", result);
@@ -217,6 +227,8 @@ public class EgovCommuMasterController {
         if(!isAuthenticated) {
             return "redirect:/uat/uia/egovLoginUsr.do";
         }
+
+		checkCommuAdmin(getCmmntyId(community, cmmntyVO), user);
 
 		if (bindingResult.hasErrors()) {
 
@@ -249,12 +261,43 @@ public class EgovCommuMasterController {
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
-    	if (isAuthenticated) {
-    		community.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
-    	    egovCommuMasterService.deleteBBSMasterInf(community);
-    	}
-    	return "forward:/cop/cmy/selectCommuMasterList.do";
+        if(!isAuthenticated) {
+            return "redirect:/uat/uia/egovLoginUsr.do";
         }
+
+		checkCommuAdmin(getCmmntyId(community, cmmntyVO), user);
+
+		community.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+		egovCommuMasterService.deleteBBSMasterInf(community);
+
+		return "forward:/cop/cmy/selectCommuMasterList.do";
+    }
+
+	private String getCmmntyId(Community community, CommunityVO cmmntyVO) {
+		String cmmntyId = community == null ? "" : EgovStringUtil.isNullToString(community.getCmmntyId());
+
+		if ("".equals(cmmntyId)) {
+			cmmntyId = cmmntyVO == null ? "" : EgovStringUtil.isNullToString(cmmntyVO.getCmmntyId());
+		}
+
+		return cmmntyId;
+	}
+
+	private void checkCommuAdmin(String cmmntyId, LoginVO user) throws Exception {
+		String uniqId = user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId());
+
+		if ("".equals(EgovStringUtil.isNullToString(cmmntyId)) || "".equals(uniqId)) {
+			throw new EgovXssException("XSS00001", "errors.xss.checkerUser");
+		}
+
+		CommunityUserVO userVO = new CommunityUserVO();
+		userVO.setCmmntyId(cmmntyId);
+		userVO.setEmplyrId(uniqId);
+
+		if (!Boolean.TRUE.equals(egovCommuManageService.selectIsCommuAdmin(userVO))) {
+			throw new EgovXssException("XSS00002", "errors.xss.checkerUser");
+		}
+	}
 
     /**
      * 포트릿을 위한 커뮤니티 정보 목록 정보를 조회한다.
