@@ -14,6 +14,7 @@ import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.cmm.util.EgovXssChecker;
 import egovframework.com.cop.bbs.service.BoardVO;
 import egovframework.com.cop.bbs.service.EgovArticleService;
 import egovframework.com.cop.scp.service.EgovArticleScrapService;
@@ -21,6 +22,7 @@ import egovframework.com.cop.scp.service.Scrap;
 import egovframework.com.cop.scp.service.ScrapVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -112,7 +114,8 @@ public class EgovArticleScrapController {
      * @throws Exception
      */
     @RequestMapping("/cop/scp/selectArticleScrapDetail.do")
-    public String selectArticleScrapDetail(@ModelAttribute("searchVO") ScrapVO scrapVO, ModelMap model) throws Exception {
+    public String selectArticleScrapDetail(HttpServletRequest request, @ModelAttribute("searchVO") ScrapVO scrapVO,
+            ModelMap model) throws Exception {
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
    	 	// KISA 보안취약점 조치 (2018-12-10, 신용호)
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -122,6 +125,7 @@ public class EgovArticleScrapController {
         }
 
 		ScrapVO scrap = egovArticleScrapService.selectArticleScrapDetail(scrapVO);
+		EgovXssChecker.checkerUserXss(request, scrap == null ? null : scrap.getFrstRegisterId());
 
 		model.addAttribute("sessionUniqId", user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 		model.addAttribute("result", scrap);
@@ -216,12 +220,16 @@ public class EgovArticleScrapController {
      * @throws Exception
      */
     @RequestMapping("/cop/scp/deleteArticleScrap.do")
-    public String deleteArticleScrap(@ModelAttribute("searchVO") ScrapVO scrapVO, @ModelAttribute("Scrap") Scrap scrap, ModelMap model) throws Exception {
+    public String deleteArticleScrap(HttpServletRequest request, @ModelAttribute("searchVO") ScrapVO scrapVO,
+            @ModelAttribute("Scrap") Scrap scrap, ModelMap model) throws Exception {
 	@SuppressWarnings("unused")
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
 		if (isAuthenticated) {
+			ScrapVO data = egovArticleScrapService.selectArticleScrapDetail(scrapVO);
+			EgovXssChecker.checkerUserXss(request, data == null ? null : data.getFrstRegisterId());
+
 		    egovArticleScrapService.deleteArticleScrap(scrapVO);
 		}
 
@@ -237,8 +245,16 @@ public class EgovArticleScrapController {
      * @throws Exception
      */
     @RequestMapping("/cop/scp/updateArticleScrapView.do")
-    public String updateArticleScrapView(@ModelAttribute("searchVO") ScrapVO scrapVO, @ModelAttribute("scrap") Scrap scrap, ModelMap model) throws Exception {
+    public String updateArticleScrapView(HttpServletRequest request, @ModelAttribute("searchVO") ScrapVO scrapVO,
+            @ModelAttribute("scrap") Scrap scrap, ModelMap model) throws Exception {
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+
+		if (!isAuthenticated) {
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+
 		Scrap vo = egovArticleScrapService.selectArticleScrapDetail(scrapVO);
+		EgovXssChecker.checkerUserXss(request, vo == null ? null : vo.getFrstRegisterId());
 
 		model.addAttribute("articleScrapVO", vo);
 
@@ -266,11 +282,18 @@ public class EgovArticleScrapController {
      * @throws Exception
      */
     @RequestMapping("/cop/scp/updateArticleScrap.do")
-    public String updateArticleScrap(@ModelAttribute("searchVO") ScrapVO scrapVO, @Valid @ModelAttribute("Scrap") Scrap scrap,
-	    BindingResult bindingResult, ModelMap model) throws Exception {
+    public String updateArticleScrap(HttpServletRequest request, @ModelAttribute("searchVO") ScrapVO scrapVO,
+            @Valid @ModelAttribute("Scrap") Scrap scrap, BindingResult bindingResult, ModelMap model) throws Exception {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+
+		if (!isAuthenticated) {
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+
+		ScrapVO data = egovArticleScrapService.selectArticleScrapDetail(scrapVO);
+		EgovXssChecker.checkerUserXss(request, data == null ? null : data.getFrstRegisterId());
 
 		if (bindingResult.hasErrors()) {
 
@@ -281,11 +304,9 @@ public class EgovArticleScrapController {
 		    return "egovframework/com/cop/scp/EgovArticleScrapUpdt";
 		}
 
-		if (isAuthenticated) {
-		    scrap.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
+		scrap.setLastUpdusrId(user == null ? "" : EgovStringUtil.isNullToString(user.getUniqId()));
 
-		    egovArticleScrapService.updateArticleScrap(scrap);
-		}
+		egovArticleScrapService.updateArticleScrap(scrap);
 
 		return "forward:/cop/scp/selectArticleScrapList.do";
     }
