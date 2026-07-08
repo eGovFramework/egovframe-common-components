@@ -53,6 +53,20 @@ function fn_egov_search_user(){
 	document.CommuUserForm.pageIndex.value = 1;
 	document.CommuUserForm.submit();
 }
+/*********************************************************
+ * 커뮤니티 사용자 상태변경 처리 함수 (POST 전송)
+ ******************************************************** */
+function fn_egov_postCommuUser(url, cmmntyId, emplyrId){
+	var f = document.createElement("form");
+	f.method = "post";
+	f.action = url;
+	var p1 = document.createElement("input");
+	p1.type = "hidden"; p1.name = "cmmntyId"; p1.value = cmmntyId; f.appendChild(p1);
+	var p2 = document.createElement("input");
+	p2.type = "hidden"; p2.name = "emplyrId"; p2.value = emplyrId; f.appendChild(p2);
+	document.body.appendChild(f);
+	f.submit();
+}
 </script>
 </head>
 <body onload="fn_egov_init()">
@@ -114,22 +128,22 @@ function fn_egov_search_user(){
 			<!-- 회원가입 신청상태일 경우 -->
 				<td>
 					<a class="btn02" href="<c:url value='/cop/cmy/insertCommuUser.do?cmmntyId=${resultInfo.cmmntyId}&emplyrId=${resultInfo.emplyrId}' />">가입승인</a>&nbsp;	
-					<a class="btn02" href="<c:url value='/cop/cmy/deleteCommuUser.do?cmmntyId=${resultInfo.cmmntyId}&emplyrId=${resultInfo.emplyrId}' />">가입거절</a>	
+					<a class="btn02" href="#" onclick="fn_egov_postCommuUser('<c:url value="/cop/cmy/deleteCommuUser.do"/>', '${resultInfo.cmmntyId}', '${resultInfo.emplyrId}'); return false;">가입거절</a>
 				</td>		
 			</c:when>
 
 			<c:when test="${resultInfo.mberSttus == 'P' && resultInfo.mngrAt == 'N'}">
 			<!-- 일반회원 상태일 경우 -->
 				<td>
-					<a class="btn02" href="<c:url value='/cop/cmy/insertCommuUserAdmin.do?cmmntyId=${resultInfo.cmmntyId}&emplyrId=${resultInfo.emplyrId}' />">관리자등록</a>&nbsp;	
-					<a class="btn02" href="<c:url value='/cop/cmy/deleteCommuUser.do?cmmntyId=${resultInfo.cmmntyId}&emplyrId=${resultInfo.emplyrId}' />">탈퇴</a>	
+					<a class="btn02" href="#" onclick="fn_egov_postCommuUser('<c:url value="/cop/cmy/insertCommuUserAdmin.do"/>', '${resultInfo.cmmntyId}', '${resultInfo.emplyrId}'); return false;">관리자등록</a>&nbsp;
+					<a class="btn02" href="#" onclick="fn_egov_postCommuUser('<c:url value="/cop/cmy/deleteCommuUser.do"/>', '${resultInfo.cmmntyId}', '${resultInfo.emplyrId}'); return false;">탈퇴</a>
 				</td>		
 			</c:when>
 			
 			<c:when test="${resultInfo.mngrAt == 'Y' }">
 			<!-- 관리자일 경우 -->
 				<td>
-					<a class="btn02" href="<c:url value='/cop/cmy/deleteCommuUserAdmin.do?cmmntyId=${resultInfo.cmmntyId}&emplyrId=${resultInfo.emplyrId}' />">관리자해제</a>
+					<a class="btn02" href="#" onclick="fn_egov_postCommuUser('<c:url value="/cop/cmy/deleteCommuUserAdmin.do"/>', '${resultInfo.cmmntyId}', '${resultInfo.emplyrId}'); return false;">관리자해제</a>
 				</td>		
 			</c:when>
 			
