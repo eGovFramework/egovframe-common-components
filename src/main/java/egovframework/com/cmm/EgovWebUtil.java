@@ -3,6 +3,8 @@ package egovframework.com.cmm;
 import java.io.File;
 import java.util.regex.Pattern;
 
+import org.springframework.util.StringUtils;
+
 /**
  * 교차접속 스크립트 공격 취약성 방지(파라미터 문자열 교체)
  *
@@ -19,12 +21,13 @@ import java.util.regex.Pattern;
  *  2022.06.09   김장하      NSR 보안조치 (removeOSCmdRisk 함수에 윈도우 다중 명령 실행 키워드 추가)
  *  2023.08.10   신용호      removeLDAPInjectionRisk() 오류 수정
  *  2024.12.04   신용호      filePathBlackList() basePath 추가
+ *  2026.06.28   Chung10kr clearXSSMinimum() 공백 검사를 StringUtils.hasText()로 단순화
  * </pre>
  */
 
 public class EgovWebUtil {
 	public static String clearXSSMinimum(String value) {
-		if (value == null || value.trim().equals("")) {
+		if (!StringUtils.hasText(value)) {
 			return "";
 		}
 
