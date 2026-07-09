@@ -271,7 +271,7 @@ public class FileSystemChecker {
 				// os command problem, throw exception
 				throw new IOException("Command line returned OS error code '" + p.exitValue() + "' for command " + Arrays.asList(cmdAttribs));
 			}
-			if (lines.size() == 0) {
+			if (lines.isEmpty()) {
 				// unknown problem, throw exception
 				throw new IOException("Command line did not return any info " + "for command " + Arrays.asList(cmdAttribs));
 			}
