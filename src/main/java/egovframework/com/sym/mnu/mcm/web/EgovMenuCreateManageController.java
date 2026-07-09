@@ -45,6 +45,7 @@ import jakarta.validation.Valid;
  *   2018.08.09  신용호          X-XSS 관련 크롬에서 오탐되는 부분 수정
  *   2018.09.10  신용호          selectMenuCreatManagList 불필요한 로직 제거
  *   2025.07.17  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *   2026.07.10  이백행          [2026년 컨트리뷰션] 디버그 출력에 log.debug 적용
  *
  *      </pre>
  */
@@ -234,12 +235,12 @@ public class EgovMenuCreateManageController {
 	 * null ? "" :
 	 * EgovStringUtil.isNullToString(EgovMenuCreateManageController.class.
 	 * getProtectionDomain().getCodeSource().getLocation().getPath());
-	 * //System.out.println("===>>> currentPath = "+currentPath); String path =
+	 * //log.debug("===>>> currentPath = {}", currentPath); String path =
 	 * currentPath.substring(0, currentPath.lastIndexOf("WEB-INF"));
 	 * menuSiteMapVO.setTmpRootPath(path);
 	 * menuSiteMapVO.setBndeFilePath("/html/egovframework/com/sym/mnu/mcm/");
-	 * //System.out.println("===>>> path = "+path);
-	 * //System.out.println("===>>> menuSiteMapVO.getMapCreatId() = "+menuSiteMapVO.
+	 * //log.debug("===>>> path = {}", path);
+	 * //log.debug("===>>> menuSiteMapVO.getMapCreatId() = {}", menuSiteMapVO.
 	 * getMapCreatId());
 	 * 
 	 * // 사이트맵 파일 생성 위치 지정 if ("WINDOWS".equals(Globals.OS_TYPE)) { // menuSiteMapVO
