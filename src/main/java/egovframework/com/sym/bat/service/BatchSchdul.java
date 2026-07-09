@@ -21,6 +21,7 @@ import egovframework.com.cmm.ComDefaultVO;
  *   수정일       수정자           수정내용
  *  -------     --------    ---------------------------
  *  2010.06.17   김진만     최초 생성
+ *  2026.07.09   EricSeokgon  PMD UseCollectionIsEmpty: size() != 0 대신 !isEmpty() 사용
  * </pre>
  */
 @SuppressWarnings("serial")
@@ -378,7 +379,7 @@ public class BatchSchdul extends ComDefaultVO implements Serializable {
 		// 요일출력
 		if (this.executCycle.equals("02")) {
 			// 실행주기가 매주인 경우에만 출력한다.
-			if (dfkSeList.size() != 0) {
+			if (!dfkSeList.isEmpty()) {
 				for (int i = 0; i < dfkSeList.size(); i++) {
 					if (i != 0) {
 						executSchdul = executSchdul + ",";
