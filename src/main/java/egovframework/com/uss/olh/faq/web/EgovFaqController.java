@@ -290,7 +290,7 @@ public class EgovFaqController {
 	 * @return "forward:/uss/olh/faq/selectFaqList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/faq/deleteFaq.do")
+	@RequestMapping(value = "/uss/olh/faq/deleteFaq.do", method = RequestMethod.POST)
 	public String deleteFaq(FaqVO faqVO, @ModelAttribute("searchVO") FaqVO searchVO) throws Exception {
 
 		// 첨부파일 삭제를 위한 ID 생성 start....
