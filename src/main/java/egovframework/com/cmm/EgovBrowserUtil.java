@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * 웹브라우저 종류및 버전 파악하기 ( IE및 Edge, Safari, Chrome, Firefox, Opera )
  *
@@ -14,10 +16,11 @@ import java.util.regex.Pattern;
  *   수정일              수정자              수정내용
  *  -----------  --------    ---------------------------
  *   2018.08.27  신용호              최초 생성
+ *   2026.07.09  이백행              [2026년 컨트리뷰션] 디버그 출력에 log.debug 적용
  *
  * </pre>
  */
-
+@Slf4j
 public class EgovBrowserUtil {
 	
 	public static final String FIREFOX = "Firefox";
@@ -37,7 +40,7 @@ public class EgovBrowserUtil {
 		HashMap<String,String> result = new HashMap<String,String>();
 		Pattern pattern = null;
 		Matcher matcher = null;
-		//System.out.println("=====>>>>> userAgent = "+userAgent);
+		log.debug("=====>>>>> userAgent = {}", userAgent);
 		
 		pattern = Pattern.compile("MSIE ([0-9]{1,2}.[0-9])");
 		matcher = pattern.matcher(userAgent);
@@ -117,9 +120,11 @@ public class EgovBrowserUtil {
 		String encodedFilename = null;
 		HashMap<String,String> result = EgovBrowserUtil.getBrowser(userAgent);
 		float version = Float.parseFloat(result.get(EgovBrowserUtil.VERSIONKEY));
-		//System.out.println("=====>>>>> browser type = "+result.get(TYPEKEY));
-		//System.out.println("=====>>>>> browser version = "+result.get(VERSIONKEY));
-		//System.out.println("=====>>>>> filename = "+filename);
+		if (log.isDebugEnabled()) {
+			log.debug("=====>>>>> browser type = {}", result.get(TYPEKEY));
+			log.debug("=====>>>>> browser version = {}", result.get(VERSIONKEY));
+			log.debug("=====>>>>> filename = {}", filename);
+		}
 		
 		if ( EgovBrowserUtil.MSIE.equals(result.get(EgovBrowserUtil.TYPEKEY)) && version <= 8.0f ) {
 			encodedFilename = "Content-Disposition: attachment; filename="+URLEncoder.encode(filename, charSet).replaceAll("\\+", "%20");
@@ -179,11 +184,11 @@ public class EgovBrowserUtil {
 		HashMap<String,String> result = null;
 		for (int i = 0; i < testUserAgent.length; i++) {
 			result = getBrowser(testUserAgent[i]);
-			System.out.println("1. User Agent : "+testUserAgent[i]);
-			System.out.println("2. Browser Type : "+result.get(TYPEKEY));
-			System.out.println("2. Browser Version : "+result.get(VERSIONKEY));
-			//System.out.println("2. Browser Version convert: "+Float.parseFloat(result.get(VERSIONKEY)));
-			System.out.println("");
+			log.debug("1. User Agent : {}", testUserAgent[i]);
+			log.debug("2. Browser Type : {}", result.get(TYPEKEY));
+			log.debug("2. Browser Version : {}", result.get(VERSIONKEY));
+			log.debug("2. Browser Version convert: {}", Float.parseFloat(result.get(VERSIONKEY)));
+			log.debug("");
 		}
 
 	}*/
