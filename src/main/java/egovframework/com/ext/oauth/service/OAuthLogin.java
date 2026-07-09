@@ -1,8 +1,5 @@
 package egovframework.com.ext.oauth.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.scribejava.core.builder.ServiceBuilder;
@@ -11,6 +8,8 @@ import com.github.scribejava.core.model.OAuthRequest;
 import com.github.scribejava.core.model.Response;
 import com.github.scribejava.core.model.Verb;
 import com.github.scribejava.core.oauth.OAuth20Service;
+
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * OAuth 로그인
@@ -27,16 +26,16 @@ import com.github.scribejava.core.oauth.OAuth20Service;
  *  -------    --------    ---------------------------
  *   2020.03.11  표프센          최초 생성
  *   2025.06.25  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-ImmutableField(불변필드), FieldNamingConventions(필드 명명 규칙), CloseResource(리소스 닫기), UnusedPrivateMethod(사용되지 않는 개인 메서드)
+ *   2026.07.10  이백행          [2026년 컨트리뷰션] 디버그 출력에 log.debug 적용
  *
  *      </pre>
  */
+@Slf4j
 public class OAuthLogin {
 	private final OAuth20Service oauthService;
 	private final OAuthVO oauthVO;
 
 	private static final ObjectMapper MAPPER = new ObjectMapper(); // 매 요청마다 객체를 생성하지 않기 위함
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(OAuthLogin.class);
 
 	public OAuthLogin(OAuthVO oauthVO) {
 		this.oauthService = new ServiceBuilder(oauthVO.getClientId()).apiSecret(oauthVO.getClientSecret())
@@ -55,10 +54,8 @@ public class OAuthLogin {
 	}
 
 	public OAuthUniversalUser getUserProfile(String code) throws Exception {
-		// System.out.println("===>>> oauthService.getApiKey() =
-		// "+oauthService.getApiKey());
-		// System.out.println("===>>> oauthService.getApiSecret() =
-		// "+oauthService.getApiSecret());
+		log.debug("===>>> oauthService.getApiKey() ={}", oauthService.getApiKey());
+		log.debug("===>>> oauthService.getApiSecret() ={}", oauthService.getApiSecret());
 		OAuth2AccessToken accessToken = oauthService.getAccessToken(code);
 
 		OAuthRequest request = new OAuthRequest(Verb.GET, this.oauthVO.getProfileUrl());
@@ -70,7 +67,7 @@ public class OAuthLogin {
 	}
 
 	private OAuthUniversalUser parseJson(String body) throws Exception {
-		LOGGER.info("============================\n" + body + "\n==================");
+		log.info("============================\n{}\n==================", body);
 		OAuthUniversalUser user = new OAuthUniversalUser();
 
 		JsonNode rootNode = MAPPER.readTree(body);
