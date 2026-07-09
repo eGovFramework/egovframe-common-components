@@ -35,6 +35,7 @@ import egovframework.com.dam.spe.req.service.EgovRequestOfferService;
 import egovframework.com.dam.spe.req.service.RequestOfferVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -165,10 +166,10 @@ public class EgovRequestOfferController {
 	 * @return "egovframework/com/dam/spe/req/EgovRequestOfferVODetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/dam/spe/req/detailRequestOffer.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/dam/spe/req/detailRequestOffer.do")
 	public String EgovRequestOfferDetail(@ModelAttribute("searchVO") RequestOfferVO searchVO,
 			RequestOfferVO requestOfferVO, @RequestParam Map<?, ?> commandMap,
-			ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
+			ModelMap model, RedirectAttributes redirectAttributes, HttpServletRequest request) throws Exception {
 
 		// Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -183,7 +184,9 @@ public class EgovRequestOfferController {
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
-		if (sCmd.equals("del")) {
+		boolean isDelete = sCmd.equals("del") && "POST".equalsIgnoreCase(request.getMethod());
+
+		if (isDelete) {
 
 			HashMap<String, String> hmParam = new HashMap<String, String>();
 			hmParam.put("ansParents", requestOfferVO.getKnoId());
@@ -199,14 +202,14 @@ public class EgovRequestOfferController {
 
 				model.addAttribute("reusltScript", reusltScript);
 
-				sCmd = "delMsg";
+				isDelete = false;
 			} else {
 				egovRequestOfferVOService.deleteRequestOffer(requestOfferVO);
 				sLocationUrl = "forward:/dam/spe/req/listRequestOffer.do";
 			}
 		}
 
-		if (!sCmd.equals("del")) {
+		if (!isDelete) {
 			// 상세정보 불러오기
 			RequestOfferVO requestOfferVOs = egovRequestOfferVOService.selectRequestOfferDetail(requestOfferVO);
 			model.addAttribute("requestOfferVO", requestOfferVOs);

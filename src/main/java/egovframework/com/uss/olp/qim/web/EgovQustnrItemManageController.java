@@ -13,7 +13,6 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -28,6 +27,7 @@ import egovframework.com.uss.olp.qim.service.QustnrItemManageVO;
 import egovframework.com.uss.olp.qmc.service.EgovQustnrManageService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -72,16 +72,16 @@ public class EgovQustnrItemManageController {
 	 * @return "egovframework/com/uss/olp/qim/EgovQustnrItemManageListPopup"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qim/EgovQustnrItemManageListPopup.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/uss/olp/qim/EgovQustnrItemManageListPopup.do")
 	public String egovQustnrItemManageListPopup(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap,
 			QustnrItemManageVO qustnrItemManageVO,
-    		ModelMap model)
+    		ModelMap model, HttpServletRequest request)
     throws Exception {
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
-		if(sCmd.equals("del")){
+		if(sCmd.equals("del") && "POST".equalsIgnoreCase(request.getMethod())){
 			egovQustnrItemManageService.deleteQustnrItemManage(qustnrItemManageVO);
 		}
 

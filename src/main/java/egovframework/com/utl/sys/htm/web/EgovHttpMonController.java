@@ -28,6 +28,7 @@ import egovframework.com.utl.sys.htm.service.HttpMonLog;
 import egovframework.com.utl.sys.htm.service.HttpMonLogVO;
 import egovframework.com.utl.sys.htm.service.HttpMonVO;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -137,12 +138,12 @@ public class EgovHttpMonController {
 	 *
 	 * @param siteUrl
 	 */
-	@RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonRegist.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonRegist.do")
 	public String insertHttpMon(
 		@Valid @ModelAttribute("httpMon") HttpMon httpMon,
 		BindingResult bindingResult,
 		ModelMap model,
-		RedirectAttributes redirectAttributes) throws Exception {
+		RedirectAttributes redirectAttributes, HttpServletRequest request) throws Exception {
 
 		// Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -154,7 +155,8 @@ public class EgovHttpMonController {
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-		if (httpMon.getWebKind() == null || httpMon.getWebKind().equals("") || bindingResult.hasErrors()) {
+		if (httpMon.getWebKind() == null || httpMon.getWebKind().equals("") || bindingResult.hasErrors()
+				|| !"POST".equalsIgnoreCase(request.getMethod())) {
 			return "egovframework/com/utl/sys/htm/EgovComUtlHttpMonRegist";
 		}
 

@@ -23,6 +23,7 @@ import egovframework.com.uss.ion.rss.service.EgovRssTagManageService;
 import egovframework.com.uss.ion.rss.service.RssManage;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -90,11 +91,12 @@ public class EgovRssTagManageController {
      * @throws Exception
      */
     @IncludedInfo(name="RSS태그관리", listUrl="/uss/ion/rss/listRssTagManage.do", order = 820 ,gid = 50)
-    @RequestMapping(value = "/uss/ion/rss/listRssTagManage.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/uss/ion/rss/listRssTagManage.do")
     public String EgovRssTagManageList(
             @RequestParam Map<?, ?> commandMap,
             @RequestParam(value = "checkList", required=false) List<String> checkList,
-            @ModelAttribute("rssManage") RssManage rssManage, ModelMap model)
+            @ModelAttribute("rssManage") RssManage rssManage, ModelMap model,
+            HttpServletRequest request)
             throws Exception {
 
     	//변수 설정
@@ -111,7 +113,7 @@ public class EgovRssTagManageController {
         LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
         //삭제 모드로 실행시
-        if(sCmd.equals("del")){
+        if(sCmd.equals("del") && "POST".equalsIgnoreCase(request.getMethod())){
 
         	for(String checkData : checkList) {
 
@@ -168,16 +170,16 @@ public class EgovRssTagManageController {
      * @return String -리턴 URL
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/ion/rss/detailRssTagManage.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/uss/ion/rss/detailRssTagManage.do")
     public String EgovRssTagManageDetail(
             RssManage rssManage, @RequestParam Map<?, ?> commandMap,
-            ModelMap model) throws Exception {
+            ModelMap model, HttpServletRequest request) throws Exception {
 
         String sLocationUrl = "egovframework/com/uss/ion/rss/EgovRssTagManageDetail";
 
         String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
-        if (sCmd.equals("del")) {
+        if (sCmd.equals("del") && "POST".equalsIgnoreCase(request.getMethod())) {
             egovRssManageService.deleteRssTagManage(rssManage);
             sLocationUrl = "redirect:/uss/ion/rss/listRssTagManage.do";
         } else {

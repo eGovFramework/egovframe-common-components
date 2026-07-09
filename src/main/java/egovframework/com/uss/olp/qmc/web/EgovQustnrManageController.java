@@ -28,6 +28,7 @@ import egovframework.com.uss.olp.qmc.service.EgovQustnrManageService;
 import egovframework.com.uss.olp.qmc.service.QustnrManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -79,15 +80,16 @@ public class EgovQustnrManageController {
 	 * @return "egovframework/com/uss/olp/qmc/EgovQustnrManageListPopup"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageListPopup.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageListPopup.do")
 	public String egovQustnrManageListPopup(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<?, ?> commandMap, QustnrManageVO qustnrManageVO, ModelMap model) throws Exception {
+			@RequestParam Map<?, ?> commandMap, QustnrManageVO qustnrManageVO, ModelMap model,
+			HttpServletRequest request) throws Exception {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("searchVO={}", searchVO);
 		}
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
-		if (sCmd.equals("del")) {
+		if (sCmd.equals("del") && "POST".equalsIgnoreCase(request.getMethod())) {
 			egovQustnrManageService.deleteQustnrManage(qustnrManageVO);
 		}
 
@@ -131,12 +133,13 @@ public class EgovQustnrManageController {
 	 * @throws Exception
 	 */
 	@IncludedInfo(name = "설문관리", order = 590, gid = 50)
-	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageList.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageList.do")
 	public String egovQustnrManageList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<?, ?> commandMap, QustnrManageVO qustnrManageVO, ModelMap model) throws Exception {
+			@RequestParam Map<?, ?> commandMap, QustnrManageVO qustnrManageVO, ModelMap model,
+			HttpServletRequest request) throws Exception {
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
-		if (sCmd.equals("del")) {
+		if (sCmd.equals("del") && "POST".equalsIgnoreCase(request.getMethod())) {
 			egovQustnrManageService.deleteQustnrManage(qustnrManageVO);
 		}
 

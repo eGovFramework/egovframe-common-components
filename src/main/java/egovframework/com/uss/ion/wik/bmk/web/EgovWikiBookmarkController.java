@@ -21,6 +21,7 @@ import egovframework.com.uss.ion.wik.bmk.service.EgovWikiBookmarkService;
 import egovframework.com.uss.ion.wik.bmk.service.WikiBookmark;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 위키북마크를 처리하는 Controller Class 구현
@@ -65,13 +66,13 @@ public class EgovWikiBookmarkController {
      * @throws Exception
      */
     @IncludedInfo(name="Wiki기능", order = 810 ,gid = 50)
-    @RequestMapping(value = "/uss/ion/wik/bmk/listWikiBookmark.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/uss/ion/wik/bmk/listWikiBookmark.do")
     public String EgovWikiBookmarkList(
     		@ModelAttribute("searchVO") WikiBookmark searchVO,
     		WikiBookmark wikiBookmark,
     		@RequestParam Map<?, ?> commandMap,
     		@RequestParam(value = "checkList", required=false) List<String> checkList,
-            ModelMap model) throws Exception {
+            ModelMap model, HttpServletRequest request) throws Exception {
 
     	//변수 설정
     	String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
@@ -87,7 +88,7 @@ public class EgovWikiBookmarkController {
         LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
         //삭제 모드로 실행시
-        if(sCmd.equals("del")){
+        if(sCmd.equals("del") && "POST".equalsIgnoreCase(request.getMethod())){
 
         	for(String checkData : checkList) {
         		LOGGER.debug("===>>> checkData = "+checkData);

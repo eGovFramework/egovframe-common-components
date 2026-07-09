@@ -12,7 +12,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -76,7 +75,7 @@ public class EgovNoteRecptnController {
      * @throws Exception
      */
     @IncludedInfo(name="받은쪽지함관리", order = 850 ,gid = 50)
-    @RequestMapping(value = "/uss/ion/ntr/listNoteRecptn.do", method = RequestMethod.POST)
+    @RequestMapping(value = "/uss/ion/ntr/listNoteRecptn.do")
     public String EgovNoteRecptnList(
 			 HttpServletRequest request,
 			 HttpServletResponse response,
@@ -100,7 +99,7 @@ public class EgovNoteRecptnController {
         LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
         //삭제 모드로 실행시
-        if(sCmd.equals("del")){
+        if(sCmd.equals("del") && "POST".equalsIgnoreCase(request.getMethod())){
         	LOGGER.debug("##### EgovNoteRecptnController EgovNoteRecptnList()  start");
         	LOGGER.debug("noteId > {}", commandMap.get("noteIdAll"));
         	LOGGER.debug("noteTrnsmitId > {}", commandMap.get("noteTrnsmitIdAll"));
@@ -176,18 +175,18 @@ public class EgovNoteRecptnController {
      * @throws Exception
      */
     @SuppressWarnings("unused")
-	@RequestMapping(value = "/uss/ion/ntr/detailNoteRecptn.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/uss/ion/ntr/detailNoteRecptn.do")
     public String EgovNoteRecptnDetail(
     		@ModelAttribute("searchVO") NoteRecptn searchVO,
             @ModelAttribute("noteRecptn") NoteRecptn noteRecptn,
     		EgovSecurityMap securityMap,
-            ModelMap model) throws Exception {
+            ModelMap model, HttpServletRequest request) throws Exception {
 
 		String sLocationUrl = "egovframework/com/uss/ion/nts/EgovNoteTrnsmitDetail";
 
         String sCmd = securityMap.get("cmd") == null ? "" : (String) securityMap.get("cmd");
 
-        if(sCmd.equals("del")){
+        if(sCmd.equals("del") && "POST".equalsIgnoreCase(request.getMethod())){
         	LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
             searchVO.setRcverId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
         	egovNoteRecptnService.deleteNoteRecptn(searchVO);

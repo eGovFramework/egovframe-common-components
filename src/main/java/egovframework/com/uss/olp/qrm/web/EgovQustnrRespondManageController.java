@@ -30,6 +30,7 @@ import egovframework.com.uss.olp.qrm.service.EgovQustnrRespondManageService;
 import egovframework.com.uss.olp.qrm.service.QustnrRespondManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -135,15 +136,15 @@ public class EgovQustnrRespondManageController {
 	 * @return "egovframework/com/uss/olp/qrm/EgovQustnrRespondManageDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qrm/EgovQustnrRespondManageDetail.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/uss/olp/qrm/EgovQustnrRespondManageDetail.do")
 	public String egovQustnrRespondManageDetail(@ModelAttribute QustnrRespondManageVO qustnrRespondManageVO,
-			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+			@RequestParam Map<?, ?> commandMap, ModelMap model, HttpServletRequest request) throws Exception {
 
 		String sLocationUrl = "egovframework/com/uss/olp/qrm/EgovQustnrRespondManageDetail";
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
-		if (sCmd.equals("del")) {
+		if (sCmd.equals("del") && "POST".equalsIgnoreCase(request.getMethod())) {
 			egovQustnrRespondManageService.deleteQustnrRespondManage(qustnrRespondManageVO);
 			sLocationUrl = "redirect:/uss/olp/qrm/EgovQustnrRespondManageList.do";
 		} else {

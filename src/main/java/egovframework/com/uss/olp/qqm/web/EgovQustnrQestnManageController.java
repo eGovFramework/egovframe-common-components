@@ -32,6 +32,7 @@ import egovframework.com.uss.olp.qqm.service.EgovQustnrQestnManageService;
 import egovframework.com.uss.olp.qqm.service.QustnrQestnManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -176,13 +177,13 @@ public class EgovQustnrQestnManageController {
 	 */
 	@SuppressWarnings("unused")
 	@IncludedInfo(name="질문관리", order = 630 ,gid = 50)
-	@RequestMapping(value = "/uss/olp/qqm/EgovQustnrQestnManageList.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/uss/olp/qqm/EgovQustnrQestnManageList.do")
 	public String egovQustnrQestnManageList(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@ModelAttribute("qustnrQestnManageVO") QustnrQestnManageVO qustnrQestnManageVO,
 			@RequestParam Map<?, ?> commandMap,
 			RedirectAttributes redirectAttributes,
-    		ModelMap model)
+    		ModelMap model, HttpServletRequest request)
     throws Exception {
     	// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -197,7 +198,7 @@ public class EgovQustnrQestnManageController {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
 		String sSearchMode = commandMap.get("searchMode") == null ? "" : (String)commandMap.get("searchMode");
 
-		if(sCmd.equals("del")){
+		if(sCmd.equals("del") && "POST".equalsIgnoreCase(request.getMethod())){
 			egovQustnrQestnManageService.deleteQustnrQestnManage(qustnrQestnManageVO);
 		}
 

@@ -633,7 +633,7 @@ public class EgovQustnrRespondInfoController {
 	 * @return "egovframework/com/uss/olp/qri/EgovQustnrRespondInfoRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qri/EgovQustnrRespondInfoRegist.do", method = RequestMethod.POST)
+	@RequestMapping(value = "/uss/olp/qri/EgovQustnrRespondInfoRegist.do")
 	public String qustnrRespondInfoRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, HttpServletRequest request,
 			@Valid @ModelAttribute("qustnrRespondInfoVO") QustnrRespondInfoVO qustnrRespondInfoVO,
@@ -658,7 +658,7 @@ public class EgovQustnrRespondInfoController {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 		LOGGER.info("cmd => {}", sCmd);
 
-		if (sCmd.equals("save")) {
+		if (sCmd.equals("save") && "POST".equalsIgnoreCase(request.getMethod())) {
 			if (bindingResult.hasErrors()) {
 				return sLocationUrl;
 			}
