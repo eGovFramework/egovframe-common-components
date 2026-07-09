@@ -46,6 +46,7 @@ import jakarta.validation.Valid;
  *   2009.04.01  이중호          최초 생성
  *   2011.08.26  정진오          IncludedInfo annotation 추가
  *   2025.07.01  이백행          컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *   2026.07.09  EricSeokgon      PMD UseCollectionIsEmpty: size() > 0 대신 !isEmpty() 사용
  *
  *      </pre>
  */
@@ -386,7 +387,7 @@ public class EgovSystemCntcController {
 		searchCntcSystemVO.setSearchCondition("CodeList");
 
 		if (systemCntc.getProvdInsttId() == null || systemCntc.getProvdInsttId().equals("")) {
-			if (cntcInsttList.size() > 0) {
+			if (!cntcInsttList.isEmpty()) {
 				EgovMap emp = cntcInsttList.get(0);
 				systemCntc.setProvdInsttId(emp.get("insttId").toString());
 			}
@@ -396,7 +397,7 @@ public class EgovSystemCntcController {
 		model.addAttribute("cntcProvdSystemList", cntcProvdSystemList);
 
 		if (systemCntc.getRequstInsttId() == null || systemCntc.getRequstInsttId().equals("")) {
-			if (cntcInsttList.size() > 0) {
+			if (!cntcInsttList.isEmpty()) {
 				EgovMap emp = cntcInsttList.get(0);
 				systemCntc.setRequstInsttId(emp.get("insttId").toString());
 			}
@@ -413,7 +414,7 @@ public class EgovSystemCntcController {
 		searchCntcServiceVO.setInsttId(systemCntc.getProvdInsttId());
 
 		if (systemCntc.getProvdSysId() == null || systemCntc.getProvdSysId().equals("")) {
-			if (cntcProvdSystemList.size() > 0) {
+			if (!cntcProvdSystemList.isEmpty()) {
 				EgovMap emp = cntcProvdSystemList.get(0);
 				systemCntc.setProvdSysId(emp.get("sysId").toString());
 			}
