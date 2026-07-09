@@ -7,15 +7,13 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cop.sms.service.EgovSmsInfoService;
 import egovframework.com.cop.sms.service.Sms;
 import egovframework.com.cop.sms.service.SmsConnection;
 import egovframework.com.cop.sms.service.SmsRecptn;
 import egovframework.com.cop.sms.service.SmsVO;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 문자메시지를 위한 서비스 구현 클래스 (프레임워크 비종속 버전)
@@ -32,15 +30,15 @@ import egovframework.com.cop.sms.service.SmsVO;
  *  -------    --------    ---------------------------
  *   2009.11.24  한성곤          최초 생성
  *   2025.06.05  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-ImmutableField(불변필드), LocalVariableNamingConventions(지역 변수 명명 규칙)
+ *   2026.07.09  이백행          [2026년 컨트리뷰션] 디버그 출력에 log.debug 적용
  *
  *      </pre>
  */
+@Slf4j
 public class EgovSmsBasicServiceImpl implements EgovSmsInfoService {
 	private final SmsBasicDAO smsDao = new SmsBasicDAO();
 
 	private String smeConfigPath = null;
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovSmsBasicServiceImpl.class);
 
 	public EgovSmsBasicServiceImpl() {
 		// --------------------------------
@@ -289,21 +287,13 @@ public class EgovSmsBasicServiceImpl implements EgovSmsInfoService {
 		String text = smsConn.getText();
 		String messageId = smsConn.getMessageId(); // messageId 지정 필요
 
-		/*
-		 * System.out.println("------------------------");
-		 * System.out.println("callTo = " + callTo); System.out.println("callFrom = " +
-		 * callFrom); System.out.println("callBack = " + callBack);
-		 * System.out.println("callBackUrl = " + callBackUrl);
-		 * System.out.println("text = " + text); System.out.println("messageId = " +
-		 * messageId);
-		 */
-		LOGGER.info("------------------------");
-		LOGGER.info("callTo = {}", callTo);
-		LOGGER.info("callFrom = {}", callFrom);
-		LOGGER.info("callBack = {}", callBack);
-		LOGGER.info("callBackUrl = {}", callBackUrl);
-		LOGGER.info("text = {}", text);
-		LOGGER.info("messageId = {}", messageId);
+		log.info("------------------------");
+		log.info("callTo = {}", callTo);
+		log.info("callFrom = {}", callFrom);
+		log.info("callBack = {}", callBack);
+		log.info("callBackUrl = {}", callBackUrl);
+		log.info("text = {}", text);
+		log.info("messageId = {}", messageId);
 
 		// SMS 전송 요청
 		EgovSmsInfoSender sender = null;
@@ -356,21 +346,13 @@ public class EgovSmsBasicServiceImpl implements EgovSmsInfoService {
 				String text = smsConn[i].getText();
 				String messageId = smsConn[i].getMessageId(); // messageId 지정 필요
 
-				/*
-				 * System.out.println("------------------------"); System.out.println("callTo["
-				 * + i + "] = " + callTo); System.out.println("callFrom[" + i + "] = " +
-				 * callFrom); System.out.println("callBack[" + i + "] = " + callBack);
-				 * System.out.println("callBackUrl[" + i + "] = " + callBackUrl);
-				 * System.out.println("text =[" + i + "] = " + text);
-				 * System.out.println("messageId[" + i + "] = " + messageId);
-				 */
-				LOGGER.info("------------------------");
-				LOGGER.info("callTo[{}] = {}", i, callTo);
-				LOGGER.info("callFrom[{}] = {}", i, callFrom);
-				LOGGER.info("callBack[{}] = {}", i, callBack);
-				LOGGER.info("callBackUrl[{}] = {}", i, callBackUrl);
-				LOGGER.info("text =[{}] = {}", i, text);
-				LOGGER.info("messageId[{}] = {}", i, messageId);
+				log.info("------------------------");
+				log.info("callTo[{}] = {}", i, callTo);
+				log.info("callFrom[{}] = {}", i, callFrom);
+				log.info("callBack[{}] = {}", i, callBack);
+				log.info("callBackUrl[{}] = {}", i, callBackUrl);
+				log.info("text =[{}] = {}", i, text);
+				log.info("messageId[{}] = {}", i, messageId);
 
 				// smsConn[i] = sendRequsest(smsConn[i]);
 				result = sender.send(smsConn[i]);
