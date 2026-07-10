@@ -1313,7 +1313,7 @@ public class EgovCalRestdeManageController {
 	 * @return "forward:/sym/cal/EgovRestdeList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/cal/EgovRestdeRemove.do")
+	@PostMapping(value = "/sym/cal/EgovRestdeRemove.do")
 	public String deleteRestde(@ModelAttribute("loginVO") LoginVO loginVO, Restde restde, ModelMap model)
 			throws Exception {
 		restdeManageService.deleteRestde(restde);
