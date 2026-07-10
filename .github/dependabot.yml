@@ -1,0 +1,43 @@
+# Dependabot 설정 — 의존성/GitHub Actions 자동 업데이트
+# 제안: eGovFramework/egovframe-common-components#1141
+# 참고: https://docs.github.com/code-security/dependabot/dependabot-version-updates/configuration-options-for-the-dependabot.yml-file
+version: 2
+updates:
+  # 1) GitHub Actions
+  #    CI 워크플로가 사용하는 액션(actions/checkout, actions/setup-java 등)의 버전을 최신화합니다.
+  #    부모 POM과 무관하고 변경 범위가 작아 노이즈가 거의 없습니다.
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "ci"
+    labels:
+      - "dependencies"
+      - "github-actions"
+
+  # 2) Maven
+  #    common-components의 pom.xml에 직접 선언된 의존성 버전을 갱신합니다.
+  #    (버전을 부모 POM egovframe-web-config-parent에서 상속받는 항목은 대상이 아니므로 PR 노이즈가 자연히 제한됩니다.)
+  #    관련 라이브러리를 그룹으로 묶어 PR 수를 더 줄입니다.
+  - package-ecosystem: "maven"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    open-pull-requests-limit: 5
+    commit-message:
+      prefix: "deps"
+    labels:
+      - "dependencies"
+      - "java"
+    groups:
+      spring:
+        patterns:
+          - "org.springframework*"
+          - "org.springframework.security*"
+      test-and-build:
+        patterns:
+          - "org.junit*"
+          - "org.mockito*"
+          - "org.apache.maven.plugins*"
