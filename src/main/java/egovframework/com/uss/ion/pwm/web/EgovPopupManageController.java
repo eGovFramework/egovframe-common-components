@@ -9,8 +9,6 @@ import java.util.Map;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -31,6 +29,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <pre>
@@ -55,13 +54,13 @@ import jakarta.validation.Valid;
  *   2019.05.17  신용호          취약점 조치 및 보완
  *   2025.08.11  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(부적절한 자원 해제)
  *   2025.08.11  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AvoidReassigningParameters(넘겨받는 메소드 parameter 값을 직접 변경하는 코드 탐지)
+ *   2026.07.10  이백행          [2026년 컨트리뷰션] 디버그 출력에 log.debug 적용
  *
  *      </pre>
  */
 @Controller
+@Slf4j
 public class EgovPopupManageController {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovPopupManageController.class);
 
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
@@ -305,7 +304,7 @@ public class EgovPopupManageController {
 		String sLocationUrl = "egovframework/com/uss/ion/pwm/EgovPopupRegist";
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
-		LOGGER.info("cmd => {}", sCmd);
+		log.info("cmd => {}", sCmd);
 
 		if (sCmd.equals("save")) {
 
@@ -354,8 +353,8 @@ public class EgovPopupManageController {
 		response.setContentType("text/html;charset=utf-8");
 		PrintWriter out = response.getWriter();
 
-			LOGGER.debug("commandMap : {}", commandMap);
-			LOGGER.debug("popupManageVO : {}", popupManageVO);
+			log.debug("commandMap : {}", commandMap);
+			log.debug("popupManageVO : {}", popupManageVO);
 
 			PopupManageVO popupManageVOs = egovPopupManageService.selectPopup(popupManageVO);
 
@@ -387,19 +386,19 @@ public class EgovPopupManageController {
 		String fileUrl2 = EgovWebUtil.filePathBlackList(fileUrl);
 
 		List<EgovMap> popupWhiteList = egovPopupManageService.selectPopupWhiteList();
-		LOGGER.debug("Open Popup > WhiteList Count = {}", popupWhiteList.size());
+		log.debug("Open Popup > WhiteList Count = {}", popupWhiteList.size());
 		if (fileUrl2 == null) {
 			fileUrl2 = "";
 		}
 		for (Object obj : popupWhiteList) {
 			EgovMap map = (EgovMap) obj;
-			LOGGER.debug("Open Popup > whiteList fileUrl = " + map.get("fileUrl"));
+			log.debug("Open Popup > whiteList fileUrl = {}", map.get("fileUrl"));
 			if (fileUrl2.equals(map.get("fileUrl"))) {
 				return fileUrl2;
 			}
 		}
-		// System.out.println("===>>> "+popupWhiteList.size());
-		LOGGER.debug("Open Popup > WhiteList mismatch! Please check Admin page!");
+		log.debug("===>>> {}", popupWhiteList.size());
+		log.debug("Open Popup > WhiteList mismatch! Please check Admin page!");
 		return "egovframework/com/cmm/egovError";
 	}
 

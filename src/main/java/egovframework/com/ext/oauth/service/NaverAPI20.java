@@ -46,7 +46,6 @@ public class NaverAPI20 extends DefaultApi20 implements OAuthConfig {
         if (state != null) {
             parameters.add(OAuthConstants.STATE, state);
         }
-        //System.out.println("===>>> "+parameters.appendTo(""));
         return parameters.appendTo(getAuthorizationBaseUrl());
     }
 }

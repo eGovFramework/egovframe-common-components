@@ -2,15 +2,12 @@ package egovframework.com.cop.sms.service.impl;
 
 import java.io.IOException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import egovframework.com.cop.sms.service.SmsRecptn;
+import lombok.extern.slf4j.Slf4j;
 import x3.client.smeapi.SMEConnection;
 import x3.client.smeapi.SMEConnectionFactory;
 import x3.client.smeapi.SMEException;
 import x3.client.smeapi.SMEListener;
-import x3.client.smeapi.SMEMessage;
 import x3.client.smeapi.SMEReceiver;
 import x3.client.smeapi.SMEReport;
 import x3.client.smeapi.SMESession;
@@ -35,9 +32,11 @@ import x3.client.smeapi.impl.SMELogger;
  *   2011.10.10  이기하          보안점검 후속초치(디버거코드 주석처리)
  *   2017.03.07  조성원          시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
  *   2025.06.05  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-ImmutableField(불변필드)
+ *   2026.07.09  이백행          [2026년 컨트리뷰션] 디버그 출력에 log.debug 적용
  *
  *      </pre>
  */
+@Slf4j
 public class EgovSmsBasicReceiver implements SMEListener {
 	private final SmsBasicDAO smsDao = new SmsBasicDAO();
 
@@ -62,8 +61,6 @@ public class EgovSmsBasicReceiver implements SMEListener {
 	/** 연결 여부 */
 	@SuppressWarnings("unused")
 	private boolean isConnected = false;
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovSmsBasicReceiver.class);
 
 	/**
 	 * SMS 결과 수신을 위한 Connection 및 Session 생성한다.
@@ -91,7 +88,7 @@ public class EgovSmsBasicReceiver implements SMEListener {
 				receiver.close();
 			}
 		} catch (SMEException ignore) {
-			LOGGER.debug(ignore.getMessage());
+			log.error(ignore.getMessage());
 		}
 
 		try {
@@ -99,7 +96,7 @@ public class EgovSmsBasicReceiver implements SMEListener {
 				sessReceiver.close();
 			}
 		} catch (SMEException ignore) {
-			LOGGER.debug(ignore.getMessage());
+			log.error(ignore.getMessage());
 		}
 
 		try {
@@ -107,8 +104,8 @@ public class EgovSmsBasicReceiver implements SMEListener {
 				connReceiver.close();
 			}
 		} catch (SMEException ignore) {
-			LOGGER.error("Exception: {}", ignore.getClass().getName());
-			LOGGER.error("Exception  Message: {}", ignore.getMessage());
+			log.error("Exception: {}", ignore.getClass().getName());
+			log.error("Exception  Message: {}", ignore.getMessage());
 		}
 	}
 
@@ -152,7 +149,7 @@ public class EgovSmsBasicReceiver implements SMEListener {
 				String doneTime = rpt.getDeliverTime(); // 이동통신사 결과처리시간-단말기에 전달된 시간(이동통신사 생성)
 				String netCode = rpt.getDestination(); // 이동통신사 정보
 
-				// System.out.println("Receiver Number is :" +
+				// log.debug("Receiver Number is :{}",
 				// ((SMEReportImpl)rpt).receiver.activeCount()); // 주석처리
 
 				String resultMsg = "";
@@ -243,23 +240,11 @@ public class EgovSmsBasicReceiver implements SMEListener {
 					resultMsg = "알 수 없는 오류 발생";
 				}
 
-				if (nRes != SMEMessage.RESULT_SUCCESS) {
-					// System.out.println("SMSMessage (msgId = " + msgId + ") report = " +
-					// rpt.getResult());
-					LOGGER.info("MessageId   : {}", msgId);
-					LOGGER.info("Result      : {}", nRes);
-					LOGGER.info("Result Msg. : {}", resultMsg);
-					LOGGER.info("Done Time   : {}", doneTime);
-					LOGGER.info("Net Code    : {}", netCode);
-				} else {
-					// System.out.println("SMEMessage (msgId = " + msgId + ") report = " +
-					// rpt.getResult());
-					LOGGER.info("MessageId   : {}", msgId);
-					LOGGER.info("Result      : {}", nRes);
-					LOGGER.info("Result Msg. : {}", resultMsg);
-					LOGGER.info("Done Time   : {}", doneTime);
-					LOGGER.info("Net Code    : {}", netCode);
-				}
+				log.info("MessageId   : {}", msgId);
+				log.info("Result      : {}", nRes);
+				log.info("Result Msg. : {}", resultMsg);
+				log.info("Done Time   : {}", doneTime);
+				log.info("Net Code    : {}", netCode);
 
 				// Spring context에서 호출된 경우만 DB를 처리함
 				if (smeConfigPath != null) {
@@ -277,13 +262,13 @@ public class EgovSmsBasicReceiver implements SMEListener {
 					} catch (IOException ex) {
 //						LOGGER.error("Exception: {}", ex.getClass().getName());
 //						LOGGER.error("Exception  Message: {}", ex.getMessage());
-						LOGGER.error("[IOException] : Connection Close");
+						log.error("[IOException] : Connection Close");
 					} catch (Exception ex) {
-						LOGGER.error("[" + ex.getClass() + "] Connection Close : ", ex.getMessage());
+						log.error("[{}] Connection Close : {}", ex.getClass(), ex.getMessage());
 					}
 				}
 			} else {
-				LOGGER.debug("SMEReceiver Disconnected!!");
+				log.debug("SMEReceiver Disconnected!!");
 				isConnected = false;
 			}
 		}

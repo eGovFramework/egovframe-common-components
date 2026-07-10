@@ -7,6 +7,7 @@ import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.utl.sim.service.EgovClntInfo;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 사용자IP 체크 인터셉터
@@ -21,15 +22,16 @@ import jakarta.servlet.http.HttpServletResponse;
  *   수정일     수정자          수정내용
  *  ----------  --------    ---------------------------
  *  2013.03.28	이기하          최초 생성
+ *  2026.07.09	이백행          [2026년 컨트리뷰션] 디버그 출력에 log.debug 적용
  *  </pre>
  */
-
+@Slf4j
 public class IpObtainInterceptor implements HandlerInterceptor {
 
 	@Override
 	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-		System.out.println("### IpObtainInterceptor start... ");
+		log.debug("### IpObtainInterceptor start... ");
 		
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 

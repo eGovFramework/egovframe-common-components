@@ -24,6 +24,7 @@ import egovframework.com.utl.sys.nsm.service.NtwrkSvcMntrngLogVO;
 import egovframework.com.utl.sys.nsm.service.NtwrkSvcMntrngVO;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 개요
@@ -40,11 +41,13 @@ import jakarta.validation.Valid;
  *
  *   수정일       수정자           수정내용
  *  -------     --------    ---------------------------
- *  2010.06.28   장철호     최초 생성
- *  2011.8.26	정진오			IncludedInfo annotation 추가
+ *   2010.06.28  장철호          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2026.07.10  이백행          [2026년 컨트리뷰션] 디버그 출력에 log.debug 적용
  * </pre>
  */
 @Controller
+@Slf4j
 public class EgovNtwrkSvcMntrngController {
 
 	@Resource(name="EgovNtwrkSvcMntrngService")
@@ -352,7 +355,7 @@ public class EgovNtwrkSvcMntrngController {
 			}
 
 			list.set(k, logVO);
-			//System.out.println(list.get(k).getCreatDt());
+			log.debug(list.get(k).getCreatDt());
 		}
 
 		// 조회시작시

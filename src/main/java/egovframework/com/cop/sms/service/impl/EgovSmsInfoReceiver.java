@@ -1,8 +1,6 @@
 package egovframework.com.cop.sms.service.impl;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.cmm.service.EgovProperties;
@@ -10,11 +8,11 @@ import egovframework.com.cmm.util.EgovBasicLogger;
 import egovframework.com.cop.sms.service.SmsRecptn;
 import jakarta.annotation.Resource;
 import lombok.Synchronized;
+import lombok.extern.slf4j.Slf4j;
 import x3.client.smeapi.SMEConnection;
 import x3.client.smeapi.SMEConnectionFactory;
 import x3.client.smeapi.SMEException;
 import x3.client.smeapi.SMEListener;
-import x3.client.smeapi.SMEMessage;
 import x3.client.smeapi.SMEReceiver;
 import x3.client.smeapi.SMEReport;
 import x3.client.smeapi.SMESession;
@@ -35,11 +33,13 @@ import x3.client.smeapi.impl.SMELogger;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.08.05  한성곤          최초 생성
- *   2011.10.10	 이기하			 보안점검 후속초치(디버거코드 주석처리)
- *	 2016-02-13   이정은 	  시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+ *   2011.10.10  이기하          보안점검 후속초치(디버거코드 주석처리)
+ *	 2016.02.13  이정은          시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
+ *   2026.07.09  이백행          [2026년 컨트리뷰션] 디버그 출력에 log.debug 적용
  * </pre>
  */
 @Service("EgovSmsInfoReceiver")
+@Slf4j
 public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEListener {
 	@Resource(name = "SmsDAO")
 	private SmsDAO smsDao;
@@ -64,8 +64,6 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 
 	/** 연결 여부 */
 	private boolean isConnected = false;
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovSmsInfoReceiver.class);
 
 	/**
 	 * SMS 결과 수신을 위한 Connection 및 Session 생성한다.
@@ -127,19 +125,19 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 		tmp = SMEConfig.getLogLevel();
 		if (tmp != null && !tmp.equals("")) {
 			SMELogger.setLogLevel(tmp);
-			// System.out.println(tmp);
+			log.debug(tmp);
 		}
 
 		tmp = SMEConfig.getLogLayout();
 		if (tmp != null && !tmp.equals("")) {
 			SMELogger.setLogLayout(tmp);
-			// System.out.println(tmp);
+			log.debug(tmp);
 		}
 
 		tmp = SMEConfig.getLogPath();
 		if (tmp != null && !tmp.equals("")) {
 			SMELogger.setLogPath(tmp);
-			// System.out.println(tmp);
+			log.debug(tmp);
 		}
 
 		SMELogger.setUseConsoleLogger(SMEConfig.getUseConsoleLogger());
@@ -159,7 +157,7 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 				String doneTime = rpt.getDeliverTime(); 	// 이동통신사 결과처리시간-단말기에 전달된 시간(이동통신사 생성)
 				String netCode = rpt.getDestination(); 		// 이동통신사 정보
 
-				//System.out.println("Receiver Number is :" + ((SMEReportImpl)rpt).receiver.activeCount()); // 주석처리
+				//log.debug("Receiver Number is :{}", ((SMEReportImpl)rpt).receiver.activeCount()); // 주석처리
 
 				String resultMsg = "";
 
@@ -249,21 +247,11 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 						resultMsg = "알 수 없는 오류 발생";
 				}
 
-				if (nRes != SMEMessage.RESULT_SUCCESS) {
-					//System.out.println("SMSMessage (msgId = " + msgId + ") report = " + rpt.getResult());
-					LOGGER.info("MessageId   : {}", msgId);
-					LOGGER.info("Result      : {}", nRes);
-					LOGGER.info("Result Msg. : {}", resultMsg);
-					LOGGER.info("Done Time   : {}", doneTime);
-					LOGGER.info("Net Code    : {}", netCode);
-				} else {
-					//System.out.println("SMEMessage (msgId = " + msgId + ") report = " + rpt.getResult());
-					LOGGER.info("MessageId   : {}", msgId);
-					LOGGER.info("Result      : {}", nRes);
-					LOGGER.info("Result Msg. : {}", resultMsg);
-					LOGGER.info("Done Time   : {}", doneTime);
-					LOGGER.info("Net Code    : {}", netCode);
-				}
+				log.info("MessageId   : {}", msgId);
+				log.info("Result      : {}", nRes);
+				log.info("Result Msg. : {}", resultMsg);
+				log.info("Done Time   : {}", doneTime);
+				log.info("Net Code    : {}", netCode);
 
 				// Spring context에서 호출된 경우만 DB를 처리함
 				if (smeConfigPath != null) {
@@ -279,14 +267,13 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 						smsDao.updateSmsRecptnInf(recptn);
 					//2017.02.08 	이정은 	시큐어코딩(ES)-부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
 					} catch (IllegalArgumentException ex) {
-						LOGGER.error("[IllegalArgumentException] : Connection Close");
+						log.error("[IllegalArgumentException] : Connection Close");
 					} catch (Exception ex) {
-						LOGGER.error("["+ ex.getClass() +"] Connection Close : ", ex.getMessage());
+						log.error("[{}] Connection Close : {}", ex.getClass(), ex.getMessage());
 					}
 				}
 			} else {
-				//System.out.println("SMEReceiver Disconnected!!"); // 주석처리
-				LOGGER.debug("SMEReceiver Disconnected!!");
+				log.debug("SMEReceiver Disconnected!!");
 				synchronized (this) {				// 221111	김혜준	2022 시큐어코딩 조치
 					this.isConnected = false;
 				}
@@ -366,14 +353,14 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 			this.smeConfigPath = EgovProperties.getPathProperty("Globals.SMEConfigPath");
 		}
 
-		LOGGER.debug("EgovSmsInfoReceiver executed...");
+		log.debug("EgovSmsInfoReceiver executed...");
 		// 2026.02.28 KISA 취약점 조치
 		try {
 			try {
 				loadSmeConfiguration();
 
 			} catch (IllegalStateException ex) {
-				LOGGER.error("{}", ex.getMessage(), ex);
+				log.error("{}", ex.getMessage(), ex);
 				return;
 			}
 
@@ -400,7 +387,7 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 					try	{
 						open();
 					} catch (SMEException ex) {
-						LOGGER.error("DEBUG: {}", ex.getMessage());
+						log.error("DEBUG: {}", ex.getMessage());
 						break;
 					}
 				}
@@ -410,8 +397,8 @@ public class EgovSmsInfoReceiver extends EgovAbstractServiceImpl implements SMEL
 			////--------------------------------
 
 		} catch (SMEException ex) {
-			LOGGER.error("Exception: {}", ex.getClass().getName());
-			LOGGER.error("Exception  Message: {}", ex.getMessage());
+			log.error("Exception: {}", ex.getClass().getName());
+			log.error("Exception  Message: {}", ex.getMessage());
 		} catch (InterruptedException ie) {
 			EgovBasicLogger.ignore("InterruptedException", ie);
 		} finally {

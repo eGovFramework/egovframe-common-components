@@ -12,6 +12,7 @@ import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.uss.olp.qtm.service.EgovQustnrTmplatManageService;
 import egovframework.com.uss.olp.qtm.service.QustnrTmplatManageVO;
 import jakarta.annotation.Resource;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 설문템플릿 ServiceImpl Class 구현
@@ -26,13 +27,13 @@ import jakarta.annotation.Resource;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.03.20  장동한          최초 생성
+ *   2026.07.10  이백행          [2026년 컨트리뷰션] 디버그 출력에 log.debug 적용
  *
  * </pre>
  */
 @Service("egovQustnrTmplatManageService")
+@Slf4j
 public class EgovQustnrTmplatManageServiceImpl extends EgovAbstractServiceImpl implements EgovQustnrTmplatManageService{
-
-	//final private Log log = LogFactory.getLog(this.getClass());
 
 	@Resource(name="qustnrTmplatManageDao")
 	private QustnrTmplatManageDao dao;
@@ -48,7 +49,7 @@ public class EgovQustnrTmplatManageServiceImpl extends EgovAbstractServiceImpl i
 	 */
 	@Override
 	public Map<?,?> selectQustnrTmplatManageTmplatImagepathnm(QustnrTmplatManageVO qustnrTmplatManageVO) throws Exception{
-		//System.out.println("EgovQustnrTmplatManageServiceImpl QestnrTmplatId >>> "+ qustnrTmplatManageVO.getQestnrTmplatId());
+		log.debug("EgovQustnrTmplatManageServiceImpl QestnrTmplatId >>> {}", qustnrTmplatManageVO.getQestnrTmplatId());
 
 		return dao.selectQustnrTmplatManageTmplatImagepathnm(qustnrTmplatManageVO);
 	}
