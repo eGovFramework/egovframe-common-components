@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.slf4j.Logger;
@@ -535,7 +536,7 @@ public class EgovVcatnManageController {
 	 * @param vcatnManage - 휴가관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/vct/deleteVcatnManage.do")
+	@RequestMapping(value = "/uss/ion/vct/deleteVcatnManage.do", method = RequestMethod.POST)
 	public String deleteVcatnManage(@ModelAttribute("vcatnManageVO") VcatnManageVO vcatnManageVO, SessionStatus status,
 			ModelMap model) throws Exception {
 		vcatnManageVO.setBgnde(EgovStringUtil.removeMinusChar(vcatnManageVO.getBgnde()));
@@ -626,7 +627,7 @@ public class EgovVcatnManageController {
 	 * @param vcatnManage - 휴가관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/vct/updtVcatnConfm.do")
+	@RequestMapping(value = "/uss/ion/vct/updtVcatnConfm.do", method = RequestMethod.POST)
 	public String updtVcatnManageConfm(@ModelAttribute("vcatnManageVO") VcatnManageVO vcatnManageVO, BindingResult bindingResult, SessionStatus status,
 			ModelMap model) throws Exception {
 

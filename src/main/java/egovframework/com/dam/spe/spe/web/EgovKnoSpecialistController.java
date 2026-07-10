@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -171,7 +172,7 @@ public class EgovKnoSpecialistController {
 	 * @param model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/dam/spe/spe/EgovComDamSpecialistRegist.do")
+	@RequestMapping(value = "/dam/spe/spe/EgovComDamSpecialistRegist.do", method = RequestMethod.POST)
 	public String insertKnoSpecialist(@ModelAttribute("mapMaterial") MapMaterial mapMaterial,
 			@Valid @ModelAttribute("knoSpecialist") KnoSpecialist knoSpecialist, BindingResult bindingResult,
 			ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
@@ -248,7 +249,7 @@ public class EgovKnoSpecialistController {
 	 * @param model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/dam/spe/spe/EgovComDamSpecialistModify.do")
+	@RequestMapping(value = "/dam/spe/spe/EgovComDamSpecialistModify.do", method = RequestMethod.POST)
 	public String updateKnoSpecialist(@Valid @ModelAttribute("knoSpecialist") KnoSpecialist knoSpecialist,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -277,7 +278,7 @@ public class EgovKnoSpecialistController {
 	 *
 	 * @param speNm
 	 */
-	@RequestMapping(value = "/dam/spe/spe/EgovComDamSpecialistRemove.do")
+	@RequestMapping(value = "/dam/spe/spe/EgovComDamSpecialistRemove.do", method = RequestMethod.POST)
 	public String deleteKnoSpecialist(@ModelAttribute("loginVO") LoginVO loginVO, KnoSpecialist knoSpecialist,
 			ModelMap model) throws Exception {
 		knoSpecialistService.deleteKnoSpecialist(knoSpecialist);

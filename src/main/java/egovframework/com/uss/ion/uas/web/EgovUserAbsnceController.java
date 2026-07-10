@@ -31,6 +31,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -139,7 +140,7 @@ public class EgovUserAbsnceController {
 	 * @param userAbsnce - 사용자부재 model
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping("/uss/ion/uas/addUserAbsnce.do")
+    @RequestMapping(value = "/uss/ion/uas/addUserAbsnce.do", method = RequestMethod.POST)
 	public String insertUserAbsnce(@Valid @ModelAttribute("userAbsnceVO") UserAbsnceVO userAbsnceVO,
 		                            BindingResult bindingResult,
 			                        ModelMap model) throws Exception {
@@ -164,7 +165,7 @@ public class EgovUserAbsnceController {
 	 * @param userAbsnce - 사용자부재 model
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping("/uss/ion/uas/updtUserAbsnce.do")
+    @RequestMapping(value = "/uss/ion/uas/updtUserAbsnce.do", method = RequestMethod.POST)
 	public String updateUserAbsnce(@Valid @ModelAttribute("userAbsnceVO") UserAbsnceVO userAbsnceVO,
 			                        BindingResult bindingResult,
 			                        ModelMap model) throws Exception {

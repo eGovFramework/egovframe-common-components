@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -184,7 +185,7 @@ public class EgovCtsnnManageController {
 	 * @param ctsnnManage - 경조관리 model
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value = "/uss/ion/ctn/insertCtsnnManage.do")
+    @RequestMapping(value = "/uss/ion/ctn/insertCtsnnManage.do", method = RequestMethod.POST)
 	 public String insertCtsnnManage(@Valid @ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 			                            BindingResult bindingResult,
 			                            SessionStatus status,
@@ -223,7 +224,7 @@ public class EgovCtsnnManageController {
 	 * @param ctsnnManage - 경조관리 model
 	 * @return String - 리턴 Url
 	 */
-	 @RequestMapping(value = "/uss/ion/ctn/updtCtsnnManage.do")
+	 @RequestMapping(value = "/uss/ion/ctn/updtCtsnnManage.do", method = RequestMethod.POST)
 	 public String updtCtsnnManage(@Valid @ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 			                        BindingResult bindingResult,
 			                        SessionStatus status,
@@ -262,7 +263,7 @@ public class EgovCtsnnManageController {
 	 * @param ctsnnManage - 경조관리 model
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value = "/uss/ion/ctn/deleteCtsnnManage.do")
+    @RequestMapping(value = "/uss/ion/ctn/deleteCtsnnManage.do", method = RequestMethod.POST)
 	 public String deleteCtsnnManage(@ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 			                         SessionStatus status,
 			                         ModelMap model) throws Exception {
@@ -338,7 +339,7 @@ public class EgovCtsnnManageController {
 	 * @param ctsnnManage - 경조관리 model
 	 * @return String - 리턴 Url
 	 */
-	 @RequestMapping(value = "/uss/ion/ctn/updtCtsnnConfm.do")
+	 @RequestMapping(value = "/uss/ion/ctn/updtCtsnnConfm.do", method = RequestMethod.POST)
 	 public String updateCtsnnManageConfm(@ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 			                               BindingResult bindingResult,
 			                               SessionStatus status,

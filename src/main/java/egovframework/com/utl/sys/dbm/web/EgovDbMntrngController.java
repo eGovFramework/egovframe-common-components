@@ -13,6 +13,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.RequestMethod;
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -77,7 +78,7 @@ public class EgovDbMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-    @RequestMapping("/utl/sys/dbm/deleteDbMntrng.do")
+    @RequestMapping(value = "/utl/sys/dbm/deleteDbMntrng.do", method = RequestMethod.POST)
 	public String deleteDbMntrng(DbMntrng dbMntrng, ModelMap model,
 			RedirectAttributes redirectAttributes)
 	  throws Exception{
@@ -101,7 +102,7 @@ public class EgovDbMntrngController {
 	 * @param model			ModelMap
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/utl/sys/dbm/addDbMntrng.do")
+	@RequestMapping(value = "/utl/sys/dbm/addDbMntrng.do", method = RequestMethod.POST)
 	public String insertDbMntrng(@Valid @ModelAttribute("dbMntrng") DbMntrng dbMntrng, BindingResult bindingResult, ModelMap model,
 			RedirectAttributes redirectAttributes)
 	  throws Exception{
@@ -315,7 +316,7 @@ public class EgovDbMntrngController {
 	 * @param model				ModelMap
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/utl/sys/dbm/updateDbMntrng.do")
+	@RequestMapping(value = "/utl/sys/dbm/updateDbMntrng.do", method = RequestMethod.POST)
 	public String updateDbMntrng(@ModelAttribute("searchVO") DbMntrng searchVO,
 			@Valid @ModelAttribute("dbMntrng") DbMntrng dbMntrng, BindingResult bindingResult, ModelMap model,
 			RedirectAttributes redirectAttributes)

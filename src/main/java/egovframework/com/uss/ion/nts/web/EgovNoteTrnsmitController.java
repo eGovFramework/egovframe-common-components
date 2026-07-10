@@ -23,6 +23,7 @@ import egovframework.com.uss.ion.nts.service.EgovNoteTrnsmitService;
 import egovframework.com.uss.ion.nts.service.NoteTrnsmit;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 보낸쪽지함관리를 처리하는 Controller Class 구현
@@ -167,7 +168,7 @@ public class EgovNoteTrnsmitController {
     public String EgovNoteTrnsmitDetail(
     		@ModelAttribute("searchVO") NoteTrnsmit searchVO,
     		EgovSecurityMap securityMap,
-            ModelMap model) throws Exception {
+            ModelMap model, HttpServletRequest request) throws Exception {
 
     		String sLocationUrl = "egovframework/com/uss/ion/nts/EgovNoteTrnsmitDetail";
 
@@ -186,7 +187,7 @@ public class EgovNoteTrnsmitController {
             securityMap.put("noteId",searchVO.getNoteId());
             securityMap.put("noteTrnsmitId", searchVO.getNoteTrnsmitId());
 
-            if(sCmd.equals("del")){
+            if(sCmd.equals("del") && "POST".equalsIgnoreCase(request.getMethod())){
             	searchVO.setFrstRegisterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
             	searchVO.setLastUpdusrId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
             	searchVO.setTrnsmiterId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));

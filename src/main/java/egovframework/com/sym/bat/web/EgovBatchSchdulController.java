@@ -14,6 +14,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
@@ -87,7 +88,7 @@ public class EgovBatchSchdulController {
 	 * @param redirectAttributes	RedirectAttributes
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/sym/bat/deleteBatchSchdul.do")
+	@RequestMapping(value = "/sym/bat/deleteBatchSchdul.do", method = RequestMethod.POST)
 	public String deleteBatchSchdul(BatchSchdul batchSchdul, ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {
@@ -113,7 +114,7 @@ public class EgovBatchSchdulController {
 	 * @param redirectAttributes	RedirectAttributes
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/sym/bat/addBatchSchdul.do")
+	@RequestMapping(value = "/sym/bat/addBatchSchdul.do", method = RequestMethod.POST)
 	public String insertBatchSchdul(@ModelAttribute("searchVO") BatchSchdul searchVO,
 			@Valid @ModelAttribute("batchSchdul") BatchSchdul batchSchdul, BindingResult bindingResult,
 			ModelMap model, RedirectAttributes redirectAttributes) throws Exception {

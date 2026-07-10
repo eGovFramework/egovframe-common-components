@@ -10,6 +10,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.support.SessionStatus;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -197,7 +198,7 @@ public class EgovNotificationController {
     /**
      * 정보알림이 정보를 삭제한다.
      */
-    @RequestMapping("/uss/ion/noi/deleteNotification.do")
+    @RequestMapping(value = "/uss/ion/noi/deleteNotification.do", method = RequestMethod.POST)
     public String deleteNotification(@ModelAttribute("notificationVO") NotificationVO notificationVO, SessionStatus status) throws Exception {
 
         LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();

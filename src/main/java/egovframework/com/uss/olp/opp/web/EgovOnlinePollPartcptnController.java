@@ -16,6 +16,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
@@ -171,7 +172,7 @@ public class EgovOnlinePollPartcptnController {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unused")
-	@RequestMapping(value = "/uss/olp/opp/registOnlinePollPartcptn.do")
+	@RequestMapping(value = "/uss/olp/opp/registOnlinePollPartcptn.do", method = RequestMethod.POST)
 	public String egovOnlinePollPartcptnRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap,
 			@ModelAttribute("onlinePollPartcptn") OnlinePollPartcptn onlinePollPartcptn, BindingResult bindingResult,

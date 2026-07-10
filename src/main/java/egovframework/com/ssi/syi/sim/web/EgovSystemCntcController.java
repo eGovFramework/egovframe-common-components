@@ -11,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -112,7 +113,7 @@ public class EgovSystemCntcController {
 	 * @return "forward:/ssi/syi/sim/getSystemCntcList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/sim/addSystemCntc.do", params = "cmd=Regist")
+	@RequestMapping(value = "/ssi/syi/sim/addSystemCntc.do", params = "cmd=Regist", method = RequestMethod.POST)
 	public String insertSystemCntc(@ModelAttribute("searchVO") SystemCntcVO searchVO,
 			@Valid @ModelAttribute("systemCntc") SystemCntc systemCntc,
 			BindingResult bindingResult, ModelMap model) throws Exception {
@@ -251,7 +252,7 @@ public class EgovSystemCntcController {
 	 * @return "forward:/ssi/syi/sim/getSystemCntcList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/sim/updateSystemCntc.do", params = "cmd=Modify")
+	@RequestMapping(value = "/ssi/syi/sim/updateSystemCntc.do", params = "cmd=Modify", method = RequestMethod.POST)
 	public String updateSystemCntc(@ModelAttribute("searchVO") SystemCntcVO searchVO,
 			@Valid @ModelAttribute("systemCntc") SystemCntc systemCntc,
 			BindingResult bindingResult, ModelMap model) throws Exception {
@@ -329,7 +330,7 @@ public class EgovSystemCntcController {
 	 * @return "egovframework/com/ssi/syi/sim/EgovSystemCntcDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/scm/getConfirmSystemCntcDetail.do")
+	@RequestMapping(value = "/ssi/syi/scm/getConfirmSystemCntcDetail.do", method = RequestMethod.POST)
 	public String selectConfirmSystemCntcDetail(@ModelAttribute("searchVO") SystemCntcVO searchVO,
 			SystemCntc systemCntc,
 			@RequestParam(value = "cmd", required = false, defaultValue = "") String cmd,

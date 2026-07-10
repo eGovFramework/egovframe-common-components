@@ -255,7 +255,7 @@ public class EgovMeetingManageController {
 	 * @throws Exception
 	 */
 	
-	@RequestMapping(value = "/uss/olp/mgt/EgovMeetingManageModify.do")
+	@RequestMapping(value = "/uss/olp/mgt/EgovMeetingManageModify.do", method = RequestMethod.POST)
 	public String meetingManageModify(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@Valid @ModelAttribute("meetingManageVO") MeetingManageVO meetingManageVO,BindingResult bindingResult,

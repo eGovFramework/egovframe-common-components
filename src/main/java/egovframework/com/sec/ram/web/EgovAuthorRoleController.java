@@ -11,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -115,7 +116,7 @@ public class EgovAuthorRoleController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sec/ram/EgovAuthorRoleInsert.do")
+	@RequestMapping(value = "/sec/ram/EgovAuthorRoleInsert.do", method = RequestMethod.POST)
 	public String insertAuthorRole(@RequestParam("authorCode") String authorCode,
 			                       @RequestParam("roleCodes") String roleCodes,
 			                       @RequestParam("regYns") String regYns,

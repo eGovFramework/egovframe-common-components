@@ -15,6 +15,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
@@ -118,7 +119,7 @@ public class EgovRecentSrchwrdController {
 	 * @return "egovframework/com/uss/ion/rsm/EgovRecentSrchwrdDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/rsm/detailRecentSrchwrd.do")
+	@RequestMapping(value = "/uss/ion/rsm/detailRecentSrchwrd.do", method = RequestMethod.POST)
 	public String egovRecentSrchwrdDetail(@ModelAttribute("recentSrchwrd") RecentSrchwrd recentSrchwrd,
 			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
@@ -171,7 +172,7 @@ public class EgovRecentSrchwrdController {
 	 * @return "redirect:/uss/ion/rsm/listRecentSrchwrd.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/rsm/updtRecentSrchwrd.do")
+	@RequestMapping(value = "/uss/ion/rsm/updtRecentSrchwrd.do", method = RequestMethod.POST)
 	public String egovRecentSrchwrdModify(@Valid RecentSrchwrd recentSrchwrd, BindingResult bindingResult, ModelMap model)
 			throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -230,7 +231,7 @@ public class EgovRecentSrchwrdController {
 	 * @return "redirect:/uss/ion/rsm/listRecentSrchwrd.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/rsm/registRecentSrchwrd.do")
+	@RequestMapping(value = "/uss/ion/rsm/registRecentSrchwrd.do", method = RequestMethod.POST)
 	public String egovRecentSrchwrdRegist(@RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("recentSrchwrd") RecentSrchwrd recentSrchwrd, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -269,7 +270,7 @@ public class EgovRecentSrchwrdController {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unused")
-	@RequestMapping(value = "/uss/ion/rsm/listRecentSrchwrdResult.do")
+	@RequestMapping(value = "/uss/ion/rsm/listRecentSrchwrdResult.do", method = RequestMethod.POST)
 	public String egovRecentSrchwrdResultList(@ModelAttribute("recentSrchwrd") RecentSrchwrd recentSrchwrd,
 			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
@@ -374,7 +375,7 @@ public class EgovRecentSrchwrdController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/rsm/registRecentSrchwrdResult.do")
+	@RequestMapping(value = "/uss/ion/rsm/registRecentSrchwrdResult.do", method = RequestMethod.POST)
 	public void egovRecentSrchwrdRegist(@RequestParam Map<?, ?> commandMap, HttpServletResponse response,
 			RecentSrchwrd recentSrchwrd) throws Exception {
 		

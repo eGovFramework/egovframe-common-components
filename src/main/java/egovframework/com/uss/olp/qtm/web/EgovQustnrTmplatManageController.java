@@ -14,6 +14,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -193,7 +194,7 @@ public class EgovQustnrTmplatManageController {
 	 * @return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qtm/EgovQustnrTmplatManageDetail.do")
+	@RequestMapping(value = "/uss/olp/qtm/EgovQustnrTmplatManageDetail.do", method = RequestMethod.POST)
 	public String egovQustnrTmplatManageDetail(
 		@ModelAttribute("searchVO") ComDefaultVO searchVO,
 		QustnrTmplatManageVO qustnrTmplatManageVO,
@@ -376,7 +377,7 @@ public class EgovQustnrTmplatManageController {
 	 * @return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageRegistActor"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qtm/EgovQustnrTmplatManageRegistActor.do")
+	@RequestMapping(value = "/uss/olp/qtm/EgovQustnrTmplatManageRegistActor.do", method = RequestMethod.POST)
 	public String qustnrTmplatManageRegistActor(
 		final MultipartHttpServletRequest multiRequest,
 		@ModelAttribute("searchVO") ComDefaultVO searchVO,

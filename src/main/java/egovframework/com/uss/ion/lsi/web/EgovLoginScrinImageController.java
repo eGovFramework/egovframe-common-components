@@ -33,6 +33,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -150,7 +151,7 @@ public class EgovLoginScrinImageController {
 	 * @return String - 리턴 Url
 	 */
     @SuppressWarnings("unused")
-	@RequestMapping(value = "/uss/ion/lsi/addLoginScrinImage.do")
+	@RequestMapping(value = "/uss/ion/lsi/addLoginScrinImage.do", method = RequestMethod.POST)
 	public String insertLoginScrinImage(final MultipartHttpServletRequest multiRequest,
 			                            @Valid @ModelAttribute("loginScrinImageVO") LoginScrinImageVO loginScrinImageVO,
 			                            BindingResult bindingResult,
@@ -234,7 +235,7 @@ public class EgovLoginScrinImageController {
 	 * @return String - 리턴 Url
 	 */
 	@SuppressWarnings("unused")
-	@RequestMapping(value = "/uss/ion/lsi/updtLoginScrinImage.do")
+	@RequestMapping(value = "/uss/ion/lsi/updtLoginScrinImage.do", method = RequestMethod.POST)
 	public String updateLoginScrinImage(final MultipartHttpServletRequest multiRequest,
 			                            @Valid @ModelAttribute("loginScrinImageVO") LoginScrinImageVO loginScrinImageVO,
 			                            BindingResult bindingResult,
@@ -310,7 +311,7 @@ public class EgovLoginScrinImageController {
 	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value = "/uss/ion/lsi/removeLoginScrinImage.do")
+    @RequestMapping(value = "/uss/ion/lsi/removeLoginScrinImage.do", method = RequestMethod.POST)
 	public String deleteLoginScrinImage(@RequestParam("imageId") String imageId,
 			                            @ModelAttribute("loginScrinImageVO") LoginScrinImageVO loginScrinImageVO,
 			                             SessionStatus status,
@@ -331,7 +332,7 @@ public class EgovLoginScrinImageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value = "/uss/ion/lsi/removeLoginScrinImageList.do")
+    @RequestMapping(value = "/uss/ion/lsi/removeLoginScrinImageList.do", method = RequestMethod.POST)
 	public String deleteLoginScrinImageList(@RequestParam("imageIds") String imageIds,
 			                                @ModelAttribute("loginScrinImageVO") LoginScrinImageVO loginScrinImageVO,
 			                                 SessionStatus status,

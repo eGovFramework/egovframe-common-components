@@ -12,6 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -22,6 +23,7 @@ import egovframework.com.uss.ion.rss.service.EgovRssTagManageService;
 import egovframework.com.uss.ion.rss.service.RssManage;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -93,7 +95,8 @@ public class EgovRssTagManageController {
     public String EgovRssTagManageList(
             @RequestParam Map<?, ?> commandMap,
             @RequestParam(value = "checkList", required=false) List<String> checkList,
-            @ModelAttribute("rssManage") RssManage rssManage, ModelMap model)
+            @ModelAttribute("rssManage") RssManage rssManage, ModelMap model,
+            HttpServletRequest request)
             throws Exception {
 
     	//변수 설정
@@ -110,7 +113,7 @@ public class EgovRssTagManageController {
         LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
         //삭제 모드로 실행시
-        if(sCmd.equals("del")){
+        if(sCmd.equals("del") && "POST".equalsIgnoreCase(request.getMethod())){
 
         	for(String checkData : checkList) {
 
@@ -170,13 +173,13 @@ public class EgovRssTagManageController {
     @RequestMapping(value = "/uss/ion/rss/detailRssTagManage.do")
     public String EgovRssTagManageDetail(
             RssManage rssManage, @RequestParam Map<?, ?> commandMap,
-            ModelMap model) throws Exception {
+            ModelMap model, HttpServletRequest request) throws Exception {
 
         String sLocationUrl = "egovframework/com/uss/ion/rss/EgovRssTagManageDetail";
 
         String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
-        if (sCmd.equals("del")) {
+        if (sCmd.equals("del") && "POST".equalsIgnoreCase(request.getMethod())) {
             egovRssManageService.deleteRssTagManage(rssManage);
             sLocationUrl = "redirect:/uss/ion/rss/listRssTagManage.do";
         } else {
@@ -198,7 +201,7 @@ public class EgovRssTagManageController {
      * @return String -리턴 URL
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/ion/rss/updtRssTagManage.do")
+    @RequestMapping(value = "/uss/ion/rss/updtRssTagManage.do", method = RequestMethod.POST)
     public String EgovRssTagManageModify(
             @RequestParam Map<?, ?> commandMap,
             @Valid @ModelAttribute("rssManage") RssManage rssManage,
@@ -279,7 +282,7 @@ public class EgovRssTagManageController {
      * @return String -리턴 URL
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/ion/rss/insertRssTagManage.do")
+    @RequestMapping(value = "/uss/ion/rss/insertRssTagManage.do", method = RequestMethod.POST)
     public String insertRssTagManage(
             @Valid @ModelAttribute("rssManage") RssManage rssManage,
             BindingResult bindingResult, ModelMap model) throws Exception {

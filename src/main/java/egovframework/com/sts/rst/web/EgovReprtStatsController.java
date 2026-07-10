@@ -28,6 +28,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
@@ -199,7 +200,7 @@ public class EgovReprtStatsController {
 	 * @param reprtStats - 보고서통계 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping("/sts/rst/addReprtStats.do")
+	@RequestMapping(value = "/sts/rst/addReprtStats.do", method = RequestMethod.POST)
 	public String insertReprtStats(@Valid @ModelAttribute("reprtStats") ReprtStats reprtStats,
 			BindingResult bindingResult,
 			@ModelAttribute("reprtStatsVO") ReprtStatsVO reprtStatsVO,

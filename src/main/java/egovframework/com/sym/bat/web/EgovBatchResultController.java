@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -64,7 +65,7 @@ public class EgovBatchResultController {
 	 * @param redirectAttributes	RedirectAttributes
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/sym/bat/deleteBatchResult.do")
+	@RequestMapping(value = "/sym/bat/deleteBatchResult.do", method = RequestMethod.POST)
 	public String deleteBatchResult(BatchResult batchResult, ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 		if (!isAuthenticated) {

@@ -14,6 +14,7 @@ import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.RequestMethod;
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.cop.ems.service.EgovSndngMailDetailService;
@@ -87,7 +88,7 @@ public class EgovSndngMailDetailController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/cop/ems/deleteSndngMail.do")
+	@RequestMapping(value = "/cop/ems/deleteSndngMail.do", method = RequestMethod.POST)
 	public String deleteSndngMail(@ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, ModelMap model)
 			throws Exception {
 

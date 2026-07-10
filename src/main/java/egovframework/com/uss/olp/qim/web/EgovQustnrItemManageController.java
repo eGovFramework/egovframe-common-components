@@ -27,6 +27,7 @@ import egovframework.com.uss.olp.qim.service.QustnrItemManageVO;
 import egovframework.com.uss.olp.qmc.service.EgovQustnrManageService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -76,11 +77,11 @@ public class EgovQustnrItemManageController {
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap,
 			QustnrItemManageVO qustnrItemManageVO,
-    		ModelMap model)
+    		ModelMap model, HttpServletRequest request)
     throws Exception {
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
-		if(sCmd.equals("del")){
+		if(sCmd.equals("del") && "POST".equalsIgnoreCase(request.getMethod())){
 			egovQustnrItemManageService.deleteQustnrItemManage(qustnrItemManageVO);
 		}
 

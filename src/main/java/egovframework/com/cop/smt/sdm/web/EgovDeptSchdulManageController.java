@@ -36,6 +36,7 @@ import egovframework.com.cop.smt.sdm.service.DeptSchdulManageVO;
 import egovframework.com.cop.smt.sdm.service.EgovDeptSchdulManageService;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -500,14 +501,15 @@ public class EgovDeptSchdulManageController {
 	 */
 	@RequestMapping(value = "/cop/smt/sdm/EgovDeptSchdulManageDetail.do")
 	public String egovDeptSchdulManageDetail(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			DeptSchdulManageVO deptSchdulManageVO, @RequestParam Map<String, String> commandMap, ModelMap model)
+			DeptSchdulManageVO deptSchdulManageVO, @RequestParam Map<String, String> commandMap, ModelMap model,
+			HttpServletRequest request)
 			throws Exception {
 
 		String sLocationUrl = "egovframework/com/cop/smt/sdm/EgovDeptSchdulManageDetail";
 
 		String sCmd = commandMap.get("cmd");
 
-		if ("del".equals(sCmd)) {
+		if ("del".equals(sCmd) && "POST".equalsIgnoreCase(request.getMethod())) {
 			egovDeptSchdulManageService.deleteDeptSchdulManage(deptSchdulManageVO);
 			sLocationUrl = "redirect:/cop/smt/sdm/EgovDeptSchdulManageList.do";
 		} else {

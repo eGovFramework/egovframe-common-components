@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -159,7 +160,7 @@ public class EgovNtwrkController {
 	 *
 	 * @param ntwrk
 	 */
-	@RequestMapping(value = "/sym/sym/nwk/addNtwrk.do")
+	@RequestMapping(value = "/sym/sym/nwk/addNtwrk.do", method = RequestMethod.POST)
 	public String insertNtwrk(@ModelAttribute("ntwrkVO") NtwrkVO ntwrkVO, @Valid @ModelAttribute("ntwrk") Ntwrk ntwrk,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -204,7 +205,7 @@ public class EgovNtwrkController {
 	 *
 	 * @param ntwrk
 	 */
-	@RequestMapping(value = "/sym/sym/nwk/updtNtwrk.do")
+	@RequestMapping(value = "/sym/sym/nwk/updtNtwrk.do", method = RequestMethod.POST)
 	public String updateNtwrk(@ModelAttribute("ntwrkVO") NtwrkVO ntwrkVO, @Valid @ModelAttribute("ntwrk") Ntwrk ntwrk, BindingResult bindingResult, SessionStatus status,
 			ModelMap model) throws Exception {
 
@@ -229,7 +230,7 @@ public class EgovNtwrkController {
 	 *
 	 * @param ntwrk
 	 */
-	@RequestMapping(value = "/sym/sym/nwk/removeNtwrk.do")
+	@RequestMapping(value = "/sym/sym/nwk/removeNtwrk.do", method = RequestMethod.POST)
 	public String deleteNtwrk(@RequestParam("ntwrkId") String ntwrkId, @ModelAttribute("ntwrk") Ntwrk ntwrk,
 			ModelMap model) throws Exception {
 		ntwrk.setNtwrkId(ntwrkId);

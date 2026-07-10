@@ -10,6 +10,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -358,7 +359,7 @@ public class EgovMemoReprtController {
 	 * @param model
 	 */
 	@SuppressWarnings("unused")
-	@RequestMapping("/cop/smt/mrm/updateMemoReprtDrctMatter.do")
+	@RequestMapping(value = "/cop/smt/mrm/updateMemoReprtDrctMatter.do", method = RequestMethod.POST)
 	public String updateMemoReprtDrctMatter(@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, ModelMap model)
 			throws Exception {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -380,7 +381,7 @@ public class EgovMemoReprtController {
 	 * @param memoReprt
 	 * @param model
 	 */
-	@RequestMapping("/cop/smt/mrm/insertMemoReprt.do")
+	@RequestMapping(value = "/cop/smt/mrm/insertMemoReprt.do", method = RequestMethod.POST)
 	public String insertMemoReprt(final MultipartHttpServletRequest multiRequest,
 			@Valid @ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -442,7 +443,7 @@ public class EgovMemoReprtController {
 	 * @param memoReprt
 	 * @param model
 	 */
-	@RequestMapping("/cop/smt/mrm/deleteMemoReprt.do")
+	@RequestMapping(value = "/cop/smt/mrm/deleteMemoReprt.do", method = RequestMethod.POST)
 	public String deleteMemoReprt(@ModelAttribute("memoReprtVO") MemoReprtVO memoReprtVO, ModelMap model)
 			throws Exception {
 		// 0. Spring Security 사용자권한 처리

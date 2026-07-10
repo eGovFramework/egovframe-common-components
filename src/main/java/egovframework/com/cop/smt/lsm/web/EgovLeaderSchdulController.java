@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.RequestMethod;
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -565,7 +566,7 @@ public class EgovLeaderSchdulController {
 	 *
 	 * @param leaderSchdul
 	 */
-	@RequestMapping(value = "/cop/smt/lsm/mng/insertLeaderSchdul.do")
+	@RequestMapping(value = "/cop/smt/lsm/mng/insertLeaderSchdul.do", method = RequestMethod.POST)
 	public String insertLeaderSchdul(@Valid @ModelAttribute("leaderSchdulVO") LeaderSchdulVO leaderSchdulVO,
 		    BindingResult bindingResult, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -846,7 +847,7 @@ public class EgovLeaderSchdulController {
 	 *
 	 * @param leaderSttusVO
 	 */
-	@RequestMapping("/cop/smt/lsm/mng/updateLeaderSttus.do")
+	@RequestMapping(value = "/cop/smt/lsm/mng/updateLeaderSttus.do", method = RequestMethod.POST)
 	public String updateLeaderSttus(@Valid @ModelAttribute("leaderSttusVO") LeaderSttusVO leaderSttusVO, BindingResult bindingResult, ModelMap model) throws Exception{
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -872,7 +873,7 @@ public class EgovLeaderSchdulController {
 	 *
 	 * @param leaderSttusVO
 	 */
-	@RequestMapping("/cop/smt/lsm/mng/insertLeaderSttus.do")
+	@RequestMapping(value = "/cop/smt/lsm/mng/insertLeaderSttus.do", method = RequestMethod.POST)
 	public String insertLeaderSttus(@Valid @ModelAttribute("leaderSttusVO") LeaderSttusVO leaderSttusVO, BindingResult bindingResult, ModelMap model) throws Exception{
 		// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();

@@ -99,7 +99,7 @@ public class EgovNoteRecptnController {
         LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
         //삭제 모드로 실행시
-        if(sCmd.equals("del")){
+        if(sCmd.equals("del") && "POST".equalsIgnoreCase(request.getMethod())){
         	LOGGER.debug("##### EgovNoteRecptnController EgovNoteRecptnList()  start");
         	LOGGER.debug("noteId > {}", commandMap.get("noteIdAll"));
         	LOGGER.debug("noteTrnsmitId > {}", commandMap.get("noteTrnsmitIdAll"));
@@ -180,13 +180,13 @@ public class EgovNoteRecptnController {
     		@ModelAttribute("searchVO") NoteRecptn searchVO,
             @ModelAttribute("noteRecptn") NoteRecptn noteRecptn,
     		EgovSecurityMap securityMap,
-            ModelMap model) throws Exception {
+            ModelMap model, HttpServletRequest request) throws Exception {
 
 		String sLocationUrl = "egovframework/com/uss/ion/nts/EgovNoteTrnsmitDetail";
 
         String sCmd = securityMap.get("cmd") == null ? "" : (String) securityMap.get("cmd");
 
-        if(sCmd.equals("del")){
+        if(sCmd.equals("del") && "POST".equalsIgnoreCase(request.getMethod())){
         	LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
             searchVO.setRcverId(loginVO == null ? "" : EgovStringUtil.isNullToString(loginVO.getUniqId()));
         	egovNoteRecptnService.deleteNoteRecptn(searchVO);

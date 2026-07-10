@@ -12,6 +12,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -102,7 +103,7 @@ public class EgovMainImageController {
 	 * 메인이미지정보를 신규로 등록한다.
 	 */
 	@SuppressWarnings("unused")
-	@RequestMapping(value = "/uss/ion/msi/addMainImage.do")
+	@RequestMapping(value = "/uss/ion/msi/addMainImage.do", method = RequestMethod.POST)
 	public String insertMainImage(final MultipartHttpServletRequest multiRequest,
 			@Valid @ModelAttribute("mainImageVO") MainImageVO mainImageVO, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {
@@ -147,7 +148,7 @@ public class EgovMainImageController {
 	 * 기 등록된 메인이미지정보를 수정한다.
 	 */
 	@SuppressWarnings("unused")
-	@RequestMapping(value = "/uss/ion/msi/updtMainImage.do")
+	@RequestMapping(value = "/uss/ion/msi/updtMainImage.do", method = RequestMethod.POST)
 	public String updateMainImage(final MultipartHttpServletRequest multiRequest,
 			@Valid @ModelAttribute("mainImageVO") MainImageVO mainImageVO, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {
@@ -195,7 +196,7 @@ public class EgovMainImageController {
 	/**
 	 * 기 등록된 메인이미지정보를 삭제한다.
 	 */
-	@RequestMapping(value = "/uss/ion/msi/removeMainImage.do")
+	@RequestMapping(value = "/uss/ion/msi/removeMainImage.do", method = RequestMethod.POST)
 	public String deleteMainImage(@RequestParam("imageId") String imageId,
 			@ModelAttribute("mainImageVO") MainImageVO mainImageVO, SessionStatus status, ModelMap model) throws Exception {
 		mainImageVO.setImageId(imageId);
@@ -208,7 +209,7 @@ public class EgovMainImageController {
 	/**
 	 * 기 등록된 메인이미지정보 목록을 일괄 삭제한다.
 	 */
-	@RequestMapping(value = "/uss/ion/msi/removeMainImageList.do")
+	@RequestMapping(value = "/uss/ion/msi/removeMainImageList.do", method = RequestMethod.POST)
 	public String deleteMainImageList(@RequestParam("imageIds") String imageIds,
 			@ModelAttribute("mainImageVO") MainImageVO mainImageVO, SessionStatus status, ModelMap model) throws Exception {
 		//2026.03.23 kisa 보안점검 대응 조치

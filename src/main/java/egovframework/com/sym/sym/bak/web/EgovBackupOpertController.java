@@ -13,6 +13,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
@@ -92,7 +93,7 @@ public class EgovBackupOpertController {
 	 * @param redirectAttributes RedirectAttributes
 	 * @exception Exception Exception
 	 */
-    @RequestMapping("/sym/sym/bak/deleteBackupOpert.do")
+    @RequestMapping(value = "/sym/sym/bak/deleteBackupOpert.do", method = RequestMethod.POST)
 	public String deleteBackupOpert(BackupOpert backupOpert, ModelMap model, RedirectAttributes redirectAttributes)
 	  throws Exception{
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -119,7 +120,7 @@ public class EgovBackupOpertController {
 	 * @param redirectAttributes RedirectAttributes
 	 * @exception Exception Exception
 	 */
-    @RequestMapping("/sym/sym/bak/addBackupOpert.do")
+    @RequestMapping(value = "/sym/sym/bak/addBackupOpert.do", method = RequestMethod.POST)
 	public String insertBackupOpert(@ModelAttribute("searchVO") BackupOpert searchVO,
 			@Valid @ModelAttribute("backupOpert") BackupOpert backupOpert, BindingResult bindingResult,
 			ModelMap model, RedirectAttributes redirectAttributes) throws Exception{
@@ -263,7 +264,7 @@ public class EgovBackupOpertController {
 	 * @param redirectAttributes RedirectAttributes
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/sym/sym/bak/updateBackupOpert.do")
+	@RequestMapping(value = "/sym/sym/bak/updateBackupOpert.do", method = RequestMethod.POST)
 	public String updateBackupOpert(@ModelAttribute("searchVO") BackupOpert searchVO,
 			@Valid @ModelAttribute("backupOpert") BackupOpert backupOpert, BindingResult bindingResult,
 			ModelMap model, RedirectAttributes redirectAttributes) throws Exception{

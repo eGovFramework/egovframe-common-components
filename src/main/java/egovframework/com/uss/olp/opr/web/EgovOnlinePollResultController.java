@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.RequestMethod;
 import egovframework.com.uss.olp.opr.service.EgovOnlinePollResultService;
 import egovframework.com.uss.olp.opr.service.OnlinePollResult;
 import jakarta.annotation.Resource;
@@ -66,7 +67,7 @@ public class EgovOnlinePollResultController {
      *         "/uss/olp/opr/EgovOnlinePollDetail"
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/olp/opr/delOnlinePollResult.do")
+    @RequestMapping(value = "/uss/olp/opr/delOnlinePollResult.do", method = RequestMethod.POST)
     public String egovOnlinePollResultDetail(
             OnlinePollResult onlinePollResult,
             ModelMap model) throws Exception {

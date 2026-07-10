@@ -11,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
@@ -66,7 +67,7 @@ public class EgovAdministCodeRecptnController {
 	 * @return "egovframework/com/sym/ccm/adc/EgovCcmAdministCodeRegist"
 	 * @throws Exception
 	 */
-    @RequestMapping(value = "/sym/ccm/acr/addAdministCode.do")
+    @RequestMapping(value = "/sym/ccm/acr/addAdministCode.do", method = RequestMethod.POST)
 	public String insertAdministCodeRecptn (AdministCodeRecptn administCodeRecptn
 			, BindingResult bindingResult
 			, @RequestParam Map<?, ?> commandMap

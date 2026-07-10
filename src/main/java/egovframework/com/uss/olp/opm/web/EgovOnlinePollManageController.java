@@ -13,6 +13,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -274,7 +275,7 @@ public class EgovOnlinePollManageController {
 	 * @return "redirect:/uss/olp/opm/listOnlinePollManage.do";
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/opm/registOnlinePollManage.do")
+	@RequestMapping(value = "/uss/olp/opm/registOnlinePollManage.do", method = RequestMethod.POST)
 	public String egovOnlinePollManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, @Valid @ModelAttribute("onlinePollManage") OnlinePollManage onlinePollManage,
 			BindingResult bindingResult,RedirectAttributes redirectAttributes, ModelMap model) throws Exception {
@@ -339,7 +340,7 @@ public class EgovOnlinePollManageController {
 	 * @return "/uss/olp/opm/EgovOnlinePollRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/opm/registOnlinePollItem.do")
+	@RequestMapping(value = "/uss/olp/opm/registOnlinePollItem.do", method = RequestMethod.POST)
 	public String egovOnlinePollItemRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, 
 			@Valid OnlinePollItem onlinePollItem, BindingResult bindingResult,
@@ -424,7 +425,7 @@ public class EgovOnlinePollManageController {
 	 * @return "/uss/olp/opm/EgovOnlinePollRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/opm/delOnlinePollItem.do")
+	@RequestMapping(value = "/uss/olp/opm/delOnlinePollItem.do", method = RequestMethod.POST)
 	public String egovOnlinePollItemDelete(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, OnlinePollItem onlinePollItem, BindingResult bindingResult,
 			RedirectAttributes redirectAttributes,

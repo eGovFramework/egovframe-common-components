@@ -11,6 +11,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.ComDefaultVO;
@@ -153,7 +154,7 @@ public class EgovMenuCreateManageController {
 	 * @return 출력페이지정보 등록처리시 "forward:/sym/mnu/mcm/EgovMenuCreatSelect.do"
 	 * @exception Exception
 	 */
-	@RequestMapping("/sym/mnu/mcm/EgovMenuCreatInsert.do")
+	@RequestMapping(value = "/sym/mnu/mcm/EgovMenuCreatInsert.do", method = RequestMethod.POST)
 	public String insertMenuCreatList(@RequestParam("checkedAuthorForInsert") String checkedAuthorForInsert,
 			@RequestParam("checkedMenuNoForInsert") String checkedMenuNoForInsert,
 			@Valid @ModelAttribute("menuCreatVO") MenuCreatVO menuCreatVO, BindingResult bindingResult, ModelMap model) throws Exception {

@@ -10,6 +10,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
@@ -195,7 +196,7 @@ public class EgovNtwrkSvcMntrngController {
 	 *
 	 * @param ntwrkSvcMntrng
 	 */
-    @RequestMapping("/utl/sys/nsm/updateNtwrkSvcMntrng.do")
+    @RequestMapping(value = "/utl/sys/nsm/updateNtwrkSvcMntrng.do", method = RequestMethod.POST)
 	public String updateNtwrkSvcMntrng(
 		@ModelAttribute("searchVO") NtwrkSvcMntrngVO searchVO,
 		@Valid @ModelAttribute("ntwrkSvcMntrngVO") NtwrkSvcMntrngVO ntwrkSvcMntrngVO,
@@ -235,7 +236,7 @@ public class EgovNtwrkSvcMntrngController {
 	 *
 	 * @param ntwrkSvcMntrng
 	 */
-    @RequestMapping("/utl/sys/nsm/insertNtwrkSvcMntrng.do")
+    @RequestMapping(value = "/utl/sys/nsm/insertNtwrkSvcMntrng.do", method = RequestMethod.POST)
 	public String insertNtwrkSvcMntrng(
 		@ModelAttribute("searchVO") NtwrkSvcMntrngVO searchVO,
 		@Valid @ModelAttribute("ntwrkSvcMntrngVO") NtwrkSvcMntrngVO ntwrkSvcMntrngVO,
@@ -291,7 +292,7 @@ public class EgovNtwrkSvcMntrngController {
 	 *
 	 * @param ntwrkSvcMntrng
 	 */
-    @RequestMapping("/utl/sys/nsm/deleteNtwrkSvcMntrng.do")
+    @RequestMapping(value = "/utl/sys/nsm/deleteNtwrkSvcMntrng.do", method = RequestMethod.POST)
 	public String deleteNtwrkSvcMntrng(@ModelAttribute("ntwrkSvcMntrngVO") NtwrkSvcMntrngVO ntwrkSvcMntrngVO,
 		ModelMap model, RedirectAttributes redirectAttributes) throws Exception{
 		// 0. Spring Security 사용자권한 처리

@@ -32,6 +32,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -133,7 +134,7 @@ public class EgovIntnetSvcGuidanceController {
 	 * @param intnetSvcGuidanceVO - 인터넷서비스안내 VO
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping("/uss/ion/isg/addIntnetSvcGuidance.do")
+	@RequestMapping(value = "/uss/ion/isg/addIntnetSvcGuidance.do", method = RequestMethod.POST)
 	public String insertIntnetSvcGuidance(@Valid @ModelAttribute("intnetSvcGuidanceVO") IntnetSvcGuidanceVO intnetSvcGuidanceVO,
 			                               BindingResult bindingResult,
 			                               ModelMap model) throws Exception {
@@ -159,7 +160,7 @@ public class EgovIntnetSvcGuidanceController {
 	 * @param intnetSvcGuidanceVO - 인터넷서비스안내 VO
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping("/uss/ion/isg/updtIntnetSvcGuidance.do")
+	@RequestMapping(value = "/uss/ion/isg/updtIntnetSvcGuidance.do", method = RequestMethod.POST)
 	public String updateIntnetSvcGuidance(@Valid @ModelAttribute("intnetSvcGuidanceVO") IntnetSvcGuidanceVO intnetSvcGuidanceVO,
 			                              BindingResult bindingResult,
 			                              ModelMap model) throws Exception {
@@ -181,7 +182,7 @@ public class EgovIntnetSvcGuidanceController {
 	 * @param intnetSvcGuidanceVO - 인터넷서비스안내 VO
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping("/uss/ion/isg/removeIntnetSvcGuidance.do")
+	@RequestMapping(value = "/uss/ion/isg/removeIntnetSvcGuidance.do", method = RequestMethod.POST)
 	public String deleteIntnetSvcGuidance(@ModelAttribute("intnetSvcGuidanceVO") IntnetSvcGuidanceVO intnetSvcGuidanceVO,
 			                               ModelMap model) throws Exception {
 

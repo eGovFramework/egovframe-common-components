@@ -15,6 +15,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -700,7 +701,7 @@ public class EgovIndvdlSchdulManageController {
 	 * @return "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageRegistActor"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/cop/smt/sim/EgovIndvdlSchdulManageRegistActor.do")
+	@RequestMapping(value = "/cop/smt/sim/EgovIndvdlSchdulManageRegistActor.do", method = RequestMethod.POST)
 	public String indvdlSchdulManageRegistActor(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("indvdlSchdulManageVO") IndvdlSchdulManageVO indvdlSchdulManageVO,

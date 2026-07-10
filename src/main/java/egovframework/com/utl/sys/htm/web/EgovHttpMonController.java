@@ -14,6 +14,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.RequestMethod;
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -27,6 +28,7 @@ import egovframework.com.utl.sys.htm.service.HttpMonLog;
 import egovframework.com.utl.sys.htm.service.HttpMonLogVO;
 import egovframework.com.utl.sys.htm.service.HttpMonVO;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -141,7 +143,7 @@ public class EgovHttpMonController {
 		@Valid @ModelAttribute("httpMon") HttpMon httpMon,
 		BindingResult bindingResult,
 		ModelMap model,
-		RedirectAttributes redirectAttributes) throws Exception {
+		RedirectAttributes redirectAttributes, HttpServletRequest request) throws Exception {
 
 		// Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -153,7 +155,8 @@ public class EgovHttpMonController {
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-		if (httpMon.getWebKind() == null || httpMon.getWebKind().equals("") || bindingResult.hasErrors()) {
+		if (httpMon.getWebKind() == null || httpMon.getWebKind().equals("") || bindingResult.hasErrors()
+				|| !"POST".equalsIgnoreCase(request.getMethod())) {
 			return "egovframework/com/utl/sys/htm/EgovComUtlHttpMonRegist";
 		}
 
@@ -187,7 +190,7 @@ public class EgovHttpMonController {
 	 * @param httpMon - Http서비스모니터링 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonModify.do")
+	@RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonModify.do", method = RequestMethod.POST)
 	public String updateHttpMon(
 		@ModelAttribute("loginVO") LoginVO loginVO,
 		@Valid @ModelAttribute("httpMon") HttpMon httpMon,
@@ -213,7 +216,7 @@ public class EgovHttpMonController {
 	 *
 	 * @param siteUrl
 	 */
-	@RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonRemove.do")
+	@RequestMapping(value = "/utl/sys/htm/EgovComUtlHttpMonRemove.do", method = RequestMethod.POST)
 	public String deleteHttpMon(@ModelAttribute("loginVO") LoginVO loginVO, HttpMon cmmWebKind, ModelMap model)
 			throws Exception {
 		egovHttpMonService.deleteHttpMon(cmmWebKind);

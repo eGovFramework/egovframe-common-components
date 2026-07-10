@@ -11,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -140,7 +141,7 @@ public class EgovTrsmrcvLogController {
 	 * @return forward:/sym/log/tlg/SelectTrsmrcvLogList.do
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/log/tlg/InsertTrsmrcvLog.do")
+	@RequestMapping(value = "/sym/log/tlg/InsertTrsmrcvLog.do", method = RequestMethod.POST)
 	public String insertTrsmrcvLog(@ModelAttribute("searchVO") TrsmrcvLog trsmrcvLog, SessionStatus status) throws Exception {
 
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();

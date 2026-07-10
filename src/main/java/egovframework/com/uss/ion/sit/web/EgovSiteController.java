@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.RequestMethod;
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -145,7 +146,7 @@ public class EgovSiteController {
 	 * @return "forward:/uss/ion/sit/selectSiteList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/sit/insertSite.do")
+	@RequestMapping(value = "/uss/ion/sit/insertSite.do", method = RequestMethod.POST)
 	public String insertSite(@Valid @ModelAttribute("siteVO") SiteVO siteVO, BindingResult bindingResult, ModelMap model) throws Exception {
 
 		if (bindingResult.hasErrors()) {
@@ -190,7 +191,7 @@ public class EgovSiteController {
 	 * @return "forward:/uss/ion/sit/selectSiteList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/sit/updateSite.do")
+	@RequestMapping(value = "/uss/ion/sit/updateSite.do", method = RequestMethod.POST)
 	public String updateSite(@Valid @ModelAttribute("siteVO") SiteVO siteVO, BindingResult bindingResult, ModelMap model) throws Exception {
 
 		if (bindingResult.hasErrors()) {
@@ -217,7 +218,7 @@ public class EgovSiteController {
 	 * @return "forward:/uss/ion/sit/selectSiteList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/sit/deleteSite.do")
+	@RequestMapping(value = "/uss/ion/sit/deleteSite.do", method = RequestMethod.POST)
 	public String deleteSite(@ModelAttribute("siteVO") SiteVO siteVO) throws Exception {
 		egovSiteService.deleteSite(siteVO);
 

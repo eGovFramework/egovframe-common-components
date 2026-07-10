@@ -331,7 +331,7 @@ public class EgovSynchrnServerController {
 	 * @param synchrnServer - 동기화대상 서버
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/utl/sys/ssy/processSynchrn.do")
+	@RequestMapping(value = "/utl/sys/ssy/processSynchrn.do", method = RequestMethod.POST)
 	@RequireAdmin
 	public String processSynchrn(@ModelAttribute("synchrnServer") SynchrnServer synchrnServer, Model model) throws Exception {
 		synchrnServer.setFilePath(SYNTH_SERVER_PATH);

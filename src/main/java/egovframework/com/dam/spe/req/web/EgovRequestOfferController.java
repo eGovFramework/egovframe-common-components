@@ -12,6 +12,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -34,6 +35,7 @@ import egovframework.com.dam.spe.req.service.EgovRequestOfferService;
 import egovframework.com.dam.spe.req.service.RequestOfferVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -167,7 +169,7 @@ public class EgovRequestOfferController {
 	@RequestMapping(value = "/dam/spe/req/detailRequestOffer.do")
 	public String EgovRequestOfferDetail(@ModelAttribute("searchVO") RequestOfferVO searchVO,
 			RequestOfferVO requestOfferVO, @RequestParam Map<?, ?> commandMap,
-			ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
+			ModelMap model, RedirectAttributes redirectAttributes, HttpServletRequest request) throws Exception {
 
 		// Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -182,7 +184,9 @@ public class EgovRequestOfferController {
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
-		if (sCmd.equals("del")) {
+		boolean isDelete = sCmd.equals("del") && "POST".equalsIgnoreCase(request.getMethod());
+
+		if (isDelete) {
 
 			HashMap<String, String> hmParam = new HashMap<String, String>();
 			hmParam.put("ansParents", requestOfferVO.getKnoId());
@@ -198,14 +202,14 @@ public class EgovRequestOfferController {
 
 				model.addAttribute("reusltScript", reusltScript);
 
-				sCmd = "delMsg";
+				isDelete = false;
 			} else {
 				egovRequestOfferVOService.deleteRequestOffer(requestOfferVO);
 				sLocationUrl = "forward:/dam/spe/req/listRequestOffer.do";
 			}
 		}
 
-		if (!sCmd.equals("del")) {
+		if (!isDelete) {
 			// 상세정보 불러오기
 			RequestOfferVO requestOfferVOs = egovRequestOfferVOService.selectRequestOfferDetail(requestOfferVO);
 			model.addAttribute("requestOfferVO", requestOfferVOs);
@@ -311,7 +315,7 @@ public class EgovRequestOfferController {
 	 * @return "egovframework/com/dam/spe/req/EgovComDamRequestOfferUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/dam/spe/req/updtRequestOfferActor.do")
+	@RequestMapping(value = "/dam/spe/req/updtRequestOfferActor.do", method = RequestMethod.POST)
 	public String EgovRequestOfferModifyActor(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") RequestOfferVO searchVO,
 			@Valid @ModelAttribute("requestOfferVO") RequestOfferVO requestOfferVO, BindingResult bindingResult,
@@ -457,7 +461,7 @@ public class EgovRequestOfferController {
 	 * @return "egovframework/com/dam/spe/req/EgovComDamRequestOfferRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/dam/spe/req/registRequestOfferActor.do")
+	@RequestMapping(value = "/dam/spe/req/registRequestOfferActor.do", method = RequestMethod.POST)
 	public String EgovRequestOfferRegistActor(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") RequestOfferVO searchVO, @RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("requestOfferVO") RequestOfferVO requestOfferVO, BindingResult bindingResult,

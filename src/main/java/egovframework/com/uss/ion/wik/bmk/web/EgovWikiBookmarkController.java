@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -20,6 +21,7 @@ import egovframework.com.uss.ion.wik.bmk.service.EgovWikiBookmarkService;
 import egovframework.com.uss.ion.wik.bmk.service.WikiBookmark;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * 위키북마크를 처리하는 Controller Class 구현
@@ -70,7 +72,7 @@ public class EgovWikiBookmarkController {
     		WikiBookmark wikiBookmark,
     		@RequestParam Map<?, ?> commandMap,
     		@RequestParam(value = "checkList", required=false) List<String> checkList,
-            ModelMap model) throws Exception {
+            ModelMap model, HttpServletRequest request) throws Exception {
 
     	//변수 설정
     	String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
@@ -86,7 +88,7 @@ public class EgovWikiBookmarkController {
         LoginVO loginVO = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 
         //삭제 모드로 실행시
-        if(sCmd.equals("del")){
+        if(sCmd.equals("del") && "POST".equalsIgnoreCase(request.getMethod())){
 
         	for(String checkData : checkList) {
         		LOGGER.debug("===>>> checkData = "+checkData);
@@ -137,7 +139,7 @@ public class EgovWikiBookmarkController {
      * @return String -리턴 URL
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/ion/wik/bmk/registWikiBookmark.do")
+    @RequestMapping(value = "/uss/ion/wik/bmk/registWikiBookmark.do", method = RequestMethod.POST)
     public String EgovWikiBookmarkRegist(
     		WikiBookmark wikiBookmark,
             ModelMap model) throws Exception {

@@ -7,6 +7,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -137,7 +138,7 @@ public class EgovTroblProcessController {
 	 * @param troblManage - 장애관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/sym/tbm/tbp/addTroblProcess.do")
+	@RequestMapping(value = "/sym/tbm/tbp/addTroblProcess.do", method = RequestMethod.POST)
 	public String insertTroblProcess(@ModelAttribute("troblProcessVO") TroblProcessVO troblProcessVO,
 			@Valid @ModelAttribute("troblProcess") TroblProcess troblProcess,
 			BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
@@ -163,7 +164,7 @@ public class EgovTroblProcessController {
 	 * @param troblManage - 장애관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/sym/tbm/tbp/removeTroblProcess.do")
+	@RequestMapping(value = "/sym/tbm/tbp/removeTroblProcess.do", method = RequestMethod.POST)
 	public String deleteTroblProcess(@RequestParam("troblId") String troblId,
 			@ModelAttribute("troblProcess") TroblProcess troblProcess, ModelMap model) throws Exception {
 

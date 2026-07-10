@@ -11,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -165,7 +166,7 @@ public class EgovCpyrhtPrtcPolicyController {
 	 * @return "forward:/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/sam/cpy/CpyrhtPrtcPolicyCnRegist.do")
+	@RequestMapping(value = "/uss/sam/cpy/CpyrhtPrtcPolicyCnRegist.do", method = RequestMethod.POST)
 	public String insertCpyrhtPrtcPolicyCn(
 		@ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO,
 			@Valid @ModelAttribute("cpyrhtPrtcPolicyVO") CpyrhtPrtcPolicyVO cpyrhtPrtcPolicyVO,
@@ -227,7 +228,7 @@ public class EgovCpyrhtPrtcPolicyController {
 	 * @return "forward:/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/sam/cpy/CpyrhtPrtcPolicyCnUpdt.do")
+	@RequestMapping(value = "/uss/sam/cpy/CpyrhtPrtcPolicyCnUpdt.do", method = RequestMethod.POST)
 	public String updateCpyrhtPrtcPolicyCn(
 		@ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO,
 			@Valid @ModelAttribute("cpyrhtPrtcPolicyVO") CpyrhtPrtcPolicyVO cpyrhtPrtcPolicyVO,
@@ -260,7 +261,7 @@ public class EgovCpyrhtPrtcPolicyController {
 	 * @return "forward:/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/sam/cpy/CpyrhtPrtcPolicyCnDelete.do")
+	@RequestMapping(value = "/uss/sam/cpy/CpyrhtPrtcPolicyCnDelete.do", method = RequestMethod.POST)
 	public String deleteCpyrhtPrtcPolicyCn(CpyrhtPrtcPolicyVO cpyrhtPrtcPolicyVO,
 			@ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO) throws Exception {
 

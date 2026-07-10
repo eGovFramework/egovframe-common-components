@@ -10,6 +10,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -161,7 +162,7 @@ public class EgovFaqController {
 	 * @return "forward:/uss/olh/faq/selectFaqList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/faq/insertFaq.do")
+	@RequestMapping(value = "/uss/olh/faq/insertFaq.do", method = RequestMethod.POST)
 	public String insertFaqCn(final MultipartHttpServletRequest multiRequest, // 첨부파일을 위한...
 			@ModelAttribute("searchVO") FaqVO searchVO, @Valid @ModelAttribute("faqVO") FaqVO faqVO,
 			BindingResult bindingResult) throws Exception {
@@ -241,7 +242,7 @@ public class EgovFaqController {
 	 * @return "forward:/uss/olh/faq/selectFaqList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/faq/updateFaq.do")
+	@RequestMapping(value = "/uss/olh/faq/updateFaq.do", method = RequestMethod.POST)
 	public String updateFaqCn(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") FaqVO searchVO, @Valid @ModelAttribute("faqVO") FaqVO faqVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
@@ -289,7 +290,7 @@ public class EgovFaqController {
 	 * @return "forward:/uss/olh/faq/selectFaqList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/faq/deleteFaq.do")
+	@RequestMapping(value = "/uss/olh/faq/deleteFaq.do", method = RequestMethod.POST)
 	public String deleteFaq(FaqVO faqVO, @ModelAttribute("searchVO") FaqVO searchVO) throws Exception {
 
 		// 첨부파일 삭제를 위한 ID 생성 start....

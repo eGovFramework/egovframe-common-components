@@ -10,6 +10,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
 import org.springframework.web.multipart.MultipartFile;
@@ -175,7 +176,7 @@ public class EgovMtgPlaceManageController {
 	 * @return String - 리턴 Url
 	 */
 	@SuppressWarnings("unused")
-	@RequestMapping(value = "/uss/ion/mtg/insertMtgPlace.do")
+	@RequestMapping(value = "/uss/ion/mtg/insertMtgPlace.do", method = RequestMethod.POST)
 	public String insertMtgPlaceManage(final MultipartHttpServletRequest multiRequest,
 			@Valid @ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {
@@ -212,7 +213,7 @@ public class EgovMtgPlaceManageController {
 	 * @return String - 리턴 Url
 	 */
 	@SuppressWarnings("unused")
-	@RequestMapping(value = "/uss/ion/mtg/updtMtgPlace.do")
+	@RequestMapping(value = "/uss/ion/mtg/updtMtgPlace.do", method = RequestMethod.POST)
 	public String updateMtgPlaceManage(final MultipartHttpServletRequest multiRequest,
 			@RequestParam("atchFileAt") String atchFileAt,
 			@Valid @ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO, BindingResult bindingResult,
@@ -257,7 +258,7 @@ public class EgovMtgPlaceManageController {
 	 * @param mtgPlaceManage - 회의실관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/mtg/deleteMtgPlaceManage.do")
+	@RequestMapping(value = "/uss/ion/mtg/deleteMtgPlaceManage.do", method = RequestMethod.POST)
 	public String deleteMtgPlaceManage(@ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO,
 			SessionStatus status, ModelMap model) throws Exception {
 		String atchFileId = mtgPlaceManageVO.getAtchFileId();
@@ -447,7 +448,7 @@ public class EgovMtgPlaceManageController {
 	 * @param mtgPlaceResve - 회의실예약 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/mtg/insertMtgPlaceResve.do")
+	@RequestMapping(value = "/uss/ion/mtg/insertMtgPlaceResve.do", method = RequestMethod.POST)
 	public String insertMtgPlaceResveManage(@ModelAttribute("mtgPlaceManageVO") MtgPlaceManageVO mtgPlaceManageVO,
 			@Valid @ModelAttribute("mtgPlaceResveVO") MtgPlaceResveVO mtgPlaceResveVO, BindingResult bindingResult,
 			@RequestParam(value = "dplactCeck", required = false) String dplactCeck,
@@ -566,7 +567,7 @@ public class EgovMtgPlaceManageController {
 	 * @param mtgPlaceResve - 회의실예약 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/mtg/deleteMtgPlaceResve.do")
+	@RequestMapping(value = "/uss/ion/mtg/deleteMtgPlaceResve.do", method = RequestMethod.POST)
 	public String deleteMtgPlaceResveManage(@ModelAttribute("mtgPlaceResveVO") MtgPlaceResveVO mtgPlaceResveVO,
 			SessionStatus status, ModelMap model) throws Exception {
 

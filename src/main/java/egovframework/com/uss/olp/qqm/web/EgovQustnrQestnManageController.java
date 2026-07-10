@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -31,6 +32,7 @@ import egovframework.com.uss.olp.qqm.service.EgovQustnrQestnManageService;
 import egovframework.com.uss.olp.qqm.service.QustnrQestnManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -181,7 +183,7 @@ public class EgovQustnrQestnManageController {
 			@ModelAttribute("qustnrQestnManageVO") QustnrQestnManageVO qustnrQestnManageVO,
 			@RequestParam Map<?, ?> commandMap,
 			RedirectAttributes redirectAttributes,
-    		ModelMap model)
+    		ModelMap model, HttpServletRequest request)
     throws Exception {
     	// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -196,7 +198,7 @@ public class EgovQustnrQestnManageController {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
 		String sSearchMode = commandMap.get("searchMode") == null ? "" : (String)commandMap.get("searchMode");
 
-		if(sCmd.equals("del")){
+		if(sCmd.equals("del") && "POST".equalsIgnoreCase(request.getMethod())){
 			egovQustnrQestnManageService.deleteQustnrQestnManage(qustnrQestnManageVO);
 		}
 
@@ -243,7 +245,7 @@ public class EgovQustnrQestnManageController {
 	 * @return "egovframework/com/uss/olp/qqm/EgovQustnrQestnManageDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qqm/EgovQustnrQestnManageDetail.do")
+	@RequestMapping(value = "/uss/olp/qqm/EgovQustnrQestnManageDetail.do", method = RequestMethod.POST)
 	public String egovQustnrQestnManageDetail(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@ModelAttribute("qustnrQestnManageVO") QustnrQestnManageVO qustnrQestnManageVO,

@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
@@ -200,7 +201,7 @@ public class EgovNewsController {
 	 * @return "forward:/uss/ion/nws/NewsInfoListInqire.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/nws/updateNews.do")
+	@RequestMapping(value = "/uss/ion/nws/updateNews.do", method = RequestMethod.POST)
 	public String updateNewsInfo(final MultipartHttpServletRequest multiRequest, @Valid @ModelAttribute("newsVO") NewsVO newsVO, BindingResult bindingResult, ModelMap model) throws Exception {
 
 		if (bindingResult.hasErrors()) {
@@ -247,7 +248,7 @@ public class EgovNewsController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/nws/deleteNews.do")
+	@RequestMapping(value = "/uss/ion/nws/deleteNews.do", method = RequestMethod.POST)
 	public String deleteNews(@ModelAttribute("newsVO") NewsVO newsVO) throws Exception {
 		egovNewsService.deleteNews(newsVO);
 

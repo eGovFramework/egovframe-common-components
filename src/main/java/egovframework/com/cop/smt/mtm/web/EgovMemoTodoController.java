@@ -12,6 +12,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.RequestMethod;
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -268,7 +269,7 @@ public class EgovMemoTodoController {
 	 *
 	 * @param memoTodo
 	 */
-    @RequestMapping("/cop/smt/mtm/deleteMemoTodo.do")
+    @RequestMapping(value = "/cop/smt/mtm/deleteMemoTodo.do", method = RequestMethod.POST)
 	public String deleteMemoTodo(@ModelAttribute("memoTodoVO") MemoTodoVO memoTodoVO, ModelMap model) throws Exception{
 		// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();

@@ -13,6 +13,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
@@ -27,6 +28,7 @@ import egovframework.com.uss.olp.qmc.service.EgovQustnrManageService;
 import egovframework.com.uss.olp.qmc.service.QustnrManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 
 /**
@@ -80,13 +82,14 @@ public class EgovQustnrManageController {
 	 */
 	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageListPopup.do")
 	public String egovQustnrManageListPopup(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<?, ?> commandMap, QustnrManageVO qustnrManageVO, ModelMap model) throws Exception {
+			@RequestParam Map<?, ?> commandMap, QustnrManageVO qustnrManageVO, ModelMap model,
+			HttpServletRequest request) throws Exception {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("searchVO={}", searchVO);
 		}
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
-		if (sCmd.equals("del")) {
+		if (sCmd.equals("del") && "POST".equalsIgnoreCase(request.getMethod())) {
 			egovQustnrManageService.deleteQustnrManage(qustnrManageVO);
 		}
 
@@ -132,10 +135,11 @@ public class EgovQustnrManageController {
 	@IncludedInfo(name = "설문관리", order = 590, gid = 50)
 	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageList.do")
 	public String egovQustnrManageList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
-			@RequestParam Map<?, ?> commandMap, QustnrManageVO qustnrManageVO, ModelMap model) throws Exception {
+			@RequestParam Map<?, ?> commandMap, QustnrManageVO qustnrManageVO, ModelMap model,
+			HttpServletRequest request) throws Exception {
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
-		if (sCmd.equals("del")) {
+		if (sCmd.equals("del") && "POST".equalsIgnoreCase(request.getMethod())) {
 			egovQustnrManageService.deleteQustnrManage(qustnrManageVO);
 		}
 
@@ -178,7 +182,7 @@ public class EgovQustnrManageController {
 	 * @return "egovframework/com/uss/olp/qmc/EgovQustnrManageDetail";
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageDetail.do")
+	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageDetail.do", method = RequestMethod.POST)
 	public String egovQustnrManageDetail(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			QustnrManageVO qustnrManageVO, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
@@ -253,7 +257,7 @@ public class EgovQustnrManageController {
 	 * @return "redirect:/uss/olp/qmc/EgovQustnrManageList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageModify.do")
+	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageModify.do", method = RequestMethod.POST)
 	public String qustnrManageModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, QustnrManageVO qustnrManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
@@ -337,7 +341,7 @@ public class EgovQustnrManageController {
 	 * @return "redirect:/uss/olp/qmc/EgovQustnrManageList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageRegist.do")
+	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageRegist.do", method = RequestMethod.POST)
 	public String qustnrManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@Valid @ModelAttribute("qustnrManageVO") QustnrManageVO qustnrManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {

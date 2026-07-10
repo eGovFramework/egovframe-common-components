@@ -9,6 +9,7 @@ import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -129,7 +130,7 @@ public class EgovDeptManageController {
 	 * @param banner - 부서 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/umt/dpt/addDeptManage.do")
+	@RequestMapping(value = "/uss/umt/dpt/addDeptManage.do", method = RequestMethod.POST)
 	public String insertDeptManage(
 		@Valid @ModelAttribute("deptManageVO") DeptManageVO deptManageVO,
 		BindingResult bindingResult,  ModelMap model) throws Exception {
@@ -150,7 +151,7 @@ public class EgovDeptManageController {
 	 * @param banner - 부서 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/umt/dpt/updtDeptManage.do")
+	@RequestMapping(value = "/uss/umt/dpt/updtDeptManage.do", method = RequestMethod.POST)
 	public String updateDeptManage(
 		@Valid @ModelAttribute("deptManageVO") DeptManageVO deptManageVO,
 		BindingResult bindingResult, ModelMap model) throws Exception {
@@ -170,7 +171,7 @@ public class EgovDeptManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/uss/umt/dpt/removeDeptManage.do")
+	@RequestMapping(value = "/uss/umt/dpt/removeDeptManage.do", method = RequestMethod.POST)
 	public String deleteDeptManage(@ModelAttribute("deptManageVO") DeptManageVO deptManageVO, Model model) throws Exception {
 
 		egovDeptManageService.deleteDeptManage(deptManageVO);
@@ -185,7 +186,7 @@ public class EgovDeptManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/uss/umt/dpt/removeDeptManageList.do")
+	@RequestMapping(value = "/uss/umt/dpt/removeDeptManageList.do", method = RequestMethod.POST)
 	public String deleteDeptManageList(@RequestParam("deptManages") String deptManages, @ModelAttribute("deptManageVO") DeptManageVO deptManageVO, ModelMap model) throws Exception {
 
 		// 2026.03.23 kisa 보안점검 대응 조치

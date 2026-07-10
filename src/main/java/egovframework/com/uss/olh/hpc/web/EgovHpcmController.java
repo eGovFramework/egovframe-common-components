@@ -10,6 +10,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
@@ -152,7 +153,7 @@ public class EgovHpcmController {
 	 * @return "forward:/uss/olh/hpc/selectHpcmList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/hpc/insertHpcm.do")
+	@RequestMapping(value = "/uss/olh/hpc/insertHpcm.do", method = RequestMethod.POST)
 	public String insertHpcmCn(@ModelAttribute("searchVO") HpcmVO searchVO, @Valid @ModelAttribute("hpcmVO") HpcmVO hpcmVO,
 			BindingResult bindingResult) throws Exception {
 
@@ -210,7 +211,7 @@ public class EgovHpcmController {
 	 * @return "forward:/uss/olh/hpc/selectHpcmList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/hpc/updateHpcm.do")
+	@RequestMapping(value = "/uss/olh/hpc/updateHpcm.do", method = RequestMethod.POST)
 	public String updateHpcm(@ModelAttribute("searchVO") HpcmVO searchVO, @Valid @ModelAttribute("hpcmManageVO") HpcmVO hpcmVO,
 			BindingResult bindingResult) throws Exception {
 
@@ -236,7 +237,7 @@ public class EgovHpcmController {
 	 * @return "forward:/uss/olh/hpc/selectHpcmList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/hpc/deleteHpcm.do")
+	@RequestMapping(value = "/uss/olh/hpc/deleteHpcm.do", method = RequestMethod.POST)
 	public String deleteHpcmCn(HpcmVO hpcmVO, @ModelAttribute("searchVO") HpcmVO searchVO) throws Exception {
 
 		egovHpcmService.deleteHpcmCn(hpcmVO);

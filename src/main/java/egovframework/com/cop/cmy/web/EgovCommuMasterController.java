@@ -11,6 +11,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import org.springframework.web.bind.annotation.RequestMethod;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
@@ -121,7 +122,7 @@ public class EgovCommuMasterController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/cmy/insertCommuMaster.do")
+    @RequestMapping(value = "/cop/cmy/insertCommuMaster.do", method = RequestMethod.POST)
     public String insertCommuMaster(@ModelAttribute("searchVO") CommunityVO cmmntyVO, @Valid @ModelAttribute("commuMasterVO") Community community,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -207,7 +208,7 @@ public class EgovCommuMasterController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/cmy/updateCommuMaster.do")
+    @RequestMapping(value = "/cop/cmy/updateCommuMaster.do", method = RequestMethod.POST)
     public String updateCommuMaster(@ModelAttribute("searchVO") CommunityVO cmmntyVO, @Valid @ModelAttribute("commuMasterVO") Community community,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -242,7 +243,7 @@ public class EgovCommuMasterController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/cmy/deleteCommuMaster.do")
+    @RequestMapping(value = "/cop/cmy/deleteCommuMaster.do", method = RequestMethod.POST)
     public String deleteCommuMaster(@ModelAttribute("searchVO") CommunityVO cmmntyVO, @ModelAttribute("commuMaster") Community community,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
 
