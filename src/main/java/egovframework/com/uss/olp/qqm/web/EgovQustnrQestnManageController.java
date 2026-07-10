@@ -8,8 +8,6 @@ import java.util.Map;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -32,6 +30,7 @@ import egovframework.com.uss.olp.qqm.service.QustnrQestnManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 설문문항을 처리하는 Controller Class 구현
@@ -46,15 +45,15 @@ import jakarta.validation.Valid;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.03.20  장동한          최초 생성
- *   2011.8.26	정진오			IncludedInfo annotation 추가
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
  *   2017.09.04  김예영          표준프레임워크 v3.7 개선
+ *   2026.07.10  이백행          [2026년 컨트리뷰션] 디버그 출력에 log.debug 적용
  *
  * </pre>
  */
 @Controller
+@Slf4j
 public class EgovQustnrQestnManageController {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovQustnrQestnManageController.class);
 
 	/** EgovMessageSource */
     @Resource(name="egovMessageSource")
@@ -91,8 +90,7 @@ public class EgovQustnrQestnManageController {
         HashMap<String, String> mapParam = new HashMap<>();
         mapParam.put("qestnrQesitmId", qustnrQestnManageVO.getQestnrQesitmId());
 
-        // System.out.println("qustnrQestnManageVO.getQestnTyCode() :
-        // "+qustnrQestnManageVO.getQestnTyCode());
+        log.debug("qustnrQestnManageVO.getQestnTyCode() :", qustnrQestnManageVO.getQestnTyCode());
 
         if ("2".equals(qustnrQestnManageVO.getQestnTyCode())) {
             // 주관식 설문통계
@@ -127,7 +125,7 @@ public class EgovQustnrQestnManageController {
 			@RequestParam Map<?, ?> commandMap,
     		ModelMap model)
     throws Exception {
-		LOGGER.info("#### POPUP CONTROLLER ENTER ###");
+		log.info("#### POPUP CONTROLLER ENTER ###");
 		String sSearchMode = commandMap.get("searchMode") == null ? "" : (String)commandMap.get("searchMode");
 		
 		//설문지정보에서 넘어오면 자동검색 설정
@@ -154,7 +152,7 @@ public class EgovQustnrQestnManageController {
 		searchVO.setRecordCountPerPage(paginationInfo.getRecordCountPerPage());
 
         List<?> resultList = egovQustnrQestnManageService.selectQustnrQestnManageList(searchVO);
-        LOGGER.info("#### resultList size = " + resultList.size());
+        log.info("#### resultList size = {}", resultList.size());
         model.addAttribute("resultList", resultList);
 
         int totCnt = egovQustnrQestnManageService.selectQustnrQestnManageListCnt(searchVO);
@@ -493,9 +491,9 @@ public class EgovQustnrQestnManageController {
 
 	    // validation 에러
 	    if (bindingResult.hasErrors()) {
-	    	 LOGGER.error("#### VALIDATION ERROR OCCURRED");
+	    	 log.error("#### VALIDATION ERROR OCCURRED");
 	    	  bindingResult.getAllErrors().forEach(error -> {
-	    	        LOGGER.error(
+	    	        log.error(
 	    	            "#### error object={}, codes={}, defaultMessage={}",
 	    	            error.getObjectName(),
 	    	            Arrays.toString(error.getCodes()),
@@ -503,7 +501,7 @@ public class EgovQustnrQestnManageController {
 	    	        );
 	    	    });
 	    	  bindingResult.getFieldErrors().forEach(error -> {
-	    	        LOGGER.error(
+	    	        log.error(
 	    	            "#### field={}, rejectedValue=[{}], message={}",
 	    	            error.getField(),
 	    	            error.getRejectedValue(),
@@ -534,7 +532,7 @@ public class EgovQustnrQestnManageController {
 
 	    // 저장
 	    egovQustnrQestnManageService.insertQustnrQestnManage(qustnrQestnManageVO);
-	    LOGGER.info(
+	    log.info(
 	    	    "#### DB SELECT qestnrId=[{}], qestnrTmplatId=[{}]",
 	    	    qustnrQestnManageVO.getQestnrId(),
 	    	    qustnrQestnManageVO.getQestnrTmplatId()

@@ -28,6 +28,7 @@ import egovframework.com.utl.sys.fsm.service.FileSysMntrngVO;
 import egovframework.com.utl.sys.fsm.service.FileSystemChecker;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 개요
@@ -44,13 +45,15 @@ import jakarta.validation.Valid;
  *
  *   수정일       수정자           수정내용
  *  -------     --------    ---------------------------
- *  2010.06.28	장철호		최초 생성
- *  2011.08.26	정진오		IncludedInfo annotation 추가
- *  2023.06.09	김수용		NSR 보안조치 (파일시스템 변수에서 개행문자 제거)
- *  2024.05.02  김수용        NSR 보안조치 (파일시스템명에서 악의적인 문자열 제거)
+ *   2010.06.28  장철호          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2023.06.09  김수용          NSR 보안조치 (파일시스템 변수에서 개행문자 제거)
+ *   2024.05.02  김수용          NSR 보안조치 (파일시스템명에서 악의적인 문자열 제거)
+ *   2026.07.10  이백행          [2026년 컨트리뷰션] 디버그 출력에 log.debug 적용
  * </pre>
  */
 @Controller
+@Slf4j
 public class EgovFileSysMntrngController {
 
 	@Resource(name = "EgovFileSysMntrngService")
@@ -277,7 +280,7 @@ public class EgovFileSysMntrngController {
 	 */
 	@RequestMapping("/utl/sys/fsm/selectFileSysMg.do")
 	public String selectFileSysMg(@ModelAttribute("fileSysMntrngVO") FileSysMntrngVO fileSysMntrngVO, ModelMap model) throws Exception {
-		//System.out.println("FileSysNm" + fileSysMntrngVO.getFileSysNm());
+		log.debug("FileSysNm={}", fileSysMntrngVO.getFileSysNm());
 
 		int totalSpaceFileSys = 0;
 		// 2026.02.28 KISA 취약점 조치
@@ -341,7 +344,7 @@ public class EgovFileSysMntrngController {
 			}
 
 			list.set(k, logVO);
-			//System.out.println(list.get(k).getCreatDt());
+			log.debug(list.get(k).getCreatDt());
 		}
 
 		// 조회시작시

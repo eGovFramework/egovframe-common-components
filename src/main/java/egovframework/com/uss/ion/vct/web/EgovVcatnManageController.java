@@ -11,8 +11,6 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
@@ -27,6 +25,7 @@ import egovframework.com.utl.fcc.service.EgovDateUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <pre>
@@ -51,10 +50,12 @@ import jakarta.validation.Valid;
  *   2010.06.15  이용           최초 생성
  *   2011.08.26  정진오          IncludedInfo annotation 추가
  *   2025.08.19  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-AvoidReassigningParameters(넘겨받는 메소드 parameter 값을 직접 변경하는 코드 탐지)
+ *   2026.07.10  이백행          [2026년 컨트리뷰션] 디버그 출력에 log.debug 적용
  *
  *      </pre>
  */
 @Controller
+@Slf4j
 public class EgovVcatnManageController {
 
 	@Resource(name = "egovMessageSource")
@@ -65,8 +66,6 @@ public class EgovVcatnManageController {
 
 	@Resource(name = "EgovCmmUseService")
 	private EgovCmmUseService cmmUseService;
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovVcatnManageController.class);
 
 	/**
 	 * 휴가관리 목록화면 이동
@@ -296,7 +295,7 @@ public class EgovVcatnManageController {
 						vcatnManageVO.setTempBgnde(EgovDateUtil.formatDate(vcatnManageVO.getBgnde(), "-"));
 						//	 2026.02.28 KISA 취약점 조치
 					} catch (IllegalArgumentException e) {
-						LOGGER.warn("bgnde formatDate 변환 실패: {}", e.getMessage());
+						log.warn("bgnde formatDate 변환 실패: {}", e.getMessage());
 						vcatnManageVO.setTempBgnde(vcatnManageVO.getBgnde());
 					}
 				}
@@ -309,7 +308,7 @@ public class EgovVcatnManageController {
 						vcatnManageVO.setTempEndde(EgovDateUtil.formatDate(vcatnManageVO.getEndde(), "-"));
 						//	 2026.02.28 KISA 취약점 조치
 					} catch (IllegalArgumentException e) {
-						LOGGER.warn("endde formatDate 변환 실패: {}", e.getMessage());
+						log.warn("endde formatDate 변환 실패: {}", e.getMessage());
 						vcatnManageVO.setTempEndde(vcatnManageVO.getEndde());
 					}
 				}
@@ -452,10 +451,6 @@ public class EgovVcatnManageController {
 		}
 
 		if (bindingResult.hasErrors()) {
-			System.out.println("#########################");
-			System.out.println("#########################");
-			System.out.println("#########################");
-
 			vcatnManageVO.setBgnde(EgovStringUtil.removeMinusChar(vcatnManageVO.getBgnde()));
 			vcatnManageVO.setEndde(EgovStringUtil.removeMinusChar(vcatnManageVO.getEndde()));
 			VcatnManageVO detail = egovVcatnManageService.selectVcatnManage(vcatnManageVO);
@@ -467,7 +462,7 @@ public class EgovVcatnManageController {
 						detail.setTempEndde(EgovDateUtil.formatDate(detail.getEndde(), "-"));
 						//	 2026.02.28 KISA 취약점 조치
 					} catch (IllegalArgumentException e) {
-						LOGGER.warn("endde formatDate 변환 실패: {}", e.getMessage());
+						log.warn("endde formatDate 변환 실패: {}", e.getMessage());
 						detail.setTempEndde(detail.getEndde());
 					}
 				} else if (detail.getEndde() != null && detail.getEndde().contains("-")) {

@@ -26,6 +26,7 @@ import egovframework.com.utl.sys.prm.service.ProcessMonLogVO;
 import egovframework.com.utl.sys.prm.service.ProcessMonVO;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 개요 - PROCESS모니터링에 대한 controller 클래스를 정의한다.
@@ -42,11 +43,13 @@ import jakarta.validation.Valid;
  *
  *   수정일       수정자           수정내용
  *  -------     --------    ---------------------------
- *  2010.9.8   박종선     최초 생성
- *  2011.8.26	정진오			IncludedInfo annotation 추가
+ *   2010.09.08  박종선          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2026.07.10  이백행          [2026년 컨트리뷰션] 디버그 출력에 log.debug 적용
  *          </pre>
  */
 @Controller
+@Slf4j
 public class EgovProcessMonController {
 
 	@Resource(name = "EgovProcessMonService")
@@ -70,6 +73,8 @@ public class EgovProcessMonController {
 	@RequestMapping("/utl/sys/prm/EgovComUtlProcessMonList.do")
 	public String selectProcessMonList(@ModelAttribute("searchVO") ProcessMonVO processMonVO, ModelMap model)
 			throws Exception {
+
+		log.debug("processMonVO={}", processMonVO);
 
 		processMonVO.setPageUnit(propertyService.getInt("pageUnit"));
 		processMonVO.setPageSize(propertyService.getInt("pageSize"));
@@ -262,7 +267,6 @@ public class EgovProcessMonController {
 	public String selectProcessSttus(@ModelAttribute("processMonVO") ProcessMonVO processMonVO, ModelMap model)
 			throws Exception {
 
-		// System.out.println("FileSysNm" + fileSysMntrngVO.getFileSysNm());
 		// KISA 보안약점 조치 (2018-10-29, 윤창원)
 		model.addAttribute("processSttus",
 				ProcessMonChecker.getProcessId(EgovStringUtil.isNullToString(processMonVO.getProcessNm())));

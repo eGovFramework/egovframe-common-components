@@ -231,7 +231,6 @@ function fn_egov_RadioBoxValue(sbName)
 
 </head>
 <body onLoad="fn_egov_init_QustnrRespondInfo();">
-<% System.out.println("EgovQustnrRespondInfoManageRegist.jsp"); %>
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 

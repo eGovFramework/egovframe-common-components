@@ -28,8 +28,7 @@ import org.apache.commons.fileupload2.core.FileUploadException;
 import org.apache.commons.fileupload2.jakarta.servlet6.JakartaServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.egovframe.rte.fdl.crypto.EgovEnvCryptoService;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
@@ -38,6 +37,7 @@ import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * Created by guava on 1/20/14.
@@ -52,18 +52,19 @@ import jakarta.servlet.http.HttpServletResponse;
  *
  *  수정일		수정자			수정내용
  *  ----------	-----------		---------------------------
- *  2014.12.04	표준프레임워크		최초 적용 (패키지 변경 및 소스 정리)
- *  2016.04.21	장동한			공통컴포넌트 V3.6 수정
- *  2018.12.11	신용호			KISA 보안취약점 등 수정
- *  2018.12.28	신용호			업로드 이미지 URL 생성 부분 수정
- *  2020.08.28	신용호			보안약점 조치 (Private 배열에 Public 데이터 할당[CWE-496])
- *  2023.06.09	이택진			NSR 보안조치 (크로스사이트 스크립트 방지를 위한 데이터 변환 코드 수정)
- *  2023.06.27	김혜준			크로스사이트 스크립트 방지 코드 미사용 변수 개선
+ *   2014.12.04  표준프레임워크    최초 적용 (패키지 변경 및 소스 정리)
+ *   2016.04.21  장동한          공통컴포넌트 V3.6 수정
+ *   2018.12.11  신용호          KISA 보안취약점 등 수정
+ *   2018.12.28  신용호          업로드 이미지 URL 생성 부분 수정
+ *   2020.08.28  신용호          보안약점 조치 (Private 배열에 Public 데이터 할당[CWE-496])
+ *   2023.06.09  이택진          NSR 보안조치 (크로스사이트 스크립트 방지를 위한 데이터 변환 코드 수정)
+ *   2023.06.27  김혜준          크로스사이트 스크립트 방지 코드 미사용 변수 개선
+ *   2026.07.10  이백행          [2026년 컨트리뷰션] 디버그 출력에 log.debug 적용
  *
  * </pre>
  */
+@Slf4j
 public class CkImageSaver {
-	private static final Log log = LogFactory.getLog(CkFilter.class);
 
 	private static final String FUNC_NO = "CKEditorFuncNum";
 
@@ -103,14 +104,11 @@ public class CkImageSaver {
 				Class<?> klass = Class.forName(saveManagerClass);
 				fileSaveManager = (FileSaveManager) klass.newInstance();
 			} catch (ClassNotFoundException e) {
-				log.error(e);
-				throw new RuntimeException(e);
+				throw new BaseRuntimeException(e);
 			} catch (InstantiationException e) {
-				log.error(e);
-				throw new RuntimeException(e);
+				throw new BaseRuntimeException(e);
 			} catch (IllegalAccessException e) {
-				log.error(e);
-				throw new RuntimeException(e);
+				throw new BaseRuntimeException(e);
 			}
 		}
 	}
@@ -138,7 +136,7 @@ public class CkImageSaver {
 
 			if (isAllowFileType(FilenameUtils.getName(uplFile.getName()))) {
 				String uploadFilePath = fileSaveManager.saveFile(uplFile, imageBaseDir);
-				//System.out.println("===>>> uploadFilePath = "+uploadFilePath);
+				log.debug("===>>> uploadFilePath = {}", uploadFilePath);
 
 				String fileName = uploadFilePath.substring(uploadFilePath.lastIndexOf('/') + 1);
 				String filePath = imageBaseDir+uploadFilePath.substring(0,uploadFilePath.lastIndexOf('/'));
@@ -149,7 +147,7 @@ public class CkImageSaver {
 					    + "&physical=" + this.encrypt(fileName,request)
 					    + "&contentType=" + this.encrypt(uplFile.getContentType(),request);
 
-				//System.out.println("===>>> relUrl = "+relUrl);
+				log.debug("===>>> relUrl = {}", relUrl);
 			} else {
 				errorMessage = "Restricted Image Format";
 			}
@@ -166,7 +164,7 @@ public class CkImageSaver {
 				Integer.parseInt(funcNo);
 			} catch (NumberFormatException e) {
 				isInteger = false;
-				log.error(e);
+				log.error("NumberFormatException", e);
 			}
 			if(!isInteger) {
 				funcNo = "1";		// 가장 많이 사용되는 값
@@ -187,7 +185,7 @@ public class CkImageSaver {
 			out.close();
 
 		} catch (FileUploadException e) {
-			log.error(e);
+			log.error("FileUploadException", e);
 		}
 	}
 

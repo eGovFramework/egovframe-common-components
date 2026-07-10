@@ -8,8 +8,6 @@ import java.util.Map;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -28,6 +26,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import net.sourceforge.ajaxtags.xml.AjaxXmlBuilder;
 
 /**
@@ -48,13 +47,13 @@ import net.sourceforge.ajaxtags.xml.AjaxXmlBuilder;
  *   2020.10.29  권태성          등록 화면과 데이터를 처리하는 method 분리
  *   2025.08.13  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UselessParentheses(불필요한 괄호사용)
  *   2025.08.13  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-CloseResource(부적절한 자원 해제)
+ *   2026.07.10  이백행          [2026년 컨트리뷰션] 디버그 출력에 log.debug 적용
  *
  *      </pre>
  */
 @Controller
+@Slf4j
 public class EgovRecentSrchwrdController {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovRecentSrchwrdController.class);
 
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
@@ -333,7 +332,7 @@ public class EgovRecentSrchwrdController {
 		if (srchwrdManageId != null && !srchwrdManageId.isEmpty()) {
 			recentSrchwrd.setSrchwrdManageId(srchwrdManageId);
 		}
-		LOGGER.debug("recentSrchwrd : {}", recentSrchwrd);
+		log.debug("recentSrchwrd : {}", recentSrchwrd);
 
 		ModelAndView model = new ModelAndView(new AjaxXmlView());
 
@@ -381,8 +380,8 @@ public class EgovRecentSrchwrdController {
 		response.setContentType("text/html;charset=UTF-8");
 		PrintWriter out = response.getWriter();
 
-		LOGGER.debug("commandMap : {}", commandMap);
-		LOGGER.debug("recentSrchwrd : {}", recentSrchwrd);
+		log.debug("commandMap : {}", commandMap);
+		log.debug("recentSrchwrd : {}", recentSrchwrd);
 
 		// 로그인 객체 선언
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -391,8 +390,7 @@ public class EgovRecentSrchwrdController {
 		recentSrchwrd.setFrstRegisterId(uniqId);
 		recentSrchwrd.setLastUpdusrId(uniqId);
 
-		// System.out.println("recentSrchwrd.getSrchwrdNm() : "+
-		// recentSrchwrd.getSrchwrdNm());
+		log.debug("recentSrchwrd.getSrchwrdNm() : {}", recentSrchwrd.getSrchwrdNm());
 
 		// 검색어가 없을 시 미저장
 		if (recentSrchwrd.getSrchwrdNm() != null && !recentSrchwrd.getSrchwrdNm().equals("")) {

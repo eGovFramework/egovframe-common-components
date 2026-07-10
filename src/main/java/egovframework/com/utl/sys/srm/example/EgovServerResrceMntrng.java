@@ -7,6 +7,8 @@ import java.lang.management.RuntimeMXBean;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Modifier;
+
+import lombok.extern.slf4j.Slf4j;
 //import java.net.MalformedURLException;
 //import java.rmi.registry.LocateRegistry;
 //import java.rmi.registry.Registry;
@@ -24,9 +26,10 @@ import java.lang.reflect.Modifier;
 /*
  *       수정일         수정자                   수정내용
  *   -------    --------    ---------------------------
- * 2017.02.07 	이정은 	시큐어코딩(ES)-오류 메시지를 통한 정보노출[CWE-210]
+ *   2017.02.07  이정은          시큐어코딩(ES)-오류 메시지를 통한 정보노출[CWE-210]
+ *   2026.07.10  이백행          [2026년 컨트리뷰션] 디버그 출력에 log.debug 적용
  */
-
+@Slf4j
 public class EgovServerResrceMntrng implements EgovServerResrceMntrngMBean {
 
 	private Object getOSInfo(String getMethod) {
@@ -47,7 +50,7 @@ public class EgovServerResrceMntrng implements EgovServerResrceMntrngMBean {
 				} catch (InvocationTargetException e) {
 					value = e;
 				}
-				//System.out.println(method.getName() + " = " + value);
+				log.debug("{} = {}", method.getName(), value);
 				return value;
 			} // if
 		} // for
@@ -76,8 +79,8 @@ public class EgovServerResrceMntrng implements EgovServerResrceMntrngMBean {
 
 		double usage = Math.min(99f, cal);
 
-		//System.out.println("Calculation: " + cal);
-		//System.out.println("CPU Usage: " + usage);
+		log.debug("Calculation: {}", cal);
+		log.debug("CPU Usage: {}", usage);
 
 		return usage;
 	}
@@ -96,7 +99,7 @@ public class EgovServerResrceMntrng implements EgovServerResrceMntrngMBean {
 
 			Registry rmi = LocateRegistry.createRegistry(9999);
 
-			System.out.println("RMI Server started : " + rmi.toString());
+			log.debug("RMI Server started : {}", rmi.toString());
 
 			MBeanServer mbeanServer = ManagementFactory.getPlatformMBeanServer();
 

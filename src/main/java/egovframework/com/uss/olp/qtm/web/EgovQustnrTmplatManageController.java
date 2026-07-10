@@ -7,8 +7,6 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
@@ -32,6 +30,7 @@ import jakarta.annotation.Resource;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * 설문템플릿 Controller Class 구현
@@ -45,18 +44,18 @@ import jakarta.validation.Valid;
  *
  *  수정일                수정자            수정내용
  *  ----------   --------   ---------------------------
- *  2009.03.20   장동한            최초 생성
- *  2011.08.26   정진오            IncludedInfo annotation 추가
- *  2020.10.30   신용호            파일업로드 제한을위한 파라미터 전달
- *  2022.11.11   김혜준			   시큐어코딩 처리
+ *   2009.03.20  장동한          최초 생성
+ *   2011.08.26  정진오          IncludedInfo annotation 추가
+ *   2020.10.30  신용호          파일업로드 제한을위한 파라미터 전달
+ *   2022.11.11  김혜준          시큐어코딩 처리
+ *   2026.07.10  이백행          [2026년 컨트리뷰션] 디버그 출력에 log.debug 적용
  *
  * </pre>
  */
 
 @Controller
+@Slf4j
 public class EgovQustnrTmplatManageController {
-
-	private static final Logger LOGGER = LoggerFactory.getLogger(EgovQustnrTmplatManageController.class);
 
 	/** EgovMessageSource */
 	@Resource(name = "egovMessageSource")
@@ -303,8 +302,8 @@ public class EgovQustnrTmplatManageController {
 
 		if (!files.isEmpty()) {
 			for (MultipartFile file : files.values()) {
-				LOGGER.info("getName => {}", file.getName());
-				LOGGER.info("getOriginalFilename => {}", file.getOriginalFilename());
+				log.info("getName => {}", file.getName());
+				log.info("getOriginalFilename => {}", file.getOriginalFilename());
 
 				// 파일 수정여부 확인
 				if (file.getOriginalFilename() != null && !file.getOriginalFilename().isEmpty()) {
@@ -350,7 +349,7 @@ public class EgovQustnrTmplatManageController {
 		String sLocationUrl = "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageRegist";
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
-		LOGGER.info("cmd => {}", sCmd);
+		log.info("cmd => {}", sCmd);
 
 		//아이디 설정
 		qustnrTmplatManageVO
@@ -391,7 +390,7 @@ public class EgovQustnrTmplatManageController {
 		}
 		// 유효성 검증, 실패시 포워딩
 				if(bindingResult.hasErrors()) {
-					System.out.println("####파라미터검증에러"+ bindingResult.getAllErrors());//확인용 로그
+					log.debug("####파라미터검증에러{}", bindingResult.getAllErrors());//확인용 로그
 					return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageRegist";
 				}
 				
@@ -408,8 +407,8 @@ public class EgovQustnrTmplatManageController {
 
 		if (files != null && !files.isEmpty()) {
 			for (MultipartFile file : files.values()) {
-				LOGGER.info("getName => {}", file.getName()); // 파일의 파라미터 이름
-				LOGGER.info("getOriginalFilename => {}", file.getOriginalFilename()); // 파일의 실제 이름
+				log.info("getName => {}", file.getName()); // 파일의 파라미터 이름
+				log.info("getOriginalFilename => {}", file.getOriginalFilename()); // 파일의 실제 이름
 
 				// 2022.11.11 시큐어코딩 처리
 				if (ObjectUtils.isNotEmpty(file.getName()) && ObjectUtils.isNotEmpty(file.getOriginalFilename())

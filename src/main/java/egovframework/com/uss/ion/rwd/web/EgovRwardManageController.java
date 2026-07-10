@@ -29,6 +29,7 @@ import egovframework.com.uss.ion.rwd.service.RwardManageVO;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 
 /**
  * <pre>
@@ -54,10 +55,12 @@ import jakarta.validation.Valid;
  *   2011.08.16  정진오          VcatnManageVO Dependency 제거, 사용하지 않는 객체 선언
  *   2011.08.26  정진오          IncludedInfo annotation 추가
  *   2025.08.15  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *   2026.07.10  이백행          [2026년 컨트리뷰션] 디버그 출력에 log.debug 적용
  *
  *      </pre>
  */
 @Controller
+@Slf4j
 public class EgovRwardManageController {
 
 	@Resource(name = "egovMessageSource")
@@ -257,12 +260,12 @@ public class EgovRwardManageController {
 
 			// final Map<String, MultipartFile> files = multiRequest.getFileMap();
 			final List<MultipartFile> files = multiRequest.getFiles("file_1");
-			// System.out.println("updtRwardManage 1");
+			log.debug("updtRwardManage 1");
 			if (!files.isEmpty()) {
-				// System.out.println("updtRwardManage 2");
+				log.debug("updtRwardManage 2");
 				if ("N".equals(atchFileAt)) {
 
-					// System.out.println("updtRwardManage 3");
+					log.debug("updtRwardManage 3");
 					List<FileVO> fvoList = fileUtil.parseFileInf(files, "RWD_", 0, atchFileId, "");
 					atchFileId = fileMngService.insertFileInfs(fvoList);
 
@@ -270,7 +273,7 @@ public class EgovRwardManageController {
 					rwardManage.setAtchFileId(atchFileId); // 첨부파일 ID
 
 				} else {
-					// System.out.println("updtRwardManage 4");
+					log.debug("updtRwardManage 4");
 					FileVO fvo = new FileVO();
 					fvo.setAtchFileId(atchFileId);
 					int fileKeyParam = fileMngService.getMaxFileSN(fvo);
