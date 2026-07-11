@@ -34,7 +34,6 @@ public class EgovDateUtilTest {
 			"THR, 목요일",
 			"THU, 목요일",
 			"Thu, 목요일",
-			"Thu, 목요일",
 			"FRI, 금요일",
 			"SAT, 토요일"
 		})
