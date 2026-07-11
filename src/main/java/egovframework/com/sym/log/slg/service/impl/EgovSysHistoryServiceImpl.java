@@ -10,7 +10,6 @@ import org.springframework.ui.ModelMap;
 import egovframework.com.sym.log.slg.service.EgovSysHistoryService;
 import egovframework.com.sym.log.slg.service.SysHistory;
 import egovframework.com.sym.log.slg.service.SysHistoryVO;
-import egovframework.com.utl.fcc.service.EgovStringUtil;
 import jakarta.annotation.Resource;
 
 /**
@@ -32,6 +31,8 @@ import jakarta.annotation.Resource;
 public class EgovSysHistoryServiceImpl extends EgovAbstractServiceImpl implements
 		EgovSysHistoryService {
 
+	private static final SysHistoryIdGenerator SYS_HISTORY_ID_GENERATOR = new SysHistoryIdGenerator();
+
 	@Resource(name="sysHistoryDAO")
 	private SysHistoryDAO sysHistoryDAO;
 
@@ -43,10 +44,7 @@ public class EgovSysHistoryServiceImpl extends EgovAbstractServiceImpl implement
 	 */
 	@Override
 	public Map<?, ?> insertSysHistory(SysHistory history) throws Exception {
-
-//		String histId = "HIST_"+20091021144553005; yyyyMMddhhmmssSSS
-		String histId = "HT_"+EgovStringUtil.getTimeStamp();
-		history.setHistId(histId);
+		history.setHistId(SYS_HISTORY_ID_GENERATOR.getNextId());
 
 		sysHistoryDAO.insertSysHistory(history);
 
