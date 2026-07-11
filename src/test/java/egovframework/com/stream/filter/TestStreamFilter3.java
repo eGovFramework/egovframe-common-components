@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * JDK 8 Stream API Test 구현
  * @author 표준프레임워크 신용호
@@ -17,12 +19,13 @@ import java.util.stream.Collectors;
  *
  *  수정일              수정자          수정내용
  *  ----------  --------  ---------------------------
- *  2021.07.26  신용호          최초 생성 ( JDK8 Stream API - List Map 중복제거 및 정렬 구현 )
+ *   2021.07.26  신용호          최초 생성 ( JDK8 Stream API - List Map 중복제거 및 정렬 구현 )
+ *   2026.07.11  이백행          [2026년 컨트리뷰션] 디버그 출력에 log.debug 적용
  *
  * </pre>
  */
 
-
+@Slf4j
 public class TestStreamFilter3 {
 
 	public static void main(String[] args) {
@@ -60,25 +63,25 @@ public class TestStreamFilter3 {
 		ArrayList<Map<String, Object>> list = new ArrayList<>(Arrays.asList(map1, map2, map3, map4, map5, map6));
 		List<Map<String, Object>> newList1 = list.stream().filter(item->item.get("name").toString().equals("shin")).collect(Collectors.toList());;
 
-		System.out.println("list size1 = "+newList1.size());
+		log.debug("list size1 = {}", newList1.size());
 
-		System.out.println("=== 지정된 항목 제거 ");
+		log.debug("=== 지정된 항목 제거 ");
 		List<Map<String, Object>> newList2 = list.stream().filter(item->!item.get("name").toString().equals("shin")).collect(Collectors.toList());;
-		System.out.println("list size2 = "+newList2.size());
-		newList2.stream().forEach(item -> System.out.println("name = " + item.get("name") + ""));
+		log.debug("list size2 = {}", newList2.size());
+		newList2.stream().forEach(item -> log.debug("name = {}",  item.get("name")));
 		
-		System.out.println("=== 중복제거 ");
-		newList2.stream().distinct().forEach(item -> System.out.println("name = " + item.get("name") + ""));
+		log.debug("=== 중복제거 ");
+		newList2.stream().distinct().forEach(item -> log.debug("name = {}", item.get("name")));
 		
-		System.out.println("=== 정렬 (Reverse) ");
+		log.debug("=== 정렬 (Reverse) ");
 		newList2.stream()
 		.sorted( (o1, o2) -> o2.get("order").toString().compareTo(o1.get("order").toString())  )
-		.forEach(item -> System.out.println("name = " + item.get("name") + ""));
+		.forEach(item -> log.debug("name = {}", item.get("name")));
 
-		System.out.println("=== 정렬 (Forward) ");
+		log.debug("=== 정렬 (Forward) ");
 		newList2.stream()
 		.sorted( (o1, o2) -> o1.get("order").toString().compareTo(o2.get("order").toString())  )
-		.forEach(item -> System.out.println("name = " + item.get("name") + ""));
+		.forEach(item -> log.debug("name = {}", item.get("name")));
 
 	}
 

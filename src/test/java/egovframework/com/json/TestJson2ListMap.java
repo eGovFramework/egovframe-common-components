@@ -5,11 +5,15 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections.MapUtils;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 
 import com.fasterxml.jackson.core.JsonParseException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.*;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class TestJson2ListMap {
 
 	@SuppressWarnings("unchecked")
@@ -26,15 +30,15 @@ public class TestJson2ListMap {
 				MapUtils.debugPrint(System.out, "map", map);
 				List<String> friends = (List<String>) map.get("friends");
 				for (String friend : friends) {
-					System.out.println(friend);
+					log.debug(friend);
 				}
 			}
 		} catch (JsonParseException e) {
-			e.printStackTrace();
+			throw new BaseRuntimeException(e);
 		} catch (JsonMappingException e) {
-			e.printStackTrace();
+			throw new BaseRuntimeException(e);
 		} catch (IOException e) {
-			e.printStackTrace();
+			throw new BaseRuntimeException(e);
 		}
 	}
 }

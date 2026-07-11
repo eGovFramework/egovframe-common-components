@@ -1,5 +1,7 @@
 package egovframework.com.secure.coding;
 
+import lombok.extern.slf4j.Slf4j;
+
 /**
  * NullCheck Test Class 구현
  * @author 표준프레임워크 신용호
@@ -10,26 +12,25 @@ package egovframework.com.secure.coding;
  *
  *  수정일              수정자          수정내용
  *  ----------  --------  ---------------------------
- *  2020.08.24  신용호          시큐어코딩 테스트 (Private 배열에 Public 데이터 할당)
+ *   2020.08.24  신용호          시큐어코딩 테스트 (Private 배열에 Public 데이터 할당)
+ *   2026.07.11  이백행          [2026년 컨트리뷰션] 디버그 출력에 log.debug 적용
  *
  * </pre>
  */
-
+@Slf4j
 public class PrivateTest {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
 		MyUserVO myUser = new MyUserVO();
 		
 		// Private String TEST
 		String myName = "SYH";
 		myUser.setName(myName);
-		System.out.println(myName);
-		System.out.println(myUser.getName());
+		log.debug(myName);
+		log.debug(myUser.getName());
 
 		myName = "Change Name";
-		System.out.println(myUser.getName());
+		log.debug(myUser.getName());
 		
 		
 		// Private Array TEST
@@ -37,11 +38,11 @@ public class PrivateTest {
 		
 		myUser.setMyColor(myColor);
 		
-		System.out.println(myColor[0]);
-		System.out.println(myUser.getMyColor()[0]);
+		log.debug(myColor[0]);
+		log.debug(myUser.getMyColor()[0]);
 
 		myColor[0] = "direct access";
-		System.out.println(myUser.getMyColor()[0]); //<=== 직접 접근 가능
+		log.debug(myUser.getMyColor()[0]); //<=== 직접 접근 가능
 		
 	}
 

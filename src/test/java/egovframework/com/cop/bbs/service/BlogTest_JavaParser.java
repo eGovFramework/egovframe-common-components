@@ -7,14 +7,17 @@ import org.junit.jupiter.api.Test;
 import com.github.javaparser.StaticJavaParser;
 import com.github.javaparser.ast.CompilationUnit;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 public class BlogTest_JavaParser {
 
 	@Test
 	public void test() throws Exception {
-		CompilationUnit cu = StaticJavaParser.parse(Paths.get(
-				"C:\\EGOVFRAME-3.10.0\\git\\egovframe-common-components\\src\\main\\java\\egovframework\\com\\cop\\bbs\\service\\Blog.java"));
+		CompilationUnit cu = StaticJavaParser
+				.parse(Paths.get("src\\main\\java\\egovframework\\com\\cop\\bbs\\service\\Blog.java"));
 
-		StringBuffer sb = new StringBuffer();
+		StringBuilder sb = new StringBuilder();
 
 		cu.getClassByName("Blog").ifPresent(coid -> {
 			coid.getMethods().forEach(method -> {
@@ -37,7 +40,7 @@ public class BlogTest_JavaParser {
 			});
 		});
 
-		System.out.println(sb);
+		log.debug("{}", sb);
 	}
 
 }

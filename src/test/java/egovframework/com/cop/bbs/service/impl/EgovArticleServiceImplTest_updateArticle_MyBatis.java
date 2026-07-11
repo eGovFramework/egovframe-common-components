@@ -6,9 +6,9 @@ import java.io.InputStream;
 import org.apache.ibatis.builder.xml.XMLMapperBuilder;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.Configuration;
+import org.egovframe.rte.fdl.cmmn.exception.BaseRuntimeException;
 import org.junit.jupiter.api.Test;
 
-import egovframework.com.cmm.util.EgovResourceCloseHelper;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -17,91 +17,94 @@ public class EgovArticleServiceImplTest_updateArticle_MyBatis {
 	// https://www.programcreek.com/java-api-examples/?api=org.apache.ibatis.builder.xml.XMLMapperBuilder
 
 //	@Test
-//	public void printResultMapInfo() throws Exception {
+//	public void printResultMapInfo() {
 //		Configuration configuration = new Configuration();
 //		String resource = "egovframework/mapper/com/cop/bbs/EgovArticle_SQL_mysql.xml";
-//		InputStream inputStream = Resources.getResourceAsStream(resource);
-//		XMLMapperBuilder builder = new XMLMapperBuilder(inputStream, configuration, resource,
-//				configuration.getSqlFragments());
-//		builder.parse();
 //
-//		ParameterMap parameterMap = configuration.getParameterMap("updateArticle");
-//		log.debug("getId={}", parameterMap.getId());
+//		try (InputStream inputStream = Resources.getResourceAsStream(resource)) {
+//			XMLMapperBuilder builder = new XMLMapperBuilder(inputStream, configuration, resource,
+//					configuration.getSqlFragments());
+//			builder.parse();
 //
-//		configuration.getParameterMapNames().forEach(action -> System.out.println(action));
+//			ParameterMap parameterMap = configuration.getParameterMap("updateArticle");
+//			log.debug("getId={}", parameterMap.getId());
 //
-//		configuration.getParameterMaps().forEach(action->System.out.println(action));
+//			configuration.getParameterMapNames().forEach(action -> log.debug(action));
 //
-//		System.out.println(configuration.getMappedStatement("updateArticle").getId());
-//		System.out.println(configuration.getMappedStatement("updateArticle").getResource());
-//		System.out.println(configuration.getMappedStatement("updateArticle").getParameterMap());
-//		System.out.println(configuration.getMappedStatement("updateArticle").getParameterMap().getId());
-//		System.out.println(configuration.getMappedStatement("updateArticle").getParameterMap().getParameterMappings());
-//		System.out.println(configuration.getMappedStatement("updateArticle").getSqlCommandType());
-//		System.out.println(configuration.getMappedStatement("updateArticle").getSqlSource());
-//		System.out.println(configuration.getMappedStatement("updateArticle").getStatementType());
+//			configuration.getParameterMaps().forEach(action -> log.debug("{}", action));
 //
-//		System.out.println(configuration.getMappedStatementNames());
-//		System.out.println(configuration.getMappedStatements());
-//		configuration.getMappedStatements().forEach(action->System.out.println(action));
-//		configuration.getMappedStatements().forEach(action->System.out.println(action.getId()));
-//		configuration.getMappedStatements().forEach(action->System.out.println(action.getResource()));
-//		configuration.getMappedStatements().forEach(action->System.out.println(action.getDatabaseId()));
-//		configuration.getMappedStatements().forEach(action->System.out.println(action.getParameterMap().getId()));
-//		configuration.getMappedStatements().forEach(action->System.out.println(action.getParameterMap().getParameterMappings()));
+//			log.debug(configuration.getMappedStatement("updateArticle").getId());
+//			log.debug(configuration.getMappedStatement("updateArticle").getResource());
+//			log.debug("{}", configuration.getMappedStatement("updateArticle").getParameterMap());
+//			log.debug(configuration.getMappedStatement("updateArticle").getParameterMap().getId());
+//			log.debug("{}", configuration.getMappedStatement("updateArticle").getParameterMap().getParameterMappings());
+//			log.debug("{}", configuration.getMappedStatement("updateArticle").getSqlCommandType());
+//			log.debug("{}", configuration.getMappedStatement("updateArticle").getSqlSource());
+//			log.debug("{}", configuration.getMappedStatement("updateArticle").getStatementType());
 //
-//		System.out.println(configuration.getMapperRegistry());
-//		System.out.println(configuration.getMapperRegistry().getMappers());
-//		System.out.println(configuration.getObjectFactory());
-//		System.out.println(configuration.getTypeAliasRegistry().getTypeAliases());
-//		System.out.println(configuration.getVariables());
+//			log.debug("{}", configuration.getMappedStatementNames());
+//			log.debug("{}", configuration.getMappedStatements());
+//			configuration.getMappedStatements().forEach(action -> log.debug("{}", action));
+//			configuration.getMappedStatements().forEach(action -> log.debug(action.getId()));
+//			configuration.getMappedStatements().forEach(action -> log.debug(action.getResource()));
+//			configuration.getMappedStatements().forEach(action -> log.debug(action.getDatabaseId()));
+//			configuration.getMappedStatements().forEach(action -> log.debug(action.getParameterMap().getId()));
+//			configuration.getMappedStatements()
+//					.forEach(action -> log.debug("{}", action.getParameterMap().getParameterMappings()));
 //
-//		configuration.getResultMaps().forEach(action -> System.out.println(action.getId()));
+//			log.debug("{}", configuration.getMapperRegistry());
+//			log.debug("{}", configuration.getMapperRegistry().getMappers());
+//			log.debug("{}", configuration.getObjectFactory());
+//			log.debug("{}", configuration.getTypeAliasRegistry().getTypeAliases());
+//			log.debug("{}", configuration.getVariables());
 //
-//		System.out.println(configuration.getMappedStatement("updateArticle").getBoundSql(BoardVO.class).getParameterObject());
-//		System.out.println(configuration.getMappedStatement("updateArticle").getBoundSql(BoardVO.class).getSql());
-//		System.out.println(configuration.getMappedStatement("updateArticle").getBoundSql(BoardVO.class).getParameterMappings());
-//		configuration.getMappedStatement("updateArticle").getBoundSql(BoardVO.class).getParameterMappings()
-//				.forEach(action -> System.out.println(action));
-//		configuration.getMappedStatement("updateArticle").getBoundSql(BoardVO.class).getParameterMappings()
-//				.forEach(action -> System.out.println(action.getProperty()));
-//		configuration.getMappedStatement("updateArticle").getBoundSql(BoardVO.class).getParameterMappings()
-//				.forEach(action -> System.out.println(action.getJavaType()));
+//			configuration.getResultMaps().forEach(action -> log.debug(action.getId()));
 //
-//		inputStream.close();
+//			log.debug("{}",
+//					configuration.getMappedStatement("updateArticle").getBoundSql(BoardVO.class).getParameterObject());
+//			log.debug(configuration.getMappedStatement("updateArticle").getBoundSql(BoardVO.class).getSql());
+//			log.debug("{}", configuration.getMappedStatement("updateArticle").getBoundSql(BoardVO.class)
+//					.getParameterMappings());
+//			configuration.getMappedStatement("updateArticle").getBoundSql(BoardVO.class).getParameterMappings()
+//					.forEach(action -> log.debug("{}", action));
+//			configuration.getMappedStatement("updateArticle").getBoundSql(BoardVO.class).getParameterMappings()
+//					.forEach(action -> log.debug(action.getProperty()));
+//			configuration.getMappedStatement("updateArticle").getBoundSql(BoardVO.class).getParameterMappings()
+//					.forEach(action -> log.debug("{}", action.getJavaType()));
+//		} catch (IOException e) {
+//			throw new BaseRuntimeException(e);
+//		}
 //	}
 
 	@Test
 	public void printParametersInfo() {
-		InputStream inputStream = null;
-		try {
-			Configuration configuration = new Configuration();
+		Configuration configuration = new Configuration();
 //			String resource = "egovframework/mapper/com/cop/bbs/EgovArticle_SQL_mysql.xml";
-			String resource = "egovframework/mapper/com/cop/bbs/EgovBBSMaster_SQL_mysql.xml";
-			inputStream = Resources.getResourceAsStream(resource);
+		String resource = "egovframework/mapper/com/cop/bbs/EgovBBSMaster_SQL_mysql.xml";
 
+		try (InputStream inputStream = Resources.getResourceAsStream(resource)) {
 			XMLMapperBuilder builder = new XMLMapperBuilder(inputStream, configuration, resource,
 					configuration.getSqlFragments());
 
 			builder.parse();
 
 //			configuration.getMappedStatement("updateArticle").getBoundSql(null).getParameterMappings()
-//					.forEach(action -> System.out.println(action));
+//					.forEach(action -> log.debug(action));
 
-//			configuration.getMappedStatementNames().forEach(action -> System.out.println(action));
+//			configuration.getMappedStatementNames().forEach(action -> log.debug(action));
 
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
 
 			configuration.getMappedStatements().forEach(ms -> {
-//				System.out.println(ms.getId());
-//				System.out.println(ms.getBoundSql(null).getParameterMappings());
+//				log.debug(ms.getId());
+//				log.debug(ms.getBoundSql(null).getParameterMappings());
 
 				sb.append(ms.getId());
 				sb.append("\n");
 
 				ms.getBoundSql(null).getParameterMappings().forEach(pm -> {
-//					System.out.println(pm.getProperty());
-//					System.out.println(pm.getJavaType().getName());
+//					log.debug(pm.getProperty());
+//					log.debug(pm.getJavaType().getName());
 
 					String property = pm.getProperty();
 					String propertyUpper = property.toUpperCase().substring(0, 1)
@@ -123,16 +126,14 @@ public class EgovArticleServiceImplTest_updateArticle_MyBatis {
 					sb.append("\n");
 				});
 
-//				System.out.println("");
+//				log.debug("");
 
 				sb.append("\n");
 			});
 
-			System.out.println(sb);
+			log.debug("{}", sb);
 		} catch (IOException e) {
-			log.error(e.getMessage());
-		} finally {
-			EgovResourceCloseHelper.close(inputStream);
+			throw new BaseRuntimeException(e);
 		}
 	}
 
