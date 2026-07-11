@@ -640,19 +640,19 @@ public class EgovDateUtil {
 	public static String convertWeek(String sWeek) {
 		String retStr = null;
 
-		if (sWeek.equals("SUN")) {
+		if (sWeek.equalsIgnoreCase("SUN")) {
 			retStr = "일요일";
-		} else if (sWeek.equals("MON")) {
+		} else if (sWeek.equalsIgnoreCase("MON")) {
 			retStr = "월요일";
-		} else if (sWeek.equals("TUE")) {
+		} else if (sWeek.equalsIgnoreCase("TUE")) {
 			retStr = "화요일";
-		} else if (sWeek.equals("WED")) {
+		} else if (sWeek.equalsIgnoreCase("WED")) {
 			retStr = "수요일";
-		} else if (sWeek.equals("THR") || sWeek.equals("THU")) {
+		} else if (sWeek.equalsIgnoreCase("THR") || sWeek.equalsIgnoreCase("THU")) {
 			retStr = "목요일";
-		} else if (sWeek.equals("FRI")) {
+		} else if (sWeek.equalsIgnoreCase("FRI")) {
 			retStr = "금요일";
-		} else if (sWeek.equals("SAT")) {
+		} else if (sWeek.equalsIgnoreCase("SAT")) {
 			retStr = "토요일";
 		}
 

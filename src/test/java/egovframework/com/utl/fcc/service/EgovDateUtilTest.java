@@ -18,21 +18,23 @@ public class EgovDateUtilTest {
 	class ConvertWeek {
 
 		// -------------------------------------------------------------------
-		// 정상 입력: 지원되는 요일 코드 -> 국문 요일명
-		//   THR: 기존 지원 값(하위호환) / THU: 이번 수정으로 추가된 표준 3글자 대문자 약어
-		//   ※ addYMDtoWeek() 의 실제 출력값인 "Thu"(첫 글자만 대문자)는 아직 미지원 —
-		//     sWeek.equals("THU") 는 대소문자를 구분하므로 "Thu" 입력 시 여전히 null 반환됨
+		// 정상 입력: 지원되는 요일 코드 -> 국문 요일명 (대소문자 구분 없이 인식)
+		//   THR: 기존 지원 값(하위호환) / THU, Thu, thu: 대소문자 무관하게 목요일로 인식
+		//   addYMDtoWeek() 의 실제 출력값인 "Thu"(첫 글자만 대문자)도 이제 정상 인식됨
 		// -------------------------------------------------------------------
 
 		@ParameterizedTest(name = "{0} -> {1}")
 		@DisplayName("지원되는 요일 코드 -> 국문 요일명")
 		@CsvSource({
 			"SUN, 일요일",
+			"Sun, 일요일",
 			"MON, 월요일",
 			"TUE, 화요일",
 			"WED, 수요일",
 			"THR, 목요일",
 			"THU, 목요일",
+			"Thu, 목요일",
+			"Thu, 목요일",
 			"FRI, 금요일",
 			"SAT, 토요일"
 		})
@@ -50,6 +52,28 @@ public class EgovDateUtilTest {
 		@DisplayName("존재하지 않는 요일 문자열 -> null 반환")
 		void unknownStringReturnsNull() {
 			assertNull(EgovDateUtil.convertWeek("XXX"));
+		}
+
+	}
+
+	@Nested
+	@DisplayName("addYMDtoWeek()")
+	class AddYMDtoWeek {
+
+
+		@ParameterizedTest(name = "{0}일 후 -> {1}")
+		@DisplayName("월요일부터 일요일까지 -> 요일 문자열(Mon~Sun)")
+		@CsvSource({
+			"0, Mon",
+			"1, Tue",
+			"2, Wed",
+			"3, Thu",
+			"4, Fri",
+			"5, Sat",
+			"6, Sun"
+		})
+		void mondayToSunday(int dayOffset, String expected) {
+			assertEquals(expected, EgovDateUtil.addYMDtoWeek("20240101", 0, 0, dayOffset));
 		}
 
 	}
