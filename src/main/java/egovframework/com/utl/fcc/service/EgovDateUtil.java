@@ -648,7 +648,7 @@ public class EgovDateUtil {
 			retStr = "화요일";
 		} else if (sWeek.equals("WED")) {
 			retStr = "수요일";
-		} else if (sWeek.equals("THR")) {
+		} else if (sWeek.equals("THR") || sWeek.equals("THU")) {
 			retStr = "목요일";
 		} else if (sWeek.equals("FRI")) {
 			retStr = "금요일";
