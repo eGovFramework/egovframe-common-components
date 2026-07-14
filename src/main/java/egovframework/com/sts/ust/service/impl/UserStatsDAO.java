@@ -21,6 +21,7 @@ import egovframework.com.sts.com.StatsVO;
  *  -------    --------    ---------------------------
  *  2009.03.19  박지욱          최초 생성
  *  2011.06.30  이기하          패키지 분리(sts -> sts.sst)
+ *  2026.06.16  이백행          [2026년 컨트리뷰션] 불필요한 예외 제거
  *
  *  </pre>
  */
@@ -31,17 +32,15 @@ public class UserStatsDAO extends EgovComAbstractDAO {
 	 * 사용자 통계를 조회한다
 	 * @param vo StatsVO
 	 * @return List
-	 * @exception Exception
 	 */
-    public List<StatsVO> selectUserStats(StatsVO vo) throws Exception {
+    public List<StatsVO> selectUserStats(StatsVO vo) {
         return selectList("UserStatsDAO.selectUserStats", vo);
     }
 
     /**
 	 * 사용자 통계를 위한 집계를 하루단위로 작업하는 배치 프로그램
-	 * @exception Exception
 	 */
-    public void summaryUserStats() throws Exception {
+    public void summaryUserStats() {
         insert("UserStatsDAO.summaryUserStats", null);
     }
 }

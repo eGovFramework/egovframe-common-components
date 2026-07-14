@@ -4,9 +4,12 @@ import com.github.scribejava.apis.GoogleApi20;
 import com.github.scribejava.apis.KakaoApi;
 import com.github.scribejava.core.builder.api.DefaultApi20;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * OAuth VO
- * 
+ *
  * @author 표프센
  * @since 2020.03.11
  * @version 3.9.0
@@ -19,70 +22,13 @@ import com.github.scribejava.core.builder.api.DefaultApi20;
  *  -------    --------    ---------------------------
  *   2020.03.11  표프센          최초 생성
  *   2025.06.25  이백행          PMD로 소프트웨어 보안약점 진단하고 제거하기-ImmutableField(불변필드)
+ *   2026.05.27  기여자          Lombok @Getter/@Setter 적용
  *
  *      </pre>
  */
+@Getter
+@Setter
 public class OAuthVO implements OAuthConfig {
-	public String getService() {
-		return serviceName;
-	}
-
-	public void setService(String service) {
-		this.serviceName = service;
-	}
-
-	public String getClientId() {
-		return clientId;
-	}
-
-	public void setClientId(String clientId) {
-		this.clientId = clientId;
-	}
-
-	public String getClientSecret() {
-		return clientSecret;
-	}
-
-	public void setClientSecret(String clientSecret) {
-		this.clientSecret = clientSecret;
-	}
-
-	public String getRedirectUrl() {
-		return redirectUrl;
-	}
-
-	public void setRedirectUrl(String redirectUrl) {
-		this.redirectUrl = redirectUrl;
-	}
-
-	public DefaultApi20 getApi20Instance() {
-		return api20Instance;
-	}
-
-	public void setApi20Instance(DefaultApi20 api20Instance) {
-		this.api20Instance = api20Instance;
-	}
-
-	public String getProfileUrl() {
-		return profileUrl;
-	}
-
-	public void setProfileUrl(String profileUrl) {
-		this.profileUrl = profileUrl;
-	}
-
-	public String getOrigin() {
-		return origin;
-	}
-
-	// scope 추가
-	public String getScope() {
-		return scope;
-	}
-
-	public void setScope(String scope) {
-		this.scope = scope;
-	}
 
 	private String serviceName;
 	private String clientId;
@@ -92,6 +38,7 @@ public class OAuthVO implements OAuthConfig {
 	private String profileUrl;
 	private String scope;
 
+	@Setter(lombok.AccessLevel.NONE)
 	private final String origin;
 
 	public OAuthVO(String serviceName, String clientId, String clientSecret, String redirectUrl, String scope) {

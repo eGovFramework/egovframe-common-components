@@ -1,6 +1,5 @@
 package egovframework.com.utl.slm;
 
-import java.util.Enumeration;
 import java.util.concurrent.ConcurrentHashMap;
 
 import jakarta.servlet.http.HttpSession;
@@ -32,12 +31,17 @@ public class EgovMultiLoginPreventor {
 	 * 사용자의 로그인 아이디로 이미 존재하는 세션을 무효화한다
 	 * */
 	public static void invalidateByLoginId(String loginId) {
-		Enumeration<String> e = loginUsers.keys();
-		while (e.hasMoreElements()) {
-			String key = e.nextElement();
-			if (key.equals(loginId)) {
-				loginUsers.get(key).invalidate();
-			}
+		// loginId가 null이면 무효화할 로그인 세션이 없는 것으로 보고, 기존 구현과 동일하게
+		// 무동작으로 처리한다. (ConcurrentHashMap.get(null)의 NPE를 방지한다.)
+		if (loginId == null) {
+			return;
+		}
+		// 맵은 로그인 아이디를 키로 사용하므로 단건 조회로 충분하다.
+		// 조회 결과를 지역변수에 담아, 다른 스레드(valueUnbound)가 엔트리를 동시에
+		// 제거하여 null이 반환되는 경우에도 NPE가 발생하지 않도록 가드한다.
+		HttpSession session = loginUsers.get(loginId);
+		if (session != null) {
+			session.invalidate();
 		}
 	}
 }

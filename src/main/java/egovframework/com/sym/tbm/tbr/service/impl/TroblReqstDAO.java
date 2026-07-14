@@ -26,7 +26,7 @@ public class TroblReqstDAO extends EgovComAbstractDAO {
 	 * @param troblReqstVO - 장애신청 Vo
 	 * @return List - 장애요청 목록
 	 */
-	public List<TroblReqstVO> selectTroblReqstList(TroblReqstVO troblReqstVO) throws Exception {
+	public List<TroblReqstVO> selectTroblReqstList(TroblReqstVO troblReqstVO) {
 		return selectList("troblReqstDAO.selectTroblReqstList", troblReqstVO);
 	}
 
@@ -35,7 +35,7 @@ public class TroblReqstDAO extends EgovComAbstractDAO {
 	 * @param troblReqstVO - 장애신청 Vo
 	 * @return int - 장애요청 카운트 수
 	 */
-	public int selectTroblReqstListTotCnt(TroblReqstVO troblReqstVO) throws Exception {
+	public int selectTroblReqstListTotCnt(TroblReqstVO troblReqstVO) {
 		return (Integer)selectOne("troblReqstDAO.selectTroblReqstListTotCnt", troblReqstVO);
 	}
 
@@ -44,7 +44,7 @@ public class TroblReqstDAO extends EgovComAbstractDAO {
 	 * @param troblReqstVO - 장애신청 Vo
 	 * @return troblReqstVO - 장애신청 Vo
 	 */
-	public TroblReqstVO selectTroblReqst(TroblReqstVO troblReqstVO) throws Exception {
+	public TroblReqstVO selectTroblReqst(TroblReqstVO troblReqstVO) {
 		return (TroblReqstVO) selectOne("troblReqstDAO.selectTroblReqst", troblReqstVO);
 	}
 
@@ -53,7 +53,7 @@ public class TroblReqstDAO extends EgovComAbstractDAO {
 	 * @param troblReqst - 장애신청 model
 	 * @param troblReqstVO - 장애신청 Vo
 	 */
-	public void insertTroblReqst(TroblReqst troblReqst) throws Exception {
+	public void insertTroblReqst(TroblReqst troblReqst) {
 		insert("troblReqstDAO.insertTroblReqst", troblReqst);
 	}
 
@@ -61,7 +61,7 @@ public class TroblReqstDAO extends EgovComAbstractDAO {
 	 * 기 등록된 장애요청정보를 수정한다.
 	 * @param troblReqst - 장애신청 model
 	 */
-	public void updateTroblReqst(TroblReqst troblReqst) throws Exception {
+	public void updateTroblReqst(TroblReqst troblReqst) {
 		update("troblReqstDAO.updateTroblReqst", troblReqst);
 	}
 
@@ -69,7 +69,7 @@ public class TroblReqstDAO extends EgovComAbstractDAO {
 	 * 기 등록된 장애요청정보를 삭제한다.
 	 * @param troblReqst - 장애신청 model
 	 */
-	public void deleteTroblReqst(TroblReqst troblReqst) throws Exception {
+	public void deleteTroblReqst(TroblReqst troblReqst) {
 		delete("troblReqstDAO.deleteTroblReqst", troblReqst);
 	}
 
@@ -77,7 +77,7 @@ public class TroblReqstDAO extends EgovComAbstractDAO {
 	 * 장애처리를 요청한다.
 	 * @param troblReqst - 장애신청 model
 	 */
-	public void requstTroblReqst(TroblReqst troblReqst) throws Exception {
+	public void requstTroblReqst(TroblReqst troblReqst) {
 		update("troblReqstDAO.requstTroblReqst", troblReqst);
 	}
 

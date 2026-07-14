@@ -23,6 +23,7 @@ import egovframework.com.sym.ccm.zip.service.ZipVO;
  *     수정일      	수정자           수정내용
  *  -----------    --------    ---------------------------
  *   2011.11.21		이기하           도로명주소 최초 생성
+ *   2026.06.16		이백행           [2026년 컨트리뷰션] 불필요한 예외 제거
  *
  * </pre>
  */
@@ -32,24 +33,21 @@ public class RdnmadZipDAO extends EgovComAbstractDAO {
 	/**
 	 * 우편번호를 삭제한다.
 	 * @param zip
-	 * @throws Exception
 	 */
-	public void deleteZip(Zip zip) throws Exception {
+	public void deleteZip(Zip zip) {
 		delete("RdnmadZipDAO.deleteZip", zip);
 	}
 
 	/**
 	 * 우편번호 전체를 삭제한다.
-	 * @throws Exception
 	 */
-	public void deleteAllZip() throws Exception {
+	public void deleteAllZip() {
 		delete("RdnmadZipDAO.deleteAllZip", new Object());
 	}
 
 	/**
 	 * 우편번호를 등록한다.
 	 * @param zip
-	 * @throws Exception
 	 */
 	public void insertZip(Zip zip) {
         insert("RdnmadZipDAO.insertZip", zip);
@@ -58,9 +56,8 @@ public class RdnmadZipDAO extends EgovComAbstractDAO {
 	/**
 	 * 우편번호 엑셀파일을 등록한다.
 	 * @param zip
-	 * @throws Exception
 	 */
-	public void insertExcelZip() throws Exception {
+	public void insertExcelZip() {
 		delete("RdnmadZipDAO.deleteAllZip", new Object());
 	}
 
@@ -70,7 +67,7 @@ public class RdnmadZipDAO extends EgovComAbstractDAO {
 	 * @param zip
 	 * @return Zip(우편번호)
 	 */
-	public Zip selectZipDetail(Zip zip) throws Exception {
+	public Zip selectZipDetail(Zip zip) {
 		return (Zip) selectOne("RdnmadZipDAO.selectZipDetail", zip);
 	}
 
@@ -79,9 +76,8 @@ public class RdnmadZipDAO extends EgovComAbstractDAO {
 	 * 우편번호 목록을 조회한다.
      * @param searchVO
      * @return List(우편번호 목록)
-     * @throws Exception
      */
-    public List<EgovMap> selectZipList(ZipVO searchVO) throws Exception {
+    public List<EgovMap> selectZipList(ZipVO searchVO) {
         return selectList("RdnmadZipDAO.selectZipList", searchVO);
     }
 
@@ -90,16 +86,15 @@ public class RdnmadZipDAO extends EgovComAbstractDAO {
      * @param searchVO
      * @return int(우편번호 총 개수)
      */
-    public int selectZipListTotCnt(ZipVO searchVO) throws Exception {
+    public int selectZipListTotCnt(ZipVO searchVO) {
         return (Integer)selectOne("RdnmadZipDAO.selectZipListTotCnt", searchVO);
     }
 
 	/**
 	 * 우편번호를 수정한다.
 	 * @param zip
-	 * @throws Exception
 	 */
-	public void updateZip(Zip zip) throws Exception {
+	public void updateZip(Zip zip) {
 		update("RdnmadZipDAO.updateZip", zip);
 	}
 

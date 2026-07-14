@@ -3,11 +3,11 @@ package egovframework.com.uss.ion.msi.service;
 import java.util.List;
 
 import egovframework.com.cmm.ComDefaultVO;
+import lombok.Getter;
+import lombok.Setter;
 import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
-import lombok.Getter;
-import lombok.Setter;
 
 /**
  * 개요
@@ -19,7 +19,20 @@ import lombok.Setter;
  * @author 이문준
  * @since 2010.08.03
  * @version 1.0
+ * @see
+ *
+ *      <pre>
+ *  == 개정이력(Modification Information) ==
+ *
+ *   수정일      수정자           수정내용
+ *  -------    --------    ---------------------------
+ *   2010.08.03  이문준          최초 생성
+ *   2026.05.26  기여자          Lombok @Getter/@Setter 적용으로 보일러플레이트 코드 제거
+ *
+ *      </pre>
  */
+@Getter
+@Setter
 public class MainImageVO extends ComDefaultVO {
 
 	private static final long serialVersionUID = 1L;
@@ -58,28 +71,6 @@ public class MainImageVO extends ComDefaultVO {
 	private List<MainImageVO> mainImageList;
 
 	/** 삭제대상 목록 */
-	@Getter
-	@Setter
 	private String[] delYn;
 
-	public String getImageId() { return imageId; }
-	public void setImageId(String imageId) { this.imageId = imageId; }
-	public String getImageNm() { return imageNm; }
-	public void setImageNm(String imageNm) { this.imageNm = imageNm; }
-	public String getImage() { return image; }
-	public void setImage(String image) { this.image = image; }
-	public String getImageFile() { return imageFile; }
-	public void setImageFile(String imageFile) { this.imageFile = imageFile; }
-	public String getImageDc() { return imageDc; }
-	public void setImageDc(String imageDc) { this.imageDc = imageDc; }
-	public String getReflctAt() { return reflctAt; }
-	public void setReflctAt(String reflctAt) { this.reflctAt = reflctAt; }
-	public String getUserId() { return userId; }
-	public void setUserId(String userId) { this.userId = userId; }
-	public String getRegDate() { return regDate; }
-	public void setRegDate(String regDate) { this.regDate = regDate; }
-	public boolean isAtchFile() { return isAtchFile; }
-	public void setAtchFile(boolean atchFile) { this.isAtchFile = atchFile; }
-	public List<MainImageVO> getMainImageList() { return mainImageList; }
-	public void setMainImageList(List<MainImageVO> mainImageList) { this.mainImageList = mainImageList; }
 }

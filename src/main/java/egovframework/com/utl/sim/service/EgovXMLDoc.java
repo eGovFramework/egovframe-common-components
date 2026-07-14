@@ -68,7 +68,11 @@ public class EgovXMLDoc {
 			File xmlFile = new File(storePathString,FilenameUtils.getName(file));
 			if (xmlFile.exists() && xmlFile.isFile()) {
 				fis = new FileInputStream(xmlFile);
-				mailDoc = (SndngMailDocument) SndngMailDocument.Factory.parse(xmlFile);
+				// XXE 방지: DOCTYPE 선언 차단 및 외부 DTD 로딩 비활성화 (getXMLDocument/getXMLFile와 동일 수준)
+				XmlOptions xmlOptions = new XmlOptions();
+				xmlOptions.setDisallowDocTypeDeclaration(true);
+				xmlOptions.setLoadExternalDTD(false);
+				mailDoc = (SndngMailDocument) SndngMailDocument.Factory.parse(xmlFile, xmlOptions);
 
 			}
 		} finally {
@@ -255,6 +259,7 @@ public class EgovXMLDoc {
 			transformer.setOutputProperty(OutputKeys.METHOD, "xml");
 			transformer.setOutputProperty(OutputKeys.INDENT, "yes");
 			transformer.transform(source, result);
+			retVal = true;
 		}
 
 		return retVal;

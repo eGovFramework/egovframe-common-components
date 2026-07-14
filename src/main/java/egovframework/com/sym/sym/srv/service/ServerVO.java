@@ -4,6 +4,9 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * <pre>
  * 개요
@@ -12,7 +15,7 @@ import java.util.List;
  * 상세내용
  * - 서버정보의 목록 항목 및 조회조건을 관리한다.
  * </pre>
- * 
+ *
  * @author 이문준
  * @since 2010.06.28
  * @version 1.0
@@ -26,6 +29,7 @@ import java.util.List;
  *   2010.06.28  이문준          최초 생성
  *   2020-08-28  신용호          보안약점 조치 (Private 배열에 Public 데이터 할당[CWE-496])
  *   2025.07.25  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-MethodReturnsInternalArray(Private 배열에 Public 데이터 할당)
+ *   2026.05.27  기여자          Lombok @Getter/@Setter 적용으로 보일러플레이트 코드 제거
  *
  *      </pre>
  */
@@ -46,6 +50,8 @@ public class ServerVO extends Server {
 	/**
 	 * 서버명 조회조건
 	 */
+	@Getter
+	@Setter
 	private String strServerNm;
 
 	/**
@@ -80,17 +86,4 @@ public class ServerVO extends Server {
 		}
 	}
 
-	/**
-	 * @return the strServerNm
-	 */
-	public String getStrServerNm() {
-		return strServerNm;
-	}
-
-	/**
-	 * @param strServerNm the strServerNm to set
-	 */
-	public void setStrServerNm(String strServerNm) {
-		this.strServerNm = strServerNm;
-	}
 }

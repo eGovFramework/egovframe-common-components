@@ -30,6 +30,7 @@ import egovframework.com.sym.sym.nwk.service.NtwrkVO;
  *  -------    --------    ---------------------------
  *   2009.03.20  lee.m.j       최초 생성
  *   2025.07.23  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-UnnecessaryBoxing(불필요한 WrapperObject 생성)
+ *   2026.06.17  이백행          [2026년 컨트리뷰션] 불필요한 예외 제거
  *
  *      </pre>
  */
@@ -42,7 +43,7 @@ public class NtwrkDAO extends EgovComAbstractDAO {
 	 * @param ntwrkVO - 네트워크 Vo
 	 * @return List - 네트워크 목록
 	 */
-	public List<NtwrkVO> selectNtwrkList(NtwrkVO ntwrkVO) throws Exception {
+	public List<NtwrkVO> selectNtwrkList(NtwrkVO ntwrkVO) {
 		return selectList("ntwrkDAO.selectNtwrkList", ntwrkVO);
 	}
 
@@ -52,7 +53,7 @@ public class NtwrkDAO extends EgovComAbstractDAO {
 	 * @param ntwrkVO - 네트워크 Vo
 	 * @return int - 네트워크 카운트 수
 	 */
-	public int selectNtwrkListTotCnt(NtwrkVO ntwrkVO) throws Exception {
+	public int selectNtwrkListTotCnt(NtwrkVO ntwrkVO) {
 		return selectOne("ntwrkDAO.selectNtwrkListTotCnt", ntwrkVO);
 	}
 
@@ -62,7 +63,7 @@ public class NtwrkDAO extends EgovComAbstractDAO {
 	 * @param ntwrkVO - 네트워크 Vo
 	 * @return NtwrkVO - 네트워크 Vo
 	 */
-	public NtwrkVO selectNtwrk(NtwrkVO ntwrkVO) throws Exception {
+	public NtwrkVO selectNtwrk(NtwrkVO ntwrkVO) {
 		return (NtwrkVO) selectOne("ntwrkDAO.selectNtwrk", ntwrkVO);
 	}
 
@@ -71,7 +72,7 @@ public class NtwrkDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param ntwrk - 네트워크 model
 	 */
-	public void insertNtwrk(Ntwrk ntwrk) throws Exception {
+	public void insertNtwrk(Ntwrk ntwrk) {
 		insert("ntwrkDAO.insertNtwrk", ntwrk);
 	}
 
@@ -80,7 +81,7 @@ public class NtwrkDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param ntwrk - 네트워크 model
 	 */
-	public void updateNtwrk(Ntwrk ntwrk) throws Exception {
+	public void updateNtwrk(Ntwrk ntwrk) {
 		update("ntwrkDAO.updateNtwrk", ntwrk);
 	}
 
@@ -89,7 +90,7 @@ public class NtwrkDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param ntwrk - 네트워크 model
 	 */
-	public void deleteNtwrk(Ntwrk ntwrk) throws Exception {
+	public void deleteNtwrk(Ntwrk ntwrk) {
 		delete("ntwrkDAO.deleteNtwrk", ntwrk);
 	}
 

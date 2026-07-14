@@ -35,7 +35,7 @@ public class ComponentScanTest_FileManageDAO {
 	FileManageDAO dao;
 
 	@Test
-	void test() throws Exception {
+	void test() {
 		log.debug("test");
 
 		// getBeanDefinitionNames

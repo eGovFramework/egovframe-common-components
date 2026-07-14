@@ -6,6 +6,8 @@ import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
 
 import egovframework.com.cmm.ComDefaultVO;
 import jakarta.validation.constraints.Size;
+import lombok.Getter;
+import lombok.Setter;
 
 /**
  * 개요
@@ -17,7 +19,8 @@ import jakarta.validation.constraints.Size;
  * @version 1.0
  * @created 06-15-2010 오후 2:08:56
  */
-
+@Getter
+@Setter
 public class BndtCeckManageVO extends ComDefaultVO {
 
 	private static final long serialVersionUID = 1L;
@@ -93,179 +96,5 @@ public class BndtCeckManageVO extends ComDefaultVO {
 	 * 당직체크리스트 당직체크구분 조회조건 변수
 	 */
 	private String searchUseAt;
-
-	/**
-	 * @return the searchUseAt
-	 */
-	public String getSearchUseAt() {
-		return searchUseAt;
-	}
-	/**
-	 * @param searchUseAt the searchUseAt to set
-	 */
-	public void setSearchUseAt(String searchUseAt) {
-		this.searchUseAt = searchUseAt;
-	}
-	/**
-	 * @return the bndtCeckManageList
-	 */
-	public List<BndtCeckManageVO> getBndtCeckManageList() {
-		return bndtCeckManageList;
-	}
-	/**
-	 * @param bndtCeckManageList the bndtCeckManageList to set
-	 */
-	public void setBndtCeckManageList(List<BndtCeckManageVO> bndtCeckManageList) {
-		this.bndtCeckManageList = bndtCeckManageList;
-	}
-
-	/**
-	 * @return the bndtCeckTemp1
-	 */
-	public String getBndtCeckTemp1() {
-		return bndtCeckTemp1;
-	}
-	/**
-	 * @param bndtCeckTemp1 the bndtCeckTemp1 to set
-	 */
-	public void setBndtCeckTemp1(String bndtCeckTemp1) {
-		this.bndtCeckTemp1 = bndtCeckTemp1;
-	}
-	/**
-	 * @return the searchBndtCeckSe
-	 */
-	public String getSearchBndtCeckSe() {
-		return searchBndtCeckSe;
-	}
-	/**
-	 * @param searchBndtCeckSe the searchBndtCeckSe to set
-	 */
-	public void setSearchBndtCeckSe(String searchBndtCeckSe) {
-		this.searchBndtCeckSe = searchBndtCeckSe;
-	}
-	/**
-	 * @return the searchBndtCeckCd
-	 */
-	public String getSearchBndtCeckCd() {
-		return searchBndtCeckCd;
-	}
-	/**
-	 * @param searchBndtCeckCd the searchBndtCeckCd to set
-	 */
-	public void setSearchBndtCeckCd(String searchBndtCeckCd) {
-		this.searchBndtCeckCd = searchBndtCeckCd;
-	}
-
-	/**
-	 * @return the bndtCeckSe
-	 */
-	public String getBndtCeckSe() {
-		return bndtCeckSe;
-	}
-
-	/**
-	 * @param bndtCeckSe the bndtCeckSe to set
-	 */
-	public void setBndtCeckSe(String bndtCeckSe) {
-		this.bndtCeckSe = bndtCeckSe;
-	}
-
-	/**
-	 * @return the bndtCeckCd
-	 */
-	public String getBndtCeckCd() {
-		return bndtCeckCd;
-	}
-
-	/**
-	 * @param bndtCeckCd the bndtCeckCd to set
-	 */
-	public void setBndtCeckCd(String bndtCeckCd) {
-		this.bndtCeckCd = bndtCeckCd;
-	}
-
-	/**
-	 * @return the bndtCeckCdNm
-	 */
-	public String getBndtCeckCdNm() {
-		return bndtCeckCdNm;
-	}
-
-	/**
-	 * @param bndtCeckCdNm the bndtCeckCdNm to set
-	 */
-	public void setBndtCeckCdNm(String bndtCeckCdNm) {
-		this.bndtCeckCdNm = bndtCeckCdNm;
-	}
-
-	/**
-	 * @return the useAt
-	 */
-	public String getUseAt() {
-		return useAt;
-	}
-
-	/**
-	 * @param useAt the useAt to set
-	 */
-	public void setUseAt(String useAt) {
-		this.useAt = useAt;
-	}
-
-	/**
-	 * @return the frstRegisterId
-	 */
-	public String getFrstRegisterId() {
-		return frstRegisterId;
-	}
-
-	/**
-	 * @param frstRegisterId the frstRegisterId to set
-	 */
-	public void setFrstRegisterId(String frstRegisterId) {
-		this.frstRegisterId = frstRegisterId;
-	}
-
-	/**
-	 * @return the frstRegisterPnttm
-	 */
-	public String getFrstRegisterPnttm() {
-		return frstRegisterPnttm;
-	}
-
-	/**
-	 * @param frstRegisterPnttm the frstRegisterPnttm to set
-	 */
-	public void setFrstRegisterPnttm(String frstRegisterPnttm) {
-		this.frstRegisterPnttm = frstRegisterPnttm;
-	}
-
-	/**
-	 * @return the lastUpdusrId
-	 */
-	public String getLastUpdusrId() {
-		return lastUpdusrId;
-	}
-
-	/**
-	 * @param lastUpdusrId the lastUpdusrId to set
-	 */
-	public void setLastUpdusrId(String lastUpdusrId) {
-		this.lastUpdusrId = lastUpdusrId;
-	}
-
-	/**
-	 * @return the lastUpdusrPnttm
-	 */
-	public String getLastUpdusrPnttm() {
-		return lastUpdusrPnttm;
-	}
-
-	/**
-	 * @param lastUpdusrPnttm the lastUpdusrPnttm to set
-	 */
-	public void setLastUpdusrPnttm(String lastUpdusrPnttm) {
-		this.lastUpdusrPnttm = lastUpdusrPnttm;
-	}
 
 }

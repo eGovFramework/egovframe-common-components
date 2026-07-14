@@ -104,7 +104,7 @@ public class EgovComIndexController {
 
 		model.addAttribute("expirePwdDay", expirePwdDay);
 
-		// 비밀번호 설정일로부터 몇일이 지났는지 확인한다. ex) 3이면 비빌번호 설정후 3일 경과
+		// 비밀번호 설정일로부터 며칠이 지났는지 확인한다. ex) 3이면 비밀번호 설정후 3일 경과
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		model.addAttribute("loginVO", loginVO);
 		int passedDayChangePWD = 0;
@@ -133,7 +133,7 @@ public class EgovComIndexController {
 
 		/* @Controller Annotation 처리된 클래스를 모두 찾는다. */
 		Map<String, Object> myZoos = applicationContext.getBeansWithAnnotation(Controller.class);
-		LOGGER.debug("How many Controllers : ", myZoos.size());
+		LOGGER.debug("How many Controllers : {}", myZoos.size());
 		for (final Object myZoo : myZoos.values()) {
 
 			Class<?> zooClass = ClassUtils.getUserClass(myZoo);

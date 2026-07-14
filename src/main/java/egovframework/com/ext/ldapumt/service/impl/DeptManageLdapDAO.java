@@ -57,6 +57,7 @@ import jakarta.annotation.Resource;
 *  2014.10.12   전우성            최초 생성
 *  2017-02-13   이정은            시큐어코딩(ES) - 시큐어코딩 부적절한 예외 처리[CWE-253, CWE-440, CWE-754]
 *  2020.08.28   정진오            표준프레임워크 v3.10 개선
+*  2026.06.15   이백행            [2026년 컨트리뷰션] 불필요한 예외 제거
 *
 * </pre>
 */
@@ -70,9 +71,8 @@ public class DeptManageLdapDAO extends OrgManageLdapDAO {
 	 * DN의 하위부서 목록을 조회
 	 * @param dn 조회할 객체의 Distinguished Name
 	 * @return
-	 * @throws Exception
 	 */
-	public List<Object> selectDeptManageSubList(String dn) throws Exception {
+	public List<Object> selectDeptManageSubList(String dn) {
 		List<Object> ucorgList = null;
 		String filter = "objectclass=ucorg2";
 
@@ -91,9 +91,8 @@ public class DeptManageLdapDAO extends OrgManageLdapDAO {
 	 * ouCode를 활용하여 하위 부서를 조
 	 * @param ouCode
 	 * @return
-	 * @throws Exception
 	 */
-	public List<Object> selectDeptManageSubListByOuCode(String ouCode) throws Exception {
+	public List<Object> selectDeptManageSubListByOuCode(String ouCode) {
 		ContainerCriteria criteria = query().where("objectclass").is("ucorg2").and("parentoucode").is(ouCode);
 
 		List<Object> list = ldapTemplate.search(criteria, new ObjectMapper<>(UcorgVO.class));
@@ -107,7 +106,7 @@ public class DeptManageLdapDAO extends OrgManageLdapDAO {
 	 * @return deptManageVO 부서 Vo
 	 * @param bannerVO
 	 */
-	public UcorgVO selectDeptManage(UcorgVO vo) throws Exception {
+	public UcorgVO selectDeptManage(UcorgVO vo) {
 		final ContainerCriteria criteria = query().where("objectclass").is("ucorg2");
 
 		Map<Object, Object> introspected = new BeanMap(vo);
@@ -141,7 +140,7 @@ public class DeptManageLdapDAO extends OrgManageLdapDAO {
 	 * 기 등록된 부서정보를 수정한다.
 	 * @param vo 부서 vo
 	 */
-	public void updateDeptManage(UcorgVO vo) throws Exception {
+	public void updateDeptManage(UcorgVO vo) {
 		updateOrg(vo);
 	}
 
@@ -149,7 +148,7 @@ public class DeptManageLdapDAO extends OrgManageLdapDAO {
 	 * 부서정보를 등한다.
 	 * @param vo 부서 vo
 	 */
-	public void insertDeptManage(UcorgVO vo) throws Exception {
+	public void insertDeptManage(UcorgVO vo) {
 		BasicAttribute ocattr = new BasicAttribute("objectclass");
 		ocattr.add("top");
 		ocattr.add("ucorg2");

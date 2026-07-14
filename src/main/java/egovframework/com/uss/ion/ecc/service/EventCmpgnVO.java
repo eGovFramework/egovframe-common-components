@@ -1,6 +1,8 @@
 package egovframework.com.uss.ion.ecc.service;
 
 import egovframework.com.cmm.ComDefaultVO;
+import lombok.Getter;
+import lombok.Setter;
 
 import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
 import jakarta.validation.constraints.AssertTrue;
@@ -23,6 +25,8 @@ import jakarta.validation.constraints.Size;
  *
  * </pre>
  */
+@Getter
+@Setter
 public class EventCmpgnVO extends ComDefaultVO {
 
 	private static final long serialVersionUID = 1L;
@@ -79,7 +83,7 @@ public class EventCmpgnVO extends ComDefaultVO {
 	 */
 	@EgovNullCheck
 	private String eventTyCode = "";
-	
+
 	/**
 	 * 행사유형코드명
 	 */
@@ -147,279 +151,5 @@ public class EventCmpgnVO extends ComDefaultVO {
 		}
 		return begin.compareTo(end) <= 0;
 	}
-
-	/**
-	 * eventConfmDe attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getEventConfmDe() {
-		return eventConfmDe;
-	}
-	/**
-	 * eventConfmDe attribute 값을 설정한다.
-	 * @return eventId String
-	 */
-	public void setEventConfmDe(String eventConfmDe) {
-		this.eventConfmDe = eventConfmDe;
-	}
-
-	/**
-	 * eventConfmAt attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getEventConfmAt() {
-		return eventConfmAt;
-	}
-	/**
-	 * eventConfmAt attribute 값을 설정한다.
-	 * @return eventId String
-	 */
-	public void setEventConfmAt(String eventConfmAt) {
-		this.eventConfmAt = eventConfmAt;
-	}
-
-
-	/**
-	 * eventId attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getEventId() {
-		return eventId;
-	}
-	/**
-	 * eventId attribute 값을 설정한다.
-	 * @return eventId String
-	 */
-	public void setEventId(String eventId) {
-		this.eventId = eventId;
-	}
-	/**
-	 * bsnsYear attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getBsnsYear() {
-		return bsnsYear;
-	}
-	/**
-	 * bsnsYear attribute 값을 설정한다.
-	 * @return bsnsYear String
-	 */
-	public void setBsnsYear(String bsnsYear) {
-		this.bsnsYear = bsnsYear;
-	}
-	/**
-	 * bsnsCode attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getBsnsCode() {
-		return bsnsCode;
-	}
-	/**
-	 * bsnsCode attribute 값을 설정한다.
-	 * @return bsnsCode String
-	 */
-	public void setBsnsCode(String bsnsCode) {
-		this.bsnsCode = bsnsCode;
-	}
-	/**
-	 * eventSvcBeginDe attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getEventSvcBeginDe() {
-		return eventSvcBeginDe;
-	}
-	/**
-	 * eventSvcBeginDe attribute 값을 설정한다.
-	 * @return eventSvcBeginDe String
-	 */
-	public void setEventSvcBeginDe(String eventSvcBeginDe) {
-		this.eventSvcBeginDe = eventSvcBeginDe;
-	}
-	/**
-	 * svcUseNmprCo attribute 를 리턴한다.
-	 * @return the int
-	 */
-	public int getSvcUseNmprCo() {
-		return svcUseNmprCo;
-	}
-	/**
-	 * svcUseNmprCo attribute 값을 설정한다.
-	 * @return svcUseNmprCo int
-	 */
-	public void setSvcUseNmprCo(int svcUseNmprCo) {
-		this.svcUseNmprCo = svcUseNmprCo;
-	}
-	/**
-	 * chargerNm attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getChargerNm() {
-		return chargerNm;
-	}
-	/**
-	 * chargerNm attribute 값을 설정한다.
-	 * @return chargerNm String
-	 */
-	public void setChargerNm(String chargerNm) {
-		this.chargerNm = chargerNm;
-	}
-	/**
-	 * eventCn attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getEventCn() {
-		return eventCn;
-	}
-	/**
-	 * eventCn attribute 값을 설정한다.
-	 * @return eventCn String
-	 */
-	public void setEventCn(String eventCn) {
-		this.eventCn = eventCn;
-	}
-	/**
-	 * eventSvcEndDe attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getEventSvcEndDe() {
-		return eventSvcEndDe;
-	}
-	/**
-	 * eventSvcEndDe attribute 값을 설정한다.
-	 * @return eventSvcEndDe String
-	 */
-	public void setEventSvcEndDe(String eventSvcEndDe) {
-		this.eventSvcEndDe = eventSvcEndDe;
-	}
-	/**
-	 * eventTyCode attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getEventTyCode() {
-		return eventTyCode;
-	}
-	/**
-	 * eventTyCode attribute 값을 설정한다.
-	 * @return eventTyCode String
-	 */
-	public void setEventTyCode(String eventTyCode) {
-		this.eventTyCode = eventTyCode;
-	}
-	/**
-	 * eventTyCodeNm attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getEventTyCodeNm() {
-		return eventTyCodeNm;
-	}
-	/**
-	 * eventTyCodeNm attribute 값을 설정한다.
-	 * @return eventTyCodeNm String
-	 */
-	public void setEventTyCodeNm(String eventTyCodeNm) {
-		this.eventTyCodeNm = eventTyCodeNm;
-	}
-	/**
-	 * prparetgCn attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getPrparetgCn() {
-		return prparetgCn;
-	}
-	/**
-	 * prparetgCn attribute 값을 설정한다.
-	 * @return prparetgCn String
-	 */
-	public void setPrparetgCn(String prparetgCn) {
-		this.prparetgCn = prparetgCn;
-	}
-	/**
-	 * frstRegisterPnttm attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getFrstRegisterPnttm() {
-		return frstRegisterPnttm;
-	}
-	/**
-	 * frstRegisterPnttm attribute 값을 설정한다.
-	 * @return frstRegisterPnttm String
-	 */
-	public void setFrstRegisterPnttm(String frstRegisterPnttm) {
-		this.frstRegisterPnttm = frstRegisterPnttm;
-	}
-	/**
-	 * frstRegisterId attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getFrstRegisterId() {
-		return frstRegisterId;
-	}
-	/**
-	 * frstRegisterId attribute 값을 설정한다.
-	 * @return frstRegisterId String
-	 */
-	public void setFrstRegisterId(String frstRegisterId) {
-		this.frstRegisterId = frstRegisterId;
-	}
-	/**
-	 * frstRegisterNm attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getFrstRegisterNm() {
-		return frstRegisterNm;
-	}
-	/**
-	 * frstRegisterNm attribute 값을 설정한다.
-	 * @return frstRegisterNm String
-	 */
-	public void setFrstRegisterNm(String frstRegisterNm) {
-		this.frstRegisterNm = frstRegisterNm;
-	}
-	/**
-	 * lastUpdusrPnttm attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getLastUpdusrPnttm() {
-		return lastUpdusrPnttm;
-	}
-	/**
-	 * lastUpdusrPnttm attribute 값을 설정한다.
-	 * @return lastUpdusrPnttm String
-	 */
-	public void setLastUpdusrPnttm(String lastUpdusrPnttm) {
-		this.lastUpdusrPnttm = lastUpdusrPnttm;
-	}
-	/**
-	 * lastUpdusrId attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getLastUpdusrId() {
-		return lastUpdusrId;
-	}
-	/**
-	 * lastUpdusrId attribute 값을 설정한다.
-	 * @return lastUpdusrId String
-	 */
-	public void setLastUpdusrId(String lastUpdusrId) {
-		this.lastUpdusrId = lastUpdusrId;
-	}
-	/**
-	 * cmd attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getCmd() {
-		return cmd;
-	}
-	/**
-	 * cmd attribute 값을 설정한다.
-	 * @return cmd String
-	 */
-	public void setCmd(String cmd) {
-		this.cmd = cmd;
-	}
-
-
-
-
 
 }

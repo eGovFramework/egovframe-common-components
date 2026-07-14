@@ -158,27 +158,28 @@ public class EgovCcmCmmnDetailCodeManageController {
 			@ModelAttribute("cmmnCodeVO") CmmnCodeVO cmmnCodeVO,
 			@ModelAttribute("cmmnDetailCodeVO") CmmnDetailCodeVO cmmnDetailCodeVO, ModelMap model) throws Exception {
 
+		addCodeSelectLists(cmmnCodeVO.getClCode(), model);
+
+		return "egovframework/com/sym/ccm/cde/EgovCcmCmmnDetailCodeRegist";
+	}
+
+	private void addCodeSelectLists(String clCode, ModelMap model) throws Exception {
 		CmmnClCodeVO searchClCodeVO = new CmmnClCodeVO();
 		searchClCodeVO.setFirstIndex(0);
 		List<CmmnClCodeVO> clCodeList = cmmnClCodeManageService.selectCmmnClCodeList(searchClCodeVO);
 		model.addAttribute("clCodeList", clCodeList);
 
-		CmmnCodeVO clCode = new CmmnCodeVO();
-		clCode.setClCode(cmmnCodeVO.getClCode());
-
-		if (!"".equals(cmmnCodeVO.getClCode())) {
+		if (!"".equals(clCode)) {
 
 			CmmnCodeVO searchCodeVO = new CmmnCodeVO();
 			searchCodeVO.setRecordCountPerPage(999999);
 			searchCodeVO.setFirstIndex(0);
 			searchCodeVO.setSearchCondition("clCode");
-			searchCodeVO.setSearchKeyword(cmmnCodeVO.getClCode());
+			searchCodeVO.setSearchKeyword(clCode);
 
 			List<CmmnCodeVO> codeList = cmmnCodeManageService.selectCmmnCodeList(searchCodeVO);
 			model.addAttribute("codeList", codeList);
 		}
-
-		return "egovframework/com/sym/ccm/cde/EgovCcmCmmnDetailCodeRegist";
 	}
 
 	/**
@@ -197,13 +198,9 @@ public class EgovCcmCmmnDetailCodeManageController {
 
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
-		CmmnClCodeVO searchClCodeVO = new CmmnClCodeVO();
-		searchClCodeVO.setFirstIndex(0);
-
 		if (bindingResult.hasErrors()) {
 
-			List<CmmnClCodeVO> clCodeList = cmmnClCodeManageService.selectCmmnClCodeList(searchClCodeVO);
-			model.addAttribute("clCodeList", clCodeList);
+			addCodeSelectLists(cmmnDetailCodeVO.getClCode(), model);
 
 			return "egovframework/com/sym/ccm/cde/EgovCcmCmmnDetailCodeRegist";
 		}
@@ -214,8 +211,7 @@ public class EgovCcmCmmnDetailCodeManageController {
 			if (vo != null) {
 				model.addAttribute("message", egovMessageSource.getMessage("comSymCcmCde.validate.codeCheck"));
 
-				List<CmmnClCodeVO> clCodeList = cmmnClCodeManageService.selectCmmnClCodeList(searchClCodeVO);
-				model.addAttribute("clCodeList", clCodeList);
+				addCodeSelectLists(cmmnDetailCodeVO.getClCode(), model);
 
 				return "egovframework/com/sym/ccm/cde/EgovCcmCmmnDetailCodeRegist";
 			}

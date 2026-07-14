@@ -29,10 +29,8 @@ public class BackupResultDao extends EgovComAbstractDAO {
 	 * 백업결과을 삭제한다.
 	 *
 	 * @param backupResult    삭제할 백업결과 VO
-	 * @exception Exception Exception
 	 */
-	public void deleteBackupResult(BackupResult backupResult)
-	  throws Exception{
+	public void deleteBackupResult(BackupResult backupResult) {
 		delete("BackupResultDao.deleteBackupResult", backupResult);
 	}
 
@@ -40,10 +38,8 @@ public class BackupResultDao extends EgovComAbstractDAO {
 	 * 백업결과을 등록한다.
 	 *
 	 * @param backupResult 저장할 백업결과 VO
-	 * @exception Exception Exception
 	 */
-	public void insertBackupResult(BackupResult backupResult)
-	  throws Exception{
+	public void insertBackupResult(BackupResult backupResult) {
 		insert("BackupResultDao.insertBackupResult", backupResult);
 	}
 
@@ -52,10 +48,8 @@ public class BackupResultDao extends EgovComAbstractDAO {
 	 * @return 백업결과정보
 	 *
 	 * @param backupResult    조회할 KEY가 있는 백업결과 VO
-	 * @exception Exception Exception
 	 */
-	public BackupResult selectBackupResult(BackupResult backupResult)
-	  throws Exception{
+	public BackupResult selectBackupResult(BackupResult backupResult) {
 		return (BackupResult)selectOne("BackupResultDao.selectBackupResult", backupResult);
 	}
 
@@ -64,10 +58,8 @@ public class BackupResultDao extends EgovComAbstractDAO {
 	 * @return 백업결과목록
 	 *
 	 * @param searchVO    조회조건이 저장된 VO
-	 * @exception Exception Exception
 	 */
-	public List<BackupResult> selectBackupResultList(BackupResult searchVO)
-	  throws Exception{
+	public List<BackupResult> selectBackupResultList(BackupResult searchVO) {
 		return selectList("BackupResultDao.selectBackupResultList", searchVO);
 	}
 
@@ -76,10 +68,8 @@ public class BackupResultDao extends EgovComAbstractDAO {
 	 * @return 목록건수
 	 *
 	 * @param searchVO    조회할 정보가 담긴 VO
-	 * @exception Exception Exception
 	 */
-	public int selectBackupResultListCnt(BackupResult searchVO)
-	  throws Exception{
+	public int selectBackupResultListCnt(BackupResult searchVO) {
 		return (Integer)selectOne("BackupResultDao.selectBackupResultListCnt", searchVO);
 	}
 
@@ -87,10 +77,8 @@ public class BackupResultDao extends EgovComAbstractDAO {
 	 * 백업결과정보를 수정한다.
 	 *
 	 * @param backupResult    수정대상 백업결과 VO
-	 * @exception Exception Exception
 	 */
-	public void updateBackupResult(BackupResult backupResult)
-	  throws Exception{
+	public void updateBackupResult(BackupResult backupResult) {
 		update("BackupResultDao.updateBackupResult", backupResult);
 	}
 

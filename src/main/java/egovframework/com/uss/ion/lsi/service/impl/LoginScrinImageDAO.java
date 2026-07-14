@@ -28,7 +28,7 @@ public class LoginScrinImageDAO extends EgovComAbstractDAO {
 	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 * @return List - 로그인화면이미지 목록
 	 */	
-	public List<LoginScrinImageVO> selectLoginScrinImageList(LoginScrinImageVO loginScrinImageVO) throws Exception {
+	public List<LoginScrinImageVO> selectLoginScrinImageList(LoginScrinImageVO loginScrinImageVO) {
 		return selectList("loginScrinImageDAO.selectLoginScrinImageList", loginScrinImageVO);
 	}
 
@@ -36,9 +36,8 @@ public class LoginScrinImageDAO extends EgovComAbstractDAO {
 	 * 로그인화면이미지목록 총 개수를 조회한다.
 	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 * @return int
-	 * @exception Exception
 	 */
-    public int selectLoginScrinImageListTotCnt(LoginScrinImageVO loginScrinImageVO) throws Exception {
+    public int selectLoginScrinImageListTotCnt(LoginScrinImageVO loginScrinImageVO) {
         return (Integer)selectOne("loginScrinImageDAO.selectLoginScrinImageListTotCnt", loginScrinImageVO);
     }
 
@@ -47,7 +46,7 @@ public class LoginScrinImageDAO extends EgovComAbstractDAO {
 	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 * @return LoginScrinImageVO - 로그인화면이미지 VO
 	 */
-	public LoginScrinImageVO selectLoginScrinImage(LoginScrinImageVO loginScrinImageVO)  throws Exception {
+	public LoginScrinImageVO selectLoginScrinImage(LoginScrinImageVO loginScrinImageVO) {
 		return (LoginScrinImageVO) selectOne("loginScrinImageDAO.selectLoginScrinImage", loginScrinImageVO);
 	}
 
@@ -55,7 +54,7 @@ public class LoginScrinImageDAO extends EgovComAbstractDAO {
 	 * 로그인화면이미지정보를 신규로 등록한다.
 	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 */
-	public void insertLoginScrinImage(LoginScrinImageVO loginScrinImageVO) throws Exception {
+	public void insertLoginScrinImage(LoginScrinImageVO loginScrinImageVO) {
 		insert("loginScrinImageDAO.insertLoginScrinImage", loginScrinImageVO);
 	}
 
@@ -63,7 +62,7 @@ public class LoginScrinImageDAO extends EgovComAbstractDAO {
 	 * 기 등록된 로그인화면이미지정보를 수정한다.
 	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 */
-	public void updateLoginScrinImage(LoginScrinImageVO loginScrinImageVO) throws Exception {
+	public void updateLoginScrinImage(LoginScrinImageVO loginScrinImageVO) {
 		update("loginScrinImageDAO.updateLoginScrinImage", loginScrinImageVO);
 	}
 
@@ -71,7 +70,7 @@ public class LoginScrinImageDAO extends EgovComAbstractDAO {
 	 * 기 등록된 로그인화면이미지정보를 삭제한다.
 	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 */
-	public void deleteLoginScrinImage(LoginScrinImageVO loginScrinImageVO) throws Exception {
+	public void deleteLoginScrinImage(LoginScrinImageVO loginScrinImageVO) {
         delete("loginScrinImageDAO.deleteLoginScrinImage",loginScrinImageVO);
 	}
 
@@ -79,7 +78,7 @@ public class LoginScrinImageDAO extends EgovComAbstractDAO {
 	 * 기 등록된 로그인화면이미지정보의 이미지파일을 삭제하기 위해 파일정보를 조회한다.
 	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 */
-	public FileVO selectLoginScrinImageFile(LoginScrinImageVO loginScrinImageVO) throws Exception {
+	public FileVO selectLoginScrinImageFile(LoginScrinImageVO loginScrinImageVO) {
 		return (FileVO) selectOne("loginScrinImageDAO.selectLoginScrinImageFile", loginScrinImageVO);
 	}
 
@@ -88,7 +87,7 @@ public class LoginScrinImageDAO extends EgovComAbstractDAO {
 	 * @param loginScrinImageVO - 로그인화면이미지 VO
 	 * @return LoginScrinImageVO - 로그인화면이미지 VO
 	 */
-	public List<LoginScrinImageVO> selectLoginScrinImageResult(LoginScrinImageVO loginScrinImageVO) throws Exception {
+	public List<LoginScrinImageVO> selectLoginScrinImageResult(LoginScrinImageVO loginScrinImageVO) {
 		return selectList("loginScrinImageDAO.selectLoginScrinImageResult", loginScrinImageVO);
 	}
 }

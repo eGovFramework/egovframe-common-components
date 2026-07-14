@@ -6,6 +6,9 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import egovframework.com.cmm.ComDefaultVO;
 
+import lombok.Getter;
+import lombok.Setter;
+
 import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
 import jakarta.validation.constraints.Size;
 
@@ -20,9 +23,12 @@ import jakarta.validation.constraints.Size;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.07.03  장동한          최초 생성
+ *   2025.05.25  장동한          Lombok @Getter/@Setter 적용
  *
  * </pre>
  */
+@Getter
+@Setter
 public class OnlineManualVO extends ComDefaultVO implements Serializable {
 
 	private static final long serialVersionUID = -7024282928339275971L;
@@ -41,7 +47,7 @@ public class OnlineManualVO extends ComDefaultVO implements Serializable {
 
     /** 온라인메뉴얼 구분코드 */
     private String onlineMnlSeCodeNm;
-    
+
     /** 온라인메뉴얼 정의 */
     @EgovNullCheck
     private String onlineMnlDf;
@@ -55,7 +61,7 @@ public class OnlineManualVO extends ComDefaultVO implements Serializable {
 
     /** 최초등록아이디 */
     private String frstRegisterId;
-    
+
     /** 최초등록자 */
     private String frstRegisterNm;
 
@@ -69,227 +75,10 @@ public class OnlineManualVO extends ComDefaultVO implements Serializable {
     private String cmd;
 
     /**
-     * onlineMnlId 리턴
-     *
-     * @return the onlineMnlId
-     */
-    public String getOnlineMnlId() {
-        return onlineMnlId;
-    }
-
-    /**
-     * onlineMnlId 설정
-     *
-     * @param onlineMnlId the onlineMnlId to set
-     */
-    public void setOnlineMnlId(String onlineMnlId) {
-        this.onlineMnlId = onlineMnlId;
-    }
-
-    /**
-     * onlineMnlNm 리턴
-     *
-     * @return the onlineMnlNm
-     */
-    public String getOnlineMnlNm() {
-        return onlineMnlNm;
-    }
-
-    /**
-     * onlineMnlNm 설정
-     *
-     * @param onlineMnlNm the onlineMnlNm to set
-     */
-    public void setOnlineMnlNm(String onlineMnlNm) {
-        this.onlineMnlNm = onlineMnlNm;
-    }
-
-    /**
-     * onlineMnlSeCode 리턴
-     *
-     * @return the onlineMnlSeCode
-     */
-    public String getOnlineMnlSeCode() {
-        return onlineMnlSeCode;
-    }
-
-    /**
-     * onlineMnlSeCode 설정
-     *
-     * @param onlineMnlSeCode the onlineMnlSeCode to set
-     */
-    public void setOnlineMnlSeCode(String onlineMnlSeCode) {
-        this.onlineMnlSeCode = onlineMnlSeCode;
-    }
-
-    /**
-     * onlineMnlSeCodeNm 리턴
-     *
-     * @return the onlineMnlSeCode
-     */
-    public String getOnlineMnlSeCodeNm() {
-        return onlineMnlSeCodeNm;
-    }
-
-    /**
-     * onlineMnlSeCodeNm 설정
-     *
-     * @param onlineMnlSeCodeNm the onlineMnlSeCodeNm to set
-     */
-    public void setOnlineMnlSeCodeNm(String onlineMnlSeCodeNm) {
-        this.onlineMnlSeCodeNm = onlineMnlSeCodeNm;
-    }
-    
-    /**
-     * onlineMnlDf 리턴
-     *
-     * @return the onlineMnlDf
-     */
-    public String getOnlineMnlDf() {
-        return onlineMnlDf;
-    }
-
-    /**
-     * onlineMnlDf 설정
-     *
-     * @param onlineMnlDf the onlineMnlDf to set
-     */
-    public void setOnlineMnlDf(String onlineMnlDf) {
-        this.onlineMnlDf = onlineMnlDf;
-    }
-
-    /**
-     * onlineMnlDc 리턴
-     *
-     * @return the onlineMnlDc
-     */
-    public String getOnlineMnlDc() {
-        return onlineMnlDc;
-    }
-
-    /**
-     * onlineMnlDc 설정
-     *
-     * @param onlineMnlDc the onlineMnlDc to set
-     */
-    public void setOnlineMnlDc(String onlineMnlDc) {
-        this.onlineMnlDc = onlineMnlDc;
-    }
-
-    /**
-     * frstRegisterPnttm 리턴
-     *
-     * @return the frstRegisterPnttm
-     */
-    public String getFrstRegisterPnttm() {
-        return frstRegisterPnttm;
-    }
-
-    /**
-     * frstRegisterPnttm 설정
-     *
-     * @param frstRegisterPnttm the frstRegisterPnttm to set
-     */
-    public void setFrstRegisterPnttm(String frstRegisterPnttm) {
-        this.frstRegisterPnttm = frstRegisterPnttm;
-    }
-
-    /**
-     * frstRegisterId 리턴
-     *
-     * @return the frstRegisterId
-     */
-    public String getFrstRegisterId() {
-        return frstRegisterId;
-    }
-
-    /**
-     * frstRegisterId 설정
-     *
-     * @param frstRegisterId the frstRegisterId to set
-     */
-    public void setFrstRegisterId(String frstRegisterId) {
-        this.frstRegisterId = frstRegisterId;
-    }
-    
-    /**
-     * frstRegisterNm 리턴
-     *
-     * @return the frstRegisterNm
-     */
-    public String getFrstRegisterNm() {
-    	return frstRegisterNm;
-    }
-    
-    /**
-     * frstRegisterNm 설정
-     *
-     * @param frstRegisterNm the frstRegisterNm to set
-     */
-    public void setFrstRegisterNm(String frstRegisterNm) {
-    	this.frstRegisterNm = frstRegisterNm;
-    }
-
-    /**
-     * lastUpdusrPnttm 리턴
-     *
-     * @return the lastUpdusrPnttm
-     */
-    public String getLastUpdusrPnttm() {
-        return lastUpdusrPnttm;
-    }
-
-    /**
-     * lastUpdusrPnttm 설정
-     *
-     * @param lastUpdusrPnttm the lastUpdusrPnttm to set
-     */
-    public void setLastUpdusrPnttm(String lastUpdusrPnttm) {
-        this.lastUpdusrPnttm = lastUpdusrPnttm;
-    }
-
-    /**
-     * lastUpdusrId 리턴
-     *
-     * @return the lastUpdusrId
-     */
-    public String getLastUpdusrId() {
-        return lastUpdusrId;
-    }
-
-    /**
-     * lastUpdusrId 설정
-     *
-     * @param lastUpdusrId the lastUpdusrId to set
-     */
-    public void setLastUpdusrId(String lastUpdusrId) {
-        this.lastUpdusrId = lastUpdusrId;
-    }
-
-    /**
-     * cmd 리턴
-     *
-     * @return the cmd
-     */
-    public String getCmd() {
-        return cmd;
-    }
-
-    /**
-     * cmd 설정
-     *
-     * @param cmd the cmd to set
-     */
-    public void setCmd(String cmd) {
-        this.cmd = cmd;
-    }
-
-    /**
-   	 * toString 메소드를 대치한다.
-   	 */
-   	public String toString(){
-   		return ToStringBuilder.reflectionToString(this);
-   	}
-
+  	 * toString 메소드를 대치한다.
+  	 */
+  	public String toString(){
+  		return ToStringBuilder.reflectionToString(this);
+  	}
 
 }

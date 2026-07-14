@@ -31,7 +31,7 @@ public class ProcessMonDAO extends EgovComAbstractDAO {
      * @param processMonVO - PROCESS모니터링 Vo
      * @return List - PROCESS모니터링 목록
      */
-    public List<ProcessMonVO> selectProcessMonList(ProcessMonVO processMonVO) throws Exception {
+    public List<ProcessMonVO> selectProcessMonList(ProcessMonVO processMonVO) {
         return selectList("ProcessMonDAO.selectProcessMonList", processMonVO);
     }
 
@@ -41,7 +41,7 @@ public class ProcessMonDAO extends EgovComAbstractDAO {
      * @param ProcessMonVO - PROCESS모니터링 Vo
      * @return int - PROCESS모니터링 토탈 카운트 수
      */
-    public int selectProcessMonTotCnt(ProcessMonVO processMonVO) throws Exception {
+    public int selectProcessMonTotCnt(ProcessMonVO processMonVO) {
         return selectOne("ProcessMonDAO.selectProcessMonTotCnt", processMonVO);
     }
 
@@ -51,7 +51,7 @@ public class ProcessMonDAO extends EgovComAbstractDAO {
      * @param processMonVO - PROCESS모니터링 Vo
      * @return processMonVO - PROCESS모니터링 Vo
      */
-    public ProcessMonVO selectProcessMon(ProcessMonVO processMonVO) throws Exception {
+    public ProcessMonVO selectProcessMon(ProcessMonVO processMonVO) {
         return selectOne("ProcessMonDAO.selectProcessMon", processMonVO);
     }
 
@@ -61,7 +61,7 @@ public class ProcessMonDAO extends EgovComAbstractDAO {
      * @param processNm - PROCESS모니터링 model
      * @return int - 등록 결과
      */
-    public int insertProcessMon(ProcessMon processMon) throws Exception {
+    public int insertProcessMon(ProcessMon processMon) {
         return insert("ProcessMonDAO.insertProcessMon", processMon);
     }
 
@@ -71,7 +71,7 @@ public class ProcessMonDAO extends EgovComAbstractDAO {
      * @param processNm - PROCESS모니터링 model
      * @return int - 수정 결과
      */
-    public int updateProcessMon(ProcessMon processMon) throws Exception {
+    public int updateProcessMon(ProcessMon processMon) {
         return update("ProcessMonDAO.updateProcessMon", processMon);
     }
 
@@ -81,7 +81,7 @@ public class ProcessMonDAO extends EgovComAbstractDAO {
      * @param processNm - PROCESS모니터링 model
      * @return int - 삭제 결과
      */
-    public int deleteProcessMon(ProcessMon processMon) throws Exception {
+    public int deleteProcessMon(ProcessMon processMon) {
         return delete("ProcessMonDAO.deleteProcessMon", processMon);
     }
 
@@ -91,7 +91,7 @@ public class ProcessMonDAO extends EgovComAbstractDAO {
      * @param ProcessMonVO - 프로세스모니터링로그 VO
      * @return List<ProcessMonLogVO> - 프로세스모니터링로그 List
      */
-    public List<ProcessMonLogVO> selectProcessMonLogList(ProcessMonLogVO processMonLogVO) throws Exception {
+    public List<ProcessMonLogVO> selectProcessMonLogList(ProcessMonLogVO processMonLogVO) {
         return selectList("ProcessMonDAO.selectProcessMonLogList", processMonLogVO);
     }
 
@@ -101,7 +101,7 @@ public class ProcessMonDAO extends EgovComAbstractDAO {
      * @param ProcessMonVO - PROCESS모니터링로그 Vo
      * @return int - PROCESS모니터링로그 토탈 카운트 수
      */
-    public int selectProcessMonLogTotCnt(ProcessMonLogVO processMonLogVO) throws Exception {
+    public int selectProcessMonLogTotCnt(ProcessMonLogVO processMonLogVO) {
         return selectOne("ProcessMonDAO.selectProcessMonLogTotCnt", processMonLogVO);
     }
 
@@ -121,7 +121,7 @@ public class ProcessMonDAO extends EgovComAbstractDAO {
      * @param ProcessMonLog - 파일시스템모니터링 대상 model
      * @return int - 등록 결과
      */
-    public int insertProcessMonLog(ProcessMonLog processMonLog) throws Exception {
+    public int insertProcessMonLog(ProcessMonLog processMonLog) {
         return insert("ProcessMonDAO.insertProcessMonLog", processMonLog);
     }
 
@@ -131,7 +131,7 @@ public class ProcessMonDAO extends EgovComAbstractDAO {
      * @param ProcessMon - 프로세스 대상 model
      * @return int - 수정 결과
      */
-    public int updateProcessMonSttus(ProcessMon processMon) throws Exception {
+    public int updateProcessMonSttus(ProcessMon processMon) {
         return update("ProcessMonDAO.updateProcessMonSttus", processMon);
     }
 }

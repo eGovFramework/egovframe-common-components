@@ -24,6 +24,7 @@ import egovframework.com.sym.ccm.icr.service.InsttCodeRecptnVO;
  *  -------    --------    ---------------------------
  *   2009.04.01  이중호          최초 생성
  *   2011.09.05  서준식          beforeData에 대한 null체크 추가
+ *   2026.06.16  이백행          [2026년 컨트리뷰션] 불필요한 예외 제거
  * Copyright (C) 2009 by MOPAS  All rights reserved.
  * </pre>
  */
@@ -33,18 +34,16 @@ public class InsttCodeRecptnDAO extends EgovComAbstractDAO {
 	/**
 	 * 기관코드수신을 처리한다.
 	 * @param insttCode
-	 * @throws Exception
 	 */
-	public void insertInsttCodeRecptn(InsttCodeRecptn insttCodeRecptn) throws Exception {
+	public void insertInsttCodeRecptn(InsttCodeRecptn insttCodeRecptn) {
         insert("InsttCodeRecptnDAO.insertInsttCodeRecptn", insttCodeRecptn);
 	}
 
 	/**
 	 * 기관코드를 등록한다.
 	 * @param insttCode
-	 * @throws Exception
 	 */
-	public void insertInsttCode(InsttCodeRecptn insttCodeRecptn) throws Exception {
+	public void insertInsttCode(InsttCodeRecptn insttCodeRecptn) {
 		InsttCodeRecptn beforeData = (InsttCodeRecptn) selectOne("InsttCodeRecptnDAO.selectInsttCodeDetail", insttCodeRecptn);
 
 		if (beforeData != null && beforeData.getInsttCode().equals(insttCodeRecptn.getInsttCode())) {//2011.09.05
@@ -63,9 +62,8 @@ public class InsttCodeRecptnDAO extends EgovComAbstractDAO {
 	/**
 	 * 기관코드를 수정한다.
 	 * @param insttCode
-	 * @throws Exception
 	 */
-	public void updateInsttCode(InsttCodeRecptn insttCodeRecptn) throws Exception {
+	public void updateInsttCode(InsttCodeRecptn insttCodeRecptn) {
 		int rtnValue = update("InsttCodeRecptnDAO.updateInsttCode", insttCodeRecptn);
         if (rtnValue != 1) {
         	// 변경 오류
@@ -77,9 +75,8 @@ public class InsttCodeRecptnDAO extends EgovComAbstractDAO {
 	/**
 	 * 기관코드를 삭제한다.
 	 * @param insttCode
-	 * @throws Exception
 	 */
-	public void deleteInsttCode(InsttCodeRecptn insttCodeRecptn) throws Exception {
+	public void deleteInsttCode(InsttCodeRecptn insttCodeRecptn) {
 		int rtnValue = update("InsttCodeRecptnDAO.deleteInsttCode", insttCodeRecptn);
         if (rtnValue != 1) {
         	// 삭제 오류
@@ -93,7 +90,7 @@ public class InsttCodeRecptnDAO extends EgovComAbstractDAO {
 	 * @param insttCode
 	 * @return InsttCode(기관코드)
 	 */
-	public InsttCodeRecptn selectInsttCodeDetail(InsttCodeRecptn insttCodeRecptn) throws Exception {
+	public InsttCodeRecptn selectInsttCodeDetail(InsttCodeRecptn insttCodeRecptn) {
 		return (InsttCodeRecptn) selectOne("InsttCodeRecptnDAO.selectInsttCodeDetail", insttCodeRecptn);
 	}
 
@@ -102,9 +99,8 @@ public class InsttCodeRecptnDAO extends EgovComAbstractDAO {
 	 * 기관코드수신 목록을 조회한다.
      * @param searchVO
      * @return List(기관코드 목록)
-     * @throws Exception
      */
-    public List<EgovMap> selectInsttCodeRecptnList(InsttCodeRecptnVO searchVO) throws Exception {
+    public List<EgovMap> selectInsttCodeRecptnList(InsttCodeRecptnVO searchVO) {
         return selectList("InsttCodeRecptnDAO.selectInsttCodeRecptnList", searchVO);
     }
 
@@ -113,17 +109,24 @@ public class InsttCodeRecptnDAO extends EgovComAbstractDAO {
      * @param searchVO
      * @return int(기관코드 총 개수)
      */
-    public int selectInsttCodeRecptnListTotCnt(InsttCodeRecptnVO searchVO) throws Exception {
+    public int selectInsttCodeRecptnListTotCnt(InsttCodeRecptnVO searchVO) {
         return (Integer)selectOne("InsttCodeRecptnDAO.selectInsttCodeRecptnListTotCnt", searchVO);
     }
+
+	/**
+	 * 등록된 기관코드 목록을 조회한다.
+	 * @return List(기관코드 목록)
+	 */
+	public List<String> selectExistingInsttCodes() {
+		return selectList("InsttCodeRecptnDAO.selectExistingInsttCodes");
+	}
 
     /**
 	 * 기관코드 목록을 조회한다.
      * @param searchVO
      * @return List(기관코드 목록)
-     * @throws Exception
      */
-    public List<EgovMap> selectInsttCodeList(InsttCodeRecptnVO searchVO) throws Exception {
+    public List<EgovMap> selectInsttCodeList(InsttCodeRecptnVO searchVO) {
         return selectList("InsttCodeRecptnDAO.selectInsttCodeList", searchVO);
     }
 
@@ -132,7 +135,7 @@ public class InsttCodeRecptnDAO extends EgovComAbstractDAO {
      * @param searchVO
      * @return int(기관코드 총 개수)
      */
-    public int selectInsttCodeListTotCnt(InsttCodeRecptnVO searchVO) throws Exception {
+    public int selectInsttCodeListTotCnt(InsttCodeRecptnVO searchVO) {
         return (Integer)selectOne("InsttCodeRecptnDAO.selectInsttCodeListTotCnt", searchVO);
     }
 }

@@ -16,6 +16,7 @@ import egovframework.com.sym.log.ulg.service.UserLog;
  *    -------        -------     -------------------
  *    2009. 3. 11.   이삼섭         최초생성
  *    2011. 7. 01.   이기하         패키지 분리(sym.log -> sym.log.ulg)
+ *    2026. 6. 16.   이백행         [2026년 컨트리뷰션] 불필요한 예외 제거
  *
  * @author 공통 서비스 개발팀 이삼섭
  * @since 2009. 3. 11.
@@ -31,9 +32,8 @@ public class UserLogDAO extends EgovComAbstractDAO {
 	 *
 	 * @param
 	 * @return
-	 * @throws Exception
 	 */
-	public void logInsertUserLog() throws Exception{
+	public void logInsertUserLog() {
 		insert("UserLog.logInsertUserLog", null);
 	}
 
@@ -42,9 +42,8 @@ public class UserLogDAO extends EgovComAbstractDAO {
 	 *
 	 * @param userLog
 	 * @return userLog
-	 * @throws Exception
 	 */
-	public UserLog selectUserLog(UserLog userLog) throws Exception{
+	public UserLog selectUserLog(UserLog userLog) {
 
 		return (UserLog) selectOne("UserLog.selectUserLog", userLog);
 	}
@@ -54,9 +53,8 @@ public class UserLogDAO extends EgovComAbstractDAO {
 	 *
 	 * @param UserLog
 	 * @return
-	 * @throws Exception
 	 */
-	public List<UserLog> selectUserLogInf(UserLog userLog) throws Exception{
+	public List<UserLog> selectUserLogInf(UserLog userLog) {
 		return selectList("UserLog.selectUserLogInf", userLog);
 	}
 
@@ -64,9 +62,8 @@ public class UserLogDAO extends EgovComAbstractDAO {
 	 * 사용자 로그정보 목록의 숫자를 조회한다.
 	 * @param UserLog
 	 * @return
-	 * @throws Exception
 	 */
-	public int selectUserLogInfCnt(UserLog userLog) throws Exception{
+	public int selectUserLogInfCnt(UserLog userLog) {
 
 		return (Integer)selectOne("UserLog.selectUserLogInfCnt", userLog);
 	}

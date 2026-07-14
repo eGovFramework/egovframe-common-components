@@ -24,6 +24,7 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
  *  2017.07.21   장동한            로그인인증제한 작업
  *  2020.07.08   신용호            비밀번호를 수정한후 경과한 날짜 조회
  *  2021.05.30   정진오            디지털원패스 인증 회원 조회
+ *  2026.06.17   이백행            [2026년 컨트리뷰션] 불필요한 예외 제거
  *  </pre>
  */
 @Repository("loginDAO")
@@ -34,9 +35,8 @@ public class LoginDAO extends EgovComAbstractDAO {
 	 * EsntlId를 이용한 로그인을 처리한다
 	 * @param vo LoginVO
 	 * @return LoginVO
-	 * @exception Exception
 	 */
-    public LoginVO actionLoginByEsntlId(LoginVO vo) throws Exception {
+    public LoginVO actionLoginByEsntlId(LoginVO vo) {
     	return (LoginVO)selectOne("LoginUsr.ssoLoginByEsntlId", vo);
     }
 
@@ -44,9 +44,8 @@ public class LoginDAO extends EgovComAbstractDAO {
 	 * 일반 로그인을 처리한다
 	 * @param vo LoginVO
 	 * @return LoginVO
-	 * @exception Exception
 	 */
-    public LoginVO actionLogin(LoginVO vo) throws Exception {
+    public LoginVO actionLogin(LoginVO vo) {
     	return (LoginVO)selectOne("LoginUsr.actionLogin", vo);
     }
 
@@ -54,9 +53,8 @@ public class LoginDAO extends EgovComAbstractDAO {
 	 * 인증서 로그인을 처리한다
 	 * @param vo LoginVO
 	 * @return LoginVO
-	 * @exception Exception
 	 */
-    public LoginVO actionCrtfctLogin(LoginVO vo) throws Exception {
+    public LoginVO actionCrtfctLogin(LoginVO vo) {
 
     	return (LoginVO)selectOne("LoginUsr.actionCrtfctLogin", vo);
     }
@@ -65,9 +63,8 @@ public class LoginDAO extends EgovComAbstractDAO {
 	 * 아이디를 찾는다.
 	 * @param vo LoginVO
 	 * @return LoginVO
-	 * @exception Exception
 	 */
-    public LoginVO searchId(LoginVO vo) throws Exception {
+    public LoginVO searchId(LoginVO vo) {
 
     	return (LoginVO)selectOne("LoginUsr.searchId", vo);
     }
@@ -76,9 +73,8 @@ public class LoginDAO extends EgovComAbstractDAO {
 	 * 비밀번호를 찾는다.
 	 * @param vo LoginVO
 	 * @return LoginVO
-	 * @exception Exception
 	 */
-    public LoginVO searchPassword(LoginVO vo) throws Exception {
+    public LoginVO searchPassword(LoginVO vo) {
 
     	return (LoginVO)selectOne("LoginUsr.searchPassword", vo);
     }
@@ -86,9 +82,8 @@ public class LoginDAO extends EgovComAbstractDAO {
     /**
 	 * 변경된 비밀번호를 저장한다.
 	 * @param vo LoginVO
-	 * @exception Exception
 	 */
-    public void updatePassword(LoginVO vo) throws Exception {
+    public void updatePassword(LoginVO vo) {
     	update("LoginUsr.updatePassword", vo);
     }
     
@@ -97,9 +92,8 @@ public class LoginDAO extends EgovComAbstractDAO {
 	 * 로그인인증제한 내역을 조회한다.
 	 * @param vo LoginVO
 	 * @return LoginVO
-	 * @exception Exception
 	 */
-	public Map<?,?> selectLoginIncorrect(LoginVO vo) throws Exception {
+	public Map<?,?> selectLoginIncorrect(LoginVO vo) {
     	return (Map<?,?>)selectOne("LoginUsr.selectLoginIncorrect", vo);
     }
 
@@ -107,9 +101,8 @@ public class LoginDAO extends EgovComAbstractDAO {
 	 * 로그인인증제한 내역을 업데이트 한다.
 	 * @param vo LoginVO
 	 * @return vod
-	 * @exception Exception
 	 */
-    public void updateLoginIncorrect(Map<?,?> map) throws Exception {
+    public void updateLoginIncorrect(Map<?,?> map) {
     	update("LoginUsr.updateLoginIncorrect"+map.get("USER_SE"), map);
     }
     
@@ -117,9 +110,8 @@ public class LoginDAO extends EgovComAbstractDAO {
 	 * 비밀번호를 수정한후 경과한 날짜를 조회한다.
 	 * @param vo LoginVO
 	 * @return LoginVO
-	 * @exception Exception
 	 */
-    public int selectPassedDayChangePWD(LoginVO vo) throws Exception {
+    public int selectPassedDayChangePWD(LoginVO vo) {
     	return selectOne("LoginUsr.selectPassedDayChangePWD", vo);
     }
 
@@ -127,9 +119,8 @@ public class LoginDAO extends EgovComAbstractDAO {
 	 * 디지털원패스 인증 회원 조회한다.
 	 * @param id
 	 * @return LoginVO
-	 * @exception Exception
 	 */
-    public LoginVO onepassLogin(String id) throws Exception {
+    public LoginVO onepassLogin(String id) {
     	return (LoginVO)selectOne("LoginUsr.onepassLogin", id);
     }
 

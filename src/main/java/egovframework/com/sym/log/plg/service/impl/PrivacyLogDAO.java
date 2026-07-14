@@ -15,9 +15,8 @@ public class PrivacyLogDAO extends EgovComAbstractDAO {
 	 *
 	 * @param
 	 * @return
-	 * @throws Exception
 	 */
-	public void insertPrivacyLog(PrivacyLog privacyLog) throws Exception{
+	public void insertPrivacyLog(PrivacyLog privacyLog) {
 		insert("PrivacyLog.insertPrivacyLog", privacyLog);
 	}
 
@@ -26,9 +25,8 @@ public class PrivacyLogDAO extends EgovComAbstractDAO {
 	 *
 	 * @param privacyLog
 	 * @return
-	 * @throws Exception
 	 */
-	public List<PrivacyLog> selectPrivacyLogList(PrivacyLog privacyLog) throws Exception{
+	public List<PrivacyLog> selectPrivacyLogList(PrivacyLog privacyLog) {
 		return selectList("PrivacyLog.selectPrivacyLogList", privacyLog);
 	}
 	
@@ -36,9 +34,8 @@ public class PrivacyLogDAO extends EgovComAbstractDAO {
 	 * 개인정보조회 로그정보 목록의 숫자를 조회한다.
 	 * @param privacyLog
 	 * @return
-	 * @throws Exception
 	 */
-	public int selectPrivacyLogListCount(PrivacyLog privacyLog) throws Exception{
+	public int selectPrivacyLogListCount(PrivacyLog privacyLog) {
 		return (Integer)selectOne("PrivacyLog.selectPrivacyLogListCount", privacyLog);
 	}
 
@@ -47,9 +44,8 @@ public class PrivacyLogDAO extends EgovComAbstractDAO {
 	 *
 	 * @param privacyLog
 	 * @return privacyLog
-	 * @throws Exception
 	 */
-	public PrivacyLog selectPrivacyLog(PrivacyLog privacyLog) throws Exception{
+	public PrivacyLog selectPrivacyLog(PrivacyLog privacyLog) {
 		return (PrivacyLog) selectOne("PrivacyLog.selectPrivacyLog", privacyLog);
 	}
 

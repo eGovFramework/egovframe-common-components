@@ -56,13 +56,13 @@ public class BatchShellScriptJob implements Job {
 
 		JobDataMap dataMap = jobContext.getJobDetail().getJobDataMap();
 
-		LOGGER.debug("job[{}] Trigger이름 : ", jobContext.getJobDetail().getKey().getName(),
+		LOGGER.debug("job[{}] Trigger이름 : {}", jobContext.getJobDetail().getKey().getName(),
 				jobContext.getTrigger().getKey().getName());
-		LOGGER.debug("job[{}] BatchOpert이름 : ", jobContext.getJobDetail().getKey().getName(),
+		LOGGER.debug("job[{}] BatchOpert이름 : {}", jobContext.getJobDetail().getKey().getName(),
 				dataMap.getString("batchOpertId"));
-		LOGGER.debug("job[{}] BatchProgram이름 : ", jobContext.getJobDetail().getKey().getName(),
+		LOGGER.debug("job[{}] BatchProgram이름 : {}", jobContext.getJobDetail().getKey().getName(),
 				dataMap.getString("batchProgrm"));
-		LOGGER.debug("job[{}] Parameter이름 : ", jobContext.getJobDetail().getKey().getName(),
+		LOGGER.debug("job[{}] Parameter이름 : {}", jobContext.getJobDetail().getKey().getName(),
 				dataMap.getString("paramtr"));
 
 		int result = executeProgram(dataMap.getString("batchProgrm"), dataMap.getString("paramtr"));

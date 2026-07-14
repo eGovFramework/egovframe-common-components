@@ -28,7 +28,7 @@ public class MtgPlaceManageDAO extends EgovComAbstractDAO {
 	 * @param mtgPlaceManageVO - 회의실관리 VO
 	 * @return List - 회의실관리 목록
 	 */
-	public List<MtgPlaceManageVO> selectMtgPlaceManageList(MtgPlaceManageVO mtgPlaceManageVO) throws Exception {
+	public List<MtgPlaceManageVO> selectMtgPlaceManageList(MtgPlaceManageVO mtgPlaceManageVO) {
 		return selectList("mtgPlaceManageDAO.selectMtgPlaceManageList", mtgPlaceManageVO);
 	}
 
@@ -36,9 +36,8 @@ public class MtgPlaceManageDAO extends EgovComAbstractDAO {
 	 * 회의실관리목록 총 개수를 조회한다.
 	 * @param mtgPlaceManageVO - 회의실관리 VO
 	 * @return int
-	 * @exception Exception
 	 */
-    public int selectMtgPlaceManageListTotCnt(MtgPlaceManageVO mtgPlaceManageVO) throws Exception {
+    public int selectMtgPlaceManageListTotCnt(MtgPlaceManageVO mtgPlaceManageVO) {
         return (Integer)selectOne("mtgPlaceManageDAO.selectMtgPlaceManageListTotCnt", mtgPlaceManageVO);
     }
 
@@ -47,28 +46,28 @@ public class MtgPlaceManageDAO extends EgovComAbstractDAO {
 	 * @param mtgPlaceManageVO - 회의실관리 VO
 	 * @return MtgPlaceManageVO - 회의실관리 VO
 	 */
-	public MtgPlaceManageVO selectMtgPlaceManage(MtgPlaceManageVO mtgPlaceManageVO)  throws Exception {
+	public MtgPlaceManageVO selectMtgPlaceManage(MtgPlaceManageVO mtgPlaceManageVO) {
 		return (MtgPlaceManageVO) selectOne("mtgPlaceManageDAO.selectMtgPlaceManage", mtgPlaceManageVO);
 	}
 
 	/**
 	 * 회의실관리정보를 신규로 등록한다.
 	 */
-	public void insertMtgPlaceManage(MtgPlaceManageVO mtgPlaceManageVO) throws Exception {
+	public void insertMtgPlaceManage(MtgPlaceManageVO mtgPlaceManageVO) {
 		insert("mtgPlaceManageDAO.insertMtgPlaceManage", mtgPlaceManageVO);
 	}
 
 	/**
 	 * 기 등록된 회의실관리정보를 수정한다.
 	 */
-	public void updtMtgPlaceManage(MtgPlaceManageVO mtgPlaceManageVO) throws Exception {
+	public void updtMtgPlaceManage(MtgPlaceManageVO mtgPlaceManageVO) {
 		update("mtgPlaceManageDAO.updtMtgPlaceManage", mtgPlaceManageVO);
 	}
 
 	/**
 	 * 기 등록된 회의실관리정보를 삭제한다.
 	 */
-	public void deleteMtgPlaceManage(MtgPlaceManageVO mtgPlaceManageVO) throws Exception {
+	public void deleteMtgPlaceManage(MtgPlaceManageVO mtgPlaceManageVO) {
 		delete("mtgPlaceManageDAO.deleteMtgPlaceManage", mtgPlaceManageVO);
 	}
 
@@ -79,7 +78,7 @@ public class MtgPlaceManageDAO extends EgovComAbstractDAO {
 	 * @param mtgPlaceManageVO - 회의실관리 VO
 	 * @return List - 회의실관리 목록
 	 */
-	public List<MtgPlaceManageVO> selectMtgPlaceIDList(MtgPlaceManageVO mtgPlaceManageVO) throws Exception {
+	public List<MtgPlaceManageVO> selectMtgPlaceIDList(MtgPlaceManageVO mtgPlaceManageVO) {
 		return selectList("mtgPlaceManageDAO.selectMtgPlaceIDList", mtgPlaceManageVO);
 	}
 	
@@ -88,7 +87,7 @@ public class MtgPlaceManageDAO extends EgovComAbstractDAO {
 	 * @param mtgPlaceManageVO - 회의실관리 VO
 	 * @return MtgPlaceManageVO - 회의실관리 목록
 	 */
-	public MtgPlaceManageVO selectMtgPlaceResveManageList(MtgPlaceManageVO mtgPlaceManageVO) throws Exception {
+	public MtgPlaceManageVO selectMtgPlaceResveManageList(MtgPlaceManageVO mtgPlaceManageVO) {
 		return (MtgPlaceManageVO) selectOne("mtgPlaceManageDAO.selectMtgPlaceResveManageList", mtgPlaceManageVO);
 	}
 	
@@ -97,7 +96,7 @@ public class MtgPlaceManageDAO extends EgovComAbstractDAO {
 	 * @param mtgPlaceManageVO - 회의실관리 VO
 	 * @return MtgPlaceManageVO - 회의실관리 VO
 	 */
-	public MtgPlaceManageVO selectMtgPlaceResve(MtgPlaceManageVO mtgPlaceManageVO)  throws Exception {
+	public MtgPlaceManageVO selectMtgPlaceResve(MtgPlaceManageVO mtgPlaceManageVO) {
 		return (MtgPlaceManageVO) selectOne("mtgPlaceManageDAO.selectMtgPlaceResve", mtgPlaceManageVO);
 	}
 
@@ -106,28 +105,28 @@ public class MtgPlaceManageDAO extends EgovComAbstractDAO {
 	 * @param mtgPlaceManageVO - 회의실관리 VO
 	 * @return MtgPlaceManageVO - 회의실관리 VO
 	 */
-	public MtgPlaceManageVO selectMtgPlaceResveDetail(MtgPlaceManageVO mtgPlaceManageVO)  throws Exception {
+	public MtgPlaceManageVO selectMtgPlaceResveDetail(MtgPlaceManageVO mtgPlaceManageVO) {
 		return (MtgPlaceManageVO) selectOne("mtgPlaceManageDAO.selectMtgPlaceResveDetail", mtgPlaceManageVO);
 	}
 	
 	/**
 	 * 회의실예약 정보를 신규로 등록한다.
 	 */
-	public void insertMtgPlaceResve(MtgPlaceResveVO mtgPlaceResveVO) throws Exception {
+	public void insertMtgPlaceResve(MtgPlaceResveVO mtgPlaceResveVO) {
 		insert("mtgPlaceManageDAO.insertMtgPlaceResve", mtgPlaceResveVO);
 	}
 
 	/**
 	 * 기 등록된 회의실예약 정보를 수정한다.
 	 */
-	public void updtMtgPlaceResve(MtgPlaceResveVO mtgPlaceResveVO) throws Exception {
+	public void updtMtgPlaceResve(MtgPlaceResveVO mtgPlaceResveVO) {
 		update("mtgPlaceManageDAO.updtMtgPlaceResve", mtgPlaceResveVO);
 	}
 
 	/**
 	 * 기 등록된 회의실예약 정보를 삭제한다.
 	 */
-	public void deleteMtgPlaceResve(MtgPlaceResveVO mtgPlaceResveVO) throws Exception {
+	public void deleteMtgPlaceResve(MtgPlaceResveVO mtgPlaceResveVO) {
 		delete("mtgPlaceManageDAO.deleteMtgPlaceResve", mtgPlaceResveVO);
 	}	
 	
@@ -137,7 +136,7 @@ public class MtgPlaceManageDAO extends EgovComAbstractDAO {
 	 * @param mtgPlaceManageVO - 회의실관리 VO
 	 * @return int - 중복건수
 	 */
-	public int mtgPlaceResveDplactCeck(MtgPlaceManageVO mtgPlaceManageVO) throws Exception {
+	public int mtgPlaceResveDplactCeck(MtgPlaceManageVO mtgPlaceManageVO) {
 		return (Integer)selectOne("mtgPlaceManageDAO.mtgPlaceResveDplactCeck", mtgPlaceManageVO);
 	}
 	

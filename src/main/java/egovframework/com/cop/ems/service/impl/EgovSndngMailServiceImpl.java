@@ -60,7 +60,7 @@ public class EgovSndngMailServiceImpl extends EgovAbstractServiceImpl implements
 		try {
 			EmailAttachment attachment = new EmailAttachment();
 			// 첨부파일이 있을 때
-			if (atchmnFileNm != "" && atchmnFileNm != null && atchmnFilePath != "" && atchmnFilePath != null) {
+			if (atchmnFileNm != null && !atchmnFileNm.isEmpty() && atchmnFilePath != null && !atchmnFilePath.isEmpty()) {
 				// 첨부할 attachment 정보를 생성합니다
 				attachment.setPath(atchmnFilePath);
 				attachment.setDisposition(EmailAttachment.ATTACHMENT);

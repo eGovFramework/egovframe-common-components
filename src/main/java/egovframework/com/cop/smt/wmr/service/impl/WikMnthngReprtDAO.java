@@ -26,6 +26,7 @@ import egovframework.com.utl.fcc.service.EgovStringUtil;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2010.7.19	장철호          최초 생성
+ *   2026.6.15	이백행          [2026년 컨트리뷰션] 불필요한 예외 제거
  *
  * </pre>
  */
@@ -39,7 +40,7 @@ public class WikMnthngReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param reportrVO
 	 */	
-	public List<ReportrVO> selectReportrList(ReportrVO reportrVO) throws Exception{
+	public List<ReportrVO> selectReportrList(ReportrVO reportrVO) {
 		return selectList("WikMnthngReprtDAO.selectReportrList", reportrVO);
 	}
 	
@@ -50,7 +51,7 @@ public class WikMnthngReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param reportrVO
 	 */
-	public int selectReportrListCnt(ReportrVO reportrVO) throws Exception{
+	public int selectReportrListCnt(ReportrVO reportrVO) {
 		return (Integer)selectOne("WikMnthngReprtDAO.selectReportrListCnt", reportrVO);
 	}
 	
@@ -61,7 +62,7 @@ public class WikMnthngReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param DeptVO
 	 */
-	public String selectWrterClsfNm(String wrterId) throws Exception{
+	public String selectWrterClsfNm(String wrterId) {
 		return (String)selectOne("WikMnthngReprtDAO.selectWrterClsfNm", wrterId);
 	}
 	
@@ -72,7 +73,7 @@ public class WikMnthngReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param wikMnthngReprtVO
 	 */
-	public List<WikMnthngReprtVO> selectWikMnthngReprtList(WikMnthngReprtVO wikMnthngReprtVO) throws Exception{
+	public List<WikMnthngReprtVO> selectWikMnthngReprtList(WikMnthngReprtVO wikMnthngReprtVO) {
 		//날짜관련
 		wikMnthngReprtVO.setSearchBgnDe(wikMnthngReprtVO.getSearchBgnDe().replaceAll("-", ""));
 		wikMnthngReprtVO.setSearchEndDe(wikMnthngReprtVO.getSearchEndDe().replaceAll("-", ""));
@@ -95,7 +96,7 @@ public class WikMnthngReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param wikMnthngReprtVO
 	 */
-	public WikMnthngReprtVO selectWikMnthngReprt(WikMnthngReprtVO wikMnthngReprtVO) throws Exception{
+	public WikMnthngReprtVO selectWikMnthngReprt(WikMnthngReprtVO wikMnthngReprtVO) {
 		WikMnthngReprtVO resultVO = (WikMnthngReprtVO)selectOne("WikMnthngReprtDAO.selectWikMnthngReprt", wikMnthngReprtVO);
 		resultVO.setReprtDe(EgovDateUtil.convertDate(resultVO.getReprtDe(), "0000", "yyyy-MM-dd"));
 		resultVO.setReprtBgnDe(EgovDateUtil.convertDate(resultVO.getReprtBgnDe(), "0000", "yyyy-MM-dd"));
@@ -109,7 +110,7 @@ public class WikMnthngReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param wikMnthngReprt
 	 */
-	public void updateWikMnthngReprt(WikMnthngReprt wikMnthngReprt) throws Exception{
+	public void updateWikMnthngReprt(WikMnthngReprt wikMnthngReprt) {
 		//날짜관련
 		//KISA 보안약점 조치 (2018-10-29, 윤창원)
 		wikMnthngReprt.setReprtDe(EgovStringUtil.isNullToString(wikMnthngReprt.getReprtDe()).replaceAll("-", ""));
@@ -124,7 +125,7 @@ public class WikMnthngReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param wikMnthngReprt
 	 */
-	public void insertWikMnthngReprt(WikMnthngReprt wikMnthngReprt) throws Exception{
+	public void insertWikMnthngReprt(WikMnthngReprt wikMnthngReprt) {
 		//날짜관련
 		//KISA 보안약점 조치 (2018-10-29, 윤창원)
 		wikMnthngReprt.setReprtDe(EgovStringUtil.isNullToString(wikMnthngReprt.getReprtDe()).replaceAll("-", ""));
@@ -139,7 +140,7 @@ public class WikMnthngReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param wikMnthngReprt
 	 */
-	public void deleteWikMnthngReprt(WikMnthngReprt wikMnthngReprt) throws Exception{
+	public void deleteWikMnthngReprt(WikMnthngReprt wikMnthngReprt) {
 		delete("WikMnthngReprtDAO.deleteWikMnthngReprt", wikMnthngReprt);
 	}
 
@@ -149,7 +150,7 @@ public class WikMnthngReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param wikMnthngReprt
 	 */
-	public void confirmWikMnthngReprt(WikMnthngReprt wikMnthngReprt) throws Exception{
+	public void confirmWikMnthngReprt(WikMnthngReprt wikMnthngReprt) {
 		update("WikMnthngReprtDAO.confirmWikMnthngReprt", wikMnthngReprt);
 	}
 
@@ -160,7 +161,7 @@ public class WikMnthngReprtDAO extends EgovComAbstractDAO {
 	 * 
 	 * @param wikMnthngReprtVO
 	 */
-	public int selectWikMnthngReprtListCnt(WikMnthngReprtVO wikMnthngReprtVO) throws Exception{
+	public int selectWikMnthngReprtListCnt(WikMnthngReprtVO wikMnthngReprtVO) {
 		//날짜관련
 		//KISA 보안약점 조치 (2018-10-29, 윤창원)
 		wikMnthngReprtVO.setSearchBgnDe(EgovStringUtil.isNullToString(wikMnthngReprtVO.getSearchBgnDe()).replaceAll("-", ""));

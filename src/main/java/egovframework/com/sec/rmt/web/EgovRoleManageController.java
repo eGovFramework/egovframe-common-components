@@ -188,6 +188,7 @@ public class EgovRoleManageController {
                               ModelMap model) throws Exception {
 
     	if (bindingResult.hasErrors()) {
+			model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(),"COM029"));
 			return "egovframework/com/sec/rmt/EgovRoleInsert";
 		} else {
     	    String roleTyp = roleManage.getRoleTyp();
@@ -225,6 +226,7 @@ public class EgovRoleManageController {
             ModelMap model) throws Exception {
 
     	if (bindingResult.hasErrors()) {
+			model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(),"COM029"));
 			return "egovframework/com/sec/rmt/EgovRoleUpdate";
 		} else {
     	egovRoleManageService.updateRole(roleManage);

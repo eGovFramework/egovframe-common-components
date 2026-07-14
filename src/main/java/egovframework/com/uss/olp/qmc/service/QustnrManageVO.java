@@ -5,6 +5,10 @@ import java.io.Serializable;
 import org.egovframe.rte.ptl.reactive.validation.EgovNullCheck;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
+
+import lombok.Getter;
+import lombok.Setter;
+
 /**
  * 설문관리 VO Class 구현
  * @author 공통서비스 장동한
@@ -21,6 +25,8 @@ import jakarta.validation.constraints.Size;
  *
  * </pre>
  */
+@Getter
+@Setter
 public class QustnrManageVO implements Serializable {
 
 	private static final long serialVersionUID = 1525075114445382036L;
@@ -74,215 +80,5 @@ public class QustnrManageVO implements Serializable {
 
 	/**  최종수정자아이디 */
 	private String lastUpdusrId =  "";
-
-	/**
-	 * qestnrId attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getQestnrId() {
-		return qestnrId;
-	}
-
-	/**
-	 * qestnrId attribute 값을 설정한다.
-	 * @return qestnrId String
-	 */
-	public void setQestnrId(String qestnrId) {
-		this.qestnrId = qestnrId;
-	}
-
-	/**
-	 * qestnrSj attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getQestnrSj() {
-		return qestnrSj;
-	}
-
-	/**
-	 * qestnrSj attribute 값을 설정한다.
-	 * @return qestnrSj String
-	 */
-	public void setQestnrSj(String qestnrSj) {
-		this.qestnrSj = qestnrSj;
-	}
-
-	/**
-	 * qestnrPurps attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getQestnrPurps() {
-		return qestnrPurps;
-	}
-
-	/**
-	 * qestnrPurps attribute 값을 설정한다.
-	 * @return qestnrPurps String
-	 */
-	public void setQestnrPurps(String qestnrPurps) {
-		this.qestnrPurps = qestnrPurps;
-	}
-
-	/**
-	 * qestnrWritngGuidanceCn attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getQestnrWritngGuidanceCn() {
-		return qestnrWritngGuidanceCn;
-	}
-
-	/**
-	 * qestnrWritngGuidanceCn attribute 값을 설정한다.
-	 * @return qestnrWritngGuidanceCn String
-	 */
-	public void setQestnrWritngGuidanceCn(String qestnrWritngGuidanceCn) {
-		this.qestnrWritngGuidanceCn = qestnrWritngGuidanceCn;
-	}
-
-	/**
-	 * qestnrBeginDe attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getQestnrBeginDe() {
-		return qestnrBeginDe;
-	}
-
-	/**
-	 * qestnrBeginDe attribute 값을 설정한다.
-	 * @return qestnrBeginDe String
-	 */
-	public void setQestnrBeginDe(String qestnrBeginDe) {
-		this.qestnrBeginDe = qestnrBeginDe;
-	}
-
-	/**
-	 * qestnrEndDe attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getQestnrEndDe() {
-		return qestnrEndDe;
-	}
-
-	/**
-	 * qestnrEndDe attribute 값을 설정한다.
-	 * @return qestnrEndDe String
-	 */
-	public void setQestnrEndDe(String qestnrEndDe) {
-		this.qestnrEndDe = qestnrEndDe;
-	}
-
-	/**
-	 * qestnrTrget attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getQestnrTrget() {
-		return qestnrTrget;
-	}
-
-	/**
-	 * qestnrTrget attribute 값을 설정한다.
-	 * @return qestnrTrget String
-	 */
-	public void setQestnrTrget(String qestnrTrget) {
-		this.qestnrTrget = qestnrTrget;
-	}
-
-	/**
-	 * qestnrTmplatId attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getQestnrTmplatId() {
-		return qestnrTmplatId;
-	}
-
-	/**
-	 * qestnrTmplatId attribute 값을 설정한다.
-	 * @return qestnrTmplatId String
-	 */
-	public void setQestnrTmplatId(String qestnrTmplatId) {
-		this.qestnrTmplatId = qestnrTmplatId;
-	}
-
-	/**
-	 * qestnrTmplatTy attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getQestnrTmplatTy() {
-		return qestnrTmplatTy;
-	}
-
-	/**
-	 * qestnrTmplatTy attribute 값을 설정한다.
-	 * @return qestnrTmplatTy String
-	 */
-	public void setQestnrTmplatTy(String qestnrTmplatTy) {
-		this.qestnrTmplatTy = qestnrTmplatTy;
-	}
-
-	/**
-	 * frstRegisterPnttm attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getFrstRegisterPnttm() {
-		return frstRegisterPnttm;
-	}
-
-	/**
-	 * frstRegisterPnttm attribute 값을 설정한다.
-	 * @return frstRegisterPnttm String
-	 */
-	public void setFrstRegisterPnttm(String frstRegisterPnttm) {
-		this.frstRegisterPnttm = frstRegisterPnttm;
-	}
-
-	/**
-	 * frstRegisterId attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getFrstRegisterId() {
-		return frstRegisterId;
-	}
-
-	/**
-	 * frstRegisterId attribute 값을 설정한다.
-	 * @return frstRegisterId String
-	 */
-	public void setFrstRegisterId(String frstRegisterId) {
-		this.frstRegisterId = frstRegisterId;
-	}
-
-	/**
-	 * lastUpdusrPnttm attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getLastUpdusrPnttm() {
-		return lastUpdusrPnttm;
-	}
-
-	/**
-	 * lastUpdusrPnttm attribute 값을 설정한다.
-	 * @return lastUpdusrPnttm String
-	 */
-	public void setLastUpdusrPnttm(String lastUpdusrPnttm) {
-		this.lastUpdusrPnttm = lastUpdusrPnttm;
-	}
-
-	/**
-	 * lastUpdusrId attribute 를 리턴한다.
-	 * @return the String
-	 */
-	public String getLastUpdusrId() {
-		return lastUpdusrId;
-	}
-
-	/**
-	 * lastUpdusrId attribute 값을 설정한다.
-	 * @return lastUpdusrId String
-	 */
-	public void setLastUpdusrId(String lastUpdusrId) {
-		this.lastUpdusrId = lastUpdusrId;
-	}
-
-
 
 }

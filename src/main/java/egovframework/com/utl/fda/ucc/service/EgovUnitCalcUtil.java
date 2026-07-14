@@ -123,7 +123,7 @@ public class EgovUnitCalcUtil {
 		double nSelVl = hmVl.get(sVolumeUnit);
 		double nSelVlAs = hmVl.get(sVolumeUnitAs);
 
-		return nSelVl / nSelVlAs * nVolume;
+		return nSelVlAs / nSelVl * nVolume;
 	}
 
 	/**
@@ -139,7 +139,7 @@ public class EgovUnitCalcUtil {
 		double nSelWt = hmWt.get(sWeightUnit);
 		double nSelWtAs = hmWt.get(sWeightUnitAs);
 
-		return nSelWt / nSelWtAs * nWeight;
+		return nSelWtAs / nSelWt * nWeight;
 	}
 
 	/**
@@ -155,6 +155,6 @@ public class EgovUnitCalcUtil {
 		double nSelAr = hmAr.get(sWidthUnit);
 		double nSelArAs = hmAr.get(sWidthUnitAs);
 
-		return nSelAr / nSelArAs * nWidth;
+		return nSelArAs / nSelAr * nWidth;
 	}
 }

@@ -25,7 +25,7 @@ public class IndvdlYrycDAO extends EgovComAbstractDAO {
 	 * 연차를 조회처리한다.
 	 * @param indvdlYrycManage - 연차관리 model
 	 */
-	public List<IndvdlYrycManage> selectIndvdlYrycManageList(IndvdlYrycManage indvdlYrycManage) throws Exception {
+	public List<IndvdlYrycManage> selectIndvdlYrycManageList(IndvdlYrycManage indvdlYrycManage) {
 		return selectList("indvdlYrycDAO.selectIndvdlYrycManageList", indvdlYrycManage);
 	}
 
@@ -33,7 +33,7 @@ public class IndvdlYrycDAO extends EgovComAbstractDAO {
 	 * 연차목록 총 개수를 조회한다.
 	 * @param indvdlYrycManage - 연차관리 model
 	 */
-	public int selectIndvdlYrycManageListTotCnt(IndvdlYrycManage indvdlYrycManage) throws Exception {
+	public int selectIndvdlYrycManageListTotCnt(IndvdlYrycManage indvdlYrycManage) {
 		return (Integer)selectOne("indvdlYrycDAO.selectIndvdlYrycManageListTotCnt", indvdlYrycManage);
 	}
 
@@ -41,7 +41,7 @@ public class IndvdlYrycDAO extends EgovComAbstractDAO {
 	 * 연차를 입력처리한다.
 	 * @param indvdlYrycManage - 연차관리 model
 	 */
-	public void insertIndvdlYrycManage(IndvdlYrycManage indvdlYrycManage) throws Exception {
+	public void insertIndvdlYrycManage(IndvdlYrycManage indvdlYrycManage) {
 		insert("indvdlYrycDAO.insertIndvdlYrycManage", indvdlYrycManage);
 	}
 
@@ -49,7 +49,7 @@ public class IndvdlYrycDAO extends EgovComAbstractDAO {
 	 * 연차를 수정처리한다.
 	 * @param indvdlYrycManage - 연차관리 model
 	 */
-	public void updtIndvdlYrycManage(IndvdlYrycManage indvdlYrycManage) throws Exception {
+	public void updtIndvdlYrycManage(IndvdlYrycManage indvdlYrycManage) {
 		update("indvdlYrycDAO.updateIndvdlYrycManage", indvdlYrycManage);
 	}
 
@@ -57,7 +57,7 @@ public class IndvdlYrycDAO extends EgovComAbstractDAO {
 	 * 연차를 삭제처리한다.
 	 * @param indvdlYrycManage - 연차관리 model
 	 */
-	public void deleteIndvdlYrycManage(IndvdlYrycManage indvdlYrycManage) throws Exception {
+	public void deleteIndvdlYrycManage(IndvdlYrycManage indvdlYrycManage) {
 		delete("indvdlYrycDAO.deleteIndvdlYrycManage", indvdlYrycManage);
 	}
 

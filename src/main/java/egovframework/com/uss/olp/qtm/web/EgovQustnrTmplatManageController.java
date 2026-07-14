@@ -378,7 +378,7 @@ public class EgovQustnrTmplatManageController {
 				LOGGER.info("getOriginalFilename => {}", file.getOriginalFilename());
 
 				// 파일 수정여부 확인
-				if (file.getOriginalFilename() != "") {
+				if (file.getOriginalFilename() != null && !file.getOriginalFilename().isEmpty()) {
 					if (file.getName().equals("qestnrTmplatImage")) {
 						byte[] fileBytes = file.getBytes();
 						// 2026.07.13 KISA 보안취약점 조치 - 서버측 실제 이미지(매직바이트+디코딩) 검증

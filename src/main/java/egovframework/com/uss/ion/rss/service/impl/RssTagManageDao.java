@@ -192,9 +192,8 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 	 *
 	 * @param rssManage -조회할 정보가 담긴 객체
 	 * @return -조회한목록이담긴List
-	 * @throws Exception
 	 */
-	public List<?> selectRssTagManageList(RssManage rssManage) throws Exception {
+	public List<?> selectRssTagManageList(RssManage rssManage) {
 		return selectList("RssTagManage.selectRssTagManage", rssManage);
 
 	}
@@ -204,9 +203,8 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 	 *
 	 * @param rssManage -조회할 정보가 담긴 객체
 	 * @return -조회한건수가담긴Integer
-	 * @throws Exception
 	 */
-	public int selectRssTagManageListCnt(RssManage rssManage) throws Exception {
+	public int selectRssTagManageListCnt(RssManage rssManage) {
 		return (Integer) selectOne("RssTagManage.selectRssTagManageCnt", rssManage);
 	}
 
@@ -215,9 +213,8 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 	 *
 	 * @param rssManage -RSS태그관리 정보가 담김 객체
 	 * @return RssManage -RSS태그관리 정보가 담김 객체
-	 * @throws Exception
 	 */
-	public RssManage selectRssTagManageDetail(RssManage rssManage) throws Exception {
+	public RssManage selectRssTagManageDetail(RssManage rssManage) {
 		return (RssManage) selectOne("RssTagManage.selectRssTagManageDetail", rssManage);
 	}
 
@@ -225,9 +222,8 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 	 * RSS태그관리를(을) 등록한다.
 	 *
 	 * @param rssManage -RSS태그관리 정보가 담김 객체
-	 * @throws Exception
 	 */
-	public void insertRssTagManage(RssManage rssManage) throws Exception {
+	public void insertRssTagManage(RssManage rssManage) {
 		insert("RssTagManage.insertRssTagManage", rssManage);
 	}
 
@@ -235,9 +231,8 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 	 * RSS태그관리를(을) 수정한다.
 	 *
 	 * @param rssManage -RSS태그관리 정보가 담김 객체
-	 * @throws Exception
 	 */
-	public void updateRssTagManage(RssManage rssManage) throws Exception {
+	public void updateRssTagManage(RssManage rssManage) {
 		update("RssTagManage.updateRssTagManage", rssManage);
 	}
 
@@ -245,9 +240,8 @@ public class RssTagManageDao extends EgovComAbstractDAO {
 	 * RSS태그관리를(을) 삭제한다.
 	 *
 	 * @param rssManage -RSS태그관리 정보가 담김 객체
-	 * @throws Exception
 	 */
-	public void deleteRssTagManage(RssManage rssManage) throws Exception {
+	public void deleteRssTagManage(RssManage rssManage) {
 		delete("RssTagManage.deleteRssTagManage", rssManage);
 	}
 

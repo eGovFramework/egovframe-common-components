@@ -23,6 +23,7 @@ import egovframework.com.ssi.syi.sim.service.SystemCntcVO;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.04.01  이중호          최초 생성
+ *   2026.06.16  이백행          [2026년 컨트리뷰션] 불필요한 예외 제거
  *
  * Copyright (C) 2009 by MOPAS  All rights reserved.
  * </pre>
@@ -33,18 +34,16 @@ public class SystemCntcDAO extends EgovComAbstractDAO {
 	/**
 	 * 시스템연계를 삭제한다.
 	 * @param systemCntc
-	 * @throws Exception
 	 */
-	public void deleteSystemCntc(SystemCntc systemCntc) throws Exception {
+	public void deleteSystemCntc(SystemCntc systemCntc) {
         delete("SystemCntcDAO.deleteSystemCntc", systemCntc);
 	}
 
 	/**
 	 * 시스템연계를 등록한다.
 	 * @param systemCntc
-	 * @throws Exception
 	 */
-	public void insertSystemCntc(SystemCntc systemCntc) throws Exception {
+	public void insertSystemCntc(SystemCntc systemCntc) {
         insert("SystemCntcDAO.insertSystemCntc", systemCntc);
 	}
 
@@ -53,16 +52,15 @@ public class SystemCntcDAO extends EgovComAbstractDAO {
 	 * @param systemCntc
 	 * @return SystemCntc(시스템연계)
 	 */
-	public SystemCntc selectSystemCntcDetail(SystemCntc systemCntc) throws Exception {
+	public SystemCntc selectSystemCntcDetail(SystemCntc systemCntc) {
 		return (SystemCntc) selectOne("SystemCntcDAO.selectSystemCntcDetail", systemCntc);
 	}
 
 	/**
 	 * 시스템연계 승인/승인취소한다.
 	 * @param systemCntc
-	 * @throws Exception
 	 */
-	public void confirmSystemCntc(SystemCntc systemCntc) throws Exception {
+	public void confirmSystemCntc(SystemCntc systemCntc) {
         update("SystemCntcDAO.confirmSystemCntc", systemCntc);
 	}
 
@@ -71,9 +69,8 @@ public class SystemCntcDAO extends EgovComAbstractDAO {
 	 * 시스템연계 목록을 조회한다.
      * @param searchVO
      * @return List(시스템연계 목록)
-     * @throws Exception
      */
-    public List<EgovMap> selectSystemCntcList(SystemCntcVO searchVO) throws Exception {
+    public List<EgovMap> selectSystemCntcList(SystemCntcVO searchVO) {
         return selectList("SystemCntcDAO.selectSystemCntcList", searchVO);
     }
 
@@ -82,16 +79,15 @@ public class SystemCntcDAO extends EgovComAbstractDAO {
      * @param searchVO
      * @return int(시스템연계 총 개수)
      */
-    public int selectSystemCntcListTotCnt(SystemCntcVO searchVO) throws Exception {
+    public int selectSystemCntcListTotCnt(SystemCntcVO searchVO) {
         return (Integer)selectOne("SystemCntcDAO.selectSystemCntcListTotCnt", searchVO);
     }
 
 	/**
 	 * 시스템연계를 수정한다.
 	 * @param systemCntc
-	 * @throws Exception
 	 */
-	public void updateSystemCntc(SystemCntc systemCntc) throws Exception {
+	public void updateSystemCntc(SystemCntc systemCntc) {
 		update("SystemCntcDAO.updateSystemCntc", systemCntc);
 	}
 

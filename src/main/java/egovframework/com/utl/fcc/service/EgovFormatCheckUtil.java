@@ -191,6 +191,10 @@ public class EgovFormatCheckUtil {
      */
     public static boolean checkFormatMail(String mail1, String mail2) {
 
+	 if(mail1 == null || mail2 == null || mail1.length() == 0 || mail2.length() == 0) {
+		return false;
+	}
+
 	 int count = 0;
 
 	 for(int i = 0; i < mail1.length(); i++){
@@ -200,7 +204,7 @@ public class EgovFormatCheckUtil {
 			continue;
 		} else if(mail1.charAt(i) <= '9' && mail1.charAt(i) >= '0') {
 			continue;
-		} else if(mail1.charAt(i) == '-' && mail1.charAt(i) == '_') {
+		} else if(mail1.charAt(i) == '-' || mail1.charAt(i) == '_') {
 			continue;
 		} else {
 			return false;
@@ -232,7 +236,11 @@ public class EgovFormatCheckUtil {
      */
     public static boolean checkFormatMail(String mail) {
 
-	 String[] temp = mail.split("@");	// '@' 를 기점으로 앞, 뒤 문자열 구분
+	 if(mail == null) {
+		return false;
+	}
+
+	 String[] temp = mail.split("@", -1);	// '@' 를 기점으로 앞, 뒤 문자열 구분
 
 	 if(temp.length == 2) {
 		return checkFormatMail(temp[0], temp[1]);
@@ -242,4 +250,3 @@ public class EgovFormatCheckUtil {
     }
 
 }
-

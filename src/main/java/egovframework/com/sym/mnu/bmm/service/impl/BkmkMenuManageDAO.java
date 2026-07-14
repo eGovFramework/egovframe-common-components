@@ -18,6 +18,7 @@ import egovframework.com.sym.mnu.mpm.service.MenuManageVO;
  *    수정일       수정자         수정내용
  *    -------        -------     -------------------
  *    2009. 9. 25.     윤성록
+ *    2026. 6. 16.     이백행       [2026년 컨트리뷰션] 불필요한 예외 제거
  *
  * @author 공통 컴포넌트 개발팀 윤성록
  * @since 2009. 9. 25.
@@ -33,9 +34,8 @@ public class BkmkMenuManageDAO extends EgovComAbstractDAO{
      *
      * @param BkmkMenuManage
      * @return
-     * @throws Exception
      */
-    public void deleteBkmkMenuManage(BkmkMenuManage bkmkMenuManage) throws Exception {
+    public void deleteBkmkMenuManage(BkmkMenuManage bkmkMenuManage) {
         delete("BkmkMenuManageDAO.deleteBkmkMenuManage", bkmkMenuManage);
     }
 
@@ -44,9 +44,8 @@ public class BkmkMenuManageDAO extends EgovComAbstractDAO{
      *
      * @param BkmkMenuManage
      * @return
-     * @throws Exception
      */
-    public void insertBkmkMenuManage(BkmkMenuManage bkmkMenuManage) throws Exception {
+    public void insertBkmkMenuManage(BkmkMenuManage bkmkMenuManage) {
         insert("BkmkMenuManageDAO.insertBkmkMenuManage", bkmkMenuManage);
     }
 
@@ -55,10 +54,9 @@ public class BkmkMenuManageDAO extends EgovComAbstractDAO{
      *
      * @param BkmkMenuManageVO
      * @return
-     * @throws Exception
      */
     public BkmkMenuManageVO selectBkmkMenuManageResult(BkmkMenuManageVO bkmkMenuManageVO)
-            throws Exception {
+            {
         BkmkMenuManageVO vo = new BkmkMenuManageVO();
         vo = (BkmkMenuManageVO)selectOne("BkmkMenuManageDAO.selectBkmkMenuManage", bkmkMenuManageVO);
         return vo;
@@ -69,10 +67,9 @@ public class BkmkMenuManageDAO extends EgovComAbstractDAO{
      *
      * @param BkmkMenuManageVO
      * @return
-     * @throws Exception
      */
 	public List<BkmkMenuManageVO> selectBkmkMenuManageList(BkmkMenuManageVO bkmkMenuManageVO)
-            throws Exception {
+            {
         return selectList("BkmkMenuManageDAO.selectBkmkMenuManageList", bkmkMenuManageVO);
     }
 
@@ -81,9 +78,8 @@ public class BkmkMenuManageDAO extends EgovComAbstractDAO{
      *
      * @param BkmkMenuManageVO
      * @return
-     * @throws Exception
      */
-    public int selectBkmkMenuManageListCnt(BkmkMenuManageVO bkmkMenuManageVO) throws Exception {
+    public int selectBkmkMenuManageListCnt(BkmkMenuManageVO bkmkMenuManageVO) {
         return (Integer)selectOne("BkmkMenuManageDAO.selectBkmkMenuManageListCnt", bkmkMenuManageVO);
     }
 
@@ -92,10 +88,9 @@ public class BkmkMenuManageDAO extends EgovComAbstractDAO{
      *
      * @param BkmkMenuManageVO
      * @return
-     * @throws Exception
      */
 	public List<BkmkMenuManageVO> selectBkmkMenuList(BkmkMenuManageVO bkmkMenuManageVO)
-            throws Exception {
+            {
         return selectList("BkmkMenuManageDAO.selectBkmkMenuList", bkmkMenuManageVO);
     }
 
@@ -104,9 +99,8 @@ public class BkmkMenuManageDAO extends EgovComAbstractDAO{
      *
      * @param BkmkMenuManageVO
      * @return
-     * @throws Exception
      */
-    public int selectBkmkMenuListCnt(BkmkMenuManageVO bkmkMenuManageVO) throws Exception {
+    public int selectBkmkMenuListCnt(BkmkMenuManageVO bkmkMenuManageVO) {
         return (Integer)selectOne("BkmkMenuManageDAO.selectBkmkMenuListCnt", bkmkMenuManageVO);
     }
 
@@ -115,9 +109,8 @@ public class BkmkMenuManageDAO extends EgovComAbstractDAO{
      *
      * @param BkmkMenuManageVO
      * @return
-     * @throws Exception
      */
-    public List<MenuManageVO> selectBkmkPreview(BkmkMenuManageVO bkmkMenuManageVO) throws Exception {
+    public List<MenuManageVO> selectBkmkPreview(BkmkMenuManageVO bkmkMenuManageVO) {
         return selectList("BkmkMenuManageDAO.selectBkmkPreview", bkmkMenuManageVO);
     }
 
@@ -126,9 +119,8 @@ public class BkmkMenuManageDAO extends EgovComAbstractDAO{
      *
      * @param bkmkMenuManage
      * @return
-     * @throws Exception
      */
-    public String selectUrl(BkmkMenuManage bkmkMenuManage) throws Exception {
+    public String selectUrl(BkmkMenuManage bkmkMenuManage) {
         return (String)selectOne("BkmkMenuManageDAO.selectUrl", bkmkMenuManage);
     }
 }

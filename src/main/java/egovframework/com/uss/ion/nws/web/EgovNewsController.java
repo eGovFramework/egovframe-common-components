@@ -144,6 +144,11 @@ public class EgovNewsController {
 	@PostMapping("/uss/ion/nws/insertNews.do")
 	public String insertNews(final MultipartHttpServletRequest multiRequest, @Valid @ModelAttribute("newsVO") NewsVO newsVO, BindingResult bindingResult, ModelMap model) throws Exception {
 
+		if(bindingResult.hasErrors()){
+			model.addAttribute("newsVO", newsVO);
+			return "egovframework/com/uss/ion/nws/EgovNewsRegist";
+		}
+
 		// 첨부파일 관련 첨부파일ID 생성
 		List<FileVO> fvoList = null;
 		String atchFileId = "";
@@ -158,11 +163,6 @@ public class EgovNewsController {
 
 		// 리턴받은 첨부파일ID를 셋팅한다..
 		newsVO.setAtchFileId(atchFileId); // 첨부파일 ID
-
-		if(bindingResult.hasErrors()){
-			model.addAttribute("newsVO", newsVO);
-			return "egovframework/com/uss/ion/nws/EgovNewsRegist";
-		}
 
 		// 로그인VO에서 사용자 정보 가져오기
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
