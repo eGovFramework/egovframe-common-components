@@ -85,7 +85,7 @@ function updateMenuManage(form) {
 		if(!validateMenuManageVO(form)){
 			return;
 		}else{
-            form.action="<c:url value='/sym/mnu/mpm/EgovMenuDetailSelectUpdt.do' />";
+            form.action="${pageContext.request.contextPath}/sym/mnu/mpm/EgovMenuDetailSelectUpdt.do";
 			form.submit();
 		}
 	}
@@ -96,7 +96,7 @@ function updateMenuManage(form) {
  ******************************************************** */
 function deleteMenuManage(form) {
 	if(confirm("<spring:message code="common.delete.msg"/>")){
-        form.action="<c:url value='/sym/mnu/mpm/EgovMenuManageDelete.do' />";
+        form.action="${pageContext.request.contextPath}/sym/mnu/mpm/EgovMenuManageDelete.do";
 		form.submit();
 	}
 }
@@ -237,8 +237,8 @@ function press() {
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="updateMenuManage(document.forms[0]); return false;" /><!-- 수정 -->
-		<span class="btn_s"><a href="<c:url value='/uss/ion/evt/selectEventRceptList.do'/>?menuNo=<c:out value='${menuManageVO.menuNo}'/>" onclick="deleteMenuManage(document.forms[0]); return false;"><spring:message code="button.delete" /></a></span><!-- 삭제 -->
-		<span class="btn_s"><a href="<c:url value='/sym/mnu/mpm/EgovMenuManageSelect.do'/>" onclick="selectList(); return false;"><spring:message code="button.list"/></a></span><!-- 목록 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="deleteMenuManage(document.forms[0]); return false;"><spring:message code="button.delete" /></a></span><!-- 삭제 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="selectList(); return false;"><spring:message code="button.list"/></a></span><!-- 목록 -->
 	</div>
 	<div style="clear:both;"></div>
 </div>

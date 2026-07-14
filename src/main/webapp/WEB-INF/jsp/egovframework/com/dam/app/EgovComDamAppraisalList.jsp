@@ -25,6 +25,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 	<head>
@@ -57,6 +59,14 @@
 			document.listForm.pageIndex.value = 1;
 		   	document.listForm.submit();
 		}
+		/* ********************************************************
+		 * 상세화면 처리 함수
+		 ******************************************************** */
+		function fnDetail(knoId){
+			document.listForm.action = "<c:url value='/dam/app/EgovComDamAppraisal.do'/>";
+			document.listForm.knoId.value = knoId;
+			document.listForm.submit();
+		}
 		
 		function press(event) {
             if (event.keyCode == 13) {
@@ -75,7 +85,7 @@
 	<div class="board">
 		<h1><spring:message code="comDamApp.comDamAppraisalList.pageTop.title"/></h1><!-- 지식평가관리 목록 -->
 		
-		<form name="listForm" action="<c:url value='/dam/app/EgovComDamAppraisalList.do'/>" method="post">
+		<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/dam/app/EgovComDamAppraisalList.do" method="post">
 		
 		<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 			<ul>
@@ -117,7 +127,7 @@
 					<tr>
 						<td><c:out value="${(searchVO.pageIndex - 1) * searchVO.pageSize + status.count}"/></td>
 						<td class="lt_text3">
-						<a href="<c:url value='/dam/app/EgovComDamAppraisal.do'/>?pageIndex=${searchVO.pageIndex}&amp;knoId=${resultInfo.knoId}"><c:out value="${resultInfo.knoNm}"/></a>								
+						<a href="javascript:void(0);" onclick="fnDetail('<c:out value="${resultInfo.knoId}"/>'); return false;"><c:out value="${resultInfo.knoNm}"/></a>								
 						</td>
 						<td>${resultInfo.knoTypeNm}</td>								
 						<td>${resultInfo.userNm}</td>							
@@ -153,7 +163,7 @@
 				
 	<input type="hidden" name="knoId">	
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-	</form>
+	</form:form>
 
 	</div>
 

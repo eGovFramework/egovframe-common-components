@@ -23,6 +23,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="ko">
 	<head>
@@ -55,6 +57,14 @@
 		   	document.listForm.submit();
 		}
 		/* ********************************************************
+		 * 상세화면 처리 함수
+		 ******************************************************** */
+		function fnDetail(knoId){
+			document.listForm.action = "<c:url value='/dam/mgm/EgovComDamManagement.do'/>";
+			document.listForm.knoId.value = knoId;
+			document.listForm.submit();
+		}
+		/* ********************************************************
 		 * 수정 처리 함수
 		 ******************************************************** */
 		function fnModify(){
@@ -72,7 +82,7 @@
 	<div class="board">
 		<h1><spring:message code="comDamMgm.comDamManagementList.pageTop.title"/></h1><!-- 지식정보관리 목록 -->
 	
-		<form name="listForm" action="<c:url value='/dam/mgm/EgovComDamManagementList.do'/>" method="post">
+		<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/dam/mgm/EgovComDamManagementList.do" method="post">
 	
 		<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 			<ul>
@@ -116,7 +126,7 @@
 						<td>${resultInfo.orgnztNm}</td>						
 						<td>${resultInfo.knoTypeNm}</td>
 						<td>
-						<a href="<c:url value='/dam/mgm/EgovComDamManagement.do'/>?pageIndex=${searchVO.pageIndex}&amp;knoId=${resultInfo.knoId}"><c:out value="${resultInfo.knoNm}"/></a>								
+						<a href="javascript:void(0);" onclick="fnDetail('<c:out value="${resultInfo.knoId}"/>'); return false;"><c:out value="${resultInfo.knoNm}"/></a>								
 						</td>															
 						<td>${resultInfo.userNm}</td>
 						<td>${resultInfo.appYmd}</td>								    
@@ -143,7 +153,7 @@
 		
 		<input type="hidden" name="knoId">	
 		<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-		</form>
+		</form:form>
 		
 	</div>
 	

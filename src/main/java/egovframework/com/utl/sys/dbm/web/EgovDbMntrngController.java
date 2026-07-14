@@ -11,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
@@ -78,7 +79,7 @@ public class EgovDbMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-    @RequestMapping("/utl/sys/dbm/deleteDbMntrng.do")
+    @PostMapping("/utl/sys/dbm/deleteDbMntrng.do")
 	@RequireAdmin
 	public String deleteDbMntrng(DbMntrng dbMntrng, ModelMap model,
 			RedirectAttributes redirectAttributes)
@@ -103,7 +104,7 @@ public class EgovDbMntrngController {
 	 * @param model			ModelMap
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/utl/sys/dbm/addDbMntrng.do")
+	@PostMapping("/utl/sys/dbm/addDbMntrng.do")
 	@RequireAdmin
 	public String insertDbMntrng(@Valid @ModelAttribute("dbMntrng") DbMntrng dbMntrng, BindingResult bindingResult, ModelMap model,
 			RedirectAttributes redirectAttributes)
@@ -142,9 +143,12 @@ public class EgovDbMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/utl/sys/dbm/getDbMntrng.do")
+	@PostMapping("/utl/sys/dbm/getDbMntrng.do")
 	public String selectDbMntrng(@ModelAttribute("searchVO")DbMntrng dbMntrng, ModelMap model)
 	  throws Exception{
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = egovAssertLoginUser();
+
 		LOGGER.debug(" 조회조건 : {}", dbMntrng);
         DbMntrng result = egovDbMntrngService.selectDbMntrng(dbMntrng);
         model.addAttribute("resultInfo", result);
@@ -162,7 +166,7 @@ public class EgovDbMntrngController {
 	 * @exception Exception Exception
 	 */
 
-	@RequestMapping("/utl/sys/dbm/getDbMntrngLog.do")
+	@PostMapping("/utl/sys/dbm/getDbMntrngLog.do")
 	public String selectDbMntrngLog(@ModelAttribute("searchVO")DbMntrngLog dbMntrngLog, ModelMap model)
 	  throws Exception{
 		LOGGER.debug(" 조회조건 : {}", dbMntrngLog);
@@ -181,7 +185,7 @@ public class EgovDbMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/utl/sys/dbm/getDbMntrngForRegist.do")
+	@PostMapping("/utl/sys/dbm/getDbMntrngForRegist.do")
 	@RequireAdmin
 	public String selectDbMntrngForRegist(@ModelAttribute("searchVO")DbMntrng dbMntrng, ModelMap model)
 	  throws Exception{
@@ -213,7 +217,7 @@ public class EgovDbMntrngController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/utl/sys/dbm/getDbMntrngForUpdate.do")
+	@PostMapping("/utl/sys/dbm/getDbMntrngForUpdate.do")
 	@RequireAdmin
 	public String selectDbMntrngForUpdate(@ModelAttribute("searchVO") DbMntrng dbMntrng, ModelMap model)
 	  throws Exception{
@@ -320,7 +324,7 @@ public class EgovDbMntrngController {
 	 * @param model				ModelMap
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/utl/sys/dbm/updateDbMntrng.do")
+	@PostMapping("/utl/sys/dbm/updateDbMntrng.do")
 	@RequireAdmin
 	public String updateDbMntrng(@ModelAttribute("searchVO") DbMntrng searchVO,
 			@Valid @ModelAttribute("dbMntrng") DbMntrng dbMntrng, BindingResult bindingResult, ModelMap model,
@@ -371,6 +375,33 @@ public class EgovDbMntrngController {
 			return ;
 		}
 
+	}
+
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 }

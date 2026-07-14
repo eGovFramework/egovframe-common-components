@@ -533,4 +533,9 @@ cursor :pointer;
 .twit_list li a:hover {text-decoration:underline; }
 .twit_list li img {display:block; margin-top:10px; }
 
+/* CKEditor로 등록한 본문(이미지 포함)을 조회화면에 그대로 출력할 때 사용 */
+.ck-content {word-break:break-all; }
+.ck-content img {max-width:100%; height:auto; }
+.ck-content table {max-width:100%; }
+
 

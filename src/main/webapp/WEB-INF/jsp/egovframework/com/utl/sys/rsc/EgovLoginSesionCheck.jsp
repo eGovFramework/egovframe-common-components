@@ -95,7 +95,7 @@ function fncgetLoginSessionView(url) {
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<span class="btn_s"><a href="<c:url value='/utl/sys/rsc/loginSessionView.do'/>" onclick="fncSelectLoginSession(); return false;"><spring:message code="button.inquire" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncSelectLoginSession(); return false;"><spring:message code="button.inquire" /></a></span>
 		<input class="s_submit" type="submit" value="<spring:message code="utlSysRsc.loginSessionCheck.set"/>" onclick="fncSetLoginSession(); return false;" /><!-- 설정 -->
 		<span class="btn_s"><a href="<%=user.getUrl() %>" onclick="" target=“_blank” title="새창" onclick="fncgetLoginSessionView('<%=(user == null || user.getUrl() == null) ? "" : user.getUrl() %>'); return false;"><spring:message code="utlSysRsc.loginSessionCheck.sessionView"/></a></span><!-- 이동 -->
 	</div>

@@ -21,6 +21,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUatUia.idPw.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -110,7 +111,7 @@ function fnSearchPassword() {
 
 	<!-- 아이디 찾기 -->
 	<fieldset class="id_search">
-	<form name="idForm" action ="<c:url value='/uat/uia/searchId.do'/>" method="post">
+	<form:form name="idForm" modelAttribute="searchIdRequestVO" action="${pageContext.request.contextPath}/uat/uia/searchId.do" method="post">
 		<legend><spring:message code="comUatUia.idPw.searchId" /></legend>
 		<h2><spring:message code="comUatUia.idPw.searchId" /></h2>
 		<div class="login_type">
@@ -149,13 +150,13 @@ function fnSearchPassword() {
 			</ul>
 		</div>
 	<input name="userSe" type="hidden" value="GNR">
-	</form>
+	</form:form>
 	</fieldset>
 	<!-- 아이디 찾기 //-->
 
 	<!-- 비밀번호 찾기 -->
 	<fieldset class="pw_search">
-		<form name="passwordForm" action ="<c:url value='/uat/uia/searchPassword.do'/>" method="post">
+		<form:form name="passwordForm" modelAttribute="searchPasswordRequestVO" action="${pageContext.request.contextPath}/uat/uia/searchPassword.do" method="post">
 		<legend><spring:message code="comUatUia.idPw.searchPassword" /></legend>
 		<h2><spring:message code="comUatUia.idPw.searchPassword" /></h2>
 		<div class="login_type">
@@ -228,7 +229,7 @@ function fnSearchPassword() {
 			</ul>
 		</div>
 		<input name="userSe" type="hidden" value="GNR">
-		</form>
+		</form:form>
 	</fieldset>
 	<!-- 비밀번호 찾기 //-->
 </div>

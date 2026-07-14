@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -88,7 +89,7 @@ public class EgovBatchSchdulController {
 	 * @param redirectAttributes	RedirectAttributes
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/sym/bat/deleteBatchSchdul.do")
+	@PostMapping("/sym/bat/deleteBatchSchdul.do")
 	@RequireAdmin
 	public String deleteBatchSchdul(BatchSchdul batchSchdul, ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -115,7 +116,7 @@ public class EgovBatchSchdulController {
 	 * @param redirectAttributes	RedirectAttributes
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/sym/bat/addBatchSchdul.do")
+	@PostMapping("/sym/bat/addBatchSchdul.do")
 	@RequireAdmin
 	public String insertBatchSchdul(@ModelAttribute("searchVO") BatchSchdul searchVO,
 			@Valid @ModelAttribute("batchSchdul") BatchSchdul batchSchdul, BindingResult bindingResult,
@@ -180,7 +181,7 @@ public class EgovBatchSchdulController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/sym/bat/getBatchSchdulForRegist.do")
+	@PostMapping("/sym/bat/getBatchSchdulForRegist.do")
 	@RequireAdmin
 	public String selectBatchSchdulForRegist(@ModelAttribute("searchVO") BatchSchdul batchSchdul, ModelMap model) throws Exception {
 		referenceData(model);
@@ -198,7 +199,7 @@ public class EgovBatchSchdulController {
 	 * @param model		ModelMap
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/sym/bat/getBatchSchdulForUpdate.do")
+	@PostMapping("/sym/bat/getBatchSchdulForUpdate.do")
 	@RequireAdmin
 	public String selectBatchSchdulForUpdate(@ModelAttribute("searchVO") BatchSchdul batchSchdul, ModelMap model) throws Exception {
 		referenceData(model);
@@ -302,7 +303,7 @@ public class EgovBatchSchdulController {
 	 * @param redirectAttributes RedirectAttributes
 	 * @exception Exception Exception
 	 */
-	@RequestMapping("/sym/bat/updateBatchSchdul.do")
+	@PostMapping("/sym/bat/updateBatchSchdul.do")
 	@RequireAdmin
 	public String updateBatchSchdul(@ModelAttribute("searchVO") BatchSchdul searchVO,
 			@Valid @ModelAttribute("batchSchdul") BatchSchdul batchSchdul, BindingResult bindingResult,

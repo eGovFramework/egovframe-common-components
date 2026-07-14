@@ -58,6 +58,7 @@ function fn_egov_move(progrmStrePath){
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
 <form name="menuListForm" action ="" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <input type="hidden" name="req_RetrunPath" value="<c:url value='/sym/mnu/bmm/EgovMenuList'/>">
 
 <div class="board">

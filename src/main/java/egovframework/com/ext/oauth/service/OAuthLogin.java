@@ -1,5 +1,8 @@
 package egovframework.com.ext.oauth.service;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -69,8 +72,31 @@ public class OAuthLogin {
 		}
 	}
 
+	/** OAuth 제공자의 PII(식별자/이름/닉네임/이메일 등) 값을 로그 출력 전에 마스킹한다. */
+	private static final Pattern SENSITIVE_FIELD_PATTERN = Pattern.compile(
+			"(\"(?:id|sub|name|nickname|email|response|properties)\"\\s*:\\s*\")([^\"]*)(\")",
+			Pattern.CASE_INSENSITIVE);
+
+	private String maskSensitiveInfo(String body) {
+		if (body == null || body.isEmpty()) {
+			return body;
+		}
+		Matcher matcher = SENSITIVE_FIELD_PATTERN.matcher(body);
+		StringBuilder sb = new StringBuilder();
+		while (matcher.find()) {
+			matcher.appendReplacement(sb, Matcher.quoteReplacement(matcher.group(1) + "****" + matcher.group(3)));
+		}
+		matcher.appendTail(sb);
+		return sb.toString();
+	}
+
 	private OAuthUniversalUser parseJson(String body) throws Exception {
-		LOGGER.info("============================\n" + body + "\n==================");
+		// [보안조치] OAuth 프로필 응답(PII 포함)을 INFO 레벨로 그대로 기록하지 않도록 변경.
+		// 운영 환경에서는 로그에 남지 않도록 DEBUG 레벨로 낮추고, 민감정보(ID/이름/이메일 등 값)를
+		// 마스킹한 뒤 기록한다. (CWE-532)
+		if (LOGGER.isDebugEnabled()) {
+			LOGGER.debug("============================\n{}\n==================", maskSensitiveInfo(body));
+		}
 		OAuthUniversalUser user = new OAuthUniversalUser();
 
 		JsonNode rootNode = MAPPER.readTree(body);

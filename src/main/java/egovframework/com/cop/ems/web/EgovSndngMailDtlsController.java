@@ -7,11 +7,15 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovMessageSource;
+import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.cop.ems.service.EgovSndngMailDetailService;
 import egovframework.com.cop.ems.service.EgovSndngMailDtlsService;
 import egovframework.com.cop.ems.service.SndngMailVO;
 import jakarta.annotation.Resource;
@@ -38,6 +42,10 @@ public class EgovSndngMailDtlsController {
 	/** EgovSndngMailDtlsService */
 	@Resource(name = "sndngMailDtlsService")
 	private EgovSndngMailDtlsService sndngMailDtlsService;
+
+	/** EgovSndngMailDetailService */
+	@Resource(name = "sndngMailDetailService")
+	private EgovSndngMailDetailService sndngMailDetailService;
 
 	/** EgovPropertyService */
 	@Resource(name = "propertiesService")
@@ -89,11 +97,30 @@ public class EgovSndngMailDtlsController {
 	 * @return String
 	 * @exception
 	 */
-	@RequestMapping(value = "/cop/ems/deleteSndngMailList.do")
+	@PostMapping("/cop/ems/deleteSndngMailList.do")
 	public String deleteSndngMailList(@ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, ModelMap model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = egovAssertLoginUser();
+
 
 		if (sndngMailVO == null || sndngMailVO.getMssageId() == null || sndngMailVO.getMssageId().equals("")) {
 			return "egovframework/com/cmm/egovError";
+		}
+
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		SndngMailVO resultMailVO = sndngMailDetailService.selectSndngMail(sndngMailVO);
+		if (resultMailVO == null || resultMailVO.getMssageId() == null || resultMailVO.getMssageId().equals("")) {
+			return "egovframework/com/cmm/egovError";
+		}
+		// 2026.07.13 KISA 보안취약점 조치
+		if (!loginVO.getId().equals(resultMailVO.getDsptchPerson())) {
+			java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+			if (auth == null || !auth.contains("ROLE_ADMIN")) {
+				throw new IllegalStateException("권한이 없습니다.");
+			}
 		}
 
 		// 1. 발송메일을 삭제한다.
@@ -102,4 +129,31 @@ public class EgovSndngMailDtlsController {
 		// 2. 발송메일 목록 페이지 이동
 		return "redirect:/cop/ems/selectSndngMailList.do";
 	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
+	}
+
 }

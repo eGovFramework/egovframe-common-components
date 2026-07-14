@@ -47,6 +47,6 @@
 
 </head>
 <body>
-	<iframe title="주소록구성원조회" id="popupFrame" src="<c:url value='${requestUrl}' />" width="<c:out value='${width}'/>" height="<c:out value='${height}'/>" align="middle" frameborder="0"></iframe>
+	<iframe title="주소록구성원조회" id="popupFrame" src="<c:url value='${fn:escapeXml(requestUrl)}' />" width="<c:out value='${width}'/>" height="<c:out value='${height}'/>" align="middle" frameborder="0"></iframe>
 </body>
 </html>

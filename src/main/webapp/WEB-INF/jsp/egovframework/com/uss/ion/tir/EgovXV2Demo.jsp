@@ -167,8 +167,6 @@
 
     // 계정 조회 응답에서 사용자 정보를 화면에 반영한다.
     function updateAccountInfo(payload) {
-    	console.log("typeof payload:", typeof payload);
-    	console.log("payload:", payload);
         var data = extractMeData(payload);
         if (!data) {
             clearAccountInfo();
@@ -235,7 +233,6 @@
             try {
                 payload = JSON.parse(payload);
             } catch (e) {
-                console.error("2차 parse 실패", e);
                 return [];
             }
         }
@@ -278,8 +275,6 @@
 
     // 추출된 트윗 목록을 화면 리스트로 렌더링한다.
     function renderTweetList(payload) {
-    	console.log("payload:", payload);
-    	console.log("extractTweets 결과:", extractTweets(payload));
     	
         var list = byId("tweetsList");
         if (!list) {
@@ -341,7 +336,6 @@
         try {
             return { ok: response.ok, status: response.status, body: JSON.parse(text), raw: text };
         } catch (e) {
-			console.error("JSON parse 실패:", text);
             return { ok: response.ok, status: response.status, body: text, raw: text };
         }
     }
@@ -372,7 +366,6 @@
         var result = await callApi(ctx + "/twitter/me.do");
         logResult("GET /twitter/me.do [" + result.status + "]", result.body);
         updateAccountInfo(result.body);
-        console.log(result.body);
         if (isMeSuccess(result)) {
             var me = extractMeData(result.body);
             byId("userId").value = me.id;

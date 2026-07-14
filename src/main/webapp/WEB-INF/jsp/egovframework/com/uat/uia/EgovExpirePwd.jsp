@@ -3,6 +3,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
  /**
   * @Class Name : EgovUnitContent.jsp
@@ -70,15 +71,12 @@ function fn_egov_change_pwd() {
 	
     switch ( $("#userSe").val() ) {
     case "USR" : // 업무사용자
-    	console.log("<spring:message code="comCmm.expirePwdContent.10"/>"); //업무사용자
     	fnPasswordMoveUser();
         break;
     case "ENT" : // 기업회원
-    	console.log("<spring:message code="comCmm.expirePwdContent.11"/>"); //기업회원
     	fnPasswordMoveEnt();
         break;
     case "GNR" : //일반회원
-    	console.log("<spring:message code="comCmm.expirePwdContent.12"/>"); //일반회원
     	fnPasswordMoveMber();
         break;
 	}
@@ -119,7 +117,7 @@ function fn_egov_change_pwd() {
 		<input class="btn_03" type="submit" value="<spring:message code="comCmm.expirePwdContent.51"/>" title="<spring:message code="comCmm.expirePwdContent.51"/>" onclick="parent.$dialog.dialog('close'); return false;" /><!-- 다음에 변경하기 -->
 	</div>
 	
-	<form id="pwdManage" name="pwdManage" method="post" target="_parent">
+	<form:form id="pwdManage" name="pwdManage" modelAttribute="loginVO" method="post" target="_parent">
 		<input type="hidden" id="loginId" name="loginId" readonly="readonly"  value="${loginVO.id}"/>
 		<input type="hidden" id="uniqId" name="uniqId" readonly="readonly"  value="${loginVO.uniqId}"/>
 		<input type="hidden" id="userSe" name="userSe" readonly="readonly"  value="${loginVO.userSe}"/>
@@ -127,6 +125,6 @@ function fn_egov_change_pwd() {
 		<!-- 일반회원 --><input type="hidden" id="mberId" name="mberId" readonly="readonly"  value=""/><!-- USER -->
 		<!-- 기업회원 --><input type="hidden" id="entrprsmberId" name="entrprsmberId" readonly="readonly" value=""/><!-- ENTERPRISE -->
 		<!-- 업무사용자 --><input type="hidden" id="emplyrId" name="emplyrId" readonly="readonly" value=""/><!-- TEST1/webmaster -->
-	</form>
+	</form:form>
 </body>
 </html>

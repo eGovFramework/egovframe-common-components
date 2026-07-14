@@ -21,10 +21,12 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUssOlhWor.wordDicaryVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title>${pageTitle} <spring:message code="title.list" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
@@ -67,7 +69,7 @@ function fn_egov_inquire_worddicarydetail(wordId) {
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="wordDicaryForm" action="<c:url value='/uss/olh/wor/selectWordDicaryList.do'/>" method="post" onSubmit="fn_egov_search_worddicary(); return false;"> 
+<form:form name="wordDicaryForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/olh/wor/selectWordDicaryList.do" method="post" onSubmit="fn_egov_search_worddicary(); return false;"> 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<!-- 하단 버튼 -->
@@ -83,7 +85,7 @@ function fn_egov_inquire_worddicarydetail(wordId) {
 			<li>
 				<input class="s_input" name="searchWrd" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${searchVO.searchWrd}"/>'  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
-				<span class="btn_b"><a href="<c:url value='/uss/olh/wor/insertWordDicaryView.do' />"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="#" onclick="fn_egov_postNavigate('<c:url value='/uss/olh/wor/insertWordDicaryView.do' />'); return false;"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
@@ -118,7 +120,7 @@ function fn_egov_inquire_worddicarydetail(wordId) {
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-		<td class="left"><a href="<c:url value='/uss/olh/wor/selectWordDicaryDetail.do?wordId=${resultInfo.wordId}'/>" onClick="fn_egov_inquire_worddicarydetail('<c:out value="${resultInfo.wordId}"/>');return false;"><c:out value='${fn:substring(resultInfo.wordNm, 0, 40)}'/></a></td>
+		<td class="left"><a href="javascript:void(0);" onClick="fn_egov_inquire_worddicarydetail('<c:out value="${resultInfo.wordId}"/>');return false;"><c:out value='${fn:substring(resultInfo.wordNm, 0, 40)}'/></a></td>
 		<td class="left"><c:out value='${resultInfo.engNm}'/></td>
 		<td class="left"><c:out value='${resultInfo.synonm}'/></td>
 		<td><c:out value='${resultInfo.emplyrNm}'/></td>
@@ -140,7 +142,7 @@ function fn_egov_inquire_worddicarydetail(wordId) {
 
 <input name="wordId" type="hidden" value="<c:out value='${searchVO.wordId}'/>">
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-</form>
+</form:form>
 
 </body>
 </html>

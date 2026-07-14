@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
@@ -151,7 +152,7 @@ public class EgovVcatnManageController {
 	 * @param vcatnManageVO - 휴가관리 VO
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/vct/EgovVcatnManageDetail.do")
+	@PostMapping("/uss/ion/vct/EgovVcatnManageDetail.do")
 	public String selectVcatnManage(@ModelAttribute("vcatnManageVO") VcatnManageVO vcatnManageVO,
 			@RequestParam Map<?, ?> commandMap, ModelMap model)
 			throws Exception {
@@ -188,7 +189,7 @@ public class EgovVcatnManageController {
 	 *
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/vct/EgovVcatnRegist.do")
+	@PostMapping("/uss/ion/vct/EgovVcatnRegist.do")
 	public String insertViewVcatnManage(@ModelAttribute("vcatnManageVO") VcatnManageVO vcatnManageVO, ModelMap model) throws Exception {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		if (user == null) {
@@ -266,7 +267,7 @@ public class EgovVcatnManageController {
 	 * @param vcatnManage - 휴가관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/vct/insertVcatnManage.do")
+	@PostMapping("/uss/ion/vct/insertVcatnManage.do")
 	public String insertVcatnManage(@Valid @ModelAttribute("vcatnManageVO") VcatnManageVO vcatnManageVO, BindingResult bindingResult,
 			SessionStatus status, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
@@ -438,7 +439,7 @@ public class EgovVcatnManageController {
 	 * @param vcatnManage - 휴가관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/vct/updtVcatnManage.do")
+	@PostMapping("/uss/ion/vct/updtVcatnManage.do")
 	public String updtVcatnManage(@Valid @ModelAttribute("vcatnManageVO") VcatnManageVO vcatnManageVO, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {
 		String sTemp = null;
@@ -535,7 +536,7 @@ public class EgovVcatnManageController {
 	 * @param vcatnManage - 휴가관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/vct/deleteVcatnManage.do")
+	@PostMapping("/uss/ion/vct/deleteVcatnManage.do")
 	public String deleteVcatnManage(@ModelAttribute("vcatnManageVO") VcatnManageVO vcatnManageVO, SessionStatus status,
 			ModelMap model) throws Exception {
 		vcatnManageVO.setBgnde(EgovStringUtil.removeMinusChar(vcatnManageVO.getBgnde()));
@@ -602,7 +603,7 @@ public class EgovVcatnManageController {
 	 * @param vcatnManageVO - 휴가관리 VO
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/vct/EgovVcatnConfm.do")
+	@PostMapping("/uss/ion/vct/EgovVcatnConfm.do")
 	public String selectVcatnConfm(@ModelAttribute("vcatnManageVO") VcatnManageVO vcatnManageVO, ModelMap model) throws Exception {
 		vcatnManageVO.setBgnde(EgovStringUtil.removeMinusChar(vcatnManageVO.getBgnde()));
 		vcatnManageVO.setEndde(EgovStringUtil.removeMinusChar(vcatnManageVO.getEndde()));
@@ -626,7 +627,7 @@ public class EgovVcatnManageController {
 	 * @param vcatnManage - 휴가관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/vct/updtVcatnConfm.do")
+	@PostMapping("/uss/ion/vct/updtVcatnConfm.do")
 	public String updtVcatnManageConfm(@ModelAttribute("vcatnManageVO") VcatnManageVO vcatnManageVO, BindingResult bindingResult, SessionStatus status,
 			ModelMap model) throws Exception {
 
@@ -661,7 +662,7 @@ public class EgovVcatnManageController {
 	 *
 	 * @param vcatnManage
 	 */
-	@RequestMapping("/uss/ion/vct/EgovVcatnReturn.do")
+	@PostMapping("/uss/ion/vct/EgovVcatnReturn.do")
 	public String selectSanctnerListPopup(@ModelAttribute("vcatnManageVO") VcatnManageVO vcatnManageVO, ModelMap model)
 			throws Exception {
 		return "egovframework/com/uss/ion/vct/EgovVcatnReturn";

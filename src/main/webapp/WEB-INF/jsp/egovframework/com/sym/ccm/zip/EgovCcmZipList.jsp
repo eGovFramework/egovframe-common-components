@@ -23,9 +23,12 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comSymCcmZip.zipVO.title"/></c:set>
 <html lang="ko">
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title>${pageTitle}<spring:message code="title.list" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
@@ -57,8 +60,7 @@ function fn_egov_search_Zip(){
  * 등록 처리 함수
  ******************************************************** */
 function fn_egov_regist_Zip(no){
-//	location.href = "<c:url value='/sym/ccm/zip/EgovCcmZipRegistView.do'/>";
-	var varForm	   			 = document.getElementById("Form");
+	var varForm	   			 = document.listForm;
 			varForm.action 			 = "<c:url value='/sym/ccm/zip/EgovCcmZipRegistView.do'/>";
 	varForm.searchList.value = no;
 	varForm.submit();
@@ -67,8 +69,7 @@ function fn_egov_regist_Zip(no){
  * 엑셀등록 처리 함수
  ******************************************************** */
 function fn_egov_regist_ExcelZip(no){
-//	location.href = "<c:url value='/sym/ccm/zip/EgovCcmExcelZipRegist.do' />";
-	var varForm	   			 = document.getElementById("Form");
+	var varForm	   			 = document.listForm;
 	varForm.action 			 = "<c:url value='/sym/ccm/zip/EgovCcmExcelZipRegist.do'/>";
 	varForm.searchList.value = no;
 	varForm.submit();
@@ -83,7 +84,7 @@ function fn_egov_modify_Zip(){
  * 상세회면 처리 함수(일반주소)
  ******************************************************** */
 function fn_egov_detail_Zip(zip,sn){
-	var varForm				 = document.getElementById("Form");
+	var varForm				 = document.listForm;
 	varForm.action           = "<c:url value='/sym/ccm/zip/EgovCcmZipDetail.do'/>";
 	varForm.zip.value        = zip;
 	varForm.sn.value         = sn;
@@ -94,7 +95,7 @@ function fn_egov_detail_Zip(zip,sn){
  * 상세회면 처리 함수(도로명주소)
  ******************************************************** */
 function fn_egov_detail_RdmnCode_Zip(rdmnCode, sn){
-	var varForm				 = document.getElementById("Form");
+	var varForm				 = document.listForm;
 	varForm.action           = "<c:url value='/sym/ccm/zip/EgovCcmZipDetail.do'/>";
 	varForm.rdmnCode.value   = rdmnCode;
 	varForm.sn.value         = sn;
@@ -118,7 +119,7 @@ function fn_egov_list(){
 </head>
 <body onLoad="fn_egov_list()">
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg"/></noscript>
-<form name="listForm" action="<c:url value='/sym/ccm/zip/EgovCcmZipList.do'/>" method="post">
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/sym/ccm/zip/EgovCcmZipList.do" method="post">
 <div class="board">
 <h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<div class="search_box">
@@ -217,14 +218,11 @@ function fn_egov_list(){
 
 
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-</form>
-<form name="Form" id="Form" method="post" action="">
-	<input type=hidden name="zip">
-	<input type=hidden name="sn" value="0">
-	<input type=hidden name="rdmnCode">
-	<input type=hidden name="searchList">
-	<input type="submit" id="invisible" class="invisible">
-</form>
+<input type=hidden name="zip">
+<input type=hidden name="sn" value="0">
+<input type=hidden name="rdmnCode">
+</form:form>
+
 </div>
 </body>
 </html>

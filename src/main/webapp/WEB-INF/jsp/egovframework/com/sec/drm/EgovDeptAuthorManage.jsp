@@ -224,7 +224,7 @@ function fncSelectDeptAuthorPop() {
 <body>
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
-<form:form name="listForm" action="${pageContext.request.contextPath}/sec/drm/EgovDeptAuthorList.do" method="post">
+<form:form name="listForm" action="${pageContext.request.contextPath}/sec/drm/EgovDeptAuthorList.do" method="post" modelAttribute="searchVO">
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1><!-- 부서권한관리 목록 -->
 	<!-- 검색영역 -->

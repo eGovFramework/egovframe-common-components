@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -107,7 +108,7 @@ public class EgovGroupManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value = "/sec/gmt/EgovGroup.do")
+    @PostMapping("/sec/gmt/EgovGroup.do")
 	public String selectGroup(@ModelAttribute("groupManageVO") GroupManageVO groupManageVO,
 								@ModelAttribute("groupManage") GroupManage groupManage,
 	    		               ModelMap model) throws Exception {
@@ -121,7 +122,7 @@ public class EgovGroupManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value = "/sec/gmt/EgovGroupInsertView.do", method = RequestMethod.POST)
+    @PostMapping("/sec/gmt/EgovGroupInsertView.do")
     @RequireAdmin
     public String insertGroupView(@ModelAttribute("groupManage") GroupManage groupManage)
             throws Exception {
@@ -135,7 +136,7 @@ public class EgovGroupManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value = "/sec/gmt/EgovGroupInsert.do", method = RequestMethod.POST)
+    @PostMapping("/sec/gmt/EgovGroupInsert.do")
     @RequireAdmin
 	public String insertGroup(@Valid @ModelAttribute("groupManage") GroupManage groupManage,
 							   BindingResult bindingResult,
@@ -160,7 +161,7 @@ public class EgovGroupManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value = "/sec/gmt/EgovGroupUpdate.do", method = RequestMethod.POST)
+    @PostMapping("/sec/gmt/EgovGroupUpdate.do")
     @RequireAdmin
 	public String updateGroup(@Valid @ModelAttribute("groupManage") GroupManage groupManage,
 			                   BindingResult bindingResult,
@@ -181,7 +182,7 @@ public class EgovGroupManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sec/gmt/EgovGroupDelete.do", method = RequestMethod.POST)
+	@PostMapping("/sec/gmt/EgovGroupDelete.do")
 	@RequireAdmin
 	public String deleteGroup(@ModelAttribute("groupManage") GroupManage groupManage,
                              Model model) throws Exception {
@@ -197,7 +198,7 @@ public class EgovGroupManageController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sec/gmt/EgovGroupListDelete.do", method = RequestMethod.POST)
+	@PostMapping("/sec/gmt/EgovGroupListDelete.do")
 	@RequireAdmin
 	public String deleteGroupList(@RequestParam("groupIds") String groupIds,
 			                      @ModelAttribute("groupManage") GroupManage groupManage,

@@ -1,7 +1,11 @@
 package egovframework.com.uss.olp.qtm.web;
 
+import java.awt.image.BufferedImage;
+import java.io.ByteArrayInputStream;
 import java.util.List;
 import java.util.Map;
+
+import javax.imageio.ImageIO;
 
 import org.apache.commons.lang3.ObjectUtils;
 import org.egovframe.rte.fdl.property.EgovPropertyService;
@@ -13,6 +17,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -74,7 +79,7 @@ public class EgovQustnrTmplatManageController {
 		return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageMain";
 	}
 
-	@RequestMapping(value = "/uss/olp/qtm/EgovQustnrTmplatManageLeft.do")
+	@RequestMapping("/uss/olp/qtm/EgovQustnrTmplatManageLeft.do")
 	public String egovQustnrTmplatManageLeft(ModelMap model) throws Exception {
 		return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageLeft";
 	}
@@ -122,6 +127,11 @@ public class EgovQustnrTmplatManageController {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
 
 		if (sCmd.equals("del")) {
+			// 2026.07.13 KISA 보안취약점 조치 - 삭제는 POST만 허용
+			jakarta.servlet.http.HttpServletRequest _req = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest();
+			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
+				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
+			}
 			egovQustnrTmplatManageService.deleteQustnrTmplatManage(qustnrTmplatManageVO);
 		}
 
@@ -163,7 +173,7 @@ public class EgovQustnrTmplatManageController {
 	 * @return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageImg"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qtm/EgovQustnrTmplatManageImg.do")
+	@PostMapping("/uss/olp/qtm/EgovQustnrTmplatManageImg.do")
 	public void egovQustnrTmplatManageImg(
 		HttpServletRequest request,
 		HttpServletResponse response,
@@ -175,13 +185,69 @@ public class EgovQustnrTmplatManageController {
 
 		byte[] img = (byte[])mapResult.get("QUSTNR_TMPLAT_IMAGE_INFOPATHNM");
 
-		String imgtype = "jpeg";
-		// 2022.11.11 시큐어코딩 처리
+		// 2026.07.13 KISA 보안취약점 조치 - 저장된 바이트의 실제 이미지 시그니처를 검사하여
+		// 올바른 Content-Type을 설정하고, 이미지가 아닌 경우 octet-stream으로 강제하여
+		// 브라우저의 MIME 스니핑으로 인한 저장형 XSS를 차단한다.
+		String imgtype = detectImageContentType(img);
 		response.setHeader("Content-Type", imgtype);
-		response.setHeader("Content-Length", "" + img.length);
-		response.getOutputStream().write(img);
+		response.setHeader("X-Content-Type-Options", "nosniff");
+		response.setHeader("Content-Length", "" + (img == null ? 0 : img.length));
+		if (img != null) {
+			response.getOutputStream().write(img);
+		}
 		response.getOutputStream().flush();
 		response.getOutputStream().close();
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 파일 시그니처(매직바이트)를 검사하여 실제 이미지 포맷의
+	 * Content-Type을 반환한다. 알 수 없는 포맷은 application/octet-stream 으로 응답하여
+	 * 브라우저가 HTML/JS로 스니핑/렌더링하지 못하도록 한다.
+	 *
+	 * @param bytes 응답으로 내려줄 원본 바이트
+	 * @return 검증된 이미지 Content-Type 또는 application/octet-stream
+	 */
+	private String detectImageContentType(byte[] bytes) {
+		if (bytes != null && bytes.length >= 4) {
+			if ((bytes[0] & 0xFF) == 0xFF && (bytes[1] & 0xFF) == 0xD8 && (bytes[2] & 0xFF) == 0xFF) {
+				return "image/jpeg";
+			}
+			if (bytes.length >= 8 && (bytes[0] & 0xFF) == 0x89 && bytes[1] == 0x50 && bytes[2] == 0x4E
+					&& bytes[3] == 0x47) {
+				return "image/png";
+			}
+			if (bytes[0] == 0x47 && bytes[1] == 0x49 && bytes[2] == 0x46 && bytes[3] == 0x38) {
+				return "image/gif";
+			}
+			if (bytes[0] == 0x42 && bytes[1] == 0x4D) {
+				return "image/bmp";
+			}
+		}
+		return "application/octet-stream";
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 업로드된 바이트가 실제 유효한 래스터 이미지인지 검증한다.
+	 * 파일 시그니처(매직바이트)를 우선 확인하고, 추가로 ImageIO 디코딩이 가능한지 재검증하여
+	 * 확장자만 이미지로 위장한 HTML/JS 등 임의 바이트의 업로드를 차단한다.
+	 *
+	 * @param bytes 업로드된 파일의 원본 바이트
+	 * @return 유효한 이미지이면 true
+	 */
+	private boolean isValidImageBytes(byte[] bytes) {
+		if (bytes == null || bytes.length == 0) {
+			return false;
+		}
+		String detected = detectImageContentType(bytes);
+		if ("application/octet-stream".equals(detected)) {
+			return false;
+		}
+		try {
+			BufferedImage image = ImageIO.read(new ByteArrayInputStream(bytes));
+			return image != null;
+		} catch (Exception e) {
+			return false;
+		}
 	}
 
 	/**
@@ -193,7 +259,7 @@ public class EgovQustnrTmplatManageController {
 	 * @return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qtm/EgovQustnrTmplatManageDetail.do")
+	@PostMapping("/uss/olp/qtm/EgovQustnrTmplatManageDetail.do")
 	public String egovQustnrTmplatManageDetail(
 		@ModelAttribute("searchVO") ComDefaultVO searchVO,
 		QustnrTmplatManageVO qustnrTmplatManageVO,
@@ -206,6 +272,11 @@ public class EgovQustnrTmplatManageController {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
 
 		if (sCmd.equals("del")) {
+			// 2026.07.13 KISA 보안취약점 조치 - 삭제는 POST만 허용
+			jakarta.servlet.http.HttpServletRequest _req = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest();
+			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
+				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
+			}
 			egovQustnrTmplatManageService.deleteQustnrTmplatManage(qustnrTmplatManageVO);
 			sLocationUrl = "redirect:/uss/olp/qtm/EgovQustnrTmplatManageList.do";
 		} else {
@@ -225,7 +296,7 @@ public class EgovQustnrTmplatManageController {
 	 * @return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageModify"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qtm/EgovQustnrTmplatManageModify.do")
+	@PostMapping("/uss/olp/qtm/EgovQustnrTmplatManageModify.do")
 	public String qustnrTmplatManageModify(
 		@ModelAttribute("searchVO") ComDefaultVO searchVO,
 		@RequestParam Map<?, ?> commandMap,
@@ -260,7 +331,7 @@ public class EgovQustnrTmplatManageController {
 	 * @return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageModifyActor"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qtm/EgovQustnrTmplatManageModifyActor.do")
+	@PostMapping("/uss/olp/qtm/EgovQustnrTmplatManageModifyActor.do")
 	public String qustnrTmplatManageModifyActor(
 		final MultipartHttpServletRequest multiRequest,
 		@ModelAttribute("searchVO") ComDefaultVO searchVO,
@@ -309,7 +380,22 @@ public class EgovQustnrTmplatManageController {
 				// 파일 수정여부 확인
 				if (file.getOriginalFilename() != "") {
 					if (file.getName().equals("qestnrTmplatImage")) {
-						qustnrTmplatManageVO.setQestnrTmplatImagepathnm(file.getBytes());
+						byte[] fileBytes = file.getBytes();
+						// 2026.07.13 KISA 보안취약점 조치 - 서버측 실제 이미지(매직바이트+디코딩) 검증
+						if (!isValidImageBytes(fileBytes)) {
+							bindingResult.rejectValue("qestnrTmplatImage", "file.invalid", "유효한 이미지 파일이 아닙니다.");
+							List<EgovMap> resultList = egovQustnrTmplatManageService
+								.selectQustnrTmplatManageDetail(qustnrTmplatManageVO);
+							model.addAttribute("resultList", resultList);
+
+							String whiteListFileUploadExtensions = EgovProperties
+								.getProperty("Globals.fileUpload.Extensions");
+							String fileUploadMaxSize = EgovProperties.getProperty("Globals.fileUpload.maxSize");
+							model.addAttribute("fileUploadExtensions", whiteListFileUploadExtensions);
+							model.addAttribute("fileUploadMaxSize", fileUploadMaxSize);
+							return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageModify";
+						}
+						qustnrTmplatManageVO.setQestnrTmplatImagepathnm(fileBytes);
 					}
 				}
 			}
@@ -328,7 +414,7 @@ public class EgovQustnrTmplatManageController {
 	 * @return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qtm/EgovQustnrTmplatManageRegist.do")
+	@PostMapping("/uss/olp/qtm/EgovQustnrTmplatManageRegist.do")
 	public String qustnrTmplatManageRegist(
 		@ModelAttribute("searchVO") ComDefaultVO searchVO,
 		@RequestParam Map<?, ?> commandMap,
@@ -376,7 +462,7 @@ public class EgovQustnrTmplatManageController {
 	 * @return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageRegistActor"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qtm/EgovQustnrTmplatManageRegistActor.do")
+	@PostMapping("/uss/olp/qtm/EgovQustnrTmplatManageRegistActor.do")
 	public String qustnrTmplatManageRegistActor(
 		final MultipartHttpServletRequest multiRequest,
 		@ModelAttribute("searchVO") ComDefaultVO searchVO,
@@ -414,7 +500,16 @@ public class EgovQustnrTmplatManageController {
 				// 2022.11.11 시큐어코딩 처리
 				if (ObjectUtils.isNotEmpty(file.getName()) && ObjectUtils.isNotEmpty(file.getOriginalFilename())
 						&& !file.isEmpty()) {
-					qustnrTmplatManageVO.setQestnrTmplatImagepathnm(file.getBytes());
+					byte[] fileBytes = file.getBytes();
+					// 2026.07.13 KISA 보안취약점 조치 - 서버측 실제 이미지(매직바이트+디코딩) 검증
+					if (!isValidImageBytes(fileBytes)) {
+						bindingResult.rejectValue(
+								"qestnrTmplatImage",
+								"file.invalid",
+								"유효한 이미지 파일이 아닙니다.");
+						return "egovframework/com/uss/olp/qtm/EgovQustnrTmplatManageRegist";
+					}
+					qustnrTmplatManageVO.setQestnrTmplatImagepathnm(fileBytes);
 					fileExists = true;
 					break;
 				}

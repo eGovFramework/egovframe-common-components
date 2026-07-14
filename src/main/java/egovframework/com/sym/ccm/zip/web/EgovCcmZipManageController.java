@@ -20,6 +20,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -151,7 +152,7 @@ public class EgovCcmZipManageController {
 	 * @return "forward:/sym/ccm/zip/EgovCcmZipList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/ccm/zip/EgovCcmZipRemove.do")
+	@PostMapping("/sym/ccm/zip/EgovCcmZipRemove.do")
 	public String deleteZip(@ModelAttribute("loginVO") LoginVO loginVO, Zip zip, ZipVO searchVO, ModelMap model)
 			throws Exception {
 		model.addAttribute("searchList", searchVO.getSearchList());
@@ -171,7 +172,7 @@ public class EgovCcmZipManageController {
 	 * @param model
 	 * @return "egovframework/com/sym/ccm/zip/EgovCcmZipRegist"
 	 */
-	@RequestMapping(value = "/sym/ccm/zip/EgovCcmZipRegistView.do")
+	@PostMapping("/sym/ccm/zip/EgovCcmZipRegistView.do")
 	public String insertZip(@ModelAttribute("loginVO") LoginVO loginVO, @ModelAttribute("zip") Zip zip, ZipVO searchVO,
 			ModelMap model) {
 		model.addAttribute("searchList", searchVO.getSearchList());
@@ -190,7 +191,7 @@ public class EgovCcmZipManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/ccm/zip/EgovCcmZipRegist.do")
+	@PostMapping("/sym/ccm/zip/EgovCcmZipRegist.do")
 	public String insertZip(@ModelAttribute("loginVO") LoginVO loginVO, @Valid @ModelAttribute("zip") Zip zip,
 			BindingResult bindingResult, ZipVO searchVO, ModelMap model) {
 		model.addAttribute("searchList", searchVO.getSearchList());
@@ -236,9 +237,9 @@ public class EgovCcmZipManageController {
 	 * @return "egovframework/com/sym/ccm/zip/EgovCcmExcelZipRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/ccm/zip/EgovCcmExcelZipRegist.do")
+	@PostMapping("/sym/ccm/zip/EgovCcmExcelZipRegist.do")
 	public String insertExcelZip(@ModelAttribute("loginVO") LoginVO loginVO, final HttpServletRequest request,
-			@RequestParam Map<String, Object> commandMap, ZipVO searchVO, Model model) throws Exception {
+			@RequestParam Map<String, Object> commandMap, @ModelAttribute("searchVO") ZipVO searchVO, Model model) throws Exception {
 		String[] fileExtension = { "XLS", "XLSX" };
 
 		model.addAttribute("searchList", searchVO.getSearchList());
@@ -296,7 +297,7 @@ public class EgovCcmZipManageController {
 	 * @return "egovframework/com/sym/ccm/zip/EgovCcmZipDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/ccm/zip/EgovCcmZipDetail.do")
+	@PostMapping("/sym/ccm/zip/EgovCcmZipDetail.do")
 	public String selectZipDetail(@ModelAttribute("loginVO") LoginVO loginVO, Zip zip, ZipVO searchVO, ModelMap model)
 			throws Exception {
 		if ("1".equals(searchVO.getSearchList())) {
@@ -368,7 +369,7 @@ public class EgovCcmZipManageController {
 	 * @return "egovframework/com/sym/ccm/zip/EgovCcmZipModify"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/ccm/zip/EgovCcmZipModifyView.do")
+	@PostMapping("/sym/ccm/zip/EgovCcmZipModifyView.do")
 	public String updateZip(@ModelAttribute("loginVO") LoginVO loginVO, @ModelAttribute("zip") Zip zip, ZipVO searchVO,
 			ModelMap model) throws Exception {
 		model.addAttribute("searchList", searchVO.getSearchList());
@@ -395,7 +396,7 @@ public class EgovCcmZipManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/ccm/zip/EgovCcmZipModify.do")
+	@PostMapping("/sym/ccm/zip/EgovCcmZipModify.do")
 	public String updateZip(@ModelAttribute("loginVO") LoginVO loginVO, @Valid @ModelAttribute("zip") Zip zip,
 			BindingResult bindingResult, ZipVO searchVO, ModelMap model) throws Exception {
 		if (zip.getSn() == 0) {

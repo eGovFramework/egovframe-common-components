@@ -27,6 +27,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title>${pageTitle} <spring:message code="title.list" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
@@ -50,24 +51,22 @@
 	}
 	
 	function fn_egov_addadbkInf(){
-		location.href = "<c:url value='/cop/adb/addAdbkInf.do'/>";
+		fn_egov_postNavigate("<c:url value='/cop/adb/addAdbkInf.do' />");
 	}
 
-	function fn_egov_deleteAdbk(adbkId, frm){
-
-		if(confirm("<spring:message code="common.delete.msg" />")){	
-			frm.adbkId.value = adbkId;
-			frm.action = "<c:url value='/cop/adb/deleteAdbkInf.do'/>";
-			frm.submit();
+	function fn_egov_deleteAdbk(adbkId){
+		if(confirm("<spring:message code="common.delete.msg" />")){
+			document.frm.adbkId.value = adbkId;
+			document.frm.action = "<c:url value='/cop/adb/deleteAdbkInf.do'/>";
+			document.frm.submit();
 		}
-
 		return false;
 	}
 
 	function fn_egov_update_adbkInf(adbkId){
-		document.item.adbkId.value = adbkId;
-		document.item.action = "<c:url value='/cop/adb/updateAdbkInf.do'/>";
-		document.item.submit();
+		document.frm.adbkId.value = adbkId;
+		document.frm.action = "<c:url value='/cop/adb/updateAdbkInf.do'/>";
+		document.frm.submit();
 		return true;
 	}
 </script>
@@ -80,7 +79,7 @@
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 
 <!-- 검색영역 -->
-<form:form name="frm" action="${pageContext.request.contextPath}/cop/adb/selectAdbkList.do" method="post">
+<form:form name="frm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/cop/adb/selectAdbkList.do" method="post">
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
 		<ul>
 			<li>
@@ -95,14 +94,12 @@
 			<li>
 				<input class="s_input" name="searchWrd" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${searchVO.searchWrd}"/>'  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" onClick="fn_egov_search_adbkInfs();return false;"/>
-				<span class="btn_b"><a href="<c:url value='/cop/adb/addAdbkInf.do'/>" onClick="javascript:fn_egov_addadbkInf();return false;"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="javascript:void(0);" onClick="javascript:fn_egov_addadbkInf();return false;"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-<input type="hidden" name="adbkId" value = "'<c:out value="${searchVO.adbkId}" />'" >
-</form:form>
-
+<input type="hidden" name="adbkId" value="">
 
 	<!-- 목록영역 -->
 	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
@@ -137,25 +134,13 @@
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 		<td class="left">
-	
-		<form name="subForm" method="post" action="<c:url value='/cop/adb/updateAdbkInf.do'/>">
-			<input name="adbkId" type="hidden" value="<c:out value="${result.adbkId}"/>">
-			<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-			<span class="link"><input type="submit" value="<c:out value="${result.adbkNm}"/>" style="border:0px solid #e0e0e0;"></span>
-		</form>
-
+			<a href="javascript:void(0);" onclick="fn_egov_update_adbkInf('<c:out value="${result.adbkId}"/>'); return false;"><c:out value="${result.adbkNm}"/></a>
 		</td>
 		<td><c:out value="${result.othbcScope}"/></td>
 		<td><c:out value="${result.wrterId}"/></td>
 		<td><c:out value="${fn:substring(result.frstRegisterPnttm, 0, 10)}"/></td>
 		<td>
-		
-		<form name="subFormDelete" method="post" action="<c:url value='/cop/adb/deleteAdbkInf.do'/>" onsubmit="fn_egov_deleteAdbk('<c:out value="${result.adbkId}" />', this.form); return false;">
-		    <input name="adbkId" type="hidden" value="<c:out value="${result.adbkId}"/>">
-		    <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-		    <input type="submit" class="btn_submit" value="<spring:message code="button.delete" />" title="<spring:message code="button.delete" /> <spring:message code="input.button" />" />
-		</form>
-				
+			<input type="button" class="btn_submit" value="<spring:message code="button.delete" />" title="<spring:message code="button.delete" /> <spring:message code="input.button" />" onclick="fn_egov_deleteAdbk('<c:out value="${result.adbkId}" />'); return false;" />
 		</td>
 		
 	</tr>
@@ -169,6 +154,7 @@
 			<ul><ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_adbkInfs"/></ul>
 		</div>
 	</c:if>
+</form:form>
 
 </div><!-- end div board -->
 

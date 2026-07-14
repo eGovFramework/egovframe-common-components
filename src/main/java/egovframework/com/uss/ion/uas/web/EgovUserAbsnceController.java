@@ -30,6 +30,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -100,7 +101,7 @@ public class EgovUserAbsnceController {
 	 * @param userAbsnceVO - 사용자부재 VO
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping("/uss/ion/uas/getUserAbsnce.do")
+    @PostMapping("/uss/ion/uas/getUserAbsnce.do")
 	public String selectUserAbsnce(@RequestParam("userId") String userId,
 			                       @ModelAttribute("userAbsnceVO") UserAbsnceVO userAbsnceVO,
 			                       ModelMap model) throws Exception {
@@ -122,7 +123,7 @@ public class EgovUserAbsnceController {
 	 * @param userAbsnce - 사용자부재 model
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping("/uss/ion/uas/addViewUserAbsnce.do")
+    @PostMapping("/uss/ion/uas/addViewUserAbsnce.do")
 	public String insertUserAbsnceView(@RequestParam("userId") String userId,
 			                           @ModelAttribute("userAbsnceVO") UserAbsnceVO userAbsnceVO,
 			                            ModelMap model) throws Exception {
@@ -139,7 +140,7 @@ public class EgovUserAbsnceController {
 	 * @param userAbsnce - 사용자부재 model
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping("/uss/ion/uas/addUserAbsnce.do")
+    @PostMapping("/uss/ion/uas/addUserAbsnce.do")
 	public String insertUserAbsnce(@Valid @ModelAttribute("userAbsnceVO") UserAbsnceVO userAbsnceVO,
 		                            BindingResult bindingResult,
 			                        ModelMap model) throws Exception {
@@ -164,7 +165,7 @@ public class EgovUserAbsnceController {
 	 * @param userAbsnce - 사용자부재 model
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping("/uss/ion/uas/updtUserAbsnce.do")
+    @PostMapping("/uss/ion/uas/updtUserAbsnce.do")
 	public String updateUserAbsnce(@Valid @ModelAttribute("userAbsnceVO") UserAbsnceVO userAbsnceVO,
 			                        BindingResult bindingResult,
 			                        ModelMap model) throws Exception {
@@ -186,7 +187,7 @@ public class EgovUserAbsnceController {
 	 * @param userAbsnce - 사용자부재 model
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping("/uss/ion/uas/removeUserAbsnce.do")
+    @PostMapping("/uss/ion/uas/removeUserAbsnce.do")
 	public String deleteUserAbsnce(@ModelAttribute("userAbsnceVO") UserAbsnceVO userAbsnceVO,
                                     ModelMap model) throws Exception {
 

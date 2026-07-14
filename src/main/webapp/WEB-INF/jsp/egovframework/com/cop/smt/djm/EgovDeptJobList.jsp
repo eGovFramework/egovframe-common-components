@@ -22,6 +22,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="tmpDeptId" value=""/>
 <c:set var="tmpDeptNm" value=""/>
 <c:set var="wtText" value=""/>
@@ -111,7 +112,7 @@
 <div class="board">
 	<h1><spring:message code="comCopSmtDjm.deptJobList.title" /></h1><!-- 부서업무 목록 -->
 	
-	<form name="frm" method="post" action="<c:url value='/cop/smt/djm/selectDeptJobList.do'/>">
+	<form:form name="frm" modelAttribute="searchVO" method="post" action="${pageContext.request.contextPath}/cop/smt/djm/selectDeptJobList.do">
 
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 	<input type="hidden" id="deptJobId" name="deptJobId">
@@ -135,7 +136,6 @@
 			</li>
 		</ul>
 	</div>
-	</form>
 		
 	<table>
 		<colgroup>
@@ -159,12 +159,7 @@
 						</c:if>
 								<tr>
 									<td>&nbsp;&nbsp;
-										<form name="searchVO" method="post" action="<c:url value='/cop/smt/djm/selectDeptJobList.do'/>">
-											<input type="hidden" class="searchDeptId" value="<c:out value="${resultBx.deptId}"/>">
-											<input type="hidden" class="searchDeptJobBxId" value="<c:out value="${resultBx.deptJobBxId}"/>">
-											<input type="hidden" class="deptJobBxNm" value="<c:out value="${resultBx.deptJobBxNm}"/>">
-											<input class="btn01" type="submit" value="<c:out value="${resultBx.deptJobBxNm}"/>" onclick="fn_egov_select_deptjobbx('<c:out value="${resultBx.deptId}"/>', '<c:out value="${resultBx.deptJobBxId}"/>', '<c:out value="${resultBx.deptJobBxNm}"/>'); return false;"  style="text-align:left;">
-										</form>
+										<input class="btn01" type="button" value="<c:out value="${resultBx.deptJobBxNm}"/>" onclick="fn_egov_select_deptjobbx('<c:out value="${resultBx.deptId}"/>', '<c:out value="${resultBx.deptJobBxId}"/>', '<c:out value="${resultBx.deptJobBxNm}"/>'); return false;"  style="text-align:left;">
 									</td>		    
 								</tr>
 						<c:if test="${tmpDeptNm != resultBxList[st.count].deptNm}">
@@ -207,15 +202,7 @@
 							<tr>
 								<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 								<td>
-									<form name="deptJobVO" method="post" action="<c:url value='/cop/smt/djm/selectDeptJob.do'/>">
-										<input type="hidden" name="searchDeptId" value="<c:out value='${searchVO.searchDeptId}'/>">
-										<input type="hidden" name="searchDeptJobBxId" value="<c:out value='${searchVO.searchDeptJobBxId}'/>">
-										<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-										<input name="searchCnd" type="hidden" value="<c:out value='${searchVO.searchCnd}'/>">
-										<input name="searchWrd" type="hidden" value="<c:out value='${searchVO.searchWrd}'/>">
-										<input type="hidden" name="deptJobId" value="<c:out value="${result.deptJobId}"/>">
-										<span class="link"><input type="submit" value="<c:out value="${result.deptJobNm}"/>" onclick="fn_egov_inqire_deptjob('<c:out value="${result.deptJobId}"/>'); return false;" style="${wtText}"></span>
-									</form>
+									<a href="javascript:void(0);" onclick="fn_egov_inqire_deptjob('<c:out value="${result.deptJobId}"/>'); return false;" style="${wtText}"><c:out value="${result.deptJobNm}"/></a>
 								</td>
 								<td><c:out value="${result.chargerNm}"/></td>
 								<td><c:out value="${fn:substring(result.frstRegisterPnttm, 0, 10)}"/></td>
@@ -238,6 +225,7 @@
 			</td>
 		</tr>
 	</table>
+	</form:form>
 </div>
 
 </body>

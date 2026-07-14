@@ -7,10 +7,13 @@
 <%@ page import="egovframework.com.uss.ion.bnt.service.BndtManageVO"%>
 <%@ page import='egovframework.com.utl.fcc.service.EgovNumberUtil' %>
 <%@ page import='egovframework.com.utl.fcc.service.EgovStringUtil' %>
+<%@ page import='egovframework.com.cmm.EgovWebUtil' %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
 
 /**
@@ -168,11 +171,11 @@ A:hover { font-size:9pt; font-family:"돋움";color:red;text-decoration:none;}
 		<a href="#LINK" onclick="location.href='<c:url value='/uss/ion/bnt/EgovBndtManageList.do'/>?year=<%=year%>&amp;month=<%=month+1%>'" style="margin-right:20px; vertical-align:-4px"><img src="<c:url value='/images/egovframework/com/cmm/icon/icon_next.png'/>"  alt="<spring:message code="comUssIonBnt.common.month.next"/>" style="margin-left:4px;"></a><!-- 월 이후 -->
 		<%}%>
 		
-		<a class="btn_01" href="<c:url value='/uss/ion/bnt/EgovBndtManageListPop.do'/>" onclick="fncBndtManageBnde(); return false;" target="_blank" title="<spring:message code="comUssIonBnt.common.toNewWindow"/>"><spring:message code="comUssIonBnt.bndtManageList.bndtExcelRegist"/></a><!-- 새 창으로 이동 --><!-- 당직엑셀등록 -->
+		<a class="btn_01" href="javascript:void(0);" onclick="fncBndtManageBnde(); return false;" target="_blank" title="<spring:message code="comUssIonBnt.common.toNewWindow"/>"><spring:message code="comUssIonBnt.bndtManageList.bndtExcelRegist"/></a><!-- 새 창으로 이동 --><!-- 당직엑셀등록 -->
 	</div>
 
 <!-- ********** 여기서 부터 본문 내용 *************** -->
-<form name="listForm" id="listForm" action="#LINK" method="post">
+<form:form name="listForm" modelAttribute="searchVO" id="listForm" action="#LINK" method="post">
 <div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="<spring:message code="comUssIonBnt.common.submit"/>" title="<spring:message code="comUssIonBnt.common.submit"/>"></div><!-- 전송 -->
 <input type="hidden" name="cmd" >
 <input type="hidden" name="bndtDe" value ="<c:out value='${bndtManageVO.bndtDe}'/>">
@@ -243,13 +246,13 @@ for(int index = 1; index <= endDay; index++)
 				%>
 				<spring:message code='comUssIonBnt.common.watcher'/>
 				<%
-				out.print(":<a href='#LINK' onclick=\"fncSelectBndtManage('" + (String)egovMap.getBndtDe() + "','"+ (String)egovMap.getBndtId() +"')\">");
+				out.print(":<a href='#LINK' onclick=\"fncSelectBndtManage('" + EgovWebUtil.escapeJavaScript((String)egovMap.getBndtDe()) + "','" + EgovWebUtil.escapeJavaScript((String)egovMap.getBndtId()) + "')\">");
 				out.print((String)egovMap.getBndtTemp1());
 				out.println("</a></div></td></tr><tr><td>&nbsp;</td></tr>");
 				iDiaryCnt = Integer.parseInt((String)egovMap.getBndtTemp2());
 
 				if(iDiaryCnt > 0 ){
-					out.print("<tr><td nowrap><div class='divDotText' style='width:92px;border:solid 0px;'><a href='#LINK' onclick=\"fncSelectBndtDiary('" + (String)egovMap.getBndtDe() + "','"+ (String)egovMap.getBndtId() +"','detail')\">");
+					out.print("<tr><td nowrap><div class='divDotText' style='width:92px;border:solid 0px;'><a href='#LINK' onclick=\"fncSelectBndtDiary('" + EgovWebUtil.escapeJavaScript((String)egovMap.getBndtDe()) + "','" + EgovWebUtil.escapeJavaScript((String)egovMap.getBndtId()) + "','detail')\">");
 					%>
 					<spring:message code='comUssIonBnt.common.writeComplete'/><!-- 작성완료 -->
 					<%
@@ -259,7 +262,7 @@ for(int index = 1; index <= endDay; index++)
 					%>
 					<spring:message code="comUssIonBnt.common.diary"/>:<%-- 일지 --%>
 					<%
-					out.print("<a class='btn_02' href='#LINK' onclick=\"fncSelectBndtDiary('" + sUseDate + "','"+ (String)egovMap.getBndtId() +"','insert')\">");
+					out.print("<a class='btn_02' href='#LINK' onclick=\"fncSelectBndtDiary('" + EgovWebUtil.escapeJavaScript(sUseDate) + "','" + EgovWebUtil.escapeJavaScript((String)egovMap.getBndtId()) + "','insert')\">");
 					%>
 					<spring:message code="comUssIonBnt.common.insert"/><!-- 등록 -->
 					<%
@@ -276,7 +279,7 @@ for(int index = 1; index <= endDay; index++)
 		%>
 		 <spring:message code="comUssIonBnt.common.watcher"/> <!-- 당직자 -->
 		<%
-		out.print(":<a class='btn_02' href='#LINK' onclick=\"fncInsertBndtManage('" +sUseDate+ "')\">");
+		out.print(":<a class='btn_02' href='#LINK' onclick=\"fncInsertBndtManage('" + EgovWebUtil.escapeJavaScript(sUseDate) + "')\">");
 		%>
 		<spring:message code="comUssIonBnt.common.insert"/><!-- 등록 -->
 		<%
@@ -314,7 +317,7 @@ while(newLine > 0 && newLine < 7)
 </tbody>
 </table>
 </DIV>
-</form>
+</form:form>
 </div>
 </BODY>
 </HTML>

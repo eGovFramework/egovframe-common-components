@@ -67,7 +67,8 @@ function fn_egov_update_view(){
 	<h2><spring:message code="comSymBat.BatchOpertDetail.pageTop.title"/></h2><!-- 배치작업 상세조회 -->
 	<span>※ "배치프로그램은 globals.properties > SHELL.(UNIX/WINDOWS).batchShellFiles에 미리 등록하여야 실행이 가능하다.(WhiteList)</span>
 
-	<form name="batchOpertForm"  id="batchOpertForm" action="<c:url value='/sym/bat/getBatchOpert.do'/>" method="post">
+	<form name="batchOpertForm"  id="batchOpertForm" action="${pageContext.request.contextPath}/sym/bat/getBatchOpert.do" method="post">
+    <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
     <input name="batchOpertId" type="hidden" value="<c:out value='${resultInfo.batchOpertId}'/>"/>
     <!-- 검색조건 유지 -->
     <input type="hidden" name="searchCondition" value="<c:out value='${searchVO.searchCondition}'/>"/>
@@ -108,9 +109,9 @@ function fn_egov_update_view(){
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<span class="btn_s2"><a href="<c:url value='/sym/bat/getBatchOpertForUpdate.do'></c:url>" onclick="fn_egov_update_view(); return false;"><spring:message code="button.update" /></a></span><!-- 수정 -->
+		<span class="btn_s2"><a href="javascript:void(0);" onclick="fn_egov_update_view(); return false;"><spring:message code="button.update" /></a></span><!-- 수정 -->
 		<input class="s_submit" type="submit" value='<spring:message code="button.delete" />' onclick="fn_egov_delete(); return false;" /><!-- 삭제 -->
-		<span class="btn_s"><a href="<c:url value='/sym/bat/getBatchOpertList.do'></c:url>" onclick="fn_egov_list(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_list(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
 	</div>
 	<div style="clear:both;"></div>
 

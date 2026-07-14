@@ -114,7 +114,11 @@ public class EgovSpringSecurityLoginFilter extends OncePerRequestFilter {
 
 			if (resultVO != null && StringUtils.hasText(resultVO.getId())) {
 
-				request.getSession().setAttribute("loginVO", resultVO);
+				// 세션 고정 방지는 Spring Security(session fixation protection)에 위임한다.
+				// invalidate()는 CSRF 토큰·SecurityContext·frameset(_left) 세션을 깨뜨린다.
+				jakarta.servlet.http.HttpSession session = request.getSession();
+				session.setAttribute("loginVO", resultVO);
+				session.setAttribute("accessUser", resultVO.getUserSe().concat(resultVO.getId()));
 
 				String securityUser = resultVO.getUserSe().concat(resultVO.getId());
 				String securityPass = resultVO.getUniqId();

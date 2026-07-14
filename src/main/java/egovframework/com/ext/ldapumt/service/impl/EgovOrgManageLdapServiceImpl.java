@@ -22,6 +22,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.springframework.ldap.support.LdapEncoder;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.ext.ldapumt.service.EgovOrgManageLdapService;
@@ -141,11 +142,13 @@ public class EgovOrgManageLdapServiceImpl extends EgovAbstractServiceImpl implem
 	 */
 	@Override
 	public Map<Object, Object> insertDeptManage(String parentDn, String ou) throws Exception {
+		// 2026.07.13 NCSC 보안점검 조치: 컨트롤러의 문자 제한 검증에 더해, LDAP DN 이스케이프를 한 번 더 적용하여 DN/RDN 주입을 방지(심층 방어)
+		String encodedOu = LdapEncoder.nameEncode(ou);
 		UcorgVO vo = new UcorgVO();
 		if ("j1_1".equals(parentDn)) { // Root에서 생성
-			vo.setDn("ou=" + ou);
+			vo.setDn("ou=" + encodedOu);
 		} else { // Root에서 생성
-			vo.setDn("ou=" + ou + ", " + parentDn);
+			vo.setDn("ou=" + encodedOu + ", " + parentDn);
 		}
 		vo.setOu(ou);
 		vo.setOuCode("0000000");
@@ -163,8 +166,9 @@ public class EgovOrgManageLdapServiceImpl extends EgovAbstractServiceImpl implem
 	 */
 	@Override
 	public Map<Object, Object> insertUserManage(String parentDn, String cn) throws Exception {
+		// 2026.07.13 NCSC 보안점검 조치: LDAP DN 이스케이프 적용(심층 방어)
 		UserVO vo = new UserVO();
-		vo.setDn("cn=" + cn + ", " + parentDn);
+		vo.setDn("cn=" + LdapEncoder.nameEncode(cn) + ", " + parentDn);
 		vo.setCn(cn);
 
 		userManageLdapDAO.insertUserManage(vo);
@@ -189,8 +193,10 @@ public class EgovOrgManageLdapServiceImpl extends EgovAbstractServiceImpl implem
 	 */
 	@Override
 	public void renameDeptManage(String dn, String name) {
+		// 2026.07.13 NCSC 보안점검 조치: 컨트롤러의 문자 제한 검증(validateRdnValue)에 더해 LDAP DN 이스케이프를 한 번 더 적용(심층 방어)하여
+		// name 값에 쉼표(,), 더하기(+), 등호(=) 등 DN 구분자가 포함되어 있어도 리터럴 RDN 값으로만 처리되도록 한다.
 		String[] nodes = dn.split(",");
-		nodes[0] = "ou=" + name;
+		nodes[0] = "ou=" + LdapEncoder.nameEncode(name);
 
 		String newDn = "";
 		for (String node : nodes) {
@@ -206,8 +212,9 @@ public class EgovOrgManageLdapServiceImpl extends EgovAbstractServiceImpl implem
 	 */
 	@Override
 	public void renameUserManage(String dn, String name) {
+		// 2026.07.13 NCSC 보안점검 조치: LDAP DN 이스케이프 적용(심층 방어)
 		String[] nodes = dn.split(",");
-		nodes[0] = "cn=" + name;
+		nodes[0] = "cn=" + LdapEncoder.nameEncode(name);
 
 		String newDn = "";
 		for (String node : nodes) {

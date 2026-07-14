@@ -3,6 +3,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
 
 /**
@@ -50,7 +51,7 @@ function fncSelectAnnvrsryGdcc(annId) {
 		<h1><spring:message code="comUssIonAns.annvrsryMainList.listTitle" /></h1><!-- 다가오는 기념일 목록 -->
 		<span>※ <spring:message code="comUssIonAns.annvrsryMainList.guide" /></span>		
 		
-		<form name="gdccForm" method="post" action="<c:url value='/uss/ion/ans/selectAnnvrsryGdcc.do'/>">
+		<form:form name="gdccForm" modelAttribute="searchVO" method="post" action="${pageContext.request.contextPath}/uss/ion/ans/selectAnnvrsryGdcc.do">
 		<input type="hidden" name="annId"       value=""/>
 		
 		<table class="board_list">
@@ -76,7 +77,7 @@ function fncSelectAnnvrsryGdcc(annId) {
 				</c:forEach>		
 			</tbody>
 		</table>
-		</form>
+		</form:form>
 	</div>
 </body>
 </html>

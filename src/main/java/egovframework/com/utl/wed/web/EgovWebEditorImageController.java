@@ -1,6 +1,11 @@
 package egovframework.com.utl.wed.web;
 
+import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.cmm.LoginVO;
+
 import java.io.FileNotFoundException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import org.egovframe.rte.fdl.crypto.EgovEnvCryptoService;
@@ -9,12 +14,14 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
 
 import egovframework.com.cmm.EgovMessageSource;
+import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.utl.fcc.service.EgovFileUploadUtil;
 import egovframework.com.utl.fcc.service.EgovFormBasedFileUtil;
@@ -79,11 +86,7 @@ public class EgovWebEditorImageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/utl/wed/insertImage.do", method = RequestMethod.GET)
-	public String goInsertImage(Model model) throws Exception {
-
-		return "egovframework/com/utl/wed/EgovInsertImage";
-	}
+	
 
 
 	/**
@@ -94,9 +97,10 @@ public class EgovWebEditorImageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/utl/wed/insertImage.do", method = RequestMethod.POST)
+	@PostMapping("/utl/wed/insertImage.do")
 	public String imageUpload(MultipartHttpServletRequest request, Model model) throws Exception {
 
+		model.addAttribute("imageUpload", new ComDefaultVO());
 		uploadImageFiles(request, model);
 		return "egovframework/com/utl/wed/EgovInsertImage";
 	}
@@ -111,7 +115,7 @@ public class EgovWebEditorImageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/utl/wed/insertImageCk.do", method = RequestMethod.POST)
+	@PostMapping("/utl/wed/insertImageCk.do")
 	public String imageUploadCk(@RequestParam(value = "CKEditorFuncNum", required=false) String ckEditorFuncNum, MultipartHttpServletRequest mRequest, HttpServletResponse response, Model model) throws Exception {
 		model.addAttribute("ckEditorFuncNum", parseCkEditorFuncNum(ckEditorFuncNum));
 		uploadImageFiles(mRequest, model);
@@ -173,14 +177,31 @@ public class EgovWebEditorImageController {
 	 */
 	@RequestMapping(value = "/utl/web/imageSrc.do",method = RequestMethod.GET)
 	public void download(HttpServletRequest request, HttpServletResponse response) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = egovAssertLoginUser();
+
 		//2017.12.12 - 출력 모듈 경로 변경 취약점 조치
 		//KISA 보안약점 조치 (2018-10-29, 윤창원)
-		String subPath = this.decrypt(EgovStringUtil.isNullToString(request.getParameter("path")));
-		String physical = this.decrypt(EgovStringUtil.isNullToString(request.getParameter("physical")));
-		String mimeType = this.decrypt(EgovStringUtil.isNullToString(request.getParameter("contentType")));
+		String pathParam = EgovStringUtil.isNullToString(request.getParameter("path"));
+		String physicalParam = EgovStringUtil.isNullToString(request.getParameter("physical"));
+		String contentTypeParam = EgovStringUtil.isNullToString(request.getParameter("contentType"));
+		String subPath = this.decrypt(pathParam);
+		String physical = this.decrypt(physicalParam);
+		String mimeType = this.decrypt(contentTypeParam);
+
+		// 2026.07.13 KISA 보안취약점 조치 - 복호화 실패 시 평문 파라미터 사용 금지
+		if (subPath.isEmpty() || physical.isEmpty() || subPath.equals(pathParam) || physical.equals(physicalParam)) {
+			throw new FileNotFoundException();
+		}
 
 		if ((subPath.indexOf("..") >= 0) || (physical.indexOf("..") >= 0) ) {
 			throw new Exception("Security Exception - illegal url called.");
+		}
+
+		Path uploadRoot = Paths.get(uploadDir).toAbsolutePath().normalize();
+		Path resolvedPath = uploadRoot.resolve(subPath).resolve(physical).normalize();
+		if (!resolvedPath.startsWith(uploadRoot)) {
+			throw new FileNotFoundException();
 		}
 
 		String ext = "";
@@ -223,13 +244,44 @@ public class EgovWebEditorImageController {
 	 */
 	private String decrypt(String decrypt){
 
+		if (decrypt == null || decrypt.isEmpty()) {
+			return "";
+		}
 		try {
 			//return cryptoService.decrypt(decrypt); // Handles URLDecoding.
 			return cryptoService.decryptNone(decrypt); // Does not handle URLDecoding.
 		} catch(IllegalArgumentException e) {
 			LOGGER.error("[IllegalArgumentException] Try/Catch...usingParameters Running : "+ e.getMessage());
 		}
-		return decrypt;
+		// 2026.07.13 KISA 보안취약점 조치 - 복호화 실패 시 평문 반환 금지
+		return "";
+	}
+
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 }

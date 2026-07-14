@@ -27,6 +27,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -160,7 +161,7 @@ public class EgovReprtStatsController {
 	 * @param reprtStatsVO - 보고서통계 VO
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping("/sts/rst/getReprtStats.do")
+	@PostMapping("/sts/rst/getReprtStats.do")
 	public String selectReprtStats(@ModelAttribute("reprtStatsVO") ReprtStatsVO reprtStatsVO,
 			                       @RequestParam("reprtTy") String reprtTy,
 			                       @RequestParam("reprtSttus") String reprtSttus,
@@ -180,7 +181,7 @@ public class EgovReprtStatsController {
 	 * @param reprtStats - 보고서통계 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping("/sts/rst/addViewReprtStats.do")
+	@PostMapping("/sts/rst/addViewReprtStats.do")
 	public String insertViewReprtStats(@ModelAttribute("reprtStatsVO") ReprtStatsVO reprtStatsVO,
 			                           @ModelAttribute("comDefaultCodeVO") ComDefaultCodeVO comDefaultCodeVO,
 			                            ModelMap model) throws Exception {
@@ -199,7 +200,7 @@ public class EgovReprtStatsController {
 	 * @param reprtStats - 보고서통계 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping("/sts/rst/addReprtStats.do")
+	@PostMapping("/sts/rst/addReprtStats.do")
 	public String insertReprtStats(@Valid @ModelAttribute("reprtStats") ReprtStats reprtStats,
 			BindingResult bindingResult,
 			@ModelAttribute("reprtStatsVO") ReprtStatsVO reprtStatsVO,

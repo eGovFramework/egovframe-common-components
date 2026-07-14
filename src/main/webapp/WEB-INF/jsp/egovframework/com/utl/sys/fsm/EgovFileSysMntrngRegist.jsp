@@ -109,7 +109,7 @@
 			<td class="left">
 				<spring:message code="comUtlSysFsm.fileSysMntrng.fileSysNm.label" var="fileSysNmTitle" />
 			    <form:input path="fileSysNm" maxlength="60" title="${fileSysNmTitle}" cssStyle="width:250px"/>
-				<a class="btn02" href="<c:url value='/utl/sys/fsm/selectFileSysMg.do'/>?searchWrd=<c:out value='${fileSysMntrngVO.searchWrd}'/>&amp;searchCnd=<c:out value='${fileSysMntrngVO.searchCnd}'/>&amp;pageIndex=<c:out value='${fileSysMntrngVO.pageIndex}'/>" onclick="fn_egov_select_filesysmg(); return false;"><spring:message code="comUtlSysFsm.fileSysMntrngRegist.selectFileSysMg"/></a><!-- 파일시스템확인 -->
+				<a class="btn02" href="javascript:void(0);" onclick="fn_egov_select_filesysmg(); return false;"><spring:message code="comUtlSysFsm.fileSysMntrngRegist.selectFileSysMg"/></a><!-- 파일시스템확인 -->
 				<div><form:errors path="fileSysNm" cssClass="error"/></div>
 			</td>
 		</tr>
@@ -158,7 +158,7 @@
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fn_egov_insert_filesysmntrng(); return false;" />
-		<span class="btn_s"><a href="<c:url value='/utl/sys/fsm/selectFileSysMntrngList.do'/>?searchWrd=<c:out value='${fileSysMntrngVO.searchWrd}'/>&amp;searchCnd=<c:out value='${fileSysMntrngVO.searchCnd}'/>&amp;pageIndex=<c:out value='${fileSysMntrngVO.pageIndex}'/>" onclick="fn_egov_list_filesysmntrng(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_list_filesysmntrng(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

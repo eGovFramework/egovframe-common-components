@@ -22,6 +22,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <!DOCTYPE html>
 <html lang="ko">
@@ -182,7 +183,7 @@
 
 <div class="board">
 
-	<form name="frm" method="post" action="<c:url value='/cop/smt/mtm/selectMemoTodoList.do'/>">
+	<form:form name="frm" modelAttribute="searchVO" method="post" action="${pageContext.request.contextPath}/cop/smt/mtm/selectMemoTodoList.do">
 	
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 	<input type="hidden" name="todoId">
@@ -209,13 +210,12 @@
 				</select>
 				<input class="s_input2 vat" name="searchWrd" type="text" value='<c:out value="${searchVO.searchWrd}"/>' onkeypress="press(event);" title="<spring:message code="title.search"/> <spring:message code="input.input"/>" style="width:100px" /><!-- 검색어 입력-->
 				
-				<span class="btn_b"><a href="<c:url value='/cop/smt/mtm/selectMemoTodoListToday.do'/>" onclick="fn_egov_select_memotoday(); return false;" title="<spring:message code="comCopSmtMtm.memoTodoList.toDoListToday"/>"><spring:message code="comCopSmtMtm.memoTodoList.toDoListToday"/></a></span><!-- 오늘의 할일 -->
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fn_egov_select_memotoday(); return false;" title="<spring:message code="comCopSmtMtm.memoTodoList.toDoListToday"/>"><spring:message code="comCopSmtMtm.memoTodoList.toDoListToday"/></a></span><!-- 오늘의 할일 -->
 				<input class="s_btn" type="submit" value="<spring:message code="title.inquire"/>" title="<spring:message code="title.inquire"/>" onclick="fn_egov_select_memotodo('1'); return false;" /><!-- 조회 -->
-				<span class="btn_b"><a href="<c:url value='/cop/smt/mtm/addMemoTodo.do'/>" onclick="fn_egov_insert_memotodo('1'); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fn_egov_insert_memotodo('1'); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
-	</form>
 	
 	<table class="board_list">
 		<caption></caption>
@@ -245,17 +245,8 @@
 			    	~
 			    	<c:out value="${result.todoEndHour}"/>:<c:out value="${result.todoEndMin}"/>
 			    </td>
-			    <td>
-			     <form name="memoReprtVO" method="post" action="<c:url value='/cop/smt/mtm/selectMemoTodo.do'/>">
-			    	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-			    	<input name="searchCnd" type="hidden" value="<c:out value='${searchVO.searchCnd}'/>">
-			    	<input name="searchWrd" type="hidden" value="<c:out value='${searchVO.searchWrd}'/>">
-			    	<input name="searchBgnDe" type="hidden" value="<c:out value='${searchVO.searchBgnDe}'/>">
-			    	<input name="searchEndDe" type="hidden" value="<c:out value='${searchVO.searchEndDe}'/>">
-			    	<input name="searchSttus" type="hidden" value="<c:out value='${searchVO.searchDe}'/>">
-					<input type="hidden" name="todoId" value="<c:out value="${result.todoId}"/>">
-				 	<span class="link"><input type="submit" value="<c:out value="${result.todoNm}"/>" onclick="fn_egov_inqire_memotodo('<c:out value="${result.todoId}"/>'); return false;" style="text-align : left;"></span>
-				 </form>
+			    <td class="left">
+					<a href="javascript:void(0);" onclick="fn_egov_inqire_memotodo('<c:out value="${result.todoId}"/>'); return false;"><c:out value="${result.todoNm}"/></a>
 				</td>
 				<td><c:out value="${result.wrterNm}"/></td>
 			    <td><c:out value="${fn:substring(result.frstRegisterPnttm, 0, 10)}"/></td>
@@ -275,6 +266,7 @@
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_memotodo"/>
 		</ul>
 	</div>
+	</form:form>
 </div>
 </body>
 </html>

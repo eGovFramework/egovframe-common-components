@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -117,7 +118,7 @@ public class EgovAuthorRoleController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sec/ram/EgovAuthorRoleInsert.do", method = RequestMethod.POST)
+	@PostMapping("/sec/ram/EgovAuthorRoleInsert.do")
 	@RequireAdmin
 	public String insertAuthorRole(@RequestParam("authorCode") String authorCode,
 			                       @RequestParam("roleCodes") String roleCodes,

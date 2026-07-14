@@ -23,6 +23,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -60,35 +62,9 @@
 
 		varForm.checkedAnnvrsryManageForInsert.value=checkAnnvrsryManage;
 		varForm.action = "<c:url value='/uss/ion/ans/insertAnnvrsryManageBnde.do'/>";
-		
-		var formData = new FormData();
-		formData.append("searchCondition", varForm.searchCondition.value);
-		formData.append("checkedAnnvrsryManageForInsert", varForm.checkedAnnvrsryManageForInsert.value);
-		formData.append("searchKeyword", varForm.searchKeyword.value);
-		formData.append("cmd", varForm.cmd.value);
-		formData.append("usid", varForm.usid.value);
-		formData.append("annvrsryDe", varForm.annvrsryDe.value);
-		formData.append("cldrSe", varForm.cldrSe.value);
-		formData.append("annvrsrySe", varForm.annvrsrySe.value);
-		formData.append("annvrsryNm", varForm.annvrsryNm.value);
-		formData.append("reptitSe", varForm.reptitSe.value);
 
-		if(confirm("<spring:message code="common.save.msg" />")){/* 저장 하시겠습니까? */			
-			$.ajax({
-				type : "post",
-				enctype : "multipart/form-data",
-				url : varForm.action,
-				data : formData,
-				processData : false,
-				contentType : false,
-				success : function(data) {
-					parent.window.fncPageReload();
-					self.close();
-				},
-				error : function(request, status, error) {
-					alert("등록 실패");
-				}
-			});
+		if(confirm("<spring:message code="common.save.msg" />")){/* 저장 하시겠습니까? */
+			varForm.submit();
 		}
 	}
 
@@ -133,12 +109,20 @@
 </script>
 </head>
 <body>
+<c:if test="${message eq 'true'}">
+<script type="text/javascript">
+	if (parent && parent.window && typeof parent.window.fncPageReload === 'function') {
+		parent.window.fncPageReload();
+	}
+	self.close();
+</script>
+</c:if>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
 <div class="board">
 	<h1><spring:message code="comUssIonAns.annvrsryManageBndeListPop.title"/></h1><!-- 기념일일괄등록 -->
 	<span>※Excel example file Location : ../WEB-INF/jsp/egovframework/com/uss/ion/ans/example/excelAnniversay.xls</span>
-	<form name="listForm" id="listForm" action="<c:url value='/uss/ion/ans/EgovAnnvrsryManageListPopAction.do'/>" method="post" enctype="multipart/form-data">
+	<form:form name="listForm" modelAttribute="searchVO" id="listForm" action="${pageContext.request.contextPath}/uss/ion/ans/EgovAnnvrsryManageListPopAction.do" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="searchCondition">
 	<input type="hidden" name="checkedAnnvrsryManageForInsert">
 	<input type="hidden" name="searchKeyword">
@@ -197,7 +181,7 @@
 			</c:if>
 		</tbody>
 	</table>
-		</form>
+		</form:form>
 </div>
 </body>
 </html>

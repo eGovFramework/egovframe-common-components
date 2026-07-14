@@ -28,6 +28,7 @@
 <%@ page import='egovframework.com.utl.fcc.service.EgovStringUtil' %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <%
 java.util.Calendar cal = java.util.Calendar.getInstance();
@@ -149,7 +150,7 @@ int newLine = 0;
 </script>
 </head>
 <body style="margin:0"> 
-<form name="leaderSchdulVO" id="leaderSchdulVO" action="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulMonthList.do' />?year=<%=year%>&month=<%=month%>&searchCondition=LEADER_ID" method="post" target="_self">
+<form:form name="leaderSchdulVO" modelAttribute="leaderSchdulVO" id="leaderSchdulVO" action="${pageContext.request.contextPath}/cop/smt/lsm/usr/selectLeaderSchdulMonthList.do?year=<%=year%>&month=<%=month%>&searchCondition=LEADER_ID" method="post" target="_self">
 	<div id="content" style="width:712px;">
 	
 		<!-- 검색영역 -->
@@ -231,7 +232,7 @@ for(int index = 1; index <= endDay; index++)
 
 	out.println("<td>");
 %>	
-	<a href="<c:url value='/cop/smt/lsm/mng/addLeaderSchdul.do' />?schdulBgnDe=<%=iUseDate%>&amp;schdulEndDe=<%=iUseDate%>&amp;searchMode=MONTH&amp;year=<%=year%>&amp;month=<%=month%>" target="_parent" onclick="JavaScript:fn_egov_regist_LeaderSchdul('<%=iUseDate%>');"><font color="<%=color%>"><%=index%></font></a>
+	<a href="JavaScript:fn_egov_regist_LeaderSchdul('<%=iUseDate%>');"><font color="<%=color%>"><%=index%></font></a>
 <%	
 	out.println("<br />");
 	
@@ -257,7 +258,7 @@ for(int index = 1; index <= endDay; index++)
 					<tr>
 						<td>
 							<div class='divDotText'>
-								<a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdul.do' />?schdulId=<%=schdulId%>&amp;schdulDe=<%=iUseDate%>&amp;searchMode=MONTH&amp;year=<%=year%>&amp;month=<%=month%>" target="_parent" onClick="JavaScript:fn_egov_detail_LeaderSchdul('<%=schdulId %>', '<%=iUseDate%>')">
+								<a href="JavaScript:fn_egov_detail_LeaderSchdul('<%=schdulId %>', '<%=iUseDate%>')">
 									<font style="font-weight : solid"><%=(String)leaderSchdulVO.getSchdulNm()%></font>
 								</a>
 							</div>
@@ -293,6 +294,6 @@ while(newLine > 0 && newLine < 7)
 		</table>
 	</div>
 	<input type="submit" value="" style="display:none;">
-</form>
+</form:form>
 </body>
 </html>

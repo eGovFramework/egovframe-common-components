@@ -16,6 +16,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -192,7 +193,7 @@ public class EgovBndtManageController {
 	 * @param bndtManageVO - 당직관리 VO
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/bnt/EgovBndtManageDetail.do")
+	@PostMapping("/uss/ion/bnt/EgovBndtManageDetail.do")
 	public String selectBndtManage(@ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO,
 			@RequestParam Map<?, ?> commandMap, ModelMap model)
 			throws Exception {
@@ -215,7 +216,7 @@ public class EgovBndtManageController {
 	 *
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/bnt/EgovBndtManageRegist.do")
+	@PostMapping("/uss/ion/bnt/EgovBndtManageRegist.do")
 	public String insertViewBndtManage(@ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO, ModelMap model) throws Exception {
 
 		bndtManageVO.setBndtDe(EgovDateUtil.formatDate(bndtManageVO.getBndtDe(), "-"));
@@ -230,7 +231,7 @@ public class EgovBndtManageController {
 	 * @param bndtManage - 당직관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/bnt/insertBndtManage.do")
+	@PostMapping("/uss/ion/bnt/insertBndtManage.do")
 	public String insertBndtManage(@Valid @ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 
@@ -253,7 +254,7 @@ public class EgovBndtManageController {
 	 * @param bndtManage - 당직관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/bnt/updtBndtManage.do")
+	@PostMapping("/uss/ion/bnt/updtBndtManage.do")
 	public String updtBndtManage(@Valid @ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 
@@ -276,7 +277,7 @@ public class EgovBndtManageController {
 	 * @param bndtManage - 당직관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/bnt/deleteBndtManage.do")
+	@PostMapping("/uss/ion/bnt/deleteBndtManage.do")
 	public String deleteBndtManage(@ModelAttribute("bndtManageVO") BndtManageVO bndtManageVO,
 			ModelMap model) throws Exception {
 
@@ -339,7 +340,7 @@ public class EgovBndtManageController {
 	 * @param bndtCeckManageVO - 당직체크 VO
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/bnt/EgovBndtCeckManage.do")
+	@PostMapping("/uss/ion/bnt/EgovBndtCeckManage.do")
 	public String selectBndtCeckManage(@ModelAttribute("bndtCeckManageVO") BndtCeckManageVO bndtCeckManageVO,
 			@RequestParam Map<?, ?> commandMap,
 			ModelMap model) throws Exception {
@@ -363,7 +364,7 @@ public class EgovBndtManageController {
 	 * @return String - 리턴 Url
 	 */
 	@SuppressWarnings("unused")
-	@RequestMapping(value = "/uss/ion/bnt/EgovBndtCeckManageRegist.do")
+	@PostMapping("/uss/ion/bnt/EgovBndtCeckManageRegist.do")
 	public String insertViewBndtCeckManage(@ModelAttribute("bndtCeckManageVO") BndtCeckManageVO bndtCeckManageVO,
 			ModelMap model) throws Exception {
 		// 로그인 객체 선언
@@ -384,7 +385,7 @@ public class EgovBndtManageController {
 	 * @param bndtCeckManage - 당직체크 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/bnt/insertBndtCeckManage.do")
+	@PostMapping("/uss/ion/bnt/insertBndtCeckManage.do")
 	public String insertBndtCeckManage(@Valid @ModelAttribute("bndtCeckManageVO") BndtCeckManageVO bndtCeckManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 
@@ -413,7 +414,7 @@ public class EgovBndtManageController {
 	 * @param bndtCeckManage - 당직체크 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/bnt/updtBndtCeckManage.do")
+	@PostMapping("/uss/ion/bnt/updtBndtCeckManage.do")
 	public String updtBndtCeckManage(@Valid @ModelAttribute("bndtCeckManageVO") BndtCeckManageVO bndtCeckManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 
@@ -440,7 +441,7 @@ public class EgovBndtManageController {
 	 * @param bndtCeckManage - 당직체크 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/bnt/deleteBndtCeckManage.do")
+	@PostMapping("/uss/ion/bnt/deleteBndtCeckManage.do")
 	public String deleteBndtCeckManage(@ModelAttribute("bndtCeckManageVO") BndtCeckManageVO bndtCeckManageVO,
 			ModelMap model) throws Exception {
 
@@ -457,7 +458,7 @@ public class EgovBndtManageController {
 	 * @param bndtDiaryVO - 당직일지 VO
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/bnt/selectBndtDiary.do")
+	@PostMapping("/uss/ion/bnt/selectBndtDiary.do")
 	public String selectBndtDiary(@ModelAttribute("bndtDiaryVO") BndtDiaryVO bndtDiaryVO,
 			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd"); // 상세정보 구분
@@ -483,7 +484,7 @@ public class EgovBndtManageController {
 	 * @param bndtDiary - 당직일지 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/bnt/insertBndtDiary.do")
+	@PostMapping("/uss/ion/bnt/insertBndtDiary.do")
 	public String insertBndtDiary(
 			@RequestParam(value = "bndtCeckSe", required = false) String[] bndtCeckSe,
 			@RequestParam(value = "bndtCeckCd", required = false) String[] bndtCeckCd,
@@ -539,7 +540,7 @@ public class EgovBndtManageController {
 	 * @param bndtDiary - 당직일지 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/bnt/updtBndtDiary.do")
+	@PostMapping("/uss/ion/bnt/updtBndtDiary.do")
 	public String updtBndtDiary(
 			@RequestParam(value = "bndtCeckSe", required = false) String[] bndtCeckSe,
 			@RequestParam(value = "bndtCeckCd", required = false) String[] bndtCeckCd,
@@ -595,7 +596,7 @@ public class EgovBndtManageController {
 	 * @param bndtDiary - 당직일지 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/bnt/deleteBndtDiary.do")
+	@PostMapping("/uss/ion/bnt/deleteBndtDiary.do")
 	public String deleteBndtDiary(@ModelAttribute("bndtDiaryVO") BndtDiaryVO bndtDiaryVO,
 			ModelMap model) throws Exception {
 
@@ -693,7 +694,7 @@ public class EgovBndtManageController {
 	 * @param bndtManageVO - 당직관리 VO
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/bnt/insertBndtManageBnde.do")
+	@PostMapping("/uss/ion/bnt/insertBndtManageBnde.do")
 	public String insertBndtManageBnde(
 			@RequestParam(value = "checkedBndtManageForInsert", required = false) String checkedBndtManageForInsert,
 			@RequestParam(value = "searchKeyword", required = false) String searchKeyword,

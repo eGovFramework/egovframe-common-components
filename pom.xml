@@ -551,6 +551,13 @@
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 		</dependency>
+
+		<!-- CKEditor 등록 컨텐츠(이미지 포함) 조회화면 출력 시 XSS 방지를 위한 HTML Sanitizer -->
+		<dependency>
+			<groupId>org.jsoup</groupId>
+			<artifactId>jsoup</artifactId>
+			<version>1.18.3</version>
+		</dependency>
 	</dependencies>
 
 	<build>

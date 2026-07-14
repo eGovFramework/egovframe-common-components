@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -80,7 +81,7 @@ public class EgovRecentSrchwrdController {
 	 */
 	@SuppressWarnings("unused")
 	@IncludedInfo(name = "최근검색어 조회", order = 760, gid = 50)
-	@RequestMapping(value = "/uss/ion/rsm/listRecentSrchwrd.do")
+	@RequestMapping("/uss/ion/rsm/listRecentSrchwrd.do")
 	public String egovRecentSrchwrdList(@ModelAttribute("recentSrchwrd") RecentSrchwrd recentSrchwrd, ModelMap model)
 			throws Exception {
 
@@ -118,9 +119,12 @@ public class EgovRecentSrchwrdController {
 	 * @return "egovframework/com/uss/ion/rsm/EgovRecentSrchwrdDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/rsm/detailRecentSrchwrd.do")
+	@PostMapping("/uss/ion/rsm/detailRecentSrchwrd.do")
 	public String egovRecentSrchwrdDetail(@ModelAttribute("recentSrchwrd") RecentSrchwrd recentSrchwrd,
 			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = egovAssertLoginUser();
+
 
 		String sLocationUrl = "egovframework/com/uss/ion/rsm/EgovRecentSrchwrdDetail";
 
@@ -146,7 +150,7 @@ public class EgovRecentSrchwrdController {
 	 * @return "egovframework/com/uss/ion/rsm/EgovRecentSrchwrdUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/rsm/updtRecentSrchwrdView.do")
+	@PostMapping("/uss/ion/rsm/updtRecentSrchwrdView.do")
 	public String egovRecentSrchwrdModify(RecentSrchwrd recentSrchwrd, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -171,7 +175,7 @@ public class EgovRecentSrchwrdController {
 	 * @return "redirect:/uss/ion/rsm/listRecentSrchwrd.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/rsm/updtRecentSrchwrd.do")
+	@PostMapping("/uss/ion/rsm/updtRecentSrchwrd.do")
 	public String egovRecentSrchwrdModify(@Valid RecentSrchwrd recentSrchwrd, BindingResult bindingResult, ModelMap model)
 			throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -207,7 +211,7 @@ public class EgovRecentSrchwrdController {
 	 * @return "/uss/ion/rsm/EgovOnlinePollRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/rsm/registRecentSrchwrdView.do")
+	@PostMapping("/uss/ion/rsm/registRecentSrchwrdView.do")
 	public String egovRecentSrchwrdRegist(@ModelAttribute("recentSrchwrd") RecentSrchwrd recentSrchwrd, ModelMap model)
 			throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -230,7 +234,7 @@ public class EgovRecentSrchwrdController {
 	 * @return "redirect:/uss/ion/rsm/listRecentSrchwrd.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/rsm/registRecentSrchwrd.do")
+	@PostMapping("/uss/ion/rsm/registRecentSrchwrd.do")
 	public String egovRecentSrchwrdRegist(@RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("recentSrchwrd") RecentSrchwrd recentSrchwrd, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -269,7 +273,7 @@ public class EgovRecentSrchwrdController {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unused")
-	@RequestMapping(value = "/uss/ion/rsm/listRecentSrchwrdResult.do")
+	@PostMapping("/uss/ion/rsm/listRecentSrchwrdResult.do")
 	public String egovRecentSrchwrdResultList(@ModelAttribute("recentSrchwrd") RecentSrchwrd recentSrchwrd,
 			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
@@ -324,7 +328,7 @@ public class EgovRecentSrchwrdController {
 	 * @return "model"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/rsm/listRecentSrchwrdResultSerach.do")
+	@PostMapping("/uss/ion/rsm/listRecentSrchwrdResultSerach.do")
 	protected ModelAndView egovRecentSrchwrdResultSerachList(@RequestParam("searchKeyword") String searchKeyword,
 			@RequestParam(value = "srchwrdManageId", required = false) String srchwrdManageId,
 			RecentSrchwrd recentSrchwrd) throws Exception {
@@ -374,7 +378,7 @@ public class EgovRecentSrchwrdController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/rsm/registRecentSrchwrdResult.do")
+	@PostMapping("/uss/ion/rsm/registRecentSrchwrdResult.do")
 	public void egovRecentSrchwrdRegist(@RequestParam Map<?, ?> commandMap, HttpServletResponse response,
 			RecentSrchwrd recentSrchwrd) throws Exception {
 		
@@ -403,6 +407,33 @@ public class EgovRecentSrchwrdController {
 		  
 		      out.flush();
 		  
+	}
+
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 }

@@ -24,9 +24,12 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="ko">
 	<head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8">
 		<title><spring:message code="comDamMapTea.comDamMapTeamList.title"/></title><!-- 지식맵(조직별)관리 목록 -->
 		<link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
@@ -63,7 +66,16 @@
 		 * 등록 처리 함수 
 		 ******************************************************** */
 		function fnRegist(){
-			location.href = "<c:url value='/dam/map/tea/EgovComDamMapTeamRegist.do'/>";
+			fn_egov_postNavigate("<c:url value='/dam/map/tea/EgovComDamMapTeamRegist.do' />");
+		}
+		/* ********************************************************
+		 * 상세화면 처리 함수
+		 ******************************************************** */
+		function fn_egov_detail_MapTeam(orgnztId){
+			var form = document.listForm;
+			form.orgnztId.value = orgnztId;
+			form.action = "<c:url value='/dam/map/tea/EgovComDamMapTeamDetail.do'/>";
+			form.submit();
 		}
 		
 		function press(event) {
@@ -83,7 +95,7 @@
 	<div class="board">
 		<h1><spring:message code="comDamMapTea.comDamMapTeamList.pageTop.title"/></h1><!-- 지식맵(조직별) 목록 -->
 	
-		<form name="listForm" action="<c:url value='/dam/map/tea/EgovComDamMapTeamList.do'/>" method="post">
+		<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/dam/map/tea/EgovComDamMapTeamList.do" method="post">
 		<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 			<ul>
 				<li>
@@ -123,7 +135,7 @@
 					<tr>				
 						<td><c:out value="${(searchVO.pageIndex - 1) * searchVO.pageSize + status.count}"/></td>
 						<td>
-						<a href="<c:url value='/dam/map/tea/EgovComDamMapTeamDetail.do'/>?pageIndex=${searchVO.pageIndex}&amp;orgnztId=${resultInfo.orgnztId}"><c:out value="${resultInfo.orgnztNm}"/></a>								
+						<a href="javascript:void(0);" onclick="fn_egov_detail_MapTeam('<c:out value="${resultInfo.orgnztId}"/>'); return false;"><c:out value="${resultInfo.orgnztNm}"/></a>								
 						</td>
 						<td>${resultInfo.orgnztId}</td>
 						<td>${resultInfo.knoUrl}</td>
@@ -151,7 +163,7 @@
 		
 		<input type="hidden" name="orgnztId">	
 		<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-		</form>
+		</form:form>
 	</div>
 	
 	</body>

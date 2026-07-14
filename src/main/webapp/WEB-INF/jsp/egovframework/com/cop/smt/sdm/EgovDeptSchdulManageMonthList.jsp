@@ -179,6 +179,7 @@ String sTodate = formatter.format(new java.util.Date());
 </HEAD>
 <BODY style="border: 0px solid #dedede;">
 <form name="deptSchdulManageVO" id="deptSchdulManageVO" action="" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <DIV id="content" style="width:712px;">
 
 <div class="sort_area">

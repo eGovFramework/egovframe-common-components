@@ -7,6 +7,8 @@ import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import egovframework.com.cmm.EgovWebUtil;
+
 /**
  * 협업 비로그인 유저용 컨트롤러 클래스
  * @author 공통서비스개발팀 이삼섭
@@ -20,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestParam;
  *   수정일      수정자           수정내용
  *  -------    --------    ---------------------------
  *   2009.4.10  이삼섭          최초 생성
+ *   2026.07.10  유지보수        NCSC 보안점검 반영 (팝업 requestUrl XSS 방지)
  *
  * </pre>
  */
@@ -38,11 +41,11 @@ public class EgovCopViewController {
 	@RequestMapping("/cop/com/openPopup.do")
 	public String openPopupWindow(@RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
 
-		String requestUrl = (String) commandMap.get("requestUrl");
-		String trgetId = (String) commandMap.get("trgetId");
-		String width = (String) commandMap.get("width");
-		String height = (String) commandMap.get("height");
-		String typeFlag = (String) commandMap.get("typeFlag");
+		String requestUrl = EgovWebUtil.sanitizeRelativeRequestUrl((String) commandMap.get("requestUrl"));
+		String trgetId = EgovWebUtil.removeCRLF(EgovWebUtil.clearXSSMinimum((String) commandMap.get("trgetId")));
+		String width = EgovWebUtil.removeCRLF((String) commandMap.get("width"));
+		String height = EgovWebUtil.removeCRLF((String) commandMap.get("height"));
+		String typeFlag = EgovWebUtil.removeCRLF(EgovWebUtil.clearXSSMinimum((String) commandMap.get("typeFlag")));
 
 		if (trgetId != null && trgetId != "") {
 			if (typeFlag != null && typeFlag != "") {

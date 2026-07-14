@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -185,7 +186,7 @@ public class EgovWikMnthngReprtController {
 	 *
 	 * @param wikMnthngReprt
 	 */
-	@RequestMapping("/cop/smt/wmr/addWikMnthngReprt.do")
+	@PostMapping("/cop/smt/wmr/addWikMnthngReprt.do")
 	public String addWikMnthngReprt(@ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 		String sLocationUrl = "egovframework/com/cop/smt/wmr/EgovWikMnthngReprtRegist";
@@ -225,7 +226,7 @@ public class EgovWikMnthngReprtController {
 	 *
 	 * @param wikMnthngReprt
 	 */
-	@RequestMapping("/cop/smt/wmr/modifyWikMnthngReprt.do")
+	@PostMapping("/cop/smt/wmr/modifyWikMnthngReprt.do")
 	public String modifyWikMnthngReprt(@ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -265,7 +266,7 @@ public class EgovWikMnthngReprtController {
 	 *
 	 * @param wikMnthngReprtVO
 	 */
-	@RequestMapping("/cop/smt/wmr/selectWikMnthngReprt.do")
+	@PostMapping("/cop/smt/wmr/selectWikMnthngReprt.do")
 	public String selectWikMnthngReprt(@ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO,
 			ModelMap model) throws Exception {
 
@@ -298,7 +299,7 @@ public class EgovWikMnthngReprtController {
 	 *
 	 * @param wikMnthngReprt
 	 */
-	@RequestMapping("/cop/smt/wmr/updateWikMnthngReprt.do")
+	@PostMapping("/cop/smt/wmr/updateWikMnthngReprt.do")
 	public String updateWikMnthngReprt(final MultipartHttpServletRequest multiRequest, EgovSecurityMap securityMap,
 			@Valid @ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO, BindingResult bindingResult, ModelMap model) throws Exception{
     	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -360,7 +361,7 @@ public class EgovWikMnthngReprtController {
 	 *
 	 * @param wikMnthngReprt
 	 */
-	@RequestMapping("/cop/smt/wmr/insertWikMnthngReprt.do")
+	@PostMapping("/cop/smt/wmr/insertWikMnthngReprt.do")
 	public String insertWikMnthngReprt(final MultipartHttpServletRequest multiRequest,
 			@Valid @ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO, BindingResult bindingResult, ModelMap model) throws Exception{
     	// 0. Spring Security 사용자권한 처리
@@ -419,7 +420,7 @@ public class EgovWikMnthngReprtController {
 	 *
 	 * @param wikMnthngReprt
 	 */
-	@RequestMapping("/cop/smt/wmr/deleteWikMnthngReprt.do")
+	@PostMapping("/cop/smt/wmr/deleteWikMnthngReprt.do")
 	public String deleteWikMnthngReprt(@ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO, ModelMap model) throws Exception{
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		// 0. Spring Security 사용자권한 처리
@@ -453,7 +454,7 @@ public class EgovWikMnthngReprtController {
 	 *
 	 * @param wikMnthngReprt
 	 */
-	@RequestMapping("/cop/smt/wmr/confirmWikMnthngReprt.do")
+	@PostMapping("/cop/smt/wmr/confirmWikMnthngReprt.do")
 	public String confirmWikMnthngReprt(@ModelAttribute("wikMnthngReprtVO") WikMnthngReprtVO wikMnthngReprtVO, ModelMap model) throws Exception{
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();

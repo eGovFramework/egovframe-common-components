@@ -118,7 +118,6 @@ function fncSelectServerEqpmnRelateList(pageNo){
 }
 
 function fncSelectServerList(){
-    // document.listForm.pageIndex.value = pageNo;
     document.listForm.action = "<c:url value='/sym/sym/srv/selectServerList.do'/>";
     document.listForm.submit();
 }
@@ -153,7 +152,7 @@ function press() {
 <div class="board">
 	<h1><spring:message code="comSymSymSrv.serverEqpmnRelateRegist.pageTop.title"/></h1><!-- 서버H/W 등록 -->
 
-	<form name="listForm" action="<c:url value='/sym/sym/srv/selectServerEqpmnRelateList.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/sym/sym/srv/selectServerEqpmnRelateList.do" method="post">
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
 			<li>
@@ -161,7 +160,7 @@ function press() {
 				<input class="s_input2 vat" name="searchKeyword" type="text" value='<c:out value="${server.serverId}"/>' size="20" onkeypress="press();" readonly="readonly" />
 				<input id="strServerNm" class="s_input2 vat" name="searchKeyword" type="text" value='<c:out value="${server.serverNm}"/>' size="20" onkeypress="press();" title="<spring:message code="title.search"/>" readonly="readonly" /><!-- 검색 -->
 				
-				<span class="btn_b"><a href="<c:url value='/sym/sym/srv/saveServerEqpmnRelate.do'/>?pageIndex=<c:out value='${serverEqpmnRelateVO.pageIndex}'/>" onclick="fncAddServerEqpmnRelateInsert(); return false;" title='<spring:message code="button.save" />'><spring:message code="button.save" /></a></span><!-- 저장 -->
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fncAddServerEqpmnRelateInsert(); return false;" title='<spring:message code="button.save" />'><spring:message code="button.save" /></a></span><!-- 저장 -->
 				<span class="btn_b"><a href="#" onclick="self.close();"><spring:message code="button.close" /></a></span><!-- 닫기 -->
 			</li>
 		</ul>
@@ -223,7 +222,7 @@ function press() {
 	<input type="hidden" name="serverEqpmnIds"/>
 	<input type="hidden" name="regYns"/>
 	<input type="hidden" name="pageIndex" value="<c:if test="${empty serverEqpmnRelateVO.pageIndex }">1</c:if><c:if test="${!empty serverEqpmnRelateVO.pageIndex }"><c:out value='${serverEqpmnRelateVO.pageIndex}'/></c:if>">
-	</form>
+	</form:form>
 	
 </div>
 

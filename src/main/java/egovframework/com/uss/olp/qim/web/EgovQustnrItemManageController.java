@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -81,6 +82,11 @@ public class EgovQustnrItemManageController {
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
 		if(sCmd.equals("del")){
+			// 2026.07.13 KISA 보안취약점 조치 - 삭제는 POST만 허용
+			jakarta.servlet.http.HttpServletRequest _req = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest();
+			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
+				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
+			}
 			egovQustnrItemManageService.deleteQustnrItemManage(qustnrItemManageVO);
 		}
 
@@ -184,7 +190,7 @@ public class EgovQustnrItemManageController {
 	 * @return  "/uss/olp/qim/EgovQustnrItemManageDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qim/EgovQustnrItemManageDetail.do")
+	@PostMapping("/uss/olp/qim/EgovQustnrItemManageDetail.do")
 	public String egovQustnrItemManageDetail(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			QustnrItemManageVO qustnrItemManageVO,
@@ -197,6 +203,15 @@ public class EgovQustnrItemManageController {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String)commandMap.get("cmd");
 
 		if(sCmd.equals("del")){
+			// 2026.07.13 KISA 보안취약점 조치 - 삭제는 POST만 허용
+			jakarta.servlet.http.HttpServletRequest _req = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest();
+			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
+				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
+			}
+			java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+			if (auth == null || !auth.contains("ROLE_ADMIN")) {
+				throw new IllegalStateException("권한이 없습니다.");
+			}
 			egovQustnrItemManageService.deleteQustnrItemManage(qustnrItemManageVO);
 			sLocationUrl = "redirect:/uss/olp/qim/EgovQustnrItemManageList.do";
 		}else{
@@ -215,7 +230,7 @@ public class EgovQustnrItemManageController {
 	 * @return "egovframework/com/uss/olp/qim/EgovQustnrItemManageModify"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qim/EgovQustnrItemManageModifyView.do")
+	@PostMapping("/uss/olp/qim/EgovQustnrItemManageModifyView.do")
 	public String qustnrItemManageModifyView(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@ModelAttribute("qustnrItemManageVO") QustnrItemManageVO qustnrItemManageVO, ModelMap model)
 			throws Exception {
@@ -247,7 +262,7 @@ public class EgovQustnrItemManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qim/EgovQustnrItemManageModify.do")
+	@PostMapping("/uss/olp/qim/EgovQustnrItemManageModify.do")
 	public String qustnrItemManageModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@Valid @ModelAttribute("qustnrItemManageVO") QustnrItemManageVO qustnrItemManageVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
@@ -291,7 +306,7 @@ public class EgovQustnrItemManageController {
 	 * @return "egovframework/com/uss/olp/qim/EgovQustnrItemManageRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qim/EgovQustnrItemManageRegistView.do")
+	@PostMapping("/uss/olp/qim/EgovQustnrItemManageRegistView.do")
 	public String qustnrItemManageRegistView(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@ModelAttribute("qustnrItemManageVO") QustnrItemManageVO qustnrItemManageVO, ModelMap model,
 			RedirectAttributes redirectAttributes)
@@ -319,7 +334,7 @@ public class EgovQustnrItemManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qim/EgovQustnrItemManageRegist.do")
+	@PostMapping("/uss/olp/qim/EgovQustnrItemManageRegist.do")
 	public String qustnrItemManageRegist(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@Valid @ModelAttribute("qustnrItemManageVO") QustnrItemManageVO qustnrItemManageVO,
@@ -353,6 +368,33 @@ public class EgovQustnrItemManageController {
 		LOGGER.info("####설문항목 등록 컨트롤러 리턴전");
 		
 		return "redirect:/uss/olp/qim/EgovQustnrItemManageList.do";
+	}
+
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 }

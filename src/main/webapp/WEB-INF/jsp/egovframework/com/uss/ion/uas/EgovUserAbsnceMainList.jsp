@@ -3,6 +3,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
 
 /**
@@ -48,7 +49,7 @@ function fncSelectUserAbsnce(userId, regYn) {
 </head>
 
 <body>
-<form name="listForms" action="<c:url value='/uss/ion/uas/getUserAbsnce.do'/>" method="post">
+<form:form name="listForms" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/ion/uas/getUserAbsnce.do" method="post">
 <div id="all" style="margin:0 auto;width:200px;" class="divDotText" align="left">
 <table width="200" cellpadding="8" class="table-line" summary="사용자부재에 대한 목록을 제공한다.">
     <tbody>
@@ -70,6 +71,6 @@ function fncSelectUserAbsnce(userId, regYn) {
 <input type="hidden" name="regYn" value="" />
 <input type="hidden" name="pageIndex" value="1"/>
 <input type="hidden" name="searchCondition" value="1"/>
-</form>
+</form:form>
 </body>
 </html>

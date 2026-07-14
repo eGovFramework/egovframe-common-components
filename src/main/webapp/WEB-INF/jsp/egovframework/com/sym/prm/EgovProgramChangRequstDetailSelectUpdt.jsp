@@ -194,7 +194,7 @@ function selectList(){
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<span class="btn_s"><a href="<c:url value='/sym/prm/EgovProgramChangeRequstSelect.do'/>" onclick="selectList(); return false;"><spring:message code="button.list"/></a></span><!-- 목록 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="selectList(); return false;"><spring:message code="button.list"/></a></span><!-- 목록 -->
 		<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="updateProgrmChangeRequst(document.forms[0]); return false;" /><!-- 수정 -->
 		<span class="btn_s"><a href="#LINK" onclick="deleteProgrmChangeRequst(document.forms[0]); return false;"><spring:message code="button.delete"/></a></span><!-- 삭제 -->
 	</div>

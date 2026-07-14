@@ -5,6 +5,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -114,7 +115,7 @@ public class EgovAuthorGroupController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sec/rgm/EgovAuthorGroupInsert.do", method = RequestMethod.POST)
+	@PostMapping("/sec/rgm/EgovAuthorGroupInsert.do")
 	@RequireAdmin
 	public String insertAuthorGroup(@RequestParam("userIds") String userIds,
 			                        @RequestParam("authorCodes") String authorCodes,
@@ -150,7 +151,7 @@ public class EgovAuthorGroupController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sec/rgm/EgovAuthorGroupDelete.do", method = RequestMethod.POST)
+	@PostMapping("/sec/rgm/EgovAuthorGroupDelete.do")
 	@RequireAdmin
 	public String deleteAuthorGroup(@RequestParam("userIds") String userIds,
                                     @ModelAttribute("authorGroup") AuthorGroup authorGroup,

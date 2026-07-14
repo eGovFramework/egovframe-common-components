@@ -248,7 +248,7 @@
 				         ON   atdrn.EVENT_ID = mge.EVENT_ID
 				         and  atdrn.APPLCNT_ID = #{applcntId}
 				 WHERE    1=1
-				 AND     (CAST(DATE_FORMAT(now(),'%Y%m%d') AS CHAR(8))  BETWEEN RCEPT_BGNDE  AND RCEPT_ENDDE 
+				 AND     (CAST(DATE_FORMAT(now(),'%Y%m%d') AS CHAR(8) CHARACTER SET utf8mb4) COLLATE utf8mb4_unicode_ci BETWEEN RCEPT_BGNDE AND RCEPT_ENDDE
 			              or atdrn.confm_At is not null)
         	 
          <if test="searchSe != null and searchSe != ''">AND
@@ -293,7 +293,7 @@
 				         ON   atdrn.EVENT_ID = mge.EVENT_ID
 				         and  atdrn.APPLCNT_ID = #{searchKeyword}
 				 WHERE    1=1
-			     AND     (CAST(DATE_FORMAT(now(),'%Y%m%d') AS CHAR(8))  BETWEEN RCEPT_BGNDE  AND RCEPT_ENDDE 
+			     AND     (CAST(DATE_FORMAT(now(),'%Y%m%d') AS CHAR(8) CHARACTER SET utf8mb4) COLLATE utf8mb4_unicode_ci BETWEEN RCEPT_BGNDE AND RCEPT_ENDDE
 			              or atdrn.confm_At is not null)
         	 
          <if test="searchSe != null and searchSe != ''">AND

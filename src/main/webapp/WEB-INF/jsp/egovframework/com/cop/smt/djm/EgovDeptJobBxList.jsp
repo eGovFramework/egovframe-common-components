@@ -3,6 +3,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <% 
 /**
  * @Class Name : EgovDeptJobBxList.jsp
@@ -37,10 +38,10 @@
 
 		if(checkedDeptJobBxId != "" && resultNum > 0){
 	        for(var i=0; i < resultNum; i++) {
-				var checkIdValue = document.deptJobBxCheck[i].check1.id;
+				var checkIdValue = document.getElementsByName('check1')[i].id;
 		        var splitCheckIdValue = checkIdValue.split("::");
 	            if(splitCheckIdValue[0] == checkedDeptJobBxId){
-	                document.deptJobBxCheck[i].check1.checked = true;
+	                document.getElementsByName('check1')[i].checked = true;
 
 					document.frm.deptJobBxId.value = checkedDeptJobBxId;
 	        		document.frm.indictOrdr.value = splitCheckIdValue[1];
@@ -84,7 +85,7 @@
 		var num = 0;
 		
 		for(var i=0; i < <c:out value='${resultNum}'/>; i++) {
-            if(document.deptJobBxCheck[i].check1.checked){
+            if(document.getElementsByName('check1')[i].checked){
                 num ++;
             } 
         }
@@ -110,13 +111,13 @@
 		document.frm.deptId.value = deptId;
 
 		var checkNum = num;
-	    var checkField = document.deptJobBxCheck[checkNum - 1].check1;
+	    var checkField = document.getElementsByName('check1')[checkNum - 1];
 
 		if(checkField) {
                for(var i=0; i < <c:out value='${resultNum}'/>; i++) {
-                   if(document.deptJobBxCheck[i].check1.checked){
+                   if(document.getElementsByName('check1')[i].checked){
                        if((checkNum - 1) != i){ 
-                    	   document.deptJobBxCheck[i].check1.checked = false;
+                    	   document.getElementsByName('check1')[i].checked = false;
                        }
                    } 
                }
@@ -140,7 +141,7 @@
 <div class="board">
 	<h1><spring:message code="comCopSmtDjm.deptJobBxList.title" /></h1><!-- 부서업무함관리 목록조회 -->
 	
-	<form name="frm" method="post" action="<c:url value='/cop/smt/djm/selectDeptJobBxList.do'/>">
+	<form:form name="frm" modelAttribute="searchVO" method="post" action="${pageContext.request.contextPath}/cop/smt/djm/selectDeptJobBxList.do">
 		<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 		<input type="hidden" name="deptJobBxId">
 		<input type="hidden" name="ordrCnd">
@@ -163,7 +164,6 @@
 				</li>
 			</ul>
 		</div>
-	</form>
 	
 	<div class="c_box">
 		<table class="board_list">
@@ -190,21 +190,12 @@
 				<c:forEach var="result" items="${resultList}" varStatus="status">
 					<tr>
 						<td>
-							<form name="deptJobBxCheck" method="post" action="<c:url value='/cop/smt/djm/selectDeptJobBxList.do'/>">
-								<input type="radio" name="check1" id="<c:out value="${result.deptJobBxId}"/>::<c:out value="${result.indictOrdr}"/>::<c:out value="${result.deptId}"/>" class="check2" onclick="fCheck('<c:out value="${status.count}"/>', '<c:out value="${result.deptJobBxId}"/>','<c:out value="${result.indictOrdr}"/>','<c:out value="${result.deptId}"/>')" title="선택">
-								<input type="submit" value="" style="border : 0px;height : 0px;color :#f7f7f7;display:none" >
-							</form>
+							<input type="radio" name="check1" id="<c:out value="${result.deptJobBxId}"/>::<c:out value="${result.indictOrdr}"/>::<c:out value="${result.deptId}"/>" class="check2" onclick="fCheck('<c:out value="${status.count}"/>', '<c:out value="${result.deptJobBxId}"/>','<c:out value="${result.indictOrdr}"/>','<c:out value="${result.deptId}"/>')" title="선택">
 						</td>
 						<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 						<td><c:out value="${result.deptNm}"/></td>
-						<td>
-							<form name="deptJobBxVO" method="post" action="<c:url value='/cop/smt/djm/modifyDeptJobBx.do'/>">
-								<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-								<input name="searchCnd" type="hidden" value="<c:out value='${searchVO.searchCnd}'/>">
-								<input name="searchWrd" type="hidden" value="<c:out value='${searchVO.searchWrd}'/>">
-								<input type="hidden" name="deptJobBxId" value="<c:out value="${result.deptJobBxId}"/>">
-								<span class="link"><input type="submit" value="<c:out value="${result.deptJobBxNm}"/>" onclick="javascript:fn_egov_inqire_deptjobbx('<c:out value="${result.deptJobBxId}"/>'); return false;" style="text-align : left;"></span>
-							</form>
+						<td class="left">
+							<a href="javascript:void(0);" onclick="fn_egov_inqire_deptjobbx('<c:out value="${result.deptJobBxId}"/>'); return false;"><c:out value="${result.deptJobBxNm}"/></a>
 						</td>
 						<td><c:out value="${result.lastUpdusrNm}"/></td>
 						<td><c:out value="${fn:substring(result.lastUpdusrPnttm, 0, 10)}"/></td>
@@ -230,6 +221,7 @@
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_deptjobbx"/>
 		</ul>
 	</div>
+	</form:form>
 </div>
 </body>
 </html>

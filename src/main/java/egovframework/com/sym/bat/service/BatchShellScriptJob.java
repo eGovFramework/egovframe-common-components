@@ -104,7 +104,10 @@ public class BatchShellScriptJob implements Job {
 			String batchFolder = EgovProperties.getProperty("SHELL.batchShellFolder");
 
 			for (String item : cmdShell) {
-				boolean whiteListStatus = batchProgrm.contains(item);
+				// [보안조치] contains() 기반 부분(substring) 일치는 batchProgrm 값에 화이트리스트
+				// 항목이 여러 개 포함될 경우 각각을 모두 실행시키는 문제(CWE-187)가 있어
+				// 화이트리스트 항목과 완전히 일치(equals)하는 경우에만 실행하도록 변경.
+				boolean whiteListStatus = batchProgrm.equals(item);
 				LOGGER.debug("SHELL.UNIX/WINDOWS.batchShellFiles WhiteList item = " + item + ", status = "
 						+ whiteListStatus);
 				if (whiteListStatus) {

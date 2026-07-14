@@ -92,7 +92,8 @@ function fn_egov_submit_WebStandardInspection(form, nNmm){
 	 if(form.rdoUri[0].checked == true){
 		 document.formHidden.action = "/EgovPageLink.do?linkIndex=7";
 	 }else{
-		 document.formHidden.action = "http://validator.w3.org/check";
+		 // [보안조치] 평문 HTTP 대신 HTTPS로 제출하여 URL 유출 및 MITM 위험 방지
+		 document.formHidden.action = "https://validator.w3.org/check";
 	 }
 	 
 	 document.formHidden.submit();
@@ -144,6 +145,7 @@ summary="이 표는 웹표준검사 대상 정보를 제공하며, URL명, Publi
 	for(int i=1 ; i<10; i++){ 
 %>
 <form name="webInspection" method="post" action="/EgovPageLink.do?linkIndex=6" target="ifr_hidden">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <table width="100%" border="1" cellpadding="0" cellspacing="1" class="table-register" summary=" ">
 <tr> 
 	<td style="padding:2px 2px 2px 2px;" height="23">
@@ -196,7 +198,8 @@ summary="이 표는 웹표준검사 대상 정보를 제공하며, URL명, Publi
 </table>
 <!--  Hiden frame  visibility: hidden;  -->
 <iframe name="ifr_hidden" id="ifr_hidden1" src="about:blank;" style="width:100%;height:400px;visibility: hidden;"></iframe>
-<form name="formHidden" id="formHidden" action="http://validator.w3.org/check" method="post" target="_blank" >
+<form name="formHidden" id="formHidden" action="https://validator.w3.org/check" method="post" target="_blank" >
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <input name="uri" type="hidden" value="">
 </form>
 </DIV>

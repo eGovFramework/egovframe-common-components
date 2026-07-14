@@ -49,7 +49,7 @@ function fncSelectAnnvrsryManageList(pageNo){
 
 <div class="wTableFrm">
 
-	<form name="DetailForm" action="<c:url value='/uss/ion/ans/selectAnnvrsryManageList.do'/>" method="post">    
+	<form name="DetailForm" action="${pageContext.request.contextPath}/uss/ion/ans/selectAnnvrsryManageList.do" method="post"><c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>    
 		<input type="hidden" name="cmd" >
 		<input type="hidden" name="annId"       value="<c:out value="${annvrsryManageVO.annId}"/>">
 		<input type="hidden" name="usid"       value="<c:out value="${annvrsryManageVO.usid}"/>">
@@ -108,7 +108,7 @@ function fncSelectAnnvrsryManageList(pageNo){
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<span class="btn_s"><a href="<c:url value='/uss/ion/ans/selectAnnvrsryManageList.do'/>?searchCondition=1" onclick="fncSelectAnnvrsryManageList(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncSelectAnnvrsryManageList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

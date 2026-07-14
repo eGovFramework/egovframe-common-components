@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.support.SessionStatus;
@@ -123,7 +124,7 @@ public class EgovProxySvcController {
 	 * @param proxySvc - 프록시서비스 Vo
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/utl/sys/pxy/getProxySvc.do")
+	@PostMapping("/utl/sys/pxy/getProxySvc.do")
 	@RequireAdmin
 	public String selectProxySvc(@ModelAttribute("proxySvc") ProxySvc proxySvc, Model model) throws Exception {
 		ProxySvc proxySvcResult = egovProxySvcService.selectProxySvc(proxySvc);
@@ -138,7 +139,7 @@ public class EgovProxySvcController {
 	 * @param proxySvc - 프록시서비스 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/utl/sys/pxy/addViewProxySvc.do", method = RequestMethod.POST)
+	@PostMapping("/utl/sys/pxy/addViewProxySvc.do")
 	@RequireAdmin
 	public String insertViewProxySvc(@ModelAttribute("proxySvc") ProxySvc proxySvc, Model model) throws Exception {
 
@@ -154,7 +155,7 @@ public class EgovProxySvcController {
 	 * @param proxySvc - 프록시서비스 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/utl/sys/pxy/addProxySvc.do", method = RequestMethod.POST)
+	@PostMapping("/utl/sys/pxy/addProxySvc.do")
 	@RequireAdmin
 	public String insertProxySvc(@Valid @ModelAttribute("proxySvc") ProxySvc proxySvc, BindingResult bindingResult, Model model, RedirectAttributes redirectAttributes) throws Exception {
 		if (bindingResult.hasErrors()) {
@@ -188,7 +189,7 @@ public class EgovProxySvcController {
 	 * @param proxySvc - 프록시서비스 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/utl/sys/pxy/updtViewProxySvc.do")
+	@PostMapping("/utl/sys/pxy/updtViewProxySvc.do")
 	@RequireAdmin
 	public String updateViewProxySvc(@ModelAttribute("proxySvc") ProxySvc proxySvc, Model model) throws Exception {
 		model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(), "COM072"));
@@ -203,7 +204,7 @@ public class EgovProxySvcController {
 	 * @param proxySvc - 프록시서비스 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/utl/sys/pxy/updtProxySvc.do", method = RequestMethod.POST)
+	@PostMapping("/utl/sys/pxy/updtProxySvc.do")
 	@RequireAdmin
 	public String updateProxySvc(@Valid @ModelAttribute("proxySvc") ProxySvc proxySvc, BindingResult bindingResult, SessionStatus status, Model model) throws Exception {
 		if (bindingResult.hasErrors()) {
@@ -234,7 +235,7 @@ public class EgovProxySvcController {
 	 * @param proxySvc - 프록시서비스 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/utl/sys/pxy/removeProxySvc.do", method = RequestMethod.POST)
+	@PostMapping("/utl/sys/pxy/removeProxySvc.do")
 	@RequireAdmin
 	public String deleteProxySvc(@ModelAttribute("proxySvc") ProxySvc proxySvc, RedirectAttributes redirectAttributes) throws Exception {
 		egovProxySvcService.deleteProxySvc(proxySvc);

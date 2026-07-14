@@ -78,7 +78,7 @@ function press() {
 <div class="board">
 	<h1><spring:message code="comSymTbmTbp.troblProcessList.pageTop.title"/></h1><!-- 장애처리 관리 -->
 
-	<form name="listForm" action="<c:url value='/sym/tbm/tbp/selectTroblProcessList.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/sym/tbm/tbp/selectTroblProcessList.do" method="post">
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
 			<li>
@@ -107,7 +107,7 @@ function press() {
 	</div>
 	<input type="hidden" name="troblId">
 	<input type="hidden" name="pageIndex" value="<c:if test="${empty troblProcessVO.pageIndex }">1</c:if><c:if test="${!empty troblProcessVO.pageIndex }"><c:out value='${troblProcessVO.pageIndex}'/></c:if>">
-	</form>
+	
 
 	<table class="board_list">
 		<caption></caption>
@@ -133,12 +133,7 @@ function press() {
 			<c:forEach var="troblProcess" items="${troblProcessList}" varStatus="status">
 			  <tr>
 			    <td>
-			        <form name="item" method="post" action="<c:url value='/sym/tbm/tbp/getTroblProcess.do'/>">
-			            <input type="hidden" name="troblId" value="<c:out value="${troblProcess.troblId}"/>">
-			            <input type="hidden" name="pageIndex" value="<c:out value='${troblProcessVO.pageIndex}'/>">
-			            <input type="hidden" name="strTroblNm" value="<c:out value='${troblProcessVO.strTroblNm}'/>">
-			            <span class="link"><input type="submit" value="<c:out value="${troblProcess.troblId}"/>" onclick="fncSelectTroblProcess('<c:out value="${troblProcess.troblId}"/>'); return false;"></span>
-			        </form>
+			        <a href="javascript:void(0);" onclick="fncSelectTroblProcess('<c:out value="${troblProcess.troblId}"/>'); return false;"><span class="link"><c:out value="${troblProcess.troblId}"/></span></a>
 			    </td>
 			    <td><c:out value="${troblProcess.troblNm}"/></td>
 			    <td><c:out value="${troblProcess.troblKndNm}"/></td>
@@ -158,6 +153,7 @@ function press() {
 		</ul>
 	</div>
 	</c:if>
+</form:form>
 </div>
 
 </body>
