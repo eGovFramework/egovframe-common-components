@@ -19,10 +19,13 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUssOlpQim.title"/></c:set>
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title>${pageTitle} <spring:message code="title.list" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
@@ -40,13 +43,13 @@ function linkPage(pageNo){
  * 등록 처리 함수 
  ******************************************************** */
 function fn_egov_regist_QustnrItemManage(){
-	location.href = "<c:url value='/uss/olp/qim/EgovQustnrItemManageRegistView.do' />";
+	fn_egov_postNavigate("<c:url value='/uss/olp/qim/EgovQustnrItemManageRegistView.do' />");
 }
 /* ********************************************************
  * 수정 처리 함수
  ******************************************************** */
 function fn_egov_modify_QustnrItemManage(){
-	location.href = "<c:url value='/uss/olp/qim/EgovQustnrItemManageModify.do' />";
+	fn_egov_postNavigate("<c:url value='/uss/olp/qim/EgovQustnrItemManageModify.do' />");
 }
 /* ********************************************************
  * 상세회면 처리 함수
@@ -106,7 +109,7 @@ function fn_egov_list_QustnrQestnManag(qestnrId, qestnrTmplatId){
 <!-- 자바스크립트 경고 태그  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="listForm" action="<c:url value='/uss/olp/qim/EgovQustnrItemManageList.do'/>" method="post" onSubmit="fn_egov_search_QustnrQestnManage(); return false;">
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/olp/qim/EgovQustnrItemManageList.do" method="post" onSubmit="fn_egov_search_QustnrQestnManage(); return false;">
 
 	
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
@@ -126,7 +129,7 @@ function fn_egov_list_QustnrQestnManag(qestnrId, qestnrTmplatId){
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code='title.search' /> <spring:message code='input.input' />" value="<c:out value='${searchVO.searchKeyword}'/>"  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code='button.inquire' />" title="<spring:message code='title.inquire' /> <spring:message code='input.button' />" onclick="fn_egov_search_QustnrItemManage(); return false;" />
 				<!-- 등록버튼 -->
-				<span class="btn_b"> <a href="<c:url value='/uss/olp/qim/EgovQustnrItemManageRegistView.do'/>" title="<spring:message code='button.create' /> <spring:message code='input.button' />"><spring:message code="button.create" /></a></span> 
+				<span class="btn_b"> <a href="#" onclick="fn_egov_postNavigate('<c:url value='/uss/olp/qim/EgovQustnrItemManageRegistView.do' />'); return false;" title="<spring:message code='button.create' /> <spring:message code='input.button' />"><spring:message code="button.create" /></a></span> 
 			</li>
 		</ul>
 	</div>
@@ -171,7 +174,7 @@ function fn_egov_list_QustnrQestnManag(qestnrId, qestnrTmplatId){
 		<td class="lt_text3">${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}</td>
 		<!-- 항목내용  -->
 		<td class="lt_text3L">
-		<a href="<c:url value='/uss/olp/qim/EgovQustnrItemManageDetail.do'/>?qustnrIemId=${resultInfo.qustnrIemId}" onClick="fn_egov_detail_QustnrItemManage('<c:out value="${resultInfo.qustnrIemId}"/>');return false;"><c:out value='${resultInfo.iemCn}'/></a>
+		<a href="javascript:void(0);" onClick="fn_egov_detail_QustnrItemManage('<c:out value="${resultInfo.qustnrIemId}"/>');return false;"><c:out value='${resultInfo.iemCn}'/></a>
 		</td>
 		<!-- 기타답변여부 -->
 		<td class="lt_text3">${resultInfo.etcAnswerAt}</td>
@@ -196,7 +199,7 @@ function fn_egov_list_QustnrQestnManag(qestnrId, qestnrTmplatId){
 <input name="searchMode" type="hidden" value="${qustnrQestnManageVO.searchMode}">
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">	
 
-</form>
+</form:form>
 
 </div><!-- end div board -->
 

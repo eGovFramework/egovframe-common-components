@@ -74,6 +74,7 @@ function fncDeleteEventReqstManage() {
 </c:if>
 
 <form name="eventManage" id="eventManage" method="post" >
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="<spring:message code="comUssIonEvt.common.submit"/>" title="<spring:message code="comUssIonEvt.common.submit"/>"></div><!-- 전송 -->
 <input name="cmd" type="hidden" value="updt"/>
 <input name="eventId" type="hidden" value="<c:out value='${eventManageVO.eventId}'/>"/>
@@ -175,10 +176,10 @@ function fncDeleteEventReqstManage() {
 		<c:if test="${empty check_popup}">
 			<c:if test="${eventManageVO.eventAtdrnCount == 0 && eventManageVO.eventDayCount >= 0}">
 				<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="fncEventReqstManage(); return false;" />
-				<span class="btn_s"><a href="<c:url value='/uss/ion/evt/EgovEventReqstDelete.do'/>?eventId=<c:out value='${eventManageVO.eventId}'/>" onclick="fncDeleteEventReqstManage(); return false;"><spring:message code="button.delete" /></a></span>
+				<span class="btn_s"><a href="javascript:void(0);" onclick="fncDeleteEventReqstManage(); return false;"><spring:message code="button.delete" /></a></span>
 			</c:if>
 			
-			<span class="btn_s"><a href="<c:url value='/uss/ion/evt/EgovEventReqstManageList.do'/>" onclick="fncEventReqstManageList(); return false;"><spring:message code="button.list" /></a></span>
+			<span class="btn_s"><a href="javascript:void(0);" onclick="fncEventReqstManageList(); return false;"><spring:message code="button.list" /></a></span>
 		</c:if>
 	</div>
 	

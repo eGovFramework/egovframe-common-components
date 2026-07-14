@@ -38,7 +38,6 @@
  * 페이징 처리 함수
  ******************************************************** */
 function linkPage(pageNo){
-//	document.progrmChangeRequstForm.searchKeyword.value =
 	document.progrmChangeRequstForm.pageIndex.value = pageNo;
 	document.progrmChangeRequstForm.action = "<c:url value='/sym/prm/EgovProgramChangeRequstSelect.do'/>";
    	document.progrmChangeRequstForm.submit();
@@ -76,6 +75,13 @@ function deleteChangeRequstList() {
 }
 <c:if test="${!empty resultMsg}">alert("${resultMsg}");</c:if>
 -->
+
+function fn_egov_detail_item(tmpProgrmNm, tmpRqesterNo) {
+	document.progrmChangeRequstForm.tmpProgrmNm.value = tmpProgrmNm;
+	document.progrmChangeRequstForm.tmpRqesterNo.value = tmpRqesterNo;
+	document.progrmChangeRequstForm.action = "<c:url value='/sym/prm/EgovProgramChangRequstDetailSelect.do'/>";
+	document.progrmChangeRequstForm.submit();
+}
 </script>
 </head>
 <body>
@@ -85,6 +91,7 @@ function deleteChangeRequstList() {
 	<h1><spring:message code="comSymPrm.programChangeRequst.pageTop.title"/></h1><!-- 프로그램변경요청 -->
 
 	<form name="progrmChangeRequstForm" action ="<c:url value='/sym/prm/EgovProgramChangeRequstSelect.do'/>?pageIndex=1" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
@@ -93,7 +100,7 @@ function deleteChangeRequstList() {
 				<input class="s_input2 vat" name="searchKeyword" type="text" value="" size="80" maxlength="60" title="<spring:message code="title.searchCondition"/>" /><!-- 검색조건 -->
 				
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title="조회" onclick="selectProgrmChangeRequstList(); return false;" /><!-- 조회 -->
-				<span class="btn_b"><a href="<c:url value='/sym/prm/EgovProgramChangRequstStre.do'/>" onclick="insertChangeRequst(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span><!-- 등록 -->
+				<span class="btn_b"><a href="javascript:void(0);" onclick="insertChangeRequst(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span><!-- 등록 -->
 			</li>
 		</ul>
 	</div>
@@ -134,11 +141,7 @@ function deleteChangeRequstList() {
 			  <tr>
 			    <td><c:out value="${result.rqesterNo}"/></td>
 			    <td>
-			      <form name="item" method="post" action="<c:url value='/sym/prm/EgovProgramChangRequstDetailSelect.do'/>">
-					<input type="hidden" name="tmpProgrmNm"  value="<c:out value="${result.progrmFileNm  }"/>"/>
-					<input type="hidden" name="tmpRqesterNo" value="<c:out value="${result.rqesterNo     }"/>"/>
-			        <span class="link"><input type="submit"   value="<c:out value="${result.progrmFileNm  }"/>" onclick="selectUpdtChangeRequstListDetail('<c:out value="${result.progrmFileNm}"/>','<c:out value="${result.rqesterNo}"/>'); return false;"></span>
-			      </form>
+			      <a href="javascript:void(0);" onclick="selectUpdtChangeRequstListDetail('<c:out value="${result.progrmFileNm}"/>','<c:out value="${result.rqesterNo}"/>'); return false;"><span class="link"><c:out value="${result.progrmFileNm  }"/></span></a>
 			    </td>
 			    <td><c:out value="${result.rqesterSj}"/></td>
 			    <td><c:out value="${result.rqesterPersonId}"/></td>

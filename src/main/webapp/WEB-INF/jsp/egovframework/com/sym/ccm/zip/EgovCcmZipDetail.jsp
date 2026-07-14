@@ -161,6 +161,7 @@ function fn_egov_delete_Zip(){
 <input class="btnStyle02" type="submit" value="<spring:message code="button.list" />" onclick="fn_egov_list_Zip(); return false;"></td>
 </div>
 <form name="Form" id="Form" method="post" action="">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input type=hidden name="zip">
 	<input type=hidden id="sn" name="sn" value="${not empty result.sn ? result.sn : 0}" />
 	<input type=hidden id="rdmnCode" name="rdmnCode" />

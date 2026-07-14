@@ -82,7 +82,7 @@
 <h2>${pageTitle} <spring:message code="title.detail" /></h2>
 
 
-<form name="OnlinePollManageForm" action="<c:url value=''/>" method="post">
+<form name="OnlinePollManageForm" action="" method="post">
 <!-- 상세정보 -->
 <table class="wTable" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
 <caption>${pageTitle} <spring:message code="title.create" /></caption>
@@ -155,17 +155,17 @@
 
 <!-- 하단 버튼 -->
 <div class="btn">
-	<form name="formUpdt" action="<c:url value='/uss/olp/opm/updtOnlinePollManageView.do'/>" method="post" style="float:left;">
+	<form name="formUpdt" action="${pageContext.request.contextPath}/uss/olp/opm/updtOnlinePollManageView.do" method="post" style="float:left;">
 		<input type="submit" class="s_submit" value="<spring:message code="button.update" />" onclick="fn_egov_modify_OnlinePollManage(); return false;">
 		<input name="pollId" type="hidden" value="${onlinePollManage.pollId}">
 	</form>
-	<form name="formDelete" action="<c:url value='/uss/olp/opm/detailOnlinePollManage.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+	<form name="formDelete" action="${pageContext.request.contextPath}/uss/olp/opm/detailOnlinePollManage.do" method="post" style="float:left; margin:0 0 0 3px;">
 		<input type="submit" class="s_submit" value="<spring:message code="button.delete" />" onclick="fn_egov_delete_OnlinePollManage(); return false;">
 		<input name="pollId" type="hidden" value="${onlinePollManage.pollId}">
 		<input name="cmd" type="hidden" value="<c:out value='del'/>"/>
 	</form>
 
-	<form name="formList" action="<c:url value='/uss/olp/opm/listOnlinePollManage.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+	<form name="formList" action="${pageContext.request.contextPath}/uss/olp/opm/listOnlinePollManage.do" method="post" style="float:left; margin:0 0 0 3px;">
 		<input type="submit" class="s_submit" value="<spring:message code="button.list" />" onclick="fn_egov_search_OnlinePollManage(); return false;">
 	</form>
 		

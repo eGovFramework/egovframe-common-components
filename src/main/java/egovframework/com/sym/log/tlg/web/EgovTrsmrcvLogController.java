@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
@@ -104,6 +105,9 @@ public class EgovTrsmrcvLogController {
 	 */
 	@RequestMapping(value = "/sym/log/tlg/InqireTrsmrcvLog.do")
 	public String selectTrsmrcvLog(@ModelAttribute("searchVO") TrsmrcvLog trsmrcvLog, @RequestParam("requstId") String requstId, ModelMap model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = egovAssertLoginUser();
+
 
 		// 2026.03.23 kisa 보안점검 대응 조치
 		if (ObjectUtils.isEmpty(requstId)) {
@@ -124,7 +128,7 @@ public class EgovTrsmrcvLogController {
      * @return sym/log/slg/EgovSysHistRegist
      * @throws Exception
      */
-    @RequestMapping(value = "/sym/log/tlg/AddTrsmrcvLog.do")
+    @PostMapping("/sym/log/tlg/AddTrsmrcvLog.do")
     public String addTrsmrcvLog(@ModelAttribute("searchVO") TrsmrcvLog trsmrcvLog, ModelMap model) throws Exception {
         ComDefaultCodeVO vo = new ComDefaultCodeVO();
         vo.setCodeId("COM002");
@@ -140,7 +144,7 @@ public class EgovTrsmrcvLogController {
 	 * @return forward:/sym/log/tlg/SelectTrsmrcvLogList.do
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/log/tlg/InsertTrsmrcvLog.do")
+	@PostMapping("/sym/log/tlg/InsertTrsmrcvLog.do")
 	public String insertTrsmrcvLog(@ModelAttribute("searchVO") TrsmrcvLog trsmrcvLog, SessionStatus status) throws Exception {
 
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -152,6 +156,33 @@ public class EgovTrsmrcvLogController {
 		}
 
 		return "forward:/sym/log/tlg/SelectTrsmrcvLogList.do";
+	}
+
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 }

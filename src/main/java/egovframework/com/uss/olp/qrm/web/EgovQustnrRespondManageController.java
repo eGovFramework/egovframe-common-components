@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -134,7 +135,7 @@ public class EgovQustnrRespondManageController {
 	 * @return "egovframework/com/uss/olp/qrm/EgovQustnrRespondManageDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qrm/EgovQustnrRespondManageDetail.do")
+	@PostMapping("/uss/olp/qrm/EgovQustnrRespondManageDetail.do")
 	public String egovQustnrRespondManageDetail(@ModelAttribute QustnrRespondManageVO qustnrRespondManageVO,
 			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
@@ -174,7 +175,7 @@ public class EgovQustnrRespondManageController {
 	 * @return "egovframework/com/uss/olp/qrm/EgovQustnrRespondManageModify"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qrm/EgovQustnrRespondManageModifyView.do")
+	@PostMapping("/uss/olp/qrm/EgovQustnrRespondManageModifyView.do")
 	public String qustnrRespondManageModify(
 			@ModelAttribute QustnrRespondManageVO qustnrRespondManageVO, 
 			RedirectAttributes redirectAttributes,
@@ -220,7 +221,7 @@ public class EgovQustnrRespondManageController {
 	 * @return "redirect:/uss/olp/qrm/EgovQustnrRespondManageList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qrm/EgovQustnrRespondManageModify.do")
+	@PostMapping("/uss/olp/qrm/EgovQustnrRespondManageModify.do")
 	public String qustnrRespondManageModify(
 			@Valid @ModelAttribute("qustnrRespondManageVO") QustnrRespondManageVO qustnrRespondManageVO,
 			BindingResult bindingResult, 
@@ -279,7 +280,7 @@ public class EgovQustnrRespondManageController {
 	 * @return "egovframework/com/uss/olp/qrm/EgovQustnrRespondManageRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qrm/EgovQustnrRespondManageRegistView.do")
+	@PostMapping("/uss/olp/qrm/EgovQustnrRespondManageRegistView.do")
 	public String qustnrRespondManageRegist(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@ModelAttribute("qustnrRespondManageVO") QustnrRespondManageVO qustnrRespondManageVO, 
@@ -319,7 +320,7 @@ public class EgovQustnrRespondManageController {
 	 * @return "redirect:/uss/olp/qrm/EgovQustnrRespondManageList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qrm/EgovQustnrRespondManageRegist.do")
+	@PostMapping("/uss/olp/qrm/EgovQustnrRespondManageRegist.do")
 	public String qustnrRespondManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("qustnrRespondManageVO") QustnrRespondManageVO qustnrRespondManageVO,

@@ -32,7 +32,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
 <script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
@@ -114,7 +113,7 @@ function fncOnChangeImage() {
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value="<spring:message code="button.save" />" onclick="fncMainImageInsert(); return false;" />
-		<span class="btn_s"><a href="<c:url value='/uss/ion/msi/selectMainImageList.do'/>?pageIndex=<c:out value='${mainImageVO.pageIndex}'/>&amp;searchKeyword=<c:out value="${mainImageVO.searchKeyword}"/>&amp;searchCondition=1" onclick="fncSelectMainImageList(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncSelectMainImageList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

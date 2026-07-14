@@ -22,6 +22,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <c:if test="${searchVO.searchCnd  == '0'}"><c:set var="pageTitle"><spring:message code="comCopAdb.popopUserList.title1"/></c:set></c:if>
 <c:if test="${searchVO.searchCnd  == '1'}"><c:set var="pageTitle"><spring:message code="comCopAdb.popopUserList.title2"/></c:set></c:if>
@@ -72,7 +73,7 @@
 <div class="popup">
 <!-- 타이틀 -->
 <h1>${pageTitle}</h1>
-<form name="frm"  method="post" action = "<c:url value='/cop/adb/selectManList.do'/>">
+<form:form name="frm" modelAttribute="searchVO" method="post" action="${pageContext.request.contextPath}/cop/adb/selectManList.do">
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 <input type="hidden" name="PopFlag" value="Y" >
 <!-- 검색영역 -->
@@ -175,7 +176,7 @@
 	<button class="btn_style3" onClick="fn_egov_close();return false;" title="<spring:message code="button.close" /> <spring:message code="input.button" />"><spring:message code="button.close" /></button>
 	<div style="clear:both;"></div>
 </div>
-</form>
+</form:form>
 </div>
 </body>
 </html>

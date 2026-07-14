@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -66,7 +67,7 @@ public class EgovCmtManageController {
      * @return forward:/uss/cmt/EgovCmtMange.do
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/cmt/EgovCmtWrkStartInsert.do")
+    @PostMapping("/uss/cmt/EgovCmtWrkStartInsert.do")
     public String insertWrkStartCmtInfo(@ModelAttribute("cmtManageVO") CmtManageVO cmtManageVO, BindingResult bindingResult, Model model) throws Exception {
 
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -98,7 +99,7 @@ public class EgovCmtManageController {
      * @return forward:/uss/cmt/EgovCmtMange.do
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/cmt/EgovCmtWrkEndInsert.do")
+    @PostMapping("/uss/cmt/EgovCmtWrkEndInsert.do")
     public String insertWrkEndCmtInfo(@ModelAttribute("cmtManageVO") CmtManageVO cmtManageVO, BindingResult bindingResult, Model model) throws Exception {
 
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();

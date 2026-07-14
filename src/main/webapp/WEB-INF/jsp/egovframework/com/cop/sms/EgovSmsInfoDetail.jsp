@@ -52,7 +52,8 @@
 	<!-- 타이틀 -->
 	<h2><spring:message code="cop.sms.textMassageDetail"/></h2><!-- 문자메시지 상세보기 -->
 	
-	<form name="frm" method="post" action="<c:url value='/cop/sms/selectSmsList.do'/>">
+	<form name="frm" method="post" action="${pageContext.request.contextPath}/cop/sms/selectSmsList.do">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 
 	<input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>">
 	<input type="hidden" name="smsId" value="<c:out value='${result.smsId}'/>" >
@@ -103,7 +104,7 @@
 	
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<span class="btn_s"><a href="<c:url value='/cop/sms/selectSmsList.do'/>?pageIndex=1" onclick="fn_egov_select_smsList('1'); return false;"><spring:message code="button.list"/></a></span><!-- 목록 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_select_smsList('1'); return false;"><spring:message code="button.list"/></a></span><!-- 목록 -->
 	</div>
 	<div style="clear:both;"></div>
 	

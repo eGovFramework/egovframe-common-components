@@ -26,7 +26,6 @@
 <title>${pageTitle} <spring:message code="title.update" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
 <script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
@@ -106,7 +105,6 @@ function fnImgChange(obj){
 				img.style.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='"
                     + obj.value + "', sizingMethod='scale')"; //이미지 로딩, sizingMethod는 div에 맞춰서 사이즈를 자동조절 하는 역할
                 /* IE 8, 9에서 불가능 */
-                //document.getElementById("IMG_VIEW").src = obj.value;
                 img.width = 66;
                 img.height = 52;
                 img.alt = "";

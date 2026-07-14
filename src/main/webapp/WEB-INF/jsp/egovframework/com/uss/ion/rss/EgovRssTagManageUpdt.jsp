@@ -83,7 +83,6 @@ function fn_egov_tableColumn_RssTagManage(sType){
 			   $("#tableColumn").html("");
 			   
 				for(var index=0 ; index < data.length ; index++) {
-					//alert(data[index].text);
 					$("#tableColumn").get(0).options[index] = new Option(data[index].text, data[index].value);
 				}
 

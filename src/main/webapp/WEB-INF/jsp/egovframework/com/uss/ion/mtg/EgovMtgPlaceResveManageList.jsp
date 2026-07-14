@@ -115,7 +115,7 @@ function fncInsertMtgPlaceResve() {
 
 <div class="board">
 	<h1><spring:message code="comUssIonMtg.mtgPlaceResveManageList.title" /></h1><!-- 회의실예약관리 목록 -->
-	<form name="listForm" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageList.do'/>" method="post"> 
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManageList.do" method="post"> 
 	<input type="hidden" id="searchCondition" name="searchCondition" value="" />
 	<input type="hidden" id="pageIndex" name="pageIndex" value="" />
 
@@ -130,7 +130,7 @@ function fncInsertMtgPlaceResve() {
 			</li>
 		</ul>
 	</div>
-	</form>
+	</form:form>
 	<p class="mb5">※<spring:message code="comUssIonMtg.mtgPlaceResveManageList.interfaceSearch" /><br /><!-- 회의일자 변경시 조회 버튼 클릭하셔야 예약 리스트가 조회됩니다. -->
 	※<spring:message code="comUssIonMtg.mtgPlaceResveManageList.interfaceDetail" /></p><!-- 회의실 예약은 회의실의 색이 없는 빈 시간을 클릭하시면 예약신청화면으로 이동합니다. (그래프 클릭시 상세화면 이동.) -->
 	
@@ -178,7 +178,8 @@ function fncInsertMtgPlaceResve() {
 	    
 	    <c:if test="${mtgPlaceResveManage.resveTemp0800!='0' }">
 	    <td   bgcolor="#431508"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageDetail.do'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManageDetail.do">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="resveId"    value="<c:out value='${fn:substring(mtgPlaceResveManage.resveTemp0800,0,20) }'/>">
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="cmd" value="detail">
@@ -191,7 +192,8 @@ function fncInsertMtgPlaceResve() {
 	    </c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp0800=='0' }">
 	    <td   bgcolor="#FFFFFF"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManage.do'/>" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManage.do" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId}'/>">
 	            <input type="hidden" name="resveId"    value="">
 	            <input type="hidden" name="cmd"        value="insert">
@@ -206,7 +208,8 @@ function fncInsertMtgPlaceResve() {
 	   
 	    <c:if test="${mtgPlaceResveManage.resveTemp0830!='0' }">
 	    <td   bgcolor="#431508"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageDetail.do'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManageDetail.do">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="resveId"    value="<c:out value='${fn:substring(mtgPlaceResveManage.resveTemp0830,0,20) }'/>">
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="cmd" value="detail">
@@ -217,7 +220,8 @@ function fncInsertMtgPlaceResve() {
 	    </td>
 	    </c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp0830=='0' }"><td   bgcolor="#FFFFFF"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManage.do'/>" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManage.do" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="resveId"    value="">
 	            <input type="hidden" name="cmd"        value="insert">
@@ -230,7 +234,8 @@ function fncInsertMtgPlaceResve() {
 	    </td></c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp0900!='0' }">
 	    <td   bgcolor="#431508"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageDetail.do'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManageDetail.do">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="resveId"    value="<c:out value='${fn:substring(mtgPlaceResveManage.resveTemp0900,0,20) }'/>">
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="cmd" value="detail">
@@ -241,7 +246,8 @@ function fncInsertMtgPlaceResve() {
 	    </td>
 	    </c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp0900=='0' }"><td   bgcolor="#FFFFFF"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManage.do'/>" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManage.do" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="resveId"    value="">
 	            <input type="hidden" name="cmd"        value="insert">
@@ -254,7 +260,8 @@ function fncInsertMtgPlaceResve() {
 	    </td></c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp0930!='0' }">
 	    <td   bgcolor="#431508"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageDetail.do'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManageDetail.do">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="resveId"    value="<c:out value='${fn:substring(mtgPlaceResveManage.resveTemp0930,0,20) }'/>">
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="cmd" value="detail">
@@ -265,7 +272,8 @@ function fncInsertMtgPlaceResve() {
 	    </td>
 	    </c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp0930=='0' }"><td   bgcolor="#FFFFFF"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManage.do'/>" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManage.do" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="resveId"    value="">
 	            <input type="hidden" name="cmd"        value="insert">
@@ -278,7 +286,8 @@ function fncInsertMtgPlaceResve() {
 	    </td></c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1000!='0' }">
 	    <td   bgcolor="#431508"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageDetail.do'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManageDetail.do">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="resveId"    value="<c:out value='${fn:substring(mtgPlaceResveManage.resveTemp1000,0,20) }'/>">
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="cmd" value="detail">
@@ -289,7 +298,8 @@ function fncInsertMtgPlaceResve() {
 	    </td>
 	    </c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1000=='0' }"><td   bgcolor="#FFFFFF"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManage.do'/>" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManage.do" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="resveId"    value="">
 	            <input type="hidden" name="cmd"        value="insert">
@@ -302,7 +312,8 @@ function fncInsertMtgPlaceResve() {
 	    </td></c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1030!='0' }">
 	    <td   bgcolor="#431508"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageDetail.do'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManageDetail.do">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="resveId"    value="<c:out value='${fn:substring(mtgPlaceResveManage.resveTemp1030,0,20) }'/>">
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="cmd" value="detail">
@@ -313,7 +324,8 @@ function fncInsertMtgPlaceResve() {
 	    </td>
 	    </c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1030=='0' }"><td   bgcolor="#FFFFFF"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManage.do'/>" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManage.do" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="resveId"    value="">
 	            <input type="hidden" name="cmd"        value="insert">
@@ -326,7 +338,8 @@ function fncInsertMtgPlaceResve() {
 	    </td></c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1100!='0' }">
 	    <td   bgcolor="#431508"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageDetail.do'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManageDetail.do">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="resveId"    value="<c:out value='${fn:substring(mtgPlaceResveManage.resveTemp1100,0,20) }'/>">
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="cmd" value="detail">
@@ -337,7 +350,8 @@ function fncInsertMtgPlaceResve() {
 	    </td>
 	    </c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1100=='0' }"><td   bgcolor="#FFFFFF"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManage.do'/>" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManage.do" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="resveId"    value="">
 	            <input type="hidden" name="cmd"        value="insert">
@@ -350,7 +364,8 @@ function fncInsertMtgPlaceResve() {
 	    </td></c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1130!='0' }">
 	    <td   bgcolor="#431508"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageDetail.do'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManageDetail.do">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="resveId"    value="<c:out value='${fn:substring(mtgPlaceResveManage.resveTemp1130,0,20) }'/>">
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="cmd" value="detail">
@@ -361,7 +376,8 @@ function fncInsertMtgPlaceResve() {
 	    </td>
 	    </c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1130=='0' }"><td   bgcolor="#FFFFFF"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManage.do'/>" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManage.do" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="resveId"    value="">
 	            <input type="hidden" name="cmd"        value="insert">
@@ -374,7 +390,8 @@ function fncInsertMtgPlaceResve() {
 	    </td></c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1200!='0' }">
 	    <td   bgcolor="#431508"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageDetail.do'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManageDetail.do">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="resveId"    value="<c:out value='${fn:substring(mtgPlaceResveManage.resveTemp1200,0,20) }'/>">
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="cmd" value="detail">
@@ -385,7 +402,8 @@ function fncInsertMtgPlaceResve() {
 	    </td>
 	    </c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1200=='0' }"><td   bgcolor="#FFFFFF"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManage.do'/>" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManage.do" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="resveId"    value="">
 	            <input type="hidden" name="cmd"        value="insert">
@@ -398,7 +416,8 @@ function fncInsertMtgPlaceResve() {
 	    </td></c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1230!='0' }">
 	    <td   bgcolor="#431508"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageDetail.do'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManageDetail.do">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="resveId"    value="<c:out value='${fn:substring(mtgPlaceResveManage.resveTemp1230,0,20) }'/>">
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="cmd" value="detail">
@@ -409,7 +428,8 @@ function fncInsertMtgPlaceResve() {
 	    </td>
 	    </c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1230=='0' }"><td   bgcolor="#FFFFFF"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManage.do'/>" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManage.do" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="resveId"    value="">
 	            <input type="hidden" name="cmd"        value="insert">
@@ -422,7 +442,8 @@ function fncInsertMtgPlaceResve() {
 	    </td></c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1300!='0' }">
 	    <td   bgcolor="#431508"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageDetail.do'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManageDetail.do">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="resveId"    value="<c:out value='${fn:substring(mtgPlaceResveManage.resveTemp1300,0,20) }'/>">
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="cmd" value="detail">
@@ -433,7 +454,8 @@ function fncInsertMtgPlaceResve() {
 	    </td>
 	    </c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1300=='0' }"><td   bgcolor="#FFFFFF"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManage.do'/>" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManage.do" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="resveId"    value="">
 	            <input type="hidden" name="cmd"        value="insert">
@@ -446,7 +468,8 @@ function fncInsertMtgPlaceResve() {
 	    </td></c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1330!='0' }">
 	    <td   bgcolor="#431508"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageDetail.do'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManageDetail.do">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="resveId"    value="<c:out value='${fn:substring(mtgPlaceResveManage.resveTemp1330,0,20) }'/>">
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="cmd" value="detail">
@@ -457,7 +480,8 @@ function fncInsertMtgPlaceResve() {
 	    </td>
 	    </c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1330=='0' }"><td   bgcolor="#FFFFFF"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManage.do'/>" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManage.do" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="resveId"    value="">
 	            <input type="hidden" name="cmd"        value="insert">
@@ -470,7 +494,8 @@ function fncInsertMtgPlaceResve() {
 	    </td></c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1400!='0' }">
 	    <td   bgcolor="#431508"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageDetail.do'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManageDetail.do">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="resveId"    value="<c:out value='${fn:substring(mtgPlaceResveManage.resveTemp1400,0,20) }'/>">
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="cmd" value="detail">
@@ -481,7 +506,8 @@ function fncInsertMtgPlaceResve() {
 	    </td>
 	    </c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1400=='0' }"><td   bgcolor="#FFFFFF"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManage.do'/>" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManage.do" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="resveId"    value="">
 	            <input type="hidden" name="cmd"        value="insert">
@@ -494,7 +520,8 @@ function fncInsertMtgPlaceResve() {
 	    </td></c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1430!='0' }">
 	    <td   bgcolor="#431508"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageDetail.do'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManageDetail.do">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="resveId"    value="<c:out value='${fn:substring(mtgPlaceResveManage.resveTemp1430,0,20) }'/>">
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="cmd" value="detail">
@@ -505,7 +532,8 @@ function fncInsertMtgPlaceResve() {
 	    </td>
 	    </c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1430=='0' }"><td   bgcolor="#FFFFFF"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManage.do'/>" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManage.do" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="resveId"    value="">
 	            <input type="hidden" name="cmd"        value="insert">
@@ -518,7 +546,8 @@ function fncInsertMtgPlaceResve() {
 	    </td></c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1500!='0' }">
 	    <td   bgcolor="#431508"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageDetail.do'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManageDetail.do">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="resveId"    value="<c:out value='${fn:substring(mtgPlaceResveManage.resveTemp1500,0,20) }'/>">
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="cmd" value="detail">
@@ -529,7 +558,8 @@ function fncInsertMtgPlaceResve() {
 	    </td>
 	    </c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1500=='0' }"><td   bgcolor="#FFFFFF"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManage.do'/>" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManage.do" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="resveId"    value="">
 	            <input type="hidden" name="cmd"        value="insert">
@@ -542,7 +572,8 @@ function fncInsertMtgPlaceResve() {
 	    </td></c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1530!='0' }">
 	    <td   bgcolor="#431508"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageDetail.do'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManageDetail.do">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="resveId"    value="<c:out value='${fn:substring(mtgPlaceResveManage.resveTemp1530,0,20) }'/>">
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="cmd" value="detail">
@@ -553,7 +584,8 @@ function fncInsertMtgPlaceResve() {
 	    </td>
 	    </c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1530=='0' }"><td   bgcolor="#FFFFFF"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManage.do'/>" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManage.do" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="resveId"    value="">
 	            <input type="hidden" name="cmd"        value="insert">
@@ -566,7 +598,8 @@ function fncInsertMtgPlaceResve() {
 	    </td></c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1600!='0' }">
 	    <td   bgcolor="#431508"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageDetail.do'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManageDetail.do">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="resveId"    value="<c:out value='${fn:substring(mtgPlaceResveManage.resveTemp1600,0,20) }'/>">
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="cmd" value="detail">
@@ -577,7 +610,8 @@ function fncInsertMtgPlaceResve() {
 	    </td>
 	    </c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1600=='0' }"><td   bgcolor="#FFFFFF"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManage.do'/>" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManage.do" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="resveId"    value="">
 	            <input type="hidden" name="cmd"        value="insert">
@@ -590,7 +624,8 @@ function fncInsertMtgPlaceResve() {
 	    </td></c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1630!='0' }">
 	    <td   bgcolor="#431508"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageDetail.do'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManageDetail.do">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="resveId"    value="<c:out value='${fn:substring(mtgPlaceResveManage.resveTemp1630,0,20) }'/>">
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="cmd" value="detail">
@@ -601,7 +636,8 @@ function fncInsertMtgPlaceResve() {
 	    </td>
 	    </c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1630=='0' }"><td   bgcolor="#FFFFFF"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManage.do'/>" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManage.do" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="resveId"    value="">
 	            <input type="hidden" name="cmd"        value="insert">
@@ -614,7 +650,8 @@ function fncInsertMtgPlaceResve() {
 	    </td></c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1700!='0' }">
 	    <td   bgcolor="#431508"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageDetail.do'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManageDetail.do">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="resveId"    value="<c:out value='${fn:substring(mtgPlaceResveManage.resveTemp1700,0,20) }'/>">
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="cmd" value="detail">
@@ -625,7 +662,8 @@ function fncInsertMtgPlaceResve() {
 	    </td>
 	    </c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1700=='0' }"><td   bgcolor="#FFFFFF"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManage.do'/>" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManage.do" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="resveId"    value="">
 	            <input type="hidden" name="cmd"        value="insert">
@@ -638,7 +676,8 @@ function fncInsertMtgPlaceResve() {
 	    </td></c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1730!='0' }">
 	    <td   bgcolor="#431508"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageDetail.do'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManageDetail.do">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="resveId"    value="<c:out value='${fn:substring(mtgPlaceResveManage.resveTemp1730,0,20) }'/>">
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="cmd" value="detail">
@@ -649,7 +688,8 @@ function fncInsertMtgPlaceResve() {
 	    </td>
 	    </c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1730=='0' }"><td   bgcolor="#FFFFFF"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManage.do'/>" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManage.do" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="resveId"    value="">
 	            <input type="hidden" name="cmd"        value="insert">
@@ -662,7 +702,8 @@ function fncInsertMtgPlaceResve() {
 	    </td></c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1800!='0' }">
 	    <td   bgcolor="#431508"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageDetail.do'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManageDetail.do">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="resveId"    value="<c:out value='${fn:substring(mtgPlaceResveManage.resveTemp1800,0,20) }'/>">
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="cmd" value="detail">
@@ -673,7 +714,8 @@ function fncInsertMtgPlaceResve() {
 	    </td>
 	    </c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1800=='0' }"><td   bgcolor="#FFFFFF"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManage.do'/>" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManage.do" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="resveId"    value="">
 	            <input type="hidden" name="cmd"        value="insert">
@@ -686,7 +728,8 @@ function fncInsertMtgPlaceResve() {
 	    </td></c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1830!='0' }">
 	    <td   bgcolor="#431508"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageDetail.do'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManageDetail.do">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="resveId"    value="<c:out value='${fn:substring(mtgPlaceResveManage.resveTemp1830,0,20) }'/>">
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="cmd" value="detail">
@@ -697,7 +740,8 @@ function fncInsertMtgPlaceResve() {
 	    </td>
 	    </c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1830=='0' }"><td   bgcolor="#FFFFFF"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManage.do'/>" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManage.do" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="resveId"    value="">
 	            <input type="hidden" name="cmd"        value="insert">
@@ -710,7 +754,8 @@ function fncInsertMtgPlaceResve() {
 	    </td></c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1900!='0' }">
 	    <td   bgcolor="#431508"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageDetail.do'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManageDetail.do">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="resveId"    value="<c:out value='${fn:substring(mtgPlaceResveManage.resveTemp1900,0,20) }'/>">
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="cmd" value="detail">
@@ -721,7 +766,8 @@ function fncInsertMtgPlaceResve() {
 	    </td>
 	    </c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1900=='0' }"><td   bgcolor="#FFFFFF"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManage.do'/>" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManage.do" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="resveId"    value="">
 	            <input type="hidden" name="cmd"        value="insert">
@@ -734,7 +780,8 @@ function fncInsertMtgPlaceResve() {
 	    </td></c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1930!='0' }">
 	    <td   bgcolor="#431508"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageDetail.do'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManageDetail.do">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="resveId"    value="<c:out value='${fn:substring(mtgPlaceResveManage.resveTemp1930,0,20) }'/>">
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="cmd" value="detail">
@@ -745,7 +792,8 @@ function fncInsertMtgPlaceResve() {
 	    </td>
 	    </c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp1930=='0' }"><td   bgcolor="#FFFFFF"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManage.do'/>" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManage.do" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="resveId"    value="">
 	            <input type="hidden" name="cmd"        value="insert">
@@ -758,7 +806,8 @@ function fncInsertMtgPlaceResve() {
 	    </td></c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp2000!='0' }">
 	    <td   bgcolor="#431508"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageDetail.do'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManageDetail.do">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="resveId"    value="<c:out value='${fn:substring(mtgPlaceResveManage.resveTemp2000,0,20) }'/>">
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="cmd" value="detail">
@@ -769,7 +818,8 @@ function fncInsertMtgPlaceResve() {
 	    </td>
 	    </c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp2000=='0' }"><td   bgcolor="#FFFFFF"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManage.do'/>" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManage.do" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="resveId"    value="">
 	            <input type="hidden" name="cmd"        value="insert">
@@ -782,7 +832,8 @@ function fncInsertMtgPlaceResve() {
 	    </td></c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp2030!='0' }">
 	    <td   bgcolor="#431508"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManageDetail.do'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManageDetail.do">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="resveId"    value="<c:out value='${fn:substring(mtgPlaceResveManage.resveTemp2030,0,20) }'/>">
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="cmd" value="detail">
@@ -793,7 +844,8 @@ function fncInsertMtgPlaceResve() {
 	    </td>
 	    </c:if>
 	    <c:if test="${mtgPlaceResveManage.resveTemp2030=='0' }"><td   bgcolor="#FFFFFF"  >
-	        <form name="item" method="post" action="<c:url value='/uss/ion/mtg/selectMtgPlaceResveManage.do'/>" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/mtg/selectMtgPlaceResveManage.do" data-opn-begin="<c:out value='${mtgPlaceResveManage.opnBeginTm}'/>" data-opn-end="<c:out value='${mtgPlaceResveManage.opnEndTm}'/>">
+	            <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	            <input type="hidden" name="mtgPlaceId" value="<c:out value='${mtgPlaceResveManage.mtgPlaceId      }'/>">
 	            <input type="hidden" name="resveId"    value="">
 	            <input type="hidden" name="cmd"        value="insert">

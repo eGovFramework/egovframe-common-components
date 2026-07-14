@@ -27,7 +27,6 @@
 <title>${pageTitle} <spring:message code="title.create" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/EgovValidation.js'/>" ></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialog.js'/>" ></script>
@@ -54,7 +53,6 @@ const QUSTNR_POPUP_CONFIG = {
 function fn_egov_init_QustnrItemManage(){
 
 	document.getElementById("iemSn").value = "1";
-	//document.getElementById("qestnrEndDe").value = "2008-01-30";
 }
 /* ********************************************************
  * 목록 으로 가기
@@ -67,11 +65,6 @@ function fn_egov_list_QustnrItemManage(){
  ******************************************************** */
 function fn_egov_save_QustnrItemManage(){
 
-	console.log("qestnrId =", document.getElementById("qestnrId")?.value);
-	console.log("qestnrTmplatId =", document.getElementById("qestnrTmplatId")?.value);
-	console.log("qestnrCn =", document.getElementById("qestnrCn")?.value);
-	console.log("qestnrQesitmId =", document.getElementById("qestnrQesitmId")?.value);
-	console.log("qestnrQesitmCn =", document.getElementById("qestnrQesitmCn")?.value);
 
 
 	var varFrom = document.getElementById("qustnrItemManageForm");
@@ -90,7 +83,6 @@ function fn_egov_save_QustnrItemManage(){
 			return;
 
 		}
-		console.log("설문정보통과")
 		if(varFrom.qestnrQesitmCn.value == "" ||
 				varFrom.qestnrQesitmId.value == ""
 				){
@@ -99,7 +91,6 @@ function fn_egov_save_QustnrItemManage(){
 			return;
 
 		}
-		console.log("설문문항정보통과")
 
 		if(!validateQustnrItemManageVO(varFrom)){
 			return;
@@ -238,7 +229,6 @@ $(document).ready(function() {
 function openQustnrModal(type) {
     const config = QUSTNR_POPUP_CONFIG[type];
     if (!config) {
-        console.error("알 수 없는 팝업 타입:", type);
         return;
     }
 
@@ -248,7 +238,6 @@ function openQustnrModal(type) {
         const keyword = config.getKeyword();
 
         if (!keyword) {
-            console.log("url 필수 값이 없습니다.");
             return;
         }
 

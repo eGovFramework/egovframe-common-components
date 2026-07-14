@@ -26,6 +26,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title>${pageTitle} <spring:message code="title.detail" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
@@ -48,7 +49,7 @@
 </head>
 <body>
 
-<form name="CcmDeCodeForm" action="<c:url value='/sym/ccm/cde/UpdateCcmCmmnDetailCodeView.do'/>" method="get">
+<form name="CcmDeCodeForm" action="${pageContext.request.contextPath}/sym/ccm/cde/UpdateCcmCmmnDetailCodeView.do" method="post">
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.detail" /></h2>

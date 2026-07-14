@@ -76,6 +76,9 @@
 		-->
 		<script type="text/javaScript" language="javascript">
 			parent.frames["_top"].location.reload();
+			if (parent.frames["_left"] != undefined) {
+				parent.frames["_left"].location.reload();
+			}
 		</script>
 	</c:if>
 	<c:if test="${loginVO == null }">

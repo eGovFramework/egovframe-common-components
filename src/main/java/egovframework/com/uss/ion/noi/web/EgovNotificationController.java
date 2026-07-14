@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.support.SessionStatus;
 
@@ -90,7 +91,7 @@ public class EgovNotificationController {
     /**
      * 신규 정보알림이 등록을 위한 등록페이지로 이동한다.
      */
-    @RequestMapping("/uss/ion/noi/addNotification.do")
+    @PostMapping("/uss/ion/noi/addNotification.do")
     public String addNotification(@ModelAttribute("notificationVO") NotificationVO notificationVO, ModelMap model) throws Exception {
         return "egovframework/com/uss/ion/noi/EgovNotificationRegist";
     }
@@ -98,7 +99,7 @@ public class EgovNotificationController {
     /**
      * 신규 정보알림이 정보를 등록한다.
      */
-    @RequestMapping("/uss/ion/noi/insertNotification.do")
+    @PostMapping("/uss/ion/noi/insertNotification.do")
     public String insertNotification(@Valid @ModelAttribute("notificationVO") NotificationVO notificationVO,
             BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
 
@@ -128,7 +129,7 @@ public class EgovNotificationController {
     /**
      * 정보알림이에 대한 상세정보를 조회한다.
      */
-    @RequestMapping("/uss/ion/noi/selectNotification.do")
+    @PostMapping("/uss/ion/noi/selectNotification.do")
     public String selectNotification(@ModelAttribute("notificationVO") NotificationVO notificationVO, ModelMap model) throws Exception {
         LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
@@ -143,7 +144,7 @@ public class EgovNotificationController {
     /**
      * 정보알림이 수정을 위해 수정페이지로 이동한다.
      */
-    @RequestMapping("/uss/ion/noi/forUpdateNotification.do")
+    @PostMapping("/uss/ion/noi/forUpdateNotification.do")
     public String forUpdateNotificaiton(@ModelAttribute("notificationVO") NotificationVO notificationVO, ModelMap model) throws Exception {
         NotificationVO vo = notificationService.selectNotificationInf(notificationVO);
         if (vo != null) {
@@ -163,7 +164,7 @@ public class EgovNotificationController {
     /**
      * 정보알림이 정보를 수정한다.
      */
-    @RequestMapping("/uss/ion/noi/updateNotification.do")
+    @PostMapping("/uss/ion/noi/updateNotification.do")
     public String updateNotification(@Valid @ModelAttribute("notificationVO") NotificationVO notificationVO,
             BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -197,7 +198,7 @@ public class EgovNotificationController {
     /**
      * 정보알림이 정보를 삭제한다.
      */
-    @RequestMapping("/uss/ion/noi/deleteNotification.do")
+    @PostMapping("/uss/ion/noi/deleteNotification.do")
     public String deleteNotification(@ModelAttribute("notificationVO") NotificationVO notificationVO, SessionStatus status) throws Exception {
 
         LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -213,7 +214,7 @@ public class EgovNotificationController {
     /**
      * 정보알림이 표시를 조회한다.
      */
-    @RequestMapping("/uss/ion/noi/getNotifications.do")
+    @PostMapping("/uss/ion/noi/getNotifications.do")
     public String getNotifications(@ModelAttribute("notificationVO") NotificationVO notificationVO, ModelMap model) throws Exception {
         Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 

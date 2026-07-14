@@ -61,6 +61,7 @@
 	<h2><spring:message code="comUssIonIsm.infrmlSanctnDetail.confmAtC" /></h2><!-- 승인 -->
 
 	<form id="targetForm" name="targetForm" method="post" action="#LINK">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input type="hidden" name="cmd">
 	<input type="hidden" name="checkedEventRceptForConfm">
 

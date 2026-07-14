@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -97,7 +98,7 @@ public class EgovUserLogController {
 	 * @return sym/log/ulg/EgovUserLogInqire
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/log/ulg/SelectUserLogDetail.do")
+	@PostMapping("/sym/log/ulg/SelectUserLogDetail.do")
 	public String selectUserLog(@ModelAttribute("searchVO") UserLog userLog,
 			@RequestParam("occrrncDe") String occrrncDe, @RequestParam("rqesterId") String rqesterId,
 			@RequestParam("srvcNm") String srvcNm, @RequestParam("methodNm") String methodNm, ModelMap model)

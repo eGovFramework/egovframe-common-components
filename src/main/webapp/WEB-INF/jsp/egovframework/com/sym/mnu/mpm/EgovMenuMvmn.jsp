@@ -66,6 +66,7 @@ function selectMenuListTmp() {
 </head>
 <body style="overflow-x:hidden;overflow-y:auto">
 <form name="searchUpperMenuIdForm" action ="<c:url value='/sym/mnu/mpm/EgovMenuListSelectTmp.do'/>" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="전송" title="전송"></div>
 <input type="hidden" name="req_RetrunPath" value="/sym/mnu/mpm/EgovMenuMvmn">
 <c:forEach var="result" items="${list_menulist}" varStatus="status" >

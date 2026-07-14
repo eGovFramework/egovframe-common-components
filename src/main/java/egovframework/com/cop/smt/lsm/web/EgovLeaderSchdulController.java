@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
@@ -232,9 +233,16 @@ public class EgovLeaderSchdulController {
 
 		if(strYear != null && !strYear.equals(""))
 		{
-		  iNowYear = Integer.parseInt(strYear);
-		  iNowMonth = Integer.parseInt(strMonth);
-		  iNowWeek = Integer.parseInt(strWeek);
+		  try {
+		    iNowYear = Integer.parseInt(strYear);
+		    iNowMonth = Integer.parseInt(strMonth);
+		    iNowWeek = Integer.parseInt(strWeek);
+		  } catch (NumberFormatException e) {
+		    // 2026.07.13 KISA 보안취약점 조치 - 잘못된 숫자 입력값 방어
+		    iNowYear = calNow.get(Calendar.YEAR);
+		    iNowMonth = calNow.get(Calendar.MONTH);
+		    iNowWeek = 0;
+		  }
 		}
 
 		//연도/월 셋팅
@@ -309,6 +317,12 @@ public class EgovLeaderSchdulController {
 
 
 		model.addAttribute("listWeekGrop", listWeekGrop);
+
+		// 2026.07.13 KISA 보안취약점 조치 - 인덱스 사용 전 범위 검증(IndexOutOfBoundsException 방지)
+		if (iNowWeek < 0 || iNowWeek >= listWeekGrop.size()) {
+			iNowWeek = 0;
+			model.addAttribute("week", iNowWeek);
+		}
 
 		List<String> listWeek = listWeekGrop.get(iNowWeek);
 
@@ -394,7 +408,7 @@ public class EgovLeaderSchdulController {
 	 *
 	 * @param leaderSchdulVO
 	 */
-	@RequestMapping(value = "/cop/smt/lsm/usr/selectLeaderSchdul.do")
+	@PostMapping("/cop/smt/lsm/usr/selectLeaderSchdul.do")
 	public String selectLeaderSchdul(@ModelAttribute("leaderSchdulVO") LeaderSchdulVO leaderSchdulVO,  ModelMap model) throws Exception{
 		/*
 		 * 공통코드
@@ -432,8 +446,8 @@ public class EgovLeaderSchdulController {
 	 *
 	 * @param leaderSchdulVO
 	 */
-	@RequestMapping(value = "/cop/smt/lsm/mng/modifyLeaderSchdul.do")
-	public String modifyLeaderSchdul(@Valid @ModelAttribute("leaderSchdulVO") LeaderSchdulVO leaderSchdulVO, BindingResult bindingResult, ModelMap model) throws Exception{
+	@PostMapping("/cop/smt/lsm/mng/modifyLeaderSchdul.do")
+	public String modifyLeaderSchdul(@ModelAttribute("leaderSchdulVO") LeaderSchdulVO leaderSchdulVO, ModelMap model) throws Exception{
 
 		String sLocationUrl = "egovframework/com/cop/smt/lsm/EgovLeaderSchdulModify";
 
@@ -501,10 +515,9 @@ public class EgovLeaderSchdulController {
      * @return
      * @throws Exception
      */
-	@RequestMapping(value = "/cop/smt/lsm/mng/addLeaderSchdul.do")
+	@RequestMapping("/cop/smt/lsm/mng/addLeaderSchdul.do")
 	public String addLeaderSchdul(
-			@Valid @ModelAttribute("leaderSchdulVO") LeaderSchdulVO leaderSchdulVO,
-			BindingResult bindingResult,
+			@ModelAttribute("leaderSchdulVO") LeaderSchdulVO leaderSchdulVO,
     		ModelMap model)
 	throws Exception {
 		String sLocationUrl = "egovframework/com/cop/smt/lsm/EgovLeaderSchdulRegist";
@@ -565,7 +578,7 @@ public class EgovLeaderSchdulController {
 	 *
 	 * @param leaderSchdul
 	 */
-	@RequestMapping(value = "/cop/smt/lsm/mng/insertLeaderSchdul.do")
+	@PostMapping("/cop/smt/lsm/mng/insertLeaderSchdul.do")
 	public String insertLeaderSchdul(@Valid @ModelAttribute("leaderSchdulVO") LeaderSchdulVO leaderSchdulVO,
 		    BindingResult bindingResult, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -621,7 +634,7 @@ public class EgovLeaderSchdulController {
 	 *
 	 * @param leaderSchdul
 	 */
-	@RequestMapping(value = "/cop/smt/lsm/mng/updateLeaderSchdul.do")
+	@PostMapping("/cop/smt/lsm/mng/updateLeaderSchdul.do")
 	public String updateLeaderSchdul(@Valid @ModelAttribute("leaderSchdulVO") LeaderSchdulVO leaderSchdulVO,
 			BindingResult bindingResult, ModelMap model) throws Exception{
 		// 0. Spring Security 사용자권한 처리
@@ -673,7 +686,7 @@ public class EgovLeaderSchdulController {
 	 *
 	 * @param leaderSchdul
 	 */
-	@RequestMapping(value = "/cop/smt/lsm/mng/deleteLeaderSchdul.do")
+	@PostMapping("/cop/smt/lsm/mng/deleteLeaderSchdul.do")
 	public String deleteLeaderSchdul(@ModelAttribute("leaderSchdulVO") LeaderSchdulVO leaderSchdulVO, ModelMap model) throws Exception{
 		// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -777,7 +790,7 @@ public class EgovLeaderSchdulController {
 	 *
 	 * @param LeaderSttus
 	 */
-	@RequestMapping("/cop/smt/lsm/mng/addLeaderSttus.do")
+	@PostMapping("/cop/smt/lsm/mng/addLeaderSttus.do")
 	public String addLeaderSttus(
 			@Valid @ModelAttribute("leaderSttusVO") LeaderSttusVO leaderSttusVO, BindingResult bindingResult,
 			ModelMap model) throws Exception{
@@ -810,7 +823,7 @@ public class EgovLeaderSchdulController {
 	 *
 	 * @param LeaderSttus
 	 */
-	@RequestMapping("/cop/smt/lsm/mng/modifyLeaderSttus.do")
+	@PostMapping("/cop/smt/lsm/mng/modifyLeaderSttus.do")
 	public String modifyLeaderSttus(@Valid @ModelAttribute("leaderSttusVO") LeaderSttusVO leaderSttusVO, BindingResult bindingResult, ModelMap model) throws Exception{
 		// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -846,7 +859,7 @@ public class EgovLeaderSchdulController {
 	 *
 	 * @param leaderSttusVO
 	 */
-	@RequestMapping("/cop/smt/lsm/mng/updateLeaderSttus.do")
+	@PostMapping("/cop/smt/lsm/mng/updateLeaderSttus.do")
 	public String updateLeaderSttus(@Valid @ModelAttribute("leaderSttusVO") LeaderSttusVO leaderSttusVO, BindingResult bindingResult, ModelMap model) throws Exception{
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -872,7 +885,7 @@ public class EgovLeaderSchdulController {
 	 *
 	 * @param leaderSttusVO
 	 */
-	@RequestMapping("/cop/smt/lsm/mng/insertLeaderSttus.do")
+	@PostMapping("/cop/smt/lsm/mng/insertLeaderSttus.do")
 	public String insertLeaderSttus(@Valid @ModelAttribute("leaderSttusVO") LeaderSttusVO leaderSttusVO, BindingResult bindingResult, ModelMap model) throws Exception{
 		// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -913,7 +926,7 @@ public class EgovLeaderSchdulController {
 	 *
 	 * @param LeaderSttus
 	 */
-	@RequestMapping("/cop/smt/lsm/mng/deleteLeaderSttus.do")
+	@PostMapping("/cop/smt/lsm/mng/deleteLeaderSttus.do")
 	public String deleteLeaderSttus(@ModelAttribute("leaderSttusVO") LeaderSttus leaderSttus, ModelMap model) throws Exception{
 		// 0. Spring Security 사용자권한 처리
     	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();

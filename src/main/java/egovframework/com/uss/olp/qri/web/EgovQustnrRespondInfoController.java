@@ -82,6 +82,63 @@ public class EgovQustnrRespondInfoController {
 	private EgovCmmUseService cmmUseService;
 
 	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - Referer 기반 오픈 리다이렉트(CWE-601) 방지
+	 * 신뢰할 수 없는 HTTP Referer 헤더를 그대로 리다이렉트 대상으로 사용하지 않도록,
+	 * 같은 오리진(scheme/host/port)이거나 안전한 상대경로("/"로 시작하고 "//" 로 시작하지 않는 경우)인
+	 * 경우에만 값을 허용하고, 그 외(외부 도메인, 스킴 상대 URL 등)에는 빈 문자열을 반환한다.
+	 *
+	 * @param request 현재 요청
+	 * @return 검증된 안전한 returnUrl (허용되지 않는 경우 빈 문자열)
+	 */
+	private String safeReturnUrl(HttpServletRequest request) {
+		String referer = request.getHeader("REFERER");
+		if (referer == null || referer.isEmpty()) {
+			return "";
+		}
+
+		// 스킴 상대(protocol-relative) URL("//evil.com")은 외부 리다이렉트이므로 차단
+		if (referer.startsWith("//") || referer.startsWith("/\\") || referer.startsWith("\\\\")) {
+			LOGGER.debug("Referer가 스킴 상대 URL 형태여서 차단되었습니다.");
+			return "";
+		}
+
+		// 같은 서버 내 상대경로("/"로 시작)는 안전한 것으로 간주
+		if (referer.startsWith("/")) {
+			return referer;
+		}
+
+		// 절대 URL인 경우 요청과 동일한 오리진(scheme, host, port)인지 검증
+		try {
+			java.net.URI refererUri = new java.net.URI(referer);
+			String refererScheme = refererUri.getScheme();
+			String refererHost = refererUri.getHost();
+
+			if (refererScheme == null || refererHost == null) {
+				return "";
+			}
+
+			int refererPort = refererUri.getPort();
+			if (refererPort == -1) {
+				refererPort = "https".equalsIgnoreCase(refererScheme) ? 443 : 80;
+			}
+			int serverPort = request.getServerPort();
+
+			boolean sameOrigin = refererScheme.equalsIgnoreCase(request.getScheme())
+					&& refererHost.equalsIgnoreCase(request.getServerName())
+					&& refererPort == serverPort;
+
+			if (sameOrigin) {
+				return referer;
+			}
+		} catch (Exception e) {
+			LOGGER.debug("Referer 파싱 실패로 인해 차단되었습니다: {}", e.getMessage());
+		}
+
+		// 외부 도메인 등 화이트리스트를 벗어나는 경우 안전한 기본값(빈 문자열) 반환
+		return "";
+	}
+
+	/**
 	 * 설문템플릿을 적용한다.
 	 *
 	 * @param searchVO
@@ -128,7 +185,8 @@ public class EgovQustnrRespondInfoController {
 				egovQustnrRespondInfoService.selectQustnrRespondInfoManageStatistics2(commandMap));
 
 		// 이전 주소
-		model.addAttribute("returnUrl", request.getHeader("REFERER"));
+		// 2026.07.13 KISA 보안취약점 조치 - Referer 오픈 리다이렉트 방지(같은 오리진/상대경로만 허용)
+		model.addAttribute("returnUrl", safeReturnUrl(request));
 
 		// 안전한 경로 문자열로 조치
 		sTemplateUrl = EgovWebUtil.filePathBlackList(sTemplateUrl);
@@ -191,7 +249,8 @@ public class EgovQustnrRespondInfoController {
 				egovQustnrRespondInfoService.selectQustnrRespondInfoManageStatistics2(commandMap));
 
 		// 이전 주소
-		model.addAttribute("returnUrl", request.getHeader("REFERER"));
+		// 2026.07.13 KISA 보안취약점 조치 - Referer 오픈 리다이렉트 방지(같은 오리진/상대경로만 허용)
+		model.addAttribute("returnUrl", safeReturnUrl(request));
 
 		return sLocationUrl;
 	}
@@ -253,7 +312,7 @@ public class EgovQustnrRespondInfoController {
 	 */
 
 	@SuppressWarnings({ "rawtypes", "unchecked" })
-	@RequestMapping(value = "/uss/olp/qnn/EgovQustnrRespondInfoManageRegist.do")
+	@PostMapping("/uss/olp/qnn/EgovQustnrRespondInfoManageRegist.do")
 	public String egovQustnrRespondInfoManageRegist(
 			@Valid @ModelAttribute("searchVO") ComDefaultVO searchVO,
 			BindingResult bindingResult,
@@ -262,7 +321,9 @@ public class EgovQustnrRespondInfoController {
 			RedirectAttributes redirectAttributes,
 			ModelMap model) throws Exception {
 
-		LOGGER.info("####EgovQustnrRespondInfoManageRegist컨트롤러진입 - commandMap 전체: {}", commandMap);
+		// 2026.07.13 KISA 보안취약점 조치 - 인증/검증 이전 시점에 전체 요청 파라미터(PII, 자유서술 응답 포함)를
+		// 그대로 로그에 남기지 않도록 민감 정보를 마스킹하고, 화이트리스트된 필드만 로그에 기록한다.
+		LOGGER.info("####EgovQustnrRespondInfoManageRegist컨트롤러진입 - commandMap 키목록: {}", commandMap.keySet());
 		LOGGER.info("####EgovQustnrRespondInfoManageRegist컨트롤러진입 - qestnrTmplateId raw: {}", commandMap.get("qestnrTmplateId"));
 		LOGGER.info("####EgovQustnrRespondInfoManageRegist컨트롤러진입 - qestnrId raw: {}", commandMap.get("qestnrId"));
 		LOGGER.info("####EgovQustnrRespondInfoManageRegist컨트롤러진입 - cmd raw: {}", commandMap.get("cmd"));
@@ -544,7 +605,7 @@ public class EgovQustnrRespondInfoController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qri/EgovQustnrRespondInfoDetail.do")
+	@PostMapping("/uss/olp/qri/EgovQustnrRespondInfoDetail.do")
 	public String egovQustnrRespondInfoDetail(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			QustnrRespondInfoVO qustnrRespondInfoVO, @RequestParam Map<?, ?> commandMap, ModelMap model)
 			throws Exception {
@@ -576,7 +637,7 @@ public class EgovQustnrRespondInfoController {
 	 * @return "egovframework/com/uss/olp/qri/EgovQustnrRespondInfoModify"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qri/EgovQustnrRespondInfoModify.do")
+	@PostMapping("/uss/olp/qri/EgovQustnrRespondInfoModify.do")
 	public String qustnrRespondInfoModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, HttpServletRequest request,
 			@Valid @ModelAttribute("qustnrRespondInfoVO") QustnrRespondInfoVO qustnrRespondInfoVO,
@@ -632,7 +693,7 @@ public class EgovQustnrRespondInfoController {
 	 * @return "egovframework/com/uss/olp/qri/EgovQustnrRespondInfoRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qri/EgovQustnrRespondInfoRegist.do")
+	@PostMapping("/uss/olp/qri/EgovQustnrRespondInfoRegist.do")
 	public String qustnrRespondInfoRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, HttpServletRequest request,
 			@Valid @ModelAttribute("qustnrRespondInfoVO") QustnrRespondInfoVO qustnrRespondInfoVO,

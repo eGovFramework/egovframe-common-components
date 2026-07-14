@@ -108,6 +108,12 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 		if (!EgovWebUtil.isIPAddress(synchrnServer.getServerIp())) {
 			return list;
 		}
+		try {
+			EgovWebUtil.validatePublicFtpHost(synchrnServer.getServerIp());
+		} catch (IllegalArgumentException e) {
+			LOGGER.warn("Blocked FTP host access: {}", synchrnServer.getServerIp());
+			return list;
+		}
 
 		try {
 			// 연동 가능 여부 확인(connect/login) 단계에만 타임아웃 적용
@@ -158,6 +164,7 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 		if (!EgovWebUtil.isIPAddress(synchrnServer.getServerIp())) {
 			throw new RuntimeException("IP is needed. (" + synchrnServer.getServerIp() + ")");
 		}
+		EgovWebUtil.validatePublicFtpHost(synchrnServer.getServerIp());
 
 		InetAddress host = InetAddress.getByName(synchrnServer.getServerIp());
 
@@ -201,6 +208,16 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 		if (!EgovWebUtil.isIPAddress(synchrnServer.getServerIp())) {
 			throw new RuntimeException("IP is needed. (" + synchrnServer.getServerIp() + ")");
 		}
+		EgovWebUtil.validatePublicFtpHost(synchrnServer.getServerIp());
+
+		// 2026.07.13 NCSC 보안점검 후속조치(#675, #674): fileNm 경로 조작(Path Traversal) 방지
+		// 경로 구분자(/, \\) 및 상위 디렉터리 이동(..) 문자를 제거하여 순수 파일명(basename)만 사용하도록 강제한다.
+		// 이를 통해 FTP retrieveFile()이 synchrnLc(작업 디렉터리) 밖의 임의 파일을 읽는 것과,
+		// 로컬 저장 경로(Globals.SynchrnServerPath + fileNm)에 임의 파일명이 사용되는 것을 함께 차단한다.
+		String safeFileNm = FilenameUtils.getName(EgovWebUtil.filePathReplaceAll(fileNm));
+		if (safeFileNm == null || safeFileNm.trim().isEmpty()) {
+			throw new IllegalArgumentException("Invalid fileNm: " + fileNm);
+		}
 
 		InetAddress host = InetAddress.getByName(synchrnServer.getServerIp());
 
@@ -208,12 +225,12 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 		ftpClient.login(synchrnServer.getFtpId(), synchrnServer.getFtpPassword());
 		ftpClient.changeWorkingDirectory(synchrnServer.getSynchrnLc());
 
-		File downFile = new File(EgovWebUtil.filePathBlackList(synchrnServer.getFilePath() + fileNm));
+		File downFile = new File(EgovWebUtil.filePathBlackList(synchrnServer.getFilePath() + safeFileNm));
 		OutputStream outputStream = null;
 
 		try {
 			outputStream = new FileOutputStream(downFile);
-			ftpClient.retrieveFile(fileNm, outputStream);
+			ftpClient.retrieveFile(safeFileNm, outputStream);
 		} finally {
 			if (outputStream != null) {
 				outputStream.close();
@@ -302,6 +319,7 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 			if (!EgovWebUtil.isIPAddress(serverIp)) {
 				throw new RuntimeException("IP is needed. (" + serverIp + ")");
 			}
+			EgovWebUtil.validatePublicFtpHost(serverIp);
 
 			InetAddress host = InetAddress.getByName(serverIp);
 			ftpClient.connect(host, port);
@@ -354,6 +372,7 @@ public class EgovSynchrnServerServiceImpl extends EgovAbstractServiceImpl implem
 			if (!EgovWebUtil.isIPAddress(serverIp)) { // 2011.10.25 보안점검 후속조치
 				throw new RuntimeException("IP is needed. (" + serverIp + ")");
 			}
+			EgovWebUtil.validatePublicFtpHost(serverIp);
 
 			if (synchrnPath == null) {
 				synchrnPath = "";

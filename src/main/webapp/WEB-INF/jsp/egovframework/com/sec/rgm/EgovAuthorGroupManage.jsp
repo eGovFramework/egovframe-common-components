@@ -128,7 +128,6 @@ function fncManageChecked() {
 }
 
 function fncSelectAuthorGroupList(pageNo){
-    //document.listForm.searchCondition.value = "1";
     document.listForm.pageIndex.value = pageNo;
     document.listForm.action = "<c:url value='/sec/rgm/EgovAuthorGroupList.do'/>";
     document.listForm.submit();
@@ -156,7 +155,6 @@ function fncAuthorGroupDeleteList() {
 }
 
 function linkPage(pageNo){
-    //document.listForm.searchCondition.value = "1";
     document.listForm.pageIndex.value = pageNo;
     document.listForm.action = "<c:url value='/sec/rgm/EgovAuthorGroupList.do'/>";
     document.listForm.submit();
@@ -211,7 +209,7 @@ function press() {
 <body>
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
-<form:form name="listForm" action="${pageContext.request.contextPath}/sec/ram/EgovAuthorGroupList.do" method="post">
+<form:form name="listForm" action="${pageContext.request.contextPath}/sec/ram/EgovAuthorGroupList.do" method="post" modelAttribute="searchVO">
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1><!-- 권한그룹관리 목록 -->
 	<!-- 검색영역 -->

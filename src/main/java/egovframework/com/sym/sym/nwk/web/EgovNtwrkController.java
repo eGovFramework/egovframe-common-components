@@ -8,6 +8,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
@@ -143,7 +144,7 @@ public class EgovNtwrkController {
 	 * @param ntwrkVO - 네트워크 Vo
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/sym/sym/nwk/addViewNtwrk.do")
+	@PostMapping("/sym/sym/nwk/addViewNtwrk.do")
 	public String insertViewNtwrk(@ModelAttribute("ntwrkVO") NtwrkVO ntwrkVO, ModelMap model) throws Exception {
 
 		model.addAttribute("ntwrk", ntwrkVO);
@@ -159,7 +160,7 @@ public class EgovNtwrkController {
 	 *
 	 * @param ntwrk
 	 */
-	@RequestMapping(value = "/sym/sym/nwk/addNtwrk.do")
+	@PostMapping("/sym/sym/nwk/addNtwrk.do")
 	public String insertNtwrk(@ModelAttribute("ntwrkVO") NtwrkVO ntwrkVO, @Valid @ModelAttribute("ntwrk") Ntwrk ntwrk,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -185,7 +186,7 @@ public class EgovNtwrkController {
 	 * @param ntwrkVO - 네트워크 Vo
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/sym/sym/nwk/updtViewNtwrk.do")
+	@PostMapping("/sym/sym/nwk/updtViewNtwrk.do")
 	public String updateViewNtwrk(@RequestParam("ntwrkId") String ntwrkId, @ModelAttribute("ntwrkVO") NtwrkVO ntwrkVO,
 			ModelMap model) throws Exception {
 
@@ -204,7 +205,7 @@ public class EgovNtwrkController {
 	 *
 	 * @param ntwrk
 	 */
-	@RequestMapping(value = "/sym/sym/nwk/updtNtwrk.do")
+	@PostMapping("/sym/sym/nwk/updtNtwrk.do")
 	public String updateNtwrk(@ModelAttribute("ntwrkVO") NtwrkVO ntwrkVO, @Valid @ModelAttribute("ntwrk") Ntwrk ntwrk, BindingResult bindingResult, SessionStatus status,
 			ModelMap model) throws Exception {
 
@@ -229,7 +230,7 @@ public class EgovNtwrkController {
 	 *
 	 * @param ntwrk
 	 */
-	@RequestMapping(value = "/sym/sym/nwk/removeNtwrk.do")
+	@PostMapping("/sym/sym/nwk/removeNtwrk.do")
 	public String deleteNtwrk(@RequestParam("ntwrkId") String ntwrkId, @ModelAttribute("ntwrk") Ntwrk ntwrk,
 			ModelMap model) throws Exception {
 		ntwrk.setNtwrkId(ntwrkId);

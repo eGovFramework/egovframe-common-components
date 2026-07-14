@@ -4,6 +4,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="ImgUrl" value="${pageContext.request.contextPath}/images/egovframework/com/cmm/"/>
 
 <%
@@ -73,7 +74,7 @@
 <div class="board" style="width:800px">
 	<h1><spring:message code="comCopCom.userListPop.pageTop.title"/></h1><!-- 사용자 목록 -->
 
-	<form name="frm" action ="<c:url value='/cop/com/selectUserList.do'/>" method="post">
+	<form:form name="frm" modelAttribute="searchVO" action ="<c:url value='/cop/com/selectUserList.do'/>" method="post">
 	<input type="hidden" name="targetMethod" value="${targetMethod}" />
 	<input type="hidden" name="trgetId" value="${trgetId}" />
 	<input type="hidden" name="PopFlag" value="Y" />
@@ -92,7 +93,7 @@
 	</div>
 	
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-	</form>
+	</form:form>
 
 	<table class="board_list">
 		<caption></caption>

@@ -31,7 +31,6 @@
 <title><spring:message code="comCopSmtMrm.memoReprtDetail.title"/></title><!-- 메모보고 상세보기 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
 <script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript">
@@ -171,11 +170,11 @@
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<c:if test="${memoReprt.reportrId eq uniqId}">
-			<span class="btn_s" style="width:64px !important"><a href="<c:url value='/cop/smt/mrm/updateMemoReprtDrctMatter.do'/>?searchWrd=<c:out value='${memoReprtVO.searchWrd}'/>&amp;searchCnd=<c:out value='${memoReprtVO.searchCnd}'/>&amp;pageIndex=<c:out value='${memoReprtVO.pageIndex}'/>&amp;searchSttus=<c:out value='${memoReprtVO.searchSttus}'/>&amp;searchDrctMatter=<c:out value='${memoReprtVO.searchDrctMatter}'/>&amp;searchBgnDe=<c:out value='${memoReprtVO.searchBgnDe}'/>&amp;searchEndDe=<c:out value='${memoReprtVO.searchEndDe}'/>" onclick="fn_egov_confirm_memoreprt(); return false;"><spring:message code="comCopSmtMrm.memoReprtDetail.memoreprt"/></a></span><!-- 의견등록 -->
+			<span class="btn_s" style="width:64px !important"><a href="javascript:void(0);" onclick="fn_egov_confirm_memoreprt(); return false;"><spring:message code="comCopSmtMrm.memoReprtDetail.memoreprt"/></a></span><!-- 의견등록 -->
 		</c:if>
 		<c:if test="${(memoReprt.reprtSttus eq '미확인' or memoReprt.reprtSttus eq 'Unidentified') && memoReprt.wrterId eq uniqId}">
 			<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="fn_egov_modify_memoreprt(); return false;" />
-			<span class="btn_s"><a href="<c:url value='/cop/smt/mrm/deleteMemoReprt.do'/>?reprtId=<c:out value='${egovc:encryptId(memoReprtVO.reprtId)}'/>" onclick="fn_egov_delete_memoreprt(); return false;"><spring:message code="button.delete" /></a></span>
+			<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_delete_memoreprt(); return false;"><spring:message code="button.delete" /></a></span>
 		</c:if>
 		<input class="s_submit" type="submit" value='<spring:message code="button.list" />' onclick="fn_egov_list_memoreprt(); return false;" />
 	</div>

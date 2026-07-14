@@ -25,6 +25,8 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -114,7 +116,7 @@ function fncEventReqstDetailPop(eventId){
 <div class="board">
 	<h1><spring:message code="comUssIonEvt.eventRceptManageList.title"/></h1><!-- 행사접수관리 목록 -->
 	
-<form name="listForm" action="<c:url value='/uss/ion/evt/selectEventRceptList.do'/>" method="post">
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/ion/evt/selectEventRceptList.do" method="post">
 	
 	<input type="hidden" name="searchCondition">
 	<input type="hidden" name="eventId">
@@ -171,7 +173,7 @@ function fncEventReqstDetailPop(eventId){
 			</li>
 		</ul>
 	</div>
-	</form>
+	</form:form>
 
 	<table class="board_list">
 		<caption></caption>
@@ -203,7 +205,7 @@ function fncEventReqstDetailPop(eventId){
 			<c:forEach items="${eventManageList}" var="resultInfo" varStatus="status">
 			<tr>
 				<td><c:out value="${(eventManageVO.pageIndex - 1) * eventManageVO.pageSize + status.count}"/></td>
-				<td><span class="link"><a href="<c:url value='/uss/ion/evt/EgovEventReqstDetail.do?cmd=popup&'/>eventId=${resultInfo.eventId}" target="_blank" title="<spring:message code="comUssIonEvt.common.toNewWindow"/>" onclick="fncEventReqstDetailPop('<c:out value="${resultInfo.eventId}"/>'); return false;"><c:out value="${resultInfo.eventNm}"/></a></span></td><!-- 새창으로 -->
+				<td><span class="link"><a href="javascript:void(0);" onclick="fncEventReqstDetailPop('<c:out value="${resultInfo.eventId}"/>'); return false;"><c:out value="${resultInfo.eventNm}"/></a></span></td><!-- 새창으로 -->
 				<td><c:out value="${resultInfo.eventPlace}"/></td>
 				<td><c:out value="${resultInfo.eventTemp3}"/></td>
 				<td class="lt_textL" nowrap><c:out value="${resultInfo.eventBeginDe}"/> ~ <br><c:out value="${resultInfo.eventEndDe}"/></td>
@@ -212,13 +214,15 @@ function fncEventReqstDetailPop(eventId){
 				<td class="lt_textL" nowrap><c:out value="${resultInfo.rceptBeginDe}"/> ~ <br><c:out value="${resultInfo.rceptEndDe}"/></td>
 				<td>
 				<c:if test="${empty resultInfo.confmAt}"> 
-			        <form name="item" method="post" action="<c:url value='/uss/ion/evt/EgovEventRceptRegist.do'/>">
+			        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/evt/EgovEventRceptRegist.do">
+			        	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 			        	<input type="hidden" name="eventId" value="<c:out value="${resultInfo.eventId}"/>">
 			            <input type="submit" value="<spring:message code="comUssIonEvt.eventRceptManageList.confmAt"/>" onclick="fncEventRceptRegist('<c:out value="${resultInfo.eventId}"/>'); return false;" style="padding:6px 10px 6px 10px; background-color:#4688d2; color:#fff; font-size:11px; border-radius:1px;"><!-- 신청 -->
 			        </form>
 		        </c:if>
 		        <c:if test="${!empty resultInfo.confmAt}">
-		        <form name="item" method="post" action="<c:url value='/uss/ion/evt/EgovEventRcrptDetail.do'/>">
+		        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/evt/EgovEventRcrptDetail.do">
+		        	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		        	<input type="hidden" name="eventId"   value="<c:out value="${resultInfo.eventId}"/>">
 		        	<input type="hidden" name="applcntId" value="<c:out value="${resultInfo.applcntId}"/>">
 		            <input type="submit" value="<c:if test="${resultInfo.confmAt eq 'A'}"><spring:message code="comUssIonEvt.eventRceptManageList.searchConfmAt.a"/></c:if><c:if test="${resultInfo.confmAt eq 'C'}"><spring:message code="comUssIonEvt.eventRceptManageList.searchConfmAt.c"/></c:if><c:if test="${resultInfo.confmAt eq 'R'}"><spring:message code="comUssIonEvt.eventRceptManageList.searchConfmAt.r"/></c:if>" onclick="fncEventRceptManageDetail('<c:out value="${resultInfo.eventId}"/>','<c:out value="${resultInfo.applcntId}"/>'); return false;" style="padding:6px 10px 6px 10px; background-color:#4688d2; color:#fff; font-size:11px; border-radius:1px;"><!-- 신청중  승인 반려 -->

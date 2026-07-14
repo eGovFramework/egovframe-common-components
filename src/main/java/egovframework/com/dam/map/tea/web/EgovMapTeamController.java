@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.LoginVO;
@@ -100,7 +101,7 @@ public class EgovMapTeamController {
 	 *
 	 * @param MapTeamVO
 	 */
-	@RequestMapping(value = "/dam/map/tea/EgovComDamMapTeamDetail.do")
+	@PostMapping("/dam/map/tea/EgovComDamMapTeamDetail.do")
 	public String selectMapTeamDetail(@ModelAttribute("loginVO") LoginVO loginVO, MapTeam mapTeam, ModelMap model)
 			throws Exception {
 		MapTeam vo = mapTeamService.selectMapTeamDetail(mapTeam);
@@ -113,7 +114,7 @@ public class EgovMapTeamController {
 	 *
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/dam/map/tea/EgovComDamMapTeamRegistView.do")
+	@PostMapping("/dam/map/tea/EgovComDamMapTeamRegistView.do")
 	public String insertMapTeamView(@ModelAttribute("mapTeam") MapTeam mapTeam) throws Exception {
 		return "egovframework/com/dam/map/tea/EgovComDamMapTeamRegist";
 	}
@@ -126,7 +127,7 @@ public class EgovMapTeamController {
 	 *
 	 * @param mapTeam
 	 */
-	@RequestMapping(value = "/dam/map/tea/EgovComDamMapTeamRegist.do")
+	@PostMapping("/dam/map/tea/EgovComDamMapTeamRegist.do")
 	public String insertMapTeam(@ModelAttribute("loginVO") LoginVO loginVO, @Valid @ModelAttribute("mapTeam") MapTeam mapTeam,
 			BindingResult bindingResult) throws Exception {
 
@@ -150,7 +151,7 @@ public class EgovMapTeamController {
 	 * @param mapTeam - 지식맵(조직별) model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/dam/map/tea/EgovComDamMapTeamModifyView.do")
+	@PostMapping("/dam/map/tea/EgovComDamMapTeamModifyView.do")
 	public String updateMapTeamView(@ModelAttribute("mapTeam") MapTeam mapTeam, ModelMap model) throws Exception {
 		MapTeam vo = mapTeamService.selectMapTeamDetail(mapTeam);
 		model.addAttribute("mapTeam", vo);
@@ -165,7 +166,7 @@ public class EgovMapTeamController {
 	 *
 	 * @param mapTeam
 	 */
-	@RequestMapping(value = "/dam/map/tea/EgovComDamMapTeamModify.do")
+	@PostMapping("/dam/map/tea/EgovComDamMapTeamModify.do")
 	public String updateMapTeam(@ModelAttribute("loginVO") LoginVO loginVO, @Valid @ModelAttribute("mapTeam") MapTeam mapTeam,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -186,7 +187,7 @@ public class EgovMapTeamController {
 	 *
 	 * @param orgnztNm
 	 */
-	@RequestMapping(value = "/dam/map/tea/EgovComDamMapTeamRemove.do")
+	@PostMapping("/dam/map/tea/EgovComDamMapTeamRemove.do")
 	public String deleteMapTeam(@ModelAttribute("loginVO") LoginVO loginVO, MapTeam mapTeam, ModelMap model)
 			throws Exception {
 		mapTeamService.deleteMapTeam(mapTeam);

@@ -17,6 +17,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <c:set var="pageTitle"><spring:message code="comUssIonNtr.title"/></c:set>
 <!DOCTYPE html>
@@ -77,10 +79,13 @@ function linkPage(pageNo){
 /* ********************************************************
  * 상세회면 처리 함수
  ******************************************************** */
-function fn_egov_detail_NoteRecptn(noteId,noteTrnsmitId){
+function fn_egov_detail_NoteRecptn(noteId,noteTrnsmitId,noteRecptnId){
 	var vFrom = document.listForm;
-	vFrom.noteId.value = noteId;
-	vFrom.noteTrnsmitId.value = noteTrnsmitId;
+	var rowFields = vFrom.querySelectorAll('tbody input[name="noteId"], tbody input[name="noteTrnsmitId"], tbody input[name="noteRecptnId"]');
+	for(var i=0; i<rowFields.length; i++){ rowFields[i].disabled = true; }
+	document.getElementById('detailNoteId').value = noteId;
+	document.getElementById('detailNoteTrnsmitId').value = noteTrnsmitId;
+	document.getElementById('detailNoteRecptnId').value = noteRecptnId;
 	vFrom.action = "<c:url value='/uss/ion/ntr/detailNoteRecptn.do'/>";
 	vFrom.submit();
 }
@@ -191,7 +196,7 @@ function fn_egov_delete_NoteRecptn(){
 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
-	<form name="listForm" id="listForm" action="<c:url value='/uss/ion/ntr/listNoteRecptn.do'/>" method="post" onSubmit="fn_egov_search_NoteRecptn(); return false;"> 
+	<form:form name="listForm" modelAttribute="searchVO" id="listForm" action="${pageContext.request.contextPath}/uss/ion/ntr/listNoteRecptn.do" method="post" onSubmit="fn_egov_search_NoteRecptn(); return false;"> 
 	<!-- 검색영역 -->
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
 		<ul>
@@ -251,10 +256,8 @@ function fn_egov_delete_NoteRecptn(){
 		</td>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 		<td class="left">
-			<a href="<c:url value='/uss/ion/ntr/detailNoteRecptn.do'/>?pageIndex=${searchVO.pageIndex}&amp;noteId=${egovc:encryptId(resultInfo.noteId)}&amp;noteTrnsmitId=${egovc:encryptId(resultInfo.noteTrnsmitId)}&amp;noteRecptnId=${egovc:encryptId(resultInfo.noteRecptnId)}">
- 				<c:set var="noteRecptnNoteSj" value='${fn:escapeXml(resultInfo.noteSj)}'/>
- 				<c:set var="noteRecptnNoteCn" value="${fn:replace(resultInfo.noteSj, crlf , '<br>')}"/>
-				<c:out value='${resultInfo.noteSj }' escapeXml='false'/>
+			<a href="javascript:void(0);" onclick="fn_egov_detail_NoteRecptn('${egovc:encryptId(resultInfo.noteId)}','${egovc:encryptId(resultInfo.noteTrnsmitId)}','${egovc:encryptId(resultInfo.noteRecptnId)}'); return false;">
+				<c:out value='${resultInfo.noteSj}'/>
 			</a>
 		</td>
 		<td><c:out value="${resultInfo.trnsmiterNm}"/></td>
@@ -274,8 +277,11 @@ function fn_egov_delete_NoteRecptn(){
 	<input name="noteIdAll" type="hidden" value="">
 	<input name="noteTrnsmitIdAll" type="hidden" value="">
 	<input name="noteRecptnIdAll" type="hidden" value="">
+	<input type="hidden" id="detailNoteId" name="noteId" value="">
+	<input type="hidden" id="detailNoteTrnsmitId" name="noteTrnsmitId" value="">
+	<input type="hidden" id="detailNoteRecptnId" name="noteRecptnId" value="">
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-	</form>
+	</form:form>
 </div><!-- end div board -->
 
 

@@ -29,11 +29,11 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 <title><spring:message code="uss.ion.msi.mainImageUpdt.mainImageUpdt"/></title><!-- 메인화면이미지 수정 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
 <script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javaScript" language="javascript">
@@ -63,7 +63,7 @@ function fncMainImageDelete() {
         return false;
     }
     if(confirm("<spring:message code="uss.ion.msi.mainImageUpdt.deleteImage"/>")){/* 삭제 하시겠습니까? */
-        location.href = "<c:url value='/uss/ion/msi/removeMainImage.do'/>?imageId=" + encodeURIComponent(varFrom.imageId.value);
+        fn_egov_postNavigate('<c:url value="/uss/ion/msi/removeMainImage.do"/>', null, varFrom);
     }
     return false;
 }
@@ -135,7 +135,7 @@ function fncOnChangeImage() {
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fncMainImageUpdate(); return false;" />
 		<span class="btn_s"><a href="#" onclick="return fncMainImageDelete();"><spring:message code="button.delete" /></a></span>
-		<span class="btn_s"><a href="<c:url value='/uss/ion/msi/selectMainImageList.do'/>?pageIndex=<c:out value='${mainImageVO.pageIndex}'/>&amp;searchKeyword=<c:out value="${mainImageVO.searchKeyword}"/>&amp;searchCondition=1" onclick="fncSelectMainImageList(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncSelectMainImageList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

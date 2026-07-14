@@ -71,6 +71,7 @@
 	
 	<div class="wTableFrm">					
 			<form name="Form" action="" method="post">
+				<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 				<input name="processNm" type="hidden">
 					<h2>&nbsp;${pageTitle}</h2>
 					<table width="700" border="0" cellpadding="0" cellspacing="1" class="wTable" 

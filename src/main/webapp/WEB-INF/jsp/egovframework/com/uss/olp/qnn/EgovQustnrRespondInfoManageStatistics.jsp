@@ -37,7 +37,19 @@ function fn_egov_init_QustnrRespondInfo(){
  * 목록 으로 가기
  ******************************************************** */
 function fn_egov_list_QustnrRespondInfo(){
-	location.href = "<c:url value='${returnUrl}'/>";
+	// 2026.07.13 KISA 보안취약점 조치 - Referer 기반 오픈 리다이렉트 방지
+	// 서버에서 같은 오리진/상대경로만 returnUrl로 내려주지만, 클라이언트에서도
+	// 절대 URL(외부 도메인)이나 스킴 상대 URL(//evil.com)로는 이동하지 않도록 재검증한다.
+	var returnUrl = "<c:out value='${returnUrl}' escapeXml='true'/>";
+	var isSafeRelativeUrl = returnUrl && returnUrl.length > 0
+		&& returnUrl.indexOf("://") === -1
+		&& returnUrl.lastIndexOf("//", 0) !== 0
+		&& returnUrl.charAt(0) === "/";
+	if (isSafeRelativeUrl) {
+		location.href = returnUrl;
+	} else {
+		location.href = "<c:url value='/uss/olp/qnn/EgovQustnrRespondInfoManageList.do'/>";
+	}
 }
 /* ********************************************************
  * 저장처리화면
@@ -243,7 +255,8 @@ return  FValue;
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<!-- 목록 버튼 -->
-		<form name="QustnrQestnManageForm" action="<c:url value='/uss/olp/qnn/EgovQustnrRespondInfoManageList.do'/>" method="post" onsubmit="fn_egov_list_QustnrRespondInfo(); return false;" style="float:left;">
+		<form name="QustnrQestnManageForm" action="${pageContext.request.contextPath}/uss/olp/qnn/EgovQustnrRespondInfoManageList.do" method="post" onsubmit="fn_egov_list_QustnrRespondInfo(); return false;" style="float:left;">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		<input type="submit" class="s_submit" value="<spring:message code='button.list' />" onclick="fn_egov_list_QustnrRespondInfo(); return false;">
 		</form>
 		

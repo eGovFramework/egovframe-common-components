@@ -46,7 +46,8 @@ function fn_egov_list(){
 
 <DIV class="wTableFrm">
 
-<form name="dbMntrngLogForm"  id="dbMntrngLogForm" action="<c:url value='/utl/sys/dbm/getDbMntrngLog.do'/>" method="post">
+<form name="dbMntrngLogForm"  id="dbMntrngLogForm" action="${pageContext.request.contextPath}/utl/sys/dbm/getDbMntrngLog.do" method="post">
+    <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
     <input name="logId" type="hidden" value="<c:out value='${resultInfo.logId}'/>"/>
     <!-- 검색조건 유지 -->
     <input type="hidden" name="searchCondition" value="<c:out value='${searchVO.searchCondition}'/>"/>

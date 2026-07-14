@@ -26,7 +26,6 @@
 <title>${pageTitle} <spring:message code="title.create" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/EgovValidation.js'/>" ></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jquery-1.12.4.min.js'/>"></script>  <!-- jQuery core -->
@@ -57,15 +56,10 @@ function fn_egov_list_QustnrRespondManage(){
  ******************************************************** */
 function fn_egov_save_QustnrRespondManage(){
 		
-	//var varFrom = document.forms[0];
-		//document.qustnrRespondManageVO;
 	var varFrom = document.getElementById("qustnrRespondManageVO")
 	if(confirm("<spring:message code='common.save.msg'/>")){
 		
-		//varFrom.action =  "<c:url value='/uss/olp/qrm/EgovQustnrRespondManageRegist.do'/>";
-		//varFrom.action =  "${pageContext.request.contextPath}/uss/olp/qrm/EgovQustnrRespondManageRegist.do";
 		document.getElementById("qustnrRespondManageVO").action = "${pageContext.request.contextPath}/uss/olp/qrm/EgovQustnrRespondManageRegist.do";
-		//varFrom.brth.value = fn_egov_SelectBoxValue('brthYYYY') + "" + fn_egov_SelectBoxValue('brthMM') + "" + fn_egov_SelectBoxValue('brthDD');
 		 
 		if(document.getElementById("qestnrCn").value == "" ||
 				document.getElementById("qestnrTmplatId").value == "" ||
@@ -81,7 +75,6 @@ function fn_egov_save_QustnrRespondManage(){
 			return;
 		}else{
 			
-			//varFrom.submit();
 			document.getElementById("qustnrRespondManageVO").submit();
 		} 
 		
@@ -220,7 +213,6 @@ $(document).ready(function() {
 function openQustnrModal(type) {
     const config = QUSTNR_POPUP_CONFIG[type];
     if (!config) {
-        console.error("알 수 없는 팝업 타입:", type);
         return;
     }
 
@@ -230,7 +222,6 @@ function openQustnrModal(type) {
         const keyword = config.getKeyword();
 
         if (!keyword) {
-            console.log("url 필수 값이 없습니다.");
             return;
         }
 

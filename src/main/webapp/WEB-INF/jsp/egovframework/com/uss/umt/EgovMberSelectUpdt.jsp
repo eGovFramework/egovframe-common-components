@@ -297,10 +297,10 @@ function onepassCancel() {
 <!-- content end -->
 
 <!-- 2021.05.30, 정진오, 디지털원패스 연동해지 -->
-<form id="onepassForm" name="onepassForm" method="post">
+<form:form id="onepassForm" name="onepassForm" modelAttribute="mberManageVO" method="post">
 <input type="hidden" name="userKey" id="userKey" value="<c:out value='${onepassUserkey}'/>"/>
 <input type="hidden" name="intfToken" id="intfToken" value="<c:out value='${onepassIntfToken}'/>"/>
-</form>
+</form:form>
 
 </body>
 </html>

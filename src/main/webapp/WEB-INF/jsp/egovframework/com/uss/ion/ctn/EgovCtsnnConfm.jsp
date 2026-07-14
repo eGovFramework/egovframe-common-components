@@ -212,7 +212,7 @@
 			<input  id="confirmAgree" class="s_submit" type="submit" value='<spring:message code="comUssIonCtn.ctsnnConfm.agree"/>' onclick="fncConfmCtsnnManage(); return false;" /><!-- 승인 -->
 			<span class="btn_s"><a id="confirmDisAgree" title='<spring:message code="comUssIonCtn.ctsnnConfm.disagree"/>'><spring:message code="comUssIonCtn.ctsnnConfm.disagree"/></a></span><!-- 반려 -->
 	    </c:if>
-	    <span class="btn_s"><a href="<c:url value='/uss/ion/ctn/EgovCtsnnConfmList.do'/>?searchCondition=1" onclick="fncEgovCtsnnConfmList(); return false;"><spring:message code="button.list" /></a></span>
+	    <span class="btn_s"><a href="javascript:void(0);" onclick="fncEgovCtsnnConfmList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </form:form>

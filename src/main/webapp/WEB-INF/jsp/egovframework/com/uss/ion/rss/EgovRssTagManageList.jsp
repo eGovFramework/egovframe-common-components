@@ -17,9 +17,12 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title><spring:message code="ussIonRss.rssTagManageList.rssTagManageList"/></title><!-- RSS태그관리 목록조회 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
@@ -37,10 +40,9 @@ function linkPage(pageNo){
 /* ********************************************************
  * 상세화면 처리 함수
  ******************************************************** */
-function fn_egov_detail_RssTagManage(noteId,noteTrnsmitId){
+function fn_egov_detail_RssTagManage(rssId){
 	var vFrom = document.listForm;
-	vFrom.noteId.value = noteId;
-	vFrom.noteTrnsmitId.value = noteTrnsmitId;
+	vFrom.rssId.value = rssId;
 	vFrom.action = "<c:url value='/uss/ion/rss/detailRssTagManage.do'/>";
 	vFrom.submit();
 }
@@ -132,7 +134,7 @@ function fn_egov_delete_RssTagManage(){
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
 <div class="board">
-<form name="listForm" action="<c:url value='/uss/ion/rss/listRssTagManage.do'/>" method="post">
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/ion/rss/listRssTagManage.do" method="post">
 	<h1><spring:message code="ussIonRss.rssTagManageList.rssTagManageList"/></h1><!-- RSS태그관리 목록 -->
 
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
@@ -157,7 +159,7 @@ function fn_egov_delete_RssTagManage(){
 				
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fn_egov_search_RssTagManage(); return false;" />
 				<input class="s_btn" type="submit" value="<spring:message code="button.delete"/>" title="<spring:message code="button.delete"/>" onclick="fn_egov_delete_RssTagManage(); return false;" /><!-- 삭제 -->
-				<span class="btn_b"><a href="<c:url value='/uss/ion/rss/insertRssTagManageView.do'/>?pageIndex=<c:out value='${rssManage.pageIndex}'/>" onclick="" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="#" onclick="fn_egov_postNavigate('<c:url value='/uss/ion/rss/insertRssTagManageView.do' />'); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
@@ -200,11 +202,11 @@ function fn_egov_delete_RssTagManage(){
 				<td><c:out value="${(rssManage.pageIndex-1) * rssManage.pageSize + status.count}"/></td>
 				<td style="word-break;break-all">
 				<div style="visibility:hidden;display:none;"><a href="#LINK_PAGE${status.count}"></a></div>
-				<a href="<c:url value='/uss/ion/rss/detailRssTagManage.do?pageIndex=${rssManage.pageIndex}&amp;rssId=${resultInfo.rssId}'/>"><c:out value="${resultInfo.trgetSvcNm}"/></a>
+				<a href="javascript:void(0);" onclick="fn_egov_detail_RssTagManage('<c:out value="${resultInfo.rssId}"/>'); return false;"><c:out value="${resultInfo.trgetSvcNm}"/></a>
 				</td>
 				<td style="word-break;break-all">
 					<div class="divDotText" style="width:200px;border:0px;">
-					<a href="<c:url value='/uss/ion/rss/detailRssTagManage.do?pageIndex=${rssManage.pageIndex}&amp;rssId=${resultInfo.rssId}'/>"><c:out value="${resultInfo.trgetSvcTable}"/></a>
+					<a href="javascript:void(0);" onclick="fn_egov_detail_RssTagManage('<c:out value="${resultInfo.rssId}"/>'); return false;"><c:out value="${resultInfo.trgetSvcTable}"/></a>
 					</div>
 				</td>
 				<td><c:out value="${resultInfo.frstRegisterNm}"/></td>
@@ -221,8 +223,9 @@ function fn_egov_delete_RssTagManage(){
 		</ul>
 	</div>
 <input name="cmd" type="hidden" value="">
+<input type="hidden" name="rssId" value="">
 <input name="pageIndex" type="hidden" value="<c:out value='${rssManage.pageIndex}'/>">
-</form>
+</form:form>
 </div>
 </body>
 </html>

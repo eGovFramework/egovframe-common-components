@@ -24,6 +24,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="egovframework.com.utl.fcc.service.EgovDateUtil" %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -120,7 +122,7 @@
 <div class="board">
 	<h1><spring:message code="comUssIonCtn.ctsnnConfmList.titleList"/></h1><!-- 경조사승인관리 목록 -->
 
-	<form name="listForm" action="<c:url value='/uss/ion/ctn/EgovCtsnnConfmList.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/ion/ctn/EgovCtsnnConfmList.do" method="post">
     <input type="hidden" name="searchCondition">
 	<input type="hidden" name="ctsnnId">
     <input type="hidden" name="infrmlSanctnId">
@@ -168,7 +170,7 @@
 			<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fncSelectCtsnnConfmList(); return false;" />
 		</div>
 	</div>
-	</form>
+	</form:form>
 	<table class="board_list">
 		<caption></caption>
 		<colgroup>
@@ -211,7 +213,8 @@
 				</td>
 				<td><c:out value="${resultInfo.sanctnDt   }"/></td>
 				<td>
-				<form name="item" method="post" action="<c:url value='/uss/ion/ctn/EgovCtsnnConfm.do'/>">
+				<form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/ctn/EgovCtsnnConfm.do">
+		           	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		           	<input type="hidden" name="ctsnnId"    value="<c:out value="${resultInfo.ctsnnId    }"/>">
 		            <input class="btn01" type="submit" style="padding:6px 10px 6px 10px; background-color:#4688d2; color:#fff; font-size:11px; border-radius:1px;"
 		                  value="<c:if test="${resultInfo.confmAt eq 'A'}"><spring:message code="comUssIonCtn.ctsnnConfmList.searchConfmAt.agree"/></c:if><c:if test="${resultInfo.confmAt ne 'A'}"><spring:message code="comUssIonCtn.ctsnnConfmList.searchConfmAt.detail"/> </c:if>"

@@ -25,6 +25,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUssUmt.deptManage.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -41,8 +43,8 @@ function fncSelectDeptManageList(pageNo){
     document.listForm.submit();
 }
 
-function fncSelectDeptManage(bannerId) {
-    document.listForm.bannerId.value = bannerId;
+function fncSelectDeptManage(orgnztId) {
+    document.listForm.orgnztId.value = orgnztId;
     document.listForm.action = "<c:url value='/uss/umt/dpt/getDeptManage.do'/>";
     document.listForm.submit();
 }
@@ -77,7 +79,7 @@ function press() {
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="listForm" method="post"> 
+<form:form name="listForm" modelAttribute="deptManageVO" method="post"> 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<!-- 검색영역 -->
@@ -88,7 +90,7 @@ function press() {
 			<li>
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${deptManageVO.searchKeyword}"/>'  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" /><!-- 조회 -->
-				<span class="btn_b"><a href="<c:url value='/uss/umt/dpt/addViewDeptManage.do'/>" onClick="fncAddDeptManageInsert(); return false;"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span><!-- 등록 -->
+				<span class="btn_b"><a href="javascript:void(0);" onClick="fncAddDeptManageInsert(); return false;"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span><!-- 등록 -->
 			</li>
 		</ul>
 	</div>
@@ -116,8 +118,8 @@ function press() {
 	</c:if>
 	<c:forEach var="deptManage" items="${deptManageList}" varStatus="status">
 	<tr>
-		<td><a href="<c:url value='/uss/umt/dpt/getDeptManage.do'/>?pageIndex=${deptManageVO.pageIndex}&searchKeyword=${deptManageVO.searchKeyword}&orgnztId=${deptManage.orgnztId}"><c:out value="${deptManage.orgnztId}"/></a></td>
-		<td class="left"><a href="<c:url value='/uss/umt/dpt/getDeptManage.do'/>?pageIndex=${deptManageVO.pageIndex}&searchKeyword=${deptManageVO.searchKeyword}&orgnztId=${deptManage.orgnztId}"><c:out value="${deptManage.orgnztNm}"/></a></td>
+		<td><a href="javascript:void(0);" onClick="fncSelectDeptManage('<c:out value="${deptManage.orgnztId}"/>'); return false;"><c:out value="${deptManage.orgnztId}"/></a></td>
+		<td class="left"><a href="javascript:void(0);" onClick="fncSelectDeptManage('<c:out value="${deptManage.orgnztId}"/>'); return false;"><c:out value="${deptManage.orgnztNm}"/></a></td>
 		<td class="left"><c:out value="${deptManage.orgnztDc}"/></td>
 	</tr>
 	</c:forEach>
@@ -135,7 +137,8 @@ function press() {
 
 <input name="pageIndex" type="hidden" value="<c:out value='${deptManageVO.pageIndex}'/>">
 <input type="hidden" name="searchCondition" value="1">
-</form>
+<input type="hidden" name="orgnztId" value="">
+</form:form>
 
 
 </body>

@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -98,7 +99,7 @@ public class EgovRecomendSiteController {
 	 * @return "/uss/ion/rec/EgovRecomendSiteDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/rec/selectRecomendSiteDetail.do")
+	@PostMapping("/uss/ion/rec/selectRecomendSiteDetail.do")
 	public String selectRecomendSiteDetail(RecomendSiteVO recomendSiteVO, ModelMap model) throws Exception {
 		RecomendSiteVO vo = egovRecomendSiteService.selectRecomendSiteDetail(recomendSiteVO);
 		model.addAttribute("recomendSiteVO", vo);
@@ -114,7 +115,7 @@ public class EgovRecomendSiteController {
 	 * @return "/uss/ion/rec/EgovRecomendSiteRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/rec/insertRecomendSiteView.do")
+	@PostMapping("/uss/ion/rec/insertRecomendSiteView.do")
 	public String insertRecomendSiteView(@ModelAttribute("recomendSiteVO") RecomendSiteVO recomendSiteVO, ModelMap model) throws Exception {
 		model.addAttribute("recomendSiteVO", recomendSiteVO);
 
@@ -130,7 +131,7 @@ public class EgovRecomendSiteController {
 	 * @return "forward:/uss/ion/rec/selectRecomendSiteList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/rec/insertRecomendSite.do")
+	@PostMapping("/uss/ion/rec/insertRecomendSite.do")
 	public String insertRecomendSite(@Valid @ModelAttribute("recomendSiteVO") RecomendSiteVO recomendSiteVO, BindingResult bindingResult, ModelMap model)throws Exception {
 
 		if (bindingResult.hasErrors()) {
@@ -157,7 +158,7 @@ public class EgovRecomendSiteController {
 	 * @return "/uss/ion/rec/EgovRecomendSiteUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/rec/updateRecomendSiteView.do")
+	@PostMapping("/uss/ion/rec/updateRecomendSiteView.do")
 	public String updateRecomendSiteView(@ModelAttribute("recomendSiteVO") RecomendSiteVO recomendSiteVO, ModelMap model) throws Exception {
 		model.addAttribute("recomendSiteVO", egovRecomendSiteService.selectRecomendSiteDetail(recomendSiteVO));
 
@@ -172,7 +173,7 @@ public class EgovRecomendSiteController {
 	 * @return "forward:/uss/ion/rec/selectRecomendSiteList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/rec/updateRecomendSite.do")
+	@PostMapping("/uss/ion/rec/updateRecomendSite.do")
 	public String updateRecomendSite(@Valid @ModelAttribute("recomendSiteVO") RecomendSiteVO recomendSiteVO, BindingResult bindingResult, ModelMap model)throws Exception {
 
 		if (bindingResult.hasErrors()) {
@@ -198,7 +199,7 @@ public class EgovRecomendSiteController {
 	 * @return "forward:/uss/ion/rec/selectRecomendSiteList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/rec/deleteRecomendSite.do")
+	@PostMapping("/uss/ion/rec/deleteRecomendSite.do")
 	public String deleteRecomendSite(@ModelAttribute("recomendSiteVO") RecomendSiteVO recomendSiteVO) throws Exception {
 		egovRecomendSiteService.deleteRecomendSite(recomendSiteVO);
 

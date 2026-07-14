@@ -6,6 +6,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -130,7 +131,7 @@ public class EgovInfrmlSanctnController {
 	 *
 	 * @param InfrmlSanctn
 	 */
-	@RequestMapping("/uss/ion/ism/selectInfrmlSanctn.do")
+	@PostMapping("/uss/ion/ism/selectInfrmlSanctn.do")
 	public String selectInfrmlSanctn(
 			@ModelAttribute("infrmlSanctn") InfrmlSanctn infrmlSanctn, ModelMap model) throws Exception{
 		// 0. Spring Security 사용자권한 처리
@@ -182,7 +183,7 @@ public class EgovInfrmlSanctnController {
 	 *
 	 * @param
 	 */
-	@RequestMapping("/uss/ion/ism/EgovReturnPopupNew.do")
+	@PostMapping("/uss/ion/ism/EgovReturnPopupNew.do")
 	public String selectReturnPopupNew() throws Exception{
 		return "egovframework/com/uss/ion/ism/EgovReturnPopupNew";
 	}
@@ -194,7 +195,7 @@ public class EgovInfrmlSanctnController {
 	 *
 	 * @param
 	 */
-	@RequestMapping("/uss/ion/ism/EgovConfmPopupNew.do")
+	@PostMapping("/uss/ion/ism/EgovConfmPopupNew.do")
 	public String selectConfmPopupNew() throws Exception{
 		return "egovframework/com/uss/ion/ism/EgovConfmPopupNew";
 	}
