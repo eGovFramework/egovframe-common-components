@@ -65,6 +65,7 @@ import jakarta.validation.Valid;
  *   2011.08.26  정진오          IncludedInfo annotation 추가
  *   2011.09.14  서준식          연계시스템 수정시 입력 데이터 표신 안되는 문제 수정
  *   2025.06.27  이백행          컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(지역 변수 명명 규칙)
+ *   2026.07.09  EricSeokgon      PMD UseCollectionIsEmpty: size() > 0 대신 !isEmpty() 사용
  *
  *      </pre>
  */
@@ -282,7 +283,7 @@ public class EgovCntcInsttController {
 		searchCntcSystemVO.setFirstIndex(0);
 		searchCntcSystemVO.setSearchCondition("CodeList");
 		if ("".equals(cntcService.getInsttId())) {
-			if (cntcInsttList.size() > 0) {
+			if (!cntcInsttList.isEmpty()) {
 				EgovMap emp = cntcInsttList.get(0);
 				cntcService.setInsttId(emp.get("insttId").toString());
 			}
@@ -334,7 +335,7 @@ public class EgovCntcInsttController {
 			searchCntcSystemVO.setFirstIndex(0);
 			searchCntcSystemVO.setSearchCondition("CodeList");
 			if ("".equals(cntcService.getInsttId())) {
-				if (cntcInsttList.size() > 0) {
+				if (!cntcInsttList.isEmpty()) {
 					EgovMap emp = cntcInsttList.get(0);
 					cntcService.setInsttId(emp.get("insttId").toString());
 				}
@@ -595,7 +596,7 @@ public class EgovCntcInsttController {
 		searchCntcSystemVO.setFirstIndex(0);
 		searchCntcSystemVO.setSearchCondition("CodeList");
 		if ("".equals(cntcService.getInsttId())) {
-			if (cntcInsttList.size() > 0) {
+			if (!cntcInsttList.isEmpty()) {
 				EgovMap emp = cntcInsttList.get(0);
 				cntcService.setInsttId(emp.get("insttId").toString());
 			}
@@ -651,7 +652,7 @@ public class EgovCntcInsttController {
 			searchCntcSystemVO.setFirstIndex(0);
 			searchCntcSystemVO.setSearchCondition("CodeList");
 			if ("".equals(cntcService.getInsttId())) {
-				if (cntcInsttList.size() > 0) {
+				if (!cntcInsttList.isEmpty()) {
 					EgovMap emp = cntcInsttList.get(0);
 					cntcService.setInsttId(emp.get("insttId").toString());
 				}
