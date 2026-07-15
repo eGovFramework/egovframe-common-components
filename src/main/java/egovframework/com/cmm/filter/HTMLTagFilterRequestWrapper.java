@@ -114,6 +114,7 @@ public class HTMLTagFilterRequestWrapper extends HttpServletRequestWrapper {
 		Map<String, String[]> valueMap = super.getParameterMap();
 
 		for (Map.Entry<String, String[]> entry : valueMap.entrySet()) {
+			String key = entry.getKey();
 			String[] values = entry.getValue();
 
 			if (isRichTextParameter(key)) {
