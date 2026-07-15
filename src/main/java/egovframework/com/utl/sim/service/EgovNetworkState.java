@@ -83,12 +83,13 @@ public class EgovNetworkState {
 				FileSystemUtils util = new FileSystemUtils();
 				Process p = util.processOperate("EgovNetworkState", execStr);
 				InputStream in = p.getInputStream();
-				String out = null;
+				StringBuilder outBuf = new StringBuilder();
 				int c;
 				while ((c = in.read()) != -1) {
-					out = out + new String(new Character((char) c).toString());
+					outBuf.append((char) c);
 				}
 				in.close();
+				String out = outBuf.toString();
 				if (out == null || out.indexOf("MAC Address = ") == -1) {
 					throw new IllegalArgumentException("String Split Error!");
 				}
