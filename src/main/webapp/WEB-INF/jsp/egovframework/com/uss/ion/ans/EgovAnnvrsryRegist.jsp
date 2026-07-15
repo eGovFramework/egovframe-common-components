@@ -191,9 +191,9 @@ function fncInsertAnnvrsry() {
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<span class="btn_s"><a href="<c:url value='/uss/ion/ans/insertViewAnnvrsry.do'/>?searchCondition=1" onclick="fncAnnvrsryClear(); return false;"><spring:message code="comUssIonAns.common.init"/></a></span><!-- 초기화 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncAnnvrsryClear(); return false;"><spring:message code="comUssIonAns.common.init"/></a></span><!-- 초기화 -->
 		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fncInsertAnnvrsry(); return false;" />
-		<span class="btn_s"><a href="<c:url value='/uss/ion/ans/selectAnnvrsryManageList.do'/>?searchCondition=1" onclick="fncSelectAnnvrsryManageList(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncSelectAnnvrsryManageList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

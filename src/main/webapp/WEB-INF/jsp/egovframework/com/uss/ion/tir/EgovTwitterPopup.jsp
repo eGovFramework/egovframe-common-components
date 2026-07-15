@@ -63,7 +63,8 @@ function fn_egov_search_TwitterRecptn(){
 <body onLoad="fn_init_TwitterPopup()">
 <DIV id="content" style="width:712px">
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
-<form id="twitterInfo" name="twitterInfo" action="<c:url value='/twitter/login.do'/>" method="post" enctype="multipart/form-data" onsubmit="return fn_egov_search_TwitterRecptn();">
+<form id="twitterInfo" name="twitterInfo" action="${pageContext.request.contextPath}/twitter/login.do" method="post" enctype="multipart/form-data" onsubmit="return fn_egov_search_TwitterRecptn();">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 
 <div class="wTableFrm">
     <h2><spring:message code="ussIonTir.twitterPopup.twitterPopupKey"/></h2><!-- 트위터(Twitter) 인증요청 - 인증키 입력 -->

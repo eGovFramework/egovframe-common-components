@@ -33,7 +33,6 @@
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/popup.js'/>" ></script>
 <script type="text/javaScript" language="javascript">
@@ -66,14 +65,13 @@ function fn_egov_save_DiaryManage(form){
 	var resultSize = EgovMultiFilesChecker.checkFileSize("egovComFileUploader", <c:out value='${fileUploadMaxSize}'/>); // 파일당 1M까지 허용 (1K=1024), 결과가 false인경우 허용되지 않음
 	if (!resultSize) return true;
 	
-	/* if(!validateDiaryManageVO(form)){
+	if(!validateDiaryManageVO(form)){
 		return false;
 	}else{
 		if(confirm("<spring:message code="common.regist.msg" />")){
 			form.submit();
 		}
-	} */
-	form.submit();
+	}
 }
 
 /* ********************************************************

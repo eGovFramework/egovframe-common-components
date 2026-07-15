@@ -23,6 +23,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 
 <!DOCTYPE html>
@@ -144,7 +145,7 @@
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
 <div class="board">
-<form name="frm" method="post" action="<c:url value='/cop/smt/wmr/selectWikMnthngReprtList.do'/>">
+<form:form name="frm" modelAttribute="searchVO" method="post" action="${pageContext.request.contextPath}/cop/smt/wmr/selectWikMnthngReprtList.do">
 	<h1><spring:message code="copSmtWmr.wikMnthngReprtList.wikMnthngReprtList"/></h1><!-- 주간/월간보고 목록 -->
 
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
@@ -184,7 +185,7 @@
 		</ul>
 	</div>
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-</form>
+	<input type="hidden" name="reprtId">
 
 	<table class="board_list">
 		<caption></caption>
@@ -214,18 +215,8 @@
 			    <td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 			    <td><c:out value="${result.reprtSe}"/></td>
 			    <td><c:out value="${result.reprtDe}"/></td>
-			    <td>
-			     <form name="wikMnthngReprtVO" method="post" action="<c:url value='/cop/smt/wmr/selectWikMnthngReprt.do'/>">
-			    	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-			    	<input name="searchCnd" type="hidden" value="<c:out value='${searchVO.searchCnd}'/>">
-			    	<input name="searchWrd" type="hidden" value="<c:out value='${searchVO.searchWrd}'/>">
-			    	<input name="searchDe" type="hidden" value="<c:out value='${searchVO.searchDe}'/>">
-			    	<input name="searchBgnDe" type="hidden" value="<c:out value='${searchVO.searchBgnDe}'/>">
-			    	<input name="searchEndDe" type="hidden" value="<c:out value='${searchVO.searchEndDe}'/>">
-			    	<input name="searchSttus" type="hidden" value="<c:out value='${searchVO.searchSttus}'/>">
-					<input type="hidden" name="reprtId" value="<c:out value="${egovc:encryptId(result.reprtId)}"/>">
-					<span class="link"><input type="submit" value="<c:out value="${result.reprtSj}"/>" style="text-align : left;"></span>
-				 </form>
+			    <td class="left">
+					<a href="javascript:void(0);" onclick="fn_egov_inqire_wikmnthngreprt('<c:out value="${egovc:encryptId(result.reprtId)}"/>'); return false;"><c:out value="${result.reprtSj}"/></a>
 				</td>
 				<td><c:out value="${result.reprtBgnDe}"/>~<c:out value="${result.reprtEndDe}"/></td>
 				<td><c:out value="${result.wrterNm}"/></td>
@@ -247,7 +238,7 @@
 		</ul>
 	</div>
 	
-</form>
+</form:form>
 </div>
 </body>
 </html>

@@ -18,6 +18,9 @@
  */
 package egovframework.com.ext.oauth.web;
 
+import egovframework.com.cmm.util.EgovUserDetailsHelper;
+import egovframework.com.cmm.LoginVO;
+
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -25,10 +28,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import egovframework.com.cmm.ComDefaultVO;
+import egovframework.com.cmm.LoginRequestVO;
 import egovframework.com.ext.oauth.service.OAuthConfig;
 import egovframework.com.ext.oauth.service.OAuthLogin;
 import egovframework.com.ext.oauth.service.OAuthUniversalUser;
@@ -71,6 +77,9 @@ public class EgovSignupController {
 	public String login(Model model) throws Exception {
 		LOGGER.debug("===>>> OAuth Login .....");
 
+		model.addAttribute("loginRequestVO", new LoginRequestVO());
+		model.addAttribute("defaultForm", new ComDefaultVO());
+
 		OAuthLogin naverLogin = new OAuthLogin(naverAuthVO);
 		LOGGER.debug("naverLogin.getOAuthURL() = "+naverLogin.getOAuthURL());
 		model.addAttribute("naver_url", naverLogin.getOAuthURL());
@@ -87,16 +96,21 @@ public class EgovSignupController {
 	}
 
 	@RequestMapping(value = "/auth/{oauthService}/callback", method = { RequestMethod.GET, RequestMethod.POST })
-	public String oauthLoginCallback(@PathVariable String oauthService, Model model, @RequestParam String code) throws Exception {
+	public String oauthLoginCallback(@PathVariable String oauthService, Model model, @RequestParam String code,
+			@RequestParam(required = false) String state) throws Exception {
 
 		LOGGER.debug("oauthLoginCallback: service={}", oauthService);
-		LOGGER.debug("===>>> code = "+ code);
 
 		OAuthVO oauthVO = null;
 		if (StringUtils.equals(OAuthConfig.GOOGLE_SERVICE_NAME, oauthService)) {
 			oauthVO = googleAuthVO;
 		} else if (StringUtils.equals(OAuthConfig.NAVER_SERVICE_NAME, oauthService)) {
 			oauthVO = naverAuthVO;
+			// 2026.07.13 KISA 보안취약점 조치 - OAuth state 검증
+			if (state == null || state.isEmpty()) {
+				model.addAttribute("message", "Invalid OAuth state.");
+				return "egovframework/com/uat/uia/EgovLoginUsrOauthResult";
+			}
 		} else {
 			oauthVO = kakaoAuthVO;
 		}
@@ -106,7 +120,9 @@ public class EgovSignupController {
 		OAuthLogin oauthLogin = new OAuthLogin(oauthVO);
 
 		OAuthUniversalUser oauthUser = oauthLogin.getUserProfile(code); // 1,2번 동시
-		LOGGER.debug("Profile ===>>" + oauthUser);
+		if (oauthUser != null) {
+			LOGGER.debug("OAuth profile received for service={}", oauthService);
+		}
 
 		// ========================================================================
 		// 다음 부분은 업무의 목적에 맞게 커스텀 코드를 작성한다.
@@ -123,6 +139,33 @@ public class EgovSignupController {
 		}
 
 		return "egovframework/com/uat/uia/EgovLoginUsrOauthResult";
+	}
+
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 }

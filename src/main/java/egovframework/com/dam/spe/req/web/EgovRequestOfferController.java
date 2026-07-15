@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -164,7 +165,7 @@ public class EgovRequestOfferController {
 	 * @return "egovframework/com/dam/spe/req/EgovRequestOfferVODetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/dam/spe/req/detailRequestOffer.do")
+	@PostMapping("/dam/spe/req/detailRequestOffer.do")
 	public String EgovRequestOfferDetail(@ModelAttribute("searchVO") RequestOfferVO searchVO,
 			RequestOfferVO requestOfferVO, @RequestParam Map<?, ?> commandMap,
 			ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
@@ -256,7 +257,7 @@ public class EgovRequestOfferController {
 	 * @return "egovframework/com/dam/spe/req/EgovComDamRequestOfferUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/dam/spe/req/updtRequestOffer.do")
+	@PostMapping("/dam/spe/req/updtRequestOffer.do")
 	public String EgovRequestOfferModify(@ModelAttribute("searchVO") RequestOfferVO searchVO,
 			@ModelAttribute("requestOfferVO") RequestOfferVO requestOfferVO,
 			ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
@@ -311,7 +312,7 @@ public class EgovRequestOfferController {
 	 * @return "egovframework/com/dam/spe/req/EgovComDamRequestOfferUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/dam/spe/req/updtRequestOfferActor.do")
+	@PostMapping("/dam/spe/req/updtRequestOfferActor.do")
 	public String EgovRequestOfferModifyActor(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") RequestOfferVO searchVO,
 			@Valid @ModelAttribute("requestOfferVO") RequestOfferVO requestOfferVO, BindingResult bindingResult,
@@ -397,7 +398,7 @@ public class EgovRequestOfferController {
 	 * @return "egovframework/com/dam/spe/req/EgovRequestOfferVORegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/dam/spe/req/registRequestOffer.do")
+	@PostMapping("/dam/spe/req/registRequestOffer.do")
 	public String EgovRequestOfferRegist(
 			// @ModelAttribute("searchVO") RequestOfferVO searchVO,
 			@RequestParam Map<?, ?> commandMap, @ModelAttribute("requestOfferVO") RequestOfferVO requestOfferVO,
@@ -457,7 +458,7 @@ public class EgovRequestOfferController {
 	 * @return "egovframework/com/dam/spe/req/EgovComDamRequestOfferRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/dam/spe/req/registRequestOfferActor.do")
+	@PostMapping("/dam/spe/req/registRequestOfferActor.do")
 	public String EgovRequestOfferRegistActor(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") RequestOfferVO searchVO, @RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("requestOfferVO") RequestOfferVO requestOfferVO, BindingResult bindingResult,

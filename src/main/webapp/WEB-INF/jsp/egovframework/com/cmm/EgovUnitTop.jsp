@@ -31,146 +31,142 @@
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/jquery.js'/>" ></script>
 <%
 
-	String egovLatestServerTime = "";
-	String egovExpireSessionTime = "";
-	// 쿠키값 가져오기
-	Cookie[] cookies = request.getCookies() ;
-	if(cookies != null){
-		for(int i=0; i < cookies.length; i++){
-			Cookie c = cookies[i] ;
-			// 저장된 쿠키 이름을 가져온다
-			String cName = c.getName();
-			// 쿠키값을 가져온다
-			String cValue = c.getValue() ;
-			if ("egovLatestServerTime".equals(cName)) {
-				egovLatestServerTime = cValue;
-			}
-			if ("egovExpireSessionTime".equals(cName)) {
-				egovExpireSessionTime = cValue;
-			}
+String egovLatestServerTime = "";
+String egovExpireSessionTime = "";
+
+// 쿠키값 가져오기
+Cookie[] cookies = request.getCookies();
+if (cookies != null) {
+	for(int i=0; i < cookies.length; i++) {
+		Cookie c = cookies[i];
+
+		// 저장된 쿠키 이름을 가져온다
+		String cName = c.getName();
+
+		// 쿠키값을 가져온다
+		String cValue = c.getValue();
+
+		if ("egovLatestServerTime".equals(cName)) {
+			egovLatestServerTime = cValue;
+		}
+
+		if ("egovExpireSessionTime".equals(cName)) {
+			egovExpireSessionTime = cValue;
 		}
 	}
+}
 
 %>
 <script type="text/javaScript" language="javascript" defer="defer">
-	function getCookie(cname) {
- 	  var name = cname + "=";
- 	  var decodedCookie = decodeURIComponent(document.cookie);
- 	  var ca = decodedCookie.split(';');
- 	  for(var i = 0; i <ca.length; i++) {
- 	    var c = ca[i];
- 	    while (c.charAt(0) == ' ') {
- 	      c = c.substring(1);
- 	    }
- 	    if (c.indexOf(name) == 0) {
- 	      return c.substring(name.length, c.length);
- 	    }
- 	  }
- 	  return "";
- 	}
-  
-  	function pad(n, width) {
-  	  n = n + '';
-  	  return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
-  	}
-  
-	var objLeftTime;
-	var objClickInfo;
-	var latestTime;
-	var expireTime;
-	var timeInterval = 1000; // 1초 간격 호출
-	var firstLocalTime = 0;
-	var elapsedLocalTime = 0;
-	var stateExpiredTime = false;
-	var logoutUrl = "<c:url value='/uat/uia/actionLogout.do'/>";
-	var timer;
-  	
-	function init() {
-		objLeftTime = document.getElementById("leftTimeInfo");
-		
-		if (objLeftTime == null) {
-			console.log("'leftTimeInfo' ID is not exist!");
-			return;
+
+function getCookie(cname) {
+	var name = cname + "=";
+	var decodedCookie = decodeURIComponent(document.cookie);
+	var ca = decodedCookie.split(';');
+	for(var i = 0; i <ca.length; i++) {
+		var c = ca[i];
+		while (c.charAt(0) == ' ') {
+			c = c.substring(1);
 		}
-		objClickInfo = document.getElementById("clickInfo");
-		//console.log(objLeftTime.textContent);
-
-		latestTime = <%=egovLatestServerTime%>; //getCookie("egovLatestServerTime")
-		expireTime = <%=egovExpireSessionTime%>; //getCookie("egovExpireSessionTime");
-		console.log("latestServerTime = "+latestTime);
-		console.log("expireSessionTime = "+expireTime);
-		
-		elapsedTime = 0;
-		firstLocalTime = (new Date()).getTime();
-		showRemaining();
-		
-		timer = setInterval(showRemaining, timeInterval); // 1초 간격 호출
-	}
-
-	function showRemaining() {
-		elapsedLocalTime = (new Date()).getTime() - firstLocalTime;
-		
-		var timeRemaining = expireTime - latestTime - elapsedLocalTime;
-		if ( timeRemaining < timeInterval ) {
-			clearInterval(timer);
-			objLeftTime.innerHTML = "00:00:00";
-			objClickInfo.text = '<spring:message code="comCmm.top.expiredSessionTime"/>'; //시간만료
-			stateExpiredTime = true;
-			alert('<spring:message code="comCmm.top.expireSessionTimeInfo"/>');//로그인 세션시간이 만료 되었습니다.
-			// reload content main page
-			$("#sessionInfo").hide();
-
-			parent.frames["_content"].location.href = logoutUrl;
-			//parent.frames["_content"].location.reload();
-
-			return;
+		if (c.indexOf(name) == 0) {
+			return c.substring(name.length, c.length);
 		}
-		var timeHour = Math.floor(timeRemaining/1000/60 / 60); 
-		var timeMin = Math.floor((timeRemaining/1000/60) % 60);
-		var timeSec = Math.floor((timeRemaining/1000) % 60);
-		//objLeftTime.textContent = pad(timeHour,2) +":"+ pad(timeMin,2) +":"+ pad(timeSec,2);
-		//objLeftTime.outerText = pad(timeHour,2) +":"+ pad(timeMin,2) +":"+ pad(timeSec,2);
-		objLeftTime.innerHTML = pad(timeHour,2) +":"+ pad(timeMin,2) +":"+ pad(timeSec,2);
-		//console.log("call showRemaining() = "+objLeftTime.innerHTML);
 	}
-  
-	function reqTimeAjax() {
-	  	
-	  	if (stateExpiredTime==true) {
-	  		alert('<spring:message code="comCmm.top.cantIncSessionTime"/>');//시간을 연장할수 없습니다.
-	  		return;
-	  	}
-	  	
-		$.ajax({
-		    url:'${pageContext.request.contextPath}/uat/uia/refreshSessionTimeout.do', //request 보낼 서버의 경로
-		    type:'get', // 메소드(get, post, put 등)
-		    data:{}, //보낼 데이터
-		    success: function(data) {
-		        //서버로부터 정상적으로 응답이 왔을 때 실행
-	        	latestTime = getCookie("egovLatestServerTime");
-	        	expireTime = getCookie("egovExpireSessionTime");
-	        	console.log("latestServerTime = "+latestTime);
-	        	console.log("expireSessionTime = "+expireTime);
-	        	init();
-		        //alert("정상수신 , data = "+data);
-		    },
-		    error: function(err) {
-		    	alert("err : "+err);
-		        //서버로부터 응답이 정상적으로 처리되지 못햇을 때 실행
-		    	//alert("오류발생 , error="+err.state());
-		    }
-		});
-		return false;
+	return "";
+}
+
+function pad(n, width) {
+	n = n + '';
+	return n.length >= width ? n : new Array(width - n.length + 1).join('0') + n;
+}
+
+var objLeftTime;
+var objClickInfo;
+var latestTime;
+var expireTime;
+var timeInterval = 1000; //1초 간격 호출
+var firstLocalTime = 0;
+var elapsedLocalTime = 0;
+var stateExpiredTime = false;
+var logoutUrl = "<c:url value='/uat/uia/actionLogout.do'/>";
+var timer;
+
+function init() {
+	objLeftTime = document.getElementById("leftTimeInfo");
+
+	if (objLeftTime == null) {
+		return;
 	}
-	
-	function logout() {
+
+	objClickInfo = document.getElementById("clickInfo");
+	latestTime = <%= "".equals(egovLatestServerTime) ? "0" : egovLatestServerTime %>; //getCookie("egovLatestServerTime")
+	expireTime = <%= "".equals(egovExpireSessionTime) ? "0" : egovExpireSessionTime %>; //getCookie("egovExpireSessionTime");
+
+	// 세션시간 관련 쿠키가 아직 발급되지 않은 경우(로그인 직후 최초 진입 등)에는
+	// 카운트다운을 시작하지 않는다. (0으로 바로 계산하면 세션만료로 오판되어
+	// 즉시 로그아웃되는 문제가 발생하므로 다음 갱신 시점까지 대기한다)
+	if (!latestTime || !expireTime) {
+		return;
+	}
+
+	elapsedTime = 0;
+	firstLocalTime = (new Date()).getTime();
+	showRemaining();
+	timer = setInterval(showRemaining, timeInterval); //1초 간격 호출
+}
+
+function showRemaining() {
+	elapsedLocalTime = (new Date()).getTime() - firstLocalTime;
+
+	var timeRemaining = expireTime - latestTime - elapsedLocalTime;
+	if ( timeRemaining < timeInterval ) {
+		clearInterval(timer);
+		objLeftTime.innerHTML = "00:00:00";
+		objClickInfo.text = '<spring:message code="comCmm.top.expiredSessionTime"/>'; //시간만료
+		stateExpiredTime = true;
+		alert('<spring:message code="comCmm.top.expireSessionTimeInfo"/>'); //로그인 세션시간이 만료 되었습니다.
 		$("#sessionInfo").hide();
-
 		parent.frames["_content"].location.href = logoutUrl;
+		return;
 	}
-	
+	var timeHour = Math.floor(timeRemaining/1000/60 / 60); 
+	var timeMin = Math.floor((timeRemaining/1000/60) % 60);
+	var timeSec = Math.floor((timeRemaining/1000) % 60);
+	objLeftTime.innerHTML = pad(timeHour,2) +":"+ pad(timeMin,2) +":"+ pad(timeSec,2);
+}
+
+function reqTimeAjax() {
+
+	if (stateExpiredTime==true) {
+		alert('<spring:message code="comCmm.top.cantIncSessionTime"/>'); //시간을 연장할수 없습니다.
+		return;
+	}
+
+	$.ajax({
+		url:'${pageContext.request.contextPath}/uat/uia/refreshSessionTimeout.do', //request 보낼 서버의 경로
+		type:'get', // 메소드(get, post, put 등)
+		data:{}, //보낼 데이터
+		success: function(data) {
+			//서버로부터 정상적으로 응답이 왔을 때 실행
+			latestTime = getCookie("egovLatestServerTime");
+			expireTime = getCookie("egovExpireSessionTime");
+			init();
+		},
+		error: function(err) {
+			alert("err : "+err);
+		}
+	});
+	return false;
+}
+
+function logout() {
+	$("#sessionInfo").hide();
+	parent.frames["_content"].location.href = logoutUrl;
+}
+
 </script>
 </head>
+
 <body onload="init()">
 <div id="header">
 	<div class="header_box">

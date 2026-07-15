@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
@@ -111,7 +112,7 @@ public class EgovNcrdManageController {
      * @throws Exception
      */
 
-    @RequestMapping("/cop/ncm/deleteNcrdInf.do")
+    @PostMapping("/cop/ncm/deleteNcrdInf.do")
     public String deleteNcrdItem(@ModelAttribute("searchVO") NameCardVO ncrdVO, SessionStatus status,
 	    ModelMap model) throws Exception {
 
@@ -140,7 +141,7 @@ public class EgovNcrdManageController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/ncm/addNcrdInf.do")
+    @PostMapping("/cop/ncm/addNcrdInf.do")
     public String addNcrdItem(@ModelAttribute("searchVO") NameCardVO ncrdVO, SessionStatus status, ModelMap model) throws Exception {
     	return "egovframework/com/cop/ncm/EgovNcrdRegist";
     }
@@ -155,7 +156,7 @@ public class EgovNcrdManageController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/ncm/insertNcrdInf.do")
+    @PostMapping("/cop/ncm/insertNcrdInf.do")
     public String insertNcrdItem(@ModelAttribute("searchVO") NameCardVO ncrdVO, @Valid @ModelAttribute("nameCard") NameCard nameCard,
 	    BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
 
@@ -189,7 +190,7 @@ public class EgovNcrdManageController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/ncm/selectNcrdInf.do")
+    @PostMapping("/cop/ncm/selectNcrdInf.do")
     public String selectNcrdItem(@ModelAttribute("searchVO") NameCardVO ncrdVO, SessionStatus status, ModelMap model) throws Exception {
 
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -218,7 +219,7 @@ public class EgovNcrdManageController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/ncm/updateNcrdInf.do")
+    @PostMapping("/cop/ncm/updateNcrdInf.do")
     public String updateNcrdItem(@ModelAttribute("searchVO") NameCardVO ncrdVO, @RequestParam("ncrdNm") String ncrdNm,
 	    @Valid @ModelAttribute("nameCard") NameCard nameCard, BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -260,7 +261,7 @@ public class EgovNcrdManageController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/ncm/insertNcrdUseInf.do")
+    @PostMapping("/cop/ncm/insertNcrdUseInf.do")
     public String insertNcrdUseInf(@ModelAttribute("ncrdUser") NameCardUser ncrdUser, @ModelAttribute("ncrdVO") NameCardVO ncrdVO,
 	    SessionStatus status, ModelMap model) throws Exception {
 		LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -337,7 +338,7 @@ public class EgovNcrdManageController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/ncm/updateNcrdUseInf.do")
+    @PostMapping("/cop/ncm/updateNcrdUseInf.do")
     public String updateNcrdUseInf(@ModelAttribute("ncrdUser") NameCardUser ncrdUser, @ModelAttribute("ncrdVO") NameCardVO ncrdVO,
 	    SessionStatus status, ModelMap model) throws Exception {
 		@SuppressWarnings("unused")

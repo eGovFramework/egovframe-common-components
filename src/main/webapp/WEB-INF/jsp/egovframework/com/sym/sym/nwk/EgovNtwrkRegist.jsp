@@ -227,7 +227,7 @@ function ipValidate(ipValue, ipName) {
 		<!-- 하단 버튼 -->
 		<div class="btn">
 			<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fncNtwrkInsert(); return false;" /><!-- 저장 -->
-			<span class="btn_s"><a href="<c:url value='/sym/sym/nwk/selectNtwrkList.do'/>?pageIndex=<c:out value='${ntwrkVO.pageIndex}'/>&amp;strManageIem=<c:out value="${ntwrkVO.strManageIem}"/>&amp;strUserNm=<c:out value="${ntwrkVO.strUserNm}"/>" onclick="fncSelectNtwrkList(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
+			<span class="btn_s"><a href="javascript:void(0);" onclick="fncSelectNtwrkList(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
 		</div>
 		<div style="clear:both;"></div>
 	

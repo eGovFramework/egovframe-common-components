@@ -70,6 +70,7 @@ function fncDeleteRwardManage() {
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
 <form name="rwardManage" id="rwardManage" method="post" >
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="<spring:message code="comUssIonRwd.common.submit"/>" title="<spring:message code="comUssIonRwd.common.submit"/>"></div><!-- 전송 -->
 <input type="hidden" name="rwardId" value="<c:out value='${rwardManageVO.rwardId}'/>"/>
 <input type="hidden" name="cmd" />
@@ -142,10 +143,10 @@ function fncDeleteRwardManage() {
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<c:if test="${rwardManageVO.confmAt eq 'A' }">
-		<span class="btn_s"><a href="<c:url value='/uss/ion/rwd/EgovRwardManageDetail.do'/>?cmd=updt&rwardId=<c:out value='${rwardManageVO.rwardId}'/>" onclick="fncEgovRwardManage(); return false;"><spring:message code="button.update" /></a></span>
-		<span class="btn_s"><a href="<c:url value='/uss/ion/rwd/deleteRwardManage.do'/>?cmd=delete&rwardId=<c:out value='${rwardManageVO.rwardId}'/>&infrmlSanctnId=<c:out value='${rwardManageVO.infrmlSanctnId}'/>" onclick="fncDeleteRwardManage(); return false;"><spring:message code="button.delete" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncEgovRwardManage(); return false;"><spring:message code="button.update" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncDeleteRwardManage(); return false;"><spring:message code="button.delete" /></a></span>
         </c:if>
-        <span class="btn_s"><a href="<c:url value='/uss/ion/rwd/selectRwardManageList.do'/>?searchCondition=1" onclick="fncEgovRwardManageList(); return false;"><spring:message code="button.list" /></a></span>
+        <span class="btn_s"><a href="javascript:void(0);" onclick="fncEgovRwardManageList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

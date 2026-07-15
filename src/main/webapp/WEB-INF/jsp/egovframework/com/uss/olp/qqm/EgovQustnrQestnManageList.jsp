@@ -24,6 +24,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title>${pageTitle} <spring:message code="title.list" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
@@ -50,7 +51,7 @@ function fn_egov_regist_QustnrQestnManage(){
  * 수정 처리 함수
  ******************************************************** */
 function fn_egov_modify_QustnrQestnManage(){
-	location.href = "<c:url value='/uss/olp/qqm/EgovQustnrQestnManageModify.do' />";
+	fn_egov_postNavigate("<c:url value='/uss/olp/qqm/EgovQustnrQestnManageModify.do' />");
 }
 /* ********************************************************
  * 상세회면 처리 함수
@@ -105,7 +106,7 @@ function fn_egov_search_QustnrQestnManage(){
 <!-- 자바스크립트 경고 태그  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="listForm" action="<c:url value='/uss/olp/qqm/EgovQustnrQestnManageList.do'/>" method="post" onSubmit="fn_egov_search_QustnrQestnManage(); return false;">
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/olp/qqm/EgovQustnrQestnManageList.do" method="post" onSubmit="fn_egov_search_QustnrQestnManage(); return false;">
 
 	
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
@@ -125,7 +126,7 @@ function fn_egov_search_QustnrQestnManage(){
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code='title.search' /> <spring:message code='input.input' />" value="<c:out value='${searchKeyword}'/>"  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code='button.inquire' />" title="<spring:message code='title.inquire' /> <spring:message code='input.button' />" onclick="fn_egov_search_QustnrQestnManage(); return false;" />
 				<!-- 등록버튼 -->
-				<span class="btn_b"> <a href="<c:url value='/uss/olp/qqm/EgovQustnrQestnManageRegist.do'/>" title="<spring:message code='button.create' /> <spring:message code='input.button' />"><spring:message code="button.create" /></a></span> 
+				<span class="btn_b"> <a href="#" onclick="fn_egov_postNavigate('<c:url value='/uss/olp/qqm/EgovQustnrQestnManageRegist.do' />'); return false;" title="<spring:message code='button.create' /> <spring:message code='input.button' />"><spring:message code="button.create" /></a></span> 
 			</li>
 		</ul>
 	</div>
@@ -141,7 +142,7 @@ function fn_egov_search_QustnrQestnManage(){
 <input name="qestnrQesitmId" type="hidden" value="">
 <input name="cmd" type="hidden" value="">
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-</form>
+
 
 	<!-- 목록영역 -->
 	<table class="board_list" summary="<spring:message code='common.summary.list' arguments='${pageTitle}' />">
@@ -184,7 +185,7 @@ function fn_egov_search_QustnrQestnManage(){
 		<td class="lt_text3">${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}</td>
 		<!-- 질문내용  -->
 		<td class="lt_text3L">
-			<a href="<c:url value='/uss/olp/qqm/EgovQustnrQestnManageDetail.do'/>?qestnrQesitmId=${resultInfo.qestnrQesitmId}" onClick="fn_egov_detail_QustnrQestnManage('<c:out value="${resultInfo.qestnrQesitmId}"/>');return false;"><c:out value='${resultInfo.qestnCn}'/></a>
+			<a href="javascript:void(0);" onClick="fn_egov_detail_QustnrQestnManage('<c:out value="${resultInfo.qestnrQesitmId}"/>');return false;"><c:out value='${resultInfo.qestnCn}'/></a>
     	</td>
 		<!-- 질문유형 -->
 		<td class="lt_text3">
@@ -194,26 +195,11 @@ function fn_egov_search_QustnrQestnManage(){
 		<!-- onLoad="if(this.width>65){this.width=65}" -->
 		<!-- 질문항목 -->
 		<td class="lt_text3">
-			<form name="subForm" method="post" action="<c:url value='/uss/olp/qim/EgovQustnrItemManageList.do'/>">
-		    <!-- <input name="qestnrQesitmId" id="qestnrQesitmId" type="hidden" value="${resultInfo.qestnrQesitmId}">  -->
-		    <input name="searchMode" type="hidden" value="Y">
-		    <span class="btn_b"><input type="submit" class="btn_submit" style="width:40px;border:solid 0px black;text-align:left;" value="<spring:message code='comUssOlpQqm.value.view'/>"></span><!-- value="보기" -->
-		    </form>
+			<input type="button" class="btn_submit" value="<spring:message code='comUssOlpQqm.value.view'/>" onclick="fn_egov_detail_QustnrQestnManage('${resultInfo.qestnrQesitmId}'); return false;" />
 		</td>
 		<!-- 통계  -->
 	  	<td class="lt_text3">
-			<form name="subForm" method="post" action="<c:url value='/uss/olp/qqm/EgovQustnrQestnManageStatistics.do'/>">
-			<c:if test="${qustnrQestnManageVO.searchMode == 'Y'}">
-			<input name="qestnrTmplatId" type="hidden" value="${qustnrQestnManageVO.qestnrTmplatId}">
-			<input name="qestnrId" type="hidden" value="${qustnrQestnManageVO.qestnrId}">
-			<input name="searchMode" type="hidden" value="${qustnrQestnManageVO.searchMode}">
-			</c:if>
-			<input name="qestnrQesitmId" type="hidden" value="${resultInfo.qestnrQesitmId}">
-			<!-- EgovQustnrQestnManageStatistics.do 로 파라미터 값을 두개 전달하기 위해 아래와 같이 input넣고 span도 수정 -->
-			<input name="qestnTyCode" type="hidden" value="${resultInfo.qestnTyCode}">
-			<%-- <span class="btn_b"><input type="submit" class="btn_submit" style="width:40px;border:solid 0px black;text-align:left;" value="<spring:message code='comUssOlpQqm.value.view'/>" onclick="fn_egov_statistics_QustnrQestnManage('${resultInfo.qestnrQesitmId}'); return false;"></span><!-- value="보기" --> --%>
-			<span class="btn_b"><input type="submit" class="btn_submit" style="width:40px;border:solid 0px black;text-align:left;" value="<spring:message code='comUssOlpQqm.value.view'/>" onclick="fn_egov_statistics_QustnrQestnManage('${resultInfo.qestnrQesitmId}','${resultInfo.qestnTyCode}'); return false;"></span><!-- value="보기" -->
-			</form>
+			<a href="javascript:void(0);" onclick="fn_egov_statistics_QustnrQestnManage('${resultInfo.qestnrQesitmId}'); return false;"><span class="link"><spring:message code='comUssOlpQqm.value.view'/></span></a>
 		</td>
 	  	<!-- 등록자  -->
 	  	<td class="lt_text3">${resultInfo.frstRegisterNm}</td>
@@ -228,6 +214,8 @@ function fn_egov_search_QustnrQestnManage(){
 	<div class="pagination">
 		<ul><ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/></ul>
 	</div>
+</form:form>
+
 	
 	
 </div><!-- end div board -->

@@ -127,9 +127,9 @@ function fncProxySvcDelete(proxyId) {
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<span class="btn_s"><a href="<c:url value='/utl/sys/pxy/updtViewProxySvc.do'><c:param name="proxyId" value='${egovc:encryptId(proxySvc.proxyId)}'/></c:url>" onclick="fncProxySvcUpdateView('<c:out value="${egovc:encryptId(proxySvc.proxyId)}"/>'); return false;"><spring:message code="button.update" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncProxySvcUpdateView('<c:out value="${egovc:encryptId(proxySvc.proxyId)}"/>'); return false;"><spring:message code="button.update" /></a></span>
 		<span class="btn_s"><a href="#" onclick="fncProxySvcDelete('<c:out value="${egovc:encryptId(proxySvc.proxyId)}"/>'); return false;"><spring:message code="button.delete" /></a></span>
-		<span class="btn_s"><a href="<c:url value='/utl/sys/pxy/selectProxySvcList.do'/>?pageIndex=<c:out value='${proxySvc.pageIndex}'/>&amp;strProxyNm=<c:out value="${proxySvc.strProxyNm}"/>" onclick="fncSelectProxySvcList(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncSelectProxySvcList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 	

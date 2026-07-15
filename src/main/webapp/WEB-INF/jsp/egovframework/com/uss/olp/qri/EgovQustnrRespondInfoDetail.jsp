@@ -69,7 +69,7 @@ function fn_egov_delete_QustnrRespondInfo(qestnrQesrspnsId){
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
 <div class="wTableFrm">
-<form name="QustnrRespondInfoForm" id="QustnrRespondInfoForm" action="<c:url value='/uss/olp/qri/EgovQustnrRespondInfoModify.do'/>" method="post">
+<form name="QustnrRespondInfoForm" id="QustnrRespondInfoForm" action="${pageContext.request.contextPath}/uss/olp/qri/EgovQustnrRespondInfoModify.do" method="post">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.detail" /></h2>
 
@@ -156,18 +156,18 @@ function fn_egov_delete_QustnrRespondInfo(qestnrQesrspnsId){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<!-- 수정 버튼 -->
-		<form name="formUpdt" action="<c:url value='/uss/olp/qri/EgovQustnrRespondInfoModify.do'/>" method="post" onsubmit="fn_egov_modify_QustnrRespondInfo('${resultList[0].qestnrQesrspnsId}'); return false;" style="float:left;">
+		<form name="formUpdt" action="${pageContext.request.contextPath}/uss/olp/qri/EgovQustnrRespondInfoModify.do" method="post" onsubmit="fn_egov_modify_QustnrRespondInfo('${resultList[0].qestnrQesrspnsId}'); return false;" style="float:left;">
 		<input type="submit" class="s_submit" value="<spring:message code='button.update' />" title="<spring:message code='title.update' /> <spring:message code='input.button' />" />
 		<input name="qestnrQesrspnsId" type="hidden" value="${resultList[0].qestnrQesrspnsId}">
 		</form>
 		<!-- 삭제 버튼 -->
-		<form name="formDelete" action="<c:url value='/uss/olp/qri/EgovQustnrRespondInfoDetail.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+		<form name="formDelete" action="${pageContext.request.contextPath}/uss/olp/qri/EgovQustnrRespondInfoDetail.do" method="post" style="float:left; margin:0 0 0 3px;">
 			<input type="submit" class="s_submit" value="<spring:message code='button.delete' />" onclick="fn_egov_delete_QustnrRespondInfo('${resultList[0].qestnrQesrspnsId}'); return false;">
 			<input name="qestnrQesrspnsId" type="hidden" value="${resultList[0].qestnrQesrspnsId}">
 			<input name="cmd" type="hidden" value="<c:out value='del'/>"/>
 		</form>
 		<!-- 목록 버튼 -->
-		<form name="formList" action="<c:url value='/uss/olp/qri/EgovQustnrRespondInfoList.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+		<form name="formList" action="${pageContext.request.contextPath}/uss/olp/qri/EgovQustnrRespondInfoList.do" method="post" style="float:left; margin:0 0 0 3px;">
 		  <input type="submit" class="s_submit" value="<spring:message code='button.list' />" onclick="fn_egov_list_QustnrRespondInfo(); return false;">
 		</form>
 		

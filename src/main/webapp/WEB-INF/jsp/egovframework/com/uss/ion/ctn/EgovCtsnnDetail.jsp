@@ -75,6 +75,7 @@
 	<h3 class="tit02" style="margin:0 0 5px 0"><spring:message code="comUssIonCtn.ctsnnManageDetail.ctsnnAplyr"/></h3><!-- 경조 신청자 -->
 	
 <form name="ctsnnManageVO" id="ctsnnManageVO" method="post" >
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value='<spring:message code="comUssIonCtn.ctsnnManageDetail.submit"/>' title='<spring:message code="comUssIonCtn.ctsnnManageDetail.submit"/>'></div><!-- 전송 -->
 <input type="hidden" name="ctsnnId"       value="<c:out value='${ctsnnManageVO.ctsnnId}'/>"/>
 <input type="hidden" name="cmd"        value="updt" />
@@ -166,11 +167,11 @@
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<c:if test="${ctsnnManageVO.confmAt eq 'A' }">
-			<span class="btn_s"><a href="<c:url value='/uss/ion/ctn/EgovCtsnnManageDetail.do'/>?cmd=updt&usid=<c:out value='${ctsnnManageVO.usid}'/>&ctsnnCd=<c:out value='${ctsnnManageVO.ctsnnCd}'/>&reqstDe=<c:out value='${ctsnnManageVO.reqstDe}'/>" onclick="fncEgovCtsnnManage(); return false;"><spring:message code="button.update" /></a></span>
-          	<span class="btn_s"><a href="<c:url value='/uss/ion/ctn/deleteCtsnnManage.do'/>?cmd=delete&usid=<c:out value='${ctsnnManageVO.usid}'/>&ctsnnCd=<c:out value='${ctsnnManageVO.ctsnnCd}'/>&reqstDe=<c:out value='${ctsnnManageVO.reqstDe}'/>&infrmlSanctnId=<c:out value='${ctsnnManageVO.infrmlSanctnId}'/>" onclick="fncDeleteCtsnnManage(); return false;"><spring:message code="button.delete" /></a></span>
+			<span class="btn_s"><a href="javascript:void(0);" onclick="fncEgovCtsnnManage(); return false;"><spring:message code="button.update" /></a></span>
+          	<span class="btn_s"><a href="javascript:void(0);" onclick="fncDeleteCtsnnManage(); return false;"><spring:message code="button.delete" /></a></span>
         </c:if>
          
-		<span class="btn_s"><a href="<c:url value='/uss/ion/ctn/selectCtsnnManageList.do'/>?searchCondition=1" onclick="fncEgovCtsnnManageList(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncEgovCtsnnManageList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 	</form>

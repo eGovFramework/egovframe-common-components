@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -61,7 +62,7 @@ public class EgovCcmAdministCodeManageController {
 	 * @return "forward:/sym/ccm/adc/EgovCcmAdministCodeList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/ccm/adc/EgovCcmAdministCodeRemove.do")
+	@PostMapping("/sym/ccm/adc/EgovCcmAdministCodeRemove.do")
 	public String deleteAdministCode(@ModelAttribute("loginVO") LoginVO loginVO, AdministCode administCode,
 			ModelMap model) throws Exception {
 		administCodeManageService.deleteAdministCode(administCode);
@@ -77,7 +78,7 @@ public class EgovCcmAdministCodeManageController {
 	 * @return "egovframework/com/sym/ccm/adc/EgovCcmAdministCodeRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/ccm/adc/EgovCcmAdministCodeRegistView.do")
+	@PostMapping("/sym/ccm/adc/EgovCcmAdministCodeRegistView.do")
 	public String insertAdministCodeView(@ModelAttribute("loginVO") LoginVO loginVO,
 			@ModelAttribute("administCode") AdministCode administCode, ModelMap model) throws Exception {
 
@@ -95,7 +96,7 @@ public class EgovCcmAdministCodeManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/ccm/adc/EgovCcmAdministCodeRegist.do")
+	@PostMapping("/sym/ccm/adc/EgovCcmAdministCodeRegist.do")
 	public String insertAdministCode(@ModelAttribute("loginVO") LoginVO loginVO,
 			@Valid @ModelAttribute("administCode") AdministCode administCode, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -127,7 +128,7 @@ public class EgovCcmAdministCodeManageController {
 	 * @return "egovframework/com/sym/ccm/adc/EgovCcmAdministCodeDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/ccm/adc/EgovCcmAdministCodeDetail.do")
+	@PostMapping("/sym/ccm/adc/EgovCcmAdministCodeDetail.do")
 	public String selectAdministCodeDetail(@ModelAttribute("loginVO") LoginVO loginVO, AdministCode administCode,
 			ModelMap model) throws Exception {
 		AdministCode vo = administCodeManageService.selectAdministCodeDetail(administCode);
@@ -230,7 +231,7 @@ public class EgovCcmAdministCodeManageController {
 	 * @return "egovframework/com/sym/ccm/adc/EgovCcmAdministCodeModify"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/ccm/adc/EgovCcmAdministCodeModifyView.do")
+	@PostMapping("/sym/ccm/adc/EgovCcmAdministCodeModifyView.do")
 	public String updateAdministCodeView(@ModelAttribute("loginVO") LoginVO loginVO,
 			@ModelAttribute("administCode") AdministCode administCode, ModelMap model) throws Exception {
 		AdministCode vo = administCodeManageService.selectAdministCodeDetail(administCode);
@@ -253,7 +254,7 @@ public class EgovCcmAdministCodeManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/ccm/adc/EgovCcmAdministCodeModify.do")
+	@PostMapping("/sym/ccm/adc/EgovCcmAdministCodeModify.do")
 	public String updateAdministCode(@ModelAttribute("loginVO") LoginVO loginVO,
 			@Valid @ModelAttribute("administCode") AdministCode administCode, BindingResult bindingResult,
 			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {

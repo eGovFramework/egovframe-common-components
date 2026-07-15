@@ -61,13 +61,10 @@ function selectMenuCreatSiteMap() {
  ******************************************************** */
 function CreatSiteMap() {
 	fHtmlCreat_Head();
-	console.log("vHtmlCode = "+vHtmlCode);
 	usrID = document.menuCreatManageSiteMapForm.creatPersonId.value;
 	authorCode = document.menuCreatManageSiteMapForm.authorCode.value;
 	document.menuCreatManageSiteMapForm.valueHtml.value    = vHtmlCode;
 	document.menuCreatManageSiteMapForm.bndeFileNm.value   = authorCode+"_SiteMap.jsp";
-	//document.menuCreatManageSiteMapForm.tmp_rootPath.value = vRootPath;
-	//document.menuCreatManageSiteMapForm.bndeFilePath.value = vSiteMapPath;
 	document.menuCreatManageSiteMapForm.mapCreatId.value   = authorCode;
 	document.menuCreatManageSiteMapForm.action = "<c:url value='/sym/mnu/mcm/EgovMenuCreatSiteMapInsert.do'/>";
     document.menuCreatManageSiteMapForm.submit();
@@ -89,6 +86,7 @@ function fCallUrl(url) {
 <noscript class="noScriptTitle"><spring:message code="comSymMnuMpm.MenuCreatSiteMap.title" /></noscript>
 
 <form name="menuCreatManageSiteMapForm" action ="<c:url value='/sym/mnu/mcm/EgovMenuCreatSiteMapSelect.do' />" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="<spring:message code="comSymMnuMpm.MenuCreatSiteMap.send" />" title="<spring:message code="comSymMnuMpm.MenuCreatSiteMap.send" />"></div><!-- 전송 -->
 <input name="valueHtml"      type="hidden" />
 <input name="creatPersonId"  type="hidden" value ="<c:out value='${resultVO.creatPersonId}'/>" />

@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -17,6 +18,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
 import egovframework.com.cmm.service.FileVO;
@@ -116,7 +118,7 @@ public class EgovFaqController {
 	 * @return "/uss/olh/faq/EgovFaqDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/faq/selectFaqDetail.do")
+	@PostMapping("/uss/olh/faq/selectFaqDetail.do")
 	public String selectFaqDetail(FaqVO faqVO, @ModelAttribute("searchVO") FaqVO searchVO, ModelMap model)
 			throws Exception {
 
@@ -135,7 +137,7 @@ public class EgovFaqController {
 	 * @return "/uss/olh/faq/EgovFaqRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/faq/insertFaqView.do")
+	@PostMapping("/uss/olh/faq/insertFaqView.do")
 	public String insertFaqView(@ModelAttribute("searchVO") FaqVO searchVO, Model model) throws Exception {
 
 		model.addAttribute("faqVO", new FaqVO());
@@ -161,7 +163,7 @@ public class EgovFaqController {
 	 * @return "forward:/uss/olh/faq/selectFaqList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/faq/insertFaq.do")
+	@PostMapping("/uss/olh/faq/insertFaq.do")
 	public String insertFaqCn(final MultipartHttpServletRequest multiRequest, // 첨부파일을 위한...
 			@ModelAttribute("searchVO") FaqVO searchVO, @Valid @ModelAttribute("faqVO") FaqVO faqVO,
 			BindingResult bindingResult) throws Exception {
@@ -207,7 +209,7 @@ public class EgovFaqController {
 	 * @return "/uss/olh/faq/EgovFaqUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/faq/updateFaqView.do")
+	@PostMapping("/uss/olh/faq/updateFaqView.do")
 	public String updateFaqView(@RequestParam("faqId") String faqId, @ModelAttribute("searchVO") FaqVO searchVO,
 			ModelMap model) throws Exception {
 
@@ -241,7 +243,7 @@ public class EgovFaqController {
 	 * @return "forward:/uss/olh/faq/selectFaqList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/faq/updateFaq.do")
+	@PostMapping("/uss/olh/faq/updateFaq.do")
 	public String updateFaqCn(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") FaqVO searchVO, @Valid @ModelAttribute("faqVO") FaqVO faqVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
@@ -289,7 +291,8 @@ public class EgovFaqController {
 	 * @return "forward:/uss/olh/faq/selectFaqList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/faq/deleteFaq.do")
+	@PostMapping("/uss/olh/faq/deleteFaq.do")
+	@RequireAdmin
 	public String deleteFaq(FaqVO faqVO, @ModelAttribute("searchVO") FaqVO searchVO) throws Exception {
 
 		// 첨부파일 삭제를 위한 ID 생성 start....
@@ -305,6 +308,33 @@ public class EgovFaqController {
 		// 첨부파일 삭제 End.............
 
 		return "forward:/uss/olh/faq/selectFaqList.do";
+	}
+
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 }

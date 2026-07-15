@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -38,7 +39,7 @@ import jakarta.validation.Valid;
 import jakarta.servlet.http.HttpServletRequest;
 
 /**
- * 일반회원관련 요청을 비지니스 클래스로 전달하고 처리된결과를 해당 웹 화면으로 전달하는 Controller를 정의한다
+ * 일반회원관련 요청을 비즈니스 클래스로 전달하고 처리된결과를 해당 웹 화면으로 전달하는 Controller를 정의한다
  * 
  * @author 공통서비스 개발팀 조재영
  * @since 2009.04.10
@@ -136,7 +137,7 @@ public class EgovMberManageController {
 	 * @return uss/umt/EgovMberInsert
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/umt/EgovMberInsertView.do", method = RequestMethod.POST)
+	@PostMapping("/uss/umt/EgovMberInsertView.do")
 	@RequireAdmin
 	public String insertMberView(@ModelAttribute("userSearchVO") UserDefaultVO userSearchVO,
 			@ModelAttribute("mberManageVO") MberManageInsertVO mberManageInsertVO, Model model) throws Exception {
@@ -179,7 +180,7 @@ public class EgovMberManageController {
 	 * @return forward:/uss/umt/EgovMberManage.do
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/umt/EgovMberInsert.do", method = RequestMethod.POST)
+	@PostMapping("/uss/umt/EgovMberInsert.do")
 	@RequireAdmin
 	public String insertMber(@Valid @ModelAttribute("mberManageVO") MberManageInsertVO mberManageInsertVO, 
 			BindingResult bindingResult,
@@ -234,7 +235,7 @@ public class EgovMberManageController {
 	 * @return uss/umt/EgovMberSelectUpdt
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/umt/EgovMberSelectUpdtView.do", method = RequestMethod.POST)
+	@PostMapping("/uss/umt/EgovMberSelectUpdtView.do")
 	public String updateMberView(@RequestParam("selectedId") String mberId,
 			@ModelAttribute("searchVO") UserDefaultVO userSearchVO, HttpServletRequest request, Model model)
 			throws Exception {
@@ -306,7 +307,11 @@ public class EgovMberManageController {
 	 * @throws Exception
 	 */
 	@RequestMapping(value = "/uss/umt/EgovMberLockIncorrect.do", method = RequestMethod.POST)
+	@RequireAdmin
 	public String updateLockIncorrect(MberManageVO mberManageVO, Model model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치 - 계정 잠금해제는 관리자만
+		egovAssertAdminOrOwner(null);
+
 
 		// 미인증 사용자에 대한 보안처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -328,7 +333,7 @@ public class EgovMberManageController {
 	 * @return forward:/uss/umt/EgovMberManage.do
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/umt/EgovMberSelectUpdt.do", method = RequestMethod.POST)
+	@PostMapping("/uss/umt/EgovMberSelectUpdt.do")
 	public String updateMber(@Valid @ModelAttribute("mberManageVO") MberManageVO mberManageVO, BindingResult bindingResult,
 			Model model) throws Exception {
 
@@ -372,7 +377,7 @@ public class EgovMberManageController {
 	 * @return forward:/uss/umt/EgovMberManage.do
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/umt/EgovMberDelete.do", method = RequestMethod.POST)
+	@PostMapping("/uss/umt/EgovMberDelete.do")
 	@RequireAdmin
 	public String deleteMber(@RequestParam("checkedIdForDel") String checkedIdForDel,
 			@ModelAttribute("searchVO") UserDefaultVO userSearchVO, HttpServletRequest request, Model model)
@@ -492,7 +497,7 @@ public class EgovMberManageController {
 	 * @return uss/umt/EgovStplatCnfirm
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/umt/EgovStplatCnfirmMber.do", method = RequestMethod.POST)
+	@PostMapping("/uss/umt/EgovStplatCnfirmMber.do")
 	public String sbscrbEntrprsMber(Model model) throws Exception {
 
 		// 미인증 사용자에 대한 보안처리
@@ -524,7 +529,7 @@ public class EgovMberManageController {
 	 * @return uss/umt/EgovMberPasswordUpdt
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/umt/EgovMberPasswordUpdt.do", method = RequestMethod.POST)
+	@PostMapping("/uss/umt/EgovMberPasswordUpdt.do")
 	public String updatePassword(ModelMap model, @RequestParam Map<String, Object> commandMap,
 			@ModelAttribute("userSearchVO") UserDefaultVO userSearchVO,
 			@Valid @ModelAttribute("mberPasswordManageVO") MberPasswordManageVO mberPasswordManageVO,
@@ -583,7 +588,7 @@ public class EgovMberManageController {
 	 * @return uss/umt/EgovMberPasswordUpdt
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/umt/EgovMberPasswordUpdtView.do", method = RequestMethod.POST)
+	@PostMapping("/uss/umt/EgovMberPasswordUpdtView.do")
 	public String updatePasswordView(ModelMap model, @RequestParam Map<String, Object> commandMap,
 			@ModelAttribute("searchVO") UserDefaultVO userSearchVO,
 			@ModelAttribute("mberPasswordManageVO") MberPasswordManageVO mberPasswordManageVO) throws Exception {
@@ -619,4 +624,31 @@ public class EgovMberManageController {
 		vo.setPassword("");
 		vo.setPassword2("");
 	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
+	}
+
 }

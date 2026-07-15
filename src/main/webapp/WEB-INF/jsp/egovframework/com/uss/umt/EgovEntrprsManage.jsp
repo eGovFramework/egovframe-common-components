@@ -22,6 +22,8 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <c:set var="pageTitle"><spring:message code="comUssUmt.entrprsUserManage.title"/></c:set>
 <!DOCTYPE html>
@@ -112,7 +114,7 @@ function fnSearch(){
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="listForm" action="<c:url value='/uss/umt/EgovEntrprsManage.do'/>" method="post"> 
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/umt/EgovEntrprsManage.do" method="post"> 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	
@@ -138,7 +140,7 @@ function fnSearch(){
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${userSearchVO.searchKeyword}"/>'  maxlength="255" >
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" /><!-- 조회 -->
 				<input type="button" class="s_btn" onClick="fnDeleteUser(); return false;" value="<spring:message code="title.delete" />" title="<spring:message code="title.delete" /> <spring:message code="input.button" />" /><!-- 삭제 -->
-				<span class="btn_b"><a href="<c:url value='/uss/umt/EgovEntrprsInsertView.do'/>" onClick="fnAddUserView(); return false;"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span><!-- 등록 -->
+				<span class="btn_b"><a href="javascript:void(0);" onClick="fnAddUserView(); return false;"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span><!-- 등록 -->
 			</li>
 		</ul>
 	</div>
@@ -186,7 +188,7 @@ function fnSearch(){
 	        <input name="checkField" title="checkField <c:out value="${status.count}"/>" type="checkbox"/>
 	        <input name="checkId" type="hidden" value="<c:out value='${result.userTy}'/>:<c:out value='${result.uniqId}'/>"/>
 	    </td>
-	    <td><a href="<c:url value='/uss/umt/EgovEntrprsSelectUpdtView.do'/>?selectedId=<c:out value="${egovc:encryptId(result.uniqId)}"/>"  onclick="javascript:fnSelectUser('<c:out value="${egovc:encryptId(result.uniqId)}"/>'); return false;"><c:out value="${result.userId}"/></a></td>
+	    <td><a href="javascript:void(0);"  onclick="javascript:fnSelectUser('<c:out value="${egovc:encryptId(result.uniqId)}"/>'); return false;"><c:out value="${result.userId}"/></a></td>
 	    <td><c:out value="${result.cmpnyNm}"/></td>
 	    <td><c:out value="${result.userNm}"/></td>
 	    <td><c:out value="${result.emailAdres}"/></td>
@@ -211,7 +213,7 @@ function fnSearch(){
 	<input name="checkedIdForDel" type="hidden" />
 	<input name="pageIndex" type="hidden" value="<c:out value='${userSearchVO.pageIndex}'/>"/>
 </div>
-</form>
+</form:form>
 
 </body>
 </html>

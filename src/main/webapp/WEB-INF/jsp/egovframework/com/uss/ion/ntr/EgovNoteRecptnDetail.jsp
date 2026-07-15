@@ -69,7 +69,7 @@ function fn_egov_delete_NoteRecptn(){
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.detail" /></h2>
 
-	<form name="NoteRecptnForm" action="<c:url value='/uss/ion/ntr/detailNoteRecptn.do'/>" method="post">
+	<form name="NoteRecptnForm" action="${pageContext.request.contextPath}/uss/ion/ntr/detailNoteRecptn.do" method="post">
 	<!-- 상세조회 -->
 	<table class="wTable" summary="<spring:message code="common.summary.inqire" arguments="${pageTitle}" />">
 	<caption>${pageTitle} <spring:message code="title.detail" /></caption>
@@ -135,13 +135,13 @@ function fn_egov_delete_NoteRecptn(){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 
-		<form name="formUpdt" action="<c:url value='/uss/ion/ntm/registEgovNoteManage.do'/>" method="post" style="float:left;">
+		<form name="formUpdt" action="${pageContext.request.contextPath}/uss/ion/ntm/registEgovNoteManage.do" method="post" style="float:left;">
 			<input type="submit" class="s_submit" value="<spring:message code="comUssIonNtr.btn.replay" />">
 			<input name="noteId" type="hidden" value="${egovc:encryptId(noteRecptn.noteId)}">
 			<input name="cmd" type="hidden" value="<c:out value='reply'/>">
 		</form>
 		
-		<form name="formDelete" action="<c:url value='/uss/ion/ntr/detailNoteRecptn.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+		<form name="formDelete" action="${pageContext.request.contextPath}/uss/ion/ntr/detailNoteRecptn.do" method="post" style="float:left; margin:0 0 0 3px;">
 			<input type="submit" class="s_submit" value="<spring:message code="button.delete" />" onClick="fn_egov_delete_NoteRecptn(); return false;">
 			<input name="noteId" type="hidden" value="${egovc:encryptId(noteRecptn.noteId)}">
 			<input name="noteTrnsmitId" type="hidden" value="${egovc:encryptId(noteRecptn.noteTrnsmitId)}">
@@ -149,7 +149,7 @@ function fn_egov_delete_NoteRecptn(){
 			<input name="cmd" type="hidden" value="<c:out value='del'/>">
 		</form>
 	
-		<form name="formList" action="<c:url value='/uss/ion/ntr/listNoteRecptn.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+		<form name="formList" action="${pageContext.request.contextPath}/uss/ion/ntr/listNoteRecptn.do" method="post" style="float:left; margin:0 0 0 3px;">
 			<input type="submit" class="s_submit" value="<spring:message code="button.list" />">
 		</form>
 	

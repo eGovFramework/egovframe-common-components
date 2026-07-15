@@ -22,6 +22,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html lang="ko">
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
@@ -40,7 +41,7 @@ function fn_egov_detail_InsttCode(insttCode){
 </script>
 </head>
 <body>
-<form name="codeForm" method="post" action="<c:url value='/sym/ccm/icr/getInsttCodeDetail.do'/>">
+<form:form name="codeForm" modelAttribute="searchVO" method="post" action="${pageContext.request.contextPath}/sym/ccm/icr/getInsttCodeDetail.do">
 <table width="200" cellpadding="0" class="table-line" border="0">
 <tbody>
 <%-- 데이터를 없을때 화면에 메세지를 출력해준다 --%>
@@ -66,6 +67,6 @@ function fn_egov_detail_InsttCode(insttCode){
 </table>
 <input name="insttCode" type="hidden"   value="" />
 <input name="pageIndex" type="hidden"   value="<c:out value="1"/>" />
-</form>
+</form:form>
 </body>
 </html>

@@ -65,7 +65,7 @@ function fn_egov_delete_NoteTrnsmit(){
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.detail" /></h2>
 
-	<form name="NoteRecptnForm" action="<c:url value='/uss/ion/ntr/detailNoteRecptn.do'/>" method="post">
+	<form name="NoteRecptnForm" action="${pageContext.request.contextPath}/uss/ion/ntr/detailNoteRecptn.do" method="post">
 	<!-- 상세조회 -->
 	<table class="wTable" summary="<spring:message code="common.summary.inqire" arguments="${pageTitle}" />">
 	<caption>${pageTitle} <spring:message code="title.detail" /></caption>
@@ -130,7 +130,7 @@ function fn_egov_delete_NoteTrnsmit(){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 	
-		<form name="formDelete" action="<c:url value='/uss/ion/nts/detailNoteTrnsmit.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+		<form name="formDelete" action="${pageContext.request.contextPath}/uss/ion/nts/detailNoteTrnsmit.do" method="post" style="float:left; margin:0 0 0 3px;">
 			<input type="submit" class="s_submit" value="<spring:message code="button.delete" />" onClick="fn_egov_delete_NoteTrnsmit(); return false;">
 			<input name="noteId" type="hidden" value="${egovc:encryptId(noteTrnsmit.noteId)}">
 			<input name="noteTrnsmitId" type="hidden" value="${egovc:encryptId(noteTrnsmit.noteTrnsmitId)}">
@@ -138,7 +138,7 @@ function fn_egov_delete_NoteTrnsmit(){
 			<input name="cmd" type="hidden" value="<c:out value='del'/>">
 		</form>
 	
-		<form name="formList" action="<c:url value='/uss/ion/nts/listNoteTrnsmit.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+		<form name="formList" action="${pageContext.request.contextPath}/uss/ion/nts/listNoteTrnsmit.do" method="post" style="float:left; margin:0 0 0 3px;">
 			<input type="submit" class="s_submit" value="<spring:message code="button.list" />">
 		</form>
 	

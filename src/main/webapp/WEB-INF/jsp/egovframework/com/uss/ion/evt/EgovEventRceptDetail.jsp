@@ -174,7 +174,7 @@ function fncDeleteEventRcept() {
 		<c:if test="${eventManageVO.confmAt eq 'A'}">
 			<input class="s_submit" type="submit" value="<spring:message code="comUssIonEvt.eventRceptDetail.confirmCancle"/>" onclick="fncDeleteEventRcept(); return false;" /><!-- 신청취소 -->
 		</c:if>
-		<span class="btn_s"><a href="<c:url value='/uss/ion/evt/EgovEventRcrptManageList.do'/>?searchCondition=1" onclick="fncEventRceptManageList(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncEventRceptManageList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

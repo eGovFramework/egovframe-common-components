@@ -22,10 +22,13 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="ajax" uri="http://ajaxtags.sourceforge.net/tags/ajaxtags" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title><spring:message code="ussIonRsm.recentSrchwrdList.recentSrchwrdList"/></title><!-- 최근검색어 관리 목록 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
@@ -36,6 +39,7 @@
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/uss/ion/rsm/recentSrchwrd.js' />"></script>
 <script type="text/javaScript" language="javascript">
+
 /* ********************************************************
  * 페이징 처리 함수
  ******************************************************** */
@@ -98,7 +102,6 @@ $(document).ready(function(){
 					response(items);
 				}
 				,error: function(xhr, status, error) {
-					console.error("Autocomplete error:", error);
 					response([]);
 				}
 			});
@@ -117,7 +120,7 @@ $(document).ready(function(){
 
 <div class="board">
 	<h1><spring:message code="ussIonRsm.recentSrchwrdList.recentSrchwrdList"/></h1><!-- 최근검색어관리 목록 -->
-	<form name="listForm" action="<c:url value='/uss/ion/rsm/listRecentSrchwrd.do'/>" method="post" onSubmit="fn_egov_search_RecentSrchwrd(); return false;">
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/ion/rsm/listRecentSrchwrd.do" method="post" onSubmit="fn_egov_search_RecentSrchwrd(); return false;">
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg"/>"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
 			<li>
@@ -131,7 +134,7 @@ $(document).ready(function(){
 			<li>
 				<input id="searchKeyword" class="s_input" name="searchKeyword" type="text" value="<c:out value="${recentSrchwrd.searchKeyword}"/>" maxlength="35" size="35" title="<spring:message code="title.search"/> <spring:message code="input.input"/>" /><!-- 검색단어입력 -->
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
-				<span class="btn_b"><a href="<c:url value='/uss/ion/rsm/registRecentSrchwrdView.do' />" title='<spring:message code="button.create" /> <spring:message code="input.button" />'><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="#" onclick="fn_egov_postNavigate('<c:url value='/uss/ion/rsm/registRecentSrchwrdView.do' />'); return false;" title='<spring:message code="button.create" /> <spring:message code="input.button" />'><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
@@ -141,7 +144,7 @@ $(document).ready(function(){
 		<!--Ajax Tags 등록 -->
 		<input type="hidden" name="rsm_url" id="rsm_url" value="<c:url value='/uss/ion/rsm/registRecentSrchwrdResult.do'/>" >
 		<!--Ajax Tags 끝 -->
-	</form>
+	
 
 	<table class="board_list">
 		<caption></caption>
@@ -169,18 +172,11 @@ $(document).ready(function(){
 			<tr>
 				<td><c:out value="${(recentSrchwrd.pageIndex-1) * recentSrchwrd.pageSize + status.count}"/></td>
 				<td>
-					<form name="subForm" method="post" action="<c:url value='/uss/ion/rsm/detailRecentSrchwrd.do'/>">
-						<input name="srchwrdManageId" type="hidden" value="${resultInfo.srchwrdManageId}">
-						<input name="pageIndex" type="hidden" value="<c:out value='${recentSrchwrd.pageIndex}'/>"/>
-						<input class="link" type="submit" value="<c:out value="${resultInfo.srchwrdManageNm}"/>" onclick="fn_egov_detail_RecentSrchwrd('${resultInfo.srchwrdManageId}'); return false;">
-					</form>
+					<a href="javascript:void(0);" onclick="fn_egov_detail_RecentSrchwrd('${resultInfo.srchwrdManageId}'); return false;"><span class="link"><c:out value="${resultInfo.srchwrdManageNm}"/></span></a>
 				</td>
 				<td><c:out value="${resultInfo.srchwrdManageUrl}"/></td>
 				<td>
-					<form name="subFormSrchwrdResult" method="post" action="<c:url value='/uss/ion/rsm/listRecentSrchwrdResult.do'/>">
-						<input name="srchwrdManageId" type="hidden" value="${resultInfo.srchwrdManageId}">
-						<input class="btn01" type="submit" value="<spring:message code="ussIonRsm.recentSrchwrdList.view"/>" /><!-- 보기 -->
-					</form>
+					<a href="javascript:void(0);" onclick="fn_egov_detail_RecentSrchwrd('${resultInfo.srchwrdManageId}'); return false;"><span class="link"><spring:message code="ussIonRsm.recentSrchwrdList.view"/></span></a>
 				</td>
 				<td><c:out value="${resultInfo.frstRegisterNm}"/></td>
 				<td><c:out value="${resultInfo.frstRegisterPnttm}"/></td>
@@ -204,6 +200,8 @@ $(document).ready(function(){
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/>
 		</ul>
 	</div>
+</form:form>
+
 </div>
 </body>
 </html>

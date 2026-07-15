@@ -21,6 +21,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUtlSysNsm.ntwrkSvcMntrng.title"/></c:set>
 <!DOCTYPE html>
 <html lang="ko">
@@ -72,7 +73,7 @@
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 
-	<form name="frm" method="post" action="<c:url value='/utl/sys/nsm/selectNtwrkSvcMntrngList.do'/>">
+	<form:form name="frm" modelAttribute="searchVO" method="post" action="${pageContext.request.contextPath}/utl/sys/nsm/selectNtwrkSvcMntrngList.do">
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 	<input type="hidden" name="sysIp">
 	<input type="hidden" name="sysPort">
@@ -90,13 +91,13 @@
 				<input class="s_input2 vat" name="searchWrd" type="text" value='<c:out value="${searchVO.searchWrd}"/>' maxlength="35" size="27" onkeypress="press(event);" title="검색어 입력" />
 				
 				<input class="s_btn" type="submit" value="<spring:message code='title.inquire' />" title="<spring:message code='title.inquire' />" onclick="fn_egov_select_ntwrksvcmntrng('1'); return false;" /><!-- 조회 -->
-				<span class="btn_b"><a href="<c:url value='/utl/sys/nsm/addNtwrkSvcMntrng.do'/>" onclick="fn_egov_insert_ntwrksvcmntrng('1'); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span><!-- 등록 -->
-				<span class="btn_b"><a href="<c:url value='/utl/sys/nsm/selectNtwrkSvcMntrngLogList.do'/>" onclick="fn_egov_log_ntwrksvcmntrng(); return false;" title='<spring:message code="button.log" />'><spring:message code="button.log" /></a></span><!-- 로그 -->
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fn_egov_insert_ntwrksvcmntrng('1'); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span><!-- 등록 -->
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fn_egov_log_ntwrksvcmntrng(); return false;" title='<spring:message code="button.log" />'><spring:message code="button.log" /></a></span><!-- 로그 -->
 			</li>
 		</ul>
 	</div>
 	
-	</form>
+	
 
 	<table class="board_list">
 		<caption>네트워크서비스모니터링대상 목록</caption>
@@ -125,14 +126,7 @@
 			    <td><c:out value="${result.sysIp}"/></td>
 			    <td><c:out value="${result.sysPort}"/></td>
 			    <td>
-			     <form name="ntwrkSvcMntrngVO" method="post" action="<c:url value='/utl/sys/nsm/selectNtwrkSvcMntrng.do'/>">
-			    	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-			    	<input name="searchCnd" type="hidden" value="<c:out value='${searchVO.searchCnd}'/>">
-			    	<input name="searchWrd" type="hidden" value="<c:out value='${searchVO.searchWrd}'/>">
-					<input type="hidden" name="sysIp" value="<c:out value="${result.sysIp}"/>">
-					<input type="hidden" name="sysPort" value="<c:out value="${result.sysPort}"/>">
-					<span class="link"><input type="submit" value="<c:out value="${result.sysNm}"/>" onclick="fn_egov_inqire_ntwrksvcmntrng('<c:out value="${result.sysIp}"/>', '<c:out value="${result.sysPort}"/>'); return false;" style="text-align : left;"></span>
-				 </form>
+			     <a href="javascript:void(0);" onclick="fn_egov_inqire_ntwrksvcmntrng('<c:out value="${result.sysIp}"/>', '<c:out value="${result.sysPort}"/>'); return false;"><span class="link"><c:out value="${result.sysNm}"/></span></a>
 				</td>
 				<td><c:out value="${result.mntrngSttus}"/></td>
 			    <td><c:out value="${result.mngrNm}"/></td>
@@ -152,6 +146,8 @@
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_ntwrksvcmntrng"/>
 		</ul>
 	</div>
+</form:form>
+
 </div>
 
 </body>

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -85,7 +86,7 @@ public class EgovUnityLinkController {
 	 * @return "egovframework/com/uss/ion/ulm/UnityLinkSample"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/ulm/listUnityLinkSample.do")
+	@PostMapping("/uss/ion/ulm/listUnityLinkSample.do")
 	public String egovUnityLinkSample1List(UnityLink unityLink, ModelMap model) throws Exception {
 		if (LOGGER.isDebugEnabled()) {
 			LOGGER.debug("unityLink={}", unityLink);
@@ -106,7 +107,7 @@ public class EgovUnityLinkController {
 	 * @throws Exception
 	 */
 	@IncludedInfo(name = "통합링크관리", order = 780, gid = 50)
-	@RequestMapping(value = "/uss/ion/ulm/listUnityLink.do")
+	@RequestMapping("/uss/ion/ulm/listUnityLink.do")
 	public String egovUnityLinkList(@ModelAttribute("unityLink") UnityLink unityLink, ModelMap model) throws Exception {
 
 		/** EgovPropertyService.sample */
@@ -146,9 +147,12 @@ public class EgovUnityLinkController {
 	 * @return "/uss/ion/ulm/EgovOnlinePollDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/ulm/detailUnityLink.do")
+	@PostMapping("/uss/ion/ulm/detailUnityLink.do")
 	public String egovUnityLinkDetail(@ModelAttribute("unityLink") UnityLink unityLink,
 			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = egovAssertLoginUser();
+
 
 		String sLocationUrl = "egovframework/com/uss/ion/ulm/EgovUnityLinkDetail";
 
@@ -176,7 +180,7 @@ public class EgovUnityLinkController {
 	 * @return "/uss/ion/ulm/EgovOnlinePollUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/ulm/updtUnityLinkView.do")
+	@PostMapping("/uss/ion/ulm/updtUnityLinkView.do")
 	public String egovUnityLinkModify(@ModelAttribute("unityLink") UnityLink unityLink, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -203,7 +207,7 @@ public class EgovUnityLinkController {
 	 * @return "/uss/ion/ulm/EgovOnlinePollUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/ulm/updtUnityLink.do")
+	@PostMapping("/uss/ion/ulm/updtUnityLink.do")
 	public String egovUnityLinkModify(
 			@Valid @ModelAttribute("unityLink") UnityLink unityLink, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -241,7 +245,7 @@ public class EgovUnityLinkController {
 	 * @return "/uss/ion/ulm/EgovOnlinePollRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/ulm/registUnityLinkView.do")
+	@PostMapping("/uss/ion/ulm/registUnityLinkView.do")
 	public String egovUnityLinkRegist(@ModelAttribute("unityLink") UnityLink unityLink, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -265,7 +269,7 @@ public class EgovUnityLinkController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/ulm/registUnityLink.do")
+	@PostMapping("/uss/ion/ulm/registUnityLink.do")
 	public String egovUnityLinkRegist(
 			@Valid @ModelAttribute("unityLink") UnityLink unityLink, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -293,6 +297,33 @@ public class EgovUnityLinkController {
 		egovUnityLinkService.insertUnityLink(unityLink);
 
 		return "redirect:/uss/ion/ulm/listUnityLink.do";
+	}
+
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 }

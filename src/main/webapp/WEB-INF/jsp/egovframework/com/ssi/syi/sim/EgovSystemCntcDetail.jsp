@@ -110,6 +110,7 @@ function fn_egov_list_SystemCntc(){
 </head>
 <body>
 <form name="Form" action="" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input name="cmd"     type="hidden">
 	<input name="cntcId"  type="hidden">
 	<input name="confmAt" type="hidden">
@@ -232,17 +233,20 @@ function fn_egov_list_SystemCntc(){
 		
 		<% /** * 승인여부 처리 */ %>
 		<c:if test="${result.confmAt eq 'N'}">
-			<form name="formUpdt" action="<c:url value='/ssi/syi/sim/updateSystemCntc.do'/>" method="post" style="display:inline-block; vertical-align:top">
+			<form name="formUpdt" action="${pageContext.request.contextPath}/ssi/syi/sim/updateSystemCntc.do" method="post" style="display:inline-block; vertical-align:top">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 			<input class="s_submit" type="submit" value="<spring:message code="button.update" />" title="<spring:message code="button.update" />" onclick="fn_egov_modify_SystemCntc(); return false;"><!-- 수정 -->
 			<input name="cntcId"        type="hidden" value="<c:out value='${result.cntcId}'/>">
 			</form>
 			
-			<form name="formDelete" action="<c:url value='/ssi/syi/sim/removeSystemCntc.do'/>" method="post" style="display:inline-block; vertical-align:top">
+			<form name="formDelete" action="${pageContext.request.contextPath}/ssi/syi/sim/removeSystemCntc.do" method="post" style="display:inline-block; vertical-align:top">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 			<input class="s_submit" type="submit" value="<spring:message code="button.delete" />" title="<spring:message code="button.delete" />" onclick="fn_egov_delete_SystemCntc(); return false;"><!-- 삭제 -->
 			<input name="cntcId"        type="hidden" value="<c:out value='${result.cntcId}'/>">
 			</form>
 			
-			<form name="formConfirm" action="<c:url value='${selfUri}'/>" method="post" style="display:inline-block; vertical-align:top">
+			<form name="formConfirm" action="${pageContext.request.contextPath}${selfUri}" method="post" style="display:inline-block; vertical-align:top">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 			<input class="s_submit" type="submit" value="<spring:message code="button.acknowledgment" />" title="<spring:message code="button.acknowledgment" />" onclick="fn_egov_confirm_SystemCntc('Y'); return false;"><!-- 승인 -->
 			<input name="cntcId"  type="hidden" value="<c:out value='${result.cntcId}'/>">
 			<input name="confmAt" type="hidden" value="Y">
@@ -252,7 +256,8 @@ function fn_egov_list_SystemCntc(){
 	
 		<% /** * 승인여부 처리 */ %>
 		<c:if test="${result.confmAt eq 'Y'}">
-			<form name="formConfirmCancel" action="<c:url value='${selfUri}'/>" method="post" style="display:inline-block; vertical-align:top">
+			<form name="formConfirmCancel" action="${pageContext.request.contextPath}${selfUri}" method="post" style="display:inline-block; vertical-align:top">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 			<input class="s_submit" type="submit" value="<spring:message code="button.cancelAcknowledgment" />" title="<spring:message code="button.cancelAcknowledgment" />" onclick="fn_egov_confirm_SystemCntc('N'); return false;"><!-- 승인취소 -->
 			<input name="cntcId"  type="hidden" value="<c:out value='${result.cntcId}'/>">
 			<input name="confmAt" type="hidden" value="N">
@@ -260,7 +265,8 @@ function fn_egov_list_SystemCntc(){
 			</form>
 		</c:if>
 		
-		<form name="formList" action="<c:url value='${listUri}'/>" method="post" style="display:inline-block; vertical-align:top">
+		<form name="formList" action="${pageContext.request.contextPath}${listUri}" method="post" style="display:inline-block; vertical-align:top">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		<input class="s_submit" type="submit" value="<spring:message code="button.list" />" title="<spring:message code="button.list" />" onclick="fn_egov_list_SystemCntc(); return false;"></span><!-- 목록 -->
 		</form>
 	</div>

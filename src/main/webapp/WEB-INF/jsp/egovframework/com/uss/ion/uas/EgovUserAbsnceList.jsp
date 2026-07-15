@@ -21,6 +21,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="ussIonUas.userAbsnceList.userAbsnceList"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -63,7 +64,7 @@ function fn_egov_inquire_userAbsncedetail(userId, regYn) {
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="userAbsnceForm" action="<c:url value='/uss/ion/uas/selectUserAbsnceList.do'/>" method="post" onSubmit="fn_egov_search_userAbsnce(); return false;"> 
+<form:form name="userAbsnceForm" modelAttribute="userAbsnceVO" action="${pageContext.request.contextPath}/uss/ion/uas/selectUserAbsnceList.do" method="post" onSubmit="fn_egov_search_userAbsnce(); return false;"> 
 <div class="board">
 	<h1>${pageTitle}</h1>
 	<!-- 하단 버튼 -->
@@ -142,7 +143,7 @@ function fn_egov_inquire_userAbsncedetail(userId, regYn) {
 
 <input name="userId" type="hidden" value="<c:out value='${userAbsnceVO.userId}'/>">
 <input name="pageIndex" type="hidden" value="<c:out value='${userAbsnceVO.pageIndex}'/>">
-</form>
+</form:form>
 
 </body>
 </html>

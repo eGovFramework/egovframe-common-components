@@ -22,12 +22,15 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="java.util.*"  %>
 <%@ page import="java.io.*"  %>
 <c:set var="pageTitle"><spring:message code="comUtlSysHtm.comUtlHttpMonList.title"/></c:set>
 <!DOCTYPE html>
 <html lang="ko">
 	<head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8">
 		<title>${pageTitle}</title>
 		<link href="<c:url value='/css/egovframework/com/com.css' />" rel="stylesheet" type="text/css">
@@ -67,6 +70,15 @@
 		function fnSearchLog(){
 			location.href = "<c:url value='/utl/sys/htm/EgovComUtlHttpMonLogList.do'/>";
 		}
+		/* ********************************************************
+		 * 상세화면 처리 함수
+		 ******************************************************** */
+		function fn_egov_detail_HttpMon(sysId){
+			var form = document.listForm;
+			form.sysId.value = sysId;
+			form.action = "<c:url value='/utl/sys/htm/EgovComUtlHttpMonDetail.do'/>";
+			form.submit();
+		}
 		-->
 		</script>
 	</head>
@@ -79,7 +91,7 @@
 		<div class="board">
 			<h1>${pageTitle}</h1>
 		
-		<form name="listForm" action="<c:url value='/utl/sys/htm/EgovComUtlHttpMonList.do'/>" method="post">
+		<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/utl/sys/htm/EgovComUtlHttpMonList.do" method="post">
 			<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
 				<ul>
 					<li>
@@ -91,7 +103,7 @@
 						<input class="s_input2 vat" name="searchKeyword" type="text" value='${searchVO.searchKeyword}' maxlength="35" size="35" title="검색어 입력" />
 						
 						<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fnSearch(); return false;" />
-						<span class="btn_b"><a href="<c:url value='/utl/sys/htm/EgovComUtlHttpMonRegist.do'/>" onclick="" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+						<span class="btn_b"><a href="#" onclick="fn_egov_postNavigate('<c:url value='/utl/sys/htm/EgovComUtlHttpMonRegist.do' />'); return false;" onclick="" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
 						<input class="s_btn" type="submit" value="<spring:message code="button.log" />" title="<spring:message code="button.log" />" onclick="fnSearchLog(); return false;" />
 					</li>
 				</ul>
@@ -123,7 +135,7 @@
 							<td><c:out value="${(searchVO.pageIndex - 1) * searchVO.pageSize + status.count}"/></td>
 							<td>${resultInfo.webKind}</td>
 							<td>
-							<a href="<c:url value='/utl/sys/htm/EgovComUtlHttpMonDetail.do'/>?pageIndex=${searchVO.pageIndex}&amp;sysId=${resultInfo.sysId}"><c:out value="${resultInfo.siteUrl}"/></a>								
+							<a href="javascript:void(0);" onclick="fn_egov_detail_HttpMon('<c:out value="${resultInfo.sysId}"/>'); return false;"><c:out value="${resultInfo.siteUrl}"/></a>								
 							</td>							
 							<td>${resultInfo.httpSttusCd}</td>
 							<td>${resultInfo.mngrNm}</td>													
@@ -148,8 +160,9 @@
 					<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/>
 				</ul>
 			</div>
+			<input type="hidden" name="sysId" value="">
 			<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-		</form>
+		</form:form>
 		</div>
 
 	</body>

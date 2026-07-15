@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -108,7 +109,7 @@ public class EgovMapMaterialController {
 	 *
 	 * @param MapMaterialVO
 	 */
-	@RequestMapping(value = "/dam/map/mat/EgovComDamMapMaterial.do")
+	@PostMapping("/dam/map/mat/EgovComDamMapMaterial.do")
 	public String selectMapMaterial(@ModelAttribute("loginVO") LoginVO loginVO, MapMaterial mapMaterial, ModelMap model)
 			throws Exception {
 		MapMaterial vo = mapMaterialService.selectMapMaterial(mapMaterial);
@@ -124,7 +125,7 @@ public class EgovMapMaterialController {
 	 * @return String - 리턴 Url
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/dam/map/mat/EgovComDamMapMaterialRegistView.do")
+	@PostMapping("/dam/map/mat/EgovComDamMapMaterialRegistView.do")
 	public String insertMapMaterialView(@ModelAttribute("loginVO") LoginVO loginVO,
 			@ModelAttribute("mapMaterial") MapMaterialVO mapMaterial, ModelMap model) throws Exception {
 
@@ -146,7 +147,7 @@ public class EgovMapMaterialController {
 	 *
 	 * @param MapMaterialVO
 	 */
-	@RequestMapping(value = "/dam/map/mat/EgovComDamMapMaterialRegist.do")
+	@PostMapping("/dam/map/mat/EgovComDamMapMaterialRegist.do")
 	public String insertMapMaterial(@ModelAttribute("loginVO") LoginVO loginVO,
 			@Valid @ModelAttribute("mapMaterial") MapMaterialVO mapMaterial, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -177,7 +178,7 @@ public class EgovMapMaterialController {
 	 * @return String - 리턴 Url
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/dam/map/mat/EgovComDamMapMaterialModifyView.do")
+	@PostMapping("/dam/map/mat/EgovComDamMapMaterialModifyView.do")
 	public String updateMapMaterialView(@ModelAttribute("loginVO") LoginVO loginVO,
 			@ModelAttribute("searchVO") MapMaterialVO searchVO,
 			@ModelAttribute("mapMaterial") MapMaterial mapMaterial, ModelMap model) throws Exception {
@@ -196,7 +197,7 @@ public class EgovMapMaterialController {
 	 *
 	 * @param MapMaterialVO
 	 */
-	@RequestMapping(value = "/dam/map/mat/EgovComDamMapMaterialModify.do")
+	@PostMapping("/dam/map/mat/EgovComDamMapMaterialModify.do")
 	public String updateMapMaterial(@ModelAttribute("loginVO") LoginVO loginVO,
 			@ModelAttribute("searchVO") MapMaterialVO searchVO,
 			@Valid @ModelAttribute("mapMaterial") MapMaterial mapMaterial, BindingResult bindingResult,
@@ -221,7 +222,7 @@ public class EgovMapMaterialController {
 	 *
 	 * @param MapMaterialVO
 	 */
-	@RequestMapping(value = "/dam/map/mat/EgovComDamMapMaterialRemove.do")
+	@PostMapping("/dam/map/mat/EgovComDamMapMaterialRemove.do")
 	public String deleteMapMaterial(@ModelAttribute("loginVO") LoginVO loginVO, MapMaterial mapMaterial, ModelMap model)
 			throws Exception {
 		mapMaterialService.deleteMapMaterial(mapMaterial);

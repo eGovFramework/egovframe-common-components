@@ -1,6 +1,7 @@
 package egovframework.com.utl.sys.rsc.web;
 
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -53,7 +54,7 @@ public class EgovLoginSesionController {
 	 * @param url - String
 	 * @return String
 	 */
-	@RequestMapping(value = "/utl/sys/rsc/setLoginSession.do")
+	@PostMapping("/utl/sys/rsc/setLoginSession.do")
 	public String setLoginSession(@RequestParam("url") String url) throws Exception {
 		egovLoginSesionCeckUtil.setLoginSession(url);
 		return "forward:/utl/sys/rsc/loginSessionView.do";

@@ -26,6 +26,7 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title><spring:message code="comUssIonYrc.indvdlYrycManageList.title" /></title><!-- 개인연차관리 목록 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
@@ -36,7 +37,7 @@
  * 등록 화면 호출 함수 
  ******************************************************** */
 function fncIndvdlYrycRegist(){
-	location.href = "<c:url value='/uss/ion/yrc/EgovIndvdlYrycRegist.do'/>";
+	fn_egov_postNavigate("<c:url value='/uss/ion/yrc/EgovIndvdlYrycRegist.do'/>");
 }
 
 -->
@@ -54,7 +55,7 @@ function fncIndvdlYrycRegist(){
 		<ul>
 			<li>			
 				<span class="btn_b">
-					<a href="<c:url value='/uss/ion/yrc/EgovIndvdlYrycRegist.do'/>" onclick="fncIndvdlYrycRegist(); return false;" title="">
+					<a href="javascript:void(0);" onclick="fncIndvdlYrycRegist(); return false;" title="">
 					<c:if test="${fn:length(resultList) == 0}">
                         <spring:message code="button.create" />
                     </c:if>

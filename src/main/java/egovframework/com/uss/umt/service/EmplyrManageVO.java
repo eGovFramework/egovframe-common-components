@@ -9,7 +9,7 @@ import lombok.Getter;
 import lombok.Setter;
 
 /**
- * 업무사용자VO클래스로서 업무사용자관리 비지니스로직 처리용 항목을 구성한다.
+ * 업무사용자VO클래스로서 업무사용자관리 비즈니스로직 처리용 항목을 구성한다.
  * @author 공통서비스 개발팀 조재영
  * @since 2009.04.10
  * @version 1.0

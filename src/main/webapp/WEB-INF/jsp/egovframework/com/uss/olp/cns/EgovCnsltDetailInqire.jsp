@@ -275,7 +275,8 @@ function fn_egov_passwordConfirm(){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 	
-		<form name="CnsltManageForm" action="<c:url value='/uss/olp/cns/CnsltPasswordConfirm.do'/>" method="post" onsubmit="fn_egov_updt_cnsltdtls('<c:out value="${result.cnsltId}"/>'); return false;" style="float:left;">
+		<form name="CnsltManageForm" action="${pageContext.request.contextPath}/uss/olp/cns/CnsltPasswordConfirm.do" method="post" onsubmit="fn_egov_updt_cnsltdtls('<c:out value="${result.cnsltId}"/>'); return false;" style="float:left;">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		<input type="submit" class="s_submit" value="<spring:message code="button.update" />" title="<spring:message code="title.update" /> <spring:message code="input.button" />" />
 		<input name="cnsltId" type="hidden" value="">
 		<input name="writngPassword" 	type="hidden" value="">
@@ -283,12 +284,14 @@ function fn_egov_passwordConfirm(){
 		</form>
 		
 		<form name="formDelete" method="post" style="float:left; margin:0 0 0 3px;">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 			<input type="submit" class="s_submit" value="<spring:message code="button.delete" />" onclick="fn_egov_delete_cnsltdtls('<c:out value="${result.cnsltId}"/>'); return false;">
 			<input name="cnsltId" type="hidden" value="${result.cnsltId}">
 			<input name="cmd" type="hidden" value="<c:out value='del'/>"/>
 		</form>
 
 		<form name="formList" method="post" style="float:left; margin:0 0 0 3px;">
+		  <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		  <input type="submit" class="s_submit" value="<spring:message code="button.list" />" onclick="fn_egov_search_list(); return false;">
 		</form>
 		

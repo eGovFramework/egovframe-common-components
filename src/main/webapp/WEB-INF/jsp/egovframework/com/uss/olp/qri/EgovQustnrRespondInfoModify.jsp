@@ -26,8 +26,8 @@
 <title>${pageTitle} <spring:message code="title.update" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialog.js'/>" ></script>
 <script type="text/javaScript" language="javascript">
 /* ********************************************************
@@ -179,7 +179,7 @@ function fn_egov_QustnrItemManageListPopup_QustnrItemManage(){
 		<tr>
 			<th>${title}<span class="pilsu">*</span></th>
 			<td class="left">
-  				<input name="respondNm" type="text" title="<spring:message code='comUssOlpQri.regist.respondNm'/>" size="50" value="<c:out value='${fn:replace(resultList[0].respondNm , crlf , "<br/>")}' escapeXml='false' />" maxlength="50" style="width:120px;"><!-- title="응답자명" -->
+  				<input name="respondNm" type="text" title="<spring:message code='comUssOlpQri.regist.respondNm'/>" size="50" value="<c:out value='${resultList[0].respondNm}'/>" maxlength="50" style="width:120px;"><!-- title="응답자명" -->
 		<div><form:errors path="respondNm" cssClass="error" /></div>
 			</td>
 		</tr>

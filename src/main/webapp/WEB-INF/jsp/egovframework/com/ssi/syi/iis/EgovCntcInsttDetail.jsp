@@ -25,6 +25,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html lang="ko">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -139,6 +141,7 @@ function fn_egov_delete_CntcService(sysId, svcId){
 <%-- noscript 테그 --%>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 <form name="Form" action="" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input name="insttId" type="hidden">
 	<input name="sysId"   type="hidden">
 	<input name="svcId"   type="hidden">
@@ -147,8 +150,8 @@ function fn_egov_delete_CntcService(sysId, svcId){
 	<input name="searchKeyword" type="hidden" value="<c:out value='${searchVO.searchKeyword}'/>">
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}' default='1'/>">
 </form>
-<form name="listForm" action="<c:url value='/ssi/syi/iis/getCntcInsttDetail.do'/>" method="post">
-</form>
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/ssi/syi/iis/getCntcInsttDetail.do" method="post">
+</form:form>
 
 
 <div class="wTableFrm">
@@ -177,7 +180,8 @@ function fn_egov_delete_CntcService(sysId, svcId){
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<form name="formUpdt" action="<c:url value='/ssi/syi/iis/updateCntcInstt.do'/>" method="post" style="display:inline-block; vertical-align:top">
+		<form name="formUpdt" action="${pageContext.request.contextPath}/ssi/syi/iis/updateCntcInstt.do" method="post" style="display:inline-block; vertical-align:top">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="fn_egov_modify_CntcInstt(); return false;" /><!-- 수정 -->
 		<input name="insttId" type="hidden" value="<c:out value='${result.insttId}'/>">
 		<input name="sysId" type="hidden" value="">
@@ -188,14 +192,16 @@ function fn_egov_delete_CntcService(sysId, svcId){
 		<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}' default='1'/>">
 		</form>
 			
-		<form name="formDelete" action="<c:url value='/ssi/syi/iis/removeCntcInstt.do'/>" method="post" style="display:inline-block; vertical-align:top">
+		<form name="formDelete" action="${pageContext.request.contextPath}/ssi/syi/iis/removeCntcInstt.do" method="post" style="display:inline-block; vertical-align:top">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		<input class="s_submit" type="submit" value="<spring:message code="button.delete" />" onclick="fn_egov_delete_CntcInstt(); return false;" /><!-- 삭제 -->
 		<input name="insttId" type="hidden" value="<c:out value='${result.insttId}'/>">
 		<input name="sysId"   type="hidden" value="">
 		<input name="svcId"   type="hidden" value="">
 		</form>
 
-		<form name="formList" action="<c:url value='/ssi/syi/iis/getCntcInsttList.do'/>" method="post" style="display:inline-block; vertical-align:top">
+		<form name="formList" action="${pageContext.request.contextPath}/ssi/syi/iis/getCntcInsttList.do" method="post" style="display:inline-block; vertical-align:top">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		<input class="s_submit" type="submit" value='<spring:message code="button.list" />' /><!-- 목록 -->
 		<!-- 검색조건 유지 -->
 		<input name="searchCondition" type="hidden" value="<c:out value='${searchVO.searchCondition}'/>">
@@ -212,7 +218,8 @@ function fn_egov_delete_CntcService(sysId, svcId){
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
 			<li>
-				<form name="formCntcSystemRegist" action="<c:url value='/ssi/syi/iis/addCntcSystem.do'/>" method="post">
+				<form name="formCntcSystemRegist" action="${pageContext.request.contextPath}/ssi/syi/iis/addCntcSystem.do" method="post">
+					<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 					<input class="s_btn" type="submit" value="<spring:message code="comSsiSyiIis.cntcInsttDetail.button.regContactSystem"/>" title="<spring:message code="comSsiSyiIis.cntcInsttDetail.insttId"/>" onclick="" /><!-- 연계시스템등록 -->
 					<input name="insttId" type="hidden" value="<c:out value='${result.insttId}'/>">
 					<!-- 검색조건 유지 -->
@@ -259,7 +266,8 @@ function fn_egov_delete_CntcService(sysId, svcId){
 						</tr>
 						<tr>
 							<td colspan="2">
-								<form name="formCntcInsttUpdt" action="<c:url value='/ssi/syi/iis/updateCntcSystem.do'/>" method="post" style="display:inline-block; vertical-align:top">
+								<form name="formCntcInsttUpdt" action="${pageContext.request.contextPath}/ssi/syi/iis/updateCntcSystem.do" method="post" style="display:inline-block; vertical-align:top">
+									<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 									<span class="button"><input type="submit" value="<spring:message code="button.update" />" onclick="fn_egov_modify_CntcSystem('<c:out value="${resultInfo.sysId}"/>'); return false;"></span><!-- 수정 -->
 									<input name="insttId" type="hidden" value="<c:out value='${result.insttId}'/>">
 									<input name="sysId"   type="hidden" value="<c:out value='${resultInfo.sysId}'/>">
@@ -270,13 +278,15 @@ function fn_egov_delete_CntcService(sysId, svcId){
 									<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}' default='1'/>">
 								</form>
 								
-								<form name="formCntcInsttDelete" action="<c:url value='/ssi/syi/iis/removeCntcSystem.do'/>" method="post" style="display:inline-block; vertical-align:top">
+								<form name="formCntcInsttDelete" action="${pageContext.request.contextPath}/ssi/syi/iis/removeCntcSystem.do" method="post" style="display:inline-block; vertical-align:top">
+									<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 									<span class="button"><input type="submit" value="<spring:message code="button.delete" />" onclick="fn_egov_delete_CntcSystem('<c:out value="${resultInfo.sysId}"/>'); return false;"></span><!-- 삭제 -->
 									<input name="insttId" type="hidden" value="<c:out value='${result.insttId}'/>">
 									<input name="sysId"   type="hidden" value="<c:out value='${resultInfo.sysId}'/>">
 								</form>
 								
-								<form name="formCntcInsttList" action="<c:url value='/ssi/syi/iis/addCntcService.do'/>" method="post" style="display:inline-block; vertical-align:top">
+								<form name="formCntcInsttList" action="${pageContext.request.contextPath}/ssi/syi/iis/addCntcService.do" method="post" style="display:inline-block; vertical-align:top">
+									<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 									<span class="button"><input type="submit" value="<spring:message code="comSsiSyiIis.cntcInsttDetail.button.regContactService"/>" onclick="fn_egov_regist_CntcService('${resultInfo.sysId}'); return false;"></span><!-- 연계서비스등록 -->
 									<input name="insttId" type="hidden" value="<c:out value='${result.insttId}'/>">
 									<input name="sysId"   type="hidden" value="<c:out value='${resultInfo.sysId}'/>">
@@ -322,7 +332,8 @@ function fn_egov_delete_CntcService(sysId, svcId){
 									</c:forEach>
 								</td>
 								<td>
-									<form name="formCntcUpdt" action="<c:url value='/ssi/syi/iis/updateCntcService.do'/>" method="post" style="display:inline-block; vertical-align:top">
+									<form name="formCntcUpdt" action="${pageContext.request.contextPath}/ssi/syi/iis/updateCntcService.do" method="post" style="display:inline-block; vertical-align:top">
+										<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 										<span class="button"><input type="submit" value="<spring:message code="button.update" />" onclick="fn_egov_modify_CntcService('<c:out value="${resultInfo.sysId}"/>','<c:out value="${resultServiceInfo.svcId}"/>'); return false;"></span><!-- 수정 -->
 										<input name="insttId" type="hidden" value="<c:out value='${result.insttId}'/>">
 										<input name="sysId"   type="hidden" value="<c:out value='${resultInfo.sysId}'/>">
@@ -333,7 +344,8 @@ function fn_egov_delete_CntcService(sysId, svcId){
 										<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}' default='1'/>">
 									</form>
 									
-									<form name="formCntcDelete" action="<c:url value='/ssi/syi/iis/removeCntcService.do'/>" method="post" style="display:inline-block; vertical-align:top">
+									<form name="formCntcDelete" action="${pageContext.request.contextPath}/ssi/syi/iis/removeCntcService.do" method="post" style="display:inline-block; vertical-align:top">
+										<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 										<span class="button"><input type="submit" value="<spring:message code="button.delete" />" onclick="fn_egov_delete_CntcService('<c:out value="${resultInfo.sysId}"/>','<c:out value="${resultServiceInfo.svcId}"/>'); return false;"></span><!-- 삭제 -->
 										<input name="insttId" type="hidden" value="<c:out value='${result.insttId}'/>">
 										<input name="sysId"   type="hidden" value="<c:out value='${resultInfo.sysId}'/>">

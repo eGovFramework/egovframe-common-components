@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -22,7 +23,7 @@ import egovframework.com.utl.fcc.service.EgovDateUtil;
 import jakarta.annotation.Resource;
 
 /**
- * 업무사용자관련 요청을  비지니스 클래스로 전달하고 처리된 결과를  해당
+ * 업무사용자관련 요청을  비즈니스 클래스로 전달하고 처리된 결과를  해당
  * 웹 화면으로 전달하는  Controller를 정의한다
  * @author 표준프레임워크 개발팀
  * @since 2014.08.29
@@ -66,7 +67,7 @@ public class EgovCmtManageController {
      * @return forward:/uss/cmt/EgovCmtMange.do
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/cmt/EgovCmtWrkStartInsert.do")
+    @PostMapping("/uss/cmt/EgovCmtWrkStartInsert.do")
     public String insertWrkStartCmtInfo(@ModelAttribute("cmtManageVO") CmtManageVO cmtManageVO, BindingResult bindingResult, Model model) throws Exception {
 
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -98,7 +99,7 @@ public class EgovCmtManageController {
      * @return forward:/uss/cmt/EgovCmtMange.do
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/cmt/EgovCmtWrkEndInsert.do")
+    @PostMapping("/uss/cmt/EgovCmtWrkEndInsert.do")
     public String insertWrkEndCmtInfo(@ModelAttribute("cmtManageVO") CmtManageVO cmtManageVO, BindingResult bindingResult, Model model) throws Exception {
 
         LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();

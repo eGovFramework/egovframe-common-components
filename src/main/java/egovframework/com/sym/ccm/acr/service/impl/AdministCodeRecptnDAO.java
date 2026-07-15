@@ -24,7 +24,7 @@ import egovframework.com.sym.ccm.acr.service.AdministCodeRecptnVO;
  *  -------    --------    ---------------------------
  *   2009.04.01  이중호         최초 생성
  *   2024.10.29	 권태성			법정동코드 저장 시 NullPointerException 수정(insertAdministCode())
- *   2026.06.16  이백행         [2026년 컨트리뷰션] 불필요한 예외(throws Exception) 제거
+ *   2026.06.16  이백행         [2026년 컨트리뷰션] 불필요한 예외 제거
  *
  * Copyright (C) 2009 by MOPAS  All rights reserved.
  * </pre>
@@ -116,6 +116,14 @@ public class AdministCodeRecptnDAO extends EgovComAbstractDAO {
     public int selectAdministCodeRecptnListTotCnt(AdministCodeRecptnVO searchVO) {
         return (Integer)selectOne("AdministCodeRecptnDAO.selectAdministCodeRecptnListTotCnt", searchVO);
     }
+
+	/**
+	 * 등록된 법정동코드(행정구역코드) 목록을 조회한다.
+	 * @return List(행정구역코드 목록)
+	 */
+	public List<String> selectExistingAdministCodes() {
+		return selectList("AdministCodeRecptnDAO.selectExistingAdministCodes");
+	}
 
     /**
 	 * 법정동코드 목록을 조회한다.

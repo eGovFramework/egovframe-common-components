@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -129,7 +130,7 @@ public class EgovArticleCommentController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/cmt/insertArticleComment.do")
+    @PostMapping("/cop/cmt/insertArticleComment.do")
     public String insertArticleComment(@ModelAttribute("searchVO") CommentVO commentVO, @Valid @ModelAttribute("comment") Comment comment,
 	    BindingResult bindingResult, ModelMap model, @RequestParam HashMap<String, String> map) throws Exception {
 
@@ -174,7 +175,7 @@ public class EgovArticleCommentController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/cmt/deleteArticleComment.do")
+    @PostMapping("/cop/cmt/deleteArticleComment.do")
     public String deleteArticleComment(@ModelAttribute("searchVO") CommentVO commentVO, @ModelAttribute("comment") Comment comment,
     		ModelMap model, @RequestParam HashMap<String, String> map) throws Exception {
 		@SuppressWarnings("unused")
@@ -206,7 +207,7 @@ public class EgovArticleCommentController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/cmt/updateArticleCommentView.do")
+    @PostMapping("/cop/cmt/updateArticleCommentView.do")
     public String updateArticleCommentView(@ModelAttribute("searchVO") CommentVO commentVO, ModelMap model) throws Exception {
 
 	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -262,7 +263,7 @@ public class EgovArticleCommentController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/cmt/updateArticleComment.do")
+    @PostMapping("/cop/cmt/updateArticleComment.do")
     public String updateArticleComment(@ModelAttribute("searchVO") CommentVO commentVO, @Valid @ModelAttribute("comment") Comment comment,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
 

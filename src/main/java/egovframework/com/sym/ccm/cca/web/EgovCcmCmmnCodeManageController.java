@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -104,7 +105,7 @@ public class EgovCcmCmmnCodeManageController {
 	 * @return "egovframework/com/sym/ccm/cca/EgovCcmCmmnCodeDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/ccm/cca/SelectCcmCmmnCodeDetail.do")
+	@PostMapping("/sym/ccm/cca/SelectCcmCmmnCodeDetail.do")
 	public String selectCmmnCodeDetail(@ModelAttribute("loginVO") LoginVO loginVO, CmmnCodeVO cmmnCodeVO,
 			ModelMap model) throws Exception {
 
@@ -123,7 +124,7 @@ public class EgovCcmCmmnCodeManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/sym/ccm/cca/RegistCcmCmmnCodeView.do")
+	@PostMapping("/sym/ccm/cca/RegistCcmCmmnCodeView.do")
 	public String insertCmmnCodeView(@ModelAttribute("cmmnCodeVO") CmmnCodeVO cmmnCodeVO, ModelMap model)
 			throws Exception {
 
@@ -146,7 +147,7 @@ public class EgovCcmCmmnCodeManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/sym/ccm/cca/RegistCcmCmmnCode.do")
+	@PostMapping("/sym/ccm/cca/RegistCcmCmmnCode.do")
 	public String insertCmmnCode(@ModelAttribute("searchVO") CmmnCodeVO cmmnCode,
 			@Valid @ModelAttribute("cmmnCodeVO") CmmnCodeVO cmmnCodeVO, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -191,7 +192,7 @@ public class EgovCcmCmmnCodeManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/sym/ccm/cca/RemoveCcmCmmnCode.do")
+	@PostMapping("/sym/ccm/cca/RemoveCcmCmmnCode.do")
 	public String deleteCmmnCode(@ModelAttribute("cmmnCodeVO") CmmnCodeVO cmmnCodeVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
 
@@ -211,7 +212,7 @@ public class EgovCcmCmmnCodeManageController {
 	 * @return "egovframework/com/sym/ccm/cca/EgovCcmCmmnCodeUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping("/sym/ccm/cca/UpdateCcmCmmnCodeView.do")
+	@PostMapping("/sym/ccm/cca/UpdateCcmCmmnCodeView.do")
 	public String updateCmmnCodeView(@ModelAttribute("cmmnCodeVO") CmmnCodeVO cmmnCodeVO, ModelMap model)
 			throws Exception {
 
@@ -231,7 +232,7 @@ public class EgovCcmCmmnCodeManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/sym/ccm/cca/UpdateCcmCmmnCode.do")
+	@PostMapping("/sym/ccm/cca/UpdateCcmCmmnCode.do")
 	public String updateCmmnCode(@ModelAttribute("searchVO") CmmnCodeVO cmmnCode,
 			@Valid @ModelAttribute("cmmnCodeVO") CmmnCodeVO cmmnCodeVO, BindingResult bindingResult, ModelMap model)
 			throws Exception {

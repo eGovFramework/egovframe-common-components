@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.LoginVO;
@@ -109,7 +110,7 @@ public class EgovRoughMapController {
 	 * @return String 건물 위치정보 상세조회 화면
 	 * @throws Exception
 	 */
-	@RequestMapping("/com/uss/ion/rmm/selectRoughMapDetail.do")
+	@PostMapping("/com/uss/ion/rmm/selectRoughMapDetail.do")
 	public String selectRoughMap(RoughMapVO searchVO, ModelMap model) throws Exception {
 
 		// 권한 체크
@@ -133,7 +134,7 @@ public class EgovRoughMapController {
 	 * @return String 건물 위치정보 등록 화면
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/com/uss/ion/rmm/registRoughMap.do")
+	@PostMapping("/com/uss/ion/rmm/registRoughMap.do")
 	public String goRoughMapRegist(@ModelAttribute("roughMap") RoughMapVO roughMap, ModelMap model) throws Exception {
 		// 권한 체크
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -152,7 +153,7 @@ public class EgovRoughMapController {
 	 * @return String 건물 위치정보 목록 조회 화면
 	 * @throws Exception
 	 */
-	@RequestMapping("/com/uss/ion/rmm/insertRoughMap.do")
+	@PostMapping("/com/uss/ion/rmm/insertRoughMap.do")
 	public String insertRoughMap(@ModelAttribute("roughMap") RoughMapVO roughMap, BindingResult bindingResult)
 			throws Exception {
 
@@ -185,7 +186,7 @@ public class EgovRoughMapController {
 	 * @return String 건물 위치정보 수정 화면
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/com/uss/ion/rmm/updateRoughMapView.do")
+	@PostMapping("/com/uss/ion/rmm/updateRoughMapView.do")
 	public String goRoughMapUpdt(@ModelAttribute("roughMap") RoughMapVO roughMap, ModelMap model) throws Exception {
 
 		// 권한 체크
@@ -210,7 +211,7 @@ public class EgovRoughMapController {
 	 * @return String 건물 위치정보 목록 조회 화면
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/com/uss/ion/rmm/updateRoughMap.do")
+	@PostMapping("/com/uss/ion/rmm/updateRoughMap.do")
 	public String updateRoughMap(@Valid @ModelAttribute("roughMap") RoughMapVO roughMap, BindingResult bindingResult)
 			throws Exception {
 
@@ -241,7 +242,7 @@ public class EgovRoughMapController {
 	 * @return String 건물 위치정보 목록 조회 화면
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/com/uss/ion/rmm/deleteRoughMap.do")
+	@PostMapping("/com/uss/ion/rmm/deleteRoughMap.do")
 	public String deleteRoughMap(@ModelAttribute("roughMap") RoughMapVO roughMap) throws Exception {
 
 		// 권한 체크

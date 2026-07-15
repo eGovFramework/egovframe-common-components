@@ -18,10 +18,13 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUssOlpQmc.title"/></c:set>
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title>${pageTitle} <spring:message code="title.list" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
@@ -50,51 +53,19 @@ function fn_egov_search_QustnrManage(){
 
 }
 /* ********************************************************
- * TODO: 테스트후 삭제 예정 : 선택 처리 함수
- ******************************************************** */
-/* function fn_egov_open_QustnrManage(qestnrId, qestnrTmplatId, cnt){
-
-	getDialogArguments();
-	 var opener = window.dialogArguments; 
-	var opener;
- 
-	if (window.dialogArguments) {
-	    opener = window.dialogArguments; // Support IE
-	} else {
-	    opener = window.opener;    // Support Chrome, Firefox, Safari, Opera
-	}
-
-	opener.document.getElementById("qestnrId").value = qestnrId;
-	opener.document.getElementById("qestnrTmplatId").value = qestnrTmplatId;
-	opener.document.getElementById("qestnrCn").value = document.getElementById("iptText_"+ cnt).value;
-
-	window.returnValue=true;
-	window.close();
-
-} */
-/* ********************************************************
  * 모달창 데이터 전달 함수
  ******************************************************** */
 function selectQustnrItem(data) {
-	console.log("[자식] 클릭됨 - 전달 데이터:", data); // 객체 전체 출력
 	var parentWin = window.parent;
 	var $p = parentWin.jQuery || parentWin.$;
 	if (!$p) {
-		console.error("[자식] 부모 jQuery 못 찾음");
 		return;
 	}
-	console.log("[자식] 부모 jQuery 찾음");
 	// 값 설정 전 현재 부모 input 값들 로그
-	console.log("[자식] 설정 전 부모 #qestnrId 값:", $p("#qestnrId").val());
-	console.log("[자식] 설정 전 부모 #qestnrTmplatId 값:", $p("#qestnrTmplatId").val());
-	console.log("[자식] 설정 전 부모 #qestnrCn 값:", $p("#qestnrCn").val());
 	$p("#qestnrId").val(data.qestnrId);
 	$p("#qestnrTmplatId").val(data.qestnrTmplatId);
 	$p("#qestnrCn").val(data.qestnrCn); //제목-인풋창에표시되는 값
 	// 값 설정 후 로그
-	console.log("[자식] 설정 후 부모 #qestnrId 값:", $p("#qestnrId").val());
-	console.log("[자식] 설정 후 부모 #qestnrTmplatId 값:", $p("#qestnrTmplatId").val());
-	console.log("[자식] 설정 후 부모 #qestnrCn 값:", $p("#qestnrCn").val());
 	$p("#qestnrModal").dialog("close");
 }
 </script>
@@ -106,7 +77,7 @@ function selectQustnrItem(data) {
 <!-- 자바스크립트 경고 태그  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="ListForm" action="<c:url value='/uss/olp/qmc/EgovQustnrManageListPopup.do'/>" method="post" onSubmit="fn_egov_search_QustnrManage(); return false;">
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/olp/qmc/EgovQustnrManageListPopup.do" method="post" onSubmit="fn_egov_search_QustnrManage(); return false;">
 
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<!-- 검색영역 -->
@@ -125,12 +96,12 @@ function selectQustnrItem(data) {
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code='title.search' /> <spring:message code='input.input' />" value="<c:out value='${searchVO.searchKeyword}'/>"  maxlength="155" >
 				<input type="submit" class="btn_style3" value="<spring:message code='button.inquire' />" title="<spring:message code='title.inquire' /> <spring:message code='input.button' />" onclick="fn_egov_search_QustnrManage(); return false;" />
 				<!-- 등록버튼 -->
-				<%-- <span class="btn_b"> <a href="<c:url value='/uss/olp/qmc/EgovQustnrManageRegist.do'/>" title="<spring:message code='button.create' /> <spring:message code='input.button' />"><spring:message code="button.create" /></a></span>  --%>
+				<%-- <span class="btn_b"> <a href="#" onclick="fn_egov_postNavigate('<c:url value='/uss/olp/qmc/EgovQustnrManageRegist.do' />'); return false;" title="<spring:message code='button.create' /> <spring:message code='input.button' />"><spring:message code="button.create" /></a></span>  --%>
 			</li>
 		</ul>
 	</div>
 
-</form>
+</form:form>
 
 	<!-- 목록영역 -->
 	<table class="popwTable" summary="<spring:message code='common.summary.list' arguments='${pageTitle}' />">

@@ -160,8 +160,8 @@ function fncUpdtBndtDiary() {
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
 			<li>
-				<span class="btn_b"><a href="<c:url value='/uss/ion/bnt/updtBndtDiary.do'/>" onclick="fncUpdtBndtDiary(); return false;"><spring:message code="button.save" /></a></span>
-				<span class="btn_b"><a href="<c:url value='/uss/ion/bnt/EgovBndtManageList.do'/>" onclick="fncBndtManageList(); return false;"><spring:message code="button.list" /></a></span>
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fncUpdtBndtDiary(); return false;"><spring:message code="button.save" /></a></span>
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fncBndtManageList(); return false;"><spring:message code="button.list" /></a></span>
 			</li>
 		</ul>
 	</div>

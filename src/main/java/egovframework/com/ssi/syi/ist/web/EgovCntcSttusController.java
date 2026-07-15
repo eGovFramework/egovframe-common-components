@@ -9,6 +9,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -57,7 +58,7 @@ public class EgovCntcSttusController {
 	 * @return "egovframework/com/cmm/sym/ccm/EgovCcmCntcSttusDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/ist/getCntcSttusDetail.do")
+	@PostMapping("/ssi/syi/ist/getCntcSttusDetail.do")
 	public String selectCntcSttusLogDetail(CntcSttus cntcSttus, ModelMap model) throws Exception {
 		CntcSttus vo = cntcSttusService.selectCntcSttusDetail(cntcSttus);
 		model.addAttribute("result", vo);

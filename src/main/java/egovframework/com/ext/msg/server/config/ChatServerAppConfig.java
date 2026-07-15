@@ -18,8 +18,8 @@
  */
 package egovframework.com.ext.msg.server.config;
 
-import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 import egovframework.com.ext.msg.server.ChatServerEndPoint;
 import jakarta.websocket.HandshakeResponse;
@@ -48,26 +48,31 @@ import jakarta.websocket.server.ServerEndpointConfig.Configurator;
 public class ChatServerAppConfig extends Configurator {
 
 	// 대화창 서버객체(ChatServerEndPoint) 저장하는 Map
-	private final static Map<String, ChatServerEndPoint> ENDPOINT_MAP = new HashMap<String, ChatServerEndPoint>();
-	private String currentUri;
+	// 2026.07.13 KISA 보안취약점 조치 - 컨테이너가 Configurator 인스턴스를 스레드 간 공유/재사용하므로
+	// 동시 핸드셰이크에 안전하도록 스레드 안전한 Map으로 변경한다.
+	private final static Map<String, ChatServerEndPoint> ENDPOINT_MAP = new ConcurrentHashMap<String, ChatServerEndPoint>();
+
+	// 2026.07.13 KISA 보안취약점 조치 - 인스턴스 필드는 동시 핸드셰이크 간 값이 덮어써지는 경쟁조건을 유발하므로
+	// 요청(스레드)별로 격리되는 ThreadLocal을 사용해 modifyHandshake와 getEndpointInstance 사이의 상태를 전달한다.
+	private static final ThreadLocal<String> CURRENT_URI = new ThreadLocal<String>();
 
 	@SuppressWarnings("unchecked")
 	@Override
 	public <T> T getEndpointInstance(Class<T> endpointClass) throws InstantiationException {
 
-		ChatServerEndPoint endpoint = ENDPOINT_MAP.get(currentUri);
-
-		if (endpoint == null) {
-			endpoint = new ChatServerEndPoint();
-			ENDPOINT_MAP.put(currentUri, endpoint);
+		String uri = CURRENT_URI.get();
+		try {
+			// computeIfAbsent로 check-then-put을 원자적으로 수행하여 손실 업데이트/중복 인스턴스 생성을 방지한다.
+			ChatServerEndPoint endpoint = ENDPOINT_MAP.computeIfAbsent(uri, key -> new ChatServerEndPoint());
+			return (T) endpoint;
+		} finally {
+			CURRENT_URI.remove();
 		}
-
-		return (T) endpoint;
 	}
 
 	@Override
 	public void modifyHandshake(ServerEndpointConfig sec, HandshakeRequest request, HandshakeResponse response) {
-		currentUri = request.getRequestURI().toString();
+		CURRENT_URI.set(request.getRequestURI().toString());
 		super.modifyHandshake(sec, request, response);
 	}
 }

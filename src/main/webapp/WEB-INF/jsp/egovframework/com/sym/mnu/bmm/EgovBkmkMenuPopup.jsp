@@ -59,6 +59,7 @@
 	<h1><spring:message code="comSymMnuBmm.BkmkMenuPopup.pageTop.title" /></h1><!-- 메뉴목록 -->
 	<span>※ "1100. 메뉴생성관리" 메뉴에서 "메뉴생성"을 먼저 해야 목록에서 확인이 가능합니다.</span>
 	<form name="frm" action ="<c:url value='/sym/mnu/bmm/selectMenuList.do'/>" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input type="hidden" name="PopFlag" value="Y" >
 	<input type="hidden" name="searchCnd" value ="0" >
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">

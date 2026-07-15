@@ -23,6 +23,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comStsRst.reprtStats.title"/></c:set>
 <!DOCTYPE html>
 <html lang="ko">
@@ -161,7 +163,7 @@ function press() {
 <div class="board">
 	<h1>${pageTitle}</h1>
 
-<form name="listForm" action="<c:url value='/sts/rst/selectReprtStatsList.do'/>" method="post">
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/sts/rst/selectReprtStatsList.do" method="post">
 <input type="hidden" name="pmFromDate" value="<c:out value="${reprtStatsVO.pmFromDate}"/>" >
 <input type="hidden" name="pmToDate" value="<c:out value="${reprtStatsVO.pmToDate}"/>" >
 
@@ -190,7 +192,7 @@ function press() {
                   <input type="text" name="pmTyToDate" size="11" readonly="readonly" tabindex="2" title="<spring:message code="comStsRst.reprtStats.toDate" />" id="tDate" value="${reprtStatsVO.pmToDate}"/> <!-- 종료일자 -->
 				
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fncSelectReprtStatsList('1'); return false;" />
-				<span class="btn_b"><a href="<c:url value='/sts/rst/addViewReprtStats.do'/>?pageIndex=<c:out value='${reprtStatsVO.pageIndex}'/>&amp;pmReprtTy=<c:out value="${reprtStatsVO.pmReprtTy}"/>&amp;pmDateTy=<c:out value="${reprtStatsVO.pmDateTy}"/>&amp;pmFromDate=<c:out value="${reprtStatsVO.pmFromDate}"/>&amp;pmToDate=<c:out value="${reprtStatsVO.pmToDate}"/>" onclick="fncAddReprtStatsInsert(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fncAddReprtStatsInsert(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
@@ -198,7 +200,7 @@ function press() {
 <input type="hidden" name="reprtSttus">
 <input type="hidden" name="pageIndex" value="<c:if test="${empty reprtStatsVO.pageIndex }">1</c:if><c:if test="${!empty reprtStatsVO.pageIndex }"><c:out value='${reprtStatsVO.pageIndex}'/></c:if>">
 <input type="hidden" name="searchCondition" value="1">	
-</form>
+</form:form>
 	
 	<table class="board_list">
 		<caption></caption>
@@ -219,7 +221,7 @@ function press() {
 			 <c:forEach var="reprtStats" items="${reprtStatsList}" varStatus="status">
 			  <tr>
 			    <td class="lt_text3" nowrap>
-			        <form name="item" method="post" action="<c:url value='/sts/rst/getReprtStats.do'/>">
+			        <form name="item" method="post" action="${pageContext.request.contextPath}/sts/rst/getReprtStats.do">
 			            <input type="hidden" name="reprtTy" value="<c:out value="${reprtStats.reprtTy}"/>">
 			            <input type="hidden" name="reprtSttus" value="<c:out value="${reprtStats.reprtSttus}"/>">
 			            <input type="hidden" name="pmFromDate" value="<c:out value="${reprtStatsVO.pmFromDate}"/>">

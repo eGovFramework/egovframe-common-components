@@ -9,12 +9,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.ComDefaultCodeVO;
+import egovframework.com.cmm.ComDefaultVO;
 import egovframework.com.cmm.EgovComponentChecker;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
@@ -88,6 +90,26 @@ public class EgovLoginController {
 
     /** log */
 	private static final Logger LOGGER = LoggerFactory.getLogger(EgovLoginController.class);
+
+	@ModelAttribute("loginRequestVO")
+	public LoginRequestVO loginRequestVO() {
+		return new LoginRequestVO();
+	}
+
+	@ModelAttribute("defaultForm")
+	public ComDefaultVO defaultForm() {
+		return new ComDefaultVO();
+	}
+
+	@ModelAttribute("searchIdRequestVO")
+	public SearchIdRequestVO searchIdRequestVO() {
+		return new SearchIdRequestVO();
+	}
+
+	@ModelAttribute("searchPasswordRequestVO")
+	public SearchPasswordRequestVO searchPasswordRequestVO() {
+		return new SearchPasswordRequestVO();
+	}
 
 	/**
 	 * 로그인 화면으로 들어간다
@@ -197,11 +219,19 @@ public class EgovLoginController {
 		// 2022.11.11 시큐어코딩 처리
 		if (resultVO.getId() != null && !resultVO.getId().equals("")) {
 
+			// 2026.07.10 NCSC 보안점검 반영: 세션 고정 공격 방지 (세션 속성 유지하며 ID만 변경)
+			jakarta.servlet.http.HttpSession session = request.getSession(false);
+			if (session != null) {
+				request.changeSessionId();
+			} else {
+				session = request.getSession(true);
+			}
+
 			// 3-1. 로그인 정보를 세션에 저장
-			request.getSession().setAttribute("loginVO", resultVO);
+			session.setAttribute("loginVO", resultVO);
 
 			// 2019.10.01 로그인 인증세션 추가
-			request.getSession().setAttribute("accessUser", resultVO.getUserSe().concat(resultVO.getId()));
+			session.setAttribute("accessUser", resultVO.getUserSe().concat(resultVO.getId()));
 			return "redirect:/uat/uia/actionMain.do";
 
 		} else {
@@ -500,9 +530,10 @@ public class EgovLoginController {
 	 * @return 인증서 등록 페이지
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/uat/uia/EgovGpkiRegist.do")
+	@PostMapping("/uat/uia/EgovGpkiRegist.do")
 	public String gpkiRegistView(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
 
+		model.addAttribute("gpkiRegist", new ComDefaultVO());
 		/** GPKI 인증 부분 */
 		// OS에 따라 (local NT(로컬) / server Unix(서버)) 구분
 		String os = System.getProperty("os.arch");
@@ -537,9 +568,10 @@ public class EgovLoginController {
 	 * @return result - dn값
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/uat/uia/actionGpkiRegist.do")
+	@PostMapping("/uat/uia/actionGpkiRegist.do")
 	public String actionGpkiRegist(HttpServletRequest request, HttpServletResponse response, ModelMap model) throws Exception {
 
+		model.addAttribute("gpkiRegist", new ComDefaultVO());
 		/** GPKI 인증 부분 */
 		// OS에 따라 (local NT(로컬) / server Unix(서버)) 구분
 		String os = System.getProperty("os.arch");
@@ -610,7 +642,7 @@ public class EgovLoginController {
 
 		model.addAttribute("expirePwdDay", expirePwdDay);
 
-		// 비밀번호 설정일로부터 몇일이 지났는지 확인한다. ex) 3이면 비빌번호 설정후 3일 경과
+		// 비밀번호 설정일로부터 며칠이 지났는지 확인한다. ex) 3이면 비밀번호 설정후 3일 경과
 		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		model.addAttribute("loginVO", loginVO);
 		int passedDayChangePWD = 0;

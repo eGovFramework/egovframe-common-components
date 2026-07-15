@@ -204,14 +204,16 @@ function fn_egov_delete_DeptSchdulManage(frm){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 	
-	<form name="DeptSchdulManageForm" id="DeptSchdulManageForm" action="<c:url value='/cop/smt/sdm/EgovDeptSchdulManageModify.do'/>" method="post" method="post" style="float:left;">
+	<form name="DeptSchdulManageForm" id="DeptSchdulManageForm" action="${pageContext.request.contextPath}/cop/smt/sdm/EgovDeptSchdulManageModify.do" method="post" style="float:left;">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input type="submit" class="s_submit" value="<spring:message code="button.update" />" title="<spring:message code="title.update" /> <spring:message code="input.button" />" />
 	<input name="schdulId" type="hidden" value="${resultList[0].schdulId}">
 	<input name="linkType" type="hidden" value="${sLinkType}">
 	<input name="cmd" type="hidden" value="<c:out value=''/>"/>
 	</form>		
 	
-	<form name="formDelete" action="<c:url value='/cop/smt/sdm/EgovDeptSchdulManageDetail.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+	<form name="formDelete" action="${pageContext.request.contextPath}/cop/smt/sdm/EgovDeptSchdulManageDetail.do" method="post" style="float:left; margin:0 0 0 3px;">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input type="submit" class="s_submit" value="<spring:message code="button.delete" />" title="<spring:message code="button.delete" /> <spring:message code="input.button" />" onclick="fn_egov_delete_DeptSchdulManage(this.form); return false;">
 	<input name="schdulId" type="hidden" value="${resultList[0].schdulId}">
 	<input name="linkType" type="hidden" value="${sLinkType}">
@@ -219,14 +221,16 @@ function fn_egov_delete_DeptSchdulManage(frm){
 	</form>
 	
 	
-	<form name="formSubDiaryManage" action="<c:url value='/cop/smt/dsm/EgovDiaryManageList.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+	<form name="formSubDiaryManage" action="${pageContext.request.contextPath}/cop/smt/dsm/EgovDiaryManageList.do" method="post" style="float:left; margin:0 0 0 3px;">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input type="submit" class="s_submit" value="<spring:message code="comCopSmtSdm.btn.diaryManage" />" title="<spring:message code="comCopSmtSdm.btn.diaryManage" /> <spring:message code="input.button" />" onclick="fn_egov_diary_DeptSchdulManage(this.form); return false;">
 	<input name="schdulId" type="hidden" value="${resultList[0].schdulId}">
 	<input name="linkType" type="hidden" value="${sLinkType}">
 	<input name="cmd" type="hidden" value=""/>
 	</form>
 	
-	<form name="formList" action="<c:url value='/cop/smt/sdm/EgovDeptSchdulManageList.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+	<form name="formList" action="${pageContext.request.contextPath}/cop/smt/sdm/EgovDeptSchdulManageList.do" method="post" style="float:left; margin:0 0 0 3px;">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		<input type="submit" class="s_submit" value="<spring:message code="button.list" />" title="<spring:message code="button.list" /> <spring:message code="input.button" />" onClick="fn_egov_list_DeptSchdulManage(); return false;">
 	</form>
 

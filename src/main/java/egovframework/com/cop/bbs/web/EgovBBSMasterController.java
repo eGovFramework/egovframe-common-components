@@ -10,6 +10,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
@@ -86,7 +88,7 @@ public class EgovBBSMasterController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/bbs/insertBBSMasterView.do")
+    @GetMapping("/cop/bbs/insertBBSMasterView.do")
     public String insertBBSMasterView(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, ModelMap model) throws Exception {
 		BoardMasterVO boardMaster = new BoardMasterVO();
 		//공통코드(게시판유형)
@@ -121,7 +123,7 @@ public class EgovBBSMasterController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/bbs/insertBBSMaster.do")
+    @PostMapping("/cop/bbs/insertBBSMaster.do")
     public String insertBBSMaster(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, @Valid @ModelAttribute("boardMasterVO") BoardMaster boardMaster,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -246,7 +248,7 @@ public class EgovBBSMasterController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/bbs/insertBlogMasterView.do")
+    @PostMapping("/cop/bbs/insertBlogMasterView.do")
     public String insertBlogMasterView(@ModelAttribute("searchVO") BlogVO blogVO, ModelMap model) throws Exception {
     	model.addAttribute("blogMasterVO", new BlogVO());
 	return "egovframework/com/cop/bbs/EgovBlogRegist";
@@ -291,7 +293,7 @@ public class EgovBBSMasterController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/bbs/insertBlogMaster.do")
+    @PostMapping("/cop/bbs/insertBlogMaster.do")
     public String insertBlogMaster(@ModelAttribute("searchVO") BlogVO blogVO, @Valid @ModelAttribute("blogMasterVO") Blog blog,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -330,7 +332,7 @@ public class EgovBBSMasterController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/bbs/selectBBSMasterDetail.do")
+    @PostMapping("/cop/bbs/selectBBSMasterDetail.do")
     public String selectBBSMasterDetail(@ModelAttribute("searchVO") BoardMasterVO searchVO, ModelMap model) throws Exception {
 		BoardMasterVO vo = egovBBSMasterService.selectBBSMasterInf(searchVO);
 		model.addAttribute("result", vo);
@@ -356,10 +358,13 @@ public class EgovBBSMasterController {
      * @param model
      * @throws Exception
      */
-    @RequestMapping("/cop/bbs/updateBBSMasterView.do")
+    @PostMapping("/cop/bbs/updateBBSMasterView.do")
     public String updateBBSMasterView(@RequestParam("bbsId") String bbsId ,
             @ModelAttribute("searchVO") BoardMaster searchVO, ModelMap model)
             throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = egovAssertLoginUser();
+
 
 
         BoardMasterVO boardMasterVO = new BoardMasterVO();
@@ -400,7 +405,7 @@ public class EgovBBSMasterController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/bbs/updateBBSMaster.do")
+    @PostMapping("/cop/bbs/updateBBSMaster.do")
     public String updateBBSMaster(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, @Valid @ModelAttribute("boardMasterVO") BoardMaster boardMaster,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -437,7 +442,7 @@ public class EgovBBSMasterController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/bbs/deleteBBSMaster.do")
+    @PostMapping("/cop/bbs/deleteBBSMaster.do")
     public String deleteBBSMaster(@ModelAttribute("searchVO") BoardMasterVO boardMasterVO, @ModelAttribute("boardMaster") BoardMaster boardMaster
 	    ) throws Exception {
 
@@ -486,5 +491,32 @@ public class EgovBBSMasterController {
     	return "egovframework/com/cop/bbs/EgovBBSListPortlet";
     }
 
+
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
+	}
 
 }

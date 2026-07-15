@@ -25,6 +25,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -68,6 +70,12 @@
 		formData.append("bndtId", varForm.bndtId.value);
 	
 		if(confirm('<spring:message code="common.save.msg" />')) {/* 저장 하시겠습니까? */
+			var csrfHeaderName = "${_csrf.headerName}";
+			var csrfToken = "${_csrf.token}";
+			var csrfParamName = "${_csrf.parameterName}";
+			if (csrfParamName && csrfToken) {
+				formData.append(csrfParamName, csrfToken);
+			}
 			$.ajax({
 				type : "post",
 				enctype : "multipart/form-data",
@@ -75,6 +83,11 @@
 				data : formData,
 				processData : false,
 				contentType : false,
+				beforeSend: function(xhr) {
+					if (csrfHeaderName && csrfToken) {
+						xhr.setRequestHeader(csrfHeaderName, csrfToken);
+					}
+				},
 				success : function(data) {
 					opener.window.fncPageReload();
 					self.close();
@@ -138,7 +151,7 @@
 		</div>
 	</c:if>
 	
-	<form name="listForm" id="listForm" action="<c:url value='/uss/ion/bnt/EgovBndtManageListPopAction.do'/>" method="post" enctype="multipart/form-data">
+	<form:form name="listForm" modelAttribute="searchVO" id="listForm" action="${pageContext.request.contextPath}/uss/ion/bnt/EgovBndtManageListPopAction.do" method="post" enctype="multipart/form-data">
 	<input type="hidden" name="searchCondition">
 	<input type="hidden" name="checkedBndtManageForInsert">
 	<input type="hidden" name="searchKeyword">
@@ -204,7 +217,7 @@
 			</c:if>
 		</tbody>
 	</table>
-	</form>
+	</form:form>
 
 </div>
 </body>

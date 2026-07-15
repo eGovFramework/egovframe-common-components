@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
@@ -80,7 +81,7 @@ public class EgovSysHistoryController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/log/slg/InsertSysHistory.do")
+	@PostMapping("/sym/log/slg/InsertSysHistory.do")
 	public String insertSysHistory(final MultipartHttpServletRequest multiRequest,
 			@Valid @ModelAttribute("history") SysHistory history, BindingResult bindingResult, SessionStatus status,
 			ModelMap model) throws Exception {
@@ -119,7 +120,7 @@ public class EgovSysHistoryController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/log/slg/AddSysHistory.do")
+	@PostMapping("/sym/log/slg/AddSysHistory.do")
 	public String addSysHistory(@ModelAttribute("searchVO") SysHistoryVO historyVO, ModelMap model) throws Exception {
 
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
@@ -137,7 +138,7 @@ public class EgovSysHistoryController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/log/slg/UpdateSysHistory.do")
+	@PostMapping("/sym/log/slg/UpdateSysHistory.do")
 	public String updateSysHistory(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") SysHistoryVO historyVO, @Valid @ModelAttribute("history") SysHistory history,
 			BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
@@ -188,7 +189,7 @@ public class EgovSysHistoryController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/log/slg/ModifySysHistory.do")
+	@PostMapping("/sym/log/slg/ModifySysHistory.do")
 	public String modifySysHistory(@ModelAttribute("searchVO") SysHistoryVO historyVO, ModelMap model)
 			throws Exception {
 
@@ -209,7 +210,7 @@ public class EgovSysHistoryController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/log/slg/DeleteSysHistory.do")
+	@PostMapping("/sym/log/slg/DeleteSysHistory.do")
 	public String deleteSysHistory(@ModelAttribute("history") SysHistory history, SessionStatus status, ModelMap model)
 			throws Exception {
 

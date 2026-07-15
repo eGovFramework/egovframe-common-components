@@ -3,6 +3,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
  /**
   * @Class Name : EgovLoginUsr.jsp
@@ -65,20 +66,18 @@ function actionLogin() {
     } else if (document.loginForm.password.value =="") {
         alert("<spring:message code="comUatUia.validate.passCheck" />"); <%-- 비밀번호를 입력하세요 --%>
     } else {
-        document.loginForm.action="<c:url value='/uat/uia/actionLogin.do'/>";
-        //document.loginForm.j_username.value = document.loginForm.userSe.value + document.loginForm.username.value;
-        //document.loginForm.action="<c:url value='/j_spring_security_check'/>";
+        document.loginForm.action="${pageContext.request.contextPath}/uat/uia/actionLogin.do";
         document.loginForm.submit();
     }
 }
 
 function actionCrtfctLogin() {
-    document.defaultForm.action="<c:url value='/uat/uia/actionCrtfctLogin.do'/>";
+    document.defaultForm.action="${pageContext.request.contextPath}/uat/uia/actionCrtfctLogin.do";
     document.defaultForm.submit();
 }
 
 function goFindId() {
-    document.defaultForm.action="<c:url value='/uat/uia/egovIdPasswordSearch.do'/>";
+    document.defaultForm.action="${pageContext.request.contextPath}/uat/uia/egovIdPasswordSearch.do";
     document.defaultForm.submit();
 }
 
@@ -96,11 +95,11 @@ function goRegiUsr() {
  
     // 일반회원
     if (userSe == "GNR") {
-        document.loginForm.action="<c:url value='/uss/umt/EgovStplatCnfirmMber.do'/>";
+        document.loginForm.action="${pageContext.request.contextPath}/uss/umt/EgovStplatCnfirmMber.do";
         document.loginForm.submit();
     // 기업회원
     } else if (userSe == "ENT") {
-        document.loginForm.action="<c:url value='/uss/umt/EgovStplatCnfirmEntrprs.do'/>";
+        document.loginForm.action="${pageContext.request.contextPath}/uss/umt/EgovStplatCnfirmEntrprs.do";
         document.loginForm.submit();
     // 업무사용자
     } else if (userSe == "USR") {
@@ -110,7 +109,7 @@ function goRegiUsr() {
 }
 
 function goGpkiIssu() {
-    document.defaultForm.action="<c:url value='/uat/uia/egovGpkiIssu.do'/>";
+    document.defaultForm.action="${pageContext.request.contextPath}/uat/uia/egovGpkiIssu.do";
     document.defaultForm.submit();
 }
 
@@ -150,26 +149,8 @@ function getid(form) {
 }
 
 function fnInit() {
-	/* if (document.getElementById('loginForm').message.value != null) {
-	    var message = document.getElementById('loginForm').message.value;
-	} */
-    /* if ("<c:out value='${message}'/>" != "") {
-        alert("<c:out value='${message}'/>");
-    } */
-
-    /* *************************
-    document.loginForm.rdoSlctUsr[0].checked = false;
-    document.loginForm.rdoSlctUsr[1].checked = false;
-    document.loginForm.rdoSlctUsr[2].checked = true;
-    document.loginForm.userSe.value = "USR";
-    document.loginForm.id.value="TEST1";
-    document.loginForm.password.value="rhdxhd12";
-    **************************** */
-
-    //getid(document.loginForm);
     // 포커스
-    //document.loginForm.rdoSlctUsr.focus();
-    
+
     getid(document.loginForm);
     
     fnLoginTypeSelect("typeGnr");
@@ -180,7 +161,6 @@ function fnInit() {
     
     // reload "_top" frame page
     if (parent.frames["_top"] == undefined)
-    	console.log("'_top' frame is not exist!");
     parent.frames["_top"].location.reload();
 }
 
@@ -223,7 +203,7 @@ function fnShowLogin(stat) {
 
 <!-- 일반로그인 -->
 <div class="login_form">
-	<form name="loginForm" id="loginForm" action="<c:url value='/uat/uia/actionLogin.do'/>" method="post">
+	<form:form name="loginForm" id="loginForm" modelAttribute="loginRequestVO" action="${pageContext.request.contextPath}/uat/uia/actionLogin.do" method="post">
 	<input type="hidden" id="message" name="message" value="<c:out value='${message}'/>">
 	
 	<fieldset>
@@ -301,15 +281,15 @@ function fnShowLogin(stat) {
 	<a href="${ kakao_url }"><img width="300" src="<c:url value='/images/egovframework/com/uat/uia/kakao-login.png'/>" alt="Kakao Login" /></a>
 	<input name="userSe" type="hidden" value="GNR"/>
 	<input name="j_username" type="hidden"/>
-	</form>
+	</form:form>
 </div>
 
 <!-- 팝업 폼 -->
-<form name="defaultForm" action ="" method="post" target="_blank">
+<form:form name="defaultForm" modelAttribute="defaultForm" action="" method="post" target="_blank">
 <div style="visibility:hidden;display:none;">
 <input name="iptSubmit3" type="submit" value="<spring:message code="comUatUia.loginForm.submit"/>" title="<spring:message code="comUatUia.loginForm.submit"/>">
 </div>
-</form>
+</form:form>
 <!-- login영역 //-->
 
 

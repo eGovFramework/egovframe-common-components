@@ -120,7 +120,7 @@ public class EgovKnoAppraisalController {
 	 *
 	 * @param KnoAppraisalVO
 	 */
-	@RequestMapping(value = "/dam/app/EgovComDamAppraisal.do")
+	@PostMapping("/dam/app/EgovComDamAppraisal.do")
 	public String selectKnoAppraisal(KnoAppraisal knoAppraisal, ModelMap model) throws Exception {
 		KnoAppraisal vo = knoAppraisalService.selectKnoAppraisal(knoAppraisal);
 		model.addAttribute("result", vo);

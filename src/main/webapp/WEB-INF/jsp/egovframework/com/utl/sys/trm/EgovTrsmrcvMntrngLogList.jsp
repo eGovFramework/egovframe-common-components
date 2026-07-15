@@ -3,6 +3,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <c:set var="pageTitle"><spring:message code="comUtlSysTrm.trsmrcvMntrngLogList.title"/></c:set>
 <%
@@ -43,9 +44,6 @@
 
     if (vForm.searchKeywordFrom.value == "") {
         // 조회일자에 현재날짜 세팅
-        //alert("빈문자열입니다. ");
-        //vForm.searchStartDate.value = fn_egov_getToday();
-        //vForm.searchEndDate.value = fn_egov_getToday();
         //vForm.searchEndHour.options[23].selected = true;
     } else {
         // 조회조건 지정된 것 설정하기.
@@ -213,7 +211,7 @@ function fn_egov_select_mntrng(){
 <div class="board">
 	<h1>${pageTitle}</h1>
 
-    <form name="frm" id="frm" action="<c:url value='/utl/sys/trm/getTrsmrcvMntrngLogList.do'/>" method="post">
+    <form:form name="frm" modelAttribute="searchVO" id="frm" action="${pageContext.request.contextPath}/utl/sys/trm/getTrsmrcvMntrngLogList.do" method="post">
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
 		<ul>
 			<li>
@@ -257,7 +255,7 @@ function fn_egov_select_mntrng(){
 	            </select>
 				
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fn_egov_get_list('1'); return false;" />
-				<span class="btn_b"><a href="<c:url value='/utl/sys/trm/getTrsmrcvMntrngList.do'/>" onclick="fn_egov_select_mntrng(); return false;" title="<spring:message code="button.list" />"><spring:message code="button.list" /></a></span>
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fn_egov_select_mntrng(); return false;" title="<spring:message code="button.list" />"><spring:message code="button.list" /></a></span>
 			</li>
 		</ul>
 	</div>
@@ -265,7 +263,7 @@ function fn_egov_select_mntrng(){
     <input name="searchKeywordFrom" type="hidden" value="<c:out value='${searchVO.searchKeywordFrom}'/>">
     <input name="searchKeywordTo" type="hidden" value="<c:out value='${searchVO.searchKeywordTo}'/>">
     <input name="logId" type="hidden" value="">
-    </form>
+    
 
 	<table class="board_list">
 		<caption></caption>
@@ -309,15 +307,7 @@ function fn_egov_select_mntrng(){
 	          <tr>
 	                <td>${resultInfo.cntcId}</td>
 	                <td>
-	                    <form name="item" method="post" action="/utl/sys/trm/getTrsmrcvMntrngLog.do">
-	                        <input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>">
-	                        <input type="hidden" name="searchCondition" value="<c:out value='${searchVO.searchCondition}'/>">
-	                        <input type="hidden" name="searchKeyword" value="<c:out value="${searchVO.searchKeyword}"/>">
-	                        <input type="hidden" name="searchKeywordFrom" value="<c:out value='${searchVO.searchKeywordFrom}'/>">
-	                        <input type="hidden" name="searchKeywordTo" value="<c:out value='${searchVO.searchKeywordTo}'/>">
-	                        <input type="hidden" name="logid" value="<c:out value="${resultInfo.logId}"/>">
-	                    <span class="link"><input type="submit" value="<c:out value="${resultInfo.cntcNm}"/>" onclick="fn_egov_get_detail_view('<c:out value="${resultInfo.logId}"/>'); return false;"></span>
-	                    </form>
+	                    <a href="javascript:void(0);" onclick="fn_egov_get_detail_view('<c:out value="${resultInfo.logId}"/>'); return false;"><span class="link"><c:out value="${resultInfo.cntcNm}"/></span></a>
 	                </td>
 	                <td>${resultInfo.testClassNm}</td>
 	                <td>${resultInfo.mngrNm}</td>
@@ -342,6 +332,8 @@ function fn_egov_select_mntrng(){
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_get_list"/>
 		</ul>
 	</div>
+</form:form>
+
 </div>
 
 

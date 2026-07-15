@@ -21,10 +21,12 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUssIonNws.newsVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title>${pageTitle} <spring:message code="title.list" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
@@ -59,7 +61,7 @@ function fn_egov_inquire_newsdetail(newsId) {
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="newsForm" action="<c:url value='/uss/ion/nws/selectNewsList.do'/>" method="post" onSubmit="fn_egov_search_news(); return false;"> 
+<form:form name="newsForm" modelAttribute="newsVO" action="${pageContext.request.contextPath}/uss/ion/nws/selectNewsList.do" method="post" onSubmit="fn_egov_search_news(); return false;"> 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<!-- 하단 버튼 -->
@@ -75,7 +77,7 @@ function fn_egov_inquire_newsdetail(newsId) {
 			<li>
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${newsVO.searchKeyword}"/>'  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
-				<span class="btn_b"><a href="<c:url value='/uss/ion/nws/insertNewsView.do' />"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="#" onclick="fn_egov_postNavigate('<c:url value='/uss/ion/nws/insertNewsView.do' />'); return false;"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
@@ -108,7 +110,7 @@ function fn_egov_inquire_newsdetail(newsId) {
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr>
 		<td><c:out value="${(newsVO.pageIndex-1) * newsVO.pageSize + status.count}"/></td>
-		<td class="left"><a href="<c:url value='/uss/ion/nws/selectNewsDetail.do?newsId=${resultInfo.newsId}'/>" onClick="fn_egov_inquire_newsdetail('<c:out value="${resultInfo.newsId}"/>');return false;"><c:out value='${fn:substring(resultInfo.newsSj, 0, 40)}'/></a></td>
+		<td class="left"><a href="javascript:void(0);" onClick="fn_egov_inquire_newsdetail('<c:out value="${resultInfo.newsId}"/>');return false;"><c:out value='${fn:substring(resultInfo.newsSj, 0, 40)}'/></a></td>
 		<td><c:out value='${resultInfo.newsOrigin}'/></td>
 		<td><c:out value='${resultInfo.ntceDe}'/></td>
 		<td><c:out value='${resultInfo.frstRegisterPnttm}'/></td>
@@ -129,7 +131,7 @@ function fn_egov_inquire_newsdetail(newsId) {
 
 <input name="newsId" type="hidden" value="<c:out value='${newsVO.newsId}'/>">
 <input name="pageIndex" type="hidden" value="<c:out value='${newsVO.pageIndex}'/>">
-</form>
+</form:form>
 
 </body>
 </html>
