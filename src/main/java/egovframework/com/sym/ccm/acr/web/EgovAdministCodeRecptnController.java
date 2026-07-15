@@ -197,8 +197,8 @@ public class EgovAdministCodeRecptnController {
      */
 	public String printParameterMap(@RequestParam Map<?, ?> commandMap){
 		String ret = "";
-       	for(Object key:commandMap.keySet()){
-    		Object value = commandMap.get(key);
+       	for(Map.Entry<?, ?> entry:commandMap.entrySet()){
+    		Object key = entry.getKey(); Object value = entry.getValue();
 
     		ret += "key:" + key.toString() + " value:" + value.toString();
     	}
