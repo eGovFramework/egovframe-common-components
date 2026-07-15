@@ -121,7 +121,7 @@ public class EgovStringUtil {
 	 * @return <code>true</code> - 입력받은 String 이 빈 문자열 또는 null인 경우
 	 */
 	public static boolean isEmpty(String str) {
-		return str == null || str.length() == 0;
+		return str == null || str.isEmpty();
 	}
 
 	/**
@@ -644,7 +644,7 @@ public class EgovStringUtil {
 			while ((start != strLen) && Character.isWhitespace(str.charAt(start))) {
 				start++;
 			}
-		} else if (stripChars.length() == 0) {
+		} else if (stripChars.isEmpty()) {
 			return str;
 		} else {
 			while ((start != strLen) && (stripChars.indexOf(str.charAt(start)) != -1)) {
@@ -683,7 +683,7 @@ public class EgovStringUtil {
 			while ((end != 0) && Character.isWhitespace(str.charAt(end - 1))) {
 				end--;
 			}
-		} else if (stripChars.length() == 0) {
+		} else if (stripChars.isEmpty()) {
 			return str;
 		} else {
 			while ((end != 0) && (stripChars.indexOf(str.charAt(end - 1)) != -1)) {

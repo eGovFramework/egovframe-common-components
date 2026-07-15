@@ -234,7 +234,7 @@ public class FileSystemUtils {
 		// not, still assuming it is on the last non-blank line)
 		for (int i = lines.size() - 1; i >= 0; i--) {
 			String line = lines.get(i);
-			if (line.length() > 0) {
+			if (!line.isEmpty()) {
 				return parseDir(line, path);
 			}
 		}
@@ -305,7 +305,7 @@ public class FileSystemUtils {
 	 * @throws IOException if an error occurs
 	 */
 	private long freeSpaceUnix(String path, boolean kb, boolean posix) throws IOException {
-		if (path.length() == 0) {
+		if (path.isEmpty()) {
 			throw new IllegalArgumentException("Path must not be empty");
 		}
 		path = FilenameUtils.normalize(path);

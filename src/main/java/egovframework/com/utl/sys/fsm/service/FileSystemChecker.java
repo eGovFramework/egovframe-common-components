@@ -165,7 +165,7 @@ public class FileSystemChecker {
 	 * @param path
 	 */
 	long totalSpaceUnix(String path) throws IOException {
-		if (path.length() == 0) {
+		if (path.isEmpty()) {
 			throw new IllegalArgumentException("Path must not be empty");
 		}
 		// 2026.02.28 KISA 보안약점 조치
