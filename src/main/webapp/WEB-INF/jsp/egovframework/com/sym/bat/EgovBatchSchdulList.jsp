@@ -3,6 +3,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <% 
 /**
  * @Class Name : EgovBatchSchdulList.jsp
@@ -70,7 +71,7 @@
 <div class="board">
 	<h1><spring:message code="comSymBat.batchSchdulList.pageTop.title"/></h1><!-- 배치스케줄관리 목록 -->
 
-    <form name="frm" id="frm" action="<c:url value='/sym/bat/getBatchSchdulList.do'/>" method="post">
+    <form:form name="frm" modelAttribute="searchVO" id="frm" action="${pageContext.request.contextPath}/sym/bat/getBatchSchdulList.do" method="post">
     <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}' default="1"/>">
     <input name="batchSchdulId" type="hidden" value="">
 
@@ -85,11 +86,11 @@
 				<input class="s_input2 vat" name="searchKeyword" type="text" value='<c:out value="${searchVO.searchKeyword}"/>' size="35" maxlength="35" onkeypress="press(event);" title="<spring:message code="comSymBat.batchSchdulList.searchKeyword"/>" /><!-- 검색키워드 -->
 				
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fn_egov_get_list('1'); return false;" /><!-- 조회 -->
-				<span class="btn_b"><a href="<c:url value='/sym/bat/getBatchSchdulForRegist.do'></c:url>" onclick="fn_egov_get_regist_view(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span><!-- 등록 -->
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fn_egov_get_regist_view(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span><!-- 등록 -->
 			</li>
 		</ul>
 	</div>
-    </form>
+    
 
 	<table class="board_list">
 		<caption></caption>
@@ -122,13 +123,7 @@
 	        <c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	          <tr>
                 <td>
-                    <form name="item" method="post" action="<c:url value='/sym/bat/getBatchSchdul.do'/>">
-                        <input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>">
-                        <input type="hidden" name="searchCondition" value="<c:out value='${searchVO.searchCondition}'/>">
-                        <input type="hidden" name="searchKeyword" value="<c:out value='${searchVO.searchKeyword}'/>">
-                        <input type="hidden" name="batchSchdulId" value="<c:out value='${resultInfo.batchSchdulId}'/>">
-                        <span class="link"><input type="submit" value="<c:out value='${resultInfo.batchSchdulId}'/>" onclick="fn_egov_get_detail_view('<c:out value="${resultInfo.batchSchdulId}"/>'); return false;"></span>
-                    </form>
+                    <a href="javascript:void(0);" onclick="fn_egov_get_detail_view('<c:out value="${resultInfo.batchSchdulId}"/>'); return false;"><span class="link"><c:out value='${resultInfo.batchSchdulId}'/></span></a>
                 </td>
                 <td>${resultInfo.batchOpertNm}</td>
                 <td>${resultInfo.batchProgrm}</td>
@@ -145,6 +140,8 @@
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_get_list"/>
 		</ul>
 	</div>
+</form:form>
+
 </div>
 
 </body>

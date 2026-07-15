@@ -26,11 +26,14 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="egovframework.com.utl.fcc.service.EgovDateUtil" %>
 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title><spring:message code="comUssIonRwd.rwardManageList.title"/></title><!-- 포상관리목록 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
@@ -111,7 +114,7 @@ function initCalendar(){
  * 등록 화면 호출 함수
  ******************************************************** */
 function fncRwardRegist(){
-	location.href = "<c:url value='/uss/ion/rwd/EgovRwardRegist.do'/>";
+	fn_egov_postNavigate("<c:url value='/uss/ion/rwd/EgovRwardRegist.do'/>");
 }
 
 /* ********************************************************
@@ -133,7 +136,7 @@ function fncRwardManageDetail(rwardId){
 <div class="board">
 	<h1><spring:message code="comUssIonRwd.rwardManageList.title"/></h1><!-- 포상관리 목록 -->
 
-	<form name="listForm" action="<c:url value='/uss/ion/rwd/selectRwardManageList.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/ion/rwd/selectRwardManageList.do" method="post">
 	<input type="hidden" name="searchCondition">
 	<input type="hidden" name="rwardId">
 	<input type="hidden" name="pageIndex" value="<c:if test="${empty rwardManageVO.pageIndex }">1</c:if><c:if test="${!empty rwardManageVO.pageIndex }"><c:out value='${rwardManageVO.pageIndex}'/></c:if>">
@@ -163,11 +166,11 @@ function fncRwardManageDetail(rwardId){
 				<label for=""><spring:message code="comUssIonRwd.common.searchNm"/> : </label><!-- 포상자 -->
 				<input name="searchNm" type="text" value="${rwardManageVO.searchNm}"  maxlength="100" title="<spring:message code="comUssIonRwd.common.searchNm"/>" style="width:128px" /><!-- 포상자 -->				
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fncSelectRwardManageList('1'); return false;" />
-				<span class="btn_b"><a href="<c:url value='/uss/ion/rwd/EgovRwardRegist.do'/>" onclick="fncRwardRegist(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fncRwardRegist(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
-</form>
+
 	<table class="board_list">
 		<caption></caption>
 		<colgroup>
@@ -198,10 +201,7 @@ function fncRwardManageDetail(rwardId){
 				<td class="lt_text3" nowrap><c:out value="${(rwardManageVO.pageIndex - 1) * rwardManageVO.pageSize + status.count}"/></td>
 				<td class="lt_text3" nowrap><c:out value="${resultInfo.rwardCdNm }"/></td>
 				<td class="lt_textL" nowrap>
-		        <form name="item" method="post" action="<c:url value='/uss/ion/rwd/EgovRwardManageDetail.do'/>">
-		        	<input type="hidden" name="rwardId" value="<c:out value="${resultInfo.rwardId }"/>">
-		            <span class="link"><input type="submit" value="<c:out value="${resultInfo.rwardNm}"/>" onclick="fncRwardManageDetail('<c:out value="${resultInfo.rwardId}"/>'); return false;" style="text-align : left;"></span>
-		        </form>
+		        <a href="javascript:void(0);" onclick="fncRwardManageDetail('<c:out value="${resultInfo.rwardId}"/>'); return false;"><span class="link"><c:out value="${resultInfo.rwardNm}"/></span></a>
 				</td>
 				<td class="lt_text3" nowrap><c:out value="${resultInfo.rwardDe      }"/></td>
 				<td class="lt_text3" nowrap><c:out value="${resultInfo.rwardManNm   }"/></td>
@@ -231,6 +231,8 @@ function fncRwardManageDetail(rwardId){
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/>
 		</ul>
 	</div>
+</form:form>
+
 </div>
 </body>
 </html>

@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -72,7 +73,7 @@ public class EgovSndngMailRegistController {
 	 * @exception Exception
 	 */
 	@IncludedInfo(name = "메일발송", order = 360, gid = 40)
-	@RequestMapping(value = "/cop/ems/insertSndngMailView.do")
+	@RequestMapping("/cop/ems/insertSndngMailView.do")
 	public String insertSndngMailView(@ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, ModelMap model)
 			throws Exception {
 
@@ -88,7 +89,7 @@ public class EgovSndngMailRegistController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/cop/ems/insertSndngMail.do")
+	@PostMapping("/cop/ems/insertSndngMail.do")
 	public String insertSndngMail(final MultipartHttpServletRequest multiRequest,
 			@Valid @ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, BindingResult bindingResult, ModelMap model,
 			HttpServletRequest request)
@@ -155,7 +156,7 @@ public class EgovSndngMailRegistController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/cop/ems/backSndngMailRegist.do")
+	@PostMapping("/cop/ems/backSndngMailRegist.do")
 	public String backSndngMailRegist(@ModelAttribute("sndngMailVO") SndngMailVO sndngMailVO, ModelMap model)
 			throws Exception {
 

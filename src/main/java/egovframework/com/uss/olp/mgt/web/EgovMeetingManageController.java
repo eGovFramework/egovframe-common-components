@@ -13,6 +13,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -60,12 +61,12 @@ public class EgovMeetingManageController {
     @Resource(name = "propertiesService")
     protected EgovPropertyService propertiesService;
 
-    @RequestMapping(value = "/uss/olp/mgt/EgovMeetingManageMain.do")
+    @RequestMapping("/uss/olp/mgt/EgovMeetingManageMain.do")
     public String egovMeetingManageMain(ModelMap model) throws Exception {
     	return "egovframework/com/uss/olp/mgt/EgovMeetingManageMain";
     }
 
-    @RequestMapping(value = "/uss/olp/mgt/EgovMeetingManageLeft.do")
+    @RequestMapping("/uss/olp/mgt/EgovMeetingManageLeft.do")
     public String egovMeetingManageLeft(ModelMap model) throws Exception {
     	return "egovframework/com/uss/olp/mgt/EgovMeetingManageLeft";
     }
@@ -105,7 +106,7 @@ public class EgovMeetingManageController {
      * @return "egovframework/com/uss/olp/mgt/EgovMeetingManageLisEmpLyrPopup"
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/olp/mgt/EgovMeetingManageLisAuthorGroupPopup.do")
+    @RequestMapping("/uss/olp/mgt/EgovMeetingManageLisAuthorGroupPopup.do")
 	public String egovMeetingManageLisAuthorGroupPopupPost (
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap,
@@ -126,7 +127,7 @@ public class EgovMeetingManageController {
      * @return  "/uss/olp/mgt/EgovMeetingManageLisEmpLyrPopup"
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/olp/mgt/EgovMeetingManageLisEmpLyrPopup.do")
+    @RequestMapping("/uss/olp/mgt/EgovMeetingManageLisEmpLyrPopup.do")
 	public String egovMeetingManageLisEmpLyrPopupPost (
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap,
@@ -194,7 +195,7 @@ public class EgovMeetingManageController {
 	 * @return "egovframework/com/uss/olp/mgt/EgovMeetingManageDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/mgt/EgovMeetingManageDetail.do")
+	@PostMapping("/uss/olp/mgt/EgovMeetingManageDetail.do")
 	public String egovMeetingManageDetail(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			MeetingManageVO meetingManageVO,
@@ -223,7 +224,7 @@ public class EgovMeetingManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/mgt/EgovMeetingManageModifyView.do")
+	@PostMapping("/uss/olp/mgt/EgovMeetingManageModifyView.do")
 	public String meetingManageModifyView(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			MeetingManageVO meetingManageVO,
@@ -255,7 +256,7 @@ public class EgovMeetingManageController {
 	 * @throws Exception
 	 */
 	
-	@RequestMapping(value = "/uss/olp/mgt/EgovMeetingManageModify.do")
+	@PostMapping("/uss/olp/mgt/EgovMeetingManageModify.do")
 	public String meetingManageModify(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@Valid @ModelAttribute("meetingManageVO") MeetingManageVO meetingManageVO,BindingResult bindingResult,
@@ -292,22 +293,16 @@ public class EgovMeetingManageController {
 	/**
 	 * 회의정보 등록 페이지 조회 
 	 * @param searchVO
-	 * @param redirectAttributes
+	 * @param meetingManageVO
+	 * @param model
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/mgt/EgovMeetingManageRegist.do", method = RequestMethod.GET)
+	@PostMapping(value = "/uss/olp/mgt/EgovMeetingManageRegist.do", params = "!cmd")
 	public String meetingManageRegistView(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
-    		RedirectAttributes redirectAttributes)
-    throws Exception {
-    	// 0. Spring Security 사용자권한 처리
-    	Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
-    	if(!isAuthenticated) {
-    		redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
-        	return "redirect:/uat/uia/egovLoginUsr.do";
-    	}
-		
+			@ModelAttribute("meetingManageVO") MeetingManageVO meetingManageVO,
+			ModelMap model) throws Exception {
 		return "egovframework/com/uss/olp/mgt/EgovMeetingManageRegist";
 	}
 	
@@ -321,7 +316,7 @@ public class EgovMeetingManageController {
 	 * @return "egovframework/com/uss/olp/mgt/EgovMeetingManageRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/mgt/EgovMeetingManageRegist.do", method = RequestMethod.POST)
+	@PostMapping(value = "/uss/olp/mgt/EgovMeetingManageRegist.do", params = "cmd=save")
 	public String meetingManageRegist(
 			@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@Valid @ModelAttribute("meetingManageVO") MeetingManageVO meetingManageVO,

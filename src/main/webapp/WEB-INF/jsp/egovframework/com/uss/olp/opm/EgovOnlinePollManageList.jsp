@@ -24,10 +24,13 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUssOlpOpm.title"/></c:set>
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title>${pageTitle} <spring:message code="comUssOlpOpm.title" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
@@ -44,7 +47,7 @@ function linkPage(pageNo){
  * 등록 처리 함수
  ******************************************************** */
 function fn_egov_regist_OnlinePollManage(){
-	location.href = "<c:url value='/uss/olp/opm/registOnlinePollManageView.do' />";
+	fn_egov_postNavigate("<c:url value='/uss/olp/opm/registOnlinePollManageView.do' />");
 }
 /* ********************************************************
  * 상세회면 처리 함수
@@ -72,7 +75,7 @@ function fn_egov_search_OnlinePollManage(){
 
 <div class="board">
 
-<form name="listForm" action="<c:url value='/uss/olp/opm/listOnlinePollManage.do'/>" method="post"> 
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/olp/opm/listOnlinePollManage.do" method="post"> 
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<!-- 검색영역 -->
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
@@ -87,13 +90,13 @@ function fn_egov_search_OnlinePollManage(){
 			<li>
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${searchVO.searchKeyword}"/>'  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
-				<span class="btn_b"><a href="<c:url value='/uss/olp/opm/registOnlinePollManageView.do' />?pageIndex=${searchVO.pageIndex}"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="#" onclick="fn_egov_postNavigate('<c:url value='/uss/olp/opm/registOnlinePollManageView.do' />'); return false;" title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
 <input name="pollId" type="hidden" value="">
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-</form>
+
 
 	<!-- 목록영역 -->
 	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
@@ -131,28 +134,16 @@ function fn_egov_search_OnlinePollManage(){
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 		<td class="leftElli">
 
- 		<form name="subForm" method="post" action="<c:url value='/uss/olp/opm/detailOnlinePollManage.do'/>">
-			<input name="pollId" type="hidden" value="<c:out value="${resultInfo.pollId}"/>">
-			<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-	    	<span class="link"><input type="submit" value="<c:out value="${resultInfo.pollNm}"/>" style="border:0px solid #e0e0e0;"></span>
-	    </form>
+ 		<a href="javascript:void(0);" onclick="fn_egov_detail_OnlinePollManage('<c:out value="${resultInfo.pollId}"/>'); return false;"><span class="link"><c:out value="${resultInfo.pollNm}"/></span></a>
 	    
 		</td>
 		<td><c:out value="${resultInfo.pollBeginDe}"/></td>
 		<td><c:out value="${resultInfo.pollEndDe}"/></td>
 		<td>
-		<form name="subFormStatistics" method="post" action="<c:url value='/uss/olp/opp/statisticsOnlinePollPartcptn.do'/>">
-			<input name="pollId" type="hidden" value="<c:out value="${resultInfo.pollId}"/>">
-			<input name="linkType" type="hidden" value="1">
-	    	<input type="submit" class="btn_submit" value="<spring:message code="comUssOlpOpm.btn.view" />" />
-	    </form>
+		<input type="button" class="btn_submit" value="<spring:message code="comUssOlpOpm.btn.view" />" onclick="fn_egov_detail_OnlinePollManage('<c:out value="${resultInfo.pollId}"/>'); return false;" />
 		</td>
 		<td>
-		<form name="subFormPollResult" method="post" action="<c:url value='/uss/olp/opr/listOnlinePollResult.do'/>">
-			<input name="pollId" type="hidden" value="<c:out value="${resultInfo.pollId}"/>">
-			<input name="linkType" type="hidden" value="1">
-	    	<input type="submit" class="btn_submit" value="<spring:message code="comUssOlpOpm.btn.view" />" />
-	    </form>
+		<input type="button" class="btn_submit" value="<spring:message code="comUssOlpOpm.btn.view" />" onclick="fn_egov_detail_OnlinePollManage('<c:out value="${resultInfo.pollId}"/>'); return false;" />
 		</td>
 		<td><c:out value="${resultInfo.frstRegisterNm}"/></td>
 		<td><c:out value="${fn:substring(resultInfo.frstRegisterPnttm, 0, 10)}"/></td>
@@ -165,6 +156,8 @@ function fn_egov_search_OnlinePollManage(){
 	<div class="pagination">
 		<ul><ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/></ul>
 	</div>
+</form:form>
+
 	
 
 

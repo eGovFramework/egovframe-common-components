@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -194,7 +195,7 @@ public class EgovBBSSatisfactionController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/stf/insertSatisfaction.do")
+    @PostMapping("/cop/stf/insertSatisfaction.do")
     public String insertSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, @Valid @ModelAttribute("satisfaction") Satisfaction satisfaction,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -233,7 +234,7 @@ public class EgovBBSSatisfactionController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/stf/anonymous/insertSatisfaction.do")
+    @PostMapping("/cop/stf/anonymous/insertSatisfaction.do")
     public String insertAnonymousSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, @Valid @ModelAttribute("satisfaction") Satisfaction satisfaction,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -266,7 +267,7 @@ public class EgovBBSSatisfactionController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/stf/deleteSatisfaction.do")
+    @PostMapping("/cop/stf/deleteSatisfaction.do")
     public String deleteSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, @ModelAttribute("satisfaction") Satisfaction satisfaction, ModelMap model) throws Exception {
 	@SuppressWarnings("unused")
 	LoginVO user = (LoginVO)EgovUserDetailsHelper.getAuthenticatedUser();
@@ -292,7 +293,7 @@ public class EgovBBSSatisfactionController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/stf/anonymous/deleteSatisfaction.do")
+    @PostMapping("/cop/stf/anonymous/deleteSatisfaction.do")
     public String deleteAnonymousSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, @ModelAttribute("satisfaction") Satisfaction satisfaction, ModelMap model) throws Exception {
 
 	//-------------------------------
@@ -474,7 +475,7 @@ public class EgovBBSSatisfactionController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/stf/updateSatisfaction.do")
+    @PostMapping("/cop/stf/updateSatisfaction.do")
     public String updateSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, @Valid @ModelAttribute("satisfaction") Satisfaction satisfaction,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -512,9 +513,12 @@ public class EgovBBSSatisfactionController {
      * @return
      * @throws Exception
      */
-    @RequestMapping("/cop/stf/anonymous/updateSatisfaction.do")
+    @PostMapping("/cop/stf/anonymous/updateSatisfaction.do")
     public String updateAnonymousSatisfaction(@ModelAttribute("searchVO") SatisfactionVO satisfactionVO, @Valid @ModelAttribute("satisfaction") Satisfaction satisfaction,
 	    BindingResult bindingResult, ModelMap model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = egovAssertLoginUser();
+
 
 		if (bindingResult.hasErrors()) {
 		    model.addAttribute("msg", "작성자 및 만족도는 필수 입력값입니다.");
@@ -534,4 +538,31 @@ public class EgovBBSSatisfactionController {
 
 		return "forward:/cop/bbs/anonymous/selectBoardArticle.do";
     }
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
+	}
+
 }

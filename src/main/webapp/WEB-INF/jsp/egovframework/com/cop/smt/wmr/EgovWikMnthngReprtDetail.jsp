@@ -32,7 +32,6 @@
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/sym/cal/EgovCalPopup.js' />"></script>
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
 <script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript">
@@ -182,12 +181,12 @@
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<c:if test="${fn:substring(wikMnthngReprt.reprtSttus,0,2) eq '등록' && wikMnthngReprt.reportrId eq uniqId}">
-		<span class="btn_s"><a href="<c:url value='/cop/smt/wmr/confirmWikMnthngReprt.do'/>?searchWrd=<c:out value='${wikMnthngReprtVO.searchWrd}'/>&amp;searchCnd=<c:out value='${wikMnthngReprtVO.searchCnd}'/>&amp;pageIndex=<c:out value='${wikMnthngReprtVO.pageIndex}'/>&amp;searchSttus=<c:out value='${wikMnthngReprtVO.searchSttus}'/>&amp;searchDe=<c:out value='${wikMnthngReprtVO.searchDe}'/>&amp;searchBgnDe=<c:out value='${wikMnthngReprtVO.searchBgnDe}'/>&amp;searchEndDe=<c:out value='${wikMnthngReprtVO.searchEndDe}'/>" onclick="fn_egov_confirm_wikmnthngreprt(); return false;"><spring:message code="button.acknowledgment" /></a></span><!-- 승인 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_confirm_wikmnthngreprt(); return false;"><spring:message code="button.acknowledgment" /></a></span><!-- 승인 -->
 		</c:if>
 		
 		<c:if test="${fn:substring(wikMnthngReprt.reprtSttus,0,2) eq '등록' && wikMnthngReprt.wrterId eq uniqId}">	
 		<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="fn_egov_modify_wikmnthngreprt(); return false;" /><!-- 수정 -->
-		<span class="btn_s"><a href="<c:url value='/cop/smt/wmr/deleteWikMnthngReprt.do'/>?reprtId=<c:out value='${egovc:encryptId(wikMnthngReprtVO.reprtId)}'/>" onclick="fn_egov_delete_wikmnthngreprt(); return false;"><spring:message code="button.delete" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_delete_wikmnthngreprt(); return false;"><spring:message code="button.delete" /></a></span>
 		</c:if>
 		
 		<input class="s_submit" type="submit" value='<spring:message code="button.list" />' onclick="fn_egov_list_wikmnthngreprt(); return false;" /><!-- 목록 -->

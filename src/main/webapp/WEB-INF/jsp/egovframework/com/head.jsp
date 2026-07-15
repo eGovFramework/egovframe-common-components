@@ -48,8 +48,6 @@
 	function fn_main_headPageMove(menuNo, url){
 		document.selectOne.menuNo.value=menuNo;
 		document.selectOne.vStartP.value=menuNo;
-		//document.selectOne.chkURL.value=url;
-	    //document.selectOne.action = "<c:url value='/sym/mnu/mpm/EgovMainMenuIndex.do'/>";
 	    document.selectOne.action = "<c:url value='/sym/mnu/mpm/EgovMainMenuLeft.do'/>";
 	    document.selectOne.target = "frmSubMemnuList";
 	    document.selectOne.submit();
@@ -60,7 +58,6 @@
 	{
 		document.selectOne.action = "<c:url value='/uat/uia/actionLogout.do'/>";
 		document.selectOne.submit();
-		//top.document.location.href = "<c:url value='/j_spring_security_logout'/>";
 	}
 </script>
 

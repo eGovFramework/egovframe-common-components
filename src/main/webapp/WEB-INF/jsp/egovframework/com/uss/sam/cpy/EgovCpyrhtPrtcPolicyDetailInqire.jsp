@@ -73,7 +73,8 @@ function fn_egov_delete_cpyrhtprtcpolicycn(cpyrhtId){
 </head>
 
 <body>
-<form name="CpyrhtPrtcPolicyForm" action="<c:url value='/uss/sam/cpy/CpyrhtPrtcPolicyDetailInqire.do'/>" method="post">
+<form name="CpyrhtPrtcPolicyForm" action="${pageContext.request.contextPath}/uss/sam/cpy/CpyrhtPrtcPolicyDetailInqire.do" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2><spring:message code="ussSamCpy.cpyrhtPrtcPolicyDetailInqire.cpyrhtPrtcPolicyDetailInqire"/></h2><!-- 저작권보호정책 상세보기 -->
@@ -101,8 +102,8 @@ function fn_egov_delete_cpyrhtprtcpolicycn(cpyrhtId){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="fn_egov_updt_cpyrhtprtcpolicycn('<c:out value="${result.cpyrhtId}"/>'); return false;" />
-		<span class="btn_s"><a href="<c:url value='/uss/sam/cpy/CpyrhtPrtcPolicyCnDelete.do'/>?cpyrhtId=<c:out value='${result.cpyrhtId}'/>" onclick="fn_egov_delete_cpyrhtprtcpolicycn('<c:out value="${result.cpyrhtId}"/>'); return false;"><spring:message code="button.delete" /></a></span>
-		<span class="btn_s"><a href="<c:url value='/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do'/>" onclick="fn_egov_inqire_cpyrhtprtcpolicylist(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_delete_cpyrhtprtcpolicycn('<c:out value="${result.cpyrhtId}"/>'); return false;"><spring:message code="button.delete" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_inqire_cpyrhtprtcpolicylist(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 	<input name="cpyrhtId" type="hidden" value="">

@@ -123,12 +123,12 @@ function fncGroupDelete() {
 <input type="hidden" name="pageIndex" value="<c:out value='${groupManageVO.pageIndex}'/>"/>
 </form:form>
 
-<form id="frmIdDelete" name="frmDelete" method="post">
+<form:form id="frmIdDelete" name="frmDelete" modelAttribute="groupManage" method="post" action="${pageContext.request.contextPath}/sec/gmt/EgovGroupDelete.do">
 <input type="hidden" name="groupId" value="<c:out value='${groupManage.groupId}'/>"/>
 <input type="hidden" name="searchCondition" value="<c:out value='${groupManageVO.searchCondition}'/>"/>
 <input type="hidden" name="searchKeyword" value="<c:out value='${groupManageVO.searchKeyword}'/>"/>
 <input type="hidden" name="pageIndex" value="<c:out value='${groupManageVO.pageIndex}'/>"/>
-</form>
+</form:form>
 
 </body>
 </html>

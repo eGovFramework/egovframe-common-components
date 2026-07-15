@@ -14,6 +14,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -410,7 +411,7 @@ public class EgovIndvdlSchdulManageController {
 	 * @return "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/cop/smt/sim/EgovIndvdlSchdulManageDetail.do")
+	@PostMapping("/cop/smt/sim/EgovIndvdlSchdulManageDetail.do")
 	public String egovIndvdlSchdulManageDetail(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			IndvdlSchdulManageVO indvdlSchdulManageVO, @RequestParam Map<?, ?> commandMap, ModelMap model)
 			throws Exception {
@@ -470,7 +471,7 @@ public class EgovIndvdlSchdulManageController {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unused")
-	@RequestMapping(value = "/cop/smt/sim/EgovIndvdlSchdulManageModify.do")
+	@PostMapping("/cop/smt/sim/EgovIndvdlSchdulManageModify.do")
 	public String indvdlSchdulManageModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, IndvdlSchdulManageVO indvdlSchdulManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
@@ -538,7 +539,7 @@ public class EgovIndvdlSchdulManageController {
 	 * @return "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageModifyActor"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/cop/smt/sim/EgovIndvdlSchdulManageModifyActor.do")
+	@PostMapping("/cop/smt/sim/EgovIndvdlSchdulManageModifyActor.do")
 	public String indvdlSchdulManageModifyActor(final MultipartHttpServletRequest multiRequest, ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("indvdlSchdulManageVO") IndvdlSchdulManageVO indvdlSchdulManageVO,
@@ -644,7 +645,7 @@ public class EgovIndvdlSchdulManageController {
 	 * @return "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/cop/smt/sim/EgovIndvdlSchdulManageRegist.do")
+	@PostMapping("/cop/smt/sim/EgovIndvdlSchdulManageRegist.do")
 	public String indvdlSchdulManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap,
 			@ModelAttribute("indvdlSchdulManageVO") IndvdlSchdulManageVO indvdlSchdulManageVO,
@@ -700,7 +701,7 @@ public class EgovIndvdlSchdulManageController {
 	 * @return "egovframework/com/cop/smt/sim/EgovIndvdlSchdulManageRegistActor"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/cop/smt/sim/EgovIndvdlSchdulManageRegistActor.do")
+	@PostMapping("/cop/smt/sim/EgovIndvdlSchdulManageRegistActor.do")
 	public String indvdlSchdulManageRegistActor(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("indvdlSchdulManageVO") IndvdlSchdulManageVO indvdlSchdulManageVO,

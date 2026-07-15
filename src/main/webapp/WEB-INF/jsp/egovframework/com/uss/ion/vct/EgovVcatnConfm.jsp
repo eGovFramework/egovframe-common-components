@@ -242,7 +242,7 @@ $(document).ready(function () {
 		<input id="confirmAgree" class="s_submit" type="submit" value='<spring:message code="comUssIonVct.common.agree"/>' title='<spring:message code="comUssIonVct.common.agree"/>' data-dialog-title="<spring:message code="comUssIonVct.vcatnConfm.title"/> - <spring:message code="comUssIonVct.common.agree"/>" /><!-- 승인 -->
 		<span class="btn_s"><a id="confirmDisAgree" href="#LINK" title='<spring:message code="comUssIonVct.common.disagree"/>' data-dialog-title="<spring:message code="comUssIonVct.vcatnConfm.title"/> - <spring:message code="comUssIonVct.common.disagree"/>"><spring:message code="comUssIonVct.common.disagree"/></a></span><!-- 반려 -->
 	    </c:if>
-	    <span class="btn_s"><a href="<c:url value='/uss/ion/vct/EgovVcatnConfmList.do'/>?searchCondition=1" onclick="fncEgovVcatnConfmList(); return false;"><spring:message code="button.list" /></a></span>
+	    <span class="btn_s"><a href="javascript:void(0);" onclick="fncEgovVcatnConfmList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 	</form:form>

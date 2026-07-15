@@ -138,7 +138,7 @@ $(document).ready(function () {
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input type="submit" class="s_submit" value="<spring:message code="button.save" />" title="<spring:message code="button.save" /> <spring:message code="input.button" />" />
-		<span class="btn_s"><a href="<c:url value='/uss/ion/bnt/EgovBndtManageList.do'/>" onclick="fncBndtManageList(); return false;" title="<spring:message code="button.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncBndtManageList(); return false;" title="<spring:message code="button.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

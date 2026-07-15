@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
@@ -100,7 +101,7 @@ public class EgovTemplateManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/tpl/selectTemplateInf.do")
+	@PostMapping("/cop/tpl/selectTemplateInf.do")
 	public String selectTemplateInf(@ModelAttribute("searchVO") TemplateInfVO tmplatInfVO, ModelMap model) throws Exception {
 
 		ComDefaultCodeVO codeVO = new ComDefaultCodeVO();
@@ -125,7 +126,7 @@ public class EgovTemplateManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/tpl/insertTemplateInf.do")
+	@PostMapping("/cop/tpl/insertTemplateInf.do")
 	public String insertTemplateInf(@ModelAttribute("searchVO") TemplateInfVO searchVO,
 			@Valid @ModelAttribute("templateInf") TemplateInf templateInf, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {
@@ -161,7 +162,7 @@ public class EgovTemplateManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/tpl/addTemplateInf.do")
+	@PostMapping("/cop/tpl/addTemplateInf.do")
 	public String addTemplateInf(@ModelAttribute("searchVO") TemplateInfVO searchVO, ModelMap model) throws Exception {
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 
@@ -183,7 +184,7 @@ public class EgovTemplateManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/tpl/updateTemplateInf.do")
+	@PostMapping("/cop/tpl/updateTemplateInf.do")
 	public String updateTemplateInf(@ModelAttribute("searchVO") TemplateInfVO tmplatInfVO,
 			@Valid @ModelAttribute("templateInf") TemplateInf templateInf, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {
@@ -223,7 +224,7 @@ public class EgovTemplateManageController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/bbs/deleteTemplateInf.do")
+	@PostMapping("/cop/bbs/deleteTemplateInf.do")
 	public String deleteTemplateInf(@ModelAttribute("searchVO") TemplateInfVO searchVO, @ModelAttribute("tmplatInf") TemplateInf tmplatInf, SessionStatus status, ModelMap model)
 			throws Exception {
 

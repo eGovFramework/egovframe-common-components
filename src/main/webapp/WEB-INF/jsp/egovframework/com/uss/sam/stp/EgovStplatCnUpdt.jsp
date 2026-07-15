@@ -24,6 +24,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title>${pageTitle} <spring:message code="title.update" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
@@ -109,7 +110,7 @@ function fn_egov_inqire_recomendsitelist() {
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input type="submit" class="s_submit" value="<spring:message code="button.update" />" title="<spring:message code="button.update" /> <spring:message code="input.button" />" />
-		<span class="btn_s"><a href="<c:url value='/uss/sam/stp/StplatListInqire.do' />"  title="<spring:message code="button.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="#" onclick="fn_egov_postNavigate('<c:url value='/uss/sam/stp/StplatListInqire.do' />'); return false;"  title="<spring:message code="button.list" /> <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
 	</div><div style="clear:both;"></div>
 	
 </div>

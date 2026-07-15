@@ -4,11 +4,14 @@ import java.util.List;
 import java.util.Map;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.EgovBizException;
 import org.egovframe.rte.psl.dataaccess.util.EgovMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
+import egovframework.com.cmm.LoginVO;
+import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.ion.ntr.service.EgovNoteRecptnService;
 import egovframework.com.uss.ion.ntr.service.NoteRecptn;
 import jakarta.annotation.Resource;
@@ -65,9 +68,32 @@ public class EgovNoteRecptnServiceImpl extends EgovAbstractServiceImpl
      */
     @Override
 	public Map<?, ?> selectNoteRecptnDetail(NoteRecptn noteRecptn) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = egovAssertLoginUser();
+
+    	LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+    	if (loginVO == null || loginVO.getUniqId() == null) {
+    		throw new EgovBizException("인증 정보가 없습니다.");
+    	}
+    	noteRecptn.setRcverId(loginVO.getUniqId());
+    	Map<?, ?> noteRecptnMap = dao.selectNoteRecptnDetail(noteRecptn);
+    	if (noteRecptnMap == null || noteRecptnMap.isEmpty()) {
+    		throw new EgovBizException("권한이 없습니다.");
+    	}
+    	Object rcverId = noteRecptnMap.get("rcverId");
+    	if (rcverId == null) {
+    		rcverId = noteRecptnMap.get("RCVER_ID");
+    	}
+    	// 2026.07.13 KISA 보안취약점 조치
+    	if (!loginVO.getUniqId().equals(String.valueOf(rcverId))) {
+    		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+    		if (auth == null || !auth.contains("ROLE_ADMIN")) {
+    			throw new EgovBizException("권한이 없습니다.");
+    		}
+    	}
     	//받은쪽지함관리를 개봉으로 상태를 바꾼다.
     	dao.updateNoteRecptnRelationOpenYn(noteRecptn);
-        return dao.selectNoteRecptnDetail(noteRecptn);
+        return noteRecptnMap;
     }
 
     /**
@@ -78,6 +104,29 @@ public class EgovNoteRecptnServiceImpl extends EgovAbstractServiceImpl
      */
     @Override
 	public void deleteNoteRecptn(NoteRecptn noteRecptn) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = egovAssertLoginUser();
+
+    	LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+    	if (loginVO == null || loginVO.getUniqId() == null) {
+    		throw new EgovBizException("인증 정보가 없습니다.");
+    	}
+    	noteRecptn.setRcverId(loginVO.getUniqId());
+    	Map<?, ?> noteRecptnMap = dao.selectNoteRecptnDetail(noteRecptn);
+    	if (noteRecptnMap == null || noteRecptnMap.isEmpty()) {
+    		throw new EgovBizException("권한이 없습니다.");
+    	}
+    	Object rcverId = noteRecptnMap.get("rcverId");
+    	if (rcverId == null) {
+    		rcverId = noteRecptnMap.get("RCVER_ID");
+    	}
+    	// 2026.07.13 KISA 보안취약점 조치
+    	if (!loginVO.getUniqId().equals(String.valueOf(rcverId))) {
+    		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+    		if (auth == null || !auth.contains("ROLE_ADMIN")) {
+    			throw new EgovBizException("권한이 없습니다.");
+    		}
+    	}
 
         //보낸쪽지함 건수를 조회함
         int nNoteTrnsmitCnt = dao.selectNoteTrnsmitRelationCnt(noteRecptn);
@@ -101,5 +150,32 @@ public class EgovNoteRecptnServiceImpl extends EgovAbstractServiceImpl
         	dao.deleteNoteRecptn(noteRecptn);
         }
     }
+
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
+	}
 
 }

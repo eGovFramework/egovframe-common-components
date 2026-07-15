@@ -69,18 +69,12 @@
 		newForm.appendChild( newfileSn );
 		newForm.appendChild( newAtchFileId );
 
-		//form = document.forms[0];
-		//form.atchFileId.value = atchFileId;
-		//form.fileSn.value = fileSn;
 		newForm.method = "post";
 		newForm.action = "<c:url value='/cmm/fms/deleteFileInfs.do'/>";
-		newForm.target = "iframe_egov_file_delete" 
+		newForm.target = "iframe_egov_file_delete"
 		newForm.submit();
-		//console.log('del submit!!');
 		var objDelTr = document.getElementById(delTrName);
 		objDelTr.parentNode.removeChild(objDelTr);
-		//fn_egov_multi_selector_update_delete();
-		//console.log('egov_file_view_table delete!!');
 
 	}
 

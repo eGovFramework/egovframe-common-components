@@ -12,6 +12,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -116,7 +117,7 @@ public class EgovCnsltManageController {
 	 * @throws Exception
 	 */
 	@IncludedInfo(name = "상담관리", order = 580, gid = 50)
-	@RequestMapping(value = "/uss/olp/cns/CnsltListInqire.do")
+	@RequestMapping("/uss/olp/cns/CnsltListInqire.do")
 	public String selectCnsltList(@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO, ModelMap model)
 			throws Exception {
 
@@ -170,7 +171,7 @@ public class EgovCnsltManageController {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("deprecation")
-	@RequestMapping("/uss/olp/cns/CnsltDetailInqire.do")
+	@PostMapping("/uss/olp/cns/CnsltDetailInqire.do")
 	public String selectCnsltListDetail(@RequestParam("passwordConfirmAt") String passwordConfirmAt,
 			CnsltManageVO cnsltManageVO, @ModelAttribute("searchVO") CnsltManageDefaultVO searchVO, ModelMap model)
 			throws Exception {
@@ -198,7 +199,7 @@ public class EgovCnsltManageController {
 	 * @return "forward:/uss/olp/cns/CnsltDetailInqire.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olp/cns/CnsltInqireCoUpdt.do")
+	@PostMapping("/uss/olp/cns/CnsltInqireCoUpdt.do")
 	public String updateCnsltInqireCo(CnsltManageVO cnsltManageVO,
 			@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO) throws Exception {
 
@@ -235,7 +236,7 @@ public class EgovCnsltManageController {
 	 * @return "/uss/olp/cns/EgovCnsltDtlsRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olp/cns/CnsltDtlsRegistView.do")
+	@PostMapping("/uss/olp/cns/CnsltDtlsRegistView.do")
 	public String insertCnsltDtlsView(@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO,
 			CnsltManageVO cnsltManageVO, Model model) throws Exception {
 
@@ -278,7 +279,7 @@ public class EgovCnsltManageController {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("deprecation")
-	@RequestMapping("/uss/olp/cns/CnsltDtlsRegist.do")
+	@PostMapping("/uss/olp/cns/CnsltDtlsRegist.do")
 	public String insertCnsltDtls(final MultipartHttpServletRequest multiRequest, // 첨부파일을 위한...
 			@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO,
 			@Valid @ModelAttribute("cnsltManageVO") CnsltManageVO cnsltManageVO, BindingResult bindingResult, ModelMap model)
@@ -395,9 +396,12 @@ public class EgovCnsltManageController {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("deprecation")
-	@RequestMapping("/uss/olp/cns/CnsltDtlsUpdtView.do")
+	@PostMapping("/uss/olp/cns/CnsltDtlsUpdtView.do")
 	public String updateCnsltDtlsView(CnsltManageVO cnsltManageVO,
 			@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO, ModelMap model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = egovAssertLoginUser();
+
 
 		CnsltManageVO vo = cnsltManageService.selectCnsltListDetail(cnsltManageVO);
 
@@ -429,7 +433,7 @@ public class EgovCnsltManageController {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("deprecation")
-	@RequestMapping("/uss/olp/cns/CnsltDtlsUpdt.do")
+	@PostMapping("/uss/olp/cns/CnsltDtlsUpdt.do")
 	public String updateCnsltDtls(@RequestParam("atchFileAt") String atchFileAt,
 			final MultipartHttpServletRequest multiRequest, @ModelAttribute("searchVO") CnsltManageDefaultVO searchVO,
 			@Valid @ModelAttribute("cnsltManageVO") CnsltManageVO cnsltManageVO, BindingResult bindingResult, ModelMap model)
@@ -494,7 +498,7 @@ public class EgovCnsltManageController {
 	 * @return "forward:/uss/olp/cns/CnsltListInqire.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olp/cns/CnsltDtlsDelete.do")
+	@PostMapping("/uss/olp/cns/CnsltDtlsDelete.do")
 	public String deleteCnsltDtls(HttpServletRequest request, CnsltManageVO cnsltManageVO,
 			@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO) throws Exception {
 
@@ -538,7 +542,7 @@ public class EgovCnsltManageController {
 	 * @throws Exception
 	 */
 	@IncludedInfo(name = "상담답변관리", order = 581, gid = 50)
-	@RequestMapping(value = "/uss/olp/cnm/CnsltAnswerListInqire.do")
+	@RequestMapping("/uss/olp/cnm/CnsltAnswerListInqire.do")
 	public String selectCnsltAnswerList(@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO, ModelMap model)
 			throws Exception {
 
@@ -575,7 +579,7 @@ public class EgovCnsltManageController {
 	 * @return "/uss/olp/cns/EgovCnsltAnswerDetailInqire"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olp/cnm/CnsltAnswerDetailInqire.do")
+	@PostMapping("/uss/olp/cnm/CnsltAnswerDetailInqire.do")
 	public String selectCnsltAnswerListDetail(CnsltManageVO cnsltManageVO, 
 			@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO, ModelMap model) throws Exception {
 
@@ -595,7 +599,7 @@ public class EgovCnsltManageController {
 	 * @return "/uss/olp/cns/EgovCnsltDtlsAnswerUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olp/cnm/CnsltDtlsAnswerUpdtView.do")
+	@PostMapping("/uss/olp/cnm/CnsltDtlsAnswerUpdtView.do")
 	public String updateCnsltDtlsAnswerView(CnsltManageVO cnsltManageVO,
 			@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO, ModelMap model) throws Exception {
 
@@ -620,7 +624,7 @@ public class EgovCnsltManageController {
 	 * @return "forward:/uss/olp/cnm/CnsltAnswerListInqire.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olp/cnm/CnsltDtlsAnswerUpdt.do")
+	@PostMapping("/uss/olp/cnm/CnsltDtlsAnswerUpdt.do")
 	public String updateCnsltDtlsAnswer(@Valid CnsltManageVO cnsltManageVO, BindingResult bindingResult,
 			@ModelAttribute("searchVO") CnsltManageDefaultVO searchVO, Model model) throws Exception {
 
@@ -645,6 +649,33 @@ public class EgovCnsltManageController {
 
 		return "forward:/uss/olp/cnm/CnsltAnswerListInqire.do";
 
+	}
+
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 }

@@ -36,7 +36,6 @@
 <title><spring:message code="comDamPer.comDamPersonalRegist.title"/></title><!-- 개인지식 등록 -->
 <link href="<c:url value='/css/egovframework/com/com.css' />" rel="stylesheet" type="text/css">
 <link href="<c:url value='/css/egovframework/com/button.css' />" rel="stylesheet" type="text/css">
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jqueryui.css' />">
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>

@@ -114,7 +114,8 @@ function fncSelectRole(roleCode) {
 }
 
 function fncAddRoleInsert() {
-    location.href = "<c:url value='/sec/rmt/EgovRoleInsertView.do'/>";
+    document.listForm.action = "<c:url value='/sec/rmt/EgovRoleInsertView.do'/>";
+    document.listForm.submit();
 }
 
 function fncRoleListDelete() {
@@ -149,7 +150,7 @@ function press() {
 <body>
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
-<form:form name="listForm" action="${pageContext.request.contextPath}/sec/rmt/EgovRoleList.do" method="post">
+<form:form name="listForm" action="${pageContext.request.contextPath}/sec/rmt/EgovRoleList.do" method="post" modelAttribute="searchVO">
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1><!-- 롤관리 목록 -->
 	<!-- 검색영역 -->
@@ -161,7 +162,7 @@ function press() {
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${roleManageVO.searchKeyword}"/>'  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" onClick="fncSelectRoleList(1);return false;"/><!-- 조회 -->
 				<input type="button" class="s_btn" onClick="fncRoleListDelete()" value="<spring:message code="title.delete" />" title="<spring:message code="title.delete" /> <spring:message code="input.button" />" /><!-- 삭제 -->
-				<span class="btn_b"><a href="<c:url value='/sec/rmt/EgovRoleInsertView.do'/>" onClick="javascript:fncAddRoleInsert();"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span><!-- 등록 -->
+				<span class="btn_b"><a href="javascript:void(0);" onClick="javascript:fncAddRoleInsert(); return false;"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span><!-- 등록 -->
 			</li>
 		</ul>
 	</div>
@@ -201,13 +202,13 @@ function press() {
 	<c:forEach var="role" items="${roleList}" varStatus="status">
 	<tr>
 		<td><input type="checkbox" name="delYn" class="check2" title="선택"><input type="hidden" name="checkId" value="<c:out value="${role.roleCode}"/>" /></td>
-		<td><a href="<c:url value='/sec/rmt/EgovRoleList.do'/>?roleCode=${role.roleCode}" onclick="javascript:fncSelectRole('<c:out value="${role.roleCode}"/>');return false;"><c:out value="${role.roleCode}"/></a></td>
+		<td><a href="javascript:void(0);" onclick="javascript:fncSelectRole('<c:out value="${role.roleCode}"/>'); return false;"><c:out value="${role.roleCode}"/></a></td>
 		<td class="left"><c:out value="${role.roleNm}"/></td>
 		<td><c:out value="${role.roleTyp}"/></td>
 		<td><c:out value="${role.roleSort}"/></td>
 		<td class="left"><c:out value="${role.roleDc}"/></td>
 		<td><c:out value="${fn:substring(role.roleCreatDe,0,10)}"/></td>
-		<td><a href="<c:url value='/sec/rmt/EgovRoleList.do'/>?roleCode=${role.roleCode}" onclick="javascript:fncSelectRole('<c:out value="${role.roleCode}"/>');return false;s"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>" align="middle" alt="<spring:message code="title.detail" />"  title="<spring:message code="title.detail" />"></a></td>
+		<td><a href="javascript:void(0);" onclick="javascript:fncSelectRole('<c:out value="${role.roleCode}"/>'); return false;"><img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif'/>" align="middle" alt="<spring:message code="title.detail" />"  title="<spring:message code="title.detail" />"></a></td>
 	</tr>
 	</c:forEach>
 	</tbody>

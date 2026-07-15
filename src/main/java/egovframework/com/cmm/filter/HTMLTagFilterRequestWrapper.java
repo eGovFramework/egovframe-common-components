@@ -15,7 +15,10 @@
  */
 package egovframework.com.cmm.filter;
 
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletRequestWrapper;
@@ -46,6 +49,14 @@ public class HTMLTagFilterRequestWrapper extends HttpServletRequestWrapper {
 	// Tag 화이트 리스트 ( 허용할 태그 등록 )
 	static private String[] whiteListTag = { "<p>", "</p>", "<br />" };
 
+	/**
+	 * CKEditor 등 리치텍스트 에디터가 사용하는 파라미터명 목록.
+	 * 이 필드는 HTML 태그(이미지 포함)를 그대로 저장해야 하므로 이 필터의 태그 치환 대상에서 제외한다.
+	 * (조회화면 출력 시에는 egovc:sanitizeHtml 로 XSS 방지 처리를 한다.)
+	 */
+	static private Set<String> richTextParameterNames = new HashSet<>(Arrays.asList(
+			"schdulCn", "nttCn", "onlineMnlDc", "indvdlInfoDc"));
+
 	public HTMLTagFilterRequestWrapper(HttpServletRequest request) {
 		super(request);
 	}
@@ -57,6 +68,10 @@ public class HTMLTagFilterRequestWrapper extends HttpServletRequestWrapper {
 
 		if (values == null) {
 			return null;
+		}
+
+		if (isRichTextParameter(parameter)) {
+			return values;
 		}
 
 		for (int i = 0; i < values.length; i++) {
@@ -80,6 +95,10 @@ public class HTMLTagFilterRequestWrapper extends HttpServletRequestWrapper {
 			return null;
 		}
 
+		if (isRichTextParameter(parameter)) {
+			return value;
+		}
+
 		value = getSafeParamData(value);
 		//System.out.println( "[HTMLTagFilter getParameter] "+ parameter + "===>>>"+value );
 		return value;
@@ -98,6 +117,10 @@ public class HTMLTagFilterRequestWrapper extends HttpServletRequestWrapper {
 		for (String key : valueMap.keySet()) {
 			values = valueMap.get(key);
 
+			if (isRichTextParameter(key)) {
+				continue;
+			}
+
 			for (int i = 0; i < values.length; i++) {
 				if (values[i] != null) {
 					values[i] = getSafeParamData(values[i]);
@@ -111,6 +134,10 @@ public class HTMLTagFilterRequestWrapper extends HttpServletRequestWrapper {
 		}
 
 		return valueMap;
+	}
+
+	private boolean isRichTextParameter(String parameter) {
+		return richTextParameterNames.contains(parameter);
 	}
 
 	private String getSafeParamData(String value) {

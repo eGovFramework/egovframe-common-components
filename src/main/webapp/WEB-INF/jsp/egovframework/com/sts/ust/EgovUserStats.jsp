@@ -3,6 +3,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comStsUst.userStats.title"/></c:set>
 <%
  /**
@@ -244,7 +246,7 @@ function getNextWeek(v,t){
 <div class="board">
 	<h1>${pageTitle}</h1>
 
-	<form name="listForm" action="<c:url value='/sts/ust/selectUserStats.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/sts/ust/selectUserStats.do" method="post">
 	    <input type="hidden" name="pdKind" value='<c:out value="${statsInfo.pdKind}"/>'/>
 	    <input type="hidden" name="statsKind" value='<c:out value="${statsInfo.statsKind}"/>'/>
 	    <input type="hidden" name="detailStatsKind" value=""/>
@@ -337,7 +339,7 @@ function getNextWeek(v,t){
 			    </c:if>
 	</table>
 
-	</form>
+	</form:form>
 </div>
 </body>
 </html>

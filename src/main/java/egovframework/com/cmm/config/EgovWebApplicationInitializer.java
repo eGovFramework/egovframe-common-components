@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.WebApplicationInitializer;
+import org.egovframe.rte.fdl.security.config.EgovSecurityConfig;
 import org.springframework.web.context.ContextLoaderListener;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.XmlWebApplicationContext;
@@ -132,6 +133,17 @@ public class EgovWebApplicationInitializer implements WebApplicationInitializer 
 	        security.addMappingForUrlPatterns(null, false, "/*");
 
 			//-------------------------------------------------------------
+			// CSRF 토큰 JSP/AJAX 노출 필터 (egov-security-config.properties csrf=true)
+			//-------------------------------------------------------------
+			if (isCsrfProtectionEnabled(rootContext)) {
+				DelegatingFilterProxy csrfTokenAttributeFilter = new DelegatingFilterProxy("egovCsrfTokenAttributeFilter");
+				csrfTokenAttributeFilter.setContextAttribute(FrameworkServlet.SERVLET_CONTEXT_PREFIX + "dispatcher");
+				FilterRegistration.Dynamic csrfTokenFilterReg = servletContext.addFilter("egovCsrfTokenAttributeFilter",
+						csrfTokenAttributeFilter);
+				csrfTokenFilterReg.addMappingForUrlPatterns(null, false, "/*");
+			}
+
+			//-------------------------------------------------------------
 			// HttpSessionEventPublisher 설정
 			//-------------------------------------------------------------
 			servletContext.addListener(new org.springframework.security.web.session.HttpSessionEventPublisher());
@@ -147,11 +159,13 @@ public class EgovWebApplicationInitializer implements WebApplicationInitializer 
 		}
 
 		//-------------------------------------------------------------
-		// CkFilter 설정 (CKEditor 사용시 설정)
+		// CkFilter 설정 (CKEditor 사용시 설정) - ck.image.url 경로로 매핑
 		//-------------------------------------------------------------
+		String ckImageUrlPattern = egovframework.com.utl.wed.web.EgovCkEditorControllerAdvice.resolveCkImageUrlPattern();
 		FilterRegistration.Dynamic regCkFilter = servletContext.addFilter("CKFilter", new CkFilter());
 		regCkFilter.setInitParameter("properties", "egovframework/egovProps/ck.properties");
-		regCkFilter.addMappingForUrlPatterns(null, false, "/ckUploadImage");
+		regCkFilter.addMappingForUrlPatterns(null, false, ckImageUrlPattern);
+		LOGGER.debug("CKFilter mapped to {}", ckImageUrlPattern);
 
 		//-------------------------------------------------------------
 		// HiddenHttpMethodFilter 설정 (Facebook OAuth 사용시 설정)
@@ -218,6 +232,16 @@ public class EgovWebApplicationInitializer implements WebApplicationInitializer 
 			return Long.parseLong(raw.trim());
 		} catch (NumberFormatException e) {
 			return defaultValue;
+		}
+	}
+
+	private static boolean isCsrfProtectionEnabled(WebApplicationContext rootContext) {
+		try {
+			EgovSecurityConfig securityConfig = rootContext.getBean(EgovSecurityConfig.class);
+			return securityConfig.isCsrf();
+		} catch (Exception e) {
+			LOGGER.warn("Failed to resolve CSRF configuration. CSRF attribute filter is not registered.", e);
+			return false;
 		}
 	}
 

@@ -44,7 +44,7 @@ public class AdministrationWordVO extends ComDefaultVO implements Serializable {
     /** 행정용어사전 영문명 */
     @EgovNullCheck
     @Size(max=255)
-    @Pattern(regexp="^[a-zA-Z0-9_]*$", message="{validation.pattern.english}")
+    @Pattern(regexp="^[a-zA-Z]+( +[a-zA-Z]+)*$", message="{validation.pattern.english}")
     private String administWordEngNm;
 
     /** 행정용어사전 약어  */

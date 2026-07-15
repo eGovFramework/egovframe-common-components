@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -102,7 +103,7 @@ public class EgovCntcInsttController {
 	 * @return "forward:/ssi/syi/iis/EgovCcmAdministCodeList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/iis/removeCntcInstt.do")
+	@PostMapping("/ssi/syi/iis/removeCntcInstt.do")
 	public String deleteCntcInstt(CntcInstt cntcInstt, ModelMap model) throws Exception {
 		cntcInsttService.deleteCntcInstt(cntcInstt);
 		return "forward:/ssi/syi/iis/getCntcInsttList.do";
@@ -117,7 +118,7 @@ public class EgovCntcInsttController {
 	 * @return "forward:/ssi/syi/iis/EgovCcmAdministCodeList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/iis/removeCntcSystem.do")
+	@PostMapping("/ssi/syi/iis/removeCntcSystem.do")
 	public String deleteCntcSystem(CntcSystem cntcSystem, ModelMap model) throws Exception {
 		cntcInsttService.deleteCntcSystem(cntcSystem);
 		return "forward:/ssi/syi/iis/getCntcInsttList.do";
@@ -132,7 +133,7 @@ public class EgovCntcInsttController {
 	 * @return "forward:/ssi/syi/iis/EgovCcmAdministCodeList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/iis/removeCntcService.do")
+	@PostMapping("/ssi/syi/iis/removeCntcService.do")
 	public String deleteCntcService(CntcService cntcService, ModelMap model) throws Exception {
 		cntcInsttService.deleteCntcService(cntcService);
 		return "forward:/ssi/syi/iis/getCntcInsttList.do";
@@ -147,7 +148,7 @@ public class EgovCntcInsttController {
 	 * @return "egovframework/com/ssi/syi/iis/EgovCntcInsttRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/iis/addCntcInstt.do", params = "!cmd")
+	@PostMapping(value = "/ssi/syi/iis/addCntcInstt.do", params = "!cmd")
 	public String insertCntcInsttView(@ModelAttribute("searchVO") CntcInsttVO searchVO,
 			@ModelAttribute("cntcInstt") CntcInstt cntcInstt,
 			ModelMap model) throws Exception {
@@ -164,7 +165,7 @@ public class EgovCntcInsttController {
 	 * @return "egovframework/com/ssi/syi/iis/EgovCntcInsttRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/iis/addCntcInstt.do", params = "cmd=Regist")
+	@PostMapping(value = "/ssi/syi/iis/addCntcInstt.do", params = "cmd=Regist")
 	public String insertCntcInstt(@ModelAttribute("searchVO") CntcInsttVO searchVO,
 			@Valid @ModelAttribute("cntcInstt") CntcInstt cntcInstt,
 			BindingResult bindingResult, ModelMap model) throws Exception {
@@ -196,7 +197,7 @@ public class EgovCntcInsttController {
 	 * @return "egovframework/com/ssi/syi/iis/EgovCntcSystemRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/iis/addCntcSystem.do", params = "!cmd")
+	@PostMapping(value = "/ssi/syi/iis/addCntcSystem.do", params = "!cmd")
 	public String insertCntcSystemView(@ModelAttribute("searchVO") CntcInsttVO searchVO,
 			@ModelAttribute("cntcSystem") CntcSystem cntcSystem,
 			ModelMap model) throws Exception {
@@ -222,7 +223,7 @@ public class EgovCntcInsttController {
 	 * @return "egovframework/com/ssi/syi/iis/EgovCntcSystemRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/iis/addCntcSystem.do", params = "cmd=Regist")
+	@PostMapping(value = "/ssi/syi/iis/addCntcSystem.do", params = "cmd=Regist")
 	public String insertCntcSystem(@ModelAttribute("searchVO") CntcInsttVO searchVO,
 			@Valid @ModelAttribute("cntcSystem") CntcSystem cntcSystem,
 			BindingResult bindingResult, ModelMap model) throws Exception {
@@ -261,7 +262,7 @@ public class EgovCntcInsttController {
 	 * @return "egovframework/com/ssi/syi/iis/EgovCntcServiceRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/iis/addCntcService.do", params = "!cmd")
+	@PostMapping(value = "/ssi/syi/iis/addCntcService.do", params = "!cmd")
 	public String insertCntcServiceView(@ModelAttribute("searchVO") CntcInsttVO searchVO,
 			@ModelAttribute("cntcService") CntcService cntcService,
 			ModelMap model) throws Exception {
@@ -312,7 +313,7 @@ public class EgovCntcInsttController {
 	 * @return "egovframework/com/ssi/syi/iis/EgovCntcServiceRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/iis/addCntcService.do", params = "cmd=Regist")
+	@PostMapping(value = "/ssi/syi/iis/addCntcService.do", params = "cmd=Regist")
 	public String insertCntcService(@ModelAttribute("searchVO") CntcInsttVO searchVO,
 			@Valid @ModelAttribute("cntcService") CntcService cntcService,
 			BindingResult bindingResult, ModelMap model) throws Exception {
@@ -377,7 +378,7 @@ public class EgovCntcInsttController {
 	 * @return "egovframework/com/ssi/syi/iis/EgovCcmCntcInsttDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/iis/getCntcInsttDetail.do")
+	@PostMapping("/ssi/syi/iis/getCntcInsttDetail.do")
 	public String selectCntcInsttDetail(@ModelAttribute("searchVO") CntcInsttVO searchVO,
 			@ModelAttribute("cntcInstt") CntcInstt cntcInstt,
 			@ModelAttribute("cntcSystemVO") CntcSystemVO cntcSystemVO,
@@ -459,10 +460,13 @@ public class EgovCntcInsttController {
 	 * @return "egovframework/com/ssi/syi/iis/EgovCntcInsttUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/iis/updateCntcInstt.do", params = "!cmd")
+	@PostMapping(value = "/ssi/syi/iis/updateCntcInstt.do", params = "!cmd")
 	public String updateCntcInsttView(@ModelAttribute("searchVO") CntcInsttVO searchVO,
 			@ModelAttribute("cntcInstt") CntcInstt cntcInstt,
 			ModelMap model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = egovAssertLoginUser();
+
 		CntcInstt vo = cntcInsttService.selectCntcInsttDetail(cntcInstt);
 		model.addAttribute("cntcInstt", vo);
 
@@ -479,7 +483,7 @@ public class EgovCntcInsttController {
 	 * @return "egovframework/com/ssi/syi/iis/EgovCntcInsttUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/iis/updateCntcInstt.do", params = "cmd=Modify")
+	@PostMapping(value = "/ssi/syi/iis/updateCntcInstt.do", params = "cmd=Modify")
 	public String updateCntcInstt(@ModelAttribute("searchVO") CntcInsttVO searchVO,
 			@Valid @ModelAttribute("cntcInstt") CntcInstt cntcInstt,
 			BindingResult bindingResult, ModelMap model) throws Exception {
@@ -506,7 +510,7 @@ public class EgovCntcInsttController {
 	 * @return "egovframework/com/ssi/syi/iis/EgovCntcSystemUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/iis/updateCntcSystem.do", params = "!cmd")
+	@PostMapping(value = "/ssi/syi/iis/updateCntcSystem.do", params = "!cmd")
 	public String updateCntcSystemView(@ModelAttribute("searchVO") CntcInsttVO searchVO,
 			@ModelAttribute("cntcSystem") CntcSystem cntcSystem,
 			ModelMap model) throws Exception {
@@ -536,7 +540,7 @@ public class EgovCntcInsttController {
 	 * @return "egovframework/com/ssi/syi/iis/EgovCntcSystemUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/iis/updateCntcSystem.do", params = "cmd=Modify")
+	@PostMapping(value = "/ssi/syi/iis/updateCntcSystem.do", params = "cmd=Modify")
 	public String updateCntcSystem(@ModelAttribute("searchVO") CntcInsttVO searchVO,
 			@Valid @ModelAttribute("cntcSystem") CntcSystem cntcSystem,
 			BindingResult bindingResult, ModelMap model) throws Exception {
@@ -572,7 +576,7 @@ public class EgovCntcInsttController {
 	 * @return "egovframework/com/ssi/syi/iis/EgovCntcServiceUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/iis/updateCntcService.do", params = "!cmd")
+	@PostMapping(value = "/ssi/syi/iis/updateCntcService.do", params = "!cmd")
 	public String updateCntcServiceView(@ModelAttribute("searchVO") CntcInsttVO searchVO,
 			@ModelAttribute("cntcService") CntcService cntcService,
 			ModelMap model) throws Exception {
@@ -626,7 +630,7 @@ public class EgovCntcInsttController {
 	 * @return "egovframework/com/ssi/syi/iis/EgovCntcServiceUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/iis/updateCntcService.do", params = "cmd=Modify")
+	@PostMapping(value = "/ssi/syi/iis/updateCntcService.do", params = "cmd=Modify")
 	public String updateCntcService(@ModelAttribute("searchVO") CntcInsttVO searchVO,
 			@Valid @ModelAttribute("cntcService") CntcService cntcService,
 			BindingResult bindingResult, ModelMap model) throws Exception {
@@ -692,6 +696,33 @@ public class EgovCntcInsttController {
 			ret += "key:" + key.toString() + " value:" + value.toString();
 		}
 		return ret;
+	}
+
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 }

@@ -1,4 +1,6 @@
 package egovframework.com.sym.sym.bak.web;
+
+import egovframework.com.cmm.LoginVO;
 import java.util.List;
 
 import org.egovframe.rte.fdl.property.EgovPropertyService;
@@ -8,11 +10,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.sym.bak.service.BackupResult;
 import egovframework.com.sym.sym.bak.service.EgovBackupResultService;
@@ -65,7 +69,8 @@ public class EgovBackupResultController {
 	 * @param redirectAttributes RedirectAttributes
 	 * @exception Exception Exception
 	 */
-    @RequestMapping("/sym/sym/bak/deleteBackupResult.do")
+    @PostMapping("/sym/sym/bak/deleteBackupResult.do")
+	@RequireAdmin
 	public String deleteBackupResult(BackupResult backupResult, ModelMap model, RedirectAttributes redirectAttributes)
 	  throws Exception{
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -89,8 +94,12 @@ public class EgovBackupResultController {
 	 * @exception Exception Exception
 	 */
 	@RequestMapping("/sym/sym/bak/getBackupResult.do")
+	@RequireAdmin
 	public String selectBackupResult(@ModelAttribute("searchVO")BackupResult backupResult, ModelMap model)
 	  throws Exception{
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = egovAssertLoginUser();
+
 		LOGGER.debug(" 조회조건 : {}", backupResult);
 		BackupResult result = egovBackupResultService.selectBackupResult(backupResult);
 		model.addAttribute("resultInfo", result);
@@ -135,5 +144,32 @@ public class EgovBackupResultController {
 		return "egovframework/com/sym/sym/bak/EgovBackupResultList";
 	}
 
+
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
+	}
 
 }

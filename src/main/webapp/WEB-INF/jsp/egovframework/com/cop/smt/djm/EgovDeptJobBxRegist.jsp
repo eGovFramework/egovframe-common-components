@@ -123,7 +123,7 @@
 				<th><spring:message code="comCopSmtDjm.deptJobRegist.deptNm" /> <span class="pilsu">*</span></th><!-- 부서 -->
 				<td class="left">
 				    <form:input path="deptNm" size="20" readonly="true" maxlength="20" title="부서" cssStyle="width:128px"/>
-				    <a href="<c:url value='/cop/smt/djm/selectDeptListPopup.do' />" target="_blank" title="새 창으로 이동" onclick="fn_egov_dept_DeptJobBx('typeDept');return false;">
+				    <a href="javascript:void(0);" onclick="fn_egov_dept_DeptJobBx('typeDept');return false;">
 						<img alt="부서" src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif' />" title="부서" />
 					</a>
 					<div><form:errors path="deptNm" cssClass="error"/></div>
@@ -148,7 +148,7 @@
 		<!-- 하단 버튼 -->
 		<div class="btn">
 			<input class="s_submit" type="submit" value="<spring:message code="button.save" />" onclick="fn_egov_regist_deptjobbx(); return false;" />
-			<span class="btn_s"><a href="<c:url value='/cop/smt/djm/selectDeptJobBxList.do'/>?searchWrd=<c:out value='${deptJobBxVO.searchWrd}'/>&amp;searchCnd=<c:out value='${deptJobBxVO.searchCnd}'/>&amp;pageIndex=<c:out value='${deptJobBxVO.pageIndex}'/>" onclick="fn_egov_list_deptjobbx(); return false;"><spring:message code="button.list" /></a></span>
+			<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_list_deptjobbx(); return false;"><spring:message code="button.list" /></a></span>
 		</div>
 		<div style="clear:both;"></div>
 	<input type="hidden" name="deptIndictOrdr" value="<c:out value='${indictOrdrValue}'/>" />

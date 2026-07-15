@@ -21,6 +21,7 @@ const EgovValidation = {
         pwdCheckSeries: '연속된 3개 이상의 문자나 숫자를 사용할 수 없습니다.',
         pwdCheckRepeat: '반복된 3개 이상의 문자나 숫자를 사용할 수 없습니다.',
         english: '{0}은(는) 영문자만 입력 가능합니다.',
+        englishWithSpace: '{0}은(는) 영문자와 공백만 입력 가능합니다. (앞·뒤 공백 불가)',
         alphanumeric: '{0}은(는) 영문자, 숫자, 언더스코어(_)만 입력 가능합니다.',
         number: '{0}은(는) 숫자여야 합니다.',
         min: '{0}은(는) {1} 이상이어야 합니다.',
@@ -81,6 +82,12 @@ const EgovValidation = {
         english: function(value) {
             if (!value) return true;
             return /^[a-zA-Z]+$/.test(value);
+        },
+        
+        // 영문자와 공백 허용 (앞·뒤 공백 불가)
+        englishWithSpace: function(value) {
+            if (!value) return true;
+            return /^[a-zA-Z]+( +[a-zA-Z]+)*$/.test(value);
         },
         
         // 영문자, 숫자, 언더스코어만 허용 (테이블명 등)
@@ -2343,7 +2350,7 @@ function validateAdministrationWordVO(form){
 			rules: {
 				required: true,
 				maxlength: 255,
-				english: true
+				englishWithSpace: true
 			}
 		},
 		administWordAbrv: {
@@ -2796,6 +2803,39 @@ function validateKnoPersonal(form) {
             rules: {
                 required: true,
                 maxlength: 10
+            }
+        }
+    };
+    return EgovValidation.validateForm(form, rules);
+}
+
+// 지식평가 validation
+function validateKnoAppraisal(form) {
+    const rules = {
+        appYmd: {
+            label: '평가일자',
+            rules: {
+                required: true,
+                maxlength: 10
+            }
+        },
+        knoAps: {
+            label: '평가결과',
+            rules: {
+                required: true
+            }
+        }
+    };
+    return EgovValidation.validateForm(form, rules);
+}
+
+// 지식정보(지식정제) validation
+function validateKnoManagement(form) {
+    const rules = {
+        knoAps: {
+            label: '지식정제',
+            rules: {
+                required: true
             }
         }
     };
@@ -4778,4 +4818,670 @@ function validateCmmnDetailCodeVO(form) {
         }
     };
     return EgovValidation.validateForm(form, rules);
+}
+
+// ProgrmManageVO validation (프로그램관리 - 프로그램목록 등록/수정)
+function validateProgrmManageVO(form) {
+    const rules = {
+        progrmFileNm: {
+            label: '프로그램파일명',
+            rules: {
+                required: true,
+                maxlength: 50
+            }
+        },
+        progrmStrePath: {
+            label: '저장경로',
+            rules: {
+                required: true,
+                maxlength: 60
+            }
+        },
+        progrmKoreanNm: {
+            label: '한글명',
+            rules: {
+                required: true,
+                maxlength: 60
+            }
+        },
+        URL: {
+            label: 'URL',
+            rules: {
+                required: true,
+                maxlength: 60
+            }
+        },
+        progrmDc: {
+            label: '프로그램설명',
+            rules: {
+                required: true
+            }
+        }
+    };
+    return EgovValidation.validateForm(form, rules);
+}
+
+// ProgrmChangeRequst validation (프로그램관리 - 프로그램변경요청 상세조회/수정)
+function validateProgrmChangeRequst(form) {
+    const rules = {
+        rqesterSj: {
+            label: '요청제목',
+            rules: {
+                required: true,
+                maxlength: 60
+            }
+        }
+    };
+    return EgovValidation.validateForm(form, rules);
+}
+
+// MenuManageVO validation (메뉴관리 - 메뉴등록/수정)
+function validateMenuManageVO(form) {
+    const rules = {
+        menuNo: {
+            label: '메뉴No',
+            rules: {
+                required: true,
+                integer: true,
+                maxlength: 10
+            }
+        },
+        menuOrdr: {
+            label: '메뉴순서',
+            rules: {
+                required: true,
+                integer: true,
+                maxlength: 10
+            }
+        },
+        menuNm: {
+            label: '메뉴명',
+            rules: {
+                required: true,
+                maxlength: 30
+            }
+        },
+        upperMenuId: {
+            label: '상위메뉴No',
+            rules: {
+                required: true,
+                integer: true,
+                maxlength: 10
+            }
+        },
+        progrmFileNm: {
+            label: '프로그램파일명',
+            rules: {
+                required: true,
+                maxlength: 60
+            }
+        },
+        relateImageNm: {
+            label: '관련이미지명',
+            rules: {
+                required: true,
+                maxlength: 30
+            }
+        },
+        relateImagePath: {
+            label: '관련이미지경로',
+            rules: {
+                required: true,
+                maxlength: 30
+            }
+        },
+        menuDc: {
+            label: '메뉴설명',
+            rules: {
+                required: true
+            }
+        }
+    };
+    return EgovValidation.validateForm(form, rules);
+}
+
+// Bookmark Menu validation (바로가기메뉴관리 - 바로가기메뉴등록)
+function validateBkmk(form) {
+    const rules = {
+        menuNm: {
+            label: '메뉴명',
+            rules: {
+                required: true,
+                maxlength: 60
+            }
+        },
+        progrmStrePath: {
+            label: '메뉴URL',
+            rules: {
+                required: true,
+                maxlength: 90
+            }
+        }
+    };
+    return EgovValidation.validateForm(form, rules);
+}
+
+// System History validation (로그관리 - 시스템이력 등록/수정)
+function validateHistory(form) {
+    const rules = {
+        histSeCode: {
+            label: '이력구분',
+            rules: {
+                required: true
+            }
+        },
+        sysNm: {
+            label: '시스템명',
+            rules: {
+                required: true,
+                maxlength: 60
+            }
+        },
+        histCn: {
+            label: '이력내용',
+            rules: {
+                required: true
+            }
+        }
+    };
+    return EgovValidation.validateForm(form, rules);
+}
+
+// Server validation (시스템관리 - 서버관리 등록/수정)
+function validateServer(form) {
+    const rules = {
+        serverNm: {
+            label: '서버S/W명',
+            rules: {
+                required: true,
+                maxlength: 23
+            }
+        },
+        regstYmd: {
+            label: '등록일자',
+            rules: {
+                required: true,
+                maxlength: 10
+            }
+        }
+    };
+    return EgovValidation.validateForm(form, rules);
+}
+
+// CmmnClCodeVO validation (공통코드관리 - 공통분류코드 등록/수정)
+function validateCmmnClCodeVO(form) {
+    const rules = {
+        clCode: {
+            label: '분류코드',
+            rules: {
+                required: true,
+                maxlength: 70
+            }
+        },
+        clCodeNm: {
+            label: '분류코드명',
+            rules: {
+                required: true,
+                maxlength: 70
+            }
+        },
+        clCodeDc: {
+            label: '분류코드설명',
+            rules: {
+                required: true
+            }
+        },
+        useAt: {
+            label: '사용여부',
+            rules: {
+                required: true
+            }
+        }
+    };
+    return EgovValidation.validateForm(form, rules);
+}
+
+// CmmnCodeVO validation (공통코드관리 - 공통코드 등록/수정)
+function validateCmmnCodeVO(form) {
+    const rules = {
+        clCode: {
+            label: '분류코드',
+            rules: {
+                required: true
+            }
+        },
+        codeId: {
+            label: '코드ID',
+            rules: {
+                required: true,
+                maxlength: 70
+            }
+        },
+        codeIdNm: {
+            label: '코드ID명',
+            rules: {
+                required: true,
+                maxlength: 70
+            }
+        },
+        codeIdDc: {
+            label: '코드ID설명',
+            rules: {
+                required: true
+            }
+        },
+        useAt: {
+            label: '사용여부',
+            rules: {
+                required: true
+            }
+        }
+    };
+    return EgovValidation.validateForm(form, rules);
+}
+
+// AdministCode validation (공통코드관리 - 행정구역코드 등록/수정)
+function validateAdministCode(form) {
+    const rules = {
+        administZoneCode: {
+            label: '행정구역코드',
+            rules: {
+                required: true,
+                maxlength: 10
+            }
+        },
+        useAt: {
+            label: '사용여부',
+            rules: {
+                required: true
+            }
+        }
+    };
+    return EgovValidation.validateForm(form, rules);
+}
+
+// InsttCode validation (공통코드관리 - 기관코드수신 등록)
+function validateInsttCode(form) {
+    const rules = {};
+    return EgovValidation.validateForm(form, rules);
+}
+
+// Zip(Postal Code) validation (공통코드관리 - 우편번호 등록/수정)
+function validateZip(form) {
+    const rules = {
+        zip: {
+            label: '우편번호',
+            rules: {
+                required: true,
+                maxlength: 5
+            }
+        },
+        ctprvnNm: {
+            label: '시도명',
+            rules: {
+                required: true,
+                maxlength: 20
+            }
+        },
+        signguNm: {
+            label: '시군구명',
+            rules: {
+                required: true,
+                maxlength: 20
+            }
+        },
+        emdNm: {
+            label: '읍면동명',
+            rules: {
+                required: true,
+                maxlength: 30
+            }
+        },
+        rdmnCode: {
+            label: '도로명코드',
+            rules: {
+                required: true,
+                maxlength: 12
+            }
+        },
+        rdmn: {
+            label: '도로명',
+            rules: {
+                required: true,
+                maxlength: 60
+            }
+        }
+    };
+    return EgovValidation.validateForm(form, rules);
+}
+
+// 부서관리 validation (사용자관리 - 부서관리 등록/수정)
+function validateDeptManage(form) {
+    const rules = {
+        orgnztId: {
+            label: '부서ID',
+            rules: {
+                required: true,
+                maxlength: 50
+            }
+        },
+        orgnztNm: {
+            label: '부서명',
+            rules: {
+                required: true,
+                maxlength: 200
+            }
+        },
+        orgnztDc: {
+            label: '설명',
+            rules: {
+                required: true
+            }
+        }
+    };
+    return EgovValidation.validateForm(form, rules);
+}
+
+// 회원관리 validation (사용자관리 - 회원 등록/수정/가입)
+function validateMberManageVO(form) {
+    const rules = {
+        mberId: {
+            label: '회원아이디',
+            rules: {
+                required: true,
+                maxlength: 20
+            }
+        },
+        mberNm: {
+            label: '회원명',
+            rules: {
+                required: true,
+                maxlength: 50
+            }
+        },
+        password: {
+            label: '비밀번호',
+            rules: {
+                required: true,
+                password1: true,
+                pwdCheckSeries: true,
+                pwdCheckRepeat: true,
+                pwdCheckComb3: true
+            }
+        },
+        passwordHint: {
+            label: '비밀번호힌트',
+            rules: {
+                required: true
+            }
+        },
+        passwordCnsr: {
+            label: '비밀번호정답',
+            rules: {
+                required: true,
+                maxlength: 100
+            }
+        },
+        sexdstnCode: {
+            label: '성별',
+            rules: {
+                required: true
+            }
+        },
+        areaNo: {
+            label: '지역번호',
+            rules: {
+                required: true,
+                maxlength: 4,
+                integer: true
+            }
+        },
+        middleTelno: {
+            label: '중간전화번호',
+            rules: {
+                required: true,
+                maxlength: 4,
+                integer: true
+            }
+        },
+        endTelno: {
+            label: '마지막전화번호',
+            rules: {
+                required: true,
+                maxlength: 4,
+                integer: true
+            }
+        },
+        moblphonNo: {
+            label: '휴대전화번호',
+            rules: {
+                required: true,
+                maxlength: 15
+            }
+        },
+        mberEmailAdres: {
+            label: '이메일주소',
+            rules: {
+                required: true,
+                email: true,
+                maxlength: 50
+            }
+        },
+        zip: {
+            label: '우편번호',
+            rules: {
+                required: true,
+                maxlength: 6
+            }
+        },
+        adres: {
+            label: '주소',
+            rules: {
+                required: true,
+                maxlength: 100
+            }
+        },
+        mberSttus: {
+            label: '회원상태',
+            rules: {
+                required: true
+            }
+        }
+    };
+    return EgovValidation.validateForm(form, rules);
+}
+
+// 사용자(직원)관리 validation (사용자관리 - 사용자 등록/수정)
+function validateUserManageVO(form) {
+    const rules = {
+        emplyrId: {
+            label: '사용자아이디',
+            rules: {
+                required: true,
+                maxlength: 20
+            }
+        },
+        emplyrNm: {
+            label: '사용자명',
+            rules: {
+                required: true,
+                maxlength: 60
+            }
+        },
+        password: {
+            label: '비밀번호',
+            rules: {
+                required: true,
+                password1: true,
+                pwdCheckSeries: true,
+                pwdCheckComb3: true
+            }
+        },
+        passwordHint: {
+            label: '비밀번호힌트',
+            rules: {
+                required: true
+            }
+        },
+        passwordCnsr: {
+            label: '비밀번호정답',
+            rules: {
+                required: true,
+                maxlength: 100
+            }
+        },
+        areaNo: {
+            label: '지역번호',
+            rules: {
+                required: true,
+                maxlength: 5,
+                integer: true
+            }
+        },
+        moblphonNo: {
+            label: '휴대전화번호',
+            rules: {
+                required: true,
+                maxlength: 15
+            }
+        },
+        emailAdres: {
+            label: '이메일주소',
+            rules: {
+                required: true,
+                email: true,
+                maxlength: 50
+            }
+        },
+        zip: {
+            label: '우편번호',
+            rules: {
+                required: true,
+                maxlength: 8
+            }
+        },
+        homeadres: {
+            label: '주소',
+            rules: {
+                required: true,
+                maxlength: 100
+            }
+        },
+        groupId: {
+            label: '권한그룹',
+            rules: {
+                required: true
+            }
+        },
+        emplyrSttusCode: {
+            label: '사용자상태',
+            rules: {
+                required: true
+            }
+        }
+    };
+    return EgovValidation.validateForm(form, rules);
+}
+
+// 설문관리 validation (설문조사 - 설문관리 등록/수정)
+function validateQustnrManageVO(form) {
+    const rules = {
+        qestnrSj: {
+            label: '설문제목',
+            rules: {
+                required: true,
+                maxlength: 100
+            }
+        },
+        qestnrPurps: {
+            label: '설문목적',
+            rules: {
+                required: true
+            }
+        },
+        qestnrWritngGuidanceCn: {
+            label: '설문작성안내내용',
+            rules: {
+                required: true
+            }
+        },
+        qestnrTrget: {
+            label: '설문대상',
+            rules: {
+                required: true
+            }
+        },
+        qestnrBeginDe: {
+            label: '설문시작일',
+            rules: {
+                required: true,
+                maxlength: 10
+            }
+        },
+        qestnrEndDe: {
+            label: '설문종료일',
+            rules: {
+                required: true,
+                maxlength: 10
+            }
+        }
+    };
+    return EgovValidation.validateForm(form, rules);
+}
+
+// 설문응답자정보관리 validation (설문조사 - 설문응답 등록)
+function validateQustnrRespondInfoManage(form) {
+    const rules = {
+        sexdstnCode: {
+            label: '성별',
+            rules: {
+                required: true
+            }
+        },
+        occpTyCode: {
+            label: '직업',
+            rules: {
+                required: true
+            }
+        },
+        respondNm: {
+            label: '응답자명',
+            rules: {
+                required: true,
+                maxlength: 50
+            }
+        }
+    };
+    return EgovValidation.validateForm(form, rules);
+}
+
+// 설문응답정보 validation (설문조사 - 설문응답정보 등록/수정)
+function validateQustnrRespondInfoVO(form) {
+    const rules = {
+        respondAnswerCn: {
+            label: '응답자답변내용',
+            rules: {
+                required: true
+            }
+        },
+        etcAnswerCn: {
+            label: '기타답변내용',
+            rules: {
+                required: true
+            }
+        },
+        respondNm: {
+            label: '응답자명',
+            rules: {
+                required: true,
+                maxlength: 50
+            }
+        }
+    };
+    return EgovValidation.validateForm(form, rules);
+}
+
+// 휴가관리 validation (uss/ion/vct 등록/수정에서 사용하는 VO 접미사 호출명)
+function validateVcatnManageVO(form) {
+    return validateVcatnManage(form);
 }

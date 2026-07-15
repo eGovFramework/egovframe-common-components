@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -47,6 +48,7 @@ import jakarta.validation.Valid;
  *   2011.08.26  정진오          IncludedInfo annotation 추가
  *   2025.07.01  이백행          컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
  *   2026.07.09  EricSeokgon      PMD UseCollectionIsEmpty: size() > 0 대신 !isEmpty() 사용
+ *   2026.07.10  유지보수        NCSC 보안점검 반영 (삭제 시 인증 검증)
  *
  *      </pre>
  */
@@ -79,9 +81,27 @@ public class EgovSystemCntcController {
 	 * @return "forward:/ssi/syi/sim/getSystemCntcList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/sim/removeSystemCntc.do")
-	public String deleteSystemCntc(SystemCntc systemCntc, ModelMap model) throws Exception {
+	@PostMapping("/ssi/syi/sim/removeSystemCntc.do")
+	public String deleteSystemCntc(SystemCntc systemCntc, ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			redirectAttributes.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+
+		if (systemCntc == null || EgovStringUtil.isEmpty(systemCntc.getCntcId())) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.delete"));
+			return "forward:/ssi/syi/sim/getSystemCntcList.do";
+		}
+
+		SystemCntc existing = systemCntcService.selectSystemCntcDetail(systemCntc);
+		if (existing == null || EgovStringUtil.isEmpty(existing.getCntcId())) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.delete"));
+			return "forward:/ssi/syi/sim/getSystemCntcList.do";
+		}
+
 		systemCntcService.deleteSystemCntc(systemCntc);
+		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		return "forward:/ssi/syi/sim/getSystemCntcList.do";
 	}
 
@@ -94,7 +114,7 @@ public class EgovSystemCntcController {
 	 * @return "egovframework/com/ssi/syi/sim/EgovSystemCntcRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/sim/addSystemCntc.do", params = "!cmd")
+	@PostMapping(value = "/ssi/syi/sim/addSystemCntc.do", params = "!cmd")
 	public String insertSystemCntcView(@ModelAttribute("searchVO") SystemCntcVO searchVO,
 			@ModelAttribute("systemCntc") SystemCntc systemCntc,
 			ModelMap model) throws Exception {
@@ -113,7 +133,7 @@ public class EgovSystemCntcController {
 	 * @return "forward:/ssi/syi/sim/getSystemCntcList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/sim/addSystemCntc.do", params = "cmd=Regist")
+	@PostMapping(value = "/ssi/syi/sim/addSystemCntc.do", params = "cmd=Regist")
 	public String insertSystemCntc(@ModelAttribute("searchVO") SystemCntcVO searchVO,
 			@Valid @ModelAttribute("systemCntc") SystemCntc systemCntc,
 			BindingResult bindingResult, ModelMap model) throws Exception {
@@ -147,7 +167,7 @@ public class EgovSystemCntcController {
 	 * @return "egovframework/com/ssi/syi/sim/EgovSystemCntcDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/sim/getSystemCntcDetail.do")
+	@PostMapping("/ssi/syi/sim/getSystemCntcDetail.do")
 	public String selectSystemCntcDetail(@ModelAttribute("searchVO") SystemCntcVO searchVO,
 			SystemCntc systemCntc, ModelMap model,
 			RedirectAttributes redirectAttributes) throws Exception {
@@ -228,10 +248,13 @@ public class EgovSystemCntcController {
 	 * @return "egovframework/com/ssi/syi/sim/EgovSystemCntcUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/sim/updateSystemCntc.do", params = "!cmd")
+	@PostMapping(value = "/ssi/syi/sim/updateSystemCntc.do", params = "!cmd")
 	public String updateSystemCntcView(@ModelAttribute("searchVO") SystemCntcVO searchVO,
 			@ModelAttribute("systemCntc") SystemCntc systemCntc,
 			ModelMap model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = egovAssertLoginUser();
+
 
 		SystemCntc vo = systemCntcService.selectSystemCntcDetail(systemCntc);
 		model.addAttribute("systemCntc", vo);
@@ -252,7 +275,7 @@ public class EgovSystemCntcController {
 	 * @return "forward:/ssi/syi/sim/getSystemCntcList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/sim/updateSystemCntc.do", params = "cmd=Modify")
+	@PostMapping(value = "/ssi/syi/sim/updateSystemCntc.do", params = "cmd=Modify")
 	public String updateSystemCntc(@ModelAttribute("searchVO") SystemCntcVO searchVO,
 			@Valid @ModelAttribute("systemCntc") SystemCntc systemCntc,
 			BindingResult bindingResult, ModelMap model) throws Exception {
@@ -330,7 +353,7 @@ public class EgovSystemCntcController {
 	 * @return "egovframework/com/ssi/syi/sim/EgovSystemCntcDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/scm/getConfirmSystemCntcDetail.do")
+	@PostMapping("/ssi/syi/scm/getConfirmSystemCntcDetail.do")
 	public String selectConfirmSystemCntcDetail(@ModelAttribute("searchVO") SystemCntcVO searchVO,
 			SystemCntc systemCntc,
 			@RequestParam(value = "cmd", required = false, defaultValue = "") String cmd,
@@ -462,6 +485,33 @@ public class EgovSystemCntcController {
 		searchCntcServiceVO.setSysId(systemCntc.getProvdSysId());
 		List<EgovMap> cntcProvdServiceList = cntcInsttService.selectCntcServiceList(searchCntcServiceVO);
 		model.addAttribute("cntcProvdServiceList", cntcProvdServiceList);
+	}
+
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 }

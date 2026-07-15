@@ -7,6 +7,7 @@
     ----------    --------  ---------------------------
     2010.08.30    장동한          최초 생성
     2018.09.11    신용호          공통컴포넌트 3.8 개선
+    2026.07.10    -               다중 폼 → 페이지당 폼 1개 + JS 제출 리팩터링
  
     author   : 공통서비스 개발팀 장동한
     since    : 2010.08.30
@@ -17,6 +18,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui" %>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ taglib prefix="egovc" uri="/WEB-INF/tlds/egovc.tld" %>
 <%pageContext.setAttribute("crlf", "\r\n"); %>
 <%--  자마스크립트 메세지 출력 --%>
@@ -40,6 +42,7 @@ function fn_egov_init_RequestOffer(){
  ******************************************************** */
 function fn_egov_modify_RequestOffer(){
 	var vFrom = document.RequestOfferForm;
+	vFrom.cmd.value = "";
 	vFrom.action = "<c:url value='/dam/spe/req/updtRequestOffer.do'/>";
 	vFrom.submit();
 }
@@ -48,8 +51,29 @@ function fn_egov_modify_RequestOffer(){
  ******************************************************** */
 function fn_egov_delete_RequestOffer(){
 	if(confirm("삭제 하시겠습니까?")){
-		document.formDelete.submit();
+		var vFrom = document.RequestOfferForm;
+		vFrom.cmd.value = "del";
+		vFrom.action = "<c:url value='/dam/spe/req/detailRequestOffer.do'/>";
+		vFrom.submit();
 	}
+}
+/* ********************************************************
+ * 답변 등록 이동
+ ******************************************************** */
+function fn_egov_reply_RequestOffer(){
+	var vFrom = document.RequestOfferForm;
+	vFrom.cmd.value = "reply";
+	vFrom.action = "<c:url value='/dam/spe/req/registRequestOffer.do'/>";
+	vFrom.submit();
+}
+/* ********************************************************
+ * 목록 이동
+ ******************************************************** */
+function fn_egov_list_RequestOffer(){
+	var vFrom = document.RequestOfferForm;
+	vFrom.cmd.value = "";
+	vFrom.action = "<c:url value='/dam/spe/req/listRequestOffer.do'/>";
+	vFrom.submit();
 }
 </script>
 </head>
@@ -62,7 +86,7 @@ function fn_egov_delete_RequestOffer(){
 	<!-- 타이틀 -->
 	<h2><spring:message code="comDamSpeReq.comDamRequestOfferDetail.pageTop.title"/></h2><!-- 지식 정보제공/정보요청  상세조회 -->
 
-	<form name="RequestOfferForm" action="<c:url value='/dam/spe/req/detailRequestOffer.do'/>" method="post">
+	<form:form name="RequestOfferForm" modelAttribute="requestOfferVO" action="${pageContext.request.contextPath}/dam/spe/req/detailRequestOffer.do" method="post">
 	
 	<!-- 등록폼 -->
 	<table class="wTable">
@@ -107,47 +131,32 @@ function fn_egov_delete_RequestOffer(){
 			</td>
 		</tr>
 	</table>
+
 	<input name="knoId" type="hidden" value="${requestOfferVO.knoId}">
-	<div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="전송" title="전송"></div>
-	</form>
+	<input name="cmd" type="hidden" value="">
+	<input name="ansDepth" type="hidden" value="${requestOfferVO.ansDepth + 1 }">
+	<input name="ansSeq" type="hidden" value="${requestOfferVO.ansSeq + 1}">
+	<input name="ansParents" type="hidden" value="${requestOfferVO.knoId}">
+	<input name="ansNumber" type="hidden" value="${requestOfferVO.ansNumber}">
+	<input name="orgnztId" type="hidden" value="${requestOfferVO.orgnztId}">
+	<input name="knoTypeCd" type="hidden" value="${requestOfferVO.knoTypeCd}">
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<%-- 자기 글일때만 수정/삭제버튼 활성화 --%>
 		<c:if test="${requestOfferVO.frstRegisterId eq USER_UNIQ_ID}">
-		<form name="formUpdt" action="<c:url value='/dam/spe/req/updtRequestOffer.do'/>" method="post" style="display:inline-block; vertical-align:top">
-		<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="fn_egov_modify_RequestOffer(); return false;" /><!-- 수정 -->
-		<input name="knoId" type="hidden" value="${requestOfferVO.knoId}">
-		</form>
-
-		<form name="formDelete" action="<c:url value='/dam/spe/req/detailRequestOffer.do'/>" method="post" style="display:inline-block; vertical-align:top">
-		<input class="s_submit" type="submit" value='<spring:message code="button.delete" />' onclick="fn_egov_delete_RequestOffer(); return false;" /><!-- 삭제 -->
-		<input name="knoId" type="hidden" value="${requestOfferVO.knoId}">
-		<input name="cmd" type="hidden" value="<c:out value='del'/>"/>
-		</form>
+		<input class="s_submit" type="button" value='<spring:message code="button.update" />' onclick="fn_egov_modify_RequestOffer(); return false;" /><!-- 수정 -->
+		<input class="s_submit" type="button" value='<spring:message code="button.delete" />' onclick="fn_egov_delete_RequestOffer(); return false;" /><!-- 삭제 -->
 		</c:if>
 		
 		<c:if test="${IS_SPE eq 'Y'}">
-		<form name="formReply" action="<c:url value='/dam/spe/req/registRequestOffer.do'/>" method="post" style="display:inline-block; vertical-align:top">
-		<input class="s_submit" type="submit" value="답변" onclick="this.form.submit();return false;" /><!-- 답변 -->
-		<input name="knoId" type="hidden" value="${requestOfferVO.knoId}">
-		
-		<input name="ansDepth" type="hidden" value="${requestOfferVO.ansDepth + 1 }">
-		<input name="ansSeq" type="hidden" value="${requestOfferVO.ansSeq + 1}">
-		<input name="ansParents" type="hidden" value="${requestOfferVO.knoId}">
-		<input name="ansNumber" type="hidden" value="${requestOfferVO.ansNumber}">
-		
-		<input name="orgnztId" type="hidden" value="${requestOfferVO.orgnztId}">
-		<input name="knoTypeCd" type="hidden" value="${requestOfferVO.knoTypeCd}">
-		<input name="cmd" type="hidden" value="reply">
-		</form>
+		<input class="s_submit" type="button" value="답변" onclick="fn_egov_reply_RequestOffer(); return false;" /><!-- 답변 -->
 		</c:if>
 		
-		<form name="formList" action="<c:url value='/dam/spe/req/listRequestOffer.do'/>" method="post" style="display:inline-block; vertical-align:top">
-		<input class="s_submit" type="submit" value='<spring:message code="button.list" />' onclick="" /><!-- 목록 -->
-		</form>
+		<input class="s_submit" type="button" value='<spring:message code="button.list" />' onclick="fn_egov_list_RequestOffer(); return false;" /><!-- 목록 -->
 	</div>
 	<div style="clear:both;"></div>
+	</form:form>
 </div>
 
 </body>

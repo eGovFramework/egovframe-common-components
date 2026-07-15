@@ -10,6 +10,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -153,7 +154,7 @@ public class EgovMenuCreateManageController {
 	 * @return 출력페이지정보 등록처리시 "forward:/sym/mnu/mcm/EgovMenuCreatSelect.do"
 	 * @exception Exception
 	 */
-	@RequestMapping("/sym/mnu/mcm/EgovMenuCreatInsert.do")
+	@PostMapping("/sym/mnu/mcm/EgovMenuCreatInsert.do")
 	public String insertMenuCreatList(@RequestParam("checkedAuthorForInsert") String checkedAuthorForInsert,
 			@RequestParam("checkedMenuNoForInsert") String checkedMenuNoForInsert,
 			@Valid @ModelAttribute("menuCreatVO") MenuCreatVO menuCreatVO, BindingResult bindingResult, ModelMap model) throws Exception {
@@ -213,7 +214,7 @@ public class EgovMenuCreateManageController {
 	 * @exception Exception
 	 */
 	/*
-	 * @RequestMapping(value = "/sym/mnu/mcm/EgovMenuCreatSiteMapInsert.do") public
+	 * @PostMapping("/sym/mnu/mcm/EgovMenuCreatSiteMapInsert.do") public
 	 * String selectMenuCreatSiteMapInsert(@ModelAttribute("menuSiteMapVO")
 	 * MenuSiteMapVO menuSiteMapVO, @RequestParam("valueHtml") String valueHtml,
 	 * ModelMap model ,HttpServletResponse response) throws Exception { boolean

@@ -102,6 +102,6 @@ link:hover { color: #000000; text-decoration: none; }
 		</ul>
 	</c:forEach>
 </ul>
-
+</div>
 </body>
 </html>

@@ -3,6 +3,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <% 
 /**
  * @Class Name : EgovBatchOpertListPopup.jsp
@@ -72,7 +73,7 @@
 <div class="board">
 	<h1><spring:message code="comSymBat.batchOpertListPopup.pageTop.title"/></h1><!-- 배치작업 조회 -->
 
-    <form name="frm" id="frm" action="<c:url value='/sym/bat/getBatchOpertList.do?popupAt=Y'/>" method="post">
+    <form:form name="frm" modelAttribute="searchVO" id="frm" action="${pageContext.request.contextPath}/sym/bat/getBatchOpertList.do?popupAt=Y" method="post">
 
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
@@ -90,7 +91,7 @@
 	</div>
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}' default="1"/>">
     <input name="batchOpertId" type="hidden" value="">
-    </form>
+    </form:form>
 	
 
 	<table class="board_list">

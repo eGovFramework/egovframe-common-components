@@ -218,7 +218,8 @@ function fn_egov_delete_QustnrQestnManage(){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<!-- 목록 버튼 -->
-		<form name="QustnrQestnManageForm" action="<c:url value='/uss/olp/qqm/EgovQustnrQestnManageList.do'/>" method="post" onsubmit="fn_egov_list_QustnrQestnManage(); return false;" style="float:left;">
+		<form name="QustnrQestnManageForm" action="${pageContext.request.contextPath}/uss/olp/qqm/EgovQustnrQestnManageList.do" method="post" onsubmit="fn_egov_list_QustnrQestnManage(); return false;" style="float:left;">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		<input type="submit" class="s_submit" value="<spring:message code='button.list' />" onclick="fn_egov_list_QustnrQestnManage(); return false;">
 		</form>
 		

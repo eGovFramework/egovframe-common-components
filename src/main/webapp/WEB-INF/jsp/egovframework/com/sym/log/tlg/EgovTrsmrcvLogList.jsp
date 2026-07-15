@@ -5,6 +5,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comSymLogTlg.trsmrcvLog.title"/> <spring:message code="title.list" /></c:set>
 <%
  /**
@@ -107,7 +108,7 @@
 <div class="board">
 	<h1>${pageTitle}</h1>
 
-<form name="frm" action ="<c:url value='/sym/log/tlg/SelectTrsmrcvLogList.do'/>" method="post">
+<form:form name="frm" modelAttribute="searchVO" action ="<c:url value='/sym/log/tlg/SelectTrsmrcvLogList.do'/>" method="post">
 <input type="hidden" name="cal_url" value="<c:url value='/sym/cal/EgovNormalCalPopup.do'/>" />
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
 		<ul>
@@ -185,7 +186,7 @@
 	</div>
 	
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-</form>	
+</form:form>	
 </div>
 
 

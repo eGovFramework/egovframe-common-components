@@ -164,7 +164,7 @@ public class EgovKnoPersonalController {
 	 *
 	 * @param KnoNm
 	 */
-	@RequestMapping(value = "/dam/per/EgovComDamPersonalRegistView.do")
+	@PostMapping("/dam/per/EgovComDamPersonalRegistView.do")
 	public String insertKnoPersonalView(KnoPersonalVO knoPersonal, ModelMap model) throws Exception {
 		setInsertKnoPersonalViewModel(knoPersonal, model);
 		return "egovframework/com/dam/per/EgovComDamPersonalRegist";

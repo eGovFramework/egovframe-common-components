@@ -143,7 +143,8 @@ function fnDelete(){
 
 
 
-<form name="Form" id="Form" method="post" action="<c:url value='/sym/ccm/adc/EgovCcmAdministCodeModify.do'/>">
+<form name="Form" id="Form" method="post" action="${pageContext.request.contextPath}/sym/ccm/adc/EgovCcmAdministCodeModify.do">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input type=hidden name="administZoneSe">
 	<input type=hidden name="administZoneCode">
 	<input type="submit" id="invisible" class="invisible"/>

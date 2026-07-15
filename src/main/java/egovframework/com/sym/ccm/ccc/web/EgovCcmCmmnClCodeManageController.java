@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -101,7 +102,7 @@ public class EgovCcmCmmnClCodeManageController {
 	 * @return "egovframework/com/sym/ccm/ccc/SelectCcmCmmnClCodeDetail.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/ccm/ccc/SelectCcmCmmnClCodeDetail.do")
+	@PostMapping("/sym/ccm/ccc/SelectCcmCmmnClCodeDetail.do")
 	public String selectCmmnClCodeDetail(@ModelAttribute("loginVO") LoginVO loginVO, CmmnClCodeVO cmmnClCodeVO,
 			ModelMap model) throws Exception {
 
@@ -120,7 +121,7 @@ public class EgovCcmCmmnClCodeManageController {
 	 * @return "egovframework/com/sym/ccm/ccc/EgovCcmCmmnClCodeRegist";
 	 * @throws Exception
 	 */
-	@RequestMapping("/sym/ccm/ccc/RegistCcmCmmnClCodeView.do")
+	@PostMapping("/sym/ccm/ccc/RegistCcmCmmnClCodeView.do")
 	public String insertCmmnClCodeView(@ModelAttribute("searchVO") CmmnClCodeVO cmmnClCodeVO, ModelMap model)
 			throws Exception {
 		model.addAttribute("cmmnClCodeVO", new CmmnClCodeVO());
@@ -138,7 +139,7 @@ public class EgovCcmCmmnClCodeManageController {
 	 * @return /sym/ccm/ccc/SelectCcmCmmnClCodeList.do";
 	 * @throws Exception
 	 */
-	@RequestMapping("/sym/ccm/ccc/RegistCcmCmmnClCode.do")
+	@PostMapping("/sym/ccm/ccc/RegistCcmCmmnClCode.do")
 	public String insertCmmnClCode(@Valid @ModelAttribute("cmmnClCodeVO") CmmnClCodeVO cmmnClCodeVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -172,7 +173,7 @@ public class EgovCcmCmmnClCodeManageController {
 	 * @return /sym/ccm/ccc/SelectCcmCmmnClCodeList.do";
 	 * @throws Exception
 	 */
-	@RequestMapping("/sym/ccm/ccc/RemoveCcmCmmnClCode.do")
+	@PostMapping("/sym/ccm/ccc/RemoveCcmCmmnClCode.do")
 	public String deleteCmmnClCode(@ModelAttribute("searchVO") CmmnClCodeVO cmmnClCode,
 			@ModelAttribute("cmmnClCodeVO") CmmnClCodeVO cmmnClCodeVO, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -193,7 +194,7 @@ public class EgovCcmCmmnClCodeManageController {
 	 * @return "egovframework/com/sym/ccm/ccc/EgovCcmCmmnClCodeUpdt";
 	 * @throws Exception
 	 */
-	@RequestMapping("/sym/ccm/ccc/UpdateCcmCmmnClCodeView.do")
+	@PostMapping("/sym/ccm/ccc/UpdateCcmCmmnClCodeView.do")
 	public String updateCmmnClCodeView(@ModelAttribute("searchVO") CmmnClCodeVO cmmnClCodeVO, ModelMap model)
 			throws Exception {
 
@@ -213,7 +214,7 @@ public class EgovCcmCmmnClCodeManageController {
 	 * @return /sym/ccm/ccc/SelectCcmCmmnClCodeList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/sym/ccm/ccc/UpdateCcmCmmnClCode.do")
+	@PostMapping("/sym/ccm/ccc/UpdateCcmCmmnClCode.do")
 	public String updateCmmnClCode(@ModelAttribute("searchVO") CmmnClCodeVO cmmnClCode,
 			@Valid @ModelAttribute("cmmnClCodeVO") CmmnClCodeVO cmmnClCodeVO, BindingResult bindingResult, ModelMap model)
 			throws Exception {

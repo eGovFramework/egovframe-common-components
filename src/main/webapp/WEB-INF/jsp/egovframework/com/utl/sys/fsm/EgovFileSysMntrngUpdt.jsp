@@ -142,7 +142,7 @@
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fn_egov_update_filesysmntrng()" />
-		<span class="btn_s"><a href="<c:url value='/utl/sys/fsm/selectFileSysMntrngList.do'/>?searchWrd=<c:out value='${fileSysMntrngVO.searchWrd}'/>&amp;searchCnd=<c:out value='${fileSysMntrngVO.searchCnd}'/>&amp;pageIndex=<c:out value='${fileSysMntrngVO.pageIndex}'/>" onclick="fn_egov_list_filesysmntrng(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_list_filesysmntrng(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 	

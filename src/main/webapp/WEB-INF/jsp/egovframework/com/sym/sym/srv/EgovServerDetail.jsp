@@ -108,9 +108,9 @@ function fncServerDelete(serverId) {
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<span class="btn_s"><a href="<c:url value='/sym/sym/srv/updtViewServer.do'/>?serverId=<c:out value='${server.serverId}'/>" onclick="fncServerUpdateView('${server.serverId}'); return false;"><spring:message code="button.update" /></a></span><!-- 수정 -->
-		<span class="btn_s"><a href="<c:url value='/sym/sym/srv/removeServer.do'/>?serverId=<c:out value='${server.serverId}'/>" onclick="fncServerDelete('${server.serverId}'); return false;"><spring:message code="button.delete" /></a></span><!-- 삭제 -->
-		<span class="btn_s"><a href="<c:url value='/sym/sym/srv/selectServerList.do'/>?pageIndex=<c:out value='${serverVO.pageIndex}'/>&amp;strServerNm=<c:out value="${serverVO.strServerNm}"/>" onclick="fncSelectServerList(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncServerUpdateView('${server.serverId}'); return false;"><spring:message code="button.update" /></a></span><!-- 수정 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncServerDelete('${server.serverId}'); return false;"><spring:message code="button.delete" /></a></span><!-- 삭제 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncSelectServerList(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
 	</div>
 	<div style="clear:both;"></div>
 </div>

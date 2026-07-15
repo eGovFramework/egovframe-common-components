@@ -3,12 +3,14 @@ package egovframework.com.uss.ion.rsn.service.impl;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
 import org.springframework.stereotype.Service;
 
 import egovframework.com.uss.ion.rsn.service.EgovRssService;
 import egovframework.com.uss.ion.rsn.service.RssInfo;
+import egovframework.com.cmm.EgovWebUtil;
 import jakarta.annotation.Resource;
 
 /**
@@ -26,6 +28,7 @@ import jakarta.annotation.Resource;
  *  -------    --------    ---------------------------
  *   2009.07.03  장동한          최초 생성
  *   2025.08.13  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *   2026.07.10  유지보수        NCSC 보안점검 반영 (RSS BDT_ETC XML 인젝션 방지)
  *
  *      </pre>
  */
@@ -73,11 +76,16 @@ public class EgovRssServiceImpl extends EgovAbstractServiceImpl implements EgovR
 				if (mapRow.get(key) instanceof String) {
 					// null 처리
 					if (mapRow.get(key) != null && key != null) {
-						smBdtTitle = smBdtTitle.replaceAll("#" + key + "#", mapRow.get(key));
-						smBdtLink = smBdtLink.replaceAll("#" + key + "#", mapRow.get(key));
-						smBdtDescription = smBdtDescription.replaceAll("#" + key + "#", mapRow.get(key));
-						smBdtTag = smBdtTag.replaceAll("#" + key + "#", mapRow.get(key));
-						smBdtEtc = smBdtEtc.replaceAll("#" + key + "#", mapRow.get(key));
+						String cellValue = EgovWebUtil.escapeXml(mapRow.get(key));
+						// 2026.07.13 KISA 보안취약점 조치 - replaceAll의 대체문자열은 정규식으로 해석되므로
+						// $, \\ 등이 역참조/이스케이프로 처리되어 예외나 의도치 않은 치환이 발생할 수 있음.
+						// Matcher.quoteReplacement()로 감싸 리터럴 문자열로 안전하게 치환한다.
+						String quotedCellValue = Matcher.quoteReplacement(cellValue);
+						smBdtTitle = smBdtTitle.replaceAll("#" + key + "#", quotedCellValue);
+						smBdtLink = smBdtLink.replaceAll("#" + key + "#", quotedCellValue);
+						smBdtDescription = smBdtDescription.replaceAll("#" + key + "#", quotedCellValue);
+						smBdtTag = smBdtTag.replaceAll("#" + key + "#", quotedCellValue);
+						smBdtEtc = smBdtEtc.replaceAll("#" + key + "#", quotedCellValue);
 					}
 				}
 			}

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
@@ -83,7 +84,7 @@ public class EgovOnlinePollManageController {
 	 * @throws Exception
 	 */
 	@IncludedInfo(name = "온라인poll관리", order = 660, gid = 50)
-	@RequestMapping(value = "/uss/olp/opm/listOnlinePollManage.do")
+	@RequestMapping("/uss/olp/opm/listOnlinePollManage.do")
 	public String egovOnlinePollManageList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, OnlinePollManage onlinePollManage, ModelMap model) throws Exception {
 
@@ -126,7 +127,7 @@ public class EgovOnlinePollManageController {
 	 * @return "/uss/olp/opm/EgovOnlinePollDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/opm/detailOnlinePollManage.do")
+	@PostMapping("/uss/olp/opm/detailOnlinePollManage.do")
 	public String egovOnlinePollManageDetail(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			OnlinePollManage onlinePollManage, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
@@ -162,7 +163,7 @@ public class EgovOnlinePollManageController {
 	 * @return "/uss/olp/opm/EgovOnlinePollUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/opm/updtOnlinePollManageView.do")
+	@PostMapping("/uss/olp/opm/updtOnlinePollManageView.do")
 	public String egovOnlinePollManageModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			OnlinePollManage onlinePollManage, ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
 
@@ -199,7 +200,7 @@ public class EgovOnlinePollManageController {
 	 * @return "redirect:/uss/olp/opm/listOnlinePollManage.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/opm/updtOnlinePollManage.do")
+	@PostMapping("/uss/olp/opm/updtOnlinePollManage.do")
 	public String egovOnlinePollManageModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, 
 			@Valid OnlinePollManage onlinePollManage, BindingResult bindingResult, RedirectAttributes redirectAttributes,
@@ -243,7 +244,7 @@ public class EgovOnlinePollManageController {
 	 * @return "/uss/olp/opm/EgovOnlinePollRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/opm/registOnlinePollManageView.do")
+	@PostMapping("/uss/olp/opm/registOnlinePollManageView.do")
 	public String egovOnlinePollManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@ModelAttribute("onlinePollManage") OnlinePollManage onlinePollManage, RedirectAttributes redirectAttributes, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -274,7 +275,7 @@ public class EgovOnlinePollManageController {
 	 * @return "redirect:/uss/olp/opm/listOnlinePollManage.do";
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/opm/registOnlinePollManage.do")
+	@PostMapping("/uss/olp/opm/registOnlinePollManage.do")
 	public String egovOnlinePollManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, @Valid @ModelAttribute("onlinePollManage") OnlinePollManage onlinePollManage,
 			BindingResult bindingResult,RedirectAttributes redirectAttributes, ModelMap model) throws Exception {
@@ -317,7 +318,7 @@ public class EgovOnlinePollManageController {
 	 * @return "/uss/olp/opm/EgovOnlinePollRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/opm/listOnlinePollItem.do")
+	@PostMapping("/uss/olp/opm/listOnlinePollItem.do")
 	public String egovOnlinePollItemList(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, @ModelAttribute("onlinePollItem") OnlinePollItem onlinePollItem,
 			ModelMap model) throws Exception {
@@ -339,7 +340,7 @@ public class EgovOnlinePollManageController {
 	 * @return "/uss/olp/opm/EgovOnlinePollRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/opm/registOnlinePollItem.do")
+	@PostMapping("/uss/olp/opm/registOnlinePollItem.do")
 	public String egovOnlinePollItemRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, 
 			@Valid OnlinePollItem onlinePollItem, BindingResult bindingResult,
@@ -382,7 +383,7 @@ public class EgovOnlinePollManageController {
 	 * @return "/uss/olp/opm/EgovOnlinePollRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/opm/updtOnlinePollItem.do")
+	@PostMapping("/uss/olp/opm/updtOnlinePollItem.do")
 	public String egovOnlinePollItemModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap,@Valid OnlinePollItem onlinePollItem, BindingResult bindingResult,
 			RedirectAttributes redirectAttributes,
@@ -424,7 +425,7 @@ public class EgovOnlinePollManageController {
 	 * @return "/uss/olp/opm/EgovOnlinePollRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/opm/delOnlinePollItem.do")
+	@PostMapping("/uss/olp/opm/delOnlinePollItem.do")
 	public String egovOnlinePollItemDelete(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, OnlinePollItem onlinePollItem, BindingResult bindingResult,
 			RedirectAttributes redirectAttributes,

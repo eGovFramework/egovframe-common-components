@@ -120,7 +120,7 @@
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fn_egov_update_ntwrksvcmntrng(); return false;" /><!-- 저장 -->
-		<span class="btn_s"><a href="<c:url value='/utl/sys/nsm/selectNtwrkSvcMntrngList.do'/>?searchWrd=<c:out value='${ntwrkSvcMntrngVO.searchWrd}'/>&amp;searchCnd=<c:out value='${ntwrkSvcMntrngVO.searchCnd}'/>&amp;pageIndex=<c:out value='${ntwrkSvcMntrngVO.pageIndex}'/>" onclick="fn_egov_list_ntwrksvcmntrng(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_list_ntwrksvcmntrng(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
 	</div>
 	<div style="clear:both;"></div>
 </div>

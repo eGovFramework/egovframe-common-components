@@ -121,15 +121,15 @@
 	</table>
 	<!-- 하단 버튼 -->
 	<div class="btn">
-	<form name="qnaForm" action="<c:url value='/uss/olh/qna/updateQnaView.do'/>" method="post" style="float:left;">
+	<form name="qnaForm" action="${pageContext.request.contextPath}/uss/olh/qna/updateQnaView.do" method="post" style="float:left;">
 			<input type="submit" class="s_submit" value="<spring:message code="button.update" />" title="<spring:message code="title.update" /> <spring:message code="input.button" />" />
 			<input name="qaId" type="hidden" value="${result.qaId}">
 		</form>
-		<form name="formDelete" action="<c:url value='/uss/olh/qna/deleteQna.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+		<form name="formDelete" action="${pageContext.request.contextPath}/uss/olh/qna/deleteQna.do" method="post" style="float:left; margin:0 0 0 3px;">
 			<input type="submit" class="s_submit" value="<spring:message code="button.delete" />" title="<spring:message code="button.delete" /> <spring:message code="input.button" />" onclick="fn_egov_delete_qna(this.form); return false;">
 			<input name="qaId" type="hidden" value="${result.qaId}">
 		</form>
-		<form name="formList" action="<c:url value='/uss/olh/qna/selectQnaList.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+		<form name="formList" action="${pageContext.request.contextPath}/uss/olh/qna/selectQnaList.do" method="post" style="float:left; margin:0 0 0 3px;">
 			<input type="submit" class="s_submit" value="<spring:message code="button.list" />">
 		</form>
 	</div><div style="clear:both;"></div>

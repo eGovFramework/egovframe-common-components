@@ -10,10 +10,13 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovMessageSource;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.EgovProperties;
 import egovframework.com.sec.ram.service.AuthorRoleManage;
 import egovframework.com.sec.ram.service.AuthorRoleManageVO;
@@ -115,7 +118,8 @@ public class EgovAuthorRoleController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sec/ram/EgovAuthorRoleInsert.do")
+	@PostMapping("/sec/ram/EgovAuthorRoleInsert.do")
+	@RequireAdmin
 	public String insertAuthorRole(@RequestParam("authorCode") String authorCode,
 			                       @RequestParam("roleCodes") String roleCodes,
 			                       @RequestParam("regYns") String regYns,

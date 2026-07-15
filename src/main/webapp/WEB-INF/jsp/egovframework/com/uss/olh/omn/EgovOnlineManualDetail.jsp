@@ -49,7 +49,7 @@ function fn_egov_list_OnlineManual(){
 <%-- noscript 테그 --%>
 <noscript class="noScriptTitle">자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>
 <!--  상단타이틀 -->
-<form name="OnlineManualForm" action="<c:url value=''/>" method="post">
+<form name="OnlineManualForm" action="" method="post">
 <!-- ----------------- 상단 타이틀  영역 -->
 <table width="100%" cellpadding="8" class="table-search" border="0">
  <tr>
@@ -126,7 +126,7 @@ function fn_egov_list_OnlineManual(){
 <table border="0" cellspacing="0" cellpadding="0" align="center">
 <tr>
 	<td>
-		<form name="formList" action="<c:url value='/uss/olh/omn/listOnlineManual.do'/>" method="post">
+		<form name="formList" action="${pageContext.request.contextPath}/uss/olh/omn/listOnlineManual.do" method="post">
 		<span class="button"><input type="submit" value="<spring:message code="button.list" />" onclick="fn_egov_list_OnlineManual(); return false;"></span>
 		</form>
 	</td>

@@ -11,6 +11,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -116,7 +117,7 @@ public class EgovOnlineManualController {
 	 * @return "/uss/olh/omn/EgovOnlineManualUserDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olh/omn/selectOnlineManualDetail.do")
+	@PostMapping("/uss/olh/omn/selectOnlineManualDetail.do")
 	public String selectOnlineManualUserDetail(@ModelAttribute("searchVO") OnlineManualVO searchVO,
 			OnlineManualVO onlineManualVO, ModelMap model) throws Exception {
 
@@ -173,7 +174,7 @@ public class EgovOnlineManualController {
 	 * @return "/uss/olh/omm/EgovOnlineManualDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olh/omm/selectOnlineManualDetail.do")
+	@PostMapping("/uss/olh/omm/selectOnlineManualDetail.do")
 	public String selectOnlineManualDetail(@ModelAttribute("searchVO") OnlineManualVO searchVO,
 			OnlineManualVO onlineManualVO, ModelMap model) throws Exception {
 
@@ -191,7 +192,7 @@ public class EgovOnlineManualController {
 	 * @return "/uss/olh/omm/EgovOnlineManualRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/omm/insertOnlineManualView.do")
+	@PostMapping("/uss/olh/omm/insertOnlineManualView.do")
 	public String insertOnlineManualView(@ModelAttribute("searchVO") OnlineManualVO searchVO, Model model)
 			throws Exception {
 
@@ -217,7 +218,7 @@ public class EgovOnlineManualController {
 	 * @return "forward:/uss/olh/awm/selectAdministrationWordManageList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/omm/insertOnlineManual.do")
+	@PostMapping("/uss/olh/omm/insertOnlineManual.do")
 	public String insertOnlineManual(@ModelAttribute("searchVO") OnlineManualVO searchVO,
 			@Valid @ModelAttribute("onlineManualVO") OnlineManualVO onlineManualVO, BindingResult bindingResult,
 			Model model)
@@ -254,7 +255,7 @@ public class EgovOnlineManualController {
 	 * @return "/uss/olh/omm/EgovOnlineManualUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/omm/updateOnlineManualView.do")
+	@PostMapping("/uss/olh/omm/updateOnlineManualView.do")
 	public String updateOnlineManualView(@RequestParam("onlineMnlId") String onlineMnlId,
 			@ModelAttribute("searchVO") OnlineManualVO searchVO, ModelMap model) throws Exception {
 
@@ -282,7 +283,7 @@ public class EgovOnlineManualController {
 	 * @return "forward:/uss/olh/omm/selectOnlineManualList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/omm/updateOnlineManual.do")
+	@PostMapping("/uss/olh/omm/updateOnlineManual.do")
 	public String updateOnlineManual(HttpServletRequest request, @ModelAttribute("searchVO") OnlineManualVO searchVO,
 			@Valid @ModelAttribute("onlineManualVO") OnlineManualVO onlineManualVO, BindingResult bindingResult,
 			Model model)
@@ -331,7 +332,7 @@ public class EgovOnlineManualController {
 	 * @return "forward:/uss/olh/omm/selectOnlineManualList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/omm/deleteOnlineManual.do")
+	@PostMapping("/uss/olh/omm/deleteOnlineManual.do")
 	public String deleteOnlineManual(HttpServletRequest request, OnlineManualVO onlineManualVO,
 			@ModelAttribute("searchVO") OnlineManualVO searchVO) throws Exception {
 

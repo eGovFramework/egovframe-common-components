@@ -17,6 +17,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -717,7 +718,7 @@ background-image : url('<c:url value="/images/egovframework/com/cmm/uss/umt/butt
 <body>
 
 <div class="board">
-<form name="listFormS" action="<c:url value='/uss/ion/wik/bmk/listWikiBookmark.do'/>" method="post">
+<form:form name="listFormS" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/ion/wik/bmk/listWikiBookmark.do" method="post">
 	<h1><spring:message code="ussIonWikBmk.wikiBookmarkList.wikiBookmarkList"/></h1><!-- 위키북마크 목록 -->
 	<span><spring:message code="ussIonWikBmk.wikiBookmarkList.bookmarkgd"/></span><!-- 위키북마크 등록은 JSP WIki 설치가 필요합니다.(자세한 내용은 위키가이드 참고) -->
 
@@ -782,7 +783,7 @@ background-image : url('<c:url value="/images/egovframework/com/cmm/uss/umt/butt
 <input name="cmd" type="hidden" value="">
 <input name="searchCondition" type="hidden" value="A.WIKI_BKMK_NM">
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-</form>
+</form:form>
 
 </div>
 

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -89,7 +90,7 @@ public class EgovCntcMessageController {
 	 * @return "forward:/ssi/syi/ims/EgovCcmAdministCodeList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/ims/removeCntcMessage.do")
+	@PostMapping("/ssi/syi/ims/removeCntcMessage.do")
 	public String deleteCntcMessage(CntcMessage cntcMessage, ModelMap model) throws Exception {
 		cntcMessageService.deleteCntcMessage(cntcMessage);
 		return "forward:/ssi/syi/ims/getCntcMessageList.do";
@@ -104,7 +105,7 @@ public class EgovCntcMessageController {
 	 * @return "forward:/ssi/syi/ims/EgovCcmAdministCodeList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/ims/removeCntcMessageItem.do")
+	@PostMapping("/ssi/syi/ims/removeCntcMessageItem.do")
 	public String deleteCntcMessageItem(CntcMessageItem cntcMessageItem, ModelMap model) throws Exception {
 		cntcMessageService.deleteCntcMessageItem(cntcMessageItem);
 		return "forward:/ssi/syi/ims/getCntcMessageList.do";
@@ -119,7 +120,7 @@ public class EgovCntcMessageController {
 	 * @return "egovframework/com/ssi/syi/ims/EgovCntcMessageRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/ims/addCntcMessage.do", params = "!cmd")
+	@PostMapping(value = "/ssi/syi/ims/addCntcMessage.do", params = "!cmd")
 	public String insertCntcMessageView(@ModelAttribute("searchVO") CntcMessageVO searchVO,
 			@ModelAttribute("cntcMessage") CntcMessage cntcMessage,
 			ModelMap model) throws Exception {
@@ -144,7 +145,7 @@ public class EgovCntcMessageController {
 	 * @return "egovframework/com/ssi/syi/ims/EgovCntcMessageRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/ims/addCntcMessage.do", params = "cmd=Regist")
+	@PostMapping(value = "/ssi/syi/ims/addCntcMessage.do", params = "cmd=Regist")
 	public String insertCntcMessage(@ModelAttribute("searchVO") CntcMessageVO searchVO,
 			@Valid @ModelAttribute("cntcMessage") CntcMessage cntcMessage,
 			BindingResult bindingResult, ModelMap model) throws Exception {
@@ -183,7 +184,7 @@ public class EgovCntcMessageController {
 	 * @return "egovframework/com/ssi/syi/ims/EgovCntcMessageItemRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/ims/addCntcMessageItem.do", params = "!cmd")
+	@PostMapping(value = "/ssi/syi/ims/addCntcMessageItem.do", params = "!cmd")
 	public String insertCntcMessageItemView(@ModelAttribute("searchVO") CntcMessageVO searchVO,
 			@ModelAttribute("cntcMessageItem") CntcMessageItem cntcMessageItem,
 			ModelMap model) throws Exception {
@@ -208,7 +209,7 @@ public class EgovCntcMessageController {
 	 * @return "egovframework/com/ssi/syi/ims/EgovCntcMessageItemRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/ims/addCntcMessageItem.do", params = "cmd=Regist")
+	@PostMapping(value = "/ssi/syi/ims/addCntcMessageItem.do", params = "cmd=Regist")
 	public String insertCntcMessageItem(@ModelAttribute("searchVO") CntcMessageVO searchVO,
 			@Valid @ModelAttribute("cntcMessageItem") CntcMessageItem cntcMessageItem,
 			BindingResult bindingResult, ModelMap model) throws Exception {
@@ -247,7 +248,7 @@ public class EgovCntcMessageController {
 	 * @return "egovframework/com/ssi/syi/ims/EgovCcmCntcMessageDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/ims/getCntcMessageDetail.do")
+	@PostMapping("/ssi/syi/ims/getCntcMessageDetail.do")
 	public String selectCntcMessageDetail(@ModelAttribute("searchVO") CntcMessageVO searchVO,
 			@ModelAttribute("cntcMessage") CntcMessage cntcMessage,
 			@ModelAttribute("cntcMessageItemVO") CntcMessageItemVO cntcMessageItemVO, ModelMap model) throws Exception {
@@ -312,7 +313,7 @@ public class EgovCntcMessageController {
 	 * @return "egovframework/com/ssi/syi/ims/EgovCntcMessageUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/ims/updateCntcMessage.do", params = "!cmd")
+	@PostMapping(value = "/ssi/syi/ims/updateCntcMessage.do", params = "!cmd")
 	public String updateCntcMessageView(@ModelAttribute("searchVO") CntcMessageVO searchVO,
 			@ModelAttribute("cntcMessage") CntcMessage cntcMessage,
 			ModelMap model) throws Exception {
@@ -340,7 +341,7 @@ public class EgovCntcMessageController {
 	 * @return "egovframework/com/ssi/syi/ims/EgovCntcMessageUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/ims/updateCntcMessage.do", params = "cmd=Modify")
+	@PostMapping(value = "/ssi/syi/ims/updateCntcMessage.do", params = "cmd=Modify")
 	public String updateCntcMessage(@ModelAttribute("searchVO") CntcMessageVO searchVO,
 			@Valid @ModelAttribute("cntcMessage") CntcMessage cntcMessage,
 			BindingResult bindingResult, ModelMap model) throws Exception {
@@ -375,7 +376,7 @@ public class EgovCntcMessageController {
 	 * @return "egovframework/com/ssi/syi/ims/EgovCntcMessageItemUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/ims/updateCntcMessageItem.do", params = "!cmd")
+	@PostMapping(value = "/ssi/syi/ims/updateCntcMessageItem.do", params = "!cmd")
 	public String updateCntcMessageItemView(@ModelAttribute("searchVO") CntcMessageVO searchVO,
 			@ModelAttribute("cntcMessageItem") CntcMessageItem cntcMessageItem,
 			ModelMap model) throws Exception {
@@ -403,7 +404,7 @@ public class EgovCntcMessageController {
 	 * @return "egovframework/com/ssi/syi/ims/EgovCntcMessageItemUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ssi/syi/ims/updateCntcMessageItem.do", params = "cmd=Modify")
+	@PostMapping(value = "/ssi/syi/ims/updateCntcMessageItem.do", params = "cmd=Modify")
 	public String updateCntcMessageItem(@ModelAttribute("searchVO") CntcMessageVO searchVO,
 			@Valid @ModelAttribute("cntcMessageItem") CntcMessageItem cntcMessageItem,
 			BindingResult bindingResult, ModelMap model) throws Exception {

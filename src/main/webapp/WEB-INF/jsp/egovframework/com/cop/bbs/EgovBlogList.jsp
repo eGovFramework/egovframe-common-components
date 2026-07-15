@@ -21,6 +21,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comCopBlog.blogMasterVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -59,22 +60,16 @@ function fn_insert_Blog() {
   	document.BlogMasterForm.submit();
 }
 
+function fn_egov_selectArticleBlogList(blogId, bbsId) {
+	document.BlogMasterForm.blogId.value = blogId;
+	document.BlogMasterForm.bbsId.value = bbsId;
+	document.BlogMasterForm.action = "<c:url value='/cop/bbs/selectArticleBlogList.do'/>";
+	document.BlogMasterForm.submit();
+}
+
 function fn_userChk(userId) {
-	$.ajax({
-		url :"<c:url value='/cop/bbs/selectChkBloguser.do'/>"
-        ,type: "POST"
-        ,dataType: 'json'  	   
-        ,success : function(data){
-        	if(data['userChk'] == "EXIST") {
-        		alert("블로그가 이미 생성되어 있습니다.\n하나의 계정으로 하나의 블로그만 생성 가능합니다.")
-        	}else{
-        		fn_insert_Blog();
-        	}
-		}
-	    ,error: function(){
-	    	alert("장애가 발생했습니다. 관리자에게 문의 하세요.");
-	    }
-	});
+	/* 중복 여부는 insertBlogMaster.do 서버 검증으로 처리. 등록화면은 form submit으로 이동 */
+	fn_insert_Blog();
 }
 
 </script>
@@ -83,7 +78,7 @@ function fn_userChk(userId) {
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="BlogMasterForm" action="<c:url value='/cop/bbs/selectBlogList.do'/>" method="post" onSubmit="fn_egov_search_blog(); return false;"> 
+<form:form name="BlogMasterForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/cop/bbs/selectBlogList.do" method="post" onSubmit="fn_egov_search_blog(); return false;"> 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1><!-- 블로그 목록 -->
 	<!-- 하단 버튼 -->
@@ -98,7 +93,7 @@ function fn_userChk(userId) {
 			<li>
 				<input class="s_input" name="searchWrd" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${searchVO.searchWrd}"/>'  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" /><!-- 조회 -->
-				<span class="btn_b"><a href="#" onClick="fn_userChk('<c:out value="${searchVO.frstRegisterId}"/>')" title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span><!-- 등록 -->
+				<span class="btn_b"><a href="javascript:void(0);" onClick="fn_userChk('<c:out value="${searchVO.frstRegisterId}"/>'); return false;" title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span><!-- 등록 -->
 			</li>
 		</ul>
 	</div>
@@ -131,7 +126,7 @@ function fn_userChk(userId) {
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
-		<td class="left"><a href="<c:url value='/cop/bbs/selectArticleBlogList.do'/>?blogId=${resultInfo.blogId}&bbsId=${resultInfo.bbsId}"><c:out value='${fn:substring(resultInfo.blogNm, 0, 40)}'/></a></td>
+		<td class="left"><a href="javascript:void(0);" onClick="fn_egov_selectArticleBlogList('<c:out value="${resultInfo.blogId}"/>','<c:out value="${resultInfo.bbsId}"/>'); return false;"><c:out value='${fn:substring(resultInfo.blogNm, 0, 40)}'/></a></td>
 		<td><c:out value='${resultInfo.frstRegisterNm}'/></td>
 		<td><c:out value='${resultInfo.frstRegisterPnttm}'/></td>
 		<td><c:out value='${resultInfo.useAt}'/></td>		
@@ -157,8 +152,9 @@ function fn_userChk(userId) {
 </div>
 
 <input name="blogId" type="hidden" value="">
+<input name="bbsId" type="hidden" value="">
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-</form>
+</form:form>
 
 </body>
 </html>

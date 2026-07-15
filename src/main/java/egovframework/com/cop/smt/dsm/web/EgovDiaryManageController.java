@@ -12,6 +12,8 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -138,7 +140,7 @@ public class EgovDiaryManageController {
 	 * @return "egovframework/com/cop/smt/dsm/EgovDiaryManageDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/cop/smt/dsm/EgovDiaryManageDetail.do")
+	@PostMapping("/cop/smt/dsm/EgovDiaryManageDetail.do")
 	public String egovDiaryManageDetail(@ModelAttribute("searchVO") ComDefaultVO searchVO, DiaryManageVO diaryManageVO,
 			@RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
@@ -168,7 +170,7 @@ public class EgovDiaryManageController {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unused")
-	@RequestMapping(value = "/cop/smt/dsm/EgovDiaryManageModify.do")
+	@PostMapping("/cop/smt/dsm/EgovDiaryManageModify.do")
 	public String diaryManageModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, DiaryManageVO diaryManageVO, BindingResult bindingResult,
 			RedirectAttributes redirectAttributes, ModelMap model) throws Exception {
@@ -211,7 +213,7 @@ public class EgovDiaryManageController {
 	 * @return "egovframework/com/cop/smt/dsm/EgovDiaryManageModifyActor"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/cop/smt/dsm/EgovDiaryManageModifyActor.do")
+	@PostMapping("/cop/smt/dsm/EgovDiaryManageModifyActor.do")
 	public String diaryManageModifyActor(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("diaryManageVO") DiaryManageVO diaryManageVO, BindingResult bindingResult, 
@@ -299,7 +301,7 @@ public class EgovDiaryManageController {
 	 * @throws Exception
 	 */
 	@SuppressWarnings("unused")
-	@RequestMapping(value = "/cop/smt/dsm/EgovDiaryManageRegist.do")
+	@GetMapping("/cop/smt/dsm/EgovDiaryManageRegist.do")
 	public String diaryManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, @ModelAttribute("diaryManageVO") DiaryManageVO diaryManageVO,
 			BindingResult bindingResult, RedirectAttributes redirectAttributes, ModelMap model) throws Exception {
@@ -338,7 +340,7 @@ public class EgovDiaryManageController {
 	 * @return "egovframework/com/cop/smt/dsm/DiaryManageRegistActor"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/cop/smt/dsm/EgovDiaryManageRegistActor.do")
+	@PostMapping("/cop/smt/dsm/EgovDiaryManageRegistActor.do")
 	public String diaryManageRegistActor(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") ComDefaultVO searchVO, @RequestParam Map<?, ?> commandMap,
 			@Valid @ModelAttribute("diaryManageVO") DiaryManageVO diaryManageVO, BindingResult bindingResult, 

@@ -24,9 +24,12 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="ko">
 	<head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8">
 		<title><spring:message code="comDamMapMat.comDamMapMaterialList.title"/></title><!-- 지식맵(유형별)관리 목록 -->
 		<link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
@@ -60,7 +63,16 @@
 		 * 등록 처리 함수 
 		 ******************************************************** */
 		function fnRegist(){
-			location.href = "<c:url value='/dam/map/mat/EgovComDamMapMaterialRegistView.do'/>";
+			fn_egov_postNavigate("<c:url value='/dam/map/mat/EgovComDamMapMaterialRegistView.do' />");
+		}
+		/* ********************************************************
+		 * 상세화면 처리 함수
+		 ******************************************************** */
+		function fn_egov_detail_MapMaterial(knoTypeCd){
+			var form = document.listForm;
+			form.knoTypeCd.value = knoTypeCd;
+			form.action = "<c:url value='/dam/map/mat/EgovComDamMapMaterial.do'/>";
+			form.submit();
 		}
 		
 		function press(event) {
@@ -78,7 +90,7 @@
 	<!-- 자바스크립트 경고 태그  -->
 	<noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 	
-	<form name="listForm" action="<c:url value='/dam/map/mat/EgovComDamMapMaterialList.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/dam/map/mat/EgovComDamMapMaterialList.do" method="post">
 	<input type="hidden" name="orgnztId">
 	
 	<div class="board">
@@ -124,7 +136,7 @@
 						<td><c:out value="${(searchVO.pageIndex - 1) * searchVO.pageSize + status.count}"/></td>
 						<td>${resultInfo.orgnztNm}</td>
 						<td>
-						<a href="<c:url value='/dam/map/mat/EgovComDamMapMaterial.do'/>?pageIndex=${searchVO.pageIndex}&amp;knoTypeCd=${resultInfo.knoTypeCd}"><c:out value="${resultInfo.knoTypeNm}"/></a>								
+						<a href="javascript:void(0);" onclick="fn_egov_detail_MapMaterial('<c:out value="${resultInfo.knoTypeCd}"/>'); return false;"><c:out value="${resultInfo.knoTypeNm}"/></a>								
 						</td>
 						<td>${resultInfo.knoUrl}</td>
 						<td>${resultInfo.clYmd}</td>
@@ -153,7 +165,7 @@
 	<input type="hidden" name="knoTypeCd">	
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 	
-	</form>
+	</form:form>
 	</body>
 </html>
 

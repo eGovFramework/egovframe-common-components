@@ -121,9 +121,9 @@ function fncBndtCeckManageList() {
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<span class="btn_s"><a href="<c:url value='/uss/ion/bnt/EgovBndtCeckManage.do'/>?cmd=updt&bndtCeckSe=<c:out value='${bndtCeckManageVO.bndtCeckSe}'/>&bndtCeckCd=<c:out value='${bndtCeckManageVO.bndtCeckCd}'/>" onclick="fncEgovBndtCeckManage(); return false;"><spring:message code="button.update" /></a></span>
-		<span class="btn_s"><a href="<c:url value='/uss/ion/bnt/deleteBndtCeckManage.do'/>?bndtCeckSe=<c:out value='${bndtCeckManageVO.bndtCeckSe}'/>&bndtCeckCd=<c:out value='${bndtCeckManageVO.bndtCeckCd}'/>" onclick="fncDeleteBndtCeckManage(); return false;"><spring:message code="button.delete" /></a></span>
-		<span class="btn_s"><a href="<c:url value='/uss/ion/bnt/EgovBndtCeckManageList.do'/>" onclick="fncBndtCeckManageList(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncEgovBndtCeckManage(); return false;"><spring:message code="button.update" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncDeleteBndtCeckManage(); return false;"><spring:message code="button.delete" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncBndtCeckManageList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

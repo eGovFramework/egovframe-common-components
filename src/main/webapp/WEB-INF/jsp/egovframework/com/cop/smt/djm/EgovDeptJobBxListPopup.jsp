@@ -34,8 +34,6 @@
 
 <script type="text/javaScript" language="javascript">
 function fn_egov_init_deptjobbx(){
-	/* var opener = window.dialogArguments; */
-	
 	var opener;
 	getDialogArguments();
 	
@@ -62,7 +60,6 @@ function resizeFrame(ifr_id,re){
  var ifr= document.getElementById(ifr_id) ;
  var innerBody = ifr.contentWindow.document.body;
  var innerHeight = innerBody.scrollHeight + (innerBody.offsetHeight - innerBody.clientHeight);
- //var innerWidth = document.body.scrollWidth + (document.body.offsetWidth - document.body.clientWidth);
 
  if (ifr.style.height != innerHeight) //주석제거시 다음 구문으로 교체 -> if (ifr.style.height != innerHeight || ifr.style.width != innerWidth)
  {

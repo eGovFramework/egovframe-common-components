@@ -3,6 +3,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="egovframework.com.cmm.LoginVO" %>
 <%@ page import="egovframework.com.cmm.util.EgovUserDetailsHelper" %>
 <%
@@ -201,7 +202,7 @@ function fn_buttonList() {
 	<h1><spring:message code="comUatUap.LoginPolicyList.caption" /></h1>
 	
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
-		<form name="listForm" action="<c:url value='/uat/uap/selectLoginPolicyList.do'/>" method="get">
+		<form:form name="listForm" modelAttribute="loginPolicyVO" action="${pageContext.request.contextPath}/uat/uap/selectLoginPolicyList.do" method="post">
 		
 		<ul>
 			<li>
@@ -215,7 +216,7 @@ function fn_buttonList() {
 		<input type="hidden" name="emplyrId">
 		<input type="hidden" name="pageIndex" value="<c:if test="${empty loginPolicyVO.pageIndex }">1</c:if><c:if test="${!empty loginPolicyVO.pageIndex }"><c:out value='${loginPolicyVO.pageIndex}'/></c:if>">
 		<input type="hidden" name="searchCondition" value="1" >
-		</form>
+		</form:form>
 	</div>
 	
 	<table class="board_list">
@@ -246,7 +247,8 @@ function fn_buttonList() {
 			<c:forEach var="loginPolicy" items="${loginPolicyList}" varStatus="status">
 			<tr>
 				<td>
-					<form name="item" action="<c:url value='/uat/uap/getLoginPolicy.do'/>">
+					<form name="item" method="post" action="${pageContext.request.contextPath}/uat/uap/getLoginPolicy.do">
+					    <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 					    <input type="hidden" name="emplyrId" value="<c:out value="${loginPolicy.emplyrId}"/>">
 					    <input type="hidden" name="pageIndex" value="<c:out value='${loginPolicyVO.pageIndex}'/>">
 					    <input type="hidden" name="searchCondition" value="<c:out value='${loginPolicyVO.searchCondition}'/>">
