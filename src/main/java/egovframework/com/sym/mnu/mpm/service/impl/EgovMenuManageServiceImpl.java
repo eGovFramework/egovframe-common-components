@@ -355,7 +355,7 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 		// String xlsFile = null;
 		try {
 			/*
-			 * 오류 메세지 정보 message = "99"; //프로그램목록테이블 데이타 존재오류. message = "99"; //메뉴정보테이블 데이타
+			 * 오류 메시지 정보 message = "99"; //프로그램목록테이블 데이터 존재오류. message = "99"; //메뉴정보테이블 데이터
 			 * 존재오류. message = "90"; //파일존재하지 않음. message = "91"; //프로그램시트의 cell 개수 오류
 			 * message = "92"; //메뉴정보시트의 cell 개수 오류 message = "93"; //엑셀 시트개수 오류 message =
 			 * "95"; //메뉴정보 입력시 에러 message = "96"; //프로그램목록입력시 에러 message = "0"; //일괄배치처리 완료
@@ -363,10 +363,10 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 
 			if (progrmManageDAO.selectProgrmListTotCnt() > 0) {
 				return requestValue = "99";
-			} // 프로그램목록테이블 데이타 존재오류.
+			} // 프로그램목록테이블 데이터 존재오류.
 			if (menuManageDAO.selectMenuListTotCnt() > 0) {
 				return requestValue = "99";
-			} // 메뉴정보테이블 데이타 존재오류.
+			} // 메뉴정보테이블 데이터 존재오류.
 
 			HSSFWorkbook hssfWB = (HSSFWorkbook) excelZipService.loadWorkbook(inputStream);
 			// 엑셀 파일 시트 개수 확인 sheet = 2 첫번째시트 = 프로그램목록 두번째시트 = 메뉴목록
@@ -378,12 +378,12 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 				progrmSheetRowCnt = progrmRow.getPhysicalNumberOfCells(); // 프로그램 cell Cnt
 				menuSheetRowCnt = menuRow.getPhysicalNumberOfCells(); // 메뉴정보 cell Cnt
 
-				// 프로그램 시트 파일 데이타 검증 cell = 5개
+				// 프로그램 시트 파일 데이터 검증 cell = 5개
 				if (progrmSheetRowCnt != 5) {
 					return requestValue = "91"; // 프로그램시트의 cell 개수 오류
 				}
 
-				// 메뉴목록 시트 파일 데이타 검증 cell = 8개
+				// 메뉴목록 시트 파일 데이터 검증 cell = 8개
 				if (menuSheetRowCnt != 8) {
 					return requestValue = "92"; // 메뉴정보시트의 cell 개수 오류
 				}
@@ -555,7 +555,7 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 	}
 
 	/**
-	 * 메뉴정보 전체데이타 초기화
+	 * 메뉴정보 전체데이터 초기화
 	 * 
 	 * @return boolean
 	 * @exception Exception
@@ -589,7 +589,7 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 	}
 
 	/**
-	 * 프로그램 정보 전체데이타 초기화
+	 * 프로그램 정보 전체데이터 초기화
 	 * 
 	 * @return boolean
 	 * @exception Exception
@@ -599,7 +599,7 @@ public class EgovMenuManageServiceImpl extends EgovAbstractServiceImpl implement
 	}
 
 	/**
-	 * 프로그램변경내역 정보 전체데이타 초기화
+	 * 프로그램변경내역 정보 전체데이터 초기화
 	 * 
 	 * @return boolean
 	 * @exception Exception
