@@ -41,7 +41,7 @@ public class EgovWildcardReloadableResourceBundleMessageSource
 			for (int i = 0; i < basenames.length; i++) {
 
 				String basename = StringUtils.trimToEmpty(basenames[i]);
-				if (basename.indexOf("classpath:/") > -1) {
+				if (basename.contains("classpath:/")) {
 					baseNames.add(basename);
 				} else if (StringUtils.isNotBlank(basename)) {
 					try {
@@ -53,7 +53,7 @@ public class EgovWildcardReloadableResourceBundleMessageSource
 							String uri = resource.getURI().toString();
 							String baseName = null;
 
-							if (uri.indexOf(".properties") == -1) {
+							if (!uri.contains(".properties")) {
 								continue;
 							}
 
@@ -61,7 +61,7 @@ public class EgovWildcardReloadableResourceBundleMessageSource
 								baseName = "classpath:" + StringUtils.substringBetween(uri, "/classes/", ".properties");
 								baseName = baseName.substring(0, baseName.indexOf("_"));
 								baseName = baseName.replaceAll("classpath:", "classpath:/");
-								if (baseNames.indexOf(baseName) > -1) {
+								if (baseNames.contains(baseName)) {
 									continue;
 								}
 

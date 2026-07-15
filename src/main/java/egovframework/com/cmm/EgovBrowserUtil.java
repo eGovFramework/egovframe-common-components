@@ -48,7 +48,7 @@ public class EgovBrowserUtil {
 			return result;
 		}
 		
-		if (userAgent.indexOf("Trident/7.0") > -1) {
+		if (userAgent.contains("Trident/7.0")) {
 		    result.put(TYPEKEY,MSIE);
 		    result.put(VERSIONKEY,"11.0");
 		    return result;
