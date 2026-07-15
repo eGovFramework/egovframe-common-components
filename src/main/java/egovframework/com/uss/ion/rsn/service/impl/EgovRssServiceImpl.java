@@ -70,23 +70,22 @@ public class EgovRssServiceImpl extends EgovAbstractServiceImpl implements EgovR
 			String smBdtTag = sBdtTag == null ? "" : sBdtTag;
 			String smBdtEtc = sBdtEtc == null ? "" : sBdtEtc;
 
-			Object[] keys = mapRow.keySet().toArray();
-
-			for (Object key : keys) {
-				if (mapRow.get(key) instanceof String) {
-					// null 처리
-					if (mapRow.get(key) != null && key != null) {
-						String cellValue = EgovWebUtil.escapeXml(mapRow.get(key));
-						// 2026.07.13 KISA 보안취약점 조치 - replaceAll의 대체문자열은 정규식으로 해석되므로
-						// $, \\ 등이 역참조/이스케이프로 처리되어 예외나 의도치 않은 치환이 발생할 수 있음.
-						// Matcher.quoteReplacement()로 감싸 리터럴 문자열로 안전하게 치환한다.
-						String quotedCellValue = Matcher.quoteReplacement(cellValue);
-						smBdtTitle = smBdtTitle.replaceAll("#" + key + "#", quotedCellValue);
-						smBdtLink = smBdtLink.replaceAll("#" + key + "#", quotedCellValue);
-						smBdtDescription = smBdtDescription.replaceAll("#" + key + "#", quotedCellValue);
-						smBdtTag = smBdtTag.replaceAll("#" + key + "#", quotedCellValue);
-						smBdtEtc = smBdtEtc.replaceAll("#" + key + "#", quotedCellValue);
-					}
+			for (Map.Entry<String, String> entry : mapRow.entrySet()) {
+				String key = entry.getKey();
+				String value = entry.getValue();
+				// null 처리
+				if (value != null && key != null) {
+					String cellValue = EgovWebUtil.escapeXml(value);
+					// 2026.07.13 KISA 보안취약점 조치 - replaceAll의 대체문자열은 정규식으로 해석되므로
+					// $, \\ 등이 역참조/이스케이프로 처리되어 예외나 의도치 않은 치환이 발생할 수 있음.
+					// Matcher.quoteReplacement()로 감싸 리터럴 문자열로 안전하게 치환한다.
+					String quotedCellValue = Matcher.quoteReplacement(cellValue);
+					String tag = "#" + key + "#";
+					smBdtTitle = smBdtTitle.replaceAll(tag, quotedCellValue);
+					smBdtLink = smBdtLink.replaceAll(tag, quotedCellValue);
+					smBdtDescription = smBdtDescription.replaceAll(tag, quotedCellValue);
+					smBdtTag = smBdtTag.replaceAll(tag, quotedCellValue);
+					smBdtEtc = smBdtEtc.replaceAll(tag, quotedCellValue);
 				}
 			}
 
