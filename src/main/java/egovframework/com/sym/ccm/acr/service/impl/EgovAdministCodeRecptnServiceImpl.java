@@ -9,7 +9,9 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
@@ -74,7 +76,11 @@ public class EgovAdministCodeRecptnServiceImpl extends EgovAbstractServiceImpl
 	 */
 	@Override
 	public void insertAdministCodeRecptn() throws Exception {
-		List<HashMap<String, String>> list = apiLink();
+		registAdministCode(apiLink());
+	}
+
+	void registAdministCode(List<HashMap<String, String>> list) throws Exception {
+		Set<String> existing = new HashSet<>(administCodeRecptnDAO.selectExistingAdministCodes());
 		for (HashMap<String, String> row : list) {
 			AdministCodeRecptn administCodeRecptn = new AdministCodeRecptn();
 
@@ -99,16 +105,13 @@ public class EgovAdministCodeRecptnServiceImpl extends EgovAbstractServiceImpl
 			administCodeRecptn.setLastUpdusrId("Batch System"); // 수정자 Batch System
 			administCodeRecptn.setUseAt("Y"); // 사용여부 >> Y
 
-			AdministCodeRecptnVO vo = new AdministCodeRecptnVO();
-			vo.setSearchCondition("CodeList");
-			vo.setAdministZoneSe("1");
-			vo.setAdministZoneCode(row.get("regionCd"));
-			int count = administCodeRecptnDAO.selectAdministCodeRecptnListTotCnt(vo);
-			if (count > 0) {
+			String code = administCodeRecptn.getAdministZoneCode();
+			if (existing.contains(code)) {
 				administCodeRecptnDAO.updateAdministCode(administCodeRecptn);
 			} else {
 				administCodeRecptnDAO.insertAdministCodeRecptn(administCodeRecptn);
 				administCodeRecptnDAO.insertAdministCode(administCodeRecptn);
+				existing.add(code);
 			}
 		}
 	}

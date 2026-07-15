@@ -52,7 +52,6 @@
 			// 페이스북 로그인 여부 확인 후 api진행
 			FB.getLoginStatus(function(response){
 				if(!response.authResponse || !response.authResponse.userID){
-					console.log(" 사용자의 로그인 또는 HTTPS 환경에서 접속해야 합니다.");
 					return;
 				}
 		

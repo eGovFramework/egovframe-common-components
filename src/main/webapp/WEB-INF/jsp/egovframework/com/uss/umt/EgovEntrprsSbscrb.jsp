@@ -34,6 +34,14 @@
 <script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script type="text/javaScript" language="javascript" defer="defer">
+var csrfHeaderName = "${_csrf.headerName}";
+var csrfToken = "${_csrf.token}";
+function egovCsrfBeforeSend(xhr) {
+	if (csrfHeaderName && csrfToken) {
+		xhr.setRequestHeader(csrfHeaderName, csrfToken);
+	}
+}
+
 
 /*********************************************************
  * 초기화
@@ -86,6 +94,7 @@ function fn_modal_setting(){
  ******************************************************** */
 function fn_id_check(){	
 	$.ajax({
+		beforeSend: egovCsrfBeforeSend,
 		type:"POST",
 		url:"<c:url value='/uss/umt/EgovIdDplctCnfirmAjax.do' />",
 		data:{
@@ -112,6 +121,7 @@ function fn_id_check(){
  ******************************************************** */
 function fn_id_checkOk(){
 	$.ajax({
+		beforeSend: egovCsrfBeforeSend,
 		type:"POST",
 		url:"<c:url value='/uss/umt/EgovIdDplctCnfirmAjax.do' />",
 		data:{

@@ -96,19 +96,19 @@
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<form name="modifyFrm" method="post" action="<c:url value='/uss/ion/noi/forUpdateNotification.do'/>" style="display:inline-block; vertical-align:top;">
+		<form name="modifyFrm" method="post" action="${pageContext.request.contextPath}/uss/ion/noi/forUpdateNotification.do" style="display:inline-block; vertical-align:top;">
 			<input name="pageIndex" type="hidden" value="<c:out value='${notificationVO.pageIndex}'/>">
 			<input type="hidden" name="ntfcNo" value="<c:out value='${result.ntfcNo}'/>" >
 			<input class="s_submit" type="submit" value="<spring:message code="button.update"/>" onclick="fn_egov_moveUpdt_notification(); return false;" />
 		</form>
 		
-		<form name="deleteFrm" method="post" action="<c:url value='/uss/ion/noi/deleteNotification.do'/>" style="display:inline-block; vertical-align:top;">
+		<form name="deleteFrm" method="post" action="${pageContext.request.contextPath}/uss/ion/noi/deleteNotification.do" style="display:inline-block; vertical-align:top;">
 			<input name="pageIndex" type="hidden" value="<c:out value='${notificationVO.pageIndex}'/>">
 			<input type="hidden" name="ntfcNo" value="<c:out value='${result.ntfcNo}'/>" >
 			<input class="s_submit" type="submit" value="<spring:message code="button.delete"/>" onclick="fn_egov_delete_notification(); return false;" />
 		</form>
 		
-		<form name="listFrm" method="post" action="<c:url value='/uss/ion/noi/selectNotificationList.do'/>" style="display:inline-block; vertical-align:top;">
+		<form name="listFrm" method="post" action="${pageContext.request.contextPath}/uss/ion/noi/selectNotificationList.do" style="display:inline-block; vertical-align:top;">
 			<input name="pageIndex" type="hidden" value="1" >
 			<input class="s_submit" type="submit" value="<spring:message code="button.list"/>" onclick="fn_egov_select_notificationList('1'); return false;" />
 		</form>

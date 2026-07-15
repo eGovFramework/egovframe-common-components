@@ -24,6 +24,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="egovframework.com.utl.fcc.service.EgovDateUtil" %>
 <!DOCTYPE html>
 <html lang="ko">
@@ -92,7 +94,7 @@ function fncVcatnManageDetail(applcntId,vcatnSe,bgnde,endde,infrmlSanctnId) {
 <div class="board">
 	<h1><spring:message code="comUssIonVct.vcatnConfmList.vcatnManageList"/></h1><!-- 휴가승인관리 목록 -->
 	
-	<form name="listForm" action="<c:url value='/uss/ion/vct/EgovVcatnConfmList.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/ion/vct/EgovVcatnConfmList.do" method="post">
 	<input type="hidden" name="searchCondition">
 	<input type="hidden" name="applcntId">
 	<input type="hidden" name="vcatnSe">
@@ -142,7 +144,7 @@ function fncVcatnManageDetail(applcntId,vcatnSe,bgnde,endde,infrmlSanctnId) {
 			</li>
 		</ul>
 	</div>
-		</form>
+		</form:form>
 	<table class="board_list">
 		<caption></caption>
 		<colgroup>
@@ -181,7 +183,8 @@ function fncVcatnManageDetail(applcntId,vcatnSe,bgnde,endde,infrmlSanctnId) {
 		          <c:if test="${resultInfo.confmAt eq 'R'}"><spring:message code="comUssIonVct.common.disagree"/></c:if><!-- 반려 -->
 				</td>
 				<td>
-		        <form name="item" method="post" action="<c:url value='/uss/ion/vct/EgovVcatnConfm.do'/>">
+		        <form name="item" method="post" action="${pageContext.request.contextPath}/uss/ion/vct/EgovVcatnConfm.do">
+		        	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		        	<input type="hidden" name="applcntId" value="<c:out value="${resultInfo.applcntId  }"/>">
 		        	<input type="hidden" name="vcatnSe"   value="<c:out value="${resultInfo.vcatnSe    }"/>">
 		        	<input type="hidden" name="bgnde"     value="<c:out value="${resultInfo.bgnde      }"/>">

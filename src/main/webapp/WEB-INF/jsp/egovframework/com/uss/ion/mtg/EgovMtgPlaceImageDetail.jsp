@@ -57,6 +57,7 @@
 		<h2><spring:message code="comUssIonMtg.mtgPlaceResveRegist.image" /></h2><!-- 회의실 이미지 -->
 	
 		<form name="imageForm" method="post">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 			<div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="<spring:message code="comUssIonMtg.mtgPlaceResveDetail.submit" />" title="<spring:message code="comUssIonMtg.mtgPlaceResveDetail.submit" />"></div>
 		</form>
 	

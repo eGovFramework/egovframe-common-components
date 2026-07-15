@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -16,6 +17,7 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sys.nsm.service.EgovNtwrkSvcMntrngService;
@@ -100,7 +102,8 @@ public class EgovNtwrkSvcMntrngController {
 	 *
 	 * @param ntwrkSvcMntrngVO
 	 */
-    @RequestMapping("/utl/sys/nsm/addNtwrkSvcMntrng.do")
+    @PostMapping("/utl/sys/nsm/addNtwrkSvcMntrng.do")
+	@RequireAdmin
 	public String addNtwrkSvcMntrng(
 		@ModelAttribute("searchVO") NtwrkSvcMntrngVO searchVO,
 		@ModelAttribute("ntwrkSvcMntrngVO") NtwrkSvcMntrngVO ntwrkSvcMntrngVO,
@@ -123,7 +126,8 @@ public class EgovNtwrkSvcMntrngController {
 	 *
 	 * @param ntwrkSvcMntrngVO
 	 */
-    @RequestMapping("/utl/sys/nsm/modifyNtwrkSvcMntrng.do")
+    @PostMapping("/utl/sys/nsm/modifyNtwrkSvcMntrng.do")
+	@RequireAdmin
 	public String modifyNtwrkSvcMntrng(
 		@ModelAttribute("searchVO") NtwrkSvcMntrngVO searchVO,
 		@ModelAttribute("ntwrkSvcMntrngVO") NtwrkSvcMntrngVO ntwrkSvcMntrngVO,
@@ -166,7 +170,7 @@ public class EgovNtwrkSvcMntrngController {
 	 *
 	 * @param ntwrkSvcMntrngVO
 	 */
-    @RequestMapping("/utl/sys/nsm/selectNtwrkSvcMntrng.do")
+    @PostMapping("/utl/sys/nsm/selectNtwrkSvcMntrng.do")
 	public String selectNtwrkSvcMntrng(@ModelAttribute("ntwrkSvcMntrngVO") NtwrkSvcMntrngVO ntwrkSvcMntrngVO, ModelMap model) throws Exception{
     	NtwrkSvcMntrng ntwrkSvcMntrng = ntwrkSvcMntrngService.selectNtwrkSvcMntrng(ntwrkSvcMntrngVO);
 
@@ -195,7 +199,8 @@ public class EgovNtwrkSvcMntrngController {
 	 *
 	 * @param ntwrkSvcMntrng
 	 */
-    @RequestMapping("/utl/sys/nsm/updateNtwrkSvcMntrng.do")
+    @PostMapping("/utl/sys/nsm/updateNtwrkSvcMntrng.do")
+	@RequireAdmin
 	public String updateNtwrkSvcMntrng(
 		@ModelAttribute("searchVO") NtwrkSvcMntrngVO searchVO,
 		@Valid @ModelAttribute("ntwrkSvcMntrngVO") NtwrkSvcMntrngVO ntwrkSvcMntrngVO,
@@ -235,7 +240,8 @@ public class EgovNtwrkSvcMntrngController {
 	 *
 	 * @param ntwrkSvcMntrng
 	 */
-    @RequestMapping("/utl/sys/nsm/insertNtwrkSvcMntrng.do")
+    @PostMapping("/utl/sys/nsm/insertNtwrkSvcMntrng.do")
+	@RequireAdmin
 	public String insertNtwrkSvcMntrng(
 		@ModelAttribute("searchVO") NtwrkSvcMntrngVO searchVO,
 		@Valid @ModelAttribute("ntwrkSvcMntrngVO") NtwrkSvcMntrngVO ntwrkSvcMntrngVO,
@@ -291,7 +297,8 @@ public class EgovNtwrkSvcMntrngController {
 	 *
 	 * @param ntwrkSvcMntrng
 	 */
-    @RequestMapping("/utl/sys/nsm/deleteNtwrkSvcMntrng.do")
+    @PostMapping("/utl/sys/nsm/deleteNtwrkSvcMntrng.do")
+	@RequireAdmin
 	public String deleteNtwrkSvcMntrng(@ModelAttribute("ntwrkSvcMntrngVO") NtwrkSvcMntrngVO ntwrkSvcMntrngVO,
 		ModelMap model, RedirectAttributes redirectAttributes) throws Exception{
 		// 0. Spring Security 사용자권한 처리
@@ -374,7 +381,7 @@ public class EgovNtwrkSvcMntrngController {
 	 *
 	 * @param ntwrkSvcMntrngLogVO
 	 */
-	@RequestMapping("/utl/sys/nsm/selectNtwrkSvcMntrngLog.do")
+	@PostMapping("/utl/sys/nsm/selectNtwrkSvcMntrngLog.do")
 	public String selectNtwrkSvcMntrngLog(@ModelAttribute("ntwrkSvcMntrngLogVO") NtwrkSvcMntrngLogVO ntwrkSvcMntrngLogVO, ModelMap model) throws Exception{
 		NtwrkSvcMntrngLogVO ntwrkSvcMntrngLog = ntwrkSvcMntrngService.selectNtwrkSvcMntrngLog(ntwrkSvcMntrngLogVO);
 		if(ntwrkSvcMntrngLog.getCreatDt() != null && !ntwrkSvcMntrngLog.getCreatDt().equals("")){

@@ -114,7 +114,7 @@
 			<form:input path="leaderNm" size="15" readonly="true" maxlength="10" title="간부명"/>
 			</td>
 			<td style="padding:0px 0px 0px 2px;margin:0px 0px 0px 0px;">
-			<a href="<c:url value='/cop/smt/lsm/selectEmplyrListPopup.do' />" target="_blank"  title="새 창으로 이동"  onClick="fn_egov_schdulCharger_LeaderSchdule('간부', 'leaderId', '', 'leaderNm', 'orgnztNm');return false;">
+			<a href="javascript:void(0);"  onClick="fn_egov_schdulCharger_LeaderSchdule('간부', 'leaderId', '', 'leaderNm', 'orgnztNm');return false;">
 			<img src="${ImgUrl}icon/search2.gif' />" style="border:0px" alt="간부선택 검색" title="간부선택 검색">
 			</a>
 			</td>
@@ -146,7 +146,7 @@
 	<tr>
 	  <td><span class="button"><input type="submit" value="<spring:message code="button.save" />" onclick="fn_egov_insert_leadersttus(); return false;"></span></td>
       <td>&nbsp;&nbsp;</td>
-      <td><span class="button"><a href="<c:url value='/cop/smt/lsm/mng/selectLeaderSttusList.do'/>?searchWrd=<c:out value='${leaderSttusVO.searchWrd}'/>&amp;searchCnd=<c:out value='${leaderSttusVO.searchCnd}'/>&amp;pageIndex=<c:out value='${leaderSttusVO.pageIndex}'/>" onclick="fn_egov_list_leadersttus(); return false;"><spring:message code="button.list" /></a></span></td>
+      <td><span class="button"><a href="javascript:void(0);" onclick="fn_egov_list_leadersttus(); return false;"><spring:message code="button.list" /></a></span></td>
 	</tr>
 	</table>
 	</div>

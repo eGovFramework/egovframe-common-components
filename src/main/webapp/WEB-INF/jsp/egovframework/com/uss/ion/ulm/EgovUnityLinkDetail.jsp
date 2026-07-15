@@ -64,7 +64,8 @@ function fn_egov_delete_UnityLink(){
 <%-- noscript 태그 --%>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
-<form name="UnityLinkForm" action="<c:url value=''/>" method="post">
+<form name="UnityLinkForm" action="" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -110,18 +111,21 @@ function fn_egov_delete_UnityLink(){
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<form name="formUpdt" action="<c:url value='/uss/ion/ulm/updtUnityLinkView.do'/>" method="post" style="display:inline-block; vertical-align:top">
+		<form name="formUpdt" action="${pageContext.request.contextPath}/uss/ion/ulm/updtUnityLinkView.do" method="post" style="display:inline-block; vertical-align:top">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 			<input name="unityLinkId" type="hidden" value="${unityLink.unityLinkId}">
 			<input class="s_submit" type="submit" value="<spring:message code="button.update" />" onclick="fn_egov_modify_UnityLink(); return false;">
 		</form>
 		
-		<form name="formDelete" action="<c:url value='/uss/ion/ulm/detailUnityLink.do'/>" method="post" style="display:inline-block; vertical-align:top">
+		<form name="formDelete" action="${pageContext.request.contextPath}/uss/ion/ulm/detailUnityLink.do" method="post" style="display:inline-block; vertical-align:top">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		<input name="unityLinkId" type="hidden" value="${unityLink.unityLinkId}">
 		<input name="cmd" type="hidden" value="<c:out value='del'/>"/>
 		<input class="s_submit" type="submit" value="<spring:message code="button.delete" />" onclick="fn_egov_delete_UnityLink(); return false;">
 		</form>
 	
-		<form name="formList" action="<c:url value='/uss/ion/ulm/listUnityLink.do'/>" method="post" style="display:inline-block; vertical-align:top">
+		<form name="formList" action="${pageContext.request.contextPath}/uss/ion/ulm/listUnityLink.do" method="post" style="display:inline-block; vertical-align:top">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		<input class="s_submit" type="submit" value="<spring:message code="button.list" />" onclick="fn_egov_list_UnityLink(); return false;">
 		</form>
 	</div>

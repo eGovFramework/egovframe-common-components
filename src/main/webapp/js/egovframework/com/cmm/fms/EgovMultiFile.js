@@ -162,9 +162,14 @@ function MultiSelector( list_target, max , file_label ){
 			return false;
 		};
 		// Set row value
-		//new_row.innerHTML = element.value;
-		new_row.innerHTML = "<span>"+element.value+"</span>&nbsp;&nbsp;";
-		
+		// 2026.07.13 KISA 보안취약점 조치: 파일명(element.value)을 innerHTML로 직접 연결하면
+		// 파일명에 포함된 HTML(예: <img onerror=...>)이 그대로 파싱/실행되어 DOM XSS가 발생할 수 있으므로,
+		// innerHTML 대신 textContent를 사용해 값을 순수 텍스트로만 렌더링한다.
+		var new_row_span = document.createElement( 'span' );
+		new_row_span.textContent = element.value;
+		new_row.appendChild( new_row_span );
+		new_row.appendChild( document.createTextNode( '  ' ) );
+
 		// Add button
 		new_row.appendChild( new_row_button );
 
@@ -208,7 +213,9 @@ function MultiSelector( list_target, max , file_label ){
 		};
 
 		// Set row value
-		new_row.innerHTML = element.value;
+		// 2026.07.13 KISA 보안취약점 조치: 파일명(element.value)을 innerHTML에 직접 대입하면
+		// DOM XSS로 이어질 수 있으므로 textContent로 안전하게 설정한다.
+		new_row.textContent = element.value;
 
 		// Add button
 		new_row.appendChild( new_row_button );

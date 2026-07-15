@@ -6,6 +6,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%--
   Class Name : EgovADressBookMainList.jsp
   Description : 주소록 메인 목록 페이지
@@ -47,7 +48,7 @@ function fncSelectAddress(AddressId) {
 <body>
 <noscript class="noScriptTitle">자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>
 
-<form name="subForms" method="post" action="<c:url value='/cop/adb/updateAdbkInf.do'/>">
+<form:form name="subForms" modelAttribute="searchVO" method="post" action="${pageContext.request.contextPath}/cop/adb/updateAdbkInf.do">
 <div id="border" style="width:200px">
 	<table width="100%" cellpadding="8" class="table-line" summary="주소록에 대한 목록을 제공한다.(마이페이지용)">
 	 <tbody>
@@ -65,6 +66,6 @@ function fncSelectAddress(AddressId) {
 	</table>
 </div>
 <input name="adbkId" type="hidden" value=""/>
-</form>
+</form:form>
 </body>
 </html>

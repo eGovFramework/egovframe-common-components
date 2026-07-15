@@ -19,10 +19,13 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUssOlpQri.title"/></c:set>
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title>${pageTitle} <spring:message code="title.list" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
@@ -40,13 +43,13 @@ function linkPage(pageNo){
  * 등록 처리 함수
  ******************************************************** */
 function fn_egov_regist_QustnrRespondInfo(){
-	location.href = "<c:url value='/uss/olp/qri/EgovQustnrRespondInfoRegist.do' />";
+	fn_egov_postNavigate("<c:url value='/uss/olp/qri/EgovQustnrRespondInfoRegist.do' />");
 }
 /* ********************************************************
  * 수정 처리 함수
  ******************************************************** */
 function fn_egov_modify_QustnrRespondInfo(){
-	location.href = "<c:url value='/uss/olp/qri/EgovQustnrRespondInfoModify.do' />";
+	fn_egov_postNavigate("<c:url value='/uss/olp/qri/EgovQustnrRespondInfoModify.do' />");
 }
 /* ********************************************************
  * 상세회면 처리 함수
@@ -54,7 +57,6 @@ function fn_egov_modify_QustnrRespondInfo(){
 function fn_egov_detail_QustnrRespondInfo(qestnrQesrspnsId){ 
 	var vFrom = document.listForm;
 	vFrom.qestnrQesrspnsId.value = qestnrQesrspnsId;
-	//document.getElementById("qestnrQesrspnsId").value = qestnrQesrspnsId;
 	vFrom.action = "<c:url value='/uss/olp/qri/EgovQustnrRespondInfoDetail.do' />";
 	vFrom.submit();
 }
@@ -106,7 +108,7 @@ function fn_egov_list_QustnrQestnManag(qestnrId, qestnrTmplatId){
 <!-- 자바스크립트 경고 태그  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="listForm" action="<c:url value='/uss/olp/qri/EgovQustnrRespondInfoList.do'/>" method="post" onSubmit="fn_egov_search_QustnrRespondInfo(); return false;">
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/olp/qri/EgovQustnrRespondInfoList.do" method="post" onSubmit="fn_egov_search_QustnrRespondInfo(); return false;">
 
 	
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
@@ -127,7 +129,7 @@ function fn_egov_list_QustnrQestnManag(qestnrId, qestnrTmplatId){
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code='title.search' /> <spring:message code='input.input' />" value="<c:out value='${searchKeyword}'/>"  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code='button.inquire' />" title="<spring:message code='title.inquire' /> <spring:message code='input.button' />" onclick="fn_egov_search_QustnrRespondInfo(); return false;" />
 				<!-- 등록버튼 -->
-				<span class="btn_b"><a href="<c:url value='/uss/olp/qri/EgovQustnrRespondInfoRegist.do' />"  title="<spring:message code='button.create' /> <spring:message code='input.button' />"><spring:message code="button.create" /></a></span> 
+				<span class="btn_b"><a href="#" onclick="fn_egov_postNavigate('<c:url value='/uss/olp/qri/EgovQustnrRespondInfoRegist.do' />'); return false;"  title="<spring:message code='button.create' /> <spring:message code='input.button' />"><spring:message code="button.create" /></a></span> 
 			</li>
 		</ul>
 	</div>
@@ -176,7 +178,7 @@ function fn_egov_list_QustnrQestnManag(qestnrId, qestnrTmplatId){
 		</td>
 		<!-- 설문문항 -->
 		<td class="lt_text3">
-			<a href="<c:url value='/uss/olp/qri/EgovQustnrRespondInfoDetail.do'/>?qestnrQesrspnsId=${resultInfo.qestnrQesrspnsId}" onClick="fn_egov_detail_QustnrRespondInfo('<c:out value="${resultInfo.qestnrQesrspnsId}"/>');return false;"><c:out value='${resultInfo.qestnCn}'/></a>
+			<a href="javascript:void(0);" onClick="fn_egov_detail_QustnrRespondInfo('<c:out value="${resultInfo.qestnrQesrspnsId}"/>');return false;"><c:out value='${resultInfo.qestnCn}'/></a>
 		</td>
 		<!-- onLoad="if(this.width>65){this.width=65}" -->
 		<!-- 설문항목 -->
@@ -204,7 +206,7 @@ function fn_egov_list_QustnrQestnManag(qestnrId, qestnrTmplatId){
 <input name="searchMode" type="hidden" value="">
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 
-</form>
+</form:form>
 	
 </div><!-- end div board -->
 

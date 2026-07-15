@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
@@ -141,7 +142,7 @@ public class EgovRwardManageController {
 	 * @param rwardManageVO - 포상관리 VO
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/rwd/EgovRwardManageDetail.do")
+	@PostMapping("/uss/ion/rwd/EgovRwardManageDetail.do")
 	public String selectRwardManage(@ModelAttribute("rwardManage") RwardManage rwardManage,
 			@ModelAttribute("rwardManageVO") RwardManageVO rwardManageVO, @RequestParam Map<?, ?> commandMap,
 			ModelMap model) throws Exception {
@@ -184,7 +185,7 @@ public class EgovRwardManageController {
 	 * 
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/rwd/EgovRwardRegist.do")
+	@PostMapping("/uss/ion/rwd/EgovRwardRegist.do")
 	public String insertViewRwardManage(@ModelAttribute("rwardManage") RwardManage rwardManage,
 			@ModelAttribute("rwardManageVO") RwardManageVO rwardManageVO, ModelMap model) throws Exception {
 		List<?> rwardCdCodeList = null;
@@ -201,7 +202,7 @@ public class EgovRwardManageController {
 	 * @param rwardManage - 포상관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/rwd/insertRwardManage.do")
+	@PostMapping("/uss/ion/rwd/insertRwardManage.do")
 	public String insertRwardManage(final MultipartHttpServletRequest multiRequest,
 			@Valid @ModelAttribute("rwardManage") RwardManage rwardManage, BindingResult bindingResult,
 			@ModelAttribute("rwardManageVO") RwardManageVO rwardManageVO, SessionStatus status, ModelMap model) throws Exception {
@@ -242,7 +243,7 @@ public class EgovRwardManageController {
 	 * @return String - 리턴 Url
 	 */
 	@SuppressWarnings("unused")
-	@RequestMapping(value = "/uss/ion/rwd/updtRwardManage.do")
+	@PostMapping("/uss/ion/rwd/updtRwardManage.do")
 	public String updtRwardManage(@RequestParam("atchFileAt") String atchFileAt,
 			final MultipartHttpServletRequest multiRequest, @Valid @ModelAttribute("rwardManage") RwardManage rwardManage, BindingResult bindingResult,
 			@ModelAttribute("rwardManageVO") RwardManageVO rwardManageVO, SessionStatus status, ModelMap model) throws Exception {
@@ -292,9 +293,12 @@ public class EgovRwardManageController {
 	 * @param rwardManage - 포상관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/rwd/deleteRwardManage.do")
+	@PostMapping("/uss/ion/rwd/deleteRwardManage.do")
 	public String deleteRwardManage(@ModelAttribute("rwardManage") RwardManage rwardManage, SessionStatus status,
 			ModelMap model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = egovAssertLoginUser();
+
 		rwardManage.setRwardDe(EgovStringUtil.removeMinusChar(rwardManage.getRwardDe()));
 
 		// 첨부파일 삭제를 위한 ID 생성 start....
@@ -368,7 +372,7 @@ public class EgovRwardManageController {
 	 * @param rwardManageVO - 포상관리 VO
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/rwd/EgovRwardConfm.do")
+	@PostMapping("/uss/ion/rwd/EgovRwardConfm.do")
 	public String selectRwardConfm(@ModelAttribute("rwardManageVO") RwardManageVO rwardManageVO,
 			@ModelAttribute("rwardManage") RwardManage rwardManage, ModelMap model) throws Exception {
 		rwardManageVO.setRwardDe(EgovStringUtil.removeMinusChar(rwardManageVO.getRwardDe()));
@@ -400,7 +404,7 @@ public class EgovRwardManageController {
 	 * @param rwardManage - 포상관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/rwd/updtRwardConfm.do")
+	@PostMapping("/uss/ion/rwd/updtRwardConfm.do")
 	public String updtRwardManageConfm(@ModelAttribute("rwardManage") RwardManage rwardManage,
 			BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
 
@@ -425,4 +429,31 @@ public class EgovRwardManageController {
 			return "forward:/uss/ion/rwd/EgovRwardConfmList.do";
 		}
 	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
+	}
+
 }

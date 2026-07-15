@@ -213,7 +213,7 @@ function initCalendar(){
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<span class="btn_s"><a href="<c:url value='/sym/prm/EgovProgramChangeRequstProcessListSelect.do'/>" onclick="selectList(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="selectList(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
 		<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="updateChangRequstProcess(document.forms[0]); return false;" /><!-- 수정 -->
 	</div>
 	<div style="clear:both;"></div>

@@ -3,6 +3,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
 
 /**
@@ -103,7 +105,7 @@
 
 <div class="board">
 
-	<form name="listForm" action="<c:url value='/uss/ion/ans/selectAnnvrsryManageList.do'/>" method="post">    
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/ion/ans/selectAnnvrsryManageList.do" method="post">    
 
 	<h1><spring:message code="comUssIonAns.annvrsryManageList.annvrsryManageList"/></h1><!-- 기념일관리 목록 -->
 	
@@ -124,12 +126,12 @@
 				</select> <spring:message code="comUssIonAns.common.year"/><!-- 년 -->
          
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fncSelectAnnvrsryManageList('1'); return false;" style="margin-left:20px" />
-				<span class="btn_b"><a href="<c:url value='/uss/ion/ans/insertViewAnnvrsry.do'/>?searchCondition=1" onclick="fncInsertAnnvrsry(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fncInsertAnnvrsry(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
 				<span class="btn_b"><a id="excelPopUp"><spring:message code="comUssIonAns.annvrsryManageList.excelRegiser"/></a></span><!-- 새 창으로 이동 --><!-- 기념일엑셀등록 -->
 			</li>
 		</ul>
 	</div>
- </form>
+ 
 	<table class="board_list">
 		<caption></caption>
 		<colgroup>
@@ -157,10 +159,7 @@
 			<tr>
 				<td><c:out value="${(annvrsryManageVO.pageIndex - 1) * annvrsryManageVO.pageSize + status.count}"/></td>
 				<td>
-					<form name="item" method="post" action="<c:url value='/uss/ion/ans/selectAnnvrsryManage.do'/>">
-					<input type="hidden" name="annId"      value="<c:out value="${annvrsryManage.annId     }"/>">
-					<span class="link"><input type="submit" value="<c:out value="${annvrsryManage.annvrsryNm}"/>" onclick="fncSelectAnnvrsryManage('<c:out value="${annvrsryManage.annId}"/>'); return false;" style="text-align : left;"></span>
-					</form>
+					<a href="javascript:void(0);" onclick="fncSelectAnnvrsryManage('<c:out value="${annvrsryManage.annId}"/>'); return false;"><span class="link"><c:out value="${annvrsryManage.annvrsryNm}"/></span></a>
 				</td>
 				<td><c:out value="${annvrsryManage.annvrsryDe}"/>
 					<br />
@@ -198,6 +197,8 @@
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/>
 		</ul>
 	</div>
+</form:form>
+
 </div>
 </body>
 </html>

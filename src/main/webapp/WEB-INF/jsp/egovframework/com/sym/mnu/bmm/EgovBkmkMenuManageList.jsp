@@ -4,6 +4,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
  /**
   * @Class Name : EgoBkmkMenuManageList.jsp
@@ -141,7 +142,7 @@ function fn_egov_deleteBkmkInf(){
 <div class="board">
 	<h1><spring:message code="comSymMnuBmm.bkmkMenuManageRegist.title" /></h1><!-- 바로가기 메뉴관리 -->
 
-	<form name="frm" action = "<c:url value='/sym/mnu/bmm/selectBkmkMenuManageList.do' />" method="post">
+	<form:form name="frm" modelAttribute="searchVO" action = "<c:url value='/sym/mnu/bmm/selectBkmkMenuManageList.do' />" method="post">
 	<input type="hidden" name="checkMenuIds" value = "" >
 	<input type="hidden" name="searchCnd" value ="0" >
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
@@ -152,9 +153,9 @@ function fn_egov_deleteBkmkInf(){
 				<label for=""><spring:message code="comSymMnuBmm.bkmkMenuManageList.menuName" /> : </label><!-- 메뉴명 -->
 				<input class="s_input2 vat" name="searchWrd" type="text" value='<c:out value="${searchVO.searchWrd}"/>' size="35" maxlength="35" onkeypress="press(event);" title="<spring:message code="comSymMnuBmm.bkmkMenuManageList.enterSearchName" />" style="width: 200px" /><!-- 검색단어입력 -->
 				<input class="s_btn" type="submit" value="<spring:message code="title.inquire" />" title="<spring:message code="title.inquire" />" onclick="fn_egov_select_bkmkInfs('1'); return false;" /><!-- 조회 -->
-				<span class="btn_b"><a href="<c:url value='/sym/mnu/bmm/openPopup.do?requestUrl=/sym/mnu/bmm/previewBkmkInf.do&amp;width=850&amp;height=360'/>" onclick="fn_egov_preview_bkmkInfs(); return false;" title="<spring:message code="comSymMnuBmm.bkmkMenuManageList.newWindow" />"><spring:message code="comSymMnuBmm.bkmkMenuManageList.preview" /></a></span><!-- 새창 --><!-- 미리보기 -->
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fn_egov_preview_bkmkInfs(); return false;" title="<spring:message code="comSymMnuBmm.bkmkMenuManageList.newWindow" />"><spring:message code="comSymMnuBmm.bkmkMenuManageList.preview" /></a></span><!-- 새창 --><!-- 미리보기 -->
 				<span class="btn_b"><a href="<c:url value= 'fn_egov_deleteBkmkInf()'/>" onclick="fn_egov_deleteBkmkInf(); return false;" title="<spring:message code="title.delete" />"><spring:message code="title.delete" /></a></span><!-- 삭제 -->
-				<span class="btn_b"><a href="<c:url value='/sym/mnu/bmm/addBkmkInf.do'/>" onclick="fn_egov_add_bkmkInfs(); return false;" title="<spring:message code="button.create" />"><spring:message code="button.create" /></a></span><!-- 등록 -->
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fn_egov_add_bkmkInfs(); return false;" title="<spring:message code="button.create" />"><spring:message code="button.create" /></a></span><!-- 등록 -->
 			</li>
 		</ul>
 	</div>
@@ -200,7 +201,7 @@ function fn_egov_deleteBkmkInf(){
 		</ul>
 	</div>
 
-	</form>
+	</form:form>
 
 </div>
 

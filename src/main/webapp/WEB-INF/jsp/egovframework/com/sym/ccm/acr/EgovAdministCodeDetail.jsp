@@ -23,6 +23,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
 <html lang="ko">
 <head>
 <title>법정동코드수신 상세조회</title>
@@ -35,16 +36,13 @@
  * 목록 으로 가기
  ******************************************************** */
 function fn_egov_list_AdministCode(){
-	location.href = "/sym/ccm/acr/getAdministCodeRecptnList.do.do";
+	document.formList.action = "<c:url value='/sym/ccm/acr/getAdministCodeRecptnList.do'/>";
+	document.formList.submit();
 }
 -->
 </script>
 </head>
 <body>
-<form name="Form" action="" method="post">
-	<input name="administZoneSe" type="hidden">
-	<input name="administZoneCode" type="hidden">
-</form>
 <%-- noscript 테그 --%>
 <noscript class="noScriptTitle">자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다.</noscript>
 
@@ -93,8 +91,9 @@ function fn_egov_list_AdministCode(){
 		<table border="0" cellspacing="0" cellpadding="0" align="center">
 		<tr>
 			<td>
-				<form name="formList" action="<c:url value='/sym/ccm/acr/getAdministCodeRecptnList.do'/>" method="post">
-				<span class="button"><input type="submit" value="<spring:message code="button.list" />" onclick="fn_egov_list_AdministCodeRecptn(); return false;"></span>
+				<form name="formList" action="${pageContext.request.contextPath}/sym/ccm/acr/getAdministCodeRecptnList.do" method="post">
+				<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
+				<span class="button"><input type="submit" value="<spring:message code="button.list" />" onclick="fn_egov_list_AdministCode(); return false;"></span>
 				</form>
 			</td>
 		</tr>
@@ -104,8 +103,6 @@ function fn_egov_list_AdministCode(){
 </table>
 
 <DIV id="content" style="display">
-<form name="listForm" action="<c:url value='/sym/ccm/acr/EgovAdministCodeRecptnList.do'/>" method="post">
-</form>
 
 <table width="700" cellpadding="8" class="table-search" border="0">
  <tr>

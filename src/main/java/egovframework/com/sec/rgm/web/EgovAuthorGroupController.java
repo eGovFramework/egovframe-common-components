@@ -5,13 +5,16 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.SessionVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.sec.ram.service.AuthorManageVO;
 import egovframework.com.sec.ram.service.EgovAuthorManageService;
 import egovframework.com.sec.rgm.service.AuthorGroup;
@@ -112,7 +115,8 @@ public class EgovAuthorGroupController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sec/rgm/EgovAuthorGroupInsert.do")
+	@PostMapping("/sec/rgm/EgovAuthorGroupInsert.do")
+	@RequireAdmin
 	public String insertAuthorGroup(@RequestParam("userIds") String userIds,
 			                        @RequestParam("authorCodes") String authorCodes,
 			                        @RequestParam("regYns") String regYns,
@@ -147,7 +151,8 @@ public class EgovAuthorGroupController {
 	 * @return String
 	 * @exception Exception
 	 */
-	@RequestMapping(value = "/sec/rgm/EgovAuthorGroupDelete.do")
+	@PostMapping("/sec/rgm/EgovAuthorGroupDelete.do")
+	@RequireAdmin
 	public String deleteAuthorGroup(@RequestParam("userIds") String userIds,
                                     @ModelAttribute("authorGroup") AuthorGroup authorGroup,
                                      ModelMap model) throws Exception {
@@ -161,7 +166,5 @@ public class EgovAuthorGroupController {
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		return "forward:/sec/rgm/EgovAuthorGroupList.do";
 	}
-
-
 
 }

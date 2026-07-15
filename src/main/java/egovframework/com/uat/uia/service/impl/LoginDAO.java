@@ -24,7 +24,7 @@ import egovframework.com.cmm.service.impl.EgovComAbstractDAO;
  *  2017.07.21   장동한            로그인인증제한 작업
  *  2020.07.08   신용호            비밀번호를 수정한후 경과한 날짜 조회
  *  2021.05.30   정진오            디지털원패스 인증 회원 조회
- *  2026.06.17   이백행            [2026년 컨트리뷰션] 불필요한 예외(throws Exception) 제거
+ *  2026.06.17   이백행            [2026년 컨트리뷰션] 불필요한 예외 제거
  *  </pre>
  */
 @Repository("loginDAO")

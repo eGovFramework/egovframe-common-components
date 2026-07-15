@@ -81,7 +81,8 @@
 		<!-- 타이틀 -->
 		<h2><spring:message code="comDamSpeSpe.comDamSpecialistDetail.pageTop.title"/></h2><!-- 지식전문가 상세조회 -->
 	
-		<form name="Form" action="<c:url value='/dam/spe/spe/EgovComDamSpecialistModifyView.do'/>" method="post">
+		<form name="Form" action="${pageContext.request.contextPath}/dam/spe/spe/EgovComDamSpecialistModifyView.do" method="post">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		<input name="speId" type="hidden">
 		<input name="knoTypeCd" type="hidden">
 		<input name="appTypeCd" type="hidden">			

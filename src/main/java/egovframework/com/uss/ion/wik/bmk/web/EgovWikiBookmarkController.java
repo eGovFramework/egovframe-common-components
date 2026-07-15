@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -64,7 +65,7 @@ public class EgovWikiBookmarkController {
      * @throws Exception
      */
     @IncludedInfo(name="Wiki기능", order = 810 ,gid = 50)
-    @RequestMapping(value = "/uss/ion/wik/bmk/listWikiBookmark.do")
+    @RequestMapping("/uss/ion/wik/bmk/listWikiBookmark.do")
     public String EgovWikiBookmarkList(
     		@ModelAttribute("searchVO") WikiBookmark searchVO,
     		WikiBookmark wikiBookmark,
@@ -87,6 +88,11 @@ public class EgovWikiBookmarkController {
 
         //삭제 모드로 실행시
         if(sCmd.equals("del")){
+			// 2026.07.13 KISA 보안취약점 조치 - 삭제는 POST만 허용
+			jakarta.servlet.http.HttpServletRequest _req = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest();
+			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
+				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
+			}
 
         	for(String checkData : checkList) {
         		LOGGER.debug("===>>> checkData = "+checkData);
@@ -137,14 +143,22 @@ public class EgovWikiBookmarkController {
      * @return String -리턴 URL
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/ion/wik/bmk/registWikiBookmark.do")
+    @PostMapping("/uss/ion/wik/bmk/registWikiBookmark.do")
     public String EgovWikiBookmarkRegist(
     		WikiBookmark wikiBookmark,
             ModelMap model) throws Exception {
 
     	String sDupl = "N";
 
-    	if(wikiBookmark.getUsid() != null &&  wikiBookmark.getWikiBkmkNm() != null){
+    	LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+    	if (loginVO == null || loginVO.getUniqId() == null) {
+    		throw new IllegalStateException("인증 정보가 없습니다.");
+    	}
+    	// 2026.07.13 KISA 보안취약점 조치 - usid는 로그인 사용자로 고정
+    	wikiBookmark.setUsid(loginVO.getUniqId());
+    	wikiBookmark.setFrstRegisterId(EgovStringUtil.isNullToString(loginVO.getUniqId()));
+
+    	if(wikiBookmark.getWikiBkmkNm() != null){
     		if(egovWikiBookmarkService.selectWikiBookmarkDuplicationCnt(wikiBookmark) > 0){
     			sDupl = "Y";
     		}else{
@@ -155,6 +169,33 @@ public class EgovWikiBookmarkController {
     	//중복 설정
     	model.addAttribute("S_DUPL", sDupl);
     	return "egovframework/com/uss/ion/wik/bmk/EgovWikiBookmarkRegist";
+	}
+
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 }

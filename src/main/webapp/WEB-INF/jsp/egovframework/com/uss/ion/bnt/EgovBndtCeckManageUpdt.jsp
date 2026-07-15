@@ -48,9 +48,9 @@ function fncBndtCeckManageList() {
  ******************************************************** */
 function fncUpdtBndtCeckManage() {
     var varFrom = document.getElementById("bndtCeckManageVO");
-    /*if(!validateBndtCeckManage(varFrom)){           
+    if(!validateBndtCeckManage(varFrom)){
         return;
-    }*/
+    }
     if(confirm("<spring:message code="common.save.msg" />")){/* 저장 하시겠습니까? */
        	varFrom.submit();
     }
@@ -110,7 +110,7 @@ function fncUpdtBndtCeckManage() {
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fncUpdtBndtCeckManage(); return false;" />
-		<span class="btn_s"><a href="<c:url value='/uss/ion/bnt/EgovBndtCeckManageList.do'/>" onclick="fncBndtCeckManageList(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncBndtCeckManageList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

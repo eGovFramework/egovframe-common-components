@@ -19,9 +19,12 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title><spring:message code="uss.ion.ulm.unityLinkList.unityLinkList" /></title>
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
@@ -62,7 +65,7 @@ function fn_egov_search_UnityLink(){
 
 <%-- noscript 테그 --%>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
-<form name="listForm" action="<c:url value='/uss/ion/ulm/listUnityLink.do'/>" method="post">
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/ion/ulm/listUnityLink.do" method="post">
 <div class="board">
 	<h1><spring:message code="uss.ion.ulm.unityLinkList.unityLinkList" /></h1>
 
@@ -77,13 +80,13 @@ function fn_egov_search_UnityLink(){
 				<input class="s_input2 vat" name="searchKeyword" type="text" value="<c:out value="${unityLink.searchKeyword}"/>" size="10" maxlength="35" onkeypress="press();" title="<spring:message code="title.search" />" /><!-- 검색어 -->
 				
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fn_egov_search_UnityLink(); return false;" />
-				<span class="btn_b"><a href="<c:url value='/uss/ion/ulm/registUnityLinkView.do' />?pageIndex=<c:out value='${unityLink.pageIndex}' />" onclick="" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="#" onclick="fn_egov_postNavigate('<c:url value='/uss/ion/ulm/registUnityLinkView.do' />'); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
 <input name="unityLinkId" type="hidden" value="">
 <input name="pageIndex" type="hidden" value="<c:out value='${unityLink.pageIndex}'/>"/>
-</form>
+
 
 	<table class="board_list">
 		<caption></caption>
@@ -127,11 +130,7 @@ function fn_egov_search_UnityLink(){
 				</c:forEach>
 			    </td>
 			    <td>
-			    	<form name="subForm" method="post" action="<c:url value='/uss/ion/ulm/detailUnityLink.do'/>">
-					<input name="unityLinkId" type="hidden" value="${resultInfo.unityLinkId}">
-					<input name="pageIndex" type="hidden" value="<c:out value='${unityLink.pageIndex}'/>"/>
-					<span class="link"><input type="submit" style="text-align:center;" value="<c:out value="${resultInfo.unityLinkNm}"/>" onclick="fn_egov_detail_UnityLink('<c:out value="${resultInfo.unityLinkId}"/>'); return false;"></span>
-			    	</form>
+			    	<a href="javascript:void(0);" onclick="fn_egov_detail_UnityLink('<c:out value="${resultInfo.unityLinkId}"/>'); return false;"><span class="link"><c:out value="${resultInfo.unityLinkNm}"/></span></a>
 			    </td>
 			    <td class="left"><c:out value="${resultInfo.unityLinkUrl}"/></td>
 			    <td><c:out value="${resultInfo.frstRegisterNm}"/></td>
@@ -147,6 +146,8 @@ function fn_egov_search_UnityLink(){
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/>
 		</ul>
 	</div>
+</form:form>
+
 </div>
 </body>
 </html>

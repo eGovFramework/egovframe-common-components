@@ -152,7 +152,7 @@
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 
-		<form name="frm" method="post" action="<c:url value='/utl/sys/fsm/selectFileSysMntrngLogList.do'/>">
+		<form:form name="frm" modelAttribute="searchVO" method="post" action="${pageContext.request.contextPath}/utl/sys/fsm/selectFileSysMntrngLogList.do">
 
 		<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 		<input type="hidden" name="fileSysId">
@@ -184,11 +184,11 @@
 					</select>
 					<input class="s_input2 vat" name="searchWrd" type="text" value='<c:out value="${searchVO.searchWrd}"/>' maxlength="35" size="27" onkeypress="press(event);" title="검색어 입력" />
 					<input class="s_btn" type="submit" value="<spring:message code="title.inquire"/>" title="<spring:message code="title.inquire"/>" onclick="fn_egov_select_filesysmntrnglog('1'); return false;" /><!-- 조회 -->
-					<span class="btn_b"><a href="<c:url value='/utl/sys/fsm/selectFileSysMntrngList.do'/>" onclick="fn_egov_select_filesysmntrng(); return false;" title="<spring:message code="comUtlSysFsm.fileSysMntrngLogList.list"/>"><spring:message code="comUtlSysFsm.fileSysMntrngLogList.list"/></a></span><!-- 목록 -->
+					<span class="btn_b"><a href="javascript:void(0);" onclick="fn_egov_select_filesysmntrng(); return false;" title="<spring:message code="comUtlSysFsm.fileSysMntrngLogList.list"/>"><spring:message code="comUtlSysFsm.fileSysMntrngLogList.list"/></a></span><!-- 목록 -->
 				</li>
 			</ul>	
 		</div>
-	</form>
+	
 	
 	<table class="board_list">
 		<caption></caption>
@@ -220,17 +220,7 @@
 			    <td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 			    <td><c:out value="${result.fileSysNm}"/></td>
 			    <td>
-			     <form name="fileSysMntrngLogVO" method="post" action="<c:url value='/utl/sys/fsm/selectFileSysMntrngLog.do'/>">
-			    	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-			    	<input name="searchCnd" type="hidden" value="<c:out value='${searchVO.searchCnd}'/>">
-			    	<input name="searchWrd" type="hidden" value="<c:out value='${searchVO.searchWrd}'/>">
-			    	<input name="searchBgnDe" type="hidden" value="<c:out value='${searchVO.searchBgnDe}'/>">
-			    	<input name="searchEndDe" type="hidden" value="<c:out value='${searchVO.searchEndDe}'/>">
-			    	<input name="searchBgnHour" type="hidden" value="<c:out value='${searchVO.searchBgnHour}'/>">
-			    	<input name="searchEndHour" type="hidden" value="<c:out value='${searchVO.searchEndHour}'/>">
-					<input type="hidden" name="fileSysId" value="<c:out value="${result.fileSysId}"/>">
-					<span class="link"><input type="submit" value="<c:out value="${result.fileSysManageNm}"/>" onclick="javascript:fn_egov_inqire_filesysmntrnglog('<c:out value="${result.fileSysId}"/>', '<c:out value="${result.logId}"/>'); return false;" style="text-align : left;"></span>
-				 </form>
+			     <a href="javascript:void(0);" onclick="javascript:fn_egov_inqire_filesysmntrnglog('<c:out value="${result.fileSysId}"/>', '<c:out value="${result.logId}"/>'); return false;"><span class="link"><c:out value="${result.fileSysManageNm}"/></span></a>
 				</td>
 				<td><c:out value="${result.fileSysMg}"/>G</td>
 				<td><c:out value="${result.fileSysThrhldRt}"/>%(<c:out value="${result.fileSysThrhld}"/>G)</td>
@@ -253,6 +243,8 @@
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_filesysmntrnglog"/>
 		</ul>
 	</div>
+</form:form>
+
 </div>
 </body>
 </html>

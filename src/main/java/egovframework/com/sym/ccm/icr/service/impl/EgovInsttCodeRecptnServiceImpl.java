@@ -9,7 +9,9 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.apache.commons.io.IOUtils;
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
@@ -74,7 +76,11 @@ public class EgovInsttCodeRecptnServiceImpl extends EgovAbstractServiceImpl impl
 	 */
 	@Override
 	public void insertInsttCodeRecptn() throws Exception {
-		List<HashMap<String, String>> list = apiLink();
+		registInsttCode(apiLink());
+	}
+
+	void registInsttCode(List<HashMap<String, String>> list) throws Exception {
+		Set<String> existing = new HashSet<>(insttCodeRecptnDAO.selectExistingInsttCodes());
 		for (HashMap<String, String> row : list) {
 			InsttCodeRecptn insttCodeRecptn = new InsttCodeRecptn();
 			insttCodeRecptn.setOccrrDe(ObjectUtils.isEmpty(row.get("crtDe")) ? "20000101" : row.get("crtDe")); // 날짜 >> crt_de 생성일 x 20000101
@@ -107,15 +113,13 @@ public class EgovInsttCodeRecptnServiceImpl extends EgovAbstractServiceImpl impl
 			insttCodeRecptn.setFrstRegisterId("System Batch"); // 등록자 Batch System
 			insttCodeRecptn.setLastUpdusrId("System Batch"); // 수정자 Batch System
 
-			InsttCodeRecptnVO vo = new InsttCodeRecptnVO();
-			vo.setSearchCondition("CodeList");
-			vo.setInsttCode(row.get("orgCd"));
-			int count = insttCodeRecptnDAO.selectInsttCodeRecptnListTotCnt(vo);
-			if (count > 0) {
+			String code = insttCodeRecptn.getInsttCode();
+			if (existing.contains(code)) {
 				insttCodeRecptnDAO.updateInsttCode(insttCodeRecptn);
 			} else {
 				insttCodeRecptnDAO.insertInsttCodeRecptn(insttCodeRecptn);
 				insttCodeRecptnDAO.insertInsttCode(insttCodeRecptn);
+				existing.add(code);
 			}
 		}
 	}

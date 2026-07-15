@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
@@ -118,7 +119,7 @@ public class EgovCtsnnManageController {
 	 * @param ctsnnManageVO - 경조관리 VO
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value = "/uss/ion/ctn/EgovCtsnnManageDetail.do")
+    @PostMapping("/uss/ion/ctn/EgovCtsnnManageDetail.do")
 	 public String selectCtsnnManage(@ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 			                         @RequestParam Map<?, ?> commandMap,
 			                         ModelMap model) throws Exception {
@@ -155,7 +156,7 @@ public class EgovCtsnnManageController {
 	 * 경조관리 등록 화면으로 이동한다.
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value = "/uss/ion/ctn/EgovCtsnnRegist.do")
+    @PostMapping("/uss/ion/ctn/EgovCtsnnRegist.do")
 	 public String insertViewCtsnnManage(@ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 			                             ModelMap model) throws Exception {
 
@@ -184,7 +185,7 @@ public class EgovCtsnnManageController {
 	 * @param ctsnnManage - 경조관리 model
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value = "/uss/ion/ctn/insertCtsnnManage.do")
+    @PostMapping("/uss/ion/ctn/insertCtsnnManage.do")
 	 public String insertCtsnnManage(@Valid @ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 			                            BindingResult bindingResult,
 			                            SessionStatus status,
@@ -223,7 +224,7 @@ public class EgovCtsnnManageController {
 	 * @param ctsnnManage - 경조관리 model
 	 * @return String - 리턴 Url
 	 */
-	 @RequestMapping(value = "/uss/ion/ctn/updtCtsnnManage.do")
+	 @PostMapping("/uss/ion/ctn/updtCtsnnManage.do")
 	 public String updtCtsnnManage(@Valid @ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 			                        BindingResult bindingResult,
 			                        SessionStatus status,
@@ -262,7 +263,7 @@ public class EgovCtsnnManageController {
 	 * @param ctsnnManage - 경조관리 model
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value = "/uss/ion/ctn/deleteCtsnnManage.do")
+    @PostMapping("/uss/ion/ctn/deleteCtsnnManage.do")
 	 public String deleteCtsnnManage(@ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 			                         SessionStatus status,
 			                         ModelMap model) throws Exception {
@@ -319,7 +320,7 @@ public class EgovCtsnnManageController {
 	 * @param ctsnnManageVO - 경조관리 VO
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value = "/uss/ion/ctn/EgovCtsnnConfm.do")
+    @PostMapping("/uss/ion/ctn/EgovCtsnnConfm.do")
 	 public String selectCtsnnConfm(@ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 							         ModelMap model) throws Exception {
     	ctsnnManageVO.setReqstDe(EgovStringUtil.removeMinusChar(ctsnnManageVO.getReqstDe()));
@@ -338,7 +339,7 @@ public class EgovCtsnnManageController {
 	 * @param ctsnnManage - 경조관리 model
 	 * @return String - 리턴 Url
 	 */
-	 @RequestMapping(value = "/uss/ion/ctn/updtCtsnnConfm.do")
+	 @PostMapping("/uss/ion/ctn/updtCtsnnConfm.do")
 	 public String updateCtsnnManageConfm(@ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 			                               BindingResult bindingResult,
 			                               SessionStatus status,
@@ -365,7 +366,7 @@ public class EgovCtsnnManageController {
 	 * @param ctsnnManage
 	 * @return  String
 	 */
-	@RequestMapping("/uss/ion/ctn/EgovCtsnnReturn.do")
+	@PostMapping("/uss/ion/ctn/EgovCtsnnReturn.do")
 	public String selectSanctnerListPopup(@ModelAttribute("ctsnnManageVO") CtsnnManageVO ctsnnManageVO,
 										  @RequestParam Map<?, ?> commandMap,
                                           ModelMap model) throws Exception{

@@ -47,7 +47,6 @@ function fn_egov_list_QustnrQestnManage(){
  ******************************************************** */
 function fn_egov_modify_QustnrQestnManage(){
 	var vFrom = document.QustnrQestnManageForm;
-	//vFrom.cmd.value = ''; 컨트롤러분리
 	vFrom.action = "<c:url value='/uss/olp/qqm/EgovQustnrQestnManageModify.do' />";;
 	vFrom.submit();
 
@@ -73,7 +72,7 @@ function fn_egov_delete_QustnrQestnManage(){
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
 <div class="wTableFrm">
-<form name="QustnrTmplatManageForm" id="QustnrTmplatManageForm" action="<c:url value='/uss/olp/qqm/EgovQustnrQestnManageModify.do'/>" method="post">
+<form name="QustnrTmplatManageForm" id="QustnrTmplatManageForm" action="${pageContext.request.contextPath}/uss/olp/qqm/EgovQustnrQestnManageModify.do" method="post">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.detail" /></h2>
 
@@ -151,10 +150,9 @@ function fn_egov_delete_QustnrQestnManage(){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<!-- 수정 버튼 -->
-		<form name="formUpdt" action="<c:url value='/uss/olp/qqm/EgovQustnrQestnManageModify.do'/>" method="post" onsubmit="fn_egov_modify_QustnrQestnManage(); return false;" style="float:left;">
+		<form name="formUpdt" action="${pageContext.request.contextPath}/uss/olp/qqm/EgovQustnrQestnManageModify.do" method="post" onsubmit="fn_egov_modify_QustnrQestnManage(); return false;" style="float:left;">
 			<input type="button" class="s_submit" value="<spring:message code='button.update' />" title="<spring:message code='title.update' /> <spring:message code='input.button' />" 
-			onclick="location.href='<c:url value='/uss/olp/qqm/EgovQustnrQestnManageModify.do'>
-           <c:param name='qestnrQesitmId' value='${resultList[0].qestnrQesitmId}'/> </c:url>';" />
+			onclick="document.formUpdt.submit(); return false;" />
 			<c:if test="${qustnrQestnManageVO.searchMode == 'Y'}">
 			<input name="qestnrTmplatId" id="qestnrTmplatId" type="hidden" value="${qustnrQestnManageVO.qestnrTmplatId}">
 			<input name="qestnrId" id="qestnrId" type="hidden" value="${qustnrQestnManageVO.qestnrId}">
@@ -163,14 +161,14 @@ function fn_egov_delete_QustnrQestnManage(){
 			<input name="qestnrQesitmId" id="qestnrQesitmId" type="hidden" value="${resultList[0].qestnrQesitmId}">
 		</form>
 		<!-- 삭제 버튼 -->
-		<form name="formDelete" action="<c:url value='/uss/olp/qqm/EgovQustnrQestnManageDetail.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+		<form name="formDelete" action="${pageContext.request.contextPath}/uss/olp/qqm/EgovQustnrQestnManageDetail.do" method="post" style="float:left; margin:0 0 0 3px;">
 			<input type="submit" class="s_submit" value="<spring:message code='button.delete' />" onclick="fn_egov_delete_QustnrQestnManage(); return false;">
 			<input name="qestnrQesitmId" type="hidden" value="${resultList[0].qestnrQesitmId}">
 			<!-- <input name="cmd" type="hidden" value="del"> -->
 			<input name="cmd" type="hidden" value="<c:out value='del'/>"/>
 		</form>
 		<!-- 목록 버튼 -->
-		<form name="formList" action="<c:url value='/uss/olp/qqm/EgovQustnrQestnManageList.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+		<form name="formList" action="${pageContext.request.contextPath}/uss/olp/qqm/EgovQustnrQestnManageList.do" method="post" style="float:left; margin:0 0 0 3px;">
 		  <input type="submit" class="s_submit" value="<spring:message code='button.list' />" onclick="fn_egov_list_QustnrQestnManage(); return false;">
 		</form>
 		

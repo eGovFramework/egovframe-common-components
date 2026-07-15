@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -159,7 +160,7 @@ public class EgovEventCmpgnController {
 	 * @return "/uss/ion/ecc/EgovEventCmpgnDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/ecc/selectEventCmpgnDetail.do")
+	@PostMapping("/uss/ion/ecc/selectEventCmpgnDetail.do")
 	public String selectEventCmpgnDetail(EventCmpgnVO eventCmpgnVO, @ModelAttribute("eventCmpgnVO") EventCmpgnVO eventCmpgnVOSearch,
 			ModelMap model) throws Exception {
 
@@ -178,7 +179,7 @@ public class EgovEventCmpgnController {
 	 * @return "/uss/ion/ecc/EgovEventCmpgnRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/ecc/insertEventCmpgnView.do")
+	@PostMapping("/uss/ion/ecc/insertEventCmpgnView.do")
 	public String insertEventCmpgnView(@ModelAttribute("eventCmpgnVO") EventCmpgnVO eventCmpgnVO, ModelMap model)
 			throws Exception {
 
@@ -199,7 +200,7 @@ public class EgovEventCmpgnController {
 	 * @return "forward:/uss/ion/ecc/selectEventCmpgnList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/ecc/insertEventCmpgn.do")
+	@PostMapping("/uss/ion/ecc/insertEventCmpgn.do")
 	public String insertEventCmpgn(@Valid @ModelAttribute("eventCmpgnVO") EventCmpgnVO eventCmpgnVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -230,7 +231,7 @@ public class EgovEventCmpgnController {
 	 * @return "/uss/ion/ecc/EgovEventCmpgnUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/ecc/updateEventCmpgnView.do")
+	@PostMapping("/uss/ion/ecc/updateEventCmpgnView.do")
 	public String updateEventCmpgnView(@RequestParam("eventId") String eventId,
 			@ModelAttribute("eventCmpgnVO") EventCmpgnVO eventCmpgnVO, ModelMap model) throws Exception {
 
@@ -252,7 +253,7 @@ public class EgovEventCmpgnController {
 	 * @return "forward:/uss/ion/ecc/selectEventCmpgnList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/ecc/updateEventCmpgn.do")
+	@PostMapping("/uss/ion/ecc/updateEventCmpgn.do")
 	public String updateEventCmpgn(@Valid @ModelAttribute("eventCmpgnVO") EventCmpgnVO eventCmpgnVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -280,7 +281,7 @@ public class EgovEventCmpgnController {
 	 * @return "forward:/uss/ion/ecc/selectEventCmpgnList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/ecc/deleteEventCmpgn.do")
+	@PostMapping("/uss/ion/ecc/deleteEventCmpgn.do")
 	public String deleteEventCmpgn(EventCmpgnVO eventCmpgnVO, @ModelAttribute("eventCmpgnVO") EventCmpgnVO eventCmpgnVOSearch)
 			throws Exception {
 
@@ -337,7 +338,7 @@ public class EgovEventCmpgnController {
 	 * @return "/uss/ion/ecc/EgovTnextrlHrDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/ecc/selectTnextrlHrDetail.do")
+	@PostMapping("/uss/ion/ecc/selectTnextrlHrDetail.do")
 	public String selectTnextrlHrDetail(TnextrlHrVO tnextrlHrVO, @ModelAttribute("tnextrlHrVO") TnextrlHrVO tnextrlHrVOSearch,
 			ModelMap model) throws Exception {
 
@@ -356,7 +357,7 @@ public class EgovEventCmpgnController {
 	 * @return "/uss/ion/ecc/EgovTnextrlHrRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/ecc/insertTnextrlHrView.do")
+	@PostMapping("/uss/ion/ecc/insertTnextrlHrView.do")
 	public String insertTnextrlHrView(@ModelAttribute("tnextrlHrVO") TnextrlHrVO tnextrlHrVO, ModelMap model) throws Exception {
 
 		addCmmCodeToModel(model, "COM014", "sexdstnCode"); // 성별
@@ -377,7 +378,7 @@ public class EgovEventCmpgnController {
 	 * @return "forward:/uss/ion/ecc/selectTnextrlHrList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/ecc/insertTnextrlHr.do")
+	@PostMapping("/uss/ion/ecc/insertTnextrlHr.do")
 	public String insertTnextrlHr(@Valid @ModelAttribute("tnextrlHrVO") TnextrlHrVO tnextrlHrVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -409,7 +410,7 @@ public class EgovEventCmpgnController {
 	 * @return "/uss/ion/ecc/EgovTnextrlHrUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/ion/ecc/updateTnextrlHrView.do")
+	@PostMapping("/uss/ion/ecc/updateTnextrlHrView.do")
 	public String updateTnextrlHrView(@RequestParam("extrlHrId") String extrlHrId,
 			@ModelAttribute("tnextrlHrVO") TnextrlHrVO tnextrlHrVO, ModelMap model) throws Exception {
 
@@ -432,7 +433,7 @@ public class EgovEventCmpgnController {
 	 * @return "redirect:/uss/ion/ecc/selectTnextrlHrList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/ecc/updateTnextrlHr.do")
+	@PostMapping("/uss/ion/ecc/updateTnextrlHr.do")
 	public String updateTnextrlHr(@Valid @ModelAttribute("tnextrlHrVO") TnextrlHrVO tnextrlHrVO,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -462,7 +463,7 @@ public class EgovEventCmpgnController {
 	 * @return "forward:/uss/ion/ecc/selectTnextrlHrList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/ecc/deleteTnextrlHr.do")
+	@PostMapping("/uss/ion/ecc/deleteTnextrlHr.do")
 	public String deleteTnextrlHr(TnextrlHrVO tnextrlHrVO, @ModelAttribute("tnextrlHrVO") TnextrlHrVO tnextrlHrVOSearch)
 			throws Exception {
 

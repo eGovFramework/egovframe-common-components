@@ -89,19 +89,19 @@
 	<!-- 하단 버튼 -->
 	<div class="btn">
 
-		<form name="formUpdt" action="<c:url value='/uss/sam/stp/StplatCnUpdtView.do'/>" method="post" style="float:left;">
+		<form name="formUpdt" action="${pageContext.request.contextPath}/uss/sam/stp/StplatCnUpdtView.do" method="post" style="float:left;">
 			<input type="submit" class="s_submit" value="<spring:message code="button.update" />">
 			<input name="useStplatId" type="hidden" value="<c:out value="${result.useStplatId}" />">
 			<input name="cmd" type="hidden" value="">
 		</form>
 		
-		<form name="formDelete" action="<c:url value='/uss/sam/stp/StplatCnDelete.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+		<form name="formDelete" action="${pageContext.request.contextPath}/uss/sam/stp/StplatCnDelete.do" method="post" style="float:left; margin:0 0 0 3px;">
 			<input type="submit" class="s_submit" value="<spring:message code="button.delete" />" onClick="fn_egov_delete_stplatcn('<c:out value="${result.useStplatId}"/>', this.form); return false;">
 			<input name="useStplatId" type="hidden" value="<c:out value="${result.useStplatId}" />">
 			<input name="cmd" type="hidden" value="<c:out value='del'/>"/>
 		</form>
 	
-		<form name="formList" action="<c:url value='/uss/sam/stp/StplatListInqire.do'/>" method="post" style="float:left; margin:0 0 0 3px;">
+		<form name="formList" action="${pageContext.request.contextPath}/uss/sam/stp/StplatListInqire.do" method="post" style="float:left; margin:0 0 0 3px;">
 			<input type="submit" class="s_submit" value="<spring:message code="button.list" />">
 		</form>
 	

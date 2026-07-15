@@ -87,7 +87,8 @@ public class DirectoryPathManager {
 	 */
 	public static File getUniqueFile(String imageBaseDir, String subDir, String fileName) {
 
-		File file = new File(fileStorePath + EgovWebUtil.filePathBlackList(imageBaseDir + subDir) + FilenameUtils.getName(fileName));
+		String basePath = EgovWebUtil.filePathBlackList(imageBaseDir + subDir) + FilenameUtils.getName(fileName);
+		File file = new File(joinPath(fileStorePath, basePath));
 
 		if (!file.exists())
 			return file;
@@ -101,6 +102,34 @@ public class DirectoryPathManager {
 			tmpFile = new File(parentDir, baseName + "_" + count++ + "_." + extension);
 		} while (tmpFile.exists());
 		return tmpFile;
+	}
+
+	/**
+	 * base와 sub 사이에 구분자가 정확히 하나만 오도록 경로를 결합한다.
+	 * (Globals.fileStorePath 뒤에 구분자가 없는 상태에서 ck.image.dir 값을 그대로 이어붙이면
+	 *  예: "allinone" + "ck_image" => "allinoneck_image" 처럼 디렉터리명이 뒤섞이는 문제를 방지한다.)
+	 *
+	 * @param base 기본 경로 (예: Globals.fileStorePath)
+	 * @param sub 하위 경로
+	 * @return 구분자가 정확히 하나로 결합된 경로
+	 */
+	private static String joinPath(String base, String sub) {
+		String normalizedBase = StringUtils.isBlank(base) ? "" : base;
+		String normalizedSub = StringUtils.isBlank(sub) ? "" : sub;
+
+		if (normalizedBase.isEmpty()) {
+			return normalizedSub;
+		}
+
+		boolean baseEndsWithSep = normalizedBase.endsWith(File.separator) || normalizedBase.endsWith("/");
+		boolean subStartsWithSep = normalizedSub.startsWith(File.separator) || normalizedSub.startsWith("/");
+
+		if (baseEndsWithSep && subStartsWithSep) {
+			return normalizedBase + normalizedSub.substring(1);
+		} else if (!baseEndsWithSep && !subStartsWithSep && !normalizedSub.isEmpty()) {
+			return normalizedBase + File.separator + normalizedSub;
+		}
+		return normalizedBase + normalizedSub;
 	}
 
 }

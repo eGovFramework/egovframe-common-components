@@ -204,7 +204,7 @@
 
       <td width="10"></td>
       <td><span class="button">
-      <a href="<c:url value='/cop/com/selectBBSUseInfs.do'/>?searchCondition=1" onclick="fn_egov_select_bbsUseInfs(); return false;"><spring:message code="button.list" /></a>
+      <a href="javascript:void(0);" onclick="fn_egov_select_bbsUseInfs(); return false;"><spring:message code="button.list" /></a>
       </span></td>
 	</tr>
 	</table>

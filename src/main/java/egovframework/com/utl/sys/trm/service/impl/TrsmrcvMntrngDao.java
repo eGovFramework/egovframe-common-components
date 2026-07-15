@@ -34,7 +34,7 @@ public class TrsmrcvMntrngDao extends EgovComAbstractDAO {
 	 * @param trsmrcvMntrng    삭제할 송수신모니터링 VO
 	 * @exception Exception Exception
 	 */
-	public void deleteTrsmrcvMntrng(TrsmrcvMntrng trsmrcvMntrng) throws Exception {
+	public void deleteTrsmrcvMntrng(TrsmrcvMntrng trsmrcvMntrng) {
 		delete("TrsmrcvMntrngDao.deleteTrsmrcvMntrng", trsmrcvMntrng);
 	}
 
@@ -44,7 +44,7 @@ public class TrsmrcvMntrngDao extends EgovComAbstractDAO {
 	 * @param trsmrcvMntrng 저장할 송수신모니터링 VO
 	 * @exception Exception Exception
 	 */
-	public void insertTrsmrcvMntrng(TrsmrcvMntrng trsmrcvMntrng) throws Exception {
+	public void insertTrsmrcvMntrng(TrsmrcvMntrng trsmrcvMntrng) {
 		insert("TrsmrcvMntrngDao.insertTrsmrcvMntrng", trsmrcvMntrng);
 	}
 
@@ -54,7 +54,7 @@ public class TrsmrcvMntrngDao extends EgovComAbstractDAO {
 	 * @param trsmrcvMntrngLog 저장할 송수신모니터링로그 VO
 	 * @exception Exception Exception
 	 */
-	public void insertTrsmrcvMntrngLog(TrsmrcvMntrngLog trsmrcvMntrngLog) throws Exception {
+	public void insertTrsmrcvMntrngLog(TrsmrcvMntrngLog trsmrcvMntrngLog) {
 		insert("TrsmrcvMntrngDao.insertTrsmrcvMntrngLog", trsmrcvMntrngLog);
 	}
 
@@ -65,7 +65,7 @@ public class TrsmrcvMntrngDao extends EgovComAbstractDAO {
 	 * @param trsmrcvMntrng    조회할 KEY가 있는 송수신모니터링 VO
 	 * @exception Exception Exception
 	 */
-	public TrsmrcvMntrng selectTrsmrcvMntrng(TrsmrcvMntrng trsmrcvMntrng) throws Exception {
+	public TrsmrcvMntrng selectTrsmrcvMntrng(TrsmrcvMntrng trsmrcvMntrng) {
 		return (TrsmrcvMntrng) selectOne("TrsmrcvMntrngDao.selectTrsmrcvMntrng", trsmrcvMntrng);
 	}
 
@@ -76,7 +76,7 @@ public class TrsmrcvMntrngDao extends EgovComAbstractDAO {
 	 * @param trsmrcvMntrngLog    조회할 KEY가 있는 송수신모니터링로그 VO
 	 * @exception Exception Exception
 	 */
-	public TrsmrcvMntrngLog selectTrsmrcvMntrngLog(TrsmrcvMntrngLog trsmrcvMntrngLog) throws Exception {
+	public TrsmrcvMntrngLog selectTrsmrcvMntrngLog(TrsmrcvMntrngLog trsmrcvMntrngLog) {
 		return (TrsmrcvMntrngLog) selectOne("TrsmrcvMntrngDao.selectTrsmrcvMntrngLog", trsmrcvMntrngLog);
 	}
 
@@ -87,7 +87,7 @@ public class TrsmrcvMntrngDao extends EgovComAbstractDAO {
 	 * @param searchVO    조회조건이 저장된 VO
 	 * @exception Exception Exception
 	 */
-	public List<TrsmrcvMntrng> selectTrsmrcvMntrngList(TrsmrcvMntrng searchVO) throws Exception {
+	public List<TrsmrcvMntrng> selectTrsmrcvMntrngList(TrsmrcvMntrng searchVO) {
 		return selectList("TrsmrcvMntrngDao.selectTrsmrcvMntrngList", searchVO);
 	}
 
@@ -98,7 +98,7 @@ public class TrsmrcvMntrngDao extends EgovComAbstractDAO {
 	 * @param searchVO    조회할 정보가 담긴 VO
 	 * @exception Exception Exception
 	 */
-	public int selectTrsmrcvMntrngListCnt(TrsmrcvMntrng searchVO) throws Exception {
+	public int selectTrsmrcvMntrngListCnt(TrsmrcvMntrng searchVO) {
 		return (Integer) selectOne("TrsmrcvMntrngDao.selectTrsmrcvMntrngListCnt", searchVO);
 	}
 
@@ -109,7 +109,7 @@ public class TrsmrcvMntrngDao extends EgovComAbstractDAO {
 	 * @param searchVO    조회조건이 저장된 VO
 	 * @exception Exception Exception
 	 */
-	public List<TrsmrcvMntrngLog> selectTrsmrcvMntrngLogList(TrsmrcvMntrngLog searchVO) throws Exception {
+	public List<TrsmrcvMntrngLog> selectTrsmrcvMntrngLogList(TrsmrcvMntrngLog searchVO) {
 		return selectList("TrsmrcvMntrngDao.selectTrsmrcvMntrngLogList", searchVO);
 	}
 
@@ -120,7 +120,7 @@ public class TrsmrcvMntrngDao extends EgovComAbstractDAO {
 	 * @param searchVO    조회할 정보가 담긴 VO
 	 * @exception Exception Exception
 	 */
-	public int selectTrsmrcvMntrngLogListCnt(TrsmrcvMntrngLog searchVO) throws Exception {
+	public int selectTrsmrcvMntrngLogListCnt(TrsmrcvMntrngLog searchVO) {
 		return (Integer) selectOne("TrsmrcvMntrngDao.selectTrsmrcvMntrngLogListCnt", searchVO);
 	}
 
@@ -130,7 +130,7 @@ public class TrsmrcvMntrngDao extends EgovComAbstractDAO {
 	 * @param trsmrcvMntrng    수정대상 송수신모니터링 VO
 	 * @exception Exception Exception
 	 */
-	public void updateTrsmrcvMntrng(TrsmrcvMntrng trsmrcvMntrng) throws Exception {
+	public void updateTrsmrcvMntrng(TrsmrcvMntrng trsmrcvMntrng) {
 		update("TrsmrcvMntrngDao.updateTrsmrcvMntrng", trsmrcvMntrng);
 	}
 
@@ -141,7 +141,7 @@ public class TrsmrcvMntrngDao extends EgovComAbstractDAO {
 	 * @param searchVO    조회조건이 저장된 VO
 	 * @exception Exception Exception
 	 */
-	public List<CntcVO> selectCntcList(CntcVO searchVO) throws Exception {
+	public List<CntcVO> selectCntcList(CntcVO searchVO) {
 		return selectList("TrsmrcvMntrngDao.selectCntcList", searchVO);
 	}
 
@@ -152,7 +152,7 @@ public class TrsmrcvMntrngDao extends EgovComAbstractDAO {
 	 * @param searchVO    조회할 정보가 담긴 VO
 	 * @exception Exception Exception
 	 */
-	public int selectCntcListCnt(CntcVO searchVO) throws Exception {
+	public int selectCntcListCnt(CntcVO searchVO) {
 		return (Integer) selectOne("TrsmrcvMntrngDao.selectCntcListCnt", searchVO);
 	}
 

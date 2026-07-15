@@ -55,6 +55,7 @@
 </head>
 <body>
 <form name="frm" action ="<c:url value='/cop/tpl/selectTemplateInfsPop.do'/>" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <input type="hidden" name="tmplatId" value="" />
 	<table width="100%" cellpadding="8" class="table-search" border="0">
 	 <tr>

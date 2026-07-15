@@ -32,6 +32,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
@@ -41,6 +42,7 @@ import org.springframework.web.multipart.MultipartHttpServletRequest;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.EgovFileMngService;
 import egovframework.com.cmm.service.EgovFileMngUtil;
 import egovframework.com.cmm.service.FileVO;
@@ -120,10 +122,14 @@ public class EgovBannerController {
 	 * @param bannerVO - 배너 Vo
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value = "/uss/ion/bnr/getBanner.do")
+    @PostMapping("/uss/ion/bnr/getBanner.do")
+	@RequireAdmin
 	public String selectBanner(@RequestParam("bannerId") String bannerId,
 			                   @ModelAttribute("bannerVO") BannerVO bannerVO,
 			                   ModelMap model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = egovAssertLoginUser();
+
 
     	bannerVO.setBannerId(bannerId);
 
@@ -137,7 +143,7 @@ public class EgovBannerController {
 	 * @param banner - 배너 model
 	 * @return String - 리턴 Url
 	 */
-    @RequestMapping(value = "/uss/ion/bnr/addViewBanner.do")
+    @PostMapping("/uss/ion/bnr/addViewBanner.do")
 	public String insertViewBanner(@ModelAttribute("bannerVO") BannerVO bannerVO,
 			                        ModelMap model) throws Exception {
 
@@ -151,7 +157,7 @@ public class EgovBannerController {
 	 * @return String - 리턴 Url
 	 */
     @SuppressWarnings("unused")
-	@RequestMapping(value = "/uss/ion/bnr/addBanner.do")
+	@PostMapping("/uss/ion/bnr/addBanner.do")
 	public String insertBanner(final MultipartHttpServletRequest multiRequest,
 			                   @Valid @ModelAttribute("bannerVO") BannerVO bannerVO,
 			                    BindingResult bindingResult,
@@ -206,7 +212,7 @@ public class EgovBannerController {
 	 * @return String - 리턴 Url
 	 */
     @SuppressWarnings("unused")
-	@RequestMapping(value = "/uss/ion/bnr/updtBanner.do")
+	@PostMapping("/uss/ion/bnr/updtBanner.do")
 	public String updateBanner(final MultipartHttpServletRequest multiRequest,
 			                   @Valid @ModelAttribute("bannerVO") BannerVO bannerVO,
 			                    BindingResult bindingResult,
@@ -267,7 +273,8 @@ public class EgovBannerController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value = "/uss/ion/bnr/removeBanner.do")
+	@PostMapping("/uss/ion/bnr/removeBanner.do")
+	@RequireAdmin
 	public String deleteBanner(@RequestParam("bannerId") String bannerId,
 			                   @ModelAttribute("bannerVO") BannerVO bannerVO,
 			                    SessionStatus status,
@@ -287,11 +294,15 @@ public class EgovBannerController {
 	 * @return String
 	 * @exception Exception
 	 */
-    @RequestMapping(value = "/uss/ion/bnr/removeBannerList.do")
+    @PostMapping("/uss/ion/bnr/removeBannerList.do")
+	@RequireAdmin
 	public String deleteBannerList(@RequestParam("bannerIds") String bannerIds,
 			                       @ModelAttribute("bannerVO") BannerVO bannerVO,
 			                        SessionStatus status,
 			                        ModelMap model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = egovAssertLoginUser();
+
     	// 2026.03.23 kisa 보안점검 대응 조치
     	  if (ObjectUtils.isEmpty(bannerIds)) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.delete"));
@@ -311,10 +322,12 @@ public class EgovBannerController {
 
 	/**
 	 * 배너가 특정화면에 반영된 결과를 조회한다.
+	 * 메인화면(EgovMainView.jsp)에서 &lt;c:import&gt;로 GET 호출되는 공개 배너 위젯이므로
+	 * POST 전용/관리자 전용으로 제한하면 안 된다. (일반 사용자 메인화면 노출용, 관리 기능 아님)
 	 * @param bannerVO - 배너 VO
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/bnr/getBannerImage.do")
+	@RequestMapping("/uss/ion/bnr/getBannerImage.do")
 	public String selectBannerResult(@ModelAttribute("bannerVO") BannerVO bannerVO,
                                       ModelMap model) throws Exception {
 
@@ -358,4 +371,31 @@ public class EgovBannerController {
 
 		return "egovframework/com/uss/ion/bnr/EgovBannerMainList";
 	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
+	}
+
 }

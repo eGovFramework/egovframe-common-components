@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
@@ -129,7 +130,7 @@ public class EgovEventManageController {
 	 * @param eventManageVO - 행사관리 VO
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/evt/EgovEventReqstDetail.do")
+	@PostMapping("/uss/ion/evt/EgovEventReqstDetail.do")
 	public String selectEventManage(@ModelAttribute("eventManage") EventManageVO eventManage,
 			@ModelAttribute("eventManageVO") EventManageVO eventManageVO, @RequestParam Map<?, ?> commandMap,
 			ModelMap model) throws Exception {
@@ -176,7 +177,7 @@ public class EgovEventManageController {
 	 * 
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/evt/EgovEventReqstRegist.do")
+	@PostMapping("/uss/ion/evt/EgovEventReqstRegist.do")
 	public String insertViewEventManage(@ModelAttribute("eventManage") EventManageVO eventManage,
 			@ModelAttribute("eventManageVO") EventManageVO eventManageVO, ModelMap model) throws Exception {
 
@@ -194,7 +195,7 @@ public class EgovEventManageController {
 	 * @param eventManage - 행사관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/evt/insertEventManage.do")
+	@PostMapping("/uss/ion/evt/insertEventManage.do")
 	public String insertEventManage(@Valid @ModelAttribute("eventManage") EventManage eventManage, BindingResult bindingResult,
 			@ModelAttribute("eventManageVO") EventManageVO eventManageVO, SessionStatus status, ModelMap model) throws Exception {
 
@@ -222,7 +223,7 @@ public class EgovEventManageController {
 	 * @param eventManage - 행사관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/evt/EgovEventReqstSave.do")
+	@PostMapping("/uss/ion/evt/EgovEventReqstSave.do")
 	public String updtEventManage(@Valid @ModelAttribute("eventManage") EventManage eventManage, BindingResult bindingResult,
 			@ModelAttribute("eventManageVO") EventManageVO eventManageVO, SessionStatus status, ModelMap model) throws Exception {
 
@@ -250,7 +251,7 @@ public class EgovEventManageController {
 	 * @param eventManage - 행사관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/evt/EgovEventReqstDelete.do")
+	@PostMapping("/uss/ion/evt/EgovEventReqstDelete.do")
 	public String deleteEventManage(@ModelAttribute("eventManage") EventManage eventManage, SessionStatus status,
 			ModelMap model) throws Exception {
 
@@ -319,7 +320,7 @@ public class EgovEventManageController {
 	 * @param eventManageVO - 행사관리 VO
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/evt/EgovEventRcrptDetail.do")
+	@PostMapping("/uss/ion/evt/EgovEventRcrptDetail.do")
 	public String selectEventAtdrn(@ModelAttribute("eventAtdrn") EventAtdrn eventAtdrn,
 			@ModelAttribute("eventManageVO") EventManageVO eventManageVO, ModelMap model) throws Exception {
 		EventManageVO eventManageVO1 = egovEventManageService.selectEventAtdrn(eventManageVO);
@@ -343,7 +344,7 @@ public class EgovEventManageController {
 	 * 
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/evt/EgovEventRceptRegist.do")
+	@PostMapping("/uss/ion/evt/EgovEventRceptRegist.do")
 	public String insertViewEventAtdrn(@ModelAttribute("eventAtdrn") EventAtdrn eventAtdrn,
 			@ModelAttribute("eventManageVO") EventManageVO eventManageVO, SessionStatus status, ModelMap model)
 			throws Exception {
@@ -372,7 +373,7 @@ public class EgovEventManageController {
 	 * @param eventAtdrn - 행사참석자 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/evt/insertEventAtdrn.do")
+	@PostMapping("/uss/ion/evt/insertEventAtdrn.do")
 	public String insertEventAtdrn(@Valid @ModelAttribute("eventAtdrn") EventAtdrn eventAtdrn, BindingResult bindingResult,
 			@ModelAttribute("eventManageVO") EventManageVO eventManageVO, SessionStatus status, ModelMap model) throws Exception {
 
@@ -437,7 +438,7 @@ public class EgovEventManageController {
 	 * @param eventManage - 행사관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/evt/deleteEventAtdrn.do")
+	@PostMapping("/uss/ion/evt/deleteEventAtdrn.do")
 	public String deleteEventAtdrn(@ModelAttribute("eventAtdrn") EventAtdrn eventAtdrn, SessionStatus status,
 			ModelMap model) throws Exception {
 
@@ -507,7 +508,7 @@ public class EgovEventManageController {
 	 * @param eventAtdrn - 행사참석자 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/uss/ion/evt/updtEventAtdrn.do")
+	@PostMapping("/uss/ion/evt/updtEventAtdrn.do")
 	public String updtEventAtdrn(@RequestParam("checkedEventRceptForConfm") String checkedEventRceptForConfm,
 			@ModelAttribute("eventAtdrn") EventAtdrn eventAtdrn,BindingResult bindingResult, @RequestParam Map<?, ?> commandMap,
 			SessionStatus status, ModelMap model) throws Exception {

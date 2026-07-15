@@ -3,6 +3,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
 
 /**
@@ -156,7 +158,7 @@ function press() {
 <div class="board">
 	<h1><spring:message code="ussIonBnr.bannerList.bannerList"/></h1><!-- 배너 관리 -->
 	
-	<form name="listForm" action="<c:url value='/uss/ion/bnr/selectBannerList.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/ion/bnr/selectBannerList.do" method="post">
 
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg"/>"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
@@ -165,7 +167,7 @@ function press() {
 				<input id="searchKeyword" class="s_input2 vat" name="searchKeyword" type="text" value="<c:out value="${bannerVO.searchKeyword}"/>" size="25" onkeypress="press();" title="<spring:message code="title.search"/>" /><!-- 검색어 -->
 				
 				<input class="s_btn" type="submit" value="<spring:message code="button.inquire" />" title="<spring:message code="button.inquire" />" onclick="fncSelectBannerList('1'); return false;" />
-				<span class="btn_b"><a href="<c:url value='/uss/ion/bnr/addViewBanner.do'/>?pageIndex=<c:out value='${bannerVO.pageIndex}'/>&amp;searchKeyword=<c:out value="${bannerVO.searchKeyword}"/>&amp;searchCondition=1" onclick="fncAddBannerInsert(); return false;" title="<spring:message code="button.create" />"><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fncAddBannerInsert(); return false;" title="<spring:message code="button.create" />"><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
@@ -174,7 +176,7 @@ function press() {
 	<input type="hidden" name="bannerIds" value="">
 	<input type="hidden" name="pageIndex" value="<c:if test="${empty bannerVO.pageIndex }">1</c:if><c:if test="${!empty bannerVO.pageIndex }"><c:out value='${bannerVO.pageIndex}'/></c:if>">
 	<input type="hidden" name="searchCondition" value="1">
-	</form>
+	
 
 	<table class="board_list">
 		<caption></caption>
@@ -196,13 +198,7 @@ function press() {
 			<c:forEach var="banner" items="${bannerList}" varStatus="status">
 			<tr>
 				<td>
-					<form name="item" method="post" action="<c:url value='/uss/ion/bnr/getBanner.do'/>">
-						<input type="hidden" name="bannerId" value="<c:out value="${banner.bannerId}"/>">
-						<input type="hidden" name="pageIndex" value="<c:out value='${bannerVO.pageIndex}'/>">
-						<input type="hidden" name="searchCondition" value="<c:out value='${bannerVO.searchCondition}'/>">
-						<input type="hidden" name="searchKeyword" value="<c:out value="${bannerVO.searchKeyword}"/>">
-						<input class="link" type="submit" value="<c:out value="${banner.bannerNm}"/>" onclick="fncSelectBanner('<c:out value="${banner.bannerId}"/>'); return false;">
-					</form>
+					<a href="javascript:void(0);" onclick="fncSelectBanner('<c:out value="${banner.bannerId}"/>'); return false;"><span class="link"><c:out value="${banner.bannerNm}"/></span></a>
 				</td><!-- 배너 명 -->
 				<td class="left"><c:out value="${banner.linkUrl}"/></td><!-- 링크 URL -->
 				<td><c:out value="${banner.bannerDc}"/></td><!-- 배너 설명 -->
@@ -227,6 +223,8 @@ function press() {
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/>
 		</ul>
 	</div>
+</form:form>
+
 </div>
 </body>
 </html>

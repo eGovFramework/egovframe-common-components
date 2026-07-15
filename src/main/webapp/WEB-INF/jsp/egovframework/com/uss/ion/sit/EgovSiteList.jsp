@@ -21,10 +21,12 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUssIonSit.siteVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title>${pageTitle} <spring:message code="title.list" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
@@ -60,7 +62,7 @@ function fn_egov_inquire_sitedetail(siteId) {
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="siteForm" action="<c:url value='/uss/ion/sit/selectSiteList.do'/>" method="post" onSubmit="fn_egov_search_site(); return false;"> 
+<form:form name="siteForm" modelAttribute="siteVO" action="${pageContext.request.contextPath}/uss/ion/sit/selectSiteList.do" method="post" onSubmit="fn_egov_search_site(); return false;"> 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<!-- 하단 버튼 -->
@@ -76,7 +78,7 @@ function fn_egov_inquire_sitedetail(siteId) {
 			<li>
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${siteVO.searchKeyword}"/>'  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
-				<span class="btn_b"><a href="<c:url value='/uss/ion/sit/insertSiteView.do' />"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="#" onclick="fn_egov_postNavigate('<c:url value='/uss/ion/sit/insertSiteView.do' />'); return false;"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
@@ -112,7 +114,7 @@ function fn_egov_inquire_sitedetail(siteId) {
 	<tr>
 		<td><c:out value="${(siteVO.pageIndex-1) * siteVO.pageSize + status.count}"/></td>
 		<td><c:out value='${resultInfo.siteThemaClNm}'/></td>
-		<td><a href="<c:url value='/uss/ion/sit/selectSiteDetail.do?siteId=${resultInfo.siteId}'/>" onClick="fn_egov_inquire_sitedetail('<c:out value="${resultInfo.siteId}"/>');return false;"><c:out value='${fn:substring(resultInfo.siteNm, 0, 40)}'/></a></td>
+		<td><a href="javascript:void(0);" onClick="fn_egov_inquire_sitedetail('<c:out value="${resultInfo.siteId}"/>');return false;"><c:out value='${fn:substring(resultInfo.siteNm, 0, 40)}'/></a></td>
 		<td><c:out value='${fn:substring(resultInfo.siteUrl, 0, 40)}'/></td>
 		<td><c:out value='${resultInfo.emplyrNm}'/></td>
 		<td><c:out value='${resultInfo.frstRegisterPnttm}'/></td>
@@ -133,7 +135,7 @@ function fn_egov_inquire_sitedetail(siteId) {
 
 <input name="siteId" type="hidden" value="<c:out value='${siteVO.siteId}'/>">
 <input name="pageIndex" type="hidden" value="<c:out value='${siteVO.pageIndex}'/>">
-</form>
+</form:form>
 
 </body>
 </html>

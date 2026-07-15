@@ -4,6 +4,7 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
 	/**
 	 * @Class Name : EgovInsertImage.jsp
@@ -215,9 +216,6 @@
 			param[id] = el.value;
 		}
 
-		// alert(param["f_url"]);
-		// alert(param["f_alt"]);
-
 		__dlg_close(param);
 
 		return false;
@@ -335,7 +333,7 @@ form {
 </head>
 <body onload="Init()">
 	<div class="title">이미지 추가</div>
-	<form action="" method="post" enctype="multipart/form-data">
+	<form:form modelAttribute="imageUpload" action="${pageContext.request.contextPath}/utl/wed/insertImage.do" method="post" enctype="multipart/form-data">
 		<table border="0" width="100%" style="padding: 0px; margin: 0px">
 			<tbody>
 				<tr>
@@ -439,6 +437,6 @@ form {
 				</td>
 			</tr>
 		</table>
-	</form>
+	</form:form>
 </body>
 </html>

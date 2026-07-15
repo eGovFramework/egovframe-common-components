@@ -77,7 +77,7 @@ function press() {
 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
-	<form name="listForm" action="<c:url value='/utl/sys/pxy/selectProxySvcList.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/utl/sys/pxy/selectProxySvcList.do" method="post">
 	<input type="hidden" name="proxyId" value="">
 	<input type="hidden" name="pageIndex" value="<c:out value='${proxySvc.pageIndex}'/>">
 	<div class="search_box" title="<spring:message code='common.searchCondition.msg' />">
@@ -86,12 +86,12 @@ function press() {
 				<label for=""><spring:message code="comUtlSysPxy.proxySvcList.proxyNm.label" /> : </label>
 				<input class="s_input2 vat" name="strProxyNm" type="text" value='<c:out value="${proxySvc.strProxyNm}"/>' size="30" onkeypress="press();" title="검색" />				
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fncSelectProxySvcList('1'); return false;" />
-				<span class="btn_b"><a href="<c:url value='/utl/sys/pxy/addViewProxySvc.do'/>?pageIndex=<c:out value='${proxySvc.pageIndex}'/>&amp;strProxyNm=<c:out value="${proxySvc.strProxyNm}"/>" onclick="fncAddProxySvcInsert(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fncAddProxySvcInsert(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
 				<span class="btn_b"><a href="<c:url value='/utl/sys/pxy/selectProxyLogList.do'/>" onclick="" title="<spring:message code="comUtlSysPxy.proxyLog.log"/>"><spring:message code="comUtlSysPxy.proxyLog.log"/></a></span><!-- 로그 -->
 			</li>
 		</ul>
 	</div>
-	</form>
+	</form:form>
 	<table class="board_list">
 		<caption></caption>
 		<colgroup>

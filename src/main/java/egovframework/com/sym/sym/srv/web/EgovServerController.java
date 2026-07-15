@@ -9,6 +9,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -18,6 +19,7 @@ import egovframework.com.cmm.ComDefaultCodeVO;
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.service.EgovCmmUseService;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.sym.sym.srv.service.EgovServerService;
@@ -131,6 +133,7 @@ public class EgovServerController {
 	 * @param serverEqpmnVO
 	 */
 	@RequestMapping(value = "/sym/sym/srv/getServerEqpmn.do")
+	@RequireAdmin
 	public String selectServerEqpmn(@RequestParam("serverEqpmnId") String serverEqpmnId,
 			@ModelAttribute("serverEqpmnVO") ServerEqpmnVO serverEqpmnVO, Model model) throws Exception {
 		serverEqpmnVO.setServerEqpmnId(serverEqpmnId);
@@ -146,7 +149,7 @@ public class EgovServerController {
 	 * @param serverEqpmnVO - 서버장비 Vo
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/sym/sym/srv/addViewServerEqpmn.do")
+	@PostMapping("/sym/sym/srv/addViewServerEqpmn.do")
 	public String insertViewServerEqpmn(@ModelAttribute("serverEqpmnVO") ServerEqpmnVO serverEqpmnVO, ModelMap model)
 			throws Exception {
 
@@ -162,7 +165,7 @@ public class EgovServerController {
 	 *
 	 * @param serverEqpmn
 	 */
-	@RequestMapping(value = "/sym/sym/srv/addServerEqpmn.do")
+	@PostMapping("/sym/sym/srv/addServerEqpmn.do")
 	public String insertServerEqpmn(@ModelAttribute("serverEqpmnVO") ServerEqpmnVO serverEqpmnVO,
 			@Valid @ModelAttribute("serverEqpmn") ServerEqpmn serverEqpmn, BindingResult bindingResult, ModelMap model)
 			throws Exception {
@@ -187,7 +190,7 @@ public class EgovServerController {
 	 * @param serverEqpmnVO - 서버장비 Vo
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/sym/sym/srv/updtViewServerEqpmn.do")
+	@PostMapping("/sym/sym/srv/updtViewServerEqpmn.do")
 	public String updateViewServerEqpmn(@RequestParam("serverEqpmnId") String serverEqpmnId,
 			@ModelAttribute("serverEqpmnVO") ServerEqpmnVO serverEqpmnVO, ModelMap model) throws Exception {
 
@@ -205,7 +208,7 @@ public class EgovServerController {
 	 *
 	 * @param serverEqpmn
 	 */
-	@RequestMapping(value = "/sym/sym/srv/updtServerEqpmn.do")
+	@PostMapping("/sym/sym/srv/updtServerEqpmn.do")
 	public String updateServerEqpmn(@ModelAttribute("serverEqpmnVO") ServerEqpmnVO serverEqpmnVO,
 			@Valid @ModelAttribute("serverEqpmn") ServerEqpmn serverEqpmn, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {
@@ -230,9 +233,13 @@ public class EgovServerController {
 	 *
 	 * @param serverEqpmn
 	 */
-	@RequestMapping(value = "/sym/sym/srv/removeServerEqpmn.do")
+	@PostMapping("/sym/sym/srv/removeServerEqpmn.do")
+	@RequireAdmin
 	public String deleteServerEqpmn(@RequestParam("serverEqpmnId") String serverEqpmnId,
 			@ModelAttribute("serverEqpmn") ServerEqpmn serverEqpmn, ModelMap model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = egovAssertLoginUser();
+
 		serverEqpmn.setServerEqpmnId(serverEqpmnId);
 		egovServerService.deleteServerEqpmn(serverEqpmn);
 		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
@@ -305,6 +312,7 @@ public class EgovServerController {
 	 * @param serverVO
 	 */
 	@RequestMapping(value = "/sym/sym/srv/getServer.do")
+	@RequireAdmin
 	public String selectServer(@RequestParam("serverId") String serverId, @ModelAttribute("serverVO") ServerVO serverVO,
 			Model model) throws Exception {
 
@@ -324,7 +332,7 @@ public class EgovServerController {
 	 * @param serverVO - 서버 Vo
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/sym/sym/srv/addViewServer.do")
+	@PostMapping("/sym/sym/srv/addViewServer.do")
 	public String insertViewServer(@ModelAttribute("serverVO") ServerVO serverVO, ModelMap model) throws Exception {
 
 		model.addAttribute("cmmCodeDetailList", getCmmCodeDetailList(new ComDefaultCodeVO(), "COM064"));
@@ -340,7 +348,7 @@ public class EgovServerController {
 	 *
 	 * @param server
 	 */
-	@RequestMapping(value = "/sym/sym/srv/addServer.do")
+	@PostMapping("/sym/sym/srv/addServer.do")
 	public String insertServer(@ModelAttribute("serverVO") ServerVO serverVO,
 			@Valid @ModelAttribute("server") Server server, BindingResult bindingResult,
 			ModelMap model) throws Exception {
@@ -365,7 +373,7 @@ public class EgovServerController {
 	 * @param serverVO - 서버 Vo
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/sym/sym/srv/updtViewServer.do")
+	@PostMapping("/sym/sym/srv/updtViewServer.do")
 	public String updateViewServer(@RequestParam("serverId") String serverId,
 			@ModelAttribute("serverVO") ServerVO serverVO, ModelMap model) throws Exception {
 
@@ -384,7 +392,7 @@ public class EgovServerController {
 	 *
 	 * @param server
 	 */
-	@RequestMapping(value = "/sym/sym/srv/updtServer.do")
+	@PostMapping("/sym/sym/srv/updtServer.do")
 	public String updateServer(@ModelAttribute("serverVO") ServerVO serverVO,
 			@Valid @ModelAttribute("server") Server server, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {
@@ -410,9 +418,13 @@ public class EgovServerController {
 	 *
 	 * @param server
 	 */
-	@RequestMapping(value = "/sym/sym/srv/removeServer.do")
+	@PostMapping("/sym/sym/srv/removeServer.do")
+	@RequireAdmin
 	public String deleteServer(@RequestParam("serverId") String serverId, @ModelAttribute("server") Server server,
 			ModelMap model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = egovAssertLoginUser();
+
 
 		server.setServerId(serverId);
 		egovServerService.deleteServer(server);
@@ -469,7 +481,7 @@ public class EgovServerController {
 	 *
 	 * @param serverEqpmnRelate
 	 */
-	@RequestMapping(value = "/sym/sym/srv/saveServerEqpmnRelate.do")
+	@PostMapping("/sym/sym/srv/saveServerEqpmnRelate.do")
 	public String saveServerEqpmnRelate(@RequestParam("serverId") String serverId,
 			@RequestParam("serverEqpmnIds") String serverEqpmnIds, @RequestParam("regYns") String regYns,
 			@ModelAttribute("serverEqpmnRelate") ServerEqpmnRelate serverEqpmnRelate, SessionStatus status,
@@ -512,4 +524,31 @@ public class EgovServerController {
 		comDefaultCodeVO.setCodeId(codeId);
 		return egovCmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
+	}
+
 }

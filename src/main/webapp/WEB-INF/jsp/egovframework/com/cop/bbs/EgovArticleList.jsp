@@ -23,6 +23,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comCopBbs.articleVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -62,6 +63,7 @@ function fn_egov_inquire_articledetail(bbsId, nttId) {
 </script>
 </c:when>
 <c:otherwise>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <script type="text/javascript">
 /*********************************************************
  * 초기화
@@ -90,8 +92,7 @@ function fn_egov_search_article(){
  * 상세회면 처리 함수
  ******************************************************** */
 function fn_egov_inquire_articledetail(bbsId, nttId) {
-	// 사이트 키값(siteId) 셋팅.
-	document.articleForm.bbsId.bbsId.value = bbsId;
+	document.articleForm.bbsId.value = bbsId;
 	document.articleForm.nttId.value = nttId;
   	document.articleForm.action = "<c:url value='/cop/bbs/selectArticleDetail.do'/>";
   	document.articleForm.submit();
@@ -106,7 +107,7 @@ function fn_egov_inquire_articledetail(bbsId, nttId) {
 
 
 <div class="board">
-	<form name="articleForm" action="<c:url value='/cop/bbs/selectArticleList.do'/>" method="get" onSubmit="fn_egov_search_article(); return false;"> 
+	<form:form name="articleForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/cop/bbs/selectArticleList.do" method="post" onSubmit="fn_egov_search_article(); return false;"> 
 	<h1>${pageTitle} <spring:message code="title.list" /> (<c:out value="${boardMasterVO.bbsNm}"/>)</h1><!-- 게시글 목록 -->
 	<!-- 하단 버튼 -->
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
@@ -123,14 +124,14 @@ function fn_egov_inquire_articledetail(bbsId, nttId) {
 				<input class="s_input" name="searchWrd" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${searchVO.searchWrd}"/>'  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" /><!-- 조회 -->
 				<c:if test="${preview != 'true'}">
-					<span class="btn_b"><a href="<c:url value='/cop/bbs/insertArticleView.do?bbsId=${boardMasterVO.bbsId}&searchCnd=${searchVO.searchCnd}&searchWrd=${searchVO.searchWrd}&pageIndex=${searchVO.pageIndex}' />"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span><!-- 등록 -->
+					<span class="btn_b"><button type="button" class="btn_b" onclick="fn_egov_postNavigate('<c:url value='/cop/bbs/insertArticleView.do' />', null, document.articleForm); return false;" title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></button></span><!-- 등록 -->
 				</c:if>
 			</li>
 		</ul>
 	</div>
 	<input name="bbsId" type="hidden" value="${boardMasterVO.bbsId}">
-	<input name="pageIndex" type="hidden" value="">
-	</form>
+	<input name="nttId" type="hidden" value="0">
+	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 	
 	<!-- 목록영역 -->
 	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
@@ -158,15 +159,7 @@ function fn_egov_inquire_articledetail(bbsId, nttId) {
 	<tr>
 		<td><img src="<c:url value='/images/egovframework/com/cop/bbs/icon_notice.png'/>" alt="notice"></td>
 		<td class="bold">
-			<form name="subForm" method="get" action="<c:url value='/cop/bbs/selectArticleDetail.do'/>">
-			    <input name="nttId" type="hidden" value="<c:out value="${noticeInfo.nttId}"/>">
-			    <input name="bbsId" type="hidden" value="<c:out value="${noticeInfo.bbsId}"/>">
-			    <input name="searchCnd" type="hidden" value="<c:out value='${searchVO.searchCnd}'/>"/>
-			    <input name="searchWrd" type="hidden" value="<c:out value='${searchVO.searchWrd}'/>"/>
-			    <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-			    <span class="link"><input type="submit" value="<c:out value='${fn:substring(noticeInfo.nttSj, 0, 40)}'/><c:if test="${noticeInfo.commentCo != ''}">	<c:out value='[${noticeInfo.commentCo}]'/></c:if>" style="border:0px solid #e0e0e0;">
-			    </span>
-			</form>
+			<a href="javascript:void(0);" onclick="fn_egov_inquire_articledetail('<c:out value="${noticeInfo.bbsId}"/>','<c:out value="${noticeInfo.nttId}"/>'); return false;"><c:out value='${fn:substring(noticeInfo.nttSj, 0, 40)}'/><c:if test="${noticeInfo.commentCo != ''}">	<c:out value='[${noticeInfo.commentCo}]'/></c:if></a>
 		</td>
 		<td><c:out value='${noticeInfo.frstRegisterNm}'/></td>
 		<td><c:out value='${noticeInfo.frstRegisterPnttm}'/></td>
@@ -182,14 +175,7 @@ function fn_egov_inquire_articledetail(bbsId, nttId) {
 		<c:when test="${resultInfo.sjBoldAt == 'Y'}">
 		<!-- 제목 Bold인 경우  -->
 		<td class="bold">
-		<form name="subForm" method="get" action="<c:url value='/cop/bbs/selectArticleDetail.do'/>">
-			    <input name="nttId" type="hidden" value="<c:out value="${resultInfo.nttId}"/>">
-			    <input name="bbsId" type="hidden" value="<c:out value="${resultInfo.bbsId}"/>">
-			    <input name="searchCnd" type="hidden" value="<c:out value='${searchVO.searchCnd}'/>"/>
-			    <input name="searchWrd" type="hidden" value="<c:out value='${searchVO.searchWrd}'/>"/>
-			    <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-			    <span class="link"><c:if test="${resultInfo.replyLc!=0}"><c:forEach begin="0" end="${resultInfo.replyLc}" step="1">&nbsp;	</c:forEach><img src="<c:url value='/images/egovframework/com/cop/bbs/icon_reply.png'/>" alt="secret"></c:if><input type="submit" value="<c:out value='${fn:substring(resultInfo.nttSj, 0, 40)}'/><c:if test="${resultInfo.commentCo != ''}">	<c:out value='[${resultInfo.commentCo}]'/></c:if>" style="border:0px solid #e0e0e0;"></span>
-		</form>
+		<span class="link"><c:if test="${resultInfo.replyLc!=0}"><c:forEach begin="0" end="${resultInfo.replyLc}" step="1">&nbsp;	</c:forEach><img src="<c:url value='/images/egovframework/com/cop/bbs/icon_reply.png'/>" alt="secret"></c:if><a href="javascript:void(0);" onclick="fn_egov_inquire_articledetail('<c:out value="${resultInfo.bbsId}"/>','<c:out value="${resultInfo.nttId}"/>'); return false;"><c:out value='${fn:substring(resultInfo.nttSj, 0, 40)}'/><c:if test="${resultInfo.commentCo != ''}">	<c:out value='[${resultInfo.commentCo}]'/></c:if></a></span>
 		</td>
 		</c:when>	
 		<c:when test="${resultInfo.secretAt == 'Y' && sessionUniqId != resultInfo.frstRegisterId}">
@@ -219,14 +205,7 @@ function fn_egov_inquire_articledetail(bbsId, nttId) {
 				    <span class="link"><c:if test="${resultInfo.replyLc!=0}"><c:forEach begin="0" end="${resultInfo.replyLc}" step="1">&nbsp;	</c:forEach><img src="<c:url value='/images/egovframework/com/cop/bbs/icon_reply.png'/>" alt="secret"></c:if><input type="submit" value="<c:out value='${fn:substring(resultInfo.nttSj, 0, 40)}'/><c:if test="${resultInfo.commentCo != ''}">	<c:out value='[${resultInfo.commentCo}]'/></c:if>" style="border:0px solid #e0e0e0;"></span>
 			</c:when>
 			<c:otherwise>
-		    	<form name="subForm" method="get" action="<c:url value='/cop/bbs/selectArticleDetail.do'/>">
-					    <input name="nttId" type="hidden" value="<c:out value="${resultInfo.nttId}"/>">
-					    <input name="bbsId" type="hidden" value="<c:out value="${resultInfo.bbsId}"/>">
-					    <input name="searchCnd" type="hidden" value="<c:out value='${searchVO.searchCnd}'/>"/>
-					    <input name="searchWrd" type="hidden" value="<c:out value='${searchVO.searchWrd}'/>"/>
-					    <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-					    <span class="link"><c:if test="${resultInfo.replyLc!=0}"><c:forEach begin="0" end="${resultInfo.replyLc}" step="1">&nbsp;	</c:forEach><img src="<c:url value='/images/egovframework/com/cop/bbs/icon_reply.png'/>" alt="secret"></c:if><input type="submit" value="<c:out value='${fn:substring(resultInfo.nttSj, 0, 40)}'/><c:if test="${resultInfo.commentCo != ''}">	<c:out value='[${resultInfo.commentCo}]'/></c:if>" style="border:0px solid #e0e0e0;"></span>
-				</form>
+		    	<span class="link"><c:if test="${resultInfo.replyLc!=0}"><c:forEach begin="0" end="${resultInfo.replyLc}" step="1">&nbsp;	</c:forEach><img src="<c:url value='/images/egovframework/com/cop/bbs/icon_reply.png'/>" alt="secret"></c:if><a href="javascript:void(0);" onclick="fn_egov_inquire_articledetail('<c:out value="${resultInfo.bbsId}"/>','<c:out value="${resultInfo.nttId}"/>'); return false;"><c:out value='${fn:substring(resultInfo.nttSj, 0, 40)}'/><c:if test="${resultInfo.commentCo != ''}">	<c:out value='[${resultInfo.commentCo}]'/></c:if></a></span>
 			</c:otherwise>
 			</c:choose>
 		</td>
@@ -261,11 +240,8 @@ function fn_egov_inquire_articledetail(bbsId, nttId) {
 	</div>
 	-->
 	
+</form:form>
 </div>
-
-<input name="nttId" type="hidden" value="0">
-<input name="bbsId" type="hidden" value="${boardMasterVO.bbsId}">
-<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
 
 
 </body>

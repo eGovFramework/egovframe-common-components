@@ -41,7 +41,6 @@
 		window.fbAsyncInit = function() {
 
 			var appId = "<c:out value='${facebookAppId}' />";
-			console.log("facebookAppId =", appId);
 			var accessToken = "";
 			var userID = "";
 
@@ -104,7 +103,6 @@
 							// res2.email : 유저 이메일 정보
 							document.querySelector('#logBtn').value = "logout";
 							document.querySelector('#facebookLink').style.display = "block";
-							console.log(res, res2);
 						});
 					});
 		}
@@ -149,7 +147,7 @@
 						<th>Feed</th>
 						<td class="left">
 							<form name=feedBtnForm
-								action="<c:url value='/uss/ion/fbk/feed.do' />" 
+								action="${pageContext.request.contextPath}/uss/ion/fbk/feed.do" 
 								method="GET"
 								target="_self">
 								<button class="btn_01" type="submit">

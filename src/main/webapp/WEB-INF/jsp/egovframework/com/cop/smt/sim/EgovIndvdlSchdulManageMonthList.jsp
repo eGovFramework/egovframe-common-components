@@ -77,7 +77,6 @@ String sTodate = formatter.format(new java.util.Date());
 	* 주관 부서 팝업창열기
 	******************************************************** */
 	function fn_egov_regist_IndvdlSchdulManage(sDate){
-		//alert(sDate);
 
 		gOpener.schdulBgnde.value = sDate;
 		gOpener.schdulEndde.value = sDate;
@@ -196,6 +195,7 @@ String sTodate = formatter.format(new java.util.Date());
 </HEAD>
 <BODY>
 <form name="IndvdlSchdulManageVO" id="IndvdlSchdulManageVO" action="" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <DIV id="content" style="width:712px;">
 
 <div class="sort_area">

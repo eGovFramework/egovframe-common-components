@@ -22,10 +22,13 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUtlSysPrm.comUtlProcessMonList.title"/></c:set>
 <!DOCTYPE html>
 <html lang="ko">
 	<head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 		<meta http-equiv="content-type" content="text/html; charset=utf-8">
 		<title>${pageTitle}</title>
 		<link href="<c:url value='/css/egovframework/com/com.css' />" rel="stylesheet" type="text/css">
@@ -65,6 +68,15 @@
 		function fnSearchLog(){
 			location.href = "<c:url value='/utl/sys/prm/EgovComUtlProcessMonLogList.do'/>";
 		}
+		/* ********************************************************
+		 * 상세화면 처리 함수
+		 ******************************************************** */
+		function fn_egov_detail_ProcessMon(processNm){
+			var form = document.listForm;
+			form.processNm.value = processNm;
+			form.action = "<c:url value='/utl/sys/prm/EgovComUtlProcessMon.do'/>";
+			form.submit();
+		}
 		-->
 		</script>
 	</head>
@@ -77,7 +89,7 @@
 	<div class="board">
 		<h1>${pageTitle}</h1>
 	
-	<form name="listForm" action="<c:url value='/utl/sys/prm/EgovComUtlProcessMonList.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/utl/sys/prm/EgovComUtlProcessMonList.do" method="post">
 		<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
 			<ul>
 				<li>
@@ -89,7 +101,7 @@
 					<input class="s_input2 vat" name="searchKeyword" type="text" value='${searchVO.searchKeyword}' size="35" title="검색어 입력" />
 					
 					<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fnSearch(); return false;" />
-					<span class="btn_b"><a href="<c:url value='/utl/sys/prm/EgovComUtlProcessMonRegistView.do'/>" onclick="" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+					<span class="btn_b"><a href="#" onclick="fn_egov_postNavigate('<c:url value='/utl/sys/prm/EgovComUtlProcessMonRegistView.do' />'); return false;" onclick="" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
 					<input class="s_btn" type="submit" value='<spring:message code="button.log" />' title="<spring:message code="button.log" />" onclick="fnSearchLog(); return false;" />
 				</li>
 			</ul>
@@ -120,7 +132,7 @@
 					<tr>
 						<td><c:out value="${(searchVO.pageIndex - 1) * searchVO.pageSize + status.count}"/></td>
 						<td>
-						<a href="<c:url value='/utl/sys/prm/EgovComUtlProcessMon.do'/>?pageIndex=${searchVO.pageIndex}&amp;processNm=${resultInfo.processNm}"><c:out value="${resultInfo.processNm}"/></a>								
+						<a href="javascript:void(0);" onclick="fn_egov_detail_ProcessMon('<c:out value="${resultInfo.processNm}"/>'); return false;"><c:out value="${resultInfo.processNm}"/></a>								
 						</td>						
 						<td>${resultInfo.procsSttus}</td>
 						<td>${resultInfo.mngrNm}</td>														
@@ -148,7 +160,7 @@
 
 			<input type="hidden" name="processNm">
 			<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-		</form>
+		</form:form>
 		
 	</div>
 	

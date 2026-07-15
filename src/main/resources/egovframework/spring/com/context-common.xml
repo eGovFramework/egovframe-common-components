@@ -9,6 +9,9 @@
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Service"/>
 		<context:include-filter type="annotation" expression="org.springframework.stereotype.Repository"/>
 		<context:exclude-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
+		<context:exclude-filter type="assignable" expression="egovframework.com.sec.security.filter.EgovCsrfSecurityConfig"/>
+		<context:exclude-filter type="assignable" expression="egovframework.com.sec.security.web.EgovCsrfControllerAdvice"/>
+		<context:exclude-filter type="assignable" expression="egovframework.com.utl.wed.web.EgovCkEditorControllerAdvice"/>
 	</context:component-scan>
 
 	<context:annotation-config/>
