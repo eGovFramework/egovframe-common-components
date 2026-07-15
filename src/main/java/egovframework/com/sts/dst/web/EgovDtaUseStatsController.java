@@ -10,6 +10,7 @@
  *     수정일       		 수정자                   수정내용
  *     -------          --------        ---------------------------
  *    2011.09.19     	 서준식 			초기 게시기간 설정
+ *    2026.07.06     	 EricSeokgon 		클래스명 오타 수정 (Contoller → Controller)
  * @author lee.m.j
  * @version 1.0
  * @created 08-9-2009 오후 1:40:19
@@ -38,7 +39,7 @@ import jakarta.annotation.Resource;
 * 데이터 사용 통계 컨트롤러 클래스
 * */
 @Controller
-public class EgovDtaUseStatsContoller {
+public class EgovDtaUseStatsController {
 
 	@Resource(name = "egovDtaUseStatsService")
 	EgovDtaUseStatsService egovDtaUseStatsService;
