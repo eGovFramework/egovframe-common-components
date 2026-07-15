@@ -67,7 +67,7 @@ public class EgovFileMngServiceImpl extends EgovAbstractServiceImpl implements E
 	public String insertFileInfs(List<FileVO> fvoList) throws Exception {
 		String atchFileId = "";
 
-		if (fvoList.size() != 0) {
+		if (!fvoList.isEmpty()) {
 			atchFileId = fileMngDAO.insertFileInfs(fvoList);
 		}
 		if (StringUtils.isEmpty(atchFileId)) {

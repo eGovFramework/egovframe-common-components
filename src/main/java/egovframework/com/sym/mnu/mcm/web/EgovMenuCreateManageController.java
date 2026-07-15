@@ -112,7 +112,7 @@ public class EgovMenuCreateManageController {
 		 * searchVO.setSearchKeyword(vo.getAuthorCode()); } }
 		 */
 		List<EgovMap> resultList = menuCreateManageService.selectMenuCreatManagList(searchVO);
-		if (resultList.size() == 0) {
+		if (resultList.isEmpty()) {
 			resultMsg = egovMessageSource.getMessage("info.nodata.msg");
 		}
 		model.addAttribute("resultList", resultList);
