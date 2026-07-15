@@ -54,4 +54,14 @@ public class EgovWebUtilTest {
 		assertEquals("", EgovWebUtil.removeLDAPInjectionRisk(null));
 		assertEquals("", EgovWebUtil.removeLDAPInjectionRisk("   "));
 	}
+
+	@Test
+	public void fileInjectPathReplaceAll_removesParentDirectorySequence() {
+		assertEquals("etcpasswd", EgovWebUtil.fileInjectPathReplaceAll("../etc/passwd"));
+	}
+
+	@Test
+	public void fileInjectPathReplaceAll_keepsSingleDotAndFollowingCharacter() {
+		assertEquals("report.txt", EgovWebUtil.fileInjectPathReplaceAll("report.txt"));
+	}
 }
