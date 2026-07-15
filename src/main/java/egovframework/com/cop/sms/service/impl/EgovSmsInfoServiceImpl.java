@@ -76,7 +76,7 @@ public class EgovSmsInfoServiceImpl extends EgovAbstractServiceImpl implements E
 	    return "";
 	}
 
-	StringBuffer buffer = new StringBuffer();
+	StringBuilder buffer = new StringBuilder();
 
 
 	if (number.length() == 9) {	// 02-500-1234 형식
