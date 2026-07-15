@@ -113,9 +113,9 @@ public class HTMLTagFilterRequestWrapper extends HttpServletRequestWrapper {
 	public Map<String, String[]> getParameterMap() {
 		Map<String, String[]> valueMap = super.getParameterMap();
 
-		String[] values;
-		for (String key : valueMap.keySet()) {
-			values = valueMap.get(key);
+		for (Map.Entry<String, String[]> entry : valueMap.entrySet()) {
+			String key = entry.getKey();
+			String[] values = entry.getValue();
 
 			if (isRichTextParameter(key)) {
 				continue;
@@ -124,13 +124,11 @@ public class HTMLTagFilterRequestWrapper extends HttpServletRequestWrapper {
 			for (int i = 0; i < values.length; i++) {
 				if (values[i] != null) {
 					values[i] = getSafeParamData(values[i]);
-    				//System.out.println( "[HTMLTagFilter getParameterMap] "+ key + "===>>>"+values[i] );
-				} else {
-					values[i] = null;
+    				//System.out.println( "[HTMLTagFilter getParameterMap] "+ entry.getKey() + "===>>>"+values[i] );
 				}
 			}
 
-            //System.out.println( String.format("키 : %s, 값 : %s", key, valueMap.get(key)) );
+            //System.out.println( String.format("키 : %s, 값 : %s", entry.getKey(), entry.getValue()) );
 		}
 
 		return valueMap;

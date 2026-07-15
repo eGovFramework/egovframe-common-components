@@ -111,13 +111,14 @@ public class DeptManageLdapDAO extends OrgManageLdapDAO {
 
 		Map<Object, Object> introspected = new BeanMap(vo);
 
-		for (Object key : introspected.keySet()) {
-			if (key.equals("dn") || key.equals("class") || introspected.get(key) == null
-				|| introspected.get(key).equals("")) {
+		for (Map.Entry<Object, Object> entry : introspected.entrySet()) {
+			Object key = entry.getKey();
+			Object value = entry.getValue();
+			if (key.equals("dn") || key.equals("class") || value == null || value.equals("")) {
 				continue;
 			}
 
-			ContainerCriteria c = query().where((String)key).is(String.valueOf(introspected.get(key)));
+			ContainerCriteria c = query().where((String)key).is(String.valueOf(value));
 			criteria.and(c);
 		}
 
