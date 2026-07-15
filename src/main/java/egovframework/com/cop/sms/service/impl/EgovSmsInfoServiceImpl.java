@@ -59,7 +59,7 @@ public class EgovSmsInfoServiceImpl extends EgovAbstractServiceImpl implements E
     private String getPhoneNumber(String number) {
 	String result = number;
 
-	if (number == null || number.trim().equals("")) {
+	if (number == null || number.trim().isEmpty()) {
 	    return "";
 	}
 
@@ -72,7 +72,7 @@ public class EgovSmsInfoServiceImpl extends EgovAbstractServiceImpl implements E
     }
 
     private String formatPhoneNumber(String number) throws ParseException {
-	if (number == null || number.trim().equals("")) {
+	if (number == null || number.trim().isEmpty()) {
 	    return "";
 	}
 
