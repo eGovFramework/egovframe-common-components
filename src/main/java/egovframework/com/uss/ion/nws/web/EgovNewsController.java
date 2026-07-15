@@ -8,6 +8,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -108,7 +109,7 @@ public class EgovNewsController {
 	 * @return "/uss/ion/nws/EgovNewsDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/nws/selectNewsDetail.do")
+	@PostMapping("/uss/ion/nws/selectNewsDetail.do")
 	public String selectNewsDetail(@ModelAttribute("newsVO") NewsVO newsVO, ModelMap model) throws Exception {
 		NewsVO vo = egovNewsService.selectNewsDetail(newsVO);
 		model.addAttribute("newsVO", vo);
@@ -124,7 +125,7 @@ public class EgovNewsController {
 	 * @return "/uss/ion/nws/EgovNewsRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/nws/insertNewsView.do")
+	@PostMapping("/uss/ion/nws/insertNewsView.do")
 	public String insertNewsView(@ModelAttribute("newsVO") NewsVO newsVO, ModelMap model) throws Exception {
 		model.addAttribute("newsVO", newsVO);
 
@@ -140,7 +141,7 @@ public class EgovNewsController {
 	 * @return "forward:/uss/ion/nws/selectNewsList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/nws/insertNews.do")
+	@PostMapping("/uss/ion/nws/insertNews.do")
 	public String insertNews(final MultipartHttpServletRequest multiRequest, @Valid @ModelAttribute("newsVO") NewsVO newsVO, BindingResult bindingResult, ModelMap model) throws Exception {
 
 		if(bindingResult.hasErrors()){
@@ -182,7 +183,7 @@ public class EgovNewsController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/nws/updateNewsView.do")
+	@PostMapping("/uss/ion/nws/updateNewsView.do")
 	public String updateNewsView(@ModelAttribute("newsVO") NewsVO newsVO, ModelMap model) throws Exception {
 		model.addAttribute("newsVO", egovNewsService.selectNewsDetail(newsVO));
 
@@ -200,7 +201,7 @@ public class EgovNewsController {
 	 * @return "forward:/uss/ion/nws/NewsInfoListInqire.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/nws/updateNews.do")
+	@PostMapping("/uss/ion/nws/updateNews.do")
 	public String updateNewsInfo(final MultipartHttpServletRequest multiRequest, @Valid @ModelAttribute("newsVO") NewsVO newsVO, BindingResult bindingResult, ModelMap model) throws Exception {
 
 		if (bindingResult.hasErrors()) {
@@ -247,11 +248,38 @@ public class EgovNewsController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/ion/nws/deleteNews.do")
+	@PostMapping("/uss/ion/nws/deleteNews.do")
 	public String deleteNews(@ModelAttribute("newsVO") NewsVO newsVO) throws Exception {
 		egovNewsService.deleteNews(newsVO);
 
 		return "forward:/uss/ion/nws/selectNewsList.do";
+	}
+
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 }

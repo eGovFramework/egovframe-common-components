@@ -29,6 +29,14 @@
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script type="text/javaScript" language="javascript">
+var csrfHeaderName = "${_csrf.headerName}";
+var csrfToken = "${_csrf.token}";
+function egovCsrfBeforeSend(xhr) {
+	if (csrfHeaderName && csrfToken) {
+		xhr.setRequestHeader(csrfHeaderName, csrfToken);
+	}
+}
+
 /*********************************************************
  * 초기화
  ******************************************************** */
@@ -42,6 +50,7 @@ function fn_egov_json_inquire(){
 
 	var gListCurrent=1;
 	$.ajax({
+		beforeSend: egovCsrfBeforeSend,
 		type:"POST",
 		url:"<c:url value='/utl/jso/EgovUtlJsonMultiInquire.do' />",
 		data:{

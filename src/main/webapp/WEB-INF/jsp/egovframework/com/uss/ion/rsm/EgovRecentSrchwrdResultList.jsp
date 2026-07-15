@@ -19,6 +19,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -85,7 +87,7 @@ function fn_egov_search_RecentSrchwrd(){
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg"/></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
 <div class="board">
-	<form name="listForm" action="<c:url value=''/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="" method="post">
 	
 	<h1><spring:message code="ussIonRsm.recentSrchwrdResultList.recentSrchwrdResultList"/></h1><!-- 최근검색어결과 목록 -->
 	
@@ -163,6 +165,6 @@ function fn_egov_search_RecentSrchwrd(){
 <input name="searchMode" type="hidden" value="">
 <input name="cmd" type="hidden" value="">
 <input name="pageIndex" type="hidden" value="<c:out value='${recentSrchwrd.pageIndex}'/>"/>
-</form>
+</form:form>
 </body>
 </html>

@@ -26,12 +26,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uat.uap.service.EgovLoginPolicyService;
 import egovframework.com.uat.uap.service.LoginPolicy;
@@ -94,7 +96,8 @@ public class EgovLoginPolicyController {
 	 * @param loginPolicyVO - 로그인정책 VO
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping("/uat/uap/getLoginPolicy.do")
+	@PostMapping("/uat/uap/getLoginPolicy.do")
+	@RequireAdmin
 	public String selectLoginPolicy(@RequestParam("emplyrId") String emplyrId,
 			                        @ModelAttribute("loginPolicyVO") LoginPolicyVO loginPolicyVO,
                                      ModelMap model) throws Exception {
@@ -118,10 +121,13 @@ public class EgovLoginPolicyController {
 	 * @param loginPolicy - 로그인정책 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping("/uat/uap/addLoginPolicyView.do")
+	@PostMapping("/uat/uap/addLoginPolicyView.do")
 	public String insertLoginPolicyView(@RequestParam("emplyrId") String emplyrId,
                                         @ModelAttribute("loginPolicyVO") LoginPolicyVO loginPolicyVO,
                                          ModelMap model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = egovAssertLoginUser();
+
 
 		loginPolicyVO.setEmplyrId(emplyrId);
 
@@ -136,7 +142,7 @@ public class EgovLoginPolicyController {
 	 * @param loginPolicy - 로그인정책 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping("/uat/uap/addLoginPolicy.do")
+	@PostMapping("/uat/uap/addLoginPolicy.do")
 	public String insertLoginPolicy(@Valid @ModelAttribute("loginPolicy") LoginPolicy loginPolicy,
 			                         BindingResult bindingResult,
                                      ModelMap model) throws Exception {
@@ -166,7 +172,7 @@ public class EgovLoginPolicyController {
 	 * @param loginPolicy - 로그인정책 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping("/uat/uap/updtLoginPolicy.do")
+	@PostMapping("/uat/uap/updtLoginPolicy.do")
 	public String updateLoginPolicy(@Valid @ModelAttribute("loginPolicy") LoginPolicy loginPolicy,
 			                         BindingResult bindingResult,
                                      ModelMap model) throws Exception {
@@ -194,7 +200,7 @@ public class EgovLoginPolicyController {
 	 * @param loginPolicy - 로그인정책 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping("/uat/uap/removeLoginPolicy.do")
+	@PostMapping("/uat/uap/removeLoginPolicy.do")
 	public String deleteLoginPolicy(@ModelAttribute("loginPolicy") LoginPolicy loginPolicy,
                                      ModelMap model) throws Exception {
 
@@ -207,6 +213,33 @@ public class EgovLoginPolicyController {
 		model.addAttribute("pageIndex", loginPolicy.getPageIndex());
 
 		return "redirect:/uat/uap/selectLoginPolicyList.do";
+	}
+
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 }

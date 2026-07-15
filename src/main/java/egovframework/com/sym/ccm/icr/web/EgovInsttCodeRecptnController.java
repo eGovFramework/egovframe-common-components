@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -68,7 +69,7 @@ public class EgovInsttCodeRecptnController {
 	 * @return "forward:/sym/ccm/icr/getInsttCodeRecptnList.do"
 	 * @throws Exception
 	 */
-    @RequestMapping(value = "/sym/ccm/icr/addInsttCode.do")
+    @PostMapping("/sym/ccm/icr/addInsttCode.do")
 	public String insertInsttCodeRecptn (InsttCodeRecptn insttCodeRecptn
 			, BindingResult bindingResult
 			, @RequestParam Map<?, ?> commandMap
@@ -92,7 +93,7 @@ public class EgovInsttCodeRecptnController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/ccm/icr/getInsttCodeDetail.do")
+	@PostMapping("/sym/ccm/icr/getInsttCodeDetail.do")
  	public String selectInsttCodeDetail (@ModelAttribute("insttCode") InsttCodeRecptn insttCode
 			, @ModelAttribute("insttCodeRecptnVO") InsttCodeRecptnVO insttCodeRecptnVO
 			, ModelMap model

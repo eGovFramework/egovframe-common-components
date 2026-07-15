@@ -124,9 +124,9 @@
 	
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<span class="btn_s"><a href="<c:url value='/uss/ion/mtg/selectMtgPlaceManage.do'/>?searchCondition=1" onclick="fncSelectMtgPlaceManage(); return false;"><spring:message code="button.update" /></a></span>
-		<span class="btn_s"><a href="<c:url value='/uss/ion/mtg/deleteMtgPlaceManage.do'/>?searchCondition=1" onclick="fncDeleteMtgPlace(); return false;"><spring:message code="button.delete" /></a></span>
-		<span class="btn_s"><a href="<c:url value='/uss/ion/mtg/selectMtgPlaceManageList.do'/>?searchCondition=1" onclick="fncSelectMtgPlaceManageList(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncSelectMtgPlaceManage(); return false;"><spring:message code="button.update" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncDeleteMtgPlace(); return false;"><spring:message code="button.delete" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncSelectMtgPlaceManageList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

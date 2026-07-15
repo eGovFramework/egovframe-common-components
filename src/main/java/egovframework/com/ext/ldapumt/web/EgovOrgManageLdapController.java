@@ -25,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -57,7 +58,7 @@ public class EgovOrgManageLdapController {
      * @return
      * @throws Exception
      */
-	@RequestMapping(value = "/ext/ldapumt/dpt/getDeptManageSublist.do", method = RequestMethod.POST)
+	@PostMapping("/ext/ldapumt/dpt/getDeptManageSublist.do")
 	@RequireAdmin
 	public ModelAndView selectDeptManageSublist(@RequestParam("dn") String dn, ModelMap model) throws Exception {
 		validateDn(dn);
@@ -74,7 +75,7 @@ public class EgovOrgManageLdapController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ext/ldapumt/dpt/getDeptManage.do", method = RequestMethod.POST)
+	@PostMapping("/ext/ldapumt/dpt/getDeptManage.do")
 	@RequireAdmin
 	public ModelAndView selectDeptManage(@RequestParam("dn") String dn, ModelMap model) throws Exception {
 		validateDn(dn);
@@ -91,7 +92,7 @@ public class EgovOrgManageLdapController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ext/ldapumt/dpt/getUserManage.do", method = RequestMethod.POST)
+	@PostMapping("/ext/ldapumt/dpt/getUserManage.do")
 	@RequireAdmin
 	public ModelAndView selectUserManage(@RequestParam("dn") String dn, ModelMap model) throws Exception {
 		validateDn(dn);
@@ -109,7 +110,7 @@ public class EgovOrgManageLdapController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ext/ldapumt/dpt/createNode.do", method = RequestMethod.POST)
+	@PostMapping("/ext/ldapumt/dpt/createNode.do")
 	@RequireAdmin
 	public ModelAndView createDeptManage(@RequestParam("dn") String parentDn, @RequestParam("text") String ou, ModelMap model) throws Exception {
 		validateDn(parentDn);
@@ -131,7 +132,7 @@ public class EgovOrgManageLdapController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ext/ldapumt/dpt/createUserNode.do", method = RequestMethod.POST)
+	@PostMapping("/ext/ldapumt/dpt/createUserNode.do")
 	@RequireAdmin
 	public ModelAndView createUserManage(@RequestParam("dn") String parentDn, @RequestParam("text") String cn, ModelMap model) throws Exception {
 		validateDn(parentDn);
@@ -153,7 +154,7 @@ public class EgovOrgManageLdapController {
 	 * @throws Exception
 	 * 하위부서까지 모두 삭제된다.
 	 */
-	@RequestMapping(value = "/ext/ldapumt/dpt/deleteNode.do", method = RequestMethod.POST)
+	@PostMapping("/ext/ldapumt/dpt/deleteNode.do")
 	@RequireAdmin
 	public ModelAndView removeDeptManage(@RequestParam("dn") String dn, ModelMap model) throws Exception {
 		validateDn(dn);
@@ -174,7 +175,7 @@ public class EgovOrgManageLdapController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ext/ldapumt/dpt/renameNode.do", method = RequestMethod.POST)
+	@PostMapping("/ext/ldapumt/dpt/renameNode.do")
 	@RequireAdmin
 	public ModelAndView renameDeptManage(@RequestParam("id") String dn, @RequestParam("text") String name, ModelMap model) throws Exception {
 		validateDn(dn);
@@ -196,7 +197,7 @@ public class EgovOrgManageLdapController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ext/ldapumt/dpt/renameUserNode.do", method = RequestMethod.POST)
+	@PostMapping("/ext/ldapumt/dpt/renameUserNode.do")
 	@RequireAdmin
 	public ModelAndView renameUserManage(@RequestParam("id") String dn, @RequestParam("text") String name, ModelMap model) throws Exception {
 		validateDn(dn);
@@ -218,7 +219,7 @@ public class EgovOrgManageLdapController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ext/ldapumt/dpt/moveOrgNode.do", method = RequestMethod.POST)
+	@PostMapping("/ext/ldapumt/dpt/moveOrgNode.do")
 	@RequireAdmin
 	public ModelAndView moveOrgManage(@RequestParam("id") String dn, @RequestParam("parent") String parentDn, ModelMap model) throws Exception {
 		validateDn(dn);
@@ -239,7 +240,7 @@ public class EgovOrgManageLdapController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ext/ldapumt/dpt/modifyDeptManage.do", method = RequestMethod.POST)
+	@PostMapping("/ext/ldapumt/dpt/modifyDeptManage.do")
 	@RequireAdmin
 	public ModelAndView modifyDeptManage(@ModelAttribute("ucorgVO") UcorgVO ucorgVO,
             ModelMap model) throws Exception {
@@ -259,7 +260,7 @@ public class EgovOrgManageLdapController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/ext/ldapumt/dpt/modifyUserManage.do", method = RequestMethod.POST)
+	@PostMapping("/ext/ldapumt/dpt/modifyUserManage.do")
 	@RequireAdmin
 	public ModelAndView modifyUserManage(@ModelAttribute("userVO") UserVO userVO,
 			ModelMap model) throws Exception {

@@ -21,6 +21,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUssOlhOmm.onlineManualVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -67,7 +68,7 @@ function fn_egov_inquire_onlinemanualdetail(onlineMnlId) {
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="onlineManualForm" action="<c:url value='/uss/olh/omn/selectOnlineManualList.do'/>" method="post" onSubmit="fn_egov_search_onlinemanual(); return false;"> 
+<form:form name="onlineManualForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/olh/omn/selectOnlineManualList.do" method="post" onSubmit="fn_egov_search_onlinemanual(); return false;"> 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<!-- 하단 버튼 -->
@@ -87,7 +88,7 @@ function fn_egov_inquire_onlinemanualdetail(onlineMnlId) {
 			</li>
 		</ul>
 	</div>
-	</form>
+	
 	
 	<!-- 목록영역 -->
 	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
@@ -119,11 +120,7 @@ function fn_egov_inquire_onlinemanualdetail(onlineMnlId) {
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 		<td><c:out value='${resultInfo.onlineMnlSeCodeNm}'/></td>
 		<td>
-			<form name="subForm" method="post" action="<c:url value='/uss/olh/omn/selectOnlineManualDetail.do'/>">
-			    <input name="onlineMnlId" type="hidden" value="<c:out value="${resultInfo.onlineMnlId}"/>">
-			    <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-			    <span class="link"><input type="submit" value="<c:out value='${fn:substring(resultInfo.onlineMnlNm, 0, 40)}'/>" style="border:0px solid #e0e0e0;"></span>
-			</form>
+			<a href="javascript:void(0);" onclick="fn_egov_inquire_onlinemanualdetail('<c:out value="${resultInfo.onlineMnlId}"/>'); return false;"><span class="link"><c:out value='${fn:substring(resultInfo.onlineMnlNm, 0, 40)}'/></span></a>
 		</td>
 		<td><c:out value='${resultInfo.frstRegisterNm}'/></td>
 		<td><c:out value='${resultInfo.frstRegisterPnttm}'/></td>
@@ -138,6 +135,8 @@ function fn_egov_inquire_onlinemanualdetail(onlineMnlId) {
 		<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_linkPage"/>
 		</ul>
 	</div>
+</form:form>
+
 	
 	
 </div>

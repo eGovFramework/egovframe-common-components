@@ -65,7 +65,7 @@ function press() {
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 
-	<form name="listForm" action="<c:url value='/utl/sys/srm/selectMntrngServerList.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/utl/sys/srm/selectMntrngServerList.do" method="post">
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
 		<ul>
 			<li>
@@ -79,7 +79,7 @@ function press() {
 	</div>
 	<input type="hidden" name="logId">
 	<input type="hidden" name="pageIndex" value="<c:if test="${empty serverResrceMntrngVO.pageIndex }">1</c:if><c:if test="${!empty serverResrceMntrngVO.pageIndex }"><c:out value='${serverResrceMntrngVO.pageIndex}'/></c:if>">
-	</form>
+	</form:form>
 
 	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
 		<caption></caption>

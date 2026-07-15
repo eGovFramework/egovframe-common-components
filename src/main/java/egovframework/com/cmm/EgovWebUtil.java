@@ -1,6 +1,8 @@
 package egovframework.com.cmm;
 
 import java.io.File;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.regex.Pattern;
 
 /**
@@ -19,6 +21,7 @@ import java.util.regex.Pattern;
  *  2022.06.09   김장하      NSR 보안조치 (removeOSCmdRisk 함수에 윈도우 다중 명령 실행 키워드 추가)
  *  2023.08.10   신용호      removeLDAPInjectionRisk() 오류 수정
  *  2024.12.04   신용호      filePathBlackList() basePath 추가
+ *  2026.07.10   유지보수    NCSC 보안점검 반영 (XSS/SSRF/세션고정 대응 유틸 추가)
  * </pre>
  */
 
@@ -146,6 +149,109 @@ public class EgovWebUtil {
 		Pattern ipPattern = Pattern.compile("\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}");
 
 		return ipPattern.matcher(str).matches();
+	}
+
+	/**
+	 * 내부(사설/루프백/링크로컬) IP 여부 확인
+	 */
+	public static boolean isInternalAddress(InetAddress address) {
+		return address.isLoopbackAddress()
+				|| address.isSiteLocalAddress()
+				|| address.isLinkLocalAddress()
+				|| address.isAnyLocalAddress();
+	}
+
+	/**
+	 * FTP/SSRF 방어를 위한 공개 IP 검증
+	 */
+	public static void validatePublicFtpHost(String serverIp) {
+		if (!isIPAddress(serverIp)) {
+			throw new IllegalArgumentException("Invalid IP address: " + serverIp);
+		}
+		try {
+			InetAddress host = InetAddress.getByName(serverIp);
+			if (isInternalAddress(host)) {
+				throw new IllegalArgumentException("Internal IP access is not allowed: " + serverIp);
+			}
+		} catch (UnknownHostException e) {
+			throw new IllegalArgumentException("Unable to resolve host: " + serverIp, e);
+		}
+	}
+
+	/**
+	 * 팝업 requestUrl 상대경로 검증
+	 */
+	public static String sanitizeRelativeRequestUrl(String requestUrl) {
+		if (requestUrl == null || requestUrl.isBlank()) {
+			throw new IllegalArgumentException("requestUrl is required");
+		}
+		String trimmed = requestUrl.trim();
+		if (!trimmed.startsWith("/") || trimmed.contains("://") || trimmed.contains("..")
+				|| trimmed.contains("\"") || trimmed.contains("'") || trimmed.contains("<")
+				|| trimmed.contains(">") || trimmed.contains("\r") || trimmed.contains("\n")) {
+			throw new IllegalArgumentException("Invalid requestUrl");
+		}
+		return trimmed;
+	}
+
+	/**
+	 * XML 특수문자 이스케이프
+	 */
+	public static String escapeXml(String value) {
+		if (value == null || value.trim().equals("")) {
+			return "";
+		}
+		return value.replace("&", "&amp;")
+				.replace("<", "&lt;")
+				.replace(">", "&gt;")
+				.replace("\"", "&quot;")
+				.replace("'", "&apos;");
+	}
+
+	/**
+	 * JavaScript 문자열 이스케이프
+	 */
+	public static String escapeJavaScript(String value) {
+		if (value == null || value.trim().equals("")) {
+			return "";
+		}
+		StringBuilder sb = new StringBuilder(value.length() + 16);
+		for (int i = 0; i < value.length(); i++) {
+			char ch = value.charAt(i);
+			switch (ch) {
+				case '\\':
+					sb.append("\\\\");
+					break;
+				case '\'':
+					sb.append("\\'");
+					break;
+				case '"':
+					sb.append("\\\"");
+					break;
+				case '\n':
+					sb.append("\\n");
+					break;
+				case '\r':
+					sb.append("\\r");
+					break;
+				case '<':
+					sb.append("\\x3c");
+					break;
+				case '>':
+					sb.append("\\x3e");
+					break;
+				case '&':
+					sb.append("\\x26");
+					break;
+				default:
+					if (ch < 32 || ch == '\u2028' || ch == '\u2029') {
+						sb.append(String.format("\\u%04x", (int) ch));
+					} else {
+						sb.append(ch);
+					}
+			}
+		}
+		return sb.toString();
 	}
 
 	public static String removeCRLF(String parameter) {

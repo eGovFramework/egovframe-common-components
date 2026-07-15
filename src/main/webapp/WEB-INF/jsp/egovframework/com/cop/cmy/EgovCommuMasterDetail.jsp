@@ -46,7 +46,8 @@
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="CommuMasterForm" action="<c:url value='/cop/cmy/updateCommuMasterView.do'/>" method="post">
+<form name="CommuMasterForm" action="${pageContext.request.contextPath}/cop/cmy/updateCommuMasterView.do" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <div class="wTableFrm">
 	<!-- 타이틀 -->
 	<h2>${pageTitle} <spring:message code="title.detail" /></h2><!-- 커뮤니티 마스터 상세조회 -->

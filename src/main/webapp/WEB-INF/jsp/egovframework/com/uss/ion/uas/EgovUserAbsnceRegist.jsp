@@ -60,11 +60,11 @@ $(function() {
  ******************************************************** */
 function fn_egov_regist_userAbsnce(form){
 	//input item Client-Side validate
-	/*if (!validateUserAbsnceVO(form)) {	
+	if (!validateUserAbsnceVO(form)) {
 		return;
-	}*/
+	}
 
-	if(confirm('<spring:message code="common.regist.msg" />')){	
+	if(confirm('<spring:message code="common.regist.msg" />')){
 		form.submit();
 	}
 }

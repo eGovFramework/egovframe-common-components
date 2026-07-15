@@ -28,6 +28,7 @@
 </head>
 <body>
 <form name="msgForm" id="msgForm" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<c:if test="${loginVO!= null}">
 		${loginVO.name}<spring:message code="comExtMsg.webSocketInto.msg1"/>  <!-- 님, 메신저에 접속 합니다. -->
 		<input type="button" id="connectMsgBtn" name="connectMsgBtn" value="<spring:message code="comExtMsg.webSocket.btnInto"/>"/>

@@ -38,7 +38,6 @@ function fnInit(){
 	getDialogArguments();
 	
 	var varParam        = window.dialogArguments;
-	//var varForm			= document.all["Form"];
 	var varForm			= document.getElementsByName("Form")[0];
 	var pForm			= parent.document.all["pForm"];
 
@@ -60,7 +59,6 @@ function fnInit(){
  * 연월변경
  ******************************************************** */
 function fnChangeCalendar(year, month){
-	//var varForm			= document.all["Form"];
 	var varForm			=  document.getElementsByName("Form")[0];
 	varForm.action      = "<c:url value='/sym/cal/EgovselectNormalCalendar.do'/>";
 	varForm.year.value  = year;
@@ -92,6 +90,7 @@ function fnReturnDay(day){
 </head>
 <body onload="fnInit();" topmargin="0" leftmargin="0">
 <form name="Form" action ="<c:url value='/sym/cal/EgovselectNormalCalendar.do'/>" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <input type="hidden" name="init" value="${init}" />
 <input type="hidden" name="year" value="${resultList[0].year}" />
 <input type="hidden" name="month" value="${resultList[0].month}" />

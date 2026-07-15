@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.multipart.MultipartHttpServletRequest;
@@ -217,7 +218,7 @@ public class EgovArticleController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/bbs/selectArticleDetail.do")
+	@PostMapping("/cop/bbs/selectArticleDetail.do")
 	public String selectArticleDetail(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) throws Exception {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
@@ -285,7 +286,7 @@ public class EgovArticleController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/bbs/insertArticleView.do")
+	@PostMapping("/cop/bbs/insertArticleView.do")
 	public String insertArticleView(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) throws Exception {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -324,7 +325,7 @@ public class EgovArticleController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/bbs/insertArticle.do")
+	@PostMapping("/cop/bbs/insertArticle.do")
 	public String insertArticle(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") BoardVO boardVO, @ModelAttribute("bdMstr") BoardMaster bdMstr,
 			@Valid @ModelAttribute("articleVO") BoardVO board, BindingResult bindingResult, ModelMap model,
@@ -405,7 +406,7 @@ public class EgovArticleController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/bbs/replyArticleView.do")
+	@PostMapping("/cop/bbs/replyArticleView.do")
 	public String addReplyBoardArticle(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model) throws Exception {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
 
@@ -454,7 +455,7 @@ public class EgovArticleController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/bbs/replyArticle.do")
+	@PostMapping("/cop/bbs/replyArticle.do")
 	public String replyBoardArticle(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") BoardVO boardVO, @ModelAttribute("bdMstr") BoardMaster bdMstr,
 			@Valid @ModelAttribute("articleVO") BoardVO board, BindingResult bindingResult, ModelMap model) throws Exception {
@@ -541,7 +542,7 @@ public class EgovArticleController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/bbs/updateArticleView.do")
+	@PostMapping("/cop/bbs/updateArticleView.do")
 	public String updateArticleView(@ModelAttribute("searchVO") BoardVO boardVO, @ModelAttribute("board") BoardVO vo,
 			ModelMap model) throws Exception {
 
@@ -597,7 +598,7 @@ public class EgovArticleController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/bbs/updateArticle.do")
+	@PostMapping("/cop/bbs/updateArticle.do")
 	public String updateBoardArticle(final MultipartHttpServletRequest multiRequest,
 			@ModelAttribute("searchVO") BoardVO boardVO, @ModelAttribute("bdMstr") BoardMaster bdMstr,
 			@Valid @ModelAttribute("articleVO") Board board, BindingResult bindingResult, ModelMap model) throws Exception {
@@ -624,7 +625,10 @@ public class EgovArticleController {
 		// @ XSS 대응 권한체크 체크 END
 		// --------------------------------------------------------------------------------------------
 
-		String atchFileId = boardVO.getAtchFileId();
+		// IDOR 조치: 클라이언트가 전달한 atchFileId(boardVO.getAtchFileId())를 그대로 신뢰하지 않고,
+		// 위에서 조회/소유권 검증을 마친 원본 게시물(vo)의 atchFileId만 사용하여
+		// 다른 사용자의 첨부파일 그룹에 파일을 추가하지 못하도록 한다.
+		String atchFileId = vo.getAtchFileId();
 
 		if (bindingResult.hasErrors()) {
 
@@ -671,7 +675,7 @@ public class EgovArticleController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/bbs/deleteArticle.do")
+	@PostMapping("/cop/bbs/deleteArticle.do")
 	public String deleteBoardArticle(HttpServletRequest request, @ModelAttribute("searchVO") BoardVO boardVO,
 			@ModelAttribute("board") Board board, @ModelAttribute("bdMstr") BoardMaster bdMstr, ModelMap model)
 			throws Exception {
@@ -793,7 +797,7 @@ public class EgovArticleController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/bbs/insertGuestArticle.do")
+	@PostMapping("/cop/bbs/insertGuestArticle.do")
 	public String insertGuestList(@ModelAttribute("searchVO") BoardVO boardVO, @Valid @ModelAttribute("Board") Board board,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -869,7 +873,7 @@ public class EgovArticleController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/bbs/deleteGuestArticle.do")
+	@PostMapping("/cop/bbs/deleteGuestArticle.do")
 	public String deleteGuestList(@ModelAttribute("searchVO") BoardVO boardVO, @Valid @ModelAttribute("articleVO") Board board,
 			ModelMap model) throws Exception {
 		@SuppressWarnings("unused")
@@ -892,7 +896,7 @@ public class EgovArticleController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/bbs/updateGuestArticleView.do")
+	@PostMapping("/cop/bbs/updateGuestArticleView.do")
 	public String updateGuestArticleView(@ModelAttribute("searchVO") BoardVO boardVO,
 			@ModelAttribute("boardMasterVO") BoardMasterVO brdMstrVO, ModelMap model) throws Exception {
 
@@ -946,7 +950,7 @@ public class EgovArticleController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/bbs/updateGuestArticle.do")
+	@PostMapping("/cop/bbs/updateGuestArticle.do")
 	public String updateGuestArticle(@ModelAttribute("searchVO") BoardVO boardVO, @Valid @ModelAttribute Board board,
 			BindingResult bindingResult, ModelMap model) throws Exception {
 
@@ -1068,7 +1072,7 @@ public class EgovArticleController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/bbs/selectArticleBlogDetail.do")
+	@PostMapping("/cop/bbs/selectArticleBlogDetail.do")
 	public ModelAndView selectArticleBlogDetail(@ModelAttribute("searchVO") BoardVO boardVO, ModelMap model)
 			throws Exception {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
@@ -1128,7 +1132,7 @@ public class EgovArticleController {
 	 * @return
 	 * @throws Exception
 	 */
-	@RequestMapping("/cop/bbs/selectArticleBlogDetailCn.do")
+	@PostMapping("/cop/bbs/selectArticleBlogDetailCn.do")
 	public ModelAndView selectArticleBlogDetailCn(@ModelAttribute("searchVO") BoardVO boardVO,
 			@ModelAttribute("commentVO") CommentVO commentVO, ModelMap model) throws Exception {
 		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();

@@ -107,7 +107,7 @@ public class EgovKnoManagementController {
 	 * @return 상세 화면 경로
 	 * @throws Exception 식별자가 없거나 해당 지식정보가 존재하지 않거나 데이터 접근 오류가 발생한 경우
 	 */
-	@RequestMapping(value = "/dam/mgm/EgovComDamManagement.do")
+	@PostMapping("/dam/mgm/EgovComDamManagement.do")
 	public String selectKnoManagement(KnoManagement knoManagement, ModelMap model) throws Exception {
 
 		//Spring Security 사용자권한 처리

@@ -1313,7 +1313,7 @@ public class EgovCalRestdeManageController {
 	 * @return "forward:/sym/cal/EgovRestdeList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/cal/EgovRestdeRemove.do")
+	@PostMapping("/sym/cal/EgovRestdeRemove.do")
 	public String deleteRestde(@ModelAttribute("loginVO") LoginVO loginVO, Restde restde, ModelMap model)
 			throws Exception {
 		restdeManageService.deleteRestde(restde);
@@ -1328,7 +1328,7 @@ public class EgovCalRestdeManageController {
 	 * @return "egovframework/com/sym/cal/EgovRestdeRegist"
 	 * @throws Exception
 	 */
-	@GetMapping("/sym/cal/EgovRestdeRegistView.do")
+	@PostMapping("/sym/cal/EgovRestdeRegistView.do")
 	public String insertRestde(@ModelAttribute("loginVO") LoginVO loginVO, ModelMap model) throws Exception {
 		ComDefaultCodeVO vo = new ComDefaultCodeVO();
 		vo.setCodeId("COM017");
@@ -1377,7 +1377,7 @@ public class EgovCalRestdeManageController {
 	 * @return "egovframework/com/sym/cal/EgovRestdeDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/cal/EgovRestdeDetail.do")
+	@PostMapping("/sym/cal/EgovRestdeDetail.do")
 	public String selectRestdeDetail(@ModelAttribute("loginVO") LoginVO loginVO, Restde restde, ModelMap model)
 			throws Exception {
 		Restde vo = restdeManageService.selectRestdeDetail(restde);
@@ -1432,7 +1432,7 @@ public class EgovCalRestdeManageController {
 	 * @return "egovframework/com/sym/cal/EgovRestdeModify"
 	 * @throws Exception
 	 */
-	@GetMapping("/sym/cal/EgovRestdeModifyView.do")
+	@PostMapping("/sym/cal/EgovRestdeModifyView.do")
 	public String updateRestde(@ModelAttribute("loginVO") LoginVO loginVO, @ModelAttribute("restde") Restde restde,
 			ModelMap model) throws Exception {
 		Restde vo = restdeManageService.selectRestdeDetail(restde);

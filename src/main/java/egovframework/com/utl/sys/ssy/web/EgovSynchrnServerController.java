@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -169,7 +170,7 @@ public class EgovSynchrnServerController {
 	 * @param synchrnServer - 동기화대상 서버(식별·목록 복귀 조건)
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/utl/sys/ssy/getSynchrnServer.do")
+	@PostMapping("/utl/sys/ssy/getSynchrnServer.do")
 	@RequireAdmin
 	public String selectSynchrnServer(@ModelAttribute("synchrnServer") SynchrnServer synchrnServer, Model model) throws Exception {
 		SynchrnServer loaded = egovSynchrnServerService.selectSynchrnServer(synchrnServer);
@@ -189,7 +190,7 @@ public class EgovSynchrnServerController {
 	 * 
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/utl/sys/ssy/removeSynchrnServerFile.do", method = RequestMethod.POST)
+	@PostMapping("/utl/sys/ssy/removeSynchrnServerFile.do")
 	@RequireAdmin
 	public String deleteSynchrnServerFile(@ModelAttribute("synchrnServer") SynchrnServer bound) throws Exception {
 		SynchrnServer loaded = egovSynchrnServerService.selectSynchrnServer(bound);
@@ -207,7 +208,7 @@ public class EgovSynchrnServerController {
 	 * @param fileNm          - 다운로드 대상 파일
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/utl/sys/ssy/getSynchrnServerFile.do", method = RequestMethod.POST)
+	@PostMapping("/utl/sys/ssy/getSynchrnServerFile.do")
 	@RequireAdmin
 	public String downloadFtpFile(@RequestParam("fileNm") String fileNm, @ModelAttribute("synchrnServer") SynchrnServer bound) throws Exception {
 		SynchrnServer loaded = egovSynchrnServerService.selectSynchrnServer(bound);
@@ -225,7 +226,7 @@ public class EgovSynchrnServerController {
 	 * @param synchrnServer - 동기화대상 서버 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/utl/sys/ssy/addViewSynchrnServer.do", method = RequestMethod.POST)
+	@PostMapping("/utl/sys/ssy/addViewSynchrnServer.do")
 	@RequireAdmin
 	public String insertViewSynchrnServer(@ModelAttribute("synchrnServer") SynchrnServer synchrnServer) throws Exception {
 		return "egovframework/com/utl/sys/ssy/EgovSynchrnServerRegist";
@@ -237,7 +238,7 @@ public class EgovSynchrnServerController {
 	 * @param synchrnServer - 동기화대상 서버 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/utl/sys/ssy/addSynchrnServer.do", method = RequestMethod.POST)
+	@PostMapping("/utl/sys/ssy/addSynchrnServer.do")
 	@RequireAdmin
 	public String insertSynchrnServer(@Valid @ModelAttribute("synchrnServer") SynchrnServer synchrnServer, BindingResult bindingResult, RedirectAttributes redirectAttributes) throws Exception {
 		if (bindingResult.hasErrors()) {
@@ -271,7 +272,7 @@ public class EgovSynchrnServerController {
 	 * @param synchrnServer - 동기화대상 서버 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/utl/sys/ssy/updtViewSynchrnServer.do")
+	@PostMapping("/utl/sys/ssy/updtViewSynchrnServer.do")
 	@RequireAdmin
 	public String updateViewSynchrnServer(@ModelAttribute("synchrnServer") SynchrnServer synchrnServer, Model model) throws Exception {
 		model.addAttribute("synchrnServer", egovSynchrnServerService.selectSynchrnServer(synchrnServer));
@@ -285,7 +286,7 @@ public class EgovSynchrnServerController {
 	 * @param synchrnServer - 동기화대상 서버 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/utl/sys/ssy/updtSynchrnServer.do", method = RequestMethod.POST)
+	@PostMapping("/utl/sys/ssy/updtSynchrnServer.do")
 	@RequireAdmin
 	public String updateSynchrnServer(@Valid @ModelAttribute("synchrnServer") SynchrnServer synchrnServer, BindingResult bindingResult, SessionStatus status, Model model) throws Exception {
 		if (bindingResult.hasErrors()) {
@@ -317,7 +318,7 @@ public class EgovSynchrnServerController {
 	 * @param synchrnServer - 동기화대상 서버 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/utl/sys/ssy/removeSynchrnServer.do", method = RequestMethod.POST)
+	@PostMapping("/utl/sys/ssy/removeSynchrnServer.do")
 	@RequireAdmin
 	public String deleteSynchrnServer(@ModelAttribute("synchrnServer") SynchrnServer synchrnServer, RedirectAttributes redirectAttributes) throws Exception {
 		egovSynchrnServerService.deleteSynchrnServer(synchrnServer);
@@ -331,7 +332,7 @@ public class EgovSynchrnServerController {
 	 * @param synchrnServer - 동기화대상 서버
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/utl/sys/ssy/processSynchrn.do")
+	@PostMapping("/utl/sys/ssy/processSynchrn.do")
 	@RequireAdmin
 	public String processSynchrn(@ModelAttribute("synchrnServer") SynchrnServer synchrnServer, Model model) throws Exception {
 		synchrnServer.setFilePath(SYNTH_SERVER_PATH);
@@ -354,7 +355,7 @@ public class EgovSynchrnServerController {
 	 * @param synchrnServer - 동기화대상 서버
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/utl/sys/ssy/uploadFile.do")
+	@PostMapping("/utl/sys/ssy/uploadFile.do")
 	@RequireAdmin
 	public String uploadFile(final MultipartHttpServletRequest multiRequest, @ModelAttribute("synchrnServer") SynchrnServer synchrnServer, Model model) throws Exception {
 		MultipartFile multipartFile = multiRequest.getFile("file");
@@ -394,7 +395,7 @@ public class EgovSynchrnServerController {
 	 * @param deleteFiles - 업로드 파일 목록
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/utl/sys/ssy/deleteFile.do", method = RequestMethod.POST)
+	@PostMapping("/utl/sys/ssy/deleteFile.do")
 	@RequireAdmin
 	public String deleteFile(@RequestParam(value = "deleteFiles", required = false, defaultValue = "") String deleteFiles, @ModelAttribute("synchrnServer") SynchrnServer synchrnServer) throws Exception {
 		synchrnServer.setReflctAt("");

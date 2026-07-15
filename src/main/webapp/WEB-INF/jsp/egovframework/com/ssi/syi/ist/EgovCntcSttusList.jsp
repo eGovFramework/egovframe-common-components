@@ -24,6 +24,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html lang="ko">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -68,7 +70,7 @@ function fn_egov_detail_CntcSttus(cntcId){
 <div class="board">
 	<h1><spring:message code="comSsiSyiIst.cntcSttusList.pageTop.title"/></h1>
 
-	<form name="listForm" action="<c:url value='/ssi/syi/ist/getCntcSttusList.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/ssi/syi/ist/getCntcSttusList.do" method="post">
 
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
@@ -86,7 +88,7 @@ function fn_egov_detail_CntcSttus(cntcId){
 	</div>
 	<input type="hidden" name="cntcId">
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-	</form>
+	</form:form>
 
 	<table class="board_list">
 		<caption></caption>
@@ -117,7 +119,8 @@ function fn_egov_detail_CntcSttus(cntcId){
 			<tr>
 				<td><c:out value="${(searchVO.pageIndex - 1) * searchVO.pageSize + status.count}"/></td>
 				<td>
-			    	<form name="subForm" method="post" action="<c:url value='/ssi/syi/ist/getCntcSttusDetail.do'/>">
+			    	<form name="subForm" method="post" action="${pageContext.request.contextPath}/ssi/syi/ist/getCntcSttusDetail.do">
+			    	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 			    	<input name="cntcId"      type="hidden" value="<c:out value="${resultInfo.cntcId}"/>">
 			    	<input name="pageIndex"   type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 			    	<span class="link"><input type="submit" value="<c:out value="${resultInfo.cntcNm}"/>" onclick="fn_egov_detail_CntcSttus('<c:out value="${resultInfo.cntcId}"/>'); return false;"></span>

@@ -5,7 +5,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!-- 떠다니는 레이어 시작 -->  
 <div id="ScrollMenu" style="position:absolute; left:614px; top:10px; width:108px; z-index:1;height: 137px;"> 
-	<form name="subForm" method="post" action="<c:url value='/uss/olh/omn/detailOnlineManual.do'/>">
+	<form name="subForm" method="post" action="${pageContext.request.contextPath}/uss/olh/omn/detailOnlineManual.do">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		<input name="onlineMnlId" type="hidden" value="${onlineMnlId}">
 		<table width="100" height="129" border="0" cellpadding="3" cellspacing="1" bgcolor="#000000"> 
 		<tr> 
@@ -26,7 +27,6 @@ function CheckMenuPosition()
 {
     // 아래의 400은 웹페이지 구성이 화면 가운데 이고 폭이 400px일 때,
 	// 페이지 내용 오른쪽에 레이어를 위치
-	//yScrollThumb = 400 + (document.body.clientWidth-400) /2;
 	yScrollThumb = 800;
 
 	if (yScrollThumb != ScrollMenu.style.left)

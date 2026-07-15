@@ -64,7 +64,8 @@ function fn_egov_update_view(){
 
 <DIV class="wTableFrm">
 
-<form name="dbMntrngForm"  id="dbMntrngForm" action="<c:url value='/utl/sys/dbm/getDbMntrng.do'/>" method="post">
+<form name="dbMntrngForm"  id="dbMntrngForm" action="${pageContext.request.contextPath}/utl/sys/dbm/getDbMntrng.do" method="post">
+    <c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
     <input name="dataSourcNm" type="hidden" value="<c:out value='${resultInfo.dataSourcNm}'/>"/>
     <!-- 검색조건 유지 -->
     <input type="hidden" name="searchCondition" value="<c:out value='${searchVO.searchCondition}'/>"/>

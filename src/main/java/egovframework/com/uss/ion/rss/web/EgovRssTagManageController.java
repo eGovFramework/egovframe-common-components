@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -89,7 +90,7 @@ public class EgovRssTagManageController {
      * @throws Exception
      */
     @IncludedInfo(name="RSS태그관리", listUrl="/uss/ion/rss/listRssTagManage.do", order = 820 ,gid = 50)
-    @RequestMapping(value = "/uss/ion/rss/listRssTagManage.do")
+    @RequestMapping("/uss/ion/rss/listRssTagManage.do")
     public String EgovRssTagManageList(
             @RequestParam Map<?, ?> commandMap,
             @RequestParam(value = "checkList", required=false) List<String> checkList,
@@ -111,6 +112,15 @@ public class EgovRssTagManageController {
 
         //삭제 모드로 실행시
         if(sCmd.equals("del")){
+			// 2026.07.13 KISA 보안취약점 조치 - 삭제는 POST만 허용
+			jakarta.servlet.http.HttpServletRequest _req = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest();
+			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
+				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
+			}
+			java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+			if (auth == null || !auth.contains("ROLE_ADMIN")) {
+				throw new IllegalStateException("권한이 없습니다.");
+			}
 
         	for(String checkData : checkList) {
 
@@ -167,7 +177,7 @@ public class EgovRssTagManageController {
      * @return String -리턴 URL
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/ion/rss/detailRssTagManage.do")
+    @PostMapping("/uss/ion/rss/detailRssTagManage.do")
     public String EgovRssTagManageDetail(
             RssManage rssManage, @RequestParam Map<?, ?> commandMap,
             ModelMap model) throws Exception {
@@ -177,6 +187,15 @@ public class EgovRssTagManageController {
         String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
         if (sCmd.equals("del")) {
+			// 2026.07.13 KISA 보안취약점 조치 - 삭제는 POST만 허용
+			jakarta.servlet.http.HttpServletRequest _req = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest();
+			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
+				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
+			}
+			java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+			if (auth == null || !auth.contains("ROLE_ADMIN")) {
+				throw new IllegalStateException("권한이 없습니다.");
+			}
             egovRssManageService.deleteRssTagManage(rssManage);
             sLocationUrl = "redirect:/uss/ion/rss/listRssTagManage.do";
         } else {
@@ -198,7 +217,7 @@ public class EgovRssTagManageController {
      * @return String -리턴 URL
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/ion/rss/updtRssTagManage.do")
+    @PostMapping("/uss/ion/rss/updtRssTagManage.do")
     public String EgovRssTagManageModify(
             @RequestParam Map<?, ?> commandMap,
             @Valid @ModelAttribute("rssManage") RssManage rssManage,
@@ -252,7 +271,7 @@ public class EgovRssTagManageController {
      * @return String -리턴 URL
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/ion/rss/insertRssTagManageView.do")
+    @PostMapping("/uss/ion/rss/insertRssTagManageView.do")
     public String insertRssTagManageView(
             @ModelAttribute("rssManage") RssManage rssManage,
             ModelMap model) throws Exception {
@@ -279,7 +298,7 @@ public class EgovRssTagManageController {
      * @return String -리턴 URL
      * @throws Exception
      */
-    @RequestMapping(value = "/uss/ion/rss/insertRssTagManage.do")
+    @PostMapping("/uss/ion/rss/insertRssTagManage.do")
     public String insertRssTagManage(
             @Valid @ModelAttribute("rssManage") RssManage rssManage,
             BindingResult bindingResult, ModelMap model) throws Exception {
@@ -311,5 +330,32 @@ public class EgovRssTagManageController {
 
             return "forward:/uss/ion/rss/listRssTagManage.do";
     }
+
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
+	}
 
 }

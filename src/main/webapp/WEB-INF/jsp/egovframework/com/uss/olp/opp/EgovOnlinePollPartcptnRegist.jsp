@@ -69,7 +69,7 @@ function fn_egov_save_OnlinePollPartcptn(){
 <div class="wTableFrm">
 
 <!--  상단타이틀 -->
-<form id="OnlinePollPartcptn" name="OnlinePollPartcptn" action="<c:url value='/uss/olp/opp/registOnlinePollPartcptn.do' />" onsubmit="return fn_egov_save_OnlinePollPartcptn()" method="post">
+<form:form id="OnlinePollPartcptn" name="OnlinePollPartcptn" modelAttribute="onlinePollPartcptn" action="${pageContext.request.contextPath}/uss/olp/opp/registOnlinePollPartcptn.do" onsubmit="return fn_egov_save_OnlinePollPartcptn()" method="post">
 <!-- 타이틀 -->
 <h2>${pageTitle} <spring:message code="title.create" /></h2>
 
@@ -151,7 +151,7 @@ function fn_egov_save_OnlinePollPartcptn(){
 
 <input name="pollId" type="hidden" value="${PollManage[0].pollId}"/>
 <input name="cmd" type="hidden" value="<c:out value='save'/>"/>
-</form>
+</form:form>
 
 
 

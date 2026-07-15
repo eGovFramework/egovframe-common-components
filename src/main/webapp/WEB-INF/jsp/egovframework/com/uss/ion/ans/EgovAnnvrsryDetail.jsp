@@ -108,18 +108,19 @@ function fncDeleteAnnvrsry() {
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<form id="selectForm" name="selectForm" action="<c:url value='/uss/ion/ans/selectAnnvrsryManage.do'/>" method="post" style="display:inline-block; vertical-align:top">  
+		<form id="selectForm" name="selectForm" action="${pageContext.request.contextPath}/uss/ion/ans/selectAnnvrsryManage.do" method="post" style="display:inline-block; vertical-align:top"><c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>  
 		<input type="hidden" name="cmd"        value="update">
 		<input type="hidden" name="annId"      value="<c:out value="${annvrsryManageVO.annId      }"/>">
 		<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="fncSelectAnnvrsryManage(); return false;" />
 		</form>
 		
-		<form id="deleteForm" name="deleteForm" method="post" action="<c:url value='/uss/ion/ans/deleteAnnvrsryManage.do'/>" style="display:inline-block; vertical-align:top">
+		<form id="deleteForm" name="deleteForm" method="post" action="${pageContext.request.contextPath}/uss/ion/ans/deleteAnnvrsryManage.do" style="display:inline-block; vertical-align:top">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		<input type="hidden" name="annId"   value="<c:out value="${annvrsryManageVO.annId      }"/>">
 		<input class="s_submit" type="submit" value='<spring:message code="button.delete" />' onclick="fncDeleteAnnvrsry(); return false;" />
         </form>
         
-        <span class="btn_s"><a href="<c:url value='/uss/ion/ans/selectAnnvrsryManageList.do'/>?searchCondition=1" onclick="fncSelectAnnvrsryManageList(); return false;"><spring:message code="button.list" /></a></span>
+        <span class="btn_s"><a href="javascript:void(0);" onclick="fncSelectAnnvrsryManageList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

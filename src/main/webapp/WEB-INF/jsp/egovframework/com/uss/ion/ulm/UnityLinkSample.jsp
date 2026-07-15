@@ -66,6 +66,7 @@ function fn_egov_SelectBoxValue(sbName)
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
 <form name="formUnityLink" action="" method="post" target="_blank">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 
 <div class="wTableFrm" style="width:310px">
 	<!-- 타이틀 -->

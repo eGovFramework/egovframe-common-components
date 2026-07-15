@@ -4,6 +4,7 @@ import jakarta.annotation.Resource;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.EgovMessageSource;
@@ -26,7 +27,7 @@ public class EgovTwitterController {
 		return "egovframework/com/uss/ion/tir/EgovTwitterMain";
 	}
 
-	@RequestMapping(value = "/uss/ion/tir/selectTwitterV2Demo.do")
+	@PostMapping("/uss/ion/tir/selectTwitterV2Demo.do")
 	public String selectTwitterV2Demo(ModelMap model) {
 		if (!EgovUserDetailsHelper.isAuthenticated()) {
 			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));

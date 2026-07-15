@@ -89,6 +89,7 @@ function fnReturnDay(day){
 
 <body>
 <form name="Form" action ="<c:url value='/sym/cal/callCal.do'/>" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <input type="hidden" name="init" value="${init}" />
 <input type="hidden" name="year" value="${resultList[0].year}" />
 <input type="hidden" name="month" value="${resultList[0].month}" />

@@ -50,7 +50,6 @@ function fn_egov_initl_cnsltdtls(){
 function fn_egov_confirm_qnapassword(){
 	
 	getDialogArguments();
-	/* var opener = window.dialogArguments; */
 	var opener;
  
 	if (window.dialogArguments) {
@@ -89,6 +88,7 @@ function fn_egov_cancel_qnapassword() {
 <body onLoad="fn_egov_initl_cnsltdtls();">
 
 <form name="CnsltManageForm"  method="post" onsubmit="fn_egov_confirm_qnapassword();" action="">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <DIV id="content" style="width:270px" class="popup">
 
 	<!-- 타이틀 -->

@@ -89,6 +89,14 @@ function chk_all(val) {
 <c:import url="./main_bottom.jsp" />
 </div><!-- contents -->
 <script>
+var csrfHeaderName = "${_csrf.headerName}";
+var csrfToken = "${_csrf.token}";
+function egovCsrfBeforeSend(xhr) {
+	if (csrfHeaderName && csrfToken) {
+		xhr.setRequestHeader(csrfHeaderName, csrfToken);
+	}
+}
+
 function fn_egov_popupOpen_PopupManage(popupId,fileUrl,width,height,top,left,stopVewAt){
 	var url = "<c:url value='/uss/ion/pwm/openPopupManage.do' />?";
 	url = url + "fileUrl=" + fileUrl;
@@ -101,6 +109,7 @@ function fn_egov_popupOpen_PopupManage(popupId,fileUrl,width,height,top,left,sto
 $(document).ready(function() {
 	
 	$.ajax({
+		beforeSend: egovCsrfBeforeSend,
 		type:"POST",
 	    url: "<c:url value='/uss/ion/pwm/listMainPopup.do' />",
 		dataType:'json',

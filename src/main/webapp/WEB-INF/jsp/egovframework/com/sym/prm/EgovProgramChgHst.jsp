@@ -37,7 +37,6 @@
  * 페이징 처리 함수
  ******************************************************** */
 function linkPage(pageNo){
-//	document.programChgHstForm.searchKeyword.value =
 	document.programChgHstForm.pageIndex.value = pageNo;
 	document.programChgHstForm.action = "<c:url value='/sym/prm/EgovProgramChgHstListSelect.do'/>";
    	document.programChgHstForm.submit();
@@ -63,6 +62,13 @@ function selectChgHstListDetail(progrmFileNm, tmp_no) {
 	document.programChgHstForm.submit();
 }
 -->
+
+function fn_egov_detail_item(tmpProgrmNm, tmpRqesterNo) {
+	document.programChgHstForm.tmpProgrmNm.value = tmpProgrmNm;
+	document.programChgHstForm.tmpRqesterNo.value = tmpRqesterNo;
+	document.programChgHstForm.action = "<c:url value='/sym/prm/EgovProgramChgHstListDetailSelect.do'/>";
+	document.programChgHstForm.submit();
+}
 </script>
 </head>
 <body>
@@ -72,6 +78,7 @@ function selectChgHstListDetail(progrmFileNm, tmp_no) {
 	<h1><spring:message code="comSymPrm.programChgHst.pageTop.title"/></h1><!--프로그램변경이력-->
 
 	<form name="programChgHstForm" action ="<c:url value='/sym/prm/EgovProgramChgHstListSelect.do'/>" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 	<div class="search_box" title="이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다.">
 		<ul>
@@ -118,11 +125,7 @@ function selectChgHstListDetail(progrmFileNm, tmp_no) {
 			 <c:forEach var="result" items="${list_changerequst}" varStatus="status">
 			  <tr>
 			    <td style="cursor:hand;">
-			        <form name="item" method="post" action="<c:url value='/sym/prm/EgovProgramChgHstListDetailSelect.do'/>">
-						<input type="hidden" name="tmpProgrmNm"   value="<c:out value="${result.progrmFileNm  }"/>"/>
-						<input type="hidden" name="tmpRqesterNo"  value="<c:out value="${result.rqesterNo  }"/>"/>
-			            <span class="link"><input type="submit" value="<c:out value="${result.progrmFileNm}"/>" onclick="selectChgHstListDetail('<c:out value="${result.progrmFileNm}"/>','<c:out value="${result.rqesterNo}"/>'); return false;"></span>
-			        </form></td>
+			        <a href="javascript:void(0);" onclick="selectChgHstListDetail('<c:out value="${result.progrmFileNm}"/>','<c:out value="${result.rqesterNo}"/>'); return false;"><span class="link"><c:out value="${result.progrmFileNm}"/></span></a></td>
 			    <td>
 			      <c:if test="${empty result.processSttus}">N/A</c:if>
 			      <c:if test="${result.processSttus == 'A'}"><spring:message code="comSymPrm.programChgHst.processSttusA"/></c:if><!-- 신청중 -->

@@ -26,6 +26,7 @@
 <%@ page import="egovframework.com.cop.smt.lsm.service.LeaderSchdulVO"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 
 <%!
     public String DateTypeIntForString(int iInput){
@@ -159,7 +160,7 @@ arrDateTitle[6] = "Sat";/* 토요일 */
 </script>
 </head>
 <body style="margin:0"> 
-<form name="leaderSchdulVO" id="leaderSchdulVO" action="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulWeekList.do' />?year=<%=iNowYear%>&month=<%=iNowMonth%>&week=<%=iNowWeek%>&searchCondition=SCHDUL_SE" method="post">
+<form:form name="leaderSchdulVO" modelAttribute="leaderSchdulVO" id="leaderSchdulVO" action="${pageContext.request.contextPath}/cop/smt/lsm/usr/selectLeaderSchdulWeekList.do?year=<%=iNowYear%>&month=<%=iNowMonth%>&week=<%=iNowWeek%>&searchCondition=SCHDUL_SE" method="post">
 <div id="content" style="width:712px;">
 
 	<!-- 검색영역 -->
@@ -228,7 +229,7 @@ for(int i=0; i < listWeek.size(); i++){
 %>
 		<tr>
 			<td>
-			    <a href="<c:url value='/cop/smt/lsm/mng/addLeaderSchdul.do' />?schdulBgnDe=<%=iUseDate%>&amp;schdulEndDe=<%=iUseDate%>&amp;searchMode=WEEK&amp;year=<%=iNowYear%>&amp;month=<%=iNowMonth%>&amp;week=<%=iNowWeek%>" target="_parent" onClick="JavaScript:fn_egov_regist_LeaderSchdul('<%=iUseDate%>');">
+			    <a href="JavaScript:fn_egov_regist_LeaderSchdul('<%=iUseDate%>');">
 			    <%=sTmpDate.substring(0,4)%><spring:message code="comCopSmtLsm.leaderSchdulMonthList.year" /> <%=sTmpDate.substring(4,6)%><spring:message code="comCopSmtLsm.leaderSchdulMonthList.month" /> <%=sTmpDate.substring(6,8)%><spring:message code="comCopSmtLsm.leaderSchdulWeekList.day" />  <%=arrDateTitle[i] %></a>
 	    	</td>
 	    	<td>
@@ -241,7 +242,7 @@ for(int i=0; i < listWeek.size(); i++){
 			int iSchdulDate = Integer.parseInt(((String)leaderSchdulVO.getSchdulDe()).substring(0, 8));
 			
 			if(iUseDate == iSchdulDate){
-				out.print("<table><tr><td nowrap><div class='divDotText' style='width:120px;border:solid 0px;'><a href=\"" + request.getContextPath() + "/cop/smt/lsm/usr/selectLeaderSchdul.do?schdulId=" + (String)leaderSchdulVO.getSchdulId() +  "&amp;schdulDe=" + iUseDate + "&amp;searchMode=WEEK&amp;year=" + iNowYear + "&amp;month=" + iNowMonth + "&amp;week=" + iNowWeek + "\" target=\"_parent\" onClick=\"JavaScript:fn_egov_detail_LeaderSchdul('" + (String)leaderSchdulVO.getSchdulId() + "', '" + iUseDate + "')\">");
+				out.print("<table><tr><td nowrap><div class='divDotText' style='width:120px;border:solid 0px;'><a href=\"JavaScript:fn_egov_detail_LeaderSchdul('" + (String)leaderSchdulVO.getSchdulId() + "', '" + iUseDate + "')\">");
 				out.print( ((String)leaderSchdulVO.getSchdulBgnDe()).substring(8,10) +":");
 				out.print( ((String)leaderSchdulVO.getSchdulBgnDe()).substring(10,12) +" ~ ");
 				out.print( ((String)leaderSchdulVO.getSchdulEndDe()).substring(8,10) +":");
@@ -265,7 +266,7 @@ for(int i=0; i < listWeek.size(); i++){
 			String sSchdulEndDate = (String)leaderSchdulVO.getSchdulEndDe().substring(0, 8);
 			
 			if(iUseDate == iSchdulDate && !sSchdulBgnDate.equals(sSchdulEndDate)){
-				out.print("<table><tr><td nowrap><div class='divDotText' style='width:350px;border:solid 0px;'><a href=\"" + request.getContextPath() + "/cop/smt/lsm/usr/selectLeaderSchdul.do?schdulId=" + (String)leaderSchdulVO.getSchdulId() +  "&amp;schdulDe=" + iUseDate + "&amp;searchMode=WEEK&amp;year=" + iNowYear + "&amp;month=" + iNowMonth + "&amp;week=" + iNowWeek + "\" target=\"_parent\" onClick=\"JavaScript:fn_egov_detail_LeaderSchdul('" + (String)leaderSchdulVO.getSchdulId() + "', '" + iUseDate + "')\">");
+				out.print("<table><tr><td nowrap><div class='divDotText' style='width:350px;border:solid 0px;'><a href=\"JavaScript:fn_egov_detail_LeaderSchdul('" + (String)leaderSchdulVO.getSchdulId() + "', '" + iUseDate + "')\">");
 				out.print("[");
 				out.print(EgovDateUtil.formatDate(sSchdulBgnDate, "-"));
 				out.print(" ~ ");
@@ -278,7 +279,7 @@ for(int i=0; i < listWeek.size(); i++){
 				out.println("</a></div></td></tr></table>");
 			}else{
 				if(iUseDate == iSchdulDate){
-					out.print("<table><tr><td nowrap><div class='divDotText' style='width:350px;border:solid 0px;'><a href=\"" + request.getContextPath() + "/cop/smt/lsm/usr/selectLeaderSchdul.do?schdulId=" + (String)leaderSchdulVO.getSchdulId() +  "&amp;schdulDe=" + iUseDate + "&amp;searchMode=WEEK&amp;year=" + iNowYear + "&amp;month=" + iNowMonth + "&amp;week=" + iNowWeek + "\" target=\"_parent\" onClick=\"JavaScript:fn_egov_detail_LeaderSchdul('" + (String)leaderSchdulVO.getSchdulId() + "', '" + iUseDate + "')\">");
+					out.print("<table><tr><td nowrap><div class='divDotText' style='width:350px;border:solid 0px;'><a href=\"JavaScript:fn_egov_detail_LeaderSchdul('" + (String)leaderSchdulVO.getSchdulId() + "', '" + iUseDate + "')\">");
 					out.print((String)leaderSchdulVO.getSchdulNm());
 					out.println("</a></div></td></tr></table>");
 				}
@@ -298,7 +299,7 @@ for(int i=0; i < listWeek.size(); i++){
 			int iSchdulDate = Integer.parseInt(((String)leaderSchdulVO.getSchdulDe()).substring(0, 8));
 			
 			if(iUseDate == iSchdulDate){
-				out.print("<table><tr><td nowrap><div class='divDotText' style='width:60px;border:solid 0px;'><a href=\"" + request.getContextPath() + "/cop/smt/lsm/usr/selectLeaderSchdul.do?schdulId=" + (String)leaderSchdulVO.getSchdulId() +  "&amp;schdulDe=" + iUseDate + "&amp;searchMode=WEEK&amp;year=" + iNowYear + "&amp;month=" + iNowMonth + "&amp;week=" + iNowWeek + "\" target=\"_parent\" onClick=\"JavaScript:fn_egov_detail_LeaderSchdul('" + (String)leaderSchdulVO.getSchdulId() + "', '" + iUseDate + "')\">");
+				out.print("<table><tr><td nowrap><div class='divDotText' style='width:60px;border:solid 0px;'><a href=\"JavaScript:fn_egov_detail_LeaderSchdul('" + (String)leaderSchdulVO.getSchdulId() + "', '" + iUseDate + "')\">");
 				out.print((String)leaderSchdulVO.getLeaderName());
 				out.println("</a></div></td></tr></table>");
 			}
@@ -313,6 +314,6 @@ for(int i=0; i < listWeek.size(); i++){
 	</table>
 </div>
 <input type="submit" value="" style="display:none;">
-</form>
+</form:form>
 </body>
 </html>

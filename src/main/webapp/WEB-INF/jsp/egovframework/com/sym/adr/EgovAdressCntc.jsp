@@ -32,6 +32,14 @@
 <script type="text/JavaScript" src="<c:url value='/js/egovframework/com/cmm/jquery-1.12.4.min.js'/>"></script>
 <c:set var="contextPath" value="${pageContext.request.contextPath}"/>
 <script type="text/javaScript" language="javascript">
+var csrfHeaderName = "${_csrf.headerName}";
+var csrfToken = "${_csrf.token}";
+function egovCsrfBeforeSend(xhr) {
+	if (csrfHeaderName && csrfToken) {
+		xhr.setRequestHeader(csrfHeaderName, csrfToken);
+	}
+}
+
 
 var addrRoad = "<spring:message code='symAdr.list.addrRoad' />";
 var addrRoad1 = "<spring:message code='symAdr.list.addrRoad1' />";
@@ -42,6 +50,7 @@ var addrPost = "<spring:message code='symAdr.list.post' />";
 
 function getAddr(){
 	$.ajax({
+		beforeSend: egovCsrfBeforeSend,
 		 //url :"http://행정망 IP/addrlink/addrLinkApiJsonp.do"		//행정망
 		 url :"http://www.juso.go.kr/addrlink/addrLinkApiJsonp.do"  //인터넷망
 		,type:"post"
@@ -67,7 +76,6 @@ function getAddr(){
 			}
 		}
 	    ,error: function(xhr, status, error){
-        	console.log("Error occurred: " + status + " " + error);
         	alert("주소 정보를 가져오는 데 실패했습니다. 상태 코드: " + xhr.status + ", 오류 메시지: " + error);
         }
     });
@@ -81,6 +89,7 @@ function decodeXmlEntities(str) {
 
 function getAddrLoc(){
     $.ajax({
+		beforeSend: egovCsrfBeforeSend,
          url :"${contextPath}/sym/adr/getAdressCntcApi.do"
         ,type:"post"
         ,data:$("#form").serialize()
@@ -130,7 +139,6 @@ function getAddrLoc(){
             }
         },
         error: function(xhr, status, error) {
-            console.log("Error occurred: " + status + " " + error);
             alert("주소 정보를 가져오는 데 실패했습니다. 상태 코드: " + xhr.status + ", 오류 메시지: " + error);
         }
     });
@@ -210,6 +218,7 @@ function makeList(xmlInput){
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
 <form name="form" id="form" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <div class="board">
 	<h1>${pageTitle}</h1>
 

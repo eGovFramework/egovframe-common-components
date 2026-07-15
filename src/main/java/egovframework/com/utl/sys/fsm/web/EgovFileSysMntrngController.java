@@ -11,6 +11,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -19,6 +20,7 @@ import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.EgovWebUtil;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.annotation.RequireAdmin;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.utl.fcc.service.EgovStringUtil;
 import egovframework.com.utl.sys.fsm.service.EgovFileSysMntrngService;
@@ -105,7 +107,8 @@ public class EgovFileSysMntrngController {
 	 *
 	 * @param fileSysMntrngVO
 	 */
-	@RequestMapping("/utl/sys/fsm/addFileSysMntrng.do")
+	@PostMapping("/utl/sys/fsm/addFileSysMntrng.do")
+	@RequireAdmin
 	public String addFileSysMntrng(@ModelAttribute("fileSysMntrngVO") FileSysMntrngVO fileSysMntrngVO, RedirectAttributes redirectAttributes) throws Exception {
 		String sLocationUrl = "egovframework/com/utl/sys/fsm/EgovFileSysMntrngRegist";
 
@@ -126,7 +129,8 @@ public class EgovFileSysMntrngController {
 	 *
 	 * @param fileSysMntrngVO
 	 */
-	@RequestMapping("/utl/sys/fsm/modifyFileSysMntrng.do")
+	@PostMapping("/utl/sys/fsm/modifyFileSysMntrng.do")
+	@RequireAdmin
 	public String modifyFileSysMntrng(@ModelAttribute("fileSysMntrngVO") FileSysMntrngVO fileSysMntrngVO, ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -159,7 +163,7 @@ public class EgovFileSysMntrngController {
 	 *
 	 * @param fileSysMntrngVO
 	 */
-	@RequestMapping("/utl/sys/fsm/selectFileSysMntrng.do")
+	@PostMapping("/utl/sys/fsm/selectFileSysMntrng.do")
 	public String selectFileSysMntrng(@ModelAttribute("ntwrkSvcMntrngVO") FileSysMntrngVO fileSysMntrngVO, ModelMap model) throws Exception {
 		FileSysMntrng fileSysMntrng = fileSysMntrngService.selectFileSysMntrng(fileSysMntrngVO);
 
@@ -180,7 +184,8 @@ public class EgovFileSysMntrngController {
 	 *
 	 * @param fileSysMntrng
 	 */
-	@RequestMapping("/utl/sys/fsm/updateFileSysMntrng.do")
+	@PostMapping("/utl/sys/fsm/updateFileSysMntrng.do")
+	@RequireAdmin
 	public String updateFileSysMntrng(
 		@Valid @ModelAttribute("fileSysMntrngVO") FileSysMntrngVO fileSysMntrngVO, BindingResult bindingResult,
 		ModelMap model) throws Exception {
@@ -213,7 +218,8 @@ public class EgovFileSysMntrngController {
 	 *
 	 * @param fileSysMntrng
 	 */
-	@RequestMapping("/utl/sys/fsm/insertFileSysMntrng.do")
+	@PostMapping("/utl/sys/fsm/insertFileSysMntrng.do")
+	@RequireAdmin
 	public String insertFileSysMntrng(
 		@Valid @ModelAttribute("fileSysMntrngVO") FileSysMntrngVO fileSysMntrngVO, BindingResult bindingResult,
 		ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
@@ -256,7 +262,8 @@ public class EgovFileSysMntrngController {
 	 *
 	 * @param fileSysMntrng
 	 */
-	@RequestMapping("/utl/sys/fsm/deleteFileSysMntrng.do")
+	@PostMapping("/utl/sys/fsm/deleteFileSysMntrng.do")
+	@RequireAdmin
 	public String deleteFileSysMntrng(@ModelAttribute("fileSysMntrngVO") FileSysMntrngVO fileSysMntrngVO, ModelMap model, RedirectAttributes redirectAttributes) throws Exception {
 		// 0. Spring Security 사용자권한 처리
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
@@ -275,7 +282,7 @@ public class EgovFileSysMntrngController {
 	 *
 	 * @param fileSysMntrng
 	 */
-	@RequestMapping("/utl/sys/fsm/selectFileSysMg.do")
+	@PostMapping("/utl/sys/fsm/selectFileSysMg.do")
 	public String selectFileSysMg(@ModelAttribute("fileSysMntrngVO") FileSysMntrngVO fileSysMntrngVO, ModelMap model) throws Exception {
 		//System.out.println("FileSysNm" + fileSysMntrngVO.getFileSysNm());
 
@@ -363,7 +370,7 @@ public class EgovFileSysMntrngController {
 	 *
 	 * @param fileSysMntrngLogVO
 	 */
-	@RequestMapping("/utl/sys/fsm/selectFileSysMntrngLog.do")
+	@PostMapping("/utl/sys/fsm/selectFileSysMntrngLog.do")
 	public String selectFileSysMntrngLog(@ModelAttribute("fileSysMntrngLogVO") FileSysMntrngLogVO fileSysMntrngLogVO, ModelMap model) throws Exception {
 		FileSysMntrngLogVO fileSysMntrngLog = fileSysMntrngService.selectFileSysMntrngLog(fileSysMntrngLogVO);
 

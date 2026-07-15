@@ -11,6 +11,7 @@ import org.springframework.ui.ModelMap;
 import org.springframework.util.ObjectUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
@@ -80,7 +81,7 @@ public class EgovMainImageController {
 	/**
 	 * 등록된 메인이미지의 상세정보를 조회한다.
 	 */
-	@RequestMapping(value = "/uss/ion/msi/getMainImage.do")
+	@PostMapping("/uss/ion/msi/getMainImage.do")
 	public String selectMainImage(@RequestParam("imageId") String imageId,
 			@ModelAttribute("mainImageVO") MainImageVO mainImageVO, ModelMap model) throws Exception {
 		mainImageVO.setImageId(imageId);
@@ -92,7 +93,7 @@ public class EgovMainImageController {
 	/**
 	 * 메인이미지 등록 화면으로 이동한다.
 	 */
-	@RequestMapping(value = "/uss/ion/msi/addViewMainImage.do")
+	@PostMapping("/uss/ion/msi/addViewMainImage.do")
 	public String insertViewMainImage(@ModelAttribute("mainImageVO") MainImageVO mainImageVO, ModelMap model) throws Exception {
 		model.addAttribute("mainImageVO", mainImageVO);
 		return "egovframework/com/uss/ion/msi/EgovMainImageRegist";
@@ -102,7 +103,7 @@ public class EgovMainImageController {
 	 * 메인이미지정보를 신규로 등록한다.
 	 */
 	@SuppressWarnings("unused")
-	@RequestMapping(value = "/uss/ion/msi/addMainImage.do")
+	@PostMapping("/uss/ion/msi/addMainImage.do")
 	public String insertMainImage(final MultipartHttpServletRequest multiRequest,
 			@Valid @ModelAttribute("mainImageVO") MainImageVO mainImageVO, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {
@@ -147,7 +148,7 @@ public class EgovMainImageController {
 	 * 기 등록된 메인이미지정보를 수정한다.
 	 */
 	@SuppressWarnings("unused")
-	@RequestMapping(value = "/uss/ion/msi/updtMainImage.do")
+	@PostMapping("/uss/ion/msi/updtMainImage.do")
 	public String updateMainImage(final MultipartHttpServletRequest multiRequest,
 			@Valid @ModelAttribute("mainImageVO") MainImageVO mainImageVO, BindingResult bindingResult,
 			SessionStatus status, ModelMap model) throws Exception {
@@ -195,7 +196,7 @@ public class EgovMainImageController {
 	/**
 	 * 기 등록된 메인이미지정보를 삭제한다.
 	 */
-	@RequestMapping(value = "/uss/ion/msi/removeMainImage.do")
+	@PostMapping("/uss/ion/msi/removeMainImage.do")
 	public String deleteMainImage(@RequestParam("imageId") String imageId,
 			@ModelAttribute("mainImageVO") MainImageVO mainImageVO, SessionStatus status, ModelMap model) throws Exception {
 		mainImageVO.setImageId(imageId);
@@ -208,7 +209,7 @@ public class EgovMainImageController {
 	/**
 	 * 기 등록된 메인이미지정보 목록을 일괄 삭제한다.
 	 */
-	@RequestMapping(value = "/uss/ion/msi/removeMainImageList.do")
+	@PostMapping("/uss/ion/msi/removeMainImageList.do")
 	public String deleteMainImageList(@RequestParam("imageIds") String imageIds,
 			@ModelAttribute("mainImageVO") MainImageVO mainImageVO, SessionStatus status, ModelMap model) throws Exception {
 		//2026.03.23 kisa 보안점검 대응 조치
@@ -228,7 +229,7 @@ public class EgovMainImageController {
 	}
 
 	@IncludedInfo(name = "메인이미지 반영결과보기", order = 771, gid = 50)
-	@RequestMapping(value = "/uss/ion/msi/getMainImageResult.do")
+	@RequestMapping("/uss/ion/msi/getMainImageResult.do")
 	public String selectMainImageResult(@ModelAttribute("mainImageVO") MainImageVO mainImageVO, ModelMap model) throws Exception {
 		List<MainImageVO> fileList = egovMainImageService.selectMainImageResult(mainImageVO);
 		model.addAttribute("fileList", fileList);

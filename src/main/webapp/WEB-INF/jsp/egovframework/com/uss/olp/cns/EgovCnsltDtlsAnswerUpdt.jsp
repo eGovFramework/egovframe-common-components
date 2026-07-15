@@ -103,7 +103,11 @@ function fn_egov_pop_mailform() {
 <!-- hidden 화일정의 -->
 <input name="cnsltId" type="hidden" value="<c:out value='${result.cnsltId}'/>">
 
-<input name="writngPassword" type="hidden" value="<c:out value='${result.writngPassword}'/>">
+<!-- 2026.07.13 KISA 보안취약점 조치: writngPassword(Base64로 인코딩된 비밀번호)는
+     본 수정 처리(updateCnsltDtlsAnswer)에서 전혀 사용되지 않는 값이며(UPDATE 쿼리에도 포함되지 않음),
+     hidden 필드에 실제 값을 그대로 노출하면 손쉽게 디코딩되어 평문 비밀번호가 유출될 수 있으므로
+     실제 값 대신 검증 통과용 마스킹 값만 전송한다. -->
+<input name="writngPassword" type="hidden" value="********">
 
 <input name="wrterNm" type="hidden" value="<c:out value='${result.wrterNm}'/>">
 <!-- 타이틀 -->
@@ -219,7 +223,7 @@ function fn_egov_pop_mailform() {
 <!-- 하단 버튼 -->
 <div class="btn">
 	<input type="submit" class="s_submit" value="<spring:message code="button.save" />" title="<spring:message code="button.save" /> <spring:message code="input.button" />" />
-	<span class="btn_s"><a href="<c:url value='/uss/olp/cnm/CnsltAnswerListInqire.do' />" onclick="fn_egov_inqire_qnaanswerlist(); return false;"  title="<spring:message code="button.list" />  <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
+	<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_inqire_qnaanswerlist(); return false;"  title="<spring:message code="button.list" />  <spring:message code="input.button" />"><spring:message code="button.list" /></a></span>
 </div><div style="clear:both;"></div>
 
 

@@ -20,10 +20,12 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comSymCcmCcc.cmmnClCodeVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title>${pageTitle} <spring:message code="title.list" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
@@ -60,11 +62,14 @@ function fn_egov_inquire_codedetail(clCode) {
   	document.CcmClCodeForm.action = "<c:url value='/sym/ccm/ccc/SelectCcmCmmnClCodeDetail.do'/>";
   	document.CcmClCodeForm.submit();
 }
+function fn_egov_regist_clcode(){
+	fn_egov_postNavigate("<c:url value='/sym/ccm/ccc/RegistCcmCmmnClCodeView.do' />");
+}
 </script>
 </head>
 <body onload="fn_egov_init()">
 
-<form name="CcmClCodeForm" action="<c:url value='/sym/ccm/ccc/SelectCcmCmmnClCodeList.do'/>" method="post" onSubmit="fn_egov_search_code(); return false;"> 
+<form:form name="CcmClCodeForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/sym/ccm/ccc/SelectCcmCmmnClCodeList.do" method="post" onSubmit="fn_egov_search_code(); return false;"> 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	
@@ -85,7 +90,7 @@ function fn_egov_inquire_codedetail(clCode) {
 			<li>
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${searchVO.searchKeyword}"/>'  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
-				<span class="btn_b"><a href="<c:url value='/sym/ccm/ccc/RegistCcmCmmnClCodeView.do' />"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fn_egov_regist_clcode(); return false;" title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
@@ -117,7 +122,7 @@ function fn_egov_inquire_codedetail(clCode) {
 	<tr>
 		<td><c:out value="${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}"/></td>
 		<td><c:out value='${resultInfo.clCode}'/></td>
-		<td><a href="<c:url value='/sym/ccm/ccc/SelectCcmCmmnClCodeDetail.do'/>?clCode=${resultInfo.clCode}" onClick="fn_egov_inquire_codedetail('<c:out value="${resultInfo.clCode}"/>');return false;"><c:out value='${fn:substring(resultInfo.clCodeNm, 0, 40)}'/></a></td>
+		<td><a href="javascript:void(0);" onClick="fn_egov_inquire_codedetail('<c:out value="${resultInfo.clCode}"/>');return false;"><c:out value='${fn:substring(resultInfo.clCodeNm, 0, 40)}'/></a></td>
 		<td><c:out value='${resultInfo.useAt}'/></td>
 	</tr>
 	</c:forEach>
@@ -135,7 +140,7 @@ function fn_egov_inquire_codedetail(clCode) {
 
 <input name="clCode" type="hidden" value="">
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-</form>
+</form:form>
 
 </body>
 </html>

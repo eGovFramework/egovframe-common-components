@@ -24,7 +24,8 @@
 <ul>
 <c:forEach var="result" items="${resultList}" varStatus="status">
    	<li style="padding-top:5px">
-		<form name="blogForm" method="post"  action="<c:url value='/cop/bbs/selectBBSMasterDetail.do'/>" >
+		<form name="blogForm" method="post"  action="${pageContext.request.contextPath}/cop/bbs/selectBBSMasterDetail.do" >
+		<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		<input type="hidden" name="bbsId" value="<c:out value='${result.bbsId}'/>"/>
 		<input type="hidden" name="bbsNm" value="<c:out value='${result.bbsNm}'/>"/>
 		<input type="submit" value="<c:out value="${result.bbsNm}"/>"/>

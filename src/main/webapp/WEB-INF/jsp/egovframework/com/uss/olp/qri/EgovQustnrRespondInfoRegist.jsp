@@ -26,8 +26,8 @@
 <title>${pageTitle} <spring:message code="title.create" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
+<script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jquery-1.12.4.min.js'/>"></script>  <!-- jQuery core -->
 <script src="<c:url value='/js/egovframework/com/cmm/jquery-ui_1.12.1.js'/>"></script>  <!-- jQuery UI -->
 <link rel="stylesheet" href="<c:url value='/css/egovframework/com/cmm/jquery-ui_1.12.1.css'/>">
@@ -56,8 +56,6 @@ const QUSTNR_POPUP_CONFIG = {
  ******************************************************** */
 function fn_egov_init_QustnrRespondInfo(){
 
-	//document.getElementById("qestnrBeginDe").value = "2008-01-01";
-	//document.getElementById("qestnrEndDe").value = "2008-01-30";
 }
 /* ********************************************************
  * 목록 으로 가기
@@ -255,7 +253,6 @@ $(document).ready(function() {
 function openQustnrModal(type) {
     const config = QUSTNR_POPUP_CONFIG[type];
     if (!config) {
-        console.error("알 수 없는 팝업 타입:", type);
         return;
     }
 
@@ -265,7 +262,6 @@ function openQustnrModal(type) {
         const keyword = config.getKeyword();
 
         if (!keyword) {
-            console.log("url 필수 값이 없습니다.");
             return;
         }
 

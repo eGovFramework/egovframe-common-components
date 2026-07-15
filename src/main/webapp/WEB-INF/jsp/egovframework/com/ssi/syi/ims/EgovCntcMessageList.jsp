@@ -24,8 +24,11 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html lang="ko">
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title><spring:message code="comSsiSyiIms.cntcMessageList.title"/></title><!-- 연계메시지 목록 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
@@ -58,7 +61,7 @@ function fn_egov_regist_CntcMessage(){
  * 수정 처리 함수
  ******************************************************** */
 function fn_egov_modify_CntcMessage(){
-	location.href = "<c:url value='/ssi/syi/ims/updateCntcMessage.do'/>";
+	fn_egov_postNavigate("<c:url value='/ssi/syi/ims/updateCntcMessage.do'/>");
 }
 /* ********************************************************
  * 상세회면 처리 함수
@@ -81,7 +84,7 @@ function fn_egov_detail_CntcMessage(cntcMessageId){
 <div class="board">
 	<h1><spring:message code="comSsiSyiIms.cntcMessageList.pageTop.title"/></h1>
 
-	<form name="listForm" action="<c:url value='/ssi/syi/ims/getCntcMessageList.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/ssi/syi/ims/getCntcMessageList.do" method="post">
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
 			<li>
@@ -92,13 +95,13 @@ function fn_egov_detail_CntcMessage(cntcMessageId){
 				<input class="s_input2 vat" name="searchKeyword" type="text" value='<c:out value='${searchVO.searchKeyword}'/>' size="35" maxlength="35" title="<spring:message code="title.searchCondition"/>" /><!-- 검색조건 -->
 				
 				<input class="s_btn" type="submit" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire"/>" onclick="fn_egov_search_CntcMessage(); return false;" /><!-- 조회 -->
-				<span class="btn_b"><a href="<c:url value='/ssi/syi/ims/addCntcMessage.do'/>" onclick="fn_egov_regist_CntcMessage(); return false;" title="<spring:message code="title.create"/>"><spring:message code="button.create" /></a></span><!-- 등록 -->
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fn_egov_regist_CntcMessage(); return false;" title="<spring:message code="title.create"/>"><spring:message code="button.create" /></a></span><!-- 등록 -->
 			</li>
 		</ul>
 	</div>
 	<input name="cntcMessageId" type="hidden" >
 	<input name="pageIndex"     type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-	</form>
+	</form:form>
 
 	<table class="board_list">
 		<caption></caption>
@@ -119,7 +122,8 @@ function fn_egov_detail_CntcMessage(cntcMessageId){
 			<tr style="cursor:pointer;cursor:hand;" onclick="fn_egov_detail_CntcMessage('<c:out value="${resultInfo.cntcMessageId}"/>');">
 				<td><c:out value="${(searchVO.pageIndex - 1) * searchVO.pageSize + status.count}"/></td>
 				<td>
-			    	<form name="subForm" method="post" action="<c:url value='/ssi/syi/ims/getCntcMessageDetail.do'/>">
+			    	<form name="subForm" method="post" action="${pageContext.request.contextPath}/ssi/syi/ims/getCntcMessageDetail.do">
+			    	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 			    	<input name="cntcMessageId" type="hidden" value="<c:out value="${resultInfo.cntcMessageId}"/>">
 			    	<input name="pageIndex"     type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 			    	<span class="link">

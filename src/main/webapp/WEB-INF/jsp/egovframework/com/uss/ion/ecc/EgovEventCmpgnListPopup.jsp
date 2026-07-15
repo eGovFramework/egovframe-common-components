@@ -21,6 +21,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUssIonEcc.eventCmpgnVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -60,7 +61,7 @@ function fn_egov_select_popup(cnt, eventId){
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="eventCmpgnForm" action="<c:url value='/uss/ion/ecc/selectEventCmpgnListPopup.do'/>" method="post" onSubmit="fn_egov_search_event(); return false;"> 
+<form:form name="eventCmpgnForm" modelAttribute="eventCmpgnVO" action="${pageContext.request.contextPath}/uss/ion/ecc/selectEventCmpgnListPopup.do" method="post" onSubmit="fn_egov_search_event(); return false;"> 
 <div class="popup">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<!-- 하단 버튼 -->
@@ -111,7 +112,7 @@ function fn_egov_select_popup(cnt, eventId){
 	<tr>
 		<td><c:out value="${(eventCmpgnVO.pageIndex-1) * eventCmpgnVO.pageSize + status.count}"/></td>
 		<td><c:out value='${resultInfo.eventTyCodeNm}'/></td>
-		<td><a href="<c:url value='/uss/ion/ecc/selectEventCmpgnDetail.do?eventId=${resultInfo.eventId}'/>" onClick="fn_egov_inquire_eventdetail('<c:out value="${resultInfo.eventId}"/>');return false;"><c:out value='${fn:substring(resultInfo.eventCn, 0, 40)}'/></a></td>
+		<td><a href="javascript:void(0);" onClick="fn_egov_inquire_eventdetail('<c:out value="${resultInfo.eventId}"/>');return false;"><c:out value='${fn:substring(resultInfo.eventCn, 0, 40)}'/></a></td>
 		<td><c:out value='${resultInfo.eventSvcBeginDe}'/></td>
 		<td><c:out value='${resultInfo.eventSvcEndDe}'/></td>
 		<td><button class="btn_s2" onClick="fn_egov_select_popup('${status.count}', '${resultInfo.eventId}');return false;" title="<spring:message code="button.select" /> <spring:message code="input.button" />"><spring:message code="button.select" /></button></td>
@@ -133,7 +134,7 @@ function fn_egov_select_popup(cnt, eventId){
 
 <input name="eventId" type="hidden" value="<c:out value='${eventCmpgnVO.eventId}'/>">
 <input name="pageIndex" type="hidden" value="<c:out value='${eventCmpgnVO.pageIndex}'/>">
-</form>
+</form:form>
 
 </body>
 </html>

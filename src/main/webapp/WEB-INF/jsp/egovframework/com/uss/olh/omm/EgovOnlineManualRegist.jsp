@@ -39,7 +39,7 @@
 function fn_egov_init(){
 
 	var ckeditor_config = {
-		filebrowserImageUploadUrl: '${pageContext.request.contextPath}/ckUploadImage',
+		filebrowserImageUploadUrl: '${ckImageUploadUrl}?${_csrf.parameterName}=${_csrf.token}',
 	};
 	CKEDITOR.replace('onlineMnlDc',ckeditor_config);
 

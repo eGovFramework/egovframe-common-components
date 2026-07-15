@@ -94,7 +94,7 @@ function fn_egov_select_guestList(pageNo) {
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
 <!-- 방명록 리스트 출력 -->
-<form name="articleForm" action="<c:url value='/cop/bbs/updateGuestArticleView.do'/>" method="post">
+<form:form name="articleForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/cop/bbs/updateGuestArticleView.do" method="post">
 <div class="board">
 <h2>${pageTitle}</h2>
 <div class="reply">
@@ -137,7 +137,7 @@ function fn_egov_select_guestList(pageNo) {
 <input name="pageIndex" type="hidden" value="<c:out value='${articleVO.pageIndex}'/>">
 <input name="nttId" type="hidden" value="">
 <input name="bbsId" type="hidden" value="<c:out value='${boardMasterVO.bbsId}'/>">
-</form>
+</form:form>
 
 <!-- 방명록 입력폼 -->
 <form:form modelAttribute="articleVO" action="${pageContext.request.contextPath}/cop/bbs/insertGuestArticle.do" method="post" onSubmit="fn_egov_insert_guest(document.forms[1]); return false; " style="float:left; clear:both;">

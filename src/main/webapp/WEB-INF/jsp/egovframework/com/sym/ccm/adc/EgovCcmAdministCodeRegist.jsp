@@ -45,10 +45,8 @@
 	 * 저장처리화면
 	 ******************************************************** */
 	 function fn_egov_regist_AdministCode(form){
-// 		var creatDe = document.administCode.creatDe.value;
 		var creatDe = document.getElementById('creatDe');
 		var ablDe = document.getElementById('ablDe');
-// 		var ablDe   = document.administCode.ablDe.value.replace(" ", "").replace("-","");
 		
 		if (creatDe.value > ablDe.value && (ablDe != "" && ablDe != "                    ")) {
 			alert("생성일, 폐기일 전후가 잘못되었습니다.\n확인 후 처리하시오.");

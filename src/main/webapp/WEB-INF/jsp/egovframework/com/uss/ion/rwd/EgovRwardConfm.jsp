@@ -199,7 +199,7 @@
 			<input id="confirmAgree" class="s_submit" type="submit" value="<spring:message code="comUssIonRwd.common.confmAt.C"/>" title="<spring:message code="comUssIonRwd.common.confmAt.C"/>" /><!-- 승인 -->
 			<span class="btn_s"><a id="confirmDisAgree" title="<spring:message code="comUssIonRwd.common.confmAt.R"/>"><spring:message code="comUssIonRwd.common.confmAt.R"/></a></span><!-- 반려 -->
 		</c:if>
-		<span class="btn_s"><a href="<c:url value='/uss/ion/rwd/EgovRwardConfmList.do'/>?searchCondition=1" onclick="fncEgovRwardConfmList(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fncEgovRwardConfmList(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

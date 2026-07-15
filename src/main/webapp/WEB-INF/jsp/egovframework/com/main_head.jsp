@@ -30,7 +30,6 @@ var getContextPath = "${pageContext.request.contextPath}";
 		document.selectOne.action = "<c:url value='/uat/uia/actionLogout.do'/>";
 		document.selectOne.target = "_top";
 		document.selectOne.submit();
-		//top.document.location.href = "<c:url value='/j_spring_security_logout'/>";
 	}
 </script>
 </head>
