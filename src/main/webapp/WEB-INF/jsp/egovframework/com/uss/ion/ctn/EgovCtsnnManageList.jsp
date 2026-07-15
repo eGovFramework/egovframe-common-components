@@ -24,11 +24,14 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="egovframework.com.utl.fcc.service.EgovDateUtil" %>
 
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title><spring:message code="comUssIonCtn.ctsnnManageList.title"/></title><!--경조사관리 목록-->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
@@ -103,7 +106,6 @@
 		         return;
 			  }
 		 }else varForm.searchToDate.value = "";
-		 //varForm.searchCondition.value = "1";
 		 varForm.pageIndex.value = pageNo;
 		 varForm.action = "<c:url value='/uss/ion/ctn/selectCtsnnManageList.do'/>";
 		 varForm.submit();
@@ -113,7 +115,7 @@
 	 * 등록 화면 호출 함수
 	 ******************************************************** */
 	function fncCtsnnRegist(){
-		location.href = "<c:url value='/uss/ion/ctn/EgovCtsnnRegist.do'/>";
+		fn_egov_postNavigate("<c:url value='/uss/ion/ctn/EgovCtsnnRegist.do'/>");
 	}
 
 	/* ********************************************************
@@ -133,7 +135,7 @@
 <div class="board">
 	<h1><spring:message code="comUssIonCtn.ctsnnManageList.title"/></h1><!--경조사관리 목록-->
 
-	<form name="listForm" action="<c:url value='/uss/ion/ctn/selectCtsnnManageList.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/ion/ctn/selectCtsnnManageList.do" method="post">
 	<input type="hidden" name="searchCondition">
 	<input type="hidden" name="ctsnnId">
 	<input type="hidden" name="pageIndex" value="<c:if test="${empty ctsnnManageVO.pageIndex }">1</c:if><c:if test="${!empty ctsnnManageVO.pageIndex }"><c:out value='${ctsnnManageVO.pageIndex}'/></c:if>">
@@ -175,10 +177,10 @@
 		
 		<div class="bt_a">
 			<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="title.inquire"/>' onclick="fncSelectCtsnnManageList('1'); return false;" /><!-- 조회 -->
-			<span class="btn_b"><a href="<c:url value='/uss/ion/ctn/EgovCtsnnRegist.do'/>" onclick="fncCtsnnRegist(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+			<span class="btn_b"><a href="javascript:void(0);" onclick="fncCtsnnRegist(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
 		</div>
 	</div>
-	</form>	
+		
 	<table class="board_list">
 		<caption></caption>
 		<colgroup>
@@ -211,10 +213,7 @@
 				<td><c:out value="${(ctsnnManageVO.pageIndex - 1) * ctsnnManageVO.pageSize + status.count}"/></td>
 				<td><c:out value="${resultInfo.ctsnnCdNm  }"/></td>
 				<td>
-				  <form name="item" method="post" action="<c:url value='/uss/ion/ctn/EgovCtsnnManageDetail.do'/>">
-<%-- 		           	<input type="hidden" name="ctsnnId"    value="<c:out value="${resultInfo.ctsnnId    }"/>"> --%>
-		            <span class="link"><input type="submit" value="<c:out value="${resultInfo.ctsnnNm}"/>" onclick="fncCtsnnManageDetail('<c:out value="${resultInfo.ctsnnId}"/>'); return false;" style="text-align : left;"></span>
-		          </form>
+				  <a href="javascript:void(0);" onclick="fncCtsnnManageDetail('<c:out value="${resultInfo.ctsnnId}"/>'); return false;"><span class="link"><c:out value="${resultInfo.ctsnnNm}"/></span></a>
 				</td>
 				<td><c:out value="${resultInfo.usNm  }"/></td>
 				<td><c:out value="${resultInfo.orgnztNm   }"/></td>
@@ -245,6 +244,8 @@
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/>
 		</ul>
 	</div>
+</form:form>
+
 	
 </div>
 </body>

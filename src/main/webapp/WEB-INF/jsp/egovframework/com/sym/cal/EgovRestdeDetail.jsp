@@ -27,6 +27,7 @@
 <c:set var="pageTitle"><spring:message code="sym.cal.detail.title"/></c:set>
 <html lang="ko">
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title>${pageTitle}</title>
 <link href="<c:url value='/css/egovframework/com/com.css' />" rel="stylesheet" type="text/css">
@@ -46,7 +47,7 @@ function fn_egov_modify_Restde(){
 	var varForm = document.all["Form"];
 	varForm.action = "<c:url value='/sym/cal/EgovRestdeModifyView.do'/>";
 	varForm.restdeNo.value = "${result.restdeNo}";
-	varForm.method = "get";
+	varForm.method = "post";
 	varForm.submit();
 }
 /* ********************************************************
@@ -113,6 +114,7 @@ function fn_egov_delete_Restde(){
 
 
 <form name="Form" method="post" action="">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input type=hidden name="restdeNo">
 	<input type="submit" id="invisible" class="invisible">
 </form>

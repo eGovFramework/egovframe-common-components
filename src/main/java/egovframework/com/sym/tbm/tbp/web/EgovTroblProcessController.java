@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.support.SessionStatus;
@@ -123,6 +124,9 @@ public class EgovTroblProcessController {
 	@RequestMapping(value = "/sym/tbm/tbp/getTroblProcess.do")
 	public String selectTroblProcess(@RequestParam("troblId") String troblId,
 			@ModelAttribute("troblProcessVO") TroblProcessVO troblProcessVO, ModelMap model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = egovAssertLoginUser();
+
 
 		troblProcessVO.setTroblId(troblId);
 		model.addAttribute("troblProcess", egovTroblProcessService.selectTroblProcess(troblProcessVO));
@@ -137,7 +141,7 @@ public class EgovTroblProcessController {
 	 * @param troblManage - 장애관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/sym/tbm/tbp/addTroblProcess.do")
+	@PostMapping("/sym/tbm/tbp/addTroblProcess.do")
 	public String insertTroblProcess(@ModelAttribute("troblProcessVO") TroblProcessVO troblProcessVO,
 			@Valid @ModelAttribute("troblProcess") TroblProcess troblProcess,
 			BindingResult bindingResult, SessionStatus status, ModelMap model) throws Exception {
@@ -163,9 +167,12 @@ public class EgovTroblProcessController {
 	 * @param troblManage - 장애관리 model
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping(value = "/sym/tbm/tbp/removeTroblProcess.do")
+	@PostMapping("/sym/tbm/tbp/removeTroblProcess.do")
 	public String deleteTroblProcess(@RequestParam("troblId") String troblId,
 			@ModelAttribute("troblProcess") TroblProcess troblProcess, ModelMap model) throws Exception {
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = egovAssertLoginUser();
+
 
 		troblProcess.setTroblId(troblId);
 		troblProcess.setProcessSttus("R");
@@ -187,4 +194,31 @@ public class EgovTroblProcessController {
 		comDefaultCodeVO.setCodeId(codeId);
 		return egovCmmUseService.selectCmmCodeDetail(comDefaultCodeVO);
 	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
+	}
+
 }

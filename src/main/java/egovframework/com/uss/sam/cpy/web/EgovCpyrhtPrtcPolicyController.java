@@ -10,12 +10,14 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import egovframework.com.cmm.EgovMessageSource;
 import egovframework.com.cmm.LoginVO;
 import egovframework.com.cmm.annotation.IncludedInfo;
+import egovframework.com.cmm.util.EgovUmtAuthorizationHelper;
 import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.com.uss.sam.cpy.service.CpyrhtPrtcPolicyDefaultVO;
 import egovframework.com.uss.sam.cpy.service.CpyrhtPrtcPolicyVO;
@@ -40,6 +42,8 @@ import jakarta.validation.Valid;
  *  -----------    --------    ---------------------------
  *   2009.04.01     박정규       최초 생성
  *   2011.08.26     정진오       IncludedInfo annotation 추가
+ *   2026.07.10     유지보수     NCSC 보안점검 반영 (삭제 시 존재·인증 검증)
+ *   2026.07.13     유지보수     IDOR 보완 (삭제 시 소유권/관리자 권한 검증)
  *
  *      </pre>
  */
@@ -90,7 +94,7 @@ public class EgovCpyrhtPrtcPolicyController {
 	 * @throws Exception
 	 */
 	@IncludedInfo(name = "저작권보호정책", order = 500, gid = 50)
-	@RequestMapping(value = "/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do")
+	@RequestMapping("/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do")
 	public String selectCpyrhtPrtcPolicyList(@ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO,
 			ModelMap model) throws Exception {
 
@@ -127,7 +131,7 @@ public class EgovCpyrhtPrtcPolicyController {
 	 * @return "/uss/sam/cpy/EgovCpyrhtPrtcPolicyDetailInqire"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/sam/cpy/CpyrhtPrtcPolicyDetailInqire.do")
+	@PostMapping("/uss/sam/cpy/CpyrhtPrtcPolicyDetailInqire.do")
 	public String selectCpyrhtPrtcPolicyDetail(CpyrhtPrtcPolicyVO cpyrhtPrtcPolicyVO,
 			@ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO, ModelMap model) throws Exception {
 
@@ -146,7 +150,7 @@ public class EgovCpyrhtPrtcPolicyController {
 	 * @return "/uss/sam/cpy/EgovCpyrhtPrtcPolicyCnRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/sam/cpy/CpyrhtPrtcPolicyCnRegistView.do")
+	@PostMapping("/uss/sam/cpy/CpyrhtPrtcPolicyCnRegistView.do")
 	public String insertCpyrhtPrtcPolicyCnView(@ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO,
 			Model model) throws Exception {
 
@@ -165,7 +169,7 @@ public class EgovCpyrhtPrtcPolicyController {
 	 * @return "forward:/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/sam/cpy/CpyrhtPrtcPolicyCnRegist.do")
+	@PostMapping("/uss/sam/cpy/CpyrhtPrtcPolicyCnRegist.do")
 	public String insertCpyrhtPrtcPolicyCn(
 		@ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO,
 			@Valid @ModelAttribute("cpyrhtPrtcPolicyVO") CpyrhtPrtcPolicyVO cpyrhtPrtcPolicyVO,
@@ -199,7 +203,7 @@ public class EgovCpyrhtPrtcPolicyController {
 	 * @return "/uss/sam/cpy/EgovCpyrhtPrtcPolicyCnUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/sam/cpy/CpyrhtPrtcPolicyCnUpdtView.do")
+	@PostMapping("/uss/sam/cpy/CpyrhtPrtcPolicyCnUpdtView.do")
 	public String updateCpyrhtPrtcPolicyCnView(@RequestParam("cpyrhtId") String cpyrhtId,
 			@ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO, ModelMap model) throws Exception {
 
@@ -227,7 +231,7 @@ public class EgovCpyrhtPrtcPolicyController {
 	 * @return "forward:/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/sam/cpy/CpyrhtPrtcPolicyCnUpdt.do")
+	@PostMapping("/uss/sam/cpy/CpyrhtPrtcPolicyCnUpdt.do")
 	public String updateCpyrhtPrtcPolicyCn(
 		@ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO,
 			@Valid @ModelAttribute("cpyrhtPrtcPolicyVO") CpyrhtPrtcPolicyVO cpyrhtPrtcPolicyVO,
@@ -260,12 +264,36 @@ public class EgovCpyrhtPrtcPolicyController {
 	 * @return "forward:/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/sam/cpy/CpyrhtPrtcPolicyCnDelete.do")
+	@PostMapping("/uss/sam/cpy/CpyrhtPrtcPolicyCnDelete.do")
 	public String deleteCpyrhtPrtcPolicyCn(CpyrhtPrtcPolicyVO cpyrhtPrtcPolicyVO,
-			@ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO) throws Exception {
+			@ModelAttribute("searchVO") CpyrhtPrtcPolicyDefaultVO searchVO, ModelMap model) throws Exception {
+
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+
+		if (EgovStringUtil.isEmpty(cpyrhtPrtcPolicyVO.getCpyrhtId())) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.delete"));
+			return "forward:/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do";
+		}
+
+		CpyrhtPrtcPolicyVO existing = cpyrhtPrtcPolicyService.selectCpyrhtPrtcPolicyDetail(cpyrhtPrtcPolicyVO);
+		if (existing == null || EgovStringUtil.isEmpty(existing.getCpyrhtId())) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.delete"));
+			return "forward:/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do";
+		}
+
+		// 관리자 또는 최초등록자만 삭제 가능 (IDOR 방지)
+		if (!EgovUmtAuthorizationHelper.canModifyUser(existing.getFrstRegisterId())) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.delete"));
+			return "forward:/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do";
+		}
 
 		cpyrhtPrtcPolicyService.deleteCpyrhtPrtcPolicyCn(cpyrhtPrtcPolicyVO);
 
+		model.addAttribute("message", egovMessageSource.getMessage("success.common.delete"));
 		return "forward:/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do";
 	}
 

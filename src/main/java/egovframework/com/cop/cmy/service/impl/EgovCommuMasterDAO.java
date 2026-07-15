@@ -41,9 +41,8 @@ public class EgovCommuMasterDAO extends EgovComAbstractDAO {
 	 *
 	 * @param cmmntyVO
 	 * @return
-	 * @throws Exception
 	 */
-	public List<CommunityVO> selectCommuMasterListPortlet(CommunityVO cmmntyVO) throws DataAccessException {
+	public List<CommunityVO> selectCommuMasterListPortlet(CommunityVO cmmntyVO) {
 		return selectList("CommuMaster.selectCommuMasterListPortlet", cmmntyVO);
 	}
 

@@ -34,7 +34,6 @@
 <script src="<c:url value='/js/egovframework/com/cmm/jquery.js' />"></script>
 <script src="<c:url value='/js/egovframework/com/cmm/jqueryui.js' />"></script>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/showModalDialog.js'/>" ></script>
-<%-- <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFile.js'/>" ></script> --%>
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/fms/EgovMultiFiles.js'/>" ></script>
 <script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 <script type="text/javascript">
@@ -146,7 +145,7 @@
 			<th><spring:message code="comCopSmtMrm.memoReprtVO.validate.reportrNm"/> <span class="pilsu">*</span></th><!-- 보고 대상자 -->
 			<td class="left">
 				<form:input path="reportrNm" readonly="true" maxlength="10" title="보고대상명" cssStyle="width:70px"/>
-				<a href="<c:url value='/cop/smt/mrm/selectReportrListPopup.do' />" target="_blank"  title="새 창으로 이동"  onclick="fn_egov_reportr_MemoReprt('보고대상', 'reportrId', '', 'reportrNm', '');return false;">
+				<a href="javascript:void(0);"  onclick="fn_egov_reportr_MemoReprt('보고대상', 'reportrId', '', 'reportrNm', '');return false;">
 				<img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif' />" alt="보고대상 검색" title="보고대상 검색"/>
 				</a>
 			
@@ -190,7 +189,7 @@
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="button.save" />' onclick="fn_egov_update_memoreprt(); return false;" />
-		<span class="btn_s"><a href="<c:url value='/cop/smt/mrm/selectMemoReprtList.do'/>?searchWrd=<c:out value='${memoReprtVO.searchWrd}'/>&amp;searchCnd=<c:out value='${memoReprtVO.searchCnd}'/>&amp;pageIndex=<c:out value='${memoReprtVO.pageIndex}'/>&amp;searchSttus=<c:out value='${memoReprtVO.searchSttus}'/>&amp;searchDrctMatter=<c:out value='${memoReprtVO.searchDrctMatter}'/>&amp;searchBgnDe=<c:out value='${memoReprtVO.searchBgnDe}'/>&amp;searchEndDe=<c:out value='${memoReprtVO.searchEndDe}'/>" onclick="fn_egov_list_memoreprt(); return false;" onclick=""><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_list_memoreprt(); return false;" onclick=""><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

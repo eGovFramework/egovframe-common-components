@@ -1,5 +1,7 @@
 package egovframework.com.cmm.web;
 
+import egovframework.com.cmm.LoginVO;
+
 import java.util.Base64;
 import java.util.List;
 import java.util.Map;
@@ -71,11 +73,19 @@ public class EgovFileMngController {
 	public String selectFileInfs(@ModelAttribute("searchVO") FileVO fileVO, HttpServletRequest request,
 			@RequestParam Map<String, Object> commandMap, ModelMap model) throws Exception {
 
+		// 2026.07.13 KISA 보안취약점 조치
+		if (!EgovUserDetailsHelper.isAuthenticated()) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+
 		String param_atchFileId = (String) commandMap.get("param_atchFileId");
 		String decodedAtchFileId = "";
 
 		if (param_atchFileId != null && !"".equals(param_atchFileId)) {
 			decodedAtchFileId = cryptoService.decrypt(param_atchFileId);
+			if (decodedAtchFileId == null || decodedAtchFileId.startsWith("FILE_ID_DECRIPT_EXCEPTION")) {
+				throw new IllegalStateException("권한이 없습니다.");
+			}
 		}
 
 		fileVO.setAtchFileId(decodedAtchFileId);
@@ -112,11 +122,19 @@ public class EgovFileMngController {
 			// SessionVO sessionVO,
 			HttpServletRequest request, ModelMap model) throws Exception {
 
+		// 2026.07.13 KISA 보안취약점 조치
+		if (!EgovUserDetailsHelper.isAuthenticated()) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+
 		String param_atchFileId = (String) commandMap.get("param_atchFileId");
 		String decodedAtchFileId = "";
 
 		if (param_atchFileId != null && !"".equals(param_atchFileId)) {
 			decodedAtchFileId = cryptoService.decrypt(param_atchFileId);
+			if (decodedAtchFileId == null || decodedAtchFileId.startsWith("FILE_ID_DECRIPT_EXCEPTION")) {
+				throw new IllegalStateException("권한이 없습니다.");
+			}
 		}
 
 		fileVO.setAtchFileId(decodedAtchFileId);
@@ -152,6 +170,11 @@ public class EgovFileMngController {
 	public String deleteFileInf(@ModelAttribute("searchVO") FileVO fileVO,
 			// SessionVO sessionVO,
 			HttpServletRequest request, ModelMap model) throws Exception {
+
+		// 2026.07.13 KISA 보안취약점 조치
+		if (!EgovUserDetailsHelper.isAuthenticated()) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
 
 		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
 
@@ -210,6 +233,33 @@ public class EgovFileMngController {
 			}
 		}
 		return returnVal;
+	}
+
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 }

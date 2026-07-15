@@ -46,7 +46,6 @@
 			var varForm			= document.all["Form"];
 			varForm.action      = "<c:url value='/dam/mgm/EgovComDamManagementModify.do'/>";
 			varForm.knoId.value = "${result.knoId}";
-			//alert(varForm.knoId.value);	
 			varForm.method = 'get';
 			varForm.submit();
 		}
@@ -63,7 +62,8 @@
 		<!-- 타이틀 -->
 		<h2><spring:message code="comDamMgm.comDamManagementDetail.pageTop.title"/></h2><!-- 지식정보 상세조회 -->
 	
-		<form name="Form" action="<c:url value='/dam/mgm/EgovComDamManagementModify.do'/>" method="post">
+		<form name="Form" action="${pageContext.request.contextPath}/dam/mgm/EgovComDamManagementModify.do" method="post">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		<input name="knoId" type="hidden">
 	
 		<!-- 등록폼 -->

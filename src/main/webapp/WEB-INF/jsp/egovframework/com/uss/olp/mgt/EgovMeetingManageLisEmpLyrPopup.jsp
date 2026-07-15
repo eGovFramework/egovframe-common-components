@@ -17,9 +17,12 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title><spring:message code="ussOlpMgt.meetingManageLisEmpLyrPopup.userPopup"/></title><!-- 사용자 검색 팝업 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
@@ -39,13 +42,13 @@ function linkPage(pageNo){
  * 등록 처리 함수
  ******************************************************** */
 function fn_egov_regist_MeetingManage(){
-	location.href = "<c:url value='/uss/olp/mgt/EgovMeetingManageRegist.do' />";
+	fn_egov_postNavigate("<c:url value='/uss/olp/mgt/EgovMeetingManageRegist.do' />");
 }
 /* ********************************************************
  * 수정 처리 함수
  ******************************************************** */
 function fn_egov_modify_MeetingManage(){
-	location.href = "<c:url value='/uss/olp/mgt/EgovMeetingManageModify.do' />";
+	fn_egov_postNavigate("<c:url value='/uss/olp/mgt/EgovMeetingManageModify.do' />");
 }
 /* ********************************************************
  * 상세화면 처리 함수
@@ -86,7 +89,6 @@ function fn_egov_search_MeetingManage(){
 function fn_egov_open_Popup(cnt, esntlId){
 
 	getDialogArguments();
-	/* var opener = window.dialogArguments; */
 	var opener;
 	 
 	if (window.dialogArguments) {
@@ -114,7 +116,7 @@ function fn_egov_open_Popup(cnt, esntlId){
 <body style="margin-top:10px">
 
 <div class="board">
-<form name="listForm" id="listForm" action="<c:url value='/uss/olp/mgt/EgovMeetingManageLisEmpLyrPopup.do'/>" method="post">
+<form:form name="listForm" modelAttribute="searchVO" id="listForm" action="${pageContext.request.contextPath}/uss/olp/mgt/EgovMeetingManageLisEmpLyrPopup.do" method="post">
 	<h1><spring:message code="ussOlpMgt.meetingManageLisEmpLyrPopup.searchId"/></h1><!-- 아이디 검색 -->
 
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
@@ -180,7 +182,7 @@ function fn_egov_open_Popup(cnt, esntlId){
 	</table>
 </div>
 
-</form>
+</form:form>
 
 </DIV>
 </body>

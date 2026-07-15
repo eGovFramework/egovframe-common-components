@@ -24,10 +24,13 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%@ page import="egovframework.com.utl.fcc.service.EgovDateUtil" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title><spring:message code="comUssIonVct.vcatnManageList.title"/></title><!-- 휴가관리 목록 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
@@ -52,7 +55,6 @@
  /*설명 : 목록 조회 */
  function fncSelectVcatnManageList(pageNo){
 	 var varForm = document.getElementById("listForm") || document.forms["listForm"];
-	 //varForm.searchCondition.value = "1";
 	 varForm.pageIndex.value = pageNo;
 	 varForm.action = "<c:url value='/uss/ion/vct/EgovVcatnManageList.do'/>";
 	 varForm.submit();
@@ -70,7 +72,7 @@ function fncVcatnRegist(){
 		alert("<spring:message code="comUssIonVct.vcatnManageList.validate.makeVcatn"/>")/* 연차가 없습니다. 개인연차 확인이 필요합니다. */
 		location.href = "<c:url value='/uss/ion/yrc/EgovIndvdlYrycManageList.do'/>";		
 	}else{
-		location.href = "<c:url value='/uss/ion/vct/EgovVcatnRegist.do'/>";
+		fn_egov_postNavigate("<c:url value='/uss/ion/vct/EgovVcatnRegist.do'/>");
 	}
 }
 
@@ -105,7 +107,7 @@ function fncVcatnManageDetail(applcntId,vcatnSe,bgnde,endde){
 
 	<span><spring:message code="comUssIonVct.vcatnManageList.validate.guide"/></span>
 
-	<form name="listForm" id="listForm" action="<c:url value='/uss/ion/vct/EgovVcatnManageList.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" id="listForm" action="${pageContext.request.contextPath}/uss/ion/vct/EgovVcatnManageList.do" method="post">
 		<input type="hidden" id="access" value="${access}">
 		<input type="hidden" name="searchCondition">
 		<input type="hidden" name="applcntId">
@@ -127,11 +129,11 @@ function fncVcatnManageDetail(applcntId,vcatnSe,bgnde,endde){
 				</select><spring:message code="comUssIonVct.vcatnManageList.year"/><!-- 년 -->				
 				
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fncSelectVcatnManageList('1'); return false;"  style="margin-left:10px" />
-				<span class="btn_b"><a href="<c:url value='/uss/ion/vct/EgovVcatnRegist.do'/>" onclick="fncVcatnRegist();" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="#" onclick="fn_egov_postNavigate('<c:url value='/uss/ion/vct/EgovVcatnRegist.do' />'); return false;" onclick="fncVcatnRegist();" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
-</form>
+
 	<table class="board_list">
 		<caption></caption>
 		<colgroup>
@@ -162,13 +164,7 @@ function fncVcatnManageDetail(applcntId,vcatnSe,bgnde,endde){
 				<td><c:out value="${resultInfo.bgnde}"/></td>
 				<td><c:out value="${resultInfo.endde}"/></td>
 				<td>
-					<form name="item" method="post" action="<c:url value='/uss/ion/vct/EgovVcatnManageDetail.do'/>">
-						<input type="hidden" name="applcntId" value="<c:out value="${resultInfo.applcntId}"/>">
-						<input type="hidden" name="vcatnSe"   value="<c:out value="${resultInfo.vcatnSe}"/>">
-						<input type="hidden" name="bgnde"     value="<c:out value="${resultInfo.bgnde}"/>">
-						<input type="hidden" name="endde"     value="<c:out value="${resultInfo.endde}"/>">
-						<input class="link" type="submit" value="<c:out value="${resultInfo.vcatnResn}"/>" onclick="fncVcatnManageDetail('<c:out value="${resultInfo.applcntId}"/>','<c:out value="${resultInfo.vcatnSe}"/>','<c:out value="${resultInfo.bgnde}"/>','<c:out value="${resultInfo.endde}"/>'); return false;" style="text-align : left;" />
-					</form>
+					<a href="javascript:void(0);" onclick="fncVcatnManageDetail('<c:out value="${resultInfo.applcntId}"/>', '<c:out value="${resultInfo.vcatnSe}"/>', '<c:out value="${resultInfo.bgnde}"/>', '<c:out value="${resultInfo.endde}"/>'); return false;"><span class="link"><c:out value="${resultInfo.vcatnResn}"/></span></a>
 				</td>
 				<td>
 					<c:if test="${resultInfo.confmAt eq 'A'}"><spring:message code="comUssIonVct.vcatnManageList.confmAt.A"/></c:if><!-- 신청중 -->
@@ -195,6 +191,8 @@ function fncVcatnManageDetail(applcntId,vcatnSe,bgnde,endde){
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/>
 		</ul>
 	</div>
+</form:form>
+
 	</div>
 </body>
 </html>

@@ -21,15 +21,26 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title><spring:message code="ussIonPwm.popupList.popupList"/></title><!-- 팝업창관리 목록 -->
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/jquery.js'/>" ></script>
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
 <link href="<c:url value="/css/egovframework/com/button.css"/>" rel="stylesheet" type="text/css">
 <script type="text/javaScript" language="javascript">
+var csrfHeaderName = "${_csrf.headerName}";
+var csrfToken = "${_csrf.token}";
+function egovCsrfBeforeSend(xhr) {
+	if (csrfHeaderName && csrfToken) {
+		xhr.setRequestHeader(csrfHeaderName, csrfToken);
+	}
+}
+
 /* ********************************************************
  * 페이징 처리 함수
  ******************************************************* */
@@ -42,7 +53,7 @@ function linkPage(pageNo){
  * 등록 처리 함수 (등록 전 단계 화면으로 이동)
  ******************************************************** */
 function fn_egov_regist_PopupManage(){
-	location.href = "<c:url value='/uss/ion/pwm/insertPopupView.do' />";
+	fn_egov_postNavigate("<c:url value='/uss/ion/pwm/insertPopupView.do' />");
 }
 /* ********************************************************
  * 상세화면 처리 함수
@@ -125,6 +136,7 @@ function fn_egov_ajaxPopupInfo_PopupManage(popupIds){
 	};
 
 	$.ajax({
+		beforeSend: egovCsrfBeforeSend,
 		url: ajaxUrl
 		,type: 'post'
 		,data: param
@@ -180,7 +192,7 @@ function fnGetCookie(name) {
 <body>
 
 <div class="board">
-<form name="listForm" action="<c:url value='/uss/ion/pwm/listPopup.do'/>" method="post">
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/ion/pwm/listPopup.do" method="post">
 	<h1><spring:message code="ussIonPwm.popupList.popupList"/></h1><!-- 팝업창관리 목록 -->
 	<span><spring:message code="ussIonPwm.popupList.guide"/> </span>
 
@@ -197,13 +209,13 @@ function fnGetCookie(name) {
 				
 				<span class="btn_b"><a href="" onclick="fn_egov_view_PopupManage(); return false;" title="새창 열림"><spring:message code="button.preview"/></a></span><!-- 미리보기 -->
 				<input class="s_btn" type="submit" value="<spring:message code="button.inquire" />" title="<spring:message code="button.inquire" />" onclick="fn_egov_search_PopupManage(); return false;" />
-				<span class="btn_b"><a href="<c:url value='/uss/ion/pwm/insertPopupView.do'/>" onclick="" title="<spring:message code="button.create" />"><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="#" onclick="fn_egov_postNavigate('<c:url value='/uss/ion/pwm/insertPopupView.do' />'); return false;" onclick="" title="<spring:message code="button.create" />"><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
 <input name="popupId" type="hidden" value="">
 <input name="pageIndex" type="hidden" value="<c:out value='${popupManageVO.pageIndex}'/>"/>
-</form>
+
 
 	<table class="board_list">
 		<caption></caption>
@@ -234,11 +246,7 @@ function fnGetCookie(name) {
 					<input type="checkbox" name="checkList" id="checkList" class="check2" value="${resultInfo.popupId}"/>
 				</td>
 				<td>
-					<form name="subForm" method="post" action="<c:url value='/uss/ion/pwm/detailPopup.do'/>">
-						<input name="popupId" type="hidden" value="${resultInfo.popupId}">
-						<input name="pageIndex" type="hidden" value="<c:out value='${popupManageVO.pageIndex}'/>"/>
-						<span class="link"><input type="submit" style="width:200px;text-align:left;" value="<c:out value="${resultInfo.popupTitleNm}"/>" onclick="fn_egov_detail_PopupManage('${resultInfo.popupId}'); return false;"></span>
-					</form>
+					<a href="javascript:void(0);" onclick="fn_egov_detail_PopupManage('${resultInfo.popupId}'); return false;"><span class="link"><c:out value="${resultInfo.popupTitleNm}"/></span></a>
 				</td>
 				<td>
 					<c:out value="${fn:substring(resultInfo.ntceBgnde, 0, 4)}"/>-<c:out value="${fn:substring(resultInfo.ntceBgnde, 4, 6)}"/>-<c:out value="${fn:substring(resultInfo.ntceBgnde, 6, 8)}"/> <c:out value="${fn:substring(resultInfo.ntceBgnde, 8, 10)}"/>H <c:out value="${fn:substring(resultInfo.ntceBgnde, 10, 12)}"/>M
@@ -270,6 +278,8 @@ function fnGetCookie(name) {
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/>
 		</ul>
 	</div>
+</form:form>
+
 </div>
 
 </body>

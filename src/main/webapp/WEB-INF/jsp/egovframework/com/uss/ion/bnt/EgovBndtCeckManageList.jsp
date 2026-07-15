@@ -24,9 +24,12 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title><spring:message code="comUssIonBnt.bndtCeckManageList.title"/></title><!-- 당직체크관리 목록 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
@@ -51,7 +54,6 @@
  /*설명 : 목록 조회 */
  function fncSelectMtgPlaceManageList(pageNo){
 	 var varForm				 = document.all["listForm"];
-	 //varForm.searchCondition.value = "1";
 	 varForm.pageIndex.value = pageNo;
 	 varForm.action = "<c:url value='/uss/ion/bnt/EgovBndtCeckManageList.do'/>";
 	 varForm.submit();
@@ -61,7 +63,7 @@
  * 등록 처리 함수 
  ******************************************************** */
 function fncBndtCeckManageRegist(){
-	location.href = "<c:url value='/uss/ion/bnt/EgovBndtCeckManageRegist.do'/>";
+	fn_egov_postNavigate("<c:url value='/uss/ion/bnt/EgovBndtCeckManageRegist.do'/>");
 }
 
 /* ********************************************************
@@ -84,7 +86,7 @@ function fncBndtCeckManageDetail(bndtCeckSe, bndtCeckCd){
 <div class="board">
 	<h1><spring:message code="comUssIonBnt.bndtCeckManageList.title"/></h1><!-- 당직체크관리 목록 -->
 
-	<form name="listForm" action="<c:url value='/uss/ion/bnt/EgovBndtCeckManageList.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/ion/bnt/EgovBndtCeckManageList.do" method="post">
 	<input type="hidden" name="searchCondition">
 	<input type="hidden" name="bndtCeckSe">
 	<input type="hidden" name="bndtCeckCd">
@@ -112,11 +114,11 @@ function fncBndtCeckManageDetail(bndtCeckSe, bndtCeckCd){
 		      	</select>
 				
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fncSelectMtgPlaceManageList('1'); return false;" />
-				<span class="btn_b"><a href="<c:url value='/uss/ion/bnt/EgovBndtCeckManageRegist.do'/>?searchCondition=1" onclick="fncBndtCeckManageRegist(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fncBndtCeckManageRegist(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
-	</form>
+	
 	<table class="board_list">
 		<caption></caption>
 		<colgroup>
@@ -142,11 +144,7 @@ function fncBndtCeckManageDetail(bndtCeckSe, bndtCeckCd){
 				<td><c:out value="${resultInfo.bndtCeckTemp1}"/></td>
 				<td><c:out value="${resultInfo.bndtCeckCd}"/></td>
 				<td>
-		        <form name="item" method="post" action="<c:url value='/uss/ion/bnt/EgovBndtCeckManage.do'/>">
-		        	<input type="hidden" name="bndtCeckSe" value="<c:out value="${resultInfo.bndtCeckSe      }"/>">
-			        <input type="hidden" name="bndtCeckCd" value="<c:out value="${resultInfo.bndtCeckCd      }"/>">
-		            <span class="link"><input type="submit" style="text-align:center" value="<c:out value="${resultInfo.bndtCeckCdNm}"/>" onclick="fncBndtCeckManageDetail('<c:out value="${resultInfo.bndtCeckSe}"/>','<c:out value="${resultInfo.bndtCeckCd}"/>'); return false;" style="text-align : left;"></span>
-		        </form></td>
+		        <a href="javascript:void(0);" onclick="fncBndtCeckManageDetail('<c:out value="${resultInfo.bndtCeckSe}"/>', '<c:out value="${resultInfo.bndtCeckCd}"/>'); return false;"><span class="link"><c:out value="${resultInfo.bndtCeckCdNm}"/></span></a></td>
 				<td><c:if test="${resultInfo.useAt == 'Y'}"><spring:message code="comUssIonBnt.common.useAt.y"/></c:if><c:if test="${resultInfo.useAt == 'N'}"><spring:message code="comUssIonBnt.common.useAt.n"/></c:if></td><!-- 사용  /미사용 -->
 			</tr>   
 			</c:forEach>
@@ -166,7 +164,9 @@ function fncBndtCeckManageDetail(bndtCeckSe, bndtCeckCd){
 		<ul>
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/>
 		</ul>
-	</div> 
+	</div>
+</form:form>
+ 
 </div>
 </body>
 </html>

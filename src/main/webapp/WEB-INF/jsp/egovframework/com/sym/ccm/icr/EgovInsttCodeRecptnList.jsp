@@ -24,6 +24,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comSymCcmIcr.insttCodeRecptn.title"/></c:set>
 <html lang="ko">
 <head>
@@ -71,7 +73,7 @@ function press(event) {
 <body>
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="listForm" action="<c:url value='/sym/ccm/icr/getInsttCodeRecptnList.do'/>" method="post">
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/sym/ccm/icr/getInsttCodeRecptnList.do" method="post">
 <input name="insttCode" type="hidden" value=""/>
 <input name="pageIndex" type="hidden" value="${searchVO.pageIndex}"/>
 <div class="board">
@@ -134,6 +136,6 @@ function press(event) {
 	</div>
 </div>
 
-</form>
+</form:form>
 </body>
 </html>

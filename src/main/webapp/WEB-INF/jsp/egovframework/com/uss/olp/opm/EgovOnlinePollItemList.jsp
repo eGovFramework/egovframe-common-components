@@ -89,11 +89,11 @@
 	/* ********************************************************
 	* 삭제 처리 함수
 	******************************************************** */
-	function fn_egov_del_OnlinePollItem(pollIemId){
+	function fn_egov_del_OnlinePollItem(button){
 		var vFrom = document.registForm;
 		vFrom.action = "<c:url value='/uss/olp/opm/delOnlinePollItem.do' />";
 
-		vFrom.pollIemId.value = pollIemId;
+		vFrom.pollIemId.value = button.getAttribute('data-poll-iem-id');
 
 		if(confirm("삭제 하시겠습니까?")){
 			 vFrom.submit();
@@ -102,11 +102,11 @@
 	/* ********************************************************
 	* 수정화면으로 전환 함수
 	******************************************************** */
-	function fn_egov_modify_display_OnlinePollItem(pollIemNm, pollIemId){
+	function fn_egov_modify_display_OnlinePollItem(button){
 		var vFrom = document.registForm;
 		vFrom.action = "<c:url value='/uss/olp/opm/updtOnlinePollItem.do' />";
-		vFrom.pollIemNm.value = pollIemNm;
-		vFrom.pollIemId.value = pollIemId;
+		vFrom.pollIemNm.value = button.getAttribute('data-poll-iem-nm');
+		vFrom.pollIemId.value = button.getAttribute('data-poll-iem-id');
 		vFrom.registFormCmd.value = 'updt';
 
 		document.getElementById('divPollIem').innerHTML = '수정';
@@ -137,7 +137,7 @@
 	******************************************************** */
 	function fn_egov_search_OnlinePollItemList(sSearch){
 
-		var arrPollItemList = new Array(<c:forEach items="${resultList}" var="resultInfo" varStatus="status">'${resultInfo.pollIemNm}'<c:if test="${status.count != resultListCont}">,</c:if></c:forEach>'');
+		var arrPollItemList = new Array(<c:forEach items="${resultList}" var="resultInfo" varStatus="status">'<c:out value="${resultInfo.pollIemNm}" escapeXml="true"/>'<c:if test="${status.count != resultListCont}">,</c:if></c:forEach>);
 		for(var i=0;i<arrPollItemList.length;i++){
 
 			if(arrPollItemList[i].trim() == sSearch){
@@ -180,7 +180,7 @@
 <div class="board">
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
-<form name="listForm" action="<c:url value='' />" method="post">
+<form:form name="listForm" modelAttribute="searchVO" action="" method="post">
 	
 <h1>${pageTitle}</h1>
 
@@ -208,14 +208,14 @@
 	<c:forEach items="${resultList}" var="resultInfo" varStatus="status">
 	<tr>
   		<td class="left"><c:out value="${resultInfo.pollIemNm}"/></td>
-  		<td><button class="btn_s2" onClick="fn_egov_modify_display_OnlinePollItem('${resultInfo.pollIemNm}','${resultInfo.pollIemId}'); return false;" title="<spring:message code="button.update" /> <spring:message code="input.button" />"><spring:message code="button.update" /></button></td>
-  		<td><button class="btn_s2" onClick="fn_egov_del_OnlinePollItem('${resultInfo.pollIemId}'); return false;" title="<spring:message code="button.delete" /> <spring:message code="input.button" />"><spring:message code="button.delete" /></button></td>
+  		<td><button type="button" class="btn_s2" data-poll-iem-nm="<c:out value='${resultInfo.pollIemNm}'/>" data-poll-iem-id="<c:out value='${resultInfo.pollIemId}'/>" onClick="fn_egov_modify_display_OnlinePollItem(this); return false;" title="<spring:message code="button.update" /> <spring:message code="input.button" />"><spring:message code="button.update" /></button></td>
+  		<td><button type="button" class="btn_s2" data-poll-iem-id="<c:out value='${resultInfo.pollIemId}'/>" onClick="fn_egov_del_OnlinePollItem(this); return false;" title="<spring:message code="button.delete" /> <spring:message code="input.button" />"><spring:message code="button.delete" /></button></td>
 	</tr>
 	</c:forEach>
 	</tbody>
 	</table>
 	
-</form>
+</form:form>
 </div>
 	<!--  줄간격조정  -->
 	<table width="100%" cellspacing="0" cellpadding="0" border="0">
@@ -224,7 +224,7 @@
 	</tr>
 	</table>
 	
-	<form:form modelAttribute="onlinePollItem" name="registForm" action="<c:url value='' />" method="post">
+	<form:form modelAttribute="onlinePollItem" name="registForm" action="" method="post">
 		<input name="pollId" type="hidden" value="${onlinePollItem.pollId}">
 		<input name="pollIemId" type="hidden" value="">
 		<input name="registFormCmd" type="hidden" value="">

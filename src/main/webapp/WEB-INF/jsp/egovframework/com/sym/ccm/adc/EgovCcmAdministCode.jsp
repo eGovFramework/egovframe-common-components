@@ -22,6 +22,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comSymCcmAdc.ccmAdministCode.upperCode"/> <spring:message code="title.list" /></c:set>
 <html lang="ko">
 <head>
@@ -86,7 +88,7 @@
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
 <div class="board">
-<form name="listForm" action="<c:url value='/sym/ccm/adc/EgovCcmAdministCode.do'/>" method="post">
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/sym/ccm/adc/EgovCcmAdministCode.do" method="post">
 	<h1>${pageTitle}</h1>
 
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
@@ -151,13 +153,10 @@
 	</div>
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>	
 <input name="searchCondition" type=hidden value="<c:out value='${searchVO.searchCondition}'/>"/>
-</form>
-<form name="Form" id="Form" method="post" action="<c:url value='/sym/ccm/adc/EgovCcmAdministCode.do'/>">
-	<input type=hidden name="administZoneSe">
-	<input type=hidden name="administZoneCode">
-	<input type=hidden name="searchCondition">
-	<input type="submit" id="invisible" class="invisible">
-</form>
+<input type=hidden name="administZoneSe">
+<input type=hidden name="administZoneCode">
+</form:form>
+
 
 </div>
 

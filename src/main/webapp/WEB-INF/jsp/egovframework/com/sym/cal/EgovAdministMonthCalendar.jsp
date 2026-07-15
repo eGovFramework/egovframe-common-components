@@ -67,6 +67,7 @@ function fn_egov_change_Calendar(form){
 <DIV id="content">
 <!-- ------------------------------------------------------------------ 상단타이틀 -->
 <form name="administMonthCalendar" action ="<c:url value='/sym/cal/EgovAdministMonthCalendar.do'/>" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input type="hidden" name="init" value="${init}" />
 	<input type="hidden" name="day" />
 	<table width="700" cellpadding="8" class="table-search" border="0">

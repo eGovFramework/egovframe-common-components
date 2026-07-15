@@ -191,13 +191,13 @@ function fncTroblReqstRequstCancl(troblId) {
 	<div class="btn">
 		<c:if test="${troblReqst.processSttus == 'A'}">
 			<input class="s_submit" type="submit" value='<spring:message code="button.update" />' onclick="fncTroblReqstUpdateView('${troblReqst.troblId}'); return false;" />
-			<span class="btn_s"><a href="<c:url value='/sym/tbm/tbr/removeTroblReqst.do'/>?troblId=<c:out value='${troblReqst.troblId}'/>" onclick="fncTroblReqstDelete('${troblReqst.troblId}'); return false;"><spring:message code="button.delete" /></a></span><!-- 삭제 -->
-			<span class="btn_s"><a href="<c:url value='/sym/tbm/tbr/requstTroblReqst.do'/>?troblId=<c:out value='${troblReqst.troblId}'/>" onclick="fncTroblReqstRequst('${troblReqst.troblId}'); return false;"><spring:message code="comSymTbmTbr.troblReqstDetail.request"/></a></span><!-- 요청 -->
+			<span class="btn_s"><a href="javascript:void(0);" onclick="fncTroblReqstDelete('${troblReqst.troblId}'); return false;"><spring:message code="button.delete" /></a></span><!-- 삭제 -->
+			<span class="btn_s"><a href="javascript:void(0);" onclick="fncTroblReqstRequst('${troblReqst.troblId}'); return false;"><spring:message code="comSymTbmTbr.troblReqstDetail.request"/></a></span><!-- 요청 -->
 		</c:if>
         <c:if test="${troblReqst.processSttus == 'R'}">
-        	<span class="btn_s2"><a href="<c:url value='/sym/tbm/tbr/requstTroblReqstCancl.do'/>?troblId=<c:out value='${troblReqst.troblId}'/>" onclick="fncTroblReqstRequstCancl('${troblReqst.troblId}'); return false;"><spring:message code="comSymTbmTbr.troblReqstDetail.cancelRequest"/></a></span><!-- 요청취소 -->
+        	<span class="btn_s2"><a href="javascript:void(0);" onclick="fncTroblReqstRequstCancl('${troblReqst.troblId}'); return false;"><spring:message code="comSymTbmTbr.troblReqstDetail.cancelRequest"/></a></span><!-- 요청취소 -->
         </c:if>
-        <span class="btn_s"><a href="<c:url value='/sym/tbm/tbr/selectTroblReqstList.do'/>?pageIndex=<c:out value='${troblReqstVO.pageIndex}'/>&amp;strTroblNm=<c:out value="${troblManageVO.strTroblNm}"/>" onclick="fncSelectTroblReqstList(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
+        <span class="btn_s"><a href="javascript:void(0);" onclick="fncSelectTroblReqstList(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
 	</div>
 	<div style="clear:both;"></div>
 	

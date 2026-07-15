@@ -21,6 +21,7 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUssOlhAwm.administrationWordVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
@@ -67,7 +68,7 @@ function fn_egov_inquire_administrationworddetail(administWordId) {
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="administrationWordForm" action="<c:url value='/uss/olh/awm/selectAdministrationWordList.do'/>" method="post" onSubmit="fn_egov_search_administrationword(); return false;"> 
+<form:form name="administrationWordForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/olh/awm/selectAdministrationWordList.do" method="post" onSubmit="fn_egov_search_administrationword(); return false;"> 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<!-- 하단 버튼 -->
@@ -89,7 +90,7 @@ function fn_egov_inquire_administrationworddetail(administWordId) {
 			</li>
 		</ul>
 	</div>
-	</form>
+	
 	
 	<!-- 목록영역 -->
 	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
@@ -124,11 +125,7 @@ function fn_egov_inquire_administrationworddetail(administWordId) {
 		<td><c:out value='${resultInfo.wordDomnNm}'/></td>
 		<td><c:out value='${resultInfo.themaRelm}'/></td>
 		<td>
-			<form name="subForm" method="post" action="<c:url value='/uss/olh/awm/selectAdministrationWordDetail.do'/>">
-			    <input name="administWordId" type="hidden" value="<c:out value="${resultInfo.administWordId}"/>">
-			    <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
-			    <span class="link"><input type="submit" value="<c:out value='${fn:substring(resultInfo.administWordNm, 0, 40)}'/>" style="border:0px solid #e0e0e0;"></span>
-			</form>
+			<a href="javascript:void(0);" onclick="fn_egov_inquire_administrationworddetail('<c:out value="${resultInfo.administWordId}"/>'); return false;"><span class="link"><c:out value='${fn:substring(resultInfo.administWordNm, 0, 40)}'/></span></a>
 		</td>
 		<td><c:out value='${resultInfo.administWordAbrv}'/></td>
 		<td><c:out value='${resultInfo.frstRegisterPnttm}'/></td>
@@ -143,6 +140,8 @@ function fn_egov_inquire_administrationworddetail(administWordId) {
 		<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="fn_egov_select_linkPage"/>
 		</ul>
 	</div>
+</form:form>
+
 	
 	
 </div>

@@ -53,7 +53,8 @@
 
 </head>
 <body>
-<form name="boardUseInf" method="post" action="<c:url value='/cop/com/updateBBSUseInf.do'/>">
+<form name="boardUseInf" method="post" action="${pageContext.request.contextPath}/cop/com/updateBBSUseInf.do">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <div style="visibility:hidden;display:none;"><input name="iptSubmit" type="submit" value="전송" title="전송"></div>
 <input type="hidden" name="pageIndex" value="<c:out value='${searchVO.pageIndex}'/>" />
 <input type="hidden" name="bbsId" value="<c:out value='${bdUseVO.bbsId}'/>" />
@@ -126,11 +127,11 @@
 	<table border="0" cellspacing="0" cellpadding="0" align="center">
 	<tr>
       <td><span class="button">
-      <a href="<c:url value='/cop/com/updateBBSUseInf.do'/>" onclick="fn_egov_updt_bbsUseInf(); return false;">수정</a>
+      <a href="javascript:void(0);" onclick="fn_egov_updt_bbsUseInf(); return false;">수정</a>
       </span></td>
       <td width="10"></td>
       <td><span class="button">
-      <a href="<c:url value='/cop/com/selectBBSUseInfs.do'/>" onclick="fn_egov_select_bbsUseInfs(); return false;">목록</a>
+      <a href="javascript:void(0);" onclick="fn_egov_select_bbsUseInfs(); return false;">목록</a>
       </span></td>
 	</tr>
 	</table>

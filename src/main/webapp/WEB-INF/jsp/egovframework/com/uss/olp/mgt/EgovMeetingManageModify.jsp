@@ -327,7 +327,7 @@ function fn_egov_SelectBoxValue(sbName)
 			<th><spring:message code="ussOlpMgt.meetingManageModify.mngtDeptNm"/></th><!-- 주관부서 -->
 			<td class="left">
 				<input id="mngtDeptNm" type="text" name="mngtDeptNm" value="${resultList[0].mngtDeptNm}" maxlength="2000" title="<spring:message code="ussOlpMgt.meetingManageModify.mngtDeptNm"/>" readonly="readonly" style="width:100px;" />
-				<a href="<c:url value='/uss/olp/mgt/EgovMeetingManageLisAuthorGroupPopup.do' />" target="_blank" title="주관부서 선택  팝업 새창으로" onclick="fn_egov_mngtDeptNm_MeetingManage();return false">
+				<a href="javascript:void(0);" onclick="fn_egov_mngtDeptNm_MeetingManage();return false">
 					<img alt="<spring:message code="ussOlpMgt.meetingManageModify.mngtDeptNm"/>" src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif' />" title="<spring:message code="ussOlpMgt.meetingManageModify.mngtDeptNm"/>" />
 				</a>
 				<input id="mngtDeptId" type="hidden" name="mngtDeptId" value="${resultList[0].mngtDeptId}" />
@@ -337,7 +337,7 @@ function fn_egov_SelectBoxValue(sbName)
 			<th><spring:message code="ussOlpMgt.meetingManageModify.mnaerNm"/></th><!-- 주관자명 -->
 			<td class="left">
 				<input id="mnaerNm" type="text" name="mnaerNm" value="${resultList[0].mnaerIds}" title="<spring:message code="ussOlpMgt.meetingManageModify.mnaerNm"/>" maxlength="2000" readonly="readonly" style="width:100px;" />
-				<a href="<c:url value='/uss/olp/mgt/EgovMeetingManageLisEmpLyrPopup.do' />" target="_blank" title="주관자ID 선택  팝업 새창으로" onclick="fn_egov_mnaer_MeetingManage();return false">
+				<a href="javascript:void(0);" onclick="fn_egov_mnaer_MeetingManage();return false">
 					<img alt="주관자ID 찾기버튼" src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif' />" title="주관자ID 찾기 버튼" />
 				</a>
 				<input id="mnaerId" type="hidden" name="mnaerId" value="${resultList[0].mnaerId}" />
@@ -347,7 +347,7 @@ function fn_egov_SelectBoxValue(sbName)
 			<th><spring:message code="ussOlpMgt.meetingManageModify.mnaerDeptNm"/></th><!-- 주관자부서 -->
 			<td class="left">
 				<input id="mnaerDeptNm" type="text" name="mnaerDeptNm" title="<spring:message code="ussOlpMgt.meetingManageModify.mnaerDeptNm"/>" value="${resultList[0].mnaerDeptNm}" maxlength="2000" style="width:100px;" readonly="readonly" />
-				<a href="<c:url value='/uss/olp/mgt/EgovMeetingManageLisAuthorGroupPopup.do' />" target="_blank" title="주관자부서 선택  팝업 새창으로" onclick="fn_egov_mnaerDept_MeetingManage();return false">
+				<a href="javascript:void(0);" onclick="fn_egov_mnaerDept_MeetingManage();return false">
 					<img src="<c:url value='/images/egovframework/com/cmm/btn/btn_search.gif' />" align="middle" style="border:0px" alt="주관자부서 찾기버튼" title="주관자부서 찾기 버튼">
 				</a>
 				<input name="mnaerDeptId"  id="mnaerDeptId" type="hidden" value="${resultList[0].mnaerDeptId}" >

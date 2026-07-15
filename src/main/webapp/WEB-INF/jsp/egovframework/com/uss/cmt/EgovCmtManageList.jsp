@@ -24,10 +24,13 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
+
 <%@ page import="egovframework.com.utl.fcc.service.EgovDateUtil" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title><spring:message code="ussCmt.cmtManageList.cmtManage"/></title><!-- 출퇴근 관리 목록 -->
 <link href="<c:url value="/css/egovframework/com/com.css"/>" rel="stylesheet" type="text/css">
@@ -40,8 +43,6 @@
  /*설명 : 목록 조회 */
  function fncSelectCmtManageList(pageNo){
 	 var varForm				 = document.all["listForm"];
-	 //varForm.searchCondition.value = "1";
-// 	 varForm.pageIndex.value = pageNo;
 	 varForm.action = "<c:url value='/uss/cmt/EgovCmtManageList.do'/>";
 	 varForm.submit();
  }
@@ -50,7 +51,7 @@
  * 출근 등록 화면 호출 함수 
  ******************************************************** */
 function fncCmtWrkStartInsert(){
-	location.href = "<c:url value='/uss/cmt/EgovCmtWrkStartInsert.do' />";
+	fn_egov_postNavigate("<c:url value='/uss/cmt/EgovCmtWrkStartInsert.do' />");
 	
 }
 
@@ -58,7 +59,7 @@ function fncCmtWrkStartInsert(){
  * 퇴근 등록  화면 호출 함수 
  ******************************************************** */
 function fncCmtWrkEndInsert(){
-	location.href = "<c:url value='/uss/cmt/EgovCmtWrkEndInsert.do' />"; 
+	fn_egov_postNavigate("<c:url value='/uss/cmt/EgovCmtWrkEndInsert.do' />");
 	
 }
 /* ********************************************************
@@ -76,7 +77,7 @@ function fncShowMessg(){
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
 <div class="board">
-<form name="listForm" action="<c:url value='/uss/cmt/EgovCmtManageList.do'/>" method="post">
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/cmt/EgovCmtManageList.do" method="post">
 <input type="hidden" name="searchCondition">
 	<h1><spring:message code="ussCmt.cmtManageList.cmtManage"/></h1><!-- 출퇴근 관리 목록 -->
 
@@ -137,6 +138,6 @@ function fncShowMessg(){
 
 	<p style="padding-top:10px; color:#595959"><spring:message code="ussCmt.cmtManageList.wrkInfo"/></p><!-- ※ 1일 중복 클릭시 오류로 처리한다. -->
 </div>
-</form>
+</form:form>
 </body>
 </html>

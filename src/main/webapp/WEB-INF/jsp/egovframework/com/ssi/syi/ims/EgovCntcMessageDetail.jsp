@@ -24,6 +24,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <html lang="ko">
 <head>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
@@ -108,6 +110,7 @@ function fn_egov_delete_CntcMessageItem(itemId){
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
 <form name="Form" action="" method="post">
+	<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 	<input name="cntcMessageId" type="hidden">
 	<input name="itemId"        type="hidden">
 	<!-- 검색조건 유지 -->
@@ -116,12 +119,12 @@ function fn_egov_delete_CntcMessageItem(itemId){
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}' default='1'/>">
 </form>
 
-<form name="listForm" action="" method="post">
+<form:form name="listForm" modelAttribute="searchVO" action="" method="post">
 	<!-- 검색조건 유지 -->
 	<input name="searchCondition" type="hidden" value="<c:out value='${searchVO.searchCondition}'/>">
 	<input name="searchKeyword" type="hidden" value="<c:out value='${searchVO.searchKeyword}'/>">
 	<input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}' default='1'/>">
-</form>
+</form:form>
 
 <div class="wTableFrm">
 	<!-- 타이틀 -->
@@ -155,19 +158,22 @@ function fn_egov_delete_CntcMessageItem(itemId){
 
 	<!-- 하단 버튼 -->
 	<div class="btn">
-		<form name="formUpdt" action="<c:url value='/ssi/syi/ims/updateCntcMessage.do'/>" method="post" style="display:inline-block; vertical-align:top">
+		<form name="formUpdt" action="${pageContext.request.contextPath}/ssi/syi/ims/updateCntcMessage.do" method="post" style="display:inline-block; vertical-align:top">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 			<input class="s_submit" type="submit" value="<spring:message code="button.update" />" title="<spring:message code="title.update" />" onclick="fn_egov_modify_CntcMessage(); return false;"><!-- 수정 -->
 			<input name="cntcMessageId" type="hidden" value="<c:out value='${result.cntcMessageId}'/>">
 			<input name="itemId" type="hidden" value="">
 		</form>
 
-		<form name="formDelete" action="<c:url value='/ssi/syi/ims/removeCntcMessage.do'/>" method="post" style="display:inline-block; vertical-align:top">
+		<form name="formDelete" action="${pageContext.request.contextPath}/ssi/syi/ims/removeCntcMessage.do" method="post" style="display:inline-block; vertical-align:top">
+			<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 			<input class="s_submit" type="submit" value="<spring:message code="button.delete" />" title="<spring:message code="title.delete" />" onclick="fn_egov_delete_CntcMessage(); return false;"><!-- 삭제 -->
 			<input name="cntcMessageId" type="hidden" value="<c:out value='${result.cntcMessageId}'/>">
 			<input name="itemId"        type="hidden" value="">
 		</form>
 	
-		<form name="formList" action="<c:url value='/ssi/syi/ims/getCntcMessageList.do'/>" method="post" style="display:inline-block; vertical-align:top">
+		<form name="formList" action="${pageContext.request.contextPath}/ssi/syi/ims/getCntcMessageList.do" method="post" style="display:inline-block; vertical-align:top">
+		<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 		<input class="s_submit" type="submit" value="<spring:message code="button.list" />" title="<spring:message code="title.list" />" onclick="fn_egov_list_CntcMessage(); return false;"><!-- 목록 -->
 		</form>
 	</div>
@@ -214,13 +220,15 @@ function fn_egov_delete_CntcMessageItem(itemId){
 				<td><c:out value="${resultInfo.itemType}"/></td>
 				<td><c:out value="${resultInfo.itemLt}"/></td>
 				<td>
-					<form name="formUpdt" action="<c:url value='/ssi/syi/ims/updateCntcMessageItem.do'/>" method="post" style="display:inline-block; vertical-align:top">
+					<form name="formUpdt" action="${pageContext.request.contextPath}/ssi/syi/ims/updateCntcMessageItem.do" method="post" style="display:inline-block; vertical-align:top">
+					<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 					<span class="button"><input type="submit" value="<spring:message code="button.update" />" title="<spring:message code="title.update" />" onclick="fn_egov_modify_CntcMessageItem('<c:out value="${resultInfo.itemId}"/>'); return false;"></span><!-- 수정 -->
 					<input name="cntcMessageId" type="hidden" value="<c:out value='${result.cntcMessageId}'/>">
 					<input name="itemId"        type="hidden" value="<c:out value='${resultInfo.itemId}'/>">
 					</form>
 					
-					<form name="formDelete" action="<c:url value='/ssi/syi/ims/removeCntcMessageItem.do'/>" method="post" style="display:inline-block; vertical-align:top">
+					<form name="formDelete" action="${pageContext.request.contextPath}/ssi/syi/ims/removeCntcMessageItem.do" method="post" style="display:inline-block; vertical-align:top">
+					<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 					<span class="button"><input type="submit" value="<spring:message code="button.delete" />" title="<spring:message code="title.delete" />" onclick="fn_egov_delete_CntcMessageItem('<c:out value="${resultInfo.itemId}"/>'); return false;"></span><!-- 삭제 -->
 					<input name="cntcMessageId" type="hidden" value="<c:out value='${result.cntcMessageId}'/>">
 					<input name="itemId"        type="hidden" value="<c:out value='${resultInfo.itemId}'/>">

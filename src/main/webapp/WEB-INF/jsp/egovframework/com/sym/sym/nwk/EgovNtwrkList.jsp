@@ -78,7 +78,7 @@ function press() {
 <div class="board">
 	<h1><spring:message code="comSymSymNwk.NtwrkList.pageTop.title"/></h1><!-- 네트워크 관리 -->
 
-<form name="listForm" action="<c:url value='/sym/sym/nwk/selectNtwrkList.do'/>" method="post">
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/sym/sym/nwk/selectNtwrkList.do" method="post">
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
 			<li>
@@ -94,14 +94,14 @@ function press() {
 				<input id="strUserNm" class="s_input2 vat" name="strUserNm" type="text" value='<c:out value="${ntwrkVO.strUserNm}"/>' size="15" onkeypress="press();" title="<spring:message code="comSymSymNwk.NtwrkList.strUserNm"/>" /><!-- 사용자 명 -->
 				
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fncSelectNtwrkList('1'); return false;" /><!-- 조회 -->
-				<span class="btn_b"><a href="<c:url value='/sym/sym/nwk/addViewNtwrk.do'/>?pageIndex=<c:out value='${ntwrkVO.pageIndex}'/>&amp;searchKeyword=<c:out value="${ntwrkVO.searchKeyword}"/>&amp;searchCondition=1" onclick="fncAddNtwrkInsert(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span><!-- 등록 -->
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fncAddNtwrkInsert(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span><!-- 등록 -->
 			</li>
 		</ul>
 	</div>
 <input type="hidden" name="ntwrkId">
 <input type="hidden" name="pageIndex" value="<c:if test="${empty ntwrkVO.pageIndex }">1</c:if><c:if test="${!empty ntwrkVO.pageIndex }"><c:out value='${ntwrkVO.pageIndex}'/></c:if>">
 <input type="hidden" name="searchCondition" value="1">
-</form>
+
 
 	<table class="board_list">
 		<caption></caption>
@@ -127,13 +127,7 @@ function press() {
 			<c:forEach var="ntwrk" items="${ntwrkList}" varStatus="status">
 			  <tr>
 			    <td>
-			        <form name="item" method="post" action="<c:url value='/sym/sym/nwk/getNtwrk.do'/>">
-			            <input type="hidden" name="ntwrkId" value="<c:out value="${ntwrk.ntwrkId}"/>">
-			            <input type="hidden" name="pageIndex" value="<c:out value='${ntwrkVO.pageIndex}'/>">
-			            <input type="hidden" name="strManageIem" value="<c:out value='${ntwrkVO.strManageIem}'/>">
-			            <input type="hidden" name="strUserNm" value="<c:out value="${ntwrkVO.strUserNm}"/>">
-			            <span class="link"><input type="submit" value="<c:out value="${ntwrk.ntwrkId}"/>" onclick="fncSelectNtwrk('<c:out value="${ntwrk.ntwrkId}"/>'); return false;"></span>
-			        </form>
+			        <a href="javascript:void(0);" onclick="fncSelectNtwrk('<c:out value="${ntwrk.ntwrkId}"/>'); return false;"><span class="link"><c:out value="${ntwrk.ntwrkId}"/></span></a>
 			    </td>
 			    <td><c:out value="${ntwrk.ntwrkIp}"/></td>
 			    <td><c:out value="${ntwrk.manageIem}"/></td>
@@ -151,6 +145,8 @@ function press() {
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/>
 		</ul>
 	</div>
+</form:form>
+
 
 </div>
 

@@ -56,8 +56,6 @@ function selectProgramListSearch() {
  * 프로그램목록 선택 처리 함수
  ******************************************************** */
 function choisProgramListSearch(vFileNm) {
-	//eval("opener.document.all."+opener.document.all.tmp_SearchElementName.value).value = vFileNm;
-	//opener.document.menuManageVO.progrmFileNm.value = vFileNm;
 	var parentFrom = opener.document.getElementsByTagName('form');
 	parentFrom[0].progrmFileNm.value = vFileNm;
     window.close();
@@ -67,6 +65,7 @@ function choisProgramListSearch(vFileNm) {
 </head>
 <body>
 <form name="progrmManageForm" action ="<c:url value='/sym/prm/EgovProgramListSearch.do'/>" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>"/>
 
 <div class="board" style="width:480px">

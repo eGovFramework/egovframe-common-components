@@ -10,6 +10,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -66,7 +67,7 @@ public class EgovAdministCodeRecptnController {
 	 * @return "egovframework/com/sym/ccm/adc/EgovCcmAdministCodeRegist"
 	 * @throws Exception
 	 */
-    @RequestMapping(value = "/sym/ccm/acr/addAdministCode.do")
+    @PostMapping("/sym/ccm/acr/addAdministCode.do")
 	public String insertAdministCodeRecptn (AdministCodeRecptn administCodeRecptn
 			, BindingResult bindingResult
 			, @RequestParam Map<?, ?> commandMap
@@ -91,7 +92,7 @@ public class EgovAdministCodeRecptnController {
 	 * @return "egovframework/com/sym/ccm/adc/EgovCcmAdministCodeDetail"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/ccm/acr/getAdministCodeDetail.do")
+	@PostMapping("/sym/ccm/acr/getAdministCodeDetail.do")
  	public String selectAdministCodeDetail (@ModelAttribute("administCode") AdministCodeRecptn administCode
 			, @ModelAttribute("administCodeRecptnVO") AdministCodeRecptnVO administCodeRecptnVO
 			, ModelMap model

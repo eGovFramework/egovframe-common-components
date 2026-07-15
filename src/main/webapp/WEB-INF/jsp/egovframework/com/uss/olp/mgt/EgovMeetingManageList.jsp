@@ -19,9 +19,12 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title><spring:message code="ussOlpMgt.meetingManageList.meetingManageList"/></title><!-- 회의관리 목록 -->
 <style type="text/css">
 	h1 {font-size:12px;}
@@ -43,13 +46,21 @@ function linkPage(pageNo){
  * 등록 처리 함수
  ******************************************************** */
 function fn_egov_regist_MeetingManage(){
-	location.href = "<c:url value='/uss/olp/mgt/EgovMeetingManageRegist.do' />";
+	var form = document.listForm;
+
+	// cmd 파라미터 제거 (params="!cmd" 매핑을 위해)
+	var cmdInput = form.querySelector('input[name="cmd"]');
+	if (cmdInput) {
+		cmdInput.parentNode.removeChild(cmdInput);
+	}
+
+	fn_egov_postNavigate("<c:url value='/uss/olp/mgt/EgovMeetingManageRegist.do' />", null, form);
 }
 /* ********************************************************
  * 수정 처리 함수
  ******************************************************** */
 function fn_egov_modify_MeetingManage(){
-	location.href = "<c:url value='/uss/olp/mgt/EgovMeetingManageModify.do' />";
+	fn_egov_postNavigate("<c:url value='/uss/olp/mgt/EgovMeetingManageModify.do' />");
 }
 /* ********************************************************
  * 상세회면 처리 함수
@@ -91,7 +102,7 @@ function fn_egov_search_MeetingManage(){
 
 <div class="board">
 	<h1><spring:message code="ussOlpMgt.meetingManageList.meetingManageList"/></h1><!-- 회의관리 목록 -->
-	<form name="listForm" id="listForm" action="#" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" id="listForm" action="#" method="post">
 
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
@@ -104,7 +115,7 @@ function fn_egov_search_MeetingManage(){
 				<input class="s_input2 vat" name="searchKeyword" type="text" value="<c:out value='${searchKeyword}'/>" size="25" title="<spring:message code="input.input"/>" /><!-- 검색단어입력 -->
 				
 				<input class="s_btn" type="submit" value="<spring:message code="button.inquire" />" title="<spring:message code="button.inquire" />" onclick="fn_egov_search_MeetingManage(); return false;" />
-				<span class="btn_b"><a href="<c:url value='/uss/olp/mgt/EgovMeetingManageRegist.do' />"><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="#" onclick="fn_egov_regist_MeetingManage(); return false;"><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
@@ -116,7 +127,7 @@ function fn_egov_search_MeetingManage(){
 <input name="mtgDe" type="hidden" value="">
 <input name="cmd" type="hidden" value="">
 <input name="pageIndex" type="hidden" value="<c:out value='${searchVO.pageIndex}'/>">
-</form>
+</form:form>
 
 	<table class="board_list">
 		<caption><spring:message code="ussOlpMgt.meetingManageList.meetingManageList"/></caption><!-- 회의 관리 목록 -->
@@ -148,11 +159,11 @@ function fn_egov_search_MeetingManage(){
 			<tr>
 				<td>${(searchVO.pageIndex-1) * searchVO.pageSize + status.count}</td>
 				<td>
-					<a href="<c:url value='/uss/olp/mgt/EgovMeetingManageDetail.do'/>?mtgId=${resultInfo.mtgId}&pageIndex=${searchVO.pageIndex}" onClick="fn_egov_detail_MeetingManage('<c:out value="${resultInfo.mtgId}"/>');return false;"><c:out value="${resultInfo.mtgDe}"/></a>
+					<a href="javascript:void(0);" onClick="fn_egov_detail_MeetingManage('<c:out value="${resultInfo.mtgId}"/>');return false;"><c:out value="${resultInfo.mtgDe}"/></a>
 					
 				</td>
 				<td>
-					<a href="<c:url value='/uss/olp/mgt/EgovMeetingManageDetail.do'/>?mtgId=${resultInfo.mtgId}&pageIndex=${searchVO.pageIndex}" onClick="fn_egov_detail_MeetingManage('<c:out value="${resultInfo.mtgId}"/>');return false;"><c:out value="${resultInfo.mtgNm}"/></a>
+					<a href="javascript:void(0);" onClick="fn_egov_detail_MeetingManage('<c:out value="${resultInfo.mtgId}"/>');return false;"><c:out value="${resultInfo.mtgNm}"/></a>
 				</td>
 				<td>${resultInfo.mtgPlace}</td>
 				<td>

@@ -3,6 +3,8 @@
 <%@ taglib prefix="ui" uri="http://egovframework.gov/ctl/ui"%>
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <%
 
 /**
@@ -108,7 +110,7 @@ function fncViewIntnetSvcGuidance() {
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript><!-- 자바스크립트를 지원하지 않는 브라우저에서는 일부 기능을 사용하실 수 없습니다. -->
 
 <div class="board">
-<form name="listForm" action="<c:url value='/uss/ion/isg/selectIntnetSvcGuidanceList.do'/>" method="post">
+<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/uss/ion/isg/selectIntnetSvcGuidanceList.do" method="post">
 	<h1><spring:message code="uss.ion.isg.intnetSvcGuidanceList.intnetSvcGuidanceList" /></h1><!-- 인터넷서비스안내 관리 목록 -->
 
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
@@ -118,15 +120,15 @@ function fncViewIntnetSvcGuidance() {
 				<input id="searchKeyword" class="s_input2 vat" name="searchKeyword" type="text" value="<c:out value="${intnetSvcGuidanceVO.searchKeyword}"/>" size="25" onkeypress="press();" title="검색" />
 				
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title="조회" onclick="fncSelectIntnetSvcGuidanceList('1'); return false;" />
-				<span class="btn_b"><a href="<c:url value='/uss/ion/isg/addViewIntnetSvcGuidance.do'/>?pageIndex=<c:out value='${intnetSvcGuidanceVO.pageIndex}'/>&amp;searchKeyword=<c:out value="${intnetSvcGuidanceVO.searchKeyword}"/>&amp;searchCondition=1" onclick="fncAddIntnetSvcGuidanceInsert(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
-				<span class="btn_b"><a href="<c:url value='/uss/ion/isg/selectIntnetSvcGuidanceResultList.do'/>" onclick="fncViewIntnetSvcGuidance(); return false;" title='새 창으로 이동' target="_blank"><spring:message code="button.confirm" /></a></span>
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fncAddIntnetSvcGuidanceInsert(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fncViewIntnetSvcGuidance(); return false;" title='새 창으로 이동' target="_blank"><spring:message code="button.confirm" /></a></span>
 			</li>
 		</ul>
 	</div>
 <input type="hidden" name="intnetSvcId">
 <input type="hidden" name="pageIndex" value="<c:if test="${empty intnetSvcGuidanceVO.pageIndex }">1</c:if><c:if test="${!empty intnetSvcGuidanceVO.pageIndex }"><c:out value='${intnetSvcGuidanceVO.pageIndex}'/></c:if>">
 <input type="hidden" name="searchCondition" value="1">
-</form>
+
 
 	<table class="board_list">
 		<caption></caption>
@@ -156,13 +158,7 @@ function fncViewIntnetSvcGuidance() {
 			 <c:forEach var="intnetSvcGuidance" items="${intnetSvcGuidanceList}" varStatus="status">
 			  <tr>
 			    <td>
-			        <form name="item" method="post" action="<c:url value='/uss/ion/isg/getIntnetSvcGuidance.do'/>">
-			            <input type="hidden" name="intnetSvcId" value="<c:out value="${intnetSvcGuidance.intnetSvcId}"/>">
-			            <input type="hidden" name="pageIndex" value="<c:out value='${intnetSvcGuidanceVO.pageIndex}'/>">
-			            <input type="hidden" name="searchCondition" value="<c:out value='${intnetSvcGuidanceVO.searchCondition}'/>">
-			            <input type="hidden" name="searchKeyword" value="<c:out value="${intnetSvcGuidanceVO.searchKeyword}"/>">
-			            <span class="link"><input type="submit" value="<c:out value="${intnetSvcGuidance.intnetSvcId}"/>" onclick="fncSelectIntnetSvcGuidance('<c:out value="${intnetSvcGuidance.intnetSvcId}"/>'); return false;"></span>
-			        </form>
+			        <a href="javascript:void(0);" onclick="fncSelectIntnetSvcGuidance('<c:out value="${intnetSvcGuidance.intnetSvcId}"/>'); return false;"><span class="link"><c:out value="${intnetSvcGuidance.intnetSvcId}"/></span></a>
 			    </td>
 			    <td><c:out value="${intnetSvcGuidance.intnetSvcNm}"/></td>
 			    <td><c:out value="${intnetSvcGuidance.reflctAt}"/></td>
@@ -178,6 +174,8 @@ function fncViewIntnetSvcGuidance() {
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/>
 		</ul>
 	</div>
+</form:form>
+
 </div>
 </body>
 </html>

@@ -7,6 +7,7 @@ import org.egovframe.rte.ptl.mvc.tags.ui.pagination.PaginationInfo;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import egovframework.com.cmm.annotation.IncludedInfo;
@@ -79,7 +80,7 @@ public class EgovPrivacyLogController {
 	 * @return sym/log/plg/EgovPrivacyLogInqire
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/sym/log/plg/SelectPrivacyLogDetail.do")
+	@PostMapping("/sym/log/plg/SelectPrivacyLogDetail.do")
 	public String selectWebLog(@ModelAttribute("searchVO") PrivacyLog privacyLog,
 			ModelMap model) throws Exception{
 

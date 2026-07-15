@@ -4,6 +4,7 @@ import java.util.Calendar;
 import java.util.List;
 
 import org.egovframe.rte.fdl.cmmn.EgovAbstractServiceImpl;
+import org.egovframe.rte.fdl.cmmn.exception.EgovBizException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
@@ -283,15 +284,33 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 	@Override
 	@SuppressWarnings("unused")
 	public void deleteVcatnManage(VcatnManageVO vcatnManageVO) throws Exception {
-		/*
-		 * 휴가 승인처리 삭제 infrmlSanctnService.insertInfrmlSanctn("000", vcatnManageVO);
-		 */
+		// 2026.07.13 KISA 보안취약점 조치
+		LoginVO _loginVO = egovAssertLoginUser();
+
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null) {
+			throw new EgovBizException("인증 정보가 없습니다.");
+		}
 		vcatnManageVO.setBgnde(EgovStringUtil.removeMinusChar(vcatnManageVO.getBgnde()));
 		vcatnManageVO.setEndde(EgovStringUtil.removeMinusChar(vcatnManageVO.getEndde()));
 		vcatnManageVO.setReqstDe(EgovStringUtil.removeMinusChar(vcatnManageVO.getReqstDe()));
+		VcatnManageVO existing = vcatnManageDAO.selectVcatnManage(vcatnManageVO);
+		if (existing == null) {
+			throw new EgovBizException("권한이 없습니다.");
+		}
+		// 2026.07.13 KISA 보안취약점 조치
+		if (!loginVO.getUniqId().equals(existing.getApplcntId())) {
+			java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+			if (auth == null || !auth.contains("ROLE_ADMIN")) {
+				throw new EgovBizException("권한이 없습니다.");
+			}
+		}
+		/*
+		 * 휴가 승인처리 삭제 infrmlSanctnService.insertInfrmlSanctn("000", vcatnManageVO);
+		 */
 		infrmlSanctnService.deleteInfrmlSanctn(converToInfrmlSanctnObject(vcatnManageVO));
 
-		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		LoginVO user = loginVO;
 
 		// 개인연차조회
 		VcatnManageVO vcatnManageVO1 = selectIndvdlYrycManage(vcatnManageVO.getApplcntId());
@@ -575,6 +594,33 @@ public class EgovVcatnManageServiceImpl extends EgovAbstractServiceImpl implemen
 		infrmlSanctn.setLastUpdusrPnttm(vcatnManageVO.getLastUpdusrPnttm());
 		infrmlSanctn.setInfrmlSanctnId(vcatnManageVO.getInfrmlSanctnId());// 약식결재ID
 		return infrmlSanctn;
+	}
+
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 로그인 사용자 확인
+	 */
+	private LoginVO egovAssertLoginUser() {
+		LoginVO loginVO = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		if (loginVO == null || loginVO.getUniqId() == null || "".equals(loginVO.getUniqId())) {
+			throw new IllegalStateException("인증 정보가 없습니다.");
+		}
+		return loginVO;
+	}
+
+	/**
+	 * 2026.07.13 KISA 보안취약점 조치 - 관리자 또는 소유자
+	 */
+	private void egovAssertAdminOrOwner(String ownerUniqId) {
+		LoginVO loginVO = egovAssertLoginUser();
+		if (ownerUniqId != null && ownerUniqId.equals(loginVO.getUniqId())) {
+			return;
+		}
+		java.util.List<String> auth = EgovUserDetailsHelper.getAuthorities();
+		if (auth != null && auth.contains("ROLE_ADMIN")) {
+			return;
+		}
+		throw new IllegalStateException("권한이 없습니다.");
 	}
 
 }

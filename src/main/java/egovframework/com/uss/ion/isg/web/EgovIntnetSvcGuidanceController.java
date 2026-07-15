@@ -17,6 +17,7 @@
  *  2010.08.03	lee.m.j		최초 생성
  *  2011.08.26	정진오		IncludedInfo annotation 추가
  *  2023.06.09	김수용		NSR 보안조치 (특수문자 복원 기능 제거)
+ *  2026.07.10  유지보수    NCSC 보안점검 반영 (삭제 시 소유권 검증)
  *
  *  </pre>
  */
@@ -31,6 +32,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -106,7 +108,7 @@ public class EgovIntnetSvcGuidanceController {
 	 * @param intnetSvcGuidanceVO - 인터넷서비스안내 VO
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping("/uss/ion/isg/getIntnetSvcGuidance.do")
+	@PostMapping("/uss/ion/isg/getIntnetSvcGuidance.do")
 	public String selectIntnetSvcGuidance(@RequestParam("intnetSvcId") String intnetSvcId,
 			                              @ModelAttribute("intnetSvcGuidanceVO") IntnetSvcGuidanceVO intnetSvcGuidanceVO,
 			                              ModelMap model) throws Exception {
@@ -122,7 +124,7 @@ public class EgovIntnetSvcGuidanceController {
 	 * 인터넷서비스안내정보를 신규 등록을 위해 등록화면으로 이동한다.
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping("/uss/ion/isg/addViewIntnetSvcGuidance.do")
+	@PostMapping("/uss/ion/isg/addViewIntnetSvcGuidance.do")
     public String insertIntnetSvcGuidanceView(@ModelAttribute("intnetSvcGuidanceVO") IntnetSvcGuidanceVO intnetSvcGuidanceVO) throws Exception {
 
         return "egovframework/com/uss/ion/isg/EgovIntnetSvcGuidanceRegist";
@@ -133,7 +135,7 @@ public class EgovIntnetSvcGuidanceController {
 	 * @param intnetSvcGuidanceVO - 인터넷서비스안내 VO
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping("/uss/ion/isg/addIntnetSvcGuidance.do")
+	@PostMapping("/uss/ion/isg/addIntnetSvcGuidance.do")
 	public String insertIntnetSvcGuidance(@Valid @ModelAttribute("intnetSvcGuidanceVO") IntnetSvcGuidanceVO intnetSvcGuidanceVO,
 			                               BindingResult bindingResult,
 			                               ModelMap model) throws Exception {
@@ -159,7 +161,7 @@ public class EgovIntnetSvcGuidanceController {
 	 * @param intnetSvcGuidanceVO - 인터넷서비스안내 VO
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping("/uss/ion/isg/updtIntnetSvcGuidance.do")
+	@PostMapping("/uss/ion/isg/updtIntnetSvcGuidance.do")
 	public String updateIntnetSvcGuidance(@Valid @ModelAttribute("intnetSvcGuidanceVO") IntnetSvcGuidanceVO intnetSvcGuidanceVO,
 			                              BindingResult bindingResult,
 			                              ModelMap model) throws Exception {
@@ -181,9 +183,34 @@ public class EgovIntnetSvcGuidanceController {
 	 * @param intnetSvcGuidanceVO - 인터넷서비스안내 VO
 	 * @return String - 리턴 Url
 	 */
-	@RequestMapping("/uss/ion/isg/removeIntnetSvcGuidance.do")
+	@PostMapping("/uss/ion/isg/removeIntnetSvcGuidance.do")
 	public String deleteIntnetSvcGuidance(@ModelAttribute("intnetSvcGuidanceVO") IntnetSvcGuidanceVO intnetSvcGuidanceVO,
 			                               ModelMap model) throws Exception {
+
+		Boolean isAuthenticated = EgovUserDetailsHelper.isAuthenticated();
+		if (!isAuthenticated) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.login"));
+			return "redirect:/uat/uia/egovLoginUsr.do";
+		}
+
+		if (EgovStringUtil.isEmpty(intnetSvcGuidanceVO.getIntnetSvcId())) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.delete"));
+			return "forward:/uss/ion/isg/selectIntnetSvcGuidanceList.do";
+		}
+
+		IntnetSvcGuidanceVO existing = egovIntnetSvcGuidanceService.selectIntnetSvcGuidance(intnetSvcGuidanceVO);
+		if (existing == null || EgovStringUtil.isEmpty(existing.getIntnetSvcId())) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.delete"));
+			return "forward:/uss/ion/isg/selectIntnetSvcGuidanceList.do";
+		}
+
+		LoginVO user = (LoginVO) EgovUserDetailsHelper.getAuthenticatedUser();
+		String loginId = user == null ? "" : EgovStringUtil.isNullToString(user.getId());
+		String ownerId = EgovStringUtil.isNullToString(existing.getUserId());
+		if (!EgovStringUtil.isEmpty(ownerId) && !loginId.equals(ownerId)) {
+			model.addAttribute("message", egovMessageSource.getMessage("fail.common.delete"));
+			return "forward:/uss/ion/isg/selectIntnetSvcGuidanceList.do";
+		}
 
     	egovIntnetSvcGuidanceService.deleteIntnetSvcGuidance(intnetSvcGuidanceVO);
 

@@ -9,6 +9,7 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -108,7 +109,7 @@ public class EgovHpcmController {
 	 * @return "/uss/olh/hpc/EgovHpcmDetailInqire"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/hpc/selectHpcmDetail.do")
+	@PostMapping("/uss/olh/hpc/selectHpcmDetail.do")
 	public String selectHpcmDetail(HpcmVO hpcmManageVO, @ModelAttribute("searchVO") HpcmVO searchVO, ModelMap model)
 			throws Exception {
 
@@ -127,7 +128,7 @@ public class EgovHpcmController {
 	 * @return "/uss/olh/hpc/EgovHpcmCnRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/hpc/insertHpcmView.do")
+	@PostMapping("/uss/olh/hpc/insertHpcmView.do")
 	public String insertHpcmView(@ModelAttribute("searchVO") HpcmVO searchVO, Model model) throws Exception {
 
 		// 공통코드를 가져오기 위한 Vo
@@ -152,7 +153,7 @@ public class EgovHpcmController {
 	 * @return "forward:/uss/olh/hpc/selectHpcmList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/hpc/insertHpcm.do")
+	@PostMapping("/uss/olh/hpc/insertHpcm.do")
 	public String insertHpcmCn(@ModelAttribute("searchVO") HpcmVO searchVO, @Valid @ModelAttribute("hpcmVO") HpcmVO hpcmVO,
 			BindingResult bindingResult) throws Exception {
 
@@ -182,7 +183,7 @@ public class EgovHpcmController {
 	 * @return "/uss/olh/hpc/EgovHpcmUpdt"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/hpc/updateHpcmView.do")
+	@PostMapping("/uss/olh/hpc/updateHpcmView.do")
 	public String updateHpcmView(@RequestParam("hpcmId") String hpcmId, @ModelAttribute("searchVO") HpcmVO searchVO,
 			ModelMap model) throws Exception {
 
@@ -210,7 +211,7 @@ public class EgovHpcmController {
 	 * @return "forward:/uss/olh/hpc/selectHpcmList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/hpc/updateHpcm.do")
+	@PostMapping("/uss/olh/hpc/updateHpcm.do")
 	public String updateHpcm(@ModelAttribute("searchVO") HpcmVO searchVO, @Valid @ModelAttribute("hpcmManageVO") HpcmVO hpcmVO,
 			BindingResult bindingResult) throws Exception {
 
@@ -236,7 +237,7 @@ public class EgovHpcmController {
 	 * @return "forward:/uss/olh/hpc/selectHpcmList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping("/uss/olh/hpc/deleteHpcm.do")
+	@PostMapping("/uss/olh/hpc/deleteHpcm.do")
 	public String deleteHpcmCn(HpcmVO hpcmVO, @ModelAttribute("searchVO") HpcmVO searchVO) throws Exception {
 
 		egovHpcmService.deleteHpcmCn(hpcmVO);

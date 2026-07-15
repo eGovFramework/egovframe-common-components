@@ -8,6 +8,7 @@
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <title>${pageTitle} <spring:message code="title.list" /></title><!-- 블로그 메인 목록 -->
 
@@ -18,6 +19,14 @@
 <script type="text/javascript" src="<c:url value="/js/egovframework/com/cmm/EgovValidation.js" />"></script>
 
 <script>
+var csrfHeaderName = "${_csrf.headerName}";
+var csrfToken = "${_csrf.token}";
+function egovCsrfBeforeSend(xhr) {
+	if (csrfHeaderName && csrfToken) {
+		xhr.setRequestHeader(csrfHeaderName, csrfToken);
+	}
+}
+
 
 /*********************************************************
  * 페이징 처리 함수
@@ -44,6 +53,7 @@ function fn_egov_loadBdList(bbsId,blogNm,cnt){
 	$('#sub').text(blogNm);
 	$(".comm_List").empty();
 	$.ajax({
+		beforeSend: egovCsrfBeforeSend,
 		url :"<c:url value='/cop/bbs/selectArticleBlogDetail.do'/>"
         ,type: "POST"
         	,data : {"bbsId":bbsId, "searchCnd":searchCnd}
@@ -95,11 +105,12 @@ function fn_blog_cn(blogId){
 		return;
 	}
 
-	location.href="<c:url value='/cop/bbs/insertArticleView.do' />?bbsId="+bbsId+"&blogAt=Y&blogId="+blogId;
+	fn_egov_postNavigate("<c:url value='/cop/bbs/insertArticleView.do' />", {bbsId: bbsId, blogAt: 'Y', blogId: blogId}, document.blogfrm);
 }
 
 function fn_clickComm(bbsId, nttId, ntcrId, replyPosblAt, blogId, cnt){
 	$.ajax({
+		beforeSend: egovCsrfBeforeSend,
 		url :"<c:url value='/cop/bbs/selectArticleBlogDetailCn.do'/>"
         ,type: "POST"
         ,data : {"bbsId":bbsId, "nttId":nttId}
@@ -142,7 +153,7 @@ function fn_clickComm(bbsId, nttId, ntcrId, replyPosblAt, blogId, cnt){
       			});
         		innerReply += "<dl>";
         		innerReply += "<dd>";
-        		innerReply += "<form id='formComment' name='formComment' method='post'>";
+        		innerReply += "<form id='formComment' name='formComment' method='post'><c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>";
         		innerReply += "<textarea name='commentCn' placeholder='<spring:message code="comCopBlog.articleBlogList.validate.limitSize" />'/>";//댓글은 500byte 까지 작성할 수 있습니다.
         		innerReply += "<button type='button' onclick='fn_egov_insert_commentList(\""+bbsId+"\", \""+nttId+"\", \""+blogId+"\");'><spring:message code="title.create"/></button>";//등록
         		innerReply += "<input name='bbsId' type='hidden' value=''>";
@@ -251,6 +262,7 @@ $(document).ready(function() {
 				</tbody>
 			</table>
 			<form name="postCnt" method="post" onChange="$('#titleck').click();">
+				<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 				<div class="post_opt">
 					<label for="" class="blind"><spring:message code="comCopBlog.articleBlogList.setListNumbers" /></label><!-- 포스트 개수 설정 -->
 					<select name="searchCnd" id="searchCnd">

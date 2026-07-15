@@ -112,7 +112,7 @@ function fn_egov_inqire_cpyrhtprtcpolicylist() {
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value="<spring:message code="button.save" />" onclick="fn_egov_regist_cpyrhtprtcpolicycn(document.forms[0]); return false;" />
-		<span class="btn_s"><a href="<c:url value='/uss/sam/cpy/CpyrhtPrtcPolicyListInqire.do'/>" onclick="fn_egov_inqire_cpyrhtprtcpolicylist(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_inqire_cpyrhtprtcpolicylist(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 </div>
 </form:form>

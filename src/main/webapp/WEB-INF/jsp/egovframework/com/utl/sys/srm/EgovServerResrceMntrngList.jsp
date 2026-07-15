@@ -154,7 +154,7 @@ function checknum(number) {
 
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 
-	<form name="listForm" action="<c:url value='/utl/sys/srm/selectServerResrceMntrngList.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/utl/sys/srm/selectServerResrceMntrngList.do" method="post">
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />">
 		<ul>
 			<li>
@@ -176,7 +176,7 @@ function checknum(number) {
 	</div>
 	<input type="hidden" name="logId">
 	<input type="hidden" name="pageIndex" value="<c:if test="${empty serverResrceMntrngVO.pageIndex }">1</c:if><c:if test="${!empty serverResrceMntrngVO.pageIndex }"><c:out value='${serverResrceMntrngVO.pageIndex}'/></c:if>">
-	</form>
+	
 
 	<table class="board_list" summary="<spring:message code="common.summary.list" arguments="${pageTitle}" />">
 		<caption></caption>
@@ -202,12 +202,7 @@ function checknum(number) {
 			<c:forEach var="serverResrceMntrng" items="${serverResrceMntrngList}" varStatus="status">
 			  <tr>
 			     <td>
-			        <form name="item" method="post" action="<c:url value='/utl/sys/srm/getServerResrceMntrng.do'/>">
-			            <input type="hidden" name="logId" value="<c:out value="${serverResrceMntrng.logId}"/>">
-			            <input type="hidden" name="pageIndex" value="<c:out value='${serverResrceMntrngVO.pageIndex}'/>">
-			            <input type="hidden" name="strServerNm" value="<c:out value="${serverResrceMntrngVO.strServerNm}"/>">
-			            <span class="link"><input type="submit" value="<c:out value="${serverResrceMntrng.serverNm}"/>" onclick="fncSelectServerResrceMntrng('<c:out value="${serverResrceMntrng.logId}"/>'); return false;"></span>
-			        </form>
+			        <a href="javascript:void(0);" onclick="fncSelectServerResrceMntrng('<c:out value="${serverResrceMntrng.logId}"/>'); return false;"><span class="link"><c:out value="${serverResrceMntrng.serverNm}"/></span></a>
 			    </td>
 			    <td><c:out value="${serverResrceMntrng.serverEqpmnIp}"/></td>
 			    <td><c:out value="${serverResrceMntrng.cpuUseRt}"/><c:if test="${serverResrceMntrng.cpuUseRt != null}">%</c:if></td>
@@ -225,6 +220,8 @@ function checknum(number) {
 			<ui:pagination paginationInfo="${paginationInfo}" type="image" jsFunction="linkPage"/>
 		</ul>
 	</div>
+</form:form>
+
 </div>
 
 

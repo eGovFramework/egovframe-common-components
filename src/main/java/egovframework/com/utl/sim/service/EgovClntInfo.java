@@ -22,6 +22,7 @@ import jakarta.servlet.http.HttpServletRequest;
  *  -------    --------    ---------------------------
  *   2009.01.19  박지욱          최초 생성
  *   2025.09.04  이백행          2025년 컨트리뷰션 PMD로 소프트웨어 보안약점 진단하고 제거하기-LocalVariableNamingConventions(final이 아닌 변수는 밑줄을 포함할 수 없음)
+ *   2026.06.29  Chung10kr       X-Forwarded-For 다중 IP 시 첫 번째 IP만 추출하도록 수정 (IP 스푸핑 방지)
  *
  *      </pre>
  */
@@ -42,6 +43,9 @@ public class EgovClntInfo {
 				.getRequest();
 
 		ipAddr = request.getHeader("X-Forwarded-For");
+		if (ipAddr != null && ipAddr.contains(",")) {
+			ipAddr = ipAddr.split(",")[0].trim();
+		}
 		if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) {
 			ipAddr = req.getHeader("Proxy-Client-IP");
 		}
@@ -53,6 +57,9 @@ public class EgovClntInfo {
 		}
 		if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) {
 			ipAddr = req.getHeader("HTTP_X_FORWARDED_FOR");
+			if (ipAddr != null && ipAddr.contains(",")) {
+				ipAddr = ipAddr.split(",")[0].trim();
+			}
 		}
 		if (ipAddr == null || ipAddr.length() == 0 || "unknown".equalsIgnoreCase(ipAddr)) {
 			ipAddr = req.getHeader("X-Real-IP");

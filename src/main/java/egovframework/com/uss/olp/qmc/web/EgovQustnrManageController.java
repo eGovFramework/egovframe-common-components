@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -87,6 +88,11 @@ public class EgovQustnrManageController {
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 		if (sCmd.equals("del")) {
+			// 2026.07.13 KISA 보안취약점 조치 - 삭제는 POST만 허용
+			jakarta.servlet.http.HttpServletRequest _req = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest();
+			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
+				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
+			}
 			egovQustnrManageService.deleteQustnrManage(qustnrManageVO);
 		}
 
@@ -136,6 +142,11 @@ public class EgovQustnrManageController {
 
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 		if (sCmd.equals("del")) {
+			// 2026.07.13 KISA 보안취약점 조치 - 삭제는 POST만 허용
+			jakarta.servlet.http.HttpServletRequest _req = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest();
+			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
+				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
+			}
 			egovQustnrManageService.deleteQustnrManage(qustnrManageVO);
 		}
 
@@ -178,7 +189,7 @@ public class EgovQustnrManageController {
 	 * @return "egovframework/com/uss/olp/qmc/EgovQustnrManageDetail";
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageDetail.do")
+	@PostMapping("/uss/olp/qmc/EgovQustnrManageDetail.do")
 	public String egovQustnrManageDetail(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			QustnrManageVO qustnrManageVO, @RequestParam Map<?, ?> commandMap, ModelMap model) throws Exception {
 
@@ -187,6 +198,11 @@ public class EgovQustnrManageController {
 		String sCmd = commandMap.get("cmd") == null ? "" : (String) commandMap.get("cmd");
 
 		if (sCmd.equals("del")) {
+			// 2026.07.13 KISA 보안취약점 조치 - 삭제는 POST만 허용
+			jakarta.servlet.http.HttpServletRequest _req = ((org.springframework.web.context.request.ServletRequestAttributes) org.springframework.web.context.request.RequestContextHolder.currentRequestAttributes()).getRequest();
+			if (!"POST".equalsIgnoreCase(_req.getMethod())) {
+				throw new org.springframework.web.HttpRequestMethodNotSupportedException(_req.getMethod());
+			}
 			egovQustnrManageService.deleteQustnrManage(qustnrManageVO);
 			sLocationUrl = "redirect:/uss/olp/qmc/EgovQustnrManageList.do";
 		} else {
@@ -213,7 +229,7 @@ public class EgovQustnrManageController {
 	 * @return "egovframework/com/uss/olp/qmc/EgovQustnrManageModify"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageModifyView.do")
+	@PostMapping("/uss/olp/qmc/EgovQustnrManageModifyView.do")
 	public String qustnrManageModify(@ModelAttribute("searchVO") ComDefaultVO searchVO, QustnrManageVO qustnrManageVO,
 			ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -253,7 +269,7 @@ public class EgovQustnrManageController {
 	 * @return "redirect:/uss/olp/qmc/EgovQustnrManageList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageModify.do")
+	@PostMapping("/uss/olp/qmc/EgovQustnrManageModify.do")
 	public String qustnrManageModify(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@RequestParam Map<?, ?> commandMap, QustnrManageVO qustnrManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {
@@ -303,7 +319,7 @@ public class EgovQustnrManageController {
 	 * @return "egovframework/com/uss/olp/qmc/EgovQustnrManageRegist"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageRegistView.do")
+	@PostMapping("/uss/olp/qmc/EgovQustnrManageRegistView.do")
 	public String qustnrManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@ModelAttribute("qustnrManageVO") QustnrManageVO qustnrManageVO, ModelMap model) throws Exception {
 		// 0. Spring Security 사용자권한 처리
@@ -337,7 +353,7 @@ public class EgovQustnrManageController {
 	 * @return "redirect:/uss/olp/qmc/EgovQustnrManageList.do"
 	 * @throws Exception
 	 */
-	@RequestMapping(value = "/uss/olp/qmc/EgovQustnrManageRegist.do")
+	@PostMapping("/uss/olp/qmc/EgovQustnrManageRegist.do")
 	public String qustnrManageRegist(@ModelAttribute("searchVO") ComDefaultVO searchVO,
 			@Valid @ModelAttribute("qustnrManageVO") QustnrManageVO qustnrManageVO, BindingResult bindingResult,
 			ModelMap model) throws Exception {

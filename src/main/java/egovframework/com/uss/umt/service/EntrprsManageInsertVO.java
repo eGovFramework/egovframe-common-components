@@ -27,4 +27,19 @@ public class EntrprsManageInsertVO extends EntrprsManageVO {
 	@EgovPwdCheck
 	private String password2;
 
+	/**
+	 * password2 attribute 값을 리턴한다.
+	 * @return String
+	 */
+	public String getPassword2() {
+		return password2;
+	}
+
+	/**
+	 * password2 attribute 값을 설정한다.
+	 * @param password2 String
+	 */
+	public void setPassword2(String password2) {
+		this.password2 = password2;
+	}
 }

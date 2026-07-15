@@ -71,7 +71,6 @@ function initCalendar(){
  ******************************************************** */
 function fn_egov_init_LeaderSchdul(){
 
-	//document.getElementsByName('reptitSeCode')[0].checked = true;
 
 	if("${leaderSchdulVO.reptitSeCode}".length == 0 ) {
 		document.getElementsByName('reptitSeCode')[0].checked = true;
@@ -106,7 +105,6 @@ function fn_egov_list_LeaderSchdul(){
  * 저장처리화면
  ******************************************************** */
 function fn_egov_save_LeaderSchdul(form){
-	//form.submit();return;
 
 	if(form.reptitSeCode[0].checked){
 		form.schdulEnddeYYYMMDD.value = form.schdulBgndeYYYMMDD.value;
@@ -369,7 +367,7 @@ String.prototype.replaceAll = function(src, repl){
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value="<spring:message code="button.save" />" onclick="fn_egov_save_LeaderSchdul(document.forms[0]); return false;" /><!-- 저장 -->
-		<span class="btn_s"><a href="<c:url value='/cop/smt/lsm/usr/selectLeaderSchdulList.do'/>" onclick="fn_egov_list_LeaderSchdul(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_list_LeaderSchdul(); return false;"><spring:message code="button.list" /></a></span><!-- 목록 -->
 	</div>
 	<div style="clear:both;"></div>
 </div>

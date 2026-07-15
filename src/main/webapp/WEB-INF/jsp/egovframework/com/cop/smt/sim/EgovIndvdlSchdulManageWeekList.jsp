@@ -177,6 +177,7 @@ String sTodate = formatter.format(new java.util.Date());
 </HEAD>
 <BODY>
 <form name="deptSchdulManageVO" id="deptSchdulManageVO" action="" method="post">
+<c:if test="${not empty _csrf}"><input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/></c:if>
 <DIV id="content" style="width:712px;">
 
 
@@ -265,7 +266,7 @@ for(int i=0; i < listWeek.size(); i++){
 		//out.print("<a href=\"JavaScript:fn_egov_detail_DeptSchdulManage('" + (String)egovMap.get("schdulId") + "')\">");
 		//out.print("<a href=\"<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageDetail.do' />?schdulId=" + (String)egovMap.get("schdulId") + "\" target=\"_top\">");
 		%>
-		<a href="<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageDetail.do' />?schdulId=<%=(String)egovMap.get("schdulId")%>" target="_parent">
+		<a href="#" onclick="fn_egov_detail_DeptSchdulManage('<%=(String)egovMap.get("schdulId")%>'); return false;">
 
 		<%
 		out.print( ((String)egovMap.get("schdulBgnde")).substring(8,10) +"시");
@@ -291,7 +292,7 @@ for(int i=0; i < listWeek.size(); i++){
 		//out.print("<a href=\"JavaScript:fn_egov_detail_DeptSchdulManage('" + (String)egovMap.get("schdulId") + "')\">");
 		//out.print("<a href=\"<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageDetail.do' />?schdulId=" + (String)egovMap.get("schdulId") + "\" target=\"_top\">");
 		%>
-		<a href="<c:url value='/cop/smt/sim/EgovIndvdlSchdulManageDetail.do' />?schdulId=<%=(String)egovMap.get("schdulId")%>" target="_parent">
+		<a href="#" onclick="fn_egov_detail_DeptSchdulManage('<%=(String)egovMap.get("schdulId")%>'); return false;">
 		<%
 		out.print((String)egovMap.get("schdulNm"));
 		out.println("</a></div></td></tr></table>");

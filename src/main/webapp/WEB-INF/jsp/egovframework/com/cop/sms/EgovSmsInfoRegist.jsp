@@ -133,7 +133,7 @@ function loading() {
 	<!-- 하단 버튼 -->
 	<div class="btn">
 		<input class="s_submit" type="submit" value='<spring:message code="cop.sms.send" />' onclick="fn_egov_regist_sms(); return false;" />
-		<span class="btn_s"><a href="<c:url value='/cop/sms/selectSmsList.do'/>?pageIndex=<c:out value='${searchVO.pageIndex}'/>" onclick="fn_egov_select_sms(); return false;"><spring:message code="button.list" /></a></span>
+		<span class="btn_s"><a href="javascript:void(0);" onclick="fn_egov_select_sms(); return false;"><spring:message code="button.list" /></a></span>
 	</div>
 	<div style="clear:both;"></div>
 </div>

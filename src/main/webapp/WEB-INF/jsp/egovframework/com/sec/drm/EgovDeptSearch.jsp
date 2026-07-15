@@ -56,12 +56,10 @@ function fncManageChecked() {
 function fncSelectDeptList(pageNo){
     document.listForm.searchCondition.value = "1";
     document.listForm.pageIndex.value = pageNo;
- // document.listForm.action = "<c:url value='/sec/drm/EgovDeptSearchList.do'/>";
     document.listForm.submit();
 }
 
 function fncSelectDept(deptCode, deptNm) {
- // window.returnValue = deptCode + "|" + deptNm;
     parent.document.listForm.deptCode.value = deptCode;
     parent.document.listForm.deptNm.value = deptNm;
     
@@ -71,7 +69,6 @@ function fncSelectDept(deptCode, deptNm) {
 function linkPage(pageNo){
     document.listForm.searchCondition.value = "1";
     document.listForm.pageIndex.value = pageNo;
-   //document.listForm.action = "<c:url value='/sec/drm/EgovDeptSearchList.do'/>";
     document.listForm.submit();
 }
 
@@ -95,7 +92,6 @@ function fncSelectDeptConfirm() {
 			}
 
 			if(checkCount == 1) {
-             // window.returnValue = org_cd + "|" + org_nm; 
                 parent.document.listForm.deptCode.value = org_cd;
                 parent.document.listForm.deptNm.value = org_nm;
                 parent.$('.ui-dialog-content').dialog('close');
@@ -105,7 +101,6 @@ function fncSelectDeptConfirm() {
 			}
 		} else {
 			if(document.listForm.delYn.checked) {
-             // window.returnValue = document.listForm.checkId.value + "|" + document.listForm.checkNm.value;
                 parent.document.listForm.deptCode.value = document.listForm.checkId.value;
                 parent.document.listForm.deptNm.value = document.listForm.checkNm.value;
                 parent.$('.ui-dialog-content').dialog('close');
@@ -132,7 +127,7 @@ function press() {
 
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
-<form:form name="listForm" action="${pageContext.request.contextPath}/sec/drm/EgovDeptSearchList.do" method="post">
+<form:form name="listForm" action="${pageContext.request.contextPath}/sec/drm/EgovDeptSearchList.do" method="post" modelAttribute="searchVO">
 <div class="popup">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1><!-- 부서조회팝업 목록 -->
 	<!-- 검색영역 -->

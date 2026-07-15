@@ -21,10 +21,12 @@
 <%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ taglib prefix="fmt" uri="http://java.sun.com/jsp/jstl/fmt" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags" %>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form" %>
 <c:set var="pageTitle"><spring:message code="comUssIonEcc.tnextrlHrVO.title"/></c:set>
 <!DOCTYPE html>
 <html>
 <head>
+<script type="text/javascript" src="<c:url value='/js/egovframework/com/cmm/egovPostNavigate.js' />"></script>
 <title>${pageTitle} <spring:message code="title.list" /></title>
 <meta http-equiv="content-type" content="text/html; charset=utf-8">
 <link type="text/css" rel="stylesheet" href="<c:url value='/css/egovframework/com/com.css' />">
@@ -59,7 +61,7 @@ function fn_egov_inquire_hrdetail(extrlHrId) {
 <!-- javascript warning tag  -->
 <noscript class="noScriptTitle"><spring:message code="common.noScriptTitle.msg" /></noscript>
 
-<form name="tnextrlHrForm" action="<c:url value='/uss/ion/ecc/selectTnextrlHrList.do'/>" method="post" onSubmit="fn_egov_search_hr(); return false;"> 
+<form:form name="tnextrlHrForm" modelAttribute="tnextrlHrVO" action="${pageContext.request.contextPath}/uss/ion/ecc/selectTnextrlHrList.do" method="post" onSubmit="fn_egov_search_hr(); return false;"> 
 <div class="board">
 	<h1>${pageTitle} <spring:message code="title.list" /></h1>
 	<!-- 하단 버튼 -->
@@ -75,7 +77,7 @@ function fn_egov_inquire_hrdetail(extrlHrId) {
 			<li>
 				<input class="s_input" name="searchKeyword" type="text"  size="35" title="<spring:message code="title.search" /> <spring:message code="input.input" />" value='<c:out value="${tnextrlHrVO.searchKeyword}"/>'  maxlength="155" >
 				<input type="submit" class="s_btn" value="<spring:message code="button.inquire" />" title="<spring:message code="title.inquire" /> <spring:message code="input.button" />" />
-				<span class="btn_b"><a href="<c:url value='/uss/ion/ecc/insertTnextrlHrView.do' />"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
+				<span class="btn_b"><a href="#" onclick="fn_egov_postNavigate('<c:url value='/uss/ion/ecc/insertTnextrlHrView.do' />'); return false;"  title="<spring:message code="button.create" /> <spring:message code="input.button" />"><spring:message code="button.create" /></a></span>
 			</li>
 		</ul>
 	</div>
@@ -109,7 +111,7 @@ function fn_egov_inquire_hrdetail(extrlHrId) {
 	<tr>
 		<td><c:out value="${(tnextrlHrVO.pageIndex-1) * tnextrlHrVO.pageSize + status.count}"/></td>
 		<td><c:out value='${resultInfo.sexdstnCodeNm}'/></td>
-		<td><a href="<c:url value='/uss/ion/ecc/selectTnextrlHrDetail.do?extrlHrId=${resultInfo.extrlHrId}'/>" onClick="fn_egov_inquire_hrdetail('<c:out value="${resultInfo.extrlHrId}"/>');return false;"><c:out value='${fn:substring(resultInfo.extrlHrNm, 0, 40)}'/></a></td>
+		<td><a href="javascript:void(0);" onClick="fn_egov_inquire_hrdetail('<c:out value="${resultInfo.extrlHrId}"/>');return false;"><c:out value='${fn:substring(resultInfo.extrlHrNm, 0, 40)}'/></a></td>
 		<td><c:out value='${resultInfo.psitnInsttNm}'/></td>
 		<td><c:out value='${resultInfo.frstRegisterPnttm}'/></td>
 	</tr>
@@ -129,7 +131,7 @@ function fn_egov_inquire_hrdetail(extrlHrId) {
 <input name="eventId" type="hidden" value="<c:out value='${tnextrlHrVO.eventId}'/>">
 <input name="extrlHrId" type="hidden" value="<c:out value='${tnextrlHrVO.extrlHrId}'/>">
 <input name="pageIndex" type="hidden" value="<c:out value='${tnextrlHrVO.pageIndex}'/>">
-</form>
+</form:form>
 
 </body>
 </html>

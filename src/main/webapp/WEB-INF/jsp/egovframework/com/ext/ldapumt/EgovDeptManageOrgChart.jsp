@@ -13,19 +13,21 @@
 	<script src="<c:url value='/html/egovframework/com/ext/ldapumt/libs/jquery.js' />"></script>
 	<script src="<c:url value='/html/egovframework/com/ext/ldapumt/jstree.js' />"></script>
 	<script type="text/javascript">
-	  //var csrfHeaderName = "${_csrf.headerName}";
-	  //var csrfToken = "${_csrf.token}";
+	  var csrfHeaderName = "${_csrf.headerName}";
+	  var csrfToken = "${_csrf.token}";
+
+	  function ldapCsrfBeforeSend(xhr) {
+		if (csrfHeaderName && csrfToken) {
+			xhr.setRequestHeader(csrfHeaderName, csrfToken);
+		}
+	  }
 
 	  function ldapPost(url, data) {
 		return $.ajax({
 			type: "POST",
 			url: url,
 			data: data,
-			/*beforeSend: function(xhr) {
-				if (csrfHeaderName && csrfToken) {
-					xhr.setRequestHeader(csrfHeaderName, csrfToken);
-				}
-			}*/
+			beforeSend: ldapCsrfBeforeSend
 		});
 	  }
 
@@ -47,7 +49,6 @@
 		data.addColumn('string', 'ToolTip');
 
 		var dn="<c:out value='${param.baseDn}'/>";
-		console.log("BASE DN:", dn);
 
 		drawChart(dn);
 	  }
@@ -134,11 +135,8 @@
 			ldapPost(url, { dn: dn }).done(function (d) {
 					d = getDataBody(d);
 				 $("#detail_div").load(htmlfile, function() {
-					 console.log("inputs :",  $("#detail_div input"));
 						$.each($("input"), function(i,v) {
 						    $(v).val(d[v.name]);
-						    console.log("d :", d);
-						    console.log("v.name :", v.name);
 						});
 				 });
 

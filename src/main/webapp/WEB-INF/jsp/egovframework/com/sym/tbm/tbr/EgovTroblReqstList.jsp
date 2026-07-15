@@ -78,7 +78,7 @@ function press() {
 <div class="board">
 	<h1><spring:message code="comSymTbmTbr.troblReqstList.pageTop.title"/></h1><!-- 장애신청 관리 -->
 
-	<form name="listForm" action="<c:url value='/sym/tbm/tbr/selectTroblReqstList.do'/>" method="post">
+	<form:form name="listForm" modelAttribute="searchVO" action="${pageContext.request.contextPath}/sym/tbm/tbr/selectTroblReqstList.do" method="post">
 	<div class="search_box" title="<spring:message code="common.searchCondition.msg" />"><!-- 이 레이아웃은 하단 정보를 대한 검색 정보로 구성되어 있습니다. -->
 		<ul>
 			<li>
@@ -102,13 +102,13 @@ function press() {
 				</select>
 				
 				<input class="s_btn" type="submit" value='<spring:message code="button.inquire" />' title='<spring:message code="button.inquire" />' onclick="fncSelectTroblReqstList('1'); return false;" /><!-- 조회 -->
-				<span class="btn_b"><a href="<c:url value='/sym/tbm/tbr/addViewTroblReqst.do'/>?pageIndex=<c:out value='${troblReqstVO.pageIndex}'/>&amp;strTroblNm=<c:out value="${troblReqstVO.strTroblNm}"/>" onclick="fncAddTroblReqstInsert(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span><!-- 등록 -->
+				<span class="btn_b"><a href="javascript:void(0);" onclick="fncAddTroblReqstInsert(); return false;" title='<spring:message code="button.create" />'><spring:message code="button.create" /></a></span><!-- 등록 -->
 			</li>
 		</ul>
 	</div>
 	<input type="hidden" name="troblId">
 	<input type="hidden" name="pageIndex" value="<c:if test="${empty troblReqstVO.pageIndex }">1</c:if><c:if test="${!empty troblReqstVO.pageIndex }"><c:out value='${troblReqstVO.pageIndex}'/></c:if>">
-	</form>
+	
 	
 	<table class="board_list">
 		<caption></caption>
@@ -134,12 +134,7 @@ function press() {
 			<c:forEach var="troblReqst" items="${troblReqstList}" varStatus="status">
 			  <tr>
 			    <td>
-			        <form name="item" method="post" action="<c:url value='/sym/tbm/tbr/getTroblReqst.do'/>">
-			            <input type="hidden" name="troblId" value="<c:out value="${troblReqst.troblId}"/>">
-			            <input type="hidden" name="pageIndex" value="<c:out value='${troblReqstVO.pageIndex}'/>">
-			            <input type="hidden" name="strTroblNm" value="<c:out value='${troblReqstVO.strTroblNm}'/>">
-			            <span class="link"><input type="submit" value="<c:out value="${troblReqst.troblId}"/>" onclick="fncSelectTroblReqst('<c:out value="${troblReqst.troblId}"/>'); return false;"></span>
-			        </form>
+			        <a href="javascript:void(0);" onclick="fncSelectTroblReqst('<c:out value="${troblReqst.troblId}"/>'); return false;"><span class="link"><c:out value="${troblReqst.troblId}"/></span></a>
 			    </td>
 			    <td><c:out value="${troblReqst.troblNm}"/></td>
 			    <td><c:out value="${troblReqst.troblKndNm}"/></td>
@@ -159,6 +154,7 @@ function press() {
 		</ul>
 	</div>
 	</c:if>
+</form:form>
 </div>
 
 </body>
