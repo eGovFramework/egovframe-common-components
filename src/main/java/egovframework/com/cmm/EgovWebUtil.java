@@ -22,6 +22,7 @@ import java.util.regex.Pattern;
  *  2023.08.10   신용호      removeLDAPInjectionRisk() 오류 수정
  *  2024.12.04   신용호      filePathBlackList() basePath 추가
  *  2026.07.10   유지보수    NCSC 보안점검 반영 (XSS/SSRF/세션고정 대응 유틸 추가)
+ *  2026.07.15   EricSeokgon fileInjectPathReplaceAll() 상위 경로 정규식 수정
  * </pre>
  */
 
@@ -138,7 +139,7 @@ public class EgovWebUtil {
 		}
 
 		returnValue = returnValue.replaceAll("/", "");
-		returnValue = returnValue.replaceAll("\\..", ""); // ..
+		returnValue = returnValue.replaceAll("\\.\\.", ""); // ..
 		returnValue = returnValue.replaceAll("\\\\", "");// \
 		returnValue = returnValue.replaceAll("&", "");
 
